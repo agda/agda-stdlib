@@ -13,7 +13,7 @@ module Data.List.Properties where
 
 open import Algebra
 import Algebra.Structures as Structures
-open import Algebra.FunctionProperties
+import Algebra.FunctionProperties as FunctionProperties
 open import Data.Bool.Base using (Bool; false; true; not; if_then_else_)
 open import Data.Fin using (Fin; zero; suc; cast; toℕ)
 open import Data.List as List
@@ -132,18 +132,24 @@ module _ {a b} {A : Set a} {B : Set b} (f : A → Maybe B) where
 
 module _ {a} {A : Set a} where
 
-  ++-assoc : Associative {A = List A} _≡_ _++_
+  length-++ : ∀ (xs : List A) {ys} → length (xs ++ ys) ≡ length xs + length ys
+  length-++ []       = refl
+  length-++ (x ∷ xs) = P.cong suc (length-++ xs)
+
+  open FunctionProperties {A = List A} _≡_
+
+  ++-assoc : Associative _++_
   ++-assoc []       ys zs = refl
   ++-assoc (x ∷ xs) ys zs = P.cong (x ∷_) (++-assoc xs ys zs)
 
-  ++-identityˡ : LeftIdentity {A = List A} _≡_ [] _++_
+  ++-identityˡ : LeftIdentity [] _++_
   ++-identityˡ xs = refl
 
-  ++-identityʳ : RightIdentity {A = List A} _≡_ [] _++_
+  ++-identityʳ : RightIdentity [] _++_
   ++-identityʳ []       = refl
   ++-identityʳ (x ∷ xs) = P.cong (x ∷_) (++-identityʳ xs)
 
-  ++-identity : Identity {A = List A} _≡_ [] _++_
+  ++-identity : Identity [] _++_
   ++-identity = ++-identityˡ , ++-identityʳ
 
   ++-identityʳ-unique : ∀ (xs : List A) {ys} → xs ≡ xs ++ ys → ys ≡ []
@@ -163,9 +169,32 @@ module _ {a} {A : Set a} where
   ++-identityˡ-unique {xs = x ∷ xs} (y ∷ []   ) eq | ()
   ++-identityˡ-unique {xs = x ∷ xs} (y ∷ _ ∷ _) eq | ()
 
-  length-++ : ∀ (xs : List A) {ys} → length (xs ++ ys) ≡ length xs + length ys
-  length-++ []       = refl
-  length-++ (x ∷ xs) = P.cong suc (length-++ xs)
+  ++-cancelˡ : ∀ xs {ys zs : List A} → xs ++ ys ≡ xs ++ zs → ys ≡ zs
+  ++-cancelˡ []       ys≡zs             = ys≡zs
+  ++-cancelˡ (x ∷ xs) x∷xs++ys≡x∷xs++zs = ++-cancelˡ xs (∷-injectiveʳ x∷xs++ys≡x∷xs++zs)
+
+  ++-cancelʳ : ∀ {xs} ys zs → ys ++ xs ≡ zs ++ xs → ys ≡ zs
+  ++-cancelʳ []       []       _             = refl
+  ++-cancelʳ {xs} []           (z ∷ zs) eq =
+    contradiction (P.trans (cong length eq) (length-++ (z ∷ zs))) (m≢1+n+m (length xs))
+  ++-cancelʳ {xs} (y ∷ ys) []       eq =
+    contradiction (P.trans (P.sym (length-++ (y ∷ ys))) (cong length eq)) (m≢1+n+m (length xs) ∘ sym)
+  ++-cancelʳ (y ∷ ys) (z ∷ zs) eq =
+    P.cong₂ _∷_ (∷-injectiveˡ eq) (++-cancelʳ ys zs (∷-injectiveʳ eq))
+
+  ++-cancel : Cancellative _++_
+  ++-cancel = ++-cancelˡ , ++-cancelʳ
+
+  ++-conicalˡ : ∀ (xs ys : List A) → xs ++ ys ≡ [] → xs ≡ []
+  ++-conicalˡ []       _ refl = refl
+  ++-conicalˡ (x ∷ xs) _ ()
+
+  ++-conicalʳ : ∀ (xs ys : List A) → xs ++ ys ≡ [] → ys ≡ []
+  ++-conicalʳ []       _ refl = refl
+  ++-conicalʳ (x ∷ xs) _ ()
+
+  ++-conical : Conical [] _++_
+  ++-conical = ++-conicalˡ , ++-conicalʳ
 
 module _ {a} {A : Set a} where
 
@@ -764,6 +793,8 @@ module _ {a p} {A : Set a} {P : A → Set p} (P? : Decidable P) where
 
 module _ {a} {A : Set a} where
 
+  open FunctionProperties {A = List A} _≡_
+
   unfold-reverse : ∀ (x : A) xs → reverse (x ∷ xs) ≡ reverse xs ∷ʳ x
   unfold-reverse x xs = helper [ x ] xs
     where
@@ -787,7 +818,7 @@ module _ {a} {A : Set a} where
     reverse ys ++ reverse (x ∷ xs)       ∎
     where open P.≡-Reasoning
 
-  reverse-involutive : Involutive {A = List A} _≡_ reverse
+  reverse-involutive : Involutive reverse
   reverse-involutive [] = refl
   reverse-involutive (x ∷ xs) = begin
     reverse (reverse (x ∷ xs))   ≡⟨ P.cong reverse $ unfold-reverse x xs ⟩

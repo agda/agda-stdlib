@@ -517,6 +517,10 @@ Other minor additions
 
 * Added new types to `Algebra.FunctionProperties`:
   ```agda
+  LeftConical e _∙_  = ∀ x y → (x ∙ y) ≈ e → x ≈ e
+  RightConical e _∙_ = ∀ x y → (x ∙ y) ≈ e → y ≈ e
+  Conical e ∙        = LeftConical e ∙ × RightConical e ∙
+
   LeftCongruent  _∙_ = ∀ {x} → (_∙ x) Preserves _≈_ ⟶ _≈_
   RightCongruent _∙_ = ∀ {x} → (x ∙_) Preserves _≈_ ⟶ _≈_
   ```
@@ -828,15 +832,21 @@ Other minor additions
 
 * Added new proofs to `Data.List.Properties`:
   ```agda
-  ≡-dec : Decidable _≡_ → Decidable {A = List A} _≡_
+  ≡-dec       : Decidable _≡_ → Decidable {A = List A} _≡_
 
-  ++-isMagma : IsMagma _++_
+  ++-cancelˡ  : xs ++ ys ≡ xs ++ zs → ys ≡ zs
+  ++-cancelʳ  : ys ++ xs ≡ zs ++ xs → ys ≡ zs
+  ++-cancel   : Cancellative _++_
+  ++-conicalˡ : xs ++ ys ≡ [] → xs ≡ []
+  ++-conicalʳ : xs ++ ys ≡ [] → ys ≡ []
+  ++-conical  : Conical [] _++_
+  ++-isMagma  : IsMagma _++_
 
-  length-%=  : length (xs [ k ]%= f) ≡ length xs
-  length-∷=  : length (xs [ k ]∷= v) ≡ length xs
-  map-∷=     : map f (xs [ k ]∷= v) ≡ map f xs [ cast eq k ]∷= f v
-  length-─   : length (xs ─ k) ≡ pred (length xs)
-  map-─      : map f (xs ─ k) ≡ map f xs ─ cast eq k
+  length-%=   : length (xs [ k ]%= f) ≡ length xs
+  length-∷=   : length (xs [ k ]∷= v) ≡ length xs
+  map-∷=      : map f (xs [ k ]∷= v) ≡ map f xs [ cast eq k ]∷= f v
+  length-─    : length (xs ─ k) ≡ pred (length xs)
+  map-─       : map f (xs ─ k) ≡ map f xs ─ cast eq k
 
   length-applyUpTo     : length (applyUpTo     f n) ≡ n
   length-applyDownFrom : length (applyDownFrom f n) ≡ n
@@ -954,6 +964,7 @@ Other minor additions
   m⊔n<o⇒n<o : ∀ m n {o} → m ⊔ n < o → n < o
 
   m≢0⇒suc[pred[m]]≡m : m ≢ 0 → suc (pred m) ≡ m
+  m≢1+n+m            : m ≢ suc (n + m)
 
   ≡ᵇ⇒≡         : T (m ≡ᵇ n) → m ≡ n
   ≡⇒≡ᵇ         : m ≡ n → T (m ≡ᵇ n)
