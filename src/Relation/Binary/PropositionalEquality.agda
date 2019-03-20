@@ -8,6 +8,7 @@
 
 module Relation.Binary.PropositionalEquality where
 
+import Axiom.Extensionality.Propositional as Ext
 open import Function
 open import Function.Equality using (Π; _⟶_; ≡-setoid)
 open import Level
@@ -119,48 +120,15 @@ inspect f x = [ refl ]
 -- f x y | c z | [ eq ] = ...
 
 ------------------------------------------------------------------------
--- Functional extensionality
-
--- If _≡_ were extensional, then the following statement could be
--- proved.
-
-Extensionality : (a b : Level) → Set _
-Extensionality a b =
-  {A : Set a} {B : A → Set b} {f g : (x : A) → B x} →
-  (∀ x → f x ≡ g x) → f ≡ g
-
--- If extensionality holds for a given universe level, then it also
--- holds for lower ones.
-
-extensionality-for-lower-levels :
-  ∀ {a₁ b₁} a₂ b₂ →
-  Extensionality (a₁ ⊔ a₂) (b₁ ⊔ b₂) → Extensionality a₁ b₁
-extensionality-for-lower-levels a₂ b₂ ext f≡g =
-  cong (λ h → lower ∘ h ∘ lift) $
-    ext (cong (lift {ℓ = b₂}) ∘ f≡g ∘ lower {ℓ = a₂})
-
--- Functional extensionality implies a form of extensionality for
--- Π-types.
-
-∀-extensionality :
-  ∀ {a b} →
-  Extensionality a (suc b) →
-  {A : Set a} (B₁ B₂ : A → Set b) →
-  (∀ x → B₁ x ≡ B₂ x) → (∀ x → B₁ x) ≡ (∀ x → B₂ x)
-∀-extensionality ext B₁ B₂ B₁≡B₂ with ext B₁≡B₂
-∀-extensionality ext B .B  B₁≡B₂ | refl = refl
-
-------------------------------------------------------------------------
 -- Propositionality
 
 isPropositional : ∀ {a} → Set a → Set a
 isPropositional A = (a b : A) → a ≡ b
 
-
-module _ {a} {A : Set a} {x y : A} where
-
 ------------------------------------------------------------------------
 -- Various equality rearrangement lemmas
+
+module _ {a} {A : Set a} {x y : A} where
 
   trans-injectiveˡ : ∀ {z} {p₁ p₂ : x ≡ y} (q : y ≡ z) →
                      trans p₁ q ≡ trans p₂ q → p₁ ≡ p₂
@@ -257,3 +225,29 @@ module _ {a} {A : Set a} (_≟_ : Decidable (_≡_ {A = A})) {a : A} where
   ≢-≟-identity {b} ¬eq with a ≟ b
   ... | yes p = ⊥-elim (¬eq p)
   ... | no ¬p = ¬p , refl
+
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 1.0
+
+Extensionality = Ext.Extensionality
+{-# WARNING_ON_USAGE Extensionality
+"Warning: Extensionality was deprecated in v1.0.
+Please use Extensionality from `Axiom.Extensionality.Propositional` instead."
+#-}
+extensionality-for-lower-levels = Ext.lower
+{-# WARNING_ON_USAGE extensionality-for-lower-levels
+"Warning: extensionality-for-lower-levels was deprecated in v1.0.
+Please use lower from `Axiom.Extensionality.Propositional` instead."
+#-}
+∀-extensionality = Ext.∀-extensionality
+{-# WARNING_ON_USAGE ∀-extensionality
+"Warning: ∀-extensionality was deprecated in v1.0.
+Please use ∀-extensionality from `Axiom.Extensionality.Propositional` instead."
+#-}

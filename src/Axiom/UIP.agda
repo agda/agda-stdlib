@@ -14,6 +14,8 @@ open import Relation.Binary.Core
 open import Relation.Binary.PropositionalEquality.Core
 
 ------------------------------------------------------------------------
+-- Definition
+--
 -- Uniqueness of Identity Proofs (UIP) states that all proofs of
 -- equality are themselves equal. In other words, the equality relation
 -- is irrelevant. Here we define UIP relative to a given type.
@@ -22,9 +24,10 @@ UIP : ∀ {a} (A : Set a) → Set a
 UIP A = Irrelevant {A = A} _≡_
 
 ------------------------------------------------------------------------
+-- Properties
+
 -- UIP always holds when using axiom K (see `Axiom.UIP.WithK`).
 
-------------------------------------------------------------------------
 -- The existence of a constant function over proofs of equality for
 -- elements in A is enough to prove UIP for A. Indeed, we can relate any
 -- proof to its image via this function which we then know is equal to
@@ -45,8 +48,6 @@ module Constant⇒UIP
     trans (sym (f refl)) (f q) ≡⟨ ≡-canonical q ⟩
     q                          ∎ where open ≡-Reasoning
 
-
-------------------------------------------------------------------------
 -- If equality is decidable for a given type, then we can prove UIP for
 -- that type. Indeed, the decision procedure allows us to define a
 -- function over proofs of equality which is constant: it returns the

@@ -295,6 +295,22 @@ Non-backwards compatible changes
   (and renamed it to `Pointwise`) and its properties to
   `Data.Container.Relation.Binary.Pointwise.Properties`.
 
+#### New `Axiom` modules
+
+* A new top level `Axiom` directory has been created that contains modules
+  for various additional axioms that users may want to postulate.
+
+* `Excluded-Middle` and associated proofs have been moved out of `Relation.Nullary.Negation`
+  and into `Axiom.ExcludedMiddle`.
+
+* `Extensionality` and associated proofs have been moved out of
+  `Relation.Binary.PropositionalEquality` and into `Axiom.Extensionality.Propositional`.
+
+* `Extensionality` and associated proofs have been moved out of
+  `Relation.Binary.HeterogeneousEquality` and into `Axiom.Extensionality.Heterogeneous`.
+
+* The old names still exist for backwards compatability but have been deprecated.
+
 #### Other
 
 * The proof `sel⇒idem` has been moved from `Algebra.FunctionProperties.Consequences` to
@@ -344,6 +360,10 @@ List of new modules
 
   Axiom.UIP
   Axiom.UIP.WithK
+  Axiom.ExcludedMiddle
+  Axiom.DoubleNegationElimination
+  Axiom.Extensionality.Propositional
+  Axiom.Extensionality.Heterogeneous
 
   Codata.Cowriter
 

@@ -8,6 +8,7 @@
 
 module Data.List.Relation.Unary.All.Properties where
 
+open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Bool.Base using (Bool; T)
 open import Data.Bool.Properties
 open import Data.Empty
@@ -68,7 +69,7 @@ module _ {a p} {A : Set a} {P : A → Set p} where
     -- If equality of functions were extensional, then the surjection
     -- could be strengthened to a bijection.
 
-    from∘to : P.Extensionality _ _ →
+    from∘to : Extensionality _ _ →
               ∀ xs → (¬p : ¬ Any P xs) → All¬⇒¬Any (¬Any⇒All¬ xs ¬p) ≡ ¬p
     from∘to ext []       ¬p = ext λ ()
     from∘to ext (x ∷ xs) ¬p = ext λ
@@ -81,7 +82,7 @@ module _ {a p} {A : Set a} {P : A → Set p} where
     where
     -- If equality of functions were extensional, then the logical
     -- equivalence could be strengthened to a surjection.
-    to∘from : P.Extensionality _ _ →
+    to∘from : Extensionality _ _ →
               ∀ {xs} (¬∀ : ¬ All P xs) → Any¬→¬All (¬All⇒Any¬ dec xs ¬∀) ≡ ¬∀
     to∘from ext ¬∀ = ext (⊥-elim ∘ ¬∀)
 
@@ -241,8 +242,7 @@ module _ {a p} {A : Set a} {P : A → Set p} (P? : Decidable P) where
   ... | yes Px = Px ∷ all-filter xs
   ... | no  _  = all-filter xs
 
-  filter⁺ : ∀ {q} {Q : A → Set q} {xs} →
-             All Q xs → All Q (filter P? xs)
+  filter⁺ : ∀ {q} {Q : A → Set q} {xs} → All Q xs → All Q (filter P? xs)
   filter⁺ {xs = _}     [] = []
   filter⁺ {xs = x ∷ _} (Qx ∷ Qxs) with P? x
   ... | no  _ = filter⁺ Qxs
