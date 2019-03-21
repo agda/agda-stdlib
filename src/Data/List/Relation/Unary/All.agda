@@ -13,7 +13,7 @@ open import Category.Monad
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Relation.Unary.Any as Any using (here; there)
 open import Data.List.Membership.Propositional using (_∈_)
-open import Data.Product as Prod using (_,_)
+open import Data.Product as Prod using (∃; -,_; _,_; proj₁)
 open import Function
 open import Level
 open import Relation.Nullary
@@ -42,7 +42,7 @@ module _ {a p} {A : Set a} {P : Pred A p} where
   tail : ∀ {x xs} → All P (x ∷ xs) → All P xs
   tail (px ∷ pxs) = pxs
 
-  fromList : ∀ (xs : List (∃ P)) → All P (List.map proj₁ xs)
+  fromList : (xs : List (∃ P)) → All P (List.map proj₁ xs)
   fromList []              = []
   fromList ((x , p) ∷ xps) = p ∷ fromList xps
 
