@@ -769,6 +769,9 @@ Other minor additions
 
 * Added new operations to `Data.List.Relation.Unary.All`:
   ```agda
+  fromList : (xs : List (∃ P)) → All P (List.map proj₁ xs)
+  toList   : All P xs → List (∃ P)
+
   self : All (const A) xs
 
   zipWith   : P ∩ Q ⊆ R → All P ∩ All Q ⊆ All R

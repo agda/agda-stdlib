@@ -33,24 +33,31 @@ data All {a p} {A : Set a} (P : Pred A p) : Pred (List A) (a ⊔ p) where
 ------------------------------------------------------------------------
 -- Operations on All
 
-head : ∀ {a p} {A : Set a} {P : Pred A p} {x xs} →
-       All P (x ∷ xs) → P x
-head (px ∷ pxs) = px
 
-tail : ∀ {a p} {A : Set a} {P : Pred A p} {x xs} →
-       All P (x ∷ xs) → All P xs
-tail (px ∷ pxs) = pxs
+module _ {a p} {A : Set a} {P : Pred A p} where
 
-lookup : ∀ {a p} {A : Set a} {P : Pred A p} {xs : List A} →
-         All P xs → (∀ {x} → x ∈ xs → P x)
-lookup []         ()
-lookup (px ∷ pxs) (here refl)  = px
-lookup (px ∷ pxs) (there x∈xs) = lookup pxs x∈xs
+  head : ∀ {x xs} → All P (x ∷ xs) → P x
+  head (px ∷ pxs) = px
 
-tabulate : ∀ {a p} {A : Set a} {P : Pred A p} {xs} →
-           (∀ {x} → x ∈ xs → P x) → All P xs
-tabulate {xs = []}     hyp = []
-tabulate {xs = x ∷ xs} hyp = hyp (here refl) ∷ tabulate (hyp ∘ there)
+  tail : ∀ {x xs} → All P (x ∷ xs) → All P xs
+  tail (px ∷ pxs) = pxs
+
+  fromList : ∀ (xs : List (∃ P)) → All P (List.map proj₁ xs)
+  fromList []              = []
+  fromList ((x , p) ∷ xps) = p ∷ fromList xps
+
+  toList : ∀ {xs} → All P xs → List (∃ P)
+  toList []         = []
+  toList (px ∷ pxs) = (-, px) ∷ toList pxs
+
+  lookup : ∀ {xs} → All P xs → (∀ {x} → x ∈ xs → P x)
+  lookup []         ()
+  lookup (px ∷ pxs) (here refl)  = px
+  lookup (px ∷ pxs) (there x∈xs) = lookup pxs x∈xs
+
+  tabulate : ∀ {xs} → (∀ {x} → x ∈ xs → P x) → All P xs
+  tabulate {xs = []}     hyp = []
+  tabulate {xs = x ∷ xs} hyp = hyp (here refl) ∷ tabulate (hyp ∘ there)
 
 self : ∀ {a} {A : Set a} {xs : List A} → All (const A) xs
 self = tabulate (λ {x} _ → x)
