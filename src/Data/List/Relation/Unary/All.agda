@@ -52,6 +52,9 @@ tabulate : ∀ {a p} {A : Set a} {P : Pred A p} {xs} →
 tabulate {xs = []}     hyp = []
 tabulate {xs = x ∷ xs} hyp = hyp (here refl) ∷ tabulate (hyp ∘ there)
 
+self : ∀ {a} {A : Set a} {xs : List A} → All (const A) xs
+self = tabulate (λ {x} _ → x)
+
 map : ∀ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} →
       P ⊆ Q → All P ⊆ All Q
 map g []         = []

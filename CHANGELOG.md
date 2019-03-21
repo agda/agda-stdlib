@@ -769,6 +769,8 @@ Other minor additions
 
 * Added new operations to `Data.List.Relation.Unary.All`:
   ```agda
+  self : All (const A) xs
+
   zipWith   : P ∩ Q ⊆ R → All P ∩ All Q ⊆ All R
   unzipWith : R ⊆ P ∩ Q → All R ⊆ All P ∩ All Q
 
