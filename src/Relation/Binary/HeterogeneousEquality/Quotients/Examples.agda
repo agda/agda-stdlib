@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Example of a Quotient: ℤ as (ℕ × ℕ / ~)
+-- Example of a Quotient: ℤ as (ℕ × ℕ / ∼)
 ------------------------------------------------------------------------
 
 {-# OPTIONS --with-K --safe #-}
@@ -9,7 +9,7 @@
 module Relation.Binary.HeterogeneousEquality.Quotients.Examples where
 
 open import Relation.Binary.HeterogeneousEquality.Quotients
-open import Level as L hiding (lift)
+open import Level using (0ℓ)
 open import Relation.Binary
 open import Relation.Binary.HeterogeneousEquality hiding (isEquivalence)
 import Relation.Binary.PropositionalEquality as ≡
@@ -40,17 +40,17 @@ infix 10 _∼_
   y₂ + x₃ + y₁   ≡⟨ +-assoc y₂ x₃ y₁ ⟩
   y₂ + (x₃ + y₁) ∎
 
-~-isEquivalence : IsEquivalence _∼_
-~-isEquivalence = record
+∼-isEquivalence : IsEquivalence _∼_
+∼-isEquivalence = record
   { refl  = refl
   ; sym   = sym
   ; trans = λ {i} {j} {k} → ∼-trans {i} {j} {k}
   }
 
-ℕ²-∼-setoid : Setoid L.zero L.zero
-ℕ²-∼-setoid = record { isEquivalence = ~-isEquivalence }
+ℕ²-∼-setoid : Setoid 0ℓ 0ℓ
+ℕ²-∼-setoid = record { isEquivalence = ∼-isEquivalence }
 
-module Integers (quot : Quotients L.zero L.zero) where
+module Integers (quot : Quotients 0ℓ 0ℓ) where
 
   Int : Quotient ℕ²-∼-setoid
   Int = quot _
@@ -61,18 +61,18 @@ module Integers (quot : Quotients L.zero L.zero) where
   (x₁ , y₁) +² (x₂ , y₂) = x₁ + x₂ , y₁ + y₂
 
   +²-cong : ∀{a b a' b'} → a ∼ a' → b ∼ b' → a +² b ∼ a' +² b'
-  +²-cong {a₁ , b₁} {c₁ , d₁} {a₂ , b₂} {c₂ , d₂} ab~cd₁ ab~cd₂ = begin
+  +²-cong {a₁ , b₁} {c₁ , d₁} {a₂ , b₂} {c₂ , d₂} ab∼cd₁ ab∼cd₂ = begin
     (a₁ + c₁) + (b₂ + d₂) ≡⟨ ≡.cong (_+ (b₂ + d₂)) (+-comm a₁ c₁) ⟩
     (c₁ + a₁) + (b₂ + d₂) ≡⟨ +-assoc c₁ a₁ (b₂ + d₂) ⟩
     c₁ + (a₁ + (b₂ + d₂)) ≡⟨ ≡.cong (c₁ +_) (≡.sym (+-assoc a₁ b₂ d₂)) ⟩
-    c₁ + (a₁ + b₂ + d₂)   ≅⟨ cong (λ n → c₁ + (n + d₂)) ab~cd₁ ⟩
+    c₁ + (a₁ + b₂ + d₂)   ≅⟨ cong (λ n → c₁ + (n + d₂)) ab∼cd₁ ⟩
     c₁ + (a₂ + b₁ + d₂)   ≡⟨ ≡.cong (c₁ +_) (+-assoc a₂ b₁ d₂) ⟩
     c₁ + (a₂ + (b₁ + d₂)) ≡⟨ ≡.cong (λ n → c₁ + (a₂ + n)) (+-comm b₁ d₂) ⟩
     c₁ + (a₂ + (d₂ + b₁)) ≡⟨ ≡.sym (+-assoc c₁ a₂ (d₂ + b₁)) ⟩
     (c₁ + a₂) + (d₂ + b₁) ≡⟨ ≡.cong (_+ (d₂ + b₁)) (+-comm c₁ a₂) ⟩
     (a₂ + c₁) + (d₂ + b₁) ≡⟨ +-assoc a₂ c₁ (d₂ + b₁) ⟩
     a₂ + (c₁ + (d₂ + b₁)) ≡⟨ ≡.cong (a₂ +_) (≡.sym (+-assoc c₁ d₂ b₁)) ⟩
-    a₂ + (c₁ + d₂ + b₁)   ≅⟨ cong (λ n → a₂ + (n + b₁)) ab~cd₂ ⟩
+    a₂ + (c₁ + d₂ + b₁)   ≅⟨ cong (λ n → a₂ + (n + b₁)) ab∼cd₂ ⟩
     a₂ + (c₂ + d₁ + b₁)   ≡⟨ ≡.cong (a₂ +_) (+-assoc c₂ d₁ b₁) ⟩
     a₂ + (c₂ + (d₁ + b₁)) ≡⟨ ≡.cong (λ n → a₂ + (c₂ + n)) (+-comm d₁ b₁) ⟩
     a₂ + (c₂ + (b₁ + d₁)) ≡⟨ ≡.sym (+-assoc a₂ c₂ (b₁ + d₁)) ⟩
