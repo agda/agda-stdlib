@@ -137,6 +137,9 @@ Non-backwards compatible changes
 * The fields `isEquivalence` and `∙-cong` in `IsSemigroup` have been
   replaced with `isMagma`.
 
+* The field `∙-cong` in `IsSemilattice`/`Semilattice` has been renamed
+  `∧-cong`.
+
 * The record `BooleanAlgebra` now exports `∨-isSemigroup`, `∧-isSemigroup`
   directly  so `Algebra.Properties.BooleanAlgebra` no longer does so.
 
