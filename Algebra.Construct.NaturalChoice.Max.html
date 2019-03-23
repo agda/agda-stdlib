@@ -13,21 +13,21 @@
   <a id="348" class="Symbol">{</a><a id="349" href="Algebra.Construct.NaturalChoice.Max.html#349" class="Bound">a</a> <a id="351" href="Algebra.Construct.NaturalChoice.Max.html#351" class="Bound">ℓ₁</a> <a id="354" href="Algebra.Construct.NaturalChoice.Max.html#354" class="Bound">ℓ₂</a><a id="356" class="Symbol">}</a> <a id="358" class="Symbol">(</a><a id="359" href="Algebra.Construct.NaturalChoice.Max.html#359" class="Bound">totalOrder</a> <a id="370" class="Symbol">:</a> <a id="372" href="Relation.Binary.html#8205" class="Record">TotalOrder</a> <a id="383" href="Algebra.Construct.NaturalChoice.Max.html#349" class="Bound">a</a> <a id="385" href="Algebra.Construct.NaturalChoice.Max.html#351" class="Bound">ℓ₁</a> <a id="388" href="Algebra.Construct.NaturalChoice.Max.html#354" class="Bound">ℓ₂</a><a id="390" class="Symbol">)</a> <a id="392" class="Keyword">where</a>
 
 <a id="399" class="Keyword">open</a> <a id="404" class="Keyword">import</a> <a id="411" href="Relation.Binary.Construct.Converse.html" class="Module">Relation.Binary.Construct.Converse</a> <a id="446" class="Keyword">using</a> <a id="452" class="Symbol">()</a>
-  <a id="457" class="Keyword">renaming</a> <a id="466" class="Symbol">(</a><a id="467" href="Relation.Binary.Construct.Converse.html#5045" class="Function">totalOrder</a> <a id="478" class="Symbol">to</a> <a id="481" href="Relation.Binary.Construct.Converse.html#5045" class="Function">converse</a><a id="489" class="Symbol">)</a>
+  <a id="457" class="Keyword">renaming</a> <a id="466" class="Symbol">(</a><a id="467" href="Relation.Binary.Construct.Converse.html#5045" class="Function">totalOrder</a> <a id="478" class="Symbol">to</a> <a id="481" href="Relation.Binary.Construct.Converse.html#5045" class="Function">flip</a><a id="485" class="Symbol">)</a>
 
-<a id="492" class="Comment">------------------------------------------------------------------------</a>
-<a id="565" class="Comment">-- Max is just min with a flipped order</a>
+<a id="488" class="Comment">------------------------------------------------------------------------</a>
+<a id="561" class="Comment">-- Max is just min with a flipped order</a>
 
-<a id="606" class="Keyword">open</a> <a id="611" class="Keyword">import</a> <a id="618" href="Algebra.Construct.NaturalChoice.Min.html" class="Module">Algebra.Construct.NaturalChoice.Min</a> <a id="654" class="Symbol">(</a><a id="655" href="Relation.Binary.Construct.Converse.html#5045" class="Function">converse</a> <a id="664" href="Algebra.Construct.NaturalChoice.Max.html#359" class="Bound">totalOrder</a><a id="674" class="Symbol">)</a>
-  <a id="678" class="Keyword">using</a>
-  <a id="686" class="Symbol">(</a> cong<a id="692" class="Symbol">;</a> idem<a id="698" class="Symbol">;</a> sel<a id="703" class="Symbol">;</a> assoc<a id="710" class="Symbol">;</a> comm
-  <a id="719" class="Symbol">;</a> identityˡ<a id="730" class="Symbol">;</a> identityʳ<a id="741" class="Symbol">;</a> identity<a id="751" class="Symbol">;</a> zeroˡ<a id="758" class="Symbol">;</a> zeroʳ<a id="765" class="Symbol">;</a> zero
-  <a id="774" class="Symbol">;</a> isMagma<a id="783" class="Symbol">;</a> isSemigroup<a id="796" class="Symbol">;</a> isBand<a id="804" class="Symbol">;</a> isSemilattice<a id="819" class="Symbol">;</a> isMonoid
-  <a id="832" class="Symbol">;</a> magma<a id="839" class="Symbol">;</a> semigroup<a id="850" class="Symbol">;</a> band<a id="856" class="Symbol">;</a> semilattice<a id="869" class="Symbol">;</a> monoid
-  <a id="880" class="Symbol">)</a>
-  <a id="884" class="Keyword">renaming</a>
-  <a id="895" class="Symbol">(</a> min            <a id="912" class="Symbol">to</a> max
-  <a id="921" class="Symbol">;</a> min[x,y]≈y⇒y≤x <a id="938" class="Symbol">to</a> max[x,y]≈y⇒x≤y
-  <a id="958" class="Symbol">;</a> min[x,y]≈x⇒x≤y <a id="975" class="Symbol">to</a> max[x,y]≈x⇒y≤x
-  <a id="995" class="Symbol">)</a>
+<a id="602" class="Keyword">open</a> <a id="607" class="Keyword">import</a> <a id="614" href="Algebra.Construct.NaturalChoice.Min.html" class="Module">Algebra.Construct.NaturalChoice.Min</a> <a id="650" class="Symbol">(</a><a id="651" href="Relation.Binary.Construct.Converse.html#5045" class="Function">flip</a> <a id="656" href="Algebra.Construct.NaturalChoice.Max.html#359" class="Bound">totalOrder</a><a id="666" class="Symbol">)</a> <a id="668" class="Keyword">public</a>
+  <a id="677" class="Keyword">using</a>
+  <a id="685" class="Symbol">(</a> cong<a id="691" class="Symbol">;</a> idem<a id="697" class="Symbol">;</a> sel<a id="702" class="Symbol">;</a> assoc<a id="709" class="Symbol">;</a> comm
+  <a id="718" class="Symbol">;</a> identityˡ<a id="729" class="Symbol">;</a> identityʳ<a id="740" class="Symbol">;</a> identity<a id="750" class="Symbol">;</a> zeroˡ<a id="757" class="Symbol">;</a> zeroʳ<a id="764" class="Symbol">;</a> zero
+  <a id="773" class="Symbol">;</a> isMagma<a id="782" class="Symbol">;</a> isSemigroup<a id="795" class="Symbol">;</a> isBand<a id="803" class="Symbol">;</a> isSemilattice<a id="818" class="Symbol">;</a> isMonoid
+  <a id="831" class="Symbol">;</a> magma<a id="838" class="Symbol">;</a> semigroup<a id="849" class="Symbol">;</a> band<a id="855" class="Symbol">;</a> semilattice<a id="868" class="Symbol">;</a> monoid
+  <a id="879" class="Symbol">)</a>
+  <a id="883" class="Keyword">renaming</a>
+  <a id="894" class="Symbol">(</a> min            <a id="911" class="Symbol">to</a> max
+  <a id="920" class="Symbol">;</a> min[x,y]≈y⇒y≤x <a id="937" class="Symbol">to</a> max[x,y]≈y⇒x≤y
+  <a id="957" class="Symbol">;</a> min[x,y]≈x⇒x≤y <a id="974" class="Symbol">to</a> max[x,y]≈x⇒y≤x
+  <a id="994" class="Symbol">)</a>
 </pre></body></html>
