@@ -9,6 +9,7 @@
 module Relation.Binary.PropositionalEquality where
 
 import Axiom.Extensionality.Propositional as Ext
+open import Axiom.UniquenessOfIdentityProofs
 open import Function
 open import Function.Equality using (Π; _⟶_; ≡-setoid)
 open import Level
@@ -16,7 +17,6 @@ open import Data.Empty
 open import Data.Product
 open import Relation.Nullary using (yes ; no)
 open import Relation.Unary using (Pred)
-open import Axiom.UIP
 open import Relation.Binary
 open import Relation.Binary.Indexed.Heterogeneous
   using (IndexedSetoid)

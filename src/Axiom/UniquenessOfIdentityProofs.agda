@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Axiom.UIP where
+module Axiom.UniquenessOfIdentityProofs where
 
 open import Data.Empty
 open import Relation.Nullary
@@ -26,7 +26,8 @@ UIP A = Irrelevant {A = A} _≡_
 ------------------------------------------------------------------------
 -- Properties
 
--- UIP always holds when using axiom K (see `Axiom.UIP.WithK`).
+-- UIP always holds when using axiom K
+-- (see `Axiom.UniquenessOfIdentityProofs.WithK`).
 
 -- The existence of a constant function over proofs of equality for
 -- elements in A is enough to prove UIP for A. Indeed, we can relate any

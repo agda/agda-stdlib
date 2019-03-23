@@ -6,9 +6,9 @@
 
 {-# OPTIONS --with-K --safe #-}
 
-module Axiom.UIP.WithK where
+module Axiom.UniquenessOfIdentityProofs.WithK where
 
-open import Axiom.UIP
+open import Axiom.UniquenessOfIdentityProofs
 open import Relation.Binary.PropositionalEquality.Core
 
 -- Axiom K implies UIP.
