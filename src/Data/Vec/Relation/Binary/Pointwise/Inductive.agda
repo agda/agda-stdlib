@@ -54,7 +54,7 @@ module _ {a b ℓ} {A : Set a} {B : Set b} {_∼_ : REL A B ℓ} where
   tail (x∼y ∷ xs∼ys) = xs∼ys
 
   lookup : ∀ {n} {xs : Vec A n} {ys : Vec B n} → Pointwise _∼_ xs ys →
-           ∀ i → (Vec.lookup i xs) ∼ (Vec.lookup i ys)
+           ∀ i → (Vec.lookup xs i) ∼ (Vec.lookup ys i)
   lookup (x∼y ∷ _)     zero    = x∼y
   lookup (_   ∷ xs∼ys) (suc i) = lookup xs∼ys i
 

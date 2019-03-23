@@ -55,7 +55,7 @@ module _ {a p} {A : Set a} {P : Pred A p} where
   ¬Any[] ()
 
   lookup-index : ∀ {m} {xs : Vec A m} (p : Any P xs) →
-                 P (lookup (Any.index p) xs)
+                 P (lookup xs (Any.index p))
   lookup-index (here px) = px
   lookup-index (there p) = lookup-index p
 

@@ -331,6 +331,11 @@ Non-backwards compatible changes
 * Changed the implementation of _≟_ and _≤″?_ for natural numbers to use a (fast)
   boolean test.
 
+* The argument order for `lookup`, `insert` and `remove` in `Data.Vec` has been altered
+  so that the `Vec` argument always come first, e.g. what was written as `lookup i v xs` is
+  now `lookup xs i v`. The argument order for the corresponding proofs has also changed.
+  This makes the operations more consistent with those in `Data.List`.
+
 List of new modules
 -------------------
 

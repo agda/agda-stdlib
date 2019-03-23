@@ -68,20 +68,20 @@ module _ {a} {A : Set a} where
 module _ {a} {A : Set a} where
 
   []=⇒lookup : ∀ {n} {x : A} {xs} {i : Fin n} →
-               xs [ i ]= x → lookup i xs ≡ x
+               xs [ i ]= x → lookup xs i ≡ x
   []=⇒lookup here            = refl
   []=⇒lookup (there xs[i]=x) = []=⇒lookup xs[i]=x
 
   lookup⇒[]= : ∀ {n} (i : Fin n) {x : A} xs →
-               lookup i xs ≡ x → xs [ i ]= x
+               lookup xs i ≡ x → xs [ i ]= x
   lookup⇒[]= zero    (_ ∷ _)  refl = here
   lookup⇒[]= (suc i) (_ ∷ xs) p    = there (lookup⇒[]= i xs p)
 
   []=↔lookup : ∀ {n i} {x} {xs : Vec A n} →
-               xs [ i ]= x ↔ lookup i xs ≡ x
+               xs [ i ]= x ↔ lookup xs i ≡ x
   []=↔lookup {i = i} =
     inverse []=⇒lookup (lookup⇒[]= _ _)
-            lookup⇒[]=∘[]=⇒lookup ([]=⇒lookup∘lookup⇒[]= i _)
+            lookup⇒[]=∘[]=⇒lookup ([]=⇒lookup∘lookup⇒[]= _ i)
     where
     lookup⇒[]=∘[]=⇒lookup :
       ∀ {n x xs} {i : Fin n} (p : xs [ i ]= x) →
@@ -91,33 +91,28 @@ module _ {a} {A : Set a} where
       P.cong there (lookup⇒[]=∘[]=⇒lookup p)
 
     []=⇒lookup∘lookup⇒[]= :
-      ∀ {n} (i : Fin n) {x} xs (p : lookup i xs ≡ x) →
+      ∀ {n} xs (i : Fin n) {x} (p : lookup xs i ≡ x) →
       []=⇒lookup (lookup⇒[]= i xs p) ≡ p
-    []=⇒lookup∘lookup⇒[]= zero    (x ∷ xs) refl = refl
-    []=⇒lookup∘lookup⇒[]= (suc i) (x ∷ xs) p    =
-      []=⇒lookup∘lookup⇒[]= i xs p
+    []=⇒lookup∘lookup⇒[]= (x ∷ xs) zero    refl = refl
+    []=⇒lookup∘lookup⇒[]= (x ∷ xs) (suc i) p    =
+      []=⇒lookup∘lookup⇒[]= xs i p
 
 ------------------------------------------------------------------------
 -- updateAt (_[_]%=_)
 
 module _ {a} {A : Set a} where
 
-  -- Defining properties of updateAt:
-
   -- (+) updateAt i actually updates the element at index i.
 
-  updateAt-updates : ∀ {n} (i : Fin n) {f : A → A} (xs : Vec A n) {x : A}
-    → xs              [ i ]= x
-    → updateAt i f xs [ i ]= f x
+  updateAt-updates : ∀ {n} (i : Fin n) {f : A → A} (xs : Vec A n) {x : A} →
+                     xs [ i ]= x → (updateAt i f xs) [ i ]= f x
   updateAt-updates zero    (x ∷ xs) here        = here
   updateAt-updates (suc i) (x ∷ xs) (there loc) = there (updateAt-updates i xs loc)
 
   -- (-) updateAt i does not touch the elements at other indices.
 
-  updateAt-minimal : ∀ {n} (i j : Fin n) {f : A → A} {x : A} (xs : Vec A n)
-    → i ≢ j
-    → xs              [ i ]= x
-    → updateAt j f xs [ i ]= x
+  updateAt-minimal : ∀ {n} (i j : Fin n) {f : A → A} {x : A} (xs : Vec A n) →
+                     i ≢ j → xs [ i ]= x → (updateAt j f xs) [ i ]= x
   updateAt-minimal zero    zero    (x ∷ xs) 0≢0 here        = ⊥-elim (0≢0 refl)
   updateAt-minimal zero    (suc j) (x ∷ xs) _   here        = here
   updateAt-minimal (suc i) zero    (x ∷ xs) _   (there loc) = there loc
@@ -135,27 +130,27 @@ module _ {a} {A : Set a} where
   -- updateAt i  is a morphism from the monoid of endofunctions  A → A
   -- to the monoid of endofunctions  Vec A n → Vec A n
 
-  -- 1a. relative identity:  f = id ↾ (lookup i xs)
+  -- 1a. relative identity:  f = id ↾ (lookup xs i)
   --                implies  updateAt i f = id ↾ xs
 
-  updateAt-id-relative : ∀ {n} (i : Fin n) (xs : Vec A n) {f : A → A}
-    → f (lookup i xs) ≡ lookup i xs
-    → updateAt i f xs ≡ xs
+  updateAt-id-relative : ∀ {n} (i : Fin n) (xs : Vec A n) {f : A → A} →
+                         f (lookup xs i) ≡ lookup xs i →
+                         updateAt i f xs ≡ xs
   updateAt-id-relative zero    (x ∷ xs) eq = P.cong (_∷ xs) eq
   updateAt-id-relative (suc i) (x ∷ xs) eq = P.cong (x ∷_) (updateAt-id-relative i xs eq)
 
   -- 1b. identity:  updateAt i id ≗ id
 
   updateAt-id : ∀ {n} (i : Fin n) (xs : Vec A n) →
-    updateAt i id xs ≡ xs
+                updateAt i id xs ≡ xs
   updateAt-id i xs = updateAt-id-relative i xs refl
 
   -- 2a. relative composition:  f ∘ g = h ↾ (lookup i xs)
   --                   implies  updateAt i f ∘ updateAt i g ≗ updateAt i h
 
-  updateAt-compose-relative : ∀ {n} (i : Fin n) {f g h : A → A} (xs : Vec A n)
-    → f (g (lookup i xs)) ≡ h (lookup i xs)
-    → updateAt i f (updateAt i g xs) ≡ updateAt i h xs
+  updateAt-compose-relative : ∀ {n} (i : Fin n) {f g h : A → A} (xs : Vec A n) →
+                              f (g (lookup xs i)) ≡ h (lookup xs i) →
+                              updateAt i f (updateAt i g xs) ≡ updateAt i h xs
   updateAt-compose-relative zero    (x ∷ xs) fg=h = P.cong (_∷ xs) fg=h
   updateAt-compose-relative (suc i) (x ∷ xs) fg=h =
     P.cong (x ∷_) (updateAt-compose-relative i xs fg=h)
@@ -163,7 +158,7 @@ module _ {a} {A : Set a} where
   -- 2b. composition:  updateAt i f ∘ updateAt i g ≗ updateAt i (f ∘ g)
 
   updateAt-compose : ∀ {n} (i : Fin n) {f g : A → A} →
-    updateAt i f ∘ updateAt i g ≗ updateAt i (f ∘ g)
+                     updateAt i f ∘ updateAt i g ≗ updateAt i (f ∘ g)
   updateAt-compose i xs = updateAt-compose-relative i xs refl
 
   -- 3. congruence:  updateAt i  is a congruence wrt. extensional equality.
@@ -171,27 +166,25 @@ module _ {a} {A : Set a} where
   -- 3a.  If    f = g ↾ (lookup i xs)
   --      then  updateAt i f = updateAt i g ↾ xs
 
-  updateAt-cong-relative : ∀ {n} (i : Fin n) {f g : A → A} (xs : Vec A n)
-    → f (lookup i xs) ≡ g (lookup i xs)
-    → updateAt i f xs ≡ updateAt i g xs
+  updateAt-cong-relative : ∀ {n} (i : Fin n) {f g : A → A} (xs : Vec A n) →
+                           f (lookup xs i) ≡ g (lookup xs i) →
+                           updateAt i f xs ≡ updateAt i g xs
   updateAt-cong-relative zero    (x ∷ xs) f=g = P.cong (_∷ xs) f=g
   updateAt-cong-relative (suc i) (x ∷ xs) f=g = P.cong (x ∷_) (updateAt-cong-relative i xs f=g)
 
   -- 3b. congruence:  f ≗ g → updateAt i f ≗ updateAt i g
 
-  updateAt-cong : ∀ {n} (i : Fin n) {f g : A → A}
-    → f ≗ g
-    → updateAt i f ≗ updateAt i g
-  updateAt-cong i f≗g xs = updateAt-cong-relative i xs (f≗g (lookup i xs))
+  updateAt-cong : ∀ {n} (i : Fin n) {f g : A → A} →
+                  f ≗ g → updateAt i f ≗ updateAt i g
+  updateAt-cong i f≗g xs = updateAt-cong-relative i xs (f≗g (lookup xs i))
 
   -- The order of updates at different indices i ≢ j does not matter.
 
   -- This a consequence of updateAt-updates and updateAt-minimal
   -- but easier to prove inductively.
 
-  updateAt-commutes : ∀ {n} (i j : Fin n) {f g : A → A}
-    → i ≢ j
-    → updateAt i f ∘ updateAt j g ≗ updateAt j g ∘ updateAt i f
+  updateAt-commutes : ∀ {n} (i j : Fin n) {f g : A → A} → i ≢ j →
+                      updateAt i f ∘ updateAt j g ≗ updateAt j g ∘ updateAt i f
   updateAt-commutes zero    zero    0≢0 (x ∷ xs) = ⊥-elim (0≢0 refl)
   updateAt-commutes zero    (suc j) i≢j (x ∷ xs) = refl
   updateAt-commutes (suc i) zero    i≢j (x ∷ xs) = refl
@@ -204,15 +197,14 @@ module _ {a} {A : Set a} where
   -- using []=↔lookup.
 
   lookup∘updateAt : ∀ {n} (i : Fin n) {f : A → A} →
-    lookup i ∘ updateAt i f ≗ f ∘ lookup i
+                    ∀ xs → lookup (updateAt i f xs) i ≡ f (lookup xs i)
   lookup∘updateAt i xs =
     []=⇒lookup (updateAt-updates i xs (lookup⇒[]= i _ refl))
 
   -- For different indices it easily follows from updateAt-minimal.
 
-  lookup∘updateAt′ : ∀ {n} (i j : Fin n) {f : A → A}
-    → i ≢ j
-    → lookup i ∘ updateAt j f ≗ lookup i
+  lookup∘updateAt′ : ∀ {n} (i j : Fin n) {f : A → A} → i ≢ j →
+                     ∀ xs → lookup (updateAt j f xs) i ≡ lookup xs i
   lookup∘updateAt′ i j xs i≢j =
     []=⇒lookup (updateAt-minimal i j i≢j xs (lookup⇒[]= i _ refl))
 
@@ -252,15 +244,15 @@ module _ {a} {A : Set a} where
   []≔-minimal xs i j i≢j loc = updateAt-minimal i j xs i≢j loc
 
   []≔-lookup : ∀ {n} (xs : Vec A n) (i : Fin n) →
-               xs [ i ]≔ lookup i xs ≡ xs
+               xs [ i ]≔ lookup xs i ≡ xs
   []≔-lookup xs i = updateAt-id-relative i xs refl
 
   lookup∘update : ∀ {n} (i : Fin n) (xs : Vec A n) x →
-                  lookup i (xs [ i ]≔ x) ≡ x
+                  lookup (xs [ i ]≔ x) i ≡ x
   lookup∘update i xs x = lookup∘updateAt i xs
 
   lookup∘update′ : ∀ {n} {i j : Fin n} → i ≢ j → ∀ (xs : Vec A n) y →
-                   lookup i (xs [ j ]≔ y) ≡ lookup i xs
+                   lookup (xs [ j ]≔ y) i ≡ lookup xs i
   lookup∘update′ {n} {i} {j} i≢j xs y = lookup∘updateAt′ i j i≢j xs
 
 ------------------------------------------------------------------------
@@ -283,13 +275,13 @@ map-∘ f g (x ∷ xs) = P.cong (f (g x) ∷_) (map-∘ f g xs)
 
 lookup-map : ∀ {a b n} {A : Set a} {B : Set b}
              (i : Fin n) (f : A → B) (xs : Vec A n) →
-             lookup i (map f xs) ≡ f (lookup i xs)
+             lookup (map f xs) i ≡ f (lookup xs i)
 lookup-map zero    f (x ∷ xs) = refl
 lookup-map (suc i) f (x ∷ xs) = lookup-map i f xs
 
 map-updateAt : ∀ {n a b} {A : Set a} {B : Set b} →
   ∀ {f : A → B} {g : A → A} {h : B → B} (xs : Vec A n) (i : Fin n)
-  → f (g (lookup i xs)) ≡ h (f (lookup i xs))
+  → f (g (lookup xs i)) ≡ h (f (lookup xs i))
   → map f (updateAt i g xs) ≡ updateAt i h (map f xs)
 map-updateAt (x ∷ xs) zero    eq = P.cong (_∷ _) eq
 map-updateAt (x ∷ xs) (suc i) eq = P.cong (_ ∷_) (map-updateAt xs i eq)
@@ -327,7 +319,7 @@ module _ {a} {A : Set a} where
 
   lookup-++-< : ∀ {m n} (xs : Vec A m) (ys : Vec A n) →
                 ∀ i (i<m : toℕ i < m) →
-                lookup i (xs ++ ys) ≡ lookup (Fin.fromℕ≤ i<m) xs
+                lookup (xs ++ ys)i  ≡ lookup xs (Fin.fromℕ≤ i<m)
   lookup-++-< []       ys i       ()
   lookup-++-< (x ∷ xs) ys zero    (s≤s z≤n)       = refl
   lookup-++-< (x ∷ xs) ys (suc i) (s≤s (s≤s i<m)) =
@@ -335,19 +327,19 @@ module _ {a} {A : Set a} where
 
   lookup-++-≥ : ∀ {m n} (xs : Vec A m) (ys : Vec A n) →
                 ∀ i (i≥m : toℕ i ≥ m) →
-                lookup i (xs ++ ys) ≡ lookup (Fin.reduce≥ i i≥m) ys
+                lookup (xs ++ ys) i ≡ lookup ys (Fin.reduce≥ i i≥m)
   lookup-++-≥ []       ys i       i≥m       = refl
   lookup-++-≥ (x ∷ xs) ys zero    ()
   lookup-++-≥ (x ∷ xs) ys (suc i) (s≤s i≥m) = lookup-++-≥ xs ys i i≥m
 
   lookup-++-inject+ : ∀ {m n} (xs : Vec A m) (ys : Vec A n) i →
-                      lookup (Fin.inject+ n i) (xs ++ ys) ≡ lookup i xs
+                      lookup (xs ++ ys) (Fin.inject+ n i) ≡ lookup xs i
   lookup-++-inject+ []       ys ()
   lookup-++-inject+ (x ∷ xs) ys zero    = refl
   lookup-++-inject+ (x ∷ xs) ys (suc i) = lookup-++-inject+ xs ys i
 
   lookup-++-+′ : ∀ {m n} (xs : Vec A m) (ys : Vec A n) i →
-                 lookup (fromℕ m +′ i) (xs ++ ys) ≡ lookup i ys
+                 lookup (xs ++ ys) (fromℕ m +′ i) ≡ lookup ys i
   lookup-++-+′ []       ys       zero    = refl
   lookup-++-+′ []       (y ∷ xs) (suc i) = lookup-++-+′ [] xs i
   lookup-++-+′ (x ∷ xs) ys       i       = lookup-++-+′ xs ys i
@@ -457,7 +449,7 @@ module _ {a b c d} {A : Set a} {B : Set b} {C : Set c} {D : Set d} where
 module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
 
   lookup-zipWith : ∀ (f : A → B → C) {n} (i : Fin n) xs ys →
-                   lookup i (zipWith f xs ys) ≡ f (lookup i xs) (lookup i ys)
+                   lookup (zipWith f xs ys) i ≡ f (lookup xs i) (lookup ys i)
   lookup-zipWith _ zero    (x ∷ _)  (y ∷ _)   = refl
   lookup-zipWith _ (suc i) (_ ∷ xs) (_ ∷ ys)  = lookup-zipWith _ i xs ys
 
@@ -467,7 +459,7 @@ module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
 module _ {a b} {A : Set a} {B : Set b} where
 
   lookup-zip : ∀ {n} (i : Fin n) (xs : Vec A n) (ys : Vec B n) →
-               lookup i (zip xs ys) ≡ (lookup i xs , lookup i ys)
+               lookup (zip xs ys) i ≡ (lookup xs i , lookup ys i)
   lookup-zip = lookup-zipWith _,_
 
   -- map lifts projections to vectors of products.
@@ -503,7 +495,7 @@ module _ {a b} {A : Set a} {B : Set b} where
 
   lookup-unzip : ∀ {n} (i : Fin n) (xys : Vec (A × B) n) →
                  let xs , ys = unzip xys
-                 in (lookup i xs , lookup i ys) ≡ lookup i xys
+                 in (lookup xs i , lookup ys i) ≡ lookup xys i
   lookup-unzip ()      []
   lookup-unzip zero    ((x , y) ∷ xys) = refl
   lookup-unzip (suc i) ((x , y) ∷ xys) = lookup-unzip i xys
@@ -538,7 +530,7 @@ module _ {a b} {A : Set a} {B : Set b} where
 module _ {a b} {A : Set a} {B : Set b} where
 
   lookup-⊛ : ∀ {n} i (fs : Vec (A → B) n) (xs : Vec A n) →
-             lookup i (fs ⊛ xs) ≡ (lookup i fs $ lookup i xs)
+             lookup (fs ⊛ xs) i ≡ (lookup fs i $ lookup xs i)
   lookup-⊛ zero    (f ∷ fs) (x ∷ xs) = refl
   lookup-⊛ (suc i) (f ∷ fs) (x ∷ xs) = lookup-⊛ i fs xs
 
@@ -609,7 +601,7 @@ sum-++-commute (x ∷ xs) {ys} = begin
 -- replicate
 
 lookup-replicate : ∀ {a n} {A : Set a} (i : Fin n) (x : A) →
-                   lookup i (replicate x) ≡ x
+                   lookup (replicate x) i ≡ x
 lookup-replicate zero    = λ _ → refl
 lookup-replicate (suc i) = lookup-replicate i
 
@@ -636,12 +628,12 @@ module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
 -- tabulate
 
 lookup∘tabulate : ∀ {a n} {A : Set a} (f : Fin n → A) (i : Fin n) →
-                  lookup i (tabulate f) ≡ f i
+                  lookup (tabulate f) i ≡ f i
 lookup∘tabulate f zero    = refl
 lookup∘tabulate f (suc i) = lookup∘tabulate (f ∘ suc) i
 
 tabulate∘lookup : ∀ {a n} {A : Set a} (xs : Vec A n) →
-                  tabulate (flip lookup xs) ≡ xs
+                  tabulate (lookup xs) ≡ xs
 tabulate∘lookup []       = refl
 tabulate∘lookup (x ∷ xs) = P.cong (x ∷_) (tabulate∘lookup xs)
 
@@ -658,7 +650,7 @@ tabulate-cong {suc n} p = P.cong₂ _∷_ (p zero) (tabulate-cong (p ∘ suc))
 ------------------------------------------------------------------------
 -- allFin
 
-lookup-allFin : ∀ {n} (i : Fin n) → lookup i (allFin n) ≡ i
+lookup-allFin : ∀ {n} (i : Fin n) → lookup (allFin n) i ≡ i
 lookup-allFin = lookup∘tabulate id
 
 allFin-map : ∀ n → allFin (suc n) ≡ zero ∷ map suc (allFin n)
@@ -672,11 +664,11 @@ tabulate-allFin f = tabulate-∘ f id
 -- get back the vector you started with.
 
 map-lookup-allFin : ∀ {a} {A : Set a} {n} (xs : Vec A n) →
-                    map (λ x → lookup x xs) (allFin n) ≡ xs
+                    map (lookup xs) (allFin n) ≡ xs
 map-lookup-allFin {n = n} xs = begin
-  map (λ x → lookup x xs) (allFin n) ≡⟨ P.sym $ tabulate-∘ (λ x → lookup x xs) id ⟩
-  tabulate (λ x → lookup x xs)       ≡⟨ tabulate∘lookup xs ⟩
-  xs                                 ∎
+  map (lookup xs) (allFin n) ≡˘⟨ tabulate-∘ (lookup xs) id ⟩
+  tabulate (lookup xs)       ≡⟨ tabulate∘lookup xs ⟩
+  xs                         ∎
   where open P.≡-Reasoning
 
 ------------------------------------------------------------------------
@@ -695,23 +687,23 @@ module _ {a p} {A : Set a} {P : Pred A p} (P? : Decidable P) where
 
 module _ {a} {A : Set a} where
 
-  insert-lookup : ∀ {n} (i : Fin (suc n)) (x : A)
-                  (xs : Vec A n) → lookup i (insert i x xs) ≡ x
-  insert-lookup zero x xs = refl
-  insert-lookup (suc ()) x []
-  insert-lookup (suc i) x (y ∷ xs) = insert-lookup i x xs
+  insert-lookup : ∀ {n} (xs : Vec A n) (i : Fin (suc n)) (v : A) →
+                  lookup (insert xs i v) i ≡ v
+  insert-lookup xs       zero     v = refl
+  insert-lookup []       (suc ()) v
+  insert-lookup (x ∷ xs) (suc i)  v = insert-lookup xs i v
 
-  insert-punchIn : ∀ {n} (i : Fin (suc n)) (x : A) (xs : Vec A n)
+  insert-punchIn : ∀ {n} (xs : Vec A n) (i : Fin (suc n)) (v : A)
                    (j : Fin n) →
-                   lookup (Fin.punchIn i j) (insert i x xs) ≡ lookup j xs
-  insert-punchIn zero x xs j = refl
-  insert-punchIn (suc ()) x [] j
-  insert-punchIn (suc i) x (y ∷ xs) zero = refl
-  insert-punchIn (suc i) x (y ∷ xs) (suc j) = insert-punchIn i x xs j
+                   lookup (insert xs i v) (Fin.punchIn i j) ≡ lookup xs j
+  insert-punchIn xs       zero     v j       = refl
+  insert-punchIn []       (suc ()) v j
+  insert-punchIn (x ∷ xs) (suc i)  v zero    = refl
+  insert-punchIn (x ∷ xs) (suc i)  v (suc j) = insert-punchIn xs i v j
 
   remove-punchOut : ∀ {n} (xs : Vec A (suc n))
                     {i : Fin (suc n)} {j : Fin (suc n)} (i≢j : i ≢ j) →
-                    lookup (Fin.punchOut i≢j) (remove i xs) ≡ lookup j xs
+                    lookup (remove xs i) (Fin.punchOut i≢j) ≡ lookup xs j
   remove-punchOut (x ∷ xs) {zero} {zero} i≢j = ⊥-elim (i≢j refl)
   remove-punchOut (x ∷ xs) {zero} {suc j} i≢j = refl
   remove-punchOut (x ∷ []) {suc ()} {j} i≢j
@@ -722,21 +714,21 @@ module _ {a} {A : Set a} where
 ------------------------------------------------------------------------
 -- remove
 
-  remove-insert : ∀ {n} (i : Fin (suc n)) (x : A) (xs : Vec A n) →
-                  remove i (insert i x xs) ≡ xs
-  remove-insert zero x xs = refl
-  remove-insert (suc ()) x []
-  remove-insert (suc zero) x (y ∷ xs) = refl
-  remove-insert (suc (suc ())) x (y ∷ [])
-  remove-insert (suc (suc i)) x (y ∷ z ∷ xs) =
-    P.cong (y ∷_) (remove-insert (suc i) x (z ∷ xs))
+  remove-insert : ∀ {n} (xs : Vec A n) (i : Fin (suc n)) (v : A) →
+                  remove (insert xs i v) i ≡ xs
+  remove-insert xs           zero           v = refl
+  remove-insert []           (suc ())       v
+  remove-insert (x ∷ xs)     (suc zero)     v = refl
+  remove-insert (x ∷ [])     (suc (suc ())) v
+  remove-insert (x ∷ y ∷ xs) (suc (suc i))  v =
+    P.cong (x ∷_) (remove-insert (y ∷ xs) (suc i) v)
 
-  insert-remove : ∀ {n} (i : Fin (suc n)) (xs : Vec A (suc n)) →
-                  insert i (lookup i xs) (remove i xs) ≡ xs
-  insert-remove zero (x ∷ xs) = refl
-  insert-remove (suc ()) (x ∷ [])
-  insert-remove (suc i) (x ∷ y ∷ xs) =
-    P.cong (x ∷_) (insert-remove i (y ∷ xs))
+  insert-remove : ∀ {n} (xs : Vec A (suc n)) (i : Fin (suc n)) →
+                  insert (remove xs i) i (lookup xs i) ≡ xs
+  insert-remove (x ∷ xs)     zero     = refl
+  insert-remove (x ∷ [])     (suc ())
+  insert-remove (x ∷ y ∷ xs) (suc i)  =
+    P.cong (x ∷_) (insert-remove (y ∷ xs) i)
 
 ------------------------------------------------------------------------
 -- Conversion function
