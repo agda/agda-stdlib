@@ -92,32 +92,4 @@
 
 <a id="_∎"></a><a id="3379" href="Relation.Binary.Reasoning.Base.Double.html#3379" class="Function Operator">_∎</a> <a id="3382" class="Symbol">:</a> <a id="3384" class="Symbol">∀</a> <a id="3386" href="Relation.Binary.Reasoning.Base.Double.html#3386" class="Bound">x</a> <a id="3388" class="Symbol">→</a> <a id="3390" href="Relation.Binary.Reasoning.Base.Double.html#3386" class="Bound">x</a> <a id="3392" href="Relation.Binary.Reasoning.Base.Double.html#1097" class="Datatype Operator">IsRelatedTo</a> <a id="3404" href="Relation.Binary.Reasoning.Base.Double.html#3386" class="Bound">x</a>
 <a id="3406" href="Relation.Binary.Reasoning.Base.Double.html#3406" class="Bound">x</a> <a id="3408" href="Relation.Binary.Reasoning.Base.Double.html#3379" class="Function Operator">∎</a> <a id="3410" class="Symbol">=</a> <a id="3412" href="Relation.Binary.Reasoning.Base.Double.html#1195" class="InductiveConstructor">equals</a> <a id="3419" href="Relation.Binary.Core.html#6108" class="Function">Eq.refl</a>
-
-<a id="3428" class="Comment">------------------------------------------------------------------------</a>
-<a id="3501" class="Comment">-- Some examples and tests</a>
-
-<a id="3529" class="Comment">{-
-private
-  module Examples where
-    postulate
-      u v w y d e : A
-      u≈v : u ≈ v
-      v≡w : v ≡ w
-      w∼y : w ∼ y
-      z≡d : y ≡ d
-      d≈e : d ≈ e
-
-    u∼y : u ∼ y
-    u∼y = begin
-      u ≈⟨ u≈v ⟩
-      v ≡⟨ v≡w ⟩
-      w ∼⟨ w∼y ⟩
-      y ∎
-
-    u≈w : u ≈ w
-    u≈w = begin-equality
-      u ≈⟨ u≈v ⟩
-      v ≡⟨ v≡w ⟩
-      w ∎
--}</a>
 </pre></body></html>

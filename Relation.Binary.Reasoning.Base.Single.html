@@ -45,21 +45,4 @@
 
 <a id="_∎"></a><a id="1295" href="Relation.Binary.Reasoning.Base.Single.html#1295" class="Function Operator">_∎</a> <a id="1298" class="Symbol">:</a> <a id="1300" class="Symbol">∀</a> <a id="1302" href="Relation.Binary.Reasoning.Base.Single.html#1302" class="Bound">x</a> <a id="1304" class="Symbol">→</a> <a id="1306" href="Relation.Binary.Reasoning.Base.Single.html#1302" class="Bound">x</a> <a id="1308" href="Relation.Binary.Reasoning.Base.Single.html#772" class="Datatype Operator">IsRelatedTo</a> <a id="1320" href="Relation.Binary.Reasoning.Base.Single.html#1302" class="Bound">x</a>
 <a id="1322" href="Relation.Binary.Reasoning.Base.Single.html#1295" class="Function Operator">_∎</a> <a id="1325" class="Symbol">_</a> <a id="1327" class="Symbol">=</a> <a id="1329" href="Relation.Binary.Reasoning.Base.Single.html#818" class="InductiveConstructor">relTo</a> <a id="1335" href="Relation.Binary.Reasoning.Base.Single.html#395" class="Bound">refl</a>
-
-<a id="1341" class="Comment">{-
-private
-  module Examples where
-    postulate
-      v w y d : A
-      v≡w : v ≡ w
-      w∼y : w ∼ y
-      y≡d : y ≡ d
-
-    u∼y : v ∼ d
-    u∼y = begin
-      v ≡⟨ v≡w ⟩
-      w ∼⟨ w∼y ⟩
-      y ≡⟨ y≡d ⟩
-      d ∎
--}</a>
 </pre></body></html>

@@ -117,45 +117,4 @@
 
 <a id="_∎"></a><a id="4555" href="Relation.Binary.Reasoning.Base.Triple.html#4555" class="Function Operator">_∎</a> <a id="4558" class="Symbol">:</a> <a id="4560" class="Symbol">∀</a> <a id="4562" href="Relation.Binary.Reasoning.Base.Triple.html#4562" class="Bound">x</a> <a id="4564" class="Symbol">→</a> <a id="4566" href="Relation.Binary.Reasoning.Base.Triple.html#4562" class="Bound">x</a> <a id="4568" href="Relation.Binary.Reasoning.Base.Triple.html#1377" class="Datatype Operator">IsRelatedTo</a> <a id="4580" href="Relation.Binary.Reasoning.Base.Triple.html#4562" class="Bound">x</a>
 <a id="4582" href="Relation.Binary.Reasoning.Base.Triple.html#4582" class="Bound">x</a> <a id="4584" href="Relation.Binary.Reasoning.Base.Triple.html#4555" class="Function Operator">∎</a> <a id="4586" class="Symbol">=</a> <a id="4588" href="Relation.Binary.Reasoning.Base.Triple.html#1526" class="InductiveConstructor">equals</a> <a id="4595" href="Relation.Binary.Core.html#6108" class="Function">Eq.refl</a>
-
-<a id="4604" class="Comment">------------------------------------------------------------------------</a>
-<a id="4677" class="Comment">-- Some examples and tests</a>
-
-<a id="4705" class="Comment">{-
-private
-  module Examples where
-    postulate
-      u v w x y z d e : A
-      u≈v : u ≈ v
-      v≡w : v ≡ w
-      w&lt;x : w &lt; x
-      x≤y : x ≤ y
-      y&lt;z : y &lt; z
-      z≡d : z ≡ d
-      d≈e : d ≈ e
-
-    u≤y : u ≤ y
-    u≤y = begin
-      u ≈⟨ u≈v ⟩
-      v ≡⟨ v≡w ⟩
-      w ≤⟨ &lt;⇒≤ (&lt;-≤-trans w&lt;x x≤y) ⟩
-      y ∎
-
-    u≤c : u &lt; e
-    u≤c = begin-strict
-      u ≈⟨ u≈v ⟩
-      v ≡⟨ v≡w ⟩
-      w &lt;⟨ w&lt;x ⟩
-      x ≤⟨ x≤y ⟩
-      y &lt;⟨ y&lt;z ⟩
-      z ≡⟨ z≡d ⟩
-      d ≈⟨ d≈e ⟩
-      e ∎
-
-    u≈w : u ≈ w
-    u≈w = begin-equality
-      u ≈⟨ u≈v ⟩
-      v ≡⟨ v≡w ⟩
-      w ∎
--}</a>
 </pre></body></html>

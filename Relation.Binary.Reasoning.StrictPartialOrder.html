@@ -6,24 +6,57 @@
 <a id="177" class="Comment">-- order.</a>
 <a id="187" class="Comment">------------------------------------------------------------------------</a>
 
-<a id="261" class="Symbol">{-#</a> <a id="265" class="Keyword">OPTIONS</a> <a id="273" class="Option">--without-K</a> <a id="285" class="Option">--safe</a> <a id="292" class="Symbol">#-}</a>
+<a id="261" class="Comment">-- Example uses:</a>
+<a id="278" class="Comment">--</a>
+<a id="281" class="Comment">--    u≤x : u ≤ x</a>
+<a id="299" class="Comment">--    u≤x = begin</a>
+<a id="317" class="Comment">--      u  ≈⟨ u≈v ⟩</a>
+<a id="337" class="Comment">--      v  ≡⟨ v≡w ⟩</a>
+<a id="357" class="Comment">--      w  &lt;⟨ w≤x ⟩</a>
+<a id="377" class="Comment">--      x  ∎</a>
+<a id="390" class="Comment">--</a>
+<a id="393" class="Comment">--    u&lt;x : u &lt; x</a>
+<a id="411" class="Comment">--    u&lt;x = begin-strict</a>
+<a id="436" class="Comment">--      u  ≈⟨ u≈v ⟩</a>
+<a id="456" class="Comment">--      v  ≡⟨ v≡w ⟩</a>
+<a id="476" class="Comment">--      w  &lt;⟨ w≤x ⟩</a>
+<a id="496" class="Comment">--      x  ∎</a>
+<a id="509" class="Comment">--</a>
+<a id="512" class="Comment">--    u&lt;e : u &lt; e</a>
+<a id="530" class="Comment">--    u&lt;e = begin-strict</a>
+<a id="555" class="Comment">--      u  ≈⟨ u≈v ⟩</a>
+<a id="575" class="Comment">--      v  ≡⟨ v≡w ⟩</a>
+<a id="595" class="Comment">--      w  &lt;⟨ w&lt;x ⟩</a>
+<a id="615" class="Comment">--      x  ≤⟨ x≤y ⟩</a>
+<a id="635" class="Comment">--      y  &lt;⟨ y&lt;z ⟩</a>
+<a id="655" class="Comment">--      z  ≡˘⟨ d≡z ⟩</a>
+<a id="676" class="Comment">--      d  ≈˘⟨ e≈d ⟩</a>
+<a id="697" class="Comment">--      e  ∎</a>
+<a id="710" class="Comment">--</a>
+<a id="713" class="Comment">--    u≈w : u ≈ w</a>
+<a id="731" class="Comment">--    u≈w = begin-equality</a>
+<a id="758" class="Comment">--      u  ≈⟨ u≈v ⟩</a>
+<a id="778" class="Comment">--      v  ≡⟨ v≡w ⟩</a>
+<a id="798" class="Comment">--      w  ∎</a>
 
-<a id="297" class="Keyword">open</a> <a id="302" class="Keyword">import</a> <a id="309" href="Relation.Binary.html" class="Module">Relation.Binary</a>
+<a id="812" class="Symbol">{-#</a> <a id="816" class="Keyword">OPTIONS</a> <a id="824" class="Option">--without-K</a> <a id="836" class="Option">--safe</a> <a id="843" class="Symbol">#-}</a>
 
-<a id="326" class="Keyword">module</a> <a id="333" href="Relation.Binary.Reasoning.StrictPartialOrder.html" class="Module">Relation.Binary.Reasoning.StrictPartialOrder</a>
-  <a id="380" class="Symbol">{</a><a id="381" href="Relation.Binary.Reasoning.StrictPartialOrder.html#381" class="Bound">p₁</a> <a id="384" href="Relation.Binary.Reasoning.StrictPartialOrder.html#384" class="Bound">p₂</a> <a id="387" href="Relation.Binary.Reasoning.StrictPartialOrder.html#387" class="Bound">p₃</a><a id="389" class="Symbol">}</a> <a id="391" class="Symbol">(</a><a id="392" href="Relation.Binary.Reasoning.StrictPartialOrder.html#392" class="Bound">S</a> <a id="394" class="Symbol">:</a> <a id="396" href="Relation.Binary.html#6050" class="Record">StrictPartialOrder</a> <a id="415" href="Relation.Binary.Reasoning.StrictPartialOrder.html#381" class="Bound">p₁</a> <a id="418" href="Relation.Binary.Reasoning.StrictPartialOrder.html#384" class="Bound">p₂</a> <a id="421" href="Relation.Binary.Reasoning.StrictPartialOrder.html#387" class="Bound">p₃</a><a id="423" class="Symbol">)</a> <a id="425" class="Keyword">where</a>
+<a id="848" class="Keyword">open</a> <a id="853" class="Keyword">import</a> <a id="860" href="Relation.Binary.html" class="Module">Relation.Binary</a>
 
-<a id="432" class="Keyword">open</a> <a id="437" href="Relation.Binary.html#6050" class="Module">StrictPartialOrder</a> <a id="456" href="Relation.Binary.Reasoning.StrictPartialOrder.html#392" class="Bound">S</a>
-<a id="458" class="Keyword">import</a> <a id="465" href="Relation.Binary.Construct.StrictToNonStrict.html" class="Module">Relation.Binary.Construct.StrictToNonStrict</a> <a id="509" href="Relation.Binary.html#6172" class="Field Operator">_≈_</a> <a id="513" href="Relation.Binary.html#6214" class="Field Operator">_&lt;_</a> <a id="517" class="Symbol">as</a> <a id="NonStrict"></a><a id="520" href="Relation.Binary.Reasoning.StrictPartialOrder.html#520" class="Module">NonStrict</a>
+<a id="877" class="Keyword">module</a> <a id="884" href="Relation.Binary.Reasoning.StrictPartialOrder.html" class="Module">Relation.Binary.Reasoning.StrictPartialOrder</a>
+  <a id="931" class="Symbol">{</a><a id="932" href="Relation.Binary.Reasoning.StrictPartialOrder.html#932" class="Bound">p₁</a> <a id="935" href="Relation.Binary.Reasoning.StrictPartialOrder.html#935" class="Bound">p₂</a> <a id="938" href="Relation.Binary.Reasoning.StrictPartialOrder.html#938" class="Bound">p₃</a><a id="940" class="Symbol">}</a> <a id="942" class="Symbol">(</a><a id="943" href="Relation.Binary.Reasoning.StrictPartialOrder.html#943" class="Bound">S</a> <a id="945" class="Symbol">:</a> <a id="947" href="Relation.Binary.html#6050" class="Record">StrictPartialOrder</a> <a id="966" href="Relation.Binary.Reasoning.StrictPartialOrder.html#932" class="Bound">p₁</a> <a id="969" href="Relation.Binary.Reasoning.StrictPartialOrder.html#935" class="Bound">p₂</a> <a id="972" href="Relation.Binary.Reasoning.StrictPartialOrder.html#938" class="Bound">p₃</a><a id="974" class="Symbol">)</a> <a id="976" class="Keyword">where</a>
 
-<a id="531" class="Comment">------------------------------------------------------------------------</a>
-<a id="604" class="Comment">-- Publicly re-export the contents of the base module</a>
+<a id="983" class="Keyword">open</a> <a id="988" href="Relation.Binary.html#6050" class="Module">StrictPartialOrder</a> <a id="1007" href="Relation.Binary.Reasoning.StrictPartialOrder.html#943" class="Bound">S</a>
+<a id="1009" class="Keyword">import</a> <a id="1016" href="Relation.Binary.Construct.StrictToNonStrict.html" class="Module">Relation.Binary.Construct.StrictToNonStrict</a> <a id="1060" href="Relation.Binary.html#6172" class="Field Operator">_≈_</a> <a id="1064" href="Relation.Binary.html#6214" class="Field Operator">_&lt;_</a> <a id="1068" class="Symbol">as</a> <a id="NonStrict"></a><a id="1071" href="Relation.Binary.Reasoning.StrictPartialOrder.html#1071" class="Module">NonStrict</a>
 
-<a id="659" class="Keyword">open</a> <a id="664" class="Keyword">import</a> <a id="671" href="Relation.Binary.Reasoning.Base.Triple.html" class="Module">Relation.Binary.Reasoning.Base.Triple</a>
-  <a id="711" class="Symbol">(</a><a id="712" href="Relation.Binary.Construct.StrictToNonStrict.html#3905" class="Function">NonStrict.isPreorder₂</a> <a id="734" href="Relation.Binary.html#6256" class="Field">isStrictPartialOrder</a><a id="754" class="Symbol">)</a>
-  <a id="758" href="Relation.Binary.html#5579" class="Function">trans</a>
-  <a id="766" href="Relation.Binary.html#5614" class="Function">&lt;-resp-≈</a>
-  <a id="777" href="Relation.Binary.Construct.StrictToNonStrict.html#1083" class="Function">NonStrict.&lt;⇒≤</a>
-  <a id="793" class="Symbol">(</a><a id="794" href="Relation.Binary.Construct.StrictToNonStrict.html#1925" class="Function">NonStrict.&lt;-≤-trans</a> <a id="814" href="Relation.Binary.html#5579" class="Function">trans</a> <a id="820" href="Relation.Binary.html#5784" class="Function">&lt;-respʳ-≈</a><a id="829" class="Symbol">)</a>
-  <a id="833" class="Keyword">public</a>
+<a id="1082" class="Comment">------------------------------------------------------------------------</a>
+<a id="1155" class="Comment">-- Publicly re-export the contents of the base module</a>
+
+<a id="1210" class="Keyword">open</a> <a id="1215" class="Keyword">import</a> <a id="1222" href="Relation.Binary.Reasoning.Base.Triple.html" class="Module">Relation.Binary.Reasoning.Base.Triple</a>
+  <a id="1262" class="Symbol">(</a><a id="1263" href="Relation.Binary.Construct.StrictToNonStrict.html#3905" class="Function">NonStrict.isPreorder₂</a> <a id="1285" href="Relation.Binary.html#6256" class="Field">isStrictPartialOrder</a><a id="1305" class="Symbol">)</a>
+  <a id="1309" href="Relation.Binary.html#5579" class="Function">trans</a>
+  <a id="1317" href="Relation.Binary.html#5614" class="Function">&lt;-resp-≈</a>
+  <a id="1328" href="Relation.Binary.Construct.StrictToNonStrict.html#1083" class="Function">NonStrict.&lt;⇒≤</a>
+  <a id="1344" class="Symbol">(</a><a id="1345" href="Relation.Binary.Construct.StrictToNonStrict.html#1925" class="Function">NonStrict.&lt;-≤-trans</a> <a id="1365" href="Relation.Binary.html#5579" class="Function">trans</a> <a id="1371" href="Relation.Binary.html#5784" class="Function">&lt;-respʳ-≈</a><a id="1380" class="Symbol">)</a>
+  <a id="1384" class="Keyword">public</a>
 </pre></body></html>
