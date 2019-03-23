@@ -459,9 +459,9 @@ record CommutativeSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
 -- A raw ring is a ring without any laws.
 
 record RawRing c : Set (suc c) where
-  infix  8 -_
-  infixl 7 _*_
-  infixl 6 _+_
+  infix  9 -_
+  infixl 8 _*_
+  infixl 7 _+_
   field
     Carrier : Set c
     _+_     : Op₂ Carrier
@@ -471,9 +471,9 @@ record RawRing c : Set (suc c) where
     1#      : Carrier
 
 record Ring c ℓ : Set (suc (c ⊔ ℓ)) where
-  infix  8 -_
-  infixl 7 _*_
-  infixl 6 _+_
+  infix  9 -_
+  infixl 8 _*_
+  infixl 7 _+_
   infix  4 _≈_
   field
     Carrier : Set c
@@ -516,9 +516,9 @@ record Ring c ℓ : Set (suc (c ⊔ ℓ)) where
     }
 
 record CommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
-  infix  8 -_
-  infixl 7 _*_
-  infixl 6 _+_
+  infix  9 -_
+  infixl 8 _*_
+  infixl 7 _+_
   infix  4 _≈_
   field
     Carrier           : Set c

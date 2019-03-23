@@ -323,7 +323,8 @@ Non-backwards compatible changes
 * `Data.List.Relation.Binary.Sublist.Propositional.Solver` has been removed and replaced by
   `Data.List.Relation.Binary.Sublist.DecPropositional.Solver`.
 
-* The functions `_∷=_` and `_─_` have been removed from `Data.List.Membership.Setoid` as they are subsumed by the more general versions now part of `Data.List.Any`.
+* The functions `_∷=_` and `_─_` have been removed from `Data.List.Membership.Setoid` as
+  they are subsumed by the more general versions now part of `Data.List.Any`.
 
 * Changed the type of `≡-≟-identity` to make use of the fact that equality
   being decidable implies UIP.
@@ -335,6 +336,10 @@ Non-backwards compatible changes
   so that the `Vec` argument always come first, e.g. what was written as `lookup i v xs` is
   now `lookup xs i v`. The argument order for the corresponding proofs has also changed.
   This makes the operations more consistent with those in `Data.List`.
+
+* The infix precedence of `-_`, `_*_` and `_+_` have all been increased by 1. This means
+  that the precedence of `_+_` is now correctly aligned with `_-_`. Previously `_-_` had
+  the same precedence as `_*_` and so `x - x * y` was not parsed correctly.
 
 List of new modules
 -------------------
