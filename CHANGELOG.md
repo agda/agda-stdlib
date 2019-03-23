@@ -737,17 +737,6 @@ Other minor additions
   alternative     : RawAlternative List
   ```
 
-* Added to `Data.Vec` a generalization of single point overwrite `_[_]≔_` to
-  single-point modification `_[_]%=_` (alias as `updateAt` with different
-  argument order):
-  ```agda
-  _[_]%=_   : Vec A n → Fin n → (A → A) → Vec A n
-  updateAt  : Fin n → (A → A) → Vec A n → Vec A n
-  ```
-
-* Added to `Data.Vec.Properties` laws for `updateAt`. Now laws for `_[_]≔_` are
-  special instances of these.
-
 * Added new operations to `Data.List.Relation.Unary.All`:
   ```agda
   zipWith   : P ∩ Q ⊆ R → All P ∩ All Q ⊆ All R
@@ -760,9 +749,9 @@ Other minor additions
   forA      : All Q xs → (Q ⊆ F ∘′ P) → F (All P xs)
   forM      : All Q xs → (Q ⊆ M ∘′ P) → M (All P xs)
 
-  updateAt  : ∀ {x xs} → x ∈ xs → (P x → P x) → All P xs → All P xs
-  _[_]%=_   : ∀ {x xs} → All P xs → x ∈ xs → (P x → P x) → All P xs
-  _[_]≔_    : ∀ {x xs} → All P xs → x ∈ xs → P x → All P xs
+  updateAt  : x ∈ xs → (P x → P x) → All P xs → All P xs
+  _[_]%=_   : All P xs → x ∈ xs → (P x → P x) → All P xs
+  _[_]≔_    : All P xs → x ∈ xs → P x → All P xs
   ```
 
 * Added new proofs to `Data.List.Relation.Unary.All.Properties`:
@@ -1034,6 +1023,17 @@ Other minor additions
   fromSum : A ⊎ B → These A B
   ```
 
+* Added to `Data.Vec` a generalization of single point overwrite `_[_]≔_` to
+  single-point modification `_[_]%=_` (alias as `updateAt` with different
+  argument order):
+  ```agda
+  _[_]%=_   : Vec A n → Fin n → (A → A) → Vec A n
+  updateAt  : Fin n → (A → A) → Vec A n → Vec A n
+  ```
+
+* Added to `Data.Vec.Properties` laws for `updateAt`. Now laws for `_[_]≔_` are
+  special instances of these.
+
 * Added new proofs to `Data.Vec.Relation.Unary.Any.Properties`:
   ```agda
   lookup-index : (p : Any P xs) → P (lookup (index p) xs)
@@ -1047,11 +1047,11 @@ Other minor additions
   ⊥↔Any[] : ⊥ ↔ Any P []
 
   map-id : ∀ f → (∀ p → f p ≡ p) → ∀ p → Any.map f p ≡ p
-  map-∘  : ∀ f g p → Any.map (f ∘ g) p ≡ Any.map f (Any.map g p)
+  map-∘  : Any.map (f ∘ g) p ≡ Any.map f (Any.map g p)
 
   swap       : Any (λ x → Any (x ∼_) ys) xs → Any (λ y → Any (_∼ y) xs) ys
-  swap-there : ∀ p → swap (Any.map there p) ≡ there (swap p)
-  swap-invol : ∀ p → swap (swap p) ≡ p
+  swap-there : swap (Any.map there p) ≡ there (swap p)
+  swap-invol : swap (swap p) ≡ p
   swap↔      : Any (λ x → Any (x ∼_) ys) xs ↔ Any (λ y → Any (_∼ y) xs) ys
 
   Any-⊎⁺ : Any P xs ⊎ Any Q xs → Any (λ x → P x ⊎ Q x) xs
@@ -1069,8 +1069,8 @@ Other minor additions
 
   map⁺      : Any (P ∘ f) xs → Any P (map f xs)
   map⁻      : Any P (map f xs) → Any (P ∘ f) xs
-  map⁺∘map⁻ : ∀ p → map⁺ (map⁻ p) ≡ p
-  map⁻∘map⁺ : ∀ P p → map⁻ (map⁺ p) ≡ p
+  map⁺∘map⁻ : map⁺ (map⁻ p) ≡ p
+  map⁻∘map⁺ : map⁻ (map⁺ p) ≡ p
   map↔      : Any (P ∘ f) xs ↔ Any P (map f xs)
 
   ++⁺ˡ            : Any P xs → Any P (xs ++ ys)
