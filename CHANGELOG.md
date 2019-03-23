@@ -347,6 +347,9 @@ List of new modules
 
   Algebra.FunctionProperties.Consequences.Propositional
 
+  Axiom.UIP
+  Axiom.UIP.WithK
+
   Codata.Cowriter
 
   Codata.M.Properties
@@ -457,6 +460,13 @@ Deprecated features
   <-irrelevance ↦ <-irrelevant
   ```
 
+* In `Data.List.Relation.Binary.Permutation.Inductive.Properties`:
+  ```agda
+  ↭⇒~bag ↦ ↭⇒∼bag
+  ~bag⇒↭ ↦ ∼bag⇒↭
+  ```
+  (now typed with "\sim" rather than "~")
+
 * In `Data.List.Relation.Binary.Pointwise`:
   ```agda
   decidable-≡   ↦ Data.List.Properties.≡-dec
@@ -500,9 +510,32 @@ Deprecated features
   ≅-heterogeneous-irrelevanceʳ ↦ ≅-heterogeneous-irrelevantʳ
   ```
 
+* In `Induction.WellFounded`:
+  ```agda
+  module Inverse-image      ↦ InverseImage
+  module Transitive-closure ↦ TransitiveClosure
+  ```
+
 * In `Relation.Binary.PropositionalEquality.WithK`:
   ```agda
   ≡-irrelevance ↦ ≡-irrelevant
+  ```
+
+* The following modules that were deprecated in v0.14 and v0.15 have been removed.
+  ```agda
+  Data.Nat.Properties.Simple
+  Data.Integer.Multiplication.Properties
+  Data.Integer.Addition.Properties
+
+  Relation.Binary.Sigma.Pointwise
+  Relation.Binary.Sum
+  Relation.Binary.List.NonStrictLex
+  Relation.Binary.List.Pointwise
+  Relation.Binary.List.StrictLex
+  Relation.Binary.Product.NonStrictLex
+  Relation.Binary.Product.Pointwise
+  Relation.Binary.Product.StrictLex
+  Relation.Binary.Vec.Pointwise
   ```
 
 Other minor additions
@@ -516,6 +549,10 @@ Other minor additions
 
 * Added new types to `Algebra.FunctionProperties`:
   ```agda
+  LeftConical e _∙_  = ∀ x y → (x ∙ y) ≈ e → x ≈ e
+  RightConical e _∙_ = ∀ x y → (x ∙ y) ≈ e → y ≈ e
+  Conical e ∙        = LeftConical e ∙ × RightConical e ∙
+
   LeftCongruent  _∙_ = ∀ {x} → (_∙ x) Preserves _≈_ ⟶ _≈_
   RightCongruent _∙_ = ∀ {x} → (x ∙_) Preserves _≈_ ⟶ _≈_
   ```
@@ -753,31 +790,30 @@ Other minor additions
   mapM      : (Q ⊆ M ∘′ P) → All Q ⊆ (M ∘′ All P)
   forA      : All Q xs → (Q ⊆ F ∘′ P) → F (All P xs)
   forM      : All Q xs → (Q ⊆ M ∘′ P) → M (All P xs)
+
+  updateAt  : x ∈ xs → (P x → P x) → All P xs → All P xs
+  _[_]%=_   : All P xs → x ∈ xs → (P x → P x) → All P xs
+  _[_]≔_    : All P xs → x ∈ xs → P x → All P xs
   ```
 
 * Added new proofs to `Data.List.Relation.Unary.All.Properties`:
   ```agda
-  respects : P Respects _≈_ → (All P) Respects _≋_
-  ```
+  respects    : P Respects _≈_ → (All P) Respects _≋_
+  ─⁺          : All Q xs → All Q (xs Any.─ p)
+  ─⁻          : Q (Any.lookup p) → All Q (xs Any.─ p) → All Q xs
 
-  A generalization of single point overwrite `_[_]≔_`
-  to single-point modification `_[_]%=_`
-  (alias with different argument order: `updateAt`):
-  ```agda
-  _[_]%=_   : Vec A n → Fin n → (A → A) → Vec A n
-  updateAt  : Fin n → (A → A) → Vec A n → Vec A n
+  map-cong    : f ≗ g → map f ps ≡ map g ps
+  map-id      : map id ps ≡ ps
+  map-compose : map g (map f ps) ≡ map (g ∘ f) ps
+  lookup-map  : lookup (map f ps) i ≡ f (lookup ps i)
+
+  ∷ʳ⁺ : All P xs → P x → All P (xs ∷ʳ x)
+  ∷ʳ⁻ : All P (xs ∷ʳ x) → All P xs × P x
   ```
 
 * Added new proofs to `Data.List.Relation.Binary.Equality.DecPropositional`:
   ```agda
   _≡?_        : Decidable (_≡_ {A = List A})
-  ```
-
-* Added new proofs to `Data.List.Relation.Unary.All.Properties`:
-  ```agda
-  respects : P Respects _≈_ → (All P) Respects _≋_
-  ─⁺       : All Q xs → All Q (xs Any.─ p)
-  ─⁻       : Q (Any.lookup p) → All Q (xs Any.─ p) → All Q xs
   ```
 
 * Added new functions to `Data.List.Relation.Unary.Any`:
@@ -827,15 +863,21 @@ Other minor additions
 
 * Added new proofs to `Data.List.Properties`:
   ```agda
-  ≡-dec : Decidable _≡_ → Decidable {A = List A} _≡_
+  ≡-dec       : Decidable _≡_ → Decidable {A = List A} _≡_
 
-  ++-isMagma : IsMagma _++_
+  ++-cancelˡ  : xs ++ ys ≡ xs ++ zs → ys ≡ zs
+  ++-cancelʳ  : ys ++ xs ≡ zs ++ xs → ys ≡ zs
+  ++-cancel   : Cancellative _++_
+  ++-conicalˡ : xs ++ ys ≡ [] → xs ≡ []
+  ++-conicalʳ : xs ++ ys ≡ [] → ys ≡ []
+  ++-conical  : Conical [] _++_
+  ++-isMagma  : IsMagma _++_
 
-  length-%=  : length (xs [ k ]%= f) ≡ length xs
-  length-∷=  : length (xs [ k ]∷= v) ≡ length xs
-  map-∷=     : map f (xs [ k ]∷= v) ≡ map f xs [ cast eq k ]∷= f v
-  length-─   : length (xs ─ k) ≡ pred (length xs)
-  map-─      : map f (xs ─ k) ≡ map f xs ─ cast eq k
+  length-%=   : length (xs [ k ]%= f) ≡ length xs
+  length-∷=   : length (xs [ k ]∷= v) ≡ length xs
+  map-∷=      : map f (xs [ k ]∷= v) ≡ map f xs [ cast eq k ]∷= f v
+  length-─    : length (xs ─ k) ≡ pred (length xs)
+  map-─       : map f (xs ─ k) ≡ map f xs ─ cast eq k
 
   length-applyUpTo     : length (applyUpTo     f n) ≡ n
   length-applyDownFrom : length (applyDownFrom f n) ≡ n
@@ -953,6 +995,7 @@ Other minor additions
   m⊔n<o⇒n<o : ∀ m n {o} → m ⊔ n < o → n < o
 
   m≢0⇒suc[pred[m]]≡m : m ≢ 0 → suc (pred m) ≡ m
+  m≢1+n+m            : m ≢ suc (n + m)
 
   ≡ᵇ⇒≡         : T (m ≡ᵇ n) → m ≡ n
   ≡⇒≡ᵇ         : m ≡ n → T (m ≡ᵇ n)
@@ -1029,6 +1072,17 @@ Other minor additions
   fromSum : A ⊎ B → These A B
   ```
 
+* Added to `Data.Vec` a generalization of single point overwrite `_[_]≔_` to
+  single-point modification `_[_]%=_` (alias as `updateAt` with different
+  argument order):
+  ```agda
+  _[_]%=_   : Vec A n → Fin n → (A → A) → Vec A n
+  updateAt  : Fin n → (A → A) → Vec A n → Vec A n
+  ```
+
+* Added to `Data.Vec.Properties` laws for `updateAt`. Now laws for `_[_]≔_` are
+  special instances of these.
+
 * Added new proofs to `Data.Vec.Relation.Unary.Any.Properties`:
   ```agda
   lookup-index : (p : Any P xs) → P (lookup (index p) xs)
@@ -1042,11 +1096,11 @@ Other minor additions
   ⊥↔Any[] : ⊥ ↔ Any P []
 
   map-id : ∀ f → (∀ p → f p ≡ p) → ∀ p → Any.map f p ≡ p
-  map-∘  : ∀ f g p → Any.map (f ∘ g) p ≡ Any.map f (Any.map g p)
+  map-∘  : Any.map (f ∘ g) p ≡ Any.map f (Any.map g p)
 
   swap       : Any (λ x → Any (x ∼_) ys) xs → Any (λ y → Any (_∼ y) xs) ys
-  swap-there : ∀ p → swap (Any.map there p) ≡ there (swap p)
-  swap-invol : ∀ p → swap (swap p) ≡ p
+  swap-there : swap (Any.map there p) ≡ there (swap p)
+  swap-invol : swap (swap p) ≡ p
   swap↔      : Any (λ x → Any (x ∼_) ys) xs ↔ Any (λ y → Any (_∼ y) xs) ys
 
   Any-⊎⁺ : Any P xs ⊎ Any Q xs → Any (λ x → P x ⊎ Q x) xs
@@ -1064,8 +1118,8 @@ Other minor additions
 
   map⁺      : Any (P ∘ f) xs → Any P (map f xs)
   map⁻      : Any P (map f xs) → Any (P ∘ f) xs
-  map⁺∘map⁻ : ∀ p → map⁺ (map⁻ p) ≡ p
-  map⁻∘map⁺ : ∀ P p → map⁻ (map⁺ p) ≡ p
+  map⁺∘map⁻ : map⁺ (map⁻ p) ≡ p
+  map⁻∘map⁺ : map⁻ (map⁺ p) ≡ p
   map↔      : Any (P ∘ f) xs ↔ Any P (map f xs)
 
   ++⁺ˡ            : Any P xs → Any P (xs ++ ys)
@@ -1128,8 +1182,6 @@ Other minor additions
   trans-injectiveˡ : trans p₁ q ≡ trans p₂ q → p₁ ≡ p₂
   trans-injectiveʳ : trans p q₁ ≡ trans p q₂ → q₁ ≡ q₂
   subst-injective  : subst P x≡y p ≡ subst P x≡y q → p ≡ q
-  module Constant⇒UIP
-  module Decidable⇒UIP
   ```
 
 * Added new proofs to `Relation.Binary.Consequences`:

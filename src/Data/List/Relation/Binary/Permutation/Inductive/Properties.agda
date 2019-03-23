@@ -257,8 +257,8 @@ module _ {a} {A : Set a} where
 
 module _ {a} {A : Set a} where
 
-  ↭⇒~bag : _↭_ ⇒ _∼[ bag ]_
-  ↭⇒~bag xs↭ys {v} = inverse (to xs↭ys) (from xs↭ys) (from∘to xs↭ys) (to∘from xs↭ys)
+  ↭⇒∼bag : _↭_ ⇒ _∼[ bag ]_
+  ↭⇒∼bag xs↭ys {v} = inverse (to xs↭ys) (from xs↭ys) (from∘to xs↭ys) (to∘from xs↭ys)
     where
     to : ∀ {xs ys} → xs ↭ ys → v ∈ xs → v ∈ ys
     to xs↭ys = Any-resp-↭ {A = A} xs↭ys
@@ -281,14 +281,35 @@ module _ {a} {A : Set a} where
     to∘from p with from∘to (↭-sym p)
     ... | res rewrite ↭-sym-involutive p = res
 
-  ~bag⇒↭ : _∼[ bag ]_ ⇒ _↭_
-  ~bag⇒↭ {[]} eq with empty-unique (Inv.sym eq)
+  ∼bag⇒↭ : _∼[ bag ]_ ⇒ _↭_
+  ∼bag⇒↭ {[]} eq with empty-unique (Inv.sym eq)
   ... | refl = refl
-  ~bag⇒↭ {x ∷ xs} eq with ∈-∃++ (to ⟨$⟩ (here ≡.refl))
+  ∼bag⇒↭ {x ∷ xs} eq with ∈-∃++ (to ⟨$⟩ (here ≡.refl))
     where open Inv.Inverse (eq {x})
   ... | zs₁ , zs₂ , p rewrite p = begin
-    x ∷ xs           <⟨ ~bag⇒↭ (drop-cons (Inv._∘_ (comm zs₁ (x ∷ zs₂)) eq)) ⟩
+    x ∷ xs           <⟨ ∼bag⇒↭ (drop-cons (Inv._∘_ (comm zs₁ (x ∷ zs₂)) eq)) ⟩
     x ∷ (zs₂ ++ zs₁) <⟨ ++-comm zs₂ zs₁ ⟩
     x ∷ (zs₁ ++ zs₂) ↭˘⟨ shift x zs₁ zs₂ ⟩
     zs₁ ++ x ∷ zs₂   ∎
     where open CommutativeMonoid (commutativeMonoid bag A)
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 1.0
+
+↭⇒~bag = ↭⇒∼bag
+{-# WARNING_ON_USAGE ↭⇒~bag
+"Warning: ↭⇒~bag was deprecated in v1.0.
+Please use ? instead (now typed with '\\sim' rather than '~')."
+#-}
+
+~bag⇒↭ = ∼bag⇒↭
+{-# WARNING_ON_USAGE ~bag⇒↭
+"Warning: ~bag⇒↭ was deprecated in v1.0.
+Please use ? instead (now typed with '\\sim' rather than '~')."
+#-}

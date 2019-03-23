@@ -233,12 +233,12 @@ preorder A = record
 
 module ≅-Reasoning where
 
-  -- The code in Relation.Binary.EqReasoning cannot handle
+  -- The code in `Relation.Binary.Reasoning.Setoid` cannot handle
   -- heterogeneous equalities, hence the code duplication here.
 
   infix  4 _IsRelatedTo_
   infix  3 _∎
-  infixr 2 _≅⟨_⟩_ _≡⟨_⟩_ _≡⟨⟩_
+  infixr 2 _≅⟨_⟩_ _≅˘⟨_⟩_ _≡⟨_⟩_ _≡˘⟨_⟩_ _≡⟨⟩_
   infix  1 begin_
 
   data _IsRelatedTo_ {ℓ} {A : Set ℓ} (x : A) {B : Set ℓ} (y : B) :
@@ -253,9 +253,17 @@ module ≅-Reasoning where
            x ≅ y → y IsRelatedTo z → x IsRelatedTo z
   _ ≅⟨ x≅y ⟩ relTo y≅z = relTo (trans x≅y y≅z)
 
+  _≅˘⟨_⟩_ : ∀ {ℓ} {A : Set ℓ} (x : A) {B} {y : B} {C} {z : C} →
+            y ≅ x → y IsRelatedTo z → x IsRelatedTo z
+  _ ≅˘⟨ y≅x ⟩ relTo y≅z = relTo (trans (sym y≅x) y≅z)
+
   _≡⟨_⟩_ : ∀ {ℓ} {A : Set ℓ} (x : A) {y C} {z : C} →
            x ≡ y → y IsRelatedTo z → x IsRelatedTo z
   _ ≡⟨ x≡y ⟩ relTo y≅z = relTo (trans (reflexive x≡y) y≅z)
+
+  _≡˘⟨_⟩_ : ∀ {ℓ} {A : Set ℓ} (x : A) {y C} {z : C} →
+            y ≡ x → y IsRelatedTo z → x IsRelatedTo z
+  _ ≡˘⟨ y≡x ⟩ relTo y≅z = relTo (trans (sym (reflexive y≡x)) y≅z)
 
   _≡⟨⟩_ : ∀ {ℓ} {A : Set ℓ} (x : A) {B} {y : B} →
           x IsRelatedTo y → x IsRelatedTo y

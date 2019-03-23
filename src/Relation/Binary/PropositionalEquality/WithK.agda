@@ -9,14 +9,15 @@
 
 module Relation.Binary.PropositionalEquality.WithK where
 
+open import Axiom.UIP.WithK
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core
 
 ------------------------------------------------------------------------
 -- Proof irrelevance
 
-≡-irrelevant : ∀ {a} {A : Set a} → Irrelevant (_≡_ {A = A})
-≡-irrelevant refl refl = refl
+≡-irrelevant : ∀ {a} {A : Set a} → Irrelevant {A = A} _≡_
+≡-irrelevant = uip
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

@@ -44,20 +44,3 @@ _ ≡⟨⟩ x∼y = _ ≡⟨ P.refl ⟩ x∼y
 
 _∎ : ∀ x → x IsRelatedTo x
 _∎ _ = relTo refl
-
-{-
-private
-  module Examples where
-    postulate
-      v w y d : A
-      v≡w : v ≡ w
-      w∼y : w ∼ y
-      y≡d : y ≡ d
-
-    u∼y : v ∼ d
-    u∼y = begin
-      v ≡⟨ v≡w ⟩
-      w ∼⟨ w∼y ⟩
-      y ≡⟨ y≡d ⟩
-      d ∎
--}

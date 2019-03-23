@@ -86,6 +86,69 @@ module _ {a p} {A : Set a} {P : A → Set p} where
     to∘from ext ¬∀ = ext (⊥-elim ∘ ¬∀)
 
 ------------------------------------------------------------------------
+-- Properties of operations over `All`
+------------------------------------------------------------------------
+-- map
+
+module _ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} {f : P ⋐ Q} where
+
+  map-cong : ∀ {xs} {g : P ⋐ Q} (ps : All P xs) →
+             (∀ {x} → f {x} P.≗ g) → All.map f ps ≡ All.map g ps
+  map-cong []        _   = P.refl
+  map-cong (px ∷ ps) feq = P.cong₂ _∷_ (feq px) (map-cong ps feq)
+
+  map-id : ∀ {xs} (ps : All P xs) → All.map id ps ≡ ps
+  map-id []        = P.refl
+  map-id (px ∷ ps) = P.cong (px ∷_)  (map-id ps)
+
+  map-compose : ∀ {r} {R : Pred A r} {xs} {g : Q ⋐ R} (ps : All P xs) →
+                All.map g (All.map f ps) ≡ All.map (g ∘ f) ps
+  map-compose []        = P.refl
+  map-compose (px ∷ ps) = P.cong (_ ∷_) (map-compose ps)
+
+  lookup-map : ∀ {xs x} (ps : All P xs) (i : x ∈ xs) →
+               All.lookup (All.map f ps) i ≡ f (All.lookup ps i)
+  lookup-map (px ∷ pxs) (here P.refl) = P.refl
+  lookup-map (px ∷ pxs) (there i) = lookup-map pxs i
+
+------------------------------------------------------------------------
+-- _[_]%=_/updateAt
+
+module _ {a p} {A : Set a} {P : Pred A p} where
+
+  updateAt-updates : ∀ {x xs px} (pxs : All P xs) (i : x ∈ xs)
+                     {f : P x → P x} → All.lookup pxs i ≡ px →
+                     All.lookup (pxs All.[ i ]%= f) i ≡ f px
+  updateAt-updates [] ()
+  updateAt-updates (px ∷ pxs) (here P.refl) P.refl = P.refl
+  updateAt-updates (px ∷ pxs) (there i) = updateAt-updates pxs i
+
+  updateAt-cong : ∀ {x xs} (pxs : All P xs) (i : x ∈ xs)
+                  {f g : P x → P x} →
+                  f (All.lookup pxs i) ≡ g (All.lookup pxs i) →
+                  (pxs All.[ i ]%= f) ≡ (pxs All.[ i ]%= g)
+  updateAt-cong (px ∷ pxs) (here P.refl)     = P.cong (_∷ pxs)
+  updateAt-cong (px ∷ pxs) (there i)     f≗g = P.cong (px ∷_) (updateAt-cong pxs i f≗g)
+
+  updateAt-id : ∀ {x xs} (pxs : All P xs) (i : x ∈ xs) →
+                (pxs All.[ i ]%= id) ≡ pxs
+  updateAt-id (px ∷ pxs) (here P.refl) = P.refl
+  updateAt-id (px ∷ pxs) (there i)     = P.cong (px ∷_) (updateAt-id pxs i)
+
+  updateAt-compose : ∀ {x xs} (pxs : All P xs) (i : x ∈ xs) {f g : P x → P x} →
+                     (pxs All.[ i ]%= f All.[ i ]%= g) ≡ pxs All.[ i ]%= (g ∘ f)
+  updateAt-compose (px ∷ pxs) (here P.refl) = P.refl
+  updateAt-compose (px ∷ pxs) (there i)     = P.cong (px ∷_) (updateAt-compose pxs i)
+
+  map-updateAt : ∀ {q x} {Q : Pred A q} {xs} →
+                 ∀ {f : P ⋐ Q} {g : P x → P x} {h : Q x → Q x}
+                 (pxs : All P xs) (i : x ∈ xs) →
+                 f (g (All.lookup pxs i)) ≡ h (f (All.lookup pxs i)) →
+                 All.map f (pxs All.[ i ]%= g) ≡ (All.map f pxs) All.[ i ]%= h
+  map-updateAt (px ∷ pxs) (here P.refl) = P.cong (_∷ _)
+  map-updateAt (px ∷ pxs) (there i) feq = P.cong (_ ∷_) (map-updateAt pxs i feq)
+
+------------------------------------------------------------------------
 -- Introduction (⁺) and elimination (⁻) rules for list operations
 ------------------------------------------------------------------------
 -- map
@@ -268,6 +331,17 @@ module _ {a p} {A : Set a} {P : A → Set p} where
 
   singleton⁻ : ∀ {x} → All P [ x ] → P x
   singleton⁻ (px ∷ []) = px
+
+------------------------------------------------------------------------
+-- snoc
+
+module _ {a p} {A : Set a} {P : A → Set p} where
+
+  ∷ʳ⁺ : ∀ {xs x} → All P xs → P x → All P (xs ∷ʳ x)
+  ∷ʳ⁺ pxs px = ++⁺ pxs (px ∷ [])
+
+  ∷ʳ⁻ : ∀ {xs x} → All P (xs ∷ʳ x) → All P xs × P x
+  ∷ʳ⁻ {xs} pxs = Prod.map₂ singleton⁻ $ ++⁻ xs pxs
 
 ------------------------------------------------------------------------
 -- fromMaybe

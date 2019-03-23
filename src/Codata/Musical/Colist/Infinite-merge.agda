@@ -181,7 +181,7 @@ module _ {a p} {A : Set a} {P : A → Set p} where
 
     to : ∀ xss p → Pred (xss , p)
     to = λ xss p →
-      WF.All.wfRec (WF.Inverse-image.wellFounded size <′-wellFounded) _
+      WF.All.wfRec (WF.InverseImage.wellFounded size <′-wellFounded) _
                    Pred step (xss , p)
       where
       size : Input → ℕ
