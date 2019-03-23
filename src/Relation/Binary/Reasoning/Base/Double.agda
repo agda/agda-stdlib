@@ -91,31 +91,3 @@ x ≡⟨⟩ x≲y = x≲y
 
 _∎ : ∀ x → x IsRelatedTo x
 x ∎ = equals Eq.refl
-
-------------------------------------------------------------------------
--- Some examples and tests
-
-{-
-private
-  module Examples where
-    postulate
-      u v w y d e : A
-      u≈v : u ≈ v
-      v≡w : v ≡ w
-      w∼y : w ∼ y
-      z≡d : y ≡ d
-      d≈e : d ≈ e
-
-    u∼y : u ∼ y
-    u∼y = begin
-      u ≈⟨ u≈v ⟩
-      v ≡⟨ v≡w ⟩
-      w ∼⟨ w∼y ⟩
-      y ∎
-
-    u≈w : u ≈ w
-    u≈w = begin-equality
-      u ≈⟨ u≈v ⟩
-      v ≡⟨ v≡w ⟩
-      w ∎
--}
