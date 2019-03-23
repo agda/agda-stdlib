@@ -56,7 +56,8 @@ record IsSemilattice (∧ : Op₂ A) : Set (a ⊔ ℓ) where
     isBand : IsBand ∧
     comm   : Commutative ∧
 
-  open IsBand isBand public renaming (∙-cong to ∧-cong)
+  open IsBand isBand public
+    renaming (∙-cong to ∧-cong; ∙-congˡ to ∧-congˡ; ∙-congʳ to ∧-congʳ)
 
 ------------------------------------------------------------------------
 -- Monoids
