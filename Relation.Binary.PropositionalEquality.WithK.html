@@ -10,27 +10,27 @@
 
 <a id="289" class="Keyword">module</a> <a id="296" href="Relation.Binary.PropositionalEquality.WithK.html" class="Module">Relation.Binary.PropositionalEquality.WithK</a> <a id="340" class="Keyword">where</a>
 
-<a id="347" class="Keyword">open</a> <a id="352" class="Keyword">import</a> <a id="359" href="Axiom.UIP.WithK.html" class="Module">Axiom.UIP.WithK</a>
-<a id="375" class="Keyword">open</a> <a id="380" class="Keyword">import</a> <a id="387" href="Relation.Binary.html" class="Module">Relation.Binary</a>
-<a id="403" class="Keyword">open</a> <a id="408" class="Keyword">import</a> <a id="415" href="Relation.Binary.PropositionalEquality.Core.html" class="Module">Relation.Binary.PropositionalEquality.Core</a>
+<a id="347" class="Keyword">open</a> <a id="352" class="Keyword">import</a> <a id="359" href="Axiom.UniquenessOfIdentityProofs.WithK.html" class="Module">Axiom.UniquenessOfIdentityProofs.WithK</a>
+<a id="398" class="Keyword">open</a> <a id="403" class="Keyword">import</a> <a id="410" href="Relation.Binary.html" class="Module">Relation.Binary</a>
+<a id="426" class="Keyword">open</a> <a id="431" class="Keyword">import</a> <a id="438" href="Relation.Binary.PropositionalEquality.Core.html" class="Module">Relation.Binary.PropositionalEquality.Core</a>
 
-<a id="459" class="Comment">------------------------------------------------------------------------</a>
-<a id="532" class="Comment">-- Proof irrelevance</a>
+<a id="482" class="Comment">------------------------------------------------------------------------</a>
+<a id="555" class="Comment">-- Proof irrelevance</a>
 
-<a id="≡-irrelevant"></a><a id="554" href="Relation.Binary.PropositionalEquality.WithK.html#554" class="Function">≡-irrelevant</a> <a id="567" class="Symbol">:</a> <a id="569" class="Symbol">∀</a> <a id="571" class="Symbol">{</a><a id="572" href="Relation.Binary.PropositionalEquality.WithK.html#572" class="Bound">a</a><a id="573" class="Symbol">}</a> <a id="575" class="Symbol">{</a><a id="576" href="Relation.Binary.PropositionalEquality.WithK.html#576" class="Bound">A</a> <a id="578" class="Symbol">:</a> <a id="580" class="PrimitiveType">Set</a> <a id="584" href="Relation.Binary.PropositionalEquality.WithK.html#572" class="Bound">a</a><a id="585" class="Symbol">}</a> <a id="587" class="Symbol">→</a> <a id="589" href="Relation.Binary.Core.html#5433" class="Function">Irrelevant</a> <a id="600" class="Symbol">{</a><a id="601" class="Argument">A</a> <a id="603" class="Symbol">=</a> <a id="605" href="Relation.Binary.PropositionalEquality.WithK.html#576" class="Bound">A</a><a id="606" class="Symbol">}</a> <a id="608" href="Agda.Builtin.Equality.html#83" class="Datatype Operator">_≡_</a>
-<a id="612" href="Relation.Binary.PropositionalEquality.WithK.html#554" class="Function">≡-irrelevant</a> <a id="625" class="Symbol">=</a> <a id="627" href="Axiom.UIP.WithK.html#406" class="Function">uip</a>
+<a id="≡-irrelevant"></a><a id="577" href="Relation.Binary.PropositionalEquality.WithK.html#577" class="Function">≡-irrelevant</a> <a id="590" class="Symbol">:</a> <a id="592" class="Symbol">∀</a> <a id="594" class="Symbol">{</a><a id="595" href="Relation.Binary.PropositionalEquality.WithK.html#595" class="Bound">a</a><a id="596" class="Symbol">}</a> <a id="598" class="Symbol">{</a><a id="599" href="Relation.Binary.PropositionalEquality.WithK.html#599" class="Bound">A</a> <a id="601" class="Symbol">:</a> <a id="603" class="PrimitiveType">Set</a> <a id="607" href="Relation.Binary.PropositionalEquality.WithK.html#595" class="Bound">a</a><a id="608" class="Symbol">}</a> <a id="610" class="Symbol">→</a> <a id="612" href="Relation.Binary.Core.html#5433" class="Function">Irrelevant</a> <a id="623" class="Symbol">{</a><a id="624" class="Argument">A</a> <a id="626" class="Symbol">=</a> <a id="628" href="Relation.Binary.PropositionalEquality.WithK.html#599" class="Bound">A</a><a id="629" class="Symbol">}</a> <a id="631" href="Agda.Builtin.Equality.html#83" class="Datatype Operator">_≡_</a>
+<a id="635" href="Relation.Binary.PropositionalEquality.WithK.html#577" class="Function">≡-irrelevant</a> <a id="648" class="Symbol">=</a> <a id="650" href="Axiom.UniquenessOfIdentityProofs.WithK.html#458" class="Function">uip</a>
 
-<a id="632" class="Comment">------------------------------------------------------------------------</a>
-<a id="705" class="Comment">-- DEPRECATED NAMES</a>
-<a id="725" class="Comment">------------------------------------------------------------------------</a>
-<a id="798" class="Comment">-- Please use the new names as continuing support for the old names is</a>
-<a id="869" class="Comment">-- not guaranteed.</a>
+<a id="655" class="Comment">------------------------------------------------------------------------</a>
+<a id="728" class="Comment">-- DEPRECATED NAMES</a>
+<a id="748" class="Comment">------------------------------------------------------------------------</a>
+<a id="821" class="Comment">-- Please use the new names as continuing support for the old names is</a>
+<a id="892" class="Comment">-- not guaranteed.</a>
 
-<a id="889" class="Comment">-- Version 1.0</a>
+<a id="912" class="Comment">-- Version 1.0</a>
 
-<a id="≡-irrelevance"></a><a id="905" href="Relation.Binary.PropositionalEquality.WithK.html#905" class="Function">≡-irrelevance</a> <a id="919" class="Symbol">=</a> <a id="921" href="Relation.Binary.PropositionalEquality.WithK.html#554" class="Function">≡-irrelevant</a>
-<a id="934" class="Symbol">{-#</a> <a id="938" class="Keyword">WARNING_ON_USAGE</a> ≡-irrelevance
-<a id="969" class="String">&quot;Warning: ≡-irrelevance was deprecated in v1.0.
+<a id="≡-irrelevance"></a><a id="928" href="Relation.Binary.PropositionalEquality.WithK.html#928" class="Function">≡-irrelevance</a> <a id="942" class="Symbol">=</a> <a id="944" href="Relation.Binary.PropositionalEquality.WithK.html#577" class="Function">≡-irrelevant</a>
+<a id="957" class="Symbol">{-#</a> <a id="961" class="Keyword">WARNING_ON_USAGE</a> ≡-irrelevance
+<a id="992" class="String">&quot;Warning: ≡-irrelevance was deprecated in v1.0.
 Please use ≡-irrelevant instead.&quot;</a>
-<a id="1051" class="Symbol">#-}</a>
+<a id="1074" class="Symbol">#-}</a>
 </pre></body></html>
