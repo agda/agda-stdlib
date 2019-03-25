@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.List.Relation.Binary.Sublist.DecPropositional.Properties</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Sublist-related properties for types with a decidable equality</a>
+<a id="172" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="246" class="Symbol">{-#</a> <a id="250" class="Keyword">OPTIONS</a> <a id="258" class="Pragma">--without-K</a> <a id="270" class="Pragma">--safe</a> <a id="277" class="Symbol">#-}</a>
+
+<a id="282" class="Keyword">open</a> <a id="287" class="Keyword">import</a> <a id="294" href="Relation.Binary.html" class="Module">Relation.Binary</a> <a id="310" class="Keyword">using</a> <a id="316" class="Symbol">(</a><a id="317" href="Relation.Binary.Core.html#5213" class="Function">Decidable</a><a id="326" class="Symbol">)</a>
+<a id="328" class="Keyword">open</a> <a id="333" class="Keyword">import</a> <a id="340" href="Agda.Builtin.Equality.html" class="Module">Agda.Builtin.Equality</a> <a id="362" class="Keyword">using</a> <a id="368" class="Symbol">(</a><a id="369" href="Agda.Builtin.Equality.html#125" class="Datatype Operator">_≡_</a><a id="372" class="Symbol">)</a>
+
+<a id="375" class="Keyword">module</a> <a id="382" href="Data.List.Relation.Binary.Sublist.DecPropositional.Properties.html" class="Module">Data.List.Relation.Binary.Sublist.DecPropositional.Properties</a>
+       <a id="451" class="Symbol">{</a><a id="452" href="Data.List.Relation.Binary.Sublist.DecPropositional.Properties.html#452" class="Bound">a</a><a id="453" class="Symbol">}</a> <a id="455" class="Symbol">{</a><a id="456" href="Data.List.Relation.Binary.Sublist.DecPropositional.Properties.html#456" class="Bound">A</a> <a id="458" class="Symbol">:</a> <a id="460" class="PrimitiveType">Set</a> <a id="464" href="Data.List.Relation.Binary.Sublist.DecPropositional.Properties.html#452" class="Bound">a</a><a id="465" class="Symbol">}</a> <a id="467" class="Symbol">(</a><a id="468" href="Data.List.Relation.Binary.Sublist.DecPropositional.Properties.html#468" class="Bound Operator">_≟_</a> <a id="472" class="Symbol">:</a> <a id="474" href="Relation.Binary.Core.html#5213" class="Function">Decidable</a> <a id="484" class="Symbol">{</a><a id="485" class="Argument">A</a> <a id="487" class="Symbol">=</a> <a id="489" href="Data.List.Relation.Binary.Sublist.DecPropositional.Properties.html#456" class="Bound">A</a><a id="490" class="Symbol">}</a> <a id="492" href="Agda.Builtin.Equality.html#125" class="Datatype Operator">_≡_</a><a id="495" class="Symbol">)</a>
+       <a id="504" class="Keyword">where</a>
+
+<a id="511" class="Keyword">import</a> <a id="518" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a> <a id="556" class="Symbol">as</a> <a id="559" class="Module">P</a>
+
+<a id="562" class="Keyword">open</a> <a id="567" class="Keyword">import</a> <a id="574" href="Data.List.Relation.Binary.Sublist.DecSetoid.Properties.html" class="Module">Data.List.Relation.Binary.Sublist.DecSetoid.Properties</a>
+  <a id="631" class="Symbol">(</a><a id="632" href="Relation.Binary.PropositionalEquality.html#1647" class="Function">P.decSetoid</a> <a id="644" href="Data.List.Relation.Binary.Sublist.DecPropositional.Properties.html#468" class="Bound Operator">_≟_</a><a id="647" class="Symbol">)</a> <a id="649" class="Keyword">public</a>
+<a id="656" class="Keyword">open</a> <a id="661" class="Keyword">import</a> <a id="668" href="Data.List.Relation.Binary.Sublist.Propositional.Properties.html" class="Module">Data.List.Relation.Binary.Sublist.Propositional.Properties</a> <a id="727" class="Symbol">{</a><a id="728" class="Argument">A</a> <a id="730" class="Symbol">=</a> <a id="732" href="Data.List.Relation.Binary.Sublist.DecPropositional.Properties.html#456" class="Bound">A</a><a id="733" class="Symbol">}</a>
+  <a id="737" class="Keyword">using</a> <a id="743" class="Symbol">(</a>lookup-injective<a id="760" class="Symbol">)</a> <a id="762" class="Keyword">public</a>
+</pre></body></html>

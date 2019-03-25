@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.List.Relation.Binary.Sublist.DecSetoid</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- An inductive definition of the sublist relation with respect to a setoid</a>
+<a id="182" class="Comment">-- which is decidable. This is a generalisation of what is commonly known as</a>
+<a id="259" class="Comment">-- Order Preserving Embeddings (OPE).</a>
+<a id="297" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="371" class="Symbol">{-#</a> <a id="375" class="Keyword">OPTIONS</a> <a id="383" class="Pragma">--without-K</a> <a id="395" class="Pragma">--safe</a> <a id="402" class="Symbol">#-}</a>
+
+<a id="407" class="Keyword">open</a> <a id="412" class="Keyword">import</a> <a id="419" href="Relation.Binary.html" class="Module">Relation.Binary</a> <a id="435" class="Keyword">using</a> <a id="441" class="Symbol">(</a><a id="442" href="Relation.Binary.html#2730" class="Record">DecSetoid</a><a id="451" class="Symbol">)</a>
+
+<a id="454" class="Keyword">module</a> <a id="461" href="Data.List.Relation.Binary.Sublist.DecSetoid.html" class="Module">Data.List.Relation.Binary.Sublist.DecSetoid</a> <a id="505" class="Symbol">{</a><a id="506" href="Data.List.Relation.Binary.Sublist.DecSetoid.html#506" class="Bound">c</a> <a id="508" href="Data.List.Relation.Binary.Sublist.DecSetoid.html#508" class="Bound">ℓ</a><a id="509" class="Symbol">}</a> <a id="511" class="Symbol">(</a><a id="512" href="Data.List.Relation.Binary.Sublist.DecSetoid.html#512" class="Bound">S</a> <a id="514" class="Symbol">:</a> <a id="516" href="Relation.Binary.html#2730" class="Record">DecSetoid</a> <a id="526" href="Data.List.Relation.Binary.Sublist.DecSetoid.html#506" class="Bound">c</a> <a id="528" href="Data.List.Relation.Binary.Sublist.DecSetoid.html#508" class="Bound">ℓ</a><a id="529" class="Symbol">)</a> <a id="531" class="Keyword">where</a>
+
+<a id="538" class="Keyword">private</a>
+  <a id="548" class="Keyword">module</a> <a id="S"></a><a id="555" href="Data.List.Relation.Binary.Sublist.DecSetoid.html#555" class="Module">S</a> <a id="557" class="Symbol">=</a> <a id="559" href="Relation.Binary.html#2730" class="Module">DecSetoid</a> <a id="569" href="Data.List.Relation.Binary.Sublist.DecSetoid.html#512" class="Bound">S</a>
+
+<a id="572" class="Keyword">open</a> <a id="577" class="Keyword">import</a> <a id="584" href="Data.List.Relation.Binary.Sublist.Setoid.html" class="Module">Data.List.Relation.Binary.Sublist.Setoid</a> <a id="625" href="Relation.Binary.html#2954" class="Function">S.setoid</a> <a id="634" class="Keyword">public</a>
+</pre></body></html>
