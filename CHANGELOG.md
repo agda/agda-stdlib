@@ -300,8 +300,8 @@ Non-backwards compatible changes
 
 #### Other
 
-* The proof `sel⇒idem` has been moved from `Algebra.FunctionProperties.Consequences` to
-  `Algebra.FunctionProperties.Consequences.Propositional` as it does not rely on equality.
+* The proof `sel⇒idem` in `Algebra.FunctionProperties.Consequences` now
+  only takes the equality relation as an argument instead of a full `Setoid`.
 
 * Moved `_≟_` from `Data.Bool.Base` to `Data.Bool.Properties`. Backwards
   compatibility has been (nearly completely) preserved by having `Data.Bool`
