@@ -9,7 +9,7 @@
 
 module Relation.Binary.PropositionalEquality.WithK where
 
-open import Axiom.UIP.WithK
+open import Axiom.UniquenessOfIdentityProofs.WithK
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality.Core
 

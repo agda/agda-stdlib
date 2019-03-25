@@ -8,13 +8,12 @@
 
 module Data.Container.Relation.Binary.Pointwise where
 
-open import Level using (_⊔_)
 open import Data.Product using (_,_; Σ-syntax; -,_; proj₁; proj₂)
 open import Function
-
+open import Level using (_⊔_)
 open import Relation.Binary using (REL; _⇒_)
-open import Relation.Binary.PropositionalEquality
-  as P using (_≡_; subst; cong; Extensionality)
+open import Relation.Binary.PropositionalEquality as P
+  using (_≡_; subst; cong)
 
 open import Data.Container.Core using (Container; ⟦_⟧)
 

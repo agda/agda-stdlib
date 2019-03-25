@@ -298,6 +298,22 @@ Non-backwards compatible changes
   (and renamed it to `Pointwise`) and its properties to
   `Data.Container.Relation.Binary.Pointwise.Properties`.
 
+#### New `Axiom` modules
+
+* A new top level `Axiom` directory has been created that contains modules
+  for various additional axioms that users may want to postulate.
+
+* `Excluded-Middle` and associated proofs have been moved out of `Relation.Nullary.Negation`
+  and into `Axiom.ExcludedMiddle`.
+
+* `Extensionality` and associated proofs have been moved out of
+  `Relation.Binary.PropositionalEquality` and into `Axiom.Extensionality.Propositional`.
+
+* `Extensionality` and associated proofs have been moved out of
+  `Relation.Binary.HeterogeneousEquality` and into `Axiom.Extensionality.Heterogeneous`.
+
+* The old names still exist for backwards compatability but have been deprecated.
+
 #### Other
 
 * The proof `sel⇒idem` in `Algebra.FunctionProperties.Consequences` now
@@ -329,7 +345,7 @@ Non-backwards compatible changes
 * The functions `_∷=_` and `_─_` have been removed from `Data.List.Membership.Setoid` as they are subsumed by the more general versions now part of `Data.List.Any`.
 
 * Changed the type of `≡-≟-identity` to make use of the fact that equality
-  being decidable implies UIP.
+  being decidable implies uniqueness of identity proofs.
 
 * Changed the implementation of _≟_ and _≤″?_ for natural numbers to use a (fast)
   boolean test.
@@ -350,8 +366,12 @@ List of new modules
 
   Algebra.FunctionProperties.Consequences.Propositional
 
-  Axiom.UIP
-  Axiom.UIP.WithK
+  Axiom.UniquenessOfIdentityProofs
+  Axiom.UniquenessOfIdentityProofs.WithK
+  Axiom.ExcludedMiddle
+  Axiom.DoubleNegationElimination
+  Axiom.Extensionality.Propositional
+  Axiom.Extensionality.Heterogeneous
 
   Codata.Cowriter
 

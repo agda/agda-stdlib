@@ -8,18 +8,17 @@
 
 module Data.Container.Combinator.Properties where
 
-open import Level using (_⊔_; lower)
-open import Data.Empty using (⊥-elim)
-open import Data.Product as Prod using (∃; _,_; proj₁; proj₂; <_,_>; uncurry; curry)
-open import Data.Sum as S using (inj₁; inj₂; [_,_]′; [_,_])
-
-open import Function as F using (_∘′_)
-open import Function.Inverse as Inv using (_↔_; inverse; module Inverse)
-open import Relation.Binary.PropositionalEquality as P using (_≡_; _≗_)
-
+open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Container.Core
 open import Data.Container.Combinator
 open import Data.Container.Relation.Unary.Any
+open import Data.Empty using (⊥-elim)
+open import Data.Product as Prod using (∃; _,_; proj₁; proj₂; <_,_>; uncurry; curry)
+open import Data.Sum as S using (inj₁; inj₂; [_,_]′; [_,_])
+open import Function as F using (_∘′_)
+open import Function.Inverse as Inv using (_↔_; inverse; module Inverse)
+open import Level using (_⊔_; lower)
+open import Relation.Binary.PropositionalEquality as P using (_≡_; _≗_)
 
 -- I have proved some of the correctness statements under the
 -- assumption of functional extensionality. I could have reformulated
@@ -36,7 +35,7 @@ module Identity where
     from : F.id X → ⟦ id ⟧ X
     from x = (_ , λ _ → x)
 
-module Constant (ext : ∀ {ℓ ℓ′} → P.Extensionality ℓ ℓ′) where
+module Constant (ext : ∀ {ℓ ℓ′} → Extensionality ℓ ℓ′) where
 
   correct : ∀ {x p y} (X : Set x) {Y : Set y} → ⟦ const {x} {p ⊔ y} X ⟧ Y ↔ F.const X Y
   correct {x} {y} X {Y} = inverse proj₁ from from∘to λ _ → P.refl
@@ -59,7 +58,7 @@ module Composition {s₁ s₂ p₁ p₂} (C₁ : Container s₁ p₁) (C₂ : Co
     from : ⟦ C₁ ⟧ (⟦ C₂ ⟧ X) → ⟦ C₁ ∘ C₂ ⟧ X
     from (s , f) = ((s , proj₁ F.∘ f) , uncurry (proj₂ F.∘ f) ∘′ ◇.proof)
 
-module Product (ext : ∀ {ℓ ℓ′} → P.Extensionality ℓ ℓ′)
+module Product (ext : ∀ {ℓ ℓ′} → Extensionality ℓ ℓ′)
        {s₁ s₂ p₁ p₂} (C₁ : Container s₁ p₁) (C₂ : Container s₂ p₂) where
 
   correct : ∀ {x} {X : Set x} →  ⟦ C₁ × C₂ ⟧ X ↔ (⟦ C₁ ⟧ X Prod.× ⟦ C₂ ⟧ X)

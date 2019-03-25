@@ -8,10 +8,11 @@
 
 module Relation.Binary.HeterogeneousEquality where
 
+import Axiom.Extensionality.Heterogeneous as Ext
 open import Data.Product
+open import Data.Unit.NonEta
 open import Function
 open import Function.Inverse using (Inverse)
-open import Data.Unit.NonEta
 open import Level
 open import Relation.Nullary
 open import Relation.Binary
@@ -39,10 +40,7 @@ x ≇ y = ¬ x ≅ y
 ------------------------------------------------------------------------
 -- Conversion
 
-open Core public using (≅-to-≡)
-
-≡-to-≅ : ∀ {a} {A : Set a} {x y : A} → x ≡ y → x ≅ y
-≡-to-≅ refl = refl
+open Core public using (≅-to-≡; ≡-to-≅)
 
 ≅-to-type-≡ : ∀ {a} {A B : Set a} {x : A} {y : B} →
                 x ≅ y → A ≡ B
@@ -273,28 +271,6 @@ module ≅-Reasoning where
   _∎ _ = relTo refl
 
 ------------------------------------------------------------------------
--- Functional extensionality
-
--- A form of functional extensionality for _≅_.
-
-Extensionality : (a b : Level) → Set _
-Extensionality a b =
-  {A : Set a} {B₁ B₂ : A → Set b}
-  {f₁ : (x : A) → B₁ x} {f₂ : (x : A) → B₂ x} →
-  (∀ x → B₁ x ≡ B₂ x) → (∀ x → f₁ x ≅ f₂ x) → f₁ ≅ f₂
-
--- This form of extensionality follows from extensionality for _≡_.
-
-≡-ext-to-≅-ext : ∀ {ℓ₁ ℓ₂} →
-  P.Extensionality ℓ₁ (suc ℓ₂) → Extensionality ℓ₁ ℓ₂
-≡-ext-to-≅-ext           ext B₁≡B₂ f₁≅f₂ with ext B₁≡B₂
-≡-ext-to-≅-ext {ℓ₁} {ℓ₂} ext B₁≡B₂ f₁≅f₂ | P.refl =
-  ≡-to-≅ $ ext′ (≅-to-≡ ∘ f₁≅f₂)
-  where
-  ext′ : P.Extensionality ℓ₁ ℓ₂
-  ext′ = P.extensionality-for-lower-levels ℓ₁ (suc ℓ₂) ext
-
-------------------------------------------------------------------------
 -- Inspect
 
 -- Inspect can be used when you want to pattern match on the result r
@@ -351,4 +327,14 @@ Please use ≅-heterogeneous-irrelevantˡ instead."
 {-# WARNING_ON_USAGE ≅-heterogeneous-irrelevanceʳ
 "Warning: ≅-heterogeneous-irrelevanceʳ was deprecated in v1.0.
 Please use ≅-heterogeneous-irrelevantʳ instead."
+#-}
+Extensionality = Ext.Extensionality
+{-# WARNING_ON_USAGE Extensionality
+"Warning: Extensionality was deprecated in v1.0.
+Please use Extensionality from `Axiom.Extensionality.Heterogeneous` instead."
+#-}
+≡-ext-to-≅-ext = Ext.≡-ext⇒≅-ext
+{-# WARNING_ON_USAGE ≡-ext-to-≅-ext
+"Warning: ≡-ext-to-≅-ext was deprecated in v1.0.
+Please use ≡-ext⇒≅-ext from `Axiom.Extensionality.Heterogeneous` instead."
 #-}
