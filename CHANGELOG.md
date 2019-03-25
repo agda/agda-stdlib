@@ -8,19 +8,23 @@ Important changes since 0.17:
 Highlights
 ----------
 
-* The library has now been refactored to make clear where the K axiom is used and
-  where it is not. Hence it can now be used in conjunction with the `--without-k` option.
+* The library has been refactored to make clear where axiom K is used and
+  where it is not. Hence it can now be used in conjunction with the
+  `--without-k` option.
 
-* Equational and inequality reasoning has been revamped, with several new primitives
-  having been added. Inequality reasoning can now prove equalities and strict inequalities
-  in addition to standard inequalities.
+* Equational and inequality reasoning has been revamped. Several new
+  primitives have been added and the inequality reasoning modules can now
+  prove equalities and strict inequalities in addition to basic inequalities.
 
-* AVL trees now work with arbitrary equalities rather than only propositional equality.
+* AVL trees now work with arbitrary equalities rather than only propositional
+  equality.
 
-* New top level `Axiom` directory which contains statements of various additional axioms
-  such as excluded middle and function extensionality which users may want to postulate.
+* New top level `Axiom` directory which contains statements of various
+  additional axioms such as excluded middle and function extensionality which
+  users may want to postulate.
 
-* The proofs of decidable equality for `String`s and `Char`s have been made safe.
+* The proofs `_≟_` of decidable equality for `String`s and `Char`s have been
+  made safe.
 
 New modules
 -----------
@@ -206,10 +210,11 @@ Non-backwards compatible changes
 
 #### Changes to the algebra hierarchy
 
-* Over time the algebra inheritance hierarchy has become a little
-  wonky due to poorly structured additions. The following changes attempt
-  to straighten the hierarchy out and new policies have been put in place so
-  that the need for additional such changes will be minimised in the future.
+* Over time the algebra inheritance hierarchy has become a tangled
+  due to poorly structured additions. The following changes attempt
+  to straighten the hierarchy out and new policies have been put in
+  place so that the  need for additional such changes will be minimised
+  in the future.
 
 * Added `Magma` and `IsMagma` to the algebra hierarchy.
 
