@@ -15,7 +15,6 @@ allOutputFile  = "Everything"
 safeOutputFile = "EverythingSafe"
 srcDir         = "src"
 
-<<<<<<< HEAD
 ---------------------------------------------------------------------------
 -- Files with a special status
 
@@ -37,6 +36,8 @@ unsafeModules = map toAgdaFilePath
   , "Data.Nat.DivMod.Unsafe"
   , "Data.String.Unsafe"
   , "Data.Word.Unsafe"
+  , "Debug.Trace"
+  , "Foreign.Haskell"
   , "IO"
   , "IO.Primitive"
   , "Reflection"
@@ -72,7 +73,8 @@ isWithKModule =
 
   withKModules :: [FilePath]
   withKModules = map modToFile
-    [ "Data.Char.Unsafe"
+    [ "Axiom.Extensionality.Heterogeneous"
+    , "Data.Char.Unsafe"
     , "Data.Float.Unsafe"
     , "Data.Nat.Unsafe"
     , "Data.Nat.DivMod.Unsafe"

@@ -4,7 +4,7 @@
 -- Examples showing how the case expressions can be used
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module README.Case where
 

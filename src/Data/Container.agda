@@ -9,8 +9,9 @@
 module Data.Container where
 
 open import Level using (_⊔_)
-open import Codata.Musical.M
+open import Codata.M hiding (map)
 open import Data.W
+open import Size
 
 ------------------------------------------------------------------------
 -- Re-exporting content to maintain backwards compatibility
@@ -46,4 +47,4 @@ module Morphism where
 μ = W
 
 ν : ∀ {s p} → Container s p → Set (s ⊔ p)
-ν = M
+ν C = M C ∞

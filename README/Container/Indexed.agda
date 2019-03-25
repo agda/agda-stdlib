@@ -4,7 +4,7 @@
 -- Example showing how to define an indexed container
 ------------------------------------------------------------------------
 
-{-# OPTIONS --with-K --safe #-}
+{-# OPTIONS --with-K --safe --guardedness #-}
 
 module README.Container.Indexed where
 

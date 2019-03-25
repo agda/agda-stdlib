@@ -415,7 +415,7 @@ List of new modules
   Data.Container.Relation.Binary.Equality.Setoid
   Data.Container.Relation.Binary.Pointwise
   Data.Container.Relation.Binary.Pointwise.Properties
-  
+
   Data.Char.Properties
 
   Data.Integer.Divisibility.Properties

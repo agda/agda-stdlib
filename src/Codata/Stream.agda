@@ -99,17 +99,3 @@ module _ {a} {A : Set a} where
 
   iterate : (A → A) → A → Stream A ∞
   iterate f = unfold < f , id >
-
-------------------------------------------------------------------------
--- Legacy
-
-open import Codata.Musical.Notation using (♭; ♯_)
-import Codata.Musical.Stream as M
-
-module _ {a} {A : Set a} where
-
-  fromMusical : ∀ {i} → M.Stream A → Stream A i
-  fromMusical (x M.∷ xs) = x ∷ λ where .force → fromMusical (♭ xs)
-
-  toMusical : Stream A ∞ → M.Stream A
-  toMusical (x ∷ xs) = x M.∷ ♯ toMusical (xs .force)

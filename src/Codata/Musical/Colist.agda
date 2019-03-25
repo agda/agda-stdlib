@@ -4,7 +4,7 @@
 -- Coinductive lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe --sized-types --guardedness #-}
+{-# OPTIONS --without-K --sized-types --guardedness #-}
 
 module Codata.Musical.Colist where
 

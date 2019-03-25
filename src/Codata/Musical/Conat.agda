@@ -4,7 +4,7 @@
 -- Coinductive "natural" numbers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe --guardedness --sized-types #-}
+{-# OPTIONS --without-K --guardedness --sized-types #-}
 
 module Codata.Musical.Conat where
 
