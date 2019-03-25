@@ -11,13 +11,13 @@ html [here](https://agda.github.io/agda-stdlib/README.html).
 
 ## Quick installation instructions
 
-Use version v0.17 of the standard library with Agda 2.5.4.1.
+Use version v1.0 of the standard library with Agda 2.6.0.
 
 Install it as follows. Say you are in directory `$HERE` (replace appropriately).
 ```
   git clone https://github.com/agda/agda-stdlib.git
   cd agda-stdlib
-  git checkout v0.17
+  git checkout v1.0
   cabal install
 ```
 The last comment is optional, omit it if you are lacking [cabal](https://www.haskell.org/cabal/).
@@ -62,17 +62,10 @@ changes to the language.
 
 ## Type-checking with the `--safe` flag
 
-After the next full release of Agda, most of the library will be able to
-be type-checked with the `--safe` flag. Only the following modules are
-not compatible:
-```
-  Data.Char.Unsafe
-  Data.Float.Unsafe
-  Data.String.Unsafe
-  Data.Word.Unsafe
-  Debug.Trace
-  IO
-  IO.Primitives
-  Reflection
-  Relation.Binary.PropositionalEquality.TrustMe
-```
+Most of the library can be type-checked using the `--safe` flag. Please consult
+`GenerateEverything.hs` for a full list of modules that use unsafe features.
+
+## Type-checking with the `--without-k` flag
+
+Most of the library can be type-checked using the `--without-k` flag. Please consult
+`GenerateEverything.hs` for a full list of modules that uses axiom K.
