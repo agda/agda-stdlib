@@ -12,7 +12,13 @@ module README.Case where
 open import Data.Fin   hiding (pred)
 open import Data.Maybe hiding (from-just)
 open import Data.Nat   hiding (pred)
+open import Data.List
+open import Data.Sum
+open import Data.Product
 open import Function
+open import Relation.Nullary
+open import Relation.Binary
+open import Relation.Binary.PropositionalEquality
 
 ------------------------------------------------------------------------
 -- Different types of pattern-matching lambdas
@@ -52,3 +58,16 @@ div2 zero    = zero
 div2 (suc m) = case m of λ where
   zero     → zero
   (suc m') → suc (div2 m')
+
+
+-- Note that some natural uses of case are rejected by the termination
+-- checker:
+
+-- module _ {a} {A : Set a} (eq? : Decidable {A = A} _≡_) where
+
+--  pairBy : List A → List (A ⊎ (A × A))
+--  pairBy []           = []
+--  pairBy (x ∷ [])     = inj₁ x ∷ []
+--  pairBy (x ∷ y ∷ xs) = case eq? x y of λ where
+--    (yes _) → inj₂ (x , y) ∷ pairBy xs
+--    (no _)  → inj₁ x ∷ pairBy (y ∷ xs)
