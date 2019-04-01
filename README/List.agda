@@ -4,6 +4,8 @@
 -- Documentation for the List type
 ------------------------------------------------------------------------
 
+{-# OPTIONS --warning noMissingDefinitions #-}
+
 module README.List where
 
 open import Algebra.Structures
@@ -23,7 +25,7 @@ open import Data.List
 
 module Basics where
 
-  -- Lists are specified using the "[]" and "_∷_" constructors.
+  -- Lists are built using the "[]" and "_∷_" constructors.
 
   list₁ : List ℕ
   list₁ = 3 ∷ 1 ∷ 2 ∷ []
@@ -45,7 +47,7 @@ module Basics where
   lem₅ : list₁ ++ list₁ ≡ 3 ∷ 1 ∷ 2 ∷ 3 ∷ 1 ∷ 2 ∷ []
   lem₅ = refl
 
-  -- Properties of the various list operations can be found in:
+  -- Various properties of these operations can be found in:
 
   open import Data.List.Properties
 
@@ -72,10 +74,13 @@ module PointwiseExplanation where
 
   -- One of the most basic ways to form a binary relation between two
   -- lists of type `List A`, given a binary relation over `A`, is to say
-  -- that two lists are related if the first elements in the lists are
-  -- related, and the second elements are related and the third pair are
-  -- related etc. This "pointwise" lifting of a relation to lists is
-  -- found in:
+  -- that two lists are related if:
+  --   i) the first elements in the lists are related
+  --   ii) the second elements in the lists are related
+  --   iii) the third elements in the lists are related etc.
+  --
+  -- A formalisation of this "pointwise" lifting of a relation to lists
+  -- is found in:
 
   open import Data.List.Relation.Binary.Pointwise
 
@@ -103,10 +108,10 @@ module PointwiseExplanation where
 
 module EqualityExplanation where
 
-  -- There are many different options for what it means for two different
-  -- lists of type `List A` to be "equal". We will initially consider
-  -- notions of equality that require the list elements to be in the
-  -- same order and later discuss other types of equality.
+  -- There are many different options for what it means for two
+  -- different lists of type `List A` to be "equal". We will initially
+  -- consider notions of equality that require the list elements to be
+  -- in the same order and later discuss other types of equality.
 
   -- The most basic option in the former case is simply to use
   -- propositional equality `_≡_` over lists:
@@ -119,23 +124,25 @@ module EqualityExplanation where
 
   -- However propositional equality is only suitable when we want to
   -- use propositional equality to compare the individual elements.
-  -- Although a contrived example, consider trying to prove the equality
-  -- of two lists of the type `List (ℕ → ℕ)`:
+  -- Although a contrived example, consider trying to prove the
+  -- equality of two lists of the type `List (ℕ → ℕ)`:
 
   lem₂ : (λ x → 2 * x + 2) ∷ [] ≡ (λ x → 2 * (x + 1)) ∷ []
 
   -- In such a case it is impossible to prove the two lists equal with
   -- refl as the two functions are not propositionally equal. In the
-  -- absence of postulating function extensionality, the most common
-  -- definition of function equality is to say that two functions are
-  -- equal if their outputs are always propositionally equal for any
-  -- input. This notion of function equality `_≗_` is found in:
+  -- absence of postulating function extensionality (see README.Axioms),
+  -- the most common definition of function equality is to say that two
+  -- functions are equal if their outputs are always propositionally
+  -- equal for any input. This notion of function equality `_≗_` is
+  -- found in:
 
   open import Relation.Binary.PropositionalEquality using (_≗_)
 
   -- We now want to use the `Pointwise` relation to say that the two
-  -- lists are equal if their elements are pointwise equal. However
-  -- instead of using the pointwise module directly to write:
+  -- lists are equal if their elements are pointwise equal with resepct
+  -- to `_≗_`. However instead of using the pointwise module directly
+  -- to write:
 
   open import Data.List.Relation.Binary.Pointwise using (Pointwise)
 
@@ -210,9 +217,8 @@ module EqualityExplanation where
 module PermutationExplanation where
 
   -- Alternatively you might consider two lists to be equal if they
-  -- contain the same elements irregardless of the order of the
-  -- elements. This is known as either "set equality" or a
-  -- "permutation".
+  -- contain the same elements regardless of the order of the elements.
+  -- This is known as either "set equality" or a "permutation".
 
   -- The easiest-to-use formalisation of this relation is found in the
   -- module:
@@ -233,17 +239,18 @@ module PermutationExplanation where
   lem₁ : 1 ∷ 2 ∷ 3 ∷ [] ↭ 3 ∷ 1 ∷ 2 ∷ []
   lem₁ = trans (prep 1 (swap 2 3 refl)) (swap 1 3 refl)
 
-  -- The above proof is not very readable though as it is difficult to
-  -- parse the constructors. The `PermutationReasoning` module can be
-  -- used to write this proof in a much more readable form:
+  -- In practice it is difficult to parse the constructors in the
+  -- proof above and hence understand why it holds. The
+  -- `PermutationReasoning` module can be used to write this proof
+  -- in a much more readable form:
 
   open PermutationReasoning
 
   lem₂ : 1 ∷ 2 ∷ 3 ∷ [] ↭ 3 ∷ 1 ∷ 2 ∷ []
   lem₂ = begin
-    1 ∷ 2 ∷ 3 ∷ [] ↭⟨ prep 1 (swap 2 3 refl) ⟩
-    1 ∷ 3 ∷ 2 ∷ [] ↭⟨ swap 1 3 refl ⟩
-    3 ∷ 1 ∷ 2 ∷ [] ∎
+    1 ∷ 2 ∷ 3 ∷ []  ↭⟨ prep 1 (swap 2 3 refl) ⟩
+    1 ∷ 3 ∷ 2 ∷ []  ↭⟨ swap 1 3 refl ⟩
+    3 ∷ 1 ∷ 2 ∷ []  ∎
 
   -- As might be expected, properties of the permutation relation may be
   -- found in `Data.List.Relation.Binary.Permutation.Inductive.Properties`.
@@ -277,7 +284,7 @@ module PermutationExplanation where
 
 -- Whereas binary relations deal with how two lists relate to one
 -- another, the unary relations in `Data.List.Relation.Unary` are used
--- to reason about the properties of an individual list. For instance:
+-- to reason about the properties of an individual list.
 
 ------------------------------------------------------------------------
 -- Any
@@ -285,14 +292,16 @@ module PermutationExplanation where
 module AnyExplanation where
 
   -- The predicate `Any` encodes the idea of at least one element of a
-  -- given list satisfying a given property/predicate.
+  -- given list satisfying a given property (or more formally a
+  -- predicate, see the `Pred` type in `Relation.Unary`).
 
   open import Data.List.Relation.Unary.Any as Any
 
-  -- A proof of type Any consists of a sequence of the constructors
-  -- "here", which indicates that the head of the list satisfies the
-  -- predicate and takes a proof that it does so, and "there" which
-  -- says that the element lies in the remainder of the list.
+  -- A proof of type Any consists of a sequence of the "there"
+  -- constructors, which says that the element lies in the remainder of
+  -- the list, followed by a single "here" constructor which indicates
+  -- that the head of the list satisfies the predicate and takes a proof
+  -- that it does so.
 
   -- For example a proof that a given list of natural numbers contains
   -- at least one number greater than or equal to 4 can be written as
@@ -303,7 +312,7 @@ module AnyExplanation where
     where
     4≤5 = s≤s (s≤s (s≤s (s≤s z≤n)))
 
-  -- Note that nothing requires that the proof of Any points at the
+  -- Note that nothing requires that the proof of `Any` points at the
   -- first such element in the list. There is therefore an alternative
   -- proof for the above lemma which points to 6 instead of 5.
 
@@ -312,14 +321,14 @@ module AnyExplanation where
     where
     4≤6 = s≤s (s≤s (s≤s (s≤s z≤n)))
 
-  -- There also exist various operations over proofs of Any whose names
+  -- There also exist various operations over proofs of `Any` whose names
   -- shadow the corresponding list operation. The standard way of using
   -- these is to use `as` to name the module:
 
   import Data.List.Relation.Unary.Any as Any
 
   -- and then use the qualified name `Any.map`. For example, map can
-  -- be used to change the predicate of Any:
+  -- be used to change the predicate of `Any`:
 
   open import Data.Nat.Properties using (≤-trans; n≤1+n)
 
@@ -381,11 +390,8 @@ module MembershipExplanation where
 
   -- For example if we want to reason about membership for `List ℕ`
   -- then you would use the `DecSetoidMembership` as we use
-  -- propositional equality over `ℕ` and it is also decidable,
-  -- as shown by:
-
-  -- Therefore the module `DecPropMembership` should be opened as
-  -- follows:
+  -- propositional equality over `ℕ` and it is also decidable. Therefore
+  -- the module `DecPropMembership` should be opened as follows:
 
   open DecPropMembership NatProp._≟_
 
@@ -410,10 +416,10 @@ module MembershipExplanation where
 
   -- As of yet there are no corresponding files for properties of
   -- membership for decidable versions of setoid and propositional
-  -- equality as (as of yet) we have no properties that only hold when
-  -- equality is decidable.
+  -- equality as we have no properties that only hold when equality is
+  -- decidable.
 
-  -- These properties modules are NOT parameterised in the same way as
+  -- These `Properties` modules are NOT parameterised in the same way as
   -- the main membership modules as some of the properties relate
   -- membership proofs for lists of different types. For example in the
   -- following the first `∈` refers to lists of type `List ℕ` whereas
