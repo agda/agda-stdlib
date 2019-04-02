@@ -17,6 +17,7 @@ open import Function using (flip; _∘′_)
 open import Induction.WellFounded
 open import Level
 open import Relation.Binary.Core
+open import Relation.Binary.Construct.Closure.Equivalence using (EqClosure)
 open import Relation.Binary.Construct.Closure.Reflexive
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive as RTrans
 open import Relation.Binary.Construct.Closure.Symmetric
@@ -29,7 +30,7 @@ module _ {a ℓ} {A : Set a} (_⟶_ : Rel A ℓ) where
   private
     _⟵_  = flip _⟶_
     _—↠_ = Star _⟶_
-    _↔_  = Star (SymClosure _⟶_)
+    _↔_  = EqClosure _⟶_
 
   IsNormalForm : A → Set _
   IsNormalForm a = ¬ ∃ λ b → (a ⟶ b)
@@ -63,35 +64,35 @@ module _ {a ℓ} {A : Set a} {_⟶_ : Rel A ℓ} where
 
   private
     _—↠_ = Star _⟶_
-    _↔_  = Star (SymClosure _⟶_)
+    _↔_  = EqClosure _⟶_
     _⟶₊_ = Plus _⟶_
 
-  det⟶conf : Deterministic _≡_ _⟶_ → Confluent _⟶_
-  det⟶conf det ε          rs₂        = -, rs₂ , ε
-  det⟶conf det rs₁        ε          = -, ε , rs₁
-  det⟶conf det (r₁ ◅ rs₁) (r₂ ◅ rs₂)
-    rewrite det r₁ r₂ = det⟶conf det rs₁ rs₂
+  det⇒conf : Deterministic _≡_ _⟶_ → Confluent _⟶_
+  det⇒conf det ε          rs₂        = -, rs₂ , ε
+  det⇒conf det rs₁        ε          = -, ε , rs₁
+  det⇒conf det (r₁ ◅ rs₁) (r₂ ◅ rs₂)
+    rewrite det r₁ r₂ = det⇒conf det rs₁ rs₂
 
-  conf⟶wcr : Confluent _⟶_ → WeaklyConfluent _⟶_
-  conf⟶wcr c fst snd = c (fst ◅ ε) (snd ◅ ε)
+  conf⇒wcr : Confluent _⟶_ → WeaklyConfluent _⟶_
+  conf⇒wcr c fst snd = c (fst ◅ ε) (snd ◅ ε)
 
-  conf⟶nf : Confluent _⟶_ → NormalForm _⟶_
-  conf⟶nf c aIsNF ε = ε
-  conf⟶nf c aIsNF (fwd x ◅ rest) = x ◅ conf⟶nf c aIsNF rest
-  conf⟶nf c aIsNF (bwd y ◅ rest) with c (y ◅ ε) (conf⟶nf c aIsNF rest)
+  conf⇒nf : Confluent _⟶_ → NormalForm _⟶_
+  conf⇒nf c aIsNF ε = ε
+  conf⇒nf c aIsNF (fwd x ◅ rest) = x ◅ conf⇒nf c aIsNF rest
+  conf⇒nf c aIsNF (bwd y ◅ rest) with c (y ◅ ε) (conf⇒nf c aIsNF rest)
   ... | _ , _    , x ◅ _ = ⊥-elim (aIsNF (_ , x))
   ... | _ , left , ε     = left
 
-  conf⟶unf : Confluent _⟶_ → UniqueNormalForm _⟶_
-  conf⟶unf _ _     _     ε           = refl
-  conf⟶unf _ aIsNF _     (fwd x ◅ _) = ⊥-elim (aIsNF (_ , x))
-  conf⟶unf c aIsNF bIsNF (bwd y ◅ r) with c (y ◅ ε) (conf⟶nf c bIsNF r)
+  conf⇒unf : Confluent _⟶_ → UniqueNormalForm _⟶_
+  conf⇒unf _ _     _     ε           = refl
+  conf⇒unf _ aIsNF _     (fwd x ◅ _) = ⊥-elim (aIsNF (_ , x))
+  conf⇒unf c aIsNF bIsNF (bwd y ◅ r) with c (y ◅ ε) (conf⇒nf c bIsNF r)
   ... | _ , ε     , x ◅ _ = ⊥-elim (bIsNF (_ , x))
   ... | _ , x ◅ _ , _     = ⊥-elim (aIsNF (_ , x))
   ... | _ , ε     , ε     = refl
 
-  un&wn⟶cr : UniqueNormalForm _⟶_ → WeaklyNormalizing _⟶_ → Confluent _⟶_
-  un&wn⟶cr un wn = helper where
+  un&wn⇒cr : UniqueNormalForm _⟶_ → WeaklyNormalizing _⟶_ → Confluent _⟶_
+  un&wn⇒cr un wn = helper where
 
     helper : ∀ {a b c} → a —↠ b → a —↠ c → ∃ λ d → (b —↠ d) × (c —↠ d)
     helper {_} {b} {c} aToB aToC with (wn b , wn c)
@@ -114,8 +115,8 @@ module _ {a ℓ} {A : Set a} {_⟶_ : Rel A ℓ} where
 
 
 -- Newman's lemma
-  sn⟶wcr⟶cr : StronglyNormalizing (Plus _⟶_) → WeaklyConfluent _⟶_ → Confluent _⟶_
-  sn⟶wcr⟶cr sn wcr = helper (sn _) where
+  sn&wcr⇒cr : StronglyNormalizing _⟶₊_ → WeaklyConfluent _⟶_ → Confluent _⟶_
+  sn&wcr⇒cr sn wcr = helper (sn _) where
 
     starToPlus : ∀ {a b c} → (a ⟶ b) → b —↠ c → a ⟶₊ c
     starToPlus aToB ε = [ aToB ]
