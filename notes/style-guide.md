@@ -80,7 +80,7 @@ This is very much a work-in-progress and is not exhaustive.
 
 ## Types
 
-## Implicit and explicit arguments
+#### Implicit and explicit arguments
 
 * Functions arguments should be implicit if they can "almost always"
   be inferred. If there are common cases where they cannot be inferred
