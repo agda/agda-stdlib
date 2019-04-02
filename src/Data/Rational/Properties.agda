@@ -9,21 +9,30 @@
 module Data.Rational.Properties where
 
 open import Function using (_∘_ ; _$_)
-open import Data.Integer as ℤ using (ℤ; ∣_∣; +_)
+open import Data.Integer as ℤ using (ℤ; ∣_∣; +_; -[1+_])
 open import Data.Integer.Coprimality using (coprime-divisor)
 import Data.Integer.Properties as ℤ
 open import Data.Rational.Base
 open import Data.Nat as ℕ using (ℕ; zero; suc)
-open import Data.Nat.Coprimality as C using (Coprime)
-open import Data.Nat.Divisibility
+import Data.Nat.Properties as ℕ
+open import Data.Nat.Coprimality as C using (Coprime; coprime?)
+open import Data.Nat.Divisibility hiding (/-cong)
+open import Data.Product using (_,_)
 open import Data.Sum
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; refl; sym; cong; cong₂; module ≡-Reasoning)
+open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (Dec; yes; no; recompute)
 open import Relation.Nullary.Decidable as Dec′ using (True; fromWitness)
 
 open import Algebra.FunctionProperties {A = ℚ} _≡_
+open import Algebra.FunctionProperties.Consequences.Propositional
+
+------------------------------------------------------------------------
+-- Helper lemmas
+
+private
+  recomputeCP : ∀ {n d} → .(Coprime n (suc d)) → Coprime n (suc d)
+  recomputeCP {n} {d-1} c = recompute (coprime? n (suc d-1)) c
 
 ------------------------------------------------------------------------
 -- Equality
@@ -38,7 +47,7 @@ open import Algebra.FunctionProperties {A = ℚ} _≡_
 
   1+d₁∣1+d₂ : suc d₁ ∣ suc d₂
   1+d₁∣1+d₂ = coprime-divisor (+ suc d₁) n₁ (+ suc d₂)
-    (C.sym (recompute (C.coprime? ∣ n₁ ∣ (suc d₁)) c₁)) $
+    (C.sym (recomputeCP c₁)) $
     divides ∣ n₂ ∣ $ begin
       ∣ n₁ ℤ.* + suc d₂ ∣  ≡⟨ cong ∣_∣ eq ⟩
       ∣ n₂ ℤ.* + suc d₁ ∣  ≡⟨ ℤ.abs-*-commute n₂ (+ suc d₁) ⟩
@@ -46,9 +55,9 @@ open import Algebra.FunctionProperties {A = ℚ} _≡_
 
   1+d₂∣1+d₁ : suc d₂ ∣ suc d₁
   1+d₂∣1+d₁ = coprime-divisor (+ suc d₂) n₂ (+ suc d₁)
-    (C.sym (recompute (C.coprime? ∣ n₂ ∣ (suc d₂)) c₂)) $
+    (C.sym (recomputeCP c₂)) $
     divides ∣ n₁ ∣ (begin
-      ∣ n₂ ℤ.* + suc d₁ ∣  ≡⟨ cong ∣_∣ (P.sym eq) ⟩
+      ∣ n₂ ℤ.* + suc d₁ ∣  ≡⟨ cong ∣_∣ (sym eq) ⟩
       ∣ n₁ ℤ.* + suc d₂ ∣  ≡⟨ ℤ.abs-*-commute n₁ (+ suc d₂) ⟩
       ∣ n₁ ∣ ℕ.* suc d₂    ∎)
 
@@ -107,7 +116,7 @@ p ≤? q = Dec′.map′ *≤* drop-*≤* ((↥ p ℤ.* ↧ q) ℤ.≤? (↥ q �
 
 ≤-isPreorder : IsPreorder _≡_ _≤_
 ≤-isPreorder = record
-  { isEquivalence = P.isEquivalence
+  { isEquivalence = isEquivalence
   ; reflexive     = ≤-reflexive
   ; trans         = ≤-trans
   }
