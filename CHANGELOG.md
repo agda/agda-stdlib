@@ -448,6 +448,22 @@ Non-backwards compatible changes
   `decSetoid` and `_==_` to be moved from `Data.(Char/String).Unsafe` to
   `Data.(Char/String).Properties`.
 
+####  Overhaul of `Data.Rational`
+
+* Many new operators have been added to `Data.Rational` including
+  addition, substraction, multiplication, inverse etc.
+
+* The existing operator `_÷_` has been renamed `_/_` and is now more liberal
+  as it now accepts non-coprime arguments (e.g. `+ 2 / 4`) which are then
+  normalised.
+
+* The old name `_÷_` has been repurposed to represent division between two
+  rationals.
+
+* The proofs `drop-*≤*`, `≃⇒≡` and `≡⇒≃` have been moved from `Data.Rational`
+  to `Data.Rational.Properties`.
+
+
 #### Changes in `Data.List`
 
 * In `Data.List.Membership.Propositional.Properties`:
@@ -496,9 +512,6 @@ Non-backwards compatible changes
 
 * The type `Coprime` and proof `coprime-divisor` have been moved from
   `Data.Integer.Divisibility` to `Data.Integer.Coprimality`.
-
-* The proofs `drop-*≤*`, `≃⇒≡` and `≡⇒≃` have been moved from `Data.Rational`
-  to `Data.Rational.Properties`.
 
 * The functions `fromMusical` and `toMusical` were moved from the `Codata` modules
   to the corresponding `Codata.Musical` modules.
@@ -1136,7 +1149,6 @@ Other minor additions
 
 * Added new functions to `Data.Rational`:
   ```agda
-  norm-mkℚ : (n : ℤ) (d : ℕ) → d ≢0 → ℚ
   -_       : ℚ → ℚ
   1/_      : (p : ℚ) → .{n≢0 : ∣ ℚ.numerator p ∣ ≢0} → ℚ
   _*_      : ℚ → ℚ → ℚ

@@ -19,9 +19,11 @@ open import Data.Nat.Divisibility
 open import Data.Sum
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; refl; sym; cong; module ≡-Reasoning)
+  using (_≡_; refl; sym; cong; cong₂; module ≡-Reasoning)
 open import Relation.Nullary using (Dec; yes; no; recompute)
-open import Relation.Nullary.Decidable using (True; fromWitness)
+open import Relation.Nullary.Decidable as Dec′ using (True; fromWitness)
+
+open import Algebra.FunctionProperties {A = ℚ} _≡_
 
 ------------------------------------------------------------------------
 -- Equality
@@ -50,16 +52,7 @@ open import Relation.Nullary.Decidable using (True; fromWitness)
       ∣ n₁ ℤ.* + suc d₂ ∣  ≡⟨ ℤ.abs-*-commute n₁ (+ suc d₂) ⟩
       ∣ n₁ ∣ ℕ.* suc d₂    ∎)
 
-  fromWitness′ : ∀ {p} {P : Set p} {Q : Dec P} → .P → True Q
-  fromWitness′ {Q = Q} p = fromWitness (recompute Q p)
-
-  .c₁′ : True (C.coprime? ∣ n₁ ∣ (suc d₁))
-  c₁′ = fromWitness′ {P = Coprime ∣ n₁ ∣ (suc d₁)} c₁
-
-  .c₂′ : True (C.coprime? ∣ n₂ ∣ (suc d₂))
-  c₂′ = fromWitness′ {P = Coprime ∣ n₂ ∣ (suc d₂)} c₂
-
-  helper : (n₁ ÷ suc d₁) {c₁′} ≡ (n₂ ÷ suc d₂) {c₂′}
+  helper : mkℚ n₁ d₁ c₁ ≡ mkℚ n₂ d₂ c₂
   helper with ∣-antisym 1+d₁∣1+d₂ 1+d₂∣1+d₁
   ... | refl with ℤ.*-cancelʳ-≡ n₁ n₂ (+ suc d₁) (λ ()) eq
   ...   | refl = refl
@@ -86,9 +79,9 @@ drop-*≤* (*≤* pq≤qp) = pq≤qp
 ≤-refl = ≤-reflexive refl
 
 ≤-trans : Transitive _≤_
-≤-trans {i = mkℚ n₁ d₁ c₁} {j = mkℚ n₂ d₂ c₂} {k = mkℚ n₃ d₃ c₃} (*≤* eq₁) (*≤* eq₂)
+≤-trans {i = p@(mkℚ n₁ d₁ c₁)} {j = q@(mkℚ n₂ d₂ c₂)} {k = r@(mkℚ n₃ d₃ c₃)} (*≤* eq₁) (*≤* eq₂)
   = *≤* $ ℤ.*-cancelʳ-≤-pos (n₁ ℤ.* ℤ.+ suc d₃) (n₃ ℤ.* ℤ.+ suc d₁) d₂ $ begin
-  let sd₁ = ℤ.+ suc d₁; sd₂ = ℤ.+ suc d₂; sd₃ = ℤ.+ suc d₃ in
+  let sd₁ = ↧ p; sd₂ = ↧ q; sd₃ = ↧ r in
   (n₁  ℤ.* sd₃) ℤ.* sd₂  ≡⟨ ℤ.*-assoc n₁ sd₃ sd₂ ⟩
   n₁   ℤ.* (sd₃ ℤ.* sd₂) ≡⟨ cong (n₁ ℤ.*_) (ℤ.*-comm sd₃ sd₂) ⟩
   n₁   ℤ.* (sd₂ ℤ.* sd₃) ≡⟨ sym (ℤ.*-assoc n₁ sd₂ sd₃) ⟩
@@ -110,9 +103,7 @@ drop-*≤* (*≤* pq≤qp) = pq≤qp
   (↥ q ℤ.* ↧ p))
 
 _≤?_ : Decidable _≤_
-p ≤? q with (↥ p ℤ.* ↧ q) ℤ.≤? (↥ q ℤ.* ↧ p)
-... | yes pq≤qp = yes (*≤* pq≤qp)
-... | no ¬pq≤qp = no (λ { (*≤* pq≤qp) → ¬pq≤qp pq≤qp })
+p ≤? q = Dec′.map′ *≤* drop-*≤* ((↥ p ℤ.* ↧ q) ℤ.≤? (↥ q ℤ.* ↧ p))
 
 ≤-isPreorder : IsPreorder _≡_ _≤_
 ≤-isPreorder = record

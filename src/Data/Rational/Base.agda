@@ -57,7 +57,7 @@ open ℚ public using ()
 infix 4 _≃_
 
 _≃_ : Rel ℚ 0ℓ
-p ≃ q = (↥ p ℤ.* ↧ q) ≡ (↥ q) ℤ.* (↧ p)
+p ≃ q = (↥ p ℤ.* ↧ q) ≡ (↥ q ℤ.* ↧ p)
 
 ------------------------------------------------------------------------
 -- Ordering of rationals
@@ -76,14 +76,6 @@ n ≢0 = False (n ℕ.≟ 0)
 
 -- introducing a notation for that nasty pattern
 pattern ⟨_&_∧_&_⟩ p eqp q eqq = GCD.is (divides p eqp , divides q eqq) _
-
--- division
-
-_÷_ : (numerator : ℤ) (denominator : ℕ)
-      .{coprime : True (coprime? ∣ numerator ∣ denominator)}
-      {≢0 : denominator ≢0} →
-      ℚ
-(n ÷ suc d) {c} = mkℚ n d (toWitness c)
 
 -- normalize takes two natural numbers, say 6 and 21 and their gcd 3, and
 -- returns them normalized as 2 and 7 and a proof that they are coprime
@@ -109,13 +101,18 @@ gcd≢0 m  n {m≢0} with gcd m n
 pattern +0       = + 0
 pattern +[1+_] n = + suc n
 
-norm-mkℚ : (n : ℤ) (d : ℕ) → .{d≢0 : d ≢0} → ℚ
-norm-mkℚ +0       d {d≢0} = mkℚ +0 0 (C.sym (C.1-coprimeTo 0))
-norm-mkℚ -[1+ n ] d {d≢0} =
+-- A constructor for ℚ that (unlike mkℚ) automatically normalises it's
+-- arguments
+
+infixl 7 _/_
+
+_/_ : (n : ℤ) (d : ℕ) → .{d≢0 : d ≢0} → ℚ
+_/_ +0       d {d≢0} = mkℚ +0 0 (C.sym (C.1-coprimeTo 0))
+_/_ -[1+ n ] d {d≢0} =
   let (q , gcd , q≢0)      = gcd≢0 (suc n) d
       (n′ , d′ , prf , eq) = normalize (suc n) d q {_} {d≢0} {q≢0} gcd
   in mkℚ -[1+ n′ ] d′ prf
-norm-mkℚ +[1+ n ] d {d≢0} =
+_/_ +[1+ n ] d {d≢0} =
   let (q , gcd , q≢0)      = gcd≢0 (suc n) d
       (n′ , d′ , prf , eq) = normalize (suc n) d q {_} {d≢0} {q≢0} gcd
   in mkℚ (+ suc n′) d′ prf
@@ -124,7 +121,7 @@ norm-mkℚ +[1+ n ] d {d≢0} =
 -- Operations on rationals
 
 infix  8 -_ 1/_
-infixl 7 _*_ _/_ _÷_
+infixl 7 _*_ _÷_
 infixl 6 _-_ _+_
 
 -- negation
@@ -137,12 +134,12 @@ infixl 6 _-_ _+_
 -- addition
 
 _+_ : ℚ → ℚ → ℚ
-p + q = norm-mkℚ (↥ p ℤ.* ↧ q ℤ.+ ↥ q ℤ.* ↧ p) (↧ₙ p ℕ.* ↧ₙ q)
+p + q = (↥ p ℤ.* ↧ q ℤ.+ ↥ q ℤ.* ↧ p) / (↧ₙ p ℕ.* ↧ₙ q)
 
 -- multiplication
 
 _*_ : ℚ → ℚ → ℚ
-p * q = norm-mkℚ (↥ p ℤ.* ↥ q) (↧ₙ p ℕ.* ↧ₙ q)
+p * q = (↥ p ℤ.* ↥ q) / (↧ₙ p ℕ.* ↧ₙ q)
 
 -- subtraction
 
@@ -157,5 +154,5 @@ p - q = p + (- q)
 
 -- division: requires a proof that the denominator is not zero
 
-_/_ : (p q : ℚ) → .{n≢0 : ∣ ↥ q ∣ ≢0} → ℚ
-(p / q) {n≢0} = p * (1/_ q {n≢0})
+_÷_ : (p q : ℚ) → .{n≢0 : ∣ ↥ q ∣ ≢0} → ℚ
+(p ÷ q) {n≢0} = p * (1/_ q {n≢0})
