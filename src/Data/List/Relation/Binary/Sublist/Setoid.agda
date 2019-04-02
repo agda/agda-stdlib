@@ -24,4 +24,5 @@ infix 4 _⊆_
 _⊆_ : Rel (List A) (c ⊔ ℓ)
 _⊆_ = Sublist.Sublist _≈_
 
-open Sublist hiding (Sublist) public
+open Sublist.Sublist {c} {c} {ℓ} {A} {A} _≈_ public
+open Sublist hiding (Sublist; []; _∷ʳ_; _∷_) public
