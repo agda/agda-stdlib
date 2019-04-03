@@ -14,15 +14,18 @@ module Data.List.Relation.Binary.Sublist.Setoid {c ℓ} (S : Setoid c ℓ) where
 
 open import Level using (_⊔_)
 open import Data.List.Base using (List; []; _∷_)
-import Data.List.Relation.Binary.Sublist.Heterogeneous as Sublist
 
 private
   module S = Setoid S
   open S renaming (Carrier to A)
 
+open import Data.List.Relation.Binary.Sublist.Heterogeneous {R = _≈_}
+  as Sublist
+  hiding (Sublist; []; _∷_; _∷ʳ_)
+  public
+
+open import Data.List.Relation.Binary.Sublist.Heterogeneous.Core _≈_ public
+
 infix 4 _⊆_
 _⊆_ : Rel (List A) (c ⊔ ℓ)
 _⊆_ = Sublist.Sublist _≈_
-
-open Sublist.Sublist {c} {c} {ℓ} {A} {A} _≈_ public
-open Sublist hiding (Sublist; []; _∷ʳ_; _∷_) public
