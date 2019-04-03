@@ -487,6 +487,10 @@ Non-backwards compatible changes
 
 #### Other changes
 
+* The implementation for  Data.Nat.Show.show  is improved. Its performance is
+  speed up `exponentially'. It uses the function  toDigitNats,  which in its turn
+  uses the functions _div_ and _%_ (based on built-in things).
+
 * The proof `sel⇒idem` in `Algebra.FunctionProperties.Consequences` now
   only takes the equality relation as an argument instead of a full `Setoid`.
 
