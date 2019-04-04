@@ -40,8 +40,8 @@ open Acc using (acc)
 <-acc {n} = Induction.Nat.<-wellFounded n
 
 
--- Conversion from unary to decimal representation.
-
+-- Conversion from unary representation to the representation by the given
+-- base.
 toDigitNats : (base : ℕ) → base > 1 → ℕ → List ℕ
 toDigitNats 0             ()
 toDigitNats 1             1>1    _ =  contradiction 1>1 (<-irrefl refl)
@@ -61,7 +61,7 @@ toDigitNats (suc (suc b)) base>1 x =  aux x <-acc []
     aux' : List ℕ → List ℕ
     aux' with q ≟ 0
     ... | yes _   =  (r ∷_)
-    ... | no q≢0 =  aux q (wf _ q<n') ∘ (r ∷_)   -- use  n' ≡ r + q*10 
+    ... | no q≢0 =  aux q (wf _ q<n') ∘ (r ∷_)   -- use  n' ≡ r + q*base 
       where  
       suc-pq≡q = m≢0⇒suc[pred[m]]≡m q≢0
       q<q*base  =
