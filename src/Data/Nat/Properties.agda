@@ -304,6 +304,10 @@ _>?_ = flip _<?_
 ≤∧≢⇒< {_} {suc n} (s≤s m≤n) 1+m≢1+n =
   s≤s (≤∧≢⇒< m≤n (1+m≢1+n ∘ cong suc))
 
+≢0⇒> :  ∀ {n} → n ≢ 0 → n > 0
+≢0⇒> {suc _} _    =  s≤s z≤n
+≢0⇒> {0}     0≢0 =  contradiction refl 0≢0
+
 n≮n : ∀ n → n ≮ n
 n≮n n = <-irrefl (refl {x = n})
 
@@ -1616,6 +1620,26 @@ module ≤-Reasoning where
     <-transʳ
     public
     hiding (_≈⟨_⟩_)
+
+
+open ≤-Reasoning using () renaming (begin_ to begin≤_; _∎ to _end≤;
+                                    _≡⟨_⟩_ to _≡≤[_]_; _≤⟨_⟩_ to _≤[_]_)
+
+m<m*n :  ∀ {m n} → 0 < m → 1 < n → m < m * n  
+m<m*n {m} {n} 0<m 1<n =
+  begin≤ 
+    suc m                ≡≤[ cong suc (sym suc-pm≡m) ]
+    suc (suc pm)         ≡≤[ cong suc (sym (*-identityʳ (suc pm))) ]
+    suc ((suc pm) * 1)     ≤[ *-monoʳ-< pm 1<n ]
+    (suc pm) * n         ≡≤[ cong (_* n) suc-pm≡m ]
+    m * n
+  end≤ 
+  where
+  pm        = pred m
+  m≢0      = ≢-sym (<⇒≢ 0<m)   
+  suc-pm≡m = m≢0⇒suc[pred[m]]≡m m≢0
+
+
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

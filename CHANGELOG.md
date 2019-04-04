@@ -503,6 +503,12 @@ Non-backwards compatible changes
 
 #### Other changes
 
+* The proof `≢-sym` added to Relation.Binary.PropositionalEquality.Core.
+
+* The proofs `≢0⇒>` and `m<m*n` (for 0<m, 1<n) added to Data.Nat.Properties.
+	
+* A faster version for  Data.Nat.Show.show  is implemented.
+
 * The proof `sel⇒idem` in `Algebra.FunctionProperties.Consequences` now
   only takes the equality relation as an argument instead of a full `Setoid`.
 
