@@ -13,6 +13,8 @@ New modules
 
 The following new modules have been added to the library:
 ```
+Category.Monad.Reader
+
 Data.List.Relation.Binary.Disjoint.Propositional
 Data.List.Relation.Binary.Disjoint.Setoid
 Data.List.Relation.Binary.Disjoint.Setoid.Properties
