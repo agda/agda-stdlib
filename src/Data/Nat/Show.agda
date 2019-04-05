@@ -34,18 +34,18 @@ open import Relation.Nullary.Negation  using (contradiction)
 open ≤-Reasoning
 
 -- Conversion from unary representation to the representation by the given
--- base. 
+-- base.
 toDigitNats : (base : ℕ) → base > 1 → ℕ → List ℕ
 toDigitNats 0             ()
 toDigitNats 1             (s≤s ())
-toDigitNats (suc (suc b)) base>1 x =  aux x (<-wellFounded x) [] 
+toDigitNats (suc (suc b)) base>1 x =  aux x (<-wellFounded x) []
   where
   -- <-wellFounded  means that _<_ is well-founded on ℕ
   --                ("each number in ℕ is accessible from 0 by _<_").
 
   base = suc (suc b);  pbase = pred base
 
-  aux : (n : ℕ) → Acc _<_ n → List ℕ → List ℕ 
+  aux : (n : ℕ) → Acc _<_ n → List ℕ → List ℕ
   aux 0       _        =  (0 ∷_)
   aux (suc n) (acc wf) =  aux'
     where
@@ -57,28 +57,28 @@ toDigitNats (suc (suc b)) base>1 x =  aux x (<-wellFounded x) []
     aux' : List ℕ → List ℕ
     aux' with q ≟ 0
     ... | yes _   =  (r ∷_)
-    ... | no q≢0 =  aux q (wf _ q<n') ∘ (r ∷_)   -- use  n' ≡ r + q*base 
+    ... | no q≢0 =  aux q (wf _ q<n') ∘ (r ∷_)   -- use  n' ≡ r + q*base
       where
       q>0       = ≢0⇒> q≢0
       suc-pq≡q = m≢0⇒suc[pred[m]]≡m q≢0
       q<q*base  = m<m*n q>0 base>1
       q<n' =
         begin suc q            ≤⟨ q<q*base ⟩
-              q * base         ≤⟨ m≤m+n (q * base) r ⟩ 
+              q * base         ≤⟨ m≤m+n (q * base) r ⟩
               q * base + r    ≡⟨ +-comm _ r ⟩
               r + q * base    ≡⟨ sym n'≡r+q*base ⟩
               n'
         ∎
 
 toDigitChar : (n : ℕ) → Char
-toDigitChar n =  Char.fromNat (n + 48) 
+toDigitChar n =  Char.fromNat (n + 48)
 
 toDecimalChars : ℕ → List Char
 toDecimalChars = map toDigitChar ∘ toDigitNats 10 1<10
   where
   1<10 = s≤s (s≤s z≤n)
 
-show : ℕ → String                 
+show : ℕ → String
 show = String.fromList ∘ toDecimalChars
 --
 -- (show n) is a string containing the decimal expansion of n (starting
