@@ -9,7 +9,7 @@ module Category.Monad.Reader where
 open import Level
 open import Function
 open import Function.Identity.Categorical as Id using (Identity)
-open import Category.Applicative.Indexed using (IFun)
+open import Category.Applicative.Indexed
 open import Category.Monad.Indexed
 open import Category.Monad
 open import Data.Unit
@@ -21,6 +21,32 @@ IReaderT : ∀ {r} (R : Set r) {i} {I : Set i} (M : IFun I r) → IFun I r
 IReaderT R M i j A = R → M i j A
 
 ------------------------------------------------------------------------
+-- Indexed reader applicative
+
+ReaderTIApplicative : ∀ {r} (R : Set r) {i} {I : Set i} {M : IFun I r} →
+                      RawIApplicative M → RawIApplicative (IReaderT R M)
+ReaderTIApplicative R App = record
+  { pure = λ x r → pure x
+  ; _⊛_ = λ m n r → m r ⊛ n r
+  } where open RawIApplicative App
+
+ReaderTIApplicativeZero : ∀ {r} (R : Set r) {i} {I : Set i} {M : IFun I r} →
+                          RawIApplicativeZero M →
+                          RawIApplicativeZero (IReaderT R M)
+ReaderTIApplicativeZero R App = record
+  { applicative = ReaderTIApplicative R applicative
+  ; ∅ = const ∅
+  } where open RawIApplicativeZero App
+
+ReaderTIAlternative : ∀ {r} (R : Set r) {i} {I : Set i} {M : IFun I r} →
+                      RawIAlternative M →
+                      RawIAlternative (IReaderT R M)
+ReaderTIAlternative R Alt = record
+  { applicativeZero = ReaderTIApplicativeZero R applicativeZero
+  ; _∣_ = λ m n r → m r ∣ n r
+  } where open RawIAlternative Alt
+
+------------------------------------------------------------------------
 -- Indexed reader monad
 
 ReaderTIMonad : ∀ {r} (R : Set r) {i} {I : Set i} {M : IFun I r} →
@@ -29,6 +55,20 @@ ReaderTIMonad R Mon = record
   { return = λ x r → return x
   ; _>>=_ = λ m f r → m r >>= flip f r
   } where open RawIMonad Mon
+
+ReaderTIMonadZero : ∀ {r} (R : Set r) {i} {I : Set i} {M : IFun I r} →
+                    RawIMonadZero M → RawIMonadZero (IReaderT R M)
+ReaderTIMonadZero R Mon = record
+  { monad = ReaderTIMonad R monad
+  ; applicativeZero = ReaderTIApplicativeZero R applicativeZero
+  } where open RawIMonadZero Mon
+
+ReaderTIMonadPlus : ∀ {r} (R : Set r) {i} {I : Set i} {M : IFun I r} →
+                    RawIMonadPlus M → RawIMonadPlus (IReaderT R M)
+ReaderTIMonadPlus R Mon = record
+  { monad = ReaderTIMonad R monad
+  ; alternative = ReaderTIAlternative R alternative
+  } where open RawIMonadPlus Mon
 
 ------------------------------------------------------------------------
 -- Reader monad operations
@@ -72,6 +112,14 @@ ReaderTMonad R Mon = ReaderTIMonad R Mon
 ReaderTMonadReader : ∀ {r} (R : Set r) {M} →
                      RawMonad M → RawMonadReader R (ReaderT R M)
 ReaderTMonadReader R Mon = ReaderTIMonadReader R Mon
+
+ReaderTMonadZero : ∀ {r} (R : Set r) {M} →
+                   RawMonadZero M → RawMonadZero (ReaderT R M)
+ReaderTMonadZero R Mon = ReaderTIMonadZero R Mon
+
+ReaderTMonadPlus : ∀ {r} (R : Set r) {M} →
+                   RawMonadPlus M → RawMonadPlus (ReaderT R M)
+ReaderTMonadPlus R Mon = ReaderTIMonadPlus R Mon
 
 Reader : ∀ {r} → Set r → Set r → Set r
 Reader R = ReaderT R Identity
