@@ -4,6 +4,8 @@
 -- The reader monad
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Category.Monad.Reader where
 
 open import Level
