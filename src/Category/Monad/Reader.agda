@@ -54,10 +54,7 @@ ReaderTIMonadReader R Mon = record
   } where open RawIMonad Mon
 
 ------------------------------------------------------------------------
--- Ordinary reader monad
-
-ReaderT : ∀ {r} (R : Set r) (M : Set r → Set r) → Set r → Set r
-ReaderT R M = IReaderT R {I = ⊤} (λ _ _ → M) _ _
+-- Ordinary reader monads
 
 RawMonadReader : ∀ {r} → Set r → (Set r → Set r) → Set _
 RawMonadReader R M = RawIMonadReader R {I = ⊤} (λ _ _ → M)
@@ -65,6 +62,16 @@ RawMonadReader R M = RawIMonadReader R {I = ⊤} (λ _ _ → M)
 module RawMonadReader {r} {R : Set r} {M : Set r → Set r}
                       (Mon : RawMonadReader R M) where
   open RawIMonadReader Mon public
+
+ReaderT : ∀ {r} (R : Set r) (M : Set r → Set r) → Set r → Set r
+ReaderT R M = IReaderT R {I = ⊤} (λ _ _ → M) _ _
+
+ReaderTMonad : ∀ {r} (R : Set r) {M} → RawMonad M → RawMonad (ReaderT R M)
+ReaderTMonad R Mon = ReaderTIMonad R Mon
+
+ReaderTMonadReader : ∀ {r} (R : Set r) {M} →
+                     RawMonad M → RawMonadReader R (ReaderT R M)
+ReaderTMonadReader R Mon = ReaderTIMonadReader R Mon
 
 Reader : ∀ {r} → Set r → Set r → Set r
 Reader R = ReaderT R Identity
