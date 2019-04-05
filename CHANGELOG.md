@@ -73,19 +73,16 @@ New modules
   Data.List.Relation.Binary.Suffix.Heterogeneous.Properties
   Data.List.Relation.Binary.Prefix.Heterogeneous
   Data.List.Relation.Binary.Prefix.Heterogeneous.Properties
-  Data.List.Relation.Binary.Sublist.Homogeneous.Properties
-  Data.List.Relation.Binary.Sublist.Homogeneous.Solver
   Data.List.Relation.Binary.Sublist.Heterogeneous
   Data.List.Relation.Binary.Sublist.Heterogeneous.Properties
+  Data.List.Relation.Binary.Sublist.Heterogeneous.Solver
   Data.List.Relation.Binary.Sublist.Setoid
   Data.List.Relation.Binary.Sublist.Setoid.Properties
   Data.List.Relation.Binary.Sublist.DecSetoid
-  Data.List.Relation.Binary.Sublist.DecSetoid.Properties
   Data.List.Relation.Binary.Sublist.DecSetoid.Solver
   Data.List.Relation.Binary.Sublist.Propositional
   Data.List.Relation.Binary.Sublist.Propositional.Properties
   Data.List.Relation.Binary.Sublist.DecPropositional
-  Data.List.Relation.Binary.Sublist.DecPropositional.Properties
   Data.List.Relation.Binary.Sublist.DecPropositional.Solver
   Data.List.Relation.Ternary.Interleaving.Setoid
   Data.List.Relation.Ternary.Interleaving.Setoid.Properties

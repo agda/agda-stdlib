@@ -11,8 +11,8 @@
 open import Relation.Binary using (REL)
 
 module Data.List.Relation.Binary.Sublist.Heterogeneous
-       {a b r} {A : Set a} {B : Set b} {R : REL A B r}
-       where
+  {a b r} {A : Set a} {B : Set b} {R : REL A B r}
+  where
 
 open import Level using (_⊔_)
 open import Data.List.Base using (List; []; _∷_; [_])
@@ -21,6 +21,9 @@ open import Function
 open import Relation.Unary using (Pred)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
+
+------------------------------------------------------------------------
+-- Re-export core definitions
 
 open import Data.List.Relation.Binary.Sublist.Heterogeneous.Core public
 
