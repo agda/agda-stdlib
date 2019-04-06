@@ -14,12 +14,16 @@ open import Data.Fin using (Fin; toℕ; fromℕ≤)
 open import Data.Fin.Properties using (toℕ-fromℕ≤)
 open import Data.Nat as Nat
 open import Data.Nat.DivMod.Core
-open import Data.Nat.Properties using (≤⇒≤″; +-assoc; +-comm; +-identityʳ)
+open import Data.Nat.Properties using (≤⇒≤″; +-assoc; +-comm; +-identityʳ;
+                                       m≤m+n; module ≤-Reasoning)
 open import Function using (_$_)
 open import Relation.Nullary.Decidable using (False)
 open import Relation.Binary.PropositionalEquality
 
 open ≡-Reasoning
+open ≤-Reasoning using () renaming (begin_ to begin≤_; _∎ to _end≤;
+                                    _≡⟨_⟩_ to _≡≤[_]_; _≤⟨_⟩_ to _≤[_]_)
+
 
 ------------------------------------------------------------------------
 -- Basic operations
@@ -70,6 +74,15 @@ a%n%n≡a%n a n = modₕ-idem 0 a n
 
 kn%n≡0 : ∀ k n → k * (suc n) % suc n ≡ 0
 kn%n≡0 = [a+kn]%n≡a%n 0
+
+[a/n]*n≤a : ∀ a n → (a div (suc n)) * (suc n) ≤ a
+[a/n]*n≤a a n =
+  begin≤ (a div n') * n'              ≤[ m≤m+n ((a div n') * n') (a % n') ]
+         (a div n') * n' + a % n'   ≡≤[ +-comm _ (a % n') ]
+         a % n' + (a div n') * n'   ≡≤[ sym (a≡a%n+[a/n]*n a n) ]
+         a
+  end≤
+  where n' = suc n
 
 %-distribˡ-+ : ∀ a b n → (a + b) % suc n ≡ (a % suc n + b % suc n) % suc n
 %-distribˡ-+ a b n = begin

@@ -503,9 +503,11 @@ Non-backwards compatible changes
 
 #### Other changes
 
-* The proof `≢-sym` added to Relation.Binary.PropositionalEquality.Core.
+* The proof ``≢-sym`` added to Relation.Binary.PropositionalEquality.Core.
 
-* The proofs `≢0⇒>` and `m<m*n` (for 0<m, 1<n) added to Data.Nat.Properties.
+* The proofs ``n≢0⇒n>0`` and `m<m*n` (for 0<m, 1<n) added to Data.Nat.Properties.
+
+* The proof ``[a/n]*n≤a``  added to Data.Nat.DivMod.
 
 * A faster version for  Data.Nat.Show.show  is implemented.
 

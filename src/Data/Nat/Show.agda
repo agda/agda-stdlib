@@ -14,11 +14,11 @@ open import Function   using (_∘_; _$_)
 open import Data.List  using (List; []; _∷_; map; reverse)
 open import Data.Nat   using (ℕ; _≟_; suc; pred; _+_; _*_; _<_; _>_; z≤n; s≤s;
                                                                       _≤?_)
-open import Data.Nat.DivMod     using (_div_; _%_; a≡a%n+[a/n]*n)
+open import Data.Nat.DivMod     using (_div_; _%_; a≡a%n+[a/n]*n; [a/n]*n≤a)
 open import Data.Product        using (proj₁)
 open import Data.Nat.Properties using
-            (+-comm; *-identityʳ; <-irrefl; <⇒≢; ≢0⇒>; m≤m+n; *-monoʳ-<;
-             m<m*n; m≢0⇒suc[pred[m]]≡m; module ≤-Reasoning
+            (+-comm; *-identityʳ; <-transˡ; <-irrefl; <⇒≢; n≢0⇒n>0; m≤m+n;
+             *-monoʳ-<; m<m*n; m≢0⇒suc[pred[m]]≡m; module ≤-Reasoning
             )
 open import Data.String as String using (String)
 open import Induction.Nat         using (<-wellFounded)
@@ -59,16 +59,10 @@ toDigitNats (suc (suc b)) base>1 x =  aux x (<-wellFounded x) []
     ... | yes _   =  (r ∷_)
     ... | no q≢0 =  aux q (wf _ q<n') ∘ (r ∷_)   -- use  n' ≡ r + q*base
       where
-      q>0       = ≢0⇒> q≢0
+      q>0       = n≢0⇒n>0 q≢0
       suc-pq≡q = m≢0⇒suc[pred[m]]≡m q≢0
       q<q*base  = m<m*n q>0 base>1
-      q<n' =
-        begin suc q            ≤⟨ q<q*base ⟩
-              q * base         ≤⟨ m≤m+n (q * base) r ⟩
-              q * base + r    ≡⟨ +-comm _ r ⟩
-              r + q * base    ≡⟨ sym n'≡r+q*base ⟩
-              n'
-        ∎
+      q<n'      = <-transˡ q<q*base ([a/n]*n≤a n' pbase)
 
 toDigitChar : (n : ℕ) → Char
 toDigitChar n =  Char.fromNat (n + 48)

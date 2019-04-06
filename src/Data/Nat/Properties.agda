@@ -304,9 +304,9 @@ _>?_ = flip _<?_
 ≤∧≢⇒< {_} {suc n} (s≤s m≤n) 1+m≢1+n =
   s≤s (≤∧≢⇒< m≤n (1+m≢1+n ∘ cong suc))
 
-≢0⇒> :  ∀ {n} → n ≢ 0 → n > 0
-≢0⇒> {suc _} _    =  s≤s z≤n
-≢0⇒> {0}     0≢0 =  contradiction refl 0≢0
+n≢0⇒n>0 :  ∀ {n} → n ≢ 0 → n > 0
+n≢0⇒n>0 {suc _} _    =  s≤s z≤n
+n≢0⇒n>0 {0}     0≢0 =  contradiction refl 0≢0
 
 n≮n : ∀ n → n ≮ n
 n≮n n = <-irrefl (refl {x = n})
@@ -769,6 +769,14 @@ i*j≡1⇒j≡1 i j eq = i*j≡1⇒i≡1 j i (trans (*-comm j i) eq)
 *-monoʳ-< zero    (s≤s m≤o) = +-mono-≤ (s≤s m≤o) z≤n
 *-monoʳ-< (suc n) (s≤s m≤o) =
   +-mono-≤ (s≤s m≤o) (<⇒≤ (*-monoʳ-< n (s≤s m≤o)))
+
+m<m*n :  ∀ {m n} → 0 < m → 1 < n → m < m * n
+m<m*n {suc m} {suc (suc n)} (s≤s _) (s≤s (s≤s _)) =
+  ≤-trans 2+m≤[2+m]+m*1 [2+m]+m*1≤[1+m]*[2+n]
+  where
+  m≤m*1                 = ≤-reflexive (sym (*-identityʳ m))
+  2+m≤[2+m]+m*1         = +-mono-≤ (m≤m+n 2 n) m≤m*1
+  [2+m]+m*1≤[1+m]*[2+n] = +-monoʳ-≤ _ (*-monoʳ-≤ m (s≤s z≤n))
 
 ------------------------------------------------------------------------
 -- Properties of _^_
@@ -1620,24 +1628,6 @@ module ≤-Reasoning where
     <-transʳ
     public
     hiding (_≈⟨_⟩_)
-
-
-open ≤-Reasoning using () renaming (begin_ to begin≤_; _∎ to _end≤;
-                                    _≡⟨_⟩_ to _≡≤[_]_; _≤⟨_⟩_ to _≤[_]_)
-
-m<m*n :  ∀ {m n} → 0 < m → 1 < n → m < m * n
-m<m*n {m} {n} 0<m 1<n =
-  begin≤
-    suc m                ≡≤[ cong suc (sym suc-pm≡m) ]
-    suc (suc pm)         ≡≤[ cong suc (sym (*-identityʳ (suc pm))) ]
-    suc ((suc pm) * 1)     ≤[ *-monoʳ-< pm 1<n ]
-    (suc pm) * n         ≡≤[ cong (_* n) suc-pm≡m ]
-    m * n
-  end≤
-  where
-  pm        = pred m
-  m≢0      = ≢-sym (<⇒≢ 0<m)
-  suc-pm≡m = m≢0⇒suc[pred[m]]≡m m≢0
 
 
 
