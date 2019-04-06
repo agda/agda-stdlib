@@ -17,9 +17,9 @@ open import Data.Nat   using (ℕ; _≟_; suc; pred; _+_; _*_; _<_; _>_; z≤n; 
 open import Data.Nat.DivMod     using (_div_; _%_; a≡a%n+[a/n]*n; [a/n]*n≤a)
 open import Data.Product        using (proj₁)
 open import Data.Nat.Properties using
-            (+-comm; *-identityʳ; <-transˡ; <-irrefl; <⇒≢; n≢0⇒n>0; m≤m+n;
-             *-monoʳ-<; m<m*n; m≢0⇒suc[pred[m]]≡m; module ≤-Reasoning
-            )
+                 (+-comm; *-identityʳ; <-transˡ; <-irrefl; <⇒≢; n≢0⇒n>0;
+                  m≤m+n; *-monoʳ-<; m<m*n; m≢0⇒suc[pred[m]]≡m
+                 )
 open import Data.String as String using (String)
 open import Induction.Nat         using (<-wellFounded)
 open import Induction.WellFounded using (Acc; acc)
@@ -31,8 +31,6 @@ open import Relation.Nullary.Negation  using (contradiction)
 
 
 ------------------------------------------------------------------------------
-open ≤-Reasoning
-
 -- Conversion from unary representation to the representation by the given
 -- base.
 toDigitNats : (base : ℕ) → base > 1 → ℕ → List ℕ
