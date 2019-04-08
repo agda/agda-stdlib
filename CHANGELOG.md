@@ -507,7 +507,9 @@ Non-backwards compatible changes
 
 * The proofs ``n≢0⇒n>0`` and `m<m*n` (for 0<m, 1<n) added to Data.Nat.Properties.
 
-* The proof ``[a/n]*n≤a``  added to Data.Nat.DivMod.
+* It Data.Nat.DivMod:  the proof ``[a/n]*n≤a`` is add,
+  ``open ≡-Resoning`` removed, the usage of equality/inequiality reasoning
+  is simplified.
 
 * A faster version for  Data.Nat.Show.show  is implemented.
 

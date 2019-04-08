@@ -13,7 +13,7 @@ open import Data.Digit using (showDigit; toDigits)
 open import Function   using (_∘_; _$_)
 open import Data.List  using (List; []; _∷_; map; reverse)
 open import Data.Nat   using (ℕ; _≟_; suc; pred; _+_; _*_; _<_; _>_; z≤n; s≤s;
-                                                                      _≤?_)
+                                                                _≤?_; _<?_)
 open import Data.Nat.DivMod     using (_div_; _%_; a≡a%n+[a/n]*n; [a/n]*n≤a)
 open import Data.Product        using (proj₁)
 open import Data.Nat.Properties using
@@ -34,33 +34,23 @@ open import Relation.Nullary.Negation  using (contradiction)
 -- Conversion from unary representation to the representation by the given
 -- base.
 toDigitNats : (base : ℕ) → base > 1 → ℕ → List ℕ
-toDigitNats 0             ()
-toDigitNats 1             (s≤s ())
-toDigitNats (suc (suc b)) base>1 x =  aux x (<-wellFounded x) []
+toDigitNats 0                  ()
+toDigitNats 1                  (s≤s ())
+toDigitNats base@(suc (suc b)) base>1 x =  aux x (<-wellFounded x) []
   where
-  -- <-wellFounded  means that _<_ is well-founded on ℕ
-  --                ("each number in ℕ is accessible from 0 by _<_").
-
-  base = suc (suc b);  pbase = pred base
-
   aux : (n : ℕ) → Acc _<_ n → List ℕ → List ℕ
-  aux 0       _        =  (0 ∷_)
-  aux (suc n) (acc wf) =  aux'
+  aux 0          _        =  (0 ∷_)
+  aux n'@(suc n) (acc wf) =  aux'
     where
-    n' = suc n;   q = n' div base;   r = n' % base;   pq = pred q
-
-    n'≡r+q*base :  n' ≡ r + q * base
-    n'≡r+q*base =  a≡a%n+[a/n]*n n' pbase
+    q = n' div base;   r = n' % base
 
     aux' : List ℕ → List ℕ
-    aux' with q ≟ 0
-    ... | yes _   =  (r ∷_)
-    ... | no q≢0 =  aux q (wf _ q<n') ∘ (r ∷_)   -- use  n' ≡ r + q*base
+    aux' with 0 <? q
+    ... | no _    =  (r ∷_)
+    ... | yes 0<q =  aux q (wf _ q<n') ∘ (r ∷_)   -- use  n' ≡ r + q*base
       where
-      q>0       = n≢0⇒n>0 q≢0
-      suc-pq≡q = m≢0⇒suc[pred[m]]≡m q≢0
-      q<q*base  = m<m*n q>0 base>1
-      q<n'      = <-transˡ q<q*base ([a/n]*n≤a n' pbase)
+      q<q*base = m<m*n 0<q base>1
+      q<n'     = <-transˡ q<q*base ([a/n]*n≤a n' (pred base))
 
 toDigitChar : (n : ℕ) → Char
 toDigitChar n =  Char.fromNat (n + 48)
