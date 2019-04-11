@@ -27,26 +27,24 @@ private
 
   lemma₁ : ∀ x y → x ∙ y ∙ x ⁻¹ ≈ y
   lemma₁ x y = begin
-    x ∙ y ∙ x ⁻¹    ≈⟨ ∙-congˡ $ comm _ _ ⟩
+    x ∙ y ∙ x ⁻¹    ≈⟨ ∙-congʳ $ comm _ _ ⟩
     y ∙ x ∙ x ⁻¹    ≈⟨ assoc _ _ _ ⟩
-    y ∙ (x ∙ x ⁻¹)  ≈⟨ ∙-congʳ $ inverseʳ _ ⟩
+    y ∙ (x ∙ x ⁻¹)  ≈⟨ ∙-congˡ $ inverseʳ _ ⟩
     y ∙ ε           ≈⟨ identityʳ _ ⟩
     y               ∎
 
   lemma₂ : ∀ x y → x ∙ (y ∙ (x ∙ y) ⁻¹ ∙ y ⁻¹) ≈ y ⁻¹
   lemma₂ x y = begin
     x ∙ (y ∙ (x ∙ y) ⁻¹ ∙ y ⁻¹)  ≈˘⟨ assoc _ _ _ ⟩
-    x ∙ (y ∙ (x ∙ y) ⁻¹) ∙ y ⁻¹  ≈˘⟨ ∙-congˡ $ assoc _ _ _ ⟩
-    x ∙ y ∙ (x ∙ y) ⁻¹ ∙ y ⁻¹    ≈⟨ ∙-congˡ $ inverseʳ _ ⟩
+    x ∙ (y ∙ (x ∙ y) ⁻¹) ∙ y ⁻¹  ≈˘⟨ ∙-congʳ $ assoc _ _ _ ⟩
+    x ∙ y ∙ (x ∙ y) ⁻¹ ∙ y ⁻¹    ≈⟨ ∙-congʳ $ inverseʳ _ ⟩
     ε ∙ y ⁻¹                     ≈⟨ identityˡ _ ⟩
     y ⁻¹                         ∎
 
 ⁻¹-∙-comm : ∀ x y → x ⁻¹ ∙ y ⁻¹ ≈ (x ∙ y) ⁻¹
 ⁻¹-∙-comm x y = begin
   x ⁻¹ ∙ y ⁻¹                         ≈⟨ comm _ _ ⟩
-  y ⁻¹ ∙ x ⁻¹                         ≈˘⟨ ∙-congˡ $ lemma₂ x y ⟩
+  y ⁻¹ ∙ x ⁻¹                         ≈˘⟨ ∙-congʳ $ lemma₂ x y ⟩
   x ∙ (y ∙ (x ∙ y) ⁻¹ ∙ y ⁻¹) ∙ x ⁻¹  ≈⟨ lemma₁ _ _ ⟩
   y ∙ (x ∙ y) ⁻¹ ∙ y ⁻¹               ≈⟨ lemma₁ _ _ ⟩
   (x ∙ y) ⁻¹                          ∎
-  where
-

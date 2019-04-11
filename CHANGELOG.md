@@ -636,8 +636,8 @@ Other minor additions
   RightConical e _∙_ = ∀ x y → (x ∙ y) ≈ e → y ≈ e
   Conical e ∙        = LeftConical e ∙ × RightConical e ∙
 
-  LeftCongruent  _∙_ = ∀ {x} → (_∙ x) Preserves _≈_ ⟶ _≈_
-  RightCongruent _∙_ = ∀ {x} → (x ∙_) Preserves _≈_ ⟶ _≈_
+  LeftCongruent  _∙_ = ∀ {x} → (x ∙_) Preserves _≈_ ⟶ _≈_
+  RightCongruent _∙_ = ∀ {x} → (_∙ x) Preserves _≈_ ⟶ _≈_
   ```
 
 * Added new proof to `Algebra.FunctionProperties.Consequences`:

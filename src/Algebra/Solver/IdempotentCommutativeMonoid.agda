@@ -108,7 +108,7 @@ empty-correct (a ∷ ρ) = empty-correct ρ
 
 sg-correct : ∀{n} (x : Fin n) (ρ : Env n) →  ⟦ sg x ⟧⇓ ρ ≈ lookup ρ x
 sg-correct zero (x ∷ ρ) = begin
-    x ∙ ⟦ empty ⟧⇓ ρ   ≈⟨ ∙-congʳ (empty-correct ρ) ⟩
+    x ∙ ⟦ empty ⟧⇓ ρ   ≈⟨ ∙-congˡ (empty-correct ρ) ⟩
     x ∙ ε              ≈⟨ identityʳ _ ⟩
     x                  ∎
 sg-correct (suc x) (m ∷ ρ) = sg-correct x ρ
@@ -118,7 +118,7 @@ sg-correct (suc x) (m ∷ ρ) = sg-correct x ρ
 flip12 : ∀ a b c → a ∙ (b ∙ c) ≈ b ∙ (a ∙ c)
 flip12 a b c = begin
     a ∙ (b ∙ c)  ≈⟨ sym (assoc _ _ _) ⟩
-    (a ∙ b) ∙ c  ≈⟨ ∙-congˡ (comm _ _) ⟩
+    (a ∙ b) ∙ c  ≈⟨ ∙-congʳ (comm _ _) ⟩
     (b ∙ a) ∙ c  ≈⟨ assoc _ _ _ ⟩
     b ∙ (a ∙ c)  ∎
 
@@ -126,9 +126,9 @@ distr : ∀ a b c → a ∙ (b ∙ c) ≈ (a ∙ b) ∙ (a ∙ c)
 distr a b c = begin
     a ∙ (b ∙ c)  ≈⟨ ∙-cong (sym (idem a)) refl ⟩
     (a ∙ a) ∙ (b ∙ c)  ≈⟨ assoc _ _ _ ⟩
-    a ∙ (a ∙ (b ∙ c))  ≈⟨ ∙-congʳ (sym (assoc _ _ _)) ⟩
-    a ∙ ((a ∙ b) ∙ c)  ≈⟨ ∙-congʳ (∙-congˡ (comm _ _)) ⟩
-    a ∙ ((b ∙ a) ∙ c)  ≈⟨ ∙-congʳ (assoc _ _ _) ⟩
+    a ∙ (a ∙ (b ∙ c))  ≈⟨ ∙-congˡ (sym (assoc _ _ _)) ⟩
+    a ∙ ((a ∙ b) ∙ c)  ≈⟨ ∙-congˡ (∙-congʳ (comm _ _)) ⟩
+    a ∙ ((b ∙ a) ∙ c)  ≈⟨ ∙-congˡ (assoc _ _ _) ⟩
     a ∙ (b ∙ (a ∙ c))  ≈⟨ sym (assoc _ _ _) ⟩
     (a ∙ b) ∙ (a ∙ c)  ∎
 
@@ -136,11 +136,11 @@ comp-correct : ∀ {n} (v w : Normal n) (ρ : Env n) →
               ⟦ v • w ⟧⇓ ρ ≈ (⟦ v ⟧⇓ ρ ∙ ⟦ w ⟧⇓ ρ)
 comp-correct [] [] ρ = sym (identityˡ _)
 comp-correct (true ∷ v) (true ∷ w) (a ∷ ρ) =
-  trans (∙-congʳ (comp-correct v w ρ)) (distr _ _ _)
+  trans (∙-congˡ (comp-correct v w ρ)) (distr _ _ _)
 comp-correct (true ∷ v) (false ∷ w) (a ∷ ρ) =
-  trans (∙-congʳ (comp-correct v w ρ)) (sym (assoc _ _ _))
+  trans (∙-congˡ (comp-correct v w ρ)) (sym (assoc _ _ _))
 comp-correct (false ∷ v) (true ∷ w) (a ∷ ρ) =
-  trans (∙-congʳ (comp-correct v w ρ)) (flip12 _ _ _)
+  trans (∙-congˡ (comp-correct v w ρ)) (flip12 _ _ _)
 comp-correct (false ∷ v) (false ∷ w) (a ∷ ρ) =
   comp-correct v w ρ
 

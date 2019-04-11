@@ -38,11 +38,11 @@ open import Data.Product using (_,_)
 
 ∧-∨-distribˡ : _∧_ DistributesOverˡ _∨_
 ∧-∨-distribˡ x y z = begin
-  x ∧ (y ∨ z)                ≈⟨ ∧-congˡ $ sym (∧-absorbs-∨ _ _) ⟩
-  (x ∧ (x ∨ y)) ∧ (y ∨ z)    ≈⟨ ∧-congˡ $ ∧-congʳ $ ∨-comm _ _ ⟩
+  x ∧ (y ∨ z)                ≈⟨ ∧-congʳ $ sym (∧-absorbs-∨ _ _) ⟩
+  (x ∧ (x ∨ y)) ∧ (y ∨ z)    ≈⟨ ∧-congʳ $ ∧-congˡ $ ∨-comm _ _ ⟩
   (x ∧ (y ∨ x)) ∧ (y ∨ z)    ≈⟨ ∧-assoc _ _ _ ⟩
-  x ∧ ((y ∨ x) ∧ (y ∨ z))    ≈⟨ ∧-congʳ $ sym (∨-∧-distribˡ _ _ _) ⟩
-  x ∧ (y ∨ x ∧ z)            ≈⟨ ∧-congˡ $ sym (∨-absorbs-∧ _ _) ⟩
+  x ∧ ((y ∨ x) ∧ (y ∨ z))    ≈⟨ ∧-congˡ $ sym (∨-∧-distribˡ _ _ _) ⟩
+  x ∧ (y ∨ x ∧ z)            ≈⟨ ∧-congʳ $ sym (∨-absorbs-∧ _ _) ⟩
   (x ∨ x ∧ z) ∧ (y ∨ x ∧ z)  ≈⟨ sym $ ∨-∧-distribʳ _ _ _ ⟩
   x ∧ y ∨ x ∧ z              ∎
 
