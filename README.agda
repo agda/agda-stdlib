@@ -267,6 +267,10 @@ import README.Integer
 
 import README.AVL
 
+-- Some examples showing how List module can be used.
+
+import README.List
+
 -- An example showing how the Record module can be used.
 
 import README.Record
