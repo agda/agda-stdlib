@@ -18,7 +18,6 @@ for how to install version 1.0 of the standard library.
 
 If you're using an old version of Agda, you can download the corresponding version
 of the standard library on the [Agda wiki](http://wiki.portal.chalmers.se/agda/pmwiki.php?n=Libraries.StandardLibrary).
-
 If you're using a development version of Agda rather than the latest official release
 you should use the `experimental` branch of the standard library rather than `master`.
 The `experimental` branch contains non-backwards compatible patches for upcoming
