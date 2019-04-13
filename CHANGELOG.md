@@ -505,11 +505,8 @@ Non-backwards compatible changes
 
 * The proof ``≢-sym`` added to Relation.Binary.PropositionalEquality.Core.
 
-* The following changes are made to  Data.Nat.Properties.
-  * The proofs  ``1+n≢0, n≢0⇒n>0, m<m*n, m∸n≢0⇒n<m``  added.
-  * A faster version for ``<-cmp`` is implemented. 
-    (``<-cmp, <-isStrictTotalOrder, <-strictTotalOrder`` moved lower in the code).
-	
+* The proofs ``n≢0⇒n>0`` and `m<m*n` (for 0<m, 1<n) added to Data.Nat.Properties.
+
 * It Data.Nat.DivMod:  the proof ``[a/n]*n≤a`` is add,
   ``open ≡-Resoning`` removed, the usage of equality/inequiality reasoning
   is simplified.

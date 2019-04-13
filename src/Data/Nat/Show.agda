@@ -53,7 +53,7 @@ toDigitNats base@(suc (suc b)) base>1 x =  aux x (<-wellFounded x) []
       q<n'     = <-transˡ q<q*base ([a/n]*n≤a n' (pred base))
 
 toDigitChar : (n : ℕ) → Char
-toDigitChar n =  Char.fromNat (n + 48)
+toDigitChar n =  Char.fromNat (n + (Char.toNat '0'))
 
 toDecimalChars : ℕ → List Char
 toDecimalChars = map toDigitChar ∘ toDigitNats 10 1<10
