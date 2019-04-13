@@ -14,7 +14,7 @@
 --   n * 0     ≈⟨ n*0≡0 n ⟩
 --   0         ∎
 
--- Module ≡-Reasoning in Relation.Binary.PropositionalEquality
+-- Module `≡-Reasoning` in `Relation.Binary.PropositionalEquality`
 -- is recommended for equational reasoning when the underlying equality is
 -- `_≡_`.
 

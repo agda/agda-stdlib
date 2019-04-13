@@ -674,15 +674,15 @@ Please use toℕ-inject≤ instead."
 Please use ≤∧≢⇒< instead."
 #-}
 
--- Version 0.18
+-- Version 1.0
 
 ≤-irrelevance = ≤-irrelevant
 {-# WARNING_ON_USAGE ≤-irrelevance
-"Warning: ≤-irrelevance was deprecated in v0.18.
+"Warning: ≤-irrelevance was deprecated in v1.0.
 Please use ≤-irrelevant instead."
 #-}
 <-irrelevance = <-irrelevant
 {-# WARNING_ON_USAGE <-irrelevance
-"Warning: <-irrelevance was deprecated in v0.18.
+"Warning: <-irrelevance was deprecated in v1.0.
 Please use <-irrelevant instead."
 #-}

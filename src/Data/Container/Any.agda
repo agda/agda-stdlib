@@ -5,7 +5,7 @@
 -- Data.Container.Relation.Unary.Any directly.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --without-K --safe --sized-types #-}
 
 module Data.Container.Any where
 

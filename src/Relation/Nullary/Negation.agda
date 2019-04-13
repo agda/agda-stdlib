@@ -165,22 +165,25 @@ private
     helper (true  , f) = inj₁ f
     helper (false , f) = inj₂ f
 
--- The classical statements of excluded middle and double-negation
--- elimination.
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 1.0
 
 Excluded-Middle : (ℓ : Level) → Set (suc ℓ)
 Excluded-Middle p = {P : Set p} → Dec P
+{-# WARNING_ON_USAGE Excluded-Middle
+"Warning: Excluded-Middle was deprecated in v1.0.
+Please use ExcludedMiddle from `Axiom.ExcludedMiddle` instead."
+#-}
 
 Double-Negation-Elimination : (ℓ : Level) → Set (suc ℓ)
 Double-Negation-Elimination p = {P : Set p} → Stable P
-
-private
-
-  -- The two statements above are equivalent. The proofs are so
-  -- simple, given the definitions above, that they are not exported.
-
-  em⇒dne : ∀ {ℓ} → Excluded-Middle ℓ → Double-Negation-Elimination ℓ
-  em⇒dne em = decidable-stable em
-
-  dne⇒em : ∀ {ℓ} → Double-Negation-Elimination ℓ → Excluded-Middle ℓ
-  dne⇒em dne = dne excluded-middle
+{-# WARNING_ON_USAGE Double-Negation-Elimination
+"Warning: Double-Negation-Elimination was deprecated in v1.0.
+Please use DoubleNegationElimination from `Axiom.DoubleNegationElimination` instead."
+#-}

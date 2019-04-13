@@ -11,6 +11,7 @@
 
 module Data.Nat.Properties where
 
+open import Axiom.UniquenessOfIdentityProofs
 open import Algebra
 open import Algebra.Morphism
 open import Function
@@ -460,6 +461,9 @@ m≢0⇒suc[pred[m]]≡m {suc m} m≢0 = refl
 m≢1+m+n : ∀ m {n} → m ≢ suc (m + n)
 m≢1+m+n zero    ()
 m≢1+m+n (suc m) eq = m≢1+m+n m (cong pred eq)
+
+m≢1+n+m : ∀ m {n} → m ≢ suc (n + m)
+m≢1+n+m m m≡1+n+m = m≢1+m+n m (trans m≡1+n+m (cong suc (+-comm _ m)))
 
 i+1+j≢i : ∀ i {j} → i + suc j ≢ i
 i+1+j≢i zero    ()
@@ -1757,15 +1761,15 @@ im≡jm+n⇒[i∸j]m≡n i j m n eq = begin
 Please use ≤∧≢⇒< instead."
 #-}
 
--- Version 0.18
+-- Version 1.0
 
 ≤-irrelevance = ≤-irrelevant
 {-# WARNING_ON_USAGE ≤-irrelevance
-"Warning: ≤-irrelevance was deprecated in v0.18.
+"Warning: ≤-irrelevance was deprecated in v1.0.
 Please use ≤-irrelevant instead."
 #-}
 <-irrelevance = <-irrelevant
 {-# WARNING_ON_USAGE <-irrelevance
-"Warning: <-irrelevance was deprecated in v0.18.
+"Warning: <-irrelevance was deprecated in v1.0.
 Please use <-irrelevant instead."
 #-}

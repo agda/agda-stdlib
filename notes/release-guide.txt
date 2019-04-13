@@ -3,20 +3,9 @@ procedure should be followed:
 
 #### Pre-release changes
 
-* Update README.agda:
+* Update README.agda by replacing 'development version' by 'version X.Y' in the title.
 
-  ** Replace 'development version' by 'version X.Y' in the title.
-
-  ** After the list of authors, replace
-
-     -- The development version of the library often requires the latest
-     -- development version of Agda.
-
-     by
-
-     -- This version of the library has been tested using Agda A.B.C.
-
-* Update the lib.cabal version to X.Y.
+* Update the lib.cabal version to `X.Y`.
 
 * Finish the CHANGELOG.
 

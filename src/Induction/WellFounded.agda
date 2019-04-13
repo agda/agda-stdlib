@@ -101,8 +101,8 @@ module Subrelation {a ℓ₁ ℓ₂} {A : Set a}
   Please use wellFounded instead."
   #-}
 
-module Inverse-image {a b ℓ} {A : Set a} {B : Set b} {_<_ : Rel B ℓ}
-                     (f : A → B) where
+module InverseImage {a b ℓ} {A : Set a} {B : Set b} {_<_ : Rel B ℓ}
+                    (f : A → B) where
 
   accessible : ∀ {x} → Acc _<_ (f x) → Acc (_<_ on f) x
   accessible (acc rs) = acc (λ y fy<fx → accessible (rs (f y) fy<fx))
@@ -116,7 +116,7 @@ module Inverse-image {a b ℓ} {A : Set a} {B : Set b} {_<_ : Rel B ℓ}
   Please use wellFounded instead."
   #-}
 
-module Transitive-closure {a ℓ} {A : Set a} (_<_ : Rel A ℓ) where
+module TransitiveClosure {a ℓ} {A : Set a} (_<_ : Rel A ℓ) where
 
   infix 4 _<⁺_
 
@@ -183,3 +183,16 @@ module Lexicographic {a b ℓ₁ ℓ₂} {A : Set a} {B : A → Set b}
   "Warning: well-founded was deprecated in v0.15.
   Please use wellFounded instead."
   #-}
+
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 1.0
+
+module Inverse-image      = InverseImage
+module Transitive-closure = TransitiveClosure

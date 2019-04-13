@@ -8,6 +8,8 @@
 
 module Relation.Binary.PropositionalEquality where
 
+import Axiom.Extensionality.Propositional as Ext
+open import Axiom.UniquenessOfIdentityProofs
 open import Function
 open import Function.Equality using (Π; _⟶_; ≡-setoid)
 open import Level
@@ -32,10 +34,6 @@ open import Relation.Binary.PropositionalEquality.Core public
 subst₂ : ∀ {a b p} {A : Set a} {B : Set b} (P : A → B → Set p)
          {x₁ x₂ y₁ y₂} → x₁ ≡ x₂ → y₁ ≡ y₂ → P x₁ y₁ → P x₂ y₂
 subst₂ P refl refl p = p
-
-cong : ∀ {a b} {A : Set a} {B : Set b}
-       (f : A → B) {x y} → x ≡ y → f x ≡ f y
-cong f refl = refl
 
 cong-app : ∀ {a b} {A : Set a} {B : A → Set b} {f g : (x : A) → B x} →
            f ≡ g → (x : A) → f x ≡ g x
@@ -122,87 +120,15 @@ inspect f x = [ refl ]
 -- f x y | c z | [ eq ] = ...
 
 ------------------------------------------------------------------------
--- Convenient syntax for equational reasoning
-
--- This is special instance of Relation.Binary.EqReasoning.
--- Rather than instantiating the latter with (setoid A),
--- we reimplement equation chains from scratch
--- since then goals are printed much more readably.
-
-module ≡-Reasoning {a} {A : Set a} where
-
-  infix  3 _∎
-  infixr 2 _≡⟨⟩_ _≡⟨_⟩_
-  infix  1 begin_
-
-  begin_ : ∀{x y : A} → x ≡ y → x ≡ y
-  begin_ x≡y = x≡y
-
-  _≡⟨⟩_ : ∀ (x {y} : A) → x ≡ y → x ≡ y
-  _ ≡⟨⟩ x≡y = x≡y
-
-  _≡⟨_⟩_ : ∀ (x {y z} : A) → x ≡ y → y ≡ z → x ≡ z
-  _ ≡⟨ x≡y ⟩ y≡z = trans x≡y y≡z
-
-  _∎ : ∀ (x : A) → x ≡ x
-  _∎ _ = refl
-
-------------------------------------------------------------------------
--- Functional extensionality
-
--- If _≡_ were extensional, then the following statement could be
--- proved.
-
-Extensionality : (a b : Level) → Set _
-Extensionality a b =
-  {A : Set a} {B : A → Set b} {f g : (x : A) → B x} →
-  (∀ x → f x ≡ g x) → f ≡ g
-
--- If extensionality holds for a given universe level, then it also
--- holds for lower ones.
-
-extensionality-for-lower-levels :
-  ∀ {a₁ b₁} a₂ b₂ →
-  Extensionality (a₁ ⊔ a₂) (b₁ ⊔ b₂) → Extensionality a₁ b₁
-extensionality-for-lower-levels a₂ b₂ ext f≡g =
-  cong (λ h → lower ∘ h ∘ lift) $
-    ext (cong (lift {ℓ = b₂}) ∘ f≡g ∘ lower {ℓ = a₂})
-
--- Functional extensionality implies a form of extensionality for
--- Π-types.
-
-∀-extensionality :
-  ∀ {a b} →
-  Extensionality a (suc b) →
-  {A : Set a} (B₁ B₂ : A → Set b) →
-  (∀ x → B₁ x ≡ B₂ x) → (∀ x → B₁ x) ≡ (∀ x → B₂ x)
-∀-extensionality ext B₁ B₂ B₁≡B₂ with ext B₁≡B₂
-∀-extensionality ext B .B  B₁≡B₂ | refl = refl
-
-------------------------------------------------------------------------
 -- Propositionality
 
 isPropositional : ∀ {a} → Set a → Set a
 isPropositional A = (a b : A) → a ≡ b
 
-
-module _ {a} {A : Set a} {x y : A} where
-
 ------------------------------------------------------------------------
 -- Various equality rearrangement lemmas
 
-  trans-reflʳ : (p : x ≡ y) → trans p refl ≡ p
-  trans-reflʳ refl = refl
-
-  trans-assoc : ∀ {z u : A} (p : x ≡ y) {q : y ≡ z} {r : z ≡ u} →
-                trans (trans p q) r ≡ trans p (trans q r)
-  trans-assoc refl = refl
-
-  trans-symˡ : (p : x ≡ y) → trans (sym p) p ≡ refl
-  trans-symˡ refl = refl
-
-  trans-symʳ : (p : x ≡ y) → trans p (sym p) ≡ refl
-  trans-symʳ refl = refl
+module _ {a} {A : Set a} {x y : A} where
 
   trans-injectiveˡ : ∀ {z} {p₁ p₂ : x ≡ y} (q : y ≡ z) →
                      trans p₁ q ≡ trans p₂ q → p₁ ≡ p₂
@@ -288,38 +214,6 @@ cong-≡id {f = f} {x} f≡id =
   where
   open ≡-Reasoning
 
-module Constant⇒UIP
-       {a} {A : Set a} (f : _≡_ {A = A} ⇒ _≡_)
-       (f-constant : ∀ {a b} (p q : a ≡ b) → f p ≡ f q)
-       where
-
-  ≡-canonical : ∀ {a b} (p : a ≡ b) → trans (sym (f refl)) (f p) ≡ p
-  ≡-canonical refl = trans-symˡ (f refl)
-
-  ≡-irrelevant : Irrelevant {A = A} _≡_
-  ≡-irrelevant p q = begin
-    p                          ≡⟨ sym (≡-canonical p) ⟩
-    trans (sym (f refl)) (f p) ≡⟨ cong (trans _) (f-constant p q) ⟩
-    trans (sym (f refl)) (f q) ≡⟨ ≡-canonical q ⟩
-    q                          ∎ where open ≡-Reasoning
-
-module Decidable⇒UIP
-       {a} {A : Set a} (_≟_ : Decidable (_≡_ {A = A}))
-       where
-
-  ≡-normalise : _≡_ {A = A} ⇒ _≡_
-  ≡-normalise {a} {b} a≡b with a ≟ b
-  ... | yes p = p
-  ... | no ¬p = ⊥-elim (¬p a≡b)
-
-  ≡-normalise-constant : ∀ {a b} (p q : a ≡ b) → ≡-normalise p ≡ ≡-normalise q
-  ≡-normalise-constant {a} {b} p q with a ≟ b
-  ... | yes _ = refl
-  ... | no ¬p = ⊥-elim (¬p p)
-
-  ≡-irrelevant : Irrelevant {A = A} _≡_
-  ≡-irrelevant = Constant⇒UIP.≡-irrelevant ≡-normalise ≡-normalise-constant
-
 module _ {a} {A : Set a} (_≟_ : Decidable (_≡_ {A = A})) {a : A} where
 
   ≡-≟-identity : ∀ {b} (eq : a ≡ b) → a ≟ b ≡ yes eq
@@ -331,3 +225,29 @@ module _ {a} {A : Set a} (_≟_ : Decidable (_≡_ {A = A})) {a : A} where
   ≢-≟-identity {b} ¬eq with a ≟ b
   ... | yes p = ⊥-elim (¬eq p)
   ... | no ¬p = ¬p , refl
+
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 1.0
+
+Extensionality = Ext.Extensionality
+{-# WARNING_ON_USAGE Extensionality
+"Warning: Extensionality was deprecated in v1.0.
+Please use Extensionality from `Axiom.Extensionality.Propositional` instead."
+#-}
+extensionality-for-lower-levels = Ext.lower-extensionality
+{-# WARNING_ON_USAGE extensionality-for-lower-levels
+"Warning: extensionality-for-lower-levels was deprecated in v1.0.
+Please use lower-extensionality from `Axiom.Extensionality.Propositional` instead."
+#-}
+∀-extensionality = Ext.∀-extensionality
+{-# WARNING_ON_USAGE ∀-extensionality
+"Warning: ∀-extensionality was deprecated in v1.0.
+Please use ∀-extensionality from `Axiom.Extensionality.Propositional` instead."
+#-}

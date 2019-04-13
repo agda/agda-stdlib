@@ -26,3 +26,6 @@ data _≅_ {ℓ} {A : Set ℓ} (x : A) : {B : Set ℓ} → B → Set ℓ where
 
 ≅-to-≡ : ∀ {a} {A : Set a} {x y : A} → x ≅ y → x ≡ y
 ≅-to-≡ refl = refl
+
+≡-to-≅ : ∀ {a} {A : Set a} {x y : A} → x ≡ y → x ≅ y
+≡-to-≅ refl = refl

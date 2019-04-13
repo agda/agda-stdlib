@@ -7,7 +7,7 @@
 -- (2006/9).
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --without-K --safe --guardedness #-}
 
 module Data.Container.Indexed where
 

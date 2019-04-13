@@ -68,7 +68,7 @@ open import Data.Product using (_,_)
 
 ∧-identityʳ : RightIdentity ⊤ _∧_
 ∧-identityʳ x = begin
-  x ∧ ⊤          ≈⟨ ∧-congʳ (sym (∨-complementʳ _)) ⟩
+  x ∧ ⊤          ≈⟨ ∧-congˡ (sym (∨-complementʳ _)) ⟩
   x ∧ (x ∨ ¬ x)  ≈⟨ ∧-absorbs-∨ _ _ ⟩
   x              ∎
 
@@ -80,7 +80,7 @@ open import Data.Product using (_,_)
 
 ∨-identityʳ : RightIdentity ⊥ _∨_
 ∨-identityʳ x = begin
-  x ∨ ⊥          ≈⟨ ∨-congʳ $ sym (∧-complementʳ _) ⟩
+  x ∨ ⊥          ≈⟨ ∨-congˡ $ sym (∧-complementʳ _) ⟩
   x ∨ x ∧ ¬ x    ≈⟨ ∨-absorbs-∧ _ _ ⟩
   x              ∎
 
@@ -92,9 +92,9 @@ open import Data.Product using (_,_)
 
 ∧-zeroʳ : RightZero ⊥ _∧_
 ∧-zeroʳ x = begin
-  x ∧ ⊥          ≈⟨ ∧-congʳ $ sym (∧-complementʳ _) ⟩
+  x ∧ ⊥          ≈⟨ ∧-congˡ $ sym (∧-complementʳ _) ⟩
   x ∧  x  ∧ ¬ x  ≈˘⟨ ∧-assoc _ _ _ ⟩
-  (x ∧ x) ∧ ¬ x  ≈⟨ ∧-congˡ $ ∧-idempotent _ ⟩
+  (x ∧ x) ∧ ¬ x  ≈⟨ ∧-congʳ $ ∧-idempotent _ ⟩
   x       ∧ ¬ x  ≈⟨ ∧-complementʳ _ ⟩
   ⊥              ∎
 
@@ -106,9 +106,9 @@ open import Data.Product using (_,_)
 
 ∨-zeroʳ : ∀ x → x ∨ ⊤ ≈ ⊤
 ∨-zeroʳ x = begin
-  x ∨ ⊤          ≈⟨ ∨-congʳ $ sym (∨-complementʳ _) ⟩
+  x ∨ ⊤          ≈⟨ ∨-congˡ $ sym (∨-complementʳ _) ⟩
   x ∨  x  ∨ ¬ x  ≈˘⟨ ∨-assoc _ _ _ ⟩
-  (x ∨ x) ∨ ¬ x  ≈⟨ ∨-congˡ $ ∨-idempotent _ ⟩
+  (x ∨ x) ∨ ¬ x  ≈⟨ ∨-congʳ $ ∨-idempotent _ ⟩
   x       ∨ ¬ x  ≈⟨ ∨-complementʳ _ ⟩
   ⊤              ∎
 
@@ -213,12 +213,12 @@ private
   lemma : ∀ x y → x ∧ y ≈ ⊥ → x ∨ y ≈ ⊤ → ¬ x ≈ y
   lemma x y x∧y=⊥ x∨y=⊤ = begin
     ¬ x                ≈˘⟨ ∧-identityʳ _ ⟩
-    ¬ x ∧ ⊤            ≈˘⟨ ∧-congʳ x∨y=⊤ ⟩
+    ¬ x ∧ ⊤            ≈˘⟨ ∧-congˡ x∨y=⊤ ⟩
     ¬ x ∧ (x ∨ y)      ≈⟨ ∧-∨-distribˡ _ _ _ ⟩
-    ¬ x ∧ x ∨ ¬ x ∧ y  ≈⟨ ∨-congˡ $ ∧-complementˡ _ ⟩
-    ⊥ ∨ ¬ x ∧ y        ≈˘⟨ ∨-congˡ x∧y=⊥ ⟩
+    ¬ x ∧ x ∨ ¬ x ∧ y  ≈⟨ ∨-congʳ $ ∧-complementˡ _ ⟩
+    ⊥ ∨ ¬ x ∧ y        ≈˘⟨ ∨-congʳ x∧y=⊥ ⟩
     x ∧ y ∨ ¬ x ∧ y    ≈˘⟨ ∧-∨-distribʳ _ _ _ ⟩
-    (x ∨ ¬ x) ∧ y      ≈⟨ ∧-congˡ $ ∨-complementʳ _ ⟩
+    (x ∨ ¬ x) ∧ y      ≈⟨ ∧-congʳ $ ∨-complementʳ _ ⟩
     ⊤ ∧ y              ≈⟨ ∧-identityˡ _ ⟩
     y                  ∎
 
@@ -236,26 +236,26 @@ deMorgan₁ x y = lemma (x ∧ y) (¬ x ∨ ¬ y) lem₁ lem₂
   where
   lem₁ = begin
     (x ∧ y) ∧ (¬ x ∨ ¬ y)          ≈⟨ ∧-∨-distribˡ _ _ _ ⟩
-    (x ∧ y) ∧ ¬ x ∨ (x ∧ y) ∧ ¬ y  ≈⟨ ∨-congˡ $ ∧-congˡ $ ∧-comm _ _ ⟩
+    (x ∧ y) ∧ ¬ x ∨ (x ∧ y) ∧ ¬ y  ≈⟨ ∨-congʳ $ ∧-congʳ $ ∧-comm _ _ ⟩
     (y ∧ x) ∧ ¬ x ∨ (x ∧ y) ∧ ¬ y  ≈⟨ ∧-assoc _ _ _ ⟨ ∨-cong ⟩ ∧-assoc _ _ _ ⟩
-    y ∧ (x ∧ ¬ x) ∨ x ∧ (y ∧ ¬ y)  ≈⟨ (∧-congʳ $ ∧-complementʳ _) ⟨ ∨-cong ⟩
-                                      (∧-congʳ $ ∧-complementʳ _) ⟩
+    y ∧ (x ∧ ¬ x) ∨ x ∧ (y ∧ ¬ y)  ≈⟨ (∧-congˡ $ ∧-complementʳ _) ⟨ ∨-cong ⟩
+                                      (∧-congˡ $ ∧-complementʳ _) ⟩
     (y ∧ ⊥) ∨ (x ∧ ⊥)              ≈⟨ ∧-zeroʳ _ ⟨ ∨-cong ⟩ ∧-zeroʳ _ ⟩
     ⊥ ∨ ⊥                          ≈⟨ ∨-identityʳ _ ⟩
     ⊥                              ∎
 
   lem₃ = begin
     (x ∧ y) ∨ ¬ x          ≈⟨ ∨-∧-distribʳ _ _ _ ⟩
-    (x ∨ ¬ x) ∧ (y ∨ ¬ x)  ≈⟨ ∧-congˡ $ ∨-complementʳ _ ⟩
+    (x ∨ ¬ x) ∧ (y ∨ ¬ x)  ≈⟨ ∧-congʳ $ ∨-complementʳ _ ⟩
     ⊤ ∧ (y ∨ ¬ x)          ≈⟨ ∧-identityˡ _ ⟩
     y ∨ ¬ x                ≈⟨ ∨-comm _ _ ⟩
     ¬ x ∨ y                ∎
 
   lem₂ = begin
     (x ∧ y) ∨ (¬ x ∨ ¬ y)  ≈˘⟨ ∨-assoc _ _ _ ⟩
-    ((x ∧ y) ∨ ¬ x) ∨ ¬ y  ≈⟨ ∨-congˡ lem₃ ⟩
+    ((x ∧ y) ∨ ¬ x) ∨ ¬ y  ≈⟨ ∨-congʳ lem₃ ⟩
     (¬ x ∨ y) ∨ ¬ y        ≈⟨ ∨-assoc _ _ _ ⟩
-    ¬ x ∨ (y ∨ ¬ y)        ≈⟨ ∨-congʳ $ ∨-complementʳ _ ⟩
+    ¬ x ∨ (y ∨ ¬ y)        ≈⟨ ∨-congˡ $ ∨-complementʳ _ ⟩
     ¬ x ∨ ⊤                ≈⟨ ∨-zeroʳ _ ⟩
     ⊤                      ∎
 
@@ -325,19 +325,19 @@ module XorRing
   ⊕-¬-distribˡ x y = begin
     ¬ (x ⊕ y)                              ≈⟨ ¬-cong $ ⊕-def _ _ ⟩
     ¬ ((x ∨ y) ∧ (¬ (x ∧ y)))              ≈⟨ ¬-cong (∧-∨-distribʳ _ _ _) ⟩
-    ¬ ((x ∧ ¬ (x ∧ y)) ∨ (y ∧ ¬ (x ∧ y)))  ≈⟨ ¬-cong $ ∨-congʳ $ ∧-congʳ $ ¬-cong (∧-comm _ _) ⟩
+    ¬ ((x ∧ ¬ (x ∧ y)) ∨ (y ∧ ¬ (x ∧ y)))  ≈⟨ ¬-cong $ ∨-congˡ $ ∧-congˡ $ ¬-cong (∧-comm _ _) ⟩
     ¬ ((x ∧ ¬ (x ∧ y)) ∨ (y ∧ ¬ (y ∧ x)))  ≈⟨ ¬-cong $ lem _ _ ⟨ ∨-cong ⟩ lem _ _ ⟩
     ¬ ((x ∧ ¬ y) ∨ (y ∧ ¬ x))              ≈⟨ deMorgan₂ _ _ ⟩
-    ¬ (x ∧ ¬ y) ∧ ¬ (y ∧ ¬ x)              ≈⟨ ∧-congˡ $ deMorgan₁ _ _ ⟩
-    (¬ x ∨ (¬ ¬ y)) ∧ ¬ (y ∧ ¬ x)          ≈⟨ helper (∨-congʳ $ ¬-involutive _) (∧-comm _ _) ⟩
+    ¬ (x ∧ ¬ y) ∧ ¬ (y ∧ ¬ x)              ≈⟨ ∧-congʳ $ deMorgan₁ _ _ ⟩
+    (¬ x ∨ (¬ ¬ y)) ∧ ¬ (y ∧ ¬ x)          ≈⟨ helper (∨-congˡ $ ¬-involutive _) (∧-comm _ _) ⟩
     (¬ x ∨ y) ∧ ¬ (¬ x ∧ y)                ≈˘⟨ ⊕-def _ _ ⟩
     ¬ x ⊕ y                                ∎
     where
     lem : ∀ x y → x ∧ ¬ (x ∧ y) ≈ x ∧ ¬ y
     lem x y = begin
-      x ∧ ¬ (x ∧ y)          ≈⟨ ∧-congʳ $ deMorgan₁ _ _ ⟩
+      x ∧ ¬ (x ∧ y)          ≈⟨ ∧-congˡ $ deMorgan₁ _ _ ⟩
       x ∧ (¬ x ∨ ¬ y)        ≈⟨ ∧-∨-distribˡ _ _ _ ⟩
-      (x ∧ ¬ x) ∨ (x ∧ ¬ y)  ≈⟨ ∨-congˡ $ ∧-complementʳ _ ⟩
+      (x ∧ ¬ x) ∨ (x ∧ ¬ y)  ≈⟨ ∨-congʳ $ ∧-complementʳ _ ⟩
       ⊥ ∨ (x ∧ ¬ y)          ≈⟨ ∨-identityˡ _ ⟩
       x ∧ ¬ y                ∎
 
@@ -359,7 +359,7 @@ module XorRing
   ⊕-identityˡ x = begin
     ⊥ ⊕ x                ≈⟨ ⊕-def _ _ ⟩
     (⊥ ∨ x) ∧ ¬ (⊥ ∧ x)  ≈⟨ helper (∨-identityˡ _) (∧-zeroˡ _) ⟩
-    x ∧ ¬ ⊥              ≈⟨ ∧-congʳ ¬⊥=⊤ ⟩
+    x ∧ ¬ ⊥              ≈⟨ ∧-congˡ ¬⊥=⊤ ⟩
     x ∧ ⊤                ≈⟨ ∧-identityʳ _ ⟩
     x                    ∎
 
@@ -384,45 +384,45 @@ module XorRing
 
   ∧-distribˡ-⊕ : _∧_ DistributesOverˡ _⊕_
   ∧-distribˡ-⊕ x y z = begin
-    x ∧ (y ⊕ z)                ≈⟨ ∧-congʳ $ ⊕-def _ _ ⟩
+    x ∧ (y ⊕ z)                ≈⟨ ∧-congˡ $ ⊕-def _ _ ⟩
     x ∧ ((y ∨ z) ∧ ¬ (y ∧ z))  ≈˘⟨ ∧-assoc _ _ _ ⟩
-    (x ∧ (y ∨ z)) ∧ ¬ (y ∧ z)  ≈⟨ ∧-congʳ $ deMorgan₁ _ _ ⟩
+    (x ∧ (y ∨ z)) ∧ ¬ (y ∧ z)  ≈⟨ ∧-congˡ $ deMorgan₁ _ _ ⟩
     (x ∧ (y ∨ z)) ∧
     (¬ y ∨ ¬ z)                ≈˘⟨ ∨-identityˡ _ ⟩
     ⊥ ∨
     ((x ∧ (y ∨ z)) ∧
-    (¬ y ∨ ¬ z))               ≈⟨ ∨-congˡ lem₃ ⟩
+    (¬ y ∨ ¬ z))               ≈⟨ ∨-congʳ lem₃ ⟩
     ((x ∧ (y ∨ z)) ∧ ¬ x) ∨
     ((x ∧ (y ∨ z)) ∧
     (¬ y ∨ ¬ z))               ≈˘⟨ ∧-∨-distribˡ _ _ _ ⟩
     (x ∧ (y ∨ z)) ∧
-    (¬ x ∨ (¬ y ∨ ¬ z))        ≈˘⟨ ∧-congʳ $ ∨-congʳ (deMorgan₁ _ _) ⟩
+    (¬ x ∨ (¬ y ∨ ¬ z))        ≈˘⟨ ∧-congˡ $ ∨-congˡ (deMorgan₁ _ _) ⟩
     (x ∧ (y ∨ z)) ∧
-    (¬ x ∨ ¬ (y ∧ z))          ≈˘⟨ ∧-congʳ (deMorgan₁ _ _) ⟩
+    (¬ x ∨ ¬ (y ∧ z))          ≈˘⟨ ∧-congˡ (deMorgan₁ _ _) ⟩
     (x ∧ (y ∨ z)) ∧
     ¬ (x ∧ (y ∧ z))            ≈⟨ helper refl lem₁ ⟩
     (x ∧ (y ∨ z)) ∧
-    ¬ ((x ∧ y) ∧ (x ∧ z))      ≈⟨ ∧-congˡ $ ∧-∨-distribˡ _ _ _ ⟩
+    ¬ ((x ∧ y) ∧ (x ∧ z))      ≈⟨ ∧-congʳ $ ∧-∨-distribˡ _ _ _ ⟩
     ((x ∧ y) ∨ (x ∧ z)) ∧
     ¬ ((x ∧ y) ∧ (x ∧ z))      ≈˘⟨ ⊕-def _ _ ⟩
     (x ∧ y) ⊕ (x ∧ z)          ∎
       where
       lem₂ = begin
         x ∧ (y ∧ z)  ≈˘⟨ ∧-assoc _ _ _ ⟩
-        (x ∧ y) ∧ z  ≈⟨ ∧-congˡ $ ∧-comm _ _ ⟩
+        (x ∧ y) ∧ z  ≈⟨ ∧-congʳ $ ∧-comm _ _ ⟩
         (y ∧ x) ∧ z  ≈⟨ ∧-assoc _ _ _ ⟩
         y ∧ (x ∧ z)  ∎
 
       lem₁ = begin
-        x ∧ (y ∧ z)        ≈˘⟨ ∧-congˡ (∧-idempotent _) ⟩
+        x ∧ (y ∧ z)        ≈˘⟨ ∧-congʳ (∧-idempotent _) ⟩
         (x ∧ x) ∧ (y ∧ z)  ≈⟨ ∧-assoc _ _ _ ⟩
-        x ∧ (x ∧ (y ∧ z))  ≈⟨ ∧-congʳ lem₂ ⟩
+        x ∧ (x ∧ (y ∧ z))  ≈⟨ ∧-congˡ lem₂ ⟩
         x ∧ (y ∧ (x ∧ z))  ≈˘⟨ ∧-assoc _ _ _ ⟩
         (x ∧ y) ∧ (x ∧ z)  ∎
 
       lem₃ = begin
         ⊥                      ≈˘⟨ ∧-zeroʳ _ ⟩
-        (y ∨ z) ∧ ⊥            ≈˘⟨ ∧-congʳ (∧-complementʳ _) ⟩
+        (y ∨ z) ∧ ⊥            ≈˘⟨ ∧-congˡ (∧-complementʳ _) ⟩
         (y ∨ z) ∧ (x ∧ ¬ x)    ≈˘⟨ ∧-assoc _ _ _ ⟩
         ((y ∨ z) ∧ x) ∧ ¬ x    ≈⟨ ∧-comm _ _ ⟨ ∧-cong ⟩ refl  ⟩
         (x ∧ (y ∨ z)) ∧ ¬ x    ∎
@@ -457,7 +457,7 @@ module XorRing
     (((¬ x ∨ ¬ y) ∨ z) ∧ ((¬ x ∨ y) ∨ ¬ z))    ≈⟨ ∧-assoc _ _ _ ⟩
     ((x ∨ y) ∨ z) ∧
     (((x ∨ ¬ y) ∨ ¬ z) ∧
-     (((¬ x ∨ ¬ y) ∨ z) ∧ ((¬ x ∨ y) ∨ ¬ z)))  ≈⟨ ∧-congʳ lem₅ ⟩
+     (((¬ x ∨ ¬ y) ∨ z) ∧ ((¬ x ∨ y) ∨ ¬ z)))  ≈⟨ ∧-congˡ lem₅ ⟩
     ((x ∨ y) ∨ z) ∧
     (((¬ x ∨ ¬ y) ∨ z) ∧
      (((x ∨ ¬ y) ∨ ¬ z) ∧ ((¬ x ∨ y) ∨ ¬ z)))  ≈˘⟨ ∧-assoc _ _ _ ⟩
@@ -470,14 +470,14 @@ module XorRing
     where
     lem₁ = begin
       ((x ∨ y) ∨ z) ∧ ((¬ x ∨ ¬ y) ∨ z)  ≈˘⟨ ∨-∧-distribʳ _ _ _ ⟩
-      ((x ∨ y) ∧ (¬ x ∨ ¬ y)) ∨ z        ≈˘⟨ ∨-congˡ $ ∧-congʳ (deMorgan₁ _ _) ⟩
+      ((x ∨ y) ∧ (¬ x ∨ ¬ y)) ∨ z        ≈˘⟨ ∨-congʳ $ ∧-congˡ (deMorgan₁ _ _) ⟩
       ((x ∨ y) ∧ ¬ (x ∧ y)) ∨ z          ∎
 
     lem₂' = begin
       (x ∨ ¬ y) ∧ (¬ x ∨ y)              ≈˘⟨ ∧-identityˡ _ ⟨ ∧-cong ⟩ ∧-identityʳ _ ⟩
       (⊤ ∧ (x ∨ ¬ y)) ∧ ((¬ x ∨ y) ∧ ⊤)  ≈˘⟨  (∨-complementˡ _ ⟨ ∧-cong ⟩ ∨-comm _ _)
                                                 ⟨ ∧-cong ⟩
-                                              (∧-congʳ $ ∨-complementˡ _) ⟩
+                                              (∧-congˡ $ ∨-complementˡ _) ⟩
       ((¬ x ∨ x) ∧ (¬ y ∨ x)) ∧
       ((¬ x ∨ y) ∧ (¬ y ∨ y))            ≈˘⟨ lemma₂ _ _ _ _ ⟩
       (¬ x ∧ ¬ y) ∨ (x ∧ y)              ≈˘⟨ deMorgan₂ _ _ ⟨ ∨-cong ⟩ ¬-involutive _ ⟩
@@ -486,12 +486,12 @@ module XorRing
 
     lem₂ = begin
       ((x ∨ ¬ y) ∨ ¬ z) ∧ ((¬ x ∨ y) ∨ ¬ z)  ≈˘⟨ ∨-∧-distribʳ _ _ _ ⟩
-      ((x ∨ ¬ y) ∧ (¬ x ∨ y)) ∨ ¬ z          ≈⟨ ∨-congˡ lem₂' ⟩
+      ((x ∨ ¬ y) ∧ (¬ x ∨ y)) ∨ ¬ z          ≈⟨ ∨-congʳ lem₂' ⟩
       ¬ ((x ∨ y) ∧ ¬ (x ∧ y)) ∨ ¬ z          ≈˘⟨ deMorgan₁ _ _ ⟩
       ¬ (((x ∨ y) ∧ ¬ (x ∧ y)) ∧ z)          ∎
 
     lem₃ = begin
-      x ∨ ((y ∨ z) ∧ ¬ (y ∧ z))          ≈⟨ ∨-congʳ $ ∧-congʳ $ deMorgan₁ _ _ ⟩
+      x ∨ ((y ∨ z) ∧ ¬ (y ∧ z))          ≈⟨ ∨-congˡ $ ∧-congˡ $ deMorgan₁ _ _ ⟩
       x ∨ ((y ∨ z) ∧ (¬ y ∨ ¬ z))        ≈⟨ ∨-∧-distribˡ _ _ _ ⟩
       (x ∨ (y ∨ z)) ∧ (x ∨ (¬ y ∨ ¬ z))  ≈˘⟨ ∨-assoc _ _ _ ⟨ ∧-cong ⟩ ∨-assoc _ _ _ ⟩
       ((x ∨ y) ∨ z) ∧ ((x ∨ ¬ y) ∨ ¬ z)  ∎
@@ -503,14 +503,14 @@ module XorRing
       ((¬ y ∨ y) ∧ (¬ z ∨ y)) ∧
       ((¬ y ∨ z) ∧ (¬ z ∨ z))    ≈⟨ (∨-complementˡ _ ⟨ ∧-cong ⟩ ∨-comm _ _)
                                       ⟨ ∧-cong ⟩
-                                   (∧-congʳ $ ∨-complementˡ _) ⟩
+                                   (∧-congˡ $ ∨-complementˡ _) ⟩
       (⊤ ∧ (y ∨ ¬ z)) ∧
       ((¬ y ∨ z) ∧ ⊤)            ≈⟨ ∧-identityˡ _ ⟨ ∧-cong ⟩ ∧-identityʳ _ ⟩
       (y ∨ ¬ z) ∧ (¬ y ∨ z)      ∎
 
     lem₄ = begin
       ¬ (x ∧ ((y ∨ z) ∧ ¬ (y ∧ z)))  ≈⟨ deMorgan₁ _ _ ⟩
-      ¬ x ∨ ¬ ((y ∨ z) ∧ ¬ (y ∧ z))  ≈⟨ ∨-congʳ lem₄' ⟩
+      ¬ x ∨ ¬ ((y ∨ z) ∧ ¬ (y ∧ z))  ≈⟨ ∨-congˡ lem₄' ⟩
       ¬ x ∨ ((y ∨ ¬ z) ∧ (¬ y ∨ z))  ≈⟨ ∨-∧-distribˡ _ _ _ ⟩
       (¬ x ∨ (y     ∨ ¬ z)) ∧
       (¬ x ∨ (¬ y ∨ z))              ≈˘⟨ ∨-assoc _ _ _ ⟨ ∧-cong ⟩ ∨-assoc _ _ _ ⟩
@@ -523,7 +523,7 @@ module XorRing
       ((x ∨ ¬ y) ∨ ¬ z) ∧
       (((¬ x ∨ ¬ y) ∨ z) ∧ ((¬ x ∨ y) ∨ ¬ z))    ≈˘⟨ ∧-assoc _ _ _ ⟩
       (((x ∨ ¬ y) ∨ ¬ z) ∧ ((¬ x ∨ ¬ y) ∨ z)) ∧
-      ((¬ x ∨ y) ∨ ¬ z)                          ≈⟨ ∧-congˡ $ ∧-comm _ _ ⟩
+      ((¬ x ∨ y) ∨ ¬ z)                          ≈⟨ ∧-congʳ $ ∧-comm _ _ ⟩
       (((¬ x ∨ ¬ y) ∨ z) ∧ ((x ∨ ¬ y) ∨ ¬ z)) ∧
       ((¬ x ∨ y) ∨ ¬ z)                          ≈⟨ ∧-assoc _ _ _ ⟩
       ((¬ x ∨ ¬ y) ∨ z) ∧

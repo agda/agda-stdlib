@@ -4,7 +4,7 @@
 -- The free monad construction on indexed containers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --without-K --safe --guardedness #-}
 
 module Data.Container.Indexed.FreeMonad where
 

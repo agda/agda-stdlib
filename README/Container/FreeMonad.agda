@@ -5,7 +5,7 @@
 -- used
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --without-K --safe --sized-types #-}
 
 module README.Container.FreeMonad where
 

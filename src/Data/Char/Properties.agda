@@ -1,33 +1,40 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Unsafe Char operations and proofs
+-- Properties of operations on characters
 ------------------------------------------------------------------------
 
-{-# OPTIONS --with-K #-}
+{-# OPTIONS --without-K --safe #-}
 
-module Data.Char.Unsafe where
+module Data.Char.Properties where
 
-open import Data.Bool.Base using (Bool; true; false)
+open import Data.Bool using (Bool)
+open import Data.Char.Base
+
+import Data.Nat.Properties as ℕₚ
+
+open import Function
 open import Relation.Nullary using (yes; no)
-open import Relation.Nullary.Decidable using (⌊_⌋)
-open import Relation.Binary using (Decidable; DecSetoid)
-open import Relation.Binary.PropositionalEquality as PropEq using (_≡_)
-open import Relation.Binary.PropositionalEquality.TrustMe
-
-open import Agda.Builtin.Char using (primCharEquality)
-open import Data.Char
+open import Relation.Nullary.Decidable using (map′;  ⌊_⌋)
+open import Relation.Binary using (Decidable; Setoid; DecSetoid; StrictTotalOrder)
+open import Relation.Binary.PropositionalEquality.Core
+import Relation.Binary.Construct.On as On
+import Relation.Binary.PropositionalEquality as PropEq
 
 ------------------------------------------------------------------------
--- An informative equality test.
+-- Primitive properties
+
+open import Agda.Builtin.Char.Properties
+  renaming ( primCharToNatInjective to toNat-injective)
+  public
+
+------------------------------------------------------------------------
+-- Decidable equality
 
 infix 4 _≟_
-
 _≟_ : Decidable {A = Char} _≡_
-s₁ ≟ s₂ with primCharEquality s₁ s₂
-... | true  = yes trustMe
-... | false = no whatever
-  where postulate whatever : _
+x ≟ y = map′ (toNat-injective x y) (cong toNat)
+      $ toNat x ℕₚ.≟ toNat y
 
 ------------------------------------------------------------------------
 -- Boolean equality test.
@@ -38,7 +45,6 @@ s₁ ≟ s₂ with primCharEquality s₁ s₂
 -- time of writing: see unit-test below.
 
 infix 4 _==_
-
 _==_ : Char → Char → Bool
 c₁ == c₂ = ⌊ c₁ ≟ c₂ ⌋
 
@@ -54,7 +60,13 @@ private
   unit-test = p _
 
 ------------------------------------------------------------------------
--- Decidable equality
+-- Structures
+
+setoid : Setoid _ _
+setoid = PropEq.setoid Char
 
 decSetoid : DecSetoid _ _
 decSetoid = PropEq.decSetoid _≟_
+
+strictTotalOrder : StrictTotalOrder _ _ _
+strictTotalOrder = On.strictTotalOrder ℕₚ.<-strictTotalOrder toNat

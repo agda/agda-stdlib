@@ -11,21 +11,45 @@ open import Relation.Binary
 module Algebra.Construct.NaturalChoice.Max
   {a ℓ₁ ℓ₂} (totalOrder : TotalOrder a ℓ₁ ℓ₂) where
 
+open import Algebra.FunctionProperties
 open import Relation.Binary.Construct.Converse using ()
-  renaming (totalOrder to converse)
+  renaming (totalOrder to flip)
+
+open TotalOrder totalOrder renaming (Carrier to A)
 
 ------------------------------------------------------------------------
 -- Max is just min with a flipped order
 
-open import Algebra.Construct.NaturalChoice.Min (converse totalOrder)
-  using
-  ( cong; idem; sel; assoc; comm
-  ; identityˡ; identityʳ; identity; zeroˡ; zeroʳ; zero
-  ; isMagma; isSemigroup; isBand; isSemilattice; isMonoid
-  ; magma; semigroup; band; semilattice; monoid
-  )
+import Algebra.Construct.NaturalChoice.Min (flip totalOrder) as Min
+
+infixl 6 _⊔_
+
+_⊔_ : Op₂ A
+_⊔_ = Min._⊓_
+
+open Min public using ()
   renaming
-  ( min            to max
-  ; min[x,y]≈y⇒y≤x to max[x,y]≈y⇒x≤y
-  ; min[x,y]≈x⇒x≤y to max[x,y]≈x⇒y≤x
+  ( ⊓-cong          to ⊔-cong
+  ; ⊓-idem          to ⊔-idem
+  ; ⊓-sel           to ⊔-sel
+  ; ⊓-assoc         to ⊔-assoc
+  ; ⊓-comm          to ⊔-comm
+  ; ⊓-identityˡ     to ⊔-identityˡ
+  ; ⊓-identityʳ     to ⊔-identityʳ
+  ; ⊓-identity      to ⊔-identity
+  ; ⊓-zeroˡ         to ⊔-zeroˡ
+  ; ⊓-zeroʳ         to ⊔-zeroʳ
+  ; ⊓-zero          to ⊔-zero
+  ; ⊓-isMagma       to ⊔-isMagma
+  ; ⊓-isSemigroup   to ⊔-isSemigroup
+  ; ⊓-isBand        to ⊔-isBand
+  ; ⊓-isSemilattice to ⊔-isSemilattice
+  ; ⊓-isMonoid      to ⊔-isMonoid
+  ; ⊓-magma         to ⊔-magma
+  ; ⊓-semigroup     to ⊔-semigroup
+  ; ⊓-band          to ⊔-band
+  ; ⊓-semilattice   to ⊔-semilattice
+  ; ⊓-monoid        to ⊔-monoid
+  ; x⊓y≈y⇒y≤x       to x⊔y≈y⇒x≤y
+  ; x⊓y≈x⇒x≤y       to x⊔y≈x⇒y≤x
   )
