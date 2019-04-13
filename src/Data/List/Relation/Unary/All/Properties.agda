@@ -23,13 +23,14 @@ open import Data.List.Relation.Binary.Subset.Propositional using (_⊆_)
 open import Data.Maybe as Maybe using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.All as MAll using (just; nothing)
 open import Data.Nat using (zero; suc; z≤n; s≤s; _<_)
+open import Data.Nat.Properties using (≤-refl; ≤-step)
 open import Data.Product as Prod using (_×_; _,_; uncurry; uncurry′)
 open import Function
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence using (_⇔_; equivalence; Equivalence)
 open import Function.Inverse using (_↔_; inverse)
 open import Function.Surjection using (_↠_; surjection)
-open import Relation.Binary using (Setoid; _Respects_)
+open import Relation.Binary using (REL; Setoid; _Respects_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Nullary
 open import Relation.Unary
@@ -85,6 +86,17 @@ module _ {a p} {A : Set a} {P : A → Set p} where
     to∘from : Extensionality _ _ →
               ∀ {xs} (¬∀ : ¬ All P xs) → Any¬→¬All (¬All⇒Any¬ dec xs ¬∀) ≡ ¬∀
     to∘from ext ¬∀ = ext (⊥-elim ∘ ¬∀)
+
+module _ {a b ℓ} {A : Set a} {B : Set b} {_~_ : REL (List A) B ℓ} where
+
+  All-swap : ∀ {xss ys} →
+             All (λ xs → All (xs ~_) ys) xss →
+             All (λ y → All (_~ y) xss) ys
+  All-swap {ys = []}     _   = []
+  All-swap {ys = y ∷ ys} []  = All.universal (λ _ → []) (y ∷ ys)
+  All-swap {ys = y ∷ ys} ((x~y ∷ x~ys) ∷ pxss) =
+    (x~y ∷ (All.map All.head pxss)) ∷
+    All-swap (x~ys ∷ (All.map All.tail pxss))
 
 ------------------------------------------------------------------------
 -- Properties of operations over `All`
@@ -264,6 +276,18 @@ module _ {a p} {A : Set a} {P : A → Set p} where
   applyUpTo⁻ f (suc n) (px ∷ _)   (s≤s z≤n)       = px
   applyUpTo⁻ f (suc n) (_  ∷ pxs) (s≤s (s≤s i<n)) =
     applyUpTo⁻ (f ∘ suc) n pxs (s≤s i<n)
+
+------------------------------------------------------------------------
+-- applyDownFrom
+
+module _ {a p} {A : Set a} {P : A → Set p} where
+
+  applyDownFrom⁺₁ : ∀ f n → (∀ {i} → i < n → P (f i)) → All P (applyDownFrom f n)
+  applyDownFrom⁺₁ f zero    Pf = []
+  applyDownFrom⁺₁ f (suc n) Pf = Pf ≤-refl ∷ applyDownFrom⁺₁ f n (Pf ∘ ≤-step)
+
+  applyDownFrom⁺₂ : ∀ f n → (∀ i → P (f i)) → All P (applyDownFrom f n)
+  applyDownFrom⁺₂ f n Pf = applyDownFrom⁺₁ f n (λ _ → Pf _)
 
 ------------------------------------------------------------------------
 -- tabulate
