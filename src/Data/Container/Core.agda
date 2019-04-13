@@ -36,7 +36,7 @@ map : ∀ {s p x y} {C : Container s p} {X : Set x} {Y : Set y} →
       (X → Y) → ⟦ C ⟧ X → ⟦ C ⟧ Y
 map f = Prod.map₂ (f ∘_)
 
--- Container morphisms
+-- Representation of container morphisms.
 
 record _⇒_ {s₁ s₂ p₁ p₂} (C₁ : Container s₁ p₁) (C₂ : Container s₂ p₂)
            : Set (s₁ ⊔ s₂ ⊔ p₁ ⊔ p₂) where

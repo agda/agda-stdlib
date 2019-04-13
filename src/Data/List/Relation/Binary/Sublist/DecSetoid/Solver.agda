@@ -10,7 +10,7 @@ open import Relation.Binary using (DecSetoid)
 
 module Data.List.Relation.Binary.Sublist.DecSetoid.Solver {c ℓ} (S : DecSetoid c ℓ) where
 
-private module S = DecSetoid S
+open DecSetoid S
 
-open import Data.List.Relation.Binary.Sublist.Homogeneous.Solver S._≈_ S.refl S._≟_
+open import Data.List.Relation.Binary.Sublist.Heterogeneous.Solver _≈_ refl _≟_
   using (Item; module Item; TList; module TList; prove) public

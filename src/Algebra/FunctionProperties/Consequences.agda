@@ -22,6 +22,11 @@ open import Relation.Binary.Reasoning.Setoid S
 open import Relation.Unary using (Pred)
 
 ------------------------------------------------------------------------
+-- Re-export core properties
+
+open import Algebra.FunctionProperties.Consequences.Core public
+
+------------------------------------------------------------------------
 -- Magma-like structures
 
 module _ {_•_ : Op₂ A} (comm : Commutative _•_) where

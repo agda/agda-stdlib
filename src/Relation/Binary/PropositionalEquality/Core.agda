@@ -79,15 +79,15 @@ module _ {a} {A : Set a} {x y : A} where
 ------------------------------------------------------------------------
 -- Convenient syntax for equational reasoning
 
--- This is special instance of Relation.Binary.EqReasoning.
--- Rather than instantiating the latter with (setoid A),
--- we reimplement equation chains from scratch
--- since then goals are printed much more readably.
+-- This is a special instance of `Relation.Binary.Reasoning.Setoid`.
+-- Rather than instantiating the latter with (setoid A), we reimplement
+-- equation chains from scratch since then goals are printed much more
+-- readably.
 
 module ≡-Reasoning {a} {A : Set a} where
 
   infix  3 _∎
-  infixr 2 _≡⟨⟩_ _≡⟨_⟩_
+  infixr 2 _≡⟨⟩_ _≡⟨_⟩_ _≡˘⟨_⟩_
   infix  1 begin_
 
   begin_ : ∀{x y : A} → x ≡ y → x ≡ y
@@ -98,6 +98,9 @@ module ≡-Reasoning {a} {A : Set a} where
 
   _≡⟨_⟩_ : ∀ (x {y z} : A) → x ≡ y → y ≡ z → x ≡ z
   _ ≡⟨ x≡y ⟩ y≡z = trans x≡y y≡z
+
+  _≡˘⟨_⟩_ : ∀ (x {y z} : A) → y ≡ x → y ≡ z → x ≡ z
+  _ ≡˘⟨ y≡x ⟩ y≡z = trans (sym y≡x) y≡z
 
   _∎ : ∀ (x : A) → x ≡ x
   _∎ _ = refl

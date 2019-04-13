@@ -139,7 +139,7 @@ module VarSubst where
   subst : Subst Fin
   subst = record
     { simple      = record { var = Fun.id; weaken = suc }
-    ; application = record { _/_ = lookup }
+    ; application = record { _/_ = flip lookup }
     }
 
   open Subst subst public

@@ -68,6 +68,23 @@ map g []         = []
 map g (px ∷ pxs) = g px ∷ map g pxs
 
 ------------------------------------------------------------------------
+-- (weak) updateAt
+
+module _ {a p}{A : Set a}{P : Pred A p} where
+  infixl 6 _[_]%=_ _[_]≔_
+
+  updateAt : ∀ {x xs} → x ∈ xs → (P x → P x) → All P xs → All P xs
+  updateAt () f []
+  updateAt (here refl) f (px ∷ pxs) = f px ∷ pxs
+  updateAt (there i)   f (px ∷ pxs) =   px ∷ updateAt i f pxs
+
+  _[_]%=_ : ∀ {x xs} → All P xs → x ∈ xs → (P x → P x) → All P xs
+  pxs [ i ]%= f = updateAt i f pxs
+
+  _[_]≔_ : ∀ {x xs} → All P xs → x ∈ xs → P x → All P xs
+  pxs [ i ]≔ px = pxs [ i ]%= const px
+
+------------------------------------------------------------------------
 -- (un/)zip(With/)
 
 module _ {a p q r} {A : Set a} {P : Pred A p} {Q : Pred A q} {R : Pred A r} where

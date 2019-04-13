@@ -15,10 +15,14 @@ open import Data.Nat using (ℕ) renaming (_≟_ to _≟-ℕ_)
 open import Data.Nat.Show renaming (show to showNat)
 open import Data.Float using (Float) renaming (show to showFloat)
 open import Data.Float.Unsafe using () renaming (_≟_ to _≟f_)
-open import Data.Char using (Char) renaming (show to showChar)
-open import Data.Char.Unsafe using () renaming (_≟_ to _≟c_)
-open import Data.String using (String) renaming (show to showString)
-open import Data.String.Unsafe using () renaming (_≟_ to _≟s_)
+open import Data.Char using (Char)
+  renaming ( show to showChar
+           ; _≟_ to _≟c_
+           )
+open import Data.String using (String)
+  renaming ( show to showString
+           ; _≟_ to _≟s_
+           )
 open import Data.Word using (Word64) renaming (toℕ to wordToℕ)
 open import Data.Word.Unsafe using () renaming (_≟_ to _≟w_)
 open import Data.Product

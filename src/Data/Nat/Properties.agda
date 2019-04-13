@@ -11,7 +11,7 @@
 
 module Data.Nat.Properties where
 
-open import Axiom.UIP
+open import Axiom.UniquenessOfIdentityProofs
 open import Algebra
 open import Algebra.Morphism
 open import Function

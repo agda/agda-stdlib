@@ -20,6 +20,37 @@ srcDir         = "src"
 
 -- | Checks whether a module is declared (un)safe
 
+unsafeModules :: [FilePath]
+unsafeModules = map toAgdaFilePath
+  [ "Codata.Musical.Cofin"
+  , "Codata.Musical.Colist"
+  , "Codata.Musical.Colist.Infinite-merge"
+  , "Codata.Musical.Conat"
+  , "Codata.Musical.Costring"
+  , "Codata.Musical.Covec"
+  , "Codata.Musical.M"
+  , "Codata.Musical.Stream"
+  , "Data.Char.Unsafe"
+  , "Data.Float.Unsafe"
+  , "Data.Nat.Unsafe"
+  , "Data.Nat.DivMod.Unsafe"
+  , "Data.String.Unsafe"
+  , "Data.Word.Unsafe"
+  , "Debug.Trace"
+  , "Foreign.Haskell"
+  , "IO"
+  , "IO.Primitive"
+  , "Reflection"
+  , "Relation.Binary.PropositionalEquality.TrustMe"
+  ] where
+
+  toAgdaFilePath :: String -> FilePath
+  toAgdaFilePath name = concat
+    [ "src/"
+    , map (\ c -> if c == '.' then '/' else c) name
+    , ".agda"
+    ]
+
 isUnsafeModule :: FilePath -> Bool
 isUnsafeModule =
   -- GA 2019-02-24: it is crucial to use an anonymous lambda
@@ -27,17 +58,6 @@ isUnsafeModule =
   -- to `isUnsafeModule`.
   \ fp -> unqualifiedModuleName fp == "Unsafe"
        || fp `elem` unsafeModules
-
-  where
-
-  unsafeModules :: [FilePath]
-  unsafeModules = map modToFile
-    [ "Debug.Trace"
-    , "IO"
-    , "IO.Primitive"
-    , "Reflection"
-    , "Relation.Binary.PropositionalEquality.TrustMe"
-    ]
 
 -- | Checks whether a module is declared as using K
 
@@ -53,7 +73,8 @@ isWithKModule =
 
   withKModules :: [FilePath]
   withKModules = map modToFile
-    [ "Data.Char.Unsafe"
+    [ "Axiom.Extensionality.Heterogeneous"
+    , "Data.Char.Unsafe"
     , "Data.Float.Unsafe"
     , "Data.Nat.Unsafe"
     , "Data.Nat.DivMod.Unsafe"
@@ -213,6 +234,7 @@ main = do
 
   writeFileUTF8 (safeOutputFile ++ ".agda") $
     unlines [ header
+            , "{-# OPTIONS --guardedness --sized-types #-}\n"
             , mkModule safeOutputFile
             , format $ filter ((Unsafe /=) . safety) libraryfiles
             ]

@@ -25,9 +25,6 @@ data Maybe {a} (A : Set a) : Set a where
   just    : (x : A) → Maybe A
   nothing : Maybe A
 
-{-# FOREIGN GHC type AgdaMaybe a b = Maybe b #-}
-{-# COMPILE GHC Maybe = data MAlonzo.Code.Data.Maybe.Base.AgdaMaybe (Just | Nothing) #-}
-
 ------------------------------------------------------------------------
 -- Some operations
 

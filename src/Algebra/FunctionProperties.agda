@@ -115,7 +115,7 @@ Congruent₂ : Op₂ A → Set _
 Congruent₂ ∙ = ∙ Preserves₂ _≈_ ⟶ _≈_ ⟶ _≈_
 
 LeftCongruent : Op₂ A → Set _
-LeftCongruent _∙_ = ∀ {x} → (_∙ x) Preserves _≈_ ⟶ _≈_
+LeftCongruent _∙_ = ∀ {x} → (x ∙_) Preserves _≈_ ⟶ _≈_
 
 RightCongruent : Op₂ A → Set _
-RightCongruent _∙_ = ∀ {x} → (x ∙_) Preserves _≈_ ⟶ _≈_
+RightCongruent _∙_ = ∀ {x} → (_∙ x) Preserves _≈_ ⟶ _≈_

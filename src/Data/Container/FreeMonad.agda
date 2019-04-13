@@ -4,7 +4,7 @@
 -- The free monad construction on containers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --without-K --safe --sized-types #-}
 
 module Data.Container.FreeMonad where
 

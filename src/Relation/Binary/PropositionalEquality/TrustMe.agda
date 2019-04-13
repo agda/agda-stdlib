@@ -14,8 +14,6 @@ open import Agda.Builtin.TrustMe
 
 -- trustMe {x = x} {y = y} evaluates to refl if x and y are
 -- definitionally equal.
---
--- For an example of the use of trustMe, see Data.String.Unsafe._≟_.
 
 trustMe : ∀ {a} {A : Set a} {x y : A} → x ≡ y
 trustMe = primTrustMe
@@ -40,3 +38,15 @@ postulate[_↦_] : ∀ {a b} {A : Set a}{B : A → Set b} →
                   (t : A) → B t → (x : A) → B x
 postulate[ a ↦ b ] a' with trustMe {x = a} {a'}
 postulate[ a ↦ b ] .a | refl = b
+
+
+------------------------------------------------------------------------
+-- DEPRECATION
+------------------------------------------------------------------------
+
+-- Version 0.18
+
+{-# WARNING_ON_USAGE erase
+"Warning: erase was deprecated in v0.18.
+Please use the safe function ≡-erase defined in Relation.Binary.PropositionalEquality.WithK instead."
+#-}
