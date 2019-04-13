@@ -60,9 +60,9 @@ record Lemmas₀ {ℓ : Level} (T : Pred ℕ ℓ) : Set ℓ where
   lookup-map-weaken-↑⋆ zero    x           = refl
   lookup-map-weaken-↑⋆ (suc k) zero        = refl
   lookup-map-weaken-↑⋆ (suc k) (suc x) {ρ} = begin
-    lookup (map weaken (map weaken ρ ↑⋆ k)) x        ≡⟨ VecProp.lookup-map x weaken _ ⟩
+    lookup (map weaken (map weaken ρ ↑⋆ k)) x        ≡⟨ VecProp.lookup-map x weaken (map weaken ρ ↑⋆ k) ⟩
     weaken (lookup (map weaken ρ ↑⋆ k) x)            ≡⟨ cong weaken (lookup-map-weaken-↑⋆ k x) ⟩
-    weaken (lookup ((ρ ↑) ↑⋆ k) (lift k suc x))      ≡⟨ sym $ VecProp.lookup-map (lift k suc x) _ _ ⟩
+    weaken (lookup ((ρ ↑) ↑⋆ k) (lift k suc x))      ≡⟨ sym $ VecProp.lookup-map (lift k suc x) weaken ((ρ ↑) ↑⋆ k) ⟩
     lookup (map weaken ((ρ ↑) ↑⋆ k)) (lift k suc x)  ∎
 
 record Lemmas₁ {ℓ} (T : Pred ℕ ℓ) : Set ℓ where
@@ -77,7 +77,7 @@ record Lemmas₁ {ℓ} (T : Pred ℕ ℓ) : Set ℓ where
                       lookup             ρ  x ≡ var      y →
                       lookup (map weaken ρ) x ≡ var (suc y)
   lookup-map-weaken x {y} {ρ} hyp = begin
-    lookup (map weaken ρ) x  ≡⟨ VecProp.lookup-map x _ _ ⟩
+    lookup (map weaken ρ) x  ≡⟨ VecProp.lookup-map x weaken ρ ⟩
     weaken (lookup ρ x)      ≡⟨ cong weaken hyp ⟩
     weaken (var y)           ≡⟨ weaken-var ⟩
     var (suc y)              ∎
@@ -89,23 +89,23 @@ record Lemmas₁ {ℓ} (T : Pred ℕ ℓ) : Set ℓ where
     lookup-id (suc x) = lookup-wk x
 
     lookup-wk : ∀ {n} (x : Fin n) → lookup wk x ≡ var (suc x)
-    lookup-wk x = lookup-map-weaken x (lookup-id x)
+    lookup-wk x = lookup-map-weaken x {ρ = id} (lookup-id x)
 
   lookup-↑⋆ : ∀ {m n} (f : Fin m → Fin n) {ρ : Sub T m n} →
               (∀ x → lookup ρ x ≡ var (f x)) →
               ∀ k x → lookup (ρ ↑⋆ k) x ≡ var (lift k f x)
-  lookup-↑⋆ f hyp zero    x       = hyp x
-  lookup-↑⋆ f hyp (suc k) zero    = refl
-  lookup-↑⋆ f hyp (suc k) (suc x) =
-    lookup-map-weaken x (lookup-↑⋆ f hyp k x)
+  lookup-↑⋆ f         hyp zero    x       = hyp x
+  lookup-↑⋆ f         hyp (suc k) zero    = refl
+  lookup-↑⋆ f {ρ = ρ} hyp (suc k) (suc x) =
+    lookup-map-weaken x {ρ = ρ ↑⋆ k} (lookup-↑⋆ f hyp k x)
 
   lookup-lift-↑⋆ : ∀ {m n} (f : Fin n → Fin m) {ρ : Sub T m n} →
                    (∀ x → lookup ρ (f x) ≡ var x) →
                    ∀ k x → lookup (ρ ↑⋆ k) (lift k f x) ≡ var x
-  lookup-lift-↑⋆ f hyp zero    x       = hyp x
-  lookup-lift-↑⋆ f hyp (suc k) zero    = refl
-  lookup-lift-↑⋆ f hyp (suc k) (suc x) =
-    lookup-map-weaken (lift k f x) (lookup-lift-↑⋆ f hyp k x)
+  lookup-lift-↑⋆ f         hyp zero    x       = hyp x
+  lookup-lift-↑⋆ f         hyp (suc k) zero    = refl
+  lookup-lift-↑⋆ f {ρ = ρ} hyp (suc k) (suc x) =
+    lookup-map-weaken (lift k f x) {ρ = ρ ↑⋆ k} (lookup-lift-↑⋆ f hyp k x)
 
   lookup-wk-↑⋆ : ∀ {n} k (x : Fin (k + n)) →
                  lookup (wk ↑⋆ k) x ≡ var (lift k suc x)
@@ -145,7 +145,7 @@ record Lemmas₂ {ℓ} (T : Pred ℕ ℓ) : Set ℓ where
 
   lookup-⊙ : ∀ {m n k} x {ρ₁ : Sub T m n} {ρ₂ : Sub T n k} →
              lookup (ρ₁ ⊙ ρ₂) x ≡ lookup ρ₁ x / ρ₂
-  lookup-⊙ x = VecProp.lookup-map x _ _
+  lookup-⊙ x {ρ₁} {ρ₂} = VecProp.lookup-map x (λ t → t / ρ₂) ρ₁
 
   lookup-⨀ : ∀ {m n} x (ρs : Subs T m n) →
              lookup (⨀ ρs) x ≡ var x /✶ ρs
@@ -153,14 +153,14 @@ record Lemmas₂ {ℓ} (T : Pred ℕ ℓ) : Set ℓ where
   lookup-⨀ x (ρ ◅ ε)          = sym var-/
   lookup-⨀ x (ρ ◅ (ρ′ ◅ ρs′)) = begin
     lookup (⨀ (ρ ◅ ρs)) x  ≡⟨ refl ⟩
-    lookup (⨀ ρs ⊙ ρ) x    ≡⟨ lookup-⊙ x ⟩
+    lookup (⨀ ρs ⊙ ρ) x    ≡⟨ lookup-⊙ x {ρ₁ = ⨀ (ρ′ ◅ ρs′)} ⟩
     lookup (⨀ ρs) x / ρ    ≡⟨ cong₂ _/_ (lookup-⨀ x (ρ′ ◅ ρs′)) refl ⟩
     var x /✶ ρs / ρ        ∎
     where ρs = ρ′ ◅ ρs′
 
   id-⊙ : ∀ {m n} {ρ : Sub T m n} → id ⊙ ρ ≡ ρ
   id-⊙ {ρ = ρ} = extensionality λ x → begin
-    lookup (id ⊙ ρ) x  ≡⟨ lookup-⊙ x ⟩
+    lookup (id ⊙ ρ) x  ≡⟨ lookup-⊙ x {ρ₁ = id} ⟩
     lookup  id x / ρ   ≡⟨ cong₂ _/_ (lookup-id x) refl ⟩
     var x        / ρ   ≡⟨ var-/ ⟩
     lookup ρ x         ∎
@@ -168,7 +168,7 @@ record Lemmas₂ {ℓ} (T : Pred ℕ ℓ) : Set ℓ where
   lookup-wk-↑⋆-⊙ : ∀ {m n} k {x} {ρ : Sub T (k + suc m) n} →
                    lookup (wk ↑⋆ k ⊙ ρ) x ≡ lookup ρ (lift k suc x)
   lookup-wk-↑⋆-⊙ k {x} {ρ} = begin
-    lookup (wk ↑⋆ k ⊙ ρ) x   ≡⟨ lookup-⊙ x ⟩
+    lookup (wk ↑⋆ k ⊙ ρ) x   ≡⟨ lookup-⊙ x {ρ₁ = wk ↑⋆ k} ⟩
     lookup (wk ↑⋆ k) x / ρ   ≡⟨ cong₂ _/_ (lookup-wk-↑⋆ k x) refl ⟩
     var (lift k suc x) / ρ   ≡⟨ var-/ ⟩
     lookup ρ (lift k suc x)  ∎
@@ -194,14 +194,14 @@ record Lemmas₂ {ℓ} (T : Pred ℕ ℓ) : Set ℓ where
                wk {n} ↑⋆ k ↑⋆ j ⊙ wk ↑⋆ j ≡
                wk ↑⋆ j ⊙ wk ↑⋆ suc k ↑⋆ j
   wk-↑⋆-⊙-wk k j = extensionality λ x → begin
-    lookup (wk ↑⋆ k ↑⋆ j ⊙ wk ↑⋆ j) x               ≡⟨ lookup-⊙ x ⟩
+    lookup (wk ↑⋆ k ↑⋆ j ⊙ wk ↑⋆ j) x               ≡⟨ lookup-⊙ x {ρ₁ = wk ↑⋆ k ↑⋆ j} ⟩
     lookup (wk ↑⋆ k ↑⋆ j) x / wk ↑⋆ j               ≡⟨ cong₂ _/_ (lookup-wk-↑⋆-↑⋆ k j x) refl ⟩
     var (lift j (lift k suc) x) / wk ↑⋆ j           ≡⟨ var-/-wk-↑⋆ j (lift j (lift k suc) x) ⟩
     var (lift j suc (lift j (lift k suc) x))        ≡⟨ cong var (lift-commutes k j x) ⟩
     var (lift j (lift (suc k) suc) (lift j suc x))  ≡⟨ sym (lookup-wk-↑⋆-↑⋆ (suc k) j (lift j suc x)) ⟩
     lookup (wk ↑⋆ suc k ↑⋆ j) (lift j suc x)        ≡⟨ sym var-/ ⟩
     var (lift j suc x) / wk ↑⋆ suc k ↑⋆ j           ≡⟨ cong₂ _/_ (sym (lookup-wk-↑⋆ j x)) refl ⟩
-    lookup (wk ↑⋆ j) x / wk ↑⋆ suc k ↑⋆ j           ≡⟨ sym (lookup-⊙ x) ⟩
+    lookup (wk ↑⋆ j) x / wk ↑⋆ suc k ↑⋆ j           ≡⟨ sym (lookup-⊙ x {ρ₁ = wk ↑⋆ j}) ⟩
     lookup (wk ↑⋆ j ⊙ wk ↑⋆ suc k ↑⋆ j) x           ∎
 
   open Subst   subst   public hiding (simple; application)
@@ -341,8 +341,8 @@ record Lemmas₄ {ℓ} (T : Pred ℕ ℓ) : Set ℓ where
             var (suc x) / ρ ↑ ≡ var x / ρ / wk
   suc-/-↑ {ρ = ρ} x = begin
     var (suc x) / ρ ↑        ≡⟨ var-/ ⟩
-    lookup (map weaken ρ) x  ≡⟨ cong (Fun.flip lookup x) map-weaken ⟩
-    lookup (ρ ⊙ wk)       x  ≡⟨ lookup-⊙ x ⟩
+    lookup (map weaken ρ) x  ≡⟨ cong (Fun.flip lookup x) (map-weaken {ρ = ρ}) ⟩
+    lookup (ρ ⊙ wk)       x  ≡⟨ lookup-⊙ x {ρ₁ = ρ} ⟩
     lookup ρ x / wk          ≡⟨ cong₂ _/_ (sym var-/) refl ⟩
     var x / ρ / wk           ∎
 
