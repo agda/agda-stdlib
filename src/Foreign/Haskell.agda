@@ -28,3 +28,12 @@ open Pair public
 
 {-# FOREIGN GHC type AgdaPair l1 l2 a b = (a , b) #-}
 {-# COMPILE GHC Pair = data MAlonzo.Code.Foreign.Haskell.AgdaPair ((,)) #-}
+
+-- Maybe
+
+data Maybe {ℓ} (A : Set ℓ) : Set ℓ where
+  just : A → Maybe A
+  nothing : Maybe A
+
+{-# FOREIGN GHC type AgdaMaybe l a = Maybe a #-}
+{-# COMPILE GHC Maybe = data AgdaMaybe (Just | Nothing) #-}
