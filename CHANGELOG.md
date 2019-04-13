@@ -23,13 +23,13 @@ New modules
   ```
   Data.AVL.NonEmpty
   Data.AVL.NonEmpty.Propositional
-  
+
   Data.These.Base
-  
+
   Data.Trie
   Data.Trie.NonEmpty
   ```
-  
+
 Removed features
 ----------------
 
@@ -43,7 +43,7 @@ Other minor additions
   ```agda
   toList : Tree V l u h → List (K& V)
   ```
-  
+
 * Added new function to `Data.Maybe.Base`:
   ```agda
   ap        : Maybe (A → B) → Maybe A → Maybe B
