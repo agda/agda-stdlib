@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html><head><meta charset="utf-8"><title>Category.Monad.Indexed</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<html><head><meta charset="utf-8"><title>Category.Monad.Indexed</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
 <a id="74" class="Comment">-- The Agda standard library</a>
 <a id="103" class="Comment">--</a>
 <a id="106" class="Comment">-- Indexed monads</a>
@@ -7,7 +7,7 @@
 
 <a id="198" class="Comment">-- Note that currently the monad laws are not included here.</a>
 
-<a id="260" class="Symbol">{-#</a> <a id="264" class="Keyword">OPTIONS</a> <a id="272" class="Option">--without-K</a> <a id="284" class="Option">--safe</a> <a id="291" class="Symbol">#-}</a>
+<a id="260" class="Symbol">{-#</a> <a id="264" class="Keyword">OPTIONS</a> <a id="272" class="Pragma">--without-K</a> <a id="284" class="Pragma">--safe</a> <a id="291" class="Symbol">#-}</a>
 
 <a id="296" class="Keyword">module</a> <a id="303" href="Category.Monad.Indexed.html" class="Module">Category.Monad.Indexed</a> <a id="326" class="Keyword">where</a>
 
@@ -43,8 +43,8 @@
 
   <a id="RawIMonad.rawIApplicative"></a><a id="1140" href="Category.Monad.Indexed.html#1140" class="Function">rawIApplicative</a> <a id="1156" class="Symbol">:</a> <a id="1158" href="Category.Applicative.Indexed.html#756" class="Record">RawIApplicative</a> <a id="1174" href="Category.Monad.Indexed.html#450" class="Bound">M</a>
   <a id="1178" href="Category.Monad.Indexed.html#1140" class="Function">rawIApplicative</a> <a id="1194" class="Symbol">=</a> <a id="1196" class="Keyword">record</a>
-    <a id="1207" class="Symbol">{</a> <a id="1209" class="Field">pure</a> <a id="1214" class="Symbol">=</a> <a id="1216" href="Category.Monad.Indexed.html#569" class="Field">return</a>
-    <a id="1227" class="Symbol">;</a> <a id="1229" class="Field Operator">_⊛_</a>  <a id="1234" class="Symbol">=</a> <a id="1236" class="Symbol">λ</a> <a id="1238" href="Category.Monad.Indexed.html#1238" class="Bound">f</a> <a id="1240" href="Category.Monad.Indexed.html#1240" class="Bound">x</a> <a id="1242" class="Symbol">→</a> <a id="1244" href="Category.Monad.Indexed.html#1238" class="Bound">f</a> <a id="1246" href="Category.Monad.Indexed.html#604" class="Field Operator">&gt;&gt;=</a> <a id="1250" class="Symbol">λ</a> <a id="1252" href="Category.Monad.Indexed.html#1252" class="Bound">f&#39;</a> <a id="1255" class="Symbol">→</a> <a id="1257" href="Category.Monad.Indexed.html#1240" class="Bound">x</a> <a id="1259" href="Category.Monad.Indexed.html#604" class="Field Operator">&gt;&gt;=</a> <a id="1263" class="Symbol">λ</a> <a id="1265" href="Category.Monad.Indexed.html#1265" class="Bound">x&#39;</a> <a id="1268" class="Symbol">→</a> <a id="1270" href="Category.Monad.Indexed.html#569" class="Field">return</a> <a id="1277" class="Symbol">(</a><a id="1278" href="Category.Monad.Indexed.html#1252" class="Bound">f&#39;</a> <a id="1281" href="Category.Monad.Indexed.html#1265" class="Bound">x&#39;</a><a id="1283" class="Symbol">)</a>
+    <a id="1207" class="Symbol">{</a> <a id="1209" href="Category.Applicative.Indexed.html#905" class="Field">pure</a> <a id="1214" class="Symbol">=</a> <a id="1216" href="Category.Monad.Indexed.html#569" class="Field">return</a>
+    <a id="1227" class="Symbol">;</a> <a id="1229" href="Category.Applicative.Indexed.html#938" class="Field Operator">_⊛_</a>  <a id="1234" class="Symbol">=</a> <a id="1236" class="Symbol">λ</a> <a id="1238" href="Category.Monad.Indexed.html#1238" class="Bound">f</a> <a id="1240" href="Category.Monad.Indexed.html#1240" class="Bound">x</a> <a id="1242" class="Symbol">→</a> <a id="1244" href="Category.Monad.Indexed.html#1238" class="Bound">f</a> <a id="1246" href="Category.Monad.Indexed.html#604" class="Field Operator">&gt;&gt;=</a> <a id="1250" class="Symbol">λ</a> <a id="1252" href="Category.Monad.Indexed.html#1252" class="Bound">f&#39;</a> <a id="1255" class="Symbol">→</a> <a id="1257" href="Category.Monad.Indexed.html#1240" class="Bound">x</a> <a id="1259" href="Category.Monad.Indexed.html#604" class="Field Operator">&gt;&gt;=</a> <a id="1263" class="Symbol">λ</a> <a id="1265" href="Category.Monad.Indexed.html#1265" class="Bound">x&#39;</a> <a id="1268" class="Symbol">→</a> <a id="1270" href="Category.Monad.Indexed.html#569" class="Field">return</a> <a id="1277" class="Symbol">(</a><a id="1278" href="Category.Monad.Indexed.html#1252" class="Bound">f&#39;</a> <a id="1281" href="Category.Monad.Indexed.html#1265" class="Bound">x&#39;</a><a id="1283" class="Symbol">)</a>
     <a id="1289" class="Symbol">}</a>
 
   <a id="1294" class="Keyword">open</a> <a id="1299" href="Category.Applicative.Indexed.html#756" class="Module">RawIApplicative</a> <a id="1315" href="Category.Monad.Indexed.html#1140" class="Function">rawIApplicative</a> <a id="1331" class="Keyword">public</a>
@@ -72,7 +72,7 @@
 
   <a id="RawIMonadPlus.monadZero"></a><a id="2011" href="Category.Monad.Indexed.html#2011" class="Function">monadZero</a> <a id="2021" class="Symbol">:</a> <a id="2023" href="Category.Monad.Indexed.html#1477" class="Record">RawIMonadZero</a> <a id="2037" href="Category.Monad.Indexed.html#1787" class="Bound">M</a>
   <a id="2041" href="Category.Monad.Indexed.html#2011" class="Function">monadZero</a> <a id="2051" class="Symbol">=</a> <a id="2053" class="Keyword">record</a>
-    <a id="2064" class="Symbol">{</a> <a id="2066" class="Field">monad</a>           <a id="2082" class="Symbol">=</a> <a id="2084" href="Category.Monad.Indexed.html#1858" class="Field">monad</a>
-    <a id="2094" class="Symbol">;</a> <a id="2096" class="Field">applicativeZero</a> <a id="2112" class="Symbol">=</a> <a id="2114" href="Category.Applicative.Indexed.html#2214" class="Field">RawIAlternative.applicativeZero</a> <a id="2146" href="Category.Monad.Indexed.html#1888" class="Field">alternative</a>
+    <a id="2064" class="Symbol">{</a> <a id="2066" href="Category.Monad.Indexed.html#1581" class="Field">monad</a>           <a id="2082" class="Symbol">=</a> <a id="2084" href="Category.Monad.Indexed.html#1858" class="Field">monad</a>
+    <a id="2094" class="Symbol">;</a> <a id="2096" href="Category.Monad.Indexed.html#1615" class="Field">applicativeZero</a> <a id="2112" class="Symbol">=</a> <a id="2114" href="Category.Applicative.Indexed.html#2214" class="Field">RawIAlternative.applicativeZero</a> <a id="2146" href="Category.Monad.Indexed.html#1888" class="Field">alternative</a>
     <a id="2162" class="Symbol">}</a>
 </pre></body></html>

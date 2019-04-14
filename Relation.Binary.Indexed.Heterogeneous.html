@@ -1,18 +1,18 @@
 <!DOCTYPE HTML>
-<html><head><meta charset="utf-8"><title>Relation.Binary.Indexed.Heterogeneous</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<html><head><meta charset="utf-8"><title>Relation.Binary.Indexed.Heterogeneous</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
 <a id="74" class="Comment">-- The Agda standard library</a>
 <a id="103" class="Comment">--</a>
 <a id="106" class="Comment">-- Indexed binary relations</a>
 <a id="134" class="Comment">------------------------------------------------------------------------</a>
 
-<a id="208" class="Symbol">{-#</a> <a id="212" class="Keyword">OPTIONS</a> <a id="220" class="Option">--without-K</a> <a id="232" class="Option">--safe</a> <a id="239" class="Symbol">#-}</a>
+<a id="208" class="Symbol">{-#</a> <a id="212" class="Keyword">OPTIONS</a> <a id="220" class="Pragma">--without-K</a> <a id="232" class="Pragma">--safe</a> <a id="239" class="Symbol">#-}</a>
 
 <a id="244" class="Keyword">module</a> <a id="251" href="Relation.Binary.Indexed.Heterogeneous.html" class="Module">Relation.Binary.Indexed.Heterogeneous</a> <a id="289" class="Keyword">where</a>
 
 <a id="296" class="Keyword">open</a> <a id="301" class="Keyword">import</a> <a id="308" href="Function.html" class="Module">Function</a>
 <a id="317" class="Keyword">open</a> <a id="322" class="Keyword">import</a> <a id="329" href="Level.html" class="Module">Level</a> <a id="335" class="Keyword">using</a> <a id="341" class="Symbol">(</a><a id="342" href="Agda.Primitive.html#627" class="Primitive">suc</a><a id="345" class="Symbol">;</a> <a id="347" href="Agda.Primitive.html#657" class="Primitive Operator">_⊔_</a><a id="350" class="Symbol">)</a>
 <a id="352" class="Keyword">open</a> <a id="357" class="Keyword">import</a> <a id="364" href="Relation.Binary.html" class="Module">Relation.Binary</a> <a id="380" class="Keyword">using</a> <a id="386" class="Symbol">(</a><a id="387" href="Relation.Binary.Core.html#1240" class="Function Operator">_⇒_</a><a id="390" class="Symbol">)</a>
-<a id="392" class="Keyword">open</a> <a id="397" class="Keyword">import</a> <a id="404" href="Relation.Binary.PropositionalEquality.Core.html" class="Module">Relation.Binary.PropositionalEquality.Core</a> <a id="447" class="Symbol">as</a> <a id="450" class="Module">P</a> <a id="452" class="Keyword">using</a> <a id="458" class="Symbol">(</a><a id="459" href="Agda.Builtin.Equality.html#83" class="Datatype Operator">_≡_</a><a id="462" class="Symbol">)</a>
+<a id="392" class="Keyword">open</a> <a id="397" class="Keyword">import</a> <a id="404" href="Relation.Binary.PropositionalEquality.Core.html" class="Module">Relation.Binary.PropositionalEquality.Core</a> <a id="447" class="Symbol">as</a> <a id="450" class="Module">P</a> <a id="452" class="Keyword">using</a> <a id="458" class="Symbol">(</a><a id="459" href="Agda.Builtin.Equality.html#125" class="Datatype Operator">_≡_</a><a id="462" class="Symbol">)</a>
 
 <a id="465" class="Comment">------------------------------------------------------------------------</a>
 <a id="538" class="Comment">-- Publically export core definitions</a>
@@ -29,8 +29,8 @@
     <a id="IsIndexedEquivalence.sym"></a><a id="904" href="Relation.Binary.Indexed.Heterogeneous.html#904" class="Field">sym</a>   <a id="910" class="Symbol">:</a> <a id="912" href="Relation.Binary.Indexed.Heterogeneous.Core.html#1156" class="Function">Symmetric</a>  <a id="923" href="Relation.Binary.Indexed.Heterogeneous.html#779" class="Bound">A</a> <a id="925" href="Relation.Binary.Indexed.Heterogeneous.html#823" class="Bound Operator">_≈_</a>
     <a id="IsIndexedEquivalence.trans"></a><a id="933" href="Relation.Binary.Indexed.Heterogeneous.html#933" class="Field">trans</a> <a id="939" class="Symbol">:</a> <a id="941" href="Relation.Binary.Indexed.Heterogeneous.Core.html#1278" class="Function">Transitive</a> <a id="952" href="Relation.Binary.Indexed.Heterogeneous.html#779" class="Bound">A</a> <a id="954" href="Relation.Binary.Indexed.Heterogeneous.html#823" class="Bound Operator">_≈_</a>
 
-  <a id="IsIndexedEquivalence.reflexive"></a><a id="961" href="Relation.Binary.Indexed.Heterogeneous.html#961" class="Function">reflexive</a> <a id="971" class="Symbol">:</a> <a id="973" class="Symbol">∀</a> <a id="975" class="Symbol">{</a><a id="976" href="Relation.Binary.Indexed.Heterogeneous.html#976" class="Bound">i</a><a id="977" class="Symbol">}</a> <a id="979" class="Symbol">→</a> <a id="981" href="Agda.Builtin.Equality.html#83" class="Datatype Operator">_≡_</a> <a id="985" href="Function.html#2548" class="Function Operator">⟨</a> <a id="987" href="Relation.Binary.Core.html#1240" class="Function Operator">_⇒_</a> <a id="991" href="Function.html#2548" class="Function Operator">⟩</a> <a id="993" href="Relation.Binary.Indexed.Heterogeneous.html#823" class="Bound Operator">_≈_</a> <a id="997" class="Symbol">{</a><a id="998" href="Relation.Binary.Indexed.Heterogeneous.html#976" class="Bound">i</a><a id="999" class="Symbol">}</a>
-  <a id="1003" href="Relation.Binary.Indexed.Heterogeneous.html#961" class="Function">reflexive</a> <a id="1013" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor">P.refl</a> <a id="1020" class="Symbol">=</a> <a id="1022" href="Relation.Binary.Indexed.Heterogeneous.html#875" class="Field">refl</a>
+  <a id="IsIndexedEquivalence.reflexive"></a><a id="961" href="Relation.Binary.Indexed.Heterogeneous.html#961" class="Function">reflexive</a> <a id="971" class="Symbol">:</a> <a id="973" class="Symbol">∀</a> <a id="975" class="Symbol">{</a><a id="976" href="Relation.Binary.Indexed.Heterogeneous.html#976" class="Bound">i</a><a id="977" class="Symbol">}</a> <a id="979" class="Symbol">→</a> <a id="981" href="Agda.Builtin.Equality.html#125" class="Datatype Operator">_≡_</a> <a id="985" href="Function.html#2548" class="Function Operator">⟨</a> <a id="987" href="Relation.Binary.Core.html#1240" class="Function Operator">_⇒_</a> <a id="991" href="Function.html#2548" class="Function Operator">⟩</a> <a id="993" href="Relation.Binary.Indexed.Heterogeneous.html#823" class="Bound Operator">_≈_</a> <a id="997" class="Symbol">{</a><a id="998" href="Relation.Binary.Indexed.Heterogeneous.html#976" class="Bound">i</a><a id="999" class="Symbol">}</a>
+  <a id="1003" href="Relation.Binary.Indexed.Heterogeneous.html#961" class="Function">reflexive</a> <a id="1013" href="Agda.Builtin.Equality.html#182" class="InductiveConstructor">P.refl</a> <a id="1020" class="Symbol">=</a> <a id="1022" href="Relation.Binary.Indexed.Heterogeneous.html#875" class="Field">refl</a>
 
 <a id="1028" class="Keyword">record</a> <a id="IndexedSetoid"></a><a id="1035" href="Relation.Binary.Indexed.Heterogeneous.html#1035" class="Record">IndexedSetoid</a> <a id="1049" class="Symbol">{</a><a id="1050" href="Relation.Binary.Indexed.Heterogeneous.html#1050" class="Bound">i</a><a id="1051" class="Symbol">}</a> <a id="1053" class="Symbol">(</a><a id="1054" href="Relation.Binary.Indexed.Heterogeneous.html#1054" class="Bound">I</a> <a id="1056" class="Symbol">:</a> <a id="1058" class="PrimitiveType">Set</a> <a id="1062" href="Relation.Binary.Indexed.Heterogeneous.html#1050" class="Bound">i</a><a id="1063" class="Symbol">)</a> <a id="1065" href="Relation.Binary.Indexed.Heterogeneous.html#1065" class="Bound">c</a> <a id="1067" href="Relation.Binary.Indexed.Heterogeneous.html#1067" class="Bound">ℓ</a> <a id="1069" class="Symbol">:</a> <a id="1071" class="PrimitiveType">Set</a> <a id="1075" class="Symbol">(</a><a id="1076" href="Agda.Primitive.html#627" class="Primitive">suc</a> <a id="1080" class="Symbol">(</a><a id="1081" href="Relation.Binary.Indexed.Heterogeneous.html#1050" class="Bound">i</a> <a id="1083" href="Agda.Primitive.html#657" class="Primitive Operator">⊔</a> <a id="1085" href="Relation.Binary.Indexed.Heterogeneous.html#1065" class="Bound">c</a> <a id="1087" href="Agda.Primitive.html#657" class="Primitive Operator">⊔</a> <a id="1089" href="Relation.Binary.Indexed.Heterogeneous.html#1067" class="Bound">ℓ</a><a id="1090" class="Symbol">))</a> <a id="1093" class="Keyword">where</a>
   <a id="1101" class="Keyword">infix</a> <a id="1107" class="Number">4</a> <a id="1109" href="Relation.Binary.Indexed.Heterogeneous.html#1155" class="Field Operator">_≈_</a>
@@ -77,22 +77,22 @@
 <a id="2435" class="Comment">-- Version 0.17</a>
 
 <a id="REL"></a><a id="2452" href="Relation.Binary.Indexed.Heterogeneous.html#2452" class="Function">REL</a> <a id="2456" class="Symbol">=</a> <a id="2458" href="Relation.Binary.Indexed.Heterogeneous.Core.html#646" class="Function">IREL</a>
-<a id="2463" class="Symbol">{-#</a> <a id="2467" class="Keyword">WARNING_ON_USAGE</a> REL
+<a id="2463" class="Symbol">{-#</a> <a id="2467" class="Keyword">WARNING_ON_USAGE</a> <a id="2484" class="Pragma">REL</a>
 <a id="2488" class="String">&quot;Warning: REL was deprecated in v0.17.
 Please use IREL instead.&quot;</a>
 <a id="2553" class="Symbol">#-}</a>
 <a id="Rel"></a><a id="2557" href="Relation.Binary.Indexed.Heterogeneous.html#2557" class="Function">Rel</a> <a id="2561" class="Symbol">=</a> <a id="2563" href="Relation.Binary.Indexed.Heterogeneous.Core.html#829" class="Function">IRel</a>
-<a id="2568" class="Symbol">{-#</a> <a id="2572" class="Keyword">WARNING_ON_USAGE</a> Rel
+<a id="2568" class="Symbol">{-#</a> <a id="2572" class="Keyword">WARNING_ON_USAGE</a> <a id="2589" class="Pragma">Rel</a>
 <a id="2593" class="String">&quot;Warning: Rel was deprecated in v0.17.
 Please use IRel instead.&quot;</a>
 <a id="2658" class="Symbol">#-}</a>
 <a id="Setoid"></a><a id="2662" href="Relation.Binary.Indexed.Heterogeneous.html#2662" class="Function">Setoid</a> <a id="2669" class="Symbol">=</a> <a id="2671" href="Relation.Binary.Indexed.Heterogeneous.html#1035" class="Record">IndexedSetoid</a>
-<a id="2685" class="Symbol">{-#</a> <a id="2689" class="Keyword">WARNING_ON_USAGE</a> Setoid
+<a id="2685" class="Symbol">{-#</a> <a id="2689" class="Keyword">WARNING_ON_USAGE</a> <a id="2706" class="Pragma">Setoid</a>
 <a id="2713" class="String">&quot;Warning: Setoid was deprecated in v0.17.
 Please use IndexedSetoid instead.&quot;</a>
 <a id="2790" class="Symbol">#-}</a>
 <a id="IsEquivalence"></a><a id="2794" href="Relation.Binary.Indexed.Heterogeneous.html#2794" class="Function">IsEquivalence</a> <a id="2808" class="Symbol">=</a> <a id="2810" href="Relation.Binary.Indexed.Heterogeneous.html#737" class="Record">IsIndexedEquivalence</a>
-<a id="2831" class="Symbol">{-#</a> <a id="2835" class="Keyword">WARNING_ON_USAGE</a> IsEquivalence
+<a id="2831" class="Symbol">{-#</a> <a id="2835" class="Keyword">WARNING_ON_USAGE</a> <a id="2852" class="Pragma">IsEquivalence</a>
 <a id="2866" class="String">&quot;Warning: IsEquivalence was deprecated in v0.17.
 Please use IsIndexedEquivalence instead.&quot;</a>
 <a id="2957" class="Symbol">#-}</a>

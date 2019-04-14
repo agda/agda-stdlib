@@ -1,12 +1,12 @@
 <!DOCTYPE HTML>
-<html><head><meta charset="utf-8"><title>Relation.Binary.Construct.Closure.Equivalence</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<html><head><meta charset="utf-8"><title>Relation.Binary.Construct.Closure.Equivalence</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
 <a id="74" class="Comment">-- The Agda standard library</a>
 <a id="103" class="Comment">--</a>
 <a id="106" class="Comment">-- The reflexive, symmetric and transitive closure of a binary</a>
 <a id="169" class="Comment">-- relation (aka the equivalence closure).</a>
 <a id="212" class="Comment">------------------------------------------------------------------------</a>
 
-<a id="286" class="Symbol">{-#</a> <a id="290" class="Keyword">OPTIONS</a> <a id="298" class="Option">--without-K</a> <a id="310" class="Option">--safe</a> <a id="317" class="Symbol">#-}</a>
+<a id="286" class="Symbol">{-#</a> <a id="290" class="Keyword">OPTIONS</a> <a id="298" class="Pragma">--without-K</a> <a id="310" class="Pragma">--safe</a> <a id="317" class="Symbol">#-}</a>
 
 <a id="322" class="Keyword">module</a> <a id="329" href="Relation.Binary.Construct.Closure.Equivalence.html" class="Module">Relation.Binary.Construct.Closure.Equivalence</a> <a id="375" class="Keyword">where</a>
 
@@ -39,15 +39,15 @@
 
   <a id="1227" href="Relation.Binary.Construct.Closure.Equivalence.html#1227" class="Function">isEquivalence</a> <a id="1241" class="Symbol">:</a> <a id="1243" href="Relation.Binary.Core.html#6007" class="Record">IsEquivalence</a> <a id="1257" class="Symbol">(</a><a id="1258" href="Relation.Binary.Construct.Closure.Equivalence.html#760" class="Function">EqClosure</a> <a id="1268" href="Relation.Binary.Construct.Closure.Equivalence.html#1001" class="Bound Operator">_∼_</a><a id="1271" class="Symbol">)</a>
   <a id="1275" href="Relation.Binary.Construct.Closure.Equivalence.html#1227" class="Function">isEquivalence</a> <a id="1289" class="Symbol">=</a> <a id="1291" class="Keyword">record</a>
-    <a id="1302" class="Symbol">{</a> <a id="1304" class="Field">refl</a>  <a id="1310" class="Symbol">=</a> <a id="1312" href="Relation.Binary.Construct.Closure.Equivalence.html#1025" class="Function">reflexive</a>
-    <a id="1326" class="Symbol">;</a> <a id="1328" class="Field">sym</a>   <a id="1334" class="Symbol">=</a> <a id="1336" href="Relation.Binary.Construct.Closure.Equivalence.html#1145" class="Function">symmetric</a>
-    <a id="1350" class="Symbol">;</a> <a id="1352" class="Field">trans</a> <a id="1358" class="Symbol">=</a> <a id="1360" href="Relation.Binary.Construct.Closure.Equivalence.html#1082" class="Function">transitive</a>
+    <a id="1302" class="Symbol">{</a> <a id="1304" href="Relation.Binary.Core.html#6108" class="Field">refl</a>  <a id="1310" class="Symbol">=</a> <a id="1312" href="Relation.Binary.Construct.Closure.Equivalence.html#1025" class="Function">reflexive</a>
+    <a id="1326" class="Symbol">;</a> <a id="1328" href="Relation.Binary.Core.html#6134" class="Field">sym</a>   <a id="1334" class="Symbol">=</a> <a id="1336" href="Relation.Binary.Construct.Closure.Equivalence.html#1145" class="Function">symmetric</a>
+    <a id="1350" class="Symbol">;</a> <a id="1352" href="Relation.Binary.Core.html#6160" class="Field">trans</a> <a id="1358" class="Symbol">=</a> <a id="1360" href="Relation.Binary.Construct.Closure.Equivalence.html#1082" class="Function">transitive</a>
     <a id="1375" class="Symbol">}</a>
 
   <a id="1380" href="Relation.Binary.Construct.Closure.Equivalence.html#1380" class="Function">setoid</a> <a id="1387" class="Symbol">:</a> <a id="1389" href="Relation.Binary.html#1930" class="Record">Setoid</a> <a id="1396" href="Relation.Binary.Construct.Closure.Equivalence.html#983" class="Bound">a</a> <a id="1398" class="Symbol">(</a><a id="1399" href="Relation.Binary.Construct.Closure.Equivalence.html#983" class="Bound">a</a> <a id="1401" href="Agda.Primitive.html#657" class="Primitive Operator">⊔</a> <a id="1403" href="Relation.Binary.Construct.Closure.Equivalence.html#985" class="Bound">ℓ</a><a id="1404" class="Symbol">)</a>
   <a id="1408" href="Relation.Binary.Construct.Closure.Equivalence.html#1380" class="Function">setoid</a> <a id="1415" class="Symbol">=</a> <a id="1417" class="Keyword">record</a>
-    <a id="1428" class="Symbol">{</a> <a id="1430" class="Field Operator">_≈_</a>           <a id="1444" class="Symbol">=</a> <a id="1446" href="Relation.Binary.Construct.Closure.Equivalence.html#760" class="Function">EqClosure</a> <a id="1456" href="Relation.Binary.Construct.Closure.Equivalence.html#1001" class="Bound Operator">_∼_</a>
-    <a id="1464" class="Symbol">;</a> <a id="1466" class="Field">isEquivalence</a> <a id="1480" class="Symbol">=</a> <a id="1482" href="Relation.Binary.Construct.Closure.Equivalence.html#1227" class="Function">isEquivalence</a>
+    <a id="1428" class="Symbol">{</a> <a id="1430" href="Relation.Binary.html#2019" class="Field Operator">_≈_</a>           <a id="1444" class="Symbol">=</a> <a id="1446" href="Relation.Binary.Construct.Closure.Equivalence.html#760" class="Function">EqClosure</a> <a id="1456" href="Relation.Binary.Construct.Closure.Equivalence.html#1001" class="Bound Operator">_∼_</a>
+    <a id="1464" class="Symbol">;</a> <a id="1466" href="Relation.Binary.html#2053" class="Field">isEquivalence</a> <a id="1480" class="Symbol">=</a> <a id="1482" href="Relation.Binary.Construct.Closure.Equivalence.html#1227" class="Function">isEquivalence</a>
     <a id="1500" class="Symbol">}</a>
 
 <a id="1503" class="Comment">------------------------------------------------------------------------</a>

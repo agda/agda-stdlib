@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html><head><meta charset="utf-8"><title>Data.Table</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<html><head><meta charset="utf-8"><title>Data.Table</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
 <a id="74" class="Comment">-- The Agda standard library</a>
 <a id="103" class="Comment">--</a>
 <a id="106" class="Comment">-- Fixed-size tables of values, implemented as functions from &#39;Fin n&#39;.</a>
@@ -7,13 +7,13 @@
 <a id="248" class="Comment">-- ease of adding and removing elements.</a>
 <a id="289" class="Comment">------------------------------------------------------------------------</a>
 
-<a id="363" class="Symbol">{-#</a> <a id="367" class="Keyword">OPTIONS</a> <a id="375" class="Option">--without-K</a> <a id="387" class="Option">--safe</a> <a id="394" class="Symbol">#-}</a>
+<a id="363" class="Symbol">{-#</a> <a id="367" class="Keyword">OPTIONS</a> <a id="375" class="Pragma">--without-K</a> <a id="387" class="Pragma">--safe</a> <a id="394" class="Symbol">#-}</a>
 
 <a id="399" class="Keyword">module</a> <a id="406" href="Data.Table.html" class="Module">Data.Table</a> <a id="417" class="Keyword">where</a>
 
 <a id="424" class="Keyword">open</a> <a id="429" class="Keyword">import</a> <a id="436" href="Data.Table.Base.html" class="Module">Data.Table.Base</a> <a id="452" class="Keyword">public</a>
 
-<a id="460" class="Keyword">open</a> <a id="465" class="Keyword">import</a> <a id="472" href="Data.Bool.html" class="Module">Data.Bool</a> <a id="482" class="Keyword">using</a> <a id="488" class="Symbol">(</a><a id="489" href="Agda.Builtin.Bool.html#92" class="InductiveConstructor">true</a><a id="493" class="Symbol">;</a> <a id="495" href="Agda.Builtin.Bool.html#86" class="InductiveConstructor">false</a><a id="500" class="Symbol">)</a>
+<a id="460" class="Keyword">open</a> <a id="465" class="Keyword">import</a> <a id="472" href="Data.Bool.html" class="Module">Data.Bool</a> <a id="482" class="Keyword">using</a> <a id="488" class="Symbol">(</a><a id="489" href="Agda.Builtin.Bool.html#160" class="InductiveConstructor">true</a><a id="493" class="Symbol">;</a> <a id="495" href="Agda.Builtin.Bool.html#154" class="InductiveConstructor">false</a><a id="500" class="Symbol">)</a>
 <a id="502" class="Keyword">open</a> <a id="507" class="Keyword">import</a> <a id="514" href="Data.Fin.html" class="Module">Data.Fin</a> <a id="523" class="Keyword">using</a> <a id="529" class="Symbol">(</a><a id="530" href="Data.Fin.Base.html#951" class="Datatype">Fin</a><a id="533" class="Symbol">;</a> <a id="535" href="Data.Fin.Properties.html#1730" class="Function Operator">_≟_</a><a id="538" class="Symbol">)</a>
 <a id="540" class="Keyword">open</a> <a id="545" class="Keyword">import</a> <a id="552" href="Function.Equality.html" class="Module">Function.Equality</a> <a id="570" class="Keyword">using</a> <a id="576" class="Symbol">(</a><a id="577" href="Function.Equality.html#831" class="Field Operator">_⟨$⟩_</a><a id="582" class="Symbol">)</a>
 <a id="584" class="Keyword">open</a> <a id="589" class="Keyword">import</a> <a id="596" href="Function.Inverse.html" class="Module">Function.Inverse</a> <a id="613" class="Keyword">using</a> <a id="619" class="Symbol">(</a><a id="620" href="Function.Inverse.html#1157" class="Record">Inverse</a><a id="627" class="Symbol">;</a> <a id="629" href="Function.Inverse.html#2229" class="Function Operator">_↔_</a><a id="632" class="Symbol">)</a>

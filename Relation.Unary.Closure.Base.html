@@ -1,11 +1,11 @@
 <!DOCTYPE HTML>
-<html><head><meta charset="utf-8"><title>Relation.Unary.Closure.Base</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<html><head><meta charset="utf-8"><title>Relation.Unary.Closure.Base</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
 <a id="74" class="Comment">-- The Agda standard library</a>
 <a id="103" class="Comment">--</a>
 <a id="106" class="Comment">-- Closures of a unary relation with respect to a binary one.</a>
 <a id="168" class="Comment">------------------------------------------------------------------------</a>
 
-<a id="242" class="Symbol">{-#</a> <a id="246" class="Keyword">OPTIONS</a> <a id="254" class="Option">--without-K</a> <a id="266" class="Option">--safe</a> <a id="273" class="Symbol">#-}</a>
+<a id="242" class="Symbol">{-#</a> <a id="246" class="Keyword">OPTIONS</a> <a id="254" class="Pragma">--without-K</a> <a id="266" class="Pragma">--safe</a> <a id="273" class="Symbol">#-}</a>
 
 <a id="278" class="Keyword">open</a> <a id="283" class="Keyword">import</a> <a id="290" href="Relation.Binary.html" class="Module">Relation.Binary</a>
 
@@ -61,5 +61,5 @@
 <a id="1970" class="Comment">-- Provided that R is transitive, □ is the Closure operator</a>
 <a id="2030" class="Comment">-- i.e. for any `T`, `□ T` is closed.</a>
 <a id="□-closed"></a><a id="2068" href="Relation.Unary.Closure.Base.html#2068" class="Function">□-closed</a> <a id="2077" class="Symbol">:</a> <a id="2079" href="Relation.Binary.Core.html#3005" class="Function">Transitive</a> <a id="2090" href="Relation.Unary.Closure.Base.html#361" class="Bound">R</a> <a id="2092" class="Symbol">→</a> <a id="2094" class="Symbol">∀</a> <a id="2096" class="Symbol">{</a><a id="2097" href="Relation.Unary.Closure.Base.html#2097" class="Bound">t</a><a id="2098" class="Symbol">}</a> <a id="2100" class="Symbol">{</a><a id="2101" href="Relation.Unary.Closure.Base.html#2101" class="Bound">T</a> <a id="2103" class="Symbol">:</a> <a id="2105" href="Relation.Unary.html#618" class="Function">Pred</a> <a id="2110" href="Relation.Unary.Closure.Base.html#349" class="Bound">A</a> <a id="2112" href="Relation.Unary.Closure.Base.html#2097" class="Bound">t</a><a id="2113" class="Symbol">}</a> <a id="2115" class="Symbol">→</a> <a id="2117" href="Relation.Unary.Closure.Base.html#1298" class="Record">Closed</a> <a id="2124" class="Symbol">(</a><a id="2125" href="Relation.Unary.Closure.Base.html#739" class="Function">□</a> <a id="2127" href="Relation.Unary.Closure.Base.html#2101" class="Bound">T</a><a id="2128" class="Symbol">)</a>
-<a id="2130" href="Relation.Unary.Closure.Base.html#2068" class="Function">□-closed</a> <a id="2139" href="Relation.Unary.Closure.Base.html#2139" class="Bound">trans</a> <a id="2145" class="Symbol">=</a> <a id="2147" class="Keyword">record</a> <a id="2154" class="Symbol">{</a> <a id="2156" class="Field">next</a> <a id="2161" class="Symbol">=</a> <a id="2163" href="Relation.Unary.Closure.Base.html#1864" class="Function">duplicate</a> <a id="2173" href="Relation.Unary.Closure.Base.html#2139" class="Bound">trans</a> <a id="2179" class="Symbol">}</a>
+<a id="2130" href="Relation.Unary.Closure.Base.html#2068" class="Function">□-closed</a> <a id="2139" href="Relation.Unary.Closure.Base.html#2139" class="Bound">trans</a> <a id="2145" class="Symbol">=</a> <a id="2147" class="Keyword">record</a> <a id="2154" class="Symbol">{</a> <a id="2156" href="Relation.Unary.Closure.Base.html#1356" class="Field">next</a> <a id="2161" class="Symbol">=</a> <a id="2163" href="Relation.Unary.Closure.Base.html#1864" class="Function">duplicate</a> <a id="2173" href="Relation.Unary.Closure.Base.html#2139" class="Bound">trans</a> <a id="2179" class="Symbol">}</a>
 </pre></body></html>

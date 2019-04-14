@@ -1,11 +1,11 @@
 <!DOCTYPE HTML>
-<html><head><meta charset="utf-8"><title>Universe</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<html><head><meta charset="utf-8"><title>Universe</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
 <a id="74" class="Comment">-- The Agda standard library</a>
 <a id="103" class="Comment">--</a>
 <a id="106" class="Comment">-- Universes</a>
 <a id="119" class="Comment">------------------------------------------------------------------------</a>
 
-<a id="193" class="Symbol">{-#</a> <a id="197" class="Keyword">OPTIONS</a> <a id="205" class="Option">--without-K</a> <a id="217" class="Option">--safe</a> <a id="224" class="Symbol">#-}</a>
+<a id="193" class="Symbol">{-#</a> <a id="197" class="Keyword">OPTIONS</a> <a id="205" class="Pragma">--without-K</a> <a id="217" class="Pragma">--safe</a> <a id="224" class="Symbol">#-}</a>
 
 <a id="229" class="Keyword">module</a> <a id="236" href="Universe.html" class="Module">Universe</a> <a id="245" class="Keyword">where</a>
 
@@ -40,7 +40,7 @@
 
   <a id="Indexed-universe.unindexed-universe"></a><a id="739" href="Universe.html#739" class="Function">unindexed-universe</a> <a id="758" class="Symbol">:</a> <a id="760" href="Universe.html#339" class="Record">Universe</a> <a id="769" class="Symbol">(</a><a id="770" href="Universe.html#508" class="Bound">i</a> <a id="772" href="Agda.Primitive.html#657" class="Primitive Operator">⊔</a> <a id="774" href="Universe.html#510" class="Bound">u</a><a id="775" class="Symbol">)</a> <a id="777" href="Universe.html#512" class="Bound">e</a>
   <a id="781" href="Universe.html#739" class="Function">unindexed-universe</a> <a id="800" class="Symbol">=</a> <a id="802" class="Keyword">record</a>
-    <a id="813" class="Symbol">{</a> <a id="815" class="Field">U</a>  <a id="818" class="Symbol">=</a> <a id="820" href="Data.Product.html#917" class="Function">∃</a> <a id="822" class="Symbol">λ</a> <a id="824" href="Universe.html#824" class="Bound">i</a> <a id="826" class="Symbol">→</a> <a id="828" href="Universe.html#603" class="Field">U</a> <a id="830" href="Universe.html#824" class="Bound">i</a>
-    <a id="836" class="Symbol">;</a> <a id="838" class="Field">El</a> <a id="841" class="Symbol">=</a> <a id="843" href="Universe.html#648" class="Field">El</a> <a id="846" href="Function.html#805" class="Function Operator">∘</a> <a id="848" href="Agda.Builtin.Sigma.html#167" class="Field">proj₂</a>
+    <a id="813" class="Symbol">{</a> <a id="815" href="Universe.html#404" class="Field">U</a>  <a id="818" class="Symbol">=</a> <a id="820" href="Data.Product.html#917" class="Function">∃</a> <a id="822" class="Symbol">λ</a> <a id="824" href="Universe.html#824" class="Bound">i</a> <a id="826" class="Symbol">→</a> <a id="828" href="Universe.html#603" class="Field">U</a> <a id="830" href="Universe.html#824" class="Bound">i</a>
+    <a id="836" class="Symbol">;</a> <a id="838" href="Universe.html#445" class="Field">El</a> <a id="841" class="Symbol">=</a> <a id="843" href="Universe.html#648" class="Field">El</a> <a id="846" href="Function.html#805" class="Function Operator">∘</a> <a id="848" href="Agda.Builtin.Sigma.html#237" class="Field">proj₂</a>
     <a id="858" class="Symbol">}</a>
 </pre></body></html>

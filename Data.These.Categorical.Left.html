@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html><head><meta charset="utf-8"><title>Data.These.Categorical.Left</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<html><head><meta charset="utf-8"><title>Data.These.Categorical.Left</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
 <a id="74" class="Comment">-- The Agda standard library</a>
 <a id="103" class="Comment">--</a>
 <a id="106" class="Comment">-- Left-biased universe-sensitive functor and monad instances for These.</a>
@@ -18,7 +18,7 @@
 <a id="702" class="Comment">-- It is a good alternative to Data.Product.Categorical when the notion</a>
 <a id="774" class="Comment">-- of warnings does not have a neutral element (e.g. List⁺).</a>
 
-<a id="836" class="Symbol">{-#</a> <a id="840" class="Keyword">OPTIONS</a> <a id="848" class="Option">--without-K</a> <a id="860" class="Option">--safe</a> <a id="867" class="Symbol">#-}</a>
+<a id="836" class="Symbol">{-#</a> <a id="840" class="Keyword">OPTIONS</a> <a id="848" class="Pragma">--without-K</a> <a id="860" class="Pragma">--safe</a> <a id="867" class="Symbol">#-}</a>
 
 <a id="872" class="Keyword">open</a> <a id="877" class="Keyword">import</a> <a id="884" href="Level.html" class="Module">Level</a>
 <a id="890" class="Keyword">open</a> <a id="895" class="Keyword">import</a> <a id="902" href="Algebra.html" class="Module">Algebra</a>
@@ -36,8 +36,8 @@
 
 <a id="applicative"></a><a id="1201" href="Data.These.Categorical.Left.html#1201" class="Function">applicative</a> <a id="1213" class="Symbol">:</a> <a id="1215" href="Category.Applicative.html#418" class="Function">RawApplicative</a> <a id="1230" href="Data.These.Categorical.Left.Base.html#806" class="Function">Theseₗ</a>
 <a id="1237" href="Data.These.Categorical.Left.html#1201" class="Function">applicative</a> <a id="1249" class="Symbol">=</a> <a id="1251" class="Keyword">record</a>
-  <a id="1260" class="Symbol">{</a> <a id="1262" class="Field">pure</a> <a id="1267" class="Symbol">=</a> <a id="1269" href="Data.These.html#449" class="InductiveConstructor">that</a>
-  <a id="1276" class="Symbol">;</a> <a id="1278" class="Field Operator">_⊛_</a>  <a id="1283" class="Symbol">=</a> <a id="1285" href="Data.These.Categorical.Left.html#1301" class="Function">ap</a>
+  <a id="1260" class="Symbol">{</a> <a id="1262" href="Category.Applicative.Indexed.html#905" class="Field">pure</a> <a id="1267" class="Symbol">=</a> <a id="1269" href="Data.These.html#449" class="InductiveConstructor">that</a>
+  <a id="1276" class="Symbol">;</a> <a id="1278" href="Category.Applicative.Indexed.html#938" class="Field Operator">_⊛_</a>  <a id="1283" class="Symbol">=</a> <a id="1285" href="Data.These.Categorical.Left.html#1301" class="Function">ap</a>
   <a id="1290" class="Symbol">}</a> <a id="1292" class="Keyword">where</a>
 
   <a id="1301" href="Data.These.Categorical.Left.html#1301" class="Function">ap</a> <a id="1304" class="Symbol">:</a> <a id="1306" class="Symbol">∀</a> <a id="1308" class="Symbol">{</a><a id="1309" href="Data.These.Categorical.Left.html#1309" class="Bound">A</a> <a id="1311" href="Data.These.Categorical.Left.html#1311" class="Bound">B</a><a id="1312" class="Symbol">}→</a> <a id="1315" href="Data.These.Categorical.Left.Base.html#806" class="Function">Theseₗ</a> <a id="1322" class="Symbol">(</a><a id="1323" href="Data.These.Categorical.Left.html#1309" class="Bound">A</a> <a id="1325" class="Symbol">→</a> <a id="1327" href="Data.These.Categorical.Left.html#1311" class="Bound">B</a><a id="1328" class="Symbol">)</a> <a id="1330" class="Symbol">→</a> <a id="1332" href="Data.These.Categorical.Left.Base.html#806" class="Function">Theseₗ</a> <a id="1339" href="Data.These.Categorical.Left.html#1309" class="Bound">A</a> <a id="1341" class="Symbol">→</a> <a id="1343" href="Data.These.Categorical.Left.Base.html#806" class="Function">Theseₗ</a> <a id="1350" href="Data.These.Categorical.Left.html#1311" class="Bound">B</a>
@@ -47,8 +47,8 @@
 
 <a id="monad"></a><a id="1447" href="Data.These.Categorical.Left.html#1447" class="Function">monad</a> <a id="1453" class="Symbol">:</a> <a id="1455" href="Category.Monad.html#396" class="Function">RawMonad</a> <a id="1464" href="Data.These.Categorical.Left.Base.html#806" class="Function">Theseₗ</a>
 <a id="1471" href="Data.These.Categorical.Left.html#1447" class="Function">monad</a> <a id="1477" class="Symbol">=</a> <a id="1479" class="Keyword">record</a>
-  <a id="1488" class="Symbol">{</a> <a id="1490" class="Field">return</a> <a id="1497" class="Symbol">=</a> <a id="1499" href="Data.These.html#449" class="InductiveConstructor">that</a>
-  <a id="1506" class="Symbol">;</a> <a id="1508" class="Field Operator">_&gt;&gt;=_</a>  <a id="1515" class="Symbol">=</a> <a id="1517" href="Data.These.Categorical.Left.html#1535" class="Function">bind</a>
+  <a id="1488" class="Symbol">{</a> <a id="1490" href="Category.Monad.Indexed.html#569" class="Field">return</a> <a id="1497" class="Symbol">=</a> <a id="1499" href="Data.These.html#449" class="InductiveConstructor">that</a>
+  <a id="1506" class="Symbol">;</a> <a id="1508" href="Category.Monad.Indexed.html#604" class="Field Operator">_&gt;&gt;=_</a>  <a id="1515" class="Symbol">=</a> <a id="1517" href="Data.These.Categorical.Left.html#1535" class="Function">bind</a>
   <a id="1524" class="Symbol">}</a> <a id="1526" class="Keyword">where</a>
 
   <a id="1535" href="Data.These.Categorical.Left.html#1535" class="Function">bind</a> <a id="1540" class="Symbol">:</a> <a id="1542" class="Symbol">∀</a> <a id="1544" class="Symbol">{</a><a id="1545" href="Data.These.Categorical.Left.html#1545" class="Bound">A</a> <a id="1547" href="Data.These.Categorical.Left.html#1547" class="Bound">B</a><a id="1548" class="Symbol">}</a> <a id="1550" class="Symbol">→</a> <a id="1552" href="Data.These.Categorical.Left.Base.html#806" class="Function">Theseₗ</a> <a id="1559" href="Data.These.Categorical.Left.html#1545" class="Bound">A</a> <a id="1561" class="Symbol">→</a> <a id="1563" class="Symbol">(</a><a id="1564" href="Data.These.Categorical.Left.html#1545" class="Bound">A</a> <a id="1566" class="Symbol">→</a> <a id="1568" href="Data.These.Categorical.Left.Base.html#806" class="Function">Theseₗ</a> <a id="1575" href="Data.These.Categorical.Left.html#1547" class="Bound">B</a><a id="1576" class="Symbol">)</a> <a id="1578" class="Symbol">→</a> <a id="1580" href="Data.These.Categorical.Left.Base.html#806" class="Function">Theseₗ</a> <a id="1587" href="Data.These.Categorical.Left.html#1547" class="Bound">B</a>

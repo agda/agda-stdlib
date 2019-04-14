@@ -1,11 +1,11 @@
 <!DOCTYPE HTML>
-<html><head><meta charset="utf-8"><title>Relation.Binary.Properties.StrictTotalOrder</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<html><head><meta charset="utf-8"><title>Relation.Binary.Properties.StrictTotalOrder</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
 <a id="74" class="Comment">-- The Agda standard library</a>
 <a id="103" class="Comment">--</a>
 <a id="106" class="Comment">-- Properties satisfied by strict partial orders</a>
 <a id="155" class="Comment">------------------------------------------------------------------------</a>
 
-<a id="229" class="Symbol">{-#</a> <a id="233" class="Keyword">OPTIONS</a> <a id="241" class="Option">--without-K</a> <a id="253" class="Option">--safe</a> <a id="260" class="Symbol">#-}</a>
+<a id="229" class="Symbol">{-#</a> <a id="233" class="Keyword">OPTIONS</a> <a id="241" class="Pragma">--without-K</a> <a id="253" class="Pragma">--safe</a> <a id="260" class="Symbol">#-}</a>
 
 <a id="265" class="Keyword">open</a> <a id="270" class="Keyword">import</a> <a id="277" href="Relation.Binary.html" class="Module">Relation.Binary</a>
 
@@ -23,7 +23,7 @@
 
 <a id="decTotalOrder"></a><a id="759" href="Relation.Binary.Properties.StrictTotalOrder.html#759" class="Function">decTotalOrder</a> <a id="773" class="Symbol">:</a> <a id="775" href="Relation.Binary.html#9250" class="Record">DecTotalOrder</a> <a id="789" class="Symbol">_</a> <a id="791" class="Symbol">_</a> <a id="793" class="Symbol">_</a>
 <a id="795" href="Relation.Binary.Properties.StrictTotalOrder.html#759" class="Function">decTotalOrder</a> <a id="809" class="Symbol">=</a> <a id="811" class="Keyword">record</a>
-  <a id="820" class="Symbol">{</a> <a id="822" class="Field">isDecTotalOrder</a> <a id="838" class="Symbol">=</a> <a id="840" href="Relation.Binary.Construct.StrictToNonStrict.html#4643" class="Function">isDecTotalOrder</a> <a id="856" href="Relation.Binary.html#11608" class="Field">isStrictTotalOrder</a>
+  <a id="820" class="Symbol">{</a> <a id="822" href="Relation.Binary.html#9436" class="Field">isDecTotalOrder</a> <a id="838" class="Symbol">=</a> <a id="840" href="Relation.Binary.Construct.StrictToNonStrict.html#4643" class="Function">isDecTotalOrder</a> <a id="856" href="Relation.Binary.html#11608" class="Field">isStrictTotalOrder</a>
   <a id="877" class="Symbol">}</a>
 
 <a id="880" class="Keyword">open</a> <a id="885" href="Relation.Binary.html#9250" class="Module">DecTotalOrder</a> <a id="899" href="Relation.Binary.Properties.StrictTotalOrder.html#759" class="Function">decTotalOrder</a> <a id="913" class="Keyword">public</a>
