@@ -34,6 +34,8 @@ Removed features
 Deprecated features
 -------------------
 
+* Renamed `Relation.Binary.Core`'s `Conn` to `Connex`.
+
 Other minor additions
 ---------------------
 
@@ -43,4 +45,17 @@ Other minor additions
 
   applyDownFrom⁺₁ : (∀ {i} → i < n → P (f i)) → All P (applyDownFrom f n)
   applyDownFrom⁺₂ : (∀ i → P (f i)) → All P (applyDownFrom f n)
+  ```
+
+* Added new proofs to `Data.Nat.Properties`:
+  ```agda
+  ≤-<-connex : Connex _≤_ _<_
+  ≥->-connex : Connex _≥_ _>_
+  <-≤-connex : Connex _<_ _≤_
+  >-≥-connex : Connex _>_ _≥_
+  ```
+
+* Added new proofs to `Relation.Binary.Consequences`:
+  ```agda
+  flip-Connex : Connex P Q → Connex Q P
   ```

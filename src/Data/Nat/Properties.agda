@@ -25,6 +25,7 @@ open import Data.Bool.Properties using (T?)
 
 open import Level using (0ℓ)
 open import Relation.Binary
+open import Relation.Binary.Consequences using (flip-Connex)
 open import Relation.Binary.PropositionalEquality
 
 open import Relation.Nullary
@@ -309,6 +310,20 @@ n≮n n = <-irrefl (refl {x = n})
 
 m<n⇒n≢0 : ∀ {m n} → m < n → n ≢ 0
 m<n⇒n≢0 (s≤s m≤n) ()
+
+≤-<-connex : Connex _≤_ _<_
+≤-<-connex m n with m ≤? n
+... | yes m≤n = inj₁ m≤n
+... | no ¬m≤n = inj₂ (≰⇒> ¬m≤n)
+
+≥->-connex : Connex _≥_ _>_
+≥->-connex = flip ≤-<-connex
+
+<-≤-connex : Connex _<_ _≤_
+<-≤-connex = flip-Connex ≤-<-connex
+
+>-≥-connex : Connex _>_ _≥_
+>-≥-connex = flip-Connex ≥->-connex
 
 ------------------------------------------------------------------------
 -- Properties of _≤′_
