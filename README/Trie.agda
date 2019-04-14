@@ -89,7 +89,7 @@ module Lexer
     -- compute the successive derivatives obtained by eating the
     -- characters one by one
     Keywords : Set _
-    Keywords = Trie _ (const _ Tok) _
+    Keywords = Trie (const _ Tok) _
 
     init : Keywords
     init = fromList $ List⁺.toList $ List⁺.map (Prod.map₁ String.toList) lex

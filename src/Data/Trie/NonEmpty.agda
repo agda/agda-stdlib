@@ -47,52 +47,52 @@ eat : ∀ {v} → Value v → Word → Value v
 family   (eat V ks) = family   V ∘′ (ks ++_)
 respects (eat V ks) = respects V ∘′ ++⁺ ≋-refl
 
-data Trie⁺ v (V : Value (v ⊔ k ⊔ e ⊔ r)) : Size → Set (v ⊔ k ⊔ e ⊔ r)
-Tries⁺ : ∀ v (V : Value (v ⊔ k ⊔ e ⊔ r)) (i : Size) → Set (v ⊔ k ⊔ e ⊔ r)
+data Trie⁺ {v} (V : Value v) : Size → Set (v ⊔ k ⊔ e ⊔ r)
+Tries⁺ : ∀ {v} (V : Value v) (i : Size) → Set (v ⊔ k ⊔ e ⊔ r)
 
-map : ∀ v w V W {i} →
+map : ∀ {v w} (V : Value v) (W : Value w) {i} →
       ∀[ family V ⇒ family W ] →
-      Trie⁺ v V i → Trie⁺ w W i
+      Trie⁺ V i → Trie⁺ W i
 
-data Trie⁺ v V where
-  node : ∀ {i} → These (family V []) (Tries⁺ v V i) → Trie⁺ v V (↑ i)
+data Trie⁺ V where
+  node : ∀ {i} → These (family V []) (Tries⁺ V i) → Trie⁺ V (↑ i)
 
-Tries⁺ v V j = Tree⁺ $ MkValue (λ k → Trie⁺ v (eat V (k ∷ [])) j)
-                     $ λ eq → map v v _ _ (respects V (eq ∷ ≋-refl))
+Tries⁺ V j = Tree⁺ $ MkValue (λ k → Trie⁺ (eat V (k ∷ [])) j)
+                   $ λ eq → map _ _ (respects V (eq ∷ ≋-refl))
 
-map v w V W f (node t) = node $ These.map f (Tree⁺.map (map v w _ _ f)) t
+map V W f (node t) = node $ These.map f (Tree⁺.map (map _ _ f)) t
 
 ------------------------------------------------------------------------
 -- Query
 
-lookup : ∀ {v V} ks → Trie⁺ v V ∞ →
-         Maybe (These (family V ks) (Tries⁺ v (eat V ks) ∞))
+lookup : ∀ {v} {V : Value v} ks → Trie⁺ V ∞ →
+         Maybe (These (family V ks) (Tries⁺ (eat V ks) ∞))
 lookup []       (node nd) = just (These.map₂ (Tree⁺.map id) nd)
 lookup (k ∷ ks) (node nd) = let open Maybe in do
   ts ← These.fromThat nd
   t  ← Tree⁺.lookup k ts
   lookup ks t
 
-module _ {v} {V : Value (v ⊔ k ⊔ e ⊔ r)} where
+module _ {v} {V : Value v} where
 
-  lookupValue : ∀ (ks : Word) → Trie⁺ v V ∞ → Maybe (family V ks)
+  lookupValue : ∀ (ks : Word) → Trie⁺ V ∞ → Maybe (family V ks)
   lookupValue ks t = lookup ks t Maybe.>>= These.fromThis
 
-  lookupTries⁺ : ∀ ks → Trie⁺ v V ∞ → Maybe (Tries⁺ v (eat V ks) ∞)
+  lookupTries⁺ : ∀ ks → Trie⁺ V ∞ → Maybe (Tries⁺ (eat V ks) ∞)
   lookupTries⁺ ks t = lookup ks t Maybe.>>= These.fromThat
 
-  lookupTrie⁺ : ∀ k → Trie⁺ v V ∞ → Maybe (Trie⁺ v (eat V (k ∷ [])) ∞)
+  lookupTrie⁺ : ∀ k → Trie⁺ V ∞ → Maybe (Trie⁺ (eat V (k ∷ [])) ∞)
   lookupTrie⁺ k t = lookupTries⁺ [] t Maybe.>>= Tree⁺.lookup k
 
 ------------------------------------------------------------------------
 -- Construction
 
-singleton : ∀ {v V} ks → family V ks → Trie⁺ v V ∞
+singleton : ∀ {v} {V : Value v} ks → family V ks → Trie⁺ V ∞
 singleton []       v = node (this v)
 singleton (k ∷ ks) v = node (that (Tree⁺.singleton k (singleton ks v)))
 
-insertWith : ∀ {v V} ks → (Maybe (family V ks) → family V ks) →
-             Trie⁺ v V ∞ → Trie⁺ v V ∞
+insertWith : ∀ {v} {V : Value v} ks → (Maybe (family V ks) → family V ks) →
+             Trie⁺ V ∞ → Trie⁺ V ∞
 insertWith []       f (node nd) =
   node (These.fold (this ∘ f ∘ just) (these (f nothing)) (these ∘ f ∘ just) nd)
 insertWith {v} {V} (k ∷ ks) f (node {j} nd) = node $
@@ -102,23 +102,24 @@ insertWith {v} {V} (k ∷ ks) f (node {j} nd) = node $
              nd
   where
 
-  end : Trie⁺ v (eat V (k ∷ [])) ∞
+  end : Trie⁺ (eat V (k ∷ [])) ∞
   end = singleton ks (f nothing)
 
-  rec : Tries⁺ v V ∞ → Tries⁺ v V ∞
+  rec : Tries⁺ V ∞ → Tries⁺ V ∞
   rec = Tree⁺.insertWith k (maybe′ (insertWith ks f) end)
 
-module _ {v} {V : Value (v ⊔ k ⊔ e ⊔ r)} where
+module _ {v} {V : Value v} where
 
   private Val = family V
 
-  insert : ∀ ks → Val ks → Trie⁺ v V ∞ → Trie⁺ v V ∞
+  insert : ∀ ks → Val ks → Trie⁺ V ∞ → Trie⁺ V ∞
   insert ks = insertWith ks ∘′ F.const
 
-  fromList⁺ : List⁺ (∃ Val) → Trie⁺ v V ∞
+  fromList⁺ : List⁺ (∃ Val) → Trie⁺ V ∞
   fromList⁺ = List⁺.foldr (uncurry insert) (uncurry singleton)
 
-toList⁺ : ∀ {v V i} → let Val = Value.family V in Trie⁺ v V i → List⁺ (∃ Val)
+toList⁺ : ∀ {v} {V : Value v} {i} → let Val = Value.family V in
+          Trie⁺ V i → List⁺ (∃ Val)
 toList⁺ (node nd) = These.mergeThese List⁺._⁺++⁺_
                     $ These.map fromVal fromTries⁺ nd
   where
@@ -132,9 +133,9 @@ toList⁺ (node nd) = These.mergeThese List⁺._⁺++⁺_
 
 -- Deletion
 
-deleteWith : ∀ {v V i} ks →
-             (∀ {i} → Trie⁺ v (eat V ks) i → Maybe (Trie⁺ v (eat V ks) i)) →
-             Trie⁺ v V i → Maybe (Trie⁺ v V i)
+deleteWith : ∀ {v} {V : Value v} {i} ks →
+             (∀ {i} → Trie⁺ (eat V ks) i → Maybe (Trie⁺ (eat V ks) i)) →
+             Trie⁺ V i → Maybe (Trie⁺ V i)
 deleteWith []       f t           = f t
 deleteWith (k ∷ ks) f t@(node nd) = let open RawMonad Identity.monad in do
   just ts ← These.fromThat nd where _ → just t
@@ -147,15 +148,15 @@ deleteWith (k ∷ ks) f t@(node nd) = let open RawMonad Identity.monad in do
     nothing  → Tree⁺.delete k ts
     (just u) → just (Tree⁺.insert k u ts)
 
-module _ {v V} where
+module _ {v} {V : Value v} where
 
-  deleteTrie⁺ : ∀ {i} (ks : Word) → Trie⁺ v V i → Maybe (Trie⁺ v V i)
+  deleteTrie⁺ : ∀ {i} (ks : Word) → Trie⁺ V i → Maybe (Trie⁺ V i)
   deleteTrie⁺ ks = deleteWith ks (F.const nothing)
 
-  deleteValue : ∀ {i} (ks : Word) → Trie⁺ v V i → Maybe (Trie⁺ v V i)
+  deleteValue : ∀ {i} (ks : Word) → Trie⁺ V i → Maybe (Trie⁺ V i)
   deleteValue ks = deleteWith ks $ λ where
     (node nd) → Maybe.map node $′ These.deleteThis nd
 
-  deleteTries⁺ : ∀ {i} (ks : Word) → Trie⁺ v V i → Maybe (Trie⁺ v V i)
+  deleteTries⁺ : ∀ {i} (ks : Word) → Trie⁺ V i → Maybe (Trie⁺ V i)
   deleteTries⁺ ks = deleteWith ks $ λ where
     (node nd) → Maybe.map node $′ These.deleteThat nd
