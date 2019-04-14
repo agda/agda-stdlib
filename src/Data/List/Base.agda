@@ -8,13 +8,13 @@
 
 module Data.List.Base where
 
-open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _+_; _*_ ; _≤_ ; s≤s)
-open import Data.Fin using (Fin; zero; suc)
-open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
 open import Data.Bool.Base as Bool
   using (Bool; false; true; not; _∧_; _∨_; if_then_else_)
+open import Data.Fin using (Fin; zero; suc)
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _+_; _*_ ; _≤_ ; s≤s)
 open import Data.Product as Prod using (_×_; _,_)
+open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
 open import Data.These as These using (These; this; that; these)
 open import Function using (id; _∘_ ; _∘′_; const; flip)
 open import Level using (Level)
@@ -193,7 +193,7 @@ applyDownFrom f (suc n) = f n ∷ applyDownFrom f n
 
 tabulate : ∀ {n} (f : Fin n → A) → List A
 tabulate {n = zero}  f = []
-tabulate {n = suc n} f = f Fin.zero ∷ tabulate (f ∘ Fin.suc)
+tabulate {n = suc n} f = f zero ∷ tabulate (f ∘ suc)
 
 lookup : ∀ (xs : List A) → Fin (length xs) → A
 lookup (x ∷ xs) zero    = x
@@ -212,7 +212,7 @@ allFin n = tabulate id
 
 -- Other
 
-unfold : ∀ {a b} {A : Set a} (B : ℕ → Set b)
+unfold : ∀ {A : Set a} (B : ℕ → Set b)
          (f : ∀ {n} → B (suc n) → Maybe (A × B n)) →
          ∀ {n} → B n → List A
 unfold B f {n = zero}  s = []
@@ -325,7 +325,7 @@ xs ∷ʳ x = xs ++ [ x ]
 
 infixl 5 _∷ʳ'_
 
-data InitLast {a} {A : Set a} : List A → Set a where
+data InitLast {A : Set a} : List A → Set a where
   []    : InitLast []
   _∷ʳ'_ : (xs : List A) (x : A) → InitLast (xs ∷ʳ x)
 
