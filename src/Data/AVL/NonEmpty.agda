@@ -53,20 +53,17 @@ module _ {v} {V : Value v} where
   insert k v (tree t) with Indexed.insert k v t ⊥⁺<[ k ]<⊤⁺
   ... | Indexed.0# , t′ = tree t′
   ... | Indexed.1# , t′ = tree t′
-  ... | Indexed.## , t′
 
   insertWith : (k : Key) → (Maybe (Val k) → Val k) → Tree⁺ V → Tree⁺ V
   insertWith k f (tree t) with Indexed.insertWith k f t ⊥⁺<[ k ]<⊤⁺
   ... | Indexed.0# , t′ = tree t′
   ... | Indexed.1# , t′ = tree t′
-  ... | Indexed.## , t′
 
   delete : Key → Tree⁺ V → Maybe (Tree⁺ V)
-  delete k (tree {h} t) with Indexed.delete k t ⊥⁺<[ k ]<⊤⁺
-  ... | Indexed.1# , t′ = just (tree t′)
+  delete k (tree {h}     t) with Indexed.delete k t ⊥⁺<[ k ]<⊤⁺
+  delete k (tree {h}     t) | Indexed.1# , t′ = just (tree t′)
   delete k (tree {0}     t) | Indexed.0# , t′ = nothing
   delete k (tree {suc h} t) | Indexed.0# , t′ = just (tree t′)
-  ... | Indexed.## , t′
 
   lookup : (k : Key) → Tree⁺ V → Maybe (Val k)
   lookup k (tree t) = Indexed.lookup k t ⊥⁺<[ k ]<⊤⁺

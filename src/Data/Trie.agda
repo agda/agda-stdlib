@@ -4,7 +4,7 @@
 -- Trie, basic type and operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --without-K --safe --sized-types #-}
 
 open import Relation.Binary using (Rel; StrictTotalOrder)
 
@@ -20,19 +20,27 @@ open import Data.These as These using (These)
 open import Function
 open import Relation.Unary using (IUniversal; _⇒_)
 
--- Trie is defined in terms of Trie⁺, the type of non-empty trie. This guarantees
--- that the trie is minimal: each path in the tree leads to either a value or a
--- number of non-empty sub-tries.
-
 private
   module S = StrictTotalOrder S
 
 open import Data.List.Relation.Binary.Equality.Setoid S.Eq.setoid
 open import Data.AVL.Value using (Value; module Value)
-open import Data.Trie.NonEmpty S as Trie⁺ using (Trie⁺; Tries⁺; Word; eat) public
+
+------------------------------------------------------------------------
+-- Definition
+
+-- Trie is defined in terms of Trie⁺, the type of non-empty trie. This
+-- guarantees that the trie is minimal: each path in the tree leads to
+-- either a value or a number of non-empty sub-tries.
+
+open import Data.Trie.NonEmpty S as Trie⁺ public
+  using (Trie⁺; Tries⁺; Word; eat)
 
 Trie : ∀ v V → Size → Set (v ⊔ k ⊔ e ⊔ r)
 Trie v V i = Maybe (Trie⁺ v V i)
+
+------------------------------------------------------------------------
+-- Operations
 
 -- Functions acting on Trie are wrappers for functions acting on Tries.
 -- Sometimes the empty case is handled in a special way (e.g. insertWith
@@ -42,6 +50,7 @@ module _ {v} {V : Value ≋-setoid (v ⊔ k ⊔ e ⊔ r)} where
 
   private Val = Value.family V
 
+------------------------------------------------------------------------
 -- Lookup
 
   lookup : ∀ ks → Trie v V ∞ → Maybe (These (Val ks) (Tries⁺ v (eat V ks) ∞))
@@ -56,6 +65,7 @@ module _ {v} {V : Value ≋-setoid (v ⊔ k ⊔ e ⊔ r)} where
   lookupTrie : ∀ k → Trie v V ∞ → Trie v (eat V (k ∷ [])) ∞
   lookupTrie k t = t Maybe.>>= Trie⁺.lookupTrie⁺ k
 
+------------------------------------------------------------------------
 -- Construction
 
   empty : Trie v V ∞
@@ -77,6 +87,7 @@ module _ {v} {V : Value ≋-setoid (v ⊔ k ⊔ e ⊔ r)} where
   toList : ∀ {i} → Trie⁺ v V i → List (∃ Val)
   toList = List⁺.toList ∘′ Trie⁺.toList⁺
 
+------------------------------------------------------------------------
 -- Modification
 
 module _ {v} {V : Value ≋-setoid (v ⊔ k ⊔ e ⊔ r)}
@@ -91,6 +102,8 @@ module _ {v} {V : Value ≋-setoid (v ⊔ k ⊔ e ⊔ r)}
   map = Maybe.map ∘′ Trie⁺.map v w V W
 
 -- Deletion
+
+module _ {v} {V : Value ≋-setoid (v ⊔ k ⊔ e ⊔ r)} where
 
   -- Use a function to decide how to modify the sub-Trie⁺ whose root is
   -- at the end of path ks.

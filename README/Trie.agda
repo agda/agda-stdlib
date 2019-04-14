@@ -4,24 +4,24 @@
 -- Example use case for a trie: a wee generic lexer
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --without-K --safe --sized-types #-}
 
 module README.Trie where
 
 ------------------------------------------------------------------------
 -- Introduction
 
--- A Trie is a tree of values indexed by words in a finite language. It allows
--- users to quickly compute the Brzozowski derivative of that little mapping
--- from words to values.
+-- A Trie is a tree of values indexed by words in a finite language. It
+-- allows users to quickly compute the Brzozowski derivative of that
+-- little mapping from words to values.
 
--- We can recognize keywords by storing the list of characters they correspond
--- to as paths in a Trie and the constructor they are decoded to as the tree's
--- values.
+-- We can recognize keywords by storing the list of characters they
+-- correspond to as paths in a Trie and the constructor they are decoded
+-- to as the tree's values.
 
 -- E.g.
 -- [     .      ] is a root
--- [  -- m -->  ] is an m-labeled edge, meaning it is followed when reading 'm'
+-- [  -- m -->  ] is an m-labeled edge and is followed when reading 'm'
 -- [    (X)     ] is a value leaf storing constructor X
 
 --                     --> -- m --> -- m --> -- a --> (LEMMA)
@@ -48,6 +48,7 @@ open import Level
 open import Data.Unit
 open import Data.Bool
 open import Data.Char          as Char
+import Data.Char.Properties    as Char
 open import Data.List          as List using (List; []; _∷_)
 open import Data.List.NonEmpty as List⁺ using (List⁺; _∷_)
 open import Data.Maybe         as Maybe
@@ -60,7 +61,6 @@ open import Function using (case_of_; _$_; _∘′_; id)
 open import Data.Trie Char.strictTotalOrder
 open import Data.AVL.Value
 
-
 ------------------------------------------------------------------------
 -- Generic lexer
 
@@ -71,12 +71,12 @@ module Lexer
   -- * keywords (as Strings)
   -- * keywords (as token values)
   (lex : List⁺ (String × Tok))
-  -- Some characters are special: they are separators, breaking a string into
-  -- a list of tokens. Some are associated to a token value (e.g. parentheses)
-  -- others are not (e.g. space)
+  -- Some characters are special: they are separators, breaking a string
+  -- into a list of tokens. Some are associated to a token value
+  -- (e.g. parentheses) others are not (e.g. space)
   (breaking : Char → ∃ λ b → if b then Maybe Tok else Lift _ ⊤)
-  -- Finally, strings which are not decoded as keywords are coerced using a
-  -- function to token values.
+  -- Finally, strings which are not decoded as keywords are coerced
+  -- using a function to token values.
   (default  : String → Tok)
   where
 
@@ -85,15 +85,17 @@ module Lexer
 
    mutual
 
-    -- We build a trie from the association list so that we may easily compute
-    -- the successive derivatives obtained by eating the characters one by one
+    -- We build a trie from the association list so that we may easily
+    -- compute the successive derivatives obtained by eating the
+    -- characters one by one
     Keywords : Set _
     Keywords = Trie _ (const _ Tok) _
 
     init : Keywords
     init = fromList $ List⁺.toList $ List⁺.map (Prod.map₁ String.toList) lex
 
-    -- Kickstart the tokeniser with an empty accumulator and the initial trie.
+    -- Kickstart the tokeniser with an empty accumulator and the initial
+    -- trie.
     start : List Char → List Tok
     start = loop [] init
 
@@ -110,16 +112,16 @@ module Lexer
       (true , m)  → push acc $ maybe′ _∷_ id m $ start cs
       -- otherwise we see whether it leads to a recognized keyword
       (false , _) → case lookupValue (c ∷ []) toks of λ where
-        -- if so we can forget about the current accumulator and restart
-        -- the tokenizer on the rest of the input
+        -- if so we can forget about the current accumulator and
+        -- restart the tokenizer on the rest of the input
         (just tok) → tok ∷ start cs
         -- otherwise we record the character we read in the accumulator,
-        -- compute the derivative of the map of keyword candidates and keep
-        -- going with the rest of the input
+        -- compute the derivative of the map of keyword candidates and
+        -- keep going with the rest of the input
         nothing    → loop (c ∷ acc) (lookupTrie c toks) cs
 
-    -- Grab the accumulator and, unless it is empty, push it on top of the
-    -- decoded list of tokens
+    -- Grab the accumulator and, unless it is empty, push it on top of
+    -- the decoded list of tokens
     push : List Char → List Tok → List Tok
     push [] ts = ts
     push cs ts = default (String.fromList (List.reverse cs)) ∷ ts

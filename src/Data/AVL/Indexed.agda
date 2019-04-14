@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Indexed AVL trees
+-- AVL trees where the stored values may depend on their key
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -109,7 +109,6 @@ module _ {v} {V : Value v} where
   joinˡ⁺ k₂ (1# , t₁)               t₃ ∼0  = (1# , node k₂ t₁ t₃ ∼-)
   joinˡ⁺ k₂ (1# , t₁)               t₃ ∼+  = (0# , node k₂ t₁ t₃ ∼0)
   joinˡ⁺ k₂ (0# , t₁)               t₃ bal = (0# , node k₂ t₁ t₃ bal)
-  joinˡ⁺ k₂ (## , t₁)               t₃ bal
 
   joinʳ⁺ : ∀ {l u hˡ hʳ h} →
            (k : K& V) →
@@ -128,7 +127,6 @@ module _ {v} {V : Value v} where
   joinʳ⁺ k₂ t₁ (1# , t₃)               ∼0  = (1# , node k₂ t₁ t₃ ∼+)
   joinʳ⁺ k₂ t₁ (1# , t₃)               ∼-  = (0# , node k₂ t₁ t₃ ∼0)
   joinʳ⁺ k₂ t₁ (0# , t₃)               bal = (0# , node k₂ t₁ t₃ bal)
-  joinʳ⁺ k₂ t₁ (## , t₃)               bal
 
   joinˡ⁻ : ∀ {l u} hˡ {hʳ h} →
            (k : K& V) →
@@ -142,7 +140,6 @@ module _ {v} {V : Value v} where
   joinˡ⁻ (suc _) k₂ (0# , t₁) t₃ ∼0  = (1# , node k₂ t₁ t₃ ∼+)
   joinˡ⁻ (suc _) k₂ (0# , t₁) t₃ ∼-  = (0# , node k₂ t₁ t₃ ∼0)
   joinˡ⁻ (suc _) k₂ (1# , t₁) t₃ bal = (1# , node k₂ t₁ t₃ bal)
-  joinˡ⁻ n       k₂ (## , t₁) t₃ bal
 
   joinʳ⁻ : ∀ {l u hˡ} hʳ {h} →
            (k : K& V) →
@@ -156,7 +153,6 @@ module _ {v} {V : Value v} where
   joinʳ⁻ (suc _) k₂ t₁ (0# , t₃) ∼0  = (1# , node k₂ t₁ t₃ ∼-)
   joinʳ⁻ (suc _) k₂ t₁ (0# , t₃) ∼+  = (0# , node k₂ t₁ t₃ ∼0)
   joinʳ⁻ (suc _) k₂ t₁ (1# , t₃) bal = (1# , node k₂ t₁ t₃ bal)
-  joinʳ⁻ n       k₂ t₁ (## , t₃) bal
 
   -- Extracts the smallest element from the tree, plus the rest.
   -- Logarithmic in the size of the tree.
