@@ -503,9 +503,15 @@ Non-backwards compatible changes
 
 #### Other changes
 
-* The following changes are done to  Data.Nat.Properties.
-  * The proofs ``1+n≢0, m∸n≢0⇒n<m`` added.
-  * A faster version for ``<-cmp`` is implemented.
+* The proof ``≢-sym`` added to  Relation.Binary.PropositionalEquality.Core.
+
+* The proofs ``n≢0⇒n>0, m<m*n`  added to  Data.Nat.Properties.
+
+* In Data.Nat.DivMod:  the proof ``[a/n]*n≤a`` added,
+  ``open ≡-Resoning`` removed, the usage of equality/inequiality reasoning
+  is simplified.
+
+* A faster version for  Data.Nat.Show.show  is implemented.
 
 * The proof `sel⇒idem` in `Algebra.FunctionProperties.Consequences` now
   only takes the equality relation as an argument instead of a full `Setoid`.
