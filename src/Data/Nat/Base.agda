@@ -2,6 +2,8 @@
 -- The Agda standard library
 --
 -- Natural numbers, basic types and operations
+--
+-- See also Induction.Nat (for example, if you're seeking an eliminator).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
