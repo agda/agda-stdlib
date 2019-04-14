@@ -212,13 +212,13 @@ allFin n = tabulate id
 
 -- Other
 
-unfold : ∀ {A : Set a} (B : ℕ → Set b)
-         (f : ∀ {n} → B (suc n) → Maybe (A × B n)) →
-         ∀ {n} → B n → List A
-unfold B f {n = zero}  s = []
-unfold B f {n = suc n} s with f s
+unfold : ∀ (P : ℕ → Set b)
+         (f : ∀ {n} → P (suc n) → Maybe (A × P n)) →
+         ∀ {n} → P n → List A
+unfold P f {n = zero}  s = []
+unfold P f {n = suc n} s with f s
 ... | nothing       = []
-... | just (x , s') = x ∷ unfold B f s'
+... | just (x , s') = x ∷ unfold P f s'
 
 ------------------------------------------------------------------------
 -- Operations for deconstructing lists
@@ -256,37 +256,37 @@ splitAt (suc n) []       = ([] , [])
 splitAt (suc n) (x ∷ xs) with splitAt n xs
 ... | (ys , zs) = (x ∷ ys , zs)
 
-takeWhile : ∀ {p} {P : Pred A p} → Decidable P → List A → List A
+takeWhile : ∀ {P : Pred A p} → Decidable P → List A → List A
 takeWhile P? []       = []
 takeWhile P? (x ∷ xs) with P? x
 ... | yes _ = x ∷ takeWhile P? xs
 ... | no  _ = []
 
-dropWhile : ∀ {p} {P : Pred A p} → Decidable P → List A → List A
+dropWhile : ∀ {P : Pred A p} → Decidable P → List A → List A
 dropWhile P? []       = []
 dropWhile P? (x ∷ xs) with P? x
 ... | yes _ = dropWhile P? xs
 ... | no  _ = x ∷ xs
 
-filter : ∀ {p} {P : Pred A p} → Decidable P → List A → List A
+filter : ∀ {P : Pred A p} → Decidable P → List A → List A
 filter P? [] = []
 filter P? (x ∷ xs) with P? x
 ... | no  _ = filter P? xs
 ... | yes _ = x ∷ filter P? xs
 
-partition : ∀ {p} {P : Pred A p} → Decidable P → List A → (List A × List A)
+partition : ∀ {P : Pred A p} → Decidable P → List A → (List A × List A)
 partition P? []       = ([] , [])
 partition P? (x ∷ xs) with P? x | partition P? xs
 ... | yes _ | (ys , zs) = (x ∷ ys , zs)
 ... | no  _ | (ys , zs) = (ys , x ∷ zs)
 
-span : ∀ {p} {P : Pred A p} → Decidable P → List A → (List A × List A)
+span : ∀ {P : Pred A p} → Decidable P → List A → (List A × List A)
 span P? []       = ([] , [])
 span P? (x ∷ xs) with P? x
 ... | yes _ = Prod.map (x ∷_) id (span P? xs)
 ... | no  _ = ([] , x ∷ xs)
 
-break : ∀ {p} {P : Pred A p} → Decidable P → List A → (List A × List A)
+break : ∀ {P : Pred A p} → Decidable P → List A → (List A × List A)
 break P? = span (∁? P?)
 
 ------------------------------------------------------------------------
