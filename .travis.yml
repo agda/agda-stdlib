@@ -47,7 +47,7 @@ install:
       mkdir -p $HOME/.ghc $HOME/.cabal/lib $HOME/.cabal/share $HOME/.cabal/bin;
     fi
   - cabal install cpphs
-  - cabal install agda
+  - cabal install Agda
   # snapshot package-db on cache miss
   - echo "snapshotting package-db to build-cache";
     mkdir $HOME/.cabsnap;
@@ -55,7 +55,7 @@ install:
     cp -a $HOME/.cabal/lib $HOME/.cabal/share $HOME/.cabal/bin $HOME/installplan.txt $HOME/.cabsnap/;
   # installing fix-agda-whitespace
   - git clone https://github.com/agda/agda --depth=1
-  - cd src/fix-agda-whitespace
+  - cd agda/src/fix-agda-whitespace
   - cabal install fix-agda-whitespace.cabal
   - cd -
   - yes | rm -R agda/
