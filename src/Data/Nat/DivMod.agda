@@ -10,18 +10,16 @@ module Data.Nat.DivMod where
 
 open import Agda.Builtin.Nat using (div-helper; mod-helper)
 
-open import Data.Fin            using (Fin; toℕ; fromℕ≤)
+open import Data.Fin using (Fin; toℕ; fromℕ≤)
 open import Data.Fin.Properties using (toℕ-fromℕ≤)
 open import Data.Nat as Nat
 open import Data.Nat.DivMod.Core
-open import Data.Nat.Properties using (≤⇒≤″; +-assoc; +-comm; +-identityʳ;
-                                       m≤m+n; module ≤-Reasoning)
+open import Data.Nat.Properties using (≤⇒≤″; +-assoc; +-comm; +-identityʳ)
 open import Function using (_$_)
-open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary.Decidable using (False)
+open import Relation.Binary.PropositionalEquality
 
-open ≤-Reasoning
-
+open ≡-Reasoning
 
 ------------------------------------------------------------------------
 -- Basic operations
@@ -63,7 +61,7 @@ a%n%n≡a%n a n = modₕ-idem 0 a n
 
 [a+kn]%n≡a%n : ∀ a k n → (a + k * (suc n)) % suc n ≡ a % suc n
 [a+kn]%n≡a%n a zero    n = cong (_% suc n) (+-identityʳ a)
-[a+kn]%n≡a%n a (suc k) n = begin-equality
+[a+kn]%n≡a%n a (suc k) n = begin
   (a + (m + k * m)) % m ≡⟨ cong (_% m) (sym (+-assoc a m (k * m))) ⟩
   (a + m + k * m)   % m ≡⟨ [a+kn]%n≡a%n (a + m) k n ⟩
   (a + m)           % m ≡⟨ [a+n]%n≡a%n a n ⟩
@@ -73,17 +71,8 @@ a%n%n≡a%n a n = modₕ-idem 0 a n
 kn%n≡0 : ∀ k n → k * (suc n) % suc n ≡ 0
 kn%n≡0 = [a+kn]%n≡a%n 0
 
-[a/n]*n≤a : ∀ a n → (a div (suc n)) * (suc n) ≤ a
-[a/n]*n≤a a n =
-  begin (a div n') * n'             ≤⟨ m≤m+n ((a div n') * n') (a % n') ⟩
-        (a div n') * n' + a % n'   ≡⟨ +-comm _ (a % n') ⟩
-        a % n' + (a div n') * n'   ≡⟨ sym (a≡a%n+[a/n]*n a n) ⟩
-        a
-  ∎
-  where n' = suc n
-
 %-distribˡ-+ : ∀ a b n → (a + b) % suc n ≡ (a % suc n + b % suc n) % suc n
-%-distribˡ-+ a b n = begin-equality
+%-distribˡ-+ a b n = begin
   (a + b)                           % m ≡⟨ cong (λ v → (v + b) % m) (a≡a%n+[a/n]*n a n) ⟩
   (a % m +  a div m * m + b)        % m ≡⟨ cong (_% m) (+-assoc (a % m) _ b) ⟩
   (a % m + (a div m * m + b))       % m ≡⟨ cong (λ v → (a % m + v) % m) (+-comm _ b) ⟩
@@ -112,7 +101,7 @@ _mod_ : (dividend divisor : ℕ) {≢0 : False (divisor ≟ 0)} → Fin divisor
 _divMod_ : (dividend divisor : ℕ) {≢0 : False (divisor ≟ 0)} →
            DivMod dividend divisor
 (a divMod 0) {}
-(a divMod suc n) = result (a div suc n) (a mod suc n) $ begin-equality
+(a divMod suc n) = result (a div suc n) (a mod suc n) $ begin
   a                                   ≡⟨ a≡a%n+[a/n]*n a n ⟩
   a % suc n                + [a/n]*n  ≡⟨ cong (_+ [a/n]*n) (sym (toℕ-fromℕ≤ (a%n<n a n))) ⟩
   toℕ (fromℕ≤ (a%n<n a n)) + [a/n]*n  ∎

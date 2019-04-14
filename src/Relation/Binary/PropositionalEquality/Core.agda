@@ -12,7 +12,6 @@
 module Relation.Binary.PropositionalEquality.Core where
 
 open import Data.Product using (_,_)
-open import Function     using (_∘_)
 open import Level
 open import Relation.Binary.Core
 open import Relation.Nullary using (¬_)
@@ -58,9 +57,6 @@ module _ {a} {A : Set a} where
     ; sym   = sym
     ; trans = trans
     }
-
-  ≢-sym : Symmetric {A = A} _≢_
-  ≢-sym x≢y =  x≢y ∘ sym
 
 ------------------------------------------------------------------------
 -- Various equality rearrangement lemmas
