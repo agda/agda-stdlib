@@ -28,6 +28,11 @@ Data.List.Relation.Unary.Unique.Setoid.Properties
 Non-backwards compatible changes
 --------------------------------
 
+* In `Reflection`, `returnT` is renamed to `return`.
+
+Removed features
+----------------
+
 Deprecated features
 -------------------
 
@@ -71,3 +76,18 @@ Other minor additions
   ```agda
   ≢-sym : Symmetric {A = A} _≢_
   ```
+
+* Reflection re-exports all operations and types defined in `Agda.Builtin.Reflection`.
+  In detail,
+
+  * For `TC` monad`: reduce`, `declarePostulate`, `commitTC`, `isMacro`, and `withNormalisation` are now re-exported.
+`returnT` is renamed to `return` and infix notations `_>>=_` and `_>>_` for bind operation are added.
+  * For `Fixity`: `non-assoc`, `related`, `unrelated`, and `fixity` are
+    re-exported.  `left-assoc` is renamed to `assocˡ`, `right-assoc` to
+`assocʳ`, and `primQNameFixity` to `getFixity`.
+
+* Reflection adds some (experimental) pattern synonyms. E.g.,
+
+  * `vArg` for visible relevant argument `arg (arg-info visible relevant)`
+  * `hLam s t` for lambda abstraction with a hidden variable `lam hidden (abs s t)`
+  * `hΠ[_∶_]_ s a ty` for Π type with an implicit index, i.e. `pi (arg (arg-info hidden relevant) a) (abs s ty)`
