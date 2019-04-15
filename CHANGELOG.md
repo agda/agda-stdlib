@@ -55,6 +55,7 @@ Other minor additions
 * Added new proofs to `Data.Nat.Properties`:
   ```agda
   n≢0⇒n>0 : n ≢ 0 → n > 0
+  m≤m*n   : 0 < n → m ≤ m * n
   m<m*n   : 0 < m → 1 < n → m < m * n
   ```
 
