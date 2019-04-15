@@ -27,7 +27,7 @@ _≢_ : ∀ {a} {A : Set a} → Rel A a
 x ≢ y = ¬ x ≡ y
 
 ------------------------------------------------------------------------
--- Some properties
+-- Properties of _≡_
 
 module _ {a} {A : Set a} where
 
@@ -59,9 +59,6 @@ module _ {a} {A : Set a} where
     ; trans = trans
     }
 
-  ≢-sym : Symmetric {A = A} _≢_
-  ≢-sym x≢y =  x≢y ∘ sym
-
 ------------------------------------------------------------------------
 -- Various equality rearrangement lemmas
 
@@ -79,6 +76,12 @@ module _ {a} {A : Set a} {x y : A} where
 
   trans-symʳ : (p : x ≡ y) → trans p (sym p) ≡ refl
   trans-symʳ refl = refl
+
+------------------------------------------------------------------------
+-- Properties of _≢_
+
+  ≢-sym : Symmetric {A = A} _≢_
+  ≢-sym x≢y =  x≢y ∘ sym
 
 ------------------------------------------------------------------------
 -- Convenient syntax for equational reasoning

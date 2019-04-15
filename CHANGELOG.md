@@ -42,7 +42,7 @@ Other minor additions
   applyDownFrom⁺₂ : (∀ i → P (f i)) → All P (applyDownFrom f n)
   ```
 
-* Added new proof to `Data.Nat.DivMod`:  
+* Added new proof to `Data.Nat.DivMod`:
   ```agda
   [a/n]*n≤a : (a div (suc n)) * (suc n) ≤ a
   ```
