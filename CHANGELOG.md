@@ -59,8 +59,8 @@ Other minor additions
   m<m*n   : 0 < m → 1 < n → m < m * n
   ```
 
-* The function `show` in `Data.Nat.Show` has been reimplemented and now
-  no longer has exponential time complexity when compiled.
+* The function `show` in `Data.Nat.Show` has been reimplemented and,
+  when compiled, now runs in time `O(log₁₀(n))` rather than `O(n)`.
 
 * Added new proof to `Relation.Binary.PropositionalEquality.Core`:
   ```agda
