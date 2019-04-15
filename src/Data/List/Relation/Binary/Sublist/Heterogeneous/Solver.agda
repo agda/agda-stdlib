@@ -8,14 +8,15 @@
 
 open import Relation.Binary using (Rel; Reflexive; Decidable)
 
-module Data.List.Relation.Binary.Sublist.Homogeneous.Solver
-       {a r} {A : Set a} (R : Rel A r)
--- Note that we only need the two following constraints to define the solver
--- itself. The data structures do not depent on them.
--- However, having the whole module parametrised by them means that we can
+module Data.List.Relation.Binary.Sublist.Heterogeneous.Solver
+  {a r} {A : Set a} (R : Rel A r)
+  (R-refl : Reflexive R) (R? : Decidable R)
+  where
+
+-- Note that we only need the above two constraints to define the
+-- solver itself. The data structures do not depend on them. However,
+-- having the whole module parametrised by them means that we can
 -- instantiate them upon import.
-       (R-refl : Reflexive R) (R? : Decidable R)
-       where
 
 open import Level using (_⊔_)
 open import Data.Fin as Fin
@@ -25,8 +26,9 @@ open import Data.Product
 open import Data.Vec as Vec using (Vec ; lookup)
 open import Data.List hiding (lookup)
 open import Data.List.Properties
-open import Data.List.Relation.Binary.Sublist.Heterogeneous hiding (lookup)
-open import Data.List.Relation.Binary.Sublist.Homogeneous.Properties
+open import Data.List.Relation.Binary.Sublist.Heterogeneous
+  hiding (lookup)
+open import Data.List.Relation.Binary.Sublist.Heterogeneous.Properties
 open import Function
 
 open import Relation.Binary.PropositionalEquality as P

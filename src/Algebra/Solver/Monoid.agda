@@ -85,7 +85,7 @@ homomorphic [] nf₂ ρ = begin
   ⟦ nf₂ ⟧⇓ ρ      ≈⟨ sym $ identityˡ _ ⟩
   ε ∙ ⟦ nf₂ ⟧⇓ ρ  ∎
 homomorphic (x ∷ nf₁) nf₂ ρ = begin
-  lookup ρ x ∙ ⟦ nf₁ ++ nf₂ ⟧⇓ ρ          ≈⟨ ∙-congʳ (homomorphic nf₁ nf₂ ρ) ⟩
+  lookup ρ x ∙ ⟦ nf₁ ++ nf₂ ⟧⇓ ρ          ≈⟨ ∙-congˡ (homomorphic nf₁ nf₂ ρ) ⟩
   lookup ρ x ∙ (⟦ nf₁ ⟧⇓ ρ ∙ ⟦ nf₂ ⟧⇓ ρ)  ≈⟨ sym $ assoc _ _ _ ⟩
   lookup ρ x ∙ ⟦ nf₁ ⟧⇓ ρ ∙ ⟦ nf₂ ⟧⇓ ρ    ∎
 
