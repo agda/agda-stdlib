@@ -9,9 +9,11 @@
 
 open import Relation.Binary using (Rel; Setoid; IsEquivalence)
 
--- The structures are parameterised by an equivalence relation
-
 module Algebra.Structures {a ℓ} {A : Set a} (_≈_ : Rel A ℓ) where
+
+-- All the structures are parameterised by the equivalence relation _≈_.
+-- The file is divided into sections depending on the arities of the
+-- components of the algebraic structure.
 
 open import Algebra.FunctionProperties _≈_
 import Algebra.FunctionProperties.Consequences as Consequences
@@ -19,7 +21,8 @@ open import Data.Product using (_,_; proj₁; proj₂)
 open import Level using (_⊔_)
 
 ------------------------------------------------------------------------
--- Semigroups
+-- Structures with 1 binary operation
+------------------------------------------------------------------------
 
 record IsMagma (∙ : Op₂ A) : Set (a ⊔ ℓ) where
   field
@@ -37,6 +40,7 @@ record IsMagma (∙ : Op₂ A) : Set (a ⊔ ℓ) where
   ∙-congʳ : RightCongruent ∙
   ∙-congʳ y≈z = ∙-cong y≈z refl
 
+
 record IsSemigroup (∙ : Op₂ A) : Set (a ⊔ ℓ) where
   field
     isMagma : IsMagma ∙
@@ -44,12 +48,14 @@ record IsSemigroup (∙ : Op₂ A) : Set (a ⊔ ℓ) where
 
   open IsMagma isMagma public
 
+
 record IsBand (∙ : Op₂ A) : Set (a ⊔ ℓ) where
   field
     isSemigroup : IsSemigroup ∙
     idem        : Idempotent ∙
 
   open IsSemigroup isSemigroup public
+
 
 record IsSemilattice (∧ : Op₂ A) : Set (a ⊔ ℓ) where
   field
@@ -59,8 +65,10 @@ record IsSemilattice (∧ : Op₂ A) : Set (a ⊔ ℓ) where
   open IsBand isBand public
     renaming (∙-cong to ∧-cong; ∙-congˡ to ∧-congˡ; ∙-congʳ to ∧-congʳ)
 
+
 ------------------------------------------------------------------------
--- Monoids
+-- Structures with 1 binary operation & 1 element
+------------------------------------------------------------------------
 
 record IsMonoid (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
   field
@@ -74,6 +82,7 @@ record IsMonoid (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
 
   identityʳ : RightIdentity ε ∙
   identityʳ = proj₂ identity
+
 
 record IsCommutativeMonoid (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
   field
@@ -95,6 +104,7 @@ record IsCommutativeMonoid (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
     ; identity    = identity
     }
 
+
 record IsIdempotentCommutativeMonoid (∙ : Op₂ A)
                                      (ε : A) : Set (a ⊔ ℓ) where
   field
@@ -103,8 +113,10 @@ record IsIdempotentCommutativeMonoid (∙ : Op₂ A)
 
   open IsCommutativeMonoid isCommutativeMonoid public
 
+
 ------------------------------------------------------------------------
--- Groups
+-- Structures with 1 binary operation, 1 unary operation & 1 element
+------------------------------------------------------------------------
 
 record IsGroup (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) where
   field
@@ -132,6 +144,7 @@ record IsGroup (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) w
   uniqueʳ-⁻¹ = Consequences.assoc+id+invˡ⇒invʳ-unique
                 setoid ∙-cong assoc identity inverseˡ
 
+
 record IsAbelianGroup (∙ : Op₂ A)
                       (ε : A) (⁻¹ : Op₁ A) : Set (a ⊔ ℓ) where
   field
@@ -147,8 +160,61 @@ record IsAbelianGroup (∙ : Op₂ A)
     ; comm        = comm
     }
 
+
 ------------------------------------------------------------------------
--- Semirings
+-- Structures with 2 binary operations
+------------------------------------------------------------------------
+
+-- Note that `IsLattice` is not defined in terms of `IsSemilattice`
+-- because the idempotence laws of ∨ and ∧ can be derived from the
+-- absorption laws, which makes the corresponding "idem" fields
+-- redundant.  The derived idempotence laws are stated and proved in
+-- `Algebra.Properties.Lattice` along with the fact that every lattice
+-- consists of two semilattices.
+
+record IsLattice (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
+  field
+    isEquivalence : IsEquivalence _≈_
+    ∨-comm        : Commutative ∨
+    ∨-assoc       : Associative ∨
+    ∨-cong        : Congruent₂ ∨
+    ∧-comm        : Commutative ∧
+    ∧-assoc       : Associative ∧
+    ∧-cong        : Congruent₂ ∧
+    absorptive    : Absorptive ∨ ∧
+
+  open IsEquivalence isEquivalence public
+
+  ∨-absorbs-∧ : ∨ Absorbs ∧
+  ∨-absorbs-∧ = proj₁ absorptive
+
+  ∧-absorbs-∨ : ∧ Absorbs ∨
+  ∧-absorbs-∨ = proj₂ absorptive
+
+  ∧-congˡ : LeftCongruent ∧
+  ∧-congˡ y≈z = ∧-cong refl y≈z
+
+  ∧-congʳ : RightCongruent ∧
+  ∧-congʳ y≈z = ∧-cong y≈z refl
+
+  ∨-congˡ : LeftCongruent ∨
+  ∨-congˡ y≈z = ∨-cong refl y≈z
+
+  ∨-congʳ : RightCongruent ∨
+  ∨-congʳ y≈z = ∨-cong y≈z refl
+
+
+record IsDistributiveLattice (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
+  field
+    isLattice    : IsLattice ∨ ∧
+    ∨-∧-distribʳ : ∨ DistributesOverʳ ∧
+
+  open IsLattice isLattice public
+
+
+------------------------------------------------------------------------
+-- Structures with 2 binary operations & 1 element
+------------------------------------------------------------------------
 
 record IsNearSemiring (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
   field
@@ -180,6 +246,7 @@ record IsNearSemiring (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
     ; isMagma  to *-isMagma
     )
 
+
 record IsSemiringWithoutOne (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
   field
     +-isCommutativeMonoid : IsCommutativeMonoid + 0#
@@ -210,6 +277,20 @@ record IsSemiringWithoutOne (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
 
   open IsNearSemiring isNearSemiring public
     hiding (+-isMonoid; zeroˡ)
+
+
+record IsCommutativeSemiringWithoutOne
+         (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
+  field
+    isSemiringWithoutOne : IsSemiringWithoutOne + * 0#
+    *-comm               : Commutative *
+
+  open IsSemiringWithoutOne isSemiringWithoutOne public
+
+
+------------------------------------------------------------------------
+-- Structures with 2 binary operations & 2 elements
+------------------------------------------------------------------------
 
 record IsSemiringWithoutAnnihilatingZero (+ * : Op₂ A)
                                          (0# 1# : A) : Set (a ⊔ ℓ) where
@@ -255,6 +336,7 @@ record IsSemiringWithoutAnnihilatingZero (+ * : Op₂ A)
     ; isSemigroup to *-isSemigroup
     )
 
+
 record IsSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
   field
     isSemiringWithoutAnnihilatingZero :
@@ -279,13 +361,6 @@ record IsSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
     ; zeroʳ
     )
 
-record IsCommutativeSemiringWithoutOne
-         (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
-  field
-    isSemiringWithoutOne : IsSemiringWithoutOne + * 0#
-    *-comm               : Commutative *
-
-  open IsSemiringWithoutOne isSemiringWithoutOne public
 
 record IsCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
   field
@@ -336,8 +411,10 @@ record IsCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
     ; *-comm               = *-CM.comm
     }
 
+
 ------------------------------------------------------------------------
--- Rings
+-- Structures with 2 binary operations, 1 unary operation & 2 elements
+------------------------------------------------------------------------
 
 record IsRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
   field
@@ -409,6 +486,7 @@ record IsRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
   open IsSemiring isSemiring public
     using (distribˡ; distribʳ; isNearSemiring; isSemiringWithoutOne)
 
+
 record IsCommutativeRing
          (+ * : Op₂ A) (- : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
   field
@@ -435,53 +513,6 @@ record IsCommutativeRing
   open IsCommutativeSemiring isCommutativeSemiring public
     using ( isCommutativeSemiringWithoutOne )
 
-------------------------------------------------------------------------
--- Lattices
-
--- Note that this record is not defined in terms of IsSemilattice
--- because the idempotence laws of ∨ and ∧ can be derived from the
--- absorption laws, which makes the corresponding "idem" fields
--- redundant.  The derived idempotence laws are stated and proved in
--- Algebra.Properties.Lattice along with the fact that every lattice
--- consists of two semilattices.
-
-record IsLattice (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
-  field
-    isEquivalence : IsEquivalence _≈_
-    ∨-comm        : Commutative ∨
-    ∨-assoc       : Associative ∨
-    ∨-cong        : Congruent₂ ∨
-    ∧-comm        : Commutative ∧
-    ∧-assoc       : Associative ∧
-    ∧-cong        : Congruent₂ ∧
-    absorptive    : Absorptive ∨ ∧
-
-  open IsEquivalence isEquivalence public
-
-  ∨-absorbs-∧ : ∨ Absorbs ∧
-  ∨-absorbs-∧ = proj₁ absorptive
-
-  ∧-absorbs-∨ : ∧ Absorbs ∨
-  ∧-absorbs-∨ = proj₂ absorptive
-
-  ∧-congˡ : LeftCongruent ∧
-  ∧-congˡ y≈z = ∧-cong refl y≈z
-
-  ∧-congʳ : RightCongruent ∧
-  ∧-congʳ y≈z = ∧-cong y≈z refl
-
-  ∨-congˡ : LeftCongruent ∨
-  ∨-congˡ y≈z = ∨-cong refl y≈z
-
-  ∨-congʳ : RightCongruent ∨
-  ∨-congʳ y≈z = ∨-cong y≈z refl
-
-record IsDistributiveLattice (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
-  field
-    isLattice    : IsLattice ∨ ∧
-    ∨-∧-distribʳ : ∨ DistributesOverʳ ∧
-
-  open IsLattice isLattice public
 
 record IsBooleanAlgebra
          (∨ ∧ : Op₂ A) (¬ : Op₁ A) (⊤ ⊥ : A) : Set (a ⊔ ℓ) where

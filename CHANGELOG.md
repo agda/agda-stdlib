@@ -41,9 +41,6 @@ New modules
   Data.Trie.NonEmpty
   ```
 
-Removed features
-----------------
-
 Deprecated features
 -------------------
 
@@ -53,6 +50,11 @@ Other minor additions
 * Added new function to `Data.AVL.Indexed`:
   ```agda
   toList : Tree V l u h → List (K& V)
+  ```
+
+* Added new function to `Data.Digit`:
+  ```agda
+  toNatDigits : (base : ℕ) {base≤16 : True (1 ≤? base)} → ℕ → List ℕ
   ```
 
 * Added new proofs to `Data.List.Relation.Unary.All.Properties`:
@@ -67,4 +69,24 @@ Other minor additions
   ```agda
   ap        : Maybe (A → B) → Maybe A → Maybe B
   _>>=_     : Maybe A → (A → Maybe B) → Maybe B
+  ```
+
+* Added new proof to `Data.Nat.DivMod`:
+  ```agda
+  [a/n]*n≤a : (a div (suc n)) * (suc n) ≤ a
+  ```
+
+* Added new proofs to `Data.Nat.Properties`:
+  ```agda
+  n≢0⇒n>0 : n ≢ 0 → n > 0
+  m≤m*n   : 0 < n → m ≤ m * n
+  m<m*n   : 0 < m → 1 < n → m < m * n
+  ```
+
+* The function `show` in `Data.Nat.Show` has been reimplemented and now
+  no longer has exponential time complexity when compiled.
+
+* Added new proof to `Relation.Binary.PropositionalEquality.Core`:
+  ```agda
+  ≢-sym : Symmetric {A = A} _≢_
   ```
