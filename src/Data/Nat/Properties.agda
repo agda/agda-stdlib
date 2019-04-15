@@ -48,14 +48,10 @@ suc-injective refl = refl
 ≡ᵇ⇒≡ : ∀ m n → T (m ≡ᵇ n) → m ≡ n
 ≡ᵇ⇒≡ zero    zero    _  = refl
 ≡ᵇ⇒≡ (suc m) (suc n) eq = cong suc (≡ᵇ⇒≡ m n eq)
-≡ᵇ⇒≡ zero    (suc n) ()
-≡ᵇ⇒≡ (suc m) zero    ()
 
 ≡⇒≡ᵇ : ∀ m n → m ≡ n → T (m ≡ᵇ n)
 ≡⇒≡ᵇ zero    zero    eq = _
 ≡⇒≡ᵇ (suc m) (suc n) eq = ≡⇒≡ᵇ m n (suc-injective eq)
-≡⇒≡ᵇ zero    (suc n) ()
-≡⇒≡ᵇ (suc m) zero    ()
 
 -- NB: we use the builtin function `_≡ᵇ_ : (m n : ℕ) → Bool` here so
 -- that the function quickly decides whether to return `yes` or `no`.
@@ -273,7 +269,6 @@ _>?_ = flip _<?_
 <⇒≢ m<n refl = 1+n≰n m<n
 
 ≤⇒≯ : _≤_ ⇒ _≯_
-≤⇒≯ z≤n       ()
 ≤⇒≯ (s≤s m≤n) (s≤s n≤m) = ≤⇒≯ m≤n n≤m
 
 <⇒≱ : _<_ ⇒ _≱_
@@ -459,19 +454,16 @@ m≢0⇒suc[pred[m]]≡m {suc m} m≢0 = refl
 +-cancel-≡ = +-cancelˡ-≡ , +-cancelʳ-≡
 
 m≢1+m+n : ∀ m {n} → m ≢ suc (m + n)
-m≢1+m+n zero    ()
 m≢1+m+n (suc m) eq = m≢1+m+n m (cong pred eq)
 
 m≢1+n+m : ∀ m {n} → m ≢ suc (n + m)
 m≢1+n+m m m≡1+n+m = m≢1+m+n m (trans m≡1+n+m (cong suc (+-comm _ m)))
 
 i+1+j≢i : ∀ i {j} → i + suc j ≢ i
-i+1+j≢i zero    ()
 i+1+j≢i (suc i) = (i+1+j≢i i) ∘ suc-injective
 
 i+j≡0⇒i≡0 : ∀ i {j} → i + j ≡ 0 → i ≡ 0
 i+j≡0⇒i≡0 zero    eq = refl
-i+j≡0⇒i≡0 (suc i) ()
 
 i+j≡0⇒j≡0 : ∀ i {j} → i + j ≡ 0 → j ≡ 0
 i+j≡0⇒j≡0 i {j} i+j≡0 = i+j≡0⇒i≡0 j (trans (+-comm j i) (i+j≡0))
@@ -550,7 +542,6 @@ m+n≤o⇒n≤o (suc m) m+n<o = m+n≤o⇒n≤o m (<⇒≤ m+n<o)
 +-monoʳ-< (suc n) m≤o = s≤s (+-monoʳ-< n m≤o)
 
 i+1+j≰i : ∀ i {j} → i + suc j ≰ i
-i+1+j≰i zero    ()
 i+1+j≰i (suc i) le = i+1+j≰i i (≤-pred le)
 
 m+n≮n : ∀ m n → m + n ≮ n
@@ -710,8 +701,6 @@ n≤′m+n (suc m) n = ≤′-step (n≤′m+n m n)
 
 *-cancelʳ-≡ : ∀ i j {k} → i * suc k ≡ j * suc k → i ≡ j
 *-cancelʳ-≡ zero    zero        eq = refl
-*-cancelʳ-≡ zero    (suc j)     ()
-*-cancelʳ-≡ (suc i) zero        ()
 *-cancelʳ-≡ (suc i) (suc j) {k} eq =
   cong suc (*-cancelʳ-≡ i j (+-cancelˡ-≡ (suc k) eq))
 
@@ -722,12 +711,9 @@ n≤′m+n (suc m) n = ≤′-step (n≤′m+n m n)
 i*j≡0⇒i≡0∨j≡0 : ∀ i {j} → i * j ≡ 0 → i ≡ 0 ⊎ j ≡ 0
 i*j≡0⇒i≡0∨j≡0 zero    {j}     eq = inj₁ refl
 i*j≡0⇒i≡0∨j≡0 (suc i) {zero}  eq = inj₂ refl
-i*j≡0⇒i≡0∨j≡0 (suc i) {suc j} ()
 
 i*j≡1⇒i≡1 : ∀ i j → i * j ≡ 1 → i ≡ 1
 i*j≡1⇒i≡1 (suc zero)    j             _  = refl
-i*j≡1⇒i≡1 zero          j             ()
-i*j≡1⇒i≡1 (suc (suc i)) (suc (suc j)) ()
 i*j≡1⇒i≡1 (suc (suc i)) (suc zero)    ()
 i*j≡1⇒i≡1 (suc (suc i)) zero          eq =
   contradiction (trans (sym $ *-zeroʳ i) eq) λ()
@@ -737,7 +723,6 @@ i*j≡1⇒j≡1 i j eq = i*j≡1⇒i≡1 j i (trans (*-comm j i) eq)
 
 *-cancelʳ-≤ : ∀ i j k → i * suc k ≤ j * suc k → i ≤ j
 *-cancelʳ-≤ zero    _       _ _  = z≤n
-*-cancelʳ-≤ (suc i) zero    _ ()
 *-cancelʳ-≤ (suc i) (suc j) k le =
   s≤s (*-cancelʳ-≤ i j k (+-cancelˡ-≤ (suc k) le))
 
@@ -812,7 +797,6 @@ i*j≡1⇒j≡1 i j eq = i*j≡1⇒i≡1 j i (trans (*-comm j i) eq)
   m ^ (n * (suc p)) ∎
 
 i^j≡0⇒i≡0 : ∀ i j → i ^ j ≡ 0 → i ≡ 0
-i^j≡0⇒i≡0 i zero    ()
 i^j≡0⇒i≡0 i (suc j) eq = [ id , i^j≡0⇒i≡0 i j ]′ (i*j≡0⇒i≡0∨j≡0 i eq)
 
 i^j≡1⇒j≡0∨i≡1 : ∀ i j → i ^ j ≡ 1 → j ≡ 0 ⊎ i ≡ 1
@@ -1272,7 +1256,6 @@ n∸m≤n (suc m) zero    = ≤-refl
 n∸m≤n (suc m) (suc n) = ≤-trans (n∸m≤n m n) (n≤1+n n)
 
 m≮m∸n : ∀ m n → m ≮ m ∸ n
-m≮m∸n zero    (suc n) ()
 m≮m∸n m       zero    = n≮n m
 m≮m∸n (suc m) (suc n) = m≮m∸n m n ∘ ≤-trans (n≤1+n (suc m))
 
@@ -1289,7 +1272,6 @@ m≮m∸n (suc m) (suc n) = m≮m∸n m n ∘ ≤-trans (n≤1+n (suc m))
 
 m∸n≡0⇒m≤n : ∀ {m n} → m ∸ n ≡ 0 → m ≤ n
 m∸n≡0⇒m≤n {zero}  {_}    _   = z≤n
-m∸n≡0⇒m≤n {suc m} {zero} ()
 m∸n≡0⇒m≤n {suc m} {suc n} eq = s≤s (m∸n≡0⇒m≤n eq)
 
 m≤n⇒m∸n≡0 : ∀ {m n} → m ≤ n → m ∸ n ≡ 0
@@ -1298,7 +1280,6 @@ m≤n⇒m∸n≡0 {_}    (s≤s m≤n) = m≤n⇒m∸n≡0 m≤n
 
 -- Properties of _∸_ and _+_
 +-∸-comm : ∀ {m} n {o} → o ≤ m → (m + n) ∸ o ≡ (m ∸ o) + n
-+-∸-comm {zero}  _ {suc o} ()
 +-∸-comm {zero}  _ {zero}  _         = refl
 +-∸-comm {suc m} _ {zero}  _         = refl
 +-∸-comm {suc m} n {suc o} (s≤s o≤m) = +-∸-comm n o≤m
@@ -1426,13 +1407,10 @@ m≤n⇒∣n-m∣≡n∸m         (s≤s m≤n) = m≤n⇒∣n-m∣≡n∸m m≤
 
 ∣n-m∣≡0⇒n≡m : ∀ {n m} → ∣ n - m ∣ ≡ 0 → n ≡ m
 ∣n-m∣≡0⇒n≡m {zero}  {zero}  eq = refl
-∣n-m∣≡0⇒n≡m {zero}  {suc m} ()
-∣n-m∣≡0⇒n≡m {suc n} {zero}  ()
 ∣n-m∣≡0⇒n≡m {suc n} {suc m} eq = cong suc (∣n-m∣≡0⇒n≡m eq)
 
 ∣n-m∣≡n∸m⇒m≤n : ∀ {n m} → ∣ n - m ∣ ≡ n ∸ m → m ≤ n
 ∣n-m∣≡n∸m⇒m≤n {zero}  {zero}  eq = z≤n
-∣n-m∣≡n∸m⇒m≤n {zero}  {suc m} ()
 ∣n-m∣≡n∸m⇒m≤n {suc n} {zero}  eq = z≤n
 ∣n-m∣≡n∸m⇒m≤n {suc n} {suc m} eq = s≤s (∣n-m∣≡n∸m⇒m≤n eq)
 
@@ -1521,7 +1499,6 @@ private
 -- equivalence to _<ᵇ_
 
 m<ᵇn⇒1+m+[n-1+m]≡n : ∀ m n → T (m <ᵇ n) → suc m + (n ∸ suc m) ≡ n
-m<ᵇn⇒1+m+[n-1+m]≡n m       zero    ()
 m<ᵇn⇒1+m+[n-1+m]≡n zero    (suc n) lt = refl
 m<ᵇn⇒1+m+[n-1+m]≡n (suc m) (suc n) lt = cong suc (m<ᵇn⇒1+m+[n-1+m]≡n m n lt)
 
@@ -1547,7 +1524,6 @@ m<ᵇ1+m+n (suc m) = m<ᵇ1+m+n m
   where
   k : ∀ m n → m ≤ n → ℕ
   k zero    n       _   = n
-  k (suc m) zero    ()
   k (suc m) (suc n) m≤n = k m n (≤-pred m≤n)
 
   proof : ∀ {m n} (m≤n : m ≤ n) → m + k m n m≤n ≡ n

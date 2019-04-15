@@ -33,4 +33,3 @@ to-witness (just {x = p} _) = p
 
 to-witness-T : ∀ {p} {P : Set p} (m : Maybe P) → T (is-just m) → P
 to-witness-T (just p) _  = p
-to-witness-T nothing  ()

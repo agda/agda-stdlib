@@ -44,7 +44,6 @@ fromFin zero    = zero
 fromFin (suc i) = suc (fromFin i)
 
 toFin : ∀ n → Cofin (Conat.fromℕ n) → Fin n
-toFin zero    ()
 toFin (suc n) zero    = zero
 toFin (suc n) (suc i) = suc (toFin n i)
 

@@ -200,7 +200,6 @@ module _ {a} {A : Set a} where
   tabulate {suc n} f = f Fin.zero ∷ tabulate (f ∘ Fin.suc)
 
   lookup : ∀ (xs : List A) → Fin (length xs) → A
-  lookup [] ()
   lookup (x ∷ xs) Fin.zero    = x
   lookup (x ∷ xs) (Fin.suc i) = lookup xs i
 
@@ -309,7 +308,6 @@ module _ {a} {A : Set a} where
   infixl 5 _[_]%=_ _[_]∷=_ _─_
 
   _[_]%=_ : (xs : List A) → Fin (length xs) → (A → A) → List A
-  []       [ ()    ]%= f
   (x ∷ xs) [ zero  ]%= f = f x ∷ xs
   (x ∷ xs) [ suc k ]%= f = x ∷ (xs [ k ]%= f)
 
@@ -317,7 +315,6 @@ module _ {a} {A : Set a} where
   xs [ k ]∷= v = xs [ k ]%= const v
 
   _─_ : (xs : List A) → Fin (length xs) → List A
-  []       ─ ()
   (x ∷ xs) ─ zero  = xs
   (x ∷ xs) ─ suc k = x ∷ (xs ─ k)
 

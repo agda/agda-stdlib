@@ -322,7 +322,6 @@ module _ {a} {A : Set a} where
 
 boolFilter-∈ : ∀ {a} {A : Set a} (p : A → Bool) (xs : List A) {x} →
            x ∈ xs → p x ≡ true → x ∈ boolFilter p xs
-boolFilter-∈ p []       ()          _
 boolFilter-∈ p (x ∷ xs) (here refl) px≡true rewrite px≡true = here refl
 boolFilter-∈ p (y ∷ xs) (there pxs) px≡true with p y
 ... | true  = there (boolFilter-∈ p xs pxs px≡true)

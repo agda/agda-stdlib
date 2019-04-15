@@ -319,7 +319,6 @@ module _ {a} {A : Set a} where
   lookup-++-< : ∀ {m n} (xs : Vec A m) (ys : Vec A n) →
                 ∀ i (i<m : toℕ i < m) →
                 lookup (xs ++ ys)i  ≡ lookup xs (Fin.fromℕ≤ i<m)
-  lookup-++-< []       ys i       ()
   lookup-++-< (x ∷ xs) ys zero    (s≤s z≤n)       = refl
   lookup-++-< (x ∷ xs) ys (suc i) (s≤s (s≤s i<m)) =
     lookup-++-< xs ys i (s≤s i<m)
@@ -328,12 +327,10 @@ module _ {a} {A : Set a} where
                 ∀ i (i≥m : toℕ i ≥ m) →
                 lookup (xs ++ ys) i ≡ lookup ys (Fin.reduce≥ i i≥m)
   lookup-++-≥ []       ys i       i≥m       = refl
-  lookup-++-≥ (x ∷ xs) ys zero    ()
   lookup-++-≥ (x ∷ xs) ys (suc i) (s≤s i≥m) = lookup-++-≥ xs ys i i≥m
 
   lookup-++-inject+ : ∀ {m n} (xs : Vec A m) (ys : Vec A n) i →
                       lookup (xs ++ ys) (Fin.inject+ n i) ≡ lookup xs i
-  lookup-++-inject+ []       ys ()
   lookup-++-inject+ (x ∷ xs) ys zero    = refl
   lookup-++-inject+ (x ∷ xs) ys (suc i) = lookup-++-inject+ xs ys i
 
@@ -345,7 +342,6 @@ module _ {a} {A : Set a} where
 
   []≔-++-inject+ : ∀ {m n x} (xs : Vec A m) (ys : Vec A n) i →
                    (xs ++ ys) [ Fin.inject+ n i ]≔ x ≡ (xs [ i ]≔ x) ++ ys
-  []≔-++-inject+ []       ys ()
   []≔-++-inject+ (x ∷ xs) ys zero    = refl
   []≔-++-inject+ (x ∷ xs) ys (suc i) =
     P.cong (x ∷_) $ []≔-++-inject+ xs ys i
@@ -495,7 +491,6 @@ module _ {a b} {A : Set a} {B : Set b} where
   lookup-unzip : ∀ {n} (i : Fin n) (xys : Vec (A × B) n) →
                  let xs , ys = unzip xys
                  in (lookup xs i , lookup ys i) ≡ lookup xys i
-  lookup-unzip ()      []
   lookup-unzip zero    ((x , y) ∷ xys) = refl
   lookup-unzip (suc i) ((x , y) ∷ xys) = lookup-unzip i xys
 
@@ -689,24 +684,21 @@ module _ {a} {A : Set a} where
   insert-lookup : ∀ {n} (xs : Vec A n) (i : Fin (suc n)) (v : A) →
                   lookup (insert xs i v) i ≡ v
   insert-lookup xs       zero     v = refl
-  insert-lookup []       (suc ()) v
   insert-lookup (x ∷ xs) (suc i)  v = insert-lookup xs i v
 
   insert-punchIn : ∀ {n} (xs : Vec A n) (i : Fin (suc n)) (v : A)
                    (j : Fin n) →
                    lookup (insert xs i v) (Fin.punchIn i j) ≡ lookup xs j
   insert-punchIn xs       zero     v j       = refl
-  insert-punchIn []       (suc ()) v j
   insert-punchIn (x ∷ xs) (suc i)  v zero    = refl
   insert-punchIn (x ∷ xs) (suc i)  v (suc j) = insert-punchIn xs i v j
 
   remove-punchOut : ∀ {n} (xs : Vec A (suc n))
                     {i : Fin (suc n)} {j : Fin (suc n)} (i≢j : i ≢ j) →
                     lookup (remove xs i) (Fin.punchOut i≢j) ≡ lookup xs j
-  remove-punchOut (x ∷ xs) {zero} {zero} i≢j = ⊥-elim (i≢j refl)
-  remove-punchOut (x ∷ xs) {zero} {suc j} i≢j = refl
-  remove-punchOut (x ∷ []) {suc ()} {j} i≢j
-  remove-punchOut (x ∷ y ∷ xs) {suc i} {zero} i≢j = refl
+  remove-punchOut (x ∷ xs)     {zero}  {zero}  i≢j = ⊥-elim (i≢j refl)
+  remove-punchOut (x ∷ xs)     {zero}  {suc j} i≢j = refl
+  remove-punchOut (x ∷ y ∷ xs) {suc i} {zero}  i≢j = refl
   remove-punchOut (x ∷ y ∷ xs) {suc i} {suc j} i≢j =
     remove-punchOut (y ∷ xs) (i≢j ∘ P.cong suc)
 
@@ -716,16 +708,13 @@ module _ {a} {A : Set a} where
   remove-insert : ∀ {n} (xs : Vec A n) (i : Fin (suc n)) (v : A) →
                   remove (insert xs i v) i ≡ xs
   remove-insert xs           zero           v = refl
-  remove-insert []           (suc ())       v
   remove-insert (x ∷ xs)     (suc zero)     v = refl
-  remove-insert (x ∷ [])     (suc (suc ())) v
   remove-insert (x ∷ y ∷ xs) (suc (suc i))  v =
     P.cong (x ∷_) (remove-insert (y ∷ xs) (suc i) v)
 
   insert-remove : ∀ {n} (xs : Vec A (suc n)) (i : Fin (suc n)) →
                   insert (remove xs i) i (lookup xs i) ≡ xs
   insert-remove (x ∷ xs)     zero     = refl
-  insert-remove (x ∷ [])     (suc ())
   insert-remove (x ∷ y ∷ xs) (suc i)  =
     P.cong (x ∷_) (insert-remove (y ∷ xs) i)
 

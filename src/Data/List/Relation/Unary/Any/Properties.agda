@@ -54,7 +54,6 @@ private
 module _ {a p ℓ} {A : Set a} {P : A → Set p} {_≈_ : Rel A ℓ} where
 
   lift-resp : P Respects _≈_ → (Any P) Respects (Pointwise _≈_)
-  lift-resp resp []            ()
   lift-resp resp (x≈y ∷ xs≈ys) (here px)   = here (resp x≈y px)
   lift-resp resp (x≈y ∷ xs≈ys) (there pxs) =
     there (lift-resp resp xs≈ys pxs)
@@ -145,7 +144,6 @@ swap↔ {P = P} = inverse swap swap swap-invol swap-invol
 ⊥↔Any⊥ {A = A} = inverse (λ()) (λ p → from p) (λ()) (λ p → from p)
   where
   from : {xs : List A} → Any (const ⊥) xs → ∀ {b} {B : Set b} → B
-  from (here ())
   from (there p) = from p
 
 ⊥↔Any[] : ∀ {a p} {A : Set a} {P : A → Set p} → ⊥ ↔ Any P []
@@ -165,10 +163,9 @@ module _ {a} {A : Set a} where
   ... | false = any⁺ p pxs
 
   any⁻ : ∀ (p : A → Bool) xs → T (any p xs) → Any (T ∘ p) xs
-  any⁻ p []       ()
   any⁻ p (x ∷ xs) px∷xs with p x | inspect p x
-  any⁻ p (x ∷ xs) px∷xs | true  | P.[ eq ] = here (Equivalence.from T-≡ ⟨$⟩ eq)
-  any⁻ p (x ∷ xs) px∷xs | false | _       = there (any⁻ p xs px∷xs)
+  ... | true  | P.[ eq ] = here (Equivalence.from T-≡ ⟨$⟩ eq)
+  ... | false | _        = there (any⁻ p xs px∷xs)
 
   any⇔ : ∀ {p : A → Bool} {xs} → Any (T ∘ p) xs ⇔ T (any p xs)
   any⇔ = equivalence (any⁺ _) (any⁻ _ _)
@@ -264,7 +261,6 @@ module _ {a p} {A : Set a} {P : Pred A p} where
 
   singleton⁻ : ∀ {x} → Any P [ x ] → P x
   singleton⁻ (here Px) = Px
-  singleton⁻ (there ())
 
 ------------------------------------------------------------------------
 -- map
@@ -278,13 +274,11 @@ module _ {a b} {A : Set a} {B : Set b} {f : A → B} where
 
   map⁻ : ∀ {p} {P : B → Set p} {xs} →
          Any P (List.map f xs) → Any (P ∘ f) xs
-  map⁻ {xs = []}     ()
   map⁻ {xs = x ∷ xs} (here p)  = here p
   map⁻ {xs = x ∷ xs} (there p) = there $ map⁻ p
 
   map⁺∘map⁻ : ∀ {p} {P : B → Set p} {xs} →
               (p : Any P (List.map f xs)) → map⁺ (map⁻ p) ≡ p
-  map⁺∘map⁻ {xs = []}     ()
   map⁺∘map⁻ {xs = x ∷ xs} (here  p) = refl
   map⁺∘map⁻ {xs = x ∷ xs} (there p) = P.cong there (map⁺∘map⁻ p)
 
@@ -305,7 +299,6 @@ module _ {a b p} {A : Set a} {B : Set b} {P : B → Set p}
 
   mapMaybe⁺ : ∀ xs → Any (MAny.Any P) (map f xs) →
               Any P (mapMaybe f xs)
-  mapMaybe⁺ []       ()
   mapMaybe⁺ (x ∷ xs) ps with f x | ps
   ... | nothing | here  ()
   ... | nothing | there pxs      = mapMaybe⁺ xs pxs
@@ -340,7 +333,6 @@ module _ {a p} {A : Set a} {P : A → Set p} where
 
   ++⁻∘++⁺ : ∀ xs {ys} (p : Any P xs ⊎ Any P ys) →
             ++⁻ xs ([ ++⁺ˡ , ++⁺ʳ xs ]′ p) ≡ p
-  ++⁻∘++⁺ []            (inj₁ ())
   ++⁻∘++⁺ []            (inj₂ p)         = refl
   ++⁻∘++⁺ (x ∷ xs)      (inj₁ (here  p)) = refl
   ++⁻∘++⁺ (x ∷ xs) {ys} (inj₁ (there p)) rewrite ++⁻∘++⁺ xs {ys} (inj₁ p) = refl
@@ -385,7 +377,6 @@ module _ {a p} {A : Set a} {P : A → Set p} where
   concat⁺ (there {x = xs} p) = ++⁺ʳ xs (concat⁺ p)
 
   concat⁻ : ∀ xss → Any P (concat xss) → Any (Any P) xss
-  concat⁻ []               ()
   concat⁻ ([]       ∷ xss) p         = there $ concat⁻ xss p
   concat⁻ ((x ∷ xs) ∷ xss) (here  p) = here (here p)
   concat⁻ ((x ∷ xs) ∷ xss) (there p) with concat⁻ (xs ∷ xss) p
@@ -404,7 +395,6 @@ module _ {a p} {A : Set a} {P : A → Set p} where
 
   concat⁺∘concat⁻ : ∀ xss (p : Any P (concat xss)) →
                       concat⁺ (concat⁻ xss p) ≡ p
-  concat⁺∘concat⁻ []               ()
   concat⁺∘concat⁻ ([]       ∷ xss) p         = concat⁺∘concat⁻ xss p
   concat⁺∘concat⁻ ((x ∷ xs) ∷ xss) (here p)  = refl
   concat⁺∘concat⁻ ((x ∷ xs) ∷ xss) (there p)
@@ -433,7 +423,6 @@ module _ {a p} {A : Set a} {P : A → Set p} where
 
   applyUpTo⁻ : ∀ f {n} → Any P (applyUpTo f n) →
                ∃ λ i → i < n × P (f i)
-  applyUpTo⁻ f {zero}  ()
   applyUpTo⁻ f {suc n} (here p)  = zero , s≤s z≤n , p
   applyUpTo⁻ f {suc n} (there p) with applyUpTo⁻ (f ∘ suc) p
   ... | i , i<n , q = suc i , s≤s i<n , q
@@ -449,7 +438,6 @@ module _ {a p} {A : Set a} {P : A → Set p} where
 
   tabulate⁻ : ∀ {n} {f : Fin n → A} →
               Any P (tabulate f) → ∃ λ i → P (f i)
-  tabulate⁻ {zero}  ()
   tabulate⁻ {suc n} (here p)   = fzero , p
   tabulate⁻ {suc n} (there p) = Prod.map fsuc id (tabulate⁻ p)
 
@@ -468,7 +456,6 @@ module _ {a b p} {A : Set a} {B : Set b} {P : B → Set p} where
   map-with-∈⁻ : ∀ (xs : List A) (f : ∀ {x} → x ∈ xs → B) →
                 Any P (map-with-∈ xs f) →
                 ∃₂ λ x (x∈xs : x ∈ xs) → P (f x∈xs)
-  map-with-∈⁻ []       f ()
   map-with-∈⁻ (y ∷ xs) f (here  p) = (y , here refl , p)
   map-with-∈⁻ (y ∷ xs) f (there p) =
     Prod.map id (Prod.map there id) $ map-with-∈⁻ xs (f ∘ there) p
@@ -487,7 +474,6 @@ module _ {a b p} {A : Set a} {B : Set b} {P : B → Set p} where
     to∘from : ∀ (xs : List A) (f : ∀ {x} → x ∈ xs → B)
               (p : Any P (map-with-∈ xs f)) →
               map-with-∈⁺ f (map-with-∈⁻ xs f p) ≡ p
-    to∘from []       f ()
     to∘from (y ∷ xs) f (here  p) = refl
     to∘from (y ∷ xs) f (there p) =
       P.cong there $ to∘from xs (f ∘ there) p
@@ -503,12 +489,10 @@ module _ {a p} {A : Set a} {P : A → Set p} where
 
   return⁻ : ∀ {x} → Any P (return x) → P x
   return⁻ (here p)   = p
-  return⁻ (there ())
 
   return⁺∘return⁻ : ∀ {x} (p : Any P (return x)) →
                     return⁺ (return⁻ p) ≡ p
   return⁺∘return⁻ (here p)   = refl
-  return⁺∘return⁻ (there ())
 
   return⁻∘return⁺ : ∀ {x} (p : P x) → return⁻ (return⁺ p) ≡ p
   return⁻∘return⁺ p = refl

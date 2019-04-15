@@ -52,12 +52,10 @@ module _ {a} {A : Set a} where
 
   insert : ∀ {n} → Vec A n → Fin (suc n) → A → Vec A (suc n)
   insert xs       zero     v = v ∷ xs
-  insert []       (suc ()) v
   insert (x ∷ xs) (suc i)  v = x ∷ insert xs i v
 
   remove : ∀ {n} → Vec A (suc n) → Fin (suc n) → Vec A n
   remove (_ ∷ xs)     zero     = xs
-  remove (x ∷ [])     (suc ())
   remove (x ∷ y ∷ xs) (suc i)  = x ∷ remove (y ∷ xs) i
 
   updateAt : ∀ {n} → Fin n → (A → A) → Vec A n → Vec A n

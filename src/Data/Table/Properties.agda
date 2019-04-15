@@ -81,12 +81,10 @@ module _ {a} {A : Set a} where
 module _ {a} {A : Set a} where
 
   fromList-∈ : ∀ {xs : List A} (i : Fin (L.length xs)) → lookup (fromList xs) i ∈ xs
-  fromList-∈ {[]}     ()
   fromList-∈ {x ∷ xs} zero    = here refl
   fromList-∈ {x ∷ xs} (suc i) = there (fromList-∈ i)
 
   index-fromList-∈ : ∀ {xs i} → index (fromList-∈ {xs} i) ≡ i
-  index-fromList-∈ {[]}     {()}
   index-fromList-∈ {x ∷ xs} {zero}  = refl
   index-fromList-∈ {x ∷ xs} {suc i} = cong suc index-fromList-∈
 

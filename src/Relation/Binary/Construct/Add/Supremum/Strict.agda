@@ -41,7 +41,6 @@ data _<⁺_ : Rel (A ⁺) (a ⊔ r) where
 
 <⁺-asym : Asymmetric _<_ → Asymmetric _<⁺_
 <⁺-asym <-asym [ p ]    [ q ] = <-asym p q
-<⁺-asym <-asym [ k ]<⊤⁺ ()
 
 <⁺-trans : Transitive _<_ → Transitive _<⁺_
 <⁺-trans <-trans [ p ] [ q ]    = [ <-trans p q ]
@@ -72,7 +71,6 @@ module _ {e} {_≈_ : Rel A e} where
 
   <⁺-irrefl : Irreflexive _≈_ _<_ → Irreflexive _≈⁺_ _<⁺_
   <⁺-irrefl <-irrefl [ p ] [ q ] = <-irrefl p q
-  <⁺-irrefl <-irrefl ⊤⁺≈⊤⁺ ()
 
   <⁺-respˡ-≈⁺ : _<_ Respectsˡ _≈_ → _<⁺_ Respectsˡ _≈⁺_
   <⁺-respˡ-≈⁺ <-respˡ-≈ [ p ] [ q ]      = [ <-respˡ-≈ p q ]

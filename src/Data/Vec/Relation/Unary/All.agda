@@ -42,7 +42,6 @@ tail (px ∷ pxs) = pxs
 
 lookup : ∀ {a p} {A : Set a} {P : A → Set p} {k} {xs : Vec A k} →
          (i : Fin k) → All P xs → P (Vec.lookup xs i)
-lookup ()      []
 lookup zero    (px ∷ pxs) = px
 lookup (suc i) (px ∷ pxs) = lookup i pxs
 

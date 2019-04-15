@@ -452,7 +452,6 @@ T-∨ {false} {false} = equivalence inj₁ [ id , id ]
 
 T-irrelevant : Irrelevant T
 T-irrelevant {true}  _  _  = refl
-T-irrelevant {false} () ()
 
 T? : U.Decidable T
 T? true  = yes _
@@ -460,7 +459,6 @@ T? false = no (λ ())
 
 T?-diag : ∀ b → T b → True (T? b)
 T?-diag true  _ = _
-T?-diag false ()
 
 push-function-into-if :
   ∀ {a b} {A : Set a} {B : Set b} (f : A → B) x {y z} →

@@ -43,7 +43,6 @@ tail (px ∷ pxs) = pxs
 
 lookup : ∀ {a p} {A : Set a} {P : Pred A p} {xs : List A} →
          All P xs → (∀ {x} → x ∈ xs → P x)
-lookup []         ()
 lookup (px ∷ pxs) (here refl)  = px
 lookup (px ∷ pxs) (there x∈xs) = lookup pxs x∈xs
 
@@ -64,7 +63,6 @@ module _ {a p}{A : Set a}{P : Pred A p} where
   infixl 6 _[_]%=_ _[_]≔_
 
   updateAt : ∀ {x xs} → x ∈ xs → (P x → P x) → All P xs → All P xs
-  updateAt () f []
   updateAt (here refl) f (px ∷ pxs) = f px ∷ pxs
   updateAt (there i)   f (px ∷ pxs) =   px ∷ updateAt i f pxs
 
