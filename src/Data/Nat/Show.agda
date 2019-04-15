@@ -8,16 +8,33 @@
 
 module Data.Nat.Show where
 
+open import Data.Char as Char using (Char)
+open import Data.Digit using (showDigit; toDigits; toNatDigits)
+open import Function using (_∘_; _$_)
+open import Data.List using (List; []; _∷_; map; reverse)
 open import Data.Nat
-open import Relation.Nullary.Decidable using (True)
-open import Data.String.Base as String using (String)
-open import Data.Digit
 open import Data.Product using (proj₁)
-open import Function
-open import Data.List.Base
+open import Data.String as String using (String)
+open import Relation.Nullary.Decidable using (True)
 
--- showInBase b n is a string containing the representation of n in
--- base b.
+------------------------------------------------------------------------
+-- Conversion from unary representation to the representation by the
+-- given base.
+
+toDigitChar : (n : ℕ) → Char
+toDigitChar n = Char.fromNat (n + (Char.toNat '0'))
+
+toDecimalChars : ℕ → List Char
+toDecimalChars = map toDigitChar ∘ toNatDigits 10
+
+------------------------------------------------------------------------
+-- Show
+
+show : ℕ → String
+show = String.fromList ∘ toDecimalChars
+
+-- Warning : when compiled the time complexity of `showInBase b n`
+-- is exponential in the argument `n`.
 
 showInBase : (base : ℕ)
              {base≥2 : True (2 ≤? base)}
@@ -28,9 +45,3 @@ showInBase base {base≥2} {base≤16} n =
   map (showDigit {base≤16 = base≤16}) $
   reverse $
   proj₁ $ toDigits base {base≥2 = base≥2} n
-
--- show n is a string containing the decimal expansion of n (starting
--- with the most significant digit).
-
-show : ℕ → String
-show = showInBase 10

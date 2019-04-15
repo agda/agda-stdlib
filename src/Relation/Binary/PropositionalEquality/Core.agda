@@ -12,6 +12,7 @@
 module Relation.Binary.PropositionalEquality.Core where
 
 open import Data.Product using (_,_)
+open import Function     using (_∘_)
 open import Level
 open import Relation.Binary.Core
 open import Relation.Nullary using (¬_)
@@ -26,7 +27,7 @@ _≢_ : ∀ {a} {A : Set a} → Rel A a
 x ≢ y = ¬ x ≡ y
 
 ------------------------------------------------------------------------
--- Some properties
+-- Properties of _≡_
 
 module _ {a} {A : Set a} where
 
@@ -75,6 +76,12 @@ module _ {a} {A : Set a} {x y : A} where
 
   trans-symʳ : (p : x ≡ y) → trans p (sym p) ≡ refl
   trans-symʳ refl = refl
+
+------------------------------------------------------------------------
+-- Properties of _≢_
+
+  ≢-sym : Symmetric {A = A} _≢_
+  ≢-sym x≢y =  x≢y ∘ sym
 
 ------------------------------------------------------------------------
 -- Convenient syntax for equational reasoning
