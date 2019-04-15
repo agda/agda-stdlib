@@ -342,10 +342,10 @@ Rel↔≡  = Pointwise-≡↔≡
 Please use Pointwise-≡↔≡ instead."
 #-}
 
--- Version 0.18
+-- Version 1.0
 
 decidable-≡ = ≡-dec
 {-# WARNING_ON_USAGE decidable-≡
-"Warning: decidable-≡ was deprecated in v0.18.
+"Warning: decidable-≡ was deprecated in v1.0.
 Please use ≡-dec from `Data.List.Properties` instead."
 #-}

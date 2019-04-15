@@ -9,14 +9,15 @@
 -- by Hancock and Hyvernat in "Programming interfaces and basic
 -- topology" (2006).
 
-{-# OPTIONS --with-K --safe #-}
+{-# OPTIONS --with-K --safe --guardedness #-}
 
 module Data.Container.Indexed.WithK where
 
-open import Level
+open import Axiom.Extensionality.Heterogeneous using (Extensionality)
 open import Data.Container.Indexed hiding (module PlainMorphism)
 open import Data.Product as Prod hiding (map)
 open import Function renaming (id to ⟨id⟩; _∘_ to _⟨∘⟩_)
+open import Level
 open import Relation.Unary using (Pred; _⊆_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_; refl)
 open import Relation.Binary.HeterogeneousEquality as H using (_≅_; refl)
@@ -38,7 +39,7 @@ private
 
   Eq⇒≅ : ∀ {i o c r ℓ} {I : Set i} {O : Set o}
          {C : Container I O c r} {X : Pred I ℓ} {o₁ o₂ : O}
-         {xs : ⟦ C ⟧ X o₁} {ys : ⟦ C ⟧ X o₂} → H.Extensionality r ℓ →
+         {xs : ⟦ C ⟧ X o₁} {ys : ⟦ C ⟧ X o₂} → Extensionality r ℓ →
          Eq C X X (λ x₁ x₂ → x₁ ≅ x₂) xs ys → xs ≅ ys
   Eq⇒≅ {xs = c , k} {.c , k′} ext (refl , refl , k≈k′) =
     H.cong (_,_ c) (ext (λ _ → refl) (λ r → k≈k′ r r refl))
@@ -169,3 +170,14 @@ module PlainMorphism {i o c r} {I : Set i} {O : Set o} where
       X.≈
       P.subst X.Carrier eq₂ (P.subst X.Carrier eq₁ x)
     lemma refl refl = X.refl
+
+------------------------------------------------------------------------
+-- All and any
+
+-- Membership.
+
+infix 4 _∈_
+
+_∈_ : ∀ {i o c r ℓ} {I : Set i} {O : Set o}
+      {C : Container I O c r} {X : Pred I (i ⊔ ℓ)} → IREL X (⟦ C ⟧ X) _
+_∈_ {C = C} {X} x xs = ◇ C {X = X} ((x ≅_) ⟨∘⟩ proj₂) (-, xs)

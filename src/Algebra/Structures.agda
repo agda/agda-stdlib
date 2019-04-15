@@ -32,10 +32,10 @@ record IsMagma (∙ : Op₂ A) : Set (a ⊔ ℓ) where
   setoid = record { isEquivalence = isEquivalence }
 
   ∙-congˡ : LeftCongruent ∙
-  ∙-congˡ y≈z = ∙-cong y≈z refl
+  ∙-congˡ y≈z = ∙-cong refl y≈z
 
   ∙-congʳ : RightCongruent ∙
-  ∙-congʳ y≈z = ∙-cong refl y≈z
+  ∙-congʳ y≈z = ∙-cong y≈z refl
 
 record IsSemigroup (∙ : Op₂ A) : Set (a ⊔ ℓ) where
   field
@@ -56,7 +56,8 @@ record IsSemilattice (∧ : Op₂ A) : Set (a ⊔ ℓ) where
     isBand : IsBand ∧
     comm   : Commutative ∧
 
-  open IsBand isBand public renaming (∙-cong to ∧-cong)
+  open IsBand isBand public
+    renaming (∙-cong to ∧-cong; ∙-congˡ to ∧-congˡ; ∙-congʳ to ∧-congʳ)
 
 ------------------------------------------------------------------------
 -- Monoids
@@ -464,16 +465,16 @@ record IsLattice (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
   ∧-absorbs-∨ = proj₂ absorptive
 
   ∧-congˡ : LeftCongruent ∧
-  ∧-congˡ y≈z = ∧-cong y≈z refl
+  ∧-congˡ y≈z = ∧-cong refl y≈z
 
   ∧-congʳ : RightCongruent ∧
-  ∧-congʳ y≈z = ∧-cong refl y≈z
+  ∧-congʳ y≈z = ∧-cong y≈z refl
 
-  ∨-congˡ  : LeftCongruent ∨
-  ∨-congˡ y≈z = ∨-cong y≈z refl
+  ∨-congˡ : LeftCongruent ∨
+  ∨-congˡ y≈z = ∨-cong refl y≈z
 
   ∨-congʳ : RightCongruent ∨
-  ∨-congʳ y≈z = ∨-cong refl y≈z
+  ∨-congʳ y≈z = ∨-cong y≈z refl
 
 record IsDistributiveLattice (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
   field

@@ -8,6 +8,7 @@
 
 module Data.List.Relation.Unary.All.Properties where
 
+open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Bool.Base using (Bool; T)
 open import Data.Bool.Properties
 open import Data.Empty
@@ -22,13 +23,14 @@ open import Data.List.Relation.Binary.Subset.Propositional using (_⊆_)
 open import Data.Maybe as Maybe using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.All as MAll using (just; nothing)
 open import Data.Nat using (zero; suc; z≤n; s≤s; _<_)
+open import Data.Nat.Properties using (≤-refl; ≤-step)
 open import Data.Product as Prod using (_×_; _,_; uncurry; uncurry′)
 open import Function
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence using (_⇔_; equivalence; Equivalence)
 open import Function.Inverse using (_↔_; inverse)
 open import Function.Surjection using (_↠_; surjection)
-open import Relation.Binary using (Setoid; _Respects_)
+open import Relation.Binary using (REL; Setoid; _Respects_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Nullary
 open import Relation.Unary
@@ -68,7 +70,7 @@ module _ {a p} {A : Set a} {P : A → Set p} where
     -- If equality of functions were extensional, then the surjection
     -- could be strengthened to a bijection.
 
-    from∘to : P.Extensionality _ _ →
+    from∘to : Extensionality _ _ →
               ∀ xs → (¬p : ¬ Any P xs) → All¬⇒¬Any (¬Any⇒All¬ xs ¬p) ≡ ¬p
     from∘to ext []       ¬p = ext λ ()
     from∘to ext (x ∷ xs) ¬p = ext λ
@@ -81,9 +83,83 @@ module _ {a p} {A : Set a} {P : A → Set p} where
     where
     -- If equality of functions were extensional, then the logical
     -- equivalence could be strengthened to a surjection.
-    to∘from : P.Extensionality _ _ →
+    to∘from : Extensionality _ _ →
               ∀ {xs} (¬∀ : ¬ All P xs) → Any¬→¬All (¬All⇒Any¬ dec xs ¬∀) ≡ ¬∀
     to∘from ext ¬∀ = ext (⊥-elim ∘ ¬∀)
+
+module _ {a b ℓ} {A : Set a} {B : Set b} {_~_ : REL (List A) B ℓ} where
+
+  All-swap : ∀ {xss ys} →
+             All (λ xs → All (xs ~_) ys) xss →
+             All (λ y → All (_~ y) xss) ys
+  All-swap {ys = []}     _   = []
+  All-swap {ys = y ∷ ys} []  = All.universal (λ _ → []) (y ∷ ys)
+  All-swap {ys = y ∷ ys} ((x~y ∷ x~ys) ∷ pxss) =
+    (x~y ∷ (All.map All.head pxss)) ∷
+    All-swap (x~ys ∷ (All.map All.tail pxss))
+
+------------------------------------------------------------------------
+-- Properties of operations over `All`
+------------------------------------------------------------------------
+-- map
+
+module _ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} {f : P ⋐ Q} where
+
+  map-cong : ∀ {xs} {g : P ⋐ Q} (ps : All P xs) →
+             (∀ {x} → f {x} P.≗ g) → All.map f ps ≡ All.map g ps
+  map-cong []        _   = P.refl
+  map-cong (px ∷ ps) feq = P.cong₂ _∷_ (feq px) (map-cong ps feq)
+
+  map-id : ∀ {xs} (ps : All P xs) → All.map id ps ≡ ps
+  map-id []        = P.refl
+  map-id (px ∷ ps) = P.cong (px ∷_)  (map-id ps)
+
+  map-compose : ∀ {r} {R : Pred A r} {xs} {g : Q ⋐ R} (ps : All P xs) →
+                All.map g (All.map f ps) ≡ All.map (g ∘ f) ps
+  map-compose []        = P.refl
+  map-compose (px ∷ ps) = P.cong (_ ∷_) (map-compose ps)
+
+  lookup-map : ∀ {xs x} (ps : All P xs) (i : x ∈ xs) →
+               All.lookup (All.map f ps) i ≡ f (All.lookup ps i)
+  lookup-map (px ∷ pxs) (here P.refl) = P.refl
+  lookup-map (px ∷ pxs) (there i) = lookup-map pxs i
+
+------------------------------------------------------------------------
+-- _[_]%=_/updateAt
+
+module _ {a p} {A : Set a} {P : Pred A p} where
+
+  updateAt-updates : ∀ {x xs px} (pxs : All P xs) (i : x ∈ xs)
+                     {f : P x → P x} → All.lookup pxs i ≡ px →
+                     All.lookup (pxs All.[ i ]%= f) i ≡ f px
+  updateAt-updates [] ()
+  updateAt-updates (px ∷ pxs) (here P.refl) P.refl = P.refl
+  updateAt-updates (px ∷ pxs) (there i) = updateAt-updates pxs i
+
+  updateAt-cong : ∀ {x xs} (pxs : All P xs) (i : x ∈ xs)
+                  {f g : P x → P x} →
+                  f (All.lookup pxs i) ≡ g (All.lookup pxs i) →
+                  (pxs All.[ i ]%= f) ≡ (pxs All.[ i ]%= g)
+  updateAt-cong (px ∷ pxs) (here P.refl)     = P.cong (_∷ pxs)
+  updateAt-cong (px ∷ pxs) (there i)     f≗g = P.cong (px ∷_) (updateAt-cong pxs i f≗g)
+
+  updateAt-id : ∀ {x xs} (pxs : All P xs) (i : x ∈ xs) →
+                (pxs All.[ i ]%= id) ≡ pxs
+  updateAt-id (px ∷ pxs) (here P.refl) = P.refl
+  updateAt-id (px ∷ pxs) (there i)     = P.cong (px ∷_) (updateAt-id pxs i)
+
+  updateAt-compose : ∀ {x xs} (pxs : All P xs) (i : x ∈ xs) {f g : P x → P x} →
+                     (pxs All.[ i ]%= f All.[ i ]%= g) ≡ pxs All.[ i ]%= (g ∘ f)
+  updateAt-compose (px ∷ pxs) (here P.refl) = P.refl
+  updateAt-compose (px ∷ pxs) (there i)     = P.cong (px ∷_) (updateAt-compose pxs i)
+
+  map-updateAt : ∀ {q x} {Q : Pred A q} {xs} →
+                 ∀ {f : P ⋐ Q} {g : P x → P x} {h : Q x → Q x}
+                 (pxs : All P xs) (i : x ∈ xs) →
+                 f (g (All.lookup pxs i)) ≡ h (f (All.lookup pxs i)) →
+                 All.map f (pxs All.[ i ]%= g) ≡ (All.map f pxs) All.[ i ]%= h
+  map-updateAt (px ∷ pxs) (here P.refl) = P.cong (_∷ _)
+  map-updateAt (px ∷ pxs) (there i) feq = P.cong (_ ∷_) (map-updateAt pxs i feq)
 
 ------------------------------------------------------------------------
 -- Introduction (⁺) and elimination (⁻) rules for list operations
@@ -202,6 +278,18 @@ module _ {a p} {A : Set a} {P : A → Set p} where
     applyUpTo⁻ (f ∘ suc) n pxs (s≤s i<n)
 
 ------------------------------------------------------------------------
+-- applyDownFrom
+
+module _ {a p} {A : Set a} {P : A → Set p} where
+
+  applyDownFrom⁺₁ : ∀ f n → (∀ {i} → i < n → P (f i)) → All P (applyDownFrom f n)
+  applyDownFrom⁺₁ f zero    Pf = []
+  applyDownFrom⁺₁ f (suc n) Pf = Pf ≤-refl ∷ applyDownFrom⁺₁ f n (Pf ∘ ≤-step)
+
+  applyDownFrom⁺₂ : ∀ f n → (∀ i → P (f i)) → All P (applyDownFrom f n)
+  applyDownFrom⁺₂ f n Pf = applyDownFrom⁺₁ f n (λ _ → Pf _)
+
+------------------------------------------------------------------------
 -- tabulate
 
 module _ {a p} {A : Set a} {P : A → Set p} where
@@ -235,18 +323,17 @@ module _ {a p q} {A : Set a} {P : A → Set p} {Q : A → Set q} where
 
 module _ {a p} {A : Set a} {P : A → Set p} (P? : Decidable P) where
 
-  filter⁺₁ : ∀ xs → All P (filter P? xs)
-  filter⁺₁ []       = []
-  filter⁺₁ (x ∷ xs) with P? x
-  ... | yes Px = Px ∷ filter⁺₁ xs
-  ... | no  _  = filter⁺₁ xs
+  all-filter : ∀ xs → All P (filter P? xs)
+  all-filter []       = []
+  all-filter (x ∷ xs) with P? x
+  ... | yes Px = Px ∷ all-filter xs
+  ... | no  _  = all-filter xs
 
-  filter⁺₂ : ∀ {q} {Q : A → Set q} {xs} →
-             All Q xs → All Q (filter P? xs)
-  filter⁺₂ {xs = _}     [] = []
-  filter⁺₂ {xs = x ∷ _} (Qx ∷ Qxs) with P? x
-  ... | no  _ = filter⁺₂ Qxs
-  ... | yes _ = Qx ∷ filter⁺₂ Qxs
+  filter⁺ : ∀ {q} {Q : A → Set q} {xs} → All Q xs → All Q (filter P? xs)
+  filter⁺ {xs = _}     [] = []
+  filter⁺ {xs = x ∷ _} (Qx ∷ Qxs) with P? x
+  ... | no  _ = filter⁺ Qxs
+  ... | yes _ = Qx ∷ filter⁺ Qxs
 
 ------------------------------------------------------------------------
 -- zipWith
@@ -268,6 +355,17 @@ module _ {a p} {A : Set a} {P : A → Set p} where
 
   singleton⁻ : ∀ {x} → All P [ x ] → P x
   singleton⁻ (px ∷ []) = px
+
+------------------------------------------------------------------------
+-- snoc
+
+module _ {a p} {A : Set a} {P : A → Set p} where
+
+  ∷ʳ⁺ : ∀ {xs x} → All P xs → P x → All P (xs ∷ʳ x)
+  ∷ʳ⁺ pxs px = ++⁺ pxs (px ∷ [])
+
+  ∷ʳ⁻ : ∀ {xs x} → All P (xs ∷ʳ x) → All P xs × P x
+  ∷ʳ⁻ {xs} pxs = Prod.map₂ singleton⁻ $ ++⁻ xs pxs
 
 ------------------------------------------------------------------------
 -- fromMaybe
@@ -383,3 +481,15 @@ map-All = map⁻
 Please use map⁻ instead."
 #-}
 
+-- Version 1.0
+
+filter⁺₁ = all-filter
+{-# WARNING_ON_USAGE filter⁺₁
+"Warning: filter⁺₁ was deprecated in v1.0.
+Please use all-filter instead."
+#-}
+filter⁺₂ = filter⁺
+{-# WARNING_ON_USAGE filter⁺₂
+"Warning: filter⁺₂ was deprecated in v1.0.
+Please use filter⁺ instead."
+#-}

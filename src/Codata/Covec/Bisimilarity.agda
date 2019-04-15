@@ -4,7 +4,7 @@
 -- Bisimilarity for Covecs
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --without-K --safe --sized-types #-}
 
 module Codata.Covec.Bisimilarity where
 

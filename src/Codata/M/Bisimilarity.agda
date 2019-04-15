@@ -4,7 +4,7 @@
 -- Bisimilarity for M-types
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --without-K --safe --sized-types #-}
 
 module Codata.M.Bisimilarity where
 
@@ -13,14 +13,14 @@ open import Size
 open import Codata.Thunk
 open import Codata.M
 open import Data.Container.Core
-import Data.Container as C
+open import Data.Container.Relation.Binary.Pointwise using (Pointwise; _,_)
 open import Data.Product using (_,_)
 open import Function
 open import Relation.Binary
 import Relation.Binary.PropositionalEquality as P
 
 data Bisim {s p} (C : Container s p) (i : Size) : Rel (M C ∞) (s ⊔ p) where
-  inf : ∀ {t u} → C.Eq C (Thunk^R (Bisim C) i) t u → Bisim C i (inf t) (inf u)
+  inf : ∀ {t u} → Pointwise C (Thunk^R (Bisim C) i) t u → Bisim C i (inf t) (inf u)
 
 module _ {s p} {C : Container s p} where
 
@@ -45,4 +45,6 @@ module _ {s p} {C : Container s p} where
     }
 
   setoid : {i : Size} → Setoid (s ⊔ p) (s ⊔ p)
-  setoid {i} = record { isEquivalence = isEquivalence {i} }
+  setoid {i} = record
+    { isEquivalence = isEquivalence {i}
+    }

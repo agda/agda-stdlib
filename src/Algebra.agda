@@ -618,10 +618,10 @@ record BooleanAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 0.18
+-- Version 1.0
 
 RawSemigroup = RawMagma
 {-# WARNING_ON_USAGE RawSemigroup
-"Warning: RawSemigroup was deprecated in v0.18.
+"Warning: RawSemigroup was deprecated in v1.0.
 Please use RawMagma instead."
 #-}
