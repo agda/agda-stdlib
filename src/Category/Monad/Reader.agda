@@ -17,60 +17,56 @@ open import Category.Monad.Indexed
 open import Category.Monad
 open import Data.Unit
 
-private
-  variable
-    ℓ : Level
-    I : Set ℓ
-    M : IFun I (r ⊔ a)
-
 ------------------------------------------------------------------------
 -- Indexed reader
 
-IReaderT : IFun I (r ⊔ a) → IFun I (r ⊔ a)
+IReaderT : ∀ {ℓ} {I : Set ℓ} → IFun I (r ⊔ a) → IFun I (r ⊔ a)
 IReaderT M i j A = R → M i j A
 
-------------------------------------------------------------------------
--- Indexed reader applicative
+module _ {ℓ} {I : Set ℓ} {M : IFun I (r ⊔ a)} where
 
-ReaderTIApplicative : RawIApplicative M → RawIApplicative (IReaderT M)
-ReaderTIApplicative App = record
-  { pure = λ x r → pure x
-  ; _⊛_ = λ m n r → m r ⊛ n r
-  } where open RawIApplicative App
+  ------------------------------------------------------------------------
+  -- Indexed reader applicative
 
-ReaderTIApplicativeZero : RawIApplicativeZero M →
-                          RawIApplicativeZero (IReaderT M)
-ReaderTIApplicativeZero App = record
-  { applicative = ReaderTIApplicative applicative
-  ; ∅ = const ∅
-  } where open RawIApplicativeZero App
+  ReaderTIApplicative : RawIApplicative M → RawIApplicative (IReaderT M)
+  ReaderTIApplicative App = record
+    { pure = λ x r → pure x
+    ; _⊛_ = λ m n r → m r ⊛ n r
+    } where open RawIApplicative App
 
-ReaderTIAlternative : RawIAlternative M → RawIAlternative (IReaderT M)
-ReaderTIAlternative Alt = record
-  { applicativeZero = ReaderTIApplicativeZero applicativeZero
-  ; _∣_ = λ m n r → m r ∣ n r
-  } where open RawIAlternative Alt
+  ReaderTIApplicativeZero : RawIApplicativeZero M →
+                            RawIApplicativeZero (IReaderT M)
+  ReaderTIApplicativeZero App = record
+    { applicative = ReaderTIApplicative applicative
+    ; ∅ = const ∅
+    } where open RawIApplicativeZero App
 
-------------------------------------------------------------------------
--- Indexed reader monad
+  ReaderTIAlternative : RawIAlternative M → RawIAlternative (IReaderT M)
+  ReaderTIAlternative Alt = record
+    { applicativeZero = ReaderTIApplicativeZero applicativeZero
+    ; _∣_ = λ m n r → m r ∣ n r
+    } where open RawIAlternative Alt
 
-ReaderTIMonad : RawIMonad M → RawIMonad (IReaderT M)
-ReaderTIMonad Mon = record
-  { return = λ x r → return x
-  ; _>>=_ = λ m f r → m r >>= flip f r
-  } where open RawIMonad Mon
+  ------------------------------------------------------------------------
+  -- Indexed reader monad
 
-ReaderTIMonadZero : RawIMonadZero M → RawIMonadZero (IReaderT M)
-ReaderTIMonadZero Mon = record
-  { monad = ReaderTIMonad monad
-  ; applicativeZero = ReaderTIApplicativeZero applicativeZero
-  } where open RawIMonadZero Mon
+  ReaderTIMonad : RawIMonad M → RawIMonad (IReaderT M)
+  ReaderTIMonad Mon = record
+    { return = λ x r → return x
+    ; _>>=_ = λ m f r → m r >>= flip f r
+    } where open RawIMonad Mon
 
-ReaderTIMonadPlus : RawIMonadPlus M → RawIMonadPlus (IReaderT M)
-ReaderTIMonadPlus Mon = record
-  { monad = ReaderTIMonad monad
-  ; alternative = ReaderTIAlternative alternative
-  } where open RawIMonadPlus Mon
+  ReaderTIMonadZero : RawIMonadZero M → RawIMonadZero (IReaderT M)
+  ReaderTIMonadZero Mon = record
+    { monad = ReaderTIMonad monad
+    ; applicativeZero = ReaderTIApplicativeZero applicativeZero
+    } where open RawIMonadZero Mon
+
+  ReaderTIMonadPlus : RawIMonadPlus M → RawIMonadPlus (IReaderT M)
+  ReaderTIMonadPlus Mon = record
+    { monad = ReaderTIMonad monad
+    ; alternative = ReaderTIAlternative alternative
+    } where open RawIMonadPlus Mon
 
 ------------------------------------------------------------------------
 -- Reader monad operations
@@ -90,7 +86,8 @@ record RawIMonadReader {ℓ} {I : Set ℓ} (M : IFun I (r ⊔ a))
   asks : ∀ {i A} → (R → A) → M i i A
   asks = reader
 
-ReaderTIMonadReader : RawIMonad M → RawIMonadReader (IReaderT M)
+ReaderTIMonadReader : ∀ {ℓ} {I : Set ℓ} {M : IFun I (r ⊔ a)} →
+                      RawIMonad M → RawIMonadReader (IReaderT M)
 ReaderTIMonadReader Mon = record
   { monad = ReaderTIMonad Mon
   ; reader = λ f r → return (f r)
