@@ -184,6 +184,9 @@ s≤s-injective refl = refl
 ≤-step z≤n       = z≤n
 ≤-step (s≤s m≤n) = s≤s (≤-step m≤n)
 
+1+n≢0 : ∀ {n} → suc n ≢ 0
+1+n≢0 ()
+
 n≤1+n : ∀ n → n ≤ 1 + n
 n≤1+n _ = ≤-step ≤-refl
 
@@ -217,15 +220,6 @@ n≢0⇒n>0 {suc n} _   =  s≤s z≤n
 <-transˡ : Trans _<_ _≤_ _<_
 <-transˡ (s≤s m≤n) (s≤s n≤o) = s≤s (≤-trans m≤n n≤o)
 
-<-cmp : Trichotomous _≡_ _<_
-<-cmp zero    zero    = tri≈ (λ())     refl  (λ())
-<-cmp zero    (suc n) = tri< (s≤s z≤n) (λ()) (λ())
-<-cmp (suc m) zero    = tri> (λ())     (λ()) (s≤s z≤n)
-<-cmp (suc m) (suc n) with <-cmp m n
-... | tri< ≤ ≢ ≱ = tri< (s≤s ≤)      (≢ ∘ suc-injective) (≱ ∘ ≤-pred)
-... | tri≈ ≰ ≡ ≱ = tri≈ (≰ ∘ ≤-pred) (cong suc ≡)        (≱ ∘ ≤-pred)
-... | tri> ≰ ≢ ≥ = tri> (≰ ∘ ≤-pred) (≢ ∘ suc-injective) (s≤s ≥)
-
 infix 4 _<?_ _>?_
 
 _<?_ : Decidable _<_
@@ -250,17 +244,6 @@ _>?_ = flip _<?_
   { isStrictPartialOrder = <-isStrictPartialOrder
   }
 
-<-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_
-<-isStrictTotalOrder = record
-  { isEquivalence = isEquivalence
-  ; trans         = <-trans
-  ; compare       = <-cmp
-  }
-
-<-strictTotalOrder : StrictTotalOrder 0ℓ 0ℓ 0ℓ
-<-strictTotalOrder = record
-  { isStrictTotalOrder = <-isStrictTotalOrder
-  }
 
 -- Other properties of _<_
 <-irrelevant : Irrelevant _<_
@@ -1328,6 +1311,65 @@ m∸n≡0⇒m≤n {suc m} {suc n} eq = s≤s (m∸n≡0⇒m≤n eq)
 m≤n⇒m∸n≡0 : ∀ {m n} → m ≤ n → m ∸ n ≡ 0
 m≤n⇒m∸n≡0 {n = n} z≤n      = 0∸n≡0 n
 m≤n⇒m∸n≡0 {_}    (s≤s m≤n) = m≤n⇒m∸n≡0 m≤n
+
+m∸n≢0⇒n<m :  {m n : ℕ} → m ∸ n ≢ 0 → n < m
+m∸n≢0⇒n<m {m} {n} m∸n≢0  with n <? m
+... | yes n<m =  n<m
+... | no n≮m =  contradiction m∸n≡0 m∸n≢0
+               where
+               m≤n = ≮⇒≥ n≮m;   m∸n≡0 = m≤n⇒m∸n≡0 m≤n
+
+--------------------------------------------------
+-- Implementing StrictTotalOrder for _<_
+
+<-cmp : Trichotomous _≡_ _<_
+<-cmp m n =  aux (m ≟ n) (m ∸ n) (n ∸ m) refl refl
+  where
+  -- It is fast due to that _≟_ and _∸_ are evaluated via built-in functions.
+
+  aux :  Dec (m ≡ n) → (d d' : ℕ) → m ∸ n ≡ d → n ∸ m ≡ d' →
+         Tri (m < n) (m ≡ n) (m > n)
+
+  aux (yes m≡n) _ _ _ _ =  tri≈ (<-irrefl m≡n) m≡n m≯n
+                          where
+                          m≯n = <-irrefl (sym m≡n)
+
+  aux (no m≢n) 0 _ m∸n≡0 _ =  tri< m<n m≢n (<-asym m<n)
+                              where
+                              m≤n =  m∸n≡0⇒m≤n m∸n≡0
+                              m<n =  ≤∧≢⇒< m≤n m≢n
+
+  aux (no m≢n) (suc _) 0 _ n∸m≡0 =  tri> (<-asym n<m) m≢n n<m
+                                    where
+                                    n≤m =  m∸n≡0⇒m≤n n∸m≡0
+                                    n≢m =  m≢n ∘ sym
+                                    n<m =  ≤∧≢⇒< n≤m n≢m
+
+  aux _ (suc d₁) (suc d₂) m∸n≡1+d₁ n∸m≡1+d₂ =  contradiction n<m (<-asym m<n)
+    where
+    m∸n≢0 = \m-n≡0 → let 1+d₁≡0 = trans (sym m∸n≡1+d₁) m-n≡0
+                        in  1+n≢0 1+d₁≡0
+
+    n∸m≢0 = \n-m≡0 → let 1+d₂≡0 = trans (sym n∸m≡1+d₂) n-m≡0
+                        in  1+n≢0 1+d₂≡0
+
+    n<m = m∸n≢0⇒n<m {m} {n} m∸n≢0
+    m<n = m∸n≢0⇒n<m n∸m≢0
+
+
+<-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_
+<-isStrictTotalOrder = record
+  { isEquivalence = isEquivalence
+  ; trans         = <-trans
+  ; compare       = <-cmp
+  }
+
+<-strictTotalOrder : StrictTotalOrder 0ℓ 0ℓ 0ℓ
+<-strictTotalOrder = record
+  { isStrictTotalOrder = <-isStrictTotalOrder
+  }
+---------------------------------------------------------------
+
 
 -- Properties of _∸_ and _+_
 +-∸-comm : ∀ {m} n {o} → o ≤ m → (m + n) ∸ o ≡ (m ∸ o) + n

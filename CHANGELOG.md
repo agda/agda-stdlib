@@ -65,4 +65,10 @@ Other minor additions
 * Added new proof to `Relation.Binary.PropositionalEquality.Core`:
   ```agda
   ≢-sym : Symmetric {A = A} _≢_
-  ```
+        ```
+
+* The folloing changes are done in `Data.Nat.Properties`.
+  * The proofs ``1+n≢0, m∸n≢0⇒n<m`` added.
+  * The function `<-cmp` has been reimplemented and, when compiled, now
+    runs many times faster than the old function.
+
