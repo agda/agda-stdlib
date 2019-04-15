@@ -1,8 +1,6 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Decision procedures for finite sets and subsets of finite sets
---
 -- This module is DEPRECATED. Please use the Data.Fin.Properties
 -- and Data.Fin.Subset.Properties directly.
 ------------------------------------------------------------------------

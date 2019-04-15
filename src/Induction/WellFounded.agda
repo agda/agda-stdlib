@@ -194,16 +194,5 @@ module Lexicographic {a b ℓ₁ ℓ₂} {A : Set a} {B : A → Set b}
 
 -- Version 1.0
 
-module Inverse-image where
-  open InverseImage public
-  {-# WARNING_ON_IMPORT
-  "Inverse-image was deprecated in v1.0.
-\ \Use InverseImage instead."
-  #-}
-
-module Transitive-closure where
-  open TransitiveClosure public
-  {-# WARNING_ON_IMPORT
-  "Transitive-closure was deprecated in v1.0.
-\ \Use TransitiveClosure instead."
-  #-}
+module Inverse-image = InverseImage
+module Transitive-closure = TransitiveClosure

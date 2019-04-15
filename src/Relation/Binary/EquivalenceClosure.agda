@@ -1,8 +1,6 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Equivalence closures of binary relations
---
 -- This module is DEPRECATED. Please use the
 -- Relation.Binary.Construct.Closure.Equivalence module directly.
 ------------------------------------------------------------------------
