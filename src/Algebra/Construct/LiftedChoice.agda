@@ -45,7 +45,7 @@ Lift f x y with ∙-sel (f x) (f y)
 
 ------------------------------------------------------------------------
 -- Algebraic properties
- 
+
 sel : ∀ (f : A → B) → Selective _≡_ (Lift f)
 sel f x y with ∙-sel (f x) (f y)
 ... | inj₁ _ = inj₁ P.refl
@@ -153,8 +153,8 @@ module _ {ℓ} {_≈A_ : Rel A ℓ} {P : Pred A p} (f : A → B) where
 {-
 module _ {ℓ} {f : A → B} {_≈ᵇ_ : Rel B ℓ} {∙-sel : Selective _≈ᵇ_ _∙_} where
   --open EqReasoning S
-  
-  
+
+
   {-
   presᵒ : ∀ {p} → (P : Pred A p) → (∀ {x y} → (f x ∙ f y) ≈ᵇ f x → P y → P x) → _◦_ Preservesᵒ P
   presᵒ P impl a b Pa⊎Pb with ∙-sel (f a) (f b)
@@ -168,7 +168,7 @@ module _ {ℓ} {f : A → B} {_≈ᵇ_ : Rel B ℓ} {∙-sel : Selective _≈ᵇ
     private
       Injective : (f : A → B) → Set _
       Injective = ∀ {x y} → f x ≈ᵇ f y → x ≈ᵃ y
-    
+
     -}
 
 -}
