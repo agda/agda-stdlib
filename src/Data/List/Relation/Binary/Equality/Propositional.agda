@@ -28,6 +28,3 @@ open SetoidEquality (P.setoid A) public
 
 ≡⇒≋ : _≡_ ⇒ _≋_
 ≡⇒≋ P.refl = ≋-refl
-
-refl : Reflexive _≋_
-refl = ≡⇒≋ P.refl

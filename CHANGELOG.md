@@ -787,11 +787,6 @@ Other minor additions
   map-tabulate : map f (tabulate g) ≡ tabulate (f ∘ g)
   ```
 
-* Added new proofs to `Data.List.Relation.Binary.Equality.Propositional`:
-  ```agda
-  refl : Reflexive _≋_
-  ```
-
 * Added new proofs to `Data.List.Relation.Binary.Permutation.Inductive.Properties`:
   ```agda
   ++-isMagma : IsMagma _↭_ _++_

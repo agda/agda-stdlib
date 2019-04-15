@@ -49,7 +49,7 @@ module _ {a} {A : Set a} where
   cycle-replicate : ∀ {i} (n : ℕ) (n≢0 : n ≢ 0) (a : A) → i ⊢ cycle (List⁺.replicate n n≢0 a) ≈ repeat a
   cycle-replicate {i} n n≢0 a = let as = List⁺.replicate n n≢0 a in begin
     cycle as                           ≡⟨⟩
-    as ⁺++ _                           ≈⟨ ⁺++⁺ Eq.refl (λ where .force → cycle-replicate n n≢0 a) ⟩
+    as ⁺++ _                           ≈⟨ ⁺++⁺ Eq.≋-refl (λ where .force → cycle-replicate n n≢0 a) ⟩
     as ⁺++ (λ where .force → repeat a) ≈⟨ P.refl ∷ (λ where .force → replicate-repeat (pred n) a) ⟩
     repeat a                           ∎ where open ≈-Reasoning
 
@@ -77,7 +77,7 @@ module _ {a b} {A : Set a} {B : Set b} where
   map-cycle : ∀ {i} (f : A → B) as → i ⊢ map f (cycle as) ≈ cycle (List⁺.map f as)
   map-cycle f as = begin
     map f (cycle as)       ≈⟨ map-⁺++ f as _ ⟩
-    List⁺.map f as ⁺++ _   ≈⟨ ⁺++⁺ Eq.refl (λ where .force → map-cycle f as) ⟩
+    List⁺.map f as ⁺++ _   ≈⟨ ⁺++⁺ Eq.≋-refl (λ where .force → map-cycle f as) ⟩
     cycle (List⁺.map f as) ∎ where open ≈-Reasoning
 
 ------------------------------------------------------------------------
