@@ -62,6 +62,11 @@ Other minor additions
 * The function `show` in `Data.Nat.Show` has been reimplemented and,
   when compiled, now runs in time `O(log₁₀(n))` rather than `O(n)`.
 
+* Added new functions to `Data.Product`:
+  ```agda
+  zip′ : (A → B → C) → (D → E → F) → A × D → B × E → C × F
+  ```
+
 * Added new proof to `Relation.Binary.PropositionalEquality.Core`:
   ```agda
   ≢-sym : Symmetric {A = A} _≢_
