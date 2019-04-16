@@ -17,16 +17,22 @@ open import Function
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence
   using (_⇔_; equivalence; module Equivalence)
-open import Level using (0ℓ)
+open import Level using (Level; 0ℓ)
 open import Relation.Binary.Core using (Decidable)
 open import Relation.Binary.PropositionalEquality hiding ([_])
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable using (True)
 open import Relation.Unary as U using (Irrelevant)
 
-open import Algebra.FunctionProperties (_≡_ {A = Bool})
-open import Algebra.Structures (_≡_ {A = Bool})
+open import Algebra.FunctionProperties {A = Bool} _≡_
+open import Algebra.Structures {A = Bool} _≡_
 open ≡-Reasoning
+
+private
+  variable
+    a b : Level
+    A : Set a
+    B : Set b
 
 ------------------------------------------------------------------------
 -- Queries
@@ -424,7 +430,7 @@ not-¬ {false} refl ()
 ¬-not {false} {true}  _   = refl
 ¬-not {false} {false} x≢y = ⊥-elim (x≢y refl)
 
-⇔→≡ : {b₁ b₂ b : Bool} → b₁ ≡ b ⇔ b₂ ≡ b → b₁ ≡ b₂
+⇔→≡ : {x y z : Bool} → x ≡ z ⇔ y ≡ z → x ≡ y
 ⇔→≡ {true } {true }         hyp = refl
 ⇔→≡ {true } {false} {true } hyp = sym (Equivalence.to hyp ⟨$⟩ refl)
 ⇔→≡ {true } {false} {false} hyp = Equivalence.from hyp ⟨$⟩ refl
@@ -432,21 +438,21 @@ not-¬ {false} refl ()
 ⇔→≡ {false} {true } {false} hyp = sym (Equivalence.to hyp ⟨$⟩ refl)
 ⇔→≡ {false} {false}         hyp = refl
 
-T-≡ : ∀ {b} → T b ⇔ b ≡ true
+T-≡ : ∀ {x} → T x ⇔ x ≡ true
 T-≡ {false} = equivalence (λ ())       (λ ())
 T-≡ {true}  = equivalence (const refl) (const _)
 
-T-not-≡ : ∀ {b} → T (not b) ⇔ b ≡ false
+T-not-≡ : ∀ {x} → T (not x) ⇔ x ≡ false
 T-not-≡ {false} = equivalence (const refl) (const _)
 T-not-≡ {true}  = equivalence (λ ())       (λ ())
 
-T-∧ : ∀ {b₁ b₂} → T (b₁ ∧ b₂) ⇔ (T b₁ × T b₂)
+T-∧ : ∀ {x y} → T (x ∧ y) ⇔ (T x × T y)
 T-∧ {true}  {true}  = equivalence (const (_ , _)) (const _)
 T-∧ {true}  {false} = equivalence (λ ())          proj₂
 T-∧ {false} {_}     = equivalence (λ ())          proj₁
 
-T-∨ : ∀ {b₁ b₂} → T (b₁ ∨ b₂) ⇔ (T b₁ ⊎ T b₂)
-T-∨ {true}  {b₂}    = equivalence inj₁ (const _)
+T-∨ : ∀ {x y} → T (x ∨ y) ⇔ (T x ⊎ T y)
+T-∨ {true}  {_}     = equivalence inj₁ (const _)
 T-∨ {false} {true}  = equivalence inj₂ (const _)
 T-∨ {false} {false} = equivalence inj₁ [ id , id ]
 
@@ -460,9 +466,8 @@ T? false = no (λ ())
 T?-diag : ∀ b → T b → True (T? b)
 T?-diag true  _ = _
 
-push-function-into-if :
-  ∀ {a b} {A : Set a} {B : Set b} (f : A → B) x {y z} →
-  f (if x then y else z) ≡ (if x then f y else f z)
+push-function-into-if : ∀ (f : A → B) x {y z} →
+                        f (if x then y else z) ≡ (if x then f y else f z)
 push-function-into-if _ true  = refl
 push-function-into-if _ false = refl
 

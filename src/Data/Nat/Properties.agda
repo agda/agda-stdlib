@@ -31,13 +31,12 @@ open import Relation.Nullary
 open import Relation.Nullary.Decidable using (True; via-injection; map′)
 open import Relation.Nullary.Negation using (contradiction)
 
-open import Algebra.FunctionProperties (_≡_ {A = ℕ})
+open import Algebra.FunctionProperties {A = ℕ} _≡_
   hiding (LeftCancellative; RightCancellative; Cancellative)
 open import Algebra.FunctionProperties
   using (LeftCancellative; RightCancellative; Cancellative)
 open import Algebra.FunctionProperties.Consequences.Propositional
-open import Algebra.Structures (_≡_ {A = ℕ})
-open ≡-Reasoning
+open import Algebra.Structures {A = ℕ} _≡_
 
 ------------------------------------------------------------------------
 -- Properties of _≡_
@@ -190,6 +189,10 @@ n≤1+n _ = ≤-step ≤-refl
 n≤0⇒n≡0 : ∀ {n} → n ≤ 0 → n ≡ 0
 n≤0⇒n≡0 z≤n = refl
 
+n≢0⇒n>0 :  ∀ {n} → n ≢ 0 → n > 0
+n≢0⇒n>0 {zero}  0≢0 =  contradiction refl 0≢0
+n≢0⇒n>0 {suc n} _   =  s≤s z≤n
+
 ------------------------------------------------------------------------
 -- Properties of _<_
 
@@ -259,9 +262,6 @@ _>?_ = flip _<?_
 <-irrelevant : Irrelevant _<_
 <-irrelevant = ≤-irrelevant
 
-<⇒≤pred : ∀ {m n} → m < n → m ≤ pred n
-<⇒≤pred (s≤s le) = le
-
 <⇒≤ : _<_ ⇒ _≤_
 <⇒≤ (s≤s m≤n) = ≤-trans m≤n (≤-step ≤-refl)
 
@@ -304,6 +304,22 @@ n≮n n = <-irrefl (refl {x = n})
 
 m<n⇒n≢0 : ∀ {m n} → m < n → n ≢ 0
 m<n⇒n≢0 (s≤s m≤n) ()
+
+------------------------------------------------------------------------
+-- A module for reasoning about the _≤_ and _<_ relations
+
+module ≤-Reasoning where
+  open import Relation.Binary.Reasoning.Base.Triple
+    ≤-isPreorder
+    <-trans
+    (resp₂ _<_)
+    <⇒≤
+    <-transˡ
+    <-transʳ
+    public
+    hiding (_≈⟨_⟩_)
+
+open ≤-Reasoning
 
 ------------------------------------------------------------------------
 -- Properties of _≤′_
@@ -362,6 +378,9 @@ pred-mono (s≤s le) = le
 ≤⇒pred≤ {zero}  le = le
 ≤⇒pred≤ {suc m} le = ≤-trans (n≤1+n m) le
 
+<⇒≤pred : ∀ {m n} → m < n → m ≤ pred n
+<⇒≤pred (s≤s le) = le
+
 m≢0⇒suc[pred[m]]≡m : ∀ {m} → m ≢ 0 → suc (pred m) ≡ m
 m≢0⇒suc[pred[m]]≡m {zero}  m≢0 = ⊥-elim (m≢0 refl)
 m≢0⇒suc[pred[m]]≡m {suc m} m≢0 = refl
@@ -390,7 +409,7 @@ m≢0⇒suc[pred[m]]≡m {suc m} m≢0 = refl
 
 +-comm : Commutative _+_
 +-comm zero    n = sym (+-identityʳ n)
-+-comm (suc m) n = begin
++-comm (suc m) n = begin-equality
   suc m + n   ≡⟨⟩
   suc (m + n) ≡⟨ cong suc (+-comm m n) ⟩
   suc (n + m) ≡⟨ sym (+-suc n m) ⟩
@@ -563,7 +582,7 @@ n≤′m+n (suc m) n = ≤′-step (n≤′m+n m n)
 
 +-*-suc : ∀ m n → m * suc n ≡ m + m * n
 +-*-suc zero    n = refl
-+-*-suc (suc m) n = begin
++-*-suc (suc m) n = begin-equality
   suc m * suc n         ≡⟨⟩
   suc n + m * suc n     ≡⟨ cong (suc n +_) (+-*-suc m n) ⟩
   suc n + (m + m * n)   ≡⟨⟩
@@ -595,7 +614,7 @@ n≤′m+n (suc m) n = ≤′-step (n≤′m+n m n)
 
 *-comm : Commutative _*_
 *-comm zero    n = sym (*-zeroʳ n)
-*-comm (suc m) n = begin
+*-comm (suc m) n = begin-equality
   suc m * n  ≡⟨⟩
   n + m * n  ≡⟨ cong (n +_) (*-comm m n) ⟩
   n + n * m  ≡⟨ sym (+-*-suc n m) ⟩
@@ -603,7 +622,7 @@ n≤′m+n (suc m) n = ≤′-step (n≤′m+n m n)
 
 *-distribʳ-+ : _*_ DistributesOverʳ _+_
 *-distribʳ-+ m zero    o = refl
-*-distribʳ-+ m (suc n) o = begin
+*-distribʳ-+ m (suc n) o = begin-equality
   (suc n + o) * m     ≡⟨⟩
   m + (n + o) * m     ≡⟨ cong (m +_) (*-distribʳ-+ m n o) ⟩
   m + (n * m + o * m) ≡⟨ sym (+-assoc m (n * m) (o * m)) ⟩
@@ -618,7 +637,7 @@ n≤′m+n (suc m) n = ≤′-step (n≤′m+n m n)
 
 *-assoc : Associative _*_
 *-assoc zero    n o = refl
-*-assoc (suc m) n o = begin
+*-assoc (suc m) n o = begin-equality
   (suc m * n) * o     ≡⟨⟩
   (n + m * n) * o     ≡⟨ *-distribʳ-+ o n (m * n) ⟩
   n * o + (m * n) * o ≡⟨ cong (n * o +_) (*-assoc m n o) ⟩
@@ -751,6 +770,20 @@ i*j≡1⇒j≡1 i j eq = i*j≡1⇒i≡1 j i (trans (*-comm j i) eq)
 *-monoʳ-< (suc n) (s≤s m≤o) =
   +-mono-≤ (s≤s m≤o) (<⇒≤ (*-monoʳ-< n (s≤s m≤o)))
 
+m≤m*n : ∀ m {n} → 0 < n → m ≤ m * n
+m≤m*n m {n} 0<n = begin
+  m     ≡⟨ sym (*-identityʳ m) ⟩
+  m * 1 ≤⟨ *-monoʳ-≤ m 0<n ⟩
+  m * n ∎
+
+m<m*n :  ∀ {m n} → 0 < m → 1 < n → m < m * n
+m<m*n {suc m-1} {suc (suc n-2)} (s≤s _) (s≤s (s≤s _)) = begin-strict
+  m           <⟨ s≤s (s≤s (n≤m+n n-2 m-1)) ⟩
+  n + m-1     ≤⟨ +-monoʳ-≤ n (m≤m*n m-1 (s≤s z≤n)) ⟩
+  n + m-1 * n ≡⟨⟩
+  m * n       ∎
+  where m = suc m-1; n = suc (suc n-2)
+
 ------------------------------------------------------------------------
 -- Properties of _^_
 
@@ -760,7 +793,7 @@ i*j≡1⇒j≡1 i j eq = i*j≡1⇒i≡1 j i (trans (*-comm j i) eq)
 
 ^-zeroˡ : LeftZero 1 _^_
 ^-zeroˡ zero    = refl
-^-zeroˡ (suc e) = begin
+^-zeroˡ (suc e) = begin-equality
   1 ^ suc e   ≡⟨⟩
   1 * (1 ^ e) ≡⟨ *-identityˡ (1 ^ e) ⟩
   1 ^ e       ≡⟨ ^-zeroˡ e ⟩
@@ -768,7 +801,7 @@ i*j≡1⇒j≡1 i j eq = i*j≡1⇒i≡1 j i (trans (*-comm j i) eq)
 
 ^-distribˡ-+-* : ∀ m n p → m ^ (n + p) ≡ m ^ n * m ^ p
 ^-distribˡ-+-* m zero    p = sym (+-identityʳ (m ^ p))
-^-distribˡ-+-* m (suc n) p = begin
+^-distribˡ-+-* m (suc n) p = begin-equality
   m * (m ^ (n + p))       ≡⟨ cong (m *_) (^-distribˡ-+-* m n p) ⟩
   m * ((m ^ n) * (m ^ p)) ≡⟨ sym (*-assoc m _ _) ⟩
   (m * (m ^ n)) * (m ^ p) ∎
@@ -786,11 +819,11 @@ i*j≡1⇒j≡1 i j eq = i*j≡1⇒i≡1 j i (trans (*-comm j i) eq)
   }
 
 ^-*-assoc : ∀ m n p → (m ^ n) ^ p ≡ m ^ (n * p)
-^-*-assoc m n zero    = begin
+^-*-assoc m n zero    = begin-equality
   1           ≡⟨⟩
   m ^ 0       ≡⟨ cong (m ^_) (sym $ *-zeroʳ n) ⟩
   m ^ (n * 0) ∎
-^-*-assoc m n (suc p) = begin
+^-*-assoc m n (suc p) = begin-equality
   (m ^ n) * ((m ^ n) ^ p) ≡⟨ cong ((m ^ n) *_) (^-*-assoc m n p) ⟩
   (m ^ n) * (m ^ (n * p)) ≡⟨ sym (^-distribˡ-+-* m n (n * p)) ⟩
   m ^ (n + n * p)         ≡⟨ cong (m ^_) (sym (+-*-suc n p)) ⟩
@@ -889,7 +922,7 @@ m≤‴m+k {m} {k = suc k} proof
 ⊓-distribʳ-⊔ (suc m) (suc n) (suc o) = cong suc $ ⊓-distribʳ-⊔ m n o
 ⊓-distribʳ-⊔ (suc m) (suc n) zero    = cong suc $ refl
 ⊓-distribʳ-⊔ (suc m) zero    o       = refl
-⊓-distribʳ-⊔ zero    n       o       = begin
+⊓-distribʳ-⊔ zero    n       o       = begin-equality
   (n ⊔ o) ⊓ 0    ≡⟨ ⊓-comm (n ⊔ o) 0 ⟩
   0 ⊓ (n ⊔ o)    ≡⟨⟩
   0 ⊓ n ⊔ 0 ⊓ o  ≡⟨ ⊓-comm 0 n ⟨ cong₂ _⊔_ ⟩ ⊓-comm 0 o ⟩
@@ -909,7 +942,7 @@ m≤‴m+k {m} {k = suc k} proof
 ⊓-abs-⊔ : _⊓_ Absorbs _⊔_
 ⊓-abs-⊔ zero    n       = refl
 ⊓-abs-⊔ (suc m) (suc n) = cong suc $ ⊓-abs-⊔ m n
-⊓-abs-⊔ (suc m) zero    = cong suc $ begin
+⊓-abs-⊔ (suc m) zero    = cong suc $ begin-equality
   m ⊓ m       ≡⟨ cong (m ⊓_) $ sym $ ⊔-identityʳ m ⟩
   m ⊓ (m ⊔ 0) ≡⟨ ⊓-abs-⊔ m zero ⟩
   m           ∎
@@ -1223,7 +1256,7 @@ m⊓n≤m+n m n with ⊓-sel m n
 
 -- Other properties
 ⊓-triangulate : ∀ x y z → x ⊓ y ⊓ z ≡ (x ⊓ y) ⊓ (y ⊓ z)
-⊓-triangulate x y z = begin
+⊓-triangulate x y z = begin-equality
   x ⊓ y ⊓ z           ≡⟨ cong (λ v → x ⊓ v ⊓ z) (sym (⊓-idem y)) ⟩
   x ⊓ (y ⊓ y) ⊓ z     ≡⟨ ⊓-assoc x _ _ ⟩
   x ⊓ ((y ⊓ y) ⊓ z)   ≡⟨ cong (x ⊓_) (⊓-assoc y _ _) ⟩
@@ -1231,7 +1264,7 @@ m⊓n≤m+n m n with ⊓-sel m n
   (x ⊓ y) ⊓ (y ⊓ z)   ∎
 
 ⊔-triangulate : ∀ x y z → x ⊔ y ⊔ z ≡ (x ⊔ y) ⊔ (y ⊔ z)
-⊔-triangulate x y z = begin
+⊔-triangulate x y z = begin-equality
   x ⊔ y ⊔ z           ≡⟨ cong (λ v → x ⊔ v ⊔ z) (sym (⊔-idem y)) ⟩
   x ⊔ (y ⊔ y) ⊔ z     ≡⟨ ⊔-assoc x _ _ ⟩
   x ⊔ ((y ⊔ y) ⊔ z)   ≡⟨ cong (x ⊔_) (⊔-assoc y _ _) ⟩
@@ -1292,8 +1325,8 @@ m≤n⇒m∸n≡0 {_}    (s≤s m≤n) = m≤n⇒m∸n≡0 m≤n
 ∸-+-assoc (suc m) (suc n) (suc o) = ∸-+-assoc m n (suc o)
 
 +-∸-assoc : ∀ m {n o} → o ≤ n → (m + n) ∸ o ≡ m + (n ∸ o)
-+-∸-assoc m (z≤n {n = n})             = begin m + n ∎
-+-∸-assoc m (s≤s {m = o} {n = n} o≤n) = begin
++-∸-assoc m (z≤n {n = n})             = begin-equality m + n ∎
++-∸-assoc m (s≤s {m = o} {n = n} o≤n) = begin-equality
   (m + suc n) ∸ suc o  ≡⟨ cong (_∸ suc o) (+-suc m n) ⟩
   suc (m + n) ∸ suc o  ≡⟨⟩
   (m + n) ∸ o          ≡⟨ +-∸-assoc m o≤n ⟩
@@ -1305,28 +1338,28 @@ n≤m+n∸m zero    (suc n) = ≤-refl
 n≤m+n∸m (suc m) (suc n) = s≤s (n≤m+n∸m m n)
 
 m+n∸n≡m : ∀ m n → (m + n) ∸ n ≡ m
-m+n∸n≡m m n = begin
+m+n∸n≡m m n = begin-equality
   (m + n) ∸ n  ≡⟨ +-∸-assoc m (≤-refl {x = n}) ⟩
   m + (n ∸ n)  ≡⟨ cong (m +_) (n∸n≡0 n) ⟩
   m + 0        ≡⟨ +-identityʳ m ⟩
   m            ∎
 
 m+n∸m≡n : ∀ {m n} → m ≤ n → m + (n ∸ m) ≡ n
-m+n∸m≡n {m} {n} m≤n = begin
+m+n∸m≡n {m} {n} m≤n = begin-equality
   m + (n ∸ m)  ≡⟨ sym $ +-∸-assoc m m≤n ⟩
   (m + n) ∸ m  ≡⟨ cong (_∸ m) (+-comm m n) ⟩
   (n + m) ∸ m  ≡⟨ m+n∸n≡m n m ⟩
   n            ∎
 
 m∸n+n≡m : ∀ {m n} → n ≤ m → (m ∸ n) + n ≡ m
-m∸n+n≡m {m} {n} n≤m = begin
+m∸n+n≡m {m} {n} n≤m = begin-equality
   (m ∸ n) + n ≡⟨ sym (+-∸-comm n n≤m) ⟩
   (m + n) ∸ n ≡⟨ m+n∸n≡m m n ⟩
   m           ∎
 
 m∸[m∸n]≡n : ∀ {m n} → n ≤ m → m ∸ (m ∸ n) ≡ n
 m∸[m∸n]≡n {m}     {_}     z≤n       = n∸n≡0 m
-m∸[m∸n]≡n {suc m} {suc n} (s≤s n≤m) = begin
+m∸[m∸n]≡n {suc m} {suc n} (s≤s n≤m) = begin-equality
   suc m ∸ (m ∸ n)   ≡⟨ +-∸-assoc 1 (n∸m≤n n m) ⟩
   suc (m ∸ (m ∸ n)) ≡⟨ cong suc (m∸[m∸n]≡n n≤m) ⟩
   suc n             ∎
@@ -1341,7 +1374,7 @@ m∸[m∸n]≡n {suc m} {suc n} (s≤s n≤m) = begin
 *-distribʳ-∸ zero    zero    (suc k) = sym (0∸n≡0 (k * zero))
 *-distribʳ-∸ (suc i) zero    (suc k) = refl
 *-distribʳ-∸ i       (suc j) zero    = refl
-*-distribʳ-∸ i       (suc j) (suc k) = begin
+*-distribʳ-∸ i       (suc j) (suc k) = begin-equality
   (j ∸ k) * i             ≡⟨ *-distribʳ-∸ i j k ⟩
   j * i ∸ k * i           ≡⟨ sym $ [i+j]∸[i+k]≡j∸k i _ _ ⟩
   i + j * i ∸ (i + k * i) ∎
@@ -1444,7 +1477,7 @@ n∸m≤∣n-m∣ n m with ≤-total m n
 ∣n-m∣≡[n∸m]∨[m∸n] : ∀ m n → (∣ n - m ∣ ≡ n ∸ m) ⊎ (∣ n - m ∣ ≡ m ∸ n)
 ∣n-m∣≡[n∸m]∨[m∸n] m n with ≤-total m n
 ... | inj₁ m≤n = inj₁ $ m≤n⇒∣n-m∣≡n∸m m≤n
-... | inj₂ n≤m = inj₂ $ begin
+... | inj₂ n≤m = inj₂ $ begin-equality
   ∣ n - m ∣ ≡⟨ ∣-∣-comm n m ⟩
   ∣ m - n ∣ ≡⟨ m≤n⇒∣n-m∣≡n∸m n≤m ⟩
   m ∸ n     ∎
@@ -1452,7 +1485,7 @@ n∸m≤∣n-m∣ n m with ≤-total m n
 private
 
   *-distribˡ-∣-∣-aux : ∀ a m n → m ≤ n → a * ∣ n - m ∣ ≡ ∣ a * n - a * m ∣
-  *-distribˡ-∣-∣-aux a m n m≤n = begin
+  *-distribˡ-∣-∣-aux a m n m≤n = begin-equality
     a * ∣ n - m ∣     ≡⟨ cong (a *_) (m≤n⇒∣n-m∣≡n∸m m≤n) ⟩
     a * (n ∸ m)       ≡⟨ *-distribˡ-∸ a n m ⟩
     a * n ∸ a * m     ≡⟨ sym $′ m≤n⇒∣n-m∣≡n∸m (*-monoʳ-≤ a m≤n) ⟩
@@ -1460,7 +1493,7 @@ private
 
 *-distribˡ-∣-∣ : _*_ DistributesOverˡ ∣_-_∣
 *-distribˡ-∣-∣ a m n with ≤-total m n
-... | inj₁ m≤n = begin
+... | inj₁ m≤n = begin-equality
   a * ∣ m - n ∣     ≡⟨ cong (a *_) (∣-∣-comm m n) ⟩
   a * ∣ n - m ∣     ≡⟨ *-distribˡ-∣-∣-aux a m n m≤n ⟩
   ∣ a * n - a * m ∣ ≡⟨ ∣-∣-comm (a * n) (a * m) ⟩
@@ -1580,20 +1613,6 @@ eq? : ∀ {a} {A : Set a} → A ↣ ℕ → Decidable {A = A} _≡_
 eq? inj = via-injection inj _≟_
 
 ------------------------------------------------------------------------
--- A module for reasoning about the _≤_ and _<_ relations
-
-module ≤-Reasoning where
-  open import Relation.Binary.Reasoning.Base.Triple
-    ≤-isPreorder
-    <-trans
-    (resp₂ _<_)
-    <⇒≤
-    <-transˡ
-    <-transʳ
-    public
-    hiding (_≈⟨_⟩_)
-
-------------------------------------------------------------------------
 -- DEPRECATED NAMES
 ------------------------------------------------------------------------
 -- Please use the new names as continuing support for the old names is
@@ -1710,11 +1729,11 @@ Please use ≤-stepsˡ instead."
 i∸k∸j+j∸k≡i+j∸k : ∀ i j k → i ∸ (k ∸ j) + (j ∸ k) ≡ i + j ∸ k
 i∸k∸j+j∸k≡i+j∸k zero    j k    = cong (_+ (j ∸ k)) (0∸n≡0 (k ∸ j))
 i∸k∸j+j∸k≡i+j∸k (suc i) j zero = cong (λ x → suc i ∸ x + j) (0∸n≡0 j)
-i∸k∸j+j∸k≡i+j∸k (suc i) zero (suc k) = begin
+i∸k∸j+j∸k≡i+j∸k (suc i) zero (suc k) = begin-equality
   i ∸ k + 0  ≡⟨ +-identityʳ _ ⟩
   i ∸ k      ≡⟨ cong (_∸ k) (sym (+-identityʳ _)) ⟩
   i + 0 ∸ k  ∎
-i∸k∸j+j∸k≡i+j∸k (suc i) (suc j) (suc k) = begin
+i∸k∸j+j∸k≡i+j∸k (suc i) (suc j) (suc k) = begin-equality
   suc i ∸ (k ∸ j) + (j ∸ k) ≡⟨ i∸k∸j+j∸k≡i+j∸k (suc i) j k ⟩
   suc i + j ∸ k             ≡⟨ cong (_∸ k) (sym (+-suc i j)) ⟩
   i + suc j ∸ k             ∎
@@ -1722,7 +1741,7 @@ i∸k∸j+j∸k≡i+j∸k (suc i) (suc j) (suc k) = begin
 "Warning: i∸k∸j+j∸k≡i+j∸k was deprecated in v0.17."
 #-}
 im≡jm+n⇒[i∸j]m≡n : ∀ i j m n → i * m ≡ j * m + n → (i ∸ j) * m ≡ n
-im≡jm+n⇒[i∸j]m≡n i j m n eq = begin
+im≡jm+n⇒[i∸j]m≡n i j m n eq = begin-equality
   (i ∸ j) * m            ≡⟨ *-distribʳ-∸ m i j ⟩
   (i * m) ∸ (j * m)      ≡⟨ cong (_∸ j * m) eq ⟩
   (j * m + n) ∸ (j * m)  ≡⟨ cong (_∸ j * m) (+-comm (j * m) n) ⟩
