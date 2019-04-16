@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe --sized-types #-}
 
-module README.Trie where
+module README.Trie.NonDependent where
 
 ------------------------------------------------------------------------
 -- Introduction
@@ -14,6 +14,10 @@ module README.Trie where
 -- A Trie is a tree of values indexed by words in a finite language. It
 -- allows users to quickly compute the Brzozowski derivative of that
 -- little mapping from words to values.
+
+-- In the most general case, values can depend upon the list of characters
+-- that constitutes the path leading to them. Here however we consider a
+-- non-dependent case (cf. README.Trie.Dependent for a dependent use case).
 
 -- We can recognize keywords by storing the list of characters they
 -- correspond to as paths in a Trie and the constructor they are decoded
@@ -85,11 +89,22 @@ module Lexer
 
    mutual
 
+    -- A Trie is defined for an alphabet of strictly ordered letters (here
+    -- we have picked Char for letters and decided to use the strict total
+    -- order induced by their injection into ℕ as witnessed by the statement
+    -- open import Data.Trie Char.strictTotalOrder earlier in this file).
+
+    -- It is parametrised by a set of Values indexed over list of letters.
+    -- Because we focus on the non-dependent case, we pick the constant
+    -- family of Value uniformly equal to Tok. It is trivially compatible
+    -- with the notion of equality underlying the strict total order on Chars.
+
+    Keywords : Set _
+    Keywords = Trie (const _ Tok) _
+
     -- We build a trie from the association list so that we may easily
     -- compute the successive derivatives obtained by eating the
     -- characters one by one
-    Keywords : Set _
-    Keywords = Trie (const _ Tok) _
 
     init : Keywords
     init = fromList $ List⁺.toList $ List⁺.map (Prod.map₁ String.toList) lex
