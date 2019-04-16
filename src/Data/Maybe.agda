@@ -13,6 +13,7 @@ open import Data.Unit using (⊤)
 open import Data.Bool.Base using (T)
 open import Data.Maybe.Relation.Unary.All
 open import Data.Maybe.Relation.Unary.Any
+open import Level using (Level)
 
 ------------------------------------------------------------------------
 -- The base type and some operations
