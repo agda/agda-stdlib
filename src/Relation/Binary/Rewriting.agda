@@ -12,14 +12,15 @@ module Relation.Binary.Rewriting where
 open import Agda.Builtin.Equality using (_≡_ ; refl)
 open import Data.Product using (_×_ ; ∃ ; -,_; _,_ ; proj₁ ; proj₂)
 open import Data.Empty
-open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
-open import Function using (flip; _∘′_)
+open import Data.Sum as Sum using (_⊎_)
+open import Function using (flip)
 open import Induction.WellFounded
 open import Level
 open import Relation.Binary.Core
 open import Relation.Binary.Construct.Closure.Equivalence using (EqClosure)
 open import Relation.Binary.Construct.Closure.Reflexive
-open import Relation.Binary.Construct.Closure.ReflexiveTransitive as RTrans
+open import Relation.Binary.Construct.Closure.ReflexiveTransitive
+open import Relation.Binary.Construct.Closure.ReflexiveSymmetricTransitive.Properties
 open import Relation.Binary.Construct.Closure.Symmetric
 open import Relation.Binary.Construct.Closure.Transitive
 open import Relation.Nullary
@@ -99,17 +100,7 @@ module _ {a ℓ} {A : Set a} {_⟶_ : Rel A ℓ} where
     ... | (bNF , (e , x)) , (_ , (f , y)) with bNF≡cNF
 
      where
-
-        forwards : ∀ {a b} → a —↠ b → a ↔ b
-        forwards = RTrans.map inj₁
-
-        backwards : ∀ {a b} → a —↠ b → b ↔ a
-        backwards = RTrans.reverse (symmetric _⟶_) ∘′ forwards
-
-        lemma : ∀ {a b c} → a —↠ b → a —↠ c → b ↔ c
-        lemma t b = backwards t ◅◅ forwards b
-
-        bNF≡cNF = un e f (lemma (aToB ◅◅ x) (aToC ◅◅ y))
+        bNF≡cNF = un e f (a—↠b&a—↠c⇒b↔c (aToB ◅◅ x) (aToC ◅◅ y))
 
     ... | refl = bNF , x , y
 
