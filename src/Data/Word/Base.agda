@@ -1,15 +1,19 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Machine words
+-- Machine words: basic type and conversion functions
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
-module Data.Word where
+module Data.Word.Base where
 
 ------------------------------------------------------------------------
--- Re-export base definitions and decidability of equality
+-- Re-export built-ins publically
 
-open import Data.Word.Base public
-open import Data.Word.Properties using (_≟_; _==_) public
+open import Agda.Builtin.Word public
+  using (Word64)
+  renaming
+  ( primWord64ToNat   to toℕ
+  ; primWord64FromNat to fromℕ
+  )

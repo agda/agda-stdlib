@@ -11,6 +11,11 @@ Highlights
 New modules
 -----------
 
+```agda
+Data.Word.Base
+Data.Word.Properties
+```
+
 Non-backwards compatible changes
 --------------------------------
 
