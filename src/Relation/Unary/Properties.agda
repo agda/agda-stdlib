@@ -11,7 +11,7 @@ module Relation.Unary.Properties where
 open import Data.Product using (_×_; _,_; swap; proj₁)
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.Unit using (tt)
-open import Relation.Binary.Core hiding (Decidable)
+open import Relation.Binary.Core hiding (Decidable; Universal)
 open import Relation.Unary
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Product using (_×-dec_)

@@ -67,6 +67,12 @@ Other minor additions
   zip′ : (A → B → C) → (D → E → F) → A × D → B × E → C × F
   ```
 
+* Added new definition in `Relation.Binary.Core`:
+  ```agda
+  Refl _≈_ _∼_  = _≈_ ⇒ _∼_
+  Universal _∼_ = ∀ x y → x ∼ y
+  ```
+
 * Added new proof to `Relation.Binary.PropositionalEquality.Core`:
   ```agda
   ≢-sym : Symmetric {A = A} _≢_
