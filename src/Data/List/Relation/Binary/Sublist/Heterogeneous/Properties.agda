@@ -195,6 +195,16 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   ++ʳ cs (y ∷ʳ rs) = y ∷ʳ ++ʳ cs rs
   ++ʳ cs (r ∷ rs)  = r ∷ ++ʳ cs rs
 
+
+------------------------------------------------------------------------
+-- concat
+
+  concat⁺ : ∀ {ass bss} → Sublist (Sublist R) ass bss →
+            Sublist R (concat ass) (concat bss)
+  concat⁺ []          = []
+  concat⁺ (y  ∷ʳ rss) = ++ˡ y (concat⁺ rss)
+  concat⁺ (rs ∷  rss) = ++⁺ rs (concat⁺ rss)
+
 ------------------------------------------------------------------------
 -- take / drop
 
