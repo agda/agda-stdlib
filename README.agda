@@ -1,7 +1,7 @@
 module README where
 
 ------------------------------------------------------------------------
--- The Agda standard library, version 1.0
+-- The Agda standard library, development version
 --
 -- Authors: Nils Anders Danielsson, Matthew Daggitt, Guillaume Allais
 -- with contributions from Andreas Abel, Stevan Andjelkovic,
@@ -266,6 +266,10 @@ import README.Integer
 -- Some examples showing how the AVL tree module can be used.
 
 import README.AVL
+
+-- Some examples showing how List module can be used.
+
+import README.List
 
 -- An example showing how the Record module can be used.
 

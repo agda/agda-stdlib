@@ -19,9 +19,9 @@ open import Data.Product
 ⁻¹-involutive : ∀ x → x ⁻¹ ⁻¹ ≈ x
 ⁻¹-involutive x = begin
   x ⁻¹ ⁻¹               ≈⟨ sym $ identityʳ _ ⟩
-  x ⁻¹ ⁻¹ ∙ ε           ≈⟨ ∙-congʳ $ sym (inverseˡ _) ⟩
+  x ⁻¹ ⁻¹ ∙ ε           ≈⟨ ∙-congˡ $ sym (inverseˡ _) ⟩
   x ⁻¹ ⁻¹ ∙ (x ⁻¹ ∙ x)  ≈⟨ sym $ assoc _ _ _ ⟩
-  x ⁻¹ ⁻¹ ∙ x ⁻¹ ∙ x    ≈⟨ ∙-congˡ $ inverseˡ _ ⟩
+  x ⁻¹ ⁻¹ ∙ x ⁻¹ ∙ x    ≈⟨ ∙-congʳ $ inverseˡ _ ⟩
   ε ∙ x                 ≈⟨ identityˡ _ ⟩
   x                     ∎
 
@@ -30,21 +30,21 @@ private
   left-helper : ∀ x y → x ≈ (x ∙ y) ∙ y ⁻¹
   left-helper x y = begin
     x              ≈⟨ sym (identityʳ x) ⟩
-    x ∙ ε          ≈⟨ ∙-congʳ $ sym (inverseʳ y) ⟩
+    x ∙ ε          ≈⟨ ∙-congˡ $ sym (inverseʳ y) ⟩
     x ∙ (y ∙ y ⁻¹) ≈⟨ sym (assoc x y (y ⁻¹)) ⟩
     (x ∙ y) ∙ y ⁻¹ ∎
 
   right-helper : ∀ x y → y ≈ x ⁻¹ ∙ (x ∙ y)
   right-helper x y = begin
     y              ≈⟨ sym (identityˡ y) ⟩
-    ε          ∙ y ≈⟨ ∙-congˡ $ sym (inverseˡ x) ⟩
+    ε          ∙ y ≈⟨ ∙-congʳ $ sym (inverseˡ x) ⟩
     (x ⁻¹ ∙ x) ∙ y ≈⟨ assoc (x ⁻¹) x y ⟩
     x ⁻¹ ∙ (x ∙ y) ∎
 
 left-identity-unique : ∀ x y → x ∙ y ≈ y → x ≈ ε
 left-identity-unique x y eq = begin
   x              ≈⟨ left-helper x y ⟩
-  (x ∙ y) ∙ y ⁻¹ ≈⟨ ∙-congˡ eq ⟩
+  (x ∙ y) ∙ y ⁻¹ ≈⟨ ∙-congʳ eq ⟩
        y  ∙ y ⁻¹ ≈⟨ inverseʳ y ⟩
   ε              ∎
 
@@ -61,7 +61,7 @@ identity-unique {x} id = left-identity-unique x x (proj₂ id x)
 left-inverse-unique : ∀ x y → x ∙ y ≈ ε → x ≈ y ⁻¹
 left-inverse-unique x y eq = begin
   x              ≈⟨ left-helper x y ⟩
-  (x ∙ y) ∙ y ⁻¹ ≈⟨ ∙-congˡ eq ⟩
+  (x ∙ y) ∙ y ⁻¹ ≈⟨ ∙-congʳ eq ⟩
        ε  ∙ y ⁻¹ ≈⟨ identityˡ (y ⁻¹) ⟩
             y ⁻¹ ∎
 

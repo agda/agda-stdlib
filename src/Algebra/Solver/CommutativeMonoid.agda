@@ -107,7 +107,7 @@ empty-correct (a ∷ ρ) = empty-correct ρ
 
 sg-correct : ∀{n} (x : Fin n) (ρ : Env n) →  ⟦ sg x ⟧⇓ ρ ≈ lookup ρ x
 sg-correct zero (x ∷ ρ) = begin
-    x ∙ ⟦ empty ⟧⇓ ρ   ≈⟨ ∙-congʳ (empty-correct ρ) ⟩
+    x ∙ ⟦ empty ⟧⇓ ρ   ≈⟨ ∙-congˡ (empty-correct ρ) ⟩
     x ∙ ε              ≈⟨ identityʳ _ ⟩
     x                  ∎
 sg-correct (suc x) (m ∷ ρ) = sg-correct x ρ
@@ -122,14 +122,14 @@ comp-correct (l ∷ v) (m ∷ w) (a ∷ ρ) = lemma l m (comp-correct v w ρ)
     flip12 : ∀ a b c → a ∙ (b ∙ c) ≈ b ∙ (a ∙ c)
     flip12 a b c = begin
         a ∙ (b ∙ c)  ≈⟨ sym (assoc _ _ _) ⟩
-        (a ∙ b) ∙ c  ≈⟨ ∙-congˡ (comm _ _) ⟩
+        (a ∙ b) ∙ c  ≈⟨ ∙-congʳ (comm _ _) ⟩
         (b ∙ a) ∙ c  ≈⟨ assoc _ _ _ ⟩
         b ∙ (a ∙ c)  ∎
     lemma : ∀ l m {d b c} (p : d ≈ b ∙ c) →
       fold d (a ∙_) (l + m) ≈ fold b (a ∙_) l ∙ fold c (a ∙_) m
     lemma zero zero p = p
-    lemma zero (suc m) p = trans (∙-congʳ (lemma zero m p)) (flip12 _ _ _)
-    lemma (suc l) m p = trans (∙-congʳ (lemma l m p)) (sym (assoc a _ _))
+    lemma zero (suc m) p = trans (∙-congˡ (lemma zero m p)) (flip12 _ _ _)
+    lemma (suc l) m p = trans (∙-congˡ (lemma l m p)) (sym (assoc a _ _))
 
 ------------------------------------------------------------------------
 -- Normalization
