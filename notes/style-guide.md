@@ -87,8 +87,12 @@ This is very much a work-in-progress and is not exhaustive.
   then they should be left explicit.
 
 * If there are lots of implicit arguments that are common to a collection
-  of proofs they should be extracted by using an anonymous module (or
-  possibly the new `variable` keyword in Agda 2.6.0).
+  of proofs they should be extracted by using an anonymous module.
+
+* Implicit of type `Level` and `Set` can be generalised using `variable`s.
+  At the moment the policy is *not* to generalise over any other types in
+  order to minimise the amount of information that users have to keep in
+  their head concurrently.
 
 ## Naming conventions
 
