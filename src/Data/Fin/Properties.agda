@@ -149,8 +149,8 @@ fromℕ≤≡fromℕ≤″ (s≤s (s≤s m<n)) (ℕ.less-than-or-equal refl) =
 
 toℕ-fromℕ≤″ : ∀ {m n} (m<n : m ℕ.<″ n) → toℕ (fromℕ≤″ m m<n) ≡ m
 toℕ-fromℕ≤″ {m} {n} m<n = begin
-  toℕ (fromℕ≤″ m m<n)  ≡⟨ cong toℕ (sym (fromℕ≤≡fromℕ≤″ (ℕₚ.≤″⇒≤ m<n) m<n)) ⟩
-  toℕ (fromℕ≤ (ℕₚ.≤″⇒≤ m<n))       ≡⟨ toℕ-fromℕ≤ (ℕₚ.≤″⇒≤ m<n) ⟩
+  toℕ (fromℕ≤″ m m<n)  ≡⟨ cong toℕ (sym (fromℕ≤≡fromℕ≤″ _ m<n)) ⟩
+  toℕ (fromℕ≤ _)       ≡⟨ toℕ-fromℕ≤ (ℕₚ.≤″⇒≤ m<n) ⟩
   m ∎
   where open ≡-Reasoning
 
@@ -378,12 +378,12 @@ lower₁-irrelevant {suc n} (suc i)  _   _ =
 
 toℕ-inject≤ : ∀ {m n} (i : Fin m) (le : m ℕ≤ n) →
                 toℕ (inject≤ i le) ≡ toℕ i
-toℕ-inject≤ zero    (s≤s le) = refl
-toℕ-inject≤ (suc i) (s≤s le) = cong suc (toℕ-inject≤ i le)
+toℕ-inject≤ {_} {suc n} zero    _  = refl
+toℕ-inject≤ {_} {suc n} (suc i) le = cong suc (toℕ-inject≤ i (ℕ.≤-pred le))
 
 inject≤-refl : ∀ {n} (i : Fin n) (n≤n : n ℕ≤ n) → inject≤ i n≤n ≡ i
-inject≤-refl zero    (s≤s _  ) = refl
-inject≤-refl (suc i) (s≤s n≤n) = cong suc (inject≤-refl i n≤n)
+inject≤-refl {suc n} zero    _   = refl
+inject≤-refl {suc n} (suc i) n≤n = cong suc (inject≤-refl i (ℕ.≤-pred n≤n))
 
 inject≤-irrelevant : ∀ {m n} (i : Fin m) (m≤n₁ m≤n₂ : m ℕ≤ n)
                      → inject≤ i m≤n₁ ≡ inject≤ i m≤n₂
