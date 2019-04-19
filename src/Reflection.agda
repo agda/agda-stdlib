@@ -644,3 +644,18 @@ mutual
   lit _   ≟-Sort unknown = no λ()
   unknown ≟-Sort set _   = no λ()
   unknown ≟-Sort lit _   = no λ()
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 1.1
+
+returnTC = return
+{-# WARNING_ON_USAGE returnTC
+"Warning: returnTC was deprecated in v1.1.
+Please use return instead."
+#-}
