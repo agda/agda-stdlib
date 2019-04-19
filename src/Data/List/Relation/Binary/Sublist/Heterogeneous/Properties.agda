@@ -164,7 +164,6 @@ module _ {a b c d r} {A : Set a} {B : Set b} {C : Set c} {D : Set d}
          Sublist R (List.map f as) (List.map g bs) →
          Sublist (λ a b → R (f a) (g b)) as bs
   map⁻ {[]}     {bs}     f g rs        = minimum _
-  map⁻ {a ∷ as} {[]}     f g ()
   map⁻ {a ∷ as} {b ∷ bs} f g (_ ∷ʳ rs) = b ∷ʳ map⁻ f g rs
   map⁻ {a ∷ as} {b ∷ bs} f g (r ∷ rs)  = r ∷ map⁻ f g rs
 
@@ -184,8 +183,6 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
         Sublist R (as ++ cs) (bs ++ ds) → Sublist R cs ds
   ++⁻ {[]}     {[]}     eq rs = rs
   ++⁻ {a ∷ as} {b ∷ bs} eq rs = ++⁻ (ℕₚ.suc-injective eq) (∷⁻ rs)
-  ++⁻ {[]} {_ ∷ _} ()
-  ++⁻ {_ ∷ _} {[]} ()
 
   ++ˡ : ∀ {as bs} (cs : List B) → Sublist R as bs → Sublist R as (cs ++ bs)
   ++ˡ zs = ++⁺ (minimum zs)
@@ -327,16 +324,12 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
     P.cong (y ∷ʳ_) ∘′ toAny-injective ∘′ there-injective
   toAny-injective {p = _ ∷ p}  {_ ∷ q}  =
     P.cong₂ (flip _∷_) (Sublist-[]-irrelevant p q) ∘′ here-injective
-  toAny-injective {p = _ ∷ʳ _} {_ ∷ _}  = λ ()
-  toAny-injective {p = _ ∷ _}  {_ ∷ʳ _} = λ ()
 
   fromAny-injective : ∀ {xs x} {p q : Any (R x) xs} →
                       fromAny {R = R} p ≡ fromAny q → p ≡ q
   fromAny-injective {p = here px} {here qx} = P.cong here ∘′ ∷-injectiveˡ
   fromAny-injective {p = there p} {there q} =
     P.cong there ∘′ fromAny-injective ∘′ ∷ʳ-injective
-  fromAny-injective {p = here _}  {there _} = λ ()
-  fromAny-injective {p = there _} {here _}  = λ ()
 
   toAny∘fromAny≗id : ∀ {xs x} (p : Any (R x) xs) → toAny (fromAny {R = R} p) ≡ p
   toAny∘fromAny≗id (here px) = P.refl

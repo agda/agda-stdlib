@@ -82,19 +82,16 @@ remove-permute π i t j = P.cong (lookup t) (Perm.punchIn-permute′ π i j)
 -- fromList
 
 fromList-∈ : ∀ {xs : List A} (i : Fin (L.length xs)) → lookup (fromList xs) i ∈ xs
-fromList-∈ {xs = []}     ()
 fromList-∈ {xs = x ∷ xs} zero    = here refl
 fromList-∈ {xs = x ∷ xs} (suc i) = there (fromList-∈ i)
 
 index-fromList-∈ : ∀ {xs : List A} {i} → index (fromList-∈ {xs = xs} i) ≡ i
-index-fromList-∈ {xs = []}     {()}
 index-fromList-∈ {xs = x ∷ xs} {zero}  = refl
 index-fromList-∈ {xs = x ∷ xs} {suc i} = cong suc index-fromList-∈
 
 fromList-index : ∀ {xs} {x : A} (x∈xs : x ∈ xs) → lookup (fromList xs) (index x∈xs) ≡ x
 fromList-index (here px)    = sym px
 fromList-index (there x∈xs) = fromList-index x∈xs
-
 
 ------------------------------------------------------------------------
 -- There exists an isomorphism between tables and vectors.

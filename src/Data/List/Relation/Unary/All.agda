@@ -50,7 +50,6 @@ module _ {P : Pred A p} where
   tail (px ∷ pxs) = pxs
 
   lookup : ∀ {xs} → All P xs → (∀ {x} → x ∈ xs → P x)
-  lookup []         ()
   lookup (px ∷ pxs) (here refl)  = px
   lookup (px ∷ pxs) (there x∈xs) = lookup pxs x∈xs
 

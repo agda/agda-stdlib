@@ -74,7 +74,6 @@ fromBits (b  ∷ bs) with fromBits bs
 fromBits (b  ∷ bs) | bs′ 1# = (b ∷ bs′) 1#
 fromBits (0b ∷ bs) | 0#     = 0#
 fromBits (1b ∷ bs) | 0#     = [] 1#
-fromBits (⊥b ∷ bs) | _
 
 private
   pattern 2+_ n = 1+ 1+ n
@@ -162,8 +161,6 @@ addCarryToBitList 0b bs        = bs
 addCarryToBitList 1b []        = 1b ∷ []
 addCarryToBitList 1b (0b ∷ bs) = 1b ∷ bs
 addCarryToBitList 1b (1b ∷ bs) = 0b ∷ addCarryToBitList 1b bs
-addCarryToBitList ⊥b _
-addCarryToBitList _  (⊥b ∷ _)
 
 addBitLists : Carry → List Bit → List Bit → List Bit
 addBitLists c []         bs₂        = addCarryToBitList c bs₂
@@ -188,7 +185,6 @@ _*_ : Bin → Bin → Bin
 (b  ∷ bs) 1# * n | 0#     = 0#
 (0b ∷ bs) 1# * n | bs' 1# = (0b ∷ bs') 1#
 (1b ∷ bs) 1# * n | bs' 1# = n + (0b ∷ bs') 1#
-(⊥b ∷ _)  1# * _ | _
 
 -- Successor.
 
@@ -206,7 +202,6 @@ pred : Bin⁺ → Bin
 pred []        = 0#
 pred (0b ∷ bs) = pred bs *2+1
 pred (1b ∷ bs) = (zero ∷ bs) 1#
-pred (⊥b ∷ bs)
 
 -- downFrom n enumerates all numbers from n - 1 to 0. This function is
 -- linear in n. Analysis: fromℕ takes linear time, and the preds used

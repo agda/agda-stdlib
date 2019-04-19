@@ -143,9 +143,6 @@ gcd′ m n = Prod.map id gcd-gcd′ (gcd m n)
 
 prime⇒coprime : ∀ m → Prime m →
                 ∀ n → 0 < n → n < m → Coprime m n
-prime⇒coprime 0             () _ _  _     _
-prime⇒coprime 1             () _ _  _     _
-prime⇒coprime (suc (suc m)) _  0 () _     _
 prime⇒coprime (suc (suc m)) _  _ _  _ {1} _                       = refl
 prime⇒coprime (suc (suc m)) p  _ _  _ {0} (divides q 2+m≡q*0 , _) =
   ⊥-elim $ i+1+j≢i 0 (begin
