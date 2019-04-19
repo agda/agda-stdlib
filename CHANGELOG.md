@@ -13,6 +13,8 @@ New modules
 
 The following new modules have been added to the library:
 ```
+Category.Monad.Reader
+
 Data.List.Relation.Binary.Disjoint.Propositional
 Data.List.Relation.Binary.Disjoint.Setoid
 Data.List.Relation.Binary.Disjoint.Setoid.Properties
@@ -28,9 +30,6 @@ Data.List.Relation.Unary.Unique.Setoid.Properties
 Non-backwards compatible changes
 --------------------------------
 
-Removed features
-----------------
-
 Deprecated features
 -------------------
 
@@ -38,6 +37,16 @@ Deprecated features
 
 Other minor additions
 ---------------------
+
+* Added new function to `Data.Digit`:
+  ```agda
+  toNatDigits : (base : ℕ) {base≤16 : True (1 ≤? base)} → ℕ → List ℕ
+  ```
+
+* Added new proof to `Data.List.Relation.Binary.Sublist.Heterogeneous.Properties`:
+  ```agda
+  concat⁺ : Sublist (Sublist R) ass bss → Sublist R (concat ass) (concat bss)
+  ```
 
 * Added new proofs to `Data.List.Relation.Unary.All.Properties`:
   ```agda
@@ -47,15 +56,37 @@ Other minor additions
   applyDownFrom⁺₂ : (∀ i → P (f i)) → All P (applyDownFrom f n)
   ```
 
+* Added new proof to `Data.Nat.DivMod`:
+  ```agda
+  [a/n]*n≤a : (a div (suc n)) * (suc n) ≤ a
+  ```
+
 * Added new proofs to `Data.Nat.Properties`:
   ```agda
   ≤-<-connex : Connex _≤_ _<_
   ≥->-connex : Connex _≥_ _>_
   <-≤-connex : Connex _<_ _≤_
   >-≥-connex : Connex _>_ _≥_
+  
+  n≢0⇒n>0 : n ≢ 0 → n > 0
+  m≤m*n   : 0 < n → m ≤ m * n
+  m<m*n   : 0 < m → 1 < n → m < m * n
+  ```
+
+* The function `show` in `Data.Nat.Show` has been reimplemented and,
+  when compiled, now runs in time `O(log₁₀(n))` rather than `O(n)`.
+
+* Added new functions to `Data.Product`:
+  ```agda
+  zip′ : (A → B → C) → (D → E → F) → A × D → B × E → C × F
   ```
 
 * Added new proofs to `Relation.Binary.Consequences`:
   ```agda
   flip-Connex : Connex P Q → Connex Q P
+  ```
+
+* Added new proof to `Relation.Binary.PropositionalEquality.Core`:
+  ```agda
+  ≢-sym : Symmetric _≢_
   ```

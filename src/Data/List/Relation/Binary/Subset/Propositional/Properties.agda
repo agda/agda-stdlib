@@ -197,7 +197,6 @@ module _ {a p} {A : Set a} {P : A → Set p} (P? : Decidable P) where
 
 boolFilter-⊆ : ∀ {a} {A : Set a} (p : A → Bool) →
                (xs : List A) → boolFilter p xs ⊆ xs
-boolFilter-⊆ _ []       = λ ()
 boolFilter-⊆ p (x ∷ xs) with p x | boolFilter-⊆ p xs
 ... | false | hyp = there ∘ hyp
 ... | true  | hyp =

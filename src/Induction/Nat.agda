@@ -62,7 +62,6 @@ mutual
   <′-wellFounded n = acc (<′-wellFounded′ n)
 
   <′-wellFounded′ : ∀ n → <′-Rec (Acc _<′_) n
-  <′-wellFounded′ zero     _ ()
   <′-wellFounded′ (suc n) .n ≤′-refl       = <′-wellFounded n
   <′-wellFounded′ (suc n)  m (≤′-step m<n) = <′-wellFounded′ n m m<n
 
