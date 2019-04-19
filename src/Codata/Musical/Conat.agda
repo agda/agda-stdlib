@@ -39,8 +39,6 @@ fromℕ (suc n) = suc (♯ fromℕ n)
 
 fromℕ-injective : ∀ {m n} → fromℕ m ≡ fromℕ n → m ≡ n
 fromℕ-injective {zero}  {zero}  eq = P.refl
-fromℕ-injective {zero}  {suc n} ()
-fromℕ-injective {suc m} {zero}  ()
 fromℕ-injective {suc m} {suc n} eq = P.cong suc (fromℕ-injective (P.cong pred eq))
 
 ∞ℕ : Coℕ

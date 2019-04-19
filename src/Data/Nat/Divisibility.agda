@@ -49,7 +49,6 @@ m ∤ n = ¬ (m ∣ n)
 -- _∣_ is a partial order
 
 ∣⇒≤ : ∀ {m n} → m ∣ suc n → m ≤ suc n
-∣⇒≤         (divides zero    ())
 ∣⇒≤ {m} {n} (divides (suc q) eq) = begin
   m          ≤⟨ m≤m+n m (q * m) ⟩
   suc q * m  ≡⟨ sym eq ⟩
