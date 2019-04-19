@@ -13,8 +13,16 @@ open import Level
 -- A unit type.
 
 open import Data.Unit using () renaming (⊤ to Unit; tt to unit) public
-{-# WARNING_ON_USAGE Unit "DEPRECATED: Use `⊤` instead of `Unit`" #-}
-{-# WARNING_ON_USAGE unit "DEPRECATED: Use `tt` instead of `unit`" #-}
+
+{-# WARNING_ON_USAGE Unit
+"Warning: Unit was deprecated in v1.1.
+Please use ⊤ from Data.Unit instead."
+#-}
+
+{-# WARNING_ON_USAGE unit
+"Warning: unit was deprecated in v1.1.
+Please use tt from Data.Unit instead."
+#-}
 
 -- A pair type
 
