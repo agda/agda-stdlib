@@ -78,3 +78,7 @@ Other minor additions
   ```agda
   ≢-sym : Symmetric {A = A} _≢_
   ```
+
+* The relation `_≅_` in `Relation.Binary.HeterogeneousEquality` has
+  been generalised so that the types of the two equal elements need not
+  be at the same universe level.
