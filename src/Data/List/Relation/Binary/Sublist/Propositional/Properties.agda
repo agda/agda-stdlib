@@ -47,5 +47,3 @@ module _ {p} {P : Pred A p} where
     cong here ∘′ subst-injective x≡y ∘′ here-injective
   lookup-injective {p = _ ∷ _}    {there v} {there w} =
     cong there ∘′ lookup-injective ∘′ there-injective
-  lookup-injective {p = _ ∷ _}    {here  _} {there _} ()
-  lookup-injective {p = _ ∷ _}    {there _} {here  _} ()
