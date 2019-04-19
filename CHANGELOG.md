@@ -88,11 +88,11 @@ Other minor additions
   ```agda
   Names             = List Name
   Args A            = List (Arg A)
-  
+
   map-Arg           : (A → B) → Arg A → Arg B
   map-Args          : (A → B) → Args A → Args B
   map-Abs           : (A → B) → Abs A → Abs B
-  
+
   reduce            : Term → TC Term
   declarePostulate  : Arg Name → Type → TC ⊤
   commitTC          : TC ⊤
@@ -100,7 +100,7 @@ Other minor additions
   withNormalisation : Bool → TC A → TC A
   _>>=_             : TC A → (A → TC B) → TC B
   _>>_              : TC A → TC B → TC B
-  
+
   assocˡ            : Associativity
   assocʳ            : Associativity
   non-assoc         : Associativity
@@ -108,7 +108,7 @@ Other minor additions
   related           : Int → Precedence
   fixity            : Associativity → Precedence → Fixity
   getFixity         : Name → Fixity
-  
+
   vArg ty           = arg (arg-info visible relevant)   ty
   hArg ty           = arg (arg-info hidden relevant)    ty
   iArg ty           = arg (arg-info instance′ relevant) ty
