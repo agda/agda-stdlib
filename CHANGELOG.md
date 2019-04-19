@@ -21,8 +21,14 @@ New modules
 
 * The following new modules have been added to the library:
   ```
+  Category.Monad.Reader
+
   Data.AVL.NonEmpty
   Data.AVL.NonEmpty.Propositional
+
+  Data.List.Relation.Binary.Disjoint.Propositional
+  Data.List.Relation.Binary.Disjoint.Setoid
+  Data.List.Relation.Binary.Disjoint.Setoid.Properties
 
   Data.List.Relation.Binary.Disjoint.Propositional
   Data.List.Relation.Binary.Disjoint.Setoid
@@ -55,6 +61,11 @@ Other minor additions
 * Added new function to `Data.Digit`:
   ```agda
   toNatDigits : (base : ℕ) {base≤16 : True (1 ≤? base)} → ℕ → List ℕ
+  ```
+
+* Added new proof to `Data.List.Relation.Binary.Sublist.Heterogeneous.Properties`:
+  ```agda
+  concat⁺ : Sublist (Sublist R) ass bss → Sublist R (concat ass) (concat bss)
   ```
 
 * Added new proofs to `Data.List.Relation.Unary.All.Properties`:
