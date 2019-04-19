@@ -36,7 +36,6 @@ False Q = T (not ⌊ Q ⌋)
 
 toWitness : ∀ {p} {P : Set p} {Q : Dec P} → True Q → P
 toWitness {Q = yes p} _  = p
-toWitness {Q = no  _} ()
 
 -- Establishes a "truth", given a witness.
 
@@ -47,7 +46,6 @@ fromWitness {Q = no ¬p} = ¬p
 -- Variants for False.
 
 toWitnessFalse : ∀ {p} {P : Set p} {Q : Dec P} → False Q → ¬ P
-toWitnessFalse {Q = yes _}  ()
 toWitnessFalse {Q = no  ¬p} _  = ¬p
 
 fromWitnessFalse : ∀ {p} {P : Set p} {Q : Dec P} → ¬ P → False Q
