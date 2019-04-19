@@ -36,7 +36,6 @@ open import Relation.Binary.PropositionalEquality as P using (_≡_)
 private
 
   lemma : ∀ n (i : Fin n) → n - suc i <′ n
-  lemma zero    ()
   lemma (suc n) i  = Nat.≤⇒≤′ $ Nat.s≤s $ FP.nℕ-ℕi≤n n i
 
 ------------------------------------------------------------------------
@@ -172,7 +171,6 @@ module _ {ℓ e} {N : Set ℓ} {E : Set e} where
 -- index.
 
   _[_] : ∀ {n} → Graph N E n → (i : Fin n) → Graph N E (suc (n - suc i))
-  ∅       [ () ]
   (c & g) [ zero ]  = c & g
   (c & g) [ suc i ] = g [ i ]
 
