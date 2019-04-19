@@ -30,15 +30,12 @@ Data.List.Relation.Unary.Unique.Setoid.Properties
 Non-backwards compatible changes
 --------------------------------
 
-Removed features
-----------------
-
 Deprecated features
 -------------------
 
 * In `Reflection`:
   ```agda
-  returnT ↦ return
+  returnTC ↦ return
   ```
 
 Other minor additions
