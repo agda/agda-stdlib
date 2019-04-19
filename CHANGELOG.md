@@ -67,7 +67,7 @@ Other minor additions
   ≥->-connex : Connex _≥_ _>_
   <-≤-connex : Connex _<_ _≤_
   >-≥-connex : Connex _>_ _≥_
-  
+
   n≢0⇒n>0 : n ≢ 0 → n > 0
   m≤m*n   : 0 < n → m ≤ m * n
   m<m*n   : 0 < m → 1 < n → m < m * n
