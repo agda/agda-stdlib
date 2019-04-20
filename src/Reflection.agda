@@ -23,8 +23,10 @@ open import Data.String using (String)
   renaming ( show to showString
            ; _≟_ to _≟s_
            )
-open import Data.Word using (Word64) renaming (toℕ to wordToℕ)
-open import Data.Word.Unsafe using () renaming (_≟_ to _≟w_)
+open import Data.Word using (Word64)
+  renaming ( toℕ to wordToℕ
+           ; _≟_ to _≟w_
+           )
 open import Data.Product
 open import Function
 open import Level
