@@ -32,7 +32,7 @@ install:
   # installing the dev version of Agda
   - git clone https://github.com/agda/agda
   - cd agda
-  - git checkout 6dd1d63a927442aac42ef299f15054dd944d7fa9
+  - git checkout f7db2bf171080e51e199ab17d2a2ff4974fb0aad
   # checking whether .ghc is still valid
   - cabal install alex happy
   - cabal install --only-dependencies --dry -v > $HOME/installplan.txt
@@ -51,17 +51,16 @@ install:
       mkdir -p $HOME/.ghc $HOME/.cabal/lib $HOME/.cabal/share $HOME/.cabal/bin;
     fi
   - cabal install cpphs
-  - cabal install Agda
+  - cabal install
   # snapshot package-db on cache miss
   - echo "snapshotting package-db to build-cache";
     mkdir $HOME/.cabsnap;
     cp -a $HOME/.ghc $HOME/.cabsnap/ghc;
     cp -a $HOME/.cabal/lib $HOME/.cabal/share $HOME/.cabal/bin $HOME/installplan.txt $HOME/.cabsnap/;
   # installing fix-agda-whitespace
-  - git clone https://github.com/agda/agda --depth=1
-  - cd agda/src/fix-agda-whitespace
+  - cd src/fix-agda-whitespace
   - cabal install fix-agda-whitespace.cabal
-  - cd -
+  - cd ../../..
   - yes | rm -R agda/
   # generating Everything.agda
   - cabal install lib.cabal
@@ -82,8 +81,9 @@ script:
   # building the docs
   - agda -i . -i src/ --html safe.agda
   - agda -i . -i src/ --html index.agda
-  # moving everything to the doc directory
-  - mv html/* .
+  # moving everything to the experimental directory
+  - mkdir -p experimental
+  - mv html/* experimental/
 
 after_success:
   # uploading to gh-pages
@@ -92,10 +92,10 @@ after_success:
   - git config --global user.email "travis-ci-bot@travis.fake"
   - git remote add upstream https://$GH_TOKEN@github.com/agda/agda-stdlib.git &>/dev/null
   - git fetch upstream && git reset upstream/gh-pages
-  - git checkout v0.16/ v0.17/ experimental/
+  - git checkout *.html v0.16/ v0.17/
   - git add -f \*.html
   - git commit -m "Automatic HTML update via Travis"
-  - if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS_BRANCH" = "master" ];
+  - if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS_BRANCH" = "experimental" ];
     then git push -q upstream HEAD:gh-pages &>/dev/null;
     fi
 
