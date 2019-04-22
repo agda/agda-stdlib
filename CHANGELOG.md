@@ -33,6 +33,10 @@ Non-backwards compatible changes
 Deprecated features
 -------------------
 
+* Deprecated `Unit` and `unit` in `Foreign.Haskell` in favour of
+  `⊤` and `tt` from `Data.Unit`, as it turns out that the latter have been
+  mapped to the Haskell equivalent for quite some time.
+
 Other minor additions
 ---------------------
 
