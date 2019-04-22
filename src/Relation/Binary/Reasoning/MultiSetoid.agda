@@ -19,8 +19,8 @@
 --     z ∎
 
 -- Note this module is not reimplemented in terms of `Reasoning.Setoid`
--- as this introduces unsolved metas for the symmetry property as the
--- underlying base module `Base.Single` does not require symmetry.
+-- as this introduces unsolved metas as the underlying base module
+-- `Base.Single` does not require `_≈_` be symmetric.
 
 {-# OPTIONS --without-K --safe #-}
 
@@ -49,11 +49,14 @@ module _ {c ℓ} (S : Setoid c ℓ) where
 module _ {c ℓ} {S : Setoid c ℓ} where
   open Setoid S
 
-  infixr 2 _≈⟨_⟩_ _≡⟨_⟩_ _≡˘⟨_⟩_ _≡⟨⟩_
+  infixr 2 _≈⟨_⟩_ _≈˘⟨_⟩_ _≡⟨_⟩_ _≡˘⟨_⟩_ _≡⟨⟩_
   infix 3 _∎
 
   _≈⟨_⟩_ : ∀ x {y z} → x ≈ y → IsRelatedTo S y z → IsRelatedTo S x z
   _ ≈⟨ x∼y ⟩ relTo y∼z = relTo (trans x∼y y∼z)
+
+  _≈˘⟨_⟩_ : ∀ x {y z} → y ≈ x → IsRelatedTo S y z → IsRelatedTo S x z
+  x ≈˘⟨ x≈y ⟩ y∼z = x ≈⟨ sym x≈y ⟩ y∼z
 
   _≡⟨_⟩_ : ∀ x {y z} → x ≡ y → IsRelatedTo S y z → IsRelatedTo S x z
   _ ≡⟨ P.refl ⟩ x∼z = x∼z
