@@ -100,9 +100,6 @@ module _  {a₁ a₂ b₁ b₂ c₁ c₂ d₁ d₂}
           x ≈AC y
     inj (inj₁ x) (inj₁ y) (inj₁ x∼₁y) = inj₁ (injective A↣B x∼₁y)
     inj (inj₂ x) (inj₂ y) (inj₂ x∼₂y) = inj₂ (injective C↣D x∼₂y)
-    -- Can be removed in Agda 2.6.0?
-    inj (inj₁ x) (inj₂ y) ()
-    inj (inj₂ x) (inj₁ y) ()
 
   _⊎-left-inverse_ : LeftInverse A B → LeftInverse C D →
                      LeftInverse (A ⊎ₛ C) (B ⊎ₛ D)

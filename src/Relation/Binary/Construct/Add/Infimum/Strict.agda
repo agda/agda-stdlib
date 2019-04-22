@@ -38,7 +38,6 @@ data _<₋_ : Rel (A ₋) (a ⊔ ℓ) where
 [<]-injective [ p ] = p
 
 <₋-asym : Asymmetric _<_ → Asymmetric _<₋_
-<₋-asym <-asym ⊥₋<[ l ]  ()
 <₋-asym <-asym [ p ] [ q ] = <-asym p q
 
 <₋-trans : Transitive _<_ → Transitive _<₋_
@@ -69,7 +68,6 @@ module _ {e} {_≈_ : Rel A e} where
   ... | tri> ¬a ¬b c = tri> (¬a ∘ [<]-injective) (¬b ∘ [≈]-injective) [ c ]
 
   <₋-irrefl : Irreflexive _≈_ _<_ → Irreflexive _≈₋_ _<₋_
-  <₋-irrefl <-irrefl ⊥₋≈⊥₋ ()
   <₋-irrefl <-irrefl [ p ] [ q ] = <-irrefl p q
 
   <₋-respˡ-≈₋ : _<_ Respectsˡ _≈_ → _<₋_ Respectsˡ _≈₋_
