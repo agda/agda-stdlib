@@ -30,11 +30,13 @@ toDecimalChars = map toDigitChar ∘ toNatDigits 10
 ------------------------------------------------------------------------
 -- Show
 
+-- Time complexity is O(log₁₀(n))
+
 show : ℕ → String
 show = String.fromList ∘ toDecimalChars
 
--- Warning : when compiled the time complexity of `showInBase b n`
--- is exponential in the argument `n`.
+-- Warning: when compiled the time complexity of `showInBase b n` is
+-- O(n) instead of the expected O(log(n)).
 
 showInBase : (base : ℕ)
              {base≥2 : True (2 ≤? base)}

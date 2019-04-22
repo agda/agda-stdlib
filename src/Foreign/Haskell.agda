@@ -12,11 +12,17 @@ open import Level
 
 -- A unit type.
 
-data Unit : Set where
-  unit : Unit
+open import Data.Unit using () renaming (⊤ to Unit; tt to unit) public
 
-{-# COMPILE GHC Unit = data () (()) #-}
-{-# COMPILE UHC Unit = data __UNIT__ (__UNIT__) #-}
+{-# WARNING_ON_USAGE Unit
+"Warning: Unit was deprecated in v1.1.
+Please use ⊤ from Data.Unit instead."
+#-}
+
+{-# WARNING_ON_USAGE unit
+"Warning: unit was deprecated in v1.1.
+Please use tt from Data.Unit instead."
+#-}
 
 -- A pair type
 
