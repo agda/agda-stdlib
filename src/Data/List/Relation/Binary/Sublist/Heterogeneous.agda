@@ -58,7 +58,6 @@ fromAny (there p) = _ ∷ʳ fromAny p
 module _ {p q} {P : Pred A p} {Q : Pred B q} (resp : P ⟶ Q Respects R) where
 
   lookup : ∀ {xs ys} → Sublist R xs ys → Any P xs → Any Q ys
-  lookup []       ()
   lookup (y ∷ʳ p)  k         = there (lookup p k)
   lookup (rxy ∷ p) (here px) = here (resp rxy px)
   lookup (rxy ∷ p) (there k) = there (lookup p k)

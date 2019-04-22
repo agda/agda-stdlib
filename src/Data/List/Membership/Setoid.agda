@@ -21,8 +21,6 @@ open import Relation.Nullary using (¬_)
 
 open Setoid S renaming (Carrier to A)
 
-open Data.List.Relation.Unary.Any using (_∷=_; _─_) public
-
 ------------------------------------------------------------------------
 -- Definitions
 
@@ -36,6 +34,8 @@ x ∉ xs = ¬ x ∈ xs
 
 ------------------------------------------------------------------------
 -- Operations
+
+open Data.List.Relation.Unary.Any using (_∷=_; _─_) public
 
 mapWith∈ : ∀ {b} {B : Set b}
            (xs : List A) → (∀ {x} → x ∈ xs → B) → List B

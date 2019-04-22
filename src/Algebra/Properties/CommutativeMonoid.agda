@@ -55,7 +55,6 @@ module _ {n} where
 
 sumₜ-remove : ∀ {n} {i : Fin (suc n)} t → sumₜ t ≈ lookup t i + sumₜ (remove i t)
 sumₜ-remove {_}     {zero}   t = refl
-sumₜ-remove {zero}  {suc ()} t
 sumₜ-remove {suc n} {suc i}  t′ =
   begin
     t₀ + ∑t           ≈⟨ +-congˡ (sumₜ-remove t) ⟩
@@ -158,7 +157,6 @@ select-transpose _ i j e k with k FP.≟ i
 -- Summing over a pulse gives you the single value picked out by the pulse.
 
 sumₜ-select : ∀ {n i} (t : Table Carrier n) → sumₜ (select 0# i t) ≈ lookup t i
-sumₜ-select {zero}  {()}
 sumₜ-select {suc n} {i} t = begin
   sumₜ (select 0# i t)                                        ≈⟨ sumₜ-remove {i = i} (select 0# i t) ⟩
   lookup (select 0# i t) i + sumₜ (remove i (select 0# i t))  ≡⟨ P.cong₂ _+_ (TP.select-lookup t) (sumₜ-cong-≡ (TP.select-remove i t)) ⟩

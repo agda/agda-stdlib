@@ -27,8 +27,6 @@ s≢opposite[s] + ()
 
 opposite-injective : ∀ {s t} → opposite s ≡ opposite t → s ≡ t
 opposite-injective { - } { - } refl = refl
-opposite-injective { - } { + } ()
-opposite-injective { + } { - } ()
 opposite-injective { + } { + } refl = refl
 
 ------------------------------------------------------------------------
