@@ -16,7 +16,8 @@ open import Relation.Nullary.Decidable using (map′; ⌊_⌋)
 open import Relation.Binary
   using (Decidable; Setoid; DecSetoid; StrictTotalOrder)
 import Relation.Binary.Construct.On as On
-open import Relation.Binary.PropositionalEquality as PropEq using (_≡_; cong)
+open import Relation.Binary.PropositionalEquality as P
+  using (_≡_; cong)
 
 ------------------------------------------------------------------------
 -- Primitive properties
@@ -30,8 +31,7 @@ open import Agda.Builtin.Word.Properties
 
 infix 4 _≟_
 _≟_ : Decidable {A = Word64} _≡_
-x ≟ y = map′ (toℕ-injective x y) (cong toℕ)
-      $ toℕ x ℕₚ.≟ toℕ y
+x ≟ y = map′ (toℕ-injective x y) (cong toℕ) (toℕ x ℕₚ.≟ toℕ y)
 
 ------------------------------------------------------------------------
 -- Boolean equality test.
@@ -44,10 +44,10 @@ w₁ == w₂ = ⌊ w₁ ≟ w₂ ⌋
 -- Structures
 
 setoid : Setoid _ _
-setoid = PropEq.setoid Word64
+setoid = P.setoid Word64
 
 decSetoid : DecSetoid _ _
-decSetoid = PropEq.decSetoid _≟_
+decSetoid = P.decSetoid _≟_
 
 strictTotalOrder : StrictTotalOrder _ _ _
 strictTotalOrder = On.strictTotalOrder ℕₚ.<-strictTotalOrder toℕ
