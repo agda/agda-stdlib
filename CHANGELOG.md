@@ -65,15 +65,18 @@ Other minor additions
 
 * Added new proofs to `Data.Nat.Properties`:
   ```agda
-  n≢0⇒n>0 : n ≢ 0 → n > 0
-  m≤m*n   : 0 < n → m ≤ m * n
-  m<m*n   : 0 < m → 1 < n → m < m * n
+  1+n≢0     : suc n ≢ 0
+  <ᵇ⇒<      : T (m <ᵇ n) → m < n
+  <⇒<ᵇ      : m < n → T (m <ᵇ n)
+  n≢0⇒n>0   : n ≢ 0 → n > 0
+  m≤m*n     : 0 < n → m ≤ m * n
+  m<m*n     : 0 < m → 1 < n → m < m * n
+  m∸n≢0⇒n<m : m ∸ n ≢ 0 → n < m
   ```
 
-* The folloing changes are done in `Data.Nat.Properties`.
-  * The proofs ``1+n≢0, m∸n≢0⇒n<m`` added.
-  * The function `<-cmp` has been reimplemented and, when compiled, now
-    runs many times faster than the old function.
+* The functions `_≤?_` and `<-cmp` in `Data.Nat.Properties` have been
+  reimplemented so that, when compiled, they run in constant time rather
+  than linear time.
 
 * The function `show` in `Data.Nat.Show` has been reimplemented and,
   when compiled, now runs in time `O(log₁₀(n))` rather than `O(n)`.

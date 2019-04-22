@@ -80,6 +80,9 @@ m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
   ; isDecEquivalence = ≡-isDecEquivalence
   }
 
+1+n≢0 : ∀ {n} → suc n ≢ 0
+1+n≢0 ()
+
 ------------------------------------------------------------------------
 -- Properties of _<ᵇ_
 
@@ -195,9 +198,6 @@ s≤s-injective refl = refl
 ≤-step z≤n       = z≤n
 ≤-step (s≤s m≤n) = s≤s (≤-step m≤n)
 
-1+n≢0 : ∀ {n} → suc n ≢ 0
-1+n≢0 ()
-
 n≤1+n : ∀ n → n ≤ 1 + n
 n≤1+n _ = ≤-step ≤-refl
 
@@ -266,17 +266,6 @@ n≤0⇒n≡0 z≤n = refl
 <-transˡ : Trans _<_ _≤_ _<_
 <-transˡ (s≤s m≤n) (s≤s n≤o) = s≤s (≤-trans m≤n n≤o)
 
-infix 4 _<?_ _>?_
-
-_<?_ : Decidable _<_
-x <? y = suc x ≤? y
-
-_>?_ : Decidable _>_
-_>?_ = flip _<?_
-
-<-resp₂-≡ : _<_ Respects₂ _≡_
-<-resp₂-≡ = subst (_ <_) , subst (_< _)
-
 -- NB: we use the builtin function `_<ᵇ_` here so that the function
 -- quickly decides which constructor to return. It still takes a
 -- linear amount of time to generate the proof if it is inspected.
@@ -289,17 +278,16 @@ _>?_ = flip _<?_
 ... | no  m≢n | yes m<n = tri< (<ᵇ⇒< m n m<n) m≢n (<⇒≯ (<ᵇ⇒< m n m<n))
 ... | no  m≢n | no  m≮n = tri> (m≮n ∘ <⇒<ᵇ)   m≢n (≤∧≢⇒< (≮⇒≥ (m≮n ∘ <⇒<ᵇ)) (m≢n ∘ sym))
 
-<-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_
-<-isStrictTotalOrder = record
-  { isEquivalence = isEquivalence
-  ; trans         = <-trans
-  ; compare       = <-cmp
-  }
+infix 4 _<?_ _>?_
 
-<-strictTotalOrder : StrictTotalOrder 0ℓ 0ℓ 0ℓ
-<-strictTotalOrder = record
-  { isStrictTotalOrder = <-isStrictTotalOrder
-  }
+_<?_ : Decidable _<_
+x <? y = suc x ≤? y
+
+_>?_ : Decidable _>_
+_>?_ = flip _<?_
+
+<-resp₂-≡ : _<_ Respects₂ _≡_
+<-resp₂-≡ = subst (_ <_) , subst (_< _)
 
 <-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
 <-isStrictPartialOrder = record
@@ -314,6 +302,18 @@ _>?_ = flip _<?_
   { isStrictPartialOrder = <-isStrictPartialOrder
   }
 
+<-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_
+<-isStrictTotalOrder = record
+  { isEquivalence = isEquivalence
+  ; trans         = <-trans
+  ; compare       = <-cmp
+  }
+
+<-strictTotalOrder : StrictTotalOrder 0ℓ 0ℓ 0ℓ
+<-strictTotalOrder = record
+  { isStrictTotalOrder = <-isStrictTotalOrder
+  }
+
 -- Other properties of _<_
 <-irrelevant : Irrelevant _<_
 <-irrelevant = ≤-irrelevant
@@ -324,7 +324,7 @@ n≮n n = <-irrefl (refl {x = n})
 m<n⇒n≢0 : ∀ {m n} → m < n → n ≢ 0
 m<n⇒n≢0 (s≤s m≤n) ()
 
-n≢0⇒n>0 :  ∀ {n} → n ≢ 0 → n > 0
+n≢0⇒n>0 : ∀ {n} → n ≢ 0 → n > 0
 n≢0⇒n>0 {zero}  0≢0 =  contradiction refl 0≢0
 n≢0⇒n>0 {suc n} _   =  s≤s z≤n
 
@@ -1334,12 +1334,10 @@ m≤n⇒m∸n≡0 : ∀ {m n} → m ≤ n → m ∸ n ≡ 0
 m≤n⇒m∸n≡0 {n = n} z≤n      = 0∸n≡0 n
 m≤n⇒m∸n≡0 {_}    (s≤s m≤n) = m≤n⇒m∸n≡0 m≤n
 
-m∸n≢0⇒n<m :  {m n : ℕ} → m ∸ n ≢ 0 → n < m
-m∸n≢0⇒n<m {m} {n} m∸n≢0  with n <? m
-... | yes n<m =  n<m
-... | no n≮m =  contradiction m∸n≡0 m∸n≢0
-               where
-               m≤n = ≮⇒≥ n≮m;   m∸n≡0 = m≤n⇒m∸n≡0 m≤n
+m∸n≢0⇒n<m : ∀ {m n} → m ∸ n ≢ 0 → n < m
+m∸n≢0⇒n<m {m} {n} m∸n≢0 with n <? m
+... | yes n<m = n<m
+... | no  n≮m = contradiction (m≤n⇒m∸n≡0 (≮⇒≥ n≮m)) m∸n≢0
 
 ---------------------------------------------------------------
 -- Properties of _∸_ and _+_
