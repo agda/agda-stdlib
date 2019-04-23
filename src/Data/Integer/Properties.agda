@@ -61,9 +61,9 @@ _≟_ : Decidable {A = ℤ} _≡_
 -- Properties of -_
 
 neg-involutive : ∀ n → - - n ≡ n
-neg-involutive (+ zero)   = refl
-neg-involutive (+ suc n)  = refl
-neg-involutive (-[1+ n ]) = refl
+neg-involutive -[1+ n ] = refl
+neg-involutive (+ 0)    = refl
+neg-involutive +[1+ n ] = refl
 
 neg-injective : ∀ {m n} → - m ≡ - n → m ≡ n
 neg-injective {m} {n} -m≡-n = begin
@@ -80,12 +80,12 @@ neg-suc (suc m) = refl
 -- Properties of ∣_∣
 
 ∣n∣≡0⇒n≡0 : ∀ {n} → ∣ n ∣ ≡ 0 → n ≡ + 0
-∣n∣≡0⇒n≡0 {+ .zero}   refl = refl
+∣n∣≡0⇒n≡0 {+ 0} refl = refl
 
 ∣-n∣≡∣n∣ : ∀ n → ∣ - n ∣ ≡ ∣ n ∣
-∣-n∣≡∣n∣ (+ zero)   = refl
-∣-n∣≡∣n∣ (+ suc n)  = refl
-∣-n∣≡∣n∣ (-[1+ n ]) = refl
+∣-n∣≡∣n∣ -[1+ n ] = refl
+∣-n∣≡∣n∣ (+ 0)    = refl
+∣-n∣≡∣n∣ +[1+ n ] = refl
 
 0≤n⇒+∣n∣≡n : ∀ {n} → + 0 ≤ n → + ∣ n ∣ ≡ n
 0≤n⇒+∣n∣≡n (+≤+ 0≤n) = refl
@@ -97,9 +97,9 @@ neg-suc (suc m) = refl
 -- Properties of sign and _◃_
 
 ◃-inverse : ∀ i → sign i ◃ ∣ i ∣ ≡ i
-◃-inverse -[1+ n ]  = refl
-◃-inverse (+ zero)  = refl
-◃-inverse (+ suc n) = refl
+◃-inverse -[1+ n ] = refl
+◃-inverse (+ 0)    = refl
+◃-inverse +[1+ n ] = refl
 
 ◃-cong : ∀ {i j} → sign i ≡ sign j → ∣ i ∣ ≡ ∣ j ∣ → i ≡ j
 ◃-cong {i} {j} sign-≡ abs-≡ = begin
@@ -293,13 +293,13 @@ suc-pred : ∀ m → sucℤ (pred m) ≡ m
 suc-pred m = begin
   sucℤ (pred m) ≡⟨ sym (+-assoc (+ 1) (- + 1) m) ⟩
   + 0 + m       ≡⟨ +-identityˡ m ⟩
-  m ∎ where open ≡-Reasoning
+  m             ∎ where open ≡-Reasoning
 
 pred-suc : ∀ m → pred (sucℤ m) ≡ m
 pred-suc m = begin
   pred (sucℤ m) ≡⟨ sym (+-assoc (- + 1) (+ 1) m) ⟩
   + 0 + m       ≡⟨ +-identityˡ m ⟩
-  m ∎ where open ≡-Reasoning
+  m             ∎ where open ≡-Reasoning
 
 +-pred : ∀ m n → m + pred n ≡ pred (m + n)
 +-pred m n = begin
@@ -317,8 +317,8 @@ pred-+ m n = begin
 
 +-inverseˡ : LeftInverse (+ 0) -_ _+_
 +-inverseˡ -[1+ n ]  = n⊖n≡0 n
-+-inverseˡ (+ zero)  = refl
-+-inverseˡ (+ suc n) = n⊖n≡0 n
++-inverseˡ (+ 0)     = refl
++-inverseˡ +[1+ n ] = n⊖n≡0 n
 
 +-inverseʳ : RightInverse (+ 0) -_ _+_
 +-inverseʳ = comm+invˡ⇒invʳ +-comm +-inverseˡ
@@ -402,9 +402,9 @@ n≢1+n { -[1+ suc n ]} ()
 
 neg-distrib-+ : ∀ m n → - (m + n) ≡ (- m) + (- n)
 neg-distrib-+ (+ zero)  (+ zero)  = refl
-neg-distrib-+ (+ zero)  (+ suc n) = refl
-neg-distrib-+ (+ suc m) (+ zero)  = cong -[1+_] (ℕₚ.+-identityʳ m)
-neg-distrib-+ (+ suc m) (+ suc n) = cong -[1+_] (ℕₚ.+-suc m n)
+neg-distrib-+ (+ zero)  +[1+ n ]  = refl
+neg-distrib-+ +[1+ m ]  (+ zero)  = cong -[1+_] (ℕₚ.+-identityʳ m)
+neg-distrib-+ +[1+ m ]  +[1+ n ]  = cong -[1+_] (ℕₚ.+-suc m n)
 neg-distrib-+ -[1+ m ]  -[1+ n ]  = cong (λ v → + suc v) (sym (ℕₚ.+-suc m n))
 neg-distrib-+ (+   m)   -[1+ n ]  = -[n⊖m]≡-m+n m (suc n)
 neg-distrib-+ -[1+ m ]  (+   n)   =
@@ -479,7 +479,7 @@ m-n≡0⇒m≡n m n m-n≡0 = begin
   m + (- n + n) ≡⟨ sym (+-assoc m (- n) n) ⟩
   (m - n) + n   ≡⟨ cong (_+ n) m-n≡0 ⟩
   + 0 + n       ≡⟨ +-identityˡ n ⟩
-  n ∎ where open ≡-Reasoning
+  n             ∎ where open ≡-Reasoning
 
 ------------------------------------------------------------------------
 -- Properties of _*_
@@ -491,9 +491,9 @@ m-n≡0⇒m≡n m n m-n≡0 = begin
 *-comm (+   a ) (+   b ) rewrite ℕₚ.*-comm a       b       = refl
 
 *-identityˡ : LeftIdentity (+ 1) _*_
-*-identityˡ (+ zero ) = refl
-*-identityˡ -[1+  n ] rewrite ℕₚ.+-identityʳ n = refl
-*-identityˡ (+ suc n) rewrite ℕₚ.+-identityʳ n = refl
+*-identityˡ -[1+ n ] rewrite ℕₚ.+-identityʳ n = refl
+*-identityˡ (+ 0)    = refl
+*-identityˡ +[1+ n ] rewrite ℕₚ.+-identityʳ n = refl
 
 *-identityʳ : RightIdentity (+ 1) _*_
 *-identityʳ = comm+idˡ⇒idʳ *-comm *-identityˡ
@@ -527,14 +527,14 @@ private
   | ℕₚ.*-zeroʳ ∣ x ∣
   | ℕₚ.*-zeroʳ ∣ sign x 𝕊* sign y ◃ ∣ x ∣ ℕ.* ∣ y ∣ ∣
   = refl
-*-assoc -[1+ a  ] -[1+ b  ] (+ suc c) = cong (+_ ∘ suc) (lemma a b c)
-*-assoc -[1+ a  ] (+ suc b) -[1+ c  ] = cong (+_ ∘ suc) (lemma a b c)
-*-assoc (+ suc a) (+ suc b) (+ suc c) = cong (+_ ∘ suc) (lemma a b c)
-*-assoc (+ suc a) -[1+ b  ] -[1+ c  ] = cong (+_ ∘ suc) (lemma a b c)
-*-assoc -[1+ a  ] -[1+ b  ] -[1+ c  ] = cong -[1+_]     (lemma a b c)
-*-assoc -[1+ a  ] (+ suc b) (+ suc c) = cong -[1+_]     (lemma a b c)
-*-assoc (+ suc a) -[1+ b  ] (+ suc c) = cong -[1+_]     (lemma a b c)
-*-assoc (+ suc a) (+ suc b) -[1+ c  ] = cong -[1+_]     (lemma a b c)
+*-assoc -[1+ a ] -[1+ b ] +[1+ c ] = cong (+_ ∘ suc) (lemma a b c)
+*-assoc -[1+ a ] +[1+ b ] -[1+ c ] = cong (+_ ∘ suc) (lemma a b c)
+*-assoc +[1+ a ] +[1+ b ] +[1+ c ] = cong (+_ ∘ suc) (lemma a b c)
+*-assoc +[1+ a ] -[1+ b ] -[1+ c ] = cong (+_ ∘ suc) (lemma a b c)
+*-assoc -[1+ a ] -[1+ b ] -[1+ c ] = cong -[1+_] (lemma a b c)
+*-assoc -[1+ a ] +[1+ b ] +[1+ c ] = cong -[1+_] (lemma a b c)
+*-assoc +[1+ a ] -[1+ b ] +[1+ c ] = cong -[1+_] (lemma a b c)
+*-assoc +[1+ a ] +[1+ b ] -[1+ c ] = cong -[1+_] (lemma a b c)
 
 private
 
@@ -825,16 +825,16 @@ pos-distrib-* (suc x) (suc y) = refl
 *-monoˡ-≤-pos n = *-monoˡ-≤-non-neg (suc n)
 
 -1*n≡-n : ∀ n → -[1+ 0 ] * n ≡ - n
--1*n≡-n (+ zero)  = refl
--1*n≡-n (+ suc n) = cong -[1+_] (ℕₚ.+-identityʳ n)
--1*n≡-n -[1+ n ]  = cong (λ v → + suc v) (ℕₚ.+-identityʳ n)
+-1*n≡-n -[1+ n ] = cong (λ v → + suc v) (ℕₚ.+-identityʳ n)
+-1*n≡-n (+ 0)    = refl
+-1*n≡-n +[1+ n ] = cong -[1+_] (ℕₚ.+-identityʳ n)
 
 neg-distribˡ-* : ∀ x y → - (x * y) ≡ (- x) * y
 neg-distribˡ-* x y = begin
   - (x * y)          ≡⟨ sym (-1*n≡-n (x * y)) ⟩
   -[1+ 0 ] * (x * y) ≡⟨ sym (*-assoc -[1+ 0 ] x y) ⟩
   -[1+ 0 ] * x * y   ≡⟨ cong (_* y) (-1*n≡-n x) ⟩
-  - x * y ∎ where open ≡-Reasoning
+  - x * y            ∎ where open ≡-Reasoning
 
 neg-distribʳ-* : ∀ x y → - (x * y) ≡ x * (- y)
 neg-distribʳ-* x y = begin
@@ -952,26 +952,26 @@ n≤m⊔n : ∀ m n → n ≤ m ⊔ n
 n≤m⊔n m n rewrite ⊔-comm m n = m≤m⊔n n m
 
 neg-distrib-⊔-⊓ : ∀ m n → - (m ⊔ n) ≡ - m ⊓ - n
-neg-distrib-⊔-⊓ -[1+ m ]  -[1+ n ]  = refl
-neg-distrib-⊔-⊓ -[1+ m ]  (+ zero)  = refl
-neg-distrib-⊔-⊓ -[1+ m ]  (+ suc n) = refl
-neg-distrib-⊔-⊓ (+ zero)  -[1+ n ]  = refl
-neg-distrib-⊔-⊓ (+ suc m) -[1+ n ]  = refl
-neg-distrib-⊔-⊓ (+ zero)  (+ zero)  = refl
-neg-distrib-⊔-⊓ (+ zero)  (+ suc n) = refl
-neg-distrib-⊔-⊓ (+ suc m) (+ zero)  = refl
-neg-distrib-⊔-⊓ (+ suc m) (+ suc n) = refl
+neg-distrib-⊔-⊓ -[1+ m ] -[1+ n ] = refl
+neg-distrib-⊔-⊓ -[1+ m ] (+ zero) = refl
+neg-distrib-⊔-⊓ -[1+ m ] +[1+ n ] = refl
+neg-distrib-⊔-⊓ (+ zero) -[1+ n ] = refl
+neg-distrib-⊔-⊓ (+ zero) (+ zero) = refl
+neg-distrib-⊔-⊓ (+ zero) +[1+ n ] = refl
+neg-distrib-⊔-⊓ +[1+ m ] -[1+ n ] = refl
+neg-distrib-⊔-⊓ +[1+ m ] (+ zero) = refl
+neg-distrib-⊔-⊓ +[1+ m ] +[1+ n ] = refl
 
 neg-distrib-⊓-⊔ : ∀ m n → - (m ⊓ n) ≡ - m ⊔ - n
-neg-distrib-⊓-⊔ -[1+ m ]  -[1+ n ]  = refl
-neg-distrib-⊓-⊔ -[1+ m ]  (+ zero)  = refl
-neg-distrib-⊓-⊔ -[1+ m ]  (+ suc n) = refl
-neg-distrib-⊓-⊔ (+ zero)  -[1+ n ]  = refl
-neg-distrib-⊓-⊔ (+ suc m) -[1+ n ]  = refl
-neg-distrib-⊓-⊔ (+ zero)  (+ zero)  = refl
-neg-distrib-⊓-⊔ (+ zero)  (+ suc n) = refl
-neg-distrib-⊓-⊔ (+ suc m) (+ zero)  = refl
-neg-distrib-⊓-⊔ (+ suc m) (+ suc n) = refl
+neg-distrib-⊓-⊔ -[1+ m ] -[1+ n ] = refl
+neg-distrib-⊓-⊔ -[1+ m ] (+ zero) = refl
+neg-distrib-⊓-⊔ -[1+ m ] +[1+ n ] = refl
+neg-distrib-⊓-⊔ (+ zero) -[1+ n ] = refl
+neg-distrib-⊓-⊔ (+ zero) (+ zero) = refl
+neg-distrib-⊓-⊔ (+ zero) +[1+ n ] = refl
+neg-distrib-⊓-⊔ +[1+ m ] -[1+ n ] = refl
+neg-distrib-⊓-⊔ +[1+ m ] (+ zero) = refl
+neg-distrib-⊓-⊔ +[1+ m ] +[1+ n ] = refl
 
 ------------------------------------------------------------------------
 -- Properties _≤_
@@ -1070,20 +1070,20 @@ _≤?_ : Decidable _≤_
 0⊖m≤+ (suc m) = -≤+
 
 ≤-step : ∀ {n m} → n ≤ m → n ≤ sucℤ m
-≤-step -≤+             = -≤+
-≤-step (+≤+ m≤n)       = +≤+ (ℕₚ.≤-step m≤n)
-≤-step (-≤- z≤n)       = -≤+
-≤-step (-≤- (ℕ.s≤s n≤m)) = -≤- (ℕₚ.≤-step n≤m)
+≤-step -≤+               = -≤+
+≤-step (+≤+ m≤n)         = +≤+ (ℕₚ.≤-step m≤n)
+≤-step (-≤- z≤n)         = -≤+
+≤-step (-≤- (s≤s n≤m)) = -≤- (ℕₚ.≤-step n≤m)
 
 ≤-steps : ∀ {m n} p → m ≤ n → m ≤ + p + n
 ≤-steps {n = n} zero    m≤n rewrite +-identityˡ n = m≤n
 ≤-steps {n = n} (suc p) m≤n rewrite suc-+ p n     = ≤-step (≤-steps p m≤n)
 
 ≤-step-neg : ∀ {m n} → m ≤ n → pred m ≤ n
-≤-step-neg -≤+             = -≤+
-≤-step-neg (-≤- n≤m)       = -≤- (ℕₚ.≤-step n≤m)
-≤-step-neg (+≤+ z≤n)       = -≤+
-≤-step-neg (+≤+ (ℕ.s≤s m≤n)) = +≤+ (ℕₚ.≤-step m≤n)
+≤-step-neg -≤+               = -≤+
+≤-step-neg (-≤- n≤m)         = -≤- (ℕₚ.≤-step n≤m)
+≤-step-neg (+≤+ z≤n)         = -≤+
+≤-step-neg (+≤+ (s≤s m≤n)) = +≤+ (ℕₚ.≤-step m≤n)
 
 ≤-steps-neg : ∀ {m n} p → m ≤ n → m - + p ≤ n
 ≤-steps-neg {m} zero    m≤n rewrite +-identityʳ m = m≤n
@@ -1091,27 +1091,27 @@ _≤?_ : Decidable _≤_
 
 ⊖-monoʳ-≥-≤ : ∀ p → (p ⊖_) Preserves ℕ._≥_ ⟶ _≤_
 ⊖-monoʳ-≥-≤ zero    (z≤n {n})     = 0⊖m≤+ n
-⊖-monoʳ-≥-≤ zero    (ℕ.s≤s m≤n)   = -≤- m≤n
+⊖-monoʳ-≥-≤ zero    (s≤s m≤n)     = -≤- m≤n
 ⊖-monoʳ-≥-≤ (suc p) (z≤n {zero})  = ≤-refl
 ⊖-monoʳ-≥-≤ (suc p) (z≤n {suc n}) = ≤-step (⊖-monoʳ-≥-≤ p (z≤n {n}))
-⊖-monoʳ-≥-≤ (suc p) (ℕ.s≤s m≤n)   = ⊖-monoʳ-≥-≤ p m≤n
+⊖-monoʳ-≥-≤ (suc p) (s≤s m≤n)     = ⊖-monoʳ-≥-≤ p m≤n
 
 ⊖-monoˡ-≤ : ∀ p → (_⊖ p) Preserves ℕ._≤_ ⟶ _≤_
 ⊖-monoˡ-≤ zero    m≤n             = +≤+ m≤n
 ⊖-monoˡ-≤ (suc p) (z≤n {0})       = ≤-refl
 ⊖-monoˡ-≤ (suc p) (z≤n {(suc m)}) = ≤-trans (⊖-monoʳ-≥-≤ 0 (ℕₚ.n≤1+n p)) (⊖-monoˡ-≤ p z≤n)
-⊖-monoˡ-≤ (suc p) (ℕ.s≤s m≤n)     = ⊖-monoˡ-≤ p m≤n
+⊖-monoˡ-≤ (suc p) (s≤s m≤n)     = ⊖-monoˡ-≤ p m≤n
 
 pred-mono : pred Preserves _≤_ ⟶ _≤_
 pred-mono (-≤+ {n = 0})     = -≤- z≤n
 pred-mono (-≤+ {n = suc n}) = -≤+
-pred-mono (-≤- n≤m)         = -≤- (ℕ.s≤s n≤m)
+pred-mono (-≤- n≤m)         = -≤- (s≤s n≤m)
 pred-mono (+≤+ m≤n)         = ⊖-monoˡ-≤ 1 m≤n
 
 suc-mono : sucℤ Preserves _≤_ ⟶ _≤_
 suc-mono (-≤+ {m}) = 0⊖m≤+ m
 suc-mono (-≤- n≤m) = ⊖-monoʳ-≥-≤ zero n≤m
-suc-mono (+≤+ m≤n) = +≤+ (ℕ.s≤s m≤n)
+suc-mono (+≤+ m≤n) = +≤+ (s≤s m≤n)
 
 +-pos-monoʳ-≤ : ∀ n → (_+_ (+ n)) Preserves _≤_ ⟶ _≤_
 +-pos-monoʳ-≤ zero {i} {j} i≤j
@@ -1175,7 +1175,7 @@ m≤n⇒m-n≤0 (-≤+ {n = n})         = ≤-steps-neg n -≤+
 m≤n⇒m-n≤0 (-≤- {n = n} n≤m)     = ≤-trans (⊖-monoʳ-≥-≤ n n≤m) (≤-reflexive (n⊖n≡0 n))
 m≤n⇒m-n≤0 (+≤+ {n = 0} z≤n)     = +≤+ z≤n
 m≤n⇒m-n≤0 (+≤+ {n = suc n} z≤n) = -≤+
-m≤n⇒m-n≤0 (+≤+ (ℕ.s≤s {m} m≤n)) = ≤-trans (⊖-monoʳ-≥-≤ m m≤n) (≤-reflexive (n⊖n≡0 m))
+m≤n⇒m-n≤0 (+≤+ (s≤s {m} m≤n))   = ≤-trans (⊖-monoʳ-≥-≤ m m≤n) (≤-reflexive (n⊖n≡0 m))
 
 m-n≤0⇒m≤n : ∀ {m n} → m - n ≤ + 0 → m ≤ n
 m-n≤0⇒m≤n {m} {n} m-n≤0 = begin

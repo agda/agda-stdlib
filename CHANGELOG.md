@@ -45,6 +45,12 @@ Other minor additions
   toNatDigits : (base : ℕ) {base≤16 : True (1 ≤? base)} → ℕ → List ℕ
   ```
 
+* Added new pattern synonyms to `Data.Integer`:
+  ```agda
+  pattern +0       = + 0
+  pattern +[1+_] n = + (suc n)
+  ```
+
 * Added new proof to `Data.List.Relation.Binary.Sublist.Heterogeneous.Properties`:
   ```agda
   concat⁺ : Sublist (Sublist R) ass bss → Sublist R (concat ass) (concat bss)
