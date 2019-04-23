@@ -223,10 +223,22 @@ constₙ (suc n) v = const (constₙ n v)
 -- Generic type constructor: n-ary existential quantifier
 
 ∃ₙ : ∀ n {ls r} {as : Sets n ls} → Arrows n as (Set r) → Set (r ⊔ toLevel n ls)
-∃ₙ n {as = as} f = Σ (Product n as) (uncurryₙ n f)
+∃ₙ zero                  f = f
+∃ₙ (suc n) {as = a , as} f = ∃ λ x → ∃ₙ n (f x)
 
 ------------------------------------------------------------------------
 -- Generic type constructor: n-ary universal quantifier
 
 ∀ₙ : ∀ n {ls r} {as : Sets n ls} → Arrows n as (Set r) → Set (r ⊔ toLevel n ls)
-∀ₙ n {as = as} f = ∀ (vs : Product n as) → uncurryₙ n f vs
+∀ₙ zero                  f = f
+∀ₙ (suc n) {as = a , as} f = {x : a} → ∀ₙ n (f x)
+
+Πₙ : ∀ n {ls r} {as : Sets n ls} → Arrows n as (Set r) → Set (r ⊔ toLevel n ls)
+Πₙ zero                  f = f
+Πₙ (suc n) {as = a , as} f = (x : a) → Πₙ n (f x)
+
+infixr 4 _⇒_
+_⇒_ : ∀ {n} {ls r s} {as : Sets n ls} (f :  Arrows n as (Set r)) (g : Arrows n as (Set s)) →
+      Arrows n as (Set (r ⊔ s))
+_⇒_ {zero}  f g   = f → g
+_⇒_ {suc n} f g x = f x ⇒ g x
