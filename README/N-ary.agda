@@ -293,50 +293,62 @@ module _ {a b c d e} {A : Set a} {B : Set b} {C : Set c} {D : Set d} {E : Set e}
 -- with non-dependent products is that they can be easily inferred. This is
 -- a prime opportunity to define generic quantifiers.
 
+-- And because n-ary relations are Set-terminated, there is no ambiguity
+-- where to split between arguments & codomain. As a consequence Agda can
+-- infer even `n`, the number of arguments. We can use notations which are
+-- just like the ones defined in `Relation.Unary`.
+
 ------------------------------------------------------------------------
--- ∃ₙ⟨_⟩ : (A₁ → ⋯ → Aₙ → Set r) → Set _
--- ∃ₙ⟨ P ⟩ = ∃ λ a₁ → ⋯ → ∃ λ aₙ → P a₁ ⋯ aₙ
+-- ∃⟨_⟩ : (A₁ → ⋯ → Aₙ → Set r) → Set _
+-- ∃⟨ P ⟩ = ∃ λ a₁ → ⋯ → ∃ λ aₙ → P a₁ ⋯ aₙ
 
 -- Returning to our favourite function taking a lot of arguments: we can
 -- find a set of input for which it evaluates to 666
 
-  exist₁ : ∃ₙ⟨ (λ k m n j → mod-helper k m n j ≡ 666) ⟩
+  exist₁ : ∃⟨ (λ k m n j → mod-helper k m n j ≡ 666) ⟩
   exist₁ = 19 , 793 , 3059 , 10 , refl
 
 ------------------------------------------------------------------------
--- ∀ₙ[_] : (A₁ → ⋯ → Aₙ → Set r) → Set _
--- ∀ₙ[_] P = ∀ {a₁} → ⋯ → ∀ {aₙ} → P a₁ ⋯ aₙ
+-- ∀[_] : (A₁ → ⋯ → Aₙ → Set r) → Set _
+-- ∀[_] P = ∀ {a₁} → ⋯ → ∀ {aₙ} → P a₁ ⋯ aₙ
 
-  all₁ : ∀ₙ[ (λ (a₁ a₂ : ℕ) → Dec (a₁ ≡ a₂)) ]
+  all₁ : ∀[ (λ (a₁ a₂ : ℕ) → Dec (a₁ ≡ a₂)) ]
   all₁ {a₁} {a₂} = a₁ ≟ a₂
 
 ------------------------------------------------------------------------
--- Πₙ : (A₁ → ⋯ → Aₙ → Set r) → Set _
--- Πₙ P = ∀ a₁ → ⋯ → ∀ aₙ → P a₁ ⋯ aₙ
+-- Π : (A₁ → ⋯ → Aₙ → Set r) → Set _
+-- Π P = ∀ a₁ → ⋯ → ∀ aₙ → P a₁ ⋯ aₙ
 
-  all₂ : Πₙ[ (λ (a₁ a₂ : ℕ) → Dec (a₁ ≡ a₂)) ]
+  all₂ : Π[ (λ (a₁ a₂ : ℕ) → Dec (a₁ ≡ a₂)) ]
   all₂ = _≟_
 
 ------------------------------------------------------------------------
--- _⇒_ : (A₁ → ⋯ → Aₙ → Set r) → (A₁ → ⋯ → Aₙ → Set s) → Set _
+-- _⇒_ : (A₁ → ⋯ → Aₙ → Set r) → (A₁ → ⋯ → Aₙ → Set s) → (A₁ → ⋯ → Aₙ → Set _)
 -- P ⇒ Q = λ a₁ → ⋯ → λ aₙ → P a₁ ⋯ aₙ → Q a₁ ⋯ aₙ
 
-  antisym : ∀ₙ[ _≤_ ⇒ _≥_ ⇒ _≡_ ]
+  antisym : ∀[ _≤_ ⇒ _≥_ ⇒ _≡_ ]
   antisym = ≤-antisym
 
 ------------------------------------------------------------------------
--- _∪_ : (A₁ → ⋯ → Aₙ → Set r) → (A₁ → ⋯ → Aₙ → Set s) → Set _
+-- _∪_ : (A₁ → ⋯ → Aₙ → Set r) → (A₁ → ⋯ → Aₙ → Set s) → (A₁ → ⋯ → Aₙ → Set _)
 -- P ∪ Q = λ a₁ → ⋯ → λ aₙ → P a₁ ⋯ aₙ ⊎ Q a₁ ⋯ aₙ
 
-  ≤->-connex : Πₙ[ _≤_ ∪ _>_ ]
+  ≤->-connex : Π[ _≤_ ∪ _>_ ]
   ≤->-connex m n with <-cmp m n
   ... | tri< a ¬b ¬c = inj₁ (<⇒≤ a)
   ... | tri≈ ¬a b ¬c = inj₁ (≤-reflexive b)
   ... | tri> ¬a ¬b c = inj₂ c
 
 ------------------------------------------------------------------------
--- _∩_ : (A₁ → ⋯ → Aₙ → Set r) → (A₁ → ⋯ → Aₙ → Set s) → Set _
+-- _∩_ : (A₁ → ⋯ → Aₙ → Set r) → (A₁ → ⋯ → Aₙ → Set s) → (A₁ → ⋯ → Aₙ → Set _)
 -- P ∩ Q = λ a₁ → ⋯ → λ aₙ → P a₁ ⋯ aₙ ⊎ Q a₁ ⋯ aₙ
 
-  <-inversion : ∀ₙ[ _<_ ⇒ (_≤_ ∩ _≢_) ]
+  <-inversion : ∀[ _<_ ⇒ (_≤_ ∩ _≢_) ]
   <-inversion m<n = <⇒≤ m<n , <⇒≢ m<n
+
+------------------------------------------------------------------------
+-- ∁ : (A₁ → ⋯ → Aₙ → Set r) → (A₁ → ⋯ → Aₙ → Set _)
+-- ∁ P = λ a₁ → ⋯ → λ aₙ → P a₁ ⋯ aₙ ⊎ Q a₁ ⋯ aₙ
+
+  m<n⇒m≱n : ∀[ _>_ ⇒ ∁ _≤_ ]
+  m<n⇒m≱n m>n m≤n = <⇒≱ m>n m≤n

@@ -15,6 +15,7 @@ open import Data.Sum using (_⊎_)
 open import Data.Nat.Base using (ℕ; zero; suc; pred)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Function
+open import Relation.Nullary
 
 ------------------------------------------------------------------------
 -- Concrete examples can be found in README.N-ary. This file's comments
@@ -22,7 +23,7 @@ open import Function
 -- behind the design decisions.
 
 ------------------------------------------------------------------------
--- Type Definition
+-- Type Definitions
 
 -- We want to define n-ary products and generic n-ary operations on them
 -- such as currying and uncurrying. We want users to be able to use these
@@ -31,7 +32,9 @@ open import Function
 -- `A₁ → ⋯ → Aₙ → B`. For this to happen, we need the structure in which
 -- these Sets are stored to effectively η-expand to `A₁, ⋯, Aₙ` when the
 -- parameter `n` is known.
+
 -- Hence the following definitions:
+------------------------------------------------------------------------
 
 -- First, a "vector" of `n` Levels (defined by induction on n so that it
 -- may be built by η-expansion and unification). Each Level will be that
@@ -66,18 +69,34 @@ Product 0       _        = ⊤
 Product 1       (a , _)  = a
 Product (suc n) (a , as) = a × Product n as
 
-------------------------------------------------------------------------
--- Generic Programs: (un)curry
--- see Relation.Binary.PropositionalEquality for other examples (congₙ, substₙ)
-
--- To be able to talk about (un)currying, we need to be able to form the
--- type `A₁ → ⋯ → Aₙ → B`. This is what `Arrows` does, by induction on `n`.
+-- Similarly we may want to talk about a function whose domains are given
+-- by a "vector" of `n` Sets and whose codomain is B. `Arrows` forms such
+-- a type of shape `A₁ → ⋯ → Aₙ → B` by induction on `n`.
 
 Arrows : ∀ n {r ls} → Sets n ls → Set r → Set (toLevel n ls ⊔ r)
 Arrows zero    _        b = b
 Arrows (suc n) (a , as) b = a → Arrows n as b
 
--- Finally, we can define `curryₙ` and `uncurryₙ` converting back and forth
+
+------------------------------------------------------------------------
+-- Generic Programs
+
+-- Once we have these type definitions, we can write generic programs
+-- over them. They will typically be split into two or three definitions:
+
+-- 1. action on the vector of n levels (if any)
+-- 2. action on the corresponding vector of n Sets
+-- 3. actual program, typed thank to the function defined in step 2.
+------------------------------------------------------------------------
+
+-- see Relation.Binary.PropositionalEquality for congₙ and substₙ, two
+-- equality-related generic programs.
+
+
+------------------------------------------------------------------------
+-- (un)curry
+
+-- We start by defining `curryₙ` and `uncurryₙ` converting back and forth
 -- between `A₁ → ⋯ → Aₙ → B` and `(A₁ × ⋯ × Aₙ) → B` by induction on `n`.
 
 curryₙ : ∀ n {ls} {as : Sets n ls} {r} {b : Set r} →
@@ -93,7 +112,7 @@ uncurryₙ 1               f = f
 uncurryₙ (suc n@(suc _)) f = uncurry (uncurryₙ n ∘′ f)
 
 ------------------------------------------------------------------------
--- Generic Programs: projection of the k-th component
+-- projection of the k-th component
 
 -- To know at which Set level the k-th projection out of an n-ary product
 -- lives, we need to extract said level, by induction on k.
@@ -121,7 +140,7 @@ projₙ (suc n@(suc _)) (suc k) (_ , vs) = projₙ n k vs
 projₙ 1 (suc ()) v
 
 ------------------------------------------------------------------------
--- Generic Programs: removal of the k-th component
+-- removal of the k-th component
 
 Levelₙ⁻ : ∀ {n} → Levels n → Fin n → Levels (pred n)
 Levelₙ⁻               (_ , ls) zero    = ls
@@ -142,7 +161,7 @@ removeₙ (suc (suc (suc _))) (suc k) (v , vs) = v , removeₙ _ k vs
 removeₙ (suc zero) (suc ()) _
 
 ------------------------------------------------------------------------
--- Generic Programs: insertion of a k-th component
+-- insertion of a k-th component
 
 Levelₙ⁺ : ∀ {n} → Levels n → Fin (suc n) → Level → Levels (suc n)
 Levelₙ⁺         ls       zero    l⁺ = l⁺ , ls
@@ -163,7 +182,7 @@ insertₙ (suc (suc n)) (suc k) v⁺ (v , vs) = v , insertₙ _ k v⁺ vs
 insertₙ 0 (suc ()) _ _
 
 ------------------------------------------------------------------------
--- Generic Programs: update of a k-th component
+-- update of a k-th component
 
 Levelₙᵘ : ∀ {n} → Levels n → Fin n → Level → Levels n
 Levelₙᵘ (_ , ls) zero    lᵘ = lᵘ , ls
@@ -185,7 +204,7 @@ updateₙ′ : ∀ n {ls lᵘ} {as : Sets n ls} k {aᵘ : Set lᵘ} (f : Projₙ
 updateₙ′ n k = updateₙ n k
 
 ------------------------------------------------------------------------
--- Generic Programs: compose function at the n-th position
+-- compose function at the n-th position
 
 composeₙ : ∀ n {ls r} {as : Sets n ls} {b : Set r} →
            ∀ {lᵒ lⁿ} {aᵒ : Set lᵒ} {aⁿ : Set lⁿ} →
@@ -194,7 +213,7 @@ composeₙ zero    f g = g ∘′ f
 composeₙ (suc n) f g = composeₙ n f ∘′ g
 
 ------------------------------------------------------------------------
--- Generic Programs: mapping under n arguments
+-- mapping under n arguments
 
 mapₙ : ∀ n {ls r s} {as : Sets n ls} {b : Set r} {c : Set s} →
        (b → c) → Arrows n as b → Arrows n as c
@@ -202,7 +221,7 @@ mapₙ zero    f v = f v
 mapₙ (suc n) f g = mapₙ n f ∘′ g
 
 ------------------------------------------------------------------------
--- Generic Programs: hole at the n-th position
+-- hole at the n-th position
 
 holeₙ : ∀ n {ls r lʰ} {as : Sets n ls} {b : Set r} {aʰ : Set lʰ} →
         (aʰ → Arrows n as b) → Arrows n as (aʰ → b)
@@ -210,7 +229,7 @@ holeₙ zero    f = f
 holeₙ (suc n) f = holeₙ n ∘′ flip f
 
 ------------------------------------------------------------------------
--- Generic Programs: function constant in its n first arguments
+-- function constant in its n first arguments
 
 -- Note that its type will only be inferred if it is used in a context
 -- specifying what the type of the function ought to be. Just like the
@@ -220,39 +239,71 @@ constₙ : ∀ n {ls r} {as : Sets n ls} {b : Set r} → b → Arrows n as b
 constₙ zero    v = v
 constₙ (suc n) v = const (constₙ n v)
 
-------------------------------------------------------------------------
--- Generic type constructor: n-ary existential quantifier
-
-∃ₙ⟨_⟩ : ∀ {n ls r} {as : Sets n ls} → Arrows n as (Set r) → Set (r ⊔ toLevel n ls)
-∃ₙ⟨_⟩ {zero}                f = f
-∃ₙ⟨_⟩ {suc n} {as = a , as} f = ∃ λ x → ∃ₙ⟨ f x ⟩
 
 ------------------------------------------------------------------------
--- Generic type constructor: n-ary universal quantifier
+-- Generic type constructors
 
-∀ₙ[_] : ∀ {n ls r} {as : Sets n ls} → Arrows n as (Set r) → Set (r ⊔ toLevel n ls)
-∀ₙ[_] {zero}                f = f
-∀ₙ[_] {suc n} {as = a , as} f = {x : a} → ∀ₙ[ f x ]
+-- `Relation.Unary` provides users with a wealth of combinators to work
+-- with indexed sets. We can generalise these to n-ary relations.
 
-Πₙ[_] : ∀ {n ls r} {as : Sets n ls} → Arrows n as (Set r) → Set (r ⊔ toLevel n ls)
-Πₙ[_] {zero}                f = f
-Πₙ[_] {suc n} {as = a , as} f = (x : a) → Πₙ[ f x ]
+-- The crucial thing to notice here is that because we are explicitly
+-- considering that the input function should be a `Set`-ended `Arrows`,
+-- all the other parameters are inferrable. This allows us to make the
+-- number arguments (`n`) implicit.
+------------------------------------------------------------------------
 
+------------------------------------------------------------------------
+-- n-ary existential quantifier
+
+∃⟨_⟩ : ∀ {n ls r} {as : Sets n ls} → Arrows n as (Set r) → Set (r ⊔ toLevel n ls)
+∃⟨_⟩ {zero}                f = f
+∃⟨_⟩ {suc n} {as = a , as} f = ∃ λ x → ∃⟨ f x ⟩
+
+------------------------------------------------------------------------
+-- n-ary universal quantifier
+
+-- implicit
+
+∀[_] : ∀ {n ls r} {as : Sets n ls} → Arrows n as (Set r) → Set (r ⊔ toLevel n ls)
+∀[_] {zero}                f = f
+∀[_] {suc n} {as = a , as} f = {x : a} → ∀[ f x ]
+
+-- explicit
+
+Π[_] : ∀ {n ls r} {as : Sets n ls} → Arrows n as (Set r) → Set (r ⊔ toLevel n ls)
+Π[_] {zero}                f = f
+Π[_] {suc n} {as = a , as} f = (x : a) → Π[ f x ]
+
+
+------------------------------------------------------------------------
+-- n-ary pointwise liftings
+
+-- implication
 
 infixr 8 _⇒_
-infixr 7 _∩_
-infixr 6 _∪_
 _⇒_ : ∀ {n} {ls r s} {as : Sets n ls} (f :  Arrows n as (Set r)) (g : Arrows n as (Set s)) →
       Arrows n as (Set (r ⊔ s))
 _⇒_ {zero}  f g   = f → g
 _⇒_ {suc n} f g x = f x ⇒ g x
 
+-- conjunction
+
+infixr 7 _∩_
 _∩_ : ∀ {n} {ls r s} {as : Sets n ls} (f :  Arrows n as (Set r)) (g : Arrows n as (Set s)) →
       Arrows n as (Set (r ⊔ s))
 _∩_ {zero}  f g   = f × g
 _∩_ {suc n} f g x = f x ∩ g x
 
+-- disjunction
+
+infixr 6 _∪_
 _∪_ : ∀ {n} {ls r s} {as : Sets n ls} (f :  Arrows n as (Set r)) (g : Arrows n as (Set s)) →
       Arrows n as (Set (r ⊔ s))
 _∪_ {zero}  f g   = f ⊎ g
 _∪_ {suc n} f g x = f x ∪ g x
+
+-- negation
+
+∁ : ∀ {n ls r} {as : Sets n ls} → Arrows n as (Set r) → Arrows n as (Set r)
+∁ {zero}  f   = ¬ f
+∁ {suc n} f x = ∁ (f x)
