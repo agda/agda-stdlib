@@ -14,19 +14,19 @@ module Data.Nat.Properties where
 open import Axiom.UniquenessOfIdentityProofs
 open import Algebra
 open import Algebra.Morphism
-open import Function
-open import Function.Injection using (_↣_)
+open import Algebra.FunctionProperties.Consequences.Propositional
+open import Data.Bool.Base using (Bool; false; true; T)
+open import Data.Bool.Properties using (T?)
+open import Data.Empty
 open import Data.Nat.Base
 open import Data.Product
 open import Data.Sum
-open import Data.Empty
-open import Data.Bool.Base using (Bool; false; true; T)
-open import Data.Bool.Properties using (T?)
-
+open import Data.Unit using (tt)
+open import Function
+open import Function.Injection using (_↣_)
 open import Level using (0ℓ)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
-
 open import Relation.Nullary
 open import Relation.Nullary.Decidable using (True; via-injection; map′)
 open import Relation.Nullary.Negation using (contradiction)
@@ -35,7 +35,6 @@ open import Algebra.FunctionProperties {A = ℕ} _≡_
   hiding (LeftCancellative; RightCancellative; Cancellative)
 open import Algebra.FunctionProperties
   using (LeftCancellative; RightCancellative; Cancellative)
-open import Algebra.FunctionProperties.Consequences.Propositional
 open import Algebra.Structures {A = ℕ} _≡_
 
 ------------------------------------------------------------------------
@@ -52,11 +51,11 @@ suc-injective refl = refl
 ≡⇒≡ᵇ zero    zero    eq = _
 ≡⇒≡ᵇ (suc m) (suc n) eq = ≡⇒≡ᵇ m n (suc-injective eq)
 
--- NB: we use the builtin function `_≡ᵇ_ : (m n : ℕ) → Bool` here so
--- that the function quickly decides whether to return `yes` or `no`.
--- It sill takes a linear amount of time to generate the proof if it
--- is inspected. We expect the main benefit to be visible in compiled
--- code: the backend erases proofs.
+-- NB: we use the builtin function `_≡ᵇ_` here so that the function
+-- quickly decides whether to return `yes` or `no`. It still takes
+-- a linear amount of time to generate the proof if it is inspected.
+-- We expect the main benefit to be visible in compiled code as the
+-- backend erases proofs.
 
 infix 4 _≟_
 _≟_ : Decidable {A = ℕ} _≡_
@@ -80,6 +79,20 @@ m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
   ; _≈_              = _≡_
   ; isDecEquivalence = ≡-isDecEquivalence
   }
+
+1+n≢0 : ∀ {n} → suc n ≢ 0
+1+n≢0 ()
+
+------------------------------------------------------------------------
+-- Properties of _<ᵇ_
+
+<ᵇ⇒< : ∀ m n → T (m <ᵇ n) → m < n
+<ᵇ⇒< zero    (suc n) m<n = s≤s z≤n
+<ᵇ⇒< (suc m) (suc n) m<n = s≤s (<ᵇ⇒< m n m<n)
+
+<⇒<ᵇ : ∀ {m n} → m < n → T (m <ᵇ n)
+<⇒<ᵇ (s≤s z≤n)       = tt
+<⇒<ᵇ (s≤s (s≤s m<n)) = <⇒<ᵇ (s≤s m<n)
 
 ------------------------------------------------------------------------
 -- Properties of _≤_
@@ -110,14 +123,19 @@ m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
 ... | inj₁ m≤n = inj₁ (s≤s m≤n)
 ... | inj₂ n≤m = inj₂ (s≤s n≤m)
 
+-- NB: we use the builtin function `_<ᵇ_` here so that the function
+-- quickly decides whether to return `yes` or `no`. It still takes
+-- a linear amount of time to generate the proof if it is inspected.
+-- We expect the main benefit to be visible in compiled code as the
+-- backend erases proofs.
+
 infix 4 _≤?_ _≥?_
 
 _≤?_ : Decidable _≤_
 zero  ≤? _     = yes z≤n
-suc m ≤? zero  = no λ()
-suc m ≤? suc n with m ≤? n
-... | yes m≤n = yes (s≤s m≤n)
-... | no  m≰n = no  (m≰n ∘ ≤-pred)
+suc m ≤? n with T? (m <ᵇ n)
+... | yes m<n = yes (<ᵇ⇒< m n m<n)
+... | no  m≮n = no  (m≮n ∘ <⇒<ᵇ)
 
 _≥?_ : Decidable _≥_
 _≥?_ = flip _≤?_
@@ -189,12 +207,47 @@ n≤1+n _ = ≤-step ≤-refl
 n≤0⇒n≡0 : ∀ {n} → n ≤ 0 → n ≡ 0
 n≤0⇒n≡0 z≤n = refl
 
-n≢0⇒n>0 :  ∀ {n} → n ≢ 0 → n > 0
-n≢0⇒n>0 {zero}  0≢0 =  contradiction refl 0≢0
-n≢0⇒n>0 {suc n} _   =  s≤s z≤n
-
 ------------------------------------------------------------------------
 -- Properties of _<_
+
+-- Relationship between operators
+
+<⇒≤ : _<_ ⇒ _≤_
+<⇒≤ (s≤s m≤n) = ≤-trans m≤n (≤-step ≤-refl)
+
+<⇒≢ : _<_ ⇒ _≢_
+<⇒≢ m<n refl = 1+n≰n m<n
+
+≤⇒≯ : _≤_ ⇒ _≯_
+≤⇒≯ (s≤s m≤n) (s≤s n≤m) = ≤⇒≯ m≤n n≤m
+
+<⇒≱ : _<_ ⇒ _≱_
+<⇒≱ (s≤s m+1≤n) (s≤s n≤m) = <⇒≱ m+1≤n n≤m
+
+<⇒≯ : _<_ ⇒ _≯_
+<⇒≯ (s≤s m<n) (s≤s n<m) = <⇒≯ m<n n<m
+
+≰⇒≮ : _≰_ ⇒ _≮_
+≰⇒≮ m≰n 1+m≤n = m≰n (<⇒≤ 1+m≤n)
+
+≰⇒> : _≰_ ⇒ _>_
+≰⇒> {zero}          z≰n = contradiction z≤n z≰n
+≰⇒> {suc m} {zero}  _   = s≤s z≤n
+≰⇒> {suc m} {suc n} m≰n = s≤s (≰⇒> (m≰n ∘ s≤s))
+
+≰⇒≥ : _≰_ ⇒ _≥_
+≰⇒≥ = <⇒≤ ∘ ≰⇒>
+
+≮⇒≥ : _≮_ ⇒ _≥_
+≮⇒≥ {_}     {zero}  _       = z≤n
+≮⇒≥ {zero}  {suc j} 1≮j+1   = contradiction (s≤s z≤n) 1≮j+1
+≮⇒≥ {suc i} {suc j} i+1≮j+1 = s≤s (≮⇒≥ (i+1≮j+1 ∘ s≤s))
+
+≤∧≢⇒< : ∀ {m n} → m ≤ n → m ≢ n → m < n
+≤∧≢⇒< {_} {zero}  z≤n       m≢n     = contradiction refl m≢n
+≤∧≢⇒< {_} {suc n} z≤n       m≢n     = s≤s z≤n
+≤∧≢⇒< {_} {suc n} (s≤s m≤n) 1+m≢1+n =
+  s≤s (≤∧≢⇒< m≤n (1+m≢1+n ∘ cong suc))
 
 -- Relation theoretic properties of _<_
 
@@ -213,14 +266,17 @@ n≢0⇒n>0 {suc n} _   =  s≤s z≤n
 <-transˡ : Trans _<_ _≤_ _<_
 <-transˡ (s≤s m≤n) (s≤s n≤o) = s≤s (≤-trans m≤n n≤o)
 
+-- NB: we use the builtin function `_<ᵇ_` here so that the function
+-- quickly decides which constructor to return. It still takes a
+-- linear amount of time to generate the proof if it is inspected.
+-- We expect the main benefit to be visible in compiled code as the
+-- backend erases proofs.
+
 <-cmp : Trichotomous _≡_ _<_
-<-cmp zero    zero    = tri≈ (λ())     refl  (λ())
-<-cmp zero    (suc n) = tri< (s≤s z≤n) (λ()) (λ())
-<-cmp (suc m) zero    = tri> (λ())     (λ()) (s≤s z≤n)
-<-cmp (suc m) (suc n) with <-cmp m n
-... | tri< ≤ ≢ ≱ = tri< (s≤s ≤)      (≢ ∘ suc-injective) (≱ ∘ ≤-pred)
-... | tri≈ ≰ ≡ ≱ = tri≈ (≰ ∘ ≤-pred) (cong suc ≡)        (≱ ∘ ≤-pred)
-... | tri> ≰ ≢ ≥ = tri> (≰ ∘ ≤-pred) (≢ ∘ suc-injective) (s≤s ≥)
+<-cmp m n with m ≟ n | T? (m <ᵇ n)
+... | yes m≡n | _       = tri≈ (<-irrefl m≡n) m≡n (<-irrefl (sym m≡n))
+... | no  m≢n | yes m<n = tri< (<ᵇ⇒< m n m<n) m≢n (<⇒≯ (<ᵇ⇒< m n m<n))
+... | no  m≢n | no  m≮n = tri> (m≮n ∘ <⇒<ᵇ)   m≢n (≤∧≢⇒< (≮⇒≥ (m≮n ∘ <⇒<ᵇ)) (m≢n ∘ sym))
 
 infix 4 _<?_ _>?_
 
@@ -262,48 +318,15 @@ _>?_ = flip _<?_
 <-irrelevant : Irrelevant _<_
 <-irrelevant = ≤-irrelevant
 
-<⇒≤ : _<_ ⇒ _≤_
-<⇒≤ (s≤s m≤n) = ≤-trans m≤n (≤-step ≤-refl)
-
-<⇒≢ : _<_ ⇒ _≢_
-<⇒≢ m<n refl = 1+n≰n m<n
-
-≤⇒≯ : _≤_ ⇒ _≯_
-≤⇒≯ (s≤s m≤n) (s≤s n≤m) = ≤⇒≯ m≤n n≤m
-
-<⇒≱ : _<_ ⇒ _≱_
-<⇒≱ (s≤s m+1≤n) (s≤s n≤m) = <⇒≱ m+1≤n n≤m
-
-<⇒≯ : _<_ ⇒ _≯_
-<⇒≯ (s≤s m<n) (s≤s n<m) = <⇒≯ m<n n<m
-
-≰⇒≮ : _≰_ ⇒ _≮_
-≰⇒≮ m≰n 1+m≤n = m≰n (<⇒≤ 1+m≤n)
-
-≰⇒> : _≰_ ⇒ _>_
-≰⇒> {zero}          z≰n = contradiction z≤n z≰n
-≰⇒> {suc m} {zero}  _   = s≤s z≤n
-≰⇒> {suc m} {suc n} m≰n = s≤s (≰⇒> (m≰n ∘ s≤s))
-
-≰⇒≥ : _≰_ ⇒ _≥_
-≰⇒≥ = <⇒≤ ∘ ≰⇒>
-
-≮⇒≥ : _≮_ ⇒ _≥_
-≮⇒≥ {_}     {zero}  _       = z≤n
-≮⇒≥ {zero}  {suc j} 1≮j+1   = contradiction (s≤s z≤n) 1≮j+1
-≮⇒≥ {suc i} {suc j} i+1≮j+1 = s≤s (≮⇒≥ (i+1≮j+1 ∘ s≤s))
-
-≤∧≢⇒< : ∀ {m n} → m ≤ n → m ≢ n → m < n
-≤∧≢⇒< {_} {zero}  z≤n       m≢n     = contradiction refl m≢n
-≤∧≢⇒< {_} {suc n} z≤n       m≢n     = s≤s z≤n
-≤∧≢⇒< {_} {suc n} (s≤s m≤n) 1+m≢1+n =
-  s≤s (≤∧≢⇒< m≤n (1+m≢1+n ∘ cong suc))
-
 n≮n : ∀ n → n ≮ n
 n≮n n = <-irrefl (refl {x = n})
 
 m<n⇒n≢0 : ∀ {m n} → m < n → n ≢ 0
 m<n⇒n≢0 (s≤s m≤n) ()
+
+n≢0⇒n>0 : ∀ {n} → n ≢ 0 → n > 0
+n≢0⇒n>0 {zero}  0≢0 =  contradiction refl 0≢0
+n≢0⇒n>0 {suc n} _   =  s≤s z≤n
 
 ------------------------------------------------------------------------
 -- A module for reasoning about the _≤_ and _<_ relations
@@ -840,7 +863,7 @@ i^j≡1⇒j≡0∨i≡1 i (suc j) eq = inj₂ (i*j≡1⇒i≡1 i (i ^ j) eq)
 -- Properties of _≤‴_
 
 ≤‴⇒≤″ : ∀{m n} → m ≤‴ n → m ≤″ n
-≤‴⇒≤″ {m = m} ≤‴-refl = less-than-or-equal {k = 0} (+-identityʳ m)
+≤‴⇒≤″ {m = m} ≤‴-refl     = less-than-or-equal {k = 0} (+-identityʳ m)
 ≤‴⇒≤″ {m = m} (≤‴-step x) = less-than-or-equal (trans (+-suc m _) (_≤″_.proof ind)) where
   ind = ≤‴⇒≤″ x
 
@@ -1311,7 +1334,14 @@ m≤n⇒m∸n≡0 : ∀ {m n} → m ≤ n → m ∸ n ≡ 0
 m≤n⇒m∸n≡0 {n = n} z≤n      = 0∸n≡0 n
 m≤n⇒m∸n≡0 {_}    (s≤s m≤n) = m≤n⇒m∸n≡0 m≤n
 
+m∸n≢0⇒n<m : ∀ {m n} → m ∸ n ≢ 0 → n < m
+m∸n≢0⇒n<m {m} {n} m∸n≢0 with n <? m
+... | yes n<m = n<m
+... | no  n≮m = contradiction (m≤n⇒m∸n≡0 (≮⇒≥ n≮m)) m∸n≢0
+
+---------------------------------------------------------------
 -- Properties of _∸_ and _+_
+
 +-∸-comm : ∀ {m} n {o} → o ≤ m → (m + n) ∸ o ≡ (m ∸ o) + n
 +-∸-comm {zero}  _ {zero}  _         = refl
 +-∸-comm {suc m} _ {zero}  _         = refl
@@ -1529,8 +1559,6 @@ private
 ------------------------------------------------------------------------
 -- Properties of _<″_, and _≤″_
 
--- equivalence to _<ᵇ_
-
 m<ᵇn⇒1+m+[n-1+m]≡n : ∀ m n → T (m <ᵇ n) → suc m + (n ∸ suc m) ≡ n
 m<ᵇn⇒1+m+[n-1+m]≡n zero    (suc n) lt = refl
 m<ᵇn⇒1+m+[n-1+m]≡n (suc m) (suc n) lt = cong suc (m<ᵇn⇒1+m+[n-1+m]≡n m n lt)
@@ -1567,7 +1595,7 @@ m<ᵇ1+m+n (suc m) = m<ᵇ1+m+n m
 
 -- NB: we use the builtin function `_<ᵇ_ : (m n : ℕ) → Bool` here so
 -- that the function quickly decides whether to return `yes` or `no`.
--- It sill takes a linear amount of time to generate the proof if it
+-- It still takes a linear amount of time to generate the proof if it
 -- is inspected. We expect the main benefit to be visible for compiled
 -- code: the backend erases proofs.
 
