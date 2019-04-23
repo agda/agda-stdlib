@@ -26,6 +26,8 @@ Data.List.Relation.Unary.Unique.Propositional.Properties
 Data.List.Relation.Unary.Unique.Setoid
 Data.List.Relation.Unary.Unique.Setoid.Properties
 
+Data.Sign.Base
+
 Data.Unit.Properties
 ```
 
