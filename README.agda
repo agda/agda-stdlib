@@ -3,23 +3,20 @@ module README where
 ------------------------------------------------------------------------
 -- The Agda standard library, development version
 --
--- Authors: Nils Anders Danielsson, with contributions from Andreas
--- Abel, Stevan Andjelkovic, Jean-Philippe Bernardy, Peter Berry,
--- Bradley Hardy Joachim Breitner, Samuel Bronson, Daniel Brown,
--- James Chapman, Liang-Ting Chen, Matthew Daggitt, Dominique Devriese,
--- Dan Doel, Érdi Gergő, Helmut Grohne, Simon Foster, Liyang Hu,
--- Jason Hu, Patrik Jansson, Alan Jeffrey, Wen Kokke, Evgeny Kotelnikov,
--- Sergei Meshveliani, Eric Mertens, Darin Morrison, Guilhem Moulin,
--- Shin-Cheng Mu, Ulf Norell, Noriyuki Ohkawa, Nicolas Pouillard,
--- Andrés Sicard-Ramírez, Sandro Stucki, Milo Turner, Noam Zeilberger
--- and some anonymous contributors.
+-- Authors: Nils Anders Danielsson, Matthew Daggitt, Guillaume Allais
+-- with contributions from Andreas Abel, Stevan Andjelkovic,
+-- Jean-Philippe Bernardy, Peter Berry, Bradley Hardy Joachim Breitner,
+-- Samuel Bronson, Daniel Brown, James Chapman, Liang-Ting Chen,
+-- Dominique Devriese, Dan Doel, Érdi Gergő, Helmut Grohne,
+-- Simon Foster, Liyang Hu, Jason Hu, Patrik Jansson, Alan Jeffrey,
+-- Wen Kokke, Evgeny Kotelnikov, Sergei Meshveliani, Eric Mertens,
+-- Darin Morrison, Guilhem Moulin, Shin-Cheng Mu, Ulf Norell,
+-- Noriyuki Ohkawa, Nicolas Pouillard, Andrés Sicard-Ramírez,
+-- Sandro Stucki, Milo Turner, Noam Zeilberger and other anonymous
+-- contributors.
 ------------------------------------------------------------------------
 
--- This version of the library has been tested using Agda 2.5.4.1.
-
--- Note that no guarantees are currently made about forwards or
--- backwards compatibility, the library is still at an experimental
--- stage.
+-- This version of the library has been tested using Agda 2.6.0.
 
 -- The library comes with a .agda-lib file, for use with the library
 -- management system.
@@ -46,6 +43,10 @@ module README where
 --     properties needed to specify these structures (associativity,
 --     commutativity, etc.), and operations on and proofs about the
 --     structures.
+-- • Axiom
+--     The consequences of assuming various additional axioms
+--     e.g. uniqueness of identity of proofs, function extensionality,
+--     excluded middle.
 -- • Category
 --     Category theory-inspired idioms used to structure functional
 --     programs (functors and monads, for instance).
@@ -120,7 +121,7 @@ import Category.Monad        -- Monads.
 import Relation.Binary.PropositionalEquality
 
 -- Convenient syntax for "equational reasoning" using a preorder:
-import Relation.Binary.PreorderReasoning
+import Relation.Binary.Reasoning.Preorder
 
 -- Solver for commutative ring or semiring equalities:
 import Algebra.Solver.Ring
@@ -184,7 +185,7 @@ import IO
 --
 --     open IsSemigroup isSemigroup public
 --
--- Note here that open IsSemigroup isSemigroup public ensures that the
+-- Note here that `open IsSemigroup isSemigroup public` ensures that the
 -- fields of the isSemigroup record can be accessed directly; this
 -- technique enables the user of an IsMonoid record to use underlying
 -- records without having to manually open an entire record hierarchy.
@@ -210,7 +211,7 @@ import IO
 -- in IsPreorder.
 
 -- Records packing up properties with the corresponding operations,
--- sets, etc. are sometimes also defined:
+-- sets, etc. are also defined:
 --
 --   record Semigroup : Set₁ where
 --     infixl 7 _∙_
@@ -265,6 +266,10 @@ import README.Integer
 -- Some examples showing how the AVL tree module can be used.
 
 import README.AVL
+
+-- Some examples showing how List module can be used.
+
+import README.List
 
 -- An example showing how the Record module can be used.
 

@@ -13,6 +13,7 @@ open import Data.Empty using (⊥)
 open import Data.Bool.Base using (T)
 open import Data.Maybe.Relation.Unary.All
 open import Data.Maybe.Relation.Unary.Any
+open import Level using (Level)
 
 ------------------------------------------------------------------------
 -- The base type and some operations
@@ -33,4 +34,3 @@ to-witness (just {x = p} _) = p
 
 to-witness-T : ∀ {p} {P : Set p} (m : Maybe P) → T (is-just m) → P
 to-witness-T (just p) _  = p
-to-witness-T nothing  ()

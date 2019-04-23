@@ -48,7 +48,6 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
     ¬[]<[] (base ())
 
     <-irreflexive : Irreflexive _≈_ _≺_ → Irreflexive _≋_ _<_
-    <-irreflexive irr []            (base ())
     <-irreflexive irr (x≈y ∷ xs≋ys) (this x<y)     = irr x≈y x<y
     <-irreflexive irr (x≈y ∷ xs≋ys) (next _ xs⊴ys) =
       <-irreflexive irr xs≋ys xs⊴ys
@@ -61,7 +60,6 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
       irrefl = asym⟶irr resp sym as
 
       asym : Asymmetric _<_
-      asym (halt)           ()
       asym (base bot)       _                = bot
       asym (this x<y)       (this y<x)       = as x<y y<x
       asym (this x<y)       (next y≈x ys⊴xs) = irrefl (sym y≈x) x<y

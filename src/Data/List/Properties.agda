@@ -13,7 +13,7 @@ module Data.List.Properties where
 
 open import Algebra
 import Algebra.Structures as Structures
-open import Algebra.FunctionProperties
+import Algebra.FunctionProperties as FunctionProperties
 open import Data.Bool.Base using (Bool; false; true; not; if_then_else_)
 open import Data.Fin using (Fin; zero; suc; cast; toℕ)
 open import Data.List as List
@@ -25,6 +25,7 @@ open import Data.Nat.Properties
 open import Data.Product as Prod hiding (map; zip)
 open import Data.These as These using (These; this; that; these)
 open import Function
+open import Level using (Level)
 import Relation.Binary as B
 import Relation.Binary.Reasoning.Setoid as EqR
 open import Relation.Binary.PropositionalEquality as P
@@ -35,85 +36,84 @@ open import Relation.Nullary.Decidable using (⌊_⌋)
 open import Relation.Unary using (Pred; Decidable; ∁)
 open import Relation.Unary.Properties using (∁?)
 
-------------------------------------------------------------------------
+private
+  variable
+    a b c d e p : Level
+    A : Set a
+    B : Set b
+    C : Set c
+    D : Set d
+    E : Set e
+
+-----------------------------------------------------------------------
 -- _∷_
 
-module _ {a} {A : Set a} {x y : A} {xs ys : List A} where
+module _ {x y : A} {xs ys : List A} where
 
- ∷-injective : x ∷ xs ≡ y List.∷ ys → x ≡ y × xs ≡ ys
- ∷-injective refl = (refl , refl)
+  ∷-injective : x ∷ xs ≡ y List.∷ ys → x ≡ y × xs ≡ ys
+  ∷-injective refl = (refl , refl)
 
- ∷-injectiveˡ : x ∷ xs ≡ y List.∷ ys → x ≡ y
- ∷-injectiveˡ refl = refl
+  ∷-injectiveˡ : x ∷ xs ≡ y List.∷ ys → x ≡ y
+  ∷-injectiveˡ refl = refl
 
- ∷-injectiveʳ : x ∷ xs ≡ y List.∷ ys → xs ≡ ys
- ∷-injectiveʳ refl = refl
+  ∷-injectiveʳ : x ∷ xs ≡ y List.∷ ys → xs ≡ ys
+  ∷-injectiveʳ refl = refl
 
-module _ {a} {A : Set a} where
-
-  ≡-dec : B.Decidable _≡_ → B.Decidable {A = List A} _≡_
-  ≡-dec _≟_ []       []       = yes refl
-  ≡-dec _≟_ (x ∷ xs) []       = no λ()
-  ≡-dec _≟_ []       (y ∷ ys) = no λ()
-  ≡-dec _≟_ (x ∷ xs) (y ∷ ys) with x ≟ y | ≡-dec _≟_ xs ys
-  ... | no  x≢y  | _        = no (x≢y   ∘ ∷-injectiveˡ)
-  ... | yes _    | no xs≢ys = no (xs≢ys ∘ ∷-injectiveʳ)
-  ... | yes refl | yes refl = yes refl
+≡-dec : B.Decidable _≡_ → B.Decidable {A = List A} _≡_
+≡-dec _≟_ []       []       = yes refl
+≡-dec _≟_ (x ∷ xs) []       = no λ()
+≡-dec _≟_ []       (y ∷ ys) = no λ()
+≡-dec _≟_ (x ∷ xs) (y ∷ ys) with x ≟ y | ≡-dec _≟_ xs ys
+... | no  x≢y  | _        = no (x≢y   ∘ ∷-injectiveˡ)
+... | yes _    | no xs≢ys = no (xs≢ys ∘ ∷-injectiveʳ)
+... | yes refl | yes refl = yes refl
 
 ------------------------------------------------------------------------
 -- map
 
-module _ {a} {A : Set a} where
+map-id : map id ≗ id {A = List A}
+map-id []       = refl
+map-id (x ∷ xs) = P.cong (x ∷_) (map-id xs)
 
-  map-id : map id ≗ id {A = List A}
-  map-id []       = refl
-  map-id (x ∷ xs) = P.cong (x ∷_) (map-id xs)
+map-id₂ : ∀ {f : A → A} {xs} → All (λ x → f x ≡ x) xs → map f xs ≡ xs
+map-id₂ []           = refl
+map-id₂ (fx≡x ∷ pxs) = P.cong₂ _∷_ fx≡x (map-id₂ pxs)
 
-  map-id₂ : ∀ {f : A → A} {xs} → All (λ x → f x ≡ x) xs → map f xs ≡ xs
-  map-id₂ []         = refl
-  map-id₂ (fx≡x ∷ pxs) = P.cong₂ _∷_ fx≡x (map-id₂ pxs)
+map-++-commute : ∀ (f : A → B) xs ys →
+                 map f (xs ++ ys) ≡ map f xs ++ map f ys
+map-++-commute f []       ys = refl
+map-++-commute f (x ∷ xs) ys = P.cong (f x ∷_) (map-++-commute f xs ys)
 
-module _ {a b} {A : Set a} {B : Set b} where
+map-cong : ∀ {f g : A → B} → f ≗ g → map f ≗ map g
+map-cong f≗g []       = refl
+map-cong f≗g (x ∷ xs) = P.cong₂ _∷_ (f≗g x) (map-cong f≗g xs)
 
-  map-++-commute : ∀ (f : A → B) xs ys →
-                   map f (xs ++ ys) ≡ map f xs ++ map f ys
-  map-++-commute f []       ys = refl
-  map-++-commute f (x ∷ xs) ys = P.cong (f x ∷_) (map-++-commute f xs ys)
+map-cong₂ : ∀ {f g : A → B} {xs} →
+            All (λ x → f x ≡ g x) xs → map f xs ≡ map g xs
+map-cong₂ []                = refl
+map-cong₂ (fx≡gx ∷ fxs≡gxs) = P.cong₂ _∷_ fx≡gx (map-cong₂ fxs≡gxs)
 
-  map-cong : ∀ {f g : A → B} → f ≗ g → map f ≗ map g
-  map-cong f≗g []       = refl
-  map-cong f≗g (x ∷ xs) = P.cong₂ _∷_ (f≗g x) (map-cong f≗g xs)
+length-map : ∀ (f : A → B) xs → length (map f xs) ≡ length xs
+length-map f []       = refl
+length-map f (x ∷ xs) = P.cong suc (length-map f xs)
 
-  map-cong₂ : ∀ {f g : A → B} {xs} →
-              All (λ x → f x ≡ g x) xs → map f xs ≡ map g xs
-  map-cong₂ []                = refl
-  map-cong₂ (fx≡gx ∷ fxs≡gxs) = P.cong₂ _∷_ fx≡gx (map-cong₂ fxs≡gxs)
-
-  length-map : ∀ (f : A → B) xs → length (map f xs) ≡ length xs
-  length-map f []       = refl
-  length-map f (x ∷ xs) = P.cong suc (length-map f xs)
-
-module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
-
-  map-compose : {g : B → C} {f : A → B} → map (g ∘ f) ≗ map g ∘ map f
-  map-compose []       = refl
-  map-compose (x ∷ xs) = P.cong (_ ∷_) (map-compose xs)
+map-compose : {g : B → C} {f : A → B} → map (g ∘ f) ≗ map g ∘ map f
+map-compose []       = refl
+map-compose (x ∷ xs) = P.cong (_ ∷_) (map-compose xs)
 
 ------------------------------------------------------------------------
 -- mapMaybe
 
-module _ {a} {A : Set a} where
+mapMaybe-just : (xs : List A) → mapMaybe just xs ≡ xs
+mapMaybe-just []       = refl
+mapMaybe-just (x ∷ xs) = P.cong (x ∷_) (mapMaybe-just xs)
 
-  mapMaybe-just : (xs : List A) → mapMaybe just xs ≡ xs
-  mapMaybe-just []       = refl
-  mapMaybe-just (x ∷ xs) = P.cong (x ∷_) (mapMaybe-just xs)
+mapMaybe-nothing : (xs : List A) →
+                   mapMaybe {B = A} (λ _ → nothing) xs ≡ []
+mapMaybe-nothing []       = refl
+mapMaybe-nothing (x ∷ xs) = mapMaybe-nothing xs
 
-  mapMaybe-nothing : (xs : List A) →
-                     mapMaybe {B = A} (λ _ → nothing) xs ≡ []
-  mapMaybe-nothing []       = refl
-  mapMaybe-nothing (x ∷ xs) = mapMaybe-nothing xs
-
-module _ {a b} {A : Set a} {B : Set b} (f : A → Maybe B) where
+module _ (f : A → Maybe B) where
 
   mapMaybe-concatMap : mapMaybe f ≗ concatMap (fromMaybe ∘ f)
   mapMaybe-concatMap [] = refl
@@ -130,20 +130,28 @@ module _ {a b} {A : Set a} {B : Set b} (f : A → Maybe B) where
 ------------------------------------------------------------------------
 -- _++_
 
-module _ {a} {A : Set a} where
+length-++ : ∀ (xs : List A) {ys} →
+            length (xs ++ ys) ≡ length xs + length ys
+length-++ []       = refl
+length-++ (x ∷ xs) = P.cong suc (length-++ xs)
 
-  ++-assoc : Associative {A = List A} _≡_ _++_
+module _ {A : Set a} where
+
+  open FunctionProperties {A = List A} _≡_
+  open Structures         {A = List A} _≡_
+
+  ++-assoc : Associative _++_
   ++-assoc []       ys zs = refl
   ++-assoc (x ∷ xs) ys zs = P.cong (x ∷_) (++-assoc xs ys zs)
 
-  ++-identityˡ : LeftIdentity {A = List A} _≡_ [] _++_
+  ++-identityˡ : LeftIdentity [] _++_
   ++-identityˡ xs = refl
 
-  ++-identityʳ : RightIdentity {A = List A} _≡_ [] _++_
+  ++-identityʳ : RightIdentity [] _++_
   ++-identityʳ []       = refl
   ++-identityʳ (x ∷ xs) = P.cong (x ∷_) (++-identityʳ xs)
 
-  ++-identity : Identity {A = List A} _≡_ [] _++_
+  ++-identity : Identity [] _++_
   ++-identity = ++-identityˡ , ++-identityʳ
 
   ++-identityʳ-unique : ∀ (xs : List A) {ys} → xs ≡ xs ++ ys → ys ≡ []
@@ -153,7 +161,6 @@ module _ {a} {A : Set a} where
 
   ++-identityˡ-unique : ∀ {xs} (ys : List A) → xs ≡ ys ++ xs → ys ≡ []
   ++-identityˡ-unique               []       _  = refl
-  ++-identityˡ-unique {xs = []}     (y ∷ ys) ()
   ++-identityˡ-unique {xs = x ∷ xs} (y ∷ ys) eq
     with ++-identityˡ-unique (ys ++ [ x ]) (begin
          xs                  ≡⟨ proj₂ (∷-injective eq) ⟩
@@ -163,13 +170,30 @@ module _ {a} {A : Set a} where
   ++-identityˡ-unique {xs = x ∷ xs} (y ∷ []   ) eq | ()
   ++-identityˡ-unique {xs = x ∷ xs} (y ∷ _ ∷ _) eq | ()
 
-  length-++ : ∀ (xs : List A) {ys} → length (xs ++ ys) ≡ length xs + length ys
-  length-++ []       = refl
-  length-++ (x ∷ xs) = P.cong suc (length-++ xs)
+  ++-cancelˡ : ∀ xs {ys zs : List A} → xs ++ ys ≡ xs ++ zs → ys ≡ zs
+  ++-cancelˡ []       ys≡zs             = ys≡zs
+  ++-cancelˡ (x ∷ xs) x∷xs++ys≡x∷xs++zs = ++-cancelˡ xs (∷-injectiveʳ x∷xs++ys≡x∷xs++zs)
 
-module _ {a} {A : Set a} where
+  ++-cancelʳ : ∀ {xs : List A} ys zs → ys ++ xs ≡ zs ++ xs → ys ≡ zs
+  ++-cancelʳ []       []       _             = refl
+  ++-cancelʳ {xs} []           (z ∷ zs) eq =
+    contradiction (P.trans (cong length eq) (length-++ (z ∷ zs))) (m≢1+n+m (length xs))
+  ++-cancelʳ {xs} (y ∷ ys) []       eq =
+    contradiction (P.trans (P.sym (length-++ (y ∷ ys))) (cong length eq)) (m≢1+n+m (length xs) ∘ sym)
+  ++-cancelʳ (y ∷ ys) (z ∷ zs) eq =
+    P.cong₂ _∷_ (∷-injectiveˡ eq) (++-cancelʳ ys zs (∷-injectiveʳ eq))
 
-  open Structures {A = List A} _≡_
+  ++-cancel : Cancellative _++_
+  ++-cancel = ++-cancelˡ , ++-cancelʳ
+
+  ++-conicalˡ : ∀ (xs ys : List A) → xs ++ ys ≡ [] → xs ≡ []
+  ++-conicalˡ []       _ refl = refl
+
+  ++-conicalʳ : ∀ (xs ys : List A) → xs ++ ys ≡ [] → ys ≡ []
+  ++-conicalʳ []       _ refl = refl
+
+  ++-conical : Conical [] _++_
+  ++-conical = ++-conicalˡ , ++-conicalʳ
 
   ++-isMagma : IsMagma _++_
   ++-isMagma = record
@@ -189,7 +213,7 @@ module _ {a} {A : Set a} where
     ; identity    = ++-identity
     }
 
-module _ {a} (A : Set a) where
+module _ (A : Set a) where
 
   ++-semigroup : Semigroup a a
   ++-semigroup = record
@@ -206,8 +230,7 @@ module _ {a} (A : Set a) where
 ------------------------------------------------------------------------
 -- alignWith
 
-module _ {a b c} {A : Set a} {B : Set b} {C : Set c}
-         {f g : These A B → C} where
+module _ {f g : These A B → C} where
 
   alignWith-cong : f ≗ g → ∀ as → alignWith f as ≗ alignWith g as
   alignWith-cong f≗g []         bs       = map-cong (f≗g ∘ that) bs
@@ -215,26 +238,23 @@ module _ {a b c} {A : Set a} {B : Set b} {C : Set c}
   alignWith-cong f≗g (a ∷ as)   (b ∷ bs) =
     P.cong₂ _∷_ (f≗g (these a b)) (alignWith-cong f≗g as bs)
 
-module _ {a b c} {A : Set a} {B : Set b} {C : Set c}
-         (f : These A B → C) where
-
   length-alignWith : ∀ xs ys →
                    length (alignWith f xs ys) ≡ length xs ⊔ length ys
   length-alignWith []         ys       = length-map (f ∘′ that) ys
   length-alignWith xs@(_ ∷ _) []       = length-map (f ∘′ this) xs
   length-alignWith (x ∷ xs)   (y ∷ ys) = P.cong suc (length-alignWith xs ys)
 
-  alignWith-map : ∀ {d e} {D : Set d} {E : Set e} (g : D → A) (h : E → B) →
-                ∀ xs ys → alignWith f (map g xs) (map h ys) ≡
-                          alignWith (f ∘′ These.map g h) xs ys
+  alignWith-map : (g : D → A) (h : E → B) →
+                  ∀ xs ys → alignWith f (map g xs) (map h ys) ≡
+                            alignWith (f ∘′ These.map g h) xs ys
   alignWith-map g h []         ys     = sym (map-compose ys)
   alignWith-map g h xs@(_ ∷ _) []     = sym (map-compose xs)
   alignWith-map g h (x ∷ xs) (y ∷ ys) =
     P.cong₂ _∷_ refl (alignWith-map g h xs ys)
 
-  map-alignWith : ∀ {d} {D : Set d} (g : C → D) → ∀ xs ys →
-                map g (alignWith f xs ys) ≡
-                alignWith (g ∘′ f) xs ys
+  map-alignWith : ∀ (g : C → D) → ∀ xs ys →
+                  map g (alignWith f xs ys) ≡
+                  alignWith (g ∘′ f) xs ys
   map-alignWith g []         ys     = sym (map-compose ys)
   map-alignWith g xs@(_ ∷ _) []     = sym (map-compose xs)
   map-alignWith g (x ∷ xs) (y ∷ ys) =
@@ -243,7 +263,7 @@ module _ {a b c} {A : Set a} {B : Set b} {C : Set c}
 ------------------------------------------------------------------------
 -- zipWith
 
-module _ {a b} {A : Set a} {B : Set b} (f : A → A → B) where
+module _ (f : A → A → B) where
 
   zipWith-comm : (∀ x y → f x y ≡ f y x) →
                  ∀ xs ys → zipWith f xs ys ≡ zipWith f ys xs
@@ -253,8 +273,7 @@ module _ {a b} {A : Set a} {B : Set b} (f : A → A → B) where
   zipWith-comm f-comm (x ∷ xs) (y ∷ ys) =
     P.cong₂ _∷_ (f-comm x y) (zipWith-comm f-comm xs ys)
 
-module _ {a b c} {A : Set a} {B : Set b} {C : Set c}
-         (f : A → B → C) where
+module _ (f : A → B → C) where
 
   zipWith-identityˡ : ∀ xs → zipWith f [] xs ≡ []
   zipWith-identityˡ []       = refl
@@ -292,18 +311,15 @@ module _ {a b c} {A : Set a} {B : Set b} {C : Set c}
 ------------------------------------------------------------------------
 -- unalignWith
 
-module _ {a b} {A : Set a} {B : Set b} where
+unalignWith-this : unalignWith ((A → These A B) ∋ this) ≗ (_, [])
+unalignWith-this []       = refl
+unalignWith-this (a ∷ as) = P.cong (Prod.map₁ (a ∷_)) (unalignWith-this as)
 
-  unalignWith-this : unalignWith ((A → These A B) ∋ this) ≗ (_, [])
-  unalignWith-this []       = refl
-  unalignWith-this (a ∷ as) = P.cong (Prod.map₁ (a ∷_)) (unalignWith-this as)
+unalignWith-that : unalignWith ((B → These A B) ∋ that) ≗ ([] ,_)
+unalignWith-that []       = refl
+unalignWith-that (b ∷ bs) = P.cong (Prod.map₂ (b ∷_)) (unalignWith-that bs)
 
-  unalignWith-that : unalignWith ((B → These A B) ∋ that) ≗ ([] ,_)
-  unalignWith-that []       = refl
-  unalignWith-that (b ∷ bs) = P.cong (Prod.map₂ (b ∷_)) (unalignWith-that bs)
-
-module _ {a b c} {A : Set a} {B : Set b} {C : Set c}
-         {f g : C → These A B} where
+module _ {f g : C → These A B} where
 
   unalignWith-cong : f ≗ g → unalignWith f ≗ unalignWith g
   unalignWith-cong f≗g []       = refl
@@ -312,18 +328,17 @@ module _ {a b c} {A : Set a} {B : Set b} {C : Set c}
   ... | that b    | ._ | refl = P.cong (Prod.map₂ (b ∷_)) (unalignWith-cong f≗g cs)
   ... | these a b | ._ | refl = P.cong (Prod.map (a ∷_) (b ∷_)) (unalignWith-cong f≗g cs)
 
-module _ {a b c} {A : Set a} {B : Set b} {C : Set c}
-         (f : C → These A B) where
+module _ (f : C → These A B) where
 
-  unalignWith-map : ∀ {d} {D : Set d} (g : D → C) →
-    ∀ ds → unalignWith f (map g ds) ≡ unalignWith (f ∘′ g) ds
+  unalignWith-map : (g : D → C) → ∀ ds →
+                    unalignWith f (map g ds) ≡ unalignWith (f ∘′ g) ds
   unalignWith-map g []       = refl
   unalignWith-map g (d ∷ ds) with f (g d)
   ... | this a    = P.cong (Prod.map₁ (a ∷_)) (unalignWith-map g ds)
   ... | that b    = P.cong (Prod.map₂ (b ∷_)) (unalignWith-map g ds)
   ... | these a b = P.cong (Prod.map (a ∷_) (b ∷_)) (unalignWith-map g ds)
 
-  map-unalignWith : ∀ {d e} {D : Set d} {E : Set e} (g : A → D) (h : B → E) →
+  map-unalignWith : (g : A → D) (h : B → E) →
     Prod.map (map g) (map h) ∘′ unalignWith f ≗ unalignWith (These.map g h ∘′ f)
   map-unalignWith g h []       = refl
   map-unalignWith g h (c ∷ cs) with f c
@@ -350,8 +365,7 @@ module _ {a b c} {A : Set a} {B : Set b} {C : Set c}
 ------------------------------------------------------------------------
 -- unzipWith
 
-module _ {a b c} {A : Set a} {B : Set b} {C : Set c}
-         (f : A → B × C) where
+module _ (f : A → B × C) where
 
   length-unzipWith₁ : ∀ xys →
                      length (proj₁ (unzipWith f xys)) ≡ length xys
@@ -372,8 +386,7 @@ module _ {a b c} {A : Set a} {B : Set b} {C : Set c}
 ------------------------------------------------------------------------
 -- foldr
 
-foldr-universal : ∀ {a b} {A : Set a} {B : Set b}
-                  (h : List A → B) f e → (h [] ≡ e) →
+foldr-universal : ∀ (h : List A → B) f e → (h [] ≡ e) →
                   (∀ x xs → h (x ∷ xs) ≡ f x (h xs)) →
                   h ≗ foldr f e
 foldr-universal h f e base step []       = base
@@ -386,26 +399,23 @@ foldr-universal h f e base step (x ∷ xs) = begin
   ∎
   where open P.≡-Reasoning
 
-foldr-cong : ∀ {a b} {A : Set a} {B : Set b}
-             {f g : A → B → B} {d e : B} →
+foldr-cong : ∀ {f g : A → B → B} {d e : B} →
              (∀ x y → f x y ≡ g x y) → d ≡ e →
              foldr f d ≗ foldr g e
 foldr-cong f≗g refl []      = refl
 foldr-cong f≗g d≡e (x ∷ xs) rewrite foldr-cong f≗g d≡e xs = f≗g x _
 
-foldr-fusion : ∀ {a b c} {A : Set a} {B : Set b} {C : Set c}
-               (h : B → C) {f : A → B → B} {g : A → C → C} (e : B) →
+foldr-fusion : ∀ (h : B → C) {f : A → B → B} {g : A → C → C} (e : B) →
                (∀ x y → h (f x y) ≡ g x (h y)) →
                h ∘ foldr f e ≗ foldr g (h e)
 foldr-fusion h {f} {g} e fuse =
   foldr-universal (h ∘ foldr f e) g (h e) refl
                   (λ x xs → fuse x (foldr f e xs))
 
-id-is-foldr : ∀ {a} {A : Set a} → id {A = List A} ≗ foldr _∷_ []
+id-is-foldr : id {A = List A} ≗ foldr _∷_ []
 id-is-foldr = foldr-universal id _∷_ [] refl (λ _ _ → refl)
 
-++-is-foldr : ∀ {a} {A : Set a} (xs ys : List A) →
-           xs ++ ys ≡ foldr _∷_ ys xs
+++-is-foldr : (xs ys : List A) → xs ++ ys ≡ foldr _∷_ ys xs
 ++-is-foldr xs ys =
   begin
     xs ++ ys
@@ -418,60 +428,54 @@ id-is-foldr = foldr-universal id _∷_ [] refl (λ _ _ → refl)
   ∎
   where open P.≡-Reasoning
 
-module _ {a b} {A : Set a} {B : Set b} where
+foldr-++ : ∀ (f : A → B → B) x ys zs →
+           foldr f x (ys ++ zs) ≡ foldr f (foldr f x zs) ys
+foldr-++ f x []       zs = refl
+foldr-++ f x (y ∷ ys) zs = P.cong (f y) (foldr-++ f x ys zs)
 
-  foldr-++ : ∀ (f : A → B → B) x ys zs →
-             foldr f x (ys ++ zs) ≡ foldr f (foldr f x zs) ys
-  foldr-++ f x []       zs = refl
-  foldr-++ f x (y ∷ ys) zs = P.cong (f y) (foldr-++ f x ys zs)
+map-is-foldr : {f : A → B} → map f ≗ foldr (λ x ys → f x ∷ ys) []
+map-is-foldr {f = f} =
+  begin
+    map f
+  ≈⟨ P.cong (map f) ∘ id-is-foldr ⟩
+    map f ∘ foldr _∷_ []
+  ≈⟨ foldr-fusion (map f) [] (λ _ _ → refl) ⟩
+    foldr (λ x ys → f x ∷ ys) []
+  ∎  where open EqR (P._→-setoid_ _ _)
 
-  map-is-foldr : {f : A → B} → map f ≗ foldr (λ x ys → f x ∷ ys) []
-  map-is-foldr {f = f} =
-    begin
-      map f
-    ≈⟨ P.cong (map f) ∘ id-is-foldr ⟩
-      map f ∘ foldr _∷_ []
-    ≈⟨ foldr-fusion (map f) [] (λ _ _ → refl) ⟩
-      foldr (λ x ys → f x ∷ ys) []
-    ∎  where open EqR (P._→-setoid_ _ _)
-
-  foldr-∷ʳ : ∀ (f : A → B → B) x y ys →
-             foldr f x (ys ∷ʳ y) ≡ foldr f (f y x) ys
-  foldr-∷ʳ f x y []       = refl
-  foldr-∷ʳ f x y (z ∷ ys) = P.cong (f z) (foldr-∷ʳ f x y ys)
+foldr-∷ʳ : ∀ (f : A → B → B) x y ys →
+           foldr f x (ys ∷ʳ y) ≡ foldr f (f y x) ys
+foldr-∷ʳ f x y []       = refl
+foldr-∷ʳ f x y (z ∷ ys) = P.cong (f z) (foldr-∷ʳ f x y ys)
 
 ------------------------------------------------------------------------
 -- foldl
 
-module _ {a b} {A : Set a} {B : Set b} where
+foldl-++ : ∀ (f : A → B → A) x ys zs →
+           foldl f x (ys ++ zs) ≡ foldl f (foldl f x ys) zs
+foldl-++ f x []       zs = refl
+foldl-++ f x (y ∷ ys) zs = foldl-++ f (f x y) ys zs
 
-  foldl-++ : ∀ (f : A → B → A) x ys zs →
-             foldl f x (ys ++ zs) ≡ foldl f (foldl f x ys) zs
-  foldl-++ f x []       zs = refl
-  foldl-++ f x (y ∷ ys) zs = foldl-++ f (f x y) ys zs
-
-  foldl-∷ʳ : ∀ (f : A → B → A) x y ys →
-             foldl f x (ys ∷ʳ y) ≡ f (foldl f x ys) y
-  foldl-∷ʳ f x y []       = refl
-  foldl-∷ʳ f x y (z ∷ ys) = foldl-∷ʳ f (f x z) y ys
+foldl-∷ʳ : ∀ (f : A → B → A) x y ys →
+           foldl f x (ys ∷ʳ y) ≡ f (foldl f x ys) y
+foldl-∷ʳ f x y []       = refl
+foldl-∷ʳ f x y (z ∷ ys) = foldl-∷ʳ f (f x z) y ys
 
 ------------------------------------------------------------------------
 -- concat
 
-module _ {a b} {A : Set a} {B : Set b} where
-
-  concat-map : ∀ {f : A → B} → concat ∘ map (map f) ≗ map f ∘ concat
-  concat-map {f = f} =
-    begin
-      concat ∘ map (map f)
-    ≈⟨ P.cong concat ∘ map-is-foldr ⟩
-      concat ∘ foldr (λ xs → map f xs ∷_) []
-    ≈⟨ foldr-fusion concat [] (λ _ _ → refl) ⟩
-      foldr (λ ys → map f ys ++_) []
-    ≈⟨ P.sym ∘ foldr-fusion (map f) [] (map-++-commute f) ⟩
-      map f ∘ concat
-    ∎
-    where open EqR (P._→-setoid_ _ _)
+concat-map : ∀ {f : A → B} → concat ∘ map (map f) ≗ map f ∘ concat
+concat-map {f = f} =
+  begin
+    concat ∘ map (map f)
+  ≈⟨ P.cong concat ∘ map-is-foldr ⟩
+    concat ∘ foldr (λ xs → map f xs ∷_) []
+  ≈⟨ foldr-fusion concat [] (λ _ _ → refl) ⟩
+    foldr (λ ys → map f ys ++_) []
+  ≈⟨ P.sym ∘ foldr-fusion (map f) [] (map-++-commute f) ⟩
+    map f ∘ concat
+  ∎
+  where open EqR (P._→-setoid_ _ _)
 
 ------------------------------------------------------------------------
 -- sum
@@ -487,71 +491,61 @@ sum-++-commute (x ∷ xs) ys = begin
 ------------------------------------------------------------------------
 -- replicate
 
-module _ {a} {A : Set a} where
-
-  length-replicate : ∀ n {x : A} → length (replicate n x) ≡ n
-  length-replicate zero    = refl
-  length-replicate (suc n) = P.cong suc (length-replicate n)
+length-replicate : ∀ n {x : A} → length (replicate n x) ≡ n
+length-replicate zero    = refl
+length-replicate (suc n) = P.cong suc (length-replicate n)
 
 ------------------------------------------------------------------------
 -- scanr
 
-module _ {a b} {A : Set a} {B : Set b} where
-
-  scanr-defn : ∀ (f : A → B → B) (e : B) →
-               scanr f e ≗ map (foldr f e) ∘ tails
-  scanr-defn f e []             = refl
-  scanr-defn f e (x ∷ [])       = refl
-  scanr-defn f e (x ∷ y ∷ xs)
-    with scanr f e (y ∷ xs) | scanr-defn f e (y ∷ xs)
-  ... | []     | ()
-  ... | z ∷ zs | eq with ∷-injective eq
-  ...   | z≡fy⦇f⦈xs , _ = P.cong₂ (λ z → f x z ∷_) z≡fy⦇f⦈xs eq
+scanr-defn : ∀ (f : A → B → B) (e : B) →
+             scanr f e ≗ map (foldr f e) ∘ tails
+scanr-defn f e []             = refl
+scanr-defn f e (x ∷ [])       = refl
+scanr-defn f e (x ∷ y ∷ xs)
+  with scanr f e (y ∷ xs) | scanr-defn f e (y ∷ xs)
+... | []     | ()
+... | z ∷ zs | eq with ∷-injective eq
+...   | z≡fy⦇f⦈xs , _ = P.cong₂ (λ z → f x z ∷_) z≡fy⦇f⦈xs eq
 
 ------------------------------------------------------------------------
 -- scanl
 
-module _ {a b} {A : Set a} {B : Set b} where
-
-  scanl-defn : ∀ (f : A → B → A) (e : A) →
-               scanl f e ≗ map (foldl f e) ∘ inits
-  scanl-defn f e []       = refl
-  scanl-defn f e (x ∷ xs) = P.cong (e ∷_) (begin
-     scanl f (f e x) xs
-   ≡⟨ scanl-defn f (f e x) xs ⟩
-     map (foldl f (f e x)) (inits xs)
-   ≡⟨ refl ⟩
-     map (foldl f e ∘ (x ∷_)) (inits xs)
-   ≡⟨ map-compose (inits xs) ⟩
-     map (foldl f e) (map (x ∷_) (inits xs))
-   ∎)
-   where open P.≡-Reasoning
+scanl-defn : ∀ (f : A → B → A) (e : A) →
+             scanl f e ≗ map (foldl f e) ∘ inits
+scanl-defn f e []       = refl
+scanl-defn f e (x ∷ xs) = P.cong (e ∷_) (begin
+   scanl f (f e x) xs
+ ≡⟨ scanl-defn f (f e x) xs ⟩
+   map (foldl f (f e x)) (inits xs)
+ ≡⟨ refl ⟩
+   map (foldl f e ∘ (x ∷_)) (inits xs)
+ ≡⟨ map-compose (inits xs) ⟩
+   map (foldl f e) (map (x ∷_) (inits xs))
+ ∎)
+ where open P.≡-Reasoning
 
 ------------------------------------------------------------------------
 -- applyUpTo
 
-module _ {a} {A : Set a} where
+length-applyUpTo : ∀ (f : ℕ → A) n → length (applyUpTo f n) ≡ n
+length-applyUpTo f zero    = refl
+length-applyUpTo f (suc n) = P.cong suc (length-applyUpTo (f ∘ suc) n)
 
-  length-applyUpTo : ∀ (f : ℕ → A) n → length (applyUpTo f n) ≡ n
-  length-applyUpTo f zero    = refl
-  length-applyUpTo f (suc n) = P.cong suc (length-applyUpTo (f ∘ suc) n)
-
-  lookup-applyUpTo : ∀ (f : ℕ → A) n i → lookup (applyUpTo f n) i ≡ f (toℕ i)
-  lookup-applyUpTo f zero  ()
-  lookup-applyUpTo f (suc n) zero    = refl
-  lookup-applyUpTo f (suc n) (suc i) = lookup-applyUpTo (f ∘ suc) n i
+lookup-applyUpTo : ∀ (f : ℕ → A) n i → lookup (applyUpTo f n) i ≡ f (toℕ i)
+lookup-applyUpTo f (suc n) zero    = refl
+lookup-applyUpTo f (suc n) (suc i) = lookup-applyUpTo (f ∘ suc) n i
 
 ------------------------------------------------------------------------
 -- applyUpTo
 
-module _ {a} {A : Set a} (f : ℕ → A) where
+module _ (f : ℕ → A) where
 
   length-applyDownFrom : ∀ n → length (applyDownFrom f n) ≡ n
   length-applyDownFrom zero    = refl
   length-applyDownFrom (suc n) = P.cong suc (length-applyDownFrom n)
 
   lookup-applyDownFrom : ∀ n i → lookup (applyDownFrom f n) i ≡ f (n ∸ (suc (toℕ i)))
-  lookup-applyDownFrom zero  ()
   lookup-applyDownFrom (suc n) zero    = refl
   lookup-applyDownFrom (suc n) (suc i) = lookup-applyDownFrom n i
 
@@ -576,118 +570,97 @@ lookup-downFrom = lookup-applyDownFrom id
 ------------------------------------------------------------------------
 -- tabulate
 
-module _ {a} {A : Set a} where
+tabulate-cong : ∀ {n} {f g : Fin n → A} →
+                f ≗ g → tabulate f ≡ tabulate g
+tabulate-cong {n = zero}  p = P.refl
+tabulate-cong {n = suc n} p = P.cong₂ _∷_ (p zero) (tabulate-cong (p ∘ suc))
 
-  tabulate-cong : ∀ {n} {f g : Fin n → A} →
-                  f ≗ g → tabulate f ≡ tabulate g
-  tabulate-cong {zero}  p = P.refl
-  tabulate-cong {suc n} p = P.cong₂ _∷_ (p zero) (tabulate-cong (p ∘ suc))
+tabulate-lookup : ∀ (xs : List A) → tabulate (lookup xs) ≡ xs
+tabulate-lookup []       = refl
+tabulate-lookup (x ∷ xs) = P.cong (_ ∷_) (tabulate-lookup xs)
 
-  tabulate-lookup : ∀ (xs : List A) → tabulate (lookup xs) ≡ xs
-  tabulate-lookup []       = refl
-  tabulate-lookup (x ∷ xs) = P.cong (_ ∷_) (tabulate-lookup xs)
+length-tabulate : ∀ {n} → (f : Fin n → A) →
+                  length (tabulate f) ≡ n
+length-tabulate {n = zero} f = refl
+length-tabulate {n = suc n} f = P.cong suc (length-tabulate (λ z → f (suc z)))
 
-  length-tabulate : ∀ {n} → (f : Fin n → A) →
-                 length (tabulate f) ≡ n
-  length-tabulate {zero} f = refl
-  length-tabulate {suc n} f = P.cong suc (length-tabulate (λ z → f (suc z)))
+lookup-tabulate : ∀ {n} → (f : Fin n → A) →
+                  ∀ i → let i′ = cast (sym (length-tabulate f)) i
+                        in lookup (tabulate f) i′ ≡ f i
+lookup-tabulate f zero    = refl
+lookup-tabulate f (suc i) = lookup-tabulate (f ∘ suc) i
 
-  lookup-tabulate : ∀{n} → (f : Fin n → A) →
-                    ∀ i → let i′ = cast (sym (length-tabulate f)) i
-                          in lookup (tabulate f) i′ ≡ f i
-  lookup-tabulate f zero    = refl
-  lookup-tabulate f (suc i) = lookup-tabulate (f ∘ suc) i
-
-module _ {a b} {A : Set a} {B : Set b} where
-
-  map-tabulate : ∀ {n} (g : Fin n → A) (f : A → B) →
-                 map f (tabulate g) ≡ tabulate (f ∘ g)
-  map-tabulate {zero}  g f = refl
-  map-tabulate {suc n} g f = P.cong (_ ∷_) (map-tabulate (g ∘ suc) f)
+map-tabulate : ∀ {n} (g : Fin n → A) (f : A → B) →
+               map f (tabulate g) ≡ tabulate (f ∘ g)
+map-tabulate {n = zero}  g f = refl
+map-tabulate {n = suc n} g f = P.cong (_ ∷_) (map-tabulate (g ∘ suc) f)
 
 ------------------------------------------------------------------------
 -- _[_]%=_
 
-module _ {a} {A : Set a} where
-
-  length-%= : ∀ xs k (f : A → A) → length (xs [ k ]%= f) ≡ length xs
-  length-%= []       ()      f
-  length-%= (x ∷ xs) zero    f = refl
-  length-%= (x ∷ xs) (suc k) f = P.cong suc (length-%= xs k f)
+length-%= : ∀ xs k (f : A → A) → length (xs [ k ]%= f) ≡ length xs
+length-%= (x ∷ xs) zero    f = refl
+length-%= (x ∷ xs) (suc k) f = P.cong suc (length-%= xs k f)
 
 ------------------------------------------------------------------------
 -- _[_]∷=_
 
-module _ {a} {A : Set a} where
+length-∷= : ∀ xs k (v : A) → length (xs [ k ]∷= v) ≡ length xs
+length-∷= xs k v = length-%= xs k (const v)
 
-  length-∷= : ∀ xs k (v : A) → length (xs [ k ]∷= v) ≡ length xs
-  length-∷= xs k v = length-%= xs k (const v)
-
-  map-∷= : ∀ {b} {B : Set b} xs k (v : A) (f : A → B) →
-           let eq = P.sym (length-map f xs) in
-           map f (xs [ k ]∷= v) ≡ map f xs [ cast eq k ]∷= f v
-  map-∷= []       ()      v f
-  map-∷= (x ∷ xs) zero    v f = refl
-  map-∷= (x ∷ xs) (suc k) v f = P.cong (f x ∷_) (map-∷= xs k v f)
+map-∷= : ∀ xs k (v : A) (f : A → B) →
+         let eq = P.sym (length-map f xs) in
+         map f (xs [ k ]∷= v) ≡ map f xs [ cast eq k ]∷= f v
+map-∷= (x ∷ xs) zero    v f = refl
+map-∷= (x ∷ xs) (suc k) v f = P.cong (f x ∷_) (map-∷= xs k v f)
 
 ------------------------------------------------------------------------
 -- _─_
 
-module _ {a} {A : Set a} where
+length-─ : ∀ (xs : List A) k → length (xs ─ k) ≡ pred (length xs)
+length-─ (x ∷ xs) zero        = refl
+length-─ (x ∷ y ∷ xs) (suc k) = P.cong suc (length-─ (y ∷ xs) k)
 
-  length-─ : ∀ (xs : List A) k → length (xs ─ k) ≡ pred (length xs)
-  length-─ []       ()
-  length-─ (x ∷ xs) zero        = refl
-  length-─ (x ∷ []) (suc ())
-  length-─ (x ∷ y ∷ xs) (suc k) = P.cong suc (length-─ (y ∷ xs) k)
-
-  map-─ : ∀ {b} {B : Set b} xs k (f : A → B) →
-          let eq = P.sym (length-map f xs) in
-          map f (xs ─ k) ≡ map f xs ─ cast eq k
-  map-─ []       ()      f
-  map-─ (x ∷ xs) zero    f = refl
-  map-─ (x ∷ xs) (suc k) f = P.cong (f x ∷_) (map-─ xs k f)
+map-─ : ∀ xs k (f : A → B) →
+        let eq = P.sym (length-map f xs) in
+        map f (xs ─ k) ≡ map f xs ─ cast eq k
+map-─ (x ∷ xs) zero    f = refl
+map-─ (x ∷ xs) (suc k) f = P.cong (f x ∷_) (map-─ xs k f)
 
 ------------------------------------------------------------------------
 -- take
 
-module _ {a} {A : Set a} where
-
-  length-take : ∀ n (xs : List A) → length (take n xs) ≡ n ⊓ (length xs)
-  length-take zero    xs       = refl
-  length-take (suc n) []       = refl
-  length-take (suc n) (x ∷ xs) = P.cong suc (length-take n xs)
+length-take : ∀ n (xs : List A) → length (take n xs) ≡ n ⊓ (length xs)
+length-take zero    xs       = refl
+length-take (suc n) []       = refl
+length-take (suc n) (x ∷ xs) = P.cong suc (length-take n xs)
 
 ------------------------------------------------------------------------
 -- drop
 
-module _ {a} {A : Set a} where
+length-drop : ∀ n (xs : List A) → length (drop n xs) ≡ length xs ∸ n
+length-drop zero    xs       = refl
+length-drop (suc n) []       = refl
+length-drop (suc n) (x ∷ xs) = length-drop n xs
 
-  length-drop : ∀ n (xs : List A) → length (drop n xs) ≡ length xs ∸ n
-  length-drop zero    xs       = refl
-  length-drop (suc n) []       = refl
-  length-drop (suc n) (x ∷ xs) = length-drop n xs
-
-  take++drop : ∀ n (xs : List A) → take n xs ++ drop n xs ≡ xs
-  take++drop zero    xs       = refl
-  take++drop (suc n) []       = refl
-  take++drop (suc n) (x ∷ xs) = P.cong (x ∷_) (take++drop n xs)
+take++drop : ∀ n (xs : List A) → take n xs ++ drop n xs ≡ xs
+take++drop zero    xs       = refl
+take++drop (suc n) []       = refl
+take++drop (suc n) (x ∷ xs) = P.cong (x ∷_) (take++drop n xs)
 
 ------------------------------------------------------------------------
 -- splitAt
 
-module _ {a} {A : Set a} where
-
-  splitAt-defn : ∀ n → splitAt {A = A} n ≗ < take n , drop n >
-  splitAt-defn zero    xs       = refl
-  splitAt-defn (suc n) []       = refl
-  splitAt-defn (suc n) (x ∷ xs) with splitAt n xs | splitAt-defn n xs
-  ... | (ys , zs) | ih = P.cong (Prod.map (x ∷_) id) ih
+splitAt-defn : ∀ n → splitAt {A = A} n ≗ < take n , drop n >
+splitAt-defn zero    xs       = refl
+splitAt-defn (suc n) []       = refl
+splitAt-defn (suc n) (x ∷ xs) with splitAt n xs | splitAt-defn n xs
+... | (ys , zs) | ih = P.cong (Prod.map (x ∷_) id) ih
 
 ------------------------------------------------------------------------
 -- takeWhile, dropWhile, and span
 
-module _ {a p} {A : Set a} {P : Pred A p} (P? : Decidable P) where
+module _ {P : Pred A p} (P? : Decidable P) where
 
   takeWhile++dropWhile : ∀ xs → takeWhile P? xs ++ dropWhile P? xs ≡ xs
   takeWhile++dropWhile []       = refl
@@ -704,7 +677,7 @@ module _ {a p} {A : Set a} {P : Pred A p} (P? : Decidable P) where
 ------------------------------------------------------------------------
 -- filter
 
-module _ {a p} {A : Set a} {P : A → Set p} (P? : Decidable P) where
+module _ {P : A → Set p} (P? : Decidable P) where
 
   length-filter : ∀ xs → length (filter P? xs) ≤ length xs
   length-filter []       = z≤n
@@ -719,7 +692,6 @@ module _ {a p} {A : Set a} {P : A → Set p} (P? : Decidable P) where
   ... | yes _   = P.cong (x ∷_) (filter-all pxs)
 
   filter-notAll : ∀ xs → Any (∁ P) xs → length (filter P? xs) < length xs
-  filter-notAll [] ()
   filter-notAll (x ∷ xs) (here ¬px) with P? x
   ... | no  _  = s≤s (length-filter xs)
   ... | yes px = contradiction px ¬px
@@ -751,7 +723,7 @@ module _ {a p} {A : Set a} {P : A → Set p} (P? : Decidable P) where
 ------------------------------------------------------------------------
 -- partition
 
-module _ {a p} {A : Set a} {P : A → Set p} (P? : Decidable P) where
+module _ {P : A → Set p} (P? : Decidable P) where
 
   partition-defn : partition P? ≗ < filter P? , filter (∁? P?) >
   partition-defn []       = refl
@@ -763,6 +735,8 @@ module _ {a p} {A : Set a} {P : A → Set p} (P? : Decidable P) where
 -- reverse
 
 module _ {a} {A : Set a} where
+
+  open FunctionProperties {A = List A} _≡_
 
   unfold-reverse : ∀ (x : A) xs → reverse (x ∷ xs) ≡ reverse xs ∷ʳ x
   unfold-reverse x xs = helper [ x ] xs
@@ -787,7 +761,7 @@ module _ {a} {A : Set a} where
     reverse ys ++ reverse (x ∷ xs)       ∎
     where open P.≡-Reasoning
 
-  reverse-involutive : Involutive {A = List A} _≡_ reverse
+  reverse-involutive : Involutive reverse
   reverse-involutive [] = refl
   reverse-involutive (x ∷ xs) = begin
     reverse (reverse (x ∷ xs))   ≡⟨ P.cong reverse $ unfold-reverse x xs ⟩
@@ -806,58 +780,53 @@ module _ {a} {A : Set a} where
     suc (length xs)             ∎
     where open P.≡-Reasoning
 
-module _ {a b} {A : Set a} {B : Set b} where
+reverse-map-commute : (f : A → B) (xs : List A) →
+                      map f (reverse xs) ≡ reverse (map f xs)
+reverse-map-commute f []       = refl
+reverse-map-commute f (x ∷ xs) = begin
+  map f (reverse (x ∷ xs))   ≡⟨ P.cong (map f) $ unfold-reverse x xs ⟩
+  map f (reverse xs ∷ʳ x)    ≡⟨ map-++-commute f (reverse xs) ([ x ]) ⟩
+  map f (reverse xs) ∷ʳ f x  ≡⟨ P.cong (_∷ʳ f x) $ reverse-map-commute f xs ⟩
+  reverse (map f xs) ∷ʳ f x  ≡⟨ P.sym $ unfold-reverse (f x) (map f xs) ⟩
+  reverse (map f (x ∷ xs))   ∎
+  where open P.≡-Reasoning
 
-  reverse-map-commute : (f : A → B) (xs : List A) →
-                        map f (reverse xs) ≡ reverse (map f xs)
-  reverse-map-commute f []       = refl
-  reverse-map-commute f (x ∷ xs) = begin
-    map f (reverse (x ∷ xs))   ≡⟨ P.cong (map f) $ unfold-reverse x xs ⟩
-    map f (reverse xs ∷ʳ x)    ≡⟨ map-++-commute f (reverse xs) ([ x ]) ⟩
-    map f (reverse xs) ∷ʳ f x  ≡⟨ P.cong (_∷ʳ f x) $ reverse-map-commute f xs ⟩
-    reverse (map f xs) ∷ʳ f x  ≡⟨ P.sym $ unfold-reverse (f x) (map f xs) ⟩
-    reverse (map f (x ∷ xs))   ∎
-    where open P.≡-Reasoning
+reverse-foldr : ∀ (f : A → B → B) x ys →
+                foldr f x (reverse ys) ≡ foldl (flip f) x ys
+reverse-foldr f x []       = refl
+reverse-foldr f x (y ∷ ys) = begin
+  foldr f x (reverse (y ∷ ys)) ≡⟨ P.cong (foldr f x) (unfold-reverse y ys) ⟩
+  foldr f x ((reverse ys) ∷ʳ y) ≡⟨ foldr-∷ʳ f x y (reverse ys) ⟩
+  foldr f (f y x) (reverse ys)  ≡⟨ reverse-foldr f (f y x) ys ⟩
+  foldl (flip f) (f y x) ys     ∎
+  where open P.≡-Reasoning
 
-  reverse-foldr : ∀ (f : A → B → B) x ys →
-                  foldr f x (reverse ys) ≡ foldl (flip f) x ys
-  reverse-foldr f x []       = refl
-  reverse-foldr f x (y ∷ ys) = begin
-    foldr f x (reverse (y ∷ ys)) ≡⟨ P.cong (foldr f x) (unfold-reverse y ys) ⟩
-    foldr f x ((reverse ys) ∷ʳ y) ≡⟨ foldr-∷ʳ f x y (reverse ys) ⟩
-    foldr f (f y x) (reverse ys)  ≡⟨ reverse-foldr f (f y x) ys ⟩
-    foldl (flip f) (f y x) ys     ∎
-    where open P.≡-Reasoning
-
-  reverse-foldl : ∀ (f : A → B → A) x ys →
-                  foldl f x (reverse ys) ≡ foldr (flip f) x ys
-  reverse-foldl f x []       = refl
-  reverse-foldl f x (y ∷ ys) = begin
-    foldl f x (reverse (y ∷ ys)) ≡⟨ P.cong (foldl f x) (unfold-reverse y ys) ⟩
-    foldl f x ((reverse ys) ∷ʳ y) ≡⟨ foldl-∷ʳ f x y (reverse ys) ⟩
-    f (foldl f x (reverse ys)) y ≡⟨ P.cong (flip f y) (reverse-foldl f x ys) ⟩
-    f (foldr (flip f) x ys) y    ∎
-    where open P.≡-Reasoning
+reverse-foldl : ∀ (f : A → B → A) x ys →
+                foldl f x (reverse ys) ≡ foldr (flip f) x ys
+reverse-foldl f x []       = refl
+reverse-foldl f x (y ∷ ys) = begin
+  foldl f x (reverse (y ∷ ys)) ≡⟨ P.cong (foldl f x) (unfold-reverse y ys) ⟩
+  foldl f x ((reverse ys) ∷ʳ y) ≡⟨ foldl-∷ʳ f x y (reverse ys) ⟩
+  f (foldl f x (reverse ys)) y ≡⟨ P.cong (flip f y) (reverse-foldl f x ys) ⟩
+  f (foldr (flip f) x ys) y    ∎
+  where open P.≡-Reasoning
 
 ------------------------------------------------------------------------
 -- _∷ʳ_
 
-module _ {a} {A : Set a} where
+module _ {x y : A} where
 
-  ∷ʳ-injective : ∀ {x y : A} xs ys →
-                 xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys × x ≡ y
+  ∷ʳ-injective : ∀ xs ys → xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys × x ≡ y
   ∷ʳ-injective []          []          refl = (refl , refl)
   ∷ʳ-injective (x ∷ xs)    (y  ∷ ys)   eq   with ∷-injective eq
   ... | refl , eq′ = Prod.map (P.cong (x ∷_)) id (∷ʳ-injective xs ys eq′)
-  ∷ʳ-injective []          (_ ∷ [])    ()
   ∷ʳ-injective []          (_ ∷ _ ∷ _) ()
-  ∷ʳ-injective (_ ∷ [])    []          ()
   ∷ʳ-injective (_ ∷ _ ∷ _) []          ()
 
-  ∷ʳ-injectiveˡ : ∀ {x y : A} (xs ys : List A) → xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys
+  ∷ʳ-injectiveˡ : ∀ (xs ys : List A) → xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys
   ∷ʳ-injectiveˡ xs ys eq = proj₁ (∷ʳ-injective xs ys eq)
 
-  ∷ʳ-injectiveʳ : ∀ {x y : A} (xs ys : List A) → xs ∷ʳ x ≡ ys ∷ʳ y → x ≡ y
+  ∷ʳ-injectiveʳ : ∀ (xs ys : List A) → xs ∷ʳ x ≡ ys ∷ʳ y → x ≡ y
   ∷ʳ-injectiveʳ xs ys eq = proj₂ (∷ʳ-injective xs ys eq)
 
 ------------------------------------------------------------------------
@@ -901,7 +870,7 @@ Please use ++-identityˡ-unique instead."
 
 -- Version 0.16
 
-module _ {a} {A : Set a} (p : A → Bool) where
+module _ (p : A → Bool) where
 
   boolTakeWhile++boolDropWhile : ∀ xs → boolTakeWhile p xs ++ boolDropWhile p xs ≡ xs
   boolTakeWhile++boolDropWhile []       = refl
@@ -938,7 +907,7 @@ module _ {a} {A : Set a} (p : A → Bool) where
   Please use partition and filter instead."
   #-}
 
-module _ {a p} {A : Set a} (P : A → Set p) (P? : Decidable P) where
+module _ (P : A → Set p) (P? : Decidable P) where
 
   boolFilter-filters : ∀ xs → All P (boolFilter (⌊_⌋ ∘ P?) xs)
   boolFilter-filters []       = []

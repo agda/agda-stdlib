@@ -4,7 +4,7 @@
 -- The partiality monad
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --without-K --safe --guardedness #-}
 
 module Category.Monad.Partiality where
 
@@ -233,7 +233,6 @@ module _ {a ℓ} {A : Set a} {_∼_ : A → A → Set ℓ} where
     sym sym-∼ eq (later         x∼y) = later (♯ sym sym-∼ eq (♭ x∼y))
     sym sym-∼ eq (laterʳ        x≈y) = laterˡ  (sym sym-∼ eq    x≈y )
     sym sym-∼ eq (laterˡ {weak} x≈y) = laterʳ  (sym sym-∼ eq    x≈y )
-    sym sym-∼ () (laterˡ {geq}  x≳y)
 
     -- Transitivity.
 
@@ -762,7 +761,6 @@ module AlternativeEquality {a ℓ} where
     symW     eq (later         x≈y) = later  (sym {eq = eq} x≈y)
     symW     eq (laterʳ        x≈y) = laterˡ (symW      eq  x≈y)
     symW     eq (laterˡ {weak} x≈y) = laterʳ (symW      eq  x≈y)
-    symW     () (laterˡ {geq}  x≈y)
 
     trans≅W : ∀ {S x y z} →
               RelW S strong x y → RelW S strong y z → RelW S strong x z
@@ -817,7 +815,6 @@ module AlternativeEquality {a ℓ} where
     whnf≳ (laterˡ x≲y)         = laterˡ (whnf≳ x≲y)
     whnf≳ (x₁∼x₂ >>= f₁∼f₂)    = whnf≳ x₁∼x₂ >>=W λ xRy → whnf≳ (f₁∼f₂ xRy)
     whnf≳ (x ∎)                = reflW x
-    whnf≳ (sym {eq = ()} x≅y)
     whnf≳ (x ≡⟨ P.refl ⟩  y≳z) = whnf≳ y≳z
     whnf≳ (x ≅⟨ x≅y    ⟩  y≳z) = trans≅∼W (whnf≅ x≅y) (whnf≳ y≳z)
     whnf≳ (x ≳⟨ x≳y    ⟩  y≳z) = trans≳-W        x≳y  (whnf≳ y≳z)

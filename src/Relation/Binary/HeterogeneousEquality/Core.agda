@@ -18,7 +18,7 @@ open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 
 infix 4 _≅_
 
-data _≅_ {ℓ} {A : Set ℓ} (x : A) : {B : Set ℓ} → B → Set ℓ where
+data _≅_ {ℓ₁} {A : Set ℓ₁} (x : A) : ∀ {ℓ₂} {B : Set ℓ₂} → B → Set ℓ₁ where
    refl : x ≅ x
 
 ------------------------------------------------------------------------
@@ -26,3 +26,6 @@ data _≅_ {ℓ} {A : Set ℓ} (x : A) : {B : Set ℓ} → B → Set ℓ where
 
 ≅-to-≡ : ∀ {a} {A : Set a} {x y : A} → x ≅ y → x ≡ y
 ≅-to-≡ refl = refl
+
+≡-to-≅ : ∀ {a} {A : Set a} {x y : A} → x ≡ y → x ≅ y
+≡-to-≅ refl = refl

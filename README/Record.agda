@@ -13,7 +13,6 @@ module README.Record where
 
 open import Data.Product
 open import Data.String
-open import Data.String.Unsafe
 open import Function using (flip)
 open import Level
 import Record

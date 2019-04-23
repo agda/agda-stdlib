@@ -4,7 +4,7 @@
 -- "Finite" sets indexed on coinductive "natural" numbers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --without-K --sized-types --guardedness #-}
 
 module Codata.Musical.Cofin where
 
@@ -44,6 +44,15 @@ fromFin zero    = zero
 fromFin (suc i) = suc (fromFin i)
 
 toFin : ∀ n → Cofin (Conat.fromℕ n) → Fin n
-toFin zero    ()
 toFin (suc n) zero    = zero
 toFin (suc n) (suc i) = suc (toFin n i)
+
+import Codata.Cofin as C
+
+fromMusical : ∀ {n} → Cofin n → C.Cofin (Conat.fromMusical n)
+fromMusical zero    = C.zero
+fromMusical (suc n) = C.suc (fromMusical n)
+
+toMusical : ∀ {n} → C.Cofin n → Cofin (Conat.toMusical n)
+toMusical C.zero    = zero
+toMusical (C.suc n) = suc (toMusical n)

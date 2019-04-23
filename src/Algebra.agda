@@ -16,7 +16,8 @@ open import Function
 open import Level
 
 ------------------------------------------------------------------------
--- Magmas
+-- Packages with 1 binary operation
+------------------------------------------------------------------------
 
 record RawMagma c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _∙_
@@ -25,6 +26,7 @@ record RawMagma c ℓ : Set (suc (c ⊔ ℓ)) where
     Carrier : Set c
     _≈_     : Rel Carrier ℓ
     _∙_     : Op₂ Carrier
+
 
 record Magma c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _∙_
@@ -40,8 +42,6 @@ record Magma c ℓ : Set (suc (c ⊔ ℓ)) where
   rawMagma : RawMagma _ _
   rawMagma = record { _≈_ = _≈_; _∙_ = _∙_ }
 
-------------------------------------------------------------------------
--- Semigroups
 
 record Semigroup c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _∙_
@@ -59,6 +59,7 @@ record Semigroup c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open Magma magma public using (rawMagma)
 
+
 record Band c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _∙_
   infix  4 _≈_
@@ -74,6 +75,7 @@ record Band c ℓ : Set (suc (c ⊔ ℓ)) where
   semigroup = record { isSemigroup = isSemigroup }
 
   open Semigroup semigroup public using (magma; rawMagma)
+
 
 record Semilattice c ℓ : Set (suc (c ⊔ ℓ)) where
   infixr 7 _∧_
@@ -91,8 +93,10 @@ record Semilattice c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open Band band public using (rawMagma; magma; semigroup)
 
+
 ------------------------------------------------------------------------
--- Monoids
+-- Packages with 1 binary operation & 1 element
+------------------------------------------------------------------------
 
 -- A raw monoid is a monoid without any laws.
 
@@ -104,6 +108,7 @@ record RawMonoid c ℓ : Set (suc (c ⊔ ℓ)) where
     _≈_     : Rel Carrier ℓ
     _∙_     : Op₂ Carrier
     ε       : Carrier
+
 
 record Monoid c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _∙_
@@ -125,6 +130,7 @@ record Monoid c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open Semigroup semigroup public using (rawMagma; magma)
 
+
 record CommutativeMonoid c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _∙_
   infix  4 _≈_
@@ -141,6 +147,7 @@ record CommutativeMonoid c ℓ : Set (suc (c ⊔ ℓ)) where
   monoid = record { isMonoid = isMonoid }
 
   open Monoid monoid public using (rawMagma; magma; semigroup; rawMonoid)
+
 
 record IdempotentCommutativeMonoid c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _∙_
@@ -160,8 +167,10 @@ record IdempotentCommutativeMonoid c ℓ : Set (suc (c ⊔ ℓ)) where
   open CommutativeMonoid commutativeMonoid public
     using (rawMagma; magma; semigroup; rawMonoid; monoid)
 
+
 ------------------------------------------------------------------------
--- Groups
+-- Packages with 1 binary operation, 1 unary operation & 1 element
+------------------------------------------------------------------------
 
 record RawGroup c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 _⁻¹
@@ -173,6 +182,7 @@ record RawGroup c ℓ : Set (suc (c ⊔ ℓ)) where
     _∙_     : Op₂ Carrier
     ε       : Carrier
     _⁻¹     : Op₁ Carrier
+
 
 record Group c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 _⁻¹
@@ -195,6 +205,7 @@ record Group c ℓ : Set (suc (c ⊔ ℓ)) where
   monoid = record { isMonoid = isMonoid }
 
   open Monoid monoid public using (rawMagma; magma; semigroup; rawMonoid)
+
 
 record AbelianGroup c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 _⁻¹
@@ -220,20 +231,50 @@ record AbelianGroup c ℓ : Set (suc (c ⊔ ℓ)) where
   commutativeMonoid =
     record { isCommutativeMonoid = isCommutativeMonoid }
 
-------------------------------------------------------------------------
--- Various kinds of semirings
 
-record RawSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
-  infixl 7 _*_
-  infixl 6 _+_
+------------------------------------------------------------------------
+-- Packages with 2 binary operations
+------------------------------------------------------------------------
+
+record Lattice c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixr 7 _∧_
+  infixr 6 _∨_
   infix  4 _≈_
   field
-    Carrier    : Set c
-    _≈_        : Rel Carrier ℓ
-    _+_        : Op₂ Carrier
-    _*_        : Op₂ Carrier
-    0#         : Carrier
-    1#         : Carrier
+    Carrier   : Set c
+    _≈_       : Rel Carrier ℓ
+    _∨_       : Op₂ Carrier
+    _∧_       : Op₂ Carrier
+    isLattice : IsLattice _≈_ _∨_ _∧_
+
+  open IsLattice isLattice public
+
+  setoid : Setoid _ _
+  setoid = record { isEquivalence = isEquivalence }
+
+
+record DistributiveLattice c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixr 7 _∧_
+  infixr 6 _∨_
+  infix  4 _≈_
+  field
+    Carrier               : Set c
+    _≈_                   : Rel Carrier ℓ
+    _∨_                   : Op₂ Carrier
+    _∧_                   : Op₂ Carrier
+    isDistributiveLattice : IsDistributiveLattice _≈_ _∨_ _∧_
+
+  open IsDistributiveLattice isDistributiveLattice public
+
+  lattice : Lattice _ _
+  lattice = record { isLattice = isLattice }
+
+  open Lattice lattice public using (setoid)
+
+
+------------------------------------------------------------------------
+-- Packages with 2 binary operations & 1 element
+------------------------------------------------------------------------
 
 record NearSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _*_
@@ -271,6 +312,7 @@ record NearSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
     ; magma    to *-magma
     )
 
+
 record SemiringWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _*_
   infixl 6 _+_
@@ -297,6 +339,52 @@ record SemiringWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
   +-commutativeMonoid : CommutativeMonoid _ _
   +-commutativeMonoid =
     record { isCommutativeMonoid = +-isCommutativeMonoid }
+
+
+record CommutativeSemiringWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _*_
+  infixl 6 _+_
+  infix  4 _≈_
+  field
+    Carrier                         : Set c
+    _≈_                             : Rel Carrier ℓ
+    _+_                             : Op₂ Carrier
+    _*_                             : Op₂ Carrier
+    0#                              : Carrier
+    isCommutativeSemiringWithoutOne :
+      IsCommutativeSemiringWithoutOne _≈_ _+_ _*_ 0#
+
+  open IsCommutativeSemiringWithoutOne
+         isCommutativeSemiringWithoutOne public
+
+  semiringWithoutOne : SemiringWithoutOne _ _
+  semiringWithoutOne =
+    record { isSemiringWithoutOne = isSemiringWithoutOne }
+
+  open SemiringWithoutOne semiringWithoutOne public
+    using
+    ( +-rawMagma; +-magma; +-semigroup
+    ; *-rawMagma; *-magma; *-semigroup
+    ; +-rawMonoid; +-monoid; +-commutativeMonoid
+    ; nearSemiring
+    )
+
+------------------------------------------------------------------------
+-- Packages with 2 binary operations & 2 elements
+------------------------------------------------------------------------
+
+record RawSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _*_
+  infixl 6 _+_
+  infix  4 _≈_
+  field
+    Carrier    : Set c
+    _≈_        : Rel Carrier ℓ
+    _+_        : Op₂ Carrier
+    _*_        : Op₂ Carrier
+    0#         : Carrier
+    1#         : Carrier
+
 
 record SemiringWithoutAnnihilatingZero c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _*_
@@ -340,6 +428,7 @@ record SemiringWithoutAnnihilatingZero c ℓ : Set (suc (c ⊔ ℓ)) where
     ; semigroup to *-semigroup
     ; rawMonoid to *-rawMonoid
     )
+
 
 record Semiring c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _*_
@@ -387,33 +476,6 @@ record Semiring c ℓ : Set (suc (c ⊔ ℓ)) where
   open SemiringWithoutOne semiringWithoutOne public
     using (nearSemiring)
 
-record CommutativeSemiringWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
-  infixl 7 _*_
-  infixl 6 _+_
-  infix  4 _≈_
-  field
-    Carrier                         : Set c
-    _≈_                             : Rel Carrier ℓ
-    _+_                             : Op₂ Carrier
-    _*_                             : Op₂ Carrier
-    0#                              : Carrier
-    isCommutativeSemiringWithoutOne :
-      IsCommutativeSemiringWithoutOne _≈_ _+_ _*_ 0#
-
-  open IsCommutativeSemiringWithoutOne
-         isCommutativeSemiringWithoutOne public
-
-  semiringWithoutOne : SemiringWithoutOne _ _
-  semiringWithoutOne =
-    record { isSemiringWithoutOne = isSemiringWithoutOne }
-
-  open SemiringWithoutOne semiringWithoutOne public
-    using
-    ( +-rawMagma; +-magma; +-semigroup
-    ; *-rawMagma; *-magma; *-semigroup
-    ; +-rawMonoid; +-monoid; +-commutativeMonoid
-    ; nearSemiring
-    )
 
 record CommutativeSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _*_
@@ -453,8 +515,10 @@ record CommutativeSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
     { isCommutativeSemiringWithoutOne = isCommutativeSemiringWithoutOne
     }
 
+
 ------------------------------------------------------------------------
--- (Commutative) rings
+-- Packages with 2 binary operations, 1 unary operation & 2 elements
+------------------------------------------------------------------------
 
 -- A raw ring is a ring without any laws.
 
@@ -469,6 +533,7 @@ record RawRing c : Set (suc c) where
     -_      : Op₁ Carrier
     0#      : Carrier
     1#      : Carrier
+
 
 record Ring c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 -_
@@ -515,6 +580,7 @@ record Ring c ℓ : Set (suc (c ⊔ ℓ)) where
     ; 1#  = 1#
     }
 
+
 record CommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 -_
   infixl 7 _*_
@@ -551,42 +617,6 @@ record CommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
     ; commutativeSemiringWithoutOne
     )
 
-------------------------------------------------------------------------
--- Lattices and boolean algebras
-
-record Lattice c ℓ : Set (suc (c ⊔ ℓ)) where
-  infixr 7 _∧_
-  infixr 6 _∨_
-  infix  4 _≈_
-  field
-    Carrier   : Set c
-    _≈_       : Rel Carrier ℓ
-    _∨_       : Op₂ Carrier
-    _∧_       : Op₂ Carrier
-    isLattice : IsLattice _≈_ _∨_ _∧_
-
-  open IsLattice isLattice public
-
-  setoid : Setoid _ _
-  setoid = record { isEquivalence = isEquivalence }
-
-record DistributiveLattice c ℓ : Set (suc (c ⊔ ℓ)) where
-  infixr 7 _∧_
-  infixr 6 _∨_
-  infix  4 _≈_
-  field
-    Carrier               : Set c
-    _≈_                   : Rel Carrier ℓ
-    _∨_                   : Op₂ Carrier
-    _∧_                   : Op₂ Carrier
-    isDistributiveLattice : IsDistributiveLattice _≈_ _∨_ _∧_
-
-  open IsDistributiveLattice isDistributiveLattice public
-
-  lattice : Lattice _ _
-  lattice = record { isLattice = isLattice }
-
-  open Lattice lattice public using (setoid)
 
 record BooleanAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 ¬_
@@ -612,16 +642,17 @@ record BooleanAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
     using (setoid; lattice)
 
 
+
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
 ------------------------------------------------------------------------
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 0.18
+-- Version 1.0
 
 RawSemigroup = RawMagma
 {-# WARNING_ON_USAGE RawSemigroup
-"Warning: RawSemigroup was deprecated in v0.18.
+"Warning: RawSemigroup was deprecated in v1.0.
 Please use RawMagma instead."
 #-}

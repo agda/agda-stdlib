@@ -5,10 +5,9 @@
 -- functors. The notation and presentation here is closest to that of
 -- Hancock and Hyvernat in "Programming interfaces and basic topology"
 -- (2006/9).
---
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --without-K --safe --guardedness #-}
 
 module Data.Container.Indexed where
 

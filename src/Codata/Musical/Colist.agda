@@ -4,7 +4,7 @@
 -- Coinductive lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --without-K --sized-types --guardedness #-}
 
 module Codata.Musical.Colist where
 
@@ -158,7 +158,6 @@ Any-map : ∀ {a b p} {A : Set a} {B : Set b} {P : B → Set p}
 Any-map {P = P} {f} {xs} = inverse to from from∘to to∘from
   where
   to : ∀ {xs} → Any P (map f xs) → Any (P ∘ f) xs
-  to {[]}     ()
   to {x ∷ xs} (here px) = here px
   to {x ∷ xs} (there p) = there (to p)
 
@@ -167,7 +166,6 @@ Any-map {P = P} {f} {xs} = inverse to from from∘to to∘from
   from (there p) = there (from p)
 
   from∘to : ∀ {xs} (p : Any P (map f xs)) → from (to p) ≡ p
-  from∘to {[]}     ()
   from∘to {x ∷ xs} (here px) = P.refl
   from∘to {x ∷ xs} (there p) = P.cong there (from∘to p)
 
@@ -423,7 +421,6 @@ Any-∈ {P = P} = record
 -- Prefixes are subsets.
 
 ⊑⇒⊆ : ∀ {a} → {A : Set a} → _⊑_ {A = A} ⇒ _⊆_
-⊑⇒⊆ []          ()
 ⊑⇒⊆ (x ∷ xs⊑ys) (here ≡x)    = here ≡x
 ⊑⇒⊆ (_ ∷ xs⊑ys) (there x∈xs) = there (⊑⇒⊆ (♭ xs⊑ys) x∈xs)
 
@@ -519,8 +516,7 @@ module Infinite-injective {a} {A : Set a} where
 
 not-finite-is-infinite :
   ∀ {a} {A : Set a} (xs : Colist A) → ¬ Finite xs → Infinite xs
-not-finite-is-infinite []       hyp with hyp []
-... | ()
+not-finite-is-infinite []       hyp = contradiction [] hyp
 not-finite-is-infinite (x ∷ xs) hyp =
   x ∷ ♯ not-finite-is-infinite (♭ xs) (hyp ∘ _∷_ x)
 
@@ -538,6 +534,22 @@ finite-or-infinite xs = helper <$> excluded-middle
 
 not-finite-and-infinite :
   ∀ {a} {A : Set a} {xs : Colist A} → Finite xs → Infinite xs → ⊥
-not-finite-and-infinite []        ()
 not-finite-and-infinite (x ∷ fin) (.x ∷ inf) =
   not-finite-and-infinite fin (♭ inf)
+
+------------------------------------------------------------------------
+-- Legacy
+
+import Codata.Colist as C
+open import Codata.Thunk
+import Size
+
+module _ {a} {A : Set a} where
+
+  fromMusical : ∀ {i} → Colist A → C.Colist A i
+  fromMusical []       = C.[]
+  fromMusical (x ∷ xs) = x C.∷ λ where .force → fromMusical (♭ xs)
+
+  toMusical : C.Colist A Size.∞ → Colist A
+  toMusical C.[]       = []
+  toMusical (x C.∷ xs) = x ∷ ♯ toMusical (xs .force)

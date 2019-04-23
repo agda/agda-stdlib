@@ -14,23 +14,30 @@ open import Data.List.Base as List using (List)
 open import Data.Product as Prod using (∃; ∃₂; _×_; _,_)
 open import Data.These as These using (These; this; that; these)
 open import Function
+open import Level using (Level)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 open import Relation.Nullary using (yes; no)
 open import Relation.Unary using (Pred; Decidable)
+
+private
+  variable
+    a b c p : Level
+    A : Set a
+    B : Set b
+    C : Set c
 
 ------------------------------------------------------------------------
 -- Types
 
 infixr 5 _∷_
 
-data Vec {a} (A : Set a) : ℕ → Set a where
+data Vec (A : Set a) : ℕ → Set a where
   []  : Vec A zero
   _∷_ : ∀ {n} (x : A) (xs : Vec A n) → Vec A (suc n)
 
 infix 4 _[_]=_
 
-data _[_]=_ {a} {A : Set a} :
-            {n : ℕ} → Vec A n → Fin n → A → Set a where
+data _[_]=_ {A : Set a} : ∀ {n} → Vec A n → Fin n → A → Set a where
   here  : ∀ {n}     {x}   {xs : Vec A n} → x ∷ xs [ zero ]= x
   there : ∀ {n} {i} {x y} {xs : Vec A n}
           (xs[i]=x : xs [ i ]= x) → y ∷ xs [ suc i ]= x
@@ -38,49 +45,46 @@ data _[_]=_ {a} {A : Set a} :
 ------------------------------------------------------------------------
 -- Basic operations
 
-head : ∀ {a n} {A : Set a} → Vec A (1 + n) → A
+head : ∀ {n} → Vec A (1 + n) → A
 head (x ∷ xs) = x
 
-tail : ∀ {a n} {A : Set a} → Vec A (1 + n) → Vec A n
+tail : ∀ {n} → Vec A (1 + n) → Vec A n
 tail (x ∷ xs) = xs
 
-lookup : ∀ {a n} {A : Set a} → Fin n → Vec A n → A
-lookup zero    (x ∷ xs) = x
-lookup (suc i) (x ∷ xs) = lookup i xs
+lookup : ∀ {n} → Vec A n → Fin n → A
+lookup (x ∷ xs) zero    = x
+lookup (x ∷ xs) (suc i) = lookup xs i
 
-insert : ∀ {a n} {A : Set a} → Fin (suc n) → A → Vec A n → Vec A (suc n)
-insert zero     x xs       = x ∷ xs
-insert (suc ()) x []
-insert (suc i)  x (y ∷ xs) = y ∷ insert i x xs
+insert : ∀ {n} → Vec A n → Fin (suc n) → A → Vec A (suc n)
+insert xs       zero     v = v ∷ xs
+insert (x ∷ xs) (suc i)  v = x ∷ insert xs i v
 
-remove : ∀ {a n} {A : Set a} → Fin (suc n) → Vec A (suc n) → Vec A n
-remove zero     (_ ∷ xs)     = xs
-remove (suc ()) (x ∷ [])
-remove (suc i)  (x ∷ y ∷ xs) = x ∷ remove i (y ∷ xs)
+remove : ∀ {n} → Vec A (suc n) → Fin (suc n) → Vec A n
+remove (_ ∷ xs)     zero     = xs
+remove (x ∷ y ∷ xs) (suc i)  = x ∷ remove (y ∷ xs) i
 
--- Update.
-
-infixl 6 _[_]%=_ _[_]≔_
-
--- updateAt i f xs  modifies the i-th element of xs according to f
-
-updateAt : ∀ {a n} {A : Set a} → Fin n → (A → A) → Vec A n → Vec A n
+updateAt : ∀ {n} → Fin n → (A → A) → Vec A n → Vec A n
 updateAt zero    f (x ∷ xs) = f x ∷ xs
 updateAt (suc i) f (x ∷ xs) = x   ∷ updateAt i f xs
 
-_[_]%=_ : ∀ {a n} {A : Set a} → Vec A n → Fin n → (A → A) → Vec A n
+-- xs [ i ]%= f  modifies the i-th element of xs according to f
+
+infixl 6 _[_]%=_
+
+_[_]%=_ : ∀ {n} → Vec A n → Fin n → (A → A) → Vec A n
 xs [ i ]%= f = updateAt i f xs
 
 -- xs [ i ]≔ y  overwrites the i-th element of xs with y
 
-_[_]≔_ : ∀ {a n} {A : Set a} → Vec A n → Fin n → A → Vec A n
-xs [ i ]≔ y = xs [ i ]%= λ _ → y
+infixl 6 _[_]≔_
+
+_[_]≔_ : ∀ {n} → Vec A n → Fin n → A → Vec A n
+xs [ i ]≔ y = xs [ i ]%= const y
 
 ------------------------------------------------------------------------
 -- Operations for transforming vectors
 
-map : ∀ {a b n} {A : Set a} {B : Set b} →
-      (A → B) → Vec A n → Vec B n
+map : ∀ {n} → (A → B) → Vec A n → Vec B n
 map f []       = []
 map f (x ∷ xs) = f x ∷ map f xs
 
@@ -88,49 +92,43 @@ map f (x ∷ xs) = f x ∷ map f xs
 
 infixr 5 _++_
 
-_++_ : ∀ {a m n} {A : Set a} → Vec A m → Vec A n → Vec A (m + n)
+_++_ : ∀ {m n} → Vec A m → Vec A n → Vec A (m + n)
 []       ++ ys = ys
 (x ∷ xs) ++ ys = x ∷ (xs ++ ys)
 
-concat : ∀ {a m n} {A : Set a} →
-         Vec (Vec A m) n → Vec A (n * m)
+concat : ∀ {m n} → Vec (Vec A m) n → Vec A (n * m)
 concat []         = []
 concat (xs ∷ xss) = xs ++ concat xss
 
 -- Align and Zip.
 
-module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
+alignWith : ∀ {m n} → (These A B → C) → Vec A m → Vec B n → Vec C (m ⊔ n)
+alignWith f []         bs       = map (f ∘′ that) bs
+alignWith f as@(_ ∷ _) []       = map (f ∘′ this) as
+alignWith f (a ∷ as)   (b ∷ bs) = f (these a b) ∷ alignWith f as bs
 
-  alignWith : ∀ {m n} → (These A B → C) → Vec A m → Vec B n → Vec C (m ⊔ n)
-  alignWith f []         bs       = map (f ∘′ that) bs
-  alignWith f as@(_ ∷ _) []       = map (f ∘′ this) as
-  alignWith f (a ∷ as)   (b ∷ bs) = f (these a b) ∷ alignWith f as bs
+zipWith : ∀ {n} → (A → B → C) → Vec A n → Vec B n → Vec C n
+zipWith f []       []       = []
+zipWith f (x ∷ xs) (y ∷ ys) = f x y ∷ zipWith f xs ys
 
-  zipWith : ∀ {n} → (A → B → C) → Vec A n → Vec B n → Vec C n
-  zipWith f []       []       = []
-  zipWith f (x ∷ xs) (y ∷ ys) = f x y ∷ zipWith f xs ys
+unzipWith : ∀ {n} → (A → B × C) → Vec A n → Vec B n × Vec C n
+unzipWith f []       = [] , []
+unzipWith f (a ∷ as) = Prod.zip _∷_ _∷_ (f a) (unzipWith f as)
 
-  unzipWith : ∀ {n} → (A → B × C) → Vec A n → Vec B n × Vec C n
-  unzipWith f []       = [] , []
-  unzipWith f (a ∷ as) = Prod.zip _∷_ _∷_ (f a) (unzipWith f as)
+align : ∀ {m n} → Vec A m → Vec B n → Vec (These A B) (m ⊔ n)
+align = alignWith id
 
-module _ {a b} {A : Set a} {B : Set b} where
+zip : ∀ {n} → Vec A n → Vec B n → Vec (A × B) n
+zip = zipWith _,_
 
-  align : ∀ {m n} → Vec A m → Vec B n → Vec (These A B) (m ⊔ n)
-  align = alignWith id
-
-  zip : ∀ {n} → Vec A n → Vec B n → Vec (A × B) n
-  zip = zipWith _,_
-
-  unzip : ∀ {n} → Vec (A × B) n → Vec A n × Vec B n
-  unzip = unzipWith id
+unzip : ∀ {n} → Vec (A × B) n → Vec A n × Vec B n
+unzip = unzipWith id
 
 -- Interleaving.
 
 infixr 5 _⋎_
 
-_⋎_ : ∀ {a m n} {A : Set a} →
-      Vec A m → Vec A n → Vec A (m +⋎ n)
+_⋎_ : ∀ {m n} → Vec A m → Vec A n → Vec A (m +⋎ n)
 []       ⋎ ys = ys
 (x ∷ xs) ⋎ ys = x ∷ (ys ⋎ xs)
 
@@ -138,8 +136,7 @@ _⋎_ : ∀ {a m n} {A : Set a} →
 
 infixl 4 _⊛_
 
-_⊛_ : ∀ {a b n} {A : Set a} {B : Set b} →
-      Vec (A → B) n → Vec A n → Vec B n
+_⊛_ : ∀ {n} → Vec (A → B) n → Vec A n → Vec B n
 []       ⊛ _        = []
 (f ∷ fs) ⊛ (x ∷ xs) = f x ∷ (fs ⊛ xs)
 
@@ -147,18 +144,15 @@ _⊛_ : ∀ {a b n} {A : Set a} {B : Set b} →
 
 infixl 1 _>>=_
 
-_>>=_ : ∀ {a b m n} {A : Set a} {B : Set b} →
-        Vec A m → (A → Vec B n) → Vec B (m * n)
+_>>=_ : ∀ {m n} → Vec A m → (A → Vec B n) → Vec B (m * n)
 xs >>= f = concat (map f xs)
 
 infixl 4 _⊛*_
 
-_⊛*_ : ∀ {a b m n} {A : Set a} {B : Set b} →
-       Vec (A → B) m → Vec A n → Vec B (m * n)
+_⊛*_ : ∀ {m n} → Vec (A → B) m → Vec A n → Vec B (m * n)
 fs ⊛* xs = fs >>= λ f → map f xs
 
-allPairs : ∀ {a b m n} {A : Set a} {B : Set b} →
-           Vec A m → Vec B n → Vec (A × B) (m * n)
+allPairs : ∀ {m n} → Vec A m → Vec B n → Vec (A × B) (m * n)
 allPairs xs ys = map _,_ xs ⊛* ys
 
 ------------------------------------------------------------------------
@@ -171,8 +165,7 @@ foldr : ∀ {a b} {A : Set a} (B : ℕ → Set b) {m} →
 foldr b _⊕_ n []       = n
 foldr b _⊕_ n (x ∷ xs) = x ⊕ foldr b _⊕_ n xs
 
-foldr₁ : ∀ {a} {A : Set a} {m} →
-         (A → A → A) → Vec A (suc m) → A
+foldr₁ : ∀ {n} → (A → A → A) → Vec A (suc n) → A
 foldr₁ _⊕_ (x ∷ [])     = x
 foldr₁ _⊕_ (x ∷ y ∷ ys) = x ⊕ foldr₁ _⊕_ (y ∷ ys)
 
@@ -183,8 +176,7 @@ foldl : ∀ {a b} {A : Set a} (B : ℕ → Set b) {m} →
 foldl b _⊕_ n []       = n
 foldl b _⊕_ n (x ∷ xs) = foldl (λ n → b (suc n)) _⊕_ (n ⊕ x) xs
 
-foldl₁ : ∀ {a} {A : Set a} {m} →
-         (A → A → A) → Vec A (suc m) → A
+foldl₁ : ∀ {n} → (A → A → A) → Vec A (suc n) → A
 foldl₁ _⊕_ (x ∷ xs) = foldl _ _⊕_ x xs
 
 -- Special folds
@@ -192,8 +184,7 @@ foldl₁ _⊕_ (x ∷ xs) = foldl _ _⊕_ x xs
 sum : ∀ {n} → Vec ℕ n → ℕ
 sum = foldr _ _+_ 0
 
-count : ∀ {a p} {A : Set a} {P : Pred A p} → Decidable P →
-        ∀ {n} → Vec A n → ℕ
+count : ∀ {P : Pred A p} → Decidable P → ∀ {n} → Vec A n → ℕ
 count P? []       = zero
 count P? (x ∷ xs) with P? x
 ... | yes _ = suc (count P? xs)
@@ -202,16 +193,16 @@ count P? (x ∷ xs) with P? x
 ------------------------------------------------------------------------
 -- Operations for building vectors
 
-[_] : ∀ {a} {A : Set a} → A → Vec A 1
+[_] : A → Vec A 1
 [ x ] = x ∷ []
 
-replicate : ∀ {a n} {A : Set a} → A → Vec A n
+replicate : ∀ {n} → A → Vec A n
 replicate {n = zero}  x = []
 replicate {n = suc n} x = x ∷ replicate x
 
-tabulate : ∀ {n a} {A : Set a} → (Fin n → A) → Vec A n
-tabulate {zero}  f = []
-tabulate {suc n} f = f zero ∷ tabulate (f ∘ suc)
+tabulate : ∀ {n} → (Fin n → A) → Vec A n
+tabulate {n = zero}  f = []
+tabulate {n = suc n} f = f zero ∷ tabulate (f ∘ suc)
 
 allFin : ∀ n → Vec (Fin n) n
 allFin _ = tabulate id
@@ -219,22 +210,22 @@ allFin _ = tabulate id
 ------------------------------------------------------------------------
 -- Operations for dividing vectors
 
-splitAt : ∀ {a} {A : Set a} m {n} (xs : Vec A (m + n)) →
+splitAt : ∀ m {n} (xs : Vec A (m + n)) →
           ∃₂ λ (ys : Vec A m) (zs : Vec A n) → xs ≡ ys ++ zs
 splitAt zero    xs                = ([] , xs , refl)
 splitAt (suc m) (x ∷ xs)          with splitAt m xs
 splitAt (suc m) (x ∷ .(ys ++ zs)) | (ys , zs , refl) =
   ((x ∷ ys) , zs , refl)
 
-take : ∀ {a} {A : Set a} m {n} → Vec A (m + n) → Vec A m
+take : ∀ m {n} → Vec A (m + n) → Vec A m
 take m xs          with splitAt m xs
 take m .(ys ++ zs) | (ys , zs , refl) = ys
 
-drop : ∀ {a} {A : Set a} m {n} → Vec A (m + n) → Vec A n
+drop : ∀ m {n} → Vec A (m + n) → Vec A n
 drop m xs          with splitAt m xs
 drop m .(ys ++ zs) | (ys , zs , refl) = zs
 
-group : ∀ {a} {A : Set a} n k (xs : Vec A (n * k)) →
+group : ∀ n k (xs : Vec A (n * k)) →
         ∃ λ (xss : Vec (Vec A k) n) → xs ≡ concat xss
 group zero    k []                  = ([] , refl)
 group (suc n) k xs                  with splitAt k xs
@@ -242,45 +233,45 @@ group (suc n) k .(ys ++ zs)         | (ys , zs , refl) with group n k zs
 group (suc n) k .(ys ++ concat zss) | (ys , ._ , refl) | (zss , refl) =
   ((ys ∷ zss) , refl)
 
-split : ∀ {a n} {A : Set a} → Vec A n → Vec A ⌈ n /2⌉ × Vec A ⌊ n /2⌋
+split : ∀ {n} → Vec A n → Vec A ⌈ n /2⌉ × Vec A ⌊ n /2⌋
 split []           = ([]     , [])
 split (x ∷ [])     = (x ∷ [] , [])
-split (x ∷ y ∷ xs) = Prod.map (_∷_ x) (_∷_ y) (split xs)
+split (x ∷ y ∷ xs) = Prod.map (x ∷_) (y ∷_) (split xs)
 
 ------------------------------------------------------------------------
 -- Operations for converting between lists
 
-toList : ∀ {a n} {A : Set a} → Vec A n → List A
+toList : ∀ {n} → Vec A n → List A
 toList []       = List.[]
 toList (x ∷ xs) = List._∷_ x (toList xs)
 
-fromList : ∀ {a} {A : Set a} → (xs : List A) → Vec A (List.length xs)
+fromList : (xs : List A) → Vec A (List.length xs)
 fromList List.[]         = []
 fromList (List._∷_ x xs) = x ∷ fromList xs
 
 ------------------------------------------------------------------------
 -- Operations for reversing vectors
 
-reverse : ∀ {a n} {A : Set a} → Vec A n → Vec A n
+reverse : ∀ {n} → Vec A n → Vec A n
 reverse {A = A} = foldl (Vec A) (λ rev x → x ∷ rev) []
 
 infixl 5 _∷ʳ_
 
-_∷ʳ_ : ∀ {a n} {A : Set a} → Vec A n → A → Vec A (1 + n)
+_∷ʳ_ : ∀ {n} → Vec A n → A → Vec A (1 + n)
 []       ∷ʳ y = [ y ]
 (x ∷ xs) ∷ʳ y = x ∷ (xs ∷ʳ y)
 
-initLast : ∀ {a n} {A : Set a} (xs : Vec A (1 + n)) →
+initLast : ∀ {n} (xs : Vec A (1 + n)) →
            ∃₂ λ (ys : Vec A n) (y : A) → xs ≡ ys ∷ʳ y
 initLast {n = zero}  (x ∷ [])         = ([] , x , refl)
 initLast {n = suc n} (x ∷ xs)         with initLast xs
 initLast {n = suc n} (x ∷ .(ys ∷ʳ y)) | (ys , y , refl) =
   ((x ∷ ys) , y , refl)
 
-init : ∀ {a n} {A : Set a} → Vec A (1 + n) → Vec A n
+init : ∀ {n} → Vec A (1 + n) → Vec A n
 init xs         with initLast xs
 init .(ys ∷ʳ y) | (ys , y , refl) = ys
 
-last : ∀ {a n} {A : Set a} → Vec A (1 + n) → A
+last : ∀ {n} → Vec A (1 + n) → A
 last xs         with initLast xs
 last .(ys ∷ʳ y) | (ys , y , refl) = y

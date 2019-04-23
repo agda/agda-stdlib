@@ -186,7 +186,6 @@ module _ {a b ℓ} {A : Set a} {B : Set b} {_∼_ : REL A B ℓ} where
 
   tabulate⁻ : ∀ {n} {f : Fin n → A} {g : Fin n → B} →
               Pointwise _∼_ (tabulate f) (tabulate g) → (∀ i → f i ∼ g i)
-  tabulate⁻ {zero}  []            ()
   tabulate⁻ {suc n} (x∼y ∷ xs∼ys) fzero    = x∼y
   tabulate⁻ {suc n} (x∼y ∷ xs∼ys) (fsuc i) = tabulate⁻ xs∼ys i
 
@@ -248,11 +247,9 @@ module _ {a b c d r} {A : Set a} {B : Set b} {C : Set c} {D : Set d}
   map⁻ : ∀ {as bs} (f : A → C) (g : B → D) →
          Pointwise R (List.map f as) (List.map g bs) →
          Pointwise (λ a b → R (f a) (g b)) as bs
-  map⁻ {[]} {[]} f g [] = []
-  map⁻ {[]} {b ∷ bs} f g rs with Pointwise-length rs
-  ... | ()
-  map⁻ {a ∷ as} {[]} f g rs with Pointwise-length rs
-  ... | ()
+  map⁻ {[]}     {[]}     f g [] = []
+  map⁻ {[]}     {b ∷ bs} f g rs = contradiction (Pointwise-length rs) λ()
+  map⁻ {a ∷ as} {[]}     f g rs = contradiction (Pointwise-length rs) λ()
   map⁻ {a ∷ as} {b ∷ bs} f g (r ∷ rs) = r ∷ map⁻ f g rs
 
 ------------------------------------------------------------------------
@@ -342,10 +339,10 @@ Rel↔≡  = Pointwise-≡↔≡
 Please use Pointwise-≡↔≡ instead."
 #-}
 
--- Version 0.18
+-- Version 1.0
 
 decidable-≡ = ≡-dec
 {-# WARNING_ON_USAGE decidable-≡
-"Warning: decidable-≡ was deprecated in v0.18.
+"Warning: decidable-≡ was deprecated in v1.0.
 Please use ≡-dec from `Data.List.Properties` instead."
 #-}

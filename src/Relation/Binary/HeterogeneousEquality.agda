@@ -8,10 +8,11 @@
 
 module Relation.Binary.HeterogeneousEquality where
 
+import Axiom.Extensionality.Heterogeneous as Ext
 open import Data.Product
+open import Data.Unit.NonEta
 open import Function
 open import Function.Inverse using (Inverse)
-open import Data.Unit.NonEta
 open import Level
 open import Relation.Nullary
 open import Relation.Binary
@@ -39,10 +40,7 @@ x ≇ y = ¬ x ≅ y
 ------------------------------------------------------------------------
 -- Conversion
 
-open Core public using (≅-to-≡)
-
-≡-to-≅ : ∀ {a} {A : Set a} {x y : A} → x ≡ y → x ≅ y
-≡-to-≅ refl = refl
+open Core public using (≅-to-≡; ≡-to-≅)
 
 ≅-to-type-≡ : ∀ {a} {A B : Set a} {x : A} {y : B} →
                 x ≅ y → A ≡ B
@@ -58,10 +56,10 @@ open Core public using (≅-to-≡)
 reflexive : ∀ {a} {A : Set a} → _⇒_ {A = A} _≡_ (λ x y → x ≅ y)
 reflexive refl = refl
 
-sym : ∀ {ℓ} {A B : Set ℓ} {x : A} {y : B} → x ≅ y → y ≅ x
+sym : ∀ {ℓ₁ ℓ₂} {A : Set ℓ₁} {B : Set ℓ₂} {x : A} {y : B} → x ≅ y → y ≅ x
 sym refl = refl
 
-trans : ∀ {ℓ} {A B C : Set ℓ} {x : A} {y : B} {z : C} →
+trans : ∀ {ℓ₁ ℓ₂ ℓ₃} {A : Set ℓ₁} {B : Set ℓ₂} {C : Set ℓ₃} {x : A} {y : B} {z : C} →
         x ≅ y → y ≅ z → x ≅ z
 trans refl eq = eq
 
@@ -233,12 +231,12 @@ preorder A = record
 
 module ≅-Reasoning where
 
-  -- The code in Relation.Binary.EqReasoning cannot handle
+  -- The code in `Relation.Binary.Reasoning.Setoid` cannot handle
   -- heterogeneous equalities, hence the code duplication here.
 
   infix  4 _IsRelatedTo_
   infix  3 _∎
-  infixr 2 _≅⟨_⟩_ _≡⟨_⟩_ _≡⟨⟩_
+  infixr 2 _≅⟨_⟩_ _≅˘⟨_⟩_ _≡⟨_⟩_ _≡˘⟨_⟩_ _≡⟨⟩_
   infix  1 begin_
 
   data _IsRelatedTo_ {ℓ} {A : Set ℓ} (x : A) {B : Set ℓ} (y : B) :
@@ -253,9 +251,17 @@ module ≅-Reasoning where
            x ≅ y → y IsRelatedTo z → x IsRelatedTo z
   _ ≅⟨ x≅y ⟩ relTo y≅z = relTo (trans x≅y y≅z)
 
+  _≅˘⟨_⟩_ : ∀ {ℓ} {A : Set ℓ} (x : A) {B} {y : B} {C} {z : C} →
+            y ≅ x → y IsRelatedTo z → x IsRelatedTo z
+  _ ≅˘⟨ y≅x ⟩ relTo y≅z = relTo (trans (sym y≅x) y≅z)
+
   _≡⟨_⟩_ : ∀ {ℓ} {A : Set ℓ} (x : A) {y C} {z : C} →
            x ≡ y → y IsRelatedTo z → x IsRelatedTo z
   _ ≡⟨ x≡y ⟩ relTo y≅z = relTo (trans (reflexive x≡y) y≅z)
+
+  _≡˘⟨_⟩_ : ∀ {ℓ} {A : Set ℓ} (x : A) {y C} {z : C} →
+            y ≡ x → y IsRelatedTo z → x IsRelatedTo z
+  _ ≡˘⟨ y≡x ⟩ relTo y≅z = relTo (trans (sym (reflexive y≡x)) y≅z)
 
   _≡⟨⟩_ : ∀ {ℓ} {A : Set ℓ} (x : A) {B} {y : B} →
           x IsRelatedTo y → x IsRelatedTo y
@@ -263,28 +269,6 @@ module ≅-Reasoning where
 
   _∎ : ∀ {a} {A : Set a} (x : A) → x IsRelatedTo x
   _∎ _ = relTo refl
-
-------------------------------------------------------------------------
--- Functional extensionality
-
--- A form of functional extensionality for _≅_.
-
-Extensionality : (a b : Level) → Set _
-Extensionality a b =
-  {A : Set a} {B₁ B₂ : A → Set b}
-  {f₁ : (x : A) → B₁ x} {f₂ : (x : A) → B₂ x} →
-  (∀ x → B₁ x ≡ B₂ x) → (∀ x → f₁ x ≅ f₂ x) → f₁ ≅ f₂
-
--- This form of extensionality follows from extensionality for _≡_.
-
-≡-ext-to-≅-ext : ∀ {ℓ₁ ℓ₂} →
-  P.Extensionality ℓ₁ (suc ℓ₂) → Extensionality ℓ₁ ℓ₂
-≡-ext-to-≅-ext           ext B₁≡B₂ f₁≅f₂ with ext B₁≡B₂
-≡-ext-to-≅-ext {ℓ₁} {ℓ₂} ext B₁≡B₂ f₁≅f₂ | P.refl =
-  ≡-to-≅ $ ext′ (≅-to-≡ ∘ f₁≅f₂)
-  where
-  ext′ : P.Extensionality ℓ₁ ℓ₂
-  ext′ = P.extensionality-for-lower-levels ℓ₁ (suc ℓ₂) ext
 
 ------------------------------------------------------------------------
 -- Inspect
@@ -322,25 +306,35 @@ proof-irrelevance = ≅-irrelevant
 Please use ≅-irrelevant instead."
 #-}
 
--- Version 0.18
+-- Version 1.0
 
 ≅-irrelevance = ≅-irrelevant
 {-# WARNING_ON_USAGE ≅-irrelevance
-"Warning: ≅-irrelevance was deprecated in v0.18.
+"Warning: ≅-irrelevance was deprecated in v1.0.
 Please use ≅-irrelevant instead."
 #-}
 ≅-heterogeneous-irrelevance = ≅-heterogeneous-irrelevant
 {-# WARNING_ON_USAGE ≅-heterogeneous-irrelevance
-"Warning: ≅-heterogeneous-irrelevance was deprecated in v0.18.
+"Warning: ≅-heterogeneous-irrelevance was deprecated in v1.0.
 Please use ≅-heterogeneous-irrelevant instead."
 #-}
 ≅-heterogeneous-irrelevanceˡ = ≅-heterogeneous-irrelevantˡ
 {-# WARNING_ON_USAGE ≅-heterogeneous-irrelevanceˡ
-"Warning: ≅-heterogeneous-irrelevanceˡ was deprecated in v0.18.
+"Warning: ≅-heterogeneous-irrelevanceˡ was deprecated in v1.0.
 Please use ≅-heterogeneous-irrelevantˡ instead."
 #-}
 ≅-heterogeneous-irrelevanceʳ = ≅-heterogeneous-irrelevantʳ
 {-# WARNING_ON_USAGE ≅-heterogeneous-irrelevanceʳ
-"Warning: ≅-heterogeneous-irrelevanceʳ was deprecated in v0.18.
+"Warning: ≅-heterogeneous-irrelevanceʳ was deprecated in v1.0.
 Please use ≅-heterogeneous-irrelevantʳ instead."
+#-}
+Extensionality = Ext.Extensionality
+{-# WARNING_ON_USAGE Extensionality
+"Warning: Extensionality was deprecated in v1.0.
+Please use Extensionality from `Axiom.Extensionality.Heterogeneous` instead."
+#-}
+≡-ext-to-≅-ext = Ext.≡-ext⇒≅-ext
+{-# WARNING_ON_USAGE ≡-ext-to-≅-ext
+"Warning: ≡-ext-to-≅-ext was deprecated in v1.0.
+Please use ≡-ext⇒≅-ext from `Axiom.Extensionality.Heterogeneous` instead."
 #-}

@@ -4,7 +4,7 @@
 -- Bisimilarity for Streams
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --without-K --safe --sized-types #-}
 
 module Codata.Stream.Bisimilarity where
 

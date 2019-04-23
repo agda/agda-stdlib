@@ -21,46 +21,49 @@ import Relation.Nullary.Decidable as Dec
 open import Relation.Unary hiding (_∈_)
 open import Relation.Binary.PropositionalEquality as P
 
+private
+  variable
+    a p q r : Level
+    A : Set a
+
 ------------------------------------------------------------------------
--- All P xs means that all elements in xs satisfy P.
+-- Definition
+
+-- Given a predicate P, then All P xs means that every element in xs
+-- satisfies P. See `Relation.Unary` for an explanation of predicates.
 
 infixr 5 _∷_
 
-data All {a p} {A : Set a} (P : Pred A p) : Pred (List A) (a ⊔ p) where
+data All {A : Set a} (P : Pred A p) : Pred (List A) (a ⊔ p) where
   []  : All P []
   _∷_ : ∀ {x xs} (px : P x) (pxs : All P xs) → All P (x ∷ xs)
 
 ------------------------------------------------------------------------
 -- Operations on All
 
-head : ∀ {a p} {A : Set a} {P : Pred A p} {x xs} →
-       All P (x ∷ xs) → P x
-head (px ∷ pxs) = px
+module _ {P : Pred A p} where
 
-tail : ∀ {a p} {A : Set a} {P : Pred A p} {x xs} →
-       All P (x ∷ xs) → All P xs
-tail (px ∷ pxs) = pxs
+  head : ∀ {x xs} → All P (x ∷ xs) → P x
+  head (px ∷ pxs) = px
 
-lookup : ∀ {a p} {A : Set a} {P : Pred A p} {xs : List A} →
-         All P xs → (∀ {x} → x ∈ xs → P x)
-lookup []         ()
-lookup (px ∷ pxs) (here refl)  = px
-lookup (px ∷ pxs) (there x∈xs) = lookup pxs x∈xs
+  tail : ∀ {x xs} → All P (x ∷ xs) → All P xs
+  tail (px ∷ pxs) = pxs
 
-tabulate : ∀ {a p} {A : Set a} {P : Pred A p} {xs} →
-           (∀ {x} → x ∈ xs → P x) → All P xs
-tabulate {xs = []}     hyp = []
-tabulate {xs = x ∷ xs} hyp = hyp (here refl) ∷ tabulate (hyp ∘ there)
+  lookup : ∀ {xs} → All P xs → (∀ {x} → x ∈ xs → P x)
+  lookup (px ∷ pxs) (here refl)  = px
+  lookup (px ∷ pxs) (there x∈xs) = lookup pxs x∈xs
 
-map : ∀ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} →
-      P ⊆ Q → All P ⊆ All Q
-map g []         = []
-map g (px ∷ pxs) = g px ∷ map g pxs
+  tabulate : ∀ {xs} → (∀ {x} → x ∈ xs → P x) → All P xs
+  tabulate {xs = []}     hyp = []
+  tabulate {xs = x ∷ xs} hyp = hyp (here refl) ∷ tabulate (hyp ∘ there)
 
-------------------------------------------------------------------------
--- (un/)zip(With/)
+module _ {P : Pred A p} {Q : Pred A q} where
 
-module _ {a p q r} {A : Set a} {P : Pred A p} {Q : Pred A q} {R : Pred A r} where
+  map : P ⊆ Q → All P ⊆ All Q
+  map g []         = []
+  map g (px ∷ pxs) = g px ∷ map g pxs
+
+module _ {P : Pred A p} {Q : Pred A q} {R : Pred A r} where
 
   zipWith : P ∩ Q ⊆ R → All P ∩ All Q ⊆ All R
   zipWith f ([] , [])             = []
@@ -70,7 +73,7 @@ module _ {a p q r} {A : Set a} {P : Pred A p} {Q : Pred A q} {R : Pred A r} wher
   unzipWith f []         = [] , []
   unzipWith f (rx ∷ rxs) = Prod.zip _∷_ _∷_ (f rx) (unzipWith f rxs)
 
-module _ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} where
+module _ {P : Pred A p} {Q : Pred A q} where
 
   zip : All P ∩ All Q ⊆ All (P ∩ Q)
   zip = zipWith id
@@ -79,10 +82,30 @@ module _ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} where
   unzip = unzipWith id
 
 ------------------------------------------------------------------------
+-- (weak) updateAt
+
+module _ {P : Pred A p} where
+
+  infixl 6 _[_]%=_ _[_]≔_
+
+  updateAt : ∀ {x xs} → x ∈ xs → (P x → P x) → All P xs → All P xs
+  updateAt () f []
+  updateAt (here refl) f (px ∷ pxs) = f px ∷ pxs
+  updateAt (there i)   f (px ∷ pxs) =   px ∷ updateAt i f pxs
+
+  _[_]%=_ : ∀ {x xs} → All P xs → x ∈ xs → (P x → P x) → All P xs
+  pxs [ i ]%= f = updateAt i f pxs
+
+  _[_]≔_ : ∀ {x xs} → All P xs → x ∈ xs → P x → All P xs
+  pxs [ i ]≔ px = pxs [ i ]%= const px
+
+------------------------------------------------------------------------
 -- Traversable-like functions
 
-module _ {a} p {A : Set a} {P : Pred A (a ⊔ p)} {F}
-         (App : RawApplicative {a ⊔ p} F) where
+module _ p {A : Set a} {P : Pred A (a ⊔ p)}
+         {F : Set (a ⊔ p) → Set (a ⊔ p)}
+         (App : RawApplicative F)
+         where
 
   open RawApplicative App
 
@@ -90,30 +113,32 @@ module _ {a} p {A : Set a} {P : Pred A (a ⊔ p)} {F}
   sequenceA []       = pure []
   sequenceA (x ∷ xs) = _∷_ <$> x ⊛ sequenceA xs
 
-  mapA : ∀ {q} {Q : Pred A q} → (Q ⊆ F ∘′ P) → All Q ⊆ (F ∘′ All P)
+  mapA : ∀ {Q : Pred A q} → (Q ⊆ F ∘′ P) → All Q ⊆ (F ∘′ All P)
   mapA f = sequenceA ∘′ map f
 
-  forA : ∀ {q} {Q : Pred A q} {xs} → All Q xs → (Q ⊆ F ∘′ P) → F (All P xs)
+  forA : ∀ {Q : Pred A q} {xs} → All Q xs → (Q ⊆ F ∘′ P) → F (All P xs)
   forA qxs f = mapA f qxs
 
-module _ {a} p {A : Set a} {P : Pred A (a ⊔ p)} {M}
-         (Mon : RawMonad {a ⊔ p} M) where
+module _ p {A : Set a} {P : Pred A (a ⊔ p)}
+         {M : Set (a ⊔ p) → Set (a ⊔ p)}
+         (Mon : RawMonad M)
+         where
 
   private App = RawMonad.rawIApplicative Mon
 
   sequenceM : All (M ∘′ P) ⊆ M ∘′ All P
   sequenceM = sequenceA p App
 
-  mapM : ∀ {q} {Q : Pred A q} → (Q ⊆ M ∘′ P) → All Q ⊆ (M ∘′ All P)
+  mapM : ∀ {Q : Pred A q} → (Q ⊆ M ∘′ P) → All Q ⊆ (M ∘′ All P)
   mapM = mapA p App
 
-  forM : ∀ {q} {Q : Pred A q} {xs} → All Q xs → (Q ⊆ M ∘′ P) → M (All P xs)
+  forM : ∀ {Q : Pred A q} {xs} → All Q xs → (Q ⊆ M ∘′ P) → M (All P xs)
   forM = forA p App
 
 ------------------------------------------------------------------------
 -- Properties of predicates preserved by All
 
-module _ {a p} {A : Set a} {P : Pred A p} where
+module _ {P : Pred A p} where
 
   all : Decidable P → Decidable (All P)
   all p []       = yes []

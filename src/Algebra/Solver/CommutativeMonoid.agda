@@ -56,7 +56,7 @@ Env n = Vec Carrier n
 -- a value.
 
 ⟦_⟧ : ∀ {n} → Expr n → Env n → Carrier
-⟦ var x   ⟧ ρ = lookup x ρ
+⟦ var x   ⟧ ρ = lookup ρ x
 ⟦ id      ⟧ ρ = ε
 ⟦ e₁ ⊕ e₂ ⟧ ρ = ⟦ e₁ ⟧ ρ ∙ ⟦ e₂ ⟧ ρ
 
@@ -105,9 +105,9 @@ empty-correct (a ∷ ρ) = empty-correct ρ
 
 -- The singleton bag stands for a single variable.
 
-sg-correct : ∀{n} (x : Fin n) (ρ : Env n) →  ⟦ sg x ⟧⇓ ρ ≈ lookup x ρ
+sg-correct : ∀{n} (x : Fin n) (ρ : Env n) →  ⟦ sg x ⟧⇓ ρ ≈ lookup ρ x
 sg-correct zero (x ∷ ρ) = begin
-    x ∙ ⟦ empty ⟧⇓ ρ   ≈⟨ ∙-cong refl (empty-correct ρ) ⟩
+    x ∙ ⟦ empty ⟧⇓ ρ   ≈⟨ ∙-congˡ (empty-correct ρ) ⟩
     x ∙ ε              ≈⟨ identityʳ _ ⟩
     x                  ∎
 sg-correct (suc x) (m ∷ ρ) = sg-correct x ρ
@@ -122,14 +122,14 @@ comp-correct (l ∷ v) (m ∷ w) (a ∷ ρ) = lemma l m (comp-correct v w ρ)
     flip12 : ∀ a b c → a ∙ (b ∙ c) ≈ b ∙ (a ∙ c)
     flip12 a b c = begin
         a ∙ (b ∙ c)  ≈⟨ sym (assoc _ _ _) ⟩
-        (a ∙ b) ∙ c  ≈⟨ ∙-cong (comm _ _) refl ⟩
+        (a ∙ b) ∙ c  ≈⟨ ∙-congʳ (comm _ _) ⟩
         (b ∙ a) ∙ c  ≈⟨ assoc _ _ _ ⟩
         b ∙ (a ∙ c)  ∎
     lemma : ∀ l m {d b c} (p : d ≈ b ∙ c) →
       fold d (a ∙_) (l + m) ≈ fold b (a ∙_) l ∙ fold c (a ∙_) m
     lemma zero zero p = p
-    lemma zero (suc m) p = trans (∙-cong refl (lemma zero m p)) (flip12 _ _ _)
-    lemma (suc l) m p = trans (∙-cong refl (lemma l m p)) (sym (assoc a _ _))
+    lemma zero (suc m) p = trans (∙-congˡ (lemma zero m p)) (flip12 _ _ _)
+    lemma (suc l) m p = trans (∙-congˡ (lemma l m p)) (sym (assoc a _ _))
 
 ------------------------------------------------------------------------
 -- Normalization
