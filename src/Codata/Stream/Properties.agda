@@ -128,6 +128,18 @@ module _ {a} {A : Set a} where
 
 -- Version 1.1
 
+repeat-ap-identity = ap-repeatˡ
+{-# WARNING_ON_USAGE repeat-ap-identity
+"Warning: repeat-ap-identity was deprecated in v1.1.
+Please use ap-repeatˡ instead."
+#-}
+
+ap-repeat-identity = ap-repeatʳ
+{-# WARNING_ON_USAGE ap-repeat-identity
+"Warning: ap-repeat-identity was deprecated in v1.1.
+Please use ap-repeatʳ instead."
+#-}
+
 ap-repeat-commute = ap-repeat
 {-# WARNING_ON_USAGE ap-repeat-commute
 "Warning: ap-repeat-commute was deprecated in v1.1.
