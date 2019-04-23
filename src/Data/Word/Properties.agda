@@ -27,11 +27,17 @@ open import Agda.Builtin.Word.Properties
   public
 
 ------------------------------------------------------------------------
--- Decidable equality
+-- Propositional equality
 
 infix 4 _≟_
 _≟_ : Decidable {A = Word64} _≡_
 x ≟ y = map′ (toℕ-injective x y) (cong toℕ) (toℕ x ℕₚ.≟ toℕ y)
+
+≡-setoid : Setoid _ _
+≡-setoid = P.setoid Word64
+
+≡-decSetoid : DecSetoid _ _
+≡-decSetoid = P.decSetoid _≟_
 
 ------------------------------------------------------------------------
 -- Boolean equality test.
@@ -41,13 +47,7 @@ _==_ : Word64 → Word64 → Bool
 w₁ == w₂ = ⌊ w₁ ≟ w₂ ⌋
 
 ------------------------------------------------------------------------
--- Structures
+-- A strict total ordering over words
 
-setoid : Setoid _ _
-setoid = P.setoid Word64
-
-decSetoid : DecSetoid _ _
-decSetoid = P.decSetoid _≟_
-
-strictTotalOrder : StrictTotalOrder _ _ _
-strictTotalOrder = On.strictTotalOrder ℕₚ.<-strictTotalOrder toℕ
+<-strictTotalOrder : StrictTotalOrder _ _ _
+<-strictTotalOrder = On.strictTotalOrder ℕₚ.<-strictTotalOrder toℕ
