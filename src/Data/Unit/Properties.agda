@@ -10,10 +10,10 @@ module Data.Unit.Properties where
 
 open import Data.Sum
 open import Data.Unit.Base
+open import Level using (0ℓ)
 open import Relation.Nullary
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as PropEq
-  using (_≡_; refl; isEquivalence)
+open import Relation.Binary.PropositionalEquality
 
 ------------------------------------------------------------------------
 -- Equality
@@ -23,16 +23,11 @@ infix 4 _≟_
 _≟_ : Decidable {A = ⊤} _≡_
 _ ≟ _ = yes refl
 
-≡-setoid : Setoid _ _
-≡-setoid = PropEq.setoid ⊤
+≡-setoid : Setoid 0ℓ 0ℓ
+≡-setoid = setoid ⊤
 
-≡-decSetoid : DecSetoid _ _
-≡-decSetoid = record
-  { isDecEquivalence = record
-    { isEquivalence = isEquivalence
-    ; _≟_           = _≟_
-    }
-  }
+≡-decSetoid : DecSetoid 0ℓ 0ℓ
+≡-decSetoid = decSetoid _≟_
 
 ------------------------------------------------------------------------
 -- _≤_
@@ -60,7 +55,7 @@ _ ≤? _ = yes _
 
 ≤-isPreorder : IsPreorder _≡_ _≤_
 ≤-isPreorder = record
-  { isEquivalence = PropEq.isEquivalence
+  { isEquivalence = isEquivalence
   ; reflexive     = ≤-reflexive
   ; trans         = ≤-trans
   }
@@ -68,30 +63,30 @@ _ ≤? _ = yes _
 ≤-isPartialOrder : IsPartialOrder _≡_ _≤_
 ≤-isPartialOrder = record
   { isPreorder = ≤-isPreorder
-  ; antisym  = ≤-antisym
+  ; antisym    = ≤-antisym
   }
 
 ≤-isTotalOrder : IsTotalOrder _≡_ _≤_
 ≤-isTotalOrder = record
   { isPartialOrder = ≤-isPartialOrder
-  ; total = ≤-total
+  ; total          = ≤-total
   }
 
 ≤-isDecTotalOrder : IsDecTotalOrder _≡_ _≤_
 ≤-isDecTotalOrder = record
   { isTotalOrder = ≤-isTotalOrder
-  ; _≟_  = _≟_
-  ; _≤?_ = _≤?_
+  ; _≟_          = _≟_
+  ; _≤?_         = _≤?_
   }
 
 -- Packages
 
-≤-poset : Poset _ _ _
+≤-poset : Poset 0ℓ 0ℓ 0ℓ
 ≤-poset = record
   { isPartialOrder = ≤-isPartialOrder
   }
 
-≤-decTotalOrder : DecTotalOrder _ _ _
+≤-decTotalOrder : DecTotalOrder 0ℓ 0ℓ 0ℓ
 ≤-decTotalOrder = record
   { isDecTotalOrder = ≤-isDecTotalOrder
   }
