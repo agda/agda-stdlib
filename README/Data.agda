@@ -32,7 +32,7 @@ import Data.Char.Base
 import Data.String.Base
 import Data.Bool.Base
 
--- Commonly these modules don't need to be import directly as their
+-- Commonly these modules don't need to be imported directly as their
 -- contents is re-exported by the top level module (see below).
 
 -- 2. A `Properties` module which contains the basic properties of the
@@ -86,6 +86,9 @@ import Data.Integer.Coprimality
 import Data.List.Base
 import Data.Maybe.Base
 import Data.Sum.Base
+
+-- Commonly these modules don't need to be imported directly as their
+-- contents is re-exported by the top level module (see below).
 
 -- 2. As with basic datatypes, a `Properties` module which contains the
 -- basic properties of the functions, operations and relations contained
