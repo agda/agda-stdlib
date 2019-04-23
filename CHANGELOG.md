@@ -8,27 +8,44 @@ Changes since 1.0.1:
 Highlights
 ----------
 
+Non-backwards compatible changes
+--------------------------------
+
+* Split the `Maybe`-independent content of `Data.These` into `Data.These.Base`
+  to avoid cyclic dependencies with `Data.Maybe.Base` which now has an `align`
+  function. `Data.These` re-exports `Data.These.Base` so it should be mostly
+  transparent for users.
+
 New modules
 -----------
 
-The following new modules have been added to the library:
-```
-Category.Monad.Reader
+* The following new modules have been added to the library:
+  ```
+  Category.Monad.Reader
 
-Data.List.Relation.Binary.Disjoint.Propositional
-Data.List.Relation.Binary.Disjoint.Setoid
-Data.List.Relation.Binary.Disjoint.Setoid.Properties
+  Data.AVL.NonEmpty
+  Data.AVL.NonEmpty.Propositional
 
-Data.List.Relation.Unary.AllPairs
-Data.List.Relation.Unary.AllPairs.Properties
-Data.List.Relation.Unary.Unique.Propositional
-Data.List.Relation.Unary.Unique.Propositional.Properties
-Data.List.Relation.Unary.Unique.Setoid
-Data.List.Relation.Unary.Unique.Setoid.Properties
-```
+  Data.List.Relation.Binary.Disjoint.Propositional
+  Data.List.Relation.Binary.Disjoint.Setoid
+  Data.List.Relation.Binary.Disjoint.Setoid.Properties
 
-Non-backwards compatible changes
---------------------------------
+  Data.List.Relation.Binary.Disjoint.Propositional
+  Data.List.Relation.Binary.Disjoint.Setoid
+  Data.List.Relation.Binary.Disjoint.Setoid.Properties
+
+  Data.List.Relation.Unary.AllPairs
+  Data.List.Relation.Unary.AllPairs.Properties
+  Data.List.Relation.Unary.Unique.Propositional
+  Data.List.Relation.Unary.Unique.Propositional.Properties
+  Data.List.Relation.Unary.Unique.Setoid
+  Data.List.Relation.Unary.Unique.Setoid.Properties
+
+  Data.These.Base
+
+  Data.Trie
+  Data.Trie.NonEmpty
+  ```
 
 Deprecated features
 -------------------
@@ -39,6 +56,11 @@ Deprecated features
 
 Other minor additions
 ---------------------
+
+* Added new function to `Data.AVL.Indexed`:
+  ```agda
+  toList : Tree V l u h → List (K& V)
+  ```
 
 * Added new function to `Data.Digit`:
   ```agda
@@ -56,6 +78,12 @@ Other minor additions
 
   applyDownFrom⁺₁ : (∀ {i} → i < n → P (f i)) → All P (applyDownFrom f n)
   applyDownFrom⁺₂ : (∀ i → P (f i)) → All P (applyDownFrom f n)
+  ```
+
+* Added new function to `Data.Maybe.Base`:
+  ```agda
+  ap        : Maybe (A → B) → Maybe A → Maybe B
+  _>>=_     : Maybe A → (A → Maybe B) → Maybe B
   ```
 
 * Added new proof to `Data.Nat.DivMod`:
