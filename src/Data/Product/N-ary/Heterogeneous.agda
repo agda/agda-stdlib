@@ -11,6 +11,7 @@ module Data.Product.N-ary.Heterogeneous where
 open import Level as L using (Level; _⊔_; Lift)
 open import Agda.Builtin.Unit
 open import Data.Product
+open import Data.Sum using (_⊎_)
 open import Data.Nat.Base using (ℕ; zero; suc; pred)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Function
@@ -222,23 +223,36 @@ constₙ (suc n) v = const (constₙ n v)
 ------------------------------------------------------------------------
 -- Generic type constructor: n-ary existential quantifier
 
-∃ₙ : ∀ n {ls r} {as : Sets n ls} → Arrows n as (Set r) → Set (r ⊔ toLevel n ls)
-∃ₙ zero                  f = f
-∃ₙ (suc n) {as = a , as} f = ∃ λ x → ∃ₙ n (f x)
+∃ₙ⟨_⟩ : ∀ {n ls r} {as : Sets n ls} → Arrows n as (Set r) → Set (r ⊔ toLevel n ls)
+∃ₙ⟨_⟩ {zero}                f = f
+∃ₙ⟨_⟩ {suc n} {as = a , as} f = ∃ λ x → ∃ₙ⟨ f x ⟩
 
 ------------------------------------------------------------------------
 -- Generic type constructor: n-ary universal quantifier
 
-∀ₙ : ∀ n {ls r} {as : Sets n ls} → Arrows n as (Set r) → Set (r ⊔ toLevel n ls)
-∀ₙ zero                  f = f
-∀ₙ (suc n) {as = a , as} f = {x : a} → ∀ₙ n (f x)
+∀ₙ[_] : ∀ {n ls r} {as : Sets n ls} → Arrows n as (Set r) → Set (r ⊔ toLevel n ls)
+∀ₙ[_] {zero}                f = f
+∀ₙ[_] {suc n} {as = a , as} f = {x : a} → ∀ₙ[ f x ]
 
-Πₙ : ∀ n {ls r} {as : Sets n ls} → Arrows n as (Set r) → Set (r ⊔ toLevel n ls)
-Πₙ zero                  f = f
-Πₙ (suc n) {as = a , as} f = (x : a) → Πₙ n (f x)
+Πₙ[_] : ∀ {n ls r} {as : Sets n ls} → Arrows n as (Set r) → Set (r ⊔ toLevel n ls)
+Πₙ[_] {zero}                f = f
+Πₙ[_] {suc n} {as = a , as} f = (x : a) → Πₙ[ f x ]
 
-infixr 4 _⇒_
+
+infixr 8 _⇒_
+infixr 7 _∩_
+infixr 6 _∪_
 _⇒_ : ∀ {n} {ls r s} {as : Sets n ls} (f :  Arrows n as (Set r)) (g : Arrows n as (Set s)) →
       Arrows n as (Set (r ⊔ s))
 _⇒_ {zero}  f g   = f → g
 _⇒_ {suc n} f g x = f x ⇒ g x
+
+_∩_ : ∀ {n} {ls r s} {as : Sets n ls} (f :  Arrows n as (Set r)) (g : Arrows n as (Set s)) →
+      Arrows n as (Set (r ⊔ s))
+_∩_ {zero}  f g   = f × g
+_∩_ {suc n} f g x = f x ∩ g x
+
+_∪_ : ∀ {n} {ls r s} {as : Sets n ls} (f :  Arrows n as (Set r)) (g : Arrows n as (Set s)) →
+      Arrows n as (Set (r ⊔ s))
+_∪_ {zero}  f g   = f ⊎ g
+_∪_ {suc n} f g x = f x ∪ g x

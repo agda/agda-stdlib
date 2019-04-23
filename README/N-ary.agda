@@ -15,9 +15,10 @@ open import Data.Fin using (Fin; fromℕ; #_; inject₁)
 open import Data.List
 open import Data.List.Properties
 open import Data.Product using (_×_; _,_)
-open import Data.Product.N-ary.Heterogeneous
+open import Data.Sum using (inj₁; inj₂)
 open import Function
 open import Relation.Nullary
+open import Relation.Binary using (module Tri); open Tri
 open import Relation.Binary.PropositionalEquality
 
 
@@ -30,6 +31,8 @@ open import Relation.Binary.PropositionalEquality
 -- of (non-dependent) n-ary functions. The representation works well with
 -- inference thus allowing us to use generic combinators to manipulate
 -- such functions.
+
+open import Data.Product.N-ary.Heterogeneous
 
 ------------------------------------------------------------------------
 -- Generalised equality-manipulating combinators
@@ -291,32 +294,49 @@ module _ {a b c d e} {A : Set a} {B : Set b} {C : Set c} {D : Set d} {E : Set e}
 -- a prime opportunity to define generic quantifiers.
 
 ------------------------------------------------------------------------
--- ∃ₙ : ∀ n → (A₁ → ⋯ → Aₙ → Set r) → Set _
--- ∃ₙ n P = ∃ λ a₁ → ⋯ → ∃ λ aₙ → P a₁ ⋯ aₙ
+-- ∃ₙ⟨_⟩ : (A₁ → ⋯ → Aₙ → Set r) → Set _
+-- ∃ₙ⟨ P ⟩ = ∃ λ a₁ → ⋯ → ∃ λ aₙ → P a₁ ⋯ aₙ
 
 -- Returning to our favourite function taking a lot of arguments: we can
 -- find a set of input for which it evaluates to 666
 
-  exist₁ : ∃ₙ 4 λ k m n j → mod-helper k m n j ≡ 666
+  exist₁ : ∃ₙ⟨ (λ k m n j → mod-helper k m n j ≡ 666) ⟩
   exist₁ = 19 , 793 , 3059 , 10 , refl
 
 ------------------------------------------------------------------------
--- ∀ₙ : ∀ n → (A₁ → ⋯ → Aₙ → Set r) → Set _
--- ∀ₙ n P = ∀ {a₁} → ⋯ → ∀ {aₙ} → P a₁ ⋯ aₙ
+-- ∀ₙ[_] : (A₁ → ⋯ → Aₙ → Set r) → Set _
+-- ∀ₙ[_] P = ∀ {a₁} → ⋯ → ∀ {aₙ} → P a₁ ⋯ aₙ
 
-  all₁ : ∀ₙ 2 λ (a₁ a₂ : ℕ) → Dec (a₁ ≡ a₂)
+  all₁ : ∀ₙ[ (λ (a₁ a₂ : ℕ) → Dec (a₁ ≡ a₂)) ]
   all₁ {a₁} {a₂} = a₁ ≟ a₂
 
 ------------------------------------------------------------------------
--- Πₙ : ∀ n → (A₁ → ⋯ → Aₙ → Set r) → Set _
--- Πₙ n P = ∀ a₁ → ⋯ → ∀ aₙ → P a₁ ⋯ aₙ
+-- Πₙ : (A₁ → ⋯ → Aₙ → Set r) → Set _
+-- Πₙ P = ∀ a₁ → ⋯ → ∀ aₙ → P a₁ ⋯ aₙ
 
-  all₂ : Πₙ 2 λ (a₁ a₂ : ℕ) → Dec (a₁ ≡ a₂)
+  all₂ : Πₙ[ (λ (a₁ a₂ : ℕ) → Dec (a₁ ≡ a₂)) ]
   all₂ = _≟_
 
 ------------------------------------------------------------------------
--- _⇒_ : ∀ n → (A₁ → ⋯ → Aₙ → Set r) → (A₁ → ⋯ → Aₙ → Set s) → Set _
--- f ⇒ g = λ a₁ → ⋯ → λ aₙ → f a₁ ⋯ aₙ → g a₁ ⋯ aₙ
+-- _⇒_ : (A₁ → ⋯ → Aₙ → Set r) → (A₁ → ⋯ → Aₙ → Set s) → Set _
+-- P ⇒ Q = λ a₁ → ⋯ → λ aₙ → P a₁ ⋯ aₙ → Q a₁ ⋯ aₙ
 
-  antisym : ∀ₙ 2 $ _≤_ ⇒ _≥_ ⇒ _≡_
+  antisym : ∀ₙ[ _≤_ ⇒ _≥_ ⇒ _≡_ ]
   antisym = ≤-antisym
+
+------------------------------------------------------------------------
+-- _∪_ : (A₁ → ⋯ → Aₙ → Set r) → (A₁ → ⋯ → Aₙ → Set s) → Set _
+-- P ∪ Q = λ a₁ → ⋯ → λ aₙ → P a₁ ⋯ aₙ ⊎ Q a₁ ⋯ aₙ
+
+  ≤->-connex : Πₙ[ _≤_ ∪ _>_ ]
+  ≤->-connex m n with <-cmp m n
+  ... | tri< a ¬b ¬c = inj₁ (<⇒≤ a)
+  ... | tri≈ ¬a b ¬c = inj₁ (≤-reflexive b)
+  ... | tri> ¬a ¬b c = inj₂ c
+
+------------------------------------------------------------------------
+-- _∩_ : (A₁ → ⋯ → Aₙ → Set r) → (A₁ → ⋯ → Aₙ → Set s) → Set _
+-- P ∩ Q = λ a₁ → ⋯ → λ aₙ → P a₁ ⋯ aₙ ⊎ Q a₁ ⋯ aₙ
+
+  <-inversion : ∀ₙ[ _<_ ⇒ (_≤_ ∩ _≢_) ]
+  <-inversion m<n = <⇒≤ m<n , <⇒≢ m<n
