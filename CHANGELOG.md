@@ -68,6 +68,11 @@ Deprecated features
   `⊤` and `tt` from `Data.Unit`, as it turns out that the latter have been
   mapped to the Haskell equivalent for quite some time.
 
+* In `Reflection`:
+  ```agda
+  returnTC ↦ return
+  ```
+
 Other minor additions
 ---------------------
 
@@ -143,6 +148,44 @@ Other minor additions
   ≢-sym : Symmetric {A = A} _≢_
   ```
 
+* Added new names, functions and shorthand to `Reflection`:
+  ```agda
+  Names             = List Name
+  Args A            = List (Arg A)
+
+  map-Arg           : (A → B) → Arg A → Arg B
+  map-Args          : (A → B) → Args A → Args B
+  map-Abs           : (A → B) → Abs A → Abs B
+
+  reduce            : Term → TC Term
+  declarePostulate  : Arg Name → Type → TC ⊤
+  commitTC          : TC ⊤
+  isMacro           : Name → TC Bool
+  withNormalisation : Bool → TC A → TC A
+  _>>=_             : TC A → (A → TC B) → TC B
+  _>>_              : TC A → TC B → TC B
+
+  assocˡ            : Associativity
+  assocʳ            : Associativity
+  non-assoc         : Associativity
+  unrelated         : Precedence
+  related           : Int → Precedence
+  fixity            : Associativity → Precedence → Fixity
+  getFixity         : Name → Fixity
+
+  vArg ty           = arg (arg-info visible relevant)   ty
+  hArg ty           = arg (arg-info hidden relevant)    ty
+  iArg ty           = arg (arg-info instance′ relevant) ty
+  vLam s t          = lam visible   (abs s t)
+  hLam s t          = lam hidden    (abs s t)
+  iLam s t          = lam instance′ (abs s t)
+  Π[_∶_]_ s a ty    = pi a (abs s ty)
+  vΠ[_∶_]_ s a ty   = Π[ s ∶ (vArg a) ] ty
+  hΠ[_∶_]_ s a ty   = Π[ s ∶ (hArg a) ] ty
+  iΠ[_∶_]_ s a ty   = Π[ s ∶ (iArg a) ] ty
+  ```
+
 * The relation `_≅_` in `Relation.Binary.HeterogeneousEquality` has
   been generalised so that the types of the two equal elements need not
   be at the same universe level.
+
