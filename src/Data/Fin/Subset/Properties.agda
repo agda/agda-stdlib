@@ -143,11 +143,9 @@ x∈⁅y⁆⇔x≡y {_} {x} {y} = equivalence
 ... | outside | outside = cong₂ _∷_ refl (⊆-antisym (drop-∷-⊆ p⊆q) (drop-∷-⊆ q⊆p))
 
 ⊆-min : ∀ {n} → Minimum (_⊆_ {n}) ⊥
-⊆-min []       ()
 ⊆-min (x ∷ xs) (there v∈⊥) = there (⊆-min xs v∈⊥)
 
 ⊆-max : ∀ {n} → Maximum (_⊆_ {n}) ⊤
-⊆-max []            ()
 ⊆-max (inside ∷ xs) here         = here
 ⊆-max (x      ∷ xs) (there v∈xs) = there (⊆-max xs v∈xs)
 
@@ -333,7 +331,6 @@ x∈p∩q⁺ (here      , here)      = here
 x∈p∩q⁺ (there x∈p , there x∈q) = there (x∈p∩q⁺ (x∈p , x∈q))
 
 x∈p∩q⁻ : ∀ {n} (p q : Subset n) {x} → x ∈ p ∩ q → x ∈ p × x ∈ q
-x∈p∩q⁻ []           []           ()
 x∈p∩q⁻ (inside ∷ p) (inside ∷ q) here          = here , here
 x∈p∩q⁻ (s      ∷ p) (t      ∷ q) (there x∈p∩q) =
   Product.map there there (x∈p∩q⁻ p q x∈p∩q)
@@ -550,7 +547,6 @@ module _ (n : ℕ) where
   ∩-∪-booleanAlgebra = BA.∧-∨-booleanAlgebra ∪-∩-booleanAlgebra
 
 p⊆p∪q : ∀ {n p} (q : Subset n) → p ⊆ p ∪ q
-p⊆p∪q []      ()
 p⊆p∪q (s ∷ q) here        = here
 p⊆p∪q (s ∷ q) (there x∈p) = there (p⊆p∪q q x∈p)
 
@@ -558,7 +554,6 @@ q⊆p∪q : ∀ {n} (p q : Subset n) → q ⊆ p ∪ q
 q⊆p∪q p q rewrite ∪-comm p q = p⊆p∪q p
 
 x∈p∪q⁻ :  ∀ {n} (p q : Subset n) {x} → x ∈ p ∪ q → x ∈ p ⊎ x ∈ q
-x∈p∪q⁻ []            []            ()
 x∈p∪q⁻ (inside  ∷ p) (t       ∷ q) here          = inj₁ here
 x∈p∪q⁻ (outside ∷ p) (inside  ∷ q) here          = inj₂ here
 x∈p∪q⁻ (s       ∷ p) (t       ∷ q) (there x∈p∪q) =

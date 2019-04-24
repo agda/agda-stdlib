@@ -72,7 +72,6 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} {P : Set}
     where
     as : Antisymmetric _≋_ _<_
     as (base _)         (base _)         = []
-    as halt             ()
     as (this x≺y)       (this y≺x)       = ⊥-elim (asym x≺y y≺x)
     as (this x≺y)       (next y≈x ys<xs) = ⊥-elim (ir (sym y≈x) x≺y)
     as (next x≈y xs<ys) (this y≺x)       = ⊥-elim (ir (sym x≈y) y≺x)
