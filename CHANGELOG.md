@@ -30,8 +30,8 @@ Data.List.Relation.Unary.Unique.Setoid.Properties
 Non-backwards compatible changes
 --------------------------------
 
-
-#### Other
+Deprecated features
+-------------------
 
 * Renamed a few `-identity` lemmas in `Codata.Stream.Properties` as they were
   proving two streams bisimilar rather than propositionally equal.
@@ -46,13 +46,6 @@ Non-backwards compatible changes
   ap-repeat-commute  ↦ ap-repeat
   map-repeat-commute ↦ map-repeat
   ```
-
-
-Removed features
-----------------
-
-Deprecated features
--------------------
 
 Other minor additions
 ---------------------
