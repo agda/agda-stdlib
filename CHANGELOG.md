@@ -3,32 +3,49 @@ Version TODO
 
 The library has been tested using Agda version 2.6.0.
 
-Changes since 1.0:
+Changes since 1.0.1:
 
 Highlights
 ----------
 
+Non-backwards compatible changes
+--------------------------------
+
+* Split the `Maybe`-independent content of `Data.These` into `Data.These.Base`
+  to avoid cyclic dependencies with `Data.Maybe.Base` which now has an `align`
+  function. `Data.These` re-exports `Data.These.Base` so it should be mostly
+  transparent for users.
+
 New modules
 -----------
 
-The following new modules have been added to the library:
-```
-Category.Monad.Reader
+* The following new modules have been added to the library:
+  ```
+  Category.Monad.Reader
 
-Data.List.Relation.Binary.Disjoint.Propositional
-Data.List.Relation.Binary.Disjoint.Setoid
-Data.List.Relation.Binary.Disjoint.Setoid.Properties
+  Data.AVL.NonEmpty
+  Data.AVL.NonEmpty.Propositional
 
-Data.List.Relation.Unary.AllPairs
-Data.List.Relation.Unary.AllPairs.Properties
-Data.List.Relation.Unary.Unique.Propositional
-Data.List.Relation.Unary.Unique.Propositional.Properties
-Data.List.Relation.Unary.Unique.Setoid
-Data.List.Relation.Unary.Unique.Setoid.Properties
-```
+  Data.List.Relation.Binary.Disjoint.Propositional
+  Data.List.Relation.Binary.Disjoint.Setoid
+  Data.List.Relation.Binary.Disjoint.Setoid.Properties
 
-Non-backwards compatible changes
---------------------------------
+  Data.List.Relation.Binary.Disjoint.Propositional
+  Data.List.Relation.Binary.Disjoint.Setoid
+  Data.List.Relation.Binary.Disjoint.Setoid.Properties
+
+  Data.List.Relation.Unary.AllPairs
+  Data.List.Relation.Unary.AllPairs.Properties
+  Data.List.Relation.Unary.Unique.Propositional
+  Data.List.Relation.Unary.Unique.Propositional.Properties
+  Data.List.Relation.Unary.Unique.Setoid
+  Data.List.Relation.Unary.Unique.Setoid.Properties
+
+  Data.These.Base
+
+  Data.Trie
+  Data.Trie.NonEmpty
+  ```
 
 Deprecated features
 -------------------
@@ -47,8 +64,17 @@ Deprecated features
   map-repeat-commute ↦ map-repeat
   ```
 
+* Deprecated `Unit` and `unit` in `Foreign.Haskell` in favour of
+  `⊤` and `tt` from `Data.Unit`, as it turns out that the latter have been
+  mapped to the Haskell equivalent for quite some time.
+
 Other minor additions
 ---------------------
+
+* Added new function to `Data.AVL.Indexed`:
+  ```agda
+  toList : Tree V l u h → List (K& V)
+  ```
 
 * Added new function to `Data.Digit`:
   ```agda
@@ -68,6 +94,12 @@ Other minor additions
   applyDownFrom⁺₂ : (∀ i → P (f i)) → All P (applyDownFrom f n)
   ```
 
+* Added new function to `Data.Maybe.Base`:
+  ```agda
+  ap        : Maybe (A → B) → Maybe A → Maybe B
+  _>>=_     : Maybe A → (A → Maybe B) → Maybe B
+  ```
+
 * Added new proof to `Data.Nat.DivMod`:
   ```agda
   [a/n]*n≤a : (a div (suc n)) * (suc n) ≤ a
@@ -75,10 +107,18 @@ Other minor additions
 
 * Added new proofs to `Data.Nat.Properties`:
   ```agda
-  n≢0⇒n>0 : n ≢ 0 → n > 0
-  m≤m*n   : 0 < n → m ≤ m * n
-  m<m*n   : 0 < m → 1 < n → m < m * n
+  1+n≢0     : suc n ≢ 0
+  <ᵇ⇒<      : T (m <ᵇ n) → m < n
+  <⇒<ᵇ      : m < n → T (m <ᵇ n)
+  n≢0⇒n>0   : n ≢ 0 → n > 0
+  m≤m*n     : 0 < n → m ≤ m * n
+  m<m*n     : 0 < m → 1 < n → m < m * n
+  m∸n≢0⇒n<m : m ∸ n ≢ 0 → n < m
   ```
+
+* The functions `_≤?_` and `<-cmp` in `Data.Nat.Properties` have been
+  reimplemented so that, when compiled, they run in constant time rather
+  than linear time.
 
 * The function `show` in `Data.Nat.Show` has been reimplemented and,
   when compiled, now runs in time `O(log₁₀(n))` rather than `O(n)`.
