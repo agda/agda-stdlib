@@ -71,6 +71,16 @@ Deprecated features
 Other minor additions
 ---------------------
 
+* Added new proofs to `Codata.Stream.Properties`:
+  ```agda
+  splitAt-repeat-identity : splitAt n (repeat a) ≡ (Vec.replicate a , repeat a)
+  replicate-repeat        : i ⊢ List.replicate n a ++ repeat a ≈ repeat a
+  cycle-replicate         : i ⊢ cycle (List⁺.replicate n n≢0 a) ≈ repeat a
+  map-cycle               : i ⊢ map f (cycle as) ≈ cycle (List⁺.map f as)
+  map-⁺++                 : i ⊢ map f (as ⁺++ xs) ≈ List⁺.map f as ⁺++ Thunk.map (map f) xs
+  map-++                  : i ⊢ map f (as ++ xs) ≈ List.map f as ++ map f xs
+  ```
+
 * Added new function to `Data.AVL.Indexed`:
   ```agda
   toList : Tree V l u h → List (K& V)
@@ -117,7 +127,7 @@ Other minor additions
   ```
 
 * The functions `_≤?_` and `<-cmp` in `Data.Nat.Properties` have been
-  reimplemented so that, when compiled, they run in constant time rather
+  reimplemented so that, when compiled, they run in logarithmic rather
   than linear time.
 
 * The function `show` in `Data.Nat.Show` has been reimplemented and,
