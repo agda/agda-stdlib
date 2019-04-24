@@ -50,6 +50,20 @@ New modules
 Deprecated features
 -------------------
 
+* Renamed a few `-identity` lemmas in `Codata.Stream.Properties` as they were
+  proving two streams bisimilar rather than propositionally equal.
+  ```agda
+  repeat-ap-identity ↦ ap-repeatˡ
+  ap-repeat-identity ↦ ap-repeatʳ
+  ```
+
+* Renamed a few lemmas in `Codata.Stream.Properties` to match the more stdlib
+  conventions:
+  ```agda
+  ap-repeat-commute  ↦ ap-repeat
+  map-repeat-commute ↦ map-repeat
+  ```
+
 * Deprecated `Unit` and `unit` in `Foreign.Haskell` in favour of
   `⊤` and `tt` from `Data.Unit`, as it turns out that the latter have been
   mapped to the Haskell equivalent for quite some time.
