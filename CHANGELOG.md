@@ -25,6 +25,9 @@ Data.List.Relation.Unary.Unique.Propositional
 Data.List.Relation.Unary.Unique.Propositional.Properties
 Data.List.Relation.Unary.Unique.Setoid
 Data.List.Relation.Unary.Unique.Setoid.Properties
+
+Data.Word.Base
+Data.Word.Properties
 ```
 
 Non-backwards compatible changes
@@ -32,6 +35,9 @@ Non-backwards compatible changes
 
 Deprecated features
 -------------------
+
+* The module `Data.Word.Unsafe` has been deprecated as there are no
+  longer any unsafe operations.
 
 * Deprecated `Unit` and `unit` in `Foreign.Haskell` in favour of
   `⊤` and `tt` from `Data.Unit`, as it turns out that the latter have been
@@ -77,6 +83,9 @@ Other minor additions
   ```agda
   zip′ : (A → B → C) → (D → E → F) → A × D → B × E → C × F
   ```
+
+* Decidable equality over words has been made safe and so `_≟_` has been
+  moved from `Data.Word.Unsafe` to `Data.Word.Properties`.
 
 * Added new proof to `Relation.Binary.PropositionalEquality.Core`:
   ```agda
