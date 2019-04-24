@@ -17,9 +17,10 @@ import Data.List.Properties as Listₚ
 open import Function
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable using (map′; ⌊_⌋)
-open import Relation.Binary using (Decidable; Setoid; DecSetoid; StrictTotalOrder)
+open import Relation.Binary
+  using (Decidable; Setoid; DecSetoid; StrictTotalOrder)
 open import Relation.Binary.PropositionalEquality.Core
-open import Data.List.Relation.Binary.Lex.Strict as StrictLex
+import Data.List.Relation.Binary.Lex.Strict as StrictLex
 import Relation.Binary.Construct.On as On
 import Relation.Binary.PropositionalEquality as PropEq
 
@@ -37,19 +38,19 @@ _≟_ : Decidable {A = String} _≡_
 x ≟ y = map′ (toList-injective x y) (cong toList)
       $ Listₚ.≡-dec Charₚ._≟_ (toList x) (toList y)
 
-setoid : Setoid _ _
-setoid = PropEq.setoid String
+≡-setoid : Setoid _ _
+≡-setoid = PropEq.setoid String
 
-decSetoid : DecSetoid _ _
-decSetoid = PropEq.decSetoid _≟_
+≡-decSetoid : DecSetoid _ _
+≡-decSetoid = PropEq.decSetoid _≟_
 
 ------------------------------------------------------------------------
 -- Lexicographic ordering on strings.
 
-strictTotalOrder : StrictTotalOrder _ _ _
-strictTotalOrder =
+<-strictTotalOrder : StrictTotalOrder _ _ _
+<-strictTotalOrder =
   On.strictTotalOrder
-    (StrictLex.<-strictTotalOrder Charₚ.strictTotalOrder)
+    (StrictLex.<-strictTotalOrder Charₚ.<-strictTotalOrder)
     toList
 
 ------------------------------------------------------------------------
@@ -74,3 +75,23 @@ private
 
   unit-test : P (_==_ "")
   unit-test = p _
+
+-- Version 1.1
+
+setoid = ≡-setoid
+{-# WARNING_ON_USAGE setoid
+"Warning: setoid was deprecated in v1.1.
+Please use ≡-setoid instead."
+#-}
+
+decSetoid = ≡-decSetoid
+{-# WARNING_ON_USAGE decSetoid
+"Warning: decSetoid was deprecated in v1.1.
+Please use ≡-decSetoid instead."
+#-}
+
+strictTotalOrder = <-strictTotalOrder
+{-# WARNING_ON_USAGE strictTotalOrder
+"Warning: strictTotalOrder was deprecated in v1.1.
+Please use <-strictTotalOrder instead."
+#-}

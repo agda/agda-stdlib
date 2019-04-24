@@ -73,6 +73,13 @@ Deprecated features
   returnTC ↦ return
   ```
 
+* In `Data.(Char/String).Properties`:
+  ```agda
+  setoid           ↦ ≡-setoid
+  decSetoid        ↦ ≡-decSetoid
+  strictTotalOrder ↦ <-strictTotalOrder
+  ```
+
 Other minor additions
 ---------------------
 

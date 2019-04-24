@@ -16,7 +16,8 @@ import Data.Nat.Properties as ℕₚ
 open import Function
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable using (map′;  ⌊_⌋)
-open import Relation.Binary using (Decidable; Setoid; DecSetoid; StrictTotalOrder)
+open import Relation.Binary
+  using (Decidable; Setoid; DecSetoid; StrictTotalOrder)
 open import Relation.Binary.PropositionalEquality.Core
 import Relation.Binary.Construct.On as On
 import Relation.Binary.PropositionalEquality as PropEq
@@ -62,11 +63,32 @@ private
 ------------------------------------------------------------------------
 -- Structures
 
-setoid : Setoid _ _
-setoid = PropEq.setoid Char
+≡-setoid : Setoid _ _
+≡-setoid = PropEq.setoid Char
 
-decSetoid : DecSetoid _ _
-decSetoid = PropEq.decSetoid _≟_
+≡-decSetoid : DecSetoid _ _
+≡-decSetoid = PropEq.decSetoid _≟_
 
-strictTotalOrder : StrictTotalOrder _ _ _
-strictTotalOrder = On.strictTotalOrder ℕₚ.<-strictTotalOrder toNat
+<-strictTotalOrder : StrictTotalOrder _ _ _
+<-strictTotalOrder = On.strictTotalOrder ℕₚ.<-strictTotalOrder toNat
+
+
+-- Version 1.1
+
+setoid = ≡-setoid
+{-# WARNING_ON_USAGE setoid
+"Warning: setoid was deprecated in v1.1.
+Please use ≡-setoid instead."
+#-}
+
+decSetoid = ≡-decSetoid
+{-# WARNING_ON_USAGE decSetoid
+"Warning: decSetoid was deprecated in v1.1.
+Please use ≡-decSetoid instead."
+#-}
+
+strictTotalOrder = <-strictTotalOrder
+{-# WARNING_ON_USAGE strictTotalOrder
+"Warning: strictTotalOrder was deprecated in v1.1.
+Please use <-strictTotalOrder instead."
+#-}
