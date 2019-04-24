@@ -11,7 +11,7 @@
 
 <a id="293" class="Keyword">open</a> <a id="298" class="Keyword">import</a> <a id="305" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a> <a id="319" class="Symbol">as</a> <a id="322" class="Module">Nat</a> <a id="326" class="Keyword">using</a> <a id="332" class="Symbol">(</a><a id="333" href="Agda.Builtin.Nat.html#165" class="Datatype">ℕ</a><a id="334" class="Symbol">)</a>
 <a id="336" class="Keyword">open</a> <a id="341" class="Keyword">import</a> <a id="348" href="Data.List.Base.html" class="Module">Data.List.Base</a> <a id="363" class="Symbol">as</a> <a id="366" class="Module">List</a> <a id="371" class="Keyword">using</a> <a id="377" class="Symbol">(</a><a id="378" href="Agda.Builtin.List.html#121" class="Datatype">List</a><a id="382" class="Symbol">)</a>
-<a id="384" class="Keyword">open</a> <a id="389" class="Keyword">import</a> <a id="396" href="Data.List.NonEmpty.html" class="Module">Data.List.NonEmpty</a> <a id="415" class="Symbol">as</a> <a id="418" class="Module">NE</a> <a id="421" class="Keyword">using</a> <a id="427" class="Symbol">(</a><a id="428" href="Data.List.NonEmpty.html#1171" class="Record">List⁺</a><a id="433" class="Symbol">)</a>
+<a id="384" class="Keyword">open</a> <a id="389" class="Keyword">import</a> <a id="396" href="Data.List.NonEmpty.html" class="Module">Data.List.NonEmpty</a> <a id="415" class="Symbol">as</a> <a id="418" class="Module">NE</a> <a id="421" class="Keyword">using</a> <a id="427" class="Symbol">(</a><a id="428" href="Data.List.NonEmpty.html#1176" class="Record">List⁺</a><a id="433" class="Symbol">)</a>
 <a id="435" class="Keyword">open</a> <a id="440" class="Keyword">import</a> <a id="447" href="Agda.Builtin.Char.html" class="Module">Agda.Builtin.Char</a> <a id="465" class="Keyword">using</a> <a id="471" class="Symbol">(</a><a id="472" href="Agda.Builtin.Char.html#200" class="Postulate">Char</a><a id="476" class="Symbol">)</a>
 <a id="478" class="Keyword">open</a> <a id="483" class="Keyword">import</a> <a id="490" href="Function.html" class="Module">Function</a>
 
@@ -35,8 +35,8 @@
 
 <a id="1036" class="Comment">-- Additional conversion functions</a>
 
-<a id="fromList⁺"></a><a id="1072" href="Data.String.Base.html#1072" class="Function">fromList⁺</a> <a id="1082" class="Symbol">:</a> <a id="1084" href="Data.List.NonEmpty.html#1171" class="Record">List⁺</a> <a id="1090" href="Agda.Builtin.Char.html#200" class="Postulate">Char</a> <a id="1095" class="Symbol">→</a> <a id="1097" href="Agda.Builtin.String.html#206" class="Postulate">String</a>
-<a id="1104" href="Data.String.Base.html#1072" class="Function">fromList⁺</a> <a id="1114" class="Symbol">=</a> <a id="1116" href="Agda.Builtin.String.html#304" class="Primitive">fromList</a> <a id="1125" href="Function.html#1085" class="Function Operator">∘</a> <a id="1127" href="Data.List.NonEmpty.html#1701" class="Function">NE.toList</a>
+<a id="fromList⁺"></a><a id="1072" href="Data.String.Base.html#1072" class="Function">fromList⁺</a> <a id="1082" class="Symbol">:</a> <a id="1084" href="Data.List.NonEmpty.html#1176" class="Record">List⁺</a> <a id="1090" href="Agda.Builtin.Char.html#200" class="Postulate">Char</a> <a id="1095" class="Symbol">→</a> <a id="1097" href="Agda.Builtin.String.html#206" class="Postulate">String</a>
+<a id="1104" href="Data.String.Base.html#1072" class="Function">fromList⁺</a> <a id="1114" class="Symbol">=</a> <a id="1116" href="Agda.Builtin.String.html#304" class="Primitive">fromList</a> <a id="1125" href="Function.html#1085" class="Function Operator">∘</a> <a id="1127" href="Data.List.NonEmpty.html#1706" class="Function">NE.toList</a>
 
 <a id="1138" class="Comment">-- List-like functions</a>
 
