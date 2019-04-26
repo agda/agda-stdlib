@@ -18,11 +18,12 @@ open import Induction.WellFounded
 open import Level
 open import Relation.Binary.Core
 open import Relation.Binary.Construct.Closure.Equivalence using (EqClosure)
+open import Relation.Binary.Construct.Closure.Equivalence.Properties
 open import Relation.Binary.Construct.Closure.Reflexive
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
-open import Relation.Binary.Construct.Closure.ReflexiveSymmetricTransitive.Properties
 open import Relation.Binary.Construct.Closure.Symmetric
 open import Relation.Binary.Construct.Closure.Transitive
+open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary
 
 -- The following definitions are taken from Klop [5]
@@ -93,17 +94,10 @@ module _ {a ℓ} {A : Set a} {_⟶_ : Rel A ℓ} where
   ... | _ , ε     , ε     = refl
 
   un&wn⇒cr : UniqueNormalForm _⟶_ → WeaklyNormalizing _⟶_ → Confluent _⟶_
-  un&wn⇒cr un wn = helper where
-
-    helper : ∀ {a b c} → a —↠ b → a —↠ c → ∃ λ d → (b —↠ d) × (c —↠ d)
-    helper {_} {b} {c} aToB aToC with (wn b , wn c)
-    ... | (bNF , (e , x)) , (_ , (f , y)) with bNF≡cNF
-
-     where
-        bNF≡cNF = un e f (a—↠b&a—↠c⇒b↔c (aToB ◅◅ x) (aToC ◅◅ y))
-
-    ... | refl = bNF , x , y
-
+  un&wn⇒cr un wn {a} {b} {c} aToB aToC with wn b | wn c
+  ... | (d , (d-nf , bToD)) | (e , (e-nf , cToE))
+    with un d-nf e-nf (a—↠b&a—↠c⇒b↔c (aToB ◅◅ bToD) (aToC ◅◅ cToE))
+  ... | refl = d , bToD , cToE
 
 -- Newman's lemma
   sn&wcr⇒cr : StronglyNormalizing _⟶₊_ → WeaklyConfluent _⟶_ → Confluent _⟶_
