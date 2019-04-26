@@ -57,7 +57,7 @@ module Some {a lt} {A : Set a} {_<_ : Rel A lt} {ℓ} where
   wfRec-builder = wfRecBuilder
   {-# WARNING_ON_USAGE wfRec-builder
   "Warning: wfRec-builder was deprecated in v0.15.
-  Please use wfRecBuilder instead."
+\ \Please use wfRecBuilder instead."
   #-}
 
 ------------------------------------------------------------------------
@@ -76,7 +76,7 @@ module All {a lt} {A : Set a} {_<_ : Rel A lt}
   wfRec-builder = wfRecBuilder
   {-# WARNING_ON_USAGE wfRec-builder
   "Warning: wfRec-builder was deprecated in v0.15.
-  Please use wfRecBuilder instead."
+\ \Please use wfRecBuilder instead."
   #-}
 
 ------------------------------------------------------------------------
@@ -98,7 +98,7 @@ module Subrelation {a ℓ₁ ℓ₂} {A : Set a}
   well-founded = wellFounded
   {-# WARNING_ON_USAGE well-founded
   "Warning: well-founded was deprecated in v0.15.
-  Please use wellFounded instead."
+\ \Please use wellFounded instead."
   #-}
 
 module InverseImage {a b ℓ} {A : Set a} {B : Set b} {_<_ : Rel B ℓ}
@@ -113,7 +113,7 @@ module InverseImage {a b ℓ} {A : Set a} {B : Set b} {_<_ : Rel B ℓ}
   well-founded = wellFounded
   {-# WARNING_ON_USAGE well-founded
   "Warning: well-founded was deprecated in v0.15.
-  Please use wellFounded instead."
+\ \Please use wellFounded instead."
   #-}
 
 module TransitiveClosure {a ℓ} {A : Set a} (_<_ : Rel A ℓ) where
@@ -143,12 +143,12 @@ module TransitiveClosure {a ℓ} {A : Set a} (_<_ : Rel A ℓ) where
   downwards-closed = downwardsClosed
   {-# WARNING_ON_USAGE downwards-closed
   "Warning: downwards-closed was deprecated in v0.15.
-  Please use downwardsClosed instead."
+\ \Please use downwardsClosed instead."
   #-}
   well-founded     = wellFounded
   {-# WARNING_ON_USAGE well-founded
   "Warning: well-founded was deprecated in v0.15.
-  Please use wellFounded instead."
+\ \Please use wellFounded instead."
   #-}
 
 module Lexicographic {a b ℓ₁ ℓ₂} {A : Set a} {B : A → Set b}
@@ -181,7 +181,7 @@ module Lexicographic {a b ℓ₁ ℓ₂} {A : Set a} {B : A → Set b}
   well-founded = wellFounded
   {-# WARNING_ON_USAGE well-founded
   "Warning: well-founded was deprecated in v0.15.
-  Please use wellFounded instead."
+\ \Please use wellFounded instead."
   #-}
 
 
@@ -194,5 +194,5 @@ module Lexicographic {a b ℓ₁ ℓ₂} {A : Set a} {B : A → Set b}
 
 -- Version 1.0
 
-module Inverse-image      = InverseImage
+module Inverse-image = InverseImage
 module Transitive-closure = TransitiveClosure
