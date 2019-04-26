@@ -77,7 +77,7 @@ Deprecated features
   ```agda
   setoid           ↦ ≡-setoid
   decSetoid        ↦ ≡-decSetoid
-  strictTotalOrder ↦ <-strictTotalOrder
+  strictTotalOrder ↦ ≈-<-strictTotalOrder
   ```
 
 Other minor additions
@@ -96,6 +96,30 @@ Other minor additions
 * Added new function to `Data.AVL.Indexed`:
   ```agda
   toList : Tree V l u h → List (K& V)
+  ```
+
+* Added new definitions to `Data.Char.Base`:
+  ```agda
+  _≈_ : Rel Char zero
+  _<_ : Rel Char zero
+  ```
+
+* Added new properties to `Data.Char.Properties`:
+  ```agda
+  ≈⇒≡         : _≈_ ⇒ _≡_
+  ≈-reflexive : _≡_ ⇒ _≈_
+  ≈-refl      : Reflexive _≈_
+  ≈-sym       : Symmetric _≈_
+  ≈-trans     : Transitive _≈_
+  ≈-subst     : ∀ {ℓ} → Substitutive _≈_ ℓ
+  _≈?_        : Decidable _≈_
+
+  ≈-isEquivalence    : IsEquivalence _≈_
+  ≈-setoid           : Setoid _ _
+  ≈-isDecEquivalence : IsDecEquivalence _≈_
+  ≈-decSetoid        : DecSetoid _ _
+
+  _<?_ : Decidable _<_
   ```
 
 * Added new function to `Data.Digit`:
@@ -148,6 +172,30 @@ Other minor additions
 * Added new functions to `Data.Product`:
   ```agda
   zip′ : (A → B → C) → (D → E → F) → A × D → B × E → C × F
+  ```
+
+* Added new definitions to `Data.String.Base`:
+  ```agda
+  _≈_ : Rel String zero
+  _<_ : Rel String zero
+  ```
+
+* Added new properties to `Data.String.Properties`:
+  ```agda
+  ≈⇒≡         : _≈_ ⇒ _≡_
+  ≈-reflexive : _≡_ ⇒ _≈_
+  ≈-refl      : Reflexive _≈_
+  ≈-sym       : Symmetric _≈_
+  ≈-trans     : Transitive _≈_
+  ≈-subst     : ∀ {ℓ} → Substitutive _≈_ ℓ
+  _≈?_        : Decidable _≈_
+
+  ≈-isEquivalence    : IsEquivalence _≈_
+  ≈-setoid           : Setoid _ _
+  ≈-isDecEquivalence : IsDecEquivalence _≈_
+  ≈-decSetoid        : DecSetoid _ _
+
+  _<?_ : Decidable _<_
   ```
 
 * Added new proof to `Relation.Binary.PropositionalEquality.Core`:

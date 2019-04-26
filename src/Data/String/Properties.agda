@@ -18,8 +18,12 @@ open import Function
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable using (map′; ⌊_⌋)
 open import Relation.Binary
-  using (Decidable; Setoid; DecSetoid; StrictTotalOrder)
+  using ( _⇒_; Reflexive; Symmetric; Transitive; Substitutive
+        ; Decidable; IsEquivalence; IsDecEquivalence
+        ; Setoid; DecSetoid; StrictTotalOrder)
 open import Relation.Binary.PropositionalEquality.Core
+
+import Data.List.Relation.Binary.Pointwise as Pointwise
 import Data.List.Relation.Binary.Lex.Strict as StrictLex
 import Relation.Binary.Construct.On as On
 import Relation.Binary.PropositionalEquality as PropEq
@@ -31,12 +35,64 @@ open import Agda.Builtin.String.Properties public
   renaming ( primStringToListInjective to toList-injective)
 
 ------------------------------------------------------------------------
--- Equality
+-- Properties of _≈_
+
+≈⇒≡ : _≈_ ⇒ _≡_
+≈⇒≡ = toList-injective _ _
+    ∘ Pointwise.Pointwise-≡⇒≡
+    ∘ Pointwise.map Charₚ.≈⇒≡
+
+≈-reflexive : _≡_ ⇒ _≈_
+≈-reflexive = Pointwise.map Charₚ.≈-reflexive
+            ∘ Pointwise.≡⇒Pointwise-≡
+            ∘ cong toList
+
+≈-refl : Reflexive _≈_
+≈-refl {x} = ≈-reflexive {x} {x} refl
+
+≈-sym : Symmetric _≈_
+≈-sym = Pointwise.symmetric (λ {i j} → Charₚ.≈-sym {i} {j})
+
+≈-trans : Transitive _≈_
+≈-trans = Pointwise.transitive (λ {i j k} → Charₚ.≈-trans {i} {j} {k})
+
+≈-subst : ∀ {ℓ} → Substitutive _≈_ ℓ
+≈-subst P x≈y p = subst P (≈⇒≡ x≈y) p
+
+infix 4 _≈?_
+_≈?_ : Decidable _≈_
+x ≈? y = Pointwise.decidable Charₚ._≈?_ (toList x) (toList y)
+
+≈-isEquivalence : IsEquivalence _≈_
+≈-isEquivalence = record
+  { refl  = λ {i} → ≈-refl {i}
+  ; sym   = λ {i j} → ≈-sym {i} {j}
+  ; trans = λ {i j k} → ≈-trans {i} {j} {k}
+  }
+
+≈-setoid : Setoid _ _
+≈-setoid = record
+  { isEquivalence = ≈-isEquivalence
+  }
+
+≈-isDecEquivalence : IsDecEquivalence _≈_
+≈-isDecEquivalence = record
+  { isEquivalence = ≈-isEquivalence
+  ; _≟_           = _≈?_
+  }
+
+≈-decSetoid : DecSetoid _ _
+≈-decSetoid = record
+  { isDecEquivalence = ≈-isDecEquivalence
+  }
+
+-----------------------------------------------------------------------
+-- Properties of _≡_
 
 infix 4 _≟_
-_≟_ : Decidable {A = String} _≡_
-x ≟ y = map′ (toList-injective x y) (cong toList)
-      $ Listₚ.≡-dec Charₚ._≟_ (toList x) (toList y)
+
+_≟_ : Decidable _≡_
+x ≟ y = map′ ≈⇒≡ ≈-reflexive $ x ≈? y
 
 ≡-setoid : Setoid _ _
 ≡-setoid = PropEq.setoid String
@@ -45,12 +101,16 @@ x ≟ y = map′ (toList-injective x y) (cong toList)
 ≡-decSetoid = PropEq.decSetoid _≟_
 
 ------------------------------------------------------------------------
--- Lexicographic ordering on strings.
+-- Properties of _<_
 
-<-strictTotalOrder : StrictTotalOrder _ _ _
-<-strictTotalOrder =
+infix 4 _<?_
+_<?_ : Decidable _<_
+x <? y = StrictLex.<-decidable Charₚ._≈?_ Charₚ._<?_ (toList x) (toList y)
+
+≈-<-strictTotalOrder : StrictTotalOrder _ _ _
+≈-<-strictTotalOrder =
   On.strictTotalOrder
-    (StrictLex.<-strictTotalOrder Charₚ.<-strictTotalOrder)
+    (StrictLex.<-strictTotalOrder Charₚ.≈-<-strictTotalOrder)
     toList
 
 ------------------------------------------------------------------------
@@ -90,8 +150,8 @@ decSetoid = ≡-decSetoid
 Please use ≡-decSetoid instead."
 #-}
 
-strictTotalOrder = <-strictTotalOrder
+strictTotalOrder = ≈-<-strictTotalOrder
 {-# WARNING_ON_USAGE strictTotalOrder
 "Warning: strictTotalOrder was deprecated in v1.1.
-Please use <-strictTotalOrder instead."
+Please use ≈-<-strictTotalOrder instead."
 #-}
