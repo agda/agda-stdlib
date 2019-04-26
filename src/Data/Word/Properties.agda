@@ -8,6 +8,7 @@
 
 module Data.Word.Properties where
 
+import Data.Nat.Base as ℕ
 open import Data.Bool.Base using (Bool)
 open import Data.Word.Base
 import Data.Nat.Properties as ℕₚ
@@ -18,8 +19,7 @@ open import Relation.Binary
         ; Decidable; IsEquivalence; IsDecEquivalence
         ; Setoid; DecSetoid; StrictTotalOrder)
 import Relation.Binary.Construct.On as On
-open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; cong)
+open import Relation.Binary.PropositionalEquality
 
 ------------------------------------------------------------------------
 -- Primitive properties
@@ -83,10 +83,10 @@ _≟_ : Decidable {A = Word64} _≡_
 x ≟ y = map′ ≈⇒≡ ≈-reflexive (x ≈? y)
 
 ≡-setoid : Setoid _ _
-≡-setoid = P.setoid Word64
+≡-setoid = setoid Word64
 
 ≡-decSetoid : DecSetoid _ _
-≡-decSetoid = P.decSetoid _≟_
+≡-decSetoid = decSetoid _≟_
 
 ------------------------------------------------------------------------
 -- Boolean equality test.
