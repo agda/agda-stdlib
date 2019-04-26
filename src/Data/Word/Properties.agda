@@ -14,7 +14,9 @@ import Data.Nat.Properties as ℕₚ
 open import Function
 open import Relation.Nullary.Decidable using (map′; ⌊_⌋)
 open import Relation.Binary
-  using (Decidable; Setoid; DecSetoid; StrictTotalOrder)
+  using ( _⇒_; Reflexive; Symmetric; Transitive; Substitutive
+        ; Decidable; IsEquivalence; IsDecEquivalence
+        ; Setoid; DecSetoid; StrictTotalOrder)
 import Relation.Binary.Construct.On as On
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; cong)
@@ -27,11 +29,58 @@ open import Agda.Builtin.Word.Properties
   public
 
 ------------------------------------------------------------------------
--- Propositional equality
+-- Properties of _≈_
+
+≈⇒≡ : _≈_ ⇒ _≡_
+≈⇒≡ = toℕ-injective _ _
+
+≈-reflexive : _≡_ ⇒ _≈_
+≈-reflexive = cong toℕ
+
+≈-refl : Reflexive _≈_
+≈-refl = refl
+
+≈-sym : Symmetric _≈_
+≈-sym = sym
+
+≈-trans : Transitive _≈_
+≈-trans = trans
+
+≈-subst : ∀ {ℓ} → Substitutive _≈_ ℓ
+≈-subst P x≈y p = subst P (≈⇒≡ x≈y) p
+
+infix 4 _≈?_
+_≈?_ : Decidable _≈_
+x ≈? y = toℕ x ℕₚ.≟ toℕ y
+
+≈-isEquivalence : IsEquivalence _≈_
+≈-isEquivalence = record
+  { refl  = λ {i} → ≈-refl {i}
+  ; sym   = λ {i j} → ≈-sym {i} {j}
+  ; trans = λ {i j k} → ≈-trans {i} {j} {k}
+  }
+
+≈-setoid : Setoid _ _
+≈-setoid = record
+  { isEquivalence = ≈-isEquivalence
+  }
+
+≈-isDecEquivalence : IsDecEquivalence _≈_
+≈-isDecEquivalence = record
+  { isEquivalence = ≈-isEquivalence
+  ; _≟_           = _≈?_
+  }
+
+≈-decSetoid : DecSetoid _ _
+≈-decSetoid = record
+  { isDecEquivalence = ≈-isDecEquivalence
+  }
+------------------------------------------------------------------------
+-- Properties of _≡_
 
 infix 4 _≟_
 _≟_ : Decidable {A = Word64} _≡_
-x ≟ y = map′ (toℕ-injective x y) (cong toℕ) (toℕ x ℕₚ.≟ toℕ y)
+x ≟ y = map′ ≈⇒≡ ≈-reflexive (x ≈? y)
 
 ≡-setoid : Setoid _ _
 ≡-setoid = P.setoid Word64
@@ -47,7 +96,11 @@ _==_ : Word64 → Word64 → Bool
 w₁ == w₂ = ⌊ w₁ ≟ w₂ ⌋
 
 ------------------------------------------------------------------------
--- A strict total ordering over words
+-- Properties of _<_
 
-<-strictTotalOrder : StrictTotalOrder _ _ _
-<-strictTotalOrder = On.strictTotalOrder ℕₚ.<-strictTotalOrder toℕ
+infix 4 _<?_
+_<?_ : Decidable _<_
+_<?_ = On.decidable toℕ ℕ._<_ ℕₚ._<?_
+
+≈-<-strictTotalOrder : StrictTotalOrder _ _ _
+≈-<-strictTotalOrder = On.strictTotalOrder ℕₚ.<-strictTotalOrder toℕ
