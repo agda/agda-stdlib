@@ -9,6 +9,7 @@
 module Data.List.Relation.Binary.Sublist.Propositional.Properties {a} {A : Set a} where
 
 open import Data.List using (map)
+open import Data.List.Relation.Unary.All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.List.Relation.Unary.Any.Properties using (here-injective; there-injective)
 open import Data.List.Relation.Binary.Sublist.Propositional
@@ -49,3 +50,16 @@ module _ {p} {P : Pred A p} where
     cong there ∘′ lookup-injective ∘′ there-injective
   lookup-injective {p = _ ∷ _}    {here  _} {there _} ()
   lookup-injective {p = _ ∷ _}    {there _} {here  _} ()
+
+------------------------------------------------------------------------
+-- Relationships to other predicates
+
+open Data.List.Relation.Binary.Sublist.Propositional renaming (lookup to Any-resp-⊆)
+
+module _ {ℓ} {P : Pred A ℓ} where
+  open import Relation.Binary using (_Respects_)
+
+  All-resp-⊆ : (All P) Respects (flip _⊆_)
+  All-resp-⊆ []          []       = []
+  All-resp-⊆ (_    ∷ʳ p) (_ ∷ xs) = All-resp-⊆ p xs
+  All-resp-⊆ (refl ∷  p) (x ∷ xs) = x ∷ All-resp-⊆ p xs
