@@ -45,6 +45,9 @@ New modules
 
   Data.Trie
   Data.Trie.NonEmpty
+
+  Relation.Binary.Construct.Closure.Equivalence.Properties
+  Relation.Binary.Rewriting
   ```
 
 Deprecated features
