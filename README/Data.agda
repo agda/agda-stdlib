@@ -91,15 +91,17 @@ import Data.Sum.Base
 -- contents is re-exported by the top level module (see below).
 
 -- 2. As with basic datatypes, a `Properties` module which contains the
--- basic properties of the functions, operations and relations contained
--- in the base module.
+-- basic properties of the functions, operations and contained in the
+-- base module.
 
 import Data.List.Properties
 import Data.Maybe.Properties
 import Data.Sum.Properties
 
 -- 3. As with basic datatypes, a top-level module which re-exports the
--- contents of the base module.
+-- contents of the base module. In some cases this may also contain
+-- additional functions which could not be placed into the corresponding
+-- Base module because of cyclic dependencies.
 
 import Data.List
 import Data.Maybe
