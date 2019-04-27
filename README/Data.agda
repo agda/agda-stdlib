@@ -185,6 +185,10 @@ import README.Data.List
 
 import README.Data.Interleaving
 
+-- Example use case for a trie: a wee generic lexer
+
+import README.Data.Trie.NonDependent
+
 -- Examples how (indexed) containers and constructions over them (free
 -- monad, least fixed point, etc.) can be used
 
