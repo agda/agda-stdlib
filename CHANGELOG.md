@@ -91,6 +91,47 @@ Other minor additions
   toList : Tree V l u h → List (K& V)
   ```
 
+* Added new relations to `Data.Bool`:
+  ```agda
+  _≤_ : Rel Bool 0ℓ
+  _<_ : Rel Bool 0ℓ
+  ```
+
+* Added new proofs to `Data.Bool.Properties`:
+  ```agda
+  ≤-reflexive       : _≡_ ⇒ _≤_
+  ≤-refl            : Reflexive _≤_
+  ≤-antisym         : Antisymmetric _≡_ _≤_
+  ≤-trans           : Transitive _≤_
+  ≤-total           : Total _≤_
+  _≤?_              : Decidable _≤_
+  ≤-minimum         : Minimum _≤_ false
+  ≤-maximum         : Maximum _≤_ true
+  ≤-irrelevant      : B.Irrelevant _≤_
+  ≤-isPreorder      : IsPreorder _≡_ _≤_
+  ≤-isPartialOrder  : IsPartialOrder _≡_ _≤_
+  ≤-isTotalOrder    : IsTotalOrder _≡_ _≤_
+  ≤-isDecTotalOrder : IsDecTotalOrder _≡_ _≤_
+  ≤-poset           : Poset 0ℓ 0ℓ 0ℓ
+  ≤-preorder        : Preorder 0ℓ 0ℓ 0ℓ
+  ≤-totalOrder      : TotalOrder 0ℓ 0ℓ 0ℓ
+  ≤-decTotalOrder   : DecTotalOrder 0ℓ 0ℓ 0ℓ
+
+  <-irrefl               : Irreflexive _≡_ _<_
+  <-asym                 : Asymmetric _<_
+  <-trans                : Transitive _<_
+  <-transʳ               : Trans _≤_ _<_ _<_
+  <-transˡ               : Trans _<_ _≤_ _<_
+  <-cmp                  : Trichotomous _≡_ _<_
+  _<?_                   : Decidable _<_
+  <-resp₂-≡              : _<_ Respects₂ _≡_
+  <-irrelevant           : B.Irrelevant _<_
+  <-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
+  <-isStrictTotalOrder   : IsStrictTotalOrder _≡_ _<_
+  <-strictPartialOrder   : StrictPartialOrder 0ℓ 0ℓ 0ℓ
+  <-strictTotalOrder     : StrictTotalOrder 0ℓ 0ℓ 0ℓ
+  ```
+
 * Added new function to `Data.Digit`:
   ```agda
   toNatDigits : (base : ℕ) {base≤16 : True (1 ≤? base)} → ℕ → List ℕ
