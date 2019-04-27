@@ -17,6 +17,7 @@ open import Data.List.Relation.Binary.Sublist.Propositional
 import Data.List.Relation.Binary.Sublist.Setoid.Properties
   as SetoidProperties
 open import Function
+open import Relation.Binary using (_Respects_)
 open import Relation.Binary.PropositionalEquality as P hiding ([_])
 open import Relation.Unary as U using (Pred)
 
@@ -54,12 +55,11 @@ module _ {p} {P : Pred A p} where
 ------------------------------------------------------------------------
 -- Relationships to other predicates
 
-open Data.List.Relation.Binary.Sublist.Propositional renaming (lookup to Any-resp-⊆)
-
 module _ {ℓ} {P : Pred A ℓ} where
-  open import Relation.Binary using (_Respects_)
-
   All-resp-⊆ : (All P) Respects (flip _⊆_)
   All-resp-⊆ []          []       = []
   All-resp-⊆ (_    ∷ʳ p) (_ ∷ xs) = All-resp-⊆ p xs
   All-resp-⊆ (refl ∷  p) (x ∷ xs) = x ∷ All-resp-⊆ p xs
+
+  Any-resp-⊆ : (Any P) Respects _⊆_
+  Any-resp-⊆ = lookup
