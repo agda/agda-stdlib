@@ -987,6 +987,12 @@ Other minor additions
   ++-magma   : Magma _ _
   ```
 
+* Added new proofs to `Data.List.Relation.Binary.Sublist.Propositional.Properties`:
+  ```agda
+  All-resp-⊆ : (All P) Respects (flip _⊆_)
+  Any-resp-⊆ : (Any P) Respects _⊆_
+  ```
+
 * Added new proofs to `Data.List.Relation.Binary.Pointwise`:
   ```agda
   reverseAcc⁺ : Pointwise R a x → Pointwise R b y → Pointwise R (reverseAcc a b) (reverseAcc x y)
