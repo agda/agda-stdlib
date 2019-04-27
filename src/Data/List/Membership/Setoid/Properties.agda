@@ -210,7 +210,6 @@ module _ {c ℓ p} (S : Setoid c ℓ) {P : Pred (Carrier S) p}
   ... | no  _ = ∈-filter⁺ v∈xs Pv
 
   ∈-filter⁻ : ∀ {v xs} → v ∈ filter P? xs → v ∈ xs × P v
-  ∈-filter⁻ {xs = []}     ()
   ∈-filter⁻ {xs = x ∷ xs} v∈f[x∷xs] with P? x
   ... | no  _  = Prod.map there id (∈-filter⁻ v∈f[x∷xs])
   ... | yes Px with v∈f[x∷xs]
@@ -237,7 +236,6 @@ module _ {c ℓ} (S : Setoid c ℓ) where
   open Membership S using (_∈_)
 
   ∈-lookup : ∀ xs i → lookup xs i ∈ xs
-  ∈-lookup []       ()
   ∈-lookup (x ∷ xs) zero    = here refl
   ∈-lookup (x ∷ xs) (suc i) = there (∈-lookup xs i)
 

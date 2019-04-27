@@ -1,7 +1,7 @@
 module README where
 
 ------------------------------------------------------------------------
--- The Agda standard library, version 1.0
+-- The Agda standard library, development version
 --
 -- Authors: Nils Anders Danielsson, Matthew Daggitt, Guillaume Allais
 -- with contributions from Andreas Abel, Stevan Andjelkovic,
@@ -267,6 +267,10 @@ import README.Integer
 
 import README.AVL
 
+-- Some examples showing how List module can be used.
+
+import README.List
+
 -- An example showing how the Record module can be used.
 
 import README.Record
@@ -299,6 +303,10 @@ import README.Inspect
 -- Using List's Interleaving to define a fully certified filter function.
 
 import README.Interleaving
+
+-- Example use case for a trie: a wee generic lexer
+
+import README.Trie.NonDependent
 
 ------------------------------------------------------------------------
 -- Core modules

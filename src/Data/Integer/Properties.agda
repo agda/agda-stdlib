@@ -81,7 +81,6 @@ neg-suc (suc m) = refl
 
 ∣n∣≡0⇒n≡0 : ∀ {n} → ∣ n ∣ ≡ 0 → n ≡ + 0
 ∣n∣≡0⇒n≡0 {+ .zero}   refl = refl
-∣n∣≡0⇒n≡0 { -[1+ n ]} ()
 
 ∣-n∣≡∣n∣ : ∀ n → ∣ - n ∣ ≡ ∣ n ∣
 ∣-n∣≡∣n∣ (+ zero)   = refl
@@ -93,7 +92,6 @@ neg-suc (suc m) = refl
 
 +∣n∣≡n⇒0≤n : ∀ {n} → + ∣ n ∣ ≡ n → + 0 ≤ n
 +∣n∣≡n⇒0≤n {+ n} _ = +≤+ z≤n
-+∣n∣≡n⇒0≤n { -[1+ n ]} ()
 
 ------------------------------------------------------------------------
 -- Properties of sign and _◃_
@@ -152,9 +150,6 @@ abs-cong {s₁} {s₂} {n₁} {n₂} eq = begin
 ◃-≡ : ∀ {m n} → sign m ≡ sign n → ∣ m ∣ ≡ ∣ n ∣ → m ≡ n
 ◃-≡ {+ m}       {+ n }      ≡-sign ≡-abs = cong ℤ.pos ≡-abs
 ◃-≡ { -[1+ m ]} { -[1+ n ]} ≡-sign ≡-abs = cong -[1+_] (ℕₚ.suc-injective ≡-abs)
-◃-≡ {+ m}       { -[1+ n ]} ()     ≡-abs
-◃-≡ { -[1+ m ]} {+ n }      ()     ≡-abs
-
 
 ------------------------------------------------------------------------
 -- Properties of _⊖_
@@ -791,8 +786,6 @@ pos-distrib-* (suc x) (suc y) = refl
 *-cancelʳ-≤-pos (-[1+ m ]) (-[1+ n ]) o (-≤- n≤m) =
   -≤- (ℕₚ.≤-pred (ℕₚ.*-cancelʳ-≤ (suc n) (suc m) o (s≤s n≤m)))
 *-cancelʳ-≤-pos -[1+ _ ]   (+ _)      _ _         = -≤+
-*-cancelʳ-≤-pos (+ 0)      -[1+ _ ]   _ ()
-*-cancelʳ-≤-pos (+ suc _)  -[1+ _ ]   _ ()
 *-cancelʳ-≤-pos (+ 0)      (+ 0)      _ _         = +≤+ z≤n
 *-cancelʳ-≤-pos (+ 0)      (+ suc _)  _ _         = +≤+ z≤n
 *-cancelʳ-≤-pos (+ suc _)  (+ 0)      _ (+≤+ ())
@@ -812,7 +805,6 @@ pos-distrib-* (suc x) (suc y) = refl
   -≤- (ℕₚ.≤-pred (ℕₚ.*-mono-≤ (s≤s n≤m) (ℕₚ.≤-refl {x = suc x})))
 *-monoʳ-≤-pos _ (+≤+ {m = 0}     {n = 0}     m≤n) = +≤+ m≤n
 *-monoʳ-≤-pos _ (+≤+ {m = 0}     {n = suc _} m≤n) = +≤+ z≤n
-*-monoʳ-≤-pos _ (+≤+ {m = suc _} {n = 0}     ())
 *-monoʳ-≤-pos x (+≤+ {m = suc _} {n = suc _} m≤n) =
   +≤+ ((ℕₚ.*-mono-≤ m≤n (ℕₚ.≤-refl {x = suc x})))
 
@@ -888,7 +880,6 @@ m≤n⇒m⊓n≡m (+≤+ m≤n) = cong +_ (ℕₚ.m≤n⇒m⊓n≡m m≤n)
 m⊓n≡m⇒m≤n : ∀ {m n} → m ⊓ n ≡ m → m ≤ n
 m⊓n≡m⇒m≤n { -[1+ m ]} { -[1+ n ]} eq = -≤- (ℕₚ.n⊔m≡n⇒m≤n (-[1+-injective eq))
 m⊓n≡m⇒m≤n { -[1+ m ]} {+ n}       eq = -≤+
-m⊓n≡m⇒m≤n {+ m}       { -[1+ n ]} ()
 m⊓n≡m⇒m≤n {+ m}       {+ n}       eq = +≤+ (ℕₚ.m⊓n≡m⇒m≤n (+-injective eq))
 
 m≥n⇒m⊓n≡n : ∀ {m n} → m ≥ n → m ⊓ n ≡ n
@@ -943,7 +934,6 @@ m≤n⇒m⊔n≡n (+≤+ m≤n) = cong +_ (ℕₚ.m≤n⇒m⊔n≡n m≤n)
 m⊔n≡n⇒m≤n : ∀ {m n} → m ⊔ n ≡ n → m ≤ n
 m⊔n≡n⇒m≤n { -[1+ m ]} { -[1+ n ]} eq = -≤- (ℕₚ.m⊓n≡n⇒n≤m (-[1+-injective eq))
 m⊔n≡n⇒m≤n { -[1+ m ]} {+ n}       eq = -≤+
-m⊔n≡n⇒m≤n {+ m}       { -[1+ n ]} ()
 m⊔n≡n⇒m≤n {+ m}       {+ n}       eq = +≤+ (ℕₚ.n⊔m≡m⇒n≤m (+-injective eq))
 
 m≥n⇒m⊔n≡m : ∀ {m n} → m ≥ n → m ⊔ n ≡ m
@@ -1006,7 +996,6 @@ drop‿-≤- (-≤- n≤m) = n≤m
 ≤-trans (+≤+ m≤n) (+≤+ n≤k) = +≤+ (ℕₚ.≤-trans m≤n n≤k)
 
 ≤-antisym : Antisymmetric _≡_ _≤_
-≤-antisym -≤+       ()
 ≤-antisym (-≤- n≤m) (-≤- m≤n) = cong -[1+_] $ ℕₚ.≤-antisym m≤n n≤m
 ≤-antisym (+≤+ m≤n) (+≤+ n≤m) = cong (+_)   $ ℕₚ.≤-antisym m≤n n≤m
 
@@ -1232,21 +1221,14 @@ n≤1+n n = ≤-step ≤-refl
 
 <-irrefl : Irreflexive _≡_ _<_
 <-irrefl { + n}          refl (+≤+ 1+n≤n) = ℕₚ.<-irrefl refl 1+n≤n
-<-irrefl { -[1+ zero  ]} refl ()
 <-irrefl { -[1+ suc n ]} refl (-≤- 1+n≤n) = ℕₚ.<-irrefl refl 1+n≤n
 
 >-irrefl : Irreflexive _≡_ _>_
 >-irrefl = <-irrefl ∘ sym
 
 <-asym : Asymmetric _<_
-<-asym {+ n}           {+ m}           (+≤+ n<m) (+≤+ m<n) =
-  ℕₚ.<-asym n<m m<n
-<-asym {+ n}           { -[1+ m ]}     ()        _
-<-asym { -[1+ n ]}     {+_ n₁}         _         ()
-<-asym { -[1+ 0 ]}     { -[1+_] _}     ()        _
-<-asym { -[1+ _ ]}     { -[1+_] 0}     _         ()
-<-asym { -[1+ suc n ]} { -[1+ suc m ]} (-≤- n<m) (-≤- m<n) =
-  ℕₚ.<-asym n<m m<n
+<-asym {+ n}           {+ m}           (+≤+ n<m) (+≤+ m<n) = ℕₚ.<-asym n<m m<n
+<-asym { -[1+ suc n ]} { -[1+ suc m ]} (-≤- n<m) (-≤- m<n) = ℕₚ.<-asym n<m m<n
 
 ≤-<-trans : Trans _≤_ _<_ _<_
 ≤-<-trans { -[1+ m ]} {+ n} {+ p} -≤+ (+≤+ 1+n≤p) = -<+ {m} {p}
@@ -1314,7 +1296,6 @@ n≤1+n n = ≤-step ≤-refl
 
 n≮n : ∀ {n} → n ≮ n
 n≮n {+ n}           (+≤+ n<n) =  contradiction n<n ℕₚ.1+n≰n
-n≮n { -[1+ 0 ]}     ()
 n≮n { -[1+ suc n ]} (-≤- n<n) =  contradiction n<n ℕₚ.1+n≰n
 
 >⇒≰ : ∀ {x y} → x > y → x ≰ y

@@ -56,10 +56,10 @@ open Core public using (≅-to-≡; ≡-to-≅)
 reflexive : ∀ {a} {A : Set a} → _⇒_ {A = A} _≡_ (λ x y → x ≅ y)
 reflexive refl = refl
 
-sym : ∀ {ℓ} {A B : Set ℓ} {x : A} {y : B} → x ≅ y → y ≅ x
+sym : ∀ {ℓ₁ ℓ₂} {A : Set ℓ₁} {B : Set ℓ₂} {x : A} {y : B} → x ≅ y → y ≅ x
 sym refl = refl
 
-trans : ∀ {ℓ} {A B C : Set ℓ} {x : A} {y : B} {z : C} →
+trans : ∀ {ℓ₁ ℓ₂ ℓ₃} {A : Set ℓ₁} {B : Set ℓ₂} {C : Set ℓ₃} {x : A} {y : B} {z : C} →
         x ≅ y → y ≅ z → x ≅ z
 trans refl eq = eq
 

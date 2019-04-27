@@ -23,29 +23,37 @@ open import Data.List.Relation.Binary.Subset.Propositional using (_⊆_)
 open import Data.Maybe as Maybe using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.All as MAll using (just; nothing)
 open import Data.Nat using (zero; suc; z≤n; s≤s; _<_)
+open import Data.Nat.Properties using (≤-refl; ≤-step)
 open import Data.Product as Prod using (_×_; _,_; uncurry; uncurry′)
 open import Function
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence using (_⇔_; equivalence; Equivalence)
 open import Function.Inverse using (_↔_; inverse)
 open import Function.Surjection using (_↠_; surjection)
-open import Relation.Binary using (Setoid; _Respects_)
+open import Level using (Level)
+open import Relation.Binary using (REL; Setoid; _Respects_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Nullary
 open import Relation.Unary
   using (Decidable; Pred; Universal) renaming (_⊆_ to _⋐_)
 
+private
+  variable
+    a b c p q ℓ : Level
+    A : Set a
+    B : Set b
+    C : Set c
+
 ------------------------------------------------------------------------
 -- Lemmas relating Any, All and negation.
 
-module _ {a p} {A : Set a} {P : A → Set p} where
+module _ {P : A → Set p} where
 
   ¬Any⇒All¬ : ∀ xs → ¬ Any P xs → All (¬_ ∘ P) xs
   ¬Any⇒All¬ []       ¬p = []
   ¬Any⇒All¬ (x ∷ xs) ¬p = ¬p ∘ here ∷ ¬Any⇒All¬ xs (¬p ∘ there)
 
   All¬⇒¬Any : ∀ {xs} → All (¬_ ∘ P) xs → ¬ Any P xs
-  All¬⇒¬Any []        ()
   All¬⇒¬Any (¬p ∷ _)  (here  p) = ¬p p
   All¬⇒¬Any (_  ∷ ¬p) (there p) = All¬⇒¬Any ¬p p
 
@@ -86,12 +94,23 @@ module _ {a p} {A : Set a} {P : A → Set p} where
               ∀ {xs} (¬∀ : ¬ All P xs) → Any¬→¬All (¬All⇒Any¬ dec xs ¬∀) ≡ ¬∀
     to∘from ext ¬∀ = ext (⊥-elim ∘ ¬∀)
 
+module _ {_~_ : REL (List A) B ℓ} where
+
+  All-swap : ∀ {xss ys} →
+             All (λ xs → All (xs ~_) ys) xss →
+             All (λ y → All (_~ y) xss) ys
+  All-swap {ys = []}     _   = []
+  All-swap {ys = y ∷ ys} []  = All.universal (λ _ → []) (y ∷ ys)
+  All-swap {ys = y ∷ ys} ((x~y ∷ x~ys) ∷ pxss) =
+    (x~y ∷ (All.map All.head pxss)) ∷
+    All-swap (x~ys ∷ (All.map All.tail pxss))
+
 ------------------------------------------------------------------------
 -- Properties of operations over `All`
 ------------------------------------------------------------------------
 -- map
 
-module _ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} {f : P ⋐ Q} where
+module _ {P : Pred A p} {Q : Pred A q} {f : P ⋐ Q} where
 
   map-cong : ∀ {xs} {g : P ⋐ Q} (ps : All P xs) →
              (∀ {x} → f {x} P.≗ g) → All.map f ps ≡ All.map g ps
@@ -115,12 +134,11 @@ module _ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} {f : P ⋐ Q} where
 ------------------------------------------------------------------------
 -- _[_]%=_/updateAt
 
-module _ {a p} {A : Set a} {P : Pred A p} where
+module _ {P : Pred A p} where
 
   updateAt-updates : ∀ {x xs px} (pxs : All P xs) (i : x ∈ xs)
                      {f : P x → P x} → All.lookup pxs i ≡ px →
                      All.lookup (pxs All.[ i ]%= f) i ≡ f px
-  updateAt-updates [] ()
   updateAt-updates (px ∷ pxs) (here P.refl) P.refl = P.refl
   updateAt-updates (px ∷ pxs) (there i) = updateAt-updates pxs i
 
@@ -141,8 +159,9 @@ module _ {a p} {A : Set a} {P : Pred A p} where
   updateAt-compose (px ∷ pxs) (here P.refl) = P.refl
   updateAt-compose (px ∷ pxs) (there i)     = P.cong (px ∷_) (updateAt-compose pxs i)
 
-  map-updateAt : ∀ {q x} {Q : Pred A q} {xs} →
-                 ∀ {f : P ⋐ Q} {g : P x → P x} {h : Q x → Q x}
+module _ {P : Pred A p} {Q : Pred A q} where
+
+  map-updateAt : ∀ {x xs} {f : P ⋐ Q} {g : P x → P x} {h : Q x → Q x}
                  (pxs : All P xs) (i : x ∈ xs) →
                  f (g (All.lookup pxs i)) ≡ h (f (All.lookup pxs i)) →
                  All.map f (pxs All.[ i ]%= g) ≡ (All.map f pxs) All.[ i ]%= h
@@ -154,7 +173,7 @@ module _ {a p} {A : Set a} {P : Pred A p} where
 ------------------------------------------------------------------------
 -- map
 
-module _ {a b p} {A : Set a} {B : Set b} {P : B → Set p} {f : A → B} where
+module _ {P : B → Set p} {f : A → B} where
 
   map⁺ : ∀ {xs} → All (P ∘ f) xs → All P (map f xs)
   map⁺ []       = []
@@ -166,8 +185,7 @@ module _ {a b p} {A : Set a} {B : Set b} {P : B → Set p} {f : A → B} where
 
 -- A variant of All.map.
 
-module _ {a b p q} {A : Set a} {B : Set b} {f : A → B}
-         {P : A → Set p} {Q : B → Set q} where
+module _ {P : A → Set p} {Q : B → Set q} {f : A → B} where
 
   gmap : P ⋐ Q ∘ f → All P ⋐ All Q ∘ map f
   gmap g = map⁺ ∘ All.map g
@@ -175,8 +193,7 @@ module _ {a b p q} {A : Set a} {B : Set b} {f : A → B}
 ------------------------------------------------------------------------
 -- mapMaybe
 
-module _ {a b p} {A : Set a} {B : Set b}
-         (P : B → Set p) {f : A → Maybe B} where
+module _ (P : B → Set p) {f : A → Maybe B} where
 
   mapMaybe⁺ : ∀ {xs} → All (MAll.All P) (map f xs) → All P (mapMaybe f xs)
   mapMaybe⁺ {[]}     [] = []
@@ -188,7 +205,7 @@ module _ {a b p} {A : Set a} {B : Set b}
 ------------------------------------------------------------------------
 -- _++_
 
-module _ {a p} {A : Set a} {P : A → Set p} where
+module _ {P : A → Set p} where
 
   ++⁺ : ∀ {xs ys} → All P xs → All P ys → All P (xs ++ ys)
   ++⁺ []         pys = pys
@@ -222,7 +239,7 @@ module _ {a p} {A : Set a} {P : A → Set p} where
 ------------------------------------------------------------------------
 -- concat
 
-module _ {a p} {A : Set a} {P : A → Set p} where
+module _ {P : A → Set p} where
 
   concat⁺ : ∀ {xss} → All (All P) xss → All P (concat xss)
   concat⁺ []           = []
@@ -235,7 +252,7 @@ module _ {a p} {A : Set a} {P : A → Set p} where
 ------------------------------------------------------------------------
 -- take and drop
 
-module _ {a p} {A : Set a} {P : A → Set p} where
+module _ {P : A → Set p} where
 
   drop⁺ : ∀ {xs} n → All P xs → All P (drop n xs)
   drop⁺ zero    pxs        = pxs
@@ -250,7 +267,7 @@ module _ {a p} {A : Set a} {P : A → Set p} where
 ------------------------------------------------------------------------
 -- applyUpTo
 
-module _ {a p} {A : Set a} {P : A → Set p} where
+module _ {P : A → Set p} where
 
   applyUpTo⁺₁ : ∀ f n → (∀ {i} → i < n → P (f i)) → All P (applyUpTo f n)
   applyUpTo⁺₁ f zero    Pf = []
@@ -260,15 +277,26 @@ module _ {a p} {A : Set a} {P : A → Set p} where
   applyUpTo⁺₂ f n Pf = applyUpTo⁺₁ f n (λ _ → Pf _)
 
   applyUpTo⁻ : ∀ f n → All P (applyUpTo f n) → ∀ {i} → i < n → P (f i)
-  applyUpTo⁻ f zero    pxs        ()
   applyUpTo⁻ f (suc n) (px ∷ _)   (s≤s z≤n)       = px
   applyUpTo⁻ f (suc n) (_  ∷ pxs) (s≤s (s≤s i<n)) =
     applyUpTo⁻ (f ∘ suc) n pxs (s≤s i<n)
 
 ------------------------------------------------------------------------
+-- applyDownFrom
+
+module _ {P : A → Set p} where
+
+  applyDownFrom⁺₁ : ∀ f n → (∀ {i} → i < n → P (f i)) → All P (applyDownFrom f n)
+  applyDownFrom⁺₁ f zero    Pf = []
+  applyDownFrom⁺₁ f (suc n) Pf = Pf ≤-refl ∷ applyDownFrom⁺₁ f n (Pf ∘ ≤-step)
+
+  applyDownFrom⁺₂ : ∀ f n → (∀ i → P (f i)) → All P (applyDownFrom f n)
+  applyDownFrom⁺₂ f n Pf = applyDownFrom⁺₁ f n (λ _ → Pf _)
+
+------------------------------------------------------------------------
 -- tabulate
 
-module _ {a p} {A : Set a} {P : A → Set p} where
+module _ {P : A → Set p} where
 
   tabulate⁺ : ∀ {n} {f : Fin n → A} →
               (∀ i → P (f i)) → All P (tabulate f)
@@ -277,14 +305,13 @@ module _ {a p} {A : Set a} {P : A → Set p} where
 
   tabulate⁻ : ∀ {n} {f : Fin n → A} →
               All P (tabulate f) → (∀ i → P (f i))
-  tabulate⁻ {zero}  pf       ()
   tabulate⁻ {suc n} (px ∷ _) fzero    = px
   tabulate⁻ {suc n} (_ ∷ pf) (fsuc i) = tabulate⁻ pf i
 
 ------------------------------------------------------------------------
 -- remove
 
-module _ {a p q} {A : Set a} {P : A → Set p} {Q : A → Set q} where
+module _ {P : A → Set p} {Q : A → Set q} where
 
   ─⁺ : ∀ {xs} (p : Any P xs) → All Q xs → All Q (xs Any.─ p)
   ─⁺ (here px) (_ ∷ qs) = qs
@@ -297,7 +324,7 @@ module _ {a p q} {A : Set a} {P : A → Set p} {Q : A → Set q} where
 ------------------------------------------------------------------------
 -- filter
 
-module _ {a p} {A : Set a} {P : A → Set p} (P? : Decidable P) where
+module _ {P : A → Set p} (P? : Decidable P) where
 
   all-filter : ∀ xs → All P (filter P? xs)
   all-filter []       = []
@@ -305,7 +332,9 @@ module _ {a p} {A : Set a} {P : A → Set p} (P? : Decidable P) where
   ... | yes Px = Px ∷ all-filter xs
   ... | no  _  = all-filter xs
 
-  filter⁺ : ∀ {q} {Q : A → Set q} {xs} → All Q xs → All Q (filter P? xs)
+module _ {P : A → Set p} {Q : A → Set q} (P? : Decidable P) where
+
+  filter⁺ : ∀ {xs} → All Q xs → All Q (filter P? xs)
   filter⁺ {xs = _}     [] = []
   filter⁺ {xs = x ∷ _} (Qx ∷ Qxs) with P? x
   ... | no  _ = filter⁺ Qxs
@@ -314,20 +343,19 @@ module _ {a p} {A : Set a} {P : A → Set p} (P? : Decidable P) where
 ------------------------------------------------------------------------
 -- zipWith
 
-module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
+module _ (P : C → Set p) (f : A → B → C) where
 
-  zipWith⁺ : ∀ {p} (P : C → Set p) (f : A → B → C) {xs ys} →
-             Pointwise (λ x y → P (f x y)) xs ys →
+  zipWith⁺ : ∀ {xs ys} → Pointwise (λ x y → P (f x y)) xs ys →
              All P (zipWith f xs ys)
-  zipWith⁺ P f []              = []
-  zipWith⁺ P f (Pfxy ∷ Pfxsys) = Pfxy ∷ zipWith⁺ P f Pfxsys
+  zipWith⁺ []              = []
+  zipWith⁺ (Pfxy ∷ Pfxsys) = Pfxy ∷ zipWith⁺ Pfxsys
 
 ------------------------------------------------------------------------
 -- Operations for constructing lists
 ------------------------------------------------------------------------
 -- singleton
 
-module _ {a p} {A : Set a} {P : A → Set p} where
+module _ {P : A → Set p} where
 
   singleton⁻ : ∀ {x} → All P [ x ] → P x
   singleton⁻ (px ∷ []) = px
@@ -335,16 +363,18 @@ module _ {a p} {A : Set a} {P : A → Set p} where
 ------------------------------------------------------------------------
 -- snoc
 
-module _ {a p} {A : Set a} {P : A → Set p} where
+module _ {P : A → Set p} {x xs} where
 
-  ∷ʳ⁺ : ∀ {xs x} → All P xs → P x → All P (xs ∷ʳ x)
+  ∷ʳ⁺ : All P xs → P x → All P (xs ∷ʳ x)
   ∷ʳ⁺ pxs px = ++⁺ pxs (px ∷ [])
 
-  ∷ʳ⁻ : ∀ {xs x} → All P (xs ∷ʳ x) → All P xs × P x
-  ∷ʳ⁻ {xs} pxs = Prod.map₂ singleton⁻ $ ++⁻ xs pxs
+  ∷ʳ⁻ : All P (xs ∷ʳ x) → All P xs × P x
+  ∷ʳ⁻ pxs = Prod.map₂ singleton⁻ $ ++⁻ xs pxs
 
 ------------------------------------------------------------------------
 -- fromMaybe
+
+module _ {P : A → Set p} where
 
   fromMaybe⁺ : ∀ {mx} → MAll.All P mx → All P (fromMaybe mx)
   fromMaybe⁺ (just px) = px ∷ []
@@ -357,6 +387,8 @@ module _ {a p} {A : Set a} {P : A → Set p} where
 ------------------------------------------------------------------------
 -- replicate
 
+module _ {P : A → Set p} where
+
   replicate⁺ : ∀ n {x} → P x → All P (replicate n x)
   replicate⁺ zero    px = []
   replicate⁺ (suc n) px = px ∷ replicate⁺ n px
@@ -364,10 +396,10 @@ module _ {a p} {A : Set a} {P : A → Set p} where
   replicate⁻ : ∀ {n x} → All P (replicate (suc n) x) → P x
   replicate⁻ (px ∷ _) = px
 
-module _ {a p} {A : Set a} {P : A → Set p} where
-
 ------------------------------------------------------------------------
 -- inits
+
+module _ {P : A → Set p} where
 
   inits⁺ : ∀ {xs} → All P xs → All (All P) (inits xs)
   inits⁺ []         = [] ∷ []
@@ -382,6 +414,8 @@ module _ {a p} {A : Set a} {P : A → Set p} where
 ------------------------------------------------------------------------
 -- tails
 
+module _ {P : A → Set p} where
+
   tails⁺ : ∀ {xs} → All P xs → All (All P) (tails xs)
   tails⁺ []             = [] ∷ []
   tails⁺ pxxs@(_ ∷ pxs) = pxxs ∷ tails⁺ pxs
@@ -393,7 +427,7 @@ module _ {a p} {A : Set a} {P : A → Set p} where
 ------------------------------------------------------------------------
 -- all
 
-module _ {a} {A : Set a} (p : A → Bool) where
+module _ (p : A → Bool) where
 
   all⁺ : ∀ xs → T (all p xs) → All (T ∘ p) xs
   all⁺ []       _     = []
@@ -407,11 +441,10 @@ module _ {a} {A : Set a} (p : A → Bool) where
 ------------------------------------------------------------------------
 -- All is anti-monotone.
 
-anti-mono : ∀ {a p} {A : Set a} {P : A → Set p} {xs ys} →
-            xs ⊆ ys → All P ys → All P xs
+anti-mono : ∀ {P : A → Set p} {xs ys} → xs ⊆ ys → All P ys → All P xs
 anti-mono xs⊆ys pys = All.tabulate (All.lookup pys ∘ xs⊆ys)
 
-all-anti-mono : ∀ {a} {A : Set a} (p : A → Bool) {xs ys} →
+all-anti-mono : ∀ (p : A → Bool) {xs ys} →
                 xs ⊆ ys → T (all p ys) → T (all p xs)
 all-anti-mono p xs⊆ys = all⁻ p ∘ anti-mono xs⊆ys ∘ all⁺ p _
 
@@ -421,12 +454,13 @@ all-anti-mono p xs⊆ys = all⁻ p ∘ anti-mono xs⊆ys ∘ all⁺ p _
 
 module _ {c ℓ} (S : Setoid c ℓ) where
 
-  open Setoid S renaming (Carrier to A)
+  open Setoid S
   open ListEq S
 
-  respects : ∀ {p} {P : Pred A p} → P Respects _≈_ → (All P) Respects _≋_
+  respects : {P : Pred Carrier p} → P Respects _≈_ → (All P) Respects _≋_
   respects p≈ []            []         = []
   respects p≈ (x≈y ∷ xs≈ys) (px ∷ pxs) = p≈ x≈y px ∷ respects p≈ xs≈ys pxs
+
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
