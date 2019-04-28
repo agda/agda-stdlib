@@ -8,6 +8,8 @@
 
 module Relation.Nullary.Construct.Add.Point where
 
-open import Data.Maybe.Base using ()
-  renaming (Maybe to Pointed; nothing to ∙; just to [_])
-  public
+open import Data.Maybe.Base public
+  using () renaming (Maybe to Pointed; nothing to ∙; just to [_])
+
+open import Data.Maybe.Properties public
+  using (≡-dec) renaming (just-injective to []-injective)

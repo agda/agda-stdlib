@@ -17,7 +17,8 @@ module Relation.Binary.Construct.Add.Infimum.Strict
 open import Level using (_⊔_)
 open import Data.Product
 open import Function
-import Relation.Binary.PropositionalEquality as P
+open import Relation.Binary.PropositionalEquality as P
+  using (_≡_; refl)
 import Relation.Binary.Construct.Add.Infimum.Equality as Equality
 import Relation.Binary.Construct.Add.Infimum.NonStrict as NonStrict
 open import Relation.Nullary
@@ -54,6 +55,46 @@ data _<₋_ : Rel (A ₋) (a ⊔ ℓ) where
 <₋-irrelevant <-irr ⊥₋<[ l ] ⊥₋<[ l ] = P.refl
 <₋-irrelevant <-irr [ p ]    [ q ]    = P.cong _ (<-irr p q)
 
+module _ {r} {_≤_ : Rel A r} where
+
+  open NonStrict _≤_
+
+  <₋-transʳ : Trans _≤_ _<_ _<_ → Trans _≤₋_ _<₋_ _<₋_
+  <₋-transʳ <-transʳ (⊥₋≤ .⊥₋) (⊥₋<[ l ]) = ⊥₋<[ l ]
+  <₋-transʳ <-transʳ (⊥₋≤ l)   [ q ]  = ⊥₋<[ _ ]
+  <₋-transʳ <-transʳ [ p ]     [ q ]  = [ <-transʳ p q ]
+
+  <₋-transˡ : Trans _<_ _≤_ _<_ → Trans _<₋_ _≤₋_ _<₋_
+  <₋-transˡ <-transˡ ⊥₋<[ l ] [ q ] = ⊥₋<[ _ ]
+  <₋-transˡ <-transˡ [ p ]    [ q ] = [ <-transˡ p q ]
+
+------------------------------------------------------------------------
+-- Relational properties + propositional equality
+
+<₋-cmp-≡ : Trichotomous _≡_ _<_ → Trichotomous _≡_ _<₋_
+<₋-cmp-≡ <-cmp ⊥₋    ⊥₋    = tri≈ (λ ()) refl (λ ())
+<₋-cmp-≡ <-cmp ⊥₋    [ l ] = tri< ⊥₋<[ l ] (λ ()) (λ ())
+<₋-cmp-≡ <-cmp [ k ] ⊥₋    = tri> (λ ()) (λ ()) ⊥₋<[ k ]
+<₋-cmp-≡ <-cmp [ k ] [ l ] with <-cmp k l
+... | tri< a ¬b    ¬c = tri< [ a ] (¬b ∘ []-injective) (¬c ∘ [<]-injective)
+... | tri≈ ¬a refl ¬c = tri≈ (¬a ∘ [<]-injective) refl (¬c ∘ [<]-injective)
+... | tri> ¬a ¬b    c = tri> (¬a ∘ [<]-injective) (¬b ∘ []-injective) [ c ]
+
+<₋-irrefl-≡ : Irreflexive _≡_ _<_ → Irreflexive _≡_ _<₋_
+<₋-irrefl-≡ <-irrefl refl [ x ] = <-irrefl refl x
+
+<₋-respˡ-≡ : _<₋_ Respectsˡ _≡_
+<₋-respˡ-≡ = P.subst (_<₋ _)
+
+<₋-respʳ-≡ : _<₋_ Respectsʳ _≡_
+<₋-respʳ-≡ = P.subst (_ <₋_)
+
+<₋-resp-≡ : _<₋_ Respects₂ _≡_
+<₋-resp-≡ = <₋-respʳ-≡ , <₋-respˡ-≡
+
+------------------------------------------------------------------------
+-- Relational properties + setoid equality
+
 module _ {e} {_≈_ : Rel A e} where
 
   open Equality _≈_
@@ -82,21 +123,36 @@ module _ {e} {_≈_ : Rel A e} where
   <₋-resp-≈₋ : _<_ Respects₂ _≈_ → _<₋_ Respects₂ _≈₋_
   <₋-resp-≈₋ = map <₋-respʳ-≈₋ <₋-respˡ-≈₋
 
-module _ {r} {_≤_ : Rel A r} where
+------------------------------------------------------------------------
+-- Structures + propositional equality
 
-  open NonStrict _≤_
+<₋-isStrictPartialOrder-≡ : IsStrictPartialOrder _≡_ _<_ →
+                            IsStrictPartialOrder _≡_ _<₋_
+<₋-isStrictPartialOrder-≡ strict = record
+  { isEquivalence = P.isEquivalence
+  ; irrefl        = <₋-irrefl-≡ irrefl
+  ; trans         = <₋-trans trans
+  ; <-resp-≈      = <₋-resp-≡
+  } where open IsStrictPartialOrder strict
 
-  <₋-transʳ : Trans _≤_ _<_ _<_ → Trans _≤₋_ _<₋_ _<₋_
-  <₋-transʳ <-transʳ (⊥₋≤ .⊥₋) (⊥₋<[ l ]) = ⊥₋<[ l ]
-  <₋-transʳ <-transʳ (⊥₋≤ l)   [ q ]  = ⊥₋<[ _ ]
-  <₋-transʳ <-transʳ [ p ]     [ q ]  = [ <-transʳ p q ]
+<₋-isDecStrictPartialOrder-≡ : IsDecStrictPartialOrder _≡_ _<_ →
+                               IsDecStrictPartialOrder _≡_ _<₋_
+<₋-isDecStrictPartialOrder-≡ dectot = record
+  { isStrictPartialOrder = <₋-isStrictPartialOrder-≡ isStrictPartialOrder
+  ; _≟_                  = ≡-dec _≟_
+  ; _<?_                 = <₋-dec _<?_
+  } where open IsDecStrictPartialOrder dectot
 
-  <₋-transˡ : Trans _<_ _≤_ _<_ → Trans _<₋_ _≤₋_ _<₋_
-  <₋-transˡ <-transˡ ⊥₋<[ l ] [ q ] = ⊥₋<[ _ ]
-  <₋-transˡ <-transˡ [ p ]    [ q ] = [ <-transˡ p q ]
+<₋-isStrictTotalOrder-≡ : IsStrictTotalOrder _≡_ _<_ →
+                          IsStrictTotalOrder _≡_ _<₋_
+<₋-isStrictTotalOrder-≡ strictot = record
+  { isEquivalence = P.isEquivalence
+  ; trans         = <₋-trans trans
+  ; compare       = <₋-cmp-≡ compare
+  } where open IsStrictTotalOrder strictot
 
 ------------------------------------------------------------------------
--- Structures
+-- Structures + setoid equality
 
 module _ {e} {_≈_ : Rel A e} where
 
