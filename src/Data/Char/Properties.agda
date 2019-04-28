@@ -25,7 +25,7 @@ import Relation.Binary.PropositionalEquality as PropEq
 -- Primitive properties
 
 open import Agda.Builtin.Char.Properties
-  renaming ( primCharToNatInjective to toNat-injective)
+  renaming ( primCharToNatInjective to toℕ-injective)
   public
 
 ------------------------------------------------------------------------
@@ -33,8 +33,8 @@ open import Agda.Builtin.Char.Properties
 
 infix 4 _≟_
 _≟_ : Decidable {A = Char} _≡_
-x ≟ y = map′ (toNat-injective x y) (cong toNat)
-      $ toNat x ℕₚ.≟ toNat y
+x ≟ y = map′ (toℕ-injective x y) (cong toℕ)
+      $ toℕ x ℕₚ.≟ toℕ y
 
 ------------------------------------------------------------------------
 -- Boolean equality test.
@@ -69,4 +69,20 @@ decSetoid : DecSetoid _ _
 decSetoid = PropEq.decSetoid _≟_
 
 strictTotalOrder : StrictTotalOrder _ _ _
-strictTotalOrder = On.strictTotalOrder ℕₚ.<-strictTotalOrder toNat
+strictTotalOrder = On.strictTotalOrder ℕₚ.<-strictTotalOrder toℕ
+
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 1.1
+
+toNat-injective = toℕ-injective
+{-# WARNING_ON_USAGE toNat-injective
+"Warning: toNat-injective was deprecated in v1.1.
+Please use toℕ-injective instead."
+#-}

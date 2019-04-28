@@ -257,8 +257,8 @@ module PermutationExplanation where
 
   open import Data.List.Relation.Binary.Permutation.Inductive.Properties
 
-  lem₃ : ∀ {xs ys : List ℕ} → xs ↭ ys → map fromNat xs ↭ map fromNat ys
-  lem₃ = map⁺ fromNat
+  lem₃ : ∀ {xs ys : List ℕ} → xs ↭ ys → map fromℕ xs ↭ map fromℕ ys
+  lem₃ = map⁺ fromℕ
 
   lem₄ : IsCommutativeMonoid {A = List ℕ} _↭_ _++_ []
   lem₄ = ++-isCommutativeMonoid
@@ -428,5 +428,5 @@ module MembershipExplanation where
   open DecPropMembership CharProp._≟_ renaming (_∈_ to _∈ᶜ_)
   open SetoidProperties using (∈-map⁺)
 
-  lem₂ : {v : ℕ} {xs : List ℕ} → v ∈ xs → fromNat v ∈ᶜ map fromNat xs
-  lem₂ = ∈-map⁺ (setoid ℕ) (setoid Char) (cong fromNat)
+  lem₂ : {v : ℕ} {xs : List ℕ} → v ∈ xs → fromℕ v ∈ᶜ map fromℕ xs
+  lem₂ = ∈-map⁺ (setoid ℕ) (setoid Char) (cong fromℕ)

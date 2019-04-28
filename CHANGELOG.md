@@ -64,6 +64,14 @@ Deprecated features
   map-repeat-commute ↦ map-repeat
   ```
 
+* Renamed functions in `Data.Char.Base` and the corresponding property
+  in `Data.Char.Properties`:
+  ```agda
+  fromNat         ↦ fromℕ
+  toNat           ↦ toℕ
+  toNat-injective ↦ toℕ-injective
+  ```
+
 * Deprecated `Unit` and `unit` in `Foreign.Haskell` in favour of
   `⊤` and `tt` from `Data.Unit`, as it turns out that the latter have been
   mapped to the Haskell equivalent for quite some time.
