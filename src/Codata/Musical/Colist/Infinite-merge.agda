@@ -145,20 +145,16 @@ module _ {a p} {A : Set a} {P : A → Set p} where
     from-injective : ∀ {xss} (p₁ p₂ : Any Q xss) →
                      from p₁ ≡ from p₂ → p₁ ≡ p₂
     from-injective (here (inj₁ p))  (here (inj₁ .p)) P.refl = P.refl
-    from-injective (here (inj₁ _))  (here (inj₂ _))  ()
-    from-injective (here (inj₂ _))  (here (inj₁ _))  ()
     from-injective (here (inj₂ p₁)) (here (inj₂ p₂)) eq     =
       P.cong (here ∘ inj₂) $
       inj₁-injective $
       Inverse.injective (Inv.sym (Any-⋎P _)) {x = inj₁ p₁} {y = inj₁ p₂} $
       there-injective eq
-    from-injective (here (inj₁ _))  (there _)  ()
     from-injective (here (inj₂ p₁)) (there p₂) eq
       with Inverse.injective (Inv.sym (Any-⋎P _))
                              {x = inj₁ p₁} {y = inj₂ (from p₂)}
                              (there-injective eq)
     ... | ()
-    from-injective (there _)  (here (inj₁ _))  ()
     from-injective (there p₁) (here (inj₂ p₂)) eq
       with Inverse.injective (Inv.sym (Any-⋎P _))
                              {x = inj₂ (from p₁)} {y = inj₁ p₂}

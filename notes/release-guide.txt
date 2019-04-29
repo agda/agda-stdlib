@@ -3,9 +3,13 @@ procedure should be followed:
 
 #### Pre-release changes
 
-* Update README.agda by replacing 'development version' by 'version X.Y' in the title.
+* Update `README.agda` by replacing 'development version' by 'version X.Y' in the title.
 
-* Update the lib.cabal version to `X.Y`.
+* Update `README.md`
+
+* Update `lib.cabal` version to `X.Y`.
+
+* Update `notes/installation-guide.txt`
 
 * Finish the CHANGELOG.
 
