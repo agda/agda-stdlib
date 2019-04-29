@@ -17,8 +17,7 @@ open import Data.List.Base
 open import Data.Product
 open import Data.Vec as Vec using (Vec; _∷_; [])
 open import Data.Nat.DivMod
-open import Induction.Nat using (<′-rec; <′-Rec; <-wellFounded)
-open import Induction.WellFounded using (Acc; acc)
+open import Data.Nat.Induction
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable
 open import Relation.Binary using (Decidable)

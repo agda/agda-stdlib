@@ -37,6 +37,9 @@ New modules
   Data.List.Relation.Unary.Unique.Setoid
   Data.List.Relation.Unary.Unique.Setoid.Properties
 
+  Data.Nat.Induction
+  Data.Fin.Induction
+
   Data.These.Base
 
   Data.Trie
@@ -66,6 +69,14 @@ Deprecated features
 * Deprecated `Unit` and `unit` in `Foreign.Haskell` in favour of
   `⊤` and `tt` from `Data.Unit`, as it turns out that the latter have been
   mapped to the Haskell equivalent for quite some time.
+
+* The induction machinary for naturals was commonly held to be one of the hardest
+  modules to find in the library. Therefore the module `Induction.Nat` has been
+  split into two new modules: `Data.Nat.Induction` and `Data.Fin.Induction`.
+  This should improve findability and better matches the design of the rest of
+  the library. The new modules also export `Acc` and `acc` meaning there is no
+  need to import `Data.Induction.WellFounded`.  The old module `Induction.Nat`
+  still exists for backwards compatability but is deprecated.
 
 * In `Reflection`:
   ```agda
