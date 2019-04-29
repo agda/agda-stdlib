@@ -66,7 +66,7 @@ RecA ⊗ RecB = Σ-Rec RecA (λ _ → RecB)
 private
 
   open import Data.Nat
-  open import Data.Nat.Induction as N
+  open import Induction.Nat as N
 
   -- The Ackermann function à la Rózsa Péter.
 
