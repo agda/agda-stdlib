@@ -102,5 +102,5 @@ infix 4 _<?_
 _<?_ : Decidable _<_
 _<?_ = On.decidable toℕ ℕ._<_ ℕₚ._<?_
 
-≈-<-strictTotalOrder : StrictTotalOrder _ _ _
-≈-<-strictTotalOrder = On.strictTotalOrder ℕₚ.<-strictTotalOrder toℕ
+<-strictTotalOrder-≈ : StrictTotalOrder _ _ _
+<-strictTotalOrder-≈ = On.strictTotalOrder ℕₚ.<-strictTotalOrder toℕ
