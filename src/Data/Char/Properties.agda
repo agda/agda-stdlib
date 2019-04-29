@@ -95,7 +95,7 @@ x ≟ y = map′ ≈⇒≡ ≈-reflexive $ x ≈? y
 ------------------------------------------------------------------------
 -- Boolean equality test.
 --
--- Why is the definition _==_ = primCharEquality not used? One reason
+-- Why is the definition _==_ = primCharEquality not used? One reason
 -- is that the present definition can sometimes improve type
 -- inference, at least with the version of Agda that is current at the
 -- time of writing: see unit-test below.
@@ -122,8 +122,8 @@ infix 4 _<?_
 _<?_ : Decidable _<_
 _<?_ = On.decidable toNat ℕ._<_ ℕₚ._<?_
 
-≈-<-strictTotalOrder : StrictTotalOrder _ _ _
-≈-<-strictTotalOrder = On.strictTotalOrder ℕₚ.<-strictTotalOrder toNat
+<-strictTotalOrder-≈ : StrictTotalOrder _ _ _
+<-strictTotalOrder-≈ = On.strictTotalOrder ℕₚ.<-strictTotalOrder toNat
 
 -- Version 1.1
 
@@ -139,8 +139,8 @@ decSetoid = ≡-decSetoid
 Please use ≡-decSetoid instead."
 #-}
 
-strictTotalOrder = ≈-<-strictTotalOrder
+strictTotalOrder = <-strictTotalOrder-≈
 {-# WARNING_ON_USAGE strictTotalOrder
 "Warning: strictTotalOrder was deprecated in v1.1.
-Please use ≈-<-strictTotalOrder instead."
+Please use <-strictTotalOrder-≈ instead."
 #-}

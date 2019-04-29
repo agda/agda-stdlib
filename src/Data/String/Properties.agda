@@ -107,10 +107,10 @@ infix 4 _<?_
 _<?_ : Decidable _<_
 x <? y = StrictLex.<-decidable Charₚ._≈?_ Charₚ._<?_ (toList x) (toList y)
 
-≈-<-strictTotalOrder : StrictTotalOrder _ _ _
-≈-<-strictTotalOrder =
+<-strictTotalOrder-≈ : StrictTotalOrder _ _ _
+<-strictTotalOrder-≈ =
   On.strictTotalOrder
-    (StrictLex.<-strictTotalOrder Charₚ.≈-<-strictTotalOrder)
+    (StrictLex.<-strictTotalOrder Charₚ.<-strictTotalOrder-≈)
     toList
 
 ------------------------------------------------------------------------
@@ -150,8 +150,8 @@ decSetoid = ≡-decSetoid
 Please use ≡-decSetoid instead."
 #-}
 
-strictTotalOrder = ≈-<-strictTotalOrder
+strictTotalOrder = <-strictTotalOrder-≈
 {-# WARNING_ON_USAGE strictTotalOrder
 "Warning: strictTotalOrder was deprecated in v1.1.
-Please use ≈-<-strictTotalOrder instead."
+Please use <-strictTotalOrder-≈ instead."
 #-}

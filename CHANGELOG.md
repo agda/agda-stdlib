@@ -77,7 +77,7 @@ Deprecated features
   ```agda
   setoid           ↦ ≡-setoid
   decSetoid        ↦ ≡-decSetoid
-  strictTotalOrder ↦ ≈-<-strictTotalOrder
+  strictTotalOrder ↦ <-strictTotalOrder-≈
   ```
 
 Other minor additions
