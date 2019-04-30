@@ -70,6 +70,37 @@ Deprecated features
 * The proof `decSetoid` in `Data.Bool` has been deprecated in favour
   of `≡-decSetoid` in `Data.Bool.Properties`.
 
+* The following names have been deprecated in order to improve the consistency
+  of proof names in `Data.Nat.Properties`:
+  ```agda
+  m≢0⇒suc[pred[m]]≡m ↦ suc[pred[n]]≡n
+
+  i+1+j≢i            ↦ m+1+n≢m
+  i+j≡0⇒i≡0          ↦ m+n≡0⇒m≡0
+  i+j≡0⇒j≡0          ↦ m+n≡0⇒n≡0
+  i+1+j≰i            ↦ m+1+n≰m
+  i*j≡0⇒i≡0∨j≡0      ↦ m*n≡0⇒m≡0∨n≡0
+  i*j≡1⇒i≡1          ↦ m*n≡1⇒m≡1
+  i*j≡1⇒j≡1          ↦ m*n≡1⇒n≡1
+  i^j≡0⇒i≡0          ↦ m^n≡0⇒m≡0
+  i^j≡1⇒j≡0∨i≡1      ↦ m^n≡1⇒n≡0∨m≡1
+  [i+j]∸[i+k]≡j∸k    ↦ [m+n]∸[m+o]≡n∸o
+
+  n≡m⇒∣n-m∣≡0        ↦ m≡n⇒∣m-n∣≡0
+  ∣n-m∣≡0⇒n≡m        ↦ ∣m-n∣≡0⇒m≡n
+  ∣n-m∣≡n∸m⇒m≤n      ↦ ∣m-n∣≡m∸n⇒n≤m
+  ∣n-n+m∣≡m          ↦ ∣m-m+n∣≡n
+  ∣n+m-n+o∣≡∣m-o|    ↦ ∣m+n-m+o∣≡∣n-o|
+  n∸m≤∣n-m∣          ↦ m∸n≤∣m-n∣
+  ∣n-m∣≤n⊔m          ↦ ∣m-n∣≤m⊔n
+
+  n≤m+n              ↦ m≤n+m
+  n≤m+n∸m            ↦ m≤n+m∸n
+  ∣n-m∣≡[n∸m]∨[m∸n]  ↦ ∣m-n∣≡[m∸n]∨[n∸m]
+  ```
+  Note that in the case of the last three proofs, the order of the
+  arguments will need to be swapped.
+
 * The following deprecations have occured in `Data.Unit` where the new
   names all live in the new `Data.Unit.Properties` file:
   ```agda
