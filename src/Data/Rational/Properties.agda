@@ -19,6 +19,7 @@ open import Data.Nat.Coprimality as C using (Coprime; coprime?)
 open import Data.Nat.Divisibility hiding (/-cong)
 open import Data.Product using (_,_)
 open import Data.Sum
+open import Level using (0ℓ)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (Dec; yes; no; recompute)
@@ -35,7 +36,24 @@ private
   recomputeCP {n} {d-1} c = recompute (coprime? n (suc d-1)) c
 
 ------------------------------------------------------------------------
--- Equality
+-- Propositional equality
+
+infix 4 _≟_
+
+_≟_ : Decidable {A = ℚ} _≡_
+mkℚ n₁ d₁ _ ≟ mkℚ n₂ d₂ _ with n₁ ℤ.≟ n₂ | d₁ ℕ.≟ d₂
+... | yes refl | yes refl = yes refl
+... | no n₁≢n₂ | _        = no λ { refl → n₁≢n₂ refl }
+... | _        | no d₁≢d₂ = no λ { refl → d₁≢d₂ refl }
+
+≡-setoid : Setoid 0ℓ 0ℓ
+≡-setoid = setoid ℚ
+
+≡-decSetoid : DecSetoid 0ℓ 0ℓ
+≡-decSetoid = decSetoid _≟_
+
+------------------------------------------------------------------------
+-- Numerator and denominator equality
 
 ≡⇒≃ : _≡_ ⇒ _≃_
 ≡⇒≃ refl = refl
@@ -65,13 +83,6 @@ private
   helper with ∣-antisym 1+d₁∣1+d₂ 1+d₂∣1+d₁
   ... | refl with ℤ.*-cancelʳ-≡ n₁ n₂ (+ suc d₁) (λ ()) eq
   ...   | refl = refl
-
-infix 4 _≟_
-
-_≟_ : Decidable {A = ℚ} _≡_
-p ≟ q with (↥ p ℤ.* ↧ q) ℤ.≟ (↥ q ℤ.* ↧ p)
-... | yes pq≃qp = yes (≃⇒≡ pq≃qp)
-... | no ¬pq≃qp = no (¬pq≃qp ∘ ≡⇒≃)
 
 ------------------------------------------------------------------------
 -- _≤_
