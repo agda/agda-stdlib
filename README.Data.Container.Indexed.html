@@ -1,0 +1,102 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>README.Data.Container.Indexed</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Example showing how to define an indexed container</a>
+<a id="160" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="234" class="Symbol">{-#</a> <a id="238" class="Keyword">OPTIONS</a> <a id="246" class="Pragma">--with-K</a> <a id="255" class="Pragma">--safe</a> <a id="262" class="Pragma">--guardedness</a> <a id="276" class="Symbol">#-}</a>
+
+<a id="281" class="Keyword">module</a> <a id="288" href="README.Data.Container.Indexed.html" class="Module">README.Data.Container.Indexed</a> <a id="318" class="Keyword">where</a>
+
+<a id="325" class="Keyword">open</a> <a id="330" class="Keyword">import</a> <a id="337" href="Data.Unit.html" class="Module">Data.Unit</a>
+<a id="347" class="Keyword">open</a> <a id="352" class="Keyword">import</a> <a id="359" href="Data.Empty.html" class="Module">Data.Empty</a>
+<a id="370" class="Keyword">open</a> <a id="375" class="Keyword">import</a> <a id="382" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a>
+<a id="396" class="Keyword">open</a> <a id="401" class="Keyword">import</a> <a id="408" href="Data.Product.html" class="Module">Data.Product</a>
+<a id="421" class="Keyword">open</a> <a id="426" class="Keyword">import</a> <a id="433" href="Function.html" class="Module">Function</a>
+<a id="442" class="Keyword">open</a> <a id="447" class="Keyword">import</a> <a id="454" href="Data.W.Indexed.html" class="Module">Data.W.Indexed</a>
+<a id="469" class="Keyword">open</a> <a id="474" class="Keyword">import</a> <a id="481" href="Data.Container.Indexed.html" class="Module">Data.Container.Indexed</a>
+<a id="504" class="Keyword">open</a> <a id="509" class="Keyword">import</a> <a id="516" href="Data.Container.Indexed.WithK.html" class="Module">Data.Container.Indexed.WithK</a>
+
+<a id="546" class="Keyword">module</a> <a id="553" href="README.Data.Container.Indexed.html#553" class="Module">_</a> <a id="555" class="Symbol">{</a><a id="556" href="README.Data.Container.Indexed.html#556" class="Bound">a</a><a id="557" class="Symbol">}</a> <a id="559" class="Symbol">(</a><a id="560" href="README.Data.Container.Indexed.html#560" class="Bound">A</a> <a id="562" class="Symbol">:</a> <a id="564" class="PrimitiveType">Set</a> <a id="568" href="README.Data.Container.Indexed.html#556" class="Bound">a</a><a id="569" class="Symbol">)</a> <a id="571" class="Keyword">where</a>
+
+<a id="578" class="Comment">------------------------------------------------------------------------</a>
+<a id="651" class="Comment">-- Vector as an indexed container</a>
+
+<a id="686" class="Comment">-- An indexed container is defined by three things:</a>
+<a id="738" class="Comment">-- 1. Commands the user can emit</a>
+<a id="771" class="Comment">-- 2. Responses the indexed container returns to these commands</a>
+<a id="835" class="Comment">-- 3. Update of the index based on the command and the response issued.</a>
+
+<a id="908" class="Comment">-- For a vector, commands are constructors, responses are the number of subvectors</a>
+<a id="991" class="Comment">-- (0 if the vector is empty, 1 otherwise) and the update corresponds to setting the</a>
+<a id="1076" class="Comment">-- size of the tail (if it exists). We can formalize these ideas like so:</a>
+
+<a id="1151" class="Comment">-- Depending on the size of the vector, we may have reached the end already (nil)</a>
+<a id="1233" class="Comment">-- or we may specify what the head should be (cons). This is the type of commands.</a>
+
+  <a id="1319" class="Keyword">data</a> <a id="1324" href="README.Data.Container.Indexed.html#1324" class="Datatype">VecC</a> <a id="1329" class="Symbol">:</a> <a id="1331" href="Agda.Builtin.Nat.html#165" class="Datatype">ℕ</a> <a id="1333" class="Symbol">→</a> <a id="1335" class="PrimitiveType">Set</a> <a id="1339" href="README.Data.Container.Indexed.html#556" class="Bound">a</a> <a id="1341" class="Keyword">where</a>
+    <a id="1351" href="README.Data.Container.Indexed.html#1351" class="InductiveConstructor">nil</a>  <a id="1356" class="Symbol">:</a>           <a id="1368" href="README.Data.Container.Indexed.html#1324" class="Datatype">VecC</a> <a id="1373" href="Agda.Builtin.Nat.html#183" class="InductiveConstructor">zero</a>
+    <a id="1382" href="README.Data.Container.Indexed.html#1382" class="InductiveConstructor">cons</a> <a id="1387" class="Symbol">:</a> <a id="1389" class="Symbol">∀</a> <a id="1391" href="README.Data.Container.Indexed.html#1391" class="Bound">n</a> <a id="1393" class="Symbol">→</a> <a id="1395" href="README.Data.Container.Indexed.html#560" class="Bound">A</a> <a id="1397" class="Symbol">→</a> <a id="1399" href="README.Data.Container.Indexed.html#1324" class="Datatype">VecC</a> <a id="1404" class="Symbol">(</a><a id="1405" href="Agda.Builtin.Nat.html#196" class="InductiveConstructor">suc</a> <a id="1409" href="README.Data.Container.Indexed.html#1391" class="Bound">n</a><a id="1410" class="Symbol">)</a>
+
+  <a id="1415" href="README.Data.Container.Indexed.html#1415" class="Function">Vec</a> <a id="1419" class="Symbol">:</a> <a id="1421" href="Data.Container.Indexed.Core.html#378" class="Record">Container</a> <a id="1431" href="Agda.Builtin.Nat.html#165" class="Datatype">ℕ</a> <a id="1433" href="Agda.Builtin.Nat.html#165" class="Datatype">ℕ</a> <a id="1435" href="README.Data.Container.Indexed.html#556" class="Bound">a</a> <a id="1437" class="Symbol">_</a>
+  <a id="1441" href="Data.Container.Indexed.Core.html#517" class="Field">Command</a> <a id="1449" href="README.Data.Container.Indexed.html#1415" class="Function">Vec</a> <a id="1453" class="Symbol">=</a> <a id="1455" href="README.Data.Container.Indexed.html#1324" class="Datatype">VecC</a>
+
+<a id="1461" class="Comment">-- We then treat each command independently, specifying both the response and the</a>
+<a id="1543" class="Comment">-- next index based on that response.</a>
+
+<a id="1582" class="Comment">-- In the nil case, the response is the empty type: there won&#39;t be any tail. As</a>
+<a id="1662" class="Comment">-- a consequence, the next index won&#39;t be needed (and we can rely on the fact the</a>
+<a id="1744" class="Comment">-- user will never be able to call it).</a>
+
+  <a id="1787" href="Data.Container.Indexed.Core.html#548" class="Field">Response</a> <a id="1796" href="README.Data.Container.Indexed.html#1415" class="Function">Vec</a> <a id="1800" href="README.Data.Container.Indexed.html#1351" class="InductiveConstructor">nil</a> <a id="1804" class="Symbol">=</a> <a id="1806" href="Data.Empty.html#279" class="Datatype">⊥</a>
+  <a id="1810" href="Data.Container.Indexed.Core.html#589" class="Field">next</a>     <a id="1819" href="README.Data.Container.Indexed.html#1415" class="Function">Vec</a> <a id="1823" href="README.Data.Container.Indexed.html#1351" class="InductiveConstructor">nil</a> <a id="1827" class="Symbol">=</a> <a id="1829" class="Symbol">λ</a> <a id="1831" class="Symbol">()</a>
+
+<a id="1835" class="Comment">-- In the cons case, the response is the unit type: there is exactly one tail. The</a>
+<a id="1918" class="Comment">-- next index is the predecessor of the current one. It is handily handed over to</a>
+<a id="2000" class="Comment">-- use by `cons`.</a>
+
+  <a id="2021" class="Comment">-- cons</a>
+  <a id="2031" href="Data.Container.Indexed.Core.html#548" class="Field">Response</a> <a id="2040" href="README.Data.Container.Indexed.html#1415" class="Function">Vec</a> <a id="2044" class="Symbol">(</a><a id="2045" href="README.Data.Container.Indexed.html#1382" class="InductiveConstructor">cons</a> <a id="2050" href="README.Data.Container.Indexed.html#2050" class="Bound">n</a> <a id="2052" href="README.Data.Container.Indexed.html#2052" class="Bound">a</a><a id="2053" class="Symbol">)</a> <a id="2055" class="Symbol">=</a> <a id="2057" href="Agda.Builtin.Unit.html#137" class="Record">⊤</a>
+  <a id="2061" href="Data.Container.Indexed.Core.html#589" class="Field">next</a>     <a id="2070" href="README.Data.Container.Indexed.html#1415" class="Function">Vec</a> <a id="2074" class="Symbol">(</a><a id="2075" href="README.Data.Container.Indexed.html#1382" class="InductiveConstructor">cons</a> <a id="2080" href="README.Data.Container.Indexed.html#2080" class="Bound">n</a> <a id="2082" href="README.Data.Container.Indexed.html#2082" class="Bound">a</a><a id="2083" class="Symbol">)</a> <a id="2085" class="Symbol">=</a> <a id="2087" class="Symbol">λ</a> <a id="2089" href="README.Data.Container.Indexed.html#2089" class="Bound">_</a> <a id="2091" class="Symbol">→</a> <a id="2093" href="README.Data.Container.Indexed.html#2080" class="Bound">n</a>
+
+<a id="2096" class="Comment">-- Finally we can define the type of Vector as the least fixed point of Vec.</a>
+
+  <a id="2176" href="README.Data.Container.Indexed.html#2176" class="Function">Vector</a> <a id="2183" class="Symbol">:</a> <a id="2185" href="Agda.Builtin.Nat.html#165" class="Datatype">ℕ</a> <a id="2187" class="Symbol">→</a> <a id="2189" class="PrimitiveType">Set</a> <a id="2193" href="README.Data.Container.Indexed.html#556" class="Bound">a</a>
+  <a id="2197" href="README.Data.Container.Indexed.html#2176" class="Function">Vector</a> <a id="2204" class="Symbol">=</a> <a id="2206" href="Data.Container.Indexed.html#1289" class="Function">μ</a> <a id="2208" href="README.Data.Container.Indexed.html#1415" class="Function">Vec</a>
+
+<a id="2213" class="Keyword">module</a> <a id="2220" href="README.Data.Container.Indexed.html#2220" class="Module">_</a> <a id="2222" class="Symbol">{</a><a id="2223" href="README.Data.Container.Indexed.html#2223" class="Bound">a</a><a id="2224" class="Symbol">}</a> <a id="2226" class="Symbol">{</a><a id="2227" href="README.Data.Container.Indexed.html#2227" class="Bound">A</a> <a id="2229" class="Symbol">:</a> <a id="2231" class="PrimitiveType">Set</a> <a id="2235" href="README.Data.Container.Indexed.html#2223" class="Bound">a</a><a id="2236" class="Symbol">}</a> <a id="2238" class="Keyword">where</a>
+
+<a id="2245" class="Comment">-- We can recover the usual constructors by using `sup` to enter the fixpoint</a>
+<a id="2323" class="Comment">-- and then using the appropriate pairing of a command &amp; a handler for the</a>
+<a id="2398" class="Comment">-- response.</a>
+
+<a id="2412" class="Comment">-- For [], the response is ⊥ which makes it easy to conclude.</a>
+
+  <a id="2477" href="README.Data.Container.Indexed.html#2477" class="Function">[]</a> <a id="2480" class="Symbol">:</a> <a id="2482" href="README.Data.Container.Indexed.html#2176" class="Function">Vector</a> <a id="2489" href="README.Data.Container.Indexed.html#2227" class="Bound">A</a> <a id="2491" class="Number">0</a>
+  <a id="2495" href="README.Data.Container.Indexed.html#2477" class="Function">[]</a> <a id="2498" class="Symbol">=</a> <a id="2500" href="Data.W.Indexed.html#561" class="InductiveConstructor">sup</a> <a id="2504" class="Symbol">(</a><a id="2505" href="README.Data.Container.Indexed.html#1351" class="InductiveConstructor">nil</a> <a id="2509" href="Agda.Builtin.Sigma.html#209" class="InductiveConstructor Operator">,</a> <a id="2511" class="Symbol">λ</a> <a id="2513" class="Symbol">())</a>
+
+<a id="2518" class="Comment">-- For _∷_, the response is ⊤ so we need to pass a tail. We give the one we took</a>
+<a id="2599" class="Comment">-- as an argument.</a>
+
+  <a id="2621" class="Keyword">infixr</a> <a id="2628" class="Number">3</a> <a id="2630" href="README.Data.Container.Indexed.html#2636" class="Function Operator">_∷_</a>
+  <a id="2636" href="README.Data.Container.Indexed.html#2636" class="Function Operator">_∷_</a> <a id="2640" class="Symbol">:</a> <a id="2642" class="Symbol">∀</a> <a id="2644" class="Symbol">{</a><a id="2645" href="README.Data.Container.Indexed.html#2645" class="Bound">n</a><a id="2646" class="Symbol">}</a> <a id="2648" class="Symbol">→</a> <a id="2650" href="README.Data.Container.Indexed.html#2227" class="Bound">A</a> <a id="2652" class="Symbol">→</a> <a id="2654" href="README.Data.Container.Indexed.html#2176" class="Function">Vector</a> <a id="2661" href="README.Data.Container.Indexed.html#2227" class="Bound">A</a> <a id="2663" href="README.Data.Container.Indexed.html#2645" class="Bound">n</a> <a id="2665" class="Symbol">→</a> <a id="2667" href="README.Data.Container.Indexed.html#2176" class="Function">Vector</a> <a id="2674" href="README.Data.Container.Indexed.html#2227" class="Bound">A</a> <a id="2676" class="Symbol">(</a><a id="2677" href="Agda.Builtin.Nat.html#196" class="InductiveConstructor">suc</a> <a id="2681" href="README.Data.Container.Indexed.html#2645" class="Bound">n</a><a id="2682" class="Symbol">)</a>
+  <a id="2686" href="README.Data.Container.Indexed.html#2686" class="Bound">x</a> <a id="2688" href="README.Data.Container.Indexed.html#2636" class="Function Operator">∷</a> <a id="2690" href="README.Data.Container.Indexed.html#2690" class="Bound">xs</a> <a id="2693" class="Symbol">=</a> <a id="2695" href="Data.W.Indexed.html#561" class="InductiveConstructor">sup</a> <a id="2699" class="Symbol">(</a><a id="2700" href="README.Data.Container.Indexed.html#1382" class="InductiveConstructor">cons</a> <a id="2705" class="Symbol">_</a> <a id="2707" href="README.Data.Container.Indexed.html#2686" class="Bound">x</a> <a id="2709" href="Agda.Builtin.Sigma.html#209" class="InductiveConstructor Operator">,</a> <a id="2711" class="Symbol">λ</a> <a id="2713" href="README.Data.Container.Indexed.html#2713" class="Bound">_</a> <a id="2715" class="Symbol">→</a> <a id="2717" href="README.Data.Container.Indexed.html#2690" class="Bound">xs</a><a id="2719" class="Symbol">)</a>
+
+<a id="2722" class="Comment">-- We can now use these constructors to build up vectors:</a>
+
+<a id="1⋯3"></a><a id="2781" href="README.Data.Container.Indexed.html#2781" class="Function">1⋯3</a> <a id="2785" class="Symbol">:</a> <a id="2787" href="README.Data.Container.Indexed.html#2176" class="Function">Vector</a> <a id="2794" href="Agda.Builtin.Nat.html#165" class="Datatype">ℕ</a> <a id="2796" class="Number">3</a>
+<a id="2798" href="README.Data.Container.Indexed.html#2781" class="Function">1⋯3</a> <a id="2802" class="Symbol">=</a> <a id="2804" class="Number">1</a> <a id="2806" href="README.Data.Container.Indexed.html#2636" class="Function Operator">∷</a> <a id="2808" class="Number">2</a> <a id="2810" href="README.Data.Container.Indexed.html#2636" class="Function Operator">∷</a> <a id="2812" class="Number">3</a> <a id="2814" href="README.Data.Container.Indexed.html#2636" class="Function Operator">∷</a> <a id="2816" href="README.Data.Container.Indexed.html#2477" class="Function">[]</a>
+
+
+
+
+
+<a id="2824" class="Comment">-- Horrible thing to check the definition of _∈_ is not buggy.</a>
+<a id="2887" class="Comment">-- Not sure whether we can say anything interesting about it in the case of Vector...</a>
+
+<a id="2974" class="Keyword">open</a> <a id="2979" class="Keyword">import</a> <a id="2986" href="Relation.Binary.HeterogeneousEquality.html" class="Module">Relation.Binary.HeterogeneousEquality</a>
+
+<a id="3025" href="README.Data.Container.Indexed.html#3025" class="Function">_</a> <a id="3027" class="Symbol">:</a> <a id="3029" href="Data.Container.Indexed.WithK.html#6695" class="Function Operator">_∈_</a> <a id="3033" class="Symbol">{</a><a id="3034" class="Argument">C</a> <a id="3036" class="Symbol">=</a> <a id="3038" href="README.Data.Container.Indexed.html#1415" class="Function">Vec</a> <a id="3042" href="Agda.Builtin.Nat.html#165" class="Datatype">ℕ</a><a id="3043" class="Symbol">}</a> <a id="3045" class="Symbol">{</a><a id="3046" class="Argument">X</a> <a id="3048" class="Symbol">=</a> <a id="3050" href="README.Data.Container.Indexed.html#2176" class="Function">Vector</a> <a id="3057" href="Agda.Builtin.Nat.html#165" class="Datatype">ℕ</a><a id="3058" class="Symbol">}</a> <a id="3060" href="README.Data.Container.Indexed.html#2781" class="Function">1⋯3</a> <a id="3064" class="Symbol">(</a><a id="3065" href="Data.Container.Indexed.Core.html#697" class="Function Operator">⟦</a> <a id="3067" href="README.Data.Container.Indexed.html#1415" class="Function">Vec</a> <a id="3071" href="Agda.Builtin.Nat.html#165" class="Datatype">ℕ</a> <a id="3073" href="Data.Container.Indexed.Core.html#697" class="Function Operator">⟧</a> <a id="3075" class="Symbol">(</a><a id="3076" href="README.Data.Container.Indexed.html#2176" class="Function">Vector</a> <a id="3083" href="Agda.Builtin.Nat.html#165" class="Datatype">ℕ</a><a id="3084" class="Symbol">)</a> <a id="3086" class="Number">4</a> <a id="3088" href="Function.html#4129" class="Function Operator">∋</a> <a id="3090" href="README.Data.Container.Indexed.html#1382" class="InductiveConstructor">cons</a> <a id="3095" class="Symbol">_</a> <a id="3097" class="Number">0</a> <a id="3099" href="Agda.Builtin.Sigma.html#209" class="InductiveConstructor Operator">,</a> <a id="3101" class="Symbol">λ</a> <a id="3103" href="README.Data.Container.Indexed.html#3103" class="Bound">_</a> <a id="3105" class="Symbol">→</a> <a id="3107" href="README.Data.Container.Indexed.html#2781" class="Function">1⋯3</a><a id="3110" class="Symbol">)</a>
+<a id="3112" class="Symbol">_</a> <a id="3114" class="Symbol">=</a> <a id="3116" class="Symbol">_</a> <a id="3118" href="Agda.Builtin.Sigma.html#209" class="InductiveConstructor Operator">,</a> <a id="3120" href="Relation.Binary.HeterogeneousEquality.Core.html#673" class="InductiveConstructor">refl</a>
+</pre></body></html>
