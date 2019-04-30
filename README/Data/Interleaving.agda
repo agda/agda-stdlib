@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module README.Interleaving where
+module README.Data.Interleaving where
 
 open import Level
 open import Data.List.Base hiding (filter)

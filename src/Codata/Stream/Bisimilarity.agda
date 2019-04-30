@@ -12,6 +12,8 @@ open import Size
 open import Codata.Thunk
 open import Codata.Stream
 open import Level
+open import Data.List.NonEmpty as List⁺ using (_∷_)
+open import Data.List.Relation.Binary.Pointwise using (Pointwise; []; _∷_)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
@@ -38,6 +40,30 @@ module _ {a b c} {A : Set a} {B : Set b} {C : Set c}
  transitive trans^PQR (p ∷ ps) (q ∷ qs) =
    trans^PQR p q ∷ λ where .force → transitive trans^PQR (ps .force) (qs .force)
 
+module _ {a r} {A : Set a} {R : Rel A r} where
+
+  isEquivalence : ∀ {i} → IsEquivalence R → IsEquivalence (Bisim R i)
+  isEquivalence equiv^R = record
+    { refl  = reflexive equiv^R.refl
+    ; sym   = symmetric equiv^R.sym
+    ; trans = transitive equiv^R.trans
+    } where module equiv^R = IsEquivalence equiv^R
+
+module _ {a r} (S : Setoid a r) where
+
+  setoid : ∀ i → Setoid a (a ⊔ r)
+  setoid i = record { isEquivalence = isEquivalence {i = i} (Setoid.isEquivalence S) }
+
+module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
+
+  ++⁺ : ∀ {as bs xs ys i} → Pointwise R as bs →
+        Bisim R i xs ys → Bisim R i (as ++ xs) (bs ++ ys)
+  ++⁺ []       rs = rs
+  ++⁺ (r ∷ pw) rs = r ∷ λ where .force → ++⁺ pw rs
+
+  ⁺++⁺ : ∀ {as bs xs ys i} → Pointwise R (List⁺.toList as) (List⁺.toList bs) →
+         Thunk^R (Bisim R) i xs ys → Bisim R i (as ⁺++ xs) (bs ⁺++ ys)
+  ⁺++⁺ (r ∷ pw) rs = r ∷ λ where .force → ++⁺ pw (rs .force)
 
 -- Pointwise Equality as a Bisimilarity
 ------------------------------------------------------------------------
@@ -56,3 +82,7 @@ module _ {ℓ} {A : Set ℓ} where
 
  trans : ∀ {i} → Transitive (i ⊢_≈_)
  trans = transitive Eq.trans
+
+module ≈-Reasoning {a} {A : Set a} {i} where
+
+  open import Relation.Binary.Reasoning.Setoid (setoid (Eq.setoid A) i) public

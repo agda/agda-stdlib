@@ -54,7 +54,10 @@ _≟_ : Decidable {A = ℤ} _≡_
 -[1+ m ] ≟ + n      = no λ()
 -[1+ m ] ≟ -[1+ n ] = Dec.map′ (cong -[1+_]) -[1+-injective (m ℕ.≟ n)
 
-≡-decSetoid : DecSetoid _ _
+≡-setoid : Setoid 0ℓ 0ℓ
+≡-setoid = setoid ℤ
+
+≡-decSetoid : DecSetoid 0ℓ 0ℓ
 ≡-decSetoid = decSetoid _≟_
 
 ------------------------------------------------------------------------
@@ -70,7 +73,7 @@ neg-injective {m} {n} -m≡-n = begin
   m     ≡⟨ sym (neg-involutive m) ⟩
   - - m ≡⟨ cong -_ -m≡-n ⟩
   - - n ≡⟨ neg-involutive n ⟩
-  n ∎ where open ≡-Reasoning
+  n     ∎ where open ≡-Reasoning
 
 neg-suc : ∀ m → - + suc m ≡ pred (- + m)
 neg-suc zero    = refl

@@ -7,7 +7,7 @@
 
 {-# OPTIONS --without-K #-}
 
-module README.Integer where
+module README.Data.Integer where
 
 -- The integers and various arithmetic operations are defined in
 -- Data.Integer.
