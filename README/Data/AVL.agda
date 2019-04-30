@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module README.AVL where
+module README.Data.AVL where
 
 ------------------------------------------------------------------------
 -- Setup
