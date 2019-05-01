@@ -62,7 +62,7 @@ open import Data.These         as These
 
 open import Function using (case_of_; _$_; _∘′_; id)
 
-open import Data.Trie Char.strictTotalOrder
+open import Data.Trie Char.<-strictTotalOrder-≈
 open import Data.AVL.Value
 
 ------------------------------------------------------------------------
