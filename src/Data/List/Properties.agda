@@ -188,11 +188,9 @@ module _ {A : Set a} where
 
   ++-conicalˡ : ∀ (xs ys : List A) → xs ++ ys ≡ [] → xs ≡ []
   ++-conicalˡ []       _ refl = refl
-  ++-conicalˡ (x ∷ xs) _ ()
 
   ++-conicalʳ : ∀ (xs ys : List A) → xs ++ ys ≡ [] → ys ≡ []
   ++-conicalʳ []       _ refl = refl
-  ++-conicalʳ (x ∷ xs) _ ()
 
   ++-conical : Conical [] _++_
   ++-conical = ++-conicalˡ , ++-conicalʳ
@@ -535,7 +533,6 @@ length-applyUpTo f zero    = refl
 length-applyUpTo f (suc n) = P.cong suc (length-applyUpTo (f ∘ suc) n)
 
 lookup-applyUpTo : ∀ (f : ℕ → A) n i → lookup (applyUpTo f n) i ≡ f (toℕ i)
-lookup-applyUpTo f zero  ()
 lookup-applyUpTo f (suc n) zero    = refl
 lookup-applyUpTo f (suc n) (suc i) = lookup-applyUpTo (f ∘ suc) n i
 
@@ -549,7 +546,6 @@ module _ (f : ℕ → A) where
   length-applyDownFrom (suc n) = P.cong suc (length-applyDownFrom n)
 
   lookup-applyDownFrom : ∀ n i → lookup (applyDownFrom f n) i ≡ f (n ∸ (suc (toℕ i)))
-  lookup-applyDownFrom zero  ()
   lookup-applyDownFrom (suc n) zero    = refl
   lookup-applyDownFrom (suc n) (suc i) = lookup-applyDownFrom n i
 
@@ -603,7 +599,6 @@ map-tabulate {n = suc n} g f = P.cong (_ ∷_) (map-tabulate (g ∘ suc) f)
 -- _[_]%=_
 
 length-%= : ∀ xs k (f : A → A) → length (xs [ k ]%= f) ≡ length xs
-length-%= []       ()      f
 length-%= (x ∷ xs) zero    f = refl
 length-%= (x ∷ xs) (suc k) f = P.cong suc (length-%= xs k f)
 
@@ -616,7 +611,6 @@ length-∷= xs k v = length-%= xs k (const v)
 map-∷= : ∀ xs k (v : A) (f : A → B) →
          let eq = P.sym (length-map f xs) in
          map f (xs [ k ]∷= v) ≡ map f xs [ cast eq k ]∷= f v
-map-∷= []       ()      v f
 map-∷= (x ∷ xs) zero    v f = refl
 map-∷= (x ∷ xs) (suc k) v f = P.cong (f x ∷_) (map-∷= xs k v f)
 
@@ -624,15 +618,12 @@ map-∷= (x ∷ xs) (suc k) v f = P.cong (f x ∷_) (map-∷= xs k v f)
 -- _─_
 
 length-─ : ∀ (xs : List A) k → length (xs ─ k) ≡ pred (length xs)
-length-─ []       ()
 length-─ (x ∷ xs) zero        = refl
-length-─ (x ∷ []) (suc ())
 length-─ (x ∷ y ∷ xs) (suc k) = P.cong suc (length-─ (y ∷ xs) k)
 
 map-─ : ∀ xs k (f : A → B) →
         let eq = P.sym (length-map f xs) in
         map f (xs ─ k) ≡ map f xs ─ cast eq k
-map-─ []       ()      f
 map-─ (x ∷ xs) zero    f = refl
 map-─ (x ∷ xs) (suc k) f = P.cong (f x ∷_) (map-─ xs k f)
 
@@ -701,7 +692,6 @@ module _ {P : A → Set p} (P? : Decidable P) where
   ... | yes _   = P.cong (x ∷_) (filter-all pxs)
 
   filter-notAll : ∀ xs → Any (∁ P) xs → length (filter P? xs) < length xs
-  filter-notAll [] ()
   filter-notAll (x ∷ xs) (here ¬px) with P? x
   ... | no  _  = s≤s (length-filter xs)
   ... | yes px = contradiction px ¬px
@@ -830,9 +820,7 @@ module _ {x y : A} where
   ∷ʳ-injective []          []          refl = (refl , refl)
   ∷ʳ-injective (x ∷ xs)    (y  ∷ ys)   eq   with ∷-injective eq
   ... | refl , eq′ = Prod.map (P.cong (x ∷_)) id (∷ʳ-injective xs ys eq′)
-  ∷ʳ-injective []          (_ ∷ [])    ()
   ∷ʳ-injective []          (_ ∷ _ ∷ _) ()
-  ∷ʳ-injective (_ ∷ [])    []          ()
   ∷ʳ-injective (_ ∷ _ ∷ _) []          ()
 
   ∷ʳ-injectiveˡ : ∀ (xs ys : List A) → xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys

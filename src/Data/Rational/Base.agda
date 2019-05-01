@@ -68,7 +68,7 @@ data _≤_ : Rel ℚ 0ℓ where
 -- Negation
 
 pattern +0       = + 0
-pattern +[1+_] n = + suc n
+pattern +[1+_] n = + (ℕ.suc n)
 
 -_ : ℚ → ℚ
 - mkℚ -[1+ n ] d prf = mkℚ +[1+ n ] d prf

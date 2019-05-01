@@ -13,7 +13,7 @@ open import Relation.Nullary using (yes; no)
 open import Relation.Unary using (∁)
 open import Function using (_∘_; flip)
 open import Data.Maybe.Base using (just; nothing)
-open import Data.Sum using (inj₁; inj₂)
+open import Data.Sum as Sum using (inj₁; inj₂)
 open import Data.Product using (_,_)
 open import Data.Empty using (⊥-elim)
 
@@ -154,3 +154,10 @@ module _ {a b p q} {A : Set a} {B : Set b }
 
   map-NonEmpty : P ⇒ Q → NonEmpty P → NonEmpty Q
   map-NonEmpty f x = nonEmpty (f (NonEmpty.proof x))
+
+module _ {a b p q} {A : Set a} {B : Set b }
+         {P : REL A B p} {Q : REL B A q}
+         where
+
+  flip-Connex : Connex P Q → Connex Q P
+  flip-Connex f x y = Sum.swap (f y x)

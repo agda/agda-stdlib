@@ -62,7 +62,6 @@ module _ {t p q} {T : Rel I t} {P : EdgePred p T} {Q : EdgePred q T} where
            Any P Q xs → All R xs → Result T Q R
   lookup (done q ◅ ε)      (↦ r ◅ _)  = result q r
   lookup (step p ◅ ps)     (↦ r ◅ rs) = lookup ps rs
-  lookup (done _ ◅ () ◅ _) _
 
 -- We can define something resembling init.
 

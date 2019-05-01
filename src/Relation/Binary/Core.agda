@@ -127,8 +127,8 @@ Asymmetric _<_ = ∀ {x y} → x < y → ¬ (y < x)
 
 -- Generalised connex - exactly one of the two relations holds.
 
-Conn : REL A B ℓ₁ → REL B A ℓ₂ → Set _
-Conn P Q = ∀ x y → P x y ⊎ Q y x
+Connex : REL A B ℓ₁ → REL B A ℓ₂ → Set _
+Connex P Q = ∀ x y → P x y ⊎ Q y x
 
 -- Totality.
 
@@ -252,3 +252,19 @@ record IsEquivalence {A : Set a} (_≈_ : Rel A ℓ) : Set (a ⊔ ℓ) where
 
   reflexive : _≡_ ⇒ _≈_
   reflexive ≡-refl = refl
+
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 1.1
+
+Conn = Connex
+{-# WARNING_ON_USAGE Conn
+"Warning: Conn was deprecated in v1.1.
+Please use Connex instead."
+#-}
