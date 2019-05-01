@@ -53,6 +53,8 @@ New modules
 Deprecated features
 -------------------
 
+* Renamed `Relation.Binary.Core`'s `Conn` to `Connex`.
+
 * Renamed a few `-identity` lemmas in `Codata.Stream.Properties` as they were
   proving two streams bisimilar rather than propositionally equal.
   ```agda
@@ -157,6 +159,11 @@ Other minor additions
 
 * Added new proofs to `Data.Nat.Properties`:
   ```agda
+  ≤-<-connex : Connex _≤_ _<_
+  ≥->-connex : Connex _≥_ _>_
+  <-≤-connex : Connex _<_ _≤_
+  >-≥-connex : Connex _>_ _≥_
+
   1+n≢0     : suc n ≢ 0
   <ᵇ⇒<      : T (m <ᵇ n) → m < n
   <⇒<ᵇ      : m < n → T (m <ᵇ n)
@@ -192,7 +199,7 @@ Other minor additions
 
 * Added new proof to `Relation.Binary.PropositionalEquality.Core`:
   ```agda
-  ≢-sym : Symmetric {A = A} _≢_
+  ≢-sym : Symmetric _≢_
   ```
 
 * Added new names, functions and shorthand to `Reflection`:
@@ -232,7 +239,11 @@ Other minor additions
   iΠ[_∶_]_ s a ty   = Π[ s ∶ (iArg a) ] ty
   ```
 
+* Added new proofs to `Relation.Binary.Consequences`:
+  ```agda
+  flip-Connex : Connex P Q → Connex Q P
+  ```
+
 * The relation `_≅_` in `Relation.Binary.HeterogeneousEquality` has
   been generalised so that the types of the two equal elements need not
   be at the same universe level.
-

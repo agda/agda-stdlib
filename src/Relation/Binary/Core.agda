@@ -113,11 +113,11 @@ Asymmetric _<_ = ∀ {x y} → x < y → ¬ (y < x)
 
 -- Generalised connex.
 
-Conn : ∀ {a b p q} {A : Set a} {B : Set b} → REL A B p → REL B A q → Set _
-Conn P Q = ∀ x y → P x y ⊎ Q y x
+Connex : ∀ {a b p q} {A : Set a} {B : Set b} → REL A B p → REL B A q → Set _
+Connex P Q = ∀ x y → P x y ⊎ Q y x
 
 Total : ∀ {a ℓ} {A : Set a} → Rel A ℓ → Set _
-Total _∼_ = Conn _∼_ _∼_
+Total _∼_ = Connex _∼_ _∼_
 
 data Tri {a b c} (A : Set a) (B : Set b) (C : Set c) :
          Set (a ⊔ b ⊔ c) where
@@ -194,3 +194,19 @@ record IsEquivalence {a ℓ} {A : Set a}
 
   reflexive : _≡_ ⇒ _≈_
   reflexive ≡-refl = refl
+
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 1.1
+
+Conn = Connex
+{-# WARNING_ON_USAGE Conn
+"Warning: Conn was deprecated in v1.1.
+Please use Connex instead."
+#-}

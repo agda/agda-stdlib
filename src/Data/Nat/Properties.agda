@@ -26,6 +26,7 @@ open import Function
 open import Function.Injection using (_↣_)
 open import Level using (0ℓ)
 open import Relation.Binary
+open import Relation.Binary.Consequences using (flip-Connex)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary
 open import Relation.Nullary.Decidable using (True; via-injection; map′)
@@ -262,6 +263,20 @@ n≤0⇒n≡0 z≤n = refl
 ≤∧≢⇒< {_} {suc n} z≤n       m≢n     = s≤s z≤n
 ≤∧≢⇒< {_} {suc n} (s≤s m≤n) 1+m≢1+n =
   s≤s (≤∧≢⇒< m≤n (1+m≢1+n ∘ cong suc))
+
+≤-<-connex : Connex _≤_ _<_
+≤-<-connex m n with m ≤? n
+... | yes m≤n = inj₁ m≤n
+... | no ¬m≤n = inj₂ (≰⇒> ¬m≤n)
+
+≥->-connex : Connex _≥_ _>_
+≥->-connex = flip ≤-<-connex
+
+<-≤-connex : Connex _<_ _≤_
+<-≤-connex = flip-Connex ≤-<-connex
+
+>-≥-connex : Connex _>_ _≥_
+>-≥-connex = flip-Connex ≥->-connex
 
 ------------------------------------------------------------------------
 -- Relational properties of _<_
