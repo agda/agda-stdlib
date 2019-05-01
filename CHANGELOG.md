@@ -120,6 +120,12 @@ Other minor additions
   toNatDigits : (base : ℕ) {base≤16 : True (1 ≤? base)} → ℕ → List ℕ
   ```
 
+* Added new pattern synonyms to `Data.Integer`:
+  ```agda
+  pattern +0       = + 0
+  pattern +[1+_] n = + (suc n)
+  ```
+
 * Added new proof to `Data.Integer.Properties`:
   ```agda
   ≡-setoid : Setoid 0ℓ 0ℓ
