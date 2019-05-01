@@ -18,7 +18,7 @@ open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence
   using (_⇔_; equivalence; module Equivalence)
 open import Level using (Level; 0ℓ)
-open import Relation.Binary.Core using (Decidable)
+open import Relation.Binary using (Decidable; DecSetoid; Setoid)
 open import Relation.Binary.PropositionalEquality hiding ([_])
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable using (True)
@@ -35,7 +35,7 @@ private
     B : Set b
 
 ------------------------------------------------------------------------
--- Queries
+-- Equality
 
 infix 4 _≟_
 
@@ -44,6 +44,12 @@ true  ≟ true  = yes refl
 false ≟ false = yes refl
 true  ≟ false = no λ()
 false ≟ true  = no λ()
+
+≡-setoid : Setoid 0ℓ 0ℓ
+≡-setoid = setoid Bool
+
+≡-decSetoid : DecSetoid 0ℓ 0ℓ
+≡-decSetoid = decSetoid _≟_
 
 ------------------------------------------------------------------------
 -- Properties of _∨_
@@ -155,9 +161,9 @@ false ≟ true  = no λ()
 ∨-isIdempotentCommutativeMonoid :
   IsIdempotentCommutativeMonoid _∨_ false
 ∨-isIdempotentCommutativeMonoid = record
-    { isCommutativeMonoid = ∨-isCommutativeMonoid
-   ; idem = ∨-idem
-   }
+  { isCommutativeMonoid = ∨-isCommutativeMonoid
+  ; idem                = ∨-idem
+  }
 
 ∨-idempotentCommutativeMonoid : IdempotentCommutativeMonoid 0ℓ 0ℓ
 ∨-idempotentCommutativeMonoid = record
@@ -223,8 +229,8 @@ false ≟ true  = no λ()
 ∧-distribʳ-∨ x y z = begin
   (y ∨ z) ∧ x     ≡⟨ ∧-comm (y ∨ z) x ⟩
   x ∧ (y ∨ z)     ≡⟨ ∧-distribˡ-∨ x y z ⟩
-  x ∧ y ∨ x ∧ z  ≡⟨ cong₂ _∨_ (∧-comm x y) (∧-comm x z) ⟩
-  y ∧ x ∨ z ∧ x  ∎
+  x ∧ y ∨ x ∧ z   ≡⟨ cong₂ _∨_ (∧-comm x y) (∧-comm x z) ⟩
+  y ∧ x ∨ z ∧ x   ∎
 
 ∧-distrib-∨ : _∧_ DistributesOver _∨_
 ∧-distrib-∨ = ∧-distribˡ-∨ , ∧-distribʳ-∨
@@ -377,7 +383,7 @@ false ≟ true  = no λ()
 
 ∨-∧-isDistributiveLattice : IsDistributiveLattice _∨_ _∧_
 ∨-∧-isDistributiveLattice = record
-  { isLattice     = ∨-∧-isLattice
+  { isLattice    = ∨-∧-isLattice
   ; ∨-∧-distribʳ = ∨-distribʳ-∧
   }
 

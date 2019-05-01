@@ -30,10 +30,6 @@ New modules
   Data.List.Relation.Binary.Disjoint.Setoid
   Data.List.Relation.Binary.Disjoint.Setoid.Properties
 
-  Data.List.Relation.Binary.Disjoint.Propositional
-  Data.List.Relation.Binary.Disjoint.Setoid
-  Data.List.Relation.Binary.Disjoint.Setoid.Properties
-
   Data.List.Relation.Unary.AllPairs
   Data.List.Relation.Unary.AllPairs.Properties
   Data.List.Relation.Unary.Unique.Propositional
@@ -41,10 +37,17 @@ New modules
   Data.List.Relation.Unary.Unique.Setoid
   Data.List.Relation.Unary.Unique.Setoid.Properties
 
+  Data.Sign.Base
+
   Data.These.Base
+
+  Data.Unit.Properties
 
   Data.Trie
   Data.Trie.NonEmpty
+
+  Relation.Binary.Construct.Closure.Equivalence.Properties
+  Relation.Binary.Rewriting
   ```
 
 Deprecated features
@@ -63,6 +66,22 @@ Deprecated features
   ap-repeat-commute  ↦ ap-repeat
   map-repeat-commute ↦ map-repeat
   ```
+
+* The proof `decSetoid` in `Data.Bool` has been deprecated in favour
+  of `≡-decSetoid` in `Data.Bool.Properties`.
+
+* The following deprecations have occured in `Data.Unit` where the new
+  names all live in the new `Data.Unit.Properties` file:
+  ```agda
+  setoid        ↦ ≡-setoid
+  decSetoid     ↦ ≡-decSetoid
+  total         ↦ ≤-total
+  poset         ↦ ≤-poset
+  decTotalOrder ↦ ≤-decTotalOrder
+  ```
+  The proof `preorder` has also been deprecated, but as it erroneously proved
+  that `_≡_` (rather than `_≤_`) is a preorder with respect to `_≡_` it does
+  not have a new name in `Data.Unit.Properties`.
 
 * Deprecated `Unit` and `unit` in `Foreign.Haskell` in favour of
   `⊤` and `tt` from `Data.Unit`, as it turns out that the latter have been
@@ -93,6 +112,11 @@ Other minor additions
   map-++                  : i ⊢ map f (as ++ xs) ≈ List.map f as ++ map f xs
   ```
 
+* Added new proof to `Data.Bool.Properties`:
+  ```agda
+  ≡-setoid : Setoid 0ℓ 0ℓ
+  ```
+
 * Added new function to `Data.AVL.Indexed`:
   ```agda
   toList : Tree V l u h → List (K& V)
@@ -100,8 +124,8 @@ Other minor additions
 
 * Added new definitions to `Data.Char.Base`:
   ```agda
-  _≈_ : Rel Char zero
-  _<_ : Rel Char zero
+  _≈_ : Rel Char 0ℓ
+  _<_ : Rel Char 0ℓ
   ```
 
 * Added new properties to `Data.Char.Properties`:
@@ -125,6 +149,11 @@ Other minor additions
 * Added new function to `Data.Digit`:
   ```agda
   toNatDigits : (base : ℕ) {base≤16 : True (1 ≤? base)} → ℕ → List ℕ
+  ```
+
+* Added new proof to `Data.Integer.Properties`:
+  ```agda
+  ≡-setoid : Setoid 0ℓ 0ℓ
   ```
 
 * Added new proof to `Data.List.Relation.Binary.Sublist.Heterogeneous.Properties`:
@@ -174,10 +203,22 @@ Other minor additions
   zip′ : (A → B → C) → (D → E → F) → A × D → B × E → C × F
   ```
 
+* Added new proofs to `Data.Rational.Properties`:
+  ```agda
+  ≡-setoid    : Setoid 0ℓ 0ℓ
+  ≡-decSetoid : DecSetoid 0ℓ 0ℓ
+  ```
+
+* Added new proofs to `Data.Sign.Properties`:
+  ```agda
+  ≡-setoid    : Setoid 0ℓ 0ℓ
+  ≡-decSetoid : DecSetoid 0ℓ 0ℓ
+  ```
+
 * Added new definitions to `Data.String.Base`:
   ```agda
-  _≈_ : Rel String zero
-  _<_ : Rel String zero
+  _≈_ : Rel String 0ℓ
+  _<_ : Rel String 0ℓ
   ```
 
 * Added new properties to `Data.String.Properties`:

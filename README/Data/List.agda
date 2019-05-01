@@ -6,7 +6,7 @@
 
 {-# OPTIONS --warning noMissingDefinitions #-}
 
-module README.List where
+module README.Data.List where
 
 open import Algebra.Structures
 open import Data.Char.Base using (Char; fromNat)

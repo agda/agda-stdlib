@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe --sized-types #-}
 
-module README.Trie.NonDependent where
+module README.Data.Trie.NonDependent where
 
 ------------------------------------------------------------------------
 -- Introduction
