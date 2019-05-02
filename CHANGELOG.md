@@ -8,6 +8,31 @@ Changes since 1.0.1:
 Highlights
 ----------
 
+Bug-fixes
+---------
+
+#### `_<_` in `Data.Integer`
+
+* The definition of `_<_` in `Data.Integer` often resulted in unsolved metas
+  when Agda has to infer the first argument. This was because it was
+  previously implemented in terms of `suc` -> `_+_` -> `_⊖_`.
+
+* To fix this problem the implementation has therefore changed to:
+  ```agda
+  data _<_ : ℤ → ℤ → Set where
+    -<+ : ∀ {m n} → -[1+ m ] < + n
+    -<- : ∀ {m n} → (n<m : n ℕ.< m) → -[1+ m ] < -[1+ n ]
+    +<+ : ∀ {m n} → (m<n : m ℕ.< n) → + m < + n
+  ```
+  which should allow many implicit parameters which previously had
+  to be given explicitly to be removed.
+
+* All proofs involving `_<_` have been updated correspondingly
+
+* For backwards compatability the old relations still exist as primed versions
+  `_<′_` as do all the old proofs, e.g. `+-monoˡ-<` has become `+-monoˡ-<′`,
+  but these have all been deprecated and may be removed in some future version.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -161,7 +186,21 @@ Other minor additions
 
 * Added new proof to `Data.Integer.Properties`:
   ```agda
-  ≡-setoid : Setoid 0ℓ 0ℓ
+  ≡-setoid     : Setoid 0ℓ 0ℓ
+  ≤-totalOrder : TotalOrder 0ℓ 0ℓ 0ℓ
+
+  +[1+-injective : +[1+ m ] ≡ +[1+ n ] → m ≡ n
+  drop‿+<+       : + m < + n → m ℕ.< n
+  drop‿-<-       : -[1+ m ] < -[1+ n ] → n ℕ.< m
+
+  m⊖n≤m          : m ⊖ n ≤ + m
+  m⊖n<1+m        : m ⊖ n < +[1+ m ]
+  m⊖1+n<m        : m ⊖ suc n < + m
+  -[1+m]≤n⊖m+1   : -[1+ m ] ≤ n ⊖ suc m
+  ⊖-monoʳ->-<    : (p ⊖_) Preserves ℕ._>_ ⟶ _<_
+  ⊖-monoˡ-<      : (_⊖ p) Preserves ℕ._<_ ⟶ _<_
+
+  *-distrib-+    : _*_ DistributesOver _+_
   ```
 
 * Added new proof to `Data.List.Relation.Binary.Sublist.Heterogeneous.Properties`:
