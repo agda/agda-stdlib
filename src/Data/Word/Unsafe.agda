@@ -22,3 +22,7 @@ a ≟ b with toℕ a ℕ.≟ toℕ b
 ... | yes _ = yes trustMe
 ... | no  _ = no whatever
   where postulate whatever : _
+{-# WARNING_ON_USAGE _≟_
+"Warning: Data.Word.Unsafe._≟_ was deprecated in v1.1.
+Please use Data.Word._≟_ instead."
+#-}

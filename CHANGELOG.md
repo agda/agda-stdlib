@@ -101,6 +101,8 @@ Deprecated features
   strictTotalOrder ↦ <-strictTotalOrder-≈
   ```
 
+* Deprecated `Data.Word.Unsafe`.
+
 Other minor additions
 ---------------------
 
@@ -302,3 +304,5 @@ Other minor additions
 * The relation `_≅_` in `Relation.Binary.HeterogeneousEquality` has
   been generalised so that the types of the two equal elements need not
   be at the same universe level.
+
+* Added a safe decidable equality `Data.Word._≟_`.
