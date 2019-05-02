@@ -139,11 +139,11 @@ extractHeader mod = extract
 -- | A crude classifier looking for lines containing options & trying to guess
 --   whether the safe file is using either @--guardedness@ or @--sized-types@
 
-data Safety = Unsafe | Safe | SafeGuardedness | SafeSizedTypes
+data Status = Deprecated | Unsafe | Safe | SafeGuardedness | SafeSizedTypes
   deriving (Eq)
 
-classify :: FilePath -> [String] -> Safety
-classify fp ls
+classify :: FilePath -> [String] -> [String] -> Status
+classify fp hd ls
   -- We start with sanity checks
   | isUnsafe && safe          = error $ fp ++ contradiction "unsafe" "safe"
   | not (isUnsafe || safe)    = error $ fp ++ uncategorized "unsafe" "safe"
@@ -151,6 +151,7 @@ classify fp ls
   | isWithK && not withK      = error $ fp ++ missingWithK
   | not (isWithK || withoutK) = error $ fp ++ uncategorized "as relying on K" "without-K"
   -- And then perform the actual classification
+  | deprecated                = Deprecated
   | isUnsafe                  = Unsafe
   | guardedness               = SafeGuardedness
   | sizedtypes                = SafeSizedTypes
@@ -170,6 +171,10 @@ classify fp ls
     safe        = option "--safe"
     withK       = option "--with-K"
     withoutK    = option "--without-K"
+
+    -- based on detected comment in header
+    deprecated  = let detect = List.isSubsequenceOf "This module is DEPRECATED."
+                  in not $ null $ filter detect hd
 
     -- GA 2019-02-24: note that we do not reprocess the whole module for every
     -- option check: the shared @options@ definition ensures we only inspect a
@@ -191,16 +196,17 @@ classify fp ls
 data LibraryFile = LibraryFile
   { filepath   :: FilePath -- ^ FilePath of the source file
   , header     :: [String] -- ^ All lines in the headers are already prefixed with \"-- \".
-  , safety     :: Safety   -- ^ Safety options used by the module
+  , status     :: Status   -- ^ Safety options used by the module
   }
 
 analyse :: FilePath -> IO LibraryFile
 analyse fp = do
   ls <- lines <$> readFileUTF8 fp
+  let hd = extractHeader fp ls
   return $ LibraryFile
     { filepath   = fp
-    , header     = extractHeader fp ls
-    , safety     = classify fp ls
+    , header     = hd
+    , status     = classify fp hd ls
     }
 
 ---------------------------------------------------------------------------
@@ -222,7 +228,7 @@ main = do
                find always
                     (extension ==? ".agda" ||? extension ==? ".lagda")
                     srcDir
-  libraryfiles <- mapM analyse modules
+  libraryfiles <- filter ((Deprecated /=) . status) <$> mapM analyse modules
 
   let mkModule str = "module " ++ str ++ " where"
 
@@ -236,7 +242,7 @@ main = do
     unlines [ header
             , "{-# OPTIONS --guardedness --sized-types #-}\n"
             , mkModule safeOutputFile
-            , format $ filter ((Unsafe /=) . safety) libraryfiles
+            , format $ filter ((Unsafe /=) . status) libraryfiles
             ]
 
   let safeGuardednessOutputFile = safeOutputFile ++ "Guardedness"
@@ -244,7 +250,7 @@ main = do
     unlines [ header
             , "{-# OPTIONS --safe --guardedness #-}\n"
             , mkModule safeGuardednessOutputFile
-            , format $ filter ((SafeGuardedness ==) . safety) libraryfiles
+            , format $ filter ((SafeGuardedness ==) . status) libraryfiles
             ]
 
   let safeSizedTypesOutputFile = safeOutputFile ++ "SizedTypes"
@@ -252,7 +258,7 @@ main = do
     unlines [ header
             , "{-# OPTIONS --safe --sized-types #-}\n"
             , mkModule safeSizedTypesOutputFile
-            , format $ filter ((SafeSizedTypes ==) . safety) libraryfiles
+            , format $ filter ((SafeSizedTypes ==) . status) libraryfiles
             ]
 
 -- | Usage info.

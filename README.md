@@ -12,7 +12,7 @@ html [here](https://agda.github.io/agda-stdlib/README.html).
 ## Installation instructions
 
 See the instructions [here](https://github.com/agda/agda-stdlib/blob/master/notes/installation-guide.md)
-for how to install version 1.0 of the standard library.
+for how to install version 1.0.1 of the standard library.
 
 ## Non-standard versions of Agda
 

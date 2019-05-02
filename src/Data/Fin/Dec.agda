@@ -1,8 +1,6 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Decision procedures for finite sets and subsets of finite sets
---
 -- This module is DEPRECATED. Please use the Data.Fin.Properties
 -- and Data.Fin.Subset.Properties directly.
 ------------------------------------------------------------------------
@@ -17,3 +15,8 @@ open import Data.Fin.Properties public
 open import Data.Fin.Subset.Properties public
   using (_∈?_; _⊆?_; nonempty?; anySubset?)
   renaming (Lift? to decLift)
+
+{-# WARNING_ON_IMPORT
+"Data.Fin.Dec was deprecated in v0.17.
+Use Data.Fin.Properties and Data.Fin.Subset.Properties instead."
+#-}
