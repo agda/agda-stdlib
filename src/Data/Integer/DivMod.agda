@@ -28,7 +28,7 @@ open import Relation.Binary.PropositionalEquality
 
 infixl 7 _divℕ_ _div_ _modℕ_ _mod_
 _divℕ_ : (dividend : ℤ) (divisor : ℕ) {≢0 : False (divisor ℕ.≟ 0)} → ℤ
-(+ n      divℕ d) {d≠0} = + (n NDM.div d) {d≠0}
+(+ n      divℕ d) {d≠0} = + (n NDM./ d) {d≠0}
 (-[1+ n ] divℕ d) {d≠0} with (ℕ.suc n NDM.divMod d) {d≠0}
 ... | NDM.result q Fin.zero    eq = - (+ q)
 ... | NDM.result q (Fin.suc r) eq = -[1+ q ]
@@ -59,7 +59,7 @@ n%d<d n -[1+ d ]    = n%ℕd<d n (ℕ.suc d)
 
 a≡a%ℕn+[a/ℕn]*n : ∀ n d {d≢0} → n ≡ + (n modℕ d) {d≢0} + (n divℕ d) {d≢0} * + d
 a≡a%ℕn+[a/ℕn]*n _ ℕ.zero {()}
-a≡a%ℕn+[a/ℕn]*n (+ n) sd@(ℕ.suc d) = let q = n NDM.div sd; r = n NDM.% sd in begin
+a≡a%ℕn+[a/ℕn]*n (+ n) sd@(ℕ.suc d) = let q = n NDM./ sd; r = n NDM.% sd in begin
   + n                ≡⟨ cong +_ (NDM.a≡a%n+[a/n]*n n d) ⟩
   + (r ℕ.+ q ℕ.* sd) ≡⟨ pos-+-commute r (q ℕ.* sd) ⟩
   + r + + (q ℕ.* sd) ≡⟨ cong (_+_ (+ (+ n modℕ sd))) (sym (pos-distrib-* q sd)) ⟩
@@ -124,7 +124,7 @@ div-neg-is-neg-divℕ n (ℕ.suc d) = -1*n≡-n (n divℕ ℕ.suc d)
 0≤n⇒0≤n/d : ∀ n d {d≢0} → + 0 ℤ.≤ n → + 0 ℤ.≤ d → + 0 ℤ.≤ (n div d) {d≢0}
 0≤n⇒0≤n/d n (+ d) {d≢0} 0≤n (+≤+ 0≤d)
   rewrite div-pos-is-divℕ n d {d≢0}
-        = 0≤n⇒0≤n/ℕd n d 0≤n
+        = 0≤n⇒0≤n/ℕd n d {d≢0} 0≤n
 
 [n/d]*d≤n : ∀ n d {d≢0} → (n div d) {d≢0} ℤ.* d ℤ.≤ n
 [n/d]*d≤n n (+ 0) {()}

@@ -72,6 +72,13 @@ Deprecated features
 * The proof `decSetoid` in `Data.Bool` has been deprecated in favour
   of `≡-decSetoid` in `Data.Bool.Properties`.
 
+* In `Data.Nat.Divisibility`:
+  ```agda
+  poset  ↦ ∣-poset
+  *-cong ↦ *-monoʳ-∣
+  /-cong ↦ *-cancelˡ-∣
+  ```
+
 * The following deprecations have occured in `Data.Unit` where the new
   names all live in the new `Data.Unit.Properties` file:
   ```agda
@@ -183,9 +190,22 @@ Other minor additions
   _>>=_     : Maybe A → (A → Maybe B) → Maybe B
   ```
 
-* Added new proof to `Data.Nat.DivMod`:
+* Added new proofs to `Data.Nat.Divisibility`:
   ```agda
-  [a/n]*n≤a : (a div (suc n)) * (suc n) ≤ a
+  ∣n∣m%n⇒∣m : d ∣ suc n → d ∣ (m % suc n) → d ∣ m
+  %-presˡ-∣ : d ∣ m → d ∣ suc n → d ∣ (m % suc n)
+  ```
+
+* Added new operator and proofs to `Data.Nat.DivMod`:
+  ```agda
+  _/_ = _div_
+
+  a%n≤a       : a % (suc n) ≤ a
+  a≤n⇒a%n≡a   : a ≤ n → a % suc n ≡ a
+  %-remove-+ˡ : a % suc n ≡ 0 → (a + b) % suc n ≡ b % suc n
+  %-remove-+ʳ : b % suc n ≡ 0 → (a + b) % suc n ≡ a % suc n
+
+  [a/n]*n≤a   : (a / suc n) * suc n ≤ a
   ```
 
 * Added new proofs to `Data.Nat.Properties`:
