@@ -130,10 +130,10 @@ record DivMod (dividend divisor : ℕ) : Set where
     remainder : Fin divisor
     property  : dividend ≡ toℕ remainder + quotient * divisor
 
-infixl 7 _mod_ _divMod_ -- _div_
+infixl 7 _div_ _mod_ _divMod_
 
--- _div_ : (dividend divisor : ℕ) .{≢0 : False (divisor ≟ 0)} → ℕ
--- _div_ = _/_
+_div_ : (dividend divisor : ℕ) .{≢0 : False (divisor ≟ 0)} → ℕ
+_div_ = _/_
 
 _mod_ : (dividend divisor : ℕ) .{≢0 : False (divisor ≟ 0)} → Fin divisor
 a mod (suc n) = fromℕ≤ (a%n<n a n)

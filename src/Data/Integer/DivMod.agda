@@ -46,19 +46,16 @@ _mod_ : (dividend divisor : ℤ) {≠0 : False (∣ divisor ∣ ℕ.≟ 0)} → 
 (n mod d) {d≢0} = (n modℕ ∣ d ∣) {d≢0}
 
 n%ℕd<d : ∀ n d {d≢0} → (n modℕ d) {d≢0} ℕ.< d
-n%ℕd<d n ℕ.zero {()}
 n%ℕd<d (+ n)    sd@(ℕ.suc d) = NDM.a%n<n n d
 n%ℕd<d -[1+ n ] sd@(ℕ.suc d) with ℕ.suc n NDM.divMod sd
 ... | NDM.result q Fin.zero    eq = ℕ.s≤s ℕ.z≤n
 ... | NDM.result q (Fin.suc r) eq = ℕ.s≤s (NProp.n∸m≤n (Fin.toℕ r) d)
 
 n%d<d : ∀ n d {d≢0} → (n mod d) {d≢0} ℕ.< ℤ.∣ d ∣
-n%d<d n (+ 0) {()}
 n%d<d n (+ ℕ.suc d) = n%ℕd<d n (ℕ.suc d)
 n%d<d n -[1+ d ]    = n%ℕd<d n (ℕ.suc d)
 
 a≡a%ℕn+[a/ℕn]*n : ∀ n d {d≢0} → n ≡ + (n modℕ d) {d≢0} + (n divℕ d) {d≢0} * + d
-a≡a%ℕn+[a/ℕn]*n _ ℕ.zero {()}
 a≡a%ℕn+[a/ℕn]*n (+ n) sd@(ℕ.suc d) = let q = n NDM./ sd; r = n NDM.% sd in begin
   + n                ≡⟨ cong +_ (NDM.a≡a%n+[a/n]*n n d) ⟩
   + (r ℕ.+ q ℕ.* sd) ≡⟨ pos-+-commute r (q ℕ.* sd) ⟩
@@ -104,18 +101,15 @@ a≡a%ℕn+[a/ℕn]*n -[1+ n ] sd@(ℕ.suc d) with (ℕ.suc n) NDM.divMod (ℕ.s
     fin-inv (ℕ.suc n) (Fin.suc k) = ⊖-≥ {n} {Fin.toℕ k} (NProp.<⇒≤ (FProp.toℕ<n k))
 
 [n/ℕd]*d≤n : ∀ n d {d≢0} → (n divℕ d) {d≢0} ℤ.* ℤ.+ d ℤ.≤ n
-[n/ℕd]*d≤n n ℕ.zero {()}
 [n/ℕd]*d≤n n (ℕ.suc d) = let q = n divℕ ℕ.suc d; r = n modℕ ℕ.suc d in begin
   q ℤ.* ℤ.+ (ℕ.suc d)           ≤⟨ n≤m+n r ⟩
   ℤ.+ r ℤ.+ q ℤ.* ℤ.+ (ℕ.suc d) ≡⟨ sym (a≡a%ℕn+[a/ℕn]*n n (ℕ.suc d)) ⟩
   n                             ∎ where open ≤-Reasoning
 
 div-pos-is-divℕ : ∀ n d {d≢0} → (n div + d) {d≢0} ≡ (n divℕ d) {d≢0}
-div-pos-is-divℕ n ℕ.zero {()}
 div-pos-is-divℕ n (ℕ.suc d) = *-identityˡ (n divℕ ℕ.suc d)
 
 div-neg-is-neg-divℕ : ∀ n d {d≢0} {∣d∣≢0} → (n div (- ℤ.+ d)) {∣d∣≢0} ≡ - (n divℕ d) {d≢0}
-div-neg-is-neg-divℕ n ℕ.zero {()}
 div-neg-is-neg-divℕ n (ℕ.suc d) = -1*n≡-n (n divℕ ℕ.suc d)
 
 0≤n⇒0≤n/ℕd : ∀ n d {d≢0} → + 0 ℤ.≤ n → + 0 ℤ.≤ (n divℕ d) {d≢0}
@@ -127,7 +121,6 @@ div-neg-is-neg-divℕ n (ℕ.suc d) = -1*n≡-n (n divℕ ℕ.suc d)
         = 0≤n⇒0≤n/ℕd n d {d≢0} 0≤n
 
 [n/d]*d≤n : ∀ n d {d≢0} → (n div d) {d≢0} ℤ.* d ℤ.≤ n
-[n/d]*d≤n n (+ 0) {()}
 [n/d]*d≤n n (+ ℕ.suc d) = begin let sd = ℕ.suc d in
   n div + sd * + sd ≡⟨ cong (_* (+ sd)) (div-pos-is-divℕ n sd) ⟩
   n divℕ sd * + sd  ≤⟨ [n/ℕd]*d≤n n sd ⟩
@@ -140,7 +133,6 @@ div-neg-is-neg-divℕ n (ℕ.suc d) = -1*n≡-n (n divℕ ℕ.suc d)
   n ∎ where open ≤-Reasoning
 
 n<s[n/ℕd]*d : ∀ n d {d≢0} → n ℤ.< ℤ.suc ((n divℕ d) {d≢0}) ℤ.* ℤ.+ d
-n<s[n/ℕd]*d n ℕ.zero {()}
 n<s[n/ℕd]*d n sd@(ℕ.suc d) = begin
   suc n                     ≡⟨ cong suc (a≡a%ℕn+[a/ℕn]*n n sd) ⟩
   suc (ℤ.+ r ℤ.+ q ℤ.* +sd) ≤⟨ +-monoˡ-< (q ℤ.* +sd) {ℤ.+ r} (ℤ.+≤+ (n%ℕd<d n sd)) ⟩
@@ -150,7 +142,6 @@ n<s[n/ℕd]*d n sd@(ℕ.suc d) = begin
   open ≤-Reasoning
 
 a≡a%n+[a/n]*n : ∀ a n {≢0} → a ≡ + (a mod n) {≢0} + (a div n) {≢0} * n
-a≡a%n+[a/n]*n n (+ 0) {()}
 a≡a%n+[a/n]*n n (+ ℕ.suc d) = begin
   let sd = ℕ.suc d; r = n modℕ sd; q = n divℕ sd; qsd = q * + sd in
   n                       ≡⟨ a≡a%ℕn+[a/ℕn]*n n sd ⟩
