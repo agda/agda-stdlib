@@ -207,6 +207,9 @@ Other minor additions
 
   [a/n]*n≤a   : (a / suc n) * suc n ≤ a
   ```
+  Additionally the `{≢0 : False (divisor ℕ.≟ 0)}` argument to all the
+  functions has been made irrelevant. This means that the operations
+  `_%_`, `_/_` etc. can now be used with `cong`.
 
 * Added new proofs to `Data.Nat.Properties`:
   ```agda
