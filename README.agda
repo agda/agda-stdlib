@@ -7,13 +7,13 @@ module README where
 -- with contributions from Andreas Abel, Stevan Andjelkovic,
 -- Jean-Philippe Bernardy, Peter Berry, Bradley Hardy Joachim Breitner,
 -- Samuel Bronson, Daniel Brown, James Chapman, Liang-Ting Chen,
--- Dominique Devriese, Dan Doel, Érdi Gergő, Helmut Grohne,
--- Simon Foster, Liyang Hu, Jason Hu, Patrik Jansson, Alan Jeffrey,
--- Wen Kokke, Evgeny Kotelnikov, Sergei Meshveliani, Eric Mertens,
--- Darin Morrison, Guilhem Moulin, Shin-Cheng Mu, Ulf Norell,
--- Noriyuki Ohkawa, Nicolas Pouillard, Andrés Sicard-Ramírez,
--- Sandro Stucki, Milo Turner, Noam Zeilberger and other anonymous
--- contributors.
+-- Dominique Devriese, Dan Doel, Érdi Gergő, Zack Grannan,
+-- Helmut Grohne, Simon Foster, Liyang Hu, Jason Hu, Patrik Jansson,
+-- Alan Jeffrey, Wen Kokke, Evgeny Kotelnikov, Sergei Meshveliani,
+-- Eric Mertens, Darin Morrison, Guilhem Moulin, Shin-Cheng Mu,
+-- Ulf Norell, Noriyuki Ohkawa, Nicolas Pouillard,
+-- Andrés Sicard-Ramírez, Sandro Stucki, Milo Turner, Noam Zeilberger
+-- and other anonymous contributors.
 ------------------------------------------------------------------------
 
 -- This version of the library has been tested using Agda 2.6.0.
