@@ -23,6 +23,9 @@ matrix:
           sources:
             - hvr-ghc
 
+env:
+  - RTS_OPTIONS=+RTS -M1.5G -H1.5G -A128M -RTS
+
 before_install:
   - export PATH=/opt/ghc/$GHC_VER/bin:/opt/cabal/$CABAL_VER/bin:/opt/alex/3.1.7/bin:/opt/happy/1.19.5/bin:~/.cabal/bin/:$PATH;
 
@@ -71,13 +74,13 @@ script:
   # detecting whitespace violations
   - make check-whitespace
   # checking safe modules build with --safe
-  - agda -i . -i src/ --safe EverythingSafeGuardedness.agda
-  - agda -i . -i src/ --safe EverythingSafeSizedTypes.agda
+  - agda $RTS_OPTIONS -i . -i src/ --safe EverythingSafeGuardedness.agda
+  - agda $RTS_OPTIONS -i . -i src/ --safe EverythingSafeSizedTypes.agda
   # detecting basic compilation errors
-  - agda -i . -i src/ -c --no-main Everything.agda
+  - agda $RTS_OPTIONS -i . -i src/ -c --no-main Everything.agda
   # building the docs
-  - agda -i . -i src/ --html safe.agda
-  - agda -i . -i src/ --html index.agda
+  - agda $RTS_OPTIONS -i . -i src/ --html safe.agda
+  - agda $RTS_OPTIONS -i . -i src/ --html index.agda
   # moving everything to the doc directory
   - mv html/* .
 

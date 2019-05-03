@@ -1,4 +1,6 @@
-AGDA=agda
+AGDA_EXEC=agda
+RTS_OPTIONS=+RTS -M1.5G -H1.5G -A128M -RTS
+AGDA=$(AGDA_EXEC) $(RTS_OPTIONS)
 
 # Before running `make test` the `fix-agda-whitespace` program should
 # be installed:
@@ -7,7 +9,7 @@ AGDA=agda
 #   cabal install
 
 test: Everything.agda check-whitespace
-	$(AGDA) -i. -isrc README.agda RTS -M1.5G -H1.5G -A128M -RTS
+	$(AGDA) -i. -isrc README.agda
 
 check-whitespace:
 	cabal exec -- fix-agda-whitespace --check
@@ -21,7 +23,7 @@ Everything.agda:
 
 .PHONY: listings
 listings: Everything.agda
-	$(AGDA) -i. -isrc --html README.agda -v0 RTS -M1.5G -H1.5G -A128M -RTS
+	$(AGDA) -i. -isrc --html README.agda -v0
 
 clean :
 	find . -type f -name '*.agdai' -delete
