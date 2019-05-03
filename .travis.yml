@@ -64,7 +64,7 @@ install:
   - cp travis/* .
 
 before_script:
-  - export RTS_OPTIONS="+RTS -M2G -H2G -A128M -RTS"
+  - export RTS_OPTIONS="+RTS -M2.5G -H2.5G -A128M -RTS"
 
 script:
   # generating index.agda
