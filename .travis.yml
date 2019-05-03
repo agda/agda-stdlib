@@ -71,6 +71,8 @@ script:
   - ./index.sh
   # detecting whitespace violations
   - make check-whitespace
+  # expose the value of RTS_OPTIONS
+  - echo $RTS_OPTIONS
   # checking safe modules build with --safe
   - agda $RTS_OPTIONS -i . -i src/ --safe EverythingSafeGuardedness.agda
   - agda $RTS_OPTIONS -i . -i src/ --safe EverythingSafeSizedTypes.agda
