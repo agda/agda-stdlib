@@ -296,7 +296,6 @@ Other minor additions
 
 * Added new definition in `Relation.Binary.Core`:
   ```agda
-  Refl _≈_ _∼_  = _≈_ ⇒ _∼_
   Universal _∼_ = ∀ x y → x ∼ y
   ```
 

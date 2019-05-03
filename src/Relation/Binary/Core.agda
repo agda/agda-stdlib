@@ -28,7 +28,8 @@ private
     C : Set c
 
 ------------------------------------------------------------------------
--- Binary relations
+-- Definition.
+------------------------------------------------------------------------
 
 -- Heterogeneous binary relations
 
@@ -41,7 +42,8 @@ Rel : Set a → (ℓ : Level) → Set (a ⊔ suc ℓ)
 Rel A ℓ = REL A A ℓ
 
 ------------------------------------------------------------------------
--- Simple properties of binary relations
+-- Simple properties
+------------------------------------------------------------------------
 
 infixr 4 _⇒_ _=[_]⇒_
 
@@ -66,15 +68,12 @@ _Preserves₂_⟶_⟶_ : (A → B → C) → Rel A ℓ₁ → Rel B ℓ₂ → R
 _+_ Preserves₂ P ⟶ Q ⟶ R =
   ∀ {x y u v} → P x y → Q u v → R (x + u) (y + v)
 
--- Reflexivity parameterised by an underlying equality.
+-- Reflexivity - defined without an underlying equality. It could
+-- alternatively be defined as `_≈_ ⇒ _∼_` for some equality `_≈_`.
 
-Refl : Rel A ℓ₁ → Rel A ℓ₂ → Set _
-Refl _≈_ _∼_ = _≈_ ⇒ _∼_
-
--- Reflexivity without an underlying equality - confusingly the
--- convention in the library is to use the name "refl" for proofs
--- of Reflexive and `reflexive` for proofs of type Refl, e.g. in
--- the definition of `IsEquivalence` later in this file. This
+-- Confusingly the convention in the library is to use the name "refl"
+-- for proofs of Reflexive and `reflexive` for proofs of type `_≈_ ⇒ _∼_`,
+-- e.g. in the definition of `IsEquivalence` later in this file. This
 -- convention is a legacy from the early days of the library.
 
 Reflexive : Rel A ℓ → Set _
@@ -133,7 +132,7 @@ Connex P Q = ∀ x y → P x y ⊎ Q y x
 -- Totality.
 
 Total : Rel A ℓ → Set _
-Total _∼_ = Conn _∼_ _∼_
+Total _∼_ = Connex _∼_ _∼_
 
 -- Generalised trichotomy - exactly one of three types has a witness.
 
