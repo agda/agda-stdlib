@@ -21,7 +21,7 @@
 
 <a id="553" class="Keyword">infix</a> <a id="559" class="Number">4</a> <a id="561" href="Data.Unit.Properties.html#566" class="Function Operator">_≟_</a>
 
-<a id="_≟_"></a><a id="566" href="Data.Unit.Properties.html#566" class="Function Operator">_≟_</a> <a id="570" class="Symbol">:</a> <a id="572" href="Relation.Binary.Core.html#5219" class="Function">Decidable</a> <a id="582" class="Symbol">{</a><a id="583" class="Argument">A</a> <a id="585" class="Symbol">=</a> <a id="587" href="Agda.Builtin.Unit.html#137" class="Record">⊤</a><a id="588" class="Symbol">}</a> <a id="590" href="Agda.Builtin.Equality.html#125" class="Datatype Operator">_≡_</a>
+<a id="_≟_"></a><a id="566" href="Data.Unit.Properties.html#566" class="Function Operator">_≟_</a> <a id="570" class="Symbol">:</a> <a id="572" href="Relation.Binary.Core.html#5557" class="Function">Decidable</a> <a id="582" class="Symbol">{</a><a id="583" class="Argument">A</a> <a id="585" class="Symbol">=</a> <a id="587" href="Agda.Builtin.Unit.html#137" class="Record">⊤</a><a id="588" class="Symbol">}</a> <a id="590" href="Agda.Builtin.Equality.html#125" class="Datatype Operator">_≡_</a>
 <a id="594" class="Symbol">_</a> <a id="596" href="Data.Unit.Properties.html#566" class="Function Operator">≟</a> <a id="598" class="Symbol">_</a> <a id="600" class="Symbol">=</a> <a id="602" href="Relation.Nullary.html#606" class="InductiveConstructor">yes</a> <a id="606" href="Agda.Builtin.Equality.html#182" class="InductiveConstructor">refl</a>
 
 <a id="≡-setoid"></a><a id="612" href="Data.Unit.Properties.html#612" class="Function">≡-setoid</a> <a id="621" class="Symbol">:</a> <a id="623" href="Relation.Binary.html#1930" class="Record">Setoid</a> <a id="630" href="Level.html#506" class="Function">0ℓ</a> <a id="633" href="Level.html#506" class="Function">0ℓ</a>
@@ -35,21 +35,21 @@
 
 <a id="797" class="Comment">-- Relational properties</a>
 
-<a id="≤-reflexive"></a><a id="823" href="Data.Unit.Properties.html#823" class="Function">≤-reflexive</a> <a id="835" class="Symbol">:</a> <a id="837" href="Agda.Builtin.Equality.html#125" class="Datatype Operator">_≡_</a> <a id="841" href="Relation.Binary.Core.html#1240" class="Function Operator">⇒</a> <a id="843" href="Data.Unit.Base.html#639" class="Record Operator">_≤_</a>
+<a id="≤-reflexive"></a><a id="823" href="Data.Unit.Properties.html#823" class="Function">≤-reflexive</a> <a id="835" class="Symbol">:</a> <a id="837" href="Agda.Builtin.Equality.html#125" class="Datatype Operator">_≡_</a> <a id="841" href="Relation.Binary.Core.html#1383" class="Function Operator">⇒</a> <a id="843" href="Data.Unit.Base.html#639" class="Record Operator">_≤_</a>
 <a id="847" href="Data.Unit.Properties.html#823" class="Function">≤-reflexive</a> <a id="859" class="Symbol">_</a> <a id="861" class="Symbol">=</a> <a id="863" class="Symbol">_</a>
 
-<a id="≤-trans"></a><a id="866" href="Data.Unit.Properties.html#866" class="Function">≤-trans</a> <a id="874" class="Symbol">:</a> <a id="876" href="Relation.Binary.Core.html#3005" class="Function">Transitive</a> <a id="887" href="Data.Unit.Base.html#639" class="Record Operator">_≤_</a>
+<a id="≤-trans"></a><a id="866" href="Data.Unit.Properties.html#866" class="Function">≤-trans</a> <a id="874" class="Symbol">:</a> <a id="876" href="Relation.Binary.Core.html#2848" class="Function">Transitive</a> <a id="887" href="Data.Unit.Base.html#639" class="Record Operator">_≤_</a>
 <a id="891" href="Data.Unit.Properties.html#866" class="Function">≤-trans</a> <a id="899" class="Symbol">_</a> <a id="901" class="Symbol">_</a> <a id="903" class="Symbol">=</a> <a id="905" class="Symbol">_</a>
 
-<a id="≤-antisym"></a><a id="908" href="Data.Unit.Properties.html#908" class="Function">≤-antisym</a> <a id="918" class="Symbol">:</a> <a id="920" href="Relation.Binary.Core.html#3278" class="Function">Antisymmetric</a> <a id="934" href="Agda.Builtin.Equality.html#125" class="Datatype Operator">_≡_</a> <a id="938" href="Data.Unit.Base.html#639" class="Record Operator">_≤_</a>
+<a id="≤-antisym"></a><a id="908" href="Data.Unit.Properties.html#908" class="Function">≤-antisym</a> <a id="918" class="Symbol">:</a> <a id="920" href="Relation.Binary.Core.html#3064" class="Function">Antisymmetric</a> <a id="934" href="Agda.Builtin.Equality.html#125" class="Datatype Operator">_≡_</a> <a id="938" href="Data.Unit.Base.html#639" class="Record Operator">_≤_</a>
 <a id="942" href="Data.Unit.Properties.html#908" class="Function">≤-antisym</a>  <a id="953" class="Symbol">_</a> <a id="955" class="Symbol">_</a> <a id="957" class="Symbol">=</a> <a id="959" href="Agda.Builtin.Equality.html#182" class="InductiveConstructor">refl</a>
 
-<a id="≤-total"></a><a id="965" href="Data.Unit.Properties.html#965" class="Function">≤-total</a> <a id="973" class="Symbol">:</a> <a id="975" href="Relation.Binary.Core.html#3627" class="Function">Total</a> <a id="981" href="Data.Unit.Base.html#639" class="Record Operator">_≤_</a>
+<a id="≤-total"></a><a id="965" href="Data.Unit.Properties.html#965" class="Function">≤-total</a> <a id="973" class="Symbol">:</a> <a id="975" href="Relation.Binary.Core.html#3566" class="Function">Total</a> <a id="981" href="Data.Unit.Base.html#639" class="Record Operator">_≤_</a>
 <a id="985" href="Data.Unit.Properties.html#965" class="Function">≤-total</a> <a id="993" class="Symbol">_</a> <a id="995" class="Symbol">_</a> <a id="997" class="Symbol">=</a> <a id="999" href="Data.Sum.Base.html#662" class="InductiveConstructor">inj₁</a> <a id="1004" class="Symbol">_</a>
 
 <a id="1007" class="Keyword">infix</a> <a id="1013" class="Number">4</a> <a id="1015" href="Data.Unit.Properties.html#1021" class="Function Operator">_≤?_</a>
 
-<a id="_≤?_"></a><a id="1021" href="Data.Unit.Properties.html#1021" class="Function Operator">_≤?_</a> <a id="1026" class="Symbol">:</a> <a id="1028" href="Relation.Binary.Core.html#5219" class="Function">Decidable</a> <a id="1038" href="Data.Unit.Base.html#639" class="Record Operator">_≤_</a>
+<a id="_≤?_"></a><a id="1021" href="Data.Unit.Properties.html#1021" class="Function Operator">_≤?_</a> <a id="1026" class="Symbol">:</a> <a id="1028" href="Relation.Binary.Core.html#5557" class="Function">Decidable</a> <a id="1038" href="Data.Unit.Base.html#639" class="Record Operator">_≤_</a>
 <a id="1042" class="Symbol">_</a> <a id="1044" href="Data.Unit.Properties.html#1021" class="Function Operator">≤?</a> <a id="1047" class="Symbol">_</a> <a id="1049" class="Symbol">=</a> <a id="1051" href="Relation.Nullary.html#606" class="InductiveConstructor">yes</a> <a id="1055" class="Symbol">_</a>
 
 <a id="1058" class="Comment">-- Structures</a>

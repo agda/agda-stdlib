@@ -8,7 +8,7 @@
 
 <a id="261" class="Symbol">{-#</a> <a id="265" class="Keyword">OPTIONS</a> <a id="273" class="Pragma">--without-K</a> <a id="285" class="Pragma">--safe</a> <a id="292" class="Symbol">#-}</a>
 
-<a id="297" class="Keyword">open</a> <a id="302" class="Keyword">import</a> <a id="309" href="Relation.Binary.html" class="Module">Relation.Binary</a> <a id="325" class="Keyword">using</a> <a id="331" class="Symbol">(</a><a id="332" href="Relation.Binary.html#1930" class="Record">Setoid</a><a id="338" class="Symbol">;</a> <a id="340" href="Relation.Binary.Core.html#4588" class="Function Operator">_Respects_</a><a id="350" class="Symbol">)</a>
+<a id="297" class="Keyword">open</a> <a id="302" class="Keyword">import</a> <a id="309" href="Relation.Binary.html" class="Module">Relation.Binary</a> <a id="325" class="Keyword">using</a> <a id="331" class="Symbol">(</a><a id="332" href="Relation.Binary.html#1930" class="Record">Setoid</a><a id="338" class="Symbol">;</a> <a id="340" href="Relation.Binary.Core.html#4575" class="Function Operator">_Respects_</a><a id="350" class="Symbol">)</a>
 
 <a id="353" class="Keyword">module</a> <a id="360" href="Data.AVL.Value.html" class="Module">Data.AVL.Value</a> <a id="375" class="Symbol">{</a><a id="376" href="Data.AVL.Value.html#376" class="Bound">a</a> <a id="378" href="Data.AVL.Value.html#378" class="Bound">ℓ</a><a id="379" class="Symbol">}</a> <a id="381" class="Symbol">(</a><a id="382" href="Data.AVL.Value.html#382" class="Bound">S</a> <a id="384" class="Symbol">:</a> <a id="386" href="Relation.Binary.html#1930" class="Record">Setoid</a> <a id="393" href="Data.AVL.Value.html#376" class="Bound">a</a> <a id="395" href="Data.AVL.Value.html#378" class="Bound">ℓ</a><a id="396" class="Symbol">)</a> <a id="398" class="Keyword">where</a>
 
@@ -20,7 +20,7 @@
   <a id="547" class="Keyword">constructor</a> <a id="Value.MkValue"></a><a id="559" href="Data.AVL.Value.html#559" class="InductiveConstructor">MkValue</a>
   <a id="569" class="Keyword">field</a>
     <a id="Value.family"></a><a id="579" href="Data.AVL.Value.html#579" class="Field">family</a>   <a id="588" class="Symbol">:</a> <a id="590" href="Relation.Binary.html#1993" class="Field">Key</a> <a id="594" class="Symbol">→</a> <a id="596" class="PrimitiveType">Set</a> <a id="600" href="Data.AVL.Value.html#515" class="Bound">v</a>
-    <a id="Value.respects"></a><a id="606" href="Data.AVL.Value.html#606" class="Field">respects</a> <a id="615" class="Symbol">:</a> <a id="617" href="Data.AVL.Value.html#579" class="Field">family</a> <a id="624" href="Relation.Binary.Core.html#4588" class="Function Operator">Respects</a> <a id="633" href="Relation.Binary.html#2019" class="Field Operator">_≈_</a>
+    <a id="Value.respects"></a><a id="606" href="Data.AVL.Value.html#606" class="Field">respects</a> <a id="615" class="Symbol">:</a> <a id="617" href="Data.AVL.Value.html#579" class="Field">family</a> <a id="624" href="Relation.Binary.Core.html#4575" class="Function Operator">Respects</a> <a id="633" href="Relation.Binary.html#2019" class="Field Operator">_≈_</a>
 
 <a id="638" class="Comment">-- The function `const` is defined using copatterns to prevent eager</a>
 <a id="707" class="Comment">-- unfolding of the function in goal types.</a>
