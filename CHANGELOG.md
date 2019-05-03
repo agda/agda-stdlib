@@ -252,11 +252,6 @@ Other minor additions
   _<?_ : Decidable _<_
   ```
 
-* Added new proof to `Relation.Binary.PropositionalEquality.Core`:
-  ```agda
-  ≢-sym : Symmetric _≢_
-  ```
-
 * Added new names, functions and shorthand to `Reflection`:
   ```agda
   Names             = List Name
@@ -299,6 +294,16 @@ Other minor additions
   flip-Connex : Connex P Q → Connex Q P
   ```
 
+* Added new definition in `Relation.Binary.Core`:
+  ```agda
+  Universal _∼_ = ∀ x y → x ∼ y
+  ```
+
 * The relation `_≅_` in `Relation.Binary.HeterogeneousEquality` has
   been generalised so that the types of the two equal elements need not
   be at the same universe level.
+
+* Added new proof to `Relation.Binary.PropositionalEquality.Core`:
+  ```agda
+  ≢-sym : Symmetric _≢_
+  ```
