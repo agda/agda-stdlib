@@ -74,7 +74,7 @@ script:
   - agda -i . -i src/ --safe EverythingSafeGuardedness.agda
   - agda -i . -i src/ --safe EverythingSafeSizedTypes.agda
   # detecting basic compilation errors
-  - agda -i . -i src/ -c --no-main Everything.agda RTS -M1.5G -H1.5G -A128M -s -RTS
+  - agda -i . -i src/ -c --no-main Everything.agda
   # building the docs
   - agda -i . -i src/ --html safe.agda
   - agda -i . -i src/ --html index.agda
