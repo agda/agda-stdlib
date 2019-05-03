@@ -1,11 +1,11 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Properties of homogeneous binary relations
+-- Properties of binary relations
 ------------------------------------------------------------------------
 
--- This file contains some core definitions which are reexported by
--- Relation.Binary or Relation.Binary.PropositionalEquality.
+-- Note that all the definitions in this file are re-exported by
+-- `Relation.Binary`.
 
 {-# OPTIONS --without-K --safe #-}
 
@@ -20,157 +20,211 @@ open import Function using (_on_; flip)
 open import Level
 open import Relation.Nullary using (Dec; ¬_)
 
+private
+  variable
+    a b c ℓ ℓ₁ ℓ₂ ℓ₃ : Level
+    A : Set a
+    B : Set b
+    C : Set c
+
 ------------------------------------------------------------------------
--- Binary relations
+-- Definition.
+------------------------------------------------------------------------
 
 -- Heterogeneous binary relations
 
-REL : ∀ {a b} → Set a → Set b → (ℓ : Level) → Set (a ⊔ b ⊔ suc ℓ)
+REL : Set a → Set b → (ℓ : Level) → Set (a ⊔ b ⊔ suc ℓ)
 REL A B ℓ = A → B → Set ℓ
 
 -- Homogeneous binary relations
 
-Rel : ∀ {a} → Set a → (ℓ : Level) → Set (a ⊔ suc ℓ)
+Rel : Set a → (ℓ : Level) → Set (a ⊔ suc ℓ)
 Rel A ℓ = REL A A ℓ
 
 ------------------------------------------------------------------------
--- Simple properties of binary relations
+-- Simple properties
+------------------------------------------------------------------------
 
 infixr 4 _⇒_ _=[_]⇒_
 
--- Implication/containment. Could also be written ⊆.
+-- Implication/containment - could also be written _⊆_.
 
-_⇒_ : ∀ {a b ℓ₁ ℓ₂} {A : Set a} {B : Set b} →
-      REL A B ℓ₁ → REL A B ℓ₂ → Set _
+_⇒_ : REL A B ℓ₁ → REL A B ℓ₂ → Set _
 P ⇒ Q = ∀ {i j} → P i j → Q i j
 
--- Generalised implication. If P ≡ Q it can be read as "f preserves P".
+-- Generalised implication - if P ≡ Q it can be read as "f preserves P".
 
-_=[_]⇒_ : ∀ {a b ℓ₁ ℓ₂} {A : Set a} {B : Set b} →
-          Rel A ℓ₁ → (A → B) → Rel B ℓ₂ → Set _
+_=[_]⇒_ : Rel A ℓ₁ → (A → B) → Rel B ℓ₂ → Set _
 P =[ f ]⇒ Q = P ⇒ (Q on f)
 
--- A synonym, along with a binary variant.
+-- A synonym for _=[_]⇒_.
 
-_Preserves_⟶_ : ∀ {a b ℓ₁ ℓ₂} {A : Set a} {B : Set b} →
-                (A → B) → Rel A ℓ₁ → Rel B ℓ₂ → Set _
+_Preserves_⟶_ : (A → B) → Rel A ℓ₁ → Rel B ℓ₂ → Set _
 f Preserves P ⟶ Q = P =[ f ]⇒ Q
 
-_Preserves₂_⟶_⟶_ :
-  ∀ {a b c ℓ₁ ℓ₂ ℓ₃} {A : Set a} {B : Set b} {C : Set c} →
-  (A → B → C) → Rel A ℓ₁ → Rel B ℓ₂ → Rel C ℓ₃ → Set _
+-- A binary variant of _Preserves_⟶_.
+
+_Preserves₂_⟶_⟶_ : (A → B → C) → Rel A ℓ₁ → Rel B ℓ₂ → Rel C ℓ₃ → Set _
 _+_ Preserves₂ P ⟶ Q ⟶ R =
   ∀ {x y u v} → P x y → Q u v → R (x + u) (y + v)
 
--- Reflexivity of _∼_ can be expressed as _≈_ ⇒ _∼_, for some
--- underlying equality _≈_. However, the following variant is often
--- easier to use.
+-- Reflexivity - defined without an underlying equality. It could
+-- alternatively be defined as `_≈_ ⇒ _∼_` for some equality `_≈_`.
 
-Reflexive : ∀ {a ℓ} {A : Set a} → Rel A ℓ → Set _
+-- Confusingly the convention in the library is to use the name "refl"
+-- for proofs of Reflexive and `reflexive` for proofs of type `_≈_ ⇒ _∼_`,
+-- e.g. in the definition of `IsEquivalence` later in this file. This
+-- convention is a legacy from the early days of the library.
+
+Reflexive : Rel A ℓ → Set _
 Reflexive _∼_ = ∀ {x} → x ∼ x
-
--- Irreflexivity is defined using an underlying equality.
-
-Irreflexive : ∀ {a b ℓ₁ ℓ₂} {A : Set a} {B : Set b} →
-              REL A B ℓ₁ → REL A B ℓ₂ → Set _
-Irreflexive _≈_ _<_ = ∀ {x y} → x ≈ y → ¬ (x < y)
 
 -- Generalised symmetry.
 
-Sym : ∀ {a b ℓ₁ ℓ₂} {A : Set a} {B : Set b} →
-      REL A B ℓ₁ → REL B A ℓ₂ → Set _
+Sym : REL A B ℓ₁ → REL B A ℓ₂ → Set _
 Sym P Q = P ⇒ flip Q
 
-Symmetric : ∀ {a ℓ} {A : Set a} → Rel A ℓ → Set _
+-- Symmetry.
+
+Symmetric : Rel A ℓ → Set _
 Symmetric _∼_ = Sym _∼_ _∼_
 
 -- Generalised transitivity.
 
-Trans : ∀ {a b c ℓ₁ ℓ₂ ℓ₃} {A : Set a} {B : Set b} {C : Set c} →
-        REL A B ℓ₁ → REL B C ℓ₂ → REL A C ℓ₃ → Set _
+Trans : REL A B ℓ₁ → REL B C ℓ₂ → REL A C ℓ₃ → Set _
 Trans P Q R = ∀ {i j k} → P i j → Q j k → R i k
 
--- A variant of Trans.
+-- A flipped variant of generalised transitivity.
 
-TransFlip : ∀ {a b c ℓ₁ ℓ₂ ℓ₃} {A : Set a} {B : Set b} {C : Set c} →
-            REL A B ℓ₁ → REL B C ℓ₂ → REL A C ℓ₃ → Set _
+TransFlip : REL A B ℓ₁ → REL B C ℓ₂ → REL A C ℓ₃ → Set _
 TransFlip P Q R = ∀ {i j k} → Q j k → P i j → R i k
 
-Transitive : ∀ {a ℓ} {A : Set a} → Rel A ℓ → Set _
+-- Transitivity.
+
+Transitive : Rel A ℓ → Set _
 Transitive _∼_ = Trans _∼_ _∼_ _∼_
 
 -- Generalised antisymmetry
 
-Antisym : ∀ {a b ℓ₁ ℓ₂ ℓ₃} {A : Set a} {B : Set b} →
-          REL A B ℓ₁ → REL B A ℓ₂ → REL A B ℓ₃ → Set _
+Antisym : REL A B ℓ₁ → REL B A ℓ₂ → REL A B ℓ₃ → Set _
 Antisym R S E = ∀ {i j} → R i j → S j i → E i j
 
-Antisymmetric : ∀ {a ℓ₁ ℓ₂} {A : Set a} → Rel A ℓ₁ → Rel A ℓ₂ → Set _
+-- Antisymmetry.
+
+Antisymmetric : Rel A ℓ₁ → Rel A ℓ₂ → Set _
 Antisymmetric _≈_ _≤_ = Antisym _≤_ _≤_ _≈_
 
-Asymmetric : ∀ {a ℓ} {A : Set a} → Rel A ℓ → Set _
+-- Irreflexivity - this is defined terms of the underlying equality.
+
+Irreflexive : REL A B ℓ₁ → REL A B ℓ₂ → Set _
+Irreflexive _≈_ _<_ = ∀ {x y} → x ≈ y → ¬ (x < y)
+
+-- Asymmetry.
+
+Asymmetric : Rel A ℓ → Set _
 Asymmetric _<_ = ∀ {x y} → x < y → ¬ (y < x)
 
--- Generalised connex.
+-- Generalised connex - exactly one of the two relations holds.
 
-Connex : ∀ {a b p q} {A : Set a} {B : Set b} → REL A B p → REL B A q → Set _
+Connex : REL A B ℓ₁ → REL B A ℓ₂ → Set _
 Connex P Q = ∀ x y → P x y ⊎ Q y x
 
-Total : ∀ {a ℓ} {A : Set a} → Rel A ℓ → Set _
+-- Totality.
+
+Total : Rel A ℓ → Set _
 Total _∼_ = Connex _∼_ _∼_
 
-data Tri {a b c} (A : Set a) (B : Set b) (C : Set c) :
-         Set (a ⊔ b ⊔ c) where
+-- Generalised trichotomy - exactly one of three types has a witness.
+
+data Tri (A : Set a) (B : Set b) (C : Set c) : Set (a ⊔ b ⊔ c) where
   tri< : ( a :   A) (¬b : ¬ B) (¬c : ¬ C) → Tri A B C
   tri≈ : (¬a : ¬ A) ( b :   B) (¬c : ¬ C) → Tri A B C
   tri> : (¬a : ¬ A) (¬b : ¬ B) ( c :   C) → Tri A B C
 
-Trichotomous : ∀ {a ℓ₁ ℓ₂} {A : Set a} → Rel A ℓ₁ → Rel A ℓ₂ → Set _
+-- Trichotomy.
+
+Trichotomous : Rel A ℓ₁ → Rel A ℓ₂ → Set _
 Trichotomous _≈_ _<_ = ∀ x y → Tri (x < y) (x ≈ y) (x > y)
   where _>_ = flip _<_
 
+-- Generalised maximum element.
 
-Max : ∀ {a ℓ} {A : Set a} {b} {B : Set b} → REL A B ℓ → B → Set _
+Max : REL A B ℓ → B → Set _
 Max _≤_ T = ∀ x → x ≤ T
 
-Maximum : ∀ {a ℓ} {A : Set a} → Rel A ℓ → A → Set _
+-- Maximum element.
+
+Maximum : Rel A ℓ → A → Set _
 Maximum = Max
 
-Min : ∀ {a ℓ} {A : Set a} {b} {B : Set b} → REL A B ℓ → A → Set _
+-- Generalised minimum element.
+
+Min : REL A B ℓ → A → Set _
 Min R = Max (flip R)
 
-Minimum : ∀ {a ℓ} {A : Set a} → Rel A ℓ → A → Set _
+-- Minimum element.
+
+Minimum : Rel A ℓ → A → Set _
 Minimum = Min
 
-_⟶_Respects_ : ∀ {a b ℓ₁ ℓ₂ ℓ₃} {A : Set a} {B : Set b} →
-               (A → Set ℓ₁) → (B → Set ℓ₂) → REL A B ℓ₃ → Set _
+-- Unary relations respecting a binary relation.
+
+_⟶_Respects_ : (A → Set ℓ₁) → (B → Set ℓ₂) → REL A B ℓ₃ → Set _
 P ⟶ Q Respects _∼_ = ∀ {x y} → x ∼ y → P x → Q y
 
-_Respects_ : ∀ {a ℓ₁ ℓ₂} {A : Set a} → (A → Set ℓ₁) → Rel A ℓ₂ → Set _
+-- Unary relation respects a binary relation.
+
+_Respects_ : (A → Set ℓ₁) → Rel A ℓ₂ → Set _
 P Respects _∼_ = P ⟶ P Respects _∼_
 
-_Respectsʳ_ : ∀ {a b ℓ₁ ℓ₂} {A : Set a} {B : Set b} → REL A B ℓ₁ → Rel B ℓ₂ → Set _
-P Respectsʳ _∼_ = ∀ {x} → (P x) Respects _∼_
+-- Right respecting - relatedness is preserved on the right by equality.
 
-_Respectsˡ_ : ∀ {a b ℓ₁ ℓ₂} {A : Set a} {B : Set b} → REL A B ℓ₁ → Rel A ℓ₂ → Set _
+_Respectsʳ_ : REL A B ℓ₁ → Rel B ℓ₂ → Set _
+_∼_ Respectsʳ _≈_ = ∀ {x} → (x ∼_) Respects _≈_
+
+-- Left respecting - relatedness is preserved on the left by equality.
+
+_Respectsˡ_ : REL A B ℓ₁ → Rel A ℓ₂ → Set _
 P Respectsˡ _∼_ = ∀ {y} → (flip P y) Respects _∼_
 
-_Respects₂_ : ∀ {a ℓ₁ ℓ₂} {A : Set a} → Rel A ℓ₁ → Rel A ℓ₂ → Set _
+-- Respecting - relatedness is preserved on both sides by equality
+
+_Respects₂_ : Rel A ℓ₁ → Rel A ℓ₂ → Set _
 P Respects₂ _∼_ = (P Respectsʳ _∼_) × (P Respectsˡ _∼_)
 
-Substitutive : ∀ {a ℓ₁} {A : Set a} → Rel A ℓ₁ → (ℓ₂ : Level) → Set _
+-- Substitutivity - any two related elements satisfy exactly the same
+-- set of unary relations. Note that only the various derivatives
+-- of propositional equality can satisfy this property.
+
+Substitutive : Rel A ℓ₁ → (ℓ₂ : Level) → Set _
 Substitutive {A = A} _∼_ p = (P : A → Set p) → P Respects _∼_
 
-Decidable : ∀ {a b ℓ} {A : Set a} {B : Set b} → REL A B ℓ → Set _
+-- Decidability - it is possible to determine whether a given pair of
+-- elements are related.
+
+Decidable : REL A B ℓ → Set _
 Decidable _∼_ = ∀ x y → Dec (x ∼ y)
 
-WeaklyDecidable : ∀ {a b ℓ} {A : Set a} {B : Set b} → REL A B ℓ → Set _
+-- Weak decidability - it is sometimes possible to determine if a given
+-- pair of elements are related.
+
+WeaklyDecidable : REL A B ℓ → Set _
 WeaklyDecidable _∼_ = ∀ x y → Maybe (x ∼ y)
 
-Irrelevant : ∀ {a b ℓ} {A : Set a} {B : Set b} → REL A B ℓ → Set _
+-- Irrelevancy - all proofs that a given pair of elements are related
+-- are indistinguishable.
+
+Irrelevant : REL A B ℓ → Set _
 Irrelevant _∼_ = ∀ {x y} (a b : x ∼ y) → a ≡ b
 
-record NonEmpty {a b ℓ} {A : Set a} {B : Set b}
+-- Universal - all pairs of elements are related
+
+Universal : REL A B ℓ → Set _
+Universal _∼_ = ∀ x y → x ∼ y
+
+-- Non-emptiness - at least one pair of elements are related.
+
+record NonEmpty {A : Set a} {B : Set b}
                 (T : REL A B ℓ) : Set (a ⊔ b ⊔ ℓ) where
   constructor nonEmpty
   field
@@ -185,8 +239,11 @@ record NonEmpty {a b ℓ} {A : Set a} {B : Set b}
 -- equivalence relation, and hence equivalence relations are not
 -- defined in terms of preorders.
 
-record IsEquivalence {a ℓ} {A : Set a}
-                     (_≈_ : Rel A ℓ) : Set (a ⊔ ℓ) where
+-- This record is defined here instead of with the rest of the
+-- structures in `Relation.Binary` due to dependency cyles with
+-- `Relation.Binary.PropositionalEquality`.
+
+record IsEquivalence {A : Set a} (_≈_ : Rel A ℓ) : Set (a ⊔ ℓ) where
   field
     refl  : Reflexive _≈_
     sym   : Symmetric _≈_
