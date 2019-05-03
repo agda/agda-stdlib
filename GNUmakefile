@@ -7,7 +7,7 @@ AGDA=agda
 #   cabal install
 
 test: Everything.agda check-whitespace
-	$(AGDA) -i. -isrc README.agda
+	$(AGDA) -i. -isrc README.agda RTS -M1.5G -H1.5G -A128M -s -RTS
 
 check-whitespace:
 	cabal exec -- fix-agda-whitespace --check
@@ -21,7 +21,7 @@ Everything.agda:
 
 .PHONY: listings
 listings: Everything.agda
-	$(AGDA) -i. -isrc --html README.agda -v0
+	$(AGDA) -i. -isrc --html README.agda -v0 RTS -M1.5G -H1.5G -A128M -s -RTS
 
 clean :
 	find . -type f -name '*.agdai' -delete
