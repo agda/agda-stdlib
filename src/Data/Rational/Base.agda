@@ -24,6 +24,13 @@ open import Relation.Binary.PropositionalEquality
 
 open ≡-Reasoning
 
+-- Note, these are re-exported publicly to maintain backwards
+-- compatability. Although we are unable (?) to put a warning on them,
+-- using these from `Data.Rational` should be viewed as a deprecated
+-- feature.
+
+open import Data.Integer public using (+0; +[1+_])
+
 ------------------------------------------------------------------------
 -- Rational numbers in reduced form. Note that there is exactly one
 -- way to represent every rational number.
@@ -66,9 +73,6 @@ data _≤_ : Rel ℚ 0ℓ where
 
 ------------------------------------------------------------------------
 -- Negation
-
-pattern +0       = + 0
-pattern +[1+_] n = + (ℕ.suc n)
 
 -_ : ℚ → ℚ
 - mkℚ -[1+ n ] d prf = mkℚ +[1+ n ] d prf
