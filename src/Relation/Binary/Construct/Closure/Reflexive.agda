@@ -11,7 +11,7 @@ module Relation.Binary.Construct.Closure.Reflexive where
 open import Data.Unit
 open import Level
 open import Function
-open import Relation.Binary hiding (Refl)
+open import Relation.Binary
 open import Relation.Binary.Construct.Constant using (Const)
 open import Relation.Binary.PropositionalEquality using (_≡_ ; refl)
 
