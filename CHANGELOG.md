@@ -147,6 +147,12 @@ Other minor additions
   zip′ : (A → B → C) → (D → E → F) → A × D → B × E → C × F
   ```
 
+* Added new definitions to `Data.Word.Base`:
+  ```agda
+  _≈_ : Rel Word64 zero
+  _<_ : Rel Word64 zero
+  ```
+
 * Decidable equality over words has been made safe and so `_≟_` has been
   moved from `Data.Word.Unsafe` to `Data.Word.Properties`.
 
