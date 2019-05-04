@@ -21,7 +21,7 @@ open import Data.List.Relation.Binary.BagAndSetEquality
   using (bag; _∼[_]_; empty-unique; drop-cons; commutativeMonoid)
 import Data.List.Properties as Lₚ
 open import Data.Product using (_,_; _×_; ∃; ∃₂)
-open import Function using (_∘_)
+open import Function using (_∘_; _⟨_⟩_)
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse as Inv using (inverse)
 open import Relation.Unary using (Pred)
@@ -232,6 +232,11 @@ module _ {a} {A : Set a} where
   ++-commutativeMonoid = record
     { isCommutativeMonoid = ++-isCommutativeMonoid
     }
+
+  -- Another useful lemma
+
+  shift' : ∀ xs ys {zs : List A} → xs ++ ys ++ zs ↭ ys ++ xs ++ zs
+  shift' xs ys = ↭-sym (++-assoc xs ys _) ⟨ trans ⟩ ++⁺ʳ _ (++-comm xs ys) ⟨ trans ⟩ ++-assoc ys xs _
 
 ------------------------------------------------------------------------
 -- _∷_
