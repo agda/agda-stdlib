@@ -293,6 +293,11 @@ module _ {f : A → B} where
          Any (P ∘ f) xs ↔ Any P (List.map f xs)
   map↔ = inverse map⁺ map⁻ (map⁻∘map⁺ _) map⁺∘map⁻
 
+module _ {a b p q} {A : Set a} {B : Set b} {f : A → B}
+         {P : A → Set p} {Q : B → Set q} where
+  gmap : P ⋐ Q ∘ f → Any P ⋐ Any Q ∘ map f
+  gmap g = map⁺ ∘ Any.map g
+
 ------------------------------------------------------------------------
 -- mapMaybe
 
