@@ -251,6 +251,19 @@ module _ {P : Pred A p} {Q : Pred B q} where
              = lem₂ _ refl
 
 ------------------------------------------------------------------------
+-- Half-applied product commutes with Any.
+
+module _ {R : REL A B r} where
+
+  Any-Σ⁺ʳ : ∀ {xs} → (∃ λ x → Any (flip R x) xs) → Any (∃ ∘ R) xs
+  Any-Σ⁺ʳ (b , here px) = here (b , px)
+  Any-Σ⁺ʳ (b , there pxs) = there (Any-Σ⁺ʳ (b , pxs))
+
+  Any-Σ⁻ʳ : ∀ {xs} → Any (∃ ∘ R) xs → ∃ λ x → Any (flip R x) xs
+  Any-Σ⁻ʳ (here (b , x)) = b , here x
+  Any-Σ⁻ʳ (there xs) = let b , xs' = Any-Σ⁻ʳ xs in b , there xs'
+
+------------------------------------------------------------------------
 -- Invertible introduction (⁺) and elimination (⁻) rules for various
 -- list functions
 ------------------------------------------------------------------------
