@@ -13,7 +13,7 @@ open import Category.Monad
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Relation.Unary.Any as Any using (here; there)
 open import Data.List.Membership.Propositional using (_∈_)
-open import Data.Product as Prod using (_,_)
+open import Data.Product as Prod using (_×_; _,_)
 open import Function
 open import Level
 open import Relation.Nullary
@@ -42,12 +42,14 @@ data All {A : Set a} (P : Pred A p) : Pred (List A) (a ⊔ p) where
 -- Operations on All
 
 module _ {P : Pred A p} where
+  uncons : ∀ {x xs} → All P (x ∷ xs) → P x × All P xs
+  uncons (px ∷ pxs) = px , pxs
 
   head : ∀ {x xs} → All P (x ∷ xs) → P x
-  head (px ∷ pxs) = px
+  head = Prod.proj₁ ∘ uncons
 
   tail : ∀ {x xs} → All P (x ∷ xs) → All P xs
-  tail (px ∷ pxs) = pxs
+  tail = Prod.proj₂ ∘ uncons
 
   lookup : ∀ {xs} → All P xs → (∀ {x} → x ∈ xs → P x)
   lookup (px ∷ pxs) (here refl)  = px
