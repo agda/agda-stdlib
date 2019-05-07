@@ -15,23 +15,25 @@ import Relation.Binary.EqReasoning as EqReasoning
 module Data.List.Relation.Binary.Permutation.Setoid
   {b} {ℓ} (S : Setoid b ℓ) where
 
-open Setoid S using (_≈_; sym)
+open Setoid S using (Carrier; _≈_; sym)
 
-open HomogeneousPermutation _≈_
-  using (_↭_; refl; prep; swap; trans; ↭-refl; ↭-trans) public
-open HomogeneousPermutation _≈_
-  using () renaming (↭-sym to ↭ₕ-sym;
-            ↭-isEquivalence to ↭ₕ-isEquivalence;
-            ↭-setoid to ↭ₕ-setoid)
+open HomogeneousPermutation
+  using (refl; prep; swap; trans)
+  renaming (Perm-refl to ↭-refl; Perm-trans to ↭-trans) public
+open HomogeneousPermutation
 
-↭-sym : Symmetric _↭_
-↭-sym = ↭ₕ-sym sym
+infix 3 _↭_
+_↭_ : Rel (List Carrier) (b ⊔ ℓ)
+_↭_ = Permutation _≈_
 
-↭-isEquivalence : IsEquivalence _↭_
-↭-isEquivalence = ↭ₕ-isEquivalence sym
+↭-sym : Symmetric (Permutation _≈_)
+↭-sym = Perm-sym sym
+
+↭-isEquivalence : IsEquivalence (Permutation _≈_)
+↭-isEquivalence = Perm-isEquivalence sym
 
 ↭-setoid : Setoid _ _
-↭-setoid = ↭ₕ-setoid sym
+↭-setoid = Perm-setoid {R = _≈_} sym
 
 ------------------------------------------------------------------------
 -- A reasoning API to chain permutation proofs

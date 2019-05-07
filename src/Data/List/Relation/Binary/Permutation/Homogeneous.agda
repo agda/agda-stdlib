@@ -7,60 +7,56 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Data.List using (List; _∷_)
-open import Level using (_⊔_)
+open import Level using (Level; _⊔_)
 open import Relation.Binary
-import Relation.Binary.EqReasoning as EqReasoning
 
-module Data.List.Relation.Binary.Permutation.Homogeneous
-  {a} {A} {ℓ} (_∼_ : Rel {a} A ℓ) where
+module Data.List.Relation.Binary.Permutation.Homogeneous where
 
-------------------------------------------------------------------------
--- A setoid equality definition of permutation
+private
+  variable
+    a r s : Level
+    A : Set a
 
-infix 3 _↭_
-
-data _↭_ : Rel (List A) (a ⊔ ℓ) where
-  refl : ∀ {xs} → xs ↭ xs
-  prep : ∀ {xs ys} {x} {x'} (eq : x ∼ x') → xs ↭ ys →
-               x ∷ xs ↭ x' ∷ ys
-  swap : ∀ {xs ys} {x} {y} {x'} {y'} (eq₁ : x ∼ x') (eq₂ : y ∼ y') →
-               xs ↭ ys → x ∷ y ∷ xs ↭ y' ∷ x' ∷ ys
-  trans : ∀ {xs ys zs} → xs ↭ ys → ys ↭ zs → xs ↭ zs
+data Permutation (R : Rel {a} A r) : Rel (List A) (a ⊔ r) where
+  refl : ∀ {xs} → Permutation R xs xs
+  prep : ∀ {xs ys} {x} {x'} (eq : R x x') → Permutation R xs ys →
+               Permutation R (x ∷ xs) (x' ∷ ys)
+  swap : ∀ {xs ys} {x} {y} {x'} {y'} (eq₁ : R x x') (eq₂ : R y y') →
+               Permutation R xs ys → Permutation R (x ∷ y ∷ xs) (y' ∷ x' ∷ ys)
+  trans : ∀ {xs ys zs} → Permutation R xs ys → Permutation R ys zs → Permutation R xs zs
 
 ------------------------------------------------------------------------
 -- _↭_ is an equivalence
 
-↭-refl : Reflexive _↭_
-↭-refl = refl
+Perm-refl : ∀ {R : Rel A r} → Reflexive (Permutation R)
+Perm-refl = refl
 
-↭-trans : Transitive _↭_
-↭-trans = trans
+Perm-trans : ∀ {R : Rel A r} → Transitive (Permutation R)
+Perm-trans = trans
 
-module _ (∼-sym : Symmetric _∼_) where
+module _ {R : Rel A r} (R-sym : Symmetric R) where
 
-  ↭-sym : Symmetric _↭_
-  ↭-sym refl                   = refl
-  ↭-sym (prep x∼x' xs↭ys)      = prep (∼-sym x∼x') (↭-sym xs↭ys)
-  ↭-sym (swap x∼x' y∼y' xs↭ys) = swap (∼-sym y∼y') (∼-sym x∼x') (↭-sym xs↭ys)
-  ↭-sym (trans xs↭ys ys↭zs)    = trans (↭-sym ys↭zs) (↭-sym xs↭ys)
+  Perm-sym : Symmetric (Permutation R)
+  Perm-sym refl                   = refl
+  Perm-sym (prep x∼x' xs↭ys)      = prep (R-sym x∼x') (Perm-sym xs↭ys)
+  Perm-sym (swap x∼x' y∼y' xs↭ys) = swap (R-sym y∼y') (R-sym x∼x') (Perm-sym xs↭ys)
+  Perm-sym (trans xs↭ys ys↭zs)    = trans (Perm-sym ys↭zs) (Perm-sym xs↭ys)
 
-  ↭-isEquivalence : IsEquivalence _↭_
-  ↭-isEquivalence = record
-    { refl  = ↭-refl
-    ; sym   = ↭-sym
-    ; trans = ↭-trans
+  Perm-isEquivalence : IsEquivalence (Permutation R)
+  Perm-isEquivalence = record
+    { refl  = Perm-refl
+    ; sym   = Perm-sym
+    ; trans = Perm-trans
     }
 
-  ↭-setoid : Setoid _ _
-  ↭-setoid = record
-    { isEquivalence = ↭-isEquivalence
+  Perm-setoid : Setoid _ _
+  Perm-setoid = record
+    { isEquivalence = Perm-isEquivalence
     }
 
-------------------------------------------------------------------------
--- A reasoning API to chain permutation proofs
-
-module PermutationReasoning (∼-sym : Symmetric _∼_) where
-
-  open EqReasoning (↭-setoid ∼-sym) public
-    using (begin_ ; _∎ ; _≡⟨⟩_; _≡⟨_⟩_)
-    renaming (_≈⟨_⟩_ to _↭⟨_⟩_)
+map : ∀ {R : Rel A r} {S : Rel A s} →
+      (R ⇒ S) → (Permutation R ⇒ Permutation S)
+map R⇒S refl = refl
+map R⇒S (prep eq xs∼ys) = prep (R⇒S eq) (map R⇒S xs∼ys)
+map R⇒S (swap eq₁ eq₂ xs∼ys) = swap (R⇒S eq₁) (R⇒S eq₂) (map R⇒S xs∼ys)
+map R⇒S (trans xs∼ys ys∼zs) = trans (map R⇒S xs∼ys) (map R⇒S ys∼zs)
