@@ -33,7 +33,6 @@ module _ {a b} {A : Set a} {B : Set b} where
   ,-injectiveʳ : ∀ {a c : A} {b d : B} → (a , b) ≡ (c , d) → b ≡ d
   ,-injectiveʳ refl = refl
 
-  ≡-dec : Decidable {A = A} _≡_ →
-          Decidable {A = B} _≡_ →
+  ≡-dec : Decidable {A = A} _≡_ → Decidable {A = B} _≡_ →
           Decidable {A = A × B} _≡_
   ≡-dec = PwND.≡?×≡?⇒≡?

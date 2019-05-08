@@ -216,6 +216,12 @@ Other minor additions
   zip′ : (A → B → C) → (D → E → F) → A × D → B × E → C × F
   ```
 
+* Added new proofs to `Data.Product.Properties`:
+  ```agda
+  ,-injectiveʳ : (a , b) ≡ (c , d) → b ≡ d
+  ≡-dec : Decidable {A} _≡_ → Decidable {B} _≡_ → Decidable {A × B} _≡_
+  ```
+
 * Added new proofs to `Data.Rational.Properties`:
   ```agda
   ≡-setoid    : Setoid 0ℓ 0ℓ
