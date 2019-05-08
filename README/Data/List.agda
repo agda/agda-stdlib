@@ -6,10 +6,10 @@
 
 {-# OPTIONS --warning noMissingDefinitions #-}
 
-module README.List where
+module README.Data.List where
 
 open import Algebra.Structures
-open import Data.Char
+open import Data.Char.Base using (Char; fromNat)
 open import Data.Char.Properties as CharProp hiding (setoid)
 open import Data.Nat
 open import Data.Nat.Properties as NatProp
