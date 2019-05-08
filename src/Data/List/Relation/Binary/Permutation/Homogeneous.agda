@@ -26,32 +26,26 @@ data Permutation (R : Rel {a} A r) : Rel (List A) (a ⊔ r) where
   trans : ∀ {xs ys zs} → Permutation R xs ys → Permutation R ys zs → Permutation R xs zs
 
 ------------------------------------------------------------------------
--- _↭_ is an equivalence
-
-Perm-refl : ∀ {R : Rel A r} → Reflexive (Permutation R)
-Perm-refl = refl
-
-Perm-trans : ∀ {R : Rel A r} → Transitive (Permutation R)
-Perm-trans = trans
+-- The Permutation relation is an equivalence
 
 module _ {R : Rel A r} (R-sym : Symmetric R) where
 
-  Perm-sym : Symmetric (Permutation R)
-  Perm-sym refl                   = refl
-  Perm-sym (prep x∼x' xs↭ys)      = prep (R-sym x∼x') (Perm-sym xs↭ys)
-  Perm-sym (swap x∼x' y∼y' xs↭ys) = swap (R-sym y∼y') (R-sym x∼x') (Perm-sym xs↭ys)
-  Perm-sym (trans xs↭ys ys↭zs)    = trans (Perm-sym ys↭zs) (Perm-sym xs↭ys)
+  sym : Symmetric (Permutation R)
+  sym refl                   = refl
+  sym (prep x∼x' xs↭ys)      = prep (R-sym x∼x') (sym xs↭ys)
+  sym (swap x∼x' y∼y' xs↭ys) = swap (R-sym y∼y') (R-sym x∼x') (sym xs↭ys)
+  sym (trans xs↭ys ys↭zs)    = trans (sym ys↭zs) (sym xs↭ys)
 
-  Perm-isEquivalence : IsEquivalence (Permutation R)
-  Perm-isEquivalence = record
-    { refl  = Perm-refl
-    ; sym   = Perm-sym
-    ; trans = Perm-trans
+  isEquivalence : IsEquivalence (Permutation R)
+  isEquivalence = record
+    { refl  = refl
+    ; sym   = sym
+    ; trans = trans
     }
 
-  Perm-setoid : Setoid _ _
-  Perm-setoid = record
-    { isEquivalence = Perm-isEquivalence
+  setoid : Setoid _ _
+  setoid = record
+    { isEquivalence = isEquivalence
     }
 
 map : ∀ {R : Rel A r} {S : Rel A s} →

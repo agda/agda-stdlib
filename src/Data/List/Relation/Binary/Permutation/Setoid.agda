@@ -18,13 +18,21 @@ module Data.List.Relation.Binary.Permutation.Setoid
 open Setoid S using (Carrier; _≈_; sym)
 
 open HomogeneousPermutation
-  using (refl; prep; swap; trans)
-  renaming (Perm-refl to ↭-refl; Perm-trans to ↭-trans) public
+  using (refl; prep; swap; trans) public
 open HomogeneousPermutation
+  renaming (sym to Perm-sym;
+            isEquivalence to Perm-isEquivalence;
+            setoid to Perm-setoid)
 
 infix 3 _↭_
 _↭_ : Rel (List Carrier) (b ⊔ ℓ)
 _↭_ = Permutation _≈_
+
+↭-refl : Reflexive (Permutation _≈_)
+↭-refl = refl
+
+↭-trans : Transitive (Permutation _≈_)
+↭-trans = trans
 
 ↭-sym : Symmetric (Permutation _≈_)
 ↭-sym = Perm-sym sym
