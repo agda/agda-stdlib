@@ -224,6 +224,7 @@ Other minor additions
 * Added new proofs to `Data.Product.Properties`:
   ```agda
   ,-injectiveʳ : (a , b) ≡ (c , d) → b ≡ d
+  ,-injective : (a , b) ≡ (c , d) → a ≡ c × b ≡ d
   ≡-dec : Decidable {A} _≡_ → Decidable {B} _≡_ → Decidable {A × B} _≡_
   ```
 
