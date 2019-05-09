@@ -9,7 +9,6 @@
 module Data.Product.Properties where
 
 open import Data.Product
-open import Data.Product.Relation.Binary.Pointwise.NonDependent as PwND
 open import Function using (_∘_)
 open import Relation.Binary using (Decidable)
 open import Relation.Binary.PropositionalEquality
@@ -35,4 +34,8 @@ module _ {a b} {A : Set a} {B : Set b} where
 
   ≡-dec : Decidable {A = A} _≡_ → Decidable {A = B} _≡_ →
           Decidable {A = A × B} _≡_
-  ≡-dec = PwND.≡?×≡?⇒≡?
+  ≡-dec dec₁ dec₂ (a , b) (c , d) with dec₁ a c
+  ... | no a≢c = no (a≢c ∘ ,-injectiveˡ)
+  ... | yes refl with dec₂ b d
+  ...   | no b≢d  = no (b≢d ∘ ,-injectiveʳ)
+  ...   | yes refl = yes refl

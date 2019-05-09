@@ -101,6 +101,11 @@ Deprecated features
   strictTotalOrder ↦ <-strictTotalOrder-≈
   ```
 
+* In `Data.Product.Relation.Binary.Pointwise.NonDependent`:
+  ```agda
+  ≡?×≡?⇒≡? ↦ Data.Product.Properites.≡-dec
+  ```
+
 Other minor additions
 ---------------------
 
