@@ -302,3 +302,11 @@ Other minor additions
 * The relation `_≅_` in `Relation.Binary.HeterogeneousEquality` has
   been generalised so that the types of the two equal elements need not
   be at the same universe level.
+
+* Defined some new utilities of unary list relations:
+  ```agda
+  All.uncons : All P (x ∷ xs) → P x × All P xs
+  Any-Σ⁺ʳ : (∃ λ x → Any (_~ x) xs) → Any (∃ ∘ _~_) xs
+  Any-Σ⁻ʳ : Any (∃ ∘ _~_) xs → ∃ λ x → Any (_~ x) xs
+  gmap : P ⋐ Q ∘ f → Any P ⋐ Any Q ∘ map f
+  ```
