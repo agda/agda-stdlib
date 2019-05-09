@@ -1,4 +1,7 @@
-language: c
+language: haskell
+ghc:
+  - "8.4"
+
 branches:
   only:
   - master
@@ -9,20 +12,6 @@ dist: xenial
 cache:
   directories:
     - $HOME/.cabsnap
-
-matrix:
-  include:
-    - env: TEST=MAIN GHC_VER=8.4.4 BUILD=CABAL CABAL_VER=2.2
-      addons:
-        apt:
-          packages:
-            - cabal-install-2.2
-            - ghc-8.4.4
-          sources:
-            - hvr-ghc
-
-before_install:
-  - export PATH=/opt/ghc/$GHC_VER/bin:/opt/cabal/$CABAL_VER/bin:/opt/alex/3.1.7/bin:/opt/happy/1.19.5/bin:~/.cabal/bin/:$PATH;
 
 install:
   - cabal update
