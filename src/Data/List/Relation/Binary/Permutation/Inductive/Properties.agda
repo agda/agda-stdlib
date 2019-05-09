@@ -235,8 +235,12 @@ module _ {a} {A : Set a} where
 
   -- Another useful lemma
 
-  shift' : ∀ xs ys {zs : List A} → xs ++ ys ++ zs ↭ ys ++ xs ++ zs
-  shift' xs ys = ↭-sym (++-assoc xs ys _) ⟨ trans ⟩ ++⁺ʳ _ (++-comm xs ys) ⟨ trans ⟩ ++-assoc ys xs _
+  shifts : ∀ xs ys {zs : List A} → xs ++ ys ++ zs ↭ ys ++ xs ++ zs
+  shifts xs ys = begin
+     xs ++ ys  ++ _ ↭˘⟨ ++-assoc xs ys _ ⟩
+    (xs ++ ys) ++ _ ↭⟨ ++⁺ʳ _ (++-comm xs ys) ⟩
+    (ys ++ xs) ++ _ ↭⟨ ++-assoc ys xs _ ⟩
+     ys ++ xs  ++ _ ∎
 
 ------------------------------------------------------------------------
 -- _∷_
