@@ -8,36 +8,45 @@
 
 module Data.Vec.Relation.Unary.Any.Properties where
 
-open import Function
-open import Function.Inverse using (_↔_; inverse)
-  renaming (_∘_ to _∘↔_; id to id↔)
-open import Data.Vec
-  using ( Vec; []; _∷_; _++_; [_]; _>>=_
-        ; toList; fromList; map; concat; tabulate; lookup )
-open import Data.Vec.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.Nat using (suc; zero)
-open import Data.Fin using (Fin) renaming (suc to fsuc; zero to fzero)
+open import Data.Fin using (Fin; zero; suc)
 open import Data.Empty using (⊥)
+open import Data.List using ([]; _∷_)
+import Data.List.Relation.Unary.Any as List
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
 open import Data.Product as Prod using (∃; ∃₂; _×_; _,_; proj₁; proj₂)
+open import Data.Vec hiding (here; there)
+open import Data.Vec.Relation.Unary.Any as Any using (Any; here; there)
+open import Data.Vec.Membership.Propositional
+  using (_∈_; mapWith∈; find; lose)
+open import Data.Vec.Relation.Binary.Pointwise.Inductive
+  using (Pointwise; []; _∷_)
+open import Function
+open import Function.Inverse using (_↔_; inverse)
+  renaming (_∘_ to _∘↔_; id to id↔)
+open import Level using (Level)
 open import Relation.Nullary using (¬_)
 open import Relation.Unary hiding (_∈_)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_; _≗_; refl)
 
+private
+  variable
+    a b p q r ℓ : Level
+    A : Set a
+    B : Set b
+
 ------------------------------------------------------------------------
 -- Equality properties
 
-module _ {a p ℓ} {A : Set a} {P : A → Set p} {_≈_ : Rel A ℓ} where
-
-  open import Data.Vec.Relation.Binary.Pointwise.Inductive using (Pointwise; []; _∷_)
+module _ {P : Pred A p} {_≈_ : Rel A ℓ} where
 
   lift-resp : ∀ {n} → P Respects _≈_ → (Any P {n}) Respects (Pointwise _≈_)
   lift-resp resp (x∼y ∷ xs∼ys) (here px)   = here (resp x∼y px)
   lift-resp resp (x∼y ∷ xs∼ys) (there pxs) = there (lift-resp resp xs∼ys pxs)
 
-module _ {a p} {A : Set a} {P : Pred A p} where
+module _ {P : Pred A p} where
 
   here-injective : ∀ {n x xs} {p q : P x} →
                    here {P = P} {n = n} {xs = xs} p ≡ here q → p ≡ q
@@ -61,36 +70,32 @@ module _ {a p} {A : Set a} {P : Pred A p} where
 ------------------------------------------------------------------------
 -- Convert from/to List.Any
 
-  open import Data.List.Relation.Unary.Any as List using (here; there)
-  open import Data.List using ([]; _∷_)
-
   fromList⁺ : ∀ {xs} → List.Any P xs → Any P (fromList xs)
-  fromList⁺ (here px) = here px
-  fromList⁺ (there v) = there (fromList⁺ v)
+  fromList⁺ (List.here px) = here px
+  fromList⁺ (List.there v) = there (fromList⁺ v)
 
   fromList⁻ : ∀ {xs} → Any P (fromList xs) → List.Any P xs
-  fromList⁻ {x ∷ xs} (here px)   = here px
-  fromList⁻ {x ∷ xs} (there pxs) = there (fromList⁻ pxs)
+  fromList⁻ {x ∷ xs} (here px)   = List.here px
+  fromList⁻ {x ∷ xs} (there pxs) = List.there (fromList⁻ pxs)
 
   toList⁺ : ∀ {n} {xs : Vec A n} → Any P xs → List.Any P (toList xs)
-  toList⁺ (here px) = here px
-  toList⁺ (there v) = there (toList⁺ v)
+  toList⁺ (here px) = List.here px
+  toList⁺ (there v) = List.there (toList⁺ v)
 
   toList⁻ : ∀ {n} {xs : Vec A n} → List.Any P (toList xs) → Any P xs
-  toList⁻ {xs = x ∷ xs} (here px)   = here px
-  toList⁻ {xs = x ∷ xs} (there pxs) = there (toList⁻ pxs)
+  toList⁻ {xs = x ∷ xs} (List.here px)   = here px
+  toList⁻ {xs = x ∷ xs} (List.there pxs) = there (toList⁻ pxs)
 
 ------------------------------------------------------------------------
 -- map
 
-map-id : ∀ {a p} {A : Set a} {P : A → Set p} (f : P ⊆ P) {n xs} →
+map-id : ∀ {P : Pred A p} (f : P ⊆ P) {n xs} →
          (∀ {x} (p : P x) → f p ≡ p) →
          (p : Any P {n} xs) → Any.map f p ≡ p
 map-id f hyp (here  p) = P.cong here (hyp p)
 map-id f hyp (there p) = P.cong there $ map-id f hyp p
 
-map-∘ : ∀ {a p q r}
-          {A : Set a} {P : A → Set p} {Q : A → Set q} {R : A → Set r}
+map-∘ : ∀ {P : Pred A p} {Q : A → Set q} {R : A → Set r}
         (f : Q ⊆ R) (g : P ⊆ Q)
         {n xs} (p : Any P {n} xs) →
         Any.map (f ∘ g) p ≡ Any.map f (Any.map g p)
@@ -100,7 +105,7 @@ map-∘ f g (there p) = P.cong there $ map-∘ f g p
 ------------------------------------------------------------------------
 -- Swapping
 
-module _ {a b ℓ} {A : Set a} {B : Set b} {P : A → B → Set ℓ} where
+module _ {P : A → B → Set ℓ} where
 
   swap : ∀ {n m} {xs : Vec A n} {ys : Vec B m} →
          Any (λ x → Any (P x) ys) xs →
@@ -113,7 +118,7 @@ module _ {a b ℓ} {A : Set a} {B : Set b} {P : A → B → Set ℓ} where
   swap-there (here  pys)  = refl
   swap-there (there pxys) = P.cong (Any.map there) (swap-there pxys)
 
-module _ {a b ℓ} {A : Set a} {B : Set b} {P : A → B → Set ℓ} where
+module _ {P : A → B → Set ℓ} where
 
   swap-invol : ∀ {n m} {xs : Vec A n} {ys : Vec B m} →
                (any : Any (λ x → Any (P x) ys) xs) →
@@ -123,7 +128,7 @@ module _ {a b ℓ} {A : Set a} {B : Set b} {P : A → B → Set ℓ} where
   swap-invol (there pxys) = P.trans (swap-there (swap pxys))
                           $ P.cong there (swap-invol pxys)
 
-module _ {a b ℓ} {A : Set a} {B : Set b} {P : A → B → Set ℓ} where
+module _ {P : A → B → Set ℓ} where
 
   swap↔ : ∀ {n m} {xs : Vec A n} {ys : Vec B m} →
           Any (λ x → Any (P x) ys) xs ↔ Any (λ y → Any (flip P y) xs) ys
@@ -132,19 +137,19 @@ module _ {a b ℓ} {A : Set a} {B : Set b} {P : A → B → Set ℓ} where
 ------------------------------------------------------------------------
 -- Lemmas relating Any to ⊥
 
-⊥↔Any⊥ : ∀ {a} {A : Set a} {n} {xs : Vec A n} → ⊥ ↔ Any (const ⊥) xs
+⊥↔Any⊥ : ∀ {n} {xs : Vec A n} → ⊥ ↔ Any (const ⊥) xs
 ⊥↔Any⊥ = inverse (λ ()) (λ p → from p) (λ ()) (λ p → from p)
   where
   from : ∀ {n xs} → Any (const ⊥) {n} xs → ∀ {b} {B : Set b} → B
   from (there p) = from p
 
-⊥↔Any[] : ∀ {a p} {A : Set a} {P : A → Set p} → ⊥ ↔ Any P []
+⊥↔Any[] : ∀ {P : Pred A p} → ⊥ ↔ Any P []
 ⊥↔Any[] = inverse (λ()) (λ()) (λ()) (λ())
 
 ------------------------------------------------------------------------
 -- Sums commute with Any
 
-module _ {a p q} {A : Set a} {P : A → Set p} {Q : A → Set q} where
+module _ {P : Pred A p} {Q : A → Set q} where
 
   Any-⊎⁺ : ∀ {n} {xs : Vec A n} → Any P xs ⊎ Any Q xs → Any (λ x → P x ⊎ Q x) xs
   Any-⊎⁺ = [ Any.map inj₁ , Any.map inj₂ ]′
@@ -174,9 +179,7 @@ module _ {a p q} {A : Set a} {P : A → Set p} {Q : A → Set q} where
 ------------------------------------------------------------------------
 -- Products "commute" with Any.
 
-module _ {a b p q} {A : Set a} {B : Set b} {P : Pred A p} {Q : Pred B q} where
-
-  open import Data.Vec.Membership.Propositional using (_∈_; find; lose)
+module _ {P : Pred A p} {Q : Pred B q} where
 
   Any-×⁺ : ∀ {n m} {xs : Vec A n} {ys : Vec B m} → Any P xs × Any Q ys →
            Any (λ x → Any (λ y → P x × Q y) ys) xs
@@ -196,7 +199,7 @@ module _ {a b p q} {A : Set a} {B : Set b} {P : Pred A p} {Q : Pred B q} where
 ------------------------------------------------------------------------
 -- Singleton ([_])
 
-module _ {a p} {A : Set a} {P : Pred A p} where
+module _ {P : Pred A p} where
 
   singleton⁺ : ∀ {x} → P x → Any P [ x ]
   singleton⁺ Px = here Px
@@ -218,36 +221,36 @@ module _ {a p} {A : Set a} {P : Pred A p} where
 ------------------------------------------------------------------------
 -- map
 
-module _ {a b} {A : Set a} {B : Set b} {f : A → B} where
+module _ {f : A → B} where
 
-  map⁺ : ∀ {p} {P : B → Set p} {n} {xs : Vec A n} →
+  map⁺ : ∀ {P : Pred B p} {n} {xs : Vec A n} →
          Any (P ∘ f) xs → Any P (map f xs)
   map⁺ (here p)  = here p
   map⁺ (there p) = there $ map⁺ p
 
-  map⁻ : ∀ {p} {P : B → Set p} {n} {xs : Vec A n} →
+  map⁻ : ∀ {P : Pred B p} {n} {xs : Vec A n} →
          Any P (map f xs) → Any (P ∘ f) xs
   map⁻ {xs = x ∷ xs} (here p)  = here p
   map⁻ {xs = x ∷ xs} (there p) = there $ map⁻ p
 
-  map⁺∘map⁻ : ∀ {p} {P : B → Set p} {n} {xs : Vec A n} →
+  map⁺∘map⁻ : ∀ {P : Pred B p} {n} {xs : Vec A n} →
               (p : Any P (map f xs)) → map⁺ (map⁻ p) ≡ p
   map⁺∘map⁻ {xs = x ∷ xs} (here  p) = refl
   map⁺∘map⁻ {xs = x ∷ xs} (there p) = P.cong there (map⁺∘map⁻ p)
 
-  map⁻∘map⁺ : ∀ {p} (P : B → Set p) {n} {xs : Vec A n} →
+  map⁻∘map⁺ : ∀ (P : Pred B p) {n} {xs : Vec A n} →
               (p : Any (P ∘ f) xs) → map⁻ {P = P} (map⁺ p) ≡ p
   map⁻∘map⁺ P (here  p) = refl
   map⁻∘map⁺ P (there p) = P.cong there (map⁻∘map⁺ P p)
 
-  map↔ : ∀ {p} {P : B → Set p} {n} {xs : Vec A n} →
+  map↔ : ∀ {P : Pred B p} {n} {xs : Vec A n} →
          Any (P ∘ f) xs ↔ Any P (map f xs)
   map↔ = inverse map⁺ map⁻ (map⁻∘map⁺ _) map⁺∘map⁻
 
 ------------------------------------------------------------------------
 -- _++_
 
-module _ {a p} {A : Set a} {P : A → Set p} where
+module _ {P : Pred A p} where
 
   ++⁺ˡ : ∀ {n m} {xs : Vec A n} {ys : Vec A m} → Any P xs → Any P (xs ++ ys)
   ++⁺ˡ (here p)  = here p
@@ -311,7 +314,7 @@ module _ {a p} {A : Set a} {P : A → Set p} where
 ------------------------------------------------------------------------
 -- concat
 
-module _ {a p} {A : Set a} {P : A → Set p} where
+module _ {P : Pred A p} where
 
   concat⁺ : ∀ {n m} {xss : Vec (Vec A n) m} → Any (Any P) xss → Any P (concat xss)
   concat⁺ (here p)           = ++⁺ˡ p
@@ -352,23 +355,21 @@ module _ {a p} {A : Set a} {P : A → Set p} where
 ------------------------------------------------------------------------
 -- tabulate
 
-module _ {a p} {A : Set a} {P : A → Set p} where
+module _ {P : Pred A p} where
 
   tabulate⁺ : ∀ {n} {f : Fin n → A} i → P (f i) → Any P (tabulate f)
-  tabulate⁺ fzero    p = here p
-  tabulate⁺ (fsuc i) p = there (tabulate⁺ i p)
+  tabulate⁺ zero    p = here p
+  tabulate⁺ (suc i) p = there (tabulate⁺ i p)
 
   tabulate⁻ : ∀ {n} {f : Fin n → A} →
               Any P (tabulate f) → ∃ λ i → P (f i)
-  tabulate⁻ {suc n} (here p)  = fzero , p
-  tabulate⁻ {suc n} (there p) = Prod.map fsuc id (tabulate⁻ p)
+  tabulate⁻ {suc n} (here p)  = zero , p
+  tabulate⁻ {suc n} (there p) = Prod.map suc id (tabulate⁻ p)
 
 ------------------------------------------------------------------------
 -- mapWith∈
 
-module _ {a b p} {A : Set a} {B : Set b} {P : B → Set p} where
-
-  open import Data.Vec.Membership.Propositional using (_∈_; mapWith∈)
+module _ {P : Pred B p} where
 
   mapWith∈⁺ : ∀ {n} {xs : Vec A n} (f : ∀ {x} → x ∈ xs → B) →
               (∃₂ λ x (x∈xs : x ∈ xs) → P (f x∈xs)) →
@@ -405,15 +406,14 @@ module _ {a b p} {A : Set a} {B : Set b} {P : B → Set p} where
 ------------------------------------------------------------------------
 -- _∷_
 
-module _ {a p} {A : Set a} where
-
-  ∷↔ : ∀ {n} (P : Pred A p) {x} {xs : Vec A n} → (P x ⊎ Any P xs) ↔ Any P (x ∷ xs)
-  ∷↔ P {x} {xs} = ++↔ ∘↔ (singleton↔ ⊎-cong id↔)
+∷↔ : ∀ {n} (P : Pred A p) {x} {xs : Vec A n} →
+     (P x ⊎ Any P xs) ↔ Any P (x ∷ xs)
+∷↔ P {x} {xs} = ++↔ ∘↔ (singleton↔ ⊎-cong id↔)
 
 ------------------------------------------------------------------------
 -- _>>=_
 
-module _ {ℓ p} {A B : Set ℓ} {P : B → Set p} {m} {f : A → Vec B m} where
+module _ {A B : Set a} {P : Pred B p} {m} {f : A → Vec B m} where
 
   >>=↔ : ∀ {n} {xs : Vec A n} → Any (Any P ∘ f) xs ↔ Any P (xs >>= f)
   >>=↔ = concat↔ ∘↔ map↔

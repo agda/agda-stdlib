@@ -52,7 +52,7 @@ decToMaybe (no _)  = nothing
 
 -- A dependent eliminator.
 
-maybe : ∀ {B : Maybe A → Set b} →
+maybe : ∀ {A : Set a} {B : Maybe A → Set b} →
         ((x : A) → B (just x)) → B nothing → (x : Maybe A) → B x
 maybe j n (just x) = j x
 maybe j n nothing  = n

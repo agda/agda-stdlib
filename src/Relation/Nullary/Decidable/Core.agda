@@ -11,42 +11,48 @@
 
 module Relation.Nullary.Decidable.Core where
 
-open import Level using (Lift)
+open import Level using (Level; Lift)
 open import Data.Bool.Base using (Bool; false; true; not; T)
 open import Data.Unit.Base using (⊤)
 open import Function
 
 open import Relation.Nullary
 
-⌊_⌋ : ∀ {p} {P : Set p} → Dec P → Bool
+private
+  variable
+    p q : Level
+    P : Set p
+    Q : Set q
+
+⌊_⌋ : Dec P → Bool
 ⌊ yes _ ⌋ = true
 ⌊ no  _ ⌋ = false
 
-True : ∀ {p} {P : Set p} → Dec P → Set
+True : Dec P → Set
 True Q = T ⌊ Q ⌋
 
-False : ∀ {p} {P : Set p} → Dec P → Set
+False : Dec P → Set
 False Q = T (not ⌊ Q ⌋)
 
 -- Gives a witness to the "truth".
 
-toWitness : ∀ {p} {P : Set p} {Q : Dec P} → True Q → P
+toWitness : {Q : Dec P} → True Q → P
 toWitness {Q = yes p} _  = p
 toWitness {Q = no  _} ()
 
 -- Establishes a "truth", given a witness.
 
-fromWitness : ∀ {p} {P : Set p} {Q : Dec P} → P → True Q
+fromWitness : {Q : Dec P} → P → True Q
 fromWitness {Q = yes p} = const _
 fromWitness {Q = no ¬p} = ¬p
 
 -- Variants for False.
 
-toWitnessFalse : ∀ {p} {P : Set p} {Q : Dec P} → False Q → ¬ P
+toWitnessFalse : {Q : Dec P} → False Q → ¬ P
 toWitnessFalse {Q = yes _}  ()
 toWitnessFalse {Q = no  ¬p} _  = ¬p
 
-fromWitnessFalse : ∀ {p} {P : Set p} {Q : Dec P} → ¬ P → False Q
+fromWitnessFalse : {Q : Dec P} → ¬ P → False Q
 fromWitnessFalse {Q = yes p} = flip _$_ p
 fromWitnessFalse {Q = no ¬p} = const _
 

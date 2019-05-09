@@ -27,10 +27,16 @@ infix  4 _≤_ _≥_ _<_ _>_ _≰_ _≱_ _≮_ _≯_
 open import Agda.Builtin.Int public
   using ()
   renaming
-  ( Int to ℤ
+  ( Int    to ℤ
   ; pos    to +_      -- "+ n"      stands for "n"
   ; negsuc to -[1+_]  -- "-[1+ n ]" stands for "- (1 + n)"
   )
+
+------------------------------------------------------------------------
+-- Some additional patterns that provide symmetry around 0
+
+pattern +0       = + 0
+pattern +[1+_] n = + (ℕ.suc n)
 
 ------------------------------------------------------------------------
 -- Conversions
@@ -61,9 +67,9 @@ data SignAbs : ℤ → Set where
   _◂_ : (s : Sign) (n : ℕ) → SignAbs (s ◃ n)
 
 signAbs : ∀ i → SignAbs i
-signAbs (+ ℕ.zero)    = Sign.+ ◂ ℕ.zero
-signAbs (+ (ℕ.suc n)) = Sign.+ ◂ ℕ.suc n
-signAbs (-[1+ n ])    = Sign.- ◂ ℕ.suc n
+signAbs -[1+ n ] = Sign.- ◂ ℕ.suc n
+signAbs (+ 0)    = Sign.+ ◂ ℕ.zero
+signAbs +[1+ n ] = Sign.+ ◂ ℕ.suc n
 
 ------------------------------------------------------------------------
 -- Arithmetic
@@ -71,9 +77,9 @@ signAbs (-[1+ n ])    = Sign.- ◂ ℕ.suc n
 -- Negation.
 
 -_ : ℤ → ℤ
-- (+ ℕ.suc n) = -[1+ n ]
-- (+ ℕ.zero)  = + ℕ.zero
-- -[1+ n ]    = + ℕ.suc n
+- -[1+ n ] = +[1+ n ]
+- (+ 0)    = + 0
+- +[1+ n ] = -[1+ n ]
 
 -- Subtraction of natural numbers.
 

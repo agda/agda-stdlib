@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe --sized-types #-}
 
-module README.Trie.NonDependent where
+module README.Data.Trie.NonDependent where
 
 ------------------------------------------------------------------------
 -- Introduction
@@ -62,7 +62,7 @@ open import Data.These         as These
 
 open import Function using (case_of_; _$_; _∘′_; id)
 
-open import Data.Trie Char.strictTotalOrder
+open import Data.Trie Char.<-strictTotalOrder-≈
 open import Data.AVL.Value
 
 ------------------------------------------------------------------------

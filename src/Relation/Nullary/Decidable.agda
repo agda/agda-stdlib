@@ -8,6 +8,7 @@
 
 module Relation.Nullary.Decidable where
 
+open import Level using (Level)
 open import Function
 open import Function.Equality    using (_⟨$⟩_; module Π)
 open import Function.Equivalence using (_⇔_; equivalence; module Equivalence)
@@ -15,19 +16,26 @@ open import Function.Injection   using (Injection; module Injection)
 open import Relation.Binary      using (Setoid; module Setoid; Decidable)
 open import Relation.Nullary
 
+private
+  variable
+    p q : Level
+    P : Set p
+    Q : Set q
+
 ------------------------------------------------------------------------
 -- Re-exporting the core definitions
 
 open import Relation.Nullary.Decidable.Core public
 
-module _  {p q} {P : Set p} {Q : Set q} where
+------------------------------------------------------------------------
+-- Maps
 
-  map : P ⇔ Q → Dec P → Dec Q
-  map P⇔Q (yes p) = yes (Equivalence.to P⇔Q ⟨$⟩ p)
-  map P⇔Q (no ¬p) = no (¬p ∘ _⟨$⟩_ (Equivalence.from P⇔Q))
+map : P ⇔ Q → Dec P → Dec Q
+map P⇔Q (yes p) = yes (Equivalence.to P⇔Q ⟨$⟩ p)
+map P⇔Q (no ¬p) = no (¬p ∘ _⟨$⟩_ (Equivalence.from P⇔Q))
 
-  map′ : (P → Q) → (Q → P) → Dec P → Dec Q
-  map′ P→Q Q→P = map (equivalence P→Q Q→P)
+map′ : (P → Q) → (Q → P) → Dec P → Dec Q
+map′ P→Q Q→P = map (equivalence P→Q Q→P)
 
 module _ {a₁ a₂ b₁ b₂} {A : Setoid a₁ a₂} {B : Setoid b₁ b₂} where
 

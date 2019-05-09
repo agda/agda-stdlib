@@ -6,7 +6,7 @@
 
 {-# OPTIONS --with-K --safe --guardedness #-}
 
-module README.Container.Indexed where
+module README.Data.Container.Indexed where
 
 open import Data.Unit
 open import Data.Empty

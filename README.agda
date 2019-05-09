@@ -7,13 +7,13 @@ module README where
 -- with contributions from Andreas Abel, Stevan Andjelkovic,
 -- Jean-Philippe Bernardy, Peter Berry, Bradley Hardy Joachim Breitner,
 -- Samuel Bronson, Daniel Brown, James Chapman, Liang-Ting Chen,
--- Dominique Devriese, Dan Doel, Érdi Gergő, Helmut Grohne,
--- Simon Foster, Liyang Hu, Jason Hu, Patrik Jansson, Alan Jeffrey,
--- Wen Kokke, Evgeny Kotelnikov, Sergei Meshveliani, Eric Mertens,
--- Darin Morrison, Guilhem Moulin, Shin-Cheng Mu, Ulf Norell,
--- Noriyuki Ohkawa, Nicolas Pouillard, Andrés Sicard-Ramírez,
--- Sandro Stucki, Milo Turner, Noam Zeilberger and other anonymous
--- contributors.
+-- Dominique Devriese, Dan Doel, Érdi Gergő, Zack Grannan,
+-- Helmut Grohne, Simon Foster, Liyang Hu, Jason Hu, Patrik Jansson,
+-- Alan Jeffrey, Wen Kokke, Evgeny Kotelnikov, Sergei Meshveliani,
+-- Eric Mertens, Darin Morrison, Guilhem Moulin, Shin-Cheng Mu,
+-- Ulf Norell, Noriyuki Ohkawa, Nicolas Pouillard,
+-- Andrés Sicard-Ramírez, Sandro Stucki, Milo Turner, Noam Zeilberger
+-- and other anonymous contributors.
 ------------------------------------------------------------------------
 
 -- This version of the library has been tested using Agda 2.6.0.
@@ -57,6 +57,9 @@ module README where
 --     folder contains modules using the old musical notation.
 -- • Data
 --     Data types and properties.
+
+import README.Data
+
 -- • Function
 --     Combinators and properties related to functions.
 -- • Foreign
@@ -70,6 +73,9 @@ module README where
 --     Universe levels.
 -- • Record
 --     An encoding of record types with manifest fields and "with".
+
+import README.Record
+
 -- • Reflection
 --     Support for reflection.
 -- • Relation
@@ -256,34 +262,9 @@ import IO
 -- More documentation
 ------------------------------------------------------------------------
 
--- Some examples showing where the natural numbers/integers and some
--- related operations and properties are defined, and how they can be
--- used:
-
-import README.Nat
-import README.Integer
-
--- Some examples showing how the AVL tree module can be used.
-
-import README.AVL
-
--- Some examples showing how List module can be used.
-
-import README.List
-
--- An example showing how the Record module can be used.
-
-import README.Record
-
 -- An example showing how the case expression can be used.
 
 import README.Case
-
--- Examples how (indexed) containers and constructions over them (free
--- monad, least fixed point, etc.) can be used
-
-import README.Container.FreeMonad
-import README.Container.Indexed
 
 -- Some examples showing how combinators can be used to emulate
 -- "functional reasoning"
@@ -304,14 +285,6 @@ import README.N-ary
 -- auxiliary definitions, and implementation details.
 
 import README.Inspect
-
--- Using List's Interleaving to define a fully certified filter function.
-
-import README.Interleaving
-
--- Example use case for a trie: a wee generic lexer
-
-import README.Trie.NonDependent
 
 ------------------------------------------------------------------------
 -- Core modules
