@@ -123,7 +123,7 @@ Other minor additions
   Congₙ  : ∀ n (f g : Arrows n as b) → Set _
   congₙ  : ∀ n (f : Arrows n as b) → Congₙ n f f
   Substₙ : ∀ n (f g : Arrows n as (Set r)) → Set _
-  substₙ : ∀ n (f : Arrows n as (Set r)) → Substₙ n f f
+  substₙ : (f : Arrows n as (Set r)) → Substₙ n f f
   ```
 
 * The relation `_≅_` in `Relation.Binary.HeterogeneousEquality` has

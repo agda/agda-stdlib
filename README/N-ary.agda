@@ -96,7 +96,7 @@ _ : ∀ m → (_+ m) ≡ (_+ (m + 0))
 _ = λ m → congₙ 1 (flip _+_) (+-comm 0 m)
 
 ------------------------------------------------------------------------
--- substₙ : ∀ n (P : A₁ → ⋯ → Aₙ → Set p) →
+-- substₙ : (P : A₁ → ⋯ → Aₙ → Set p) →
 --          a₁ ≡ b₁ → ⋯ aₙ ≡ bₙ → P a₁ ⋯ aₙ → P b₁ ⋯ bₙ
 
 -- We can play the same type of game with subst
@@ -111,7 +111,7 @@ open import Agda.Builtin.Nat using (mod-helper)
 _ : ∀ k m n j → mod-helper k m (n + 1) (j + 1) ≡ mod-helper (k + 1) m n j
 _ = λ k m n j →
     let P sk sn sj = mod-helper k m sn sj ≡ mod-helper sk m n j
-    in substₙ 3 P (+-comm 1 k) (+-comm 1 n) (+-comm 1 j) refl
+    in substₙ P (+-comm 1 k) (+-comm 1 n) (+-comm 1 j) refl
 
 -----------------------------------------------------------------------
 -- Generic programs working on n-ary products & functions

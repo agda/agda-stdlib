@@ -64,10 +64,10 @@ Substₙ : ∀ n {r} {ls : Levels n} {as : Sets n ls} →
 Substₙ zero    f g = f → g
 Substₙ (suc n) f g = ∀ {x y} → x ≡ y → Substₙ n (f x) (g y)
 
-substₙ : ∀ n {ls : Levels n} {as : Sets n ls} {r} →
+substₙ : ∀ {n} {ls : Levels n} {as : Sets n ls} {r} →
          (f : Arrows n as (Set r)) → Substₙ n f f
-substₙ zero    f x    = x
-substₙ (suc n) f refl = substₙ n (f _)
+substₙ {zero}  f x    = x
+substₙ {suc n} f refl = substₙ (f _)
 
 ------------------------------------------------------------------------
 -- Structure of equality as a binary relation
