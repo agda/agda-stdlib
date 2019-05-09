@@ -15,14 +15,17 @@ open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 import Data.List.Relation.Unary.Any.Properties as Any
 import Data.List.Membership.Setoid as Membership
 import Data.List.Relation.Binary.Equality.Setoid as Equality
+import Data.List.Relation.Unary.Unique.Setoid as Unique
 open import Data.Nat using (suc; z≤n; s≤s; _≤_; _<_)
 open import Data.Nat.Properties using (≤-trans; n≤1+n)
 open import Data.Product as Prod using (∃; _×_; _,_ ; ∃₂)
 open import Data.Sum using (_⊎_; inj₁; inj₂)
 open import Function using (_$_; flip; _∘_; id)
 open import Relation.Binary hiding (Decidable)
+  renaming (Irrelevant to Irrelevant₂)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Unary using (Decidable; Pred)
+  renaming (Irrelevant to Irrelevant₁)
 open import Relation.Nullary using (¬_; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 open Setoid using (Carrier)
@@ -49,6 +52,30 @@ module _ {c ℓ} (S : Setoid c ℓ) where
 
   ∉-resp-≋ : ∀ {x} → (x ∉_) Respects _≋_
   ∉-resp-≋ xs≋ys v∉xs v∈ys = v∉xs (∈-resp-≋ (≋-sym xs≋ys) v∈ys)
+
+------------------------------------------------------------------------
+-- Irrelevance
+
+module _ {c ℓ} (S : Setoid c ℓ)
+               (≈-irrelevant : Irrelevant₂ (Setoid._≈_ S)) where
+
+  open Setoid S
+  open Unique S
+  open Membership S
+  open import Data.List.Relation.Unary.All as All using (All; _∷_)
+
+  private
+    _≉_ = λ x y → ¬ (x ≈ y)
+
+    ∉×∈⇒≉ : ∀ {x y xs} → All (y ≉_) xs → x ∈ xs → x ≉ y
+    ∉×∈⇒≉ (y≉z ∷ ps) (here x≈z)   = λ x≈y → y≉z (trans (sym x≈y) x≈z)
+    ∉×∈⇒≉ (y≉z ∷ ps) (there x∈xs) = ∉×∈⇒≉ ps x∈xs
+
+  irrelevant : ∀ {xs} → Unique xs → Irrelevant₁ (_∈ xs)
+  irrelevant _        (here p)  (here q)  = P.cong here (≈-irrelevant p q)
+  irrelevant (_  ∷ u) (there p) (there q) = P.cong there (irrelevant u p q)
+  irrelevant (≉s ∷ _) (here p)  (there q) = contradiction p (∉×∈⇒≉ ≉s q)
+  irrelevant (≉s ∷ _) (there p) (here q)  = contradiction q (∉×∈⇒≉ ≉s p)
 
 ------------------------------------------------------------------------
 -- mapWith∈
