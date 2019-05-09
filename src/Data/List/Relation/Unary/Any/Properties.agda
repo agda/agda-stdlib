@@ -253,15 +253,15 @@ module _ {P : Pred A p} {Q : Pred B q} where
 ------------------------------------------------------------------------
 -- Half-applied product commutes with Any.
 
-module _ {R : REL A B r} where
+module _ {_~_ : REL A B r} where
 
-  Any-Σ⁺ʳ : ∀ {xs} → (∃ λ x → Any (flip R x) xs) → Any (∃ ∘ R) xs
+  Any-Σ⁺ʳ : ∀ {xs} → (∃ λ x → Any (_~ x) xs) → Any (∃ ∘ _~_) xs
   Any-Σ⁺ʳ (b , here px) = here (b , px)
   Any-Σ⁺ʳ (b , there pxs) = there (Any-Σ⁺ʳ (b , pxs))
 
-  Any-Σ⁻ʳ : ∀ {xs} → Any (∃ ∘ R) xs → ∃ λ x → Any (flip R x) xs
+  Any-Σ⁻ʳ : ∀ {xs} → Any (∃ ∘ _~_) xs → ∃ λ x → Any (_~ x) xs
   Any-Σ⁻ʳ (here (b , x)) = b , here x
-  Any-Σ⁻ʳ (there xs) = let b , xs' = Any-Σ⁻ʳ xs in b , there xs'
+  Any-Σ⁻ʳ (there xs) = Prod.map₂ there $ Any-Σ⁻ʳ xs
 
 ------------------------------------------------------------------------
 -- Invertible introduction (⁺) and elimination (⁻) rules for various
@@ -306,8 +306,7 @@ module _ {f : A → B} where
          Any (P ∘ f) xs ↔ Any P (List.map f xs)
   map↔ = inverse map⁺ map⁻ (map⁻∘map⁺ _) map⁺∘map⁻
 
-module _ {a b p q} {A : Set a} {B : Set b} {f : A → B}
-         {P : A → Set p} {Q : B → Set q} where
+module _ {f : A → B} {P : A → Set p} {Q : B → Set q} where
   gmap : P ⋐ Q ∘ f → Any P ⋐ Any Q ∘ map f
   gmap g = map⁺ ∘ Any.map g
 

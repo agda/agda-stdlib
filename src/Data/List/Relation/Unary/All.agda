@@ -13,7 +13,7 @@ open import Category.Monad
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Relation.Unary.Any as Any using (here; there)
 open import Data.List.Membership.Propositional using (_∈_)
-open import Data.Product as Prod using (_×_; _,_)
+open import Data.Product as Prod using (_×_; _,_; proj₁; proj₂)
 open import Function
 open import Level
 open import Relation.Nullary
@@ -46,10 +46,10 @@ module _ {P : Pred A p} where
   uncons (px ∷ pxs) = px , pxs
 
   head : ∀ {x xs} → All P (x ∷ xs) → P x
-  head = Prod.proj₁ ∘ uncons
+  head = proj₁ ∘ uncons
 
   tail : ∀ {x xs} → All P (x ∷ xs) → All P xs
-  tail = Prod.proj₂ ∘ uncons
+  tail = proj₂ ∘ uncons
 
   lookup : ∀ {xs} → All P xs → (∀ {x} → x ∈ xs → P x)
   lookup (px ∷ pxs) (here refl)  = px
