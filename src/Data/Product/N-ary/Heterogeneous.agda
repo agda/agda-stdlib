@@ -255,7 +255,7 @@ constₙ (suc n) v = const (constₙ n v)
 ------------------------------------------------------------------------
 -- n-ary existential quantifier
 
-infix 10 ∃⟨_⟩
+infix 5 ∃⟨_⟩
 ∃⟨_⟩ : ∀ {n ls r} {as : Sets n ls} → Arrows n as (Set r) → Set (r ⊔ toLevel n ls)
 ∃⟨_⟩ {zero}                f = f
 ∃⟨_⟩ {suc n} {as = a , as} f = ∃ λ x → ∃⟨ f x ⟩
@@ -265,14 +265,14 @@ infix 10 ∃⟨_⟩
 
 -- implicit
 
-infix 10 ∀[_]
+infix 5 ∀[_]
 ∀[_] : ∀ {n ls r} {as : Sets n ls} → Arrows n as (Set r) → Set (r ⊔ toLevel n ls)
 ∀[_] {zero}                f = f
 ∀[_] {suc n} {as = a , as} f = {x : a} → ∀[ f x ]
 
 -- explicit
 
-infix 10 Π[_]
+infix 5 Π[_]
 Π[_] : ∀ {n ls r} {as : Sets n ls} → Arrows n as (Set r) → Set (r ⊔ toLevel n ls)
 Π[_] {zero}                f = f
 Π[_] {suc n} {as = a , as} f = (x : a) → Π[ f x ]
@@ -283,7 +283,7 @@ infix 10 Π[_]
 
 -- implication
 
-infixr 8 _⇒_
+infixr 6 _⇒_
 _⇒_ : ∀ {n} {ls r s} {as : Sets n ls} (f :  Arrows n as (Set r)) (g : Arrows n as (Set s)) →
       Arrows n as (Set (r ⊔ s))
 _⇒_ {zero}  f g   = f → g
@@ -299,7 +299,7 @@ _∩_ {suc n} f g x = f x ∩ g x
 
 -- disjunction
 
-infixr 6 _∪_
+infixr 8 _∪_
 _∪_ : ∀ {n} {ls r s} {as : Sets n ls} (f :  Arrows n as (Set r)) (g : Arrows n as (Set s)) →
       Arrows n as (Set (r ⊔ s))
 _∪_ {zero}  f g   = f ⊎ g
