@@ -18,6 +18,13 @@ open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary.Decidable
 
+private
+  variable
+    a b c ℓ ℓ₁ ℓ₂ : Level
+    A : Set a
+    B : Set b
+    C : Set c
+
 ------------------------------------------------------------------------
 -- N-ary functions
 
@@ -25,56 +32,54 @@ N-ary-level : Level → Level → ℕ → Level
 N-ary-level ℓ₁ ℓ₂ zero    = ℓ₂
 N-ary-level ℓ₁ ℓ₂ (suc n) = ℓ₁ ⊔ N-ary-level ℓ₁ ℓ₂ n
 
-N-ary : ∀ {ℓ₁ ℓ₂} (n : ℕ) → Set ℓ₁ → Set ℓ₂ → Set (N-ary-level ℓ₁ ℓ₂ n)
+N-ary : ∀ (n : ℕ) → Set ℓ₁ → Set ℓ₂ → Set (N-ary-level ℓ₁ ℓ₂ n)
 N-ary zero    A B = B
 N-ary (suc n) A B = A → N-ary n A B
 
 ------------------------------------------------------------------------
 -- Conversion
 
-curryⁿ : ∀ {n a b} {A : Set a} {B : Set b} →
-         (Vec A n → B) → N-ary n A B
-curryⁿ {zero}  f = f []
-curryⁿ {suc n} f = λ x → curryⁿ (f ∘ _∷_ x)
+curryⁿ : ∀ {n} → (Vec A n → B) → N-ary n A B
+curryⁿ {n = zero}  f = f []
+curryⁿ {n = suc n} f = λ x → curryⁿ (f ∘ _∷_ x)
 
-_$ⁿ_ : ∀ {n a b} {A : Set a} {B : Set b} → N-ary n A B → (Vec A n → B)
+_$ⁿ_ : ∀ {n} → N-ary n A B → (Vec A n → B)
 f $ⁿ []       = f
 f $ⁿ (x ∷ xs) = f x $ⁿ xs
 
 ------------------------------------------------------------------------
 -- Quantifiers
 
--- Universal quantifier.
+module _ {A : Set a} where
 
-∀ⁿ : ∀ n {a ℓ} {A : Set a} →
-     N-ary n A (Set ℓ) → Set (N-ary-level a ℓ n)
-∀ⁿ zero    P = P
-∀ⁿ (suc n) P = ∀ x → ∀ⁿ n (P x)
+  -- Universal quantifier.
 
--- Universal quantifier with implicit (hidden) arguments.
+  ∀ⁿ : ∀ n → N-ary n A (Set ℓ) → Set (N-ary-level a ℓ n)
+  ∀ⁿ zero    P = P
+  ∀ⁿ (suc n) P = ∀ x → ∀ⁿ n (P x)
 
-∀ⁿʰ : ∀ n {a ℓ} {A : Set a} →
-     N-ary n A (Set ℓ) → Set (N-ary-level a ℓ n)
-∀ⁿʰ zero    P = P
-∀ⁿʰ (suc n) P = ∀ {x} → ∀ⁿʰ n (P x)
+  -- Universal quantifier with implicit (hidden) arguments.
 
--- Existential quantifier.
+  ∀ⁿʰ : ∀ n → N-ary n A (Set ℓ) → Set (N-ary-level a ℓ n)
+  ∀ⁿʰ zero    P = P
+  ∀ⁿʰ (suc n) P = ∀ {x} → ∀ⁿʰ n (P x)
 
-∃ⁿ : ∀ n {a ℓ} {A : Set a} →
-     N-ary n A (Set ℓ) → Set (N-ary-level a ℓ n)
-∃ⁿ zero    P = P
-∃ⁿ (suc n) P = ∃ λ x → ∃ⁿ n (P x)
+  -- Existential quantifier.
+
+  ∃ⁿ : ∀ n → N-ary n A (Set ℓ) → Set (N-ary-level a ℓ n)
+  ∃ⁿ zero    P = P
+  ∃ⁿ (suc n) P = ∃ λ x → ∃ⁿ n (P x)
 
 ------------------------------------------------------------------------
 -- N-ary function equality
 
-Eq : ∀ {a b c ℓ} {A : Set a} {B : Set b} {C : Set c} n →
+Eq : ∀ {A : Set a} {B : Set b} {C : Set c} n →
      REL B C ℓ → REL (N-ary n A B) (N-ary n A C) (N-ary-level a ℓ n)
 Eq n _∼_ f g = ∀ⁿ n (curryⁿ {n = n} λ xs → (f $ⁿ xs) ∼ (g $ⁿ xs))
 
 -- A variant where all the arguments are implicit (hidden).
 
-Eqʰ : ∀ {a b c ℓ} {A : Set a} {B : Set b} {C : Set c} n →
+Eqʰ : ∀ {A : Set a} {B : Set b} {C : Set c} n →
       REL B C ℓ → REL (N-ary n A B) (N-ary n A C) (N-ary-level a ℓ n)
 Eqʰ n _∼_ f g = ∀ⁿʰ n (curryⁿ {n = n} λ xs → (f $ⁿ xs) ∼ (g $ⁿ xs))
 
@@ -83,21 +88,21 @@ Eqʰ n _∼_ f g = ∀ⁿʰ n (curryⁿ {n = n} λ xs → (f $ⁿ xs) ∼ (g $�
 
 -- The functions curryⁿ and _$ⁿ_ are inverses.
 
-left-inverse : ∀ {n a b} {A : Set a} {B : Set b} (f : Vec A n → B) →
+left-inverse : ∀ {n} (f : Vec A n → B) →
                ∀ xs → (curryⁿ f $ⁿ xs) ≡ f xs
 left-inverse f []       = refl
 left-inverse f (x ∷ xs) = left-inverse (f ∘ _∷_ x) xs
 
-right-inverse : ∀ {a b} {A : Set a} {B : Set b} n (f : N-ary n A B) →
-                Eq n _≡_ (curryⁿ (_$ⁿ_ {n} f)) f
+right-inverse : ∀ n (f : N-ary n A B) →
+                Eq n _≡_ (curryⁿ (_$ⁿ_ {n = n} f)) f
 right-inverse zero    f = refl
 right-inverse (suc n) f = λ x → right-inverse n (f x)
 
 -- ∀ⁿ can be expressed in an "uncurried" way.
 
-uncurry-∀ⁿ : ∀ n {a ℓ} {A : Set a} {P : N-ary n A (Set ℓ)} →
+uncurry-∀ⁿ : ∀ n {P : N-ary n A (Set ℓ)} →
              ∀ⁿ n P ⇔ (∀ (xs : Vec A n) → P $ⁿ xs)
-uncurry-∀ⁿ n {a} {ℓ} {A} = equivalence (⇒ n) (⇐ n)
+uncurry-∀ⁿ {a} {A} {ℓ} n = equivalence (⇒ n) (⇐ n)
   where
   ⇒ : ∀ n {P : N-ary n A (Set ℓ)} →
       ∀ⁿ n P → (∀ (xs : Vec A n) → P $ⁿ xs)
@@ -111,9 +116,9 @@ uncurry-∀ⁿ n {a} {ℓ} {A} = equivalence (⇒ n) (⇐ n)
 
 -- ∃ⁿ can be expressed in an "uncurried" way.
 
-uncurry-∃ⁿ : ∀ n {a ℓ} {A : Set a} {P : N-ary n A (Set ℓ)} →
+uncurry-∃ⁿ : ∀ n {P : N-ary n A (Set ℓ)} →
              ∃ⁿ n P ⇔ (∃ λ (xs : Vec A n) → P $ⁿ xs)
-uncurry-∃ⁿ n {a} {ℓ} {A} = equivalence (⇒ n) (⇐ n)
+uncurry-∃ⁿ {a} {A} {ℓ} n = equivalence (⇒ n) (⇐ n)
   where
   ⇒ : ∀ n {P : N-ary n A (Set ℓ)} →
       ∃ⁿ n P → (∃ λ (xs : Vec A n) → P $ⁿ xs)
@@ -127,47 +132,43 @@ uncurry-∃ⁿ n {a} {ℓ} {A} = equivalence (⇒ n) (⇐ n)
 
 -- Conversion preserves equality.
 
-curryⁿ-cong : ∀ {n a b c ℓ} {A : Set a} {B : Set b} {C : Set c}
-              (_∼_ : REL B C ℓ) (f : Vec A n → B) (g : Vec A n → C) →
-              (∀ xs → f xs ∼ g xs) →
-              Eq n _∼_ (curryⁿ f) (curryⁿ g)
-curryⁿ-cong {zero}  _∼_ f g hyp = hyp []
-curryⁿ-cong {suc n} _∼_ f g hyp = λ x →
-  curryⁿ-cong _∼_ (f ∘ _∷_ x) (g ∘ _∷_ x) (λ xs → hyp (x ∷ xs))
+module _ (_∼_ : REL B C ℓ) where
 
-curryⁿ-cong⁻¹ : ∀ {n a b c ℓ} {A : Set a} {B : Set b} {C : Set c}
-                (_∼_ : REL B C ℓ) (f : Vec A n → B) (g : Vec A n → C) →
-                Eq n _∼_ (curryⁿ f) (curryⁿ g) →
-                ∀ xs → f xs ∼ g xs
-curryⁿ-cong⁻¹ _∼_ f g hyp []       = hyp
-curryⁿ-cong⁻¹ _∼_ f g hyp (x ∷ xs) =
-  curryⁿ-cong⁻¹ _∼_ (f ∘ _∷_ x) (g ∘ _∷_ x) (hyp x) xs
+  curryⁿ-cong : ∀ {n} (f : Vec A n → B) (g : Vec A n → C) →
+                (∀ xs → f xs ∼ g xs) →
+                Eq n _∼_ (curryⁿ f) (curryⁿ g)
+  curryⁿ-cong {n = zero}  f g hyp = hyp []
+  curryⁿ-cong {n = suc n} f g hyp = λ x →
+    curryⁿ-cong (f ∘ _∷_ x) (g ∘ _∷_ x) (λ xs → hyp (x ∷ xs))
 
-appⁿ-cong : ∀ {n a b c ℓ} {A : Set a} {B : Set b} {C : Set c}
-            (_∼_ : REL B C ℓ) (f : N-ary n A B) (g : N-ary n A C) →
-            Eq n _∼_ f g →
-            (xs : Vec A n) → (f $ⁿ xs) ∼ (g $ⁿ xs)
-appⁿ-cong _∼_ f g hyp []       = hyp
-appⁿ-cong _∼_ f g hyp (x ∷ xs) = appⁿ-cong _∼_ (f x) (g x) (hyp x) xs
+  curryⁿ-cong⁻¹ : ∀ {n} (f : Vec A n → B) (g : Vec A n → C) →
+                  Eq n _∼_ (curryⁿ f) (curryⁿ g) →
+                  ∀ xs → f xs ∼ g xs
+  curryⁿ-cong⁻¹ f g hyp []       = hyp
+  curryⁿ-cong⁻¹ f g hyp (x ∷ xs) =
+    curryⁿ-cong⁻¹ (f ∘ _∷_ x) (g ∘ _∷_ x) (hyp x) xs
 
-appⁿ-cong⁻¹ : ∀ {n a b c ℓ} {A : Set a} {B : Set b} {C : Set c}
-              (_∼_ : REL B C ℓ) (f : N-ary n A B) (g : N-ary n A C) →
-              ((xs : Vec A n) → (f $ⁿ xs) ∼ (g $ⁿ xs)) →
-              Eq n _∼_ f g
-appⁿ-cong⁻¹ {zero}  _∼_ f g hyp = hyp []
-appⁿ-cong⁻¹ {suc n} _∼_ f g hyp = λ x →
-  appⁿ-cong⁻¹ _∼_ (f x) (g x) (λ xs → hyp (x ∷ xs))
+  appⁿ-cong : ∀ {n} (f : N-ary n A B) (g : N-ary n A C) →
+              Eq n _∼_ f g →
+              (xs : Vec A n) → (f $ⁿ xs) ∼ (g $ⁿ xs)
+  appⁿ-cong f g hyp []       = hyp
+  appⁿ-cong f g hyp (x ∷ xs) = appⁿ-cong (f x) (g x) (hyp x) xs
+
+  appⁿ-cong⁻¹ : ∀ {n} (f : N-ary n A B) (g : N-ary n A C) →
+                ((xs : Vec A n) → (f $ⁿ xs) ∼ (g $ⁿ xs)) →
+                Eq n _∼_ f g
+  appⁿ-cong⁻¹ {n = zero}  f g hyp = hyp []
+  appⁿ-cong⁻¹ {n = suc n} f g hyp = λ x →
+    appⁿ-cong⁻¹ (f x) (g x) (λ xs → hyp (x ∷ xs))
 
 -- Eq and Eqʰ are equivalent.
 
-Eq-to-Eqʰ : ∀ {a b c ℓ} {A : Set a} {B : Set b} {C : Set c}
-            n (_∼_ : REL B C ℓ) {f : N-ary n A B} {g : N-ary n A C} →
+Eq-to-Eqʰ : ∀ n (_∼_ : REL B C ℓ) {f : N-ary n A B} {g : N-ary n A C} →
             Eq n _∼_ f g → Eqʰ n _∼_ f g
 Eq-to-Eqʰ zero    _∼_ eq = eq
 Eq-to-Eqʰ (suc n) _∼_ eq = Eq-to-Eqʰ n _∼_ (eq _)
 
-Eqʰ-to-Eq : ∀ {a b c ℓ} {A : Set a} {B : Set b} {C : Set c}
-            n (_∼_ : REL B C ℓ) {f : N-ary n A B} {g : N-ary n A C} →
+Eqʰ-to-Eq : ∀ n (_∼_ : REL B C ℓ) {f : N-ary n A B} {g : N-ary n A C} →
             Eqʰ n _∼_ f g → Eq n _∼_ f g
 Eqʰ-to-Eq zero    _∼_ eq = eq
 Eqʰ-to-Eq (suc n) _∼_ eq = λ _ → Eqʰ-to-Eq n _∼_ eq
