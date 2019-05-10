@@ -21,11 +21,9 @@ open import Data.Nat.Properties using (≤-trans; n≤1+n)
 open import Data.Product as Prod using (∃; _×_; _,_ ; ∃₂)
 open import Data.Sum using (_⊎_; inj₁; inj₂)
 open import Function using (_$_; flip; _∘_; id)
-open import Relation.Binary hiding (Decidable)
-  renaming (Irrelevant to Irrelevant₂)
+open import Relation.Binary as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
-open import Relation.Unary using (Decidable; Pred)
-  renaming (Irrelevant to Irrelevant₁)
+open import Relation.Unary as U using (Decidable; Pred)
 open import Relation.Nullary using (¬_; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 open Setoid using (Carrier)
@@ -57,7 +55,7 @@ module _ {c ℓ} (S : Setoid c ℓ) where
 -- Irrelevance
 
 module _ {c ℓ} (S : Setoid c ℓ)
-               (≈-irrelevant : Irrelevant₂ (Setoid._≈_ S)) where
+               (≈-irrelevant : B.Irrelevant (Setoid._≈_ S)) where
 
   open Setoid S
   open Unique S
@@ -71,7 +69,7 @@ module _ {c ℓ} (S : Setoid c ℓ)
     ∉×∈⇒≉ (y≉z ∷ ps) (here x≈z)   = λ x≈y → y≉z (trans (sym x≈y) x≈z)
     ∉×∈⇒≉ (y≉z ∷ ps) (there x∈xs) = ∉×∈⇒≉ ps x∈xs
 
-  irrelevant : ∀ {xs} → Unique xs → Irrelevant₁ (_∈ xs)
+  irrelevant : ∀ {xs} → Unique xs → U.Irrelevant (_∈ xs)
   irrelevant _        (here p)  (here q)  = P.cong here (≈-irrelevant p q)
   irrelevant (_  ∷ u) (there p) (there q) = P.cong there (irrelevant u p q)
   irrelevant (≉s ∷ _) (here p)  (there q) = contradiction p (∉×∈⇒≉ ≉s q)
