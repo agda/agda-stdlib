@@ -171,6 +171,11 @@ Other minor additions
   concat⁺ : Sublist (Sublist R) ass bss → Sublist R (concat ass) (concat bss)
   ```
 
+* Added new proof to `Data.List.Relation.Unary.All`:
+  ```agda
+  glookup : ∀[ P ⇒ Q ⇒ R ] → All P xs → (i : Any Q xs) → R (lookup i)
+  ```
+
 * Added new proofs to `Data.List.Relation.Unary.All.Properties`:
   ```agda
   All-swap        : All (λ xs → All (xs ~_) ys) xss → All (λ y → All (_~ y) xss) ys

@@ -11,7 +11,7 @@ module Data.List.Relation.Unary.All where
 open import Category.Applicative
 open import Category.Monad
 open import Data.List.Base as List using (List; []; _∷_)
-open import Data.List.Relation.Unary.Any as Any using (here; there)
+open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Membership.Propositional using (_∈_)
 open import Data.Product as Prod using (_,_)
 open import Function
@@ -48,11 +48,6 @@ module _ {P : Pred A p} where
 
   tail : ∀ {x xs} → All P (x ∷ xs) → All P xs
   tail (px ∷ pxs) = pxs
-
-  lookup : ∀ {xs} → All P xs → (∀ {x} → x ∈ xs → P x)
-  lookup (px ∷ pxs) (here refl)  = px
-  lookup (px ∷ pxs) (there x∈xs) = lookup pxs x∈xs
-
   tabulate : ∀ {xs} → (∀ {x} → x ∈ xs → P x) → All P xs
   tabulate {xs = []}     hyp = []
   tabulate {xs = x ∷ xs} hyp = hyp (here refl) ∷ tabulate (hyp ∘ there)
@@ -134,6 +129,21 @@ module _ p {A : Set a} {P : Pred A (a ⊔ p)}
 
   forM : ∀ {Q : Pred A q} {xs} → All Q xs → (Q ⊆ M ∘′ P) → M (All P xs)
   forM = forA p App
+
+------------------------------------------------------------------------
+-- Generalised lookup based on a proof of Any
+
+module _ {P : Pred A p} {Q : Pred A q} {R : Pred A r}
+         (p×q⇒r : ∀[ P ⇒ Q ⇒ R ]) where
+
+  glookup : ∀ {xs} → All P xs → (i : Any Q xs) → R (Any.lookup i)
+  glookup (px ∷ pxs) (here qx) = p×q⇒r px qx
+  glookup (px ∷ pxs) (there i) = glookup pxs i
+
+module _ {P : Pred A p} where
+
+  lookup : ∀ {xs} → All P xs → (∀ {x} → x ∈ xs → P x)
+  lookup pxs = glookup (λ { px refl → px }) pxs
 
 ------------------------------------------------------------------------
 -- Properties of predicates preserved by All

@@ -12,6 +12,7 @@ open import Algebra.FunctionProperties using (Op₂; Selective)
 open import Data.Fin using (Fin; zero; suc)
 open import Data.List
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
+open import Data.List.Relation.Unary.All as All using (All)
 import Data.List.Relation.Unary.Any.Properties as Any
 import Data.List.Membership.Setoid as Membership
 import Data.List.Relation.Binary.Equality.Setoid as Equality
@@ -60,14 +61,12 @@ module _ {c ℓ} (S : Setoid c ℓ)
   open Setoid S
   open Unique S
   open Membership S
-  open import Data.List.Relation.Unary.All as All using (All; _∷_)
 
   private
     _≉_ = λ x y → ¬ (x ≈ y)
 
     ∉×∈⇒≉ : ∀ {x y xs} → All (y ≉_) xs → x ∈ xs → x ≉ y
-    ∉×∈⇒≉ (y≉z ∷ ps) (here x≈z)   = λ x≈y → y≉z (trans (sym x≈y) x≈z)
-    ∉×∈⇒≉ (y≉z ∷ ps) (there x∈xs) = ∉×∈⇒≉ ps x∈xs
+    ∉×∈⇒≉ = All.glookup λ y≉z x≈z x≈y → y≉z (trans (sym x≈y) x≈z)
 
   irrelevant : ∀ {xs} → Unique xs → U.Irrelevant (_∈ xs)
   irrelevant _        (here p)  (here q)  = P.cong here (≈-irrelevant p q)
