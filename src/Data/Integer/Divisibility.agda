@@ -49,7 +49,7 @@ open ℕᵈ public using (divides)
 
 *-cancelˡ-∣ : ∀ k {i j} → k ≢ + 0 → k * i ∣ k * j → i ∣ j
 *-cancelˡ-∣ k {i} {j} k≢0 k*i∣k*j = ℕᵈ./-cong (ℕ.pred ∣ k ∣) $ begin
-  let ∣k∣-is-suc = ℕᵖ.m≢0⇒suc[pred[m]]≡m (k≢0 ∘ ∣n∣≡0⇒n≡0) in
+  let ∣k∣-is-suc = ℕᵖ.suc[pred[n]]≡n (k≢0 ∘ ∣n∣≡0⇒n≡0) in
   ℕ.suc (ℕ.pred ∣ k ∣) ℕ.* ∣ i ∣ ≡⟨ cong (ℕ._* ∣ i ∣) (∣k∣-is-suc) ⟩
   ∣ k ∣ ℕ.* ∣ i ∣                ≡⟨ sym (abs-*-commute k i) ⟩
   ∣ k * i ∣                      ∣⟨ k*i∣k*j ⟩
