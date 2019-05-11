@@ -106,9 +106,21 @@ This is very much a work-in-progress and is not exhaustive.
 * Datatype names should be capitalised and function names should be
   lowercase.
 
+#### Variables
+
+* Natural variables are named `m`, `n`, `o`, ... (default `n`)
+
+* Integer varaibles are named `i`, `j`, `k`, ... (default `i`)
+
+* Rational variables are named `p`, `q`, `r`, ... (default `p`)
+
+* When naming proofs, the variables should occur in order, e.g.
+  `m≤n+m` rather than `n≤m+n`.
+
 * Collections of elements are usually indicated by appending an `s`
   (e.g. if you are naming your variables `x` and `y` then lists
   should be named `xs` and `ys`).
+
 
 #### Preconditions and postconditions
 
@@ -119,7 +131,7 @@ This is very much a work-in-progress and is not exhaustive.
   of the result by using the symbol `⇒` in names (e.g. `asym⇒antisym`)
 
 * Preconditions and postconditions should be combined using the symbols
-  `∨` and `∧` (e.g. `i*j≡0⇒i≡0∨j≡0`)
+  `∨` and `∧` (e.g. `m*n≡0⇒m≡0∨n≡0`)
 
 * Try to avoid the need for bracketing but if necessary use square
   brackets (e.g. `[m∸n]⊓[n∸m]≡0`)

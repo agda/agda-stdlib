@@ -22,7 +22,7 @@ open import Relation.Nullary.Decidable using (True)
 -- given base.
 
 toDigitChar : (n : ℕ) → Char
-toDigitChar n = Char.fromNat (n + (Char.toNat '0'))
+toDigitChar n = Char.fromℕ (n + (Char.toℕ '0'))
 
 toDecimalChars : ℕ → List Char
 toDecimalChars = map toDigitChar ∘ toNatDigits 10

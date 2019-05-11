@@ -72,6 +72,37 @@ Deprecated features
 * The proof `decSetoid` in `Data.Bool` has been deprecated in favour
   of `≡-decSetoid` in `Data.Bool.Properties`.
 
+* The following names have been deprecated in order to improve the consistency
+  of proof names in `Data.Nat.Properties`:
+  ```agda
+  m≢0⇒suc[pred[m]]≡m ↦ suc[pred[n]]≡n
+
+  i+1+j≢i            ↦ m+1+n≢m
+  i+j≡0⇒i≡0          ↦ m+n≡0⇒m≡0
+  i+j≡0⇒j≡0          ↦ m+n≡0⇒n≡0
+  i+1+j≰i            ↦ m+1+n≰m
+  i*j≡0⇒i≡0∨j≡0      ↦ m*n≡0⇒m≡0∨n≡0
+  i*j≡1⇒i≡1          ↦ m*n≡1⇒m≡1
+  i*j≡1⇒j≡1          ↦ m*n≡1⇒n≡1
+  i^j≡0⇒i≡0          ↦ m^n≡0⇒m≡0
+  i^j≡1⇒j≡0∨i≡1      ↦ m^n≡1⇒n≡0∨m≡1
+  [i+j]∸[i+k]≡j∸k    ↦ [m+n]∸[m+o]≡n∸o
+
+  n≡m⇒∣n-m∣≡0        ↦ m≡n⇒∣m-n∣≡0
+  ∣n-m∣≡0⇒n≡m        ↦ ∣m-n∣≡0⇒m≡n
+  ∣n-m∣≡n∸m⇒m≤n      ↦ ∣m-n∣≡m∸n⇒n≤m
+  ∣n-n+m∣≡m          ↦ ∣m-m+n∣≡n
+  ∣n+m-n+o∣≡∣m-o|    ↦ ∣m+n-m+o∣≡∣n-o|
+  n∸m≤∣n-m∣          ↦ m∸n≤∣m-n∣
+  ∣n-m∣≤n⊔m          ↦ ∣m-n∣≤m⊔n
+
+  n≤m+n              ↦ m≤n+m
+  n≤m+n∸m            ↦ m≤n+m∸n
+  ∣n-m∣≡[n∸m]∨[m∸n]  ↦ ∣m-n∣≡[m∸n]∨[n∸m]
+  ```
+  Note that in the case of the last three proofs, the order of the
+  arguments will need to be swapped.
+
 * The following deprecations have occured in `Data.Unit` where the new
   names all live in the new `Data.Unit.Properties` file:
   ```agda
@@ -92,6 +123,14 @@ Deprecated features
 * In `Reflection`:
   ```agda
   returnTC ↦ return
+  ```
+
+* Renamed functions in `Data.Char.Base` and the corresponding property
+  in `Data.Char.Properties`:
+  ```agda
+  fromNat         ↦ fromℕ
+  toNat           ↦ toℕ
+  toNat-injective ↦ toℕ-injective
   ```
 
 * In `Data.(Char/String).Properties`:
@@ -167,6 +206,12 @@ Other minor additions
 * Added new proof to `Data.List.Relation.Binary.Sublist.Heterogeneous.Properties`:
   ```agda
   concat⁺ : Sublist (Sublist R) ass bss → Sublist R (concat ass) (concat bss)
+  ```
+
+* Added new proofs to `Data.List.Relation.Binary.Sublist.Propositional.Properties`:
+  ```agda
+  All-resp-⊆ : (All P) Respects (flip _⊆_)
+  Any-resp-⊆ : (Any P) Respects _⊆_
   ```
 
 * Added new proofs to `Data.List.Relation.Unary.All.Properties`:
@@ -252,11 +297,6 @@ Other minor additions
   _<?_ : Decidable _<_
   ```
 
-* Added new proof to `Relation.Binary.PropositionalEquality.Core`:
-  ```agda
-  ≢-sym : Symmetric _≢_
-  ```
-
 * Added new names, functions and shorthand to `Reflection`:
   ```agda
   Names             = List Name
@@ -322,6 +362,11 @@ Other minor additions
   <±-isStrictTotalOrder-≡      : IsStrictTotalOrder _≡_ _<_ → IsStrictTotalOrder _≡_ _<±_
   ```
 
+* Added new definition in `Relation.Binary.Core`:
+  ```agda
+  Universal _∼_ = ∀ x y → x ∼ y
+  ```
+
 * The relation `_≅_` in `Relation.Binary.HeterogeneousEquality` has
   been generalised so that the types of the two equal elements need not
   be at the same universe level.
@@ -330,4 +375,14 @@ Other minor additions
   ```agda
   ≡-dec        : Decidable {A = A} _≡_ → Decidable {A = Pointed A} _≡_
   []-injective : [ x ] ≡ [ y ] → x ≡ y
+  ```
+
+* Added new proof to `Relation.Binary.PropositionalEquality.Core`:
+  ```agda
+  ≢-sym : Symmetric _≢_
+  ```
+
+* Added new notation to `Relation.Unary`:
+  ```agda
+  syntax Satisfiable P = ∃⟨ P ⟩
   ```
