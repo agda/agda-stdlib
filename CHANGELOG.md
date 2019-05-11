@@ -352,3 +352,8 @@ Other minor additions
   ```agda
   ≢-sym : Symmetric _≢_
   ```
+
+* Added new notation to `Relation.Unary`:
+  ```agda
+  syntax Satisfiable P = ∃⟨ P ⟩
+  ```
