@@ -72,6 +72,13 @@ Deprecated features
 * The proof `decSetoid` in `Data.Bool` has been deprecated in favour
   of `≡-decSetoid` in `Data.Bool.Properties`.
 
+* In `Data.Nat.Divisibility`:
+  ```agda
+  poset  ↦ ∣-poset
+  *-cong ↦ *-monoʳ-∣
+  /-cong ↦ *-cancelˡ-∣
+  ```
+
 * The following names have been deprecated in order to improve the consistency
   of proof names in `Data.Nat.Properties`:
   ```agda
@@ -269,10 +276,26 @@ Other minor additions
   _>>=_     : Maybe A → (A → Maybe B) → Maybe B
   ```
 
-* Added new proof to `Data.Nat.DivMod`:
+* Added new proofs to `Data.Nat.Divisibility`:
   ```agda
-  [a/n]*n≤a : (a div (suc n)) * (suc n) ≤ a
+  ∣n∣m%n⇒∣m : d ∣ suc n → d ∣ (m % suc n) → d ∣ m
+  %-presˡ-∣ : d ∣ m → d ∣ suc n → d ∣ (m % suc n)
   ```
+
+* Added new operator and proofs to `Data.Nat.DivMod`:
+  ```agda
+  _/_ = _div_
+
+  a%n≤a       : a % (suc n) ≤ a
+  a≤n⇒a%n≡a   : a ≤ n → a % suc n ≡ a
+  %-remove-+ˡ : a % suc n ≡ 0 → (a + b) % suc n ≡ b % suc n
+  %-remove-+ʳ : b % suc n ≡ 0 → (a + b) % suc n ≡ a % suc n
+
+  [a/n]*n≤a   : (a / suc n) * suc n ≤ a
+  ```
+  Additionally the `{≢0 : False (divisor ℕ.≟ 0)}` argument to all the
+  functions has been made irrelevant. This means that the operations
+  `_%_`, `_/_` etc. can now be used with `cong`.
 
 * Added new proofs to `Data.Nat.Properties`:
   ```agda
@@ -392,4 +415,9 @@ Other minor additions
 * Added new proof to `Relation.Binary.PropositionalEquality.Core`:
   ```agda
   ≢-sym : Symmetric _≢_
+  ```
+
+* Added new notation to `Relation.Unary`:
+  ```agda
+  syntax Satisfiable P = ∃⟨ P ⟩
   ```

@@ -55,7 +55,7 @@ toNatDigits base@(suc (suc b)) n = aux (<-wellFounded n) []
   where
   aux : {n : ℕ} → Acc _<_ n → List ℕ → List ℕ
   aux {zero}        _        xs =  (0 ∷ xs)
-  aux {n@(suc n-1)} (acc wf) xs with 0 <? n div base
+  aux {n@(suc n-1)} (acc wf) xs with 0 <? n / base
   ... | no _    =  (n % base) ∷ xs
   ... | yes 0<q =  aux (wf _ q<n) ((n % base) ∷ xs)
     where
