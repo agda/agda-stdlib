@@ -18,11 +18,11 @@ open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence
   using (_⇔_; equivalence; module Equivalence)
 open import Level using (Level; 0ℓ)
-open import Relation.Binary as B using (Decidable; DecSetoid; Setoid)
+open import Relation.Binary
 open import Relation.Binary.PropositionalEquality hiding ([_])
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable using (True)
-open import Relation.Unary as U using (Irrelevant)
+import Relation.Unary as U
 
 open import Algebra.FunctionProperties {A = Bool} _≡_
 open import Algebra.Structures {A = Bool} _≡_
@@ -92,7 +92,7 @@ true  ≤? true  = yes b≤b
 ≤-maximum false = f≤t
 ≤-maximum true  = b≤b
 
-≤-irrelevant : B.Irrelevant _≤_
+≤-irrelevant : Irrelevant _≤_
 ≤-irrelevant {_}     f≤t f≤t = refl
 ≤-irrelevant {false} b≤b b≤b = refl
 ≤-irrelevant {true}  b≤b b≤b = refl
@@ -183,7 +183,7 @@ true  <? _     = no  (λ())
 <-resp₂-≡ : _<_ Respects₂ _≡_
 <-resp₂-≡ = subst (_ <_) , subst (_< _)
 
-<-irrelevant : B.Irrelevant _<_
+<-irrelevant : Irrelevant _<_
 <-irrelevant f<t f<t = refl
 
 -- Structures
