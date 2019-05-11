@@ -169,6 +169,12 @@ Other minor additions
   concat⁺ : Sublist (Sublist R) ass bss → Sublist R (concat ass) (concat bss)
   ```
 
+* Added new proofs to `Data.List.Relation.Binary.Sublist.Propositional.Properties`:
+  ```agda
+  All-resp-⊆ : (All P) Respects (flip _⊆_)
+  Any-resp-⊆ : (Any P) Respects _⊆_
+  ```
+
 * Added new proofs to `Data.List.Relation.Unary.All.Properties`:
   ```agda
   All-swap        : All (λ xs → All (xs ~_) ys) xss → All (λ y → All (_~ y) xss) ys
