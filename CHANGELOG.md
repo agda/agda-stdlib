@@ -94,6 +94,14 @@ Deprecated features
   returnTC ↦ return
   ```
 
+* Renamed functions in `Data.Char.Base` and the corresponding property
+  in `Data.Char.Properties`:
+  ```agda
+  fromNat         ↦ fromℕ
+  toNat           ↦ toℕ
+  toNat-injective ↦ toℕ-injective
+  ```
+
 * In `Data.(Char/String).Properties`:
   ```agda
   setoid           ↦ ≡-setoid
