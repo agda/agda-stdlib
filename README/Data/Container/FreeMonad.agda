@@ -7,7 +7,7 @@
 
 {-# OPTIONS --without-K --safe --sized-types #-}
 
-module README.Container.FreeMonad where
+module README.Data.Container.FreeMonad where
 
 open import Category.Monad
 open import Data.Empty

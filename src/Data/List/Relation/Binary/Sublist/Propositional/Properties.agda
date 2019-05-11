@@ -9,6 +9,7 @@
 module Data.List.Relation.Binary.Sublist.Propositional.Properties {a} {A : Set a} where
 
 open import Data.List using (map)
+open import Data.List.Relation.Unary.All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.List.Relation.Unary.Any.Properties using (here-injective; there-injective)
 open import Data.List.Relation.Binary.Sublist.Propositional
@@ -16,6 +17,7 @@ open import Data.List.Relation.Binary.Sublist.Propositional
 import Data.List.Relation.Binary.Sublist.Setoid.Properties
   as SetoidProperties
 open import Function
+open import Relation.Binary using (_Respects_)
 open import Relation.Binary.PropositionalEquality as P hiding ([_])
 open import Relation.Unary as U using (Pred)
 
@@ -47,3 +49,15 @@ module _ {p} {P : Pred A p} where
     cong here ∘′ subst-injective x≡y ∘′ here-injective
   lookup-injective {p = _ ∷ _}    {there v} {there w} =
     cong there ∘′ lookup-injective ∘′ there-injective
+
+------------------------------------------------------------------------
+-- Relationships to other predicates
+
+module _ {ℓ} {P : Pred A ℓ} where
+  All-resp-⊆ : (All P) Respects (flip _⊆_)
+  All-resp-⊆ []          []       = []
+  All-resp-⊆ (_    ∷ʳ p) (_ ∷ xs) = All-resp-⊆ p xs
+  All-resp-⊆ (refl ∷  p) (x ∷ xs) = x ∷ All-resp-⊆ p xs
+
+  Any-resp-⊆ : (Any P) Respects _⊆_
+  Any-resp-⊆ = lookup

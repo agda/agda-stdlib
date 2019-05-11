@@ -30,10 +30,6 @@ New modules
   Data.List.Relation.Binary.Disjoint.Setoid
   Data.List.Relation.Binary.Disjoint.Setoid.Properties
 
-  Data.List.Relation.Binary.Disjoint.Propositional
-  Data.List.Relation.Binary.Disjoint.Setoid
-  Data.List.Relation.Binary.Disjoint.Setoid.Properties
-
   Data.List.Relation.Unary.AllPairs
   Data.List.Relation.Unary.AllPairs.Properties
   Data.List.Relation.Unary.Unique.Propositional
@@ -41,14 +37,23 @@ New modules
   Data.List.Relation.Unary.Unique.Setoid
   Data.List.Relation.Unary.Unique.Setoid.Properties
 
+  Data.Sign.Base
+
   Data.These.Base
+
+  Data.Unit.Properties
 
   Data.Trie
   Data.Trie.NonEmpty
+
+  Relation.Binary.Construct.Closure.Equivalence.Properties
+  Relation.Binary.Rewriting
   ```
 
 Deprecated features
 -------------------
+
+* Renamed `Relation.Binary.Core`'s `Conn` to `Connex`.
 
 * Renamed a few `-identity` lemmas in `Codata.Stream.Properties` as they were
   proving two streams bisimilar rather than propositionally equal.
@@ -64,6 +69,22 @@ Deprecated features
   map-repeat-commute ↦ map-repeat
   ```
 
+* The proof `decSetoid` in `Data.Bool` has been deprecated in favour
+  of `≡-decSetoid` in `Data.Bool.Properties`.
+
+* The following deprecations have occured in `Data.Unit` where the new
+  names all live in the new `Data.Unit.Properties` file:
+  ```agda
+  setoid        ↦ ≡-setoid
+  decSetoid     ↦ ≡-decSetoid
+  total         ↦ ≤-total
+  poset         ↦ ≤-poset
+  decTotalOrder ↦ ≤-decTotalOrder
+  ```
+  The proof `preorder` has also been deprecated, but as it erroneously proved
+  that `_≡_` (rather than `_≤_`) is a preorder with respect to `_≡_` it does
+  not have a new name in `Data.Unit.Properties`.
+
 * Deprecated `Unit` and `unit` in `Foreign.Haskell` in favour of
   `⊤` and `tt` from `Data.Unit`, as it turns out that the latter have been
   mapped to the Haskell equivalent for quite some time.
@@ -71,6 +92,21 @@ Deprecated features
 * In `Reflection`:
   ```agda
   returnTC ↦ return
+  ```
+
+* Renamed functions in `Data.Char.Base` and the corresponding property
+  in `Data.Char.Properties`:
+  ```agda
+  fromNat         ↦ fromℕ
+  toNat           ↦ toℕ
+  toNat-injective ↦ toℕ-injective
+  ```
+
+* In `Data.(Char/String).Properties`:
+  ```agda
+  setoid           ↦ ≡-setoid
+  decSetoid        ↦ ≡-decSetoid
+  strictTotalOrder ↦ <-strictTotalOrder-≈
   ```
 
 Other minor additions
@@ -84,6 +120,11 @@ Other minor additions
   map-cycle               : i ⊢ map f (cycle as) ≈ cycle (List⁺.map f as)
   map-⁺++                 : i ⊢ map f (as ⁺++ xs) ≈ List⁺.map f as ⁺++ Thunk.map (map f) xs
   map-++                  : i ⊢ map f (as ++ xs) ≈ List.map f as ++ map f xs
+  ```
+
+* Added new proof to `Data.Bool.Properties`:
+  ```agda
+  ≡-setoid : Setoid 0ℓ 0ℓ
   ```
 
 * Added new function to `Data.AVL.Indexed`:
@@ -132,14 +173,55 @@ Other minor additions
   <-strictTotalOrder     : StrictTotalOrder 0ℓ 0ℓ 0ℓ
   ```
 
+* Added new definitions to `Data.Char.Base`:
+  ```agda
+  _≈_ : Rel Char 0ℓ
+  _<_ : Rel Char 0ℓ
+  ```
+
+* Added new properties to `Data.Char.Properties`:
+  ```agda
+  ≈⇒≡         : _≈_ ⇒ _≡_
+  ≈-reflexive : _≡_ ⇒ _≈_
+  ≈-refl      : Reflexive _≈_
+  ≈-sym       : Symmetric _≈_
+  ≈-trans     : Transitive _≈_
+  ≈-subst     : ∀ {ℓ} → Substitutive _≈_ ℓ
+  _≈?_        : Decidable _≈_
+
+  ≈-isEquivalence    : IsEquivalence _≈_
+  ≈-setoid           : Setoid _ _
+  ≈-isDecEquivalence : IsDecEquivalence _≈_
+  ≈-decSetoid        : DecSetoid _ _
+
+  _<?_ : Decidable _<_
+  ```
+
 * Added new function to `Data.Digit`:
   ```agda
   toNatDigits : (base : ℕ) {base≤16 : True (1 ≤? base)} → ℕ → List ℕ
   ```
 
+* Added new pattern synonyms to `Data.Integer`:
+  ```agda
+  pattern +0       = + 0
+  pattern +[1+_] n = + (suc n)
+  ```
+
+* Added new proof to `Data.Integer.Properties`:
+  ```agda
+  ≡-setoid : Setoid 0ℓ 0ℓ
+  ```
+
 * Added new proof to `Data.List.Relation.Binary.Sublist.Heterogeneous.Properties`:
   ```agda
   concat⁺ : Sublist (Sublist R) ass bss → Sublist R (concat ass) (concat bss)
+  ```
+
+* Added new proofs to `Data.List.Relation.Binary.Sublist.Propositional.Properties`:
+  ```agda
+  All-resp-⊆ : (All P) Respects (flip _⊆_)
+  Any-resp-⊆ : (Any P) Respects _⊆_
   ```
 
 * Added new proofs to `Data.List.Relation.Unary.All.Properties`:
@@ -163,6 +245,11 @@ Other minor additions
 
 * Added new proofs to `Data.Nat.Properties`:
   ```agda
+  ≤-<-connex : Connex _≤_ _<_
+  ≥->-connex : Connex _≥_ _>_
+  <-≤-connex : Connex _<_ _≤_
+  >-≥-connex : Connex _>_ _≥_
+
   1+n≢0     : suc n ≢ 0
   <ᵇ⇒<      : T (m <ᵇ n) → m < n
   <⇒<ᵇ      : m < n → T (m <ᵇ n)
@@ -184,9 +271,40 @@ Other minor additions
   zip′ : (A → B → C) → (D → E → F) → A × D → B × E → C × F
   ```
 
-* Added new proof to `Relation.Binary.PropositionalEquality.Core`:
+* Added new proofs to `Data.Rational.Properties`:
   ```agda
-  ≢-sym : Symmetric {A = A} _≢_
+  ≡-setoid    : Setoid 0ℓ 0ℓ
+  ≡-decSetoid : DecSetoid 0ℓ 0ℓ
+  ```
+
+* Added new proofs to `Data.Sign.Properties`:
+  ```agda
+  ≡-setoid    : Setoid 0ℓ 0ℓ
+  ≡-decSetoid : DecSetoid 0ℓ 0ℓ
+  ```
+
+* Added new definitions to `Data.String.Base`:
+  ```agda
+  _≈_ : Rel String 0ℓ
+  _<_ : Rel String 0ℓ
+  ```
+
+* Added new properties to `Data.String.Properties`:
+  ```agda
+  ≈⇒≡         : _≈_ ⇒ _≡_
+  ≈-reflexive : _≡_ ⇒ _≈_
+  ≈-refl      : Reflexive _≈_
+  ≈-sym       : Symmetric _≈_
+  ≈-trans     : Transitive _≈_
+  ≈-subst     : ∀ {ℓ} → Substitutive _≈_ ℓ
+  _≈?_        : Decidable _≈_
+
+  ≈-isEquivalence    : IsEquivalence _≈_
+  ≈-setoid           : Setoid _ _
+  ≈-isDecEquivalence : IsDecEquivalence _≈_
+  ≈-decSetoid        : DecSetoid _ _
+
+  _<?_ : Decidable _<_
   ```
 
 * Added new names, functions and shorthand to `Reflection`:
@@ -226,7 +344,21 @@ Other minor additions
   iΠ[_∶_]_ s a ty   = Π[ s ∶ (iArg a) ] ty
   ```
 
+* Added new proofs to `Relation.Binary.Consequences`:
+  ```agda
+  flip-Connex : Connex P Q → Connex Q P
+  ```
+
+* Added new definition in `Relation.Binary.Core`:
+  ```agda
+  Universal _∼_ = ∀ x y → x ∼ y
+  ```
+
 * The relation `_≅_` in `Relation.Binary.HeterogeneousEquality` has
   been generalised so that the types of the two equal elements need not
   be at the same universe level.
 
+* Added new proof to `Relation.Binary.PropositionalEquality.Core`:
+  ```agda
+  ≢-sym : Symmetric _≢_
+  ```

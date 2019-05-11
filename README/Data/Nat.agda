@@ -7,7 +7,7 @@
 
 {-# OPTIONS --without-K #-}
 
-module README.Nat where
+module README.Data.Nat where
 
 -- The natural numbers and various arithmetic operations are defined
 -- in Data.Nat.
