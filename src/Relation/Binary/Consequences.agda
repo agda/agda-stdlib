@@ -167,5 +167,5 @@ module _ {P : REL A B ℓ₁} {Q : REL B A ℓ₂} where
 
 module _ {r} {R : REL A B r} where
 
-     dec⟶irrel′ : Decidable R → Irrelevant′ R
-     dec⟶irrel′ dec {a} {b} = recompute $ dec a b
+     dec⟶recomput : Decidable R → Recomputable R
+     dec⟶recomput dec {a} {b} = recompute $ dec a b

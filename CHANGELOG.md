@@ -308,10 +308,10 @@ Other minor additions
   ≢-sym : Symmetric _≢_
   ```
 
-* Defined another notion of irrelevance (reconstructibility) for binary relations:
+* Defined a notion of recomputability for binary relations:
   ```agda
-  Irrelevant′ : REL A B ℓ → Set _
-  Irrelevant′ _~_ = ∀ {x y} → .(x ~ y) → x ~ y
+  Recomputable : REL A B ℓ → Set _
+  Recomputable _~_ = ∀ {x y} → .(x ~ y) → x ~ y
 
-  dec⟶irrel′ : Decidable R → Irrelevant′ R
+  dec⟶recomput : Decidable R → Recomputable R
   ```

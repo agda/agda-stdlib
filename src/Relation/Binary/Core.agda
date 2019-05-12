@@ -217,11 +217,11 @@ WeaklyDecidable _∼_ = ∀ x y → Maybe (x ∼ y)
 Irrelevant : REL A B ℓ → Set _
 Irrelevant _∼_ = ∀ {x y} (a b : x ∼ y) → a ≡ b
 
--- Another irrelevancy - we can rebuild a relevant proof given an
+-- Recomputability - we can rebuild a relevant proof given an
 -- irrelevant one.
 
-Irrelevant′ : REL A B ℓ → Set _
-Irrelevant′ _∼_ = ∀ {x y} → .(x ∼ y) → x ∼ y
+Recomputable : REL A B ℓ → Set _
+Recomputable _∼_ = ∀ {x y} → .(x ∼ y) → x ∼ y
 
 -- Universal - all pairs of elements are related
 
