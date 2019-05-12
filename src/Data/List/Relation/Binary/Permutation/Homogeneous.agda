@@ -6,11 +6,11 @@
 
 {-# OPTIONS --without-K --safe #-}
 
+module Data.List.Relation.Binary.Permutation.Homogeneous where
+
 open import Data.List using (List; _∷_)
 open import Level using (Level; _⊔_)
 open import Relation.Binary
-
-module Data.List.Relation.Binary.Permutation.Homogeneous where
 
 private
   variable

@@ -6,14 +6,15 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Data.List using (List; _∷_)
-import Data.List.Relation.Binary.Permutation.Homogeneous as HomogeneousPermutation
-open import Level using (_⊔_)
 open import Relation.Binary
-import Relation.Binary.EqReasoning as EqReasoning
 
 module Data.List.Relation.Binary.Permutation.Setoid
   {b} {ℓ} (S : Setoid b ℓ) where
+
+open import Data.List using (List; _∷_)
+import Data.List.Relation.Binary.Permutation.Homogeneous as HomogeneousPermutation
+open import Level using (_⊔_)
+import Relation.Binary.EqReasoning as EqReasoning
 
 open Setoid S using (Carrier; _≈_; sym)
 
@@ -27,6 +28,9 @@ open HomogeneousPermutation
 infix 3 _↭_
 _↭_ : Rel (List Carrier) (b ⊔ ℓ)
 _↭_ = Permutation _≈_
+
+------------------------------------------------------------------------
+-- _↭_ is an equivalence
 
 ↭-refl : Reflexive (Permutation _≈_)
 ↭-refl = refl
