@@ -262,7 +262,7 @@ nonZeroDivisor-lemma m zero r r≢zero (divides zero eq) = r≢zero $ begin-equa
   1 * toℕ r  ≡⟨ eq ⟩
   0          ∎
 nonZeroDivisor-lemma m zero r r≢zero (divides (suc q) eq) =
-  i+1+j≰i m $ begin
+  m+1+n≰m m $ begin
     m + suc (q * suc m) ≡⟨ +-suc m (q * suc m) ⟩
     suc (m + q * suc m) ≡⟨ sym eq ⟩
     1 * toℕ r           ≡⟨ *-identityˡ (toℕ r) ⟩
