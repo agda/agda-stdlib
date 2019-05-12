@@ -160,6 +160,11 @@ record IdempotentCommutativeMonoid c ℓ : Set (suc (c ⊔ ℓ)) where
   open CommutativeMonoid commutativeMonoid public
     using (rawMagma; magma; semigroup; rawMonoid; monoid)
 
+BoundedLattice = IdempotentCommutativeMonoid
+
+module BoundedLattice {c ℓ} {idempotentCommutativeMonoid : IdempotentCommutativeMonoid c ℓ} =
+       IdempotentCommutativeMonoid idempotentCommutativeMonoid
+
 ------------------------------------------------------------------------
 -- Groups
 

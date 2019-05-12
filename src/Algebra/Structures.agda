@@ -103,6 +103,15 @@ record IsIdempotentCommutativeMonoid (∙ : Op₂ A)
 
   open IsCommutativeMonoid isCommutativeMonoid public
 
+-- IsBoundedLattice is an (more comprehensive) alias for IsIdempotentCommutativeMonoid
+
+IsBoundedLattice = IsIdempotentCommutativeMonoid
+
+module IsBoundedLattice {∙ : Op₂ A}
+                        {ε : A}
+                        (isIdempotentCommutativeMonoid : IsIdempotentCommutativeMonoid ∙ ε) =
+       IsIdempotentCommutativeMonoid isIdempotentCommutativeMonoid
+
 ------------------------------------------------------------------------
 -- Groups
 
