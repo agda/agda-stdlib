@@ -72,7 +72,7 @@ plus-eq-+ (suc m) n      = refl
 
 plus-eq-with : ∀ m n → Plus-eq m n (m + n)
 plus-eq-with m n with m + n | inspect (m +_) n
-... | zero  | [ m+n≡0   ] = i+j≡0⇒i≡0 m m+n≡0 , i+j≡0⇒j≡0 m m+n≡0
+... | zero  | [ m+n≡0   ] = m+n≡0⇒m≡0 m m+n≡0 , m+n≡0⇒n≡0 m m+n≡0
 ... | suc p | [ m+n≡1+p ] = m+n≡1+p
 
 
@@ -87,7 +87,7 @@ plus-eq-aux : ∀ m n → Plus-eq m n (m + n)
 plus-eq-aux m n = aux m n (m + n) refl where
 
   aux : ∀ m n p → m + n ≡ p → Plus-eq m n p
-  aux m n zero    m+n≡0   = i+j≡0⇒i≡0 m m+n≡0 , i+j≡0⇒j≡0 m m+n≡0
+  aux m n zero    m+n≡0   = m+n≡0⇒m≡0 m m+n≡0 , m+n≡0⇒n≡0 m m+n≡0
   aux m n (suc p) m+n≡1+p = m+n≡1+p
 
 -- The problem is that when we write ̀with f x | pr`, `with` decides to call `y`
@@ -124,7 +124,7 @@ plus-eq-reveal : ∀ m n → Plus-eq m n (m + n)
 plus-eq-reveal m n = aux m n (m + n) (my-inspect (m +_) n) where
 
   aux : ∀ m n p → MyReveal (m +_) · n is p → Plus-eq m n p
-  aux m n zero    [ m+n≡0   ] = i+j≡0⇒i≡0 m m+n≡0 , i+j≡0⇒j≡0 m m+n≡0
+  aux m n zero    [ m+n≡0   ] = m+n≡0⇒m≡0 m m+n≡0 , m+n≡0⇒n≡0 m m+n≡0
   aux m n (suc p) [ m+n≡1+p ] = m+n≡1+p
 
 -- At the cost of having to unwrap the constructor `[_]` around the equality

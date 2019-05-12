@@ -29,17 +29,17 @@ import Relation.Binary.PropositionalEquality as PropEq
 -- Primitive properties
 
 open import Agda.Builtin.Char.Properties
-  renaming ( primCharToNatInjective to toNat-injective)
+  renaming ( primCharToNatInjective to toℕ-injective)
   public
 
 ------------------------------------------------------------------------
 -- Properties of _≈_
 
 ≈⇒≡ : _≈_ ⇒ _≡_
-≈⇒≡ = toNat-injective _ _
+≈⇒≡ = toℕ-injective _ _
 
 ≈-reflexive : _≡_ ⇒ _≈_
-≈-reflexive = cong toNat
+≈-reflexive = cong toℕ
 
 ≈-refl : Reflexive _≈_
 ≈-refl = refl
@@ -55,7 +55,7 @@ open import Agda.Builtin.Char.Properties
 
 infix 4 _≈?_
 _≈?_ : Decidable _≈_
-x ≈? y = toNat x ℕₚ.≟ toNat y
+x ≈? y = toℕ x ℕₚ.≟ toℕ y
 
 ≈-isEquivalence : IsEquivalence _≈_
 ≈-isEquivalence = record
@@ -79,12 +79,13 @@ x ≈? y = toNat x ℕₚ.≟ toNat y
 ≈-decSetoid = record
   { isDecEquivalence = ≈-isDecEquivalence
   }
+
 ------------------------------------------------------------------------
 -- Properties of _≡_
 
 infix 4 _≟_
 _≟_ : Decidable {A = Char} _≡_
-x ≟ y = map′ ≈⇒≡ ≈-reflexive $ x ≈? y
+x ≟ y = map′ ≈⇒≡ ≈-reflexive (x ≈? y)
 
 ≡-setoid : Setoid _ _
 ≡-setoid = PropEq.setoid Char
@@ -120,12 +121,24 @@ private
 
 infix 4 _<?_
 _<?_ : Decidable _<_
-_<?_ = On.decidable toNat ℕ._<_ ℕₚ._<?_
+_<?_ = On.decidable toℕ ℕ._<_ ℕₚ._<?_
 
 <-strictTotalOrder-≈ : StrictTotalOrder _ _ _
-<-strictTotalOrder-≈ = On.strictTotalOrder ℕₚ.<-strictTotalOrder toNat
+<-strictTotalOrder-≈ = On.strictTotalOrder ℕₚ.<-strictTotalOrder toℕ
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
 
 -- Version 1.1
+
+toNat-injective = toℕ-injective
+{-# WARNING_ON_USAGE toℕ-injective
+"Warning: toNat-injective was deprecated in v1.1.
+Please use toℕ-injective instead."
+#-}
 
 setoid = ≡-setoid
 {-# WARNING_ON_USAGE setoid
