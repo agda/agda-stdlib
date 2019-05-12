@@ -62,27 +62,12 @@ false ≟ true  = no λ()
 ≤-refl : Reflexive _≤_
 ≤-refl = ≤-reflexive refl
 
+≤-trans : Transitive _≤_
+≤-trans b≤b p   = p
+≤-trans f≤t b≤b = f≤t
+
 ≤-antisym : Antisymmetric _≡_ _≤_
 ≤-antisym b≤b _ = refl
-
-≤-trans : Transitive _≤_
-≤-trans f≤t b≤b = f≤t
-≤-trans b≤b f≤t = f≤t
-≤-trans b≤b b≤b = b≤b
-
-≤-total : Total _≤_
-≤-total false false = inj₁ b≤b
-≤-total false true  = inj₁ f≤t
-≤-total true  false = inj₂ f≤t
-≤-total true  true  = inj₁ b≤b
-
-infix 4 _≤?_
-
-_≤?_ : Decidable _≤_
-false ≤? false = yes b≤b
-false ≤? true  = yes f≤t
-true  ≤? false = no λ()
-true  ≤? true  = yes b≤b
 
 ≤-minimum : Minimum _≤_ false
 ≤-minimum false = b≤b
@@ -91,6 +76,17 @@ true  ≤? true  = yes b≤b
 ≤-maximum : Maximum _≤_ true
 ≤-maximum false = f≤t
 ≤-maximum true  = b≤b
+
+≤-total : Total _≤_
+≤-total false b = inj₁ (≤-minimum b)
+≤-total true  b = inj₂ (≤-maximum b)
+
+infix 4 _≤?_
+
+_≤?_ : Decidable _≤_
+false ≤? b     = yes (≤-minimum b)
+true  ≤? false = no λ ()
+true  ≤? true  = yes b≤b
 
 ≤-irrelevant : Irrelevant _≤_
 ≤-irrelevant {_}     f≤t f≤t = refl
