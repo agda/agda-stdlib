@@ -37,6 +37,9 @@ New modules
   Data.List.Relation.Unary.Unique.Setoid
   Data.List.Relation.Unary.Unique.Setoid.Properties
 
+  Data.Nat.Induction
+  Data.Fin.Induction
+
   Data.Product.N-ary.Heterogeneous
 
   Data.Sign.Base
@@ -135,6 +138,14 @@ Deprecated features
   `⊤` and `tt` from `Data.Unit`, as it turns out that the latter have been
   mapped to the Haskell equivalent for quite some time.
 
+* The induction machinary for naturals was commonly held to be one of the hardest
+  modules to find in the library. Therefore the module `Induction.Nat` has been
+  split into two new modules: `Data.Nat.Induction` and `Data.Fin.Induction`.
+  This should improve findability and better matches the design of the rest of
+  the library. The new modules also export `Acc` and `acc` meaning there is no
+  need to import `Data.Induction.WellFounded`.  The old module `Induction.Nat`
+  still exists for backwards compatability but is deprecated.
+
 * In `Reflection`:
   ```agda
   returnTC ↦ return
@@ -176,6 +187,47 @@ Other minor additions
 * Added new function to `Data.AVL.Indexed`:
   ```agda
   toList : Tree V l u h → List (K& V)
+  ```
+
+* Added new relations to `Data.Bool`:
+  ```agda
+  _≤_ : Rel Bool 0ℓ
+  _<_ : Rel Bool 0ℓ
+  ```
+
+* Added new proofs to `Data.Bool.Properties`:
+  ```agda
+  ≤-reflexive       : _≡_ ⇒ _≤_
+  ≤-refl            : Reflexive _≤_
+  ≤-antisym         : Antisymmetric _≡_ _≤_
+  ≤-trans           : Transitive _≤_
+  ≤-total           : Total _≤_
+  _≤?_              : Decidable _≤_
+  ≤-minimum         : Minimum _≤_ false
+  ≤-maximum         : Maximum _≤_ true
+  ≤-irrelevant      : B.Irrelevant _≤_
+  ≤-isPreorder      : IsPreorder _≡_ _≤_
+  ≤-isPartialOrder  : IsPartialOrder _≡_ _≤_
+  ≤-isTotalOrder    : IsTotalOrder _≡_ _≤_
+  ≤-isDecTotalOrder : IsDecTotalOrder _≡_ _≤_
+  ≤-poset           : Poset 0ℓ 0ℓ 0ℓ
+  ≤-preorder        : Preorder 0ℓ 0ℓ 0ℓ
+  ≤-totalOrder      : TotalOrder 0ℓ 0ℓ 0ℓ
+  ≤-decTotalOrder   : DecTotalOrder 0ℓ 0ℓ 0ℓ
+
+  <-irrefl               : Irreflexive _≡_ _<_
+  <-asym                 : Asymmetric _<_
+  <-trans                : Transitive _<_
+  <-transʳ               : Trans _≤_ _<_ _<_
+  <-transˡ               : Trans _<_ _≤_ _<_
+  <-cmp                  : Trichotomous _≡_ _<_
+  _<?_                   : Decidable _<_
+  <-resp₂-≡              : _<_ Respects₂ _≡_
+  <-irrelevant           : B.Irrelevant _<_
+  <-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
+  <-isStrictTotalOrder   : IsStrictTotalOrder _≡_ _<_
+  <-strictPartialOrder   : StrictPartialOrder 0ℓ 0ℓ 0ℓ
+  <-strictTotalOrder     : StrictTotalOrder 0ℓ 0ℓ 0ℓ
   ```
 
 * Added new definitions to `Data.Char.Base`:
@@ -370,6 +422,29 @@ Other minor additions
   flip-Connex : Connex P Q → Connex Q P
   ```
 
+* Added new proofs to `Relation.Binary.Construct.Add.(Infimum/Supremum/Extrema).NonStrict`:
+  ```agda
+  ≤±-reflexive-≡         : (_≡_ ⇒ _≤_) → (_≡_ ⇒ _≤±_)
+  ≤±-antisym-≡           : Antisymmetric _≡_ _≤_ → Antisymmetric _≡_ _≤±_
+  ≤±-isPreorder-≡        : IsPreorder _≡_ _≤_ → IsPreorder _≡_ _≤±_
+  ≤±-isPartialOrder-≡    : IsPartialOrder _≡_ _≤_ → IsPartialOrder _≡_ _≤±_
+  ≤±-isDecPartialOrder-≡ : IsDecPartialOrder _≡_ _≤_ → IsDecPartialOrder _≡_ _≤±_
+  ≤±-isTotalOrder-≡      : IsTotalOrder _≡_ _≤_ → IsTotalOrder _≡_ _≤±_
+  ≤±-isDecTotalOrder-≡   : IsDecTotalOrder _≡_ _≤_ → IsDecTotalOrder _≡_ _≤±_
+  ```
+
+* Added new proofs to `Relation.Binary.Construct.Add.(Infimum/Supremum/Extrema).Strict`:
+  ```agda
+  <±-respˡ-≡                   : _<±_ Respectsˡ _≡_
+  <±-respʳ-≡                   : _<±_ Respectsʳ _≡_
+  <±-resp-≡                    : _<±_ Respects₂ _≡_
+  <±-cmp-≡                     : Trichotomous _≡_ _<_ → Trichotomous _≡_ _<±_
+  <±-irrefl-≡                  : Irreflexive _≡_ _<_ → Irreflexive _≡_ _<±_
+  <±-isStrictPartialOrder-≡    : IsStrictPartialOrder _≡_ _<_ → IsStrictPartialOrder _≡_ _<±_
+  <±-isDecStrictPartialOrder-≡ : IsDecStrictPartialOrder _≡_ _<_ → IsDecStrictPartialOrder _≡_ _<±_
+  <±-isStrictTotalOrder-≡      : IsStrictTotalOrder _≡_ _<_ → IsStrictTotalOrder _≡_ _<±_
+  ```
+
 * Added new definition in `Relation.Binary.Core`:
   ```agda
   Universal _∼_ = ∀ x y → x ∼ y
@@ -378,6 +453,12 @@ Other minor additions
 * The relation `_≅_` in `Relation.Binary.HeterogeneousEquality` has
   been generalised so that the types of the two equal elements need not
   be at the same universe level.
+
+* Added new proofs to `Relation.Nullary.Construct.Add.Point`:
+  ```agda
+  ≡-dec        : Decidable {A = A} _≡_ → Decidable {A = Pointed A} _≡_
+  []-injective : [ x ] ≡ [ y ] → x ≡ y
+  ```
 
 * Added new proof to `Relation.Binary.PropositionalEquality.Core`:
   ```agda
