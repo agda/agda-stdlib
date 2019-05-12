@@ -63,7 +63,7 @@ a[modₕ]n≤a acc (suc a) zero    = begin
   modₕ acc (acc + 0) (suc a) 0 ≡⟨ cong (λ v → modₕ acc v (suc a) 0) (+-identityʳ acc) ⟩
   modₕ acc acc (suc a) 0       ≤⟨ a[modₕ]n≤a 0 a acc ⟩
   a                            ≤⟨ n≤1+n a ⟩
-  suc a                        ≤⟨ n≤m+n acc (suc a) ⟩
+  suc a                        ≤⟨ m≤n+m (suc a) acc ⟩
   acc + suc a                  ∎
 
 modₕ-idem : ∀ acc a n → modₕ 0 (acc + n) (modₕ acc (acc + n) a n) (acc + n) ≡ modₕ acc (acc + n) a n
