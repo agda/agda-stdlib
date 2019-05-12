@@ -467,3 +467,11 @@ Other minor additions
   ```agda
   syntax Satisfiable P = ∃⟨ P ⟩
   ```
+
+* Defined a notion of recomputability for binary relations:
+  ```agda
+  Recomputable : REL A B ℓ → Set _
+  Recomputable _~_ = ∀ {x y} → .(x ~ y) → x ~ y
+
+  dec⟶recomputable : Decidable R → Recomputable R
+  ```
