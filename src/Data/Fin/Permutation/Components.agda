@@ -43,14 +43,13 @@ reverse {suc n} i  = inject≤ (n ℕ- i) (ℕₚ.n∸m≤n (toℕ i) (suc n))
 transpose-inverse : ∀ {n} (i j : Fin n) {k} →
                     transpose i j (transpose j i k) ≡ k
 transpose-inverse i j {k} with k ≟ j
-... | yes p rewrite ≡-≟-identity _≟_ {a = i} refl = sym p
+... | yes p rewrite ≡-≟-identity _≟_ {x = i} refl = sym p
 ... | no ¬p with k ≟ i
-transpose-inverse i j {k} | no ¬p | yes q with j ≟ i
-... | yes r = trans r (sym q)
-... | no ¬r rewrite ≡-≟-identity _≟_ {a = j} refl = sym q
-transpose-inverse i j {k} | no ¬p | no ¬q
-  rewrite proj₂ (≢-≟-identity _≟_ ¬q)
-        | proj₂ (≢-≟-identity _≟_ ¬p) = refl
+...   | no ¬q rewrite proj₂ (≢-≟-identity _≟_ ¬q)
+                    | proj₂ (≢-≟-identity _≟_ ¬p) = refl
+...   | yes q with j ≟ i
+...     | yes r = trans r (sym q)
+...     | no ¬r rewrite ≡-≟-identity _≟_ {x = j} refl = sym q
 
 reverse-prop : ∀ {n} → (i : Fin n) → toℕ (reverse i) ≡ n ∸ suc (toℕ i)
 reverse-prop {suc n} i = begin

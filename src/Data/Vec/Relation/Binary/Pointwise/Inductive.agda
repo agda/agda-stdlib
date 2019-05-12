@@ -14,15 +14,24 @@ open import Data.Nat using (ℕ; zero; suc)
 open import Data.Product using (_×_; _,_)
 open import Data.Vec as Vec hiding ([_]; head; tail; map; lookup)
 open import Data.Vec.Relation.Unary.All using (All; []; _∷_)
-open import Level using (_⊔_)
+open import Level using (Level; _⊔_)
 open import Function using (_∘_)
 open import Function.Equivalence using (_⇔_; equivalence)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Nullary
+open import Relation.Unary using (Pred)
+
+private
+  variable
+    a b c d ℓ ℓ₁ ℓ₂ : Level
+    A : Set a
+    B : Set b
+    C : Set c
+    D : Set d
 
 ------------------------------------------------------------------------
--- Relation
+-- Definition
 
 infixr 5 _∷_
 
@@ -34,8 +43,10 @@ data Pointwise {a b ℓ} {A : Set a} {B : Set b} (_∼_ : REL A B ℓ) :
         (x∼y : x ∼ y) (xs∼ys : Pointwise _∼_ xs ys) →
         Pointwise _∼_ (x ∷ xs) (y ∷ ys)
 
-length-equal : ∀ {a b m n ℓ} {A : Set a} {B : Set b} {_∼_ : REL A B ℓ}
-               {xs : Vec A m} {ys : Vec B n} →
+------------------------------------------------------------------------
+-- Properties
+
+length-equal : ∀ {m n} {_∼_ : REL A B ℓ} {xs : Vec A m} {ys : Vec B n} →
                Pointwise _∼_ xs ys → m ≡ n
 length-equal []          = P.refl
 length-equal (_ ∷ xs∼ys) = P.cong suc (length-equal xs∼ys)
@@ -43,7 +54,7 @@ length-equal (_ ∷ xs∼ys) = P.cong suc (length-equal xs∼ys)
 ------------------------------------------------------------------------
 -- Operations
 
-module _ {a b ℓ} {A : Set a} {B : Set b} {_∼_ : REL A B ℓ} where
+module _ {_∼_ : REL A B ℓ} where
 
   head : ∀ {m n x y} {xs : Vec A m} {ys : Vec B n} →
          Pointwise _∼_ (x ∷ xs) (y ∷ ys) → x ∼ y
@@ -66,26 +77,24 @@ module _ {a b ℓ} {A : Set a} {B : Set b} {_∼_ : REL A B ℓ} where
 ------------------------------------------------------------------------
 -- Relational properties
 
-refl : ∀ {a ℓ} {A : Set a} {_∼_ : Rel A ℓ} →
-       ∀ {n} → Reflexive _∼_ → Reflexive (Pointwise _∼_ {n})
+refl : ∀ {_∼_ : Rel A ℓ} {n} →
+       Reflexive _∼_ → Reflexive (Pointwise _∼_ {n})
 refl ∼-refl {[]}      = []
 refl ∼-refl {x ∷ xs} = ∼-refl ∷ refl ∼-refl
 
-sym : ∀ {a b ℓ} {A : Set a} {B : Set b}
-      {P : REL A B ℓ} {Q : REL B A ℓ} {m n} →
+sym : ∀ {P : REL A B ℓ} {Q : REL B A ℓ} {m n} →
       Sym P Q → Sym (Pointwise P) (Pointwise Q {m} {n})
 sym sm []             = []
 sym sm (x∼y ∷ xs∼ys) = sm x∼y ∷ sym sm xs∼ys
 
-trans : ∀ {a b c ℓ} {A : Set a} {B : Set b} {C : Set c}
-        {P : REL A B ℓ} {Q : REL B C ℓ} {R : REL A C ℓ} {m n o} →
+trans : ∀ {P : REL A B ℓ} {Q : REL B C ℓ} {R : REL A C ℓ} {m n o} →
         Trans P Q R →
         Trans (Pointwise P {m}) (Pointwise Q {n} {o}) (Pointwise R)
 trans trns []             []             = []
 trans trns (x∼y ∷ xs∼ys) (y∼z ∷ ys∼zs) =
   trns x∼y y∼z ∷ trans trns xs∼ys ys∼zs
 
-decidable : ∀ {a b ℓ} {A : Set a} {B : Set b} {_∼_ : REL A B ℓ} →
+decidable : ∀ {_∼_ : REL A B ℓ} →
             Decidable _∼_ → ∀ {m n} → Decidable (Pointwise _∼_ {m} {n})
 decidable dec []       []       = yes []
 decidable dec []       (y ∷ ys) = no λ()
@@ -96,41 +105,47 @@ decidable dec (x ∷ xs) (y ∷ ys) with dec x y
 ...   | no ¬xs∼ys = no (¬xs∼ys ∘ tail)
 ...   | yes xs∼ys = yes (x∼y ∷ xs∼ys)
 
-isEquivalence : ∀ {a ℓ} {A : Set a} {_∼_ : Rel A ℓ} →
-                IsEquivalence _∼_ → ∀ n →
-                IsEquivalence (Pointwise _∼_ {n})
-isEquivalence equiv n = record
-  { refl  = refl  (IsEquivalence.refl  equiv)
-  ; sym   = sym   (IsEquivalence.sym   equiv)
-  ; trans = trans (IsEquivalence.trans equiv)
-  }
+------------------------------------------------------------------------
+-- Structures
 
-isDecEquivalence : ∀ {a ℓ} {A : Set a} {_∼_ : Rel A ℓ} →
-                   IsDecEquivalence _∼_ → ∀ n →
-                   IsDecEquivalence (Pointwise _∼_ {n})
-isDecEquivalence decEquiv n = record
-  { isEquivalence = isEquivalence (IsDecEquivalence.isEquivalence decEquiv) n
-  ; _≟_           = decidable (IsDecEquivalence._≟_ decEquiv)
-  }
+module _ {_∼_ : Rel A ℓ} where
 
-setoid : ∀ {a ℓ} → Setoid a ℓ → ℕ → Setoid a (a ⊔ ℓ)
+  isEquivalence : IsEquivalence _∼_ → ∀ n →
+                  IsEquivalence (Pointwise _∼_ {n})
+  isEquivalence equiv n = record
+    { refl  = refl  Eq.refl
+    ; sym   = sym   Eq.sym
+    ; trans = trans Eq.trans
+    } where module Eq = IsEquivalence equiv
+
+  isDecEquivalence : IsDecEquivalence _∼_ → ∀ n →
+                     IsDecEquivalence (Pointwise _∼_ {n})
+  isDecEquivalence decEquiv n = record
+    { isEquivalence = isEquivalence Eq.isEquivalence n
+    ; _≟_           = decidable Eq._≟_
+    } where module Eq = IsDecEquivalence decEquiv
+
+------------------------------------------------------------------------
+-- Packages
+
+setoid : Setoid a ℓ → ℕ → Setoid a (a ⊔ ℓ)
 setoid S n = record
-   { isEquivalence = isEquivalence (Setoid.isEquivalence S) n
-   }
+   { isEquivalence = isEquivalence Eq.isEquivalence n
+   } where module Eq = Setoid S
 
-decSetoid : ∀ {a ℓ} → DecSetoid a ℓ → ℕ → DecSetoid a (a ⊔ ℓ)
+decSetoid : DecSetoid a ℓ → ℕ → DecSetoid a (a ⊔ ℓ)
 decSetoid S n = record
-   { isDecEquivalence = isDecEquivalence (DecSetoid.isDecEquivalence S) n
-   }
+   { isDecEquivalence = isDecEquivalence Eq.isDecEquivalence n
+   } where module Eq = DecSetoid S
 
 ------------------------------------------------------------------------
 -- map
 
-module _ {a b c d} {A : Set a} {B : Set b} {C : Set c} {D : Set d} where
+module _ {_∼₁_ : REL A B ℓ₁} {_∼₂_ : REL C D ℓ₂}
+         {f : A → C} {g : B → D}
+         where
 
-  map⁺ : ∀ {ℓ₁ ℓ₂} {_∼₁_ : REL A B ℓ₁} {_∼₂_ : REL C D ℓ₂}
-         {f : A → C} {g : B → D} →
-         (∀ {x y} → x ∼₁ y → f x ∼₂ g y) →
+  map⁺ : (∀ {x y} → x ∼₁ y → f x ∼₂ g y) →
          ∀ {m n xs ys} → Pointwise _∼₁_ {m} {n} xs ys →
          Pointwise _∼₂_ (Vec.map f xs) (Vec.map g ys)
   map⁺ ∼₁⇒∼₂ []             = []
@@ -139,7 +154,7 @@ module _ {a b c d} {A : Set a} {B : Set b} {C : Set c} {D : Set d} where
 ------------------------------------------------------------------------
 -- _++_
 
-module _ {a b ℓ} {A : Set a} {B : Set b} {_∼_ : REL A B ℓ} where
+module _ {_∼_ : REL A B ℓ} where
 
   ++⁺ : ∀ {m n p q}
         {ws : Vec A m} {xs : Vec B p} {ys : Vec A n} {zs : Vec B q} →
@@ -169,7 +184,7 @@ module _ {a b ℓ} {A : Set a} {B : Set b} {_∼_ : REL A B ℓ} where
 ------------------------------------------------------------------------
 -- concat
 
-module _ {a b ℓ} {A : Set a} {B : Set b} {_∼_ : REL A B ℓ} where
+module _ {_∼_ : REL A B ℓ} where
 
   concat⁺ : ∀ {m n p q}
             {xss : Vec (Vec A m) n} {yss : Vec (Vec B p) q} →
@@ -188,7 +203,7 @@ module _ {a b ℓ} {A : Set a} {B : Set b} {_∼_ : REL A B ℓ} where
 ------------------------------------------------------------------------
 -- tabulate
 
-module _ {a b ℓ} {A : Set a} {B : Set b} {_∼_ : REL A B ℓ} where
+module _ {_∼_ : REL A B ℓ} where
 
   tabulate⁺ : ∀ {n} {f : Fin n → A} {g : Fin n → B} →
               (∀ i → f i ∼ g i) →
@@ -205,7 +220,7 @@ module _ {a b ℓ} {A : Set a} {B : Set b} {_∼_ : REL A B ℓ} where
 ------------------------------------------------------------------------
 -- Degenerate pointwise relations
 
-module _ {a b ℓ} {A : Set a} {B : Set b} {P : A → Set ℓ} where
+module _ {P : Pred A ℓ} where
 
   Pointwiseˡ⇒All : ∀ {m n} {xs : Vec A m} {ys : Vec B n} →
                    Pointwise (λ x y → P x) xs ys → All P xs
@@ -230,20 +245,15 @@ module _ {a b ℓ} {A : Set a} {B : Set b} {P : A → Set ℓ} where
 ------------------------------------------------------------------------
 -- Pointwise _≡_ is equivalent to _≡_
 
-module _ {a} {A : Set a} where
+Pointwise-≡⇒≡ : ∀ {n} {xs ys : Vec A n} → Pointwise _≡_ xs ys → xs ≡ ys
+Pointwise-≡⇒≡ []               = P.refl
+Pointwise-≡⇒≡ (P.refl ∷ xs∼ys) = P.cong (_ ∷_) (Pointwise-≡⇒≡ xs∼ys)
 
-  Pointwise-≡⇒≡ : ∀ {n} {xs ys : Vec A n} →
-                  Pointwise _≡_ xs ys → xs ≡ ys
-  Pointwise-≡⇒≡ []               = P.refl
-  Pointwise-≡⇒≡ (P.refl ∷ xs∼ys) = P.cong (_ ∷_) (Pointwise-≡⇒≡ xs∼ys)
+≡⇒Pointwise-≡ : ∀ {n} {xs ys : Vec A n} → xs ≡ ys → Pointwise _≡_ xs ys
+≡⇒Pointwise-≡ P.refl = refl P.refl
 
-  ≡⇒Pointwise-≡ : ∀ {n} {xs ys : Vec A n} →
-                  xs ≡ ys → Pointwise _≡_ xs ys
-  ≡⇒Pointwise-≡ P.refl = refl P.refl
-
-  Pointwise-≡↔≡ : ∀ {n} {xs ys : Vec A n} →
-                  Pointwise _≡_ xs ys ⇔ xs ≡ ys
-  Pointwise-≡↔≡ = equivalence Pointwise-≡⇒≡ ≡⇒Pointwise-≡
+Pointwise-≡↔≡ : ∀ {n} {xs ys : Vec A n} → Pointwise _≡_ xs ys ⇔ xs ≡ ys
+Pointwise-≡↔≡ = equivalence Pointwise-≡⇒≡ ≡⇒Pointwise-≡
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

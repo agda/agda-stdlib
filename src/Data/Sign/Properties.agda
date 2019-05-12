@@ -10,16 +10,36 @@ module Data.Sign.Properties where
 
 open import Algebra
 open import Data.Empty
-open import Data.Sign
+open import Data.Sign.Base
 open import Data.Product using (_,_)
 open import Function
 open import Level using (0ℓ)
+open import Relation.Binary using (Decidable; Setoid; DecSetoid)
 open import Relation.Binary.PropositionalEquality
+open import Relation.Nullary using (yes; no)
 
 open import Algebra.Structures {A = Sign} _≡_
 open import Algebra.FunctionProperties {A = Sign} _≡_
 
--- The opposite of a sign is not equal to the sign.
+------------------------------------------------------------------------
+-- Equality
+
+infix 4 _≟_
+
+_≟_ : Decidable {A = Sign} _≡_
+- ≟ - = yes refl
+- ≟ + = no λ()
++ ≟ - = no λ()
++ ≟ + = yes refl
+
+≡-setoid : Setoid 0ℓ 0ℓ
+≡-setoid = setoid Sign
+
+≡-decSetoid : DecSetoid 0ℓ 0ℓ
+≡-decSetoid = decSetoid _≟_
+
+------------------------------------------------------------------------
+-- opposite
 
 s≢opposite[s] : ∀ s → s ≢ opposite s
 s≢opposite[s] - ()
