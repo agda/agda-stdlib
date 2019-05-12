@@ -53,6 +53,10 @@ New modules
 Deprecated features
 -------------------
 
+* The modules `Record` and `Universe` have been moved to `Data.Record`
+  and `Data.Universe` respectively. The old modules still exist but have
+  been deprecated.
+
 * Renamed `Relation.Binary.Core`'s `Conn` to `Connex`.
 
 * Renamed a few `-identity` lemmas in `Codata.Stream.Properties` as they were

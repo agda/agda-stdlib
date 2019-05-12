@@ -185,6 +185,10 @@ import README.Data.List
 
 import README.Data.Interleaving
 
+-- Example of an encoding of record types with manifest fields and "with".
+
+import README.Data.Record
+
 -- Example use case for a trie: a wee generic lexer
 
 import README.Data.Trie.NonDependent
