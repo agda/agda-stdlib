@@ -362,6 +362,29 @@ Other minor additions
   flip-Connex : Connex P Q → Connex Q P
   ```
 
+* Added new proofs to `Relation.Binary.Construct.Add.(Infimum/Supremum/Extrema).NonStrict`:
+  ```agda
+  ≤±-reflexive-≡         : (_≡_ ⇒ _≤_) → (_≡_ ⇒ _≤±_)
+  ≤±-antisym-≡           : Antisymmetric _≡_ _≤_ → Antisymmetric _≡_ _≤±_
+  ≤±-isPreorder-≡        : IsPreorder _≡_ _≤_ → IsPreorder _≡_ _≤±_
+  ≤±-isPartialOrder-≡    : IsPartialOrder _≡_ _≤_ → IsPartialOrder _≡_ _≤±_
+  ≤±-isDecPartialOrder-≡ : IsDecPartialOrder _≡_ _≤_ → IsDecPartialOrder _≡_ _≤±_
+  ≤±-isTotalOrder-≡      : IsTotalOrder _≡_ _≤_ → IsTotalOrder _≡_ _≤±_
+  ≤±-isDecTotalOrder-≡   : IsDecTotalOrder _≡_ _≤_ → IsDecTotalOrder _≡_ _≤±_
+  ```
+
+* Added new proofs to `Relation.Binary.Construct.Add.(Infimum/Supremum/Extrema).Strict`:
+  ```agda
+  <±-respˡ-≡                   : _<±_ Respectsˡ _≡_
+  <±-respʳ-≡                   : _<±_ Respectsʳ _≡_
+  <±-resp-≡                    : _<±_ Respects₂ _≡_
+  <±-cmp-≡                     : Trichotomous _≡_ _<_ → Trichotomous _≡_ _<±_
+  <±-irrefl-≡                  : Irreflexive _≡_ _<_ → Irreflexive _≡_ _<±_
+  <±-isStrictPartialOrder-≡    : IsStrictPartialOrder _≡_ _<_ → IsStrictPartialOrder _≡_ _<±_
+  <±-isDecStrictPartialOrder-≡ : IsDecStrictPartialOrder _≡_ _<_ → IsDecStrictPartialOrder _≡_ _<±_
+  <±-isStrictTotalOrder-≡      : IsStrictTotalOrder _≡_ _<_ → IsStrictTotalOrder _≡_ _<±_
+  ```
+
 * Added new definition in `Relation.Binary.Core`:
   ```agda
   Universal _∼_ = ∀ x y → x ∼ y
@@ -370,6 +393,12 @@ Other minor additions
 * The relation `_≅_` in `Relation.Binary.HeterogeneousEquality` has
   been generalised so that the types of the two equal elements need not
   be at the same universe level.
+
+* Added new proofs to `Relation.Nullary.Construct.Add.Point`:
+  ```agda
+  ≡-dec        : Decidable {A = A} _≡_ → Decidable {A = Pointed A} _≡_
+  []-injective : [ x ] ≡ [ y ] → x ≡ y
+  ```
 
 * Added new proof to `Relation.Binary.PropositionalEquality.Core`:
   ```agda
