@@ -1,0 +1,139 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Nat.Induction</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Various forms of induction for natural numbers</a>
+<a id="156" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="230" class="Symbol">{-#</a> <a id="234" class="Keyword">OPTIONS</a> <a id="242" class="Pragma">--without-K</a> <a id="254" class="Pragma">--safe</a> <a id="261" class="Symbol">#-}</a>
+
+<a id="266" class="Keyword">module</a> <a id="273" href="Data.Nat.Induction.html" class="Module">Data.Nat.Induction</a> <a id="292" class="Keyword">where</a>
+
+<a id="299" class="Keyword">open</a> <a id="304" class="Keyword">import</a> <a id="311" href="Function.html" class="Module">Function</a>
+<a id="320" class="Keyword">open</a> <a id="325" class="Keyword">import</a> <a id="332" href="Data.Nat.html" class="Module">Data.Nat</a>
+<a id="341" class="Keyword">open</a> <a id="346" class="Keyword">import</a> <a id="353" href="Data.Nat.Properties.html" class="Module">Data.Nat.Properties</a> <a id="373" class="Keyword">using</a> <a id="379" class="Symbol">(</a><a id="380" href="Data.Nat.Properties.html#47305" class="Function">≤⇒≤′</a><a id="384" class="Symbol">)</a>
+<a id="386" class="Keyword">open</a> <a id="391" class="Keyword">import</a> <a id="398" href="Data.Product.html" class="Module">Data.Product</a>
+<a id="411" class="Keyword">open</a> <a id="416" class="Keyword">import</a> <a id="423" href="Data.Unit.html" class="Module">Data.Unit</a>
+<a id="433" class="Keyword">open</a> <a id="438" class="Keyword">import</a> <a id="445" href="Induction.html" class="Module">Induction</a>
+<a id="455" class="Keyword">open</a> <a id="460" class="Keyword">import</a> <a id="467" href="Induction.WellFounded.html" class="Module">Induction.WellFounded</a> <a id="489" class="Symbol">as</a> <a id="492" class="Module">WF</a>
+<a id="495" class="Keyword">open</a> <a id="500" class="Keyword">import</a> <a id="507" href="Level.html" class="Module">Level</a> <a id="513" class="Keyword">using</a> <a id="519" class="Symbol">(</a><a id="520" href="Level.html#394" class="Record">Lift</a><a id="524" class="Symbol">)</a>
+<a id="526" class="Keyword">open</a> <a id="531" class="Keyword">import</a> <a id="538" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a>
+<a id="576" class="Keyword">open</a> <a id="581" class="Keyword">import</a> <a id="588" href="Relation.Unary.html" class="Module">Relation.Unary</a>
+
+<a id="604" class="Comment">------------------------------------------------------------------------</a>
+<a id="677" class="Comment">-- Re-export accessability</a>
+
+<a id="705" class="Keyword">open</a> <a id="710" href="Induction.WellFounded.html" class="Module">WF</a> <a id="713" class="Keyword">public</a> <a id="720" class="Keyword">using</a> <a id="726" class="Symbol">(</a><a id="727" href="Induction.WellFounded.html#794" class="Datatype">Acc</a><a id="730" class="Symbol">;</a> <a id="732" href="Induction.WellFounded.html#862" class="InductiveConstructor">acc</a><a id="735" class="Symbol">)</a>
+
+<a id="738" class="Comment">------------------------------------------------------------------------</a>
+<a id="811" class="Comment">-- Ordinary induction</a>
+
+<a id="Rec"></a><a id="834" href="Data.Nat.Induction.html#834" class="Function">Rec</a> <a id="838" class="Symbol">:</a> <a id="840" class="Symbol">∀</a> <a id="842" href="Data.Nat.Induction.html#842" class="Bound">ℓ</a> <a id="844" class="Symbol">→</a> <a id="846" href="Induction.html#760" class="Function">RecStruct</a> <a id="856" href="Agda.Builtin.Nat.html#165" class="Datatype">ℕ</a> <a id="858" href="Data.Nat.Induction.html#842" class="Bound">ℓ</a> <a id="860" href="Data.Nat.Induction.html#842" class="Bound">ℓ</a>
+<a id="862" href="Data.Nat.Induction.html#834" class="Function">Rec</a> <a id="866" href="Data.Nat.Induction.html#866" class="Bound">ℓ</a> <a id="868" href="Data.Nat.Induction.html#868" class="Bound">P</a> <a id="870" href="Agda.Builtin.Nat.html#183" class="InductiveConstructor">zero</a>    <a id="878" class="Symbol">=</a> <a id="880" href="Level.html#394" class="Record">Lift</a> <a id="885" href="Data.Nat.Induction.html#866" class="Bound">ℓ</a> <a id="887" href="Agda.Builtin.Unit.html#137" class="Record">⊤</a>
+<a id="889" href="Data.Nat.Induction.html#834" class="Function">Rec</a> <a id="893" href="Data.Nat.Induction.html#893" class="Bound">ℓ</a> <a id="895" href="Data.Nat.Induction.html#895" class="Bound">P</a> <a id="897" class="Symbol">(</a><a id="898" href="Agda.Builtin.Nat.html#196" class="InductiveConstructor">suc</a> <a id="902" href="Data.Nat.Induction.html#902" class="Bound">n</a><a id="903" class="Symbol">)</a> <a id="905" class="Symbol">=</a> <a id="907" href="Data.Nat.Induction.html#895" class="Bound">P</a> <a id="909" href="Data.Nat.Induction.html#902" class="Bound">n</a>
+
+<a id="recBuilder"></a><a id="912" href="Data.Nat.Induction.html#912" class="Function">recBuilder</a> <a id="923" class="Symbol">:</a> <a id="925" class="Symbol">∀</a> <a id="927" class="Symbol">{</a><a id="928" href="Data.Nat.Induction.html#928" class="Bound">ℓ</a><a id="929" class="Symbol">}</a> <a id="931" class="Symbol">→</a> <a id="933" href="Induction.html#948" class="Function">RecursorBuilder</a> <a id="949" class="Symbol">(</a><a id="950" href="Data.Nat.Induction.html#834" class="Function">Rec</a> <a id="954" href="Data.Nat.Induction.html#928" class="Bound">ℓ</a><a id="955" class="Symbol">)</a>
+<a id="957" href="Data.Nat.Induction.html#912" class="Function">recBuilder</a> <a id="968" href="Data.Nat.Induction.html#968" class="Bound">P</a> <a id="970" href="Data.Nat.Induction.html#970" class="Bound">f</a> <a id="972" href="Agda.Builtin.Nat.html#183" class="InductiveConstructor">zero</a>    <a id="980" class="Symbol">=</a> <a id="982" class="Symbol">_</a>
+<a id="984" href="Data.Nat.Induction.html#912" class="Function">recBuilder</a> <a id="995" href="Data.Nat.Induction.html#995" class="Bound">P</a> <a id="997" href="Data.Nat.Induction.html#997" class="Bound">f</a> <a id="999" class="Symbol">(</a><a id="1000" href="Agda.Builtin.Nat.html#196" class="InductiveConstructor">suc</a> <a id="1004" href="Data.Nat.Induction.html#1004" class="Bound">n</a><a id="1005" class="Symbol">)</a> <a id="1007" class="Symbol">=</a> <a id="1009" href="Data.Nat.Induction.html#997" class="Bound">f</a> <a id="1011" href="Data.Nat.Induction.html#1004" class="Bound">n</a> <a id="1013" class="Symbol">(</a><a id="1014" href="Data.Nat.Induction.html#912" class="Function">recBuilder</a> <a id="1025" href="Data.Nat.Induction.html#995" class="Bound">P</a> <a id="1027" href="Data.Nat.Induction.html#997" class="Bound">f</a> <a id="1029" href="Data.Nat.Induction.html#1004" class="Bound">n</a><a id="1030" class="Symbol">)</a>
+
+<a id="rec"></a><a id="1033" href="Data.Nat.Induction.html#1033" class="Function">rec</a> <a id="1037" class="Symbol">:</a> <a id="1039" class="Symbol">∀</a> <a id="1041" class="Symbol">{</a><a id="1042" href="Data.Nat.Induction.html#1042" class="Bound">ℓ</a><a id="1043" class="Symbol">}</a> <a id="1045" class="Symbol">→</a> <a id="1047" href="Induction.html#1149" class="Function">Recursor</a> <a id="1056" class="Symbol">(</a><a id="1057" href="Data.Nat.Induction.html#834" class="Function">Rec</a> <a id="1061" href="Data.Nat.Induction.html#1042" class="Bound">ℓ</a><a id="1062" class="Symbol">)</a>
+<a id="1064" href="Data.Nat.Induction.html#1033" class="Function">rec</a> <a id="1068" class="Symbol">=</a> <a id="1070" href="Induction.html#1320" class="Function">build</a> <a id="1076" href="Data.Nat.Induction.html#912" class="Function">recBuilder</a>
+
+<a id="1088" class="Comment">------------------------------------------------------------------------</a>
+<a id="1161" class="Comment">-- Complete induction</a>
+
+<a id="CRec"></a><a id="1184" href="Data.Nat.Induction.html#1184" class="Function">CRec</a> <a id="1189" class="Symbol">:</a> <a id="1191" class="Symbol">∀</a> <a id="1193" href="Data.Nat.Induction.html#1193" class="Bound">ℓ</a> <a id="1195" class="Symbol">→</a> <a id="1197" href="Induction.html#760" class="Function">RecStruct</a> <a id="1207" href="Agda.Builtin.Nat.html#165" class="Datatype">ℕ</a> <a id="1209" href="Data.Nat.Induction.html#1193" class="Bound">ℓ</a> <a id="1211" href="Data.Nat.Induction.html#1193" class="Bound">ℓ</a>
+<a id="1213" href="Data.Nat.Induction.html#1184" class="Function">CRec</a> <a id="1218" href="Data.Nat.Induction.html#1218" class="Bound">ℓ</a> <a id="1220" href="Data.Nat.Induction.html#1220" class="Bound">P</a> <a id="1222" href="Agda.Builtin.Nat.html#183" class="InductiveConstructor">zero</a>    <a id="1230" class="Symbol">=</a> <a id="1232" href="Level.html#394" class="Record">Lift</a> <a id="1237" href="Data.Nat.Induction.html#1218" class="Bound">ℓ</a> <a id="1239" href="Agda.Builtin.Unit.html#137" class="Record">⊤</a>
+<a id="1241" href="Data.Nat.Induction.html#1184" class="Function">CRec</a> <a id="1246" href="Data.Nat.Induction.html#1246" class="Bound">ℓ</a> <a id="1248" href="Data.Nat.Induction.html#1248" class="Bound">P</a> <a id="1250" class="Symbol">(</a><a id="1251" href="Agda.Builtin.Nat.html#196" class="InductiveConstructor">suc</a> <a id="1255" href="Data.Nat.Induction.html#1255" class="Bound">n</a><a id="1256" class="Symbol">)</a> <a id="1258" class="Symbol">=</a> <a id="1260" href="Data.Nat.Induction.html#1248" class="Bound">P</a> <a id="1262" href="Data.Nat.Induction.html#1255" class="Bound">n</a> <a id="1264" href="Data.Product.html#1162" class="Function Operator">×</a> <a id="1266" href="Data.Nat.Induction.html#1184" class="Function">CRec</a> <a id="1271" href="Data.Nat.Induction.html#1246" class="Bound">ℓ</a> <a id="1273" href="Data.Nat.Induction.html#1248" class="Bound">P</a> <a id="1275" href="Data.Nat.Induction.html#1255" class="Bound">n</a>
+
+<a id="cRecBuilder"></a><a id="1278" href="Data.Nat.Induction.html#1278" class="Function">cRecBuilder</a> <a id="1290" class="Symbol">:</a> <a id="1292" class="Symbol">∀</a> <a id="1294" class="Symbol">{</a><a id="1295" href="Data.Nat.Induction.html#1295" class="Bound">ℓ</a><a id="1296" class="Symbol">}</a> <a id="1298" class="Symbol">→</a> <a id="1300" href="Induction.html#948" class="Function">RecursorBuilder</a> <a id="1316" class="Symbol">(</a><a id="1317" href="Data.Nat.Induction.html#1184" class="Function">CRec</a> <a id="1322" href="Data.Nat.Induction.html#1295" class="Bound">ℓ</a><a id="1323" class="Symbol">)</a>
+<a id="1325" href="Data.Nat.Induction.html#1278" class="Function">cRecBuilder</a> <a id="1337" href="Data.Nat.Induction.html#1337" class="Bound">P</a> <a id="1339" href="Data.Nat.Induction.html#1339" class="Bound">f</a> <a id="1341" href="Agda.Builtin.Nat.html#183" class="InductiveConstructor">zero</a>    <a id="1349" class="Symbol">=</a> <a id="1351" class="Symbol">_</a>
+<a id="1353" href="Data.Nat.Induction.html#1278" class="Function">cRecBuilder</a> <a id="1365" href="Data.Nat.Induction.html#1365" class="Bound">P</a> <a id="1367" href="Data.Nat.Induction.html#1367" class="Bound">f</a> <a id="1369" class="Symbol">(</a><a id="1370" href="Agda.Builtin.Nat.html#196" class="InductiveConstructor">suc</a> <a id="1374" href="Data.Nat.Induction.html#1374" class="Bound">n</a><a id="1375" class="Symbol">)</a> <a id="1377" class="Symbol">=</a> <a id="1379" href="Data.Nat.Induction.html#1367" class="Bound">f</a> <a id="1381" href="Data.Nat.Induction.html#1374" class="Bound">n</a> <a id="1383" href="Data.Nat.Induction.html#1399" class="Function">ih</a> <a id="1386" href="Agda.Builtin.Sigma.html#209" class="InductiveConstructor Operator">,</a> <a id="1388" href="Data.Nat.Induction.html#1399" class="Function">ih</a>
+  <a id="1393" class="Keyword">where</a> <a id="1399" href="Data.Nat.Induction.html#1399" class="Function">ih</a> <a id="1402" class="Symbol">=</a> <a id="1404" href="Data.Nat.Induction.html#1278" class="Function">cRecBuilder</a> <a id="1416" href="Data.Nat.Induction.html#1365" class="Bound">P</a> <a id="1418" href="Data.Nat.Induction.html#1367" class="Bound">f</a> <a id="1420" href="Data.Nat.Induction.html#1374" class="Bound">n</a>
+
+<a id="cRec"></a><a id="1423" href="Data.Nat.Induction.html#1423" class="Function">cRec</a> <a id="1428" class="Symbol">:</a> <a id="1430" class="Symbol">∀</a> <a id="1432" class="Symbol">{</a><a id="1433" href="Data.Nat.Induction.html#1433" class="Bound">ℓ</a><a id="1434" class="Symbol">}</a> <a id="1436" class="Symbol">→</a> <a id="1438" href="Induction.html#1149" class="Function">Recursor</a> <a id="1447" class="Symbol">(</a><a id="1448" href="Data.Nat.Induction.html#1184" class="Function">CRec</a> <a id="1453" href="Data.Nat.Induction.html#1433" class="Bound">ℓ</a><a id="1454" class="Symbol">)</a>
+<a id="1456" href="Data.Nat.Induction.html#1423" class="Function">cRec</a> <a id="1461" class="Symbol">=</a> <a id="1463" href="Induction.html#1320" class="Function">build</a> <a id="1469" href="Data.Nat.Induction.html#1278" class="Function">cRecBuilder</a>
+
+<a id="1482" class="Comment">------------------------------------------------------------------------</a>
+<a id="1555" class="Comment">-- Complete induction based on _&lt;′_</a>
+
+<a id="&lt;′-Rec"></a><a id="1592" href="Data.Nat.Induction.html#1592" class="Function">&lt;′-Rec</a> <a id="1599" class="Symbol">:</a> <a id="1601" class="Symbol">∀</a> <a id="1603" class="Symbol">{</a><a id="1604" href="Data.Nat.Induction.html#1604" class="Bound">ℓ</a><a id="1605" class="Symbol">}</a> <a id="1607" class="Symbol">→</a> <a id="1609" href="Induction.html#760" class="Function">RecStruct</a> <a id="1619" href="Agda.Builtin.Nat.html#165" class="Datatype">ℕ</a> <a id="1621" href="Data.Nat.Induction.html#1604" class="Bound">ℓ</a> <a id="1623" href="Data.Nat.Induction.html#1604" class="Bound">ℓ</a>
+<a id="1625" href="Data.Nat.Induction.html#1592" class="Function">&lt;′-Rec</a> <a id="1632" class="Symbol">=</a> <a id="1634" href="Induction.WellFounded.html#566" class="Function">WfRec</a> <a id="1640" href="Data.Nat.Base.html#2580" class="Function Operator">_&lt;′_</a>
+
+<a id="1646" class="Keyword">mutual</a>
+
+  <a id="&lt;′-wellFounded"></a><a id="1656" href="Data.Nat.Induction.html#1656" class="Function">&lt;′-wellFounded</a> <a id="1671" class="Symbol">:</a> <a id="1673" href="Induction.WellFounded.html#1048" class="Function">WellFounded</a> <a id="1685" href="Data.Nat.Base.html#2580" class="Function Operator">_&lt;′_</a>
+  <a id="1692" href="Data.Nat.Induction.html#1656" class="Function">&lt;′-wellFounded</a> <a id="1707" href="Data.Nat.Induction.html#1707" class="Bound">n</a> <a id="1709" class="Symbol">=</a> <a id="1711" href="Induction.WellFounded.html#862" class="InductiveConstructor">acc</a> <a id="1715" class="Symbol">(</a><a id="1716" href="Data.Nat.Induction.html#1738" class="Function">&lt;′-wellFounded′</a> <a id="1732" href="Data.Nat.Induction.html#1707" class="Bound">n</a><a id="1733" class="Symbol">)</a>
+
+  <a id="&lt;′-wellFounded′"></a><a id="1738" href="Data.Nat.Induction.html#1738" class="Function">&lt;′-wellFounded′</a> <a id="1754" class="Symbol">:</a> <a id="1756" class="Symbol">∀</a> <a id="1758" href="Data.Nat.Induction.html#1758" class="Bound">n</a> <a id="1760" class="Symbol">→</a> <a id="1762" href="Data.Nat.Induction.html#1592" class="Function">&lt;′-Rec</a> <a id="1769" class="Symbol">(</a><a id="1770" href="Induction.WellFounded.html#794" class="Datatype">Acc</a> <a id="1774" href="Data.Nat.Base.html#2580" class="Function Operator">_&lt;′_</a><a id="1778" class="Symbol">)</a> <a id="1780" href="Data.Nat.Induction.html#1758" class="Bound">n</a>
+  <a id="1784" href="Data.Nat.Induction.html#1738" class="Function">&lt;′-wellFounded′</a> <a id="1800" class="Symbol">(</a><a id="1801" href="Agda.Builtin.Nat.html#196" class="InductiveConstructor">suc</a> <a id="1805" href="Data.Nat.Induction.html#1805" class="Bound">n</a><a id="1806" class="Symbol">)</a> <a id="1808" class="DottedPattern Symbol">.</a><a id="1809" href="Data.Nat.Induction.html#1805" class="DottedPattern Bound">n</a> <a id="1811" href="Data.Nat.Base.html#2491" class="InductiveConstructor">≤′-refl</a>       <a id="1825" class="Symbol">=</a> <a id="1827" href="Data.Nat.Induction.html#1656" class="Function">&lt;′-wellFounded</a> <a id="1842" href="Data.Nat.Induction.html#1805" class="Bound">n</a>
+  <a id="1846" href="Data.Nat.Induction.html#1738" class="Function">&lt;′-wellFounded′</a> <a id="1862" class="Symbol">(</a><a id="1863" href="Agda.Builtin.Nat.html#196" class="InductiveConstructor">suc</a> <a id="1867" href="Data.Nat.Induction.html#1867" class="Bound">n</a><a id="1868" class="Symbol">)</a>  <a id="1871" href="Data.Nat.Induction.html#1871" class="Bound">m</a> <a id="1873" class="Symbol">(</a><a id="1874" href="Data.Nat.Base.html#2534" class="InductiveConstructor">≤′-step</a> <a id="1882" href="Data.Nat.Induction.html#1882" class="Bound">m&lt;n</a><a id="1885" class="Symbol">)</a> <a id="1887" class="Symbol">=</a> <a id="1889" href="Data.Nat.Induction.html#1738" class="Function">&lt;′-wellFounded′</a> <a id="1905" href="Data.Nat.Induction.html#1867" class="Bound">n</a> <a id="1907" href="Data.Nat.Induction.html#1871" class="Bound">m</a> <a id="1909" href="Data.Nat.Induction.html#1882" class="Bound">m&lt;n</a>
+
+<a id="1914" class="Keyword">module</a> <a id="1921" href="Data.Nat.Induction.html#1921" class="Module">_</a> <a id="1923" class="Symbol">{</a><a id="1924" href="Data.Nat.Induction.html#1924" class="Bound">ℓ</a><a id="1925" class="Symbol">}</a> <a id="1927" class="Keyword">where</a>
+  <a id="1935" class="Keyword">open</a> <a id="1940" href="Induction.WellFounded.html#2039" class="Module">WF.All</a> <a id="1947" href="Data.Nat.Induction.html#1656" class="Function">&lt;′-wellFounded</a> <a id="1962" href="Data.Nat.Induction.html#1924" class="Bound">ℓ</a> <a id="1964" class="Keyword">public</a>
+    <a id="1975" class="Keyword">renaming</a> <a id="1984" class="Symbol">(</a> wfRecBuilder <a id="1999" class="Symbol">to</a> &lt;′-recBuilder
+             <a id="2029" class="Symbol">;</a> wfRec        <a id="2044" class="Symbol">to</a> &lt;′-rec
+             <a id="2067" class="Symbol">)</a>
+    <a id="2073" class="Keyword">hiding</a> <a id="2080" class="Symbol">(</a>wfRec-builder<a id="2094" class="Symbol">)</a>
+
+<a id="2097" class="Comment">------------------------------------------------------------------------</a>
+<a id="2170" class="Comment">-- Complete induction based on _&lt;_</a>
+
+<a id="&lt;-Rec"></a><a id="2206" href="Data.Nat.Induction.html#2206" class="Function">&lt;-Rec</a> <a id="2212" class="Symbol">:</a> <a id="2214" class="Symbol">∀</a> <a id="2216" class="Symbol">{</a><a id="2217" href="Data.Nat.Induction.html#2217" class="Bound">ℓ</a><a id="2218" class="Symbol">}</a> <a id="2220" class="Symbol">→</a> <a id="2222" href="Induction.html#760" class="Function">RecStruct</a> <a id="2232" href="Agda.Builtin.Nat.html#165" class="Datatype">ℕ</a> <a id="2234" href="Data.Nat.Induction.html#2217" class="Bound">ℓ</a> <a id="2236" href="Data.Nat.Induction.html#2217" class="Bound">ℓ</a>
+<a id="2238" href="Data.Nat.Induction.html#2206" class="Function">&lt;-Rec</a> <a id="2244" class="Symbol">=</a> <a id="2246" href="Induction.WellFounded.html#566" class="Function">WfRec</a> <a id="2252" href="Data.Nat.Base.html#1076" class="Function Operator">_&lt;_</a>
+
+<a id="&lt;-wellFounded"></a><a id="2257" href="Data.Nat.Induction.html#2257" class="Function">&lt;-wellFounded</a> <a id="2271" class="Symbol">:</a> <a id="2273" href="Induction.WellFounded.html#1048" class="Function">WellFounded</a> <a id="2285" href="Data.Nat.Base.html#1076" class="Function Operator">_&lt;_</a>
+<a id="2289" href="Data.Nat.Induction.html#2257" class="Function">&lt;-wellFounded</a> <a id="2303" class="Symbol">=</a> <a id="2305" href="Induction.WellFounded.html#3017" class="Function">Subrelation.wellFounded</a> <a id="2329" href="Data.Nat.Properties.html#47305" class="Function">≤⇒≤′</a> <a id="2334" href="Data.Nat.Induction.html#1656" class="Function">&lt;′-wellFounded</a>
+
+<a id="2350" class="Keyword">module</a> <a id="2357" href="Data.Nat.Induction.html#2357" class="Module">_</a> <a id="2359" class="Symbol">{</a><a id="2360" href="Data.Nat.Induction.html#2360" class="Bound">ℓ</a><a id="2361" class="Symbol">}</a> <a id="2363" class="Keyword">where</a>
+  <a id="2371" class="Keyword">open</a> <a id="2376" href="Induction.WellFounded.html#2039" class="Module">WF.All</a> <a id="2383" href="Data.Nat.Induction.html#2257" class="Function">&lt;-wellFounded</a> <a id="2397" href="Data.Nat.Induction.html#2360" class="Bound">ℓ</a> <a id="2399" class="Keyword">public</a>
+    <a id="2410" class="Keyword">renaming</a> <a id="2419" class="Symbol">(</a> wfRecBuilder <a id="2434" class="Symbol">to</a> &lt;-recBuilder
+             <a id="2463" class="Symbol">;</a> wfRec        <a id="2478" class="Symbol">to</a> &lt;-rec
+             <a id="2500" class="Symbol">)</a>
+    <a id="2506" class="Keyword">hiding</a> <a id="2513" class="Symbol">(</a>wfRec-builder<a id="2527" class="Symbol">)</a>
+
+
+<a id="2531" class="Comment">------------------------------------------------------------------------</a>
+<a id="2604" class="Comment">-- DEPRECATED NAMES</a>
+<a id="2624" class="Comment">------------------------------------------------------------------------</a>
+<a id="2697" class="Comment">-- Please use the new names as continuing support for the old names is</a>
+<a id="2768" class="Comment">-- not guaranteed.</a>
+
+<a id="2788" class="Comment">-- Version 0.15</a>
+
+<a id="rec-builder"></a><a id="2805" href="Data.Nat.Induction.html#2805" class="Function">rec-builder</a>      <a id="2822" class="Symbol">=</a> <a id="2824" href="Data.Nat.Induction.html#912" class="Function">recBuilder</a>
+<a id="2835" class="Symbol">{-#</a> <a id="2839" class="Keyword">WARNING_ON_USAGE</a> <a id="2856" class="Pragma">rec-builder</a>
+<a id="2868" class="String">&quot;Warning: rec-builder was deprecated in v0.15.
+Please use recBuilder instead.&quot;</a>
+<a id="2947" class="Symbol">#-}</a>
+<a id="cRec-builder"></a><a id="2951" href="Data.Nat.Induction.html#2951" class="Function">cRec-builder</a>     <a id="2968" class="Symbol">=</a> <a id="2970" href="Data.Nat.Induction.html#1278" class="Function">cRecBuilder</a>
+<a id="2982" class="Symbol">{-#</a> <a id="2986" class="Keyword">WARNING_ON_USAGE</a> <a id="3003" class="Pragma">cRec-builder</a>
+<a id="3016" class="String">&quot;Warning: cRec-builder was deprecated in v0.15.
+Please use cRecBuilder instead.&quot;</a>
+<a id="3097" class="Symbol">#-}</a>
+<a id="&lt;′-rec-builder"></a><a id="3101" href="Data.Nat.Induction.html#3101" class="Function">&lt;′-rec-builder</a>   <a id="3118" class="Symbol">=</a> <a id="3120" href="Induction.WellFounded.html#2124" class="Function">&lt;′-recBuilder</a>
+<a id="3134" class="Symbol">{-#</a> <a id="3138" class="Keyword">WARNING_ON_USAGE</a> <a id="3155" class="Pragma">&lt;′-rec-builder</a>
+<a id="3170" class="String">&quot;Warning: &lt;′-rec-builder was deprecated in v0.15.
+Please use &lt;′-recBuilder instead.&quot;</a>
+<a id="3255" class="Symbol">#-}</a>
+<a id="&lt;-rec-builder"></a><a id="3259" href="Data.Nat.Induction.html#3259" class="Function">&lt;-rec-builder</a>    <a id="3276" class="Symbol">=</a> <a id="3278" href="Induction.WellFounded.html#2124" class="Function">&lt;-recBuilder</a>
+<a id="3291" class="Symbol">{-#</a> <a id="3295" class="Keyword">WARNING_ON_USAGE</a> <a id="3312" class="Pragma">&lt;-rec-builder</a>
+<a id="3326" class="String">&quot;Warning: &lt;-rec-builder was deprecated in v0.15.
+Please use &lt;-recBuilder instead.&quot;</a>
+<a id="3409" class="Symbol">#-}</a>
+<a id="&lt;′-well-founded"></a><a id="3413" href="Data.Nat.Induction.html#3413" class="Function">&lt;′-well-founded</a>  <a id="3430" class="Symbol">=</a> <a id="3432" href="Data.Nat.Induction.html#1656" class="Function">&lt;′-wellFounded</a>
+<a id="3447" class="Symbol">{-#</a> <a id="3451" class="Keyword">WARNING_ON_USAGE</a> <a id="3468" class="Pragma">&lt;′-well-founded</a>
+<a id="3484" class="String">&quot;Warning: &lt;′-well-founded was deprecated in v0.15.
+Please use &lt;′-wellFounded instead.&quot;</a>
+<a id="3571" class="Symbol">#-}</a>
+<a id="&lt;′-well-founded′"></a><a id="3575" href="Data.Nat.Induction.html#3575" class="Function">&lt;′-well-founded′</a> <a id="3592" class="Symbol">=</a> <a id="3594" href="Data.Nat.Induction.html#1738" class="Function">&lt;′-wellFounded′</a>
+<a id="3610" class="Symbol">{-#</a> <a id="3614" class="Keyword">WARNING_ON_USAGE</a> <a id="3631" class="Pragma">&lt;′-well-founded′</a>
+<a id="3648" class="String">&quot;Warning: &lt;′-well-founded′ was deprecated in v0.15.
+Please use &lt;′-wellFounded′ instead.&quot;</a>
+<a id="3737" class="Symbol">#-}</a>
+<a id="&lt;-well-founded"></a><a id="3741" href="Data.Nat.Induction.html#3741" class="Function">&lt;-well-founded</a>   <a id="3758" class="Symbol">=</a> <a id="3760" href="Data.Nat.Induction.html#2257" class="Function">&lt;-wellFounded</a>
+<a id="3774" class="Symbol">{-#</a> <a id="3778" class="Keyword">WARNING_ON_USAGE</a> <a id="3795" class="Pragma">&lt;-well-founded</a>
+<a id="3810" class="String">&quot;Warning: &lt;-well-founded was deprecated in v0.15.
+Please use &lt;-wellFounded instead.&quot;</a>
+<a id="3895" class="Symbol">#-}</a>
+</pre></body></html>
