@@ -24,7 +24,6 @@ infixl 6 _⊕_
 _⊕_ : ℕ₂ → ℕ → ℕ
 0# ⊕ n = n
 1# ⊕ n = 1 + n
-## ⊕ n
 
 -- pred[ i ⊕ n ] = pred (i ⊕ n).
 
