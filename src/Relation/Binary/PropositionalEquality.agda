@@ -55,7 +55,7 @@ cong₂ f refl refl = refl
 -- n-ary versions of `cong` and `subst`
 
 Congₙ : ∀ n {ls : Levels n} {as : Sets n ls} {r} {b : Set r} →
-        (f g : Arrows n as b) → Set (toLevel n ls ⊔ r)
+        (f g : Arrows n as b) → Set (r ⊔ (⨆ n ls))
 Congₙ zero    f g = f ≡ g
 Congₙ (suc n) f g = ∀ {x y} → x ≡ y → Congₙ n (f x) (g y)
 
@@ -65,7 +65,7 @@ congₙ zero    f      = refl
 congₙ (suc n) f refl = congₙ n (f _)
 
 Substₙ : ∀ n {r} {ls : Levels n} {as : Sets n ls} →
-         (f g : Arrows n as (Set r)) → Set (toLevel n ls ⊔ r)
+         (f g : Arrows n as (Set r)) → Set (r ⊔ (⨆ n ls))
 Substₙ zero    f g = f → g
 Substₙ (suc n) f g = ∀ {x y} → x ≡ y → Substₙ n (f x) (g y)
 

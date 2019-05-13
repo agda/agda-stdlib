@@ -8,7 +8,7 @@
 
 module Data.Product.N-ary.Heterogeneous where
 
-open import Level as L using (Level; _⊔_; Lift)
+open import Level as L using (Level; _⊔_; Lift; 0ℓ)
 open import Agda.Builtin.Unit
 open import Data.Product
 open import Data.Sum using (_⊎_)
@@ -44,27 +44,44 @@ Levels : ℕ → Set
 Levels zero    = ⊤
 Levels (suc n) = Level × Levels n
 
+ltabulate : (n : ℕ) (f : Fin n → Level) → Levels n
+ltabulate zero    f = _
+ltabulate (suc n) f = f zero , ltabulate n (f ∘′ suc)
+
+lreplicate : (n : ℕ) → Level → Levels n
+lreplicate n ℓ = ltabulate n (const ℓ)
+
+0ℓs : ∀ {n} → Levels n
+0ℓs = lreplicate _ 0ℓ
+
 -- The overall product's Level will be the least upper bound of all of the
 -- Levels involved.
 
-toLevel : ∀ n → Levels n → Level
-toLevel zero    _        = L.zero
-toLevel (suc n) (l , ls) = l ⊔ toLevel n ls
+⨆ : ∀ n → Levels n → Level
+⨆ zero    _        = L.zero
+⨆ (suc n) (l , ls) = l ⊔ (⨆ n ls)
 
 -- Second, a "vector" of `n` Sets whose respective Levels are determined
 -- by the `Levels n` input.
 
-Sets : ∀ n (ls : Levels n) → Set (L.suc (toLevel n ls))
+Sets : ∀ n (ls : Levels n) → Set (L.suc (⨆ n ls))
 Sets zero    _        = Lift _ ⊤
 Sets (suc n) (l , ls) = Set l × Sets n ls
 
 -- Third, the n-ary product itself: provided n Levels and a corresponding
 -- "vector" of `n` Sets, we can build a big right-nested product type packing
--- a value for each one of these Sets. We have a special case for 1 because
--- we want our `(un)curryₙ` functions to work for user-written functions and
--- they rarely are ⊤-terminated.
+-- a value for each one of these Sets.
+-- We have two distinct but equivalent definitions:
+-- the first which is always ⊤-terminated
+-- the other which has a special case for n = 1 because we want our `(un)curryₙ`
+-- functions to work for user-written functions and products and they rarely are
+-- ⊤-terminated.
 
-Product : ∀ n {ls} → Sets n ls → Set (toLevel n ls)
+Product⊤ : ∀ n {ls} → Sets n ls → Set (⨆ n ls)
+Product⊤ zero    as       = ⊤
+Product⊤ (suc n) (a , as) = a × Product⊤ n as
+
+Product : ∀ n {ls} → Sets n ls → Set (⨆ n ls)
 Product 0       _        = ⊤
 Product 1       (a , _)  = a
 Product (suc n) (a , as) = a × Product n as
@@ -73,7 +90,7 @@ Product (suc n) (a , as) = a × Product n as
 -- by a "vector" of `n` Sets and whose codomain is B. `Arrows` forms such
 -- a type of shape `A₁ → ⋯ → Aₙ → B` by induction on `n`.
 
-Arrows : ∀ n {r ls} → Sets n ls → Set r → Set (toLevel n ls ⊔ r)
+Arrows : ∀ n {r ls} → Sets n ls → Set r → Set (r ⊔ (⨆ n ls))
 Arrows zero    _        b = b
 Arrows (suc n) (a , as) b = a → Arrows n as b
 
@@ -92,6 +109,18 @@ Arrows (suc n) (a , as) b = a → Arrows n as b
 -- see Relation.Binary.PropositionalEquality for congₙ and substₙ, two
 -- equality-related generic programs.
 
+------------------------------------------------------------------------
+-- equivalence of Product and Product⊤
+
+toProduct : ∀ n {ls} {as : Sets n ls} → Product⊤ n as → Product n as
+toProduct 0             _        = _
+toProduct 1             (v , _)  = v
+toProduct (suc (suc n)) (v , vs) = v , toProduct _ vs
+
+toProduct⊤ : ∀ n {ls} {as : Sets n ls} → Product n as → Product⊤ n as
+toProduct⊤ 0             _        = _
+toProduct⊤ 1             v        = v , _
+toProduct⊤ (suc (suc n)) (v , vs) = v , toProduct⊤ _ vs
 
 ------------------------------------------------------------------------
 -- (un)curry
@@ -256,7 +285,7 @@ constₙ (suc n) v = const (constₙ n v)
 -- n-ary existential quantifier
 
 infix 5 ∃⟨_⟩
-∃⟨_⟩ : ∀ {n ls r} {as : Sets n ls} → Arrows n as (Set r) → Set (r ⊔ toLevel n ls)
+∃⟨_⟩ : ∀ {n ls r} {as : Sets n ls} → Arrows n as (Set r) → Set (r ⊔ (⨆ n ls))
 ∃⟨_⟩ {zero}                f = f
 ∃⟨_⟩ {suc n} {as = a , as} f = ∃ λ x → ∃⟨ f x ⟩
 
@@ -266,14 +295,14 @@ infix 5 ∃⟨_⟩
 -- implicit
 
 infix 5 ∀[_]
-∀[_] : ∀ {n ls r} {as : Sets n ls} → Arrows n as (Set r) → Set (r ⊔ toLevel n ls)
+∀[_] : ∀ {n ls r} {as : Sets n ls} → Arrows n as (Set r) → Set (r ⊔ (⨆ n ls))
 ∀[_] {zero}                f = f
 ∀[_] {suc n} {as = a , as} f = {x : a} → ∀[ f x ]
 
 -- explicit
 
 infix 5 Π[_]
-Π[_] : ∀ {n ls r} {as : Sets n ls} → Arrows n as (Set r) → Set (r ⊔ toLevel n ls)
+Π[_] : ∀ {n ls r} {as : Sets n ls} → Arrows n as (Set r) → Set (r ⊔ (⨆ n ls))
 Π[_] {zero}                f = f
 Π[_] {suc n} {as = a , as} f = (x : a) → Π[ f x ]
 
