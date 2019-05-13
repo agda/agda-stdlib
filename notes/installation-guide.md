@@ -13,27 +13,27 @@ Use version v1.0.1 of the standard library with Agda 2.6.0.
    wget -O agda-stdlib.tar https://github.com/agda/agda-stdlib/tarball/v1.0.1
    ```
    (you can replace `wget` with other popular tools such as `curl`).
-   
+
 3. Extract the standard library from the tarball. Again this can either be
    done manually or via the command line as follows:
    ```
    tar -zxvf agda-stdlib.tar
    ```
 
-4. [ OPTIONAL ] If using [cabal](https://www.haskell.org/cabal/) then run 
+4. [ OPTIONAL ] If using [cabal](https://www.haskell.org/cabal/) then run
    the commands to install via cabal:
    ```
    cd agda-stdlib
    cabal install
    ```
 
-5. Register the standard library with Agda's package system by adding 
+5. Register the standard library with Agda's package system by adding
    the following line to `$HOME/.agda/libraries`:
    ```
    $HERE/agda-stdlib/standard-library.agda-lib
    ```
 
-6. [ OPTIONAL ] To use the standard library in your project `$PROJECT`, 
+6. [ OPTIONAL ] To use the standard library in your project `$PROJECT`,
    put a file `$PROJECT.agda-lib` file in the project root containing:
    ```
    depend: standard-library
@@ -48,5 +48,5 @@ Use version v1.0.1 of the standard library with Agda 2.6.0.
    standard-library
    ```
 
-Find the full story about installing Agda libraries at 
+Find the full story about installing Agda libraries at
 [readthedocs](http://agda.readthedocs.io/en/latest/tools/package-system.html).
