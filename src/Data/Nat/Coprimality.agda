@@ -57,7 +57,7 @@ private
   2+≢1 ()
 
 coprime? : Decidable Coprime
-coprime? i j with gcd i j
+coprime? i j with mkGCD i j
 ... | (0           , g) = no  (0≢1  ∘ GCD.unique g ∘ coprime-gcd)
 ... | (1           , g) = yes (gcd-coprime g)
 ... | (suc (suc d) , g) = no  (2+≢1 ∘ GCD.unique g ∘ coprime-gcd)
@@ -136,8 +136,8 @@ gcd′-gcd (gcd-* q₁ q₂ c) = GCD.is (n∣m*n q₁ , n∣m*n q₂) (coprime-f
 -- Calculates (the alternative representation of) the gcd of the
 -- arguments.
 
-gcd′ : ∀ m n → ∃ λ d → GCD′ m n d
-gcd′ m n = Prod.map id gcd-gcd′ (gcd m n)
+mkGCD′ : ∀ m n → ∃ λ d → GCD′ m n d
+mkGCD′ m n = Prod.map id gcd-gcd′ (mkGCD m n)
 
 -- Primality implies coprimality.
 

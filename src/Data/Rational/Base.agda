@@ -90,7 +90,7 @@ n ≢0 = False (n ℕ.≟ 0)
 -- and returns them in a normalized form, e.g. say 2 and 7
 
 normalize : ∀ m n .{m≢0 : m ≢0} .{n≢0 : n ≢0} → ℚ
-normalize (suc m) (suc n) with gcd (suc m) (suc n)
+normalize (suc m) (suc n) with mkGCD (suc m) (suc n)
 ... | zero  , GCD.is (1+m∣0 , _) _ = contradiction (0∣⇒≡0 1+m∣0) λ()
 ... | suc g , G@(GCD.is (divides (suc p) refl , divides (suc q) refl) _)
   = mkℚ (+ suc p) q (Bézout-coprime (Bézout.identity G))

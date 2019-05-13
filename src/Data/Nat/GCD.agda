@@ -29,9 +29,17 @@ open import Relation.Nullary.Negation using (contradiction)
 ------------------------------------------------------------------------
 -- Definition
 
+-- Calculated via Euclid's algorithm. In order to show progress,
+-- avoiding the initial case where the arguments are swapped, it is
+-- necessary to first define a version `gcd′` which assumes that the
+-- first argument is strictly smaller than the second.
+
 gcd′ : ∀ m n → Acc _<_ m → n < m → ℕ
 gcd′ m zero        _         _   = m
 gcd′ m n@(suc n-1) (acc rec) n<m = gcd′ n (m % n) (rec _ n<m) (a%n<n m n-1)
+
+-- The full `gcd` function can then easily be defined after comparing
+-- the two arguments.
 
 gcd : ℕ → ℕ → ℕ
 gcd m n with <-cmp m n
@@ -40,7 +48,21 @@ gcd m n with <-cmp m n
 ... | tri> _ _ n<m = gcd′ m n (<-wellFounded m) n<m
 
 ------------------------------------------------------------------------
--- Properties of GCD
+-- Properties of gcd′
+
+gcd′[m,n]∣m,n : ∀ {m n} rec n<m → gcd′ m n rec n<m ∣ m × gcd′ m n rec n<m ∣ n
+gcd′[m,n]∣m,n {m} {zero}  rec       n<m = ∣-refl , m ∣0
+gcd′[m,n]∣m,n {m} {suc n} (acc rec) n<m
+  with gcd′[m,n]∣m,n (rec _ n<m) (a%n<n m n)
+... | gcd∣n , gcd∣m%n = ∣n∣m%n⇒∣m gcd∣n gcd∣m%n , gcd∣n
+
+gcd′-greatest : ∀ {m n c} rec n<m → c ∣ m → c ∣ n → c ∣ gcd′ m n rec n<m
+gcd′-greatest {m} {zero}  rec       n<m c∣m c∣n = c∣m
+gcd′-greatest {m} {suc n} (acc rec) n<m c∣m c∣n =
+  gcd′-greatest (rec _ n<m) (a%n<n m n) c∣n (%-presˡ-∣ c∣m c∣n)
+
+------------------------------------------------------------------------
+-- Properties of gcd
 
 gcd-comm : ∀ m n → gcd m n ≡ gcd n m
 gcd-comm m n with <-cmp m n | <-cmp n m
@@ -54,25 +76,14 @@ gcd-comm m n with <-cmp m n | <-cmp n m
 ... | tri> _ _ m>n | tri≈ n≮m _ _ = contradiction m>n n≮m
 ... | tri> _ _ m>n | tri> n≮m _ _ = contradiction m>n n≮m
 
-gcd′[m,n]∣m,n : ∀ m n rec n<m → gcd′ m n rec n<m ∣ m × gcd′ m n rec n<m ∣ n
-gcd′[m,n]∣m,n m zero    rec       n<m = ∣-refl , m ∣0
-gcd′[m,n]∣m,n m (suc n) (acc rec) n<m
-  with gcd′[m,n]∣m,n (suc n) (m % suc n) (rec _ n<m) (a%n<n m n)
-... | gcd∣n , gcd∣m%n = ∣n∣m%n⇒∣m gcd∣n gcd∣m%n , gcd∣n
-
 gcd[m,n]∣m : ∀ m n → gcd m n ∣ m
 gcd[m,n]∣m m n with <-cmp m n
-... | tri< n<m _ _ = proj₂ (gcd′[m,n]∣m,n n m _ _)
+... | tri< n<m _ _ = proj₂ (gcd′[m,n]∣m,n {n} {m} _ _)
 ... | tri≈ _ _ _   = ∣-refl
-... | tri> _ _ m<n = proj₁ (gcd′[m,n]∣m,n m n _ _)
+... | tri> _ _ m<n = proj₁ (gcd′[m,n]∣m,n {m} {n} _ _)
 
 gcd[m,n]∣n : ∀ m n → gcd m n ∣ n
 gcd[m,n]∣n m n = subst (_∣ n) (gcd-comm n m) (gcd[m,n]∣m n m)
-
-gcd′-greatest : ∀ {m n c} rec n<m → c ∣ m → c ∣ n → c ∣ gcd′ m n rec n<m
-gcd′-greatest {m} {zero}  rec       n<m c∣m c∣n = c∣m
-gcd′-greatest {m} {suc n} (acc rec) n<m c∣m c∣n =
-  gcd′-greatest (rec _ n<m) (a%n<n m n) c∣n (%-presˡ-∣ c∣m c∣n)
 
 gcd-greatest : ∀ {m n c} → c ∣ m → c ∣ n → c ∣ gcd m n
 gcd-greatest {m} {n} c∣m c∣n with <-cmp m n
@@ -137,7 +148,7 @@ module GCD where
 
 open GCD public using (GCD) hiding (module GCD)
 
--- gcd fulfils the conditons required of GCD
+-- The function gcd fulfils the conditions required of GCD
 
 gcd-GCD : ∀ m n → GCD m n (gcd m n)
 gcd-GCD m n = GCD.is
