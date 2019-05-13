@@ -468,7 +468,14 @@ Other minor additions
   syntax Satisfiable P = ∃⟨ P ⟩
   ```
 
-* Defined a notion of recomputability for binary relations:
+* Defined a notion of recomputability for unary and binary relations:
+  ```agda
+  Recomputable : Pred A ℓ → Set _
+  Recomputable P = ∀ {x} → .(P x) → P x
+
+  dec⟶recomputable : Decidable P → Recomputable P
+  ```
+
   ```agda
   Recomputable : REL A B ℓ → Set _
   Recomputable _~_ = ∀ {x y} → .(x ~ y) → x ~ y
