@@ -461,3 +461,15 @@ Other minor additions
   ```agda
   syntax Satisfiable P = ∃⟨ P ⟩
   ```
+
+* Added new alias definitions and modules for `Algebra.IdempotentCommutativeMonoid`
+  and `Algebra.Structures.IsIdempotentCommutativeMonoid`:
+  ```agda
+  BoundedLattice = IdempotentCommutativeMonoid
+  module BoundedLattice {c ℓ} (idempotentCommutativeMonoid : IdempotentCommutativeMonoid c ℓ)
+  IsBoundedLattice = IsIdempotentCommutativeMonoid
+  module IsBoundedLattice {∙ : Op₂ A}
+                          {ε : A}
+                          (isIdempotentCommutativeMonoid : IsIdempotentCommutativeMonoid ∙ ε)
+
+  ```

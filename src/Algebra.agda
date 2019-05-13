@@ -169,7 +169,7 @@ record IdempotentCommutativeMonoid c ℓ : Set (suc (c ⊔ ℓ)) where
 
 BoundedLattice = IdempotentCommutativeMonoid
 
-module BoundedLattice {c ℓ} {idempotentCommutativeMonoid : IdempotentCommutativeMonoid c ℓ} =
+module BoundedLattice {c ℓ} (idempotentCommutativeMonoid : IdempotentCommutativeMonoid c ℓ) =
        IdempotentCommutativeMonoid idempotentCommutativeMonoid
 
 
