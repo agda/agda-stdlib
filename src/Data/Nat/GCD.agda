@@ -13,33 +13,35 @@ open import Data.Nat.Divisibility
 open import Data.Nat.DivMod
 open import Data.Nat.GCD.Lemmas
 open import Data.Nat.Properties
+open import Data.Nat.Induction
+  using (Acc; acc; <′-Rec; <′-recBuilder; <-wellFounded)
+open import Data.Nat.Properties using (+-suc)
 open import Data.Product
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
 open import Function
-open import Induction
-open import Induction.Nat using (<′-Rec; <′-recBuilder; <-wellFounded)
-open import Induction.WellFounded using (Acc; acc)
-open import Induction.Lexicographic
+open import Induction using (build)
+open import Induction.Lexicographic using (_⊗_; [_⊗_])
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; subst; cong)
 open import Relation.Nullary using (Dec; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
+import Relation.Nullary.Decidable as Dec
 
 ------------------------------------------------------------------------
 -- Definition
 
 -- Calculated via Euclid's algorithm. In order to show progress,
--- avoiding the initial case where the arguments are swapped, it is
--- necessary to first define a version `gcd′` which assumes that the
+-- avoiding the initial step where the first argument may increase, it
+-- is necessary to first define a version `gcd′` which assumes that the
 -- first argument is strictly smaller than the second.
 
 gcd′ : ∀ m n → Acc _<_ m → n < m → ℕ
 gcd′ m zero        _         _   = m
 gcd′ m n@(suc n-1) (acc rec) n<m = gcd′ n (m % n) (rec _ n<m) (a%n<n m n-1)
 
--- The full `gcd` function can then easily be defined after comparing
--- the two arguments.
+-- The full `gcd` function can then be defined to first compare the two
+-- arguments and then apply `gcd′` in the right way.
 
 gcd : ℕ → ℕ → ℕ
 gcd m n with <-cmp m n
@@ -64,18 +66,6 @@ gcd′-greatest {m} {suc n} (acc rec) n<m c∣m c∣n =
 ------------------------------------------------------------------------
 -- Properties of gcd
 
-gcd-comm : ∀ m n → gcd m n ≡ gcd n m
-gcd-comm m n with <-cmp m n | <-cmp n m
-... | tri< m<n _ _ | tri< _ _ n≯m = contradiction m<n n≯m
-... | tri< m<n _ _ | tri≈ _ _ n≯m = contradiction m<n n≯m
-... | tri< m<n _ _ | tri> _ _ n>m = cong (gcd′ _ _ _) (<-irrelevant m<n n>m)
-... | tri≈ _ m≡n _ | tri< _ n≢m _ = contradiction (P.sym m≡n) n≢m
-... | tri≈ _ m≡n _ | tri≈ _ _   _ = m≡n
-... | tri≈ _ m≡n _ | tri> _ n≢m _ = contradiction (P.sym m≡n) n≢m
-... | tri> _ _ m>n | tri< n<m _ _ = cong (gcd′ _ _ _) (<-irrelevant m>n n<m)
-... | tri> _ _ m>n | tri≈ n≮m _ _ = contradiction m>n n≮m
-... | tri> _ _ m>n | tri> n≮m _ _ = contradiction m>n n≮m
-
 gcd[m,n]∣m : ∀ m n → gcd m n ∣ m
 gcd[m,n]∣m m n with <-cmp m n
 ... | tri< n<m _ _ = proj₂ (gcd′[m,n]∣m,n {n} {m} _ _)
@@ -83,7 +73,10 @@ gcd[m,n]∣m m n with <-cmp m n
 ... | tri> _ _ m<n = proj₁ (gcd′[m,n]∣m,n {m} {n} _ _)
 
 gcd[m,n]∣n : ∀ m n → gcd m n ∣ n
-gcd[m,n]∣n m n = subst (_∣ n) (gcd-comm n m) (gcd[m,n]∣m n m)
+gcd[m,n]∣n m n with <-cmp m n
+... | tri< n<m _    _ = proj₁ (gcd′[m,n]∣m,n {n} {m} _ _)
+... | tri≈ _ P.refl _ = ∣-refl
+... | tri> _ _    m<n = proj₂ (gcd′[m,n]∣m,n {m} {n} _ _)
 
 gcd-greatest : ∀ {m n c} → c ∣ m → c ∣ n → c ∣ gcd m n
 gcd-greatest {m} {n} c∣m c∣n with <-cmp m n
@@ -94,6 +87,11 @@ gcd-greatest {m} {n} c∣m c∣n with <-cmp m n
 gcd≢0 : ∀ m n → m ≢ 0 ⊎ n ≢ 0 → gcd m n ≢ 0
 gcd≢0 m n (inj₁ m≢0) eq = m≢0 (0∣⇒≡0 (subst (_∣ m) eq (gcd[m,n]∣m m n)))
 gcd≢0 m n (inj₂ n≢0) eq = n≢0 (0∣⇒≡0 (subst (_∣ n) eq (gcd[m,n]∣n m n)))
+
+gcd-comm : ∀ m n → gcd m n ≡ gcd n m
+gcd-comm m n = ∣-antisym
+  (gcd-greatest (gcd[m,n]∣n m n) (gcd[m,n]∣m m n))
+  (gcd-greatest (gcd[m,n]∣n n m) (gcd[m,n]∣m n m))
 
 ------------------------------------------------------------------------
 -- A formal specification of GCD
@@ -163,9 +161,8 @@ mkGCD m n = gcd m n , gcd-GCD m n
 -- gcd as a proposition is decidable
 
 gcd? : (m n d : ℕ) → Dec (GCD m n d)
-gcd? m n d with gcd m n ≟ d
-... | yes P.refl = yes (gcd-GCD m n)
-... | no  gcd≢d  = no (gcd≢d ∘ GCD.unique (gcd-GCD m n))
+gcd? m n d = Dec.map′ (λ { P.refl → res}) (GCD.unique res) (gcd m n ≟ d)
+  where res = gcd-GCD m n
 
 ------------------------------------------------------------------------
 -- Calculating the gcd

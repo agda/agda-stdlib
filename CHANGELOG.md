@@ -8,6 +8,31 @@ Changes since 1.0.1:
 Highlights
 ----------
 
+Bug-fixes
+---------
+
+#### `_<_` in `Data.Integer`
+
+* The definition of `_<_` in `Data.Integer` often resulted in unsolved metas
+  when Agda has to infer the first argument. This was because it was
+  previously implemented in terms of `suc` -> `_+_` -> `_⊖_`.
+
+* To fix this problem the implementation has therefore changed to:
+  ```agda
+  data _<_ : ℤ → ℤ → Set where
+    -<+ : ∀ {m n} → -[1+ m ] < + n
+    -<- : ∀ {m n} → (n<m : n ℕ.< m) → -[1+ m ] < -[1+ n ]
+    +<+ : ∀ {m n} → (m<n : m ℕ.< n) → + m < + n
+  ```
+  which should allow many implicit parameters which previously had
+  to be given explicitly to be removed.
+
+* All proofs involving `_<_` have been updated correspondingly
+
+* For backwards compatability the old relations still exist as primed versions
+  `_<′_` as do all the old proofs, e.g. `+-monoˡ-<` has become `+-monoˡ-<′`,
+  but these have all been deprecated and may be removed in some future version.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -42,6 +67,9 @@ New modules
   Data.List.Relation.Unary.Unique.Propositional.Properties
   Data.List.Relation.Unary.Unique.Setoid
   Data.List.Relation.Unary.Unique.Setoid.Properties
+
+  Data.Nat.Induction
+  Data.Fin.Induction
 
   Data.Sign.Base
 
@@ -133,6 +161,14 @@ Deprecated features
   `⊤` and `tt` from `Data.Unit`, as it turns out that the latter have been
   mapped to the Haskell equivalent for quite some time.
 
+* The induction machinary for naturals was commonly held to be one of the hardest
+  modules to find in the library. Therefore the module `Induction.Nat` has been
+  split into two new modules: `Data.Nat.Induction` and `Data.Fin.Induction`.
+  This should improve findability and better matches the design of the rest of
+  the library. The new modules also export `Acc` and `acc` meaning there is no
+  need to import `Data.Induction.WellFounded`.  The old module `Induction.Nat`
+  still exists for backwards compatability but is deprecated.
+
 * In `Reflection`:
   ```agda
   returnTC ↦ return
@@ -176,6 +212,47 @@ Other minor additions
   toList : Tree V l u h → List (K& V)
   ```
 
+* Added new relations to `Data.Bool`:
+  ```agda
+  _≤_ : Rel Bool 0ℓ
+  _<_ : Rel Bool 0ℓ
+  ```
+
+* Added new proofs to `Data.Bool.Properties`:
+  ```agda
+  ≤-reflexive       : _≡_ ⇒ _≤_
+  ≤-refl            : Reflexive _≤_
+  ≤-antisym         : Antisymmetric _≡_ _≤_
+  ≤-trans           : Transitive _≤_
+  ≤-total           : Total _≤_
+  _≤?_              : Decidable _≤_
+  ≤-minimum         : Minimum _≤_ false
+  ≤-maximum         : Maximum _≤_ true
+  ≤-irrelevant      : B.Irrelevant _≤_
+  ≤-isPreorder      : IsPreorder _≡_ _≤_
+  ≤-isPartialOrder  : IsPartialOrder _≡_ _≤_
+  ≤-isTotalOrder    : IsTotalOrder _≡_ _≤_
+  ≤-isDecTotalOrder : IsDecTotalOrder _≡_ _≤_
+  ≤-poset           : Poset 0ℓ 0ℓ 0ℓ
+  ≤-preorder        : Preorder 0ℓ 0ℓ 0ℓ
+  ≤-totalOrder      : TotalOrder 0ℓ 0ℓ 0ℓ
+  ≤-decTotalOrder   : DecTotalOrder 0ℓ 0ℓ 0ℓ
+
+  <-irrefl               : Irreflexive _≡_ _<_
+  <-asym                 : Asymmetric _<_
+  <-trans                : Transitive _<_
+  <-transʳ               : Trans _≤_ _<_ _<_
+  <-transˡ               : Trans _<_ _≤_ _<_
+  <-cmp                  : Trichotomous _≡_ _<_
+  _<?_                   : Decidable _<_
+  <-resp₂-≡              : _<_ Respects₂ _≡_
+  <-irrelevant           : B.Irrelevant _<_
+  <-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
+  <-isStrictTotalOrder   : IsStrictTotalOrder _≡_ _<_
+  <-strictPartialOrder   : StrictPartialOrder 0ℓ 0ℓ 0ℓ
+  <-strictTotalOrder     : StrictTotalOrder 0ℓ 0ℓ 0ℓ
+  ```
+
 * Added new definitions to `Data.Char.Base`:
   ```agda
   _≈_ : Rel Char 0ℓ
@@ -213,7 +290,21 @@ Other minor additions
 
 * Added new proof to `Data.Integer.Properties`:
   ```agda
-  ≡-setoid : Setoid 0ℓ 0ℓ
+  ≡-setoid     : Setoid 0ℓ 0ℓ
+  ≤-totalOrder : TotalOrder 0ℓ 0ℓ 0ℓ
+
+  +[1+-injective : +[1+ m ] ≡ +[1+ n ] → m ≡ n
+  drop‿+<+       : + m < + n → m ℕ.< n
+  drop‿-<-       : -[1+ m ] < -[1+ n ] → n ℕ.< m
+
+  m⊖n≤m          : m ⊖ n ≤ + m
+  m⊖n<1+m        : m ⊖ n < +[1+ m ]
+  m⊖1+n<m        : m ⊖ suc n < + m
+  -[1+m]≤n⊖m+1   : -[1+ m ] ≤ n ⊖ suc m
+  ⊖-monoʳ->-<    : (p ⊖_) Preserves ℕ._>_ ⟶ _<_
+  ⊖-monoˡ-<      : (_⊖ p) Preserves ℕ._<_ ⟶ _<_
+
+  *-distrib-+    : _*_ DistributesOver _+_
   ```
 
 * Added new proof to `Data.List.Relation.Binary.Sublist.Heterogeneous.Properties`:
