@@ -4,9 +4,7 @@ branches:
   - master
   - experimental
 
-sudo: enabled
-
-dist: trusty
+dist: xenial
 
 cache:
   directories:
@@ -65,19 +63,24 @@ install:
   # setting up travis-specific scripts and files
   - cp travis/* .
 
+before_script:
+  - export RTS_OPTIONS="+RTS -M2.5G -H2.5G -A128M -RTS"
+
 script:
   # generating index.agda
   - ./index.sh
   # detecting whitespace violations
   - make check-whitespace
+  # expose the value of RTS_OPTIONS
+  - echo $RTS_OPTIONS
   # checking safe modules build with --safe
-  - agda -i . -i src/ --safe EverythingSafeGuardedness.agda
-  - agda -i . -i src/ --safe EverythingSafeSizedTypes.agda
+  - agda $RTS_OPTIONS -i . -i src/ --safe EverythingSafeGuardedness.agda
+  - agda $RTS_OPTIONS -i . -i src/ --safe EverythingSafeSizedTypes.agda
   # detecting basic compilation errors
-  - agda -i . -i src/ -c --no-main Everything.agda
+  - agda $RTS_OPTIONS -i . -i src/ -c --no-main Everything.agda
   # building the docs
-  - agda -i . -i src/ --html safe.agda
-  - agda -i . -i src/ --html index.agda
+  - agda $RTS_OPTIONS -i . -i src/ --html safe.agda
+  - agda $RTS_OPTIONS -i . -i src/ --html index.agda
   # moving everything to the doc directory
   - mv html/* .
 

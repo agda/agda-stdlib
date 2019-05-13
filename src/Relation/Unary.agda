@@ -127,7 +127,7 @@ P ⊅′ Q = ¬ (P ⊃′ Q)
 ------------------------------------------------------------------------
 -- Properties of sets
 
-infix 10 Universal IUniversal
+infix 10 Satisfiable Universal IUniversal
 
 -- Emptiness - no element satisfies P.
 
@@ -138,6 +138,8 @@ Empty P = ∀ x → x ∉ P
 
 Satisfiable : Pred A ℓ → Set _
 Satisfiable P = ∃ λ x → x ∈ P
+
+syntax Satisfiable P = ∃⟨ P ⟩
 
 -- Universality - all elements satisfy P.
 
