@@ -10,21 +10,39 @@ module Data.Nat.LCM where
 
 open import Algebra
 open import Data.Nat
+open import Data.Nat.Coprimality as Coprime
+open import Data.Nat.Divisibility
+open import Data.Nat.DivMod using (_/_)
 open import Data.Nat.Properties
 open import Data.Nat.Solver
 open import Data.Nat.GCD
-open import Data.Nat.Divisibility
-open import Data.Nat.Coprimality as Coprime
 open import Data.Product
+open import Data.Sum using (inj₁)
 open import Function
 open import Relation.Binary.PropositionalEquality as PropEq
   using (_≡_; refl)
 open import Relation.Binary
+open import Relation.Nullary.Decidable using (fromWitnessFalse)
 
 open +-*-Solver
 
 ------------------------------------------------------------------------
--- Least common multiple (lcm).
+-- Definition
+
+lcm : ℕ → ℕ → ℕ
+lcm zero      n         = zero
+lcm n         zero      = zero
+lcm m@(suc _) n@(suc _) = (m * n / gcd m n) {≢0}
+  where ≢0 = fromWitnessFalse (gcd≢0 m n (inj₁ (λ())))
+
+m∣lcm[m,n] : ∀ m n → m ∣ lcm m n
+m∣lcm[m,n] zero      zero      = 0 ∣0
+m∣lcm[m,n] zero      (suc n)   = 0 ∣0
+m∣lcm[m,n] (suc m)   zero      = suc m ∣0
+m∣lcm[m,n] m@(suc _) n@(suc _) = {!!}
+
+------------------------------------------------------------------------
+-- A formal specification of LCM
 
 module LCM where
 
@@ -68,9 +86,9 @@ private
 
 -- The lcm can be calculated from the gcd.
 
-lcm : (i j : ℕ) → ∃ λ d → LCM i j d
-lcm i j with mkGCD′ i j
-lcm .(q₁ * d) .(q₂ * d) | (d , gcd-* q₁ q₂ q₁-q₂-coprime) =
+mkLCM : (i j : ℕ) → ∃ λ d → LCM i j d
+mkLCM i j with mkGCD′ i j
+mkLCM .(q₁ * d) .(q₂ * d) | (d , gcd-* q₁ q₂ q₁-q₂-coprime) =
   ( q₁ * q₂ * d
   , record { commonMultiple = (mult₁ q₁ q₂ d , mult₂ q₁ q₂ d)
            ; least          = least d
@@ -115,12 +133,9 @@ lcm .(q₁ * d) .(q₂ * d) | (d , gcd-* q₁ q₂ q₁-q₂-coprime) =
 -- numbers.
 
 gcd*lcm : ∀ {i j d m} → GCD i j d → LCM i j m → i * j ≡ d * m
-gcd*lcm  {i}        {j}       {d}  {m}               g l with LCM.unique l (proj₂ (lcm i j))
-gcd*lcm  {i}        {j}       {d} .{proj₁ (lcm i j)} g l | refl with mkGCD′ i j
-gcd*lcm .{q₁ * d′} .{q₂ * d′} {d}                    g l | refl | (d′ , gcd-* q₁ q₂ q₁-q₂-coprime)
-                                                           with GCD.unique g
-                                                                  (gcd′-gcd (gcd-* q₁ q₂ q₁-q₂-coprime))
-gcd*lcm .{q₁ * d}  .{q₂ * d}  {d}                    g l | refl | (.d , gcd-* q₁ q₂ q₁-q₂-coprime) | refl =
-  solve 3 (λ q₁ q₂ d → q₁ :* d :* (q₂ :* d)
-                   :=  d :* (q₁ :* q₂ :* d))
-          refl q₁ q₂ d
+gcd*lcm  {i} {j} {d} {m} g l with LCM.unique l (proj₂ (mkLCM i j))
+... | refl with mkGCD′ i j
+...   | (d′ , gcd-* q₁ q₂ q₁-q₂-coprime)
+  with GCD.unique g (gcd′-gcd (gcd-* q₁ q₂ q₁-q₂-coprime))
+...     | refl = solve 3
+  (λ q₁ q₂ d → q₁ :* d :* (q₂ :* d) :=  d :* (q₁ :* q₂ :* d)) refl q₁ q₂ d
