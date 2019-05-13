@@ -171,6 +171,8 @@ import Data.Product.Function.Dependent.Setoid
 -- used:
 
 import README.Data.Nat
+import README.Data.Nat.Induction
+
 import README.Data.Integer
 
 -- Some examples showing how the AVL tree module can be used.
