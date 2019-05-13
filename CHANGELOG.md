@@ -53,9 +53,13 @@ New modules
 Deprecated features
 -------------------
 
-* The modules `Record` and `Universe` have been moved to `Data.Record`
-  and `Data.Universe` respectively. The old modules still exist but have
-  been deprecated.
+* The module `Record` has been moved to `Data.Record`. The old module still
+  exists but has been deprecated.
+
+* The module `Universe` has been split into `Data.Universe` and
+  `Data.Universe.Indexed`. In the latter `Indexed-universe` has been
+  renamed to `IndexedUniverse` to better follow the library conventions. The
+  old module still exists exporting the old names, but has been deprecated.
 
 * Renamed `Relation.Binary.Core`'s `Conn` to `Connex`.
 
