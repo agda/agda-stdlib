@@ -100,6 +100,8 @@ Deprecated features
 * The proof `decSetoid` in `Data.Bool` has been deprecated in favour
   of `≡-decSetoid` in `Data.Bool.Properties`.
 
+* In `Data.Fin.Properties` the operator `_+′_` has been deprecated.
+
 * In `Data.Nat.Divisibility`:
   ```agda
   poset  ↦ ∣-poset
@@ -150,6 +152,12 @@ Deprecated features
   The proof `preorder` has also been deprecated, but as it erroneously proved
   that `_≡_` (rather than `_≤_`) is a preorder with respect to `_≡_` it does
   not have a new name in `Data.Unit.Properties`.
+
+* In `Data.Vec.Properties`:
+  ```agda
+  lookup-++-inject+ ↦ lookup-++ˡ
+  lookup-++-+′      ↦ lookup-++ʳ
+  ```
 
 * Deprecated `Unit` and `unit` in `Foreign.Haskell` in favour of
   `⊤` and `tt` from `Data.Unit`, as it turns out that the latter have been

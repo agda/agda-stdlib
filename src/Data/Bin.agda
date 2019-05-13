@@ -149,12 +149,12 @@ Carry : Set
 Carry = Bit
 
 addBits : Carry → Bit → Bit → Carry × Bit
-addBits c b₁ b₂ with c +′ (b₁ +′ b₂)
-... | zero           = (0b , 0b)
-... | 1+ zero        = (0b , 1b)
-... | 1+ 1+ zero     = (1b , 0b)
-... | 1+ 1+ 1+ zero  = (1b , 1b)
-... | 1+ 1+ 1+ 1+ ()
+addBits c  0b 0b = 0b , c
+addBits 0b b₁ 0b = 0b , b₁
+addBits 0b 0b b₂ = 0b , b₂
+addBits c  1b 1b = 1b , c
+addBits 1b b₁ 1b = 1b , b₁
+addBits 1b 1b b₂ = 1b , b₂
 
 addCarryToBitList : Carry → List Bit → List Bit
 addCarryToBitList 0b bs        = bs
