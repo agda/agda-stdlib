@@ -488,6 +488,8 @@ Other minor additions
   <±-isStrictTotalOrder-≡      : IsStrictTotalOrder _≡_ _<_ → IsStrictTotalOrder _≡_ _<±_
   ```
 
+* Defined `_≉_` as the negation of `_≈_` in `Relation.Binary`'s `Setoid`.
+
 * Added new definition in `Relation.Binary.Core`:
   ```agda
   Universal _∼_ = ∀ x y → x ∼ y
