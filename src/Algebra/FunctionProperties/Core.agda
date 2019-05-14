@@ -13,10 +13,7 @@
 
 module Algebra.FunctionProperties.Core where
 
-open import Data.Product using (_×_)
-open import Data.Sum using (_⊎_)
 open import Level
-open import Relation.Unary using (Pred)
 
 ------------------------------------------------------------------------
 -- Unary and binary operations
