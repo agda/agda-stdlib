@@ -86,6 +86,7 @@ How to make changes
    ```
    git push
    ```
+
 11. Go to your fork on Github at `https://github.com/USER_NAME/agda-stdlib`
         and follow the [official Git instructions](https://help.github.com/en/articles/creating-a-pull-request-from-a-fork)
         to open a pull request to the main standard library repository.
