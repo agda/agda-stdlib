@@ -11,12 +11,12 @@ module Data.Nat.GCD where
 open import Data.Nat
 open import Data.Nat.Divisibility
 open import Data.Nat.GCD.Lemmas
+open import Data.Nat.Induction using (<′-Rec; <′-recBuilder)
 open import Data.Nat.Properties using (+-suc)
 open import Data.Product
 open import Function
-open import Induction
-open import Induction.Nat using (<′-Rec; <′-recBuilder)
-open import Induction.Lexicographic
+open import Induction using (build)
+open import Induction.Lexicographic using (_⊗_; [_⊗_])
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_; subst)
 open import Relation.Nullary using (Dec; yes; no)

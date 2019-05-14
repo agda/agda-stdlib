@@ -38,7 +38,7 @@ lem₀ i j m n eq = begin
   n                      ∎
 
 lem₁ : ∀ i j → 2 + i ≤′ 2 + j + i
-lem₁ i j = ≤⇒≤′ $ s≤s $ s≤s $ n≤m+n j i
+lem₁ i j = ≤⇒≤′ $ s≤s $ s≤s $ m≤n+m i j
 
 lem₂ : ∀ d x {k n} →
        d + x * k ≡ x * n → d + x * (n + k) ≡ 2 * x * n
@@ -148,7 +148,7 @@ lem₁₀ : ∀ {a′} b c {d} e f → let a = suc a′ in
         a + b * (c * d * a) ≡ e * (f * d * a) →
         d ≡ 1
 lem₁₀ {a′} b c {d} e f eq =
-  i*j≡1⇒j≡1 (e * f ∸ b * c) d
+  m*n≡1⇒n≡1 (e * f ∸ b * c) d
     (lem₀ (e * f) (b * c) d 1
        (*-cancelʳ-≡ (e * f * d) (b * c * d + 1) (begin
           e * f * d * a        ≡⟨ solve 4 (λ e f d a → e :* f :* d :* a
