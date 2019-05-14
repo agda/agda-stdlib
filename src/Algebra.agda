@@ -94,6 +94,22 @@ record Semilattice c ℓ : Set (suc (c ⊔ ℓ)) where
   open Band band public using (rawMagma; magma; semigroup)
 
 
+record SelectiveMagma c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _∙_
+  infix  4 _≈_
+  field
+    Carrier          : Set c
+    _≈_              : Rel Carrier ℓ
+    _∙_              : Op₂ Carrier
+    isSelectiveMagma : IsSelectiveMagma _≈_ _∙_
+
+  open IsSelectiveMagma isSelectiveMagma public
+
+  magma : Magma c ℓ
+  magma = record { isMagma = isMagma }
+
+  open Magma magma public using (rawMagma)
+
 ------------------------------------------------------------------------
 -- Packages with 1 binary operation & 1 element
 ------------------------------------------------------------------------
