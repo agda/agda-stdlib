@@ -236,11 +236,11 @@ module _ {a} {A : Set a} where
   -- Another useful lemma
 
   shifts : ∀ xs ys {zs : List A} → xs ++ ys ++ zs ↭ ys ++ xs ++ zs
-  shifts xs ys = begin
-     xs ++ ys  ++ _ ↭˘⟨ ++-assoc xs ys _ ⟩
-    (xs ++ ys) ++ _ ↭⟨ ++⁺ʳ _ (++-comm xs ys) ⟩
-    (ys ++ xs) ++ _ ↭⟨ ++-assoc ys xs _ ⟩
-     ys ++ xs  ++ _ ∎
+  shifts xs ys {zs} = begin
+     xs ++ ys  ++ zs ↭˘⟨ ++-assoc xs ys zs ⟩
+    (xs ++ ys) ++ zs ↭⟨ ++⁺ʳ zs (++-comm xs ys) ⟩
+    (ys ++ xs) ++ zs ↭⟨ ++-assoc ys xs zs ⟩
+     ys ++ xs  ++ zs ∎
 
 ------------------------------------------------------------------------
 -- _∷_
