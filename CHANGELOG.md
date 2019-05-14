@@ -103,7 +103,7 @@ Deprecated features
 
 * In `Data.Product.Relation.Binary.Pointwise.NonDependent`:
   ```agda
-  ≡?×≡?⇒≡? ↦ Data.Product.Properites.≡-dec
+  ≡?×≡?⇒≡? ↦ Data.Product.Properties.≡-dec
   ```
 
 Other minor additions
