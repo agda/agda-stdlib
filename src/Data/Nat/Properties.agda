@@ -824,6 +824,19 @@ m<m*n {suc m-1} {suc (suc n-2)} (s≤s _) (s≤s (s≤s _)) = begin-strict
   m * n       ∎
   where m = suc m-1; n = suc (suc n-2)
 
+*-cancelʳ-< : RightCancellative _<_ _*_
+*-cancelʳ-< {zero}  zero    (suc o) _     = s≤s z≤n
+*-cancelʳ-< {suc m} zero    (suc o) _     = s≤s z≤n
+*-cancelʳ-< {m}     (suc n) (suc o) nm<om =
+  s≤s (*-cancelʳ-< n o (+-cancelˡ-< m nm<om))
+
+-- Redo in terms of `comm+cancelʳ⇒cancelˡ` when generalised
+*-cancelˡ-< : LeftCancellative _<_ _*_
+*-cancelˡ-< x {y} {z} rewrite *-comm x y | *-comm x z = *-cancelʳ-< y z
+
+*-cancel-< : Cancellative _<_ _*_
+*-cancel-< = *-cancelˡ-< , *-cancelʳ-<
+
 ------------------------------------------------------------------------
 -- Properties of _^_
 ------------------------------------------------------------------------
