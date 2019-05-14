@@ -311,9 +311,11 @@ Other minor additions
 
 * Added new operations to `Data.List.Relation.Unary.All`:
   ```agda
-  fromList : (xs : List (∃ P)) → All P (List.map proj₁ xs)
-  toList   : All P xs → List (∃ P)
-  self     : All (const A) xs
+  reduce    : (f : ∀ {x} → P x → B) → ∀ {xs} → All P xs → List B
+  construct : (f : B → ∃ P) (xs : List B) → ∃ (All P)
+  fromList  : (xs : List (∃ P)) → All P (List.map proj₁ xs)
+  toList    : All P xs → List (∃ P)
+  self      : All (const A) xs
   ```
 
 * Added new proofs to `Data.List.Relation.Binary.Sublist.Propositional.Properties`:
