@@ -317,6 +317,15 @@ Other minor additions
   concat⁺ : Sublist (Sublist R) ass bss → Sublist R (concat ass) (concat bss)
   ```
 
+* Added new operations to `Data.List.Relation.Unary.All`:
+  ```agda
+  reduce    : (f : ∀ {x} → P x → B) → ∀ {xs} → All P xs → List B
+  construct : (f : B → ∃ P) (xs : List B) → ∃ (All P)
+  fromList  : (xs : List (∃ P)) → All P (List.map proj₁ xs)
+  toList    : All P xs → List (∃ P)
+  self      : All (const A) xs
+  ```
+
 * Added new proofs to `Data.List.Relation.Binary.Sublist.Propositional.Properties`:
   ```agda
   All-resp-⊆ : (All P) Respects (flip _⊆_)
