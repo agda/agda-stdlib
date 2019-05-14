@@ -57,6 +57,9 @@ New modules
   Data.List.Relation.Binary.Disjoint.Setoid
   Data.List.Relation.Binary.Disjoint.Setoid.Properties
 
+  Data.List.Relation.Binary.Permutation.Setoid
+  Data.List.Relation.Binary.Permutation.Homogeneous
+
   Data.List.Relation.Unary.AllPairs
   Data.List.Relation.Unary.AllPairs.Properties
   Data.List.Relation.Unary.Unique.Propositional
@@ -303,6 +306,14 @@ Other minor additions
   *-distrib-+    : _*_ DistributesOver _+_
   ```
 
+* Added new proofs to `Data.List.Properties`:
+  ```agda
+  foldr-forcesᵇ    : (P (f x y) → P x × P y) → P (foldr f e xs) → All P xs
+  foldr-preservesᵇ : (P x → P y → P (f x y)) → P e → All P xs   → P (foldr f e xs)
+  foldr-preservesʳ : (P y → P (f x y))       → P e              → P (foldr f e xs)
+  foldr-preservesᵒ : (P x ⊎ P y → P (f x y)) → P e ⊎ Any P xs   → P (foldr f e xs)
+  ```
+
 * Added new proof to `Data.List.Relation.Binary.Sublist.Heterogeneous.Properties`:
   ```agda
   concat⁺ : Sublist (Sublist R) ass bss → Sublist R (concat ass) (concat bss)
@@ -316,6 +327,12 @@ Other minor additions
 * Added new proof to `Data.List.Relation.Unary.All`:
   ```agda
   glookup : ∀[ P ⇒ Q ⇒ R ] → All P xs → (i : Any Q xs) → R (lookup i)
+
+  reduce    : (f : ∀ {x} → P x → B) → ∀ {xs} → All P xs → List B
+  construct : (f : B → ∃ P) (xs : List B) → ∃ (All P)
+  fromList  : (xs : List (∃ P)) → All P (List.map proj₁ xs)
+  toList    : All P xs → List (∃ P)
+  self      : All (const A) xs
   ```
 
 * Added new proofs to `Data.List.Relation.Binary.Sublist.Propositional.Properties`:
