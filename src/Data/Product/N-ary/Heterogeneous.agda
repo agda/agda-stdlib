@@ -286,8 +286,8 @@ constₙ (suc n) v = const (constₙ n v)
 
 infix 5 ∃⟨_⟩
 ∃⟨_⟩ : ∀ {n ls r} {as : Sets n ls} → Arrows n as (Set r) → Set (r ⊔ (⨆ n ls))
-∃⟨_⟩ {zero}                f = f
-∃⟨_⟩ {suc n} {as = a , as} f = ∃ λ x → ∃⟨ f x ⟩
+∃⟨_⟩ {zero}  f = f
+∃⟨_⟩ {suc n} f = ∃ λ x → ∃⟨ f x ⟩
 
 ------------------------------------------------------------------------
 -- n-ary universal quantifier
@@ -296,15 +296,15 @@ infix 5 ∃⟨_⟩
 
 infix 5 ∀[_]
 ∀[_] : ∀ {n ls r} {as : Sets n ls} → Arrows n as (Set r) → Set (r ⊔ (⨆ n ls))
-∀[_] {zero}                f = f
-∀[_] {suc n} {as = a , as} f = {x : a} → ∀[ f x ]
+∀[_] {zero}  f = f
+∀[_] {suc n} f = ∀ {x} → ∀[ f x ]
 
 -- explicit
 
 infix 5 Π[_]
 Π[_] : ∀ {n ls r} {as : Sets n ls} → Arrows n as (Set r) → Set (r ⊔ (⨆ n ls))
-Π[_] {zero}                f = f
-Π[_] {suc n} {as = a , as} f = (x : a) → Π[ f x ]
+Π[_] {zero}  f = f
+Π[_] {suc n} f = ∀ x → Π[ f x ]
 
 
 ------------------------------------------------------------------------
