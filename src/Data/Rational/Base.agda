@@ -124,8 +124,7 @@ normalize (suc m) (suc n) with gcd (suc m) (suc n)
 infixl 7 _/_
 
 _/_ : (n : ℤ) (d : ℕ) → .{d≢0 : d ≢0} → ℚ
-(+0       / d) {d≢0} =   normalize 0       d {d≢0}
-(+[1+ n ] / d) {d≢0} =   normalize (suc n) d {d≢0}
+(+ n      / d) {d≢0} =   normalize n       d {d≢0}
 (-[1+ n ] / d) {d≢0} = - normalize (suc n) d {d≢0}
 
 ------------------------------------------------------------------------------
