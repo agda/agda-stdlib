@@ -449,30 +449,36 @@ foldr-∷ʳ : ∀ (f : A → B → B) x y ys →
 foldr-∷ʳ f x y []       = refl
 foldr-∷ʳ f x y (z ∷ ys) = P.cong (f z) (foldr-∷ʳ f x y ys)
 
-module _ {a p} {A : Set a} {P : Pred A p} {f : A → A → A} where
+-- Interaction with predicates
+
+module _ {P : Pred A p} {f : A → A → A} where
 
   open FunctionProperties
 
-  foldr-forcesᵇ : ForcesBoth f P → ∀ e xs → P (foldr f e xs) → All P xs
+  foldr-forcesᵇ : (∀ x y → P (f x y) → P x × P y) →
+                  ∀ e xs → P (foldr f e xs) → All P xs
   foldr-forcesᵇ _      _ []       _     = []
   foldr-forcesᵇ forces _ (x ∷ xs) Pfold with forces _ _ Pfold
   ... | (px , pfxs) = px ∷ foldr-forcesᵇ forces _ xs pfxs
 
-  foldr-presᵇ : PreservesBoth f P → ∀ {e xs} → P e → All P xs → P (foldr f e xs)
-  foldr-presᵇ _    Pe []         = Pe
-  foldr-presᵇ pres Pe (px ∷ pxs) = pres px (foldr-presᵇ pres Pe pxs)
+  foldr-preservesᵇ : (∀ {x y} → P x → P y → P (f x y)) →
+                     ∀ {e xs} → P e → All P xs → P (foldr f e xs)
+  foldr-preservesᵇ _    Pe []         = Pe
+  foldr-preservesᵇ pres Pe (px ∷ pxs) = pres px (foldr-preservesᵇ pres Pe pxs)
 
-  foldr-presʳ : PreservesRight f P → ∀ {e} → P e → ∀ xs → P (foldr f e xs)
-  foldr-presʳ pres Pe []       = Pe
-  foldr-presʳ pres Pe (_ ∷ xs) = pres _ (foldr-presʳ pres Pe xs)
+  foldr-preservesʳ : (∀ x {y} → P y → P (f x y)) →
+                     ∀ {e} → P e → ∀ xs → P (foldr f e xs)
+  foldr-preservesʳ pres Pe []       = Pe
+  foldr-preservesʳ pres Pe (_ ∷ xs) = pres _ (foldr-preservesʳ pres Pe xs)
 
-  foldr-presᵒ : PreservesOne f P → ∀ e xs → P e ⊎ Any P xs → P (foldr f e xs)
-  foldr-presᵒ pres e []       (inj₁ Pe)          = Pe
-  foldr-presᵒ pres e (x ∷ xs) (inj₁ Pe)          =
-    pres _ _ (inj₂ (foldr-presᵒ pres e xs (inj₁ Pe)))
-  foldr-presᵒ pres e (x ∷ xs) (inj₂ (here px))   = pres _ _ (inj₁ px)
-  foldr-presᵒ pres e (x ∷ xs) (inj₂ (there pxs)) =
-    pres _ _ (inj₂ (foldr-presᵒ pres e xs (inj₂ pxs)))
+  foldr-preservesᵒ : (∀ x y → P x ⊎ P y → P (f x y)) →
+                     ∀ e xs → P e ⊎ Any P xs → P (foldr f e xs)
+  foldr-preservesᵒ pres e []       (inj₁ Pe)          = Pe
+  foldr-preservesᵒ pres e (x ∷ xs) (inj₁ Pe)          =
+    pres _ _ (inj₂ (foldr-preservesᵒ pres e xs (inj₁ Pe)))
+  foldr-preservesᵒ pres e (x ∷ xs) (inj₂ (here px))   = pres _ _ (inj₁ px)
+  foldr-preservesᵒ pres e (x ∷ xs) (inj₂ (there pxs)) =
+    pres _ _ (inj₂ (foldr-preservesᵒ pres e xs (inj₂ pxs)))
 
 ------------------------------------------------------------------------
 -- foldl
