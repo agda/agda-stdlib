@@ -515,4 +515,4 @@ Other minor additions
   ```agda
   syntax Satisfiable P = ∃⟨ P ⟩
   ```
- 
+
