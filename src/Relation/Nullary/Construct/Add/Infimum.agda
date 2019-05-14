@@ -8,6 +8,6 @@
 
 module Relation.Nullary.Construct.Add.Infimum where
 
-open import Relation.Nullary.Construct.Add.Point
+open import Relation.Nullary.Construct.Add.Point public
   renaming (Pointed to _₋; ∙ to ⊥₋)
-  public
+

@@ -17,49 +17,61 @@ open import Function.Equality using (_⟨$⟩_; module Π)
 open import Function.Equivalence
   using (_⇔_; equivalence; module Equivalence)
 open import Function.Injection using (Injection; module Injection)
-open import Level using (Lift)
+open import Level using (Level; Lift)
 open import Relation.Binary using (Setoid; module Setoid; Decidable)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary
 
-⌊_⌋ : ∀ {p} {P : Set p} → Dec P → Bool
+private
+  variable
+    p q : Level
+    P : Set p
+    Q : Set q
+
+------------------------------------------------------------------------
+-- Conversion to and from Bool
+
+⌊_⌋ : Dec P → Bool
 ⌊ yes _ ⌋ = true
 ⌊ no  _ ⌋ = false
 
-True : ∀ {p} {P : Set p} → Dec P → Set
+------------------------------------------------------------------------
+-- Types for whether a type is occupied or not
+
+True : Dec P → Set
 True Q = T ⌊ Q ⌋
 
-False : ∀ {p} {P : Set p} → Dec P → Set
+False : Dec P → Set
 False Q = T (not ⌊ Q ⌋)
 
 -- Gives a witness to the "truth".
 
-toWitness : ∀ {p} {P : Set p} {Q : Dec P} → True Q → P
+toWitness : ∀ {Q : Dec P} → True Q → P
 toWitness {Q = yes p} _  = p
-toWitness {Q = no  _} ()
 
 -- Establishes a "truth", given a witness.
 
-fromWitness : ∀ {p} {P : Set p} {Q : Dec P} → P → True Q
+fromWitness : ∀ {Q : Dec P} → P → True Q
 fromWitness {Q = yes p} = const _
 fromWitness {Q = no ¬p} = ¬p
 
 -- Variants for False.
 
-toWitnessFalse : ∀ {p} {P : Set p} {Q : Dec P} → False Q → ¬ P
-toWitnessFalse {Q = yes _}  ()
+toWitnessFalse : ∀ {Q : Dec P} → False Q → ¬ P
 toWitnessFalse {Q = no  ¬p} _  = ¬p
 
-fromWitnessFalse : ∀ {p} {P : Set p} {Q : Dec P} → ¬ P → False Q
+fromWitnessFalse : ∀ {Q : Dec P} → ¬ P → False Q
 fromWitnessFalse {Q = yes p} = flip _$_ p
 fromWitnessFalse {Q = no ¬p} = const _
 
-map : ∀ {p q} {P : Set p} {Q : Set q} → P ⇔ Q → Dec P → Dec Q
+------------------------------------------------------------------------
+-- Maps
+
+map : P ⇔ Q → Dec P → Dec Q
 map P⇔Q (yes p) = yes (Equivalence.to P⇔Q ⟨$⟩ p)
 map P⇔Q (no ¬p) = no (¬p ∘ _⟨$⟩_ (Equivalence.from P⇔Q))
 
-map′ : ∀ {p q} {P : Set p} {Q : Set q} →
-       (P → Q) → (Q → P) → Dec P → Dec Q
+map′ : (P → Q) → (Q → P) → Dec P → Dec Q
 map′ P→Q Q→P = map (equivalence P→Q Q→P)
 
 module _ {a₁ a₂ b₁ b₂} {A : Setoid a₁ a₂} {B : Setoid b₁ b₂} where
@@ -77,10 +89,13 @@ module _ {a₁ a₂ b₁ b₂} {A : Setoid a₁ a₂} {B : Setoid b₁ b₂} whe
   ... | yes injx≈injy = yes (Injection.injective inj injx≈injy)
   ... | no  injx≉injy = no (λ x≈y → injx≉injy (Π.cong (to inj) x≈y))
 
--- If a decision procedure returns "yes", then we can extract the
--- proof using from-yes.
+------------------------------------------------------------------------
+-- Extracting proofs
 
 module _ {p} {P : Set p} where
+
+-- If a decision procedure returns "yes", then we can extract the
+-- proof using from-yes.
 
   From-yes : Dec P → Set p
   From-yes (yes _) = P
