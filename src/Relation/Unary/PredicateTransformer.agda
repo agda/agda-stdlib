@@ -4,114 +4,120 @@
 -- Predicate transformers
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Relation.Unary.PredicateTransformer where
 
-open import Level hiding (_⊔_)
-open import Function
 open import Data.Product
+open import Function
+open import Level hiding (_⊔_)
 open import Relation.Nullary
 open import Relation.Unary
 open import Relation.Binary using (REL)
 
-------------------------------------------------------------------------
+private
+  variable
+    a b c i ℓ ℓ₁ ℓ₂ ℓ₃ : Level
+    A : Set a
+    B : Set b
+    C : Set c
 
+------------------------------------------------------------------------
 -- Heterogeneous and homogeneous predicate transformers
 
-PT : ∀ {a b} → Set a → Set b → (ℓ₁ ℓ₂ : Level) → Set _
+PT : Set a → Set b → (ℓ₁ ℓ₂ : Level) → Set _
 PT A B ℓ₁ ℓ₂ = Pred A ℓ₁ → Pred B ℓ₂
 
-Pt : ∀ {a} → Set a → (ℓ : Level) → Set _
+Pt : Set a → (ℓ : Level) → Set _
 Pt A ℓ = PT A A ℓ ℓ
 
+------------------------------------------------------------------------
 -- Composition and identity
 
-_⍮_ : ∀ {a b c ℓ₁ ℓ₂ ℓ₃} {A : Set a} {B : Set b} {C : Set c} →
-      PT B C ℓ₂ ℓ₃ → PT A B ℓ₁ ℓ₂ → PT A C ℓ₁ _
+_⍮_ : PT B C ℓ₂ ℓ₃ → PT A B ℓ₁ ℓ₂ → PT A C ℓ₁ _
 S ⍮ T = S ∘ T
 
-skip : ∀ {a ℓ} {A : Set a} → PT A A ℓ ℓ
+skip : PT A A ℓ ℓ
 skip P = P
 
 ------------------------------------------------------------------------
 -- Operations on predicates extend pointwise to predicate transformers
 
-module _ {a b} {A : Set a} {B : Set b} where
+-- The bottom and the top of the predicate transformer lattice.
 
-  -- The bottom and the top of the predicate transformer lattice.
+abort : PT A B 0ℓ 0ℓ
+abort = λ _ → ∅
 
-  abort : PT A B zero zero
-  abort = λ _ → ∅
+magic : PT A B 0ℓ 0ℓ
+magic = λ _ → U
 
-  magic : PT A B zero zero
-  magic = λ _ → U
+-- Negation.
 
-  -- Negation.
+∼_ : PT A B ℓ₁ ℓ₂ → PT A B ℓ₁ ℓ₂
+∼ T = ∁ ∘ T
 
-  ∼_ : ∀ {ℓ₁ ℓ₂} → PT A B ℓ₁ ℓ₂ → PT A B ℓ₁ ℓ₂
-  ∼ T = ∁ ∘ T
+-- Refinement.
 
-  -- Refinement.
+infix 4 _⊑_ _⊒_ _⊑′_ _⊒′_
 
-  infix 4 _⊑_ _⊒_ _⊑′_ _⊒′_
+_⊑_ : PT A B ℓ₁ ℓ₂ → PT A B ℓ₁ ℓ₂ → Set _
+S ⊑ T = ∀ {X} → S X ⊆ T X
 
-  _⊑_ : ∀ {ℓ₁ ℓ₂} → PT A B ℓ₁ ℓ₂ → PT A B ℓ₁ ℓ₂ → Set _
-  S ⊑ T = ∀ {X} → S X ⊆ T X
+_⊑′_ : PT A B ℓ₁ ℓ₂ → PT A B ℓ₁ ℓ₂ → Set _
+S ⊑′ T = ∀ X → S X ⊆ T X
 
-  _⊑′_ : ∀ {ℓ₁ ℓ₂} → PT A B ℓ₁ ℓ₂ → PT A B ℓ₁ ℓ₂ → Set _
-  S ⊑′ T = ∀ X → S X ⊆ T X
+_⊒_ : PT A B ℓ₁ ℓ₂ → PT A B ℓ₁ ℓ₂ → Set _
+T ⊒ S = T ⊑ S
 
-  _⊒_ : ∀ {ℓ₁ ℓ₂} → PT A B ℓ₁ ℓ₂ → PT A B ℓ₁ ℓ₂ → Set _
-  T ⊒ S = T ⊑ S
+_⊒′_ : PT A B ℓ₁ ℓ₂ → PT A B ℓ₁ ℓ₂ → Set _
+T ⊒′ S = S ⊑′ T
 
-  _⊒′_ : ∀ {ℓ₁ ℓ₂} → PT A B ℓ₁ ℓ₂ → PT A B ℓ₁ ℓ₂ → Set _
-  T ⊒′ S = S ⊑′ T
+-- The dual of refinement.
 
-  -- The dual of refinement.
+infix 4 _⋢_
 
-  infix 4 _⋢_
+_⋢_ : PT A B ℓ₁ ℓ₂ → PT A B ℓ₁ ℓ₂ → Set _
+S ⋢ T = ∃ λ X → S X ≬ T X
 
-  _⋢_ : ∀ {ℓ₁ ℓ₂} → PT A B ℓ₁ ℓ₂ → PT A B ℓ₁ ℓ₂ → Set _
-  S ⋢ T = ∃ λ X → S X ≬ T X
+-- Union.
 
-  -- Union.
+infixl 6 _⊓_
 
-  infixl 6 _⊓_
+_⊓_ : PT A B ℓ₁ ℓ₂ → PT A B ℓ₁ ℓ₂ → PT A B ℓ₁ ℓ₂
+S ⊓ T = λ X → S X ∪ T X
 
-  _⊓_ : ∀ {ℓ₁ ℓ₂} → PT A B ℓ₁ ℓ₂ → PT A B ℓ₁ ℓ₂ → PT A B ℓ₁ ℓ₂
-  S ⊓ T = λ X → S X ∪ T X
+-- Intersection.
 
-  -- Intersection.
+infixl 7 _⊔_
 
-  infixl 7 _⊔_
+_⊔_ : PT A B ℓ₁ ℓ₂ → PT A B ℓ₁ ℓ₂ → PT A B ℓ₁ ℓ₂
+S ⊔ T = λ X → S X ∩ T X
 
-  _⊔_ : ∀ {ℓ₁ ℓ₂} → PT A B ℓ₁ ℓ₂ → PT A B ℓ₁ ℓ₂ → PT A B ℓ₁ ℓ₂
-  S ⊔ T = λ X → S X ∩ T X
+-- Implication.
 
-  -- Implication.
+infixl 8 _⇛_
 
-  infixl 8 _⇛_
+_⇛_ : PT A B ℓ₁ ℓ₂ → PT A B ℓ₁ ℓ₂ → PT A B ℓ₁ ℓ₂
+S ⇛ T = λ X → S X ⇒ T X
 
-  _⇛_ : ∀ {ℓ₁ ℓ₂} → PT A B ℓ₁ ℓ₂ → PT A B ℓ₁ ℓ₂ → PT A B ℓ₁ ℓ₂
-  S ⇛ T = λ X → S X ⇒ T X
+-- Infinitary union and intersection.
 
-  -- Infinitary union and intersection.
+infix 9 ⨆ ⨅
 
-  infix 9 ⨆ ⨅
+⨆ : ∀ (I : Set i) → (I → PT A B ℓ₁ ℓ₂) → PT A B ℓ₁ _
+⨆ I T = λ X → ⋃[ i ∶ I ] T i X
 
-  ⨆ : ∀ {ℓ₁ ℓ₂ i} (I : Set i) → (I → PT A B ℓ₁ ℓ₂) → PT A B ℓ₁ _
-  ⨆ I T = λ X → ⋃[ i ∶ I ] T i X
+syntax ⨆ I (λ i → T) = ⨆[ i ∶ I ] T
 
-  syntax ⨆ I (λ i → T) = ⨆[ i ∶ I ] T
+⨅ : ∀ (I : Set i) → (I → PT A B ℓ₁ ℓ₂) → PT A B ℓ₁ _
+⨅ I T = λ X → ⋂[ i ∶ I ] T i X
 
-  ⨅ : ∀ {ℓ₁ ℓ₂ i} (I : Set i) → (I → PT A B ℓ₁ ℓ₂) → PT A B ℓ₁ _
-  ⨅ I T = λ X → ⋂[ i ∶ I ] T i X
+syntax ⨅ I (λ i → T) = ⨅[ i ∶ I ] T
 
-  syntax ⨅ I (λ i → T) = ⨅[ i ∶ I ] T
+-- Angelic and demonic update.
 
-  -- Angelic and demonic update.
+⟨_⟩ : REL A B ℓ → PT B A ℓ _
+⟨ R ⟩ P = λ x → R x ≬ P
 
-  ⟨_⟩ : ∀ {ℓ} → REL A B ℓ → PT B A ℓ _
-  ⟨ R ⟩ P = λ x → R x ≬ P
-
-  [_] : ∀ {ℓ} → REL A B ℓ → PT B A ℓ _
-  [ R ] P = λ x → R x ⊆ P
+[_] : REL A B ℓ → PT B A ℓ _
+[ R ] P = λ x → R x ⊆ P

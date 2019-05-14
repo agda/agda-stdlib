@@ -4,18 +4,20 @@
 -- Digits and digit expansions
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Digit where
 
-open import Data.Nat using (ℕ; zero; suc; pred; _+_; _*_; _≤?_; _≤′_)
+open import Data.Nat
 open import Data.Nat.Properties
-open SemiringSolver
+open import Data.Nat.Solver
 open import Data.Fin as Fin using (Fin; zero; suc; toℕ)
 open import Data.Char using (Char)
 open import Data.List.Base
 open import Data.Product
 open import Data.Vec as Vec using (Vec; _∷_; [])
 open import Data.Nat.DivMod
-open import Induction.Nat using (<′-rec; <′-Rec)
+open import Data.Nat.Induction
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable
 open import Relation.Binary using (Decidable)
@@ -44,27 +46,25 @@ Bit     = Digit 2
 1b = suc zero
 
 ------------------------------------------------------------------------
--- Showing digits
+-- Converting between `ℕ` and `expansions of ℕ`
 
--- The characters used to show the first 16 digits.
-
-digitChars : Vec Char 16
-digitChars =
-  '0' ∷ '1' ∷ '2' ∷ '3' ∷ '4' ∷ '5' ∷ '6' ∷ '7' ∷ '8' ∷ '9' ∷
-  'a' ∷ 'b' ∷ 'c' ∷ 'd' ∷ 'e' ∷ 'f' ∷ []
-
--- showDigit shows digits in base ≤ 16.
-
-showDigit : ∀ {base} {base≤16 : True (base ≤? 16)} →
-            Digit base → Char
-showDigit {base≤16 = base≤16} d =
-  Vec.lookup (Fin.inject≤ d (toWitness base≤16)) digitChars
+toNatDigits : (base : ℕ) {base≤16 : True (1 ≤? base)} → ℕ → List ℕ
+toNatDigits base@(suc zero)    n = replicate n 1
+toNatDigits base@(suc (suc b)) n = aux (<-wellFounded n) []
+  where
+  aux : {n : ℕ} → Acc _<_ n → List ℕ → List ℕ
+  aux {zero}        _        xs =  (0 ∷ xs)
+  aux {n@(suc n-1)} (acc wf) xs with 0 <? n / base
+  ... | no _    =  (n % base) ∷ xs
+  ... | yes 0<q =  aux (wf _ q<n) ((n % base) ∷ xs)
+    where
+    q<n = <-transˡ (m<m*n 0<q (s≤s (s≤s z≤n))) ([a/n]*n≤a n (suc b))
 
 ------------------------------------------------------------------------
--- Digit expansions
+-- Converting between `ℕ` and expansions of `Digit base`
 
 Expansion : ℕ → Set
-Expansion base = List (Fin base)
+Expansion base = List (Digit base)
 
 -- fromDigits takes a digit expansion of a natural number, starting
 -- with the _least_ significant digit, and returns the corresponding
@@ -81,17 +81,16 @@ fromDigits {base} (d ∷ ds) = toℕ d + fromDigits ds * base
 
 toDigits : (base : ℕ) {base≥2 : True (2 ≤? base)} (n : ℕ) →
            ∃ λ (ds : Expansion base) → fromDigits ds ≡ n
-toDigits zero       {base≥2 = ()} _
-toDigits (suc zero) {base≥2 = ()} _
 toDigits (suc (suc k)) n = <′-rec Pred helper n
   where
   base = suc (suc k)
   Pred = λ n → ∃ λ ds → fromDigits ds ≡ n
 
-  cons : ∀ {m} (r : Fin base) → Pred m → Pred (toℕ r + m * base)
+  cons : ∀ {m} (r : Digit base) → Pred m → Pred (toℕ r + m * base)
   cons r (ds , eq) = (r ∷ ds , P.cong (λ i → toℕ r + i * base) eq)
 
   open ≤-Reasoning
+  open +-*-Solver
 
   lem : ∀ x k r → 2 + x ≤′ r + (1 + x) * (2 + k)
   lem x k r = ≤⇒≤′ $ begin
@@ -111,3 +110,18 @@ toDigits (suc (suc k)) n = <′-rec Pred helper n
   helper .(toℕ r + suc x * base) rec | result (suc x) r refl =
     cons r (rec (suc x) (lem (pred (suc x)) k (toℕ r)))
 
+------------------------------------------------------------------------
+-- Showing digits
+
+-- The characters used to show the first 16 digits.
+
+digitChars : Vec Char 16
+digitChars =
+  '0' ∷ '1' ∷ '2' ∷ '3' ∷ '4' ∷ '5' ∷ '6' ∷ '7' ∷ '8' ∷ '9' ∷
+  'a' ∷ 'b' ∷ 'c' ∷ 'd' ∷ 'e' ∷ 'f' ∷ []
+
+-- showDigit shows digits in base ≤ 16.
+
+showDigit : ∀ {base} {base≤16 : True (base ≤? 16)} → Digit base → Char
+showDigit {base≤16 = base≤16} d =
+  Vec.lookup digitChars (Fin.inject≤ d (toWitness base≤16))

@@ -4,12 +4,15 @@
 -- IO
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --guardedness #-}
+
 module IO where
 
-open import Coinduction
+open import Codata.Musical.Notation
+open import Codata.Musical.Colist
+open import Codata.Musical.Costring
 open import Data.Unit
 open import Data.String
-open import Data.Colist
 open import Function
 import IO.Primitive as Prim
 open import Level
@@ -52,18 +55,19 @@ sequence (c ∷ cs) = ♯ c                  >>= λ x  →
 -- The reason for not defining sequence′ in terms of sequence is
 -- efficiency (the unused results could cause unnecessary memory use).
 
-sequence′ : ∀ {a} {A : Set a} → Colist (IO A) → IO (Lift ⊤)
+sequence′ : ∀ {a} {A : Set a} → Colist (IO A) → IO (Lift a ⊤)
 sequence′ []       = return _
 sequence′ (c ∷ cs) = ♯ c                   >>
                      ♯ (♯ sequence′ (♭ cs) >>
                      ♯ return _)
 
-mapM : ∀ {a b} {A : Set a} {B : Set b} →
-       (A → IO B) → Colist A → IO (Colist B)
-mapM f = sequence ∘ map f
+module _ {a b} {A : Set a} {B : Set b} where
 
-mapM′ : {A B : Set} → (A → IO B) → Colist A → IO (Lift ⊤)
-mapM′ f = sequence′ ∘ map f
+  mapM : (A → IO B) → Colist A → IO (Colist B)
+  mapM f = sequence ∘ map f
+
+  mapM′ : (A → IO B) → Colist A → IO (Lift b ⊤)
+  mapM′ f = sequence′ ∘ map f
 
 ------------------------------------------------------------------------
 -- Simple lazy IO
@@ -120,3 +124,7 @@ putStrLn∞ s =
 
 putStrLn : String → IO ⊤
 putStrLn s = putStrLn∞ (toCostring s)
+
+-- Note that the commands writeFile, appendFile, putStr and putStrLn
+-- perform two conversions (string → costring → Haskell list). It may
+-- be preferable to only perform one conversion.

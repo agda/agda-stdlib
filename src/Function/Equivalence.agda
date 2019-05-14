@@ -4,6 +4,8 @@
 -- Equivalence (coinhabitance)
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Function.Equivalence where
 
 open import Function using (flip)
@@ -13,7 +15,8 @@ open import Level
 open import Relation.Binary
 import Relation.Binary.PropositionalEquality as P
 
--- Setoid equivalence.
+------------------------------------------------------------------------
+-- Setoid equivalence
 
 record Equivalence {f₁ f₂ t₁ t₂}
                    (From : Setoid f₁ f₂) (To : Setoid t₁ t₂) :
@@ -22,7 +25,9 @@ record Equivalence {f₁ f₂ t₁ t₂}
     to   : From ⟶ To
     from : To ⟶ From
 
--- Set equivalence.
+------------------------------------------------------------------------
+-- The set of all equivalences between two sets (i.e. equivalences
+-- with propositional equality)
 
 infix 3 _⇔_
 
@@ -31,32 +36,10 @@ From ⇔ To = Equivalence (P.setoid From) (P.setoid To)
 
 equivalence : ∀ {f t} {From : Set f} {To : Set t} →
               (From → To) → (To → From) → From ⇔ To
-equivalence to from = record { to = P.→-to-⟶ to; from = P.→-to-⟶ from }
-
-------------------------------------------------------------------------
--- Map and zip
-
-map : ∀ {f₁ f₂ t₁ t₂} {From : Setoid f₁ f₂} {To : Setoid t₁ t₂}
-        {f₁′ f₂′ t₁′ t₂′}
-        {From′ : Setoid f₁′ f₂′} {To′ : Setoid t₁′ t₂′} →
-      ((From ⟶ To) → (From′ ⟶ To′)) →
-      ((To ⟶ From) → (To′ ⟶ From′)) →
-      Equivalence From To → Equivalence From′ To′
-map t f eq = record { to = t to; from = f from }
-  where open Equivalence eq
-
-zip : ∀ {f₁₁ f₂₁ t₁₁ t₂₁}
-        {From₁ : Setoid f₁₁ f₂₁} {To₁ : Setoid t₁₁ t₂₁}
-        {f₁₂ f₂₂ t₁₂ t₂₂}
-        {From₂ : Setoid f₁₂ f₂₂} {To₂ : Setoid t₁₂ t₂₂}
-        {f₁ f₂ t₁ t₂} {From : Setoid f₁ f₂} {To : Setoid t₁ t₂} →
-      ((From₁ ⟶ To₁) → (From₂ ⟶ To₂) → (From ⟶ To)) →
-      ((To₁ ⟶ From₁) → (To₂ ⟶ From₂) → (To ⟶ From)) →
-      Equivalence From₁ To₁ → Equivalence From₂ To₂ →
-      Equivalence From To
-zip t f eq₁ eq₂ =
-  record { to = t (to eq₁) (to eq₂); from = f (from eq₁) (from eq₂) }
-  where open Equivalence
+equivalence to from = record
+  { to   = P.→-to-⟶ to
+  ; from = P.→-to-⟶ from
+  }
 
 ------------------------------------------------------------------------
 -- Equivalence is an equivalence relation
@@ -96,12 +79,45 @@ setoid : (s₁ s₂ : Level) → Setoid (suc (s₁ ⊔ s₂)) (s₁ ⊔ s₂)
 setoid s₁ s₂ = record
   { Carrier       = Setoid s₁ s₂
   ; _≈_           = Equivalence
-  ; isEquivalence = record {refl = id; sym = sym; trans = flip _∘_}
+  ; isEquivalence = record
+    { refl  = id
+    ; sym   = sym
+    ; trans = flip _∘_
+    }
   }
 
 ⇔-setoid : (ℓ : Level) → Setoid (suc ℓ) ℓ
 ⇔-setoid ℓ = record
   { Carrier       = Set ℓ
   ; _≈_           = _⇔_
-  ; isEquivalence = record {refl = id; sym = sym; trans = flip _∘_}
+  ; isEquivalence = record
+    { refl  = id
+    ; sym   = sym
+    ; trans = flip _∘_
+    }
   }
+
+------------------------------------------------------------------------
+-- Transformations
+
+map : ∀ {f₁ f₂ t₁ t₂} {From : Setoid f₁ f₂} {To : Setoid t₁ t₂}
+        {f₁′ f₂′ t₁′ t₂′}
+        {From′ : Setoid f₁′ f₂′} {To′ : Setoid t₁′ t₂′} →
+      ((From ⟶ To) → (From′ ⟶ To′)) →
+      ((To ⟶ From) → (To′ ⟶ From′)) →
+      Equivalence From To → Equivalence From′ To′
+map t f eq = record { to = t to; from = f from }
+  where open Equivalence eq
+
+zip : ∀ {f₁₁ f₂₁ t₁₁ t₂₁}
+        {From₁ : Setoid f₁₁ f₂₁} {To₁ : Setoid t₁₁ t₂₁}
+        {f₁₂ f₂₂ t₁₂ t₂₂}
+        {From₂ : Setoid f₁₂ f₂₂} {To₂ : Setoid t₁₂ t₂₂}
+        {f₁ f₂ t₁ t₂} {From : Setoid f₁ f₂} {To : Setoid t₁ t₂} →
+      ((From₁ ⟶ To₁) → (From₂ ⟶ To₂) → (From ⟶ To)) →
+      ((To₁ ⟶ From₁) → (To₂ ⟶ From₂) → (To ⟶ From)) →
+      Equivalence From₁ To₁ → Equivalence From₂ To₂ →
+      Equivalence From To
+zip t f eq₁ eq₂ =
+  record { to = t (to eq₁) (to eq₂); from = f (from eq₁) (from eq₂) }
+  where open Equivalence

@@ -4,6 +4,8 @@
 -- Properties satisfied by bounded meet semilattices
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Relation.Binary.Lattice
 
 module Relation.Binary.Properties.BoundedMeetSemilattice
@@ -35,4 +37,5 @@ dualBoundedJoinSemilattice = record
   ; isBoundedJoinSemilattice = dualIsBoundedJoinSemilattice
   }
 
-open J dualBoundedJoinSemilattice public
+open J dualBoundedJoinSemilattice
+  hiding (dualIsBoundedMeetSemilattice; dualBoundedMeetSemilattice) public

@@ -7,9 +7,12 @@
 -- This module illustrates how Data.Fin.Substitution.Lemmas.AppLemmas
 -- can be used.
 
-open import Data.Fin.Substitution.Lemmas
+{-# OPTIONS --without-K --safe #-}
 
-module Data.Fin.Substitution.List {T} (lemmas₄ : Lemmas₄ T) where
+open import Data.Fin.Substitution.Lemmas
+open import Data.Nat using (ℕ)
+
+module Data.Fin.Substitution.List {ℓ} {T : ℕ → Set ℓ} (lemmas₄ : Lemmas₄ T) where
 
 open import Data.List.Base
 open import Data.List.Properties

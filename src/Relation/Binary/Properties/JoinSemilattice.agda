@@ -4,6 +4,8 @@
 -- Properties satisfied by join semilattices
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Relation.Binary.Lattice
 
 module Relation.Binary.Properties.JoinSemilattice
@@ -11,11 +13,15 @@ module Relation.Binary.Properties.JoinSemilattice
 
 open JoinSemilattice J
 
+import Algebra as Alg
+import Algebra.Structures as Alg
 import Algebra.FunctionProperties as P; open P _≈_
 open import Data.Product
 open import Function using (_∘_; flip)
 open import Relation.Binary
 open import Relation.Binary.Properties.Poset poset
+
+import Relation.Binary.Reasoning.PartialOrder as PoR
 
 -- The join operation is monotonic.
 
@@ -54,6 +60,33 @@ open import Relation.Binary.Properties.Poset poset
   let x≤x∨x , _ , least = supremum x x
   in antisym (least x refl refl) x≤x∨x
 
+x≤y⇒x∨y≈y : ∀ {x y} → x ≤ y → x ∨ y ≈ y
+x≤y⇒x∨y≈y {x} {y} x≤y = antisym
+  (begin x ∨ y ≤⟨ ∨-monotonic x≤y refl ⟩
+         y ∨ y ≈⟨ ∨-idempotent _ ⟩
+         y ∎)
+  (y≤x∨y _ _)
+  where open PoR poset
+
+-- Every order-theoretic semilattice can be turned into an algebraic one.
+
+isAlgSemilattice : Alg.IsSemilattice _≈_ _∨_
+isAlgSemilattice = record
+  { isBand = record
+    { isSemigroup = record
+      { isMagma   = record
+        { isEquivalence = isEquivalence
+        ; ∙-cong        = ∨-cong
+        }
+      ; assoc  = ∨-assoc
+      }
+    ; idem     = ∨-idempotent
+    }
+  ; comm       = ∨-comm
+  }
+
+algSemilattice : Alg.Semilattice c ℓ₁
+algSemilattice = record { isSemilattice = isAlgSemilattice }
 
 -- The dual construction is a meet semilattice.
 

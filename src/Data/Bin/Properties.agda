@@ -4,6 +4,8 @@
 -- Properties of the binary representation of natural numbers
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Bin.Properties where
 
 open import Data.Bin
@@ -13,7 +15,7 @@ import Data.Fin.Properties as 𝔽ₚ
 open import Data.List.Base using (List; []; _∷_)
 open import Data.List.Properties using (∷-injective)
 open import Data.Nat
-  using (ℕ; zero; z≤n; s≤s; ≤-pred)
+  using (ℕ; zero; z≤n; s≤s)
   renaming (suc to 1+_; _+_ to _+ℕ_; _*_ to _*ℕ_; _≤_ to _≤ℕ_)
 import Data.Nat.Properties as ℕₚ
 open import Data.Product using (proj₁; proj₂)
@@ -75,7 +77,7 @@ as 1# ≟ bs 1# with as ≟ₑ bs
   1+ (m₁ +ℕ n₁ *ℕ 2) ≤⟨ s≤s (ℕₚ.+-monoˡ-≤ _ (𝔽ₚ.toℕ≤pred[n] a)) ⟩
   1+ (1 +ℕ n₁ *ℕ 2)  ≡⟨ refl ⟩
   1+ n₁ *ℕ 2         ≤⟨ ℕₚ.*-mono-≤ lt ℕₚ.≤-refl ⟩
-  n₂ *ℕ 2            ≤⟨ ℕₚ.n≤m+n m₂ (n₂ *ℕ 2) ⟩
+  n₂ *ℕ 2            ≤⟨ ℕₚ.m≤n+m (n₂ *ℕ 2) m₂ ⟩
   m₂ +ℕ n₂ *ℕ 2      ∎)
   where
   open ℕₚ.≤-Reasoning
@@ -92,7 +94,7 @@ as 1# ≟ bs 1# with as ≟ₑ bs
   m₁ = Fin.toℕ a; m₂ = Fin.toℕ b; n = toℕ (bs 1#)
 
 1<[23] : ∀ {b} → [] 1# < (b ∷ []) 1#
-1<[23] {b} = less (ℕₚ.n≤m+n (Fin.toℕ b) 2)
+1<[23] {b} = less (ℕₚ.m≤n+m 2 (Fin.toℕ b))
 
 1<2+ : ∀ {b bs} → [] 1# < (b ∷ bs) 1#
 1<2+ {_} {[]}     = 1<[23]

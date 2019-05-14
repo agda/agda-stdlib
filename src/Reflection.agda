@@ -4,6 +4,8 @@
 -- Support for reflection
 ------------------------------------------------------------------------
 
+{-# OPTIONS --with-K #-}
+
 module Reflection where
 
 open import Data.Unit.Base using (⊤)
@@ -11,9 +13,18 @@ open import Data.Bool.Base using (Bool; false; true)
 open import Data.List.Base using (List); open Data.List.Base.List
 open import Data.Nat using (ℕ) renaming (_≟_ to _≟-ℕ_)
 open import Data.Nat.Show renaming (show to showNat)
-open import Data.Float using (Float) renaming (_≟_ to _≟f_; show to showFloat)
-open import Data.Char using (Char) renaming (_≟_ to _≟c_; show to showChar)
-open import Data.String using (String) renaming (_≟_ to _≟s_; show to showString)
+open import Data.Float using (Float) renaming (show to showFloat)
+open import Data.Float.Unsafe using () renaming (_≟_ to _≟f_)
+open import Data.Char using (Char)
+  renaming ( show to showChar
+           ; _≟_ to _≟c_
+           )
+open import Data.String using (String)
+  renaming ( show to showString
+           ; _≟_ to _≟s_
+           )
+open import Data.Word using (Word64) renaming (toℕ to wordToℕ)
+open import Data.Word.Unsafe using () renaming (_≟_ to _≟w_)
 open import Data.Product
 open import Function
 open import Level
@@ -33,6 +44,8 @@ import Agda.Builtin.Reflection as Builtin
 
 open Builtin public using (Name)
 
+Names : Set
+Names = List Name
 -- Equality of names is decidable.
 
 infix 4 _==_ _≟-Name_
@@ -52,6 +65,14 @@ s₁ ≟-Name s₂ with s₁ == s₂
 
 showName : Name → String
 showName = Builtin.primShowQName
+
+------------------------------------------------------------------------
+-- Fixity
+
+open Builtin public using (non-assoc; related; unrelated; fixity)
+  renaming ( left-assoc  to assocˡ
+           ; right-assoc to assocʳ
+           ; primQNameFixity to getFixity)
 
 ------------------------------------------------------------------------
 -- Metavariables
@@ -104,9 +125,21 @@ relevance (arg-info _ r) = r
 open Builtin public using (Arg; arg)
 open Builtin public using (Abs; abs)
 
+Args : (A : Set) → Set
+Args A = List (Arg A)
+
+map-Arg : {A B : Set} → (A → B) → Arg A → Arg B
+map-Arg f (arg i x) = arg i (f x)
+
+map-Args : {A B : Set} → (A → B) → Args A → Args B
+map-Args f xs = Data.List.Base.map (map-Arg f) xs
+
+map-Abs : {A B : Set} → (A → B) → Abs A → Abs B
+map-Abs f (abs s x) = abs s (f x)
+
 -- Literals.
 
-open Builtin public using (Literal; nat; float; char; string; name; meta)
+open Builtin public using (Literal; nat; word64; float; char; string; name; meta)
 
 -- Patterns.
 
@@ -122,6 +155,18 @@ open Builtin public
 
 Clauses = List Clause
 
+-- Pattern synonyms for more compact presentation
+
+pattern vArg ty            = arg (arg-info visible relevant)   ty
+pattern hArg ty            = arg (arg-info hidden relevant)    ty
+pattern iArg ty            = arg (arg-info instance′ relevant) ty
+pattern vLam s t           = lam visible   (abs s t)
+pattern hLam s t           = lam hidden    (abs s t)
+pattern iLam s t           = lam instance′ (abs s t)
+pattern Π[_∶_]_ s a ty     = pi a (abs s ty)
+pattern vΠ[_∶_]_ s a ty    = Π[ s ∶ (vArg a) ] ty
+pattern hΠ[_∶_]_ s a ty    = Π[ s ∶ (hArg a) ] ty
+pattern iΠ[_∶_]_ s a ty    = Π[ s ∶ (iArg a) ] ty
 ------------------------------------------------------------------------
 -- Definitions
 
@@ -137,6 +182,7 @@ open Builtin public
 
 showLiteral : Literal → String
 showLiteral (nat x)    = showNat x
+showLiteral (word64 x) = showNat (wordToℕ x)
 showLiteral (float x)  = showFloat x
 showLiteral (char x)   = showChar x
 showLiteral (string x) = showString x
@@ -151,10 +197,23 @@ open Builtin public using (ErrorPart; strErr; termErr; nameErr)
 
 -- The monad
 open Builtin public
-  using ( TC; returnTC; bindTC; unify; typeError; inferType; checkType
-        ; normalise; catchTC; getContext; extendContext; inContext
-        ; freshName; declareDef; defineFun; getType; getDefinition
-        ; blockOnMeta; quoteTC; unquoteTC )
+  using ( TC; bindTC; unify; typeError; inferType; checkType
+        ; normalise; reduce
+        ; catchTC; quoteTC; unquoteTC
+        ; getContext; extendContext; inContext; freshName
+        ; declareDef; declarePostulate; defineFun; getType; getDefinition
+        ; blockOnMeta; commitTC; isMacro; withNormalisation
+        ; debugPrint; noConstraints; runSpeculative)
+  renaming (returnTC to return)
+
+infixl 1 _>>=_
+infixl 1 _>>_
+
+_>>=_ : ∀ {a b} {A : Set a} {B : Set b} → TC A → (A → TC B) → TC B
+ma >>= f = bindTC ma f
+
+_>>_ :  ∀ {a b} {A : Set a} {B : Set b} → TC A → TC B → TC B
+ma >> mb = ma >>= (λ _ → mb)
 
 newMeta : Type → TC Term
 newMeta = checkType unknown
@@ -272,6 +331,9 @@ private
   nat₁ : ∀ {x y} → nat x ≡ nat y → x ≡ y
   nat₁ refl = refl
 
+  word64₁ : ∀ {x y} → word64 x ≡ word64 y → x ≡ y
+  word64₁ refl = refl
+
   float₁ : ∀ {x y} → float x ≡ float y → x ≡ y
   float₁ refl = refl
 
@@ -326,36 +388,49 @@ arg-info v r ≟-Arg-info arg-info v′ r′ =
 
 _≟-Lit_ : Decidable (_≡_ {A = Literal})
 nat x ≟-Lit nat x₁ = Dec.map′ (cong nat) nat₁ (x ≟-ℕ x₁)
+nat x ≟-Lit word64 x₁ = no (λ ())
 nat x ≟-Lit float x₁ = no (λ ())
 nat x ≟-Lit char x₁ = no (λ ())
 nat x ≟-Lit string x₁ = no (λ ())
 nat x ≟-Lit name x₁ = no (λ ())
 nat x ≟-Lit meta x₁ = no (λ ())
+word64 x ≟-Lit word64 x₁ = Dec.map′ (cong word64) word64₁ (x ≟w x₁)
+word64 x ≟-Lit nat x₁ = no (λ ())
+word64 x ≟-Lit float x₁ = no (λ ())
+word64 x ≟-Lit char x₁ = no (λ ())
+word64 x ≟-Lit string x₁ = no (λ ())
+word64 x ≟-Lit name x₁ = no (λ ())
+word64 x ≟-Lit meta x₁ = no (λ ())
 float x ≟-Lit nat x₁ = no (λ ())
+float x ≟-Lit word64 x₁ = no (λ ())
 float x ≟-Lit float x₁ = Dec.map′ (cong float) float₁ (x ≟f x₁)
 float x ≟-Lit char x₁ = no (λ ())
 float x ≟-Lit string x₁ = no (λ ())
 float x ≟-Lit name x₁ = no (λ ())
 float x ≟-Lit meta x₁ = no (λ ())
 char x ≟-Lit nat x₁ = no (λ ())
+char x ≟-Lit word64 x₁ = no (λ ())
 char x ≟-Lit float x₁ = no (λ ())
 char x ≟-Lit char x₁ = Dec.map′ (cong char) char₁ (x ≟c x₁)
 char x ≟-Lit string x₁ = no (λ ())
 char x ≟-Lit name x₁ = no (λ ())
 char x ≟-Lit meta x₁ = no (λ ())
 string x ≟-Lit nat x₁ = no (λ ())
+string x ≟-Lit word64 x₁ = no (λ ())
 string x ≟-Lit float x₁ = no (λ ())
 string x ≟-Lit char x₁ = no (λ ())
 string x ≟-Lit string x₁ = Dec.map′ (cong string) string₁ (x ≟s x₁)
 string x ≟-Lit name x₁ = no (λ ())
 string x ≟-Lit meta x₁ = no (λ ())
 name x ≟-Lit nat x₁ = no (λ ())
+name x ≟-Lit word64 x₁ = no (λ ())
 name x ≟-Lit float x₁ = no (λ ())
 name x ≟-Lit char x₁ = no (λ ())
 name x ≟-Lit string x₁ = no (λ ())
 name x ≟-Lit name x₁ = Dec.map′ (cong name) name₁ (x ≟-Name x₁)
 name x ≟-Lit meta x₁ = no (λ ())
 meta x ≟-Lit nat x₁ = no (λ ())
+meta x ≟-Lit word64 x₁ = no (λ ())
 meta x ≟-Lit float x₁ = no (λ ())
 meta x ≟-Lit char x₁ = no (λ ())
 meta x ≟-Lit string x₁ = no (λ ())
@@ -393,7 +468,7 @@ mutual
              < arg₁ , arg₂ >
              (i ≟-Arg-info i′ ×-dec a ≟-Pattern a′)
 
-  _≟-Args_ : Decidable (_≡_ {A = List (Arg Term)})
+  _≟-Args_ : Decidable (_≡_ {A = Args Term})
   []       ≟-Args []       = yes refl
   (x ∷ xs) ≟-Args (y ∷ ys) = Dec.map′ (cong₂′ _∷_) < cons₁ , cons₂ > (x ≟-ArgTerm y ×-dec xs ≟-Args ys)
   []       ≟-Args (_ ∷ _)  = no λ()
@@ -449,7 +524,7 @@ mutual
   absurd ≟-Pattern proj x = no (λ ())
   absurd ≟-Pattern absurd = yes refl
 
-  _≟-ArgPatterns_ : Decidable (_≡_ {A = List (Arg Pattern)})
+  _≟-ArgPatterns_ : Decidable (_≡_ {A = Args Pattern})
   []       ≟-ArgPatterns []       = yes refl
   (x ∷ xs) ≟-ArgPatterns (y ∷ ys) = Dec.map′ (cong₂′ _∷_) < cons₁ , cons₂ > (x ≟-ArgPattern y ×-dec xs ≟-ArgPatterns ys)
   []       ≟-ArgPatterns (_ ∷ _)  = no λ()
@@ -569,3 +644,18 @@ mutual
   lit _   ≟-Sort unknown = no λ()
   unknown ≟-Sort set _   = no λ()
   unknown ≟-Sort lit _   = no λ()
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 1.1
+
+returnTC = return
+{-# WARNING_ON_USAGE returnTC
+"Warning: returnTC was deprecated in v1.1.
+Please use return instead."
+#-}

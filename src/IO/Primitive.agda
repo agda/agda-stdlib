@@ -4,11 +4,14 @@
 -- Primitive IO: simple bindings to Haskell types and functions
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K #-}
+
 module IO.Primitive where
 
+open import Codata.Musical.Costring
 open import Data.Char.Base
-open import Data.String
-open import Foreign.Haskell
+open import Data.String.Base
+open import Data.Unit using () renaming (⊤ to Unit)
 
 ------------------------------------------------------------------------
 -- The IO monad
@@ -63,14 +66,24 @@ postulate
     Control.Exception.bracketOnError (return ()) (\_ -> System.IO.hClose h)
                                                  (\_ -> System.IO.hFileSize h)
     Data.Text.IO.hGetContents h
+
+  fromColist :: MAlonzo.Code.Codata.Musical.Colist.AgdaColist a -> [a]
+  fromColist MAlonzo.Code.Codata.Musical.Colist.Nil         = []
+  fromColist (MAlonzo.Code.Codata.Musical.Colist.Cons x xs) =
+    x : fromColist (MAlonzo.RTE.flat xs)
+
+  toColist :: [a] -> MAlonzo.Code.Codata.Musical.Colist.AgdaColist a
+  toColist []       = MAlonzo.Code.Codata.Musical.Colist.Nil
+  toColist (x : xs) =
+    MAlonzo.Code.Codata.Musical.Colist.Cons x (MAlonzo.RTE.Sharp (toColist xs))
 #-}
 
-{-# COMPILE GHC getContents    = getContents                           #-}
-{-# COMPILE GHC readFile       = readFile . Data.Text.unpack           #-}
-{-# COMPILE GHC writeFile      = \x -> writeFile (Data.Text.unpack x)  #-}
-{-# COMPILE GHC appendFile     = \x -> appendFile (Data.Text.unpack x) #-}
-{-# COMPILE GHC putStr         = putStr                                #-}
-{-# COMPILE GHC putStrLn       = putStrLn                              #-}
+{-# COMPILE GHC getContents    = fmap toColist getContents                          #-}
+{-# COMPILE GHC readFile       = fmap toColist . readFile . Data.Text.unpack        #-}
+{-# COMPILE GHC writeFile      = \x -> writeFile (Data.Text.unpack x) . fromColist  #-}
+{-# COMPILE GHC appendFile     = \x -> appendFile (Data.Text.unpack x) . fromColist #-}
+{-# COMPILE GHC putStr         = putStr . fromColist                                #-}
+{-# COMPILE GHC putStrLn       = putStrLn . fromColist                              #-}
 {-# COMPILE GHC readFiniteFile = readFiniteFile                        #-}
 {-# COMPILE UHC getContents    = UHC.Agda.Builtins.primGetContents     #-}
 {-# COMPILE UHC readFile       = UHC.Agda.Builtins.primReadFile        #-}

@@ -4,6 +4,8 @@
 -- Boolean algebra expressions
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Algebra
 
 module Algebra.Properties.BooleanAlgebra.Expression
@@ -15,15 +17,15 @@ open BooleanAlgebra B
 open import Category.Applicative
 import Category.Applicative.Indexed as Applicative
 open import Category.Monad
-open import Category.Monad.Identity
 open import Data.Fin using (Fin)
 open import Data.Nat
 open import Data.Product using (_,_; proj₁; proj₂)
 open import Data.Vec as Vec using (Vec)
 import Data.Vec.Categorical as VecCat
+import Function.Identity.Categorical as IdCat
 open import Data.Vec.Properties using (lookup-map)
-open import Data.Vec.Relation.Pointwise.Extensional as PW
-  using (Pointwise; module Pointwise; ext)
+open import Data.Vec.Relation.Binary.Pointwise.Extensional as PW
+  using (Pointwise; ext)
 open import Function
 open import Relation.Binary.PropositionalEquality as P using (_≗_)
 import Relation.Binary.Reflection as Reflection
@@ -51,7 +53,7 @@ module Semantics
   open RawApplicative A
 
   ⟦_⟧ : ∀ {n} → Expr n → Vec (F Carrier) n → F Carrier
-  ⟦ var x     ⟧ ρ = Vec.lookup x ρ
+  ⟦ var x     ⟧ ρ = Vec.lookup ρ x
   ⟦ e₁ or e₂  ⟧ ρ = pure _∨_ ⊛ ⟦ e₁ ⟧ ρ ⊛ ⟦ e₂ ⟧ ρ
   ⟦ e₁ and e₂ ⟧ ρ = pure _∧_ ⊛ ⟦ e₁ ⟧ ρ ⊛ ⟦ e₂ ⟧ ρ
   ⟦ not e     ⟧ ρ = pure ¬_ ⊛ ⟦ e ⟧ ρ
@@ -76,8 +78,8 @@ module Naturality
 
   natural : ∀ {n} (e : Expr n) → op ∘ ⟦ e ⟧₁ ≗ ⟦ e ⟧₂ ∘ Vec.map op
   natural (var x) ρ = begin
-    op (Vec.lookup x ρ)                                            ≡⟨ P.sym $ lookup-map x op ρ ⟩
-    Vec.lookup x (Vec.map op ρ)                                    ∎
+    op (Vec.lookup ρ x)                                            ≡⟨ P.sym $ lookup-map x op ρ ⟩
+    Vec.lookup (Vec.map op ρ) x                                    ∎
   natural (e₁ or e₂) ρ = begin
     op (pure₁ _∨_ ⊛₁ ⟦ e₁ ⟧₁ ρ ⊛₁ ⟦ e₂ ⟧₁ ρ)                       ≡⟨ op-⊛ _ _ ⟩
     op (pure₁ _∨_ ⊛₁ ⟦ e₁ ⟧₁ ρ) ⊛₂ op (⟦ e₂ ⟧₁ ρ)                  ≡⟨ P.cong₂ _⊛₂_ (op-⊛ _ _) P.refl ⟩
@@ -142,12 +144,11 @@ lift n = record
                                    _ _ _ _
                                    (∧-cong (Pointwise.app xs≈ys i)
                                            (Pointwise.app us≈vs i))
-        ; absorptive    = (λ _ _ → ext λ i →
-                             solve i 2 (λ x y → x or (x and y) , x)
-                                   (proj₁ absorptive _ _) _ _) ,
-                          (λ _ _ → ext λ i →
-                             solve i 2 (λ x y → x and (x or y) , x)
-                                   (proj₂ absorptive _ _) _ _)
+        ; absorptive    =
+          (λ _ _ → ext λ i →
+            solve i 2 (λ x y → x or (x and y) , x) (∨-absorbs-∧ _ _) _ _) ,
+          (λ _ _ → ext λ i →
+            solve i 2 (λ x y → x and (x or y) , x) (∧-absorbs-∨ _ _) _ _)
         }
       ; ∨-∧-distribʳ = λ _ _ _ → ext λ i →
                          solve i 3
@@ -171,14 +172,14 @@ lift n = record
     using (pure; zipWith) renaming (_<$>_ to map)
 
   ⟦_⟧Id : ∀ {n} → Expr n → Vec Carrier n → Carrier
-  ⟦_⟧Id = Semantics.⟦_⟧ (RawMonad.rawIApplicative IdentityMonad)
+  ⟦_⟧Id = Semantics.⟦_⟧ IdCat.applicative
 
   ⟦_⟧Vec : ∀ {m n} → Expr n → Vec (Vec Carrier m) n → Vec Carrier m
   ⟦_⟧Vec = Semantics.⟦_⟧ VecCat.applicative
 
   open module R {n} (i : Fin n) =
     Reflection setoid var
-      (λ e ρ → Vec.lookup i (⟦ e ⟧Vec ρ))
-      (λ e ρ → ⟦ e ⟧Id (Vec.map (Vec.lookup i) ρ))
+      (λ e ρ → Vec.lookup (⟦ e ⟧Vec ρ) i)
+      (λ e ρ → ⟦ e ⟧Id (Vec.map (flip Vec.lookup i) ρ))
       (λ e ρ → sym $ reflexive $
                  Naturality.natural (VecCat.lookup-morphism i) e ρ)

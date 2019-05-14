@@ -6,6 +6,8 @@
 
 -- Note that currently the monad laws are not included here.
 
+{-# OPTIONS --without-K --safe #-}
+
 module Category.Monad where
 
 open import Function
@@ -14,6 +16,9 @@ open import Data.Unit
 
 RawMonad : ∀ {f} → (Set f → Set f) → Set _
 RawMonad M = RawIMonad {I = ⊤} (λ _ _ → M)
+
+RawMonadT : ∀ {f} (T : (Set f → Set f) → (Set f → Set f)) → Set _
+RawMonadT T = RawIMonadT {I = ⊤} (λ M _ _ → T (M _ _))
 
 RawMonadZero : ∀ {f} → (Set f → Set f) → Set _
 RawMonadZero M = RawIMonadZero {I = ⊤} (λ _ _ → M)

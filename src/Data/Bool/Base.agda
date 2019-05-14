@@ -3,16 +3,20 @@
 --
 -- The type for booleans and some operations
 ------------------------------------------------------------------------
+
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Bool.Base where
 
 open import Data.Unit.Base using (⊤)
 open import Data.Empty
+open import Level using (Level)
 open import Relation.Nullary
-open import Relation.Binary.Core
 
-infixr 6 _∧_
-infixr 5 _∨_ _xor_
-infix  0 if_then_else_
+private
+  variable
+    a : Level
+    A : Set a
 
 ------------------------------------------------------------------------
 -- The boolean type
@@ -20,22 +24,26 @@ infix  0 if_then_else_
 open import Agda.Builtin.Bool public
 
 ------------------------------------------------------------------------
--- Some operations
+-- Relations
+
+infix 4 _≤_ _<_
+
+data _≤_ : Bool → Bool → Set where
+  f≤t : false ≤ true
+  b≤b : ∀ {b} → b ≤ b
+
+data _<_ : Bool → Bool → Set where
+  f<t : false < true
+
+------------------------------------------------------------------------
+-- Boolean operations
+
+infixr 6 _∧_
+infixr 5 _∨_ _xor_
 
 not : Bool → Bool
 not true  = false
 not false = true
-
--- A function mapping true to an inhabited type and false to an empty
--- type.
-
-T : Bool → Set
-T true  = ⊤
-T false = ⊥
-
-if_then_else_ : ∀ {a} {A : Set a} → Bool → A → A → A
-if true  then t else f = t
-if false then t else f = f
 
 _∧_ : Bool → Bool → Bool
 true  ∧ b = b
@@ -50,12 +58,18 @@ true  xor b = not b
 false xor b = b
 
 ------------------------------------------------------------------------
--- Queries
+-- Other operations
 
-infix 4 _≟_
+infix  0 if_then_else_
 
-_≟_ : Decidable {A = Bool} _≡_
-true  ≟ true  = yes refl
-false ≟ false = yes refl
-true  ≟ false = no λ()
-false ≟ true  = no λ()
+if_then_else_ : Bool → A → A → A
+if true  then t else f = t
+if false then t else f = f
+
+-- A function mapping true to an inhabited type and false to an empty
+-- type.
+
+T : Bool → Set
+T true  = ⊤
+T false = ⊥
+

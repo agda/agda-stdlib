@@ -4,6 +4,8 @@
 -- Some properties about subsets
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Fin.Subset.Properties where
 
 open import Algebra
@@ -12,22 +14,24 @@ import Algebra.Structures as AlgebraicStructures
 import Algebra.Properties.Lattice as L
 import Algebra.Properties.DistributiveLattice as DL
 import Algebra.Properties.BooleanAlgebra as BA
-open import Data.Bool.Base using (_≟_)
 open import Data.Bool.Properties
 open import Data.Fin using (Fin; suc; zero)
 open import Data.Fin.Subset
+open import Data.Fin.Properties using (any?; decFinSubset)
 open import Data.Nat.Base using (ℕ; zero; suc; z≤n; s≤s; _≤_)
 open import Data.Nat.Properties using (≤-step)
-open import Data.Product as Product using (_×_; _,_)
+open import Data.Product as Product using (∃; ∄; _×_; _,_)
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
-open import Data.Vec hiding (_∈_)
+open import Data.Vec
 open import Data.Vec.Properties
-open import Function using (const; id)
+open import Function using (_∘_; const; id; case_of_)
 open import Function.Equivalence using (_⇔_; equivalence)
-open import Relation.Binary
+open import Relation.Binary as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; cong; cong₂; subst; isEquivalence)
 open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary using (Dec; yes; no)
+open import Relation.Unary using (Pred; Decidable)
 
 ------------------------------------------------------------------------
 -- Constructor mangling
@@ -38,8 +42,31 @@ drop-there (there x∈p) = x∈p
 drop-∷-⊆ : ∀ {n s₁ s₂} {p₁ p₂ : Subset n} → s₁ ∷ p₁ ⊆ s₂ ∷ p₂ → p₁ ⊆ p₂
 drop-∷-⊆ p₁s₁⊆p₂s₂ x∈p₁ = drop-there (p₁s₁⊆p₂s₂ (there x∈p₁))
 
+------------------------------------------------------------------------
+-- _∈_
+
+infix 4 _∈?_
+_∈?_ : ∀ {n} x (p : Subset n) → Dec (x ∈ p)
+zero  ∈? inside  ∷ p = yes here
+zero  ∈? outside ∷ p = no  λ()
+suc n ∈? s       ∷ p with n ∈? p
+... | yes n∈p = yes (there n∈p)
+... | no  n∉p = no  (n∉p ∘ drop-there)
+
+------------------------------------------------------------------------
+-- Empty
+
 drop-∷-Empty : ∀ {n s} {p : Subset n} → Empty (s ∷ p) → Empty p
 drop-∷-Empty ¬∃∈ (x , x∈p) = ¬∃∈ (suc x , there x∈p)
+
+Empty-unique : ∀ {n} {p : Subset n} → Empty p → p ≡ ⊥
+Empty-unique {_} {[]}          ¬∃∈ = refl
+Empty-unique {_} {inside  ∷ p} ¬∃∈ = contradiction (zero , here) ¬∃∈
+Empty-unique {_} {outside ∷ p} ¬∃∈ =
+  cong (outside ∷_) (Empty-unique (drop-∷-Empty ¬∃∈))
+
+nonempty? : ∀ {n} → Decidable (Nonempty {n})
+nonempty? p = any? (_∈? p)
 
 ------------------------------------------------------------------------
 -- ∣_∣
@@ -59,12 +86,6 @@ drop-∷-Empty ¬∃∈ (x , x∈p) = ¬∃∈ (suc x , there x∈p)
 ∣⊥∣≡0 : ∀ n → ∣ ⊥ {n = n} ∣ ≡ 0
 ∣⊥∣≡0 zero    = refl
 ∣⊥∣≡0 (suc n) = ∣⊥∣≡0 n
-
-Empty-unique : ∀ {n} {p : Subset n} → Empty p → p ≡ ⊥
-Empty-unique {_} {[]}          ¬∃∈ = refl
-Empty-unique {_} {inside  ∷ p} ¬∃∈ = contradiction (zero , here) ¬∃∈
-Empty-unique {_} {outside ∷ p} ¬∃∈ =
-  cong (outside ∷_) (Empty-unique (drop-∷-Empty ¬∃∈))
 
 ------------------------------------------------------------------------
 -- ⊤
@@ -114,21 +135,30 @@ x∈⁅y⁆⇔x≡y {_} {x} {y} = equivalence
 ⊆-trans p⊆q q⊆r x∈p = q⊆r (p⊆q x∈p)
 
 ⊆-antisym : ∀ {n} → Antisymmetric _≡_ (_⊆_ {n})
-⊆-antisym {x = []}           {[]}           p⊆q q⊆p = refl
-⊆-antisym {x = x ∷ xs} {y ∷ ys} p⊆q q⊆p with x | y
+⊆-antisym {i = []}     {[]}     p⊆q q⊆p = refl
+⊆-antisym {i = x ∷ xs} {y ∷ ys} p⊆q q⊆p with x | y
 ... | inside  | inside  = cong₂ _∷_ refl (⊆-antisym (drop-∷-⊆ p⊆q) (drop-∷-⊆ q⊆p))
 ... | inside  | outside = contradiction (p⊆q here) λ()
 ... | outside | inside  = contradiction (q⊆p here) λ()
 ... | outside | outside = cong₂ _∷_ refl (⊆-antisym (drop-∷-⊆ p⊆q) (drop-∷-⊆ q⊆p))
 
 ⊆-min : ∀ {n} → Minimum (_⊆_ {n}) ⊥
-⊆-min []       ()
 ⊆-min (x ∷ xs) (there v∈⊥) = there (⊆-min xs v∈⊥)
 
 ⊆-max : ∀ {n} → Maximum (_⊆_ {n}) ⊤
-⊆-max []            ()
 ⊆-max (inside ∷ xs) here         = here
 ⊆-max (x      ∷ xs) (there v∈xs) = there (⊆-max xs v∈xs)
+
+infix 4 _⊆?_
+_⊆?_ : ∀ {n} → B.Decidable (_⊆_ {n = n})
+[]          ⊆? []          = yes id
+outside ∷ p ⊆? y ∷ q with p ⊆? q
+... | yes p⊆q = yes λ { (there v∈p) → there (p⊆q v∈p)}
+... | no  p⊈q = no (p⊈q ∘ drop-∷-⊆)
+inside  ∷ p ⊆? outside ∷ q = no (λ p⊆q → case (p⊆q here) of λ())
+inside  ∷ p ⊆? inside  ∷ q with p ⊆? q
+... | yes p⊆q = yes λ { here → here ; (there v) → there (p⊆q v)}
+... | no  p⊈q = no (p⊈q ∘ drop-∷-⊆)
 
 module _ (n : ℕ) where
 
@@ -209,16 +239,48 @@ module _ (n : ℕ) where
 
   open AlgebraicStructures {A = Subset n} _≡_
 
+  ∩-isMagma : IsMagma _∩_
+  ∩-isMagma = record
+    { isEquivalence = isEquivalence
+    ; ∙-cong        = cong₂ _∩_
+    }
+
+  ∩-magma : Magma _ _
+  ∩-magma = record
+    { isMagma = ∩-isMagma
+    }
+
   ∩-isSemigroup : IsSemigroup _∩_
   ∩-isSemigroup = record
-    { isEquivalence = isEquivalence
-    ; assoc         = ∩-assoc
-    ; ∙-cong        = cong₂ _∩_
+    { isMagma = ∩-isMagma
+    ; assoc   = ∩-assoc
     }
 
   ∩-semigroup : Semigroup _ _
   ∩-semigroup = record
     { isSemigroup = ∩-isSemigroup
+    }
+
+  ∩-isBand : IsBand _∩_
+  ∩-isBand = record
+    { isSemigroup = ∩-isSemigroup
+    ; idem        = ∩-idem
+    }
+
+  ∩-band : Band _ _
+  ∩-band = record
+    { isBand = ∩-isBand
+    }
+
+  ∩-isSemilattice : IsSemilattice _∩_
+  ∩-isSemilattice = record
+    { isBand = ∩-isBand
+    ; comm   = ∩-comm
+    }
+
+  ∩-semilattice : Semilattice _ _
+  ∩-semilattice = record
+    { isSemilattice = ∩-isSemilattice
     }
 
   ∩-isMonoid : IsMonoid _∩_ ⊤
@@ -269,7 +331,6 @@ x∈p∩q⁺ (here      , here)      = here
 x∈p∩q⁺ (there x∈p , there x∈q) = there (x∈p∩q⁺ (x∈p , x∈q))
 
 x∈p∩q⁻ : ∀ {n} (p q : Subset n) {x} → x ∈ p ∩ q → x ∈ p × x ∈ q
-x∈p∩q⁻ []           []           ()
 x∈p∩q⁻ (inside ∷ p) (inside ∷ q) here          = here , here
 x∈p∩q⁻ (s      ∷ p) (t      ∷ q) (there x∈p∩q) =
   Product.map there there (x∈p∩q⁻ p q x∈p∩q)
@@ -348,16 +409,48 @@ module _ (n : ℕ) where
 
   open AlgebraicStructures {A = Subset n} _≡_
 
+  ∪-isMagma : IsMagma _∪_
+  ∪-isMagma = record
+    { isEquivalence = isEquivalence
+    ; ∙-cong        = cong₂ _∪_
+    }
+
+  ∪-magma : Magma _ _
+  ∪-magma = record
+    { isMagma = ∪-isMagma
+    }
+
   ∪-isSemigroup : IsSemigroup _∪_
   ∪-isSemigroup = record
-    { isEquivalence = isEquivalence
-    ; assoc         = ∪-assoc
-    ; ∙-cong        = cong₂ _∪_
+    { isMagma = ∪-isMagma
+    ; assoc   = ∪-assoc
     }
 
   ∪-semigroup : Semigroup _ _
   ∪-semigroup = record
     { isSemigroup = ∪-isSemigroup
+    }
+
+  ∪-isBand : IsBand _∪_
+  ∪-isBand = record
+    { isSemigroup = ∪-isSemigroup
+    ; idem        = ∪-idem
+    }
+
+  ∪-band : Band _ _
+  ∪-band = record
+    { isBand = ∪-isBand
+    }
+
+  ∪-isSemilattice : IsSemilattice _∪_
+  ∪-isSemilattice = record
+    { isBand = ∪-isBand
+    ; comm   = ∪-comm
+    }
+
+  ∪-semilattice : Semilattice _ _
+  ∪-semilattice = record
+    { isSemilattice = ∪-isSemilattice
     }
 
   ∪-isMonoid : IsMonoid _∪_ ⊥
@@ -454,7 +547,6 @@ module _ (n : ℕ) where
   ∩-∪-booleanAlgebra = BA.∧-∨-booleanAlgebra ∪-∩-booleanAlgebra
 
 p⊆p∪q : ∀ {n p} (q : Subset n) → p ⊆ p ∪ q
-p⊆p∪q []      ()
 p⊆p∪q (s ∷ q) here        = here
 p⊆p∪q (s ∷ q) (there x∈p) = there (p⊆p∪q q x∈p)
 
@@ -462,7 +554,6 @@ q⊆p∪q : ∀ {n} (p q : Subset n) → q ⊆ p ∪ q
 q⊆p∪q p q rewrite ∪-comm p q = p⊆p∪q p
 
 x∈p∪q⁻ :  ∀ {n} (p q : Subset n) {x} → x ∈ p ∪ q → x ∈ p ⊎ x ∈ q
-x∈p∪q⁻ []            []            ()
 x∈p∪q⁻ (inside  ∷ p) (t       ∷ q) here          = inj₁ here
 x∈p∪q⁻ (outside ∷ p) (inside  ∷ q) here          = inj₂ here
 x∈p∪q⁻ (s       ∷ p) (t       ∷ q) (there x∈p∪q) =
@@ -474,3 +565,26 @@ x∈p∪q⁺ (inj₂ x∈q) = q⊆p∪q _ _ x∈q
 
 ∪⇔⊎ : ∀ {n} {p q : Subset n} {x} → x ∈ p ∪ q ⇔ (x ∈ p ⊎ x ∈ q)
 ∪⇔⊎ = equivalence (x∈p∪q⁻ _ _) x∈p∪q⁺
+
+------------------------------------------------------------------------
+-- Lift
+
+Lift? : ∀ {n p} {P : Pred (Fin n) p} → Decidable P → Decidable (Lift P)
+Lift? P? p = decFinSubset (_∈? p) (λ {x} _ → P? x)
+
+------------------------------------------------------------------------
+-- Other
+
+anySubset? : ∀ {n} {P : Subset n → Set} → Decidable P → Dec (∃ P)
+anySubset? {zero}  P? with P? []
+... | yes P[] = yes (_ , P[])
+... | no ¬P[] = no (λ {([] , P[]) → ¬P[] P[]})
+anySubset? {suc n} P? with anySubset? (P? ∘ (inside ∷_))
+... | yes (_ , Pp) = yes (_ , Pp)
+... | no  ¬Pp      with anySubset? (P? ∘ (outside ∷_))
+...   | yes (_ , Pp) = yes (_ , Pp)
+...   | no ¬Pp'      = no λ
+  { (inside  ∷ p , Pp)  → ¬Pp  (_ , Pp)
+  ; (outside ∷ p , Pp') → ¬Pp' (_ , Pp')
+  }
+

@@ -4,24 +4,212 @@
 -- A bunch of properties
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Bool.Properties where
 
-open import Data.Bool
+open import Algebra
+open import Data.Bool.Base
+open import Data.Empty
+open import Data.Product
+open import Data.Sum
 open import Function
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence
   using (_⇔_; equivalence; module Equivalence)
-open import Algebra
-import Algebra.RingSolver.Simple as Solver
-import Algebra.RingSolver.AlmostCommutativeRing as ACR
-open import Relation.Binary.PropositionalEquality
-  hiding ([_]; proof-irrelevance)
+open import Level using (Level; 0ℓ)
+open import Relation.Binary
+open import Relation.Binary.PropositionalEquality hiding ([_])
+open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Decidable using (True)
+import Relation.Unary as U
+
+open import Algebra.FunctionProperties {A = Bool} _≡_
+open import Algebra.Structures {A = Bool} _≡_
 open ≡-Reasoning
-open import Algebra.FunctionProperties (_≡_ {A = Bool})
-open import Algebra.Structures (_≡_ {A = Bool})
-open import Data.Product
-open import Data.Sum
-open import Data.Empty
+
+private
+  variable
+    a b : Level
+    A : Set a
+    B : Set b
+
+------------------------------------------------------------------------
+-- Properties of _≡_
+
+infix 4 _≟_
+
+_≟_ : Decidable {A = Bool} _≡_
+true  ≟ true  = yes refl
+false ≟ false = yes refl
+true  ≟ false = no λ()
+false ≟ true  = no λ()
+
+≡-setoid : Setoid 0ℓ 0ℓ
+≡-setoid = setoid Bool
+
+≡-decSetoid : DecSetoid 0ℓ 0ℓ
+≡-decSetoid = decSetoid _≟_
+
+------------------------------------------------------------------------
+-- Properties of _≤_
+
+-- Relational properties
+
+≤-reflexive : _≡_ ⇒ _≤_
+≤-reflexive refl = b≤b
+
+≤-refl : Reflexive _≤_
+≤-refl = ≤-reflexive refl
+
+≤-trans : Transitive _≤_
+≤-trans b≤b p   = p
+≤-trans f≤t b≤b = f≤t
+
+≤-antisym : Antisymmetric _≡_ _≤_
+≤-antisym b≤b _ = refl
+
+≤-minimum : Minimum _≤_ false
+≤-minimum false = b≤b
+≤-minimum true  = f≤t
+
+≤-maximum : Maximum _≤_ true
+≤-maximum false = f≤t
+≤-maximum true  = b≤b
+
+≤-total : Total _≤_
+≤-total false b = inj₁ (≤-minimum b)
+≤-total true  b = inj₂ (≤-maximum b)
+
+infix 4 _≤?_
+
+_≤?_ : Decidable _≤_
+false ≤? b     = yes (≤-minimum b)
+true  ≤? false = no λ ()
+true  ≤? true  = yes b≤b
+
+≤-irrelevant : Irrelevant _≤_
+≤-irrelevant {_}     f≤t f≤t = refl
+≤-irrelevant {false} b≤b b≤b = refl
+≤-irrelevant {true}  b≤b b≤b = refl
+
+-- Structures
+
+≤-isPreorder : IsPreorder _≡_ _≤_
+≤-isPreorder = record
+  { isEquivalence = isEquivalence
+  ; reflexive     = ≤-reflexive
+  ; trans         = ≤-trans
+  }
+
+≤-isPartialOrder : IsPartialOrder _≡_ _≤_
+≤-isPartialOrder = record
+  { isPreorder = ≤-isPreorder
+  ; antisym    = ≤-antisym
+  }
+
+≤-isTotalOrder : IsTotalOrder _≡_ _≤_
+≤-isTotalOrder = record
+  { isPartialOrder = ≤-isPartialOrder
+  ; total          = ≤-total
+  }
+
+≤-isDecTotalOrder : IsDecTotalOrder _≡_ _≤_
+≤-isDecTotalOrder = record
+  { isTotalOrder = ≤-isTotalOrder
+  ; _≟_          = _≟_
+  ; _≤?_         = _≤?_
+  }
+
+-- Packages
+
+≤-poset : Poset 0ℓ 0ℓ 0ℓ
+≤-poset = record
+  { isPartialOrder = ≤-isPartialOrder
+  }
+
+≤-preorder : Preorder 0ℓ 0ℓ 0ℓ
+≤-preorder = record
+  { isPreorder = ≤-isPreorder
+  }
+
+≤-totalOrder : TotalOrder 0ℓ 0ℓ 0ℓ
+≤-totalOrder = record
+  { isTotalOrder = ≤-isTotalOrder
+  }
+
+≤-decTotalOrder : DecTotalOrder 0ℓ 0ℓ 0ℓ
+≤-decTotalOrder = record
+  { isDecTotalOrder = ≤-isDecTotalOrder
+  }
+
+------------------------------------------------------------------------
+-- Properties of _<_
+
+-- Relational properties
+
+<-irrefl : Irreflexive _≡_ _<_
+<-irrefl refl ()
+
+<-asym : Asymmetric _<_
+<-asym f<t ()
+
+<-trans : Transitive _<_
+<-trans f<t ()
+
+<-transʳ : Trans _≤_ _<_ _<_
+<-transʳ b≤b f<t = f<t
+
+<-transˡ : Trans _<_ _≤_ _<_
+<-transˡ f<t b≤b = f<t
+
+<-cmp : Trichotomous _≡_ _<_
+<-cmp false false = tri≈ (λ()) refl  (λ())
+<-cmp false true  = tri< f<t   (λ()) (λ())
+<-cmp true  false = tri> (λ()) (λ()) f<t
+<-cmp true  true  = tri≈ (λ()) refl  (λ())
+
+infix 4 _<?_
+
+_<?_ : Decidable _<_
+false <? false = no  (λ())
+false <? true  = yes f<t
+true  <? _     = no  (λ())
+
+<-resp₂-≡ : _<_ Respects₂ _≡_
+<-resp₂-≡ = subst (_ <_) , subst (_< _)
+
+<-irrelevant : Irrelevant _<_
+<-irrelevant f<t f<t = refl
+
+-- Structures
+
+<-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
+<-isStrictPartialOrder = record
+  { isEquivalence = isEquivalence
+  ; irrefl        = <-irrefl
+  ; trans         = <-trans
+  ; <-resp-≈      = <-resp₂-≡
+  }
+
+<-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_
+<-isStrictTotalOrder = record
+  { isEquivalence = isEquivalence
+  ; trans         = <-trans
+  ; compare       = <-cmp
+  }
+
+-- Packages
+
+<-strictPartialOrder : StrictPartialOrder 0ℓ 0ℓ 0ℓ
+<-strictPartialOrder = record
+  { isStrictPartialOrder = <-isStrictPartialOrder
+  }
+
+<-strictTotalOrder : StrictTotalOrder 0ℓ 0ℓ 0ℓ
+<-strictTotalOrder = record
+  { isStrictTotalOrder = <-isStrictTotalOrder
+  }
 
 ------------------------------------------------------------------------
 -- Properties of _∨_
@@ -74,16 +262,48 @@ open import Data.Empty
 ∨-sel false y = inj₂ refl
 ∨-sel true y  = inj₁ refl
 
-∨-isSemigroup : IsSemigroup _∨_
-∨-isSemigroup = record
+∨-isMagma : IsMagma _∨_
+∨-isMagma = record
   { isEquivalence = isEquivalence
-  ; assoc         = ∨-assoc
   ; ∙-cong        = cong₂ _∨_
   }
 
-∨-semigroup : Semigroup _ _
+∨-magma : Magma 0ℓ 0ℓ
+∨-magma = record
+  { isMagma = ∨-isMagma
+  }
+
+∨-isSemigroup : IsSemigroup _∨_
+∨-isSemigroup = record
+  { isMagma = ∨-isMagma
+  ; assoc   = ∨-assoc
+  }
+
+∨-semigroup : Semigroup 0ℓ 0ℓ
 ∨-semigroup = record
   { isSemigroup = ∨-isSemigroup
+  }
+
+∨-isBand : IsBand _∨_
+∨-isBand = record
+  { isSemigroup = ∨-isSemigroup
+  ; idem        = ∨-idem
+  }
+
+∨-band : Band 0ℓ 0ℓ
+∨-band = record
+  { isBand = ∨-isBand
+  }
+
+∨-isSemilattice : IsSemilattice _∨_
+∨-isSemilattice = record
+  { isBand = ∨-isBand
+  ; comm   = ∨-comm
+  }
+
+∨-semilattice : Semilattice 0ℓ 0ℓ
+∨-semilattice = record
+  { isSemilattice = ∨-isSemilattice
   }
 
 ∨-isCommutativeMonoid : IsCommutativeMonoid _∨_ false
@@ -93,7 +313,7 @@ open import Data.Empty
   ; comm        = ∨-comm
   }
 
-∨-commutativeMonoid : CommutativeMonoid _ _
+∨-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
 ∨-commutativeMonoid = record
   { isCommutativeMonoid = ∨-isCommutativeMonoid
   }
@@ -101,11 +321,11 @@ open import Data.Empty
 ∨-isIdempotentCommutativeMonoid :
   IsIdempotentCommutativeMonoid _∨_ false
 ∨-isIdempotentCommutativeMonoid = record
-    { isCommutativeMonoid = ∨-isCommutativeMonoid
-   ; idem = ∨-idem
-   }
+  { isCommutativeMonoid = ∨-isCommutativeMonoid
+  ; idem                = ∨-idem
+  }
 
-∨-idempotentCommutativeMonoid : IdempotentCommutativeMonoid _ _
+∨-idempotentCommutativeMonoid : IdempotentCommutativeMonoid 0ℓ 0ℓ
 ∨-idempotentCommutativeMonoid = record
   { isIdempotentCommutativeMonoid = ∨-isIdempotentCommutativeMonoid
   }
@@ -169,8 +389,8 @@ open import Data.Empty
 ∧-distribʳ-∨ x y z = begin
   (y ∨ z) ∧ x     ≡⟨ ∧-comm (y ∨ z) x ⟩
   x ∧ (y ∨ z)     ≡⟨ ∧-distribˡ-∨ x y z ⟩
-  x ∧ y ∨ x ∧ z  ≡⟨ cong₂ _∨_ (∧-comm x y) (∧-comm x z) ⟩
-  y ∧ x ∨ z ∧ x  ∎
+  x ∧ y ∨ x ∧ z   ≡⟨ cong₂ _∨_ (∧-comm x y) (∧-comm x z) ⟩
+  y ∧ x ∨ z ∧ x   ∎
 
 ∧-distrib-∨ : _∧_ DistributesOver _∨_
 ∧-distrib-∨ = ∧-distribˡ-∨ , ∧-distribʳ-∨
@@ -200,16 +420,48 @@ open import Data.Empty
 ∨-∧-absorptive : Absorptive _∨_ _∧_
 ∨-∧-absorptive = ∨-abs-∧ , ∧-abs-∨
 
-∧-isSemigroup : IsSemigroup _∧_
-∧-isSemigroup = record
+∧-isMagma : IsMagma _∧_
+∧-isMagma = record
   { isEquivalence = isEquivalence
-  ; assoc         = ∧-assoc
   ; ∙-cong        = cong₂ _∧_
   }
 
-∧-semigroup : Semigroup _ _
+∧-magma : Magma 0ℓ 0ℓ
+∧-magma = record
+  { isMagma = ∧-isMagma
+  }
+
+∧-isSemigroup : IsSemigroup _∧_
+∧-isSemigroup = record
+  { isMagma = ∧-isMagma
+  ; assoc   = ∧-assoc
+  }
+
+∧-semigroup : Semigroup 0ℓ 0ℓ
 ∧-semigroup = record
   { isSemigroup = ∧-isSemigroup
+  }
+
+∧-isBand : IsBand _∧_
+∧-isBand = record
+  { isSemigroup = ∧-isSemigroup
+  ; idem        = ∧-idem
+  }
+
+∧-band : Band 0ℓ 0ℓ
+∧-band = record
+  { isBand = ∧-isBand
+  }
+
+∧-isSemilattice : IsSemilattice _∧_
+∧-isSemilattice = record
+  { isBand = ∧-isBand
+  ; comm   = ∧-comm
+  }
+
+∧-semilattice : Semilattice 0ℓ 0ℓ
+∧-semilattice = record
+  { isSemilattice = ∧-isSemilattice
   }
 
 ∧-isCommutativeMonoid : IsCommutativeMonoid _∧_ true
@@ -219,7 +471,7 @@ open import Data.Empty
   ; comm        = ∧-comm
   }
 
-∧-commutativeMonoid : CommutativeMonoid _ _
+∧-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
 ∧-commutativeMonoid = record
   { isCommutativeMonoid = ∧-isCommutativeMonoid
   }
@@ -231,7 +483,7 @@ open import Data.Empty
   ; idem = ∧-idem
   }
 
-∧-idempotentCommutativeMonoid : IdempotentCommutativeMonoid _ _
+∧-idempotentCommutativeMonoid : IdempotentCommutativeMonoid 0ℓ 0ℓ
 ∧-idempotentCommutativeMonoid = record
   { isIdempotentCommutativeMonoid = ∧-isIdempotentCommutativeMonoid
   }
@@ -245,7 +497,7 @@ open import Data.Empty
   ; zeroˡ    = ∧-zeroˡ
   }
 
-∨-∧-commutativeSemiring : CommutativeSemiring _ _
+∨-∧-commutativeSemiring : CommutativeSemiring 0ℓ 0ℓ
 ∨-∧-commutativeSemiring = record
   { _+_                   = _∨_
   ; _*_                   = _∧_
@@ -263,7 +515,7 @@ open import Data.Empty
   ; zeroˡ    = ∨-zeroˡ
   }
 
-∧-∨-commutativeSemiring : CommutativeSemiring _ _
+∧-∨-commutativeSemiring : CommutativeSemiring 0ℓ 0ℓ
 ∧-∨-commutativeSemiring = record
   { _+_                   = _∧_
   ; _*_                   = _∨_
@@ -284,18 +536,18 @@ open import Data.Empty
   ; absorptive    = ∨-∧-absorptive
   }
 
-∨-∧-lattice : Lattice _ _
+∨-∧-lattice : Lattice 0ℓ 0ℓ
 ∨-∧-lattice = record
   { isLattice = ∨-∧-isLattice
   }
 
 ∨-∧-isDistributiveLattice : IsDistributiveLattice _∨_ _∧_
 ∨-∧-isDistributiveLattice = record
-  { isLattice     = ∨-∧-isLattice
+  { isLattice    = ∨-∧-isLattice
   ; ∨-∧-distribʳ = ∨-distribʳ-∧
   }
 
-∨-∧-distributiveLattice : DistributiveLattice _ _
+∨-∧-distributiveLattice : DistributiveLattice 0ℓ 0ℓ
 ∨-∧-distributiveLattice = record
   { isDistributiveLattice = ∨-∧-isDistributiveLattice
   }
@@ -308,7 +560,7 @@ open import Data.Empty
   ; ¬-cong        = cong not
   }
 
-∨-∧-booleanAlgebra : BooleanAlgebra _ _
+∨-∧-booleanAlgebra : BooleanAlgebra 0ℓ 0ℓ
 ∨-∧-booleanAlgebra = record
   { isBooleanAlgebra = ∨-∧-isBooleanAlgebra
   }
@@ -320,7 +572,7 @@ xor-is-ok : ∀ x y → x xor y ≡ (x ∨ y) ∧ not (x ∧ y)
 xor-is-ok true  y = refl
 xor-is-ok false y = sym (∧-identityʳ _)
 
-xor-∧-commutativeRing : CommutativeRing _ _
+xor-∧-commutativeRing : CommutativeRing 0ℓ 0ℓ
 xor-∧-commutativeRing = commutativeRing
   where
   import Algebra.Properties.BooleanAlgebra as BA
@@ -344,7 +596,7 @@ not-¬ {false} refl ()
 ¬-not {false} {true}  _   = refl
 ¬-not {false} {false} x≢y = ⊥-elim (x≢y refl)
 
-⇔→≡ : {b₁ b₂ b : Bool} → b₁ ≡ b ⇔ b₂ ≡ b → b₁ ≡ b₂
+⇔→≡ : {x y z : Bool} → x ≡ z ⇔ y ≡ z → x ≡ y
 ⇔→≡ {true } {true }         hyp = refl
 ⇔→≡ {true } {false} {true } hyp = sym (Equivalence.to hyp ⟨$⟩ refl)
 ⇔→≡ {true } {false} {false} hyp = Equivalence.from hyp ⟨$⟩ refl
@@ -352,42 +604,38 @@ not-¬ {false} refl ()
 ⇔→≡ {false} {true } {false} hyp = sym (Equivalence.to hyp ⟨$⟩ refl)
 ⇔→≡ {false} {false}         hyp = refl
 
-T-≡ : ∀ {b} → T b ⇔ b ≡ true
+T-≡ : ∀ {x} → T x ⇔ x ≡ true
 T-≡ {false} = equivalence (λ ())       (λ ())
 T-≡ {true}  = equivalence (const refl) (const _)
 
-T-not-≡ : ∀ {b} → T (not b) ⇔ b ≡ false
+T-not-≡ : ∀ {x} → T (not x) ⇔ x ≡ false
 T-not-≡ {false} = equivalence (const refl) (const _)
 T-not-≡ {true}  = equivalence (λ ())       (λ ())
 
-T-∧ : ∀ {b₁ b₂} → T (b₁ ∧ b₂) ⇔ (T b₁ × T b₂)
+T-∧ : ∀ {x y} → T (x ∧ y) ⇔ (T x × T y)
 T-∧ {true}  {true}  = equivalence (const (_ , _)) (const _)
 T-∧ {true}  {false} = equivalence (λ ())          proj₂
 T-∧ {false} {_}     = equivalence (λ ())          proj₁
 
-T-∨ : ∀ {b₁ b₂} → T (b₁ ∨ b₂) ⇔ (T b₁ ⊎ T b₂)
-T-∨ {true}  {b₂}    = equivalence inj₁ (const _)
+T-∨ : ∀ {x y} → T (x ∨ y) ⇔ (T x ⊎ T y)
+T-∨ {true}  {_}     = equivalence inj₁ (const _)
 T-∨ {false} {true}  = equivalence inj₂ (const _)
 T-∨ {false} {false} = equivalence inj₁ [ id , id ]
 
-T-irrelevance : IrrelevantPred T
-T-irrelevance {true}  _  _  = refl
-T-irrelevance {false} () ()
+T-irrelevant : U.Irrelevant T
+T-irrelevant {true}  _  _  = refl
 
-push-function-into-if :
-  ∀ {a b} {A : Set a} {B : Set b} (f : A → B) x {y z} →
-  f (if x then y else z) ≡ (if x then f y else f z)
+T? : U.Decidable T
+T? true  = yes _
+T? false = no (λ ())
+
+T?-diag : ∀ b → T b → True (T? b)
+T?-diag true  _ = _
+
+push-function-into-if : ∀ (f : A → B) x {y z} →
+                        f (if x then y else z) ≡ (if x then f y else f z)
 push-function-into-if _ true  = refl
 push-function-into-if _ false = refl
-
-------------------------------------------------------------------------
--- Modules for reasoning about boolean operations
-
-module RingSolver =
-  Solver (ACR.fromCommutativeSemiring ∨-∧-commutativeSemiring) _≟_
-
-module XorRingSolver =
-  Solver (ACR.fromCommutativeRing xor-∧-commutativeRing) _≟_
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
@@ -395,28 +643,123 @@ module XorRingSolver =
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
+-- Version 0.15
+
 ∧-∨-distˡ   = ∧-distribˡ-∨
+{-# WARNING_ON_USAGE ∧-∨-distˡ
+"Warning: ∧-∨-distˡ was deprecated in v0.15.
+Please use ∧-distribˡ-∨ instead."
+#-}
 ∧-∨-distʳ   = ∧-distribʳ-∨
+{-# WARNING_ON_USAGE ∧-∨-distʳ
+"Warning: ∧-∨-distʳ was deprecated in v0.15.
+Please use ∧-distribʳ-∨ instead."
+#-}
 distrib-∧-∨ = ∧-distrib-∨
+{-# WARNING_ON_USAGE distrib-∧-∨
+"Warning: distrib-∧-∨ was deprecated in v0.15.
+Please use ∧-distrib-∨ instead."
+#-}
 ∨-∧-distˡ   = ∨-distribˡ-∧
+{-# WARNING_ON_USAGE ∨-∧-distˡ
+"Warning: ∨-∧-distˡ was deprecated in v0.15.
+Please use ∨-distribˡ-∧ instead."
+#-}
 ∨-∧-distʳ   = ∨-distribʳ-∧
+{-# WARNING_ON_USAGE ∨-∧-distʳ
+"Warning: ∨-∧-distʳ was deprecated in v0.15.
+Please use ∨-distribʳ-∧ instead."
+#-}
 ∨-∧-distrib = ∨-distrib-∧
+{-# WARNING_ON_USAGE ∨-∧-distrib
+"Warning: ∨-∧-distrib was deprecated in v0.15.
+Please use ∨-distrib-∧ instead."
+#-}
 ∨-∧-abs    = ∨-abs-∧
+{-# WARNING_ON_USAGE ∨-∧-abs
+"Warning: ∨-∧-abs was deprecated in v0.15.
+Please use ∨-abs-∧ instead."
+#-}
 ∧-∨-abs    = ∧-abs-∨
-
+{-# WARNING_ON_USAGE ∧-∨-abs
+"Warning: ∧-∨-abs was deprecated in v0.15.
+Please use ∧-abs-∨ instead."
+#-}
 not-∧-inverseˡ = ∧-inverseˡ
+{-# WARNING_ON_USAGE not-∧-inverseˡ
+"Warning: not-∧-inverseˡ was deprecated in v0.15.
+Please use ∧-inverseˡ instead."
+#-}
 not-∧-inverseʳ = ∧-inverseʳ
+{-# WARNING_ON_USAGE not-∧-inverseʳ
+"Warning: not-∧-inverseʳ was deprecated in v0.15.
+Please use ∧-inverseʳ instead."
+#-}
 not-∧-inverse = ∧-inverse
+{-# WARNING_ON_USAGE not-∧-inverse
+"Warning: not-∧-inverse was deprecated in v0.15.
+Please use ∧-inverse instead."
+#-}
 not-∨-inverseˡ = ∨-inverseˡ
+{-# WARNING_ON_USAGE not-∨-inverseˡ
+"Warning: not-∨-inverseˡ was deprecated in v0.15.
+Please use ∨-inverseˡ instead."
+#-}
 not-∨-inverseʳ = ∨-inverseʳ
+{-# WARNING_ON_USAGE not-∨-inverseʳ
+"Warning: not-∨-inverseʳ was deprecated in v0.15.
+Please use ∨-inverseʳ instead."
+#-}
 not-∨-inverse = ∨-inverse
-
+{-# WARNING_ON_USAGE not-∨-inverse
+"Warning: not-∨-inverse was deprecated in v0.15.
+Please use ∨-inverse instead."
+#-}
 isCommutativeSemiring-∨-∧ = ∨-∧-isCommutativeSemiring
+{-# WARNING_ON_USAGE isCommutativeSemiring-∨-∧
+"Warning: isCommutativeSemiring-∨-∧ was deprecated in v0.15.
+Please use ∨-∧-isCommutativeSemiring instead."
+#-}
 commutativeSemiring-∨-∧   =  ∨-∧-commutativeSemiring
+{-# WARNING_ON_USAGE commutativeSemiring-∨-∧
+"Warning: commutativeSemiring-∨-∧ was deprecated in v0.15.
+Please use ∨-∧-commutativeSemiring instead."
+#-}
 isCommutativeSemiring-∧-∨ = ∧-∨-isCommutativeSemiring
+{-# WARNING_ON_USAGE isCommutativeSemiring-∧-∨
+"Warning: isCommutativeSemiring-∧-∨ was deprecated in v0.15.
+Please use ∧-∨-isCommutativeSemiring instead."
+#-}
 commutativeSemiring-∧-∨   = ∧-∨-commutativeSemiring
-isBooleanAlgebra           = ∨-∧-isBooleanAlgebra
-booleanAlgebra             = ∨-∧-booleanAlgebra
+{-# WARNING_ON_USAGE commutativeSemiring-∧-∨
+"Warning: commutativeSemiring-∧-∨ was deprecated in v0.15.
+Please use ∧-∨-commutativeSemiring instead."
+#-}
+isBooleanAlgebra          = ∨-∧-isBooleanAlgebra
+{-# WARNING_ON_USAGE isBooleanAlgebra
+"Warning: isBooleanAlgebra was deprecated in v0.15.
+Please use ∨-∧-isBooleanAlgebra instead."
+#-}
+booleanAlgebra            = ∨-∧-booleanAlgebra
+{-# WARNING_ON_USAGE booleanAlgebra
+"Warning: booleanAlgebra was deprecated in v0.15.
+Please use ∨-∧-booleanAlgebra instead."
+#-}
 commutativeRing-xor-∧     = xor-∧-commutativeRing
+{-# WARNING_ON_USAGE commutativeRing-xor-∧
+"Warning: commutativeRing-xor-∧ was deprecated in v0.15.
+Please use xor-∧-commutativeRing instead."
+#-}
+proof-irrelevance = T-irrelevant
+{-# WARNING_ON_USAGE proof-irrelevance
+"Warning: proof-irrelevance was deprecated in v0.15.
+Please use T-irrelevant instead."
+#-}
 
-proof-irrelevance = T-irrelevance
+-- Version 1.0
+
+T-irrelevance = T-irrelevant
+{-# WARNING_ON_USAGE T-irrelevance
+"Warning: T-irrelevance was deprecated in v1.0.
+Please use T-irrelevant instead."
+#-}

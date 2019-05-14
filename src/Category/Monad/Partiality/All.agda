@@ -4,11 +4,13 @@
 -- An All predicate for the partiality monad
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe --guardedness #-}
+
 module Category.Monad.Partiality.All where
 
 open import Category.Monad
 open import Category.Monad.Partiality as Partiality using (_⊥; ⇒≈)
-open import Coinduction
+open import Codata.Musical.Notation
 open import Function
 open import Level
 open import Relation.Binary using (_Respects_; IsEquivalence)

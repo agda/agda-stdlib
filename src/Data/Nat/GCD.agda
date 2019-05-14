@@ -4,20 +4,22 @@
 -- Greatest common divisor
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Nat.GCD where
 
 open import Data.Nat
-open import Data.Nat.Divisibility as Div
-open import Relation.Binary
-private module P = Poset Div.poset
-open import Data.Product
-open import Relation.Binary.PropositionalEquality as PropEq using (_≡_; subst)
-open import Relation.Nullary using (Dec; yes; no)
-open import Induction
-open import Induction.Nat using (<′-Rec; <′-recBuilder)
-open import Induction.Lexicographic
-open import Function
+open import Data.Nat.Divisibility
 open import Data.Nat.GCD.Lemmas
+open import Data.Nat.Induction using (<′-Rec; <′-recBuilder)
+open import Data.Nat.Properties using (+-suc)
+open import Data.Product
+open import Function
+open import Induction using (build)
+open import Induction.Lexicographic using (_⊗_; [_⊗_])
+open import Relation.Binary
+open import Relation.Binary.PropositionalEquality as P using (_≡_; subst)
+open import Relation.Nullary using (Dec; yes; no)
 
 ------------------------------------------------------------------------
 -- Greatest common divisor
@@ -42,7 +44,7 @@ module GCD where
   -- The gcd is unique.
 
   unique : ∀ {d₁ d₂ m n} → GCD m n d₁ → GCD m n d₂ → d₁ ≡ d₂
-  unique d₁ d₂ = P.antisym (GCD.greatest d₂ (GCD.commonDivisor d₁))
+  unique d₁ d₂ = ∣-antisym (GCD.greatest d₂ (GCD.commonDivisor d₁))
                            (GCD.greatest d₁ (GCD.commonDivisor d₂))
 
   -- The gcd relation is "symmetric".
@@ -53,12 +55,12 @@ module GCD where
   -- The gcd relation is "reflexive".
 
   refl : ∀ {n} → GCD n n n
-  refl = is (P.refl , P.refl) proj₁
+  refl = is (∣-refl , ∣-refl) proj₁
 
   -- The GCD of 0 and n is n.
 
   base : ∀ {n} → GCD 0 n n
-  base {n} = is (n ∣0 , P.refl) proj₂
+  base {n} = is (n ∣0 , ∣-refl) proj₂
 
   -- If d is the gcd of n and k, then it is also the gcd of n and
   -- n + k.
@@ -99,10 +101,10 @@ module Bézout where
     sym (-+ x y eq) = +- y x eq
 
     refl : ∀ {d} → Identity d d d
-    refl = -+ 0 1 PropEq.refl
+    refl = -+ 0 1 P.refl
 
     base : ∀ {d} → Identity d 0 d
-    base = -+ 0 1 PropEq.refl
+    base = -+ 0 1 P.refl
 
     private
       infixl 7 _⊕_
@@ -143,7 +145,7 @@ module Bézout where
 
     stepˡ : ∀ {n k} → Lemma n (suc k) → Lemma n (suc (n + k))
     stepˡ {n} {k} (result d g b) =
-      PropEq.subst (Lemma n) (lem₀ n k) $
+      subst (Lemma n) (+-suc n k) $
         result d (GCD.step g) (Identity.step b)
 
     stepʳ : ∀ {n k} → Lemma (suc k) n → Lemma (suc (n + k)) n
@@ -176,19 +178,19 @@ module Bézout where
 
   identity : ∀ {m n d} → GCD m n d → Identity d m n
   identity {m} {n} g with lemma m n
-  identity g | result d g′ b with GCD.unique g g′
-  identity g | result d g′ b | PropEq.refl = b
+  ... | result d g′ b with GCD.unique g g′
+  ...   | P.refl = b
 
 -- Calculates the gcd of the arguments.
 
 gcd : (m n : ℕ) → ∃ λ d → GCD m n d
 gcd m n with Bézout.lemma m n
-gcd m n | Bézout.result d g _ = (d , g)
+... | Bézout.result d g _ = (d , g)
 
 -- gcd as a proposition is decidable
 
 gcd? : (m n d : ℕ) → Dec (GCD m n d)
 gcd? m n d with gcd m n
 ... | d′ , p with d′ ≟ d
-... | no ¬g = no (λ p′ → ¬g (GCD.unique p p′))
-... | yes g = yes (subst (GCD m n) g p)
+...   | no ¬g = no (¬g ∘ GCD.unique p)
+...   | yes g = yes (subst (GCD m n) g p)

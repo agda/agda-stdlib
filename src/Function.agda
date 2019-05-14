@@ -4,128 +4,173 @@
 -- Simple combinators working solely on and with functions
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Function where
 
 open import Level
 open import Strict
 
-infixr 9 _∘_ _∘′_
-infixl 8 _ˢ_
-infixl 1 _on_
-infixl 1 _⟨_⟩_
-infixr 0 _-[_]-_ _$_ _$′_ _$!_ _$!′_
-infixl 0 _|>_ _|>′_ _∋_
+private
+  variable
+    a b c d e : Level
+    A : Set a
+    B : Set b
+    C : Set c
+    D : Set d
+    E : Set e
 
 ------------------------------------------------------------------------
 -- Types
 
--- Unary functions on a given set.
-
-Fun₁ : ∀ {i} → Set i → Set i
+Fun₁ : Set a → Set a
 Fun₁ A = A → A
 
--- Binary functions on a given set.
-
-Fun₂ : ∀ {i} → Set i → Set i
+Fun₂ : Set a → Set a
 Fun₂ A = A → A → A
 
 ------------------------------------------------------------------------
--- Functions
+-- Some simple functions
 
-_∘_ : ∀ {a b c}
-        {A : Set a} {B : A → Set b} {C : {x : A} → B x → Set c} →
-        (∀ {x} (y : B x) → C y) → (g : (x : A) → B x) →
-        ((x : A) → C (g x))
-f ∘ g = λ x → f (g x)
-
-_∘′_ : ∀ {a b c} {A : Set a} {B : Set b} {C : Set c} →
-         (B → C) → (A → B) → (A → C)
-f ∘′ g = _∘_ f g
-
-id : ∀ {a} {A : Set a} → A → A
+id : A → A
 id x = x
 
-const : ∀ {a b} {A : Set a} {B : Set b} → A → B → A
+const : A → B → A
 const x = λ _ → x
 
--- The S combinator. (Written infix as in Conor McBride's paper
--- "Outrageous but Meaningful Coincidences: Dependent type-safe syntax
--- and evaluation".)
+------------------------------------------------------------------------
+-- Operations on dependent functions
 
-_ˢ_ : ∀ {a b c}
-        {A : Set a} {B : A → Set b} {C : (x : A) → B x → Set c} →
+-- These are functions whose output has a type that depends on the
+-- value of the input to the function.
+
+infixr 9 _∘_
+infixl 8 _ˢ_
+infixl 0 _|>_
+infix  0 case_return_of_
+infixr -1 _$_ _$!_
+
+-- Composition
+
+_∘_ : ∀ {A : Set a} {B : A → Set b} {C : {x : A} → B x → Set c} →
+      (∀ {x} (y : B x) → C y) → (g : (x : A) → B x) →
+      ((x : A) → C (g x))
+f ∘ g = λ x → f (g x)
+
+-- Flipping order of arguments
+
+flip : ∀ {A : Set a} {B : Set b} {C : A → B → Set c} →
+       ((x : A) (y : B) → C x y) → ((y : B) (x : A) → C x y)
+flip f = λ y x → f x y
+
+-- Application - note that _$_ is right associative, as in Haskell.
+-- If you want a left associative infix application operator, use
+-- Category.Functor._<$>_ from Category.Monad.Identity.IdentityMonad.
+
+_$_ : ∀ {A : Set a} {B : A → Set b} →
+      ((x : A) → B x) → ((x : A) → B x)
+f $ x = f x
+
+-- Strict (call-by-value) application
+
+_$!_ : ∀ {A : Set a} {B : A → Set b} →
+       ((x : A) → B x) → ((x : A) → B x)
+_$!_ = flip force
+
+-- Flipped application (aka pipe-forward)
+
+_|>_ : ∀ {A : Set a} {B : A → Set b} →
+       (a : A) → (∀ a → B a) → B a
+_|>_ = flip _$_
+
+-- The S combinator - written infix as in Conor McBride's paper
+-- "Outrageous but Meaningful Coincidences: Dependent type-safe syntax
+-- and evaluation".
+
+_ˢ_ : ∀ {A : Set a} {B : A → Set b} {C : (x : A) → B x → Set c} →
       ((x : A) (y : B x) → C x y) →
       (g : (x : A) → B x) →
       ((x : A) → C x (g x))
 f ˢ g = λ x → f x (g x)
 
-flip : ∀ {a b c} {A : Set a} {B : Set b} {C : A → B → Set c} →
-       ((x : A) (y : B) → C x y) → ((y : B) (x : A) → C x y)
-flip f = λ y x → f x y
+-- Case expressions (to be used with pattern-matching lambdas, see
+-- README.Case).
 
--- Note that _$_ is right associative, like in Haskell. If you want a
--- left associative infix application operator, use
--- Category.Functor._<$>_, available from
--- Category.Monad.Identity.IdentityMonad.
+case_return_of_ : ∀ {A : Set a} (x : A) (B : A → Set b) →
+                  ((x : A) → B x) → B x
+case x return B of f = f x
 
-_$_ : ∀ {a b} {A : Set a} {B : A → Set b} →
-      ((x : A) → B x) → ((x : A) → B x)
-f $ x = f x
+------------------------------------------------------------------------
+-- Non-dependent versions of dependent operations
 
-_$′_ : ∀ {a b} {A : Set a} {B : Set b} →
-       (A → B) → (A → B)
+-- Any of the above operations for dependent functions will also work
+-- for non-dependent functions but sometimes Agda has difficulty
+-- inferring the non-dependency. Primed (′ = \prime) versions of the
+-- operations are therefore provided below that sometimes have better
+-- inference properties.
+
+infixr 9 _∘′_
+infixl 0 _|>′_
+infix  0 case_of_
+infixr -1 _$′_ _$!′_
+
+-- Composition
+
+_∘′_ : (B → C) → (A → B) → (A → C)
+f ∘′ g = _∘_ f g
+
+-- Application
+
+_$′_ : (A → B) → (A → B)
 _$′_ = _$_
 
 -- Strict (call-by-value) application
 
-_$!_ : ∀ {a b} {A : Set a} {B : A → Set b} →
-       ((x : A) → B x) → ((x : A) → B x)
-_$!_ = flip force
-
-_$!′_ : ∀ {a b} {A : Set a} {B : Set b} →
-        (A → B) → (A → B)
+_$!′_ : (A → B) → (A → B)
 _$!′_ = _$!_
 
--- flipped application aka pipe-forward
+-- Flipped application (aka pipe-forward)
 
-_|>_ : ∀ {a b} {A : Set a} {B : A → Set b} →
-       (a : A) → (∀ a → B a) → B a
-_|>_ = flip _$_
-
-
-_|>′_ : ∀ {a b} {A : Set a} {B : Set b} →
-        A → (A → B) → B
+_|>′_ : A → (A → B) → B
 _|>′_ = _|>_
 
+-- Case expressions (to be used with pattern-matching lambdas, see
+-- README.Case).
 
-_⟨_⟩_ : ∀ {a b c} {A : Set a} {B : Set b} {C : Set c} →
-        A → (A → B → C) → B → C
+case_of_ : A → (A → B) → B
+case x of f = case x return _ of f
+
+------------------------------------------------------------------------
+-- Operations that are only defined for non-dependent functions
+
+infixr 0 _-[_]-_
+infixl 1 _on_
+infixl 1 _⟨_⟩_
+infixl 0 _∋_
+
+-- Binary application
+
+_⟨_⟩_ : A → (A → B → C) → B → C
 x ⟨ f ⟩ y = f x y
 
-_on_ : ∀ {a b c} {A : Set a} {B : Set b} {C : Set c} →
-       (B → B → C) → (A → B) → (A → A → C)
+-- Composition of a binary function with a unary function
+
+_on_ : (B → B → C) → (A → B) → (A → A → C)
 _*_ on f = λ x y → f x * f y
 
-_-[_]-_ : ∀ {a b c d e} {A : Set a} {B : Set b} {C : Set c}
-            {D : Set d} {E : Set e} →
-          (A → B → C) → (C → D → E) → (A → B → D) → (A → B → E)
+-- Composition of three binary functions
+
+_-[_]-_ : (A → B → C) → (C → D → E) → (A → B → D) → (A → B → E)
 f -[ _*_ ]- g = λ x y → f x y * g x y
 
 -- In Agda you cannot annotate every subexpression with a type
 -- signature. This function can be used instead.
 
-_∋_ : ∀ {a} (A : Set a) → A → A
+_∋_ : (A : Set a) → A → A
 A ∋ x = x
 
--- Case expressions (to be used with pattern-matching lambdas, see
--- README.Case).
+-- Conversely it is sometimes useful to be able to extract the
+-- type of a given expression.
 
-infix 0 case_return_of_ case_of_
-
-case_return_of_ :
-  ∀ {a b} {A : Set a}
-  (x : A) (B : A → Set b) → ((x : A) → B x) → B x
-case x return B of f = f x
-
-case_of_ : ∀ {a b} {A : Set a} {B : Set b} → A → (A → B) → B
-case x of f = case x return _ of f
+typeOf : {A : Set a} → A → Set a
+typeOf {A = A} _ = A

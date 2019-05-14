@@ -6,6 +6,8 @@
 
 -- Note that currently the functor laws are not included here.
 
+{-# OPTIONS --without-K --safe #-}
+
 module Category.Functor where
 
 open import Function
@@ -15,12 +17,16 @@ open import Relation.Binary.PropositionalEquality
 
 record RawFunctor {ℓ} (F : Set ℓ → Set ℓ) : Set (suc ℓ) where
   infixl 4 _<$>_ _<$_
+  infixl 1 _<&>_
 
   field
     _<$>_ : ∀ {A B} → (A → B) → F A → F B
 
   _<$_ : ∀ {A B} → A → F B → F A
   x <$ y = const x <$> y
+
+  _<&>_ : ∀ {A B} → F A → (A → B) → F B
+  _<&>_ = flip _<$>_
 
 -- A functor morphism from F₁ to F₂ is an operation op such that
 -- op (F₁ f x) ≡ F₂ f (op x)

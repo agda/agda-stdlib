@@ -4,6 +4,8 @@
 -- Properties of functions, such as associativity and commutativity
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Level
 open import Relation.Binary
 open import Data.Sum
@@ -36,7 +38,7 @@ RightIdentity : A → Op₂ A → Set _
 RightIdentity e _∙_ = ∀ x → (x ∙ e) ≈ x
 
 Identity : A → Op₂ A → Set _
-Identity e ∙ = LeftIdentity e ∙ × RightIdentity e ∙
+Identity e ∙ = (LeftIdentity e ∙) × (RightIdentity e ∙)
 
 LeftZero : A → Op₂ A → Set _
 LeftZero z _∙_ = ∀ x → (z ∙ x) ≈ z
@@ -45,7 +47,7 @@ RightZero : A → Op₂ A → Set _
 RightZero z _∙_ = ∀ x → (x ∙ z) ≈ z
 
 Zero : A → Op₂ A → Set _
-Zero z ∙ = LeftZero z ∙ × RightZero z ∙
+Zero z ∙ = (LeftZero z ∙) × (RightZero z ∙)
 
 LeftInverse : A → Op₁ A → Op₂ A → Set _
 LeftInverse e _⁻¹ _∙_ = ∀ x → ((x ⁻¹) ∙ x) ≈ e
@@ -54,7 +56,16 @@ RightInverse : A → Op₁ A → Op₂ A → Set _
 RightInverse e _⁻¹ _∙_ = ∀ x → (x ∙ (x ⁻¹)) ≈ e
 
 Inverse : A → Op₁ A → Op₂ A → Set _
-Inverse e ⁻¹ ∙ = LeftInverse e ⁻¹ ∙ × RightInverse e ⁻¹ ∙
+Inverse e ⁻¹ ∙ = (LeftInverse e ⁻¹) ∙ × (RightInverse e ⁻¹ ∙)
+
+LeftConical : A → Op₂ A → Set _
+LeftConical e _∙_ = ∀ x y → (x ∙ y) ≈ e → x ≈ e
+
+RightConical : A → Op₂ A → Set _
+RightConical e _∙_ = ∀ x y → (x ∙ y) ≈ e → y ≈ e
+
+Conical : A → Op₂ A → Set _
+Conical e ∙ = (LeftConical e ∙) × (RightConical e ∙)
 
 _DistributesOverˡ_ : Op₂ A → Op₂ A → Set _
 _*_ DistributesOverˡ _+_ =
@@ -95,10 +106,16 @@ RightCancellative : Op₂ A → Set _
 RightCancellative _•_ = ∀ {x} y z → (y • x) ≈ (z • x) → y ≈ z
 
 Cancellative : Op₂ A → Set _
-Cancellative _•_ = LeftCancellative _•_ × RightCancellative _•_
+Cancellative _•_ = (LeftCancellative _•_) × (RightCancellative _•_)
 
 Congruent₁ : Op₁ A → Set _
 Congruent₁ f = f Preserves _≈_ ⟶ _≈_
 
 Congruent₂ : Op₂ A → Set _
 Congruent₂ ∙ = ∙ Preserves₂ _≈_ ⟶ _≈_ ⟶ _≈_
+
+LeftCongruent : Op₂ A → Set _
+LeftCongruent _∙_ = ∀ {x} → (x ∙_) Preserves _≈_ ⟶ _≈_
+
+RightCongruent : Op₂ A → Set _
+RightCongruent _∙_ = ∀ {x} → (_∙ x) Preserves _≈_ ⟶ _≈_

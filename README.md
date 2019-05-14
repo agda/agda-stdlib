@@ -1,44 +1,42 @@
 The Agda standard library
 =========================
 
-The standard library aims to contain all the tools needed to easily write both programs and proofs. While we always try and write efficient code, we prioritise ease of proof over type-checking and normalisation performance. If computational performance is important to you, then perhaps try [agda-prelude](https://github.com/UlfNorell/agda-prelude) instead.
+The standard library aims to contain all the tools needed to easily
+write both programs and proofs. While we always try and write efficient
+code, we prioritise ease of proof over type-checking and normalisation
+performance. If computational performance is important to you, then
+perhaps try [agda-prelude](https://github.com/UlfNorell/agda-prelude)
+instead. You can browse the library source code in glorious clickable
+html [here](https://agda.github.io/agda-stdlib/README.html).
 
-If you would like to suggest improvements, feel free to use the `Issues` tab. If you would like to make improvements yourself, follow the instructions in [HACKING](https://github.com/agda/agda-stdlib/blob/master/HACKING.md).
+## Installation instructions
 
-You can browse the library source code in glorious clickable html [here](https://agda.github.io/agda-stdlib/README.html).
+See the instructions [here](https://github.com/agda/agda-stdlib/blob/master/notes/installation-guide.md)
+for how to install version 1.0.1 of the standard library.
 
-## Quick installation instructions
+## Non-standard versions of Agda
 
-Use version v0.15 of the standard library with Agda 2.5.3.
+If you're using an old version of Agda, you can download the corresponding version
+of the standard library on the [Agda wiki](http://wiki.portal.chalmers.se/agda/pmwiki.php?n=Libraries.StandardLibrary).
+If you're using a development version of Agda rather than the latest official release
+you should use the `experimental` branch of the standard library rather than `master`.
+The `experimental` branch contains non-backwards compatible patches for upcoming
+changes to the language.
 
-Install it as follows. Say you are in directory `$HERE` (replace appropriately).
-```
-  git clone https://github.com/agda/agda-stdlib.git
-  cd agda-stdlib
-  git checkout v0.15
-  cabal install
-```
-The last comment is optional, omit it if you are lacking [cabal](https://www.haskell.org/cabal/).
+## Type-checking with the `--safe` flag
 
-Register it by adding the following line to
-`$HOME/.agda/libraries`:
-```
-  $HERE/agda-stdlib/standard-library.agda-lib
-```
+Most of the library can be type-checked using the `--safe` flag. Please consult
+[GenerateEverything.hs](https://github.com/agda/agda-stdlib/blob/master/GenerateEverything.hs#L23)
+for a full list of modules that use unsafe features.
 
-To use the standard library in you project `$PROJECT`, put a file
-`$PROJECT.agda-lib` file in the project root containing:
-```
-  depend: standard-library
-  include: $DIRS
-```
-where `$DIRS` is a list of directories where Agda
-searches for modules, for instance `.` (just the project root).
+## Type-checking with the `--without-k` flag
 
-If you want to refer to the standard library in all your
-projects, add the following line to `$HOME/.agda/defaults`
-```
-  standard-library
-```
+Most of the library can be type-checked using the `--without-k` flag. Please consult
+[GenerateEverything.hs](https://github.com/agda/agda-stdlib/blob/master/GenerateEverything.hs#L74)
+for a full list of modules that use axiom K.
 
-Find the full story at [readthedocs](http://agda.readthedocs.io/en/latest/tools/package-system.html).
+## Contributing to the library
+
+If you would like to suggest improvements, feel free to use the `Issues` tab.
+If you would like to make improvements yourself, follow the instructions in
+[HACKING](https://github.com/agda/agda-stdlib/blob/master/HACKING.md).

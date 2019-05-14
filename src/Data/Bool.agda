@@ -4,6 +4,8 @@
 -- Booleans
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Bool where
 
 open import Relation.Nullary
@@ -17,7 +19,22 @@ open import Relation.Binary.PropositionalEquality as PropEq
 open import Data.Bool.Base public
 
 ------------------------------------------------------------------------
--- Some properties
+-- Publicly re-export queries
 
-decSetoid : DecSetoid _ _
-decSetoid = PropEq.decSetoid _≟_
+open import Data.Bool.Properties public
+  using (_≟_; _≤?_; _<?_)
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 1.1
+
+decSetoid = Data.Bool.Properties.≡-decSetoid
+{-# WARNING_ON_USAGE decSetoid
+"Warning: decSetoid was deprecated in v1.1.
+Please use ≡-decSetoid from Data.Bool.Properties instead."
+#-}

@@ -4,6 +4,8 @@
 -- Well-founded induction
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Relation.Binary
 
 module Induction.WellFounded where
@@ -34,8 +36,11 @@ data Acc {a ℓ} {A : Set a} (_<_ : Rel A ℓ) (x : A) : Set (a ⊔ ℓ) where
 WellFounded : ∀ {a ℓ} {A : Set a} → Rel A ℓ → Set _
 WellFounded _<_ = ∀ x → Acc _<_ x
 
--- DEPRECATED - please use WellFounded instead
 Well-founded = WellFounded
+{-# WARNING_ON_USAGE Well-founded
+"Warning: Well-founded was deprecated in v0.15.
+Please use WellFounded instead."
+#-}
 
 ------------------------------------------------------------------------
 -- Well-founded induction for the subset of accessible elements:
@@ -49,8 +54,11 @@ module Some {a lt} {A : Set a} {_<_ : Rel A lt} {ℓ} where
   wfRec : SubsetRecursor (Acc _<_) (WfRec _<_)
   wfRec = subsetBuild wfRecBuilder
 
-  -- DEPRECATED - please use WellFounded instead
   wfRec-builder = wfRecBuilder
+  {-# WARNING_ON_USAGE wfRec-builder
+  "Warning: wfRec-builder was deprecated in v0.15.
+  Please use wfRecBuilder instead."
+  #-}
 
 ------------------------------------------------------------------------
 -- Well-founded induction for all elements, assuming they are all
@@ -65,8 +73,11 @@ module All {a lt} {A : Set a} {_<_ : Rel A lt}
   wfRec : Recursor (WfRec _<_)
   wfRec = build wfRecBuilder
 
-  -- DEPRECATED - please use WellFounded instead
   wfRec-builder = wfRecBuilder
+  {-# WARNING_ON_USAGE wfRec-builder
+  "Warning: wfRec-builder was deprecated in v0.15.
+  Please use wfRecBuilder instead."
+  #-}
 
 ------------------------------------------------------------------------
 -- It might be useful to establish proofs of Acc or Well-founded using
@@ -84,11 +95,14 @@ module Subrelation {a ℓ₁ ℓ₂} {A : Set a}
   wellFounded : WellFounded _<₂_ → WellFounded _<₁_
   wellFounded wf = λ x → accessible (wf x)
 
-  -- DEPRECATED - please use wellFounded instead
   well-founded = wellFounded
+  {-# WARNING_ON_USAGE well-founded
+  "Warning: well-founded was deprecated in v0.15.
+  Please use wellFounded instead."
+  #-}
 
-module Inverse-image {a b ℓ} {A : Set a} {B : Set b} {_<_ : Rel B ℓ}
-                     (f : A → B) where
+module InverseImage {a b ℓ} {A : Set a} {B : Set b} {_<_ : Rel B ℓ}
+                    (f : A → B) where
 
   accessible : ∀ {x} → Acc _<_ (f x) → Acc (_<_ on f) x
   accessible (acc rs) = acc (λ y fy<fx → accessible (rs (f y) fy<fx))
@@ -96,10 +110,13 @@ module Inverse-image {a b ℓ} {A : Set a} {B : Set b} {_<_ : Rel B ℓ}
   wellFounded : WellFounded _<_ → WellFounded (_<_ on f)
   wellFounded wf = λ x → accessible (wf (f x))
 
-  -- DEPRECATED - please use wellFounded instead
   well-founded = wellFounded
+  {-# WARNING_ON_USAGE well-founded
+  "Warning: well-founded was deprecated in v0.15.
+  Please use wellFounded instead."
+  #-}
 
-module Transitive-closure {a ℓ} {A : Set a} (_<_ : Rel A ℓ) where
+module TransitiveClosure {a ℓ} {A : Set a} (_<_ : Rel A ℓ) where
 
   infix 4 _<⁺_
 
@@ -123,9 +140,16 @@ module Transitive-closure {a ℓ} {A : Set a} (_<_ : Rel A ℓ) where
   wellFounded : WellFounded _<_ → WellFounded _<⁺_
   wellFounded wf = λ x → accessible (wf x)
 
-  -- DEPRECATED - please use wellFounded and downwardsClosed instead
   downwards-closed = downwardsClosed
+  {-# WARNING_ON_USAGE downwards-closed
+  "Warning: downwards-closed was deprecated in v0.15.
+  Please use downwardsClosed instead."
+  #-}
   well-founded     = wellFounded
+  {-# WARNING_ON_USAGE well-founded
+  "Warning: well-founded was deprecated in v0.15.
+  Please use wellFounded instead."
+  #-}
 
 module Lexicographic {a b ℓ₁ ℓ₂} {A : Set a} {B : A → Set b}
                      (RelA : Rel A ℓ₁)
@@ -154,5 +178,21 @@ module Lexicographic {a b ℓ₁ ℓ₂} {A : Set a} {B : A → Set b}
                 WellFounded _<_
   wellFounded wfA wfB p = accessible (wfA (proj₁ p)) wfB
 
-  -- DEPRECATED - please use wellFounded instead
   well-founded = wellFounded
+  {-# WARNING_ON_USAGE well-founded
+  "Warning: well-founded was deprecated in v0.15.
+  Please use wellFounded instead."
+  #-}
+
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 1.0
+
+module Inverse-image      = InverseImage
+module Transitive-closure = TransitiveClosure

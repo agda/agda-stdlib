@@ -6,6 +6,8 @@
 
 -- Vectors of a specified maximum length.
 
+{-# OPTIONS --with-K --safe #-}
+
 module Data.Star.BoundedVec where
 
 import Data.Maybe.Base as Maybe
@@ -17,7 +19,7 @@ open import Data.Unit
 open import Function
 open import Relation.Binary
 open import Relation.Binary.Consequences
-open import Relation.Binary.Closure.ReflexiveTransitive
+open import Relation.Binary.Construct.Closure.ReflexiveTransitive
 
 ------------------------------------------------------------------------
 -- The type

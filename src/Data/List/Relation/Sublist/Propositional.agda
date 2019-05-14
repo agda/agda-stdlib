@@ -1,15 +1,12 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- The sublist relation over propositional equality.
+-- This module is DEPRECATED. Please use
+-- Data.List.Relation.Binary.Sublist.Propositional directly.
 ------------------------------------------------------------------------
 
-module Data.List.Relation.Sublist.Propositional {a} {A : Set a} where
+{-# OPTIONS --without-K --safe #-}
 
-import Data.List.Relation.Sublist.Setoid as SetoidSublist
-open import Relation.Binary.PropositionalEquality using (setoid)
+module Data.List.Relation.Sublist.Propositional where
 
-------------------------------------------------------------------------
--- Re-export parameterised definitions from setoid sublists
-
-open SetoidSublist (setoid A) public
+open import Data.List.Relation.Binary.Sublist.Propositional public

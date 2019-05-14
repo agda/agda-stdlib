@@ -4,21 +4,22 @@
 -- Properties of homogeneous binary relations
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Relation.Binary where
 
+open import Agda.Builtin.Equality using (_≡_)
 open import Data.Product
 open import Data.Sum
 open import Function
 open import Level
 import Relation.Binary.PropositionalEquality.Core as PropEq
 open import Relation.Binary.Consequences
-open import Relation.Binary.Core as Core using (_≡_)
-import Relation.Binary.Indexed.Core as I
 
 ------------------------------------------------------------------------
 -- Simple properties and equivalence relations
 
-open Core public hiding (_≡_; refl; _≢_)
+open import Relation.Binary.Core public
 
 ------------------------------------------------------------------------
 -- Preorders
@@ -80,19 +81,6 @@ record Setoid c ℓ : Set (suc (c ⊔ ℓ)) where
 
   preorder : Preorder c c ℓ
   preorder = record { isPreorder = isPreorder }
-
-  -- A trivially indexed setoid.
-
-  indexedSetoid : ∀ {i} {I : Set i} → I.Setoid I c _
-  indexedSetoid = record
-    { Carrier = λ _ → Carrier
-    ; _≈_     = _≈_
-    ; isEquivalence = record
-      { refl  = refl
-      ; sym   = sym
-      ; trans = trans
-      }
-    }
 
 ------------------------------------------------------------------------
 -- Decidable equivalence relations
@@ -217,8 +205,17 @@ record IsStrictPartialOrder {a ℓ₁ ℓ₂} {A : Set a}
   asym : Asymmetric _<_
   asym {x} {y} = trans∧irr⟶asym Eq.refl trans irrefl {x = x} {y}
 
-  -- DEPRECATED, please use `asym` directly
+  <-respʳ-≈ : _<_ Respectsʳ _≈_
+  <-respʳ-≈ = proj₁ <-resp-≈
+
+  <-respˡ-≈ : _<_ Respectsˡ _≈_
+  <-respˡ-≈ = proj₂ <-resp-≈
+
   asymmetric = asym
+  {-# WARNING_ON_USAGE asymmetric
+  "Warning: asymmetric was deprecated in v0.16.
+  Please use asym instead."
+  #-}
 
 record StrictPartialOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   infix 4 _≈_ _<_
@@ -356,7 +353,10 @@ record DecTotalOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
 ------------------------------------------------------------------------
 -- Strict total orders
 
--- Note that these orders are decidable (see compare).
+-- Note that these orders are decidable. The current implementation
+-- of `Trichotomous` subsumes irreflexivity and asymmetry. Any reasonable
+-- definition capturing these three properties implies decidability
+-- as `Trichotomous` necessarily separates out the equality case.
 
 record IsStrictTotalOrder {a ℓ₁ ℓ₂} {A : Set a}
                           (_≈_ : Rel A ℓ₁) (_<_ : Rel A ℓ₂) :

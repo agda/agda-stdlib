@@ -5,6 +5,8 @@
 -- such as equivalences, surjections and bijections
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Function.Related where
 
 open import Level
@@ -246,49 +248,72 @@ reverse {surjection}          = Surjection.right-inverse
 reverse {bijection}           = Inv.sym
 
 ------------------------------------------------------------------------
+-- For a fixed universe level every kind is a preorder and each
+-- symmetric kind is an equivalence
+
+K-refl : ∀ {k ℓ} → Reflexive (Related k {ℓ})
+K-refl {implication}         = id
+K-refl {reverse-implication} = lam id
+K-refl {equivalence}         = Eq.id
+K-refl {injection}           = Inj.id
+K-refl {reverse-injection}   = lam Inj.id
+K-refl {left-inverse}        = LeftInv.id
+K-refl {surjection}          = Surj.id
+K-refl {bijection}           = Inv.id
+
+K-reflexive : ∀ {k ℓ} → _≡_ ⇒ Related k {ℓ}
+K-reflexive P.refl = K-refl
+
+K-trans : ∀ {k ℓ₁ ℓ₂ ℓ₃} → Trans (Related k {ℓ₁} {ℓ₂})
+                                (Related k {ℓ₂} {ℓ₃})
+                                (Related k {ℓ₁} {ℓ₃})
+K-trans {implication}         = flip _∘′_
+K-trans {reverse-implication} = λ f g → lam (app-← f ∘ app-← g)
+K-trans {equivalence}         = flip Eq._∘_
+K-trans {injection}           = flip Inj._∘_
+K-trans {reverse-injection}   = λ f g → lam (Inj._∘_ (app-↢ f) (app-↢ g))
+K-trans {left-inverse}        = flip LeftInv._∘_
+K-trans {surjection}          = flip Surj._∘_
+K-trans {bijection}           = flip Inv._∘_
+
+SK-sym : ∀ {k ℓ₁ ℓ₂} → Sym (Related ⌊ k ⌋ {ℓ₁} {ℓ₂})
+                          (Related ⌊ k ⌋ {ℓ₂} {ℓ₁})
+SK-sym {equivalence} = Eq.sym
+SK-sym {bijection}   = Inv.sym
+
+SK-isEquivalence : ∀ k ℓ → IsEquivalence {ℓ = ℓ} (Related ⌊ k ⌋)
+SK-isEquivalence k ℓ = record
+  { refl  = K-refl
+  ; sym   = SK-sym
+  ; trans = K-trans
+  }
+
+SK-setoid : Symmetric-kind → (ℓ : Level) → Setoid _ _
+SK-setoid k ℓ = record { isEquivalence = SK-isEquivalence k ℓ }
+
+K-isPreorder : ∀ k ℓ → IsPreorder _↔_ (Related k)
+K-isPreorder k ℓ = record
+    { isEquivalence = SK-isEquivalence bijection ℓ
+    ; reflexive     = ↔⇒
+    ; trans         = K-trans
+    }
+
+K-preorder : Kind → (ℓ : Level) → Preorder _ _ _
+K-preorder k ℓ = record { isPreorder = K-isPreorder k ℓ }
+
+------------------------------------------------------------------------
 -- Equational reasoning
 
 -- Equational reasoning for related things.
 
 module EquationalReasoning where
 
-  private
-
-    refl : ∀ {k ℓ} → Reflexive (Related k {ℓ})
-    refl {implication}         = id
-    refl {reverse-implication} = lam id
-    refl {equivalence}         = Eq.id
-    refl {injection}           = Inj.id
-    refl {reverse-injection}   = lam Inj.id
-    refl {left-inverse}        = LeftInv.id
-    refl {surjection}          = Surj.id
-    refl {bijection}           = Inv.id
-
-    trans : ∀ {k ℓ₁ ℓ₂ ℓ₃} →
-            Trans (Related k {ℓ₁} {ℓ₂})
-                  (Related k {ℓ₂} {ℓ₃})
-                  (Related k {ℓ₁} {ℓ₃})
-    trans {implication}         = flip _∘′_
-    trans {reverse-implication} = λ f g → lam (app-← f ∘ app-← g)
-    trans {equivalence}         = flip Eq._∘_
-    trans {injection}           = flip Inj._∘_
-    trans {reverse-injection}   = λ f g → lam (Inj._∘_ (app-↢ f) (app-↢ g))
-    trans {left-inverse}        = flip LeftInv._∘_
-    trans {surjection}          = flip Surj._∘_
-    trans {bijection}           = flip Inv._∘_
-
-  sym : ∀ {k ℓ₁ ℓ₂} →
-        Sym (Related ⌊ k ⌋ {ℓ₁} {ℓ₂})
-            (Related ⌊ k ⌋ {ℓ₂} {ℓ₁})
-  sym {equivalence} = Eq.sym
-  sym {bijection}   = Inv.sym
-
   infix  3 _∎
   infixr 2 _∼⟨_⟩_ _↔⟨_⟩_ _↔⟨⟩_ _≡⟨_⟩_
 
   _∼⟨_⟩_ : ∀ {k x y z} (X : Set x) {Y : Set y} {Z : Set z} →
            X ∼[ k ] Y → Y ∼[ k ] Z → X ∼[ k ] Z
-  _ ∼⟨ X↝Y ⟩ Y↝Z = trans X↝Y Y↝Z
+  _ ∼⟨ X↝Y ⟩ Y↝Z = K-trans X↝Y Y↝Z
 
   -- Isomorphisms can be combined with any other kind of relatedness.
 
@@ -305,37 +330,15 @@ module EquationalReasoning where
   X ≡⟨ X≡Y ⟩ Y⇔Z = X ∼⟨ ≡⇒ X≡Y ⟩ Y⇔Z
 
   _∎ : ∀ {k x} (X : Set x) → X ∼[ k ] X
-  X ∎ = refl
+  X ∎ = K-refl
 
--- For a symmetric kind and a fixed universe level we can construct a
--- setoid.
-
-setoid : Symmetric-kind → (ℓ : Level) → Setoid _ _
-setoid k ℓ = record
-  { Carrier       = Set ℓ
-  ; _≈_           = Related ⌊ k ⌋
-  ; isEquivalence =
-      record {refl = _ ∎; sym = sym; trans = _∼⟨_⟩_ _}
-  } where open EquationalReasoning
-
--- For an arbitrary kind and a fixed universe level we can construct a
--- preorder.
-
-preorder : Kind → (ℓ : Level) → Preorder _ _ _
-preorder k ℓ = record
-  { Carrier    = Set ℓ
-  ; _≈_        = _↔_
-  ; _∼_        = Related k
-  ; isPreorder = record
-    { isEquivalence = Setoid.isEquivalence (setoid bijection ℓ)
-    ; reflexive     = ↔⇒
-    ; trans         = _∼⟨_⟩_ _
-    }
-  } where open EquationalReasoning
+  sym = SK-sym
+  {-# WARNING_ON_USAGE sym
+  "Warning: EquationalReasoning.sym was deprecated in v0.17.
+  Please use SK-sym instead."
+  #-}
 
 ------------------------------------------------------------------------
--- Some induced relations
-
 -- Every unary relation induces a preorder and, for symmetric kinds,
 -- an equivalence. (No claim is made that these relations are unique.)
 
@@ -346,24 +349,29 @@ InducedRelation₁ k S = λ x y → S x ∼[ k ] S y
 InducedPreorder₁ : Kind → ∀ {a s} {A : Set a} →
                    (A → Set s) → Preorder _ _ _
 InducedPreorder₁ k S = record
-  { _≈_        = P._≡_
+  { _≈_        = _≡_
   ; _∼_        = InducedRelation₁ k S
   ; isPreorder = record
     { isEquivalence = P.isEquivalence
     ; reflexive     = reflexive ∘
-                      Setoid.reflexive (setoid bijection _) ∘
+                      K-reflexive ∘
                       P.cong S
-    ; trans         = trans
+    ; trans         = K-trans
     }
-  } where open Preorder (preorder _ _)
+  } where open Preorder (K-preorder _ _)
 
 InducedEquivalence₁ : Symmetric-kind → ∀ {a s} {A : Set a} →
                       (A → Set s) → Setoid _ _
 InducedEquivalence₁ k S = record
   { _≈_           = InducedRelation₁ ⌊ k ⌋ S
-  ; isEquivalence = record {refl = refl; sym = sym; trans = trans}
-  } where open Setoid (setoid _ _)
+  ; isEquivalence = record
+    { refl  = K-refl
+    ; sym   = SK-sym
+    ; trans = K-trans
+    }
+  }
 
+------------------------------------------------------------------------
 -- Every binary relation induces a preorder and, for symmetric kinds,
 -- an equivalence. (No claim is made that these relations are unique.)
 
@@ -374,18 +382,18 @@ InducedRelation₂ k _S_ = λ x y → ∀ {z} → (z S x) ∼[ k ] (z S y)
 InducedPreorder₂ : Kind → ∀ {a b s} {A : Set a} {B : Set b} →
                    (A → B → Set s) → Preorder _ _ _
 InducedPreorder₂ k _S_ = record
-  { _≈_        = P._≡_
+  { _≈_        = _≡_
   ; _∼_        = InducedRelation₂ k _S_
   ; isPreorder = record
     { isEquivalence = P.isEquivalence
     ; reflexive     = λ x≡y {z} →
                         reflexive $
-                        Setoid.reflexive (setoid bijection _) $
+                        K-reflexive $
                         P.cong (_S_ z) x≡y
 
-    ; trans         = λ i↝j j↝k → trans i↝j j↝k
+    ; trans         = λ i↝j j↝k → K-trans i↝j j↝k
     }
-  } where open Preorder (preorder _ _)
+  } where open Preorder (K-preorder _ _)
 
 InducedEquivalence₂ : Symmetric-kind →
                       ∀ {a b s} {A : Set a} {B : Set b} →
@@ -397,4 +405,23 @@ InducedEquivalence₂ k _S_ = record
     ; sym   = λ i↝j → sym i↝j
     ; trans = λ i↝j j↝k → trans i↝j j↝k
     }
-  } where open Setoid (setoid _ _)
+  } where open Setoid (SK-setoid _ _)
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 0.17
+
+preorder = K-preorder
+{-# WARNING_ON_USAGE preorder
+"Warning: preorder was deprecated in v0.17.
+Please use K-preorder instead."
+#-}
+setoid = SK-setoid
+{-# WARNING_ON_USAGE setoid
+"Warning: setoid was deprecated in v0.17.
+Please use SK-setoid instead."
+#-}

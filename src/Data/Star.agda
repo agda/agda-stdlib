@@ -4,9 +4,11 @@
 -- The reflexive transitive closures of McBride, Norell and Jansson
 --
 -- This module is DEPRECATED. Please use the
--- Relation.Binary.Closure.ReflexiveTransitive module directly.
+-- Relation.Binary.Construct.Closure.ReflexiveTransitive module directly
 ------------------------------------------------------------------------
+
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Star where
 
-open import Relation.Binary.Closure.ReflexiveTransitive public
+open import Relation.Binary.Construct.Closure.ReflexiveTransitive public

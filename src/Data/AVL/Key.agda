@@ -1,68 +1,67 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Keys for AVL trees
--- The key type extended with a new minimum and maximum.
+-- Keys for AVL trees -- the original key type extended with a new
+-- minimum and maximum.
 -----------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_ ; refl)
 
 module Data.AVL.Key
-       {k r} (Key : Set k)
-       {_<_ : Rel Key r}
-       (isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_)
-       where
-
-open IsStrictTotalOrder isStrictTotalOrder
+  {a ℓ₁ ℓ₂} (strictTotalOrder : StrictTotalOrder a ℓ₁ ℓ₂)
+  where
 
 open import Level
 open import Data.Empty
 open import Data.Unit
 open import Data.Product
+open import Relation.Binary.PropositionalEquality using (_≡_ ; refl)
+open import Relation.Nullary.Construct.Add.Extrema
+  as AddExtremaToSet using (_±)
+open import Relation.Binary.Construct.Add.Extrema.Strict
+  as AddExtremaToOrder using ()
 
-infix 5 [_]
+open StrictTotalOrder strictTotalOrder renaming (Carrier to Key)
 
-data Key⁺ : Set k where
-  ⊥⁺ ⊤⁺ : Key⁺
-  [_]   : (k : Key) → Key⁺
+-----------------------------------------------------------------------
+-- Keys are augmented with new extrema (i.e. an artificial minimum and
+-- maximum)
 
-[_]-injective : ∀ {k l} → [ k ] ≡ [ l ] → k ≡ l
-[_]-injective refl = refl
+Key⁺ : Set a
+Key⁺ = Key ±
 
--- An extended strict ordering relation.
+open AddExtremaToSet public
+  using ([_]; [_]-injective)
+  renaming
+  ( ⊥± to ⊥⁺
+  ; ⊤± to ⊤⁺
+  )
 
-infix 4 _<⁺_
+-----------------------------------------------------------------------
+-- The order is extended in a corresponding manner
 
-_<⁺_ : Key⁺ → Key⁺ → Set r
-⊥⁺    <⁺ [ _ ] = Lift ⊤
-⊥⁺    <⁺ ⊤⁺    = Lift ⊤
-[ x ] <⁺ [ y ] = x < y
-[ _ ] <⁺ ⊤⁺    = Lift ⊤
-_     <⁺ _     = Lift ⊥
+open AddExtremaToOrder _<_ public
+  using () renaming
+  (_<±_    to _<⁺_
+  ; [_]    to [_]ᴿ
+  ; ⊥±<⊤±  to ⊥⁺<⊤⁺
+  ; [_]<⊤± to [_]<⊤⁺
+  ; ⊥±<[_] to ⊥⁺<[_]
+  )
 
 -- A pair of ordering constraints.
 
 infix 4 _<_<_
 
-_<_<_ : Key⁺ → Key → Key⁺ → Set r
+_<_<_ : Key⁺ → Key → Key⁺ → Set (a ⊔ ℓ₂)
 l < x < u = l <⁺ [ x ] × [ x ] <⁺ u
 
--- _<⁺_ is transitive.
+-- Properties
+
+⊥⁺<[_]<⊤⁺ : ∀ k → ⊥⁺ < k < ⊤⁺
+⊥⁺<[ k ]<⊤⁺ = ⊥⁺<[ k ] , [ k ]<⊤⁺
 
 trans⁺ : ∀ l {m u} → l <⁺ m → m <⁺ u → l <⁺ u
-
-trans⁺ [ l ] {m = [ m ]} {u = [ u ]} l<m m<u = trans l<m m<u
-
-trans⁺ ⊥⁺    {u = [ _ ]} _ _ = _
-trans⁺ ⊥⁺    {u = ⊤⁺}    _ _ = _
-trans⁺ [ _ ] {u = ⊤⁺}    _ _ = _
-
-trans⁺ _     {m = ⊥⁺}    {u = ⊥⁺}    _ (lift ())
-trans⁺ _     {m = [ _ ]} {u = ⊥⁺}    _ (lift ())
-trans⁺ _     {m = ⊤⁺}    {u = ⊥⁺}    _ (lift ())
-trans⁺ [ _ ] {m = ⊥⁺}    {u = [ _ ]} (lift ()) _
-trans⁺ [ _ ] {m = ⊤⁺}    {u = [ _ ]} _ (lift ())
-trans⁺ ⊤⁺    {m = ⊥⁺}                (lift ()) _
-trans⁺ ⊤⁺    {m = [ _ ]}             (lift ()) _
-trans⁺ ⊤⁺    {m = ⊤⁺}                (lift ()) _
+trans⁺ l = AddExtremaToOrder.<±-trans _<_ trans

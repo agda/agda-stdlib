@@ -4,6 +4,8 @@
 -- Subsets of finite sets
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Fin.Subset where
 
 open import Algebra
@@ -15,8 +17,8 @@ open import Data.Fin using (Fin; zero; suc)
 open import Data.List.Base using (List; foldr; foldl)
 open import Data.Nat using (ℕ)
 open import Data.Product using (∃)
-open import Data.Vec hiding (_∈_; foldr; foldl)
-import Data.Vec.Relation.Pointwise.Extensional as Pointwise
+open import Data.Vec hiding (foldr; foldl)
+import Data.Vec.Relation.Binary.Pointwise.Extensional as Pointwise
 open import Relation.Nullary
 
 ------------------------------------------------------------------------
@@ -75,11 +77,11 @@ infixr 6 _∪_
 ∁ : ∀ {n} → Op₁ (Subset n)
 ∁ p = map not p
 
--- Union
+-- Intersection
 _∩_ : ∀ {n} → Op₂ (Subset n)
 p ∩ q = zipWith _∧_ p q
 
--- Intersection
+-- Union
 _∪_ : ∀ {n} → Op₂ (Subset n)
 p ∪ q = zipWith _∨_ p q
 
@@ -104,6 +106,5 @@ Nonempty p = ∃ λ f → f ∈ p
 Empty : ∀ {n} (p : Subset n) → Set
 Empty p = ¬ Nonempty p
 
--- Point-wise lifting of properties.
-Lift : ∀ {n} → (Fin n → Set) → (Subset n → Set)
+Lift : ∀ {n ℓ} → (Fin n → Set ℓ) → (Subset n → Set ℓ)
 Lift P p = ∀ {x} → x ∈ p → P x

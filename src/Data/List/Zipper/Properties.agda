@@ -4,12 +4,15 @@
 -- List Zipper-related properties
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.List.Zipper.Properties where
 
-open import Data.Maybe.Base as Maybe using (Maybe ; just ; nothing)
 open import Data.List.Base as List using (List ; [] ; _∷_)
 open import Data.List.Properties
 open import Data.List.Zipper
+open import Data.Maybe.Base using (Maybe; just; nothing)
+open import Data.Maybe.Relation.Unary.All using (All; just; nothing)
 open import Relation.Binary.PropositionalEquality
 open ≡-Reasoning
 open import Function
@@ -21,7 +24,7 @@ module _ {a} {A : Set a} where
 
  -- Stability under moving left or right
 
- toList-left-identity : (zp : Zipper A) → Maybe.All ((_≡_ on toList) zp) (left zp)
+ toList-left-identity : (zp : Zipper A) → All ((_≡_ on toList) zp) (left zp)
  toList-left-identity (mkZipper []        val) = nothing
  toList-left-identity (mkZipper (x ∷ ctx) val) = just $′ begin
    List.reverse (x ∷ ctx) List.++ val
@@ -31,7 +34,7 @@ module _ {a} {A : Set a} where
    toList (mkZipper ctx (x ∷ val))
      ∎
 
- toList-right-identity : (zp : Zipper A) → Maybe.All ((_≡_ on toList) zp) (right zp)
+ toList-right-identity : (zp : Zipper A) → All ((_≡_ on toList) zp) (right zp)
  toList-right-identity (mkZipper ctx [])        = nothing
  toList-right-identity (mkZipper ctx (x ∷ val)) = just $′ begin
    List.reverse ctx List.++ x ∷ val

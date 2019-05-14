@@ -4,20 +4,30 @@
 -- Some properties imply others
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Relation.Binary.Consequences where
 
-open import Relation.Binary.Core hiding (refl)
-open import Relation.Nullary using (yes; no)
-open import Relation.Unary using (∁)
-open import Function using (_∘_; flip)
-open import Data.Sum using (inj₁; inj₂)
+open import Data.Maybe.Base using (just; nothing)
+open import Data.Sum as Sum using (inj₁; inj₂)
 open import Data.Product using (_,_)
 open import Data.Empty using (⊥-elim)
+open import Function using (_∘_; flip)
+open import Level using (Level)
+open import Relation.Binary.Core
+open import Relation.Nullary using (yes; no)
+open import Relation.Unary using (∁)
+
+private
+  variable
+    a b ℓ ℓ₁ ℓ₂ p : Level
+    A : Set a
+    B : Set b
 
 ------------------------------------------------------------------------
 -- Substitutive properties
 
-module _ {a ℓ p} {A : Set a} {_∼_ : Rel A ℓ} (P : Rel A p) where
+module _ {_∼_ : Rel A ℓ} (P : Rel A p) where
 
   subst⟶respˡ : Substitutive _∼_ p → P Respectsˡ _∼_
   subst⟶respˡ subst {y} x'∼x Px'y = subst (flip P y) x'∼x Px'y
@@ -28,15 +38,15 @@ module _ {a ℓ p} {A : Set a} {_∼_ : Rel A ℓ} (P : Rel A p) where
   subst⟶resp₂ : Substitutive _∼_ p → P Respects₂ _∼_
   subst⟶resp₂ subst = subst⟶respʳ subst , subst⟶respˡ subst
 
-module _ {a ℓ p} {A : Set a} {∼ : Rel A ℓ} {P : A → Set p} where
+module _ {_∼_ : Rel A ℓ} {P : A → Set p} where
 
-  P-resp⟶¬P-resp : Symmetric ∼ → P Respects ∼ → (∁ P) Respects ∼
+  P-resp⟶¬P-resp : Symmetric _∼_ → P Respects _∼_ → (∁ P) Respects _∼_
   P-resp⟶¬P-resp sym resp x∼y ¬Px Py = ¬Px (resp (sym x∼y) Py)
 
 ------------------------------------------------------------------------
 -- Proofs for non-strict orders
 
-module _ {a ℓ₁ ℓ₂} {A : Set a} {_≈_ : Rel A ℓ₁} {_≤_ : Rel A ℓ₂} where
+module _ {_≈_ : Rel A ℓ₁} {_≤_ : Rel A ℓ₂} where
 
   total⟶refl : _≤_ Respects₂ _≈_ → Symmetric _≈_ →
                  Total _≤_ → _≈_ ⇒ _≤_
@@ -55,15 +65,15 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} {_≈_ : Rel A ℓ₁} {_≤_ : Rel A ℓ
 ------------------------------------------------------------------------
 -- Proofs for strict orders
 
-module _ {a ℓ₁ ℓ₂} {A : Set a} {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ₂} where
+module _ {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ₂} where
 
   trans∧irr⟶asym : Reflexive _≈_ → Transitive _<_ →
-                     Irreflexive _≈_ _<_ → Asymmetric _<_
+                   Irreflexive _≈_ _<_ → Asymmetric _<_
   trans∧irr⟶asym refl trans irrefl x<y y<x =
     irrefl refl (trans x<y y<x)
 
   irr∧antisym⟶asym : Irreflexive _≈_ _<_ → Antisymmetric _≈_ _<_ →
-                       Asymmetric _<_
+                     Asymmetric _<_
   irr∧antisym⟶asym irrefl antisym x<y y<x =
     irrefl (antisym x<y y<x) x<y
 
@@ -100,34 +110,57 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ�
   ... | tri> x≮y _ _ = no  x≮y
 
   trans∧tri⟶respʳ≈ : Symmetric _≈_ → Transitive _≈_ →
-                       Transitive _<_ → Trichotomous _≈_ _<_ →
-                       _<_ Respectsʳ _≈_
+                     Transitive _<_ → Trichotomous _≈_ _<_ →
+                     _<_ Respectsʳ _≈_
   trans∧tri⟶respʳ≈ sym ≈-tr <-tr tri {x} {y} {z} y≈z x<y with tri x z
   ... | tri< x<z _ _ = x<z
   ... | tri≈ _ x≈z _ = ⊥-elim (tri⟶irr tri (≈-tr x≈z (sym y≈z)) x<y)
   ... | tri> _ _ z<x = ⊥-elim (tri⟶irr tri (sym y≈z) (<-tr z<x x<y))
 
   trans∧tri⟶respˡ≈ : Transitive _≈_ →
-                       Transitive _<_ → Trichotomous _≈_ _<_ →
-                       _<_ Respectsˡ _≈_
+                     Transitive _<_ → Trichotomous _≈_ _<_ →
+                     _<_ Respectsˡ _≈_
   trans∧tri⟶respˡ≈ ≈-tr <-tr tri {z} {_} {y} x≈y x<z with tri y z
   ... | tri< y<z _ _ = y<z
   ... | tri≈ _ y≈z _ = ⊥-elim (tri⟶irr tri (≈-tr x≈y y≈z) x<z)
   ... | tri> _ _ z<y = ⊥-elim (tri⟶irr tri x≈y (<-tr x<z z<y))
 
   trans∧tri⟶resp≈ : Symmetric _≈_ → Transitive _≈_ →
-                      Transitive _<_ → Trichotomous _≈_ _<_ →
-                      _<_ Respects₂ _≈_
+                    Transitive _<_ → Trichotomous _≈_ _<_ →
+                    _<_ Respects₂ _≈_
   trans∧tri⟶resp≈ sym ≈-tr <-tr tri =
     trans∧tri⟶respʳ≈ sym ≈-tr <-tr tri ,
     trans∧tri⟶respˡ≈ ≈-tr <-tr tri
 
 ------------------------------------------------------------------------
+-- Without Loss of Generality
+
+module _  {_R_ : Rel A ℓ₁} {Q : Rel A ℓ₂} where
+
+  wlog : Total _R_ → Symmetric Q →
+         (∀ a b → a R b → Q a b) →
+         ∀ a b → Q a b
+  wlog r-total q-sym prf a b with r-total a b
+  ... | inj₁ aRb = prf a b aRb
+  ... | inj₂ bRa = q-sym (prf b a bRa)
+
+
+------------------------------------------------------------------------
 -- Other proofs
 
-module _ {a b p q} {A : Set a} {B : Set b }
-         {P : REL A B p} {Q : REL A B q}
-         where
+module _ {P : REL A B p} where
+
+  dec⟶weaklyDec : Decidable P → WeaklyDecidable P
+  dec⟶weaklyDec dec x y with dec x y
+  ... | yes p = just p
+  ... | no _ = nothing
+
+module _ {P : REL A B ℓ₁} {Q : REL A B ℓ₂} where
 
   map-NonEmpty : P ⇒ Q → NonEmpty P → NonEmpty Q
   map-NonEmpty f x = nonEmpty (f (NonEmpty.proof x))
+
+module _ {P : REL A B ℓ₁} {Q : REL B A ℓ₂} where
+
+  flip-Connex : Connex P Q → Connex Q P
+  flip-Connex f x y = Sum.swap (f y x)

@@ -4,8 +4,12 @@
 -- Propositional (intensional) equality
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Relation.Binary.PropositionalEquality where
 
+import Axiom.Extensionality.Propositional as Ext
+open import Axiom.UniquenessOfIdentityProofs
 open import Function
 open import Function.Equality using (Π; _⟶_; ≡-setoid)
 open import Level
@@ -14,41 +18,44 @@ open import Data.Product
 open import Relation.Nullary using (yes ; no)
 open import Relation.Unary using (Pred)
 open import Relation.Binary
-import Relation.Binary.Indexed as I
-open import Relation.Binary.HeterogeneousEquality.Core as H using (_≅_)
+open import Relation.Binary.Indexed.Heterogeneous
+  using (IndexedSetoid)
+import Relation.Binary.Indexed.Heterogeneous.Construct.Trivial
+  as Trivial
 
--- Some of the definitions can be found in the following modules:
+private
+  variable
+    a b c ℓ p : Level
+    A : Set a
+    B : Set b
+    C : Set c
 
-open import Relation.Binary.Core public using (_≡_; refl; _≢_)
+------------------------------------------------------------------------
+-- Re-export contents of core module
+
 open import Relation.Binary.PropositionalEquality.Core public
 
 ------------------------------------------------------------------------
 -- Some properties
 
-subst₂ : ∀ {a b p} {A : Set a} {B : Set b} (P : A → B → Set p)
-         {x₁ x₂ y₁ y₂} → x₁ ≡ x₂ → y₁ ≡ y₂ → P x₁ y₁ → P x₂ y₂
-subst₂ P refl refl p = p
+subst₂ : ∀ (_∼_ : REL A B ℓ) {x y u v} → x ≡ y → u ≡ v → x ∼ u → y ∼ v
+subst₂ _ refl refl p = p
 
-cong : ∀ {a b} {A : Set a} {B : Set b}
-       (f : A → B) {x y} → x ≡ y → f x ≡ f y
-cong f refl = refl
-
-cong-app : ∀ {a b} {A : Set a} {B : A → Set b} {f g : (x : A) → B x} →
+cong-app : ∀ {A : Set a} {B : A → Set b} {f g : (x : A) → B x} →
            f ≡ g → (x : A) → f x ≡ g x
 cong-app refl x = refl
 
-cong₂ : ∀ {a b c} {A : Set a} {B : Set b} {C : Set c}
-        (f : A → B → C) {x y u v} → x ≡ y → u ≡ v → f x u ≡ f y v
+cong₂ : ∀ (f : A → B → C) {x y u v} → x ≡ y → u ≡ v → f x u ≡ f y v
 cong₂ f refl refl = refl
 
-setoid : ∀ {a} → Set a → Setoid _ _
+setoid : Set a → Setoid _ _
 setoid A = record
   { Carrier       = A
   ; _≈_           = _≡_
   ; isEquivalence = isEquivalence
   }
 
-decSetoid : ∀ {a} {A : Set a} → Decidable (_≡_ {A = A}) → DecSetoid _ _
+decSetoid : Decidable {A = A} _≡_ → DecSetoid _ _
 decSetoid dec = record
   { _≈_              = _≡_
   ; isDecEquivalence = record
@@ -57,14 +64,14 @@ decSetoid dec = record
       }
   }
 
-isPreorder : ∀ {a} {A : Set a} → IsPreorder {A = A} _≡_ _≡_
+isPreorder : IsPreorder {A = A} _≡_ _≡_
 isPreorder = record
   { isEquivalence = isEquivalence
   ; reflexive     = id
   ; trans         = trans
   }
 
-preorder : ∀ {a} → Set a → Preorder _ _ _
+preorder : Set a → Preorder _ _ _
 preorder A = record
   { Carrier    = A
   ; _≈_        = _≡_
@@ -77,22 +84,21 @@ preorder A = record
 
 infix 4 _≗_
 
-_→-setoid_ : ∀ {a b} (A : Set a) (B : Set b) → Setoid _ _
-A →-setoid B = ≡-setoid A (Setoid.indexedSetoid (setoid B))
+_→-setoid_ : ∀ (A : Set a) (B : Set b) → Setoid _ _
+A →-setoid B = ≡-setoid A (Trivial.indexedSetoid (setoid B))
 
-_≗_ : ∀ {a b} {A : Set a} {B : Set b} (f g : A → B) → Set _
-_≗_ {A = A} {B} = Setoid._≈_ (A →-setoid B)
+_≗_ : (f g : A → B) → Set _
+_≗_ {A = A} {B = B} = Setoid._≈_ (A →-setoid B)
 
-:→-to-Π : ∀ {a b₁ b₂} {A : Set a} {B : I.Setoid _ b₁ b₂} →
-          ((x : A) → I.Setoid.Carrier B x) → Π (setoid A) B
-:→-to-Π {B = B} f = record { _⟨$⟩_ = f; cong = cong′ }
-  where
-  open I.Setoid B using (_≈_)
+:→-to-Π : ∀ {A : Set a} {B : IndexedSetoid A b ℓ} →
+          ((x : A) → IndexedSetoid.Carrier B x) → Π (setoid A) B
+:→-to-Π {B = B} f = record
+  { _⟨$⟩_ = f
+  ; cong  = λ { refl → IndexedSetoid.refl B }
+  }
+  where open IndexedSetoid B using (_≈_)
 
-  cong′ : ∀ {x y} → x ≡ y → f x ≈ f y
-  cong′ refl = I.Setoid.refl B
-
-→-to-⟶ : ∀ {a b₁ b₂} {A : Set a} {B : Setoid b₁ b₂} →
+→-to-⟶ : ∀ {A : Set a} {B : Setoid b ℓ} →
          (A → Setoid.Carrier B) → setoid A ⟶ B
 →-to-⟶ = :→-to-Π
 
@@ -102,109 +108,111 @@ _≗_ {A = A} {B} = Setoid._≈_ (A →-setoid B)
 -- Inspect can be used when you want to pattern match on the result r
 -- of some expression e, and you also need to "remember" that r ≡ e.
 
-record Reveal_·_is_ {a b} {A : Set a} {B : A → Set b}
+-- See README.Inspect for an explanation of how/why to use this.
+
+record Reveal_·_is_ {A : Set a} {B : A → Set b}
                     (f : (x : A) → B x) (x : A) (y : B x) :
                     Set (a ⊔ b) where
   constructor [_]
   field eq : f x ≡ y
 
-inspect : ∀ {a b} {A : Set a} {B : A → Set b}
+inspect : ∀ {A : Set a} {B : A → Set b}
           (f : (x : A) → B x) (x : A) → Reveal f · x is f x
 inspect f x = [ refl ]
 
--- Example usage:
-
--- f x y with g x | inspect g x
--- f x y | c z | [ eq ] = ...
-
 ------------------------------------------------------------------------
--- Convenient syntax for equational reasoning
+-- Propositionality
 
--- This is special instance of Relation.Binary.EqReasoning.
--- Rather than instantiating the latter with (setoid A),
--- we reimplement equation chains from scratch
--- since then goals are printed much more readably.
-
-module ≡-Reasoning {a} {A : Set a} where
-
-  infix  3 _∎
-  infixr 2 _≡⟨⟩_ _≡⟨_⟩_ _≅⟨_⟩_
-  infix  1 begin_
-
-  begin_ : ∀{x y : A} → x ≡ y → x ≡ y
-  begin_ x≡y = x≡y
-
-  _≡⟨⟩_ : ∀ (x {y} : A) → x ≡ y → x ≡ y
-  _ ≡⟨⟩ x≡y = x≡y
-
-  _≡⟨_⟩_ : ∀ (x {y z} : A) → x ≡ y → y ≡ z → x ≡ z
-  _ ≡⟨ x≡y ⟩ y≡z = trans x≡y y≡z
-
-  _≅⟨_⟩_ : ∀ (x {y z} : A) → x ≅ y → y ≡ z → x ≡ z
-  _ ≅⟨ x≅y ⟩ y≡z = trans (H.≅-to-≡ x≅y) y≡z
-
-  _∎ : ∀ (x : A) → x ≡ x
-  _∎ _ = refl
-
-------------------------------------------------------------------------
--- Functional extensionality
-
--- If _≡_ were extensional, then the following statement could be
--- proved.
-
-Extensionality : (a b : Level) → Set _
-Extensionality a b =
-  {A : Set a} {B : A → Set b} {f g : (x : A) → B x} →
-  (∀ x → f x ≡ g x) → f ≡ g
-
--- If extensionality holds for a given universe level, then it also
--- holds for lower ones.
-
-extensionality-for-lower-levels :
-  ∀ {a₁ b₁} a₂ b₂ →
-  Extensionality (a₁ ⊔ a₂) (b₁ ⊔ b₂) → Extensionality a₁ b₁
-extensionality-for-lower-levels a₂ b₂ ext f≡g =
-  cong (λ h → lower ∘ h ∘ lift) $
-    ext (cong (lift {ℓ = b₂}) ∘ f≡g ∘ lower {ℓ = a₂})
-
--- Functional extensionality implies a form of extensionality for
--- Π-types.
-
-∀-extensionality :
-  ∀ {a b} →
-  Extensionality a (suc b) →
-  {A : Set a} (B₁ B₂ : A → Set b) →
-  (∀ x → B₁ x ≡ B₂ x) → (∀ x → B₁ x) ≡ (∀ x → B₂ x)
-∀-extensionality ext B₁ B₂ B₁≡B₂ with ext B₁≡B₂
-∀-extensionality ext B .B  B₁≡B₂ | refl = refl
-
-------------------------------------------------------------------------
--- Proof irrelevance
-
-isPropositional : ∀ {a} → Set a → Set a
+isPropositional : Set a → Set a
 isPropositional A = (a b : A) → a ≡ b
 
-IrrelevantPred : ∀ {a ℓ} {A : Set a} → Pred A ℓ → Set (ℓ ⊔ a)
-IrrelevantPred P = ∀ {x} → isPropositional (P x)
+------------------------------------------------------------------------
+-- Various equality rearrangement lemmas
 
-IrrelevantRel : ∀ {a b ℓ} {A : Set a} {B : Set b} →
-                REL A B ℓ → Set (ℓ ⊔ a ⊔ b)
-IrrelevantRel _~_ = ∀ {x y} → isPropositional (x ~ y)
+trans-injectiveˡ : ∀ {x y z : A} {p₁ p₂ : x ≡ y} (q : y ≡ z) →
+                   trans p₁ q ≡ trans p₂ q → p₁ ≡ p₂
+trans-injectiveˡ refl = subst₂ _≡_ (trans-reflʳ _) (trans-reflʳ _)
 
-≡-irrelevance : ∀ {a} {A : Set a} → IrrelevantRel (_≡_ {A = A})
-≡-irrelevance refl refl = refl
+trans-injectiveʳ : ∀ {x y z : A} (p : x ≡ y) {q₁ q₂ : y ≡ z} →
+                   trans p q₁ ≡ trans p q₂ → q₁ ≡ q₂
+trans-injectiveʳ refl eq = eq
 
-module _ {a} {A : Set a} (_≟_ : Decidable (_≡_ {A = A})) {a b : A} where
+cong-id : ∀ {x y : A} (p : x ≡ y) → cong id p ≡ p
+cong-id refl = refl
 
-  ≡-≟-identity : (eq : a ≡ b) → a ≟ b ≡ yes eq
-  ≡-≟-identity eq with a ≟ b
-  ... | yes p = cong yes (≡-irrelevance p eq)
+cong-∘ : ∀ {x y : A} {f : B → C} {g : A → B} (p : x ≡ y) →
+         cong (f ∘ g) p ≡ cong f (cong g p)
+cong-∘ refl = refl
+
+module _ {P : Pred A p} {x y : A} where
+
+  subst-injective : ∀ (x≡y : x ≡ y) {p q : P x} →
+                    subst P x≡y p ≡ subst P x≡y q → p ≡ q
+  subst-injective refl p≡q = p≡q
+
+  subst-subst : ∀ {z} (x≡y : x ≡ y) {y≡z : y ≡ z} {p : P x} →
+                subst P y≡z (subst P x≡y p) ≡ subst P (trans x≡y y≡z) p
+  subst-subst refl = refl
+
+  subst-subst-sym : (x≡y : x ≡ y) {p : P y} →
+                    subst P x≡y (subst P (sym x≡y) p) ≡ p
+  subst-subst-sym refl = refl
+
+  subst-sym-subst : (x≡y : x ≡ y) {p : P x} →
+                    subst P (sym x≡y) (subst P x≡y p) ≡ p
+  subst-sym-subst refl = refl
+
+subst-∘ : ∀ {x y : A} {P : Pred B p} {f : A → B}
+          (x≡y : x ≡ y) {p : P (f x)} →
+          subst (P ∘ f) x≡y p ≡ subst P (cong f x≡y) p
+subst-∘ refl = refl
+
+subst-application : ∀ {a₁ a₂ b₁ b₂} {A₁ : Set a₁} {A₂ : Set a₂}
+                    (B₁ : A₁ → Set b₁) {B₂ : A₂ → Set b₂}
+                    {f : A₂ → A₁} {x₁ x₂ : A₂} {y : B₁ (f x₁)}
+                    (g : ∀ x → B₁ (f x) → B₂ x) (eq : x₁ ≡ x₂) →
+                    subst B₂ eq (g x₁ y) ≡ g x₂ (subst B₁ (cong f eq) y)
+subst-application _ _ refl = refl
+
+-- A lemma that is very similar to Lemma 2.4.3 from the HoTT book.
+
+naturality : ∀ {x y} {x≡y : x ≡ y} {f g : A → B}
+             (f≡g : ∀ x → f x ≡ g x) →
+             trans (cong f x≡y) (f≡g y) ≡ trans (f≡g x) (cong g x≡y)
+naturality {x = x} {x≡y = refl} f≡g =
+  f≡g x               ≡⟨ sym (trans-reflʳ _) ⟩
+  trans (f≡g x) refl  ∎
+  where open ≡-Reasoning
+
+-- A lemma that is very similar to Corollary 2.4.4 from the HoTT book.
+
+cong-≡id : ∀ {f : A → A} {x : A} (f≡id : ∀ x → f x ≡ x) →
+           cong f (f≡id x) ≡ f≡id (f x)
+cong-≡id {f = f} {x} f≡id =
+  cong f fx≡x                                    ≡⟨ sym (trans-reflʳ _) ⟩
+  trans (cong f fx≡x) refl                       ≡⟨ cong (trans _) (sym (trans-symʳ fx≡x)) ⟩
+  trans (cong f fx≡x) (trans fx≡x (sym fx≡x))    ≡⟨ sym (trans-assoc (cong f fx≡x)) ⟩
+  trans (trans (cong f fx≡x) fx≡x) (sym fx≡x)    ≡⟨ cong (λ p → trans p (sym _)) (naturality f≡id) ⟩
+  trans (trans f²x≡x (cong id fx≡x)) (sym fx≡x)  ≡⟨ cong (λ p → trans (trans f²x≡x p) (sym fx≡x)) (cong-id _) ⟩
+  trans (trans f²x≡x fx≡x) (sym fx≡x)            ≡⟨ trans-assoc f²x≡x ⟩
+  trans f²x≡x (trans fx≡x (sym fx≡x))            ≡⟨ cong (trans _) (trans-symʳ fx≡x) ⟩
+  trans f²x≡x refl                               ≡⟨ trans-reflʳ _ ⟩
+  f≡id (f x)                                     ∎
+  where open ≡-Reasoning; fx≡x = f≡id x; f²x≡x = f≡id (f x)
+
+module _ (_≟_ : Decidable {A = A} _≡_) where
+
+  ≡-≟-identity : ∀ {x y : A} (eq : x ≡ y) → x ≟ y ≡ yes eq
+  ≡-≟-identity {x} {y} eq with x ≟ y
+  ... | yes p = cong yes (Decidable⇒UIP.≡-irrelevant _≟_ p eq)
   ... | no ¬p = ⊥-elim (¬p eq)
 
-  ≢-≟-identity : a ≢ b → ∃ λ ¬eq → a ≟ b ≡ no ¬eq
-  ≢-≟-identity ¬eq with a ≟ b
+  ≢-≟-identity : ∀ {x y : A} → x ≢ y → ∃ λ ¬eq → x ≟ y ≡ no ¬eq
+  ≢-≟-identity {x} {y} ¬eq with x ≟ y
   ... | yes p = ⊥-elim (¬eq p)
   ... | no ¬p = ¬p , refl
+
+
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
@@ -212,4 +220,20 @@ module _ {a} {A : Set a} (_≟_ : Decidable (_≡_ {A = A})) {a b : A} where
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
-proof-irrelevance = ≡-irrelevance
+-- Version 1.0
+
+Extensionality = Ext.Extensionality
+{-# WARNING_ON_USAGE Extensionality
+"Warning: Extensionality was deprecated in v1.0.
+Please use Extensionality from `Axiom.Extensionality.Propositional` instead."
+#-}
+extensionality-for-lower-levels = Ext.lower-extensionality
+{-# WARNING_ON_USAGE extensionality-for-lower-levels
+"Warning: extensionality-for-lower-levels was deprecated in v1.0.
+Please use lower-extensionality from `Axiom.Extensionality.Propositional` instead."
+#-}
+∀-extensionality = Ext.∀-extensionality
+{-# WARNING_ON_USAGE ∀-extensionality
+"Warning: ∀-extensionality was deprecated in v1.0.
+Please use ∀-extensionality from `Axiom.Extensionality.Propositional` instead."
+#-}

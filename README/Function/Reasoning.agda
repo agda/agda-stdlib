@@ -6,6 +6,8 @@
 -- described in: https://stackoverflow.com/q/22676703/3168666
 ------------------------------------------------------------------------
 
+{-# OPTIONS --with-K #-}
+
 module README.Function.Reasoning where
 
 -- Function.Reasoning exports a flipped application (_|>_) combinator
@@ -33,10 +35,10 @@ module _ {A B C : Set} {A→B : A → B} {B→C : B → C} where
 open import Data.Nat
 open import Data.List.Base
 open import Data.Char.Base
-open import Data.String using (String ; toList ; fromList ; _==_)
+open import Data.String using (String; toList; fromList; _==_)
 open import Function
-open import Data.Bool
-open import Data.Product as P using (_×_ ; <_,_> ; uncurry ; proj₁)
+open import Data.Bool hiding (_≤?_)
+open import Data.Product as P using (_×_; <_,_>; uncurry; proj₁)
 open import Agda.Builtin.Equality
 
 -- This can give us for instance this decomposition of a function

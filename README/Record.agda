@@ -7,6 +7,8 @@
 -- Taken from Randy Pollack's paper "Dependently Typed Records in Type
 -- Theory".
 
+{-# OPTIONS --with-K #-}
+
 module README.Record where
 
 open import Data.Product
@@ -25,8 +27,8 @@ open Record String _≟_
 PER : Signature _
 PER = ∅ , "S"     ∶ (λ _ → Set)
         , "R"     ∶ (λ r → r · "S" → r · "S" → Set)
-        , "sym"   ∶ (λ r → Lift (Symmetric (r · "R")))
-        , "trans" ∶ (λ r → Lift (Transitive (r · "R")))
+        , "sym"   ∶ (λ r → Lift _ (Symmetric (r · "R")))
+        , "trans" ∶ (λ r → Lift _ (Transitive (r · "R")))
 
 -- Given a PER the converse relation is also a PER.
 

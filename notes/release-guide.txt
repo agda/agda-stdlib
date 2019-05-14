@@ -1,0 +1,64 @@
+When releasing a new version of Agda standard library, the following
+procedure should be followed:
+
+#### Pre-release changes
+
+* Update `README.agda` by replacing 'development version' by 'version X.Y' in the title.
+
+* Update `README.md`
+
+* Update `lib.cabal` version to `X.Y`.
+
+* Update `notes/installation-guide.txt`
+
+* Finish the CHANGELOG.
+
+* Update the copyright year range in the LICENSE file, if necessary.
+
+#### Pre-release tests
+
+* Ensure that the library type-checks using Agda A.B.C:
+
+    make test
+
+* Update submodule commit in the Agda repository:
+
+    cd agda
+    make fast-forward-std-lib
+
+* Run the tests involving the library:
+
+    make lib-succeed
+
+* Commit the changes and push
+
+#### Release
+
+* Tag version X.Y (do not forget to record the changes above first):
+
+    VERSION=X.Y
+    git tag -a v$VERSION -m "Agda standard library version $VERSION"
+
+* Push all the changes and the new tag (requires Git >= 1.8.3):
+
+    git push --follow-tags
+
+* Submit a pull request to update the version of standard library on Homebrew
+  (https://github.com/Homebrew/homebrew-core/blob/master/Formula/agda.rb)
+
+* Update the Agda wiki:
+
+  ** The standard library page.
+
+  ** News section on the main page.
+
+* Announce the release of the new version on the Agda mailing lists
+  (users and developers).
+
+#### Post-release
+
+* Move the CHANGELOG.md into the old CHANGELOG folders
+
+* Create new CHANGELOG.md file
+
+* Revert changes in README.md to reference development version

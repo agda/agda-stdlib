@@ -4,18 +4,42 @@
 -- Some properties about signs
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Sign.Properties where
 
 open import Algebra
-open import Algebra.Structures
 open import Data.Empty
-open import Function
-open import Data.Sign
+open import Data.Sign.Base
 open import Data.Product using (_,_)
+open import Function
+open import Level using (0ℓ)
+open import Relation.Binary using (Decidable; Setoid; DecSetoid)
 open import Relation.Binary.PropositionalEquality
-open import Algebra.FunctionProperties (_≡_ {A = Sign})
+open import Relation.Nullary using (yes; no)
 
--- The opposite of a sign is not equal to the sign.
+open import Algebra.Structures {A = Sign} _≡_
+open import Algebra.FunctionProperties {A = Sign} _≡_
+
+------------------------------------------------------------------------
+-- Equality
+
+infix 4 _≟_
+
+_≟_ : Decidable {A = Sign} _≡_
+- ≟ - = yes refl
+- ≟ + = no λ()
++ ≟ - = no λ()
++ ≟ + = yes refl
+
+≡-setoid : Setoid 0ℓ 0ℓ
+≡-setoid = setoid Sign
+
+≡-decSetoid : DecSetoid 0ℓ 0ℓ
+≡-decSetoid = decSetoid _≟_
+
+------------------------------------------------------------------------
+-- opposite
 
 s≢opposite[s] : ∀ s → s ≢ opposite s
 s≢opposite[s] - ()
@@ -23,8 +47,6 @@ s≢opposite[s] + ()
 
 opposite-injective : ∀ {s t} → opposite s ≡ opposite t → s ≡ t
 opposite-injective { - } { - } refl = refl
-opposite-injective { - } { + } ()
-opposite-injective { + } { - } ()
 opposite-injective { + } { + } refl = refl
 
 ------------------------------------------------------------------------
@@ -68,34 +90,37 @@ opposite-injective { + } { + } refl = refl
 *-cancel-≡ : Cancellative _*_
 *-cancel-≡ = *-cancelˡ-≡ , *-cancelʳ-≡
 
-*-isSemigroup : IsSemigroup _≡_ _*_
-*-isSemigroup = record
+*-isMagma : IsMagma _*_
+*-isMagma = record
   { isEquivalence = isEquivalence
-  ; assoc         = *-assoc
   ; ∙-cong        = cong₂ _*_
   }
 
-*-semigroup : Semigroup _ _
-*-semigroup = record
-  { Carrier     = Sign
-  ; _≈_         = _≡_
-  ; _∙_         = _*_
-  ; isSemigroup = *-isSemigroup
+*-magma : Magma 0ℓ 0ℓ
+*-magma = record
+  { isMagma = *-isMagma
   }
 
-*-isMonoid : IsMonoid _≡_ _*_ +
-*-isMonoid = record
-    { isSemigroup = *-isSemigroup
-    ; identity    = *-identity
-    }
+*-isSemigroup : IsSemigroup _*_
+*-isSemigroup = record
+  { isMagma = *-isMagma
+  ; assoc   = *-assoc
+  }
 
-*-monoid : Monoid _ _
+*-semigroup : Semigroup 0ℓ 0ℓ
+*-semigroup = record
+  { isSemigroup = *-isSemigroup
+  }
+
+*-isMonoid : IsMonoid _*_ +
+*-isMonoid = record
+  { isSemigroup = *-isSemigroup
+  ; identity    = *-identity
+  }
+
+*-monoid : Monoid 0ℓ 0ℓ
 *-monoid = record
-  { Carrier  = Sign
-  ; _≈_      = _≡_
-  ; _∙_      = _*_
-  ; ε        = +
-  ; isMonoid = *-isMonoid
+  { isMonoid = *-isMonoid
   }
 
 -- Other properties of _*_
@@ -111,7 +136,27 @@ s*s≡+ - = refl
 -- not guaranteed.
 
 opposite-not-equal = s≢opposite[s]
-opposite-cong      = opposite-injective
-cancel-*-left      = *-cancelˡ-≡
-cancel-*-right     = *-cancelʳ-≡
-*-cancellative     = *-cancel-≡
+{-# WARNING_ON_USAGE opposite-not-equal
+"Warning: opposite-not-equal was deprecated in v0.15.
+Please use s≢opposite[s] instead."
+#-}
+opposite-cong = opposite-injective
+{-# WARNING_ON_USAGE opposite-cong
+"Warning: opposite-cong was deprecated in v0.15.
+Please use opposite-injective instead."
+#-}
+cancel-*-left = *-cancelˡ-≡
+{-# WARNING_ON_USAGE cancel-*-left
+"Warning: cancel-*-left was deprecated in v0.15.
+Please use *-cancelˡ-≡ instead."
+#-}
+cancel-*-right = *-cancelʳ-≡
+{-# WARNING_ON_USAGE cancel-*-right
+"Warning: cancel-*-right was deprecated in v0.15.
+Please use *-cancelʳ-≡ instead."
+#-}
+*-cancellative = *-cancel-≡
+{-# WARNING_ON_USAGE *-cancellative
+"Warning: *-cancellative was deprecated in v0.15.
+Please use *-cancel-≡ instead."
+#-}

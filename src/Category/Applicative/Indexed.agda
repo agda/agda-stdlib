@@ -7,16 +7,21 @@
 -- Note that currently the applicative functor laws are not included
 -- here.
 
+{-# OPTIONS --without-K --safe #-}
+
 module Category.Applicative.Indexed where
 
 open import Category.Functor using (RawFunctor)
-open import Data.Product
+open import Data.Product using (_×_; _,_)
 open import Function
 open import Level
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
 IFun : ∀ {i} → Set i → (ℓ : Level) → Set _
 IFun I ℓ = I → I → Set ℓ → Set ℓ
+
+------------------------------------------------------------------------
+-- Type, and usual combinators
 
 record RawIApplicative {i f} {I : Set i} (F : IFun I f) :
                        Set (i ⊔ suc f) where
@@ -49,6 +54,36 @@ record RawIApplicative {i f} {I : Set i} (F : IFun I f) :
   zipWith : ∀ {i j k A B C} → (A → B → C) → F i j A → F j k B → F i k C
   zipWith f x y = f <$> x ⊛ y
 
+  zip : ∀ {i j k A B} → F i j A → F j k B → F i k (A × B)
+  zip = zipWith _,_
+
+------------------------------------------------------------------------
+-- Applicative with a zero
+
+record RawIApplicativeZero
+       {i f} {I : Set i} (F : IFun I f) :
+       Set (i ⊔ suc f) where
+  field
+    applicative : RawIApplicative F
+    ∅           : ∀ {i j A} → F i j A
+
+  open RawIApplicative applicative public
+
+------------------------------------------------------------------------
+-- Alternative functors: `F i j A` is a monoid
+
+record RawIAlternative
+       {i f} {I : Set i} (F : IFun I f) :
+       Set (i ⊔ suc f) where
+  infixr 3 _∣_
+  field
+    applicativeZero : RawIApplicativeZero F
+    _∣_             : ∀ {i j A} → F i j A → F i j A → F i j A
+
+  open RawIApplicativeZero applicativeZero public
+
+
+------------------------------------------------------------------------
 -- Applicative functor morphisms, specialised to propositional
 -- equality.
 

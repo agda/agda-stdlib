@@ -4,6 +4,8 @@
 -- Properties satisfied by strict partial orders
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Relation.Binary
 
 module Relation.Binary.Properties.StrictTotalOrder
@@ -11,8 +13,7 @@ module Relation.Binary.Properties.StrictTotalOrder
        where
 
 open Relation.Binary.StrictTotalOrder STO
-import Relation.Binary.StrictToNonStrict as Conv
-open Conv _≈_ _<_
+open import Relation.Binary.Construct.StrictToNonStrict _≈_ _<_
 import Relation.Binary.Properties.StrictPartialOrder as SPO
 open import Relation.Binary.Consequences
 
@@ -21,14 +22,7 @@ open import Relation.Binary.Consequences
 
 decTotalOrder : DecTotalOrder _ _ _
 decTotalOrder = record
-  { isDecTotalOrder = record
-    { isTotalOrder = record
-      { isPartialOrder = SPO.isPartialOrder strictPartialOrder
-      ; total          = total compare
-      }
-    ; _≟_  = _≟_
-    ; _≤?_ = decidable' compare
-    }
+  { isDecTotalOrder = isDecTotalOrder isStrictTotalOrder
   }
 
 open DecTotalOrder decTotalOrder public

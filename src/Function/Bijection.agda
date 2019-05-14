@@ -4,17 +4,21 @@
 -- Bijections
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Function.Bijection where
 
 open import Data.Product
 open import Level
 open import Relation.Binary
+open import Relation.Binary.PropositionalEquality as P
 open import Function.Equality as F
   using (_⟶_; _⟨$⟩_) renaming (_∘_ to _⟪∘⟫_)
-open import Function.Injection   as Inj  hiding (id; _∘_)
-open import Function.Surjection  as Surj hiding (id; _∘_)
-open import Function.LeftInverse as Left hiding (id; _∘_)
+open import Function.Injection   as Inj  hiding (id; _∘_; injection)
+open import Function.Surjection  as Surj hiding (id; _∘_; surjection)
+open import Function.LeftInverse as Left hiding (id; _∘_; leftInverse)
 
+------------------------------------------------------------------------
 -- Bijective functions.
 
 record Bijective {f₁ f₂ t₁ t₂}
@@ -30,6 +34,7 @@ record Bijective {f₁ f₂ t₁ t₂}
   left-inverse-of : from LeftInverseOf to
   left-inverse-of x = injective (right-inverse-of (to ⟨$⟩ x))
 
+------------------------------------------------------------------------
 -- The set of all bijections between two setoids.
 
 record Bijection {f₁ f₂ t₁ t₂}
@@ -65,6 +70,32 @@ record Bijection {f₁ f₂ t₁ t₂}
 
   open LeftInverse left-inverse public using (to-from)
 
+------------------------------------------------------------------------
+-- The set of all bijections between two sets (i.e. bijections with
+-- propositional equality)
+
+infix 3 _⤖_
+
+_⤖_ : ∀ {f t} → Set f → Set t → Set _
+From ⤖ To = Bijection (P.setoid From) (P.setoid To)
+
+bijection : ∀ {f t} {From : Set f} {To : Set t} →
+            (to : From → To) (from : To → From) →
+            (∀ {x y} → to x ≡ to y → x ≡ y) →
+            (∀ x → to (from x) ≡ x) →
+            From ⤖ To
+bijection to from inj invʳ = record
+  { to        = P.→-to-⟶ to
+  ; bijective = record
+    { injective  = inj
+    ; surjective = record
+      { from             = P.→-to-⟶ from
+      ; right-inverse-of = invʳ
+      }
+    }
+  }
+
+------------------------------------------------------------------------
 -- Identity and composition. (Note that these proofs are superfluous,
 -- given that Bijection is equivalent to Function.Inverse.Inverse.)
 

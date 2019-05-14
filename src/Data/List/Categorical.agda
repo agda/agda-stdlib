@@ -4,9 +4,12 @@
 -- A categorical view of List
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.List.Categorical where
 
-open import Algebra
+open import Category.Functor
+open import Category.Applicative
 open import Category.Monad
 open import Data.Bool.Base using (false; true)
 open import Data.List
@@ -17,42 +20,83 @@ open import Relation.Binary.PropositionalEquality as P
 open P.≡-Reasoning
 
 ------------------------------------------------------------------------
+-- List applicative functor
+
+functor : ∀ {ℓ} → RawFunctor {ℓ} List
+functor = record { _<$>_ = map }
+
+applicative : ∀ {ℓ} → RawApplicative {ℓ} List
+applicative = record
+  { pure = [_]
+  ; _⊛_  = λ fs as → concatMap (λ f → map f as) fs
+  }
+
+applicativeZero : ∀ {ℓ} → RawApplicativeZero {ℓ} List
+applicativeZero = record
+  { applicative = applicative
+  ; ∅           = []
+  }
+
+alternative : ∀ {ℓ} → RawAlternative {ℓ} List
+alternative = record
+  { applicativeZero = applicativeZero
+  ; _∣_             = _++_
+  }
+
+------------------------------------------------------------------------
 -- List monad
 
-monad : ∀ {ℓ} → RawMonad (List {ℓ})
+monad : ∀ {ℓ} → RawMonad {ℓ} List
 monad = record
-  { return = λ x → x ∷ []
-  ; _>>=_  = λ xs f → concat (map f xs)
+  { return = [_]
+  ; _>>=_  = flip concatMap
   }
 
-monadZero : ∀ {ℓ} → RawMonadZero (List {ℓ})
+monadZero : ∀ {ℓ} → RawMonadZero {ℓ} List
 monadZero = record
-  { monad = monad
-  ; ∅     = []
+  { monad           = monad
+  ; applicativeZero = applicativeZero
   }
 
-monadPlus : ∀ {ℓ} → RawMonadPlus (List {ℓ})
+monadPlus : ∀ {ℓ} → RawMonadPlus {ℓ} List
 monadPlus = record
-  { monadZero = monadZero
-  ; _∣_       = _++_
+  { monad = monad
+  ; alternative = alternative
   }
 
 ------------------------------------------------------------------------
 -- Get access to other monadic functions
 
-private
- module Monadic {m} {M : Set m → Set m} (Mon : RawMonad M) where
+module _ {f F} (App : RawApplicative {f} F) where
 
-  open RawMonad Mon
+  open RawApplicative App
 
-  sequence : ∀ {A} → List (M A) → M (List A)
-  sequence []       = return []
-  sequence (x ∷ xs) = _∷_ <$> x ⊛ sequence xs
+  sequenceA : ∀ {A} → List (F A) → F (List A)
+  sequenceA []       = pure []
+  sequenceA (x ∷ xs) = _∷_ <$> x ⊛ sequenceA xs
 
-  mapM : ∀ {a} {A : Set a} {B} → (A → M B) → List A → M (List B)
-  mapM f = sequence ∘ map f
+  mapA : ∀ {a} {A : Set a} {B} → (A → F B) → List A → F (List B)
+  mapA f = sequenceA ∘ map f
 
-open Monadic public
+  forA : ∀ {a} {A : Set a} {B} → List A → (A → F B) → F (List B)
+  forA = flip mapA
+
+module _ {m M} (Mon : RawMonad {m} M) where
+
+  private App = RawMonad.rawIApplicative Mon
+
+  sequenceM = sequenceA App
+  mapM = mapA App
+  forM = forA App
+
+------------------------------------------------------------------------
+-- List monad transformer
+
+monadT : ∀ {ℓ} → RawMonadT {ℓ} (_∘′ List)
+monadT M = record
+  { return = pure ∘′ [_]
+  ; _>>=_  = λ mas f → mas >>= λ as → concat <$> mapM M f as
+  } where open RawMonad M
 
 ------------------------------------------------------------------------
 -- The list monad.

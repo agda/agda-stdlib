@@ -10,6 +10,8 @@
 -- avoided: pairs are represented as pairs (x , y), not as triples
 -- (x , y , unit).
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Product.N-ary where
 
 open import Data.Nat as Nat hiding (_^_)
@@ -29,7 +31,7 @@ pattern 2+_ n = suc (suc n)
 
 infix 8 _^_
 _^_ : ∀ {ℓ} → Set ℓ → ℕ → Set ℓ
-A ^ 0    = Lift ⊤
+A ^ 0    = Lift _ ⊤
 A ^ 1    = A
 A ^ 2+ n = A × A ^ suc n
 
@@ -39,7 +41,7 @@ module _  {a} {A : Set a} where
 
   infix 3 _∈[_]_
   _∈[_]_ : A → ∀ n → A ^ n → Set a
-  a ∈[ 0    ] as      = Lift ⊥
+  a ∈[ 0    ] as      = Lift _ ⊥
   a ∈[ 1    ] a′      = a ≡ a′
   a ∈[ 2+ n ] a′ , as = a ≡ a′ ⊎ a ∈[ suc n ] as
 

@@ -5,6 +5,8 @@
 -- of substitution for the untyped λ-calculus, along with some lemmas
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Fin.Substitution.Example where
 
 open import Data.Fin.Substitution
@@ -15,7 +17,7 @@ open import Data.Vec
 open import Relation.Binary.PropositionalEquality as PropEq
   using (_≡_; refl; sym; cong; cong₂)
 open PropEq.≡-Reasoning
-open import Relation.Binary.Closure.ReflexiveTransitive
+open import Relation.Binary.Construct.Closure.ReflexiveTransitive
   using (Star; ε; _◅_)
 
 -- A representation of the untyped λ-calculus. Uses de Bruijn indices.
@@ -29,7 +31,7 @@ data Tm (n : ℕ) : Set where
 
 -- Code for applying substitutions.
 
-module TmApp {T} (l : Lift T Tm) where
+module TmApp {ℓ} {T : ℕ → Set ℓ} (l : Lift T Tm) where
   open Lift l hiding (var)
 
   -- Applies a substitution to a term.
@@ -37,7 +39,7 @@ module TmApp {T} (l : Lift T Tm) where
   infix 8 _/_
 
   _/_ : ∀ {m n} → Tm m → Sub T m n → Tm n
-  var x   / ρ = lift (lookup x ρ)
+  var x   / ρ = lift (lookup ρ x)
   ƛ t     / ρ = ƛ (t / ρ ↑)
   t₁ · t₂ / ρ = (t₁ / ρ) · (t₂ / ρ)
 

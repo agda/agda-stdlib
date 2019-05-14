@@ -4,18 +4,22 @@
 -- A universe of proposition functors, along with some properties
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Relation.Nullary.Universe where
 
 open import Relation.Nullary
 open import Relation.Nullary.Negation
 open import Relation.Binary hiding (_⇒_)
-open import Relation.Binary.Simple
+import Relation.Binary.Construct.Always as Always
 open import Relation.Binary.PropositionalEquality as PropEq
   using (_≡_; refl)
+import Relation.Binary.Indexed.Heterogeneous.Construct.Trivial
+  as Trivial
 open import Data.Sum     as Sum  hiding (map)
-open import Data.Sum.Relation.Pointwise
+open import Data.Sum.Relation.Binary.Pointwise
 open import Data.Product as Prod hiding (map)
-open import Data.Product.Relation.Pointwise.NonDependent
+open import Data.Product.Relation.Binary.Pointwise.NonDependent
 open import Function
 import Function.Equality as FunS
 open import Data.Empty
@@ -49,8 +53,8 @@ mutual
   setoid (F₁ ∨ F₂) P = (setoid F₁ P) ⊎ₛ (setoid F₂ P)
   setoid (F₁ ∧ F₂) P = (setoid F₁ P) ×ₛ (setoid F₂ P)
   setoid (P₁ ⇒ F₂) P = FunS.≡-setoid P₁
-                         (Setoid.indexedSetoid (setoid F₂ P))
-  setoid (¬¬ F)    P = Always-setoid (¬ ¬ ⟦ F ⟧ P)
+                         (Trivial.indexedSetoid (setoid F₂ P))
+  setoid (¬¬ F)    P = Always.setoid (¬ ¬ ⟦ F ⟧ P) _
 
   ⟦_⟧ : ∀ {p} → PropF p → (Set p → Set p)
   ⟦ F ⟧ P = Setoid.Carrier (setoid F P)
@@ -71,8 +75,8 @@ map (¬¬ F)    f FP = ¬¬-map (map F f) FP
 map-id : ∀ {p} (F : PropF p) {P} → ⟨ ⟦ F ⟧ P ⇒ F ⟩ map F id ≈ id
 map-id Id        x        = refl
 map-id (K P)     x        = refl
-map-id (F₁ ∨ F₂) (inj₁ x) = ₁∼₁ (map-id F₁ x)
-map-id (F₁ ∨ F₂) (inj₂ y) = ₂∼₂ (map-id F₂ y)
+map-id (F₁ ∨ F₂) (inj₁ x) = inj₁ (map-id F₁ x)
+map-id (F₁ ∨ F₂) (inj₂ y) = inj₂ (map-id F₂ y)
 map-id (F₁ ∧ F₂) (x , y)  = (map-id F₁ x , map-id F₂ y)
 map-id (P₁ ⇒ F₂) f        = λ x → map-id F₂ (f x)
 map-id (¬¬ F)    ¬¬x      = _
@@ -81,8 +85,8 @@ map-∘ : ∀ {p} (F : PropF p) {P Q R} (f : Q → R) (g : P → Q) →
         ⟨ ⟦ F ⟧ P ⇒ F ⟩ map F f ∘ map F g ≈ map F (f ∘ g)
 map-∘ Id        f g x        = refl
 map-∘ (K P)     f g x        = refl
-map-∘ (F₁ ∨ F₂) f g (inj₁ x) = ₁∼₁ (map-∘ F₁ f g x)
-map-∘ (F₁ ∨ F₂) f g (inj₂ y) = ₂∼₂ (map-∘ F₂ f g y)
+map-∘ (F₁ ∨ F₂) f g (inj₁ x) = inj₁ (map-∘ F₁ f g x)
+map-∘ (F₁ ∨ F₂) f g (inj₂ y) = inj₂ (map-∘ F₂ f g y)
 map-∘ (F₁ ∧ F₂) f g x        = (map-∘ F₁ f g (proj₁ x) ,
                                 map-∘ F₂ f g (proj₂ x))
 map-∘ (P₁ ⇒ F₂) f g h        = λ x → map-∘ F₂ f g (h x)
@@ -91,7 +95,7 @@ map-∘ (¬¬ F)    f g x        = _
 -- A variant of sequence can be implemented for ⟦ F ⟧.
 
 sequence : ∀ {p AF} → RawApplicative AF →
-           (AF (Lift ⊥) → ⊥) →
+           (AF (Lift p ⊥) → ⊥) →
            ({A B : Set p} → (A → AF B) → AF (A → B)) →
            ∀ F {P} → ⟦ F ⟧ (AF P) → AF (⟦ F ⟧ P)
 sequence {AF = AF} A extract-⊥ sequence-⇒ = helper

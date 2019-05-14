@@ -4,12 +4,14 @@
 -- The free monad construction on indexed containers
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe --guardedness #-}
+
 module Data.Container.Indexed.FreeMonad where
 
 open import Level
 open import Function hiding (const)
 open import Category.Monad.Predicate
-open import Data.Container.Indexed hiding (_∈_)
+open import Data.Container.Indexed
 open import Data.Container.Indexed.Combinator hiding (id; _∘_)
 open import Data.Empty
 open import Data.Sum using (inj₁; inj₂)

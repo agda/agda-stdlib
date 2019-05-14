@@ -4,7 +4,30 @@
 -- Natural numbers
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Nat where
 
--- The core type and operations are re-exported from Data.Nat.Base
+------------------------------------------------------------------------
+-- Publicly re-export the contents of the base module
+
 open import Data.Nat.Base public
+
+------------------------------------------------------------------------
+-- Publicly re-export queries
+
+open import Data.Nat.Properties public
+  using
+  ( _≟_
+  ; _≤?_ ; _≥?_ ; _<?_ ; _>?_
+  ; _≤′?_; _≥′?_; _<′?_; _>′?_
+  ; _≤″?_; _<″?_; _≥″?_; _>″?_
+  )
+
+------------------------------------------------------------------------
+-- Deprecated
+
+-- Version 0.17
+
+open import Data.Nat.Properties public
+  using (≤-pred)

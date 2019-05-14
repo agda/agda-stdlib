@@ -4,6 +4,8 @@
 -- Non-empty lists
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.List.NonEmpty where
 
 open import Category.Monad
@@ -12,7 +14,8 @@ open import Data.Bool.Properties
 open import Data.List as List using (List; []; _∷_)
 open import Data.Maybe.Base using (Maybe ; nothing; just)
 open import Data.Nat as Nat
-open import Data.Product using (∃; proj₁; proj₂; _,_; ,_)
+open import Data.Product as Prod using (∃; _×_; proj₁; proj₂; _,_; -,_)
+open import Data.These as These using (These; this; that; these)
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
 open import Data.Unit
 open import Data.Vec as Vec using (Vec; []; _∷_)
@@ -20,7 +23,7 @@ open import Function
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence
   using () renaming (module Equivalence to Eq)
-open import Relation.Binary.PropositionalEquality as P using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality as P using (_≡_; _≢_; refl)
 open import Relation.Nullary.Decidable using (⌊_⌋)
 
 ------------------------------------------------------------------------
@@ -36,16 +39,23 @@ record List⁺ {a} (A : Set a) : Set a where
 
 open List⁺ public
 
-[_] : ∀ {a} {A : Set a} → A → List⁺ A
-[ x ] = x ∷ []
+-- Basic combinators
 
-infixr 5 _∷⁺_
+module _ {a} {A : Set a} where
 
-_∷⁺_ : ∀ {a} {A : Set a} → A → List⁺ A → List⁺ A
-x ∷⁺ y ∷ xs = x ∷ y ∷ xs
+  uncons : List⁺ A → A × List A
+  uncons (hd ∷ tl) = hd , tl
 
-length : ∀ {a} {A : Set a} → List⁺ A → ℕ
-length (x ∷ xs) = suc (List.length xs)
+  [_] : A → List⁺ A
+  [ x ] = x ∷ []
+
+  infixr 5 _∷⁺_
+
+  _∷⁺_ : A → List⁺ A → List⁺ A
+  x ∷⁺ y ∷ xs = x ∷ y ∷ xs
+
+  length : List⁺ A → ℕ
+  length (x ∷ xs) = suc (List.length xs)
 
 ------------------------------------------------------------------------
 -- Conversion
@@ -75,6 +85,9 @@ lift f xs = fromVec (proj₂ (f (toVec xs)))
 
 map : ∀ {a b} {A : Set a} {B : Set b} → (A → B) → List⁺ A → List⁺ B
 map f (x ∷ xs) = (f x ∷ List.map f xs)
+
+replicate : ∀ {a} {A : Set a} n → n ≢ 0 → A → List⁺ A
+replicate n n≢0 a = a ∷ List.replicate (pred n) a
 
 -- Right fold. Note that s is only applied to the last element (see
 -- the examples below).
@@ -106,28 +119,63 @@ foldl₁ f = foldl f id
 
 -- Append (several variants).
 
-infixr 5 _⁺++⁺_ _++⁺_ _⁺++_
+module _ {a} {A : Set a} where
 
-_⁺++⁺_ : ∀ {a} {A : Set a} → List⁺ A → List⁺ A → List⁺ A
-(x ∷ xs) ⁺++⁺ (y ∷ ys) = x ∷ (xs List.++ y ∷ ys)
+  infixr 5 _⁺++⁺_ _++⁺_ _⁺++_
 
-_⁺++_ : ∀ {a} {A : Set a} → List⁺ A → List A → List⁺ A
-(x ∷ xs) ⁺++ ys = x ∷ (xs List.++ ys)
+  _⁺++⁺_ : List⁺ A → List⁺ A → List⁺ A
+  (x ∷ xs) ⁺++⁺ (y ∷ ys) = x ∷ (xs List.++ y ∷ ys)
 
-_++⁺_ : ∀ {a} {A : Set a} → List A → List⁺ A → List⁺ A
-xs ++⁺ ys = List.foldr _∷⁺_ ys xs
+  _⁺++_ : List⁺ A → List A → List⁺ A
+  (x ∷ xs) ⁺++ ys = x ∷ (xs List.++ ys)
 
-concat : ∀ {a} {A : Set a} → List⁺ (List⁺ A) → List⁺ A
-concat (xs ∷ xss) = xs ⁺++ List.concat (List.map toList xss)
+  _++⁺_ : List A → List⁺ A → List⁺ A
+  xs ++⁺ ys = List.foldr _∷⁺_ ys xs
 
-monad : ∀ {f} → RawMonad (List⁺ {a = f})
-monad = record
-  { return = [_]
-  ; _>>=_  = λ xs f → concat (map f xs)
-  }
+  concat : List⁺ (List⁺ A) → List⁺ A
+  concat (xs ∷ xss) = xs ⁺++ List.concat (List.map toList xss)
+
+concatMap : ∀ {a b} {A : Set a} {B : Set b} → (A → List⁺ B) → List⁺ A → List⁺ B
+concatMap f = concat ∘′ map f
+
+-- Reverse
 
 reverse : ∀ {a} {A : Set a} → List⁺ A → List⁺ A
-reverse = lift (,_ ∘′ Vec.reverse)
+reverse = lift (-,_ ∘′ Vec.reverse)
+
+-- Align and Zip
+
+module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
+
+  alignWith : (These A B → C) → List⁺ A → List⁺ B → List⁺ C
+  alignWith f (a ∷ as) (b ∷ bs) = f (these a b) ∷ List.alignWith f as bs
+
+  zipWith : (A → B → C) → List⁺ A → List⁺ B → List⁺ C
+  zipWith f (a ∷ as) (b ∷ bs) = f a b ∷ List.zipWith f as bs
+
+  unalignWith : (A → These B C) → List⁺ A → These (List⁺ B) (List⁺ C)
+  unalignWith f = foldr (These.alignWith mcons mcons ∘′ f)
+                        (These.map [_] [_] ∘′ f)
+
+    where mcons : ∀ {e} {E : Set e} → These E (List⁺ E) → List⁺ E
+          mcons = These.fold [_] id _∷⁺_
+
+  unzipWith : (A → B × C) → List⁺ A → List⁺ B × List⁺ C
+  unzipWith f (a ∷ as) = Prod.zip _∷_ _∷_ (f a) (List.unzipWith f as)
+
+module _ {a b} {A : Set a} {B : Set b} where
+
+  align : List⁺ A → List⁺ B → List⁺ (These A B)
+  align = alignWith id
+
+  zip : List⁺ A → List⁺ B → List⁺ (A × B)
+  zip = zipWith _,_
+
+  unalign : List⁺ (These A B) → These (List⁺ A) (List⁺ B)
+  unalign = unalignWith id
+
+  unzip : List⁺ (A × B) → List⁺ A × List⁺ B
+  unzip = unzipWith id
 
 -- Snoc.
 

@@ -4,24 +4,30 @@
 -- Divisibility
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Data.Nat.Divisibility where
 
-open import Data.Nat as Nat
+open import Algebra
+open import Data.Nat
 open import Data.Nat.DivMod
 open import Data.Nat.Properties
-open import Data.Fin using (Fin; zero; suc; toℕ)
-import Data.Fin.Properties as FP
-open SemiringSolver
-open import Algebra
 open import Data.Product
+open import Function
+open import Function.Equivalence using (_⇔_; equivalence)
+open import Level using (0ℓ)
 open import Relation.Nullary
+import Relation.Nullary.Decidable as Dec
 open import Relation.Binary
-import Relation.Binary.PartialOrderReasoning as PartialOrderReasoning
+import Relation.Binary.Reasoning.PartialOrder as POR
 open import Relation.Binary.PropositionalEquality as PropEq
   using (_≡_; _≢_; refl; sym; trans; cong; cong₂; subst)
-open import Function
+
+open ≤-Reasoning
 
 ------------------------------------------------------------------------
+-- Definition
+--
 -- m ∣ n is inhabited iff m divides n. Some sources, like Hardy and
 -- Wright's "An Introduction to the Theory of Numbers", require m to
 -- be non-zero. However, some things become a bit nicer if m is
@@ -34,18 +40,33 @@ record _∣_ (m n : ℕ) : Set where
   constructor divides
   field quotient : ℕ
         equality : n ≡ quotient * m
+open _∣_ using (quotient) public
 
 _∤_ : Rel ℕ _
 m ∤ n = ¬ (m ∣ n)
 
-quotient : ∀ {m n} → m ∣ n → ℕ
-quotient (divides q _) = q
+------------------------------------------------------------------------
+-- Relationship with _%_
+
+m%n≡0⇒n∣m : ∀ m n → m % suc n ≡ 0 → suc n ∣ m
+m%n≡0⇒n∣m m n eq = divides (m / suc n) (begin-equality
+  m                               ≡⟨ a≡a%n+[a/n]*n m n ⟩
+  m % suc n + m / suc n * (suc n) ≡⟨ cong₂ _+_ eq refl ⟩
+  m / suc n * (suc n)             ∎)
+
+n∣m⇒m%n≡0 : ∀ m n → suc n ∣ m → m % suc n ≡ 0
+n∣m⇒m%n≡0 m n (divides v eq) = begin-equality
+  m           % suc n ≡⟨ cong (_% suc n) eq ⟩
+  (v * suc n) % suc n ≡⟨ kn%n≡0 v n ⟩
+  0                     ∎
+
+m%n≡0⇔n∣m : ∀ m n → m % suc n ≡ 0 ⇔ suc n ∣ m
+m%n≡0⇔n∣m m n = equivalence (m%n≡0⇒n∣m m n) (n∣m⇒m%n≡0 m n)
 
 ------------------------------------------------------------------------
 -- _∣_ is a partial order
 
 ∣⇒≤ : ∀ {m n} → m ∣ suc n → m ≤ suc n
-∣⇒≤         (divides zero    ())
 ∣⇒≤ {m} {n} (divides (suc q) eq) = begin
   m          ≤⟨ m≤m+n m (q * m) ⟩
   suc q * m  ≡⟨ sym eq ⟩
@@ -63,10 +84,16 @@ quotient (divides q _) = q
   divides (q * p) (sym (*-assoc q p _))
 
 ∣-antisym : Antisymmetric _≡_ _∣_
-∣-antisym {m} {0} _ (divides q eq) = trans eq (*-comm q 0)
-∣-antisym {0} {n} (divides p eq) _ = sym (trans eq (*-comm p 0))
-∣-antisym {suc m} {suc n} (divides p eq₁) (divides q eq₂) =
-  ≤-antisym (∣⇒≤ (divides p eq₁)) (∣⇒≤ (divides q eq₂))
+∣-antisym {m}     {zero}  _ (divides q refl) = *-zeroʳ q
+∣-antisym {zero}  {n}     (divides p eq) _   = sym (trans eq (*-comm p 0))
+∣-antisym {suc m} {suc n} p∣q           q∣p  = ≤-antisym (∣⇒≤ p∣q) (∣⇒≤ q∣p)
+
+infix 4 _∣?_
+
+_∣?_ : Decidable _∣_
+zero  ∣? zero   = yes (divides 0 refl)
+zero  ∣? suc m  = no ((λ()) ∘′ ∣-antisym (divides 0 refl))
+suc n ∣? m      = Dec.map (m%n≡0⇔n∣m m n) (m % suc n ≟ 0)
 
 ∣-isPreorder : IsPreorder _≡_ _∣_
 ∣-isPreorder = record
@@ -81,16 +108,21 @@ quotient (divides q _) = q
   ; antisym    = ∣-antisym
   }
 
-poset : Poset _ _ _
-poset = record
-  { Carrier        = ℕ
-  ; _≈_            = _≡_
-  ; _≤_            = _∣_
-  ; isPartialOrder = ∣-isPartialOrder
+∣-preorder : Preorder 0ℓ 0ℓ 0ℓ
+∣-preorder = record
+  { isPreorder = ∣-isPreorder
   }
 
-module ∣-Reasoning = PartialOrderReasoning poset
-  hiding   (_≈⟨_⟩_)
+∣-poset : Poset 0ℓ 0ℓ 0ℓ
+∣-poset = record
+  { isPartialOrder = ∣-isPartialOrder
+  }
+
+------------------------------------------------------------------------
+-- A reasoning module for the _∣_ relation
+
+module ∣-Reasoning = POR ∣-poset
+  hiding   (_≈⟨_⟩_; _≈˘⟨_⟩_)
   renaming (_≤⟨_⟩_ to _∣⟨_⟩_)
 
 ------------------------------------------------------------------------
@@ -122,106 +154,143 @@ m∣m*n n = divides n (*-comm _ n)
 ------------------------------------------------------------------------
 -- Operators and divisibility
 
-module _ where
-
-  open PropEq.≡-Reasoning
-
-  ∣m⇒∣m*n : ∀ {i m} n → i ∣ m → i ∣ m * n
-  ∣m⇒∣m*n {i} {m} n (divides q eq) = divides (q * n) $ begin
+∣m⇒∣m*n : ∀ {i m} n → i ∣ m → i ∣ m * n
+∣m⇒∣m*n {i} {m} n (divides q eq) =
+  divides (q * n) $ begin-equality
     m * n       ≡⟨ cong (_* n) eq ⟩
     q * i * n   ≡⟨ *-assoc q i n ⟩
     q * (i * n) ≡⟨ cong (q *_) (*-comm i n) ⟩
     q * (n * i) ≡⟨ sym (*-assoc q n i) ⟩
     q * n * i ∎
 
-  ∣n⇒∣m*n : ∀ {i} m {n} → i ∣ n → i ∣ m * n
-  ∣n⇒∣m*n {i} m {n} (divides q eq) = divides (m * q) $ begin
-    m * n       ≡⟨ cong (m *_) eq ⟩
-    m * (q * i) ≡⟨ sym (*-assoc m q i) ⟩
-    m * q * i ∎
+∣n⇒∣m*n : ∀ {i} m {n} → i ∣ n → i ∣ m * n
+∣n⇒∣m*n {i} m {n} i∣n = subst (i ∣_) (*-comm n m) (∣m⇒∣m*n m i∣n)
 
-  ∣m∣n⇒∣m+n : ∀ {i m n} → i ∣ m → i ∣ n → i ∣ m + n
-  ∣m∣n⇒∣m+n (divides p refl) (divides q refl) =
-    divides (p + q) (sym (*-distribʳ-+ _ p q))
+∣m∣n⇒∣m+n : ∀ {i m n} → i ∣ m → i ∣ n → i ∣ m + n
+∣m∣n⇒∣m+n (divides p refl) (divides q refl) =
+  divides (p + q) (sym (*-distribʳ-+ _ p q))
 
-  ∣m+n∣m⇒∣n : ∀ {i m n} → i ∣ m + n → i ∣ m → i ∣ n
-  ∣m+n∣m⇒∣n {i} {m} {n} (divides p m+n≡p*i) (divides q m≡q*i) =
-    divides (p ∸ q) $ begin
-      n             ≡⟨ sym (m+n∸n≡m n m) ⟩
-      n + m ∸ m     ≡⟨ cong (_∸ m) (+-comm n m) ⟩
-      m + n ∸ m     ≡⟨ cong₂ _∸_ m+n≡p*i m≡q*i ⟩
-      p * i ∸ q * i ≡⟨ sym (*-distribʳ-∸ i p q) ⟩
-      (p ∸ q) * i   ∎
+∣m+n∣m⇒∣n : ∀ {i m n} → i ∣ m + n → i ∣ m → i ∣ n
+∣m+n∣m⇒∣n {i} {m} {n} (divides p m+n≡p*i) (divides q m≡q*i) =
+  divides (p ∸ q) $ begin-equality
+    n             ≡⟨ sym (m+n∸n≡m n m) ⟩
+    n + m ∸ m     ≡⟨ cong (_∸ m) (+-comm n m) ⟩
+    m + n ∸ m     ≡⟨ cong₂ _∸_ m+n≡p*i m≡q*i ⟩
+    p * i ∸ q * i ≡⟨ sym (*-distribʳ-∸ i p q) ⟩
+    (p ∸ q) * i   ∎
 
-  ∣m∸n∣n⇒∣m : ∀ i {m n} → n ≤ m → i ∣ m ∸ n → i ∣ n → i ∣ m
-  ∣m∸n∣n⇒∣m i {m} {n} n≤m (divides p m∸n≡p*i) (divides q n≡q*o) =
-    divides (p + q) $ begin
-      m             ≡⟨ sym (m+n∸m≡n n≤m) ⟩
-      n + (m ∸ n)   ≡⟨ +-comm n (m ∸ n) ⟩
-      m ∸ n + n     ≡⟨ cong₂ _+_ m∸n≡p*i n≡q*o ⟩
-      p * i + q * i ≡⟨ sym (*-distribʳ-+ i p q)  ⟩
-      (p + q) * i   ∎
+∣m∸n∣n⇒∣m : ∀ i {m n} → n ≤ m → i ∣ m ∸ n → i ∣ n → i ∣ m
+∣m∸n∣n⇒∣m i {m} {n} n≤m (divides p m∸n≡p*i) (divides q n≡q*o) =
+  divides (p + q) $ begin-equality
+    m             ≡⟨ sym (m+n∸m≡n n≤m) ⟩
+    n + (m ∸ n)   ≡⟨ +-comm n (m ∸ n) ⟩
+    m ∸ n + n     ≡⟨ cong₂ _+_ m∸n≡p*i n≡q*o ⟩
+    p * i + q * i ≡⟨ sym (*-distribʳ-+ i p q)  ⟩
+    (p + q) * i   ∎
 
-  *-cong : ∀ {i j} k → i ∣ j → k * i ∣ k * j
-  *-cong {i} {j} k (divides q j≡q*i) = divides q $ begin
-    k * j        ≡⟨ cong (_*_ k) j≡q*i ⟩
-    k * (q * i)  ≡⟨ sym (*-assoc k q i) ⟩
-    (k * q) * i  ≡⟨ cong (_* i) (*-comm k q) ⟩
-    (q * k) * i  ≡⟨ *-assoc q k i ⟩
-    q * (k * i)  ∎
+∣n∣m%n⇒∣m : ∀ {m n d} → d ∣ suc n → d ∣ (m % suc n) → d ∣ m
+∣n∣m%n⇒∣m {m} {n-1} {d} (divides a n≡ad) (divides b m%n≡bd) =
+  divides (b + (m / n) * a) (begin-equality
+    m                         ≡⟨ a≡a%n+[a/n]*n m n-1 ⟩
+    m % n + (m / n) * n       ≡⟨ cong₂ _+_ m%n≡bd (cong (m / n *_) n≡ad) ⟩
+    b * d + (m / n) * (a * d) ≡⟨ sym (cong (b * d +_) (*-assoc (m / n) a d)) ⟩
+    b * d + ((m / n) * a) * d ≡⟨ sym (*-distribʳ-+ d b _) ⟩
+    (b + (m / n) * a) * d     ∎)
+    where n = suc n-1
 
-  /-cong : ∀ {i j} k → suc k * i ∣ suc k * j → i ∣ j
-  /-cong {i} {j} k (divides q eq) =
-    divides q (*-cancelʳ-≡ j (q * i) (begin
-      j * (suc k)        ≡⟨ *-comm j (suc k) ⟩
-      (suc k) * j        ≡⟨ eq ⟩
-      q * ((suc k) * i)  ≡⟨ cong (q *_) (*-comm (suc k) i) ⟩
-      q * (i * (suc k))  ≡⟨ sym (*-assoc q i (suc k)) ⟩
-      (q * i) * (suc k)  ∎))
+*-monoʳ-∣ : ∀ {i j} k → i ∣ j → k * i ∣ k * j
+*-monoʳ-∣ {i} {j} k (divides q j≡q*i) = divides q $ begin-equality
+  k * j        ≡⟨ cong (_*_ k) j≡q*i ⟩
+  k * (q * i)  ≡⟨ sym (*-assoc k q i) ⟩
+  (k * q) * i  ≡⟨ cong (_* i) (*-comm k q) ⟩
+  (q * k) * i  ≡⟨ *-assoc q k i ⟩
+  q * (k * i)  ∎
 
--- If the remainder after division is non-zero, then the divisor does
--- not divide the dividend.
+*-cancelˡ-∣ : ∀ {i j} k → suc k * i ∣ suc k * j → i ∣ j
+*-cancelˡ-∣ {i} {j} k (divides q eq) =
+  divides q $ *-cancelʳ-≡ j (q * i) $ begin-equality
+    j * (suc k)      ≡⟨ *-comm j (suc k) ⟩
+    suc k * j        ≡⟨ eq ⟩
+    q * (suc k * i)  ≡⟨ cong (q *_) (*-comm (suc k) i) ⟩
+    q * (i * suc k)  ≡⟨ sym (*-assoc q i (suc k)) ⟩
+    (q * i) * suc k  ∎
 
-nonZeroDivisor-lemma
-  : ∀ m q (r : Fin (1 + m)) → toℕ r ≢ 0 →
-    1 + m ∤ toℕ r + q * (1 + m)
-nonZeroDivisor-lemma m zero r r≢zero (divides zero eq) = r≢zero $ begin
+%-presˡ-∣ : ∀ {m n d} → d ∣ m → d ∣ suc n → d ∣ (m % suc n)
+%-presˡ-∣ {m} {n} {d} (divides a refl) (divides b 1+n≡bd) =
+  divides (a ∸ ad/n * b) $ begin-equality
+    a * d % suc n          ≡⟨ a%n=a∸a/n*n (a * d) n ⟩
+    a * d ∸ ad/n * (suc n) ≡⟨ cong (λ v → a * d ∸ ad/n * v) 1+n≡bd ⟩
+    a * d ∸ ad/n * (b * d) ≡⟨ sym (cong (a * d ∸_) (*-assoc ad/n b d)) ⟩
+    a * d ∸ (ad/n * b) * d ≡⟨ sym (*-distribʳ-∸ d a (ad/n * b)) ⟩
+    (a ∸ ad/n * b) * d     ∎
+  where ad/n = a * d / (suc n)
+
+
+------------------------------------------------------------------------
+-- DEPRECATED - please use new names as continuing support for the old
+-- names is not guaranteed.
+
+-- Version 0.14
+
+∣-+ = ∣m∣n⇒∣m+n
+{-# WARNING_ON_USAGE ∣-+
+"Warning: ∣-+ was deprecated in v0.14.
+Please use ∣m∣n⇒∣m+n instead."
+#-}
+∣-∸ = ∣m+n∣m⇒∣n
+{-# WARNING_ON_USAGE ∣-∸
+"Warning: ∣-∸ was deprecated in v0.14.
+Please use ∣m+n∣m⇒∣n instead."
+#-}
+∣-* = n∣m*n
+{-# WARNING_ON_USAGE ∣-*
+"Warning: ∣-* was deprecated in v0.14.
+Please use n∣m*n instead."
+#-}
+
+-- Version 0.17
+
+open import Data.Fin using (Fin; zero; suc; toℕ)
+import Data.Fin.Properties as FP
+open import Data.Nat.Solver
+open +-*-Solver
+
+nonZeroDivisor-lemma : ∀ m q (r : Fin (1 + m)) → toℕ r ≢ 0 →
+                       1 + m ∤ toℕ r + q * (1 + m)
+nonZeroDivisor-lemma m zero r r≢zero (divides zero eq) = r≢zero $ begin-equality
   toℕ r      ≡⟨ sym (*-identityˡ (toℕ r)) ⟩
   1 * toℕ r  ≡⟨ eq ⟩
   0          ∎
-  where open PropEq.≡-Reasoning
 nonZeroDivisor-lemma m zero r r≢zero (divides (suc q) eq) =
-  i+1+j≰i m $ begin
+  m+1+n≰m m $ begin
     m + suc (q * suc m) ≡⟨ +-suc m (q * suc m) ⟩
     suc (m + q * suc m) ≡⟨ sym eq ⟩
     1 * toℕ r           ≡⟨ *-identityˡ (toℕ r) ⟩
     toℕ r               ≤⟨ FP.toℕ≤pred[n] r ⟩
     m                   ∎
-  where open ≤-Reasoning
 nonZeroDivisor-lemma m (suc q) r r≢zero d =
   nonZeroDivisor-lemma m q r r≢zero (∣m+n∣m⇒∣n d' ∣-refl)
   where
   lem = solve 3 (λ m r q → r :+ (m :+ q)  :=  m :+ (r :+ q))
                 refl (suc m) (toℕ r) (q * suc m)
   d' = subst (1 + m ∣_) lem d
+{-# WARNING_ON_USAGE nonZeroDivisor-lemma
+"Warning: nonZeroDivisor-lemma was deprecated in v0.17."
+#-}
 
--- Divisibility is decidable.
-
-infix 4 _∣?_
-
-_∣?_ : Decidable _∣_
-zero  ∣? zero                     = yes (0 ∣0)
-zero  ∣? suc n                    = no ((λ()) ∘′ 0∣⇒≡0)
-suc m ∣? n                        with n divMod suc m
-suc m ∣? .(q * suc m)             | result q zero    refl =
-  yes $ divides q refl
-suc m ∣? .(1 + toℕ r + q * suc m) | result q (suc r) refl =
-  no $ nonZeroDivisor-lemma m q (suc r) (λ())
-
-------------------------------------------------------------------------
--- DEPRECATED - please use new names as continuing support for the old
--- names is not guaranteed.
-
-∣-+ = ∣m∣n⇒∣m+n
-∣-∸ = ∣m+n∣m⇒∣n
-∣-* = n∣m*n
+-- Version 1.1
+poset = ∣-poset
+{-# WARNING_ON_USAGE poset
+"Warning: poset was deprecated in v0.14.
+Please use ∣-poset instead."
+#-}
+*-cong = *-monoʳ-∣
+{-# WARNING_ON_USAGE *-cong
+"Warning: *-cong was deprecated in v0.14.
+Please use *-monoʳ-∣ instead."
+#-}
+/-cong = *-cancelˡ-∣
+{-# WARNING_ON_USAGE /-cong
+"Warning: /-cong was deprecated in v0.14.
+Please use *-cancelˡ-∣ instead."
+#-}

@@ -4,9 +4,11 @@
 -- Transitive closures
 --
 -- This module is DEPRECATED. Please use the
--- Relation.Binary.Closure.Transitive module directly.
+-- Relation.Binary.Construct.Closure.Transitive module directly.
 ------------------------------------------------------------------------
+
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Plus where
 
-open import Relation.Binary.Closure.Transitive public
+open import Relation.Binary.Construct.Closure.Transitive public

@@ -7,6 +7,8 @@
 
 -- For an example of how this module can be used, see README.Record.
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Data.Bool.Base using (if_then_else_)
 open import Data.Empty
 open import Data.List.Base
@@ -22,7 +24,7 @@ open import Relation.Nullary.Decidable
 -- The module is parametrised by the type of labels, which should come
 -- with decidable equality.
 
-module Record {ℓ : Level} (Label : Set ℓ) (_≟_ : Decidable (_≡_ {A = Label})) where
+module Record {ℓ} (Label : Set ℓ) (_≟_ : Decidable {A = Label} _≡_) where
 
 ------------------------------------------------------------------------
 -- A Σ-type with a manifest field
@@ -69,7 +71,7 @@ mutual
     field fun : Record-fun Sig
 
   Record-fun : ∀ {s} → Signature s → Set s
-  Record-fun ∅             = Lift ⊤
+  Record-fun ∅             = Lift _ ⊤
   Record-fun (Sig , ℓ ∶ A) =          Σ (Record Sig) A
   Record-fun (Sig , ℓ ≔ a) = Manifest-Σ (Record Sig) a
 

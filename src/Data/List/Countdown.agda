@@ -5,10 +5,12 @@
 -- of elements /not/ in a given list
 ------------------------------------------------------------------------
 
-import Level
+{-# OPTIONS --without-K --safe #-}
+
+open import Level using (0ℓ)
 open import Relation.Binary
 
-module Data.List.Countdown (D : DecSetoid Level.zero Level.zero) where
+module Data.List.Countdown (D : DecSetoid 0ℓ 0ℓ) where
 
 open import Data.Empty
 open import Data.Fin using (Fin; zero; suc; punchOut)
@@ -19,10 +21,11 @@ open import Function.Equality using (_⟨$⟩_)
 open import Function.Injection
   using (Injection; module Injection)
 open import Data.List hiding (lookup)
-open import Data.List.Any as Any using (here; there)
+open import Data.List.Relation.Unary.Any as Any using (here; there)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Product
 open import Data.Sum
+open import Data.Sum.Properties
 open import Relation.Nullary
 open import Relation.Binary.PropositionalEquality as PropEq
   using (_≡_; _≢_; refl; cong)
@@ -37,10 +40,6 @@ private
 -- Helper functions
 
 private
-
-  drop-inj₂ : ∀ {A B : Set} {x y} →
-              inj₂ {A = A} {B = B} x ≡ inj₂ y → x ≡ y
-  drop-inj₂ refl = refl
 
   -- The /first/ occurrence of x in xs.
 
@@ -126,8 +125,8 @@ empty : ∀ {n} → Injection D.setoid (PropEq.setoid (Fin n)) → [] ⊕ n
 empty inj =
   record { kind      = inj₂ ∘ _⟨$⟩_ to
          ; injective = λ {x} {y} {i} eq₁ eq₂ → injective (begin
-             to ⟨$⟩ x  ≡⟨ drop-inj₂ eq₁ ⟩
-             i         ≡⟨ PropEq.sym $ drop-inj₂ eq₂ ⟩
+             to ⟨$⟩ x  ≡⟨ inj₂-injective eq₁ ⟩
+             i         ≡⟨ PropEq.sym $ inj₂-injective eq₂ ⟩
              to ⟨$⟩ y  ∎)
          }
   where open Injection inj
@@ -199,7 +198,7 @@ insert {counted} {n} counted⊕1+n x x∉counted =
   inj eq₁ eq₂ | no  _ | no  _ | inj₂ i         | inj₂ _ | inj₂ _ | _ | _ | hlp =
     hlp _ refl refl $
       punchOut-injective {i = i} _ _ $
-        (PropEq.trans (drop-inj₂ eq₁) (PropEq.sym (drop-inj₂ eq₂)))
+        (PropEq.trans (inj₂-injective eq₁) (PropEq.sym (inj₂-injective eq₂)))
 
 -- Counts an element if it has not already been counted.
 

@@ -4,13 +4,16 @@
 -- Finite maps with indexed keys and values, based on AVL trees
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Data.Product as Prod
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Relation.Binary.PropositionalEquality using (_≡_; cong; subst)
+import Data.AVL.Value
 
 module Data.AVL.IndexedMap
   {i k v ℓ}
-  {Index : Set i} {Key : Index → Set k} (Value : Index → Set v)
+  {Index : Set i} {Key : Index → Set k}  (Value : Index → Set v)
   {_<_ : Rel (∃ Key) ℓ}
   (isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_)
   where
@@ -41,9 +44,9 @@ private
 
 private
   open module AVL =
-    Data.AVL isStrictTotalOrder
-    public using () renaming (Tree to Map')
-  Map = Map' (Value ∘ proj₁)
+    Data.AVL (record { isStrictTotalOrder = isStrictTotalOrder })
+    using () renaming (Tree to Map')
+  Map = Map' (AVL.MkValue (Value ∘ proj₁) (subst Value ∘′ cong proj₁))
 
 -- Repackaged functions.
 
@@ -51,21 +54,21 @@ empty : Map
 empty = AVL.empty
 
 singleton : ∀ {i} → Key i → Value i → Map
-singleton k v = AVL.singleton (, k) v
+singleton k v = AVL.singleton (-, k) v
 
 insert : ∀ {i} → Key i → Value i → Map → Map
-insert k v = AVL.insert (, k) v
+insert k v = AVL.insert (-, k) v
 
 delete : ∀ {i} → Key i → Map → Map
-delete k = AVL.delete (, k)
+delete k = AVL.delete (-, k)
 
 lookup : ∀ {i} → Key i → Map → Maybe (Value i)
-lookup k m = AVL.lookup (, k) m
+lookup k m = AVL.lookup (-, k) m
 
 infix 4 _∈?_
 
 _∈?_ : ∀ {i} → Key i → Map → Bool
-_∈?_ k = AVL._∈?_ (, k)
+_∈?_ k = AVL._∈?_ (-, k)
 
 headTail : Map → Maybe (KV × Map)
 headTail m = Maybe.map (Prod.map toKV id) (AVL.headTail m)
