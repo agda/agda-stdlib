@@ -308,6 +308,11 @@ Other minor additions
   concat⁺ : Sublist (Sublist R) ass bss → Sublist R (concat ass) (concat bss)
   ```
 
+* Added new proof to `Data.List.Membership.Setoid.Properties`:
+  ```agda
+  unique⇒irrelevant : B.Irrelevant _≈_ → Unique xs → U.Irrelevant (_∈ xs)
+  ```
+
 * Added new proof to `Data.List.Relation.Unary.All`:
   ```agda
   glookup : ∀[ P ⇒ Q ⇒ R ] → All P xs → (i : Any Q xs) → R (lookup i)
