@@ -62,7 +62,6 @@ module _ {c ℓ} (S : Setoid c ℓ) where
   open Membership S
 
   private
-    _≉_ = λ x y → ¬ (x ≈ y)
 
     ∉×∈⇒≉ : ∀ {x y xs} → All (y ≉_) xs → x ∈ xs → x ≉ y
     ∉×∈⇒≉ = All.glookup λ y≉z x≈z x≈y → y≉z (trans (sym x≈y) x≈z)
