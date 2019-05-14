@@ -499,9 +499,13 @@ Other minor additions
   ≢-sym : Symmetric _≢_
   ```
 
-* Defined some new utilities of unary list relations:
+* Added new function in `Data.List.Relation.Unary.All`:
   ```agda
   All.uncons : All P (x ∷ xs) → P x × All P xs
+  ```
+
+* Added new proofs to `Data.List.Relation.Unary.Any.Properties`:
+  ```agda
   Any-Σ⁺ʳ : (∃ λ x → Any (_~ x) xs) → Any (∃ ∘ _~_) xs
   Any-Σ⁻ʳ : Any (∃ ∘ _~_) xs → ∃ λ x → Any (_~ x) xs
   gmap : P ⋐ Q ∘ f → Any P ⋐ Any Q ∘ map f
