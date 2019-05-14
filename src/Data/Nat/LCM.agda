@@ -19,28 +19,61 @@ open import Data.Nat.GCD
 open import Data.Product
 open import Data.Sum using (inj₁)
 open import Function
-open import Relation.Binary.PropositionalEquality as PropEq
+open import Relation.Binary.PropositionalEquality as P
   using (_≡_; refl)
 open import Relation.Binary
-open import Relation.Nullary.Decidable using (fromWitnessFalse)
+open import Relation.Nullary.Decidable using (False; fromWitnessFalse)
 
 open +-*-Solver
+
+private
+  gcd≢0′ : ∀ m {n} → False (gcd (suc m) (suc n) ≟ 0)
+  gcd≢0′ m {n} = fromWitnessFalse (gcd≢0 (suc m) (suc n) (inj₁ (λ())))
 
 ------------------------------------------------------------------------
 -- Definition
 
 lcm : ℕ → ℕ → ℕ
-lcm zero      n         = zero
-lcm n         zero      = zero
-lcm m@(suc _) n@(suc _) = (m * n / gcd m n) {≢0}
-  where ≢0 = fromWitnessFalse (gcd≢0 m n (inj₁ (λ())))
+lcm zero        n           = zero
+lcm n           zero        = zero
+lcm m@(suc m-1) n@(suc n-1) = (m * n / gcd m n) {gcd≢0′ m-1}
+
+------------------------------------------------------------------------
+-- Properties
+
+*-/-assoc : ∀ m {n d} d≢0 → d ∣ n → ((m * n) / d) {d≢0} ≡ m * ((n / d) {d≢0})
+*-/-assoc = {!!}
 
 m∣lcm[m,n] : ∀ m n → m ∣ lcm m n
 m∣lcm[m,n] zero      zero      = 0 ∣0
 m∣lcm[m,n] zero      (suc n)   = 0 ∣0
 m∣lcm[m,n] (suc m)   zero      = suc m ∣0
-m∣lcm[m,n] m@(suc _) n@(suc _) = {!!}
+m∣lcm[m,n] m@(suc m-1) n@(suc n-1) = begin
+ m                 ∣⟨ m∣m*n _ ⟩
+ m * (n / gcd m n) ≡⟨ P.sym (*-/-assoc m (gcd≢0′ m-1) (gcd[m,n]∣n m n)) ⟩
+ m * n / gcd m n   ∎
+ where open ∣-Reasoning
 
+n∣lcm[m,n] : ∀ m n → n ∣ lcm m n
+n∣lcm[m,n] zero        zero        = 0 ∣0
+n∣lcm[m,n] zero        (suc n)     = suc n ∣0
+n∣lcm[m,n] (suc m)     zero        = 0 ∣0
+n∣lcm[m,n] m@(suc m-1) n@(suc n-1) = begin
+  n                 ∣⟨ m∣m*n (m / gcd m n) ⟩
+  n * (m / gcd m n) ≡⟨ P.sym (*-/-assoc n (gcd≢0′ m-1) (gcd[m,n]∣m m n)) ⟩
+  n * m / gcd m n   ≡⟨ P.cong (λ v → (v / gcd m n) {gcd≢0′ m-1}) (*-comm n m) ⟩
+  m * n / gcd m n   ∎
+  where open ∣-Reasoning
+
+lcd-least : ∀ {m n c} → m ∣ c → n ∣ c → lcm m n ∣ c
+lcd-least {zero}  {zero}  {c} 0∣c _   = 0∣c
+lcd-least {zero}  {suc n} {c} 0∣c _   = 0∣c
+lcd-least {suc m} {zero}  {c} _   0∣c = 0∣c
+lcd-least {m@(suc m-1)} {n@(suc n-1)} {c} m∣c n∣c = begin
+  m * n / gcd m n  ∣⟨ {!!} ⟩
+  c                ∎
+  where open ∣-Reasoning
+{-
 ------------------------------------------------------------------------
 -- A formal specification of LCM
 
@@ -139,3 +172,4 @@ gcd*lcm  {i} {j} {d} {m} g l with LCM.unique l (proj₂ (mkLCM i j))
   with GCD.unique g (gcd′-gcd (gcd-* q₁ q₂ q₁-q₂-coprime))
 ...     | refl = solve 3
   (λ q₁ q₂ d → q₁ :* d :* (q₂ :* d) :=  d :* (q₁ :* q₂ :* d)) refl q₁ q₂ d
+-}
