@@ -117,8 +117,6 @@ isLibraryModule f =
 -- -- Description of the module
 -- ------------------------------------------------------------------------
 
--- | Reads a module and extracts the header.
-
 extractHeader :: FilePath -> [String] -> [String]
 extractHeader mod = extract
   where
