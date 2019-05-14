@@ -133,12 +133,12 @@ module _ p {A : Set a} {P : Pred A (a ⊔ p)}
 ------------------------------------------------------------------------
 -- Generalised lookup based on a proof of Any
 
-module _ {P : Pred A p} {Q : Pred A q} {R : Pred A r}
-         (p×q⇒r : ∀[ P ⇒ Q ⇒ R ]) where
+module _ {P : Pred A p} {Q : Pred A q} {R : Pred A r} where
 
-  glookup : ∀ {xs} → All P xs → (i : Any Q xs) → R (Any.lookup i)
-  glookup (px ∷ pxs) (here qx) = p×q⇒r px qx
-  glookup (px ∷ pxs) (there i) = glookup pxs i
+  glookup : ∀[ P ⇒ Q ⇒ R ] → ∀ {xs} →
+            All P xs → (i : Any Q xs) → R (Any.lookup i)
+  glookup p×q⇒r (px ∷ pxs) (here qx) = p×q⇒r px qx
+  glookup p×q⇒r (px ∷ pxs) (there i) = glookup p×q⇒r pxs i
 
 module _ {P : Pred A p} where
 
