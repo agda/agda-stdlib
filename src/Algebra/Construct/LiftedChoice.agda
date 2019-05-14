@@ -4,6 +4,8 @@
 -- Choosing between elements based on the result of applying a function
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Algebra using (SelectiveMagma)
 
 module Algebra.Construct.LiftedChoice where
