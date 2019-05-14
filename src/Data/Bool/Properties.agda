@@ -18,11 +18,11 @@ open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence
   using (_⇔_; equivalence; module Equivalence)
 open import Level using (Level; 0ℓ)
-open import Relation.Binary.Core using (Decidable)
+open import Relation.Binary
 open import Relation.Binary.PropositionalEquality hiding ([_])
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable using (True)
-open import Relation.Unary as U using (Irrelevant)
+import Relation.Unary as U
 
 open import Algebra.FunctionProperties {A = Bool} _≡_
 open import Algebra.Structures {A = Bool} _≡_
@@ -35,7 +35,7 @@ private
     B : Set b
 
 ------------------------------------------------------------------------
--- Queries
+-- Properties of _≡_
 
 infix 4 _≟_
 
@@ -44,6 +44,172 @@ true  ≟ true  = yes refl
 false ≟ false = yes refl
 true  ≟ false = no λ()
 false ≟ true  = no λ()
+
+≡-setoid : Setoid 0ℓ 0ℓ
+≡-setoid = setoid Bool
+
+≡-decSetoid : DecSetoid 0ℓ 0ℓ
+≡-decSetoid = decSetoid _≟_
+
+------------------------------------------------------------------------
+-- Properties of _≤_
+
+-- Relational properties
+
+≤-reflexive : _≡_ ⇒ _≤_
+≤-reflexive refl = b≤b
+
+≤-refl : Reflexive _≤_
+≤-refl = ≤-reflexive refl
+
+≤-trans : Transitive _≤_
+≤-trans b≤b p   = p
+≤-trans f≤t b≤b = f≤t
+
+≤-antisym : Antisymmetric _≡_ _≤_
+≤-antisym b≤b _ = refl
+
+≤-minimum : Minimum _≤_ false
+≤-minimum false = b≤b
+≤-minimum true  = f≤t
+
+≤-maximum : Maximum _≤_ true
+≤-maximum false = f≤t
+≤-maximum true  = b≤b
+
+≤-total : Total _≤_
+≤-total false b = inj₁ (≤-minimum b)
+≤-total true  b = inj₂ (≤-maximum b)
+
+infix 4 _≤?_
+
+_≤?_ : Decidable _≤_
+false ≤? b     = yes (≤-minimum b)
+true  ≤? false = no λ ()
+true  ≤? true  = yes b≤b
+
+≤-irrelevant : Irrelevant _≤_
+≤-irrelevant {_}     f≤t f≤t = refl
+≤-irrelevant {false} b≤b b≤b = refl
+≤-irrelevant {true}  b≤b b≤b = refl
+
+-- Structures
+
+≤-isPreorder : IsPreorder _≡_ _≤_
+≤-isPreorder = record
+  { isEquivalence = isEquivalence
+  ; reflexive     = ≤-reflexive
+  ; trans         = ≤-trans
+  }
+
+≤-isPartialOrder : IsPartialOrder _≡_ _≤_
+≤-isPartialOrder = record
+  { isPreorder = ≤-isPreorder
+  ; antisym    = ≤-antisym
+  }
+
+≤-isTotalOrder : IsTotalOrder _≡_ _≤_
+≤-isTotalOrder = record
+  { isPartialOrder = ≤-isPartialOrder
+  ; total          = ≤-total
+  }
+
+≤-isDecTotalOrder : IsDecTotalOrder _≡_ _≤_
+≤-isDecTotalOrder = record
+  { isTotalOrder = ≤-isTotalOrder
+  ; _≟_          = _≟_
+  ; _≤?_         = _≤?_
+  }
+
+-- Packages
+
+≤-poset : Poset 0ℓ 0ℓ 0ℓ
+≤-poset = record
+  { isPartialOrder = ≤-isPartialOrder
+  }
+
+≤-preorder : Preorder 0ℓ 0ℓ 0ℓ
+≤-preorder = record
+  { isPreorder = ≤-isPreorder
+  }
+
+≤-totalOrder : TotalOrder 0ℓ 0ℓ 0ℓ
+≤-totalOrder = record
+  { isTotalOrder = ≤-isTotalOrder
+  }
+
+≤-decTotalOrder : DecTotalOrder 0ℓ 0ℓ 0ℓ
+≤-decTotalOrder = record
+  { isDecTotalOrder = ≤-isDecTotalOrder
+  }
+
+------------------------------------------------------------------------
+-- Properties of _<_
+
+-- Relational properties
+
+<-irrefl : Irreflexive _≡_ _<_
+<-irrefl refl ()
+
+<-asym : Asymmetric _<_
+<-asym f<t ()
+
+<-trans : Transitive _<_
+<-trans f<t ()
+
+<-transʳ : Trans _≤_ _<_ _<_
+<-transʳ b≤b f<t = f<t
+
+<-transˡ : Trans _<_ _≤_ _<_
+<-transˡ f<t b≤b = f<t
+
+<-cmp : Trichotomous _≡_ _<_
+<-cmp false false = tri≈ (λ()) refl  (λ())
+<-cmp false true  = tri< f<t   (λ()) (λ())
+<-cmp true  false = tri> (λ()) (λ()) f<t
+<-cmp true  true  = tri≈ (λ()) refl  (λ())
+
+infix 4 _<?_
+
+_<?_ : Decidable _<_
+false <? false = no  (λ())
+false <? true  = yes f<t
+true  <? _     = no  (λ())
+
+<-resp₂-≡ : _<_ Respects₂ _≡_
+<-resp₂-≡ = subst (_ <_) , subst (_< _)
+
+<-irrelevant : Irrelevant _<_
+<-irrelevant f<t f<t = refl
+
+-- Structures
+
+<-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
+<-isStrictPartialOrder = record
+  { isEquivalence = isEquivalence
+  ; irrefl        = <-irrefl
+  ; trans         = <-trans
+  ; <-resp-≈      = <-resp₂-≡
+  }
+
+<-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_
+<-isStrictTotalOrder = record
+  { isEquivalence = isEquivalence
+  ; trans         = <-trans
+  ; compare       = <-cmp
+  }
+
+-- Packages
+
+<-strictPartialOrder : StrictPartialOrder 0ℓ 0ℓ 0ℓ
+<-strictPartialOrder = record
+  { isStrictPartialOrder = <-isStrictPartialOrder
+  }
+
+<-strictTotalOrder : StrictTotalOrder 0ℓ 0ℓ 0ℓ
+<-strictTotalOrder = record
+  { isStrictTotalOrder = <-isStrictTotalOrder
+  }
 
 ------------------------------------------------------------------------
 -- Properties of _∨_
@@ -155,9 +321,9 @@ false ≟ true  = no λ()
 ∨-isIdempotentCommutativeMonoid :
   IsIdempotentCommutativeMonoid _∨_ false
 ∨-isIdempotentCommutativeMonoid = record
-    { isCommutativeMonoid = ∨-isCommutativeMonoid
-   ; idem = ∨-idem
-   }
+  { isCommutativeMonoid = ∨-isCommutativeMonoid
+  ; idem                = ∨-idem
+  }
 
 ∨-idempotentCommutativeMonoid : IdempotentCommutativeMonoid 0ℓ 0ℓ
 ∨-idempotentCommutativeMonoid = record
@@ -223,8 +389,8 @@ false ≟ true  = no λ()
 ∧-distribʳ-∨ x y z = begin
   (y ∨ z) ∧ x     ≡⟨ ∧-comm (y ∨ z) x ⟩
   x ∧ (y ∨ z)     ≡⟨ ∧-distribˡ-∨ x y z ⟩
-  x ∧ y ∨ x ∧ z  ≡⟨ cong₂ _∨_ (∧-comm x y) (∧-comm x z) ⟩
-  y ∧ x ∨ z ∧ x  ∎
+  x ∧ y ∨ x ∧ z   ≡⟨ cong₂ _∨_ (∧-comm x y) (∧-comm x z) ⟩
+  y ∧ x ∨ z ∧ x   ∎
 
 ∧-distrib-∨ : _∧_ DistributesOver _∨_
 ∧-distrib-∨ = ∧-distribˡ-∨ , ∧-distribʳ-∨
@@ -377,7 +543,7 @@ false ≟ true  = no λ()
 
 ∨-∧-isDistributiveLattice : IsDistributiveLattice _∨_ _∧_
 ∨-∧-isDistributiveLattice = record
-  { isLattice     = ∨-∧-isLattice
+  { isLattice    = ∨-∧-isLattice
   ; ∨-∧-distribʳ = ∨-distribʳ-∧
   }
 
@@ -456,7 +622,7 @@ T-∨ {true}  {_}     = equivalence inj₁ (const _)
 T-∨ {false} {true}  = equivalence inj₂ (const _)
 T-∨ {false} {false} = equivalence inj₁ [ id , id ]
 
-T-irrelevant : Irrelevant T
+T-irrelevant : U.Irrelevant T
 T-irrelevant {true}  _  _  = refl
 
 T? : U.Decidable T
