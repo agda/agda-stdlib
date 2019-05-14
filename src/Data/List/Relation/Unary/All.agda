@@ -44,7 +44,6 @@ data All {A : Set a} (P : Pred A p) : Pred (List A) (a ⊔ p) where
 
 module _ {P : Pred A p} where
 
-
   head : ∀ {x xs} → All P (x ∷ xs) → P x
   head (px ∷ pxs) = px
 
