@@ -13,15 +13,22 @@ module Data.Maybe.Base where
 open import Level
 open import Data.Bool.Base using (Bool; true; false; not)
 open import Data.Unit.Base using (⊤)
-open import Data.These using (These; this; that; these)
+open import Data.These.Base using (These; this; that; these)
 open import Data.Product as Prod using (_×_; _,_)
 open import Function
 open import Relation.Nullary
 
+private
+  variable
+    a b c : Level
+    A : Set a
+    B : Set b
+    C : Set c
+
 ------------------------------------------------------------------------
 -- Definition
 
-data Maybe {a} (A : Set a) : Set a where
+data Maybe (A : Set a) : Set a where
   just    : (x : A) → Maybe A
   nothing : Maybe A
 
@@ -32,32 +39,32 @@ boolToMaybe : Bool → Maybe ⊤
 boolToMaybe true  = just _
 boolToMaybe false = nothing
 
-is-just : ∀ {a} {A : Set a} → Maybe A → Bool
+is-just : Maybe A → Bool
 is-just (just _) = true
 is-just nothing  = false
 
-is-nothing : ∀ {a} {A : Set a} → Maybe A → Bool
+is-nothing : Maybe A → Bool
 is-nothing = not ∘ is-just
 
-decToMaybe : ∀ {a} {A : Set a} → Dec A → Maybe A
+decToMaybe : Dec A → Maybe A
 decToMaybe (yes x) = just x
 decToMaybe (no _)  = nothing
 
 -- A dependent eliminator.
 
-maybe : ∀ {a b} {A : Set a} {B : Maybe A → Set b} →
+maybe : ∀ {A : Set a} {B : Maybe A → Set b} →
         ((x : A) → B (just x)) → B nothing → (x : Maybe A) → B x
 maybe j n (just x) = j x
 maybe j n nothing  = n
 
 -- A non-dependent eliminator.
 
-maybe′ : ∀ {a b} {A : Set a} {B : Set b} → (A → B) → B → Maybe A → B
+maybe′ : (A → B) → B → Maybe A → B
 maybe′ = maybe
 
 -- A defaulting mechanism
 
-fromMaybe : ∀ {a} {A : Set a} → A → Maybe A → A
+fromMaybe : A → Maybe A → A
 fromMaybe = maybe′ id
 
 -- A safe variant of "fromJust". If the value is nothing, then the
@@ -73,46 +80,54 @@ module _ {a} {A : Set a} where
   from-just (just x) = x
   from-just nothing  = _
 
--- Functoriality: map.
+-- Functoriality: map
 
-map : ∀ {a b} {A : Set a} {B : Set b} → (A → B) → Maybe A → Maybe B
+map : (A → B) → Maybe A → Maybe B
 map f = maybe (just ∘ f) nothing
+
+-- Applicative: ap
+
+ap : Maybe (A → B) → Maybe A → Maybe B
+ap nothing  = const nothing
+ap (just f) = map f
+
+-- Monad: bind
+
+infixl 1 _>>=_
+_>>=_ : Maybe A → (A → Maybe B) → Maybe B
+nothing >>= f = nothing
+just a  >>= f = f a
 
 -- Alternative: <∣>
 
-_<∣>_ : ∀ {a} {A : Set a} → Maybe A → Maybe A → Maybe A
+_<∣>_ : Maybe A → Maybe A → Maybe A
 just x  <∣> my = just x
 nothing <∣> my = my
 
 ------------------------------------------------------------------------
 -- Aligning and zipping
 
-module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
+alignWith : (These A B → C) → Maybe A → Maybe B → Maybe C
+alignWith f (just a) (just b) = just (f (these a b))
+alignWith f (just a) nothing  = just (f (this a))
+alignWith f nothing  (just b) = just (f (that b))
+alignWith f nothing  nothing  = nothing
 
-  alignWith : (These A B → C) → Maybe A → Maybe B → Maybe C
-  alignWith f (just a) (just b) = just (f (these a b))
-  alignWith f (just a) nothing  = just (f (this a))
-  alignWith f nothing  (just b) = just (f (that b))
-  alignWith f nothing  nothing  = nothing
+zipWith : (A → B → C) → Maybe A → Maybe B → Maybe C
+zipWith f (just a) (just b) = just (f a b)
+zipWith _ _        _        = nothing
 
-  zipWith : (A → B → C) → Maybe A → Maybe B → Maybe C
-  zipWith f (just a) (just b) = just (f a b)
-  zipWith _ _ _ = nothing
+align : Maybe A → Maybe B → Maybe (These A B)
+align = alignWith id
 
-module _ {a b} {A : Set a} {B : Set b} where
+zip : Maybe A → Maybe B → Maybe (A × B)
+zip = zipWith _,_
 
-  align : Maybe A → Maybe B → Maybe (These A B)
-  align = alignWith id
-
-  zip : Maybe A → Maybe B → Maybe (A × B)
-  zip = zipWith _,_
-
-module _ {a b} {A : Set a} {B : Set b} where
-
+------------------------------------------------------------------------
 -- Injections.
 
-  thisM : A → Maybe B → These A B
-  thisM a = maybe′ (these a) (this a)
+thisM : A → Maybe B → These A B
+thisM a = maybe′ (these a) (this a)
 
-  thatM : Maybe A → B → These A B
-  thatM = maybe′ these that
+thatM : Maybe A → B → These A B
+thatM = maybe′ these that

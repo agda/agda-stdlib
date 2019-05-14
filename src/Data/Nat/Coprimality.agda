@@ -44,7 +44,7 @@ coprime-gcd {m} {n} c = GCD.is (1∣ m , 1∣ n) greatest
 
 gcd-coprime : ∀ {m n} → GCD m n 1 → Coprime m n
 gcd-coprime g cd with GCD.greatest g cd
-... | divides q eq = i*j≡1⇒j≡1 q _ (P.sym eq)
+... | divides q eq = m*n≡1⇒n≡1 q _ (P.sym eq)
 
 ------------------------------------------------------------------------
 -- Coprime is decidable.
@@ -143,12 +143,9 @@ gcd′ m n = Prod.map id gcd-gcd′ (gcd m n)
 
 prime⇒coprime : ∀ m → Prime m →
                 ∀ n → 0 < n → n < m → Coprime m n
-prime⇒coprime 0             () _ _  _     _
-prime⇒coprime 1             () _ _  _     _
-prime⇒coprime (suc (suc m)) _  0 () _     _
 prime⇒coprime (suc (suc m)) _  _ _  _ {1} _                       = refl
 prime⇒coprime (suc (suc m)) p  _ _  _ {0} (divides q 2+m≡q*0 , _) =
-  ⊥-elim $ i+1+j≢i 0 (begin
+  ⊥-elim $ m+1+n≢m 0 (begin
     2 + m  ≡⟨ 2+m≡q*0 ⟩
     q * 0  ≡⟨ *-zeroʳ q ⟩
     0      ∎)

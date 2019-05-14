@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Indexed AVL trees
+-- AVL trees where the stored values may depend on their key
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -13,8 +13,9 @@ module Data.AVL.Indexed
 
 open import Level using (_⊔_)
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
-open import Data.Product hiding (map)
-open import Data.Maybe hiding (map)
+open import Data.Product using (Σ; ∃; _×_; _,_; proj₁)
+open import Data.Maybe using (Maybe; just; nothing)
+open import Data.List.Base as List using (List)
 open import Data.DifferenceList using (DiffList; []; _∷_; _++_)
 open import Function as F hiding (const)
 open import Relation.Unary
@@ -108,7 +109,6 @@ module _ {v} {V : Value v} where
   joinˡ⁺ k₂ (1# , t₁)               t₃ ∼0  = (1# , node k₂ t₁ t₃ ∼-)
   joinˡ⁺ k₂ (1# , t₁)               t₃ ∼+  = (0# , node k₂ t₁ t₃ ∼0)
   joinˡ⁺ k₂ (0# , t₁)               t₃ bal = (0# , node k₂ t₁ t₃ bal)
-  joinˡ⁺ k₂ (## , t₁)               t₃ bal
 
   joinʳ⁺ : ∀ {l u hˡ hʳ h} →
            (k : K& V) →
@@ -127,7 +127,6 @@ module _ {v} {V : Value v} where
   joinʳ⁺ k₂ t₁ (1# , t₃)               ∼0  = (1# , node k₂ t₁ t₃ ∼+)
   joinʳ⁺ k₂ t₁ (1# , t₃)               ∼-  = (0# , node k₂ t₁ t₃ ∼0)
   joinʳ⁺ k₂ t₁ (0# , t₃)               bal = (0# , node k₂ t₁ t₃ bal)
-  joinʳ⁺ k₂ t₁ (## , t₃)               bal
 
   joinˡ⁻ : ∀ {l u} hˡ {hʳ h} →
            (k : K& V) →
@@ -141,7 +140,6 @@ module _ {v} {V : Value v} where
   joinˡ⁻ (suc _) k₂ (0# , t₁) t₃ ∼0  = (1# , node k₂ t₁ t₃ ∼+)
   joinˡ⁻ (suc _) k₂ (0# , t₁) t₃ ∼-  = (0# , node k₂ t₁ t₃ ∼0)
   joinˡ⁻ (suc _) k₂ (1# , t₁) t₃ bal = (1# , node k₂ t₁ t₃ bal)
-  joinˡ⁻ n       k₂ (## , t₁) t₃ bal
 
   joinʳ⁻ : ∀ {l u hˡ} hʳ {h} →
            (k : K& V) →
@@ -155,7 +153,6 @@ module _ {v} {V : Value v} where
   joinʳ⁻ (suc _) k₂ t₁ (0# , t₃) ∼0  = (1# , node k₂ t₁ t₃ ∼-)
   joinʳ⁻ (suc _) k₂ t₁ (0# , t₃) ∼+  = (0# , node k₂ t₁ t₃ ∼0)
   joinʳ⁻ (suc _) k₂ t₁ (1# , t₃) bal = (1# , node k₂ t₁ t₃ bal)
-  joinʳ⁻ n       k₂ t₁ (## , t₃) bal
 
   -- Extracts the smallest element from the tree, plus the rest.
   -- Logarithmic in the size of the tree.
@@ -250,6 +247,9 @@ module _ {v} {V : Value v} where
   toDiffList : ∀ {l u h} → Tree V l u h → DiffList (K& V)
   toDiffList (leaf _)       = []
   toDiffList (node k l r _) = toDiffList l ++ k ∷ toDiffList r
+
+  toList : ∀ {l u h} → Tree V l u h → List (K& V)
+  toList t = toDiffList t List.[]
 
 module _ {v w} {V : Value v} {W : Value w} where
 

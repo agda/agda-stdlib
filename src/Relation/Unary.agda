@@ -17,198 +17,216 @@ open import Level
 open import Relation.Nullary
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
+private
+  variable
+    a b c ℓ ℓ₁ ℓ₂ : Level
+    A : Set a
+    B : Set b
+    C : Set c
+
 ------------------------------------------------------------------------
 -- Unary relations
+
+-- Unary relations are known as predicates and `Pred A ℓ` can be viewed
+-- as some property that elements of type A might satisfy.
+
+-- Consequently `P : Pred A ℓ` can also be seen as a subset of A
+-- containing all the elements of A that satisfy property P. This view
+-- informs much of the notation used below.
 
 Pred : ∀ {a} → Set a → (ℓ : Level) → Set (a ⊔ suc ℓ)
 Pred A ℓ = A → Set ℓ
 
 ------------------------------------------------------------------------
--- Unary relations can be seen as sets
--- i.e. they can be seen as subsets of the universe of discourse.
+-- Special sets
 
-module _ {a} {A : Set a} where
+-- The empty set.
 
-  ----------------------------------------------------------------------
-  -- Special sets
+∅ : Pred A 0ℓ
+∅ = λ _ → ⊥
 
-  -- The empty set
+-- The singleton set.
 
-  ∅ : Pred A zero
-  ∅ = λ _ → ⊥
+｛_｝ : A → Pred A _
+｛ x ｝ = x ≡_
 
-  -- The singleton set
+-- The universal set.
 
-  ｛_｝ : A → Pred A a
-  ｛ x ｝ = x ≡_
+U : Pred A 0ℓ
+U = λ _ → ⊤
 
-  -- The universe
+------------------------------------------------------------------------
+-- Membership
 
-  U : Pred A zero
-  U = λ _ → ⊤
+infix 4 _∈_ _∉_
 
-  ----------------------------------------------------------------------
-  -- Membership
+_∈_ : A → Pred A ℓ → Set _
+x ∈ P = P x
 
-  infix 4 _∈_ _∉_
+_∉_ : A → Pred A ℓ → Set _
+x ∉ P = ¬ x ∈ P
 
-  _∈_ : ∀ {ℓ} → A → Pred A ℓ → Set _
-  x ∈ P = P x
+------------------------------------------------------------------------
+-- Subset relations
 
-  _∉_ : ∀ {ℓ} → A → Pred A ℓ → Set _
-  x ∉ P = ¬ x ∈ P
+infix 4 _⊆_ _⊇_ _⊈_ _⊉_ _⊂_ _⊃_ _⊄_ _⊅_
 
-  ----------------------------------------------------------------------
-  -- Subsets
+_⊆_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
+P ⊆ Q = ∀ {x} → x ∈ P → x ∈ Q
 
-  infix 4 _⊆_ _⊇_ _⊈_ _⊉_ _⊂_ _⊃_ _⊄_ _⊅_
+_⊇_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
+P ⊇ Q = Q ⊆ P
 
-  _⊆_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Set _
-  P ⊆ Q = ∀ {x} → x ∈ P → x ∈ Q
+_⊈_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
+P ⊈ Q = ¬ (P ⊆ Q)
 
-  _⊇_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Set _
-  P ⊇ Q = Q ⊆ P
+_⊉_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
+P ⊉ Q = ¬ (P ⊇ Q)
 
-  _⊈_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Set _
-  P ⊈ Q = ¬ (P ⊆ Q)
+_⊂_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
+P ⊂ Q = P ⊆ Q × Q ⊈ P
 
-  _⊉_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Set _
-  P ⊉ Q = ¬ (P ⊇ Q)
+_⊃_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
+P ⊃ Q = Q ⊂ P
 
-  _⊂_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Set _
-  P ⊂ Q = P ⊆ Q × Q ⊈ P
+_⊄_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
+P ⊄ Q = ¬ (P ⊂ Q)
 
-  _⊃_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Set _
-  P ⊃ Q = Q ⊂ P
+_⊅_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
+P ⊅ Q = ¬ (P ⊃ Q)
 
-  _⊄_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Set _
-  P ⊄ Q = ¬ (P ⊂ Q)
+-- The following primed variants of _⊆_ can be used when 'x' can't
+-- be inferred from 'x ∈ P'.
 
-  _⊅_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Set _
-  P ⊅ Q = ¬ (P ⊃ Q)
+infix 4 _⊆′_ _⊇′_ _⊈′_ _⊉′_ _⊂′_ _⊃′_ _⊄′_ _⊅′_
 
-  -- Dashed variants of _⊆_ for when 'x' can't be inferred from 'x ∈ P'.
+_⊆′_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
+P ⊆′ Q = ∀ x → x ∈ P → x ∈ Q
 
-  infix 4 _⊆′_ _⊇′_ _⊈′_ _⊉′_ _⊂′_ _⊃′_ _⊄′_ _⊅′_
+_⊇′_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
+Q ⊇′ P = P ⊆′ Q
 
-  _⊆′_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Set _
-  P ⊆′ Q = ∀ x → x ∈ P → x ∈ Q
+_⊈′_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
+P ⊈′ Q = ¬ (P ⊆′ Q)
 
-  _⊇′_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Set _
-  Q ⊇′ P = P ⊆′ Q
+_⊉′_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
+P ⊉′ Q = ¬ (P ⊇′ Q)
 
-  _⊈′_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Set _
-  P ⊈′ Q = ¬ (P ⊆′ Q)
+_⊂′_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
+P ⊂′ Q = P ⊆′ Q × Q ⊈′ P
 
-  _⊉′_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Set _
-  P ⊉′ Q = ¬ (P ⊇′ Q)
+_⊃′_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
+P ⊃′ Q = Q ⊂′ P
 
-  _⊂′_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Set _
-  P ⊂′ Q = P ⊆′ Q × Q ⊈′ P
+_⊄′_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
+P ⊄′ Q = ¬ (P ⊂′ Q)
 
-  _⊃′_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Set _
-  P ⊃′ Q = Q ⊂′ P
+_⊅′_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
+P ⊅′ Q = ¬ (P ⊃′ Q)
 
-  _⊄′_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Set _
-  P ⊄′ Q = ¬ (P ⊂′ Q)
+------------------------------------------------------------------------
+-- Properties of sets
 
-  _⊅′_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Set _
-  P ⊅′ Q = ¬ (P ⊃′ Q)
+infix 10 Satisfiable Universal IUniversal
 
-  ----------------------------------------------------------------------
-  -- Properties of sets
+-- Emptiness - no element satisfies P.
 
-  -- Emptiness
+Empty : Pred A ℓ → Set _
+Empty P = ∀ x → x ∉ P
 
-  Empty : ∀ {ℓ} → Pred A ℓ → Set _
-  Empty P = ∀ x → x ∉ P
+-- Satisfiable - at least one element satisfies P.
 
-  -- Satisfiable
+Satisfiable : Pred A ℓ → Set _
+Satisfiable P = ∃ λ x → x ∈ P
 
-  Satisfiable : ∀ {ℓ} → Pred A ℓ → Set _
-  Satisfiable P = ∃ λ x → x ∈ P
+syntax Satisfiable P = ∃⟨ P ⟩
 
-  -- Universality
+-- Universality - all elements satisfy P.
 
-  infix 10 Universal IUniversal
-  Universal : ∀ {ℓ} → Pred A ℓ → Set _
-  Universal P = ∀ x → x ∈ P
+Universal : Pred A ℓ → Set _
+Universal P = ∀ x → x ∈ P
 
-  IUniversal : ∀ {ℓ} → Pred A ℓ → Set _
-  IUniversal P = ∀ {x} → x ∈ P
+syntax Universal  P = Π[ P ]
 
-  syntax Universal  P = Π[ P ]
-  syntax IUniversal P = ∀[ P ]
+-- Implicit universality - all elements satisfy P.
 
-  -- Decidability
+IUniversal : Pred A ℓ → Set _
+IUniversal P = ∀ {x} → x ∈ P
 
-  Decidable : ∀ {ℓ} → Pred A ℓ → Set _
-  Decidable P = ∀ x → Dec (P x)
+syntax IUniversal P = ∀[ P ]
 
-  -- Irrelevance
+-- Decidability - it is possible to determine if an arbitrary element
+-- satisfies P.
 
-  Irrelevant : ∀ {ℓ} → Pred A ℓ → Set _
-  Irrelevant P = ∀ {x} (a : P x) (b : P x) → a ≡ b
+Decidable : Pred A ℓ → Set _
+Decidable P = ∀ x → Dec (P x)
 
-  ----------------------------------------------------------------------
-  -- Operations on sets
+-- Irrelevance - any two proofs that an element satifies P are
+-- indistinguishable.
 
-  -- Set complement.
+Irrelevant : Pred A ℓ → Set _
+Irrelevant P = ∀ {x} (a : P x) (b : P x) → a ≡ b
 
-  ∁ : ∀ {ℓ} → Pred A ℓ → Pred A ℓ
-  ∁ P = λ x → x ∉ P
+------------------------------------------------------------------------
+-- Operations on sets
 
-  -- Positive version of non-disjointness, dual to inclusion.
+infix 10 ⋃ ⋂
+infixr 9 _⊢_
+infixr 8 _⇒_
+infixr 7 _∩_
+infixr 6 _∪_
+infix 4 _≬_
 
-  infix 4 _≬_
+-- Complement.
 
-  _≬_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Set _
-  P ≬ Q = ∃ λ x → x ∈ P × x ∈ Q
+∁ : Pred A ℓ → Pred A ℓ
+∁ P = λ x → x ∉ P
 
-  -- Set union.
+-- Implication.
 
-  infixr 6 _∪_
+_⇒_ : Pred A ℓ₁ → Pred A ℓ₂ → Pred A _
+P ⇒ Q = λ x → x ∈ P → x ∈ Q
 
-  _∪_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Pred A _
-  P ∪ Q = λ x → x ∈ P ⊎ x ∈ Q
+-- Union.
 
-  -- Set intersection.
+_∪_ : Pred A ℓ₁ → Pred A ℓ₂ → Pred A _
+P ∪ Q = λ x → x ∈ P ⊎ x ∈ Q
 
-  infixr 7 _∩_
+-- Intersection.
 
-  _∩_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Pred A _
-  P ∩ Q = λ x → x ∈ P × x ∈ Q
+_∩_ : Pred A ℓ₁ → Pred A ℓ₂ → Pred A _
+P ∩ Q = λ x → x ∈ P × x ∈ Q
 
-  -- Implication.
+-- Infinitary union.
 
-  infixr 8 _⇒_
+⋃ : ∀ {i} (I : Set i) → (I → Pred A ℓ) → Pred A _
+⋃ I P = λ x → Σ[ i ∈ I ] P i x
 
-  _⇒_ : ∀ {ℓ₁ ℓ₂} → Pred A ℓ₁ → Pred A ℓ₂ → Pred A _
-  P ⇒ Q = λ x → x ∈ P → x ∈ Q
+syntax ⋃ I (λ i → P) = ⋃[ i ∶ I ] P
 
-  -- Infinitary union and intersection.
+-- Infinitary intersection.
 
-  infix 10 ⋃ ⋂
+⋂ : ∀ {i} (I : Set i) → (I → Pred A ℓ) → Pred A _
+⋂ I P = λ x → (i : I) → P i x
 
-  ⋃ : ∀ {ℓ i} (I : Set i) → (I → Pred A ℓ) → Pred A _
-  ⋃ I P = λ x → Σ[ i ∈ I ] P i x
+syntax ⋂ I (λ i → P) = ⋂[ i ∶ I ] P
 
-  syntax ⋃ I (λ i → P) = ⋃[ i ∶ I ] P
+-- Positive version of non-disjointness, dual to inclusion.
 
-  ⋂ : ∀ {ℓ i} (I : Set i) → (I → Pred A ℓ) → Pred A _
-  ⋂ I P = λ x → (i : I) → P i x
-
-  syntax ⋂ I (λ i → P) = ⋂[ i ∶ I ] P
+_≬_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
+P ≬ Q = ∃ λ x → x ∈ P × x ∈ Q
 
 -- Update.
 
-infixr 9 _⊢_
-
-_⊢_ : ∀ {a b} {A : Set a} {B : Set b} {ℓ} → (A → B) → Pred B ℓ → Pred A ℓ
+_⊢_ : (A → B) → Pred B ℓ → Pred A ℓ
 f ⊢ P = λ x → P (f x)
 
 ------------------------------------------------------------------------
--- Unary relation combinators
+-- Predicate combinators
+
+-- These differ from the set operations above, as the carrier set of the
+-- resulting predicates are not the same as the carrier set of the
+-- component predicates.
 
 infixr  2 _⟨×⟩_
 infixr  2 _⟨⊙⟩_
@@ -219,45 +237,48 @@ infix  10 _~
 infixr  9 _⟨∘⟩_
 infixr  2 _//_ _\\_
 
-_⟨×⟩_ : ∀ {a b ℓ₁ ℓ₂} {A : Set a} {B : Set b} →
-        Pred A ℓ₁ → Pred B ℓ₂ → Pred (A × B) _
+-- Product.
+
+_⟨×⟩_ : Pred A ℓ₁ → Pred B ℓ₂ → Pred (A × B) _
 (P ⟨×⟩ Q) (x , y) = x ∈ P × y ∈ Q
 
-_⟨⊙⟩_ : ∀ {a b ℓ₁ ℓ₂} {A : Set a} {B : Set b} →
-        Pred A ℓ₁ → Pred B ℓ₂ → Pred (A × B) _
-(P ⟨⊙⟩ Q) (x , y) = x ∈ P ⊎ y ∈ Q
+-- Sum over one element.
 
-_⟨⊎⟩_ : ∀ {a b ℓ} {A : Set a} {B : Set b} →
-        Pred A ℓ → Pred B ℓ → Pred (A ⊎ B) _
+_⟨⊎⟩_ : Pred A ℓ → Pred B ℓ → Pred (A ⊎ B) _
 P ⟨⊎⟩ Q = [ P , Q ]
 
-_⟨→⟩_ : ∀ {a b ℓ₁ ℓ₂} {A : Set a} {B : Set b} →
-        Pred A ℓ₁ → Pred B ℓ₂ → Pred (A → B) _
+-- Sum over two elements.
+
+_⟨⊙⟩_ : Pred A ℓ₁ → Pred B ℓ₂ → Pred (A × B) _
+(P ⟨⊙⟩ Q) (x , y) = x ∈ P ⊎ y ∈ Q
+
+-- Implication.
+
+_⟨→⟩_ : Pred A ℓ₁ → Pred B ℓ₂ → Pred (A → B) _
 (P ⟨→⟩ Q) f = P ⊆ Q ∘ f
 
-_⟨·⟩_ : ∀ {a b ℓ₁ ℓ₂} {A : Set a} {B : Set b}
-        (P : Pred A ℓ₁) (Q : Pred B ℓ₂) →
+-- Product.
+
+_⟨·⟩_ : (P : Pred A ℓ₁) (Q : Pred B ℓ₂) →
         (P ⟨×⟩ (P ⟨→⟩ Q)) ⊆ Q ∘ uncurry (flip _$_)
 (P ⟨·⟩ Q) (p , f) = f p
 
 -- Converse.
 
-_~ : ∀ {a b ℓ} {A : Set a} {B : Set b} →
-     Pred (A × B) ℓ → Pred (B × A) ℓ
+_~ : Pred (A × B) ℓ → Pred (B × A) ℓ
 P ~ = P ∘ swap
 
 -- Composition.
 
-_⟨∘⟩_ : ∀ {a b c ℓ₁ ℓ₂} {A : Set a} {B : Set b} {C : Set c} →
-        Pred (A × B) ℓ₁ → Pred (B × C) ℓ₂ → Pred (A × C) _
+_⟨∘⟩_ : Pred (A × B) ℓ₁ → Pred (B × C) ℓ₂ → Pred (A × C) _
 (P ⟨∘⟩ Q) (x , z) = ∃ λ y → (x , y) ∈ P × (y , z) ∈ Q
 
--- Post and pre-division.
+-- Post-division.
 
-_//_ : ∀ {a b c ℓ₁ ℓ₂} {A : Set a} {B : Set b} {C : Set c} →
-       Pred (A × C) ℓ₁ → Pred (B × C) ℓ₂ → Pred (A × B) _
-(P // Q) (x , y) = Q ∘ _,_ y ⊆ P ∘ _,_ x
+_//_ : Pred (A × C) ℓ₁ → Pred (B × C) ℓ₂ → Pred (A × B) _
+(P // Q) (x , y) = Q ∘ (y ,_) ⊆ P ∘ (x ,_)
 
-_\\_ : ∀ {a b c ℓ₁ ℓ₂} {A : Set a} {B : Set b} {C : Set c} →
-       Pred (A × C) ℓ₁ → Pred (A × B) ℓ₂ → Pred (B × C) _
+-- Pre-division.
+
+_\\_ : Pred (A × C) ℓ₁ → Pred (A × B) ℓ₂ → Pred (B × C) _
 P \\ Q = (P ~ // Q ~) ~

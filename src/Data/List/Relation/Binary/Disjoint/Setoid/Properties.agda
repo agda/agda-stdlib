@@ -49,7 +49,6 @@ module _ {c ℓ} (S : Setoid c ℓ) where
 module _ {c ℓ} (S : Setoid c ℓ) where
 
   concat⁺ʳ : ∀ {vs xss} → All (Disjoint S vs) xss → Disjoint S vs (concat xss)
-  concat⁺ʳ {xss = []}       []               (_ , ())
   concat⁺ʳ {xss = xs ∷ xss} (vs#xs ∷ vs#xss) (v∈vs , v∈xs++concatxss)
     with ++⁻ xs v∈xs++concatxss
   ... | inj₁ v∈xs  = vs#xs (v∈vs , v∈xs)

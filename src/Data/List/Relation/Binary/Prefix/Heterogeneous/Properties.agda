@@ -39,7 +39,6 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   toPointwise : ∀ {as bs} → length as ≡ length bs →
                 Prefix R as bs → Pointwise R as bs
   toPointwise {bs = []} eq [] = []
-  toPointwise {bs = _ ∷ _} () []
   toPointwise eq (r ∷ rs) = r ∷ toPointwise (suc-injective eq) rs
 
 module _ {a b c r s t} {A : Set a} {B : Set b} {C : Set c}
@@ -79,8 +78,6 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
         Prefix R (as ++ cs) (bs ++ ds) → Prefix R cs ds
   ++⁻ {[]}    {[]}    eq rs       = rs
   ++⁻ {_ ∷ _} {_ ∷ _} eq (_ ∷ rs) = ++⁻ (suc-injective eq) rs
-  ++⁻ {[]} {_ ∷ _} ()
-  ++⁻ {_ ∷ _} {[]} ()
 
 ------------------------------------------------------------------------
 -- map
@@ -98,7 +95,6 @@ module _ {a b c d r} {A : Set a} {B : Set b} {C : Set c} {D : Set d}
          Prefix R (List.map f as) (List.map g bs) →
          Prefix (λ a b → R (f a) (g b)) as bs
   map⁻ {[]}     {bs}     f g rs       = []
-  map⁻ {a ∷ as} {[]}     f g ()
   map⁻ {a ∷ as} {b ∷ bs} f g (r ∷ rs) = r ∷ map⁻ f g rs
 
 ------------------------------------------------------------------------
@@ -134,7 +130,6 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
           Prefix R as bs
   take⁻                   zero    hds       tls = tls
   take⁻ {[]}              (suc n) hds       tls = []
-  take⁻ {a ∷ as} {[]}     (suc n) ()        tls
   take⁻ {a ∷ as} {b ∷ bs} (suc n) (r ∷ hds) tls = r ∷ take⁻ n hds tls
 
 ------------------------------------------------------------------------
@@ -149,7 +144,6 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
           Prefix R (drop n as) (drop n bs) → Prefix R as bs
   drop⁻                 zero    hds       tls = tls
   drop⁻ {[]}            (suc n) hds       tls = []
-  drop⁻ {_ ∷ _} {[]}    (suc n) ()        tls
   drop⁻ {_ ∷ _} {_ ∷ _} (suc n) (r ∷ hds) tls = r ∷ (drop⁻ n hds tls)
 
 ------------------------------------------------------------------------
@@ -163,7 +157,6 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   replicate⁻ : ∀ {m n a b} → m ≢ 0 →
                Prefix R (replicate m a) (replicate n b) → R a b
   replicate⁻ {zero}  {n}     m≢0 r  = ⊥-elim (m≢0 P.refl)
-  replicate⁻ {suc m} {zero}  m≢0 ()
   replicate⁻ {suc m} {suc n} m≢0 rs = Prefix.head rs
 
 ------------------------------------------------------------------------

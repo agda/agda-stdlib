@@ -1,12 +1,13 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Convenient syntax for "equational reasoning" in multiple Setoids
+-- Convenient syntax for "equational reasoning" in multiple Setoids.
 ------------------------------------------------------------------------
 
 -- Example use:
 --
---   open import Data.Maybe
+--   open import Data.Maybe.Properties
+--   open import Data.Maybe.Relation.Binary.Equality
 --   open import Relation.Binary.Reasoning.MultiSetoid
 --
 --   begin⟨ S ⟩
@@ -17,34 +18,55 @@
 --     y ≈⟨ y≈z ⟩
 --     z ∎
 
+-- Note this module is not reimplemented in terms of `Reasoning.Setoid`
+-- as this introduces unsolved metas as the underlying base module
+-- `Base.Single` does not require `_≈_` be symmetric.
+
 {-# OPTIONS --without-K --safe #-}
 
 module Relation.Binary.Reasoning.MultiSetoid where
 
+open import Level using (_⊔_)
 open import Relation.Binary
-open import Relation.Binary.Reasoning.Setoid as EqR using (_IsRelatedTo_)
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
-open Setoid renaming (_≈_ to [_]_≈_)
+------------------------------------------------------------------------
+-- Combinators that take the current setoid as an explicit argument.
 
-infix 1 begin⟨_⟩_
-infixr 2 _≈⟨_⟩_ _≡⟨_⟩_ _≡˘⟨_⟩_ _≡⟨⟩_
-infix 3 _∎
+module _ {c ℓ} (S : Setoid c ℓ) where
+  open Setoid S
 
-begin⟨_⟩_ : ∀ {c l} (S : Setoid c l) {x y} → _IsRelatedTo_ S x y → [ S ] x ≈ y
-begin⟨_⟩_ S p = EqR.begin_ S p
+  data IsRelatedTo (x y : _) : Set (c ⊔ ℓ) where
+    relTo : (x∼y : x ≈ y) → IsRelatedTo x y
 
-_≈⟨_⟩_ : ∀ {c l} {S : Setoid c l} x {y z} → [ S ] x ≈ y → _IsRelatedTo_ S y z → _IsRelatedTo_ S x z
-_≈⟨_⟩_ {S = S} = EqR._≈⟨_⟩_ S
+  infix 1 begin⟨_⟩_
+  begin⟨_⟩_ : ∀ {x y} → IsRelatedTo x y → x ≈ y
+  begin⟨_⟩_ (relTo eq) = eq
 
-_≡⟨_⟩_ : ∀ {c l} {S : Setoid c l} x {y z} → x ≡ y → _IsRelatedTo_ S y z → _IsRelatedTo_ S x z
-_≡⟨_⟩_ {S = S} = EqR._≡⟨_⟩_ S
+------------------------------------------------------------------------
+-- Combinators that take the current setoid as an implicit argument.
 
-_≡˘⟨_⟩_ : ∀ {c l} {S : Setoid c l} x {y z} → y ≡ x → _IsRelatedTo_ S y z → _IsRelatedTo_ S x z
-_≡˘⟨_⟩_ {S = S} = EqR._≡˘⟨_⟩_ S
+module _ {c ℓ} {S : Setoid c ℓ} where
+  open Setoid S
 
-_≡⟨⟩_ : ∀ {c l} {S : Setoid c l} x {y} → _IsRelatedTo_ S x y → _IsRelatedTo_ S x y
-_≡⟨⟩_ {S = S} = EqR._≡⟨⟩_ S
+  infixr 2 _≈⟨_⟩_ _≈˘⟨_⟩_ _≡⟨_⟩_ _≡˘⟨_⟩_ _≡⟨⟩_
+  infix 3 _∎
 
-_∎ : ∀ {c l} {S : Setoid c l} x → _IsRelatedTo_ S x x
-_∎ {S = S} = EqR._∎ S
+  _≈⟨_⟩_ : ∀ x {y z} → x ≈ y → IsRelatedTo S y z → IsRelatedTo S x z
+  _ ≈⟨ x∼y ⟩ relTo y∼z = relTo (trans x∼y y∼z)
+
+  _≈˘⟨_⟩_ : ∀ x {y z} → y ≈ x → IsRelatedTo S y z → IsRelatedTo S x z
+  x ≈˘⟨ x≈y ⟩ y∼z = x ≈⟨ sym x≈y ⟩ y∼z
+
+  _≡⟨_⟩_ : ∀ x {y z} → x ≡ y → IsRelatedTo S y z → IsRelatedTo S x z
+  _ ≡⟨ P.refl ⟩ x∼z = x∼z
+
+  _≡˘⟨_⟩_ : ∀ x {y z} → y ≡ x → IsRelatedTo S y z → IsRelatedTo S x z
+  _ ≡˘⟨ P.refl ⟩ x∼z = x∼z
+
+  _≡⟨⟩_ : ∀ x {y} → IsRelatedTo S x y → IsRelatedTo S x y
+  _ ≡⟨⟩ x∼y = _ ≡⟨ P.refl ⟩ x∼y
+
+  _∎ : ∀ x → IsRelatedTo S x x
+  _∎ _ = relTo refl
+

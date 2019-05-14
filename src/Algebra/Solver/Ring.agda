@@ -510,7 +510,6 @@ correct-con c (x ∷ ρ) = begin
 
 correct-var : ∀ {n} (i : Fin n) →
               ∀ ρ → ⟦ normalise-var i ⟧N ρ ≈ lookup ρ i
-correct-var ()      []
 correct-var (suc i) (x ∷ ρ) = begin
   ⟦ ∅ *x+HN normalise-var i ⟧H (x ∷ ρ)  ≈⟨ ∅*x+HN-homo (normalise-var i) x ρ ⟩
   ⟦ normalise-var i ⟧N ρ                ≈⟨ correct-var i ρ ⟩
