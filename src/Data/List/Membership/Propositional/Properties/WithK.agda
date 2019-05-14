@@ -20,6 +20,6 @@ open import Relation.Binary.PropositionalEquality.WithK
 ------------------------------------------------------------------------
 -- Irrelevance
 
-irrelevant : ∀ {a} {A : Set a} {xs : List A} →
-             Unique xs → Irrelevant (_∈ xs)
-irrelevant = Membershipₛ.irrelevant (P.setoid _) ≡-irrelevant
+unique⇒irrelevant : ∀ {a} {A : Set a} {xs : List A} →
+                    Unique xs → Irrelevant (_∈ xs)
+unique⇒irrelevant = Membershipₛ.unique⇒irrelevant (P.setoid _) ≡-irrelevant
