@@ -55,8 +55,7 @@ module _ {c ℓ} (S : Setoid c ℓ) where
 ------------------------------------------------------------------------
 -- Irrelevance
 
-module _ {c ℓ} (S : Setoid c ℓ)
-               (≈-irrelevant : B.Irrelevant (Setoid._≈_ S)) where
+module _ {c ℓ} (S : Setoid c ℓ) where
 
   open Setoid S
   open Unique S
@@ -68,11 +67,15 @@ module _ {c ℓ} (S : Setoid c ℓ)
     ∉×∈⇒≉ : ∀ {x y xs} → All (y ≉_) xs → x ∈ xs → x ≉ y
     ∉×∈⇒≉ = All.glookup λ y≉z x≈z x≈y → y≉z (trans (sym x≈y) x≈z)
 
-  unique⇒irrelevant : ∀ {xs} → Unique xs → U.Irrelevant (_∈ xs)
-  unique⇒irrelevant _        (here p)  (here q)  = P.cong here (≈-irrelevant p q)
-  unique⇒irrelevant (_  ∷ u) (there p) (there q) = P.cong there (unique⇒irrelevant u p q)
-  unique⇒irrelevant (≉s ∷ _) (here p)  (there q) = contradiction p (∉×∈⇒≉ ≉s q)
-  unique⇒irrelevant (≉s ∷ _) (there p) (here q)  = contradiction q (∉×∈⇒≉ ≉s p)
+  unique⇒irrelevant : B.Irrelevant _≈_ → ∀ {xs} → Unique xs → U.Irrelevant (_∈ xs)
+  unique⇒irrelevant ≈-irr _        (here p)  (here q)  =
+    P.cong here (≈-irr p q)
+  unique⇒irrelevant ≈-irr (_  ∷ u) (there p) (there q) =
+    P.cong there (unique⇒irrelevant ≈-irr u p q)
+  unique⇒irrelevant ≈-irr (≉s ∷ _) (here p)  (there q) =
+    contradiction p (∉×∈⇒≉ ≉s q)
+  unique⇒irrelevant ≈-irr (≉s ∷ _) (there p) (here q)  =
+    contradiction q (∉×∈⇒≉ ≉s p)
 
 ------------------------------------------------------------------------
 -- mapWith∈
