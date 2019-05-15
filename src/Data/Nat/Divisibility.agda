@@ -27,23 +27,8 @@ open ≤-Reasoning
 
 ------------------------------------------------------------------------
 -- Definition
---
--- m ∣ n is inhabited iff m divides n. Some sources, like Hardy and
--- Wright's "An Introduction to the Theory of Numbers", require m to
--- be non-zero. However, some things become a bit nicer if m is
--- allowed to be zero. For instance, _∣_ becomes a partial order, and
--- the gcd of 0 and 0 becomes defined.
 
-infix 4 _∣_ _∤_
-
-record _∣_ (m n : ℕ) : Set where
-  constructor divides
-  field quotient : ℕ
-        equality : n ≡ quotient * m
-open _∣_ using (quotient) public
-
-_∤_ : Rel ℕ _
-m ∤ n = ¬ (m ∣ n)
+open import Data.Nat.Divisibility.Core public
 
 ------------------------------------------------------------------------
 -- Relationship with _%_

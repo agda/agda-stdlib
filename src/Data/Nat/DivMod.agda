@@ -14,6 +14,7 @@ open import Data.Fin using (Fin; toℕ; fromℕ≤)
 open import Data.Fin.Properties using (toℕ-fromℕ≤)
 open import Data.Nat as Nat
 open import Data.Nat.DivMod.Core
+open import Data.Nat.Divisibility.Core
 open import Data.Nat.Properties
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary.Decidable using (False)
@@ -112,6 +113,9 @@ a≤n⇒a%n≡a {a} {n} a≤n with ≤⇒≤″ a≤n
 ------------------------------------------------------------------------
 -- Properties of _/_
 
+n/n≡1 : ∀ n → suc n / suc n ≡ 1
+n/n≡1 n = {!!}
+
 [a/n]*n≤a : ∀ a n → (a / suc n) * suc n ≤ a
 [a/n]*n≤a a n-1 = begin
   (a / n) * n          ≤⟨ m≤m+n ((a / n) * n) (a % n) ⟩
@@ -119,6 +123,10 @@ a≤n⇒a%n≡a {a} {n} a≤n with ≤⇒≤″ a≤n
   a % n + (a / n) * n  ≡⟨ sym (a≡a%n+[a/n]*n a n-1) ⟩
   a                    ∎
   where n = suc n-1
+
+
+*-/-assoc : ∀ m {n d} d≢0 → d ∣ n → ((m * n) / d) {d≢0} ≡ m * ((n / d) {d≢0})
+*-/-assoc m d≢0 (divides q refl) = {!!}
 
 ------------------------------------------------------------------------
 --  A specification of integer division.

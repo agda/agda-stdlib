@@ -41,8 +41,11 @@ lcm m@(suc m-1) n@(suc n-1) = (m * n / gcd m n) {gcd≢0′ m-1}
 ------------------------------------------------------------------------
 -- Properties
 
-*-/-assoc : ∀ m {n d} d≢0 → d ∣ n → ((m * n) / d) {d≢0} ≡ m * ((n / d) {d≢0})
-*-/-assoc = {!!}
+∣-test : ∀ {m n o} → m ∣ n → n ∣ o → (n / m) ∣ o
+∣-test = {!!}
+
+/n-pres-∣ : ∀ {m n c} → m ∣ c → n ∣ c → Coprime m n → m * n ∣ c
+/n-pres-∣ {m} {n} {c} m∣c n∣c cop = {!!}
 
 m∣lcm[m,n] : ∀ m n → m ∣ lcm m n
 m∣lcm[m,n] zero      zero      = 0 ∣0
@@ -65,14 +68,28 @@ n∣lcm[m,n] m@(suc m-1) n@(suc n-1) = begin
   m * n / gcd m n   ∎
   where open ∣-Reasoning
 
+{-
 lcd-least : ∀ {m n c} → m ∣ c → n ∣ c → lcm m n ∣ c
 lcd-least {zero}  {zero}  {c} 0∣c _   = 0∣c
 lcd-least {zero}  {suc n} {c} 0∣c _   = 0∣c
 lcd-least {suc m} {zero}  {c} _   0∣c = 0∣c
 lcd-least {m@(suc m-1)} {n@(suc n-1)} {c} m∣c n∣c = begin
-  m * n / gcd m n  ∣⟨ {!!} ⟩
-  c                ∎
+  m * n / gcd m n   ≡⟨ {!!} ⟩
+  m * (n / gcd m n) ∣⟨ /n-pres-∣ m∣c {!!} {!!} ⟩
+  c                 ∎
   where open ∣-Reasoning
+-}
+
+gcd*lcm : ∀ m n → gcd m n * lcm m n ≡ m * n
+gcd*lcm zero    zero    = refl
+gcd*lcm zero    (suc n) = *-zeroʳ n
+gcd*lcm (suc m) zero    = refl
+gcd*lcm m@(suc _) n@(suc _) = begin-equality
+  gcd m n * (m * n / gcd m n) ≡⟨ {!!} ⟩
+  gcd m n * (m * n) / gcd m n ≡⟨ {!!} ⟩
+  (m * n) * gcd m n / gcd m n ≡⟨ {!!} ⟩
+  m * n                       ∎
+  where open ≤-Reasoning
 {-
 ------------------------------------------------------------------------
 -- A formal specification of LCM
