@@ -496,20 +496,26 @@ Other minor additions
   <±-isStrictTotalOrder-≡      : IsStrictTotalOrder _≡_ _<_ → IsStrictTotalOrder _≡_ _<±_
   ```
 
-* Added new definition in `Relation.Binary.Core`:
+* Added new definitions in `Relation.Binary.Core`:
   ```agda
-  Universal _∼_ = ∀ x y → x ∼ y
+  Universal _∼_    = ∀ x y → x ∼ y
+  Recomputable _~_ = ∀ {x y} → .(x ~ y) → x ~ y
   ```
 
-* The relation `_≅_` in `Relation.Binary.HeterogeneousEquality` has
-  been generalised so that the types of the two equal elements need not
-  be at the same universe level.
+* Added new proof to `Relation.Binary.Consequences`:
+  ```agda
+  dec⟶recomput : Decidable R → Recomputable R
+  ```
 
 * Added new proofs to `Relation.Nullary.Construct.Add.Point`:
   ```agda
   ≡-dec        : Decidable {A = A} _≡_ → Decidable {A = Pointed A} _≡_
   []-injective : [ x ] ≡ [ y ] → x ≡ y
   ```
+
+* The relation `_≅_` in `Relation.Binary.HeterogeneousEquality` has
+  been generalised so that the types of the two equal elements need not
+  be at the same universe level.
 
 * Added new proof to `Relation.Binary.PropositionalEquality.Core`:
   ```agda
@@ -519,4 +525,19 @@ Other minor additions
 * Added new notation to `Relation.Unary`:
   ```agda
   syntax Satisfiable P = ∃⟨ P ⟩
+  ```
+
+* Defined a notion of recomputability for unary and binary relations:
+  ```agda
+  Recomputable : Pred A ℓ → Set _
+  Recomputable P = ∀ {x} → .(P x) → P x
+
+  dec⟶recomputable : Decidable P → Recomputable P
+  ```
+
+  ```agda
+  Recomputable : REL A B ℓ → Set _
+  Recomputable _~_ = ∀ {x y} → .(x ~ y) → x ~ y
+
+  dec⟶recomputable : Decidable R → Recomputable R
   ```
