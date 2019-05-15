@@ -11,11 +11,11 @@ module Relation.Binary.Consequences where
 open import Data.Maybe.Base using (just; nothing)
 open import Data.Sum as Sum using (inj₁; inj₂)
 open import Data.Product using (_,_)
-open import Data.Empty using (⊥-elim)
-open import Function using (_∘_; flip)
+open import Data.Empty.Irrelevant using (⊥-elim)
+open import Function using (_∘_; _$_; flip)
 open import Level using (Level)
 open import Relation.Binary.Core
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary using (yes; no; recompute)
 open import Relation.Unary using (∁)
 
 private
@@ -164,3 +164,8 @@ module _ {P : REL A B ℓ₁} {Q : REL B A ℓ₂} where
 
   flip-Connex : Connex P Q → Connex Q P
   flip-Connex f x y = Sum.swap (f y x)
+
+module _ {r} {R : REL A B r} where
+
+     dec⟶recomputable : Decidable R → Recomputable R
+     dec⟶recomputable dec {a} {b} = recompute $ dec a b
