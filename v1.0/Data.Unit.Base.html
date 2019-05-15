@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Unit.Base</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- The unit type and the total relation on unit</a>
+<a id="154" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="228" class="Symbol">{-#</a> <a id="232" class="Keyword">OPTIONS</a> <a id="240" class="Pragma">--without-K</a> <a id="252" class="Pragma">--safe</a> <a id="259" class="Symbol">#-}</a>
+
+<a id="264" class="Keyword">module</a> <a id="271" href="Data.Unit.Base.html" class="Module">Data.Unit.Base</a> <a id="286" class="Keyword">where</a>
+
+<a id="293" class="Comment">------------------------------------------------------------------------</a>
+<a id="366" class="Comment">-- A unit type defined as a record type</a>
+
+<a id="407" class="Comment">-- Note that the name of this type is &quot;\top&quot;, not T.</a>
+
+<a id="461" class="Keyword">open</a> <a id="466" class="Keyword">import</a> <a id="473" href="Agda.Builtin.Unit.html" class="Module">Agda.Builtin.Unit</a> <a id="491" class="Keyword">public</a> <a id="498" class="Keyword">using</a> <a id="504" class="Symbol">(</a><a id="505" href="Agda.Builtin.Unit.html#137" class="Record">⊤</a><a id="506" class="Symbol">;</a> <a id="508" href="Agda.Builtin.Unit.html#174" class="InductiveConstructor">tt</a><a id="510" class="Symbol">)</a>
+
+<a id="513" class="Keyword">record</a> <a id="_≤_"></a><a id="520" href="Data.Unit.Base.html#520" class="Record Operator">_≤_</a> <a id="524" class="Symbol">(</a><a id="525" href="Data.Unit.Base.html#525" class="Bound">x</a> <a id="527" href="Data.Unit.Base.html#527" class="Bound">y</a> <a id="529" class="Symbol">:</a> <a id="531" href="Agda.Builtin.Unit.html#137" class="Record">⊤</a><a id="532" class="Symbol">)</a> <a id="534" class="Symbol">:</a> <a id="536" class="PrimitiveType">Set</a> <a id="540" class="Keyword">where</a>
+</pre></body></html>
