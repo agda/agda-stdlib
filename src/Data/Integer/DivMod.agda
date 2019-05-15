@@ -8,21 +8,16 @@
 
 module Data.Integer.DivMod where
 
+open import Data.Fin as Fin using (Fin)
+import Data.Fin.Properties as FProp
+open import Data.Integer as ℤ
+open import Data.Integer.Properties
 open import Data.Nat as ℕ using (ℕ)
 import Data.Nat.Properties as NProp
 import Data.Nat.DivMod as NDM
-
 import Data.Sign as S
 import Data.Sign.Properties as SProp
-
-open import Data.Integer as ℤ
-open import Data.Integer.Properties
-
-open import Data.Fin as Fin using (Fin)
-import Data.Fin.Properties as FProp
-
 open import Function
-
 open import Relation.Nullary.Decidable
 open import Relation.Binary.PropositionalEquality
 
@@ -132,14 +127,13 @@ div-neg-is-neg-divℕ n (ℕ.suc d) = -1*n≡-n (n divℕ ℕ.suc d)
   n divℕ sd * + sd        ≤⟨ [n/ℕd]*d≤n n sd ⟩
   n ∎ where open ≤-Reasoning
 
-n<s[n/ℕd]*d : ∀ n d {d≢0} → n ℤ.< ℤ.suc ((n divℕ d) {d≢0}) ℤ.* ℤ.+ d
-n<s[n/ℕd]*d n sd@(ℕ.suc d) = begin
-  suc n                     ≡⟨ cong suc (a≡a%ℕn+[a/ℕn]*n n sd) ⟩
-  suc (ℤ.+ r ℤ.+ q ℤ.* +sd) ≤⟨ +-monoˡ-< (q ℤ.* +sd) {ℤ.+ r} (ℤ.+≤+ (n%ℕd<d n sd)) ⟩
-  +sd ℤ.+ q ℤ.* +sd         ≡⟨ sym ([1+m]*n≡n+m*n q +sd) ⟩
-  ℤ.suc q ℤ.* +sd           ∎ where
-  q = n divℕ sd; +sd = ℤ.+ sd; r = n modℕ sd
-  open ≤-Reasoning
+n<s[n/ℕd]*d : ∀ n d {d≢0} → n ℤ.< suc ((n divℕ d) {d≢0}) ℤ.* ℤ.+ d
+n<s[n/ℕd]*d n sd@(ℕ.suc d) = begin-strict
+  n                           ≡⟨ a≡a%ℕn+[a/ℕn]*n n sd ⟩
+  ℤ.+ r ℤ.+ q ℤ.* + sd        <⟨ +-monoˡ-< (q ℤ.* + sd) (ℤ.+<+ (n%ℕd<d n sd)) ⟩
+  + sd  ℤ.+ q ℤ.* + sd        ≡⟨ sym ([1+m]*n≡n+m*n q (+ sd)) ⟩
+  suc (n divℕ ℕ.suc d) * + sd ∎ where
+  open ≤-Reasoning; q = n divℕ sd; r = n modℕ sd
 
 a≡a%n+[a/n]*n : ∀ a n {≢0} → a ≡ + (a mod n) {≢0} + (a div n) {≢0} * n
 a≡a%n+[a/n]*n n (+ ℕ.suc d) = begin

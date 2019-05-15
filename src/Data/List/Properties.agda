@@ -23,6 +23,7 @@ open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Nat
 open import Data.Nat.Properties
 open import Data.Product as Prod hiding (map; zip)
+open import Data.Sum using (_⊎_; inj₁; inj₂)
 open import Data.These as These using (These; this; that; these)
 open import Function
 open import Level using (Level)
@@ -447,6 +448,37 @@ foldr-∷ʳ : ∀ (f : A → B → B) x y ys →
            foldr f x (ys ∷ʳ y) ≡ foldr f (f y x) ys
 foldr-∷ʳ f x y []       = refl
 foldr-∷ʳ f x y (z ∷ ys) = P.cong (f z) (foldr-∷ʳ f x y ys)
+
+-- Interaction with predicates
+
+module _ {P : Pred A p} {f : A → A → A} where
+
+  open FunctionProperties
+
+  foldr-forcesᵇ : (∀ x y → P (f x y) → P x × P y) →
+                  ∀ e xs → P (foldr f e xs) → All P xs
+  foldr-forcesᵇ _      _ []       _     = []
+  foldr-forcesᵇ forces _ (x ∷ xs) Pfold with forces _ _ Pfold
+  ... | (px , pfxs) = px ∷ foldr-forcesᵇ forces _ xs pfxs
+
+  foldr-preservesᵇ : (∀ {x y} → P x → P y → P (f x y)) →
+                     ∀ {e xs} → P e → All P xs → P (foldr f e xs)
+  foldr-preservesᵇ _    Pe []         = Pe
+  foldr-preservesᵇ pres Pe (px ∷ pxs) = pres px (foldr-preservesᵇ pres Pe pxs)
+
+  foldr-preservesʳ : (∀ x {y} → P y → P (f x y)) →
+                     ∀ {e} → P e → ∀ xs → P (foldr f e xs)
+  foldr-preservesʳ pres Pe []       = Pe
+  foldr-preservesʳ pres Pe (_ ∷ xs) = pres _ (foldr-preservesʳ pres Pe xs)
+
+  foldr-preservesᵒ : (∀ x y → P x ⊎ P y → P (f x y)) →
+                     ∀ e xs → P e ⊎ Any P xs → P (foldr f e xs)
+  foldr-preservesᵒ pres e []       (inj₁ Pe)          = Pe
+  foldr-preservesᵒ pres e (x ∷ xs) (inj₁ Pe)          =
+    pres _ _ (inj₂ (foldr-preservesᵒ pres e xs (inj₁ Pe)))
+  foldr-preservesᵒ pres e (x ∷ xs) (inj₂ (here px))   = pres _ _ (inj₁ px)
+  foldr-preservesᵒ pres e (x ∷ xs) (inj₂ (there pxs)) =
+    pres _ _ (inj₂ (foldr-preservesᵒ pres e xs (inj₂ pxs)))
 
 ------------------------------------------------------------------------
 -- foldl
