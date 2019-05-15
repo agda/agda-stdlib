@@ -522,6 +522,11 @@ Other minor additions
   ≢-sym : Symmetric _≢_
   ```
 
+* Defined a new utility in `Data.List.Relation.Binary.Permutation.Inductive.Properties`:
+  ```agda
+  shifts : xs ++ ys ++ zs ↭ ys ++ xs ++ zs
+  ```
+
 * Added new notation to `Relation.Unary`:
   ```agda
   syntax Satisfiable P = ∃⟨ P ⟩
