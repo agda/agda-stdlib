@@ -1,0 +1,196 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>README.Trie.NonDependent</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Example use case for a trie: a wee generic lexer</a>
+<a id="158" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="232" class="Symbol">{-#</a> <a id="236" class="Keyword">OPTIONS</a> <a id="244" class="Pragma">--without-K</a> <a id="256" class="Pragma">--safe</a> <a id="263" class="Pragma">--sized-types</a> <a id="277" class="Symbol">#-}</a>
+
+<a id="282" class="Keyword">module</a> <a id="289" href="README.Trie.NonDependent.html" class="Module">README.Trie.NonDependent</a> <a id="314" class="Keyword">where</a>
+
+<a id="321" class="Comment">------------------------------------------------------------------------</a>
+<a id="394" class="Comment">-- Introduction</a>
+
+<a id="411" class="Comment">-- A Trie is a tree of values indexed by words in a finite language. It</a>
+<a id="483" class="Comment">-- allows users to quickly compute the Brzozowski derivative of that</a>
+<a id="552" class="Comment">-- little mapping from words to values.</a>
+
+<a id="593" class="Comment">-- In the most general case, values can depend upon the list of characters</a>
+<a id="668" class="Comment">-- that constitutes the path leading to them. Here however we consider a</a>
+<a id="741" class="Comment">-- non-dependent case (cf. README.Trie.Dependent for a dependent use case).</a>
+
+<a id="818" class="Comment">-- We can recognize keywords by storing the list of characters they</a>
+<a id="886" class="Comment">-- correspond to as paths in a Trie and the constructor they are decoded</a>
+<a id="959" class="Comment">-- to as the tree&#39;s values.</a>
+
+<a id="988" class="Comment">-- E.g.</a>
+<a id="996" class="Comment">-- [     .      ] is a root</a>
+<a id="1024" class="Comment">-- [  -- m --&gt;  ] is an m-labeled edge and is followed when reading &#39;m&#39;</a>
+<a id="1096" class="Comment">-- [    (X)     ] is a value leaf storing constructor X</a>
+
+<a id="1153" class="Comment">--                     --&gt; -- m --&gt; -- m --&gt; -- a --&gt; (LEMMA)</a>
+<a id="1215" class="Comment">--                    /</a>
+<a id="1239" class="Comment">--       -- l --&gt; -- e --&gt; -- t --&gt; (LET)</a>
+<a id="1281" class="Comment">--      /</a>
+<a id="1291" class="Comment">--     /    -- u --&gt; -- t --&gt; -- u --&gt; -- a --&gt; -- l --&gt; (MUTUAL)</a>
+<a id="1357" class="Comment">--    /    /</a>
+<a id="1370" class="Comment">--  .&lt; -- m --&gt; -- o --&gt; -- d --&gt; -- u --&gt; -- l --&gt; -- e --&gt; (MODULE)</a>
+<a id="1440" class="Comment">--    \</a>
+<a id="1448" class="Comment">--     -- w --&gt; -- h --&gt; -- e --&gt; -- r --&gt; -- e --&gt; (WHERE)</a>
+<a id="1508" class="Comment">--                           \</a>
+<a id="1539" class="Comment">--                            --&gt; -- n --&gt; (WHEN)</a>
+
+
+<a id="1591" class="Comment">-- after reading &#39;w&#39;, we get the derivative:</a>
+
+<a id="1637" class="Comment">--  . -- h --&gt; -- e --&gt; -- r --&gt; -- e --&gt; (WHERE)</a>
+<a id="1687" class="Comment">--                 \</a>
+<a id="1708" class="Comment">--                  --&gt; -- n --&gt; (WHEN)</a>
+
+
+<a id="1750" class="Keyword">open</a> <a id="1755" class="Keyword">import</a> <a id="1762" href="Level.html" class="Module">Level</a>
+<a id="1768" class="Keyword">open</a> <a id="1773" class="Keyword">import</a> <a id="1780" href="Data.Unit.html" class="Module">Data.Unit</a>
+<a id="1790" class="Keyword">open</a> <a id="1795" class="Keyword">import</a> <a id="1802" href="Data.Bool.html" class="Module">Data.Bool</a>
+<a id="1812" class="Keyword">open</a> <a id="1817" class="Keyword">import</a> <a id="1824" href="Data.Char.html" class="Module">Data.Char</a>          <a id="1843" class="Symbol">as</a> <a id="1846" class="Module">Char</a>
+<a id="1851" class="Keyword">import</a> <a id="1858" href="Data.Char.Properties.html" class="Module">Data.Char.Properties</a>    <a id="1882" class="Symbol">as</a> <a id="1885" class="Module">Char</a>
+<a id="1890" class="Keyword">open</a> <a id="1895" class="Keyword">import</a> <a id="1902" href="Data.List.html" class="Module">Data.List</a>          <a id="1921" class="Symbol">as</a> <a id="1924" class="Module">List</a> <a id="1929" class="Keyword">using</a> <a id="1935" class="Symbol">(</a><a id="1936" href="Agda.Builtin.List.html#121" class="Datatype">List</a><a id="1940" class="Symbol">;</a> <a id="1942" href="Data.List.Base.html#8786" class="InductiveConstructor">[]</a><a id="1944" class="Symbol">;</a> <a id="1946" href="Agda.Builtin.List.html#173" class="InductiveConstructor Operator">_∷_</a><a id="1949" class="Symbol">)</a>
+<a id="1951" class="Keyword">open</a> <a id="1956" class="Keyword">import</a> <a id="1963" href="Data.List.NonEmpty.html" class="Module">Data.List.NonEmpty</a> <a id="1982" class="Symbol">as</a> <a id="1985" class="Module">List⁺</a> <a id="1991" class="Keyword">using</a> <a id="1997" class="Symbol">(</a><a id="1998" href="Data.List.NonEmpty.html#1176" class="Record">List⁺</a><a id="2003" class="Symbol">;</a> <a id="2005" href="Data.List.NonEmpty.html#1226" class="InductiveConstructor Operator">_∷_</a><a id="2008" class="Symbol">)</a>
+<a id="2010" class="Keyword">open</a> <a id="2015" class="Keyword">import</a> <a id="2022" href="Data.Maybe.html" class="Module">Data.Maybe</a>         <a id="2041" class="Symbol">as</a> <a id="2044" class="Module">Maybe</a>
+<a id="2050" class="Keyword">open</a> <a id="2055" class="Keyword">import</a> <a id="2062" href="Data.Product.html" class="Module">Data.Product</a>       <a id="2081" class="Symbol">as</a> <a id="2084" class="Module">Prod</a>
+<a id="2089" class="Keyword">open</a> <a id="2094" class="Keyword">import</a> <a id="2101" href="Data.String.Base.html" class="Module">Data.String.Base</a>   <a id="2120" class="Symbol">as</a> <a id="2123" class="Module">String</a> <a id="2130" class="Keyword">using</a> <a id="2136" class="Symbol">(</a><a id="2137" href="Agda.Builtin.String.html#206" class="Postulate">String</a><a id="2143" class="Symbol">)</a>
+<a id="2145" class="Keyword">open</a> <a id="2150" class="Keyword">import</a> <a id="2157" href="Data.These.html" class="Module">Data.These</a>         <a id="2176" class="Symbol">as</a> <a id="2179" class="Module">These</a>
+
+<a id="2186" class="Keyword">open</a> <a id="2191" class="Keyword">import</a> <a id="2198" href="Function.html" class="Module">Function</a> <a id="2207" class="Keyword">using</a> <a id="2213" class="Symbol">(</a><a id="2214" href="Function.html#3404" class="Function Operator">case_of_</a><a id="2222" class="Symbol">;</a> <a id="2224" href="Function.html#1631" class="Function Operator">_$_</a><a id="2227" class="Symbol">;</a> <a id="2229" href="Function.html#3053" class="Function Operator">_∘′_</a><a id="2233" class="Symbol">;</a> <a id="2235" href="Function.html#708" class="Function">id</a><a id="2237" class="Symbol">)</a>
+
+<a id="2240" class="Keyword">open</a> <a id="2245" class="Keyword">import</a> <a id="2252" href="Data.Trie.html" class="Module">Data.Trie</a> <a id="2262" href="Data.Char.Properties.html#2022" class="Function">Char.strictTotalOrder</a>
+<a id="2284" class="Keyword">open</a> <a id="2289" class="Keyword">import</a> <a id="2296" href="Data.AVL.Value.html" class="Module">Data.AVL.Value</a>
+
+<a id="2312" class="Comment">------------------------------------------------------------------------</a>
+<a id="2385" class="Comment">-- Generic lexer</a>
+
+<a id="2403" class="Keyword">module</a> <a id="Lexer"></a><a id="2410" href="README.Trie.NonDependent.html#2410" class="Module">Lexer</a>
+  <a id="2418" class="Comment">-- Our lexer is parametrised over the type of tokens</a>
+  <a id="2473" class="Symbol">{</a><a id="2474" href="README.Trie.NonDependent.html#2474" class="Bound">t</a><a id="2475" class="Symbol">}</a> <a id="2477" class="Symbol">{</a><a id="2478" href="README.Trie.NonDependent.html#2478" class="Bound">Tok</a> <a id="2482" class="Symbol">:</a> <a id="2484" class="PrimitiveType">Set</a> <a id="2488" href="README.Trie.NonDependent.html#2474" class="Bound">t</a><a id="2489" class="Symbol">}</a>
+  <a id="2493" class="Comment">-- We start with an association list between</a>
+  <a id="2540" class="Comment">-- * keywords (as Strings)</a>
+  <a id="2569" class="Comment">-- * keywords (as token values)</a>
+  <a id="2603" class="Symbol">(</a><a id="2604" href="README.Trie.NonDependent.html#2604" class="Bound">lex</a> <a id="2608" class="Symbol">:</a> <a id="2610" href="Data.List.NonEmpty.html#1176" class="Record">List⁺</a> <a id="2616" class="Symbol">(</a><a id="2617" href="Agda.Builtin.String.html#206" class="Postulate">String</a> <a id="2624" href="Data.Product.html#1162" class="Function Operator">×</a> <a id="2626" href="README.Trie.NonDependent.html#2478" class="Bound">Tok</a><a id="2629" class="Symbol">))</a>
+  <a id="2634" class="Comment">-- Some characters are special: they are separators, breaking a string</a>
+  <a id="2707" class="Comment">-- into a list of tokens. Some are associated to a token value</a>
+  <a id="2772" class="Comment">-- (e.g. parentheses) others are not (e.g. space)</a>
+  <a id="2824" class="Symbol">(</a><a id="2825" href="README.Trie.NonDependent.html#2825" class="Bound">breaking</a> <a id="2834" class="Symbol">:</a> <a id="2836" href="Agda.Builtin.Char.html#200" class="Postulate">Char</a> <a id="2841" class="Symbol">→</a> <a id="2843" href="Data.Product.html#1364" class="Function">∃</a> <a id="2845" class="Symbol">λ</a> <a id="2847" href="README.Trie.NonDependent.html#2847" class="Bound">b</a> <a id="2849" class="Symbol">→</a> <a id="2851" href="Data.Bool.Base.html#1072" class="Function Operator">if</a> <a id="2854" href="README.Trie.NonDependent.html#2847" class="Bound">b</a> <a id="2856" href="Data.Bool.Base.html#1072" class="Function Operator">then</a> <a id="2861" href="Data.Maybe.Base.html#795" class="Datatype">Maybe</a> <a id="2867" href="README.Trie.NonDependent.html#2478" class="Bound">Tok</a> <a id="2871" href="Data.Bool.Base.html#1072" class="Function Operator">else</a> <a id="2876" href="Level.html#394" class="Record">Lift</a> <a id="2881" class="Symbol">_</a> <a id="2883" href="Agda.Builtin.Unit.html#137" class="Record">⊤</a><a id="2884" class="Symbol">)</a>
+  <a id="2888" class="Comment">-- Finally, strings which are not decoded as keywords are coerced</a>
+  <a id="2956" class="Comment">-- using a function to token values.</a>
+  <a id="2995" class="Symbol">(</a><a id="2996" href="README.Trie.NonDependent.html#2996" class="Bound">default</a>  <a id="3005" class="Symbol">:</a> <a id="3007" href="Agda.Builtin.String.html#206" class="Postulate">String</a> <a id="3014" class="Symbol">→</a> <a id="3016" href="README.Trie.NonDependent.html#2478" class="Bound">Tok</a><a id="3019" class="Symbol">)</a>
+  <a id="3023" class="Keyword">where</a>
+
+  <a id="Lexer.tokenize"></a><a id="3032" href="README.Trie.NonDependent.html#3032" class="Function">tokenize</a> <a id="3041" class="Symbol">:</a> <a id="3043" href="Agda.Builtin.String.html#206" class="Postulate">String</a> <a id="3050" class="Symbol">→</a> <a id="3052" href="Agda.Builtin.List.html#121" class="Datatype">List</a> <a id="3057" href="README.Trie.NonDependent.html#2478" class="Bound">Tok</a>
+  <a id="3063" href="README.Trie.NonDependent.html#3032" class="Function">tokenize</a> <a id="3072" class="Symbol">=</a> <a id="3074" href="README.Trie.NonDependent.html#4130" class="Function">start</a> <a id="3080" href="Function.html#3053" class="Function Operator">∘′</a> <a id="3083" href="Agda.Builtin.String.html#262" class="Primitive">String.toList</a> <a id="3097" class="Keyword">where</a>
+
+   <a id="3107" class="Keyword">mutual</a>
+
+    <a id="3119" class="Comment">-- A Trie is defined for an alphabet of strictly ordered letters (here</a>
+    <a id="3194" class="Comment">-- we have picked Char for letters and decided to use the strict total</a>
+    <a id="3269" class="Comment">-- order induced by their injection into ℕ as witnessed by the statement</a>
+    <a id="3346" class="Comment">-- open import Data.Trie Char.strictTotalOrder earlier in this file).</a>
+
+    <a id="3421" class="Comment">-- It is parametrised by a set of Values indexed over list of letters.</a>
+    <a id="3496" class="Comment">-- Because we focus on the non-dependent case, we pick the constant</a>
+    <a id="3568" class="Comment">-- family of Value uniformly equal to Tok. It is trivially compatible</a>
+    <a id="3642" class="Comment">-- with the notion of equality underlying the strict total order on Chars.</a>
+
+    <a id="3722" href="README.Trie.NonDependent.html#3722" class="Function">Keywords</a> <a id="3731" class="Symbol">:</a> <a id="3733" class="PrimitiveType">Set</a> <a id="3737" class="Symbol">_</a>
+    <a id="3743" href="README.Trie.NonDependent.html#3722" class="Function">Keywords</a> <a id="3752" class="Symbol">=</a> <a id="3754" href="Data.Trie.html#1304" class="Function">Trie</a> <a id="3759" class="Symbol">(</a><a id="3760" href="Data.AVL.Value.html#751" class="Function">const</a> <a id="3766" class="Symbol">_</a> <a id="3768" href="README.Trie.NonDependent.html#2478" class="Bound">Tok</a><a id="3771" class="Symbol">)</a> <a id="3773" class="Symbol">_</a>
+
+    <a id="3780" class="Comment">-- We build a trie from the association list so that we may easily</a>
+    <a id="3851" class="Comment">-- compute the successive derivatives obtained by eating the</a>
+    <a id="3916" class="Comment">-- characters one by one</a>
+
+    <a id="3946" href="README.Trie.NonDependent.html#3946" class="Function">init</a> <a id="3951" class="Symbol">:</a> <a id="3953" href="README.Trie.NonDependent.html#3722" class="Function">Keywords</a>
+    <a id="3966" href="README.Trie.NonDependent.html#3946" class="Function">init</a> <a id="3971" class="Symbol">=</a> <a id="3973" href="Data.Trie.html#2763" class="Function">fromList</a> <a id="3982" href="Function.html#1631" class="Function Operator">$</a> <a id="3984" href="Data.List.NonEmpty.html#1706" class="Function">List⁺.toList</a> <a id="3997" href="Function.html#1631" class="Function Operator">$</a> <a id="3999" href="Data.List.NonEmpty.html#2295" class="Function">List⁺.map</a> <a id="4009" class="Symbol">(</a><a id="4010" href="Data.Product.html#2569" class="Function">Prod.map₁</a> <a id="4020" href="Agda.Builtin.String.html#262" class="Primitive">String.toList</a><a id="4033" class="Symbol">)</a> <a id="4035" href="README.Trie.NonDependent.html#2604" class="Bound">lex</a>
+
+    <a id="4044" class="Comment">-- Kickstart the tokeniser with an empty accumulator and the initial</a>
+    <a id="4117" class="Comment">-- trie.</a>
+    <a id="4130" href="README.Trie.NonDependent.html#4130" class="Function">start</a> <a id="4136" class="Symbol">:</a> <a id="4138" href="Agda.Builtin.List.html#121" class="Datatype">List</a> <a id="4143" href="Agda.Builtin.Char.html#200" class="Postulate">Char</a> <a id="4148" class="Symbol">→</a> <a id="4150" href="Agda.Builtin.List.html#121" class="Datatype">List</a> <a id="4155" href="README.Trie.NonDependent.html#2478" class="Bound">Tok</a>
+    <a id="4163" href="README.Trie.NonDependent.html#4130" class="Function">start</a> <a id="4169" class="Symbol">=</a> <a id="4171" href="README.Trie.NonDependent.html#4210" class="Function">loop</a> <a id="4176" href="Agda.Builtin.List.html#158" class="InductiveConstructor">[]</a> <a id="4179" href="README.Trie.NonDependent.html#3946" class="Function">init</a>
+
+    <a id="4189" class="Comment">-- The main loop</a>
+    <a id="4210" href="README.Trie.NonDependent.html#4210" class="Function">loop</a> <a id="4215" class="Symbol">:</a> <a id="4217" class="Symbol">(</a><a id="4218" href="README.Trie.NonDependent.html#4218" class="Bound">acc</a>  <a id="4223" class="Symbol">:</a> <a id="4225" href="Agda.Builtin.List.html#121" class="Datatype">List</a> <a id="4230" href="Agda.Builtin.Char.html#200" class="Postulate">Char</a><a id="4234" class="Symbol">)</a>  <a id="4237" class="Symbol">→</a> <a id="4239" class="Comment">-- chars read so far in this token</a>
+           <a id="4285" class="Symbol">(</a><a id="4286" href="README.Trie.NonDependent.html#4286" class="Bound">toks</a> <a id="4291" class="Symbol">:</a> <a id="4293" href="README.Trie.NonDependent.html#3722" class="Function">Keywords</a><a id="4301" class="Symbol">)</a>   <a id="4305" class="Symbol">→</a> <a id="4307" class="Comment">-- keyword candidates left at this point</a>
+           <a id="4359" class="Symbol">(</a><a id="4360" href="README.Trie.NonDependent.html#4360" class="Bound">input</a> <a id="4366" class="Symbol">:</a> <a id="4368" href="Agda.Builtin.List.html#121" class="Datatype">List</a> <a id="4373" href="Agda.Builtin.Char.html#200" class="Postulate">Char</a><a id="4377" class="Symbol">)</a> <a id="4379" class="Symbol">→</a> <a id="4381" class="Comment">-- list of chars to tokenize</a>
+           <a id="4421" href="Agda.Builtin.List.html#121" class="Datatype">List</a> <a id="4426" href="README.Trie.NonDependent.html#2478" class="Bound">Tok</a>
+    <a id="4434" class="Comment">-- Empty input: finish up, check whether we have a non-empty accumulator</a>
+    <a id="4511" href="README.Trie.NonDependent.html#4210" class="Function">loop</a> <a id="4516" href="README.Trie.NonDependent.html#4516" class="Bound">acc</a> <a id="4520" href="README.Trie.NonDependent.html#4520" class="Bound">toks</a> <a id="4525" href="Agda.Builtin.List.html#158" class="InductiveConstructor">[]</a>         <a id="4536" class="Symbol">=</a> <a id="4538" href="README.Trie.NonDependent.html#5408" class="Function">push</a> <a id="4543" href="README.Trie.NonDependent.html#4516" class="Bound">acc</a> <a id="4547" href="Agda.Builtin.List.html#158" class="InductiveConstructor">[]</a>
+    <a id="4554" class="Comment">-- At least one character</a>
+    <a id="4584" href="README.Trie.NonDependent.html#4210" class="Function">loop</a> <a id="4589" href="README.Trie.NonDependent.html#4589" class="Bound">acc</a> <a id="4593" href="README.Trie.NonDependent.html#4593" class="Bound">toks</a> <a id="4598" class="Symbol">(</a><a id="4599" href="README.Trie.NonDependent.html#4599" class="Bound">c</a> <a id="4601" href="Agda.Builtin.List.html#173" class="InductiveConstructor Operator">∷</a> <a id="4603" href="README.Trie.NonDependent.html#4603" class="Bound">cs</a><a id="4605" class="Symbol">)</a>   <a id="4609" class="Symbol">=</a> <a id="4611" href="Function.html#3404" class="Function Operator">case</a> <a id="4616" href="README.Trie.NonDependent.html#2825" class="Bound">breaking</a> <a id="4625" href="README.Trie.NonDependent.html#4599" class="Bound">c</a> <a id="4627" href="Function.html#3404" class="Function Operator">of</a> <a id="4630" class="Symbol">λ</a> <a id="4632" class="Keyword">where</a>
+      <a id="4644" class="Comment">-- if we are supposed to break on this character, we do</a>
+      <a id="4706" class="Symbol">(</a><a id="4707" href="Agda.Builtin.Bool.html#160" class="InductiveConstructor">true</a> <a id="4712" href="Agda.Builtin.Sigma.html#209" class="InductiveConstructor Operator">,</a> <a id="4714" href="README.Trie.NonDependent.html#4714" class="Bound">m</a><a id="4715" class="Symbol">)</a>  <a id="4718" class="Symbol">→</a> <a id="4720" href="README.Trie.NonDependent.html#5408" class="Function">push</a> <a id="4725" href="README.Trie.NonDependent.html#4589" class="Bound">acc</a> <a id="4729" href="Function.html#1631" class="Function Operator">$</a> <a id="4731" href="Data.Maybe.Base.html#1482" class="Function">maybe′</a> <a id="4738" href="Agda.Builtin.List.html#173" class="InductiveConstructor Operator">_∷_</a> <a id="4742" href="Function.html#708" class="Function">id</a> <a id="4745" href="README.Trie.NonDependent.html#4714" class="Bound">m</a> <a id="4747" href="Function.html#1631" class="Function Operator">$</a> <a id="4749" href="README.Trie.NonDependent.html#4130" class="Function">start</a> <a id="4755" href="README.Trie.NonDependent.html#4603" class="Bound">cs</a>
+      <a id="4764" class="Comment">-- otherwise we see whether it leads to a recognized keyword</a>
+      <a id="4831" class="Symbol">(</a><a id="4832" href="Agda.Builtin.Bool.html#154" class="InductiveConstructor">false</a> <a id="4838" href="Agda.Builtin.Sigma.html#209" class="InductiveConstructor Operator">,</a> <a id="4840" class="Symbol">_)</a> <a id="4843" class="Symbol">→</a> <a id="4845" href="Function.html#3404" class="Function Operator">case</a> <a id="4850" href="Data.Trie.html#1946" class="Function">lookupValue</a> <a id="4862" class="Symbol">(</a><a id="4863" href="README.Trie.NonDependent.html#4599" class="Bound">c</a> <a id="4865" href="Agda.Builtin.List.html#173" class="InductiveConstructor Operator">∷</a> <a id="4867" href="Agda.Builtin.List.html#158" class="InductiveConstructor">[]</a><a id="4869" class="Symbol">)</a> <a id="4871" href="README.Trie.NonDependent.html#4593" class="Bound">toks</a> <a id="4876" href="Function.html#3404" class="Function Operator">of</a> <a id="4879" class="Symbol">λ</a> <a id="4881" class="Keyword">where</a>
+        <a id="4895" class="Comment">-- if so we can forget about the current accumulator and</a>
+        <a id="4960" class="Comment">-- restart the tokenizer on the rest of the input</a>
+        <a id="5018" class="Symbol">(</a><a id="5019" href="Data.Maybe.Base.html#829" class="InductiveConstructor">just</a> <a id="5024" href="README.Trie.NonDependent.html#5024" class="Bound">tok</a><a id="5027" class="Symbol">)</a> <a id="5029" class="Symbol">→</a> <a id="5031" href="README.Trie.NonDependent.html#5024" class="Bound">tok</a> <a id="5035" href="Agda.Builtin.List.html#173" class="InductiveConstructor Operator">∷</a> <a id="5037" href="README.Trie.NonDependent.html#4130" class="Function">start</a> <a id="5043" href="README.Trie.NonDependent.html#4603" class="Bound">cs</a>
+        <a id="5054" class="Comment">-- otherwise we record the character we read in the accumulator,</a>
+        <a id="5127" class="Comment">-- compute the derivative of the map of keyword candidates and</a>
+        <a id="5198" class="Comment">-- keep going with the rest of the input</a>
+        <a id="5247" href="Data.Maybe.Base.html#859" class="InductiveConstructor">nothing</a>    <a id="5258" class="Symbol">→</a> <a id="5260" href="README.Trie.NonDependent.html#4210" class="Function">loop</a> <a id="5265" class="Symbol">(</a><a id="5266" href="README.Trie.NonDependent.html#4599" class="Bound">c</a> <a id="5268" href="Agda.Builtin.List.html#173" class="InductiveConstructor Operator">∷</a> <a id="5270" href="README.Trie.NonDependent.html#4589" class="Bound">acc</a><a id="5273" class="Symbol">)</a> <a id="5275" class="Symbol">(</a><a id="5276" href="Data.Trie.html#2170" class="Function">lookupTrie</a> <a id="5287" href="README.Trie.NonDependent.html#4599" class="Bound">c</a> <a id="5289" href="README.Trie.NonDependent.html#4593" class="Bound">toks</a><a id="5293" class="Symbol">)</a> <a id="5295" href="README.Trie.NonDependent.html#4603" class="Bound">cs</a>
+
+    <a id="5303" class="Comment">-- Grab the accumulator and, unless it is empty, push it on top of</a>
+    <a id="5374" class="Comment">-- the decoded list of tokens</a>
+    <a id="5408" href="README.Trie.NonDependent.html#5408" class="Function">push</a> <a id="5413" class="Symbol">:</a> <a id="5415" href="Agda.Builtin.List.html#121" class="Datatype">List</a> <a id="5420" href="Agda.Builtin.Char.html#200" class="Postulate">Char</a> <a id="5425" class="Symbol">→</a> <a id="5427" href="Agda.Builtin.List.html#121" class="Datatype">List</a> <a id="5432" href="README.Trie.NonDependent.html#2478" class="Bound">Tok</a> <a id="5436" class="Symbol">→</a> <a id="5438" href="Agda.Builtin.List.html#121" class="Datatype">List</a> <a id="5443" href="README.Trie.NonDependent.html#2478" class="Bound">Tok</a>
+    <a id="5451" href="README.Trie.NonDependent.html#5408" class="Function">push</a> <a id="5456" href="Agda.Builtin.List.html#158" class="InductiveConstructor">[]</a> <a id="5459" href="README.Trie.NonDependent.html#5459" class="Bound">ts</a> <a id="5462" class="Symbol">=</a> <a id="5464" href="README.Trie.NonDependent.html#5459" class="Bound">ts</a>
+    <a id="5471" href="README.Trie.NonDependent.html#5408" class="CatchallClause Function">push</a><a id="5475" class="CatchallClause"> </a><a id="5476" href="README.Trie.NonDependent.html#5476" class="CatchallClause Bound">cs</a><a id="5478" class="CatchallClause"> </a><a id="5479" href="README.Trie.NonDependent.html#5479" class="CatchallClause Bound">ts</a> <a id="5482" class="Symbol">=</a> <a id="5484" href="README.Trie.NonDependent.html#2996" class="Bound">default</a> <a id="5492" class="Symbol">(</a><a id="5493" href="Agda.Builtin.String.html#304" class="Primitive">String.fromList</a> <a id="5509" class="Symbol">(</a><a id="5510" href="Data.List.Base.html#8564" class="Function">List.reverse</a> <a id="5523" href="README.Trie.NonDependent.html#5476" class="Bound">cs</a><a id="5525" class="Symbol">))</a> <a id="5528" href="Agda.Builtin.List.html#173" class="InductiveConstructor Operator">∷</a> <a id="5530" href="README.Trie.NonDependent.html#5479" class="Bound">ts</a>
+
+
+<a id="5535" class="Comment">------------------------------------------------------------------------</a>
+<a id="5608" class="Comment">-- Concrete instance</a>
+
+<a id="5630" class="Comment">-- A small set of keywords for a language with expressions of the form</a>
+<a id="5701" class="Comment">-- `let x = e in b`.</a>
+
+<a id="5723" class="Keyword">data</a> <a id="TOK"></a><a id="5728" href="README.Trie.NonDependent.html#5728" class="Datatype">TOK</a> <a id="5732" class="Symbol">:</a> <a id="5734" class="PrimitiveType">Set</a> <a id="5738" class="Keyword">where</a>
+  <a id="TOK.LET"></a><a id="5746" href="README.Trie.NonDependent.html#5746" class="InductiveConstructor">LET</a> <a id="TOK.EQ"></a><a id="5750" href="README.Trie.NonDependent.html#5750" class="InductiveConstructor">EQ</a> <a id="TOK.IN"></a><a id="5753" href="README.Trie.NonDependent.html#5753" class="InductiveConstructor">IN</a> <a id="5756" class="Symbol">:</a> <a id="5758" href="README.Trie.NonDependent.html#5728" class="Datatype">TOK</a>
+  <a id="TOK.LPAR"></a><a id="5764" href="README.Trie.NonDependent.html#5764" class="InductiveConstructor">LPAR</a> <a id="TOK.RPAR"></a><a id="5769" href="README.Trie.NonDependent.html#5769" class="InductiveConstructor">RPAR</a> <a id="5774" class="Symbol">:</a> <a id="5776" href="README.Trie.NonDependent.html#5728" class="Datatype">TOK</a>
+  <a id="TOK.ID"></a><a id="5782" href="README.Trie.NonDependent.html#5782" class="InductiveConstructor">ID</a> <a id="5785" class="Symbol">:</a> <a id="5787" href="Agda.Builtin.String.html#206" class="Postulate">String</a> <a id="5794" class="Symbol">→</a> <a id="5796" href="README.Trie.NonDependent.html#5728" class="Datatype">TOK</a>
+
+<a id="toks"></a><a id="5801" href="README.Trie.NonDependent.html#5801" class="Function">toks</a> <a id="5806" class="Symbol">:</a> <a id="5808" href="Data.List.NonEmpty.html#1176" class="Record">List⁺</a> <a id="5814" class="Symbol">(</a><a id="5815" href="Agda.Builtin.String.html#206" class="Postulate">String</a> <a id="5822" href="Data.Product.html#1162" class="Function Operator">×</a> <a id="5824" href="README.Trie.NonDependent.html#5728" class="Datatype">TOK</a><a id="5827" class="Symbol">)</a>
+<a id="5829" href="README.Trie.NonDependent.html#5801" class="Function">toks</a> <a id="5834" class="Symbol">=</a> <a id="5836" class="Symbol">(</a><a id="5837" class="String">&quot;let&quot;</a> <a id="5843" href="Agda.Builtin.Sigma.html#209" class="InductiveConstructor Operator">,</a> <a id="5845" href="README.Trie.NonDependent.html#5746" class="InductiveConstructor">LET</a><a id="5848" class="Symbol">)</a>
+     <a id="5855" href="Data.List.NonEmpty.html#1226" class="InductiveConstructor Operator">∷</a> <a id="5857" class="Symbol">(</a><a id="5858" class="String">&quot;=&quot;</a>   <a id="5864" href="Agda.Builtin.Sigma.html#209" class="InductiveConstructor Operator">,</a> <a id="5866" href="README.Trie.NonDependent.html#5750" class="InductiveConstructor">EQ</a><a id="5868" class="Symbol">)</a>
+     <a id="5875" href="Agda.Builtin.List.html#173" class="InductiveConstructor Operator">∷</a> <a id="5877" class="Symbol">(</a><a id="5878" class="String">&quot;in&quot;</a>  <a id="5884" href="Agda.Builtin.Sigma.html#209" class="InductiveConstructor Operator">,</a> <a id="5886" href="README.Trie.NonDependent.html#5753" class="InductiveConstructor">IN</a><a id="5888" class="Symbol">)</a>
+     <a id="5895" href="Agda.Builtin.List.html#173" class="InductiveConstructor Operator">∷</a> <a id="5897" href="Agda.Builtin.List.html#158" class="InductiveConstructor">[]</a>
+
+<a id="5901" class="Comment">-- Breaking characters: spaces (thrown away) and parentheses (kept)</a>
+
+<a id="breaking"></a><a id="5970" href="README.Trie.NonDependent.html#5970" class="Function">breaking</a> <a id="5979" class="Symbol">:</a> <a id="5981" href="Agda.Builtin.Char.html#200" class="Postulate">Char</a> <a id="5986" class="Symbol">→</a> <a id="5988" href="Data.Product.html#1364" class="Function">∃</a> <a id="5990" class="Symbol">λ</a> <a id="5992" href="README.Trie.NonDependent.html#5992" class="Bound">b</a> <a id="5994" class="Symbol">→</a> <a id="5996" href="Data.Bool.Base.html#1072" class="Function Operator">if</a> <a id="5999" href="README.Trie.NonDependent.html#5992" class="Bound">b</a> <a id="6001" href="Data.Bool.Base.html#1072" class="Function Operator">then</a> <a id="6006" href="Data.Maybe.Base.html#795" class="Datatype">Maybe</a> <a id="6012" href="README.Trie.NonDependent.html#5728" class="Datatype">TOK</a> <a id="6016" href="Data.Bool.Base.html#1072" class="Function Operator">else</a> <a id="6021" href="Level.html#394" class="Record">Lift</a> <a id="6026" class="Symbol">_</a> <a id="6028" href="Agda.Builtin.Unit.html#137" class="Record">⊤</a>
+<a id="6030" href="README.Trie.NonDependent.html#5970" class="Function">breaking</a> <a id="6039" href="README.Trie.NonDependent.html#6039" class="Bound">c</a> <a id="6041" class="Symbol">=</a> <a id="6043" href="Data.Bool.Base.html#1072" class="Function Operator">if</a> <a id="6046" href="Agda.Builtin.Char.html#286" class="Primitive">isSpace</a> <a id="6054" href="README.Trie.NonDependent.html#6039" class="Bound">c</a> <a id="6056" href="Data.Bool.Base.html#1072" class="Function Operator">then</a> <a id="6061" href="Agda.Builtin.Bool.html#160" class="InductiveConstructor">true</a> <a id="6066" href="Agda.Builtin.Sigma.html#209" class="InductiveConstructor Operator">,</a> <a id="6068" href="Data.Maybe.Base.html#859" class="InductiveConstructor">nothing</a> <a id="6076" href="Data.Bool.Base.html#1072" class="Function Operator">else</a> <a id="6081" href="README.Trie.NonDependent.html#6099" class="Function">parens</a> <a id="6088" href="README.Trie.NonDependent.html#6039" class="Bound">c</a> <a id="6090" class="Keyword">where</a>
+
+  <a id="6099" href="README.Trie.NonDependent.html#6099" class="Function">parens</a> <a id="6106" class="Symbol">:</a> <a id="6108" href="Agda.Builtin.Char.html#200" class="Postulate">Char</a> <a id="6113" class="Symbol">→</a> <a id="6115" class="Symbol">_</a>
+  <a id="6119" href="README.Trie.NonDependent.html#6099" class="Function">parens</a> <a id="6126" class="String">&#39;(&#39;</a> <a id="6130" class="Symbol">=</a> <a id="6132" href="Agda.Builtin.Bool.html#160" class="InductiveConstructor">true</a> <a id="6137" href="Agda.Builtin.Sigma.html#209" class="InductiveConstructor Operator">,</a> <a id="6139" href="Data.Maybe.Base.html#829" class="InductiveConstructor">just</a> <a id="6144" href="README.Trie.NonDependent.html#5764" class="InductiveConstructor">LPAR</a>
+  <a id="6151" href="README.Trie.NonDependent.html#6099" class="Function">parens</a> <a id="6158" class="String">&#39;)&#39;</a> <a id="6162" class="Symbol">=</a> <a id="6164" href="Agda.Builtin.Bool.html#160" class="InductiveConstructor">true</a> <a id="6169" href="Agda.Builtin.Sigma.html#209" class="InductiveConstructor Operator">,</a> <a id="6171" href="Data.Maybe.Base.html#829" class="InductiveConstructor">just</a> <a id="6176" href="README.Trie.NonDependent.html#5769" class="InductiveConstructor">RPAR</a>
+  <a id="6183" href="README.Trie.NonDependent.html#6099" class="Function">parens</a> <a id="6190" class="Symbol">_</a>   <a id="6194" class="Symbol">=</a> <a id="6196" href="Agda.Builtin.Bool.html#154" class="InductiveConstructor">false</a> <a id="6202" href="Agda.Builtin.Sigma.html#209" class="InductiveConstructor Operator">,</a> <a id="6204" class="Symbol">_</a>
+
+<a id="6207" class="Keyword">open</a> <a id="6212" class="Keyword">import</a> <a id="6219" href="Agda.Builtin.Equality.html" class="Module">Agda.Builtin.Equality</a>
+<a id="6241" class="Keyword">open</a> <a id="6246" href="README.Trie.NonDependent.html#2410" class="Module">Lexer</a> <a id="6252" href="README.Trie.NonDependent.html#5801" class="Function">toks</a> <a id="6257" href="README.Trie.NonDependent.html#5970" class="Function">breaking</a> <a id="6266" href="README.Trie.NonDependent.html#5782" class="InductiveConstructor">ID</a>
+
+<a id="6270" class="Comment">-- A test case:</a>
+
+<a id="6287" href="README.Trie.NonDependent.html#6287" class="Function">_</a> <a id="6289" class="Symbol">:</a> <a id="6291" href="README.Trie.NonDependent.html#3032" class="Function">tokenize</a> <a id="6300" class="String">&quot;fix f x = let b = fix f in (f b) x&quot;</a>
+  <a id="6339" href="Agda.Builtin.Equality.html#125" class="Datatype Operator">≡</a> <a id="6341" href="README.Trie.NonDependent.html#5782" class="InductiveConstructor">ID</a> <a id="6344" class="String">&quot;fix&quot;</a>
+  <a id="6352" href="Agda.Builtin.List.html#173" class="InductiveConstructor Operator">∷</a> <a id="6354" href="README.Trie.NonDependent.html#5782" class="InductiveConstructor">ID</a> <a id="6357" class="String">&quot;f&quot;</a>
+  <a id="6363" href="Agda.Builtin.List.html#173" class="InductiveConstructor Operator">∷</a> <a id="6365" href="README.Trie.NonDependent.html#5782" class="InductiveConstructor">ID</a> <a id="6368" class="String">&quot;x&quot;</a>
+  <a id="6374" href="Agda.Builtin.List.html#173" class="InductiveConstructor Operator">∷</a> <a id="6376" href="README.Trie.NonDependent.html#5750" class="InductiveConstructor">EQ</a>
+  <a id="6381" href="Agda.Builtin.List.html#173" class="InductiveConstructor Operator">∷</a> <a id="6383" href="README.Trie.NonDependent.html#5746" class="InductiveConstructor">LET</a>
+  <a id="6389" href="Agda.Builtin.List.html#173" class="InductiveConstructor Operator">∷</a> <a id="6391" href="README.Trie.NonDependent.html#5782" class="InductiveConstructor">ID</a> <a id="6394" class="String">&quot;b&quot;</a>
+  <a id="6400" href="Agda.Builtin.List.html#173" class="InductiveConstructor Operator">∷</a> <a id="6402" href="README.Trie.NonDependent.html#5750" class="InductiveConstructor">EQ</a>
+  <a id="6407" href="Agda.Builtin.List.html#173" class="InductiveConstructor Operator">∷</a> <a id="6409" href="README.Trie.NonDependent.html#5782" class="InductiveConstructor">ID</a> <a id="6412" class="String">&quot;fix&quot;</a>
+  <a id="6420" href="Agda.Builtin.List.html#173" class="InductiveConstructor Operator">∷</a> <a id="6422" href="README.Trie.NonDependent.html#5782" class="InductiveConstructor">ID</a> <a id="6425" class="String">&quot;f&quot;</a>
+  <a id="6431" href="Agda.Builtin.List.html#173" class="InductiveConstructor Operator">∷</a> <a id="6433" href="README.Trie.NonDependent.html#5753" class="InductiveConstructor">IN</a>
+  <a id="6438" href="Agda.Builtin.List.html#173" class="InductiveConstructor Operator">∷</a> <a id="6440" href="README.Trie.NonDependent.html#5764" class="InductiveConstructor">LPAR</a>
+  <a id="6447" href="Agda.Builtin.List.html#173" class="InductiveConstructor Operator">∷</a> <a id="6449" href="README.Trie.NonDependent.html#5782" class="InductiveConstructor">ID</a> <a id="6452" class="String">&quot;f&quot;</a>
+  <a id="6458" href="Agda.Builtin.List.html#173" class="InductiveConstructor Operator">∷</a> <a id="6460" href="README.Trie.NonDependent.html#5782" class="InductiveConstructor">ID</a> <a id="6463" class="String">&quot;b&quot;</a>
+  <a id="6469" href="Agda.Builtin.List.html#173" class="InductiveConstructor Operator">∷</a> <a id="6471" href="README.Trie.NonDependent.html#5769" class="InductiveConstructor">RPAR</a>
+  <a id="6478" href="Agda.Builtin.List.html#173" class="InductiveConstructor Operator">∷</a> <a id="6480" href="README.Trie.NonDependent.html#5782" class="InductiveConstructor">ID</a> <a id="6483" class="String">&quot;x&quot;</a>
+  <a id="6489" href="Agda.Builtin.List.html#173" class="InductiveConstructor Operator">∷</a> <a id="6491" href="Agda.Builtin.List.html#158" class="InductiveConstructor">[]</a>
+<a id="6494" class="Symbol">_</a> <a id="6496" class="Symbol">=</a> <a id="6498" href="Agda.Builtin.Equality.html#182" class="InductiveConstructor">refl</a>
+</pre></body></html>
