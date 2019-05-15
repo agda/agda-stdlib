@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Relation.Binary.Sum</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Sums of binary relations</a>
+<a id="134" class="Comment">--</a>
+<a id="137" class="Comment">-- This module is DEPRECATED. Please use the Data.Sum.Relation modules</a>
+<a id="208" class="Comment">-- directly.</a>
+<a id="221" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="295" class="Keyword">module</a> <a id="302" href="Relation.Binary.Sum.html" class="Module">Relation.Binary.Sum</a> <a id="322" class="Keyword">where</a>
+
+<a id="329" class="Keyword">open</a> <a id="334" class="Keyword">import</a> <a id="341" href="Data.Sum.Relation.Core.html" class="Module">Data.Sum.Relation.Core</a> <a id="364" class="Keyword">public</a>
+
+<a id="372" class="Keyword">open</a> <a id="377" class="Keyword">import</a> <a id="384" href="Data.Sum.Relation.Pointwise.html" class="Module">Data.Sum.Relation.Pointwise</a> <a id="412" class="Keyword">public</a>
+  <a id="421" class="Keyword">renaming</a>
+  <a id="432" class="Symbol">(</a> <a id="434" href="Data.Sum.Relation.Pointwise.html#1217" class="Function">Pointwise</a>          <a id="453" class="Symbol">to</a> <a id="456" href="Data.Sum.Relation.Pointwise.html#1217" class="Function">_⊎-Rel_</a>
+  <a id="466" class="Symbol">;</a> <a id="468" href="Data.Sum.Relation.Pointwise.html#1847" class="Function">⊎-symmetric</a>        <a id="487" class="Symbol">to</a> <a id="490" href="Data.Sum.Relation.Pointwise.html#1847" class="Function">_⊎-symmetric_</a>
+  <a id="506" class="Symbol">;</a> <a id="508" href="Data.Sum.Relation.Pointwise.html#2455" class="Function">⊎-substitutive</a>     <a id="527" class="Symbol">to</a> <a id="530" href="Data.Sum.Relation.Pointwise.html#2455" class="Function">_⊎-substitutive_</a>
+  <a id="549" class="Symbol">;</a> <a id="551" href="Data.Sum.Relation.Pointwise.html#4066" class="Function">⊎-isEquivalence</a>    <a id="570" class="Symbol">to</a> <a id="573" href="Data.Sum.Relation.Pointwise.html#4066" class="Function">_⊎-isEquivalence_</a>
+  <a id="593" class="Symbol">;</a> <a id="595" href="Data.Sum.Relation.Pointwise.html#4416" class="Function">⊎-isDecEquivalence</a> <a id="614" class="Symbol">to</a> <a id="617" href="Data.Sum.Relation.Pointwise.html#4416" class="Function">_⊎-isDecEquivalence_</a>
+  <a id="640" class="Symbol">;</a> <a id="642" href="Data.Sum.Relation.Pointwise.html#6476" class="Function">⊎-setoid</a>           <a id="661" class="Symbol">to</a> <a id="664" href="Data.Sum.Relation.Pointwise.html#6476" class="Function">_⊎-setoid_</a>
+  <a id="677" class="Symbol">;</a> <a id="679" href="Data.Sum.Relation.Pointwise.html#6661" class="Function">⊎-decSetoid</a>        <a id="698" class="Symbol">to</a> <a id="701" href="Data.Sum.Relation.Pointwise.html#6661" class="Function">_⊎-decSetoid_</a>
+  <a id="717" class="Symbol">;</a> <a id="719" href="Data.Sum.Relation.Pointwise.html#7919" class="Function">Pointwise-≡↔≡</a>      <a id="738" class="Symbol">to</a> <a id="741" href="Data.Sum.Relation.Pointwise.html#7919" class="Function">⊎-Rel↔≡</a>
+  <a id="751" class="Symbol">)</a>
+  <a id="755" class="Keyword">hiding</a>
+  <a id="764" class="Symbol">(</a> <a id="766" href="Data.Sum.Relation.Pointwise.html#2832" class="Function">⊎-decidable</a>
+  <a id="780" class="Symbol">)</a>
+
+<a id="783" class="Keyword">open</a> <a id="788" class="Keyword">import</a> <a id="795" href="Data.Sum.Relation.LeftOrder.html" class="Module">Data.Sum.Relation.LeftOrder</a> <a id="823" class="Keyword">public</a>
+  <a id="832" class="Keyword">using</a> <a id="838" class="Symbol">()</a>
+  <a id="843" class="Keyword">renaming</a>
+  <a id="854" class="Symbol">(</a> <a id="856" href="Data.Sum.Relation.LeftOrder.html#1619" class="Function">⊎-&lt;-total</a>              <a id="879" class="Symbol">to</a> <a id="882" href="Data.Sum.Relation.LeftOrder.html#1619" class="Function">_⊎-&lt;-total_</a>
+  <a id="896" class="Symbol">;</a> <a id="898" href="Data.Sum.Relation.LeftOrder.html#3060" class="Function">⊎-&lt;-trichotomous</a>       <a id="921" class="Symbol">to</a> <a id="924" href="Data.Sum.Relation.LeftOrder.html#3060" class="Function">_⊎-&lt;-trichotomous_</a>
+  <a id="945" class="Symbol">;</a> <a id="947" href="Data.Sum.Relation.LeftOrder.html#5760" class="Function">⊎-&lt;-isTotalOrder</a>       <a id="970" class="Symbol">to</a> <a id="973" href="Data.Sum.Relation.LeftOrder.html#5760" class="Function">_⊎-&lt;-isTotalOrder_</a>
+  <a id="994" class="Symbol">;</a> <a id="996" href="Data.Sum.Relation.LeftOrder.html#6136" class="Function">⊎-&lt;-isDecTotalOrder</a>    <a id="1019" class="Symbol">to</a> <a id="1022" href="Data.Sum.Relation.LeftOrder.html#6136" class="Function">_⊎-&lt;-isDecTotalOrder_</a>
+  <a id="1046" class="Symbol">;</a> <a id="1048" href="Data.Sum.Relation.LeftOrder.html#6609" class="Function">⊎-&lt;-isStrictTotalOrder</a> <a id="1071" class="Symbol">to</a> <a id="1074" href="Data.Sum.Relation.LeftOrder.html#6609" class="Function">_⊎-&lt;-isStrictTotalOrder_</a>
+  <a id="1101" class="Symbol">;</a> <a id="1103" href="Data.Sum.Relation.LeftOrder.html#7489" class="Function">⊎-&lt;-poset</a>              <a id="1126" class="Symbol">to</a> <a id="1129" href="Data.Sum.Relation.LeftOrder.html#7489" class="Function">_⊎-&lt;-poset_</a>
+  <a id="1143" class="Symbol">;</a> <a id="1145" href="Data.Sum.Relation.LeftOrder.html#7716" class="Function">⊎-&lt;-strictPartialOrder</a> <a id="1168" class="Symbol">to</a> <a id="1171" href="Data.Sum.Relation.LeftOrder.html#7716" class="Function">_⊎-&lt;-strictPartialOrder_</a>
+  <a id="1198" class="Symbol">;</a> <a id="1200" href="Data.Sum.Relation.LeftOrder.html#8073" class="Function">⊎-&lt;-totalOrder</a>         <a id="1223" class="Symbol">to</a> <a id="1226" href="Data.Sum.Relation.LeftOrder.html#8073" class="Function">_⊎-&lt;-totalOrder_</a>
+  <a id="1245" class="Symbol">;</a> <a id="1247" href="Data.Sum.Relation.LeftOrder.html#8324" class="Function">⊎-&lt;-decTotalOrder</a>      <a id="1270" class="Symbol">to</a> <a id="1273" href="Data.Sum.Relation.LeftOrder.html#8324" class="Function">_⊎-&lt;-decTotalOrder_</a>
+  <a id="1295" class="Symbol">;</a> <a id="1297" href="Data.Sum.Relation.LeftOrder.html#8611" class="Function">⊎-&lt;-strictTotalOrder</a>   <a id="1320" class="Symbol">to</a> <a id="1323" href="Data.Sum.Relation.LeftOrder.html#8611" class="Function">_⊎-&lt;-strictTotalOrder_</a>
+  <a id="1348" class="Symbol">)</a>
+</pre></body></html>

@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Char</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Characters</a>
+<a id="120" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="194" class="Keyword">module</a> <a id="201" href="Data.Char.html" class="Module">Data.Char</a> <a id="211" class="Keyword">where</a>
+
+<a id="218" class="Keyword">open</a> <a id="223" class="Keyword">import</a> <a id="230" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a> <a id="244" class="Keyword">using</a> <a id="250" class="Symbol">(</a><a id="251" href="Agda.Builtin.Nat.html#97" class="Datatype">ℕ</a><a id="252" class="Symbol">)</a>
+<a id="254" class="Keyword">open</a> <a id="259" class="Keyword">import</a> <a id="266" href="Data.Nat.Properties.html" class="Module">Data.Nat.Properties</a> <a id="286" class="Keyword">using</a> <a id="292" class="Symbol">(</a><a id="293" href="Data.Nat.Properties.html#5211" class="Function">&lt;-strictTotalOrder</a><a id="311" class="Symbol">)</a>
+<a id="313" class="Keyword">open</a> <a id="318" class="Keyword">import</a> <a id="325" href="Data.Bool.Base.html" class="Module">Data.Bool.Base</a> <a id="340" class="Keyword">using</a> <a id="346" class="Symbol">(</a><a id="347" href="Agda.Builtin.Bool.html#67" class="Datatype">Bool</a><a id="351" class="Symbol">;</a> <a id="353" href="Agda.Builtin.Bool.html#92" class="InductiveConstructor">true</a><a id="357" class="Symbol">;</a> <a id="359" href="Agda.Builtin.Bool.html#86" class="InductiveConstructor">false</a><a id="364" class="Symbol">)</a>
+<a id="366" class="Keyword">open</a> <a id="371" class="Keyword">import</a> <a id="378" href="Relation.Nullary.html" class="Module">Relation.Nullary</a>
+<a id="395" class="Keyword">open</a> <a id="400" class="Keyword">import</a> <a id="407" href="Relation.Nullary.Decidable.html" class="Module">Relation.Nullary.Decidable</a>
+<a id="434" class="Keyword">open</a> <a id="439" class="Keyword">import</a> <a id="446" href="Relation.Binary.html" class="Module">Relation.Binary</a>
+<a id="462" class="Keyword">import</a> <a id="469" href="Relation.Binary.On.html" class="Module">Relation.Binary.On</a> <a id="488" class="Symbol">as</a> <a id="491" class="Module">On</a>
+<a id="494" class="Keyword">open</a> <a id="499" class="Keyword">import</a> <a id="506" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a> <a id="544" class="Symbol">as</a> <a id="547" class="Module">PropEq</a> <a id="554" class="Keyword">using</a> <a id="560" class="Symbol">(</a><a id="561" href="Agda.Builtin.Equality.html#83" class="Datatype Operator">_≡_</a><a id="564" class="Symbol">)</a>
+<a id="566" class="Keyword">open</a> <a id="571" class="Keyword">import</a> <a id="578" href="Relation.Binary.PropositionalEquality.TrustMe.html" class="Module">Relation.Binary.PropositionalEquality.TrustMe</a>
+
+<a id="625" class="Keyword">open</a> <a id="630" class="Keyword">import</a> <a id="637" href="Agda.Builtin.Char.html" class="Module">Agda.Builtin.Char</a> <a id="655" class="Keyword">using</a> <a id="661" class="Symbol">(</a><a id="662" href="Agda.Builtin.Char.html#400" class="Primitive">primCharEquality</a><a id="678" class="Symbol">)</a>
+<a id="680" class="Keyword">open</a> <a id="685" class="Keyword">import</a> <a id="692" href="Data.String.Base.html" class="Module">Data.String.Base</a> <a id="709" class="Keyword">using</a> <a id="715" class="Symbol">(</a><a id="716" href="Agda.Builtin.String.html#165" class="Postulate">String</a><a id="722" class="Symbol">)</a>
+<a id="724" class="Keyword">open</a> <a id="729" class="Keyword">import</a> <a id="736" href="Data.Char.Base.html" class="Module">Data.Char.Base</a>
+<a id="751" class="Keyword">open</a>        <a id="763" href="Data.Char.Base.html" class="Module">Data.Char.Base</a> <a id="778" class="Keyword">public</a> <a id="785" class="Keyword">using</a> <a id="791" class="Symbol">(</a><a id="792" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a><a id="796" class="Symbol">;</a> <a id="798" href="Data.Char.Base.html#717" class="Function">show</a><a id="802" class="Symbol">;</a> <a id="804" href="Data.Char.Base.html#1131" class="Function">toNat</a><a id="809" class="Symbol">;</a> <a id="811" href="Data.Char.Base.html#1171" class="Function">fromNat</a><a id="818" class="Symbol">)</a>
+
+<a id="821" class="Comment">-- Informative equality test.</a>
+
+<a id="852" class="Keyword">infix</a> <a id="858" class="Number">4</a> <a id="860" href="Data.Char.html#865" class="Function Operator">_≟_</a>
+
+<a id="_≟_"></a><a id="865" href="Data.Char.html#865" class="Function Operator">_≟_</a> <a id="869" class="Symbol">:</a> <a id="871" href="Relation.Binary.Core.html#3776" class="Function">Decidable</a> <a id="881" class="Symbol">{</a><a id="882" class="Argument">A</a> <a id="884" class="Symbol">=</a> <a id="886" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a><a id="890" class="Symbol">}</a> <a id="892" href="Agda.Builtin.Equality.html#83" class="Datatype Operator">_≡_</a>
+<a id="896" href="Data.Char.html#896" class="Bound">s₁</a> <a id="899" href="Data.Char.html#865" class="Function Operator">≟</a> <a id="901" href="Data.Char.html#901" class="Bound">s₂</a> <a id="904" class="Keyword">with</a> <a id="909" href="Agda.Builtin.Char.html#400" class="Primitive">primCharEquality</a> <a id="926" href="Data.Char.html#896" class="Bound">s₁</a> <a id="929" href="Data.Char.html#901" class="Bound">s₂</a>
+<a id="932" class="Symbol">...</a> <a id="936" class="Symbol">|</a> <a id="938" href="Agda.Builtin.Bool.html#92" class="InductiveConstructor">true</a>  <a id="944" class="Symbol">=</a> <a id="946" href="Relation.Nullary.html#570" class="InductiveConstructor">yes</a> <a id="950" href="Relation.Binary.PropositionalEquality.TrustMe.html#518" class="Function">trustMe</a>
+<a id="958" class="Symbol">...</a> <a id="962" class="Symbol">|</a> <a id="964" href="Agda.Builtin.Bool.html#86" class="InductiveConstructor">false</a> <a id="970" class="Symbol">=</a> <a id="972" href="Relation.Nullary.html#597" class="InductiveConstructor">no</a> <a id="975" href="Data.Char.html#1002" class="Postulate">whatever</a>
+  <a id="986" class="Keyword">where</a> <a id="992" class="Keyword">postulate</a> <a id="1002" href="Data.Char.html#1002" class="Postulate">whatever</a> <a id="1011" class="Symbol">:</a> <a id="1013" class="Symbol">_</a>
+
+<a id="1016" class="Comment">-- Boolean equality test.</a>
+<a id="1042" class="Comment">--</a>
+<a id="1045" class="Comment">-- Why is the definition _==_ = primCharEquality not used? One reason</a>
+<a id="1115" class="Comment">-- is that the present definition can sometimes improve type</a>
+<a id="1176" class="Comment">-- inference, at least with the version of Agda that is current at the</a>
+<a id="1247" class="Comment">-- time of writing: see unit-test below.</a>
+
+<a id="1289" class="Keyword">infix</a> <a id="1295" class="Number">4</a> <a id="1297" href="Data.Char.html#1303" class="Function Operator">_==_</a>
+
+<a id="_==_"></a><a id="1303" href="Data.Char.html#1303" class="Function Operator">_==_</a> <a id="1308" class="Symbol">:</a> <a id="1310" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a> <a id="1315" class="Symbol">→</a> <a id="1317" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a> <a id="1322" class="Symbol">→</a> <a id="1324" href="Agda.Builtin.Bool.html#67" class="Datatype">Bool</a>
+<a id="1329" href="Data.Char.html#1329" class="Bound">c₁</a> <a id="1332" href="Data.Char.html#1303" class="Function Operator">==</a> <a id="1335" href="Data.Char.html#1335" class="Bound">c₂</a> <a id="1338" class="Symbol">=</a> <a id="1340" href="Relation.Nullary.Decidable.html#822" class="Function Operator">⌊</a> <a id="1342" href="Data.Char.html#1329" class="Bound">c₁</a> <a id="1345" href="Data.Char.html#865" class="Function Operator">≟</a> <a id="1347" href="Data.Char.html#1335" class="Bound">c₂</a> <a id="1350" href="Relation.Nullary.Decidable.html#822" class="Function Operator">⌋</a>
+
+<a id="1353" class="Keyword">private</a>
+
+  <a id="1364" class="Comment">-- The following unit test does not type-check (at the time of</a>
+  <a id="1429" class="Comment">-- writing) if _==_ is replaced by primCharEquality.</a>
+
+  <a id="1485" class="Keyword">data</a> <a id="P"></a><a id="1490" href="Data.Char.html#1490" class="Datatype">P</a> <a id="1492" class="Symbol">:</a> <a id="1494" class="Symbol">(</a><a id="1495" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a> <a id="1500" class="Symbol">→</a> <a id="1502" href="Agda.Builtin.Bool.html#67" class="Datatype">Bool</a><a id="1506" class="Symbol">)</a> <a id="1508" class="Symbol">→</a> <a id="1510" class="PrimitiveType">Set</a> <a id="1514" class="Keyword">where</a>
+    <a id="P.p"></a><a id="1524" href="Data.Char.html#1524" class="InductiveConstructor">p</a> <a id="1526" class="Symbol">:</a> <a id="1528" class="Symbol">(</a><a id="1529" href="Data.Char.html#1529" class="Bound">c</a> <a id="1531" class="Symbol">:</a> <a id="1533" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a><a id="1537" class="Symbol">)</a> <a id="1539" class="Symbol">→</a> <a id="1541" href="Data.Char.html#1490" class="Datatype">P</a> <a id="1543" class="Symbol">(</a><a id="1544" href="Data.Char.html#1303" class="Function Operator">_==_</a> <a id="1549" href="Data.Char.html#1529" class="Bound">c</a><a id="1550" class="Symbol">)</a>
+
+  <a id="unit-test"></a><a id="1555" href="Data.Char.html#1555" class="Function">unit-test</a> <a id="1565" class="Symbol">:</a> <a id="1567" href="Data.Char.html#1490" class="Datatype">P</a> <a id="1569" class="Symbol">(</a><a id="1570" href="Data.Char.html#1303" class="Function Operator">_==_</a> <a id="1575" class="String">&#39;x&#39;</a><a id="1578" class="Symbol">)</a>
+  <a id="1582" href="Data.Char.html#1555" class="Function">unit-test</a> <a id="1592" class="Symbol">=</a> <a id="1594" href="Data.Char.html#1524" class="InductiveConstructor">p</a> <a id="1596" class="Symbol">_</a>
+
+<a id="setoid"></a><a id="1599" href="Data.Char.html#1599" class="Function">setoid</a> <a id="1606" class="Symbol">:</a> <a id="1608" href="Relation.Binary.html#1943" class="Record">Setoid</a> <a id="1615" class="Symbol">_</a> <a id="1617" class="Symbol">_</a>
+<a id="1619" href="Data.Char.html#1599" class="Function">setoid</a> <a id="1626" class="Symbol">=</a> <a id="1628" href="Relation.Binary.PropositionalEquality.html#1459" class="Function">PropEq.setoid</a> <a id="1642" href="Agda.Builtin.Char.html#132" class="Postulate">Char</a>
+
+<a id="decSetoid"></a><a id="1648" href="Data.Char.html#1648" class="Function">decSetoid</a> <a id="1658" class="Symbol">:</a> <a id="1660" href="Relation.Binary.html#3012" class="Record">DecSetoid</a> <a id="1670" class="Symbol">_</a> <a id="1672" class="Symbol">_</a>
+<a id="1674" href="Data.Char.html#1648" class="Function">decSetoid</a> <a id="1684" class="Symbol">=</a> <a id="1686" href="Relation.Binary.PropositionalEquality.html#1598" class="Function">PropEq.decSetoid</a> <a id="1703" href="Data.Char.html#865" class="Function Operator">_≟_</a>
+
+<a id="1708" class="Comment">-- An ordering induced by the toNat function.</a>
+
+<a id="strictTotalOrder"></a><a id="1755" href="Data.Char.html#1755" class="Function">strictTotalOrder</a> <a id="1772" class="Symbol">:</a> <a id="1774" href="Relation.Binary.html#11275" class="Record">StrictTotalOrder</a> <a id="1791" class="Symbol">_</a> <a id="1793" class="Symbol">_</a> <a id="1795" class="Symbol">_</a>
+<a id="1797" href="Data.Char.html#1755" class="Function">strictTotalOrder</a> <a id="1814" class="Symbol">=</a> <a id="1816" href="Relation.Binary.On.html#7015" class="Function">On.strictTotalOrder</a> <a id="1836" href="Data.Nat.Properties.html#5211" class="Function">&lt;-strictTotalOrder</a> <a id="1855" href="Data.Char.Base.html#1131" class="Function">toNat</a>
+</pre></body></html>
