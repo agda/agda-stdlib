@@ -313,32 +313,33 @@ infix 5 Π[_]
 ------------------------------------------------------------------------
 -- n-ary pointwise liftings
 
+lift₂ : ∀ n {ls r s t} {as : Sets n ls} {R : Set r} {S : Set s} {T : Set t} →
+        (R → S → T) → as ⇉ R → as ⇉ S → as ⇉ T
+lift₂ zero    op f g = op f g
+lift₂ (suc n) op f g = λ x → lift₂ n op (f x) (g x)
+
 -- implication
 
 infixr 6 _⇒_
 _⇒_ : ∀ {n} {ls r s} {as : Sets n ls} →
       as ⇉ Set r → as ⇉ Set s → as ⇉ Set (r ⊔ s)
-_⇒_ {zero}  f g   = f → g
-_⇒_ {suc n} f g x = f x ⇒ g x
+_⇒_ = lift₂ _ (λ A B → A → B)
 
 -- conjunction
 
 infixr 7 _∩_
 _∩_ : ∀ {n} {ls r s} {as : Sets n ls} →
       as ⇉ Set r → as ⇉ Set s → as ⇉ Set (r ⊔ s)
-_∩_ {zero}  f g   = f × g
-_∩_ {suc n} f g x = f x ∩ g x
+_∩_ = lift₂ _ _×_
 
 -- disjunction
 
 infixr 8 _∪_
 _∪_ : ∀ {n} {ls r s} {as : Sets n ls} →
       as ⇉ Set r → as ⇉ Set s → as ⇉ Set (r ⊔ s)
-_∪_ {zero}  f g   = f ⊎ g
-_∪_ {suc n} f g x = f x ∪ g x
+_∪_ = lift₂ _ _⊎_
 
 -- negation
 
 ∁ : ∀ {n ls r} {as : Sets n ls} → as ⇉ Set r → as ⇉ Set r
-∁ {zero}  f   = ¬ f
-∁ {suc n} f x = ∁ (f x)
+∁ = mapₙ _ ¬_
