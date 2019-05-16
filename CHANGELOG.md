@@ -36,9 +36,11 @@ Bug-fixes
 
 * All proofs involving `_<_` have been updated correspondingly
 
-* For backwards compatability the old relations still exist as primed versions
+* For backwards compatibility the old relations still exist as primed versions
   `_<′_` as do all the old proofs, e.g. `+-monoˡ-<` has become `+-monoˡ-<′`,
   but these have all been deprecated and may be removed in some future version.
+
+* `Setω` is now exported in `Level`.
 
 New modules
 -----------
@@ -92,13 +94,13 @@ been attached to all deprecated names.
 
 #### Modules
 
-* The induction machinary for naturals was commonly held to be one of the hardest
+* The induction machinery for naturals was commonly held to be one of the hardest
   modules to find in the library. Therefore the module `Induction.Nat` has been
   split into two new modules: `Data.Nat.Induction` and `Data.Fin.Induction`.
   This should improve findability and better matches the design of the rest of
   the library. The new modules also export `Acc` and `acc` meaning there is no
   need to import `Data.Induction.WellFounded`.  The old module `Induction.Nat`
-  still exists for backwards compatability but is deprecated.
+  still exists for backwards compatibility but is deprecated.
 
 #### Names
 
