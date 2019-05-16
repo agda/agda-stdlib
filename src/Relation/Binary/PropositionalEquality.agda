@@ -54,23 +54,23 @@ cong₂ f refl refl = refl
 ------------------------------------------------------------------------
 -- n-ary versions of `cong` and `subst`
 
-Congₙ : ∀ n {ls : Levels n} {as : Sets n ls} {r} {b : Set r} →
-        (f g : Arrows n as b) → Set (r ⊔ (⨆ n ls))
+Congₙ : ∀ n {ls} {as : Sets n ls} {r} {b : Set r} →
+        (f g : as ⇉ b) → Set (r ⊔ (⨆ n ls))
 Congₙ zero    f g = f ≡ g
 Congₙ (suc n) f g = ∀ {x y} → x ≡ y → Congₙ n (f x) (g y)
 
-congₙ : ∀ n {ls : Levels n} {as : Sets n ls} {r} {b : Set r} →
-        (f : Arrows n as b) → Congₙ n f f
+congₙ : ∀ n {ls} {as : Sets n ls} {r} {b : Set r} →
+        (f : as ⇉ b) → Congₙ n f f
 congₙ zero    f      = refl
 congₙ (suc n) f refl = congₙ n (f _)
 
-Substₙ : ∀ n {r} {ls : Levels n} {as : Sets n ls} →
-         (f g : Arrows n as (Set r)) → Set (r ⊔ (⨆ n ls))
+Substₙ : ∀ n {r ls} {as : Sets n ls} →
+         (f g : as ⇉ Set r) → Set (r ⊔ (⨆ n ls))
 Substₙ zero    f g = f → g
 Substₙ (suc n) f g = ∀ {x y} → x ≡ y → Substₙ n (f x) (g y)
 
-substₙ : ∀ {n} {ls : Levels n} {as : Sets n ls} {r} →
-        (f : Arrows n as (Set r)) → Substₙ n f f
+substₙ : ∀ {n r ls} {as : Sets n ls} →
+        (f : as ⇉ Set r) → Substₙ n f f
 substₙ {zero}  f x    = x
 substₙ {suc n} f refl = substₙ (f _)
 

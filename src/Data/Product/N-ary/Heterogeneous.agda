@@ -94,6 +94,9 @@ Arrows : ∀ n {r ls} → Sets n ls → Set r → Set (r ⊔ (⨆ n ls))
 Arrows zero    _        b = b
 Arrows (suc n) (a , as) b = a → Arrows n as b
 
+infixr 0 _⇉_
+_⇉_ : ∀ {n ls r} → Sets n ls → Set r → Set (r ⊔ (⨆ n ls))
+_⇉_ = Arrows _
 
 ------------------------------------------------------------------------
 -- Generic Programs
@@ -129,13 +132,13 @@ toProduct⊤ (suc (suc n)) (v , vs) = v , toProduct⊤ _ vs
 -- between `A₁ → ⋯ → Aₙ → B` and `(A₁ × ⋯ × Aₙ) → B` by induction on `n`.
 
 curryₙ : ∀ n {ls} {as : Sets n ls} {r} {b : Set r} →
-         (Product n as → b) → Arrows n as b
+         (Product n as → b) → as ⇉ b
 curryₙ 0               f = f _
 curryₙ 1               f = f
 curryₙ (suc n@(suc _)) f = curryₙ n ∘′ curry f
 
-uncurryₙ : ∀ n {ls : Levels n} {as : Sets n ls} {r} {b : Set r} →
-           Arrows n as b → (Product n as → b)
+uncurryₙ : ∀ n {ls} {as : Sets n ls} {r} {b : Set r} →
+           as ⇉ b → (Product n as → b)
 uncurryₙ 0               f = const f
 uncurryₙ 1               f = f
 uncurryₙ (suc n@(suc _)) f = uncurry (uncurryₙ n ∘′ f)
@@ -237,7 +240,7 @@ updateₙ′ n k = updateₙ n k
 
 composeₙ : ∀ n {ls r} {as : Sets n ls} {b : Set r} →
            ∀ {lᵒ lⁿ} {aᵒ : Set lᵒ} {aⁿ : Set lⁿ} →
-           (aⁿ → aᵒ) → Arrows n as (aᵒ → b) → Arrows n as (aⁿ → b)
+           (aⁿ → aᵒ) → as ⇉ (aᵒ → b) → as ⇉ (aⁿ → b)
 composeₙ zero    f g = g ∘′ f
 composeₙ (suc n) f g = composeₙ n f ∘′ g
 
@@ -245,7 +248,7 @@ composeₙ (suc n) f g = composeₙ n f ∘′ g
 -- mapping under n arguments
 
 mapₙ : ∀ n {ls r s} {as : Sets n ls} {b : Set r} {c : Set s} →
-       (b → c) → Arrows n as b → Arrows n as c
+       (b → c) → as ⇉ b → as ⇉ c
 mapₙ zero    f v = f v
 mapₙ (suc n) f g = mapₙ n f ∘′ g
 
@@ -253,7 +256,7 @@ mapₙ (suc n) f g = mapₙ n f ∘′ g
 -- hole at the n-th position
 
 holeₙ : ∀ n {ls r lʰ} {as : Sets n ls} {b : Set r} {aʰ : Set lʰ} →
-        (aʰ → Arrows n as b) → Arrows n as (aʰ → b)
+        (aʰ → as ⇉ b) → as ⇉ (aʰ → b)
 holeₙ zero    f = f
 holeₙ (suc n) f = holeₙ n ∘′ flip f
 
@@ -264,7 +267,7 @@ holeₙ (suc n) f = holeₙ n ∘′ flip f
 -- specifying what the type of the function ought to be. Just like the
 -- usual const: there is no way to infer its domain from its argument.
 
-constₙ : ∀ n {ls r} {as : Sets n ls} {b : Set r} → b → Arrows n as b
+constₙ : ∀ n {ls r} {as : Sets n ls} {b : Set r} → b → as ⇉ b
 constₙ zero    v = v
 constₙ (suc n) v = const (constₙ n v)
 
@@ -285,7 +288,7 @@ constₙ (suc n) v = const (constₙ n v)
 -- n-ary existential quantifier
 
 infix 5 ∃⟨_⟩
-∃⟨_⟩ : ∀ {n ls r} {as : Sets n ls} → Arrows n as (Set r) → Set (r ⊔ (⨆ n ls))
+∃⟨_⟩ : ∀ {n ls r} {as : Sets n ls} → as ⇉ Set r → Set (r ⊔ (⨆ n ls))
 ∃⟨_⟩ {zero}  f = f
 ∃⟨_⟩ {suc n} f = ∃ λ x → ∃⟨ f x ⟩
 
@@ -295,14 +298,14 @@ infix 5 ∃⟨_⟩
 -- implicit
 
 infix 5 ∀[_]
-∀[_] : ∀ {n ls r} {as : Sets n ls} → Arrows n as (Set r) → Set (r ⊔ (⨆ n ls))
+∀[_] : ∀ {n ls r} {as : Sets n ls} → as ⇉ Set r → Set (r ⊔ (⨆ n ls))
 ∀[_] {zero}  f = f
 ∀[_] {suc n} f = ∀ {x} → ∀[ f x ]
 
 -- explicit
 
 infix 5 Π[_]
-Π[_] : ∀ {n ls r} {as : Sets n ls} → Arrows n as (Set r) → Set (r ⊔ (⨆ n ls))
+Π[_] : ∀ {n ls r} {as : Sets n ls} → as ⇉ Set r → Set (r ⊔ (⨆ n ls))
 Π[_] {zero}  f = f
 Π[_] {suc n} f = ∀ x → Π[ f x ]
 
@@ -313,29 +316,29 @@ infix 5 Π[_]
 -- implication
 
 infixr 6 _⇒_
-_⇒_ : ∀ {n} {ls r s} {as : Sets n ls} (f :  Arrows n as (Set r)) (g : Arrows n as (Set s)) →
-      Arrows n as (Set (r ⊔ s))
+_⇒_ : ∀ {n} {ls r s} {as : Sets n ls} →
+      as ⇉ Set r → as ⇉ Set s → as ⇉ Set (r ⊔ s)
 _⇒_ {zero}  f g   = f → g
 _⇒_ {suc n} f g x = f x ⇒ g x
 
 -- conjunction
 
 infixr 7 _∩_
-_∩_ : ∀ {n} {ls r s} {as : Sets n ls} (f :  Arrows n as (Set r)) (g : Arrows n as (Set s)) →
-      Arrows n as (Set (r ⊔ s))
+_∩_ : ∀ {n} {ls r s} {as : Sets n ls} →
+      as ⇉ Set r → as ⇉ Set s → as ⇉ Set (r ⊔ s)
 _∩_ {zero}  f g   = f × g
 _∩_ {suc n} f g x = f x ∩ g x
 
 -- disjunction
 
 infixr 8 _∪_
-_∪_ : ∀ {n} {ls r s} {as : Sets n ls} (f :  Arrows n as (Set r)) (g : Arrows n as (Set s)) →
-      Arrows n as (Set (r ⊔ s))
+_∪_ : ∀ {n} {ls r s} {as : Sets n ls} →
+      as ⇉ Set r → as ⇉ Set s → as ⇉ Set (r ⊔ s)
 _∪_ {zero}  f g   = f ⊎ g
 _∪_ {suc n} f g x = f x ∪ g x
 
 -- negation
 
-∁ : ∀ {n ls r} {as : Sets n ls} → Arrows n as (Set r) → Arrows n as (Set r)
+∁ : ∀ {n ls r} {as : Sets n ls} → as ⇉ Set r → as ⇉ Set r
 ∁ {zero}  f   = ¬ f
 ∁ {suc n} f x = ∁ (f x)
