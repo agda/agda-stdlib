@@ -196,6 +196,11 @@ been attached to all deprecated names.
   strictTotalOrder ↦ <-strictTotalOrder-≈
   ```
 
+* In `Data.Product.Relation.Binary.Pointwise.NonDependent`:
+  ```agda
+  ≡?×≡?⇒≡? ↦ Data.Product.Properties.≡-dec
+  ```
+
 Other minor additions
 ---------------------
 
@@ -343,7 +348,7 @@ Other minor additions
 * Added new operations to `Data.List.Relation.Unary.All`:
   ```agda
   glookup : ∀[ P ⇒ Q ⇒ R ] → All P xs → (i : Any Q xs) → R (lookup i)
-
+  uncons    : All P (x ∷ xs) → P x × All P xs
   reduce    : (f : ∀ {x} → P x → B) → ∀ {xs} → All P xs → List B
   construct : (f : B → ∃ P) (xs : List B) → ∃ (All P)
   fromList  : (xs : List (∃ P)) → All P (List.map proj₁ xs)
@@ -357,6 +362,13 @@ Other minor additions
 
   applyDownFrom⁺₁ : (∀ {i} → i < n → P (f i)) → All P (applyDownFrom f n)
   applyDownFrom⁺₂ : (∀ i → P (f i)) → All P (applyDownFrom f n)
+  ```
+
+* Added new proofs to `Data.List.Relation.Unary.Any.Properties`:
+  ```agda
+  Any-Σ⁺ʳ : (∃ λ x → Any (_~ x) xs) → Any (∃ ∘ _~_) xs
+  Any-Σ⁻ʳ : Any (∃ ∘ _~_) xs → ∃ λ x → Any (_~ x) xs
+  gmap : P ⋐ Q ∘ f → Any P ⋐ Any Q ∘ map f
   ```
 
 * Added new functions to `Data.Maybe.Base`:
@@ -405,6 +417,13 @@ Other minor additions
 * Added new functions to `Data.Product`:
   ```agda
   zip′ : (A → B → C) → (D → E → F) → A × D → B × E → C × F
+  ```
+
+* Added new proofs to `Data.Product.Properties`:
+  ```agda
+  ,-injectiveʳ : (a , b) ≡ (c , d) → b ≡ d
+  ,-injective : (a , b) ≡ (c , d) → a ≡ c × b ≡ d
+  ≡-dec : Decidable {A} _≡_ → Decidable {B} _≡_ → Decidable {A × B} _≡_
   ```
 
 * Added new proofs to `Data.Rational.Properties`:
@@ -542,3 +561,4 @@ Other minor additions
   ```agda
   dec⟶recomputable : Decidable R → Recomputable R
   ```
+
