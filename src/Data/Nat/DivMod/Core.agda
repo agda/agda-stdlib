@@ -23,7 +23,7 @@ private
 
   div-cong₃ : ∀ {c n a₁ a₂ b} → a₁ ≡ a₂ → divₕ c n a₁ b ≡ divₕ c n a₂ b
   div-cong₃ refl = refl
-  
+
 -------------------------------------------------------------------------
 -- mod lemmas
 
