@@ -335,6 +335,7 @@ Other minor additions
 
 * Added new operations to `Data.List.Relation.Unary.All`:
   ```agda
+  uncons    : All P (x ∷ xs) → P x × All P xs
   reduce    : (f : ∀ {x} → P x → B) → ∀ {xs} → All P xs → List B
   construct : (f : B → ∃ P) (xs : List B) → ∃ (All P)
   fromList  : (xs : List (∃ P)) → All P (List.map proj₁ xs)
@@ -348,6 +349,13 @@ Other minor additions
 
   applyDownFrom⁺₁ : (∀ {i} → i < n → P (f i)) → All P (applyDownFrom f n)
   applyDownFrom⁺₂ : (∀ i → P (f i)) → All P (applyDownFrom f n)
+  ```
+
+* Added new proofs to `Data.List.Relation.Unary.Any.Properties`:
+  ```agda
+  Any-Σ⁺ʳ : (∃ λ x → Any (_~ x) xs) → Any (∃ ∘ _~_) xs
+  Any-Σ⁻ʳ : Any (∃ ∘ _~_) xs → ∃ λ x → Any (_~ x) xs
+  gmap : P ⋐ Q ∘ f → Any P ⋐ Any Q ∘ map f
   ```
 
 * Added new functions to `Data.Maybe.Base`:
@@ -531,3 +539,4 @@ Other minor additions
   ```agda
   dec⟶recomputable : Decidable R → Recomputable R
   ```
+
