@@ -16,6 +16,7 @@ open import Data.Nat as Nat
 open import Data.Nat.DivMod.Core
 open import Data.Nat.Divisibility.Core
 open import Data.Nat.Properties
+open import Data.Sum using (_⊎_; inj₁; inj₂)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary.Decidable using (False)
 
@@ -79,7 +80,7 @@ kn%n≡0 = [a+kn]%n≡a%n 0
 a%n<n : ∀ a n → a % suc n < suc n
 a%n<n a n = s≤s (a[modₕ]n<n 0 a n)
 
-a%n≤a : ∀ a n → a % (suc n) ≤ a
+a%n≤a : ∀ a n → a % suc n ≤ a
 a%n≤a a n = a[modₕ]n≤a 0 a n
 
 a≤n⇒a%n≡a : ∀ {a n} → a ≤ n → a % suc n ≡ a
@@ -113,20 +114,62 @@ a≤n⇒a%n≡a {a} {n} a≤n with ≤⇒≤″ a≤n
 ------------------------------------------------------------------------
 -- Properties of _/_
 
-n/n≡1 : ∀ n → suc n / suc n ≡ 1
-n/n≡1 n = {!!}
+0/n≡0 : ∀ n → 0 / suc n ≡ 0
+0/n≡0 n = refl
 
-[a/n]*n≤a : ∀ a n → (a / suc n) * suc n ≤ a
-[a/n]*n≤a a n-1 = begin
+a/1≡a : ∀ a → a / 1 ≡ a
+a/1≡a a = a[divₕ]1≡a 0 a
+
+n/n≡1 : ∀ n → suc n / suc n ≡ 1
+n/n≡1 n = n[divₕ]n≡1 n n
+
+a*n/n≡a : ∀ a n → a * suc n / suc n ≡ a
+a*n/n≡a a n-1 = a*n[divₕ]n≡a 0 a n-1
+
+a/n*n≤a : ∀ a n → a / suc n * suc n ≤ a
+a/n*n≤a a n-1 = begin
   (a / n) * n          ≤⟨ m≤m+n ((a / n) * n) (a % n) ⟩
   (a / n) * n + a % n  ≡⟨ +-comm _ (a % n) ⟩
   a % n + (a / n) * n  ≡⟨ sym (a≡a%n+[a/n]*n a n-1) ⟩
   a                    ∎
   where n = suc n-1
 
+a/n*n≡a : ∀ {a n} → suc n ∣ a → a / suc n * suc n ≡ a
+a/n*n≡a {_} {n} (divides q refl) = cong (_* suc n) (a*n/n≡a q n)
 
-*-/-assoc : ∀ m {n d} d≢0 → d ∣ n → ((m * n) / d) {d≢0} ≡ m * ((n / d) {d≢0})
-*-/-assoc m d≢0 (divides q refl) = {!!}
+
++-distribʳ-/ : ∀ m n {d} → m % suc d + n % suc d < suc d →
+              (m + n) / suc d ≡ m / suc d + n / suc d
++-distribʳ-/ m n {d = d} leq = {!!}
+{-
+begin-equality
+  (p * suc d + q * suc d) / suc d       ≡⟨ cong (_/ suc d) (sym (*-distribʳ-+ (suc d) p q)) ⟩
+  (p + q) * suc d / suc d               ≡⟨ a*n/n≡a (p + q) d ⟩
+  p + q                                 ≡⟨ sym (cong₂ _+_ (a*n/n≡a p d) (a*n/n≡a q d)) ⟩
+  p * suc d / suc d + q * suc d / suc d ∎
+-}
+
++-distribʳ-/-∣ˡ : ∀ {m} n {d} → suc d ∣ m →
+              (m + n) / suc d ≡ m / suc d + n / suc d
++-distribʳ-/-∣ˡ {m} n {d} (divides p refl) = +-distribʳ-/ m n (begin-strict
+  p * suc d % suc d + n % suc d ≡⟨ cong (_+ n % suc d) (kn%n≡0 p d) ⟩
+  n % suc d                     <⟨ a%n<n n d ⟩
+  suc d                         ∎)
+
++-distribʳ-/-∣ʳ : ∀ {m} n {d} → suc d ∣ n →
+              (m + n) / suc d ≡ m / suc d + n / suc d
++-distribʳ-/-∣ʳ {m} n {d} (divides p refl) = +-distribʳ-/ m n (begin-strict
+  m % suc d + p * suc d % suc d ≡⟨ cong (m % suc d +_) (kn%n≡0 p d) ⟩
+  m % suc d + 0                 ≡⟨ +-identityʳ _ ⟩
+  m % suc d                     <⟨ a%n<n m d ⟩
+  suc d                         ∎)
+
+*-/-assoc : ∀ m {n d} d≢0 → d ∣ n → (m * n / d) {d≢0} ≡ m * ((n / d) {d≢0})
+*-/-assoc zero    {_} {suc d} d≢0 d∣n = 0/n≡0 d
+*-/-assoc (suc m) {n} {suc d} d≢0 d∣n = begin-equality
+  (n + m * n) / suc d         ≡⟨ +-distribʳ-/-∣ˡ _ d∣n ⟩
+  n / suc d + (m * n) / suc d ≡⟨ cong (n / suc d +_) (*-/-assoc m d≢0 d∣n) ⟩
+  n / suc d + m * (n / suc d) ∎
 
 ------------------------------------------------------------------------
 --  A specification of integer division.

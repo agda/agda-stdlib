@@ -13,10 +13,12 @@
 module Data.Nat.Divisibility.Core where
 
 open import Data.Nat using (ℕ; _*_)
+open import Data.Nat.Properties
 open import Level using (0ℓ)
 open import Relation.Nullary using (¬_)
 open import Relation.Binary using (Rel)
-open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Relation.Binary.PropositionalEquality
+  using (_≡_; refl; sym)
 
 ------------------------------------------------------------------------
 -- Definition
@@ -37,3 +39,15 @@ open _∣_ using (quotient) public
 
 _∤_ : Rel ℕ 0ℓ
 m ∤ n = ¬ (m ∣ n)
+
+------------------------------------------------------------------------
+-- Basic properties
+
+n∣n : ∀ {n} → n ∣ n
+n∣n {n} = divides 1 (sym (*-identityˡ n))
+
+n∣m*n : ∀ m {n} → n ∣ m * n
+n∣m*n m = divides m refl
+
+m∣m*n : ∀ {m} n → m ∣ m * n
+m∣m*n n = divides n (*-comm _ n)

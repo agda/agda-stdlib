@@ -21,6 +21,9 @@ private
   mod-cong₃ : ∀ {c n a₁ a₂ b} → a₁ ≡ a₂ → modₕ c n a₁ b ≡ modₕ c n a₂ b
   mod-cong₃ refl = refl
 
+  div-cong₃ : ∀ {c n a₁ a₂ b} → a₁ ≡ a₂ → divₕ c n a₁ b ≡ divₕ c n a₂ b
+  div-cong₃ refl = refl
+  
 -------------------------------------------------------------------------
 -- mod lemmas
 
@@ -99,6 +102,10 @@ a+n[modₕ]n≡a[modₕ]n acc (suc a) (suc n) rewrite +-suc acc n = begin-equali
 -------------------------------------------------------------------------
 -- division lemmas
 
+divₕ-restart : ∀ k m n j → j < n → divₕ k m n j ≡ divₕ (suc k) m (n ∸ suc j) m
+divₕ-restart k m (suc n) zero    j<n       = refl
+divₕ-restart k m (suc n) (suc j) (s≤s j<n) = divₕ-restart k m n j j<n
+
 -- The quotient and remainder are related to the dividend and
 -- divisor in the right way.
 
@@ -119,3 +126,31 @@ division-lemma accᵐ accᵈ (suc d) (suc n) rewrite +-suc accᵐ n = begin-equa
   modₕ _ _ d n + divₕ accᵈ _ d n * m  ∎
   where
   m = 2 + accᵐ + n
+
+n[divₕ]n≡1 : ∀ n m → divₕ 0 n (suc m) m ≡ 1
+n[divₕ]n≡1 n zero    = refl
+n[divₕ]n≡1 n (suc m) = n[divₕ]n≡1 n m
+
+a[divₕ]1≡a : ∀ acc a → divₕ acc 0 a 0 ≡ acc + a
+a[divₕ]1≡a acc zero    = sym (+-identityʳ acc)
+a[divₕ]1≡a acc (suc a) = trans (a[divₕ]1≡a (suc acc) a) (sym (+-suc acc a))
+
+a*n[divₕ]n≡a : ∀ acc a n → divₕ acc n (a * suc n) n ≡ acc + a
+a*n[divₕ]n≡a acc zero    n = sym (+-identityʳ acc)
+a*n[divₕ]n≡a acc (suc a) n = begin-equality
+  divₕ acc n (suc a * suc n) n                   ≡⟨ divₕ-restart acc n (suc a * suc n) n (m≤m+n (suc n) _) ⟩
+  divₕ (suc acc) n (suc a * suc n ∸ suc n) n     ≡⟨⟩
+  divₕ (suc acc) n (suc n + a * suc n ∸ suc n) n ≡⟨ div-cong₃ (m+n∸m≡n (suc n) (a * suc n)) ⟩
+  divₕ (suc acc) n (a * suc n) n                 ≡⟨ a*n[divₕ]n≡a (suc acc) a n ⟩
+  suc acc + a                                    ≡⟨ sym (+-suc acc a) ⟩
+  acc + suc a                                    ∎
+
+divₕ-eq : ∀ acc m n j k → modₕ 0 m n m divₕ acc m n j ≡ divₕ acc m n k
+divₕ-eq = {!!}
+
++-distrib-divₕ : ∀ acc d m n j k → modₕ k d m j + modₕ 0 d n d < suc d →
+                 divₕ acc d (m + n) j ≡ divₕ acc d m k + divₕ 0 d n d
++-distrib-divₕ acc d zero    n j       k leq = {!!}
++-distrib-divₕ acc d (suc m) n (suc j) k leq = {!!} --+-distrib-divₕ d m n j {!!}
++-distrib-divₕ acc d (suc m) n zero    k leq = {!!}
+
