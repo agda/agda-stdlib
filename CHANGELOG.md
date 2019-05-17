@@ -194,6 +194,11 @@ been attached to all deprecated names.
   strictTotalOrder ↦ <-strictTotalOrder-≈
   ```
 
+* In `Data.Product.Relation.Binary.Pointwise.NonDependent`:
+  ```agda
+  ≡?×≡?⇒≡? ↦ Data.Product.Properties.≡-dec
+  ```
+
 Other minor additions
 ---------------------
 
@@ -404,6 +409,13 @@ Other minor additions
 * Added new functions to `Data.Product`:
   ```agda
   zip′ : (A → B → C) → (D → E → F) → A × D → B × E → C × F
+  ```
+
+* Added new proofs to `Data.Product.Properties`:
+  ```agda
+  ,-injectiveʳ : (a , b) ≡ (c , d) → b ≡ d
+  ,-injective : (a , b) ≡ (c , d) → a ≡ c × b ≡ d
+  ≡-dec : Decidable {A} _≡_ → Decidable {B} _≡_ → Decidable {A × B} _≡_
   ```
 
 * Added new proofs to `Data.Rational.Properties`:
