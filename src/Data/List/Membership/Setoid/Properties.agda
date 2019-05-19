@@ -62,9 +62,8 @@ module _ {c ℓ} (S : Setoid c ℓ) where
   open Membership S
 
   private
-
     ∉×∈⇒≉ : ∀ {x y xs} → All (y ≉_) xs → x ∈ xs → x ≉ y
-    ∉×∈⇒≉ = All.glookup λ y≉z x≈z x≈y → y≉z (trans (sym x≈y) x≈z)
+    ∉×∈⇒≉ = All.lookupWith λ y≉z x≈z x≈y → y≉z (trans (sym x≈y) x≈z)
 
   unique⇒irrelevant : B.Irrelevant _≈_ → ∀ {xs} → Unique xs → U.Irrelevant (_∈ xs)
   unique⇒irrelevant ≈-irr _        (here p)  (here q)  =

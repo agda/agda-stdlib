@@ -155,17 +155,22 @@ module _ (p : Level) {A : Set a} {P : Pred A (a ⊔ p)}
 ------------------------------------------------------------------------
 -- Generalised lookup based on a proof of Any
 
+module _ {P : Pred A p} {Q : Pred A q} where
+
+  lookupAny : ∀ {xs} → All P xs → (i : Any Q xs) → (P ∩ Q) (Any.lookup i)
+  lookupAny (px ∷ pxs) (here qx) = px , qx
+  lookupAny (px ∷ pxs) (there i) = lookupAny pxs i
+
 module _ {P : Pred A p} {Q : Pred A q} {R : Pred A r} where
 
-  glookup : ∀[ P ⇒ Q ⇒ R ] → ∀ {xs} →
-            All P xs → (i : Any Q xs) → R (Any.lookup i)
-  glookup p×q⇒r (px ∷ pxs) (here qx) = p×q⇒r px qx
-  glookup p×q⇒r (px ∷ pxs) (there i) = glookup p×q⇒r pxs i
+  lookupWith : ∀[ P ⇒ Q ⇒ R ] → ∀ {xs} → All P xs → (i : Any Q xs) →
+               R (Any.lookup i)
+  lookupWith f pxs i = Prod.uncurry f (lookupAny pxs i)
 
 module _ {P : Pred A p} where
 
   lookup : ∀ {xs} → All P xs → (∀ {x} → x ∈ xs → P x)
-  lookup pxs = glookup (λ { px refl → px }) pxs
+  lookup pxs = lookupWith (λ { px refl → px }) pxs
 
 ------------------------------------------------------------------------
 -- Properties of predicates preserved by All
