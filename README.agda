@@ -71,11 +71,6 @@ import README.Data
 --     Input/output-related functions.
 -- • Level
 --     Universe levels.
--- • Record
---     An encoding of record types with manifest fields and "with".
-
-import README.Record
-
 -- • Reflection
 --     Support for reflection.
 -- • Relation
@@ -84,8 +79,6 @@ import README.Record
 --     Sizes used by the sized types mechanism.
 -- • Strict
 --     Provides access to the builtins relating to strictness.
--- • Universe
---     A definition of universes.
 
 ------------------------------------------------------------------------
 -- A selection of useful library modules
