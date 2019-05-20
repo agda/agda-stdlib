@@ -35,12 +35,14 @@ private
 -- Introduction
 ------------------------------------------------------------------------
 
--- Data.Product.N-ary.Heterogeneous provides a generic representation of
--- n-ary heterogeneous (non dependent) products and the corresponding types
--- of (non-dependent) n-ary functions. The representation works well with
--- inference thus allowing us to use generic combinators to manipulate
--- such functions.
+-- Function.Nary.NonDependent and Data.Product.N-ary.Heterogeneous provide
+-- a generic representation of n-ary heterogeneous (non dependent) products
+-- and the corresponding types of (non-dependent) n-ary functions. The
+-- representation works well with inference thus allowing us to use generic
+-- combinators to manipulate such functions.
 
+open import Function.Nary.NonDependent
+open import Relation.Nary
 open import Data.Product.N-ary.Heterogeneous
 
 ------------------------------------------------------------------------
@@ -228,18 +230,19 @@ update₂ : (p : A × B × ℕ × C × D) → (A × B × List D × C × D)
 update₂ = λ p → updateₙ′ 5 (# 2) (λ n → replicate n (projₙ 5 (# 4) p)) p
 
 -----------------------------------------------------------------------
--- composeₙ : ∀ n → (C → D) → (A₁ → ⋯ Aₙ → D → B) → A₁ → ⋯ → Aₙ → C → B
+-- _%=_⊢_ : ∀ n → (C → D) → (A₁ → ⋯ Aₙ → D → B) → A₁ → ⋯ → Aₙ → C → B
 
--- Traditional composition focuses solely on the first argument of an
--- n-ary function. `composeₙ` on the other hand allows us to touch any
--- one of the arguments.
+-- Traditional composition (also known as the index update operator `_⊢_`
+-- in `Relation.Unary`) focuses solely on the first argument of an n-ary
+-- function. `_%=_⊢_` on the other hand allows us to touch any one of the
+-- arguments.
 
 -- In the following example we have a function `f : A → B` and `replicate`
 -- of type `ℕ → B → List B`. We want ̀f` to act on the second argument of
 -- replicate. Which we can do like so.
 
 compose₁ : (A → B) → ℕ → A → List B
-compose₁ f = composeₙ 1 f replicate
+compose₁ f = 1 %= f ⊢ replicate
 
 -- Here we spell out the equivalent explicit variable-manipulation and
 -- prove the two functions equal.
@@ -249,6 +252,20 @@ compose₁' f n a = replicate n (f a)
 
 compose₁-eq : compose₁ {a} {A} {b} {B} ≡ compose₁'
 compose₁-eq = refl
+
+-----------------------------------------------------------------------
+-- _∷=_⊢_ : ∀ n → A → (A₁ → ⋯ Aₙ → A → B) → A₁ → ⋯ → Aₙ → B
+
+-- Partial application usual focuses on the first argument of a function.
+-- We can now partially apply a function in any of its arguments using
+-- `_∷=_⊢_`. Reusing our example involving replicate: we can specialise it
+-- to only output finite lists of `0`:
+
+apply₁ : ℕ → List ℕ
+apply₁ = 1 ∷= 0 ⊢ replicate
+
+apply₁-eq : apply₁ 3 ≡ 0 ∷ 0 ∷ 0 ∷ []
+apply₁-eq = refl
 
 ------------------------------------------------------------------------
 -- holeₙ : ∀ n → (A → (A₁ → ⋯ Aₙ → B)) → A₁ → ⋯ → Aₙ → (A → B)

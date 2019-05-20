@@ -12,6 +12,7 @@ import Axiom.Extensionality.Propositional as Ext
 open import Axiom.UniquenessOfIdentityProofs
 open import Function
 open import Function.Equality using (Π; _⟶_; ≡-setoid)
+open import Function.Nary.NonDependent
 open import Level as L
 open import Data.Empty
 open import Data.Nat.Base using (ℕ; zero; suc)

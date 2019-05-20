@@ -8,6 +8,12 @@
 
 module Data.Product.N-ary.Heterogeneous where
 
+------------------------------------------------------------------------
+-- Concrete examples can be found in README.N-ary. This file's comments
+-- are more focused on the implementation details and the motivations
+-- behind the design decisions.
+------------------------------------------------------------------------
+
 open import Level as L using (Level; _⊔_; Lift; 0ℓ)
 open import Agda.Builtin.Unit
 open import Data.Product
@@ -17,60 +23,10 @@ open import Data.Fin.Base using (Fin; zero; suc)
 open import Function
 open import Relation.Nullary
 
-------------------------------------------------------------------------
--- Concrete examples can be found in README.N-ary. This file's comments
--- are more focused on the implementation details and the motivations
--- behind the design decisions.
+open import Function.Nary.NonDependent
 
-------------------------------------------------------------------------
--- Type Definitions
-
--- We want to define n-ary products and generic n-ary operations on them
--- such as currying and uncurrying. We want users to be able to use these
--- seamlessly whenever n is concrete. In other words, we want Agda to infer
--- the sets `A₁, ⋯, Aₙ` when we write `uncurryₙ n f` where `f` has type
--- `A₁ → ⋯ → Aₙ → B`. For this to happen, we need the structure in which
--- these Sets are stored to effectively η-expand to `A₁, ⋯, Aₙ` when the
--- parameter `n` is known.
-
--- Hence the following definitions:
-------------------------------------------------------------------------
-
--- First, a "vector" of `n` Levels (defined by induction on n so that it
--- may be built by η-expansion and unification). Each Level will be that
--- of one of the Sets we want to take the n-ary product of.
-
-Levels : ℕ → Set
-Levels zero    = ⊤
-Levels (suc n) = Level × Levels n
-
-ltabulate : (n : ℕ) (f : Fin n → Level) → Levels n
-ltabulate zero    f = _
-ltabulate (suc n) f = f zero , ltabulate n (f ∘′ suc)
-
-lreplicate : (n : ℕ) → Level → Levels n
-lreplicate n ℓ = ltabulate n (const ℓ)
-
-0ℓs : ∀ {n} → Levels n
-0ℓs = lreplicate _ 0ℓ
-
--- The overall product's Level will be the least upper bound of all of the
--- Levels involved.
-
-⨆ : ∀ n → Levels n → Level
-⨆ zero    _        = L.zero
-⨆ (suc n) (l , ls) = l ⊔ (⨆ n ls)
-
--- Second, a "vector" of `n` Sets whose respective Levels are determined
--- by the `Levels n` input.
-
-Sets : ∀ n (ls : Levels n) → Set (L.suc (⨆ n ls))
-Sets zero    _        = Lift _ ⊤
-Sets (suc n) (l , ls) = Set l × Sets n ls
-
--- Third, the n-ary product itself: provided n Levels and a corresponding
--- "vector" of `n` Sets, we can build a big right-nested product type packing
--- a value for each one of these Sets.
+-- Provided n Levels and a corresponding "vector" of `n` Sets, we can build a big
+-- right-nested product type packing a value for each one of these Sets.
 -- We have two distinct but equivalent definitions:
 -- the first which is always ⊤-terminated
 -- the other which has a special case for n = 1 because we want our `(un)curryₙ`
@@ -85,18 +41,6 @@ Product : ∀ n {ls} → Sets n ls → Set (⨆ n ls)
 Product 0       _        = ⊤
 Product 1       (a , _)  = a
 Product (suc n) (a , as) = a × Product n as
-
--- Similarly we may want to talk about a function whose domains are given
--- by a "vector" of `n` Sets and whose codomain is B. `Arrows` forms such
--- a type of shape `A₁ → ⋯ → Aₙ → B` by induction on `n`.
-
-Arrows : ∀ n {r ls} → Sets n ls → Set r → Set (r ⊔ (⨆ n ls))
-Arrows zero    _        b = b
-Arrows (suc n) (a , as) b = a → Arrows n as b
-
-infixr 0 _⇉_
-_⇉_ : ∀ {n ls r} → Sets n ls → Set r → Set (r ⊔ (⨆ n ls))
-_⇉_ = Arrows _
 
 ------------------------------------------------------------------------
 -- Generic Programs
@@ -142,6 +86,16 @@ uncurryₙ : ∀ n {ls} {as : Sets n ls} {r} {b : Set r} →
 uncurryₙ 0               f = const f
 uncurryₙ 1               f = f
 uncurryₙ (suc n@(suc _)) f = uncurry (uncurryₙ n ∘′ f)
+
+-- Variants for Product⊤
+
+curry⊤ₙ : ∀ n {ls} {as : Sets n ls} {r} {b : Set r} →
+          (Product⊤ n as → b) → as ⇉ b
+curry⊤ₙ n f = curryₙ n (f ∘ toProduct⊤ n)
+
+uncurry⊤ₙ : ∀ n {ls} {as : Sets n ls} {r} {b : Set r} →
+            as ⇉ b → (Product⊤ n as → b)
+uncurry⊤ₙ n f = uncurryₙ n f ∘ toProduct n
 
 ------------------------------------------------------------------------
 -- projection of the k-th component
@@ -234,112 +188,3 @@ updateₙ 1 (suc ()) _ _
 updateₙ′ : ∀ n {ls lᵘ} {as : Sets n ls} k {aᵘ : Set lᵘ} (f : Projₙ as k → aᵘ) →
            Product n as → Product n (Updateₙ as k aᵘ)
 updateₙ′ n k = updateₙ n k
-
-------------------------------------------------------------------------
--- compose function at the n-th position
-
-composeₙ : ∀ n {ls r} {as : Sets n ls} {b : Set r} →
-           ∀ {lᵒ lⁿ} {aᵒ : Set lᵒ} {aⁿ : Set lⁿ} →
-           (aⁿ → aᵒ) → as ⇉ (aᵒ → b) → as ⇉ (aⁿ → b)
-composeₙ zero    f g = g ∘′ f
-composeₙ (suc n) f g = composeₙ n f ∘′ g
-
-------------------------------------------------------------------------
--- mapping under n arguments
-
-mapₙ : ∀ n {ls r s} {as : Sets n ls} {b : Set r} {c : Set s} →
-       (b → c) → as ⇉ b → as ⇉ c
-mapₙ zero    f v = f v
-mapₙ (suc n) f g = mapₙ n f ∘′ g
-
-------------------------------------------------------------------------
--- hole at the n-th position
-
-holeₙ : ∀ n {ls r lʰ} {as : Sets n ls} {b : Set r} {aʰ : Set lʰ} →
-        (aʰ → as ⇉ b) → as ⇉ (aʰ → b)
-holeₙ zero    f = f
-holeₙ (suc n) f = holeₙ n ∘′ flip f
-
-------------------------------------------------------------------------
--- function constant in its n first arguments
-
--- Note that its type will only be inferred if it is used in a context
--- specifying what the type of the function ought to be. Just like the
--- usual const: there is no way to infer its domain from its argument.
-
-constₙ : ∀ n {ls r} {as : Sets n ls} {b : Set r} → b → as ⇉ b
-constₙ zero    v = v
-constₙ (suc n) v = const (constₙ n v)
-
-
-------------------------------------------------------------------------
--- Generic type constructors
-
--- `Relation.Unary` provides users with a wealth of combinators to work
--- with indexed sets. We can generalise these to n-ary relations.
-
--- The crucial thing to notice here is that because we are explicitly
--- considering that the input function should be a `Set`-ended `Arrows`,
--- all the other parameters are inferrable. This allows us to make the
--- number arguments (`n`) implicit.
-------------------------------------------------------------------------
-
-------------------------------------------------------------------------
--- n-ary existential quantifier
-
-infix 5 ∃⟨_⟩
-∃⟨_⟩ : ∀ {n ls r} {as : Sets n ls} → as ⇉ Set r → Set (r ⊔ (⨆ n ls))
-∃⟨_⟩ {zero}  f = f
-∃⟨_⟩ {suc n} f = ∃ λ x → ∃⟨ f x ⟩
-
-------------------------------------------------------------------------
--- n-ary universal quantifier
-
--- implicit
-
-infix 5 ∀[_]
-∀[_] : ∀ {n ls r} {as : Sets n ls} → as ⇉ Set r → Set (r ⊔ (⨆ n ls))
-∀[_] {zero}  f = f
-∀[_] {suc n} f = ∀ {x} → ∀[ f x ]
-
--- explicit
-
-infix 5 Π[_]
-Π[_] : ∀ {n ls r} {as : Sets n ls} → as ⇉ Set r → Set (r ⊔ (⨆ n ls))
-Π[_] {zero}  f = f
-Π[_] {suc n} f = ∀ x → Π[ f x ]
-
-
-------------------------------------------------------------------------
--- n-ary pointwise liftings
-
-lift₂ : ∀ n {ls r s t} {as : Sets n ls} {R : Set r} {S : Set s} {T : Set t} →
-        (R → S → T) → as ⇉ R → as ⇉ S → as ⇉ T
-lift₂ zero    op f g = op f g
-lift₂ (suc n) op f g = λ x → lift₂ n op (f x) (g x)
-
--- implication
-
-infixr 6 _⇒_
-_⇒_ : ∀ {n} {ls r s} {as : Sets n ls} →
-      as ⇉ Set r → as ⇉ Set s → as ⇉ Set (r ⊔ s)
-_⇒_ = lift₂ _ (λ A B → A → B)
-
--- conjunction
-
-infixr 7 _∩_
-_∩_ : ∀ {n} {ls r s} {as : Sets n ls} →
-      as ⇉ Set r → as ⇉ Set s → as ⇉ Set (r ⊔ s)
-_∩_ = lift₂ _ _×_
-
--- disjunction
-
-infixr 8 _∪_
-_∪_ : ∀ {n} {ls r s} {as : Sets n ls} →
-      as ⇉ Set r → as ⇉ Set s → as ⇉ Set (r ⊔ s)
-_∪_ = lift₂ _ _⊎_
-
--- negation
-
-∁ : ∀ {n ls r} {as : Sets n ls} → as ⇉ Set r → as ⇉ Set r
-∁ = mapₙ _ ¬_

@@ -68,6 +68,8 @@ New modules
   Data.Fin.Induction
 
   Data.Product.N-ary.Heterogeneous
+  Function.Nary.NonDependent
+  Relation.Nary
 
   Data.Sign.Base
 
