@@ -167,6 +167,12 @@ Decidable P = ∀ x → Dec (P x)
 Irrelevant : Pred A ℓ → Set _
 Irrelevant P = ∀ {x} (a : P x) (b : P x) → a ≡ b
 
+-- Recomputability - we can rebuild a relevant proof given an
+-- irrelevant one.
+
+Recomputable : Pred A ℓ → Set _
+Recomputable P = ∀ {x} → .(P x) → P x
+
 ------------------------------------------------------------------------
 -- Operations on sets
 
