@@ -82,7 +82,6 @@ New modules
 
 Deprecated features
 -------------------
-
 The following deprecations have occurred as part of a drive to improve
 consistency across the library. The deprecated names still exist and
 therefore all existing code should still work, however use of the new names
@@ -99,6 +98,14 @@ been attached to all deprecated names.
   the library. The new modules also export `Acc` and `acc` meaning there is no
   need to import `Data.Induction.WellFounded`.  The old module `Induction.Nat`
   still exists for backwards compatability but is deprecated.
+
+* The module `Record` has been moved to `Data.Record`. The old module still
+  exists but has been deprecated.
+
+* The module `Universe` has been split into `Data.Universe` and
+  `Data.Universe.Indexed`. In the latter `Indexed-universe` has been
+  renamed to `IndexedUniverse` to better follow the library conventions. The
+  old module still exists exporting the old names, but has been deprecated.
 
 #### Names
 
