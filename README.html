@@ -72,242 +72,235 @@
 <a id="2944" class="Comment">--     Input/output-related functions.</a>
 <a id="2983" class="Comment">-- • Level</a>
 <a id="2994" class="Comment">--     Universe levels.</a>
-<a id="3018" class="Comment">-- • Record</a>
-<a id="3030" class="Comment">--     An encoding of record types with manifest fields and &quot;with&quot;.</a>
+<a id="3018" class="Comment">-- • Reflection</a>
+<a id="3034" class="Comment">--     Support for reflection.</a>
+<a id="3065" class="Comment">-- • Relation</a>
+<a id="3079" class="Comment">--     Properties of and proofs about relations.</a>
+<a id="3128" class="Comment">-- • Size</a>
+<a id="3138" class="Comment">--     Sizes used by the sized types mechanism.</a>
+<a id="3186" class="Comment">-- • Strict</a>
+<a id="3198" class="Comment">--     Provides access to the builtins relating to strictness.</a>
 
-<a id="3099" class="Keyword">import</a> <a id="3106" href="README.Record.html" class="Module">README.Record</a>
+<a id="3262" class="Comment">------------------------------------------------------------------------</a>
+<a id="3335" class="Comment">-- A selection of useful library modules</a>
+<a id="3376" class="Comment">------------------------------------------------------------------------</a>
 
-<a id="3121" class="Comment">-- • Reflection</a>
-<a id="3137" class="Comment">--     Support for reflection.</a>
-<a id="3168" class="Comment">-- • Relation</a>
-<a id="3182" class="Comment">--     Properties of and proofs about relations.</a>
-<a id="3231" class="Comment">-- • Size</a>
-<a id="3241" class="Comment">--     Sizes used by the sized types mechanism.</a>
-<a id="3289" class="Comment">-- • Strict</a>
-<a id="3301" class="Comment">--     Provides access to the builtins relating to strictness.</a>
-<a id="3364" class="Comment">-- • Universe</a>
-<a id="3378" class="Comment">--     A definition of universes.</a>
+<a id="3450" class="Comment">-- Note that module names in source code are often hyperlinked to the</a>
+<a id="3520" class="Comment">-- corresponding module. In the Emacs mode you can follow these</a>
+<a id="3584" class="Comment">-- hyperlinks by typing M-. or clicking with the middle mouse button.</a>
 
-<a id="3413" class="Comment">------------------------------------------------------------------------</a>
-<a id="3486" class="Comment">-- A selection of useful library modules</a>
-<a id="3527" class="Comment">------------------------------------------------------------------------</a>
+<a id="3655" class="Comment">-- • Some data types</a>
 
-<a id="3601" class="Comment">-- Note that module names in source code are often hyperlinked to the</a>
-<a id="3671" class="Comment">-- corresponding module. In the Emacs mode you can follow these</a>
-<a id="3735" class="Comment">-- hyperlinks by typing M-. or clicking with the middle mouse button.</a>
+<a id="3677" class="Keyword">import</a> <a id="3684" href="Data.Bool.html" class="Module">Data.Bool</a>     <a id="3698" class="Comment">-- Booleans.</a>
+<a id="3711" class="Keyword">import</a> <a id="3718" href="Data.Char.html" class="Module">Data.Char</a>     <a id="3732" class="Comment">-- Characters.</a>
+<a id="3747" class="Keyword">import</a> <a id="3754" href="Data.Empty.html" class="Module">Data.Empty</a>    <a id="3768" class="Comment">-- The empty type.</a>
+<a id="3787" class="Keyword">import</a> <a id="3794" href="Data.Fin.html" class="Module">Data.Fin</a>      <a id="3808" class="Comment">-- Finite sets.</a>
+<a id="3824" class="Keyword">import</a> <a id="3831" href="Data.List.html" class="Module">Data.List</a>     <a id="3845" class="Comment">-- Lists.</a>
+<a id="3855" class="Keyword">import</a> <a id="3862" href="Data.Maybe.html" class="Module">Data.Maybe</a>    <a id="3876" class="Comment">-- The maybe type.</a>
+<a id="3895" class="Keyword">import</a> <a id="3902" href="Data.Nat.html" class="Module">Data.Nat</a>      <a id="3916" class="Comment">-- Natural numbers.</a>
+<a id="3936" class="Keyword">import</a> <a id="3943" href="Data.Product.html" class="Module">Data.Product</a>  <a id="3957" class="Comment">-- Products.</a>
+<a id="3970" class="Keyword">import</a> <a id="3977" href="Data.String.html" class="Module">Data.String</a>   <a id="3991" class="Comment">-- Strings.</a>
+<a id="4003" class="Keyword">import</a> <a id="4010" href="Data.Sum.html" class="Module">Data.Sum</a>      <a id="4024" class="Comment">-- Disjoint sums.</a>
+<a id="4042" class="Keyword">import</a> <a id="4049" href="Data.Unit.html" class="Module">Data.Unit</a>     <a id="4063" class="Comment">-- The unit type.</a>
+<a id="4081" class="Keyword">import</a> <a id="4088" href="Data.Vec.html" class="Module">Data.Vec</a>      <a id="4102" class="Comment">-- Fixed-length vectors.</a>
 
-<a id="3806" class="Comment">-- • Some data types</a>
+<a id="4128" class="Comment">-- • Some co-inductive data types</a>
 
-<a id="3828" class="Keyword">import</a> <a id="3835" href="Data.Bool.html" class="Module">Data.Bool</a>     <a id="3849" class="Comment">-- Booleans.</a>
-<a id="3862" class="Keyword">import</a> <a id="3869" href="Data.Char.html" class="Module">Data.Char</a>     <a id="3883" class="Comment">-- Characters.</a>
-<a id="3898" class="Keyword">import</a> <a id="3905" href="Data.Empty.html" class="Module">Data.Empty</a>    <a id="3919" class="Comment">-- The empty type.</a>
-<a id="3938" class="Keyword">import</a> <a id="3945" href="Data.Fin.html" class="Module">Data.Fin</a>      <a id="3959" class="Comment">-- Finite sets.</a>
-<a id="3975" class="Keyword">import</a> <a id="3982" href="Data.List.html" class="Module">Data.List</a>     <a id="3996" class="Comment">-- Lists.</a>
-<a id="4006" class="Keyword">import</a> <a id="4013" href="Data.Maybe.html" class="Module">Data.Maybe</a>    <a id="4027" class="Comment">-- The maybe type.</a>
-<a id="4046" class="Keyword">import</a> <a id="4053" href="Data.Nat.html" class="Module">Data.Nat</a>      <a id="4067" class="Comment">-- Natural numbers.</a>
-<a id="4087" class="Keyword">import</a> <a id="4094" href="Data.Product.html" class="Module">Data.Product</a>  <a id="4108" class="Comment">-- Products.</a>
-<a id="4121" class="Keyword">import</a> <a id="4128" href="Data.String.html" class="Module">Data.String</a>   <a id="4142" class="Comment">-- Strings.</a>
-<a id="4154" class="Keyword">import</a> <a id="4161" href="Data.Sum.html" class="Module">Data.Sum</a>      <a id="4175" class="Comment">-- Disjoint sums.</a>
-<a id="4193" class="Keyword">import</a> <a id="4200" href="Data.Unit.html" class="Module">Data.Unit</a>     <a id="4214" class="Comment">-- The unit type.</a>
-<a id="4232" class="Keyword">import</a> <a id="4239" href="Data.Vec.html" class="Module">Data.Vec</a>      <a id="4253" class="Comment">-- Fixed-length vectors.</a>
+<a id="4163" class="Keyword">import</a> <a id="4170" href="Codata.Stream.html" class="Module">Codata.Stream</a> <a id="4184" class="Comment">-- Streams.</a>
+<a id="4196" class="Keyword">import</a> <a id="4203" href="Codata.Colist.html" class="Module">Codata.Colist</a> <a id="4217" class="Comment">-- Colists.</a>
 
-<a id="4279" class="Comment">-- • Some co-inductive data types</a>
+<a id="4230" class="Comment">-- • Some types used to structure computations</a>
 
-<a id="4314" class="Keyword">import</a> <a id="4321" href="Codata.Stream.html" class="Module">Codata.Stream</a> <a id="4335" class="Comment">-- Streams.</a>
-<a id="4347" class="Keyword">import</a> <a id="4354" href="Codata.Colist.html" class="Module">Codata.Colist</a> <a id="4368" class="Comment">-- Colists.</a>
+<a id="4278" class="Keyword">import</a> <a id="4285" href="Category.Functor.html" class="Module">Category.Functor</a>      <a id="4307" class="Comment">-- Functors.</a>
+<a id="4320" class="Keyword">import</a> <a id="4327" href="Category.Applicative.html" class="Module">Category.Applicative</a>  <a id="4349" class="Comment">-- Applicative functors.</a>
+<a id="4374" class="Keyword">import</a> <a id="4381" href="Category.Monad.html" class="Module">Category.Monad</a>        <a id="4403" class="Comment">-- Monads.</a>
 
-<a id="4381" class="Comment">-- • Some types used to structure computations</a>
+<a id="4415" class="Comment">-- • Equality</a>
 
-<a id="4429" class="Keyword">import</a> <a id="4436" href="Category.Functor.html" class="Module">Category.Functor</a>      <a id="4458" class="Comment">-- Functors.</a>
-<a id="4471" class="Keyword">import</a> <a id="4478" href="Category.Applicative.html" class="Module">Category.Applicative</a>  <a id="4500" class="Comment">-- Applicative functors.</a>
-<a id="4525" class="Keyword">import</a> <a id="4532" href="Category.Monad.html" class="Module">Category.Monad</a>        <a id="4554" class="Comment">-- Monads.</a>
+<a id="4430" class="Comment">-- Propositional equality:</a>
+<a id="4457" class="Keyword">import</a> <a id="4464" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a>
 
-<a id="4566" class="Comment">-- • Equality</a>
+<a id="4503" class="Comment">-- Convenient syntax for &quot;equational reasoning&quot; using a preorder:</a>
+<a id="4569" class="Keyword">import</a> <a id="4576" href="Relation.Binary.Reasoning.Preorder.html" class="Module">Relation.Binary.Reasoning.Preorder</a>
 
-<a id="4581" class="Comment">-- Propositional equality:</a>
-<a id="4608" class="Keyword">import</a> <a id="4615" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a>
+<a id="4612" class="Comment">-- Solver for commutative ring or semiring equalities:</a>
+<a id="4667" class="Keyword">import</a> <a id="4674" href="Algebra.Solver.Ring.html" class="Module">Algebra.Solver.Ring</a>
 
-<a id="4654" class="Comment">-- Convenient syntax for &quot;equational reasoning&quot; using a preorder:</a>
-<a id="4720" class="Keyword">import</a> <a id="4727" href="Relation.Binary.Reasoning.Preorder.html" class="Module">Relation.Binary.Reasoning.Preorder</a>
+<a id="4695" class="Comment">-- • Properties of functions, sets and relations</a>
 
-<a id="4763" class="Comment">-- Solver for commutative ring or semiring equalities:</a>
-<a id="4818" class="Keyword">import</a> <a id="4825" href="Algebra.Solver.Ring.html" class="Module">Algebra.Solver.Ring</a>
+<a id="4745" class="Comment">-- Monoids, rings and similar algebraic structures:</a>
+<a id="4797" class="Keyword">import</a> <a id="4804" href="Algebra.html" class="Module">Algebra</a>
 
-<a id="4846" class="Comment">-- • Properties of functions, sets and relations</a>
+<a id="4813" class="Comment">-- Negation, decidability, and similar operations on sets:</a>
+<a id="4872" class="Keyword">import</a> <a id="4879" href="Relation.Nullary.html" class="Module">Relation.Nullary</a>
 
-<a id="4896" class="Comment">-- Monoids, rings and similar algebraic structures:</a>
-<a id="4948" class="Keyword">import</a> <a id="4955" href="Algebra.html" class="Module">Algebra</a>
+<a id="4897" class="Comment">-- Properties of homogeneous binary relations:</a>
+<a id="4944" class="Keyword">import</a> <a id="4951" href="Relation.Binary.html" class="Module">Relation.Binary</a>
 
-<a id="4964" class="Comment">-- Negation, decidability, and similar operations on sets:</a>
-<a id="5023" class="Keyword">import</a> <a id="5030" href="Relation.Nullary.html" class="Module">Relation.Nullary</a>
+<a id="4968" class="Comment">-- • Induction</a>
 
-<a id="5048" class="Comment">-- Properties of homogeneous binary relations:</a>
-<a id="5095" class="Keyword">import</a> <a id="5102" href="Relation.Binary.html" class="Module">Relation.Binary</a>
+<a id="4984" class="Comment">-- An abstraction of various forms of recursion/induction:</a>
+<a id="5043" class="Keyword">import</a> <a id="5050" href="Induction.html" class="Module">Induction</a>
 
-<a id="5119" class="Comment">-- • Induction</a>
+<a id="5061" class="Comment">-- Well-founded induction:</a>
+<a id="5088" class="Keyword">import</a> <a id="5095" href="Induction.WellFounded.html" class="Module">Induction.WellFounded</a>
 
-<a id="5135" class="Comment">-- An abstraction of various forms of recursion/induction:</a>
-<a id="5194" class="Keyword">import</a> <a id="5201" href="Induction.html" class="Module">Induction</a>
+<a id="5118" class="Comment">-- Various forms of induction for natural numbers:</a>
+<a id="5169" class="Keyword">import</a> <a id="5176" href="Induction.Nat.html" class="Module">Induction.Nat</a>
 
-<a id="5212" class="Comment">-- Well-founded induction:</a>
-<a id="5239" class="Keyword">import</a> <a id="5246" href="Induction.WellFounded.html" class="Module">Induction.WellFounded</a>
+<a id="5191" class="Comment">-- • Support for coinduction</a>
 
-<a id="5269" class="Comment">-- Various forms of induction for natural numbers:</a>
-<a id="5320" class="Keyword">import</a> <a id="5327" href="Induction.Nat.html" class="Module">Induction.Nat</a>
+<a id="5221" class="Keyword">import</a> <a id="5228" href="Codata.Musical.Notation.html" class="Module">Codata.Musical.Notation</a>
+<a id="5252" class="Keyword">import</a> <a id="5259" href="Codata.Thunk.html" class="Module">Codata.Thunk</a>
 
-<a id="5342" class="Comment">-- • Support for coinduction</a>
+<a id="5273" class="Comment">-- • IO</a>
 
-<a id="5372" class="Keyword">import</a> <a id="5379" href="Codata.Musical.Notation.html" class="Module">Codata.Musical.Notation</a>
-<a id="5403" class="Keyword">import</a> <a id="5410" href="Codata.Thunk.html" class="Module">Codata.Thunk</a>
+<a id="5282" class="Keyword">import</a> <a id="5289" href="IO.html" class="Module">IO</a>
 
-<a id="5424" class="Comment">-- • IO</a>
+<a id="5293" class="Comment">------------------------------------------------------------------------</a>
+<a id="5366" class="Comment">-- Record hierarchies</a>
+<a id="5388" class="Comment">------------------------------------------------------------------------</a>
 
-<a id="5433" class="Keyword">import</a> <a id="5440" href="IO.html" class="Module">IO</a>
+<a id="5462" class="Comment">-- When an abstract hierarchy of some sort (for instance semigroup →</a>
+<a id="5531" class="Comment">-- monoid → group) is included in the library the basic approach is to</a>
+<a id="5602" class="Comment">-- specify the properties of every concept in terms of a record</a>
+<a id="5666" class="Comment">-- containing just properties, parameterised on the underlying</a>
+<a id="5729" class="Comment">-- operations, sets etc.:</a>
+<a id="5755" class="Comment">--</a>
+<a id="5758" class="Comment">--   record IsSemigroup {A} (≈ : Rel A) (∙ : Op₂ A) : Set where</a>
+<a id="5822" class="Comment">--     open FunctionProperties ≈</a>
+<a id="5855" class="Comment">--     field</a>
+<a id="5868" class="Comment">--       isEquivalence : IsEquivalence ≈</a>
+<a id="5909" class="Comment">--       assoc         : Associative ∙</a>
+<a id="5948" class="Comment">--       ∙-cong        : ∙ Preserves₂ ≈ ⟶ ≈ ⟶ ≈</a>
+<a id="5996" class="Comment">--</a>
+<a id="5999" class="Comment">-- More specific concepts are then specified in terms of the simpler</a>
+<a id="6068" class="Comment">-- ones:</a>
+<a id="6077" class="Comment">--</a>
+<a id="6080" class="Comment">--     record IsMonoid {A} (≈ : Rel A) (∙ : Op₂ A) (ε : A) : Set where</a>
+<a id="6151" class="Comment">--       open FunctionProperties ≈</a>
+<a id="6186" class="Comment">--       field</a>
+<a id="6201" class="Comment">--         isSemigroup : IsSemigroup ≈ ∙</a>
+<a id="6242" class="Comment">--         identity    : Identity ε ∙</a>
+<a id="6280" class="Comment">--</a>
+<a id="6283" class="Comment">--     open IsSemigroup isSemigroup public</a>
+<a id="6326" class="Comment">--</a>
+<a id="6329" class="Comment">-- Note here that `open IsSemigroup isSemigroup public` ensures that the</a>
+<a id="6402" class="Comment">-- fields of the isSemigroup record can be accessed directly; this</a>
+<a id="6469" class="Comment">-- technique enables the user of an IsMonoid record to use underlying</a>
+<a id="6539" class="Comment">-- records without having to manually open an entire record hierarchy.</a>
+<a id="6610" class="Comment">-- This is not always possible, though. Consider the following definition</a>
+<a id="6684" class="Comment">-- of preorders:</a>
+<a id="6701" class="Comment">--</a>
+<a id="6704" class="Comment">--   record IsPreorder {A : Set}</a>
+<a id="6737" class="Comment">--                     (_≈_ : Rel A) -- The underlying equality.</a>
+<a id="6802" class="Comment">--                     (_∼_ : Rel A) -- The relation.</a>
+<a id="6856" class="Comment">--                     : Set where</a>
+<a id="6891" class="Comment">--     field</a>
+<a id="6904" class="Comment">--       isEquivalence : IsEquivalence _≈_</a>
+<a id="6947" class="Comment">--       -- Reflexivity is expressed in terms of an underlying equality:</a>
+<a id="7020" class="Comment">--       reflexive     : _≈_ ⇒ _∼_</a>
+<a id="7055" class="Comment">--       trans         : Transitive _∼_</a>
+<a id="7095" class="Comment">--</a>
+<a id="7098" class="Comment">--     module Eq = IsEquivalence isEquivalence</a>
+<a id="7145" class="Comment">--</a>
+<a id="7148" class="Comment">--     ...</a>
+<a id="7159" class="Comment">--</a>
+<a id="7162" class="Comment">-- The Eq module in IsPreorder is not opened publicly, because it</a>
+<a id="7228" class="Comment">-- contains some fields which clash with fields or other definitions</a>
+<a id="7297" class="Comment">-- in IsPreorder.</a>
 
-<a id="5444" class="Comment">------------------------------------------------------------------------</a>
-<a id="5517" class="Comment">-- Record hierarchies</a>
-<a id="5539" class="Comment">------------------------------------------------------------------------</a>
+<a id="7316" class="Comment">-- Records packing up properties with the corresponding operations,</a>
+<a id="7384" class="Comment">-- sets, etc. are also defined:</a>
+<a id="7416" class="Comment">--</a>
+<a id="7419" class="Comment">--   record Semigroup : Set₁ where</a>
+<a id="7454" class="Comment">--     infixl 7 _∙_</a>
+<a id="7474" class="Comment">--     infix  4 _≈_</a>
+<a id="7494" class="Comment">--     field</a>
+<a id="7507" class="Comment">--       Carrier     : Set</a>
+<a id="7534" class="Comment">--       _≈_         : Rel Carrier</a>
+<a id="7569" class="Comment">--       _∙_         : Op₂ Carrier</a>
+<a id="7604" class="Comment">--       isSemigroup : IsSemigroup _≈_ _∙_</a>
+<a id="7647" class="Comment">--</a>
+<a id="7650" class="Comment">--     open IsSemigroup isSemigroup public</a>
+<a id="7693" class="Comment">--</a>
+<a id="7696" class="Comment">--     setoid : Setoid</a>
+<a id="7719" class="Comment">--     setoid = record { isEquivalence = isEquivalence }</a>
+<a id="7776" class="Comment">--</a>
+<a id="7779" class="Comment">--   record Monoid : Set₁ where</a>
+<a id="7811" class="Comment">--     infixl 7 _∙_</a>
+<a id="7831" class="Comment">--     infix  4 _≈_</a>
+<a id="7851" class="Comment">--     field</a>
+<a id="7864" class="Comment">--       Carrier  : Set</a>
+<a id="7888" class="Comment">--       _≈_      : Rel Carrier</a>
+<a id="7920" class="Comment">--       _∙_      : Op₂ Carrier</a>
+<a id="7952" class="Comment">--       ε        : Carrier</a>
+<a id="7980" class="Comment">--       isMonoid : IsMonoid _≈_ _∙_ ε</a>
+<a id="8019" class="Comment">--</a>
+<a id="8022" class="Comment">--     open IsMonoid isMonoid public</a>
+<a id="8059" class="Comment">--</a>
+<a id="8062" class="Comment">--     semigroup : Semigroup</a>
+<a id="8091" class="Comment">--     semigroup = record { isSemigroup = isSemigroup }</a>
+<a id="8147" class="Comment">--</a>
+<a id="8150" class="Comment">--     open Semigroup semigroup public using (setoid)</a>
+<a id="8204" class="Comment">--</a>
+<a id="8207" class="Comment">-- Note that the Monoid record does not include a Semigroup field.</a>
+<a id="8274" class="Comment">-- Instead the Monoid /module/ includes a &quot;repackaging function&quot;</a>
+<a id="8339" class="Comment">-- semigroup which converts a Monoid to a Semigroup.</a>
 
-<a id="5613" class="Comment">-- When an abstract hierarchy of some sort (for instance semigroup →</a>
-<a id="5682" class="Comment">-- monoid → group) is included in the library the basic approach is to</a>
-<a id="5753" class="Comment">-- specify the properties of every concept in terms of a record</a>
-<a id="5817" class="Comment">-- containing just properties, parameterised on the underlying</a>
-<a id="5880" class="Comment">-- operations, sets etc.:</a>
-<a id="5906" class="Comment">--</a>
-<a id="5909" class="Comment">--   record IsSemigroup {A} (≈ : Rel A) (∙ : Op₂ A) : Set where</a>
-<a id="5973" class="Comment">--     open FunctionProperties ≈</a>
-<a id="6006" class="Comment">--     field</a>
-<a id="6019" class="Comment">--       isEquivalence : IsEquivalence ≈</a>
-<a id="6060" class="Comment">--       assoc         : Associative ∙</a>
-<a id="6099" class="Comment">--       ∙-cong        : ∙ Preserves₂ ≈ ⟶ ≈ ⟶ ≈</a>
-<a id="6147" class="Comment">--</a>
-<a id="6150" class="Comment">-- More specific concepts are then specified in terms of the simpler</a>
-<a id="6219" class="Comment">-- ones:</a>
-<a id="6228" class="Comment">--</a>
-<a id="6231" class="Comment">--     record IsMonoid {A} (≈ : Rel A) (∙ : Op₂ A) (ε : A) : Set where</a>
-<a id="6302" class="Comment">--       open FunctionProperties ≈</a>
-<a id="6337" class="Comment">--       field</a>
-<a id="6352" class="Comment">--         isSemigroup : IsSemigroup ≈ ∙</a>
-<a id="6393" class="Comment">--         identity    : Identity ε ∙</a>
-<a id="6431" class="Comment">--</a>
-<a id="6434" class="Comment">--     open IsSemigroup isSemigroup public</a>
-<a id="6477" class="Comment">--</a>
-<a id="6480" class="Comment">-- Note here that `open IsSemigroup isSemigroup public` ensures that the</a>
-<a id="6553" class="Comment">-- fields of the isSemigroup record can be accessed directly; this</a>
-<a id="6620" class="Comment">-- technique enables the user of an IsMonoid record to use underlying</a>
-<a id="6690" class="Comment">-- records without having to manually open an entire record hierarchy.</a>
-<a id="6761" class="Comment">-- This is not always possible, though. Consider the following definition</a>
-<a id="6835" class="Comment">-- of preorders:</a>
-<a id="6852" class="Comment">--</a>
-<a id="6855" class="Comment">--   record IsPreorder {A : Set}</a>
-<a id="6888" class="Comment">--                     (_≈_ : Rel A) -- The underlying equality.</a>
-<a id="6953" class="Comment">--                     (_∼_ : Rel A) -- The relation.</a>
-<a id="7007" class="Comment">--                     : Set where</a>
-<a id="7042" class="Comment">--     field</a>
-<a id="7055" class="Comment">--       isEquivalence : IsEquivalence _≈_</a>
-<a id="7098" class="Comment">--       -- Reflexivity is expressed in terms of an underlying equality:</a>
-<a id="7171" class="Comment">--       reflexive     : _≈_ ⇒ _∼_</a>
-<a id="7206" class="Comment">--       trans         : Transitive _∼_</a>
-<a id="7246" class="Comment">--</a>
-<a id="7249" class="Comment">--     module Eq = IsEquivalence isEquivalence</a>
-<a id="7296" class="Comment">--</a>
-<a id="7299" class="Comment">--     ...</a>
-<a id="7310" class="Comment">--</a>
-<a id="7313" class="Comment">-- The Eq module in IsPreorder is not opened publicly, because it</a>
-<a id="7379" class="Comment">-- contains some fields which clash with fields or other definitions</a>
-<a id="7448" class="Comment">-- in IsPreorder.</a>
+<a id="8393" class="Comment">-- The above setup may seem a bit complicated, but we think it makes the</a>
+<a id="8466" class="Comment">-- library quite easy to work with, while also providing enough</a>
+<a id="8530" class="Comment">-- flexibility.</a>
 
-<a id="7467" class="Comment">-- Records packing up properties with the corresponding operations,</a>
-<a id="7535" class="Comment">-- sets, etc. are also defined:</a>
-<a id="7567" class="Comment">--</a>
-<a id="7570" class="Comment">--   record Semigroup : Set₁ where</a>
-<a id="7605" class="Comment">--     infixl 7 _∙_</a>
-<a id="7625" class="Comment">--     infix  4 _≈_</a>
-<a id="7645" class="Comment">--     field</a>
-<a id="7658" class="Comment">--       Carrier     : Set</a>
-<a id="7685" class="Comment">--       _≈_         : Rel Carrier</a>
-<a id="7720" class="Comment">--       _∙_         : Op₂ Carrier</a>
-<a id="7755" class="Comment">--       isSemigroup : IsSemigroup _≈_ _∙_</a>
-<a id="7798" class="Comment">--</a>
-<a id="7801" class="Comment">--     open IsSemigroup isSemigroup public</a>
-<a id="7844" class="Comment">--</a>
-<a id="7847" class="Comment">--     setoid : Setoid</a>
-<a id="7870" class="Comment">--     setoid = record { isEquivalence = isEquivalence }</a>
-<a id="7927" class="Comment">--</a>
-<a id="7930" class="Comment">--   record Monoid : Set₁ where</a>
-<a id="7962" class="Comment">--     infixl 7 _∙_</a>
-<a id="7982" class="Comment">--     infix  4 _≈_</a>
-<a id="8002" class="Comment">--     field</a>
-<a id="8015" class="Comment">--       Carrier  : Set</a>
-<a id="8039" class="Comment">--       _≈_      : Rel Carrier</a>
-<a id="8071" class="Comment">--       _∙_      : Op₂ Carrier</a>
-<a id="8103" class="Comment">--       ε        : Carrier</a>
-<a id="8131" class="Comment">--       isMonoid : IsMonoid _≈_ _∙_ ε</a>
-<a id="8170" class="Comment">--</a>
-<a id="8173" class="Comment">--     open IsMonoid isMonoid public</a>
-<a id="8210" class="Comment">--</a>
-<a id="8213" class="Comment">--     semigroup : Semigroup</a>
-<a id="8242" class="Comment">--     semigroup = record { isSemigroup = isSemigroup }</a>
-<a id="8298" class="Comment">--</a>
-<a id="8301" class="Comment">--     open Semigroup semigroup public using (setoid)</a>
-<a id="8355" class="Comment">--</a>
-<a id="8358" class="Comment">-- Note that the Monoid record does not include a Semigroup field.</a>
-<a id="8425" class="Comment">-- Instead the Monoid /module/ includes a &quot;repackaging function&quot;</a>
-<a id="8490" class="Comment">-- semigroup which converts a Monoid to a Semigroup.</a>
+<a id="8547" class="Comment">------------------------------------------------------------------------</a>
+<a id="8620" class="Comment">-- More documentation</a>
+<a id="8642" class="Comment">------------------------------------------------------------------------</a>
 
-<a id="8544" class="Comment">-- The above setup may seem a bit complicated, but we think it makes the</a>
-<a id="8617" class="Comment">-- library quite easy to work with, while also providing enough</a>
-<a id="8681" class="Comment">-- flexibility.</a>
+<a id="8716" class="Comment">-- An example showing how the case expression can be used.</a>
 
-<a id="8698" class="Comment">------------------------------------------------------------------------</a>
-<a id="8771" class="Comment">-- More documentation</a>
-<a id="8793" class="Comment">------------------------------------------------------------------------</a>
+<a id="8776" class="Keyword">import</a> <a id="8783" href="README.Case.html" class="Module">README.Case</a>
 
-<a id="8867" class="Comment">-- An example showing how the case expression can be used.</a>
+<a id="8796" class="Comment">-- Some examples showing how combinators can be used to emulate</a>
+<a id="8860" class="Comment">-- &quot;functional reasoning&quot;</a>
 
-<a id="8927" class="Keyword">import</a> <a id="8934" href="README.Case.html" class="Module">README.Case</a>
+<a id="8887" class="Keyword">import</a> <a id="8894" href="README.Function.Reasoning.html" class="Module">README.Function.Reasoning</a>
 
-<a id="8947" class="Comment">-- Some examples showing how combinators can be used to emulate</a>
-<a id="9011" class="Comment">-- &quot;functional reasoning&quot;</a>
+<a id="8921" class="Comment">-- An example showing how to use the debug tracing mechanism to inspect</a>
+<a id="8993" class="Comment">-- the behaviour of compiled Agda programs.</a>
 
-<a id="9038" class="Keyword">import</a> <a id="9045" href="README.Function.Reasoning.html" class="Module">README.Function.Reasoning</a>
+<a id="9038" class="Keyword">import</a> <a id="9045" href="README.Debug.Trace.html" class="Module">README.Debug.Trace</a>
 
-<a id="9072" class="Comment">-- An example showing how to use the debug tracing mechanism to inspect</a>
-<a id="9144" class="Comment">-- the behaviour of compiled Agda programs.</a>
+<a id="9065" class="Comment">-- Explaining the inspect idiom: use case, equivalent handwritten</a>
+<a id="9131" class="Comment">-- auxiliary definitions, and implementation details.</a>
 
-<a id="9189" class="Keyword">import</a> <a id="9196" href="README.Debug.Trace.html" class="Module">README.Debug.Trace</a>
+<a id="9186" class="Keyword">import</a> <a id="9193" href="README.Inspect.html" class="Module">README.Inspect</a>
 
-<a id="9216" class="Comment">-- Explaining the inspect idiom: use case, equivalent handwritten</a>
-<a id="9282" class="Comment">-- auxiliary definitions, and implementation details.</a>
+<a id="9209" class="Comment">------------------------------------------------------------------------</a>
+<a id="9282" class="Comment">-- Core modules</a>
+<a id="9298" class="Comment">------------------------------------------------------------------------</a>
 
-<a id="9337" class="Keyword">import</a> <a id="9344" href="README.Inspect.html" class="Module">README.Inspect</a>
+<a id="9372" class="Comment">-- Some modules have names ending in &quot;.Core&quot;. These modules are</a>
+<a id="9436" class="Comment">-- internal, and have (mostly) been created to avoid mutual recursion</a>
+<a id="9506" class="Comment">-- between modules. They should not be imported directly; their</a>
+<a id="9570" class="Comment">-- contents are reexported by other modules.</a>
 
-<a id="9360" class="Comment">------------------------------------------------------------------------</a>
-<a id="9433" class="Comment">-- Core modules</a>
-<a id="9449" class="Comment">------------------------------------------------------------------------</a>
+<a id="9616" class="Comment">------------------------------------------------------------------------</a>
+<a id="9689" class="Comment">-- All library modules</a>
+<a id="9712" class="Comment">------------------------------------------------------------------------</a>
 
-<a id="9523" class="Comment">-- Some modules have names ending in &quot;.Core&quot;. These modules are</a>
-<a id="9587" class="Comment">-- internal, and have (mostly) been created to avoid mutual recursion</a>
-<a id="9657" class="Comment">-- between modules. They should not be imported directly; their</a>
-<a id="9721" class="Comment">-- contents are reexported by other modules.</a>
+<a id="9786" class="Comment">-- For short descriptions of every library module, see Everything;</a>
+<a id="9853" class="Comment">-- to exclude unsafe modules, see EverythingSafe:</a>
 
-<a id="9767" class="Comment">------------------------------------------------------------------------</a>
-<a id="9840" class="Comment">-- All library modules</a>
-<a id="9863" class="Comment">------------------------------------------------------------------------</a>
+<a id="9904" class="Keyword">import</a> <a id="9911" href="Everything.html" class="Module">Everything</a>
+<a id="9922" class="Keyword">import</a> <a id="9929" href="EverythingSafe.html" class="Module">EverythingSafe</a>
 
-<a id="9937" class="Comment">-- For short descriptions of every library module, see Everything;</a>
-<a id="10004" class="Comment">-- to exclude unsafe modules, see EverythingSafe:</a>
+<a id="9945" class="Comment">-- Note that the Everything* modules are generated automatically. If</a>
+<a id="10014" class="Comment">-- you have downloaded the library from its Git repository and want</a>
+<a id="10082" class="Comment">-- to type check README then you can (try to) construct Everything by</a>
+<a id="10152" class="Comment">-- running &quot;cabal install &amp;&amp; GenerateEverything&quot;.</a>
 
-<a id="10055" class="Keyword">import</a> <a id="10062" href="Everything.html" class="Module">Everything</a>
-<a id="10073" class="Keyword">import</a> <a id="10080" href="EverythingSafe.html" class="Module">EverythingSafe</a>
-
-<a id="10096" class="Comment">-- Note that the Everything* modules are generated automatically. If</a>
-<a id="10165" class="Comment">-- you have downloaded the library from its Git repository and want</a>
-<a id="10233" class="Comment">-- to type check README then you can (try to) construct Everything by</a>
-<a id="10303" class="Comment">-- running &quot;cabal install &amp;&amp; GenerateEverything&quot;.</a>
-
-<a id="10354" class="Comment">-- Note that all library sources are located under src or ffi. The</a>
-<a id="10421" class="Comment">-- modules README, README.* and Everything are not really part of the</a>
-<a id="10491" class="Comment">-- library, so these modules are located in the top-level directory</a>
-<a id="10559" class="Comment">-- instead.</a>
+<a id="10203" class="Comment">-- Note that all library sources are located under src or ffi. The</a>
+<a id="10270" class="Comment">-- modules README, README.* and Everything are not really part of the</a>
+<a id="10340" class="Comment">-- library, so these modules are located in the top-level directory</a>
+<a id="10408" class="Comment">-- instead.</a>
 </pre></body></html>
