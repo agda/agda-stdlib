@@ -256,7 +256,7 @@ compose₁-eq = refl
 -----------------------------------------------------------------------
 -- _∷=_⊢_ : ∀ n → A → (A₁ → ⋯ Aₙ → A → B) → A₁ → ⋯ → Aₙ → B
 
--- Partial application usual focuses on the first argument of a function.
+-- Partial application usually focuses on the first argument of a function.
 -- We can now partially apply a function in any of its arguments using
 -- `_∷=_⊢_`. Reusing our example involving replicate: we can specialise it
 -- to only output finite lists of `0`:
