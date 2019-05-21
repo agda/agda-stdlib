@@ -82,6 +82,9 @@ m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
   ; isDecEquivalence = ≡-isDecEquivalence
   }
 
+0≢1+n : ∀ {n} → 0 ≢ suc n
+0≢1+n ()
+
 1+n≢0 : ∀ {n} → suc n ≢ 0
 1+n≢0 ()
 
@@ -149,6 +152,9 @@ suc m ≤? n with T? (m <ᵇ n)
 
 _≥?_ : Decidable _≥_
 _≥?_ = flip _≤?_
+
+n<1+n : ∀ {n} → n < suc n
+n<1+n = ≤-refl
 
 ------------------------------------------------------------------------
 -- Structures
@@ -606,13 +612,13 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
 +-*-suc : ∀ m n → m * suc n ≡ m + m * n
 +-*-suc zero    n = refl
 +-*-suc (suc m) n = begin-equality
-  suc m * suc n         ≡⟨⟩
-  suc n + m * suc n     ≡⟨ cong (suc n +_) (+-*-suc m n) ⟩
-  suc n + (m + m * n)   ≡⟨⟩
-  suc (n + (m + m * n)) ≡⟨ cong suc (sym (+-assoc n m (m * n))) ⟩
-  suc (n + m + m * n)   ≡⟨ cong (λ x → suc (x + m * n)) (+-comm n m) ⟩
-  suc (m + n + m * n)   ≡⟨ cong suc (+-assoc m n (m * n)) ⟩
-  suc (m + (n + m * n)) ≡⟨⟩
+  suc m * suc n          ≡⟨⟩
+  suc n + m * suc n      ≡⟨ cong (suc n +_) (+-*-suc m n) ⟩
+  suc n + (m + m * n)    ≡⟨⟩
+  suc (n + (m + m * n))  ≡⟨ cong suc (sym (+-assoc n m (m * n))) ⟩
+  suc (n + m + m * n)    ≡⟨ cong (λ x → suc (x + m * n)) (+-comm n m) ⟩
+  suc (m + n + m * n)    ≡⟨ cong suc (+-assoc m n (m * n)) ⟩
+  suc (m + (n + m * n))  ≡⟨⟩
   suc m + suc m * n     ∎
 
 ------------------------------------------------------------------------
@@ -669,6 +675,26 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
   n * o + (m * n) * o ≡⟨ cong (n * o +_) (*-assoc m n o) ⟩
   n * o + m * (n * o) ≡⟨⟩
   suc m * (n * o)     ∎
+
+m*[1+n] :  ∀ m n → m * (suc n) ≡ m + m * n
+m*[1+n] m n =
+  begin-equality m * (1 + n)     ≡⟨ *-distribˡ-+ m 1 n ⟩
+                 m * 1 + m * n   ≡⟨ cong (_+ (m * n)) (*-identityʳ  m) ⟩
+                 m + m * n
+  ∎
+
+m>1⇒m*n≢1 :  ∀ {m n} → m > 1 → m * n ≢ 1
+m>1⇒m*n≢1 {m} {0}     _   m*0≡1  =  0≢1+n 0≡1
+                                   where
+                                   0≡1 = trans (sym (*-zeroʳ m)) m*0≡1
+
+m>1⇒m*n≢1 {m} {suc n} m>1 m*n'≡1 =  <⇒≢ m*n'>1 (sym m*n'≡1)
+  where
+  m*n'>1 = begin 2             ≤⟨ m>1 ⟩
+                 m             ≤⟨ m≤m+n m (m * n) ⟩
+                 m + m * n     ≡⟨ sym (m*[1+n] m n) ⟩
+                 m * (suc n)
+           ∎
 
 ------------------------------------------------------------------------
 -- Structures
@@ -1472,6 +1498,16 @@ m∸[m∸n]≡n {suc m} {suc n} (s≤s n≤m) = begin-equality
 
 *-distrib-∸ : _*_ DistributesOver _∸_
 *-distrib-∸ = *-distribˡ-∸ , *-distribʳ-∸
+
+2m≢1+2n :  ∀ m n → 2 * m ≢ suc (2 * n)
+2m≢1+2n m n 2m≡1+2n =  m>1⇒m*n≢1 {2} {m ∸ n} n<1+n 2[m-n]≡1
+  where
+  2n       = 2 * n
+  2[m-n]≡1 = begin-equality 2 * (m ∸ n)      ≡⟨ *-distribˡ-∸ 2 m n ⟩
+                            2 * m ∸ 2n       ≡⟨ cong (_∸ 2n) 2m≡1+2n ⟩
+                            (1 + 2n) ∸ 2n    ≡⟨ m+n∸n≡m 1 2n ⟩
+                            1
+             ∎
 
 ------------------------------------------------------------------------
 -- Properties of _∸_ and _⊓_ and _⊔_

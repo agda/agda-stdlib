@@ -21,6 +21,9 @@ New modules
 
 * The following new modules have been added to the library:
   ```
+  Algebra.Properties/Setoid
+  Algebra.Properties/Semigroup
+
   Category.Monad.Reader
 
   Data.AVL.NonEmpty
@@ -46,9 +49,16 @@ New modules
   Data.Trie
   Data.Trie.NonEmpty
 
+* Added  Function.Properties  containing the definitions
+    Injective _~_ _~'_ f,  Surjective _~_ f
+
   Relation.Binary.Construct.Closure.Equivalence.Properties
   Relation.Binary.Rewriting
   ```
+
+* Data.Bin.agda  removed,  Data/Bin/  contains (so far) a single new
+  module Bin0.agda
+
 
 Deprecated features
 -------------------
@@ -195,7 +205,13 @@ Other minor additions
   <-≤-connex : Connex _<_ _≤_
   >-≥-connex : Connex _>_ _≥_
 
-  1+n≢0     : suc n ≢ 0
+  1+n≢0  : suc n ≢ 0
+  0≢1+n
+  n<1+n    (as ≤-refl)
+  m*[1+n]
+  2m≢1+2n
+  m>1⇒m*n≢1
+
   <ᵇ⇒<      : T (m <ᵇ n) → m < n
   <⇒<ᵇ      : m < n → T (m <ᵇ n)
   n≢0⇒n>0   : n ≢ 0 → n > 0
@@ -294,9 +310,13 @@ Other minor additions
   flip-Connex : Connex P Q → Connex Q P
   ```
 
-* Added new definition in `Relation.Binary.Core`:
+* Added new definitions in `Relation.Binary.Core`:
   ```agda
-  Universal _∼_ = ∀ x y → x ∼ y
+  Universal _∼_  = ∀ x y → x ∼ y
+  _←→_     A B = (A → B) × (B → A)
+        _
+  definition of _Respects2_ and proofs for its relation to _Respects₂_
+
   ```
 
 * The relation `_≅_` in `Relation.Binary.HeterogeneousEquality` has
@@ -307,3 +327,4 @@ Other minor additions
   ```agda
   ≢-sym : Symmetric _≢_
   ```
+
