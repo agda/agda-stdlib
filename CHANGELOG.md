@@ -559,3 +559,5 @@ Other minor additions
   dec⟶recomputable : Decidable R → Recomputable R
   ```
 
+* Created modules `Relation.Binary.Construct.Closure.Reflexive.Properties` and
+  `Relation.Binary.Construct.Closure.Reflexive.Properties.WithK`
