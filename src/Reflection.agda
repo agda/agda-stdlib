@@ -129,7 +129,7 @@ relevance (arg-info _ r) = r
 open Builtin public using (Arg; arg)
 open Builtin public using (Abs; abs)
 
--- TODO: make the following universe-polymorphic once agda/agda#3793 is merged. 
+-- TODO: make the following universe-polymorphic once agda/agda#3793 is merged.
 Args : (A : Set) → Set
 Args A = List (Arg A)
 
