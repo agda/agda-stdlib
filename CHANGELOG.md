@@ -21,7 +21,6 @@ New modules
 
 * The following new modules have been added to the library:
   ```
-  Algebra.Properties/Setoid
   Algebra.Properties/Semigroup
 
   Category.Monad.Reader
@@ -49,14 +48,13 @@ New modules
   Data.Trie
   Data.Trie.NonEmpty
 
-* Added  Function.Properties  containing the definitions
-    Injective _~_ _~'_ f,  Surjective _~_ f
-
   Relation.Binary.Construct.Closure.Equivalence.Properties
   Relation.Binary.Rewriting
+
+  Relation.Binary.Properties.Setoid
   ```
 
-* Data.Bin.agda  removed,  Data/Bin/  contains (so far) a single new
+* Data.Bin/*.agda  removed,  Data/Bin/  contains (so far) a single new
   module Bin0.agda
 
 
@@ -313,9 +311,11 @@ Other minor additions
 * Added new definitions in `Relation.Binary.Core`:
   ```agda
   Universal _∼_  = ∀ x y → x ∼ y
-  _←→_     A B = (A → B) × (B → A)
-        _
-  definition of _Respects2_ and proofs for its relation to _Respects₂_
+
+  _←→_ A B = (A → B) × (B → A),
+  ```
+
+  definition of ``_Respects2_`` and proofs for its relation to ``_Respects₂_``
 
   ```
 

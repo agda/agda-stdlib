@@ -677,11 +677,10 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
   suc m * (n * o)     ∎
 
 m*[1+n] :  ∀ m n → m * (suc n) ≡ m + m * n
-m*[1+n] m n =
-  begin-equality m * (1 + n)     ≡⟨ *-distribˡ-+ m 1 n ⟩
-                 m * 1 + m * n   ≡⟨ cong (_+ (m * n)) (*-identityʳ  m) ⟩
-                 m + m * n
-  ∎
+m*[1+n] m n = begin-equality
+  m * (1 + n)     ≡⟨ *-distribˡ-+ m 1 n ⟩
+  m * 1 + m * n   ≡⟨ cong (_+ (m * n)) (*-identityʳ  m) ⟩
+  m + m * n       ∎
 
 m>1⇒m*n≢1 :  ∀ {m n} → m > 1 → m * n ≢ 1
 m>1⇒m*n≢1 {m} {0}     _   m*0≡1  =  0≢1+n 0≡1
@@ -690,11 +689,11 @@ m>1⇒m*n≢1 {m} {0}     _   m*0≡1  =  0≢1+n 0≡1
 
 m>1⇒m*n≢1 {m} {suc n} m>1 m*n'≡1 =  <⇒≢ m*n'>1 (sym m*n'≡1)
   where
-  m*n'>1 = begin 2             ≤⟨ m>1 ⟩
-                 m             ≤⟨ m≤m+n m (m * n) ⟩
-                 m + m * n     ≡⟨ sym (m*[1+n] m n) ⟩
-                 m * (suc n)
-           ∎
+  m*n'>1 = begin
+    2             ≤⟨ m>1 ⟩
+    m             ≤⟨ m≤m+n m (m * n) ⟩
+    m + m * n     ≡⟨ sym (m*[1+n] m n) ⟩
+    m * (suc n)   ∎
 
 ------------------------------------------------------------------------
 -- Structures
@@ -1503,11 +1502,11 @@ m∸[m∸n]≡n {suc m} {suc n} (s≤s n≤m) = begin-equality
 2m≢1+2n m n 2m≡1+2n =  m>1⇒m*n≢1 {2} {m ∸ n} n<1+n 2[m-n]≡1
   where
   2n       = 2 * n
-  2[m-n]≡1 = begin-equality 2 * (m ∸ n)      ≡⟨ *-distribˡ-∸ 2 m n ⟩
-                            2 * m ∸ 2n       ≡⟨ cong (_∸ 2n) 2m≡1+2n ⟩
-                            (1 + 2n) ∸ 2n    ≡⟨ m+n∸n≡m 1 2n ⟩
-                            1
-             ∎
+  2[m-n]≡1 = begin-equality
+    2 * (m ∸ n)      ≡⟨ *-distribˡ-∸ 2 m n ⟩
+    2 * m ∸ 2n       ≡⟨ cong (_∸ 2n) 2m≡1+2n ⟩
+    (1 + 2n) ∸ 2n    ≡⟨ m+n∸n≡m 1 2n ⟩
+    1                ∎
 
 ------------------------------------------------------------------------
 -- Properties of _∸_ and _⊓_ and _⊔_
