@@ -168,6 +168,16 @@ record IdempotentCommutativeMonoid c ℓ : Set (suc (c ⊔ ℓ)) where
     using (rawMagma; magma; semigroup; rawMonoid; monoid)
 
 
+-- Idempotent commutative monoids are also known as bounded lattices.
+-- Note that the BoundedLattice necessarily uses the notation inherited
+-- from monoids rather than lattices.
+
+BoundedLattice = IdempotentCommutativeMonoid
+
+module BoundedLattice {c ℓ} (idemCommMonoid : IdempotentCommutativeMonoid c ℓ) =
+       IdempotentCommutativeMonoid idemCommMonoid
+
+
 ------------------------------------------------------------------------
 -- Packages with 1 binary operation, 1 unary operation & 1 element
 ------------------------------------------------------------------------

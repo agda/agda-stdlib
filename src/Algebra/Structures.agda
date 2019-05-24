@@ -114,6 +114,18 @@ record IsIdempotentCommutativeMonoid (∙ : Op₂ A)
   open IsCommutativeMonoid isCommutativeMonoid public
 
 
+-- Idempotent commutative monoids are also known as bounded lattices.
+-- Note that the BoundedLattice necessarily uses the notation inherited
+-- from monoids rather than lattices.
+
+IsBoundedLattice = IsIdempotentCommutativeMonoid
+
+module IsBoundedLattice {∙ : Op₂ A}
+                        {ε : A}
+                        (isIdemCommMonoid : IsIdempotentCommutativeMonoid ∙ ε) =
+       IsIdempotentCommutativeMonoid isIdemCommMonoid
+
+
 ------------------------------------------------------------------------
 -- Structures with 1 binary operation, 1 unary operation & 1 element
 ------------------------------------------------------------------------
