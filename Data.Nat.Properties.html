@@ -25,7 +25,7 @@
 <a id="744" class="Keyword">open</a> <a id="749" class="Keyword">import</a> <a id="756" href="Data.Unit.html" class="Module">Data.Unit</a> <a id="766" class="Keyword">using</a> <a id="772" class="Symbol">(</a><a id="773" href="Agda.Builtin.Unit.html#174" class="InductiveConstructor">tt</a><a id="775" class="Symbol">)</a>
 <a id="777" class="Keyword">open</a> <a id="782" class="Keyword">import</a> <a id="789" href="Function.html" class="Module">Function</a>
 <a id="798" class="Keyword">open</a> <a id="803" class="Keyword">import</a> <a id="810" href="Function.Injection.html" class="Module">Function.Injection</a> <a id="829" class="Keyword">using</a> <a id="835" class="Symbol">(</a><a id="836" href="Function.Injection.html#1399" class="Function Operator">_↣_</a><a id="839" class="Symbol">)</a>
-<a id="841" class="Keyword">open</a> <a id="846" class="Keyword">import</a> <a id="853" href="Level.html" class="Module">Level</a> <a id="859" class="Keyword">using</a> <a id="865" class="Symbol">(</a><a id="866" href="Level.html#506" class="Function">0ℓ</a><a id="868" class="Symbol">)</a>
+<a id="841" class="Keyword">open</a> <a id="846" class="Keyword">import</a> <a id="853" href="Level.html" class="Module">Level</a> <a id="859" class="Keyword">using</a> <a id="865" class="Symbol">(</a><a id="866" href="Level.html#512" class="Function">0ℓ</a><a id="868" class="Symbol">)</a>
 <a id="870" class="Keyword">open</a> <a id="875" class="Keyword">import</a> <a id="882" href="Relation.Binary.html" class="Module">Relation.Binary</a>
 <a id="898" class="Keyword">open</a> <a id="903" class="Keyword">import</a> <a id="910" href="Relation.Binary.Consequences.html" class="Module">Relation.Binary.Consequences</a> <a id="939" class="Keyword">using</a> <a id="945" class="Symbol">(</a><a id="946" href="Relation.Binary.Consequences.html#5576" class="Function">flip-Connex</a><a id="957" class="Symbol">)</a>
 <a id="959" class="Keyword">open</a> <a id="964" class="Keyword">import</a> <a id="971" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a>
@@ -76,7 +76,7 @@
   <a id="2568" class="Symbol">;</a> <a id="2570" href="Relation.Binary.html#2649" class="Field Operator">_≟_</a>           <a id="2584" class="Symbol">=</a> <a id="2586" href="Data.Nat.Properties.html#2213" class="Function Operator">_≟_</a>
   <a id="2592" class="Symbol">}</a>
 
-<a id="≡-decSetoid"></a><a id="2595" href="Data.Nat.Properties.html#2595" class="Function">≡-decSetoid</a> <a id="2607" class="Symbol">:</a> <a id="2609" href="Relation.Binary.html#2730" class="Record">DecSetoid</a> <a id="2619" href="Level.html#506" class="Function">0ℓ</a> <a id="2622" href="Level.html#506" class="Function">0ℓ</a>
+<a id="≡-decSetoid"></a><a id="2595" href="Data.Nat.Properties.html#2595" class="Function">≡-decSetoid</a> <a id="2607" class="Symbol">:</a> <a id="2609" href="Relation.Binary.html#2730" class="Record">DecSetoid</a> <a id="2619" href="Level.html#512" class="Function">0ℓ</a> <a id="2622" href="Level.html#512" class="Function">0ℓ</a>
 <a id="2625" href="Data.Nat.Properties.html#2595" class="Function">≡-decSetoid</a> <a id="2637" class="Symbol">=</a> <a id="2639" class="Keyword">record</a>
   <a id="2648" class="Symbol">{</a> <a id="2650" href="Relation.Binary.html#2796" class="Field">Carrier</a>          <a id="2667" class="Symbol">=</a> <a id="2669" href="Agda.Builtin.Nat.html#165" class="Datatype">ℕ</a>
   <a id="2673" class="Symbol">;</a> <a id="2675" href="Relation.Binary.html#2825" class="Field Operator">_≈_</a>              <a id="2692" class="Symbol">=</a> <a id="2694" href="Agda.Builtin.Equality.html#125" class="Datatype Operator">_≡_</a>
@@ -183,22 +183,22 @@
 <a id="5411" class="Comment">------------------------------------------------------------------------</a>
 <a id="5484" class="Comment">-- Packages</a>
 
-<a id="≤-preorder"></a><a id="5497" href="Data.Nat.Properties.html#5497" class="Function">≤-preorder</a> <a id="5508" class="Symbol">:</a> <a id="5510" href="Relation.Binary.html#1492" class="Record">Preorder</a> <a id="5519" href="Level.html#506" class="Function">0ℓ</a> <a id="5522" href="Level.html#506" class="Function">0ℓ</a> <a id="5525" href="Level.html#506" class="Function">0ℓ</a>
+<a id="≤-preorder"></a><a id="5497" href="Data.Nat.Properties.html#5497" class="Function">≤-preorder</a> <a id="5508" class="Symbol">:</a> <a id="5510" href="Relation.Binary.html#1492" class="Record">Preorder</a> <a id="5519" href="Level.html#512" class="Function">0ℓ</a> <a id="5522" href="Level.html#512" class="Function">0ℓ</a> <a id="5525" href="Level.html#512" class="Function">0ℓ</a>
 <a id="5528" href="Data.Nat.Properties.html#5497" class="Function">≤-preorder</a> <a id="5539" class="Symbol">=</a> <a id="5541" class="Keyword">record</a>
   <a id="5550" class="Symbol">{</a> <a id="5552" href="Relation.Binary.html#1705" class="Field">isPreorder</a> <a id="5563" class="Symbol">=</a> <a id="5565" href="Data.Nat.Properties.html#4835" class="Function">≤-isPreorder</a>
   <a id="5580" class="Symbol">}</a>
 
-<a id="≤-poset"></a><a id="5583" href="Data.Nat.Properties.html#5583" class="Function">≤-poset</a> <a id="5591" class="Symbol">:</a> <a id="5593" href="Relation.Binary.html#3546" class="Record">Poset</a> <a id="5599" href="Level.html#506" class="Function">0ℓ</a> <a id="5602" href="Level.html#506" class="Function">0ℓ</a> <a id="5605" href="Level.html#506" class="Function">0ℓ</a>
+<a id="≤-poset"></a><a id="5583" href="Data.Nat.Properties.html#5583" class="Function">≤-poset</a> <a id="5591" class="Symbol">:</a> <a id="5593" href="Relation.Binary.html#3546" class="Record">Poset</a> <a id="5599" href="Level.html#512" class="Function">0ℓ</a> <a id="5602" href="Level.html#512" class="Function">0ℓ</a> <a id="5605" href="Level.html#512" class="Function">0ℓ</a>
 <a id="5608" href="Data.Nat.Properties.html#5583" class="Function">≤-poset</a> <a id="5616" class="Symbol">=</a> <a id="5618" class="Keyword">record</a>
   <a id="5627" class="Symbol">{</a> <a id="5629" href="Relation.Binary.html#3721" class="Field">isPartialOrder</a> <a id="5644" class="Symbol">=</a> <a id="5646" href="Data.Nat.Properties.html#4990" class="Function">≤-isPartialOrder</a>
   <a id="5665" class="Symbol">}</a>
 
-<a id="≤-totalOrder"></a><a id="5668" href="Data.Nat.Properties.html#5668" class="Function">≤-totalOrder</a> <a id="5681" class="Symbol">:</a> <a id="5683" href="Relation.Binary.html#8205" class="Record">TotalOrder</a> <a id="5694" href="Level.html#506" class="Function">0ℓ</a> <a id="5697" href="Level.html#506" class="Function">0ℓ</a> <a id="5700" href="Level.html#506" class="Function">0ℓ</a>
+<a id="≤-totalOrder"></a><a id="5668" href="Data.Nat.Properties.html#5668" class="Function">≤-totalOrder</a> <a id="5681" class="Symbol">:</a> <a id="5683" href="Relation.Binary.html#8205" class="Record">TotalOrder</a> <a id="5694" href="Level.html#512" class="Function">0ℓ</a> <a id="5697" href="Level.html#512" class="Function">0ℓ</a> <a id="5700" href="Level.html#512" class="Function">0ℓ</a>
 <a id="5703" href="Data.Nat.Properties.html#5668" class="Function">≤-totalOrder</a> <a id="5716" class="Symbol">=</a> <a id="5718" class="Keyword">record</a>
   <a id="5727" class="Symbol">{</a> <a id="5729" href="Relation.Binary.html#8379" class="Field">isTotalOrder</a> <a id="5742" class="Symbol">=</a> <a id="5744" href="Data.Nat.Properties.html#5120" class="Function">≤-isTotalOrder</a>
   <a id="5761" class="Symbol">}</a>
 
-<a id="≤-decTotalOrder"></a><a id="5764" href="Data.Nat.Properties.html#5764" class="Function">≤-decTotalOrder</a> <a id="5780" class="Symbol">:</a> <a id="5782" href="Relation.Binary.html#9250" class="Record">DecTotalOrder</a> <a id="5796" href="Level.html#506" class="Function">0ℓ</a> <a id="5799" href="Level.html#506" class="Function">0ℓ</a> <a id="5802" href="Level.html#506" class="Function">0ℓ</a>
+<a id="≤-decTotalOrder"></a><a id="5764" href="Data.Nat.Properties.html#5764" class="Function">≤-decTotalOrder</a> <a id="5780" class="Symbol">:</a> <a id="5782" href="Relation.Binary.html#9250" class="Record">DecTotalOrder</a> <a id="5796" href="Level.html#512" class="Function">0ℓ</a> <a id="5799" href="Level.html#512" class="Function">0ℓ</a> <a id="5802" href="Level.html#512" class="Function">0ℓ</a>
 <a id="5805" href="Data.Nat.Properties.html#5764" class="Function">≤-decTotalOrder</a> <a id="5821" class="Symbol">=</a> <a id="5823" class="Keyword">record</a>
   <a id="5832" class="Symbol">{</a> <a id="5834" href="Relation.Binary.html#9436" class="Field">isDecTotalOrder</a> <a id="5850" class="Symbol">=</a> <a id="5852" href="Data.Nat.Properties.html#5254" class="Function">≤-isDecTotalOrder</a>
   <a id="5872" class="Symbol">}</a>
@@ -341,12 +341,12 @@
   <a id="9498" class="Symbol">;</a> <a id="9500" href="Relation.Binary.html#10503" class="Field">compare</a>       <a id="9514" class="Symbol">=</a> <a id="9516" href="Data.Nat.Properties.html#8530" class="Function">&lt;-cmp</a>
   <a id="9524" class="Symbol">}</a>
 
-<a id="&lt;-strictPartialOrder"></a><a id="9527" href="Data.Nat.Properties.html#9527" class="Function">&lt;-strictPartialOrder</a> <a id="9548" class="Symbol">:</a> <a id="9550" href="Relation.Binary.html#6050" class="Record">StrictPartialOrder</a> <a id="9569" href="Level.html#506" class="Function">0ℓ</a> <a id="9572" href="Level.html#506" class="Function">0ℓ</a> <a id="9575" href="Level.html#506" class="Function">0ℓ</a>
+<a id="&lt;-strictPartialOrder"></a><a id="9527" href="Data.Nat.Properties.html#9527" class="Function">&lt;-strictPartialOrder</a> <a id="9548" class="Symbol">:</a> <a id="9550" href="Relation.Binary.html#6050" class="Record">StrictPartialOrder</a> <a id="9569" href="Level.html#512" class="Function">0ℓ</a> <a id="9572" href="Level.html#512" class="Function">0ℓ</a> <a id="9575" href="Level.html#512" class="Function">0ℓ</a>
 <a id="9578" href="Data.Nat.Properties.html#9527" class="Function">&lt;-strictPartialOrder</a> <a id="9599" class="Symbol">=</a> <a id="9601" class="Keyword">record</a>
   <a id="9610" class="Symbol">{</a> <a id="9612" href="Relation.Binary.html#6256" class="Field">isStrictPartialOrder</a> <a id="9633" class="Symbol">=</a> <a id="9635" href="Data.Nat.Properties.html#9142" class="Function">&lt;-isStrictPartialOrder</a>
   <a id="9660" class="Symbol">}</a>
 
-<a id="&lt;-strictTotalOrder"></a><a id="9663" href="Data.Nat.Properties.html#9663" class="Function">&lt;-strictTotalOrder</a> <a id="9682" class="Symbol">:</a> <a id="9684" href="Relation.Binary.html#11410" class="Record">StrictTotalOrder</a> <a id="9701" href="Level.html#506" class="Function">0ℓ</a> <a id="9704" href="Level.html#506" class="Function">0ℓ</a> <a id="9707" href="Level.html#506" class="Function">0ℓ</a>
+<a id="&lt;-strictTotalOrder"></a><a id="9663" href="Data.Nat.Properties.html#9663" class="Function">&lt;-strictTotalOrder</a> <a id="9682" class="Symbol">:</a> <a id="9684" href="Relation.Binary.html#11410" class="Record">StrictTotalOrder</a> <a id="9701" href="Level.html#512" class="Function">0ℓ</a> <a id="9704" href="Level.html#512" class="Function">0ℓ</a> <a id="9707" href="Level.html#512" class="Function">0ℓ</a>
 <a id="9710" href="Data.Nat.Properties.html#9663" class="Function">&lt;-strictTotalOrder</a> <a id="9729" class="Symbol">=</a> <a id="9731" class="Keyword">record</a>
   <a id="9740" class="Symbol">{</a> <a id="9742" href="Relation.Binary.html#11608" class="Field">isStrictTotalOrder</a> <a id="9761" class="Symbol">=</a> <a id="9763" href="Data.Nat.Properties.html#9354" class="Function">&lt;-isStrictTotalOrder</a>
   <a id="9786" class="Symbol">}</a>
@@ -478,22 +478,22 @@
 <a id="12993" class="Comment">------------------------------------------------------------------------</a>
 <a id="13066" class="Comment">-- Packages</a>
 
-<a id="+-magma"></a><a id="13079" href="Data.Nat.Properties.html#13079" class="Function">+-magma</a> <a id="13087" class="Symbol">:</a> <a id="13089" href="Algebra.html#848" class="Record">Magma</a> <a id="13095" href="Level.html#506" class="Function">0ℓ</a> <a id="13098" href="Level.html#506" class="Function">0ℓ</a>
+<a id="+-magma"></a><a id="13079" href="Data.Nat.Properties.html#13079" class="Function">+-magma</a> <a id="13087" class="Symbol">:</a> <a id="13089" href="Algebra.html#848" class="Record">Magma</a> <a id="13095" href="Level.html#512" class="Function">0ℓ</a> <a id="13098" href="Level.html#512" class="Function">0ℓ</a>
 <a id="13101" href="Data.Nat.Properties.html#13079" class="Function">+-magma</a> <a id="13109" class="Symbol">=</a> <a id="13111" class="Keyword">record</a>
   <a id="13120" class="Symbol">{</a> <a id="13122" href="Algebra.html#1000" class="Field">isMagma</a> <a id="13130" class="Symbol">=</a> <a id="13132" href="Data.Nat.Properties.html#12479" class="Function">+-isMagma</a>
   <a id="13144" class="Symbol">}</a>
 
-<a id="+-semigroup"></a><a id="13147" href="Data.Nat.Properties.html#13147" class="Function">+-semigroup</a> <a id="13159" class="Symbol">:</a> <a id="13161" href="Algebra.html#1138" class="Record">Semigroup</a> <a id="13171" href="Level.html#506" class="Function">0ℓ</a> <a id="13174" href="Level.html#506" class="Function">0ℓ</a>
+<a id="+-semigroup"></a><a id="13147" href="Data.Nat.Properties.html#13147" class="Function">+-semigroup</a> <a id="13159" class="Symbol">:</a> <a id="13161" href="Algebra.html#1138" class="Record">Semigroup</a> <a id="13171" href="Level.html#512" class="Function">0ℓ</a> <a id="13174" href="Level.html#512" class="Function">0ℓ</a>
 <a id="13177" href="Data.Nat.Properties.html#13147" class="Function">+-semigroup</a> <a id="13189" class="Symbol">=</a> <a id="13191" class="Keyword">record</a>
   <a id="13200" class="Symbol">{</a> <a id="13202" href="Algebra.html#1306" class="Field">isSemigroup</a> <a id="13214" class="Symbol">=</a> <a id="13216" href="Data.Nat.Properties.html#12591" class="Function">+-isSemigroup</a>
   <a id="13232" class="Symbol">}</a>
 
-<a id="+-0-monoid"></a><a id="13235" href="Data.Nat.Properties.html#13235" class="Function">+-0-monoid</a> <a id="13246" class="Symbol">:</a> <a id="13248" href="Algebra.html#2651" class="Record">Monoid</a> <a id="13255" href="Level.html#506" class="Function">0ℓ</a> <a id="13258" href="Level.html#506" class="Function">0ℓ</a>
+<a id="+-0-monoid"></a><a id="13235" href="Data.Nat.Properties.html#13235" class="Function">+-0-monoid</a> <a id="13246" class="Symbol">:</a> <a id="13248" href="Algebra.html#2651" class="Record">Monoid</a> <a id="13255" href="Level.html#512" class="Function">0ℓ</a> <a id="13258" href="Level.html#512" class="Function">0ℓ</a>
 <a id="13261" href="Data.Nat.Properties.html#13235" class="Function">+-0-monoid</a> <a id="13272" class="Symbol">=</a> <a id="13274" class="Keyword">record</a>
   <a id="13283" class="Symbol">{</a> <a id="13285" href="Algebra.html#2830" class="Field">isMonoid</a> <a id="13294" class="Symbol">=</a> <a id="13296" href="Data.Nat.Properties.html#12697" class="Function">+-0-isMonoid</a>
   <a id="13311" class="Symbol">}</a>
 
-<a id="+-0-commutativeMonoid"></a><a id="13314" href="Data.Nat.Properties.html#13314" class="Function">+-0-commutativeMonoid</a> <a id="13336" class="Symbol">:</a> <a id="13338" href="Algebra.html#3122" class="Record">CommutativeMonoid</a> <a id="13356" href="Level.html#506" class="Function">0ℓ</a> <a id="13359" href="Level.html#506" class="Function">0ℓ</a>
+<a id="+-0-commutativeMonoid"></a><a id="13314" href="Data.Nat.Properties.html#13314" class="Function">+-0-commutativeMonoid</a> <a id="13336" class="Symbol">:</a> <a id="13338" href="Algebra.html#3122" class="Record">CommutativeMonoid</a> <a id="13356" href="Level.html#512" class="Function">0ℓ</a> <a id="13359" href="Level.html#512" class="Function">0ℓ</a>
 <a id="13362" href="Data.Nat.Properties.html#13314" class="Function">+-0-commutativeMonoid</a> <a id="13384" class="Symbol">=</a> <a id="13386" class="Keyword">record</a>
   <a id="13395" class="Symbol">{</a> <a id="13397" href="Algebra.html#3356" class="Field">isCommutativeMonoid</a> <a id="13417" class="Symbol">=</a> <a id="13419" href="Data.Nat.Properties.html#12815" class="Function">+-0-isCommutativeMonoid</a>
   <a id="13445" class="Symbol">}</a>
@@ -723,32 +723,32 @@
 <a id="20102" class="Comment">------------------------------------------------------------------------</a>
 <a id="20175" class="Comment">-- Packages</a>
 
-<a id="*-magma"></a><a id="20188" href="Data.Nat.Properties.html#20188" class="Function">*-magma</a> <a id="20196" class="Symbol">:</a> <a id="20198" href="Algebra.html#848" class="Record">Magma</a> <a id="20204" href="Level.html#506" class="Function">0ℓ</a> <a id="20207" href="Level.html#506" class="Function">0ℓ</a>
+<a id="*-magma"></a><a id="20188" href="Data.Nat.Properties.html#20188" class="Function">*-magma</a> <a id="20196" class="Symbol">:</a> <a id="20198" href="Algebra.html#848" class="Record">Magma</a> <a id="20204" href="Level.html#512" class="Function">0ℓ</a> <a id="20207" href="Level.html#512" class="Function">0ℓ</a>
 <a id="20210" href="Data.Nat.Properties.html#20188" class="Function">*-magma</a> <a id="20218" class="Symbol">=</a> <a id="20220" class="Keyword">record</a>
   <a id="20229" class="Symbol">{</a> <a id="20231" href="Algebra.html#1000" class="Field">isMagma</a> <a id="20239" class="Symbol">=</a> <a id="20241" href="Data.Nat.Properties.html#19026" class="Function">*-isMagma</a>
   <a id="20253" class="Symbol">}</a>
 
-<a id="*-semigroup"></a><a id="20256" href="Data.Nat.Properties.html#20256" class="Function">*-semigroup</a> <a id="20268" class="Symbol">:</a> <a id="20270" href="Algebra.html#1138" class="Record">Semigroup</a> <a id="20280" href="Level.html#506" class="Function">0ℓ</a> <a id="20283" href="Level.html#506" class="Function">0ℓ</a>
+<a id="*-semigroup"></a><a id="20256" href="Data.Nat.Properties.html#20256" class="Function">*-semigroup</a> <a id="20268" class="Symbol">:</a> <a id="20270" href="Algebra.html#1138" class="Record">Semigroup</a> <a id="20280" href="Level.html#512" class="Function">0ℓ</a> <a id="20283" href="Level.html#512" class="Function">0ℓ</a>
 <a id="20286" href="Data.Nat.Properties.html#20256" class="Function">*-semigroup</a> <a id="20298" class="Symbol">=</a> <a id="20300" class="Keyword">record</a>
   <a id="20309" class="Symbol">{</a> <a id="20311" href="Algebra.html#1306" class="Field">isSemigroup</a> <a id="20323" class="Symbol">=</a> <a id="20325" href="Data.Nat.Properties.html#19138" class="Function">*-isSemigroup</a>
   <a id="20341" class="Symbol">}</a>
 
-<a id="*-1-monoid"></a><a id="20344" href="Data.Nat.Properties.html#20344" class="Function">*-1-monoid</a> <a id="20355" class="Symbol">:</a> <a id="20357" href="Algebra.html#2651" class="Record">Monoid</a> <a id="20364" href="Level.html#506" class="Function">0ℓ</a> <a id="20367" href="Level.html#506" class="Function">0ℓ</a>
+<a id="*-1-monoid"></a><a id="20344" href="Data.Nat.Properties.html#20344" class="Function">*-1-monoid</a> <a id="20355" class="Symbol">:</a> <a id="20357" href="Algebra.html#2651" class="Record">Monoid</a> <a id="20364" href="Level.html#512" class="Function">0ℓ</a> <a id="20367" href="Level.html#512" class="Function">0ℓ</a>
 <a id="20370" href="Data.Nat.Properties.html#20344" class="Function">*-1-monoid</a> <a id="20381" class="Symbol">=</a> <a id="20383" class="Keyword">record</a>
   <a id="20392" class="Symbol">{</a> <a id="20394" href="Algebra.html#2830" class="Field">isMonoid</a> <a id="20403" class="Symbol">=</a> <a id="20405" href="Data.Nat.Properties.html#19244" class="Function">*-1-isMonoid</a>
   <a id="20420" class="Symbol">}</a>
 
-<a id="*-1-commutativeMonoid"></a><a id="20423" href="Data.Nat.Properties.html#20423" class="Function">*-1-commutativeMonoid</a> <a id="20445" class="Symbol">:</a> <a id="20447" href="Algebra.html#3122" class="Record">CommutativeMonoid</a> <a id="20465" href="Level.html#506" class="Function">0ℓ</a> <a id="20468" href="Level.html#506" class="Function">0ℓ</a>
+<a id="*-1-commutativeMonoid"></a><a id="20423" href="Data.Nat.Properties.html#20423" class="Function">*-1-commutativeMonoid</a> <a id="20445" class="Symbol">:</a> <a id="20447" href="Algebra.html#3122" class="Record">CommutativeMonoid</a> <a id="20465" href="Level.html#512" class="Function">0ℓ</a> <a id="20468" href="Level.html#512" class="Function">0ℓ</a>
 <a id="20471" href="Data.Nat.Properties.html#20423" class="Function">*-1-commutativeMonoid</a> <a id="20493" class="Symbol">=</a> <a id="20495" class="Keyword">record</a>
   <a id="20504" class="Symbol">{</a> <a id="20506" href="Algebra.html#3356" class="Field">isCommutativeMonoid</a> <a id="20526" class="Symbol">=</a> <a id="20528" href="Data.Nat.Properties.html#19362" class="Function">*-1-isCommutativeMonoid</a>
   <a id="20554" class="Symbol">}</a>
 
-<a id="*-+-semiring"></a><a id="20557" href="Data.Nat.Properties.html#20557" class="Function">*-+-semiring</a> <a id="20570" class="Symbol">:</a> <a id="20572" href="Algebra.html#11311" class="Record">Semiring</a> <a id="20581" href="Level.html#506" class="Function">0ℓ</a> <a id="20584" href="Level.html#506" class="Function">0ℓ</a>
+<a id="*-+-semiring"></a><a id="20557" href="Data.Nat.Properties.html#20557" class="Function">*-+-semiring</a> <a id="20570" class="Symbol">:</a> <a id="20572" href="Algebra.html#11311" class="Record">Semiring</a> <a id="20581" href="Level.html#512" class="Function">0ℓ</a> <a id="20584" href="Level.html#512" class="Function">0ℓ</a>
 <a id="20587" href="Data.Nat.Properties.html#20557" class="Function">*-+-semiring</a> <a id="20600" class="Symbol">=</a> <a id="20602" class="Keyword">record</a>
   <a id="20611" class="Symbol">{</a> <a id="20613" href="Algebra.html#11569" class="Field">isSemiring</a> <a id="20624" class="Symbol">=</a> <a id="20626" href="Data.Nat.Properties.html#19540" class="Function">*-+-isSemiring</a>
   <a id="20643" class="Symbol">}</a>
 
-<a id="*-+-commutativeSemiring"></a><a id="20646" href="Data.Nat.Properties.html#20646" class="Function">*-+-commutativeSemiring</a> <a id="20670" class="Symbol">:</a> <a id="20672" href="Algebra.html#12473" class="Record">CommutativeSemiring</a> <a id="20692" href="Level.html#506" class="Function">0ℓ</a> <a id="20695" href="Level.html#506" class="Function">0ℓ</a>
+<a id="*-+-commutativeSemiring"></a><a id="20646" href="Data.Nat.Properties.html#20646" class="Function">*-+-commutativeSemiring</a> <a id="20670" class="Symbol">:</a> <a id="20672" href="Algebra.html#12473" class="Record">CommutativeSemiring</a> <a id="20692" href="Level.html#512" class="Function">0ℓ</a> <a id="20695" href="Level.html#512" class="Function">0ℓ</a>
 <a id="20698" href="Data.Nat.Properties.html#20646" class="Function">*-+-commutativeSemiring</a> <a id="20722" class="Symbol">=</a> <a id="20724" class="Keyword">record</a>
   <a id="20733" class="Symbol">{</a> <a id="20735" href="Algebra.html#12808" class="Field">isCommutativeSemiring</a> <a id="20757" class="Symbol">=</a> <a id="20759" href="Data.Nat.Properties.html#19819" class="Function">*-+-isCommutativeSemiring</a>
   <a id="20787" class="Symbol">}</a>
@@ -950,27 +950,27 @@
 <a id="26734" class="Comment">------------------------------------------------------------------------</a>
 <a id="26807" class="Comment">-- Packages</a>
 
-<a id="⊔-magma"></a><a id="26820" href="Data.Nat.Properties.html#26820" class="Function">⊔-magma</a> <a id="26828" class="Symbol">:</a> <a id="26830" href="Algebra.html#848" class="Record">Magma</a> <a id="26836" href="Level.html#506" class="Function">0ℓ</a> <a id="26839" href="Level.html#506" class="Function">0ℓ</a>
+<a id="⊔-magma"></a><a id="26820" href="Data.Nat.Properties.html#26820" class="Function">⊔-magma</a> <a id="26828" class="Symbol">:</a> <a id="26830" href="Algebra.html#848" class="Record">Magma</a> <a id="26836" href="Level.html#512" class="Function">0ℓ</a> <a id="26839" href="Level.html#512" class="Function">0ℓ</a>
 <a id="26842" href="Data.Nat.Properties.html#26820" class="Function">⊔-magma</a> <a id="26850" class="Symbol">=</a> <a id="26852" class="Keyword">record</a>
   <a id="26861" class="Symbol">{</a> <a id="26863" href="Algebra.html#1000" class="Field">isMagma</a> <a id="26871" class="Symbol">=</a> <a id="26873" href="Data.Nat.Properties.html#26129" class="Function">⊔-isMagma</a>
   <a id="26885" class="Symbol">}</a>
 
-<a id="⊔-semigroup"></a><a id="26888" href="Data.Nat.Properties.html#26888" class="Function">⊔-semigroup</a> <a id="26900" class="Symbol">:</a> <a id="26902" href="Algebra.html#1138" class="Record">Semigroup</a> <a id="26912" href="Level.html#506" class="Function">0ℓ</a> <a id="26915" href="Level.html#506" class="Function">0ℓ</a>
+<a id="⊔-semigroup"></a><a id="26888" href="Data.Nat.Properties.html#26888" class="Function">⊔-semigroup</a> <a id="26900" class="Symbol">:</a> <a id="26902" href="Algebra.html#1138" class="Record">Semigroup</a> <a id="26912" href="Level.html#512" class="Function">0ℓ</a> <a id="26915" href="Level.html#512" class="Function">0ℓ</a>
 <a id="26918" href="Data.Nat.Properties.html#26888" class="Function">⊔-semigroup</a> <a id="26930" class="Symbol">=</a> <a id="26932" class="Keyword">record</a>
   <a id="26941" class="Symbol">{</a> <a id="26943" href="Algebra.html#1306" class="Field">isSemigroup</a> <a id="26955" class="Symbol">=</a> <a id="26957" href="Data.Nat.Properties.html#26241" class="Function">⊔-isSemigroup</a>
   <a id="26973" class="Symbol">}</a>
 
-<a id="⊔-band"></a><a id="26976" href="Data.Nat.Properties.html#26976" class="Function">⊔-band</a> <a id="26983" class="Symbol">:</a> <a id="26985" href="Algebra.html#1492" class="Record">Band</a> <a id="26990" href="Level.html#506" class="Function">0ℓ</a> <a id="26993" href="Level.html#506" class="Function">0ℓ</a>
+<a id="⊔-band"></a><a id="26976" href="Data.Nat.Properties.html#26976" class="Function">⊔-band</a> <a id="26983" class="Symbol">:</a> <a id="26985" href="Algebra.html#1492" class="Record">Band</a> <a id="26990" href="Level.html#512" class="Function">0ℓ</a> <a id="26993" href="Level.html#512" class="Function">0ℓ</a>
 <a id="26996" href="Data.Nat.Properties.html#26976" class="Function">⊔-band</a> <a id="27003" class="Symbol">=</a> <a id="27005" class="Keyword">record</a>
   <a id="27014" class="Symbol">{</a> <a id="27016" href="Algebra.html#1643" class="Field">isBand</a> <a id="27023" class="Symbol">=</a> <a id="27025" href="Data.Nat.Properties.html#26347" class="Function">⊔-isBand</a>
   <a id="27036" class="Symbol">}</a>
 
-<a id="⊔-semilattice"></a><a id="27039" href="Data.Nat.Properties.html#27039" class="Function">⊔-semilattice</a> <a id="27053" class="Symbol">:</a> <a id="27055" href="Algebra.html#1845" class="Record">Semilattice</a> <a id="27067" href="Level.html#506" class="Function">0ℓ</a> <a id="27070" href="Level.html#506" class="Function">0ℓ</a>
+<a id="⊔-semilattice"></a><a id="27039" href="Data.Nat.Properties.html#27039" class="Function">⊔-semilattice</a> <a id="27053" class="Symbol">:</a> <a id="27055" href="Algebra.html#1845" class="Record">Semilattice</a> <a id="27067" href="Level.html#512" class="Function">0ℓ</a> <a id="27070" href="Level.html#512" class="Function">0ℓ</a>
 <a id="27073" href="Data.Nat.Properties.html#27039" class="Function">⊔-semilattice</a> <a id="27087" class="Symbol">=</a> <a id="27089" class="Keyword">record</a>
   <a id="27098" class="Symbol">{</a> <a id="27100" href="Algebra.html#2021" class="Field">isSemilattice</a> <a id="27114" class="Symbol">=</a> <a id="27116" href="Data.Nat.Properties.html#26449" class="Function">⊔-isSemilattice</a>
   <a id="27134" class="Symbol">}</a>
 
-<a id="⊔-0-commutativeMonoid"></a><a id="27137" href="Data.Nat.Properties.html#27137" class="Function">⊔-0-commutativeMonoid</a> <a id="27159" class="Symbol">:</a> <a id="27161" href="Algebra.html#3122" class="Record">CommutativeMonoid</a> <a id="27179" href="Level.html#506" class="Function">0ℓ</a> <a id="27182" href="Level.html#506" class="Function">0ℓ</a>
+<a id="⊔-0-commutativeMonoid"></a><a id="27137" href="Data.Nat.Properties.html#27137" class="Function">⊔-0-commutativeMonoid</a> <a id="27159" class="Symbol">:</a> <a id="27161" href="Algebra.html#3122" class="Record">CommutativeMonoid</a> <a id="27179" href="Level.html#512" class="Function">0ℓ</a> <a id="27182" href="Level.html#512" class="Function">0ℓ</a>
 <a id="27185" href="Data.Nat.Properties.html#27137" class="Function">⊔-0-commutativeMonoid</a> <a id="27207" class="Symbol">=</a> <a id="27209" class="Keyword">record</a>
   <a id="27218" class="Symbol">{</a> <a id="27220" href="Algebra.html#3356" class="Field">isCommutativeMonoid</a> <a id="27240" class="Symbol">=</a> <a id="27242" href="Data.Nat.Properties.html#26557" class="Function">⊔-0-isCommutativeMonoid</a>
   <a id="27268" class="Symbol">}</a>
@@ -1199,38 +1199,38 @@
 <a id="33641" class="Comment">------------------------------------------------------------------------</a>
 <a id="33714" class="Comment">-- Packages</a>
 
-<a id="⊓-magma"></a><a id="33727" href="Data.Nat.Properties.html#33727" class="Function">⊓-magma</a> <a id="33735" class="Symbol">:</a> <a id="33737" href="Algebra.html#848" class="Record">Magma</a> <a id="33743" href="Level.html#506" class="Function">0ℓ</a> <a id="33746" href="Level.html#506" class="Function">0ℓ</a>
+<a id="⊓-magma"></a><a id="33727" href="Data.Nat.Properties.html#33727" class="Function">⊓-magma</a> <a id="33735" class="Symbol">:</a> <a id="33737" href="Algebra.html#848" class="Record">Magma</a> <a id="33743" href="Level.html#512" class="Function">0ℓ</a> <a id="33746" href="Level.html#512" class="Function">0ℓ</a>
 <a id="33749" href="Data.Nat.Properties.html#33727" class="Function">⊓-magma</a> <a id="33757" class="Symbol">=</a> <a id="33759" class="Keyword">record</a>
   <a id="33768" class="Symbol">{</a> <a id="33770" href="Algebra.html#1000" class="Field">isMagma</a> <a id="33778" class="Symbol">=</a> <a id="33780" href="Data.Nat.Properties.html#32265" class="Function">⊓-isMagma</a>
   <a id="33792" class="Symbol">}</a>
 
-<a id="⊓-semigroup"></a><a id="33795" href="Data.Nat.Properties.html#33795" class="Function">⊓-semigroup</a> <a id="33807" class="Symbol">:</a> <a id="33809" href="Algebra.html#1138" class="Record">Semigroup</a> <a id="33819" href="Level.html#506" class="Function">0ℓ</a> <a id="33822" href="Level.html#506" class="Function">0ℓ</a>
+<a id="⊓-semigroup"></a><a id="33795" href="Data.Nat.Properties.html#33795" class="Function">⊓-semigroup</a> <a id="33807" class="Symbol">:</a> <a id="33809" href="Algebra.html#1138" class="Record">Semigroup</a> <a id="33819" href="Level.html#512" class="Function">0ℓ</a> <a id="33822" href="Level.html#512" class="Function">0ℓ</a>
 <a id="33825" href="Data.Nat.Properties.html#33795" class="Function">⊓-semigroup</a> <a id="33837" class="Symbol">=</a> <a id="33839" class="Keyword">record</a>
   <a id="33848" class="Symbol">{</a> <a id="33850" href="Algebra.html#1306" class="Field">isSemigroup</a> <a id="33862" class="Symbol">=</a> <a id="33864" href="Data.Nat.Properties.html#26241" class="Function">⊔-isSemigroup</a>
   <a id="33880" class="Symbol">}</a>
 
-<a id="⊓-band"></a><a id="33883" href="Data.Nat.Properties.html#33883" class="Function">⊓-band</a> <a id="33890" class="Symbol">:</a> <a id="33892" href="Algebra.html#1492" class="Record">Band</a> <a id="33897" href="Level.html#506" class="Function">0ℓ</a> <a id="33900" href="Level.html#506" class="Function">0ℓ</a>
+<a id="⊓-band"></a><a id="33883" href="Data.Nat.Properties.html#33883" class="Function">⊓-band</a> <a id="33890" class="Symbol">:</a> <a id="33892" href="Algebra.html#1492" class="Record">Band</a> <a id="33897" href="Level.html#512" class="Function">0ℓ</a> <a id="33900" href="Level.html#512" class="Function">0ℓ</a>
 <a id="33903" href="Data.Nat.Properties.html#33883" class="Function">⊓-band</a> <a id="33910" class="Symbol">=</a> <a id="33912" class="Keyword">record</a>
   <a id="33921" class="Symbol">{</a> <a id="33923" href="Algebra.html#1643" class="Field">isBand</a> <a id="33930" class="Symbol">=</a> <a id="33932" href="Data.Nat.Properties.html#32483" class="Function">⊓-isBand</a>
   <a id="33943" class="Symbol">}</a>
 
-<a id="⊓-semilattice"></a><a id="33946" href="Data.Nat.Properties.html#33946" class="Function">⊓-semilattice</a> <a id="33960" class="Symbol">:</a> <a id="33962" href="Algebra.html#1845" class="Record">Semilattice</a> <a id="33974" href="Level.html#506" class="Function">0ℓ</a> <a id="33977" href="Level.html#506" class="Function">0ℓ</a>
+<a id="⊓-semilattice"></a><a id="33946" href="Data.Nat.Properties.html#33946" class="Function">⊓-semilattice</a> <a id="33960" class="Symbol">:</a> <a id="33962" href="Algebra.html#1845" class="Record">Semilattice</a> <a id="33974" href="Level.html#512" class="Function">0ℓ</a> <a id="33977" href="Level.html#512" class="Function">0ℓ</a>
 <a id="33980" href="Data.Nat.Properties.html#33946" class="Function">⊓-semilattice</a> <a id="33994" class="Symbol">=</a> <a id="33996" class="Keyword">record</a>
   <a id="34005" class="Symbol">{</a> <a id="34007" href="Algebra.html#2021" class="Field">isSemilattice</a> <a id="34021" class="Symbol">=</a> <a id="34023" href="Data.Nat.Properties.html#32585" class="Function">⊓-isSemilattice</a>
   <a id="34041" class="Symbol">}</a>
 
-<a id="⊔-⊓-commutativeSemiringWithoutOne"></a><a id="34044" href="Data.Nat.Properties.html#34044" class="Function">⊔-⊓-commutativeSemiringWithoutOne</a> <a id="34078" class="Symbol">:</a> <a id="34080" href="Algebra.html#8733" class="Record">CommutativeSemiringWithoutOne</a> <a id="34110" href="Level.html#506" class="Function">0ℓ</a> <a id="34113" href="Level.html#506" class="Function">0ℓ</a>
+<a id="⊔-⊓-commutativeSemiringWithoutOne"></a><a id="34044" href="Data.Nat.Properties.html#34044" class="Function">⊔-⊓-commutativeSemiringWithoutOne</a> <a id="34078" class="Symbol">:</a> <a id="34080" href="Algebra.html#8733" class="Record">CommutativeSemiringWithoutOne</a> <a id="34110" href="Level.html#512" class="Function">0ℓ</a> <a id="34113" href="Level.html#512" class="Function">0ℓ</a>
 <a id="34116" href="Data.Nat.Properties.html#34044" class="Function">⊔-⊓-commutativeSemiringWithoutOne</a> <a id="34150" class="Symbol">=</a> <a id="34152" class="Keyword">record</a>
   <a id="34161" class="Symbol">{</a> <a id="34163" href="Algebra.html#9092" class="Field">isCommutativeSemiringWithoutOne</a> <a id="34195" class="Symbol">=</a>
       <a id="34203" href="Data.Nat.Properties.html#32959" class="Function">⊔-⊓-isCommutativeSemiringWithoutOne</a>
   <a id="34241" class="Symbol">}</a>
 
-<a id="⊓-⊔-lattice"></a><a id="34244" href="Data.Nat.Properties.html#34244" class="Function">⊓-⊔-lattice</a> <a id="34256" class="Symbol">:</a> <a id="34258" href="Algebra.html#6054" class="Record">Lattice</a> <a id="34266" href="Level.html#506" class="Function">0ℓ</a> <a id="34269" href="Level.html#506" class="Function">0ℓ</a>
+<a id="⊓-⊔-lattice"></a><a id="34244" href="Data.Nat.Properties.html#34244" class="Function">⊓-⊔-lattice</a> <a id="34256" class="Symbol">:</a> <a id="34258" href="Algebra.html#6054" class="Record">Lattice</a> <a id="34266" href="Level.html#512" class="Function">0ℓ</a> <a id="34269" href="Level.html#512" class="Function">0ℓ</a>
 <a id="34272" href="Data.Nat.Properties.html#34244" class="Function">⊓-⊔-lattice</a> <a id="34284" class="Symbol">=</a> <a id="34286" class="Keyword">record</a>
   <a id="34295" class="Symbol">{</a> <a id="34297" href="Algebra.html#6257" class="Field">isLattice</a> <a id="34307" class="Symbol">=</a> <a id="34309" href="Data.Nat.Properties.html#33177" class="Function">⊓-⊔-isLattice</a>
   <a id="34325" class="Symbol">}</a>
 
-<a id="⊓-⊔-distributiveLattice"></a><a id="34328" href="Data.Nat.Properties.html#34328" class="Function">⊓-⊔-distributiveLattice</a> <a id="34352" class="Symbol">:</a> <a id="34354" href="Algebra.html#6410" class="Record">DistributiveLattice</a> <a id="34374" href="Level.html#506" class="Function">0ℓ</a> <a id="34377" href="Level.html#506" class="Function">0ℓ</a>
+<a id="⊓-⊔-distributiveLattice"></a><a id="34328" href="Data.Nat.Properties.html#34328" class="Function">⊓-⊔-distributiveLattice</a> <a id="34352" class="Symbol">:</a> <a id="34354" href="Algebra.html#6410" class="Record">DistributiveLattice</a> <a id="34374" href="Level.html#512" class="Function">0ℓ</a> <a id="34377" href="Level.html#512" class="Function">0ℓ</a>
 <a id="34380" href="Data.Nat.Properties.html#34328" class="Function">⊓-⊔-distributiveLattice</a> <a id="34404" class="Symbol">=</a> <a id="34406" class="Keyword">record</a>
   <a id="34415" class="Symbol">{</a> <a id="34417" href="Algebra.html#6673" class="Field">isDistributiveLattice</a> <a id="34439" class="Symbol">=</a> <a id="34441" href="Data.Nat.Properties.html#33478" class="Function">⊓-⊔-isDistributiveLattice</a>
   <a id="34469" class="Symbol">}</a>
