@@ -113,14 +113,17 @@ record IsIdempotentCommutativeMonoid (∙ : Op₂ A)
 
   open IsCommutativeMonoid isCommutativeMonoid public
 
--- IsBoundedLattice is an (more comprehensive) alias for IsIdempotentCommutativeMonoid
+
+-- Idempotent commutative monoids are also known as bounded lattices.
+-- Note that the BoundedLattice necessarily uses the notation inherited
+-- from monoids rather than lattices.
 
 IsBoundedLattice = IsIdempotentCommutativeMonoid
 
 module IsBoundedLattice {∙ : Op₂ A}
                         {ε : A}
-                        (isIdempotentCommutativeMonoid : IsIdempotentCommutativeMonoid ∙ ε) =
-       IsIdempotentCommutativeMonoid isIdempotentCommutativeMonoid
+                        (isIdemCommMonoid : IsIdempotentCommutativeMonoid ∙ ε) =
+       IsIdempotentCommutativeMonoid isIdemCommMonoid
 
 
 ------------------------------------------------------------------------
