@@ -561,3 +561,14 @@ Other minor additions
   dec⟶recomputable : Decidable R → Recomputable R
   ```
 
+* Added new alias definitions and modules for `Algebra.IdempotentCommutativeMonoid`
+  and `Algebra.Structures.IsIdempotentCommutativeMonoid`:
+  ```agda
+  BoundedLattice = IdempotentCommutativeMonoid
+  module BoundedLattice {c ℓ} (idempotentCommutativeMonoid : IdempotentCommutativeMonoid c ℓ)
+  IsBoundedLattice = IsIdempotentCommutativeMonoid
+  module IsBoundedLattice {∙ : Op₂ A}
+                          {ε : A}
+                          (isIdempotentCommutativeMonoid : IsIdempotentCommutativeMonoid ∙ ε)
+
+  ```
