@@ -40,7 +40,10 @@ Bug-fixes
   `_<′_` as do all the old proofs, e.g. `+-monoˡ-<` has become `+-monoˡ-<′`,
   but these have all been deprecated and may be removed in some future version.
 
-* `Setω` is now exported in `Level`.
+#### Other
+
+* `Data.Rational` now exports queries from `Data.Rational.Base` instead of
+  from `Data.Nat.Base`.
 
 New modules
 -----------
@@ -316,10 +319,17 @@ Other minor additions
   ```agda
   ≡-setoid       : Setoid 0ℓ 0ℓ
   ≤-totalOrder   : TotalOrder 0ℓ 0ℓ 0ℓ
+  _<?_           : Decidable _<_
 
   +[1+-injective : +[1+ m ] ≡ +[1+ n ] → m ≡ n
   drop‿+<+       : + m < + n → m ℕ.< n
   drop‿-<-       : -[1+ m ] < -[1+ n ] → n ℕ.< m
+
+  -◃<+◃          : 0 < m → Sign.- ◃ m < Sign.+ ◃ n
+  +◃≮-           : Sign.+ ◃ m ≮ -[1+ n ]
+  +◃-mono-<      : m ℕ.< n → Sign.+ ◃ m < Sign.+ ◃ n
+  +◃-cancel-<    : Sign.+ ◃ m < Sign.+ ◃ n → m ℕ.< n
+  neg◃-cancel-<  : Sign.- ◃ m < Sign.- ◃ n → n ℕ.< m
 
   m⊖n≤m          : m ⊖ n ≤ + m
   m⊖n<1+m        : m ⊖ n < +[1+ m ]
@@ -328,7 +338,11 @@ Other minor additions
   ⊖-monoʳ->-<    : (p ⊖_) Preserves ℕ._>_ ⟶ _<_
   ⊖-monoˡ-<      : (_⊖ p) Preserves ℕ._<_ ⟶ _<_
 
-  *-distrib-+    : _*_ DistributesOver _+_
+  *-distrib-+         : _*_ DistributesOver _+_
+  *-monoˡ-<-pos       : (+[1+ n ] *_) Preserves _<_ ⟶ _<_
+  *-monoʳ-<-pos       : (_* +[1+ n ]) Preserves _<_ ⟶ _<_
+  *-cancelˡ-<-non-neg : + m * n < + m * o → n < o
+  *-cancelʳ-<-non-neg : m * + o < n * + o → m < n
   ```
 
 * Added new proofs to `Data.List.Properties`:
@@ -421,6 +435,10 @@ Other minor additions
   m≤m*n     : 0 < n → m ≤ m * n
   m<m*n     : 0 < m → 1 < n → m < m * n
   m∸n≢0⇒n<m : m ∸ n ≢ 0 → n < m
+
+  *-cancelʳ-< : RightCancellative _<_ _*_
+  *-cancelˡ-< : LeftCancellative _<_ _*_
+  *-cancel-<  : Cancellative _<_ _*_
   ```
 
 * Added new functions to `Data.Product`:
@@ -435,10 +453,42 @@ Other minor additions
   ≡-dec : Decidable {A} _≡_ → Decidable {B} _≡_ → Decidable {A × B} _≡_
   ```
 
-* Added new proofs to `Data.Rational.Properties`:
+* Added new relations to `Data.Rational.Base`:
   ```agda
-  ≡-setoid    : Setoid 0ℓ 0ℓ
-  ≡-decSetoid : DecSetoid 0ℓ 0ℓ
+  _<_ : Rel ℚ 0ℓ
+  _≥_ : Rel ℚ 0ℓ
+  _>_ : Rel ℚ 0ℓ
+  _≰_ : Rel ℚ 0ℓ
+  _≱_ : Rel ℚ 0ℓ
+  _≮_ : Rel ℚ 0ℓ
+  _≯_ : Rel ℚ 0ℓ
+  ```
+
+* Added new proofs and modules to `Data.Rational.Properties`:
+  ```agda
+  ≡-setoid     : Setoid 0ℓ 0ℓ
+  ≡-decSetoid  : DecSetoid 0ℓ 0ℓ
+
+  drop-*<*     : p < q → (↥ p ℤ.* ↧ q) ℤ.< (↥ q ℤ.* ↧ p)
+  <⇒≤          : _<_ ⇒ _≤_
+  <-irrefl     : Irreflexive _≡_ _<_
+  <-asym       : Asymmetric _<_
+  <-≤-trans    : Trans _<_ _≤_ _<_
+  ≤-<-trans    : Trans _≤_ _<_ _<_
+  <-trans      : Transitive _<_
+  _<?_         : Decidable _<_
+  <-cmp        : Trichotomous _≡_ _<_
+  <-irrelevant : Irrelevant _<_
+  <-respʳ-≡    : _<_ Respectsʳ _≡_
+  <-respˡ-≡    : _<_ Respectsˡ _≡_
+  <-resp-≡     : _<_ Respects₂ _≡_
+
+  <-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
+  <-isStrictTotalOrder   : IsStrictTotalOrder _≡_ _<_
+  <-strictPartialOrder   : StrictPartialOrder 0ℓ 0ℓ 0ℓ
+  <-strictTotalOrder     : StrictTotalOrder 0ℓ 0ℓ 0ℓ
+
+  module ≤-Reasoning
   ```
 
 * Added new proofs to `Data.Sign.Properties`:
@@ -470,6 +520,8 @@ Other minor additions
 
   _<?_ : Decidable _<_
   ```
+
+* The special term `Setω` is now exported by `Level`.
 
 * Added new types, functions and proofs to `Reflection`:
   ```agda
