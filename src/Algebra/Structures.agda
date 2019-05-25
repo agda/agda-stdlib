@@ -66,6 +66,13 @@ record IsSemilattice (∧ : Op₂ A) : Set (a ⊔ ℓ) where
     renaming (∙-cong to ∧-cong; ∙-congˡ to ∧-congˡ; ∙-congʳ to ∧-congʳ)
 
 
+record IsSelectiveMagma (∙ : Op₂ A) : Set (a ⊔ ℓ) where
+  field
+    isMagma : IsMagma ∙
+    sel     : Selective ∙
+
+  open IsMagma isMagma public
+
 ------------------------------------------------------------------------
 -- Structures with 1 binary operation & 1 element
 ------------------------------------------------------------------------

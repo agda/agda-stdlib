@@ -50,6 +50,8 @@ New modules
 
 * The following new modules have been added to the library:
   ```
+  Algebra.Constructs.LiftedChoice
+
   Category.Monad.Reader
 
   Data.AVL.NonEmpty
@@ -221,6 +223,16 @@ been attached to all deprecated names.
 
 Other minor additions
 ---------------------
+
+* Added new record to `Algebra`:
+  ```agda
+  record SelectiveMagma c ℓ : Set (suc (c ⊔ ℓ))
+  ```
+
+* Added new record to `Algebra.Structure`:
+  ```agda
+  record IsSelectiveMagma (∙ : Op₂ A) : Set (a ⊔ ℓ)
+  ```
 
 * Added new proofs to `Codata.Stream.Properties`:
   ```agda
