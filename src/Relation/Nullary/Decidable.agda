@@ -21,6 +21,7 @@ open import Level using (Level; Lift)
 open import Relation.Binary using (Setoid; module Setoid; Decidable)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary
+open import Relation.Nullary.Irrelevant
 
 private
   variable
@@ -92,7 +93,7 @@ module _ {a₁ a₂ b₁ b₂} {A : Setoid a₁ a₂} {B : Setoid b₁ b₂} whe
 ------------------------------------------------------------------------
 -- Extracting proofs
 
-module _ {p} {P : Set p} where
+module _ {P : Set p} where
 
 -- If a decision procedure returns "yes", then we can extract the
 -- proof using from-yes.
@@ -115,3 +116,20 @@ module _ {p} {P : Set p} where
   from-no : (p : Dec P) → From-no p
   from-no (no ¬p) = ¬p
   from-no (yes _) = _
+
+------------------------------------------------------------------------
+-- Result of decidability
+
+module _ {P : Set p} where
+
+  p?-yes : ∀ (p? : Dec P) → P → ∃ λ p′ → p? ≡ yes p′
+  p?-yes (yes p′) p = p′ , refl
+  p?-yes (no ¬p) p = ⊥-elim (¬p p)
+
+  p?-no : ∀ (p? : Dec P) → ¬ P → ∃ λ ¬p′ → p? ≡ no ¬p′
+  p?-no (yes p) ¬p  = ¬p , ⊥-elim (¬p p)
+  p?-no (no ¬p′) ¬p = ¬p′ , refl
+
+  p?-yes-irr : ∀ (p? : Dec P) → Irrelevant P → (p : P) → p? ≡ yes p
+  p?-yes-irr p? irr p with p?-yes p? p
+  ... | p′ , eq rewrite irr p p′ = eq
