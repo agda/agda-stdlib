@@ -549,12 +549,8 @@ m≤m+n : ∀ m n → m ≤ m + n
 m≤m+n zero    n = z≤n
 m≤m+n (suc m) n = s≤s (m≤m+n m n)
 
--- Note: _+′_ in Data.Fin.Properties relies on the structure of this
--- proof so the proof cannot be simplified to
--- `subst (m ≤_) (+-comm n m) (m≤m+n m n)` at the moment.
 m≤n+m : ∀ m n → m ≤ n + m
-m≤n+m zero    n = z≤n
-m≤n+m (suc m) n = subst (suc m ≤_) (sym (+-suc n m)) (s≤s (m≤n+m m n))
+m≤n+m m n = subst (m ≤_) (+-comm m n) (m≤m+n m n)
 
 m+n≤o⇒m≤o : ∀ m {n o} → m + n ≤ o → m ≤ o
 m+n≤o⇒m≤o zero    m+n≤o       = z≤n

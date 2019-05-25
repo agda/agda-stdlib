@@ -129,6 +129,8 @@ been attached to all deprecated names.
   decSetoid   ↦  ≡-decSetoid
   ```
 
+* In `Data.Fin.Properties` the operator `_+′_` has been deprecated.
+
 * In `Data.Nat.Divisibility`:
   ```agda
   poset   ↦  ∣-poset
@@ -201,6 +203,12 @@ been attached to all deprecated names.
   setoid           ↦ ≡-setoid
   decSetoid        ↦ ≡-decSetoid
   strictTotalOrder ↦ <-strictTotalOrder-≈
+  ```
+
+* In `Data.Vec.Properties`:
+  ```agda
+  lookup-++-inject+ ↦ lookup-++ˡ
+  lookup-++-+′      ↦ lookup-++ʳ
   ```
 
 * In `Data.Product.Relation.Binary.Pointwise.NonDependent`:
