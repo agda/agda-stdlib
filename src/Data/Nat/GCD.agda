@@ -36,12 +36,12 @@ import Relation.Nullary.Decidable as Dec
 -- is necessary to first define a version `gcd′` which assumes that the
 -- first argument is strictly smaller than the second.
 
+-- The full `gcd` function then compares the two arguments and applies
+-- `gcd′` accordingly.
+
 gcd′ : ∀ m n → Acc _<_ m → n < m → ℕ
 gcd′ m zero        _         _   = m
 gcd′ m n@(suc n-1) (acc rec) n<m = gcd′ n (m % n) (rec _ n<m) (a%n<n m n-1)
-
--- The full `gcd` function can then be defined to first compare the two
--- arguments and then apply `gcd′` in the right way.
 
 gcd : ℕ → ℕ → ℕ
 gcd m n with <-cmp m n
