@@ -56,7 +56,6 @@ m%n≡0⇔n∣m m n = equivalence (m%n≡0⇒n∣m m n) (n∣m⇒m%n≡0 m n)
   m          ≤⟨ m≤m+n m (q * m) ⟩
   suc q * m  ≡⟨ sym eq ⟩
   suc n      ∎
-  where open ≤-Reasoning
 
 ∣-reflexive : _≡_ ⇒ _∣_
 ∣-reflexive {n} refl = n∣n

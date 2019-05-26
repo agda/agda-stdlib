@@ -167,7 +167,6 @@ a*n[divₕ]n≡a acc (suc a) n = begin-equality
   acc + suc a                                    ∎
 
 
-{-
 +-distrib-divₕ-orig : ∀ d m n → modₕ 0 d m d + modₕ 0 d n d < suc d →
                       divₕ 0 d (m + n) d ≡ divₕ 0 d m d + divₕ 0 d n d
 +-distrib-divₕ-orig d m n leq = {!!}
@@ -178,8 +177,12 @@ a*n[divₕ]n≡a acc (suc a) n = begin-equality
 
 -- n = l(1+d) + n mod (1+d)
 
-divₕ-eq : ∀ d n j k → modₕ 0 d n d ∸ j + modₕ 0 d n d ∸ k < suc d → divₕ 0 d n j ≡ divₕ 0 d n k
-divₕ-eq d n j = {!!}
+divₕ-eq : ∀ d n j k → n ∸ j + n ∸ k → ? → divₕ 0 d n j ≡ divₕ 0 d n k
+divₕ-eq d zero    j k leq eq = refl
+divₕ-eq d (suc n) zero    zero    leq eq = refl
+divₕ-eq d (suc n) zero    (suc k) leq eq = {!!} -- k < n ≤ k + d
+divₕ-eq d (suc n) (suc j) zero    leq eq = {!!} -- j < n ≤ j + d
+divₕ-eq d (suc n) (suc j) (suc k) leq eq = divₕ-eq d n j k {!!} {!!}
 
 +-distrib-divₕ : ∀ acc d m n j k → modₕ k d m j + modₕ 0 d n d < suc d →
                  divₕ acc d (m + n) j ≡ divₕ acc d m j + divₕ 0 d n d
@@ -187,8 +190,6 @@ divₕ-eq d n j = {!!}
 +-distrib-divₕ acc d (suc m) n zero    k leq = +-distrib-divₕ (suc acc) d m n d 0 leq
 +-distrib-divₕ acc d zero    n j       k leq = begin-equality
   divₕ acc d n j     ≡⟨ divₕ-extractAcc acc d n j ⟩
-  acc + divₕ 0 d n j ≡⟨ cong (acc +_) {!!} ⟩
+  acc + divₕ 0 d n j ≡⟨ cong (acc +_) (divₕ-eq d n j d {!!} {!!}) ⟩
   acc + divₕ 0 d n d ∎
--}
-
 
