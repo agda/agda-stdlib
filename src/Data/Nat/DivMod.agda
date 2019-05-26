@@ -137,7 +137,7 @@ a/n*n≤a a n-1 = begin
 a/n*n≡a : ∀ {a n} → suc n ∣ a → a / suc n * suc n ≡ a
 a/n*n≡a {_} {n} (divides q refl) = cong (_* suc n) (a*n/n≡a q n)
 
-
+{-
 +-distribʳ-/ : ∀ m n {d} → m % suc d + n % suc d < suc d →
               (m + n) / suc d ≡ m / suc d + n / suc d
 +-distribʳ-/ m n {d = d} leq = {!!}
@@ -170,6 +170,7 @@ begin-equality
   (n + m * n) / suc d         ≡⟨ +-distribʳ-/-∣ˡ _ d∣n ⟩
   n / suc d + (m * n) / suc d ≡⟨ cong (n / suc d +_) (*-/-assoc m d≢0 d∣n) ⟩
   n / suc d + m * (n / suc d) ∎
+-}
 
 ------------------------------------------------------------------------
 --  A specification of integer division.

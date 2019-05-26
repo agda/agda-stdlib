@@ -181,18 +181,18 @@ n ∣0 = divides 0 refl
 ∣m∸n∣n⇒∣m : ∀ i {m n} → n ≤ m → i ∣ m ∸ n → i ∣ n → i ∣ m
 ∣m∸n∣n⇒∣m i {m} {n} n≤m (divides p m∸n≡p*i) (divides q n≡q*o) =
   divides (p + q) $ begin-equality
-    m             ≡⟨ sym (m+n∸m≡n n≤m) ⟩
+    m             ≡⟨ sym (m+[n∸m]≡n n≤m) ⟩
     n + (m ∸ n)   ≡⟨ +-comm n (m ∸ n) ⟩
     m ∸ n + n     ≡⟨ cong₂ _+_ m∸n≡p*i n≡q*o ⟩
     p * i + q * i ≡⟨ sym (*-distribʳ-+ i p q)  ⟩
     (p + q) * i   ∎
-
+{-
 ------------------------------------------------------------------------
 -- Properties of _∣_ and _/_
 
 ∣-test : ∀ {m n o} → m ∣ n → n ∣ o → (n / m) ∣ o
 ∣-test (divides p refl) (divides q refl) = {!!}
-
+-}
 ------------------------------------------------------------------------
 -- Properties of _∣_ and _%_
 

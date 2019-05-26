@@ -21,26 +21,24 @@ open ≤-Reasoning
 -------------------------------------------------------------------------
 -- mod helper lemmas
 
-private
+mod-cong₃ : ∀ {c n a₁ a₂ b} → a₁ ≡ a₂ → modₕ c n a₁ b ≡ modₕ c n a₂ b
+mod-cong₃ refl = refl
 
-  mod-cong₃ : ∀ {c n a₁ a₂ b} → a₁ ≡ a₂ → modₕ c n a₁ b ≡ modₕ c n a₂ b
-  mod-cong₃ refl = refl
+modₕ-skipTo0 : ∀ acc n a b → modₕ acc n (b + a) a ≡ modₕ (a + acc) n b 0
+modₕ-skipTo0 acc n zero    b = cong (λ v → modₕ acc n v 0) (+-identityʳ b)
+modₕ-skipTo0 acc n (suc a) b = begin-equality
+  modₕ acc n (b + suc a) (suc a) ≡⟨ mod-cong₃ (+-suc b a) ⟩
+  modₕ acc n (suc b + a) (suc a) ≡⟨⟩
+  modₕ (suc acc) n (b + a) a     ≡⟨ modₕ-skipTo0 (suc acc) n a b ⟩
+  modₕ (a + suc acc) n b 0       ≡⟨ cong (λ v → modₕ v n b 0) (+-suc a acc) ⟩
+  modₕ (suc a + acc) n b 0       ∎
 
-  modₕ-skipTo0 : ∀ acc n a b → modₕ acc n (b + a) a ≡ modₕ (a + acc) n b 0
-  modₕ-skipTo0 acc n zero    b = cong (λ v → modₕ acc n v 0) (+-identityʳ b)
-  modₕ-skipTo0 acc n (suc a) b = begin-equality
-    modₕ acc n (b + suc a) (suc a) ≡⟨ mod-cong₃ (+-suc b a) ⟩
-    modₕ acc n (suc b + a) (suc a) ≡⟨⟩
-    modₕ (suc acc) n (b + a) a     ≡⟨ modₕ-skipTo0 (suc acc) n a b ⟩
-    modₕ (a + suc acc) n b 0       ≡⟨ cong (λ v → modₕ v n b 0) (+-suc a acc) ⟩
-    modₕ (suc a + acc) n b 0       ∎
-
-  modₕ-skipToEnd : ∀ acc n a b → modₕ acc n a (a + b) ≡ acc + a
-  modₕ-skipToEnd acc n zero    b = sym (+-identityʳ acc)
-  modₕ-skipToEnd acc n (suc a) b = begin-equality
-    modₕ (suc acc) n a (a + b) ≡⟨ modₕ-skipToEnd (suc acc) n a b ⟩
-    suc acc + a                ≡⟨ sym (+-suc acc a) ⟩
-    acc + suc a                ∎
+modₕ-skipToEnd : ∀ acc n a b → modₕ acc n a (a + b) ≡ acc + a
+modₕ-skipToEnd acc n zero    b = sym (+-identityʳ acc)
+modₕ-skipToEnd acc n (suc a) b = begin-equality
+  modₕ (suc acc) n a (a + b) ≡⟨ modₕ-skipToEnd (suc acc) n a b ⟩
+  suc acc + a                ≡⟨ sym (+-suc acc a) ⟩
+  acc + suc a                ∎
 
 -------------------------------------------------------------------------
 -- mod real lemmas
@@ -168,6 +166,8 @@ a*n[divₕ]n≡a acc (suc a) n = begin-equality
   suc acc + a                                    ≡⟨ sym (+-suc acc a) ⟩
   acc + suc a                                    ∎
 
+
+{-
 +-distrib-divₕ-orig : ∀ d m n → modₕ 0 d m d + modₕ 0 d n d < suc d →
                       divₕ 0 d (m + n) d ≡ divₕ 0 d m d + divₕ 0 d n d
 +-distrib-divₕ-orig d m n leq = {!!}
@@ -189,3 +189,6 @@ divₕ-eq d n j = {!!}
   divₕ acc d n j     ≡⟨ divₕ-extractAcc acc d n j ⟩
   acc + divₕ 0 d n j ≡⟨ cong (acc +_) {!!} ⟩
   acc + divₕ 0 d n d ∎
+-}
+
+

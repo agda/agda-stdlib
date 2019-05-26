@@ -472,14 +472,6 @@ punchOut-punchIn (suc i) {suc j} = cong suc (begin
   where open ≡-Reasoning
 
 ------------------------------------------------------------------------
--- _+′_
-
-infixl 6 _+′_
-
-_+′_ : ∀ {m n} (i : Fin m) (j : Fin n) → Fin (ℕ.pred m ℕ+ n)
-i +′ j = inject≤ (i + j) (ℕₚ.+-monoˡ-≤ _ (toℕ≤pred[n] i))
-
-------------------------------------------------------------------------
 -- Quantification
 
 ∀-cons : ∀ {n p} {P : Pred (Fin (suc n)) p} →
@@ -573,6 +565,8 @@ module _ {a} {A : Set a} where
   eq? : ∀ {n} → A ↣ Fin n → B.Decidable {A = A} _≡_
   eq? inj = Dec.via-injection inj _≟_
 
+
+
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
 ------------------------------------------------------------------------
@@ -659,4 +653,14 @@ Please use ≤-irrelevant instead."
 {-# WARNING_ON_USAGE <-irrelevance
 "Warning: <-irrelevance was deprecated in v1.0.
 Please use <-irrelevant instead."
+#-}
+
+-- Version 1.1
+
+infixl 6 _+′_
+_+′_ : ∀ {m n} (i : Fin m) (j : Fin n) → Fin (ℕ.pred m ℕ+ n)
+i +′ j = inject≤ (i + j) (ℕₚ.+-monoˡ-≤ _ (toℕ≤pred[n] i))
+{-# WARNING_ON_USAGE _+′_
+"Warning: _+′_ was deprecated in v1.1.
+Please use `raise` or `inject+` from `Data.Fin` instead."
 #-}
