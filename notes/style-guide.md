@@ -52,6 +52,25 @@ This is very much a work-in-progress and is not exhaustive.
   should  always go at the end of the line rather the beginning of the
   next line.
 
+#### Module parameters
+
+* Module parameters should be put on a single line if they fit.
+
+* If they don't then they should be spread out over multiple lines,
+  each indented by two spaces. If they can be grouped logically
+  by line then it is fine to do so, otherwise a line each is
+  probably clearest.
+
+* The `where` should then go on it's own line at the end.
+
+* For example:
+  ```agda
+  module Relation.Binary.Reasoning.Base.Single
+    {a ℓ} {A : Set a} (_∼_ : Rel A ℓ)
+    (refl : Reflexive _∼_) (trans : Transitive _∼_)
+    where
+  ```
+
 #### Reasoning layout
 
 * The `begin` clause should go on the same line as the rest of the proof.
