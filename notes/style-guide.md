@@ -10,6 +10,9 @@ This is very much a work-in-progress and is not exhaustive.
 * All module imports should be at the top of the file immediately after
   the module declaration.
 
+* If the module takes parameters that require imports from other files
+  then those imports only may be placed above the module declaration.
+
 * If it is important that certain names only come into scope later in
   the file then the module should still be imported at the top of the
   file but it can be given a shorter name using `as` and then opened
@@ -67,6 +70,27 @@ This is very much a work-in-progress and is not exhaustive.
     suc (m + n)  ≡⟨ cong suc (+-comm m n) ⟩
     suc (n + m)  ≡⟨ sym (+-suc n m) ⟩
     n + suc m    ∎
+  ```
+
+#### Record layout
+
+* The `record` declaration should go on the same line.
+
+* The next line with the first record item should start a single `{` after it.
+
+* Every subsequent item of the record should go on it's own line
+  starting with a `;`.
+
+* The final line should end with `}` on it's own.
+
+* For example:
+  ```agda
+  ≤-isPreorder : IsPreorder _≡_ _≤_
+  ≤-isPreorder = record
+    { isEquivalence = isEquivalence
+    ; reflexive     = ≤-reflexive
+    ; trans         = ≤-trans
+    }
   ```
 
 #### Other
