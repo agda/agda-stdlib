@@ -45,6 +45,15 @@ Bug-fixes
 * `Data.Rational` now exports queries from `Data.Rational.Base` instead of
   from `Data.Nat.Base`.
 
+Non-backwards compatible changes
+--------------------------------
+
+* The function `gcd` in `Data.Nat.GCD` has been reimplemented so it is much
+  faster when compiled. The function `gcd` now has type `ℕ → ℕ → ℕ`. The old
+  function of type `(m n : ℕ) → ∃ λ d → GCD m n d` has been renamed `mkGCD`,
+  and `gcd′` in `Data.Nat.Coprimality` has been renamed `mkGCD′`. All other
+  functionality is untouched.
+
 New modules
 -----------
 
@@ -412,6 +421,15 @@ Other minor additions
   _>>=_     : Maybe A → (A → Maybe B) → Maybe B
   ```
 
+* Added new proofs to `Data.Nat.GCD`:
+  ```agda
+  gcd-comm     : gcd m n ≡ gcd n m
+  gcd[m,n]∣m   : gcd m n ∣ m
+  gcd[m,n]∣n   : gcd m n ∣ n
+  gcd-greatest : c ∣ m → c ∣ n → c ∣ gcd m n
+  gcd≢0        : m ≢ 0 ⊎ n ≢ 0 → gcd m n ≢ 0
+  ```
+
 * Added new proofs to `Data.Nat.Divisibility`:
   ```agda
   ∣n∣m%n⇒∣m : d ∣ suc n → d ∣ (m % suc n) → d ∣ m
@@ -424,8 +442,10 @@ Other minor additions
 
   a%n≤a       : a % (suc n) ≤ a
   a≤n⇒a%n≡a   : a ≤ n → a % suc n ≡ a
+  ∣n∣m%n⇒∣m   : d ∣ suc n → d ∣ (m % suc n) → d ∣ m
   %-remove-+ˡ : a % suc n ≡ 0 → (a + b) % suc n ≡ b % suc n
   %-remove-+ʳ : b % suc n ≡ 0 → (a + b) % suc n ≡ a % suc n
+  %-presˡ-∣   : d ∣ m → d ∣ suc n → d ∣ (m % suc n)
 
   [a/n]*n≤a   : (a / suc n) * suc n ≤ a
   ```
