@@ -650,7 +650,7 @@ Other minor additions
   Irrelevant : ∀ {p} → Set p → Set p
   Irrelevant P = ∀ (p₁ p₂ : P) → p₁ ≡ p₂
   ```
-  
+
 * Added three lemmas in `Relation.Nullary.Decidable` which constraints the output of
   decision procedures:
   ```agda
