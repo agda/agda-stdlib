@@ -21,7 +21,7 @@ New modules
 
 * The following new modules have been added to the library:
   ```
-  Algebra.Properties/Semigroup
+  Algebra.Properties.CommutativeSemigroup
 
   Category.Monad.Reader
 
@@ -54,8 +54,9 @@ New modules
   Relation.Binary.Properties.Setoid
   ```
 
-* Data.Bin/*.agda  removed,  Data/Bin/  contains (so far) a single new
-  module Bin0.agda
+* ``Data/Bin.agda`` and ``Data.Bin/*.agda``  of lib-1.0 are removed,
+  added new ``Data.Bin.Base, Data.Bin.Properties``.
+
 
 
 Deprecated features
@@ -203,18 +204,18 @@ Other minor additions
   <-≤-connex : Connex _<_ _≤_
   >-≥-connex : Connex _>_ _≥_
 
-  1+n≢0  : suc n ≢ 0
-  0≢1+n
-  n<1+n    (as ≤-refl)
-  m*[1+n]
-  2m≢1+2n
-  m>1⇒m*n≢1
+  1+n≢0      : suc n ≢ 0
+  0≢1+n      : 0 ≢ suc n
+  n<1+n      : n < suc n   (by ≤-refl)
+  m*[1+n]    : m * (suc n) ≡ m + m * n
+  2m≢1+2n    : 2 * m ≢ 1 + 2 * n
+  m>1⇒m*n≢1 : m > 1 ⇒ m * n ≢ 1
 
   <ᵇ⇒<      : T (m <ᵇ n) → m < n
   <⇒<ᵇ      : m < n → T (m <ᵇ n)
   n≢0⇒n>0   : n ≢ 0 → n > 0
-  m≤m*n     : 0 < n → m ≤ m * n
-  m<m*n     : 0 < m → 1 < n → m < m * n
+  m≤m*n      : 0 < n → m ≤ m * n
+  m<m*n      : 0 < m → 1 < n → m < m * n
   m∸n≢0⇒n<m : m ∸ n ≢ 0 → n < m
   ```
 
