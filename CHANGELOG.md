@@ -560,6 +560,12 @@ Other minor additions
   _<?_ : Decidable _<_
   ```
 
+* Added new functions to `Data.Vec.Base`:
+  ```agda
+  restrictWith : (A → B → C) → Vec A m → Vec B n → Vec C (m ⊓ n)
+  restrict     : Vec A m → Vec B n → Vec (A × B) (m ⊓ n)
+  ```
+
 * Added new functions to `Data.Vec`:
   ```agda
   filter    : Decidable P → ∀[ Vec A ⇒ Bounded A ]
