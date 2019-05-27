@@ -92,6 +92,10 @@ New modules
   Data.Trie
   Data.Trie.NonEmpty
 
+  Data.Vec.Base
+  Data.Vec.Bounded.Base
+  Data.Vec.Bounded
+
   Relation.Binary.Construct.Closure.Equivalence.Properties
   Relation.Binary.Rewriting
   ```
@@ -471,6 +475,9 @@ Other minor additions
   *-cancelʳ-< : RightCancellative _<_ _*_
   *-cancelˡ-< : LeftCancellative _<_ _*_
   *-cancel-<  : Cancellative _<_ _*_
+
+  ⊔-least    : m ≤ o → n ≤ o → m ⊔ n ≤ o
+  ⊓-greatest : m ≥ o → n ≥ o → m ⊓ n ≥ o
   ```
 
 * Added new functions to `Data.Product`:
@@ -551,6 +558,13 @@ Other minor additions
   ≈-decSetoid        : DecSetoid _ _
 
   _<?_ : Decidable _<_
+  ```
+
+* Added new functions to `Data.Vec`:
+  ```agda
+  filter    : Decidable P → ∀[ Vec A ⇒ Bounded A ]
+  takeWhile : Decidable P → ∀[ Vec A ⇒ Bounded A ]
+  dropWhile : Decidable P → ∀[ Vec A ⇒ Bounded A ]
   ```
 
 * The special term `Setω` is now exported by `Level`.
