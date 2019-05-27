@@ -9,7 +9,7 @@
 module Function.Nary.NonDependent where
 
 ------------------------------------------------------------------------
--- Concrete examples can be found in README.N-ary. This file's comments
+-- Concrete examples can be found in README.Nary. This file's comments
 -- are more focused on the implementation details and the motivations
 -- behind the design decisions.
 ------------------------------------------------------------------------

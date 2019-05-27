@@ -36,15 +36,31 @@ Bug-fixes
 
 * All proofs involving `_<_` have been updated correspondingly
 
-* For backwards compatability the old relations still exist as primed versions
+* For backwards compatibility the old relations still exist as primed versions
   `_<′_` as do all the old proofs, e.g. `+-monoˡ-<` has become `+-monoˡ-<′`,
   but these have all been deprecated and may be removed in some future version.
+
+#### Other
+
+* `Data.Rational` now exports queries from `Data.Rational.Base` instead of
+  from `Data.Nat.Base`.
+
+Non-backwards compatible changes
+--------------------------------
+
+* The function `gcd` in `Data.Nat.GCD` has been reimplemented so it is much
+  faster when compiled. The function `gcd` now has type `ℕ → ℕ → ℕ`. The old
+  function of type `(m n : ℕ) → ∃ λ d → GCD m n d` has been renamed `mkGCD`,
+  and `gcd′` in `Data.Nat.Coprimality` has been renamed `mkGCD′`. All other
+  functionality is untouched.
 
 New modules
 -----------
 
 * The following new modules have been added to the library:
   ```
+  Algebra.Constructs.LiftedChoice
+
   Category.Monad.Reader
 
   Data.AVL.NonEmpty
@@ -67,7 +83,7 @@ New modules
   Data.Nat.Induction
   Data.Fin.Induction
 
-  Data.Product.N-ary.Heterogeneous
+  Data.Product.Nary.NonDependent
   Function.Nary.NonDependent
   Relation.Nary
 
@@ -101,13 +117,13 @@ been attached to all deprecated names.
 
 #### Modules
 
-* The induction machinary for naturals was commonly held to be one of the hardest
+* The induction machinery for naturals was commonly held to be one of the hardest
   modules to find in the library. Therefore the module `Induction.Nat` has been
   split into two new modules: `Data.Nat.Induction` and `Data.Fin.Induction`.
   This should improve findability and better matches the design of the rest of
   the library. The new modules also export `Acc` and `acc` meaning there is no
   need to import `Data.Induction.WellFounded`.  The old module `Induction.Nat`
-  still exists for backwards compatability but is deprecated.
+  still exists for backwards compatibility but is deprecated.
 
 * The module `Record` has been moved to `Data.Record`. The old module still
   exists but has been deprecated.
@@ -116,6 +132,10 @@ been attached to all deprecated names.
   `Data.Universe.Indexed`. In the latter `Indexed-universe` has been
   renamed to `IndexedUniverse` to better follow the library conventions. The
   old module still exists exporting the old names, but has been deprecated.
+
+* The `Data.Product.N-ary` modules have been deprecated and their content
+  moved to `Data.Vec.Recursive` to make place for properly heterogeneous
+  n-ary products in `Data.Product.Nary`.
 
 #### Names
 
@@ -136,6 +156,8 @@ been attached to all deprecated names.
   ```agda
   decSetoid   ↦  ≡-decSetoid
   ```
+
+* In `Data.Fin.Properties` the operator `_+′_` has been deprecated.
 
 * In `Data.Nat.Divisibility`:
   ```agda
@@ -211,6 +233,12 @@ been attached to all deprecated names.
   strictTotalOrder ↦ <-strictTotalOrder-≈
   ```
 
+* In `Data.Vec.Properties`:
+  ```agda
+  lookup-++-inject+ ↦ lookup-++ˡ
+  lookup-++-+′      ↦ lookup-++ʳ
+  ```
+
 * In `Data.Product.Relation.Binary.Pointwise.NonDependent`:
   ```agda
   ≡?×≡?⇒≡? ↦ Data.Product.Properties.≡-dec
@@ -218,6 +246,16 @@ been attached to all deprecated names.
 
 Other minor additions
 ---------------------
+
+* Added new record to `Algebra`:
+  ```agda
+  record SelectiveMagma c ℓ : Set (suc (c ⊔ ℓ))
+  ```
+
+* Added new record to `Algebra.Structure`:
+  ```agda
+  record IsSelectiveMagma (∙ : Op₂ A) : Set (a ⊔ ℓ)
+  ```
 
 * Added new proofs to `Codata.Stream.Properties`:
   ```agda
@@ -316,10 +354,17 @@ Other minor additions
   ```agda
   ≡-setoid       : Setoid 0ℓ 0ℓ
   ≤-totalOrder   : TotalOrder 0ℓ 0ℓ 0ℓ
+  _<?_           : Decidable _<_
 
   +[1+-injective : +[1+ m ] ≡ +[1+ n ] → m ≡ n
   drop‿+<+       : + m < + n → m ℕ.< n
   drop‿-<-       : -[1+ m ] < -[1+ n ] → n ℕ.< m
+
+  -◃<+◃          : 0 < m → Sign.- ◃ m < Sign.+ ◃ n
+  +◃≮-           : Sign.+ ◃ m ≮ -[1+ n ]
+  +◃-mono-<      : m ℕ.< n → Sign.+ ◃ m < Sign.+ ◃ n
+  +◃-cancel-<    : Sign.+ ◃ m < Sign.+ ◃ n → m ℕ.< n
+  neg◃-cancel-<  : Sign.- ◃ m < Sign.- ◃ n → n ℕ.< m
 
   m⊖n≤m          : m ⊖ n ≤ + m
   m⊖n<1+m        : m ⊖ n < +[1+ m ]
@@ -328,7 +373,11 @@ Other minor additions
   ⊖-monoʳ->-<    : (p ⊖_) Preserves ℕ._>_ ⟶ _<_
   ⊖-monoˡ-<      : (_⊖ p) Preserves ℕ._<_ ⟶ _<_
 
-  *-distrib-+    : _*_ DistributesOver _+_
+  *-distrib-+         : _*_ DistributesOver _+_
+  *-monoˡ-<-pos       : (+[1+ n ] *_) Preserves _<_ ⟶ _<_
+  *-monoʳ-<-pos       : (_* +[1+ n ]) Preserves _<_ ⟶ _<_
+  *-cancelˡ-<-non-neg : + m * n < + m * o → n < o
+  *-cancelʳ-<-non-neg : m * + o < n * + o → m < n
   ```
 
 * Added new proofs to `Data.List.Properties`:
@@ -386,6 +435,15 @@ Other minor additions
   _>>=_     : Maybe A → (A → Maybe B) → Maybe B
   ```
 
+* Added new proofs to `Data.Nat.GCD`:
+  ```agda
+  gcd-comm     : gcd m n ≡ gcd n m
+  gcd[m,n]∣m   : gcd m n ∣ m
+  gcd[m,n]∣n   : gcd m n ∣ n
+  gcd-greatest : c ∣ m → c ∣ n → c ∣ gcd m n
+  gcd≢0        : m ≢ 0 ⊎ n ≢ 0 → gcd m n ≢ 0
+  ```
+
 * Added new proofs to `Data.Nat.Divisibility`:
   ```agda
   ∣n∣m%n⇒∣m : d ∣ suc n → d ∣ (m % suc n) → d ∣ m
@@ -398,8 +456,10 @@ Other minor additions
 
   a%n≤a       : a % (suc n) ≤ a
   a≤n⇒a%n≡a   : a ≤ n → a % suc n ≡ a
+  ∣n∣m%n⇒∣m   : d ∣ suc n → d ∣ (m % suc n) → d ∣ m
   %-remove-+ˡ : a % suc n ≡ 0 → (a + b) % suc n ≡ b % suc n
   %-remove-+ʳ : b % suc n ≡ 0 → (a + b) % suc n ≡ a % suc n
+  %-presˡ-∣   : d ∣ m → d ∣ suc n → d ∣ (m % suc n)
 
   [a/n]*n≤a   : (a / suc n) * suc n ≤ a
   ```
@@ -421,6 +481,10 @@ Other minor additions
   m≤m*n     : 0 < n → m ≤ m * n
   m<m*n     : 0 < m → 1 < n → m < m * n
   m∸n≢0⇒n<m : m ∸ n ≢ 0 → n < m
+
+  *-cancelʳ-< : RightCancellative _<_ _*_
+  *-cancelˡ-< : LeftCancellative _<_ _*_
+  *-cancel-<  : Cancellative _<_ _*_
   ```
 
 * Added new functions to `Data.Product`:
@@ -435,10 +499,42 @@ Other minor additions
   ≡-dec : Decidable {A} _≡_ → Decidable {B} _≡_ → Decidable {A × B} _≡_
   ```
 
-* Added new proofs to `Data.Rational.Properties`:
+* Added new relations to `Data.Rational.Base`:
   ```agda
-  ≡-setoid    : Setoid 0ℓ 0ℓ
-  ≡-decSetoid : DecSetoid 0ℓ 0ℓ
+  _<_ : Rel ℚ 0ℓ
+  _≥_ : Rel ℚ 0ℓ
+  _>_ : Rel ℚ 0ℓ
+  _≰_ : Rel ℚ 0ℓ
+  _≱_ : Rel ℚ 0ℓ
+  _≮_ : Rel ℚ 0ℓ
+  _≯_ : Rel ℚ 0ℓ
+  ```
+
+* Added new proofs and modules to `Data.Rational.Properties`:
+  ```agda
+  ≡-setoid     : Setoid 0ℓ 0ℓ
+  ≡-decSetoid  : DecSetoid 0ℓ 0ℓ
+
+  drop-*<*     : p < q → (↥ p ℤ.* ↧ q) ℤ.< (↥ q ℤ.* ↧ p)
+  <⇒≤          : _<_ ⇒ _≤_
+  <-irrefl     : Irreflexive _≡_ _<_
+  <-asym       : Asymmetric _<_
+  <-≤-trans    : Trans _<_ _≤_ _<_
+  ≤-<-trans    : Trans _≤_ _<_ _<_
+  <-trans      : Transitive _<_
+  _<?_         : Decidable _<_
+  <-cmp        : Trichotomous _≡_ _<_
+  <-irrelevant : Irrelevant _<_
+  <-respʳ-≡    : _<_ Respectsʳ _≡_
+  <-respˡ-≡    : _<_ Respectsˡ _≡_
+  <-resp-≡     : _<_ Respects₂ _≡_
+
+  <-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
+  <-isStrictTotalOrder   : IsStrictTotalOrder _≡_ _<_
+  <-strictPartialOrder   : StrictPartialOrder 0ℓ 0ℓ 0ℓ
+  <-strictTotalOrder     : StrictTotalOrder 0ℓ 0ℓ 0ℓ
+
+  module ≤-Reasoning
   ```
 
 * Added new proofs to `Data.Sign.Properties`:
@@ -470,6 +566,8 @@ Other minor additions
 
   _<?_ : Decidable _<_
   ```
+
+* The special term `Setω` is now exported by `Level`.
 
 * Added new types, functions and proofs to `Reflection`:
   ```agda
@@ -577,3 +675,14 @@ Other minor additions
   dec⟶recomputable : Decidable R → Recomputable R
   ```
 
+* Added new alias definitions and modules for `Algebra.IdempotentCommutativeMonoid`
+  and `Algebra.Structures.IsIdempotentCommutativeMonoid`:
+  ```agda
+  BoundedLattice = IdempotentCommutativeMonoid
+  module BoundedLattice {c ℓ} (idempotentCommutativeMonoid : IdempotentCommutativeMonoid c ℓ)
+  IsBoundedLattice = IsIdempotentCommutativeMonoid
+  module IsBoundedLattice {∙ : Op₂ A}
+                          {ε : A}
+                          (isIdempotentCommutativeMonoid : IsIdempotentCommutativeMonoid ∙ ε)
+
+  ```

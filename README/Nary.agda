@@ -7,7 +7,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module README.N-ary where
+module README.Nary where
 
 open import Level using (Level)
 open import Data.Nat.Base
@@ -41,9 +41,10 @@ private
 -- representation works well with inference thus allowing us to use generic
 -- combinators to manipulate such functions.
 
+open import Data.Product.Nary.NonDependent
 open import Function.Nary.NonDependent
 open import Relation.Nary
-open import Data.Product.N-ary.Heterogeneous
+
 
 ------------------------------------------------------------------------
 -- Generalised equality-manipulating combinators

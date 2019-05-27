@@ -17,7 +17,7 @@ open import Level as L
 open import Data.Empty
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Product
-open import Data.Product.N-ary.Heterogeneous
+open import Function.Nary.NonDependent
 
 open import Relation.Nullary using (yes ; no)
 open import Relation.Unary using (Pred)

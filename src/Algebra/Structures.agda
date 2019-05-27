@@ -66,6 +66,13 @@ record IsSemilattice (∧ : Op₂ A) : Set (a ⊔ ℓ) where
     renaming (∙-cong to ∧-cong; ∙-congˡ to ∧-congˡ; ∙-congʳ to ∧-congʳ)
 
 
+record IsSelectiveMagma (∙ : Op₂ A) : Set (a ⊔ ℓ) where
+  field
+    isMagma : IsMagma ∙
+    sel     : Selective ∙
+
+  open IsMagma isMagma public
+
 ------------------------------------------------------------------------
 -- Structures with 1 binary operation & 1 element
 ------------------------------------------------------------------------
@@ -112,6 +119,18 @@ record IsIdempotentCommutativeMonoid (∙ : Op₂ A)
     idem                : Idempotent ∙
 
   open IsCommutativeMonoid isCommutativeMonoid public
+
+
+-- Idempotent commutative monoids are also known as bounded lattices.
+-- Note that the BoundedLattice necessarily uses the notation inherited
+-- from monoids rather than lattices.
+
+IsBoundedLattice = IsIdempotentCommutativeMonoid
+
+module IsBoundedLattice {∙ : Op₂ A}
+                        {ε : A}
+                        (isIdemCommMonoid : IsIdempotentCommutativeMonoid ∙ ε) =
+       IsIdempotentCommutativeMonoid isIdemCommMonoid
 
 
 ------------------------------------------------------------------------

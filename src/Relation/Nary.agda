@@ -9,7 +9,7 @@
 module Relation.Nary where
 
 ------------------------------------------------------------------------
--- Concrete examples can be found in README.N-ary. This file's comments
+-- Concrete examples can be found in README.Nary. This file's comments
 -- are more focused on the implementation details and the motivations
 -- behind the design decisions.
 ------------------------------------------------------------------------
@@ -17,14 +17,12 @@ module Relation.Nary where
 open import Level using (Level; _⊔_)
 open import Data.Nat.Base using (zero; suc)
 open import Data.Product using (_×_; _,_)
-open import Data.Product.N-ary.Heterogeneous
-  using (Product⊤; curry⊤ₙ; uncurry⊤ₙ)
+open import Data.Product.Nary.NonDependent using (Product⊤; curry⊤ₙ; uncurry⊤ₙ)
 open import Data.Sum using (_⊎_)
 open import Function using (_$_)
 open import Function.Nary.NonDependent
 open import Relation.Nullary using (¬_)
 import Relation.Unary as Unary
-
 
 private
   variable

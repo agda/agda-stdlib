@@ -1,15 +1,15 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Heterogeneous N-ary Products
+-- Nondependent heterogeneous N-ary products
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
-module Data.Product.N-ary.Heterogeneous where
+module Data.Product.Nary.NonDependent where
 
 ------------------------------------------------------------------------
--- Concrete examples can be found in README.N-ary. This file's comments
+-- Concrete examples can be found in README.Nary. This file's comments
 -- are more focused on the implementation details and the motivations
 -- behind the design decisions.
 ------------------------------------------------------------------------
