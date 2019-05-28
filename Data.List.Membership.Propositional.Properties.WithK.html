@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.List.Membership.Propositional.Properties.WithK</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Properties related to propositional list membership, that rely on</a>
+<a id="175" class="Comment">-- the K rule</a>
+<a id="189" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="263" class="Symbol">{-#</a> <a id="267" class="Keyword">OPTIONS</a> <a id="275" class="Pragma">--with-K</a> <a id="284" class="Pragma">--safe</a> <a id="291" class="Symbol">#-}</a>
+
+<a id="296" class="Keyword">module</a> <a id="303" href="Data.List.Membership.Propositional.Properties.WithK.html" class="Module">Data.List.Membership.Propositional.Properties.WithK</a> <a id="355" class="Keyword">where</a>
+
+<a id="362" class="Keyword">open</a> <a id="367" class="Keyword">import</a> <a id="374" href="Data.List.html" class="Module">Data.List</a>
+<a id="384" class="Keyword">open</a> <a id="389" class="Keyword">import</a> <a id="396" href="Data.List.Relation.Unary.Unique.Propositional.html" class="Module">Data.List.Relation.Unary.Unique.Propositional</a>
+<a id="442" class="Keyword">open</a> <a id="447" class="Keyword">import</a> <a id="454" href="Data.List.Membership.Propositional.html" class="Module">Data.List.Membership.Propositional</a>
+<a id="489" class="Keyword">import</a> <a id="496" href="Data.List.Membership.Setoid.Properties.html" class="Module">Data.List.Membership.Setoid.Properties</a> <a id="535" class="Symbol">as</a> <a id="538" class="Module">Membershipₛ</a>
+<a id="550" class="Keyword">open</a> <a id="555" class="Keyword">import</a> <a id="562" href="Relation.Unary.html" class="Module">Relation.Unary</a> <a id="577" class="Keyword">using</a> <a id="583" class="Symbol">(</a><a id="584" href="Relation.Unary.html#3600" class="Function">Irrelevant</a><a id="594" class="Symbol">)</a>
+<a id="596" class="Keyword">open</a> <a id="601" class="Keyword">import</a> <a id="608" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a> <a id="646" class="Symbol">as</a> <a id="649" class="Module">P</a> <a id="651" class="Keyword">using</a> <a id="657" class="Symbol">(</a><a id="658" href="Agda.Builtin.Equality.html#125" class="Datatype Operator">_≡_</a><a id="661" class="Symbol">)</a>
+<a id="663" class="Keyword">open</a> <a id="668" class="Keyword">import</a> <a id="675" href="Relation.Binary.PropositionalEquality.WithK.html" class="Module">Relation.Binary.PropositionalEquality.WithK</a>
+
+<a id="720" class="Comment">------------------------------------------------------------------------</a>
+<a id="793" class="Comment">-- Irrelevance</a>
+
+<a id="unique⇒irrelevant"></a><a id="809" href="Data.List.Membership.Propositional.Properties.WithK.html#809" class="Function">unique⇒irrelevant</a> <a id="827" class="Symbol">:</a> <a id="829" class="Symbol">∀</a> <a id="831" class="Symbol">{</a><a id="832" href="Data.List.Membership.Propositional.Properties.WithK.html#832" class="Bound">a</a><a id="833" class="Symbol">}</a> <a id="835" class="Symbol">{</a><a id="836" href="Data.List.Membership.Propositional.Properties.WithK.html#836" class="Bound">A</a> <a id="838" class="Symbol">:</a> <a id="840" class="PrimitiveType">Set</a> <a id="844" href="Data.List.Membership.Propositional.Properties.WithK.html#832" class="Bound">a</a><a id="845" class="Symbol">}</a> <a id="847" class="Symbol">{</a><a id="848" href="Data.List.Membership.Propositional.Properties.WithK.html#848" class="Bound">xs</a> <a id="851" class="Symbol">:</a> <a id="853" href="Agda.Builtin.List.html#121" class="Datatype">List</a> <a id="858" href="Data.List.Membership.Propositional.Properties.WithK.html#836" class="Bound">A</a><a id="859" class="Symbol">}</a> <a id="861" class="Symbol">→</a>
+                    <a id="883" href="Data.List.Relation.Unary.Unique.Setoid.html#718" class="Function">Unique</a> <a id="890" href="Data.List.Membership.Propositional.Properties.WithK.html#848" class="Bound">xs</a> <a id="893" class="Symbol">→</a> <a id="895" href="Relation.Unary.html#3600" class="Function">Irrelevant</a> <a id="906" class="Symbol">(</a><a id="907" href="Data.List.Membership.Setoid.html#877" class="Function Operator">_∈</a> <a id="910" href="Data.List.Membership.Propositional.Properties.WithK.html#848" class="Bound">xs</a><a id="912" class="Symbol">)</a>
+<a id="914" href="Data.List.Membership.Propositional.Properties.WithK.html#809" class="Function">unique⇒irrelevant</a> <a id="932" class="Symbol">=</a> <a id="934" href="Data.List.Membership.Setoid.Properties.html#2310" class="Function">Membershipₛ.unique⇒irrelevant</a> <a id="964" class="Symbol">(</a><a id="965" href="Relation.Binary.PropositionalEquality.html#1479" class="Function">P.setoid</a> <a id="974" class="Symbol">_)</a> <a id="977" href="Relation.Binary.PropositionalEquality.WithK.html#980" class="Function">≡-irrelevant</a>
+</pre></body></html>
