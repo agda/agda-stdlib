@@ -10,6 +10,9 @@ This is very much a work-in-progress and is not exhaustive.
 * All module imports should be at the top of the file immediately after
   the module declaration.
 
+* If the module takes parameters that require imports from other files
+  then those imports only may be placed above the module declaration.
+
 * If it is important that certain names only come into scope later in
   the file then the module should still be imported at the top of the
   file but it can be given a shorter name using `as` and then opened
@@ -49,6 +52,25 @@ This is very much a work-in-progress and is not exhaustive.
   should  always go at the end of the line rather the beginning of the
   next line.
 
+#### Module parameters
+
+* Module parameters should be put on a single line if they fit.
+
+* If they don't then they should be spread out over multiple lines,
+  each indented by two spaces. If they can be grouped logically
+  by line then it is fine to do so, otherwise a line each is
+  probably clearest.
+
+* The `where` should then go on it's own line at the end.
+
+* For example:
+  ```agda
+  module Relation.Binary.Reasoning.Base.Single
+    {a ℓ} {A : Set a} (_∼_ : Rel A ℓ)
+    (refl : Reflexive _∼_) (trans : Transitive _∼_)
+    where
+  ```
+
 #### Reasoning layout
 
 * The `begin` clause should go on the same line as the rest of the proof.
@@ -67,6 +89,27 @@ This is very much a work-in-progress and is not exhaustive.
     suc (m + n)  ≡⟨ cong suc (+-comm m n) ⟩
     suc (n + m)  ≡⟨ sym (+-suc n m) ⟩
     n + suc m    ∎
+  ```
+
+#### Record layout
+
+* The `record` declaration should go on the same line.
+
+* The next line with the first record item should start a single `{` after it.
+
+* Every subsequent item of the record should go on it's own line
+  starting with a `;`.
+
+* The final line should end with `}` on it's own.
+
+* For example:
+  ```agda
+  ≤-isPreorder : IsPreorder _≡_ _≤_
+  ≤-isPreorder = record
+    { isEquivalence = isEquivalence
+    ; reflexive     = ≤-reflexive
+    ; trans         = ≤-trans
+    }
   ```
 
 #### Other
@@ -106,9 +149,21 @@ This is very much a work-in-progress and is not exhaustive.
 * Datatype names should be capitalised and function names should be
   lowercase.
 
+#### Variables
+
+* Natural variables are named `m`, `n`, `o`, ... (default `n`)
+
+* Integer varaibles are named `i`, `j`, `k`, ... (default `i`)
+
+* Rational variables are named `p`, `q`, `r`, ... (default `p`)
+
+* When naming proofs, the variables should occur in order, e.g.
+  `m≤n+m` rather than `n≤m+n`.
+
 * Collections of elements are usually indicated by appending an `s`
   (e.g. if you are naming your variables `x` and `y` then lists
   should be named `xs` and `ys`).
+
 
 #### Preconditions and postconditions
 
@@ -119,7 +174,7 @@ This is very much a work-in-progress and is not exhaustive.
   of the result by using the symbol `⇒` in names (e.g. `asym⇒antisym`)
 
 * Preconditions and postconditions should be combined using the symbols
-  `∨` and `∧` (e.g. `i*j≡0⇒i≡0∨j≡0`)
+  `∨` and `∧` (e.g. `m*n≡0⇒m≡0∨n≡0`)
 
 * Try to avoid the need for bracketing but if necessary use square
   brackets (e.g. `[m∸n]⊓[n∸m]≡0`)

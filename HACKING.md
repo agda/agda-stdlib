@@ -94,8 +94,10 @@ How to make changes
 12. The library maintainers will then be made aware of your requested
         changes and should be in touch soon.
 
-Installing `fix-agda-whitespace`
---------------------------------
+How to enforce whitespace policies
+----------------------------------
+
+### Installing fix-agda-whitespace
 
 This tool is kept in the main agda repository. It can be installed by
 following these instructions:
@@ -105,3 +107,14 @@ following these instructions:
    cabal install
    ```
 
+### Adding fix-agda-whitespace as a pre-commit hook
+
+You can add the following code to the file `.git/hooks/pre-commit` to
+get git to run fix-agda-whitespace before each `git commit` and ensure
+you are never committing anything with a whitespace violation:
+
+   ```
+   #!/bin/sh
+
+   fix-agda-whitespace --check
+   ```

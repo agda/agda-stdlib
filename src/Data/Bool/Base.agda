@@ -24,6 +24,18 @@ private
 open import Agda.Builtin.Bool public
 
 ------------------------------------------------------------------------
+-- Relations
+
+infix 4 _≤_ _<_
+
+data _≤_ : Bool → Bool → Set where
+  f≤t : false ≤ true
+  b≤b : ∀ {b} → b ≤ b
+
+data _<_ : Bool → Bool → Set where
+  f<t : false < true
+
+------------------------------------------------------------------------
 -- Boolean operations
 
 infixr 6 _∧_

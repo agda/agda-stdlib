@@ -11,7 +11,6 @@ module Data.Vec.Properties where
 open import Algebra.FunctionProperties
 open import Data.Empty using (⊥-elim)
 open import Data.Fin as Fin using (Fin; zero; suc; toℕ; fromℕ)
-open import Data.Fin.Properties using (_+′_)
 open import Data.List.Base as List using (List)
 open import Data.Nat
 open import Data.Nat.Properties using (+-assoc; ≤-step)
@@ -245,6 +244,12 @@ lookup∘updateAt′ i j xs i≢j =
              xs [ i ]≔ lookup xs i ≡ xs
 []≔-lookup xs i = updateAt-id-relative i xs refl
 
+[]≔-++-inject+ : ∀ {m n x} (xs : Vec A m) (ys : Vec A n) i →
+                 (xs ++ ys) [ Fin.inject+ n i ]≔ x ≡ (xs [ i ]≔ x) ++ ys
+[]≔-++-inject+ (x ∷ xs) ys zero    = refl
+[]≔-++-inject+ (x ∷ xs) ys (suc i) =
+  P.cong (x ∷_) $ []≔-++-inject+ xs ys i
+
 lookup∘update : ∀ {n} (i : Fin n) (xs : Vec A n) x →
                 lookup (xs [ i ]≔ x) i ≡ x
 lookup∘update i xs x = lookup∘updateAt i xs
@@ -311,7 +316,7 @@ module _ {m} {ys ys' : Vec A m} where
 
 lookup-++-< : ∀ {m n} (xs : Vec A m) (ys : Vec A n) →
               ∀ i (i<m : toℕ i < m) →
-              lookup (xs ++ ys)i  ≡ lookup xs (Fin.fromℕ≤ i<m)
+              lookup (xs ++ ys) i  ≡ lookup xs (Fin.fromℕ≤ i<m)
 lookup-++-< (x ∷ xs) ys zero    (s≤s z≤n)       = refl
 lookup-++-< (x ∷ xs) ys (suc i) (s≤s (s≤s i<m)) =
   lookup-++-< xs ys i (s≤s i<m)
@@ -322,22 +327,16 @@ lookup-++-≥ : ∀ {m n} (xs : Vec A m) (ys : Vec A n) →
 lookup-++-≥ []       ys i       i≥m       = refl
 lookup-++-≥ (x ∷ xs) ys (suc i) (s≤s i≥m) = lookup-++-≥ xs ys i i≥m
 
-lookup-++-inject+ : ∀ {m n} (xs : Vec A m) (ys : Vec A n) i →
-                    lookup (xs ++ ys) (Fin.inject+ n i) ≡ lookup xs i
-lookup-++-inject+ (x ∷ xs) ys zero    = refl
-lookup-++-inject+ (x ∷ xs) ys (suc i) = lookup-++-inject+ xs ys i
+lookup-++ˡ : ∀ {m n} (xs : Vec A m) (ys : Vec A n) i →
+             lookup (xs ++ ys) (Fin.inject+ n i) ≡ lookup xs i
+lookup-++ˡ (x ∷ xs) ys zero    = refl
+lookup-++ˡ (x ∷ xs) ys (suc i) = lookup-++ˡ xs ys i
 
-lookup-++-+′ : ∀ {m n} (xs : Vec A m) (ys : Vec A n) i →
-               lookup (xs ++ ys) (fromℕ m +′ i) ≡ lookup ys i
-lookup-++-+′ []       ys       zero    = refl
-lookup-++-+′ []       (y ∷ xs) (suc i) = lookup-++-+′ [] xs i
-lookup-++-+′ (x ∷ xs) ys       i       = lookup-++-+′ xs ys i
-
-[]≔-++-inject+ : ∀ {m n x} (xs : Vec A m) (ys : Vec A n) i →
-                 (xs ++ ys) [ Fin.inject+ n i ]≔ x ≡ (xs [ i ]≔ x) ++ ys
-[]≔-++-inject+ (x ∷ xs) ys zero    = refl
-[]≔-++-inject+ (x ∷ xs) ys (suc i) =
-  P.cong (x ∷_) $ []≔-++-inject+ xs ys i
+lookup-++ʳ : ∀ {m n} (xs : Vec A m) (ys : Vec A n) i →
+             lookup (xs ++ ys) (Fin.raise m i) ≡ lookup ys i
+lookup-++ʳ []       ys       zero    = refl
+lookup-++ʳ []       (y ∷ xs) (suc i) = lookup-++ʳ [] xs i
+lookup-++ʳ (x ∷ xs) ys       i       = lookup-++ʳ xs ys i
 
 ------------------------------------------------------------------------
 -- zipWith
@@ -701,3 +700,23 @@ insert-remove (x ∷ y ∷ xs) (suc i)  =
 toList∘fromList : (xs : List A) → toList (fromList xs) ≡ xs
 toList∘fromList List.[]       = refl
 toList∘fromList (x List.∷ xs) = P.cong (x List.∷_) (toList∘fromList xs)
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 1.1
+
+lookup-++-inject+ = lookup-++ˡ
+{-# WARNING_ON_USAGE lookup-++-inject+
+"Warning: lookup-++-inject+ was deprecated in v1.1.
+Please use lookup-++ˡ instead."
+#-}
+lookup-++-+′ = lookup-++ʳ
+{-# WARNING_ON_USAGE lookup-++-+′
+"Warning: lookup-++-+′ was deprecated in v1.1.
+Please use lookup-++ʳ instead."
+#-}

@@ -22,14 +22,15 @@ open import Data.Sum
 open import Level using (0ℓ)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary using (Dec; yes; no; recompute)
-open import Relation.Nullary.Decidable as Dec′ using (True; fromWitness)
+open import Relation.Nullary using (yes; no; recompute)
+open import Relation.Nullary.Decidable as Dec using (True; fromWitness)
 
 open import Algebra.FunctionProperties {A = ℚ} _≡_
 open import Algebra.FunctionProperties.Consequences.Propositional
 
 ------------------------------------------------------------------------
 -- Helper lemmas
+------------------------------------------------------------------------
 
 private
   recomputeCP : ∀ {n d} → .(Coprime n (suc d)) → Coprime n (suc d)
@@ -37,6 +38,7 @@ private
 
 ------------------------------------------------------------------------
 -- Propositional equality
+------------------------------------------------------------------------
 
 infix 4 _≟_
 
@@ -54,6 +56,7 @@ mkℚ n₁ d₁ _ ≟ mkℚ n₂ d₂ _ with n₁ ℤ.≟ n₂ | d₁ ℕ.≟ d�
 
 ------------------------------------------------------------------------
 -- Numerator and denominator equality
+------------------------------------------------------------------------
 
 ≡⇒≃ : _≡_ ⇒ _≃_
 ≡⇒≃ refl = refl
@@ -85,12 +88,14 @@ mkℚ n₁ d₁ _ ≟ mkℚ n₂ d₂ _ with n₁ ℤ.≟ n₂ | d₁ ℕ.≟ d�
   ...   | refl = refl
 
 ------------------------------------------------------------------------
--- _≤_
-
-infix 4 _≤?_
+-- Properties of _≤_
+------------------------------------------------------------------------
 
 drop-*≤* : ∀ {p q} → p ≤ q → (↥ p ℤ.* ↧ q) ℤ.≤ (↥ q ℤ.* ↧ p)
 drop-*≤* (*≤* pq≤qp) = pq≤qp
+
+------------------------------------------------------------------------
+-- Relational properties
 
 ≤-reflexive : _≡_ ⇒ _≤_
 ≤-reflexive refl = *≤* ℤ.≤-refl
@@ -122,8 +127,15 @@ drop-*≤* (*≤* pq≤qp) = pq≤qp
   (↥ p ℤ.* ↧ q)
   (↥ q ℤ.* ↧ p))
 
+infix 4 _≤?_
 _≤?_ : Decidable _≤_
-p ≤? q = Dec′.map′ *≤* drop-*≤* ((↥ p ℤ.* ↧ q) ℤ.≤? (↥ q ℤ.* ↧ p))
+p ≤? q = Dec.map′ *≤* drop-*≤* ((↥ p ℤ.* ↧ q) ℤ.≤? (↥ q ℤ.* ↧ p))
+
+≤-irrelevant : Irrelevant _≤_
+≤-irrelevant (*≤* p≤q₁) (*≤* p≤q₂) = cong *≤* (ℤ.≤-irrelevant p≤q₁ p≤q₂)
+
+------------------------------------------------------------------------
+-- Structures
 
 ≤-isPreorder : IsPreorder _≡_ _≤_
 ≤-isPreorder = record
@@ -151,6 +163,9 @@ p ≤? q = Dec′.map′ *≤* drop-*≤* ((↥ p ℤ.* ↧ q) ℤ.≤? (↥ q �
   ; _≤?_         = _≤?_
   }
 
+------------------------------------------------------------------------
+-- Packages
+
 ≤-decTotalOrder : DecTotalOrder _ _ _
 ≤-decTotalOrder = record
   { Carrier         = ℚ
@@ -159,8 +174,128 @@ p ≤? q = Dec′.map′ *≤* drop-*≤* ((↥ p ℤ.* ↧ q) ℤ.≤? (↥ q �
   ; isDecTotalOrder = ≤-isDecTotalOrder
   }
 
-≤-irrelevant : Irrelevant _≤_
-≤-irrelevant (*≤* x₁) (*≤* x₂) = cong *≤* (ℤ.≤-irrelevant x₁ x₂)
+------------------------------------------------------------------------
+-- Properties of _<_
+------------------------------------------------------------------------
+
+drop-*<* : ∀ {p q} → p < q → (↥ p ℤ.* ↧ q) ℤ.< (↥ q ℤ.* ↧ p)
+drop-*<* (*<* pq<qp) = pq<qp
+
+------------------------------------------------------------------------
+-- Relational properties
+
+<⇒≤ : _<_ ⇒ _≤_
+<⇒≤ (*<* p<q) = *≤* (ℤ.<⇒≤ p<q)
+
+<-irrefl : Irreflexive _≡_ _<_
+<-irrefl refl (*<* p<p) = ℤ.<-irrefl refl p<p
+
+<-asym : Asymmetric _<_
+<-asym (*<* p<q) (*<* q<p) = ℤ.<-asym p<q q<p
+
+<-≤-trans : Trans _<_ _≤_ _<_
+<-≤-trans {p} {q} {r} (*<* p<q) (*≤* q≤r) = *<*
+  (ℤ.*-cancelʳ-<-non-neg _ (begin-strict
+  let n₁ = ↥ p; n₂ = ↥ q; n₃ = ↥ r; sd₁ = ↧ p; sd₂ = ↧ q; sd₃ = ↧ r in
+  (n₁  ℤ.* sd₃) ℤ.* sd₂  ≡⟨ ℤ.*-assoc n₁ sd₃ sd₂ ⟩
+  n₁   ℤ.* (sd₃ ℤ.* sd₂) ≡⟨ cong (n₁ ℤ.*_) (ℤ.*-comm sd₃ sd₂) ⟩
+  n₁   ℤ.* (sd₂ ℤ.* sd₃) ≡⟨ sym (ℤ.*-assoc n₁ sd₂ sd₃) ⟩
+  (n₁  ℤ.* sd₂) ℤ.* sd₃  <⟨ ℤ.*-monoʳ-<-pos (ℕ.pred (↧ₙ r)) p<q ⟩
+  (n₂  ℤ.* sd₁) ℤ.* sd₃  ≡⟨ cong (ℤ._* sd₃) (ℤ.*-comm n₂ sd₁) ⟩
+  (sd₁ ℤ.* n₂)  ℤ.* sd₃  ≡⟨ ℤ.*-assoc sd₁ n₂ sd₃ ⟩
+  sd₁  ℤ.* (n₂  ℤ.* sd₃) ≤⟨ ℤ.*-monoˡ-≤-pos (ℕ.pred (↧ₙ p)) q≤r ⟩
+  sd₁  ℤ.* (n₃  ℤ.* sd₂) ≡⟨ sym (ℤ.*-assoc sd₁ n₃ sd₂) ⟩
+  (sd₁ ℤ.* n₃)  ℤ.* sd₂  ≡⟨ cong (ℤ._* sd₂) (ℤ.*-comm sd₁ n₃) ⟩
+  (n₃  ℤ.* sd₁) ℤ.* sd₂  ∎))
+  where open ℤ.≤-Reasoning
+
+≤-<-trans : Trans _≤_ _<_ _<_
+≤-<-trans {p} {q} {r} (*≤* p≤q) (*<* q<r) = *<*
+  (ℤ.*-cancelʳ-<-non-neg _ (begin-strict
+  let n₁ = ↥ p; n₂ = ↥ q; n₃ = ↥ r; sd₁ = ↧ p; sd₂ = ↧ q; sd₃ = ↧ r in
+  (n₁  ℤ.* sd₃) ℤ.* sd₂  ≡⟨ ℤ.*-assoc n₁ sd₃ sd₂ ⟩
+  n₁   ℤ.* (sd₃ ℤ.* sd₂) ≡⟨ cong (n₁ ℤ.*_) (ℤ.*-comm sd₃ sd₂) ⟩
+  n₁   ℤ.* (sd₂ ℤ.* sd₃) ≡⟨ sym (ℤ.*-assoc n₁ sd₂ sd₃) ⟩
+  (n₁  ℤ.* sd₂) ℤ.* sd₃  ≤⟨ ℤ.*-monoʳ-≤-pos (ℕ.pred (↧ₙ r)) p≤q ⟩
+  (n₂  ℤ.* sd₁) ℤ.* sd₃  ≡⟨ cong (ℤ._* sd₃) (ℤ.*-comm n₂ sd₁) ⟩
+  (sd₁ ℤ.* n₂)  ℤ.* sd₃  ≡⟨ ℤ.*-assoc sd₁ n₂ sd₃ ⟩
+  sd₁  ℤ.* (n₂  ℤ.* sd₃) <⟨ ℤ.*-monoˡ-<-pos (ℕ.pred (↧ₙ p)) q<r ⟩
+  sd₁  ℤ.* (n₃  ℤ.* sd₂) ≡⟨ sym (ℤ.*-assoc sd₁ n₃ sd₂) ⟩
+  (sd₁ ℤ.* n₃)  ℤ.* sd₂  ≡⟨ cong (ℤ._* sd₂) (ℤ.*-comm sd₁ n₃) ⟩
+  (n₃  ℤ.* sd₁) ℤ.* sd₂  ∎))
+  where open ℤ.≤-Reasoning
+
+<-trans : Transitive _<_
+<-trans p<q = ≤-<-trans (<⇒≤ p<q)
+
+infix 4 _<?_
+
+_<?_ : Decidable _<_
+p <? q = Dec.map′ *<* drop-*<* ((↥ p ℤ.* ↧ q) ℤ.<? (↥ q ℤ.* ↧ p))
+
+<-cmp : Trichotomous _≡_ _<_
+<-cmp p q with ℤ.<-cmp (↥ p ℤ.* ↧ q) (↥ q ℤ.* ↧ p)
+... | tri< < ≢ ≯ = tri< (*<* <)        (≢ ∘ ≡⇒≃) (≯ ∘ drop-*<*)
+... | tri≈ ≮ ≡ ≯ = tri≈ (≮ ∘ drop-*<*) (≃⇒≡ ≡)   (≯ ∘ drop-*<*)
+... | tri> ≮ ≢ > = tri> (≮ ∘ drop-*<*) (≢ ∘ ≡⇒≃) (*<* >)
+
+<-irrelevant : Irrelevant _<_
+<-irrelevant (*<* p<q₁) (*<* p<q₂) = cong *<* (ℤ.<-irrelevant p<q₁ p<q₂)
+
+<-respʳ-≡ : _<_ Respectsʳ _≡_
+<-respʳ-≡ = subst (_ <_)
+
+<-respˡ-≡ : _<_ Respectsˡ _≡_
+<-respˡ-≡ = subst (_< _)
+
+<-resp-≡ : _<_ Respects₂ _≡_
+<-resp-≡ = <-respʳ-≡ , <-respˡ-≡
+
+------------------------------------------------------------------------
+-- Structures
+
+<-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
+<-isStrictPartialOrder = record
+  { isEquivalence = isEquivalence
+  ; irrefl        = <-irrefl
+  ; trans         = <-trans
+  ; <-resp-≈      = <-resp-≡
+  }
+
+<-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_
+<-isStrictTotalOrder = record
+  { isEquivalence = isEquivalence
+  ; trans         = <-trans
+  ; compare       = <-cmp
+  }
+
+------------------------------------------------------------------------
+-- Packages
+
+<-strictPartialOrder : StrictPartialOrder 0ℓ 0ℓ 0ℓ
+<-strictPartialOrder = record
+  { isStrictPartialOrder = <-isStrictPartialOrder
+  }
+
+<-strictTotalOrder : StrictTotalOrder 0ℓ 0ℓ 0ℓ
+<-strictTotalOrder = record
+  { isStrictTotalOrder = <-isStrictTotalOrder
+  }
+
+------------------------------------------------------------------------
+-- A specialised module for reasoning about the _≤_ and _<_ relations
+------------------------------------------------------------------------
+
+module ≤-Reasoning where
+  open import Relation.Binary.Reasoning.Base.Triple
+    ≤-isPreorder
+    <-trans
+    (resp₂ _<_)
+    <⇒≤
+    <-≤-trans
+    ≤-<-trans
+    public
+    hiding (_≈⟨_⟩_; _≈˘⟨_⟩_)
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

@@ -13,7 +13,7 @@ open import Data.Nat
 open import Data.Nat.Properties
 open import Data.Nat.Solver
 open import Data.Nat.GCD
-open import Data.Nat.Divisibility as Div
+open import Data.Nat.Divisibility
 open import Data.Nat.Coprimality as Coprime
 open import Data.Product
 open import Function
@@ -22,9 +22,6 @@ open import Relation.Binary.PropositionalEquality as PropEq
 open import Relation.Binary
 
 open +-*-Solver
-
-private
-  module P  = Poset Div.poset
 
 ------------------------------------------------------------------------
 -- Least common multiple (lcm).
@@ -48,7 +45,7 @@ module LCM where
   -- The lcm is unique.
 
   unique : ∀ {d₁ d₂ m n} → LCM m n d₁ → LCM m n d₂ → d₁ ≡ d₂
-  unique d₁ d₂ = P.antisym (LCM.least d₁ (LCM.commonMultiple d₂))
+  unique d₁ d₂ = ∣-antisym (LCM.least d₁ (LCM.commonMultiple d₂))
                            (LCM.least d₂ (LCM.commonMultiple d₁))
 
 open LCM public using (LCM) hiding (module LCM)
@@ -72,7 +69,7 @@ private
 -- The lcm can be calculated from the gcd.
 
 lcm : (i j : ℕ) → ∃ λ d → LCM i j d
-lcm i j with gcd′ i j
+lcm i j with mkGCD′ i j
 lcm .(q₁ * d) .(q₂ * d) | (d , gcd-* q₁ q₂ q₁-q₂-coprime) =
   ( q₁ * q₂ * d
   , record { commonMultiple = (mult₁ q₁ q₂ d , mult₂ q₁ q₂ d)
@@ -119,7 +116,7 @@ lcm .(q₁ * d) .(q₂ * d) | (d , gcd-* q₁ q₂ q₁-q₂-coprime) =
 
 gcd*lcm : ∀ {i j d m} → GCD i j d → LCM i j m → i * j ≡ d * m
 gcd*lcm  {i}        {j}       {d}  {m}               g l with LCM.unique l (proj₂ (lcm i j))
-gcd*lcm  {i}        {j}       {d} .{proj₁ (lcm i j)} g l | refl with gcd′ i j
+gcd*lcm  {i}        {j}       {d} .{proj₁ (lcm i j)} g l | refl with mkGCD′ i j
 gcd*lcm .{q₁ * d′} .{q₂ * d′} {d}                    g l | refl | (d′ , gcd-* q₁ q₂ q₁-q₂-coprime)
                                                            with GCD.unique g
                                                                   (gcd′-gcd (gcd-* q₁ q₂ q₁-q₂-coprime))

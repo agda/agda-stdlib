@@ -37,6 +37,10 @@ open import Relation.Nullary.Product
 
 import Agda.Builtin.Reflection as Builtin
 
+private
+  variable
+    a b c d : Level
+    A B C D : Set a
 ------------------------------------------------------------------------
 -- Names
 
@@ -125,6 +129,7 @@ relevance (arg-info _ r) = r
 open Builtin public using (Arg; arg)
 open Builtin public using (Abs; abs)
 
+-- TODO: make the following universe-polymorphic once agda/agda#3793 is merged.
 Args : (A : Set) → Set
 Args A = List (Arg A)
 
@@ -225,26 +230,24 @@ newMeta = checkType unknown
 
 private
 
-  cong₂′ : ∀ {a b c : Level} {A : Set a} {B : Set b} {C : Set c}
-          (f : A → B → C) {x y u v} →
+  cong₂′ : ∀ (f : A → B → C) {x y u v} →
           x ≡ y × u ≡ v → f x u ≡ f y v
   cong₂′ f = uncurry (cong₂ f)
 
-  cong₃′ : ∀ {a b c d : Level} {A : Set a} {B : Set b} {C : Set c}
-             {D : Set d} (f : A → B → C → D) {x y u v r s} →
+  cong₃′ : ∀ (f : A → B → C → D) {x y u v r s} →
            x ≡ y × u ≡ v × r ≡ s → f x u r ≡ f y v s
   cong₃′ f (refl , refl , refl) = refl
 
-  arg₁ : ∀ {A i i′} {x x′ : A} → arg i x ≡ arg i′ x′ → i ≡ i′
+  arg₁ : ∀ {i i′} {x x′ : A} → arg i x ≡ arg i′ x′ → i ≡ i′
   arg₁ refl = refl
 
-  arg₂ : ∀ {A i i′} {x x′ : A} → arg i x ≡ arg i′ x′ → x ≡ x′
+  arg₂ : ∀ {i i′} {x x′ : A} → arg i x ≡ arg i′ x′ → x ≡ x′
   arg₂ refl = refl
 
-  abs₁ : ∀ {A i i′} {x x′ : A} → abs i x ≡ abs i′ x′ → i ≡ i′
+  abs₁ : ∀ {i i′} {x x′ : A} → abs i x ≡ abs i′ x′ → i ≡ i′
   abs₁ refl = refl
 
-  abs₂ : ∀ {A i i′} {x x′ : A} → abs i x ≡ abs i′ x′ → x ≡ x′
+  abs₂ : ∀ {i i′} {x x′ : A} → abs i x ≡ abs i′ x′ → x ≡ x′
   abs₂ refl = refl
 
   arg-info₁ : ∀ {v v′ r r′} → arg-info v r ≡ arg-info v′ r′ → v ≡ v′
@@ -253,10 +256,10 @@ private
   arg-info₂ : ∀ {v v′ r r′} → arg-info v r ≡ arg-info v′ r′ → r ≡ r′
   arg-info₂ refl = refl
 
-  cons₁ : ∀ {a} {A : Set a} {x y} {xs ys : List A} → x ∷ xs ≡ y ∷ ys → x ≡ y
+  cons₁ : ∀ {x y} {xs ys : List A} → x ∷ xs ≡ y ∷ ys → x ≡ y
   cons₁ refl = refl
 
-  cons₂ : ∀ {a} {A : Set a} {x y} {xs ys : List A} → x ∷ xs ≡ y ∷ ys → xs ≡ ys
+  cons₂ : ∀ {x y} {xs ys : List A} → x ∷ xs ≡ y ∷ ys → xs ≡ ys
   cons₂ refl = refl
 
   var₁ : ∀ {x x′ args args′} → Term.var x args ≡ var x′ args′ → x ≡ x′
