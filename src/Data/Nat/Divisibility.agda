@@ -58,7 +58,7 @@ m%n≡0⇔n∣m m n = equivalence (m%n≡0⇒n∣m m n) (n∣m⇒m%n≡0 m n)
   suc n      ∎
 
 ∣-reflexive : _≡_ ⇒ _∣_
-∣-reflexive {n} refl = n∣n
+∣-reflexive {n} refl = divides 1 (sym (*-identityˡ n))
 
 ∣-refl : Reflexive _∣_
 ∣-refl = ∣-reflexive refl
@@ -126,6 +126,9 @@ n ∣0 = divides 0 refl
 ∣1⇒≡1 : ∀ {n} → n ∣ 1 → n ≡ 1
 ∣1⇒≡1 {n} n∣1 = ∣-antisym n∣1 (1∣ n)
 
+n∣n : ∀ {n} → n ∣ n
+n∣n {n} = ∣-refl
+
 ------------------------------------------------------------------------
 -- Properties of _∣_ and _+_
 
@@ -157,6 +160,12 @@ n ∣0 = divides 0 refl
 ∣n⇒∣m*n : ∀ {i} m {n} → i ∣ n → i ∣ m * n
 ∣n⇒∣m*n {i} m {n} i∣n = subst (i ∣_) (*-comm n m) (∣m⇒∣m*n m i∣n)
 
+n∣m*n : ∀ m {n} → n ∣ m * n
+n∣m*n m = divides m refl
+
+m∣m*n : ∀ {m} n → m ∣ m * n
+m∣m*n n = divides n (*-comm _ n)
+
 *-monoʳ-∣ : ∀ {i j} k → i ∣ j → k * i ∣ k * j
 *-monoʳ-∣ {i} {j} k (divides q j≡q*i) = divides q $ begin-equality
   k * j        ≡⟨ cong (_*_ k) j≡q*i ⟩
@@ -185,13 +194,7 @@ n ∣0 = divides 0 refl
     m ∸ n + n     ≡⟨ cong₂ _+_ m∸n≡p*i n≡q*o ⟩
     p * i + q * i ≡⟨ sym (*-distribʳ-+ i p q)  ⟩
     (p + q) * i   ∎
-{-
-------------------------------------------------------------------------
--- Properties of _∣_ and _/_
 
-∣-test : ∀ {m n o} → m ∣ n → n ∣ o → (n / m) ∣ o
-∣-test (divides p refl) (divides q refl) = {!!}
--}
 ------------------------------------------------------------------------
 -- Properties of _∣_ and _%_
 
@@ -268,6 +271,7 @@ nonZeroDivisor-lemma m (suc q) r r≢zero d =
 #-}
 
 -- Version 1.1
+
 poset = ∣-poset
 {-# WARNING_ON_USAGE poset
 "Warning: poset was deprecated in v0.14.

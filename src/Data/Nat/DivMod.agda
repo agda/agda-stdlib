@@ -85,7 +85,7 @@ a%n≤a a n = a[modₕ]n≤a 0 a n
 
 a≤n⇒a%n≡a : ∀ {a n} → a ≤ n → a % suc n ≡ a
 a≤n⇒a%n≡a {a} {n} a≤n with ≤⇒≤″ a≤n
-... | less-than-or-equal {k} refl = modₕ-skipToEnd 0 (a + k) a k
+... | less-than-or-equal {k} refl = a≤n⇒a[modₕ]n≡a 0 (a + k) a k
 
 %-distribˡ-+ : ∀ a b n → (a + b) % suc n ≡ (a % suc n + b % suc n) % suc n
 %-distribˡ-+ a b n-1 = begin-equality
@@ -137,28 +137,20 @@ a/n*n≤a a n-1 = begin
 a/n*n≡a : ∀ {a n} → suc n ∣ a → a / suc n * suc n ≡ a
 a/n*n≡a {_} {n} (divides q refl) = cong (_* suc n) (a*n/n≡a q n)
 
-{-
-+-distribʳ-/ : ∀ m n {d} → m % suc d + n % suc d < suc d →
++-distrib-/ : ∀ m n {d} → m % suc d + n % suc d < suc d →
               (m + n) / suc d ≡ m / suc d + n / suc d
-+-distribʳ-/ m n {d = d} leq = {!!}
-{-
-begin-equality
-  (p * suc d + q * suc d) / suc d       ≡⟨ cong (_/ suc d) (sym (*-distribʳ-+ (suc d) p q)) ⟩
-  (p + q) * suc d / suc d               ≡⟨ a*n/n≡a (p + q) d ⟩
-  p + q                                 ≡⟨ sym (cong₂ _+_ (a*n/n≡a p d) (a*n/n≡a q d)) ⟩
-  p * suc d / suc d + q * suc d / suc d ∎
--}
++-distrib-/ m n {d = d} leq = +-distrib-divₕ 0 0 m n d leq
 
-+-distribʳ-/-∣ˡ : ∀ {m} n {d} → suc d ∣ m →
++-distrib-/-∣ˡ : ∀ {m} n {d} → suc d ∣ m →
               (m + n) / suc d ≡ m / suc d + n / suc d
-+-distribʳ-/-∣ˡ {m} n {d} (divides p refl) = +-distribʳ-/ m n (begin-strict
++-distrib-/-∣ˡ {m} n {d} (divides p refl) = +-distrib-/ m n (begin-strict
   p * suc d % suc d + n % suc d ≡⟨ cong (_+ n % suc d) (kn%n≡0 p d) ⟩
   n % suc d                     <⟨ a%n<n n d ⟩
   suc d                         ∎)
 
-+-distribʳ-/-∣ʳ : ∀ {m} n {d} → suc d ∣ n →
++-distrib-/-∣ʳ : ∀ {m} n {d} → suc d ∣ n →
               (m + n) / suc d ≡ m / suc d + n / suc d
-+-distribʳ-/-∣ʳ {m} n {d} (divides p refl) = +-distribʳ-/ m n (begin-strict
++-distrib-/-∣ʳ {m} n {d} (divides p refl) = +-distrib-/ m n (begin-strict
   m % suc d + p * suc d % suc d ≡⟨ cong (m % suc d +_) (kn%n≡0 p d) ⟩
   m % suc d + 0                 ≡⟨ +-identityʳ _ ⟩
   m % suc d                     <⟨ a%n<n m d ⟩
@@ -167,10 +159,9 @@ begin-equality
 *-/-assoc : ∀ m {n d} d≢0 → d ∣ n → (m * n / d) {d≢0} ≡ m * ((n / d) {d≢0})
 *-/-assoc zero    {_} {suc d} d≢0 d∣n = 0/n≡0 d
 *-/-assoc (suc m) {n} {suc d} d≢0 d∣n = begin-equality
-  (n + m * n) / suc d         ≡⟨ +-distribʳ-/-∣ˡ _ d∣n ⟩
+  (n + m * n) / suc d         ≡⟨ +-distrib-/-∣ˡ _ d∣n ⟩
   n / suc d + (m * n) / suc d ≡⟨ cong (n / suc d +_) (*-/-assoc m d≢0 d∣n) ⟩
   n / suc d + m * (n / suc d) ∎
--}
 
 ------------------------------------------------------------------------
 --  A specification of integer division.

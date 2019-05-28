@@ -12,7 +12,7 @@ open import Algebra
 open import Data.Nat
 open import Data.Nat.Coprimality as Coprime
 open import Data.Nat.Divisibility
-open import Data.Nat.DivMod using (_/_)
+open import Data.Nat.DivMod using (_/_; *-/-assoc)
 open import Data.Nat.Properties
 open import Data.Nat.Solver
 open import Data.Nat.GCD
@@ -40,13 +40,13 @@ lcm m@(suc m-1) n@(suc n-1) = (m * n / gcd m n) {gcd≢0′ m-1}
 
 ------------------------------------------------------------------------
 -- Properties
-
+{-
 ∣-test : ∀ {m n o} → m ∣ n → n ∣ o → (n / m) ∣ o
 ∣-test = {!!}
 
 /n-pres-∣ : ∀ {m n c} → m ∣ c → n ∣ c → Coprime m n → m * n ∣ c
 /n-pres-∣ {m} {n} {c} m∣c n∣c cop = {!!}
-
+-}
 m∣lcm[m,n] : ∀ m n → m ∣ lcm m n
 m∣lcm[m,n] zero      zero      = 0 ∣0
 m∣lcm[m,n] zero      (suc n)   = 0 ∣0

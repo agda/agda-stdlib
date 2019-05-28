@@ -13,35 +13,49 @@ open import Agda.Builtin.Nat using ()
 
 open import Data.Nat
 open import Data.Nat.Properties
+open import Data.Sum using (_⊎_; inj₁; inj₂)
+open import Data.Product using (_×_; _,_)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Negation using (contradiction)
 
 open ≤-Reasoning
 
 -------------------------------------------------------------------------
--- mod helper lemmas
+-- Helper lemas that have no interpretation for `mod`, only for `modₕ`
 
-mod-cong₃ : ∀ {c n a₁ a₂ b} → a₁ ≡ a₂ → modₕ c n a₁ b ≡ modₕ c n a₂ b
-mod-cong₃ refl = refl
+private
 
-modₕ-skipTo0 : ∀ acc n a b → modₕ acc n (b + a) a ≡ modₕ (a + acc) n b 0
-modₕ-skipTo0 acc n zero    b = cong (λ v → modₕ acc n v 0) (+-identityʳ b)
-modₕ-skipTo0 acc n (suc a) b = begin-equality
-  modₕ acc n (b + suc a) (suc a) ≡⟨ mod-cong₃ (+-suc b a) ⟩
-  modₕ acc n (suc b + a) (suc a) ≡⟨⟩
-  modₕ (suc acc) n (b + a) a     ≡⟨ modₕ-skipTo0 (suc acc) n a b ⟩
-  modₕ (a + suc acc) n b 0       ≡⟨ cong (λ v → modₕ v n b 0) (+-suc a acc) ⟩
-  modₕ (suc a + acc) n b 0       ∎
+  mod-cong₃ : ∀ {c n a₁ a₂ b} → a₁ ≡ a₂ → modₕ c n a₁ b ≡ modₕ c n a₂ b
+  mod-cong₃ refl = refl
 
-modₕ-skipToEnd : ∀ acc n a b → modₕ acc n a (a + b) ≡ acc + a
-modₕ-skipToEnd acc n zero    b = sym (+-identityʳ acc)
-modₕ-skipToEnd acc n (suc a) b = begin-equality
-  modₕ (suc acc) n a (a + b) ≡⟨ modₕ-skipToEnd (suc acc) n a b ⟩
-  suc acc + a                ≡⟨ sym (+-suc acc a) ⟩
-  acc + suc a                ∎
+  modₕ-skipTo0 : ∀ acc n a b → modₕ acc n (b + a) a ≡ modₕ (a + acc) n b 0
+  modₕ-skipTo0 acc n zero    b = cong (λ v → modₕ acc n v 0) (+-identityʳ b)
+  modₕ-skipTo0 acc n (suc a) b = begin-equality
+    modₕ acc n (b + suc a) (suc a) ≡⟨ mod-cong₃ (+-suc b a) ⟩
+    modₕ acc n (suc b + a) (suc a) ≡⟨⟩
+    modₕ (suc acc) n (b + a) a     ≡⟨ modₕ-skipTo0 (suc acc) n a b ⟩
+    modₕ (a + suc acc) n b 0       ≡⟨ cong (λ v → modₕ v n b 0) (+-suc a acc) ⟩
+    modₕ (suc a + acc) n b 0       ∎
+
+  modₕ-help2 : ∀ acc l n → modₕ acc (acc + l) (suc n) l ≡ 0 → modₕ acc (acc + l) n l ≡ acc + l
+  modₕ-help2 acc zero zero eq = sym (+-identityʳ acc)
+  modₕ-help2 acc zero (suc n) eq rewrite +-identityʳ acc = modₕ-help2 0 acc n eq
+  modₕ-help2 acc (suc l) (suc n) eq rewrite +-suc acc l = modₕ-help2 (suc acc) l n eq
+
+  modₕ-help3 : ∀ k acc n l → suc k ≤ modₕ acc (acc + l) (suc n) l → k ≤ modₕ acc (acc + l) n l
+  modₕ-help3 k acc zero    (suc l) (s≤s leq) = leq
+  modₕ-help3 k acc (suc n) zero    leq rewrite +-identityʳ acc = modₕ-help3 k 0 n acc leq
+  modₕ-help3 k acc (suc n) (suc l) leq rewrite +-suc acc l = modₕ-help3 k (suc acc) n l leq
+
+  modₕ-help4 : ∀ k acc n l → 0 < modₕ acc (acc + l) (suc n) l →
+               modₕ acc (acc + l) (suc n) l ≤ suc k → modₕ acc (acc + l) n l ≤ k
+  modₕ-help4 k acc zero    (suc l) 0<mod (s≤s leq) = leq
+  modₕ-help4 k acc (suc n) zero    0<mod leq rewrite +-identityʳ acc = modₕ-help4 k 0 n acc 0<mod leq
+  modₕ-help4 k acc (suc n) (suc l) 0<mod leq rewrite +-suc acc l = modₕ-help4 k (suc acc) n l 0<mod leq
 
 -------------------------------------------------------------------------
--- mod real lemmas
+-- Lemmas for modₕ that also have an interpreation for mod
 
 a[modₕ]1≡0 : ∀ a → modₕ 0 0 a 0 ≡ 0
 a[modₕ]1≡0 zero    = refl
@@ -69,8 +83,15 @@ a[modₕ]n≤a acc (suc a) zero    = begin
   suc a                        ≤⟨ m≤n+m (suc a) acc ⟩
   acc + suc a                  ∎
 
+a≤n⇒a[modₕ]n≡a : ∀ acc n a b → modₕ acc n a (a + b) ≡ acc + a
+a≤n⇒a[modₕ]n≡a acc n zero    b = sym (+-identityʳ acc)
+a≤n⇒a[modₕ]n≡a acc n (suc a) b = begin-equality
+  modₕ (suc acc) n a (a + b) ≡⟨ a≤n⇒a[modₕ]n≡a (suc acc) n a b ⟩
+  suc acc + a                ≡⟨ sym (+-suc acc a) ⟩
+  acc + suc a                ∎
+
 modₕ-idem : ∀ acc a n → modₕ 0 (acc + n) (modₕ acc (acc + n) a n) (acc + n) ≡ modₕ acc (acc + n) a n
-modₕ-idem acc zero    n       = modₕ-skipToEnd 0 (acc + n) acc n
+modₕ-idem acc zero    n       = a≤n⇒a[modₕ]n≡a 0 (acc + n) acc n
 modₕ-idem acc (suc a) zero    rewrite +-identityʳ acc = modₕ-idem 0 a acc
 modₕ-idem acc (suc a) (suc n) rewrite +-suc acc n = modₕ-idem (suc acc) a n
 
@@ -79,7 +100,7 @@ a+n[modₕ]n≡a[modₕ]n acc zero n rewrite +-identityʳ acc = begin-equality
   modₕ acc (acc + n) (acc + suc n) n   ≡⟨ mod-cong₃ (+-suc acc n) ⟩
   modₕ acc (acc + n) (suc acc + n) n   ≡⟨ modₕ-skipTo0 acc (acc + n) n (suc acc) ⟩
   modₕ (acc + n) (acc + n) (suc acc) 0 ≡⟨⟩
-  modₕ 0 (acc + n) acc (acc + n)       ≡⟨ modₕ-skipToEnd 0 (acc + n) acc n ⟩
+  modₕ 0 (acc + n) acc (acc + n)       ≡⟨ a≤n⇒a[modₕ]n≡a 0 (acc + n) acc n ⟩
   acc                                  ∎
 a+n[modₕ]n≡a[modₕ]n acc (suc a) zero rewrite +-identityʳ acc = begin-equality
   modₕ acc acc (acc + suc a + 1)   0   ≡⟨ mod-cong₃ (+-comm (acc + suc a) 1) ⟩
@@ -107,22 +128,63 @@ private
   div-cong₃ : ∀ {c n a₁ a₂ b} → a₁ ≡ a₂ → divₕ c n a₁ b ≡ divₕ c n a₂ b
   div-cong₃ refl = refl
 
-  divₕ-restart : ∀ k m n j → j < n → divₕ k m n j ≡ divₕ (suc k) m (n ∸ suc j) m
-  divₕ-restart k m (suc n) zero    j<n       = refl
-  divₕ-restart k m (suc n) (suc j) (s≤s j<n) = divₕ-restart k m n j j<n
+  divₕ-restart : ∀ acc d n j → j < n → divₕ acc d n j ≡ divₕ (suc acc) d (n ∸ suc j) d
+  divₕ-restart acc d (suc n) zero    j<n       = refl
+  divₕ-restart acc d (suc n) (suc j) (s≤s j<n) = divₕ-restart acc d n j j<n
 
-  divₕ-finish : ∀ k m n j → j ≥ n → divₕ k m n j ≡ k
-  divₕ-finish k m zero    j       j≥n       = refl
-  divₕ-finish k m (suc n) (suc j) (s≤s j≥n) = divₕ-finish k m n j j≥n
+  divₕ-finish : ∀ acc d n j → j ≥ n → divₕ acc d n j ≡ acc
+  divₕ-finish acc d zero    j       j≥n       = refl
+  divₕ-finish acc d (suc n) (suc j) (s≤s j≥n) = divₕ-finish acc d n j j≥n
 
-  divₕ-extractAcc : ∀ k m n j → divₕ k m n j ≡ k + divₕ 0 m n j
-  divₕ-extractAcc k m zero j          = sym (+-identityʳ k)
-  divₕ-extractAcc k m (suc n) (suc j) = divₕ-extractAcc k m n j
-  divₕ-extractAcc k m (suc n) zero = begin-equality
-    divₕ (suc k)    m n m  ≡⟨ divₕ-extractAcc (suc k) m n m ⟩
-    suc k +  divₕ 0 m n m  ≡⟨ sym (+-suc k _) ⟩
-    k + suc (divₕ 0 m n m) ≡⟨ cong (k +_) (sym (divₕ-extractAcc 1 m n m)) ⟩
-    k +      divₕ 1 m n m  ∎
+  divₕ-extractAcc : ∀ acc d n j → divₕ acc d n j ≡ acc + divₕ 0 d n j
+  divₕ-extractAcc acc d zero j          = sym (+-identityʳ acc)
+  divₕ-extractAcc acc d (suc n) (suc j) = divₕ-extractAcc acc d n j
+  divₕ-extractAcc acc d (suc n) zero = begin-equality
+    divₕ (suc acc)    d n d  ≡⟨ divₕ-extractAcc (suc acc) d n d ⟩
+    suc acc +  divₕ 0 d n d  ≡⟨ sym (+-suc acc _) ⟩
+    acc + suc (divₕ 0 d n d) ≡⟨ cong (acc +_) (sym (divₕ-extractAcc 1 d n d)) ⟩
+    acc +      divₕ 1 d n d  ∎
+
+  pattern inj₂′ x = inj₂ (inj₁ x)
+  pattern inj₃  x = inj₂ (inj₂ x)
+
+  -- It may be that this triple sum has an elegant simplification to a
+  -- set of inequalities involving the modulus but I can't find it.
+  divₕ-lemma : ∀ {acc₁ acc₂} d n j k → j ≤ d → k ≤ d →
+               (acc₁ ≡ acc₂     × j ≤ k × k < modₕ 0 d n d) ⊎
+               (acc₁ ≡ acc₂     × modₕ 0 d n d ≤ j × j ≤ k) ⊎
+               (acc₁ ≡ suc acc₂ × k < modₕ 0 d n d × modₕ 0 d n d ≤ j) →
+               divₕ acc₁ d n j ≡ divₕ acc₂ d n k
+  divₕ-lemma d zero    j       k       j≤d k≤d (inj₁  (refl , _)) = refl
+  divₕ-lemma d zero    j       k       j≤d k≤d (inj₂′ (refl , _)) = refl
+  divₕ-lemma d zero    j       k       j≤d k≤d (inj₃ (eq , () , _))
+  -- (0 , 0) cases
+  divₕ-lemma d (suc n) zero    zero    j≤d k≤d (inj₁ (refl , _)) =
+    divₕ-lemma d n d d ≤-refl ≤-refl (inj₂′ (refl , a[modₕ]n<n 0 n d , ≤-refl))
+  divₕ-lemma d (suc n) zero    zero    j≤d k≤d (inj₂′ (refl , _)) =
+    divₕ-lemma d n d d ≤-refl ≤-refl (inj₂′ (refl , a[modₕ]n<n 0 n d , ≤-refl))
+  divₕ-lemma d (suc n) zero    zero    j≤d k≤d (inj₃ (_ , 0<mod , mod≤0)) =
+    contradiction (<-transˡ 0<mod mod≤0) λ()
+  -- (0 , suc) cases
+  divₕ-lemma d (suc n) zero (suc k)    j≤d k≤d (inj₁  (refl , _ , 1+k<mod)) =
+    divₕ-lemma d n d k ≤-refl (<⇒≤ k≤d) (inj₃ (refl , modₕ-help3 (suc k) 0 n d 1+k<mod , a[modₕ]n<n 0 n d))
+  divₕ-lemma d (suc n) zero (suc k)    j≤d k≤d (inj₂′ (refl , mod≤0 , _)) =
+    divₕ-lemma d n d k ≤-refl (<⇒≤ k≤d) (inj₃ (refl , subst (k <_) (sym (modₕ-help2 0 d n (n≤0⇒n≡0 mod≤0))) k≤d , a[modₕ]n<n 0 n d))
+  divₕ-lemma d (suc n) zero (suc k)    j≤d k≤d (inj₃  (_ , 1+k<mod , mod≤0)) =
+    contradiction (<-transˡ 1+k<mod mod≤0) λ()
+  -- (suc , 0) cases
+  divₕ-lemma d (suc n) (suc j) zero j≤d k≤d (inj₁  (_ , () , _))
+  divₕ-lemma d (suc n) (suc j) zero j≤d k≤d (inj₂′ (_ , _ , ()))
+  divₕ-lemma d (suc n) (suc j) zero j≤d k≤d (inj₃  (eq , 0<mod , mod≤1+j)) =
+    divₕ-lemma d n j d (<⇒≤ j≤d) ≤-refl (inj₂′ (eq , modₕ-help4 j 0 n d 0<mod mod≤1+j , <⇒≤ j≤d))
+  -- (suc , suc) cases
+  divₕ-lemma d (suc n) (suc j) (suc k) j≤d k≤d (inj₁ (eq , s≤s j≤k , 1+k<mod)) =
+    divₕ-lemma d n j k (<⇒≤ j≤d) (<⇒≤ k≤d) (inj₁ (eq , j≤k , modₕ-help3 (suc k) 0 n d 1+k<mod))
+  divₕ-lemma d (suc n) (suc j) (suc k) j≤d k≤d (inj₂′ (eq , mod≤1+j , (s≤s j≤k))) with modₕ 0 d (suc n) d ≟ 0
+  ... | yes mod≡0 = divₕ-lemma d n j k (<⇒≤ j≤d) (<⇒≤ k≤d) (inj₁ (eq , j≤k , subst (k <_) (sym (modₕ-help2 0 d n mod≡0)) k≤d))
+  ... | no  mod≢0 = divₕ-lemma d n j k (<⇒≤ j≤d) (<⇒≤ k≤d) (inj₂′ (eq , modₕ-help4 j 0 n d (n≢0⇒n>0 mod≢0) mod≤1+j , j≤k))
+  divₕ-lemma d (suc n) (suc j) (suc k) j≤d k≤d (inj₃  (eq , k<mod , mod≤1+j)) =
+    divₕ-lemma d n j k (<⇒≤ j≤d) (<⇒≤ k≤d) (inj₃ (eq , modₕ-help3 (suc k) 0 n d k<mod , modₕ-help4 j 0 n d (<-transʳ z≤n k<mod) mod≤1+j))
 
 -------------------------------------------------------------------------
 -- division lemmas
@@ -148,6 +210,7 @@ division-lemma accᵐ accᵈ (suc d) (suc n) rewrite +-suc accᵐ n = begin-equa
   where
   m = 2 + accᵐ + n
 
+
 n[divₕ]n≡1 : ∀ n m → divₕ 0 n (suc m) m ≡ 1
 n[divₕ]n≡1 n zero    = refl
 n[divₕ]n≡1 n (suc m) = n[divₕ]n≡1 n m
@@ -167,29 +230,15 @@ a*n[divₕ]n≡a acc (suc a) n = begin-equality
   acc + suc a                                    ∎
 
 
-+-distrib-divₕ-orig : ∀ d m n → modₕ 0 d m d + modₕ 0 d n d < suc d →
-                      divₕ 0 d (m + n) d ≡ divₕ 0 d m d + divₕ 0 d n d
-+-distrib-divₕ-orig d m n leq = {!!}
 
+divₕ-eq : ∀ k n j → k + modₕ 0 (k + j) n (k + j) < suc (k + j) → divₕ 0 (k + j) n j ≡ divₕ 0 (k + j) n (k + j)
+divₕ-eq k n j leq = divₕ-lemma (k + j) n j (k + j) (m≤n+m j k) ≤-refl (inj₂′ (refl , +-cancelˡ-≤ (suc k) leq , m≤n+m j k))
 
-
--- (n mod (1+d) - j) / (1 + d) ≡ (n mod (1+d) - k) / (1 + d)
-
--- n = l(1+d) + n mod (1+d)
-
-divₕ-eq : ∀ d n j k → n ∸ j + n ∸ k → ? → divₕ 0 d n j ≡ divₕ 0 d n k
-divₕ-eq d zero    j k leq eq = refl
-divₕ-eq d (suc n) zero    zero    leq eq = refl
-divₕ-eq d (suc n) zero    (suc k) leq eq = {!!} -- k < n ≤ k + d
-divₕ-eq d (suc n) (suc j) zero    leq eq = {!!} -- j < n ≤ j + d
-divₕ-eq d (suc n) (suc j) (suc k) leq eq = divₕ-eq d n j k {!!} {!!}
-
-+-distrib-divₕ : ∀ acc d m n j k → modₕ k d m j + modₕ 0 d n d < suc d →
-                 divₕ acc d (m + n) j ≡ divₕ acc d m j + divₕ 0 d n d
-+-distrib-divₕ acc d (suc m) n (suc j) k leq = +-distrib-divₕ acc d m n j (suc k) leq
-+-distrib-divₕ acc d (suc m) n zero    k leq = +-distrib-divₕ (suc acc) d m n d 0 leq
-+-distrib-divₕ acc d zero    n j       k leq = begin-equality
-  divₕ acc d n j     ≡⟨ divₕ-extractAcc acc d n j ⟩
-  acc + divₕ 0 d n j ≡⟨ cong (acc +_) (divₕ-eq d n j d {!!} {!!}) ⟩
-  acc + divₕ 0 d n d ∎
-
++-distrib-divₕ : ∀ acc k m n j → modₕ k (k + j) m j + modₕ 0 (k + j) n (k + j) < suc (k + j) →
+                 divₕ acc (k + j) (m + n) j ≡ divₕ acc (k + j) m j + divₕ 0 (k + j) n (k + j)
++-distrib-divₕ acc k (suc m) n zero leq rewrite +-identityʳ k = +-distrib-divₕ (suc acc) 0 m n k leq
++-distrib-divₕ acc k (suc m) n (suc j) leq rewrite +-suc k j = +-distrib-divₕ acc (suc k) m n j leq
++-distrib-divₕ acc k zero n j leq = begin-equality
+  divₕ acc (k + j) n j           ≡⟨ divₕ-extractAcc acc (k + j) n j ⟩
+  acc + divₕ 0 (k + j) n j       ≡⟨ cong (acc +_) (divₕ-eq k n j leq) ⟩
+  acc + divₕ 0 (k + j) n (k + j) ∎
