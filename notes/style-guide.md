@@ -7,8 +7,8 @@ This is very much a work-in-progress and is not exhaustive.
 
 #### Module imports
 
-* All module imports should be at the top of the file immediately after
-  the module declaration.
+* All module imports should be placed at the top of the file immediately
+  after the module declaration.
 
 * If the module takes parameters that require imports from other files
   then those imports only may be placed above the module declaration.
@@ -18,15 +18,15 @@ This is very much a work-in-progress and is not exhaustive.
   file but it can be given a shorter name using `as` and then opened
   later on in the file when needed, e.g.
   ```agda
-  import Data.List.Relation.Binary.Equality.SetoidEquality as SetoidEq
+  import Data.List.Relation.Binary.Equality.Setoid as SetoidEquality
   ...
   ...
-  open SetoidEq
+  open SetoidEquality S
   ```
 
 * The list of module imports should be in alphabetical order.
 
-* When only using a few items from a module, the items should be
+* When using only a few items from a module, the items should be
   enumerated in the import with `using` in order to make dependencies
   clearer.
 
@@ -34,9 +34,10 @@ This is very much a work-in-progress and is not exhaustive.
 
 * The contents of a top-level module should have zero indentation.
 
-* Every subsequent nested scope should then indent by 2 spaces.
+* Every subsequent nested scope should then be indented by an additional
+  two spaces.
 
-* `where` blocks should be indented two spaces in and their contents
+* `where` blocks should be indented by two spaces and their contents
   should be aligned with the `where`.
 
 * If the type of a term does not fit on one line then the subsequent
@@ -44,7 +45,7 @@ This is very much a work-in-progress and is not exhaustive.
   of the first line of type, e.g.
   ```agda
   map-cong₂ : ∀ {a b} {A : Set a} {B : Set b} →
-                      ∀ {f g : A → B} {xs} →
+              ∀ {f g : A → B} {xs} →
               All (λ x → f x ≡ g x) xs → map f xs ≡ map g xs
   ```
 
@@ -56,12 +57,12 @@ This is very much a work-in-progress and is not exhaustive.
 
 * Module parameters should be put on a single line if they fit.
 
-* If they don't then they should be spread out over multiple lines,
-  each indented by two spaces. If they can be grouped logically
-  by line then it is fine to do so, otherwise a line each is
-  probably clearest.
+* If they don't fit on a single line, then they should be spread out
+  over multiple lines, each indented by two spaces. If they can be
+  grouped logically by line then it is fine to do so, otherwise a line
+  each is probably clearest.
 
-* The `where` should then go on it's own line at the end.
+* The `where` should go on it's own line at the end.
 
 * For example:
   ```agda
@@ -75,7 +76,7 @@ This is very much a work-in-progress and is not exhaustive.
 
 * The `begin` clause should go on the same line as the rest of the proof.
 
-* Every subsequent combinator `_≡⟨_⟩_` should go on it's own line,
+* Every subsequent combinator `_≡⟨_⟩_` should go on its own line,
   indented by two spaces.
 
 * The relation sign (e.g. `≡`) for each line should be aligned if possible.
@@ -91,27 +92,26 @@ This is very much a work-in-progress and is not exhaustive.
     n + suc m    ∎
   ```
 
-* In case multiple reasoning frameworks are used in the same file, the
+* When multiple reasoning frameworks need to be used in the same file, the
   `open` statement should always come in a where clause local to the
   definition. This way users can easily see which reasoning toolkit is
   being used. For instance:
-
   ```agda
   foo m n p = begin
-  (...)
-    ∎ where open ≤-Reasoning
+    (...) ∎
+    where open ≤-Reasoning
   ```
 
 #### Record layout
 
-* The `record` declaration should go on the same line.
+* The `record` declaration should go on the same line as the rest of the proof.
 
-* The next line with the first record item should start a single `{` after it.
+* The next line with the first record item should start with a single `{`.
 
-* Every subsequent item of the record should go on it's own line
-  starting with a `;`.
+* Every subsequent item of the record should go on its own line starting with
+  a `;`.
 
-* The final line should end with `}` on it's own.
+* The final line should end with `}` on its own.
 
 * For example:
   ```agda
@@ -143,7 +143,7 @@ This is very much a work-in-progress and is not exhaustive.
 * If there are lots of implicit arguments that are common to a collection
   of proofs they should be extracted by using an anonymous module.
 
-* Implicit of type `Level` and `Set` can be generalised using `variable`s.
+* Implicit of type `Level` and `Set` can be generalised using `variable`.
   At the moment the policy is *not* to generalise over any other types in
   order to minimise the amount of information that users have to keep in
   their head concurrently.
@@ -164,7 +164,7 @@ This is very much a work-in-progress and is not exhaustive.
 
 * Natural variables are named `m`, `n`, `o`, ... (default `n`)
 
-* Integer varaibles are named `i`, `j`, `k`, ... (default `i`)
+* Integer variables are named `i`, `j`, `k`, ... (default `i`)
 
 * Rational variables are named `p`, `q`, `r`, ... (default `p`)
 
@@ -192,7 +192,7 @@ This is very much a work-in-progress and is not exhaustive.
 
 #### Operators and relations
 
-* Operators and relations names should use mixfix notation where
+* Operators and relations should be defined using mixfix notation where
   applicable (e.g. `_+_`, `_<_`)
 
 * Common properties such as those in rings/orders/equivalences etc.
