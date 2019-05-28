@@ -16,7 +16,6 @@ open import Data.Nat as Nat
 open import Data.Nat.DivMod.Core
 open import Data.Nat.Divisibility.Core
 open import Data.Nat.Properties
-open import Data.Sum using (_⊎_; inj₁; inj₂)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary.Decidable using (False)
 
@@ -41,7 +40,7 @@ a % (suc n) = mod-helper 0 n a n
 -- Relationship between _%_ and _div_
 
 a≡a%n+[a/n]*n : ∀ a n → a ≡ a % suc n + (a / (suc n)) * suc n
-a≡a%n+[a/n]*n a n = division-lemma 0 0 a n
+a≡a%n+[a/n]*n a n = div-mod-lemma 0 0 a n
 
 a%n=a∸a/n*n : ∀ a n → a % suc n ≡ a ∸ (a / suc n) * suc n
 a%n=a∸a/n*n a n-1 = begin-equality
@@ -86,6 +85,15 @@ a%n≤a a n = a[modₕ]n≤a 0 a n
 a≤n⇒a%n≡a : ∀ {a n} → a ≤ n → a % suc n ≡ a
 a≤n⇒a%n≡a {a} {n} a≤n with ≤⇒≤″ a≤n
 ... | less-than-or-equal {k} refl = a≤n⇒a[modₕ]n≡a 0 (a + k) a k
+
+a+1%n≡0⇒a%n≡n-1 : ∀ {a n} → suc a % suc n ≡ 0 → a % suc n ≡ n
+a+1%n≡0⇒a%n≡n-1 {a} {n} eq = a+1[modₕ]n≡0⇒a[modₕ]n≡n-1 0 n a eq
+
+m<1+a%n⇒m≤a%n : ∀ {m} a n → m < suc a % suc n → m ≤ a % suc n
+m<1+a%n⇒m≤a%n {m} a n = k<1+a[modₕ]n⇒k≤a[modₕ]n 0 m a n
+
+1+a%n≤1+m⇒a%n≤m : ∀ m a n → 0 < suc a % suc n → suc a % suc n ≤ suc m → a % suc n ≤ m
+1+a%n≤1+m⇒a%n≤m m a n leq = 1+a[modₕ]n≤1+k⇒a[modₕ]n≤k 0 m a n leq
 
 %-distribˡ-+ : ∀ a b n → (a + b) % suc n ≡ (a % suc n + b % suc n) % suc n
 %-distribˡ-+ a b n-1 = begin-equality
