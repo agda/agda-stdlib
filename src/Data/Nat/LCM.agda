@@ -19,80 +19,15 @@ open import Data.Nat.GCD
 open import Data.Product
 open import Data.Sum using (inj₁)
 open import Function
-open import Relation.Binary.PropositionalEquality as P
+open import Relation.Binary.PropositionalEquality as PropEq
   using (_≡_; refl)
 open import Relation.Binary
 open import Relation.Nullary.Decidable using (False; fromWitnessFalse)
 
 open +-*-Solver
 
-private
-  gcd≢0′ : ∀ m {n} → False (gcd (suc m) (suc n) ≟ 0)
-  gcd≢0′ m {n} = fromWitnessFalse (gcd≢0 (suc m) (suc n) (inj₁ (λ())))
-
 ------------------------------------------------------------------------
--- Definition
-
-lcm : ℕ → ℕ → ℕ
-lcm zero        n           = zero
-lcm n           zero        = zero
-lcm m@(suc m-1) n@(suc n-1) = (m * n / gcd m n) {gcd≢0′ m-1}
-
-------------------------------------------------------------------------
--- Properties
-{-
-∣-test : ∀ {m n o} → m ∣ n → n ∣ o → (n / m) ∣ o
-∣-test = {!!}
-
-/n-pres-∣ : ∀ {m n c} → m ∣ c → n ∣ c → Coprime m n → m * n ∣ c
-/n-pres-∣ {m} {n} {c} m∣c n∣c cop = {!!}
--}
-m∣lcm[m,n] : ∀ m n → m ∣ lcm m n
-m∣lcm[m,n] zero      zero      = 0 ∣0
-m∣lcm[m,n] zero      (suc n)   = 0 ∣0
-m∣lcm[m,n] (suc m)   zero      = suc m ∣0
-m∣lcm[m,n] m@(suc m-1) n@(suc n-1) = begin
- m                 ∣⟨ m∣m*n _ ⟩
- m * (n / gcd m n) ≡⟨ P.sym (*-/-assoc m (gcd≢0′ m-1) (gcd[m,n]∣n m n)) ⟩
- m * n / gcd m n   ∎
- where open ∣-Reasoning
-
-n∣lcm[m,n] : ∀ m n → n ∣ lcm m n
-n∣lcm[m,n] zero        zero        = 0 ∣0
-n∣lcm[m,n] zero        (suc n)     = suc n ∣0
-n∣lcm[m,n] (suc m)     zero        = 0 ∣0
-n∣lcm[m,n] m@(suc m-1) n@(suc n-1) = begin
-  n                 ∣⟨ m∣m*n (m / gcd m n) ⟩
-  n * (m / gcd m n) ≡⟨ P.sym (*-/-assoc n (gcd≢0′ m-1) (gcd[m,n]∣m m n)) ⟩
-  n * m / gcd m n   ≡⟨ P.cong (λ v → (v / gcd m n) {gcd≢0′ m-1}) (*-comm n m) ⟩
-  m * n / gcd m n   ∎
-  where open ∣-Reasoning
-
-{-
-lcd-least : ∀ {m n c} → m ∣ c → n ∣ c → lcm m n ∣ c
-lcd-least {zero}  {zero}  {c} 0∣c _   = 0∣c
-lcd-least {zero}  {suc n} {c} 0∣c _   = 0∣c
-lcd-least {suc m} {zero}  {c} _   0∣c = 0∣c
-lcd-least {m@(suc m-1)} {n@(suc n-1)} {c} m∣c n∣c = begin
-  m * n / gcd m n   ≡⟨ {!!} ⟩
-  m * (n / gcd m n) ∣⟨ /n-pres-∣ m∣c {!!} {!!} ⟩
-  c                 ∎
-  where open ∣-Reasoning
--}
-
-gcd*lcm : ∀ m n → gcd m n * lcm m n ≡ m * n
-gcd*lcm zero    zero    = refl
-gcd*lcm zero    (suc n) = *-zeroʳ n
-gcd*lcm (suc m) zero    = refl
-gcd*lcm m@(suc _) n@(suc _) = begin-equality
-  gcd m n * (m * n / gcd m n) ≡⟨ {!!} ⟩
-  gcd m n * (m * n) / gcd m n ≡⟨ {!!} ⟩
-  (m * n) * gcd m n / gcd m n ≡⟨ {!!} ⟩
-  m * n                       ∎
-  where open ≤-Reasoning
-{-
-------------------------------------------------------------------------
--- A formal specification of LCM
+-- Least common multiple (lcm).
 
 module LCM where
 
@@ -136,9 +71,9 @@ private
 
 -- The lcm can be calculated from the gcd.
 
-mkLCM : (i j : ℕ) → ∃ λ d → LCM i j d
-mkLCM i j with mkGCD′ i j
-mkLCM .(q₁ * d) .(q₂ * d) | (d , gcd-* q₁ q₂ q₁-q₂-coprime) =
+lcm : (i j : ℕ) → ∃ λ d → LCM i j d
+lcm i j with mkGCD′ i j
+lcm .(q₁ * d) .(q₂ * d) | (d , gcd-* q₁ q₂ q₁-q₂-coprime) =
   ( q₁ * q₂ * d
   , record { commonMultiple = (mult₁ q₁ q₂ d , mult₂ q₁ q₂ d)
            ; least          = least d
@@ -183,10 +118,12 @@ mkLCM .(q₁ * d) .(q₂ * d) | (d , gcd-* q₁ q₂ q₁-q₂-coprime) =
 -- numbers.
 
 gcd*lcm : ∀ {i j d m} → GCD i j d → LCM i j m → i * j ≡ d * m
-gcd*lcm  {i} {j} {d} {m} g l with LCM.unique l (proj₂ (mkLCM i j))
-... | refl with mkGCD′ i j
-...   | (d′ , gcd-* q₁ q₂ q₁-q₂-coprime)
-  with GCD.unique g (gcd′-gcd (gcd-* q₁ q₂ q₁-q₂-coprime))
-...     | refl = solve 3
-  (λ q₁ q₂ d → q₁ :* d :* (q₂ :* d) :=  d :* (q₁ :* q₂ :* d)) refl q₁ q₂ d
--}
+gcd*lcm  {i}        {j}       {d}  {m}               g l with LCM.unique l (proj₂ (lcm i j))
+gcd*lcm  {i}        {j}       {d} .{proj₁ (lcm i j)} g l | refl with mkGCD′ i j
+gcd*lcm .{q₁ * d′} .{q₂ * d′} {d}                    g l | refl | (d′ , gcd-* q₁ q₂ q₁-q₂-coprime)
+                                                           with GCD.unique g
+                                                                  (gcd′-gcd (gcd-* q₁ q₂ q₁-q₂-coprime))
+gcd*lcm .{q₁ * d}  .{q₂ * d}  {d}                    g l | refl | (.d , gcd-* q₁ q₂ q₁-q₂-coprime) | refl =
+  solve 3 (λ q₁ q₂ d → q₁ :* d :* (q₂ :* d)
+                   :=  d :* (q₁ :* q₂ :* d))
+          refl q₁ q₂ d

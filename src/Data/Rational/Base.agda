@@ -111,12 +111,8 @@ n ≢0 = False (n ℕ.≟ 0)
 -- A constructor for ℚ that takes two natural numbers, say 6 and 21,
 -- and returns them in a normalized form, e.g. say 2 and 7
 
-<<<<<<< HEAD
-normalize : ∀ m n .{m≢0 : m ≢0} .{n≢0 : n ≢0} → ℚ
-=======
 normalize : ∀ (m n : ℕ) → .{n≢0 : n ≢0} → ℚ
 normalize zero    n       = mkℚ +0 0 (C.sym (C.1-coprimeTo 0))
->>>>>>> master
 normalize (suc m) (suc n) with mkGCD (suc m) (suc n)
 ... | zero  , GCD.is (1+m∣0 , _) _ = contradiction (0∣⇒≡0 1+m∣0) λ()
 ... | suc g , G@(GCD.is (divides (suc p) refl , divides (suc q) refl) _)

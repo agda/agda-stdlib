@@ -100,15 +100,14 @@ a≤n⇒a%n≡a {a} {n} a≤n with ≤⇒≤″ a≤n
   (a % n +  b % n)                % n ∎
   where n = suc n-1
 
-%-remove-+ˡ : ∀ a b {n} → a % suc n ≡ 0 → (a + b) % suc n ≡ b % suc n
-%-remove-+ˡ a b {n-1} eq = begin-equality
-  (a + b) % n          ≡⟨ %-distribˡ-+ a b n-1 ⟩
-  (a % n + b % n) % n  ≡⟨ cong (λ v → (v + b % n) % n) eq ⟩
-  b % n % n            ≡⟨ a%n%n≡a%n b n-1 ⟩
-  b % n                ∎
+%-remove-+ˡ : ∀ a b {n} → suc n ∣ a → (a + b) % suc n ≡ b % suc n
+%-remove-+ˡ a b {n-1} (divides p refl) = begin-equality
+  (p * n + b) % n ≡⟨ cong (_% n) (+-comm (p * n) b) ⟩
+  (b + p * n) % n ≡⟨ [a+kn]%n≡a%n b p n-1 ⟩
+  b           % n ∎
   where n = suc n-1
 
-%-remove-+ʳ : ∀ a b {n} → b % suc n ≡ 0 → (a + b) % suc n ≡ a % suc n
+%-remove-+ʳ : ∀ a b {n} → suc n ∣ b → (a + b) % suc n ≡ a % suc n
 %-remove-+ʳ a b {n} eq rewrite +-comm a b = %-remove-+ˡ b a eq
 
 ------------------------------------------------------------------------

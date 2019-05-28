@@ -21,7 +21,7 @@ Bug-fixes
 #### `_<_` in `Data.Integer`
 
 * The definition of `_<_` in `Data.Integer` often resulted in unsolved metas
-  when Agda has to infer the first argument. This was because it was
+  when Agda had to infer the first argument. This was because it was
   previously implemented in terms of `suc` -> `_+_` -> `_⊖_`.
 
 * To fix this problem the implementation has therefore changed to:
@@ -44,6 +44,11 @@ Bug-fixes
 
 * `Data.Rational` now exports queries from `Data.Rational.Base` instead of
   from `Data.Nat.Base`.
+
+* The proof `m+n∸m≡n` in `Data.Nat.Properties` was incorrectly named as
+  it proved the equality `m + (n ∸ m) ≡ n` rather than `m + n ∸ m ≡ n`. It has
+  therefore been renamed `m+[n∸m]≡n` and the old name now refers to a new
+  proof of the correct type.
 
 Non-backwards compatible changes
 --------------------------------
@@ -438,22 +443,31 @@ Other minor additions
 
 * Added new proofs to `Data.Nat.Divisibility`:
   ```agda
+  ∣m∸n∣n⇒∣m : n ≤ m → i ∣ m ∸ n → i ∣ n → i ∣ m
   ∣n∣m%n⇒∣m : d ∣ suc n → d ∣ (m % suc n) → d ∣ m
-  %-presˡ-∣ : d ∣ m → d ∣ suc n → d ∣ (m % suc n)
+  %-presˡ-∣ : d ∣ m → d ∣ suc n → d ∣ (m % suc n
   ```
 
 * Added new operator and proofs to `Data.Nat.DivMod`:
   ```agda
   _/_ = _div_
 
-  a%n≤a       : a % (suc n) ≤ a
-  a≤n⇒a%n≡a   : a ≤ n → a % suc n ≡ a
-  ∣n∣m%n⇒∣m   : d ∣ suc n → d ∣ (m % suc n) → d ∣ m
-  %-remove-+ˡ : a % suc n ≡ 0 → (a + b) % suc n ≡ b % suc n
-  %-remove-+ʳ : b % suc n ≡ 0 → (a + b) % suc n ≡ a % suc n
-  %-presˡ-∣   : d ∣ m → d ∣ suc n → d ∣ (m % suc n)
+  a%n≤a          : a % suc n ≤ a
+  a≤n⇒a%n≡a      : a ≤ n → a % suc n ≡ a
+  %-remove-+ˡ    : suc n ∣ a → (a + b) % suc n ≡ b % suc n
+  %-remove-+ʳ    : suc n ∣ b → (a + b) % suc n ≡ a % suc n
+  %-presˡ-∣      : d ∣ m → d ∣ suc n → d ∣ (m % suc n)
 
-  [a/n]*n≤a   : (a / suc n) * suc n ≤ a
+  0/n≡0          : 0 / suc n ≡ 0
+  a/1≡a          : a / 1 ≡ a
+  n/n≡1          : suc n / suc n ≡ 1
+  a*n/n≡a        : a * suc n / suc n ≡ a
+  a/n*n≤a        : a / suc n * suc n ≤ a
+  a/n*n≡a        : suc n ∣ a → a / suc n * suc n ≡ a
+  *-/-assoc      : d ∣ n → (m * n) / d ≡ m * (n / d)
+  +-distrib-/    : m % suc d + n % suc d < suc d → (m + n) / suc d ≡ m / suc d + n / suc d
+  +-distrib-/-∣ˡ : suc d ∣ m                     → (m + n) / suc d ≡ m / suc d + n / suc d
+  +-distrib-/-∣ʳ : suc d ∣ n                     → (m + n) / suc d ≡ m / suc d + n / suc d
   ```
   Additionally the `{≢0 : False (divisor ℕ.≟ 0)}` argument to all the
   division and modulus functions has been marked irrelevant. This means
