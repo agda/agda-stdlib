@@ -22,6 +22,7 @@ New modules
 * The following new modules have been added to the library:
   ```
   Algebra.Properties.CommutativeSemigroup
+  Algebra.Properties.Semigroup
 
   Category.Monad.Reader
 
@@ -56,7 +57,10 @@ New modules
 
 * ``Data/Bin.agda`` and ``Data.Bin/*.agda``  of lib-1.0 are removed,
   added new ``Data.Bin.Base, Data.Bin.Properties``.
-
+  This total change of the Bin part is done for the following reasons.
+  1) The Bin data representation with three constructors is unique for each
+     natural number, this approach simplifies the algorithms and proofs.
+  2) Many necessary functions and proofs are added.
 
 
 Deprecated features
@@ -204,19 +208,19 @@ Other minor additions
   <-≤-connex : Connex _<_ _≤_
   >-≥-connex : Connex _>_ _≥_
 
-  1+n≢0      : suc n ≢ 0
-  0≢1+n      : 0 ≢ suc n
-  n<1+n      : n < suc n   (by ≤-refl)
-  m*[1+n]    : m * (suc n) ≡ m + m * n
-  2m≢1+2n    : 2 * m ≢ 1 + 2 * n
-  m>1⇒m*n≢1 : m > 1 ⇒ m * n ≢ 1
+  1+n≢0         : suc n ≢ 0
+  0≢1+n         : 0 ≢ suc n
+  n<1+n         : n < suc n
+  m*[1+n]       : m * (suc n) ≡ m + m * n
+  even≢odd      : 2 * m ≢ 1 + 2 * n
+  m>1⇒m*n≢1     : m > 1 ⇒ m * n ≢ 1
 
-  <ᵇ⇒<      : T (m <ᵇ n) → m < n
-  <⇒<ᵇ      : m < n → T (m <ᵇ n)
-  n≢0⇒n>0   : n ≢ 0 → n > 0
-  m≤m*n      : 0 < n → m ≤ m * n
-  m<m*n      : 0 < m → 1 < n → m < m * n
-  m∸n≢0⇒n<m : m ∸ n ≢ 0 → n < m
+  <ᵇ⇒<          : T (m <ᵇ n) → m < n
+  <⇒<ᵇ          : m < n → T (m <ᵇ n)
+  n≢0⇒n>0       : n ≢ 0 → n > 0
+  m≤m*n         : 0 < n → m ≤ m * n
+  m<m*n         : 0 < m → 1 < n → m < m * n
+  m∸n≢0⇒n<m     : m ∸ n ≢ 0 → n < m
   ```
 
 * The functions `_≤?_` and `<-cmp` in `Data.Nat.Properties` have been
@@ -312,12 +316,6 @@ Other minor additions
 * Added new definitions in `Relation.Binary.Core`:
   ```agda
   Universal _∼_  = ∀ x y → x ∼ y
-
-  _←→_ A B = (A → B) × (B → A),
-  ```
-
-  definition of ``_Respects2_`` and proofs for its relation to ``_Respects₂_``
-
   ```
 
 * The relation `_≅_` in `Relation.Binary.HeterogeneousEquality` has

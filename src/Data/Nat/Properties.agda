@@ -1498,15 +1498,12 @@ m∸[m∸n]≡n {suc m} {suc n} (s≤s n≤m) = begin-equality
 *-distrib-∸ : _*_ DistributesOver _∸_
 *-distrib-∸ = *-distribˡ-∸ , *-distribʳ-∸
 
-2m≢1+2n :  ∀ m n → 2 * m ≢ suc (2 * n)
-2m≢1+2n m n 2m≡1+2n =  m>1⇒m*n≢1 {2} {m ∸ n} n<1+n 2[m-n]≡1
-  where
-  2n       = 2 * n
-  2[m-n]≡1 = begin-equality
-    2 * (m ∸ n)      ≡⟨ *-distribˡ-∸ 2 m n ⟩
-    2 * m ∸ 2n       ≡⟨ cong (_∸ 2n) 2m≡1+2n ⟩
-    (1 + 2n) ∸ 2n    ≡⟨ m+n∸n≡m 1 2n ⟩
-    1                ∎
+even≢odd :  ∀ m n → 2 * m ≢ suc (2 * n)
+even≢odd m n 2m≡1+2n =  m>1⇒m*n≢1 {2} {m ∸ n} n<1+n $ begin-equality
+  2 * (m ∸ n)           ≡⟨ *-distribˡ-∸ 2 m n ⟩
+  2 * m ∸ 2 * n         ≡⟨ cong (_∸ (2 * n)) 2m≡1+2n ⟩
+  (1 + 2 * n) ∸ 2 * n   ≡⟨ m+n∸n≡m 1 (2 * n) ⟩
+  1                     ∎
 
 ------------------------------------------------------------------------
 -- Properties of _∸_ and _⊓_ and _⊔_

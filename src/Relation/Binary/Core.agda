@@ -53,12 +53,6 @@ _⇒_ : REL A B ℓ₁ → REL A B ℓ₂ → Set _
 P ⇒ Q = ∀ {i j} → P i j → Q i j
 
 
-infix 3 _←→_
-
-_←→_ :  Set a → Set b → Set _   -- "if and only if"
-_←→_ A B = (A → B) × (B → A)
-
-
 -- Generalised implication - if P ≡ Q it can be read as "f preserves P".
 
 _=[_]⇒_ : Rel A ℓ₁ → (A → B) → Rel B ℓ₂ → Set _
@@ -198,32 +192,6 @@ P Respectsˡ _∼_ = ∀ {y} → (flip P y) Respects _∼_
 
 _Respects₂_ : Rel A ℓ₁ → Rel A ℓ₂ → Set _
 P Respects₂ _∼_ = (P Respectsʳ _∼_) × (P Respectsˡ _∼_)
-
-
-_Respects2_ : Rel A ℓ₁ → Rel A ℓ₂ → Set _
-P Respects2 _~_ = ∀ {x x' y y'} → x ~ x' → y ~ y' → P x y → P x' y'
- --
- -- It is easier to use than  _Respects₂_  of standard lib-1.0.
-
-Respects₂⇒Respects2 : (P : Rel A ℓ₁) → (_~_ : Rel A ℓ₂) →
-                                         P Respects₂ _~_ → P Respects2 _~_
-Respects₂⇒Respects2 P _~_ (P-respʳ , P-respˡ) {x} {x'} {y} {y'} x~x' y~y'
-                                                                      Pxy =
-  P-respˡ x~x' Pxy'
-  where
-  Pxy' = P-respʳ y~y' Pxy
-
--- the reverse holds if ~ is reflexive:
---
-Respects2⇒Respects₂ : (P : Rel A ℓ₁) → (_~_ : Rel A ℓ₂) →
-                       Reflexive _~_ → P Respects2 _~_ → P Respects₂ _~_
-
-Respects2⇒Respects₂ P _~_ ~refl resp2 =
-  ( (\{x y y'} → respR {x} {y} {y'}) , (\{y x x'} → respL {y} {x} {x'}) )
-  where
-  respR = (\{x y y'}      → resp2 ~refl)
-  respL = (\{y x x'} x~x' → resp2 x~x' ~refl)
-
 
 -- Substitutivity - any two related elements satisfy exactly the same
 -- set of unary relations. Note that only the various derivatives

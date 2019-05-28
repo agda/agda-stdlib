@@ -9,14 +9,13 @@
 open import Algebra using (Semigroup)
 open import Algebra.FunctionProperties using (Commutative)
 
-module Algebra.Properties.CommutativeSemigroup {ℓ ℓ=} (H : Semigroup ℓ ℓ=)
-                                     (open Semigroup H using (_≈_; _∙_))
-                                     (comm : Commutative _≈_ _∙_)
-                                     where
+module Algebra.Properties.CommutativeSemigroup
+       {ℓ ℓ=} (H : Semigroup ℓ ℓ=) (open Semigroup H using (_≈_; _∙_))
+       (comm : Commutative _≈_ _∙_)
+       where
 
-import      Relation.Binary.Properties.Setoid as OfSetoid
-open import Function using (_$_)
-import      Relation.Binary.EqReasoning as EqR
+import Relation.Binary.Properties.Setoid as OfSetoid
+import Relation.Binary.EqReasoning as EqR
 
 open Semigroup H using (refl; sym; trans; assoc; ∙-congˡ; ∙-congʳ; setoid)
 open OfSetoid setoid public
@@ -29,24 +28,24 @@ open EqR setoid
 -- There are five nontrivial permutations.
 ------------------------------------------------------------------------------
 
-x∙yz≈y∙xz :  ∀ x y z → x ∙ (y ∙ z) ≈ y ∙ (x ∙ z)    -- x-y
+x∙yz≈y∙xz :  ∀ x y z → x ∙ (y ∙ z) ≈ y ∙ (x ∙ z)
 x∙yz≈y∙xz x y z = begin
   x ∙ (y ∙ z)    ≈⟨ sym (assoc x y z) ⟩
   (x ∙ y) ∙ z    ≈⟨ ∙-congʳ (comm x y) ⟩
   (y ∙ x) ∙ z    ≈⟨ assoc y x z ⟩
   y ∙ (x ∙ z)    ∎
 
-x∙yz≈z∙yx :  ∀ x y z → x ∙ (y ∙ z) ≈ z ∙ (y ∙ x)    -- x-z
+x∙yz≈z∙yx :  ∀ x y z → x ∙ (y ∙ z) ≈ z ∙ (y ∙ x)
 x∙yz≈z∙yx x y z = begin
   x ∙ (y ∙ z)    ≈⟨ ∙-congˡ (comm y z) ⟩
   x ∙ (z ∙ y)    ≈⟨ x∙yz≈y∙xz x z y ⟩
   z ∙ (x ∙ y)    ≈⟨ ∙-congˡ (comm x y) ⟩
   z ∙ (y ∙ x)    ∎
 
-x∙yz≈x∙zy :  ∀ x y z → x ∙ (y ∙ z) ≈ x ∙ (z ∙ y)    -- y-z
+x∙yz≈x∙zy :  ∀ x y z → x ∙ (y ∙ z) ≈ x ∙ (z ∙ y)
 x∙yz≈x∙zy _ y z =  ∙-congˡ (comm y z)
 
-x∙yz≈y∙zx :  ∀ x y z → x ∙ (y ∙ z) ≈ y ∙ (z ∙ x)    -- cycle
+x∙yz≈y∙zx :  ∀ x y z → x ∙ (y ∙ z) ≈ y ∙ (z ∙ x)
 x∙yz≈y∙zx x y z = begin
   x ∙ (y ∙ z)   ≈⟨ comm x _ ⟩
   (y ∙ z) ∙ x   ≈⟨ assoc y z x ⟩
@@ -63,7 +62,6 @@ x∙yz≈z∙xy x y z = begin
 -- These permutation laws are proved by composing the proofs for
 -- partitions (1,1) with  \p → trans p (sym (assoc _ _ _)).
 ------------------------------------------------------------------------------
-x∙yz≈xy∙z =  \x y z → sym (assoc x y z)
 
 x∙yz≈yx∙z :  ∀ x y z → x ∙ (y ∙ z) ≈ (y ∙ x) ∙ z
 x∙yz≈yx∙z x y z =  trans (x∙yz≈y∙xz x y z) (sym (assoc y x z))
@@ -87,8 +85,6 @@ x∙yz≈zx∙y x y z =  trans (x∙yz≈z∙xy x y z) (sym (assoc z x y))
 -- trans (assoc x y z).
 ------------------------------------------------------------------------------
 
--- xy∙z≈x∙yz =  assoc _ _ _
-
 xy∙z≈y∙xz :  ∀ x y z → (x ∙ y) ∙ z ≈ y ∙ (x ∙ z)
 xy∙z≈y∙xz x y z =  trans (assoc x y z) (x∙yz≈y∙xz x y z)
 
@@ -98,15 +94,19 @@ xy∙z≈z∙yx x y z =  trans (assoc x y z) (x∙yz≈z∙yx x y z)
 xy∙z≈x∙zy :  ∀ x y z → (x ∙ y) ∙ z ≈ x ∙ (z ∙ y)
 xy∙z≈x∙zy x y z =  trans (assoc x y z) (x∙yz≈x∙zy x y z)
 
-xy∙z≈y∙zx =  \x y z → trans (assoc x y z) (x∙yz≈y∙zx x y z)
-xy∙z≈z∙xy =  \x y z → trans (assoc x y z) (x∙yz≈z∙xy x y z)
+xy∙z≈y∙zx :  ∀ x y z → (x ∙ y) ∙ z ≈ y ∙ (z ∙ x)
+xy∙z≈y∙zx x y z =  trans (assoc x y z) (x∙yz≈y∙zx x y z)
+
+xy∙z≈z∙xy :  ∀ x y z → (x ∙ y) ∙ z ≈ z ∙ (x ∙ y)
+xy∙z≈z∙xy x y z =  trans (assoc x y z) (x∙yz≈z∙xy x y z)
 
 ------------------------------------------------------------------------------
 -- Partitions (2,2).
 -- These proofs are by composing with the proofs for (2,1).
 ------------------------------------------------------------------------------
 
-xy∙z≈yx∙z =  \x y z → trans (xy∙z≈y∙xz _ _ _) (sym (assoc y x z))
+xy∙z≈yx∙z :  ∀ x y z → (x ∙ y) ∙ z ≈ (y ∙ x) ∙ z
+xy∙z≈yx∙z x y z =  trans (xy∙z≈y∙xz _ _ _) (sym (assoc y x z))
 
 xy∙z≈zy∙x :  ∀ x y z → (x ∙ y) ∙ z ≈ (z ∙ y) ∙ x
 xy∙z≈zy∙x x y z =  trans (xy∙z≈z∙yx x y z) (sym (assoc z y x))
