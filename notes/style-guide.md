@@ -91,6 +91,17 @@ This is very much a work-in-progress and is not exhaustive.
     n + suc m    ∎
   ```
 
+* In case multiple reasoning frameworks are used in the same file, the
+  `open` statement should always come in a where clause local to the
+  definition. This way users can easily see which reasoning toolkit is
+  being used. For instance:
+
+  ```agda
+  foo m n p = begin
+  (...)
+    ∎ where open ≤-Reasoning
+  ```
+
 #### Record layout
 
 * The `record` declaration should go on the same line.
