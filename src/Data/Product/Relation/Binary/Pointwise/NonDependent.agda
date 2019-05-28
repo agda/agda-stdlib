@@ -9,6 +9,7 @@
 module Data.Product.Relation.Binary.Pointwise.NonDependent where
 
 open import Data.Product as Prod
+open import Data.Product.Properties using (≡-dec)
 open import Data.Sum
 open import Data.Unit.Base using (⊤)
 open import Function
@@ -244,10 +245,6 @@ module _ {a b} {A : Set a} {B : Set b} where
       }
     }
 
-  ≡?×≡?⇒≡? : Decidable {A = A} _≡_ → Decidable {A = B} _≡_ →
-              Decidable {A = A × B} _≡_
-  ≡?×≡?⇒≡? ≟₁ ≟₂ p q = Dec.map′ ≡×≡⇒≡ ≡⇒≡×≡ (×-decidable ≟₁ ≟₂ p q)
-
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
 ------------------------------------------------------------------------
@@ -352,8 +349,13 @@ _×-strictPartialOrder_    = ×-strictPartialOrder
 "Warning: _×-strictPartialOrder_ was deprecated in v0.15.
 Please use ×-strictPartialOrder instead."
 #-}
-_×-≟_                     = ≡?×≡?⇒≡?
+_×-≟_                     = ≡-dec
 {-# WARNING_ON_USAGE _×-≟_
 "Warning: _×-≟_ was deprecated in v0.15.
-Please use ≡?×≡?⇒≡? instead."
+Please use ≡-dec from Data.Product.Properties instead."
+#-}
+≡?×≡?⇒≡?                  = ≡-dec
+{-# WARNING_ON_USAGE ≡?×≡?⇒≡?
+"Warning: ≡?×≡?⇒≡? was deprecated in v1.1.
+Please use ≡-dec from Data.Product.Properties instead."
 #-}

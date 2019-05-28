@@ -171,6 +171,8 @@ import Data.Product.Function.Dependent.Setoid
 -- used:
 
 import README.Data.Nat
+import README.Data.Nat.Induction
+
 import README.Data.Integer
 
 -- Some examples showing how the AVL tree module can be used.
@@ -184,6 +186,10 @@ import README.Data.List
 -- Using List's Interleaving to define a fully certified filter function.
 
 import README.Data.Interleaving
+
+-- Example of an encoding of record types with manifest fields and "with".
+
+import README.Data.Record
 
 -- Example use case for a trie: a wee generic lexer
 

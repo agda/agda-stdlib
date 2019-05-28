@@ -11,6 +11,7 @@ module Codata.Musical.Colist.Infinite-merge where
 open import Codata.Musical.Notation
 open import Codata.Musical.Colist as Colist hiding (_⋎_)
 open import Data.Nat
+open import Data.Nat.Induction using (<′-wellFounded)
 open import Data.Nat.Properties
 open import Data.Product as Prod
 open import Data.Sum
@@ -21,7 +22,6 @@ open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse as Inv using (_↔_; Inverse; inverse)
 import Function.Related as Related
 open import Function.Related.TypeIsomorphisms
-open import Induction.Nat using (<′-wellFounded)
 import Induction.WellFounded as WF
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 

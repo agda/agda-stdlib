@@ -11,7 +11,7 @@ module Level where
 -- Levels.
 
 open import Agda.Primitive as Prim public
-  using    (Level; _⊔_)
+  using    (Level; _⊔_; Setω)
   renaming (lzero to zero; lsuc to suc)
 
 -- Lifting.
