@@ -66,6 +66,8 @@ New modules
   Data.AVL.NonEmpty
   Data.AVL.NonEmpty.Propositional
 
+  Data.List.Membership.Propositional.Properties.WithK
+
   Data.List.Relation.Binary.Disjoint.Propositional
   Data.List.Relation.Binary.Disjoint.Setoid
   Data.List.Relation.Binary.Disjoint.Setoid.Properties
@@ -384,6 +386,11 @@ Other minor additions
   concat⁺ : Sublist (Sublist R) ass bss → Sublist R (concat ass) (concat bss)
   ```
 
+* Added new proof to `Data.List.Membership.Setoid.Properties`:
+  ```agda
+  unique⇒irrelevant : B.Irrelevant _≈_ → Unique xs → U.Irrelevant (_∈ xs)
+  ```
+
 * Added new proofs to `Data.List.Relation.Binary.Sublist.Propositional.Properties`:
   ```agda
   All-resp-⊆ : (All P) Respects (flip _⊆_)
@@ -392,12 +399,14 @@ Other minor additions
 
 * Added new operations to `Data.List.Relation.Unary.All`:
   ```agda
-  uncons    : All P (x ∷ xs) → P x × All P xs
-  reduce    : (f : ∀ {x} → P x → B) → ∀ {xs} → All P xs → List B
-  construct : (f : B → ∃ P) (xs : List B) → ∃ (All P)
-  fromList  : (xs : List (∃ P)) → All P (List.map proj₁ xs)
-  toList    : All P xs → List (∃ P)
-  self      : All (const A) xs
+  lookupAny  : All P xs → (i : Any Q xs) → (P ∩ Q) (lookup i)
+  lookupWith : ∀[ P ⇒ Q ⇒ R ] → All P xs → (i : Any Q xs) → R (lookup i)
+  uncons     : All P (x ∷ xs) → P x × All P xs
+  reduce     : (f : ∀ {x} → P x → B) → ∀ {xs} → All P xs → List B
+  construct  : (f : B → ∃ P) (xs : List B) → ∃ (All P)
+  fromList   : (xs : List (∃ P)) → All P (List.map proj₁ xs)
+  toList     : All P xs → List (∃ P)
+  self       : All (const A) xs
   ```
 
 * Added new proofs to `Data.List.Relation.Unary.All.Properties`:
@@ -591,6 +600,8 @@ Other minor additions
   hΠ[_∶_]_ s a ty   = Π[ s ∶ (hArg a) ] ty
   iΠ[_∶_]_ s a ty   = Π[ s ∶ (iArg a) ] ty
   ```
+
+* Defined `_≉_` as the negation of `_≈_` in `Relation.Binary`'s `Setoid`.
 
 * Added new definitions in `Relation.Binary.Core`:
   ```agda
