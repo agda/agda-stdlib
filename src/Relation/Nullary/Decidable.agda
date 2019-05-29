@@ -93,7 +93,7 @@ module _ {a₁ a₂ b₁ b₂} {A : Setoid a₁ a₂} {B : Setoid b₁ b₂} whe
 ------------------------------------------------------------------------
 -- Extracting proofs
 
-module _ {P : Set p} where
+module _ {p} {P : Set p} where
 
 -- If a decision procedure returns "yes", then we can extract the
 -- proof using from-yes.
@@ -120,16 +120,14 @@ module _ {P : Set p} where
 ------------------------------------------------------------------------
 -- Result of decidability
 
-module _ {P : Set p} where
+dec-yes : (p? : Dec P) → P → ∃ λ p′ → p? ≡ yes p′
+dec-yes (yes p′) p = p′ , refl
+dec-yes (no ¬p) p = ⊥-elim (¬p p)
 
-  p?-yes : ∀ (p? : Dec P) → P → ∃ λ p′ → p? ≡ yes p′
-  p?-yes (yes p′) p = p′ , refl
-  p?-yes (no ¬p) p = ⊥-elim (¬p p)
+dec-no : (p? : Dec P) → ¬ P → ∃ λ ¬p′ → p? ≡ no ¬p′
+dec-no (yes p) ¬p  = ¬p , ⊥-elim (¬p p)
+dec-no (no ¬p′) ¬p = ¬p′ , refl
 
-  p?-no : ∀ (p? : Dec P) → ¬ P → ∃ λ ¬p′ → p? ≡ no ¬p′
-  p?-no (yes p) ¬p  = ¬p , ⊥-elim (¬p p)
-  p?-no (no ¬p′) ¬p = ¬p′ , refl
-
-  p?-yes-irr : ∀ (p? : Dec P) → Irrelevant P → (p : P) → p? ≡ yes p
-  p?-yes-irr p? irr p with p?-yes p? p
-  ... | p′ , eq rewrite irr p p′ = eq
+dec-yes-irr : (p? : Dec P) → Irrelevant P → (p : P) → p? ≡ yes p
+dec-yes-irr p? irr p with dec-yes p? p
+... | p′ , eq rewrite irr p p′ = eq
