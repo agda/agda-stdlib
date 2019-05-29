@@ -645,7 +645,7 @@ Other minor additions
 
   ```
 
-* Added a new module `Relation.Nullary.Irrelevant`:
+* Added the definition for `Irrelevant` in `Relation.Nullary`:
   ```agda
   Irrelevant P = ∀ (p₁ p₂ : P) → p₁ ≡ p₂
   ```

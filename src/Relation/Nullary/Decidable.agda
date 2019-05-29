@@ -19,9 +19,8 @@ open import Function.Equivalence
 open import Function.Injection using (Injection; module Injection)
 open import Level using (Level; Lift)
 open import Relation.Binary using (Setoid; module Setoid; Decidable)
-open import Relation.Binary.PropositionalEquality
+open import Agda.Builtin.Equality
 open import Relation.Nullary
-open import Relation.Nullary.Irrelevant
 
 private
   variable

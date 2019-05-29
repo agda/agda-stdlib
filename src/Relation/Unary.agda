@@ -14,7 +14,7 @@ open import Data.Product
 open import Data.Sum using (_⊎_; [_,_])
 open import Function
 open import Level
-open import Relation.Nullary
+open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 private
