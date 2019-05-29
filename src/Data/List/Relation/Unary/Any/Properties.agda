@@ -32,7 +32,7 @@ open import Data.Product.Function.NonDependent.Propositional
 import Data.Product.Function.Dependent.Propositional as Σ
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
-open import Function
+open import Function.Core
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence using (_⇔_; equivalence; Equivalence)
 open import Function.Inverse as Inv using (_↔_; inverse; Inverse)

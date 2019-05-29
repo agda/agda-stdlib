@@ -13,7 +13,7 @@ open import Category.Monad
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.Any using (Any; just)
 open import Data.Product as Prod using (_,_)
-open import Function using (id; _∘′_)
+open import Function.Core using (id; _∘′_)
 open import Function.Equivalence using (_⇔_; equivalence)
 open import Level
 open import Relation.Binary.PropositionalEquality as P using (_≡_; cong)

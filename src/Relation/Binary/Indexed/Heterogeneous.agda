@@ -8,7 +8,7 @@
 
 module Relation.Binary.Indexed.Heterogeneous where
 
-open import Function
+open import Function.Core
 open import Level using (suc; _⊔_)
 open import Relation.Binary using (_⇒_)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)

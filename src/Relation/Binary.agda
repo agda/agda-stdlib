@@ -11,7 +11,7 @@ module Relation.Binary where
 open import Agda.Builtin.Equality using (_≡_)
 open import Data.Product
 open import Data.Sum
-open import Function
+open import Function.Core
 open import Level
 open import Relation.Nullary using (¬_)
 import Relation.Binary.PropositionalEquality.Core as PropEq

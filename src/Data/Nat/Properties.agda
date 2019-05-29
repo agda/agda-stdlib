@@ -22,7 +22,7 @@ open import Data.Nat.Base
 open import Data.Product
 open import Data.Sum
 open import Data.Unit using (tt)
-open import Function
+open import Function.Core
 open import Function.Injection using (_↣_)
 open import Level using (0ℓ)
 open import Relation.Binary

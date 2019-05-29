@@ -11,7 +11,7 @@ module Relation.Binary.HeterogeneousEquality where
 import Axiom.Extensionality.Heterogeneous as Ext
 open import Data.Product
 open import Data.Unit.NonEta
-open import Function
+open import Function.Core
 open import Function.Inverse using (Inverse)
 open import Level
 open import Relation.Nullary
