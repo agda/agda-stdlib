@@ -25,8 +25,8 @@ Extensionality a b =
 
 -- A variant for implicit function spaces.
 
-ExtensionalityImplicit : (a b : Level) → Set _
-ExtensionalityImplicit a b =
+IExtensionality : (a b : Level) → Set _
+IExtensionality a b =
   {A : Set a} {B : A → Set b} {f g : {x : A} → B x} →
   (∀ {x} → f {x} ≡ g {x}) → (λ {x} → f {x}) ≡ (λ {x} → g {x})
 
@@ -58,10 +58,5 @@ lower-extensionality a₂ b₂ ext f≡g = cong (λ h → Level.lower ∘ h ∘ 
 
 implicit-extensionality : ∀ {a b} →
                           Extensionality a b →
-                          ExtensionalityImplicit a b
-implicit-extensionality {a} {b} ext f≡g = cong explicit-to-implicit
-                                               (ext (λ x → f≡g))
-  where
-  explicit-to-implicit : {A : Set a}{B : A → Set b} →
-                         ((x : A) → B x) → ({x : A} → B x)
-  explicit-to-implicit f {x} = f x
+                          IExtensionality a b
+implicit-extensionality ext f≡g = cong _$- (ext (λ x → f≡g))
