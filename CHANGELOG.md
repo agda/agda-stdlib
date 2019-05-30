@@ -675,3 +675,12 @@ Other minor additions
                           (isIdempotentCommutativeMonoid : IsIdempotentCommutativeMonoid ∙ ε)
 
   ```
+
+* Added new definition of function extensionality for implicit
+  function spaces to `Axiom.Extensionality.Propositional`, and
+  a proof that it follows from extensionality for explicit
+  function spaces:
+  ```agda
+  ExtensionalityImplicit a b = {f g : {x : A} → B x} → (∀ {x} → f {x} ≡ g {x}) → (λ {x} → f {x}) ≡ (λ {x} → g {x})
+  implicit-extensionality : Extensionality a b → ExtensionalityImplicit a b
+  ```
