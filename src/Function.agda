@@ -106,9 +106,9 @@ _$- : ∀ {A : Set a}{B : A → Set b} →
       (∀ x → B x) → (∀ {x} → B x)
 f $- = f _
 
-_$· : ∀ {A : Set a}{B : A → Set b} →
+λ- : ∀ {A : Set a}{B : A → Set b} →
        ({x : A} → B x) → ((x : A) → B x)
-f $· = λ x → f
+λ- f = λ x → f
 
 ------------------------------------------------------------------------
 -- Non-dependent versions of dependent operations
