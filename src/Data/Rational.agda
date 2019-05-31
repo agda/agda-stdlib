@@ -12,15 +12,11 @@ open import Data.Integer as ℤ using (ℤ; +_)
 open import Data.String using (String; _++_)
 
 ------------------------------------------------------------------------
--- Publicly re-export contents of core module
+-- Publicly re-export contents of core module and queries
 
 open import Data.Rational.Base public
-
-------------------------------------------------------------------------
--- Publicly re-export queries
-
-open import Data.Nat.Properties public
-  using (_≟_; _≤?_)
+open import Data.Rational.Properties public
+  using (_≟_; _≤?_; _<?_)
 
 ------------------------------------------------------------------------
 -- Method for displaying rationals

@@ -7,23 +7,26 @@ This is very much a work-in-progress and is not exhaustive.
 
 #### Module imports
 
-* All module imports should be at the top of the file immediately after
-  the module declaration.
+* All module imports should be placed at the top of the file immediately
+  after the module declaration.
+
+* If the module takes parameters that require imports from other files
+  then those imports only may be placed above the module declaration.
 
 * If it is important that certain names only come into scope later in
   the file then the module should still be imported at the top of the
   file but it can be given a shorter name using `as` and then opened
   later on in the file when needed, e.g.
   ```agda
-  import Data.List.Relation.Binary.Equality.SetoidEquality as SetoidEq
+  import Data.List.Relation.Binary.Equality.Setoid as SetoidEquality
   ...
   ...
-  open SetoidEq
+  open SetoidEquality S
   ```
 
 * The list of module imports should be in alphabetical order.
 
-* When only using a few items from a module, the items should be
+* When using only a few items from a module, the items should be
   enumerated in the import with `using` in order to make dependencies
   clearer.
 
@@ -31,9 +34,10 @@ This is very much a work-in-progress and is not exhaustive.
 
 * The contents of a top-level module should have zero indentation.
 
-* Every subsequent nested scope should then indent by 2 spaces.
+* Every subsequent nested scope should then be indented by an additional
+  two spaces.
 
-* `where` blocks should be indented two spaces in and their contents
+* `where` blocks should be indented by two spaces and their contents
   should be aligned with the `where`.
 
 * If the type of a term does not fit on one line then the subsequent
@@ -41,7 +45,7 @@ This is very much a work-in-progress and is not exhaustive.
   of the first line of type, e.g.
   ```agda
   map-cong₂ : ∀ {a b} {A : Set a} {B : Set b} →
-                      ∀ {f g : A → B} {xs} →
+              ∀ {f g : A → B} {xs} →
               All (λ x → f x ≡ g x) xs → map f xs ≡ map g xs
   ```
 
@@ -49,11 +53,30 @@ This is very much a work-in-progress and is not exhaustive.
   should  always go at the end of the line rather the beginning of the
   next line.
 
+#### Module parameters
+
+* Module parameters should be put on a single line if they fit.
+
+* If they don't fit on a single line, then they should be spread out
+  over multiple lines, each indented by two spaces. If they can be
+  grouped logically by line then it is fine to do so, otherwise a line
+  each is probably clearest.
+
+* The `where` should go on it's own line at the end.
+
+* For example:
+  ```agda
+  module Relation.Binary.Reasoning.Base.Single
+    {a ℓ} {A : Set a} (_∼_ : Rel A ℓ)
+    (refl : Reflexive _∼_) (trans : Transitive _∼_)
+    where
+  ```
+
 #### Reasoning layout
 
 * The `begin` clause should go on the same line as the rest of the proof.
 
-* Every subsequent combinator `_≡⟨_⟩_` should go on it's own line,
+* Every subsequent combinator `_≡⟨_⟩_` should go on its own line,
   indented by two spaces.
 
 * The relation sign (e.g. `≡`) for each line should be aligned if possible.
@@ -67,6 +90,37 @@ This is very much a work-in-progress and is not exhaustive.
     suc (m + n)  ≡⟨ cong suc (+-comm m n) ⟩
     suc (n + m)  ≡⟨ sym (+-suc n m) ⟩
     n + suc m    ∎
+  ```
+
+* When multiple reasoning frameworks need to be used in the same file, the
+  `open` statement should always come in a where clause local to the
+  definition. This way users can easily see which reasoning toolkit is
+  being used. For instance:
+  ```agda
+  foo m n p = begin
+    (...) ∎
+    where open ≤-Reasoning
+  ```
+
+#### Record layout
+
+* The `record` declaration should go on the same line as the rest of the proof.
+
+* The next line with the first record item should start with a single `{`.
+
+* Every subsequent item of the record should go on its own line starting with
+  a `;`.
+
+* The final line should end with `}` on its own.
+
+* For example:
+  ```agda
+  ≤-isPreorder : IsPreorder _≡_ _≤_
+  ≤-isPreorder = record
+    { isEquivalence = isEquivalence
+    ; reflexive     = ≤-reflexive
+    ; trans         = ≤-trans
+    }
   ```
 
 #### Other
@@ -89,7 +143,7 @@ This is very much a work-in-progress and is not exhaustive.
 * If there are lots of implicit arguments that are common to a collection
   of proofs they should be extracted by using an anonymous module.
 
-* Implicit of type `Level` and `Set` can be generalised using `variable`s.
+* Implicit of type `Level` and `Set` can be generalised using `variable`.
   At the moment the policy is *not* to generalise over any other types in
   order to minimise the amount of information that users have to keep in
   their head concurrently.
@@ -106,9 +160,21 @@ This is very much a work-in-progress and is not exhaustive.
 * Datatype names should be capitalised and function names should be
   lowercase.
 
+#### Variables
+
+* Natural variables are named `m`, `n`, `o`, ... (default `n`)
+
+* Integer variables are named `i`, `j`, `k`, ... (default `i`)
+
+* Rational variables are named `p`, `q`, `r`, ... (default `p`)
+
+* When naming proofs, the variables should occur in order, e.g.
+  `m≤n+m` rather than `n≤m+n`.
+
 * Collections of elements are usually indicated by appending an `s`
   (e.g. if you are naming your variables `x` and `y` then lists
   should be named `xs` and `ys`).
+
 
 #### Preconditions and postconditions
 
@@ -119,14 +185,14 @@ This is very much a work-in-progress and is not exhaustive.
   of the result by using the symbol `⇒` in names (e.g. `asym⇒antisym`)
 
 * Preconditions and postconditions should be combined using the symbols
-  `∨` and `∧` (e.g. `i*j≡0⇒i≡0∨j≡0`)
+  `∨` and `∧` (e.g. `m*n≡0⇒m≡0∨n≡0`)
 
 * Try to avoid the need for bracketing but if necessary use square
   brackets (e.g. `[m∸n]⊓[n∸m]≡0`)
 
 #### Operators and relations
 
-* Operators and relations names should use mixfix notation where
+* Operators and relations should be defined using mixfix notation where
   applicable (e.g. `_+_`, `_<_`)
 
 * Common properties such as those in rings/orders/equivalences etc.

@@ -9,7 +9,7 @@
 
 {-# OPTIONS --with-K #-}
 
-module README.Record where
+module README.Data.Record where
 
 open import Data.Product
 open import Data.String
