@@ -102,6 +102,9 @@ New modules
   Relation.Binary.Rewriting
 
   Relation.Nullary.Decidable.Core
+
+  Text.Format
+  Text.Printf
   ```
 
 * The function `#_` has been moved from `Data.Fin.Base` to `Data.Fin`
