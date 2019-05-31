@@ -11,6 +11,8 @@ module Data.Bin.Properties where
 
 open import Algebra
 import      Algebra.FunctionProperties as FuncProp
+open import Algebra.FunctionProperties.Consequences.Propositional using
+                            (comm+cancelˡ⇒cancelʳ; comm+distrˡ⇒distrʳ)
 open import Algebra.Structures
 open import Data.Bin.Base
 open import Data.Nat using (ℕ; s≤s)
@@ -79,6 +81,16 @@ _≟_ :  Decidable (_≡_ {A = Bin})       -- Decidable equality on Bin.
 ... | no ne  =  no (ne ∘ suc2*-injective)
 
 
+≡-isDecEquivalence :  IsDecEquivalence {A = Bin} _≡_
+≡-isDecEquivalence =  record
+  { isEquivalence = isEquivalence;  _≟_ = _≟_
+  }
+
+≡-decSetoid : DecSetoid 0ℓ 0ℓ
+≡-decSetoid = record
+  {isDecEquivalence = ≡-isDecEquivalence
+  }
+
 |x|≡0⇒x≡0 :  ∀ {x} → size x ≡ 0 → x ≡ 0#
 |x|≡0⇒x≡0 {0#} _ =  refl
 
@@ -86,6 +98,7 @@ suc≢0 :  ∀ {x} → suc x ≢ 0#
 suc≢0 {0#}      ()
 suc≢0 {2suc _}  ()
 suc≢0 {suc2* _} ()
+
 
 ------------------------------------------------------------------------------
 -- Constructor properties
@@ -96,15 +109,9 @@ x≢0⇒x+y≢0 {2suc _} 0# _   =  λ()
 x≢0⇒x+y≢0 {0#}     _  0≢0 =  contradiction refl 0≢0
 
 2suc-as∘ :  2suc ≗ 2* ∘ suc
-2suc-as∘ 0#       =  refl
-2suc-as∘ (2suc x) =  begin
-  2suc (2suc x)        ≡⟨ cong 2suc (2suc-as∘ x) ⟩
-  2suc (2* (suc x))    ≡⟨⟩
-  2* (suc2* (suc x))   ≡⟨⟩
-  2* (suc (2suc x))    ∎
-
+2suc-as∘ 0#        =  refl
+2suc-as∘ (2suc x)  =  cong 2suc (2suc-as∘ x)
 2suc-as∘ (suc2* x) =  refl
-
 
 
 -- suc2*∘suc≗suc∘2suc :  suc2* ∘ suc ≗ suc ∘ 2suc   is by  const refl
@@ -127,7 +134,6 @@ pred∘suc (2suc x)  =  sym (2suc-as∘ x)
 pred∘suc (suc2* x) =  refl
 
 suc∘pred :  (x : Bin) → x ≢ 0# → suc (pred x) ≡ x
-
 suc∘pred 0#        0≢0 =  contradiction refl 0≢0
 suc∘pred (2suc _)  _   =  refl
 suc∘pred (suc2* x) _   =  begin
@@ -254,20 +260,20 @@ x≡0⇒toℕ-x≡0 {0#} _ = refl
 toℕ-x≡0⇒x≡0 :  ∀ {x} → toℕ x ≡ 0 → x ≡ 0#
 toℕ-x≡0⇒x≡0 {0#} _ = refl
 
-toℕ+homo :  ∀ x y → toℕ (x + y) ≡ toℕ x +ₙ toℕ y
-toℕ+homo 0# _  =  refl
-toℕ+homo x  0# =  begin
+toℕ-homo-+ :  ∀ x y → toℕ (x + y) ≡ toℕ x +ₙ toℕ y
+toℕ-homo-+ 0# _  =  refl
+toℕ-homo-+ x  0# =  begin
   toℕ (x + 0#)      ≡⟨ cong toℕ (+-identityʳ x) ⟩
   toℕ x             ≡⟨ sym (ℕp.+-comm (toℕ x) 0) ⟩
   toℕ x +ₙ 0        ≡⟨⟩
   toℕ x +ₙ toℕ 0#   ∎
 
-toℕ+homo (2suc x) (2suc y) = begin
+toℕ-homo-+ (2suc x) (2suc y) = begin
   toℕ ((2suc x) + (2suc y))        ≡⟨⟩
   toℕ (2suc (suc (x + y)))         ≡⟨⟩
   2 *ₙ (1+ (toℕ (suc (x + y))))    ≡⟨ cong ((2 *ₙ_) ∘ 1+_) (toℕ∘suc (x + y)) ⟩
   2 *ₙ (1+ (1+ toℕ (x + y)))       ≡⟨ cong ((2 *ₙ_) ∘ 1+_ ∘ 1+_)
-                                                      (toℕ+homo x y) ⟩
+                                                      (toℕ-homo-+ x y) ⟩
   2 *ₙ ((1+ (1+ (m +ₙ n))))        ≡⟨ cong ((2 *ₙ_) ∘ 1+_)
                                                     (sym (ℕp.+-assoc 1 m n)) ⟩
   2 *ₙ ((1+ ((1+ m) +ₙ n)))        ≡⟨ cong ((2 *ₙ_) ∘ 1+_ ∘ (_+ₙ n))
@@ -283,12 +289,12 @@ toℕ+homo (2suc x) (2suc y) = begin
   where
   m = toℕ x;  n = toℕ y
 
-toℕ+homo (2suc x) (suc2* y) = begin
+toℕ-homo-+ (2suc x) (suc2* y) = begin
   toℕ ((2suc x) + (suc2* y))      ≡⟨⟩
   toℕ (suc (2suc (x + y)))        ≡⟨ toℕ∘suc (2suc (x + y)) ⟩
   1+ (toℕ (2suc (x + y)))         ≡⟨⟩
-  1+ (2 *ₙ (1+ (toℕ (x + y))))    ≡⟨ cong (1+_ ∘ (2 *ₙ_) ∘ 1+_) (toℕ+homo x y)
-                                   ⟩
+  1+ (2 *ₙ (1+ (toℕ (x + y))))    ≡⟨ cong (1+_ ∘ (2 *ₙ_) ∘ 1+_)
+                                                     (toℕ-homo-+ x y) ⟩
   1+ (2 *ₙ (1+ (m +ₙ n)))         ≡⟨ cong (1+_ ∘ (2 *ₙ_))
                                                  (sym (ℕp.+-assoc 1 m n)) ⟩
   1+ (2 *ₙ (1+m +ₙ n))            ≡⟨ cong 1+_ (ℕp.*-distribˡ-+ 2 1+m n) ⟩
@@ -298,12 +304,12 @@ toℕ+homo (2suc x) (suc2* y) = begin
   where
   m = toℕ x;  n = toℕ y;  1+m = 1+ m
 
-toℕ+homo (suc2* x) (2suc y) = begin
+toℕ-homo-+ (suc2* x) (2suc y) = begin
   toℕ ((suc2* x) + (2suc y))      ≡⟨⟩
   toℕ (suc (2suc (x + y)))        ≡⟨ toℕ∘suc (2suc (x + y)) ⟩
   1+ (toℕ (2suc (x + y)))         ≡⟨⟩
   1+ (2 *ₙ (1+ (toℕ (x + y))))    ≡⟨ cong (1+_ ∘ (2 *ₙ_) ∘ 1+_)
-                                                         (toℕ+homo x y) ⟩
+                                                         (toℕ-homo-+ x y) ⟩
   1+ (2 *ₙ (1+ (m +ₙ n)))         ≡⟨ cong (1+_ ∘ (2 *ₙ_))
                                           (Of+ℕ-semigroup.x∙yz≈y∙xz 1 m n)
                                    ⟩
@@ -314,12 +320,12 @@ toℕ+homo (suc2* x) (2suc y) = begin
   where
   m = toℕ x;  n = toℕ y;  1+n = 1+ n
 
-toℕ+homo (suc2* x) (suc2* y) = begin
+toℕ-homo-+ (suc2* x) (suc2* y) = begin
   toℕ ((suc2* x) + (suc2* y))       ≡⟨⟩
   toℕ (suc (suc2* (x + y)))         ≡⟨ toℕ∘suc (suc2* (x + y)) ⟩
   1+ (toℕ (suc2* (x + y)))          ≡⟨⟩
   1+ (1+ (2 *ₙ (toℕ (x + y))))      ≡⟨ cong (1+_ ∘ 1+_ ∘ (2 *ₙ_))
-                                                       (toℕ+homo x y) ⟩
+                                                       (toℕ-homo-+ x y) ⟩
   1+ (1+ (2 *ₙ (m +ₙ n)))           ≡⟨ cong (1+_ ∘ 1+_) (ℕp.*-distribˡ-+ 2 m n)
                                      ⟩
   1+ (1+ (2 *ₙ m +ₙ 2 *ₙ n))        ≡⟨ cong 1+_
@@ -346,11 +352,11 @@ ext-fromℕ (1+ n)  with ext-fromℕ n
 fromℕ : ℕ → Bin
 fromℕ = proj₁ ∘ ext-fromℕ
 
-fromℕ+homo :  (m n : ℕ) → fromℕ (m +ₙ n) ≡ fromℕ m + fromℕ n
-fromℕ+homo 0      _ = refl
-fromℕ+homo (1+ m) n = begin
+fromℕ-homo-+ :  (m n : ℕ) → fromℕ (m +ₙ n) ≡ fromℕ m + fromℕ n
+fromℕ-homo-+ 0      _ = refl
+fromℕ-homo-+ (1+ m) n = begin
   fromℕ ((1+ m) +ₙ n)         ≡⟨⟩
-  suc (fromℕ (m +ₙ n))        ≡⟨ cong suc (fromℕ+homo m n) ⟩
+  suc (fromℕ (m +ₙ n))        ≡⟨ cong suc (fromℕ-homo-+ m n) ⟩
   suc (a + b)                 ≡⟨ sym (suc-+ a b) ⟩
   (suc a) + b                 ≡⟨⟩
   (fromℕ (1+ m)) + (fromℕ n)  ∎
@@ -437,21 +443,21 @@ fromℕ∘pred n =
 +-comm :  Commutative _+_
 +-comm a b = begin
   a + b                    ≡⟨ sym (fromℕ∘toℕ (a + b)) ⟩
-  fromℕ (toℕ (a + b))      ≡⟨ cong fromℕ (toℕ+homo a b) ⟩
+  fromℕ (toℕ (a + b))      ≡⟨ cong fromℕ (toℕ-homo-+ a b) ⟩
   fromℕ (toℕ a +ₙ toℕ b)   ≡⟨ cong fromℕ (ℕp.+-comm (toℕ a) (toℕ b)) ⟩
-  fromℕ (toℕ b +ₙ toℕ a)   ≡⟨ cong fromℕ (sym (toℕ+homo b a)) ⟩
+  fromℕ (toℕ b +ₙ toℕ a)   ≡⟨ cong fromℕ (sym (toℕ-homo-+ b a)) ⟩
   fromℕ (toℕ (b + a))      ≡⟨ fromℕ∘toℕ (b + a) ⟩
   b + a                    ∎
 
 +-assoc :  Associative _+_
 +-assoc a b c = begin
   (a + b) + c                  ≡⟨ sym (fromℕ∘toℕ ((a + b) + c)) ⟩
-  fromℕ (toℕ ((a + b) + c))    ≡⟨ cong fromℕ (toℕ+homo (a + b) c) ⟩
-  fromℕ (toℕ (a + b) +ₙ cN)    ≡⟨ cong (fromℕ ∘ (_+ₙ cN)) (toℕ+homo a b) ⟩
+  fromℕ (toℕ ((a + b) + c))    ≡⟨ cong fromℕ (toℕ-homo-+ (a + b) c) ⟩
+  fromℕ (toℕ (a + b) +ₙ cN)    ≡⟨ cong (fromℕ ∘ (_+ₙ cN)) (toℕ-homo-+ a b) ⟩
   fromℕ ((aN +ₙ bN) +ₙ cN)     ≡⟨ cong fromℕ (ℕp.+-assoc aN bN cN) ⟩
   fromℕ (aN +ₙ (bN +ₙ cN))     ≡⟨ cong (fromℕ ∘ (aN +ₙ_))
-                                                (sym (toℕ+homo b c)) ⟩
-  fromℕ (aN +ₙ toℕ (b + c))    ≡⟨ cong fromℕ (sym (toℕ+homo a (b + c))) ⟩
+                                                (sym (toℕ-homo-+ b c)) ⟩
+  fromℕ (aN +ₙ toℕ (b + c))    ≡⟨ cong fromℕ (sym (toℕ-homo-+ a (b + c))) ⟩
   fromℕ (toℕ (a + (b + c)))    ≡⟨ fromℕ∘toℕ (a + (b + c)) ⟩
   (a + (b + c))                ∎
   where
@@ -468,9 +474,9 @@ fromℕ∘pred n =
   k = toℕ x;  m = toℕ y;  n = toℕ z
 
   eq = begin
-    k +ₙ m         ≡⟨ sym (toℕ+homo x y) ⟩
+    k +ₙ m         ≡⟨ sym (toℕ-homo-+ x y) ⟩
     toℕ (x + y)    ≡⟨ cong toℕ x+y≡x+z ⟩
-    toℕ (x + z)    ≡⟨ toℕ+homo x z ⟩
+    toℕ (x + z)    ≡⟨ toℕ-homo-+ x z ⟩
     k +ₙ n         ∎
 
   m≡n = begin
@@ -481,39 +487,30 @@ fromℕ∘pred n =
     (n +ₙ k) ∸ₙ k    ≡⟨ ℕp.m+n∸n≡m n k ⟩
     n                ∎
 
-+-cancelʳ-≡ : RightCancellative _+_
-+-cancelʳ-≡ {x} y z y+x≡z+x =  +-cancelˡ-≡ x {y} {z} x+y≡x+z
-  where
-  x+y≡x+z = begin
-    x + y   ≡⟨ +-comm x y ⟩
-    y + x   ≡⟨ y+x≡z+x ⟩
-    z + x   ≡⟨ +-comm z x ⟩
-    x + z   ∎
++-cancelʳ-≡ :  RightCancellative _+_
++-cancelʳ-≡ =  comm+cancelˡ⇒cancelʳ +-comm +-cancelˡ-≡
 
-decEquivalence :  IsDecEquivalence (_≡_ {A = Bin})
-decEquivalence =  record{ isEquivalence = isEquivalence;  _≟_ = _≟_ }
-
-≡-decSetoid : DecSetoid 0ℓ 0ℓ
-≡-decSetoid = record
-  { Carrier          = Bin
-  ; _≈_              = _≡_
-  ; isDecEquivalence = decEquivalence
-  }
-
-+-isMagma :  IsMagma _≡_ _+_
-+-isMagma =  record
++-isMagma : IsMagma _≡_ _+_
++-isMagma = record
   { isEquivalence = isEquivalence
   ; ∙-cong        = cong₂ _+_
   }
 
-+-magma :  Magma 0ℓ 0ℓ
-+-magma =  record{ isMagma = +-isMagma }
++-magma : Magma 0ℓ 0ℓ
++-magma = record
+  { isMagma = +-isMagma
+  }
 
 +-isSemigroup : IsSemigroup _≡_ _+_
-+-isSemigroup = record{ isMagma = +-isMagma;  assoc = +-assoc }
++-isSemigroup = record
+  { isMagma = +-isMagma
+  ; assoc = +-assoc
+  }
 
 +-semigroup : Semigroup 0ℓ 0ℓ
-+-semigroup = record{ isSemigroup = +-isSemigroup }
++-semigroup = record
+  { isSemigroup = +-isSemigroup
+  }
 
 +-0-isMonoid : IsMonoid _≡_ _+_ 0#
 +-0-isMonoid = record
@@ -548,8 +545,8 @@ decEquivalence =  record{ isEquivalence = isEquivalence;  _≟_ = _≟_ }
 private  2*ₙ2*ₙ =  (2 *ₙ_) ∘ (2 *ₙ_)
 
 
-toℕ*homo :  ∀ x y → toℕ (x * y) ≡ toℕ x *ₙ toℕ y
-toℕ*homo x y =  aux x y (size x +ₙ size y) ℕp.≤-refl
+toℕ-homo-* :  ∀ x y → toℕ (x * y) ≡ toℕ x *ₙ toℕ y
+toℕ-homo-* x y =  aux x y (size x +ₙ size y) ℕp.≤-refl
   where
   aux :  (x y : Bin) → (cnt : ℕ) → (size x +ₙ size y ≤ₙ cnt) →
          toℕ (x * y) ≡ toℕ x *ₙ toℕ y
@@ -566,9 +563,9 @@ toℕ*homo x y =  aux x y (size x +ₙ size y) ℕp.≤-refl
     toℕ (2* (2suc (x + (y + xy))))      ≡⟨ toℕ∘2* (2suc (x + (y + xy))) ⟩
     2 *ₙ (toℕ (2suc (x + (y + xy))))    ≡⟨⟩
     2*ₙ2*ₙ (1+ (toℕ (x + (y + xy))))    ≡⟨ cong (2*ₙ2*ₙ ∘ 1+_)
-                                                    (toℕ+homo x (y + xy)) ⟩
+                                                    (toℕ-homo-+ x (y + xy)) ⟩
     2*ₙ2*ₙ (1+ (m +ₙ (toℕ (y + xy))))   ≡⟨ cong (2*ₙ2*ₙ ∘ 1+_ ∘ (m +ₙ_))
-                                                            (toℕ+homo y xy) ⟩
+                                                         (toℕ-homo-+ y xy) ⟩
     2*ₙ2*ₙ (1+ (m +ₙ (n +ₙ toℕ xy)))
                                    ≡⟨ cong (2*ₙ2*ₙ ∘ 1+_ ∘ (m +ₙ_) ∘ (n +ₙ_))
                                            (aux x y cnt |x|+|y|≤cnt) ⟩
@@ -599,7 +596,7 @@ toℕ*homo x y =  aux x y (size x +ₙ size y) ℕp.≤-refl
     toℕ ((2suc x) * (suc2* y))           ≡⟨⟩
     toℕ (2suc (x + y * (2suc x)))        ≡⟨⟩
     2 *ₙ (1+ (toℕ (x + y * (2suc x))))   ≡⟨ cong ((2 *ₙ_) ∘ 1+_)
-                                                             (toℕ+homo x _) ⟩
+                                                          (toℕ-homo-+ x _) ⟩
     2 *ₙ (1+ (m +ₙ (toℕ (y * (2suc x)))))  ≡⟨ cong ((2 *ₙ_) ∘ 1+_ ∘ (m +ₙ_))
                                                 (aux y _ cnt |y|+1+|x|≤cnt) ⟩
     2 *ₙ (1+m +ₙ (n *ₙ (toℕ (2suc x))))  ≡⟨⟩
@@ -627,7 +624,7 @@ toℕ*homo x y =  aux x y (size x +ₙ size y) ℕp.≤-refl
     toℕ ((suc2* x) * (2suc y))            ≡⟨⟩
     toℕ (2suc (y + x * (2suc y)))         ≡⟨⟩
     2 *ₙ (1+ (toℕ (y + x * (2suc y))))    ≡⟨ cong ((2 *ₙ_) ∘ 1+_)
-                                                 (toℕ+homo y (x * (2suc y))) ⟩
+                                               (toℕ-homo-+ y (x * (2suc y))) ⟩
     2 *ₙ (1+ (n +ₙ (toℕ (x * (2suc y)))))
                                         ≡⟨ cong ((2 *ₙ_) ∘ 1+_ ∘ (n +ₙ_))
                                            (aux x (2suc y) cnt |x|+1+|y|≤cnt)
@@ -650,7 +647,7 @@ toℕ*homo x y =  aux x y (size x +ₙ size y) ℕp.≤-refl
     toℕ ((suc2* x) * (suc2* y))          ≡⟨⟩
     toℕ (suc2* (x + y * [1+2x]))         ≡⟨⟩
     1+ (2 *ₙ (toℕ (x + y * [1+2x])))     ≡⟨ cong (1+_ ∘ (2 *ₙ_))
-                                                 (toℕ+homo x (y * [1+2x])) ⟩
+                                              (toℕ-homo-+ x (y * [1+2x])) ⟩
     1+ (2 *ₙ (m +ₙ (toℕ (y * [1+2x]))))  ≡⟨ cong (1+_ ∘ (2 *ₙ_) ∘ (m +ₙ_))
                                             (aux y [1+2x] cnt |y|+1+|x|≤cnt)
                                            ⟩
@@ -676,10 +673,10 @@ toℕ*homo x y =  aux x y (size x +ₙ size y) ℕp.≤-refl
     |y|+1+|x|≤cnt = subst (_≤ₙ cnt) eq |x|+1+|y|≤cnt
 
 
-fromℕ*homo :  ∀ m n → fromℕ (m *ₙ n) ≡ fromℕ m * fromℕ n
-fromℕ*homo m n = begin
+fromℕ-homo-* :  ∀ m n → fromℕ (m *ₙ n) ≡ fromℕ m * fromℕ n
+fromℕ-homo-* m n = begin
   fromℕ (m *ₙ n)           ≡⟨ cong fromℕ (cong₂ _*ₙ_ m≡aN n≡bN) ⟩
-  fromℕ (toℕ a *ₙ toℕ b)   ≡⟨ cong fromℕ (sym (toℕ*homo a b)) ⟩
+  fromℕ (toℕ a *ₙ toℕ b)   ≡⟨ cong fromℕ (sym (toℕ-homo-* a b)) ⟩
   fromℕ (toℕ (a * b))      ≡⟨ fromℕ∘toℕ (a * b) ⟩
   a * b                    ∎
   where
@@ -689,7 +686,7 @@ fromℕ*homo m n = begin
 2*≗2B* :  2* ≗ (2B *_)
 2*≗2B* x =  toℕ-injective $ begin
   toℕ (2* x)     ≡⟨ toℕ∘2* x ⟩
-  2 *ₙ (toℕ x)   ≡⟨ sym (toℕ*homo 2B x) ⟩
+  2 *ₙ (toℕ x)   ≡⟨ sym (toℕ-homo-* 2B x) ⟩
   toℕ (2B * x)   ∎
 
 2x≡0⇒x≡0 :  ∀ {x} → 2* x ≡ 0# → x ≡ 0#
@@ -713,21 +710,21 @@ x≢0⇒2x≢0 x≢0 =  x≢0 ∘ 2x≡0⇒x≡0
 *-comm : Commutative _*_
 *-comm a b = begin
   a * b                    ≡⟨ sym (fromℕ∘toℕ (a * b)) ⟩
-  fromℕ (toℕ (a * b))      ≡⟨ cong fromℕ (toℕ*homo a b) ⟩
+  fromℕ (toℕ (a * b))      ≡⟨ cong fromℕ (toℕ-homo-* a b) ⟩
   fromℕ (toℕ a *ₙ toℕ b)   ≡⟨ cong fromℕ (ℕp.*-comm (toℕ a) (toℕ b)) ⟩
-  fromℕ (toℕ b *ₙ toℕ a)   ≡⟨ cong fromℕ (sym (toℕ*homo b a)) ⟩
+  fromℕ (toℕ b *ₙ toℕ a)   ≡⟨ cong fromℕ (sym (toℕ-homo-* b a)) ⟩
   fromℕ (toℕ (b * a))      ≡⟨ fromℕ∘toℕ (b * a) ⟩
   b * a                    ∎
 
 *-assoc :  Associative _*_
 *-assoc a b c = begin
   (a * b) * c                 ≡⟨ sym (fromℕ∘toℕ ((a * b) * c)) ⟩
-  fromℕ (toℕ ((a * b) * c))   ≡⟨ cong fromℕ (toℕ*homo (a * b) c) ⟩
-  fromℕ (toℕ (a * b) *ₙ cN)   ≡⟨ cong (fromℕ ∘ (_*ₙ cN)) (toℕ*homo a b) ⟩
+  fromℕ (toℕ ((a * b) * c))   ≡⟨ cong fromℕ (toℕ-homo-* (a * b) c) ⟩
+  fromℕ (toℕ (a * b) *ₙ cN)   ≡⟨ cong (fromℕ ∘ (_*ₙ cN)) (toℕ-homo-* a b) ⟩
   fromℕ ((aN *ₙ bN) *ₙ cN)    ≡⟨ cong fromℕ (ℕp.*-assoc aN bN cN) ⟩
   fromℕ (aN *ₙ (bN *ₙ cN))    ≡⟨ cong (fromℕ ∘ (aN *ₙ_))
-                                                  (sym (toℕ*homo b c)) ⟩
-  fromℕ (aN *ₙ toℕ (b * c))   ≡⟨ cong fromℕ (sym (toℕ*homo a (b * c))) ⟩
+                                                  (sym (toℕ-homo-* b c)) ⟩
+  fromℕ (aN *ₙ toℕ (b * c))   ≡⟨ cong fromℕ (sym (toℕ-homo-* a (b * c))) ⟩
   fromℕ (toℕ (a * (b * c)))   ≡⟨ fromℕ∘toℕ (a * (b * c)) ⟩
   (a * (b * c))               ∎
   where
@@ -744,16 +741,16 @@ x≢0⇒2x≢0 x≢0 =  x≢0 ∘ 2x≡0⇒x≡0
 *-distribˡ-+ :  _DistributesOverˡ_ _*_ _+_
 *-distribˡ-+ a b c = begin
   a * (b + c)                          ≡⟨ sym (fromℕ∘toℕ (a * (b + c))) ⟩
-  fromℕ (toℕ (a * (b + c)))            ≡⟨ cong fromℕ (toℕ*homo a (b + c)) ⟩
+  fromℕ (toℕ (a * (b + c)))            ≡⟨ cong fromℕ (toℕ-homo-* a (b + c)) ⟩
   fromℕ (k *ₙ (toℕ (b + c)))           ≡⟨ cong (fromℕ ∘ (k *ₙ_))
-                                                         (toℕ+homo b c) ⟩
+                                                         (toℕ-homo-+ b c) ⟩
   fromℕ (k *ₙ (m +ₙ n))                ≡⟨ cong fromℕ (ℕp.*-distribˡ-+ k m n) ⟩
   fromℕ (k *ₙ m +ₙ k *ₙ n)             ≡⟨ cong fromℕ $
-                                          cong₂ _+ₙ_ (sym (toℕ*homo a b))
-                                                     (sym (toℕ*homo a c))
+                                          cong₂ _+ₙ_ (sym (toℕ-homo-* a b))
+                                                     (sym (toℕ-homo-* a c))
                                         ⟩
   fromℕ (toℕ (a * b) +ₙ toℕ (a * c))   ≡⟨ cong fromℕ $
-                                            sym (toℕ+homo (a * b) (a * c))
+                                            sym (toℕ-homo-+ (a * b) (a * c))
                                         ⟩
   fromℕ (toℕ (a * b + a * c))          ≡⟨ fromℕ∘toℕ (a * b + a * c) ⟩
   a * b + a * c                        ∎
@@ -762,11 +759,7 @@ x≢0⇒2x≢0 x≢0 =  x≢0 ∘ 2x≡0⇒x≡0
 
 
 *-distribʳ-+ :  _DistributesOverʳ_ _*_ _+_
-*-distribʳ-+ a b c = begin
-  (b + c) * a      ≡⟨ *-comm (b + c) a ⟩
-  a * (b + c)      ≡⟨ *-distribˡ-+ a b c ⟩
-  a * b + a * c    ≡⟨ cong₂ _+_ (*-comm a b) (*-comm a c) ⟩
-  b * a + c * a    ∎
+*-distribʳ-+ =  comm+distrˡ⇒distrʳ *-comm *-distribˡ-+
 
 *-distrib-+ :  _DistributesOver_ _*_ _+_
 *-distrib-+ =  (*-distribˡ-+ , *-distribʳ-+)
@@ -784,7 +777,7 @@ x≢0⇒2x≢0 x≢0 =  x≢0 ∘ 2x≡0⇒x≡0
 *-identityˡ : LeftIdentity 1B _*_
 *-identityˡ x = begin
   1B * x                 ≡⟨ sym (fromℕ∘toℕ (1B * x)) ⟩
-  fromℕ (toℕ (1B * x))   ≡⟨ cong fromℕ (toℕ*homo 1B x) ⟩
+  fromℕ (toℕ (1B * x))   ≡⟨ cong fromℕ (toℕ-homo-* 1B x) ⟩
   fromℕ (1 *ₙ n)         ≡⟨ cong fromℕ (ℕp.*-identityˡ n) ⟩
   fromℕ n                ≡⟨ fromℕ∘toℕ x ⟩
   x                      ∎
@@ -843,7 +836,9 @@ suc* x y = begin
   }
 
 *-magma : Magma 0ℓ 0ℓ
-*-magma = record{ isMagma = *-isMagma }
+*-magma = record
+  { isMagma = *-isMagma
+  }
 
 *-isSemigroup : IsSemigroup _≡_ _*_
 *-isSemigroup = record
@@ -852,7 +847,9 @@ suc* x y = begin
   }
 
 *-semigroup : Semigroup 0ℓ 0ℓ
-*-semigroup = record{ isSemigroup = *-isSemigroup }
+*-semigroup = record
+  { isSemigroup = *-isSemigroup
+  }
 
 *-1-isMonoid : IsMonoid _≡_ _*_ 1B
 *-1-isMonoid = record
@@ -874,40 +871,43 @@ suc* x y = begin
   }
 
 *-1-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
-*-1-commutativeMonoid = record{ isCommutativeMonoid = *-1-isCommutativeMonoid
-                              }
+*-1-commutativeMonoid = record
+  { isCommutativeMonoid = *-1-isCommutativeMonoid
+  }
 
-isSemiringWithoutAnnihilatingZero :
+*-+-isSemiringWithoutAnnihilatingZero :
                            IsSemiringWithoutAnnihilatingZero _≡_ _+_ _*_ 0# 1B
-isSemiringWithoutAnnihilatingZero = record
+*-+-isSemiringWithoutAnnihilatingZero = record
   { +-isCommutativeMonoid = +-0-isCommutativeMonoid
   ; *-isMonoid            = *-1-isMonoid
   ; distrib               = *-distrib-+
   }
 
-isSemiring : IsSemiring _≡_ _+_ _*_ 0# 1B
-isSemiring = record
-  { isSemiringWithoutAnnihilatingZero = isSemiringWithoutAnnihilatingZero
+*-+-isSemiring : IsSemiring _≡_ _+_ _*_ 0# 1B
+*-+-isSemiring = record
+  { isSemiringWithoutAnnihilatingZero = *-+-isSemiringWithoutAnnihilatingZero
   ; zero                              = *-zero
   }
 
-semiring : Semiring 0ℓ 0ℓ
-semiring = record
+*-+-semiring : Semiring 0ℓ 0ℓ
+*-+-semiring = record
   { _+_        = _+_
   ; _*_        = _*_
   ; 0#         = 0#
   ; 1#         = 1B
-  ; isSemiring = isSemiring
+  ; isSemiring = *-+-isSemiring
   }
 
-isCommutativeSemiring : IsCommutativeSemiring _≡_ _+_ _*_ 0# 1B
-isCommutativeSemiring = record
+*-+-isCommutativeSemiring : IsCommutativeSemiring _≡_ _+_ _*_ 0# 1B
+*-+-isCommutativeSemiring = record
   { +-isCommutativeMonoid = +-0-isCommutativeMonoid
   ; *-isCommutativeMonoid = *-1-isCommutativeMonoid
   ; distribʳ              = *-distribʳ-+
   ; zeroˡ                 = *-zeroˡ
   }
 
-commutativeSemiring : CommutativeSemiring 0ℓ 0ℓ
-commutativeSemiring = record{ isCommutativeSemiring = isCommutativeSemiring }
+*-+-commutativeSemiring : CommutativeSemiring 0ℓ 0ℓ
+*-+-commutativeSemiring = record
+  { isCommutativeSemiring = *-+-isCommutativeSemiring
+  }
 

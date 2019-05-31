@@ -104,9 +104,13 @@ New modules
 * ``Data/Bin.agda`` and ``Data.Bin/*.agda``  of lib-1.0 are removed,
   added new ``Data.Bin.Base, Data.Bin.Properties``.
   This total change of the Bin part is done for the following reasons.
-  1) The Bin data representation with three constructors is unique for each
-     natural number, this approach simplifies the algorithms and proofs.
-  2) Many necessary functions and proofs are added.
+  1) Many necessary functions and proofs are added.
+  2) After this has been done, the author noticed (decided) that the whole
+   thing is implemented much simpler with using another representation for Bin:
+   the one with certain three constructors. This representation is taken
+   (with renaming the constructors) from the letter by Martin Escardo to the
+   e-mail list. The referred code (of 2016) resides on
+   http://www.cs.bham.ac.uk/~mhe/agda-new/BinaryNaturals.html
 
 
 Deprecated features
@@ -486,7 +490,6 @@ Other minor additions
   m≤m*n         : 0 < n → m ≤ m * n
   m<m*n         : 0 < m → 1 < n → m < m * n
   m∸n≢0⇒n<m     : m ∸ n ≢ 0 → n < m
-  ```
 
   *-cancelʳ-< : RightCancellative _<_ _*_
   *-cancelˡ-< : LeftCancellative _<_ _*_

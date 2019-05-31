@@ -683,8 +683,8 @@ m*[1+n] m n = begin-equality
 
 m>1⇒m*n≢1 :  ∀ {m n} → m > 1 → m * n ≢ 1
 m>1⇒m*n≢1 {m} {0}     _   m*0≡1  =  0≢1+n 0≡1
-                                   where
-                                   0≡1 = trans (sym (*-zeroʳ m)) m*0≡1
+  where
+  0≡1 = trans (sym (*-zeroʳ m)) m*0≡1
 
 m>1⇒m*n≢1 {m} {suc n} m>1 m*n'≡1 =  <⇒≢ m*n'>1 (sym m*n'≡1)
   where
