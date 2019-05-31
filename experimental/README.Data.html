@@ -1,0 +1,204 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>README.Data</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- An explanation about how data types are laid out in the standard</a>
+<a id="174" class="Comment">-- library.</a>
+<a id="186" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="260" class="Keyword">module</a> <a id="267" href="README.Data.html" class="Module">README.Data</a> <a id="279" class="Keyword">where</a>
+
+<a id="286" class="Comment">-- The top-level folder `Data` contains all the definitions of datatypes</a>
+<a id="359" class="Comment">-- and their associated properties.</a>
+
+<a id="396" class="Comment">-- Datatypes can broadly split into two categories</a>
+<a id="447" class="Comment">--   i) &quot;Basic&quot; datatypes which do not take other datatypes as generic</a>
+<a id="518" class="Comment">--      arguments (Nat, String, Fin, Bool, Char etc.)</a>
+<a id="572" class="Comment">--   ii) &quot;Container&quot; datatypes which take other generic datatypes as</a>
+<a id="641" class="Comment">--   arguments, (List, Vec, Sum, Product, Maybe, AVL trees etc.)</a>
+
+<a id="707" class="Comment">------------------------------------------------------------------------</a>
+<a id="780" class="Comment">-- Basic datatypes</a>
+<a id="799" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="873" class="Comment">-- Basic datatypes are usually organised as follows:</a>
+
+<a id="927" class="Comment">-- 1. A `Base` module which either contains the definition of the</a>
+<a id="993" class="Comment">-- datatype or reimports it from the builtin modules, along with common</a>
+<a id="1065" class="Comment">-- functions, operations and relations over elements of the datatype.</a>
+
+<a id="1136" class="Keyword">import</a> <a id="1143" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a>
+<a id="1157" class="Keyword">import</a> <a id="1164" href="Data.Integer.Base.html" class="Module">Data.Integer.Base</a>
+<a id="1182" class="Keyword">import</a> <a id="1189" href="Data.Char.Base.html" class="Module">Data.Char.Base</a>
+<a id="1204" class="Keyword">import</a> <a id="1211" href="Data.String.Base.html" class="Module">Data.String.Base</a>
+<a id="1228" class="Keyword">import</a> <a id="1235" href="Data.Bool.Base.html" class="Module">Data.Bool.Base</a>
+
+<a id="1251" class="Comment">-- Commonly these modules don&#39;t need to be imported directly as their</a>
+<a id="1321" class="Comment">-- contents is re-exported by the top level module (see below).</a>
+
+<a id="1386" class="Comment">-- 2. A `Properties` module which contains the basic properties of the</a>
+<a id="1457" class="Comment">-- functions, operations and relations contained in the base module.</a>
+
+<a id="1527" class="Keyword">import</a> <a id="1534" href="Data.Nat.Properties.html" class="Module">Data.Nat.Properties</a>
+<a id="1554" class="Keyword">import</a> <a id="1561" href="Data.Integer.Properties.html" class="Module">Data.Integer.Properties</a>
+<a id="1585" class="Keyword">import</a> <a id="1592" href="Data.Char.Properties.html" class="Module">Data.Char.Properties</a>
+<a id="1613" class="Keyword">import</a> <a id="1620" href="Data.String.Properties.html" class="Module">Data.String.Properties</a>
+<a id="1643" class="Keyword">import</a> <a id="1650" href="Data.Bool.Properties.html" class="Module">Data.Bool.Properties</a>
+
+<a id="1672" class="Comment">-- 3. A top-level module which re-exports the contents of the base</a>
+<a id="1739" class="Comment">-- module as well as various queries (i.e. decidability proofs) from the</a>
+<a id="1812" class="Comment">-- properties file.</a>
+
+<a id="1833" class="Keyword">import</a> <a id="1840" href="Data.Nat.html" class="Module">Data.Nat</a>
+<a id="1849" class="Keyword">import</a> <a id="1856" href="Data.Integer.html" class="Module">Data.Integer</a>
+<a id="1869" class="Keyword">import</a> <a id="1876" href="Data.Char.html" class="Module">Data.Char</a>
+<a id="1886" class="Keyword">import</a> <a id="1893" href="Data.String.html" class="Module">Data.String</a>
+<a id="1905" class="Keyword">import</a> <a id="1912" href="Data.Bool.html" class="Module">Data.Bool</a>
+
+<a id="1923" class="Comment">-- 4. A `Solver` module (for those datatypes that have an algebraic solver)</a>
+<a id="1999" class="Comment">-- which can be used to automatically solve equalities over the basic datatype.</a>
+
+<a id="2080" class="Keyword">import</a> <a id="2087" href="Data.Nat.Solver.html" class="Module">Data.Nat.Solver</a>
+<a id="2103" class="Keyword">import</a> <a id="2110" href="Data.Integer.Solver.html" class="Module">Data.Integer.Solver</a>
+<a id="2130" class="Keyword">import</a> <a id="2137" href="Data.Bool.Solver.html" class="Module">Data.Bool.Solver</a>
+
+<a id="2155" class="Comment">-- 5. More complex operations and relations are commonly found in their</a>
+<a id="2227" class="Comment">-- own module beneath the top-level directory. For example:</a>
+
+<a id="2288" class="Keyword">import</a> <a id="2295" href="Data.Nat.DivMod.html" class="Module">Data.Nat.DivMod</a>
+<a id="2311" class="Keyword">import</a> <a id="2318" href="Data.Integer.Coprimality.html" class="Module">Data.Integer.Coprimality</a>
+
+<a id="2344" class="Comment">-- Note that eventually there is a plan to re-organise the library to</a>
+<a id="2414" class="Comment">-- have the top-level module export a far wider range of properties and</a>
+<a id="2486" class="Comment">-- additional operations in order to minimise the number of imports</a>
+<a id="2554" class="Comment">-- needed. Currently it is necessary to import each of these seperately</a>
+<a id="2626" class="Comment">-- however.</a>
+
+<a id="2639" class="Comment">------------------------------------------------------------------------</a>
+<a id="2712" class="Comment">-- Container datatypes</a>
+<a id="2735" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="2809" class="Comment">-- 1. As with basic datatypes, a `Base` module which contains the</a>
+<a id="2875" class="Comment">-- definition of the datatype, along with common functions and</a>
+<a id="2938" class="Comment">-- operations over that data. Unlike basic datatypes, the `Base` module</a>
+<a id="3010" class="Comment">-- for container datatypes does not export any relations or predicates</a>
+<a id="3081" class="Comment">-- over the datatype (see the `Relation` section below).</a>
+
+<a id="3139" class="Keyword">import</a> <a id="3146" href="Data.List.Base.html" class="Module">Data.List.Base</a>
+<a id="3161" class="Keyword">import</a> <a id="3168" href="Data.Maybe.Base.html" class="Module">Data.Maybe.Base</a>
+<a id="3184" class="Keyword">import</a> <a id="3191" href="Data.Sum.Base.html" class="Module">Data.Sum.Base</a>
+
+<a id="3206" class="Comment">-- Commonly these modules don&#39;t need to be imported directly as their</a>
+<a id="3276" class="Comment">-- contents is re-exported by the top level module (see below).</a>
+
+<a id="3341" class="Comment">-- 2. As with basic datatypes, a `Properties` module which contains the</a>
+<a id="3413" class="Comment">-- basic properties of the functions, operations and contained in the</a>
+<a id="3483" class="Comment">-- base module.</a>
+
+<a id="3500" class="Keyword">import</a> <a id="3507" href="Data.List.Properties.html" class="Module">Data.List.Properties</a>
+<a id="3528" class="Keyword">import</a> <a id="3535" href="Data.Maybe.Properties.html" class="Module">Data.Maybe.Properties</a>
+<a id="3557" class="Keyword">import</a> <a id="3564" href="Data.Sum.Properties.html" class="Module">Data.Sum.Properties</a>
+
+<a id="3585" class="Comment">-- 3. As with basic datatypes, a top-level module which re-exports the</a>
+<a id="3656" class="Comment">-- contents of the base module. In some cases this may also contain</a>
+<a id="3724" class="Comment">-- additional functions which could not be placed into the corresponding</a>
+<a id="3797" class="Comment">-- Base module because of cyclic dependencies.</a>
+
+<a id="3845" class="Keyword">import</a> <a id="3852" href="Data.List.html" class="Module">Data.List</a>
+<a id="3862" class="Keyword">import</a> <a id="3869" href="Data.Maybe.html" class="Module">Data.Maybe</a>
+<a id="3880" class="Keyword">import</a> <a id="3887" href="Data.Sum.html" class="Module">Data.Sum</a>
+
+<a id="3897" class="Comment">-- 4. A `Relation.Binary` folder where binary relations over the datatypes</a>
+<a id="3972" class="Comment">-- are stored. Because relations over container datatypes often depend on</a>
+<a id="4046" class="Comment">-- relations over the parameter datatype, this differs from basic datatypes</a>
+<a id="4122" class="Comment">-- where the binary relations are usually defined in the `Base` module, e.g.</a>
+<a id="4199" class="Comment">-- equality over the type `List A` depends on equality over type `A`.</a>
+
+<a id="4270" class="Comment">-- For example the `Pointwise` relation that takes a relation over the</a>
+<a id="4341" class="Comment">-- underlying type A and lifts it to the container parameterised can be found</a>
+<a id="4419" class="Comment">-- as follows:</a>
+
+<a id="4435" class="Keyword">import</a> <a id="4442" href="Data.List.Relation.Binary.Pointwise.html" class="Module">Data.List.Relation.Binary.Pointwise</a>
+<a id="4478" class="Keyword">import</a> <a id="4485" href="Data.Maybe.Relation.Binary.Pointwise.html" class="Module">Data.Maybe.Relation.Binary.Pointwise</a>
+<a id="4522" class="Keyword">import</a> <a id="4529" href="Data.Sum.Relation.Binary.Pointwise.html" class="Module">Data.Sum.Relation.Binary.Pointwise</a>
+
+<a id="4565" class="Comment">-- Another useful subfolder in the `Data.X.Relation.Binary` folders is the</a>
+<a id="4640" class="Comment">-- `Data.X.Relation.Binary.Equality` folder which contains various forms of</a>
+<a id="4716" class="Comment">-- equality over the datatype.</a>
+
+<a id="4748" class="Comment">-- 5. A `Relation.Unary` folder where unary relations, or predicates,</a>
+<a id="4818" class="Comment">-- over the datatypes are stored. These can be viewed as properties</a>
+<a id="4886" class="Comment">-- over a single list.</a>
+
+<a id="4910" class="Comment">-- For example a commmon, useful example is `Data.X.Relation.Unary.Any`</a>
+<a id="4982" class="Comment">-- that contains the types of proofs that at least one element in the</a>
+<a id="5052" class="Comment">-- container satisfies some predicate/property.</a>
+
+<a id="5101" class="Keyword">import</a> <a id="5108" href="Data.List.Relation.Unary.Any.html" class="Module">Data.List.Relation.Unary.Any</a>
+<a id="5137" class="Keyword">import</a> <a id="5144" href="Data.Vec.Relation.Unary.Any.html" class="Module">Data.Vec.Relation.Unary.Any</a>
+<a id="5172" class="Keyword">import</a> <a id="5179" href="Data.Maybe.Relation.Unary.Any.html" class="Module">Data.Maybe.Relation.Unary.Any</a>
+
+<a id="5210" class="Comment">-- Alternatively the `Data.X.Relation.Unary.All` module contains the</a>
+<a id="5279" class="Comment">-- type of proofs that all elements in the container satisfy some</a>
+<a id="5345" class="Comment">-- property.</a>
+
+<a id="5359" class="Keyword">import</a> <a id="5366" href="Data.List.Relation.Unary.All.html" class="Module">Data.List.Relation.Unary.All</a>
+<a id="5395" class="Keyword">import</a> <a id="5402" href="Data.Vec.Relation.Unary.All.html" class="Module">Data.Vec.Relation.Unary.All</a>
+<a id="5430" class="Keyword">import</a> <a id="5437" href="Data.Maybe.Relation.Unary.All.html" class="Module">Data.Maybe.Relation.Unary.All</a>
+
+<a id="5468" class="Comment">-- 6. A `Categorical` module/folder that contains categorical</a>
+<a id="5530" class="Comment">-- interpretations of the datatype.</a>
+
+<a id="5567" class="Keyword">import</a> <a id="5574" href="Data.List.Categorical.html" class="Module">Data.List.Categorical</a>
+<a id="5596" class="Keyword">import</a> <a id="5603" href="Data.Maybe.Categorical.html" class="Module">Data.Maybe.Categorical</a>
+<a id="5626" class="Keyword">import</a> <a id="5633" href="Data.Sum.Categorical.Left.html" class="Module">Data.Sum.Categorical.Left</a>
+<a id="5659" class="Keyword">import</a> <a id="5666" href="Data.Sum.Categorical.Right.html" class="Module">Data.Sum.Categorical.Right</a>
+
+<a id="5694" class="Comment">-- 7. A `Function` folder that contains lifting of various types of</a>
+<a id="5762" class="Comment">-- functions (e.g. injections, surjections, bijections, inverses) to</a>
+<a id="5831" class="Comment">-- the datatype.</a>
+
+<a id="5849" class="Keyword">import</a> <a id="5856" href="Data.Sum.Function.Propositional.html" class="Module">Data.Sum.Function.Propositional</a>
+<a id="5888" class="Keyword">import</a> <a id="5895" href="Data.Sum.Function.Setoid.html" class="Module">Data.Sum.Function.Setoid</a>
+<a id="5920" class="Keyword">import</a> <a id="5927" href="Data.Product.Function.Dependent.Propositional.html" class="Module">Data.Product.Function.Dependent.Propositional</a>
+<a id="5973" class="Keyword">import</a> <a id="5980" href="Data.Product.Function.Dependent.Setoid.html" class="Module">Data.Product.Function.Dependent.Setoid</a>
+
+<a id="6020" class="Comment">------------------------------------------------------------------------</a>
+<a id="6093" class="Comment">-- Full list of documentation for the Data folder</a>
+<a id="6143" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="6217" class="Comment">-- Some examples showing where the natural numbers/integers and some</a>
+<a id="6286" class="Comment">-- related operations and properties are defined, and how they can be</a>
+<a id="6356" class="Comment">-- used:</a>
+
+<a id="6366" class="Keyword">import</a> <a id="6373" href="README.Data.Nat.html" class="Module">README.Data.Nat</a>
+<a id="6389" class="Keyword">import</a> <a id="6396" href="README.Data.Nat.Induction.html" class="Module">README.Data.Nat.Induction</a>
+
+<a id="6423" class="Keyword">import</a> <a id="6430" href="README.Data.Integer.html" class="Module">README.Data.Integer</a>
+
+<a id="6451" class="Comment">-- Some examples showing how the AVL tree module can be used.</a>
+
+<a id="6514" class="Keyword">import</a> <a id="6521" href="README.Data.AVL.html" class="Module">README.Data.AVL</a>
+
+<a id="6538" class="Comment">-- Some examples showing how List module can be used.</a>
+
+<a id="6593" class="Keyword">import</a> <a id="6600" href="README.Data.List.html" class="Module">README.Data.List</a>
+
+<a id="6618" class="Comment">-- Using List&#39;s Interleaving to define a fully certified filter function.</a>
+
+<a id="6693" class="Keyword">import</a> <a id="6700" href="README.Data.Interleaving.html" class="Module">README.Data.Interleaving</a>
+
+<a id="6726" class="Comment">-- Example of an encoding of record types with manifest fields and &quot;with&quot;.</a>
+
+<a id="6802" class="Keyword">import</a> <a id="6809" href="README.Data.Record.html" class="Module">README.Data.Record</a>
+
+<a id="6829" class="Comment">-- Example use case for a trie: a wee generic lexer</a>
+
+<a id="6882" class="Keyword">import</a> <a id="6889" href="README.Data.Trie.NonDependent.html" class="Module">README.Data.Trie.NonDependent</a>
+
+<a id="6920" class="Comment">-- Examples how (indexed) containers and constructions over them (free</a>
+<a id="6991" class="Comment">-- monad, least fixed point, etc.) can be used</a>
+
+<a id="7039" class="Keyword">import</a> <a id="7046" href="README.Data.Container.FreeMonad.html" class="Module">README.Data.Container.FreeMonad</a>
+<a id="7078" class="Keyword">import</a> <a id="7085" href="README.Data.Container.Indexed.html" class="Module">README.Data.Container.Indexed</a>
+</pre></body></html>
