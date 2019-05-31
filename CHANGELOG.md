@@ -559,6 +559,8 @@ Other minor additions
   ```agda
   _≈_ : Rel String 0ℓ
   _<_ : Rel String 0ℓ
+
+  fromChar : Char → String
   ```
 
 * Added new properties to `Data.String.Properties`:
