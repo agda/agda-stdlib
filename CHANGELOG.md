@@ -678,7 +678,7 @@ Other minor additions
 
 * Added new functions to `Function`:
   ```agda
-  _$- : (∀ x → B x) → (∀ {x} → B x)
+  _$- : ((x : A) → B x) → ({x : A} → B x)
   λ-  : ({x : A} → B x) → ((x : A) → B x)
   ```
 

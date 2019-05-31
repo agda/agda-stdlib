@@ -104,7 +104,7 @@ case x return B of f = f x
 -- Converting between implicit and explicit function spaces.
 
 _$- : ∀ {A : Set a}{B : A → Set b} →
-      (∀ x → B x) → (∀ {x} → B x)
+      ((x : A) → B x) → ({x : A} → B x)
 f $- = f _
 
 λ- : ∀ {A : Set a}{B : A → Set b} →
