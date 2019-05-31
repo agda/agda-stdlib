@@ -49,6 +49,7 @@ infixl 8 _ˢ_
 infixl 0 _|>_
 infix  0 case_return_of_
 infixr -1 _$_ _$!_
+infix  -1 _$-
 
 -- Composition
 
