@@ -43,18 +43,24 @@ module README where
 --     properties needed to specify these structures (associativity,
 --     commutativity, etc.), and operations on and proofs about the
 --     structures.
+
 -- • Axiom
---     The consequences of assuming various additional axioms
---     e.g. uniqueness of identity of proofs, function extensionality,
---     excluded middle.
+--     Types and consequences of various additional axioms not
+--     provable in Agda, e.g. uniqueness of identity of proofs,
+--     function extensionality and excluded middle.
+
+import README.Axiom
+
 -- • Category
 --     Category theory-inspired idioms used to structure functional
 --     programs (functors and monads, for instance).
+
 -- • Codata
 --     Coinductive data types and properties. There are two different
 --     approaches taken. The `Codata` folder contains the new more
 --     standard approach using sized types. The `Codata.Musical`
 --     folder contains modules using the old musical notation.
+
 -- • Data
 --     Data types and properties.
 
@@ -62,21 +68,29 @@ import README.Data
 
 -- • Function
 --     Combinators and properties related to functions.
+
 -- • Foreign
 --     Related to the foreign function interface.
+
 -- • Induction
 --     A general framework for induction (includes lexicographic and
 --     well-founded induction).
+
 -- • IO
 --     Input/output-related functions.
+
 -- • Level
 --     Universe levels.
+
 -- • Reflection
 --     Support for reflection.
+
 -- • Relation
 --     Properties of and proofs about relations.
+
 -- • Size
 --     Sizes used by the sized types mechanism.
+
 -- • Strict
 --     Provides access to the builtins relating to strictness.
 
@@ -145,7 +159,7 @@ import Induction
 import Induction.WellFounded
 
 -- Various forms of induction for natural numbers:
-import Induction.Nat
+import Data.Nat.Induction
 
 -- • Support for coinduction
 
