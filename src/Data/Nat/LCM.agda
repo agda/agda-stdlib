@@ -69,7 +69,7 @@ private
 -- The lcm can be calculated from the gcd.
 
 lcm : (i j : ℕ) → ∃ λ d → LCM i j d
-lcm i j with gcd′ i j
+lcm i j with mkGCD′ i j
 lcm .(q₁ * d) .(q₂ * d) | (d , gcd-* q₁ q₂ q₁-q₂-coprime) =
   ( q₁ * q₂ * d
   , record { commonMultiple = (mult₁ q₁ q₂ d , mult₂ q₁ q₂ d)
@@ -116,7 +116,7 @@ lcm .(q₁ * d) .(q₂ * d) | (d , gcd-* q₁ q₂ q₁-q₂-coprime) =
 
 gcd*lcm : ∀ {i j d m} → GCD i j d → LCM i j m → i * j ≡ d * m
 gcd*lcm  {i}        {j}       {d}  {m}               g l with LCM.unique l (proj₂ (lcm i j))
-gcd*lcm  {i}        {j}       {d} .{proj₁ (lcm i j)} g l | refl with gcd′ i j
+gcd*lcm  {i}        {j}       {d} .{proj₁ (lcm i j)} g l | refl with mkGCD′ i j
 gcd*lcm .{q₁ * d′} .{q₂ * d′} {d}                    g l | refl | (d′ , gcd-* q₁ q₂ q₁-q₂-coprime)
                                                            with GCD.unique g
                                                                   (gcd′-gcd (gcd-* q₁ q₂ q₁-q₂-coprime))
