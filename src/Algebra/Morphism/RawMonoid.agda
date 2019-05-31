@@ -1,0 +1,69 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Consequences of a morphism between monoids
+------------------------------------------------------------------------
+
+{-# OPTIONS --without-K --safe #-}
+
+open import Algebra
+open import Algebra.Morphism
+open RawMonoid using (Carrier; _≈_)
+
+module Algebra.Morphism.RawMonoid
+  {a b ℓ₁ ℓ₂} {From : RawMonoid b ℓ₂} {To : RawMonoid a ℓ₁}
+  {to : Carrier From → Carrier To}
+  (isRawMonoidMorphism : IsRawMonoidMorphism From To to)
+  {from : Carrier To → Carrier From}
+  (from-to : ∀ x → _≈_ From (from (to x)) x)
+  (from-cong : ∀ {x y} → _≈_ To x y → _≈_ From (from x) (from y))
+  where
+
+open import Relation.Binary
+open import Algebra
+open import Algebra.Structures
+open import Algebra.FunctionProperties
+open import Data.Product using (_,_)
+open import Function
+open import Level
+import Relation.Binary.Reasoning.Setoid as SetoidReasoning
+
+private
+  module F = RawMonoid From
+  module T = RawMonoid To
+
+open Definitions F.Carrier T.Carrier T._≈_
+open T using () renaming (_∙_ to _⊕_)
+open F using (_∙_)
+
+open IsRawMonoidMorphism isRawMonoidMorphism
+open SetoidReasoning F-setoid
+
+------------------------------------------------------------------------
+-- Export all properties of magma morphisms
+
+open import Algebra.Morphism.RawMagma magma-homo from-to from-cong public
+
+------------------------------------------------------------------------
+-- Properties
+
+identityˡ-homo : LeftIdentity T._≈_ T.ε _⊕_ → LeftIdentity F._≈_ F.ε _∙_
+identityˡ-homo idˡ x = begin
+  F.ε ∙ x              ≈˘⟨ from-to (F.ε ∙ x) ⟩
+  from (to (F.ε ∙ x))  ≈⟨ from-cong (∙-homo F.ε x) ⟩
+  from (to F.ε ⊕ to x) ≈⟨ from-cong (T-∙-congʳ ε-homo) ⟩
+  from (T.ε ⊕ to x)    ≈⟨ from-cong (idˡ (to x)) ⟩
+  from (to x)          ≈⟨ from-to x ⟩
+  x                    ∎
+
+identityʳ-homo : RightIdentity T._≈_ T.ε _⊕_ → RightIdentity F._≈_ F.ε _∙_
+identityʳ-homo idʳ x = begin
+  x ∙ F.ε              ≈˘⟨ from-to (x ∙ F.ε) ⟩
+  from (to (x ∙ F.ε))  ≈⟨ from-cong (∙-homo x F.ε) ⟩
+  from (to x ⊕ to F.ε) ≈⟨ from-cong (T-∙-congˡ ε-homo) ⟩
+  from (to x ⊕ T.ε)    ≈⟨ from-cong (idʳ (to x)) ⟩
+  from (to x)          ≈⟨ from-to x ⟩
+  x                    ∎
+
+identity-homo : Identity T._≈_ T.ε _⊕_ → Identity F._≈_ F.ε _∙_
+identity-homo (idˡ , idʳ) = identityˡ-homo idˡ , identityʳ-homo idʳ

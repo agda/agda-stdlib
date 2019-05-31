@@ -61,6 +61,9 @@ New modules
   ```
   Algebra.Constructs.LiftedChoice
 
+  Algebra.Morphism.RawMagma
+  Algebra.Morphism.RawMonoid
+
   Category.Monad.Reader
 
   Data.AVL.NonEmpty
@@ -239,10 +242,18 @@ Other minor additions
   ```agda
   record SelectiveMagma c ℓ : Set (suc (c ⊔ ℓ))
   ```
+  Additionally the record `RawMonoid` now exports `RawMagma` and `RawGroup`
+  exports `RawMonoid` and `RawMagma`.
 
 * Added new record to `Algebra.Structure`:
   ```agda
   record IsSelectiveMagma (∙ : Op₂ A) : Set (a ⊔ ℓ)
+  ```
+
+* Added new records to `Algebra.Morphism`:
+  ```agda
+  record IsRawMagmaMorphism  (⟦_⟧ : Morphism) : Set (c₁ ⊔ ℓ₁ ⊔ c₂ ⊔ ℓ₂)
+  record IsRawMonoidMorphism (⟦_⟧ : Morphism) : Set (c₁ ⊔ ℓ₁ ⊔ c₂ ⊔ ℓ₂)
   ```
 
 * Added new proofs to `Codata.Stream.Properties`:
