@@ -269,6 +269,11 @@ import README.Function.Reasoning
 
 import README.Debug.Trace
 
+-- An exploration of the generic programs acting on n-ary functions and
+-- n-ary heterogeneous products
+
+import README.Nary
+
 -- Explaining the inspect idiom: use case, equivalent handwritten
 -- auxiliary definitions, and implementation details.
 
