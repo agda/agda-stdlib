@@ -8,22 +8,22 @@
 
 module Text.Printf where
 
-open import Level using (0ℓ)
-open import Data.Empty using (⊥; ⊥-elim)
+open import Level using (0ℓ; Lift)
 open import Data.List.Base as List using (List; []; _∷_)
+open import Data.Nat.Base using (ℕ)
+open import Data.Product
+open import Data.Product.Nary.NonDependent
 open import Data.String.Base
-open import Data.Sum.Base using (inj₁; inj₂)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.Unit using (⊤)
+open import Function.Nary.NonDependent
+open import Function
+open import Strict
 
 import Data.Char.Base as Cₛ
 import Data.Integer   as ℤₛ
 import Data.Float     as Fₛ
 import Data.Nat.Show  as ℕₛ
-
-open import Data.Product
-open import Data.Product.Nary.NonDependent
-open import Function.Nary.NonDependent
-open import Function
 
 open import Text.Format as Format hiding (Error)
 
@@ -37,30 +37,20 @@ assemble (`String ∷ fmt) (s , vs) = s          ∷ assemble fmt vs
 assemble (Raw str ∷ fmt) vs       = str ∷ assemble fmt vs
 
 record Error (e : Format.Error) : Set where
-  field impossible : ⊥
 
-module _ (input : String) where
+private
 
-  private
+  Size : Format.Error ⊎ Format → ℕ
+  Size (inj₁ err) = 0
+  Size (inj₂ fmt) = size fmt
 
-    constraint : Set
-    constraint = case lexer input of λ where
-      (inj₁ err) → Error err
-      (inj₂ fmt) → ⊤
+  Printf : ∀ pr → Set (⨆ (Size pr) 0ℓs)
+  Printf (inj₁ err) = Error err
+  Printf (inj₂ fmt) = Arrows _ ⟦ fmt ⟧ String
 
-  module _ {pr : constraint} where
+  printf' : ∀ pr → Printf pr
+  printf' (inj₁ err) = _
+  printf' (inj₂ fmt) = curry⊤ₙ _ (concat ∘′ assemble fmt)
 
-    private
-
-      fmt : Format
-      fmt with lexer input
-      ... | inj₁ err = ⊥-elim (Error.impossible pr)
-      ... | inj₂ fmt = fmt
-
-      n   = size fmt
-
-    Printf : Set (⨆ n 0ℓs)
-    Printf = Arrows n ⟦ fmt ⟧ String
-
-    printf : Printf
-    printf = curryₙ n (concat ∘′ assemble fmt ∘′ toProduct⊤ n)
+printf : (input : String) → Printf (lexer input)
+printf input = printf' (lexer input)
