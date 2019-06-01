@@ -9,8 +9,11 @@
 module Text.Printf where
 
 open import Level using (0ℓ)
-open import Data.List.Base as List
+open import Data.Empty using (⊥; ⊥-elim)
+open import Data.List.Base as List using (List; []; _∷_)
 open import Data.String.Base
+open import Data.Sum.Base using (inj₁; inj₂)
+open import Data.Unit using (⊤)
 
 import Data.Char.Base as Cₛ
 import Data.Integer   as ℤₛ
@@ -22,7 +25,7 @@ open import Data.Product.Nary.NonDependent
 open import Function.Nary.NonDependent
 open import Function
 
-open import Text.Format
+open import Text.Format as Format hiding (Error)
 
 assemble : ∀ fmt → Product⊤ _ ⟦ fmt ⟧ → List String
 assemble []              vs       = []
@@ -33,15 +36,31 @@ assemble (`Char   ∷ fmt) (c , vs) = fromChar c ∷ assemble fmt vs
 assemble (`String ∷ fmt) (s , vs) = s          ∷ assemble fmt vs
 assemble (Raw str ∷ fmt) vs       = str ∷ assemble fmt vs
 
-module _ (fmt : Format) where
+record Error (e : Format.Error) : Set where
+  field impossible : ⊥
+
+module _ (input : String) where
 
   private
---    cs  = toList str
---    fmt = format cs
-    n   = size fmt
 
-  Printf : Set (⨆ n 0ℓs)
-  Printf = Arrows n ⟦ fmt ⟧ (List String)
+    constraint : Set
+    constraint = case lexer input of λ where
+      (inj₁ err) → Error err
+      (inj₂ fmt) → ⊤
 
-  printf : Printf
-  printf = curryₙ n (assemble fmt ∘′ toProduct⊤ n)
+  module _ {pr : constraint} where
+
+    private
+
+      fmt : Format
+      fmt with lexer input
+      ... | inj₁ err = ⊥-elim (Error.impossible pr)
+      ... | inj₂ fmt = fmt
+
+      n   = size fmt
+
+    Printf : Set (⨆ n 0ℓs)
+    Printf = Arrows n ⟦ fmt ⟧ String
+
+    printf : Printf
+    printf = curryₙ n (concat ∘′ assemble fmt ∘′ toProduct⊤ n)
