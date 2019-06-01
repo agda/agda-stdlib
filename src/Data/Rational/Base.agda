@@ -113,7 +113,7 @@ n ≢0 = False (n ℕ.≟ 0)
 
 normalize : ∀ (m n : ℕ) → .{n≢0 : n ≢0} → ℚ
 normalize zero    n       = mkℚ +0 0 (C.sym (C.1-coprimeTo 0))
-normalize (suc m) (suc n) with gcd (suc m) (suc n)
+normalize (suc m) (suc n) with mkGCD (suc m) (suc n)
 ... | zero  , GCD.is (1+m∣0 , _) _ = contradiction (0∣⇒≡0 1+m∣0) λ()
 ... | suc g , G@(GCD.is (divides (suc p) refl , divides (suc q) refl) _)
   = mkℚ (+ suc p) q (Bézout-coprime (Bézout.identity G))

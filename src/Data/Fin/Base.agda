@@ -13,15 +13,13 @@
 module Data.Fin.Base where
 
 open import Data.Empty using (⊥-elim)
-open import Data.Nat as ℕ
-  using (ℕ; zero; suc; z≤n; s≤s)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc; z≤n; s≤s)
 open import Function using (_∘_; _on_)
 open import Level using () renaming (zero to ℓ₀)
 open import Relation.Nullary using (yes; no)
-open import Relation.Nullary.Decidable using (True; toWitness)
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality
-  using (_≡_; _≢_; refl; cong)
+open import Relation.Nullary.Decidable.Core using (True; toWitness)
+open import Relation.Binary.Core
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≢_; refl; cong)
 
 ------------------------------------------------------------------------
 -- Types
@@ -74,13 +72,6 @@ fromℕ≤″ : ∀ m {n} → m ℕ.<″ n → Fin n
 fromℕ≤″ zero    (ℕ.less-than-or-equal refl) = zero
 fromℕ≤″ (suc m) (ℕ.less-than-or-equal refl) =
   suc (fromℕ≤″ m (ℕ.less-than-or-equal refl))
-
--- # m = "m".
-
-infix 10 #_
-
-#_ : ∀ m {n} {m<n : True (suc m ℕ.≤? n)} → Fin n
-#_ _ {m<n = m<n} = fromℕ≤ (toWitness m<n)
 
 -- raise m "i" = "m + i".
 

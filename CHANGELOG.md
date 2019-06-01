@@ -45,6 +45,15 @@ Bug-fixes
 * `Data.Rational` now exports queries from `Data.Rational.Base` instead of
   from `Data.Nat.Base`.
 
+Non-backwards compatible changes
+--------------------------------
+
+* The function `gcd` in `Data.Nat.GCD` has been reimplemented so it is much
+  faster when compiled. The function `gcd` now has type `ℕ → ℕ → ℕ`. The old
+  function of type `(m n : ℕ) → ∃ λ d → GCD m n d` has been renamed `mkGCD`,
+  and `gcd′` in `Data.Nat.Coprimality` has been renamed `mkGCD′`. All other
+  functionality is untouched.
+
 New modules
 -----------
 
@@ -56,6 +65,8 @@ New modules
 
   Data.AVL.NonEmpty
   Data.AVL.NonEmpty.Propositional
+
+  Data.List.Membership.Propositional.Properties.WithK
 
   Data.List.Relation.Binary.Disjoint.Propositional
   Data.List.Relation.Binary.Disjoint.Setoid
@@ -74,6 +85,10 @@ New modules
   Data.Nat.Induction
   Data.Fin.Induction
 
+  Data.Product.Nary.NonDependent
+  Function.Nary.NonDependent
+  Relation.Nary
+
   Data.Sign.Base
 
   Data.These.Base
@@ -85,7 +100,13 @@ New modules
 
   Relation.Binary.Construct.Closure.Equivalence.Properties
   Relation.Binary.Rewriting
+
+  Relation.Nullary.Decidable.Core
   ```
+
+* The function `#_` has been moved from `Data.Fin.Base` to `Data.Fin`
+  to break dependency cycles following the introduction of the module
+  `Data.Product.N-ary.Heterogeneous`.
 
 Deprecated features
 -------------------
@@ -113,6 +134,10 @@ been attached to all deprecated names.
   `Data.Universe.Indexed`. In the latter `Indexed-universe` has been
   renamed to `IndexedUniverse` to better follow the library conventions. The
   old module still exists exporting the old names, but has been deprecated.
+
+* The `Data.Product.N-ary` modules have been deprecated and their content
+  moved to `Data.Vec.Recursive` to make place for properly heterogeneous
+  n-ary products in `Data.Product.Nary`.
 
 #### Names
 
@@ -375,6 +400,11 @@ Other minor additions
   concat⁺ : Sublist (Sublist R) ass bss → Sublist R (concat ass) (concat bss)
   ```
 
+* Added new proof to `Data.List.Membership.Setoid.Properties`:
+  ```agda
+  unique⇒irrelevant : B.Irrelevant _≈_ → Unique xs → U.Irrelevant (_∈ xs)
+  ```
+
 * Added new proofs to `Data.List.Relation.Binary.Sublist.Propositional.Properties`:
   ```agda
   All-resp-⊆ : (All P) Respects (flip _⊆_)
@@ -383,12 +413,14 @@ Other minor additions
 
 * Added new operations to `Data.List.Relation.Unary.All`:
   ```agda
-  uncons    : All P (x ∷ xs) → P x × All P xs
-  reduce    : (f : ∀ {x} → P x → B) → ∀ {xs} → All P xs → List B
-  construct : (f : B → ∃ P) (xs : List B) → ∃ (All P)
-  fromList  : (xs : List (∃ P)) → All P (List.map proj₁ xs)
-  toList    : All P xs → List (∃ P)
-  self      : All (const A) xs
+  lookupAny  : All P xs → (i : Any Q xs) → (P ∩ Q) (lookup i)
+  lookupWith : ∀[ P ⇒ Q ⇒ R ] → All P xs → (i : Any Q xs) → R (lookup i)
+  uncons     : All P (x ∷ xs) → P x × All P xs
+  reduce     : (f : ∀ {x} → P x → B) → ∀ {xs} → All P xs → List B
+  construct  : (f : B → ∃ P) (xs : List B) → ∃ (All P)
+  fromList   : (xs : List (∃ P)) → All P (List.map proj₁ xs)
+  toList     : All P xs → List (∃ P)
+  self       : All (const A) xs
   ```
 
 * Added new proofs to `Data.List.Relation.Unary.All.Properties`:
@@ -412,6 +444,15 @@ Other minor additions
   _>>=_     : Maybe A → (A → Maybe B) → Maybe B
   ```
 
+* Added new proofs to `Data.Nat.GCD`:
+  ```agda
+  gcd-comm     : gcd m n ≡ gcd n m
+  gcd[m,n]∣m   : gcd m n ∣ m
+  gcd[m,n]∣n   : gcd m n ∣ n
+  gcd-greatest : c ∣ m → c ∣ n → c ∣ gcd m n
+  gcd≢0        : m ≢ 0 ⊎ n ≢ 0 → gcd m n ≢ 0
+  ```
+
 * Added new proofs to `Data.Nat.Divisibility`:
   ```agda
   ∣n∣m%n⇒∣m : d ∣ suc n → d ∣ (m % suc n) → d ∣ m
@@ -424,8 +465,10 @@ Other minor additions
 
   a%n≤a       : a % (suc n) ≤ a
   a≤n⇒a%n≡a   : a ≤ n → a % suc n ≡ a
+  ∣n∣m%n⇒∣m   : d ∣ suc n → d ∣ (m % suc n) → d ∣ m
   %-remove-+ˡ : a % suc n ≡ 0 → (a + b) % suc n ≡ b % suc n
   %-remove-+ʳ : b % suc n ≡ 0 → (a + b) % suc n ≡ a % suc n
+  %-presˡ-∣   : d ∣ m → d ∣ suc n → d ∣ (m % suc n)
 
   [a/n]*n≤a   : (a / suc n) * suc n ≤ a
   ```
@@ -572,6 +615,8 @@ Other minor additions
   iΠ[_∶_]_ s a ty   = Π[ s ∶ (iArg a) ] ty
   ```
 
+* Defined `_≉_` as the negation of `_≈_` in `Relation.Binary`'s `Setoid`.
+
 * Added new definitions in `Relation.Binary.Core`:
   ```agda
   Universal _∼_    = ∀ x y → x ∼ y
@@ -610,6 +655,14 @@ Other minor additions
 * In `Relation.Binary.HeterogeneousEquality` the relation `_≅_` has
   been generalised so that the types of the two equal elements need not
   be at the same universe level.
+
+* Added new proof to `Relation.Binary.PropositionalEquality`:
+  ```
+  Congₙ  : ∀ n (f g : Arrows n as b) → Set _
+  congₙ  : ∀ n (f : Arrows n as b) → Congₙ n f f
+  Substₙ : ∀ n (f g : Arrows n as (Set r)) → Set _
+  substₙ : (f : Arrows n as (Set r)) → Substₙ n f f
+  ```
 
 * Added new proof to `Relation.Binary.PropositionalEquality.Core`:
   ```agda
