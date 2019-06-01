@@ -36,9 +36,9 @@ assemble (`Char   ∷ fmt) (c , vs) = fromChar c ∷ assemble fmt vs
 assemble (`String ∷ fmt) (s , vs) = s          ∷ assemble fmt vs
 assemble (Raw str ∷ fmt) vs       = str ∷ assemble fmt vs
 
-record Error (e : Format.Error) : Set where
-
 private
+
+  record Error (e : Format.Error) : Set where
 
   Size : Format.Error ⊎ Format → ℕ
   Size (inj₁ err) = 0
