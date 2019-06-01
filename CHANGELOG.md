@@ -703,7 +703,7 @@ Other minor additions
   Irrelevant P = ∀ (p₁ p₂ : P) → p₁ ≡ p₂
   ```
 
-* Added three lemmas in `Relation.Nullary.Decidable` which constraints the output of
+* Added three lemmas in `Relation.Nullary.Decidable.Core` which constraints the output of
   decision procedures:
   ```agda
   dec-yes     : (p? : Dec P) → P → ∃ λ p′ → p? ≡ yes p′
