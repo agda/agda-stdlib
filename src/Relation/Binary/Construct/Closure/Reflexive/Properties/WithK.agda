@@ -28,14 +28,17 @@ module _ {a ℓ} {A : Set a} {_~_ : Rel A ℓ} where
     asym⟶antisym ≈-refl _ _ refl = ≈-refl
     asym⟶antisym ≈-refl _ refl _ = ≈-refl
 
+    preorder : Transitive _~_ → IsPreorder _≡_ (Refl _~_)
+    preorder ~-trans = record
+        { isEquivalence = PropEq.isEquivalence
+        ; reflexive = λ { refl → refl }
+        ; trans = trans ~-trans }
+
     partialOrder : IsStrictPartialOrder _≡_ _~_ → IsPartialOrder _≡_ (Refl _~_)
     partialOrder ~-IsStrictPartialOrder = record
-        { isPreorder = record
-            { isEquivalence = isEquivalence
-            ; reflexive = λ { refl → refl }
-            ; trans = trans (IsStrictPartialOrder.trans ~-IsStrictPartialOrder) }
+        { isPreorder = preorder (IsStrictPartialOrder.trans ~-IsStrictPartialOrder)
         ; antisym = asym⟶antisym {_} {_≡_} Eq.refl asym }
-      where open IsStrictPartialOrder ~-IsStrictPartialOrder hiding (trans)
+      where open IsStrictPartialOrder ~-IsStrictPartialOrder
 
     decPartialOrder : IsDecStrictPartialOrder _≡_ _~_ → IsDecPartialOrder _≡_ (Refl _~_)
     decPartialOrder ~-IsDecStrictPartialOrder = record
