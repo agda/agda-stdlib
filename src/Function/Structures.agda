@@ -4,6 +4,8 @@
 -- Structures for types of functions
 ------------------------------------------------------------------------
 
+-- These definitions should usually be accessed from `Function`.
+
 {-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary

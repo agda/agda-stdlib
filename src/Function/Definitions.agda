@@ -1,8 +1,10 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Definitions for types of functions
+-- Definitions for types of functions.
 ------------------------------------------------------------------------
+
+-- These definitions should usually be accessed from `Function`.
 
 {-# OPTIONS --without-K --safe #-}
 
@@ -13,6 +15,8 @@ module Function.Definitions
   where
 
 open import Data.Product using (∃; _×_)
+import Function.Definitions.Core1 as Core₁
+import Function.Definitions.Core2 as Core₂
 open import Level using (_⊔_)
 
 ------------------------------------------------------------------------
@@ -24,17 +28,17 @@ Congruent f = ∀ {x y} → x ≈₁ y → f x ≈₂ f y
 Injective : (A → B) → Set (a ⊔ ℓ₁ ⊔ ℓ₂)
 Injective f = ∀ {x y} → f x ≈₂ f y → x ≈₁ y
 
-Surjective : (A → B) → Set (a ⊔ b ⊔ ℓ₂)
-Surjective f = ∀ x → ∃ λ y → y ≈₂ f x
+open Core₂ _≈₂_ public
+  using (Surjective)
 
 Bijective : (A → B) → Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
 Bijective f = Injective f × Surjective f
 
-LeftInverses : (A → B) → (B → A) → Set (b ⊔ ℓ₂)
-LeftInverses f g = ∀ x → f (g x) ≈₂ x
+open Core₂ _≈₂_ public
+  using (LeftInverses)
 
-RightInverses : (A → B) → (B → A) → Set (a ⊔ ℓ₁)
-RightInverses f g = ∀ x → g (f x) ≈₁ x
+open Core₁ _≈₁_ public
+  using (RightInverses)
 
 Inverses : (A → B) → (B → A) → Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
 Inverses f g = LeftInverses f g × RightInverses f g
