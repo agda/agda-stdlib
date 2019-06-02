@@ -41,6 +41,10 @@ suc 0#        =  suc2* 0#
 suc (2suc x)  =  suc2* (suc x)   -- 1 + 2(1+x)
 suc (suc2* x) =  2suc x          -- 1 + 1 + 2x =  2*(1+x)
 
+fromℕ : ℕ → Bin                  -- it costs O(n)
+fromℕ 0      = 0#
+fromℕ (1+ n) = suc (fromℕ n)
+
 
 ------------------------------------------------------------------------------
 -- Constants
@@ -67,12 +71,9 @@ _+_ : Op₂ Bin
 0#        + y         =  y
 x         + 0#        =  x
 (2suc x)  + (2suc y)  =  2suc (suc (x + y))
-                                       -- 2(1+x) + 2(1+y) =  2(1 + 1+x+y)
 (2suc x)  + (suc2* y) =  suc (2suc (x + y))
-                                       -- 2(1+x) + 1 + 2y =  1 + 2(1+x+y)
 (suc2* x) + (2suc y)  =  suc (2suc (x + y))
 (suc2* x) + (suc2* y) =  suc (suc2* (x + y))
-                              -- 1+2x + 1+2y =  2 + 2(x+y) =  1 + 1 + 2(x+y)
 
 2* : Bin → Bin
 2* 0#        = 0#
@@ -98,15 +99,9 @@ _*_ : Op₂ Bin
 _         * 0#        =  0#
 (2suc x)  * (2suc y)  =  2* (2suc (x + (y + x * y)))
 (2suc x)  * (suc2* y) =  2suc (x + y * (2suc x))
-                      --
-                      -- 2(1+x) * (1+2y) =  2(1 + 2y + x + 2xy)
-                      --                 =  2(1 + x + y*2(1 + x))
 
 (suc2* x) * (2suc y)  =  2suc (y + x * (2suc y))
 (suc2* x) * (suc2* y) =  suc2* (x + y * (suc2* x))
-            --
-            -- (1 + 2x)(1 + 2y) =  1 + (2y + 2x + 4xy)
-            --                     1 + 2(x + y * (1 + 2x))
 
 toℕ : Bin → ℕ
 toℕ 0#        =  0

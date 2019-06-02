@@ -18,7 +18,6 @@ open import Data.Bin.Base
 open import Data.Nat using (ℕ; s≤s)
                      renaming (suc to 1+_; pred to predₙ; _+_ to _+ₙ_;
                                _*_ to _*ₙ_; _∸_ to _∸ₙ_; _≤_ to _≤ₙ_)
-            -- to distinguish these operators from their Bin versions
 
 open import Data.Nat.Properties as ℕp using (even≢odd)
 open import Data.Product    using (_,_; proj₁; proj₂; ∃)
@@ -83,7 +82,8 @@ _≟_ :  Decidable (_≡_ {A = Bin})       -- Decidable equality on Bin.
 
 ≡-isDecEquivalence :  IsDecEquivalence {A = Bin} _≡_
 ≡-isDecEquivalence =  record
-  { isEquivalence = isEquivalence;  _≟_ = _≟_
+  { isEquivalence = isEquivalence
+  ; _≟_           = _≟_
   }
 
 ≡-decSetoid : DecSetoid 0ℓ 0ℓ
@@ -136,10 +136,7 @@ pred∘suc (suc2* x) =  refl
 suc∘pred :  (x : Bin) → x ≢ 0# → suc (pred x) ≡ x
 suc∘pred 0#        0≢0 =  contradiction refl 0≢0
 suc∘pred (2suc _)  _   =  refl
-suc∘pred (suc2* x) _   =  begin
-  suc (pred (suc2* x))   ≡⟨⟩
-  suc (2* x)             ≡⟨ sym (suc2*-as∘ x) ⟩
-  suc2* x                ∎
+suc∘pred (suc2* x) _   =  sym (suc2*-as∘ x)
 
 
 ------------------------------------------------------------------------------
@@ -166,32 +163,14 @@ suc≗1+ (2suc _)  =  refl
 suc≗1+ (suc2* _) =  refl
 
 suc-+ :  ∀ x y → (suc x) + y ≡ suc (x + y)
-suc-+ 0# y = begin
-  suc 0# + y     ≡⟨⟩
-  1B + y         ≡⟨ sym (suc≗1+ y) ⟩
-  suc y          ≡⟨⟩
-  suc (0# + y)   ∎
-
-suc-+ x 0# = begin
+suc-+ 0# y =  sym (suc≗1+ y)
+suc-+ x 0# =  begin
   suc x + 0#     ≡⟨ +-identityʳ (suc x) ⟩
   suc x          ≡⟨ cong suc (sym (+-identityʳ x)) ⟩
   suc (x + 0#)   ∎
 
-suc-+ (2suc x) (2suc y) = begin
-  (suc (2suc x)) + (2suc y)    ≡⟨⟩
-  suc2* (suc x) + (2suc y)     ≡⟨⟩
-  suc (2suc (suc x + y))       ≡⟨ cong (suc ∘ 2suc) (suc-+ x y) ⟩
-  suc (2suc (suc (x + y)))     ≡⟨⟩
-  suc ((2suc x) + (2suc y))    ∎
-
-suc-+ (2suc x) (suc2* y) = begin
-  (suc (2suc x)) + (suc2* y)     ≡⟨⟩
-  (suc2* (suc x)) + (suc2* y)    ≡⟨⟩
-  suc (suc2* (suc x + y))        ≡⟨ cong (suc ∘ suc2*) (suc-+ x y) ⟩
-  suc (suc2* (suc (x + y)))      ≡⟨⟩
-  suc (suc (2suc (x + y)))       ≡⟨⟩
-  suc ((2suc x) + (suc2* y))     ∎
-
+suc-+ (2suc x) (2suc y)   =  cong (suc ∘ 2suc) (suc-+ x y)
+suc-+ (2suc x) (suc2* y)  =  cong (suc ∘ suc2*) (suc-+ x y)
 suc-+ (suc2* x) (2suc y)  =  refl
 suc-+ (suc2* x) (suc2* y) =  refl
 
@@ -253,12 +232,19 @@ toℕ∘pred 0#        =  refl
 toℕ∘pred (2suc x)  =  cong predₙ $ sym $ ℕp.*-distribˡ-+ 2 1 (toℕ x)
 toℕ∘pred (suc2* x) =  toℕ∘2* x
 
+toℕ∘fromℕ :  toℕ ∘ fromℕ ≗ id
+toℕ∘fromℕ 0      = refl
+toℕ∘fromℕ (1+ n) = begin
+  toℕ (fromℕ (1+ n))   ≡⟨⟩
+  toℕ (suc (fromℕ n))  ≡⟨ toℕ∘suc (fromℕ n) ⟩
+  1+ (toℕ (fromℕ n))   ≡⟨ cong 1+_ (toℕ∘fromℕ n) ⟩
+  1+ n                 ∎
 
-x≡0⇒toℕ-x≡0 :  ∀ {x} → x ≡ 0# → toℕ x ≡ 0
-x≡0⇒toℕ-x≡0 {0#} _ = refl
+x≡0⇒toℕ[x]≡0 :  ∀ {x} → x ≡ 0# → toℕ x ≡ 0
+x≡0⇒toℕ[x]≡0 {0#} _ = refl
 
-toℕ-x≡0⇒x≡0 :  ∀ {x} → toℕ x ≡ 0 → x ≡ 0#
-toℕ-x≡0⇒x≡0 {0#} _ = refl
+toℕ[x]≡0⇒x≡0 :  ∀ {x} → toℕ x ≡ 0 → x ≡ 0#
+toℕ[x]≡0⇒x≡0 {0#} _ = refl
 
 toℕ-homo-+ :  ∀ x y → toℕ (x + y) ≡ toℕ x +ₙ toℕ y
 toℕ-homo-+ 0# _  =  refl
@@ -285,7 +271,7 @@ toℕ-homo-+ (2suc x) (2suc y) = begin
                                     ⟩
   2 *ₙ ((1+ m) +ₙ (1+ n))          ≡⟨ ℕp.*-distribˡ-+ 2 (1+ m) (1+ n) ⟩
   (2 *ₙ (1+ m)) +ₙ (2 *ₙ (1+ n))   ≡⟨⟩
-  toℕ (2suc x) +ₙ toℕ (2suc y)   ∎
+  toℕ (2suc x) +ₙ toℕ (2suc y)     ∎
   where
   m = toℕ x;  n = toℕ y
 
@@ -338,20 +324,6 @@ toℕ-homo-+ (suc2* x) (suc2* y) = begin
   m = toℕ x;  n = toℕ y
 
 
-ext-fromℕ :  (n : ℕ) → ∃ (\x → toℕ x ≡ n)    -- Mind:  it costs O(n)
-ext-fromℕ 0       =  (0# , refl)
-ext-fromℕ (1+ n)  with ext-fromℕ n
-...
-    | (x , toℕ-x≡n) = (suc x , toℕ-suc-x≡1+n)
-  where
-  toℕ-suc-x≡1+n = begin
-    toℕ (suc x)   ≡⟨ toℕ∘suc x ⟩
-    1+ (toℕ x)    ≡⟨ cong 1+_ toℕ-x≡n ⟩
-    1+ n          ∎
-
-fromℕ : ℕ → Bin
-fromℕ = proj₁ ∘ ext-fromℕ
-
 fromℕ-homo-+ :  (m n : ℕ) → fromℕ (m +ₙ n) ≡ fromℕ m + fromℕ n
 fromℕ-homo-+ 0      _ = refl
 fromℕ-homo-+ (1+ m) n = begin
@@ -362,14 +334,6 @@ fromℕ-homo-+ (1+ m) n = begin
   (fromℕ (1+ m)) + (fromℕ n)  ∎
   where
   a = fromℕ m;  b = fromℕ n
-
-toℕ∘fromℕ :  toℕ ∘ fromℕ ≗ id
-toℕ∘fromℕ 0      = refl
-toℕ∘fromℕ (1+ n) = begin
-  toℕ (fromℕ (1+ n))   ≡⟨⟩
-  toℕ (suc (fromℕ n))  ≡⟨ toℕ∘suc (fromℕ n) ⟩
-  1+ (toℕ (fromℕ n))   ≡⟨ cong 1+_ (toℕ∘fromℕ n) ⟩
-  1+ n                 ∎
 
 toℕ-injective :  ∀ {x y} → toℕ x ≡ toℕ y → x ≡ y
 toℕ-injective {0#}     {0#}     _               =  refl
@@ -401,19 +365,13 @@ toℕ-injective {suc2* x} {suc2* y} 1+2xN≡1+2yN =  cong suc2* x≡y
 toℕ-surjective :  (y : ℕ) → ∃ (\x → toℕ x ≡ y)
 toℕ-surjective 0       =  (0# , refl)
 toℕ-surjective (1+ n)  with toℕ-surjective n
-...
-    | (a , toℕ-a≡n) = (suc a , toℕ-suc-a≡1+n)
+... | (a , toℕ-a≡n) = (suc a , toℕ-suc-a≡1+n)
   where
-  toℕ-suc-a≡1+n = begin
-    toℕ (suc a)   ≡⟨ toℕ∘suc a ⟩
-    1+ (toℕ a)    ≡⟨ cong 1+_ toℕ-a≡n ⟩
-    1+ n          ∎
-
+  toℕ-suc-a≡1+n =  trans (toℕ∘suc a) (cong 1+_ toℕ-a≡n)
 
 fromℕ∘toℕ :  fromℕ ∘ toℕ ≗ id
-fromℕ∘toℕ a =  toℕ-injective toℕ-b≡toℕ-a
-  where
-  toℕ-b≡toℕ-a = proj₂ (ext-fromℕ (toℕ a))
+fromℕ∘toℕ =  toℕ-injective ∘ toℕ∘fromℕ ∘ toℕ
+
 
 ------------------------------------------------------------------------------
 -- Summary:
@@ -422,16 +380,14 @@ fromℕ∘toℕ a =  toℕ-injective toℕ-b≡toℕ-a
 ------------------------------------------------------------------------------
 
 fromℕ∘pred :  (n : ℕ) → fromℕ (predₙ n) ≡ pred (fromℕ n)
-fromℕ∘pred n =
-  let (x , toℕ-x≡n) = ext-fromℕ n
-  in
-  begin
-    fromℕ (predₙ n)         ≡⟨ cong (fromℕ ∘ predₙ) (sym (toℕ∘fromℕ n)) ⟩
-    fromℕ (predₙ (toℕ x))   ≡⟨ cong fromℕ (sym (toℕ∘pred x)) ⟩
-    fromℕ (toℕ (pred x))    ≡⟨ fromℕ∘toℕ (pred x) ⟩
-    pred x                  ≡⟨ refl ⟩
-    pred (fromℕ n)
-  ∎
+fromℕ∘pred n = begin
+  fromℕ (predₙ n)        ≡⟨ cong (fromℕ ∘ predₙ) (sym (toℕ∘fromℕ n)) ⟩
+  fromℕ (predₙ (toℕ x))  ≡⟨ cong fromℕ (sym (toℕ∘pred x)) ⟩
+  fromℕ (toℕ (pred x))   ≡⟨ fromℕ∘toℕ (pred x) ⟩
+  pred x                 ≡⟨ refl ⟩
+  pred (fromℕ n)         ∎
+  where
+  x = fromℕ n
 
 
 ------------------------------------------------------------------------------
@@ -557,7 +513,6 @@ toℕ-homo-* x y =  aux x y (size x +ₙ size y) ℕp.≤-refl
     0                 ≡⟨ sym (ℕp.*-zeroʳ (toℕ x)) ⟩
     toℕ x *ₙ toℕ 0#   ∎
 
-  ---------------------
   aux (2suc x) (2suc y) (1+ cnt) (s≤s |x|+1+|y|≤cnt) = begin
     toℕ (2suc x * 2suc y)               ≡⟨⟩
     toℕ (2* (2suc (x + (y + xy))))      ≡⟨ toℕ∘2* (2suc (x + (y + xy))) ⟩
@@ -609,7 +564,7 @@ toℕ-homo-* x y =  aux x y (size x +ₙ size y) ℕp.≤-refl
                                                                    1 2n) ⟩
     (1+ 2n) *ₙ 2[1+m]                    ≡⟨ ℕp.*-comm (1+ 2n) 2[1+m] ⟩
     2[1+m] *ₙ (1+ 2n)                    ≡⟨⟩
-    toℕ (2suc x) *ₙ toℕ (suc2* y)      ∎
+    toℕ (2suc x) *ₙ toℕ (suc2* y)        ∎
     where
     m      = toℕ x;       n  = toℕ y;   1+m = 1+ m
     2[1+m] = 2 *ₙ (1+ m);  2n = 2 *ₙ n
@@ -619,16 +574,15 @@ toℕ-homo-* x y =  aux x y (size x +ₙ size y) ℕp.≤-refl
 
     |y|+1+|x|≤cnt =  subst (_≤ₙ cnt) eq |x|+1+|y|≤cnt
 
-      ---------
   aux (suc2* x) (2suc y) (1+ cnt) (s≤s |x|+1+|y|≤cnt) = begin
     toℕ ((suc2* x) * (2suc y))            ≡⟨⟩
     toℕ (2suc (y + x * (2suc y)))         ≡⟨⟩
     2 *ₙ (1+ (toℕ (y + x * (2suc y))))    ≡⟨ cong ((2 *ₙ_) ∘ 1+_)
                                                (toℕ-homo-+ y (x * (2suc y))) ⟩
     2 *ₙ (1+ (n +ₙ (toℕ (x * (2suc y)))))
-                                        ≡⟨ cong ((2 *ₙ_) ∘ 1+_ ∘ (n +ₙ_))
-                                           (aux x (2suc y) cnt |x|+1+|y|≤cnt)
-                                         ⟩
+                                       ≡⟨ cong ((2 *ₙ_) ∘ 1+_ ∘ (n +ₙ_))
+                                          (aux x (2suc y) cnt |x|+1+|y|≤cnt)
+                                        ⟩
     2 *ₙ (1+n +ₙ (m *ₙ toℕ (2suc y)))  ≡⟨⟩
     2 *ₙ (1+n +ₙ (m *ₙ 2[1+n]))        ≡⟨ ℕp.*-distribˡ-+ 2 1+n _ ⟩
     2[1+n] +ₙ (2 *ₙ (m *ₙ 2[1+n]))     ≡⟨ cong (2[1+n] +ₙ_)
@@ -637,7 +591,7 @@ toℕ-homo-* x y =  aux x y (size x +ₙ size y) ℕp.≤-refl
                                                (sym (ℕp.*-identityˡ 2[1+n])) ⟩
     1 *ₙ 2[1+n] +ₙ 2m *ₙ 2[1+n]        ≡⟨ sym (ℕp.*-distribʳ-+ 2[1+n] 1 2m) ⟩
     (1+ 2m) *ₙ 2[1+n]                  ≡⟨⟩
-    toℕ (suc2* x) *ₙ toℕ (2suc y)    ∎
+    toℕ (suc2* x) *ₙ toℕ (2suc y)      ∎
     where
     m  = toℕ x;   n      = toℕ y;      1+n = 1+ n
     2m = 2 *ₙ m;   2[1+n] = 2 *ₙ (1+ n)
