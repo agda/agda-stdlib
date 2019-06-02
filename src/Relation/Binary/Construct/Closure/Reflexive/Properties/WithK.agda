@@ -52,9 +52,9 @@ module _ {a ℓ} {A : Set a} {_~_ : Rel A ℓ} where
 
             total : Total (Refl _~_)
             total x y with compare x y
-            total _ _ | tri< a _ _ = inj₁ [ a ]
-            total _ _ | tri≈ _ refl _ = inj₁ refl
-            total _ _ | tri> _ _ c = inj₂ [ c ]
+            ... | tri< a _ _ = inj₁ [ a ]
+            ... | tri≈ _ refl _ = inj₁ refl
+            ... | tri> _ _ c = inj₂ [ c ]
 
     isDecTotalOrder : IsStrictTotalOrder _≡_ _~_ → IsDecTotalOrder _≡_ (Refl _~_)
     isDecTotalOrder ~-IsStrictTotalOrder = record
