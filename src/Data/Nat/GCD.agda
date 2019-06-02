@@ -39,50 +39,58 @@ import Relation.Nullary.Decidable as Dec
 -- The full `gcd` function then compares the two arguments and applies
 -- `gcd′` accordingly.
 
-gcd′ : ∀ m n → Acc _<_ m → n < m → ℕ
-gcd′ m zero        _         _   = m
-gcd′ m n@(suc n-1) (acc rec) n<m = gcd′ n (m % n) (rec _ n<m) (a%n<n m n-1)
+abstract
 
-gcd : ℕ → ℕ → ℕ
-gcd m n with <-cmp m n
-... | tri< m<n _ _ = gcd′ n m (<-wellFounded n) m<n
-... | tri≈ _ _ _   = m
-... | tri> _ _ n<m = gcd′ m n (<-wellFounded m) n<m
+  gcd′ : ∀ m n → Acc _<_ m → n < m → ℕ
+  gcd′ m zero        _         _   = m
+  gcd′ m n@(suc n-1) (acc rec) n<m = gcd′ n (m % n) (rec _ n<m) (a%n<n m n-1)
+
+  gcd : ℕ → ℕ → ℕ
+  gcd m n with <-cmp m n
+  ... | tri< m<n _ _ = gcd′ n m (<-wellFounded n) m<n
+  ... | tri≈ _ _ _   = m
+  ... | tri> _ _ n<m = gcd′ m n (<-wellFounded m) n<m
 
 ------------------------------------------------------------------------
 -- Properties of gcd′
 
-gcd′[m,n]∣m,n : ∀ {m n} rec n<m → gcd′ m n rec n<m ∣ m × gcd′ m n rec n<m ∣ n
-gcd′[m,n]∣m,n {m} {zero}  rec       n<m = ∣-refl , m ∣0
-gcd′[m,n]∣m,n {m} {suc n} (acc rec) n<m
-  with gcd′[m,n]∣m,n (rec _ n<m) (a%n<n m n)
-... | gcd∣n , gcd∣m%n = ∣n∣m%n⇒∣m gcd∣n gcd∣m%n , gcd∣n
+  gcd′[m,n]∣m,n : ∀ {m n} rec n<m → gcd′ m n rec n<m ∣ m × gcd′ m n rec n<m ∣ n
+  gcd′[m,n]∣m,n {m} {zero}  rec       n<m = ∣-refl , m ∣0
+  gcd′[m,n]∣m,n {m} {suc n} (acc rec) n<m
+    with gcd′[m,n]∣m,n (rec _ n<m) (a%n<n m n)
+  ... | gcd∣n , gcd∣m%n = ∣n∣m%n⇒∣m gcd∣n gcd∣m%n , gcd∣n
 
-gcd′-greatest : ∀ {m n c} rec n<m → c ∣ m → c ∣ n → c ∣ gcd′ m n rec n<m
-gcd′-greatest {m} {zero}  rec       n<m c∣m c∣n = c∣m
-gcd′-greatest {m} {suc n} (acc rec) n<m c∣m c∣n =
-  gcd′-greatest (rec _ n<m) (a%n<n m n) c∣n (%-presˡ-∣ c∣m c∣n)
+  gcd′-greatest : ∀ {m n c} rec n<m → c ∣ m → c ∣ n → c ∣ gcd′ m n rec n<m
+  gcd′-greatest {m} {zero}  rec       n<m c∣m c∣n = c∣m
+  gcd′-greatest {m} {suc n} (acc rec) n<m c∣m c∣n =
+    gcd′-greatest (rec _ n<m) (a%n<n m n) c∣n (%-presˡ-∣ c∣m c∣n)
 
 ------------------------------------------------------------------------
--- Properties of gcd
+-- Core properties of gcd
 
-gcd[m,n]∣m : ∀ m n → gcd m n ∣ m
-gcd[m,n]∣m m n with <-cmp m n
-... | tri< n<m _ _ = proj₂ (gcd′[m,n]∣m,n {n} {m} _ _)
-... | tri≈ _ _ _   = ∣-refl
-... | tri> _ _ m<n = proj₁ (gcd′[m,n]∣m,n {m} {n} _ _)
+  gcd[m,n]∣m : ∀ m n → gcd m n ∣ m
+  gcd[m,n]∣m m n with <-cmp m n
+  ... | tri< n<m _ _ = proj₂ (gcd′[m,n]∣m,n {n} {m} _ _)
+  ... | tri≈ _ _ _   = ∣-refl
+  ... | tri> _ _ m<n = proj₁ (gcd′[m,n]∣m,n {m} {n} _ _)
 
-gcd[m,n]∣n : ∀ m n → gcd m n ∣ n
-gcd[m,n]∣n m n with <-cmp m n
-... | tri< n<m _    _ = proj₁ (gcd′[m,n]∣m,n {n} {m} _ _)
-... | tri≈ _ P.refl _ = ∣-refl
-... | tri> _ _    m<n = proj₂ (gcd′[m,n]∣m,n {m} {n} _ _)
+  gcd[m,n]∣n : ∀ m n → gcd m n ∣ n
+  gcd[m,n]∣n m n with <-cmp m n
+  ... | tri< n<m _    _ = proj₁ (gcd′[m,n]∣m,n {n} {m} _ _)
+  ... | tri≈ _ P.refl _ = ∣-refl
+  ... | tri> _ _    m<n = proj₂ (gcd′[m,n]∣m,n {m} {n} _ _)
 
-gcd-greatest : ∀ {m n c} → c ∣ m → c ∣ n → c ∣ gcd m n
-gcd-greatest {m} {n} c∣m c∣n with <-cmp m n
-... | tri< n<m _ _ = gcd′-greatest _ _ c∣n c∣m
-... | tri≈ _ _ _   = c∣m
-... | tri> _ _ m<n = gcd′-greatest _ _ c∣m c∣n
+  gcd-greatest : ∀ {m n c} → c ∣ m → c ∣ n → c ∣ gcd m n
+  gcd-greatest {m} {n} c∣m c∣n with <-cmp m n
+  ... | tri< n<m _ _ = gcd′-greatest _ _ c∣n c∣m
+  ... | tri≈ _ _ _   = c∣m
+  ... | tri> _ _ m<n = gcd′-greatest _ _ c∣m c∣n
+
+------------------------------------------------------------------------
+-- Other properties
+
+-- Note that all other properties of `gcd` should be inferable from the
+-- 3 core properties above.
 
 gcd≢0 : ∀ m n → m ≢ 0 ⊎ n ≢ 0 → gcd m n ≢ 0
 gcd≢0 m n (inj₁ m≢0) eq = m≢0 (0∣⇒≡0 (subst (_∣ m) eq (gcd[m,n]∣m m n)))
