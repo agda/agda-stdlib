@@ -32,6 +32,7 @@ data Chunk : Set where
   `ℕ `ℤ `Float `Char `String : Chunk
   Raw : String → Chunk
 
+Format : Set
 Format = List Chunk
 
 ------------------------------------------------------------------------
