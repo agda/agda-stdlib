@@ -28,26 +28,26 @@ module _ {a ℓ} {A : Set a} {_~_ : Rel A ℓ} where
     asym⟶antisym ≈-refl _ _ refl = ≈-refl
     asym⟶antisym ≈-refl _ refl _ = ≈-refl
 
-    preorder : Transitive _~_ → IsPreorder _≡_ (Refl _~_)
-    preorder ~-trans = record
+    isPreorder : Transitive _~_ → IsPreorder _≡_ (Refl _~_)
+    isPreorder ~-trans = record
         { isEquivalence = PropEq.isEquivalence
         ; reflexive = λ { refl → refl }
         ; trans = trans ~-trans }
 
-    partialOrder : IsStrictPartialOrder _≡_ _~_ → IsPartialOrder _≡_ (Refl _~_)
-    partialOrder ~-IsStrictPartialOrder = record
-        { isPreorder = preorder (IsStrictPartialOrder.trans ~-IsStrictPartialOrder)
+    isPartialOrder : IsStrictPartialOrder _≡_ _~_ → IsPartialOrder _≡_ (Refl _~_)
+    isPartialOrder ~-IsStrictPartialOrder = record
+        { isPreorder = isPreorder (IsStrictPartialOrder.trans ~-IsStrictPartialOrder)
         ; antisym = asym⟶antisym {_} {_≡_} Eq.refl asym }
       where open IsStrictPartialOrder ~-IsStrictPartialOrder
 
-    decPartialOrder : IsDecStrictPartialOrder _≡_ _~_ → IsDecPartialOrder _≡_ (Refl _~_)
-    decPartialOrder ~-IsDecStrictPartialOrder = record
-      { isPartialOrder = partialOrder isStrictPartialOrder; _≟_ = _≟_; _≤?_ = dec _≟_ _<?_ }
+    isDecPartialOrder : IsDecStrictPartialOrder _≡_ _~_ → IsDecPartialOrder _≡_ (Refl _~_)
+    isDecPartialOrder ~-IsDecStrictPartialOrder = record
+      { isPartialOrder = isPartialOrder isStrictPartialOrder; _≟_ = _≟_; _≤?_ = dec _≟_ _<?_ }
       where open IsDecStrictPartialOrder ~-IsDecStrictPartialOrder
 
-    totalOrder : IsStrictTotalOrder _≡_ _~_ → IsTotalOrder _≡_ (Refl _~_)
-    totalOrder ~-IsStrictTotalOrder = record
-      { isPartialOrder = partialOrder isStrictPartialOrder; total = total }
+    isTotalOrder : IsStrictTotalOrder _≡_ _~_ → IsTotalOrder _≡_ (Refl _~_)
+    isTotalOrder ~-IsStrictTotalOrder = record
+      { isPartialOrder = isPartialOrder isStrictPartialOrder; total = total }
       where open IsStrictTotalOrder ~-IsStrictTotalOrder
 
             total : Total (Refl _~_)
@@ -56,7 +56,7 @@ module _ {a ℓ} {A : Set a} {_~_ : Rel A ℓ} where
             total _ _ | tri≈ _ refl _ = inj₁ refl
             total _ _ | tri> _ _ c = inj₂ [ c ]
 
-    decTotalOrder : IsStrictTotalOrder _≡_ _~_ → IsDecTotalOrder _≡_ (Refl _~_)
-    decTotalOrder ~-IsStrictTotalOrder = record
-      { isTotalOrder = totalOrder ~-IsStrictTotalOrder; _≟_ = _≟_; _≤?_ = dec _≟_ _<?_ }
+    isDecTotalOrder : IsStrictTotalOrder _≡_ _~_ → IsDecTotalOrder _≡_ (Refl _~_)
+    isDecTotalOrder ~-IsStrictTotalOrder = record
+      { isTotalOrder = isTotalOrder ~-IsStrictTotalOrder; _≟_ = _≟_; _≤?_ = dec _≟_ _<?_ }
       where open IsStrictTotalOrder ~-IsStrictTotalOrder
