@@ -91,12 +91,7 @@ _ = printf "%s: %u + %a ≡ %u"
 -- unification error which hopefully makes the problem clear e.g.
 -- `printf "%s: %u + %a ≡ %u" "example" 3 2 5` fails with the error:
 
--- Text.Printf.Error
--- (InvalidType
--- (fromList
---  (reverse
---   ('%' ∷ ' ' ∷ '+' ∷ ' ' ∷ 'u' ∷ '%' ∷ ' ' ∷ ':' ∷ 's' ∷ '%' ∷ [])))
--- 'a' (fromList (' ' ∷ '≡' ∷ ' ' ∷ '%' ∷ 'u' ∷ [])))
--- should be a function type, but it isn't
+-- Text.Printf.Error (InvalidType "%s: %u + %" 'a' " ≡ %u") should be
+-- a function type, but it isn't
 -- when checking that "example" 3 2 5 are valid arguments to a
 -- function of type Text.Printf.Printf (lexer "%s: %u + %a ≡ %u")

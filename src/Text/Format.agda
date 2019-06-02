@@ -17,6 +17,7 @@ open import Data.Sum.Base
 import Data.Sum.Categorical.Left as Sumₗ
 open import Function
 open import Function.Nary.NonDependent using (0ℓs; Sets)
+open import Strict
 
 -- Formatted types
 open import Data.Char.Base
@@ -95,12 +96,15 @@ lexer input = loop [] [] (toList input) where
   loop acc bef (c ∷ cs)         = loop (c ∷ acc) (c ∷ bef) cs
 
   type bef []       = inj₁ (UnexpectedEndOfString input)
-  type bef (c ∷ cs) = (λ ck → _∷_ <$> ck ⊛ loop [] (c ∷ bef) cs) $
-    case c of λ where
-      'd' → pure `ℤ
-      'i' → pure `ℤ
-      'u' → pure `ℕ
-      'f' → pure `Float
-      'c' → pure `Char
-      's' → pure `String
-      _   → inj₁ (InvalidType (toRevString bef) c (fromList cs))
+  type bef (c ∷ cs) = _∷_ <$> chunk c ⊛ loop [] (c ∷ bef) cs where
+
+    chunk : Char → Error ⊎ Chunk
+    chunk 'd' = pure `ℤ
+    chunk 'i' = pure `ℤ
+    chunk 'u' = pure `ℕ
+    chunk 'f' = pure `Float
+    chunk 'c' = pure `Char
+    chunk 's' = pure `String
+    chunk _   = force′ (toRevString bef) $′ λ prefix →
+                force′ (fromList cs)     $′ λ suffix →
+                inj₁ (InvalidType prefix c suffix)
