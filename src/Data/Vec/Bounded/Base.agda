@@ -30,53 +30,53 @@ private
 -- Types
 
 infix 4 _,_
-record Bounded (A : Set a) (n : ℕ) : Set a where
+record Vec≤ (A : Set a) (n : ℕ) : Set a where
   constructor _,_
   field {length} : ℕ
         vec      : Vec A length
         .bound   : length ≤ n
 
 ------------------------------------------------------------------------
--- Creating new Bounded vectors
+-- Creating new Vec≤ vectors
 
-fromVec : ∀[ Vec A ⇒ Bounded A ]
+fromVec : ∀[ Vec A ⇒ Vec≤ A ]
 fromVec v = v , ℕₚ.≤-refl
 
-replicate : ∀ {m n} .(m≤n : m ≤ n) → A → Bounded A n
+replicate : ∀ {m n} .(m≤n : m ≤ n) → A → Vec≤ A n
 replicate m≤n a = Vec.replicate a , m≤n
 
-[] : ∀[ Bounded A ]
+[] : ∀[ Vec≤ A ]
 [] = Vec.[] , z≤n
 
 infixr 5 _∷_
-_∷_ : ∀ {n} → A → Bounded A n → Bounded A (suc n)
+_∷_ : ∀ {n} → A → Vec≤ A n → Vec≤ A (suc n)
 a ∷ (as , p) = a Vec.∷ as , s≤s p
 
 ------------------------------------------------------------------------
--- Modifying Bounded vectors
+-- Modifying Vec≤ vectors
 
-≤-cast : ∀ {m n} → .(m≤n : m ≤ n) → Bounded A m → Bounded A n
+≤-cast : ∀ {m n} → .(m≤n : m ≤ n) → Vec≤ A m → Vec≤ A n
 ≤-cast m≤n (v , p) = v , ℕₚ.≤-trans p m≤n
 
-≡-cast : ∀ {m n} → .(eq : m ≡ n) → Bounded A m → Bounded A n
+≡-cast : ∀ {m n} → .(eq : m ≡ n) → Vec≤ A m → Vec≤ A n
 ≡-cast m≡n = ≤-cast (ℕₚ.≤-reflexive m≡n)
 
-map : (A → B) → ∀[ Bounded A ⇒ Bounded B ]
+map : (A → B) → ∀[ Vec≤ A ⇒ Vec≤ B ]
 map f (v , p) = Vec.map f v , p
 
-reverse : ∀[ Bounded A ⇒ Bounded A ]
+reverse : ∀[ Vec≤ A ⇒ Vec≤ A ]
 reverse (v , p) = Vec.reverse v , p
 
 -- Align and Zip.
 
-alignWith : (These A B → C) → ∀[ Bounded A ⇒ Bounded B ⇒ Bounded C ]
+alignWith : (These A B → C) → ∀[ Vec≤ A ⇒ Vec≤ B ⇒ Vec≤ C ]
 alignWith f (as , p) (bs , q) = Vec.alignWith f as bs , ℕₚ.⊔-least p q
 
-zipWith : (A → B → C) → ∀[ Bounded A ⇒ Bounded B ⇒ Bounded C ]
+zipWith : (A → B → C) → ∀[ Vec≤ A ⇒ Vec≤ B ⇒ Vec≤ C ]
 zipWith f (as , p) (bs , q) = Vec.restrictWith f as bs , ℕₚ.m≤n⇒m⊓o≤n _ p
 
-zip : ∀[ Bounded A ⇒ Bounded B ⇒ Bounded (A × B) ]
+zip : ∀[ Vec≤ A ⇒ Vec≤ B ⇒ Vec≤ (A × B) ]
 zip = zipWith _,_
 
-align : ∀[ Bounded A ⇒ Bounded B ⇒ Bounded (These A B) ]
+align : ∀[ Vec≤ A ⇒ Vec≤ B ⇒ Vec≤ (These A B) ]
 align = alignWith id

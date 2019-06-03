@@ -29,12 +29,12 @@ open import Data.Vec.Bounded.Base public
 -- Additional operations
 
 lift : ∀ {f} → f Preserves _≤_ ⟶ _≤_ →
-       ∀[ Vec A     ⇒ f ⊢ Bounded A ] →
-       ∀[ Bounded A ⇒ f ⊢ Bounded A ]
+       ∀[ Vec A  ⇒ f ⊢ Vec≤ A ] →
+       ∀[ Vec≤ A ⇒ f ⊢ Vec≤ A ]
 lift incr f (as , p) = ≤-cast (incr p) (f as)
 
-lift′ : ∀[ Vec A     ⇒ Bounded A ] →
-        ∀[ Bounded A ⇒ Bounded A ]
+lift′ : ∀[ Vec A  ⇒ Vec≤ A ] →
+        ∀[ Vec≤ A ⇒ Vec≤ A ]
 lift′ = lift id
 
 ------------------------------------------------------------------------
@@ -42,11 +42,11 @@ lift′ = lift id
 
 module _ {P : A → Set p} (P? : Decidable P) where
 
-  filter : ∀[ Bounded A ⇒ Bounded A ]
+  filter : ∀[ Vec≤ A ⇒ Vec≤ A ]
   filter = lift′ (Vec.filter P?)
 
-  takeWhile : ∀[ Bounded A ⇒ Bounded A ]
+  takeWhile : ∀[ Vec≤ A ⇒ Vec≤ A ]
   takeWhile = lift′ (Vec.takeWhile P?)
 
-  dropWhile : ∀[ Bounded A ⇒ Bounded A ]
+  dropWhile : ∀[ Vec≤ A ⇒ Vec≤ A ]
   dropWhile = lift′ (Vec.dropWhile P?)
