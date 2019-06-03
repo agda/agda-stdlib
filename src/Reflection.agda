@@ -34,8 +34,17 @@ private
 
 open import Reflection.Name as Name using (Name; Names) public
 open import Reflection.Meta as Meta using (Meta) public
-open import Reflection.Literal as Literal
-  using (Literal); open Literal.Literal public
+open import Reflection.Literal as Literal using (Literal) public
+open Literal.Literal public
+open import Reflection.Argument as Argument
+  using ( Arg; arg; Args; module Relevance; module Visibility; module Information
+        ; vArg; hArg; iArg
+        ) public
+open Argument.Relevance.Relevance public
+open Argument.Visibility.Visibility public
+open Argument.Information.ArgInfo public
+
+open import Reflection.Pattern as Pattern using (Pattern) public
 
 ------------------------------------------------------------------------
 -- Fixity
@@ -48,43 +57,10 @@ open Builtin public using (non-assoc; related; unrelated; fixity)
 ------------------------------------------------------------------------
 -- Terms
 
--- Is the argument visible (explicit), hidden (implicit), or an
--- instance argument?
-open Builtin public using (Visibility; visible; hidden; instance′)
-
--- Arguments can be relevant or irrelevant.
-open Builtin public using (Relevance; relevant; irrelevant)
-
--- Arguments.
-open Builtin public
-  renaming ( ArgInfo to Arg-info )
-  using    ( arg-info )
-
-visibility : Arg-info → Visibility
-visibility (arg-info v _) = v
-
-relevance : Arg-info → Relevance
-relevance (arg-info _ r) = r
-
-open Builtin public using (Arg; arg)
 open Builtin public using (Abs; abs)
-
--- TODO: make the following universe-polymorphic once agda/agda#3793 is merged.
-Args : (A : Set) → Set
-Args A = List (Arg A)
-
-map-Arg : {A B : Set} → (A → B) → Arg A → Arg B
-map-Arg f (arg i x) = arg i (f x)
-
-map-Args : {A B : Set} → (A → B) → Args A → Args B
-map-Args f xs = Data.List.Base.map (map-Arg f) xs
 
 map-Abs : {A B : Set} → (A → B) → Abs A → Abs B
 map-Abs f (abs s x) = abs s (f x)
-
--- Patterns.
-
-open Builtin public using (Pattern; con; dot; var; lit; proj; absurd)
 
 -- Terms.
 
@@ -98,9 +74,6 @@ Clauses = List Clause
 
 -- Pattern synonyms for more compact presentation
 
-pattern vArg ty            = arg (arg-info visible relevant)   ty
-pattern hArg ty            = arg (arg-info hidden relevant)    ty
-pattern iArg ty            = arg (arg-info instance′ relevant) ty
 pattern vLam s t           = lam visible   (abs s t)
 pattern hLam s t           = lam hidden    (abs s t)
 pattern iLam s t           = lam instance′ (abs s t)
@@ -154,22 +127,15 @@ newMeta = checkType unknown
 -- Term equality is decidable
 
 -- Boring helper functions.
-
 private
 
   cong₂′ : ∀ (f : A → B → C) {x y u v} →
-          x ≡ y × u ≡ v → f x u ≡ f y v
+         x ≡ y × u ≡ v → f x u ≡ f y v
   cong₂′ f = uncurry (cong₂ f)
 
   cong₃′ : ∀ (f : A → B → C → D) {x y u v r s} →
-           x ≡ y × u ≡ v × r ≡ s → f x u r ≡ f y v s
+         x ≡ y × u ≡ v × r ≡ s → f x u r ≡ f y v s
   cong₃′ f (refl , refl , refl) = refl
-
-  arg₁ : ∀ {i i′} {x x′ : A} → arg i x ≡ arg i′ x′ → i ≡ i′
-  arg₁ refl = refl
-
-  arg₂ : ∀ {i i′} {x x′ : A} → arg i x ≡ arg i′ x′ → x ≡ x′
-  arg₂ refl = refl
 
   abs₁ : ∀ {i i′} {x x′ : A} → abs i x ≡ abs i′ x′ → i ≡ i′
   abs₁ refl = refl
@@ -237,21 +203,6 @@ private
   lit₁ : ∀ {x y} → Term.lit x ≡ lit y → x ≡ y
   lit₁ refl = refl
 
-  pcon₁ : ∀ {c c′ args args′} → Pattern.con c args ≡ con c′ args′ → c ≡ c′
-  pcon₁ refl = refl
-
-  pcon₂ : ∀ {c c′ args args′} → Pattern.con c args ≡ con c′ args′ → args ≡ args′
-  pcon₂ refl = refl
-
-  pvar : ∀ {x y} → Pattern.var x ≡ var y → x ≡ y
-  pvar refl = refl
-
-  plit₁ : ∀ {x y} → Pattern.lit x ≡ lit y → x ≡ y
-  plit₁ refl = refl
-
-  pproj₁ : ∀ {x y} → proj x ≡ proj y → x ≡ y
-  pproj₁ refl = refl
-
   set₁ : ∀ {x y} → set x ≡ set y → x ≡ y
   set₁ refl = refl
 
@@ -267,33 +218,9 @@ private
   absurd-clause₁ : ∀ {ps ps′} → absurd-clause ps ≡ absurd-clause ps′ → ps ≡ ps′
   absurd-clause₁ refl = refl
 
-infix 4 _≟-Visibility_ _≟-Relevance_ _≟-Arg-info_ _≟-AbsTerm_
-        _≟-AbsType_ _≟-ArgTerm_ _≟-ArgType_ _≟-ArgPattern_ _≟-Args_
-        _≟-Clause_ _≟-Clauses_ _≟-Pattern_ _≟-ArgPatterns_ _≟_
+infix 4 _≟-AbsTerm_ _≟-AbsType_ _≟-ArgTerm_ _≟-ArgType_ _≟-Args_
+        _≟-Clause_ _≟-Clauses_ _≟_
         _≟-Sort_
-
-_≟-Visibility_ : Decidable (_≡_ {A = Visibility})
-visible   ≟-Visibility visible   = yes refl
-hidden    ≟-Visibility hidden    = yes refl
-instance′ ≟-Visibility instance′ = yes refl
-visible   ≟-Visibility hidden    = no λ()
-visible   ≟-Visibility instance′ = no λ()
-hidden    ≟-Visibility visible   = no λ()
-hidden    ≟-Visibility instance′ = no λ()
-instance′ ≟-Visibility visible   = no λ()
-instance′ ≟-Visibility hidden    = no λ()
-
-_≟-Relevance_ : Decidable (_≡_ {A = Relevance})
-relevant   ≟-Relevance relevant   = yes refl
-irrelevant ≟-Relevance irrelevant = yes refl
-relevant   ≟-Relevance irrelevant = no λ()
-irrelevant ≟-Relevance relevant   = no λ()
-
-_≟-Arg-info_ : Decidable (_≡_ {A = Arg-info})
-arg-info v r ≟-Arg-info arg-info v′ r′ =
-  Dec.map′ (cong₂′ arg-info)
-           < arg-info₁ , arg-info₂ >
-           (v ≟-Visibility v′ ×-dec r ≟-Relevance r′)
 
 mutual
   _≟-AbsTerm_ : Decidable (_≡_ {A = Abs Term})
@@ -309,22 +236,10 @@ mutual
              (s String.≟ s′ ×-dec a ≟ a′)
 
   _≟-ArgTerm_ : Decidable (_≡_ {A = Arg Term})
-  arg i a ≟-ArgTerm arg i′ a′ =
-    Dec.map′ (cong₂′ arg)
-             < arg₁ , arg₂ >
-             (i ≟-Arg-info i′ ×-dec a ≟ a′)
+  arg i a ≟-ArgTerm arg i′ a′ = Argument.unArg-dec (a ≟ a′)
 
   _≟-ArgType_ : Decidable (_≡_ {A = Arg Type})
-  arg i a ≟-ArgType arg i′ a′ =
-    Dec.map′ (cong₂′ arg)
-             < arg₁ , arg₂ >
-             (i ≟-Arg-info i′ ×-dec a ≟ a′)
-
-  _≟-ArgPattern_ : Decidable (_≡_ {A = Arg Pattern})
-  arg i a ≟-ArgPattern arg i′ a′ =
-    Dec.map′ (cong₂′ arg)
-             < arg₁ , arg₂ >
-             (i ≟-Arg-info i′ ×-dec a ≟-Pattern a′)
+  arg i a ≟-ArgType arg i′ a′ = Argument.unArg-dec (a ≟ a′)
 
   _≟-Args_ : Decidable (_≡_ {A = Args Term})
   []       ≟-Args []       = yes refl
@@ -333,8 +248,8 @@ mutual
   (_ ∷ _)  ≟-Args []       = no λ()
 
   _≟-Clause_ : Decidable (_≡_ {A = Clause})
-  clause ps b ≟-Clause clause ps′ b′ = Dec.map′ (cong₂′ clause) < clause₁ , clause₂ > (ps ≟-ArgPatterns ps′ ×-dec b ≟ b′)
-  absurd-clause ps ≟-Clause absurd-clause ps′ = Dec.map′ (cong absurd-clause) absurd-clause₁ (ps ≟-ArgPatterns ps′)
+  clause ps b ≟-Clause clause ps′ b′ = Dec.map′ (cong₂′ clause) < clause₁ , clause₂ > (ps Pattern.≟s ps′ ×-dec b ≟ b′)
+  absurd-clause ps ≟-Clause absurd-clause ps′ = Dec.map′ (cong absurd-clause) absurd-clause₁ (ps Pattern.≟s ps′)
   clause _ _      ≟-Clause absurd-clause _ = no λ()
   absurd-clause _ ≟-Clause clause _ _      = no λ()
 
@@ -344,56 +259,12 @@ mutual
   []       ≟-Clauses (_ ∷ _)  = no λ()
   (_ ∷ _)  ≟-Clauses []       = no λ()
 
-  _≟-Pattern_ : Decidable (_≡_ {A = Pattern})
-  con c ps ≟-Pattern con c′ ps′ = Dec.map′ (cong₂′ con) < pcon₁ , pcon₂ > (c Name.≟ c′ ×-dec ps ≟-ArgPatterns ps′)
-  con x x₁ ≟-Pattern dot = no (λ ())
-  con x x₁ ≟-Pattern var x₂ = no (λ ())
-  con x x₁ ≟-Pattern lit x₂ = no (λ ())
-  con x x₁ ≟-Pattern proj x₂ = no (λ ())
-  con x x₁ ≟-Pattern absurd = no (λ ())
-  dot ≟-Pattern con x x₁ = no (λ ())
-  dot ≟-Pattern dot = yes refl
-  dot ≟-Pattern var x = no (λ ())
-  dot ≟-Pattern lit x = no (λ ())
-  dot ≟-Pattern proj x = no (λ ())
-  dot ≟-Pattern absurd = no (λ ())
-  var s ≟-Pattern con x x₁ = no (λ ())
-  var s ≟-Pattern dot = no (λ ())
-  var s ≟-Pattern var s′ = Dec.map′ (cong var) pvar (s String.≟ s′)
-  var s ≟-Pattern lit x = no (λ ())
-  var s ≟-Pattern proj x = no (λ ())
-  var s ≟-Pattern absurd = no (λ ())
-  lit x ≟-Pattern con x₁ x₂ = no (λ ())
-  lit x ≟-Pattern dot = no (λ ())
-  lit x ≟-Pattern var _ = no (λ ())
-  lit l ≟-Pattern lit l′ = Dec.map′ (cong lit) plit₁ (l Literal.≟ l′)
-  lit x ≟-Pattern proj x₁ = no (λ ())
-  lit x ≟-Pattern absurd = no (λ ())
-  proj x ≟-Pattern con x₁ x₂ = no (λ ())
-  proj x ≟-Pattern dot = no (λ ())
-  proj x ≟-Pattern var _ = no (λ ())
-  proj x ≟-Pattern lit x₁ = no (λ ())
-  proj x ≟-Pattern proj x₁ = Dec.map′ (cong proj) pproj₁ (x Name.≟ x₁)
-  proj x ≟-Pattern absurd = no (λ ())
-  absurd ≟-Pattern con x x₁ = no (λ ())
-  absurd ≟-Pattern dot = no (λ ())
-  absurd ≟-Pattern var _ = no (λ ())
-  absurd ≟-Pattern lit x = no (λ ())
-  absurd ≟-Pattern proj x = no (λ ())
-  absurd ≟-Pattern absurd = yes refl
-
-  _≟-ArgPatterns_ : Decidable (_≡_ {A = Args Pattern})
-  []       ≟-ArgPatterns []       = yes refl
-  (x ∷ xs) ≟-ArgPatterns (y ∷ ys) = Dec.map′ (cong₂′ _∷_) < cons₁ , cons₂ > (x ≟-ArgPattern y ×-dec xs ≟-ArgPatterns ys)
-  []       ≟-ArgPatterns (_ ∷ _)  = no λ()
-  (_ ∷ _)  ≟-ArgPatterns []       = no λ()
-
   _≟_ : Decidable (_≡_ {A = Term})
   var x args ≟ var x′ args′ = Dec.map′ (cong₂′ var) < var₁ , var₂ > (x ℕ.≟ x′          ×-dec args ≟-Args args′)
   con c args ≟ con c′ args′ = Dec.map′ (cong₂′ con) < con₁ , con₂ > (c Name.≟ c′       ×-dec args ≟-Args args′)
   def f args ≟ def f′ args′ = Dec.map′ (cong₂′ def) < def₁ , def₂ > (f Name.≟ f′       ×-dec args ≟-Args args′)
   meta x args ≟ meta x′ args′ = Dec.map′ (cong₂′ meta) < meta₁ , meta₂ > (x Meta.≟ x′   ×-dec args ≟-Args args′)
-  lam v t    ≟ lam v′ t′    = Dec.map′ (cong₂′ lam) < lam₁ , lam₂ > (v ≟-Visibility v′ ×-dec t ≟-AbsTerm t′)
+  lam v t    ≟ lam v′ t′    = Dec.map′ (cong₂′ lam) < lam₁ , lam₂ > (v Visibility.≟ v′ ×-dec t ≟-AbsTerm t′)
   pat-lam cs args ≟ pat-lam cs′ args′ =
                               Dec.map′ (cong₂′ pat-lam) < pat-lam₁ , pat-lam₂ > (cs ≟-Clauses cs′ ×-dec args ≟-Args args′)
   pi t₁ t₂   ≟ pi t₁′ t₂′   = Dec.map′ (cong₂′ pi)  < pi₁  , pi₂  > (t₁ ≟-ArgType t₁′  ×-dec t₂ ≟-AbsType t₂′)
@@ -560,7 +431,57 @@ name₁ = Literal.name-injective
 Please use Reflection.Literal's name-injective instead."
 #-}
 
-infix 4 _≟-Lit_ _≟-Name_ _≟-Meta_
+arg₁ = Argument.arg-injective₁
+{-# WARNING_ON_USAGE arg₁
+"Warning: arg₁ was deprecated in v1.1.
+Please use Reflection.Argument's arg-injective₁ instead."
+#-}
+
+arg₂ = Argument.arg-injective₂
+{-# WARNING_ON_USAGE arg₂
+"Warning: arg₂ was deprecated in v1.1.
+Please use Reflection.Argument's arg-injective₂ instead."
+#-}
+
+pcon₁ = Pattern.con-injective₁
+{-# WARNING_ON_USAGE pcon₁
+"Warning: pcon₁ was deprecated in v1.1.
+Please use Reflection.Pattern's con-injective₁ instead."
+#-}
+
+pcon₂ = Pattern.con-injective₂
+{-# WARNING_ON_USAGE pcon₂
+"Warning: pcon₂ was deprecated in v1.1.
+Please use Reflection.Pattern's con-injective₂ instead."
+#-}
+
+pvar = Pattern.con-injective₂
+{-# WARNING_ON_USAGE pvar
+"Warning: pvar was deprecated in v1.1.
+Please use Reflection.Pattern's var-injective instead."
+#-}
+
+plit₁ = Pattern.con-injective₂
+{-# WARNING_ON_USAGE plit₁
+"Warning: plit₁ was deprecated in v1.1.
+Please use Reflection.Pattern's lit-injective instead."
+#-}
+
+pproj₁ = Pattern.con-injective₂
+{-# WARNING_ON_USAGE pproj₁
+"Warning: pproj₁ was deprecated in v1.1.
+Please use Reflection.Pattern's proj-injective instead."
+#-}
+
+Arg-info = Information.ArgInfo
+{-# WARNING_ON_USAGE Arg-info
+"Warning: Arg-info was deprecated in v1.1.
+Please use Reflection.Argument.Information's ArgInfo instead."
+#-}
+
+infix 4 _≟-Lit_ _≟-Name_ _≟-Meta_ _≟-Visibility_ _≟-Relevance_ _≟-Arg-info_
+        _≟-Pattern_ _≟-ArgPatterns_
+
 _≟-Lit_ = Literal._≟_
 {-# WARNING_ON_USAGE _≟-Lit_
 "Warning: _≟-Lit_ was deprecated in v1.1.
@@ -579,6 +500,36 @@ _≟-Meta_ = Meta._≟_
 Please use Reflection.Meta's _≟_ instead."
 #-}
 
+_≟-Visibility_ = Visibility._≟_
+{-# WARNING_ON_USAGE _≟-Visibility_
+"Warning: _≟-Visibility_ was deprecated in v1.1.
+Please use Reflection.Argument.Visibility's _≟_ instead."
+#-}
+
+_≟-Relevance_ = Relevance._≟_
+{-# WARNING_ON_USAGE _≟-Relevance_
+"Warning: _≟-Relevance_ was deprecated in v1.1.
+Please use Reflection.Argument.Relevance's _≟_ instead."
+#-}
+
+_≟-Arg-info_ = Information._≟_
+{-# WARNING_ON_USAGE _≟-Arg-info_
+"Warning: _≟-Arg-info_ was deprecated in v1.1.
+Please use Reflection.Argument.Information's _≟_ instead."
+#-}
+
+_≟-Pattern_ = Pattern._≟_
+{-# WARNING_ON_USAGE _≟-Pattern_
+"Warning: _≟-Pattern_ was deprecated in v1.1.
+Please use Reflection.Pattern's _≟_ instead."
+#-}
+
+_≟-ArgPatterns_ = Pattern._≟s_
+{-# WARNING_ON_USAGE _≟-ArgPatterns_
+"Warning: _≟-ArgPatterns_ was deprecated in v1.1.
+Please use Reflection.Pattern's _≟s_ instead."
+#-}
+
 showLiteral = Literal.show
 {-# WARNING_ON_USAGE showLiteral
 "Warning: showLiteral was deprecated in v1.1.
@@ -595,4 +546,28 @@ showMeta = Meta.show
 {-# WARNING_ON_USAGE showMeta
 "Warning: showMeta was deprecated in v1.1.
 Please use Reflection.Meta's show instead."
+#-}
+
+map-Arg = Argument.map
+{-# WARNING_ON_USAGE map-Arg
+"Warning: map-Arg was deprecated in v1.1.
+Please use Reflection.Argument's map instead."
+#-}
+
+map-Args = Argument.map-Args
+{-# WARNING_ON_USAGE map-Args
+"Warning: map-Args was deprecated in v1.1.
+Please use Reflection.Argument's map-Args instead."
+#-}
+
+visibility = Information.visibility
+{-# WARNING_ON_USAGE visibility
+"Warning: visibility was deprecated in v1.1.
+Please use Reflection.Argument.Information's visibility instead."
+#-}
+
+relevance = Information.relevance
+{-# WARNING_ON_USAGE relevance
+"Warning: relevance was deprecated in v1.1.
+Please use Reflection.Argument.Information's relevance instead."
 #-}
