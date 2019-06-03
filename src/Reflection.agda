@@ -143,12 +143,6 @@ private
   abs₂ : ∀ {i i′} {x x′ : A} → abs i x ≡ abs i′ x′ → x ≡ x′
   abs₂ refl = refl
 
-  arg-info₁ : ∀ {v v′ r r′} → arg-info v r ≡ arg-info v′ r′ → v ≡ v′
-  arg-info₁ refl = refl
-
-  arg-info₂ : ∀ {v v′ r r′} → arg-info v r ≡ arg-info v′ r′ → r ≡ r′
-  arg-info₂ refl = refl
-
   cons₁ : ∀ {x y} {xs ys : List A} → x ∷ xs ≡ y ∷ ys → x ≡ y
   cons₁ refl = refl
 
@@ -471,6 +465,18 @@ pproj₁ = Pattern.con-injective₂
 {-# WARNING_ON_USAGE pproj₁
 "Warning: pproj₁ was deprecated in v1.1.
 Please use Reflection.Pattern's proj-injective instead."
+#-}
+
+arg-info₁ = Information.arg-info-injective₁
+{-# WARNING_ON_USAGE arg-info₁
+"Warning: arg-info₁ was deprecated in v1.1.
+Please use Reflection.Argument.Information's arg-info-injective₁ instead."
+#-}
+
+arg-info₂ = Information.arg-info-injective₂
+{-# WARNING_ON_USAGE arg-info₂
+"Warning: arg-info₁ was deprecated in v1.1.
+Please use Reflection.Argument.Information's arg-info-injective₂ instead."
 #-}
 
 Arg-info = Information.ArgInfo
