@@ -9,6 +9,7 @@
 module Relation.Binary.Construct.Closure.Reflexive.Properties.WithK where
 
 open import Data.Empty.Irrelevant using (⊥-elim)
+open import Data.Product as Prod
 open import Data.Sum as Sum
 open import Relation.Binary
 open import Relation.Binary.Construct.Closure.Reflexive
@@ -22,10 +23,10 @@ module _ {a ℓ} {A : Set a} {_~_ : Rel A ℓ} where
   irrel _       ~-irrefl refl    [ x∼y ]  = ⊥-elim (~-irrefl refl x∼y)
   irrel _       _        refl    refl     = refl
 
-  antisym : ∀ {ℓ'} {_≈_ : Rel _ ℓ'} → Reflexive _≈_ → Asymmetric _~_ → Antisymmetric _≈_ (Refl _~_)
-  antisym ≈-refl ~-asym [ x∼y ] [ x∼y′ ] = ⊥-elim (~-asym x∼y x∼y′)
-  antisym ≈-refl _      _       refl     = ≈-refl
-  antisym ≈-refl _      refl    _        = ≈-refl
+  antisym : ∀ {ℓ'} → (E : Σ (Rel A ℓ') Reflexive) → Asymmetric _~_ → Antisymmetric (proj₁ E) (Refl _~_)
+  antisym _ ~-asym [ x∼y ] [ x∼y′ ] = ⊥-elim (~-asym x∼y x∼y′)
+  antisym E _      _       refl     = proj₂ E
+  antisym E _      refl    _        = proj₂ E
 
   isPreorder : Transitive _~_ → IsPreorder _≡_ (Refl _~_)
   isPreorder ~-trans = record
@@ -37,7 +38,7 @@ module _ {a ℓ} {A : Set a} {_~_ : Rel A ℓ} where
   isPartialOrder : IsStrictPartialOrder _≡_ _~_ → IsPartialOrder _≡_ (Refl _~_)
   isPartialOrder ~-IsStrictPartialOrder = record
       { isPreorder = isPreorder (IsStrictPartialOrder.trans ~-IsStrictPartialOrder)
-      ; antisym = antisym {_} {_≡_} Eq.refl asym
+      ; antisym = antisym (_≡_ , refl) asym
       }
     where open IsStrictPartialOrder ~-IsStrictPartialOrder
 
