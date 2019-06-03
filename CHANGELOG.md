@@ -104,6 +104,7 @@ New modules
   Data.Word.Base
   Data.Word.Properties
 
+  Reflection.Literal
   Reflection.Meta
   Reflection.Name
 

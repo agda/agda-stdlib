@@ -44,6 +44,8 @@ private
 
 open import Reflection.Name as Name using (Name) public
 open import Reflection.Meta as Meta using (Meta) public
+open import Reflection.Literal as Literal
+  using (Literal); open Literal.Literal public
 
 ------------------------------------------------------------------------
 -- Fixity
@@ -90,10 +92,6 @@ map-Args f xs = Data.List.Base.map (map-Arg f) xs
 map-Abs : {A B : Set} → (A → B) → Abs A → Abs B
 map-Abs f (abs s x) = abs s (f x)
 
--- Literals.
-
-open Builtin public using (Literal; nat; word64; float; char; string; name; meta)
-
 -- Patterns.
 
 open Builtin public using (Pattern; con; dot; var; lit; proj; absurd)
@@ -132,15 +130,6 @@ open Builtin public
   renaming ( record-type to record′
            ; data-cons   to constructor′
            ; prim-fun    to primitive′ )
-
-showLiteral : Literal → String
-showLiteral (nat x)    = showNat x
-showLiteral (word64 x) = showNat (wordToℕ x)
-showLiteral (float x)  = Float.show x
-showLiteral (char x)   = showChar x
-showLiteral (string x) = showString x
-showLiteral (name x)   = Name.show x
-showLiteral (meta x)   = Meta.show x
 
 ------------------------------------------------------------------------
 -- Type checking monad
@@ -279,27 +268,6 @@ private
   slit₁ : ∀ {x y} → Sort.lit x ≡ lit y → x ≡ y
   slit₁ refl = refl
 
-  nat₁ : ∀ {x y} → nat x ≡ nat y → x ≡ y
-  nat₁ refl = refl
-
-  word64₁ : ∀ {x y} → word64 x ≡ word64 y → x ≡ y
-  word64₁ refl = refl
-
-  float₁ : ∀ {x y} → float x ≡ float y → x ≡ y
-  float₁ refl = refl
-
-  char₁ : ∀ {x y} → char x ≡ char y → x ≡ y
-  char₁ refl = refl
-
-  string₁ : ∀ {x y} → string x ≡ string y → x ≡ y
-  string₁ refl = refl
-
-  name₁ : ∀ {x y} → name x ≡ name y → x ≡ y
-  name₁ refl = refl
-
-  lmeta₁ : ∀ {x y} → Literal.meta x ≡ meta y → x ≡ y
-  lmeta₁ refl = refl
-
   clause₁ : ∀ {ps ps′ b b′} → clause ps b ≡ clause ps′ b′ → ps ≡ ps′
   clause₁ refl = refl
 
@@ -309,7 +277,7 @@ private
   absurd-clause₁ : ∀ {ps ps′} → absurd-clause ps ≡ absurd-clause ps′ → ps ≡ ps′
   absurd-clause₁ refl = refl
 
-infix 4 _≟-Visibility_ _≟-Relevance_ _≟-Arg-info_ _≟-Lit_ _≟-AbsTerm_
+infix 4 _≟-Visibility_ _≟-Relevance_ _≟-Arg-info_ _≟-AbsTerm_
         _≟-AbsType_ _≟-ArgTerm_ _≟-ArgType_ _≟-ArgPattern_ _≟-Args_
         _≟-Clause_ _≟-Clauses_ _≟-Pattern_ _≟-ArgPatterns_ _≟_
         _≟-Sort_
@@ -336,57 +304,6 @@ arg-info v r ≟-Arg-info arg-info v′ r′ =
   Dec.map′ (cong₂′ arg-info)
            < arg-info₁ , arg-info₂ >
            (v ≟-Visibility v′ ×-dec r ≟-Relevance r′)
-
-_≟-Lit_ : Decidable (_≡_ {A = Literal})
-nat x ≟-Lit nat x₁ = Dec.map′ (cong nat) nat₁ (x ≟-ℕ x₁)
-nat x ≟-Lit word64 x₁ = no (λ ())
-nat x ≟-Lit float x₁ = no (λ ())
-nat x ≟-Lit char x₁ = no (λ ())
-nat x ≟-Lit string x₁ = no (λ ())
-nat x ≟-Lit name x₁ = no (λ ())
-nat x ≟-Lit meta x₁ = no (λ ())
-word64 x ≟-Lit word64 x₁ = Dec.map′ (cong word64) word64₁ (x ≟w x₁)
-word64 x ≟-Lit nat x₁ = no (λ ())
-word64 x ≟-Lit float x₁ = no (λ ())
-word64 x ≟-Lit char x₁ = no (λ ())
-word64 x ≟-Lit string x₁ = no (λ ())
-word64 x ≟-Lit name x₁ = no (λ ())
-word64 x ≟-Lit meta x₁ = no (λ ())
-float x ≟-Lit nat x₁ = no (λ ())
-float x ≟-Lit word64 x₁ = no (λ ())
-float x ≟-Lit float x₁ = Dec.map′ (cong float) float₁ (x Float.≟ x₁)
-float x ≟-Lit char x₁ = no (λ ())
-float x ≟-Lit string x₁ = no (λ ())
-float x ≟-Lit name x₁ = no (λ ())
-float x ≟-Lit meta x₁ = no (λ ())
-char x ≟-Lit nat x₁ = no (λ ())
-char x ≟-Lit word64 x₁ = no (λ ())
-char x ≟-Lit float x₁ = no (λ ())
-char x ≟-Lit char x₁ = Dec.map′ (cong char) char₁ (x ≟c x₁)
-char x ≟-Lit string x₁ = no (λ ())
-char x ≟-Lit name x₁ = no (λ ())
-char x ≟-Lit meta x₁ = no (λ ())
-string x ≟-Lit nat x₁ = no (λ ())
-string x ≟-Lit word64 x₁ = no (λ ())
-string x ≟-Lit float x₁ = no (λ ())
-string x ≟-Lit char x₁ = no (λ ())
-string x ≟-Lit string x₁ = Dec.map′ (cong string) string₁ (x ≟s x₁)
-string x ≟-Lit name x₁ = no (λ ())
-string x ≟-Lit meta x₁ = no (λ ())
-name x ≟-Lit nat x₁ = no (λ ())
-name x ≟-Lit word64 x₁ = no (λ ())
-name x ≟-Lit float x₁ = no (λ ())
-name x ≟-Lit char x₁ = no (λ ())
-name x ≟-Lit string x₁ = no (λ ())
-name x ≟-Lit name x₁ = Dec.map′ (cong name) name₁ (x Name.≟ x₁)
-name x ≟-Lit meta x₁ = no (λ ())
-meta x ≟-Lit nat x₁ = no (λ ())
-meta x ≟-Lit word64 x₁ = no (λ ())
-meta x ≟-Lit float x₁ = no (λ ())
-meta x ≟-Lit char x₁ = no (λ ())
-meta x ≟-Lit string x₁ = no (λ ())
-meta x ≟-Lit name x₁ = no (λ ())
-meta x ≟-Lit meta x₁ = Dec.map′ (cong meta) lmeta₁ (x Meta.≟ x₁)
 
 mutual
   _≟-AbsTerm_ : Decidable (_≡_ {A = Abs Term})
@@ -459,7 +376,7 @@ mutual
   lit x ≟-Pattern con x₁ x₂ = no (λ ())
   lit x ≟-Pattern dot = no (λ ())
   lit x ≟-Pattern var _ = no (λ ())
-  lit l ≟-Pattern lit l′ = Dec.map′ (cong lit) plit₁ (l ≟-Lit l′)
+  lit l ≟-Pattern lit l′ = Dec.map′ (cong lit) plit₁ (l Literal.≟ l′)
   lit x ≟-Pattern proj x₁ = no (λ ())
   lit x ≟-Pattern absurd = no (λ ())
   proj x ≟-Pattern con x₁ x₂ = no (λ ())
@@ -491,7 +408,7 @@ mutual
                               Dec.map′ (cong₂′ pat-lam) < pat-lam₁ , pat-lam₂ > (cs ≟-Clauses cs′ ×-dec args ≟-Args args′)
   pi t₁ t₂   ≟ pi t₁′ t₂′   = Dec.map′ (cong₂′ pi)  < pi₁  , pi₂  > (t₁ ≟-ArgType t₁′  ×-dec t₂ ≟-AbsType t₂′)
   sort s     ≟ sort s′      = Dec.map′ (cong sort)  sort₁           (s ≟-Sort s′)
-  lit l      ≟ lit l′       = Dec.map′ (cong lit)   lit₁           (l ≟-Lit l′)
+  lit l      ≟ lit l′       = Dec.map′ (cong lit)   lit₁           (l Literal.≟ l′)
   unknown    ≟ unknown      = yes refl
 
   var x args ≟ con c args′ = no λ()
@@ -609,4 +526,59 @@ returnTC = return
 {-# WARNING_ON_USAGE returnTC
 "Warning: returnTC was deprecated in v1.1.
 Please use return instead."
+#-}
+
+lmeta₁ = Literal.meta-injective
+{-# WARNING_ON_USAGE lmeta₁
+"Warning: lmeta₁ was deprecated in v1.1.
+Please use Reflection.Literal's meta-injective instead."
+#-}
+
+nat₁ = Literal.nat-injective
+{-# WARNING_ON_USAGE nat₁
+"Warning: nat₁ was deprecated in v1.1.
+Please use Reflection.Literal's nat-injective instead."
+#-}
+
+word64₁ = Literal.nat-injective
+{-# WARNING_ON_USAGE word64₁
+"Warning: word64₁ was deprecated in v1.1.
+Please use Reflection.Literal's nat-injective instead."
+#-}
+
+float₁ = Literal.nat-injective
+{-# WARNING_ON_USAGE float₁
+"Warning: float₁ was deprecated in v1.1.
+Please use Reflection.Literal's float-injective instead."
+#-}
+
+char₁ = Literal.char-injective
+{-# WARNING_ON_USAGE char₁
+"Warning: char₁ was deprecated in v1.1.
+Please use Reflection.Literal's char-injective instead."
+#-}
+
+string₁ = Literal.string-injective
+{-# WARNING_ON_USAGE string₁
+"Warning: string₁ was deprecated in v1.1.
+Please use Reflection.Literal's string-injective instead."
+#-}
+
+name₁ = Literal.name-injective
+{-# WARNING_ON_USAGE name₁
+"Warning: name₁ was deprecated in v1.1.
+Please use Reflection.Literal's name-injective instead."
+#-}
+
+infix 4 _≟-Lit_
+_≟-Lit_ = Literal._≟_
+{-# WARNING_ON_USAGE _≟-Lit_
+"Warning: _≟-Lit_ was deprecated in v1.1.
+Please use Reflection.Literal's _≟_ instead."
+#-}
+
+showLiteral = Literal.show
+{-# WARNING_ON_USAGE showLiteral
+"Warning: showLiteral was deprecated in v1.1.
+Please use Reflection.Literal's show instead."
 #-}
