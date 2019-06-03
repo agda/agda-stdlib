@@ -34,11 +34,11 @@ module _ {a ℓ} {A : Set a} {_~_ : Rel A ℓ} where
   ... | yes refl | _     = yes refl
   ... | no ¬p    | no ¬q = no λ { refl → ¬p refl; [ p ] → ¬q p }
 
-  tri⟶dec∘Refl : Trichotomous _≡_ _~_ → Decidable (Refl _~_)
-  tri⟶dec∘Refl ~-tri a b with ~-tri a b
-  tri⟶dec∘Refl ~-tri _ _ | tri< a  _    _ = yes [ a ]
-  tri⟶dec∘Refl ~-tri _ _ | tri≈ _  refl _ = yes refl
-  tri⟶dec∘Refl ~-tri _ _ | tri> ¬a ¬b   _ = no (λ { refl → ¬b refl ; [ p ] → ¬a p })
+  decidable : Trichotomous _≡_ _~_ → Decidable (Refl _~_)
+  decidable ~-tri a b with ~-tri a b
+  decidable ~-tri _ _ | tri< a  _    _ = yes [ a ]
+  decidable ~-tri _ _ | tri≈ _  refl _ = yes refl
+  decidable ~-tri _ _ | tri> ¬a ¬b   _ = no (λ { refl → ¬b refl ; [ p ] → ¬a p })
 
   trans : Transitive _~_ → Transitive (Refl _~_)
   trans ~-trans [ x∼y ] [ x∼y₁ ] = [ ~-trans x∼y x∼y₁ ]

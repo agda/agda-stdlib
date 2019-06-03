@@ -16,16 +16,16 @@ open import Relation.Binary.Construct.Closure.Reflexive.Properties public
 open import Relation.Binary.PropositionalEquality as PropEq using (_≡_; refl)
 
 module _ {a ℓ} {A : Set a} {_~_ : Rel A ℓ} where
-  irrel∧irrefl⟶irrel : Irrelevant _~_ → Irreflexive _≡_ _~_ → Irrelevant (Refl _~_)
-  irrel∧irrefl⟶irrel ~-irrel _        [ x∼y ] [ x∼y′ ] = PropEq.cong [_] (~-irrel x∼y x∼y′)
-  irrel∧irrefl⟶irrel _       ~-irrefl [ x∼y ] refl     = ⊥-elim (~-irrefl refl x∼y)
-  irrel∧irrefl⟶irrel _       ~-irrefl refl    [ x∼y ]  = ⊥-elim (~-irrefl refl x∼y)
-  irrel∧irrefl⟶irrel _       _        refl    refl     = refl
+  irrel : Irrelevant _~_ → Irreflexive _≡_ _~_ → Irrelevant (Refl _~_)
+  irrel ~-irrel _        [ x∼y ] [ x∼y′ ] = PropEq.cong [_] (~-irrel x∼y x∼y′)
+  irrel _       ~-irrefl [ x∼y ] refl     = ⊥-elim (~-irrefl refl x∼y)
+  irrel _       ~-irrefl refl    [ x∼y ]  = ⊥-elim (~-irrefl refl x∼y)
+  irrel _       _        refl    refl     = refl
 
-  asym⟶antisym : ∀ {ℓ'} {_≈_ : Rel _ ℓ'} → Reflexive _≈_ → Asymmetric _~_ → Antisymmetric _≈_ (Refl _~_)
-  asym⟶antisym ≈-refl ~-asym [ x∼y ] [ x∼y′ ] = ⊥-elim (~-asym x∼y x∼y′)
-  asym⟶antisym ≈-refl _      _       refl     = ≈-refl
-  asym⟶antisym ≈-refl _      refl    _        = ≈-refl
+  antisym : ∀ {ℓ'} {_≈_ : Rel _ ℓ'} → Reflexive _≈_ → Asymmetric _~_ → Antisymmetric _≈_ (Refl _~_)
+  antisym ≈-refl ~-asym [ x∼y ] [ x∼y′ ] = ⊥-elim (~-asym x∼y x∼y′)
+  antisym ≈-refl _      _       refl     = ≈-refl
+  antisym ≈-refl _      refl    _        = ≈-refl
 
   isPreorder : Transitive _~_ → IsPreorder _≡_ (Refl _~_)
   isPreorder ~-trans = record
@@ -37,7 +37,7 @@ module _ {a ℓ} {A : Set a} {_~_ : Rel A ℓ} where
   isPartialOrder : IsStrictPartialOrder _≡_ _~_ → IsPartialOrder _≡_ (Refl _~_)
   isPartialOrder ~-IsStrictPartialOrder = record
       { isPreorder = isPreorder (IsStrictPartialOrder.trans ~-IsStrictPartialOrder)
-      ; antisym = asym⟶antisym {_} {_≡_} Eq.refl asym
+      ; antisym = antisym {_} {_≡_} Eq.refl asym
       }
     where open IsStrictPartialOrder ~-IsStrictPartialOrder
 
