@@ -54,6 +54,19 @@ Non-backwards compatible changes
   and `gcd′` in `Data.Nat.Coprimality` has been renamed `mkGCD′`. All other
   functionality is untouched.
 
+#### Re-implementation of `Data.Bin`
+
+* ``Data/Bin.agda`` and ``Data.Bin/*.agda``  of lib-1.0 are removed,
+  added new ``Data.Bin.Base, Data.Bin.Properties``.
+  This total change of the Bin part is done for the following reasons.
+  1) Many necessary functions and proofs are added.
+  2) After this has been done, the author noticed (decided) that the whole
+   thing is implemented much simpler with using another representation for Bin:
+   the one with certain three constructors. This representation is taken
+   (with renaming the constructors) from the letter by Martin Escardo to the
+   e-mail list. The referred code (of 2016) resides on
+   http://www.cs.bham.ac.uk/~mhe/agda-new/BinaryNaturals.html
+
 New modules
 -----------
 
@@ -68,6 +81,8 @@ New modules
 
   Data.AVL.NonEmpty
   Data.AVL.NonEmpty.Propositional
+
+  Data.List.Membership.Propositional.Properties.WithK
 
   Data.List.Relation.Binary.Disjoint.Propositional
   Data.List.Relation.Binary.Disjoint.Setoid
@@ -86,6 +101,10 @@ New modules
   Data.Nat.Induction
   Data.Fin.Induction
 
+  Data.Product.Nary.NonDependent
+  Function.Nary.NonDependent
+  Relation.Nary
+
   Data.Sign.Base
 
   Data.These.Base
@@ -98,23 +117,18 @@ New modules
   Relation.Binary.Construct.Closure.Equivalence.Properties
   Relation.Binary.Rewriting
 
+  Relation.Nullary.Decidable.Core
+
   Relation.Binary.Properties.Setoid
   ```
 
-* ``Data/Bin.agda`` and ``Data.Bin/*.agda``  of lib-1.0 are removed,
-  added new ``Data.Bin.Base, Data.Bin.Properties``.
-  This total change of the Bin part is done for the following reasons.
-  1) Many necessary functions and proofs are added.
-  2) After this has been done, the author noticed (decided) that the whole
-   thing is implemented much simpler with using another representation for Bin:
-   the one with certain three constructors. This representation is taken
-   (with renaming the constructors) from the letter by Martin Escardo to the
-   e-mail list. The referred code (of 2016) resides on
-   http://www.cs.bham.ac.uk/~mhe/agda-new/BinaryNaturals.html
-
+* The function `#_` has been moved from `Data.Fin.Base` to `Data.Fin`
+  to break dependency cycles following the introduction of the module
+  `Data.Product.N-ary.Heterogeneous`.
 
 Deprecated features
 -------------------
+
 The following deprecations have occurred as part of a drive to improve
 consistency across the library. The deprecated names still exist and
 therefore all existing code should still work, however use of the new names
@@ -139,6 +153,10 @@ been attached to all deprecated names.
   `Data.Universe.Indexed`. In the latter `Indexed-universe` has been
   renamed to `IndexedUniverse` to better follow the library conventions. The
   old module still exists exporting the old names, but has been deprecated.
+
+* The `Data.Product.N-ary` modules have been deprecated and their content
+  moved to `Data.Vec.Recursive` to make place for properly heterogeneous
+  n-ary products in `Data.Product.Nary`.
 
 #### Names
 
@@ -401,6 +419,11 @@ Other minor additions
   concat⁺ : Sublist (Sublist R) ass bss → Sublist R (concat ass) (concat bss)
   ```
 
+* Added new proof to `Data.List.Membership.Setoid.Properties`:
+  ```agda
+  unique⇒irrelevant : B.Irrelevant _≈_ → Unique xs → U.Irrelevant (_∈ xs)
+  ```
+
 * Added new proofs to `Data.List.Relation.Binary.Sublist.Propositional.Properties`:
   ```agda
   All-resp-⊆ : (All P) Respects (flip _⊆_)
@@ -409,12 +432,14 @@ Other minor additions
 
 * Added new operations to `Data.List.Relation.Unary.All`:
   ```agda
-  uncons    : All P (x ∷ xs) → P x × All P xs
-  reduce    : (f : ∀ {x} → P x → B) → ∀ {xs} → All P xs → List B
-  construct : (f : B → ∃ P) (xs : List B) → ∃ (All P)
-  fromList  : (xs : List (∃ P)) → All P (List.map proj₁ xs)
-  toList    : All P xs → List (∃ P)
-  self      : All (const A) xs
+  lookupAny  : All P xs → (i : Any Q xs) → (P ∩ Q) (lookup i)
+  lookupWith : ∀[ P ⇒ Q ⇒ R ] → All P xs → (i : Any Q xs) → R (lookup i)
+  uncons     : All P (x ∷ xs) → P x × All P xs
+  reduce     : (f : ∀ {x} → P x → B) → ∀ {xs} → All P xs → List B
+  construct  : (f : B → ∃ P) (xs : List B) → ∃ (All P)
+  fromList   : (xs : List (∃ P)) → All P (List.map proj₁ xs)
+  toList     : All P xs → List (∃ P)
+  self       : All (const A) xs
   ```
 
 * Added new proofs to `Data.List.Relation.Unary.All.Properties`:
@@ -615,6 +640,8 @@ Other minor additions
   iΠ[_∶_]_ s a ty   = Π[ s ∶ (iArg a) ] ty
   ```
 
+* Defined `_≉_` as the negation of `_≈_` in `Relation.Binary`'s `Setoid`.
+
 * Added new definitions in `Relation.Binary.Core`:
   ```agda
   Universal _∼_    = ∀ x y → x ∼ y
@@ -658,6 +685,14 @@ Other minor additions
 * The relation `_≅_` in `Relation.Binary.HeterogeneousEquality` has
   been generalised so that the types of the two equal elements need not
   be at the same universe level.
+
+* Added new proof to `Relation.Binary.PropositionalEquality`:
+  ```
+  Congₙ  : ∀ n (f g : Arrows n as b) → Set _
+  congₙ  : ∀ n (f : Arrows n as b) → Congₙ n f f
+  Substₙ : ∀ n (f g : Arrows n as (Set r)) → Set _
+  substₙ : (f : Arrows n as (Set r)) → Substₙ n f f
+  ```
 
 * Added new proof to `Relation.Binary.PropositionalEquality.Core`:
   ```agda
