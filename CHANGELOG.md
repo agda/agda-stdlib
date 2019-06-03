@@ -104,6 +104,7 @@ New modules
   Data.Word.Base
   Data.Word.Properties
 
+  Reflection.Abstraction
   Reflection.Argument
   Reflection.Argument.Information
   Reflection.Argument.Relevance

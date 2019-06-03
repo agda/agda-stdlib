@@ -45,6 +45,7 @@ open Argument.Visibility.Visibility public
 open Argument.Information.ArgInfo public
 
 open import Reflection.Pattern as Pattern using (Pattern) public
+open import Reflection.Abstraction as Abstraction using (Abs; abs) public
 
 ------------------------------------------------------------------------
 -- Fixity
@@ -56,11 +57,6 @@ open Builtin public using (non-assoc; related; unrelated; fixity)
 
 ------------------------------------------------------------------------
 -- Terms
-
-open Builtin public using (Abs; abs)
-
-map-Abs : {A B : Set} → (A → B) → Abs A → Abs B
-map-Abs f (abs s x) = abs s (f x)
 
 -- Terms.
 
@@ -137,12 +133,6 @@ private
          x ≡ y × u ≡ v × r ≡ s → f x u r ≡ f y v s
   cong₃′ f (refl , refl , refl) = refl
 
-  abs₁ : ∀ {i i′} {x x′ : A} → abs i x ≡ abs i′ x′ → i ≡ i′
-  abs₁ refl = refl
-
-  abs₂ : ∀ {i i′} {x x′ : A} → abs i x ≡ abs i′ x′ → x ≡ x′
-  abs₂ refl = refl
-
   cons₁ : ∀ {x y} {xs ys : List A} → x ∷ xs ≡ y ∷ ys → x ≡ y
   cons₁ refl = refl
 
@@ -218,16 +208,10 @@ infix 4 _≟-AbsTerm_ _≟-AbsType_ _≟-ArgTerm_ _≟-ArgType_ _≟-Args_
 
 mutual
   _≟-AbsTerm_ : Decidable (_≡_ {A = Abs Term})
-  abs s a ≟-AbsTerm abs s′ a′ =
-    Dec.map′ (cong₂′ abs)
-             < abs₁ , abs₂ >
-             (s String.≟ s′ ×-dec a ≟ a′)
+  abs s a ≟-AbsTerm abs s′ a′ = Abstraction.unAbs-dec (a ≟ a′)
 
   _≟-AbsType_ : Decidable (_≡_ {A = Abs Type})
-  abs s a ≟-AbsType abs s′ a′ =
-    Dec.map′ (cong₂′ abs)
-             < abs₁ , abs₂ >
-             (s String.≟ s′ ×-dec a ≟ a′)
+  abs s a ≟-AbsType abs s′ a′ = Abstraction.unAbs-dec (a ≟ a′)
 
   _≟-ArgTerm_ : Decidable (_≡_ {A = Arg Term})
   arg i a ≟-ArgTerm arg i′ a′ = Argument.unArg-dec (a ≟ a′)
@@ -479,6 +463,18 @@ arg-info₂ = Information.arg-info-injective₂
 Please use Reflection.Argument.Information's arg-info-injective₂ instead."
 #-}
 
+abs₁ = Abstraction.abs-injective₁
+{-# WARNING_ON_USAGE abs₁
+"Warning: abs₁ was deprecated in v1.1.
+Please use Reflection.Abstraction's abs-injective₁ instead."
+#-}
+
+abs₂ = Abstraction.abs-injective₂
+{-# WARNING_ON_USAGE abs₂
+"Warning: abs₁ was deprecated in v1.1.
+Please use Reflection.Abstraction's abs-injective₂ instead."
+#-}
+
 Arg-info = Information.ArgInfo
 {-# WARNING_ON_USAGE Arg-info
 "Warning: Arg-info was deprecated in v1.1.
@@ -552,6 +548,12 @@ showMeta = Meta.show
 {-# WARNING_ON_USAGE showMeta
 "Warning: showMeta was deprecated in v1.1.
 Please use Reflection.Meta's show instead."
+#-}
+
+map-Abs = Abstraction.map
+{-# WARNING_ON_USAGE map-Abs
+"Warning: map-Abs was deprecated in v1.1.
+Please use Reflection.Abstraction's map instead."
 #-}
 
 map-Arg = Argument.map
