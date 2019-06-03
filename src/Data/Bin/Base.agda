@@ -18,8 +18,7 @@ open import Relation.Nullary using (yes; no)
 ------------------------------------------------------------------------
 -- Definition
 
-data Bin : Set
-  where
+data Bin : Set where
   0#    : Bin
   2suc  : Bin → Bin    -- n → 2*(1+n)  arbitrary nonzero even
   suc2* : Bin → Bin    -- n → 1 + 2*n  arbitrary odd
