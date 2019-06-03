@@ -14,7 +14,7 @@ module Relation.Binary.Core where
 open import Agda.Builtin.Equality using (_≡_) renaming (refl to ≡-refl)
 
 open import Data.Maybe.Base using (Maybe)
-open import Data.Product using (_×_; _,_)
+open import Data.Product using (_×_)
 open import Data.Sum.Base using (_⊎_)
 open import Function using (_on_; flip)
 open import Level
@@ -51,7 +51,6 @@ infixr 4 _⇒_ _=[_]⇒_
 
 _⇒_ : REL A B ℓ₁ → REL A B ℓ₂ → Set _
 P ⇒ Q = ∀ {i j} → P i j → Q i j
-
 
 -- Generalised implication - if P ≡ Q it can be read as "f preserves P".
 

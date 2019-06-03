@@ -10,13 +10,10 @@ open import Algebra using (Semigroup)
 open import Algebra.FunctionProperties using (Commutative)
 
 module Algebra.Properties.CommutativeSemigroup
-  {ℓ ℓ=} (H : Semigroup ℓ ℓ=) (open Semigroup H) (comm : Commutative _≈_ _∙_)
+  {a ℓ} (S : Semigroup a ℓ) (open Semigroup S) (comm : Commutative _≈_ _∙_)
   where
 
-import Relation.Binary.Properties.Setoid as OfSetoid
-import Relation.Binary.EqReasoning as EqR
-
-open EqR setoid
+open import Relation.Binary.Reasoning.Setoid setoid
 
 -- Permutation laws for _∙_ for three factors.
 

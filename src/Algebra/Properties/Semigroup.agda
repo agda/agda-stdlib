@@ -8,9 +8,9 @@
 
 open import Algebra using (Semigroup)
 
-module Algebra.Properties.Semigroup {ℓ ℓ=} (H : Semigroup ℓ ℓ=) where
+module Algebra.Properties.Semigroup {a ℓ} (S : Semigroup a ℓ) where
 
-open Semigroup H using (_≈_; _∙_; sym; assoc)
+open Semigroup S
 
-x∙yz≈xy∙z :  ∀ x y z → x ∙ (y ∙ z) ≈ (x ∙ y) ∙ z
+x∙yz≈xy∙z : ∀ x y z → x ∙ (y ∙ z) ≈ (x ∙ y) ∙ z
 x∙yz≈xy∙z x y z =  sym (assoc x y z)
