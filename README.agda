@@ -46,8 +46,8 @@ module README where
 
 -- • Axiom
 --     Types and consequences of various additional axioms not
---     provable in Agda, e.g. uniqueness of identity of proofs,
---     function extensionality and excluded middle.
+--     necessarily included in Agda, e.g. uniqueness of identity
+--     proofs, function extensionality and excluded middle.
 
 import README.Axiom
 

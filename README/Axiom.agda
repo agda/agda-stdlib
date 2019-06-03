@@ -32,7 +32,7 @@ open import Level using (0ℓ)
 open import Relation.Nullary using (Dec)
 
 -- The type of the proof of saying that excluded middle holds for
--- all types at universe level 0ℓ is therefore:
+-- all types at universe level ℓ is therefore:
 --
 --   ExcludedMiddle ℓ = ∀ {P : Set ℓ} → Dec P
 --
@@ -43,16 +43,16 @@ open import Axiom.ExcludedMiddle
 -- There are two different ways that the axiom can be introduced into
 -- your Agda development. The first option is to postulate it:
 
-postulate excludedMiddle : ExcludedMiddle 0ℓ
+postulate excludedMiddle : ExcludedMiddle ℓ
 
--- This has the advantage that it only neesd to be postulated once
+-- This has the advantage that it only needs to be postulated once
 -- and it can then be imported into many different modules as with any
 -- other proof. The downside is that the resulting Agda code will no
 -- longer type check under the --safe flag.
 
 -- The second approach is to pass it as a module parameter:
 
-module Proof (excludedMiddle : ExcludedMiddle 0ℓ) where
+module Proof (excludedMiddle : ExcludedMiddle ℓ) where
 
 -- The advantage of this approach is that the resulting Agda
 -- development can still be type checked under the --safe flag.
