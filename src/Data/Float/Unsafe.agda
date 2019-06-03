@@ -8,19 +8,9 @@
 
 module Data.Float.Unsafe where
 
-open import Data.Float
-open import Data.Bool.Base using (false; true)
-open import Relation.Nullary using (Dec; yes; no)
-open import Relation.Binary.PropositionalEquality using (_≡_)
-open import Relation.Binary.PropositionalEquality.TrustMe
+open import Data.Float public using (_≟_)
 
-------------------------------------------------------------------------
--- Equality testing
-
-infix 4 _≟_
-
-_≟_ : (x y : Float) → Dec (x ≡ y)
-x ≟ y with primFloatEquality x y
-... | true  = yes trustMe
-... | false = no whatever
-  where postulate whatever : _
+{-# WARNING_ON_IMPORT
+"Data.Float.Unsafe was deprecated in v1.1.
+Use Data.Float instead."
+#-}

@@ -66,6 +66,9 @@ New modules
   Data.AVL.NonEmpty
   Data.AVL.NonEmpty.Propositional
 
+  Data.Float.Base
+  Data.Float.Properties
+
   Data.List.Membership.Propositional.Properties.WithK
 
   Data.List.Relation.Binary.Disjoint.Propositional
@@ -218,8 +221,8 @@ been attached to all deprecated names.
   favour of `⊤` and `tt` from `Data.Unit`, as it turns out that the latter
   have been automatically mapped to the Haskell equivalent for quite some time.
 
-* The module `Data.Word.Unsafe` has been deprecated as there are no
-  longer any unsafe operations.
+* The modules `Data.Word.Unsafe` and `Data.Float.Unsafe` have been deprecated
+  as there are no longer any unsafe operations.
 
 * Renamed a few `-identity` lemmas in `Codata.Stream.Properties` as they were
   proving two streams bisimilar rather than propositionally equal.
