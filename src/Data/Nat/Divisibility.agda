@@ -41,9 +41,9 @@ m%n≡0⇒n∣m m n eq = divides (m / suc n) (begin-equality
 
 n∣m⇒m%n≡0 : ∀ m n → suc n ∣ m → m % suc n ≡ 0
 n∣m⇒m%n≡0 m n (divides v eq) = begin-equality
-  m           % suc n ≡⟨ cong (_% suc n) eq ⟩
-  (v * suc n) % suc n ≡⟨ kn%n≡0 v n ⟩
-  0                     ∎
+  m           % suc n  ≡⟨ cong (_% suc n) eq ⟩
+  (v * suc n) % suc n  ≡⟨ kn%n≡0 v n ⟩
+  0                    ∎
 
 m%n≡0⇔n∣m : ∀ m n → m % suc n ≡ 0 ⇔ suc n ∣ m
 m%n≡0⇔n∣m m n = equivalence (m%n≡0⇒n∣m m n) (n∣m⇒m%n≡0 m n)

@@ -18,10 +18,10 @@ open import Data.Nat.Properties
 open import Data.Nat.Solver
 open import Data.Nat.GCD
 open import Data.Product
-open import Data.Sum using (inj₁)
+open import Data.Sum using (_⊎_; inj₁; inj₂)
 open import Function
 open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; refl; cong; cong₂; sym; module ≡-Reasoning)
+  using (_≡_; refl; sym; trans; cong; cong₂; module ≡-Reasoning)
 open import Relation.Binary
 open import Relation.Nullary.Decidable using (False; fromWitnessFalse)
 
@@ -55,6 +55,8 @@ abstract
 ------------------------------------------------------------------------
 -- Properties
 
+abstract
+
   m∣lcm[m,n] : ∀ m n → m ∣ lcm m n
   m∣lcm[m,n] zero      zero      = 0 ∣0
   m∣lcm[m,n] zero      (suc n)   = 0 ∣0
@@ -76,37 +78,52 @@ abstract
     m * n / gcd m n   ∎
     where open ∣-Reasoning
 
-  lcd-least : ∀ {m n c} → m ∣ c → n ∣ c → lcm m n ∣ c
-  lcd-least {zero}  {zero}  {c} 0∣c _   = 0∣c
-  lcd-least {zero}  {suc n} {c} 0∣c _   = 0∣c
-  lcd-least {suc m} {zero}  {c} _   0∣c = 0∣c
-  lcd-least {m@(suc m-1)} {n@(suc n-1)} {c} m∣c n∣c = begin
+  lcm-least : ∀ {m n c} → m ∣ c → n ∣ c → lcm m n ∣ c
+  lcm-least {zero}  {zero}  {c} 0∣c _   = 0∣c
+  lcm-least {zero}  {suc n} {c} 0∣c _   = 0∣c
+  lcm-least {suc m} {zero}  {c} _   0∣c = 0∣c
+  lcm-least {m@(suc m-1)} {n@(suc n-1)} {c} m∣c n∣c = begin
     m * n / gcd m n   ≡⟨ *-/-assoc m (gcd≢0′ m-1) (gcd[m,n]∣n m n) ⟩
     m * (n / gcd m n) ∣⟨ /n-pres-∣ m∣c {!!} {!!} ⟩
     c                 ∎
     where open ∣-Reasoning
 
-lcd-comm : ∀ m n → lcm m n ≡ lcm n m
-lcd-comm m n = ∣-antisym
-  (lcd-least (n∣lcm[m,n] n m) (m∣lcm[m,n] n m))
-  (lcd-least (n∣lcm[m,n] m n) (m∣lcm[m,n] m n))
+lcm-comm : ∀ m n → lcm m n ≡ lcm n m
+lcm-comm m n = ∣-antisym
+  (lcm-least (n∣lcm[m,n] n m) (m∣lcm[m,n] n m))
+  (lcm-least (n∣lcm[m,n] m n) (m∣lcm[m,n] m n))
+
+lcm[0,n]≡0 : ∀ n → lcm 0 n ≡ 0
+lcm[0,n]≡0 n = 0∣⇒≡0 (m∣lcm[m,n] 0 n)
+
+lcm[n,0]≡0 : ∀ n → lcm n 0 ≡ 0
+lcm[n,0]≡0 n = 0∣⇒≡0 (n∣lcm[m,n] n 0)
+
+lcm-factorˡ : ∀ m n k → lcm (k * m) (k * n) ≡ k * lcm m n
+lcm-factorˡ m n k = {!!}
+
+lcm-factorʳ : ∀ m n k → lcm (m * k) (n * k) ≡ lcm m n * k
+lcm-factorʳ m n k rewrite *-comm m k | *-comm n k | *-comm (lcm m n) k = lcm-factorˡ m n k
+
+lcm-coprime : ∀ m n → Coprime m n → lcm m n ≡ m * n
+lcm-coprime = {!!}
 
 gcd*lcm : ∀ m n → gcd m n * lcm m n ≡ m * n
-gcd*lcm 0 n = {!!}
-gcd*lcm m 0 = {!!}
+gcd*lcm zero n rewrite lcm[0,n]≡0 n | *-zeroʳ (gcd 0 n)             = refl
+gcd*lcm m zero rewrite lcm[n,0]≡0 m | *-zeroʳ (gcd m 0) | *-zeroʳ m = refl
 gcd*lcm m@(suc m-1) n@(suc n-1) = begin
-  g * lcm m n                 ≡⟨ cong (g *_) (cong₂ lcm {!!} {!!}) ⟩
-  g * lcm (m/g * g) (n/g * g) ≡⟨ cong (g *_) {!!} ⟩
-  g * (lcm m/g n/g * g)       ≡⟨ cong (g *_) (cong (_* g) {!!}) ⟩
+  g * lcm m n                 ≡⟨ cong (g *_) (sym (cong₂ lcm (a/n*n≡a g∣m) (a/n*n≡a g∣n))) ⟩
+  g * lcm (m/g * g) (n/g * g) ≡⟨ cong (g *_) (lcm-factorʳ m/g n/g g) ⟩
+  g * (lcm m/g n/g * g)       ≡⟨ cong (g *_) (cong (_* g) (lcm-coprime m/g n/g {!!})) ⟩
   g * (m/g * n/g * g)         ≡⟨ cong (g *_) (*-assoc m/g n/g g) ⟩
   g * (m/g * (n/g * g))       ≡⟨ sym (*-assoc g m/g (n/g * g)) ⟩
-  (g * m/g) * (n/g * g)       ≡⟨ cong₂ _*_ {!!} (a/n*n≡a {!gcd[m,n]∣n m n!}) ⟩
+  (g * m/g) * (n/g * g)       ≡⟨ cong₂ _*_ (n*[a/n]≡a g∣m) (a/n*n≡a g∣n) ⟩
   m * n                       ∎
   where
   open ≡-Reasoning
   g   = gcd m n
-  m/g = (m / g) {{!!}}
-  n/g = (n / g) {{!!}}
+  m/g = (m / g) {gcd≢0′ m-1}; g∣m = gcd[m,n]∣m m n
+  n/g = (n / g) {gcd≢0′ m-1}; g∣n = gcd[m,n]∣n m n
 
 ------------------------------------------------------------------------
 -- Least common multiple (lcm).
@@ -138,75 +155,18 @@ open LCM public using (LCM) hiding (module LCM)
 ------------------------------------------------------------------------
 -- Calculating the lcm
 
-private
-  lem₁ = solve 3 (λ a b c → a :* b :* c  :=  b :* (a :* c)) refl
-  lem₂ = solve 3 (λ a b c → a :* b :* c  :=  a :* (b :* c)) refl
+lcm-LCM : ∀ m n → LCM m n (lcm m n)
+lcm-LCM m n = record
+  { commonMultiple = m∣lcm[m,n] m n , n∣lcm[m,n] m n
+  ; least          = uncurry′ lcm-least
+  }
 
-  -- If these lemmas are inlined, then type checking takes a lot
-  -- longer... (In the development version of Agda from 2009-05-21.)
+mkLCM : ∀ m n → ∃ λ d → LCM m n d
+mkLCM m n = lcm m n , lcm-LCM m n
 
-  mult₁ : ∀ q₁ q₂ d → q₁ * d ∣ q₁ * q₂ * d
-  mult₁ q₁ q₂ d = divides q₂ (lem₁ q₁ q₂ d)
-
-  mult₂ : ∀ q₁ q₂ d → q₂ * d ∣ q₁ * q₂ * d
-  mult₂ q₁ q₂ d = divides q₁ (lem₂ q₁ q₂ d)
-
--- The lcm can be calculated from the gcd.
-
-mkLCM : (i j : ℕ) → ∃ λ d → LCM i j d
-mkLCM i j with Coprime.mkGCD′ i j
-mkLCM .(q₁ * d) .(q₂ * d) | (d , gcd-* q₁ q₂ q₁-q₂-coprime) =
-  ( q₁ * q₂ * d
-  , record { commonMultiple = (mult₁ q₁ q₂ d , mult₂ q₁ q₂ d)
-           ; least          = least d
-           }
-  )
-  where
-  least : ∀ d {m} → q₁ * d ∣ m × q₂ * d ∣ m → q₁ * q₂ * d ∣ m
-  least zero (divides q₃ refl , _) = begin
-    q₁ * q₂ * 0    ∣⟨ (q₁ * q₂ * 0) ∣0 ⟩
-    0              ≡⟨ solve 2 (λ a b → con 0  :=  a :* (b :* con 0))
-                              refl q₃ q₁ ⟩
-    q₃ * (q₁ * 0)  ∎
-    where open ∣-Reasoning
-  least (suc d) {m} (divides q₃ eq₃ , divides q₄ eq₄) =
-    q₁q₂d′∣m q₃ eq₃ q₂∣q₃
-    where
-    open P.≡-Reasoning
-    d′ = suc d
-
-    q₂∣q₃ : q₂ ∣ q₃
-    q₂∣q₃ = coprime-divisor (Coprime.sym q₁-q₂-coprime)
-              (divides q₄ $ *-cancelʳ-≡ _ _ (begin
-                 q₁ * q₃ * d′    ≡⟨ lem₁ q₁ q₃ d′ ⟩
-                 q₃ * (q₁ * d′)  ≡⟨ sym eq₃ ⟩
-                 m               ≡⟨ eq₄ ⟩
-                 q₄ * (q₂ * d′)  ≡⟨ sym (lem₂ q₄ q₂ d′) ⟩
-                 q₄ *  q₂ * d′   ∎))
-
-    q₁q₂d′∣m : ∀ q₃ → m ≡ q₃ * (q₁ * d′) → q₂ ∣ q₃ → q₁ * q₂ * d′ ∣ m
-    q₁q₂d′∣m .(q₅ * q₂) eq₃′ (divides q₅ refl) =
-      divides q₅ (begin
-        m                    ≡⟨ eq₃′ ⟩
-        q₅ * q₂ * (q₁ * d′)  ≡⟨ solve 4 (λ q₁ q₂ q₅ d′ → q₅ :* q₂ :* (q₁ :* d′)
-                                                     :=  q₅ :* (q₁ :* q₂ :* d′))
-                                        refl q₁ q₂ q₅ d′ ⟩
-        q₅ * (q₁ * q₂ * d′)  ∎)
-
-------------------------------------------------------------------------
--- Properties
-
--- The product of the gcd and the lcm is the product of the two
--- numbers.
-{-
-gcd*lcm : ∀ {i j d m} → GCD i j d → LCM i j m → i * j ≡ d * m
-gcd*lcm  {i}        {j}       {d}  {m}               g l with LCM.unique l (proj₂ (lcm i j))
-gcd*lcm  {i}        {j}       {d} .{proj₁ (lcm i j)} g l | refl with mkGCD′ i j
-gcd*lcm .{q₁ * d′} .{q₂ * d′} {d}                    g l | refl | (d′ , gcd-* q₁ q₂ q₁-q₂-coprime)
-                                                           with GCD.unique g
-                                                                  (gcd′-gcd (gcd-* q₁ q₂ q₁-q₂-coprime))
-gcd*lcm .{q₁ * d}  .{q₂ * d}  {d}                    g l | refl | (.d , gcd-* q₁ q₂ q₁-q₂-coprime) | refl =
-  solve 3 (λ q₁ q₂ d → q₁ :* d :* (q₂ :* d)
-                   :=  d :* (q₁ :* q₂ :* d))
-          refl q₁ q₂ d
--}
+GCD*LCM : ∀ {m n g l} → GCD m n g → LCM m n l → m * n ≡ g * l
+GCD*LCM {m} {n} {g} {l} gc lc = sym (begin
+  g * l             ≡⟨ cong₂ _*_ (GCD.unique gc (gcd-GCD m n)) (LCM.unique lc (lcm-LCM m n)) ⟩
+  gcd m n * lcm m n ≡⟨ gcd*lcm m n ⟩
+  m * n             ∎)
+  where open ≡-Reasoning

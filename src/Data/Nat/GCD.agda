@@ -54,6 +54,8 @@ abstract
 ------------------------------------------------------------------------
 -- Properties of gcd′
 
+abstract
+
   gcd′[m,n]∣m,n : ∀ {m n} rec n<m → gcd′ m n rec n<m ∣ m × gcd′ m n rec n<m ∣ n
   gcd′[m,n]∣m,n {m} {zero}  rec       n<m = ∣-refl , m ∣0
   gcd′[m,n]∣m,n {m} {suc n} (acc rec) n<m
@@ -67,6 +69,8 @@ abstract
 
 ------------------------------------------------------------------------
 -- Core properties of gcd
+
+abstract
 
   gcd[m,n]∣m : ∀ m n → gcd m n ∣ m
   gcd[m,n]∣m m n with <-cmp m n
@@ -157,13 +161,14 @@ open GCD public using (GCD) hiding (module GCD)
 -- The function gcd fulfils the conditions required of GCD
 
 gcd-GCD : ∀ m n → GCD m n (gcd m n)
-gcd-GCD m n = GCD.is
-  (gcd[m,n]∣m m n , gcd[m,n]∣n m n)
-  λ {d} → uncurry′ (gcd-greatest {m} {n} {d})
+gcd-GCD m n = record
+  { commonDivisor = gcd[m,n]∣m m n , gcd[m,n]∣n m n
+  ; greatest      = uncurry′ gcd-greatest
+  }
 
 -- Calculates the gcd of the arguments.
 
-mkGCD : (m n : ℕ) → ∃ λ d → GCD m n d
+mkGCD : ∀ m n → ∃ λ d → GCD m n d
 mkGCD m n = gcd m n , gcd-GCD m n
 
 -- gcd as a proposition is decidable

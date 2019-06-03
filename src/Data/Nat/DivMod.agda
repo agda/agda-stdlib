@@ -130,8 +130,14 @@ a/1≡a a = a[divₕ]1≡a 0 a
 n/n≡1 : ∀ n → suc n / suc n ≡ 1
 n/n≡1 n = n[divₕ]n≡1 n n
 
-a*n/n≡a : ∀ a n → a * suc n / suc n ≡ a
-a*n/n≡a a n-1 = a*n[divₕ]n≡a 0 a n-1
+a*n/n≡a : ∀ a n .{n≢0} → (a * n / n) {n≢0} ≡ a
+a*n/n≡a a (suc n-1) = a*n[divₕ]n≡a 0 a n-1
+
+a/n*n≡a : ∀ {a n} .{n≢0} → n ∣ a → (a / n) {n≢0} * n ≡ a
+a/n*n≡a {n = n} (divides q refl) = cong (_* n) (a*n/n≡a q n)
+
+n*[a/n]≡a : ∀ {a n} .{n≢0} → n ∣ a → n * (a / n) {n≢0} ≡ a
+n*[a/n]≡a {n = n} n∣a = trans (*-comm n (_ / n)) (a/n*n≡a n∣a)
 
 a/n*n≤a : ∀ a n → a / suc n * suc n ≤ a
 a/n*n≤a a n-1 = begin
@@ -140,9 +146,6 @@ a/n*n≤a a n-1 = begin
   a % n + (a / n) * n  ≡⟨ sym (a≡a%n+[a/n]*n a n-1) ⟩
   a                    ∎
   where n = suc n-1
-
-a/n*n≡a : ∀ {a n} → suc n ∣ a → a / suc n * suc n ≡ a
-a/n*n≡a {_} {n} (divides q refl) = cong (_* suc n) (a*n/n≡a q n)
 
 +-distrib-/ : ∀ m n {d} → m % suc d + n % suc d < suc d →
               (m + n) / suc d ≡ m / suc d + n / suc d

@@ -148,14 +148,18 @@ prime⇒coprime (suc (suc m)) p (suc n) _ 1+n<2+m {suc (suc i)}
     (P.sym (cong (2 +_) (toℕ-fromℕ≤ i<m)))
     2+i∣2+m
 
+
 ------------------------------------------------------------------------
--- A variant of GCD.
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use GCD from `Data.Nat.GCD` as continued support for the
+-- proofs below is not guaranteed.
+
+-- Version 1.1.
 
 data GCD′ : ℕ → ℕ → ℕ → Set where
   gcd-* : ∀ {d} q₁ q₂ (c : Coprime q₁ q₂) →
           GCD′ (q₁ * d) (q₂ * d) d
-
--- The two definitions are equivalent.
 
 gcd-gcd′ : ∀ {d m n} → GCD m n d → GCD′ m n d
 gcd-gcd′         g with GCD.commonDivisor g
@@ -167,9 +171,11 @@ gcd-gcd′ {suc d} g | (divides q₁ refl , divides q₂ refl) =
 
 gcd′-gcd : ∀ {m n d} → GCD′ m n d → GCD m n d
 gcd′-gcd (gcd-* q₁ q₂ c) = GCD.is (n∣m*n q₁ , n∣m*n q₂) (coprime-factors c)
-
--- Calculates (the alternative representation of) the gcd of the
--- arguments.
-
+{-# WARNING_ON_USAGE gcd′-gcd
+"Warning: gcd′-gcd was deprecated in v1.1."
+#-}
 mkGCD′ : ∀ m n → ∃ λ d → GCD′ m n d
 mkGCD′ m n = Prod.map id gcd-gcd′ (mkGCD m n)
+{-# WARNING_ON_USAGE mkGCD′
+"Warning: mkGCD′ was deprecated in v1.1."
+#-}
