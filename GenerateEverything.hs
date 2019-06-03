@@ -40,7 +40,6 @@ unsafeModules = map toAgdaFilePath
   , "Foreign.Haskell"
   , "IO"
   , "IO.Primitive"
-  , "Reflection"
   , "Relation.Binary.PropositionalEquality.TrustMe"
   ] where
 
