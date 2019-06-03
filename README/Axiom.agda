@@ -6,7 +6,9 @@
 
 module README.Axiom where
 
-open import Level using (0ℓ)
+open import Level using (Level)
+
+private variable ℓ : Level
 
 ------------------------------------------------------------------------
 -- Introduction
