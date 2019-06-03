@@ -4,7 +4,7 @@
 -- Support for reflection
 ------------------------------------------------------------------------
 
-{-# OPTIONS --with-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Reflection where
 
@@ -13,8 +13,7 @@ open import Data.Bool.Base using (Bool; false; true)
 open import Data.List.Base using (List); open Data.List.Base.List
 open import Data.Nat using (ℕ) renaming (_≟_ to _≟-ℕ_)
 open import Data.Nat.Show renaming (show to showNat)
-open import Data.Float using (Float) renaming (show to showFloat)
-open import Data.Float.Unsafe using () renaming (_≟_ to _≟f_)
+open import Data.Float as Float using (Float)
 open import Data.Char using (Char)
   renaming ( show to showChar
            ; _≟_ to _≟c_
@@ -32,7 +31,6 @@ open import Function
 open import Level
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
-open import Relation.Binary.PropositionalEquality.TrustMe
 open import Relation.Nullary hiding (module Dec)
 open import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Product
@@ -43,34 +41,9 @@ private
   variable
     a b c d : Level
     A B C D : Set a
-------------------------------------------------------------------------
--- Names
 
--- Names.
-
-open Builtin public using (Name)
-
-Names : Set
-Names = List Name
--- Equality of names is decidable.
-
-infix 4 _==_ _≟-Name_
-
-private
-
-  _==_ : Name → Name → Bool
-  _==_ = Builtin.primQNameEquality
-
-_≟-Name_ : Decidable {A = Name} _≡_
-s₁ ≟-Name s₂ with s₁ == s₂
-... | true  = yes trustMe
-... | false = no whatever
-  where postulate whatever : _
-
--- Names can be shown.
-
-showName : Name → String
-showName = Builtin.primShowQName
+open import Reflection.Name as Name using (Name) public
+open import Reflection.Meta as Meta using (Meta) public
 
 ------------------------------------------------------------------------
 -- Fixity
@@ -79,33 +52,6 @@ open Builtin public using (non-assoc; related; unrelated; fixity)
   renaming ( left-assoc  to assocˡ
            ; right-assoc to assocʳ
            ; primQNameFixity to getFixity)
-
-------------------------------------------------------------------------
--- Metavariables
-
--- Metavariables.
-
-open Builtin public using (Meta)
-
--- Equality of metavariables is decidable.
-
-infix 4 _==-Meta_ _≟-Meta_
-
-private
-
-  _==-Meta_ : Meta → Meta → Bool
-  _==-Meta_ = Builtin.primMetaEquality
-
-_≟-Meta_ : Decidable {A = Meta} _≡_
-s₁ ≟-Meta s₂ with s₁ ==-Meta s₂
-... | true  = yes trustMe
-... | false = no whatever
-  where postulate whatever : _
-
--- Metas can be shown.
-
-showMeta : Meta → String
-showMeta = Builtin.primShowMeta
 
 ------------------------------------------------------------------------
 -- Terms
@@ -190,11 +136,11 @@ open Builtin public
 showLiteral : Literal → String
 showLiteral (nat x)    = showNat x
 showLiteral (word64 x) = showNat (wordToℕ x)
-showLiteral (float x)  = showFloat x
+showLiteral (float x)  = Float.show x
 showLiteral (char x)   = showChar x
 showLiteral (string x) = showString x
-showLiteral (name x)   = showName x
-showLiteral (meta x)   = showMeta x
+showLiteral (name x)   = Name.show x
+showLiteral (meta x)   = Meta.show x
 
 ------------------------------------------------------------------------
 -- Type checking monad
@@ -408,7 +354,7 @@ word64 x ≟-Lit name x₁ = no (λ ())
 word64 x ≟-Lit meta x₁ = no (λ ())
 float x ≟-Lit nat x₁ = no (λ ())
 float x ≟-Lit word64 x₁ = no (λ ())
-float x ≟-Lit float x₁ = Dec.map′ (cong float) float₁ (x ≟f x₁)
+float x ≟-Lit float x₁ = Dec.map′ (cong float) float₁ (x Float.≟ x₁)
 float x ≟-Lit char x₁ = no (λ ())
 float x ≟-Lit string x₁ = no (λ ())
 float x ≟-Lit name x₁ = no (λ ())
@@ -432,7 +378,7 @@ name x ≟-Lit word64 x₁ = no (λ ())
 name x ≟-Lit float x₁ = no (λ ())
 name x ≟-Lit char x₁ = no (λ ())
 name x ≟-Lit string x₁ = no (λ ())
-name x ≟-Lit name x₁ = Dec.map′ (cong name) name₁ (x ≟-Name x₁)
+name x ≟-Lit name x₁ = Dec.map′ (cong name) name₁ (x Name.≟ x₁)
 name x ≟-Lit meta x₁ = no (λ ())
 meta x ≟-Lit nat x₁ = no (λ ())
 meta x ≟-Lit word64 x₁ = no (λ ())
@@ -440,7 +386,7 @@ meta x ≟-Lit float x₁ = no (λ ())
 meta x ≟-Lit char x₁ = no (λ ())
 meta x ≟-Lit string x₁ = no (λ ())
 meta x ≟-Lit name x₁ = no (λ ())
-meta x ≟-Lit meta x₁ = Dec.map′ (cong meta) lmeta₁ (x ≟-Meta x₁)
+meta x ≟-Lit meta x₁ = Dec.map′ (cong meta) lmeta₁ (x Meta.≟ x₁)
 
 mutual
   _≟-AbsTerm_ : Decidable (_≡_ {A = Abs Term})
@@ -492,7 +438,7 @@ mutual
   (_ ∷ _)  ≟-Clauses []       = no λ()
 
   _≟-Pattern_ : Decidable (_≡_ {A = Pattern})
-  con c ps ≟-Pattern con c′ ps′ = Dec.map′ (cong₂′ con) < pcon₁ , pcon₂ > (c ≟-Name c′ ×-dec ps ≟-ArgPatterns ps′)
+  con c ps ≟-Pattern con c′ ps′ = Dec.map′ (cong₂′ con) < pcon₁ , pcon₂ > (c Name.≟ c′ ×-dec ps ≟-ArgPatterns ps′)
   con x x₁ ≟-Pattern dot = no (λ ())
   con x x₁ ≟-Pattern var x₂ = no (λ ())
   con x x₁ ≟-Pattern lit x₂ = no (λ ())
@@ -520,7 +466,7 @@ mutual
   proj x ≟-Pattern dot = no (λ ())
   proj x ≟-Pattern var _ = no (λ ())
   proj x ≟-Pattern lit x₁ = no (λ ())
-  proj x ≟-Pattern proj x₁ = Dec.map′ (cong proj) pproj₁ (x ≟-Name x₁)
+  proj x ≟-Pattern proj x₁ = Dec.map′ (cong proj) pproj₁ (x Name.≟ x₁)
   proj x ≟-Pattern absurd = no (λ ())
   absurd ≟-Pattern con x x₁ = no (λ ())
   absurd ≟-Pattern dot = no (λ ())
@@ -537,9 +483,9 @@ mutual
 
   _≟_ : Decidable (_≡_ {A = Term})
   var x args ≟ var x′ args′ = Dec.map′ (cong₂′ var) < var₁ , var₂ > (x ≟-ℕ x′          ×-dec args ≟-Args args′)
-  con c args ≟ con c′ args′ = Dec.map′ (cong₂′ con) < con₁ , con₂ > (c ≟-Name c′       ×-dec args ≟-Args args′)
-  def f args ≟ def f′ args′ = Dec.map′ (cong₂′ def) < def₁ , def₂ > (f ≟-Name f′       ×-dec args ≟-Args args′)
-  meta x args ≟ meta x′ args′ = Dec.map′ (cong₂′ meta) < meta₁ , meta₂ > (x ≟-Meta x′   ×-dec args ≟-Args args′)
+  con c args ≟ con c′ args′ = Dec.map′ (cong₂′ con) < con₁ , con₂ > (c Name.≟ c′       ×-dec args ≟-Args args′)
+  def f args ≟ def f′ args′ = Dec.map′ (cong₂′ def) < def₁ , def₂ > (f Name.≟ f′       ×-dec args ≟-Args args′)
+  meta x args ≟ meta x′ args′ = Dec.map′ (cong₂′ meta) < meta₁ , meta₂ > (x Meta.≟ x′   ×-dec args ≟-Args args′)
   lam v t    ≟ lam v′ t′    = Dec.map′ (cong₂′ lam) < lam₁ , lam₂ > (v ≟-Visibility v′ ×-dec t ≟-AbsTerm t′)
   pat-lam cs args ≟ pat-lam cs′ args′ =
                               Dec.map′ (cong₂′ pat-lam) < pat-lam₁ , pat-lam₂ > (cs ≟-Clauses cs′ ×-dec args ≟-Args args′)
