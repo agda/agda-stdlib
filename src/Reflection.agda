@@ -42,7 +42,7 @@ private
     a b c d : Level
     A B C D : Set a
 
-open import Reflection.Name as Name using (Name) public
+open import Reflection.Name as Name using (Name; Names) public
 open import Reflection.Meta as Meta using (Meta) public
 open import Reflection.Literal as Literal
   using (Literal); open Literal.Literal public
@@ -570,15 +570,39 @@ name₁ = Literal.name-injective
 Please use Reflection.Literal's name-injective instead."
 #-}
 
-infix 4 _≟-Lit_
+infix 4 _≟-Lit_ _≟-Name_ _≟-Meta_
 _≟-Lit_ = Literal._≟_
 {-# WARNING_ON_USAGE _≟-Lit_
 "Warning: _≟-Lit_ was deprecated in v1.1.
 Please use Reflection.Literal's _≟_ instead."
 #-}
 
+_≟-Name_ = Name._≟_
+{-# WARNING_ON_USAGE _≟-Name_
+"Warning: _≟-Name_ was deprecated in v1.1.
+Please use Reflection.Name's _≟_ instead."
+#-}
+
+_≟-Meta_ = Meta._≟_
+{-# WARNING_ON_USAGE _≟-Meta_
+"Warning: _≟-Meta_ was deprecated in v1.1.
+Please use Reflection.Meta's _≟_ instead."
+#-}
+
 showLiteral = Literal.show
 {-# WARNING_ON_USAGE showLiteral
 "Warning: showLiteral was deprecated in v1.1.
 Please use Reflection.Literal's show instead."
+#-}
+
+showName = Name.show
+{-# WARNING_ON_USAGE showName
+"Warning: showName was deprecated in v1.1.
+Please use Reflection.Name's show instead."
+#-}
+
+showMeta = Meta.show
+{-# WARNING_ON_USAGE showMeta
+"Warning: showMeta was deprecated in v1.1.
+Please use Reflection.Meta's show instead."
 #-}
