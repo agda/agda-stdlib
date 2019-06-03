@@ -36,3 +36,9 @@ infixr 2 _≈˘⟨_⟩_
 
 _≈˘⟨_⟩_ : ∀ x {y z} → y ≈ x → y IsRelatedTo z → x IsRelatedTo z
 x ≈˘⟨ x≈y ⟩ y∼z = x ≈⟨ sym x≈y ⟩ y∼z
+
+infixr 2 ≈-step
+≈-step : ∀ x {y z} → y IsRelatedTo z → x ≈ y → x IsRelatedTo z
+≈-step x y≈z x≈y = x ≈⟨ x≈y ⟩ y≈z
+
+syntax ≈-step x y≈z x≈y = x ≈!⟨ x≈y ⟩ y≈z
