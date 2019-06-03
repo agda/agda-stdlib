@@ -104,9 +104,14 @@ New modules
   Data.Word.Base
   Data.Word.Properties
 
+  Reflection.Argument
+  Reflection.Argument.Information
+  Reflection.Argument.Relevance
+  Reflection.Argument.Visibility
   Reflection.Literal
   Reflection.Meta
   Reflection.Name
+  Reflection.Pattern
 
   Relation.Binary.Construct.Closure.Equivalence.Properties
   Relation.Binary.Rewriting
