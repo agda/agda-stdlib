@@ -8,24 +8,11 @@
 
 module Reflection where
 
-open import Data.Unit.Base using (⊤)
-open import Data.Bool.Base using (Bool; false; true)
-open import Data.List.Base using (List); open Data.List.Base.List
-open import Data.Nat using (ℕ) renaming (_≟_ to _≟-ℕ_)
-open import Data.Nat.Show renaming (show to showNat)
-open import Data.Float as Float using (Float)
-open import Data.Char using (Char)
-  renaming ( show to showChar
-           ; _≟_ to _≟c_
-           )
-open import Data.String using (String)
-  renaming ( show to showString
-           ; _≟_ to _≟s_
-           )
-open import Data.Word using (Word64)
-  renaming ( toℕ to wordToℕ
-           ; _≟_ to _≟w_
-           )
+open import Data.List.Base using (List); open List
+
+open import Data.Nat    as ℕ      using (ℕ)
+open import Data.String as String using (String)
+
 open import Data.Product
 open import Function
 open import Level
@@ -41,6 +28,9 @@ private
   variable
     a b c d : Level
     A B C D : Set a
+
+------------------------------------------------------------------------
+-- Names, Metas, and Literals re-exported publically
 
 open import Reflection.Name as Name using (Name; Names) public
 open import Reflection.Meta as Meta using (Meta) public
@@ -310,13 +300,13 @@ mutual
   abs s a ≟-AbsTerm abs s′ a′ =
     Dec.map′ (cong₂′ abs)
              < abs₁ , abs₂ >
-             (s ≟s s′ ×-dec a ≟ a′)
+             (s String.≟ s′ ×-dec a ≟ a′)
 
   _≟-AbsType_ : Decidable (_≡_ {A = Abs Type})
   abs s a ≟-AbsType abs s′ a′ =
     Dec.map′ (cong₂′ abs)
              < abs₁ , abs₂ >
-             (s ≟s s′ ×-dec a ≟ a′)
+             (s String.≟ s′ ×-dec a ≟ a′)
 
   _≟-ArgTerm_ : Decidable (_≡_ {A = Arg Term})
   arg i a ≟-ArgTerm arg i′ a′ =
@@ -369,7 +359,7 @@ mutual
   dot ≟-Pattern absurd = no (λ ())
   var s ≟-Pattern con x x₁ = no (λ ())
   var s ≟-Pattern dot = no (λ ())
-  var s ≟-Pattern var s′ = Dec.map′ (cong var) pvar (s ≟s s′)
+  var s ≟-Pattern var s′ = Dec.map′ (cong var) pvar (s String.≟ s′)
   var s ≟-Pattern lit x = no (λ ())
   var s ≟-Pattern proj x = no (λ ())
   var s ≟-Pattern absurd = no (λ ())
@@ -399,7 +389,7 @@ mutual
   (_ ∷ _)  ≟-ArgPatterns []       = no λ()
 
   _≟_ : Decidable (_≡_ {A = Term})
-  var x args ≟ var x′ args′ = Dec.map′ (cong₂′ var) < var₁ , var₂ > (x ≟-ℕ x′          ×-dec args ≟-Args args′)
+  var x args ≟ var x′ args′ = Dec.map′ (cong₂′ var) < var₁ , var₂ > (x ℕ.≟ x′          ×-dec args ≟-Args args′)
   con c args ≟ con c′ args′ = Dec.map′ (cong₂′ con) < con₁ , con₂ > (c Name.≟ c′       ×-dec args ≟-Args args′)
   def f args ≟ def f′ args′ = Dec.map′ (cong₂′ def) < def₁ , def₂ > (f Name.≟ f′       ×-dec args ≟-Args args′)
   meta x args ≟ meta x′ args′ = Dec.map′ (cong₂′ meta) < meta₁ , meta₂ > (x Meta.≟ x′   ×-dec args ≟-Args args′)
@@ -504,7 +494,7 @@ mutual
 
   _≟-Sort_ : Decidable (_≡_ {A = Sort})
   set t   ≟-Sort set t′  = Dec.map′ (cong set) set₁ (t ≟ t′)
-  lit n   ≟-Sort lit n′  = Dec.map′ (cong lit) slit₁ (n ≟-ℕ n′)
+  lit n   ≟-Sort lit n′  = Dec.map′ (cong lit) slit₁ (n ℕ.≟ n′)
   unknown ≟-Sort unknown = yes refl
   set _   ≟-Sort lit _   = no λ()
   set _   ≟-Sort unknown = no λ()
