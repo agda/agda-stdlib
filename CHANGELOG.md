@@ -104,6 +104,8 @@ New modules
   Data.Word.Base
   Data.Word.Properties
 
+  Reflection.Name
+
   Relation.Binary.Construct.Closure.Equivalence.Properties
   Relation.Binary.Rewriting
 
