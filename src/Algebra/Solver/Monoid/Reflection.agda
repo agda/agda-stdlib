@@ -1,10 +1,10 @@
-{-# OPTIONS --without-K --safe #-}
-
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
 -- Reflection-based solver for monoid equalities
 ------------------------------------------------------------------------
+
+{-# OPTIONS --without-K --safe #-}
 
 module Algebra.Solver.Monoid.Reflection where
 
