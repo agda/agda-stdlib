@@ -25,49 +25,49 @@ import Relation.Binary.Reasoning.Setoid as SetoidReasoning
 -- The Expr type with homomorphism proofs
 ----------------------------------------------------------------------
 
-infixl 7 _⊙_
+infixl 7 _∙′_
 data Expr {a} (A : Set a) : Set a where
-  _⊙_  : Expr A → Expr A → Expr A
-  ⓔ    : Expr A
-  ⟦_↑⟧ : A → Expr A
+  _∙′_  : Expr A → Expr A → Expr A
+  ε′    : Expr A
+  [_↑]  : A → Expr A
 
 module _ {m₁ m₂} (mon : Monoid m₁ m₂) where
   open Monoid mon
 
-  ⟦_↓⟧ : Expr Carrier → Carrier
-  ⟦ x ⊙ y  ↓⟧ = ⟦ x ↓⟧ ∙ ⟦ y ↓⟧
-  ⟦ ⓔ      ↓⟧ = ε
-  ⟦ ⟦ x ↑⟧ ↓⟧ = x
+  [_↓] : Expr Carrier → Carrier
+  [ x ∙′ y  ↓] = [ x ↓] ∙ [ y ↓]
+  [ ε′      ↓] = ε
+  [ [ x ↑]  ↓] = x
 
-  ⟦_⇓⟧′ : Expr Carrier → Carrier → Carrier
-  ⟦ x ⊙ y  ⇓⟧′ z = ⟦ x ⇓⟧′ (⟦ y ⇓⟧′ z)
-  ⟦ ⓔ      ⇓⟧′ y = y
-  ⟦ ⟦ x ↑⟧ ⇓⟧′ y = x ∙ y
+  [_⇓]′ : Expr Carrier → Carrier → Carrier
+  [ x ∙′ y  ⇓]′ z = [ x ⇓]′ ([ y ⇓]′ z)
+  [ ε′      ⇓]′ y = y
+  [ [ x ↑]  ⇓]′ y = x ∙ y
 
-  ⟦_⇓⟧ : Expr Carrier → Carrier
-  ⟦ x ⇓⟧ = ⟦ x ⇓⟧′ ε
+  [_⇓] : Expr Carrier → Carrier
+  [ x ⇓] = [ x ⇓]′ ε
 
   open SetoidReasoning setoid
 
-  homo′ : ∀ x y → ⟦ x ⇓⟧ ∙ y ≈ ⟦ x ⇓⟧′ y
-  homo′ ⓔ y = identityˡ y
-  homo′ ⟦ x ↑⟧ y = ∙-congʳ (identityʳ x)
-  homo′ (x ⊙ y) z = begin
-    ⟦ x ⊙ y ⇓⟧ ∙ z        ≡⟨⟩
-    ⟦ x ⇓⟧′ ⟦ y ⇓⟧ ∙ z    ≈˘⟨ ∙-congʳ (homo′ x ⟦ y ⇓⟧) ⟩
-    (⟦ x ⇓⟧ ∙ ⟦ y ⇓⟧) ∙ z ≈⟨ assoc ⟦ x ⇓⟧ ⟦ y ⇓⟧ z ⟩
-    ⟦ x ⇓⟧ ∙ (⟦ y ⇓⟧ ∙ z) ≈⟨ ∙-congˡ (homo′ y z) ⟩
-    ⟦ x ⇓⟧ ∙ (⟦ y ⇓⟧′ z)  ≈⟨ homo′ x (⟦ y ⇓⟧′ z) ⟩
-    ⟦ x ⇓⟧′ (⟦ y ⇓⟧′ z)   ∎
+  homo′ : ∀ x y → [ x ⇓] ∙ y ≈ [ x ⇓]′ y
+  homo′ ε′ y       = identityˡ y
+  homo′ [ x ↑] y   = ∙-congʳ (identityʳ x)
+  homo′ (x ∙′ y) z = begin
+    [ x ∙′ y ⇓] ∙ z       ≡⟨⟩
+    [ x ⇓]′ [ y ⇓] ∙ z    ≈˘⟨ ∙-congʳ (homo′ x [ y ⇓]) ⟩
+    ([ x ⇓] ∙ [ y ⇓]) ∙ z ≈⟨ assoc [ x ⇓] [ y ⇓] z ⟩
+    [ x ⇓] ∙ ([ y ⇓] ∙ z) ≈⟨ ∙-congˡ (homo′ y z) ⟩
+    [ x ⇓] ∙ ([ y ⇓]′ z)  ≈⟨ homo′ x ([ y ⇓]′ z) ⟩
+    [ x ⇓]′ ([ y ⇓]′ z)   ∎
 
-  homo : ∀ x → ⟦ x ⇓⟧ ≈ ⟦ x ↓⟧
-  homo ⓔ = refl
-  homo ⟦ x ↑⟧ = identityʳ x
-  homo (x ⊙ y) = begin
-    ⟦ x ⊙ y ⇓⟧      ≡⟨⟩
-    ⟦ x ⇓⟧′ ⟦ y ⇓⟧  ≈˘⟨ homo′ x ⟦ y ⇓⟧ ⟩
-    ⟦ x ⇓⟧ ∙ ⟦ y ⇓⟧ ≈⟨ ∙-cong (homo x) (homo y) ⟩
-    ⟦ x ↓⟧ ∙ ⟦ y ↓⟧ ∎
+  homo : ∀ x → [ x ⇓] ≈ [ x ↓]
+  homo ε′       = refl
+  homo [ x ↑]   = identityʳ x
+  homo (x ∙′ y) = begin
+    [ x ∙′ y ⇓]     ≡⟨⟩
+    [ x ⇓]′ [ y ⇓]  ≈˘⟨ homo′ x [ y ⇓] ⟩
+    [ x ⇓] ∙ [ y ⇓] ≈⟨ ∙-cong (homo x) (homo y) ⟩
+    [ x ↓] ∙ [ y ↓] ∎
 
 ----------------------------------------------------------------------
 -- Helpers for reflection
@@ -133,33 +133,33 @@ findMonoidNames mon = do
 -- Building Expr
 ----------------------------------------------------------------------
 
-ⓔ′ : Term
-ⓔ′ = quote ⓔ ⟨ con ⟩ []
+ε″ : Term
+ε″ = quote ε′ ⟨ con ⟩ []
 
-⟦_↑⟧′ : Term → Term
-⟦ t ↑⟧′ = quote ⟦_↑⟧ ⟨ con ⟩ (t ⟨∷⟩ [])
+[_↑]′ : Term → Term
+[ t ↑]′ = quote [_↑] ⟨ con ⟩ (t ⟨∷⟩ [])
 
 module _ (names : MonoidNames) where
  open MonoidNames names
 
  mutual
-  ⊙′ : List (Arg Term) → Term
-  ⊙′ (x ⟨∷⟩ y ⟨∷⟩ []) = quote _⊙_ ⟨ con ⟩ E′ x ⟨∷⟩ E′ y ⟨∷⟩ []
-  ⊙′ (x ∷ xs) = ⊙′ xs
-  ⊙′ _ = unknown
+  ∙″ : List (Arg Term) → Term
+  ∙″ (x ⟨∷⟩ y ⟨∷⟩ []) = quote _∙′_ ⟨ con ⟩ E′ x ⟨∷⟩ E′ y ⟨∷⟩ []
+  ∙″ (x ∷ xs) = ∙″ xs
+  ∙″ _ = unknown
 
   E′ : Term → Term
   E′ t@(def n xs) = if is-∙ n
-                      then ⊙′ xs
+                      then ∙″ xs
                     else if is-ε n
-                      then ⓔ′
-                      else ⟦ t ↑⟧′
+                      then ε″
+                      else [ t ↑]′
   E′ t@(con n xs) = if is-∙ n
-                      then ⊙′ xs
+                      then ∙″ xs
                     else if is-ε n
-                      then ⓔ′
-                      else ⟦ t ↑⟧′
-  E′ t = quote ⟦_↑⟧ ⟨ con ⟩ (t ⟨∷⟩ [])
+                      then ε″
+                      else [ t ↑]′
+  E′ t = quote [_↑] ⟨ con ⟩ (t ⟨∷⟩ [])
 
 ----------------------------------------------------------------------
 -- Constructing the solution
