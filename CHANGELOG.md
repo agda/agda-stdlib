@@ -98,6 +98,8 @@ New modules
   Data.Trie
   Data.Trie.NonEmpty
 
+  Function.Reasoning.Logical
+
   Relation.Binary.Construct.Closure.Equivalence.Properties
   Relation.Binary.Rewriting
 
