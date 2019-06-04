@@ -21,7 +21,7 @@ open import Relation.Binary.PropositionalEquality as P
   using (_≡_; refl)
 import Relation.Binary.Construct.Add.Infimum.Equality as Equality
 import Relation.Binary.Construct.Add.Infimum.NonStrict as NonStrict
-open import Relation.Nullary
+open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Nullary.Construct.Add.Infimum
 import Relation.Nullary.Decidable as Dec
 

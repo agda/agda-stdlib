@@ -697,3 +697,16 @@ Other minor additions
                           (isIdempotentCommutativeMonoid : IsIdempotentCommutativeMonoid ∙ ε)
 
   ```
+
+* Added the definition for `Irrelevant` in `Relation.Nullary`:
+  ```agda
+  Irrelevant P = ∀ (p₁ p₂ : P) → p₁ ≡ p₂
+  ```
+
+* Added three lemmas in `Relation.Nullary.Decidable.Core` which constraints the output of
+  decision procedures:
+  ```agda
+  dec-yes     : (p? : Dec P) → P → ∃ λ p′ → p? ≡ yes p′
+  dec-no      : (p? : Dec P) → ¬ P → ∃ λ ¬p′ → p? ≡ no ¬p′
+  dec-yes-irr : (p? : Dec P) → Irrelevant P → (p : P) → p? ≡ yes p
+  ```
