@@ -12,8 +12,8 @@ module README where
 -- Alan Jeffrey, Wen Kokke, Evgeny Kotelnikov, Sergei Meshveliani,
 -- Eric Mertens, Darin Morrison, Guilhem Moulin, Shin-Cheng Mu,
 -- Ulf Norell, Noriyuki Ohkawa, Nicolas Pouillard,
--- Andrés Sicard-Ramírez, Sandro Stucki, Milo Turner, Noam Zeilberger
--- and other anonymous contributors.
+-- Andrés Sicard-Ramírez, Lex van der Stoep, Sandro Stucki, Milo Turner,
+-- Noam Zeilberger and other anonymous contributors.
 ------------------------------------------------------------------------
 
 -- This version of the library has been tested using Agda 2.6.0.
@@ -268,6 +268,11 @@ import README.Function.Reasoning
 -- the behaviour of compiled Agda programs.
 
 import README.Debug.Trace
+
+-- An exploration of the generic programs acting on n-ary functions and
+-- n-ary heterogeneous products
+
+import README.Nary
 
 -- Explaining the inspect idiom: use case, equivalent handwritten
 -- auxiliary definitions, and implementation details.

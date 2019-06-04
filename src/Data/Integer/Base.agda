@@ -12,6 +12,7 @@ open import Data.Nat.Base as ℕ
   using (ℕ) renaming (_+_ to _ℕ+_; _*_ to _ℕ*_)
 open import Data.Sign as Sign using (Sign) renaming (_*_ to _S*_)
 open import Function
+open import Level using (0ℓ)
 open import Relation.Nullary using (¬_)
 open import Relation.Binary using (Rel)
 open import Relation.Binary.PropositionalEquality using (_≡_)
@@ -51,22 +52,22 @@ data _<_ : ℤ → ℤ → Set where
   -<+ : ∀ {m n} → -[1+ m ] < + n
   +<+ : ∀ {m n} → (m<n : m ℕ.< n) → + m < + n
 
-_≥_ : Rel ℤ _
+_≥_ : Rel ℤ 0ℓ
 x ≥ y = y ≤ x
 
-_>_ : Rel ℤ _
+_>_ : Rel ℤ 0ℓ
 x > y = y < x
 
-_≰_ : Rel ℤ _
+_≰_ : Rel ℤ 0ℓ
 x ≰ y = ¬ (x ≤ y)
 
-_≱_ : Rel ℤ _
+_≱_ : Rel ℤ 0ℓ
 x ≱ y = ¬ (x ≥ y)
 
-_≮_ : Rel ℤ _
+_≮_ : Rel ℤ 0ℓ
 x ≮ y = ¬ (x < y)
 
-_≯_ : Rel ℤ _
+_≯_ : Rel ℤ 0ℓ
 x ≯ y = ¬ (x > y)
 
 ------------------------------------------------------------------------
