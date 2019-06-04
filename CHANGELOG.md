@@ -568,9 +568,9 @@ Other minor additions
 
 * Added new functions to `Data.Vec`:
   ```agda
-  filter    : Decidable P → Vec A → Vec≤ A
-  takeWhile : Decidable P → Vec A → Vec≤ A
-  dropWhile : Decidable P → Vec A → Vec≤ A
+  filter    : Decidable P → Vec A n → Vec≤ A n
+  takeWhile : Decidable P → Vec A n → Vec≤ A n
+  dropWhile : Decidable P → Vec A n → Vec≤ A n
   ```
 
 * The special term `Setω` is now exported by `Level`.
