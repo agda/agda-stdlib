@@ -231,7 +231,7 @@ been attached to all deprecated names.
   favour of `⊤` and `tt` from `Data.Unit`, as it turns out that the latter
   have been automatically mapped to the Haskell equivalent for quite some time.
 
-* The modules `Data.Word.Unsafe` and `Data.Float.Unsafe` have been deprecated
+* The modules `Data.Word.Unsafe` and `Data.Float.Unsafe` have been removed
   as there are no longer any unsafe operations.
 
 * Renamed a few `-identity` lemmas in `Codata.Stream.Properties` as they were
@@ -367,6 +367,9 @@ Other minor additions
   ```agda
   toNatDigits : (base : ℕ) {base≤16 : True (1 ≤? base)} → ℕ → List ℕ
   ```
+
+* Decidable equality over floating point numbers has been made safe and
+  so  `_≟_` has been moved from `Data.Float.Unsafe` to `Data.Float.Properties`.
 
 * Added new pattern synonyms to `Data.Integer`:
   ```agda
