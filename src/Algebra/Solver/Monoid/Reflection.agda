@@ -19,6 +19,8 @@ open import Data.Product as Product using (_×_; _,_)
 
 open import Agda.Builtin.Reflection
 
+import Relation.Binary.Reasoning.Setoid as SetoidReasoning
+
 ----------------------------------------------------------------------
 -- The Expr type with homomorphism proofs
 ----------------------------------------------------------------------
@@ -45,7 +47,7 @@ module _ {m₁ m₂} (mon : Monoid m₁ m₂) where
   ⟦_⇓⟧ : Expr Carrier → Carrier
   ⟦ x ⇓⟧ = ⟦ x ⇓⟧′ ε
 
-  open import Relation.Binary.Reasoning.Setoid setoid
+  open SetoidReasoning setoid
 
   homo′ : ∀ x y → ⟦ x ⇓⟧ ∙ y ≈ ⟦ x ⇓⟧′ y
   homo′ ⓔ y = identityˡ y
