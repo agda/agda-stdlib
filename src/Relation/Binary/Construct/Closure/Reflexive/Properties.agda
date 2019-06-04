@@ -19,14 +19,14 @@ open import Relation.Unary using (Pred)
 
 private
   variable
-    a b ℓ ℓ₁ ℓ₂ p : Level
+    a b ℓ p q : Level
     A : Set a
     B : Set b
 
 ------------------------------------------------------------------------
 -- Properties
 
-module _ {P : Rel A ℓ₁} {Q : Rel B ℓ₂} where
+module _ {P : Rel A p} {Q : Rel B q} where
 
   =[]⇒ : ∀ {f : A → B} → P =[ f ]⇒ Q → Refl P =[ f ]⇒ Refl Q
   =[]⇒ x [ x∼y ] = [ x x∼y ]
@@ -40,8 +40,6 @@ module _ {_~_ : Rel A ℓ} where
 
   respʳ : ∀ {P : REL B A p} → P Respectsʳ _~_ → P Respectsʳ (Refl _~_)
   respʳ = respˡ
-
-module _ {_~_ : Rel A ℓ} where
 
   sym : Symmetric _~_ → Symmetric (Refl _~_)
   sym ~-sym [ x∼y ] = [ ~-sym x∼y ]
