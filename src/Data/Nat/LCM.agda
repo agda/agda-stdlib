@@ -10,8 +10,7 @@ module Data.Nat.LCM where
 
 open import Algebra
 open import Data.Nat
-open import Data.Nat.Coprimality as Coprime
-  using (Coprime; mkGCD′; gcd-*; coprime-divisor)
+open import Data.Nat.Coprimality using (Coprime)
 open import Data.Nat.Divisibility
 open import Data.Nat.DivMod
 open import Data.Nat.Properties
@@ -28,8 +27,8 @@ open import Relation.Nullary.Decidable using (False; fromWitnessFalse)
 open +-*-Solver
 
 private
-  gcd≢0′ : ∀ m {n} → False (gcd (suc m) (suc n) ≟ 0)
-  gcd≢0′ m {n} = fromWitnessFalse (gcd≢0 (suc m) (suc n) (inj₁ (λ())))
+  gcd≢0′ : ∀ m {n} → False (gcd (suc m) n ≟ 0)
+  gcd≢0′ m {n} = fromWitnessFalse (gcd≢0 (suc m) n (inj₁ (λ())))
 
 ------------------------------------------------------------------------
 -- Properties that need to be shifted
@@ -37,10 +36,11 @@ private
 /n-pres-∣ : ∀ {m n c} → m ∣ c → n ∣ c → Coprime m n → m * n ∣ c
 /n-pres-∣ {m} {n} {c} m∣c n∣c cop = {!!}
 
-{-
-∣-test : ∀ {m n o} → m ∣ n → n ∣ o → (n / m) ∣ o
+∣-test : ∀ {m n o} .{m≢0} → m ∣ n → n ∣ o → (n / m) {m≢0} ∣ o
 ∣-test = {!!}
--}
+
+[m/o]∣n⇒[m/n]∣o : ∀ m n o .{n≢0} .{o≢0} → (m / o) {o≢0} ∣ n → (m / n) {n≢0} ∣ o
+[m/o]∣n⇒[m/n]∣o = {!!}
 
 ------------------------------------------------------------------------
 -- Definition
@@ -48,9 +48,8 @@ private
 abstract
 
   lcm : ℕ → ℕ → ℕ
-  lcm zero        n           = zero
-  lcm n           zero        = zero
-  lcm m@(suc m-1) n@(suc n-1) = (m * n / gcd m n) {gcd≢0′ m-1}
+  lcm zero        n = zero
+  lcm m@(suc m-1) n = (m * n / gcd m n) {gcd≢0′ m-1}
 
 ------------------------------------------------------------------------
 -- Properties
@@ -58,20 +57,16 @@ abstract
 abstract
 
   m∣lcm[m,n] : ∀ m n → m ∣ lcm m n
-  m∣lcm[m,n] zero      zero      = 0 ∣0
-  m∣lcm[m,n] zero      (suc n)   = 0 ∣0
-  m∣lcm[m,n] (suc m)   zero      = suc m ∣0
-  m∣lcm[m,n] m@(suc m-1) n@(suc n-1) = begin
+  m∣lcm[m,n] zero        n = 0 ∣0
+  m∣lcm[m,n] m@(suc m-1) n = begin
     m                  ∣⟨ m∣m*n _ ⟩
     m * (n / gcd m n)  ≡⟨ sym (*-/-assoc m (gcd≢0′ m-1) (gcd[m,n]∣n m n)) ⟩
     (m * n) / gcd m n  ∎
     where open ∣-Reasoning
 
   n∣lcm[m,n] : ∀ m n → n ∣ lcm m n
-  n∣lcm[m,n] zero        zero        = 0 ∣0
-  n∣lcm[m,n] zero        (suc n)     = suc n ∣0
-  n∣lcm[m,n] (suc m)     zero        = 0 ∣0
-  n∣lcm[m,n] m@(suc m-1) n@(suc n-1) = begin
+  n∣lcm[m,n] zero        n = n ∣0
+  n∣lcm[m,n] m@(suc m-1) n = begin
     n                 ∣⟨ m∣m*n (m / gcd m n) ⟩
     n * (m / gcd m n) ≡⟨ sym (*-/-assoc n (gcd≢0′ m-1) (gcd[m,n]∣m m n)) ⟩
     n * m / gcd m n   ≡⟨ cong (λ v → (v / gcd m n) {gcd≢0′ m-1}) (*-comm n m) ⟩
@@ -79,14 +74,17 @@ abstract
     where open ∣-Reasoning
 
   lcm-least : ∀ {m n c} → m ∣ c → n ∣ c → lcm m n ∣ c
-  lcm-least {zero}  {zero}  {c} 0∣c _   = 0∣c
-  lcm-least {zero}  {suc n} {c} 0∣c _   = 0∣c
-  lcm-least {suc m} {zero}  {c} _   0∣c = 0∣c
-  lcm-least {m@(suc m-1)} {n@(suc n-1)} {c} m∣c n∣c = begin
+  lcm-least {zero}        {n} {c} 0∣c _   = 0∣c
+  lcm-least {m@(suc m-1)} {n} {c} m∣c n∣c = [m/o]∣n⇒[m/n]∣o (m * n) (gcd m n) c (gcd-greatest {!!} {!!})
+    where
+    -- gcd-greatest {c = m * n / c}
+{-
+begin
     m * n / gcd m n   ≡⟨ *-/-assoc m (gcd≢0′ m-1) (gcd[m,n]∣n m n) ⟩
-    m * (n / gcd m n) ∣⟨ /n-pres-∣ m∣c {!!} {!!} ⟩
+    m * (n / gcd m n) ∣⟨ /n-pres-∣ m∣c (∣-test (gcd[m,n]∣n m n) n∣c) {!!} ⟩
     c                 ∎
     where open ∣-Reasoning
+-}
 
 lcm-comm : ∀ m n → lcm m n ≡ lcm n m
 lcm-comm m n = ∣-antisym
@@ -100,13 +98,17 @@ lcm[n,0]≡0 : ∀ n → lcm n 0 ≡ 0
 lcm[n,0]≡0 n = 0∣⇒≡0 (n∣lcm[m,n] n 0)
 
 lcm-factorˡ : ∀ m n k → lcm (k * m) (k * n) ≡ k * lcm m n
-lcm-factorˡ m n k = {!!}
+lcm-factorˡ m n k = ∣-antisym
+  (lcm-least (*-monoʳ-∣ k (m∣lcm[m,n] m n)) (*-monoʳ-∣ k (n∣lcm[m,n] m n)))
+  {!!}
 
 lcm-factorʳ : ∀ m n k → lcm (m * k) (n * k) ≡ lcm m n * k
 lcm-factorʳ m n k rewrite *-comm m k | *-comm n k | *-comm (lcm m n) k = lcm-factorˡ m n k
 
-lcm-coprime : ∀ m n → Coprime m n → lcm m n ≡ m * n
-lcm-coprime = {!!}
+lcm-coprime : ∀ {m n} → Coprime m n → lcm m n ≡ m * n
+lcm-coprime coprime = ∣-antisym
+  {!lcm-least ? ?!}
+  {!!}
 
 gcd*lcm : ∀ m n → gcd m n * lcm m n ≡ m * n
 gcd*lcm zero n rewrite lcm[0,n]≡0 n | *-zeroʳ (gcd 0 n)             = refl
@@ -114,7 +116,7 @@ gcd*lcm m zero rewrite lcm[n,0]≡0 m | *-zeroʳ (gcd m 0) | *-zeroʳ m = refl
 gcd*lcm m@(suc m-1) n@(suc n-1) = begin
   g * lcm m n                 ≡⟨ cong (g *_) (sym (cong₂ lcm (a/n*n≡a g∣m) (a/n*n≡a g∣n))) ⟩
   g * lcm (m/g * g) (n/g * g) ≡⟨ cong (g *_) (lcm-factorʳ m/g n/g g) ⟩
-  g * (lcm m/g n/g * g)       ≡⟨ cong (g *_) (cong (_* g) (lcm-coprime m/g n/g {!!})) ⟩
+  g * (lcm m/g n/g * g)       ≡⟨ cong (g *_) (cong (_* g) (lcm-coprime {!!})) ⟩
   g * (m/g * n/g * g)         ≡⟨ cong (g *_) (*-assoc m/g n/g g) ⟩
   g * (m/g * (n/g * g))       ≡⟨ sym (*-assoc g m/g (n/g * g)) ⟩
   (g * m/g) * (n/g * g)       ≡⟨ cong₂ _*_ (n*[a/n]≡a g∣m) (a/n*n≡a g∣n) ⟩
