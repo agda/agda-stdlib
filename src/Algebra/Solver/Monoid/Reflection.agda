@@ -25,8 +25,8 @@ open import Agda.Builtin.Reflection
 
 infixl 7 _⊙_
 data Expr {a} (A : Set a) : Set a where
-  _⊙_ : Expr A → Expr A → Expr A
-  ⓔ  : Expr A
+  _⊙_  : Expr A → Expr A → Expr A
+  ⓔ    : Expr A
   ⟦_↑⟧ : A → Expr A
 
 module _ {m₁ m₂} (mon : Monoid m₁ m₂) where
