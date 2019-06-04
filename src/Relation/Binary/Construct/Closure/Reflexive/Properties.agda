@@ -9,6 +9,7 @@
 module Relation.Binary.Construct.Closure.Reflexive.Properties where
 
 open import Data.Product as Prod
+open import Data.Sum
 open import Function
 open import Level
 open import Relation.Binary
@@ -62,6 +63,19 @@ module _ {_~_ : Rel A ℓ} where
   ... | tri< a~b  _  _ = yes [ a~b ]
   ... | tri≈ _  refl _ = yes refl
   ... | tri> ¬a ¬b   _ = no λ { refl → ¬b refl ; [ p ] → ¬a p }
+
+  total : Trichotomous _≡_ _~_ → Total (Refl _~_)
+  total compare x y with compare x y
+  ... | tri< a _    _ = inj₁ [ a ]
+  ... | tri≈ _ refl _ = inj₁ refl
+  ... | tri> _ _    c = inj₂ [ c ]
+
+  isPreorder : Transitive _~_ → IsPreorder _≡_ (Refl _~_)
+  isPreorder ~-trans = record
+    { isEquivalence = PropEq.isEquivalence
+    ; reflexive     = λ { refl → refl }
+    ; trans         = trans ~-trans
+    }
 
 module _ {_~_ : Rel A ℓ} {P : Pred A p} where
 

@@ -29,19 +29,6 @@ module _ {a ℓ} {A : Set a} {_~_ : Rel A ℓ} where
   antisym E _      _       refl     = proj₂ E
   antisym E _      refl    _        = proj₂ E
 
-  total : Trichotomous _≡_ _~_ → Total (Refl _~_)
-  total compare x y with compare x y
-  ... | tri< a _    _ = inj₁ [ a ]
-  ... | tri≈ _ refl _ = inj₁ refl
-  ... | tri> _ _    c = inj₂ [ c ]
-
-  isPreorder : Transitive _~_ → IsPreorder _≡_ (Refl _~_)
-  isPreorder ~-trans = record
-    { isEquivalence = PropEq.isEquivalence
-    ; reflexive     = λ { refl → refl }
-    ; trans         = trans ~-trans
-    }
-
   isPartialOrder : IsStrictPartialOrder _≡_ _~_ → IsPartialOrder _≡_ (Refl _~_)
   isPartialOrder SPO = record
     { isPreorder = isPreorder (IsStrictPartialOrder.trans SPO)
