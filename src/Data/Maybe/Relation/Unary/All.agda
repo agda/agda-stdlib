@@ -18,7 +18,7 @@ open import Function.Equivalence using (_⇔_; equivalence)
 open import Level
 open import Relation.Binary.PropositionalEquality as P using (_≡_; cong)
 open import Relation.Unary
-open import Relation.Nullary
+open import Relation.Nullary hiding (Irrelevant)
 import Relation.Nullary.Decidable as Dec
 
 ------------------------------------------------------------------------

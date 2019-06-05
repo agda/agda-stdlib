@@ -85,6 +85,10 @@ New modules
   Data.Nat.Induction
   Data.Fin.Induction
 
+  Data.Product.Nary.NonDependent
+  Function.Nary.NonDependent
+  Relation.Nary
+
   Data.Sign.Base
 
   Data.These.Base
@@ -96,7 +100,13 @@ New modules
 
   Relation.Binary.Construct.Closure.Equivalence.Properties
   Relation.Binary.Rewriting
+
+  Relation.Nullary.Decidable.Core
   ```
+
+* The function `#_` has been moved from `Data.Fin.Base` to `Data.Fin`
+  to break dependency cycles following the introduction of the module
+  `Data.Product.N-ary.Heterogeneous`.
 
 Deprecated features
 -------------------
@@ -124,6 +134,10 @@ been attached to all deprecated names.
   `Data.Universe.Indexed`. In the latter `Indexed-universe` has been
   renamed to `IndexedUniverse` to better follow the library conventions. The
   old module still exists exporting the old names, but has been deprecated.
+
+* The `Data.Product.N-ary` modules have been deprecated and their content
+  moved to `Data.Vec.Recursive` to make place for properly heterogeneous
+  n-ary products in `Data.Product.Nary`.
 
 #### Names
 
@@ -642,6 +656,14 @@ Other minor additions
   been generalised so that the types of the two equal elements need not
   be at the same universe level.
 
+* Added new proof to `Relation.Binary.PropositionalEquality`:
+  ```
+  Congₙ  : ∀ n (f g : Arrows n as b) → Set _
+  congₙ  : ∀ n (f : Arrows n as b) → Congₙ n f f
+  Substₙ : ∀ n (f g : Arrows n as (Set r)) → Set _
+  substₙ : (f : Arrows n as (Set r)) → Substₙ n f f
+  ```
+
 * Added new proof to `Relation.Binary.PropositionalEquality.Core`:
   ```agda
   ≢-sym : Symmetric _≢_
@@ -674,4 +696,17 @@ Other minor additions
                           {ε : A}
                           (isIdempotentCommutativeMonoid : IsIdempotentCommutativeMonoid ∙ ε)
 
+  ```
+
+* Added the definition for `Irrelevant` in `Relation.Nullary`:
+  ```agda
+  Irrelevant P = ∀ (p₁ p₂ : P) → p₁ ≡ p₂
+  ```
+
+* Added three lemmas in `Relation.Nullary.Decidable.Core` which constraints the output of
+  decision procedures:
+  ```agda
+  dec-yes     : (p? : Dec P) → P → ∃ λ p′ → p? ≡ yes p′
+  dec-no      : (p? : Dec P) → ¬ P → ∃ λ ¬p′ → p? ≡ no ¬p′
+  dec-yes-irr : (p? : Dec P) → Irrelevant P → (p : P) → p? ≡ yes p
   ```

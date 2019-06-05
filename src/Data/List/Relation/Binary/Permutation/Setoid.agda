@@ -14,7 +14,7 @@ module Data.List.Relation.Binary.Permutation.Setoid
 open import Data.List using (List; _∷_)
 import Data.List.Relation.Binary.Permutation.Homogeneous as HomogeneousPermutation
 open import Level using (_⊔_)
-import Relation.Binary.EqReasoning as EqReasoning
+import Relation.Binary.Reasoning.Setoid as EqReasoning
 
 open Setoid S using (Carrier; _≈_; sym)
 
