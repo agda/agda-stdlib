@@ -35,10 +35,10 @@ Bijective : (A → B) → Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
 Bijective f = Injective f × Surjective f
 
 open Core₂ _≈₂_ public
-  using (LeftInverses)
+  using (Inverseˡ)
 
 open Core₁ _≈₁_ public
-  using (RightInverses)
+  using (Inverseʳ)
 
-Inverses : (A → B) → (B → A) → Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
-Inverses f g = LeftInverses f g × RightInverses f g
+Inverseᵇ : (A → B) → (B → A) → Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
+Inverseᵇ f g = Inverseˡ f g × Inverseʳ f g

@@ -77,7 +77,7 @@ record IsLeftInverse (f : A → B) (g : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ �
   field
     isPreserving : IsEqualityPreserving f
     cong²        : Congruent _≈₂_ _≈₁_ g
-    inverseˡ     : LeftInverses _≈₁_ _≈₂_ f g
+    inverseˡ     : Inverseˡ _≈₁_ _≈₂_ f g
 
   open IsEqualityPreserving isPreserving public
     renaming (cong to cong¹)
@@ -87,7 +87,7 @@ record IsRightInverse (f : A → B) (g : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ 
   field
     isPreserving : IsEqualityPreserving f
     cong²        : Congruent _≈₂_ _≈₁_ g
-    inverseʳ     : RightInverses _≈₁_ _≈₂_ f g
+    inverseʳ     : Inverseʳ _≈₁_ _≈₂_ f g
 
   open IsEqualityPreserving isPreserving public
     renaming (cong to cong¹)
@@ -96,7 +96,7 @@ record IsRightInverse (f : A → B) (g : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ 
 record IsInverse (f : A → B) (g : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   field
     isLeftInverse  : IsLeftInverse f g
-    inverseʳ       : RightInverses _≈₁_ _≈₂_ f g
+    inverseʳ       : Inverseʳ _≈₁_ _≈₂_ f g
 
   open IsLeftInverse isLeftInverse public
 
@@ -107,6 +107,6 @@ record IsInverse (f : A → B) (g : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ�
     ; inverseʳ     = inverseʳ
     }
 
-  inverse : Inverses _≈₁_ _≈₂_ f g
+  inverse : Inverseᵇ _≈₁_ _≈₂_ f g
   inverse = inverseˡ , inverseʳ
 

@@ -16,7 +16,7 @@ module Function.Definitions.Core2
   where
 
 open import Data.Product using (∃)
-open import Level using (_⊔_)
+open import Level using (Level; _⊔_)
 
 ------------------------------------------------------------------------
 -- Definitions
@@ -24,5 +24,6 @@ open import Level using (_⊔_)
 Surjective : ∀ {a} {A : Set a} → (A → B) → Set (a ⊔ b ⊔ ℓ₂)
 Surjective f = ∀ x → ∃ λ y → y ≈₂ f x
 
-LeftInverses : ∀ {a} {A : Set a} → (A → B) → (B → A) → Set (b ⊔ ℓ₂)
-LeftInverses f g = ∀ x → f (g x) ≈₂ x
+-- (Note the name `LeftInverse` is used for the package)
+Inverseˡ : ∀ {a} {A : Set a} → (A → B) → (B → A) → Set (b ⊔ ℓ₂)
+Inverseˡ f g = ∀ x → f (g x) ≈₂ x

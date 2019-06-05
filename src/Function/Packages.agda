@@ -124,7 +124,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       g         : B → A
       cong¹     : f Preserves _≈₁_ ⟶ _≈₂_
       cong²     : g Preserves _≈₂_ ⟶ _≈₁_
-      inverseˡ  : LeftInverses f g
+      inverseˡ  : Inverseˡ f g
 
     isLeftInverse : IsLeftInverse f g
     isLeftInverse = record
@@ -150,7 +150,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       g         : B → A
       cong¹     : f Preserves _≈₁_ ⟶ _≈₂_
       cong²     : g Preserves _≈₂_ ⟶ _≈₁_
-      inverseʳ  : RightInverses f g
+      inverseʳ  : Inverseʳ f g
 
     isRightInverse : IsRightInverse f g
     isRightInverse = record
@@ -176,12 +176,12 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       f⁻¹       : B → A
       cong¹     : f Preserves _≈₁_ ⟶ _≈₂_
       cong²     : f⁻¹ Preserves _≈₂_ ⟶ _≈₁_
-      inverse   : Inverses f f⁻¹
+      inverse   : Inverseᵇ f f⁻¹
 
-    inverseˡ : LeftInverses f f⁻¹
+    inverseˡ : Inverseˡ f f⁻¹
     inverseˡ = proj₁ inverse
 
-    inverseʳ : RightInverses f f⁻¹
+    inverseʳ : Inverseʳ f f⁻¹
     inverseʳ = proj₂ inverse
 
     leftInverse : LeftInverse
@@ -208,7 +208,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       }
 
 ------------------------------------------------------------------------
--- Packages over propositional equality
+-- Packages specialised for propositional equality
 
 infix 3 _↣_ _↠_ _⤖_ _⇔_ _↞_ _↔_
 
