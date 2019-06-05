@@ -27,23 +27,8 @@ open ≤-Reasoning
 
 ------------------------------------------------------------------------
 -- Definition
---
--- m ∣ n is inhabited iff m divides n. Some sources, like Hardy and
--- Wright's "An Introduction to the Theory of Numbers", require m to
--- be non-zero. However, some things become a bit nicer if m is
--- allowed to be zero. For instance, _∣_ becomes a partial order, and
--- the gcd of 0 and 0 becomes defined.
 
-infix 4 _∣_ _∤_
-
-record _∣_ (m n : ℕ) : Set where
-  constructor divides
-  field quotient : ℕ
-        equality : n ≡ quotient * m
-open _∣_ using (quotient) public
-
-_∤_ : Rel ℕ _
-m ∤ n = ¬ (m ∣ n)
+open import Data.Nat.Divisibility.Core public
 
 ------------------------------------------------------------------------
 -- Relationship with _%_
@@ -71,7 +56,6 @@ m%n≡0⇔n∣m m n = equivalence (m%n≡0⇒n∣m m n) (n∣m⇒m%n≡0 m n)
   m          ≤⟨ m≤m+n m (q * m) ⟩
   suc q * m  ≡⟨ sym eq ⟩
   suc n      ∎
-  where open ≤-Reasoning
 
 ∣-reflexive : _≡_ ⇒ _∣_
 ∣-reflexive {n} refl = divides 1 (sym (*-identityˡ n))
@@ -136,35 +120,17 @@ infix 10 1∣_ _∣0
 _∣0 : ∀ n → n ∣ 0
 n ∣0 = divides 0 refl
 
-n∣n : ∀ {n} → n ∣ n
-n∣n = ∣-refl
-
-n∣m*n : ∀ m {n} → n ∣ m * n
-n∣m*n m = divides m refl
-
-m∣m*n : ∀ {m} n → m ∣ m * n
-m∣m*n n = divides n (*-comm _ n)
-
 0∣⇒≡0 : ∀ {n} → 0 ∣ n → n ≡ 0
 0∣⇒≡0 {n} 0∣n = ∣-antisym (n ∣0) 0∣n
 
 ∣1⇒≡1 : ∀ {n} → n ∣ 1 → n ≡ 1
 ∣1⇒≡1 {n} n∣1 = ∣-antisym n∣1 (1∣ n)
 
+n∣n : ∀ {n} → n ∣ n
+n∣n {n} = ∣-refl
+
 ------------------------------------------------------------------------
--- Operators and divisibility
-
-∣m⇒∣m*n : ∀ {i m} n → i ∣ m → i ∣ m * n
-∣m⇒∣m*n {i} {m} n (divides q eq) =
-  divides (q * n) $ begin-equality
-    m * n       ≡⟨ cong (_* n) eq ⟩
-    q * i * n   ≡⟨ *-assoc q i n ⟩
-    q * (i * n) ≡⟨ cong (q *_) (*-comm i n) ⟩
-    q * (n * i) ≡⟨ sym (*-assoc q n i) ⟩
-    q * n * i ∎
-
-∣n⇒∣m*n : ∀ {i} m {n} → i ∣ n → i ∣ m * n
-∣n⇒∣m*n {i} m {n} i∣n = subst (i ∣_) (*-comm n m) (∣m⇒∣m*n m i∣n)
+-- Properties of _∣_ and _+_
 
 ∣m∣n⇒∣m+n : ∀ {i m n} → i ∣ m → i ∣ n → i ∣ m + n
 ∣m∣n⇒∣m+n (divides p refl) (divides q refl) =
@@ -179,24 +145,26 @@ m∣m*n n = divides n (*-comm _ n)
     p * i ∸ q * i ≡⟨ sym (*-distribʳ-∸ i p q) ⟩
     (p ∸ q) * i   ∎
 
-∣m∸n∣n⇒∣m : ∀ i {m n} → n ≤ m → i ∣ m ∸ n → i ∣ n → i ∣ m
-∣m∸n∣n⇒∣m i {m} {n} n≤m (divides p m∸n≡p*i) (divides q n≡q*o) =
-  divides (p + q) $ begin-equality
-    m             ≡⟨ sym (m+n∸m≡n n≤m) ⟩
-    n + (m ∸ n)   ≡⟨ +-comm n (m ∸ n) ⟩
-    m ∸ n + n     ≡⟨ cong₂ _+_ m∸n≡p*i n≡q*o ⟩
-    p * i + q * i ≡⟨ sym (*-distribʳ-+ i p q)  ⟩
-    (p + q) * i   ∎
+------------------------------------------------------------------------
+-- Properties of _∣_ and _*_
 
-∣n∣m%n⇒∣m : ∀ {m n d} → d ∣ suc n → d ∣ (m % suc n) → d ∣ m
-∣n∣m%n⇒∣m {m} {n-1} {d} (divides a n≡ad) (divides b m%n≡bd) =
-  divides (b + (m / n) * a) (begin-equality
-    m                         ≡⟨ a≡a%n+[a/n]*n m n-1 ⟩
-    m % n + (m / n) * n       ≡⟨ cong₂ _+_ m%n≡bd (cong (m / n *_) n≡ad) ⟩
-    b * d + (m / n) * (a * d) ≡⟨ sym (cong (b * d +_) (*-assoc (m / n) a d)) ⟩
-    b * d + ((m / n) * a) * d ≡⟨ sym (*-distribʳ-+ d b _) ⟩
-    (b + (m / n) * a) * d     ∎)
-    where n = suc n-1
+∣m⇒∣m*n : ∀ {i m} n → i ∣ m → i ∣ m * n
+∣m⇒∣m*n {i} {m} n (divides q eq) =
+  divides (q * n) $ begin-equality
+    m * n       ≡⟨ cong (_* n) eq ⟩
+    q * i * n   ≡⟨ *-assoc q i n ⟩
+    q * (i * n) ≡⟨ cong (q *_) (*-comm i n) ⟩
+    q * (n * i) ≡⟨ sym (*-assoc q n i) ⟩
+    q * n * i ∎
+
+∣n⇒∣m*n : ∀ {i} m {n} → i ∣ n → i ∣ m * n
+∣n⇒∣m*n {i} m {n} i∣n = subst (i ∣_) (*-comm n m) (∣m⇒∣m*n m i∣n)
+
+n∣m*n : ∀ m {n} → n ∣ m * n
+n∣m*n m = divides m refl
+
+m∣m*n : ∀ {m} n → m ∣ m * n
+m∣m*n n = divides n (*-comm _ n)
 
 *-monoʳ-∣ : ∀ {i j} k → i ∣ j → k * i ∣ k * j
 *-monoʳ-∣ {i} {j} k (divides q j≡q*i) = divides q $ begin-equality
@@ -215,16 +183,39 @@ m∣m*n n = divides n (*-comm _ n)
     q * (i * suc k)  ≡⟨ sym (*-assoc q i (suc k)) ⟩
     (q * i) * suc k  ∎
 
-%-presˡ-∣ : ∀ {m n d} → d ∣ m → d ∣ suc n → d ∣ (m % suc n)
-%-presˡ-∣ {m} {n} {d} (divides a refl) (divides b 1+n≡bd) =
+------------------------------------------------------------------------
+-- Properties of _∣_ and _∸_
+
+∣m∸n∣n⇒∣m : ∀ i {m n} → n ≤ m → i ∣ m ∸ n → i ∣ n → i ∣ m
+∣m∸n∣n⇒∣m i {m} {n} n≤m (divides p m∸n≡p*i) (divides q n≡q*o) =
+  divides (p + q) $ begin-equality
+    m             ≡⟨ sym (m+[n∸m]≡n n≤m) ⟩
+    n + (m ∸ n)   ≡⟨ +-comm n (m ∸ n) ⟩
+    m ∸ n + n     ≡⟨ cong₂ _+_ m∸n≡p*i n≡q*o ⟩
+    p * i + q * i ≡⟨ sym (*-distribʳ-+ i p q)  ⟩
+    (p + q) * i   ∎
+
+------------------------------------------------------------------------
+-- Properties of _∣_ and _%_
+
+∣n∣m%n⇒∣m : ∀ {m n d ≢0} → d ∣ n → d ∣ (m % n) {≢0} → d ∣ m
+∣n∣m%n⇒∣m {m} {n@(suc n-1)} {d} (divides a n≡ad) (divides b m%n≡bd) =
+  divides (b + (m / n) * a) (begin-equality
+    m                         ≡⟨ a≡a%n+[a/n]*n m n-1 ⟩
+    m % n + (m / n) * n       ≡⟨ cong₂ _+_ m%n≡bd (cong (m / n *_) n≡ad) ⟩
+    b * d + (m / n) * (a * d) ≡⟨ sym (cong (b * d +_) (*-assoc (m / n) a d)) ⟩
+    b * d + ((m / n) * a) * d ≡⟨ sym (*-distribʳ-+ d b _) ⟩
+    (b + (m / n) * a) * d     ∎)
+
+%-presˡ-∣ : ∀ {m n d ≢0} → d ∣ m → d ∣ n → d ∣ (m % n) {≢0}
+%-presˡ-∣ {m} {n@(suc n-1)} {d} (divides a refl) (divides b 1+n≡bd) =
   divides (a ∸ ad/n * b) $ begin-equality
-    a * d % suc n          ≡⟨ a%n=a∸a/n*n (a * d) n ⟩
-    a * d ∸ ad/n * (suc n) ≡⟨ cong (λ v → a * d ∸ ad/n * v) 1+n≡bd ⟩
+    a * d % n              ≡⟨ a%n=a∸a/n*n (a * d) n-1 ⟩
+    a * d ∸ ad/n * n       ≡⟨ cong (λ v → a * d ∸ ad/n * v) 1+n≡bd ⟩
     a * d ∸ ad/n * (b * d) ≡⟨ sym (cong (a * d ∸_) (*-assoc ad/n b d)) ⟩
     a * d ∸ (ad/n * b) * d ≡⟨ sym (*-distribʳ-∸ d a (ad/n * b)) ⟩
     (a ∸ ad/n * b) * d     ∎
-  where ad/n = a * d / (suc n)
-
+  where ad/n = a * d / n
 
 ------------------------------------------------------------------------
 -- DEPRECATED - please use new names as continuing support for the old
@@ -279,6 +270,7 @@ nonZeroDivisor-lemma m (suc q) r r≢zero d =
 #-}
 
 -- Version 1.1
+
 poset = ∣-poset
 {-# WARNING_ON_USAGE poset
 "Warning: poset was deprecated in v0.14.

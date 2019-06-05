@@ -14,7 +14,7 @@ open import Data.Product as Prod using (_,_)
 open import Data.Vec as Vec using (Vec; []; _∷_)
 open import Function using (_∘_)
 open import Level using (Level; _⊔_)
-open import Relation.Nullary
+open import Relation.Nullary hiding (Irrelevant)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Unary
 open import Relation.Binary.PropositionalEquality as P using (subst)

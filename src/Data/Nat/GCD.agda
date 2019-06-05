@@ -161,8 +161,9 @@ mkGCD m n = gcd m n , gcd-GCD m n
 -- gcd as a proposition is decidable
 
 gcd? : (m n d : ℕ) → Dec (GCD m n d)
-gcd? m n d = Dec.map′ (λ { P.refl → res}) (GCD.unique res) (gcd m n ≟ d)
-  where res = gcd-GCD m n
+gcd? m n d with gcd m n ≟ d
+... | yes P.refl = yes (gcd-GCD m n)
+... | no  gcd≢d  = no (gcd≢d ∘ GCD.unique (gcd-GCD m n))
 
 ------------------------------------------------------------------------
 -- Calculating the gcd

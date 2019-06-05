@@ -11,8 +11,7 @@ module Data.Unit where
 open import Data.Sum
 open import Relation.Nullary
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as PropEq
-  using (_≡_; refl)
+import Relation.Binary.PropositionalEquality as PropEq
 
 ------------------------------------------------------------------------
 -- Re-export contents of base module
@@ -24,7 +23,6 @@ open import Data.Unit.Base public
 
 open import Data.Unit.Properties public
   using (_≟_; _≤?_)
-
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

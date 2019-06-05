@@ -16,7 +16,7 @@ open import Data.List.Membership.Propositional using (_∈_)
 open import Data.Product as Prod using (∃; -,_; _×_; _,_; proj₁; proj₂)
 open import Function
 open import Level
-open import Relation.Nullary
+open import Relation.Nullary hiding (Irrelevant)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Unary hiding (_∈_)
 open import Relation.Binary.PropositionalEquality as P
