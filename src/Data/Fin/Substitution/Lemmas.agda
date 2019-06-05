@@ -346,6 +346,14 @@ record Lemmas₄ {ℓ} (T : Pred ℕ ℓ) : Set ℓ where
     lookup ρ x / wk          ≡⟨ cong₂ _/_ (sym var-/) refl ⟩
     var x / ρ / wk           ∎
 
+  weaken-↑ : ∀ {k n} t {ρ : Sub T k n} → weaken t / (ρ ↑) ≡ weaken (t / ρ)
+  weaken-↑ t {ρ} = begin
+    weaken t / (ρ ↑) ≡⟨ cong (_/ ρ ↑) (sym /-wk) ⟩
+    t / wk / ρ ↑ ≡⟨ sym (wk-commutes t) ⟩
+    t / ρ / wk ≡⟨ /-wk ⟩
+    weaken (t / ρ)
+    ∎
+
   open Lemmas₃ lemmas₃ public
     hiding (/✶-↑✶; /✶-↑✶′; wk-↑⋆-⊙-wk;
             lookup-wk-↑⋆-⊙; lookup-map-weaken-↑⋆)
