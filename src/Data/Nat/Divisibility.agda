@@ -198,25 +198,24 @@ m∣m*n n = divides n (*-comm _ n)
 ------------------------------------------------------------------------
 -- Properties of _∣_ and _%_
 
-∣n∣m%n⇒∣m : ∀ {m n d} → d ∣ suc n → d ∣ (m % suc n) → d ∣ m
-∣n∣m%n⇒∣m {m} {n-1} {d} (divides a n≡ad) (divides b m%n≡bd) =
+∣n∣m%n⇒∣m : ∀ {m n d ≢0} → d ∣ n → d ∣ (m % n) {≢0} → d ∣ m
+∣n∣m%n⇒∣m {m} {n@(suc n-1)} {d} (divides a n≡ad) (divides b m%n≡bd) =
   divides (b + (m / n) * a) (begin-equality
     m                         ≡⟨ a≡a%n+[a/n]*n m n-1 ⟩
     m % n + (m / n) * n       ≡⟨ cong₂ _+_ m%n≡bd (cong (m / n *_) n≡ad) ⟩
     b * d + (m / n) * (a * d) ≡⟨ sym (cong (b * d +_) (*-assoc (m / n) a d)) ⟩
     b * d + ((m / n) * a) * d ≡⟨ sym (*-distribʳ-+ d b _) ⟩
     (b + (m / n) * a) * d     ∎)
-    where n = suc n-1
 
-%-presˡ-∣ : ∀ {m n d} → d ∣ m → d ∣ suc n → d ∣ (m % suc n)
-%-presˡ-∣ {m} {n} {d} (divides a refl) (divides b 1+n≡bd) =
+%-presˡ-∣ : ∀ {m n d ≢0} → d ∣ m → d ∣ n → d ∣ (m % n) {≢0}
+%-presˡ-∣ {m} {n@(suc n-1)} {d} (divides a refl) (divides b 1+n≡bd) =
   divides (a ∸ ad/n * b) $ begin-equality
-    a * d % suc n          ≡⟨ a%n=a∸a/n*n (a * d) n ⟩
-    a * d ∸ ad/n * (suc n) ≡⟨ cong (λ v → a * d ∸ ad/n * v) 1+n≡bd ⟩
+    a * d % n              ≡⟨ a%n=a∸a/n*n (a * d) n-1 ⟩
+    a * d ∸ ad/n * n       ≡⟨ cong (λ v → a * d ∸ ad/n * v) 1+n≡bd ⟩
     a * d ∸ ad/n * (b * d) ≡⟨ sym (cong (a * d ∸_) (*-assoc ad/n b d)) ⟩
     a * d ∸ (ad/n * b) * d ≡⟨ sym (*-distribʳ-∸ d a (ad/n * b)) ⟩
     (a ∸ ad/n * b) * d     ∎
-  where ad/n = a * d / (suc n)
+  where ad/n = a * d / n
 
 ------------------------------------------------------------------------
 -- DEPRECATED - please use new names as continuing support for the old

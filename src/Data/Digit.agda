@@ -56,9 +56,10 @@ toNatDigits base@(suc (suc b)) n = aux (<-wellFounded n) []
   aux {zero}        _        xs =  (0 ∷ xs)
   aux {n@(suc n-1)} (acc wf) xs with 0 <? n / base
   ... | no _    =  (n % base) ∷ xs
-  ... | yes 0<q =  aux (wf _ q<n) ((n % base) ∷ xs)
+  ... | yes 0<q =  aux (wf (n / base) q<n) ((n % base) ∷ xs)
     where
-    q<n = <-transˡ (m<m*n 0<q (s≤s (s≤s z≤n))) (a/n*n≤a n (suc b))
+    q<n : n / base < n
+    q<n = m/n<m n base (s≤s z≤n) (s≤s (s≤s z≤n))
 
 ------------------------------------------------------------------------
 -- Converting between `ℕ` and expansions of `Digit base`
