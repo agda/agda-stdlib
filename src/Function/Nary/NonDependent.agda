@@ -19,7 +19,7 @@ open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Product using (_×_; _,_)
 open import Data.Unit.Base
-open import Function using (_∘′_; _$′_; const; flip)
+open import Function.Core using (_∘′_; _$′_; const; flip)
 open import Relation.Unary using (IUniversal)
 
 private

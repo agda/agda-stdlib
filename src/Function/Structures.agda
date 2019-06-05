@@ -18,7 +18,6 @@ open import Data.Product using (∃; _×_; _,_)
 open import Function.Core
 open import Function.Definitions
 open import Level using (_⊔_)
-import Relation.Binary.Reasoning.Setoid as SetoidReasoning
 
 ------------------------------------------------------------------------
 -- Definitions
