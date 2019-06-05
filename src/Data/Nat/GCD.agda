@@ -10,19 +10,91 @@ module Data.Nat.GCD where
 
 open import Data.Nat
 open import Data.Nat.Divisibility
+open import Data.Nat.DivMod
 open import Data.Nat.GCD.Lemmas
+open import Data.Nat.Properties
+open import Data.Nat.Induction
+  using (Acc; acc; <′-Rec; <′-recBuilder; <-wellFounded)
 open import Data.Nat.Properties using (+-suc)
 open import Data.Product
+open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
 open import Function
-open import Induction
-open import Induction.Nat using (<′-Rec; <′-recBuilder)
-open import Induction.Lexicographic
+open import Induction using (build)
+open import Induction.Lexicographic using (_⊗_; [_⊗_])
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_; subst)
+open import Relation.Binary.PropositionalEquality as P
+  using (_≡_; _≢_; subst; cong)
 open import Relation.Nullary using (Dec; yes; no)
+open import Relation.Nullary.Negation using (contradiction)
+import Relation.Nullary.Decidable as Dec
 
 ------------------------------------------------------------------------
--- Greatest common divisor
+-- Definition
+
+-- Calculated via Euclid's algorithm. In order to show progress,
+-- avoiding the initial step where the first argument may increase, it
+-- is necessary to first define a version `gcd′` which assumes that the
+-- first argument is strictly smaller than the second.
+
+-- The full `gcd` function then compares the two arguments and applies
+-- `gcd′` accordingly.
+
+gcd′ : ∀ m n → Acc _<_ m → n < m → ℕ
+gcd′ m zero        _         _   = m
+gcd′ m n@(suc n-1) (acc rec) n<m = gcd′ n (m % n) (rec _ n<m) (a%n<n m n-1)
+
+gcd : ℕ → ℕ → ℕ
+gcd m n with <-cmp m n
+... | tri< m<n _ _ = gcd′ n m (<-wellFounded n) m<n
+... | tri≈ _ _ _   = m
+... | tri> _ _ n<m = gcd′ m n (<-wellFounded m) n<m
+
+------------------------------------------------------------------------
+-- Properties of gcd′
+
+gcd′[m,n]∣m,n : ∀ {m n} rec n<m → gcd′ m n rec n<m ∣ m × gcd′ m n rec n<m ∣ n
+gcd′[m,n]∣m,n {m} {zero}  rec       n<m = ∣-refl , m ∣0
+gcd′[m,n]∣m,n {m} {suc n} (acc rec) n<m
+  with gcd′[m,n]∣m,n (rec _ n<m) (a%n<n m n)
+... | gcd∣n , gcd∣m%n = ∣n∣m%n⇒∣m gcd∣n gcd∣m%n , gcd∣n
+
+gcd′-greatest : ∀ {m n c} rec n<m → c ∣ m → c ∣ n → c ∣ gcd′ m n rec n<m
+gcd′-greatest {m} {zero}  rec       n<m c∣m c∣n = c∣m
+gcd′-greatest {m} {suc n} (acc rec) n<m c∣m c∣n =
+  gcd′-greatest (rec _ n<m) (a%n<n m n) c∣n (%-presˡ-∣ c∣m c∣n)
+
+------------------------------------------------------------------------
+-- Properties of gcd
+
+gcd[m,n]∣m : ∀ m n → gcd m n ∣ m
+gcd[m,n]∣m m n with <-cmp m n
+... | tri< n<m _ _ = proj₂ (gcd′[m,n]∣m,n {n} {m} _ _)
+... | tri≈ _ _ _   = ∣-refl
+... | tri> _ _ m<n = proj₁ (gcd′[m,n]∣m,n {m} {n} _ _)
+
+gcd[m,n]∣n : ∀ m n → gcd m n ∣ n
+gcd[m,n]∣n m n with <-cmp m n
+... | tri< n<m _    _ = proj₁ (gcd′[m,n]∣m,n {n} {m} _ _)
+... | tri≈ _ P.refl _ = ∣-refl
+... | tri> _ _    m<n = proj₂ (gcd′[m,n]∣m,n {m} {n} _ _)
+
+gcd-greatest : ∀ {m n c} → c ∣ m → c ∣ n → c ∣ gcd m n
+gcd-greatest {m} {n} c∣m c∣n with <-cmp m n
+... | tri< n<m _ _ = gcd′-greatest _ _ c∣n c∣m
+... | tri≈ _ _ _   = c∣m
+... | tri> _ _ m<n = gcd′-greatest _ _ c∣m c∣n
+
+gcd≢0 : ∀ m n → m ≢ 0 ⊎ n ≢ 0 → gcd m n ≢ 0
+gcd≢0 m n (inj₁ m≢0) eq = m≢0 (0∣⇒≡0 (subst (_∣ m) eq (gcd[m,n]∣m m n)))
+gcd≢0 m n (inj₂ n≢0) eq = n≢0 (0∣⇒≡0 (subst (_∣ n) eq (gcd[m,n]∣n m n)))
+
+gcd-comm : ∀ m n → gcd m n ≡ gcd n m
+gcd-comm m n = ∣-antisym
+  (gcd-greatest (gcd[m,n]∣n m n) (gcd[m,n]∣m m n))
+  (gcd-greatest (gcd[m,n]∣n n m) (gcd[m,n]∣m n m))
+
+------------------------------------------------------------------------
+-- A formal specification of GCD
 
 module GCD where
 
@@ -74,6 +146,25 @@ module GCD where
 
 open GCD public using (GCD) hiding (module GCD)
 
+-- The function gcd fulfils the conditions required of GCD
+
+gcd-GCD : ∀ m n → GCD m n (gcd m n)
+gcd-GCD m n = GCD.is
+  (gcd[m,n]∣m m n , gcd[m,n]∣n m n)
+  λ {d} → uncurry′ (gcd-greatest {m} {n} {d})
+
+-- Calculates the gcd of the arguments.
+
+mkGCD : (m n : ℕ) → ∃ λ d → GCD m n d
+mkGCD m n = gcd m n , gcd-GCD m n
+
+-- gcd as a proposition is decidable
+
+gcd? : (m n d : ℕ) → Dec (GCD m n d)
+gcd? m n d with gcd m n ≟ d
+... | yes P.refl = yes (gcd-GCD m n)
+... | no  gcd≢d  = no (gcd≢d ∘ GCD.unique (gcd-GCD m n))
+
 ------------------------------------------------------------------------
 -- Calculating the gcd
 
@@ -113,14 +204,14 @@ module Bézout where
       m ⊕ n = 1 + m + n
 
     step : ∀ {d n k} → Identity d n k → Identity d n (n + k)
-    step {d}     (+-  x  y       eq) with compare x y
-    step {d}     (+- .x .x       eq) | equal x     = +- (2 * x)     x       (lem₂ d x   eq)
-    step {d}     (+- .x .(x ⊕ i) eq) | less x i    = +- (2 * x ⊕ i) (x ⊕ i) (lem₃ d x   eq)
-    step {d} {n} (+- .(y ⊕ i) .y eq) | greater y i = +- (2 * y ⊕ i) y       (lem₄ d y n eq)
-    step {d}     (-+  x  y       eq) with compare x y
-    step {d}     (-+ .x .x       eq) | equal x     = -+ (2 * x)     x       (lem₅ d x   eq)
-    step {d}     (-+ .x .(x ⊕ i) eq) | less x i    = -+ (2 * x ⊕ i) (x ⊕ i) (lem₆ d x   eq)
-    step {d} {n} (-+ .(y ⊕ i) .y eq) | greater y i = -+ (2 * y ⊕ i) y       (lem₇ d y n eq)
+    step {d} {n} (+-  x  y       eq) with compare x y
+    ... | equal x     = +- (2 * x)     x       (lem₂ d x   eq)
+    ... | less x i    = +- (2 * x ⊕ i) (x ⊕ i) (lem₃ d x   eq)
+    ... | greater y i = +- (2 * y ⊕ i) y       (lem₄ d y n eq)
+    step {d} {n} (-+  x  y       eq) with compare x y
+    ... | equal x     = -+ (2 * x)     x       (lem₅ d x   eq)
+    ... | less x i    = -+ (2 * x ⊕ i) (x ⊕ i) (lem₆ d x   eq)
+    ... | greater y i = -+ (2 * y ⊕ i) y       (lem₇ d y n eq)
 
   open Identity public using (Identity; +-; -+) hiding (module Identity)
 
@@ -157,22 +248,20 @@ module Bézout where
   -- Euclidean algorithm.
 
   lemma : (m n : ℕ) → Lemma m n
-  lemma m n = build [ <′-recBuilder ⊗ <′-recBuilder ] P gcd (m , n)
+  lemma m n = build [ <′-recBuilder ⊗ <′-recBuilder ] P gcd″ (m , n)
     where
     P : ℕ × ℕ → Set
     P (m , n) = Lemma m n
 
-    gcd : ∀ p → (<′-Rec ⊗ <′-Rec) P p → P p
-    gcd (zero  , n                 ) rec = Lemma.base n
-    gcd (suc m , zero              ) rec = Lemma.sym (Lemma.base (suc m))
-    gcd (suc m , suc n             ) rec with compare m n
-    gcd (suc m , suc .m            ) rec | equal .m     = Lemma.refl (suc m)
-    gcd (suc m , suc .(suc (m + k))) rec | less .m k    =
+    gcd″ : ∀ p → (<′-Rec ⊗ <′-Rec) P p → P p
+    gcd″ (zero  , n                 ) rec = Lemma.base n
+    gcd″ (suc m , zero              ) rec = Lemma.sym (Lemma.base (suc m))
+    gcd″ (suc m , suc n             ) rec with compare m n
+    ... | equal .m     = Lemma.refl (suc m)
+    ... | less .m k    = Lemma.stepˡ $ proj₁ rec (suc k) (lem₁ k m)
                       -- "gcd (suc m) (suc k)"
-      Lemma.stepˡ $ proj₁ rec (suc k) (lem₁ k m)
-    gcd (suc .(suc (n + k)) , suc n) rec | greater .n k =
+    ... | greater .n k = Lemma.stepʳ $ proj₂ rec (suc k) (lem₁ k n) (suc n)
                       -- "gcd (suc k) (suc n)"
-      Lemma.stepʳ $ proj₂ rec (suc k) (lem₁ k n) (suc n)
 
   -- Bézout's identity can be recovered from the GCD.
 
@@ -180,17 +269,3 @@ module Bézout where
   identity {m} {n} g with lemma m n
   ... | result d g′ b with GCD.unique g g′
   ...   | P.refl = b
-
--- Calculates the gcd of the arguments.
-
-gcd : (m n : ℕ) → ∃ λ d → GCD m n d
-gcd m n with Bézout.lemma m n
-... | Bézout.result d g _ = (d , g)
-
--- gcd as a proposition is decidable
-
-gcd? : (m n d : ℕ) → Dec (GCD m n d)
-gcd? m n d with gcd m n
-... | d′ , p with d′ ≟ d
-...   | no ¬g = no (¬g ∘ GCD.unique p)
-...   | yes g = yes (subst (GCD m n) g p)

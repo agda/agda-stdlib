@@ -12,6 +12,7 @@ open import Data.Nat.Base as ℕ
   using (ℕ) renaming (_+_ to _ℕ+_; _*_ to _ℕ*_)
 open import Data.Sign as Sign using (Sign) renaming (_*_ to _S*_)
 open import Function
+open import Level using (0ℓ)
 open import Relation.Nullary using (¬_)
 open import Relation.Binary using (Rel)
 open import Relation.Binary.PropositionalEquality using (_≡_)
@@ -37,6 +38,37 @@ open import Agda.Builtin.Int public
 
 pattern +0       = + 0
 pattern +[1+_] n = + (ℕ.suc n)
+
+------------------------------------------------------------------------
+-- Ordering
+
+data _≤_ : ℤ → ℤ → Set where
+  -≤- : ∀ {m n} → (n≤m : n ℕ.≤ m) → -[1+ m ] ≤ -[1+ n ]
+  -≤+ : ∀ {m n} → -[1+ m ] ≤ + n
+  +≤+ : ∀ {m n} → (m≤n : m ℕ.≤ n) → + m ≤ + n
+
+data _<_ : ℤ → ℤ → Set where
+  -<- : ∀ {m n} → (n<m : n ℕ.< m) → -[1+ m ] < -[1+ n ]
+  -<+ : ∀ {m n} → -[1+ m ] < + n
+  +<+ : ∀ {m n} → (m<n : m ℕ.< n) → + m < + n
+
+_≥_ : Rel ℤ 0ℓ
+x ≥ y = y ≤ x
+
+_>_ : Rel ℤ 0ℓ
+x > y = y < x
+
+_≰_ : Rel ℤ 0ℓ
+x ≰ y = ¬ (x ≤ y)
+
+_≱_ : Rel ℤ 0ℓ
+x ≱ y = ¬ (x ≥ y)
+
+_≮_ : Rel ℤ 0ℓ
+x ≮ y = ¬ (x < y)
+
+_≯_ : Rel ℤ 0ℓ
+x ≯ y = ¬ (x > y)
 
 ------------------------------------------------------------------------
 -- Conversions
@@ -68,7 +100,7 @@ data SignAbs : ℤ → Set where
 
 signAbs : ∀ i → SignAbs i
 signAbs -[1+ n ] = Sign.- ◂ ℕ.suc n
-signAbs (+ 0)    = Sign.+ ◂ ℕ.zero
+signAbs +0       = Sign.+ ◂ ℕ.zero
 signAbs +[1+ n ] = Sign.+ ◂ ℕ.suc n
 
 ------------------------------------------------------------------------
@@ -78,7 +110,7 @@ signAbs +[1+ n ] = Sign.+ ◂ ℕ.suc n
 
 -_ : ℤ → ℤ
 - -[1+ n ] = +[1+ n ]
-- (+ 0)    = + 0
+- +0       = +0
 - +[1+ n ] = -[1+ n ]
 
 -- Subtraction of natural numbers.
@@ -132,31 +164,30 @@ _⊓_ : ℤ → ℤ → ℤ
 +    m   ⊓ -[1+ n ] = -[1+ n ]
 +    m   ⊓ +    n   = + (ℕ._⊓_ m n)
 
+
 ------------------------------------------------------------------------
--- Ordering
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
 
-data _≤_ : ℤ → ℤ → Set where
-  -≤+ : ∀ {m n} → -[1+ m ] ≤ + n
-  -≤- : ∀ {m n} → (n≤m : n ℕ.≤ m) → -[1+ m ] ≤ -[1+ n ]
-  +≤+ : ∀ {m n} → (m≤n : m ℕ.≤ n) → + m ≤ + n
+-- Version 1.1
 
-_≥_ : Rel ℤ _
-x ≥ y = y ≤ x
+-- The following definition of _<_ results in the unsolved metas for the
+-- first argument in certain situations. They do not have deprecation
+-- warnings attached as they are still used in some deprecated properties
+-- in `Data.Integer.Properties` and `Data.Integer.DivMod`.
 
-_<_ : Rel ℤ _
-x < y = suc x ≤ y
+infix  4 _<′_ _>′_ _≮′_ _≯′_
 
-_>_ : Rel ℤ _
-x > y = y < x
+_<′_ : Rel ℤ _
+x <′ y = suc x ≤ y
 
-_≰_ : Rel ℤ _
-x ≰ y = ¬ (x ≤ y)
+_>′_ : Rel ℤ _
+x >′ y = y <′ x
 
-_≱_ : Rel ℤ _
-x ≱ y = ¬ (x ≥ y)
+_≮′_ : Rel ℤ _
+x ≮′ y = ¬ (x <′ y)
 
-_≮_ : Rel ℤ _
-x ≮ y = ¬ (x < y)
-
-_≯_ : Rel ℤ _
-x ≯ y = ¬ (x > y)
+_≯′_ : Rel ℤ _
+x ≯′ y = ¬ (x >′ y)

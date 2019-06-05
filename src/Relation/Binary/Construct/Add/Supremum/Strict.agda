@@ -17,9 +17,10 @@ module Relation.Binary.Construct.Add.Supremum.Strict
 open import Level using (_⊔_)
 open import Data.Product
 open import Function
-open import Relation.Nullary
+open import Relation.Nullary hiding (Irrelevant)
 import Relation.Nullary.Decidable as Dec
-import Relation.Binary.PropositionalEquality as P
+open import Relation.Binary.PropositionalEquality as P
+  using (_≡_; refl)
 open import Relation.Nullary.Construct.Add.Supremum
 import Relation.Binary.Construct.Add.Supremum.Equality as Equality
 import Relation.Binary.Construct.Add.Supremum.NonStrict as NonStrict
@@ -56,6 +57,47 @@ data _<⁺_ : Rel (A ⁺) (a ⊔ r) where
 <⁺-irrelevant <-irr [ p ]    [ q ]    = P.cong _ (<-irr p q)
 <⁺-irrelevant <-irr [ k ]<⊤⁺ [ k ]<⊤⁺ = P.refl
 
+
+module _ {r} {_≤_ : Rel A r} where
+
+  open NonStrict _≤_
+
+  <⁺-transʳ : Trans _≤_ _<_ _<_ → Trans _≤⁺_ _<⁺_ _<⁺_
+  <⁺-transʳ <-transʳ [ p ] [ q ]    = [ <-transʳ p q ]
+  <⁺-transʳ <-transʳ [ p ] [ k ]<⊤⁺ = [ _ ]<⊤⁺
+
+  <⁺-transˡ : Trans _<_ _≤_ _<_ → Trans _<⁺_ _≤⁺_ _<⁺_
+  <⁺-transˡ <-transˡ [ p ]    [ q ]       = [ <-transˡ p q ]
+  <⁺-transˡ <-transˡ [ p ]    ([ _ ] ≤⊤⁺) = [ _ ]<⊤⁺
+  <⁺-transˡ <-transˡ [ k ]<⊤⁺ (⊤⁺ ≤⊤⁺)    = [ k ]<⊤⁺
+
+------------------------------------------------------------------------
+-- Relational properties + propositional equality
+
+<⁺-cmp-≡ : Trichotomous _≡_ _<_ → Trichotomous _≡_ _<⁺_
+<⁺-cmp-≡ <-cmp ⊤⁺    ⊤⁺    = tri≈ (λ ()) refl (λ ())
+<⁺-cmp-≡ <-cmp ⊤⁺    [ l ] = tri> (λ ()) (λ ()) [ l ]<⊤⁺
+<⁺-cmp-≡ <-cmp [ k ] ⊤⁺    = tri< [ k ]<⊤⁺ (λ ()) (λ ())
+<⁺-cmp-≡ <-cmp [ k ] [ l ] with <-cmp k l
+... | tri< a ¬b    ¬c = tri< [ a ] (¬b ∘ []-injective) (¬c ∘ [<]-injective)
+... | tri≈ ¬a refl ¬c = tri≈ (¬a ∘ [<]-injective) refl (¬c ∘ [<]-injective)
+... | tri> ¬a ¬b    c = tri> (¬a ∘ [<]-injective) (¬b ∘ []-injective) [ c ]
+
+<⁺-irrefl-≡ : Irreflexive _≡_ _<_ → Irreflexive _≡_ _<⁺_
+<⁺-irrefl-≡ <-irrefl refl [ x ] = <-irrefl refl x
+
+<⁺-respˡ-≡ : _<⁺_ Respectsˡ _≡_
+<⁺-respˡ-≡ = P.subst (_<⁺ _)
+
+<⁺-respʳ-≡ : _<⁺_ Respectsʳ _≡_
+<⁺-respʳ-≡ = P.subst (_ <⁺_)
+
+<⁺-resp-≡ : _<⁺_ Respects₂ _≡_
+<⁺-resp-≡ = <⁺-respʳ-≡ , <⁺-respˡ-≡
+
+------------------------------------------------------------------------
+-- Relational properties + setoid equality
+
 module _ {e} {_≈_ : Rel A e} where
 
   open Equality _≈_
@@ -84,21 +126,36 @@ module _ {e} {_≈_ : Rel A e} where
   <⁺-resp-≈⁺ : _<_ Respects₂ _≈_ → _<⁺_ Respects₂ _≈⁺_
   <⁺-resp-≈⁺ = map <⁺-respʳ-≈⁺ <⁺-respˡ-≈⁺
 
-module _ {r} {_≤_ : Rel A r} where
+------------------------------------------------------------------------
+-- Structures + propositional equality
 
-  open NonStrict _≤_
+<⁺-isStrictPartialOrder-≡ : IsStrictPartialOrder _≡_ _<_ →
+                            IsStrictPartialOrder _≡_ _<⁺_
+<⁺-isStrictPartialOrder-≡ strict = record
+  { isEquivalence = P.isEquivalence
+  ; irrefl        = <⁺-irrefl-≡ irrefl
+  ; trans         = <⁺-trans trans
+  ; <-resp-≈      = <⁺-resp-≡
+  } where open IsStrictPartialOrder strict
 
-  <⁺-transʳ : Trans _≤_ _<_ _<_ → Trans _≤⁺_ _<⁺_ _<⁺_
-  <⁺-transʳ <-transʳ [ p ] [ q ]    = [ <-transʳ p q ]
-  <⁺-transʳ <-transʳ [ p ] [ k ]<⊤⁺ = [ _ ]<⊤⁺
+<⁺-isDecStrictPartialOrder-≡ : IsDecStrictPartialOrder _≡_ _<_ →
+                               IsDecStrictPartialOrder _≡_ _<⁺_
+<⁺-isDecStrictPartialOrder-≡ dectot = record
+  { isStrictPartialOrder = <⁺-isStrictPartialOrder-≡ isStrictPartialOrder
+  ; _≟_                  = ≡-dec _≟_
+  ; _<?_                 = <⁺-dec _<?_
+  } where open IsDecStrictPartialOrder dectot
 
-  <⁺-transˡ : Trans _<_ _≤_ _<_ → Trans _<⁺_ _≤⁺_ _<⁺_
-  <⁺-transˡ <-transˡ [ p ]    [ q ]       = [ <-transˡ p q ]
-  <⁺-transˡ <-transˡ [ p ]    ([ _ ] ≤⊤⁺) = [ _ ]<⊤⁺
-  <⁺-transˡ <-transˡ [ k ]<⊤⁺ (⊤⁺ ≤⊤⁺)    = [ k ]<⊤⁺
+<⁺-isStrictTotalOrder-≡ : IsStrictTotalOrder _≡_ _<_ →
+                          IsStrictTotalOrder _≡_ _<⁺_
+<⁺-isStrictTotalOrder-≡ strictot = record
+  { isEquivalence = P.isEquivalence
+  ; trans         = <⁺-trans trans
+  ; compare       = <⁺-cmp-≡ compare
+  } where open IsStrictTotalOrder strictot
 
 ------------------------------------------------------------------------
--- Structures
+-- Structures + setoid equality
 
 module _ {e} {_≈_ : Rel A e} where
 

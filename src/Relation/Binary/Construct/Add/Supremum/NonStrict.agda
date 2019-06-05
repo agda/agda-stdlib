@@ -16,9 +16,10 @@ module Relation.Binary.Construct.Add.Supremum.NonStrict
 
 open import Level using (_⊔_)
 open import Data.Sum as Sum
-open import Relation.Nullary
+open import Relation.Nullary hiding (Irrelevant)
 import Relation.Nullary.Decidable as Dec
-import Relation.Binary.PropositionalEquality as P
+open import Relation.Binary.PropositionalEquality as P
+  using (_≡_; refl)
 open import Relation.Nullary.Construct.Add.Supremum
 import Relation.Binary.Construct.Add.Supremum.Equality as Equality
 
@@ -34,18 +35,6 @@ data _≤⁺_ : Rel (A ⁺) (a ⊔ ℓ) where
 
 [≤]-injective : ∀ {k l} → [ k ] ≤⁺ [ l ] → k ≤ l
 [≤]-injective [ p ] = p
-
-module _ {e} {_≈_ : Rel A e} where
-
-  open Equality _≈_
-
-  ≤⁺-reflexive : (_≈_ ⇒ _≤_) → (_≈⁺_ ⇒ _≤⁺_)
-  ≤⁺-reflexive ≤-reflexive [ p ] = [ ≤-reflexive p ]
-  ≤⁺-reflexive ≤-reflexive ⊤⁺≈⊤⁺ = ⊤⁺ ≤⊤⁺
-
-  ≤⁺-antisym : Antisymmetric _≈_ _≤_ → Antisymmetric _≈⁺_ _≤⁺_
-  ≤⁺-antisym ≤-antisym [ p ]    [ q ]    = [ ≤-antisym p q ]
-  ≤⁺-antisym ≤-antisym (⊤⁺ ≤⊤⁺) (⊤⁺ ≤⊤⁺) = ⊤⁺≈⊤⁺
 
 ≤⁺-trans : Transitive _≤_ → Transitive _≤⁺_
 ≤⁺-trans ≤-trans [ p ] [ q ]   = [ ≤-trans p q ]
@@ -69,7 +58,69 @@ module _ {e} {_≈_ : Rel A e} where
 ≤⁺-irrelevant ≤-irr (k ≤⊤⁺) (k ≤⊤⁺) = P.refl
 
 ------------------------------------------------------------------------
--- Structures
+-- Relational properties + propositional equality
+
+≤⁺-reflexive-≡ : (_≡_ ⇒ _≤_) → (_≡_ ⇒ _≤⁺_)
+≤⁺-reflexive-≡ ≤-reflexive {[ x ]} refl = [ ≤-reflexive refl ]
+≤⁺-reflexive-≡ ≤-reflexive {⊤⁺}    refl = ⊤⁺ ≤⊤⁺
+
+≤⁺-antisym-≡ : Antisymmetric _≡_ _≤_ → Antisymmetric _≡_ _≤⁺_
+≤⁺-antisym-≡ antisym (⊤⁺ ≤⊤⁺) (⊥⁺ ≤⊤⁺) = refl
+≤⁺-antisym-≡ antisym [ p ] [ q ]       = P.cong [_] (antisym p q)
+
+------------------------------------------------------------------------
+-- Relation properties + setoid equality
+
+module _ {e} {_≈_ : Rel A e} where
+
+  open Equality _≈_
+
+  ≤⁺-reflexive : (_≈_ ⇒ _≤_) → (_≈⁺_ ⇒ _≤⁺_)
+  ≤⁺-reflexive ≤-reflexive [ p ] = [ ≤-reflexive p ]
+  ≤⁺-reflexive ≤-reflexive ⊤⁺≈⊤⁺ = ⊤⁺ ≤⊤⁺
+
+  ≤⁺-antisym : Antisymmetric _≈_ _≤_ → Antisymmetric _≈⁺_ _≤⁺_
+  ≤⁺-antisym ≤-antisym [ p ]    [ q ]    = [ ≤-antisym p q ]
+  ≤⁺-antisym ≤-antisym (⊤⁺ ≤⊤⁺) (⊤⁺ ≤⊤⁺) = ⊤⁺≈⊤⁺
+
+------------------------------------------------------------------------
+-- Structures + propositional equality
+
+≤⁺-isPreorder-≡ : IsPreorder _≡_ _≤_ → IsPreorder _≡_ _≤⁺_
+≤⁺-isPreorder-≡ ≤-isPreorder = record
+  { isEquivalence = P.isEquivalence
+  ; reflexive     = ≤⁺-reflexive-≡ reflexive
+  ; trans         = ≤⁺-trans trans
+  } where open IsPreorder ≤-isPreorder
+
+≤⁺-isPartialOrder-≡ : IsPartialOrder _≡_ _≤_ → IsPartialOrder _≡_ _≤⁺_
+≤⁺-isPartialOrder-≡ ≤-isPartialOrder = record
+  { isPreorder = ≤⁺-isPreorder-≡ isPreorder
+  ; antisym    = ≤⁺-antisym-≡ antisym
+  } where open IsPartialOrder ≤-isPartialOrder
+
+≤⁺-isDecPartialOrder-≡ : IsDecPartialOrder _≡_ _≤_ → IsDecPartialOrder _≡_ _≤⁺_
+≤⁺-isDecPartialOrder-≡ ≤-isDecPartialOrder = record
+  { isPartialOrder = ≤⁺-isPartialOrder-≡ isPartialOrder
+  ; _≟_            = ≡-dec _≟_
+  ; _≤?_           = ≤⁺-dec _≤?_
+  } where open IsDecPartialOrder ≤-isDecPartialOrder
+
+≤⁺-isTotalOrder-≡ : IsTotalOrder _≡_ _≤_ → IsTotalOrder _≡_ _≤⁺_
+≤⁺-isTotalOrder-≡ ≤-isTotalOrder = record
+  { isPartialOrder = ≤⁺-isPartialOrder-≡ isPartialOrder
+  ; total          = ≤⁺-total total
+  } where open IsTotalOrder ≤-isTotalOrder
+
+≤⁺-isDecTotalOrder-≡ : IsDecTotalOrder _≡_ _≤_ → IsDecTotalOrder _≡_ _≤⁺_
+≤⁺-isDecTotalOrder-≡ ≤-isDecTotalOrder = record
+  { isTotalOrder = ≤⁺-isTotalOrder-≡ isTotalOrder
+  ; _≟_          = ≡-dec _≟_
+  ; _≤?_         = ≤⁺-dec _≤?_
+  } where open IsDecTotalOrder ≤-isDecTotalOrder
+
+------------------------------------------------------------------------
+-- Structures + setoid equality
 
 module _ {e} {_≈_ : Rel A e} where
 

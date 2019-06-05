@@ -14,7 +14,7 @@ open import Level using (_⊔_)
 open import Relation.Nullary using (¬_)
 open import Function using (_∘_)
 open import Data.List using (List; []; [_]; _∷_)
-open import Data.List.Any using (here; there)
+open import Data.List.Relation.Unary.Any using (here; there)
 open import Data.Product using (_×_; _,_)
 
 open Setoid S renaming (Carrier to A)

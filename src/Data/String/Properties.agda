@@ -8,12 +8,12 @@
 
 module Data.String.Properties where
 
-open import Data.Bool.Base
-open import Data.String.Base
-
+open import Data.Bool.Base using (Bool)
 import Data.Char.Properties as Charₚ
 import Data.List.Properties as Listₚ
-
+import Data.List.Relation.Binary.Pointwise as Pointwise
+import Data.List.Relation.Binary.Lex.Strict as StrictLex
+open import Data.String.Base
 open import Function
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable using (map′; ⌊_⌋)
@@ -22,9 +22,6 @@ open import Relation.Binary
         ; Decidable; IsEquivalence; IsDecEquivalence
         ; Setoid; DecSetoid; StrictTotalOrder)
 open import Relation.Binary.PropositionalEquality.Core
-
-import Data.List.Relation.Binary.Pointwise as Pointwise
-import Data.List.Relation.Binary.Lex.Strict as StrictLex
 import Relation.Binary.Construct.On as On
 import Relation.Binary.PropositionalEquality as PropEq
 
