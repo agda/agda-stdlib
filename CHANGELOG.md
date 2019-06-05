@@ -71,6 +71,8 @@ New modules
   Data.AVL.NonEmpty
   Data.AVL.NonEmpty.Propositional
 
+  Data.List.Membership.Propositional.Properties.WithK
+
   Data.List.Relation.Binary.Disjoint.Propositional
   Data.List.Relation.Binary.Disjoint.Setoid
   Data.List.Relation.Binary.Disjoint.Setoid.Properties
@@ -90,6 +92,10 @@ New modules
   Data.Nat.Induction
   Data.Fin.Induction
 
+  Data.Product.Nary.NonDependent
+  Function.Nary.NonDependent
+  Relation.Nary
+
   Data.Sign.Base
 
   Data.These.Base
@@ -101,7 +107,13 @@ New modules
 
   Relation.Binary.Construct.Closure.Equivalence.Properties
   Relation.Binary.Rewriting
+
+  Relation.Nullary.Decidable.Core
   ```
+
+* The function `#_` has been moved from `Data.Fin.Base` to `Data.Fin`
+  to break dependency cycles following the introduction of the module
+  `Data.Product.N-ary.Heterogeneous`.
 
 Deprecated features
 -------------------
@@ -129,6 +141,10 @@ been attached to all deprecated names.
   `Data.Universe.Indexed`. In the latter `Indexed-universe` has been
   renamed to `IndexedUniverse` to better follow the library conventions. The
   old module still exists exporting the old names, but has been deprecated.
+
+* The `Data.Product.N-ary` modules have been deprecated and their content
+  moved to `Data.Vec.Recursive` to make place for properly heterogeneous
+  n-ary products in `Data.Product.Nary`.
 
 #### Names
 
@@ -391,6 +407,11 @@ Other minor additions
   concat⁺ : Sublist (Sublist R) ass bss → Sublist R (concat ass) (concat bss)
   ```
 
+* Added new proof to `Data.List.Membership.Setoid.Properties`:
+  ```agda
+  unique⇒irrelevant : B.Irrelevant _≈_ → Unique xs → U.Irrelevant (_∈ xs)
+  ```
+
 * Added new proofs to `Data.List.Relation.Binary.Sublist.Propositional.Properties`:
   ```agda
   All-resp-⊆ : (All P) Respects (flip _⊆_)
@@ -399,12 +420,14 @@ Other minor additions
 
 * Added new operations to `Data.List.Relation.Unary.All`:
   ```agda
-  uncons    : All P (x ∷ xs) → P x × All P xs
-  reduce    : (f : ∀ {x} → P x → B) → ∀ {xs} → All P xs → List B
-  construct : (f : B → ∃ P) (xs : List B) → ∃ (All P)
-  fromList  : (xs : List (∃ P)) → All P (List.map proj₁ xs)
-  toList    : All P xs → List (∃ P)
-  self      : All (const A) xs
+  lookupAny  : All P xs → (i : Any Q xs) → (P ∩ Q) (lookup i)
+  lookupWith : ∀[ P ⇒ Q ⇒ R ] → All P xs → (i : Any Q xs) → R (lookup i)
+  uncons     : All P (x ∷ xs) → P x × All P xs
+  reduce     : (f : ∀ {x} → P x → B) → ∀ {xs} → All P xs → List B
+  construct  : (f : B → ∃ P) (xs : List B) → ∃ (All P)
+  fromList   : (xs : List (∃ P)) → All P (List.map proj₁ xs)
+  toList     : All P xs → List (∃ P)
+  self       : All (const A) xs
   ```
 
 * Added new proofs to `Data.List.Relation.Unary.All.Properties`:
@@ -440,33 +463,33 @@ Other minor additions
 * Added new proofs to `Data.Nat.Divisibility`:
   ```agda
   ∣m∸n∣n⇒∣m : n ≤ m → i ∣ m ∸ n → i ∣ n → i ∣ m
-  ∣n∣m%n⇒∣m : d ∣ suc n → d ∣ (m % suc n) → d ∣ m
-  %-presˡ-∣ : d ∣ m → d ∣ suc n → d ∣ (m % suc n)
+  ∣n∣m%n⇒∣m : d ∣ n → d ∣ (m % n) → d ∣ m
+  %-presˡ-∣ : d ∣ m → d ∣ n → d ∣ (m % n)
   ```
 
 * Added new operator and proofs to `Data.Nat.DivMod`:
   ```agda
   _/_ = _div_
 
-  a%n≤a           : a % suc n ≤ a
-  a≤n⇒a%n≡a       : a ≤ n → a % suc n ≡ a
-  %-remove-+ˡ     : suc n ∣ a → (a + b) % suc n ≡ b % suc n
-  %-remove-+ʳ     : suc n ∣ b → (a + b) % suc n ≡ a % suc n
-  %-presˡ-∣       : d ∣ m → d ∣ suc n → d ∣ (m % suc n)
-  a+1%n≡0⇒a%n≡n-1 : suc a % suc n ≡ 0 → a % suc n ≡ n
-  m<1+a%n⇒m≤a%n   : m < suc a % suc n → m ≤ a % suc n
-  1+a%n≤1+m⇒a%n≤m : 0 < suc a % suc n → suc a % suc n ≤ suc m → a % suc n ≤ m
+  m%n≤m               : m % n ≤ m
+  m≤n⇒m%n≡m           : m ≤ n → m % n ≡ m
+  %-remove-+ˡ         : d ∣ m → (m + n) % d ≡ n % d
+  %-remove-+ʳ         : d ∣ n → (m + n) % d ≡ m % d
+  %-pred-≡0           : suc m % n ≡ 0 → m % n ≡ n ∸ 1
+  m<[1+n%d]⇒m≤[n%d]   : m < suc n % d → m ≤ n % d
+  [1+a%n]≤1+m⇒[a%n]≤m : 0 < suc n % d → suc n % d ≤ suc m → n % d ≤ m
 
-  0/n≡0           : 0 / suc n ≡ 0
-  a/1≡a           : a / 1 ≡ a
-  n/n≡1           : suc n / suc n ≡ 1
-  a*n/n≡a         : a * suc n / suc n ≡ a
-  a/n*n≤a         : a / suc n * suc n ≤ a
-  a/n*n≡a         : suc n ∣ a → a / suc n * suc n ≡ a
+  0/n≡0           : 0 / n ≡ 0
+  n/1≡a           : n / 1 ≡ n
+  n/n≡1           : n / n ≡ 1
+  m*n/n≡m         : m * n / n ≡ m
+  m/n*n≡m         : n ∣ m → m / n * n ≡ m
+  m/n*n≤m         : m / n * n ≤ m
+  m/n<m           : m ≥ 1 → n ≥ 2 → m / n < m
   *-/-assoc       : d ∣ n → (m * n) / d ≡ m * (n / d)
-  +-distrib-/     : m % suc d + n % suc d < suc d → (m + n) / suc d ≡ m / suc d + n / suc d
-  +-distrib-/-∣ˡ  : suc d ∣ m                     → (m + n) / suc d ≡ m / suc d + n / suc d
-  +-distrib-/-∣ʳ  : suc d ∣ n                     → (m + n) / suc d ≡ m / suc d + n / suc d
+  +-distrib-/     : m % d + n % d < d → (m + n) / d ≡ m / d + n / d
+  +-distrib-/-∣ˡ  : d ∣ m → (m + n) / d ≡ m / d + n / d
+  +-distrib-/-∣ʳ  : d ∣ n → (m + n) / d ≡ m / d + n / d
   ```
   Additionally the `{≢0 : False (divisor ℕ.≟ 0)}` argument to all the
   division and modulus functions has been marked irrelevant. This means
@@ -611,6 +634,8 @@ Other minor additions
   iΠ[_∶_]_ s a ty   = Π[ s ∶ (iArg a) ] ty
   ```
 
+* Defined `_≉_` as the negation of `_≈_` in `Relation.Binary`'s `Setoid`.
+
 * Added new definitions in `Relation.Binary.Core`:
   ```agda
   Universal _∼_    = ∀ x y → x ∼ y
@@ -650,6 +675,14 @@ Other minor additions
   been generalised so that the types of the two equal elements need not
   be at the same universe level.
 
+* Added new proof to `Relation.Binary.PropositionalEquality`:
+  ```
+  Congₙ  : ∀ n (f g : Arrows n as b) → Set _
+  congₙ  : ∀ n (f : Arrows n as b) → Congₙ n f f
+  Substₙ : ∀ n (f g : Arrows n as (Set r)) → Set _
+  substₙ : (f : Arrows n as (Set r)) → Substₙ n f f
+  ```
+
 * Added new proof to `Relation.Binary.PropositionalEquality.Core`:
   ```agda
   ≢-sym : Symmetric _≢_
@@ -682,4 +715,17 @@ Other minor additions
                           {ε : A}
                           (isIdempotentCommutativeMonoid : IsIdempotentCommutativeMonoid ∙ ε)
 
+  ```
+
+* Added the definition for `Irrelevant` in `Relation.Nullary`:
+  ```agda
+  Irrelevant P = ∀ (p₁ p₂ : P) → p₁ ≡ p₂
+  ```
+
+* Added three lemmas in `Relation.Nullary.Decidable.Core` which constraints the output of
+  decision procedures:
+  ```agda
+  dec-yes     : (p? : Dec P) → P → ∃ λ p′ → p? ≡ yes p′
+  dec-no      : (p? : Dec P) → ¬ P → ∃ λ ¬p′ → p? ≡ no ¬p′
+  dec-yes-irr : (p? : Dec P) → Irrelevant P → (p : P) → p? ≡ yes p
   ```

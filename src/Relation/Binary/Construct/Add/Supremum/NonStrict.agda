@@ -16,7 +16,7 @@ module Relation.Binary.Construct.Add.Supremum.NonStrict
 
 open import Level using (_⊔_)
 open import Data.Sum as Sum
-open import Relation.Nullary
+open import Relation.Nullary hiding (Irrelevant)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; refl)

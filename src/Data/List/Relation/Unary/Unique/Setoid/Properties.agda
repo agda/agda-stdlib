@@ -70,10 +70,7 @@ module _ {a ℓ} (S : Setoid a ℓ) where
 
 module _ {a ℓ} (S : Setoid a ℓ) where
 
-  open Setoid S using (_≈_) renaming (Carrier to A)
-  private
-    _≉_ : Rel A ℓ
-    x ≉ y = ¬ (x ≈ y)
+  open Setoid S using (_≈_; _≉_) renaming (Carrier to A)
 
   applyUpTo⁺₁ : ∀ f n → (∀ {i j} → i < j → j < n → f i ≉ f j) →
                 Unique S (applyUpTo f n)
@@ -88,10 +85,7 @@ module _ {a ℓ} (S : Setoid a ℓ) where
 
 module _ {a ℓ} (S : Setoid a ℓ) where
 
-  open Setoid S using (_≈_) renaming (Carrier to A)
-  private
-    _≉_ : Rel A ℓ
-    x ≉ y = ¬ (x ≈ y)
+  open Setoid S using (_≈_; _≉_) renaming (Carrier to A)
 
   applyDownFrom⁺₁ : ∀ f n → (∀ {i j} → j < i → i < n → f i ≉ f j) →
                     Unique S (applyDownFrom f n)

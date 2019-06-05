@@ -17,7 +17,7 @@ module Relation.Binary.Construct.Add.Point.Equality
 open import Level using (_⊔_)
 open import Function
 import Relation.Binary.PropositionalEquality as P
-open import Relation.Nullary
+open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Nullary.Construct.Add.Point
 import Relation.Nullary.Decidable as Dec
 

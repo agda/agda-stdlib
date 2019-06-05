@@ -13,6 +13,9 @@ open import Data.Nat
 open import Data.Nat.Coprimality using (Coprime)
 open import Data.Nat.Divisibility
 open import Data.Nat.DivMod
+open import Data.Nat.Coprimality as Coprime
+open import Data.Nat.Divisibility
+open import Data.Nat.DivMod using (_/_; *-/-assoc)
 open import Data.Nat.Properties
 open import Data.Nat.Solver
 open import Data.Nat.GCD
