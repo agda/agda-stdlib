@@ -7,13 +7,13 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Data.List.Kleene.AsList where
+module Data.KleeneList.AsList where
 
 open import Level as Level using (Level)
 
-import Data.List.Kleene.Base as Kleene
+import Data.KleeneList.Base as Kleene
 
-open import Data.List.Kleene.Base
+open import Data.KleeneList.Base
   using
     ( []
     )

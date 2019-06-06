@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Data.List.Kleene.Base where
+module Data.KleeneList.Base where
 
 open import Data.Product as Product using (_×_; _,_; map₂; map₁; proj₁; proj₂)
 open import Data.Nat     as ℕ       using (ℕ; suc; zero)
