@@ -13,9 +13,6 @@ open import Data.Nat
 open import Data.Nat.Coprimality using (Coprime)
 open import Data.Nat.Divisibility
 open import Data.Nat.DivMod
-open import Data.Nat.Coprimality as Coprime
-open import Data.Nat.Divisibility
-open import Data.Nat.DivMod using (_/_; *-/-assoc)
 open import Data.Nat.Properties
 open import Data.Nat.Solver
 open import Data.Nat.GCD
@@ -63,7 +60,7 @@ abstract
   m∣lcm[m,n] zero        n = 0 ∣0
   m∣lcm[m,n] m@(suc m-1) n = begin
     m                  ∣⟨ m∣m*n _ ⟩
-    m * (n / gcd m n)  ≡⟨ sym (*-/-assoc m (gcd≢0′ m-1) (gcd[m,n]∣n m n)) ⟩
+    m * (n / gcd m n)  ≡⟨ sym (*-/-assoc m {≢0 = gcd≢0′ m-1} (gcd[m,n]∣n m n)) ⟩
     (m * n) / gcd m n  ∎
     where open ∣-Reasoning
 
@@ -71,16 +68,22 @@ abstract
   n∣lcm[m,n] zero        n = n ∣0
   n∣lcm[m,n] m@(suc m-1) n = begin
     n                 ∣⟨ m∣m*n (m / gcd m n) ⟩
-    n * (m / gcd m n) ≡⟨ sym (*-/-assoc n (gcd≢0′ m-1) (gcd[m,n]∣m m n)) ⟩
+    n * (m / gcd m n) ≡⟨ sym (*-/-assoc n {≢0 = gcd≢0′ m-1} (gcd[m,n]∣m m n)) ⟩
     n * m / gcd m n   ≡⟨ cong (λ v → (v / gcd m n) {gcd≢0′ m-1}) (*-comm n m) ⟩
     m * n / gcd m n   ∎
     where open ∣-Reasoning
 
   lcm-least : ∀ {m n c} → m ∣ c → n ∣ c → lcm m n ∣ c
   lcm-least {zero}        {n} {c} 0∣c _   = 0∣c
-  lcm-least {m@(suc m-1)} {n} {c} m∣c n∣c = [m/o]∣n⇒[m/n]∣o (m * n) (gcd m n) c (gcd-greatest {!!} {!!})
-    where
-    -- gcd-greatest {c = m * n / c}
+  lcm-least {m@(suc m-1)} {n} {c} m∣c n∣c = [m/o]∣n⇒[m/n]∣o (m * n) (gcd m n) c {gcd≢0′ m-1} {{!!}}
+    (gcd-greatest
+      (begin
+        m * n / c   ≡⟨ {!!} ⟩
+        m           ∎)
+      (begin
+        m * n / c ≡⟨ {!!} ⟩
+        n         ∎))
+    where open ∣-Reasoning
 {-
 begin
     m * n / gcd m n   ≡⟨ *-/-assoc m (gcd≢0′ m-1) (gcd[m,n]∣n m n) ⟩
@@ -117,12 +120,12 @@ gcd*lcm : ∀ m n → gcd m n * lcm m n ≡ m * n
 gcd*lcm zero n rewrite lcm[0,n]≡0 n | *-zeroʳ (gcd 0 n)             = refl
 gcd*lcm m zero rewrite lcm[n,0]≡0 m | *-zeroʳ (gcd m 0) | *-zeroʳ m = refl
 gcd*lcm m@(suc m-1) n@(suc n-1) = begin
-  g * lcm m n                 ≡⟨ cong (g *_) (sym (cong₂ lcm (a/n*n≡a g∣m) (a/n*n≡a g∣n))) ⟩
+  g * lcm m n                 ≡⟨ cong (g *_) (sym (cong₂ lcm (m/n*n≡m g∣m) (m/n*n≡m g∣n))) ⟩
   g * lcm (m/g * g) (n/g * g) ≡⟨ cong (g *_) (lcm-factorʳ m/g n/g g) ⟩
   g * (lcm m/g n/g * g)       ≡⟨ cong (g *_) (cong (_* g) (lcm-coprime {!!})) ⟩
   g * (m/g * n/g * g)         ≡⟨ cong (g *_) (*-assoc m/g n/g g) ⟩
   g * (m/g * (n/g * g))       ≡⟨ sym (*-assoc g m/g (n/g * g)) ⟩
-  (g * m/g) * (n/g * g)       ≡⟨ cong₂ _*_ (n*[a/n]≡a g∣m) (a/n*n≡a g∣n) ⟩
+  (g * m/g) * (n/g * g)       ≡⟨ cong₂ _*_ (m*[n/m]≡n g∣m) (m/n*n≡m g∣n) ⟩
   m * n                       ∎
   where
   open ≡-Reasoning

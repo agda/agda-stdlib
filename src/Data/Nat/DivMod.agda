@@ -87,44 +87,42 @@ kn%n≡0 = [a+kn]%n≡a%n 0
 a%n<n : ∀ a n → a % suc n < suc n
 a%n<n a n = s≤s (a[modₕ]n<n 0 a n)
 
-a%n≤a : ∀ a n → a % suc n ≤ a
-a%n≤a a n = a[modₕ]n≤a 0 a n
+m%n≤m : ∀ m n → m % suc n ≤ m
+m%n≤m m n = a[modₕ]n≤a 0 m n
 
-a≤n⇒a%n≡a : ∀ {a n} → a ≤ n → a % suc n ≡ a
-a≤n⇒a%n≡a {a} {n} a≤n with ≤⇒≤″ a≤n
-... | less-than-or-equal {k} refl = a≤n⇒a[modₕ]n≡a 0 (a + k) a k
+m≤n⇒m%n≡m : ∀ {m n} → m ≤ n → m % suc n ≡ m
+m≤n⇒m%n≡m {m} {n} m≤n with ≤⇒≤″ m≤n
+... | less-than-or-equal {k} refl = a≤n⇒a[modₕ]n≡a 0 (m + k) m k
 
-a+1%n≡0⇒a%n≡n-1 : ∀ {a n} → suc a % suc n ≡ 0 → a % suc n ≡ n
-a+1%n≡0⇒a%n≡n-1 {a} {n} eq = a+1[modₕ]n≡0⇒a[modₕ]n≡n-1 0 n a eq
+%-pred-≡0 : ∀ {m n} {≢0} → (suc m % n) {≢0} ≡ 0 → (m % n) {≢0} ≡ n ∸ 1
+%-pred-≡0 {m} {suc n-1} eq = a+1[modₕ]n≡0⇒a[modₕ]n≡n-1 0 n-1 m eq
 
-m<1+a%n⇒m≤a%n : ∀ {m} a n → m < suc a % suc n → m ≤ a % suc n
-m<1+a%n⇒m≤a%n {m} a n = k<1+a[modₕ]n⇒k≤a[modₕ]n 0 m a n
+m<[1+n%d]⇒m≤[n%d] : ∀ {m} n d {≢0} → m < (suc n % d) {≢0} → m ≤ (n % d) {≢0}
+m<[1+n%d]⇒m≤[n%d] {m} n (suc d-1) = k<1+a[modₕ]n⇒k≤a[modₕ]n 0 m n d-1
 
-1+a%n≤1+m⇒a%n≤m : ∀ m a n → 0 < suc a % suc n → suc a % suc n ≤ suc m → a % suc n ≤ m
-1+a%n≤1+m⇒a%n≤m m a n leq = 1+a[modₕ]n≤1+k⇒a[modₕ]n≤k 0 m a n leq
+[1+a%n]≤1+m⇒[a%n]≤m : ∀ m n d {≢0} → 0 < (suc n % d) {≢0} → (suc n % d) {≢0} ≤ suc m → (n % d) {≢0} ≤ m
+[1+a%n]≤1+m⇒[a%n]≤m m n (suc d-1) leq = 1+a[modₕ]n≤1+k⇒a[modₕ]n≤k 0 m n d-1 leq
 
-%-distribˡ-+ : ∀ a b n → (a + b) % suc n ≡ (a % suc n + b % suc n) % suc n
-%-distribˡ-+ a b n-1 = begin-equality
-  (a + b)                         % n ≡⟨ cong (λ v → (v + b) % n) (a≡a%n+[a/n]*n a n-1) ⟩
-  (a % n +  a / n * n + b)        % n ≡⟨ cong (_% n) (+-assoc (a % n) _ b) ⟩
-  (a % n + (a / n * n + b))       % n ≡⟨ cong (λ v → (a % n + v) % n) (+-comm _ b) ⟩
-  (a % n + (b + a / n * n))       % n ≡⟨ cong (_% n) (sym (+-assoc (a % n) b _)) ⟩
-  (a % n +  b + a / n * n)        % n ≡⟨ [a+kn]%n≡a%n (a % n + b) (a / n) n-1 ⟩
-  (a % n +  b)                    % n ≡⟨ cong (λ v → (a % n + v) % n) (a≡a%n+[a/n]*n b n-1) ⟩
-  (a % n + (b % n + (b / n) * n)) % n ≡⟨ sym (cong (_% n) (+-assoc (a % n) (b % n) _)) ⟩
-  (a % n +  b % n + (b / n) * n)  % n ≡⟨ [a+kn]%n≡a%n (a % n + b % n) (b / n) n-1 ⟩
-  (a % n +  b % n)                % n ∎
-  where n = suc n-1
+%-distribˡ-+ : ∀ m n d {≢0} → ((m + n) % d) {≢0} ≡ (((m % d) {≢0} + (n % d) {≢0}) % d) {≢0}
+%-distribˡ-+ m n d@(suc d-1) = begin-equality
+  (m + n)                         % d ≡⟨ cong (λ v → (v + n) % d) (a≡a%n+[a/n]*n m d-1) ⟩
+  (m % d +  m / d * d + n)        % d ≡⟨ cong (_% d) (+-assoc (m % d) _ n) ⟩
+  (m % d + (m / d * d + n))       % d ≡⟨ cong (λ v → (m % d + v) % d) (+-comm _ n) ⟩
+  (m % d + (n + m / d * d))       % d ≡⟨ cong (_% d) (sym (+-assoc (m % d) n _)) ⟩
+  (m % d +  n + m / d * d)        % d ≡⟨ [a+kn]%n≡a%n (m % d + n) (m / d) d-1 ⟩
+  (m % d +  n)                    % d ≡⟨ cong (λ v → (m % d + v) % d) (a≡a%n+[a/n]*n n d-1) ⟩
+  (m % d + (n % d + (n / d) * d)) % d ≡⟨ sym (cong (_% d) (+-assoc (m % d) (n % d) _)) ⟩
+  (m % d +  n % d + (n / d) * d)  % d ≡⟨ [a+kn]%n≡a%n (m % d + n % d) (n / d) d-1 ⟩
+  (m % d +  n % d)                % d ∎
 
-%-remove-+ˡ : ∀ a b {n} → suc n ∣ a → (a + b) % suc n ≡ b % suc n
-%-remove-+ˡ a b {n-1} (divides p refl) = begin-equality
-  (p * n + b) % n ≡⟨ cong (_% n) (+-comm (p * n) b) ⟩
-  (b + p * n) % n ≡⟨ [a+kn]%n≡a%n b p n-1 ⟩
-  b           % n ∎
-  where n = suc n-1
+%-remove-+ˡ : ∀ {m} n {d} {≢0} → d ∣ m → ((m + n) % d) {≢0} ≡ (n % d) {≢0}
+%-remove-+ˡ {m} n {d@(suc d-1)} (divides p refl) = begin-equality
+  (p * d + n) % d ≡⟨ cong (_% d) (+-comm (p * d) n) ⟩
+  (n + p * d) % d ≡⟨ [a+kn]%n≡a%n n p d-1 ⟩
+  n           % d ∎
 
-%-remove-+ʳ : ∀ a b {n} → suc n ∣ b → (a + b) % suc n ≡ a % suc n
-%-remove-+ʳ a b {n} eq rewrite +-comm a b = %-remove-+ˡ b a eq
+%-remove-+ʳ : ∀ m {n d} {≢0} → d ∣ n → ((m + n) % d) {≢0} ≡ (m % d) {≢0}
+%-remove-+ʳ m {n} {suc _} eq rewrite +-comm m n = %-remove-+ˡ {n} m eq
 
 ------------------------------------------------------------------------
 -- Properties of _/_
@@ -144,8 +142,8 @@ m*n/n≡m m (suc n-1) = a*n[divₕ]n≡a 0 m n-1
 m/n*n≡m : ∀ {m n} .{≢0} → n ∣ m → (m / n) {≢0} * n ≡ m
 m/n*n≡m {_} {n@(suc n-1)} (divides q refl) = cong (_* n) (m*n/n≡m q n)
 
-n*[a/n]≡a : ∀ {a n} .{n≢0} → n ∣ a → n * (a / n) {n≢0} ≡ a
-n*[a/n]≡a {n = n} n∣a = trans (*-comm n (_ / n)) (m/n*n≡m n∣a)
+m*[n/m]≡n : ∀ {m n} .{≢0} → m ∣ n → m * (n / m) {≢0} ≡ n
+m*[n/m]≡n {m} m∣n = trans (*-comm m (_ / m)) (m/n*n≡m m∣n)
 
 m/n*n≤m : ∀ m n .{≢0} → (m / n) {≢0} * n ≤ m
 m/n*n≤m m n@(suc n-1) = begin
