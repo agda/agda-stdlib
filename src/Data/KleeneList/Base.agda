@@ -27,7 +27,7 @@ private
 ------------------------------------------------------------------------
 -- Definitions
 --
--- These lists are exatcly equivalent to normal lists, except the "cons"
+-- These lists are exactly equivalent to normal lists, except the "cons"
 -- case is split into its own data type. This lets us write all the same
 -- functions as before, but it has 2 advantages:
 --
@@ -163,7 +163,7 @@ module Apply where
   []     ⋆<*>⋆ xs = []
   (∹ fs) ⋆<*>⋆ xs = fs ⁺<*>⋆ xs
 
-  fs ⁺<*>⋆ xs = map⋆ (head fs) xs Concat.⋆++⋆ (tail fs ⋆<*>⋆ xs)
+  fs ⁺<*>⋆ xs = map⋆ (head fs) xs ++⋆ (tail fs ⋆<*>⋆ xs)
 
   []     ⋆<*>⁺ xs = []
   (∹ fs) ⋆<*>⁺ xs = ∹ fs ⁺<*>⁺ xs
@@ -224,26 +224,26 @@ module _ (f : B → A → B) where
 -- Accumulating maps
 
 module _ (f : B → A → (B × C)) where
-  mapAccumL⋆ : B → A ⋆ → (B × C ⋆)
-  mapAccumL⁺ : B → A ⁺ → (B × C ⁺)
+  mapAccumˡ⋆ : B → A ⋆ → (B × C ⋆)
+  mapAccumˡ⁺ : B → A ⁺ → (B × C ⁺)
 
-  mapAccumL⋆ b [] = b , []
-  mapAccumL⋆ b (∹ xs) = map₂ ∹_ (mapAccumL⁺ b xs)
+  mapAccumˡ⋆ b [] = b , []
+  mapAccumˡ⋆ b (∹ xs) = map₂ ∹_ (mapAccumˡ⁺ b xs)
 
-  mapAccumL⁺ b (x & xs) =
+  mapAccumˡ⁺ b (x & xs) =
     let y , ys = f b x
-        z , zs = mapAccumL⋆ y xs
+        z , zs = mapAccumˡ⋆ y xs
     in z , ys & zs
 
 module _ (f : A → B → (C × B)) (b : B) where
-  mapAccumR⋆ : A ⋆ → (C ⋆ × B)
-  mapAccumR⁺ : A ⁺ → (C ⁺ × B)
+  mapAccumʳ⋆ : A ⋆ → (C ⋆ × B)
+  mapAccumʳ⁺ : A ⁺ → (C ⁺ × B)
 
-  mapAccumR⋆ [] = [] , b
-  mapAccumR⋆ (∹ xs) = map₁ ∹_ (mapAccumR⁺ xs)
+  mapAccumʳ⋆ [] = [] , b
+  mapAccumʳ⋆ (∹ xs) = map₁ ∹_ (mapAccumʳ⁺ xs)
 
-  mapAccumR⁺ (x & xs) =
-    let ys , y = mapAccumR⋆ xs
+  mapAccumʳ⁺ (x & xs) =
+    let ys , y = mapAccumʳ⋆ xs
         zs , z = f x y
     in zs & ys , z
 
@@ -263,13 +263,13 @@ module _ (f : A → A → A) where
   foldl1 (x & xs) = foldl⋆ f x xs
 
 module _ (f : A → Maybe B → B) where
-  foldrMay⋆ : A ⋆ → Maybe B
-  foldrMay⁺ : A ⁺ → B
+  foldrMaybe⋆ : A ⋆ → Maybe B
+  foldrMaybe⁺ : A ⁺ → B
 
-  foldrMay⋆ [] = nothing
-  foldrMay⋆ (∹ xs) = just (foldrMay⁺ xs)
+  foldrMaybe⋆ [] = nothing
+  foldrMaybe⋆ (∹ xs) = just (foldrMaybe⁺ xs)
 
-  foldrMay⁺ xs = f (head xs) (foldrMay⋆ (tail xs))
+  foldrMaybe⁺ xs = f (head xs) (foldrMaybe⋆ (tail xs))
 
 ------------------------------------------------------------------------
 -- Indexing
