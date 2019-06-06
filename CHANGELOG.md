@@ -66,9 +66,9 @@ New modules
   Data.AVL.NonEmpty
   Data.AVL.NonEmpty.Propositional
 
-  Data.List.Kleene
-  Data.List.Kleene.AsList
-  Data.List.Kleene.Base
+  Data.KleeneList
+  Data.KleeneList.AsList
+  Data.KleeneList.Base
 
   Data.List.Membership.Propositional.Properties.WithK
 
