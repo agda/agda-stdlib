@@ -22,6 +22,7 @@ open import Data.Nat.Base using (ℕ; zero; suc; pred)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Function
 open import Relation.Nullary
+open import Relation.Nullary.Product using (_×-dec_)
 
 open import Function.Nary.NonDependent
 
@@ -98,6 +99,13 @@ uncurry⊤ₙ : ∀ n {ls} {as : Sets n ls} {r} {b : Set r} →
             as ⇉ b → (Product⊤ n as → b)
 uncurry⊤ₙ zero    f = const f
 uncurry⊤ₙ (suc n) f = uncurry (uncurry⊤ₙ n ∘′ f)
+
+------------------------------------------------------------------------
+-- decidability
+
+Product⊤-dec : ∀ n {ls} {as : Sets n ls} → Product⊤ n (Dec <$> as) → Dec (Product⊤ n as)
+Product⊤-dec zero    _          = yes _
+Product⊤-dec (suc n) (p? , ps?) = p? ×-dec Product⊤-dec n ps?
 
 ------------------------------------------------------------------------
 -- projection of the k-th component
