@@ -471,7 +471,7 @@ record TermLemmas (T : ℕ → Set) : Set₁ where
     termSubst : TermSubst T
 
   open TermSubst termSubst
-  module T = TermSubst termSubst
+  private module T = TermSubst termSubst
 
   field
     app-var : ∀ {T′} {lift : Lift T′ T} {m n x} {ρ : Sub T′ m n} →
