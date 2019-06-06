@@ -45,7 +45,7 @@ arg-info-injective₂ refl = refl
 arg-info-injective : ∀ {v r v′ r′} → arg-info v r ≡ arg-info v′ r′ → v ≡ v′ × r ≡ r′
 arg-info-injective = < arg-info-injective₁ , arg-info-injective₂ >
 
-_≟_ : Decidable (_≡_ {A = ArgInfo})
+_≟_ : DecidableEquality ArgInfo
 arg-info v r ≟ arg-info v′ r′ =
   Dec.map′ (uncurry (cong₂ arg-info))
            arg-info-injective

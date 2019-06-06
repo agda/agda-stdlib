@@ -653,8 +653,9 @@ Other minor additions
 
 * Added new definitions in `Relation.Binary.Core`:
   ```agda
-  Universal _∼_    = ∀ x y → x ∼ y
-  Recomputable _~_ = ∀ {x y} → .(x ~ y) → x ~ y
+  Universal _∼_       = ∀ x y → x ∼ y
+  Recomputable _~_    = ∀ {x y} → .(x ~ y) → x ~ y
+  DecidableEquality A = Decidable {A = A} _≡_
   ```
 
 * Added new proof to `Relation.Binary.Consequences`:

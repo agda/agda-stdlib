@@ -76,5 +76,5 @@ unArg-dec : {x y : Arg A} → Dec (unArg x ≡ unArg y) → Dec (x ≡ y)
 unArg-dec {x = arg i a} {arg i′ a′} a≟a′ =
   Dec.map′ (uncurry (cong₂ arg)) arg-injective ((i Information.≟ i′) ×-dec a≟a′)
 
-≡-dec : Decidable {A = A} _≡_ → Decidable {A = Arg A} _≡_
+≡-dec : DecidableEquality A → DecidableEquality (Arg A)
 ≡-dec _≟_ x y = unArg-dec (unArg x ≟ unArg y)

@@ -18,7 +18,7 @@ open import Relation.Binary.PropositionalEquality
 open import Agda.Builtin.Reflection public using (Relevance)
 open Relevance public
 
-_≟_ : Decidable (_≡_ {A = Relevance})
+_≟_ : DecidableEquality Relevance
 relevant   ≟ relevant   = yes refl
 irrelevant ≟ irrelevant = yes refl
 relevant   ≟ irrelevant = no λ()

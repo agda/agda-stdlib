@@ -18,7 +18,7 @@ open import Relation.Binary.PropositionalEquality
 open import Agda.Builtin.Reflection public using (Visibility)
 open Visibility public
 
-_≟_ : Decidable (_≡_ {A = Visibility})
+_≟_ : DecidableEquality Visibility
 visible   ≟ visible   = yes refl
 hidden    ≟ hidden    = yes refl
 instance′ ≟ instance′ = yes refl

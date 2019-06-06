@@ -26,6 +26,9 @@ open import Reflection.Argument
 open import Agda.Builtin.Reflection public using (Pattern)
 open Pattern public
 
+------------------------------------------------------------------------
+-- Decidable equality
+
 con-injective₁ : ∀ {c c′ args args′} → con c args ≡ con c′ args′ → c ≡ c′
 con-injective₁ refl = refl
 
