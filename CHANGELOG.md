@@ -413,6 +413,8 @@ Other minor additions
   foldr-preservesᵇ : (P x → P y → P (f x y)) → P e → All P xs   → P (foldr f e xs)
   foldr-preservesʳ : (P y → P (f x y))       → P e              → P (foldr f e xs)
   foldr-preservesᵒ : (P x ⊎ P y → P (f x y)) → P e ⊎ Any P xs   → P (foldr f e xs)
+
+  ∷-dec : Dec (x ≡ y) → Dec (xs ≡ ys) → Dec (x List.∷ xs ≡ y ∷ ys)
   ```
 
 * Defined a new utility in `Data.List.Relation.Binary.Permutation.Inductive.Properties`:
