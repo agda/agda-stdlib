@@ -186,7 +186,7 @@ getArgs _ = nothing
 
 -- We try to be flexible here, by matching two kinds of names.
 -- The first is the field accessor for the monoid record itself.
--- However, users will likely want to use te solver with
+-- However, users will likely want to use the solver with
 -- expressions like:
 --   xs ++ (ys ++ zs) ≡ (xs ++ ys) ++ zs
 -- So we also evaluate the field accessor to find functions like ++.
