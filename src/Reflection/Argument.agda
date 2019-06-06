@@ -10,6 +10,9 @@ module Reflection.Argument where
 
 open import Data.List.Base as List using (List)
 open import Data.Product using (_×_; _,_; uncurry; <_,_>)
+open import Reflection.Argument.Visibility
+open import Reflection.Argument.Relevance
+open import Reflection.Argument.Information as Information
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Product using (_×-dec_)
@@ -24,13 +27,6 @@ private
 -- Re-exporting the builtins publically
 
 open import Agda.Builtin.Reflection public using (Arg)
-import Reflection.Argument.Relevance
-module Relevance = Reflection.Argument.Relevance; open Relevance
-import Reflection.Argument.Visibility
-module Visibility = Reflection.Argument.Visibility; open Visibility
-import Reflection.Argument.Information
-module Information = Reflection.Argument.Information; open Information
-
 open Arg public
 
 -- Pattern synonyms
