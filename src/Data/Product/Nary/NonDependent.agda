@@ -16,13 +16,16 @@ module Data.Product.Nary.NonDependent where
 
 open import Level as L using (Level; _⊔_; Lift; 0ℓ)
 open import Agda.Builtin.Unit
-open import Data.Product
+open import Data.Product as Prod
+import Data.Product.Properties as Prodₚ
 open import Data.Sum using (_⊎_)
 open import Data.Nat.Base using (ℕ; zero; suc; pred)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Function
 open import Relation.Nullary
 open import Relation.Nullary.Product using (_×-dec_)
+open import Relation.Binary using (Rel)
+open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong₂)
 
 open import Function.Nary.NonDependent
 
@@ -42,6 +45,17 @@ Product : ∀ n {ls} → Sets n ls → Set (⨆ n ls)
 Product 0       _        = ⊤
 Product 1       (a , _)  = a
 Product (suc n) (a , as) = a × Product n as
+
+-- Pointwise lifting of a relation on products
+
+Allₙ : (∀ {a} {A : Set a} → Rel A a) →
+        ∀ n {ls} {as : Sets n ls} (l r : Product n as) → Sets n ls
+Allₙ R 0               l       r       = _
+Allₙ R 1               a       b       = R a b , _
+Allₙ R (suc n@(suc _)) (a , l) (b , r) = R a b , Allₙ R n l r
+
+Equalₙ : ∀ n {ls} {as : Sets n ls} (l r : Product n as) → Sets n ls
+Equalₙ = Allₙ _≡_
 
 ------------------------------------------------------------------------
 -- Generic Programs
@@ -106,6 +120,26 @@ uncurry⊤ₙ (suc n) f = uncurry (uncurry⊤ₙ n ∘′ f)
 Product⊤-dec : ∀ n {ls} {as : Sets n ls} → Product⊤ n (Dec <$> as) → Dec (Product⊤ n as)
 Product⊤-dec zero    _          = yes _
 Product⊤-dec (suc n) (p? , ps?) = p? ×-dec Product⊤-dec n ps?
+
+Product-dec : ∀ n {ls} {as : Sets n ls} → Product n (Dec <$> as) → Dec (Product n as)
+Product-dec 0               _          = yes _
+Product-dec 1               p?         = p?
+Product-dec (suc n@(suc _)) (p? , ps?) = p? ×-dec Product-dec n ps?
+
+------------------------------------------------------------------------
+-- pointwise liftings
+
+toEqualₙ : ∀ n {ls} {as : Sets n ls} {l r : Product n as} →
+           l ≡ r → Product n (Equalₙ n l r)
+toEqualₙ 0               eq = _
+toEqualₙ 1               eq = eq
+toEqualₙ (suc n@(suc _)) eq = Prod.map₂ (toEqualₙ n) (Prodₚ.,-injective eq)
+
+fromEqualₙ : ∀ n {ls} {as : Sets n ls} {l r : Product n as} →
+             Product n (Equalₙ n l r) → l ≡ r
+fromEqualₙ 0               eq = refl
+fromEqualₙ 1               eq = eq
+fromEqualₙ (suc n@(suc _)) eq = uncurry (cong₂ _,_) (Prod.map₂ (fromEqualₙ n) eq)
 
 ------------------------------------------------------------------------
 -- projection of the k-th component

@@ -16,13 +16,16 @@ module Relation.Nary where
 
 open import Level using (Level; _⊔_)
 open import Data.Nat.Base using (zero; suc)
-open import Data.Product using (_×_; _,_)
-open import Data.Product.Nary.NonDependent using (Product⊤; curry⊤ₙ; uncurry⊤ₙ)
+open import Data.Product as Prod using (_×_; _,_; uncurry)
+open import Data.Product.Nary.NonDependent
 open import Data.Sum using (_⊎_)
-open import Function using (_$_)
+open import Function using (_$_; _∘′_)
 open import Function.Nary.NonDependent
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary using (¬_; Dec; yes; no)
+import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Product using (_×-dec_)
 import Relation.Unary as Unary
+open import Relation.Binary.PropositionalEquality using (_≡_; cong)
 
 private
   variable
@@ -70,7 +73,28 @@ infix 5 ∃⟨_⟩ Π[_] ∀[_]
 ∀[_] : ∀ {n ls r} {as : Sets n ls} → as ⇉ Set r → Set (r ⊔ (⨆ n ls))
 ∀[_] = quantₙ Unary.IUniversal _
 
+------------------------------------------------------------------------
+-- Decidability transformer
 
+-- Injectiveₙ : ∀ n. ∀ a₁₁ a₁₂ ⋯ aₙ₁ aₙ₂ →
+--                   con a₁₁ ⋯ aₙ₁ ≡ con a₁₂ ⋯ aₙ₂ →
+--                   a₁₁ ≡ a₁₂ × ⋯ × aₙ₁ ≡ aₙ₂
+
+Injectiveₙ : ∀ n {ls} {as : Sets n ls} {R : Set r} → Arrows n as R → Set (r Level.⊔ ⨆ n ls)
+Injectiveₙ n f = ∀ {l r} → uncurryₙ n f l ≡ uncurryₙ n f r → Product n (Equalₙ n l r)
+
+-- ≟-mapₙ : ∀ n. (con : A₁ → ⋯ → Aₙ → R) →
+--               Injectiveₙ n con →
+--               ∀ a₁₁ a₁₂ ⋯ aₙ₁ aₙ₂ →
+--               Dec (a₁₁ ≡ a₁₂) → ⋯ Dec (aₙ₁ ≡ aₙ₂) →
+--               Dec (con a₁₁ ⋯ aₙ₁ ≡ con a₁₂ ⋯ aₙ₂)
+
+≟-mapₙ : ∀ n {ls} {as : Sets n ls} (con : Arrows n as R) →
+         Injectiveₙ n con → ∀ {l r : Product n as} →
+         Arrows n (Dec <$> Equalₙ n l r) (Dec (uncurryₙ n con l ≡ uncurryₙ n con r))
+≟-mapₙ n con con-inj =
+  curryₙ n λ a?s → let as? = Product-dec n a?s in
+  Dec.map′ (cong (uncurryₙ n con) ∘′ fromEqualₙ n) con-inj as?
 
 ------------------------------------------------------------------------
 -- Pointwise liftings of k-ary operators
