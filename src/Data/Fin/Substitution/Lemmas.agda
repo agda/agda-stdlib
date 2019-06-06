@@ -538,8 +538,8 @@ record TermLemmas (T : ℕ → Set) : Set₁ where
     (t₁ T./ T.wk) T./ (t₂ ∷ ρ) ≡⟨ ⨀→/✶ ((t₂ ∷ ρ) ◅ T.wk ◅ ε) (ρ ◅ ε) (wk-⊙-∷ t₂ ρ) t₁ ⟩
     t₁ T./ ρ                   ∎
 
-  weaken-sub′ : ∀ {n} (t₁ : T n) {t₂ : T n} → T.weaken t₁ T./ (T.sub t₂) ≡ t₁
-  weaken-sub′ t₁ {t₂} = begin
+  weaken-sub : ∀ {n} (t₁ : T n) {t₂ : T n} → T.weaken t₁ T./ (T.sub t₂) ≡ t₁
+  weaken-sub t₁ {t₂} = begin
     T.weaken t₁ T./ (T.sub t₂) ≡⟨ weaken-∷ t₁ ⟩
     t₁ T./ T.id                ≡⟨ id-vanishes t₁ ⟩
     t₁                         ∎

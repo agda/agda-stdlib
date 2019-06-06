@@ -261,7 +261,7 @@ Other minor additions
   weaken-↑    : weaken t / (ρ ↑) ≡ weaken (t / ρ)
   wk-⊙-∷      : (wk ⊙ (t ∷ ρ)) ≡ ρ
   weaken-∷    : weaken t₁ / (t₂ ∷ ρ) ≡ t₁ / ρ
-  weaken-sub′ : weaken t₁ / sub t₂ ≡ t₁
+  weaken-sub : weaken t₁ / sub t₂ ≡ t₁
   ```
 
 * Added new record to `Algebra`:
