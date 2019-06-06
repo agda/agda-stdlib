@@ -91,11 +91,13 @@ uncurryₙ (suc n@(suc _)) f = uncurry (uncurryₙ n ∘′ f)
 
 curry⊤ₙ : ∀ n {ls} {as : Sets n ls} {r} {b : Set r} →
           (Product⊤ n as → b) → as ⇉ b
-curry⊤ₙ n f = curryₙ n (f ∘ toProduct⊤ n)
+curry⊤ₙ zero    f = f _
+curry⊤ₙ (suc n) f = curry⊤ₙ n ∘′ curry f
 
 uncurry⊤ₙ : ∀ n {ls} {as : Sets n ls} {r} {b : Set r} →
             as ⇉ b → (Product⊤ n as → b)
-uncurry⊤ₙ n f = uncurryₙ n f ∘ toProduct n
+uncurry⊤ₙ zero    f = const f
+uncurry⊤ₙ (suc n) f = uncurry (uncurry⊤ₙ n ∘′ f)
 
 ------------------------------------------------------------------------
 -- projection of the k-th component
