@@ -3,23 +3,20 @@ module README where
 ------------------------------------------------------------------------
 -- The Agda standard library, development version
 --
--- Authors: Nils Anders Danielsson, with contributions from Andreas
--- Abel, Stevan Andjelkovic, Jean-Philippe Bernardy, Peter Berry,
--- Bradley Hardy Joachim Breitner, Samuel Bronson, Daniel Brown,
--- James Chapman, Liang-Ting Chen, Matthew Daggitt, Dominique Devriese,
--- Dan Doel, Érdi Gergő, Helmut Grohne, Simon Foster, Liyang Hu,
--- Jason Hu, Patrik Jansson, Alan Jeffrey, Wen Kokke, Evgeny Kotelnikov,
--- Sergei Meshveliani, Eric Mertens, Darin Morrison, Guilhem Moulin,
--- Shin-Cheng Mu, Ulf Norell, Noriyuki Ohkawa, Nicolas Pouillard,
--- Andrés Sicard-Ramírez, Sandro Stucki, Milo Turner, Noam Zeilberger
--- and some anonymous contributors.
+-- Authors: Nils Anders Danielsson, Matthew Daggitt, Guillaume Allais
+-- with contributions from Andreas Abel, Stevan Andjelkovic,
+-- Jean-Philippe Bernardy, Peter Berry, Bradley Hardy Joachim Breitner,
+-- Samuel Bronson, Daniel Brown, James Chapman, Liang-Ting Chen,
+-- Dominique Devriese, Dan Doel, Érdi Gergő, Zack Grannan,
+-- Helmut Grohne, Simon Foster, Liyang Hu, Jason Hu, Patrik Jansson,
+-- Alan Jeffrey, Wen Kokke, Evgeny Kotelnikov, Sergei Meshveliani,
+-- Eric Mertens, Darin Morrison, Guilhem Moulin, Shin-Cheng Mu,
+-- Ulf Norell, Noriyuki Ohkawa, Nicolas Pouillard,
+-- Andrés Sicard-Ramírez, Lex van der Stoep, Sandro Stucki, Milo Turner,
+-- Noam Zeilberger and other anonymous contributors.
 ------------------------------------------------------------------------
 
--- This version of the library has been tested using Agda 2.5.4.1.
-
--- Note that no guarantees are currently made about forwards or
--- backwards compatibility, the library is still at an experimental
--- stage.
+-- This version of the library has been tested using Agda 2.6.0.
 
 -- The library comes with a .agda-lib file, for use with the library
 -- management system.
@@ -60,6 +57,9 @@ module README where
 --     folder contains modules using the old musical notation.
 -- • Data
 --     Data types and properties.
+
+import README.Data
+
 -- • Function
 --     Combinators and properties related to functions.
 -- • Foreign
@@ -71,8 +71,6 @@ module README where
 --     Input/output-related functions.
 -- • Level
 --     Universe levels.
--- • Record
---     An encoding of record types with manifest fields and "with".
 -- • Reflection
 --     Support for reflection.
 -- • Relation
@@ -81,8 +79,6 @@ module README where
 --     Sizes used by the sized types mechanism.
 -- • Strict
 --     Provides access to the builtins relating to strictness.
--- • Universe
---     A definition of universes.
 
 ------------------------------------------------------------------------
 -- A selection of useful library modules
@@ -188,7 +184,7 @@ import IO
 --
 --     open IsSemigroup isSemigroup public
 --
--- Note here that open IsSemigroup isSemigroup public ensures that the
+-- Note here that `open IsSemigroup isSemigroup public` ensures that the
 -- fields of the isSemigroup record can be accessed directly; this
 -- technique enables the user of an IsMonoid record to use underlying
 -- records without having to manually open an entire record hierarchy.
@@ -214,7 +210,7 @@ import IO
 -- in IsPreorder.
 
 -- Records packing up properties with the corresponding operations,
--- sets, etc. are sometimes also defined:
+-- sets, etc. are also defined:
 --
 --   record Semigroup : Set₁ where
 --     infixl 7 _∙_
@@ -259,30 +255,9 @@ import IO
 -- More documentation
 ------------------------------------------------------------------------
 
--- Some examples showing where the natural numbers/integers and some
--- related operations and properties are defined, and how they can be
--- used:
-
-import README.Nat
-import README.Integer
-
--- Some examples showing how the AVL tree module can be used.
-
-import README.AVL
-
--- An example showing how the Record module can be used.
-
-import README.Record
-
 -- An example showing how the case expression can be used.
 
 import README.Case
-
--- Examples how (indexed) containers and constructions over them (free
--- monad, least fixed point, etc.) can be used
-
-import README.Container.FreeMonad
-import README.Container.Indexed
 
 -- Some examples showing how combinators can be used to emulate
 -- "functional reasoning"
@@ -294,14 +269,15 @@ import README.Function.Reasoning
 
 import README.Debug.Trace
 
+-- An exploration of the generic programs acting on n-ary functions and
+-- n-ary heterogeneous products
+
+import README.Nary
+
 -- Explaining the inspect idiom: use case, equivalent handwritten
 -- auxiliary definitions, and implementation details.
 
 import README.Inspect
-
--- Using List's Interleaving to define a fully certified filter function.
-
-import README.Interleaving
 
 ------------------------------------------------------------------------
 -- Core modules

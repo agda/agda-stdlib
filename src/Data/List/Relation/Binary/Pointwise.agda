@@ -16,7 +16,7 @@ open import Data.List.Properties using (≡-dec)
 open import Data.Fin using (Fin) renaming (zero to fzero; suc to fsuc)
 open import Data.Nat using (ℕ; zero; suc)
 open import Level
-open import Relation.Nullary
+open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Nullary.Negation using (contradiction)
 import Relation.Nullary.Decidable as Dec using (map′)
 open import Relation.Unary as U using (Pred)
@@ -186,7 +186,6 @@ module _ {a b ℓ} {A : Set a} {B : Set b} {_∼_ : REL A B ℓ} where
 
   tabulate⁻ : ∀ {n} {f : Fin n → A} {g : Fin n → B} →
               Pointwise _∼_ (tabulate f) (tabulate g) → (∀ i → f i ∼ g i)
-  tabulate⁻ {zero}  []            ()
   tabulate⁻ {suc n} (x∼y ∷ xs∼ys) fzero    = x∼y
   tabulate⁻ {suc n} (x∼y ∷ xs∼ys) (fsuc i) = tabulate⁻ xs∼ys i
 
@@ -248,11 +247,9 @@ module _ {a b c d r} {A : Set a} {B : Set b} {C : Set c} {D : Set d}
   map⁻ : ∀ {as bs} (f : A → C) (g : B → D) →
          Pointwise R (List.map f as) (List.map g bs) →
          Pointwise (λ a b → R (f a) (g b)) as bs
-  map⁻ {[]} {[]} f g [] = []
-  map⁻ {[]} {b ∷ bs} f g rs with Pointwise-length rs
-  ... | ()
-  map⁻ {a ∷ as} {[]} f g rs with Pointwise-length rs
-  ... | ()
+  map⁻ {[]}     {[]}     f g [] = []
+  map⁻ {[]}     {b ∷ bs} f g rs = contradiction (Pointwise-length rs) λ()
+  map⁻ {a ∷ as} {[]}     f g rs = contradiction (Pointwise-length rs) λ()
   map⁻ {a ∷ as} {b ∷ bs} f g (r ∷ rs) = r ∷ map⁻ f g rs
 
 ------------------------------------------------------------------------

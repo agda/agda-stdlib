@@ -8,12 +8,14 @@
 
 module Relation.Binary.HeterogeneousEquality where
 
+import Axiom.Extensionality.Heterogeneous as Ext
 open import Data.Product
+open import Data.Unit.NonEta
 open import Function
 open import Function.Inverse using (Inverse)
-open import Data.Unit.NonEta
 open import Level
-open import Relation.Nullary
+open import Relation.Nullary hiding (Irrelevant)
+open import Relation.Unary using (Pred)
 open import Relation.Binary
 open import Relation.Binary.Consequences
 open import Relation.Binary.Indexed.Heterogeneous
@@ -24,6 +26,13 @@ open import Relation.Binary.PropositionalEquality as P using (_≡_; refl)
 
 import Relation.Binary.HeterogeneousEquality.Core as Core
 
+private
+  variable
+    a b c p ℓ : Level
+    A : Set a
+    B : Set b
+    C : Set c
+
 ------------------------------------------------------------------------
 -- Heterogeneous equality
 
@@ -33,145 +42,127 @@ open Core public using (_≅_; refl)
 
 -- Nonequality.
 
-_≇_ : ∀ {ℓ} {A : Set ℓ} → A → {B : Set ℓ} → B → Set ℓ
+_≇_ : ∀ {A : Set a} → A → {B : Set b} → B → Set a
 x ≇ y = ¬ x ≅ y
 
 ------------------------------------------------------------------------
 -- Conversion
 
-open Core public using (≅-to-≡)
+open Core public using (≅-to-≡; ≡-to-≅)
 
-≡-to-≅ : ∀ {a} {A : Set a} {x y : A} → x ≡ y → x ≅ y
-≡-to-≅ refl = refl
-
-≅-to-type-≡ : ∀ {a} {A B : Set a} {x : A} {y : B} →
-                x ≅ y → A ≡ B
+≅-to-type-≡ : ∀ {A B : Set a} {x : A} {y : B} → x ≅ y → A ≡ B
 ≅-to-type-≡ refl = refl
 
-≅-to-subst-≡ : ∀ {a} {A B : Set a} {x : A} {y : B} → (p : x ≅ y) →
-                 P.subst (λ x → x) (≅-to-type-≡ p) x ≡ y
+≅-to-subst-≡ : ∀ {A B : Set a} {x : A} {y : B} → (p : x ≅ y) →
+               P.subst (λ x → x) (≅-to-type-≡ p) x ≡ y
 ≅-to-subst-≡ refl = refl
 
 ------------------------------------------------------------------------
 -- Some properties
 
-reflexive : ∀ {a} {A : Set a} → _⇒_ {A = A} _≡_ (λ x y → x ≅ y)
+reflexive : _⇒_ {A = A} _≡_ (λ x y → x ≅ y)
 reflexive refl = refl
 
-sym : ∀ {ℓ} {A B : Set ℓ} {x : A} {y : B} → x ≅ y → y ≅ x
+sym : ∀ {x : A} {y : B} → x ≅ y → y ≅ x
 sym refl = refl
 
-trans : ∀ {ℓ} {A B C : Set ℓ} {x : A} {y : B} {z : C} →
-        x ≅ y → y ≅ z → x ≅ z
+trans : ∀ {x : A} {y : B} {z : C} → x ≅ y → y ≅ z → x ≅ z
 trans refl eq = eq
 
-subst : ∀ {a} {A : Set a} {p} → Substitutive {A = A} (λ x y → x ≅ y) p
+subst : Substitutive {A = A} (λ x y → x ≅ y) ℓ
 subst P refl p = p
 
-subst₂ : ∀ {a b p} {A : Set a} {B : Set b} (P : A → B → Set p) →
-         ∀ {x₁ x₂ y₁ y₂} → x₁ ≅ x₂ → y₁ ≅ y₂ → P x₁ y₁ → P x₂ y₂
-subst₂ P refl refl p = p
+subst₂ : ∀ (_∼_ : REL A B ℓ) {x y u v} → x ≅ y → u ≅ v → x ∼ u → y ∼ v
+subst₂ _ refl refl p = p
 
-subst-removable : ∀ {a p} {A : Set a}
-                  (P : A → Set p) {x y} (eq : x ≅ y) z →
+subst-removable : ∀ (P : Pred A p) {x y} (eq : x ≅ y) z →
                   subst P eq z ≅ z
 subst-removable P refl z = refl
 
-≡-subst-removable : ∀ {a p} {A : Set a}
-                    (P : A → Set p) {x y} (eq : x ≡ y) z →
+≡-subst-removable : ∀ (P : Pred A p) {x y} (eq : x ≡ y) z →
                     P.subst P eq z ≅ z
 ≡-subst-removable P refl z = refl
 
-cong : ∀ {a b} {A : Set a} {B : A → Set b} {x y}
+cong : ∀ {A : Set a} {B : A → Set b} {x y}
        (f : (x : A) → B x) → x ≅ y → f x ≅ f y
 cong f refl = refl
 
-cong-app : ∀ {a b} {A : Set a} {B : A → Set b} {f g : (x : A) → B x} →
+cong-app : ∀ {A : Set a} {B : A → Set b} {f g : (x : A) → B x} →
            f ≅ g → (x : A) → f x ≅ g x
 cong-app refl x = refl
 
-cong₂ : ∀ {a b c} {A : Set a} {B : A → Set b} {C : ∀ x → B x → Set c}
-          {x y u v}
+cong₂ : ∀ {A : Set a} {B : A → Set b} {C : ∀ x → B x → Set c} {x y u v}
         (f : (x : A) (y : B x) → C x y) → x ≅ y → u ≅ v → f x u ≅ f y v
 cong₂ f refl refl = refl
 
-resp₂ : ∀ {a ℓ} {A : Set a} (∼ : Rel A ℓ) → ∼ Respects₂ (λ x y → x ≅ y)
+resp₂ : ∀ (∼ : Rel A ℓ) → ∼ Respects₂ (λ x y → x ≅ y)
 resp₂ _∼_ = subst⟶resp₂ _∼_ subst
 
-icong : ∀ {a b ℓ} {I : Set ℓ}
-        (A : I → Set a) {B : {k : I} → A k → Set b}
-        {i j : I} {x : A i} {y : A j} →
-        i ≡ j →
-        (f : {k : I} → (z : A k) → B z) →
-        x ≅ y →
-        f x ≅ f y
-icong _ refl _ refl = refl
+module _ {I : Set ℓ} (A : I → Set a) {B : {k : I} → A k → Set b} where
 
-icong₂ : ∀ {a b c ℓ} {I : Set ℓ}
-         (A : I → Set a)
-         {B : {k : I} → A k → Set b}
-         {C : {k : I} → (a : A k) → B a → Set c}
-         {i j : I} {x : A i} {y : A j} {u : B x} {v : B y} →
-         i ≡ j →
-         (f : {k : I} → (z : A k) → (w : B z) → C z w) →
-         x ≅ y → u ≅ v →
-         f x u ≅ f y v
-icong₂ _ refl _ refl refl = refl
+  icong : {i j : I} {x : A i} {y : A j} →
+          i ≡ j →
+          (f : {k : I} → (z : A k) → B z) →
+          x ≅ y →
+          f x ≅ f y
+  icong refl _ refl = refl
 
-icong-subst-removable : ∀ {a b ℓ}
-                        {I : Set ℓ}
-                        (A : I → Set a) {B : {k : I} → A k → Set b}
-                        {i j : I} (eq : i ≅ j)
-                        (f : {k : I} → (z : A k) → B z)
-                        (x : A i) →
-                        f (subst A eq x) ≅ f x
-icong-subst-removable _ refl _ _ = refl
+  icong₂ : {C : {k : I} → (a : A k) → B a → Set c}
+           {i j : I} {x : A i} {y : A j} {u : B x} {v : B y} →
+           i ≡ j →
+           (f : {k : I} → (z : A k) → (w : B z) → C z w) →
+           x ≅ y → u ≅ v →
+           f x u ≅ f y v
+  icong₂ refl _ refl refl = refl
 
-icong-≡-subst-removable : ∀ {a b ℓ}
-                          {I : Set ℓ}
-                          (A : I → Set a) {B : {k : I} → A k → Set b}
-                          {i j : I} (eq : i ≡ j)
+  icong-subst-removable : {i j : I} (eq : i ≅ j)
                           (f : {k : I} → (z : A k) → B z)
                           (x : A i) →
-                          f (P.subst A eq x) ≅ f x
-icong-≡-subst-removable _ refl _ _ = refl
+                          f (subst A eq x) ≅ f x
+  icong-subst-removable refl _ _ = refl
+
+  icong-≡-subst-removable : {i j : I} (eq : i ≡ j)
+                            (f : {k : I} → (z : A k) → B z)
+                            (x : A i) →
+                            f (P.subst A eq x) ≅ f x
+  icong-≡-subst-removable refl _ _ = refl
 
 ------------------------------------------------------------------------
 --Proof irrelevance
 
-≅-irrelevant : ∀ {ℓ} {A B : Set ℓ} → Irrelevant ((A → B → Set ℓ) ∋ λ a → a ≅_)
+≅-irrelevant : {A B : Set ℓ} → Irrelevant ((A → B → Set ℓ) ∋ λ a → a ≅_)
 ≅-irrelevant refl refl = refl
 
-module _ {ℓ} {A₁ A₂ A₃ A₄ : Set ℓ} {a₁ : A₁} {a₂ : A₂} {a₃ : A₃} {a₄ : A₄} where
+module _ {A C : Set a} {B D : Set ℓ}
+         {w : A} {x : B} {y : C} {z : D} where
 
- ≅-heterogeneous-irrelevant : (p : a₁ ≅ a₂) (q : a₃ ≅ a₄) → a₂ ≅ a₃ → p ≅ q
+ ≅-heterogeneous-irrelevant : (p : w ≅ x) (q : y ≅ z) → x ≅ y → p ≅ q
  ≅-heterogeneous-irrelevant refl refl refl = refl
 
- ≅-heterogeneous-irrelevantˡ : (p : a₁ ≅ a₂) (q : a₃ ≅ a₄) → a₁ ≅ a₃ → p ≅ q
+ ≅-heterogeneous-irrelevantˡ : (p : w ≅ x) (q : y ≅ z) → w ≅ y → p ≅ q
  ≅-heterogeneous-irrelevantˡ refl refl refl = refl
 
- ≅-heterogeneous-irrelevantʳ : (p : a₁ ≅ a₂) (q : a₃ ≅ a₄) → a₂ ≅ a₄ → p ≅ q
+ ≅-heterogeneous-irrelevantʳ : (p : w ≅ x) (q : y ≅ z) → x ≅ z → p ≅ q
  ≅-heterogeneous-irrelevantʳ refl refl refl = refl
 
 ------------------------------------------------------------------------
 -- Structures
 
-isEquivalence : ∀ {a} {A : Set a} →
-                IsEquivalence {A = A} (λ x y → x ≅ y)
+isEquivalence : IsEquivalence {A = A} (λ x y → x ≅ y)
 isEquivalence = record
   { refl  = refl
   ; sym   = sym
   ; trans = trans
   }
 
-setoid : ∀ {a} → Set a → Setoid _ _
+setoid : Set ℓ → Setoid ℓ ℓ
 setoid A = record
   { Carrier       = A
   ; _≈_           = λ x y → x ≅ y
   ; isEquivalence = isEquivalence
   }
 
-indexedSetoid : ∀ {a b} {A : Set a} → (A → Set b) → IndexedSetoid A _ _
+indexedSetoid : (A → Set b) → IndexedSetoid A _ _
 indexedSetoid B = record
   { Carrier       = B
   ; _≈_           = λ x y → x ≅ y
@@ -182,7 +173,7 @@ indexedSetoid B = record
     }
   }
 
-≡↔≅ : ∀ {a b} {A : Set a} (B : A → Set b) {x : A} →
+≡↔≅ : ∀ {A : Set a} (B : A → Set b) {x : A} →
       Inverse (P.setoid (B x)) ((indexedSetoid B) atₛ x)
 ≡↔≅ B = record
   { to         = record { _⟨$⟩_ = id; cong = ≡-to-≅ }
@@ -193,8 +184,7 @@ indexedSetoid B = record
     }
   }
 
-decSetoid : ∀ {a} {A : Set a} →
-            Decidable {A = A} {B = A} (λ x y → x ≅ y) →
+decSetoid : Decidable {A = A} {B = A} (λ x y → x ≅ y) →
             DecSetoid _ _
 decSetoid dec = record
   { _≈_              = λ x y → x ≅ y
@@ -204,23 +194,21 @@ decSetoid dec = record
       }
   }
 
-isPreorder : ∀ {a} {A : Set a} →
-             IsPreorder {A = A} (λ x y → x ≅ y) (λ x y → x ≅ y)
+isPreorder : IsPreorder {A = A} (λ x y → x ≅ y) (λ x y → x ≅ y)
 isPreorder = record
   { isEquivalence = isEquivalence
   ; reflexive     = id
   ; trans         = trans
   }
 
-isPreorder-≡ : ∀ {a} {A : Set a} →
-               IsPreorder {A = A} _≡_ (λ x y → x ≅ y)
+isPreorder-≡ : IsPreorder {A = A} _≡_ (λ x y → x ≅ y)
 isPreorder-≡ = record
   { isEquivalence = P.isEquivalence
   ; reflexive     = reflexive
   ; trans         = trans
   }
 
-preorder : ∀ {a} → Set a → Preorder _ _ _
+preorder : Set ℓ → Preorder ℓ ℓ ℓ
 preorder A = record
   { Carrier    = A
   ; _≈_        = _≡_
@@ -241,58 +229,34 @@ module ≅-Reasoning where
   infixr 2 _≅⟨_⟩_ _≅˘⟨_⟩_ _≡⟨_⟩_ _≡˘⟨_⟩_ _≡⟨⟩_
   infix  1 begin_
 
-  data _IsRelatedTo_ {ℓ} {A : Set ℓ} (x : A) {B : Set ℓ} (y : B) :
+  data _IsRelatedTo_ {A : Set ℓ} (x : A) {B : Set ℓ} (y : B) :
                      Set ℓ where
     relTo : (x≅y : x ≅ y) → x IsRelatedTo y
 
-  begin_ : ∀ {ℓ} {A : Set ℓ} {x : A} {B} {y : B} →
-           x IsRelatedTo y → x ≅ y
+  begin_ : ∀ {x : A} {y : B} → x IsRelatedTo y → x ≅ y
   begin relTo x≅y = x≅y
 
-  _≅⟨_⟩_ : ∀ {ℓ} {A : Set ℓ} (x : A) {B} {y : B} {C} {z : C} →
+  _≅⟨_⟩_ : ∀ (x : A) {y : B} {z : C} →
            x ≅ y → y IsRelatedTo z → x IsRelatedTo z
   _ ≅⟨ x≅y ⟩ relTo y≅z = relTo (trans x≅y y≅z)
 
-  _≅˘⟨_⟩_ : ∀ {ℓ} {A : Set ℓ} (x : A) {B} {y : B} {C} {z : C} →
+  _≅˘⟨_⟩_ : ∀ (x : A) {y : B} {z : C} →
             y ≅ x → y IsRelatedTo z → x IsRelatedTo z
   _ ≅˘⟨ y≅x ⟩ relTo y≅z = relTo (trans (sym y≅x) y≅z)
 
-  _≡⟨_⟩_ : ∀ {ℓ} {A : Set ℓ} (x : A) {y C} {z : C} →
+  _≡⟨_⟩_ : ∀ (x : A) {y : A} {z : C} →
            x ≡ y → y IsRelatedTo z → x IsRelatedTo z
   _ ≡⟨ x≡y ⟩ relTo y≅z = relTo (trans (reflexive x≡y) y≅z)
 
-  _≡˘⟨_⟩_ : ∀ {ℓ} {A : Set ℓ} (x : A) {y C} {z : C} →
+  _≡˘⟨_⟩_ : ∀ (x : A) {y : A} {z : C} →
             y ≡ x → y IsRelatedTo z → x IsRelatedTo z
   _ ≡˘⟨ y≡x ⟩ relTo y≅z = relTo (trans (sym (reflexive y≡x)) y≅z)
 
-  _≡⟨⟩_ : ∀ {ℓ} {A : Set ℓ} (x : A) {B} {y : B} →
-          x IsRelatedTo y → x IsRelatedTo y
+  _≡⟨⟩_ : ∀ (x : A) {y : B} → x IsRelatedTo y → x IsRelatedTo y
   _ ≡⟨⟩ x≅y = x≅y
 
-  _∎ : ∀ {a} {A : Set a} (x : A) → x IsRelatedTo x
+  _∎ : ∀ (x : A) → x IsRelatedTo x
   _∎ _ = relTo refl
-
-------------------------------------------------------------------------
--- Functional extensionality
-
--- A form of functional extensionality for _≅_.
-
-Extensionality : (a b : Level) → Set _
-Extensionality a b =
-  {A : Set a} {B₁ B₂ : A → Set b}
-  {f₁ : (x : A) → B₁ x} {f₂ : (x : A) → B₂ x} →
-  (∀ x → B₁ x ≡ B₂ x) → (∀ x → f₁ x ≅ f₂ x) → f₁ ≅ f₂
-
--- This form of extensionality follows from extensionality for _≡_.
-
-≡-ext-to-≅-ext : ∀ {ℓ₁ ℓ₂} →
-  P.Extensionality ℓ₁ (suc ℓ₂) → Extensionality ℓ₁ ℓ₂
-≡-ext-to-≅-ext           ext B₁≡B₂ f₁≅f₂ with ext B₁≡B₂
-≡-ext-to-≅-ext {ℓ₁} {ℓ₂} ext B₁≡B₂ f₁≅f₂ | P.refl =
-  ≡-to-≅ $ ext′ (≅-to-≡ ∘ f₁≅f₂)
-  where
-  ext′ : P.Extensionality ℓ₁ ℓ₂
-  ext′ = P.extensionality-for-lower-levels ℓ₁ (suc ℓ₂) ext
 
 ------------------------------------------------------------------------
 -- Inspect
@@ -300,13 +264,13 @@ Extensionality a b =
 -- Inspect can be used when you want to pattern match on the result r
 -- of some expression e, and you also need to "remember" that r ≡ e.
 
-record Reveal_·_is_ {a b} {A : Set a} {B : A → Set b}
+record Reveal_·_is_ {A : Set a} {B : A → Set b}
                     (f : (x : A) → B x) (x : A) (y : B x) :
                     Set (a ⊔ b) where
   constructor [_]
   field eq : f x ≅ y
 
-inspect : ∀ {a b} {A : Set a} {B : A → Set b}
+inspect : ∀ {A : Set a} {B : A → Set b}
           (f : (x : A) → B x) (x : A) → Reveal f · x is f x
 inspect f x = [ refl ]
 
@@ -351,4 +315,14 @@ Please use ≅-heterogeneous-irrelevantˡ instead."
 {-# WARNING_ON_USAGE ≅-heterogeneous-irrelevanceʳ
 "Warning: ≅-heterogeneous-irrelevanceʳ was deprecated in v1.0.
 Please use ≅-heterogeneous-irrelevantʳ instead."
+#-}
+Extensionality = Ext.Extensionality
+{-# WARNING_ON_USAGE Extensionality
+"Warning: Extensionality was deprecated in v1.0.
+Please use Extensionality from `Axiom.Extensionality.Heterogeneous` instead."
+#-}
+≡-ext-to-≅-ext = Ext.≡-ext⇒≅-ext
+{-# WARNING_ON_USAGE ≡-ext-to-≅-ext
+"Warning: ≡-ext-to-≅-ext was deprecated in v1.0.
+Please use ≡-ext⇒≅-ext from `Axiom.Extensionality.Heterogeneous` instead."
 #-}

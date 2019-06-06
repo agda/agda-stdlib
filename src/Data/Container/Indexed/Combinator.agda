@@ -4,11 +4,11 @@
 -- Indexed container combinators
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --without-K --safe --guardedness #-}
 
 module Data.Container.Indexed.Combinator where
 
-open import Level
+open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Container.Indexed
 open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Unit.Base using (⊤)
@@ -16,6 +16,7 @@ open import Data.Product as Prod hiding (Σ) renaming (_×_ to _⟨×⟩_)
 open import Data.Sum renaming (_⊎_ to _⟨⊎⟩_)
 open import Function as F hiding (id; const) renaming (_∘_ to _⟨∘⟩_)
 open import Function.Inverse using (_↔̇_; inverse)
+open import Level
 open import Relation.Unary using (Pred; _⊆_; _∪_; _∩_; ⋃; ⋂)
   renaming (_⟨×⟩_ to _⟪×⟫_; _⟨⊙⟩_ to _⟪⊙⟫_; _⟨⊎⟩_ to _⟪⊎⟫_)
 open import Relation.Binary.PropositionalEquality as P
@@ -147,7 +148,7 @@ module Identity where
     from : ∀ {x} → F.id X x → ⟦ id ⟧ X x
     from x = (_ , λ _ → x)
 
-module Constant (ext : ∀ {ℓ} → P.Extensionality ℓ ℓ) where
+module Constant (ext : ∀ {ℓ} → Extensionality ℓ ℓ) where
 
   correct : ∀ {i o ℓ₁ ℓ₂} {I : Set i} {O : Set o} (X : Pred O ℓ₁)
             {Y : Pred O ℓ₂} → ⟦ const X ⟧ Y ↔̇ F.const X Y
@@ -190,7 +191,7 @@ module Composition where
     from : ⟦ C₁ ⟧ (⟦ C₂ ⟧ X) ⊆ ⟦ C₁ ∘ C₂ ⟧ X
     from (c , f) = ((c , proj₁ ⟨∘⟩ f) , uncurry (proj₂ ⟨∘⟩ f))
 
-module Product (ext : ∀ {ℓ} → P.Extensionality ℓ ℓ) where
+module Product (ext : ∀ {ℓ} → Extensionality ℓ ℓ) where
 
   correct : ∀ {i o c r} {I : Set i} {O : Set o}
               (C₁ C₂ : Container I O c r) {X} →

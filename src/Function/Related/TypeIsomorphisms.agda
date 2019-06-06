@@ -11,6 +11,7 @@ module Function.Related.TypeIsomorphisms where
 
 open import Algebra
 import Algebra.FunctionProperties as FP
+open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Algebra.Structures
 open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Product as Prod hiding (swap)
@@ -271,7 +272,7 @@ A⇔B →-cong-⇔ C⇔D = Eq.equivalence
 
 →-cong :
   ∀ {a b c d} →
-  P.Extensionality a c → P.Extensionality b d →
+  Extensionality a c → Extensionality b d →
   ∀ {k} {A : Set a} {B : Set b} {C : Set c} {D : Set d} →
   A ∼[ ⌊ k ⌋ ] B → C ∼[ ⌊ k ⌋ ] D → (A → C) ∼[ ⌊ k ⌋ ] (B → D)
 →-cong extAC extBD {equivalence} A⇔B C⇔D = A⇔B →-cong-⇔ C⇔D
@@ -303,9 +304,7 @@ A⇔B →-cong-⇔ C⇔D = Eq.equivalence
 ¬-cong-⇔ A⇔B = A⇔B →-cong-⇔ (⊥ ∎)
   where open EquationalReasoning
 
-¬-cong : ∀ {a b} →
-         P.Extensionality a 0ℓ →
-         P.Extensionality b 0ℓ →
+¬-cong : ∀ {a b} → Extensionality a 0ℓ → Extensionality b 0ℓ →
          ∀ {k} {A : Set a} {B : Set b} →
          A ∼[ ⌊ k ⌋ ] B → (¬ A) ∼[ ⌊ k ⌋ ] (¬ B)
 ¬-cong extA extB A≈B = →-cong extA extB A≈B (⊥ ∎)

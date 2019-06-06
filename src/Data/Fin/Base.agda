@@ -13,15 +13,13 @@
 module Data.Fin.Base where
 
 open import Data.Empty using (⊥-elim)
-open import Data.Nat as ℕ
-  using (ℕ; zero; suc; z≤n; s≤s)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc; z≤n; s≤s)
 open import Function using (_∘_; _on_)
 open import Level using () renaming (zero to ℓ₀)
 open import Relation.Nullary using (yes; no)
-open import Relation.Nullary.Decidable using (True; toWitness)
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality
-  using (_≡_; _≢_; refl; cong)
+open import Relation.Nullary.Decidable.Core using (True; toWitness)
+open import Relation.Binary.Core
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≢_; refl; cong)
 
 ------------------------------------------------------------------------
 -- Types
@@ -50,8 +48,6 @@ cast : ∀ {m n} → .(_ : m ≡ n) → Fin m → Fin n
 cast {zero}  {zero}  eq k       = k
 cast {suc m} {suc n} eq zero    = zero
 cast {suc m} {suc n} eq (suc k) = suc (cast (cong ℕ.pred eq) k)
-cast {zero}  {suc n} ()
-cast {suc m} {zero}  ()
 
 ------------------------------------------------------------------------
 -- Conversions
@@ -77,13 +73,6 @@ fromℕ≤″ zero    (ℕ.less-than-or-equal refl) = zero
 fromℕ≤″ (suc m) (ℕ.less-than-or-equal refl) =
   suc (fromℕ≤″ m (ℕ.less-than-or-equal refl))
 
--- # m = "m".
-
-infix 10 #_
-
-#_ : ∀ m {n} {m<n : True (suc m ℕ.≤? n)} → Fin n
-#_ _ {m<n = m<n} = fromℕ≤ (toWitness m<n)
-
 -- raise m "i" = "m + i".
 
 raise : ∀ {m} n → Fin m → Fin (n ℕ.+ m)
@@ -94,19 +83,15 @@ raise (suc n) i = suc (raise n i)
 
 reduce≥ : ∀ {m n} (i : Fin (m ℕ.+ n)) (i≥m : toℕ i ℕ.≥ m) → Fin n
 reduce≥ {zero}  i       i≥m       = i
-reduce≥ {suc m} zero    ()
 reduce≥ {suc m} (suc i) (s≤s i≥m) = reduce≥ i i≥m
 
 -- inject⋆ m "i" = "i".
 
 inject : ∀ {n} {i : Fin n} → Fin′ i → Fin n
-inject {i = zero}  ()
 inject {i = suc i} zero    = zero
 inject {i = suc i} (suc j) = suc (inject j)
 
 inject! : ∀ {n} {i : Fin (suc n)} → Fin′ i → Fin n
-inject! {n = zero}  {i = suc ()} _
-inject!             {i = zero}   ()
 inject! {n = suc _} {i = suc _}  zero    = zero
 inject! {n = suc _} {i = suc _}  (suc j) = suc (inject! j)
 
@@ -126,7 +111,6 @@ inject≤ (suc i) (s≤s le) = suc (inject≤ i le)
 
 lower₁ : ∀ {n} → (i : Fin (suc n)) → (n ≢ toℕ i) → Fin n
 lower₁ {zero} zero ne = ⊥-elim (ne refl)
-lower₁ {zero} (suc ()) _
 lower₁ {suc n} zero _ = zero
 lower₁ {suc n} (suc i) ne = suc (lower₁ i λ x → ne (cong suc x))
 
@@ -152,7 +136,6 @@ fold′ : ∀ {n t} (T : Fin (suc n) → Set t) →
         T zero →
         ∀ i → T i
 fold′             T f x zero     = x
-fold′ {n = zero}  T f x (suc ())
 fold′ {n = suc n} T f x (suc i)  =
   f i (fold′ (T ∘ inject₁) (f ∘ inject₁) x i)
 
@@ -177,7 +160,6 @@ infixl 6 _-_
 
 _-_ : ∀ {m} (i : Fin m) (j : Fin′ (suc i)) → Fin (m ℕ.∸ toℕ j)
 i     - zero   = i
-zero  - suc ()
 suc i - suc j  = i - j
 
 -- m ℕ- "i" = "m ∸ i".
@@ -186,7 +168,6 @@ infixl 6 _ℕ-_
 
 _ℕ-_ : (n : ℕ) (j : Fin (suc n)) → Fin (suc n ℕ.∸ toℕ j)
 n     ℕ- zero   = fromℕ n
-zero  ℕ- suc ()
 suc n ℕ- suc i  = n ℕ- i
 
 -- m ℕ-ℕ "i" = m ∸ i.
@@ -195,7 +176,6 @@ infixl 6 _ℕ-ℕ_
 
 _ℕ-ℕ_ : (n : ℕ) → Fin (suc n) → ℕ
 n     ℕ-ℕ zero   = n
-zero  ℕ-ℕ suc ()
 suc n ℕ-ℕ suc i  = n ℕ-ℕ i
 
 -- pred "i" = "pred i".
@@ -211,7 +191,6 @@ pred (suc i) = inject₁ i
 punchOut : ∀ {m} {i j : Fin (suc m)} → i ≢ j → Fin m
 punchOut {_}     {zero}   {zero}  i≢j = ⊥-elim (i≢j refl)
 punchOut {_}     {zero}   {suc j} _   = j
-punchOut {zero}  {suc ()}
 punchOut {suc m} {suc i}  {zero}  _   = zero
 punchOut {suc m} {suc i}  {suc j} i≢j = suc (punchOut (i≢j ∘ cong suc))
 

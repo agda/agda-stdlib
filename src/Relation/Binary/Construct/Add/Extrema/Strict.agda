@@ -16,10 +16,12 @@ module Relation.Binary.Construct.Add.Extrema.Strict
 
 open import Level
 open import Function
-open import Relation.Nullary
+open import Relation.Nullary hiding (Irrelevant)
 
 import Relation.Nullary.Construct.Add.Infimum as I
 open import Relation.Nullary.Construct.Add.Extrema
+open import Relation.Binary.PropositionalEquality
+  using (_≡_; refl)
 import Relation.Binary.Construct.Add.Infimum.Strict as AddInfimum
 import Relation.Binary.Construct.Add.Supremum.Strict as AddSupremum
 import Relation.Binary.Construct.Add.Extrema.Equality as Equality
@@ -60,6 +62,37 @@ pattern [_]<⊤± k = Sup.[ I.[ k ] ]<⊤⁺
 <±-irrelevant : Irrelevant _<_ → Irrelevant _<±_
 <±-irrelevant = Sup.<⁺-irrelevant ∘′ Inf.<₋-irrelevant
 
+module _ {r} {_≤_ : Rel A r} where
+
+  open NonStrict _≤_
+
+  <±-transʳ : Trans _≤_ _<_ _<_ → Trans _≤±_ _<±_ _<±_
+  <±-transʳ = Sup.<⁺-transʳ ∘′ Inf.<₋-transʳ
+
+  <±-transˡ : Trans _<_ _≤_ _<_ → Trans _<±_ _≤±_ _<±_
+  <±-transˡ = Sup.<⁺-transˡ ∘′ Inf.<₋-transˡ
+
+------------------------------------------------------------------------
+-- Relational properties + propositional equality
+
+<±-cmp-≡ : Trichotomous _≡_ _<_ → Trichotomous _≡_ _<±_
+<±-cmp-≡ = Sup.<⁺-cmp-≡ ∘′ Inf.<₋-cmp-≡
+
+<±-irrefl-≡ : Irreflexive _≡_ _<_ → Irreflexive _≡_ _<±_
+<±-irrefl-≡ = Sup.<⁺-irrefl-≡ ∘′ Inf.<₋-irrefl-≡
+
+<±-respˡ-≡ : _<±_ Respectsˡ _≡_
+<±-respˡ-≡ = Sup.<⁺-respˡ-≡
+
+<±-respʳ-≡ : _<±_ Respectsʳ _≡_
+<±-respʳ-≡ = Sup.<⁺-respʳ-≡
+
+<±-resp-≡ : _<±_ Respects₂ _≡_
+<±-resp-≡ = Sup.<⁺-resp-≡
+
+------------------------------------------------------------------------
+-- Relational properties + setoid equality
+
 module _ {e} {_≈_ : Rel A e} where
 
   open Equality _≈_
@@ -79,18 +112,26 @@ module _ {e} {_≈_ : Rel A e} where
   <±-resp-≈± : _<_ Respects₂ _≈_ → _<±_ Respects₂ _≈±_
   <±-resp-≈± = Sup.<⁺-resp-≈⁺ ∘′ Inf.<₋-resp-≈₋
 
-module _ {r} {_≤_ : Rel A r} where
+------------------------------------------------------------------------
+-- Structures + propositional equality
 
-  open NonStrict _≤_
+<±-isStrictPartialOrder-≡ : IsStrictPartialOrder _≡_ _<_ →
+                            IsStrictPartialOrder _≡_ _<±_
+<±-isStrictPartialOrder-≡ =
+  Sup.<⁺-isStrictPartialOrder-≡ ∘′ Inf.<₋-isStrictPartialOrder-≡
 
-  <±-transʳ : Trans _≤_ _<_ _<_ → Trans _≤±_ _<±_ _<±_
-  <±-transʳ = Sup.<⁺-transʳ ∘′ Inf.<₋-transʳ
+<±-isDecStrictPartialOrder-≡ : IsDecStrictPartialOrder _≡_ _<_ →
+                               IsDecStrictPartialOrder _≡_ _<±_
+<±-isDecStrictPartialOrder-≡ =
+  Sup.<⁺-isDecStrictPartialOrder-≡ ∘′ Inf.<₋-isDecStrictPartialOrder-≡
 
-  <±-transˡ : Trans _<_ _≤_ _<_ → Trans _<±_ _≤±_ _<±_
-  <±-transˡ = Sup.<⁺-transˡ ∘′ Inf.<₋-transˡ
+<±-isStrictTotalOrder-≡ : IsStrictTotalOrder _≡_ _<_ →
+                          IsStrictTotalOrder _≡_ _<±_
+<±-isStrictTotalOrder-≡ =
+  Sup.<⁺-isStrictTotalOrder-≡ ∘′ Inf.<₋-isStrictTotalOrder-≡
 
 ------------------------------------------------------------------------
--- Structures
+-- Structures + setoid equality
 
 module _ {e} {_≈_ : Rel A e} where
 

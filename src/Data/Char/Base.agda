@@ -8,51 +8,61 @@
 
 module Data.Char.Base where
 
-open import Agda.Builtin.String using (primShowChar)
-open import Data.Nat.Base    using (ℕ)
-open import Data.Bool.Base   using (Bool)
-open import Data.String.Base using (String)
+open import Level using (zero)
+import Data.Nat.Base as ℕ
+open import Function
+open import Relation.Binary using (Rel)
+open import Relation.Binary.PropositionalEquality
 
 ------------------------------------------------------------------------
--- Re-export the type
+-- Re-export the type, and renamed primitives
 
-import Agda.Builtin.Char as AgdaChar
-open AgdaChar using (Char) public
+open import Agda.Builtin.Char public using ( Char )
+  renaming
+  -- testing
+  ( primIsLower    to isLower
+  ; primIsDigit    to isDigit
+  ; primIsAlpha    to isAlpha
+  ; primIsSpace    to isSpace
+  ; primIsAscii    to isAscii
+  ; primIsLatin1   to isLatin1
+  ; primIsPrint    to isPrint
+  ; primIsHexDigit to isHexDigit
+  -- transforming
+  ; primToUpper to toUpper
+  ; primToLower to toLower
+  -- converting
+  ; primCharToNat to toℕ
+  ; primNatToChar to fromℕ
+  )
+
+open import Agda.Builtin.String public using ()
+  renaming ( primShowChar to show )
+
+infix 4 _≈_
+_≈_ : Rel Char zero
+_≈_ = _≡_ on toℕ
+
+infix 4 _<_
+_<_ : Rel Char zero
+_<_ = ℕ._<_ on toℕ
 
 ------------------------------------------------------------------------
--- Primitive operations
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
 
-open AgdaChar
+-- Version 1.1
 
-show : Char → String
-show = primShowChar
+toNat = toℕ
+{-# WARNING_ON_USAGE toNat
+"Warning: toNat was deprecated in v1.1.
+Please use toℕ instead."
+#-}
 
-isLower : Char → Bool
-isLower = primIsLower
-
-isDigit : Char → Bool
-isDigit = primIsDigit
-
-isAlpha : Char → Bool
-isAlpha = primIsAlpha
-
-isSpace : Char → Bool
-isSpace = primIsSpace
-
-isAscii : Char → Bool
-isAscii = primIsAscii
-
-isLatin1 : Char → Bool
-isLatin1 = primIsLatin1
-
-isPrint : Char → Bool
-isPrint = primIsPrint
-
-isHexDigit : Char → Bool
-isHexDigit = primIsHexDigit
-
-toNat : Char → ℕ
-toNat = primCharToNat
-
-fromNat : ℕ → Char
-fromNat = primNatToChar
+fromNat = fromℕ
+{-# WARNING_ON_USAGE fromNat
+"Warning: fromNat was deprecated in v1.1.
+Please use fromℕ instead."
+#-}

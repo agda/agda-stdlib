@@ -12,9 +12,16 @@
 module Relation.Binary.PropositionalEquality.Core where
 
 open import Data.Product using (_,_)
+open import Function     using (_∘_)
 open import Level
 open import Relation.Binary.Core
 open import Relation.Nullary using (¬_)
+
+private
+  variable
+    a b ℓ : Level
+    A : Set a
+    B : Set b
 
 ------------------------------------------------------------------------
 -- Propositional equality
@@ -22,59 +29,61 @@ open import Relation.Nullary using (¬_)
 open import Agda.Builtin.Equality public
 
 infix 4 _≢_
-_≢_ : ∀ {a} {A : Set a} → Rel A a
+_≢_ : {A : Set a} → Rel A a
 x ≢ y = ¬ x ≡ y
 
 ------------------------------------------------------------------------
--- Some properties
+-- Properties of _≡_
 
-module _ {a} {A : Set a} where
+sym : Symmetric {A = A} _≡_
+sym refl = refl
 
-  sym : Symmetric {A = A} _≡_
-  sym refl = refl
+trans : Transitive {A = A} _≡_
+trans refl eq = eq
 
-  trans : Transitive {A = A} _≡_
-  trans refl eq = eq
+subst : Substitutive {A = A} _≡_ ℓ
+subst P refl p = p
 
-  subst : ∀ {p} → Substitutive {A = A} _≡_ p
-  subst P refl p = p
+cong : ∀ (f : A → B) {x y} → x ≡ y → f x ≡ f y
+cong f refl = refl
 
-  cong : ∀ {b} {B : Set b} (f : A → B) {x y} → x ≡ y → f x ≡ f y
-  cong f refl = refl
+respˡ : ∀ (∼ : Rel A ℓ) → ∼ Respectsˡ _≡_
+respˡ _∼_ refl x∼y = x∼y
 
-  respˡ : ∀ {ℓ} (∼ : Rel A ℓ) → ∼ Respectsˡ _≡_
-  respˡ _∼_ refl x∼y = x∼y
+respʳ : ∀ (∼ : Rel A ℓ) → ∼ Respectsʳ _≡_
+respʳ _∼_ refl x∼y = x∼y
 
-  respʳ : ∀ {ℓ} (∼ : Rel A ℓ) → ∼ Respectsʳ _≡_
-  respʳ _∼_ refl x∼y = x∼y
+resp₂ : ∀ (∼ : Rel A ℓ) → ∼ Respects₂ _≡_
+resp₂ _∼_ = respʳ _∼_ , respˡ _∼_
 
-  resp₂ : ∀ {ℓ} (∼ : Rel A ℓ) → ∼ Respects₂ _≡_
-  resp₂ _∼_ = respʳ _∼_ , respˡ _∼_
-
-  isEquivalence : IsEquivalence {A = A} _≡_
-  isEquivalence = record
-    { refl  = refl
-    ; sym   = sym
-    ; trans = trans
-    }
+isEquivalence : IsEquivalence {A = A} _≡_
+isEquivalence = record
+  { refl  = refl
+  ; sym   = sym
+  ; trans = trans
+  }
 
 ------------------------------------------------------------------------
 -- Various equality rearrangement lemmas
 
-module _ {a} {A : Set a} {x y : A} where
+trans-reflʳ : ∀ {x y : A} (p : x ≡ y) → trans p refl ≡ p
+trans-reflʳ refl = refl
 
-  trans-reflʳ : (p : x ≡ y) → trans p refl ≡ p
-  trans-reflʳ refl = refl
+trans-assoc : ∀ {x y z u : A} (p : x ≡ y) {q : y ≡ z} {r : z ≡ u} →
+  trans (trans p q) r ≡ trans p (trans q r)
+trans-assoc refl = refl
 
-  trans-assoc : ∀ {z u} (p : x ≡ y) {q : y ≡ z} {r : z ≡ u} →
-    trans (trans p q) r ≡ trans p (trans q r)
-  trans-assoc refl = refl
+trans-symˡ : ∀ {x y : A} (p : x ≡ y) → trans (sym p) p ≡ refl
+trans-symˡ refl = refl
 
-  trans-symˡ : (p : x ≡ y) → trans (sym p) p ≡ refl
-  trans-symˡ refl = refl
+trans-symʳ : ∀ {x y : A} (p : x ≡ y) → trans p (sym p) ≡ refl
+trans-symʳ refl = refl
 
-  trans-symʳ : (p : x ≡ y) → trans p (sym p) ≡ refl
-  trans-symʳ refl = refl
+------------------------------------------------------------------------
+-- Properties of _≢_
+
+≢-sym : Symmetric {A = A} _≢_
+≢-sym x≢y =  x≢y ∘ sym
 
 ------------------------------------------------------------------------
 -- Convenient syntax for equational reasoning
@@ -84,7 +93,7 @@ module _ {a} {A : Set a} {x y : A} where
 -- equation chains from scratch since then goals are printed much more
 -- readably.
 
-module ≡-Reasoning {a} {A : Set a} where
+module ≡-Reasoning {A : Set a} where
 
   infix  3 _∎
   infixr 2 _≡⟨⟩_ _≡⟨_⟩_ _≡˘⟨_⟩_

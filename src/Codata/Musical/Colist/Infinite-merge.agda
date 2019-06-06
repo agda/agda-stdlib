@@ -4,13 +4,14 @@
 -- Infinite merge operation for coinductive lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --without-K --guardedness #-}
 
 module Codata.Musical.Colist.Infinite-merge where
 
 open import Codata.Musical.Notation
 open import Codata.Musical.Colist as Colist hiding (_⋎_)
 open import Data.Nat
+open import Data.Nat.Induction using (<′-wellFounded)
 open import Data.Nat.Properties
 open import Data.Product as Prod
 open import Data.Sum
@@ -21,7 +22,6 @@ open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse as Inv using (_↔_; Inverse; inverse)
 import Function.Related as Related
 open import Function.Related.TypeIsomorphisms
-open import Induction.Nat using (<′-wellFounded)
 import Induction.WellFounded as WF
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
@@ -145,20 +145,16 @@ module _ {a p} {A : Set a} {P : A → Set p} where
     from-injective : ∀ {xss} (p₁ p₂ : Any Q xss) →
                      from p₁ ≡ from p₂ → p₁ ≡ p₂
     from-injective (here (inj₁ p))  (here (inj₁ .p)) P.refl = P.refl
-    from-injective (here (inj₁ _))  (here (inj₂ _))  ()
-    from-injective (here (inj₂ _))  (here (inj₁ _))  ()
     from-injective (here (inj₂ p₁)) (here (inj₂ p₂)) eq     =
       P.cong (here ∘ inj₂) $
       inj₁-injective $
       Inverse.injective (Inv.sym (Any-⋎P _)) {x = inj₁ p₁} {y = inj₁ p₂} $
       there-injective eq
-    from-injective (here (inj₁ _))  (there _)  ()
     from-injective (here (inj₂ p₁)) (there p₂) eq
       with Inverse.injective (Inv.sym (Any-⋎P _))
                              {x = inj₁ p₁} {y = inj₂ (from p₂)}
                              (there-injective eq)
     ... | ()
-    from-injective (there _)  (here (inj₁ _))  ()
     from-injective (there p₁) (here (inj₂ p₂)) eq
       with Inverse.injective (Inv.sym (Any-⋎P _))
                              {x = inj₂ (from p₁)} {y = inj₁ p₂}

@@ -25,7 +25,11 @@ open import Relation.Binary.PropositionalEquality as P
 open import Relation.Nullary
 open import Relation.Binary
 
+open ≤-Reasoning
+
 ------------------------------------------------------------------------
+-- Definition
+--
 -- Coprime m n is inhabited iff m and n are coprime (relatively
 -- prime), i.e. if their only common divisor is 1.
 
@@ -44,10 +48,13 @@ coprime-gcd {m} {n} c = GCD.is (1∣ m , 1∣ n) greatest
 
 gcd-coprime : ∀ {m n} → GCD m n 1 → Coprime m n
 gcd-coprime g cd with GCD.greatest g cd
-... | divides q eq = i*j≡1⇒j≡1 q _ (P.sym eq)
+... | divides q eq = m*n≡1⇒n≡1 q _ (P.sym eq)
 
 ------------------------------------------------------------------------
--- Coprime is decidable.
+-- Relational properties of Coprime
+
+sym : Symmetric Coprime
+sym c = c ∘ swap
 
 private
   0≢1 : 0 ≢ 1
@@ -57,15 +64,13 @@ private
   2+≢1 ()
 
 coprime? : Decidable Coprime
-coprime? i j with gcd i j
+coprime? i j with mkGCD i j
 ... | (0           , g) = no  (0≢1  ∘ GCD.unique g ∘ coprime-gcd)
 ... | (1           , g) = yes (gcd-coprime g)
 ... | (suc (suc d) , g) = no  (2+≢1 ∘ GCD.unique g ∘ coprime-gcd)
 
--- The coprimality relation is symmetric.
-
-sym : Symmetric Coprime
-sym c = c ∘ swap
+------------------------------------------------------------------------
+-- Other basic properties
 
 -- Everything is coprime to 1.
 
@@ -81,6 +86,9 @@ sym c = c ∘ swap
 
 coprime-+ : ∀ {m n} → Coprime m n → Coprime (n + m) n
 coprime-+ c (d₁ , d₂) = c (∣m+n∣m⇒∣n d₁ d₂ , d₂)
+
+------------------------------------------------------------------------
+-- Relationship with Bezout's lemma
 
 -- If the "gcd" in Bézout's identity is non-zero, then the "other"
 -- divisors are coprime.
@@ -114,6 +122,33 @@ coprime-factors c (divides q₁ eq₁ , divides q₂ eq₂) with coprime-Bézout
 ... | Bézout.+- x y eq = divides (x * q₁ ∸ y * q₂) (lem₁₁ x y eq eq₁ eq₂)
 ... | Bézout.-+ x y eq = divides (y * q₂ ∸ x * q₁) (lem₁₁ y x eq eq₂ eq₁)
 
+------------------------------------------------------------------------
+-- Primality implies coprimality.
+
+prime⇒coprime : ∀ m → Prime m →
+                ∀ n → 0 < n → n < m → Coprime m n
+prime⇒coprime (suc (suc m)) _  _ _  _ {1} _                       = refl
+prime⇒coprime (suc (suc m)) p  _ _  _ {0} (divides q 2+m≡q*0 , _) =
+  ⊥-elim $ m+1+n≢m 0 (begin-equality
+    2 + m  ≡⟨ 2+m≡q*0 ⟩
+    q * 0  ≡⟨ *-zeroʳ q ⟩
+    0      ∎)
+prime⇒coprime (suc (suc m)) p (suc n) _ 1+n<2+m {suc (suc i)}
+              (2+i∣2+m , 2+i∣1+n) =
+  ⊥-elim (p _ 2+i′∣2+m)
+  where
+  i<m : i < m
+  i<m = +-cancelˡ-< 2 (begin-strict
+    2 + i ≤⟨ ∣⇒≤ 2+i∣1+n ⟩
+    1 + n <⟨ 1+n<2+m ⟩
+    2 + m ∎)
+
+  2+i′∣2+m : 2 + toℕ (fromℕ≤ i<m) ∣ 2 + m
+  2+i′∣2+m = subst (_∣ 2 + m)
+    (P.sym (cong (2 +_) (toℕ-fromℕ≤ i<m)))
+    2+i∣2+m
+
+------------------------------------------------------------------------
 -- A variant of GCD.
 
 data GCD′ : ℕ → ℕ → ℕ → Set where
@@ -136,35 +171,5 @@ gcd′-gcd (gcd-* q₁ q₂ c) = GCD.is (n∣m*n q₁ , n∣m*n q₂) (coprime-f
 -- Calculates (the alternative representation of) the gcd of the
 -- arguments.
 
-gcd′ : ∀ m n → ∃ λ d → GCD′ m n d
-gcd′ m n = Prod.map id gcd-gcd′ (gcd m n)
-
--- Primality implies coprimality.
-
-prime⇒coprime : ∀ m → Prime m →
-                ∀ n → 0 < n → n < m → Coprime m n
-prime⇒coprime 0             () _ _  _     _
-prime⇒coprime 1             () _ _  _     _
-prime⇒coprime (suc (suc m)) _  0 () _     _
-prime⇒coprime (suc (suc m)) _  _ _  _ {1} _                       = refl
-prime⇒coprime (suc (suc m)) p  _ _  _ {0} (divides q 2+m≡q*0 , _) =
-  ⊥-elim $ i+1+j≢i 0 (begin
-    2 + m  ≡⟨ 2+m≡q*0 ⟩
-    q * 0  ≡⟨ *-zeroʳ q ⟩
-    0      ∎)
-  where open ≡-Reasoning
-prime⇒coprime (suc (suc m)) p (suc n) _ 1+n<2+m {suc (suc i)}
-              (2+i∣2+m , 2+i∣1+n) =
-  ⊥-elim (p _ 2+i′∣2+m)
-  where
-  i<m : i < m
-  i<m = +-cancelˡ-< 2 (begin-strict
-    2 + i ≤⟨ ∣⇒≤ 2+i∣1+n ⟩
-    1 + n <⟨ 1+n<2+m ⟩
-    2 + m ∎)
-    where open ≤-Reasoning
-
-  2+i′∣2+m : 2 + toℕ (fromℕ≤ i<m) ∣ 2 + m
-  2+i′∣2+m = subst (_∣ 2 + m)
-    (P.sym (cong (2 +_) (toℕ-fromℕ≤ i<m)))
-    2+i∣2+m
+mkGCD′ : ∀ m n → ∃ λ d → GCD′ m n d
+mkGCD′ m n = Prod.map id gcd-gcd′ (mkGCD m n)
