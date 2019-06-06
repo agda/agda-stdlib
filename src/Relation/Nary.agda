@@ -16,7 +16,7 @@ module Relation.Nary where
 
 open import Level using (Level; _⊔_)
 open import Data.Nat.Base using (zero; suc)
-open import Data.Product as Prod using (_×_; _,_; uncurry)
+open import Data.Product as Prod using (_×_; _,_)
 open import Data.Product.Nary.NonDependent
 open import Data.Sum using (_⊎_)
 open import Function using (_$_; _∘′_)
