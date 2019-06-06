@@ -8,6 +8,8 @@
 
 module Reflection.Pattern where
 
+open import Data.List.Base
+open import Data.List.Properties
 open import Data.Product
 import Data.String as String
 import Reflection.Literal as Literal
@@ -46,9 +48,6 @@ lit-injective refl = refl
 
 proj-injective : ∀ {x y} → proj x ≡ proj y → x ≡ y
 proj-injective refl = refl
-
-open import Data.List.Base
-open import Data.List.Properties
 
 _≟s_ : Decidable (_≡_ {A = Args Pattern})
 _≟_  : Decidable (_≡_ {A = Pattern})
@@ -91,10 +90,8 @@ absurd ≟ lit x = no (λ ())
 absurd ≟ proj x = no (λ ())
 absurd ≟ absurd = yes refl
 
-[]             ≟s []       = yes refl
-(arg i p ∷ xs) ≟s (arg j q ∷ ys) =
-  Dec.map′ (uncurry (cong₂ _∷_)) ∷-injective
-  (unArg-dec (p ≟ q) ×-dec xs ≟s ys)
+[]             ≟s []             = yes refl
+(arg i p ∷ xs) ≟s (arg j q ∷ ys) = ∷-dec (unArg-dec (p ≟ q)) (xs ≟s ys)
 
 []      ≟s (_ ∷ _) = no λ()
 (_ ∷ _) ≟s []      = no λ()

@@ -31,9 +31,9 @@ open Arg public
 
 -- Pattern synonyms
 
-pattern vArg ty            = arg (arg-info visible relevant)   ty
-pattern hArg ty            = arg (arg-info hidden relevant)    ty
-pattern iArg ty            = arg (arg-info instance′ relevant) ty
+pattern vArg ty = arg (arg-info visible relevant)   ty
+pattern hArg ty = arg (arg-info hidden relevant)    ty
+pattern iArg ty = arg (arg-info instance′ relevant) ty
 
 ------------------------------------------------------------------------
 -- Operations
