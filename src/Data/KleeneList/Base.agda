@@ -252,12 +252,12 @@ module _ (f : A → B → (C × B)) (b : B) where
 
 last : A ⁺ → A
 last (x & []) = x
-last (_ & (∹ xs)) = last xs
+last (_ & ∹ xs) = last xs
 
 module _ (f : A → A → A) where
   foldr1 : A ⁺ → A
   foldr1 (x & []) = x
-  foldr1 (x & (∹ xs)) = f x (foldr1 xs)
+  foldr1 (x & ∹ xs) = f x (foldr1 xs)
 
   foldl1 : A ⁺ → A
   foldl1 (x & xs) = foldl⋆ f x xs

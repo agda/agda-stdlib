@@ -37,6 +37,7 @@ open import Data.KleeneList.Base
     ; _<*>⋆_ to _<*>_
     ; _>>=⋆_ to _>>=_
     ; mapAccumˡ⋆ to mapAccumˡ
+    ; mapAccumʳ⋆ to mapAccumʳ
     ; _[_]⋆ to _[_]
     ; applyUpTo⋆ to applyUpTo
     ; upTo⋆ to upTo
