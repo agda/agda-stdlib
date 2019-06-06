@@ -59,6 +59,22 @@ Non-backwards compatible changes
   and `gcd′` in `Data.Nat.Coprimality` has been renamed `mkGCD′`. All other
   functionality is untouched.
 
+* At the moment the functions `sequenceA`, `mapA`, `forA`, `sequenceM`,
+  `mapM` and `forM` in the `Data.X.Categorical` modules all require the
+  `Applicative`/`Monad` to be passed each time they're used. To avoid this they
+  have now been placed in parameterised, modules named `TraversableA` and
+  `TraversableM`. To recover the old behaviour simply write `open TraversableA`.
+  However the applicative may avoid being passed by writing `open TraversableA app`.
+  The change has occured in the following modules:
+  ```adga
+  Data.Maybe.Categorical
+  Data.List.Categorical
+  Data.List.NonEmpty.Categorical
+  Data.Product.Categorical.(Left/Right)
+  Data.Sum.Categorical.(Left/Right)
+  Data.Vec.Categorical
+  ```
+
 New modules
 -----------
 
