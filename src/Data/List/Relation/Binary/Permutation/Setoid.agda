@@ -20,13 +20,13 @@ import Relation.Binary.Reasoning.Setoid as SetoidReasoning
 
 private
   module Eq = Setoid S
-open Eq using (_≈_; sym) renaming (Carrier to A)
+open Eq using (_≈_) renaming (Carrier to A)
 
 ------------------------------------------------------------------------
 -- Definition
 
 open Homogeneous public
-  using (prep; swap; trans) renaming (eq to refl)
+  using (refl; prep; swap; trans)
 
 infix 3 _↭_
 
@@ -37,22 +37,22 @@ _↭_ = Homogeneous.Permutation _≈_
 -- _↭_ is an equivalence
 
 ↭-reflexive : _≡_ ⇒ _↭_
-↭-reflexive refl = Homogeneous.refl Eq.refl
+↭-reflexive refl = refl
 
 ↭-refl : Reflexive _↭_
 ↭-refl = ↭-reflexive refl
 
 ↭-sym : Symmetric _↭_
-↭-sym = Homogeneous.sym sym
+↭-sym = Homogeneous.sym Eq.sym
 
 ↭-trans : Transitive _↭_
 ↭-trans = trans
 
 ↭-isEquivalence : IsEquivalence _↭_
-↭-isEquivalence = Homogeneous.isEquivalence Eq.refl sym
+↭-isEquivalence = Homogeneous.isEquivalence Eq.sym
 
 ↭-setoid : Setoid _ _
-↭-setoid = Homogeneous.setoid {R = _≈_} Eq.refl sym
+↭-setoid = Homogeneous.setoid {R = _≈_} Eq.sym
 
 ------------------------------------------------------------------------
 -- A reasoning API to chain permutation proofs

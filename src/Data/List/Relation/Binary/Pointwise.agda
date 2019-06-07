@@ -12,9 +12,10 @@ open import Function
 open import Function.Inverse using (Inverse)
 open import Data.Product hiding (map)
 open import Data.List.Base as List hiding (map; head; tail)
-open import Data.List.Properties using (≡-dec)
+open import Data.List.Properties using (≡-dec; length-++)
 open import Data.Fin using (Fin) renaming (zero to fzero; suc to fsuc)
 open import Data.Nat using (ℕ; zero; suc)
+open import Data.Nat.Properties
 open import Level
 open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Nullary.Negation using (contradiction)
@@ -173,6 +174,16 @@ poset p = record
   }
 
 ------------------------------------------------------------------------
+-- length
+
+module _ {_∼_ : REL A B ℓ} where
+
+  Pointwise-length : ∀ {xs ys} → Pointwise _∼_ xs ys →
+                     length xs ≡ length ys
+  Pointwise-length []            = P.refl
+  Pointwise-length (x∼y ∷ xs∼ys) = P.cong ℕ.suc (Pointwise-length xs∼ys)
+
+------------------------------------------------------------------------
 -- tabulate
 
 module _ {_∼_ : REL A B ℓ} where
@@ -197,6 +208,21 @@ module _ {_∼_ : REL A B ℓ} where
   ++⁺ []            ys∼zs = ys∼zs
   ++⁺ (w∼x ∷ ws∼xs) ys∼zs = w∼x ∷ ++⁺ ws∼xs ys∼zs
 
+module _ {_∼_ : Rel₂ A ℓ} where
+
+  ++-cancelˡ : ∀ xs {ys zs : List A} → Pointwise _∼_ (xs ++ ys) (xs ++ zs) → Pointwise _∼_ ys zs
+  ++-cancelˡ []       ys∼zs               = ys∼zs
+  ++-cancelˡ (x ∷ xs) (_ ∷ xs++ys∼xs++zs) = ++-cancelˡ xs xs++ys∼xs++zs
+
+  ++-cancelʳ : ∀ {xs : List A} ys zs → Pointwise _∼_ (ys ++ xs) (zs ++ xs) → Pointwise _∼_ ys zs
+  ++-cancelʳ []       []       _             = []
+  ++-cancelʳ (y ∷ ys) (z ∷ zs) (y∼z ∷ ys∼zs) = y∼z ∷ (++-cancelʳ ys zs ys∼zs)
+  -- Impossible cases
+  ++-cancelʳ {xs}     []       (z ∷ zs) eq   =
+    contradiction (P.trans (Pointwise-length eq) (length-++ (z ∷ zs))) (m≢1+n+m (length xs))
+  ++-cancelʳ {xs}     (y ∷ ys) []       eq   =
+    contradiction (P.trans (P.sym (length-++ (y ∷ ys))) (Pointwise-length eq)) (m≢1+n+m (length xs) ∘ P.sym)
+
 ------------------------------------------------------------------------
 -- concat
 
@@ -206,16 +232,6 @@ module _ {_∼_ : REL A B ℓ} where
             Pointwise _∼_ (concat xss) (concat yss)
   concat⁺ []                = []
   concat⁺ (xs∼ys ∷ xss∼yss) = ++⁺ xs∼ys (concat⁺ xss∼yss)
-
-------------------------------------------------------------------------
--- length
-
-module _ {_∼_ : REL A B ℓ} where
-
-  Pointwise-length : ∀ {xs ys} → Pointwise _∼_ xs ys →
-                     length xs ≡ length ys
-  Pointwise-length []            = P.refl
-  Pointwise-length (x∼y ∷ xs∼ys) = P.cong ℕ.suc (Pointwise-length xs∼ys)
 
 ------------------------------------------------------------------------
 -- reverse
