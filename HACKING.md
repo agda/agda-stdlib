@@ -71,18 +71,18 @@ How to make changes
    ------------------------------------------------------------------------
    ```
 
-   If possible, each module should use the options safe and without-K. You
+   If possible, each module should use the options `--safe` and `--without-K`. You
    can achieve this by placing the following pragma under the header and before
    any other line of code (including the module name):
    ```
    {-# OPTIONS --without-K --safe #-}
    ```
 
-   If a module cannot be made safe or needs the with-K option then it should be
+   If a module cannot be made safe or needs the `--with-K` option then it should be
    split into a module which is compatible with these options and an auxiliary
    one which will:
-   * Either be called SOME/PATH/Unsafe.agda or SOME/PATH/WithK.agda
-   * Or explicitly declared as either unsafe or needing K in GenerateEverything.hs
+   * Either be called `SOME/PATH/Unsafe.agda` or `SOME/PATH/WithK.agda`
+   * Or explicitly declared as either unsafe or needing K in `GenerateEverything.hs`
 
 ### Upload your changes
 
