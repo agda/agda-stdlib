@@ -46,11 +46,15 @@ import Reflection.Argument.Visibility as Visibility
 open Visibility.Visibility public
 import Reflection.Argument.Information as Information
 open Information.ArgInfo public
-open import Reflection.Term as Term using (Term; Type; Clause; Clauses; Sort) public
-open Term.Term public
 
 open import Reflection.Pattern as Pattern using (Pattern) public
 open import Reflection.Abstraction as Abstraction using (Abs; abs) public
+
+open import Reflection.Term as Term using (Term; Type; Clause; Clauses; Sort) public
+open Term.Term public
+
+open import Reflection.Definition as Definition using (Definition) public
+open Definition.Definition public
 
 ------------------------------------------------------------------------
 -- Fixity
@@ -59,19 +63,6 @@ open Builtin public using (non-assoc; related; unrelated; fixity)
   renaming ( left-assoc  to assocˡ
            ; right-assoc to assocʳ
            ; primQNameFixity to getFixity)
-
-------------------------------------------------------------------------
--- Definitions
-
-open Builtin public
-  using    ( Definition
-           ; function
-           ; data-type
-           ; axiom
-           )
-  renaming ( record-type to record′
-           ; data-cons   to constructor′
-           ; prim-fun    to primitive′ )
 
 ------------------------------------------------------------------------
 -- Type checking monad
