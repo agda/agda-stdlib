@@ -80,8 +80,15 @@ infix 5 ∃⟨_⟩ Π[_] ∀[_]
 --                   con a₁₁ ⋯ aₙ₁ ≡ con a₁₂ ⋯ aₙ₂ →
 --                   a₁₁ ≡ a₁₂ × ⋯ × aₙ₁ ≡ aₙ₂
 
-Injectiveₙ : ∀ n {ls} {as : Sets n ls} {R : Set r} → Arrows n as R → Set (r Level.⊔ ⨆ n ls)
-Injectiveₙ n f = ∀ {l r} → uncurryₙ n f l ≡ uncurryₙ n f r → Product n (Equalₙ n l r)
+Injectiveₙ : ∀ n {ls} {as : Sets n ls} {R : Set r} →
+             Arrows n as R → Set (r Level.⊔ ⨆ n ls)
+Injectiveₙ n f = ∀ {l r} → uncurryₙ n f l ≡ uncurryₙ n f r →
+                 Product n (Equalₙ n l r)
+
+injectiveₙ : ∀ n {ls} {as : Sets n ls} {R : Set r} (con : Arrows n as R) →
+             (∀ {l r} → uncurryₙ n con l ≡ uncurryₙ n con r → l ≡ r) →
+             Injectiveₙ n con
+injectiveₙ n con con-inj eq = toEqualₙ n (con-inj eq)
 
 -- ≟-mapₙ : ∀ n. (con : A₁ → ⋯ → Aₙ → R) →
 --               Injectiveₙ n con →
@@ -89,9 +96,8 @@ Injectiveₙ n f = ∀ {l r} → uncurryₙ n f l ≡ uncurryₙ n f r → Produ
 --               Dec (a₁₁ ≡ a₁₂) → ⋯ Dec (aₙ₁ ≡ aₙ₂) →
 --               Dec (con a₁₁ ⋯ aₙ₁ ≡ con a₁₂ ⋯ aₙ₂)
 
-≟-mapₙ : ∀ n {ls} {as : Sets n ls} (con : Arrows n as R) →
-         Injectiveₙ n con → ∀ {l r : Product n as} →
-         Arrows n (Dec <$> Equalₙ n l r) (Dec (uncurryₙ n con l ≡ uncurryₙ n con r))
+≟-mapₙ : ∀ n {ls} {as : Sets n ls} (con : Arrows n as R) → Injectiveₙ n con →
+         ∀ {l r} → Arrows n (Dec <$> Equalₙ n l r) (Dec (uncurryₙ n con l ≡ uncurryₙ n con r))
 ≟-mapₙ n con con-inj =
   curryₙ n λ a?s → let as? = Product-dec n a?s in
   Dec.map′ (cong (uncurryₙ n con) ∘′ fromEqualₙ n) con-inj as?
