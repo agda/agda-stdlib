@@ -109,10 +109,12 @@ New modules
   Reflection.Argument.Information
   Reflection.Argument.Relevance
   Reflection.Argument.Visibility
+  Reflection.Definition
   Reflection.Literal
   Reflection.Meta
   Reflection.Name
   Reflection.Pattern
+  Reflection.Term
 
   Relation.Binary.Construct.Closure.Equivalence.Properties
   Relation.Binary.Rewriting
