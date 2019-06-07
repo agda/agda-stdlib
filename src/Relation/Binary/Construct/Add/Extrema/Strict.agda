@@ -16,7 +16,7 @@ module Relation.Binary.Construct.Add.Extrema.Strict
 
 open import Level
 open import Function
-open import Relation.Nullary
+open import Relation.Nullary hiding (Irrelevant)
 
 import Relation.Nullary.Construct.Add.Infimum as I
 open import Relation.Nullary.Construct.Add.Extrema

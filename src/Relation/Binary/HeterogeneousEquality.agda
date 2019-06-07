@@ -14,7 +14,7 @@ open import Data.Unit.NonEta
 open import Function
 open import Function.Inverse using (Inverse)
 open import Level
-open import Relation.Nullary
+open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Unary using (Pred)
 open import Relation.Binary
 open import Relation.Binary.Consequences
