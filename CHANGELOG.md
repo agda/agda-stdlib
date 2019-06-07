@@ -77,6 +77,10 @@ New modules
   Data.AVL.NonEmpty
   Data.AVL.NonEmpty.Propositional
 
+  Data.List.Extrema
+  Data.List.Extrema.Nat
+  Data.List.Extrema.Core
+
   Data.List.Membership.Propositional.Properties.WithK
 
   Data.List.Relation.Binary.Disjoint.Propositional
