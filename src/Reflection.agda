@@ -220,3 +220,61 @@ relevance = Information.relevance
 "Warning: relevance was deprecated in v1.1.
 Please use Reflection.Argument.Information's relevance instead."
 #-}
+
+infix 4 _≟-AbsTerm_ _≟-AbsType_ _≟-ArgTerm_ _≟-ArgType_ _≟-Args_
+        _≟-Clause_ _≟-Clauses_ _≟_
+        _≟-Sort_
+
+_≟-AbsTerm_ = Term._≟-AbsTerm_
+{-# WARNING_ON_USAGE _≟-AbsTerm_
+"Warning: _≟-AbsTerm_ was deprecated in v1.1.
+Please use Reflection.Term's _≟-AbsTerm_ instead."
+#-}
+
+_≟-AbsType_ = Term._≟-AbsType_
+{-# WARNING_ON_USAGE _≟-AbsType_
+"Warning: _≟-AbsType_ was deprecated in v1.1.
+Please use Reflection.Term's _≟-AbsType_ instead."
+#-}
+
+_≟-ArgTerm_ = Term._≟-ArgTerm_
+{-# WARNING_ON_USAGE _≟-ArgTerm_
+"Warning: _≟-ArgTerm_ was deprecated in v1.1.
+Please use Reflection.Term's _≟-ArgTerm_ instead."
+#-}
+
+_≟-ArgType_ = Term._≟-ArgType_
+{-# WARNING_ON_USAGE _≟-ArgType_
+"Warning: _≟-ArgType_ was deprecated in v1.1.
+Please use Reflection.Term's _≟-ArgType_ instead."
+#-}
+
+_≟-Args_    = Term._≟-Args_
+{-# WARNING_ON_USAGE _≟-Args_
+"Warning: _≟-Args_ was deprecated in v1.1.
+Please use Reflection.Term's _≟-Args_ instead."
+#-}
+
+_≟-Clause_  = Term._≟-Clause_
+{-# WARNING_ON_USAGE _≟-Clause_
+"Warning: _≟-Clause_ was deprecated in v1.1.
+Please use Reflection.Term's _≟-Clause_ instead."
+#-}
+
+_≟-Clauses_ = Term._≟-Clauses_
+{-# WARNING_ON_USAGE _≟-Clauses_
+"Warning: _≟-Clauses_ was deprecated in v1.1.
+Please use Reflection.Term's _≟-Clauses_ instead."
+#-}
+
+_≟_         = Term._≟_
+{-# WARNING_ON_USAGE _≟_
+"Warning: _≟_ was deprecated in v1.1.
+Please use Reflection.Term's _≟_ instead."
+#-}
+
+_≟-Sort_    = Term._≟-Sort_
+{-# WARNING_ON_USAGE _≟-Sort_
+"Warning: _≟-Sort_ was deprecated in v1.1.
+Please use Reflection.Term's _≟-Sort_ instead."
+#-}
