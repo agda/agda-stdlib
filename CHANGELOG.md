@@ -50,6 +50,12 @@ Bug-fixes
   therefore been renamed `m+[n∸m]≡n` and the old name now refers to a new
   proof of the correct type.
 
+* The infix precedence of `_-_` in the record `Group` from `Algebra.Structures`
+  was previously set such that when it was inherited by the records `Ring`,
+  `CommutativeRing` etc. it had the same predence as `_*_` rather than `_+_`.
+  This lead to `x - x * x` being ambigous instead of being parsed as `x - (x * x)`.
+  To fix this the precedence of `_-_` has been reduced from 7 to 6.
+
 Non-backwards compatible changes
 --------------------------------
 
