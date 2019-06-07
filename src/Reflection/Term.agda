@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Patterns used in the reflection machinery
+-- Terms used in the reflection machinery
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
