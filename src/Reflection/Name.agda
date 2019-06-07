@@ -39,5 +39,5 @@ infix 4 _≈?_ _≟_
 _≈?_ : Decidable _≈_
 _≈?_ = On.decidable toWords _≡_ (Prodₚ.≡-dec Wₚ._≟_ Wₚ._≟_)
 
-_≟_ : Decidable {A = Name} _≡_
+_≟_ : DecidableEquality Name
 m ≟ n = map′ (toWords-injective _ _) (cong toWords) (m ≈? n)

@@ -75,7 +75,7 @@ _≈?_ = On.decidable toWord Word._≈_ Wₚ._≈?_
 -- Properties of _≡_
 
 infix 4 _≟_
-_≟_ : Decidable {A = Float} _≡_
+_≟_ : DecidableEquality Float
 x ≟ y = map′ ≈⇒≡ ≈-reflexive (x ≈? y)
 
 ≡-setoid : Setoid _ _

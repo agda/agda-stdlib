@@ -62,7 +62,7 @@ name-injective : ∀ {x y} → name x ≡ name y → x ≡ y
 name-injective refl = refl
 
 infix 4 _≟_
-_≟_ : Decidable (_≡_ {A = Literal})
+_≟_ : DecidableEquality Literal
 nat x ≟ nat x₁ = Dec.map′ (cong nat) nat-injective (x ℕ.≟ x₁)
 nat x ≟ word64 x₁ = no (λ ())
 nat x ≟ float x₁ = no (λ ())

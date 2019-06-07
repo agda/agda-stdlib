@@ -16,7 +16,7 @@ open import Function
 open import Relation.Nullary.Decidable using (map′; ⌊_⌋)
 open import Relation.Binary
   using ( _⇒_; Reflexive; Symmetric; Transitive; Substitutive
-        ; Decidable; IsEquivalence; IsDecEquivalence
+        ; Decidable; DecidableEquality; IsEquivalence; IsDecEquivalence
         ; Setoid; DecSetoid; StrictTotalOrder)
 import Relation.Binary.Construct.On as On
 open import Relation.Binary.PropositionalEquality
@@ -79,7 +79,7 @@ x ≈? y = toℕ x ℕₚ.≟ toℕ y
 -- Properties of _≡_
 
 infix 4 _≟_
-_≟_ : Decidable {A = Word64} _≡_
+_≟_ : DecidableEquality Word64
 x ≟ y = map′ ≈⇒≡ ≈-reflexive (x ≈? y)
 
 ≡-setoid : Setoid _ _
