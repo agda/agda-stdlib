@@ -14,43 +14,13 @@ open import Data.Sum as Sum
 open import Relation.Binary
 open import Relation.Binary.Construct.Closure.Reflexive
 open import Relation.Binary.Construct.Closure.Reflexive.Properties public
-open import Relation.Binary.PropositionalEquality as PropEq using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality as PropEq using (_≡_; refl; cong)
+open import Relation.Nullary.Negation using (contradiction)
 
-module _ {a ℓ} {A : Set a} {_~_ : Rel A ℓ} where
+module _ {a ℓ} {A : Set a} {_∼_ : Rel A ℓ} where
 
-  irrel : Irrelevant _~_ → Irreflexive _≡_ _~_ → Irrelevant (Refl _~_)
-  irrel ~-irrel _        [ x∼y ] [ x∼y′ ] = PropEq.cong [_] (~-irrel x∼y x∼y′)
-  irrel _       ~-irrefl [ x∼y ] refl     = ⊥-elim (~-irrefl refl x∼y)
-  irrel _       ~-irrefl refl    [ x∼y ]  = ⊥-elim (~-irrefl refl x∼y)
-  irrel _       _        refl    refl     = refl
-
-  antisym : ∀ {ℓ'} → (E : Σ (Rel A ℓ') Reflexive) → Asymmetric _~_ → Antisymmetric (proj₁ E) (Refl _~_)
-  antisym _ ~-asym [ x∼y ] [ x∼y′ ] = ⊥-elim (~-asym x∼y x∼y′)
-  antisym E _      _       refl     = proj₂ E
-  antisym E _      refl    _        = proj₂ E
-
-  isPartialOrder : IsStrictPartialOrder _≡_ _~_ → IsPartialOrder _≡_ (Refl _~_)
-  isPartialOrder SPO = record
-    { isPreorder = isPreorder (IsStrictPartialOrder.trans SPO)
-    ; antisym    = antisym (_≡_ , refl) asym
-    } where open IsStrictPartialOrder SPO
-
-  isDecPartialOrder : IsDecStrictPartialOrder _≡_ _~_ → IsDecPartialOrder _≡_ (Refl _~_)
-  isDecPartialOrder DSPO = record
-    { isPartialOrder = isPartialOrder isStrictPartialOrder
-    ; _≟_            = _≟_
-    ; _≤?_           = dec _≟_ _<?_
-    } where open IsDecStrictPartialOrder DSPO
-
-  isTotalOrder : IsStrictTotalOrder _≡_ _~_ → IsTotalOrder _≡_ (Refl _~_)
-  isTotalOrder STO = record
-    { isPartialOrder = isPartialOrder isStrictPartialOrder
-    ; total          = total compare
-    } where open IsStrictTotalOrder STO
-
-  isDecTotalOrder : IsStrictTotalOrder _≡_ _~_ → IsDecTotalOrder _≡_ (Refl _~_)
-  isDecTotalOrder STO = record
-    { isTotalOrder = isTotalOrder STO
-    ; _≟_          = _≟_
-    ; _≤?_         = dec _≟_ _<?_
-    } where open IsStrictTotalOrder STO
+  irrel : Irrelevant _∼_ → Irreflexive _≡_ _∼_ → Irrelevant (Refl _∼_)
+  irrel irrel irrefl [ x∼y₁ ] [ x∼y₂ ] = cong [_] (irrel x∼y₁ x∼y₂)
+  irrel irrel irrefl [ x∼y ]  refl     = contradiction x∼y (irrefl refl)
+  irrel irrel irrefl refl     [ x∼y ]  = contradiction x∼y (irrefl refl)
+  irrel irrel irrefl refl     refl     = refl

@@ -16,6 +16,7 @@ open import Relation.Binary
 open import Relation.Binary.Construct.Closure.Reflexive
 open import Relation.Binary.PropositionalEquality as PropEq using (_≡_; refl)
 open import Relation.Nullary
+open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred)
 
 private
@@ -25,7 +26,7 @@ private
     B : Set b
 
 ------------------------------------------------------------------------
--- Properties
+-- Relational properties
 
 module _ {P : Rel A p} {Q : Rel B q} where
 
@@ -34,13 +35,6 @@ module _ {P : Rel A p} {Q : Rel B q} where
   =[]⇒ x refl    = refl
 
 module _ {_~_ : Rel A ℓ} where
-
-  respˡ : ∀ {P : REL A B p} → P Respectsˡ _~_ → P Respectsˡ (Refl _~_)
-  respˡ p-respˡ-~ [ x∼y ] = p-respˡ-~ x∼y
-  respˡ _         refl    = id
-
-  respʳ : ∀ {P : REL B A p} → P Respectsʳ _~_ → P Respectsʳ (Refl _~_)
-  respʳ = respˡ
 
   sym : Symmetric _~_ → Symmetric (Refl _~_)
   sym ~-sym [ x∼y ] = [ ~-sym x∼y ]
@@ -51,6 +45,18 @@ module _ {_~_ : Rel A ℓ} where
   trans ~-trans [ x∼y ] refl     = [ x∼y ]
   trans ~-trans refl    [ x∼y ]  = [ x∼y ]
   trans ~-trans refl    refl     = refl
+
+  antisym : ∀ {ℓ'} (_≈_ : Rel A ℓ') → Reflexive _≈_ →
+            Asymmetric _~_ → Antisymmetric _≈_ (Refl _~_)
+  antisym _≈_ ref asym [ x∼y ] [ y∼x ] = contradiction x∼y (asym y∼x)
+  antisym _≈_ ref asym [ x∼y ] refl    = ref
+  antisym _≈_ ref asym refl    _       = ref
+
+  total : Trichotomous _≡_ _~_ → Total (Refl _~_)
+  total compare x y with compare x y
+  ... | tri< a _    _ = inj₁ [ a ]
+  ... | tri≈ _ refl _ = inj₁ refl
+  ... | tri> _ _    c = inj₂ [ c ]
 
   dec : Decidable {A = A} _≡_ → Decidable _~_ → Decidable (Refl _~_)
   dec ≡-dec ~-dec a b with ≡-dec a b | ~-dec a b
@@ -64,18 +70,12 @@ module _ {_~_ : Rel A ℓ} where
   ... | tri≈ _  refl _ = yes refl
   ... | tri> ¬a ¬b   _ = no λ { refl → ¬b refl ; [ p ] → ¬a p }
 
-  total : Trichotomous _≡_ _~_ → Total (Refl _~_)
-  total compare x y with compare x y
-  ... | tri< a _    _ = inj₁ [ a ]
-  ... | tri≈ _ refl _ = inj₁ refl
-  ... | tri> _ _    c = inj₂ [ c ]
+  respˡ : ∀ {P : REL A B p} → P Respectsˡ _~_ → P Respectsˡ (Refl _~_)
+  respˡ p-respˡ-~ [ x∼y ] = p-respˡ-~ x∼y
+  respˡ _         refl    = id
 
-  isPreorder : Transitive _~_ → IsPreorder _≡_ (Refl _~_)
-  isPreorder ~-trans = record
-    { isEquivalence = PropEq.isEquivalence
-    ; reflexive     = λ { refl → refl }
-    ; trans         = trans ~-trans
-    }
+  respʳ : ∀ {P : REL B A p} → P Respectsʳ _~_ → P Respectsʳ (Refl _~_)
+  respʳ = respˡ
 
 module _ {_~_ : Rel A ℓ} {P : Pred A p} where
 
@@ -87,3 +87,41 @@ module _ {_~_ : Rel A ℓ} {P : Rel A p} where
 
   resp₂ : P Respects₂ _~_ → P Respects₂ (Refl _~_)
   resp₂ = Prod.map respˡ respʳ
+
+------------------------------------------------------------------------
+-- Structures
+
+module _ {_~_ : Rel A ℓ} where
+
+  isPreorder : Transitive _~_ → IsPreorder _≡_ (Refl _~_)
+  isPreorder ~-trans = record
+    { isEquivalence = PropEq.isEquivalence
+    ; reflexive     = λ { refl → refl }
+    ; trans         = trans ~-trans
+    }
+
+  isPartialOrder : IsStrictPartialOrder _≡_ _~_ → IsPartialOrder _≡_ (Refl _~_)
+  isPartialOrder O = record
+    { isPreorder = isPreorder O.trans
+    ; antisym    = antisym _≡_ refl O.asym
+    } where module O = IsStrictPartialOrder O
+
+  isDecPartialOrder : IsDecStrictPartialOrder _≡_ _~_ → IsDecPartialOrder _≡_ (Refl _~_)
+  isDecPartialOrder O = record
+    { isPartialOrder = isPartialOrder O.isStrictPartialOrder
+    ; _≟_            = O._≟_
+    ; _≤?_           = dec O._≟_ O._<?_
+    } where module O = IsDecStrictPartialOrder O
+
+  isTotalOrder : IsStrictTotalOrder _≡_ _~_ → IsTotalOrder _≡_ (Refl _~_)
+  isTotalOrder O = record
+    { isPartialOrder = isPartialOrder isStrictPartialOrder
+    ; total          = total compare
+    } where open IsStrictTotalOrder O
+
+  isDecTotalOrder : IsStrictTotalOrder _≡_ _~_ → IsDecTotalOrder _≡_ (Refl _~_)
+  isDecTotalOrder O = record
+    { isTotalOrder = isTotalOrder O
+    ; _≟_          = _≟_
+    ; _≤?_         = dec _≟_ _<?_
+    } where open IsStrictTotalOrder O
