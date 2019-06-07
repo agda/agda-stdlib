@@ -11,20 +11,21 @@ module Data.List.Relation.Unary.All where
 open import Category.Applicative
 open import Category.Monad
 open import Data.List.Base as List using (List; []; _∷_)
-open import Data.List.Relation.Unary.Any as Any using (here; there)
+open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Membership.Propositional using (_∈_)
-open import Data.Product as Prod using (_,_)
+open import Data.Product as Prod using (∃; -,_; _×_; _,_; proj₁; proj₂)
 open import Function
 open import Level
-open import Relation.Nullary
+open import Relation.Nullary hiding (Irrelevant)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Unary hiding (_∈_)
 open import Relation.Binary.PropositionalEquality as P
 
 private
   variable
-    a p q r : Level
+    a b p q r : Level
     A : Set a
+    B : Set b
 
 ------------------------------------------------------------------------
 -- Definition
@@ -42,21 +43,33 @@ data All {A : Set a} (P : Pred A p) : Pred (List A) (a ⊔ p) where
 -- Operations on All
 
 module _ {P : Pred A p} where
+  uncons : ∀ {x xs} → All P (x ∷ xs) → P x × All P xs
+  uncons (px ∷ pxs) = px , pxs
 
   head : ∀ {x xs} → All P (x ∷ xs) → P x
-  head (px ∷ pxs) = px
+  head = proj₁ ∘ uncons
 
   tail : ∀ {x xs} → All P (x ∷ xs) → All P xs
-  tail (px ∷ pxs) = pxs
-
-  lookup : ∀ {xs} → All P xs → (∀ {x} → x ∈ xs → P x)
-  lookup []         ()
-  lookup (px ∷ pxs) (here refl)  = px
-  lookup (px ∷ pxs) (there x∈xs) = lookup pxs x∈xs
+  tail = proj₂ ∘ uncons
 
   tabulate : ∀ {xs} → (∀ {x} → x ∈ xs → P x) → All P xs
   tabulate {xs = []}     hyp = []
   tabulate {xs = x ∷ xs} hyp = hyp (here refl) ∷ tabulate (hyp ∘ there)
+
+  reduce : (f : ∀ {x} → P x → B) → ∀ {xs} → All P xs → List B
+  reduce f []         = []
+  reduce f (px ∷ pxs) = f px ∷ reduce f pxs
+
+  construct : (f : B → ∃ P) (xs : List B) → ∃ (All P)
+  construct f []       = [] , []
+  construct f (x ∷ xs) = Prod.zip _∷_ _∷_ (f x) (construct f xs)
+
+  fromList : (xs : List (∃ P)) → All P (List.map proj₁ xs)
+  fromList []              = []
+  fromList ((x , p) ∷ xps) = p ∷ fromList xps
+
+  toList : ∀ {xs} → All P xs → List (∃ P)
+  toList pxs = reduce (λ {x} px → x , px) pxs
 
 module _ {P : Pred A p} {Q : Pred A q} where
 
@@ -82,6 +95,9 @@ module _ {P : Pred A p} {Q : Pred A q} where
   unzip : All (P ∩ Q) ⊆ All P ∩ All Q
   unzip = unzipWith id
 
+self : ∀ {xs : List A} → All (const A) xs
+self = tabulate (λ {x} _ → x)
+
 ------------------------------------------------------------------------
 -- (weak) updateAt
 
@@ -103,7 +119,7 @@ module _ {P : Pred A p} where
 ------------------------------------------------------------------------
 -- Traversable-like functions
 
-module _ p {A : Set a} {P : Pred A (a ⊔ p)}
+module _ (p : Level) {A : Set a} {P : Pred A (a ⊔ p)}
          {F : Set (a ⊔ p) → Set (a ⊔ p)}
          (App : RawApplicative F)
          where
@@ -120,7 +136,7 @@ module _ p {A : Set a} {P : Pred A (a ⊔ p)}
   forA : ∀ {Q : Pred A q} {xs} → All Q xs → (Q ⊆ F ∘′ P) → F (All P xs)
   forA qxs f = mapA f qxs
 
-module _ p {A : Set a} {P : Pred A (a ⊔ p)}
+module _ (p : Level) {A : Set a} {P : Pred A (a ⊔ p)}
          {M : Set (a ⊔ p) → Set (a ⊔ p)}
          (Mon : RawMonad M)
          where
@@ -135,6 +151,26 @@ module _ p {A : Set a} {P : Pred A (a ⊔ p)}
 
   forM : ∀ {Q : Pred A q} {xs} → All Q xs → (Q ⊆ M ∘′ P) → M (All P xs)
   forM = forA p App
+
+------------------------------------------------------------------------
+-- Generalised lookup based on a proof of Any
+
+module _ {P : Pred A p} {Q : Pred A q} where
+
+  lookupAny : ∀ {xs} → All P xs → (i : Any Q xs) → (P ∩ Q) (Any.lookup i)
+  lookupAny (px ∷ pxs) (here qx) = px , qx
+  lookupAny (px ∷ pxs) (there i) = lookupAny pxs i
+
+module _ {P : Pred A p} {Q : Pred A q} {R : Pred A r} where
+
+  lookupWith : ∀[ P ⇒ Q ⇒ R ] → ∀ {xs} → All P xs → (i : Any Q xs) →
+               R (Any.lookup i)
+  lookupWith f pxs i = Prod.uncurry f (lookupAny pxs i)
+
+module _ {P : Pred A p} where
+
+  lookup : ∀ {xs} → All P xs → (∀ {x} → x ∈ xs → P x)
+  lookup pxs = lookupWith (λ { px refl → px }) pxs
 
 ------------------------------------------------------------------------
 -- Properties of predicates preserved by All

@@ -10,7 +10,7 @@ module Data.List.Relation.Unary.All.Properties where
 
 open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Bool.Base using (Bool; T)
-open import Data.Bool.Properties
+open import Data.Bool.Properties using (T-∧)
 open import Data.Empty
 open import Data.Fin using (Fin) renaming (zero to fzero; suc to fsuc)
 open import Data.List.Base
@@ -54,7 +54,6 @@ module _ {P : A → Set p} where
   ¬Any⇒All¬ (x ∷ xs) ¬p = ¬p ∘ here ∷ ¬Any⇒All¬ xs (¬p ∘ there)
 
   All¬⇒¬Any : ∀ {xs} → All (¬_ ∘ P) xs → ¬ Any P xs
-  All¬⇒¬Any []        ()
   All¬⇒¬Any (¬p ∷ _)  (here  p) = ¬p p
   All¬⇒¬Any (_  ∷ ¬p) (there p) = All¬⇒¬Any ¬p p
 
@@ -140,7 +139,6 @@ module _ {P : Pred A p} where
   updateAt-updates : ∀ {x xs px} (pxs : All P xs) (i : x ∈ xs)
                      {f : P x → P x} → All.lookup pxs i ≡ px →
                      All.lookup (pxs All.[ i ]%= f) i ≡ f px
-  updateAt-updates [] ()
   updateAt-updates (px ∷ pxs) (here P.refl) P.refl = P.refl
   updateAt-updates (px ∷ pxs) (there i) = updateAt-updates pxs i
 
@@ -279,7 +277,6 @@ module _ {P : A → Set p} where
   applyUpTo⁺₂ f n Pf = applyUpTo⁺₁ f n (λ _ → Pf _)
 
   applyUpTo⁻ : ∀ f n → All P (applyUpTo f n) → ∀ {i} → i < n → P (f i)
-  applyUpTo⁻ f zero    pxs        ()
   applyUpTo⁻ f (suc n) (px ∷ _)   (s≤s z≤n)       = px
   applyUpTo⁻ f (suc n) (_  ∷ pxs) (s≤s (s≤s i<n)) =
     applyUpTo⁻ (f ∘ suc) n pxs (s≤s i<n)
@@ -308,7 +305,6 @@ module _ {P : A → Set p} where
 
   tabulate⁻ : ∀ {n} {f : Fin n → A} →
               All P (tabulate f) → (∀ i → P (f i))
-  tabulate⁻ {zero}  pf       ()
   tabulate⁻ {suc n} (px ∷ _) fzero    = px
   tabulate⁻ {suc n} (_ ∷ pf) (fsuc i) = tabulate⁻ pf i
 

@@ -8,11 +8,16 @@
 
 module Data.String.Base where
 
+open import Level using (zero)
 open import Data.Nat.Base as Nat using (ℕ)
 open import Data.List.Base as List using (List)
 open import Data.List.NonEmpty as NE using (List⁺)
-open import Agda.Builtin.Char using (Char)
+open import Data.List.Relation.Binary.Pointwise using (Pointwise)
+open import Data.List.Relation.Binary.Lex.Strict using (Lex-<)
+open import Data.Char.Base as Char using (Char)
 open import Function
+open import Relation.Binary using (Rel)
+open import Relation.Binary.PropositionalEquality
 
 ------------------------------------------------------------------------
 -- From Agda.Builtin: type and renamed primitives
@@ -28,6 +33,21 @@ open String public using ( String )
   ; primStringFromList to fromList
   ; primShowString     to show
   )
+
+------------------------------------------------------------------------
+-- Relations
+
+-- Pointwise equality on Strings
+
+infix 4 _≈_
+_≈_ : Rel String zero
+_≈_ = Pointwise Char._≈_ on toList
+
+-- Lexicographic ordering on Strings
+
+infix 4 _<_
+_<_ : Rel String zero
+_<_ = Lex-< Char._≈_ Char._<_ on toList
 
 ------------------------------------------------------------------------
 -- Operations

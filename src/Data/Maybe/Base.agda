@@ -13,7 +13,7 @@ module Data.Maybe.Base where
 open import Level
 open import Data.Bool.Base using (Bool; true; false; not)
 open import Data.Unit.Base using (⊤)
-open import Data.These using (These; this; that; these)
+open import Data.These.Base using (These; this; that; these)
 open import Data.Product as Prod using (_×_; _,_)
 open import Function
 open import Relation.Nullary
@@ -52,7 +52,7 @@ decToMaybe (no _)  = nothing
 
 -- A dependent eliminator.
 
-maybe : ∀ {B : Maybe A → Set b} →
+maybe : ∀ {A : Set a} {B : Maybe A → Set b} →
         ((x : A) → B (just x)) → B nothing → (x : Maybe A) → B x
 maybe j n (just x) = j x
 maybe j n nothing  = n
@@ -80,10 +80,23 @@ module _ {a} {A : Set a} where
   from-just (just x) = x
   from-just nothing  = _
 
--- Functoriality: map.
+-- Functoriality: map
 
 map : (A → B) → Maybe A → Maybe B
 map f = maybe (just ∘ f) nothing
+
+-- Applicative: ap
+
+ap : Maybe (A → B) → Maybe A → Maybe B
+ap nothing  = const nothing
+ap (just f) = map f
+
+-- Monad: bind
+
+infixl 1 _>>=_
+_>>=_ : Maybe A → (A → Maybe B) → Maybe B
+nothing >>= f = nothing
+just a  >>= f = f a
 
 -- Alternative: <∣>
 

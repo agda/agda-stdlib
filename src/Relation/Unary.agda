@@ -14,7 +14,7 @@ open import Data.Product
 open import Data.Sum using (_⊎_; [_,_])
 open import Function
 open import Level
-open import Relation.Nullary
+open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 private
@@ -127,7 +127,7 @@ P ⊅′ Q = ¬ (P ⊃′ Q)
 ------------------------------------------------------------------------
 -- Properties of sets
 
-infix 10 Universal IUniversal
+infix 10 Satisfiable Universal IUniversal
 
 -- Emptiness - no element satisfies P.
 
@@ -138,6 +138,8 @@ Empty P = ∀ x → x ∉ P
 
 Satisfiable : Pred A ℓ → Set _
 Satisfiable P = ∃ λ x → x ∈ P
+
+syntax Satisfiable P = ∃⟨ P ⟩
 
 -- Universality - all elements satisfy P.
 
@@ -164,6 +166,12 @@ Decidable P = ∀ x → Dec (P x)
 
 Irrelevant : Pred A ℓ → Set _
 Irrelevant P = ∀ {x} (a : P x) (b : P x) → a ≡ b
+
+-- Recomputability - we can rebuild a relevant proof given an
+-- irrelevant one.
+
+Recomputable : Pred A ℓ → Set _
+Recomputable P = ∀ {x} → .(P x) → P x
 
 ------------------------------------------------------------------------
 -- Operations on sets

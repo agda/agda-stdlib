@@ -17,6 +17,7 @@ module Relation.Binary.Construct.Add.Extrema.NonStrict
 open import Function
 open import Relation.Nullary.Construct.Add.Extrema
 import Relation.Nullary.Construct.Add.Infimum as I
+open import Relation.Binary.PropositionalEquality using (_≡_)
 import Relation.Binary.Construct.Add.Infimum.NonStrict as AddInfimum
 import Relation.Binary.Construct.Add.Supremum.NonStrict as AddSupremum
 import Relation.Binary.Construct.Add.Extrema.Equality as Equality
@@ -56,16 +57,6 @@ _≤⊤± : ∀ k → k ≤± ⊤±
 [≤]-injective : ∀ {k l} → [ k ] ≤± [ l ] → k ≤ l
 [≤]-injective = Inf.[≤]-injective ∘′ Sup.[≤]-injective
 
-module _ {e} {_≈_ : Rel A e} where
-
-  open Equality _≈_
-
-  ≤±-reflexive : (_≈_ ⇒ _≤_) → (_≈±_ ⇒ _≤±_)
-  ≤±-reflexive = Sup.≤⁺-reflexive ∘′ Inf.≤₋-reflexive
-
-  ≤±-antisym : Antisymmetric _≈_ _≤_ → Antisymmetric _≈±_ _≤±_
-  ≤±-antisym = Sup.≤⁺-antisym ∘′ Inf.≤₋-antisym
-
 ≤±-trans : Transitive _≤_ → Transitive _≤±_
 ≤±-trans = Sup.≤⁺-trans ∘′ Inf.≤₋-trans
 
@@ -85,7 +76,47 @@ module _ {e} {_≈_ : Rel A e} where
 ≤±-irrelevant = Sup.≤⁺-irrelevant ∘′ Inf.≤₋-irrelevant
 
 -------------------------------------------------------------------------
--- Structures
+-- Relational properties + propositional equality
+
+≤±-reflexive-≡ : (_≡_ ⇒ _≤_) → (_≡_ ⇒ _≤±_)
+≤±-reflexive-≡ = Sup.≤⁺-reflexive-≡ ∘′ Inf.≤₋-reflexive-≡
+
+≤±-antisym-≡ : Antisymmetric _≡_ _≤_ → Antisymmetric _≡_ _≤±_
+≤±-antisym-≡ = Sup.≤⁺-antisym-≡ ∘′ Inf.≤₋-antisym-≡
+
+-------------------------------------------------------------------------
+-- Relational properties + setoid equality
+
+module _ {e} {_≈_ : Rel A e} where
+
+  open Equality _≈_
+
+  ≤±-reflexive : (_≈_ ⇒ _≤_) → (_≈±_ ⇒ _≤±_)
+  ≤±-reflexive = Sup.≤⁺-reflexive ∘′ Inf.≤₋-reflexive
+
+  ≤±-antisym : Antisymmetric _≈_ _≤_ → Antisymmetric _≈±_ _≤±_
+  ≤±-antisym = Sup.≤⁺-antisym ∘′ Inf.≤₋-antisym
+
+-------------------------------------------------------------------------
+-- Structures + propositional equality
+
+≤±-isPreorder-≡ : IsPreorder _≡_ _≤_ → IsPreorder _≡_ _≤±_
+≤±-isPreorder-≡ = Sup.≤⁺-isPreorder-≡ ∘′ Inf.≤₋-isPreorder-≡
+
+≤±-isPartialOrder-≡ : IsPartialOrder _≡_ _≤_ → IsPartialOrder _≡_ _≤±_
+≤±-isPartialOrder-≡ = Sup.≤⁺-isPartialOrder-≡ ∘′ Inf.≤₋-isPartialOrder-≡
+
+≤±-isDecPartialOrder-≡ : IsDecPartialOrder _≡_ _≤_ → IsDecPartialOrder _≡_ _≤±_
+≤±-isDecPartialOrder-≡ = Sup.≤⁺-isDecPartialOrder-≡ ∘′ Inf.≤₋-isDecPartialOrder-≡
+
+≤±-isTotalOrder-≡ : IsTotalOrder _≡_ _≤_ → IsTotalOrder _≡_ _≤±_
+≤±-isTotalOrder-≡ = Sup.≤⁺-isTotalOrder-≡ ∘′ Inf.≤₋-isTotalOrder-≡
+
+≤±-isDecTotalOrder-≡ : IsDecTotalOrder _≡_ _≤_ → IsDecTotalOrder _≡_ _≤±_
+≤±-isDecTotalOrder-≡ = Sup.≤⁺-isDecTotalOrder-≡ ∘′ Inf.≤₋-isDecTotalOrder-≡
+
+-------------------------------------------------------------------------
+-- Structures + setoid equality
 
 module _ {e} {_≈_ : Rel A e} where
 

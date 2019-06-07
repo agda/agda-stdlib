@@ -82,8 +82,6 @@ decSetoid n = record
 toℕ-injective : ∀ {n} {i j : Fin n} → toℕ i ≡ toℕ j → i ≡ j
 toℕ-injective {zero}  {}      {}      _
 toℕ-injective {suc n} {zero}  {zero}  eq = refl
-toℕ-injective {suc n} {zero}  {suc j} ()
-toℕ-injective {suc n} {suc i} {zero}  ()
 toℕ-injective {suc n} {suc i} {suc j} eq =
   cong suc (toℕ-injective (cong ℕ.pred eq))
 
@@ -101,7 +99,6 @@ toℕ<n (suc i) = s≤s (toℕ<n i)
 
 toℕ≤pred[n] : ∀ {n} (i : Fin n) → toℕ i ℕ≤ ℕ.pred n
 toℕ≤pred[n] zero                 = z≤n
-toℕ≤pred[n] (suc {n = zero}  ())
 toℕ≤pred[n] (suc {n = suc n} i)  = s≤s (toℕ≤pred[n] i)
 
 -- A simpler implementation of toℕ≤pred[n],
@@ -158,9 +155,7 @@ toℕ-fromℕ≤″ {m} {n} m<n = begin
 -- cast
 
 toℕ-cast : ∀ {m n} .(eq : m ≡ n) (k : Fin m) → toℕ (cast eq k) ≡ toℕ k
-toℕ-cast {n = zero}  () zero
 toℕ-cast {n = suc n} eq zero    = refl
-toℕ-cast {n = zero}  () (suc k)
 toℕ-cast {n = suc n} eq (suc k) = cong suc (toℕ-cast (cong ℕ.pred eq) k)
 
 ------------------------------------------------------------------------
@@ -306,7 +301,6 @@ m <? n = suc (toℕ m) ℕ.≤? toℕ n
 ≤∧≢⇒< : ∀ {n} {i j : Fin n} → i ≤ j → i ≢ j → i < j
 ≤∧≢⇒< {i = zero}  {zero}  _         0≢0     = contradiction refl 0≢0
 ≤∧≢⇒< {i = zero}  {suc j} _         _       = s≤s z≤n
-≤∧≢⇒< {i = suc i} {zero}  ()
 ≤∧≢⇒< {i = suc i} {suc j} (s≤s i≤j) 1+i≢1+j =
   s≤s (≤∧≢⇒< i≤j (1+i≢1+j ∘ (cong suc)))
 
@@ -315,7 +309,6 @@ m <? n = suc (toℕ m) ℕ.≤? toℕ n
 
 toℕ-inject : ∀ {n} {i : Fin n} (j : Fin′ i) →
              toℕ (inject j) ≡ toℕ j
-toℕ-inject {i = zero}  ()
 toℕ-inject {i = suc i} zero    = refl
 toℕ-inject {i = suc i} (suc j) = cong suc (toℕ-inject j)
 
@@ -331,8 +324,6 @@ toℕ-inject+ n (suc i) = cong suc (toℕ-inject+ n i)
 
 inject₁-injective : ∀ {n} {i j : Fin n} → inject₁ i ≡ inject₁ j → i ≡ j
 inject₁-injective {i = zero}  {zero}  i≡j = refl
-inject₁-injective {i = zero}  {suc j} ()
-inject₁-injective {i = suc i} {zero}  ()
 inject₁-injective {i = suc i} {suc j} i≡j =
   cong suc (inject₁-injective (suc-injective i≡j))
 
@@ -341,8 +332,7 @@ toℕ-inject₁ zero    = refl
 toℕ-inject₁ (suc i) = cong suc (toℕ-inject₁ i)
 
 toℕ-inject₁-≢ : ∀ {n}(i : Fin n) → n ≢ toℕ (inject₁ i)
-toℕ-inject₁-≢ zero = λ ()
-toℕ-inject₁-≢ (suc i) = λ p → toℕ-inject₁-≢ i (ℕₚ.suc-injective p)
+toℕ-inject₁-≢ (suc i) = toℕ-inject₁-≢ i ∘ ℕₚ.suc-injective
 
 ------------------------------------------------------------------------
 -- inject₁ and lower₁
@@ -350,7 +340,6 @@ toℕ-inject₁-≢ (suc i) = λ p → toℕ-inject₁-≢ i (ℕₚ.suc-injecti
 inject₁-lower₁ : ∀ {n} (i : Fin (suc n)) (n≢i : n ≢ toℕ i) →
                  inject₁ (lower₁ i n≢i) ≡ i
 inject₁-lower₁ {zero}  zero     0≢0     = contradiction refl 0≢0
-inject₁-lower₁ {zero}  (suc ()) _
 inject₁-lower₁ {suc n} zero     _       = refl
 inject₁-lower₁ {suc n} (suc i)  n+1≢i+1 =
   cong suc (inject₁-lower₁ i  (n+1≢i+1 ∘ cong suc))
@@ -368,7 +357,6 @@ lower₁-inject₁ i = lower₁-inject₁′ i (toℕ-inject₁-≢ i)
 lower₁-irrelevant : ∀ {n} (i : Fin (suc n)) n≢i₁ n≢i₂ →
              lower₁ {n} i n≢i₁ ≡ lower₁ {n} i n≢i₂
 lower₁-irrelevant {zero}  zero     0≢0 _ = contradiction refl 0≢0
-lower₁-irrelevant {zero}  (suc ()) _   _
 lower₁-irrelevant {suc n} zero     _   _ = refl
 lower₁-irrelevant {suc n} (suc i)  _   _ =
   cong suc (lower₁-irrelevant i _ _)
@@ -412,7 +400,6 @@ inject≤-idempotent (suc i) (s≤s m≤n) (s≤s n≤k) (s≤s m≤k) = cong su
 -- pred
 
 <⇒≤pred : ∀ {n} {i j : Fin n} → j < i → j ≤ pred i
-<⇒≤pred {i = zero}  {_}     ()
 <⇒≤pred {i = suc i} {zero}  j<i       = z≤n
 <⇒≤pred {i = suc i} {suc j} (s≤s j<i) =
   subst (_ ℕ≤_) (sym (toℕ-inject₁ i)) j<i
@@ -422,7 +409,6 @@ inject≤-idempotent (suc i) (s≤s m≤n) (s≤s n≤k) (s≤s m≤k) = cong su
 
 toℕ‿ℕ- : ∀ n i → toℕ (n ℕ- i) ≡ n ∸ toℕ i
 toℕ‿ℕ- n       zero     = toℕ-fromℕ n
-toℕ‿ℕ- zero    (suc ())
 toℕ‿ℕ- (suc n) (suc i)  = toℕ‿ℕ- n i
 
 ------------------------------------------------------------------------
@@ -430,7 +416,6 @@ toℕ‿ℕ- (suc n) (suc i)  = toℕ‿ℕ- n i
 
 nℕ-ℕi≤n : ∀ n i → n ℕ-ℕ i ℕ≤ n
 nℕ-ℕi≤n n       zero     = ℕₚ.≤-refl
-nℕ-ℕi≤n zero    (suc ())
 nℕ-ℕi≤n (suc n) (suc i)  = begin
   n ℕ-ℕ i  ≤⟨ nℕ-ℕi≤n n i ⟩
   n        ≤⟨ ℕₚ.n≤1+n n ⟩
@@ -444,14 +429,10 @@ punchIn-injective : ∀ {m} i (j k : Fin m) →
                     punchIn i j ≡ punchIn i k → j ≡ k
 punchIn-injective zero    _       _       refl      = refl
 punchIn-injective (suc i) zero    zero    _         = refl
-punchIn-injective (suc i) zero    (suc k) ()
-punchIn-injective (suc i) (suc j) zero    ()
 punchIn-injective (suc i) (suc j) (suc k) ↑j+1≡↑k+1 =
   cong suc (punchIn-injective i j k (suc-injective ↑j+1≡↑k+1))
 
 punchInᵢ≢i : ∀ {m} i (j : Fin m) → punchIn i j ≢ i
-punchInᵢ≢i zero    _    ()
-punchInᵢ≢i (suc i) zero ()
 punchInᵢ≢i (suc i) (suc j) = punchInᵢ≢i i j ∘ suc-injective
 
 ------------------------------------------------------------------------
@@ -464,10 +445,7 @@ punchOut-cong : ∀ {n} (i : Fin (suc n)) {j k} {i≢j : i ≢ j} {i≢k : i ≢
 punchOut-cong zero {zero} {i≢j = 0≢0} = contradiction refl 0≢0
 punchOut-cong zero {suc j} {zero} {i≢k = 0≢0} = contradiction refl 0≢0
 punchOut-cong zero {suc j} {suc k} = suc-injective
-punchOut-cong {zero} (suc ())
 punchOut-cong {suc n} (suc i) {zero} {zero} _ = refl
-punchOut-cong {suc n} (suc i) {zero} {suc k} ()
-punchOut-cong {suc n} (suc i) {suc j} {zero} ()
 punchOut-cong {suc n} (suc i) {suc j} {suc k} = cong suc ∘ punchOut-cong i ∘ suc-injective
 
 -- An alternative to 'punchOut-cong' in the which the new inequality argument is
@@ -483,10 +461,7 @@ punchOut-injective : ∀ {m} {i j k : Fin (suc m)}
 punchOut-injective {_}     {zero}   {zero}  {_}     0≢0 _   _     = contradiction refl 0≢0
 punchOut-injective {_}     {zero}   {_}     {zero}  _   0≢0 _     = contradiction refl 0≢0
 punchOut-injective {_}     {zero}   {suc j} {suc k} _   _   pⱼ≡pₖ = cong suc pⱼ≡pₖ
-punchOut-injective {zero}  {suc ()}
 punchOut-injective {suc n} {suc i}  {zero}  {zero}  _   _    _    = refl
-punchOut-injective {suc n} {suc i}  {zero}  {suc k} _   _   ()
-punchOut-injective {suc n} {suc i}  {suc j} {zero}  _   _   ()
 punchOut-injective {suc n} {suc i}  {suc j} {suc k} i≢j i≢k pⱼ≡pₖ =
   cong suc (punchOut-injective (i≢j ∘ cong suc) (i≢k ∘ cong suc) (suc-injective pⱼ≡pₖ))
 
@@ -494,7 +469,6 @@ punchIn-punchOut : ∀ {m} {i j : Fin (suc m)} (i≢j : i ≢ j) →
                    punchIn i (punchOut i≢j) ≡ j
 punchIn-punchOut {_}     {zero}   {zero}  0≢0 = contradiction refl 0≢0
 punchIn-punchOut {_}     {zero}   {suc j} _   = refl
-punchIn-punchOut {zero}  {suc ()}
 punchIn-punchOut {suc m} {suc i}  {zero}  i≢j = refl
 punchIn-punchOut {suc m} {suc i}  {suc j} i≢j =
   cong suc (punchIn-punchOut (i≢j ∘ cong suc))
@@ -507,14 +481,6 @@ punchOut-punchIn (suc i) {suc j} = cong suc (begin
   punchOut (punchInᵢ≢i i j ∘ sym)                             ≡⟨ punchOut-punchIn i ⟩
   j                                                           ∎)
   where open ≡-Reasoning
-
-------------------------------------------------------------------------
--- _+′_
-
-infixl 6 _+′_
-
-_+′_ : ∀ {m n} (i : Fin m) (j : Fin n) → Fin (ℕ.pred m ℕ+ n)
-i +′ j = inject≤ (i + j) (ℕₚ.+-mono-≤ (toℕ≤pred[n] i) ℕₚ.≤-refl)
 
 ------------------------------------------------------------------------
 -- Quantification
@@ -610,6 +576,8 @@ module _ {a} {A : Set a} where
   eq? : ∀ {n} → A ↣ Fin n → B.Decidable {A = A} _≡_
   eq? inj = Dec.via-injection inj _≟_
 
+
+
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
 ------------------------------------------------------------------------
@@ -696,4 +664,14 @@ Please use ≤-irrelevant instead."
 {-# WARNING_ON_USAGE <-irrelevance
 "Warning: <-irrelevance was deprecated in v1.0.
 Please use <-irrelevant instead."
+#-}
+
+-- Version 1.1
+
+infixl 6 _+′_
+_+′_ : ∀ {m n} (i : Fin m) (j : Fin n) → Fin (ℕ.pred m ℕ+ n)
+i +′ j = inject≤ (i + j) (ℕₚ.+-monoˡ-≤ _ (toℕ≤pred[n] i))
+{-# WARNING_ON_USAGE _+′_
+"Warning: _+′_ was deprecated in v1.1.
+Please use `raise` or `inject+` from `Data.Fin` instead."
 #-}
