@@ -27,7 +27,7 @@ open import Relation.Nullary.Product using (_×-dec_)
 open import Relation.Binary using (Rel)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong₂)
 
-open import Function.Nary.NonDependent
+open import Function.Nary.NonDependent.Base
 
 -- Provided n Levels and a corresponding "vector" of `n` Sets, we can build a big
 -- right-nested product type packing a value for each one of these Sets.
