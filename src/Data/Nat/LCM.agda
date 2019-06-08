@@ -10,16 +10,19 @@ module Data.Nat.LCM where
 
 open import Algebra
 open import Data.Nat
+open import Data.Nat.Coprimality as Coprime
+open import Data.Nat.Divisibility
+open import Data.Nat.DivMod using (_/_; *-/-assoc)
 open import Data.Nat.Properties
 open import Data.Nat.Solver
 open import Data.Nat.GCD
-open import Data.Nat.Divisibility
-open import Data.Nat.Coprimality as Coprime
 open import Data.Product
+open import Data.Sum using (inj₁)
 open import Function
 open import Relation.Binary.PropositionalEquality as PropEq
   using (_≡_; refl)
 open import Relation.Binary
+open import Relation.Nullary.Decidable using (False; fromWitnessFalse)
 
 open +-*-Solver
 
