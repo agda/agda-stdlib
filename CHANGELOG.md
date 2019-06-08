@@ -115,7 +115,10 @@ New modules
   Data.Trie
   Data.Trie.NonEmpty
 
+  Relation.Binary.Construct.Closure.Reflexive.Properties
+  Relation.Binary.Construct.Closure.Reflexive.Properties.WithK
   Relation.Binary.Construct.Closure.Equivalence.Properties
+
   Relation.Binary.Rewriting
 
   Relation.Nullary.Decidable.Core
