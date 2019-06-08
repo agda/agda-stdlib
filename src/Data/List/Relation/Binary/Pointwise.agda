@@ -16,7 +16,7 @@ open import Data.List.Properties using (≡-dec)
 open import Data.Fin using (Fin) renaming (zero to fzero; suc to fsuc)
 open import Data.Nat using (ℕ; zero; suc)
 open import Level
-open import Relation.Nullary
+open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Nullary.Negation using (contradiction)
 import Relation.Nullary.Decidable as Dec using (map′)
 open import Relation.Unary as U using (Pred)
