@@ -370,6 +370,20 @@ Other minor additions
   toNatDigits : (base : ℕ) {base≤16 : True (1 ≤? base)} → ℕ → List ℕ
   ```
 
+* Added new patterns to `Data.Fin.Base`:
+  ```agda
+  pattern 0F = zero
+  pattern 1F = suc 0F
+  pattern 2F = suc 1F
+  pattern 3F = suc 2F
+  pattern 4F = suc 3F
+  pattern 5F = suc 4F
+  pattern 6F = suc 5F
+  pattern 7F = suc 6F
+  pattern 8F = suc 7F
+  pattern 9F = suc 8F
+  ```
+
 * Added new pattern synonyms to `Data.Integer`:
   ```agda
   pattern +0       = + 0
