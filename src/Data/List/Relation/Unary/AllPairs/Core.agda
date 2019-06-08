@@ -2,9 +2,13 @@
 -- The Agda standard library
 --
 -- Lists where every pair of elements are related (symmetrically)
--- Core modules are not meant to be used directly outside of the standard
--- library.
 ------------------------------------------------------------------------
+
+-- Core modules are not meant to be used directly outside of the
+-- standard library.
+
+-- This module should be removable if and when Agda issue
+-- https://github.com/agda/agda/issues/3210 is fixed
 
 {-# OPTIONS --without-K --safe #-}
 
@@ -28,4 +32,3 @@ infixr 5 _∷_
 data AllPairs : List A → Set (a ⊔ ℓ) where
   []  : AllPairs []
   _∷_ : ∀ {x xs} → All (R x) xs → AllPairs xs → AllPairs (x ∷ xs)
-
