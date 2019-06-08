@@ -255,12 +255,12 @@ last (x & []) = x
 last (_ & ∹ xs) = last xs
 
 module _ (f : A → A → A) where
-  foldr1 : A ⁺ → A
-  foldr1 (x & []) = x
-  foldr1 (x & ∹ xs) = f x (foldr1 xs)
+  foldr₁ : A ⁺ → A
+  foldr₁ (x & []) = x
+  foldr₁ (x & ∹ xs) = f x (foldr₁ xs)
 
-  foldl1 : A ⁺ → A
-  foldl1 (x & xs) = foldl⋆ f x xs
+  foldl₁ : A ⁺ → A
+  foldl₁ (x & xs) = foldl⋆ f x xs
 
 module _ (f : A → Maybe B → B) where
   foldrMaybe⋆ : A ⋆ → Maybe B
