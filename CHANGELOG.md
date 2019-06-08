@@ -80,7 +80,7 @@ New modules
   Data.KleeneList
   Data.KleeneList.AsList
   Data.KleeneList.Base
-  
+
   Data.List.Extrema
   Data.List.Extrema.Nat
   Data.List.Extrema.Core
