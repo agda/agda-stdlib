@@ -12,12 +12,10 @@ import Axiom.Extensionality.Propositional as Ext
 open import Axiom.UniquenessOfIdentityProofs
 open import Function
 open import Function.Equality using (Π; _⟶_; ≡-setoid)
-open import Function.Nary.NonDependent
 open import Level as L
 open import Data.Empty
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Product
-open import Function.Nary.NonDependent
 
 open import Relation.Nullary using (yes ; no)
 open import Relation.Nullary.Decidable.Core
@@ -52,29 +50,6 @@ cong-app refl x = refl
 
 cong₂ : ∀ (f : A → B → C) {x y u v} → x ≡ y → u ≡ v → f x u ≡ f y v
 cong₂ f refl refl = refl
-
-------------------------------------------------------------------------
--- n-ary versions of `cong` and `subst`
-
-Congₙ : ∀ n {ls} {as : Sets n ls} {r} {b : Set r} →
-        (f g : as ⇉ b) → Set (r ⊔ (⨆ n ls))
-Congₙ zero    f g = f ≡ g
-Congₙ (suc n) f g = ∀ {x y} → x ≡ y → Congₙ n (f x) (g y)
-
-congₙ : ∀ n {ls} {as : Sets n ls} {r} {b : Set r} →
-        (f : as ⇉ b) → Congₙ n f f
-congₙ zero    f      = refl
-congₙ (suc n) f refl = congₙ n (f _)
-
-Substₙ : ∀ n {r ls} {as : Sets n ls} →
-         (f g : as ⇉ Set r) → Set (r ⊔ (⨆ n ls))
-Substₙ zero    f g = f → g
-Substₙ (suc n) f g = ∀ {x y} → x ≡ y → Substₙ n (f x) (g y)
-
-substₙ : ∀ {n r ls} {as : Sets n ls} →
-        (f : as ⇉ Set r) → Substₙ n f f
-substₙ {zero}  f x    = x
-substₙ {suc n} f refl = substₙ (f _)
 
 ------------------------------------------------------------------------
 -- Structure of equality as a binary relation

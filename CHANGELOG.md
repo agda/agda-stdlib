@@ -104,6 +104,7 @@ New modules
 
   Data.Product.Nary.NonDependent
   Function.Nary.NonDependent
+  Function.Nary.NonDependent.Base
   Relation.Nary
 
   Data.Sign.Base
@@ -692,14 +693,6 @@ Other minor additions
 * In `Relation.Binary.HeterogeneousEquality` the relation `_≅_` has
   been generalised so that the types of the two equal elements need not
   be at the same universe level.
-
-* Added new proof to `Relation.Binary.PropositionalEquality`:
-  ```
-  Congₙ  : ∀ n (f g : Arrows n as b) → Set _
-  congₙ  : ∀ n (f : Arrows n as b) → Congₙ n f f
-  Substₙ : ∀ n (f g : Arrows n as (Set r)) → Set _
-  substₙ : (f : Arrows n as (Set r)) → Substₙ n f f
-  ```
 
 * Added new proof to `Relation.Binary.PropositionalEquality.Core`:
   ```agda
