@@ -12,8 +12,8 @@ module README where
 -- Alan Jeffrey, Wen Kokke, Evgeny Kotelnikov, Sergei Meshveliani,
 -- Eric Mertens, Darin Morrison, Guilhem Moulin, Shin-Cheng Mu,
 -- Ulf Norell, Noriyuki Ohkawa, Nicolas Pouillard,
--- Andrés Sicard-Ramírez, Sandro Stucki, Milo Turner, Noam Zeilberger
--- and other anonymous contributors.
+-- Andrés Sicard-Ramírez, Lex van der Stoep, Sandro Stucki, Milo Turner,
+-- Noam Zeilberger and other anonymous contributors.
 ------------------------------------------------------------------------
 
 -- This version of the library has been tested using Agda 2.6.0.
@@ -269,7 +269,7 @@ import IO
 -- More documentation
 ------------------------------------------------------------------------
 
--- An example showing how the case expression can be used.
+-- Some examples showing how the case expression can be used.
 
 import README.Case
 
@@ -292,6 +292,10 @@ import README.Nary
 -- auxiliary definitions, and implementation details.
 
 import README.Inspect
+
+-- Explaining string formats and the behaviour of printf
+
+import README.Text
 
 ------------------------------------------------------------------------
 -- Core modules
