@@ -122,6 +122,9 @@ New modules
   Relation.Binary.Rewriting
 
   Relation.Nullary.Decidable.Core
+
+  Text.Format
+  Text.Printf
   ```
 
 * The function `#_` has been moved from `Data.Fin.Base` to `Data.Fin`
@@ -588,6 +591,8 @@ Other minor additions
   ```agda
   _≈_ : Rel String 0ℓ
   _<_ : Rel String 0ℓ
+
+  fromChar : Char → String
   ```
 
 * Added new properties to `Data.String.Properties`:

@@ -255,7 +255,7 @@ import IO
 -- More documentation
 ------------------------------------------------------------------------
 
--- An example showing how the case expression can be used.
+-- Some examples showing how the case expression can be used.
 
 import README.Case
 
@@ -278,6 +278,10 @@ import README.Nary
 -- auxiliary definitions, and implementation details.
 
 import README.Inspect
+
+-- Explaining string formats and the behaviour of printf
+
+import README.Text
 
 ------------------------------------------------------------------------
 -- Core modules
