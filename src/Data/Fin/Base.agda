@@ -230,9 +230,20 @@ compare zero    zero    = equal   zero
 compare zero    (suc j) = less    (suc j) zero
 compare (suc i) zero    = greater (suc i) zero
 compare (suc i) (suc j) with compare i j
-compare (suc .(inject least)) (suc .greatest) | less    greatest least =
-  less    (suc greatest) (suc least)
-compare (suc .greatest) (suc .(inject least)) | greater greatest least =
-  greater (suc greatest) (suc least)
-compare (suc .i)        (suc .i)              | equal i =
-  equal (suc i)
+... | less    greatest least = less    (suc greatest) (suc least)
+... | greater greatest least = greater (suc greatest) (suc least)
+... | equal   i              = equal   (suc i)
+
+------------------------------------------------------------------------
+-- Constants
+
+pattern 0F = zero
+pattern 1F = suc 0F
+pattern 2F = suc 1F
+pattern 3F = suc 2F
+pattern 4F = suc 3F
+pattern 5F = suc 4F
+pattern 6F = suc 5F
+pattern 7F = suc 6F
+pattern 8F = suc 7F
+pattern 9F = suc 8F

@@ -77,6 +77,10 @@ New modules
   Data.AVL.NonEmpty
   Data.AVL.NonEmpty.Propositional
 
+  Data.List.Extrema
+  Data.List.Extrema.Nat
+  Data.List.Extrema.Core
+
   Data.List.Membership.Propositional.Properties.WithK
 
   Data.List.Relation.Binary.Disjoint.Propositional
@@ -100,6 +104,7 @@ New modules
 
   Data.Product.Nary.NonDependent
   Function.Nary.NonDependent
+  Function.Nary.NonDependent.Base
   Relation.Nary
 
   Data.Sign.Base
@@ -111,10 +116,16 @@ New modules
   Data.Trie
   Data.Trie.NonEmpty
 
+  Relation.Binary.Construct.Closure.Reflexive.Properties
+  Relation.Binary.Construct.Closure.Reflexive.Properties.WithK
   Relation.Binary.Construct.Closure.Equivalence.Properties
+
   Relation.Binary.Rewriting
 
   Relation.Nullary.Decidable.Core
+
+  Text.Format
+  Text.Printf
   ```
 
 * The function `#_` has been moved from `Data.Fin.Base` to `Data.Fin`
@@ -359,6 +370,20 @@ Other minor additions
   toNatDigits : (base : ℕ) {base≤16 : True (1 ≤? base)} → ℕ → List ℕ
   ```
 
+* Added new patterns to `Data.Fin.Base`:
+  ```agda
+  pattern 0F = zero
+  pattern 1F = suc 0F
+  pattern 2F = suc 1F
+  pattern 3F = suc 2F
+  pattern 4F = suc 3F
+  pattern 5F = suc 4F
+  pattern 6F = suc 5F
+  pattern 7F = suc 6F
+  pattern 8F = suc 7F
+  pattern 9F = suc 8F
+  ```
+
 * Added new pattern synonyms to `Data.Integer`:
   ```agda
   pattern +0       = + 0
@@ -581,6 +606,8 @@ Other minor additions
   ```agda
   _≈_ : Rel String 0ℓ
   _<_ : Rel String 0ℓ
+
+  fromChar : Char → String
   ```
 
 * Added new properties to `Data.String.Properties`:
@@ -681,14 +708,6 @@ Other minor additions
   been generalised so that the types of the two equal elements need not
   be at the same universe level.
 
-* Added new proof to `Relation.Binary.PropositionalEquality`:
-  ```
-  Congₙ  : ∀ n (f g : Arrows n as b) → Set _
-  congₙ  : ∀ n (f : Arrows n as b) → Congₙ n f f
-  Substₙ : ∀ n (f g : Arrows n as (Set r)) → Set _
-  substₙ : (f : Arrows n as (Set r)) → Substₙ n f f
-  ```
-
 * Added new proof to `Relation.Binary.PropositionalEquality.Core`:
   ```agda
   ≢-sym : Symmetric _≢_
@@ -721,6 +740,21 @@ Other minor additions
                           {ε : A}
                           (isIdempotentCommutativeMonoid : IsIdempotentCommutativeMonoid ∙ ε)
 
+  ```
+
+* Added new functions to `Function`:
+  ```agda
+  _$- : ((x : A) → B x) → ({x : A} → B x)
+  λ-  : ({x : A} → B x) → ((x : A) → B x)
+  ```
+
+* Added new definition of function extensionality for implicit
+  function spaces to `Axiom.Extensionality.Propositional`, and
+  a proof that it follows from extensionality for explicit
+  function spaces:
+  ```agda
+  ExtensionalityImplicit a b = {f g : {x : A} → B x} → (∀ {x} → f {x} ≡ g {x}) → (λ {x} → f {x}) ≡ (λ {x} → g {x})
+  implicit-extensionality : Extensionality a b → ExtensionalityImplicit a b
   ```
 
 * Added the definition for `Irrelevant` in `Relation.Nullary`:
