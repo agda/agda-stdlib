@@ -14,6 +14,7 @@ module Data.Fin.Base where
 
 open import Data.Empty using (⊥-elim)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; z≤n; s≤s)
+import Data.Nat.Properties as ℕₚ
 open import Function using (_∘_; _on_)
 open import Level using () renaming (zero to ℓ₀)
 open import Relation.Nullary using (yes; no)
@@ -64,7 +65,7 @@ fromℕ (suc n) = suc (fromℕ n)
 
 fromℕ≤ : ∀ {m n} → m ℕ.< n → Fin n
 fromℕ≤ {zero} {suc n} m≤n = zero
-fromℕ≤ {suc m} {suc n} m≤n = suc (fromℕ≤ (ℕ.≤-pred m≤n))
+fromℕ≤ {suc m} {suc n} m≤n = suc (fromℕ≤ (ℕₚ.≤-pred m≤n))
 
 -- fromℕ≤″ m _ = "m".
 
@@ -105,7 +106,7 @@ inject₁ (suc i) = suc (inject₁ i)
 
 inject≤ : ∀ {m n} → Fin m → m ℕ.≤ n → Fin n
 inject≤ {_} {suc n} zero    le = zero
-inject≤ {_} {suc n} (suc i) le = suc (inject≤ i (ℕ.≤-pred le))
+inject≤ {_} {suc n} (suc i) le = suc (inject≤ i (ℕₚ.≤-pred le))
 
 -- lower₁ "i" _ = "i".
 
