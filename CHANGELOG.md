@@ -769,3 +769,11 @@ Other minor additions
   dec-no      : (p? : Dec P) → ¬ P → ∃ λ ¬p′ → p? ≡ no ¬p′
   dec-yes-irr : (p? : Dec P) → Irrelevant P → (p : P) → p? ≡ yes p
   ```
+
+* Changed the functions fromℕ≤ , inject≤ , toℕ-inject≤ , inject≤-refl to not pattern match on ℕ≤ and
+  added functions inject≤-irrelevant and inject≤-idempotent in `Data.Fin.Properties`:
+  ```agda
+  inject≤-irrelevant : ∀ {m n} (i : Fin m) (m≤n₁ m≤n₂ : m ℕ≤ n)
+                       → inject≤ i m≤n₁ ≡ inject≤ i m≤n₂
+  inject≤-idempotent : ∀ {m n k} (i : Fin m) (m≤n : m ℕ≤ n) (n≤k : n ℕ≤ k) (m≤k : m ℕ≤ k)
+  ```
