@@ -364,12 +364,12 @@ lower₁-irrelevant {suc n} (suc i)  _   _ =
 ------------------------------------------------------------------------
 -- inject≤
 
-toℕ-inject≤ : ∀ {m n} (i : Fin m) (le : m ℕ≤ n) →
+toℕ-inject≤ : ∀ {m n} (i : Fin m) .(le : m ℕ≤ n) →
                 toℕ (inject≤ i le) ≡ toℕ i
 toℕ-inject≤ {_} {suc n} zero    _  = refl
 toℕ-inject≤ {_} {suc n} (suc i) le = cong suc (toℕ-inject≤ i (ℕ.≤-pred le))
 
-inject≤-refl : ∀ {n} (i : Fin n) (n≤n : n ℕ≤ n) → inject≤ i n≤n ≡ i
+inject≤-refl : ∀ {n} (i : Fin n) .(n≤n : n ℕ≤ n) → inject≤ i n≤n ≡ i
 inject≤-refl {suc n} zero    _   = refl
 inject≤-refl {suc n} (suc i) n≤n = cong suc (inject≤-refl i (ℕ.≤-pred n≤n))
 
