@@ -146,7 +146,7 @@ fromℕ≤≡fromℕ≤″ (s≤s (s≤s m<n)) (ℕ.less-than-or-equal refl) =
 
 toℕ-fromℕ≤″ : ∀ {m n} (m<n : m ℕ.<″ n) → toℕ (fromℕ≤″ m m<n) ≡ m
 toℕ-fromℕ≤″ {m} {n} m<n = begin
-  toℕ (fromℕ≤″ m m<n)  ≡⟨ cong toℕ (sym (fromℕ≤≡fromℕ≤″ _ m<n)) ⟩
+  toℕ (fromℕ≤″ m m<n)  ≡⟨ cong toℕ (sym (fromℕ≤≡fromℕ≤″ (ℕₚ.≤″⇒≤ m<n) m<n)) ⟩
   toℕ (fromℕ≤ _)       ≡⟨ toℕ-fromℕ≤ (ℕₚ.≤″⇒≤ m<n) ⟩
   m ∎
   where open ≡-Reasoning
@@ -375,9 +375,8 @@ inject≤-refl {suc n} (suc i) n≤n = cong suc (inject≤-refl i (ℕ.≤-pred 
 
 inject≤-irrelevant : ∀ {m n} (i : Fin m) (m≤n₁ m≤n₂ : m ℕ≤ n)
                      → inject≤ i m≤n₁ ≡ inject≤ i m≤n₂
-inject≤-irrelevant {_} {suc n} zero m≤n₁ m≤n₂ = refl
-inject≤-irrelevant {_} {suc n} (suc i) m≤n₁ m≤n₂
-  = P.cong suc (inject≤-irrelevant i (ℕ.≤-pred m≤n₁) (ℕ.≤-pred m≤n₂))
+inject≤-irrelevant {_} {suc n} zero m≤n₁ m≤n₂    = refl
+inject≤-irrelevant {_} {suc n} (suc i) m≤n₁ m≤n₂ = refl
 
 inject≤-idempotent : ∀ {m n k} (i : Fin m) (m≤n : m ℕ≤ n) (n≤k : n ℕ≤ k) (m≤k : m ℕ≤ k)
                      → inject≤ (inject≤ i m≤n) n≤k ≡ inject≤ i m≤k
