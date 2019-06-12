@@ -46,7 +46,7 @@ Bug-fixes
   from `Data.Nat.Base`.
 
 * The proof `m+n∸m≡n` in `Data.Nat.Properties` was incorrectly named as
-  it proved the equality `m + (n ∸ m) ≡ n` rather than `m + n ∸ m ≡ n`. It has
+  it proved `m + (n ∸ m) ≡ n` rather than `m + n ∸ m ≡ n`. It has
   therefore been renamed `m+[n∸m]≡n` and the old name now refers to a new
   proof of the correct type.
 
@@ -64,6 +64,11 @@ Non-backwards compatible changes
   function of type `(m n : ℕ) → ∃ λ d → GCD m n d` has been renamed `mkGCD`,
   and `gcd′` in `Data.Nat.Coprimality` has been renamed `mkGCD′`. All other
   functionality is untouched.
+
+* The module `IsDistributiveLattice` in `Algebra.Structures` has had its field
+  renamed from `∨-∧-distribʳ` to `∨-distribʳ-∧` in order to match the conventions
+  found elsewhere in the library. To maximise backwards compatability the record
+  still exports the name `∨-∧-distribʳ` but it has been deprecated.
 
 * At the moment the functions `sequenceA`, `mapA`, `forA`, `sequenceM`,
   `mapM` and `forM` in the `Data.X.Categorical` modules all require the
@@ -180,6 +185,56 @@ been attached to all deprecated names.
   n-ary products in `Data.Product.Nary`.
 
 #### Names
+
+* In `Algebra.Properties.BooleanAlgebra`:
+  ```agda
+  ¬⊥=⊤              ↦ ⊥≉⊤
+  ¬⊤=⊥              ↦ ⊤≉⊥
+  ⊕-¬-distribˡ      ↦ ¬-distribˡ-⊕
+  ⊕-¬-distribʳ      ↦ ¬-distribʳ-⊕
+  isCommutativeRing ↦ ⊕-∧-isCommutativeRing
+  commutativeRing   ↦ ⊕-∧-commutativeRing
+  ```
+
+* In `Algebra.Properties.DistributiveLattice`:
+  ```agda
+  ∨-∧-distribˡ ↦ ∨-distribˡ-∧
+  ∨-∧-distrib  ↦ ∨-distrib-∧
+  ∧-∨-distribˡ ↦ ∧-distribˡ-∨
+  ∧-∨-distribʳ ↦ ∧-distribʳ-∨
+  ∧-∨-distrib  ↦ ∧-distrib-∨
+  ```
+
+* In `Algebra.Properties.Group`:
+  ```agda
+  left-identity-unique  ↦ identityˡ-unique
+  right-identity-unique ↦ identityʳ-unique
+  left-inverse-unique   ↦ inverseˡ-unique
+  right-inverse-unique  ↦ inverseʳ-unique
+  ```
+
+* In `Algebra.Properties.Lattice`:
+  ```agda
+  ∧-idempotent            ↦ ∧-idem
+  ∨-idempotent            ↦ ∨-idem
+  isOrderTheoreticLattice ↦ ∨-∧-isOrderTheoreticLattice
+  orderTheoreticLattice   ↦ ∨-∧-orderTheoreticLattice
+  ```
+
+* In `Algebra.Properties.Ring`:
+  ```agda
+  -‿*-distribˡ ↦ -‿distribˡ-*
+  -‿*-distribʳ ↦ -‿distribʳ-*
+  ```
+  NOTE: the equality is flipped for the new names so you will need `sym (-‿distribˡ-* ...)`.
+
+* In `Algebra.Properties.Semilattice`:
+  ```agda
+  isOrderTheoreticMeetSemilattice ↦ ∧-isOrderTheoreticMeetSemilattice
+  isOrderTheoreticJoinSemilattice ↦ ∧-isOrderTheoreticJoinSemilattice
+  orderTheoreticMeetSemilattice   ↦ ∧-orderTheoreticMeetSemilattice
+  orderTheoreticJoinSemilattice   ↦ ∧-orderTheoreticJoinSemilattice
+  ```
 
 * In `Relation.Binary.Core`:
   ```agdas
@@ -305,6 +360,21 @@ Other minor additions
 * Added new record to `Algebra.Structure`:
   ```agda
   record IsSelectiveMagma (∙ : Op₂ A) : Set (a ⊔ ℓ)
+  ```
+
+* Added new proof to `Algebra.Properties.AbelianGroup`:
+  ```agda
+  xyx⁻¹≈y : x ∙ y ∙ x ⁻¹ ≈ y
+  ```
+
+* Added new proofs to `Algebra.Properties.Lattice`:
+  ```agda
+  ∧-isMagma     : IsMagma _∧_
+  ∧-isSemigroup : IsSemigroup _∧_
+  ∧-isBand      : IsBand _∧_
+  ∨-isMagma     : IsMagma _∨_
+  ∨-isSemigroup : IsSemigroup _∨_
+  ∨-isBand      : IsBand _∨_
   ```
 
 * Added new proofs to `Codata.Stream.Properties`:

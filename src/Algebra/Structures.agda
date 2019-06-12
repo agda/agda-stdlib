@@ -226,10 +226,15 @@ record IsLattice (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
 record IsDistributiveLattice (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
   field
     isLattice    : IsLattice ∨ ∧
-    ∨-∧-distribʳ : ∨ DistributesOverʳ ∧
+    ∨-distribʳ-∧ : ∨ DistributesOverʳ ∧
 
   open IsLattice isLattice public
 
+  ∨-∧-distribʳ = ∨-distribʳ-∧
+  {-# WARNING_ON_USAGE ∨-∧-distribʳ
+  "Warning: ∨-∧-distribʳ was deprecated in v1.1.
+  Please use ∨-distribʳ-∧ instead."
+  #-}
 
 ------------------------------------------------------------------------
 -- Structures with 2 binary operations & 1 element
