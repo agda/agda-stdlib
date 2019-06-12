@@ -774,4 +774,5 @@ Other minor additions
   added function inject≤-idempotent in `Data.Fin.Properties`:
   ```agda
   inject≤-idempotent : ∀ {m n k} (i : Fin m) .(m≤n : m ℕ≤ n) .(n≤k : n ℕ≤ k) .(m≤k : m ℕ≤ k)
+                       → inject≤ (inject≤ i m≤n) n≤k ≡ inject≤ i m≤k
   ```
