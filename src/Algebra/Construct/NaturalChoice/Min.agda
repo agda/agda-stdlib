@@ -156,6 +156,12 @@ x ⊓ y with total x y
   ; identity    = ⊓-identity top
   }
 
+⊓-isSelectiveMagma : IsSelectiveMagma _⊓_
+⊓-isSelectiveMagma = record
+  { isMagma = ⊓-isMagma
+  ; sel     = ⊓-sel
+  }
+
 ----------------------------------------------------------------------------
 -- Algebraic packages
 
@@ -182,6 +188,11 @@ x ⊓ y with total x y
 ⊓-monoid : ∀ {⊥} → Maximum _≤_ ⊥ → Monoid a ℓ₁
 ⊓-monoid top = record
   { isMonoid = ⊓-isMonoid top
+  }
+
+⊓-selectiveMagma : SelectiveMagma a ℓ₁
+⊓-selectiveMagma = record
+  { isSelectiveMagma = ⊓-isSelectiveMagma
   }
 
 ----------------------------------------------------------------------------

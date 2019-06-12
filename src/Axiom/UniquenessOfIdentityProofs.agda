@@ -9,7 +9,7 @@
 module Axiom.UniquenessOfIdentityProofs where
 
 open import Data.Empty
-open import Relation.Nullary
+open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Binary.Core
 open import Relation.Binary.PropositionalEquality.Core
 
@@ -47,7 +47,8 @@ module Constant⇒UIP
     p                          ≡⟨ sym (≡-canonical p) ⟩
     trans (sym (f refl)) (f p) ≡⟨ cong (trans _) (f-constant p q) ⟩
     trans (sym (f refl)) (f q) ≡⟨ ≡-canonical q ⟩
-    q                          ∎ where open ≡-Reasoning
+    q                          ∎
+    where open ≡-Reasoning
 
 -- If equality is decidable for a given type, then we can prove UIP for
 -- that type. Indeed, the decision procedure allows us to define a
@@ -55,7 +56,7 @@ module Constant⇒UIP
 -- proof produced by the decision procedure.
 
 module Decidable⇒UIP
-  {a} {A : Set a} (_≟_ : Decidable (_≡_ {A = A}))
+  {a} {A : Set a} (_≟_ : Decidable {A = A} _≡_)
   where
 
   ≡-normalise : _≡_ {A = A} ⇒ _≡_

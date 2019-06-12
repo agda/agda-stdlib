@@ -12,8 +12,7 @@ open import Level using (0ℓ)
 open import Function using (_∘_; flip)
 open import Relation.Binary
 open import Relation.Binary.Core
-open import Relation.Binary.PropositionalEquality.Core
-open import Relation.Binary.PropositionalEquality
+open import Agda.Builtin.Equality
 open import Relation.Nullary using (¬_)
 
 ------------------------------------------------------------------------

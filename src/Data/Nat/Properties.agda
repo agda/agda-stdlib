@@ -28,7 +28,7 @@ open import Level using (0ℓ)
 open import Relation.Binary
 open import Relation.Binary.Consequences using (flip-Connex)
 open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary
+open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Nullary.Decidable using (True; via-injection; map′)
 open import Relation.Nullary.Negation using (contradiction)
 
@@ -1211,7 +1211,7 @@ m⊔n≤m+n m n with ⊔-sel m n
 ⊓-⊔-isDistributiveLattice : IsDistributiveLattice _⊓_ _⊔_
 ⊓-⊔-isDistributiveLattice = record
   { isLattice    = ⊓-⊔-isLattice
-  ; ∨-∧-distribʳ = ⊓-distribʳ-⊔
+  ; ∨-distribʳ-∧ = ⊓-distribʳ-⊔
   }
 
 ------------------------------------------------------------------------
@@ -1425,15 +1425,18 @@ m≤n+m∸n zero    n       = z≤n
 m≤n+m∸n (suc m) zero    = ≤-refl
 m≤n+m∸n (suc m) (suc n) = s≤s (m≤n+m∸n m n)
 
-m+n∸n≡m : ∀ m n → (m + n) ∸ n ≡ m
+m+n∸n≡m : ∀ m n → m + n ∸ n ≡ m
 m+n∸n≡m m n = begin-equality
   (m + n) ∸ n  ≡⟨ +-∸-assoc m (≤-refl {x = n}) ⟩
   m + (n ∸ n)  ≡⟨ cong (m +_) (n∸n≡0 n) ⟩
   m + 0        ≡⟨ +-identityʳ m ⟩
   m            ∎
 
-m+n∸m≡n : ∀ {m n} → m ≤ n → m + (n ∸ m) ≡ n
-m+n∸m≡n {m} {n} m≤n = begin-equality
+m+n∸m≡n : ∀ m n → m + n ∸ m ≡ n
+m+n∸m≡n m n = trans (cong (_∸ m) (+-comm m n)) (m+n∸n≡m n m)
+
+m+[n∸m]≡n : ∀ {m n} → m ≤ n → m + (n ∸ m) ≡ n
+m+[n∸m]≡n {m} {n} m≤n = begin-equality
   m + (n ∸ m)  ≡⟨ sym $ +-∸-assoc m m≤n ⟩
   (m + n) ∸ m  ≡⟨ cong (_∸ m) (+-comm m n) ⟩
   (n + m) ∸ m  ≡⟨ m+n∸n≡m n m ⟩
@@ -1673,13 +1676,13 @@ n≤′m+n (suc m) n = ≤′-step (n≤′m+n m n)
 ------------------------------------------------------------------------
 
 m<ᵇn⇒1+m+[n-1+m]≡n : ∀ m n → T (m <ᵇ n) → suc m + (n ∸ suc m) ≡ n
-m<ᵇn⇒1+m+[n-1+m]≡n m n lt = m+n∸m≡n (<ᵇ⇒< m n lt)
+m<ᵇn⇒1+m+[n-1+m]≡n m n lt = m+[n∸m]≡n (<ᵇ⇒< m n lt)
 
 m<ᵇ1+m+n : ∀ m {n} → T (m <ᵇ suc (m + n))
 m<ᵇ1+m+n m = <⇒<ᵇ (m≤m+n (suc m) _)
 
 <ᵇ⇒<″ : ∀ {m n} → T (m <ᵇ n) → m <″ n
-<ᵇ⇒<″ {m} {n} leq = less-than-or-equal (m+n∸m≡n (<ᵇ⇒< m n leq))
+<ᵇ⇒<″ {m} {n} leq = less-than-or-equal (m+[n∸m]≡n (<ᵇ⇒< m n leq))
 
 <″⇒<ᵇ : ∀ {m n} → m <″ n → T (m <ᵇ n)
 <″⇒<ᵇ {m} (less-than-or-equal refl) = <⇒<ᵇ (m≤m+n (suc m) _)
@@ -1692,7 +1695,7 @@ m<ᵇ1+m+n m = <⇒<ᵇ (m≤m+n (suc m) _)
   s≤s (≤″⇒≤ (less-than-or-equal refl))
 
 ≤⇒≤″ : _≤_ ⇒ _≤″_
-≤⇒≤″ = less-than-or-equal ∘ m+n∸m≡n
+≤⇒≤″ = less-than-or-equal ∘ m+[n∸m]≡n
 
 -- NB: we use the builtin function `_<ᵇ_ : (m n : ℕ) → Bool` here so
 -- that the function quickly decides whether to return `yes` or `no`.

@@ -19,7 +19,7 @@ open import Data.Sum as Sum
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; refl)
 import Relation.Binary.Construct.Add.Infimum.Equality as Equality
-open import Relation.Nullary
+open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Nullary.Construct.Add.Infimum
 import Relation.Nullary.Decidable as Dec
 
