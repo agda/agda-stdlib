@@ -273,6 +273,14 @@ been attached to all deprecated names.
 Other minor additions
 ---------------------
 
+* A few new proofs in Data.Fin.Substitution.Lemmas:
+  ```agda
+  weaken-↑    : weaken t / (ρ ↑) ≡ weaken (t / ρ)
+  wk-⊙-∷      : (wk ⊙ (t ∷ ρ)) ≡ ρ
+  weaken-∷    : weaken t₁ / (t₂ ∷ ρ) ≡ t₁ / ρ
+  weaken-sub : weaken t₁ / sub t₂ ≡ t₁
+  ```
+
 * Added new record to `Algebra`:
   ```agda
   record SelectiveMagma c ℓ : Set (suc (c ⊔ ℓ))
