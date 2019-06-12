@@ -346,6 +346,13 @@ record Lemmas₄ {ℓ} (T : Pred ℕ ℓ) : Set ℓ where
     lookup ρ x / wk          ≡⟨ cong₂ _/_ (sym var-/) refl ⟩
     var x / ρ / wk           ∎
 
+  weaken-↑ : ∀ {k n} t {ρ : Sub T k n} → weaken t / (ρ ↑) ≡ weaken (t / ρ)
+  weaken-↑ t {ρ} = begin
+    weaken t / (ρ ↑) ≡⟨ cong (_/ ρ ↑) (sym /-wk) ⟩
+    t / wk / ρ ↑     ≡⟨ sym (wk-commutes t) ⟩
+    t / ρ / wk       ≡⟨ /-wk ⟩
+    weaken (t / ρ)   ∎
+
   open Lemmas₃ lemmas₃ public
     hiding (/✶-↑✶; /✶-↑✶′; wk-↑⋆-⊙-wk;
             lookup-wk-↑⋆-⊙; lookup-map-weaken-↑⋆)
@@ -360,7 +367,7 @@ record AppLemmas {ℓ₁ ℓ₂} (T₁ : Pred ℕ ℓ₁) (T₂ : Pred ℕ ℓ�
 
   open Application application using (_/_; _/✶_)
   open Lemmas₄ lemmas₄
-    using (id; _⊙_; wk; weaken; sub; _↑; ⨀) renaming (_/_ to _⊘_)
+    using (id; _⊙_; wk; weaken; sub; _↑; ⨀; /-wk) renaming (_/_ to _⊘_)
 
   field
     id-vanishes : ∀ {n} (t : T₁ n) → t / id ≡ t
@@ -464,6 +471,7 @@ record TermLemmas (T : ℕ → Set) : Set₁ where
     termSubst : TermSubst T
 
   open TermSubst termSubst
+  private module T = TermSubst termSubst
 
   field
     app-var : ∀ {T′} {lift : Lift T′ T} {m n x} {ρ : Sub T′ m n} →
@@ -518,3 +526,20 @@ record TermLemmas (T : ℕ → Set) : Set₁ where
     }
 
   open Lemmas₅ lemmas₅ public hiding (lemmas₃)
+
+  wk-⊙-∷ : ∀ {m n} (t : T n) (ρ : Sub T m n) → (T.wk T.⊙ (t ∷ ρ)) ≡ ρ
+  wk-⊙-∷ t ρ = extensionality (λ x → begin
+    lookup (T.wk T.⊙ (t ∷ ρ)) x ≡⟨ L₃.lookup-wk-↑⋆-⊙ 0 {ρ = t ∷ ρ} ⟩
+    lookup ρ x                  ∎)
+
+  weaken-∷ : ∀ {k n} (t₁ : T k) {t₂ : T n} {ρ : Sub T k n} → T.weaken t₁ T./ (t₂ ∷ ρ) ≡ t₁ T./ ρ
+  weaken-∷ t₁ {t₂} {ρ} = begin
+    T.weaken t₁ T./ (t₂ ∷ ρ)   ≡⟨ cong (T._/ (t₂ ∷ ρ)) (sym /-wk) ⟩
+    (t₁ T./ T.wk) T./ (t₂ ∷ ρ) ≡⟨ ⨀→/✶ ((t₂ ∷ ρ) ◅ T.wk ◅ ε) (ρ ◅ ε) (wk-⊙-∷ t₂ ρ) t₁ ⟩
+    t₁ T./ ρ                   ∎
+
+  weaken-sub : ∀ {n} (t₁ : T n) {t₂ : T n} → T.weaken t₁ T./ (T.sub t₂) ≡ t₁
+  weaken-sub t₁ {t₂} = begin
+    T.weaken t₁ T./ (T.sub t₂) ≡⟨ weaken-∷ t₁ ⟩
+    t₁ T./ T.id                ≡⟨ id-vanishes t₁ ⟩
+    t₁                         ∎

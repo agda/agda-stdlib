@@ -145,7 +145,7 @@ record IsGroup (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) w
 
   open IsMonoid isMonoid public
 
-  infixl 7 _-_
+  infixl 6 _-_
   _-_ : Op₂ A
   x - y = x ∙ (y ⁻¹)
 

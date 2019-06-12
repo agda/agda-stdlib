@@ -50,6 +50,12 @@ Bug-fixes
   therefore been renamed `m+[n∸m]≡n` and the old name now refers to a new
   proof of the correct type.
 
+* The infix precedence of `_-_` in the record `Group` from `Algebra.Structures`
+  was previously set such that when it was inherited by the records `Ring`,
+  `CommutativeRing` etc. it had the same predence as `_*_` rather than `_+_`.
+  This lead to `x - x * x` being ambigous instead of being parsed as `x - (x * x)`.
+  To fix this the precedence of `_-_` has been reduced from 7 to 6.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -64,6 +70,22 @@ Non-backwards compatible changes
   found elsewhere in the library. To maximise backwards compatability the record
   still exports the name `∨-∧-distribʳ` but it has been deprecated.
 
+* At the moment the functions `sequenceA`, `mapA`, `forA`, `sequenceM`,
+  `mapM` and `forM` in the `Data.X.Categorical` modules all require the
+  `Applicative`/`Monad` to be passed each time they're used. To avoid this they
+  have now been placed in parameterised, modules named `TraversableA` and
+  `TraversableM`. To recover the old behaviour simply write `open TraversableA`.
+  However the applicative may avoid being passed by writing `open TraversableA app`.
+  The change has occured in the following modules:
+  ```adga
+  Data.Maybe.Categorical
+  Data.List.Categorical
+  Data.List.NonEmpty.Categorical
+  Data.Product.Categorical.(Left/Right)
+  Data.Sum.Categorical.(Left/Right)
+  Data.Vec.Categorical
+  ```
+
 New modules
 -----------
 
@@ -75,6 +97,10 @@ New modules
 
   Data.AVL.NonEmpty
   Data.AVL.NonEmpty.Propositional
+
+  Data.List.Extrema
+  Data.List.Extrema.Nat
+  Data.List.Extrema.Core
 
   Data.List.Membership.Propositional.Properties.WithK
 
@@ -99,6 +125,7 @@ New modules
 
   Data.Product.Nary.NonDependent
   Function.Nary.NonDependent
+  Function.Nary.NonDependent.Base
   Relation.Nary
 
   Data.Sign.Base
@@ -110,10 +137,16 @@ New modules
   Data.Trie
   Data.Trie.NonEmpty
 
+  Relation.Binary.Construct.Closure.Reflexive.Properties
+  Relation.Binary.Construct.Closure.Reflexive.Properties.WithK
   Relation.Binary.Construct.Closure.Equivalence.Properties
+
   Relation.Binary.Rewriting
 
   Relation.Nullary.Decidable.Core
+
+  Text.Format
+  Text.Printf
   ```
 
 * The function `#_` has been moved from `Data.Fin.Base` to `Data.Fin`
@@ -311,6 +344,14 @@ been attached to all deprecated names.
 Other minor additions
 ---------------------
 
+* A few new proofs in Data.Fin.Substitution.Lemmas:
+  ```agda
+  weaken-↑    : weaken t / (ρ ↑) ≡ weaken (t / ρ)
+  wk-⊙-∷      : (wk ⊙ (t ∷ ρ)) ≡ ρ
+  weaken-∷    : weaken t₁ / (t₂ ∷ ρ) ≡ t₁ / ρ
+  weaken-sub : weaken t₁ / sub t₂ ≡ t₁
+  ```
+
 * Added new record to `Algebra`:
   ```agda
   record SelectiveMagma c ℓ : Set (suc (c ⊔ ℓ))
@@ -421,6 +462,20 @@ Other minor additions
 * Added new function to `Data.Digit`:
   ```agda
   toNatDigits : (base : ℕ) {base≤16 : True (1 ≤? base)} → ℕ → List ℕ
+  ```
+
+* Added new patterns to `Data.Fin.Base`:
+  ```agda
+  pattern 0F = zero
+  pattern 1F = suc 0F
+  pattern 2F = suc 1F
+  pattern 3F = suc 2F
+  pattern 4F = suc 3F
+  pattern 5F = suc 4F
+  pattern 6F = suc 5F
+  pattern 7F = suc 6F
+  pattern 8F = suc 7F
+  pattern 9F = suc 8F
   ```
 
 * Added new pattern synonyms to `Data.Integer`:
@@ -645,6 +700,8 @@ Other minor additions
   ```agda
   _≈_ : Rel String 0ℓ
   _<_ : Rel String 0ℓ
+
+  fromChar : Char → String
   ```
 
 * Added new properties to `Data.String.Properties`:
@@ -745,14 +802,6 @@ Other minor additions
   been generalised so that the types of the two equal elements need not
   be at the same universe level.
 
-* Added new proof to `Relation.Binary.PropositionalEquality`:
-  ```
-  Congₙ  : ∀ n (f g : Arrows n as b) → Set _
-  congₙ  : ∀ n (f : Arrows n as b) → Congₙ n f f
-  Substₙ : ∀ n (f g : Arrows n as (Set r)) → Set _
-  substₙ : (f : Arrows n as (Set r)) → Substₙ n f f
-  ```
-
 * Added new proof to `Relation.Binary.PropositionalEquality.Core`:
   ```agda
   ≢-sym : Symmetric _≢_
@@ -785,6 +834,21 @@ Other minor additions
                           {ε : A}
                           (isIdempotentCommutativeMonoid : IsIdempotentCommutativeMonoid ∙ ε)
 
+  ```
+
+* Added new functions to `Function`:
+  ```agda
+  _$- : ((x : A) → B x) → ({x : A} → B x)
+  λ-  : ({x : A} → B x) → ((x : A) → B x)
+  ```
+
+* Added new definition of function extensionality for implicit
+  function spaces to `Axiom.Extensionality.Propositional`, and
+  a proof that it follows from extensionality for explicit
+  function spaces:
+  ```agda
+  ExtensionalityImplicit a b = {f g : {x : A} → B x} → (∀ {x} → f {x} ≡ g {x}) → (λ {x} → f {x}) ≡ (λ {x} → g {x})
+  implicit-extensionality : Extensionality a b → ExtensionalityImplicit a b
   ```
 
 * Added the definition for `Irrelevant` in `Relation.Nullary`:
