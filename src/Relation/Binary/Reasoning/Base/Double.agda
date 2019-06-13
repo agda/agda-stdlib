@@ -28,6 +28,8 @@ open IsPreorder isPreorder
 ------------------------------------------------------------------------
 -- A datatype to hide the current relation type
 
+infix 4 _IsRelatedTo_
+
 data _IsRelatedTo_ (x y : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
   nonstrict : (x∼y : x ∼ y) → x IsRelatedTo y
   equals    : (x≈y : x ≈ y) → x IsRelatedTo y
@@ -57,9 +59,9 @@ extractEquality (isEquality x≈y) = x≈y
 ------------------------------------------------------------------------
 -- Reasoning combinators
 
-infix -1 begin_ begin-equality_
-infixr 0 _∼⟨_⟩_ _≈⟨_⟩_ _≈˘⟨_⟩_ _≡⟨_⟩_ _≡˘⟨_⟩_ _≡⟨⟩_
-infix  1 _∎
+infix  1 begin_ begin-equality_
+infixr 2 _∼⟨_⟩_ _≈⟨_⟩_ _≈˘⟨_⟩_ _≡⟨_⟩_ _≡˘⟨_⟩_ _≡⟨⟩_
+infix  3 _∎
 
 begin_ : ∀ {x y} (r : x IsRelatedTo y) → x ∼ y
 begin (nonstrict x∼y) = x∼y
