@@ -576,20 +576,22 @@ Other minor additions
   _>>=_     : Maybe A → (A → Maybe B) → Maybe B
   ```
 
-* Added new proofs to `Data.Nat.GCD`:
-  ```agda
-  gcd-comm     : gcd m n ≡ gcd n m
-  gcd[m,n]∣m   : gcd m n ∣ m
-  gcd[m,n]∣n   : gcd m n ∣ n
-  gcd-greatest : c ∣ m → c ∣ n → c ∣ gcd m n
-  gcd≢0        : m ≢ 0 ⊎ n ≢ 0 → gcd m n ≢ 0
-  ```
-
 * Added new proofs to `Data.Nat.Divisibility`:
   ```agda
   ∣m∸n∣n⇒∣m : n ≤ m → i ∣ m ∸ n → i ∣ n → i ∣ m
   ∣n∣m%n⇒∣m : d ∣ n → d ∣ (m % n) → d ∣ m
+
+  *-monoˡ-∣ : ∀ {i j} k → i ∣ j → i * k ∣ j * k
   %-presˡ-∣ : d ∣ m → d ∣ n → d ∣ (m % n)
+
+  *-monoˡ-∣ : ∀ {i j} k → i ∣ j → i * k ∣ j * k
+  m/n∣m : ∀ {m n n≢0} → n ∣ m → (m / n) {n≢0} ∣ m
+  m*n∣o⇒m∣o/n : ∀ m n {o n≢0} → m * n ∣ o → m ∣ (o / n) {n≢0}
+  m*n∣o⇒n∣o/m : ∀ m n {o n≢0} → m * n ∣ o → n ∣ (o / m) {n≢0}
+  m∣n/o⇒m*o∣n : ∀ {m n o n≢0} → o ∣ n → m ∣ (n / o) {n≢0} → m * o ∣ n
+  m∣n/o⇒o*m∣n : ∀ {m n o o≢0} → o ∣ n → m ∣ (n / o) {o≢0} → o * m ∣ n
+  m/n∣o⇒m∣o*n : ∀ {m n o n≢0} → n ∣ m → (m / n) {n≢0} ∣ o → m ∣ o * n
+  m∣n*o⇒m/n∣o : ∀ {m n o n≢0} → n ∣ m → m ∣ o * n → (m / n) {n≢0} ∣ o
   ```
 
 * Added new operator and proofs to `Data.Nat.DivMod`:
@@ -605,10 +607,11 @@ Other minor additions
   [1+a%n]≤1+m⇒[a%n]≤m : 0 < suc n % d → suc n % d ≤ suc m → n % d ≤ m
 
   0/n≡0           : 0 / n ≡ 0
-  n/1≡a           : n / 1 ≡ n
+  n/1≡n           : n / 1 ≡ n
   n/n≡1           : n / n ≡ 1
   m*n/n≡m         : m * n / n ≡ m
   m/n*n≡m         : n ∣ m → m / n * n ≡ m
+  m*[n/m]≡n       : m ∣ n → m * (n / m) ≡ n
   m/n*n≤m         : m / n * n ≤ m
   m/n<m           : m ≥ 1 → n ≥ 2 → m / n < m
   *-/-assoc       : d ∣ n → (m * n) / d ≡ m * (n / d)
@@ -619,6 +622,30 @@ Other minor additions
   Additionally the `{≢0 : False (divisor ℕ.≟ 0)}` argument to all the
   division and modulus functions has been marked irrelevant. This means
   that the operations `_%_`, `_/_` etc. can now be used with `cong`.
+
+* Added new proofs to `Data.Nat.GCD`:
+  ```agda
+  gcd[m,n]∣m            : gcd m n ∣ m
+  gcd[m,n]∣n            : gcd m n ∣ n
+  gcd-greatest          : c ∣ m → c ∣ n → c ∣ gcd m n
+  gcd[0,0]≡0            : gcd 0 0 ≡ 0
+  gcd[m,n]≢0            : m ≢ 0 ⊎ n ≢ 0 → gcd m n ≢ 0
+  gcd-comm              : gcd m n ≡ gcd n m
+  gcd-universality      : (∀ {d} → d ∣ m × d ∣ n → d ∣ g) → (∀ {d} → d ∣ g → d ∣ m × d ∣ n) → g ≡ gcd m n
+  gcd[cm,cn]/c≡gcd[m,n] : gcd (c * m) (c * n) / c ≡ gcd m n
+  c*gcd[m,n]≡gcd[cm,cn] : c * gcd m n ≡ gcd (c * m) (c * n)
+  ```
+
+* Added new proofs to `Data.Nat.LCM`:
+  ```agda
+  m∣lcm[m,n] : m ∣ lcm m n
+  n∣lcm[m,n] : n ∣ lcm m n
+  lcm-least  : m ∣ c → n ∣ c → lcm m n ∣ c
+  lcm[0,n]≡0 : lcm 0 n ≡ 0
+  lcm[n,0]≡0 : lcm n 0 ≡ 0
+  lcm-comm   : lcm m n ≡ lcm n m
+  gcd*lcm    : gcd m n * lcm m n ≡ m * n
+  ```
 
 * Added new proofs to `Data.Nat.Properties`:
   ```agda

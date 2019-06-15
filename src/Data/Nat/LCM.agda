@@ -48,19 +48,19 @@ abstract
 
 abstract
 
-  m∣lcm[m,n] : ∀ m n → m ∣ lcm m n
-  m∣lcm[m,n] zero        n = 0 ∣0
-  m∣lcm[m,n] m@(suc m-1) n = begin
+  m∣lcm[m,n] : ∀ {m n} → m ∣ lcm m n
+  m∣lcm[m,n] {zero}        {n} = 0 ∣0
+  m∣lcm[m,n] {m@(suc m-1)} {n} = begin
     m                  ∣⟨ m∣m*n _ ⟩
-    m * (n / gcd m n)  ≡⟨ sym (*-/-assoc m {≢0 = gcd≢0′ m-1} (gcd[m,n]∣n m n)) ⟩
+    m * (n / gcd m n)  ≡⟨ sym (*-/-assoc m {≢0 = gcd≢0′ m-1} gcd[m,n]∣n) ⟩
     (m * n) / gcd m n  ∎
     where open ∣-Reasoning
 
-  n∣lcm[m,n] : ∀ m n → n ∣ lcm m n
-  n∣lcm[m,n] zero        n = n ∣0
-  n∣lcm[m,n] m@(suc m-1) n = begin
+  n∣lcm[m,n] : ∀ {m n} → n ∣ lcm m n
+  n∣lcm[m,n] {zero}        {n} = n ∣0
+  n∣lcm[m,n] {m@(suc m-1)} {n} = begin
     n                 ∣⟨ m∣m*n (m / gcd m n) ⟩
-    n * (m / gcd m n) ≡⟨ sym (*-/-assoc n {≢0 = gcd≢0′ m-1} (gcd[m,n]∣m m n)) ⟩
+    n * (m / gcd m n) ≡⟨ sym (*-/-assoc n {≢0 = gcd≢0′ m-1} gcd[m,n]∣m) ⟩
     n * m / gcd m n   ≡⟨ cong (λ v → (v / gcd m n) {gcd≢0′ m-1}) (*-comm n m) ⟩
     m * n / gcd m n   ∎
     where open ∣-Reasoning
@@ -71,7 +71,7 @@ abstract
     where
     open ∣-Reasoning
     gcd[m,n]∣m*n : gcd m n ∣ m * n
-    gcd[m,n]∣m*n = ∣-trans (gcd[m,n]∣m m n) (m∣m*n n)
+    gcd[m,n]∣m*n = ∣-trans gcd[m,n]∣m (m∣m*n n)
 
     mn∣c*gcd : m * n ∣ c * gcd m n
     mn∣c*gcd = begin
@@ -91,21 +91,21 @@ abstract
   gcd*lcm : ∀ m n → gcd m n * lcm m n ≡ m * n
   gcd*lcm zero        n = *-zeroʳ (gcd 0 n)
   gcd*lcm m@(suc m-1) n = m*[n/m]≡n {gcd m n} (begin
-    gcd m n ∣⟨ gcd[m,n]∣m m n ⟩
+    gcd m n ∣⟨ gcd[m,n]∣m ⟩
     m       ∣⟨ m∣m*n n ⟩
     m * n   ∎)
     where open ∣-Reasoning
 
 lcm[0,n]≡0 : ∀ n → lcm 0 n ≡ 0
-lcm[0,n]≡0 n = 0∣⇒≡0 (m∣lcm[m,n] 0 n)
+lcm[0,n]≡0 n = 0∣⇒≡0 m∣lcm[m,n]
 
 lcm[n,0]≡0 : ∀ n → lcm n 0 ≡ 0
-lcm[n,0]≡0 n = 0∣⇒≡0 (n∣lcm[m,n] n 0)
+lcm[n,0]≡0 n = 0∣⇒≡0 n∣lcm[m,n]
 
 lcm-comm : ∀ m n → lcm m n ≡ lcm n m
 lcm-comm m n = ∣-antisym
-  (lcm-least (n∣lcm[m,n] n m) (m∣lcm[m,n] n m))
-  (lcm-least (n∣lcm[m,n] m n) (m∣lcm[m,n] m n))
+  (lcm-least n∣lcm[m,n] m∣lcm[m,n])
+  (lcm-least n∣lcm[m,n] m∣lcm[m,n])
 
 ------------------------------------------------------------------------
 -- Least common multiple (lcm).
@@ -139,7 +139,7 @@ open LCM public using (LCM) hiding (module LCM)
 
 lcm-LCM : ∀ m n → LCM m n (lcm m n)
 lcm-LCM m n = record
-  { commonMultiple = m∣lcm[m,n] m n , n∣lcm[m,n] m n
+  { commonMultiple = m∣lcm[m,n] , n∣lcm[m,n]
   ; least          = uncurry′ lcm-least
   }
 
