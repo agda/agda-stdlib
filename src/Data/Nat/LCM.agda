@@ -28,22 +28,14 @@ open +-*-Solver
 
 private
   gcd≢0′ : ∀ m {n} → False (gcd (suc m) n ≟ 0)
-  gcd≢0′ m {n} = fromWitnessFalse (gcd≢0 (suc m) n (inj₁ (λ())))
-
-------------------------------------------------------------------------
--- Properties that need to be shifted
-
-/n-pres-∣ : ∀ {m n c} → m ∣ c → n ∣ c → Coprime m n → m * n ∣ c
-/n-pres-∣ {m} {n} {c} m∣c n∣c cop = {!!}
-
-∣-test : ∀ {m n o} .{m≢0} → m ∣ n → n ∣ o → (n / m) {m≢0} ∣ o
-∣-test = {!!}
-
-[m/o]∣n⇒[m/n]∣o : ∀ m n o .{n≢0} .{o≢0} → (m / o) {o≢0} ∣ n → (m / n) {n≢0} ∣ o
-[m/o]∣n⇒[m/n]∣o = {!!}
+  gcd≢0′ m {n} = fromWitnessFalse (gcd[m,n]≢0 (suc m) n (inj₁ (λ())))
 
 ------------------------------------------------------------------------
 -- Definition
+
+-- The lcm is defined abstractly to prevent unhelpful unfolding during
+-- proofs. This isn't a problem as all it's properties are derivable
+-- from the 3 core properties proved below.
 
 abstract
 
@@ -52,7 +44,7 @@ abstract
   lcm m@(suc m-1) n = (m * n / gcd m n) {gcd≢0′ m-1}
 
 ------------------------------------------------------------------------
--- Properties
+-- Core properties
 
 abstract
 
@@ -75,27 +67,34 @@ abstract
 
   lcm-least : ∀ {m n c} → m ∣ c → n ∣ c → lcm m n ∣ c
   lcm-least {zero}        {n} {c} 0∣c _   = 0∣c
-  lcm-least {m@(suc m-1)} {n} {c} m∣c n∣c = [m/o]∣n⇒[m/n]∣o (m * n) (gcd m n) c {gcd≢0′ m-1} {{!!}}
-    (gcd-greatest
-      (begin
-        m * n / c   ≡⟨ {!!} ⟩
-        m           ∎)
-      (begin
-        m * n / c ≡⟨ {!!} ⟩
-        n         ∎))
-    where open ∣-Reasoning
-{-
-begin
-    m * n / gcd m n   ≡⟨ *-/-assoc m (gcd≢0′ m-1) (gcd[m,n]∣n m n) ⟩
-    m * (n / gcd m n) ∣⟨ /n-pres-∣ m∣c (∣-test (gcd[m,n]∣n m n) n∣c) {!!} ⟩
-    c                 ∎
-    where open ∣-Reasoning
--}
+  lcm-least {m@(suc m-1)} {n} {c} m∣c n∣c = m∣n*o⇒m/n∣o {n≢0 = gcd≢0′ m-1} gcd[m,n]∣m*n mn∣c*gcd
+    where
+    open ∣-Reasoning
+    gcd[m,n]∣m*n : gcd m n ∣ m * n
+    gcd[m,n]∣m*n = ∣-trans (gcd[m,n]∣m m n) (m∣m*n n)
 
-lcm-comm : ∀ m n → lcm m n ≡ lcm n m
-lcm-comm m n = ∣-antisym
-  (lcm-least (n∣lcm[m,n] n m) (m∣lcm[m,n] n m))
-  (lcm-least (n∣lcm[m,n] m n) (m∣lcm[m,n] m n))
+    mn∣c*gcd : m * n ∣ c * gcd m n
+    mn∣c*gcd = begin
+      m * n               ∣⟨ gcd-greatest (P.subst (_∣ c * m) (*-comm n m) (*-monoˡ-∣ m n∣c)) (*-monoˡ-∣ n m∣c) ⟩
+      gcd (c * m) (c * n) ≡⟨ sym (c*gcd[m,n]≡gcd[cm,cn] c m n) ⟩
+      c * gcd m n         ∎
+
+------------------------------------------------------------------------
+-- Other properties
+
+-- Note that all other properties of `gcd` should be inferable from the
+-- 3 core properties above.
+
+abstract
+  -- Having said that we sneak one more property in under the
+  -- abstraction barrier as it's just *so* much easier to prove this way
+  gcd*lcm : ∀ m n → gcd m n * lcm m n ≡ m * n
+  gcd*lcm zero        n = *-zeroʳ (gcd 0 n)
+  gcd*lcm m@(suc m-1) n = m*[n/m]≡n {gcd m n} (begin
+    gcd m n ∣⟨ gcd[m,n]∣m m n ⟩
+    m       ∣⟨ m∣m*n n ⟩
+    m * n   ∎)
+    where open ∣-Reasoning
 
 lcm[0,n]≡0 : ∀ n → lcm 0 n ≡ 0
 lcm[0,n]≡0 n = 0∣⇒≡0 (m∣lcm[m,n] 0 n)
@@ -103,35 +102,10 @@ lcm[0,n]≡0 n = 0∣⇒≡0 (m∣lcm[m,n] 0 n)
 lcm[n,0]≡0 : ∀ n → lcm n 0 ≡ 0
 lcm[n,0]≡0 n = 0∣⇒≡0 (n∣lcm[m,n] n 0)
 
-lcm-factorˡ : ∀ m n k → lcm (k * m) (k * n) ≡ k * lcm m n
-lcm-factorˡ m n k = ∣-antisym
-  (lcm-least (*-monoʳ-∣ k (m∣lcm[m,n] m n)) (*-monoʳ-∣ k (n∣lcm[m,n] m n)))
-  {!!}
-
-lcm-factorʳ : ∀ m n k → lcm (m * k) (n * k) ≡ lcm m n * k
-lcm-factorʳ m n k rewrite *-comm m k | *-comm n k | *-comm (lcm m n) k = lcm-factorˡ m n k
-
-lcm-coprime : ∀ {m n} → Coprime m n → lcm m n ≡ m * n
-lcm-coprime coprime = ∣-antisym
-  {!lcm-least ? ?!}
-  {!!}
-
-gcd*lcm : ∀ m n → gcd m n * lcm m n ≡ m * n
-gcd*lcm zero n rewrite lcm[0,n]≡0 n | *-zeroʳ (gcd 0 n)             = refl
-gcd*lcm m zero rewrite lcm[n,0]≡0 m | *-zeroʳ (gcd m 0) | *-zeroʳ m = refl
-gcd*lcm m@(suc m-1) n@(suc n-1) = begin
-  g * lcm m n                 ≡⟨ cong (g *_) (sym (cong₂ lcm (m/n*n≡m g∣m) (m/n*n≡m g∣n))) ⟩
-  g * lcm (m/g * g) (n/g * g) ≡⟨ cong (g *_) (lcm-factorʳ m/g n/g g) ⟩
-  g * (lcm m/g n/g * g)       ≡⟨ cong (g *_) (cong (_* g) (lcm-coprime {!!})) ⟩
-  g * (m/g * n/g * g)         ≡⟨ cong (g *_) (*-assoc m/g n/g g) ⟩
-  g * (m/g * (n/g * g))       ≡⟨ sym (*-assoc g m/g (n/g * g)) ⟩
-  (g * m/g) * (n/g * g)       ≡⟨ cong₂ _*_ (m*[n/m]≡n g∣m) (m/n*n≡m g∣n) ⟩
-  m * n                       ∎
-  where
-  open ≡-Reasoning
-  g   = gcd m n
-  m/g = (m / g) {gcd≢0′ m-1}; g∣m = gcd[m,n]∣m m n
-  n/g = (n / g) {gcd≢0′ m-1}; g∣n = gcd[m,n]∣n m n
+lcm-comm : ∀ m n → lcm m n ≡ lcm n m
+lcm-comm m n = ∣-antisym
+  (lcm-least (n∣lcm[m,n] n m) (m∣lcm[m,n] n m))
+  (lcm-least (n∣lcm[m,n] m n) (m∣lcm[m,n] m n))
 
 ------------------------------------------------------------------------
 -- Least common multiple (lcm).
@@ -161,7 +135,7 @@ module LCM where
 open LCM public using (LCM) hiding (module LCM)
 
 ------------------------------------------------------------------------
--- Calculating the lcm
+-- Calculating the LCM
 
 lcm-LCM : ∀ m n → LCM m n (lcm m n)
 lcm-LCM m n = record

@@ -16,8 +16,8 @@ open import Data.Product
 open import Function
 open import Function.Equivalence using (_⇔_; equivalence)
 open import Level using (0ℓ)
-open import Relation.Nullary
-import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Decidable as Dec using (False)
 open import Relation.Binary
 import Relation.Binary.Reasoning.PartialOrder as POR
 open import Relation.Binary.PropositionalEquality as PropEq
@@ -170,6 +170,9 @@ m∣m*n n = divides n (*-comm _ n)
   q * (k * i)  ∎
   where open ≤-Reasoning
 
+*-monoˡ-∣ : ∀ {i j} k → i ∣ j → i * k ∣ j * k
+*-monoˡ-∣ {i} {j} k rewrite *-comm i k | *-comm j k = *-monoʳ-∣ k
+
 *-cancelˡ-∣ : ∀ {i j} k → suc k * i ∣ suc k * j → i ∣ j
 *-cancelˡ-∣ {i} {j} k (divides q eq) =
   divides q $ *-cancelʳ-≡ j (q * i) $ begin-equality
@@ -179,6 +182,9 @@ m∣m*n n = divides n (*-comm _ n)
     q * (i * suc k)  ≡⟨ sym (*-assoc q i (suc k)) ⟩
     (q * i) * suc k  ∎
     where open ≤-Reasoning
+
+*-cancelʳ-∣ : ∀ {i j} k {k≢0 : False (k ≟ 0)} → i * k ∣ j * k → i ∣ j
+*-cancelʳ-∣ {i} {j} k@(suc k-1) rewrite *-comm i k | *-comm j k = *-cancelˡ-∣ k-1
 
 ------------------------------------------------------------------------
 -- Properties of _∣_ and _∸_
@@ -196,11 +202,46 @@ m∣m*n n = divides n (*-comm _ n)
 ------------------------------------------------------------------------
 -- Properties of _∣_ and _/_
 
-m/n∣m : ∀ {m n ≢0} → n ∣ m → (m / n) {≢0} ∣ m
+m/n∣m : ∀ {m n n≢0} → n ∣ m → (m / n) {n≢0} ∣ m
 m/n∣m {m} {n} (divides p refl) = begin
   p * n / n ≡⟨ m*n/n≡m p n ⟩
   p         ∣⟨ m∣m*n n ⟩
   p * n     ∎
+  where open ∣-Reasoning
+
+m*n∣o⇒m∣o/n : ∀ m n {o n≢0} → m * n ∣ o → m ∣ (o / n) {n≢0}
+m*n∣o⇒m∣o/n m n {_} {≢0} (divides p refl) = begin
+  m               ∣⟨ n∣m*n p ⟩
+  p * m           ≡⟨ sym (*-identityʳ (p * m)) ⟩
+  p * m * 1       ≡⟨ sym (cong (p * m *_) (n/n≡1 n)) ⟩
+  p * m * (n / n) ≡⟨ sym (*-/-assoc (p * m) {≢0 = ≢0} (n∣n {n})) ⟩
+  p * m * n / n   ≡⟨ cong (λ v → (v / n) {≢0}) (*-assoc p m n) ⟩
+  p * (m * n) / n ∎
+  where open ∣-Reasoning
+
+m*n∣o⇒n∣o/m : ∀ m n {o n≢0} → m * n ∣ o → n ∣ (o / m) {n≢0}
+m*n∣o⇒n∣o/m m n {o} {≢0} rewrite *-comm m n = m*n∣o⇒m∣o/n n m {o} {≢0}
+
+m∣n/o⇒m*o∣n : ∀ {m n o n≢0} → o ∣ n → m ∣ (n / o) {n≢0} → m * o ∣ n
+m∣n/o⇒m*o∣n {m} {n} {o} (divides p refl) m∣p*o/o = begin
+  m * o ∣⟨ *-monoˡ-∣ o (subst (m ∣_) (m*n/n≡m p o) m∣p*o/o) ⟩
+  p * o ∎
+  where open ∣-Reasoning
+
+m∣n/o⇒o*m∣n : ∀ {m n o o≢0} → o ∣ n → m ∣ (n / o) {o≢0} → o * m ∣ n
+m∣n/o⇒o*m∣n {m} {_} {o} {≢0} rewrite *-comm o m = m∣n/o⇒m*o∣n {n≢0 = ≢0}
+
+m/n∣o⇒m∣o*n : ∀ {m n o n≢0} → n ∣ m → (m / n) {n≢0} ∣ o → m ∣ o * n
+m/n∣o⇒m∣o*n {_} {n} {o} (divides p refl) p*n/n∣o = begin
+  p * n ∣⟨ *-monoˡ-∣ n (subst (_∣ o) (m*n/n≡m p n) p*n/n∣o) ⟩
+  o * n ∎
+  where open ∣-Reasoning
+
+m∣n*o⇒m/n∣o : ∀ {m n o n≢0} → n ∣ m → m ∣ o * n → (m / n) {n≢0} ∣ o
+m∣n*o⇒m/n∣o {_} {n@(suc _)} {o} (divides p refl) pn∣on = begin
+  p * n / n ≡⟨ m*n/n≡m p n ⟩
+  p         ∣⟨ *-cancelʳ-∣ n pn∣on ⟩
+  o         ∎
   where open ∣-Reasoning
 
 ------------------------------------------------------------------------
