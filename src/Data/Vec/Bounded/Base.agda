@@ -39,13 +39,13 @@ record Vec≤ (A : Set a) (n : ℕ) : Set a where
 ------------------------------------------------------------------------
 -- Creating new Vec≤ vectors
 
-fromVec : ∀[ Vec A ⇒ Vec≤ A ]
+fromVec : ∀ {n} → Vec A n → Vec≤ A n
 fromVec v = v , ℕₚ.≤-refl
 
 replicate : ∀ {m n} .(m≤n : m ≤ n) → A → Vec≤ A n
 replicate m≤n a = Vec.replicate a , m≤n
 
-[] : ∀[ Vec≤ A ]
+[] : ∀ {n} → Vec≤ A n
 [] = Vec.[] , z≤n
 
 infixr 5 _∷_
@@ -61,22 +61,22 @@ a ∷ (as , p) = a Vec.∷ as , s≤s p
 ≡-cast : ∀ {m n} → .(eq : m ≡ n) → Vec≤ A m → Vec≤ A n
 ≡-cast m≡n = ≤-cast (ℕₚ.≤-reflexive m≡n)
 
-map : (A → B) → ∀[ Vec≤ A ⇒ Vec≤ B ]
+map : (A → B) → ∀ {n} → Vec≤ A n → Vec≤ B n
 map f (v , p) = Vec.map f v , p
 
-reverse : ∀[ Vec≤ A ⇒ Vec≤ A ]
+reverse : ∀ {n} → Vec≤ A n → Vec≤ A n
 reverse (v , p) = Vec.reverse v , p
 
 -- Align and Zip.
 
-alignWith : (These A B → C) → ∀[ Vec≤ A ⇒ Vec≤ B ⇒ Vec≤ C ]
+alignWith : (These A B → C) → ∀ {n} → Vec≤ A n → Vec≤ B n → Vec≤ C n
 alignWith f (as , p) (bs , q) = Vec.alignWith f as bs , ℕₚ.⊔-least p q
 
-zipWith : (A → B → C) → ∀[ Vec≤ A ⇒ Vec≤ B ⇒ Vec≤ C ]
+zipWith : (A → B → C) → ∀ {n} → Vec≤ A n → Vec≤ B n → Vec≤ C n
 zipWith f (as , p) (bs , q) = Vec.restrictWith f as bs , ℕₚ.m≤n⇒m⊓o≤n _ p
 
-zip : ∀[ Vec≤ A ⇒ Vec≤ B ⇒ Vec≤ (A × B) ]
+zip : ∀ {n} → Vec≤ A n → Vec≤ B n → Vec≤ (A × B) n
 zip = zipWith _,_
 
-align : ∀[ Vec≤ A ⇒ Vec≤ B ⇒ Vec≤ (These A B) ]
+align : ∀ {n} → Vec≤ A n → Vec≤ B n → Vec≤ (These A B) n
 align = alignWith id

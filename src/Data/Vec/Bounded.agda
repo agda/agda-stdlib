@@ -13,7 +13,7 @@ open import Data.Nat.Base
 open import Data.Vec as Vec using (Vec)
 open import Function
 open import Relation.Binary using (_Preserves_⟶_)
-open import Relation.Unary
+open import Relation.Unary using (Pred; Decidable)
 
 private
   variable
@@ -29,24 +29,24 @@ open import Data.Vec.Bounded.Base public
 -- Additional operations
 
 lift : ∀ {f} → f Preserves _≤_ ⟶ _≤_ →
-       ∀[ Vec A  ⇒ f ⊢ Vec≤ A ] →
-       ∀[ Vec≤ A ⇒ f ⊢ Vec≤ A ]
+       (∀ {n} → Vec A n  → Vec≤ A (f n)) →
+       ∀ {n} →  Vec≤ A n → Vec≤ A (f n)
 lift incr f (as , p) = ≤-cast (incr p) (f as)
 
-lift′ : ∀[ Vec A  ⇒ Vec≤ A ] →
-        ∀[ Vec≤ A ⇒ Vec≤ A ]
+lift′ : (∀ {n} → Vec A n  → Vec≤ A n) →
+        (∀ {n} → Vec≤ A n → Vec≤ A n)
 lift′ = lift id
 
 ------------------------------------------------------------------------
 -- Additional operations
 
-module _ {P : A → Set p} (P? : Decidable P) where
+module _ {P : Pred A p} (P? : Decidable P) where
 
-  filter : ∀[ Vec≤ A ⇒ Vec≤ A ]
+  filter : ∀ {n} → Vec≤ A n → Vec≤ A n
   filter = lift′ (Vec.filter P?)
 
-  takeWhile : ∀[ Vec≤ A ⇒ Vec≤ A ]
+  takeWhile : ∀ {n} → Vec≤ A n → Vec≤ A n
   takeWhile = lift′ (Vec.takeWhile P?)
 
-  dropWhile : ∀[ Vec≤ A ⇒ Vec≤ A ]
+  dropWhile : ∀ {n} → Vec≤ A n → Vec≤ A n
   dropWhile = lift′ (Vec.dropWhile P?)
