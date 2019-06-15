@@ -61,6 +61,14 @@ Bug-fixes
   This lead to `x - x * x` being ambigous instead of being parsed as `x - (x * x)`.
   To fix this the precedence of `_-_` has been reduced from 7 to 6.
 
+* The infix precedence of the generic order reasoning combinators (`_∼⟨_⟩_`,
+  `_≈⟨_⟩_`, etc.) in `Relation.Binary.Reasoning.Base.{Double,Triple}` were
+  lowered when implementing new style reasoning (issue #185).  This lead to
+  inconsistencies in modules that add custom combinators (e.g. `StarReasoning`
+  from `Relation.Binary.Construct.Closure.ReflexiveTransitive.Properties`)
+  using the original fixity (see issue #814 for details).  The old fixity has
+  been restored now.
+
 Non-backwards compatible changes
 --------------------------------
 
