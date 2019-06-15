@@ -1,0 +1,104 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Float.Properties</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Properties of operations on floats</a>
+<a id="144" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="218" class="Symbol">{-#</a> <a id="222" class="Keyword">OPTIONS</a> <a id="230" class="Pragma">--without-K</a> <a id="242" class="Pragma">--safe</a> <a id="249" class="Symbol">#-}</a>
+
+<a id="254" class="Keyword">module</a> <a id="261" href="Data.Float.Properties.html" class="Module">Data.Float.Properties</a> <a id="283" class="Keyword">where</a>
+
+<a id="290" class="Keyword">open</a> <a id="295" class="Keyword">import</a> <a id="302" href="Data.Bool.Base.html" class="Module">Data.Bool.Base</a> <a id="317" class="Symbol">as</a> <a id="320" class="Module">Bool</a> <a id="325" class="Keyword">using</a> <a id="331" class="Symbol">(</a><a id="332" href="Agda.Builtin.Bool.html#135" class="Datatype">Bool</a><a id="336" class="Symbol">)</a>
+<a id="338" class="Keyword">open</a> <a id="343" class="Keyword">import</a> <a id="350" href="Data.Float.Base.html" class="Module">Data.Float.Base</a>
+<a id="366" class="Keyword">import</a> <a id="373" href="Data.Word.Base.html" class="Module">Data.Word.Base</a> <a id="388" class="Symbol">as</a> <a id="391" class="Module">Word</a>
+<a id="396" class="Keyword">import</a> <a id="403" href="Data.Word.Properties.html" class="Module">Data.Word.Properties</a> <a id="424" class="Symbol">as</a> <a id="427" class="Module">Wₚ</a>
+<a id="430" class="Keyword">open</a> <a id="435" class="Keyword">import</a> <a id="442" href="Relation.Nullary.Decidable.html" class="Module">Relation.Nullary.Decidable</a> <a id="469" class="Symbol">as</a> <a id="472" class="Module">RN</a> <a id="475" class="Keyword">using</a> <a id="481" class="Symbol">(</a><a id="482" href="Relation.Nullary.Decidable.html#1117" class="Function">map′</a><a id="486" class="Symbol">)</a>
+<a id="488" class="Keyword">open</a> <a id="493" class="Keyword">import</a> <a id="500" href="Relation.Binary.html" class="Module">Relation.Binary</a>
+<a id="516" class="Keyword">import</a> <a id="523" href="Relation.Binary.Construct.On.html" class="Module">Relation.Binary.Construct.On</a> <a id="552" class="Symbol">as</a> <a id="555" class="Module">On</a>
+<a id="558" class="Keyword">open</a> <a id="563" class="Keyword">import</a> <a id="570" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a>
+
+<a id="609" class="Comment">------------------------------------------------------------------------</a>
+<a id="682" class="Comment">-- Primitive properties</a>
+
+<a id="707" class="Keyword">open</a> <a id="712" class="Keyword">import</a> <a id="719" href="Agda.Builtin.Float.Properties.html" class="Module">Agda.Builtin.Float.Properties</a>
+  <a id="751" class="Keyword">renaming</a> <a id="760" class="Symbol">(</a><a id="761" href="Agda.Builtin.Float.Properties.html#194" class="Primitive">primFloatToWord64Injective</a> <a id="788" class="Symbol">to</a> <a id="791" href="Agda.Builtin.Float.Properties.html#194" class="Primitive">toWord-injective</a><a id="807" class="Symbol">)</a>
+  <a id="811" class="Keyword">public</a>
+
+<a id="819" class="Comment">------------------------------------------------------------------------</a>
+<a id="892" class="Comment">-- Properties of _≈_</a>
+
+<a id="≈⇒≡"></a><a id="914" href="Data.Float.Properties.html#914" class="Function">≈⇒≡</a> <a id="918" class="Symbol">:</a> <a id="920" href="Data.Float.Base.html#1367" class="Function Operator">_≈_</a> <a id="924" href="Relation.Binary.Core.html#1383" class="Function Operator">⇒</a> <a id="926" href="Agda.Builtin.Equality.html#125" class="Datatype Operator">_≡_</a>
+<a id="930" href="Data.Float.Properties.html#914" class="Function">≈⇒≡</a> <a id="934" href="Data.Float.Properties.html#934" class="Bound">eq</a> <a id="937" class="Symbol">=</a> <a id="939" href="Agda.Builtin.Float.Properties.html#194" class="Primitive">toWord-injective</a> <a id="956" class="Symbol">_</a> <a id="958" class="Symbol">_</a>  <a id="961" class="Symbol">(</a><a id="962" href="Data.Word.Properties.html#1101" class="Function">Wₚ.≈⇒≡</a> <a id="969" href="Data.Float.Properties.html#934" class="Bound">eq</a><a id="971" class="Symbol">)</a>
+
+<a id="≈-reflexive"></a><a id="974" href="Data.Float.Properties.html#974" class="Function">≈-reflexive</a> <a id="986" class="Symbol">:</a> <a id="988" href="Agda.Builtin.Equality.html#125" class="Datatype Operator">_≡_</a> <a id="992" href="Relation.Binary.Core.html#1383" class="Function Operator">⇒</a> <a id="994" href="Data.Float.Base.html#1367" class="Function Operator">_≈_</a>
+<a id="998" href="Data.Float.Properties.html#974" class="Function">≈-reflexive</a> <a id="1010" href="Data.Float.Properties.html#1010" class="Bound">eq</a> <a id="1013" class="Symbol">=</a> <a id="1015" href="Data.Word.Properties.html#1142" class="Function">Wₚ.≈-reflexive</a> <a id="1030" class="Symbol">(</a><a id="1031" href="Relation.Binary.PropositionalEquality.Core.html#1090" class="Function">cong</a> <a id="1036" href="Agda.Builtin.Float.html#318" class="Primitive">toWord</a> <a id="1043" href="Data.Float.Properties.html#1010" class="Bound">eq</a><a id="1045" class="Symbol">)</a>
+
+<a id="≈-refl"></a><a id="1048" href="Data.Float.Properties.html#1048" class="Function">≈-refl</a> <a id="1055" class="Symbol">:</a> <a id="1057" href="Relation.Binary.Core.html#2321" class="Function">Reflexive</a> <a id="1067" href="Data.Float.Base.html#1367" class="Function Operator">_≈_</a>
+<a id="1071" href="Data.Float.Properties.html#1048" class="Function">≈-refl</a> <a id="1078" class="Symbol">=</a> <a id="1080" href="Agda.Builtin.Equality.html#182" class="InductiveConstructor">refl</a>
+
+<a id="≈-sym"></a><a id="1086" href="Data.Float.Properties.html#1086" class="Function">≈-sym</a> <a id="1092" class="Symbol">:</a> <a id="1094" href="Relation.Binary.Core.html#2480" class="Function">Symmetric</a> <a id="1104" href="Data.Float.Base.html#1367" class="Function Operator">_≈_</a>
+<a id="1108" href="Data.Float.Properties.html#1086" class="Function">≈-sym</a> <a id="1114" class="Symbol">=</a> <a id="1116" href="Relation.Binary.PropositionalEquality.Core.html#939" class="Function">sym</a>
+
+<a id="≈-trans"></a><a id="1121" href="Data.Float.Properties.html#1121" class="Function">≈-trans</a> <a id="1129" class="Symbol">:</a> <a id="1131" href="Relation.Binary.Core.html#2848" class="Function">Transitive</a> <a id="1142" href="Data.Float.Base.html#1367" class="Function Operator">_≈_</a>
+<a id="1146" href="Data.Float.Properties.html#1121" class="Function">≈-trans</a> <a id="1154" class="Symbol">=</a> <a id="1156" href="Relation.Binary.PropositionalEquality.Core.html#984" class="Function">trans</a>
+
+<a id="≈-subst"></a><a id="1163" href="Data.Float.Properties.html#1163" class="Function">≈-subst</a> <a id="1171" class="Symbol">:</a> <a id="1173" class="Symbol">∀</a> <a id="1175" class="Symbol">{</a><a id="1176" href="Data.Float.Properties.html#1176" class="Bound">ℓ</a><a id="1177" class="Symbol">}</a> <a id="1179" class="Symbol">→</a> <a id="1181" href="Relation.Binary.Core.html#5351" class="Function">Substitutive</a> <a id="1194" href="Data.Float.Base.html#1367" class="Function Operator">_≈_</a> <a id="1198" href="Data.Float.Properties.html#1176" class="Bound">ℓ</a>
+<a id="1200" href="Data.Float.Properties.html#1163" class="Function">≈-subst</a> <a id="1208" href="Data.Float.Properties.html#1208" class="Bound">P</a> <a id="1210" href="Data.Float.Properties.html#1210" class="Bound">x≈y</a> <a id="1214" href="Data.Float.Properties.html#1214" class="Bound">p</a> <a id="1216" class="Symbol">=</a> <a id="1218" href="Relation.Binary.PropositionalEquality.Core.html#1035" class="Function">subst</a> <a id="1224" href="Data.Float.Properties.html#1208" class="Bound">P</a> <a id="1226" class="Symbol">(</a><a id="1227" href="Data.Float.Properties.html#914" class="Function">≈⇒≡</a> <a id="1231" href="Data.Float.Properties.html#1210" class="Bound">x≈y</a><a id="1234" class="Symbol">)</a> <a id="1236" href="Data.Float.Properties.html#1214" class="Bound">p</a>
+
+<a id="1239" class="Keyword">infix</a> <a id="1245" class="Number">4</a> <a id="1247" href="Data.Float.Properties.html#1252" class="Function Operator">_≈?_</a>
+<a id="_≈?_"></a><a id="1252" href="Data.Float.Properties.html#1252" class="Function Operator">_≈?_</a> <a id="1257" class="Symbol">:</a> <a id="1259" href="Relation.Binary.Core.html#5557" class="Function">Decidable</a> <a id="1269" href="Data.Float.Base.html#1367" class="Function Operator">_≈_</a>
+<a id="1273" href="Data.Float.Properties.html#1252" class="Function Operator">_≈?_</a> <a id="1278" class="Symbol">=</a> <a id="1280" href="Relation.Binary.Construct.On.html#1639" class="Function">On.decidable</a> <a id="1293" href="Agda.Builtin.Float.html#318" class="Primitive">toWord</a> <a id="1300" href="Data.Word.Base.html#718" class="Function Operator">Word._≈_</a> <a id="1309" href="Data.Word.Properties.html#1394" class="Function Operator">Wₚ._≈?_</a>
+
+<a id="≈-isEquivalence"></a><a id="1318" href="Data.Float.Properties.html#1318" class="Function">≈-isEquivalence</a> <a id="1334" class="Symbol">:</a> <a id="1336" href="Relation.Binary.Core.html#7031" class="Record">IsEquivalence</a> <a id="1350" href="Data.Float.Base.html#1367" class="Function Operator">_≈_</a>
+<a id="1354" href="Data.Float.Properties.html#1318" class="Function">≈-isEquivalence</a> <a id="1370" class="Symbol">=</a> <a id="1372" class="Keyword">record</a>
+  <a id="1381" class="Symbol">{</a> <a id="1383" href="Relation.Binary.Core.html#7105" class="Field">refl</a>  <a id="1389" class="Symbol">=</a> <a id="1391" class="Symbol">λ</a> <a id="1393" class="Symbol">{</a><a id="1394" href="Data.Float.Properties.html#1394" class="Bound">i</a><a id="1395" class="Symbol">}</a> <a id="1397" class="Symbol">→</a> <a id="1399" href="Data.Float.Properties.html#1048" class="Function">≈-refl</a> <a id="1406" class="Symbol">{</a><a id="1407" href="Data.Float.Properties.html#1394" class="Bound">i</a><a id="1408" class="Symbol">}</a>
+  <a id="1412" class="Symbol">;</a> <a id="1414" href="Relation.Binary.Core.html#7131" class="Field">sym</a>   <a id="1420" class="Symbol">=</a> <a id="1422" class="Symbol">λ</a> <a id="1424" class="Symbol">{</a><a id="1425" href="Data.Float.Properties.html#1425" class="Bound">i</a> <a id="1427" href="Data.Float.Properties.html#1427" class="Bound">j</a><a id="1428" class="Symbol">}</a> <a id="1430" class="Symbol">→</a> <a id="1432" href="Data.Float.Properties.html#1086" class="Function">≈-sym</a> <a id="1438" class="Symbol">{</a><a id="1439" href="Data.Float.Properties.html#1425" class="Bound">i</a><a id="1440" class="Symbol">}</a> <a id="1442" class="Symbol">{</a><a id="1443" href="Data.Float.Properties.html#1427" class="Bound">j</a><a id="1444" class="Symbol">}</a>
+  <a id="1448" class="Symbol">;</a> <a id="1450" href="Relation.Binary.Core.html#7157" class="Field">trans</a> <a id="1456" class="Symbol">=</a> <a id="1458" class="Symbol">λ</a> <a id="1460" class="Symbol">{</a><a id="1461" href="Data.Float.Properties.html#1461" class="Bound">i</a> <a id="1463" href="Data.Float.Properties.html#1463" class="Bound">j</a> <a id="1465" href="Data.Float.Properties.html#1465" class="Bound">k</a><a id="1466" class="Symbol">}</a> <a id="1468" class="Symbol">→</a> <a id="1470" href="Data.Float.Properties.html#1121" class="Function">≈-trans</a> <a id="1478" class="Symbol">{</a><a id="1479" href="Data.Float.Properties.html#1461" class="Bound">i</a><a id="1480" class="Symbol">}</a> <a id="1482" class="Symbol">{</a><a id="1483" href="Data.Float.Properties.html#1463" class="Bound">j</a><a id="1484" class="Symbol">}</a> <a id="1486" class="Symbol">{</a><a id="1487" href="Data.Float.Properties.html#1465" class="Bound">k</a><a id="1488" class="Symbol">}</a>
+  <a id="1492" class="Symbol">}</a>
+
+<a id="≈-setoid"></a><a id="1495" href="Data.Float.Properties.html#1495" class="Function">≈-setoid</a> <a id="1504" class="Symbol">:</a> <a id="1506" href="Relation.Binary.html#1970" class="Record">Setoid</a> <a id="1513" class="Symbol">_</a> <a id="1515" class="Symbol">_</a>
+<a id="1517" href="Data.Float.Properties.html#1495" class="Function">≈-setoid</a> <a id="1526" class="Symbol">=</a> <a id="1528" class="Keyword">record</a>
+  <a id="1537" class="Symbol">{</a> <a id="1539" href="Relation.Binary.html#2093" class="Field">isEquivalence</a> <a id="1553" class="Symbol">=</a> <a id="1555" href="Data.Float.Properties.html#1318" class="Function">≈-isEquivalence</a>
+  <a id="1573" class="Symbol">}</a>
+
+<a id="≈-isDecEquivalence"></a><a id="1576" href="Data.Float.Properties.html#1576" class="Function">≈-isDecEquivalence</a> <a id="1595" class="Symbol">:</a> <a id="1597" href="Relation.Binary.html#2573" class="Record">IsDecEquivalence</a> <a id="1614" href="Data.Float.Base.html#1367" class="Function Operator">_≈_</a>
+<a id="1618" href="Data.Float.Properties.html#1576" class="Function">≈-isDecEquivalence</a> <a id="1637" class="Symbol">=</a> <a id="1639" class="Keyword">record</a>
+  <a id="1648" class="Symbol">{</a> <a id="1650" href="Relation.Binary.html#2694" class="Field">isEquivalence</a> <a id="1664" class="Symbol">=</a> <a id="1666" href="Data.Float.Properties.html#1318" class="Function">≈-isEquivalence</a>
+  <a id="1684" class="Symbol">;</a> <a id="1686" href="Relation.Binary.html#2732" class="Field Operator">_≟_</a>           <a id="1700" class="Symbol">=</a> <a id="1702" href="Data.Float.Properties.html#1252" class="Function Operator">_≈?_</a>
+  <a id="1709" class="Symbol">}</a>
+
+<a id="≈-decSetoid"></a><a id="1712" href="Data.Float.Properties.html#1712" class="Function">≈-decSetoid</a> <a id="1724" class="Symbol">:</a> <a id="1726" href="Relation.Binary.html#2813" class="Record">DecSetoid</a> <a id="1736" class="Symbol">_</a> <a id="1738" class="Symbol">_</a>
+<a id="1740" href="Data.Float.Properties.html#1712" class="Function">≈-decSetoid</a> <a id="1752" class="Symbol">=</a> <a id="1754" class="Keyword">record</a>
+  <a id="1763" class="Symbol">{</a> <a id="1765" href="Relation.Binary.html#2945" class="Field">isDecEquivalence</a> <a id="1782" class="Symbol">=</a> <a id="1784" href="Data.Float.Properties.html#1576" class="Function">≈-isDecEquivalence</a>
+  <a id="1805" class="Symbol">}</a>
+<a id="1807" class="Comment">------------------------------------------------------------------------</a>
+<a id="1880" class="Comment">-- Properties of _≡_</a>
+
+<a id="1902" class="Keyword">infix</a> <a id="1908" class="Number">4</a> <a id="1910" href="Data.Float.Properties.html#1914" class="Function Operator">_≟_</a>
+<a id="_≟_"></a><a id="1914" href="Data.Float.Properties.html#1914" class="Function Operator">_≟_</a> <a id="1918" class="Symbol">:</a> <a id="1920" href="Relation.Binary.Core.html#5624" class="Function">DecidableEquality</a> <a id="1938" href="Agda.Builtin.Float.html#265" class="Postulate">Float</a>
+<a id="1944" href="Data.Float.Properties.html#1944" class="Bound">x</a> <a id="1946" href="Data.Float.Properties.html#1914" class="Function Operator">≟</a> <a id="1948" href="Data.Float.Properties.html#1948" class="Bound">y</a> <a id="1950" class="Symbol">=</a> <a id="1952" href="Relation.Nullary.Decidable.html#1117" class="Function">map′</a> <a id="1957" href="Data.Float.Properties.html#914" class="Function">≈⇒≡</a> <a id="1961" href="Data.Float.Properties.html#974" class="Function">≈-reflexive</a> <a id="1973" class="Symbol">(</a><a id="1974" href="Data.Float.Properties.html#1944" class="Bound">x</a> <a id="1976" href="Data.Float.Properties.html#1252" class="Function Operator">≈?</a> <a id="1979" href="Data.Float.Properties.html#1948" class="Bound">y</a><a id="1980" class="Symbol">)</a>
+
+<a id="≡-setoid"></a><a id="1983" href="Data.Float.Properties.html#1983" class="Function">≡-setoid</a> <a id="1992" class="Symbol">:</a> <a id="1994" href="Relation.Binary.html#1970" class="Record">Setoid</a> <a id="2001" class="Symbol">_</a> <a id="2003" class="Symbol">_</a>
+<a id="2005" href="Data.Float.Properties.html#1983" class="Function">≡-setoid</a> <a id="2014" class="Symbol">=</a> <a id="2016" href="Relation.Binary.PropositionalEquality.html#2497" class="Function">setoid</a> <a id="2023" href="Agda.Builtin.Float.html#265" class="Postulate">Float</a>
+
+<a id="≡-decSetoid"></a><a id="2030" href="Data.Float.Properties.html#2030" class="Function">≡-decSetoid</a> <a id="2042" class="Symbol">:</a> <a id="2044" href="Relation.Binary.html#2813" class="Record">DecSetoid</a> <a id="2054" class="Symbol">_</a> <a id="2056" class="Symbol">_</a>
+<a id="2058" href="Data.Float.Properties.html#2030" class="Function">≡-decSetoid</a> <a id="2070" class="Symbol">=</a> <a id="2072" href="Relation.Binary.PropositionalEquality.html#2628" class="Function">decSetoid</a> <a id="2082" href="Data.Float.Properties.html#1914" class="Function Operator">_≟_</a>
+
+<a id="2087" class="Comment">------------------------------------------------------------------------</a>
+<a id="2160" class="Comment">-- Boolean equality test.</a>
+
+<a id="2187" class="Keyword">infix</a> <a id="2193" class="Number">4</a> <a id="2195" href="Data.Float.Properties.html#2200" class="Function Operator">_==_</a>
+<a id="_==_"></a><a id="2200" href="Data.Float.Properties.html#2200" class="Function Operator">_==_</a> <a id="2205" class="Symbol">:</a> <a id="2207" href="Agda.Builtin.Float.html#265" class="Postulate">Float</a> <a id="2213" class="Symbol">→</a> <a id="2215" href="Agda.Builtin.Float.html#265" class="Postulate">Float</a> <a id="2221" class="Symbol">→</a> <a id="2223" href="Agda.Builtin.Bool.html#135" class="Datatype">Bool</a>
+<a id="2228" href="Data.Float.Properties.html#2228" class="Bound">w₁</a> <a id="2231" href="Data.Float.Properties.html#2200" class="Function Operator">==</a> <a id="2234" href="Data.Float.Properties.html#2234" class="Bound">w₂</a> <a id="2237" class="Symbol">=</a> <a id="2239" href="Relation.Nullary.Decidable.Core.html#671" class="Function Operator">RN.⌊</a> <a id="2244" href="Data.Float.Properties.html#2228" class="Bound">w₁</a> <a id="2247" href="Data.Float.Properties.html#1914" class="Function Operator">≟</a> <a id="2249" href="Data.Float.Properties.html#2234" class="Bound">w₂</a> <a id="2252" href="Relation.Nullary.Decidable.Core.html#671" class="Function Operator">⌋</a>
+
+<a id="2255" class="Comment">------------------------------------------------------------------------</a>
+<a id="2328" class="Comment">-- Properties of _&lt;_</a>
+
+<a id="2350" class="Keyword">infix</a> <a id="2356" class="Number">4</a> <a id="2358" href="Data.Float.Properties.html#2363" class="Function Operator">_&lt;?_</a>
+<a id="_&lt;?_"></a><a id="2363" href="Data.Float.Properties.html#2363" class="Function Operator">_&lt;?_</a> <a id="2368" class="Symbol">:</a> <a id="2370" href="Relation.Binary.Core.html#5557" class="Function">Decidable</a> <a id="2380" href="Data.Float.Base.html#1411" class="Function Operator">_&lt;_</a>
+<a id="2384" href="Data.Float.Properties.html#2363" class="Function Operator">_&lt;?_</a> <a id="2389" class="Symbol">=</a> <a id="2391" href="Relation.Binary.Construct.On.html#1639" class="Function">On.decidable</a> <a id="2404" href="Agda.Builtin.Float.html#318" class="Primitive">toWord</a> <a id="2411" href="Data.Word.Base.html#770" class="Function Operator">Word._&lt;_</a> <a id="2420" href="Data.Word.Properties.html#2488" class="Function Operator">Wₚ._&lt;?_</a>
+
+<a id="&lt;-strictTotalOrder-≈"></a><a id="2429" href="Data.Float.Properties.html#2429" class="Function">&lt;-strictTotalOrder-≈</a> <a id="2450" class="Symbol">:</a> <a id="2452" href="Relation.Binary.html#11493" class="Record">StrictTotalOrder</a> <a id="2469" class="Symbol">_</a> <a id="2471" class="Symbol">_</a> <a id="2473" class="Symbol">_</a>
+<a id="2475" href="Data.Float.Properties.html#2429" class="Function">&lt;-strictTotalOrder-≈</a> <a id="2496" class="Symbol">=</a> <a id="2498" href="Relation.Binary.Construct.On.html#7061" class="Function">On.strictTotalOrder</a> <a id="2518" href="Data.Word.Properties.html#2548" class="Function">Wₚ.&lt;-strictTotalOrder-≈</a> <a id="2542" href="Agda.Builtin.Float.html#318" class="Primitive">toWord</a>
+</pre></body></html>
