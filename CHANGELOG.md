@@ -59,11 +59,11 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
-* The function `gcd` in `Data.Nat.GCD` has been reimplemented so it is much
-  faster when compiled. The function `gcd` now has type `ℕ → ℕ → ℕ`. The old
-  function of type `(m n : ℕ) → ∃ λ d → GCD m n d` has been renamed `mkGCD`,
-  and `gcd′` in `Data.Nat.Coprimality` has been renamed `mkGCD′`. All other
-  functionality is untouched.
+* The functions `gcd` and `lcm` in `Data.Nat.GCD/LCM` have been reimplemented
+  so that they run much faster when compiled. The functions now have type `ℕ → ℕ → ℕ`.
+  The old functions of type `(m n : ℕ) → ∃ λ d → GCD/LCM m n d` has been renamed
+  `mkGCD`/`mkLCM`, and `gcd′` in `Data.Nat.Coprimality` has been deprecated. All
+  other functionality is untouched.
 
 * The module `IsDistributiveLattice` in `Algebra.Structures` has had its field
   renamed from `∨-∧-distribʳ` to `∨-distribʳ-∧` in order to match the conventions
