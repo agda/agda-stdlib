@@ -27,7 +27,7 @@ open import Function.Inverse as Inv using (inverse)
 open import Relation.Unary using (Pred)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as ≡
-  using (_≡_ ; cong; cong₂; _≢_; inspect)
+  using (_≡_ ; refl ; cong; cong₂; _≢_; inspect)
 
 open PermutationReasoning
 
@@ -37,7 +37,7 @@ open PermutationReasoning
 module _ {a} {A : Set a} where
 
   ↭-sym-involutive : ∀ {xs ys : List A} (p : xs ↭ ys) → ↭-sym (↭-sym p) ≡ p
-  ↭-sym-involutive refl          = ≡.refl
+  ↭-sym-involutive refl          = refl
   ↭-sym-involutive (prep x ↭)    = cong (prep x) (↭-sym-involutive ↭)
   ↭-sym-involutive (swap x y ↭)  = cong (swap x y) (↭-sym-involutive ↭)
   ↭-sym-involutive (trans ↭₁ ↭₂) =

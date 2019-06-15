@@ -72,8 +72,9 @@ New modules
   Data.List.Relation.Binary.Disjoint.Setoid
   Data.List.Relation.Binary.Disjoint.Setoid.Properties
 
-  Data.List.Relation.Binary.Permutation.Setoid
   Data.List.Relation.Binary.Permutation.Homogeneous
+  Data.List.Relation.Binary.Permutation.Setoid
+  Data.List.Relation.Binary.Permutation.Setoid.Properties
 
   Data.List.Relation.Unary.AllPairs
   Data.List.Relation.Unary.AllPairs.Properties
@@ -138,6 +139,10 @@ been attached to all deprecated names.
 * The `Data.Product.N-ary` modules have been deprecated and their content
   moved to `Data.Vec.Recursive` to make place for properly heterogeneous
   n-ary products in `Data.Product.Nary`.
+
+* The modules `Data.List.Relation.Binary.Permutation.Inductive(.Properties)`
+  have been renamed `Data.List.Relation.Binary.Permutation.Propositional(.Properties)`
+  to match the rest of the library.
 
 #### Names
 
