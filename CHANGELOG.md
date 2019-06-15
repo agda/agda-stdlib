@@ -578,20 +578,17 @@ Other minor additions
 
 * Added new proofs to `Data.Nat.Divisibility`:
   ```agda
-  ∣m∸n∣n⇒∣m : n ≤ m → i ∣ m ∸ n → i ∣ n → i ∣ m
-  ∣n∣m%n⇒∣m : d ∣ n → d ∣ (m % n) → d ∣ m
-
-  *-monoˡ-∣ : ∀ {i j} k → i ∣ j → i * k ∣ j * k
-  %-presˡ-∣ : d ∣ m → d ∣ n → d ∣ (m % n)
-
-  *-monoˡ-∣ : ∀ {i j} k → i ∣ j → i * k ∣ j * k
-  m/n∣m : ∀ {m n n≢0} → n ∣ m → (m / n) {n≢0} ∣ m
-  m*n∣o⇒m∣o/n : ∀ m n {o n≢0} → m * n ∣ o → m ∣ (o / n) {n≢0}
-  m*n∣o⇒n∣o/m : ∀ m n {o n≢0} → m * n ∣ o → n ∣ (o / m) {n≢0}
-  m∣n/o⇒m*o∣n : ∀ {m n o n≢0} → o ∣ n → m ∣ (n / o) {n≢0} → m * o ∣ n
-  m∣n/o⇒o*m∣n : ∀ {m n o o≢0} → o ∣ n → m ∣ (n / o) {o≢0} → o * m ∣ n
-  m/n∣o⇒m∣o*n : ∀ {m n o n≢0} → n ∣ m → (m / n) {n≢0} ∣ o → m ∣ o * n
-  m∣n*o⇒m/n∣o : ∀ {m n o n≢0} → n ∣ m → m ∣ o * n → (m / n) {n≢0} ∣ o
+  ∣m∸n∣n⇒∣m   : n ≤ m → i ∣ m ∸ n → i ∣ n → i ∣ m
+  ∣n∣m%n⇒∣m   : d ∣ n → d ∣ (m % n) → d ∣ m
+  *-monoˡ-∣   : i ∣ j → i * k ∣ j * k
+  %-presˡ-∣   : d ∣ m → d ∣ n → d ∣ (m % n)
+  m/n∣m       : n ∣ m → m / n ∣ m
+  m*n∣o⇒m∣o/n : m * n ∣ o → m ∣ o / n
+  m*n∣o⇒n∣o/m : m * n ∣ o → n ∣ o / m
+  m∣n/o⇒m*o∣n : o ∣ n → m ∣ n / o → m * o ∣ n
+  m∣n/o⇒o*m∣n : o ∣ n → m ∣ n / o → o * m ∣ n
+  m/n∣o⇒m∣o*n : n ∣ m → m / n ∣ o → m ∣ o * n
+  m∣n*o⇒m/n∣o : n ∣ m → m ∣ o * n → m / n ∣ o
   ```
 
 * Added new operator and proofs to `Data.Nat.DivMod`:
