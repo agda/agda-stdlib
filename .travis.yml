@@ -30,7 +30,7 @@ install:
   # installing the dev version of Agda
   - git clone https://github.com/agda/agda
   - cd agda
-  - git checkout b57260d0ceb1de4a5edc323d8ec2361904b5066e
+  - git checkout 39c273eb6eb3ab68c23b0de7a19eaadd84f0e5fb
   # checking whether .ghc is still valid
   - cabal install alex happy
   - cabal install --only-dependencies --dry -v > $HOME/installplan.txt

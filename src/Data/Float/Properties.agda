@@ -1,41 +1,37 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Properties of operations on machine words
+-- Properties of operations on floats
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
-module Data.Word.Properties where
+module Data.Float.Properties where
 
-import Data.Nat.Base as ℕ
-open import Data.Bool.Base using (Bool)
-open import Data.Word.Base
-import Data.Nat.Properties as ℕₚ
-open import Function
-open import Relation.Nullary.Decidable using (map′; ⌊_⌋)
+open import Data.Bool.Base as Bool using (Bool)
+open import Data.Float.Base
+import Data.Word.Base as Word
+import Data.Word.Properties as Wₚ
+open import Relation.Nullary.Decidable as RN using (map′)
 open import Relation.Binary
-  using ( _⇒_; Reflexive; Symmetric; Transitive; Substitutive
-        ; Decidable; DecidableEquality; IsEquivalence; IsDecEquivalence
-        ; Setoid; DecSetoid; StrictTotalOrder)
 import Relation.Binary.Construct.On as On
 open import Relation.Binary.PropositionalEquality
 
 ------------------------------------------------------------------------
 -- Primitive properties
 
-open import Agda.Builtin.Word.Properties
-  renaming (primWord64ToNatInjective to toℕ-injective)
+open import Agda.Builtin.Float.Properties
+  renaming (primFloatToWord64Injective to toWord-injective)
   public
 
 ------------------------------------------------------------------------
 -- Properties of _≈_
 
 ≈⇒≡ : _≈_ ⇒ _≡_
-≈⇒≡ = toℕ-injective _ _
+≈⇒≡ eq = toWord-injective _ _  (Wₚ.≈⇒≡ eq)
 
 ≈-reflexive : _≡_ ⇒ _≈_
-≈-reflexive = cong toℕ
+≈-reflexive eq = Wₚ.≈-reflexive (cong toWord eq)
 
 ≈-refl : Reflexive _≈_
 ≈-refl = refl
@@ -51,7 +47,7 @@ open import Agda.Builtin.Word.Properties
 
 infix 4 _≈?_
 _≈?_ : Decidable _≈_
-x ≈? y = toℕ x ℕₚ.≟ toℕ y
+_≈?_ = On.decidable toWord Word._≈_ Wₚ._≈?_
 
 ≈-isEquivalence : IsEquivalence _≈_
 ≈-isEquivalence = record
@@ -79,11 +75,11 @@ x ≈? y = toℕ x ℕₚ.≟ toℕ y
 -- Properties of _≡_
 
 infix 4 _≟_
-_≟_ : DecidableEquality Word64
+_≟_ : DecidableEquality Float
 x ≟ y = map′ ≈⇒≡ ≈-reflexive (x ≈? y)
 
 ≡-setoid : Setoid _ _
-≡-setoid = setoid Word64
+≡-setoid = setoid Float
 
 ≡-decSetoid : DecSetoid _ _
 ≡-decSetoid = decSetoid _≟_
@@ -92,15 +88,15 @@ x ≟ y = map′ ≈⇒≡ ≈-reflexive (x ≈? y)
 -- Boolean equality test.
 
 infix 4 _==_
-_==_ : Word64 → Word64 → Bool
-w₁ == w₂ = ⌊ w₁ ≟ w₂ ⌋
+_==_ : Float → Float → Bool
+w₁ == w₂ = RN.⌊ w₁ ≟ w₂ ⌋
 
 ------------------------------------------------------------------------
 -- Properties of _<_
 
 infix 4 _<?_
 _<?_ : Decidable _<_
-_<?_ = On.decidable toℕ ℕ._<_ ℕₚ._<?_
+_<?_ = On.decidable toWord Word._<_ Wₚ._<?_
 
 <-strictTotalOrder-≈ : StrictTotalOrder _ _ _
-<-strictTotalOrder-≈ = On.strictTotalOrder ℕₚ.<-strictTotalOrder toℕ
+<-strictTotalOrder-≈ = On.strictTotalOrder Wₚ.<-strictTotalOrder-≈ toWord

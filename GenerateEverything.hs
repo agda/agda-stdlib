@@ -1,9 +1,11 @@
 {-# LANGUAGE PatternGuards #-}
 
 import Control.Applicative
+import Control.Monad
 
 import qualified Data.List as List
 
+import System.Directory
 import System.Environment
 import System.Exit
 import System.FilePath
@@ -21,7 +23,7 @@ srcDir         = "src"
 -- | Checks whether a module is declared (un)safe
 
 unsafeModules :: [FilePath]
-unsafeModules = map toAgdaFilePath
+unsafeModules = map modToFile
   [ "Codata.Musical.Cofin"
   , "Codata.Musical.Colist"
   , "Codata.Musical.Colist.Infinite-merge"
@@ -30,36 +32,36 @@ unsafeModules = map toAgdaFilePath
   , "Codata.Musical.Covec"
   , "Codata.Musical.M"
   , "Codata.Musical.Stream"
-  , "Data.Char.Unsafe"
-  , "Data.Float.Unsafe"
-  , "Data.Nat.Unsafe"
-  , "Data.Nat.DivMod.Unsafe"
-  , "Data.String.Unsafe"
-  , "Data.Word.Unsafe"
   , "Debug.Trace"
   , "Foreign.Haskell"
   , "IO"
   , "IO.Primitive"
-  , "Reflection"
   , "Relation.Binary.PropositionalEquality.TrustMe"
   ] where
 
-  toAgdaFilePath :: String -> FilePath
-  toAgdaFilePath name = concat
-    [ "src/"
-    , map (\ c -> if c == '.' then '/' else c) name
-    , ".agda"
-    ]
-
 isUnsafeModule :: FilePath -> Bool
-isUnsafeModule =
-  -- GA 2019-02-24: it is crucial to use an anonymous lambda
-  -- here so that `unsafeModules` is shared between all calls
-  -- to `isUnsafeModule`.
-  \ fp -> unqualifiedModuleName fp == "Unsafe"
-       || fp `elem` unsafeModules
+isUnsafeModule fp =
+    unqualifiedModuleName fp == "Unsafe"
+    || fp `elem` unsafeModules
 
 -- | Checks whether a module is declared as using K
+
+withKModules :: [FilePath]
+withKModules = map modToFile
+  [ "Axiom.Extensionality.Heterogeneous"
+  , "Data.Star.BoundedVec"
+  , "Data.Star.Decoration"
+  , "Data.Star.Environment"
+  , "Data.Star.Fin"
+  , "Data.Star.Pointer"
+  , "Data.Star.Vec"
+  , "Data.String.Unsafe"
+  , "Relation.Binary.HeterogeneousEquality"
+  , "Relation.Binary.HeterogeneousEquality.Core"
+  , "Relation.Binary.HeterogeneousEquality.Quotients.Examples"
+  , "Relation.Binary.HeterogeneousEquality.Quotients"
+  , "Relation.Binary.PropositionalEquality.TrustMe"
+  ]
 
 isWithKModule :: FilePath -> Bool
 isWithKModule =
@@ -68,31 +70,6 @@ isWithKModule =
   -- to `isWithKModule`.
   \ fp -> unqualifiedModuleName fp == "WithK"
        || fp `elem` withKModules
-
-  where
-
-  withKModules :: [FilePath]
-  withKModules = map modToFile
-    [ "Axiom.Extensionality.Heterogeneous"
-    , "Data.Char.Unsafe"
-    , "Data.Float.Unsafe"
-    , "Data.Nat.Unsafe"
-    , "Data.Nat.DivMod.Unsafe"
-    , "Data.Star.BoundedVec"
-    , "Data.Star.Decoration"
-    , "Data.Star.Environment"
-    , "Data.Star.Fin"
-    , "Data.Star.Pointer"
-    , "Data.Star.Vec"
-    , "Data.String.Unsafe"
-    , "Data.Word.Unsafe"
-    , "Reflection"
-    , "Relation.Binary.HeterogeneousEquality"
-    , "Relation.Binary.HeterogeneousEquality.Core"
-    , "Relation.Binary.HeterogeneousEquality.Quotients.Examples"
-    , "Relation.Binary.HeterogeneousEquality.Quotients"
-    , "Relation.Binary.PropositionalEquality.TrustMe"
-    ]
 
 unqualifiedModuleName :: FilePath -> String
 unqualifiedModuleName = dropExtension . takeFileName
@@ -103,7 +80,6 @@ isLibraryModule :: FilePath -> Bool
 isLibraryModule f =
   takeExtension f `elem` [".agda", ".lagda"]
   && unqualifiedModuleName f /= "Core"
-
 
 ---------------------------------------------------------------------------
 -- Analysing library files
@@ -209,6 +185,13 @@ analyse fp = do
     , status     = classify fp hd ls
     }
 
+checkFilePaths :: String -> [FilePath] -> IO ()
+checkFilePaths cat fps = forM_ fps $ \ fp -> do
+  b <- doesFileExist fp
+  if b
+    then pure ()
+    else error $ fp ++ " is listed as " ++ cat ++ " but does not exist."
+
 ---------------------------------------------------------------------------
 -- Collecting all non-Core library files, analysing them and generating
 -- 4 files:
@@ -222,6 +205,9 @@ main = do
   case args of
     [] -> return ()
     _  -> hPutStr stderr usage >> exitFailure
+
+  checkFilePaths "unsafe" unsafeModules
+  checkFilePaths "using K" withKModules
 
   header  <- readFileUTF8 headerFile
   modules <- filter isLibraryModule . List.sort <$>

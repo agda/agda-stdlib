@@ -27,13 +27,14 @@ open import Data.Sum using (_⊎_; inj₁; inj₂)
 open import Data.These as These using (These; this; that; these)
 open import Function
 open import Level using (Level)
-import Relation.Binary as B
+open import Relation.Binary as B using (DecidableEquality)
 import Relation.Binary.Reasoning.Setoid as EqR
 open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; _≢_; _≗_; refl ; sym ; cong)
-open import Relation.Nullary using (¬_; yes; no)
+  using (_≡_; _≢_; _≗_; refl ; sym ; cong; cong₂)
+open import Relation.Nullary using (Dec; ¬_; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Nullary.Decidable using (⌊_⌋)
+open import Relation.Nullary.Product using (_×-dec_)
+open import Relation.Nullary.Decidable as Dec using (⌊_⌋)
 open import Relation.Unary using (Pred; Decidable; ∁)
 open import Relation.Unary.Properties using (∁?)
 
@@ -60,14 +61,14 @@ module _ {x y : A} {xs ys : List A} where
   ∷-injectiveʳ : x ∷ xs ≡ y List.∷ ys → xs ≡ ys
   ∷-injectiveʳ refl = refl
 
-≡-dec : B.Decidable _≡_ → B.Decidable {A = List A} _≡_
+  ∷-dec : Dec (x ≡ y) → Dec (xs ≡ ys) → Dec (x List.∷ xs ≡ y ∷ ys)
+  ∷-dec x≟y xs≟ys = Dec.map′ (uncurry (cong₂ _∷_)) ∷-injective (x≟y ×-dec xs≟ys)
+
+≡-dec : DecidableEquality A → DecidableEquality (List A)
 ≡-dec _≟_ []       []       = yes refl
 ≡-dec _≟_ (x ∷ xs) []       = no λ()
 ≡-dec _≟_ []       (y ∷ ys) = no λ()
-≡-dec _≟_ (x ∷ xs) (y ∷ ys) with x ≟ y | ≡-dec _≟_ xs ys
-... | no  x≢y  | _        = no (x≢y   ∘ ∷-injectiveˡ)
-... | yes _    | no xs≢ys = no (xs≢ys ∘ ∷-injectiveʳ)
-... | yes refl | yes refl = yes refl
+≡-dec _≟_ (x ∷ xs) (y ∷ ys) = ∷-dec (x ≟ y) (≡-dec _≟_ xs ys)
 
 ------------------------------------------------------------------------
 -- map

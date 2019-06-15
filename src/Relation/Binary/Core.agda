@@ -205,6 +205,9 @@ Substitutive {A = A} _∼_ p = (P : A → Set p) → P Respects _∼_
 Decidable : REL A B ℓ → Set _
 Decidable _∼_ = ∀ x y → Dec (x ∼ y)
 
+DecidableEquality : (A : Set a) → Set _
+DecidableEquality A = Decidable {A = A} _≡_
+
 -- Weak decidability - it is sometimes possible to determine if a given
 -- pair of elements are related.
 

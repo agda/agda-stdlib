@@ -66,6 +66,9 @@ New modules
   Data.AVL.NonEmpty
   Data.AVL.NonEmpty.Propositional
 
+  Data.Float.Base
+  Data.Float.Properties
+
   Data.List.Membership.Propositional.Properties.WithK
 
   Data.List.Relation.Binary.Disjoint.Propositional
@@ -100,6 +103,18 @@ New modules
 
   Data.Word.Base
   Data.Word.Properties
+
+  Reflection.Abstraction
+  Reflection.Argument
+  Reflection.Argument.Information
+  Reflection.Argument.Relevance
+  Reflection.Argument.Visibility
+  Reflection.Definition
+  Reflection.Literal
+  Reflection.Meta
+  Reflection.Name
+  Reflection.Pattern
+  Reflection.Term
 
   Relation.Binary.Construct.Closure.Equivalence.Properties
   Relation.Binary.Rewriting
@@ -218,8 +233,8 @@ been attached to all deprecated names.
   favour of `⊤` and `tt` from `Data.Unit`, as it turns out that the latter
   have been automatically mapped to the Haskell equivalent for quite some time.
 
-* The module `Data.Word.Unsafe` has been deprecated as there are no
-  longer any unsafe operations.
+* The modules `Data.Word.Unsafe` and `Data.Float.Unsafe` have been removed
+  as there are no longer any unsafe operations.
 
 * Renamed a few `-identity` lemmas in `Codata.Stream.Properties` as they were
   proving two streams bisimilar rather than propositionally equal.
@@ -355,6 +370,9 @@ Other minor additions
   toNatDigits : (base : ℕ) {base≤16 : True (1 ≤? base)} → ℕ → List ℕ
   ```
 
+* Decidable equality over floating point numbers has been made safe and
+  so  `_≟_` has been moved from `Data.Float.Unsafe` to `Data.Float.Properties`.
+
 * Added new pattern synonyms to `Data.Integer`:
   ```agda
   pattern +0       = + 0
@@ -397,6 +415,8 @@ Other minor additions
   foldr-preservesᵇ : (P x → P y → P (f x y)) → P e → All P xs   → P (foldr f e xs)
   foldr-preservesʳ : (P y → P (f x y))       → P e              → P (foldr f e xs)
   foldr-preservesᵒ : (P x ⊎ P y → P (f x y)) → P e ⊎ Any P xs   → P (foldr f e xs)
+
+  ∷-dec : Dec (x ≡ y) → Dec (xs ≡ ys) → Dec (x List.∷ xs ≡ y ∷ ys)
   ```
 
 * Defined a new utility in `Data.List.Relation.Binary.Permutation.Inductive.Properties`:
@@ -637,8 +657,9 @@ Other minor additions
 
 * Added new definitions in `Relation.Binary.Core`:
   ```agda
-  Universal _∼_    = ∀ x y → x ∼ y
-  Recomputable _~_ = ∀ {x y} → .(x ~ y) → x ~ y
+  Universal _∼_       = ∀ x y → x ∼ y
+  Recomputable _~_    = ∀ {x y} → .(x ~ y) → x ~ y
+  DecidableEquality A = Decidable {A = A} _≡_
   ```
 
 * Added new proof to `Relation.Binary.Consequences`:
