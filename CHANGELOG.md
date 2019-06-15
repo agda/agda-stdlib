@@ -45,6 +45,11 @@ Bug-fixes
 * `Data.Rational` now exports queries from `Data.Rational.Base` instead of
   from `Data.Nat.Base`.
 
+* The implementation of the functions `fromℕ≤` and `inject≤` in `Data.Fin.Base`
+  has been changed so as to avoid pattern matching on the `m ≤ n` proof. This
+  makes significantly them easier to use, as often it is inconvenient to
+  pattern match on the `m ≤ n` proof directly.
+
 * The proof `m+n∸m≡n` in `Data.Nat.Properties` was incorrectly named as
   it proved the equality `m + (n ∸ m) ≡ n` rather than `m + n ∸ m ≡ n`. It has
   therefore been renamed `m+[n∸m]≡n` and the old name now refers to a new
@@ -382,6 +387,11 @@ Other minor additions
   pattern 7F = suc 6F
   pattern 8F = suc 7F
   pattern 9F = suc 8F
+  ```
+
+* Added new proof to `Data.Fin.Properties`:
+  ```agda
+  inject≤-idempotent : inject≤ (inject≤ i m≤n) n≤k ≡ inject≤ i m≤k
   ```
 
 * Added new pattern synonyms to `Data.Integer`:
@@ -768,11 +778,4 @@ Other minor additions
   dec-yes     : (p? : Dec P) → P → ∃ λ p′ → p? ≡ yes p′
   dec-no      : (p? : Dec P) → ¬ P → ∃ λ ¬p′ → p? ≡ no ¬p′
   dec-yes-irr : (p? : Dec P) → Irrelevant P → (p : P) → p? ≡ yes p
-  ```
-
-* Changed the functions fromℕ≤ , inject≤ , toℕ-inject≤ , inject≤-refl to not pattern match on ℕ≤ and
-  added function inject≤-idempotent in `Data.Fin.Properties`:
-  ```agda
-  inject≤-idempotent : ∀ {m n k} (i : Fin m) .(m≤n : m ℕ≤ n) .(n≤k : n ℕ≤ k) .(m≤k : m ℕ≤ k)
-                       → inject≤ (inject≤ i m≤n) n≤k ≡ inject≤ i m≤k
   ```

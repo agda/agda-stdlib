@@ -373,10 +373,11 @@ inject≤-refl : ∀ {n} (i : Fin n) .(n≤n : n ℕ≤ n) → inject≤ i n≤n
 inject≤-refl {suc n} zero    _   = refl
 inject≤-refl {suc n} (suc i) n≤n = cong suc (inject≤-refl i (ℕ.≤-pred n≤n))
 
-inject≤-idempotent : ∀ {m n k} (i : Fin m) .(m≤n : m ℕ≤ n) .(n≤k : n ℕ≤ k) .(m≤k : m ℕ≤ k)
-                     → inject≤ (inject≤ i m≤n) n≤k ≡ inject≤ i m≤k
-inject≤-idempotent {_} {suc n} {suc k}     zero    _ _ _ = refl
-inject≤-idempotent {n = suc n} {k = suc k} (suc i) _ _ _ =
+inject≤-idempotent : ∀ {m n k} (i : Fin m)
+                     .(m≤n : m ℕ≤ n) .(n≤k : n ℕ≤ k) .(m≤k : m ℕ≤ k) →
+                     inject≤ (inject≤ i m≤n) n≤k ≡ inject≤ i m≤k
+inject≤-idempotent {_} {suc n} {suc k} zero    _ _ _ = refl
+inject≤-idempotent {_} {suc n} {suc k} (suc i) _ _ _ =
   cong suc (inject≤-idempotent i _ _ _)
 
 ------------------------------------------------------------------------

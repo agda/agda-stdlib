@@ -64,7 +64,7 @@ fromℕ (suc n) = suc (fromℕ n)
 -- fromℕ≤ {m} _ = "m".
 
 fromℕ≤ : ∀ {m n} → .(m ℕ.< n) → Fin n
-fromℕ≤ {zero} {suc n} m≤n = zero
+fromℕ≤ {zero}  {suc n} m≤n = zero
 fromℕ≤ {suc m} {suc n} m≤n = suc (fromℕ≤ (ℕₚ.≤-pred m≤n))
 
 -- fromℕ≤″ m _ = "m".
