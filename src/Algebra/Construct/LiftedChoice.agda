@@ -167,7 +167,7 @@ module _ {_≈_ : Rel B ℓ} {_∙_ : Op₂ B}
 ------------------------------------------------------------------------
 -- Other properties
 
-  module _ {ℓ} {_≈′_ : Rel A ℓ} {P : Pred A p} (f : A → B) where
+  module _ {P : Pred A p} (f : A → B) where
 
     private
       _◦_ = Lift _≈_ _∙_ M.sel f
@@ -188,8 +188,8 @@ module _ {_≈_ : Rel B ℓ} {_∙_ : Op₂ B}
     ... | inj₁ fx∙fy≈fx = right Py fx∙fy≈fx
     ... | inj₂ fx∙fy≈fy = Py
 
-    preservesᵇ : ∀ (P : Pred A p) → ∀ {x y} → P x → P y → P (x ◦ y)
-    preservesᵇ P {x} {y} Px Py with M.sel (f x) (f y)
+    preservesᵇ : ∀ {x y} → P x → P y → P (x ◦ y)
+    preservesᵇ {x} {y} Px Py with M.sel (f x) (f y)
     ... | inj₁ _ = Px
     ... | inj₂ _ = Py
 

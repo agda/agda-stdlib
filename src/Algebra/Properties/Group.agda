@@ -41,32 +41,62 @@ private
     (x ⁻¹ ∙ x) ∙ y ≈⟨ assoc (x ⁻¹) x y ⟩
     x ⁻¹ ∙ (x ∙ y) ∎
 
-left-identity-unique : ∀ x y → x ∙ y ≈ y → x ≈ ε
-left-identity-unique x y eq = begin
+identityˡ-unique : ∀ x y → x ∙ y ≈ y → x ≈ ε
+identityˡ-unique x y eq = begin
   x              ≈⟨ left-helper x y ⟩
   (x ∙ y) ∙ y ⁻¹ ≈⟨ ∙-congʳ eq ⟩
        y  ∙ y ⁻¹ ≈⟨ inverseʳ y ⟩
   ε              ∎
 
-right-identity-unique : ∀ x y → x ∙ y ≈ x → y ≈ ε
-right-identity-unique x y eq = begin
+identityʳ-unique : ∀ x y → x ∙ y ≈ x → y ≈ ε
+identityʳ-unique x y eq = begin
   y              ≈⟨ right-helper x y ⟩
   x ⁻¹ ∙ (x ∙ y) ≈⟨ refl ⟨ ∙-cong ⟩ eq ⟩
   x ⁻¹ ∙  x      ≈⟨ inverseˡ x ⟩
   ε              ∎
 
 identity-unique : ∀ {x} → Identity x _∙_ → x ≈ ε
-identity-unique {x} id = left-identity-unique x x (proj₂ id x)
+identity-unique {x} id = identityˡ-unique x x (proj₂ id x)
 
-left-inverse-unique : ∀ x y → x ∙ y ≈ ε → x ≈ y ⁻¹
-left-inverse-unique x y eq = begin
+inverseˡ-unique : ∀ x y → x ∙ y ≈ ε → x ≈ y ⁻¹
+inverseˡ-unique x y eq = begin
   x              ≈⟨ left-helper x y ⟩
   (x ∙ y) ∙ y ⁻¹ ≈⟨ ∙-congʳ eq ⟩
        ε  ∙ y ⁻¹ ≈⟨ identityˡ (y ⁻¹) ⟩
             y ⁻¹ ∎
 
-right-inverse-unique : ∀ x y → x ∙ y ≈ ε → y ≈ x ⁻¹
-right-inverse-unique x y eq = begin
+inverseʳ-unique : ∀ x y → x ∙ y ≈ ε → y ≈ x ⁻¹
+inverseʳ-unique x y eq = begin
   y       ≈⟨ sym (⁻¹-involutive y) ⟩
-  y ⁻¹ ⁻¹ ≈⟨ ⁻¹-cong (sym (left-inverse-unique x y eq)) ⟩
+  y ⁻¹ ⁻¹ ≈⟨ ⁻¹-cong (sym (inverseˡ-unique x y eq)) ⟩
   x ⁻¹    ∎
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 1.1
+
+left-identity-unique = identityˡ-unique
+{-# WARNING_ON_USAGE left-identity-unique
+"Warning: left-identity-unique was deprecated in v1.1.
+Please use identityˡ-unique instead."
+#-}
+right-identity-unique = identityʳ-unique
+{-# WARNING_ON_USAGE right-identity-unique
+"Warning: right-identity-unique was deprecated in v1.1.
+Please use identityʳ-unique instead."
+#-}
+left-inverse-unique = inverseˡ-unique
+{-# WARNING_ON_USAGE left-inverse-unique
+"Warning: left-inverse-unique was deprecated in v1.1.
+Please use inverseˡ-unique instead."
+#-}
+right-inverse-unique = inverseʳ-unique
+{-# WARNING_ON_USAGE right-inverse-unique
+"Warning: right-inverse-unique was deprecated in v1.1.
+Please use inverseʳ-unique instead."
+#-}

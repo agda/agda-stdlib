@@ -150,7 +150,7 @@ lift n = record
           (λ _ _ → ext λ i →
             solve i 2 (λ x y → x and (x or y) , x) (∧-absorbs-∨ _ _) _ _)
         }
-      ; ∨-∧-distribʳ = λ _ _ _ → ext λ i →
+      ; ∨-distribʳ-∧ = λ _ _ _ → ext λ i →
                          solve i 3
                                (λ x y z → (y and z) or x ,
                                           (y or x) and (z or x))

@@ -1201,7 +1201,7 @@ m⊔n≤m+n m n with ⊔-sel m n
 ⊓-⊔-isDistributiveLattice : IsDistributiveLattice _⊓_ _⊔_
 ⊓-⊔-isDistributiveLattice = record
   { isLattice    = ⊓-⊔-isLattice
-  ; ∨-∧-distribʳ = ⊓-distribʳ-⊔
+  ; ∨-distribʳ-∧ = ⊓-distribʳ-⊔
   }
 
 ------------------------------------------------------------------------
