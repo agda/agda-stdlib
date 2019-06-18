@@ -384,6 +384,14 @@ Other minor additions
   xyx⁻¹≈y : x ∙ y ∙ x ⁻¹ ≈ y
   ```
 
+* Added new proofs to `Algebra.Properties.Group`:
+  ```agda
+  ε⁻¹≈ε     : ε ⁻¹ ≈ ε
+  ∙-cancelˡ : LeftCancellative _∙_
+  ∙-cancelʳ : RightCancellative _∙_
+  ∙-cancel  : Cancellative _∙_
+  ```
+
 * Added new proofs to `Algebra.Properties.Lattice`:
   ```agda
   ∧-isMagma     : IsMagma _∧_
