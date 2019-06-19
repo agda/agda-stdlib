@@ -12,10 +12,8 @@ import Axiom.Extensionality.Propositional as Ext
 open import Axiom.UniquenessOfIdentityProofs
 open import Function
 open import Function.Equality using (Π; _⟶_; ≡-setoid)
-open import Level as L
-open import Data.Empty
-open import Data.Nat.Base using (ℕ; zero; suc)
-open import Data.Product
+open import Level using (Level; _⊔_)
+open import Data.Product using (∃)
 
 open import Relation.Nullary using (yes ; no)
 open import Relation.Nullary.Decidable.Core
