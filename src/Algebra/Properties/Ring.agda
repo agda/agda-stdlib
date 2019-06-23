@@ -21,7 +21,11 @@ open import Relation.Binary.Reasoning.Setoid setoid
 
 open AbelianGroupProperties +-abelianGroup public
   renaming
-  ( ⁻¹-involutive    to -‿involutive
+  ( ε⁻¹≈ε            to -0#≈0#
+  ; ∙-cancelˡ        to +-cancelˡ
+  ; ∙-cancelʳ        to +-cancelʳ
+  ; ∙-cancel         to +-cancel
+  ; ⁻¹-involutive    to -‿involutive
   ; identityˡ-unique to +-identityˡ-unique
   ; identityʳ-unique to +-identityʳ-unique
   ; identity-unique  to +-identity-unique

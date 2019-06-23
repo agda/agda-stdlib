@@ -16,6 +16,37 @@ open import Relation.Binary.Reasoning.Setoid setoid
 open import Function
 open import Data.Product
 
+ε⁻¹≈ε : ε ⁻¹ ≈ ε
+ε⁻¹≈ε = begin
+  ε ⁻¹      ≈⟨ sym $ identityʳ (ε ⁻¹) ⟩
+  ε ⁻¹ ∙ ε  ≈⟨ inverseˡ ε ⟩
+  ε         ∎
+
+∙-cancelˡ : LeftCancellative _∙_
+∙-cancelˡ x {y} {z} eq = begin
+  y               ≈⟨ sym $ identityˡ y ⟩
+  ε ∙ y           ≈⟨ sym $ ∙-congʳ $ inverseˡ x ⟩
+  (x ⁻¹ ∙ x) ∙ y  ≈⟨ assoc (x ⁻¹) x y ⟩
+  x ⁻¹ ∙ (x ∙ y)  ≈⟨ ∙-congˡ eq ⟩
+  x ⁻¹ ∙ (x ∙ z)  ≈⟨ sym $ assoc (x ⁻¹) x z ⟩
+  (x ⁻¹ ∙ x) ∙ z  ≈⟨ ∙-congʳ $ inverseˡ x ⟩
+  ε ∙ z           ≈⟨ identityˡ z ⟩
+  z               ∎
+
+∙-cancelʳ : RightCancellative _∙_
+∙-cancelʳ {x} y z eq = begin
+  y               ≈⟨ sym $ identityʳ y ⟩
+  y ∙ ε           ≈⟨ sym $ ∙-congˡ $ inverseʳ x ⟩
+  y ∙ (x ∙ x ⁻¹)  ≈⟨ sym $ assoc y x (x ⁻¹) ⟩
+  (y ∙ x) ∙ x ⁻¹  ≈⟨ ∙-congʳ eq ⟩
+  (z ∙ x) ∙ x ⁻¹  ≈⟨ assoc z x (x ⁻¹) ⟩
+  z ∙ (x ∙ x ⁻¹)  ≈⟨ ∙-congˡ $ inverseʳ x ⟩
+  z ∙ ε           ≈⟨ identityʳ z ⟩
+  z               ∎
+
+∙-cancel : Cancellative _∙_
+∙-cancel = ∙-cancelˡ , ∙-cancelʳ
+
 ⁻¹-involutive : ∀ x → x ⁻¹ ⁻¹ ≈ x
 ⁻¹-involutive x = begin
   x ⁻¹ ⁻¹               ≈⟨ sym $ identityʳ _ ⟩
