@@ -9,11 +9,7 @@
 module Data.Bin.Base where
 
 open import Algebra.FunctionProperties using (Op₂)
-open import Data.Nat using (ℕ) renaming (suc to 1+_; _*_ to _*ₙ_)
-open import Function using (_∘_)
-open import Relation.Binary using (Decidable)
-open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong)
-open import Relation.Nullary using (yes; no)
+open import Data.Nat.Base as ℕ using (ℕ)
 
 ------------------------------------------------------------------------
 -- Definition
@@ -26,10 +22,10 @@ data Bin : Set where
 ------------------------------------------------------------------------
 -- Basic operations
 
-2* : Bin → Bin
-2* 0#        = 0#
-2* (2suc x)  = 2suc (suc2* x)
-2* (suc2* x) = 2suc (2* x)       -- 2(1+x) + 2(1+x) = 2(1+x + 1+x) = 2(1 + 1+2x)
+double : Bin → Bin
+double 0#        = 0#
+double (2suc x)  = 2suc (suc2* x)
+double (suc2* x) = 2suc (double x)  -- 2(1+x) + 2(1+x) = 2(1+x + 1+x) = 2(1 + 1+2x)
 
 suc : Bin → Bin
 suc 0#        =  suc2* 0#
@@ -38,8 +34,8 @@ suc (suc2* x) =  2suc x          -- 1 + 1 + 2x =  2*(1+x)
 
 pred : Bin → Bin
 pred 0#        = 0#
-pred (2suc x)  = suc2* x   -- 2(1+x) - 1 =  1+2x
-pred (suc2* x) = 2* x      -- 1 + 2x -1  =  2x
+pred (2suc x)  = suc2* x     -- 2(1+x) - 1 =  1+2x
+pred (suc2* x) = double x    -- 1 + 2x -1  =  2x
 
 ------------------------------------------------------------------------
 -- Addition, multiplication and certain related functions
@@ -58,7 +54,7 @@ x         + 0#        =  x
 _*_ : Op₂ Bin
 0#        * _         =  0#
 _         * 0#        =  0#
-(2suc x)  * (2suc y)  =  2* (2suc (x + (y + x * y)))
+(2suc x)  * (2suc y)  =  double (2suc (x + (y + x * y)))
 (2suc x)  * (suc2* y) =  2suc (x + y * (2suc x))
 (suc2* x) * (2suc y)  =  2suc (y + x * (2suc y))
 (suc2* x) * (suc2* y) =  suc2* (x + y * (suc2* x))
@@ -68,13 +64,13 @@ _         * 0#        =  0#
 
 toℕ : Bin → ℕ
 toℕ 0#        =  0
-toℕ (2suc x)  =  2 *ₙ (1+ (toℕ x))
-toℕ (suc2* x) =  1+ (2 *ₙ (toℕ x))
+toℕ (2suc x)  =  2 ℕ.* (ℕ.suc (toℕ x))
+toℕ (suc2* x) =  ℕ.suc (2 ℕ.* (toℕ x))
 
 -- Costs O(n), could be improved using `_/_` and `_%_`
 fromℕ : ℕ → Bin
-fromℕ 0      = 0#
-fromℕ (1+ n) = suc (fromℕ n)
+fromℕ 0          = 0#
+fromℕ (ℕ.suc n) = suc (fromℕ n)
 
 ------------------------------------------------------------------------
 -- Other functions
@@ -82,8 +78,8 @@ fromℕ (1+ n) = suc (fromℕ n)
 -- Useful in some termination proofs.
 size : Bin → ℕ
 size 0#        = 0
-size (2suc x)  = 1+ (size x)
-size (suc2* x) = 1+ (size x)
+size (2suc x)  = ℕ.suc (size x)
+size (suc2* x) = ℕ.suc (size x)
 
 ------------------------------------------------------------------------
 -- Constants

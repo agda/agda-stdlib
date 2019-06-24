@@ -82,6 +82,8 @@ New modules
   Data.AVL.NonEmpty
   Data.AVL.NonEmpty.Propositional
 
+  Data.Bin
+
   Data.List.Membership.Propositional.Properties.WithK
 
   Data.List.Relation.Binary.Disjoint.Propositional
