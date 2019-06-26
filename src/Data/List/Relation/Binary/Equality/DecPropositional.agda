@@ -1,8 +1,12 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Decidable equality over lists using propositional equality
+-- Decidable pointwise equality over lists using propositional equality
 ------------------------------------------------------------------------
+
+-- Note think carefully about using this module as pointwise
+-- propositional equality can usually be replaced with propositional
+-- equality.
 
 {-# OPTIONS --without-K --safe #-}
 

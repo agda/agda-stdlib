@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Decidable equality over lists parameterised by some setoid
+-- Pointwise decidable equality over lists parameterised by a setoid
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

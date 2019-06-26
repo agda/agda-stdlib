@@ -121,8 +121,9 @@ New modules
   Data.List.Relation.Binary.Disjoint.Setoid
   Data.List.Relation.Binary.Disjoint.Setoid.Properties
 
-  Data.List.Relation.Binary.Permutation.Setoid
   Data.List.Relation.Binary.Permutation.Homogeneous
+  Data.List.Relation.Binary.Permutation.Setoid
+  Data.List.Relation.Binary.Permutation.Setoid.Properties
 
   Data.List.Relation.Unary.AllPairs
   Data.List.Relation.Unary.AllPairs.Properties
@@ -200,6 +201,10 @@ been attached to all deprecated names.
 * The `Data.Product.N-ary` modules have been deprecated and their content
   moved to `Data.Vec.Recursive` to make place for properly heterogeneous
   n-ary products in `Data.Product.Nary`.
+
+* The modules `Data.List.Relation.Binary.Permutation.Inductive(.Properties)`
+  have been renamed `Data.List.Relation.Binary.Permutation.Propositional(.Properties)`
+  to match the rest of the library.
 
 #### Names
 
@@ -552,9 +557,15 @@ Other minor additions
   foldr-preservesᵒ : (P x ⊎ P y → P (f x y)) → P e ⊎ Any P xs   → P (foldr f e xs)
   ```
 
-* Defined a new utility in `Data.List.Relation.Binary.Permutation.Inductive.Properties`:
+* Added a new proof in `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
   ```agda
   shifts : xs ++ ys ++ zs ↭ ys ++ xs ++ zs
+  ```
+
+* Added new proofs to `Data.List.Relation.Binary.Pointwise`:
+  ```agda
+  ++-cancelˡ : Pointwise _∼_ (xs ++ ys) (xs ++ zs) → Pointwise _∼_ ys zs
+  ++-cancelʳ : Pointwise _∼_ (ys ++ xs) (zs ++ xs) → Pointwise _∼_ ys zs
   ```
 
 * Added new proof to `Data.List.Relation.Binary.Sublist.Heterogeneous.Properties`:
@@ -597,7 +608,7 @@ Other minor additions
   ```agda
   Any-Σ⁺ʳ : (∃ λ x → Any (_~ x) xs) → Any (∃ ∘ _~_) xs
   Any-Σ⁻ʳ : Any (∃ ∘ _~_) xs → ∃ λ x → Any (_~ x) xs
-  gmap : P ⋐ Q ∘ f → Any P ⋐ Any Q ∘ map f
+  gmap    : P ⋐ Q ∘ f → Any P ⋐ Any Q ∘ map f
   ```
 
 * Added new functions to `Data.Maybe.Base`:
