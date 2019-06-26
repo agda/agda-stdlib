@@ -263,6 +263,17 @@ been attached to all deprecated names.
   /-cong  ↦  *-cancelˡ-∣
   ```
 
+* In `Data.Nat.DivMod`:
+  ```agda
+  a≡a%n+[a/n]*n  ↦  m≡m%n+[m/n]*n
+  a%1≡0          ↦  n%1≡0
+  a%n%n≡a%n      ↦  m%n%n≡m%n
+  [a+n]%n≡a%n    ↦  [m+n]%n≡m%n
+  [a+kn]%n≡a%n   ↦  [m+kn]%n≡m%n
+  kn%n≡0         ↦  m*n%n≡0
+  a%n<n          ↦  m%n<n
+  ```
+
 * In `Data.Nat.Properties`:
   ```agda
   m≢0⇒suc[pred[m]]≡m  ↦  suc[pred[n]]≡n
@@ -601,7 +612,7 @@ Other minor additions
   %-remove-+ʳ         : d ∣ n → (m + n) % d ≡ m % d
   %-pred-≡0           : suc m % n ≡ 0 → m % n ≡ n ∸ 1
   m<[1+n%d]⇒m≤[n%d]   : m < suc n % d → m ≤ n % d
-  [1+a%n]≤1+m⇒[a%n]≤m : 0 < suc n % d → suc n % d ≤ suc m → n % d ≤ m
+  [1+m%d]≤1+n⇒[m%d]≤n : 0 < suc m % d → suc m % d ≤ suc n → m % d ≤ n
 
   0/n≡0           : 0 / n ≡ 0
   n/1≡n           : n / 1 ≡ n

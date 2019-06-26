@@ -41,7 +41,7 @@ _mod_ : (dividend divisor : ℤ) {≠0 : False (∣ divisor ∣ ℕ.≟ 0)} → 
 (n mod d) {d≢0} = (n modℕ ∣ d ∣) {d≢0}
 
 n%ℕd<d : ∀ n d {d≢0} → (n modℕ d) {d≢0} ℕ.< d
-n%ℕd<d (+ n)    sd@(ℕ.suc d) = NDM.a%n<n n d
+n%ℕd<d (+ n)    sd@(ℕ.suc d) = NDM.m%n<n n d
 n%ℕd<d -[1+ n ] sd@(ℕ.suc d) with ℕ.suc n NDM.divMod sd
 ... | NDM.result q Fin.zero    eq = ℕ.s≤s ℕ.z≤n
 ... | NDM.result q (Fin.suc r) eq = ℕ.s≤s (NProp.n∸m≤n (Fin.toℕ r) d)
@@ -52,7 +52,7 @@ n%d<d n -[1+ d ]    = n%ℕd<d n (ℕ.suc d)
 
 a≡a%ℕn+[a/ℕn]*n : ∀ n d {d≢0} → n ≡ + (n modℕ d) {d≢0} + (n divℕ d) {d≢0} * + d
 a≡a%ℕn+[a/ℕn]*n (+ n) sd@(ℕ.suc d) = let q = n NDM./ sd; r = n NDM.% sd in begin
-  + n                ≡⟨ cong +_ (NDM.a≡a%n+[a/n]*n n d) ⟩
+  + n                ≡⟨ cong +_ (NDM.m≡m%n+[m/n]*n n d) ⟩
   + (r ℕ.+ q ℕ.* sd) ≡⟨ pos-+-commute r (q ℕ.* sd) ⟩
   + r + + (q ℕ.* sd) ≡⟨ cong (_+_ (+ (+ n modℕ sd))) (sym (pos-distrib-* q sd)) ⟩
   + r + + q * + sd   ∎ where open ≡-Reasoning

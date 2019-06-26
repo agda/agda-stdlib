@@ -33,7 +33,7 @@ open import Data.Nat.Divisibility.Core public
 
 m%n≡0⇒n∣m : ∀ m n → m % suc n ≡ 0 → suc n ∣ m
 m%n≡0⇒n∣m m n eq = divides (m / suc n) (begin-equality
-  m                               ≡⟨ a≡a%n+[a/n]*n m n ⟩
+  m                               ≡⟨ m≡m%n+[m/n]*n m n ⟩
   m % suc n + m / suc n * (suc n) ≡⟨ cong₂ _+_ eq refl ⟩
   m / suc n * (suc n)             ∎)
   where open ≤-Reasoning
@@ -41,7 +41,7 @@ m%n≡0⇒n∣m m n eq = divides (m / suc n) (begin-equality
 n∣m⇒m%n≡0 : ∀ m n → suc n ∣ m → m % suc n ≡ 0
 n∣m⇒m%n≡0 m n (divides v eq) = begin-equality
   m           % suc n  ≡⟨ cong (_% suc n) eq ⟩
-  (v * suc n) % suc n  ≡⟨ kn%n≡0 v n ⟩
+  (v * suc n) % suc n  ≡⟨ m*n%n≡0 v n ⟩
   0                    ∎
   where open ≤-Reasoning
 
@@ -250,7 +250,7 @@ m∣n*o⇒m/n∣o {_} {n@(suc _)} {o} (divides p refl) pn∣on = begin
 ∣n∣m%n⇒∣m : ∀ {m n d ≢0} → d ∣ n → d ∣ (m % n) {≢0} → d ∣ m
 ∣n∣m%n⇒∣m {m} {n@(suc n-1)} {d} (divides a n≡ad) (divides b m%n≡bd) =
   divides (b + (m / n) * a) (begin-equality
-    m                         ≡⟨ a≡a%n+[a/n]*n m n-1 ⟩
+    m                         ≡⟨ m≡m%n+[m/n]*n m n-1 ⟩
     m % n + (m / n) * n       ≡⟨ cong₂ _+_ m%n≡bd (cong (m / n *_) n≡ad) ⟩
     b * d + (m / n) * (a * d) ≡⟨ sym (cong (b * d +_) (*-assoc (m / n) a d)) ⟩
     b * d + ((m / n) * a) * d ≡⟨ sym (*-distribʳ-+ d b _) ⟩
@@ -260,7 +260,7 @@ m∣n*o⇒m/n∣o {_} {n@(suc _)} {o} (divides p refl) pn∣on = begin
 %-presˡ-∣ : ∀ {m n d ≢0} → d ∣ m → d ∣ n → d ∣ (m % n) {≢0}
 %-presˡ-∣ {m} {n@(suc n-1)} {d} (divides a refl) (divides b 1+n≡bd) =
   divides (a ∸ ad/n * b) $ begin-equality
-    a * d % n              ≡⟨ a%n=a∸a/n*n (a * d) n-1 ⟩
+    a * d % n              ≡⟨ m%n≡m∸m/n*n (a * d) n-1 ⟩
     a * d ∸ ad/n * n       ≡⟨ cong (λ v → a * d ∸ ad/n * v) 1+n≡bd ⟩
     a * d ∸ ad/n * (b * d) ≡⟨ sym (cong (a * d ∸_) (*-assoc ad/n b d)) ⟩
     a * d ∸ (ad/n * b) * d ≡⟨ sym (*-distribʳ-∸ d a (ad/n * b)) ⟩
@@ -325,16 +325,16 @@ nonZeroDivisor-lemma m (suc q) r r≢zero d =
 
 poset = ∣-poset
 {-# WARNING_ON_USAGE poset
-"Warning: poset was deprecated in v0.14.
+"Warning: poset was deprecated in v1.1.
 Please use ∣-poset instead."
 #-}
 *-cong = *-monoʳ-∣
 {-# WARNING_ON_USAGE *-cong
-"Warning: *-cong was deprecated in v0.14.
+"Warning: *-cong was deprecated in v1.1.
 Please use *-monoʳ-∣ instead."
 #-}
 /-cong = *-cancelˡ-∣
 {-# WARNING_ON_USAGE /-cong
-"Warning: /-cong was deprecated in v0.14.
+"Warning: /-cong was deprecated in v1.1.
 Please use *-cancelˡ-∣ instead."
 #-}
