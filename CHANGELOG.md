@@ -155,6 +155,9 @@ New modules
   Data.Vec.Bounded.Base
   Data.Vec.Bounded
 
+  Foreign.Haskell.Pair
+  Foreign.Haskell.Maybe
+
   Relation.Binary.Construct.Closure.Reflexive.Properties
   Relation.Binary.Construct.Closure.Reflexive.Properties.WithK
   Relation.Binary.Construct.Closure.Equivalence.Properties
