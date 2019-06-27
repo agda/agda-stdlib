@@ -13,15 +13,14 @@
 module Data.Fin.Base where
 
 open import Data.Empty using (⊥-elim)
-open import Data.Nat as ℕ
-  using (ℕ; zero; suc; z≤n; s≤s)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc; z≤n; s≤s)
+import Data.Nat.Properties as ℕₚ
 open import Function using (_∘_; _on_)
 open import Level using () renaming (zero to ℓ₀)
 open import Relation.Nullary using (yes; no)
-open import Relation.Nullary.Decidable using (True; toWitness)
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality
-  using (_≡_; _≢_; refl; cong)
+open import Relation.Nullary.Decidable.Core using (True; toWitness)
+open import Relation.Binary.Core
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≢_; refl; cong)
 
 ------------------------------------------------------------------------
 -- Types
@@ -64,9 +63,9 @@ fromℕ (suc n) = suc (fromℕ n)
 
 -- fromℕ≤ {m} _ = "m".
 
-fromℕ≤ : ∀ {m n} → m ℕ.< n → Fin n
-fromℕ≤ (s≤s z≤n)       = zero
-fromℕ≤ (s≤s (s≤s m≤n)) = suc (fromℕ≤ (s≤s m≤n))
+fromℕ≤ : ∀ {m n} → .(m ℕ.< n) → Fin n
+fromℕ≤ {zero}  {suc n} m≤n = zero
+fromℕ≤ {suc m} {suc n} m≤n = suc (fromℕ≤ (ℕₚ.≤-pred m≤n))
 
 -- fromℕ≤″ m _ = "m".
 
@@ -74,13 +73,6 @@ fromℕ≤″ : ∀ m {n} → m ℕ.<″ n → Fin n
 fromℕ≤″ zero    (ℕ.less-than-or-equal refl) = zero
 fromℕ≤″ (suc m) (ℕ.less-than-or-equal refl) =
   suc (fromℕ≤″ m (ℕ.less-than-or-equal refl))
-
--- # m = "m".
-
-infix 10 #_
-
-#_ : ∀ m {n} {m<n : True (suc m ℕ.≤? n)} → Fin n
-#_ _ {m<n = m<n} = fromℕ≤ (toWitness m<n)
 
 -- raise m "i" = "m + i".
 
@@ -112,9 +104,9 @@ inject₁ : ∀ {m} → Fin m → Fin (suc m)
 inject₁ zero    = zero
 inject₁ (suc i) = suc (inject₁ i)
 
-inject≤ : ∀ {m n} → Fin m → m ℕ.≤ n → Fin n
-inject≤ zero    (s≤s le) = zero
-inject≤ (suc i) (s≤s le) = suc (inject≤ i le)
+inject≤ : ∀ {m n} → Fin m → .(m ℕ.≤ n) → Fin n
+inject≤ {_} {suc n} zero    le = zero
+inject≤ {_} {suc n} (suc i) le = suc (inject≤ i (ℕₚ.≤-pred le))
 
 -- lower₁ "i" _ = "i".
 
@@ -239,9 +231,20 @@ compare zero    zero    = equal   zero
 compare zero    (suc j) = less    (suc j) zero
 compare (suc i) zero    = greater (suc i) zero
 compare (suc i) (suc j) with compare i j
-compare (suc .(inject least)) (suc .greatest) | less    greatest least =
-  less    (suc greatest) (suc least)
-compare (suc .greatest) (suc .(inject least)) | greater greatest least =
-  greater (suc greatest) (suc least)
-compare (suc .i)        (suc .i)              | equal i =
-  equal (suc i)
+... | less    greatest least = less    (suc greatest) (suc least)
+... | greater greatest least = greater (suc greatest) (suc least)
+... | equal   i              = equal   (suc i)
+
+------------------------------------------------------------------------
+-- Constants
+
+pattern 0F = zero
+pattern 1F = suc 0F
+pattern 2F = suc 1F
+pattern 3F = suc 2F
+pattern 4F = suc 3F
+pattern 5F = suc 4F
+pattern 6F = suc 5F
+pattern 7F = suc 6F
+pattern 8F = suc 7F
+pattern 9F = suc 8F

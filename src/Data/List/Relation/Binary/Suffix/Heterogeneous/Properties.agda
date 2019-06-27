@@ -134,8 +134,9 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
     where
     open ≤-Reasoning
     ds<cs : length ds < length cs
-    ds<cs = begin
-      suc (length ds)             ≤⟨ s≤s (n≤m+n (length bs) (length ds)) ⟩
+    ds<cs = begin-strict
+      length ds                   ≤⟨ m≤n+m (length ds) (length bs) ⟩
+      length bs + length ds       <⟨ ≤-refl ⟩
       suc (length bs + length ds) ≡⟨ sym $ Listₚ.length-++ (b ∷ bs) ⟩
       length (b ∷ bs ++ ds)       ≡⟨ sym $ Pointwise-length rs ⟩
       length cs                   ∎
@@ -155,11 +156,10 @@ module _ {a b c d r} {A : Set a} {B : Set b} {C : Set c} {D : Set d}
   map⁻ : ∀ {as bs} (f : A → C) (g : B → D) →
          Suffix R (List.map f as) (List.map g bs) →
          Suffix (λ a b → R (f a) (g b)) as bs
-  map⁻ {as} {b ∷ bs} f g (here rs) = here (Pw.map⁻ f g rs)
+  map⁻ {as} {b ∷ bs} f g (here rs)   = here (Pw.map⁻ f g rs)
   map⁻ {as} {b ∷ bs} f g (there suf) = there (map⁻ f g suf)
-  map⁻ {x ∷ as} {[]} f g suf with length-mono suf
-  ... | ()
-  map⁻ {[]} {[]} f g suf = here []
+  map⁻ {x ∷ as} {[]} f g suf         = contradiction (length-mono suf) λ()
+  map⁻ {[]}     {[]} f g suf         = here []
 
 ------------------------------------------------------------------------
 -- filter

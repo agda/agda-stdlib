@@ -13,5 +13,5 @@ open import Relation.Binary.PropositionalEquality.Core
 
 -- Axiom K implies UIP.
 
-uip : ∀ {a A} → UIP {a} A
+uip : ∀ {a} {A : Set a} → UIP A
 uip refl refl = refl

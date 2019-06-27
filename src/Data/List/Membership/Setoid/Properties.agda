@@ -12,17 +12,19 @@ open import Algebra.FunctionProperties using (Op₂; Selective)
 open import Data.Fin using (Fin; zero; suc)
 open import Data.List
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
+open import Data.List.Relation.Unary.All as All using (All)
 import Data.List.Relation.Unary.Any.Properties as Any
 import Data.List.Membership.Setoid as Membership
 import Data.List.Relation.Binary.Equality.Setoid as Equality
+import Data.List.Relation.Unary.Unique.Setoid as Unique
 open import Data.Nat using (suc; z≤n; s≤s; _≤_; _<_)
 open import Data.Nat.Properties using (≤-trans; n≤1+n)
 open import Data.Product as Prod using (∃; _×_; _,_ ; ∃₂)
 open import Data.Sum using (_⊎_; inj₁; inj₂)
 open import Function using (_$_; flip; _∘_; id)
-open import Relation.Binary hiding (Decidable)
+open import Relation.Binary as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
-open import Relation.Unary using (Decidable; Pred)
+open import Relation.Unary as U using (Decidable; Pred)
 open import Relation.Nullary using (¬_; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 open Setoid using (Carrier)
@@ -49,6 +51,29 @@ module _ {c ℓ} (S : Setoid c ℓ) where
 
   ∉-resp-≋ : ∀ {x} → (x ∉_) Respects _≋_
   ∉-resp-≋ xs≋ys v∉xs v∈ys = v∉xs (∈-resp-≋ (≋-sym xs≋ys) v∈ys)
+
+------------------------------------------------------------------------
+-- Irrelevance
+
+module _ {c ℓ} (S : Setoid c ℓ) where
+
+  open Setoid S
+  open Unique S
+  open Membership S
+
+  private
+    ∉×∈⇒≉ : ∀ {x y xs} → All (y ≉_) xs → x ∈ xs → x ≉ y
+    ∉×∈⇒≉ = All.lookupWith λ y≉z x≈z x≈y → y≉z (trans (sym x≈y) x≈z)
+
+  unique⇒irrelevant : B.Irrelevant _≈_ → ∀ {xs} → Unique xs → U.Irrelevant (_∈ xs)
+  unique⇒irrelevant ≈-irr _        (here p)  (here q)  =
+    P.cong here (≈-irr p q)
+  unique⇒irrelevant ≈-irr (_  ∷ u) (there p) (there q) =
+    P.cong there (unique⇒irrelevant ≈-irr u p q)
+  unique⇒irrelevant ≈-irr (≉s ∷ _) (here p)  (there q) =
+    contradiction p (∉×∈⇒≉ ≉s q)
+  unique⇒irrelevant ≈-irr (≉s ∷ _) (there p) (here q)  =
+    contradiction q (∉×∈⇒≉ ≉s p)
 
 ------------------------------------------------------------------------
 -- mapWith∈

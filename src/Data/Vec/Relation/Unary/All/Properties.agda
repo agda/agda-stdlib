@@ -13,16 +13,23 @@ open import Data.List.Relation.Unary.All as List using ([]; _∷_)
 open import Data.Product as Prod using (_×_; _,_; uncurry; uncurry′)
 open import Data.Vec as Vec
 open import Data.Vec.Relation.Unary.All as All using (All; []; _∷_)
+open import Level using (Level)
 open import Function using (_∘_; id)
 open import Function.Inverse using (_↔_; inverse)
 open import Relation.Unary using (Pred) renaming (_⊆_ to _⋐_)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; cong; cong₂; →-to-⟶)
 
+private
+  variable
+    a b p q : Level
+    A : Set a
+    B : Set b
+
 ------------------------------------------------------------------------
 -- map
 
-module _ {a b p} {A : Set a} {B : Set b} {P : Pred B p} {f : A → B} where
+module _ {P : Pred B p} {f : A → B} where
 
   map⁺ : ∀ {n} {xs : Vec A n} → All (P ∘ f) xs → All P (map f xs)
   map⁺ []         = []
@@ -34,8 +41,7 @@ module _ {a b p} {A : Set a} {B : Set b} {P : Pred B p} {f : A → B} where
 
 -- A variant of All.map
 
-module _ {a b p q} {A : Set a} {B : Set b} {f : A → B}
-         {P : Pred A p} {Q : Pred B q} where
+module _ {f : A → B} {P : Pred A p} {Q : Pred B q} where
 
   gmap : ∀ {n} → P ⋐ Q ∘ f → All P {n} ⋐ All Q {n} ∘ map f
   gmap g = map⁺ ∘ All.map g
@@ -43,7 +49,7 @@ module _ {a b p q} {A : Set a} {B : Set b} {f : A → B}
 ------------------------------------------------------------------------
 -- _++_
 
-module _ {a n p} {A : Set a} {P : Pred A p} where
+module _ {n} {P : Pred A p} where
 
   ++⁺ : ∀ {m} {xs : Vec A m} {ys : Vec A n} →
         All P xs → All P ys → All P (xs ++ ys)
@@ -84,7 +90,7 @@ module _ {a n p} {A : Set a} {P : Pred A p} where
 ------------------------------------------------------------------------
 -- concat
 
-module _ {a m p} {A : Set a} {P : Pred A p} where
+module _ {m} {P : Pred A p} where
 
   concat⁺ : ∀ {n} {xss : Vec (Vec A m) n} →
             All (All P) xss → All P (concat xss)
@@ -99,7 +105,7 @@ module _ {a m p} {A : Set a} {P : Pred A p} where
 ------------------------------------------------------------------------
 -- toList
 
-module _ {a p} {A : Set a} {P : A → Set p} where
+module _ {P : Pred A p} where
 
   toList⁺ : ∀ {n} {xs : Vec A n} → All P xs → List.All P (toList xs)
   toList⁺ []         = []
@@ -112,7 +118,7 @@ module _ {a p} {A : Set a} {P : A → Set p} where
 ------------------------------------------------------------------------
 -- fromList
 
-module _ {a p} {A : Set a} {P : A → Set p} where
+module _ {P : Pred A p} where
 
   fromList⁺ : ∀ {xs} → List.All P xs → All P (fromList xs)
   fromList⁺ []         = []

@@ -13,6 +13,7 @@ open import Data.Product
 open import Data.Sum
 open import Function
 open import Level
+open import Relation.Nullary using (¬_)
 import Relation.Binary.PropositionalEquality.Core as PropEq
 open import Relation.Binary.Consequences
 
@@ -69,6 +70,9 @@ record Setoid c ℓ : Set (suc (c ⊔ ℓ)) where
     Carrier       : Set c
     _≈_           : Rel Carrier ℓ
     isEquivalence : IsEquivalence _≈_
+
+  _≉_ : Rel Carrier _
+  x ≉ y = ¬ (x ≈ y)
 
   open IsEquivalence isEquivalence public
 

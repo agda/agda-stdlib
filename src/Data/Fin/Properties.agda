@@ -146,7 +146,7 @@ fromℕ≤≡fromℕ≤″ (s≤s (s≤s m<n)) (ℕ.less-than-or-equal refl) =
 
 toℕ-fromℕ≤″ : ∀ {m n} (m<n : m ℕ.<″ n) → toℕ (fromℕ≤″ m m<n) ≡ m
 toℕ-fromℕ≤″ {m} {n} m<n = begin
-  toℕ (fromℕ≤″ m m<n)  ≡⟨ cong toℕ (sym (fromℕ≤≡fromℕ≤″ _ m<n)) ⟩
+  toℕ (fromℕ≤″ m m<n)  ≡⟨ cong toℕ (sym (fromℕ≤≡fromℕ≤″ (ℕₚ.≤″⇒≤ m<n) m<n)) ⟩
   toℕ (fromℕ≤ _)       ≡⟨ toℕ-fromℕ≤ (ℕₚ.≤″⇒≤ m<n) ⟩
   m ∎
   where open ≡-Reasoning
@@ -364,14 +364,21 @@ lower₁-irrelevant {suc n} (suc i)  _   _ =
 ------------------------------------------------------------------------
 -- inject≤
 
-toℕ-inject≤ : ∀ {m n} (i : Fin m) (le : m ℕ≤ n) →
+toℕ-inject≤ : ∀ {m n} (i : Fin m) .(le : m ℕ≤ n) →
                 toℕ (inject≤ i le) ≡ toℕ i
-toℕ-inject≤ zero    (s≤s le) = refl
-toℕ-inject≤ (suc i) (s≤s le) = cong suc (toℕ-inject≤ i le)
+toℕ-inject≤ {_} {suc n} zero    _  = refl
+toℕ-inject≤ {_} {suc n} (suc i) le = cong suc (toℕ-inject≤ i (ℕ.≤-pred le))
 
-inject≤-refl : ∀ {n} (i : Fin n) (n≤n : n ℕ≤ n) → inject≤ i n≤n ≡ i
-inject≤-refl zero    (s≤s _  ) = refl
-inject≤-refl (suc i) (s≤s n≤n) = cong suc (inject≤-refl i n≤n)
+inject≤-refl : ∀ {n} (i : Fin n) .(n≤n : n ℕ≤ n) → inject≤ i n≤n ≡ i
+inject≤-refl {suc n} zero    _   = refl
+inject≤-refl {suc n} (suc i) n≤n = cong suc (inject≤-refl i (ℕ.≤-pred n≤n))
+
+inject≤-idempotent : ∀ {m n k} (i : Fin m)
+                     .(m≤n : m ℕ≤ n) .(n≤k : n ℕ≤ k) .(m≤k : m ℕ≤ k) →
+                     inject≤ (inject≤ i m≤n) n≤k ≡ inject≤ i m≤k
+inject≤-idempotent {_} {suc n} {suc k} zero    _ _ _ = refl
+inject≤-idempotent {_} {suc n} {suc k} (suc i) _ _ _ =
+  cong suc (inject≤-idempotent i _ _ _)
 
 ------------------------------------------------------------------------
 -- _≺_
@@ -472,14 +479,6 @@ punchOut-punchIn (suc i) {suc j} = cong suc (begin
   where open ≡-Reasoning
 
 ------------------------------------------------------------------------
--- _+′_
-
-infixl 6 _+′_
-
-_+′_ : ∀ {m n} (i : Fin m) (j : Fin n) → Fin (ℕ.pred m ℕ+ n)
-i +′ j = inject≤ (i + j) (ℕₚ.+-mono-≤ (toℕ≤pred[n] i) ℕₚ.≤-refl)
-
-------------------------------------------------------------------------
 -- Quantification
 
 ∀-cons : ∀ {n p} {P : Pred (Fin (suc n)) p} →
@@ -573,6 +572,8 @@ module _ {a} {A : Set a} where
   eq? : ∀ {n} → A ↣ Fin n → B.Decidable {A = A} _≡_
   eq? inj = Dec.via-injection inj _≟_
 
+
+
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
 ------------------------------------------------------------------------
@@ -659,4 +660,14 @@ Please use ≤-irrelevant instead."
 {-# WARNING_ON_USAGE <-irrelevance
 "Warning: <-irrelevance was deprecated in v1.0.
 Please use <-irrelevant instead."
+#-}
+
+-- Version 1.1
+
+infixl 6 _+′_
+_+′_ : ∀ {m n} (i : Fin m) (j : Fin n) → Fin (ℕ.pred m ℕ+ n)
+i +′ j = inject≤ (i + j) (ℕₚ.+-monoˡ-≤ _ (toℕ≤pred[n] i))
+{-# WARNING_ON_USAGE _+′_
+"Warning: _+′_ was deprecated in v1.1.
+Please use `raise` or `inject+` from `Data.Fin` instead."
 #-}

@@ -71,6 +71,19 @@ How to make changes
    ------------------------------------------------------------------------
    ```
 
+   If possible, each module should use the options `--safe` and `--without-K`. You
+   can achieve this by placing the following pragma under the header and before
+   any other line of code (including the module name):
+   ```
+   {-# OPTIONS --without-K --safe #-}
+   ```
+
+   If a module cannot be made safe or needs the `--with-K` option then it should be
+   split into a module which is compatible with these options and an auxiliary
+   one which will:
+   * Either be called `SOME/PATH/Unsafe.agda` or `SOME/PATH/WithK.agda`
+   * Or explicitly declared as either unsafe or needing K in `GenerateEverything.hs`
+
 ### Upload your changes
 
 8. Use the `git add X` command to add changes to file `X` to the commit,
@@ -94,8 +107,10 @@ How to make changes
 12. The library maintainers will then be made aware of your requested
         changes and should be in touch soon.
 
-Installing `fix-agda-whitespace`
---------------------------------
+How to enforce whitespace policies
+----------------------------------
+
+### Installing fix-agda-whitespace
 
 This tool is kept in the main agda repository. It can be installed by
 following these instructions:
@@ -105,3 +120,14 @@ following these instructions:
    cabal install
    ```
 
+### Adding fix-agda-whitespace as a pre-commit hook
+
+You can add the following code to the file `.git/hooks/pre-commit` to
+get git to run fix-agda-whitespace before each `git commit` and ensure
+you are never committing anything with a whitespace violation:
+
+   ```
+   #!/bin/sh
+
+   fix-agda-whitespace --check
+   ```

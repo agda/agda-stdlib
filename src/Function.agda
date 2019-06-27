@@ -49,6 +49,7 @@ infixl 8 _ˢ_
 infixl 0 _|>_
 infix  0 case_return_of_
 infixr -1 _$_ _$!_
+infix  -1 _$-
 
 -- Composition
 
@@ -99,6 +100,16 @@ f ˢ g = λ x → f x (g x)
 case_return_of_ : ∀ {A : Set a} (x : A) (B : A → Set b) →
                   ((x : A) → B x) → B x
 case x return B of f = f x
+
+-- Converting between implicit and explicit function spaces.
+
+_$- : ∀ {A : Set a}{B : A → Set b} →
+      ((x : A) → B x) → ({x : A} → B x)
+f $- = f _
+
+λ- : ∀ {A : Set a}{B : A → Set b} →
+       ({x : A} → B x) → ((x : A) → B x)
+λ- f = λ x → f
 
 ------------------------------------------------------------------------
 -- Non-dependent versions of dependent operations
