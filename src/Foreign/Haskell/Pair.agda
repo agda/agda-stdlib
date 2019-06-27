@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- The Pair type implemented by calling out to Haskell via the FFI
+-- The Pair type which calls out to Haskell via the FFI
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K #-}
@@ -20,11 +20,10 @@ private
 ------------------------------------------------------------------------
 -- Definition
 
-record Pair (A : Set a) (B : Set b) : Set (a ⊔ b) where
-  constructor _,_
-  field  fst : A
-         snd : B
-open Pair public
+abstract
+
+  Pair : Set a → Set b → Set (a ⊔ b)
+  Pair = _×_
 
 {-# FOREIGN GHC type AgdaPair l1 l2 a b = (a , b) #-}
 {-# COMPILE GHC Pair = data MAlonzo.Code.Foreign.Haskell.AgdaPair ((,)) #-}
@@ -32,8 +31,10 @@ open Pair public
 ------------------------------------------------------------------------
 -- Conversion
 
-toForeign : A × B → Pair A B
-toForeign (a , b) = (a , b)
+abstract
 
-fromForeign : Pair A B → A × B
-fromForeign (a , b) = (a , b)
+  toForeign : A × B → Pair A B
+  toForeign x = x
+
+  fromForeign : Pair A B → A × B
+  fromForeign x = x

@@ -42,6 +42,9 @@ New modules
   Data.Trie
   Data.Trie.NonEmpty
 
+  Foreign.Haskell.Pair
+  Foreign.Haskell.Maybe
+
   Relation.Binary.Construct.Closure.Equivalence.Properties
   Relation.Binary.Rewriting
   ```
