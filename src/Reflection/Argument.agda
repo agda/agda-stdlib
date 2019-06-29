@@ -18,10 +18,12 @@ import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Product using (_×-dec_)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
+open import Level
 
 private
   variable
-    A B : Set
+    a b : Level
+    A B : Set a
 
 ------------------------------------------------------------------------
 -- Re-exporting the builtins publically
@@ -41,8 +43,7 @@ pattern iArg ty = arg (arg-info instance′ relevant) ty
 map : (A → B) → Arg A → Arg B
 map f (arg i x) = arg i (f x)
 
--- TODO: make the following universe-polymorphic once agda/agda#3793 is merged.
-Args : (A : Set) → Set
+Args : {a : Level} (A : Set a) → Set a
 Args A = List (Arg A)
 
 map-Args : (A → B) → Args A → Args B
