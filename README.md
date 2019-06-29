@@ -17,7 +17,7 @@ You can browse the library source code in glorious clickable html
 ## Installation instructions
 
 See the instructions [here](https://github.com/agda/agda-stdlib/blob/master/notes/installation-guide.md)
-for how to install version 1.0.1 of the standard library.
+for how to install version 1.1 of the standard library.
 
 #### Old versions of Agda
 

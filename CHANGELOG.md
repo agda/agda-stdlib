@@ -1,7 +1,7 @@
-Version TODO
-============
+Version 1.1
+===========
 
-The library has been tested using Agda version 2.6.0.
+The library has been tested using Agda version 2.6.0.1.
 
 Changes since 1.0.1:
 

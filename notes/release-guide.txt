@@ -11,7 +11,7 @@ procedure should be followed:
 
 * Update `notes/installation-guide.txt`
 
-* Finish the CHANGELOG.
+* Update `CHANGELOG.md`.
 
 * Update the copyright year range in the LICENSE file, if necessary.
 
