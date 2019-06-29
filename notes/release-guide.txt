@@ -28,7 +28,7 @@ procedure should be followed:
 
 * Run the tests involving the library:
 
-    make lib-succeed
+    make test
 
 * Commit the changes and push
 
