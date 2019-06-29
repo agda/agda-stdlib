@@ -8,7 +8,8 @@
 
 open import Algebra
 
-module Algebra.Properties.CommutativeMonoid {g₁ g₂} (M : CommutativeMonoid g₁ g₂) where
+module Algebra.Properties.CommutativeMonoid
+  {g₁ g₂} (M : CommutativeMonoid g₁ g₂) where
 
 open import Algebra.Operations.CommutativeMonoid M
 open import Algebra.Solver.CommutativeMonoid M

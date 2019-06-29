@@ -5,6 +5,9 @@
 -- Data.List.Relation.Binary.Sublist.Heterogeneous.
 ------------------------------------------------------------------------
 
+-- This module should be removable if and when Agda issue
+-- https://github.com/agda/agda/issues/3210 is fixed
+
 {-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary using (REL)

@@ -9,7 +9,7 @@
 open import Algebra
 
 module Algebra.Properties.AbelianGroup
-         {g₁ g₂} (G : AbelianGroup g₁ g₂) where
+  {a ℓ} (G : AbelianGroup a ℓ) where
 
 open AbelianGroup G
 open import Function
@@ -24,27 +24,26 @@ open import Algebra.Properties.Group group public
 -- Properties of abelian groups
 
 private
-
-  lemma₁ : ∀ x y → x ∙ y ∙ x ⁻¹ ≈ y
-  lemma₁ x y = begin
-    x ∙ y ∙ x ⁻¹    ≈⟨ ∙-congʳ $ comm _ _ ⟩
-    y ∙ x ∙ x ⁻¹    ≈⟨ assoc _ _ _ ⟩
-    y ∙ (x ∙ x ⁻¹)  ≈⟨ ∙-congˡ $ inverseʳ _ ⟩
-    y ∙ ε           ≈⟨ identityʳ _ ⟩
-    y               ∎
-
   lemma₂ : ∀ x y → x ∙ (y ∙ (x ∙ y) ⁻¹ ∙ y ⁻¹) ≈ y ⁻¹
   lemma₂ x y = begin
     x ∙ (y ∙ (x ∙ y) ⁻¹ ∙ y ⁻¹)  ≈˘⟨ assoc _ _ _ ⟩
     x ∙ (y ∙ (x ∙ y) ⁻¹) ∙ y ⁻¹  ≈˘⟨ ∙-congʳ $ assoc _ _ _ ⟩
-    x ∙ y ∙ (x ∙ y) ⁻¹ ∙ y ⁻¹    ≈⟨ ∙-congʳ $ inverseʳ _ ⟩
-    ε ∙ y ⁻¹                     ≈⟨ identityˡ _ ⟩
+    x ∙ y ∙ (x ∙ y) ⁻¹ ∙ y ⁻¹    ≈⟨  ∙-congʳ $ inverseʳ _ ⟩
+    ε ∙ y ⁻¹                     ≈⟨  identityˡ _ ⟩
     y ⁻¹                         ∎
+
+xyx⁻¹≈y : ∀ x y → x ∙ y ∙ x ⁻¹ ≈ y
+xyx⁻¹≈y x y = begin
+  x ∙ y ∙ x ⁻¹    ≈⟨ ∙-congʳ $ comm _ _ ⟩
+  y ∙ x ∙ x ⁻¹    ≈⟨ assoc _ _ _ ⟩
+  y ∙ (x ∙ x ⁻¹)  ≈⟨ ∙-congˡ $ inverseʳ _ ⟩
+  y ∙ ε           ≈⟨ identityʳ _ ⟩
+  y               ∎
 
 ⁻¹-∙-comm : ∀ x y → x ⁻¹ ∙ y ⁻¹ ≈ (x ∙ y) ⁻¹
 ⁻¹-∙-comm x y = begin
-  x ⁻¹ ∙ y ⁻¹                         ≈⟨ comm _ _ ⟩
+  x ⁻¹ ∙ y ⁻¹                         ≈⟨  comm _ _ ⟩
   y ⁻¹ ∙ x ⁻¹                         ≈˘⟨ ∙-congʳ $ lemma₂ x y ⟩
-  x ∙ (y ∙ (x ∙ y) ⁻¹ ∙ y ⁻¹) ∙ x ⁻¹  ≈⟨ lemma₁ _ _ ⟩
-  y ∙ (x ∙ y) ⁻¹ ∙ y ⁻¹               ≈⟨ lemma₁ _ _ ⟩
+  x ∙ (y ∙ (x ∙ y) ⁻¹ ∙ y ⁻¹) ∙ x ⁻¹  ≈⟨  xyx⁻¹≈y x _ ⟩
+  y ∙ (x ∙ y) ⁻¹ ∙ y ⁻¹               ≈⟨  xyx⁻¹≈y y _ ⟩
   (x ∙ y) ⁻¹                          ∎

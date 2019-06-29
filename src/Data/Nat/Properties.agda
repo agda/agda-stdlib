@@ -921,6 +921,11 @@ m^n≡1⇒n≡0∨m≡1 m (suc n) eq = inj₂ (m*n≡1⇒m≡1 m (m ^ n) eq)
 ⊔-idem : Idempotent _⊔_
 ⊔-idem = sel⇒idem ⊔-sel
 
+⊔-least : ∀ {m n o} → m ≤ o → n ≤ o → m ⊔ n ≤ o
+⊔-least {m} {n} m≤o n≤o with ⊔-sel m n
+... | inj₁ m⊔n≡m rewrite m⊔n≡m = m≤o
+... | inj₂ m⊔n≡n rewrite m⊔n≡n = n≤o
+
 ------------------------------------------------------------------------
 -- Structures
 
@@ -1112,6 +1117,11 @@ m⊔n≤m+n m n with ⊔-sel m n
 ⊓-idem : Idempotent _⊓_
 ⊓-idem = sel⇒idem ⊓-sel
 
+⊓-greatest : ∀ {m n o} → m ≥ o → n ≥ o → m ⊓ n ≥ o
+⊓-greatest {m} {n} m≥o n≥o with ⊓-sel m n
+... | inj₁ m⊓n≡m rewrite m⊓n≡m = m≥o
+... | inj₂ m⊓n≡n rewrite m⊓n≡n = n≥o
+
 ⊓-distribʳ-⊔ : _⊓_ DistributesOverʳ _⊔_
 ⊓-distribʳ-⊔ (suc m) (suc n) (suc o) = cong suc $ ⊓-distribʳ-⊔ m n o
 ⊓-distribʳ-⊔ (suc m) (suc n) zero    = cong suc $ refl
@@ -1201,7 +1211,7 @@ m⊔n≤m+n m n with ⊔-sel m n
 ⊓-⊔-isDistributiveLattice : IsDistributiveLattice _⊓_ _⊔_
 ⊓-⊔-isDistributiveLattice = record
   { isLattice    = ⊓-⊔-isLattice
-  ; ∨-∧-distribʳ = ⊓-distribʳ-⊔
+  ; ∨-distribʳ-∧ = ⊓-distribʳ-⊔
   }
 
 ------------------------------------------------------------------------

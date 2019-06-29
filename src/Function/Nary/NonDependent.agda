@@ -25,7 +25,9 @@ open import Relation.Binary.PropositionalEquality
 
 private
   variable
-    r : Level
+    a b r : Level
+    A : Set a
+    B : Set b
 
 ------------------------------------------------------------------------
 -- Re-exporting the basic operations
@@ -50,15 +52,31 @@ lreplicate n ℓ = ltabulate n (const ℓ)
 
 module _ n {ls} {as : Sets n ls} {R : Set r} (f : as ⇉ R) where
 
+  private
+    g : Product n as → R
+    g = uncurryₙ n f
+
 -- Congruentₙ : ∀ n. ∀ a₁₁ a₁₂ ⋯ aₙ₁ aₙ₂ →
 --                   a₁₁ ≡ a₁₂ → ⋯ → aₙ₁ ≡ aₙ₂ →
 --                   f a₁₁ ⋯ aₙ₁ ≡ f a₁₂ ⋯ aₙ₂
 
   Congruentₙ : Set (r Level.⊔ ⨆ n ls)
-  Congruentₙ = ∀ {l r} → Equalₙ n l r ⇉ (uncurryₙ n f l ≡ uncurryₙ n f r)
+  Congruentₙ = ∀ {l r} → Equalₙ n l r ⇉ (g l ≡ g r)
 
   congₙ : Congruentₙ
-  congₙ = curryₙ n (cong (uncurryₙ n f) ∘′ fromEqualₙ n)
+  congₙ = curryₙ n (cong g ∘′ fromEqualₙ n)
+
+-- Congruence at a specific location
+
+module _ m n {ls ls'} {as : Sets m ls} {bs : Sets n ls'}
+         (f : as ⇉ (A → bs ⇉ B)) where
+
+  private
+    g : Product m as → A → Product n bs → B
+    g vs a ws = uncurryₙ n (uncurryₙ m f vs a) ws
+
+  congAt : ∀ {vs ws a₁ a₂} → a₁ ≡ a₂ → g vs a₁ ws ≡ g vs a₂ ws
+  congAt {vs} {ws} = cong (λ a → g vs a ws)
 
 ------------------------------------------------------------------------
 -- Injectivitiy
@@ -69,9 +87,12 @@ module _ n {ls} {as : Sets n ls} {R : Set r} (con : as ⇉ R) where
 --                   con a₁₁ ⋯ aₙ₁ ≡ con a₁₂ ⋯ aₙ₂ →
 --                   a₁₁ ≡ a₁₂ × ⋯ × aₙ₁ ≡ aₙ₂
 
-  Injectiveₙ : Set (r Level.⊔ ⨆ n ls)
-  Injectiveₙ = ∀ {l r} → uncurryₙ n con l ≡ uncurryₙ n con r → Product n (Equalₙ n l r)
+  private
+    c : Product n as → R
+    c = uncurryₙ n con
 
-  injectiveₙ : (∀ {l r} → uncurryₙ n con l ≡ uncurryₙ n con r → l ≡ r) →
-               Injectiveₙ
+  Injectiveₙ : Set (r Level.⊔ ⨆ n ls)
+  Injectiveₙ = ∀ {l r} → c l ≡ c r → Product n (Equalₙ n l r)
+
+  injectiveₙ : (∀ {l r} → c l ≡ c r → l ≡ r) → Injectiveₙ
   injectiveₙ con-inj eq = toEqualₙ n (con-inj eq)

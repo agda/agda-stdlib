@@ -34,14 +34,13 @@ import Relation.Nullary.Decidable as Dec
 -- Calculated via Euclid's algorithm. In order to show progress,
 -- avoiding the initial step where the first argument may increase, it
 -- is necessary to first define a version `gcd′` which assumes that the
--- first argument is strictly smaller than the second.
-
--- The full `gcd` function then compares the two arguments and applies
--- `gcd′` accordingly.
+-- first argument is strictly smaller than the second. The full `gcd`
+-- function then compares the two arguments and applies `gcd′`
+-- accordingly.
 
 gcd′ : ∀ m n → Acc _<_ m → n < m → ℕ
 gcd′ m zero        _         _   = m
-gcd′ m n@(suc n-1) (acc rec) n<m = gcd′ n (m % n) (rec _ n<m) (a%n<n m n-1)
+gcd′ m n@(suc n-1) (acc rec) n<m = gcd′ n (m % n) (rec _ n<m) (m%n<n m n-1)
 
 gcd : ℕ → ℕ → ℕ
 gcd m n with <-cmp m n
@@ -50,21 +49,21 @@ gcd m n with <-cmp m n
 ... | tri> _ _ n<m = gcd′ m n (<-wellFounded m) n<m
 
 ------------------------------------------------------------------------
--- Properties of gcd′
+-- Core properties of gcd′
 
 gcd′[m,n]∣m,n : ∀ {m n} rec n<m → gcd′ m n rec n<m ∣ m × gcd′ m n rec n<m ∣ n
 gcd′[m,n]∣m,n {m} {zero}  rec       n<m = ∣-refl , m ∣0
 gcd′[m,n]∣m,n {m} {suc n} (acc rec) n<m
-  with gcd′[m,n]∣m,n (rec _ n<m) (a%n<n m n)
+  with gcd′[m,n]∣m,n (rec _ n<m) (m%n<n m n)
 ... | gcd∣n , gcd∣m%n = ∣n∣m%n⇒∣m gcd∣n gcd∣m%n , gcd∣n
 
 gcd′-greatest : ∀ {m n c} rec n<m → c ∣ m → c ∣ n → c ∣ gcd′ m n rec n<m
 gcd′-greatest {m} {zero}  rec       n<m c∣m c∣n = c∣m
 gcd′-greatest {m} {suc n} (acc rec) n<m c∣m c∣n =
-  gcd′-greatest (rec _ n<m) (a%n<n m n) c∣n (%-presˡ-∣ c∣m c∣n)
+  gcd′-greatest (rec _ n<m) (m%n<n m n) c∣n (%-presˡ-∣ c∣m c∣n)
 
 ------------------------------------------------------------------------
--- Properties of gcd
+-- Core properties of gcd
 
 gcd[m,n]∣m : ∀ m n → gcd m n ∣ m
 gcd[m,n]∣m m n with <-cmp m n
@@ -84,14 +83,54 @@ gcd-greatest {m} {n} c∣m c∣n with <-cmp m n
 ... | tri≈ _ _ _   = c∣m
 ... | tri> _ _ m<n = gcd′-greatest _ _ c∣m c∣n
 
-gcd≢0 : ∀ m n → m ≢ 0 ⊎ n ≢ 0 → gcd m n ≢ 0
-gcd≢0 m n (inj₁ m≢0) eq = m≢0 (0∣⇒≡0 (subst (_∣ m) eq (gcd[m,n]∣m m n)))
-gcd≢0 m n (inj₂ n≢0) eq = n≢0 (0∣⇒≡0 (subst (_∣ n) eq (gcd[m,n]∣n m n)))
+------------------------------------------------------------------------
+-- Other properties
+
+-- Note that all other properties of `gcd` should be inferable from the
+-- 3 core properties above.
+
+gcd[0,0]≡0 : gcd 0 0 ≡ 0
+gcd[0,0]≡0 = ∣-antisym (gcd 0 0 ∣0) (gcd-greatest (0 ∣0) (0 ∣0))
+
+gcd[m,n]≢0 : ∀ m n → m ≢ 0 ⊎ n ≢ 0 → gcd m n ≢ 0
+gcd[m,n]≢0 m n (inj₁ m≢0) eq = m≢0 (0∣⇒≡0 (subst (_∣ m) eq (gcd[m,n]∣m m n)))
+gcd[m,n]≢0 m n (inj₂ n≢0) eq = n≢0 (0∣⇒≡0 (subst (_∣ n) eq (gcd[m,n]∣n m n)))
 
 gcd-comm : ∀ m n → gcd m n ≡ gcd n m
 gcd-comm m n = ∣-antisym
   (gcd-greatest (gcd[m,n]∣n m n) (gcd[m,n]∣m m n))
   (gcd-greatest (gcd[m,n]∣n n m) (gcd[m,n]∣m n m))
+
+gcd-universality : ∀ {m n g} →
+                   (∀ {d} → d ∣ m × d ∣ n → d ∣ g) →
+                   (∀ {d} → d ∣ g → d ∣ m × d ∣ n) →
+                   g ≡ gcd m n
+gcd-universality {m} {n} forwards backwards with backwards ∣-refl
+... | back₁ , back₂ = ∣-antisym
+  (gcd-greatest back₁ back₂)
+  (forwards (gcd[m,n]∣m m n , gcd[m,n]∣n m n))
+
+-- This could be simplified with some nice backwards/forwards reasoning
+-- after the new function hierarchy is up and running.
+gcd[cm,cn]/c≡gcd[m,n] : ∀ c m n {≢0} → (gcd (c * m) (c * n) / c) {≢0} ≡ gcd m n
+gcd[cm,cn]/c≡gcd[m,n] c@(suc c-1) m n = gcd-universality forwards backwards
+  where
+  forwards : ∀ {d : ℕ} → d ∣ m × d ∣ n → d ∣ gcd (c * m) (c * n) / c
+  forwards {d} (d∣m , d∣n) = m*n∣o⇒n∣o/m c d (gcd-greatest (*-monoʳ-∣ c d∣m) (*-monoʳ-∣ c d∣n))
+
+  backwards : ∀ {d : ℕ} → d ∣ gcd (c * m) (c * n) / c → d ∣ m × d ∣ n
+  backwards {d} d∣gcd[cm,cn]/c with m∣n/o⇒o*m∣n (gcd-greatest (m∣m*n m) (m∣m*n n)) d∣gcd[cm,cn]/c
+  ... | cd∣gcd[cm,n] =
+    *-cancelˡ-∣ c-1 (∣-trans cd∣gcd[cm,n] (gcd[m,n]∣m (c * m) _)) ,
+    *-cancelˡ-∣ c-1 (∣-trans cd∣gcd[cm,n] (gcd[m,n]∣n (c * m) _))
+
+c*gcd[m,n]≡gcd[cm,cn] : ∀ c m n → c * gcd m n ≡ gcd (c * m) (c * n)
+c*gcd[m,n]≡gcd[cm,cn] zero        m n = P.sym gcd[0,0]≡0
+c*gcd[m,n]≡gcd[cm,cn] c@(suc c-1) m n = begin
+  c * gcd m n                   ≡⟨ cong (c *_) (P.sym (gcd[cm,cn]/c≡gcd[m,n] c m n)) ⟩
+  c * (gcd (c * m) (c * n) / c) ≡⟨ m*[n/m]≡n (gcd-greatest (m∣m*n m) (m∣m*n n)) ⟩
+  gcd (c * m) (c * n)           ∎
+  where open P.≡-Reasoning
 
 ------------------------------------------------------------------------
 -- A formal specification of GCD
@@ -149,13 +188,14 @@ open GCD public using (GCD) hiding (module GCD)
 -- The function gcd fulfils the conditions required of GCD
 
 gcd-GCD : ∀ m n → GCD m n (gcd m n)
-gcd-GCD m n = GCD.is
-  (gcd[m,n]∣m m n , gcd[m,n]∣n m n)
-  λ {d} → uncurry′ (gcd-greatest {m} {n} {d})
+gcd-GCD m n = record
+  { commonDivisor = gcd[m,n]∣m m n , gcd[m,n]∣n m n
+  ; greatest      = uncurry′ gcd-greatest
+  }
 
 -- Calculates the gcd of the arguments.
 
-mkGCD : (m n : ℕ) → ∃ λ d → GCD m n d
+mkGCD : ∀ m n → ∃ λ d → GCD m n d
 mkGCD m n = gcd m n , gcd-GCD m n
 
 -- gcd as a proposition is decidable

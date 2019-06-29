@@ -51,7 +51,7 @@ lower-extensionality a₂ b₂ ext f≡g = cong (λ h → Level.lower ∘ h ∘ 
                    (∀ x → B₁ x ≡ B₂ x) →
                    (∀ x → B₁ x) ≡ (∀ x → B₂ x)
 ∀-extensionality ext B₁ B₂ B₁≡B₂ with ext B₁≡B₂
-∀-extensionality ext B .B  B₁≡B₂ | refl = refl
+... | refl = refl
 
 -- Extensionality for explicit function spaces implies extensionality
 -- for implicit function spaces.

@@ -1,8 +1,12 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Equality over lists using propositional equality
+-- Pointwise equality over lists using propositional equality
 ------------------------------------------------------------------------
+
+-- Note think carefully about using this module as pointwise
+-- propositional equality can usually be replaced with propositional
+-- equality.
 
 {-# OPTIONS --without-K --safe #-}
 
@@ -15,7 +19,7 @@ import Data.List.Relation.Binary.Equality.Setoid as SetoidEquality
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
 ------------------------------------------------------------------------
--- Publically re-export everything from setoid equality
+-- Re-export everything from setoid equality
 
 open SetoidEquality (P.setoid A) public
 
