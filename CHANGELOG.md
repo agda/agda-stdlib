@@ -258,8 +258,8 @@ automated warnings will be attached to these modules to discourage their use.
   modules to find in the library. Therefore the module `Induction.Nat` has been
   split into two new modules: `Data.Nat.Induction` and `Data.Fin.Induction`.
   This should improve findability and better matches the design of the rest of
-  the library. The new modules also re-export `Acc` and `acc` meaning that users no
-  longer need to import `Data.Induction.WellFounded` as well.
+  the library. The new modules also publicly re-export `Acc` and `acc`, meaning
+  that users no longer need to import `Data.Induction.WellFounded` as well.
 
 * The module `Record` has been moved to `Data.Record`.
 
@@ -348,7 +348,7 @@ attached to all deprecated names to discourage their use.
   map-repeat-commute  ↦  map-repeat
   ```
 
-* In `Data.Bool` (new names in `Data.Bool.Properties`):
+* In `Data.Bool` (with the new name in `Data.Bool.Properties`):
   ```agda
   decSetoid   ↦  ≡-decSetoid
   ```
@@ -405,7 +405,7 @@ attached to all deprecated names to discourage their use.
   Note that in the case of the last three proofs, the order of the
   arguments will need to be swapped.
 
-* In `Data.Unit` (new names in `Data.Unit.Properties`):
+* In `Data.Unit` (with the new names in `Data.Unit.Properties`):
   ```agda
   setoid        ↦ ≡-setoid
   decSetoid     ↦ ≡-decSetoid
@@ -427,12 +427,10 @@ attached to all deprecated names to discourage their use.
   returnTC ↦ return
   ```
 
-* Renamed functions in `Data.Char.Base` and the corresponding property
-  in `Data.Char.Properties`:
+* Renamed functions in `Data.Char.Base`:
   ```agda
   fromNat         ↦ fromℕ
   toNat           ↦ toℕ
-  toNat-injective ↦ toℕ-injective
   ```
 
 * In `Data.(Char/String).Properties`:
@@ -440,6 +438,7 @@ attached to all deprecated names to discourage their use.
   setoid           ↦ ≡-setoid
   decSetoid        ↦ ≡-decSetoid
   strictTotalOrder ↦ <-strictTotalOrder-≈
+  toNat-injective  ↦ toℕ-injective
   ```
 
 * In `Data.Vec.Properties`:
@@ -448,9 +447,10 @@ attached to all deprecated names to discourage their use.
   lookup-++-+′      ↦ lookup-++ʳ
   ```
 
-* In `Data.Product.Relation.Binary.Pointwise.NonDependent`:
+* In `Data.Product.Relation.Binary.Pointwise.NonDependent` (with the
+  new name in `Data.Product.Properties`).:
   ```agda
-  ≡?×≡?⇒≡? ↦ Data.Product.Properties.≡-dec
+  ≡?×≡?⇒≡? ↦ ≡-dec
   ```
 
 Other minor additions
@@ -458,20 +458,20 @@ Other minor additions
 
 * Added new proofs in Data.Fin.Substitution.Lemmas:
   ```agda
-  weaken-↑    : weaken t / (ρ ↑) ≡ weaken (t / ρ)
-  wk-⊙-∷      : wk ⊙ (t ∷ ρ) ≡ ρ
+  weaken-↑    : weaken t / (ρ ↑)     ≡ weaken (t / ρ)
   weaken-∷    : weaken t₁ / (t₂ ∷ ρ) ≡ t₁ / ρ
-  weaken-sub  : weaken t₁ / sub t₂ ≡ t₁
+  weaken-sub  : weaken t₁ / sub t₂   ≡ t₁
+  wk-⊙-∷      : wk ⊙ (t ∷ ρ)         ≡ ρ
   ```
 
 * Added new record to `Algebra`:
   ```agda
-  record SelectiveMagma c ℓ : Set (suc (c ⊔ ℓ))
+  SelectiveMagma c ℓ : Set (suc (c ⊔ ℓ))
   ```
 
 * Added new record to `Algebra.Structure`:
   ```agda
-  record IsSelectiveMagma (∙ : Op₂ A) : Set (a ⊔ ℓ)
+  IsSelectiveMagma (∙ : Op₂ A) : Set (a ⊔ ℓ)
   ```
 
 * Added new proof to `Algebra.Properties.AbelianGroup`:
@@ -520,25 +520,25 @@ Other minor additions
 
 * Added new proofs to `Data.Bool.Properties`:
   ```agda
-  ≡-setoid          : Setoid 0ℓ 0ℓ
+  ≡-setoid               : Setoid 0ℓ 0ℓ
 
-  ≤-reflexive       : _≡_ ⇒ _≤_
-  ≤-refl            : Reflexive _≤_
-  ≤-antisym         : Antisymmetric _≡_ _≤_
-  ≤-trans           : Transitive _≤_
-  ≤-total           : Total _≤_
-  _≤?_              : Decidable _≤_
-  ≤-minimum         : Minimum _≤_ false
-  ≤-maximum         : Maximum _≤_ true
-  ≤-irrelevant      : B.Irrelevant _≤_
-  ≤-isPreorder      : IsPreorder _≡_ _≤_
-  ≤-isPartialOrder  : IsPartialOrder _≡_ _≤_
-  ≤-isTotalOrder    : IsTotalOrder _≡_ _≤_
-  ≤-isDecTotalOrder : IsDecTotalOrder _≡_ _≤_
-  ≤-poset           : Poset 0ℓ 0ℓ 0ℓ
-  ≤-preorder        : Preorder 0ℓ 0ℓ 0ℓ
-  ≤-totalOrder      : TotalOrder 0ℓ 0ℓ 0ℓ
-  ≤-decTotalOrder   : DecTotalOrder 0ℓ 0ℓ 0ℓ
+  ≤-reflexive            : _≡_ ⇒ _≤_
+  ≤-refl                 : Reflexive _≤_
+  ≤-antisym              : Antisymmetric _≡_ _≤_
+  ≤-trans                : Transitive _≤_
+  ≤-total                : Total _≤_
+  _≤?_                   : Decidable _≤_
+  ≤-minimum              : Minimum _≤_ false
+  ≤-maximum              : Maximum _≤_ true
+  ≤-irrelevant           : B.Irrelevant _≤_
+  ≤-isPreorder           : IsPreorder      _≡_ _≤_
+  ≤-isPartialOrder       : IsPartialOrder  _≡_ _≤_
+  ≤-isTotalOrder         : IsTotalOrder    _≡_ _≤_
+  ≤-isDecTotalOrder      : IsDecTotalOrder _≡_ _≤_
+  ≤-poset                : Poset         0ℓ 0ℓ 0ℓ
+  ≤-preorder             : Preorder      0ℓ 0ℓ 0ℓ
+  ≤-totalOrder           : TotalOrder    0ℓ 0ℓ 0ℓ
+  ≤-decTotalOrder        : DecTotalOrder 0ℓ 0ℓ 0ℓ
 
   <-irrefl               : Irreflexive _≡_ _<_
   <-asym                 : Asymmetric _<_
@@ -550,9 +550,9 @@ Other minor additions
   <-resp₂-≡              : _<_ Respects₂ _≡_
   <-irrelevant           : B.Irrelevant _<_
   <-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
-  <-isStrictTotalOrder   : IsStrictTotalOrder _≡_ _<_
+  <-isStrictTotalOrder   : IsStrictTotalOrder   _≡_ _<_
   <-strictPartialOrder   : StrictPartialOrder 0ℓ 0ℓ 0ℓ
-  <-strictTotalOrder     : StrictTotalOrder 0ℓ 0ℓ 0ℓ
+  <-strictTotalOrder     : StrictTotalOrder   0ℓ 0ℓ 0ℓ
   ```
 
 * Added new definitions to `Data.Char.Base`:
@@ -610,26 +610,26 @@ Other minor additions
 
 * Added new proofs to `Data.Integer.Properties`:
   ```agda
-  ≡-setoid       : Setoid 0ℓ 0ℓ
-  ≤-totalOrder   : TotalOrder 0ℓ 0ℓ 0ℓ
-  _<?_           : Decidable _<_
+  ≡-setoid            : Setoid 0ℓ 0ℓ
+  ≤-totalOrder        : TotalOrder 0ℓ 0ℓ 0ℓ
+  _<?_                : Decidable _<_
 
-  +[1+-injective : +[1+ m ] ≡ +[1+ n ] → m ≡ n
-  drop‿+<+       : + m < + n → m ℕ.< n
-  drop‿-<-       : -[1+ m ] < -[1+ n ] → n ℕ.< m
+  +[1+-injective      : +[1+ m ] ≡ +[1+ n ] → m ≡ n
+  drop‿+<+            : + m < + n → m ℕ.< n
+  drop‿-<-            : -[1+ m ] < -[1+ n ] → n ℕ.< m
 
-  -◃<+◃          : 0 < m → Sign.- ◃ m < Sign.+ ◃ n
-  +◃≮-           : Sign.+ ◃ m ≮ -[1+ n ]
-  +◃-mono-<      : m ℕ.< n → Sign.+ ◃ m < Sign.+ ◃ n
-  +◃-cancel-<    : Sign.+ ◃ m < Sign.+ ◃ n → m ℕ.< n
-  neg◃-cancel-<  : Sign.- ◃ m < Sign.- ◃ n → n ℕ.< m
+  -◃<+◃               : 0 < m → Sign.- ◃ m < Sign.+ ◃ n
+  +◃≮-                : Sign.+ ◃ m ≮ -[1+ n ]
+  +◃-mono-<           : m ℕ.< n → Sign.+ ◃ m < Sign.+ ◃ n
+  +◃-cancel-<         : Sign.+ ◃ m < Sign.+ ◃ n → m ℕ.< n
+  neg◃-cancel-<       : Sign.- ◃ m < Sign.- ◃ n → n ℕ.< m
 
-  m⊖n≤m          : m ⊖ n ≤ + m
-  m⊖n<1+m        : m ⊖ n < +[1+ m ]
-  m⊖1+n<m        : m ⊖ suc n < + m
-  -[1+m]≤n⊖m+1   : -[1+ m ] ≤ n ⊖ suc m
-  ⊖-monoʳ->-<    : (p ⊖_) Preserves ℕ._>_ ⟶ _<_
-  ⊖-monoˡ-<      : (_⊖ p) Preserves ℕ._<_ ⟶ _<_
+  m⊖n≤m               : m ⊖ n ≤ + m
+  m⊖n<1+m             : m ⊖ n < +[1+ m ]
+  m⊖1+n<m             : m ⊖ suc n < + m
+  -[1+m]≤n⊖m+1        : -[1+ m ] ≤ n ⊖ suc m
+  ⊖-monoʳ->-<         : (p ⊖_) Preserves ℕ._>_ ⟶ _<_
+  ⊖-monoˡ-<           : (_⊖ p) Preserves ℕ._<_ ⟶ _<_
 
   *-distrib-+         : _*_ DistributesOver _+_
   *-monoˡ-<-pos       : (+[1+ n ] *_) Preserves _<_ ⟶ _<_
@@ -732,22 +732,22 @@ Other minor additions
   m<[1+n%d]⇒m≤[n%d]   : m < suc n % d → m ≤ n % d
   [1+m%d]≤1+n⇒[m%d]≤n : 0 < suc m % d → suc m % d ≤ suc n → m % d ≤ n
 
-  0/n≡0           : 0 / n ≡ 0
-  n/1≡n           : n / 1 ≡ n
-  n/n≡1           : n / n ≡ 1
-  m*n/n≡m         : m * n / n ≡ m
-  m/n*n≡m         : n ∣ m → m / n * n ≡ m
-  m*[n/m]≡n       : m ∣ n → m * (n / m) ≡ n
-  m/n*n≤m         : m / n * n ≤ m
-  m/n<m           : m ≥ 1 → n ≥ 2 → m / n < m
-  *-/-assoc       : d ∣ n → (m * n) / d ≡ m * (n / d)
-  +-distrib-/     : m % d + n % d < d → (m + n) / d ≡ m / d + n / d
-  +-distrib-/-∣ˡ  : d ∣ m → (m + n) / d ≡ m / d + n / d
-  +-distrib-/-∣ʳ  : d ∣ n → (m + n) / d ≡ m / d + n / d
+  0/n≡0               : 0 / n ≡ 0
+  n/1≡n               : n / 1 ≡ n
+  n/n≡1               : n / n ≡ 1
+  m*n/n≡m             : m * n / n ≡ m
+  m/n*n≡m             : n ∣ m → m / n * n ≡ m
+  m*[n/m]≡n           : m ∣ n → m * (n / m) ≡ n
+  m/n*n≤m             : m / n * n ≤ m
+  m/n<m               : m ≥ 1 → n ≥ 2 → m / n < m
+  *-/-assoc           : d ∣ n → (m * n) / d ≡ m * (n / d)
+  +-distrib-/         : m % d + n % d < d → (m + n) / d ≡ m / d + n / d
+  +-distrib-/-∣ˡ      : d ∣ m → (m + n) / d ≡ m / d + n / d
+  +-distrib-/-∣ʳ      : d ∣ n → (m + n) / d ≡ m / d + n / d
   ```
   Additionally the `{≢0 : False (divisor ℕ.≟ 0)}` argument to all the
-  division and modulus functions has been marked irrelevant. This means
-  that the operations `_%_`, `_/_` etc. can now be used with `cong`.
+  division and modulus functions has been marked irrelevant. One useful consequence
+  of this is that the operations `_%_`, `_/_` etc. can now be used with `cong`.
 
 * Added new proofs to `Data.Nat.GCD`:
   ```agda
@@ -995,8 +995,7 @@ Other minor additions
   dec⟶recomputable : Decidable R → Recomputable R
   ```
 
-* Added new alias definitions for `Algebra.IdempotentCommutativeMonoid`
-  and `Algebra.Structures.IsIdempotentCommutativeMonoid`:
+* Added new aliases for `IdempotentCommutativeMonoid` in `Algebra`:
   ```agda
   BoundedLattice   = IdempotentCommutativeMonoid
   IsBoundedLattice = IsIdempotentCommutativeMonoid
