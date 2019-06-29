@@ -35,7 +35,7 @@ applicative = record
 ------------------------------------------------------------------------
 -- Get access to other monadic functions
 
-module _ {f F} (App : RawApplicative {f} F) where
+module TraversableA {f F} (App : RawApplicative {f} F) where
 
   open RawApplicative App
 
@@ -49,18 +49,16 @@ module _ {f F} (App : RawApplicative {f} F) where
   forA : ∀ {a} {A : Set a} {B n} → Vec A n → (A → F B) → F (Vec B n)
   forA = flip mapA
 
-module _ {m M} (Mon : RawMonad {m} M) where
+module TraversableM {m M} (Mon : RawMonad {m} M) where
 
-  private App = RawMonad.rawIApplicative Mon
+  open RawMonad Mon
 
-  sequenceM : ∀ {A n} → Vec (M A) n → M (Vec A n)
-  sequenceM = sequenceA App
-
-  mapM : ∀ {a} {A : Set a} {B n} → (A → M B) → Vec A n → M (Vec B n)
-  mapM = mapA App
-
-  forM : ∀ {a} {A : Set a} {B n} → Vec A n → (A → M B) → M (Vec B n)
-  forM = forA App
+  open TraversableA rawIApplicative public
+    renaming
+    ( sequenceA to sequenceM
+    ; mapA      to mapM
+    ; forA      to forM
+    )
 
 ------------------------------------------------------------------------
 -- Other

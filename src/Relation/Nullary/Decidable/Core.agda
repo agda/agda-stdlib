@@ -14,8 +14,11 @@ module Relation.Nullary.Decidable.Core where
 open import Level using (Level; Lift)
 open import Data.Bool.Base using (Bool; false; true; not; T)
 open import Data.Unit.Base using (⊤)
+open import Data.Empty
+open import Data.Product
 open import Function
 
+open import Agda.Builtin.Equality
 open import Relation.Nullary
 
 private
@@ -79,3 +82,18 @@ module _ {p} {P : Set p} where
   from-no : (p : Dec P) → From-no p
   from-no (no ¬p) = ¬p
   from-no (yes _) = _
+
+------------------------------------------------------------------------
+-- Result of decidability
+
+dec-yes : (p? : Dec P) → P → ∃ λ p′ → p? ≡ yes p′
+dec-yes (yes p′) p = p′ , refl
+dec-yes (no ¬p) p = ⊥-elim (¬p p)
+
+dec-no : (p? : Dec P) → ¬ P → ∃ λ ¬p′ → p? ≡ no ¬p′
+dec-no (yes p) ¬p  = ¬p , ⊥-elim (¬p p)
+dec-no (no ¬p′) ¬p = ¬p′ , refl
+
+dec-yes-irr : (p? : Dec P) → Irrelevant P → (p : P) → p? ≡ yes p
+dec-yes-irr p? irr p with dec-yes p? p
+... | p′ , eq rewrite irr p p′ = eq

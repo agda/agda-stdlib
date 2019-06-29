@@ -34,6 +34,8 @@ unsafeModules = map modToFile
   , "Codata.Musical.Stream"
   , "Debug.Trace"
   , "Foreign.Haskell"
+  , "Foreign.Haskell.Maybe"
+  , "Foreign.Haskell.Pair"
   , "IO"
   , "IO.Primitive"
   , "Relation.Binary.PropositionalEquality.TrustMe"
