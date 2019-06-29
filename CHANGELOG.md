@@ -11,7 +11,7 @@ Highlights
 * Large increases in performance for `Nat`, `Integer` and `Rational` datatypes,
   particularly in compiled code.
 
-* Generic n-ary programming (projₙ, congₙ, substₙ etc.)
+* Generic n-ary programming (`projₙ`, `congₙ`, `substₙ` etc.)
 
 * General argmin/argmax/min/max over `List`.
 
@@ -47,7 +47,7 @@ Bug-fixes
 * `Data.Rational` previously accidently exported queries from `Data.Nat.Base`
   instead of `Data.Rational.Base`. This has now been fixed.
 
-#### Fixed name in `Data.Nat.Properties`
+#### Fixed inaccurate name in `Data.Nat.Properties`
 
 * The proof `m+n∸m≡n` in `Data.Nat.Properties` was incorrectly named as
   it proved `m + (n ∸ m) ≡ n` rather than `m + n ∸ m ≡ n`. It has
@@ -60,16 +60,16 @@ Bug-fixes
   was previously set such that when it was inherited by the records `Ring`,
   `CommutativeRing` etc. it had the same predence as `_*_` rather than `_+_`.
   This lead to `x - x * x` being ambigous instead of being parsed as `x - (x * x)`.
-  To fix this the precedence of `_-_` has been reduced from 7 to 6.
+  To fix this, the precedence of `_-_` has been reduced from 7 to 6.
 
 #### Fixed operator precedents in `Reasoning` modules
 
 * The infix precedence of the generic order reasoning combinators (`_∼⟨_⟩_`,
-  `_≈⟨_⟩_`, etc.) in `Relation.Binary.Reasoning.Base.{Double,Triple}` were
-  lowered when implementing new style reasoning (issue #185).  This lead to
-  inconsistencies in modules that add custom combinators (e.g. `StarReasoning`
-  from `Relation.Binary.Construct.Closure.ReflexiveTransitive.Properties`)
-  using the original fixity.  The old fixity has been restored now.
+  `_≈⟨_⟩_`, etc.) in `Relation.Binary.Reasoning.Base.Double/Triple` were
+  accidentally lowered when implementing new style reasoning in `v1.0`.
+  This lead to inconsistencies in modules that add custom combinators (e.g.
+  `StarReasoning` from `Relation.Binary.Construct.Closure.ReflexiveTransitive.Properties`)
+  using the original fixity.  The old fixity has now been restored.
 
 Other non-backwards compatible changes
 --------------------------------------
@@ -77,20 +77,19 @@ Other non-backwards compatible changes
 #### Improved performance of arithmetic decision procedures & operations
 
 * The functions `_≤?_` and `<-cmp` in `Data.Nat.Properties` have been
-  reimplemented so that, when compiled or when the generated proof is
-  unused, now uses only built-in primitives. This should result in a
-  significant performance increase.
+  reimplemented uses only built-in primitives. Consequently this should
+  result in a significant performance increase when these functions are
+  compiled or when the generated proof is ignored.
 
 * The function `show` in `Data.Nat.Show` has been reimplemented and,
   when compiled, now runs in time `O(log₁₀(n))` rather than `O(n)`.
 
 * The functions `gcd` and `lcm` in `Data.Nat.GCD` and `Data.Nat.LCM`
   have been reimplemented via the built-ins `_/_` and `mod` so that
-  they run much faster when compiled. The new functions now have type
-  `ℕ → ℕ → ℕ` instead of the old functions of type
-  `(m n : ℕ) → ∃ λ d → GCD/LCM m n d`. The old functions have been renamed
-  `mkGCD`/`mkLCM`. The alternative `gcd′` in `Data.Nat.Coprimality` has
-  been deprecated.
+  they run much faster when compiled and normalised. Their types have also
+  been changed to `ℕ → ℕ → ℕ` instead of `(m n : ℕ) → ∃ λ d → GCD/LCM m n d`.
+  The old functions still exist and have been renamed `mkGCD`/`mkLCM`.
+  The alternative `gcd′` in `Data.Nat.Coprimality` has been deprecated.
 
 * As a consequence of the above, the performance of all decidability procedures
   in `Data.Integer` and `Data.Rational` should also have improved. Normalisation
@@ -105,20 +104,21 @@ Other non-backwards compatible changes
 
 #### Consistent field names in `IsDistributiveLattice`
 
-* The module `IsDistributiveLattice` in `Algebra.Structures` has had its field
-  renamed from `∨-∧-distribʳ` to `∨-distribʳ-∧` in order to match the conventions
-  found elsewhere in the library. To maximise backwards compatability the record
-  still exports the name `∨-∧-distribʳ` but it has been deprecated.
+* In order to match the conventions found elsewhere in the library, the module
+  `IsDistributiveLattice` in `Algebra.Structures` has had its field renamed
+  from `∨-∧-distribʳ` to `∨-distribʳ-∧` . To maximise backwards compatability,
+  the record still exports `∨-∧-distribʳ` but the name is deprecated.
 
 #### Making categorical traversal functions easier to use
 
-* At the moment the functions `sequenceA`, `mapA`, `forA`, `sequenceM`,
-  `mapM` and `forM` in the `Data.X.Categorical` modules all require the
-  `Applicative`/`Monad` to be passed each time they're used. To avoid this they
-  have now been placed in parameterised, modules named `TraversableA` and
+* Previously the functions `sequenceA`, `mapA`, `forA`, `sequenceM`,
+  `mapM` and `forM` in the `Data.X.Categorical` modules required the
+  `Applicative`/`Monad` to be passed each time they were used. To avoid this
+  they have now been placed in parameterised modules named `TraversableA` and
   `TraversableM`. To recover the old behaviour simply write `open TraversableA`.
-  However the applicative may avoid being passed by writing `open TraversableA app`.
-  The change has occured in the following modules:
+  However you may now, for example, avoid passing the applicative every time
+  by writing `open TraversableA app`. The change has occured in the following
+  modules:
   ```adga
   Data.Maybe.Categorical
   Data.List.Categorical
@@ -161,7 +161,7 @@ The following new modules have been added to the library:
   Data.List.Extrema
   Data.List.Extrema.Nat
   Data.List.Extrema.Core
- ```
+  ```
 
 * Additional properties of membership with the `--with-k` option enabled.
   ```
@@ -336,7 +336,7 @@ attached to all deprecated names to discourage their use.
   ```
 
 * In `Relation.Binary.Core`:
-  ```agdas
+  ```agda
   Conn  ↦  Connex
   ```
 

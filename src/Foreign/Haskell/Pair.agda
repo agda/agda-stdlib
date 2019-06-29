@@ -20,10 +20,11 @@ private
 ------------------------------------------------------------------------
 -- Definition
 
-abstract
-
-  Pair : Set a → Set b → Set (a ⊔ b)
-  Pair = _×_
+record Pair (A : Set a) (B : Set b) : Set (a ⊔ b) where
+  constructor _,_
+  field  fst : A
+         snd : B
+open Pair public
 
 {-# FOREIGN GHC type AgdaPair l1 l2 a b = (a , b) #-}
 {-# COMPILE GHC Pair = data MAlonzo.Code.Foreign.Haskell.AgdaPair ((,)) #-}
@@ -31,10 +32,8 @@ abstract
 ------------------------------------------------------------------------
 -- Conversion
 
-abstract
+toForeign : A × B → Pair A B
+toForeign (a , b) = (a , b)
 
-  toForeign : A × B → Pair A B
-  toForeign x = x
-
-  fromForeign : Pair A B → A × B
-  fromForeign x = x
+fromForeign : Pair A B → A × B
+fromForeign (a , b) = (a , b)
