@@ -2,33 +2,37 @@
 <html><head><meta charset="utf-8"><title>Data.List.Relation.Binary.Equality.DecPropositional</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
 <a id="74" class="Comment">-- The Agda standard library</a>
 <a id="103" class="Comment">--</a>
-<a id="106" class="Comment">-- Decidable equality over lists using propositional equality</a>
-<a id="168" class="Comment">------------------------------------------------------------------------</a>
+<a id="106" class="Comment">-- Decidable pointwise equality over lists using propositional equality</a>
+<a id="178" class="Comment">------------------------------------------------------------------------</a>
 
-<a id="242" class="Symbol">{-#</a> <a id="246" class="Keyword">OPTIONS</a> <a id="254" class="Pragma">--without-K</a> <a id="266" class="Pragma">--safe</a> <a id="273" class="Symbol">#-}</a>
+<a id="252" class="Comment">-- Note think carefully about using this module as pointwise</a>
+<a id="313" class="Comment">-- propositional equality can usually be replaced with propositional</a>
+<a id="382" class="Comment">-- equality.</a>
 
-<a id="278" class="Keyword">open</a> <a id="283" class="Keyword">import</a> <a id="290" href="Relation.Binary.html" class="Module">Relation.Binary</a>
-<a id="306" class="Keyword">open</a> <a id="311" class="Keyword">import</a> <a id="318" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a>
+<a id="396" class="Symbol">{-#</a> <a id="400" class="Keyword">OPTIONS</a> <a id="408" class="Pragma">--without-K</a> <a id="420" class="Pragma">--safe</a> <a id="427" class="Symbol">#-}</a>
 
-<a id="357" class="Keyword">module</a> <a id="364" href="Data.List.Relation.Binary.Equality.DecPropositional.html" class="Module">Data.List.Relation.Binary.Equality.DecPropositional</a>
-  <a id="418" class="Symbol">{</a><a id="419" href="Data.List.Relation.Binary.Equality.DecPropositional.html#419" class="Bound">a</a><a id="420" class="Symbol">}</a> <a id="422" class="Symbol">{</a><a id="423" href="Data.List.Relation.Binary.Equality.DecPropositional.html#423" class="Bound">A</a> <a id="425" class="Symbol">:</a> <a id="427" class="PrimitiveType">Set</a> <a id="431" href="Data.List.Relation.Binary.Equality.DecPropositional.html#419" class="Bound">a</a><a id="432" class="Symbol">}</a> <a id="434" class="Symbol">(</a><a id="435" href="Data.List.Relation.Binary.Equality.DecPropositional.html#435" class="Bound Operator">_≟_</a> <a id="439" class="Symbol">:</a> <a id="441" href="Relation.Binary.Core.html#5557" class="Function">Decidable</a> <a id="451" class="Symbol">{</a><a id="452" class="Argument">A</a> <a id="454" class="Symbol">=</a> <a id="456" href="Data.List.Relation.Binary.Equality.DecPropositional.html#423" class="Bound">A</a><a id="457" class="Symbol">}</a> <a id="459" href="Agda.Builtin.Equality.html#125" class="Datatype Operator">_≡_</a><a id="462" class="Symbol">)</a> <a id="464" class="Keyword">where</a>
+<a id="432" class="Keyword">open</a> <a id="437" class="Keyword">import</a> <a id="444" href="Relation.Binary.html" class="Module">Relation.Binary</a>
+<a id="460" class="Keyword">open</a> <a id="465" class="Keyword">import</a> <a id="472" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a>
 
-<a id="471" class="Keyword">open</a> <a id="476" class="Keyword">import</a> <a id="483" href="Data.List.html" class="Module">Data.List</a> <a id="493" class="Keyword">using</a> <a id="499" class="Symbol">(</a><a id="500" href="Agda.Builtin.List.html#121" class="Datatype">List</a><a id="504" class="Symbol">)</a>
-<a id="506" class="Keyword">open</a> <a id="511" class="Keyword">import</a> <a id="518" href="Data.List.Properties.html" class="Module">Data.List.Properties</a> <a id="539" class="Keyword">using</a> <a id="545" class="Symbol">(</a><a id="546" href="Data.List.Properties.html#2266" class="Function">≡-dec</a><a id="551" class="Symbol">)</a>
-<a id="553" class="Keyword">import</a> <a id="560" href="Data.List.Relation.Binary.Equality.Propositional.html" class="Module">Data.List.Relation.Binary.Equality.Propositional</a> <a id="609" class="Symbol">as</a> <a id="612" class="Module">PropositionalEq</a>
-<a id="628" class="Keyword">import</a> <a id="635" href="Data.List.Relation.Binary.Equality.DecSetoid.html" class="Module">Data.List.Relation.Binary.Equality.DecSetoid</a> <a id="680" class="Symbol">as</a> <a id="683" class="Module">DecSetoidEq</a>
+<a id="511" class="Keyword">module</a> <a id="518" href="Data.List.Relation.Binary.Equality.DecPropositional.html" class="Module">Data.List.Relation.Binary.Equality.DecPropositional</a>
+  <a id="572" class="Symbol">{</a><a id="573" href="Data.List.Relation.Binary.Equality.DecPropositional.html#573" class="Bound">a</a><a id="574" class="Symbol">}</a> <a id="576" class="Symbol">{</a><a id="577" href="Data.List.Relation.Binary.Equality.DecPropositional.html#577" class="Bound">A</a> <a id="579" class="Symbol">:</a> <a id="581" class="PrimitiveType">Set</a> <a id="585" href="Data.List.Relation.Binary.Equality.DecPropositional.html#573" class="Bound">a</a><a id="586" class="Symbol">}</a> <a id="588" class="Symbol">(</a><a id="589" href="Data.List.Relation.Binary.Equality.DecPropositional.html#589" class="Bound Operator">_≟_</a> <a id="593" class="Symbol">:</a> <a id="595" href="Relation.Binary.Core.html#5557" class="Function">Decidable</a> <a id="605" class="Symbol">{</a><a id="606" class="Argument">A</a> <a id="608" class="Symbol">=</a> <a id="610" href="Data.List.Relation.Binary.Equality.DecPropositional.html#577" class="Bound">A</a><a id="611" class="Symbol">}</a> <a id="613" href="Agda.Builtin.Equality.html#125" class="Datatype Operator">_≡_</a><a id="616" class="Symbol">)</a> <a id="618" class="Keyword">where</a>
 
-<a id="696" class="Comment">------------------------------------------------------------------------</a>
-<a id="769" class="Comment">-- Publically re-export everything from decSetoid and propositional</a>
-<a id="837" class="Comment">-- equality</a>
+<a id="625" class="Keyword">open</a> <a id="630" class="Keyword">import</a> <a id="637" href="Data.List.html" class="Module">Data.List</a> <a id="647" class="Keyword">using</a> <a id="653" class="Symbol">(</a><a id="654" href="Agda.Builtin.List.html#121" class="Datatype">List</a><a id="658" class="Symbol">)</a>
+<a id="660" class="Keyword">open</a> <a id="665" class="Keyword">import</a> <a id="672" href="Data.List.Properties.html" class="Module">Data.List.Properties</a> <a id="693" class="Keyword">using</a> <a id="699" class="Symbol">(</a><a id="700" href="Data.List.Properties.html#2266" class="Function">≡-dec</a><a id="705" class="Symbol">)</a>
+<a id="707" class="Keyword">import</a> <a id="714" href="Data.List.Relation.Binary.Equality.Propositional.html" class="Module">Data.List.Relation.Binary.Equality.Propositional</a> <a id="763" class="Symbol">as</a> <a id="766" class="Module">PropositionalEq</a>
+<a id="782" class="Keyword">import</a> <a id="789" href="Data.List.Relation.Binary.Equality.DecSetoid.html" class="Module">Data.List.Relation.Binary.Equality.DecSetoid</a> <a id="834" class="Symbol">as</a> <a id="837" class="Module">DecSetoidEq</a>
 
-<a id="850" class="Keyword">open</a> <a id="855" href="Data.List.Relation.Binary.Equality.Propositional.html" class="Module">PropositionalEq</a> <a id="871" class="Keyword">public</a>
-<a id="878" class="Keyword">open</a> <a id="883" href="Data.List.Relation.Binary.Equality.DecSetoid.html" class="Module">DecSetoidEq</a> <a id="895" class="Symbol">(</a><a id="896" href="Relation.Binary.PropositionalEquality.html#2628" class="Function">decSetoid</a> <a id="906" href="Data.List.Relation.Binary.Equality.DecPropositional.html#435" class="Bound Operator">_≟_</a><a id="909" class="Symbol">)</a> <a id="911" class="Keyword">public</a>
-  <a id="920" class="Keyword">using</a> <a id="926" class="Symbol">(</a>_≋?_<a id="931" class="Symbol">;</a> ≋-isDecEquivalence<a id="951" class="Symbol">;</a> ≋-decSetoid<a id="964" class="Symbol">)</a>
+<a id="850" class="Comment">------------------------------------------------------------------------</a>
+<a id="923" class="Comment">-- Publically re-export everything from decSetoid and propositional</a>
+<a id="991" class="Comment">-- equality</a>
 
-<a id="967" class="Comment">------------------------------------------------------------------------</a>
-<a id="1040" class="Comment">-- Additional proofs</a>
+<a id="1004" class="Keyword">open</a> <a id="1009" href="Data.List.Relation.Binary.Equality.Propositional.html" class="Module">PropositionalEq</a> <a id="1025" class="Keyword">public</a>
+<a id="1032" class="Keyword">open</a> <a id="1037" href="Data.List.Relation.Binary.Equality.DecSetoid.html" class="Module">DecSetoidEq</a> <a id="1049" class="Symbol">(</a><a id="1050" href="Relation.Binary.PropositionalEquality.html#1781" class="Function">decSetoid</a> <a id="1060" href="Data.List.Relation.Binary.Equality.DecPropositional.html#589" class="Bound Operator">_≟_</a><a id="1063" class="Symbol">)</a> <a id="1065" class="Keyword">public</a>
+  <a id="1074" class="Keyword">using</a> <a id="1080" class="Symbol">(</a>_≋?_<a id="1085" class="Symbol">;</a> ≋-isDecEquivalence<a id="1105" class="Symbol">;</a> ≋-decSetoid<a id="1118" class="Symbol">)</a>
 
-<a id="_≡?_"></a><a id="1062" href="Data.List.Relation.Binary.Equality.DecPropositional.html#1062" class="Function Operator">_≡?_</a> <a id="1067" class="Symbol">:</a> <a id="1069" href="Relation.Binary.Core.html#5557" class="Function">Decidable</a> <a id="1079" class="Symbol">(</a><a id="1080" href="Agda.Builtin.Equality.html#125" class="Datatype Operator">_≡_</a> <a id="1084" class="Symbol">{</a><a id="1085" class="Argument">A</a> <a id="1087" class="Symbol">=</a> <a id="1089" href="Agda.Builtin.List.html#121" class="Datatype">List</a> <a id="1094" href="Data.List.Relation.Binary.Equality.DecPropositional.html#423" class="Bound">A</a><a id="1095" class="Symbol">})</a>
-<a id="1098" href="Data.List.Relation.Binary.Equality.DecPropositional.html#1062" class="Function Operator">_≡?_</a> <a id="1103" class="Symbol">=</a> <a id="1105" href="Data.List.Properties.html#2266" class="Function">≡-dec</a> <a id="1111" href="Data.List.Relation.Binary.Equality.DecPropositional.html#435" class="Bound Operator">_≟_</a>
+<a id="1121" class="Comment">------------------------------------------------------------------------</a>
+<a id="1194" class="Comment">-- Additional proofs</a>
+
+<a id="_≡?_"></a><a id="1216" href="Data.List.Relation.Binary.Equality.DecPropositional.html#1216" class="Function Operator">_≡?_</a> <a id="1221" class="Symbol">:</a> <a id="1223" href="Relation.Binary.Core.html#5557" class="Function">Decidable</a> <a id="1233" class="Symbol">(</a><a id="1234" href="Agda.Builtin.Equality.html#125" class="Datatype Operator">_≡_</a> <a id="1238" class="Symbol">{</a><a id="1239" class="Argument">A</a> <a id="1241" class="Symbol">=</a> <a id="1243" href="Agda.Builtin.List.html#121" class="Datatype">List</a> <a id="1248" href="Data.List.Relation.Binary.Equality.DecPropositional.html#577" class="Bound">A</a><a id="1249" class="Symbol">})</a>
+<a id="1252" href="Data.List.Relation.Binary.Equality.DecPropositional.html#1216" class="Function Operator">_≡?_</a> <a id="1257" class="Symbol">=</a> <a id="1259" href="Data.List.Properties.html#2266" class="Function">≡-dec</a> <a id="1265" href="Data.List.Relation.Binary.Equality.DecPropositional.html#589" class="Bound Operator">_≟_</a>
 </pre></body></html>
