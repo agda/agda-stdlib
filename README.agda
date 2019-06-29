@@ -1,7 +1,7 @@
 module README where
 
 ------------------------------------------------------------------------
--- The Agda standard library, development version
+-- The Agda standard library, version 1.2-dev
 --
 -- Authors: Nils Anders Danielsson, Matthew Daggitt, Guillaume Allais
 -- with contributions from Andreas Abel, Stevan Andjelkovic,
@@ -16,20 +16,13 @@ module README where
 -- Noam Zeilberger and other anonymous contributors.
 ------------------------------------------------------------------------
 
--- This version of the library has been tested using Agda 2.6.0.
+-- This version of the library has been tested using Agda 2.6.0.1.
 
 -- The library comes with a .agda-lib file, for use with the library
 -- management system.
 
 -- Currently the library does not support the JavaScript compiler
 -- backend.
-
--- Contributions to this library are welcome (but to avoid wasted work
--- it is suggested that you discuss large changes before implementing
--- them). Please send contributions in the form of git pull requests,
--- patch bundles or ask for commmit rights to the repository.  It is
--- appreciated if every patch contains a single, complete change, and
--- if the coding style used in the library is adhered to.
 
 ------------------------------------------------------------------------
 -- Module hierarchy
