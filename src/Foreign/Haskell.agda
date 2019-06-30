@@ -10,17 +10,23 @@ module Foreign.Haskell where
 
 open import Level
 
--- A pair type
+------------------------------------------------------------------------
+-- Pairs
 
-record Pair {ℓ ℓ′ : Level} (A : Set ℓ) (B : Set ℓ′) : Set (ℓ ⊔ ℓ′) where
-  constructor _,_
-  field  fst : A
-         snd : B
-open Pair public
+open import Foreign.Haskell.Pair public
+  renaming
+  ( toForeign   to toForeignPair
+  ; fromForeign to fromForeignPair
+  )
 
-{-# FOREIGN GHC type AgdaPair l1 l2 a b = (a , b) #-}
-{-# COMPILE GHC Pair = data MAlonzo.Code.Foreign.Haskell.AgdaPair ((,)) #-}
+------------------------------------------------------------------------
+-- Maybe
 
+open import Foreign.Haskell.Maybe public
+  renaming
+  ( toForeign   to toForeignMaybe
+  ; fromForeign to fromForeignMaybe
+  )
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

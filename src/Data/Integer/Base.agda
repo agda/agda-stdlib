@@ -6,6 +6,9 @@
 
 {-# OPTIONS --without-K --safe #-}
 
+-- Disabled to prevent warnings from deprecated names
+{-# OPTIONS --warn=noUserWarning #-}
+
 module Data.Integer.Base where
 
 open import Data.Nat.Base as ℕ
@@ -174,20 +177,31 @@ _⊓_ : ℤ → ℤ → ℤ
 -- Version 1.1
 
 -- The following definition of _<_ results in the unsolved metas for the
--- first argument in certain situations. They do not have deprecation
--- warnings attached as they are still used in some deprecated properties
--- in `Data.Integer.Properties` and `Data.Integer.DivMod`.
+-- first argument in certain situations.
 
 infix  4 _<′_ _>′_ _≮′_ _≯′_
 
 _<′_ : Rel ℤ _
 x <′ y = suc x ≤ y
-
+{-# WARNING_ON_USAGE _<′_
+"Warning: _<′_ was deprecated in v1.1.
+Please use _<_ instead."
+#-}
 _>′_ : Rel ℤ _
 x >′ y = y <′ x
-
+{-# WARNING_ON_USAGE _>′_
+"Warning: _>′_ was deprecated in v1.1.
+Please use _>_ instead."
+#-}
 _≮′_ : Rel ℤ _
 x ≮′ y = ¬ (x <′ y)
-
+{-# WARNING_ON_USAGE _≮′_
+"Warning: _≮′_ was deprecated in v1.1.
+Please use _≮_ instead."
+#-}
 _≯′_ : Rel ℤ _
 x ≯′ y = ¬ (x >′ y)
+{-# WARNING_ON_USAGE _≯′_
+"Warning: _≯′_ was deprecated in v1.1.
+Please use _≯_ instead."
+#-}
