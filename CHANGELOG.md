@@ -46,7 +46,20 @@ is encouraged. Although not anticipated any time soon, they may eventually
 be removed in some future release of the library. Automated warnings are
 attached to all deprecated names to discourage their use.
 
+* In `Data.Integer.Properties`:
+  ```agda
+  [1+m]*n≡n+m*n ↦ suc-*
+  ```
 
+* In `Data.Nat.Properties`:
+  ```agda
+  +-*-suc ↦ *-suc
+  ```
 
 Other minor additions
 ---------------------
+
+* Added new proof to `Data.Integer.Properties`:
+  ```agda
+  *-suc : m * sucℤ n ≡ m + m * n
+  ```
