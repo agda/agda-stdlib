@@ -958,3 +958,9 @@ Other minor additions
   dec-no      : (p? : Dec P) → ¬ P → ∃ λ ¬p′ → p? ≡ no ¬p′
   dec-yes-irr : (p? : Dec P) → Irrelevant P → (p : P) → p? ≡ yes p
   ```
+
+* Added functions to extract the universe level from a type and a term.
+  ```agda
+  levelOfType : ∀ {a} → Set a → Level
+  levelOfTerm : ∀ {a} {A : Set a} → A → Level
+  ```
