@@ -13,10 +13,7 @@ module Relation.Binary.Properties.Setoid {a ℓ} (S : Setoid a ℓ) where
 open import Function using (_∘_; _$_)
 open import Relation.Nullary using (¬_)
 
-open Setoid S using (Carrier; _≈_; refl; sym; trans)
-
-_≉_ :  Rel Carrier _
-_≉_ x =  ¬_ ∘ (x ≈_)
+open Setoid S using (Carrier; _≈_; _≉_; refl; sym; trans)
 
 ≉-sym :  Symmetric _≉_
 ≉-sym {x} {y} x≉y =  x≉y ∘ sym

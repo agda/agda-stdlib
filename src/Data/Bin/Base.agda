@@ -15,27 +15,27 @@ open import Data.Nat.Base as ℕ using (ℕ)
 -- Definition
 
 data Bin : Set where
-  0#    : Bin
-  2suc  : Bin → Bin    -- n → 2*(1+n)  arbitrary nonzero even
-  suc2* : Bin → Bin    -- n → 1 + 2*n  arbitrary odd
+  zero   : Bin
+  2[1+_] : Bin → Bin    -- n → 2*(1+n)  arbitrary nonzero even
+  1+[2_] : Bin → Bin    -- n → 1 + 2*n  arbitrary odd
 
 ------------------------------------------------------------------------
 -- Basic operations
 
 double : Bin → Bin
-double 0#        = 0#
-double (2suc x)  = 2suc (suc2* x)
-double (suc2* x) = 2suc (double x)  -- 2(1+x) + 2(1+x) = 2(1+x + 1+x) = 2(1 + 1+2x)
+double zero     = zero
+double 2[1+ x ] = 2[1+ 1+[2 x ] ]
+double 1+[2 x ] = 2[1+ (double x) ]  -- 2(1+x)+ 2(1+x) = 2(1+x + 1+x) = 2(1+ 1+2x)
 
 suc : Bin → Bin
-suc 0#        =  suc2* 0#
-suc (2suc x)  =  suc2* (suc x)   -- 1 + 2(1+x)
-suc (suc2* x) =  2suc x          -- 1 + 1 + 2x =  2*(1+x)
+suc zero     =  1+[2 zero ]
+suc 2[1+ x ] =  1+[2 (suc x) ]
+suc 1+[2 x ] =  2[1+ x ]
 
 pred : Bin → Bin
-pred 0#        = 0#
-pred (2suc x)  = suc2* x     -- 2(1+x) - 1 =  1+2x
-pred (suc2* x) = double x    -- 1 + 2x -1  =  2x
+pred zero     = zero
+pred 2[1+ x ] = 1+[2 x ]
+pred 1+[2 x ] = double x    -- 1 + 2x -1  =  2x
 
 ------------------------------------------------------------------------
 -- Addition, multiplication and certain related functions
@@ -44,32 +44,32 @@ infixl 6 _+_
 infixl 7 _*_
 
 _+_ : Op₂ Bin
-0#        + y         =  y
-x         + 0#        =  x
-(2suc x)  + (2suc y)  =  2suc (suc (x + y))
-(2suc x)  + (suc2* y) =  suc (2suc (x + y))
-(suc2* x) + (2suc y)  =  suc (2suc (x + y))
-(suc2* x) + (suc2* y) =  suc (suc2* (x + y))
+zero     + y        =  y
+x        + zero     =  x
+2[1+ x ] + 2[1+ y ] =  2[1+ (suc (x + y)) ]
+2[1+ x ] + 1+[2 y ] =  suc 2[1+ (x + y) ]
+1+[2 x ] + 2[1+ y ] =  suc 2[1+ (x + y) ]
+1+[2 x ] + 1+[2 y ] =  suc 1+[2 (x + y) ]
 
 _*_ : Op₂ Bin
-0#        * _         =  0#
-_         * 0#        =  0#
-(2suc x)  * (2suc y)  =  double (2suc (x + (y + x * y)))
-(2suc x)  * (suc2* y) =  2suc (x + y * (2suc x))
-(suc2* x) * (2suc y)  =  2suc (y + x * (2suc y))
-(suc2* x) * (suc2* y) =  suc2* (x + y * (suc2* x))
+zero     * _        =  zero
+_        * zero     =  zero
+2[1+ x ] * 2[1+ y ] =  double 2[1+ (x + (y + x * y)) ]
+2[1+ x ] * 1+[2 y ] =  2[1+ (x + y * 2[1+ x ]) ]
+1+[2 x ] * 2[1+ y ] =  2[1+ (y + x * 2[1+ y ]) ]
+1+[2 x ] * 1+[2 y ] =  1+[2 (x + y * 1+[2 x ]) ]
 
 ------------------------------------------------------------------------
 -- Conversion between Bin and ℕ
 
 toℕ : Bin → ℕ
-toℕ 0#        =  0
-toℕ (2suc x)  =  2 ℕ.* (ℕ.suc (toℕ x))
-toℕ (suc2* x) =  ℕ.suc (2 ℕ.* (toℕ x))
+toℕ zero     =  0
+toℕ 2[1+ x ] =  2 ℕ.* (ℕ.suc (toℕ x))
+toℕ 1+[2 x ] =  ℕ.suc (2 ℕ.* (toℕ x))
 
 -- Costs O(n), could be improved using `_/_` and `_%_`
 fromℕ : ℕ → Bin
-fromℕ 0          = 0#
+fromℕ 0          = zero
 fromℕ (ℕ.suc n) = suc (fromℕ n)
 
 ------------------------------------------------------------------------
@@ -77,14 +77,14 @@ fromℕ (ℕ.suc n) = suc (fromℕ n)
 
 -- Useful in some termination proofs.
 size : Bin → ℕ
-size 0#        = 0
-size (2suc x)  = ℕ.suc (size x)
-size (suc2* x) = ℕ.suc (size x)
+size zero     = 0
+size 2[1+ x ] = ℕ.suc (size x)
+size 1+[2 x ] = ℕ.suc (size x)
 
 ------------------------------------------------------------------------
 -- Constants
 
-1B = suc 0#
+1B = suc zero
 2B = suc 1B
 3B = suc 2B
 4B = suc 3B
