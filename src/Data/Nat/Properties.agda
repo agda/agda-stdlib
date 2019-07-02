@@ -608,11 +608,11 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
 -- Properties of _*_
 ------------------------------------------------------------------------
 
-+-*-suc : ∀ m n → m * suc n ≡ m + m * n
-+-*-suc zero    n = refl
-+-*-suc (suc m) n = begin-equality
+*-suc : ∀ m n → m * suc n ≡ m + m * n
+*-suc zero    n = refl
+*-suc (suc m) n = begin-equality
   suc m * suc n          ≡⟨⟩
-  suc n + m * suc n      ≡⟨ cong (suc n +_) (+-*-suc m n) ⟩
+  suc n + m * suc n      ≡⟨ cong (suc n +_) (*-suc m n) ⟩
   suc n + (m + m * n)    ≡⟨⟩
   suc (n + (m + m * n))  ≡⟨ cong suc (sym (+-assoc n m (m * n))) ⟩
   suc (n + m + m * n)    ≡⟨ cong (λ x → suc (x + m * n)) (+-comm n m) ⟩
@@ -648,7 +648,7 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
 *-comm (suc m) n = begin-equality
   suc m * n  ≡⟨⟩
   n + m * n  ≡⟨ cong (n +_) (*-comm m n) ⟩
-  n + n * m  ≡⟨ sym (+-*-suc n m) ⟩
+  n + n * m  ≡⟨ sym (*-suc n m) ⟩
   n * suc m  ∎
 
 *-distribʳ-+ : _*_ DistributesOverʳ _+_
@@ -685,7 +685,7 @@ m>1⇒m*n≢1 {m} {suc n} m>1 m*n'≡1 =  <⇒≢ m*n'>1 (sym m*n'≡1)
   m*n'>1 = begin
     2             ≤⟨ m>1 ⟩
     m             ≤⟨ m≤m+n m (m * n) ⟩
-    m + m * n     ≡⟨ sym (+-*-suc m n) ⟩
+    m + m * n     ≡⟨ sym (*-suc m n) ⟩
     m * (suc n)   ∎
 
 ------------------------------------------------------------------------
@@ -892,7 +892,7 @@ m<m*n {suc m-1} {suc (suc n-2)} (s≤s _) (s≤s (s≤s _)) = begin-strict
 ^-*-assoc m n (suc o) = begin-equality
   (m ^ n) * ((m ^ n) ^ o) ≡⟨ cong ((m ^ n) *_) (^-*-assoc m n o) ⟩
   (m ^ n) * (m ^ (n * o)) ≡⟨ sym (^-distribˡ-+-* m n (n * o)) ⟩
-  m ^ (n + n * o)         ≡⟨ cong (m ^_) (sym (+-*-suc n o)) ⟩
+  m ^ (n + n * o)         ≡⟨ cong (m ^_) (sym (*-suc n o)) ⟩
   m ^ (n * (suc o)) ∎
 
 m^n≡0⇒m≡0 : ∀ m n → m ^ n ≡ 0 → m ≡ 0
