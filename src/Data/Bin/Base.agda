@@ -25,7 +25,7 @@ data Bin : Set where
 double : Bin → Bin
 double zero     = zero
 double 2[1+ x ] = 2[1+ 1+[2 x ] ]
-double 1+[2 x ] = 2[1+ (double x) ]  -- 2(1+x)+ 2(1+x) = 2(1+x + 1+x) = 2(1+ 1+2x)
+double 1+[2 x ] = 2[1+ (double x) ]
 
 suc : Bin → Bin
 suc zero     =  1+[2 zero ]
@@ -35,7 +35,7 @@ suc 1+[2 x ] =  2[1+ x ]
 pred : Bin → Bin
 pred zero     = zero
 pred 2[1+ x ] = 1+[2 x ]
-pred 1+[2 x ] = double x    -- 1 + 2x -1  =  2x
+pred 1+[2 x ] = double x
 
 ------------------------------------------------------------------------
 -- Addition, multiplication and certain related functions
@@ -69,7 +69,7 @@ toℕ 1+[2 x ] =  ℕ.suc (2 ℕ.* (toℕ x))
 
 -- Costs O(n), could be improved using `_/_` and `_%_`
 fromℕ : ℕ → Bin
-fromℕ 0          = zero
+fromℕ 0         = zero
 fromℕ (ℕ.suc n) = suc (fromℕ n)
 
 ------------------------------------------------------------------------
@@ -84,7 +84,8 @@ size 1+[2 x ] = ℕ.suc (size x)
 ------------------------------------------------------------------------
 -- Constants
 
-1B = suc zero
+0B = zero
+1B = suc 0B
 2B = suc 1B
 3B = suc 2B
 4B = suc 3B
