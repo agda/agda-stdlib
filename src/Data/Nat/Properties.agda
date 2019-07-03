@@ -611,13 +611,13 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
 *-suc : ∀ m n → m * suc n ≡ m + m * n
 *-suc zero    n = refl
 *-suc (suc m) n = begin-equality
-  suc m * suc n          ≡⟨⟩
-  suc n + m * suc n      ≡⟨ cong (suc n +_) (*-suc m n) ⟩
-  suc n + (m + m * n)    ≡⟨⟩
-  suc (n + (m + m * n))  ≡⟨ cong suc (sym (+-assoc n m (m * n))) ⟩
-  suc (n + m + m * n)    ≡⟨ cong (λ x → suc (x + m * n)) (+-comm n m) ⟩
-  suc (m + n + m * n)    ≡⟨ cong suc (+-assoc m n (m * n)) ⟩
-  suc (m + (n + m * n))  ≡⟨⟩
+  suc m * suc n         ≡⟨⟩
+  suc n + m * suc n     ≡⟨ cong (suc n +_) (*-suc m n) ⟩
+  suc n + (m + m * n)   ≡⟨⟩
+  suc (n + (m + m * n)) ≡⟨ cong suc (sym (+-assoc n m (m * n))) ⟩
+  suc (n + m + m * n)   ≡⟨ cong (λ x → suc (x + m * n)) (+-comm n m) ⟩
+  suc (m + n + m * n)   ≡⟨ cong suc (+-assoc m n (m * n)) ⟩
+  suc (m + (n + m * n)) ≡⟨⟩
   suc m + suc m * n     ∎
 
 ------------------------------------------------------------------------
@@ -2060,4 +2060,12 @@ Please use m≤n+m∸n instead (note, you will need to switch the argument order
 {-# WARNING_ON_USAGE ∣n-m∣≡[n∸m]∨[m∸n]
 "Warning: ∣n-m∣≡[n∸m]∨[m∸n] was deprecated in v1.1.
 Please use ∣m-n∣≡[m∸n]∨[n∸m] instead (note, you will need to switch the argument order)."
+#-}
+
+-- Version 1.2
+
++-*-suc = *-suc
+{-# WARNING_ON_USAGE +-*-suc
+"Warning: +-*-suc was deprecated in v1.2.
+Please use *-suc instead."
 #-}
