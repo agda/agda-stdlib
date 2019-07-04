@@ -18,11 +18,10 @@ Bug-fixes
 Other non-backwards compatible changes
 --------------------------------------
 
-
 #### Re-implementation of `Data.Bin`
 
-* ``Data/Bin.agda`` and ``Data.Bin/*.agda``  of lib-1.0 are removed,
-  added new ``Data.Bin.Base, Data.Bin.Properties``.
+* `Data/Bin.agda` and `Data.Bin/*.agda`  of lib-1.0 are removed,
+  added new `Data.Bin.Base, Data.Bin.Properties`.
   This total change of the Bin part is done for the following reasons.
   1) Many necessary functions and proofs are added.
   2) After this has been done, the author noticed (decided) that the whole
@@ -38,7 +37,14 @@ The following new modules have been added to the library:
 
 * The following new modules have been added to the library:
   ```
+  Algebra.Properties.Semigroup
+  Algebra.Properties.CommutativeSemigroup
+
   Data.Bin
+  Data.Bin.Base
+  Data.Bin.Properties
+
+  Relation.Binary.Properties.Setoid
   ```
 
 Relocated modules
@@ -76,4 +82,11 @@ Other minor additions
 * Added new proof to `Data.Integer.Properties`:
   ```agda
   *-suc : m * sucℤ n ≡ m + m * n
+  ```
+
+* Added new proof to `Data.Nat.Properties`:
+  ```agda
+  even≢odd : ∀ m n → 2 * m ≢ suc (2 * n)
+  0≢1+n    : ∀ {n} → 0 ≢ suc n
+  n<1+n    : ∀ {n} → n < suc n
   ```

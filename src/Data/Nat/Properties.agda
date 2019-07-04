@@ -515,6 +515,9 @@ m≢1+n+m m m≡1+n+m = m≢1+m+n m (trans m≡1+n+m (cong suc (+-comm _ m)))
 m+1+n≢m : ∀ m {n} → m + suc n ≢ m
 m+1+n≢m (suc m) = (m+1+n≢m m) ∘ suc-injective
 
+m+1+n≢0 : ∀ m {n} → m + suc n ≢ 0
+m+1+n≢0 m {n} rewrite +-suc m n = λ()
+
 m+n≡0⇒m≡0 : ∀ m {n} → m + n ≡ 0 → m ≡ 0
 m+n≡0⇒m≡0 zero eq = refl
 
@@ -674,19 +677,6 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
   n * o + (m * n) * o ≡⟨ cong (n * o +_) (*-assoc m n o) ⟩
   n * o + m * (n * o) ≡⟨⟩
   suc m * (n * o)     ∎
-
-m>1⇒m*n≢1 :  ∀ {m n} → m > 1 → m * n ≢ 1
-m>1⇒m*n≢1 {m} {0}     _   m*0≡1  =  0≢1+n 0≡1
-  where
-  0≡1 = trans (sym (*-zeroʳ m)) m*0≡1
-
-m>1⇒m*n≢1 {m} {suc n} m>1 m*n'≡1 =  <⇒≢ m*n'>1 (sym m*n'≡1)
-  where
-  m*n'>1 = begin
-    2             ≤⟨ m>1 ⟩
-    m             ≤⟨ m≤m+n m (m * n) ⟩
-    m + m * n     ≡⟨ sym (*-suc m n) ⟩
-    m * (suc n)   ∎
 
 ------------------------------------------------------------------------
 -- Structures
@@ -1498,11 +1488,12 @@ m∸[m∸n]≡n {suc m} {suc n} (s≤s n≤m) = begin-equality
 *-distrib-∸ = *-distribˡ-∸ , *-distribʳ-∸
 
 even≢odd :  ∀ m n → 2 * m ≢ suc (2 * n)
-even≢odd m n 2m≡1+2n =  m>1⇒m*n≢1 {2} {m ∸ n} n<1+n $ begin-equality
-  2 * (m ∸ n)           ≡⟨ *-distribˡ-∸ 2 m n ⟩
-  2 * m ∸ 2 * n         ≡⟨ cong (_∸ (2 * n)) 2m≡1+2n ⟩
-  (1 + 2 * n) ∸ 2 * n   ≡⟨ m+n∸n≡m 1 (2 * n) ⟩
-  1                     ∎
+even≢odd (suc m) zero    eq = contradiction (suc-injective eq) (m+1+n≢0 m)
+even≢odd (suc m) (suc n) eq = even≢odd m n (suc-injective (begin-equality
+  suc (2 * m)         ≡⟨ sym (+-suc m _) ⟩
+  m + suc (m + 0)     ≡⟨ suc-injective eq ⟩
+  suc n + suc (n + 0) ≡⟨ cong suc (+-suc n _) ⟩
+  suc (suc (2 * n))   ∎))
 
 ------------------------------------------------------------------------
 -- Properties of _∸_ and _⊓_ and _⊔_
