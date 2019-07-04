@@ -82,6 +82,9 @@ m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
   ; isDecEquivalence = ≡-isDecEquivalence
   }
 
+0≢1+n : ∀ {n} → 0 ≢ suc n
+0≢1+n ()
+
 1+n≢0 : ∀ {n} → suc n ≢ 0
 1+n≢0 ()
 
@@ -149,6 +152,9 @@ suc m ≤? n with T? (m <ᵇ n)
 
 _≥?_ : Decidable _≥_
 _≥?_ = flip _≤?_
+
+n<1+n : ∀ {n} → n < suc n
+n<1+n = ≤-refl
 
 ------------------------------------------------------------------------
 -- Structures
@@ -508,6 +514,9 @@ m≢1+n+m m m≡1+n+m = m≢1+m+n m (trans m≡1+n+m (cong suc (+-comm _ m)))
 
 m+1+n≢m : ∀ m {n} → m + suc n ≢ m
 m+1+n≢m (suc m) = (m+1+n≢m m) ∘ suc-injective
+
+m+1+n≢0 : ∀ m {n} → m + suc n ≢ 0
+m+1+n≢0 m {n} rewrite +-suc m n = λ()
 
 m+n≡0⇒m≡0 : ∀ m {n} → m + n ≡ 0 → m ≡ 0
 m+n≡0⇒m≡0 zero eq = refl
@@ -1477,6 +1486,14 @@ m∸[m∸n]≡n {suc m} {suc n} (s≤s n≤m) = begin-equality
 
 *-distrib-∸ : _*_ DistributesOver _∸_
 *-distrib-∸ = *-distribˡ-∸ , *-distribʳ-∸
+
+even≢odd :  ∀ m n → 2 * m ≢ suc (2 * n)
+even≢odd (suc m) zero    eq = contradiction (suc-injective eq) (m+1+n≢0 m)
+even≢odd (suc m) (suc n) eq = even≢odd m n (suc-injective (begin-equality
+  suc (2 * m)         ≡⟨ sym (+-suc m _) ⟩
+  m + suc (m + 0)     ≡⟨ suc-injective eq ⟩
+  suc n + suc (n + 0) ≡⟨ cong suc (+-suc n _) ⟩
+  suc (suc (2 * n))   ∎))
 
 ------------------------------------------------------------------------
 -- Properties of _∸_ and _⊓_ and _⊔_
