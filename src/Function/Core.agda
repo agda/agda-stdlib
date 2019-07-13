@@ -4,6 +4,8 @@
 -- Simple combinators working solely on and with functions
 ------------------------------------------------------------------------
 
+-- The contents of this file should usually be accessed from `Function`.
+
 {-# OPTIONS --without-K --safe #-}
 
 module Function.Core where
@@ -92,6 +94,14 @@ _ˢ_ : ∀ {A : Set a} {B : A → Set b} {C : (x : A) → B x → Set c} →
       (g : (x : A) → B x) →
       ((x : A) → C x (g x))
 f ˢ g = λ x → f x (g x)
+
+-- Converting between implicit and explicit function spaces.
+
+_$- : ∀ {A : Set a} {B : A → Set b} → ((x : A) → B x) → ({x : A} → B x)
+f $- = f _
+
+λ- : ∀ {A : Set a} {B : A → Set b} → ({x : A} → B x) → ((x : A) → B x)
+λ- f = λ x → f
 
 -- Case expressions (to be used with pattern-matching lambdas, see
 -- README.Case).

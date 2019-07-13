@@ -6,22 +6,31 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Relation.Binary using (Setoid)
+open import Relation.Binary using (Rel; Setoid)
 
 module Data.List.Relation.Unary.Unique.Setoid {a ℓ} (S : Setoid a ℓ) where
 
+open Setoid S renaming (Carrier to A)
+
 open import Data.List
-open import Data.List.Relation.Unary.AllPairs as AllPairsM
+import Data.List.Relation.Unary.AllPairs as AllPairsM
 open import Level using (_⊔_)
 open import Relation.Unary using (Pred)
 open import Relation.Nullary using (¬_)
 
-open Setoid S renaming (Carrier to A)
 
 ------------------------------------------------------------------------
 -- Definition
 
-Unique : Pred (List A) (a ⊔ ℓ)
-Unique xs = AllPairs (λ x y → ¬ (x ≈ y)) xs
+private
 
-open AllPairsM public using (_∷_; []; head; tail)
+  Distinct : Rel A ℓ
+  Distinct x y = ¬ (x ≈ y)
+
+open import Data.List.Relation.Unary.AllPairs.Core Distinct
+     renaming (AllPairs to Unique)
+     public
+
+open import Data.List.Relation.Unary.AllPairs {R = Distinct}
+     using (head; tail)
+     public

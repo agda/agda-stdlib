@@ -507,7 +507,7 @@ module _ (n : ℕ) where
   ∪-∩-isDistributiveLattice : IsDistributiveLattice _∪_ _∩_
   ∪-∩-isDistributiveLattice = record
     { isLattice    = ∪-∩-isLattice
-    ; ∨-∧-distribʳ = ∪-distribʳ-∩
+    ; ∨-distribʳ-∧ = ∪-distribʳ-∩
     }
 
   ∪-∩-distributiveLattice : DistributiveLattice _ _

@@ -5,7 +5,7 @@
 -- relation over the co-domain.
 ------------------------------------------------------------------------
 
--- These definitions should usually be accessed from `Function`.
+-- The contents of this file should usually be accessed from `Function`.
 
 {-# OPTIONS --without-K --safe #-}
 

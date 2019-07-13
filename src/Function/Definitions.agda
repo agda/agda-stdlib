@@ -4,14 +4,16 @@
 -- Definitions for types of functions.
 ------------------------------------------------------------------------
 
--- These definitions should usually be accessed from `Function`.
+-- The contents of this file should usually be accessed from `Function`.
 
 {-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary
 
 module Function.Definitions
-  {a b ℓ₁ ℓ₂} {A : Set a} {B : Set b} (_≈₁_ : Rel A ℓ₁) (_≈₂_ : Rel B ℓ₂)
+  {a b ℓ₁ ℓ₂} {A : Set a} {B : Set b}
+  (_≈₁_ : Rel A ℓ₁) -- Equality over the domain
+  (_≈₂_ : Rel B ℓ₂) -- Equality over the codomain
   where
 
 open import Data.Product using (∃; _×_)

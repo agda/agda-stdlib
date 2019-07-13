@@ -4,7 +4,7 @@
 -- Structures for types of functions
 ------------------------------------------------------------------------
 
--- These definitions should usually be accessed from `Function`.
+-- The contents of this file should usually be accessed from `Function`.
 
 {-# OPTIONS --without-K --safe #-}
 
@@ -22,37 +22,37 @@ open import Level using (_⊔_)
 ------------------------------------------------------------------------
 -- Definitions
 
-record IsEqualityPreserving (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+record IsCongruent (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   field
     cong           : Congruent _≈₁_ _≈₂_ f
-    isEquivalence¹ : IsEquivalence _≈₁_
-    isEquivalence² : IsEquivalence _≈₂_
+    isEquivalence₁ : IsEquivalence _≈₁_
+    isEquivalence₂ : IsEquivalence _≈₂_
 
-  setoid¹ : Setoid a ℓ₁
-  setoid¹ = record
-    { isEquivalence = isEquivalence¹
+  setoid₁ : Setoid a ℓ₁
+  setoid₁ = record
+    { isEquivalence = isEquivalence₁
     }
 
-  setoid² : Setoid b ℓ₂
-  setoid² = record
-    { isEquivalence = isEquivalence²
+  setoid₂ : Setoid b ℓ₂
+  setoid₂ = record
+    { isEquivalence = isEquivalence₂
     }
 
 
 record IsInjection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   field
-    isPreserving : IsEqualityPreserving f
-    injective    : Injective _≈₁_ _≈₂_ f
+    isCongruent : IsCongruent f
+    injective   : Injective _≈₁_ _≈₂_ f
 
-  open IsEqualityPreserving isPreserving public
+  open IsCongruent isCongruent public
 
 
 record IsSurjection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   field
-    isPreserving : IsEqualityPreserving f
-    surjective   : Surjective _≈₁_ _≈₂_ f
+    isCongruent : IsCongruent f
+    surjective  : Surjective _≈₁_ _≈₂_ f
 
-  open IsEqualityPreserving isPreserving public
+  open IsCongruent isCongruent public
 
 
 record IsBijection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
@@ -67,43 +67,43 @@ record IsBijection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
 
   isSurjection : IsSurjection f
   isSurjection = record
-    { isPreserving = isPreserving
-    ; surjective   = surjective
+    { isCongruent = isCongruent
+    ; surjective  = surjective
     }
 
 
 record IsLeftInverse (f : A → B) (g : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   field
-    isPreserving : IsEqualityPreserving f
-    cong²        : Congruent _≈₂_ _≈₁_ g
+    isCongruent  : IsCongruent f
+    cong₂        : Congruent _≈₂_ _≈₁_ g
     inverseˡ     : Inverseˡ _≈₁_ _≈₂_ f g
 
-  open IsEqualityPreserving isPreserving public
-    renaming (cong to cong¹)
+  open IsCongruent isCongruent public
+    renaming (cong to cong₁)
 
 
 record IsRightInverse (f : A → B) (g : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   field
-    isPreserving : IsEqualityPreserving f
-    cong²        : Congruent _≈₂_ _≈₁_ g
-    inverseʳ     : Inverseʳ _≈₁_ _≈₂_ f g
+    isCongruent : IsCongruent f
+    cong₂       : Congruent _≈₂_ _≈₁_ g
+    inverseʳ    : Inverseʳ _≈₁_ _≈₂_ f g
 
-  open IsEqualityPreserving isPreserving public
-    renaming (cong to cong¹)
+  open IsCongruent isCongruent public
+    renaming (cong to cong₁)
 
 
 record IsInverse (f : A → B) (g : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   field
-    isLeftInverse  : IsLeftInverse f g
-    inverseʳ       : Inverseʳ _≈₁_ _≈₂_ f g
+    isLeftInverse : IsLeftInverse f g
+    inverseʳ      : Inverseʳ _≈₁_ _≈₂_ f g
 
   open IsLeftInverse isLeftInverse public
 
   isRightInverse : IsRightInverse f g
   isRightInverse = record
-    { isPreserving = isPreserving
-    ; cong²        = cong²
-    ; inverseʳ     = inverseʳ
+    { isCongruent = isCongruent
+    ; cong₂       = cong₂
+    ; inverseʳ    = inverseʳ
     }
 
   inverse : Inverseᵇ _≈₁_ _≈₂_ f g

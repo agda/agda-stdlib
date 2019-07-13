@@ -38,6 +38,8 @@ unsafeModules = map toAgdaFilePath
   , "Data.Word.Unsafe"
   , "Debug.Trace"
   , "Foreign.Haskell"
+  , "Foreign.Haskell.Maybe"
+  , "Foreign.Haskell.Pair"
   , "IO"
   , "IO.Primitive"
   , "Reflection"

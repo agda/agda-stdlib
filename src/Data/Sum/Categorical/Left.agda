@@ -49,7 +49,7 @@ monad = monadT Id.monad
 ------------------------------------------------------------------------
 -- Get access to other monadic functions
 
-module _ {F} (App : RawApplicative {a ⊔ b} F) where
+module TraversableA {F} (App : RawApplicative {a ⊔ b} F) where
 
   open RawApplicative App
 
@@ -63,16 +63,14 @@ module _ {F} (App : RawApplicative {a ⊔ b} F) where
   forA : ∀ {A B} → Sumₗ A → (A → F B) → F (Sumₗ B)
   forA = flip mapA
 
-module _ {M} (Mon : RawMonad {a ⊔ b} M) where
+module TraversableM {M} (Mon : RawMonad {a ⊔ b} M) where
 
-  private App = RawMonad.rawIApplicative Mon
+  open RawMonad Mon
 
-  sequenceM : ∀ {A} → Sumₗ (M A) → M (Sumₗ A)
-  sequenceM = sequenceA App
-
-  mapM : ∀ {A B} → (A → M B) → Sumₗ A → M (Sumₗ B)
-  mapM = mapA App
-
-  forM : ∀ {A B} → Sumₗ A → (A → M B) → M (Sumₗ B)
-  forM = forA App
+  open TraversableA rawIApplicative public
+    renaming
+    ( sequenceA to sequenceM
+    ; mapA      to mapM
+    ; forA      to forM
+    )
 

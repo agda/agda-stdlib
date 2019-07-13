@@ -1,712 +1,155 @@
-Version TODO
-============
+Version 1.2-dev
+===============
 
-The library has been tested using Agda version 2.6.0.
+The library has been tested using Agda version 2.6.0.1.
 
-Changes since 1.0.1:
+Changes since 1.1:
 
 Highlights
 ----------
 
-* The functions `_≤?_` and `<-cmp` in `Data.Nat.Properties` have been
-  reimplemented so that, when compiled, they run in logarithmic rather
-  than linear time.
 
-* The function `show` in `Data.Nat.Show` has been reimplemented and,
-  when compiled, now runs in time `O(log₁₀(n))` rather than `O(n)`.
 
 Bug-fixes
 ---------
 
-#### `_<_` in `Data.Integer`
 
-* The definition of `_<_` in `Data.Integer` often resulted in unsolved metas
-  when Agda has to infer the first argument. This was because it was
-  previously implemented in terms of `suc` -> `_+_` -> `_⊖_`.
 
-* To fix this problem the implementation has therefore changed to:
+Other non-backwards compatible changes
+--------------------------------------
+
+#### New function hierarchy
+
+The main problems with the current way various types of functions are
+handled are:
+  1. The raw functions were wrapped in the  equality-preserving
+         type `_⟶_` from `Function.Equality`. As the rest of the library
+     very rarely used such wrapped functions, it was almost impossible
+     to write code that interfaces neatly  between the `Function` hierarchy
+     and, for example, the `Algebra` hierarchy.
+  2. The symbol `_⟶_` that was used for equality preserving functions
+     was almost indistinguishable from ordinary functions `_→_` in many fonts,
+     leading to confusion when reading code.
+  3. The hierarchy didn't follow the same pattern as the other record
+     hierarchies in the standard library. Coupled with point 1., this meant
+     that anecdotally people are scared away from it.
+  4. There was no way of specifying a function has a specific property
+     (e.g. is injective) without specifying all the properties required
+     of the equality relation as well. This is in contrast to the
+     `Relation.Binary` and `Algebra` hierarchies where it is perfectly
+     possible to specify that for example an operation is commutative
+     without providing all the proofs associated with the equality relation.
+
+To address these problems a new function hierarchy similar to the ones in
+`Relation.Binary` and `Algebra` has been created. The new modules are as
+follows:
+  - `Function.Definitions` containing definitions like `Injective`,
+    `Surjective` parameterised by the function and the equality relations
+     over the domain and codomain.
+  - `Function.Structures` containing definitions like `IsInjection`,
+     `IsSurjection`, once again parameterised by the function and the equality
+     relations but also wrapping up all the equality and congruence lemmas.
+  - `Function.Packages` containing definitions like `Injection`, `Surjection`
+     which provides essentially the same top-level interface as currently exists,
+     i.e. parameterised by setoids but hiding the function.
+  - The old file `Function` has been moved to `Function.Core` and `Function`
+    now exports the whole of this hierarchy, just like `Relation.Binary`.
+
+These changes are nearly entirely backwards compatible. The only problem will occur
+is when code imports both `Function` and e.g. `Function.Injection` in which case the
+old and new definitions of `Injection` will clash. In the short term this can
+immediately be fixed by importing `Function.Core` instead of `Function`. However
+we would encourage to the new hierarchy in the medium to long term.
+
+The old modules will probably be deprecated (NOT COMPLETED AS OF YET)
   ```agda
-  data _<_ : ℤ → ℤ → Set where
-    -<+ : ∀ {m n} → -[1+ m ] < + n
-    -<- : ∀ {m n} → (n<m : n ℕ.< m) → -[1+ m ] < -[1+ n ]
-    +<+ : ∀ {m n} → (m<n : m ℕ.< n) → + m < + n
+  Function.Equivalence
+  Function.Equality
+  Function.Bijection
+  Function.Injection
+  Function.Surjection
+  Function.LeftInverse
   ```
-  which should allow many implicit parameters which previously had
-  to be given explicitly to be removed.
 
-* All proofs involving `_<_` have been updated correspondingly
+#### Re-implementation of `Data.Bin`
 
-* For backwards compatibility the old relations still exist as primed versions
-  `_<′_` as do all the old proofs, e.g. `+-monoˡ-<` has become `+-monoˡ-<′`,
-  but these have all been deprecated and may be removed in some future version.
-
-#### Other
-
-* `Data.Rational` now exports queries from `Data.Rational.Base` instead of
-  from `Data.Nat.Base`.
-
-Non-backwards compatible changes
---------------------------------
-
-* The function `gcd` in `Data.Nat.GCD` has been reimplemented so it is much
-  faster when compiled. The function `gcd` now has type `ℕ → ℕ → ℕ`. The old
-  function of type `(m n : ℕ) → ∃ λ d → GCD m n d` has been renamed `mkGCD`,
-  and `gcd′` in `Data.Nat.Coprimality` has been renamed `mkGCD′`. All other
-  functionality is untouched.
+* `Data/Bin.agda` and `Data.Bin/*.agda`  of lib-1.0 are removed,
+  added new `Data.Bin.Base, Data.Bin.Properties`.
+  This total change of the Bin part is done for the following reasons.
+  1) Many necessary functions and proofs are added.
+  2) After this has been done, the author noticed (decided) that the whole
+   thing is implemented much simpler with using another representation for Bin:
+   the one with certain three constructors. This representation is taken
+   (with renaming the constructors) from the letter by Martin Escardo to the
+   e-mail list. The referred code (of 2016) resides on
+   http://www.cs.bham.ac.uk/~mhe/agda-new/BinaryNaturals.html
 
 New modules
 -----------
+The following new modules have been added to the library:
 
 * The following new modules have been added to the library:
   ```
-  Algebra.Constructs.LiftedChoice
+  Algebra.Properties.Semigroup
+  Algebra.Properties.CommutativeSemigroup
 
-  Category.Monad.Reader
+  Data.Bin
+  Data.Bin.Base
+  Data.Bin.Properties
 
-  Data.AVL.NonEmpty
-  Data.AVL.NonEmpty.Propositional
+  Function.Definitions
+  Function.Packages
+  Function.Structures
 
-  Data.List.Membership.Propositional.Properties.WithK
-
-  Data.List.Relation.Binary.Disjoint.Propositional
-  Data.List.Relation.Binary.Disjoint.Setoid
-  Data.List.Relation.Binary.Disjoint.Setoid.Properties
-
-  Data.List.Relation.Binary.Permutation.Setoid
-  Data.List.Relation.Binary.Permutation.Homogeneous
-
-  Data.List.Relation.Unary.AllPairs
-  Data.List.Relation.Unary.AllPairs.Properties
-  Data.List.Relation.Unary.Unique.Propositional
-  Data.List.Relation.Unary.Unique.Propositional.Properties
-  Data.List.Relation.Unary.Unique.Setoid
-  Data.List.Relation.Unary.Unique.Setoid.Properties
-
-  Data.Nat.Induction
-  Data.Fin.Induction
-
-  Data.Product.Nary.NonDependent
-  Function.Nary.NonDependent
-  Relation.Nary
-
-  Data.Sign.Base
-
-  Data.These.Base
-
-  Data.Unit.Properties
-
-  Data.Trie
-  Data.Trie.NonEmpty
-
-  Relation.Binary.Construct.Closure.Equivalence.Properties
-  Relation.Binary.Rewriting
-
-  Relation.Nullary.Decidable.Core
+  Relation.Binary.Properties.Setoid
   ```
 
-* The function `#_` has been moved from `Data.Fin.Base` to `Data.Fin`
-  to break dependency cycles following the introduction of the module
-  `Data.Product.N-ary.Heterogeneous`.
+Relocated modules
+-----------------
+The following modules have been moved as part of a drive to improve
+usability and consistency across the library. The old modules still exist and
+therefore all existing code should still work, however they have been deprecated
+and, although not anticipated any time soon, they may eventually
+be removed in some future release of the library. After the next release of Agda
+automated warnings will be attached to these modules to discourage their use.
 
-Deprecated features
--------------------
+
+Deprecated names
+----------------
 The following deprecations have occurred as part of a drive to improve
 consistency across the library. The deprecated names still exist and
 therefore all existing code should still work, however use of the new names
 is encouraged. Although not anticipated any time soon, they may eventually
-be removed in some future release of the library. Automated warnings have
-been attached to all deprecated names.
+be removed in some future release of the library. Automated warnings are
+attached to all deprecated names to discourage their use.
 
-#### Modules
-
-* The induction machinery for naturals was commonly held to be one of the hardest
-  modules to find in the library. Therefore the module `Induction.Nat` has been
-  split into two new modules: `Data.Nat.Induction` and `Data.Fin.Induction`.
-  This should improve findability and better matches the design of the rest of
-  the library. The new modules also export `Acc` and `acc` meaning there is no
-  need to import `Data.Induction.WellFounded`.  The old module `Induction.Nat`
-  still exists for backwards compatibility but is deprecated.
-
-* The module `Record` has been moved to `Data.Record`. The old module still
-  exists but has been deprecated.
-
-* The module `Universe` has been split into `Data.Universe` and
-  `Data.Universe.Indexed`. In the latter `Indexed-universe` has been
-  renamed to `IndexedUniverse` to better follow the library conventions. The
-  old module still exists exporting the old names, but has been deprecated.
-
-* The `Data.Product.N-ary` modules have been deprecated and their content
-  moved to `Data.Vec.Recursive` to make place for properly heterogeneous
-  n-ary products in `Data.Product.Nary`.
-
-#### Names
-
-* In `Relation.Binary.Core`:
-  ```agdas
-  Conn  ↦  Connex
-  ```
-
-* In `Codata.Stream.Properties`:
+* In `Data.Integer.Properties`:
   ```agda
-  repeat-ap-identity  ↦  ap-repeatˡ
-  ap-repeat-identity  ↦  ap-repeatʳ
-  ap-repeat-commute   ↦  ap-repeat
-  map-repeat-commute  ↦  map-repeat
-  ```
-
-* In `Data.Bool` (new names in `Data.Bool.Properties`):
-  ```agda
-  decSetoid   ↦  ≡-decSetoid
-  ```
-
-* In `Data.Fin.Properties` the operator `_+′_` has been deprecated.
-
-* In `Data.Nat.Divisibility`:
-  ```agda
-  poset   ↦  ∣-poset
-  *-cong  ↦  *-monoʳ-∣
-  /-cong  ↦  *-cancelˡ-∣
+  [1+m]*n≡n+m*n ↦ suc-*
   ```
 
 * In `Data.Nat.Properties`:
   ```agda
-  m≢0⇒suc[pred[m]]≡m  ↦  suc[pred[n]]≡n
-
-  i+1+j≢i             ↦  m+1+n≢m
-  i+j≡0⇒i≡0           ↦  m+n≡0⇒m≡0
-  i+j≡0⇒j≡0           ↦  m+n≡0⇒n≡0
-  i+1+j≰i             ↦  m+1+n≰m
-  i*j≡0⇒i≡0∨j≡0       ↦  m*n≡0⇒m≡0∨n≡0
-  i*j≡1⇒i≡1           ↦  m*n≡1⇒m≡1
-  i*j≡1⇒j≡1           ↦  m*n≡1⇒n≡1
-  i^j≡0⇒i≡0           ↦  m^n≡0⇒m≡0
-  i^j≡1⇒j≡0∨i≡1       ↦  m^n≡1⇒n≡0∨m≡1
-  [i+j]∸[i+k]≡j∸k     ↦  [m+n]∸[m+o]≡n∸o
-
-  n≡m⇒∣n-m∣≡0         ↦  m≡n⇒∣m-n∣≡0
-  ∣n-m∣≡0⇒n≡m         ↦  ∣m-n∣≡0⇒m≡n
-  ∣n-m∣≡n∸m⇒m≤n       ↦  ∣m-n∣≡m∸n⇒n≤m
-  ∣n-n+m∣≡m           ↦  ∣m-m+n∣≡n
-  ∣n+m-n+o∣≡∣m-o|     ↦  ∣m+n-m+o∣≡∣n-o|
-  n∸m≤∣n-m∣           ↦  m∸n≤∣m-n∣
-  ∣n-m∣≤n⊔m           ↦  ∣m-n∣≤m⊔n
-
-  n≤m+n               ↦  m≤n+m
-  n≤m+n∸m             ↦  m≤n+m∸n
-  ∣n-m∣≡[n∸m]∨[m∸n]   ↦  ∣m-n∣≡[m∸n]∨[n∸m]
-  ```
-  Note that in the case of the last three proofs, the order of the
-  arguments will need to be swapped.
-
-* In `Data.Unit` (new names in `Data.Unit.Properties`):
-  ```agda
-  setoid        ↦ ≡-setoid
-  decSetoid     ↦ ≡-decSetoid
-  total         ↦ ≤-total
-  poset         ↦ ≤-poset
-  decTotalOrder ↦ ≤-decTotalOrder
-  ```
-
-* In `Data.Unit` the proof `preorder` in has also been deprecated, but
-  as it erroneously proved that `_≡_` rather than `_≤_` is a preorder
-  with respect to `_≡_` it does not have a new name in `Data.Unit.Properties`.
-
-* In `Foreign.Haskell` the terms `Unit` and `unit` have been deprecated in
-  favour of `⊤` and `tt` from `Data.Unit`, as it turns out that the latter
-  have been automatically mapped to the Haskell equivalent for quite some time.
-
-* In `Reflection`:
-  ```agda
-  returnTC ↦ return
-  ```
-
-* Renamed functions in `Data.Char.Base` and the corresponding property
-  in `Data.Char.Properties`:
-  ```agda
-  fromNat         ↦ fromℕ
-  toNat           ↦ toℕ
-  toNat-injective ↦ toℕ-injective
-  ```
-
-* In `Data.(Char/String).Properties`:
-  ```agda
-  setoid           ↦ ≡-setoid
-  decSetoid        ↦ ≡-decSetoid
-  strictTotalOrder ↦ <-strictTotalOrder-≈
-  ```
-
-* In `Data.Vec.Properties`:
-  ```agda
-  lookup-++-inject+ ↦ lookup-++ˡ
-  lookup-++-+′      ↦ lookup-++ʳ
-  ```
-
-* In `Data.Product.Relation.Binary.Pointwise.NonDependent`:
-  ```agda
-  ≡?×≡?⇒≡? ↦ Data.Product.Properties.≡-dec
+  +-*-suc ↦ *-suc
   ```
 
 Other minor additions
 ---------------------
 
-* Added new record to `Algebra`:
+* Added new proof to `Data.Integer.Properties`:
   ```agda
-  record SelectiveMagma c ℓ : Set (suc (c ⊔ ℓ))
+  *-suc : m * sucℤ n ≡ m + m * n
   ```
 
-* Added new record to `Algebra.Structure`:
+* Added new proof to `Data.Nat.Properties`:
   ```agda
-  record IsSelectiveMagma (∙ : Op₂ A) : Set (a ⊔ ℓ)
+  even≢odd : ∀ m n → 2 * m ≢ suc (2 * n)
+  0≢1+n    : ∀ {n} → 0 ≢ suc n
+  n<1+n    : ∀ {n} → n < suc n
   ```
 
-* Added new proofs to `Codata.Stream.Properties`:
+* Added functions to extract the universe level from a type and a term.
   ```agda
-  splitAt-repeat-identity : splitAt n (repeat a) ≡ (Vec.replicate a , repeat a)
-  replicate-repeat        : i ⊢ List.replicate n a ++ repeat a ≈ repeat a
-  cycle-replicate         : i ⊢ cycle (List⁺.replicate n n≢0 a) ≈ repeat a
-  map-cycle               : i ⊢ map f (cycle as) ≈ cycle (List⁺.map f as)
-  map-⁺++                 : i ⊢ map f (as ⁺++ xs) ≈ List⁺.map f as ⁺++ Thunk.map (map f) xs
-  map-++                  : i ⊢ map f (as ++ xs) ≈ List.map f as ++ map f xs
-  ```
-
-* Added new function to `Data.AVL.Indexed`:
-  ```agda
-  toList : Tree V l u h → List (K& V)
-  ```
-
-* Added new relations to `Data.Bool`:
-  ```agda
-  _≤_ : Rel Bool 0ℓ
-  _<_ : Rel Bool 0ℓ
-  ```
-
-* Added new proofs to `Data.Bool.Properties`:
-  ```agda
-  ≡-setoid          : Setoid 0ℓ 0ℓ
-
-  ≤-reflexive       : _≡_ ⇒ _≤_
-  ≤-refl            : Reflexive _≤_
-  ≤-antisym         : Antisymmetric _≡_ _≤_
-  ≤-trans           : Transitive _≤_
-  ≤-total           : Total _≤_
-  _≤?_              : Decidable _≤_
-  ≤-minimum         : Minimum _≤_ false
-  ≤-maximum         : Maximum _≤_ true
-  ≤-irrelevant      : B.Irrelevant _≤_
-  ≤-isPreorder      : IsPreorder _≡_ _≤_
-  ≤-isPartialOrder  : IsPartialOrder _≡_ _≤_
-  ≤-isTotalOrder    : IsTotalOrder _≡_ _≤_
-  ≤-isDecTotalOrder : IsDecTotalOrder _≡_ _≤_
-  ≤-poset           : Poset 0ℓ 0ℓ 0ℓ
-  ≤-preorder        : Preorder 0ℓ 0ℓ 0ℓ
-  ≤-totalOrder      : TotalOrder 0ℓ 0ℓ 0ℓ
-  ≤-decTotalOrder   : DecTotalOrder 0ℓ 0ℓ 0ℓ
-
-  <-irrefl               : Irreflexive _≡_ _<_
-  <-asym                 : Asymmetric _<_
-  <-trans                : Transitive _<_
-  <-transʳ               : Trans _≤_ _<_ _<_
-  <-transˡ               : Trans _<_ _≤_ _<_
-  <-cmp                  : Trichotomous _≡_ _<_
-  _<?_                   : Decidable _<_
-  <-resp₂-≡              : _<_ Respects₂ _≡_
-  <-irrelevant           : B.Irrelevant _<_
-  <-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
-  <-isStrictTotalOrder   : IsStrictTotalOrder _≡_ _<_
-  <-strictPartialOrder   : StrictPartialOrder 0ℓ 0ℓ 0ℓ
-  <-strictTotalOrder     : StrictTotalOrder 0ℓ 0ℓ 0ℓ
-  ```
-
-* Added new definitions to `Data.Char.Base`:
-  ```agda
-  _≈_ : Rel Char 0ℓ
-  _<_ : Rel Char 0ℓ
-  ```
-
-* Added new properties to `Data.Char.Properties`:
-  ```agda
-  ≈⇒≡         : _≈_ ⇒ _≡_
-  ≈-reflexive : _≡_ ⇒ _≈_
-  ≈-refl      : Reflexive _≈_
-  ≈-sym       : Symmetric _≈_
-  ≈-trans     : Transitive _≈_
-  ≈-subst     : ∀ {ℓ} → Substitutive _≈_ ℓ
-  _≈?_        : Decidable _≈_
-
-  ≈-isEquivalence    : IsEquivalence _≈_
-  ≈-setoid           : Setoid _ _
-  ≈-isDecEquivalence : IsDecEquivalence _≈_
-  ≈-decSetoid        : DecSetoid _ _
-
-  _<?_ : Decidable _<_
-  ```
-
-* Added new function to `Data.Digit`:
-  ```agda
-  toNatDigits : (base : ℕ) {base≤16 : True (1 ≤? base)} → ℕ → List ℕ
-  ```
-
-* Added new pattern synonyms to `Data.Integer`:
-  ```agda
-  pattern +0       = + 0
-  pattern +[1+_] n = + (suc n)
-  ```
-
-* Added new proofs to `Data.Integer.Properties`:
-  ```agda
-  ≡-setoid       : Setoid 0ℓ 0ℓ
-  ≤-totalOrder   : TotalOrder 0ℓ 0ℓ 0ℓ
-  _<?_           : Decidable _<_
-
-  +[1+-injective : +[1+ m ] ≡ +[1+ n ] → m ≡ n
-  drop‿+<+       : + m < + n → m ℕ.< n
-  drop‿-<-       : -[1+ m ] < -[1+ n ] → n ℕ.< m
-
-  -◃<+◃          : 0 < m → Sign.- ◃ m < Sign.+ ◃ n
-  +◃≮-           : Sign.+ ◃ m ≮ -[1+ n ]
-  +◃-mono-<      : m ℕ.< n → Sign.+ ◃ m < Sign.+ ◃ n
-  +◃-cancel-<    : Sign.+ ◃ m < Sign.+ ◃ n → m ℕ.< n
-  neg◃-cancel-<  : Sign.- ◃ m < Sign.- ◃ n → n ℕ.< m
-
-  m⊖n≤m          : m ⊖ n ≤ + m
-  m⊖n<1+m        : m ⊖ n < +[1+ m ]
-  m⊖1+n<m        : m ⊖ suc n < + m
-  -[1+m]≤n⊖m+1   : -[1+ m ] ≤ n ⊖ suc m
-  ⊖-monoʳ->-<    : (p ⊖_) Preserves ℕ._>_ ⟶ _<_
-  ⊖-monoˡ-<      : (_⊖ p) Preserves ℕ._<_ ⟶ _<_
-
-  *-distrib-+         : _*_ DistributesOver _+_
-  *-monoˡ-<-pos       : (+[1+ n ] *_) Preserves _<_ ⟶ _<_
-  *-monoʳ-<-pos       : (_* +[1+ n ]) Preserves _<_ ⟶ _<_
-  *-cancelˡ-<-non-neg : + m * n < + m * o → n < o
-  *-cancelʳ-<-non-neg : m * + o < n * + o → m < n
-  ```
-
-* Added new proofs to `Data.List.Properties`:
-  ```agda
-  foldr-forcesᵇ    : (P (f x y) → P x × P y) → P (foldr f e xs) → All P xs
-  foldr-preservesᵇ : (P x → P y → P (f x y)) → P e → All P xs   → P (foldr f e xs)
-  foldr-preservesʳ : (P y → P (f x y))       → P e              → P (foldr f e xs)
-  foldr-preservesᵒ : (P x ⊎ P y → P (f x y)) → P e ⊎ Any P xs   → P (foldr f e xs)
-  ```
-
-* Defined a new utility in `Data.List.Relation.Binary.Permutation.Inductive.Properties`:
-  ```agda
-  shifts : xs ++ ys ++ zs ↭ ys ++ xs ++ zs
-  ```
-
-* Added new proof to `Data.List.Relation.Binary.Sublist.Heterogeneous.Properties`:
-  ```agda
-  concat⁺ : Sublist (Sublist R) ass bss → Sublist R (concat ass) (concat bss)
-  ```
-
-* Added new proof to `Data.List.Membership.Setoid.Properties`:
-  ```agda
-  unique⇒irrelevant : B.Irrelevant _≈_ → Unique xs → U.Irrelevant (_∈ xs)
-  ```
-
-* Added new proofs to `Data.List.Relation.Binary.Sublist.Propositional.Properties`:
-  ```agda
-  All-resp-⊆ : (All P) Respects (flip _⊆_)
-  Any-resp-⊆ : (Any P) Respects _⊆_
-  ```
-
-* Added new operations to `Data.List.Relation.Unary.All`:
-  ```agda
-  lookupAny  : All P xs → (i : Any Q xs) → (P ∩ Q) (lookup i)
-  lookupWith : ∀[ P ⇒ Q ⇒ R ] → All P xs → (i : Any Q xs) → R (lookup i)
-  uncons     : All P (x ∷ xs) → P x × All P xs
-  reduce     : (f : ∀ {x} → P x → B) → ∀ {xs} → All P xs → List B
-  construct  : (f : B → ∃ P) (xs : List B) → ∃ (All P)
-  fromList   : (xs : List (∃ P)) → All P (List.map proj₁ xs)
-  toList     : All P xs → List (∃ P)
-  self       : All (const A) xs
-  ```
-
-* Added new proofs to `Data.List.Relation.Unary.All.Properties`:
-  ```agda
-  All-swap        : All (λ xs → All (xs ~_) ys) xss → All (λ y → All (_~ y) xss) ys
-
-  applyDownFrom⁺₁ : (∀ {i} → i < n → P (f i)) → All P (applyDownFrom f n)
-  applyDownFrom⁺₂ : (∀ i → P (f i)) → All P (applyDownFrom f n)
-  ```
-
-* Added new proofs to `Data.List.Relation.Unary.Any.Properties`:
-  ```agda
-  Any-Σ⁺ʳ : (∃ λ x → Any (_~ x) xs) → Any (∃ ∘ _~_) xs
-  Any-Σ⁻ʳ : Any (∃ ∘ _~_) xs → ∃ λ x → Any (_~ x) xs
-  gmap : P ⋐ Q ∘ f → Any P ⋐ Any Q ∘ map f
-  ```
-
-* Added new functions to `Data.Maybe.Base`:
-  ```agda
-  ap        : Maybe (A → B) → Maybe A → Maybe B
-  _>>=_     : Maybe A → (A → Maybe B) → Maybe B
-  ```
-
-* Added new proofs to `Data.Nat.GCD`:
-  ```agda
-  gcd-comm     : gcd m n ≡ gcd n m
-  gcd[m,n]∣m   : gcd m n ∣ m
-  gcd[m,n]∣n   : gcd m n ∣ n
-  gcd-greatest : c ∣ m → c ∣ n → c ∣ gcd m n
-  gcd≢0        : m ≢ 0 ⊎ n ≢ 0 → gcd m n ≢ 0
-  ```
-
-* Added new proofs to `Data.Nat.Divisibility`:
-  ```agda
-  ∣n∣m%n⇒∣m : d ∣ suc n → d ∣ (m % suc n) → d ∣ m
-  %-presˡ-∣ : d ∣ m → d ∣ suc n → d ∣ (m % suc n)
-  ```
-
-* Added new operator and proofs to `Data.Nat.DivMod`:
-  ```agda
-  _/_ = _div_
-
-  a%n≤a       : a % (suc n) ≤ a
-  a≤n⇒a%n≡a   : a ≤ n → a % suc n ≡ a
-  ∣n∣m%n⇒∣m   : d ∣ suc n → d ∣ (m % suc n) → d ∣ m
-  %-remove-+ˡ : a % suc n ≡ 0 → (a + b) % suc n ≡ b % suc n
-  %-remove-+ʳ : b % suc n ≡ 0 → (a + b) % suc n ≡ a % suc n
-  %-presˡ-∣   : d ∣ m → d ∣ suc n → d ∣ (m % suc n)
-
-  [a/n]*n≤a   : (a / suc n) * suc n ≤ a
-  ```
-  Additionally the `{≢0 : False (divisor ℕ.≟ 0)}` argument to all the
-  division and modulus functions has been marked irrelevant. This means
-  that the operations `_%_`, `_/_` etc. can now be used with `cong`.
-
-* Added new proofs to `Data.Nat.Properties`:
-  ```agda
-  ≤-<-connex : Connex _≤_ _<_
-  ≥->-connex : Connex _≥_ _>_
-  <-≤-connex : Connex _<_ _≤_
-  >-≥-connex : Connex _>_ _≥_
-
-  1+n≢0     : suc n ≢ 0
-  <ᵇ⇒<      : T (m <ᵇ n) → m < n
-  <⇒<ᵇ      : m < n → T (m <ᵇ n)
-  n≢0⇒n>0   : n ≢ 0 → n > 0
-  m≤m*n     : 0 < n → m ≤ m * n
-  m<m*n     : 0 < m → 1 < n → m < m * n
-  m∸n≢0⇒n<m : m ∸ n ≢ 0 → n < m
-
-  *-cancelʳ-< : RightCancellative _<_ _*_
-  *-cancelˡ-< : LeftCancellative _<_ _*_
-  *-cancel-<  : Cancellative _<_ _*_
-  ```
-
-* Added new functions to `Data.Product`:
-  ```agda
-  zip′ : (A → B → C) → (D → E → F) → A × D → B × E → C × F
-  ```
-
-* Added new proofs to `Data.Product.Properties`:
-  ```agda
-  ,-injectiveʳ : (a , b) ≡ (c , d) → b ≡ d
-  ,-injective : (a , b) ≡ (c , d) → a ≡ c × b ≡ d
-  ≡-dec : Decidable {A} _≡_ → Decidable {B} _≡_ → Decidable {A × B} _≡_
-  ```
-
-* Added new relations to `Data.Rational.Base`:
-  ```agda
-  _<_ : Rel ℚ 0ℓ
-  _≥_ : Rel ℚ 0ℓ
-  _>_ : Rel ℚ 0ℓ
-  _≰_ : Rel ℚ 0ℓ
-  _≱_ : Rel ℚ 0ℓ
-  _≮_ : Rel ℚ 0ℓ
-  _≯_ : Rel ℚ 0ℓ
-  ```
-
-* Added new proofs and modules to `Data.Rational.Properties`:
-  ```agda
-  ≡-setoid     : Setoid 0ℓ 0ℓ
-  ≡-decSetoid  : DecSetoid 0ℓ 0ℓ
-
-  drop-*<*     : p < q → (↥ p ℤ.* ↧ q) ℤ.< (↥ q ℤ.* ↧ p)
-  <⇒≤          : _<_ ⇒ _≤_
-  <-irrefl     : Irreflexive _≡_ _<_
-  <-asym       : Asymmetric _<_
-  <-≤-trans    : Trans _<_ _≤_ _<_
-  ≤-<-trans    : Trans _≤_ _<_ _<_
-  <-trans      : Transitive _<_
-  _<?_         : Decidable _<_
-  <-cmp        : Trichotomous _≡_ _<_
-  <-irrelevant : Irrelevant _<_
-  <-respʳ-≡    : _<_ Respectsʳ _≡_
-  <-respˡ-≡    : _<_ Respectsˡ _≡_
-  <-resp-≡     : _<_ Respects₂ _≡_
-
-  <-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
-  <-isStrictTotalOrder   : IsStrictTotalOrder _≡_ _<_
-  <-strictPartialOrder   : StrictPartialOrder 0ℓ 0ℓ 0ℓ
-  <-strictTotalOrder     : StrictTotalOrder 0ℓ 0ℓ 0ℓ
-
-  module ≤-Reasoning
-  ```
-
-* Added new proofs to `Data.Sign.Properties`:
-  ```agda
-  ≡-setoid    : Setoid 0ℓ 0ℓ
-  ≡-decSetoid : DecSetoid 0ℓ 0ℓ
-  ```
-
-* Added new definitions to `Data.String.Base`:
-  ```agda
-  _≈_ : Rel String 0ℓ
-  _<_ : Rel String 0ℓ
-  ```
-
-* Added new properties to `Data.String.Properties`:
-  ```agda
-  ≈⇒≡         : _≈_ ⇒ _≡_
-  ≈-reflexive : _≡_ ⇒ _≈_
-  ≈-refl      : Reflexive _≈_
-  ≈-sym       : Symmetric _≈_
-  ≈-trans     : Transitive _≈_
-  ≈-subst     : ∀ {ℓ} → Substitutive _≈_ ℓ
-  _≈?_        : Decidable _≈_
-
-  ≈-isEquivalence    : IsEquivalence _≈_
-  ≈-setoid           : Setoid _ _
-  ≈-isDecEquivalence : IsDecEquivalence _≈_
-  ≈-decSetoid        : DecSetoid _ _
-
-  _<?_ : Decidable _<_
-  ```
-
-* The special term `Setω` is now exported by `Level`.
-
-* Added new types, functions and proofs to `Reflection`:
-  ```agda
-  Names             = List Name
-  Args A            = List (Arg A)
-
-  map-Arg           : (A → B) → Arg A → Arg B
-  map-Args          : (A → B) → Args A → Args B
-  map-Abs           : (A → B) → Abs A → Abs B
-
-  reduce            : Term → TC Term
-  declarePostulate  : Arg Name → Type → TC ⊤
-  commitTC          : TC ⊤
-  isMacro           : Name → TC Bool
-  withNormalisation : Bool → TC A → TC A
-  _>>=_             : TC A → (A → TC B) → TC B
-  _>>_              : TC A → TC B → TC B
-
-  assocˡ            : Associativity
-  assocʳ            : Associativity
-  non-assoc         : Associativity
-  unrelated         : Precedence
-  related           : Int → Precedence
-  fixity            : Associativity → Precedence → Fixity
-  getFixity         : Name → Fixity
-
-  vArg ty           = arg (arg-info visible relevant)   ty
-  hArg ty           = arg (arg-info hidden relevant)    ty
-  iArg ty           = arg (arg-info instance′ relevant) ty
-  vLam s t          = lam visible   (abs s t)
-  hLam s t          = lam hidden    (abs s t)
-  iLam s t          = lam instance′ (abs s t)
-  Π[_∶_]_ s a ty    = pi a (abs s ty)
-  vΠ[_∶_]_ s a ty   = Π[ s ∶ (vArg a) ] ty
-  hΠ[_∶_]_ s a ty   = Π[ s ∶ (hArg a) ] ty
-  iΠ[_∶_]_ s a ty   = Π[ s ∶ (iArg a) ] ty
-  ```
-
-* Defined `_≉_` as the negation of `_≈_` in `Relation.Binary`'s `Setoid`.
-
-* Added new definitions in `Relation.Binary.Core`:
-  ```agda
-  Universal _∼_    = ∀ x y → x ∼ y
-  Recomputable _~_ = ∀ {x y} → .(x ~ y) → x ~ y
-  ```
-
-* Added new proof to `Relation.Binary.Consequences`:
-  ```agda
-  dec⟶recomputable : Decidable R → Recomputable R
-  flip-Connex      : Connex P Q → Connex Q P
-  ```
-
-* Added new proofs to `Relation.Binary.Construct.Add.(Infimum/Supremum/Extrema).NonStrict`:
-  ```agda
-  ≤±-reflexive-≡         : (_≡_ ⇒ _≤_) → (_≡_ ⇒ _≤±_)
-  ≤±-antisym-≡           : Antisymmetric _≡_ _≤_ → Antisymmetric _≡_ _≤±_
-  ≤±-isPreorder-≡        : IsPreorder _≡_ _≤_ → IsPreorder _≡_ _≤±_
-  ≤±-isPartialOrder-≡    : IsPartialOrder _≡_ _≤_ → IsPartialOrder _≡_ _≤±_
-  ≤±-isDecPartialOrder-≡ : IsDecPartialOrder _≡_ _≤_ → IsDecPartialOrder _≡_ _≤±_
-  ≤±-isTotalOrder-≡      : IsTotalOrder _≡_ _≤_ → IsTotalOrder _≡_ _≤±_
-  ≤±-isDecTotalOrder-≡   : IsDecTotalOrder _≡_ _≤_ → IsDecTotalOrder _≡_ _≤±_
-  ```
-
-* Added new proofs to `Relation.Binary.Construct.Add.(Infimum/Supremum/Extrema).Strict`:
-  ```agda
-  <±-respˡ-≡                   : _<±_ Respectsˡ _≡_
-  <±-respʳ-≡                   : _<±_ Respectsʳ _≡_
-  <±-resp-≡                    : _<±_ Respects₂ _≡_
-  <±-cmp-≡                     : Trichotomous _≡_ _<_ → Trichotomous _≡_ _<±_
-  <±-irrefl-≡                  : Irreflexive _≡_ _<_ → Irreflexive _≡_ _<±_
-  <±-isStrictPartialOrder-≡    : IsStrictPartialOrder _≡_ _<_ → IsStrictPartialOrder _≡_ _<±_
-  <±-isDecStrictPartialOrder-≡ : IsDecStrictPartialOrder _≡_ _<_ → IsDecStrictPartialOrder _≡_ _<±_
-  <±-isStrictTotalOrder-≡      : IsStrictTotalOrder _≡_ _<_ → IsStrictTotalOrder _≡_ _<±_
-  ```
-
-* In `Relation.Binary.HeterogeneousEquality` the relation `_≅_` has
-  been generalised so that the types of the two equal elements need not
-  be at the same universe level.
-
-* Added new proof to `Relation.Binary.PropositionalEquality`:
-  ```
-  Congₙ  : ∀ n (f g : Arrows n as b) → Set _
-  congₙ  : ∀ n (f : Arrows n as b) → Congₙ n f f
-  Substₙ : ∀ n (f g : Arrows n as (Set r)) → Set _
-  substₙ : (f : Arrows n as (Set r)) → Substₙ n f f
-  ```
-
-* Added new proof to `Relation.Binary.PropositionalEquality.Core`:
-  ```agda
-  ≢-sym : Symmetric _≢_
-  ```
-
-* Added new proofs to `Relation.Nullary.Construct.Add.Point`:
-  ```agda
-  ≡-dec        : Decidable {A = A} _≡_ → Decidable {A = Pointed A} _≡_
-  []-injective : [ x ] ≡ [ y ] → x ≡ y
-  ```
-
-* Added new type and syntax to `Relation.Unary`:
-  ```agda
-  Recomputable P = ∀ {x} → .(P x) → P x
-  syntax Satisfiable P = ∃⟨ P ⟩
-  ```
-
-* Added new proof to `Relation.Unary.Consequences`:
-  ```agda
-  dec⟶recomputable : Decidable R → Recomputable R
-  ```
-
-* Added new alias definitions and modules for `Algebra.IdempotentCommutativeMonoid`
-  and `Algebra.Structures.IsIdempotentCommutativeMonoid`:
-  ```agda
-  BoundedLattice = IdempotentCommutativeMonoid
-  module BoundedLattice {c ℓ} (idempotentCommutativeMonoid : IdempotentCommutativeMonoid c ℓ)
-  IsBoundedLattice = IsIdempotentCommutativeMonoid
-  module IsBoundedLattice {∙ : Op₂ A}
-                          {ε : A}
-                          (isIdempotentCommutativeMonoid : IsIdempotentCommutativeMonoid ∙ ε)
-
-  ```
-
-* Added the definition for `Irrelevant` in `Relation.Nullary`:
-  ```agda
-  Irrelevant P = ∀ (p₁ p₂ : P) → p₁ ≡ p₂
-  ```
-
-* Added three lemmas in `Relation.Nullary.Decidable.Core` which constraints the output of
-  decision procedures:
-  ```agda
-  dec-yes     : (p? : Dec P) → P → ∃ λ p′ → p? ≡ yes p′
-  dec-no      : (p? : Dec P) → ¬ P → ∃ λ ¬p′ → p? ≡ no ¬p′
-  dec-yes-irr : (p? : Dec P) → Irrelevant P → (p : P) → p? ≡ yes p
+  levelOfType : ∀ {a} → Set a → Level
+  levelOfTerm : ∀ {a} {A : Set a} → A → Level
   ```

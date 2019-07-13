@@ -4,7 +4,7 @@
 -- Packages for types of functions
 ------------------------------------------------------------------------
 
--- These definitions should usually be accessed from `Function`.
+-- The contents of this file should usually be accessed from `Function`.
 
 -- Note that these packages differ from those found elsewhere in other
 -- library hierarchies as they take Setoids as parameters. This is
@@ -48,14 +48,17 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       cong        : f Preserves _≈₁_ ⟶ _≈₂_
       injective   : Injective f
 
+    isCongruent : IsCongruent f
+    isCongruent = record
+      { cong           = cong
+      ; isEquivalence₁ = isEquivalence From
+      ; isEquivalence₂ = isEquivalence To
+      }
+
     isInjection : IsInjection f
     isInjection = record
-      { isPreserving = record
-        { cong           = cong
-        ; isEquivalence¹ = isEquivalence From
-        ; isEquivalence² = isEquivalence To
-        }
-      ; injective    = injective
+      { isCongruent = isCongruent
+      ; injective   = injective
       }
 
 
@@ -65,14 +68,17 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       cong       : f Preserves _≈₁_ ⟶ _≈₂_
       surjective : Surjective f
 
+    isCongruent : IsCongruent f
+    isCongruent = record
+      { cong           = cong
+      ; isEquivalence₁ = isEquivalence From
+      ; isEquivalence₂ = isEquivalence To
+      }
+
     isSurjection : IsSurjection f
     isSurjection = record
-      { isPreserving = record
-        { cong           = cong
-        ; isEquivalence¹ = isEquivalence From
-        ; isEquivalence² = isEquivalence To
-        }
-      ; surjective   = surjective
+      { isCongruent = isCongruent
+      ; surjective  = surjective
       }
 
 
@@ -114,33 +120,36 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
     field
       f     : A → B
       g     : B → A
-      cong¹ : f Preserves _≈₁_ ⟶ _≈₂_
-      cong² : g Preserves _≈₂_ ⟶ _≈₁_
+      cong₁ : f Preserves _≈₁_ ⟶ _≈₂_
+      cong₂ : g Preserves _≈₂_ ⟶ _≈₁_
 
 
   record LeftInverse : Set (a ⊔ b ⊔ suc (ℓ₁ ⊔ ℓ₂)) where
     field
       f         : A → B
       g         : B → A
-      cong¹     : f Preserves _≈₁_ ⟶ _≈₂_
-      cong²     : g Preserves _≈₂_ ⟶ _≈₁_
+      cong₁     : f Preserves _≈₁_ ⟶ _≈₂_
+      cong₂     : g Preserves _≈₂_ ⟶ _≈₁_
       inverseˡ  : Inverseˡ f g
+
+    isCongruent : IsCongruent f
+    isCongruent = record
+      { cong           = cong₁
+      ; isEquivalence₁ = isEquivalence From
+      ; isEquivalence₂ = isEquivalence To
+      }
 
     isLeftInverse : IsLeftInverse f g
     isLeftInverse = record
-      { isPreserving = record
-        { cong           = cong¹
-        ; isEquivalence¹ = isEquivalence From
-        ; isEquivalence² = isEquivalence To
-        }
-      ; cong²        = cong²
-      ; inverseˡ     = inverseˡ
+      { isCongruent = isCongruent
+      ; cong₂       = cong₂
+      ; inverseˡ    = inverseˡ
       }
 
     equivalence : Equivalence
     equivalence = record
-      { cong¹ = cong¹
-      ; cong² = cong²
+      { cong₁ = cong₁
+      ; cong₂ = cong₂
       }
 
 
@@ -148,25 +157,28 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
     field
       f         : A → B
       g         : B → A
-      cong¹     : f Preserves _≈₁_ ⟶ _≈₂_
-      cong²     : g Preserves _≈₂_ ⟶ _≈₁_
+      cong₁     : f Preserves _≈₁_ ⟶ _≈₂_
+      cong₂     : g Preserves _≈₂_ ⟶ _≈₁_
       inverseʳ  : Inverseʳ f g
+
+    isCongruent : IsCongruent f
+    isCongruent = record
+      { cong           = cong₁
+      ; isEquivalence₁ = isEquivalence From
+      ; isEquivalence₂ = isEquivalence To
+      }
 
     isRightInverse : IsRightInverse f g
     isRightInverse = record
-      { isPreserving = record
-        { cong           = cong¹
-        ; isEquivalence¹ = isEquivalence From
-        ; isEquivalence² = isEquivalence To
-        }
-      ; cong²        = cong²
-      ; inverseʳ     = inverseʳ
+      { isCongruent = isCongruent
+      ; cong₂       = cong₂
+      ; inverseʳ    = inverseʳ
       }
 
     equivalence : Equivalence
     equivalence = record
-      { cong¹ = cong¹
-      ; cong² = cong²
+      { cong₁ = cong₁
+      ; cong₂ = cong₂
       }
 
 
@@ -174,8 +186,8 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
     field
       f         : A → B
       f⁻¹       : B → A
-      cong¹     : f Preserves _≈₁_ ⟶ _≈₂_
-      cong²     : f⁻¹ Preserves _≈₂_ ⟶ _≈₁_
+      cong₁     : f Preserves _≈₁_ ⟶ _≈₂_
+      cong₂     : f⁻¹ Preserves _≈₂_ ⟶ _≈₁_
       inverse   : Inverseᵇ f f⁻¹
 
     inverseˡ : Inverseˡ f f⁻¹
@@ -186,15 +198,15 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
 
     leftInverse : LeftInverse
     leftInverse = record
-      { cong¹    = cong¹
-      ; cong²    = cong²
+      { cong₁    = cong₁
+      ; cong₂    = cong₂
       ; inverseˡ = inverseˡ
       }
 
     rightInverse : RightInverse
     rightInverse = record
-      { cong¹    = cong¹
-      ; cong²    = cong²
+      { cong₁    = cong₁
+      ; cong₂    = cong₂
       ; inverseʳ = inverseʳ
       }
 
@@ -213,19 +225,19 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
 infix 3 _↣_ _↠_ _⤖_ _⇔_ _↞_ _↔_
 
 _↣_ : Set a → Set b → Set _
-From ↣ To = Injection (≡-setoid From) (≡-setoid To)
+A ↣ B = Injection (≡-setoid A) (≡-setoid B)
 
 _↠_ : Set a → Set b → Set _
-From ↠ To = Surjection (≡-setoid From) (≡-setoid To)
+A ↠ B = Surjection (≡-setoid A) (≡-setoid B)
 
 _⤖_ : Set a → Set b → Set _
-From ⤖ To = Bijection (≡-setoid From) (≡-setoid To)
+A ⤖ B = Bijection (≡-setoid A) (≡-setoid B)
 
 _⇔_ : Set a → Set b → Set _
-From ⇔ To = Equivalence (≡-setoid From) (≡-setoid To)
+A ⇔ B = Equivalence (≡-setoid A) (≡-setoid B)
 
 _↞_ : Set a → Set b → Set _
-From ↞ To = LeftInverse (≡-setoid From) (≡-setoid To)
+A ↞ B = LeftInverse (≡-setoid A) (≡-setoid B)
 
 _↔_ : Set a → Set b → Set _
-From ↔ To = Inverse (≡-setoid From) (≡-setoid To)
+A ↔ B = Inverse (≡-setoid A) (≡-setoid B)

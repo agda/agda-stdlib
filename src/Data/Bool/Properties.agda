@@ -544,7 +544,7 @@ true  <? _     = no  (λ())
 ∨-∧-isDistributiveLattice : IsDistributiveLattice _∨_ _∧_
 ∨-∧-isDistributiveLattice = record
   { isLattice    = ∨-∧-isLattice
-  ; ∨-∧-distribʳ = ∨-distribʳ-∧
+  ; ∨-distribʳ-∧ = ∨-distribʳ-∧
   }
 
 ∨-∧-distributiveLattice : DistributiveLattice 0ℓ 0ℓ
