@@ -90,3 +90,9 @@ Other minor additions
   0≢1+n    : ∀ {n} → 0 ≢ suc n
   n<1+n    : ∀ {n} → n < suc n
   ```
+
+* Added functions to extract the universe level from a type and a term.
+  ```agda
+  levelOfType : ∀ {a} → Set a → Level
+  levelOfTerm : ∀ {a} {A : Set a} → A → Level
+  ```
