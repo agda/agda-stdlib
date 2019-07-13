@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Relation.Binary.Reasoning.Setoid</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Convenient syntax for reasoning with a setoid</a>
+<a id="155" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="229" class="Comment">-- Example use:</a>
+
+<a id="246" class="Comment">-- n*0≡0 : ∀ n → n * 0 ≡ 0</a>
+<a id="273" class="Comment">-- n*0≡0 zero    = refl</a>
+<a id="297" class="Comment">-- n*0≡0 (suc n) = begin</a>
+<a id="322" class="Comment">--   suc n * 0 ≈⟨ refl ⟩</a>
+<a id="347" class="Comment">--   n * 0 + 0 ≈⟨ ... ⟩</a>
+<a id="371" class="Comment">--   n * 0     ≈⟨ n*0≡0 n ⟩</a>
+<a id="399" class="Comment">--   0         ∎</a>
+
+<a id="417" class="Comment">-- Module `≡-Reasoning` in `Relation.Binary.PropositionalEquality`</a>
+<a id="484" class="Comment">-- is recommended for equational reasoning when the underlying equality is</a>
+<a id="559" class="Comment">-- `_≡_`.</a>
+
+<a id="570" class="Symbol">{-#</a> <a id="574" class="Keyword">OPTIONS</a> <a id="582" class="Pragma">--without-K</a> <a id="594" class="Pragma">--safe</a> <a id="601" class="Symbol">#-}</a>
+
+<a id="606" class="Keyword">open</a> <a id="611" class="Keyword">import</a> <a id="618" href="Relation.Binary.html" class="Module">Relation.Binary</a>
+
+<a id="635" class="Keyword">module</a> <a id="642" href="Relation.Binary.Reasoning.Setoid.html" class="Module">Relation.Binary.Reasoning.Setoid</a> <a id="675" class="Symbol">{</a><a id="676" href="Relation.Binary.Reasoning.Setoid.html#676" class="Bound">s₁</a> <a id="679" href="Relation.Binary.Reasoning.Setoid.html#679" class="Bound">s₂</a><a id="681" class="Symbol">}</a> <a id="683" class="Symbol">(</a><a id="684" href="Relation.Binary.Reasoning.Setoid.html#684" class="Bound">S</a> <a id="686" class="Symbol">:</a> <a id="688" href="Relation.Binary.html#1970" class="Record">Setoid</a> <a id="695" href="Relation.Binary.Reasoning.Setoid.html#676" class="Bound">s₁</a> <a id="698" href="Relation.Binary.Reasoning.Setoid.html#679" class="Bound">s₂</a><a id="700" class="Symbol">)</a> <a id="702" class="Keyword">where</a>
+
+<a id="709" class="Keyword">open</a> <a id="714" href="Relation.Binary.html#1970" class="Module">Setoid</a> <a id="721" href="Relation.Binary.Reasoning.Setoid.html#684" class="Bound">S</a>
+
+<a id="724" class="Comment">------------------------------------------------------------------------</a>
+<a id="797" class="Comment">-- Publicly re-export base contents</a>
+
+<a id="834" class="Keyword">open</a> <a id="839" class="Keyword">import</a> <a id="846" href="Relation.Binary.Reasoning.Base.Single.html" class="Module">Relation.Binary.Reasoning.Base.Single</a> <a id="884" href="Relation.Binary.html#2059" class="Field Operator">_≈_</a> <a id="888" href="Relation.Binary.Core.html#7020" class="Function">refl</a> <a id="893" href="Relation.Binary.Core.html#7072" class="Function">trans</a> <a id="899" class="Keyword">public</a>
+  <a id="908" class="Keyword">renaming</a> <a id="917" class="Symbol">(</a>_∼⟨_⟩_ <a id="925" class="Symbol">to</a> _≈⟨_⟩_<a id="934" class="Symbol">)</a>
+
+<a id="937" class="Keyword">infixr</a> <a id="944" class="Number">2</a> <a id="946" href="Relation.Binary.Reasoning.Setoid.html#955" class="Function Operator">_≈˘⟨_⟩_</a>
+
+<a id="_≈˘⟨_⟩_"></a><a id="955" href="Relation.Binary.Reasoning.Setoid.html#955" class="Function Operator">_≈˘⟨_⟩_</a> <a id="963" class="Symbol">:</a> <a id="965" class="Symbol">∀</a> <a id="967" href="Relation.Binary.Reasoning.Setoid.html#967" class="Bound">x</a> <a id="969" class="Symbol">{</a><a id="970" href="Relation.Binary.Reasoning.Setoid.html#970" class="Bound">y</a> <a id="972" href="Relation.Binary.Reasoning.Setoid.html#972" class="Bound">z</a><a id="973" class="Symbol">}</a> <a id="975" class="Symbol">→</a> <a id="977" href="Relation.Binary.Reasoning.Setoid.html#970" class="Bound">y</a> <a id="979" href="Relation.Binary.html#2059" class="Field Operator">≈</a> <a id="981" href="Relation.Binary.Reasoning.Setoid.html#967" class="Bound">x</a> <a id="983" class="Symbol">→</a> <a id="985" href="Relation.Binary.Reasoning.Setoid.html#970" class="Bound">y</a> <a id="987" href="Relation.Binary.Reasoning.Base.Single.html#772" class="Datatype Operator">IsRelatedTo</a> <a id="999" href="Relation.Binary.Reasoning.Setoid.html#972" class="Bound">z</a> <a id="1001" class="Symbol">→</a> <a id="1003" href="Relation.Binary.Reasoning.Setoid.html#967" class="Bound">x</a> <a id="1005" href="Relation.Binary.Reasoning.Base.Single.html#772" class="Datatype Operator">IsRelatedTo</a> <a id="1017" href="Relation.Binary.Reasoning.Setoid.html#972" class="Bound">z</a>
+<a id="1019" href="Relation.Binary.Reasoning.Setoid.html#1019" class="Bound">x</a> <a id="1021" href="Relation.Binary.Reasoning.Setoid.html#955" class="Function Operator">≈˘⟨</a> <a id="1025" href="Relation.Binary.Reasoning.Setoid.html#1025" class="Bound">x≈y</a> <a id="1029" href="Relation.Binary.Reasoning.Setoid.html#955" class="Function Operator">⟩</a> <a id="1031" href="Relation.Binary.Reasoning.Setoid.html#1031" class="Bound">y∼z</a> <a id="1035" class="Symbol">=</a> <a id="1037" href="Relation.Binary.Reasoning.Setoid.html#1019" class="Bound">x</a> <a id="1039" href="Relation.Binary.Reasoning.Base.Single.html#925" class="Function Operator">≈⟨</a> <a id="1042" href="Relation.Binary.Core.html#7046" class="Function">sym</a> <a id="1046" href="Relation.Binary.Reasoning.Setoid.html#1025" class="Bound">x≈y</a> <a id="1050" href="Relation.Binary.Reasoning.Base.Single.html#925" class="Function Operator">⟩</a> <a id="1052" href="Relation.Binary.Reasoning.Setoid.html#1031" class="Bound">y∼z</a>
+</pre></body></html>

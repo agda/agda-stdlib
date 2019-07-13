@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Algebra.Construct.NaturalChoice.Max</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- The max operator derived from an arbitrary total order</a>
+<a id="164" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="238" class="Symbol">{-#</a> <a id="242" class="Keyword">OPTIONS</a> <a id="250" class="Pragma">--without-K</a> <a id="262" class="Pragma">--safe</a> <a id="269" class="Symbol">#-}</a>
+
+<a id="274" class="Keyword">open</a> <a id="279" class="Keyword">import</a> <a id="286" href="Relation.Binary.html" class="Module">Relation.Binary</a>
+
+<a id="303" class="Keyword">module</a> <a id="310" href="Algebra.Construct.NaturalChoice.Max.html" class="Module">Algebra.Construct.NaturalChoice.Max</a>
+  <a id="348" class="Symbol">{</a><a id="349" href="Algebra.Construct.NaturalChoice.Max.html#349" class="Bound">a</a> <a id="351" href="Algebra.Construct.NaturalChoice.Max.html#351" class="Bound">ℓ₁</a> <a id="354" href="Algebra.Construct.NaturalChoice.Max.html#354" class="Bound">ℓ₂</a><a id="356" class="Symbol">}</a> <a id="358" class="Symbol">(</a><a id="359" href="Algebra.Construct.NaturalChoice.Max.html#359" class="Bound">totalOrder</a> <a id="370" class="Symbol">:</a> <a id="372" href="Relation.Binary.html#8288" class="Record">TotalOrder</a> <a id="383" href="Algebra.Construct.NaturalChoice.Max.html#349" class="Bound">a</a> <a id="385" href="Algebra.Construct.NaturalChoice.Max.html#351" class="Bound">ℓ₁</a> <a id="388" href="Algebra.Construct.NaturalChoice.Max.html#354" class="Bound">ℓ₂</a><a id="390" class="Symbol">)</a> <a id="392" class="Keyword">where</a>
+
+<a id="399" class="Keyword">open</a> <a id="404" class="Keyword">import</a> <a id="411" href="Algebra.FunctionProperties.html" class="Module">Algebra.FunctionProperties</a>
+<a id="438" class="Keyword">open</a> <a id="443" class="Keyword">import</a> <a id="450" href="Relation.Binary.Construct.Converse.html" class="Module">Relation.Binary.Construct.Converse</a> <a id="485" class="Keyword">using</a> <a id="491" class="Symbol">()</a>
+  <a id="496" class="Keyword">renaming</a> <a id="505" class="Symbol">(</a><a id="506" href="Relation.Binary.Construct.Converse.html#5045" class="Function">totalOrder</a> <a id="517" class="Symbol">to</a> <a id="520" href="Relation.Binary.Construct.Converse.html#5045" class="Function">flip</a><a id="524" class="Symbol">)</a>
+
+<a id="527" class="Keyword">open</a> <a id="532" href="Relation.Binary.html#8288" class="Module">TotalOrder</a> <a id="543" href="Algebra.Construct.NaturalChoice.Max.html#359" class="Bound">totalOrder</a> <a id="554" class="Keyword">renaming</a> <a id="563" class="Symbol">(</a>Carrier <a id="572" class="Symbol">to</a> A<a id="576" class="Symbol">)</a>
+
+<a id="579" class="Comment">------------------------------------------------------------------------</a>
+<a id="652" class="Comment">-- Max is just min with a flipped order</a>
+
+<a id="693" class="Keyword">import</a> <a id="700" href="Algebra.Construct.NaturalChoice.Min.html" class="Module">Algebra.Construct.NaturalChoice.Min</a> <a id="736" class="Symbol">(</a><a id="737" href="Relation.Binary.Construct.Converse.html#5045" class="Function">flip</a> <a id="742" href="Algebra.Construct.NaturalChoice.Max.html#359" class="Bound">totalOrder</a><a id="752" class="Symbol">)</a> <a id="754" class="Symbol">as</a> <a id="Min"></a><a id="757" href="Algebra.Construct.NaturalChoice.Max.html#757" class="Module">Min</a>
+
+<a id="762" class="Keyword">infixl</a> <a id="769" class="Number">6</a> <a id="771" href="Algebra.Construct.NaturalChoice.Max.html#776" class="Function Operator">_⊔_</a>
+
+<a id="_⊔_"></a><a id="776" href="Algebra.Construct.NaturalChoice.Max.html#776" class="Function Operator">_⊔_</a> <a id="780" class="Symbol">:</a> <a id="782" href="Algebra.FunctionProperties.Core.html#751" class="Function">Op₂</a> <a id="786" href="Relation.Binary.html#8369" class="Field">A</a>
+<a id="788" href="Algebra.Construct.NaturalChoice.Max.html#776" class="Function Operator">_⊔_</a> <a id="792" class="Symbol">=</a> <a id="794" href="Algebra.Construct.NaturalChoice.Min.html#774" class="Function Operator">Min._⊓_</a>
+
+<a id="803" class="Keyword">open</a> <a id="808" href="Algebra.Construct.NaturalChoice.Max.html#757" class="Module">Min</a> <a id="812" class="Keyword">public</a> <a id="819" class="Keyword">using</a> <a id="825" class="Symbol">()</a>
+  <a id="830" class="Keyword">renaming</a>
+  <a id="841" class="Symbol">(</a> <a id="843" href="Algebra.Construct.NaturalChoice.Min.html#1155" class="Function">⊓-cong</a>             <a id="862" class="Symbol">to</a> <a id="865" href="Algebra.Construct.NaturalChoice.Min.html#1155" class="Function">⊔-cong</a>
+  <a id="874" class="Symbol">;</a> <a id="876" href="Algebra.Construct.NaturalChoice.Min.html#1056" class="Function">⊓-idem</a>             <a id="895" class="Symbol">to</a> <a id="898" href="Algebra.Construct.NaturalChoice.Min.html#1056" class="Function">⊔-idem</a>
+  <a id="907" class="Symbol">;</a> <a id="909" href="Algebra.Construct.NaturalChoice.Min.html#948" class="Function">⊓-sel</a>              <a id="928" class="Symbol">to</a> <a id="931" href="Algebra.Construct.NaturalChoice.Min.html#948" class="Function">⊔-sel</a>
+  <a id="939" class="Symbol">;</a> <a id="941" href="Algebra.Construct.NaturalChoice.Min.html#1696" class="Function">⊓-assoc</a>            <a id="960" class="Symbol">to</a> <a id="963" href="Algebra.Construct.NaturalChoice.Min.html#1696" class="Function">⊔-assoc</a>
+  <a id="973" class="Symbol">;</a> <a id="975" href="Algebra.Construct.NaturalChoice.Min.html#1472" class="Function">⊓-comm</a>             <a id="994" class="Symbol">to</a> <a id="997" href="Algebra.Construct.NaturalChoice.Min.html#1472" class="Function">⊔-comm</a>
+  <a id="1006" class="Symbol">;</a> <a id="1008" href="Algebra.Construct.NaturalChoice.Min.html#3768" class="Function">⊓-identityˡ</a>        <a id="1027" class="Symbol">to</a> <a id="1030" href="Algebra.Construct.NaturalChoice.Min.html#3768" class="Function">⊔-identityˡ</a>
+  <a id="1044" class="Symbol">;</a> <a id="1046" href="Algebra.Construct.NaturalChoice.Min.html#3925" class="Function">⊓-identityʳ</a>        <a id="1065" class="Symbol">to</a> <a id="1068" href="Algebra.Construct.NaturalChoice.Min.html#3925" class="Function">⊔-identityʳ</a>
+  <a id="1082" class="Symbol">;</a> <a id="1084" href="Algebra.Construct.NaturalChoice.Min.html#4083" class="Function">⊓-identity</a>         <a id="1103" class="Symbol">to</a> <a id="1106" href="Algebra.Construct.NaturalChoice.Min.html#4083" class="Function">⊔-identity</a>
+  <a id="1119" class="Symbol">;</a> <a id="1121" href="Algebra.Construct.NaturalChoice.Min.html#4189" class="Function">⊓-zeroˡ</a>            <a id="1140" class="Symbol">to</a> <a id="1143" href="Algebra.Construct.NaturalChoice.Min.html#4189" class="Function">⊔-zeroˡ</a>
+  <a id="1153" class="Symbol">;</a> <a id="1155" href="Algebra.Construct.NaturalChoice.Min.html#4334" class="Function">⊓-zeroʳ</a>            <a id="1174" class="Symbol">to</a> <a id="1177" href="Algebra.Construct.NaturalChoice.Min.html#4334" class="Function">⊔-zeroʳ</a>
+  <a id="1187" class="Symbol">;</a> <a id="1189" href="Algebra.Construct.NaturalChoice.Min.html#4480" class="Function">⊓-zero</a>             <a id="1208" class="Symbol">to</a> <a id="1211" href="Algebra.Construct.NaturalChoice.Min.html#4480" class="Function">⊔-zero</a>
+  <a id="1220" class="Symbol">;</a> <a id="1222" href="Algebra.Construct.NaturalChoice.Min.html#4668" class="Function">⊓-isMagma</a>          <a id="1241" class="Symbol">to</a> <a id="1244" href="Algebra.Construct.NaturalChoice.Min.html#4668" class="Function">⊔-isMagma</a>
+  <a id="1256" class="Symbol">;</a> <a id="1258" href="Algebra.Construct.NaturalChoice.Min.html#4777" class="Function">⊓-isSemigroup</a>      <a id="1277" class="Symbol">to</a> <a id="1280" href="Algebra.Construct.NaturalChoice.Min.html#4777" class="Function">⊔-isSemigroup</a>
+  <a id="1296" class="Symbol">;</a> <a id="1298" href="Algebra.Construct.NaturalChoice.Min.html#4883" class="Function">⊓-isBand</a>           <a id="1317" class="Symbol">to</a> <a id="1320" href="Algebra.Construct.NaturalChoice.Min.html#4883" class="Function">⊔-isBand</a>
+  <a id="1331" class="Symbol">;</a> <a id="1333" href="Algebra.Construct.NaturalChoice.Min.html#4985" class="Function">⊓-isSemilattice</a>    <a id="1352" class="Symbol">to</a> <a id="1355" href="Algebra.Construct.NaturalChoice.Min.html#4985" class="Function">⊔-isSemilattice</a>
+  <a id="1373" class="Symbol">;</a> <a id="1375" href="Algebra.Construct.NaturalChoice.Min.html#5093" class="Function">⊓-isMonoid</a>         <a id="1394" class="Symbol">to</a> <a id="1397" href="Algebra.Construct.NaturalChoice.Min.html#5093" class="Function">⊔-isMonoid</a>
+  <a id="1410" class="Symbol">;</a> <a id="1412" href="Algebra.Construct.NaturalChoice.Min.html#5239" class="Function">⊓-isSelectiveMagma</a> <a id="1431" class="Symbol">to</a> <a id="1434" href="Algebra.Construct.NaturalChoice.Min.html#5239" class="Function">⊔-isSelectiveMagma</a>
+  <a id="1455" class="Symbol">;</a> <a id="1457" href="Algebra.Construct.NaturalChoice.Min.html#5458" class="Function">⊓-magma</a>            <a id="1476" class="Symbol">to</a> <a id="1479" href="Algebra.Construct.NaturalChoice.Min.html#5458" class="Function">⊔-magma</a>
+  <a id="1489" class="Symbol">;</a> <a id="1491" href="Algebra.Construct.NaturalChoice.Min.html#5525" class="Function">⊓-semigroup</a>        <a id="1510" class="Symbol">to</a> <a id="1513" href="Algebra.Construct.NaturalChoice.Min.html#5525" class="Function">⊔-semigroup</a>
+  <a id="1527" class="Symbol">;</a> <a id="1529" href="Algebra.Construct.NaturalChoice.Min.html#5612" class="Function">⊓-band</a>             <a id="1548" class="Symbol">to</a> <a id="1551" href="Algebra.Construct.NaturalChoice.Min.html#5612" class="Function">⊔-band</a>
+  <a id="1560" class="Symbol">;</a> <a id="1562" href="Algebra.Construct.NaturalChoice.Min.html#5674" class="Function">⊓-semilattice</a>      <a id="1581" class="Symbol">to</a> <a id="1584" href="Algebra.Construct.NaturalChoice.Min.html#5674" class="Function">⊔-semilattice</a>
+  <a id="1600" class="Symbol">;</a> <a id="1602" href="Algebra.Construct.NaturalChoice.Min.html#5771" class="Function">⊓-monoid</a>           <a id="1621" class="Symbol">to</a> <a id="1624" href="Algebra.Construct.NaturalChoice.Min.html#5771" class="Function">⊔-monoid</a>
+  <a id="1635" class="Symbol">;</a> <a id="1637" href="Algebra.Construct.NaturalChoice.Min.html#5875" class="Function">⊓-selectiveMagma</a>   <a id="1656" class="Symbol">to</a> <a id="1659" href="Algebra.Construct.NaturalChoice.Min.html#5875" class="Function">⊔-selectiveMagma</a>
+  <a id="1678" class="Symbol">;</a> <a id="1680" href="Algebra.Construct.NaturalChoice.Min.html#6085" class="Function">x⊓y≈y⇒y≤x</a>          <a id="1699" class="Symbol">to</a> <a id="1702" href="Algebra.Construct.NaturalChoice.Min.html#6085" class="Function">x⊔y≈y⇒x≤y</a>
+  <a id="1714" class="Symbol">;</a> <a id="1716" href="Algebra.Construct.NaturalChoice.Min.html#6228" class="Function">x⊓y≈x⇒x≤y</a>          <a id="1735" class="Symbol">to</a> <a id="1738" href="Algebra.Construct.NaturalChoice.Min.html#6228" class="Function">x⊔y≈x⇒y≤x</a>
+  <a id="1750" class="Symbol">)</a>
+</pre></body></html>

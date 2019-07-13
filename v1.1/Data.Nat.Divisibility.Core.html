@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Nat.Divisibility.Core</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Core definition of divisibility</a>
+<a id="141" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="215" class="Comment">-- The definition of divisibility is split out from</a>
+<a id="267" class="Comment">-- `Data.Nat.Divisibility` to avoid a dependency cycle with</a>
+<a id="327" class="Comment">-- `Data.Nat.DivMod`.</a>
+
+<a id="350" class="Symbol">{-#</a> <a id="354" class="Keyword">OPTIONS</a> <a id="362" class="Pragma">--without-K</a> <a id="374" class="Pragma">--safe</a> <a id="381" class="Symbol">#-}</a>
+
+<a id="386" class="Keyword">module</a> <a id="393" href="Data.Nat.Divisibility.Core.html" class="Module">Data.Nat.Divisibility.Core</a> <a id="420" class="Keyword">where</a>
+
+<a id="427" class="Keyword">open</a> <a id="432" class="Keyword">import</a> <a id="439" href="Data.Nat.html" class="Module">Data.Nat</a> <a id="448" class="Keyword">using</a> <a id="454" class="Symbol">(</a><a id="455" href="Agda.Builtin.Nat.html#165" class="Datatype">ℕ</a><a id="456" class="Symbol">;</a> <a id="458" href="Agda.Builtin.Nat.html#501" class="Primitive Operator">_*_</a><a id="461" class="Symbol">)</a>
+<a id="463" class="Keyword">open</a> <a id="468" class="Keyword">import</a> <a id="475" href="Data.Nat.Properties.html" class="Module">Data.Nat.Properties</a>
+<a id="495" class="Keyword">open</a> <a id="500" class="Keyword">import</a> <a id="507" href="Level.html" class="Module">Level</a> <a id="513" class="Keyword">using</a> <a id="519" class="Symbol">(</a><a id="520" href="Level.html#512" class="Function">0ℓ</a><a id="522" class="Symbol">)</a>
+<a id="524" class="Keyword">open</a> <a id="529" class="Keyword">import</a> <a id="536" href="Relation.Nullary.html" class="Module">Relation.Nullary</a> <a id="553" class="Keyword">using</a> <a id="559" class="Symbol">(</a><a id="560" href="Relation.Nullary.html#535" class="Function Operator">¬_</a><a id="562" class="Symbol">)</a>
+<a id="564" class="Keyword">open</a> <a id="569" class="Keyword">import</a> <a id="576" href="Relation.Binary.html" class="Module">Relation.Binary</a> <a id="592" class="Keyword">using</a> <a id="598" class="Symbol">(</a><a id="599" href="Relation.Binary.Core.html#1071" class="Function">Rel</a><a id="602" class="Symbol">)</a>
+<a id="604" class="Keyword">open</a> <a id="609" class="Keyword">import</a> <a id="616" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a>
+  <a id="656" class="Keyword">using</a> <a id="662" class="Symbol">(</a><a id="663" href="Agda.Builtin.Equality.html#125" class="Datatype Operator">_≡_</a><a id="666" class="Symbol">;</a> <a id="668" href="Agda.Builtin.Equality.html#182" class="InductiveConstructor">refl</a><a id="672" class="Symbol">;</a> <a id="674" href="Relation.Binary.PropositionalEquality.Core.html#939" class="Function">sym</a><a id="677" class="Symbol">)</a>
+
+<a id="680" class="Comment">------------------------------------------------------------------------</a>
+<a id="753" class="Comment">-- Definition</a>
+<a id="767" class="Comment">--</a>
+<a id="770" class="Comment">-- m ∣ n is inhabited iff m divides n. Some sources, like Hardy and</a>
+<a id="838" class="Comment">-- Wright&#39;s &quot;An Introduction to the Theory of Numbers&quot;, require m to</a>
+<a id="907" class="Comment">-- be non-zero. However, some things become a bit nicer if m is</a>
+<a id="971" class="Comment">-- allowed to be zero. For instance, _∣_ becomes a partial order, and</a>
+<a id="1041" class="Comment">-- the gcd of 0 and 0 becomes defined.</a>
+
+<a id="1081" class="Keyword">infix</a> <a id="1087" class="Number">4</a> <a id="1089" href="Data.Nat.Divisibility.Core.html#1105" class="Record Operator">_∣_</a> <a id="1093" href="Data.Nat.Divisibility.Core.html#1244" class="Function Operator">_∤_</a>
+
+<a id="1098" class="Keyword">record</a> <a id="_∣_"></a><a id="1105" href="Data.Nat.Divisibility.Core.html#1105" class="Record Operator">_∣_</a> <a id="1109" class="Symbol">(</a><a id="1110" href="Data.Nat.Divisibility.Core.html#1110" class="Bound">m</a> <a id="1112" href="Data.Nat.Divisibility.Core.html#1112" class="Bound">n</a> <a id="1114" class="Symbol">:</a> <a id="1116" href="Agda.Builtin.Nat.html#165" class="Datatype">ℕ</a><a id="1117" class="Symbol">)</a> <a id="1119" class="Symbol">:</a> <a id="1121" class="PrimitiveType">Set</a> <a id="1125" class="Keyword">where</a>
+  <a id="1133" class="Keyword">constructor</a> <a id="_∣_.divides"></a><a id="1145" href="Data.Nat.Divisibility.Core.html#1145" class="InductiveConstructor">divides</a>
+  <a id="1155" class="Keyword">field</a> <a id="_∣_.quotient"></a><a id="1161" href="Data.Nat.Divisibility.Core.html#1161" class="Field">quotient</a> <a id="1170" class="Symbol">:</a> <a id="1172" href="Agda.Builtin.Nat.html#165" class="Datatype">ℕ</a>
+        <a id="_∣_.equality"></a><a id="1182" href="Data.Nat.Divisibility.Core.html#1182" class="Field">equality</a> <a id="1191" class="Symbol">:</a> <a id="1193" href="Data.Nat.Divisibility.Core.html#1112" class="Bound">n</a> <a id="1195" href="Agda.Builtin.Equality.html#125" class="Datatype Operator">≡</a> <a id="1197" href="Data.Nat.Divisibility.Core.html#1161" class="Field">quotient</a> <a id="1206" href="Agda.Builtin.Nat.html#501" class="Primitive Operator">*</a> <a id="1208" href="Data.Nat.Divisibility.Core.html#1110" class="Bound">m</a>
+<a id="1210" class="Keyword">open</a> <a id="1215" href="Data.Nat.Divisibility.Core.html#1105" class="Module Operator">_∣_</a> <a id="1219" class="Keyword">using</a> <a id="1225" class="Symbol">(</a><a id="1226" href="Data.Nat.Divisibility.Core.html#1161" class="Field">quotient</a><a id="1234" class="Symbol">)</a> <a id="1236" class="Keyword">public</a>
+
+<a id="_∤_"></a><a id="1244" href="Data.Nat.Divisibility.Core.html#1244" class="Function Operator">_∤_</a> <a id="1248" class="Symbol">:</a> <a id="1250" href="Relation.Binary.Core.html#1071" class="Function">Rel</a> <a id="1254" href="Agda.Builtin.Nat.html#165" class="Datatype">ℕ</a> <a id="1256" href="Level.html#512" class="Function">0ℓ</a>
+<a id="1259" href="Data.Nat.Divisibility.Core.html#1259" class="Bound">m</a> <a id="1261" href="Data.Nat.Divisibility.Core.html#1244" class="Function Operator">∤</a> <a id="1263" href="Data.Nat.Divisibility.Core.html#1263" class="Bound">n</a> <a id="1265" class="Symbol">=</a> <a id="1267" href="Relation.Nullary.html#535" class="Function Operator">¬</a> <a id="1269" class="Symbol">(</a><a id="1270" href="Data.Nat.Divisibility.Core.html#1259" class="Bound">m</a> <a id="1272" href="Data.Nat.Divisibility.Core.html#1105" class="Record Operator">∣</a> <a id="1274" href="Data.Nat.Divisibility.Core.html#1263" class="Bound">n</a><a id="1275" class="Symbol">)</a>
+</pre></body></html>

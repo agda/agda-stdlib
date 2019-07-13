@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Unit</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- The unit type</a>
+<a id="123" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="197" class="Symbol">{-#</a> <a id="201" class="Keyword">OPTIONS</a> <a id="209" class="Pragma">--without-K</a> <a id="221" class="Pragma">--safe</a> <a id="228" class="Symbol">#-}</a>
+
+<a id="233" class="Keyword">module</a> <a id="240" href="Data.Unit.html" class="Module">Data.Unit</a> <a id="250" class="Keyword">where</a>
+
+<a id="257" class="Keyword">open</a> <a id="262" class="Keyword">import</a> <a id="269" href="Data.Sum.html" class="Module">Data.Sum</a>
+<a id="278" class="Keyword">open</a> <a id="283" class="Keyword">import</a> <a id="290" href="Relation.Nullary.html" class="Module">Relation.Nullary</a>
+<a id="307" class="Keyword">open</a> <a id="312" class="Keyword">import</a> <a id="319" href="Relation.Binary.html" class="Module">Relation.Binary</a>
+<a id="335" class="Keyword">import</a> <a id="342" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a> <a id="380" class="Symbol">as</a> <a id="383" class="Module">PropEq</a>
+
+<a id="391" class="Comment">------------------------------------------------------------------------</a>
+<a id="464" class="Comment">-- Re-export contents of base module</a>
+
+<a id="502" class="Keyword">open</a> <a id="507" class="Keyword">import</a> <a id="514" href="Data.Unit.Base.html" class="Module">Data.Unit.Base</a> <a id="529" class="Keyword">public</a>
+
+<a id="537" class="Comment">------------------------------------------------------------------------</a>
+<a id="610" class="Comment">-- Re-export query operations</a>
+
+<a id="641" class="Keyword">open</a> <a id="646" class="Keyword">import</a> <a id="653" href="Data.Unit.Properties.html" class="Module">Data.Unit.Properties</a> <a id="674" class="Keyword">public</a>
+  <a id="683" class="Keyword">using</a> <a id="689" class="Symbol">(</a><a id="690" href="Data.Unit.Properties.html#566" class="Function Operator">_≟_</a><a id="693" class="Symbol">;</a> <a id="695" href="Data.Unit.Properties.html#1021" class="Function Operator">_≤?_</a><a id="699" class="Symbol">)</a>
+
+<a id="702" class="Comment">------------------------------------------------------------------------</a>
+<a id="775" class="Comment">-- DEPRECATED NAMES</a>
+<a id="795" class="Comment">------------------------------------------------------------------------</a>
+<a id="868" class="Comment">-- Please use the new names as continuing support for the old names is</a>
+<a id="939" class="Comment">-- not guaranteed.</a>
+
+<a id="959" class="Comment">-- Version 1.1</a>
+
+<a id="setoid"></a><a id="975" href="Data.Unit.html#975" class="Function">setoid</a> <a id="982" class="Symbol">=</a> <a id="984" href="Data.Unit.Properties.html#612" class="Function">Data.Unit.Properties.≡-setoid</a>
+<a id="1014" class="Symbol">{-#</a> <a id="1018" class="Keyword">WARNING_ON_USAGE</a> <a id="1035" class="Pragma">setoid</a>
+<a id="1042" class="String">&quot;Warning: setoid was deprecated in v1.1.
+Please use ≡-setoid from Data.Unit.Properties instead.&quot;</a>
+<a id="1139" class="Symbol">#-}</a>
+<a id="decSetoid"></a><a id="1143" href="Data.Unit.html#1143" class="Function">decSetoid</a> <a id="1153" class="Symbol">=</a> <a id="1155" href="Data.Unit.Properties.html#657" class="Function">Data.Unit.Properties.≡-decSetoid</a>
+<a id="1188" class="Symbol">{-#</a> <a id="1192" class="Keyword">WARNING_ON_USAGE</a> <a id="1209" class="Pragma">decSetoid</a>
+<a id="1219" class="String">&quot;Warning: decSetoid was deprecated in v1.1.
+Please use ≡-decSetoid from Data.Unit.Properties instead.&quot;</a>
+<a id="1322" class="Symbol">#-}</a>
+<a id="total"></a><a id="1326" href="Data.Unit.html#1326" class="Function">total</a> <a id="1332" class="Symbol">=</a> <a id="1334" href="Data.Unit.Properties.html#965" class="Function">Data.Unit.Properties.≤-total</a>
+<a id="1363" class="Symbol">{-#</a> <a id="1367" class="Keyword">WARNING_ON_USAGE</a> <a id="1384" class="Pragma">total</a>
+<a id="1390" class="String">&quot;Warning: total was deprecated in v1.1.
+Please use ≤-total from Data.Unit.Properties instead.&quot;</a>
+<a id="1485" class="Symbol">#-}</a>
+<a id="poset"></a><a id="1489" href="Data.Unit.html#1489" class="Function">poset</a> <a id="1495" class="Symbol">=</a> <a id="1497" href="Data.Unit.Properties.html#1662" class="Function">Data.Unit.Properties.≤-poset</a>
+<a id="1526" class="Symbol">{-#</a> <a id="1530" class="Keyword">WARNING_ON_USAGE</a> <a id="1547" class="Pragma">poset</a>
+<a id="1553" class="String">&quot;Warning: poset was deprecated in v1.1.
+Please use ≤-poset from Data.Unit.Properties instead.&quot;</a>
+<a id="1648" class="Symbol">#-}</a>
+<a id="decTotalOrder"></a><a id="1652" href="Data.Unit.html#1652" class="Function">decTotalOrder</a> <a id="1666" class="Symbol">=</a> <a id="1668" href="Data.Unit.Properties.html#1747" class="Function">Data.Unit.Properties.≤-decTotalOrder</a>
+<a id="1705" class="Symbol">{-#</a> <a id="1709" class="Keyword">WARNING_ON_USAGE</a> <a id="1726" class="Pragma">decTotalOrder</a>
+<a id="1740" class="String">&quot;Warning: decTotalOrder was deprecated in v1.1.
+Please use ≤-decTotalOrder from Data.Unit.Properties instead.&quot;</a>
+<a id="1851" class="Symbol">#-}</a>
+<a id="preorder"></a><a id="1855" href="Data.Unit.html#1855" class="Function">preorder</a> <a id="1864" class="Symbol">=</a> <a id="1866" href="Relation.Binary.PropositionalEquality.html#2138" class="Function">PropEq.preorder</a> <a id="1882" href="Agda.Builtin.Unit.html#137" class="Record">⊤</a>
+<a id="1884" class="Symbol">{-#</a> <a id="1888" class="Keyword">WARNING_ON_USAGE</a> <a id="1905" class="Pragma">decTotalOrder</a>
+<a id="1919" class="String">&quot;Warning: preorder was deprecated in v1.1.&quot;</a>
+<a id="1963" class="Symbol">#-}</a>
+</pre></body></html>
