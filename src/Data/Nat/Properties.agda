@@ -28,7 +28,7 @@ open import Level using (0ℓ)
 open import Relation.Binary
 open import Relation.Binary.Consequences using (flip-Connex)
 open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary
+open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Nullary.Decidable using (True; via-injection; map′)
 open import Relation.Nullary.Negation using (contradiction)
 
@@ -81,6 +81,9 @@ m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
   ; _≈_              = _≡_
   ; isDecEquivalence = ≡-isDecEquivalence
   }
+
+0≢1+n : ∀ {n} → 0 ≢ suc n
+0≢1+n ()
 
 1+n≢0 : ∀ {n} → suc n ≢ 0
 1+n≢0 ()
@@ -149,6 +152,9 @@ suc m ≤? n with T? (m <ᵇ n)
 
 _≥?_ : Decidable _≥_
 _≥?_ = flip _≤?_
+
+n<1+n : ∀ {n} → n < suc n
+n<1+n = ≤-refl
 
 ------------------------------------------------------------------------
 -- Structures
@@ -509,6 +515,9 @@ m≢1+n+m m m≡1+n+m = m≢1+m+n m (trans m≡1+n+m (cong suc (+-comm _ m)))
 m+1+n≢m : ∀ m {n} → m + suc n ≢ m
 m+1+n≢m (suc m) = (m+1+n≢m m) ∘ suc-injective
 
+m+1+n≢0 : ∀ m {n} → m + suc n ≢ 0
+m+1+n≢0 m {n} rewrite +-suc m n = λ()
+
 m+n≡0⇒m≡0 : ∀ m {n} → m + n ≡ 0 → m ≡ 0
 m+n≡0⇒m≡0 zero eq = refl
 
@@ -602,11 +611,11 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
 -- Properties of _*_
 ------------------------------------------------------------------------
 
-+-*-suc : ∀ m n → m * suc n ≡ m + m * n
-+-*-suc zero    n = refl
-+-*-suc (suc m) n = begin-equality
+*-suc : ∀ m n → m * suc n ≡ m + m * n
+*-suc zero    n = refl
+*-suc (suc m) n = begin-equality
   suc m * suc n         ≡⟨⟩
-  suc n + m * suc n     ≡⟨ cong (suc n +_) (+-*-suc m n) ⟩
+  suc n + m * suc n     ≡⟨ cong (suc n +_) (*-suc m n) ⟩
   suc n + (m + m * n)   ≡⟨⟩
   suc (n + (m + m * n)) ≡⟨ cong suc (sym (+-assoc n m (m * n))) ⟩
   suc (n + m + m * n)   ≡⟨ cong (λ x → suc (x + m * n)) (+-comm n m) ⟩
@@ -642,7 +651,7 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
 *-comm (suc m) n = begin-equality
   suc m * n  ≡⟨⟩
   n + m * n  ≡⟨ cong (n +_) (*-comm m n) ⟩
-  n + n * m  ≡⟨ sym (+-*-suc n m) ⟩
+  n + n * m  ≡⟨ sym (*-suc n m) ⟩
   n * suc m  ∎
 
 *-distribʳ-+ : _*_ DistributesOverʳ _+_
@@ -873,7 +882,7 @@ m<m*n {suc m-1} {suc (suc n-2)} (s≤s _) (s≤s (s≤s _)) = begin-strict
 ^-*-assoc m n (suc o) = begin-equality
   (m ^ n) * ((m ^ n) ^ o) ≡⟨ cong ((m ^ n) *_) (^-*-assoc m n o) ⟩
   (m ^ n) * (m ^ (n * o)) ≡⟨ sym (^-distribˡ-+-* m n (n * o)) ⟩
-  m ^ (n + n * o)         ≡⟨ cong (m ^_) (sym (+-*-suc n o)) ⟩
+  m ^ (n + n * o)         ≡⟨ cong (m ^_) (sym (*-suc n o)) ⟩
   m ^ (n * (suc o)) ∎
 
 m^n≡0⇒m≡0 : ∀ m n → m ^ n ≡ 0 → m ≡ 0
@@ -920,6 +929,11 @@ m^n≡1⇒n≡0∨m≡1 m (suc n) eq = inj₂ (m*n≡1⇒m≡1 m (m ^ n) eq)
 
 ⊔-idem : Idempotent _⊔_
 ⊔-idem = sel⇒idem ⊔-sel
+
+⊔-least : ∀ {m n o} → m ≤ o → n ≤ o → m ⊔ n ≤ o
+⊔-least {m} {n} m≤o n≤o with ⊔-sel m n
+... | inj₁ m⊔n≡m rewrite m⊔n≡m = m≤o
+... | inj₂ m⊔n≡n rewrite m⊔n≡n = n≤o
 
 ------------------------------------------------------------------------
 -- Structures
@@ -1112,6 +1126,11 @@ m⊔n≤m+n m n with ⊔-sel m n
 ⊓-idem : Idempotent _⊓_
 ⊓-idem = sel⇒idem ⊓-sel
 
+⊓-greatest : ∀ {m n o} → m ≥ o → n ≥ o → m ⊓ n ≥ o
+⊓-greatest {m} {n} m≥o n≥o with ⊓-sel m n
+... | inj₁ m⊓n≡m rewrite m⊓n≡m = m≥o
+... | inj₂ m⊓n≡n rewrite m⊓n≡n = n≥o
+
 ⊓-distribʳ-⊔ : _⊓_ DistributesOverʳ _⊔_
 ⊓-distribʳ-⊔ (suc m) (suc n) (suc o) = cong suc $ ⊓-distribʳ-⊔ m n o
 ⊓-distribʳ-⊔ (suc m) (suc n) zero    = cong suc $ refl
@@ -1201,7 +1220,7 @@ m⊔n≤m+n m n with ⊔-sel m n
 ⊓-⊔-isDistributiveLattice : IsDistributiveLattice _⊓_ _⊔_
 ⊓-⊔-isDistributiveLattice = record
   { isLattice    = ⊓-⊔-isLattice
-  ; ∨-∧-distribʳ = ⊓-distribʳ-⊔
+  ; ∨-distribʳ-∧ = ⊓-distribʳ-⊔
   }
 
 ------------------------------------------------------------------------
@@ -1415,15 +1434,18 @@ m≤n+m∸n zero    n       = z≤n
 m≤n+m∸n (suc m) zero    = ≤-refl
 m≤n+m∸n (suc m) (suc n) = s≤s (m≤n+m∸n m n)
 
-m+n∸n≡m : ∀ m n → (m + n) ∸ n ≡ m
+m+n∸n≡m : ∀ m n → m + n ∸ n ≡ m
 m+n∸n≡m m n = begin-equality
   (m + n) ∸ n  ≡⟨ +-∸-assoc m (≤-refl {x = n}) ⟩
   m + (n ∸ n)  ≡⟨ cong (m +_) (n∸n≡0 n) ⟩
   m + 0        ≡⟨ +-identityʳ m ⟩
   m            ∎
 
-m+n∸m≡n : ∀ {m n} → m ≤ n → m + (n ∸ m) ≡ n
-m+n∸m≡n {m} {n} m≤n = begin-equality
+m+n∸m≡n : ∀ m n → m + n ∸ m ≡ n
+m+n∸m≡n m n = trans (cong (_∸ m) (+-comm m n)) (m+n∸n≡m n m)
+
+m+[n∸m]≡n : ∀ {m n} → m ≤ n → m + (n ∸ m) ≡ n
+m+[n∸m]≡n {m} {n} m≤n = begin-equality
   m + (n ∸ m)  ≡⟨ sym $ +-∸-assoc m m≤n ⟩
   (m + n) ∸ m  ≡⟨ cong (_∸ m) (+-comm m n) ⟩
   (n + m) ∸ m  ≡⟨ m+n∸n≡m n m ⟩
@@ -1464,6 +1486,14 @@ m∸[m∸n]≡n {suc m} {suc n} (s≤s n≤m) = begin-equality
 
 *-distrib-∸ : _*_ DistributesOver _∸_
 *-distrib-∸ = *-distribˡ-∸ , *-distribʳ-∸
+
+even≢odd :  ∀ m n → 2 * m ≢ suc (2 * n)
+even≢odd (suc m) zero    eq = contradiction (suc-injective eq) (m+1+n≢0 m)
+even≢odd (suc m) (suc n) eq = even≢odd m n (suc-injective (begin-equality
+  suc (2 * m)         ≡⟨ sym (+-suc m _) ⟩
+  m + suc (m + 0)     ≡⟨ suc-injective eq ⟩
+  suc n + suc (n + 0) ≡⟨ cong suc (+-suc n _) ⟩
+  suc (suc (2 * n))   ∎))
 
 ------------------------------------------------------------------------
 -- Properties of _∸_ and _⊓_ and _⊔_
@@ -1663,13 +1693,13 @@ n≤′m+n (suc m) n = ≤′-step (n≤′m+n m n)
 ------------------------------------------------------------------------
 
 m<ᵇn⇒1+m+[n-1+m]≡n : ∀ m n → T (m <ᵇ n) → suc m + (n ∸ suc m) ≡ n
-m<ᵇn⇒1+m+[n-1+m]≡n m n lt = m+n∸m≡n (<ᵇ⇒< m n lt)
+m<ᵇn⇒1+m+[n-1+m]≡n m n lt = m+[n∸m]≡n (<ᵇ⇒< m n lt)
 
 m<ᵇ1+m+n : ∀ m {n} → T (m <ᵇ suc (m + n))
 m<ᵇ1+m+n m = <⇒<ᵇ (m≤m+n (suc m) _)
 
 <ᵇ⇒<″ : ∀ {m n} → T (m <ᵇ n) → m <″ n
-<ᵇ⇒<″ {m} {n} leq = less-than-or-equal (m+n∸m≡n (<ᵇ⇒< m n leq))
+<ᵇ⇒<″ {m} {n} leq = less-than-or-equal (m+[n∸m]≡n (<ᵇ⇒< m n leq))
 
 <″⇒<ᵇ : ∀ {m n} → m <″ n → T (m <ᵇ n)
 <″⇒<ᵇ {m} (less-than-or-equal refl) = <⇒<ᵇ (m≤m+n (suc m) _)
@@ -1682,7 +1712,7 @@ m<ᵇ1+m+n m = <⇒<ᵇ (m≤m+n (suc m) _)
   s≤s (≤″⇒≤ (less-than-or-equal refl))
 
 ≤⇒≤″ : _≤_ ⇒ _≤″_
-≤⇒≤″ = less-than-or-equal ∘ m+n∸m≡n
+≤⇒≤″ = less-than-or-equal ∘ m+[n∸m]≡n
 
 -- NB: we use the builtin function `_<ᵇ_ : (m n : ℕ) → Bool` here so
 -- that the function quickly decides whether to return `yes` or `no`.
@@ -2021,4 +2051,12 @@ Please use m≤n+m∸n instead (note, you will need to switch the argument order
 {-# WARNING_ON_USAGE ∣n-m∣≡[n∸m]∨[m∸n]
 "Warning: ∣n-m∣≡[n∸m]∨[m∸n] was deprecated in v1.1.
 Please use ∣m-n∣≡[m∸n]∨[n∸m] instead (note, you will need to switch the argument order)."
+#-}
+
+-- Version 1.2
+
++-*-suc = *-suc
+{-# WARNING_ON_USAGE +-*-suc
+"Warning: +-*-suc was deprecated in v1.2.
+Please use *-suc instead."
 #-}

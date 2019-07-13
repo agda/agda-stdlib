@@ -145,7 +145,7 @@ record IsGroup (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) w
 
   open IsMonoid isMonoid public
 
-  infixl 7 _-_
+  infixl 6 _-_
   _-_ : Op₂ A
   x - y = x ∙ (y ⁻¹)
 
@@ -226,10 +226,15 @@ record IsLattice (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
 record IsDistributiveLattice (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
   field
     isLattice    : IsLattice ∨ ∧
-    ∨-∧-distribʳ : ∨ DistributesOverʳ ∧
+    ∨-distribʳ-∧ : ∨ DistributesOverʳ ∧
 
   open IsLattice isLattice public
 
+  ∨-∧-distribʳ = ∨-distribʳ-∧
+  {-# WARNING_ON_USAGE ∨-∧-distribʳ
+  "Warning: ∨-∧-distribʳ was deprecated in v1.1.
+  Please use ∨-distribʳ-∧ instead."
+  #-}
 
 ------------------------------------------------------------------------
 -- Structures with 2 binary operations & 1 element

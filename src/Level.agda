@@ -26,3 +26,9 @@ open Lift public
 
 0ℓ : Level
 0ℓ = zero
+
+levelOfType : ∀ {a} → Set a → Level
+levelOfType {a} _ = a
+
+levelOfTerm : ∀ {a} {A : Set a} → A → Level
+levelOfTerm {a} _ = a

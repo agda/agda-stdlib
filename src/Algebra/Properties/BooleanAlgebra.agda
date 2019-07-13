@@ -13,11 +13,7 @@ module Algebra.Properties.BooleanAlgebra
   where
 
 open BooleanAlgebra B
-import Algebra.Properties.DistributiveLattice
-private
-  open module DL = Algebra.Properties.DistributiveLattice
-                     distributiveLattice public
-    hiding (replace-equality)
+import Algebra.Properties.DistributiveLattice as DistribLatticeProperties
 open import Algebra.Structures _≈_
 open import Algebra.FunctionProperties _≈_
 open import Algebra.FunctionProperties.Consequences setoid
@@ -29,7 +25,13 @@ open import Function.Equivalence using (_⇔_; module Equivalence)
 open import Data.Product using (_,_)
 
 ------------------------------------------------------------------------
--- Some simple generalisations
+-- Export properties from distributive lattices
+
+open DistribLatticeProperties distributiveLattice public
+  hiding (replace-equality)
+
+------------------------------------------------------------------------
+-- Some simple consequences
 
 ∨-complementˡ : LeftInverse ⊤ ¬_ _∨_
 ∨-complementˡ = comm+invʳ⇒invˡ ∨-comm ∨-complementʳ
@@ -56,11 +58,7 @@ open import Data.Product using (_,_)
 
 ∧-∨-booleanAlgebra : BooleanAlgebra _ _
 ∧-∨-booleanAlgebra = record
-  { _∧_              = _∨_
-  ; _∨_              = _∧_
-  ; ⊤                = ⊥
-  ; ⊥                = ⊤
-  ; isBooleanAlgebra = ∧-∨-isBooleanAlgebra
+  { isBooleanAlgebra = ∧-∨-isBooleanAlgebra
   }
 
 ------------------------------------------------------------------------
@@ -92,10 +90,10 @@ open import Data.Product using (_,_)
 
 ∧-zeroʳ : RightZero ⊥ _∧_
 ∧-zeroʳ x = begin
-  x ∧ ⊥          ≈⟨ ∧-congˡ $ sym (∧-complementʳ _) ⟩
-  x ∧  x  ∧ ¬ x  ≈˘⟨ ∧-assoc _ _ _ ⟩
-  (x ∧ x) ∧ ¬ x  ≈⟨ ∧-congʳ $ ∧-idempotent _ ⟩
-  x       ∧ ¬ x  ≈⟨ ∧-complementʳ _ ⟩
+  x ∧ ⊥          ≈˘⟨ ∧-congˡ (∧-complementʳ x) ⟩
+  x ∧  x  ∧ ¬ x  ≈˘⟨ ∧-assoc x x (¬ x) ⟩
+  (x ∧ x) ∧ ¬ x  ≈⟨  ∧-congʳ (∧-idempotent x) ⟩
+  x       ∧ ¬ x  ≈⟨  ∧-complementʳ x ⟩
   ⊥              ∎
 
 ∧-zeroˡ : LeftZero ⊥ _∧_
@@ -106,41 +104,17 @@ open import Data.Product using (_,_)
 
 ∨-zeroʳ : ∀ x → x ∨ ⊤ ≈ ⊤
 ∨-zeroʳ x = begin
-  x ∨ ⊤          ≈⟨ ∨-congˡ $ sym (∨-complementʳ _) ⟩
-  x ∨  x  ∨ ¬ x  ≈˘⟨ ∨-assoc _ _ _ ⟩
-  (x ∨ x) ∨ ¬ x  ≈⟨ ∨-congʳ $ ∨-idempotent _ ⟩
-  x       ∨ ¬ x  ≈⟨ ∨-complementʳ _ ⟩
+  x ∨ ⊤          ≈˘⟨ ∨-congˡ (∨-complementʳ x) ⟩
+  x ∨  x  ∨ ¬ x  ≈˘⟨ ∨-assoc x x (¬ x) ⟩
+  (x ∨ x) ∨ ¬ x  ≈⟨ ∨-congʳ (∨-idempotent x) ⟩
+  x       ∨ ¬ x  ≈⟨ ∨-complementʳ x ⟩
   ⊤              ∎
 
 ∨-zeroˡ : LeftZero ⊤ _∨_
-∨-zeroˡ _ = ∨-comm _ _ ⟨ trans ⟩ ∨-zeroʳ _
+∨-zeroˡ = comm+zeʳ⇒zeˡ ∨-comm ∨-zeroʳ
 
 ∨-zero : Zero ⊤ _∨_
 ∨-zero = ∨-zeroˡ , ∨-zeroʳ
-
-∨-isMagma : IsMagma _∨_
-∨-isMagma = record
-  { isEquivalence = isEquivalence
-  ; ∙-cong        = ∨-cong
-  }
-
-∧-isMagma : IsMagma _∧_
-∧-isMagma = record
-  { isEquivalence = isEquivalence
-  ; ∙-cong        = ∧-cong
-  }
-
-∨-isSemigroup : IsSemigroup _∨_
-∨-isSemigroup = record
-  { isMagma = ∨-isMagma
-  ; assoc   = ∨-assoc
-  }
-
-∧-isSemigroup : IsSemigroup _∧_
-∧-isSemigroup = record
-  { isMagma = ∧-isMagma
-  ; assoc   = ∧-assoc
-  }
 
 ∨-⊥-isMonoid : IsMonoid _∨_ ⊥
 ∨-⊥-isMonoid = record
@@ -176,15 +150,6 @@ open import Data.Product using (_,_)
   ; zeroˡ                 = ∧-zeroˡ
   }
 
-∨-∧-commutativeSemiring : CommutativeSemiring _ _
-∨-∧-commutativeSemiring = record
-  { _+_                   = _∨_
-  ; _*_                   = _∧_
-  ; 0#                    = ⊥
-  ; 1#                    = ⊤
-  ; isCommutativeSemiring = ∨-∧-isCommutativeSemiring
-  }
-
 ∧-∨-isCommutativeSemiring : IsCommutativeSemiring _∧_ _∨_ ⊤ ⊥
 ∧-∨-isCommutativeSemiring = record
   { +-isCommutativeMonoid = ∧-⊤-isCommutativeMonoid
@@ -193,13 +158,14 @@ open import Data.Product using (_,_)
   ; zeroˡ    = ∨-zeroˡ
   }
 
+∨-∧-commutativeSemiring : CommutativeSemiring _ _
+∨-∧-commutativeSemiring = record
+  { isCommutativeSemiring = ∨-∧-isCommutativeSemiring
+  }
+
 ∧-∨-commutativeSemiring : CommutativeSemiring _ _
 ∧-∨-commutativeSemiring = record
-  { _+_                   = _∧_
-  ; _*_                   = _∨_
-  ; 0#                    = ⊤
-  ; 1#                    = ⊥
-  ; isCommutativeSemiring = ∧-∨-isCommutativeSemiring
+  { isCommutativeSemiring = ∧-∨-isCommutativeSemiring
   }
 
 ------------------------------------------------------------------------
@@ -214,19 +180,19 @@ private
   lemma x y x∧y=⊥ x∨y=⊤ = begin
     ¬ x                ≈˘⟨ ∧-identityʳ _ ⟩
     ¬ x ∧ ⊤            ≈˘⟨ ∧-congˡ x∨y=⊤ ⟩
-    ¬ x ∧ (x ∨ y)      ≈⟨ ∧-∨-distribˡ _ _ _ ⟩
-    ¬ x ∧ x ∨ ¬ x ∧ y  ≈⟨ ∨-congʳ $ ∧-complementˡ _ ⟩
+    ¬ x ∧ (x ∨ y)      ≈⟨  ∧-∨-distribˡ _ _ _ ⟩
+    ¬ x ∧ x ∨ ¬ x ∧ y  ≈⟨  ∨-congʳ $ ∧-complementˡ _ ⟩
     ⊥ ∨ ¬ x ∧ y        ≈˘⟨ ∨-congʳ x∧y=⊥ ⟩
     x ∧ y ∨ ¬ x ∧ y    ≈˘⟨ ∧-∨-distribʳ _ _ _ ⟩
-    (x ∨ ¬ x) ∧ y      ≈⟨ ∧-congʳ $ ∨-complementʳ _ ⟩
-    ⊤ ∧ y              ≈⟨ ∧-identityˡ _ ⟩
+    (x ∨ ¬ x) ∧ y      ≈⟨  ∧-congʳ $ ∨-complementʳ _ ⟩
+    ⊤ ∧ y              ≈⟨  ∧-identityˡ _ ⟩
     y                  ∎
 
-¬⊥=⊤ : ¬ ⊥ ≈ ⊤
-¬⊥=⊤ = lemma ⊥ ⊤ (∧-identityʳ _) (∨-zeroʳ _)
+⊥≉⊤ : ¬ ⊥ ≈ ⊤
+⊥≉⊤ = lemma ⊥ ⊤ (∧-identityʳ _) (∨-zeroʳ _)
 
-¬⊤=⊥ : ¬ ⊤ ≈ ⊥
-¬⊤=⊥ = lemma ⊤ ⊥ (∧-zeroʳ _) (∨-identityʳ _)
+⊤≉⊥ : ¬ ⊤ ≈ ⊥
+⊤≉⊥ = lemma ⊤ ⊥ (∧-zeroʳ _) (∨-identityʳ _)
 
 ¬-involutive : Involutive ¬_
 ¬-involutive x = lemma (¬ x) x (∧-complementˡ _) (∨-complementˡ _)
@@ -268,9 +234,9 @@ deMorgan₂ x y = begin
 
 -- One can replace the underlying equality with an equivalent one.
 
-replace-equality :
-  {_≈′_ : Rel Carrier b₂} →
-  (∀ {x y} → x ≈ y ⇔ (x ≈′ y)) → BooleanAlgebra _ _
+replace-equality : {_≈′_ : Rel Carrier b₂} →
+                   (∀ {x y} → x ≈ y ⇔ (x ≈′ y)) →
+                   BooleanAlgebra _ _
 replace-equality {_≈′_} ≈⇔≈′ = record
   { _≈_              = _≈′_
   ; _∨_              = _∨_
@@ -280,7 +246,7 @@ replace-equality {_≈′_} ≈⇔≈′ = record
   ; ⊥                = ⊥
   ; isBooleanAlgebra =  record
     { isDistributiveLattice = DistributiveLattice.isDistributiveLattice
-                                (DL.replace-equality ≈⇔≈′)
+        (DistribLatticeProperties.replace-equality distributiveLattice ≈⇔≈′)
     ; ∨-complementʳ         = λ x → to ⟨$⟩ ∨-complementʳ x
     ; ∧-complementʳ         = λ x → to ⟨$⟩ ∧-complementʳ x
     ; ¬-cong                = λ i≈j → to ⟨$⟩ ¬-cong (from ⟨$⟩ i≈j)
@@ -308,21 +274,21 @@ module XorRing
 
   ⊕-cong : Congruent₂ _⊕_
   ⊕-cong {x} {y} {u} {v} x≈y u≈v = begin
-    x ⊕ u                ≈⟨ ⊕-def _ _ ⟩
-    (x ∨ u) ∧ ¬ (x ∧ u)  ≈⟨ helper (x≈y ⟨ ∨-cong ⟩ u≈v)
-                                   (x≈y ⟨ ∧-cong ⟩ u≈v) ⟩
+    x ⊕ u                ≈⟨  ⊕-def _ _ ⟩
+    (x ∨ u) ∧ ¬ (x ∧ u)  ≈⟨  helper (x≈y ⟨ ∨-cong ⟩ u≈v)
+                                    (x≈y ⟨ ∧-cong ⟩ u≈v) ⟩
     (y ∨ v) ∧ ¬ (y ∧ v)  ≈˘⟨ ⊕-def _ _ ⟩
     y ⊕ v                ∎
 
   ⊕-comm : Commutative _⊕_
   ⊕-comm x y = begin
-    x ⊕ y                ≈⟨ ⊕-def _ _ ⟩
-    (x ∨ y) ∧ ¬ (x ∧ y)  ≈⟨ helper (∨-comm _ _) (∧-comm _ _) ⟩
+    x ⊕ y                ≈⟨  ⊕-def _ _ ⟩
+    (x ∨ y) ∧ ¬ (x ∧ y)  ≈⟨  helper (∨-comm _ _) (∧-comm _ _) ⟩
     (y ∨ x) ∧ ¬ (y ∧ x)  ≈˘⟨ ⊕-def _ _ ⟩
     y ⊕ x                ∎
 
-  ⊕-¬-distribˡ : ∀ x y → ¬ (x ⊕ y) ≈ ¬ x ⊕ y
-  ⊕-¬-distribˡ x y = begin
+  ¬-distribˡ-⊕ : ∀ x y → ¬ (x ⊕ y) ≈ ¬ x ⊕ y
+  ¬-distribˡ-⊕ x y = begin
     ¬ (x ⊕ y)                              ≈⟨ ¬-cong $ ⊕-def _ _ ⟩
     ¬ ((x ∨ y) ∧ (¬ (x ∧ y)))              ≈⟨ ¬-cong (∧-∨-distribʳ _ _ _) ⟩
     ¬ ((x ∧ ¬ (x ∧ y)) ∨ (y ∧ ¬ (x ∧ y)))  ≈⟨ ¬-cong $ ∨-congˡ $ ∧-congˡ $ ¬-cong (∧-comm _ _) ⟩
@@ -341,25 +307,25 @@ module XorRing
       ⊥ ∨ (x ∧ ¬ y)          ≈⟨ ∨-identityˡ _ ⟩
       x ∧ ¬ y                ∎
 
-  ⊕-¬-distribʳ : ∀ x y → ¬ (x ⊕ y) ≈ x ⊕ ¬ y
-  ⊕-¬-distribʳ x y = begin
+  ¬-distribʳ-⊕ : ∀ x y → ¬ (x ⊕ y) ≈ x ⊕ ¬ y
+  ¬-distribʳ-⊕ x y = begin
     ¬ (x ⊕ y)  ≈⟨ ¬-cong $ ⊕-comm _ _ ⟩
-    ¬ (y ⊕ x)  ≈⟨ ⊕-¬-distribˡ _ _ ⟩
+    ¬ (y ⊕ x)  ≈⟨ ¬-distribˡ-⊕ _ _ ⟩
     ¬ y ⊕ x    ≈⟨ ⊕-comm _ _ ⟩
     x ⊕ ¬ y    ∎
 
   ⊕-annihilates-¬ : ∀ x y → x ⊕ y ≈ ¬ x ⊕ ¬ y
   ⊕-annihilates-¬ x y = begin
     x ⊕ y        ≈˘⟨ ¬-involutive _ ⟩
-    ¬ ¬ (x ⊕ y)  ≈⟨ ¬-cong $ ⊕-¬-distribˡ _ _ ⟩
-    ¬ (¬ x ⊕ y)  ≈⟨ ⊕-¬-distribʳ _ _ ⟩
+    ¬ ¬ (x ⊕ y)  ≈⟨  ¬-cong $ ¬-distribˡ-⊕ _ _ ⟩
+    ¬ (¬ x ⊕ y)  ≈⟨  ¬-distribʳ-⊕ _ _ ⟩
     ¬ x ⊕ ¬ y    ∎
 
   ⊕-identityˡ : LeftIdentity ⊥ _⊕_
   ⊕-identityˡ x = begin
     ⊥ ⊕ x                ≈⟨ ⊕-def _ _ ⟩
     (⊥ ∨ x) ∧ ¬ (⊥ ∧ x)  ≈⟨ helper (∨-identityˡ _) (∧-zeroˡ _) ⟩
-    x ∧ ¬ ⊥              ≈⟨ ∧-congˡ ¬⊥=⊤ ⟩
+    x ∧ ¬ ⊥              ≈⟨ ∧-congˡ ⊥≉⊤ ⟩
     x ∧ ⊤                ≈⟨ ∧-identityʳ _ ⟩
     x                    ∎
 
@@ -567,21 +533,38 @@ module XorRing
     ; distrib = ∧-distrib-⊕
     }
 
-  isCommutativeRing : IsCommutativeRing _⊕_ _∧_ id ⊥ ⊤
-  isCommutativeRing = record
+  ⊕-∧-isCommutativeRing : IsCommutativeRing _⊕_ _∧_ id ⊥ ⊤
+  ⊕-∧-isCommutativeRing = record
     { isRing = ⊕-∧-isRing
     ; *-comm = ∧-comm
     }
 
-  commutativeRing : CommutativeRing _ _
-  commutativeRing = record
-    { _+_               = _⊕_
-    ; _*_               = _∧_
-    ; -_                = id
-    ; 0#                = ⊥
-    ; 1#                = ⊤
-    ; isCommutativeRing = isCommutativeRing
+  ⊕-∧-commutativeRing : CommutativeRing _ _
+  ⊕-∧-commutativeRing = record
+    { isCommutativeRing = ⊕-∧-isCommutativeRing
     }
+
+  ⊕-¬-distribˡ = ¬-distribˡ-⊕
+  {-# WARNING_ON_USAGE ⊕-¬-distribˡ
+  "Warning: ⊕-¬-distribˡ was deprecated in v1.1.
+  Please use ¬-distribˡ-⊕ instead."
+  #-}
+  ⊕-¬-distribʳ = ¬-distribʳ-⊕
+  {-# WARNING_ON_USAGE ⊕-¬-distribʳ
+  "Warning: ⊕-¬-distribʳ was deprecated in v1.1.
+  Please use ¬-distribʳ-⊕ instead."
+  #-}
+  isCommutativeRing = ⊕-∧-isCommutativeRing
+  {-# WARNING_ON_USAGE isCommutativeRing
+  "Warning: isCommutativeRing was deprecated in v1.1.
+  Please use ⊕-∧-isCommutativeRing instead."
+  #-}
+  commutativeRing = ⊕-∧-commutativeRing
+  {-# WARNING_ON_USAGE commutativeRing
+  "Warning: commutativeRing was deprecated in v1.1.
+  Please use ⊕-∧-commutativeRing instead."
+  #-}
+
 
 infixl 6 _⊕_
 
@@ -589,3 +572,23 @@ _⊕_ : Op₂ Carrier
 x ⊕ y = (x ∨ y) ∧ ¬ (x ∧ y)
 
 module DefaultXorRing = XorRing _⊕_ (λ _ _ → refl)
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 1.1
+
+¬⊥=⊤ = ⊥≉⊤
+{-# WARNING_ON_USAGE ¬⊥=⊤
+"Warning: ¬⊥=⊤ was deprecated in v1.1.
+Please use ⊥≉⊤ instead."
+#-}
+¬⊤=⊥ = ⊤≉⊥
+{-# WARNING_ON_USAGE ¬⊤=⊥
+"Warning: ¬⊤=⊥ was deprecated in v1.1.
+Please use ⊤≉⊥ instead."
+#-}

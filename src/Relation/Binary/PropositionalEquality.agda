@@ -12,10 +12,11 @@ import Axiom.Extensionality.Propositional as Ext
 open import Axiom.UniquenessOfIdentityProofs
 open import Function
 open import Function.Equality using (Π; _⟶_; ≡-setoid)
-open import Level
-open import Data.Empty
-open import Data.Product
+open import Level using (Level; _⊔_)
+open import Data.Product using (∃)
+
 open import Relation.Nullary using (yes ; no)
+open import Relation.Nullary.Decidable.Core
 open import Relation.Unary using (Pred)
 open import Relation.Binary
 open import Relation.Binary.Indexed.Heterogeneous
@@ -47,6 +48,9 @@ cong-app refl x = refl
 
 cong₂ : ∀ (f : A → B → C) {x y u v} → x ≡ y → u ≡ v → f x u ≡ f y v
 cong₂ f refl refl = refl
+
+------------------------------------------------------------------------
+-- Structure of equality as a binary relation
 
 setoid : Set a → Setoid _ _
 setoid A = record
@@ -203,14 +207,10 @@ cong-≡id {f = f} {x} f≡id =
 module _ (_≟_ : Decidable {A = A} _≡_) where
 
   ≡-≟-identity : ∀ {x y : A} (eq : x ≡ y) → x ≟ y ≡ yes eq
-  ≡-≟-identity {x} {y} eq with x ≟ y
-  ... | yes p = cong yes (Decidable⇒UIP.≡-irrelevant _≟_ p eq)
-  ... | no ¬p = ⊥-elim (¬p eq)
+  ≡-≟-identity {x} {y} eq = dec-yes-irr (x ≟ y) (Decidable⇒UIP.≡-irrelevant _≟_) eq
 
   ≢-≟-identity : ∀ {x y : A} → x ≢ y → ∃ λ ¬eq → x ≟ y ≡ no ¬eq
-  ≢-≟-identity {x} {y} ¬eq with x ≟ y
-  ... | yes p = ⊥-elim (¬eq p)
-  ... | no ¬p = ¬p , refl
+  ≢-≟-identity {x} {y} ¬eq = dec-no (x ≟ y) ¬eq
 
 
 

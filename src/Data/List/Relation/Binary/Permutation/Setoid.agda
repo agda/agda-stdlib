@@ -9,50 +9,72 @@
 open import Relation.Binary
 
 module Data.List.Relation.Binary.Permutation.Setoid
-  {b} {ℓ} (S : Setoid b ℓ) where
+  {a ℓ} (S : Setoid a ℓ) where
 
 open import Data.List using (List; _∷_)
-import Data.List.Relation.Binary.Permutation.Homogeneous as HomogeneousPermutation
+import Data.List.Relation.Binary.Permutation.Homogeneous as Homogeneous
+open import Data.List.Relation.Binary.Equality.Setoid S
 open import Level using (_⊔_)
-import Relation.Binary.EqReasoning as EqReasoning
+open import Relation.Binary.PropositionalEquality using (_≡_; refl)
+import Relation.Binary.Reasoning.Setoid as SetoidReasoning
 
-open Setoid S using (Carrier; _≈_; sym)
+private
+  module Eq = Setoid S
+open Eq using (_≈_) renaming (Carrier to A)
 
-open HomogeneousPermutation
-  using (refl; prep; swap; trans) public
-open HomogeneousPermutation
-  renaming (sym to Perm-sym;
-            isEquivalence to Perm-isEquivalence;
-            setoid to Perm-setoid)
+------------------------------------------------------------------------
+-- Definition
+
+open Homogeneous public
+  using (refl; prep; swap; trans)
 
 infix 3 _↭_
-_↭_ : Rel (List Carrier) (b ⊔ ℓ)
-_↭_ = Permutation _≈_
+
+_↭_ : Rel (List A) (a ⊔ ℓ)
+_↭_ = Homogeneous.Permutation _≈_
 
 ------------------------------------------------------------------------
 -- _↭_ is an equivalence
 
-↭-refl : Reflexive (Permutation _≈_)
-↭-refl = refl
+↭-reflexive : _≡_ ⇒ _↭_
+↭-reflexive refl = refl
 
-↭-trans : Transitive (Permutation _≈_)
+↭-refl : Reflexive _↭_
+↭-refl = ↭-reflexive refl
+
+↭-sym : Symmetric _↭_
+↭-sym = Homogeneous.sym Eq.sym
+
+↭-trans : Transitive _↭_
 ↭-trans = trans
 
-↭-sym : Symmetric (Permutation _≈_)
-↭-sym = Perm-sym sym
-
-↭-isEquivalence : IsEquivalence (Permutation _≈_)
-↭-isEquivalence = Perm-isEquivalence sym
+↭-isEquivalence : IsEquivalence _↭_
+↭-isEquivalence = Homogeneous.isEquivalence Eq.sym
 
 ↭-setoid : Setoid _ _
-↭-setoid = Perm-setoid {R = _≈_} sym
+↭-setoid = Homogeneous.setoid {R = _≈_} Eq.sym
 
 ------------------------------------------------------------------------
 -- A reasoning API to chain permutation proofs
 
 module PermutationReasoning where
 
-  open EqReasoning ↭-setoid public
+  open SetoidReasoning ↭-setoid
+    using (_IsRelatedTo_; relTo)
+
+  open SetoidReasoning ↭-setoid public
     using (begin_ ; _∎ ; _≡⟨⟩_; _≡⟨_⟩_)
-    renaming (_≈⟨_⟩_ to _↭⟨_⟩_)
+    renaming (_≈⟨_⟩_ to _↭⟨_⟩_; _≈˘⟨_⟩_ to _↭˘⟨_⟩_)
+
+  infixr 2 _∷_<⟨_⟩_  _∷_∷_<<⟨_⟩_
+
+  -- Skip reasoning on the first element
+  _∷_<⟨_⟩_ : ∀ x xs {ys zs : List A} → xs ↭ ys →
+               (x ∷ ys) IsRelatedTo zs → (x ∷ xs) IsRelatedTo zs
+  x ∷ xs <⟨ xs↭ys ⟩ rel = relTo (trans (prep Eq.refl xs↭ys) (begin rel))
+
+  -- Skip reasoning about the first two elements
+  _∷_∷_<<⟨_⟩_ : ∀ x y xs {ys zs : List A} → xs ↭ ys →
+                  (y ∷ x ∷ ys) IsRelatedTo zs → (x ∷ y ∷ xs) IsRelatedTo zs
+  x ∷ y ∷ xs <<⟨ xs↭ys ⟩ rel = relTo (trans (swap Eq.refl Eq.refl xs↭ys) (begin rel))
 

@@ -71,6 +71,19 @@ How to make changes
    ------------------------------------------------------------------------
    ```
 
+   If possible, each module should use the options `--safe` and `--without-K`. You
+   can achieve this by placing the following pragma under the header and before
+   any other line of code (including the module name):
+   ```
+   {-# OPTIONS --without-K --safe #-}
+   ```
+
+   If a module cannot be made safe or needs the `--with-K` option then it should be
+   split into a module which is compatible with these options and an auxiliary
+   one which will:
+   * Either be called `SOME/PATH/Unsafe.agda` or `SOME/PATH/WithK.agda`
+   * Or explicitly declared as either unsafe or needing K in `GenerateEverything.hs`
+
 ### Upload your changes
 
 8. Use the `git add X` command to add changes to file `X` to the commit,
@@ -118,3 +131,23 @@ you are never committing anything with a whitespace violation:
 
    fix-agda-whitespace --check
    ```
+
+Type-checking the README directory
+----------------------------------
+
+* By default the README directory is not exported in the
+  `standard-library.agda-lib` file in order to avoid clashing with other people's
+  README files. This means that by default type-checking a file in the README
+  directory fails.
+
+* If you wish to type-check a README file, then you will need to change the line:
+  ```
+  include: src
+  ```
+  to
+  ```
+  include: src .
+  ```
+  in the `standard-library.agda-lib` file.
+
+* Please do not include this change in your pull request.

@@ -6,6 +6,9 @@
 
 {-# OPTIONS --without-K --safe #-}
 
+-- Disabled to prevent warnings from deprecated names
+{-# OPTIONS --warn=noUserWarning #-}
+
 module Data.Integer.Properties where
 
 open import Algebra
@@ -1280,11 +1283,20 @@ abs-*-commute i j = abs-◃ _ _
         | *-comm i k
         = *-cancelʳ-≡ j k i
 
-[1+m]*n≡n+m*n : ∀ m n → sucℤ m * n ≡ n + m * n
-[1+m]*n≡n+m*n m n = begin
+suc-* : ∀ m n → sucℤ m * n ≡ n + m * n
+suc-* m n = begin
   sucℤ m * n      ≡⟨ *-distribʳ-+ n (+ 1) m ⟩
   + 1 * n + m * n ≡⟨ cong (_+ m * n) (*-identityˡ n) ⟩
-  n + m * n       ∎ where open ≡-Reasoning
+  n + m * n       ∎
+  where open ≡-Reasoning
+
+*-suc : ∀ m n → m * sucℤ n ≡ m + m * n
+*-suc m n = begin
+  m * sucℤ n ≡⟨ *-comm m _ ⟩
+  sucℤ n * m ≡⟨ suc-* n m ⟩
+  m + n * m  ≡⟨ cong (λ v → m + v) (*-comm n m) ⟩
+  m + m * n  ∎
+  where open ≡-Reasoning
 
 -1*n≡-n : ∀ n → -[1+ 0 ] * n ≡ - n
 -1*n≡-n -[1+ n ] = cong (λ v → + suc v) (ℕₚ.+-identityʳ n)
@@ -1631,38 +1643,56 @@ Please use <-irrelevant instead."
 -<′+ : ∀ {m n} → -[1+ m ] <′ + n
 -<′+ {0}     = +≤+ z≤n
 -<′+ {suc _} = -≤+
-
+{-# WARNING_ON_USAGE -<′+
+"Warning: _<′_ was deprecated in v1.1.
+Please use _<_ instead."
+#-}
 <′-irrefl : Irreflexive _≡_ _<′_
 <′-irrefl { + n}          refl (+≤+ 1+n≤n) = ℕₚ.<-irrefl refl 1+n≤n
 <′-irrefl { -[1+ suc n ]} refl (-≤- 1+n≤n) = ℕₚ.<-irrefl refl 1+n≤n
-
+{-# WARNING_ON_USAGE <′-irrefl
+"Warning: _<′_ was deprecated in v1.1.
+Please use _<_ instead."
+#-}
 >′-irrefl : Irreflexive _≡_ _>′_
 >′-irrefl = <′-irrefl ∘ sym
 {-# WARNING_ON_USAGE >′-irrefl
-"Warning: _>′_ was deprecated in v1.0.
+"Warning: _>′_ was deprecated in v1.1.
 Please use _>_ instead."
 #-}
 <′-asym : Asymmetric _<′_
 <′-asym {+ n}           {+ m}           (+≤+ n<m) (+≤+ m<n) = ℕₚ.<-asym n<m m<n
 <′-asym { -[1+ suc n ]} { -[1+ suc m ]} (-≤- n<m) (-≤- m<n) = ℕₚ.<-asym n<m m<n
 {-# WARNING_ON_USAGE <′-asym
-"Warning: _<′_ was deprecated in v1.0.
+"Warning: _<′_ was deprecated in v1.1.
 Please use _<_ instead."
 #-}
 ≤-<′-trans : Trans _≤_ _<′_ _<′_
 ≤-<′-trans { -[1+ m ]} {+ n} {+ p} -≤+ (+≤+ 1+n≤p) = -<′+ {m} {p}
 ≤-<′-trans {+ m} {+ n} {+ p} (+≤+ m≤n) (+≤+ 1+n≤p) = +≤+ (ℕₚ.≤-trans (ℕ.s≤s m≤n) 1+n≤p)
 ≤-<′-trans { -[1+ m ]} { -[1+ n ]} (-≤- n≤m) n<p = ≤-trans (⊖-monoʳ-≥-≤ 0 n≤m) n<p
-
+{-# WARNING_ON_USAGE ≤-<′-trans
+"Warning: _<′_ was deprecated in v1.1.
+Please use _<_ instead."
+#-}
 <′-≤-trans : Trans _<′_ _≤_ _<′_
 <′-≤-trans = ≤-trans
-
+{-# WARNING_ON_USAGE <′-≤-trans
+"Warning: _<′_ was deprecated in v1.1.
+Please use _<_ instead."
+#-}
 <′⇒≤ : ∀ {m n} → m <′ n → m ≤ n
 <′⇒≤ m<n =  ≤-trans (n≤1+n _) m<n
-
+{-# WARNING_ON_USAGE <′⇒≤
+"Warning: _<′_ was deprecated in v1.1.
+Please use _<_ instead."
+#-}
 <′-trans : Transitive _<′_
 <′-trans {m} {n} {p} m<n n<p = ≤-<′-trans {m} {n} {p} (<′⇒≤ m<n) n<p
-
+{-# WARNING_ON_USAGE <′-trans
+"Warning: _<′_ was deprecated in v1.1.
+Please use _<_ instead."
+#-}
 <′-cmp : Trichotomous _≡_ _<′_
 <′-cmp (+ m) (+ n) with ℕₚ.<-cmp m n
 ... | tri< m<n m≢n m≯n =
@@ -1685,7 +1715,10 @@ Please use _<_ instead."
   tri≈ (m≯n ∘ ℕ.s≤s ∘ drop‿-≤-) (cong -[1+_] m≡n) (m≮n ∘ ℕ.s≤s ∘ drop‿-≤-)
 ... | tri> m≮n m≢n m>n =
   tri< (-≤- (ℕₚ.≤-pred m>n)) (m≢n ∘ -[1+-injective) (m≮n ∘ s≤s ∘ drop‿-≤-)
-
+{-# WARNING_ON_USAGE <′-cmp
+"Warning: _<′_ was deprecated in v1.1.
+Please use _<_ instead."
+#-}
 <′-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<′_
 <′-isStrictPartialOrder = record
   { isEquivalence = isEquivalence
@@ -1693,13 +1726,16 @@ Please use _<_ instead."
   ; trans         = λ {i} → <′-trans {i}
   ; <-resp-≈      = (λ {x} → subst (x <′_)) , subst (_<′ _)
   }
-
+{-# WARNING_ON_USAGE <′-isStrictPartialOrder
+"Warning: _<′_ was deprecated in v1.1.
+Please use _<_ instead."
+#-}
 <′-strictPartialOrder : StrictPartialOrder _ _ _
 <′-strictPartialOrder = record
   { isStrictPartialOrder = <′-isStrictPartialOrder
   }
 {-# WARNING_ON_USAGE <′-strictPartialOrder
-"Warning: _<′_ was deprecated in v1.0.
+"Warning: _<′_ was deprecated in v1.1.
 Please use _<_ instead."
 #-}
 <′-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<′_
@@ -1708,23 +1744,29 @@ Please use _<_ instead."
   ; trans         = λ {i} → <′-trans {i}
   ; compare       = <′-cmp
   }
-
+{-# WARNING_ON_USAGE <′-isStrictTotalOrder
+"Warning: _<′_ was deprecated in v1.1.
+Please use _<_ instead."
+#-}
 <′-strictTotalOrder : StrictTotalOrder _ _ _
 <′-strictTotalOrder = record
   { isStrictTotalOrder = <′-isStrictTotalOrder
   }
 {-# WARNING_ON_USAGE <′-strictTotalOrder
-"Warning: _<′_ was deprecated in v1.0.
+"Warning: _<′_ was deprecated in v1.1.
 Please use _<_ instead."
 #-}
 n≮′n : ∀ {n} → n ≮′ n
 n≮′n {+ n}           (+≤+ n<n) =  contradiction n<n ℕₚ.1+n≰n
 n≮′n { -[1+ suc n ]} (-≤- n<n) =  contradiction n<n ℕₚ.1+n≰n
-
+{-# WARNING_ON_USAGE n≮′n
+"Warning: n≮′n was deprecated in v1.1.
+Please use n≮n instead."
+#-}
 >′⇒≰′ : ∀ {x y} → x >′ y → x ≰ y
 >′⇒≰′ {y = y} x>y x≤y = contradiction (<′-≤-trans {i = y} x>y x≤y) n≮′n
 {-# WARNING_ON_USAGE >′⇒≰′
-"Warning: _<′_ was deprecated in v1.0.
+"Warning: _<′_ was deprecated in v1.1.
 Please use _<_ instead."
 #-}
 ≰⇒>′ : ∀ {x y} → x ≰ y → x >′ y
@@ -1737,26 +1779,32 @@ Please use _<_ instead."
 ... | yes m≤n  = -≤- m≤n
 ... | no  m≰n' = contradiction (-≤- (ℕₚ.≰⇒> m≰n')) m≰n
 {-# WARNING_ON_USAGE ≰⇒>′
-"Warning: _<′_ was deprecated in v1.0.
+"Warning: _<′_ was deprecated in v1.1.
 Please use _<_ instead."
 #-}
 <′-irrelevant : Irrelevant _<′_
 <′-irrelevant = ≤-irrelevant
 {-# WARNING_ON_USAGE <′-irrelevant
-"Warning: _<′_ was deprecated in v1.0.
+"Warning: _<′_ was deprecated in v1.1.
 Please use _<_ instead."
 #-}
 +-monoˡ-<′ : ∀ n → (_+ n) Preserves _<′_ ⟶ _<′_
 +-monoˡ-<′ n {i} {j} i<j
   rewrite sym (+-assoc (+ 1) i n)
           = +-monoˡ-≤ n i<j
-
+{-# WARNING_ON_USAGE +-monoˡ-<′
+"Warning: _<′_ was deprecated in v1.1.
+Please use _<_ instead."
+#-}
 +-monoʳ-<′ : ∀ n → (_+_ n) Preserves _<′_ ⟶ _<′_
 +-monoʳ-<′ n {i} {j} i<j
   rewrite +-comm n i
         | +-comm n j
         = +-monoˡ-<′ n {i} {j} i<j
-
+{-# WARNING_ON_USAGE +-monoʳ-<′
+"Warning: _<′_ was deprecated in v1.1.
+Please use _<_ instead."
+#-}
 +-mono-<′ : _+_ Preserves₂ _<′_ ⟶ _<′_ ⟶ _<′_
 +-mono-<′ {m} {n} {i} {j} m<n i<j = begin
   sucℤ (m + i) ≤⟨ suc-mono {m + i} (<′⇒≤ (+-monoˡ-<′ i {m} {n} m<n)) ⟩
@@ -1764,20 +1812,20 @@ Please use _<_ instead."
   n + j        ∎
   where open ≤-Reasoning
 {-# WARNING_ON_USAGE +-mono-<′
-"Warning: _<′_ was deprecated in v1.0.
+"Warning: _<′_ was deprecated in v1.1.
 Please use _<_ instead."
 #-}
 +-mono-≤-<′ : _+_ Preserves₂ _≤_ ⟶ _<′_ ⟶ _<′_
 +-mono-≤-<′ {m} {n} {i} {j} m≤n i<j = ≤-<′-trans (+-monoˡ-≤ i m≤n) (+-monoʳ-<′ n i<j)
 {-# WARNING_ON_USAGE +-mono-≤-<′
-"Warning: _<′_ was deprecated in v1.0.
+"Warning: _<′_ was deprecated in v1.1.
 Please use _<_ instead."
 #-}
 +-mono-<′-≤ : _+_ Preserves₂ _<′_ ⟶ _≤_ ⟶ _<′_
 +-mono-<′-≤ {m} {n} {i} {j} m<n i≤j =
   <′-≤-trans {m + i} {n + i} {n + j} (+-monoˡ-<′ i {m} {n} m<n) (+-monoʳ-≤ n i≤j)
 {-# WARNING_ON_USAGE +-mono-<′-≤
-"Warning: _<′_ was deprecated in v1.0.
+"Warning: _<′_ was deprecated in v1.1.
 Please use _<_ instead."
 #-}
 m≤pred[n]⇒m<′n : ∀ {m n} → m ≤ pred n → m <′ n
@@ -1789,7 +1837,7 @@ m≤pred[n]⇒m<′n {m} {n} m≤predn = begin
   n                    ∎
   where open ≤-Reasoning
 {-# WARNING_ON_USAGE m≤pred[n]⇒m<′n
-"Warning: _<′_ was deprecated in v1.0.
+"Warning: _<′_ was deprecated in v1.1.
 Please use _<_ instead."
 #-}
 m<′n⇒m≤pred[n] : ∀ {m n} → m <′ n → m ≤ pred n
@@ -1799,6 +1847,14 @@ m<′n⇒m≤pred[n] {m} {n} m<n = begin
   pred n        ∎
   where open ≤-Reasoning
 {-# WARNING_ON_USAGE m<′n⇒m≤pred[n]
-"Warning: _<′_ was deprecated in v1.0.
+"Warning: _<′_ was deprecated in v1.1.
 Please use _<_ instead."
+#-}
+
+-- Version 1.2
+
+[1+m]*n≡n+m*n = suc-*
+{-# WARNING_ON_USAGE [1+m]*n≡n+m*n
+"Warning: [1+m]*n≡n+m*n was deprecated in v1.1.
+Please use suc-* instead."
 #-}
