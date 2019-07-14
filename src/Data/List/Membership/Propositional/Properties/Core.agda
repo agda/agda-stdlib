@@ -12,7 +12,7 @@
 
 module Data.List.Membership.Propositional.Properties.Core where
 
-open import Function using (flip; id; _∘_)
+open import Function.Core using (flip; id; _∘_)
 open import Function.Inverse using (_↔_; inverse)
 open import Data.List.Base using (List)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)

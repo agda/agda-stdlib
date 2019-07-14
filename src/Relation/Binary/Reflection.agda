@@ -10,7 +10,7 @@
 open import Data.Fin
 open import Data.Nat
 open import Data.Vec as Vec
-open import Function
+open import Function.Core
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence using (module Equivalence)
 open import Level

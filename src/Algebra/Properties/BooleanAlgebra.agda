@@ -19,7 +19,7 @@ open import Algebra.FunctionProperties _≈_
 open import Algebra.FunctionProperties.Consequences setoid
 open import Relation.Binary.Reasoning.Setoid setoid
 open import Relation.Binary
-open import Function
+open import Function.Core
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence using (_⇔_; module Equivalence)
 open import Data.Product using (_,_)

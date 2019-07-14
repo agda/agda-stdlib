@@ -13,7 +13,7 @@ open import Data.Nat
 open import Data.Nat.DivMod
 open import Data.Nat.Properties
 open import Data.Product
-open import Function
+open import Function.Core
 open import Function.Equivalence using (_⇔_; equivalence)
 open import Level using (0ℓ)
 open import Relation.Nullary using (yes; no)

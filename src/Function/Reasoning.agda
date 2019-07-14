@@ -9,7 +9,7 @@
 
 module Function.Reasoning where
 
-open import Function using (_∋_)
+open import Function.Core using (_∋_)
 
 -- Need to give _∋_ a new name as syntax cannot contain underscores
 infixl 0 ∋-syntax
