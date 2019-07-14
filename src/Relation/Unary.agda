@@ -12,7 +12,7 @@ open import Data.Empty
 open import Data.Unit.Base using (⊤)
 open import Data.Product
 open import Data.Sum using (_⊎_; [_,_])
-open import Function
+open import Function.Core
 open import Level
 open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)

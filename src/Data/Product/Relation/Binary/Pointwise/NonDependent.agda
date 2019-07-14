@@ -12,7 +12,7 @@ open import Data.Product as Prod
 open import Data.Product.Properties using (≡-dec)
 open import Data.Sum
 open import Data.Unit.Base using (⊤)
-open import Function
+open import Function.Core
 open import Function.Equality as F using (_⟶_; _⟨$⟩_)
 open import Function.Equivalence as Eq
   using (Equivalence; _⇔_; module Equivalence)

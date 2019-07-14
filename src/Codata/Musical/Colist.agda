@@ -23,7 +23,7 @@ open import Data.List.Base using (List; []; _∷_)
 open import Data.List.NonEmpty using (List⁺; _∷_)
 open import Data.Product as Prod using (∃; _×_; _,_)
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
-open import Function
+open import Function.Core
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse as Inv using (_↔_; _↔̇_; Inverse; inverse)
 open import Level using (_⊔_)
