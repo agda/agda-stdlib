@@ -125,6 +125,12 @@ record RawMonoid c ℓ : Set (suc (c ⊔ ℓ)) where
     _∙_     : Op₂ Carrier
     ε       : Carrier
 
+  rawMagma : RawMagma c ℓ
+  rawMagma = record
+    { _≈_ = _≈_
+    ; _∙_ = _∙_
+    }
+
 
 record Monoid c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _∙_
@@ -208,6 +214,16 @@ record RawGroup c ℓ : Set (suc (c ⊔ ℓ)) where
     _∙_     : Op₂ Carrier
     ε       : Carrier
     _⁻¹     : Op₁ Carrier
+
+  rawMonoid : RawMonoid c ℓ
+  rawMonoid = record
+    { _≈_ = _≈_
+    ; _∙_ = _∙_
+    ; ε   = ε
+    }
+
+  open RawMonoid rawMonoid public
+    using (rawMagma)
 
 
 record Group c ℓ : Set (suc (c ⊔ ℓ)) where

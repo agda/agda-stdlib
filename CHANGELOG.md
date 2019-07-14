@@ -90,6 +90,9 @@ The following new modules have been added to the library:
 
 * The following new modules have been added to the library:
   ```
+  Algebra.Morphism.RawMagma
+  Algebra.Morphism.RawMonoid
+
   Algebra.Properties.Semigroup
   Algebra.Properties.CommutativeSemigroup
 
@@ -141,7 +144,7 @@ Other minor additions
   *-suc : m * sucℤ n ≡ m + m * n
   ```
 
-* Added new proof to `Data.Nat.Properties`:
+* Added new proofs to `Data.Nat.Properties`:
   ```agda
   even≢odd : ∀ m n → 2 * m ≢ suc (2 * n)
   0≢1+n    : ∀ {n} → 0 ≢ suc n
