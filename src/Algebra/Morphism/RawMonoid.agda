@@ -8,13 +8,14 @@
 
 open import Algebra
 open import Algebra.Morphism
+open import Function
 open RawMonoid using (Carrier; _≈_)
 
 module Algebra.Morphism.RawMonoid
   {a b ℓ₁ ℓ₂} {From : RawMonoid b ℓ₂} {To : RawMonoid a ℓ₁}
-  {to : Carrier From → Carrier To}
-  (isRawMonoidMorphism : IsRawMonoidMorphism From To to)
-  (to-injective : ∀ {x y} → _≈_ To (to x) (to y) → _≈_ From x y)
+  {f : Carrier From → Carrier To}
+  (f-isRawMonoidMorphism : IsRawMonoidMorphism From To f)
+  (f-injective : Injective (_≈_ From) (_≈_ To) f)
   where
 
 open import Relation.Binary
@@ -34,30 +35,30 @@ open Definitions F.Carrier T.Carrier T._≈_
 open T using () renaming (_∙_ to _⊕_)
 open F using (_∙_)
 
-open IsRawMonoidMorphism isRawMonoidMorphism
+open IsRawMonoidMorphism f-isRawMonoidMorphism
 open SetoidReasoning T-setoid
 
 ------------------------------------------------------------------------
 -- Export all properties of magma morphisms
 
-open import Algebra.Morphism.RawMagma magma-homo to-injective public
+open import Algebra.Morphism.RawMagma magma-homo f-injective public
 
 ------------------------------------------------------------------------
 -- Properties
 
 identityˡ-homo : LeftIdentity T._≈_ T.ε _⊕_ → LeftIdentity F._≈_ F.ε _∙_
-identityˡ-homo idˡ x = to-injective (begin
-  to (F.ε ∙ x)  ≈⟨ ∙-homo F.ε x ⟩
-  to F.ε ⊕ to x ≈⟨ T-∙-congʳ ε-homo ⟩
-  T.ε ⊕ to x    ≈⟨ idˡ (to x) ⟩
-  to x          ∎)
+identityˡ-homo idˡ x = f-injective (begin
+  f (F.ε ∙ x)  ≈⟨ ∙-homo F.ε x ⟩
+  f F.ε ⊕ f x ≈⟨ T-∙-congʳ ε-homo ⟩
+  T.ε ⊕ f x    ≈⟨ idˡ (f x) ⟩
+  f x          ∎)
 
 identityʳ-homo : RightIdentity T._≈_ T.ε _⊕_ → RightIdentity F._≈_ F.ε _∙_
-identityʳ-homo idʳ x = to-injective (begin
-  to (x ∙ F.ε)  ≈⟨ ∙-homo x F.ε ⟩
-  to x ⊕ to F.ε ≈⟨ T-∙-congˡ ε-homo ⟩
-  to x ⊕ T.ε    ≈⟨ idʳ (to x) ⟩
-  to x          ∎)
+identityʳ-homo idʳ x = f-injective (begin
+  f (x ∙ F.ε)  ≈⟨ ∙-homo x F.ε ⟩
+  f x ⊕ f F.ε ≈⟨ T-∙-congˡ ε-homo ⟩
+  f x ⊕ T.ε    ≈⟨ idʳ (f x) ⟩
+  f x          ∎)
 
 identity-homo : Identity T._≈_ T.ε _⊕_ → Identity F._≈_ F.ε _∙_
 identity-homo (idˡ , idʳ) = identityˡ-homo idˡ , identityʳ-homo idʳ

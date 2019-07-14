@@ -14,7 +14,6 @@ open import Algebra.Structures
 open import Algebra.FunctionProperties hiding (LeftInverse)
 import Algebra.Properties.Group as GroupP
 open import Function
-open import Function.LeftInverse using (LeftInverse)
 open import Level
 import Relation.Binary.Reasoning.Setoid as EqR
 
@@ -72,7 +71,8 @@ module _ {c₁ ℓ₁ c₂ ℓ₂}
       ; setoid  to T-setoid
       )
 
-  syntax IsRawMagmaMorphism From To F = F Is From -RawMagma⟶ To
+  IsRawMagmaMorphism-syntax = IsRawMagmaMorphism
+  syntax IsRawMagmaMorphism-syntax From To F = F Is From -RawMagma⟶ To
 
 
 module _ {c₁ ℓ₁ c₂ ℓ₂}
@@ -92,7 +92,8 @@ module _ {c₁ ℓ₁ c₂ ℓ₂}
 
     open IsRawMagmaMorphism magma-homo public
 
-  syntax IsRawMonoidMorphism From To F = F Is From -RawMonoid⟶ To
+  IsRawMonoidMorphism-syntax = IsRawMonoidMorphism
+  syntax IsRawMonoidMorphism-syntax From To F = F Is From -RawMonoid⟶ To
 
 
 ------------------------------------------------------------------------
@@ -113,7 +114,8 @@ module _ {c₁ ℓ₁ c₂ ℓ₂}
       ⟦⟧-cong : ⟦_⟧ Preserves F._≈_ ⟶ T._≈_
       ∙-homo  : Homomorphic₂ ⟦_⟧ F._∙_ T._∙_
 
-  syntax IsSemigroupMorphism From To F = F Is From -Semigroup⟶ To
+  IsSemigroupMorphism-syntax = IsSemigroupMorphism
+  syntax IsSemigroupMorphism-syntax From To F = F Is From -Semigroup⟶ To
 
 module _ {c₁ ℓ₁ c₂ ℓ₂}
          (From : Monoid c₁ ℓ₁)
@@ -132,7 +134,8 @@ module _ {c₁ ℓ₁ c₂ ℓ₂}
 
     open IsSemigroupMorphism sm-homo public
 
-  syntax IsMonoidMorphism From To F = F Is From -Monoid⟶ To
+  IsMonoidMorphism-syntax = IsMonoidMorphism
+  syntax IsMonoidMorphism-syntax From To F = F Is From -Monoid⟶ To
 
 module _ {c₁ ℓ₁ c₂ ℓ₂}
          (From : CommutativeMonoid c₁ ℓ₁)
@@ -150,7 +153,8 @@ module _ {c₁ ℓ₁ c₂ ℓ₂}
 
     open IsMonoidMorphism mn-homo public
 
-  syntax IsCommutativeMonoidMorphism From To F = F Is From -CommutativeMonoid⟶ To
+  IsCommutativeMonoidMorphism-syntax = IsCommutativeMonoidMorphism
+  syntax IsCommutativeMonoidMorphism-syntax From To F = F Is From -CommutativeMonoid⟶ To
 
 module _ {c₁ ℓ₁ c₂ ℓ₂}
          (From : IdempotentCommutativeMonoid c₁ ℓ₁)
@@ -172,7 +176,8 @@ module _ {c₁ ℓ₁ c₂ ℓ₂}
       IsCommutativeMonoidMorphism F.commutativeMonoid T.commutativeMonoid ⟦_⟧
     isCommutativeMonoidMorphism = record { mn-homo = mn-homo }
 
-  syntax IsIdempotentCommutativeMonoidMorphism From To F = F Is From -IdempotentCommutativeMonoid⟶ To
+  IsIdempotentCommutativeMonoidMorphism-syntax = IsIdempotentCommutativeMonoidMorphism
+  syntax IsIdempotentCommutativeMonoidMorphism-syntax From To F = F Is From -IdempotentCommutativeMonoid⟶ To
 
 module _ {c₁ ℓ₁ c₂ ℓ₂}
          (From : Group c₁ ℓ₁)
@@ -197,7 +202,8 @@ module _ {c₁ ℓ₁ c₂ ℓ₂}
       ⟦ F.ε ⟧              ≈⟨ ε-homo ⟩
       T.ε ∎
 
-  syntax IsGroupMorphism From To F = F Is From -Group⟶ To
+  IsGroupMorphism-syntax = IsGroupMorphism
+  syntax IsGroupMorphism-syntax From To F = F Is From -Group⟶ To
 
 module _ {c₁ ℓ₁ c₂ ℓ₂}
          (From : AbelianGroup c₁ ℓ₁)
@@ -215,7 +221,8 @@ module _ {c₁ ℓ₁ c₂ ℓ₂}
 
     open IsGroupMorphism gp-homo public
 
-  syntax IsAbelianGroupMorphism From To F = F Is From -AbelianGroup⟶ To
+  IsAbelianGroupMorphism-syntax = IsAbelianGroupMorphism
+  syntax IsAbelianGroupMorphism-syntax From To F = F Is From -AbelianGroup⟶ To
 
 module _ {c₁ ℓ₁ c₂ ℓ₂}
          (From : Ring c₁ ℓ₁)
@@ -232,5 +239,5 @@ module _ {c₁ ℓ₁ c₂ ℓ₂}
       +-abgp-homo : ⟦_⟧ Is F.+-abelianGroup -AbelianGroup⟶ T.+-abelianGroup
       *-mn-homo   : ⟦_⟧ Is F.*-monoid -Monoid⟶ T.*-monoid
 
-  syntax IsRingMorphism From To F = F Is From -Ring⟶ To
-
+  IsRingMorphism-syntax = IsRingMorphism
+  syntax IsRingMorphism-syntax From To F = F Is From -Ring⟶ To
