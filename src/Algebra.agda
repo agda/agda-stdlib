@@ -12,7 +12,7 @@ module Algebra where
 open import Relation.Binary
 open import Algebra.FunctionProperties
 open import Algebra.Structures
-open import Function
+open import Function.Core
 open import Level
 
 ------------------------------------------------------------------------

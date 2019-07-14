@@ -62,3 +62,20 @@ identityʳ-homo idʳ x = f-injective (begin
 
 identity-homo : Identity T._≈_ T.ε _⊕_ → Identity F._≈_ F.ε _∙_
 identity-homo (idˡ , idʳ) = identityˡ-homo idˡ , identityʳ-homo idʳ
+
+------------------------------------------------------------------------
+-- Properties
+
+isMonoid-homo : IsMonoid T._≈_ _⊕_ T.ε → IsMonoid F._≈_ _∙_ F.ε
+isMonoid-homo isMonoid = record
+  { isSemigroup = isSemigroup-homo isSemigroup
+  ; identity    = identity-homo identity
+  } where open IsMonoid isMonoid
+
+isCommutativeMonoid-homo : IsCommutativeMonoid T._≈_ _⊕_ T.ε →
+                           IsCommutativeMonoid F._≈_ _∙_ F.ε
+isCommutativeMonoid-homo isCommMonoid = record
+  { isSemigroup = isSemigroup-homo isSemigroup
+  ; identityˡ   = identityˡ-homo identityˡ
+  ; comm        = comm-homo comm
+  } where open IsCommutativeMonoid isCommMonoid

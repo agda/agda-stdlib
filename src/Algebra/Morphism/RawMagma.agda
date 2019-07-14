@@ -8,6 +8,7 @@
 
 open import Algebra
 open import Algebra.Morphism
+open import Algebra.Structures
 open import Function
 open RawMagma using (Carrier; _≈_)
 
@@ -34,6 +35,9 @@ open F using (_∙_)
 
 open IsRawMagmaMorphism f-isRawMagmaMorphism
 open SetoidReasoning T-setoid
+
+------------------------------------------------------------------------
+-- Properties
 
 assoc-homo : Associative T._≈_ _⊕_ → Associative F._≈_ _∙_
 assoc-homo assoc x y z = f-injective (begin
@@ -84,3 +88,30 @@ cancelʳ-homo cancelʳ {x} y z y∙x≈z∙x = f-injective (cancelʳ (f y) (f z)
 
 cancel-homo : Cancellative T._≈_ _⊕_ → Cancellative F._≈_ _∙_
 cancel-homo (cancelˡ , cancelʳ) = cancelˡ-homo cancelˡ , cancelʳ-homo cancelʳ
+
+------------------------------------------------------------------------
+-- Structures
+
+isSemigroup-homo : IsSemigroup T._≈_ _⊕_ → IsSemigroup F._≈_ _∙_
+isSemigroup-homo isSemigroup = record
+  { isMagma = F-isMagma
+  ; assoc   = assoc-homo assoc
+  } where open IsSemigroup isSemigroup
+
+isBand-homo : IsBand T._≈_ _⊕_ → IsBand F._≈_ _∙_
+isBand-homo isBand = record
+  { isSemigroup = isSemigroup-homo isSemigroup
+  ; idem        = idem-homo idem
+  } where open IsBand isBand
+
+isSemilattice-homo : IsSemilattice T._≈_ _⊕_ → IsSemilattice F._≈_ _∙_
+isSemilattice-homo isSemilattice = record
+  { isBand = isBand-homo isBand
+  ; comm   = comm-homo comm
+  } where open IsSemilattice isSemilattice
+
+isSelectiveMagma-homo : IsSelectiveMagma T._≈_ _⊕_ → IsSelectiveMagma F._≈_ _∙_
+isSelectiveMagma-homo isSelMagma = record
+  { isMagma = F-isMagma
+  ; sel     = sel-homo sel
+  } where open IsSelectiveMagma isSelMagma

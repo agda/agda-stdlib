@@ -149,6 +149,17 @@ Other minor additions
   even≢odd : ∀ m n → 2 * m ≢ suc (2 * n)
   0≢1+n    : ∀ {n} → 0 ≢ suc n
   n<1+n    : ∀ {n} → n < suc n
+
+  +-rawMagma     : RawMagma 0ℓ 0ℓ
+  *-rawMagma     : RawMagma 0ℓ 0ℓ
+  +-0-rawMonoid  : RawMonoid 0ℓ 0ℓ
+  *-1-rawMonoid  : RawMonoid 0ℓ 0ℓ
+  ```
+
+* Added new proofs to `Relation.Binary.PropositionalEquality`:
+  ```agda
+  isMagma : (_∙_ : Op₂ A) → IsMagma _≡_ _∙_
+  magma   : (_∙_ : Op₂ A) → Magma a a
   ```
 
 * Added functions to extract the universe level from a type and a term.
