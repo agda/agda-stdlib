@@ -561,6 +561,19 @@ m≤m+n (suc m) n = s≤s (m≤m+n m n)
 m≤n+m : ∀ m n → m ≤ n + m
 m≤n+m m n = subst (m ≤_) (+-comm m n) (m≤m+n m n)
 
+0<1+n : ∀ {n} → 0 < suc n
+0<1+n {n} =  m≤m+n 1 n
+
+m≤n⇒m<n∨m≡n :  ∀ {m n} → m ≤ n → m < n ⊎ m ≡ n
+m≤n⇒m<n∨m≡n {0}     {0}     _          =  inj₂ refl
+m≤n⇒m<n∨m≡n {0}     {suc n} _          =  inj₁ 0<1+n
+m≤n⇒m<n∨m≡n {suc m} {suc n} (s≤s m≤n)  with  m≤n⇒m<n∨m≡n m≤n
+... | inj₂ m≡n = inj₂ (cong suc m≡n)
+... | inj₁ m<n = inj₁ m''≤n'
+  where
+  m''≤n' : suc (suc m) ≤ suc n
+  m''≤n' = s≤s m<n
+
 m+n≤o⇒m≤o : ∀ m {n o} → m + n ≤ o → m ≤ o
 m+n≤o⇒m≤o zero    m+n≤o       = z≤n
 m+n≤o⇒m≤o (suc m) (s≤s m+n≤o) = s≤s (m+n≤o⇒m≤o m m+n≤o)
