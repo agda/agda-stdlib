@@ -341,48 +341,60 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 ------------------------------------------------------------------------
 -- Relational properties
 
-module _ {a r} {A : Set a} {R : Rel A r} where
+module Reflexivity
+    {a r} {A : Set a} {R : Rel A r}
+    (R-refl : Reflexive R) where
 
-  reflexive : Reflexive R → _≡_ ⇒ Sublist R
-  reflexive R-refl P.refl = fromPointwise (Pw.refl R-refl)
+  reflexive : _≡_ ⇒ Sublist R
+  reflexive P.refl = fromPointwise (Pw.refl R-refl)
 
-  refl : Reflexive R → Reflexive (Sublist R)
-  refl R-refl = reflexive R-refl P.refl
+  refl : Reflexive (Sublist R)
+  refl = reflexive P.refl
 
-module _ {a b c r s t} {A : Set a} {B : Set b} {C : Set c}
-         {R : REL A B r} {S : REL B C s} {T : REL A C t} where
+open Reflexivity public
 
-  trans : Trans R S T → Trans (Sublist R) (Sublist S) (Sublist T)
-  trans rs⇒t []        []        = []
-  trans rs⇒t rs        (y ∷ʳ ss) = y ∷ʳ trans rs⇒t rs ss
-  trans rs⇒t (y ∷ʳ rs) (s ∷ ss)  = _ ∷ʳ trans rs⇒t rs ss
-  trans rs⇒t (r ∷ rs)  (s ∷ ss)  = rs⇒t r s ∷ trans rs⇒t rs ss
+module Transitivity
+    {a b c r s t} {A : Set a} {B : Set b} {C : Set c}
+    {R : REL A B r} {S : REL B C s} {T : REL A C t}
+    (rs⇒t : Trans R S T) where
 
-module _ {a b r s e} {A : Set a} {B : Set b}
-         {R : REL A B r} {S : REL B A s} {E : REL A B e} where
+  trans : Trans (Sublist R) (Sublist S) (Sublist T)
+  trans rs        (y ∷ʳ ss) = y ∷ʳ trans rs ss
+  trans (y ∷ʳ rs) (s ∷ ss)  = _ ∷ʳ trans rs ss
+  trans (r ∷ rs)  (s ∷ ss)  = rs⇒t r s ∷ trans rs ss
+  trans []        []        = []
+
+open Transitivity public
+
+module Antisymmetry
+    {a b r s e} {A : Set a} {B : Set b}
+    {R : REL A B r} {S : REL B A s} {E : REL A B e}
+    (rs⇒e : Antisym R S E) where
 
   open ℕₚ.≤-Reasoning
 
-  antisym : Antisym R S E → Antisym (Sublist R) (Sublist S) (Pointwise E)
-  antisym rs⇒e []        []        = []
-  antisym rs⇒e (r ∷ rs)  (s ∷ ss)  = rs⇒e r s ∷ antisym rs⇒e rs ss
+  antisym : Antisym (Sublist R) (Sublist S) (Pointwise E)
+  antisym []        []        = []
+  antisym (r ∷ rs)  (s ∷ ss)  = rs⇒e r s ∷ antisym rs ss
   -- impossible cases
-  antisym rs⇒e (_∷ʳ_ {xs} {ys₁} y rs) (_∷ʳ_ {ys₂} {zs} z ss) =
+  antisym (_∷ʳ_ {xs} {ys₁} y rs) (_∷ʳ_ {ys₂} {zs} z ss) =
     ⊥-elim $ ℕₚ.<-irrefl P.refl $ begin
     length (y ∷ ys₁) ≤⟨ length-mono-≤ ss ⟩
     length zs        ≤⟨ ℕₚ.n≤1+n (length zs) ⟩
     length (z ∷ zs)  ≤⟨ length-mono-≤ rs ⟩
     length ys₁       ∎
-  antisym rs⇒e (_∷ʳ_ {xs} {ys₁} y rs) (_∷_ {y} {ys₂} {z} {zs} s ss)  =
+  antisym (_∷ʳ_ {xs} {ys₁} y rs) (_∷_ {y} {ys₂} {z} {zs} s ss)  =
     ⊥-elim $ ℕₚ.<-irrefl P.refl $ begin
     length (z ∷ zs) ≤⟨ length-mono-≤ rs ⟩
     length ys₁      ≤⟨ length-mono-≤ ss ⟩
     length zs       ∎
-  antisym rs⇒e (_∷_ {x} {xs} {y} {ys₁} r rs)  (_∷ʳ_ {ys₂} {zs} z ss) =
+  antisym (_∷_ {x} {xs} {y} {ys₁} r rs)  (_∷ʳ_ {ys₂} {zs} z ss) =
     ⊥-elim $ ℕₚ.<-irrefl P.refl $ begin
     length (y ∷ ys₁) ≤⟨ length-mono-≤ ss ⟩
     length xs        ≤⟨ length-mono-≤ rs ⟩
     length ys₁       ∎
+
+open Antisymmetry public
 
 module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} (R? : Decidable R) where
 
