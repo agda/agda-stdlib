@@ -28,15 +28,23 @@ record IsCongruent (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     isEquivalence₁ : IsEquivalence _≈₁_
     isEquivalence₂ : IsEquivalence _≈₂_
 
-  setoid₁ : Setoid a ℓ₁
-  setoid₁ = record
-    { isEquivalence = isEquivalence₁
-    }
+  module Eq₁ where
 
-  setoid₂ : Setoid b ℓ₂
-  setoid₂ = record
-    { isEquivalence = isEquivalence₂
-    }
+    setoid : Setoid a ℓ₁
+    setoid = record
+      { isEquivalence = isEquivalence₁
+      }
+
+    open Setoid setoid public
+
+  module Eq₂ where
+
+    setoid : Setoid b ℓ₂
+    setoid = record
+      { isEquivalence = isEquivalence₂
+      }
+
+    open Setoid setoid public
 
 
 record IsInjection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
@@ -108,4 +116,3 @@ record IsInverse (f : A → B) (g : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ�
 
   inverse : Inverseᵇ _≈₁_ _≈₂_ f g
   inverse = inverseˡ , inverseʳ
-

@@ -20,7 +20,7 @@ Other non-backwards compatible changes
 
 #### New function hierarchy
 
-The main problems with the current way various types of functions are
+* The main problems with the current way various types of functions are
 handled are:
   1. The raw functions were wrapped in the  equality-preserving
          type `_⟶_` from `Function.Equality`. As the rest of the library
@@ -40,7 +40,7 @@ handled are:
      possible to specify that for example an operation is commutative
      without providing all the proofs associated with the equality relation.
 
-To address these problems a new function hierarchy similar to the ones in
+* To address these problems a new function hierarchy similar to the ones in
 `Relation.Binary` and `Algebra` has been created. The new modules are as
 follows:
   - `Function.Definitions` containing definitions like `Injective`,
@@ -55,13 +55,19 @@ follows:
   - The old file `Function` has been moved to `Function.Core` and `Function`
     now exports the whole of this hierarchy, just like `Relation.Binary`.
 
-These changes are nearly entirely backwards compatible. The only problem will occur
+* These changes are nearly entirely backwards compatible. The only problem will occur
 is when code imports both `Function` and e.g. `Function.Injection` in which case the
 old and new definitions of `Injection` will clash. In the short term this can
 immediately be fixed by importing `Function.Core` instead of `Function`. However
 we would encourage to the new hierarchy in the medium to long term.
 
-The old modules will probably be deprecated (NOT COMPLETED AS OF YET)
+* The list of new modules is as follows:
+  ```agda
+  Function.Construct.Identity
+  Function.Construct.Composition
+  ```
+
+* The old modules will probably be deprecated (NOT COMPLETED AS OF YET)
   ```agda
   Function.Equivalence
   Function.Equality
