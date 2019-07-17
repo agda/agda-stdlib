@@ -27,9 +27,9 @@ open import Relation.Nullary.Negation using (contradiction)
 open import Algebra.FunctionProperties {A = Bin} _≡_
 open import Algebra.Structures {A = Bin} _≡_
 import Algebra.Properties.CommutativeSemigroup ℕₚ.+-semigroup ℕₚ.+-comm as
-                                                              Of+ℕ-semigroup
+  Of+ℕ-semigroup
 import Algebra.Properties.CommutativeSemigroup ℕₚ.*-semigroup ℕₚ.*-comm as
-                                                              Of*ℕ-semigroup
+  Of*ℕ-semigroup
 open ≡-Reasoning
 open +-*-Solver
 
@@ -43,6 +43,12 @@ open +-*-Solver
 ------------------------------------------------------------------------
 -- Properties of _≡_
 ------------------------------------------------------------------------
+
+2[1+x]≢0 : ∀ {x} → 2[1+ x ] ≢ zero
+2[1+x]≢0 ()
+
+1+[2x]≢0 : ∀ {x} → 1+[2 x ] ≢ zero
+1+[2x]≢0 ()
 
 2[1+-injective : ∀ {x y} → 2[1+ x ] ≡ 2[1+ y ] → x ≡ y
 2[1+-injective refl = refl
@@ -61,29 +67,22 @@ zero     ≟ 1+[2 _ ] =  no λ()
 1+[2 _ ] ≟ 2[1+ _ ] =  no λ()
 1+[2 x ] ≟ 1+[2 y ] =  Dec.map′ (cong 1+[2_]) 1+[2-injective (x ≟ y)
 
-
-≡-setoid : Setoid 0ℓ 0ℓ
-≡-setoid = setoid Bin
-
 ≡-isDecEquivalence :  IsDecEquivalence {A = Bin} _≡_
 ≡-isDecEquivalence =  record
   { isEquivalence = isEquivalence
   ; _≟_           = _≟_
   }
 
+≡-setoid : Setoid 0ℓ 0ℓ
+≡-setoid = setoid Bin
+
 ≡-decSetoid : DecSetoid 0ℓ 0ℓ
 ≡-decSetoid = record
   {isDecEquivalence = ≡-isDecEquivalence
   }
 
-2[1+x]≢0 : ∀ {x} → 2[1+ x ] ≢ zero
-2[1+x]≢0 ()
-
-1+[2x]≢0 : ∀ {x} → 1+[2 x ] ≢ zero
-1+[2x]≢0 ()
-
 ------------------------------------------------------------------------
--- Properties of `double'
+-- Properties of double
 ------------------------------------------------------------------------
 
 2[1+-as∘ : 2[1+_] ≗ double ∘ suc
@@ -103,11 +102,11 @@ zero     ≟ 1+[2 _ ] =  no λ()
   where
   2x = double x
 
-double-x≡0⇒x≡0 : ∀ {x} → double x ≡ zero → x ≡ zero
-double-x≡0⇒x≡0 {zero} _ = refl
+double[x]≡0⇒x≡0 : ∀ {x} → double x ≡ zero → x ≡ zero
+double[x]≡0⇒x≡0 {zero} _ = refl
 
-x≢0⇒double-x≢0 : ∀ {x} → x ≢ zero → double x ≢ zero
-x≢0⇒double-x≢0 x≢0 = x≢0 ∘ double-x≡0⇒x≡0
+x≢0⇒double[x]≢0 : ∀ {x} → x ≢ zero → double x ≢ zero
+x≢0⇒double[x]≢0 x≢0 = x≢0 ∘ double[x]≡0⇒x≡0
 
 double≢1 : ∀ {x} → double x ≢ 1B
 double≢1 {zero} ()
@@ -204,10 +203,6 @@ toℕ[x]≡0⇒x≡0 {zero} _ = refl
 -- Properties of _+_
 ------------------------------------------------------------------------
 
-x≢0⇒x+y≢0 : ∀ {x} (y : Bin) → x ≢ zero → x + y ≢ zero
-x≢0⇒x+y≢0 {2[1+ _ ]} zero _   =  λ()
-x≢0⇒x+y≢0 {zero}     _    0≢0 =  contradiction refl 0≢0
-
 ------------------------------------------------------------------------
 -- toℕ/fromℕ are homomorphisms for _+_
 
@@ -220,60 +215,49 @@ toℕ-homo-+ 2[1+ x ] 2[1+ y ] = begin
   toℕ 2[1+ (suc (x + y)) ]           ≡⟨⟩
   2 ℕ.* (1 ℕ.+ (toℕ (suc (x + y))))  ≡⟨ cong ((2 ℕ.*_) ∘ ℕ.suc) (toℕ-suc (x + y)) ⟩
   2 ℕ.* (2 ℕ.+ toℕ (x + y))          ≡⟨ cong ((2 ℕ.*_) ∘ (2 ℕ.+_)) (toℕ-homo-+ x y) ⟩
-  2 ℕ.* (2 ℕ.+ (m ℕ.+ n))
-                 ≡⟨ solve 2 (λ m n → con 2 :* (con 2 :+ (m :+ n))  :=
-                                      con 2 :* (con 1 :+ m) :+ con 2 :* (con 1 :+ n))
-                          refl m n
-                  ⟩
+  2 ℕ.* (2 ℕ.+ (m ℕ.+ n))            ≡⟨ solve 2 (λ m n → con 2 :* (con 2 :+ (m :+ n)) :=
+                                          con 2 :* (con 1 :+ m) :+ con 2 :* (con 1 :+ n))
+                                          refl (toℕ x) (toℕ y) ⟩
   toℕ 2[1+ x ] ℕ.+ toℕ 2[1+ y ]      ∎
   where
   m = toℕ x;  n = toℕ y
 
 toℕ-homo-+ 2[1+ x ] 1+[2 y ] = begin
-  toℕ (2[1+ x ] + 1+[2 y ])            ≡⟨⟩
-  toℕ (suc 2[1+ (x + y) ])             ≡⟨ toℕ-suc 2[1+ (x + y) ] ⟩
-  ℕ.suc (toℕ 2[1+ (x + y) ])           ≡⟨⟩
-  ℕ.suc (2 ℕ.* (ℕ.suc (toℕ (x + y))))  ≡⟨ cong (ℕ.suc ∘ (2 ℕ.*_) ∘ ℕ.suc)
-                                                     (toℕ-homo-+ x y) ⟩
-  ℕ.suc (2 ℕ.* (ℕ.suc (m ℕ.+ n)))
-               ≡⟨ solve 2 (λ m n → con 1 :+ (con 2 :* (con 1 :+ (m :+ n))) :=
-                                   con 2 :* (con 1 :+ m) :+ (con 1 :+ (con 2 :* n)))
-                        refl m n
-                ⟩
-  (2 ℕ.* ℕ.suc m) ℕ.+ (ℕ.suc (2 ℕ.* n))    ≡⟨⟩
-  toℕ 2[1+ x ] ℕ.+ toℕ 1+[2 y ]            ∎
+  toℕ (2[1+ x ] + 1+[2 y ])             ≡⟨⟩
+  toℕ (suc 2[1+ (x + y) ])              ≡⟨ toℕ-suc 2[1+ (x + y) ] ⟩
+  ℕ.suc (toℕ 2[1+ (x + y) ])            ≡⟨⟩
+  ℕ.suc (2 ℕ.* (ℕ.suc (toℕ (x + y))))   ≡⟨ cong (ℕ.suc ∘ (2 ℕ.*_) ∘ ℕ.suc) (toℕ-homo-+ x y) ⟩
+  ℕ.suc (2 ℕ.* (ℕ.suc (m ℕ.+ n)))       ≡⟨ solve 2 (λ m n → con 1 :+ (con 2 :* (con 1 :+ (m :+ n))) :=
+                                             con 2 :* (con 1 :+ m) :+ (con 1 :+ (con 2 :* n)))
+                                             refl m n ⟩
+  (2 ℕ.* ℕ.suc m) ℕ.+ (ℕ.suc (2 ℕ.* n)) ≡⟨⟩
+  toℕ 2[1+ x ] ℕ.+ toℕ 1+[2 y ]         ∎
   where
   m = toℕ x;  n = toℕ y
 
 toℕ-homo-+ 1+[2 x ] 2[1+ y ] = begin
-  toℕ (1+[2 x ] + 2[1+ y ])            ≡⟨⟩
-  toℕ (suc 2[1+ (x + y) ])             ≡⟨ toℕ-suc 2[1+ (x + y) ] ⟩
-  ℕ.suc (toℕ 2[1+ (x + y) ])           ≡⟨⟩
-  ℕ.suc (2 ℕ.* (ℕ.suc (toℕ (x + y))))  ≡⟨ cong (ℕ.suc ∘ (2 ℕ.*_) ∘ ℕ.suc)
-                                                        (toℕ-homo-+ x y) ⟩
-  ℕ.suc (2 ℕ.* (ℕ.suc (m ℕ.+ n)))
-           ≡⟨ solve 2 (λ m n → con 1 :+ (con 2 :* (con 1 :+ (m :+ n))) :=
-                               (con 1 :+ (con 2 :* m)) :+ (con 2 :* (con 1 :+ n)))
-                    refl m n
-            ⟩
-  (ℕ.suc (2 ℕ.* m)) ℕ.+ (2 ℕ.* (ℕ.suc n))    ≡⟨⟩
-  toℕ 1+[2 x ] ℕ.+ toℕ 2[1+ y ]              ∎
+  toℕ (1+[2 x ] + 2[1+ y ])                 ≡⟨⟩
+  toℕ (suc 2[1+ (x + y) ])                  ≡⟨ toℕ-suc 2[1+ (x + y) ] ⟩
+  ℕ.suc (toℕ 2[1+ (x + y) ])                ≡⟨⟩
+  ℕ.suc (2 ℕ.* (ℕ.suc (toℕ (x + y))))       ≡⟨ cong (ℕ.suc ∘ (2 ℕ.*_) ∘ ℕ.suc) (toℕ-homo-+ x y) ⟩
+  ℕ.suc (2 ℕ.* (ℕ.suc (m ℕ.+ n)))           ≡⟨ solve 2 (λ m n → con 1 :+ (con 2 :* (con 1 :+ (m :+ n))) :=
+                                                 (con 1 :+ (con 2 :* m)) :+ (con 2 :* (con 1 :+ n)))
+                                                 refl m n ⟩
+  (ℕ.suc (2 ℕ.* m)) ℕ.+ (2 ℕ.* (ℕ.suc n))  ≡⟨⟩
+  toℕ 1+[2 x ] ℕ.+ toℕ 2[1+ y ]            ∎
   where
   m = toℕ x;  n = toℕ y
 
 toℕ-homo-+ 1+[2 x ] 1+[2 y ] = begin
-  toℕ (1+[2 x ] + 1+[2 y ])              ≡⟨⟩
-  toℕ (suc 1+[2 (x + y) ])               ≡⟨ toℕ-suc 1+[2 (x + y) ] ⟩
-  ℕ.suc (toℕ 1+[2 (x + y) ])             ≡⟨⟩
-  ℕ.suc (ℕ.suc (2 ℕ.* (toℕ (x + y))))    ≡⟨ cong (ℕ.suc ∘ ℕ.suc ∘ (2 ℕ.*_))
-                                                 (toℕ-homo-+ x y) ⟩
-  ℕ.suc (ℕ.suc (2 ℕ.* (m ℕ.+ n)))
-              ≡⟨ solve 2 (λ m n → con 1 :+ (con 1 :+ (con 2 :* (m :+ n))) :=
-                                  (con 1 :+ (con 2 :* m)) :+ (con 1 :+ (con 2 :* n)))
-                       refl m n
-               ⟩
-  (ℕ.suc (2 ℕ.* m)) ℕ.+ (ℕ.suc (2 ℕ.* n))    ≡⟨⟩
-  toℕ 1+[2 x ] ℕ.+ toℕ 1+[2 y ]              ∎
+  toℕ (1+[2 x ] + 1+[2 y ])               ≡⟨⟩
+  toℕ (suc 1+[2 (x + y) ])                ≡⟨ toℕ-suc 1+[2 (x + y) ] ⟩
+  ℕ.suc (toℕ 1+[2 (x + y) ])              ≡⟨⟩
+  ℕ.suc (ℕ.suc (2 ℕ.* (toℕ (x + y))))     ≡⟨ cong (ℕ.suc ∘ ℕ.suc ∘ (2 ℕ.*_)) (toℕ-homo-+ x y) ⟩
+  ℕ.suc (ℕ.suc (2 ℕ.* (m ℕ.+ n)))         ≡⟨ solve 2 (λ m n → con 1 :+ (con 1 :+ (con 2 :* (m :+ n))) :=
+                                               (con 1 :+ (con 2 :* m)) :+ (con 1 :+ (con 2 :* n)))
+                                               refl m n ⟩
+  (ℕ.suc (2 ℕ.* m)) ℕ.+ (ℕ.suc (2 ℕ.* n)) ≡⟨⟩
+  toℕ 1+[2 x ] ℕ.+ toℕ 1+[2 y ]           ∎
   where
   m = toℕ x;  n = toℕ y
 
@@ -306,7 +290,7 @@ fromℕ-homo-+ (ℕ.suc m) n = begin
   a = fromℕ m;  b = fromℕ n
 
 ------------------------------------------------------------------------
--- Classical algebraic properties for _+_
+-- Algebraic properties of _+_
 
 -- Mostly proved by using the isomorphism between `ℕ` and `Bin` provided
 -- by `toℕ`/`fromℕ`.
@@ -420,6 +404,12 @@ fromℕ-homo-+ (ℕ.suc m) n = begin
   { isCommutativeMonoid = +-0-isCommutativeMonoid
   }
 
+------------------------------------------------------------------------
+-- Other properties
+
+x≢0⇒x+y≢0 : ∀ {x} (y : Bin) → x ≢ zero → x + y ≢ zero
+x≢0⇒x+y≢0 {2[1+ _ ]} zero _   =  λ()
+x≢0⇒x+y≢0 {zero}     _    0≢0 =  contradiction refl 0≢0
 
 ------------------------------------------------------------------------
 -- Properties of _*_
@@ -440,46 +430,36 @@ toℕ-homo-* x y = aux x y (size x ℕ.+ size y) ℕₚ.≤-refl
   aux 2[1+ x ] zero     _ _ = sym (ℕₚ.*-zeroʳ (toℕ x ℕ.+ (ℕ.suc (toℕ x ℕ.+ 0))))
   aux 1+[2 x ] zero     _ _ = sym (ℕₚ.*-zeroʳ (toℕ x ℕ.+ (toℕ x ℕ.+ 0)))
   aux 2[1+ x ] 2[1+ y ] (ℕ.suc cnt) (s≤s |x|+1+|y|≤cnt) = begin
-    toℕ (2[1+ x ] * 2[1+ y ])              ≡⟨⟩
-    toℕ (double 2[1+ (x + (y + xy)) ])     ≡⟨ toℕ-double 2[1+ (x + (y + xy)) ] ⟩
-    2 ℕ.* (toℕ 2[1+ (x + (y + xy)) ])      ≡⟨⟩
-    2*ₙ2*ₙ (ℕ.suc (toℕ (x + (y + xy))))    ≡⟨ cong (2*ₙ2*ₙ ∘ ℕ.suc)
-                                                    (toℕ-homo-+ x (y + xy)) ⟩
-    2*ₙ2*ₙ (ℕ.suc (m ℕ.+ (toℕ (y + xy))))  ≡⟨ cong (2*ₙ2*ₙ ∘ ℕ.suc ∘ (m ℕ.+_))
-                                                             (toℕ-homo-+ y xy) ⟩
-    2*ₙ2*ₙ (ℕ.suc (m ℕ.+ (n ℕ.+ toℕ xy)))
-                                       ≡⟨ cong (2*ₙ2*ₙ ∘ ℕ.suc ∘ (m ℕ.+_) ∘ (n ℕ.+_))
-                                               (aux x y cnt |x|+|y|≤cnt) ⟩
-    2*ₙ2*ₙ (ℕ.suc (m ℕ.+ (n ℕ.+ (m ℕ.* n))))
-           ≡⟨ solve 2 (λ m n → con 2 :* (con 2 :* (con 1 :+ (m :+ (n :+ m :* n)))) :=
-                               (con 2 :* (con 1 :+ m)) :* (con 2 :* (con 1 :+ n)))
-                    refl m n
-            ⟩
-    (2 ℕ.* (1 ℕ.+ m)) ℕ.* (2 ℕ.* (1 ℕ.+ n))    ≡⟨⟩
-    toℕ 2[1+ x ] ℕ.* toℕ 2[1+ y ]              ∎
+    toℕ (2[1+ x ] * 2[1+ y ])                ≡⟨⟩
+    toℕ (double 2[1+ (x + (y + xy)) ])       ≡⟨ toℕ-double 2[1+ (x + (y + xy)) ] ⟩
+    2 ℕ.* (toℕ 2[1+ (x + (y + xy)) ])        ≡⟨⟩
+    2*ₙ2*ₙ (ℕ.suc (toℕ (x + (y + xy))))      ≡⟨ cong (2*ₙ2*ₙ ∘ ℕ.suc) (toℕ-homo-+ x (y + xy)) ⟩
+    2*ₙ2*ₙ (ℕ.suc (m ℕ.+ (toℕ (y + xy))))    ≡⟨ cong (2*ₙ2*ₙ ∘ ℕ.suc ∘ (m ℕ.+_)) (toℕ-homo-+ y xy) ⟩
+    2*ₙ2*ₙ (ℕ.suc (m ℕ.+ (n ℕ.+ toℕ xy)))    ≡⟨ cong (2*ₙ2*ₙ ∘ ℕ.suc ∘ (m ℕ.+_) ∘ (n ℕ.+_))
+                                                  (aux x y cnt |x|+|y|≤cnt) ⟩
+    2*ₙ2*ₙ (ℕ.suc (m ℕ.+ (n ℕ.+ (m ℕ.* n)))) ≡⟨ solve 2 (λ m n → con 2 :* (con 2 :* (con 1 :+ (m :+ (n :+ m :* n)))) :=
+                                                  (con 2 :* (con 1 :+ m)) :* (con 2 :* (con 1 :+ n)))
+                                                  refl m n ⟩
+    (2 ℕ.* (1 ℕ.+ m)) ℕ.* (2 ℕ.* (1 ℕ.+ n))  ≡⟨⟩
+    toℕ 2[1+ x ] ℕ.* toℕ 2[1+ y ]            ∎
     where
     m = toℕ x;  n = toℕ y;  xy = x * y
 
     |x|+|y|≤cnt = ℕₚ.≤-trans (ℕₚ.+-monoʳ-≤ (size x) (ℕₚ.n≤1+n (size y))) |x|+1+|y|≤cnt
 
   aux 2[1+ x ] 1+[2 y ] (ℕ.suc cnt) (s≤s |x|+1+|y|≤cnt) = begin
-    toℕ (2[1+ x ] * 1+[2 y ])                ≡⟨⟩
-    toℕ (2[1+ (x + y * 2[1+ x ]) ])          ≡⟨⟩
-    2 ℕ.* (ℕ.suc (toℕ (x + y * 2[1+ x ])))   ≡⟨ cong ((2 ℕ.*_) ∘ ℕ.suc)
-                                                                 (toℕ-homo-+ x _) ⟩
-    2 ℕ.* (ℕ.suc (m ℕ.+ (toℕ (y * 2[1+ x ]))))
-                                             ≡⟨ cong ((2 ℕ.*_) ∘ ℕ.suc ∘ (m ℕ.+_))
-                                                  (aux y 2[1+ x ] cnt |y|+1+|x|≤cnt)
-                                              ⟩
-    2 ℕ.* (1+m ℕ.+ (n ℕ.* (toℕ 2[1+ x ])))   ≡⟨⟩
-    2 ℕ.* (1+m ℕ.+ (n ℕ.* 2[1+m]))
-        ≡⟨ solve 2
-            (λ m n → con 2 :* ((con 1 :+ m) :+ (n :* (con 2 :* (con 1 :+ m)))) :=
-                      (con 2 :* (con 1 :+ m)) :* (con 1 :+ con 2 :* n))
-            refl m n
-         ⟩
-    2[1+m] ℕ.* (ℕ.suc (2 ℕ.* n))     ≡⟨⟩
-    toℕ 2[1+ x ] ℕ.* toℕ 1+[2 y ]    ∎
+    toℕ (2[1+ x ] * 1+[2 y ])                  ≡⟨⟩
+    toℕ (2[1+ (x + y * 2[1+ x ]) ])            ≡⟨⟩
+    2 ℕ.* (ℕ.suc (toℕ (x + y * 2[1+ x ])))     ≡⟨ cong ((2 ℕ.*_) ∘ ℕ.suc) (toℕ-homo-+ x _) ⟩
+    2 ℕ.* (ℕ.suc (m ℕ.+ (toℕ (y * 2[1+ x ])))) ≡⟨ cong ((2 ℕ.*_) ∘ ℕ.suc ∘ (m ℕ.+_))
+                                                    (aux y 2[1+ x ] cnt |y|+1+|x|≤cnt) ⟩
+    2 ℕ.* (1+m ℕ.+ (n ℕ.* (toℕ 2[1+ x ])))     ≡⟨⟩
+    2 ℕ.* (1+m ℕ.+ (n ℕ.* 2[1+m]))             ≡⟨ solve 2 (λ m n →
+                                                    con 2 :* ((con 1 :+ m) :+ (n :* (con 2 :* (con 1 :+ m)))) :=
+                                                    (con 2 :* (con 1 :+ m)) :* (con 1 :+ con 2 :* n))
+                                                    refl m n ⟩
+    2[1+m] ℕ.* (ℕ.suc (2 ℕ.* n))               ≡⟨⟩
+    toℕ 2[1+ x ] ℕ.* toℕ 1+[2 y ]              ∎
     where
     m = toℕ x;   n = toℕ y;   1+m = ℕ.suc m;   2[1+m] = 2 ℕ.* (ℕ.suc m)
 
@@ -489,23 +469,19 @@ toℕ-homo-* x y = aux x y (size x ℕ.+ size y) ℕₚ.≤-refl
     |y|+1+|x|≤cnt =  subst (ℕ._≤ cnt) eq |x|+1+|y|≤cnt
 
   aux 1+[2 x ] 2[1+ y ] (ℕ.suc cnt) (s≤s |x|+1+|y|≤cnt) = begin
-    toℕ (1+[2 x ] * 2[1+ y ])               ≡⟨⟩
-    toℕ 2[1+ (y + x * 2[1+ y ]) ]           ≡⟨⟩
-    2 ℕ.* (ℕ.suc (toℕ (y + x * 2[1+ y ])))  ≡⟨ cong ((2 ℕ.*_) ∘ ℕ.suc)
-                                                  (toℕ-homo-+ y (x * 2[1+ y ])) ⟩
-    2 ℕ.* (ℕ.suc (n ℕ.+ (toℕ (x * 2[1+ y ]))))
-                                            ≡⟨ cong ((2 ℕ.*_) ∘ ℕ.suc ∘ (n ℕ.+_))
-                                                    (aux x 2[1+ y ] cnt |x|+1+|y|≤cnt)
-                                             ⟩
-    2 ℕ.* (1+n ℕ.+ (m ℕ.* toℕ 2[1+ y ]))    ≡⟨⟩
-    2 ℕ.* (1+n ℕ.+ (m ℕ.* 2[1+n]))
-      ≡⟨ solve 2
-           (λ m n → con 2 :* ((con 1 :+ n) :+ (m :* (con 2 :* (con 1 :+ n)))) :=
-                     (con 1 :+ (con 2 :* m)) :* (con 2 :* (con 1 :+ n)))
-           refl m n
-         ⟩
-    (ℕ.suc 2m) ℕ.* 2[1+n]                  ≡⟨⟩
-    toℕ 1+[2 x ] ℕ.* toℕ 2[1+ y ]          ∎
+    toℕ (1+[2 x ] * 2[1+ y ])                  ≡⟨⟩
+    toℕ 2[1+ (y + x * 2[1+ y ]) ]              ≡⟨⟩
+    2 ℕ.* (ℕ.suc (toℕ (y + x * 2[1+ y ])))     ≡⟨ cong ((2 ℕ.*_) ∘ ℕ.suc)
+                                                    (toℕ-homo-+ y (x * 2[1+ y ])) ⟩
+    2 ℕ.* (ℕ.suc (n ℕ.+ (toℕ (x * 2[1+ y ])))) ≡⟨ cong ((2 ℕ.*_) ∘ ℕ.suc ∘ (n ℕ.+_))
+                                                    (aux x 2[1+ y ] cnt |x|+1+|y|≤cnt) ⟩
+    2 ℕ.* (1+n ℕ.+ (m ℕ.* toℕ 2[1+ y ]))       ≡⟨⟩
+    2 ℕ.* (1+n ℕ.+ (m ℕ.* 2[1+n]))             ≡⟨ solve 2 (λ m n →
+                                                    con 2 :* ((con 1 :+ n) :+ (m :* (con 2 :* (con 1 :+ n)))) :=
+                                                    (con 1 :+ (con 2 :* m)) :* (con 2 :* (con 1 :+ n)))
+                                                    refl m n ⟩
+    (ℕ.suc 2m) ℕ.* 2[1+n]                      ≡⟨⟩
+    toℕ 1+[2 x ] ℕ.* toℕ 2[1+ y ]              ∎
     where
     m  = toℕ x;     n      = toℕ y;            1+n = ℕ.suc n
     2m = 2 ℕ.* m;   2[1+n] = 2 ℕ.* (ℕ.suc n)
@@ -514,20 +490,14 @@ toℕ-homo-* x y = aux x y (size x ℕ.+ size y) ℕₚ.≤-refl
   aux 1+[2 x ] 1+[2 y ] (ℕ.suc cnt) (s≤s |x|+1+|y|≤cnt) = begin
     toℕ (1+[2 x ] * 1+[2 y ])               ≡⟨⟩
     toℕ 1+[2 (x + y * 1+2x) ]               ≡⟨⟩
-    ℕ.suc (2 ℕ.* (toℕ (x + y * 1+2x)))      ≡⟨ cong (ℕ.suc ∘ (2 ℕ.*_))
-                                                      (toℕ-homo-+ x (y * 1+2x)) ⟩
+    ℕ.suc (2 ℕ.* (toℕ (x + y * 1+2x)))      ≡⟨ cong (ℕ.suc ∘ (2 ℕ.*_)) (toℕ-homo-+ x (y * 1+2x)) ⟩
     ℕ.suc (2 ℕ.* (m ℕ.+ (toℕ (y * 1+2x))))  ≡⟨ cong (ℕ.suc ∘ (2 ℕ.*_) ∘ (m ℕ.+_))
-                                                    (aux y 1+2x cnt |y|+1+|x|≤cnt)
-                                             ⟩
-    ℕ.suc (2 ℕ.* (m ℕ.+ (n ℕ.* [1+2x]')))
-                                ≡⟨ cong ℕ.suc $ ℕₚ.*-distribˡ-+ 2 m (n ℕ.* [1+2x]')
-                                 ⟩
-    ℕ.suc (2m ℕ.+ (2 ℕ.* (n ℕ.* [1+2x]')))  ≡⟨ cong (ℕ.suc ∘ (2m ℕ.+_))
-                                                    (sym (ℕₚ.*-assoc 2 n _)) ⟩
+                                                 (aux y 1+2x cnt |y|+1+|x|≤cnt) ⟩
+    ℕ.suc (2 ℕ.* (m ℕ.+ (n ℕ.* [1+2x]')))   ≡⟨ cong ℕ.suc $ ℕₚ.*-distribˡ-+ 2 m (n ℕ.* [1+2x]') ⟩
+    ℕ.suc (2m ℕ.+ (2 ℕ.* (n ℕ.* [1+2x]')))  ≡⟨ cong (ℕ.suc ∘ (2m ℕ.+_)) (sym (ℕₚ.*-assoc 2 n _)) ⟩
     (ℕ.suc 2m) ℕ.+ 2n ℕ.* [1+2x]'           ≡⟨⟩
     [1+2x]' ℕ.+ 2n ℕ.* [1+2x]'              ≡⟨ cong (ℕ._+ (2n ℕ.* [1+2x]')) $
-                                                    sym (ℕₚ.*-identityˡ [1+2x]')
-                                             ⟩
+                                                    sym (ℕₚ.*-identityˡ [1+2x]') ⟩
     1 ℕ.* [1+2x]' ℕ.+ 2n ℕ.* [1+2x]'        ≡⟨ sym (ℕₚ.*-distribʳ-+ [1+2x]' 1 2n) ⟩
     (ℕ.suc 2n) ℕ.* [1+2x]'                  ≡⟨ ℕₚ.*-comm (ℕ.suc 2n) [1+2x]' ⟩
     toℕ 1+[2 x ] ℕ.* toℕ 1+[2 y ]           ∎
@@ -608,16 +578,13 @@ fromℕ-homo-* m n = begin
 
 *-distribˡ-+ : _*_ DistributesOverˡ _+_
 *-distribˡ-+ a b c = begin
-  a * (b + c)                         ≡⟨ sym (fromℕ-toℕ (a * (b + c))) ⟩
-  fromℕ (toℕ (a * (b + c)))           ≡⟨ cong fromℕ (toℕ-homo-* a (b + c)) ⟩
-  fromℕ (k ℕ.* (toℕ (b + c)))         ≡⟨ cong (fromℕ ∘ (k ℕ.*_)) (toℕ-homo-+ b c) ⟩
-  fromℕ (k ℕ.* (m ℕ.+ n))             ≡⟨ cong fromℕ (ℕₚ.*-distribˡ-+ k m n) ⟩
-  fromℕ (k ℕ.* m ℕ.+ k ℕ.* n)         ≡⟨ cong fromℕ $ sym $
-                                         cong₂ ℕ._+_ (toℕ-homo-* a b) (toℕ-homo-* a c)
-                                       ⟩
-  fromℕ (toℕ (a * b) ℕ.+ toℕ (a * c))
-                                       ≡⟨ cong fromℕ (sym (toℕ-homo-+ (a * b) (a * c)))
-                                        ⟩
+  a * (b + c)                          ≡⟨ sym (fromℕ-toℕ (a * (b + c))) ⟩
+  fromℕ (toℕ (a * (b + c)))            ≡⟨ cong fromℕ (toℕ-homo-* a (b + c)) ⟩
+  fromℕ (k ℕ.* (toℕ (b + c)))          ≡⟨ cong (fromℕ ∘ (k ℕ.*_)) (toℕ-homo-+ b c) ⟩
+  fromℕ (k ℕ.* (m ℕ.+ n))              ≡⟨ cong fromℕ (ℕₚ.*-distribˡ-+ k m n) ⟩
+  fromℕ (k ℕ.* m ℕ.+ k ℕ.* n)          ≡⟨ cong fromℕ $ sym $
+                                           cong₂ ℕ._+_ (toℕ-homo-* a b) (toℕ-homo-* a c) ⟩
+  fromℕ (toℕ (a * b) ℕ.+ toℕ (a * c))  ≡⟨ cong fromℕ (sym (toℕ-homo-+ (a * b) (a * c))) ⟩
   fromℕ (toℕ (a * b + a * c))          ≡⟨ fromℕ-toℕ (a * b + a * c) ⟩
   a * b + a * c                        ∎
   where
@@ -765,8 +732,8 @@ double-*-assoc x y = begin
   2B * (x * y)       ≡⟨ sym (double≗2B* (x * y)) ⟩
   double (x * y)     ∎
 
-double-x≡x+x :  ∀ x → double x ≡ x + x
-double-x≡x+x x =  trans (double≗2B* x) (2B*x≡x+x x)
+double[x]≡x+x :  ∀ x → double x ≡ x + x
+double[x]≡x+x x =  trans (double≗2B* x) (2B*x≡x+x x)
 
 double-distrib-+ : ∀ x y → double (x + y) ≡ double x + double y
 double-distrib-+ x y = begin

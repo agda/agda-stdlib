@@ -41,7 +41,8 @@ The following new modules have been added to the library:
   Algebra.Properties.CommutativeSemigroup
 
   Data.Bin
-  Data.Bin.Base
+  Data.Bin.Bas
+  Data.Bin.Induction
   Data.Bin.Ordering
   Data.Bin.Properties
 
@@ -87,7 +88,7 @@ attached to all deprecated names to discourage their use.
 
   In several property names ``2, 2*`` replaced with ``double``.
 
-	
+
 Other minor additions
 ---------------------
 

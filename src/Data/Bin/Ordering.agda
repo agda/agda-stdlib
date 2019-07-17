@@ -10,13 +10,11 @@ module Data.Bin.Ordering where
 
 open import Data.Bin.Base
 open import Data.Bin.Properties
-open import Data.List using (List; []; _∷_; [_])
 open import Data.Nat as ℕ using (ℕ; z≤n; s≤s)
 open import Data.Nat.Properties as ℕp using (m+n∸m≡n; m+n∸n≡m)
 open import Data.Product using (_,_; proj₁; proj₂)
 open import Data.Sum using (_⊎_; inj₁; inj₂)
 open import Function using (_∘_; _$_; flip; case_of_; _on_)
-import Induction.Nat
 open import Level using () renaming (zero to 0ℓ)
 open import Relation.Binary using
   (Rel; Reflexive; Symmetric; Antisymmetric; Transitive; Irreflexive; Tri; _⇒_;
@@ -30,10 +28,6 @@ open import Relation.Binary.PropositionalEquality.Core using (≢-sym)
 import Relation.Binary.Reasoning.Base.Triple as InequalityReasoning
 open import Relation.Nullary using (¬_; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
-
-open P.≡-Reasoning renaming (begin_ to begin≡_; _∎ to _end≡)
-open ℕp.≤-Reasoning using () renaming (begin_ to begin≤ₙ_; _∎ to _end≤ₙ;
-                                        _≡⟨_⟩_ to _≡≤ₙ[_]_; _≤⟨_⟩_ to _≤ₙ[_]_)
 
 open Bin
 
@@ -57,7 +51,6 @@ Example. Explanation for  even<odd x<y :
 
 For  odd<even (inj₁ x<y) :    1+2x < 2(1+y)  ~  2(1+x) ≤ 2(1+y)  ~  x ≤ y
 -}
-
 
 _>_ _≤_ _≥_ _≮_ _≯_ _≰_ _≱_ :  Rel Bin 0ℓ
 
@@ -223,14 +216,15 @@ toℕ-mono-< {zero}     {2[1+ _ ]} _               =  ℕp.0<1+n
 toℕ-mono-< {zero}     {1+[2 _ ]} _               =  ℕp.0<1+n
 toℕ-mono-< {2[1+ x ]} {2[1+ y ]} (even<even x<y) =  x'N<y'N
   where
-  xN = toℕ x;   yN = toℕ y
-
+  open ℕp.≤-Reasoning
+  xN      = toℕ x
+  yN      = toℕ y
   xN<yN   = toℕ-mono-< x<y
-  x'N<y'N = begin≤ₙ
-    ℕ.suc (2 ℕ.* (ℕ.suc xN))   ≤ₙ[ ℕp.+-monoʳ-≤ 1 (ℕp.*-monoʳ-≤ 2 xN<yN) ]
-    ℕ.suc (2 ℕ.* yN)           ≤ₙ[ ℕp.≤-step ℕp.≤-refl ]
-    2 ℕ.+ (2 ℕ.* yN)           ≡≤ₙ[ sym (ℕp.*-distribˡ-+ 2 1 yN) ]
-    2 ℕ.* (ℕ.suc yN)           end≤ₙ
+  x'N<y'N = begin
+    ℕ.suc (2 ℕ.* (ℕ.suc xN))   ≤⟨ ℕp.+-monoʳ-≤ 1 (ℕp.*-monoʳ-≤ 2 xN<yN) ⟩
+    ℕ.suc (2 ℕ.* yN)            ≤⟨ ℕp.≤-step ℕp.≤-refl ⟩
+    2 ℕ.+ (2 ℕ.* yN)            ≡⟨ sym (ℕp.*-distribˡ-+ 2 1 yN) ⟩
+    2 ℕ.* (ℕ.suc yN)            ∎
 
 toℕ-mono-< {2[1+ x ]} {1+[2 y ]} (even<odd x<y) =  x'N<y'N
   where
@@ -241,15 +235,17 @@ toℕ-mono-< {2[1+ x ]} {1+[2 y ]} (even<odd x<y) =  x'N<y'N
 
 toℕ-mono-< {1+[2 x ]} {2[1+ y ]} (odd<even (inj₁ x<y)) =  x'N<y'N
   where
+  open ℕp.≤-Reasoning
   xN      = toℕ x
   yN      = toℕ y
   xN<yN   = toℕ-mono-< x<y
-  x'N<y'N = begin≤ₙ
-    ℕ.suc (ℕ.suc (2 ℕ.* xN))   ≡≤ₙ[ refl  ]
-    2 ℕ.+ (2 ℕ.* xN)           ≡≤ₙ[ sym (ℕp.*-distribˡ-+ 2 1 xN) ]
-    2 ℕ.* (ℕ.suc xN)            ≤ₙ[ ℕp.*-monoʳ-≤ 2 xN<yN ]
-    2 ℕ.* yN                    ≤ₙ[ ℕp.*-monoʳ-≤ 2 (ℕp.≤-step ℕp.≤-refl) ]
-    2 ℕ.* (ℕ.suc yN)           end≤ₙ
+  x'N<y'N = begin
+    ℕ.suc (ℕ.suc (2 ℕ.* xN))   ≡⟨ refl ⟩
+    2 ℕ.+ (2 ℕ.* xN)            ≡⟨ sym (ℕp.*-distribˡ-+ 2 1 xN) ⟩
+    2 ℕ.* (ℕ.suc xN)            ≤⟨ ℕp.*-monoʳ-≤ 2 xN<yN ⟩
+    2 ℕ.* yN                     ≤⟨ ℕp.*-monoʳ-≤ 2 (ℕp.≤-step ℕp.≤-refl) ⟩
+    2 ℕ.* (ℕ.suc yN)            ∎
+
 
 toℕ-mono-< {1+[2 x ]} {2[1+ .x ]} (odd<even (inj₂ refl)) =  x'N<y'N
   where
@@ -269,16 +265,17 @@ toℕ-mono-< {1+[2 x ]} {1+[2 y ]} (odd<odd x<y) =  x'N<y'N
 fromℕ-mono-< :  fromℕ Preserves ℕ._<_ ⟶ _<_
 fromℕ-mono-< {m} {n} m<n =
   let
+    open P.≡-Reasoning
     x       = fromℕ m;      y       = fromℕ n
     toℕ-x≡m = toℕ-fromℕ m;  toℕ-y≡n = toℕ-fromℕ n
   in
   case <-cmp x y of \
   { (tri< x<y _   _) → x<y
-  ; (tri≈ _   x≡y _) → let m≡n = begin≡
-                             m       ≡⟨ sym toℕ-x≡m ⟩
-                             toℕ x   ≡⟨ cong toℕ x≡y ⟩
-                             toℕ y   ≡⟨ toℕ-y≡n ⟩
-                             n       end≡
+  ; (tri≈ _   x≡y _) → let m≡n = begin
+                            m       ≡⟨ sym toℕ-x≡m ⟩
+                            toℕ x   ≡⟨ cong toℕ x≡y ⟩
+                            toℕ y   ≡⟨ toℕ-y≡n ⟩
+                            n       ∎
                        in
                        contradiction m≡n (ℕp.<⇒≢ m<n)
 
@@ -397,7 +394,8 @@ x ≤? y  with <-cmp x y
 ≤-isPreorder =  record
   { isEquivalence = isEquivalence
   ; reflexive     = ≤-reflexive
-  ; trans         = ≤-trans }
+  ; trans         = ≤-trans
+  }
 
 <-resp-≈ :  _<_ Respects₂ _≡_
 <-resp-≈ =  ( (\{x y y'} y≡y' x<y → subst (x <_) y≡y' x<y) ,
@@ -408,8 +406,8 @@ x ≤? y  with <-cmp x y
 -- Several monotonicity proofs for _+_, suc
 ------------------------------------------------------------------------------
 
-open InequalityReasoning {A = Bin} {_≈_ = _≡_} ≤-isPreorder <-trans <-resp-≈
-                                                <⇒≤ <-≤-trans ≤-<-trans
+module IneqReasoning = InequalityReasoning {A = Bin} {_≈_ = _≡_} ≤-isPreorder <-trans
+                                           <-resp-≈ <⇒≤ <-≤-trans ≤-<-trans
 
 +-mono-≤ :  _+_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
 +-mono-≤ {x} {x'} {y} {y'} x≤x' y≤y' =  begin
@@ -420,6 +418,7 @@ open InequalityReasoning {A = Bin} {_≈_ = _≡_} ≤-isPreorder <-trans <-resp
   fromℕ m' + fromℕ n'    ≈⟨ cong₂ _+_ (fromℕ-toℕ x') (fromℕ-toℕ y') ⟩
   x' + y'                ∎
   where
+  open IneqReasoning
   m    = toℕ x;             m'   = toℕ x'
   n    = toℕ y;             n'   = toℕ y'
   m≤m' = toℕ-mono-≤ x≤x';   n≤n' = toℕ-mono-≤ y≤y'
@@ -431,16 +430,15 @@ open InequalityReasoning {A = Bin} {_≈_ = _≡_} ≤-isPreorder <-trans <-resp
 +-monoʳ-≤ x {y} {z} y≤z =  +-mono-≤ {x} {x} {y} {z} (≤-refl {x}) y≤z
 
 +-mono-<-≤ :  _+_ Preserves₂ _<_ ⟶ _≤_ ⟶ _<_
-+-mono-<-≤ {x} {x'} {y} {y'} x<x' y≤y' =
-  begin-strict
++-mono-<-≤ {x} {x'} {y} {y'} x<x' y≤y' =  begin-strict
     x + y                     ≈⟨ sym $ cong₂ _+_ (fromℕ-toℕ x) (fromℕ-toℕ y) ⟩
     fromℕ m + fromℕ n      ≈⟨ sym (fromℕ-homo-+ m n) ⟩
     fromℕ (m ℕ.+ n)          <⟨ fromℕ-mono-< (ℕp.+-mono-<-≤ m<m' n≤n') ⟩
     fromℕ (m' ℕ.+ n')        ≈⟨ fromℕ-homo-+ m' n' ⟩
     fromℕ m' + fromℕ n'    ≈⟨ cong₂ _+_ (fromℕ-toℕ x') (fromℕ-toℕ y') ⟩
-    x' + y'
-  ∎
+    x' + y'                  ∎
   where
+  open IneqReasoning
   m    = toℕ x;             n    = toℕ y
   m'   = toℕ x';            n'   = toℕ y'
   m<m' = toℕ-mono-< x<x';   n≤n' = toℕ-mono-≤ y≤y'
@@ -462,6 +460,8 @@ suc-mono-≤ {x} {y} x≤y =  begin
   1B + x    ≤⟨ +-monoʳ-≤ 1B {x} {y} x≤y ⟩
   1B + y    ≈⟨ sym (suc≗1+ y) ⟩
   suc y     ∎
+  where
+  open IneqReasoning
 
 ------------------------------------------------------------------------------
 -- Some more properties for _<_, _≤_.
@@ -472,12 +472,16 @@ x≤y+x x y =  begin
   x          ≈⟨ sym (+-identityˡ x) ⟩
   zero + x   ≤⟨ +-monoˡ-≤ x {zero} {y} (0≤ y) ⟩
   y + x      ∎
+  where
+  open IneqReasoning
 
 x≤x+y :  ∀ (x y) → x ≤ x + y
 x≤x+y x y =  begin
   x        ≤⟨ x≤y+x x y ⟩
   y + x    ≈⟨ +-comm y x ⟩
   x + y    ∎
+  where
+  open IneqReasoning
 
 x<1+x :  ∀ x → x < 1B + x
 x<1+x x = begin-strict
@@ -487,6 +491,7 @@ x<1+x x = begin-strict
   1B + fromℕ n      ≈⟨ cong (1B +_) (fromℕ-toℕ x) ⟩
   1B + x            ∎
   where
+  open IneqReasoning
   n = toℕ x
 
 x<x+1 :  ∀ x → x < x + 1B
@@ -494,24 +499,30 @@ x<x+1 x =  begin-strict
   x        <⟨ x<1+x x ⟩
   1B + x   ≈⟨ +-comm 1B x ⟩
   x + 1B   ∎
+  where
+  open IneqReasoning
 
-x<suc-x :  ∀ x → x < suc x
-x<suc-x x =  begin-strict
+x<suc[x] :  ∀ x → x < suc x
+x<suc[x] x =  begin-strict
   x        <⟨ x<1+x x ⟩
   1B + x   ≈⟨ sym (suc≗1+ x) ⟩
   suc x    ∎
+  where
+  open IneqReasoning
 
-x≤suc-x :  ∀ x → x ≤ suc x
-x≤suc-x x =  <⇒≤ {x} {suc x} (x<suc-x x)
+x≤suc[x] :  ∀ x → x ≤ suc x
+x≤suc[x] x =  <⇒≤ {x} {suc x} (x<suc[x] x)
 
-x≢suc-x :  ∀ x → x ≢ suc x
-x≢suc-x =  <⇒≢ ∘ x<suc-x
+x≢suc[x] :  ∀ x → x ≢ suc x
+x≢suc[x] =  <⇒≢ ∘ x<suc[x]
 
-pred-x<x :  ∀ {x} → x ≢ zero → pred x < x
-pred-x<x {x} x≢0 =  begin-strict
-  pred x          <⟨ x<suc-x (pred x) ⟩
+pred[x]<x :  ∀ {x} → x ≢ zero → pred x < x
+pred[x]<x {x} x≢0 =  begin-strict
+  pred x          <⟨ x<suc[x] (pred x) ⟩
   suc (pred x)    ≈⟨ suc-pred x x≢0 ⟩
   x               ∎
+  where
+  open IneqReasoning
 
 ------------------------------------------------------------------------------
 -- Monotonicity proofs for _*_, double.
@@ -526,6 +537,7 @@ pred-x<x {x} x≢0 =  begin-strict
   fromℕ m' * fromℕ n'    ≈⟨ cong₂ _*_ (fromℕ-toℕ x') (fromℕ-toℕ y') ⟩
   x' * y'                ∎
   where
+  open IneqReasoning
   m    = toℕ x;              m'   = toℕ x'
   n    = toℕ y;              n'   = toℕ y'
   m≤m' = toℕ-mono-≤ x≤x';    n≤n' = toℕ-mono-≤ y≤y'
@@ -545,6 +557,7 @@ pred-x<x {x} x≢0 =  begin-strict
   fromℕ m' * fromℕ n'    ≈⟨ cong₂ _*_ (fromℕ-toℕ x') (fromℕ-toℕ y') ⟩
   x' * y'                ∎
   where
+  open IneqReasoning
   m    = toℕ x;              m'   = toℕ x'
   n    = toℕ y;              n'   = toℕ y'
   m<m' = toℕ-mono-< x<x';    n<n' = toℕ-mono-< y<y'
@@ -556,6 +569,7 @@ pred-x<x {x} x≢0 =  begin-strict
   z + xz           ≈⟨ sym (suc-* x z) ⟩
   (suc x) * z      ∎
   where
+  open IneqReasoning
   xy = x * y;   xz = x * z;   xy≤xz = *-monoʳ-≤ x (<⇒≤ {y} {z} y<z)
 
 *-monoˡ-< :  ∀ x → (_* (suc x)) Preserves _<_ ⟶ _<_
@@ -564,6 +578,8 @@ pred-x<x {x} x≢0 =  begin-strict
   (suc x) * y   <⟨ *-monoʳ-< x {y} {z} y<z ⟩
   (suc x) * z   ≈⟨ *-comm (suc x) z ⟩
   z * (suc x)   ∎
+  where
+  open IneqReasoning
 
 double-mono-≤ :  double Preserves _≤_ ⟶ _≤_
 double-mono-≤ {x} {y} x≤y =  begin
@@ -571,6 +587,8 @@ double-mono-≤ {x} {y} x≤y =  begin
   2B * x     ≤⟨ *-monoʳ-≤ 2B {x} {y} x≤y ⟩
   2B * y     ≈⟨ sym (double≗2B* y) ⟩
   double y   ∎
+  where
+  open IneqReasoning
 
 double-mono-< :  double Preserves _<_ ⟶ _<_
 double-mono-< {x} {y} x<y =  begin-strict
@@ -578,6 +596,8 @@ double-mono-< {x} {y} x<y =  begin-strict
   2B * x     <⟨ *-monoʳ-< 1B {x} {y} x<y ⟩
   2B * y     ≈⟨ sym (double≗2B* y) ⟩
   double y   ∎
+  where
+  open IneqReasoning
 
 double-back-mono-≤ :  ∀ {x y} → double x ≤ double y → x ≤ y
 double-back-mono-≤ {x} {y} 2x≤2y  with <-cmp x y
@@ -602,8 +622,8 @@ double-back-mono-< {x} {y} 2x<2y  with <-cmp x y
 -- Some more properties for _<_, _≤_.
 ------------------------------------------------------------------------------
 
-x<double-x :  ∀ x → x ≢ zero → x < double x
-x<double-x x x≢0 =  begin-strict
+x<double[x] :  ∀ x → x ≢ zero → x < double x
+x<double[x] x x≢0 =  begin-strict
   x                 ≈⟨ sym (suc-pred x x≢0) ⟩
   suc px            ≈⟨ sym (*-identityʳ (suc px)) ⟩
   suc px * 1B       <⟨ *-monoʳ-< px (x<1+x 1B) ⟩
@@ -612,58 +632,70 @@ x<double-x x x≢0 =  begin-strict
   double (suc px)   ≈⟨ cong double (suc-pred x x≢0) ⟩
   double x          ∎
   where
+  open IneqReasoning
   px = pred x
 
-suc-x≤⇒x< :  ∀ {x y} → suc x ≤ y → x < y
-suc-x≤⇒x< {x} {_} (inj₁ sx<y)  =  <-trans (x<suc-x x) sx<y
-suc-x≤⇒x< {x} {_} (inj₂ sx≡y) =  subst (x <_) sx≡y (x<suc-x x)
+suc[x]≤⇒x< :  ∀ {x y} → suc x ≤ y → x < y
+suc[x]≤⇒x< {x} {_} (inj₁ sx<y)  =  <-trans (x<suc[x] x) sx<y
+suc[x]≤⇒x< {x} {_} (inj₂ sx≡y) =  subst (x <_) sx≡y (x<suc[x] x)
 
-x<⇒suc-x≤ :  ∀ {x y} → x < y → suc x ≤ y
-x<⇒suc-x≤ {x} {y} x<y =  begin
+x<⇒suc[x]≤ :  ∀ {x y} → x < y → suc x ≤ y
+x<⇒suc[x]≤ {x} {y} x<y =  begin
   suc x                  ≈⟨ sym (fromℕ-toℕ (suc x)) ⟩
   fromℕ (toℕ (suc x))    ≈⟨ cong fromℕ (toℕ-suc x) ⟩
   fromℕ (ℕ.suc m)        ≤⟨ fromℕ-mono-≤ 1+m≤n ⟩
   fromℕ n                ≈⟨ fromℕ-toℕ y ⟩
   y                      ∎
   where
+  open IneqReasoning
   m = toℕ x;  n = toℕ y;  1+m≤n = toℕ-mono-< x<y
 
-suc-x≤double-x :  ∀ x → x ≢ zero → suc x ≤ double x
-suc-x≤double-x x =  x<⇒suc-x≤ {x} {double x} ∘ x<double-x x
+suc[x]≤double[x] :  ∀ x → x ≢ zero → suc x ≤ double x
+suc[x]≤double[x] x =  x<⇒suc[x]≤ {x} {double x} ∘ x<double[x] x
 
-x≤[suc-y]*x :  ∀ (x y) → x ≤ (suc y) * x
-x≤[suc-y]*x x y =  begin
+x≤suc[y]*x :  ∀ (x y) → x ≤ (suc y) * x
+x≤suc[y]*x x y =  begin
   x             ≤⟨ x≤x+y x (y * x) ⟩
   x + y * x     ≈⟨ sym (suc-* y x) ⟩
   (suc y) * x   ∎
+  where
+  open IneqReasoning
 
-x≤double-x :  ∀ x → x ≤ double x
-x≤double-x x =  begin
+x≤double[x] :  ∀ x → x ≤ double x
+x≤double[x] x =  begin
   x         ≤⟨ x≤x+y x x ⟩
-  x + x     ≈⟨ sym (double-x≡x+x x) ⟩
+  x + x     ≈⟨ sym (double[x]≡x+x x) ⟩
   double x  ∎
+  where
+  open IneqReasoning
 
-suc-x<2[1+x] :  ∀ x → suc x < 2[1+ x ]
-suc-x<2[1+x] x =  begin-strict
-  suc x           <⟨ x<double-x (suc x) suc≢0  ⟩
+suc[x]<2[1+x] :  ∀ x → suc x < 2[1+ x ]
+suc[x]<2[1+x] x =  begin-strict
+  suc x           <⟨ x<double[x] (suc x) suc≢0  ⟩
   double (suc x)  ≈⟨ sym (2[1+-as∘ x) ⟩
   2[1+ x ]        ∎
+  where
+  open IneqReasoning
 
 x<2[1+x] :  ∀ x → x < 2[1+ x ]
-x<2[1+x] x =  <-trans {x} {suc x} {2[1+ x ]} (x<suc-x x) (suc-x<2[1+x] x)
+x<2[1+x] x =  <-trans {x} {suc x} {2[1+ x ]} (x<suc[x] x) (suc[x]<2[1+x] x)
 
 x<1+[2x] :  ∀ x → x < 1+[2 x ]
 x<1+[2x] x =  begin-strict
-  x               <⟨ x<suc-x x ⟩
-  suc x           ≤⟨ suc-mono-≤ {x} {double x} (x≤double-x x) ⟩
+  x               <⟨ x<suc[x] x ⟩
+  suc x           ≤⟨ suc-mono-≤ {x} {double x} (x≤double[x] x) ⟩
   suc (double x)  ≈⟨ sym (1+[2-as∘ x) ⟩
   1+[2 x ]        ∎
+  where
+  open IneqReasoning
 
-double-x<1+[2x] :  ∀ x → double x < 1+[2 x ]
-double-x<1+[2x] x =  begin-strict
-  double x     <⟨ x<suc-x (double x) ⟩
+double[x]<1+[2x] :  ∀ x → double x < 1+[2 x ]
+double[x]<1+[2x] x =  begin-strict
+  double x     <⟨ x<suc[x] (double x) ⟩
   suc (double x)   ≈⟨ sym (1+[2-as∘ x) ⟩
   1+[2 x ]     ∎
+  where
+  open IneqReasoning
 
 pred-mono-≤ :  pred Preserves _≤_ ⟶ _≤_
 pred-mono-≤ {x} {y} x≤y =  begin
@@ -674,16 +706,17 @@ pred-mono-≤ {x} {y} x≤y =  begin
   pred (fromℕ n)     ≈⟨ cong pred (fromℕ-toℕ y) ⟩
   pred y             ∎
   where
+  open IneqReasoning
   m = toℕ x;  n = toℕ y;  m≤n = toℕ-mono-≤ x≤y
 
 x<1⇒x≡0 :  ∀ {x} → x < 1B → x ≡ zero
 x<1⇒x≡0 {x} x<1 =  ≤0⇒≡ x≤0
   where
-  suc-x≤1 = x<⇒suc-x≤ {x} {1B} x<1
-
+  open IneqReasoning
+  suc[x]≤1 = x<⇒suc[x]≤ {x} {1B} x<1
   x≤0 = begin
     x             ≈⟨ sym (pred-suc x) ⟩
-    pred (suc x)  ≤⟨ pred-mono-≤ {suc x} {1B} suc-x≤1 ⟩
+    pred (suc x)  ≤⟨ pred-mono-≤ {suc x} {1B} suc[x]≤1 ⟩
     pred 1B       ≈⟨ refl ⟩
     zero          ∎
 
@@ -705,80 +738,29 @@ _<ₙon_ =  ℕ._<_ on toℕ
   xN'<yN' = fromℕ-mono-< xN<yN
 
 ------------------------------------------------------------------------------
--- Arranging a well-founded recursion by _<_ on Bin.
---
--- The function  downFrom  below can serve as an example of usage.
+-- StrictTotalOrder and DecTotalOrder instances for Bin.
 ------------------------------------------------------------------------------
-
-open import Induction.WellFounded using (Acc; module Inverse-image; module Subrelation)
-open Acc using (acc)
-
-Acc< =  Acc _<_
-
-<-acc-ℕ :  {n : ℕ} → Acc ℕ._<_ n
--- This means that _<_ is well-founded on ℕ
--- ("each number in ℕ is accessible from 0 by _<_").
-
-<-acc-ℕ {n} = Induction.Nat.<-wellFounded n
-
--- Derive accessibility for _<_ on Bin from accessibility for _<_ on ℕ:
-<ₙon-acc :  ∀ {x} → Acc _<ₙon_ x
-<ₙon-acc {x} =  Inverse-image.accessible {_} {_} {_} {Bin} {ℕ} {ℕ._<_} toℕ
-                                                     (<-acc-ℕ {toℕ x})
-
-<-acc :  {x : Bin} → Acc< x
-<-acc {x} =  Subrelation.accessible {_} {_} {_} {Bin} {_<_} {_<ₙon_} <⇒<ₙon
-                                                            (<ₙon-acc {x})
-
-acc-0 :  Acc< zero
-acc-0 =  acc (\x x<0 → contradiction x<0 ≮0)
-
-acc-suc-x⇒acc-x :  ∀ {x} → Acc< (suc x) → Acc< x
-acc-suc-x⇒acc-x {x} (acc wf-suc-x) =  wf-suc-x _ (x<suc-x x)
-
-acc-double-x⇒acc-x :  ∀ {x} → Acc< (double x) → Acc< x
-acc-double-x⇒acc-x {zero}     _            =  acc-0
-acc-double-x⇒acc-x {2[1+ x ]} (acc wf-2x') =  wf-2x' _ (x<double-x 2[1+ x ] 2[1+x]≢0)
-acc-double-x⇒acc-x {1+[2 x ]} (acc wf-2x') =  wf-2x' _ (x<double-x 1+[2 x ] 1+[2x]≢0)
-
-acc-2[1+x]⇒acc-suc :  ∀ {x} → Acc _<_ 2[1+ x ] → Acc _<_ (suc x)
-acc-2[1+x]⇒acc-suc {x} acc-2[1+x] =  acc-double-x⇒acc-x {suc x} acc-double-suc-x
-  where
-  acc-double-suc-x :  Acc _<_ (double (suc x))
-  acc-double-suc-x =  subst (Acc _<_) (2[1+-as∘ x) acc-2[1+x]
-
-acc-1+[2x]⇒acc-x :  ∀ {x} → Acc< 1+[2 x ] → Acc< x
-acc-1+[2x]⇒acc-x {x} acc-1+[2x] =  acc-double-x⇒acc-x acc-2x
-  where
-  acc-suc-2x = subst Acc< (1+[2-as∘ x) acc-1+[2x]
-  acc-2x     = acc-suc-x⇒acc-x acc-suc-2x
-
-acc-2[1+x]⇒acc-1+[2x] :  ∀ {x} → Acc< 2[1+ x ] → Acc< 1+[2 x ]
-acc-2[1+x]⇒acc-1+[2x] {x} (acc wf-2[1+x]) =  wf-2[1+x] _ (1+[2x]<2[1+x] x)
-
-downFrom' : (x : Bin) → Acc _<_ x → List Bin
-downFrom' x (acc wf)  with x ≟ zero
-... | yes _  =  [ zero ]
-... | no x≢0 =  x ∷ (downFrom' (pred x) (wf _ (pred-x<x {x} x≢0)))
-
-downFrom :  (x : Bin) → List Bin
-downFrom x =  downFrom' x <-acc
 
 <-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_
 <-isStrictTotalOrder = record
   { isEquivalence =  isEquivalence
   ; trans         =  \{x y z} → <-trans {x} {y} {z}
-  ; compare       =  <-cmp }
+  ; compare       =  <-cmp
+  }
 
 <-strictTotalOrder : StrictTotalOrder _ _ _
 <-strictTotalOrder = record
   { Carrier            =  Bin
   ; _≈_                =  _≡_
   ; _<_                =  _<_
-  ; isStrictTotalOrder =  <-isStrictTotalOrder }
+  ; isStrictTotalOrder =  <-isStrictTotalOrder
+  }
 
 ≤-isPartialOrder :  IsPartialOrder _≡_ _≤_
-≤-isPartialOrder =  record{ isPreorder = ≤-isPreorder;  antisym = ≤-antisym }
+≤-isPartialOrder =  record
+  { isPreorder = ≤-isPreorder
+  ; antisym    = ≤-antisym
+  }
 
 ≤-total :  Relation.Binary.Total _≤_
 ≤-total x y  with <-cmp x y
@@ -787,17 +769,23 @@ downFrom x =  downFrom' x <-acc
 ... | tri> _  _  gt =  inj₂ (<⇒≤ {y} {x} gt)
 
 ≤-isTotalOrder : IsTotalOrder _≡_ _≤_
-≤-isTotalOrder = record{ isPartialOrder = ≤-isPartialOrder;  total = ≤-total }
+≤-isTotalOrder = record
+  { isPartialOrder = ≤-isPartialOrder
+  ; total = ≤-total
+  }
 
 ≤-isDecTotalOrder : IsDecTotalOrder _≡_ _≤_
 ≤-isDecTotalOrder = record
   { isTotalOrder = ≤-isTotalOrder
   ; _≟_          = _≟_
-  ; _≤?_         = _≤?_ }
+  ; _≤?_         = _≤?_
+  }
 
 ≤-decTotalOrder : DecTotalOrder 0ℓ 0ℓ 0ℓ
 ≤-decTotalOrder = record
   { Carrier         = Bin
   ; _≈_             = _≡_ {A = Bin}
   ; _≤_             = _≤_
-  ; isDecTotalOrder = ≤-isDecTotalOrder }
+  ; isDecTotalOrder = ≤-isDecTotalOrder
+  }
+
