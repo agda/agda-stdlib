@@ -102,7 +102,7 @@ The following new modules have been added to the library:
 
   Data.Rational.Unnormalised
   Data.Rational.Unnormalised.Properties
-  
+
   Function.Definitions
   Function.Packages
   Function.Structures

@@ -4,7 +4,7 @@
 -- Properties of unnormalized Rational numbers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Rational.Unnormalised.Properties where
 
