@@ -34,10 +34,10 @@
 <a id="878" href="Data.Sign.Base.html#537" class="InductiveConstructor">+</a> <a id="880" href="Data.Sign.Properties.html#800" class="Function Operator">≟</a> <a id="882" href="Data.Sign.Base.html#537" class="InductiveConstructor">+</a> <a id="884" class="Symbol">=</a> <a id="886" href="Relation.Nullary.html#641" class="InductiveConstructor">yes</a> <a id="890" href="Agda.Builtin.Equality.html#182" class="InductiveConstructor">refl</a>
 
 <a id="≡-setoid"></a><a id="896" href="Data.Sign.Properties.html#896" class="Function">≡-setoid</a> <a id="905" class="Symbol">:</a> <a id="907" href="Relation.Binary.html#1975" class="Record">Setoid</a> <a id="914" href="Level.html#512" class="Function">0ℓ</a> <a id="917" href="Level.html#512" class="Function">0ℓ</a>
-<a id="920" href="Data.Sign.Properties.html#896" class="Function">≡-setoid</a> <a id="929" class="Symbol">=</a> <a id="931" href="Relation.Binary.PropositionalEquality.html#1655" class="Function">setoid</a> <a id="938" href="Data.Sign.Base.html#507" class="Datatype">Sign</a>
+<a id="920" href="Data.Sign.Properties.html#896" class="Function">≡-setoid</a> <a id="929" class="Symbol">=</a> <a id="931" href="Relation.Binary.PropositionalEquality.html#1745" class="Function">setoid</a> <a id="938" href="Data.Sign.Base.html#507" class="Datatype">Sign</a>
 
 <a id="≡-decSetoid"></a><a id="944" href="Data.Sign.Properties.html#944" class="Function">≡-decSetoid</a> <a id="956" class="Symbol">:</a> <a id="958" href="Relation.Binary.html#2818" class="Record">DecSetoid</a> <a id="968" href="Level.html#512" class="Function">0ℓ</a> <a id="971" href="Level.html#512" class="Function">0ℓ</a>
-<a id="974" href="Data.Sign.Properties.html#944" class="Function">≡-decSetoid</a> <a id="986" class="Symbol">=</a> <a id="988" href="Relation.Binary.PropositionalEquality.html#1786" class="Function">decSetoid</a> <a id="998" href="Data.Sign.Properties.html#800" class="Function Operator">_≟_</a>
+<a id="974" href="Data.Sign.Properties.html#944" class="Function">≡-decSetoid</a> <a id="986" class="Symbol">=</a> <a id="988" href="Relation.Binary.PropositionalEquality.html#1876" class="Function">decSetoid</a> <a id="998" href="Data.Sign.Properties.html#800" class="Function Operator">_≟_</a>
 
 <a id="1003" class="Comment">------------------------------------------------------------------------</a>
 <a id="1076" class="Comment">-- opposite</a>
@@ -94,12 +94,12 @@
 <a id="*-isMagma"></a><a id="2221" href="Data.Sign.Properties.html#2221" class="Function">*-isMagma</a> <a id="2231" class="Symbol">:</a> <a id="2233" href="Algebra.Structures.html#988" class="Record">IsMagma</a> <a id="2241" href="Data.Sign.Base.html#748" class="Function Operator">_*_</a>
 <a id="2245" href="Data.Sign.Properties.html#2221" class="Function">*-isMagma</a> <a id="2255" class="Symbol">=</a> <a id="2257" class="Keyword">record</a>
   <a id="2266" class="Symbol">{</a> <a id="2268" href="Algebra.Structures.html#1040" class="Field">isEquivalence</a> <a id="2282" class="Symbol">=</a> <a id="2284" href="Relation.Binary.PropositionalEquality.Core.html#1371" class="Function">isEquivalence</a>
-  <a id="2300" class="Symbol">;</a> <a id="2302" href="Algebra.Structures.html#1078" class="Field">∙-cong</a>        <a id="2316" class="Symbol">=</a> <a id="2318" href="Relation.Binary.PropositionalEquality.html#1441" class="Function">cong₂</a> <a id="2324" href="Data.Sign.Base.html#748" class="Function Operator">_*_</a>
+  <a id="2300" class="Symbol">;</a> <a id="2302" href="Algebra.Structures.html#1078" class="Field">∙-cong</a>        <a id="2316" class="Symbol">=</a> <a id="2318" href="Relation.Binary.PropositionalEquality.html#1531" class="Function">cong₂</a> <a id="2324" href="Data.Sign.Base.html#748" class="Function Operator">_*_</a>
   <a id="2330" class="Symbol">}</a>
 
-<a id="*-magma"></a><a id="2333" href="Data.Sign.Properties.html#2333" class="Function">*-magma</a> <a id="2341" class="Symbol">:</a> <a id="2343" href="Algebra.html#848" class="Record">Magma</a> <a id="2349" href="Level.html#512" class="Function">0ℓ</a> <a id="2352" href="Level.html#512" class="Function">0ℓ</a>
+<a id="*-magma"></a><a id="2333" href="Data.Sign.Properties.html#2333" class="Function">*-magma</a> <a id="2341" class="Symbol">:</a> <a id="2343" href="Algebra.html#853" class="Record">Magma</a> <a id="2349" href="Level.html#512" class="Function">0ℓ</a> <a id="2352" href="Level.html#512" class="Function">0ℓ</a>
 <a id="2355" href="Data.Sign.Properties.html#2333" class="Function">*-magma</a> <a id="2363" class="Symbol">=</a> <a id="2365" class="Keyword">record</a>
-  <a id="2374" class="Symbol">{</a> <a id="2376" href="Algebra.html#1000" class="Field">isMagma</a> <a id="2384" class="Symbol">=</a> <a id="2386" href="Data.Sign.Properties.html#2221" class="Function">*-isMagma</a>
+  <a id="2374" class="Symbol">{</a> <a id="2376" href="Algebra.html#1005" class="Field">isMagma</a> <a id="2384" class="Symbol">=</a> <a id="2386" href="Data.Sign.Properties.html#2221" class="Function">*-isMagma</a>
   <a id="2398" class="Symbol">}</a>
 
 <a id="*-isSemigroup"></a><a id="2401" href="Data.Sign.Properties.html#2401" class="Function">*-isSemigroup</a> <a id="2415" class="Symbol">:</a> <a id="2417" href="Algebra.Structures.html#1357" class="Record">IsSemigroup</a> <a id="2429" href="Data.Sign.Base.html#748" class="Function Operator">_*_</a>
@@ -108,9 +108,9 @@
   <a id="2482" class="Symbol">;</a> <a id="2484" href="Algebra.Structures.html#1437" class="Field">assoc</a>   <a id="2492" class="Symbol">=</a> <a id="2494" href="Data.Sign.Properties.html#1727" class="Function">*-assoc</a>
   <a id="2504" class="Symbol">}</a>
 
-<a id="*-semigroup"></a><a id="2507" href="Data.Sign.Properties.html#2507" class="Function">*-semigroup</a> <a id="2519" class="Symbol">:</a> <a id="2521" href="Algebra.html#1138" class="Record">Semigroup</a> <a id="2531" href="Level.html#512" class="Function">0ℓ</a> <a id="2534" href="Level.html#512" class="Function">0ℓ</a>
+<a id="*-semigroup"></a><a id="2507" href="Data.Sign.Properties.html#2507" class="Function">*-semigroup</a> <a id="2519" class="Symbol">:</a> <a id="2521" href="Algebra.html#1143" class="Record">Semigroup</a> <a id="2531" href="Level.html#512" class="Function">0ℓ</a> <a id="2534" href="Level.html#512" class="Function">0ℓ</a>
 <a id="2537" href="Data.Sign.Properties.html#2507" class="Function">*-semigroup</a> <a id="2549" class="Symbol">=</a> <a id="2551" class="Keyword">record</a>
-  <a id="2560" class="Symbol">{</a> <a id="2562" href="Algebra.html#1306" class="Field">isSemigroup</a> <a id="2574" class="Symbol">=</a> <a id="2576" href="Data.Sign.Properties.html#2401" class="Function">*-isSemigroup</a>
+  <a id="2560" class="Symbol">{</a> <a id="2562" href="Algebra.html#1311" class="Field">isSemigroup</a> <a id="2574" class="Symbol">=</a> <a id="2576" href="Data.Sign.Properties.html#2401" class="Function">*-isSemigroup</a>
   <a id="2592" class="Symbol">}</a>
 
 <a id="*-isMonoid"></a><a id="2595" href="Data.Sign.Properties.html#2595" class="Function">*-isMonoid</a> <a id="2606" class="Symbol">:</a> <a id="2608" href="Algebra.Structures.html#2215" class="Record">IsMonoid</a> <a id="2617" href="Data.Sign.Base.html#748" class="Function Operator">_*_</a> <a id="2621" href="Data.Sign.Base.html#537" class="InductiveConstructor">+</a>
@@ -119,9 +119,9 @@
   <a id="2677" class="Symbol">;</a> <a id="2679" href="Algebra.Structures.html#2308" class="Field">identity</a>    <a id="2691" class="Symbol">=</a> <a id="2693" href="Data.Sign.Properties.html#1560" class="Function">*-identity</a>
   <a id="2706" class="Symbol">}</a>
 
-<a id="*-monoid"></a><a id="2709" href="Data.Sign.Properties.html#2709" class="Function">*-monoid</a> <a id="2718" class="Symbol">:</a> <a id="2720" href="Algebra.html#3129" class="Record">Monoid</a> <a id="2727" href="Level.html#512" class="Function">0ℓ</a> <a id="2730" href="Level.html#512" class="Function">0ℓ</a>
+<a id="*-monoid"></a><a id="2709" href="Data.Sign.Properties.html#2709" class="Function">*-monoid</a> <a id="2718" class="Symbol">:</a> <a id="2720" href="Algebra.html#3134" class="Record">Monoid</a> <a id="2727" href="Level.html#512" class="Function">0ℓ</a> <a id="2730" href="Level.html#512" class="Function">0ℓ</a>
 <a id="2733" href="Data.Sign.Properties.html#2709" class="Function">*-monoid</a> <a id="2742" class="Symbol">=</a> <a id="2744" class="Keyword">record</a>
-  <a id="2753" class="Symbol">{</a> <a id="2755" href="Algebra.html#3308" class="Field">isMonoid</a> <a id="2764" class="Symbol">=</a> <a id="2766" href="Data.Sign.Properties.html#2595" class="Function">*-isMonoid</a>
+  <a id="2753" class="Symbol">{</a> <a id="2755" href="Algebra.html#3313" class="Field">isMonoid</a> <a id="2764" class="Symbol">=</a> <a id="2766" href="Data.Sign.Properties.html#2595" class="Function">*-isMonoid</a>
   <a id="2779" class="Symbol">}</a>
 
 <a id="2782" class="Comment">-- Other properties of _*_</a>
