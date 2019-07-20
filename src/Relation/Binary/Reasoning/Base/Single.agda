@@ -14,7 +14,8 @@ module Relation.Binary.Reasoning.Base.Single
   where
 
 open import Level using (_⊔_)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core as P
+  using (_≡_)
 
 infix  4 _IsRelatedTo_
 infix  3 _∎
