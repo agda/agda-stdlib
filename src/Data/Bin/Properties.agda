@@ -26,13 +26,12 @@ import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Negation using (contradiction)
 open import Algebra.FunctionProperties {A = Bin} _≡_
 open import Algebra.Structures {A = Bin} _≡_
-import Algebra.Properties.CommutativeSemigroup ℕₚ.+-semigroup ℕₚ.+-comm as
-  Of+ℕ-semigroup
-import Algebra.Properties.CommutativeSemigroup ℕₚ.*-semigroup ℕₚ.*-comm as
-  Of*ℕ-semigroup
+import Algebra.Properties.CommutativeSemigroup ℕₚ.+-semigroup ℕₚ.+-comm
+  as Of+ℕ-semigroup
+import Algebra.Properties.CommutativeSemigroup ℕₚ.*-semigroup ℕₚ.*-comm
+  as Of*ℕ-semigroup
 open ≡-Reasoning
 open +-*-Solver
-
 
 ------------------------------------------------------------------------
 -- Properties of size
@@ -125,10 +124,10 @@ pred-suc zero     =  refl
 pred-suc 2[1+ x ] =  sym (2[1+-as∘ x)
 pred-suc 1+[2 x ] =  refl
 
-suc-pred : ∀ x → x ≢ zero → suc (pred x) ≡ x
-suc-pred zero     0≢0 =  contradiction refl 0≢0
-suc-pred 2[1+ _ ] _   =  refl
-suc-pred 1+[2 x ] _   =  sym (1+[2-as∘ x)
+suc-pred : ∀ {x} → x ≢ zero → suc (pred x) ≡ x
+suc-pred {zero}     0≢0 =  contradiction refl 0≢0
+suc-pred {2[1+ _ ]} _   =  refl
+suc-pred {1+[2 x ]} _   =  sym (1+[2-as∘ x)
 
 ------------------------------------------------------------------------
 -- Properties of toℕ & fromℕ
@@ -150,7 +149,7 @@ toℕ-pred 2[1+ x ] =  cong ℕ.pred $ sym $ ℕₚ.*-distribˡ-+ 2 1 (toℕ x)
 toℕ-pred 1+[2 x ] =  toℕ-double x
 
 toℕ-fromℕ : toℕ ∘ fromℕ ≗ id
-toℕ-fromℕ 0      = refl
+toℕ-fromℕ 0         = refl
 toℕ-fromℕ (ℕ.suc n) = begin
   toℕ (fromℕ (ℕ.suc n))   ≡⟨⟩
   toℕ (suc (fromℕ n))     ≡⟨ toℕ-suc (fromℕ n) ⟩
@@ -215,18 +214,16 @@ toℕ-homo-+ 2[1+ x ] 2[1+ y ] = begin
   toℕ 2[1+ (suc (x + y)) ]           ≡⟨⟩
   2 ℕ.* (1 ℕ.+ (toℕ (suc (x + y))))  ≡⟨ cong ((2 ℕ.*_) ∘ ℕ.suc) (toℕ-suc (x + y)) ⟩
   2 ℕ.* (2 ℕ.+ toℕ (x + y))          ≡⟨ cong ((2 ℕ.*_) ∘ (2 ℕ.+_)) (toℕ-homo-+ x y) ⟩
-  2 ℕ.* (2 ℕ.+ (m ℕ.+ n))            ≡⟨ solve 2 (λ m n → con 2 :* (con 2 :+ (m :+ n)) :=
+  2 ℕ.* (2 ℕ.+ (toℕ x ℕ.+ toℕ y))    ≡⟨ solve 2 (λ m n → con 2 :* (con 2 :+ (m :+ n))  :=
                                           con 2 :* (con 1 :+ m) :+ con 2 :* (con 1 :+ n))
                                           refl (toℕ x) (toℕ y) ⟩
   toℕ 2[1+ x ] ℕ.+ toℕ 2[1+ y ]      ∎
-  where
-  m = toℕ x;  n = toℕ y
 
 toℕ-homo-+ 2[1+ x ] 1+[2 y ] = begin
   toℕ (2[1+ x ] + 1+[2 y ])             ≡⟨⟩
   toℕ (suc 2[1+ (x + y) ])              ≡⟨ toℕ-suc 2[1+ (x + y) ] ⟩
   ℕ.suc (toℕ 2[1+ (x + y) ])            ≡⟨⟩
-  ℕ.suc (2 ℕ.* (ℕ.suc (toℕ (x + y))))   ≡⟨ cong (ℕ.suc ∘ (2 ℕ.*_) ∘ ℕ.suc) (toℕ-homo-+ x y) ⟩
+  ℕ.suc (2 ℕ.* (ℕ.suc (toℕ (x + y))))   ≡⟨ cong (λ v → ℕ.suc (2 ℕ.* ℕ.suc v)) (toℕ-homo-+ x y) ⟩
   ℕ.suc (2 ℕ.* (ℕ.suc (m ℕ.+ n)))       ≡⟨ solve 2 (λ m n → con 1 :+ (con 2 :* (con 1 :+ (m :+ n))) :=
                                              con 2 :* (con 1 :+ m) :+ (con 1 :+ (con 2 :* n)))
                                              refl m n ⟩
@@ -243,8 +240,8 @@ toℕ-homo-+ 1+[2 x ] 2[1+ y ] = begin
   ℕ.suc (2 ℕ.* (ℕ.suc (m ℕ.+ n)))           ≡⟨ solve 2 (λ m n → con 1 :+ (con 2 :* (con 1 :+ (m :+ n))) :=
                                                  (con 1 :+ (con 2 :* m)) :+ (con 2 :* (con 1 :+ n)))
                                                  refl m n ⟩
-  (ℕ.suc (2 ℕ.* m)) ℕ.+ (2 ℕ.* (ℕ.suc n))  ≡⟨⟩
-  toℕ 1+[2 x ] ℕ.+ toℕ 2[1+ y ]            ∎
+  (ℕ.suc (2 ℕ.* m)) ℕ.+ (2 ℕ.* (ℕ.suc n))   ≡⟨⟩
+  toℕ 1+[2 x ] ℕ.+ toℕ 2[1+ y ]             ∎
   where
   m = toℕ x;  n = toℕ y
 
@@ -355,8 +352,7 @@ fromℕ-homo-+ (ℕ.suc m) n = begin
 +-cancelʳ-≡ =  comm+cancelˡ⇒cancelʳ +-comm +-cancelˡ-≡
 
 ------------------------------------------------------------------------
--- Instances for Bin for some classical algebraic categories.
--- Additive part.
+-- Structures
 
 +-isMagma : IsMagma _+_
 +-isMagma = record
@@ -370,7 +366,7 @@ fromℕ-homo-+ (ℕ.suc m) n = begin
   ; assoc   = +-assoc
   }
 
-+-0-isMonoid : IsMonoid _+_ zero
++-0-isMonoid : IsMonoid _+_ 0B
 +-0-isMonoid = record
   { isSemigroup = +-isSemigroup
   ; identity    = +-identity
@@ -382,6 +378,9 @@ fromℕ-homo-+ (ℕ.suc m) n = begin
   ; identityˡ   = +-identityˡ
   ; comm        = +-comm
   }
+
+------------------------------------------------------------------------
+-- Packages
 
 +-magma : Magma 0ℓ 0ℓ
 +-magma = record
@@ -597,8 +596,7 @@ fromℕ-homo-* m n = begin
 *-distrib-+ = *-distribˡ-+ , *-distribʳ-+
 
 ------------------------------------------------------------------------
--- Instances for Bin for some classical algebraic categories.
--- Multiplicative part, CommutativeSemiring.
+-- Structures
 
 *-isMagma : IsMagma _*_
 *-isMagma = record
@@ -645,6 +643,9 @@ fromℕ-homo-* m n = begin
   ; distribʳ              = *-distribʳ-+
   ; zeroˡ                 = *-zeroˡ
   }
+
+------------------------------------------------------------------------
+-- Packages
 
 *-magma : Magma 0ℓ 0ℓ
 *-magma = record

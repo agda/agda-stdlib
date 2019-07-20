@@ -567,12 +567,9 @@ m≤n+m m n = subst (m ≤_) (+-comm m n) (m≤m+n m n)
 m≤n⇒m<n∨m≡n :  ∀ {m n} → m ≤ n → m < n ⊎ m ≡ n
 m≤n⇒m<n∨m≡n {0}     {0}     _          =  inj₂ refl
 m≤n⇒m<n∨m≡n {0}     {suc n} _          =  inj₁ 0<1+n
-m≤n⇒m<n∨m≡n {suc m} {suc n} (s≤s m≤n)  with  m≤n⇒m<n∨m≡n m≤n
+m≤n⇒m<n∨m≡n {suc m} {suc n} (s≤s m≤n)  with m≤n⇒m<n∨m≡n m≤n
 ... | inj₂ m≡n = inj₂ (cong suc m≡n)
-... | inj₁ m<n = inj₁ m''≤n'
-  where
-  m''≤n' : suc (suc m) ≤ suc n
-  m''≤n' = s≤s m<n
+... | inj₁ m<n = inj₁ (s≤s m<n)
 
 m+n≤o⇒m≤o : ∀ m {n o} → m + n ≤ o → m ≤ o
 m+n≤o⇒m≤o zero    m+n≤o       = z≤n

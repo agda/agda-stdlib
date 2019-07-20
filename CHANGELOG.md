@@ -41,7 +41,7 @@ The following new modules have been added to the library:
   Algebra.Properties.CommutativeSemigroup
 
   Data.Bin
-  Data.Bin.Bas
+  Data.Bin.Base
   Data.Bin.Induction
   Data.Bin.Ordering
   Data.Bin.Properties
@@ -79,16 +79,6 @@ attached to all deprecated names to discourage their use.
 
   ```
 
-* In `Data.Bin.Properties`:
-  ```agda
-  2[1+-≢0  ↦  2[1+x]≢0
-  1+[2-≢0  ↦  1+2[1+x]≢0
-
-  ```
-
-  In several property names ``2, 2*`` replaced with ``double``.
-
-
 Other minor additions
 ---------------------
 
@@ -100,10 +90,10 @@ Other minor additions
 * Added new proofs to `Data.Nat.Properties`:
   ```agda
   even≢odd     : ∀ m n → 2 * m ≢ suc (2 * n)
-  0≢1+n        : ∀ {n} → 0 ≢ suc n
-  n<1+n        : ∀ {n} → n < suc n
-  0<1+n        : ∀ {n} → 0 < suc n
-  m≤n⇒m<n∨m≡n : ∀ {m n} → m ≤ n → m < n ⊎ m ≡ n
+  0≢1+n        : 0 ≢ suc n
+  n<1+n        : n < suc n
+  0<1+n        : 0 < suc n
+  m≤n⇒m<n∨m≡n : m ≤ n → m < n ⊎ m ≡ n
 
   ```
 
