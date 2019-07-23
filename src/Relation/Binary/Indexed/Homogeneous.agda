@@ -51,16 +51,11 @@ record IsIndexedEquivalence {i a ℓ} {I : Set i} (A : I → Set a)
   trans : B.Transitive (Lift A _≈ᵢ_)
   trans x≈y y≈z i = transᵢ (x≈y i) (y≈z i)
 
-  isPartialEquivalence : B.IsPartialEquivalence (Lift A _≈ᵢ_)
-  isPartialEquivalence = record
-    { sym   = sym
-    ; trans = trans
-    }
-
   isEquivalence : B.IsEquivalence (Lift A _≈ᵢ_)
   isEquivalence = record
     { refl  = refl
-    ; isPartialEquivalence = isPartialEquivalence
+    ; sym   = sym
+    ; trans = trans
     }
 
 record IndexedSetoid {i} (I : Set i) c ℓ : Set (suc (i ⊔ c ⊔ ℓ)) where

@@ -21,10 +21,8 @@ setoid S n = record
   ; _≈_ = λ t t′ → ∀ i → lookup t i ≈ lookup t′ i
   ; isEquivalence = record
     { refl  = λ i → refl
-    ; isPartialEquivalence = record
-      { sym   = λ p → sym ∘ p
-      ; trans = λ p q i → trans (p i) (q i)
-      }
+    ; sym   = λ p → sym ∘ p
+    ; trans = λ p q i → trans (p i) (q i)
     }
   }
   where open Setoid S

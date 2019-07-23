@@ -63,16 +63,11 @@ data _≈∙_ : Rel (Pointed A) (a ⊔ ℓ) where
 ------------------------------------------------------------------------
 -- Structures
 
-≈∙-isPartialEquivalence : IsPartialEquivalence _≈_ → IsPartialEquivalence _≈∙_
-≈∙-isPartialEquivalence ≈-isPartialEquivalence = record
-  { sym   = ≈∙-sym sym
-  ; trans = ≈∙-trans trans
-  } where open IsPartialEquivalence ≈-isPartialEquivalence
-
 ≈∙-isEquivalence : IsEquivalence _≈_ → IsEquivalence _≈∙_
 ≈∙-isEquivalence ≈-isEquivalence = record
-  { isPartialEquivalence = ≈∙-isPartialEquivalence isPartialEquivalence
-  ; refl  = ≈∙-refl refl
+  { refl  = ≈∙-refl refl
+  ; sym   = ≈∙-sym sym
+  ; trans = ≈∙-trans trans
   } where open IsEquivalence ≈-isEquivalence
 
 ≈∙-isDecEquivalence : IsDecEquivalence _≈_ → IsDecEquivalence _≈∙_

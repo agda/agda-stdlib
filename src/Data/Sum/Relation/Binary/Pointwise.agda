@@ -114,20 +114,12 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
          {ℓ₁ ℓ₂} {≈₁ : Rel A₁ ℓ₁} {≈₂ : Rel A₂ ℓ₂}
          where
 
-  ⊎-isPartialEquivalence : IsPartialEquivalence ≈₁ → IsPartialEquivalence ≈₂ →
-                           IsPartialEquivalence (Pointwise ≈₁ ≈₂)
-  ⊎-isPartialEquivalence eq₁ eq₂ = record
-    { sym   = ⊎-symmetric  (sym   eq₁) (sym   eq₂)
-    ; trans = ⊎-transitive (trans eq₁) (trans eq₂)
-    }
-    where open IsPartialEquivalence
-
   ⊎-isEquivalence : IsEquivalence ≈₁ → IsEquivalence ≈₂ →
                     IsEquivalence (Pointwise ≈₁ ≈₂)
   ⊎-isEquivalence eq₁ eq₂ = record
-    { isPartialEquivalence =
-        ⊎-isPartialEquivalence (isPartialEquivalence eq₁) (isPartialEquivalence eq₂)
-    ; refl  = ⊎-refl       (refl  eq₁) (refl  eq₂)
+    { refl  = ⊎-refl       (refl  eq₁) (refl  eq₂)
+    ; sym   = ⊎-symmetric  (sym   eq₁) (sym   eq₂)
+    ; trans = ⊎-transitive (trans eq₁) (trans eq₂)
     }
     where open IsEquivalence
 

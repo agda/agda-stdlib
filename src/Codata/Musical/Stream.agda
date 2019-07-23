@@ -129,10 +129,8 @@ setoid A = record
   ; _≈_           = _≈_ {A = A}
   ; isEquivalence = record
     { refl  = refl
-    ; isPartialEquivalence = record
-      { sym   = sym
-      ; trans = trans
-      }
+    ; sym   = sym
+    ; trans = trans
     }
   }
   where

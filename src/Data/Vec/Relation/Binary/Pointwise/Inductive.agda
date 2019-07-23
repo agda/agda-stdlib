@@ -110,18 +110,12 @@ decidable dec (x ∷ xs) (y ∷ ys) with dec x y
 
 module _ {_∼_ : Rel A ℓ} where
 
-  isPartialEquivalence : IsPartialEquivalence _∼_ → ∀ n →
-                         IsPartialEquivalence (Pointwise _∼_ {n})
-  isPartialEquivalence pequiv n = record
-    { sym   = sym   Peq.sym
-    ; trans = trans Peq.trans
-    } where module Peq = IsPartialEquivalence pequiv
-
   isEquivalence : IsEquivalence _∼_ → ∀ n →
                   IsEquivalence (Pointwise _∼_ {n})
   isEquivalence equiv n = record
     { refl  = refl  Eq.refl
-    ; isPartialEquivalence = isPartialEquivalence Eq.isPartialEquivalence n
+    ; sym   = sym   Eq.sym
+    ; trans = trans Eq.trans
     } where module Eq = IsEquivalence equiv
 
   isDecEquivalence : IsDecEquivalence _∼_ → ∀ n →

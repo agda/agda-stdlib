@@ -51,10 +51,8 @@ setoid C X = record
   ; _≈_           = _≈_
   ; isEquivalence = record
     { refl  = refl , refl , λ { r .r refl → X.refl }
-    ; isPartialEquivalence = record
-      { sym   = sym
-      ; trans = λ { {_} {i = xs} {ys} {zs} → trans {_} {i = xs} {ys} {zs}  }
-      }
+    ; sym   = sym
+    ; trans = λ { {_} {i = xs} {ys} {zs} → trans {_} {i = xs} {ys} {zs}  }
     }
   }
   where

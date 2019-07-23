@@ -148,22 +148,11 @@ module _ {A C : Set a} {B D : Set ℓ}
 ------------------------------------------------------------------------
 -- Structures
 
-isPartialEquivalence : IsPartialEquivalence {A = A} (λ x y → x ≅ y)
-isPartialEquivalence = record
-  { sym   = sym
-  ; trans = trans
-  }
-
-partialSetoid : ∀ (A : Set ℓ) → PartialSetoid ℓ A
-partialSetoid A = record
-  { _≈_                  = λ x y → x ≅ y
-  ; isPartialEquivalence = isPartialEquivalence
-  }
-
 isEquivalence : IsEquivalence {A = A} (λ x y → x ≅ y)
 isEquivalence = record
-  { isPartialEquivalence = isPartialEquivalence
-  ; refl  = refl
+  { refl  = refl
+  ; sym   = sym
+  ; trans = trans
   }
 
 setoid : Set ℓ → Setoid ℓ ℓ
@@ -178,11 +167,9 @@ indexedSetoid B = record
   { Carrier       = B
   ; _≈_           = λ x y → x ≅ y
   ; isEquivalence = record
-    { isPartialEquivalence = record
-      { sym   = sym
-      ; trans = trans
-      }
-    ; refl  = refl
+    { refl  = refl
+    ; sym   = sym
+    ; trans = trans
     }
   }
 

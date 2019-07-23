@@ -37,16 +37,11 @@ module _ {s p} {C : Container s p} where
   trans (inf (P.refl , f)) (inf (P.refl , g)) =
     inf (P.refl , λ where p .force → trans (f p .force) (g p .force))
 
-  isPartialEquivalence : ∀ {i} → IsPartialEquivalence (Bisim C i)
-  isPartialEquivalence = record
-    { sym   = sym
-    ; trans = trans
-    }
-
   isEquivalence : ∀ {i} → IsEquivalence (Bisim C i)
   isEquivalence = record
     { refl  = refl
-    ; isPartialEquivalence = isPartialEquivalence
+    ; sym   = sym
+    ; trans = trans
     }
 
   setoid : {i : Size} → Setoid (s ⊔ p) (s ⊔ p)

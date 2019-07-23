@@ -41,21 +41,11 @@ module _ {s p} (C : Container s p) where
   trans : Transitive Eq
   trans = Pw.trans C _ S.trans
 
-  isPartialEquivalence : IsPartialEquivalence Eq
-  isPartialEquivalence = record
-    { sym   = sym
-    ; trans = trans
-    }
-
-  partialSetoid : PartialSetoid _ _
-  partialSetoid = record
-    { isPartialEquivalence = isPartialEquivalence
-    }
-
   isEquivalence : IsEquivalence Eq
   isEquivalence = record
-    { isPartialEquivalence = isPartialEquivalence
-    ; refl  = refl
+    { refl  = refl
+    ; sym   = sym
+    ; trans = trans
     }
 
   setoid : Setoid (s ⊔ p ⊔ c) (s ⊔ p ⊔ e)

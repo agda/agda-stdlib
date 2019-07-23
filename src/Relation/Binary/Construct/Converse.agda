@@ -77,17 +77,11 @@ module _ {a b ℓ} {A : Set a} {B : Set b} (∼ : REL A B ℓ) where
 
 module _ {a ℓ} {A : Set a} {≈ : Rel A ℓ} where
 
-  isPartialEquivalence : IsPartialEquivalence ≈ → IsPartialEquivalence (flip ≈)
-  isPartialEquivalence peq = record
-    { sym   = sym   ≈ Peq.sym
-    ; trans = trans ≈ Peq.trans
-    }
-    where module Peq = IsPartialEquivalence peq
-
   isEquivalence : IsEquivalence ≈ → IsEquivalence (flip ≈)
   isEquivalence eq = record
     { refl  = refl  ≈ Eq.refl
-    ; isPartialEquivalence = isPartialEquivalence Eq.isPartialEquivalence
+    ; sym   = sym   ≈ Eq.sym
+    ; trans = trans ≈ Eq.trans
     }
     where module Eq = IsEquivalence eq
 

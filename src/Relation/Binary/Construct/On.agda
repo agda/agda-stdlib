@@ -58,19 +58,12 @@ module _ {a b} {A : Set a} {B : Set b} (f : B → A) where
                  Trichotomous ≈ < → Trichotomous (≈ on f) (< on f)
   trichotomous _ _ compare = λ x y → compare (f x) (f y)
 
-  isPartialEquivalence : ∀ {ℓ} {≈ : Rel A ℓ} →
-                         IsPartialEquivalence ≈ → IsPartialEquivalence (≈ on f)
-  isPartialEquivalence {≈ = ≈} peq = record
-    { sym   = symmetric ≈ Peq.sym
-    ; trans = transitive ≈ Peq.trans
-    }
-    where module Peq = IsPartialEquivalence peq
-
   isEquivalence : ∀ {ℓ} {≈ : Rel A ℓ} →
                   IsEquivalence ≈ → IsEquivalence (≈ on f)
   isEquivalence {≈ = ≈} eq = record
-    { isPartialEquivalence = isPartialEquivalence Eq.isPartialEquivalence
-    ; refl                 = reflexive  ≈ Eq.refl
+    { refl  = reflexive  ≈ Eq.refl
+    ; sym   = symmetric  ≈ Eq.sym
+    ; trans = transitive ≈ Eq.trans
     }
     where module Eq = IsEquivalence eq
 

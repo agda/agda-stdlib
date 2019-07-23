@@ -40,16 +40,11 @@ infix 10 _∼_
   y₂ + x₃ + y₁   ≡⟨ +-assoc y₂ x₃ y₁ ⟩
   y₂ + (x₃ + y₁) ∎
 
-∼-isPartialEquivalence : IsPartialEquivalence _∼_
-∼-isPartialEquivalence = record
-  { sym   = sym
-  ; trans = λ {i} {j} {k} → ∼-trans {i} {j} {k}
-  }
-
 ∼-isEquivalence : IsEquivalence _∼_
 ∼-isEquivalence = record
   { refl  = refl
-  ; isPartialEquivalence = ∼-isPartialEquivalence
+  ; sym   = sym
+  ; trans = λ {i} {j} {k} → ∼-trans {i} {j} {k}
   }
 
 ℕ²-∼-setoid : Setoid 0ℓ 0ℓ

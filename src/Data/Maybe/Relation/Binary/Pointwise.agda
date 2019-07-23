@@ -70,16 +70,11 @@ module _ {a r} {A : Set a} {R : Rel A r} where
   dec R-dec nothing  (just y) = no (λ ())
   dec R-dec nothing  nothing  = yes nothing
 
-  isPartialEquivalence : IsPartialEquivalence R → IsPartialEquivalence (Pointwise R)
-  isPartialEquivalence R-isPartialEquivalence = record
-    { sym   = sym R.sym
-    ; trans = trans R.trans
-    } where module R = IsPartialEquivalence R-isPartialEquivalence
-
   isEquivalence : IsEquivalence R → IsEquivalence (Pointwise R)
   isEquivalence R-isEquivalence = record
-    { isPartialEquivalence = isPartialEquivalence R.isPartialEquivalence
-    ; refl  = refl R.refl
+    { refl  = refl R.refl
+    ; sym   = sym R.sym
+    ; trans = trans R.trans
     } where module R = IsEquivalence R-isEquivalence
 
   isDecEquivalence : IsDecEquivalence R → IsDecEquivalence (Pointwise R)

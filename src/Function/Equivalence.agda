@@ -80,11 +80,9 @@ setoid s₁ s₂ = record
   { Carrier       = Setoid s₁ s₂
   ; _≈_           = Equivalence
   ; isEquivalence = record
-    { isPartialEquivalence = record
-      { sym   = sym
-      ; trans = flip _∘_
-      }
-    ; refl  = id
+    { refl  = id
+    ; sym   = sym
+    ; trans = flip _∘_
     }
   }
 
@@ -93,11 +91,9 @@ setoid s₁ s₂ = record
   { Carrier       = Set ℓ
   ; _≈_           = _⇔_
   ; isEquivalence = record
-    { isPartialEquivalence = record
-      { sym   = sym
-      ; trans = flip _∘_
-      }
-    ; refl  = id
+    { refl  = id
+    ; sym   = sym
+    ; trans = flip _∘_
     }
   }
 

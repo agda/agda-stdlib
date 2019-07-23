@@ -19,8 +19,8 @@ open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable using (map′;  ⌊_⌋)
 open import Relation.Binary
   using ( _⇒_; Reflexive; Symmetric; Transitive; Substitutive
-        ; Decidable; IsPartialEquivalence; IsEquivalence; IsDecEquivalence
-        ; PartialSetoid; Setoid; DecSetoid; StrictTotalOrder)
+        ; Decidable; IsEquivalence; IsDecEquivalence
+        ; Setoid; DecSetoid; StrictTotalOrder)
 open import Relation.Binary.PropositionalEquality.Core
 import Relation.Binary.Construct.On as On
 import Relation.Binary.PropositionalEquality as PropEq
@@ -57,21 +57,11 @@ infix 4 _≈?_
 _≈?_ : Decidable _≈_
 x ≈? y = toℕ x ℕₚ.≟ toℕ y
 
-≈-isPartialEquivalence : IsPartialEquivalence _≈_
-≈-isPartialEquivalence = record
-  { sym   = λ {i j} → ≈-sym {i} {j}
-  ; trans = λ {i j k} → ≈-trans {i} {j} {k}
-  }
-
-≈-partialSetoid : PartialSetoid _ _
-≈-partialSetoid = record
-  { isPartialEquivalence = ≈-isPartialEquivalence
-  }
-
 ≈-isEquivalence : IsEquivalence _≈_
 ≈-isEquivalence = record
-  { isPartialEquivalence = ≈-isPartialEquivalence
-  ; refl  = λ {i} → ≈-refl {i}
+  { refl  = λ {i} → ≈-refl {i}
+  ; sym   = λ {i j} → ≈-sym {i} {j}
+  ; trans = λ {i j k} → ≈-trans {i} {j} {k}
   }
 
 ≈-setoid : Setoid _ _
