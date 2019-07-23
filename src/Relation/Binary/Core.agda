@@ -238,15 +238,6 @@ record NonEmpty {A : Set a} {B : Set b}
     {y}   : B
     proof : T x y
 
-
-------------------------------------------------------------------------
--- Partial Equivalence relations
-
-record IsPartialEquivalence {A : Set a} (_≈_ : Rel A ℓ) : Set (a ⊔ ℓ) where
-  field
-    sym   : Symmetric _≈_
-    trans : Transitive _≈_
-
 ------------------------------------------------------------------------
 -- Equivalence relations
 
@@ -260,10 +251,9 @@ record IsPartialEquivalence {A : Set a} (_≈_ : Rel A ℓ) : Set (a ⊔ ℓ) wh
 
 record IsEquivalence {A : Set a} (_≈_ : Rel A ℓ) : Set (a ⊔ ℓ) where
   field
-    isPartialEquivalence : IsPartialEquivalence _≈_
     refl  : Reflexive _≈_
-
-  open IsPartialEquivalence isPartialEquivalence public
+    sym   : Symmetric _≈_
+    trans : Transitive _≈_
 
   reflexive : _≡_ ⇒ _≈_
   reflexive ≡-refl = refl
