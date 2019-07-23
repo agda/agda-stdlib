@@ -60,6 +60,22 @@ record Preorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   open IsPreorder isPreorder public
 
 ------------------------------------------------------------------------
+-- Partial Setoids
+
+-- Partial Equivalence relations are defined in Relation.Binary.Core.
+
+record PartialSetoid {c} ℓ (A : Set c) : Set (suc (c ⊔ ℓ)) where
+  infix 4 _≈_
+  field
+    _≈_ : Rel A ℓ
+    isPartialEquivalence : IsPartialEquivalence _≈_
+
+  open IsPartialEquivalence isPartialEquivalence public
+
+  _≉_ : Rel A _
+  x ≉ y = ¬ (x ≈ y)
+
+------------------------------------------------------------------------
 -- Setoids
 
 -- Equivalence relations are defined in Relation.Binary.Core.
@@ -71,10 +87,11 @@ record Setoid c ℓ : Set (suc (c ⊔ ℓ)) where
     _≈_           : Rel Carrier ℓ
     isEquivalence : IsEquivalence _≈_
 
-  _≉_ : Rel Carrier _
-  x ≉ y = ¬ (x ≈ y)
 
   open IsEquivalence isEquivalence public
+
+  _≉_ : Rel Carrier _
+  x ≉ y = ¬ (x ≈ y)
 
   isPreorder : IsPreorder _≡_ _≈_
   isPreorder = record
@@ -82,6 +99,9 @@ record Setoid c ℓ : Set (suc (c ⊔ ℓ)) where
     ; reflexive     = reflexive
     ; trans         = trans
     }
+
+  partialSetoid : PartialSetoid ℓ Carrier
+  partialSetoid = record { isPartialEquivalence = isPartialEquivalence }
 
   preorder : Preorder c c ℓ
   preorder = record { isPreorder = isPreorder }
@@ -110,7 +130,7 @@ record DecSetoid c ℓ : Set (suc (c ⊔ ℓ)) where
   setoid : Setoid c ℓ
   setoid = record { isEquivalence = isEquivalence }
 
-  open Setoid setoid public using (preorder)
+  open Setoid setoid public using (partialSetoid; preorder)
 
 ------------------------------------------------------------------------
 -- Partial orders
