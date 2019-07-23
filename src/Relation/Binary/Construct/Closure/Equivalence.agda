@@ -36,11 +36,16 @@ module _ {a ℓ} {A : Set a} (_∼_ : Rel A ℓ) where
   symmetric : Symmetric (EqClosure _∼_)
   symmetric = reverse (SC.symmetric _∼_)
 
+  isPartialEquivalence : IsPartialEquivalence (EqClosure _∼_)
+  isPartialEquivalence = record
+    { sym   = symmetric
+    ; trans = transitive
+    }
+
   isEquivalence : IsEquivalence (EqClosure _∼_)
   isEquivalence = record
     { refl  = reflexive
-    ; sym   = symmetric
-    ; trans = transitive
+    ; isPartialEquivalence = isPartialEquivalence
     }
 
   setoid : Setoid a (a ⊔ ℓ)

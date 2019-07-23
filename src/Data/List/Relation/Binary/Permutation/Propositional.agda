@@ -49,11 +49,21 @@ data _↭_ : Rel (List A) a where
 ↭-trans : Transitive _↭_
 ↭-trans = trans
 
+↭-isPartialEquivalence : IsPartialEquivalence _↭_
+↭-isPartialEquivalence = record
+  { sym   = ↭-sym
+  ; trans = trans
+  }
+
+↭-partialSetoid : PartialSetoid _ _
+↭-partialSetoid = record
+  { isPartialEquivalence = ↭-isPartialEquivalence
+  }
+
 ↭-isEquivalence : IsEquivalence _↭_
 ↭-isEquivalence = record
-  { refl  = refl
-  ; sym   = ↭-sym
-  ; trans = trans
+  { isPartialEquivalence = ↭-isPartialEquivalence
+  ; refl                 = refl
   }
 
 ↭-setoid : Setoid _ _

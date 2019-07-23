@@ -87,11 +87,17 @@ module _ {a b ℓ₁ ℓ₂} {A : Set a} {B : Set b} {L : REL A B ℓ₁} {R : R
 
 module _ {a ℓ₁ ℓ₂} {A : Set a} {L : Rel A ℓ₁} {R : Rel A ℓ₂} where
 
+  isPartialEquivalence : IsPartialEquivalence L → IsPartialEquivalence R → IsPartialEquivalence (L ∩ R)
+  isPartialEquivalence peqₗ peqᵣ = record
+    { sym   = symmetric  L R Peqₗ.sym   Peqᵣ.sym
+    ; trans = transitive L R Peqₗ.trans Peqᵣ.trans
+    }
+    where module Peqₗ = IsPartialEquivalence peqₗ; module Peqᵣ = IsPartialEquivalence peqᵣ
+
   isEquivalence : IsEquivalence L → IsEquivalence R → IsEquivalence (L ∩ R)
   isEquivalence eqₗ eqᵣ = record
-    { refl  = reflexive  L R Eqₗ.refl  Eqᵣ.refl
-    ; sym   = symmetric  L R Eqₗ.sym   Eqᵣ.sym
-    ; trans = transitive L R Eqₗ.trans Eqᵣ.trans
+    { isPartialEquivalence  = isPartialEquivalence Eqₗ.isPartialEquivalence  Eqᵣ.isPartialEquivalence
+    ; refl  = reflexive  L R Eqₗ.refl  Eqᵣ.refl
     }
     where module Eqₗ = IsEquivalence eqₗ; module Eqᵣ = IsEquivalence eqᵣ
 

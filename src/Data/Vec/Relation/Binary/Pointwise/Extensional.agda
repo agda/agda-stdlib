@@ -113,12 +113,18 @@ decidable dec xs ys = Dec.map
   (Setoid.sym (⇔-setoid _) equivalent)
   (Inductive.decidable dec xs ys)
 
+isPartialEquivalence : ∀ {_∼_ : Rel A ℓ} {n} →
+                       IsPartialEquivalence _∼_ → IsPartialEquivalence (Pointwise _∼_ {n = n})
+isPartialEquivalence pequiv = record
+  { sym   = sym   Peq.sym
+  ; trans = trans Peq.trans
+  } where module Peq = IsPartialEquivalence pequiv
+
 isEquivalence : ∀ {_∼_ : Rel A ℓ} {n} →
                 IsEquivalence _∼_ → IsEquivalence (Pointwise _∼_ {n = n})
 isEquivalence equiv = record
   { refl  = refl  Eq.refl
-  ; sym   = sym   Eq.sym
-  ; trans = trans Eq.trans
+  ; isPartialEquivalence = isPartialEquivalence Eq.isPartialEquivalence
   } where module Eq = IsEquivalence equiv
 
 isDecEquivalence : ∀ {_∼_ : Rel A ℓ} {n} →

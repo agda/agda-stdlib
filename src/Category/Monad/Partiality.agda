@@ -291,8 +291,10 @@ module _ {a ℓ} {A : Set a} {_∼_ : A → A → Set ℓ} where
     ; _≈_           = Rel k
     ; isEquivalence = record
       { refl  = Pre.refl
-      ; sym   = Equivalence.sym (IsEquivalence.sym equiv) eq
-      ; trans = Pre.trans
+      ; isPartialEquivalence = record
+        { sym   = Equivalence.sym (IsEquivalence.sym equiv) eq
+        ; trans = Pre.trans
+        }
       }
     } where module Pre = Preorder (preorder′ equiv k)
 

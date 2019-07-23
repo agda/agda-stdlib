@@ -22,12 +22,19 @@ module _ {a} {A : Set a} where
     Aᵢ : I → Set a
     Aᵢ i = A
 
+  isIndexedPartialEquivalence : ∀ {ℓ} {_≈_ : Rel A ℓ} → IsPartialEquivalence _≈_ →
+                                IsIndexedPartialEquivalence Aᵢ _≈_
+  isIndexedPartialEquivalence isPeq = record
+    { sym   = sym
+    ; trans = trans
+    }
+    where open IsPartialEquivalence isPeq
+
   isIndexedEquivalence : ∀ {ℓ} {_≈_ : Rel A ℓ} → IsEquivalence _≈_ →
                          IsIndexedEquivalence Aᵢ _≈_
   isIndexedEquivalence isEq = record
-    { refl  = refl
-    ; sym   = sym
-    ; trans = trans
+    { isPartialEquivalence = isIndexedPartialEquivalence isPartialEquivalence
+    ; refl  = refl
     }
     where open IsEquivalence isEq
 

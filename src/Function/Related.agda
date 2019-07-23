@@ -281,11 +281,16 @@ SK-sym : ∀ {k ℓ₁ ℓ₂} → Sym (Related ⌊ k ⌋ {ℓ₁} {ℓ₂})
 SK-sym {equivalence} = Eq.sym
 SK-sym {bijection}   = Inv.sym
 
+SK-isPartialEquivalence : ∀ k ℓ → IsPartialEquivalence {ℓ = ℓ} (Related ⌊ k ⌋)
+SK-isPartialEquivalence k ℓ = record
+  { sym   = SK-sym
+  ; trans = K-trans
+  }
+
 SK-isEquivalence : ∀ k ℓ → IsEquivalence {ℓ = ℓ} (Related ⌊ k ⌋)
 SK-isEquivalence k ℓ = record
-  { refl  = K-refl
-  ; sym   = SK-sym
-  ; trans = K-trans
+  { isPartialEquivalence = SK-isPartialEquivalence k ℓ
+  ; refl  = K-refl
   }
 
 SK-setoid : Symmetric-kind → (ℓ : Level) → Setoid _ _
@@ -366,8 +371,10 @@ InducedEquivalence₁ k S = record
   { _≈_           = InducedRelation₁ ⌊ k ⌋ S
   ; isEquivalence = record
     { refl  = K-refl
-    ; sym   = SK-sym
-    ; trans = K-trans
+    ; isPartialEquivalence = record
+      { sym   = SK-sym
+      ; trans = K-trans
+      }
     }
   }
 
@@ -402,8 +409,10 @@ InducedEquivalence₂ k _S_ = record
   { _≈_           = InducedRelation₂ ⌊ k ⌋ _S_
   ; isEquivalence = record
     { refl  = refl
-    ; sym   = λ i↝j → sym i↝j
-    ; trans = λ i↝j j↝k → trans i↝j j↝k
+    ; isPartialEquivalence = record
+      { sym   = λ i↝j → sym i↝j
+      ; trans = λ i↝j j↝k → trans i↝j j↝k
+      }
     }
   } where open Setoid (SK-setoid _ _)
 

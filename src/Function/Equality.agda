@@ -75,9 +75,11 @@ setoid From To = record
   { Carrier       = Π From To
   ; _≈_           = λ f g → ∀ {x y} → x ≈₁ y → f ⟨$⟩ x ≈₂ g ⟨$⟩ y
   ; isEquivalence = record
-    { refl  = λ {f} → cong f
-    ; sym   = λ f∼g x∼y → To.sym (f∼g (From.sym x∼y))
-    ; trans = λ f∼g g∼h x∼y → To.trans (f∼g From.refl) (g∼h x∼y)
+    { isPartialEquivalence = record
+      { sym   = λ f∼g x∼y → To.sym (f∼g (From.sym x∼y))
+      ; trans = λ f∼g g∼h x∼y → To.trans (f∼g From.refl) (g∼h x∼y)
+      }
+    ; refl  = λ {f} → cong f
     }
   }
   where
@@ -99,9 +101,11 @@ From ⇨ To = setoid From (Trivial.indexedSetoid To)
   { Carrier       = (x : From) → Carrier x
   ; _≈_           = λ f g → ∀ x → f x ≈ g x
   ; isEquivalence = record
-    { refl  = λ {f} x → refl
-    ; sym   = λ f∼g x → sym (f∼g x)
-    ; trans = λ f∼g g∼h x → trans (f∼g x) (g∼h x)
+    { isPartialEquivalence = record
+      { sym   = λ f∼g x → sym (f∼g x)
+      ; trans = λ f∼g g∼h x → trans (f∼g x) (g∼h x)
+      }
+    ; refl  = λ {f} x → refl
     }
   } where open IndexedSetoid To
 

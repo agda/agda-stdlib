@@ -34,11 +34,16 @@ module _ {R : Rel A r}  where
   sym R-sym (swap x∼x' y∼y' xs↭ys) = swap (R-sym y∼y') (R-sym x∼x') (sym R-sym xs↭ys)
   sym R-sym (trans xs↭ys ys↭zs)    = trans (sym R-sym ys↭zs) (sym R-sym xs↭ys)
 
+  isPartialEquivalence : Symmetric R → IsPartialEquivalence (Permutation R)
+  isPartialEquivalence R-sym = record
+    { sym   = sym R-sym
+    ; trans = trans
+    }
+
   isEquivalence : Symmetric R → IsEquivalence (Permutation R)
   isEquivalence R-sym = record
     { refl  = refl
-    ; sym   = sym R-sym
-    ; trans = trans
+    ; isPartialEquivalence = isPartialEquivalence R-sym
     }
 
   setoid : Symmetric R → Setoid _ _

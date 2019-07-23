@@ -30,11 +30,16 @@ module _ {a c} (A : Set a) {C : Set c} where
   trans : Transitive {A = A} (Const C)
   trans c d = c
 
+  isPartialEquivalence : C → IsPartialEquivalence {A = A} (Const C)
+  isPartialEquivalence  c = record
+    { sym   = λ {x} {y} → sym {x} {y}
+    ; trans = λ {x} {y} {z} → trans {x} {y} {z}
+    }
+
   isEquivalence : C → IsEquivalence {A = A} (Const C)
   isEquivalence c = record
     { refl  = λ {x} → refl c {x}
-    ; sym   = λ {x} {y} → sym {x} {y}
-    ; trans = λ {x} {y} {z} → trans {x} {y} {z}
+    ; isPartialEquivalence = isPartialEquivalence c
     }
 
   setoid : C → Setoid a c

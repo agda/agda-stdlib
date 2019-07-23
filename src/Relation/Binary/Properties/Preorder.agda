@@ -35,8 +35,10 @@ InducedEquivalence : Setoid _ _
 InducedEquivalence = record
   { _≈_           = λ x y → x ∼ y × y ∼ x
   ; isEquivalence = record
-    { refl  = (refl , refl)
-    ; sym   = swap
-    ; trans = Prod.zip trans (flip trans)
+    { isPartialEquivalence = record
+      { sym   = swap
+      ; trans = Prod.zip trans (flip trans)
+      }
+    ; refl  = (refl , refl)
     }
   }

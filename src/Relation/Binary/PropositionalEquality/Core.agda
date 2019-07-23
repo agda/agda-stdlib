@@ -56,11 +56,16 @@ respʳ _∼_ refl x∼y = x∼y
 resp₂ : ∀ (∼ : Rel A ℓ) → ∼ Respects₂ _≡_
 resp₂ _∼_ = respʳ _∼_ , respˡ _∼_
 
+isPartialEquivalence : IsPartialEquivalence {A = A} _≡_
+isPartialEquivalence = record
+  { sym   = sym
+  ; trans = trans
+  }
+
 isEquivalence : IsEquivalence {A = A} _≡_
 isEquivalence = record
-  { refl  = refl
-  ; sym   = sym
-  ; trans = trans
+  { isPartialEquivalence = isPartialEquivalence
+  ; refl  = refl
   }
 
 ------------------------------------------------------------------------

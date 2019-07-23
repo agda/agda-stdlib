@@ -119,16 +119,25 @@ module _ {a₁ a₂ ℓ₁ ℓ₂} {A₁ : Set a₁} {A₂ : Set a₂} where
 
   -- Some collections of properties which are preserved by ×-Rel.
 
+  ×-isPartialEquivalence : ∀ {_≈₁_ _≈₂_} →
+    IsPartialEquivalence _≈₁_ → IsPartialEquivalence _≈₂_ →
+    IsPartialEquivalence (Pointwise _≈₁_ _≈₂_)
+  ×-isPartialEquivalence {_≈₁_ = _≈₁_} {_≈₂_ = _≈₂_} eq₁ eq₂ = record
+    { sym   = ×-symmetric   {_∼₁_ = _≈₁_} {_∼₂_ = _≈₂_}
+                            (sym   eq₁) (sym   eq₂)
+    ; trans = ×-transitive  {_∼₁_ = _≈₁_} {_∼₂_ = _≈₂_}
+                            (trans eq₁) (trans eq₂)
+    }
+    where open IsPartialEquivalence
+
   ×-isEquivalence : ∀ {_≈₁_ _≈₂_} →
     IsEquivalence _≈₁_ → IsEquivalence _≈₂_ →
     IsEquivalence (Pointwise _≈₁_ _≈₂_)
   ×-isEquivalence {_≈₁_ = _≈₁_} {_≈₂_ = _≈₂_} eq₁ eq₂ = record
-    { refl  = ×-refl        {_∼₁_ = _≈₁_} {_∼₂_ = _≈₂_}
-                            (refl  eq₁) (refl  eq₂)
-    ; sym   = ×-symmetric   {_∼₁_ = _≈₁_} {_∼₂_ = _≈₂_}
-                            (sym   eq₁) (sym   eq₂)
-    ; trans = ×-transitive  {_∼₁_ = _≈₁_} {_∼₂_ = _≈₂_}
-                            (trans eq₁) (trans eq₂)
+    { isPartialEquivalence = ×-isPartialEquivalence
+                              (isPartialEquivalence eq₁) (isPartialEquivalence eq₂)
+    ; refl                 = ×-refl {_∼₁_ = _≈₁_} {_∼₂_ = _≈₂_}
+                              (refl  eq₁) (refl  eq₂)
     }
     where open IsEquivalence
 

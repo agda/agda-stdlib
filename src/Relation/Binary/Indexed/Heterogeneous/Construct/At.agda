@@ -18,14 +18,21 @@ open import Relation.Binary.Indexed.Heterogeneous
 
 module _ {a i} {I : Set i} {A : I → Set a} where
 
+  isPartialEquivalence : ∀ {ℓ} {_≈_ : IRel A ℓ} → IsIndexedPartialEquivalence A _≈_ →
+                         (index : I) → IsPartialEquivalence (_≈_ {index})
+  isPartialEquivalence isPeq index = record
+    { sym   = sym
+    ; trans = trans
+    }
+    where open IsIndexedPartialEquivalence isPeq
+
   isEquivalence : ∀ {ℓ} {_≈_ : IRel A ℓ} → IsIndexedEquivalence A _≈_ →
                   (index : I) → IsEquivalence (_≈_ {index})
   isEquivalence isEq index = record
-    { refl  = refl
-    ; sym   = sym
-    ; trans = trans
+    { isPartialEquivalence = isPartialEquivalence Eq.isPartialEquivalence index
+    ; refl  = Eq.refl
     }
-    where open IsIndexedEquivalence isEq
+    where module Eq = IsIndexedEquivalence isEq
 
   isPreorder : ∀ {ℓ₁ ℓ₂} {_≈_ : IRel A ℓ₁} {_∼_ : IRel A ℓ₂} →
                IsIndexedPreorder A _≈_ _∼_ →

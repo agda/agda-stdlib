@@ -12,9 +12,9 @@ open import Data.Product as Prod
 open import Level
 open import Function
 open import Relation.Binary as B
-  using (_⇒_; Setoid; IsEquivalence)
+  using (_⇒_; PartialSetoid; IsPartialEquivalence; Setoid; IsEquivalence)
 open import Relation.Binary.Indexed.Heterogeneous as I
-  using (IREL; IRel; IndexedSetoid; IsIndexedEquivalence)
+  using (IREL; IRel; IndexedPartialSetoid; IsIndexedPartialEquivalence; IndexedSetoid; IsIndexedEquivalence)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
 ------------------------------------------------------------------------
@@ -58,12 +58,21 @@ module _ {a b ℓ₁ ℓ₂} {A : Set a} {B : A → Set b}
   transitive trans₁ trans₂ (x₁Rx₂ , y₁Ry₂) (x₂Rx₃ , y₂Ry₃) =
     (trans₁ x₁Rx₂ x₂Rx₃ , trans₂ y₁Ry₂ y₂Ry₃)
 
+  isPartialEquivalence : IsPartialEquivalence R → IsIndexedPartialEquivalence B S →
+                         IsPartialEquivalence R×S
+  isPartialEquivalence peq₁ peq₂ = record
+    { sym   = symmetric  Peq.sym   IPeq.sym
+    ; trans = transitive Peq.trans IPeq.trans
+    } where
+    module Peq = IsPartialEquivalence peq₁
+    module IPeq = IsIndexedPartialEquivalence peq₂
+
   isEquivalence : IsEquivalence R → IsIndexedEquivalence B S →
                   IsEquivalence R×S
   isEquivalence eq₁ eq₂ = record
     { refl  = refl       Eq.refl  IEq.refl
-    ; sym   = symmetric  Eq.sym   IEq.sym
-    ; trans = transitive Eq.trans IEq.trans
+    ; isPartialEquivalence =
+        isPartialEquivalence Eq.isPartialEquivalence IEq.isPartialEquivalence
     } where
     module Eq = IsEquivalence eq₁
     module IEq = IsIndexedEquivalence eq₂

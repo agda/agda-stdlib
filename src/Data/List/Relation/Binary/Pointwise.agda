@@ -126,9 +126,11 @@ module _ {_≈_ : Rel₂ A ℓ} where
 
   isEquivalence : IsEquivalence _≈_ → IsEquivalence (Pointwise _≈_)
   isEquivalence eq = record
-    { refl  = refl       Eq.refl
-    ; sym   = symmetric  Eq.sym
-    ; trans = transitive Eq.trans
+    { isPartialEquivalence = record
+      { sym   = symmetric  Eq.sym
+      ; trans = transitive Eq.trans
+      }
+    ; refl  = refl       Eq.refl
     } where module Eq = IsEquivalence eq
 
   isDecEquivalence : IsDecEquivalence _≈_ → IsDecEquivalence (Pointwise _≈_)

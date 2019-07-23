@@ -42,11 +42,16 @@ module _ {a b c} {A : Set a} {B : Set b} {C : Set c}
 
 module _ {a r} {A : Set a} {R : Rel A r} where
 
+  isPartialEquivalence : ∀ {i} → IsPartialEquivalence R → IsPartialEquivalence (Bisim R i)
+  isPartialEquivalence pequiv^R = record
+    { sym   = symmetric pequiv^R.sym
+    ; trans = transitive pequiv^R.trans
+    } where module pequiv^R = IsPartialEquivalence pequiv^R
+
   isEquivalence : ∀ {i} → IsEquivalence R → IsEquivalence (Bisim R i)
   isEquivalence equiv^R = record
     { refl  = reflexive equiv^R.refl
-    ; sym   = symmetric equiv^R.sym
-    ; trans = transitive equiv^R.trans
+    ; isPartialEquivalence = isPartialEquivalence equiv^R.isPartialEquivalence
     } where module equiv^R = IsEquivalence equiv^R
 
 module _ {a r} (S : Setoid a r) where

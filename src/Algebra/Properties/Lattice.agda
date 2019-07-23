@@ -190,9 +190,11 @@ replace-equality {_≈′_} ≈⇔≈′ = record
   ; _∨_       = _∨_
   ; isLattice = record
     { isEquivalence = record
-      { refl  = to ⟨$⟩ refl
-      ; sym   = λ x≈y → to ⟨$⟩ sym (from ⟨$⟩ x≈y)
-      ; trans = λ x≈y y≈z → to ⟨$⟩ trans (from ⟨$⟩ x≈y) (from ⟨$⟩ y≈z)
+      { isPartialEquivalence = record
+        { sym   = λ x≈y → to ⟨$⟩ sym (from ⟨$⟩ x≈y)
+        ; trans = λ x≈y y≈z → to ⟨$⟩ trans (from ⟨$⟩ x≈y) (from ⟨$⟩ y≈z)
+        }
+      ; refl  = to ⟨$⟩ refl
       }
     ; ∨-comm     = λ x y → to ⟨$⟩ ∨-comm x y
     ; ∨-assoc    = λ x y z → to ⟨$⟩ ∨-assoc x y z
