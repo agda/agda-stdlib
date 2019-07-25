@@ -162,8 +162,8 @@ z ∷ʳ₂ rpo = record { leg₁ = z ∷ʳ leg₁ rpo ; leg₂ = refl ∷ leg₂
 ------------------------------------------------------------------------
 -- Left-biased pushout: add elements of left extension first.
 
-⊆-merge : (τ : xs ⊆ ys) (σ : xs ⊆ zs) → RawPushout τ σ
-⊆-merge []        σ         = record { leg₁ = σ ; leg₂ = ⊆-refl }
-⊆-merge (y  ∷ʳ τ) σ         = y ∷ʳ₁ ⊆-merge τ σ
-⊆-merge τ@(_ ∷ _) (z  ∷ʳ σ) = z ∷ʳ₂ ⊆-merge τ σ
-⊆-merge (x≈y ∷ τ) (x≈z ∷ σ) = ∷-rpo x≈y x≈z (⊆-merge τ σ)
+⊆-joinˡ : (τ : xs ⊆ ys) (σ : xs ⊆ zs) → RawPushout τ σ
+⊆-joinˡ []        σ         = record { leg₁ = σ ; leg₂ = ⊆-refl }
+⊆-joinˡ (y  ∷ʳ τ) σ         = y ∷ʳ₁ ⊆-joinˡ τ σ
+⊆-joinˡ τ@(_ ∷ _) (z  ∷ʳ σ) = z ∷ʳ₂ ⊆-joinˡ τ σ
+⊆-joinˡ (x≈y ∷ τ) (x≈z ∷ σ) = ∷-rpo x≈y x≈z (⊆-joinˡ τ σ)
