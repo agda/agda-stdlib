@@ -146,17 +146,26 @@ open RawPushout
 -- Extending the right upper corner.
 
 _∷ʳ₁_ : ∀ y → RawPushout τ σ → RawPushout (y ∷ʳ τ) σ
-y ∷ʳ₁ rpo = record { leg₁ = refl ∷ leg₁ rpo ; leg₂ = y ∷ʳ leg₂ rpo }
+y ∷ʳ₁ rpo = record
+  { leg₁ = refl ∷ leg₁ rpo
+  ; leg₂ = y   ∷ʳ leg₂ rpo
+  }
 
 -- Extending the left lower corner.
 
 _∷ʳ₂_ : ∀ z → RawPushout τ σ → RawPushout τ (z ∷ʳ σ)
-z ∷ʳ₂ rpo = record { leg₁ = z ∷ʳ leg₁ rpo ; leg₂ = refl ∷ leg₂ rpo }
+z ∷ʳ₂ rpo = record
+  { leg₁ = z   ∷ʳ leg₁ rpo
+  ; leg₂ = refl ∷ leg₂ rpo
+  }
 
 -- Extending both of these corners with equal elements.
 
 ∷-rpo : (x≈y : x ≈ y) (x≈z : x ≈ z) → RawPushout τ σ → RawPushout (x≈y ∷ τ) (x≈z ∷ σ)
-∷-rpo x≈y x≈z rpo = record { leg₁ = sym x≈y ∷ leg₁ rpo; leg₂ = sym x≈z ∷ leg₂ rpo }
+∷-rpo x≈y x≈z rpo = record
+  { leg₁ = sym x≈y ∷ leg₁ rpo
+  ; leg₂ = sym x≈z ∷ leg₂ rpo
+  }
 
 ------------------------------------------------------------------------
 -- Left-biased pushout: add elements of left extension first.
