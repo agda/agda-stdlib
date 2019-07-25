@@ -72,6 +72,9 @@ record PartialSetoid {c} (Carrier : Set c) ℓ  : Set (suc (c ⊔ ℓ)) where
     _≈_           : Rel Carrier ℓ
     isPartialEquivalence : IsPartialEquivalence _≈_
 
+  _≉_ : Rel Carrier _
+  x ≉ y = ¬ (x ≈ y)
+
   open IsPartialEquivalence isPartialEquivalence public
 
 

@@ -9,8 +9,7 @@
 open import Relation.Binary
 
 module Relation.Binary.Reasoning.Base.Single
-  {a ℓ} {A : Set a} (_∼_ : Rel A ℓ)
-  (refl : Reflexive _∼_) (trans : Transitive _∼_)
+  {a ℓ} {A : Set a} (_∼_ : Rel A ℓ) (trans : Transitive _∼_)
   where
 
 open import Level using (_⊔_)
@@ -18,7 +17,7 @@ open import Relation.Binary.PropositionalEquality.Core as P
   using (_≡_)
 
 infix  4 _IsRelatedTo_
-infix  3 _∎
+infix  3 _∎⟨_⟩
 infixr 2 _∼⟨_⟩_ _≡⟨_⟩_ _≡˘⟨_⟩_ _≡⟨⟩_
 infix  1 begin_
 
@@ -43,5 +42,5 @@ _ ≡˘⟨ P.refl ⟩ x∼z = x∼z
 _≡⟨⟩_ : ∀ x {y} → x IsRelatedTo y → x IsRelatedTo y
 _ ≡⟨⟩ x∼y = _ ≡⟨ P.refl ⟩ x∼y
 
-_∎ : ∀ x → x IsRelatedTo x
-_∎ _ = relTo refl
+_∎⟨_⟩ : ∀ x → x ∼ x → x IsRelatedTo x
+_ ∎⟨ x∼x ⟩  = relTo x∼x
