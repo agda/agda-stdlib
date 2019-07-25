@@ -148,13 +148,13 @@ IsWeakPushout {τ = τ} {σ = σ} rpo =
   ⊆-trans τ (RawPushout.leg₁ rpo) ≡
   ⊆-trans σ (RawPushout.leg₂ rpo)
 
--- Joining two list extensions with ⊆-join produces a weak pushout.
+-- Joining two list extensions with ⊆-pushout produces a weak pushout.
 
-⊆-joinˡ-is-wpo : ∀{xs ys zs : List A} {τ : xs ⊆ ys} {σ : xs ⊆ zs} →
-                 IsWeakPushout (⊆-joinˡ τ σ)
-⊆-joinˡ-is-wpo {τ = []} {σ = σ}
+⊆-pushoutˡ-is-wpo : ∀{xs ys zs : List A} {τ : xs ⊆ ys} {σ : xs ⊆ zs} →
+                 IsWeakPushout (⊆-pushoutˡ τ σ)
+⊆-pushoutˡ-is-wpo {τ = []} {σ = σ}
   rewrite ⊆-trans-idʳ {τ = σ}
         = ⊆-trans-idˡ {xs = []}
-⊆-joinˡ-is-wpo {τ = y   ∷ʳ _}                = cong (y   ∷ʳ_) ⊆-joinˡ-is-wpo
-⊆-joinˡ-is-wpo {τ = _   ∷  _} {σ = z   ∷ʳ _} = cong (z   ∷ʳ_) ⊆-joinˡ-is-wpo
-⊆-joinˡ-is-wpo {τ = refl ∷ _} {σ = refl ∷ _} = cong (refl ∷_) ⊆-joinˡ-is-wpo
+⊆-pushoutˡ-is-wpo {τ = y   ∷ʳ _}                = cong (y   ∷ʳ_) ⊆-pushoutˡ-is-wpo
+⊆-pushoutˡ-is-wpo {τ = _   ∷  _} {σ = z   ∷ʳ _} = cong (z   ∷ʳ_) ⊆-pushoutˡ-is-wpo
+⊆-pushoutˡ-is-wpo {τ = refl ∷ _} {σ = refl ∷ _} = cong (refl ∷_) ⊆-pushoutˡ-is-wpo

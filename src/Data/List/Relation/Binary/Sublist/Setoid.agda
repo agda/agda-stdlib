@@ -14,6 +14,7 @@ module Data.List.Relation.Binary.Sublist.Setoid
   {c ℓ} (S : Setoid c ℓ) where
 
 open import Level using (_⊔_)
+
 open import Data.List.Base using (List; []; _∷_)
 import Data.List.Relation.Binary.Equality.Setoid as SetoidEquality
 import Data.List.Relation.Binary.Sublist.Heterogeneous as Heterogeneous
@@ -21,6 +22,8 @@ import Data.List.Relation.Binary.Sublist.Heterogeneous.Core
   as HeterogeneousCore
 import Data.List.Relation.Binary.Sublist.Heterogeneous.Properties
   as HeterogeneousProperties
+open import Data.Product using (∃; _,_)
+
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Nullary using (¬_)
@@ -170,8 +173,16 @@ z ∷ʳ₂ rpo = record
 ------------------------------------------------------------------------
 -- Left-biased pushout: add elements of left extension first.
 
-⊆-joinˡ : (τ : xs ⊆ ys) (σ : xs ⊆ zs) → RawPushout τ σ
-⊆-joinˡ []        σ         = record { leg₁ = σ ; leg₂ = ⊆-refl }
-⊆-joinˡ (y  ∷ʳ τ) σ         = y ∷ʳ₁ ⊆-joinˡ τ σ
-⊆-joinˡ τ@(_ ∷ _) (z  ∷ʳ σ) = z ∷ʳ₂ ⊆-joinˡ τ σ
-⊆-joinˡ (x≈y ∷ τ) (x≈z ∷ σ) = ∷-rpo x≈y x≈z (⊆-joinˡ τ σ)
+⊆-pushoutˡ : (τ : xs ⊆ ys) (σ : xs ⊆ zs) → RawPushout τ σ
+⊆-pushoutˡ []        σ         = record { leg₁ = σ ; leg₂ = ⊆-refl }
+⊆-pushoutˡ (y  ∷ʳ τ) σ         = y ∷ʳ₁ ⊆-pushoutˡ τ σ
+⊆-pushoutˡ τ@(_ ∷ _) (z  ∷ʳ σ) = z ∷ʳ₂ ⊆-pushoutˡ τ σ
+⊆-pushoutˡ (x≈y ∷ τ) (x≈z ∷ σ) = ∷-rpo x≈y x≈z (⊆-pushoutˡ τ σ)
+
+-- Join two extensions, returning the upper bound and the diagonal
+-- of the pushout square.
+
+⊆-joinˡ : (τ : xs ⊆ ys) (σ : xs ⊆ zs) → ∃ λ us → xs ⊆ us
+⊆-joinˡ τ σ = upperBound rpo , ⊆-trans τ (leg₁ rpo)
+  where
+  rpo = ⊆-pushoutˡ τ σ
