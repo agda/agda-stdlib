@@ -90,3 +90,80 @@ open HeterogeneousProperties.Antisymmetry {R = _≈_} {S = _≈_} (λ x≈y _ �
 ⊆-poset = record
   { isPartialOrder = ⊆-isPartialOrder
   }
+
+------------------------------------------------------------------------
+-- Weak pushout
+--
+-- The category _⊆_ does not have proper pushouts.  For instance consider:
+--
+--   τᵤ : [] ⊆ (u ∷ [])
+--   τᵥ : [] ⊆ (v ∷ [])
+--
+-- Then, there are two unrelated upper bounds (u ∷ v ∷ []) and (v ∷ u ∷ []),
+-- since _⊆_ does not include permutations.
+--
+-- Even though there are no unique least upper bounds, we can merge two
+-- extensions of a list, producing a minimial superlist of both.
+--
+-- For the example, the left-biased merge would produce the pair:
+--
+--   τᵤ′ : (u ∷ []) ⊆ (u ∷ v ∷ [])
+--   τᵥ′ : (v ∷ []) ⊆ (u ∷ v ∷ [])
+--
+-- We call such a pair a raw pushout.  It is then a weak pushout if the
+-- resulting square commutes, i.e.:
+--
+--   ⊆-trans τᵤ τᵤ′ ~ ⊆-trans τᵥ τᵥ′
+--
+-- This requires a notion of equality _~_ on sublist morphisms.
+--
+-- Further, commutation requires a similar commutation property
+-- for the underlying equality _≈_, namely
+--
+--   trans x≈y (sym x≈y) == trans x≈z (sym x≈z)
+--
+-- for some notion of equality _==_ for equality proofs _≈_.
+-- Such a property is given e.g. if _≈_ is proof irrelevant
+-- or forms a groupoid.
+
+private
+  variable
+    x y z : A
+    xs ys zs us vs : List A
+    τ τ′ τ₁ τ₂ σ σ′ : xs ⊆ ys
+
+record RawPushout (τ : xs ⊆ ys) (σ : xs ⊆ zs) : Set (c ⊔ ℓ) where
+  constructor rawPushout
+  field
+    {upperBound} : List A
+    leg₁         : ys ⊆ upperBound
+    leg₂         : zs ⊆ upperBound
+
+open RawPushout
+
+------------------------------------------------------------------------
+-- Extending corners of a raw pushout square
+
+-- Extending the right upper corner.
+
+_∷ʳ₁_ : ∀ y → RawPushout τ σ → RawPushout (y ∷ʳ τ) σ
+y ∷ʳ₁ rpo = record { leg₁ = refl ∷ leg₁ rpo ; leg₂ = y ∷ʳ leg₂ rpo }
+
+-- Extending the left lower corner.
+
+_∷ʳ₂_ : ∀ z → RawPushout τ σ → RawPushout τ (z ∷ʳ σ)
+z ∷ʳ₂ rpo = record { leg₁ = z ∷ʳ leg₁ rpo ; leg₂ = refl ∷ leg₂ rpo }
+
+-- Extending both of these corners with equal elements.
+
+∷-rpo : (x≈y : x ≈ y) (x≈z : x ≈ z) → RawPushout τ σ → RawPushout (x≈y ∷ τ) (x≈z ∷ σ)
+∷-rpo x≈y x≈z rpo = record { leg₁ = sym x≈y ∷ leg₁ rpo; leg₂ = sym x≈z ∷ leg₂ rpo }
+
+------------------------------------------------------------------------
+-- Left-biased pushout: add elements of left extension first.
+
+⊆-merge : (τ : xs ⊆ ys) (σ : xs ⊆ zs) → RawPushout τ σ
+⊆-merge []        σ         = record { leg₁ = σ ; leg₂ = ⊆-refl }
+⊆-merge (y  ∷ʳ τ) σ         = y ∷ʳ₁ ⊆-merge τ σ
+⊆-merge τ@(_ ∷ _) (z  ∷ʳ σ) = z ∷ʳ₂ ⊆-merge τ σ
+⊆-merge (x≈y ∷ τ) (x≈z ∷ σ) = ∷-rpo x≈y x≈z (⊆-merge τ σ)
