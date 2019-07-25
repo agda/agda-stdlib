@@ -92,7 +92,7 @@ open HeterogeneousProperties.Antisymmetry {R = _≈_} {S = _≈_} (λ x≈y _ �
   }
 
 ------------------------------------------------------------------------
--- Weak pushout
+-- Raw pushout
 --
 -- The category _⊆_ does not have proper pushouts.  For instance consider:
 --
@@ -128,12 +128,11 @@ open HeterogeneousProperties.Antisymmetry {R = _≈_} {S = _≈_} (λ x≈y _ �
 
 private
   variable
-    x y z : A
-    xs ys zs us vs : List A
-    τ τ′ τ₁ τ₂ σ σ′ : xs ⊆ ys
+    x y z    : A
+    xs ys zs : List A
+    τ σ      : xs ⊆ ys
 
 record RawPushout (τ : xs ⊆ ys) (σ : xs ⊆ zs) : Set (c ⊔ ℓ) where
-  constructor rawPushout
   field
     {upperBound} : List A
     leg₁         : ys ⊆ upperBound
