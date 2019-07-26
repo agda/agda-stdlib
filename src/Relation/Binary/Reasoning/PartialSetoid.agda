@@ -15,7 +15,7 @@ open PartialSetoid S
 ------------------------------------------------------------------------
 -- Publicly re-export base contents
 
-open import Relation.Binary.Reasoning.Base.Single _≈_ trans public
+open import Relation.Binary.Reasoning.Base.Partial _≈_ trans public
   renaming (_∼⟨_⟩_ to _≈⟨_⟩_)
 
 infixr 2 _≈˘⟨_⟩_
