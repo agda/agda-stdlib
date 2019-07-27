@@ -26,6 +26,7 @@ open import Level using (0ℓ)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; cong; subst; module ≡-Reasoning)
 open import Relation.Nullary
+open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Binary
 
 open ≤-Reasoning
@@ -84,6 +85,9 @@ coprime? i j with mkGCD i j
 
 0-coprimeTo-m⇒m≡1 : ∀ {m} → Coprime 0 m → m ≡ 1
 0-coprimeTo-m⇒m≡1 {m} c = c (m ∣0 , ∣-refl)
+
+¬0-coprimeTo-2+ : ∀ {n} → ¬ Coprime 0 (2 + n)
+¬0-coprimeTo-2+ coprime = contradiction (0-coprimeTo-m⇒m≡1 coprime) λ()
 
 -- If m and n are coprime, then n + m and n are also coprime.
 

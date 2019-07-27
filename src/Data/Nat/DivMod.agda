@@ -15,6 +15,7 @@ open import Data.Fin.Properties using (toℕ-fromℕ≤)
 open import Data.Nat as Nat
 open import Data.Nat.DivMod.Core
 open import Data.Nat.Divisibility.Core
+open import Data.Nat.Predicate
 open import Data.Nat.Properties
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary.Decidable using (False)
@@ -22,26 +23,26 @@ open import Relation.Nullary.Decidable using (False)
 open ≤-Reasoning
 
 ------------------------------------------------------------------------
--- Definitions
+-- Definitions (with automatic non-zeroness)
 
 -- The division and modulus operations are only defined when the divisor
 -- is non-zero. The proof of this is defined as an irrelevant
--- implict argument of type `False (divisor ≟ 0)`. This allows this
--- proof to be automatically inferred when the divisor is of the form
--- `suc n`, and hence minimises the number of these proofs that
--- need be passed around. You can therefore write `m / suc n` without
--- issue.
+-- implict argument of type `NonZero divisor ≡ False (divisor ≟ 0)`.
+-- This allows this proof to be automatically inferred when the divisor
+-- is of the form `suc n`, and hence minimises the number of these
+-- proofs that need be passed around. You can therefore write
+-- `m / suc n` without issue.
 
 infixl 7 _/_ _%_
 
 -- Natural division
 
-_/_ : (dividend divisor : ℕ) .{≢0 : False (divisor ≟ 0)} → ℕ
+_/_ : (dividend divisor : ℕ) .{≢0 : NonZero divisor} → ℕ
 m / (suc n) = div-helper 0 n m n
 
 -- Natural remainder/modulus
 
-_%_ : (dividend divisor : ℕ) .{≢0 : False (divisor ≟ 0)} → ℕ
+_%_ : (dividend divisor : ℕ) .{≢0 : NonZero divisor} → ℕ
 m % (suc n) = mod-helper 0 n m n
 
 ------------------------------------------------------------------------
@@ -196,13 +197,13 @@ record DivMod (dividend divisor : ℕ) : Set where
 
 infixl 7 _div_ _mod_ _divMod_
 
-_div_ : (dividend divisor : ℕ) .{≢0 : False (divisor ≟ 0)} → ℕ
+_div_ : (dividend divisor : ℕ) .{≢0 : NonZero divisor} → ℕ
 _div_ = _/_
 
-_mod_ : (dividend divisor : ℕ) .{≢0 : False (divisor ≟ 0)} → Fin divisor
+_mod_ : (dividend divisor : ℕ) .{≢0 : NonZero divisor} → Fin divisor
 m mod (suc n) = fromℕ≤ (m%n<n m n)
 
-_divMod_ : (dividend divisor : ℕ) .{≢0 : False (divisor ≟ 0)} →
+_divMod_ : (dividend divisor : ℕ) .{≢0 : NonZero divisor} →
            DivMod dividend divisor
 m divMod n@(suc n-1) = result (m / n) (m mod n) (begin-equality
   m                                     ≡⟨ m≡m%n+[m/n]*n m n-1 ⟩

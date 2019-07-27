@@ -100,6 +100,10 @@ The following new modules have been added to the library:
   Data.Bin.Base
   Data.Bin.Properties
 
+  Data.Nat.Predicate
+  Data.Integer.Predicate
+  Data.Rational.Predicate
+
   Data.Rational.Unnormalised
   Data.Rational.Unnormalised.Properties
 
@@ -152,6 +156,11 @@ Other minor additions
 * Added new proof to `Data.Integer.Properties`:
   ```agda
   *-suc : m * sucℤ n ≡ m + m * n
+  ```
+
+* Added new proof to `Data.Nat.Coprimality`:
+  ```agda
+  ¬0-coprimeTo-2+ : ¬ Coprime 0 (2 + n)
   ```
 
 * Added new proofs to `Data.Nat.Properties`:
