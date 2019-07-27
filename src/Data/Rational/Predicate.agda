@@ -26,14 +26,6 @@ open ≤-Reasoning
 ------------------------------------------------------------------------
 -- Definition
 
--- The predicates here are defined in a slight odd manner. Instead of
--- defining `NonZero x` as `x ≢ +0` or via a datatype as might be
--- expected we define it in terms of `False` and the decidability of
--- propositional equality `_≟_`. This ensures that for any `x` of the
--- form `-[1+ y ]` then Agda can automatically infer `NonZero x` and
--- hence when it is passed as an implicit argument no proof is required.
--- See `Data.Integer.DivMod` for an example.
-
 NonZero : Pred ℚ 0ℓ
 NonZero p = ℤ.NonZero (↥ p)
 
