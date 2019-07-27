@@ -100,6 +100,9 @@ The following new modules have been added to the library:
   Data.Bin.Base
   Data.Bin.Properties
 
+  Data.Rational.Unnormalised
+  Data.Rational.Unnormalised.Properties
+
   Function.Definitions
   Function.Packages
   Function.Structures
@@ -138,6 +141,13 @@ attached to all deprecated names to discourage their use.
 
 Other minor additions
 ---------------------
+
+* Added new constants to `Data.Integer.Base`:
+  ```agda
+  -1ℤ = -[1+ 0 ]
+   0ℤ = +0
+   1ℤ = +[1+ 0 ]
+  ```
 
 * Added new proof to `Data.Integer.Properties`:
   ```agda
