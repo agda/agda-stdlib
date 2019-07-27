@@ -17,6 +17,8 @@ open import Relation.Binary.Reasoning.Setoid setoid
 
 -- Permutation laws for _∙_ for three factors.
 
+open import Algebra.Properties.Semigroup S public
+
 ------------------------------------------------------------------------------
 -- Partitions (1,1).
 -- There are five nontrivial permutations.

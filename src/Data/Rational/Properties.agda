@@ -8,33 +8,48 @@
 
 module Data.Rational.Properties where
 
-open import Function using (_∘_ ; _$_)
-open import Data.Integer as ℤ using (ℤ; ∣_∣; +_; -[1+_])
+open import Algebra
+open import Algebra.Structures
+open import Algebra.Morphism
+import Algebra.Morphism.RawMonoid as MonoidMorphisms
+import Algebra.Properties.CommutativeSemigroup as CommSemigroupProperties
+open import Data.Integer as ℤ using (ℤ; ∣_∣; +_; -[1+_]; 0ℤ; _◃_)
 open import Data.Integer.Coprimality using (coprime-divisor)
 import Data.Integer.Properties as ℤ
-open import Data.Rational.Base
+open import Data.Integer.GCD using (gcd; gcd[i,j]≡0⇒i≡0; gcd[i,j]≡0⇒j≡0)
 open import Data.Nat as ℕ using (ℕ; zero; suc)
 import Data.Nat.Properties as ℕ
 open import Data.Nat.Coprimality as C using (Coprime; coprime?)
 open import Data.Nat.Divisibility hiding (/-cong)
+import Data.Nat.GCD as ℕ
+import Data.Nat.DivMod as ℕ
 open import Data.Product using (_,_)
+open import Data.Rational.Base
+open import Data.Rational.Unnormalised as ℚᵘ
+  using (ℚᵘ; *≡*) renaming (↥_ to ↥ᵘ_; ↧_ to ↧ᵘ_; _≃_ to _≃ᵘ_)
+import Data.Rational.Unnormalised.Properties as ℚᵘ
 open import Data.Sum
+open import Data.Unit using (tt)
+import Data.Sign as S
+open import Function using (_∘_ ; _$_; Injective)
 open import Level using (0ℓ)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (yes; no; recompute)
-open import Relation.Nullary.Decidable as Dec using (True; fromWitness)
+open import Relation.Nullary.Decidable as Dec
+  using (True; False; fromWitness; fromWitnessFalse)
+open import Relation.Nullary.Negation using (contradiction)
 
 open import Algebra.FunctionProperties {A = ℚ} _≡_
 open import Algebra.FunctionProperties.Consequences.Propositional
 
-------------------------------------------------------------------------
--- Helper lemmas
-------------------------------------------------------------------------
-
 private
-  recomputeCP : ∀ {n d} → .(Coprime n (suc d)) → Coprime n (suc d)
-  recomputeCP {n} {d-1} c = recompute (coprime? n (suc d-1)) c
+  infix 4 _≢0
+  _≢0 : ℕ → Set
+  n ≢0 = False (n ℕ.≟ 0)
+
+  recomputeCP : ∀ {n d} → .(Coprime n d) → Coprime n d
+  recomputeCP {n} {d} c = recompute (coprime? n d) c
 
 ------------------------------------------------------------------------
 -- Propositional equality
@@ -53,6 +68,33 @@ mkℚ n₁ d₁ _ ≟ mkℚ n₂ d₂ _ with n₁ ℤ.≟ n₂ | d₁ ℕ.≟ d�
 
 ≡-decSetoid : DecSetoid 0ℓ 0ℓ
 ≡-decSetoid = decSetoid _≟_
+
+------------------------------------------------------------------------
+-- mkℚ
+------------------------------------------------------------------------
+
+mkℚ-cong : ∀ {n₁ n₂ d₁ d₂}
+           .{c₁ : Coprime ∣ n₁ ∣ (suc d₁)}
+           .{c₂ : Coprime ∣ n₂ ∣ (suc d₂)} →
+           n₁ ≡ n₂ → d₁ ≡ d₂ → mkℚ n₁ d₁ c₁ ≡ mkℚ n₂ d₂ c₂
+mkℚ-cong refl refl = refl
+
+------------------------------------------------------------------------
+-- mkℚ′
+------------------------------------------------------------------------
+
+mkℚ+-cong : ∀ {n₁ n₂ d₁ d₂} d₁≢0 d₂≢0
+           .{c₁ : Coprime n₁ d₁}
+           .{c₂ : Coprime n₂ d₂} →
+           n₁ ≡ n₂ → d₁ ≡ d₂ →
+           mkℚ+ n₁ d₁ {d₁≢0} c₁ ≡ mkℚ+ n₂ d₂ {d₂≢0} c₂
+mkℚ+-cong _ _ refl refl = refl
+
+↥-mkℚ+ : ∀ n d {d≢0} .{c : Coprime n d} → ↥ (mkℚ+ n d {d≢0} c) ≡ + n
+↥-mkℚ+ n (suc d) = refl
+
+↧-mkℚ+ : ∀ n d {d≢0} .{c : Coprime n d} → ↧ (mkℚ+ n d {d≢0} c) ≡ + d
+↧-mkℚ+ n (suc d) = refl
 
 ------------------------------------------------------------------------
 -- Numerator and denominator equality
@@ -129,7 +171,7 @@ drop-*≤* (*≤* pq≤qp) = pq≤qp
 
 infix 4 _≤?_
 _≤?_ : Decidable _≤_
-p ≤? q = Dec.map′ *≤* drop-*≤* ((↥ p ℤ.* ↧ q) ℤ.≤? (↥ q ℤ.* ↧ p))
+p ≤? q = Dec.map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* ↧ p)
 
 ≤-irrelevant : Irrelevant _≤_
 ≤-irrelevant (*≤* p≤q₁) (*≤* p≤q₂) = cong *≤* (ℤ.≤-irrelevant p≤q₁ p≤q₂)
@@ -296,6 +338,248 @@ module ≤-Reasoning where
     ≤-<-trans
     public
     hiding (_≈⟨_⟩_; _≈˘⟨_⟩_)
+
+------------------------------------------------------------------------
+-- Properties of -_
+------------------------------------------------------------------------
+
+↥-neg : ∀ p → ↥ (- p) ≡ ℤ.- (↥ p)
+↥-neg (mkℚ -[1+ _ ] _ _) = refl
+↥-neg (mkℚ +0       _ _) = refl
+↥-neg (mkℚ +[1+ _ ] _ _) = refl
+
+↧-neg : ∀ p → ↧ (- p) ≡ ↧ p
+↧-neg (mkℚ -[1+ _ ] _ _) = refl
+↧-neg (mkℚ +0       _ _) = refl
+↧-neg (mkℚ +[1+ _ ] _ _) = refl
+
+------------------------------------------------------------------------
+-- Properties of normalize
+------------------------------------------------------------------------
+
+normalize-coprime : ∀ {n d-1} .(c : Coprime n (suc d-1)) →
+                    normalize n (suc d-1) ≡ mkℚ (+ n) d-1 c
+normalize-coprime {n} {d-1} c = begin
+  normalize n d              ≡⟨⟩
+  mkℚ+ (n ℕ./ g) (d ℕ./ g) _ ≡⟨ mkℚ+-cong n/g≢0 d/1≢0 {c₂ = c₂} (ℕ./-congʳ {n≢0 = g≢0} g≡1) (ℕ./-congʳ {n≢0 = g≢0} g≡1) ⟩
+  mkℚ+ (n ℕ./ 1) (d ℕ./ 1) _ ≡⟨ mkℚ+-cong d/1≢0 _ (ℕ.n/1≡n n) (ℕ.n/1≡n d) ⟩
+  mkℚ+ n d _                 ≡⟨⟩
+  mkℚ (+ n) d-1 _            ∎
+  where
+  open ≡-Reasoning; d = suc d-1; g = ℕ.gcd n d
+  c′ = recomputeCP c
+  c₂ : Coprime (n ℕ./ 1) (d ℕ./ 1)
+  c₂ = subst₂ Coprime (sym (ℕ.n/1≡n n)) (sym (ℕ.n/1≡n d)) c′
+  g≡1 = C.coprime⇒gcd≡1 c′
+  g≢0   = fromWitnessFalse (ℕ.gcd[m,n]≢0 n d (inj₂ λ()))
+  n/g≢0 = fromWitnessFalse (ℕ.n/gcd[m,n]≢0 n d {_} {g≢0})
+  d/1≢0 = fromWitnessFalse (subst (_≢ 0) (sym (ℕ.n/1≡n d)) λ())
+
+↥-normalize : ∀ i n {n≢0} → ↥ (normalize i n {n≢0}) ℤ.* gcd (+ i) (+ n) ≡ + i
+↥-normalize i n@(suc n-1) = begin
+  ↥ (normalize i n) ℤ.* + g  ≡⟨ cong (ℤ._* + g) (↥-mkℚ+ _ (n ℕ./ g) {n/g≢0}) ⟩
+  + (i ℕ./ g)       ℤ.* + g  ≡⟨⟩
+  S.+ ◃ i ℕ./ g     ℕ.* g    ≡⟨ cong (S.+ ◃_) (ℕ.m/n*n≡m (ℕ.gcd[m,n]∣m i n)) ⟩
+  S.+ ◃ i                    ≡⟨ ℤ.+◃n≡+n i ⟩
+  + i                        ∎
+  where
+  open ≡-Reasoning; g = ℕ.gcd i n
+  g≢0   = fromWitnessFalse (ℕ.gcd[m,n]≢0 i n (inj₂ λ()))
+  n/g≢0 = fromWitnessFalse (ℕ.n/gcd[m,n]≢0 i n {_} {g≢0})
+
+↧-normalize : ∀ i n {n≢0} → ↧ (normalize i n {n≢0}) ℤ.* gcd (+ i) (+ n) ≡ + n
+↧-normalize i n@(suc n-1) = begin
+  ↧ (normalize i n) ℤ.* + g  ≡⟨ cong (ℤ._* + g) (↧-mkℚ+ _ (n ℕ./ g) {n/g≢0}) ⟩
+  + (n ℕ./ g)       ℤ.* + g  ≡⟨⟩
+  S.+ ◃ n ℕ./ g     ℕ.* g    ≡⟨ cong (S.+ ◃_) (ℕ.m/n*n≡m (ℕ.gcd[m,n]∣n i n)) ⟩
+  S.+ ◃ n                    ≡⟨ ℤ.+◃n≡+n n ⟩
+  + n                        ∎
+  where
+  open ≡-Reasoning; g = ℕ.gcd i n
+  g≢0   = fromWitnessFalse (ℕ.gcd[m,n]≢0 i n (inj₂ λ()))
+  n/g≢0 = fromWitnessFalse (ℕ.n/gcd[m,n]≢0 i n {_} {g≢0})
+
+------------------------------------------------------------------------
+-- Properties of _/_
+------------------------------------------------------------------------
+
+↥-/ : ∀ i n {n≢0} → ↥ (i / n) {n≢0} ℤ.* gcd i (+ n) ≡ i
+↥-/ (+ m)    (suc n) = ↥-normalize m (suc n)
+↥-/ -[1+ m ] (suc n) = begin-equality
+  ↥ (- norm)   ℤ.* + g  ≡⟨ cong (ℤ._* + g) (↥-neg norm) ⟩
+  ℤ.- (↥ norm) ℤ.* + g  ≡⟨ sym (ℤ.neg-distribˡ-* (↥ norm) (+ g)) ⟩
+  ℤ.- (↥ norm  ℤ.* + g) ≡⟨ cong (ℤ.-_) (↥-normalize (suc m) (suc n)) ⟩
+  S.- ◃ suc m           ≡⟨⟩
+  -[1+ m ]              ∎
+  where
+  open ℤ.≤-Reasoning
+  g = ℕ.gcd (suc m) (suc n)
+  norm = normalize (suc m) (suc n)
+
+↧-/ : ∀ i n {n≢0} → ↧ (i / n) {n≢0} ℤ.* gcd i (+ n) ≡ + n
+↧-/ (+ m)    (suc n) = ↧-normalize m (suc n)
+↧-/ -[1+ m ] (suc n) = begin-equality
+  ↧ (- norm) ℤ.* + g  ≡⟨ cong (ℤ._* + g) (↧-neg norm) ⟩
+  ↧ norm     ℤ.* + g  ≡⟨ ↧-normalize (suc m) (suc n) ⟩
+  + (suc n)           ∎
+  where
+  open ℤ.≤-Reasoning
+  g = ℕ.gcd (suc m) (suc n)
+  norm = normalize (suc m) (suc n)
+
+↥p/↧p≡p : ∀ p → ↥ p / ↧ₙ p ≡ p
+↥p/↧p≡p (mkℚ (+ n)    d-1 prf) = normalize-coprime prf
+↥p/↧p≡p (mkℚ -[1+ n ] d-1 prf) = cong (-_) (normalize-coprime prf)
+
+0/n≡0 : ∀ n {n≢0} → (0ℤ / n) {n≢0} ≡ 0ℚ
+0/n≡0 n@(suc n-1) {n≢0} = mkℚ+-cong n/n≢0 _ {c₂ = 0-cop-1} (ℕ.0/n≡0 (ℕ.gcd 0 n)) (ℕ.n/n≡1 n)
+  where
+  n/n≢0 = subst _≢0 (sym (ℕ.n/n≡1 n)) _
+  0-cop-1 = C.sym (C.1-coprimeTo 0)
+
+------------------------------------------------------------------------
+-- Properties of toℚ/fromℚ
+------------------------------------------------------------------------
+
+toℚᵘ-cong : toℚᵘ Preserves _≡_ ⟶ _≃ᵘ_
+toℚᵘ-cong refl = *≡* refl
+
+toℚᵘ-injective : Injective _≡_ _≃ᵘ_ toℚᵘ
+toℚᵘ-injective (*≡* eq) = ≃⇒≡ eq
+
+fromℚᵘ-toℚᵘ : ∀ p → fromℚᵘ (toℚᵘ p) ≡ p
+fromℚᵘ-toℚᵘ (mkℚ (+ n)      d-1 c) = normalize-coprime c
+fromℚᵘ-toℚᵘ (mkℚ (-[1+ n ]) d-1 c) = cong (-_) (normalize-coprime c)
+
+------------------------------------------------------------------------
+-- Properties of _+_
+------------------------------------------------------------------------
+
+private
+  ↥+ᵘ : ℚ → ℚ → ℤ
+  ↥+ᵘ p q = ↥ p ℤ.* ↧ q ℤ.+ ↥ q ℤ.* ↧ p
+
+  ↧+ᵘ : ℚ → ℚ → ℤ
+  ↧+ᵘ p q = ↧ p ℤ.* ↧ q
+
+  +-nf : ℚ → ℚ → ℤ
+  +-nf p q = gcd (↥+ᵘ p q) (↧+ᵘ p q)
+
+↥-+ : ∀ p q → ↥ (p + q) ℤ.* +-nf p q ≡ ↥+ᵘ p q
+↥-+ p q = ↥-/ (↥+ᵘ p q) (↧ₙ p ℕ.* ↧ₙ q)
+
+↧-+ : ∀ p q → ↧ (p + q) ℤ.* +-nf p q ≡ ↧+ᵘ p q
+↧-+ p q = ↧-/ (↥+ᵘ p q) (↧ₙ p ℕ.* ↧ₙ q)
+
++-rawMagma : RawMagma 0ℓ 0ℓ
++-rawMagma = record
+  { _≈_ = _≡_
+  ; _∙_ = _+_
+  }
+
++-rawMonoid : RawMonoid 0ℓ 0ℓ
++-rawMonoid = record
+  { _≈_ = _≡_
+  ; _∙_ = _+_
+  ; ε   = 0ℚ
+  }
+
+open Definitions ℚ ℚᵘ ℚᵘ._≃_
+
+toℚᵘ-homo-+ : Homomorphic₂ toℚᵘ _+_ ℚᵘ._+_
+toℚᵘ-homo-+ p q with +-nf p q ℤ.≟ 0ℤ
+... | yes nf[p,q]≡0 = *≡* (begin
+  ↥ (p + q) ℤ.* ↧+ᵘ p q   ≡⟨ cong (ℤ._* ↧+ᵘ p q) eq ⟩
+  0ℤ        ℤ.* ↧+ᵘ p q   ≡⟨⟩
+  0ℤ        ℤ.* ↧ (p + q) ≡⟨ cong (ℤ._* ↧ (p + q)) (sym eq2) ⟩
+  ↥+ᵘ p q   ℤ.* ↧ (p + q) ∎)
+  where
+  open ≡-Reasoning
+  eq2 : ↥+ᵘ p q ≡ 0ℤ
+  eq2 = gcd[i,j]≡0⇒i≡0 (↥+ᵘ p q) (↧+ᵘ p q) nf[p,q]≡0
+
+  eq : ↥ (p + q) ≡ 0ℤ
+  eq rewrite eq2 = cong ↥_ (0/n≡0 (↧ₙ p ℕ.* ↧ₙ q))
+
+... | no  nf[p,q]≢0 = *≡* (ℤ.*-cancelʳ-≡ _ _ (+-nf p q) nf[p,q]≢0 (begin
+  ↥ (p + q) ℤ.* ↧+ᵘ p q    ℤ.* +-nf p q   ≡⟨ xy∙z≈xz∙y (↥ (p + q)) _ _ ⟩
+  ↥ (p + q) ℤ.* +-nf p q   ℤ.* ↧+ᵘ p q    ≡⟨ cong (ℤ._* ↧+ᵘ p q) (↥-+ p q) ⟩
+  ↥+ᵘ p q   ℤ.* ↧+ᵘ p q                   ≡⟨ cong (↥+ᵘ p q ℤ.*_) (sym (↧-+ p q)) ⟩
+  ↥+ᵘ p q   ℤ.* (↧ (p + q) ℤ.* +-nf p q)  ≡⟨ x∙yz≈xy∙z (↥+ᵘ p q) _ _ ⟩
+  ↥+ᵘ p q   ℤ.* ↧ (p + q)  ℤ.* +-nf p q   ∎))
+  where open ≡-Reasoning; open CommSemigroupProperties ℤ.*-semigroup ℤ.*-comm
+
+toℚᵘ-+-isRawMagmaMorphism : IsRawMagmaMorphism +-rawMagma ℚᵘ.+-rawMagma toℚᵘ
+toℚᵘ-+-isRawMagmaMorphism = record
+  { F-isMagma = isMagma _+_
+  ; T-isMagma = ℚᵘ.+-isMagma
+  ; ⟦⟧-cong   = toℚᵘ-cong
+  ; ∙-homo    = toℚᵘ-homo-+
+  }
+
+toℚᵘ-+-isRawMonoidMorphism : IsRawMonoidMorphism +-rawMonoid ℚᵘ.+-rawMonoid toℚᵘ
+toℚᵘ-+-isRawMonoidMorphism = record
+  { magma-homo = toℚᵘ-+-isRawMagmaMorphism
+  ; ε-homo     = ℚᵘ.≃-refl
+  }
+
+------------------------------------------------------------------------
+-- Algebraic properties
+
+open MonoidMorphisms toℚᵘ-+-isRawMonoidMorphism toℚᵘ-injective
+
++-assoc : Associative _+_
++-assoc = assoc-homo ℚᵘ.+-assoc
+
++-comm : Commutative _+_
++-comm = comm-homo ℚᵘ.+-comm
+
++-identityˡ : LeftIdentity 0ℚ _+_
++-identityˡ = identityˡ-homo ℚᵘ.+-identityˡ
+
++-identityʳ : RightIdentity 0ℚ _+_
++-identityʳ = identityʳ-homo ℚᵘ.+-identityʳ
+
++-identity : Identity 0ℚ _+_
++-identity = +-identityˡ , +-identityʳ
+
+------------------------------------------------------------------------
+-- Structures
+
++-isMagma : IsMagma _≡_ _+_
++-isMagma = isMagma _+_
+
++-isSemigroup : IsSemigroup _≡_ _+_
++-isSemigroup = isSemigroup-homo ℚᵘ.+-isSemigroup
+
++-0-isMonoid : IsMonoid _≡_ _+_ 0ℚ
++-0-isMonoid = isMonoid-homo ℚᵘ.+-0-isMonoid
+
++-0-isCommutativeMonoid : IsCommutativeMonoid _≡_ _+_ 0ℚ
++-0-isCommutativeMonoid = isCommutativeMonoid-homo ℚᵘ.+-0-isCommutativeMonoid
+
+------------------------------------------------------------------------
+-- Packages
+
++-magma : Magma 0ℓ 0ℓ
++-magma = record
+  { isMagma = +-isMagma
+  }
+
++-semigroup : Semigroup 0ℓ 0ℓ
++-semigroup = record
+  { isSemigroup = +-isSemigroup
+  }
+
++-0-monoid : Monoid 0ℓ 0ℓ
++-0-monoid = record
+  { isMonoid = +-0-isMonoid
+  }
+
++-0-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
++-0-commutativeMonoid = record
+  { isCommutativeMonoid = +-0-isCommutativeMonoid
+  }
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

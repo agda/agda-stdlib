@@ -127,6 +127,13 @@ m<[1+n%d]⇒m≤[n%d] {m} n (suc d-1) = k<1+a[modₕ]n⇒k≤a[modₕ]n 0 m n d-
 ------------------------------------------------------------------------
 -- Properties of _/_
 
+/-congˡ : ∀ {m n o : ℕ} {o≢0} → m ≡ n → (m / o) {o≢0} ≡ (n / o) {o≢0}
+/-congˡ refl = refl
+
+/-congʳ : ∀ {m n o : ℕ} {n≢0 o≢0} → n ≡ o →
+         (m / n) {n≢0} ≡ (m / o) {o≢0}
+/-congʳ refl = refl
+
 0/n≡0 : ∀ n .{≢0} → (0 / n) {≢0} ≡ 0
 0/n≡0 (suc n-1) = refl
 
@@ -157,6 +164,21 @@ m/n<m m n@(suc n-1) m≥1 n≥2 = *-cancelʳ-< {n} (m / n) m (begin-strict
   (m / n) * n ≤⟨ m/n*n≤m m n ⟩
   m           <⟨ m<m*n m≥1 n≥2 ⟩
   m * n       ∎)
+
+/-mono-≤ : ∀ {m n o p} {o≢0 p≢0} → m ≤ n → o ≥ p → (m / o) {o≢0} ≤ (n / p) {p≢0}
+/-mono-≤ m≤n (s≤s o≥p) = divₕ-mono-≤ 0 m≤n o≥p
+
+/-monoˡ-≤ : ∀ {m n o} {o≢0} → m ≤ n → (m / o) {o≢0} ≤ (n / o) {o≢0}
+/-monoˡ-≤ {o≢0 = o≢0} m≤n = /-mono-≤ {o≢0 = o≢0} {o≢0} m≤n ≤-refl
+
+/-monoʳ-≤ : ∀ m {n o} {n≢0 o≢0} → n ≥ o → (m / n) {n≢0} ≤ (m / o) {o≢0}
+/-monoʳ-≤ _ {n≢0 = n≢0} {o≢0} n≥o = /-mono-≤ {o≢0 = n≢0} {o≢0} ≤-refl n≥o
+
+m≥n⇒m/n>0 : ∀ {m n n≢0} → m ≥ n → (m / n) {n≢0} > 0
+m≥n⇒m/n>0 {m@(suc m-1)} {n@(suc n-1)} m≥n = begin
+  1     ≡⟨ sym (n/n≡1 m) ⟩
+  m / m ≤⟨ /-monoʳ-≤ m m≥n ⟩
+  m / n ∎
 
 +-distrib-/ : ∀ m n {d} .{≢0} → (m % d) {≢0} + (n % d) {≢0} < d →
               ((m + n) / d) {≢0} ≡ (m / d) {≢0} + (n / d) {≢0}
