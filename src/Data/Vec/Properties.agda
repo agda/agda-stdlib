@@ -17,7 +17,7 @@ open import Data.Nat.Properties using (+-assoc; ≤-step)
 open import Data.Product as Prod
   using (_×_; _,_; proj₁; proj₂; <_,_>; uncurry)
 open import Data.Vec
-open import Function
+open import Function.Core
 open import Function.Inverse using (_↔_; inverse)
 open import Level using (Level)
 open import Relation.Binary as B hiding (Decidable)

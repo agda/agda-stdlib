@@ -12,7 +12,7 @@ module Data.Product.Function.Dependent.Setoid where
 open import Data.Product
 open import Data.Product.Relation.Binary.Pointwise.Dependent
 open import Relation.Binary
-open import Function
+open import Function.Core
 open import Function.Equality as F using (_⟶_; _⟨$⟩_)
 open import Function.Equivalence as Eq
   using (Equivalence; _⇔_; module Equivalence)

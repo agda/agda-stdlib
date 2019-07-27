@@ -13,7 +13,7 @@ open import Data.Bool.Base
 open import Data.Empty
 open import Data.Product
 open import Data.Sum
-open import Function
+open import Function.Core
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence
   using (_⇔_; equivalence; module Equivalence)

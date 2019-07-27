@@ -18,7 +18,7 @@ open import Algebra.Structures
 open import Algebra.FunctionProperties _≈_
 open import Relation.Binary
 open import Relation.Binary.Reasoning.Setoid setoid
-open import Function
+open import Function.Core
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence using (_⇔_; module Equivalence)
 open import Data.Product using (_,_)

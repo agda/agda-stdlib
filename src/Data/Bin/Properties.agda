@@ -10,6 +10,8 @@
 module Data.Bin.Properties where
 
 open import Algebra
+open import Algebra.Morphism
+import Algebra.Morphism.RawMonoid as MonoidMorphisms
 open import Algebra.FunctionProperties.Consequences.Propositional
 open import Data.Bin.Base
 open import Data.Nat as ℕ using (ℕ; s≤s)
@@ -67,7 +69,7 @@ zero     ≟ 1+[2 _ ] =  no λ()
 1+[2 x ] ≟ 1+[2 y ] =  Dec.map′ (cong 1+[2_]) 1+[2-injective (x ≟ y)
 
 ≡-isDecEquivalence :  IsDecEquivalence {A = Bin} _≡_
-≡-isDecEquivalence =  record
+≡-isDecEquivalence = record
   { isEquivalence = isEquivalence
   ; _≟_           = _≟_
   }
@@ -202,6 +204,19 @@ toℕ[x]≡0⇒x≡0 {zero} _ = refl
 -- Properties of _+_
 ------------------------------------------------------------------------
 
++-rawMagma : RawMagma 0ℓ 0ℓ
++-rawMagma = record
+  { _≈_ = _≡_
+  ; _∙_ = _+_
+  }
+
++-0-rawMonoid : RawMonoid 0ℓ 0ℓ
++-0-rawMonoid = record
+  { _≈_ = _≡_
+  ; _∙_ = _+_
+  ; ε   = 0B
+  }
+
 ------------------------------------------------------------------------
 -- toℕ/fromℕ are homomorphisms for _+_
 
@@ -258,6 +273,20 @@ toℕ-homo-+ 1+[2 x ] 1+[2 y ] = begin
   where
   m = toℕ x;  n = toℕ y
 
+toℕ-+-isRawMagmaMorphism : IsRawMagmaMorphism +-rawMagma ℕₚ.+-rawMagma toℕ
+toℕ-+-isRawMagmaMorphism = record
+  { F-isMagma = isMagma _+_
+  ; T-isMagma = ℕₚ.+-isMagma
+  ; ⟦⟧-cong   = cong toℕ
+  ; ∙-homo    = toℕ-homo-+
+  }
+
+toℕ-+-isRawMonoidMorphism : IsRawMonoidMorphism +-0-rawMonoid ℕₚ.+-0-rawMonoid toℕ
+toℕ-+-isRawMonoidMorphism = record
+  { magma-homo = toℕ-+-isRawMagmaMorphism
+  ; ε-homo     = refl
+  }
+
 suc≗1+ : suc ≗ 1B +_
 suc≗1+ zero     = refl
 suc≗1+ 2[1+ _ ] = refl
@@ -292,100 +321,51 @@ fromℕ-homo-+ (ℕ.suc m) n = begin
 -- Mostly proved by using the isomorphism between `ℕ` and `Bin` provided
 -- by `toℕ`/`fromℕ`.
 
-+-assoc :  Associative _+_
-+-assoc a b c = begin
-  (a + b) + c                  ≡⟨ sym (fromℕ-toℕ ((a + b) + c)) ⟩
-  fromℕ (toℕ ((a + b) + c))    ≡⟨ cong fromℕ (toℕ-homo-+ (a + b) c) ⟩
-  fromℕ (toℕ (a + b) ℕ.+ cN)   ≡⟨ cong (fromℕ ∘ (ℕ._+ cN)) (toℕ-homo-+ a b) ⟩
-  fromℕ ((aN ℕ.+ bN) ℕ.+ cN)   ≡⟨ cong fromℕ (ℕₚ.+-assoc aN bN cN) ⟩
-  fromℕ (aN ℕ.+ (bN ℕ.+ cN))   ≡⟨ cong (fromℕ ∘ (aN ℕ.+_)) (sym (toℕ-homo-+ b c)) ⟩
-  fromℕ (aN ℕ.+ toℕ (b + c))   ≡⟨ cong fromℕ (sym (toℕ-homo-+ a (b + c))) ⟩
-  fromℕ (toℕ (a + (b + c)))    ≡⟨ fromℕ-toℕ (a + (b + c)) ⟩
-  (a + (b + c))                ∎
-  where
-  aN = toℕ a;   bN = toℕ b;   cN = toℕ c
+module _ where
 
-+-comm :  Commutative _+_
-+-comm a b = begin
-  a + b                     ≡⟨ sym (fromℕ-toℕ (a + b)) ⟩
-  fromℕ (toℕ (a + b))       ≡⟨ cong fromℕ (toℕ-homo-+ a b) ⟩
-  fromℕ (toℕ a ℕ.+ toℕ b)   ≡⟨ cong fromℕ (ℕₚ.+-comm (toℕ a) (toℕ b)) ⟩
-  fromℕ (toℕ b ℕ.+ toℕ a)   ≡⟨ cong fromℕ (sym (toℕ-homo-+ b a)) ⟩
-  fromℕ (toℕ (b + a))       ≡⟨ fromℕ-toℕ (b + a) ⟩
-  b + a                     ∎
+  open MonoidMorphisms toℕ-+-isRawMonoidMorphism toℕ-injective
 
-+-identityˡ : LeftIdentity zero _+_
-+-identityˡ _ = refl
+  +-assoc :  Associative _+_
+  +-assoc = assoc-homo ℕₚ.+-assoc
 
-+-identityʳ : RightIdentity zero _+_
-+-identityʳ zero     = refl
-+-identityʳ 2[1+ _ ] = refl
-+-identityʳ 1+[2 _ ] = refl
+  +-comm :  Commutative _+_
+  +-comm = comm-homo ℕₚ.+-comm
 
-+-identity : Identity zero _+_
-+-identity = +-identityˡ , +-identityʳ
+  +-identityˡ : LeftIdentity zero _+_
+  +-identityˡ _ = refl
 
-+-cancelˡ-≡ : LeftCancellative _+_
-+-cancelˡ-≡ x {y} {z} x+y≡x+z = begin
-  y         ≡⟨ sym (fromℕ-toℕ y) ⟩
-  fromℕ m   ≡⟨ cong fromℕ m≡n ⟩
-  fromℕ n   ≡⟨ fromℕ-toℕ z ⟩
-  z         ∎
-  where
-  k = toℕ x;  m = toℕ y;  n = toℕ z
+  +-identityʳ : RightIdentity zero _+_
+  +-identityʳ = identityʳ-homo ℕₚ.+-identityʳ
 
-  eq = begin
-    k ℕ.+ m        ≡⟨ sym (toℕ-homo-+ x y) ⟩
-    toℕ (x + y)    ≡⟨ cong toℕ x+y≡x+z ⟩
-    toℕ (x + z)    ≡⟨ toℕ-homo-+ x z ⟩
-    k ℕ.+ n        ∎
+  +-identity : Identity zero _+_
+  +-identity = +-identityˡ , +-identityʳ
 
-  m≡n = begin
-    m                  ≡⟨ sym (ℕₚ.m+n∸n≡m m k)⟩
-    (m ℕ.+ k) ℕ.∸ k    ≡⟨ cong (ℕ._∸ k) (ℕₚ.+-comm m k) ⟩
-    (k ℕ.+ m) ℕ.∸ k    ≡⟨ cong (ℕ._∸ k) eq ⟩
-    (k ℕ.+ n) ℕ.∸ k    ≡⟨ cong (ℕ._∸ k) (ℕₚ.+-comm k n) ⟩
-    (n ℕ.+ k) ℕ.∸ k    ≡⟨ ℕₚ.m+n∸n≡m n k ⟩
-    n                  ∎
+  +-cancelˡ-≡ : LeftCancellative _+_
+  +-cancelˡ-≡ = cancelˡ-homo ℕₚ.+-cancelˡ-≡
 
-+-cancelʳ-≡ :  RightCancellative _+_
-+-cancelʳ-≡ =  comm+cancelˡ⇒cancelʳ +-comm +-cancelˡ-≡
+  +-cancelʳ-≡ : RightCancellative _+_
+  +-cancelʳ-≡ = cancelʳ-homo ℕₚ.+-cancelʳ-≡
 
 ------------------------------------------------------------------------
 -- Structures
 
-+-isMagma : IsMagma _+_
-+-isMagma = record
-  { isEquivalence = isEquivalence
-  ; ∙-cong        = cong₂ _+_
-  }
+  +-isMagma : IsMagma _+_
+  +-isMagma = isMagma _+_
 
-+-isSemigroup : IsSemigroup _+_
-+-isSemigroup = record
-  { isMagma = +-isMagma
-  ; assoc   = +-assoc
-  }
+  +-isSemigroup : IsSemigroup _+_
+  +-isSemigroup = isSemigroup-homo ℕₚ.+-isSemigroup
 
-+-0-isMonoid : IsMonoid _+_ 0B
-+-0-isMonoid = record
-  { isSemigroup = +-isSemigroup
-  ; identity    = +-identity
-  }
+  +-0-isMonoid : IsMonoid _+_ 0B
+  +-0-isMonoid = isMonoid-homo ℕₚ.+-0-isMonoid
 
-+-0-isCommutativeMonoid : IsCommutativeMonoid _+_ zero
-+-0-isCommutativeMonoid = record
-  { isSemigroup = +-isSemigroup
-  ; identityˡ   = +-identityˡ
-  ; comm        = +-comm
-  }
+  +-0-isCommutativeMonoid : IsCommutativeMonoid _+_ 0B
+  +-0-isCommutativeMonoid = isCommutativeMonoid-homo ℕₚ.+-0-isCommutativeMonoid
 
 ------------------------------------------------------------------------
 -- Packages
 
 +-magma : Magma 0ℓ 0ℓ
-+-magma = record
-  { isMagma = +-isMagma
-  }
++-magma = magma _+_
 
 +-semigroup : Semigroup 0ℓ 0ℓ
 +-semigroup = record
@@ -413,6 +393,19 @@ x≢0⇒x+y≢0 {zero}     _    0≢0 =  contradiction refl 0≢0
 ------------------------------------------------------------------------
 -- Properties of _*_
 ------------------------------------------------------------------------
+
+*-rawMagma : RawMagma 0ℓ 0ℓ
+*-rawMagma = record
+  { _≈_ = _≡_
+  ; _∙_ = _*_
+  }
+
+*-1-rawMonoid : RawMonoid 0ℓ 0ℓ
+*-1-rawMonoid = record
+  { _≈_ = _≡_
+  ; _∙_ = _*_
+  ; ε   = 1B
+  }
 
 ------------------------------------------------------------------------
 -- toℕ/fromℕ are homomorphisms for _*_
@@ -509,6 +502,19 @@ toℕ-homo-* x y = aux x y (size x ℕ.+ size y) ℕₚ.≤-refl
 
     |y|+1+|x|≤cnt = subst (ℕ._≤ cnt) eq |x|+1+|y|≤cnt
 
+toℕ-*-isRawMagmaMorphism : IsRawMagmaMorphism *-rawMagma ℕₚ.*-rawMagma toℕ
+toℕ-*-isRawMagmaMorphism = record
+  { F-isMagma = isMagma _*_
+  ; T-isMagma = ℕₚ.*-isMagma
+  ; ⟦⟧-cong   = cong toℕ
+  ; ∙-homo    = toℕ-homo-*
+  }
+
+toℕ-*-isRawMonoidMorphism : IsRawMonoidMorphism *-1-rawMonoid ℕₚ.*-1-rawMonoid toℕ
+toℕ-*-isRawMonoidMorphism = record
+  { magma-homo = toℕ-*-isRawMagmaMorphism
+  ; ε-homo     = refl
+  }
 
 fromℕ-homo-* :  ∀ m n → fromℕ (m ℕ.* n) ≡ fromℕ m * fromℕ n
 fromℕ-homo-* m n = begin
@@ -526,43 +532,23 @@ fromℕ-homo-* m n = begin
 -- Mostly proved by using the isomorphism between `ℕ` and `Bin` provided
 -- by `toℕ`/`fromℕ`.
 
-*-assoc :  Associative _*_
-*-assoc a b c = begin
-  (a * b) * c                  ≡⟨ sym (fromℕ-toℕ ((a * b) * c)) ⟩
-  fromℕ (toℕ ((a * b) * c))    ≡⟨ cong fromℕ (toℕ-homo-* (a * b) c) ⟩
-  fromℕ (toℕ (a * b) ℕ.* cN)   ≡⟨ cong (fromℕ ∘ (ℕ._* cN)) (toℕ-homo-* a b) ⟩
-  fromℕ ((aN ℕ.* bN) ℕ.* cN)   ≡⟨ cong fromℕ (ℕₚ.*-assoc aN bN cN) ⟩
-  fromℕ (aN ℕ.* (bN ℕ.* cN))   ≡⟨ cong (fromℕ ∘ (aN ℕ.*_)) (sym (toℕ-homo-* b c)) ⟩
-  fromℕ (aN ℕ.* toℕ (b * c))   ≡⟨ cong fromℕ (sym (toℕ-homo-* a (b * c))) ⟩
-  fromℕ (toℕ (a * (b * c)))    ≡⟨ fromℕ-toℕ (a * (b * c)) ⟩
-  (a * (b * c))                ∎
-  where
-  aN = toℕ a;   bN = toℕ b;   cN = toℕ c
+module _ where
+  open MonoidMorphisms toℕ-*-isRawMonoidMorphism toℕ-injective
 
-*-comm : Commutative _*_
-*-comm a b = begin
-  a * b                     ≡⟨ sym (fromℕ-toℕ (a * b)) ⟩
-  fromℕ (toℕ (a * b))       ≡⟨ cong fromℕ (toℕ-homo-* a b) ⟩
-  fromℕ (toℕ a ℕ.* toℕ b)   ≡⟨ cong fromℕ (ℕₚ.*-comm (toℕ a) (toℕ b)) ⟩
-  fromℕ (toℕ b ℕ.* toℕ a)   ≡⟨ cong fromℕ (sym (toℕ-homo-* b a)) ⟩
-  fromℕ (toℕ (b * a))       ≡⟨ fromℕ-toℕ (b * a) ⟩
-  b * a                     ∎
+  *-assoc :  Associative _*_
+  *-assoc = assoc-homo ℕₚ.*-assoc
 
-*-identityˡ : LeftIdentity 1B _*_
-*-identityˡ x = begin
-  1B * x                 ≡⟨ sym (fromℕ-toℕ (1B * x)) ⟩
-  fromℕ (toℕ (1B * x))   ≡⟨ cong fromℕ (toℕ-homo-* 1B x) ⟩
-  fromℕ (1 ℕ.* n)        ≡⟨ cong fromℕ (ℕₚ.*-identityˡ n) ⟩
-  fromℕ n                ≡⟨ fromℕ-toℕ x ⟩
-  x                      ∎
-  where
-  n = toℕ x
+  *-comm : Commutative _*_
+  *-comm = comm-homo ℕₚ.*-comm
 
-*-identityʳ : RightIdentity 1B _*_
-*-identityʳ x =  trans (*-comm x 1B) (*-identityˡ x)
+  *-identityˡ : LeftIdentity 1B _*_
+  *-identityˡ = identityˡ-homo ℕₚ.*-identityˡ
 
-*-identity : Identity 1B _*_
-*-identity = (*-identityˡ , *-identityʳ)
+  *-identityʳ : RightIdentity 1B _*_
+  *-identityʳ x =  trans (*-comm x 1B) (*-identityˡ x)
+
+  *-identity : Identity 1B _*_
+  *-identity = (*-identityˡ , *-identityʳ)
 
 *-zeroˡ : LeftZero zero _*_
 *-zeroˡ _ = refl
@@ -598,30 +584,20 @@ fromℕ-homo-* m n = begin
 ------------------------------------------------------------------------
 -- Structures
 
-*-isMagma : IsMagma _*_
-*-isMagma = record
-  { isEquivalence = isEquivalence
-  ; ∙-cong        = cong₂ _*_
-  }
+module _ where
+  open MonoidMorphisms toℕ-*-isRawMonoidMorphism toℕ-injective
 
-*-isSemigroup : IsSemigroup _*_
-*-isSemigroup = record
-  { isMagma = *-isMagma
-  ; assoc   = *-assoc
-  }
+  *-isMagma : IsMagma _*_
+  *-isMagma = isMagma _*_
 
-*-1-isMonoid : IsMonoid _*_ 1B
-*-1-isMonoid = record
-  { isSemigroup = *-isSemigroup
-  ; identity    = *-identity
-  }
+  *-isSemigroup : IsSemigroup _*_
+  *-isSemigroup = isSemigroup-homo ℕₚ.*-isSemigroup
 
-*-1-isCommutativeMonoid : IsCommutativeMonoid _*_ 1B
-*-1-isCommutativeMonoid = record
-  { isSemigroup = *-isSemigroup
-  ; identityˡ   = *-identityˡ
-  ; comm        = *-comm
-  }
+  *-1-isMonoid : IsMonoid _*_ 1B
+  *-1-isMonoid = isMonoid-homo ℕₚ.*-1-isMonoid
+
+  *-1-isCommutativeMonoid : IsCommutativeMonoid _*_ 1B
+  *-1-isCommutativeMonoid = isCommutativeMonoid-homo ℕₚ.*-1-isCommutativeMonoid
 
 *-+-isSemiringWithoutAnnihilatingZero : IsSemiringWithoutAnnihilatingZero _+_ _*_ zero 1B
 *-+-isSemiringWithoutAnnihilatingZero = record

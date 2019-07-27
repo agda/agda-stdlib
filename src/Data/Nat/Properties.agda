@@ -22,7 +22,7 @@ open import Data.Nat.Base
 open import Data.Product
 open import Data.Sum
 open import Data.Unit using (tt)
-open import Function
+open import Function.Core
 open import Function.Injection using (_↣_)
 open import Level using (0ℓ)
 open import Relation.Binary
@@ -483,6 +483,19 @@ suc[pred[n]]≡n {suc n} n≢0 = refl
 ------------------------------------------------------------------------
 -- Packages
 
++-rawMagma : RawMagma 0ℓ 0ℓ
++-rawMagma = record
+  { _≈_ = _≡_
+  ; _∙_ = _+_
+  }
+
++-0-rawMonoid : RawMonoid 0ℓ 0ℓ
++-0-rawMonoid = record
+  { _≈_ = _≡_
+  ; _∙_ = _+_
+  ; ε   = 0
+  }
+
 +-magma : Magma 0ℓ 0ℓ
 +-magma = record
   { isMagma = +-isMagma
@@ -736,6 +749,19 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
 
 ------------------------------------------------------------------------
 -- Packages
+
+*-rawMagma : RawMagma 0ℓ 0ℓ
+*-rawMagma = record
+  { _≈_ = _≡_
+  ; _∙_ = _*_
+  }
+
+*-1-rawMonoid : RawMonoid 0ℓ 0ℓ
+*-1-rawMonoid = record
+  { _≈_ = _≡_
+  ; _∙_ = _*_
+  ; ε   = 1
+  }
 
 *-magma : Magma 0ℓ 0ℓ
 *-magma = record

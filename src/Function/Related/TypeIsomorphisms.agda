@@ -21,7 +21,7 @@ open import Data.Sum.Properties using (swap-involutive)
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
 open import Data.Unit using (⊤)
 open import Level using (Level; Lift; lower; 0ℓ; suc)
-open import Function
+open import Function.Core
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence as Eq using (_⇔_; Equivalence)
 open import Function.Inverse as Inv using (_↔_; Inverse; inverse)

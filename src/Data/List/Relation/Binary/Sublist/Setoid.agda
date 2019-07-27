@@ -48,14 +48,14 @@ open Heterogeneous {R = _≈_} hiding (Sublist; []; _∷_; _∷ʳ_) public
 ⊆-reflexive : _≋_ ⇒ _⊆_
 ⊆-reflexive = HeterogeneousProperties.fromPointwise
 
-⊆-refl : Reflexive _⊆_
-⊆-refl = HeterogeneousProperties.refl refl
+open HeterogeneousProperties.Reflexivity {R = _≈_} refl public using ()
+  renaming (refl to ⊆-refl)  -- ⊆-refl : Reflexive _⊆_
 
-⊆-trans : Transitive _⊆_
-⊆-trans = HeterogeneousProperties.trans trans
+open HeterogeneousProperties.Transitivity {R = _≈_} {S = _≈_} {T = _≈_} trans public using ()
+  renaming (trans to ⊆-trans)  -- ⊆-trans : Transitive _⊆_
 
-⊆-antisym : Antisymmetric _≋_ _⊆_
-⊆-antisym = HeterogeneousProperties.antisym (λ x≈y _ → x≈y)
+open HeterogeneousProperties.Antisymmetry {R = _≈_} {S = _≈_} (λ x≈y _ → x≈y) public using ()
+  renaming (antisym to ⊆-antisym)  -- ⊆-antisym : Antisymmetric _≋_ _⊆_
 
 ⊆-isPreorder : IsPreorder _≋_ _⊆_
 ⊆-isPreorder = record

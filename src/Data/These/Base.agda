@@ -10,7 +10,7 @@ module Data.These.Base where
 
 open import Level
 open import Data.Sum.Base using (_⊎_; [_,_]′)
-open import Function
+open import Function.Core
 
 private
   variable

@@ -19,7 +19,7 @@ open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Product using (_×_; _,_)
 open import Data.Product.Nary.NonDependent
-open import Function using (_∘′_; _$′_; const; flip)
+open import Function.Core using (_∘′_; _$′_; const; flip)
 open import Relation.Unary using (IUniversal)
 open import Relation.Binary.PropositionalEquality
 
@@ -79,7 +79,7 @@ module _ m n {ls ls'} {as : Sets m ls} {bs : Sets n ls'}
   congAt {vs} {ws} = cong (λ a → g vs a ws)
 
 ------------------------------------------------------------------------
--- Injectivitiy
+-- Injectivity
 
 module _ n {ls} {as : Sets n ls} {R : Set r} (con : as ⇉ R) where
 
