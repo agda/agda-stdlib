@@ -100,6 +100,9 @@ The following new modules have been added to the library:
   Data.Bin.Base
   Data.Bin.Properties
 
+  Data.Rational.Unnormalised
+  Data.Rational.Unnormalised.Properties
+
   Function.Definitions
   Function.Packages
   Function.Structures
@@ -139,6 +142,13 @@ attached to all deprecated names to discourage their use.
 Other minor additions
 ---------------------
 
+* Added new constants to `Data.Integer.Base`:
+  ```agda
+  -1ℤ = -[1+ 0 ]
+   0ℤ = +0
+   1ℤ = +[1+ 0 ]
+  ```
+
 * Added new proof to `Data.Integer.Properties`:
   ```agda
   *-suc : m * sucℤ n ≡ m + m * n
@@ -149,6 +159,17 @@ Other minor additions
   even≢odd : ∀ m n → 2 * m ≢ suc (2 * n)
   0≢1+n    : ∀ {n} → 0 ≢ suc n
   n<1+n    : ∀ {n} → n < suc n
+
+  +-rawMagma     : RawMagma 0ℓ 0ℓ
+  *-rawMagma     : RawMagma 0ℓ 0ℓ
+  +-0-rawMonoid  : RawMonoid 0ℓ 0ℓ
+  *-1-rawMonoid  : RawMonoid 0ℓ 0ℓ
+  ```
+
+* Added new proofs to `Relation.Binary.PropositionalEquality`:
+  ```agda
+  isMagma : (_∙_ : Op₂ A) → IsMagma _≡_ _∙_
+  magma   : (_∙_ : Op₂ A) → Magma a a
   ```
 
 * Added functions to extract the universe level from a type and a term.

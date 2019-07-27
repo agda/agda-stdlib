@@ -19,7 +19,8 @@ module Relation.Binary.Reasoning.Base.Double {a ℓ₁ ℓ₂} {A : Set a}
 open import Data.Product using (proj₁; proj₂)
 open import Level using (Level; _⊔_; Lift; lift)
 open import Function using (case_of_; id)
-open import Relation.Binary.PropositionalEquality using (_≡_; refl; sym)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; sym)
 open import Relation.Nullary using (Dec; yes; no)
 open import Relation.Nullary.Decidable using (True; toWitness)
 
