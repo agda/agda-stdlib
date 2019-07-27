@@ -60,25 +60,6 @@ record Preorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   open IsPreorder isPreorder public
 
 ------------------------------------------------------------------------
--- Partial Setoids
-
--- Partial equivalence relations are defined in Relation.Binary.Core.
--- Furthermore, PartialSetoid is parameterized by a type to make
--- dealing with subsets more feasible.
-
-record PartialSetoid {c} (Carrier : Set c) ℓ  : Set (suc (c ⊔ ℓ)) where
-  infix 4 _≈_
-  field
-    _≈_           : Rel Carrier ℓ
-    isPartialEquivalence : IsPartialEquivalence _≈_
-
-  _≉_ : Rel Carrier _
-  x ≉ y = ¬ (x ≈ y)
-
-  open IsPartialEquivalence isPartialEquivalence public
-
-
-------------------------------------------------------------------------
 -- Setoids
 
 -- Equivalence relations are defined in Relation.Binary.Core.
@@ -94,11 +75,6 @@ record Setoid c ℓ : Set (suc (c ⊔ ℓ)) where
   x ≉ y = ¬ (x ≈ y)
 
   open IsEquivalence isEquivalence public
-
-  partialSetoid : PartialSetoid Carrier ℓ
-  partialSetoid = record
-    { isPartialEquivalence = isPartialEquivalence
-    }
 
   isPreorder : IsPreorder _≡_ _≈_
   isPreorder = record

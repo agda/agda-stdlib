@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Partial
 
 module Relation.Binary.Reasoning.PartialSetoid {s₁ s₂} {A : Set s₁} (S : PartialSetoid A s₂) where
 

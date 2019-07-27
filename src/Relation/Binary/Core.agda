@@ -238,16 +238,6 @@ record NonEmpty {A : Set a} {B : Set b}
     {y}   : B
     proof : T x y
 
-------------------------------------------------------------------------
--- Partial Equivalence relations
---
--- Equivalence relations are not defined in terms of their partial
--- counterparts for backwards-compatibility reasons.
-
-record IsPartialEquivalence {A : Set a} (_≈_ : Rel A ℓ) : Set (a ⊔ ℓ) where
-  field
-    sym   : Symmetric _≈_
-    trans : Transitive _≈_
 
 ------------------------------------------------------------------------
 -- Equivalence relations
@@ -268,13 +258,6 @@ record IsEquivalence {A : Set a} (_≈_ : Rel A ℓ) : Set (a ⊔ ℓ) where
 
   reflexive : _≡_ ⇒ _≈_
   reflexive ≡-refl = refl
-
-  isPartialEquivalence : IsPartialEquivalence _≈_
-  isPartialEquivalence = record
-    { sym    = sym
-    ; trans = trans
-    }
-
 
 
 ------------------------------------------------------------------------

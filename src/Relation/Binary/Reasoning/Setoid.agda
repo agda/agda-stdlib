@@ -21,6 +21,7 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary
+open import Relation.Binary.Partial as PartialSetoid
 
 module Relation.Binary.Reasoning.Setoid {s₁ s₂} (S : Setoid s₁ s₂) where
 
@@ -29,5 +30,5 @@ open Setoid S
 ------------------------------------------------------------------------
 -- Publicly re-export base contents
 
-open import Relation.Binary.Reasoning.PartialSetoid partialSetoid public
+open import Relation.Binary.Reasoning.PartialSetoid (PartialSetoid.fromSetoid S) public
 open import Relation.Binary.Reasoning.Base.Single _≈_ refl trans using (_∎) public
