@@ -23,6 +23,7 @@ import Data.List.Relation.Binary.Sublist.Heterogeneous.Properties
   as HeterogeneousProperties
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Nullary using (¬_)
 
 open Setoid S renaming (Carrier to A)
 open SetoidEquality S
@@ -30,9 +31,19 @@ open SetoidEquality S
 ------------------------------------------------------------------------
 -- Definition
 
-infix 4 _⊆_
+infix 4 _⊆_ _⊇_ _⊈_ _⊉_
+
 _⊆_ : Rel (List A) (c ⊔ ℓ)
 _⊆_ = Heterogeneous.Sublist _≈_
+
+_⊇_ : Rel (List A) (c ⊔ ℓ)
+xs ⊇ ys = ys ⊆ xs
+
+_⊈_ : Rel (List A) (c ⊔ ℓ)
+xs ⊈ ys = ¬ (xs ⊆ ys)
+
+_⊉_ : Rel (List A) (c ⊔ ℓ)
+xs ⊉ ys = ¬ (xs ⊇ ys)
 
 ------------------------------------------------------------------------
 -- Re-export definitions and operations from heterogeneous sublists

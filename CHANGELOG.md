@@ -154,6 +154,27 @@ Other minor additions
   *-suc : m * sucℤ n ≡ m + m * n
   ```
 
+* Added new relations to `Data.List.Relation.Binary.Sublist.Setoid/Propositional`:
+  ```agda
+  xs ⊇ ys = ys ⊆ xs
+  xs ⊈ ys = ¬ (xs ⊆ ys)
+  xs ⊉ ys = ¬ (xs ⊇ ys)
+  ```
+
+* Added new proofs to `Data.List.Relation.Binary.Sublist.Propositional.Properties`:
+  ```agda
+  ⊆-trans-idˡ      : ⊆-trans ⊆-refl τ ≡ τ
+  ⊆-trans-idʳ      : ⊆-trans τ ⊆-refl ≡ τ
+  ⊆-trans-assoc    : ⊆-trans τ₁ (⊆-trans τ₂ τ₃) ≡ ⊆-trans (⊆-trans τ₁ τ₂) τ₃
+  All-resp-⊆       : (All P) Respects _⊇_
+  Any-resp-⊆       : (Any P) Respects _⊆_
+  All-resp-⊆-refl  : All-resp-⊆ ⊆-refl ≗ id
+  All-resp-⊆-trans : All-resp-⊆ (⊆-trans τ τ′) ≗ All-resp-⊆ τ ∘ All-resp-⊆ τ′
+  Any-resp-⊆-refl  : Any-resp-⊆ ⊆-refl ≗ id
+  Any-resp-⊆-trans : Any-resp-⊆ (⊆-trans τ τ′) ≗ Any-resp-⊆ τ′ ∘ Any-resp-⊆ τ
+  lookup-injective : lookup τ i ≡ lookup τ j → i ≡ j
+  ```
+
 * Added new proofs to `Data.Nat.Properties`:
   ```agda
   even≢odd : ∀ m n → 2 * m ≢ suc (2 * n)
