@@ -28,7 +28,7 @@ open Acc using (acc)
                                         (Induction.Nat.<-wellFounded (toℕ x))
 
 acc[0] :  Acc _<_ zero
-acc[0] =  acc (λ x x<0 → contradiction x<0 ≮0)
+acc[0] =  acc (λ x x<0 → contradiction x<0 x≮0)
 
 acc[suc[x]]⇒acc[x] :  ∀ {x} → Acc _<_ (suc x) → Acc _<_ x
 acc[suc[x]]⇒acc[x] {x} (acc wf[suc[x]]) =  wf[suc[x]] _ (x<suc[x] x)
@@ -42,12 +42,12 @@ acc[2[1+x]]⇒acc-suc[x] :  ∀ {x} → Acc _<_ 2[1+ x ] → Acc _<_ (suc x)
 acc[2[1+x]]⇒acc-suc[x] {x} acc-2[1+x] =  acc[double[x]]⇒acc[x] {suc x} acc-double-suc-x
   where
   acc-double-suc-x :  Acc _<_ (double (suc x))
-  acc-double-suc-x =  subst (Acc _<_) (2[1+-as∘ x) acc-2[1+x]
+  acc-double-suc-x =  subst (Acc _<_) (2[1+_]-as∘ x) acc-2[1+x]
 
 acc[1+[2x]]⇒acc[x] :  ∀ {x} → Acc _<_ 1+[2 x ] → Acc _<_ x
 acc[1+[2x]]⇒acc[x] {x} acc-1+[2x] =  acc[double[x]]⇒acc[x] acc-2x
   where
-  acc-suc-2x = subst (Acc _<_) (1+[2-as∘ x) acc-1+[2x]
+  acc-suc-2x = subst (Acc _<_) (1+[2_]-as∘ x) acc-1+[2x]
   acc-2x     = acc[suc[x]]⇒acc[x] acc-suc-2x
 
 acc[2[1+x]]⇒acc[1+[2x]] :  ∀ {x} → Acc _<_ 2[1+ x ] → Acc _<_ 1+[2 x ]

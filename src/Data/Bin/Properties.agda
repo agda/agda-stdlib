@@ -36,17 +36,17 @@ open +-*-Solver
 ------------------------------------------------------------------------
 -- Properties of size
 
-|x|≡0⇒x≡0 :  ∀ {x} → size x ≡ 0 → x ≡ zero
+|x|≡0⇒x≡0 :  ∀ {x} → size x ≡ 0 → x ≡ 0B
 |x|≡0⇒x≡0 {zero} refl =  refl
 
 ------------------------------------------------------------------------
 -- Properties of _≡_
 ------------------------------------------------------------------------
 
-2[1+x]≢0 : ∀ {x} → 2[1+ x ] ≢ zero
+2[1+x]≢0 : ∀ {x} → 2[1+ x ] ≢ 0B
 2[1+x]≢0 ()
 
-1+[2x]≢0 : ∀ {x} → 1+[2 x ] ≢ zero
+1+[2x]≢0 : ∀ {x} → 1+[2 x ] ≢ 0B
 1+[2x]≢0 ()
 
 2[1+-injective : ∀ {x y} → 2[1+ x ] ≡ 2[1+ y ] → x ≡ y
@@ -84,22 +84,21 @@ zero     ≟ 1+[2 _ ] =  no λ()
 -- Properties of double
 ------------------------------------------------------------------------
 
-2[1+-as∘ : 2[1+_] ≗ double ∘ suc
-2[1+-as∘ zero     =  refl
-2[1+-as∘ 2[1+ x ] =  cong 2[1+_] (2[1+-as∘ x)
-2[1+-as∘ 1+[2 x ] =  refl
+2[1+_]-as∘ : 2[1+_] ≗ double ∘ suc
+2[1+_]-as∘ zero     =  refl
+2[1+_]-as∘ 2[1+ x ] =  cong 2[1+_] (2[1+_]-as∘ x)
+2[1+_]-as∘ 1+[2 x ] =  refl
 
-1+[2-as∘ : 1+[2_] ≗ suc ∘ double
-1+[2-as∘ zero     = refl
-1+[2-as∘ 2[1+ x ] = refl
-1+[2-as∘ 1+[2 x ] = begin
-  1+[2 1+[2 x ] ]         ≡⟨ cong 1+[2_] (1+[2-as∘ x) ⟩
+1+[2_]-as∘ : 1+[2_] ≗ suc ∘ double
+1+[2_]-as∘ zero     = refl
+1+[2_]-as∘ 2[1+ x ] = refl
+1+[2_]-as∘ 1+[2 x ] = begin
+  1+[2 1+[2 x ] ]         ≡⟨ cong 1+[2_] (1+[2_]-as∘ x) ⟩
   1+[2 (suc 2x) ]         ≡⟨⟩
-  suc 2[1+ 2x ]           ≡⟨ cong suc (2[1+-as∘ 2x) ⟩
-  suc (double (suc 2x))   ≡⟨ cong (suc ∘ double) (sym (1+[2-as∘ x)) ⟩
+  suc 2[1+ 2x ]           ≡⟨ cong suc (2[1+_]-as∘ 2x) ⟩
+  suc (double (suc 2x))   ≡⟨ cong (suc ∘ double) (sym (1+[2_]-as∘ x)) ⟩
   suc (double 1+[2 x ])   ∎
-  where
-  2x = double x
+  where 2x = double x
 
 double[x]≡0⇒x≡0 : ∀ {x} → double x ≡ zero → x ≡ zero
 double[x]≡0⇒x≡0 {zero} _ = refl
@@ -121,13 +120,13 @@ suc≢0 {1+[2 _ ]} ()
 
 pred-suc : pred ∘ suc ≗ id
 pred-suc zero     =  refl
-pred-suc 2[1+ x ] =  sym (2[1+-as∘ x)
+pred-suc 2[1+ x ] =  sym (2[1+_]-as∘ x)
 pred-suc 1+[2 x ] =  refl
 
 suc-pred : ∀ {x} → x ≢ zero → suc (pred x) ≡ x
 suc-pred {zero}     0≢0 =  contradiction refl 0≢0
 suc-pred {2[1+ _ ]} _   =  refl
-suc-pred {1+[2 x ]} _   =  sym (1+[2-as∘ x)
+suc-pred {1+[2 x ]} _   =  sym (1+[2_]-as∘ x)
 
 ------------------------------------------------------------------------
 -- Properties of toℕ & fromℕ
@@ -173,8 +172,8 @@ toℕ-injective {1+[2 x ]} {2[1+ y ]} 1+2xN≡2[1+yN] =
 toℕ-injective {1+[2 x ]} {1+[2 y ]} 1+2xN≡1+2yN =  cong 1+[2_] x≡y
   where
   2xN≡2yN = cong ℕ.pred 1+2xN≡1+2yN
-  xN≡yN = ℕₚ.*-cancelˡ-≡ 1 2xN≡2yN
-  x≡y = toℕ-injective xN≡yN
+  xN≡yN   = ℕₚ.*-cancelˡ-≡ 1 2xN≡2yN
+  x≡y     = toℕ-injective xN≡yN
 
 toℕ-surjective :  ∀ n → ∃ (λ x → toℕ x ≡ n)
 toℕ-surjective n =  (fromℕ n , toℕ-fromℕ n)
@@ -189,8 +188,7 @@ fromℕ-pred n = begin
   fromℕ (toℕ (pred x))    ≡⟨ fromℕ-toℕ (pred x) ⟩
   pred x                  ≡⟨ refl ⟩
   pred (fromℕ n)          ∎
-  where
-  x = fromℕ n
+  where x = fromℕ n
 
 x≡0⇒toℕ[x]≡0 :  ∀ {x} → x ≡ zero → toℕ x ≡ 0
 x≡0⇒toℕ[x]≡0 {zero} _ = refl
@@ -229,8 +227,7 @@ toℕ-homo-+ 2[1+ x ] 1+[2 y ] = begin
                                              refl m n ⟩
   (2 ℕ.* ℕ.suc m) ℕ.+ (ℕ.suc (2 ℕ.* n)) ≡⟨⟩
   toℕ 2[1+ x ] ℕ.+ toℕ 1+[2 y ]         ∎
-  where
-  m = toℕ x;  n = toℕ y
+  where m = toℕ x; n = toℕ y
 
 toℕ-homo-+ 1+[2 x ] 2[1+ y ] = begin
   toℕ (1+[2 x ] + 2[1+ y ])                 ≡⟨⟩
@@ -242,8 +239,7 @@ toℕ-homo-+ 1+[2 x ] 2[1+ y ] = begin
                                                  refl m n ⟩
   (ℕ.suc (2 ℕ.* m)) ℕ.+ (2 ℕ.* (ℕ.suc n))   ≡⟨⟩
   toℕ 1+[2 x ] ℕ.+ toℕ 2[1+ y ]             ∎
-  where
-  m = toℕ x;  n = toℕ y
+  where m = toℕ x;  n = toℕ y
 
 toℕ-homo-+ 1+[2 x ] 1+[2 y ] = begin
   toℕ (1+[2 x ] + 1+[2 y ])               ≡⟨⟩
@@ -255,8 +251,7 @@ toℕ-homo-+ 1+[2 x ] 1+[2 y ] = begin
                                                refl m n ⟩
   (ℕ.suc (2 ℕ.* m)) ℕ.+ (ℕ.suc (2 ℕ.* n)) ≡⟨⟩
   toℕ 1+[2 x ] ℕ.+ toℕ 1+[2 y ]           ∎
-  where
-  m = toℕ x;  n = toℕ y
+  where m = toℕ x;  n = toℕ y
 
 suc≗1+ : suc ≗ 1B +_
 suc≗1+ zero     = refl
@@ -283,8 +278,7 @@ fromℕ-homo-+ (ℕ.suc m) n = begin
   suc (a + b)                      ≡⟨ sym (suc-+ a b) ⟩
   (suc a) + b                      ≡⟨⟩
   (fromℕ (ℕ.suc m)) + (fromℕ n)    ∎
-  where
-  a = fromℕ m;  b = fromℕ n
+  where a = fromℕ m;  b = fromℕ n
 
 ------------------------------------------------------------------------
 -- Algebraic properties of _+_
@@ -302,8 +296,7 @@ fromℕ-homo-+ (ℕ.suc m) n = begin
   fromℕ (aN ℕ.+ toℕ (b + c))   ≡⟨ cong fromℕ (sym (toℕ-homo-+ a (b + c))) ⟩
   fromℕ (toℕ (a + (b + c)))    ≡⟨ fromℕ-toℕ (a + (b + c)) ⟩
   (a + (b + c))                ∎
-  where
-  aN = toℕ a;   bN = toℕ b;   cN = toℕ c
+  where aN = toℕ a;   bN = toℕ b;   cN = toℕ c
 
 +-comm :  Commutative _+_
 +-comm a b = begin
@@ -332,8 +325,7 @@ fromℕ-homo-+ (ℕ.suc m) n = begin
   fromℕ n   ≡⟨ fromℕ-toℕ z ⟩
   z         ∎
   where
-  k = toℕ x;  m = toℕ y;  n = toℕ z
-
+  k  = toℕ x;  m = toℕ y;  n = toℕ z
   eq = begin
     k ℕ.+ m        ≡⟨ sym (toℕ-homo-+ x y) ⟩
     toℕ (x + y)    ≡⟨ cong toℕ x+y≡x+z ⟩
@@ -341,7 +333,7 @@ fromℕ-homo-+ (ℕ.suc m) n = begin
     k ℕ.+ n        ∎
 
   m≡n = begin
-    m                  ≡⟨ sym (ℕₚ.m+n∸n≡m m k)⟩
+    m                  ≡⟨ sym (ℕₚ.m+n∸n≡m m k) ⟩
     (m ℕ.+ k) ℕ.∸ k    ≡⟨ cong (ℕ._∸ k) (ℕₚ.+-comm m k) ⟩
     (k ℕ.+ m) ℕ.∸ k    ≡⟨ cong (ℕ._∸ k) eq ⟩
     (k ℕ.+ n) ℕ.∸ k    ≡⟨ cong (ℕ._∸ k) (ℕₚ.+-comm k n) ⟩
@@ -536,8 +528,7 @@ fromℕ-homo-* m n = begin
   fromℕ (aN ℕ.* toℕ (b * c))   ≡⟨ cong fromℕ (sym (toℕ-homo-* a (b * c))) ⟩
   fromℕ (toℕ (a * (b * c)))    ≡⟨ fromℕ-toℕ (a * (b * c)) ⟩
   (a * (b * c))                ∎
-  where
-  aN = toℕ a;   bN = toℕ b;   cN = toℕ c
+  where aN = toℕ a;  bN = toℕ b;  cN = toℕ c
 
 *-comm : Commutative _*_
 *-comm a b = begin
@@ -555,8 +546,7 @@ fromℕ-homo-* m n = begin
   fromℕ (1 ℕ.* n)        ≡⟨ cong fromℕ (ℕₚ.*-identityˡ n) ⟩
   fromℕ n                ≡⟨ fromℕ-toℕ x ⟩
   x                      ∎
-  where
-  n = toℕ x
+  where n = toℕ x
 
 *-identityʳ : RightIdentity 1B _*_
 *-identityʳ x =  trans (*-comm x 1B) (*-identityˡ x)
@@ -582,12 +572,11 @@ fromℕ-homo-* m n = begin
   fromℕ (k ℕ.* (toℕ (b + c)))          ≡⟨ cong (fromℕ ∘ (k ℕ.*_)) (toℕ-homo-+ b c) ⟩
   fromℕ (k ℕ.* (m ℕ.+ n))              ≡⟨ cong fromℕ (ℕₚ.*-distribˡ-+ k m n) ⟩
   fromℕ (k ℕ.* m ℕ.+ k ℕ.* n)          ≡⟨ cong fromℕ $ sym $
-                                           cong₂ ℕ._+_ (toℕ-homo-* a b) (toℕ-homo-* a c) ⟩
+                                            cong₂ ℕ._+_ (toℕ-homo-* a b) (toℕ-homo-* a c) ⟩
   fromℕ (toℕ (a * b) ℕ.+ toℕ (a * c))  ≡⟨ cong fromℕ (sym (toℕ-homo-+ (a * b) (a * c))) ⟩
   fromℕ (toℕ (a * b + a * c))          ≡⟨ fromℕ-toℕ (a * b + a * c) ⟩
   a * b + a * c                        ∎
-  where
-  k = toℕ a;   m = toℕ b;   n = toℕ c
+  where k = toℕ a;  m = toℕ b;  n = toℕ c
 
 *-distribʳ-+ : _*_ DistributesOverʳ _+_
 *-distribʳ-+ = comm+distrˡ⇒distrʳ *-comm *-distribˡ-+
@@ -742,5 +731,4 @@ double-distrib-+ x y = begin
   2B * (x + y)           ≡⟨ *-distribˡ-+ 2B x y ⟩
   (2B * x) + (2B * y)    ≡⟨ cong₂ _+_ eq eq' ⟩
   double x + double y    ∎
-  where
-  eq = sym (double≗2B* x);   eq' = sym (double≗2B* y)
+  where eq = sym (double≗2B* x);   eq' = sym (double≗2B* y)
