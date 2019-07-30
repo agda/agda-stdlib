@@ -15,7 +15,7 @@ open import Data.Bool.Base using (Bool; true; false; not)
 open import Data.Unit.Base using (⊤)
 open import Data.These.Base using (These; this; that; these)
 open import Data.Product as Prod using (_×_; _,_)
-open import Function
+open import Function.Core
 open import Relation.Nullary
 
 private
