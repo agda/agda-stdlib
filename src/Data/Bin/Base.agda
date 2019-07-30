@@ -9,14 +9,7 @@
 module Data.Bin.Base where
 
 open import Algebra.FunctionProperties using (Op₂)
-open import Data.Char using (Char)
-open import Data.Digit using (Bit)
-import Data.Fin as F
-open import Data.List using (List; []; _∷_; map; reverse)
 open import Data.Nat.Base as ℕ using (ℕ)
-open import Data.String as String using (String)
-open import Function using (_∘_)
-open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 
 ------------------------------------------------------------------------
 -- Definition
@@ -101,53 +94,3 @@ size 1+[2 x ] = ℕ.suc (size x)
 7B = suc 6B
 8B = suc 7B
 9B = suc 8B
-
-------------------------------------------------------------------------------
--- Conversion to/from bit list and character list (used to show/parse Bin).
-
-pattern 0b = F.zero
-pattern 1b = F.suc 0b
-pattern ⊥b = F.suc (F.suc ())
-
-fromBits : List Bit → Bin        -- less significant bits are put ahead
-fromBits []        = 0B
-fromBits (0b ∷ bs) = double (fromBits bs)
-fromBits (1b ∷ bs) = 1+[2 (fromBits bs) ]
-fromBits (⊥b ∷ _)
-
-private
-  add1 : List Bit → List Bit
-  add1 []        =  1b ∷ []
-  add1 (0b ∷ bs) =  1b ∷ bs
-  add1 (1b ∷ bs) =  0b ∷ (add1 bs)
-  add1 (⊥b ∷ _)
-
-toBits : Bin → List Bit
-toBits zero     =  []
-toBits 2[1+ x ] =  0b ∷ add1 (toBits x)
-toBits 1+[2 x ] =  1b ∷ (toBits x)
-
-toBitsR = reverse ∘ toBits
-
-bitToChar : Bit → Char
-bitToChar 0b = '0'
-bitToChar 1b = '1'
-bitToChar ⊥b
-
-showBits : List Bit → String
-showBits = String.fromList ∘ map bitToChar
-
-showBitsR : List Bit → String
-showBitsR = String.fromList ∘ map bitToChar ∘ reverse
-
-show : Bin → String
-show = showBits ∘ toBitsR
-
-private
-  test : show (fromℕ 5) ≡ "101"
-         -- show (fromℕ 0) ≡ ""
-         -- show (fromℕ 1) ≡ "1"
-         -- show (fromℕ 2) ≡ "10"
-         -- show (fromℕ 3) ≡ "11"
-         -- show (fromℕ 4) ≡ "100"
-  test = refl

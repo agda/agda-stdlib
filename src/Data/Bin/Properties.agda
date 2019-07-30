@@ -20,6 +20,8 @@ open import Data.Nat.Solver
 open import Data.Product using (_,_; proj₁; proj₂; ∃)
 open import Data.Sum using (_⊎_; inj₁; inj₂)
 open import Function using (_∘_; _$_; id; const)
+open import Function.Definitions using (Injective)
+open import Function.Definitions.Core2 using (Surjective)
 open import Level using (0ℓ)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
@@ -51,22 +53,22 @@ open +-*-Solver
 1+[2x]≢0 : ∀ {x} → 1+[2 x ] ≢ 0B
 1+[2x]≢0 ()
 
-2[1+-injective : ∀ {x y} → 2[1+ x ] ≡ 2[1+ y ] → x ≡ y
-2[1+-injective refl = refl
+2[1+_]-injective : Injective {A = Bin} {B = Bin} _≡_ _≡_ 2[1+_]
+2[1+_]-injective refl = refl
 
-1+[2-injective : ∀ {x y} → 1+[2 x ] ≡ 1+[2 y ] → x ≡ y
-1+[2-injective refl = refl
+1+[2_]-injective : Injective {A = Bin} {B = Bin} _≡_ _≡_ 1+[2_]
+1+[2_]-injective refl = refl
 
 _≟_ :  Decidable {A = Bin} _≡_
 zero     ≟ zero     =  yes refl
 zero     ≟ 2[1+ _ ] =  no λ()
 zero     ≟ 1+[2 _ ] =  no λ()
 2[1+ _ ] ≟ zero     =  no λ()
-2[1+ x ] ≟ 2[1+ y ] =  Dec.map′ (cong 2[1+_]) 2[1+-injective (x ≟ y)
+2[1+ x ] ≟ 2[1+ y ] =  Dec.map′ (cong 2[1+_]) 2[1+_]-injective (x ≟ y)
 2[1+ _ ] ≟ 1+[2 _ ] =  no λ()
 1+[2 _ ] ≟ zero     =  no λ()
 1+[2 _ ] ≟ 2[1+ _ ] =  no λ()
-1+[2 x ] ≟ 1+[2 y ] =  Dec.map′ (cong 1+[2_]) 1+[2-injective (x ≟ y)
+1+[2 x ] ≟ 1+[2 y ] =  Dec.map′ (cong 1+[2_]) 1+[2_]-injective (x ≟ y)
 
 ≡-isDecEquivalence :  IsDecEquivalence {A = Bin} _≡_
 ≡-isDecEquivalence = record
@@ -157,7 +159,7 @@ toℕ-fromℕ (ℕ.suc n) = begin
   ℕ.suc (toℕ (fromℕ n))   ≡⟨ cong ℕ.suc (toℕ-fromℕ n) ⟩
   ℕ.suc n                 ∎
 
-toℕ-injective :  ∀ {x y} → toℕ x ≡ toℕ y → x ≡ y
+toℕ-injective :  Injective {A = Bin} {B = ℕ} _≡_ _≡_ toℕ
 toℕ-injective {zero}     {zero}     _               =  refl
 toℕ-injective {2[1+ x ]} {2[1+ y ]} 2[1+xN]≡2[1+yN] =  cong 2[1+_] x≡y
   where
@@ -177,8 +179,8 @@ toℕ-injective {1+[2 x ]} {1+[2 y ]} 1+2xN≡1+2yN =  cong 1+[2_] x≡y
   xN≡yN   = ℕₚ.*-cancelˡ-≡ 1 2xN≡2yN
   x≡y     = toℕ-injective xN≡yN
 
-toℕ-surjective :  ∀ n → ∃ (λ x → toℕ x ≡ n)
-toℕ-surjective n =  (fromℕ n , toℕ-fromℕ n)
+toℕ-surjective :  Surjective {B = ℕ} _≡_ toℕ
+toℕ-surjective n =  (fromℕ n , sym (toℕ-fromℕ n))
 
 fromℕ-toℕ :  fromℕ ∘ toℕ ≗ id
 fromℕ-toℕ =  toℕ-injective ∘ toℕ-fromℕ ∘ toℕ
@@ -316,7 +318,6 @@ fromℕ-homo-+ (ℕ.suc m) n = begin
 -- by `toℕ`/`fromℕ`.
 
 module _ where
-
   open MonoidMorphisms toℕ-+-isRawMonoidMorphism toℕ-injective
 
   +-assoc :  Associative _+_
