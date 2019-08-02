@@ -24,15 +24,12 @@ open import Relation.Binary
 
 module Relation.Binary.Reasoning.Setoid {s₁ s₂} (S : Setoid s₁ s₂) where
 
+open import Relation.Binary.Partial as PartialSetoid
+
 open Setoid S
 
 ------------------------------------------------------------------------
--- Publicly re-export base contents
+-- Publicly re-export partial setoid contents
 
-open import Relation.Binary.Reasoning.Base.Single _≈_ refl trans public
-  renaming (_∼⟨_⟩_ to _≈⟨_⟩_)
-
-infixr 2 _≈˘⟨_⟩_
-
-_≈˘⟨_⟩_ : ∀ x {y z} → y ≈ x → y IsRelatedTo z → x IsRelatedTo z
-x ≈˘⟨ x≈y ⟩ y∼z = x ≈⟨ sym x≈y ⟩ y∼z
+open import Relation.Binary.Reasoning.PartialSetoid (PartialSetoid.fromSetoid S) public
+open import Relation.Binary.Reasoning.Base.Single _≈_ refl trans using (_∎) public
