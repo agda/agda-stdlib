@@ -276,9 +276,7 @@ toℕ-homo-+ 1+[2 x ] 1+[2 y ] = begin
 
 toℕ-+-isRawMagmaMorphism : IsRawMagmaMorphism +-rawMagma ℕₚ.+-rawMagma toℕ
 toℕ-+-isRawMagmaMorphism = record
-  { F-isMagma = isMagma _+_
-  ; T-isMagma = ℕₚ.+-isMagma
-  ; ⟦⟧-cong   = cong toℕ
+  { ⟦⟧-cong   = cong toℕ
   ; ∙-homo    = toℕ-homo-+
   }
 
@@ -323,8 +321,8 @@ fromℕ-homo-+ (ℕ.suc m) n = begin
 -- by `toℕ`/`fromℕ`.
 
 module _ where
-
-  open MonoidMorphisms toℕ-+-isRawMonoidMorphism toℕ-injective
+  open MonoidMorphisms ℕₚ.+-isMagma toℕ-+-isRawMonoidMorphism toℕ-injective
+    hiding (isMagma)
 
   +-assoc :  Associative _+_
   +-assoc = assoc-homo ℕₚ.+-assoc
@@ -508,9 +506,7 @@ toℕ-homo-* x y = aux x y (size x ℕ.+ size y) ℕₚ.≤-refl
 
 toℕ-*-isRawMagmaMorphism : IsRawMagmaMorphism *-rawMagma ℕₚ.*-rawMagma toℕ
 toℕ-*-isRawMagmaMorphism = record
-  { F-isMagma = isMagma _*_
-  ; T-isMagma = ℕₚ.*-isMagma
-  ; ⟦⟧-cong   = cong toℕ
+  { ⟦⟧-cong   = cong toℕ
   ; ∙-homo    = toℕ-homo-*
   }
 
@@ -537,7 +533,8 @@ fromℕ-homo-* m n = begin
 -- by `toℕ`/`fromℕ`.
 
 module _ where
-  open MonoidMorphisms toℕ-*-isRawMonoidMorphism toℕ-injective
+  open MonoidMorphisms ℕₚ.*-isMagma toℕ-*-isRawMonoidMorphism toℕ-injective
+    hiding (isMagma)
 
   *-assoc :  Associative _*_
   *-assoc = assoc-homo ℕₚ.*-assoc
@@ -590,7 +587,8 @@ module _ where
 -- Structures
 
 module _ where
-  open MonoidMorphisms toℕ-*-isRawMonoidMorphism toℕ-injective
+  open MonoidMorphisms ℕₚ.*-isMagma toℕ-*-isRawMonoidMorphism toℕ-injective
+    hiding (isMagma)
 
   *-isMagma : IsMagma _*_
   *-isMagma = isMagma _*_

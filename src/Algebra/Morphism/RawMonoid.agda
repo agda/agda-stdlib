@@ -8,12 +8,14 @@
 
 open import Algebra
 open import Algebra.Morphism
+open import Algebra.Structures using (IsMagma)
 open import Function
 open RawMonoid using (Carrier; _≈_)
 
 module Algebra.Morphism.RawMonoid
   {a b ℓ₁ ℓ₂} {From : RawMonoid b ℓ₂} {To : RawMonoid a ℓ₁}
   {f : Carrier From → Carrier To}
+  (T-isMagma : IsMagma (_≈_ To) (RawMonoid._∙_ To))
   (f-isRawMonoidMorphism : IsRawMonoidMorphism From To f)
   (f-injective : Injective (_≈_ From) (_≈_ To) f)
   where
@@ -28,20 +30,24 @@ open import Level
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning
 
 private
+  T-magma : Magma _ _
+  T-magma = record { isMagma = T-isMagma }
+
   module F = RawMonoid From
   module T = RawMonoid To
+  module TM = Magma T-magma
 
 open Definitions F.Carrier T.Carrier T._≈_
 open T using () renaming (_∙_ to _⊕_)
 open F using (_∙_)
 
 open IsRawMonoidMorphism f-isRawMonoidMorphism
-open SetoidReasoning T-setoid
+open SetoidReasoning (IsMagma.setoid T-isMagma)
 
 ------------------------------------------------------------------------
 -- Export all properties of magma morphisms
 
-open import Algebra.Morphism.RawMagma magma-homo f-injective public
+open import Algebra.Morphism.RawMagma {To = T-magma} magma-homo f-injective public
 
 ------------------------------------------------------------------------
 -- Properties
@@ -49,14 +55,14 @@ open import Algebra.Morphism.RawMagma magma-homo f-injective public
 identityˡ-homo : LeftIdentity T._≈_ T.ε _⊕_ → LeftIdentity F._≈_ F.ε _∙_
 identityˡ-homo idˡ x = f-injective (begin
   f (F.ε ∙ x)  ≈⟨ ∙-homo F.ε x ⟩
-  f F.ε ⊕ f x ≈⟨ T-∙-congʳ ε-homo ⟩
+  f F.ε ⊕ f x ≈⟨ TM.∙-congʳ ε-homo ⟩
   T.ε ⊕ f x    ≈⟨ idˡ (f x) ⟩
   f x          ∎)
 
 identityʳ-homo : RightIdentity T._≈_ T.ε _⊕_ → RightIdentity F._≈_ F.ε _∙_
 identityʳ-homo idʳ x = f-injective (begin
   f (x ∙ F.ε)  ≈⟨ ∙-homo x F.ε ⟩
-  f x ⊕ f F.ε ≈⟨ T-∙-congˡ ε-homo ⟩
+  f x ⊕ f F.ε ≈⟨ TM.∙-congˡ ε-homo ⟩
   f x ⊕ T.ε    ≈⟨ idʳ (f x) ⟩
   f x          ∎)
 

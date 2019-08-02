@@ -48,28 +48,10 @@ module _ {c₁ ℓ₁ c₂ ℓ₂}
   open Definitions F.Carrier T.Carrier T._≈_
 
   record IsRawMagmaMorphism (⟦_⟧ : Morphism) :
-         Set (c₁ ⊔ ℓ₁ ⊔ c₂ ⊔ ℓ₂) where
+         Set (c₁ ⊔ ℓ₁ ⊔ ℓ₂) where
     field
-      F-isMagma : IsMagma F._≈_ F._∙_
-      T-isMagma : IsMagma T._≈_ T._∙_
       ⟦⟧-cong : ⟦_⟧ Preserves F._≈_ ⟶ T._≈_
       ∙-homo  : Homomorphic₂ ⟦_⟧ F._∙_ T._∙_
-
-    open IsMagma F-isMagma public using ()
-      renaming
-      ( ∙-cong  to F-∙-cong
-      ; ∙-congˡ to F-∙-congˡ
-      ; ∙-congʳ to F-∙-congʳ
-      ; setoid  to F-setoid
-      )
-
-    open IsMagma T-isMagma public using ()
-      renaming
-      ( ∙-cong  to T-∙-cong
-      ; ∙-congˡ to T-∙-congˡ
-      ; ∙-congʳ to T-∙-congʳ
-      ; setoid  to T-setoid
-      )
 
   IsRawMagmaMorphism-syntax = IsRawMagmaMorphism
   syntax IsRawMagmaMorphism-syntax From To F = F Is From -RawMagma⟶ To
@@ -85,7 +67,7 @@ module _ {c₁ ℓ₁ c₂ ℓ₂}
   open Definitions F.Carrier T.Carrier T._≈_
 
   record IsRawMonoidMorphism (⟦_⟧ : Morphism) :
-         Set (c₁ ⊔ ℓ₁ ⊔ c₂ ⊔ ℓ₂) where
+         Set (c₁ ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       magma-homo : IsRawMagmaMorphism F.rawMagma T.rawMagma ⟦_⟧
       ε-homo     : Homomorphic₀ ⟦_⟧ F.ε T.ε
@@ -109,7 +91,7 @@ module _ {c₁ ℓ₁ c₂ ℓ₂}
   open Definitions F.Carrier T.Carrier T._≈_
 
   record IsSemigroupMorphism (⟦_⟧ : Morphism) :
-         Set (c₁ ⊔ ℓ₁ ⊔ c₂ ⊔ ℓ₂) where
+         Set (c₁ ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       ⟦⟧-cong : ⟦_⟧ Preserves F._≈_ ⟶ T._≈_
       ∙-homo  : Homomorphic₂ ⟦_⟧ F._∙_ T._∙_
@@ -127,7 +109,7 @@ module _ {c₁ ℓ₁ c₂ ℓ₂}
   open Definitions F.Carrier T.Carrier T._≈_
 
   record IsMonoidMorphism (⟦_⟧ : Morphism) :
-         Set (c₁ ⊔ ℓ₁ ⊔ c₂ ⊔ ℓ₂) where
+         Set (c₁ ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       sm-homo : IsSemigroupMorphism F.semigroup T.semigroup ⟦_⟧
       ε-homo  : Homomorphic₀ ⟦_⟧ F.ε T.ε
@@ -147,7 +129,7 @@ module _ {c₁ ℓ₁ c₂ ℓ₂}
   open Definitions F.Carrier T.Carrier T._≈_
 
   record IsCommutativeMonoidMorphism (⟦_⟧ : Morphism) :
-         Set (c₁ ⊔ ℓ₁ ⊔ c₂ ⊔ ℓ₂) where
+         Set (c₁ ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       mn-homo : IsMonoidMorphism F.monoid T.monoid ⟦_⟧
 
@@ -166,7 +148,7 @@ module _ {c₁ ℓ₁ c₂ ℓ₂}
   open Definitions F.Carrier T.Carrier T._≈_
 
   record IsIdempotentCommutativeMonoidMorphism (⟦_⟧ : Morphism) :
-         Set (c₁ ⊔ ℓ₁ ⊔ c₂ ⊔ ℓ₂) where
+         Set (c₁ ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       mn-homo : IsMonoidMorphism F.monoid T.monoid ⟦_⟧
 
@@ -189,7 +171,7 @@ module _ {c₁ ℓ₁ c₂ ℓ₂}
   open Definitions F.Carrier T.Carrier T._≈_
 
   record IsGroupMorphism (⟦_⟧ : Morphism) :
-         Set (c₁ ⊔ ℓ₁ ⊔ c₂ ⊔ ℓ₂) where
+         Set (c₁ ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       mn-homo : IsMonoidMorphism F.monoid T.monoid ⟦_⟧
 
@@ -215,7 +197,7 @@ module _ {c₁ ℓ₁ c₂ ℓ₂}
   open Definitions F.Carrier T.Carrier T._≈_
 
   record IsAbelianGroupMorphism (⟦_⟧ : Morphism) :
-         Set (c₁ ⊔ ℓ₁ ⊔ c₂ ⊔ ℓ₂) where
+         Set (c₁ ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       gp-homo : IsGroupMorphism F.group T.group ⟦_⟧
 
@@ -234,7 +216,7 @@ module _ {c₁ ℓ₁ c₂ ℓ₂}
   open Definitions F.Carrier T.Carrier T._≈_
 
   record IsRingMorphism (⟦_⟧ : Morphism) :
-         Set (c₁ ⊔ ℓ₁ ⊔ c₂ ⊔ ℓ₂) where
+         Set (c₁ ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       +-abgp-homo : ⟦_⟧ Is F.+-abelianGroup -AbelianGroup⟶ T.+-abelianGroup
       *-mn-homo   : ⟦_⟧ Is F.*-monoid -Monoid⟶ T.*-monoid
