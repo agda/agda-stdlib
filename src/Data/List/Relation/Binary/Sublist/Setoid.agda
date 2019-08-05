@@ -227,7 +227,88 @@ data Disjoint : (τ : xs ⊆ zs) (σ : ys ⊆ zs) → Set (c ⊔ ℓ) where
 ... | no ¬d = no λ{ (_ ∷ d) → ¬d d }
 
 
+record IsUpperBound {xs ys zs} (τ : xs ⊆ zs) (σ : ys ⊆ zs) (us : List A) : Set (c ⊔ ℓ) where
+  field
+    sub  : us ⊆ zs
+    inj₁ : xs ⊆ us
+    inj₂ : ys ⊆ us
 
+module _ (open IsUpperBound) where
+
+  ∷-ub : IsUpperBound τ σ us → IsUpperBound (x ∷ʳ τ) (x ∷ʳ σ) us
+  ∷-ub u = record
+    { sub  = _ ∷ʳ u .sub
+    ; inj₁ = u .inj₁
+    ; inj₂ = u .inj₂
+    }
+
+  ∷-ub⁻¹ : IsUpperBound (x ∷ʳ τ) (x ∷ʳ σ) us → IsUpperBound τ σ us
+  ∷-ub⁻¹ u = record
+    { sub  = {! u .sub !}
+    ; inj₁ = u .inj₁
+    ; inj₂ = u .inj₂
+    }
+
+  _∷ˡ-ub_ : (x≈y : x ≈ y) → IsUpperBound τ σ us → IsUpperBound (x≈y ∷ τ) (y ∷ʳ σ) (y ∷ us)
+  x≈y ∷ˡ-ub u = record
+    { sub = refl ∷ u .sub
+    ; inj₁ = x≈y ∷ u .inj₁
+    ; inj₂ = _  ∷ʳ u .inj₂
+    }
+
+  _∷ˡ-ub⁻¹_ : (x≈y : x ≈ y) → IsUpperBound (x≈y ∷ τ) (y ∷ʳ σ) (y ∷ us) → IsUpperBound τ σ us
+  x≈y ∷ˡ-ub⁻¹ record { sub = (y ∷ʳ ρ) ; inj₁ = (.y ∷ʳ τ′) ; inj₂ = (.y ∷ʳ σ′) } = record { sub = ⊆-trans (y ∷ʳ ⊆-refl) ρ ; inj₁ = ⊆-trans (_ ∷ʳ ⊆-refl) τ′ ; inj₂ = σ′ }
+  x≈y ∷ˡ-ub⁻¹ record { sub = (y ∷ʳ ρ) ; inj₁ = (.y ∷ʳ τ′) ; inj₂ = (_  ∷ σ′)  } = record { sub = ⊆-trans (y ∷ʳ ⊆-refl) ρ ; inj₁ = ⊆-trans (_ ∷ʳ ⊆-refl) τ′ ; inj₂ = {!!} }
+  x≈y ∷ˡ-ub⁻¹ record { sub = (y ∷ʳ ρ) ; inj₁ = (x ∷ τ′)   ; inj₂ = (.y ∷ʳ σ′) } = record { sub = ⊆-trans (y ∷ʳ ⊆-refl) ρ ; inj₁ = τ′                       ; inj₂ = σ′ }
+  x≈y ∷ˡ-ub⁻¹ record { sub = (y ∷ʳ ρ) ; inj₁ = (x ∷ τ′)   ; inj₂ = (_  ∷ σ′)  } = record { sub = ⊆-trans (y ∷ʳ ⊆-refl) ρ ; inj₁ = τ′                       ; inj₂ = {!!} }
+  x≈y ∷ˡ-ub⁻¹ record { sub = (x ∷ ρ)  ; inj₁ = (y ∷ʳ τ′)  ; inj₂ = (.y ∷ʳ σ′) } = record { sub = ρ                       ; inj₁ = ⊆-trans (_ ∷ʳ ⊆-refl) τ′ ; inj₂ = σ′ }
+  x≈y ∷ˡ-ub⁻¹ record { sub = (x ∷ ρ)  ; inj₁ = (y ∷ʳ τ′)  ; inj₂ = (_  ∷ σ′)  } = record { sub = ρ                       ; inj₁ = ⊆-trans (_ ∷ʳ ⊆-refl) τ′ ; inj₂ = {!!} }
+  x≈y ∷ˡ-ub⁻¹ record { sub = (x ∷ ρ)  ; inj₁ = (x₁ ∷ τ′)  ; inj₂ = (y  ∷ʳ σ′) } = record { sub = ρ                       ; inj₁ = τ′                       ; inj₂ = σ′ }
+  x≈y ∷ˡ-ub⁻¹ record { sub = (x ∷ ρ)  ; inj₁ = (x₁ ∷ τ′)  ; inj₂ = (_  ∷ σ′)  } = record { sub = ρ                       ; inj₁ = τ′                       ; inj₂ = {!!} }
+
+  _∷ʳ-ub_ : (x≈y : x ≈ y) → IsUpperBound τ σ us → IsUpperBound (y ∷ʳ τ) (x≈y ∷ σ) (y ∷ us)
+  x≈y ∷ʳ-ub u = record
+    { sub  = refl ∷ u .sub
+    ; inj₁ = _   ∷ʳ u .inj₁
+    ; inj₂ = x≈y  ∷ u .inj₂
+    }
+
+record Union {xs ys zs} (τ : xs ⊆ zs) (σ : ys ⊆ zs) : Set (c ⊔ ℓ) where
+  field
+    {union} : List A
+    isUpperBound : IsUpperBound τ σ union
+  open IsUpperBound isUpperBound public
+
+  field
+    least : ∀ us → IsUpperBound τ σ us → union ⊆ us
+
+open Union
+
+∷-union : Union τ σ → Union (x ∷ʳ τ) (x ∷ʳ σ)
+∷-union u = record
+  { isUpperBound = ∷-ub (u .isUpperBound)
+  ; least = λ{ us u′ → u .least us {!u′!} }
+  }
+
+_∷ˡ-union_ : (x≈y : x ≈ y) → Union τ σ → Union (x≈y ∷ τ) (y ∷ʳ σ)
+(x≈y ∷ˡ-union u) .union        = _ ∷ u .union
+(x≈y ∷ˡ-union u) .isUpperBound = x≈y ∷ˡ-ub (u .isUpperBound)
+(x≈y ∷ˡ-union u) .least us record { sub = (y ∷ʳ ρ) ; inj₁ = τ′ ; inj₂ = σ′ } = {!!}
+(x≈y ∷ˡ-union u) .least .(_ ∷ _) record { sub = (x′≈y ∷ ρ) ; inj₁ = τ′ ; inj₂ = σ′ } = sym x′≈y ∷ u .least _ (record { sub = ρ ; inj₁ = {!!} ; inj₂ = {!!} })
+
+-- (x≈y ∷ˡ-union u) .least .(y ∷ _) record { sub = sub ; inj₁ = (y ∷ʳ τ′) ; inj₂ = inj₂ } = {!u .least!}
+-- (x≈y ∷ˡ-union u) .least .(_ ∷ _) record { sub = sub ; inj₁ = (x ∷  τ′) ; inj₂ = inj₂ } = {!!}
+
+_∷ʳ-union_ : (x≈y : x ≈ y) → Union τ σ → Union (y ∷ʳ τ) (x≈y ∷ σ)
+x≈y ∷ʳ-union u = {!!}
+
+⊆-disjoint-union : {τ : xs ⊆ zs} {σ : ys ⊆ zs} → Disjoint τ σ → Union τ σ
+⊆-disjoint-union []         = {! record { sub = [] ; inj₁ = [] ; inj₂ = [] } !}
+⊆-disjoint-union (x   ∷  d) = ∷-union (⊆-disjoint-union d)
+⊆-disjoint-union (x≈y ∷ˡ d) = x≈y ∷ˡ-union (⊆-disjoint-union d)
+⊆-disjoint-union (x≈y ∷ʳ d) = x≈y ∷ʳ-union (⊆-disjoint-union d)
+
+{-
 record Union {xs ys zs} (τ : xs ⊆ zs) (σ : ys ⊆ zs) : Set (c ⊔ ℓ) where
   field
     {union} : List A
