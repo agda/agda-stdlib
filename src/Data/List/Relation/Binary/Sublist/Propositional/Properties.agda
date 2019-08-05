@@ -133,6 +133,28 @@ lookup-⊆-trans = Any-resp-⊆-trans
 
 lookup-injective : ∀ {P : Pred A ℓ} {xs ys} {τ : xs ⊆ ys} {i j : Any P xs} →
                    lookup τ i ≡ lookup τ j → i ≡ j
-lookup-injective {τ = _  ∷ʳ _}                      = lookup-injective ∘′ there-injective
+lookup-injective {τ = _   ∷ʳ _}                     = lookup-injective ∘′ there-injective
 lookup-injective {τ = refl ∷ _} {here  _} {here  _} = cong here ∘′ here-injective
-lookup-injective {τ = _   ∷ _}  {there _} {there _} = cong there ∘′ lookup-injective ∘′ there-injective
+lookup-injective {τ = _    ∷ _} {there _} {there _} = cong there ∘′ lookup-injective ∘′ there-injective
+
+------------------------------------------------------------------------
+-- Weak pushout (wpo)
+
+-- A raw pushout is a weak pushout if the pushout square commutes.
+
+IsWeakPushout : ∀{xs ys zs : List A} {τ : xs ⊆ ys} {σ : xs ⊆ zs} →
+                RawPushout τ σ → Set a
+IsWeakPushout {τ = τ} {σ = σ} rpo =
+  ⊆-trans τ (RawPushout.leg₁ rpo) ≡
+  ⊆-trans σ (RawPushout.leg₂ rpo)
+
+-- Joining two list extensions with ⊆-pushout produces a weak pushout.
+
+⊆-pushoutˡ-is-wpo : ∀{xs ys zs : List A} {τ : xs ⊆ ys} {σ : xs ⊆ zs} →
+                 IsWeakPushout (⊆-pushoutˡ τ σ)
+⊆-pushoutˡ-is-wpo {τ = []} {σ = σ}
+  rewrite ⊆-trans-idʳ {τ = σ}
+        = ⊆-trans-idˡ {xs = []}
+⊆-pushoutˡ-is-wpo {τ = y   ∷ʳ _}                = cong (y   ∷ʳ_) ⊆-pushoutˡ-is-wpo
+⊆-pushoutˡ-is-wpo {τ = _   ∷  _} {σ = z   ∷ʳ _} = cong (z   ∷ʳ_) ⊆-pushoutˡ-is-wpo
+⊆-pushoutˡ-is-wpo {τ = refl ∷ _} {σ = refl ∷ _} = cong (refl ∷_) ⊆-pushoutˡ-is-wpo
