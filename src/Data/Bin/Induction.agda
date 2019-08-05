@@ -10,7 +10,6 @@ module Data.Bin.Induction where
 
 open import Data.Bin.Base
 open import Data.Bin.Properties
-open import Data.Bin.Ordering
 open import Data.List using (List; []; _∷_; [_])
 open import Data.Nat as ℕ using (ℕ)
 import Induction.Nat
@@ -21,11 +20,11 @@ open import Induction.WellFounded using (Acc; module Inverse-image; module Subre
 open Acc using (acc)
 
 <-acc :  {x : Bin} → Acc _<_ x
-<-acc {x} =  Subrelation.accessible {_} {_} {_} {Bin} {_<_} {_<ₙon_} <⇒<ₙon <ₙon-acc-x
+<-acc {x} =  Subrelation.accessible {_} {_} {_} {Bin} {_<_} {_<ℕ_} <⇒<ℕ <ℕ-acc-x
   where
   -- Derive accessibility for _<_ on Bin from accessibility for _<_ on ℕ:
-  <ₙon-acc-x = Inverse-image.accessible {_} {_} {_} {Bin} {ℕ} {ℕ._<_} toℕ
-                                        (Induction.Nat.<-wellFounded (toℕ x))
+  <ℕ-acc-x = Inverse-image.accessible {_} {_} {_} {Bin} {ℕ} {ℕ._<_} toℕ
+                                       (Induction.Nat.<-wellFounded (toℕ x))
 
 acc[0] :  Acc _<_ zero
 acc[0] =  acc (λ x x<0 → contradiction x<0 x≮0)

@@ -10,6 +10,12 @@ module Data.Bin.Base where
 
 open import Algebra.FunctionProperties using (Op₂)
 open import Data.Nat.Base as ℕ using (ℕ)
+open import Data.Sum using (_⊎_)
+open import Function using (_on_)
+open import Level using (0ℓ)
+open import Relation.Binary using (Rel)
+open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Relation.Nullary using (¬_)
 
 ------------------------------------------------------------------------
 -- Definition
@@ -94,3 +100,48 @@ size 1+[2 x ] = ℕ.suc (size x)
 7B = suc 6B
 8B = suc 7B
 9B = suc 8B
+
+------------------------------------------------------------------------
+-- The ordering relation
+
+infix 4 _<_ _>_ _≤_ _≮_ _≯_ _≰_ _≱_
+
+data _<_ : Rel Bin 0ℓ  where
+  0<even    : ∀ {x} → zero < 2[1+ x ]
+  0<odd     : ∀ {x} → zero < 1+[2 x ]
+  even<even : ∀ {x y} → x < y → 2[1+ x ] < 2[1+ y ]
+  even<odd  : ∀ {x y} → x < y → 2[1+ x ] < 1+[2 y ]
+  odd<even  : ∀ {x y} → x < y ⊎ x ≡ y → 1+[2 x ] < 2[1+ y ]
+  odd<odd   : ∀ {x y} → x < y → 1+[2 x ] < 1+[2 y ]
+
+  -- In these constructors "even" stands for nonzero even.
+{-
+Example. Explanation for  even<odd x<y :
+2(1+x) < 1+2y  ~  1+2(1+x) ≤ 1+2y  ~  2(1+x) ≤ 2y  ~  1+x ≤ y  ~ x < y
+
+For  odd<even (inj₁ x<y) :    1+2x < 2(1+y)  ~  2(1+x) ≤ 2(1+y)  ~  x ≤ y
+-}
+
+_>_ :  Rel Bin 0ℓ
+x > y =  y < x
+
+_≤_ :  Rel Bin 0ℓ
+x ≤ y =  x < y ⊎ x ≡ y
+
+_≥_ :  Rel Bin 0ℓ
+x ≥ y =  y ≤ x
+
+_≮_ :  Rel Bin 0ℓ
+x ≮ y =  ¬ (x < y)
+
+_≯_ :  Rel Bin 0ℓ
+x ≯ y =  ¬ (x > y)
+
+_≰_ :  Rel Bin 0ℓ
+x ≰ y =  ¬ (x ≤ y)
+
+_≱_ :  Rel Bin 0ℓ
+x ≱ y =  ¬ (x ≥ y)
+
+_<ℕ_ :  Rel Bin 0ℓ
+_<ℕ_ =  ℕ._<_ on toℕ
