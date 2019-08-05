@@ -7,6 +7,7 @@
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --postfix-projections #-}
 
 open import Relation.Binary using (Setoid; Rel)
 
@@ -283,4 +284,7 @@ record IsWeakCoproduct (τ : xs ⊆ zs) (σ : ys ⊆ zs) (τ+σ : us ⊆ zs) : S
     inj₂ : ys ⊆ us
     -- slice₁ : ⊆-trans inj₁ τ+σ ≋ τ
 
+-- -}
+-- -}
+-- -}
 -- -}
