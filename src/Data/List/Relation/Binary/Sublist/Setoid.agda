@@ -225,20 +225,46 @@ data Disjoint : (τ : xs ⊆ zs) (σ : ys ⊆ zs) → Set (c ⊔ ℓ) where
 ... | yes d = yes (y ∷ d)
 ... | no ¬d = no λ{ (_ ∷ d) → ¬d d }
 
-record Union xs ys : Set (c ⊔ ℓ) where
+
+
+record Union {xs ys zs} (τ : xs ⊆ zs) (σ : ys ⊆ zs) : Set (c ⊔ ℓ) where
   field
     {union} : List A
+    sub  : union ⊆ zs
     inj₁ : xs ⊆ union
     inj₂ : ys ⊆ union
 
 open Union
 
-∷ˡ-union : Union xs ys → Union (x ∷ xs) ys
-∷ˡ-union u = record
-  { inj₁ = refl ∷ u .inj₁
-  ; inj₂ = _   ∷ʳ u .inj₂
+∷-union : Union τ σ → Union (x ∷ʳ τ) (x ∷ʳ σ)
+∷-union u = record
+  { sub  = _ ∷ʳ u .sub
+  ; inj₁ = u .inj₁
+  ; inj₂ = u .inj₂
   }
 
+_∷ˡ-union_ : (x≈y : x ≈ y) → Union τ σ → Union (x≈y ∷ τ) (y ∷ʳ σ)
+x≈y ∷ˡ-union u = record
+  { sub = refl ∷ u .sub
+  ; inj₁ = x≈y ∷ u .inj₁
+  ; inj₂ = _  ∷ʳ u .inj₂
+  }
+
+_∷ʳ-union_ : (x≈y : x ≈ y) → Union τ σ → Union (y ∷ʳ τ) (x≈y ∷ σ)
+x≈y ∷ʳ-union u = record
+  { sub  = refl ∷ u .sub
+  ; inj₁ = _   ∷ʳ u .inj₁
+  ; inj₂ = x≈y  ∷ u .inj₂
+  }
+
+
+⊆-disjoint-union : {τ : xs ⊆ zs} {σ : ys ⊆ zs} → Disjoint τ σ → Union τ σ
+⊆-disjoint-union []         = record { sub = [] ; inj₁ = [] ; inj₂ = [] }
+⊆-disjoint-union (x   ∷  d) = ∷-union (⊆-disjoint-union d)
+⊆-disjoint-union (x≈y ∷ˡ d) = x≈y ∷ˡ-union (⊆-disjoint-union d)
+⊆-disjoint-union (x≈y ∷ʳ d) = x≈y ∷ʳ-union (⊆-disjoint-union d)
+
+{-
 ∷ʳ-union : Union xs ys → Union xs (y ∷ ys)
 ∷ʳ-union u = record
   { inj₁ = _   ∷ʳ u .inj₁
@@ -256,3 +282,5 @@ record IsWeakCoproduct (τ : xs ⊆ zs) (σ : ys ⊆ zs) (τ+σ : us ⊆ zs) : S
     inj₁ : xs ⊆ us
     inj₂ : ys ⊆ us
     -- slice₁ : ⊆-trans inj₁ τ+σ ≋ τ
+
+-- -}
