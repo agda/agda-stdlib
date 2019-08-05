@@ -26,7 +26,7 @@ open import Data.Product using (∃; _,_)
 
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary using (¬_; Dec; yes; no)
 
 open Setoid S renaming (Carrier to A)
 open SetoidEquality S
@@ -185,3 +185,74 @@ z ∷ʳ₂ rpo = record
 ⊆-joinˡ τ σ = upperBound rpo , ⊆-trans τ (leg₁ rpo)
   where
   rpo = ⊆-pushoutˡ τ σ
+
+------------------------------------------------------------------------
+-- Disjoint union
+--
+-- Two non-overlapping sublists can be joined in a unique way.
+
+private
+  variable
+    x y z : A
+    x≈y x≈z y≈z : x ≈ y
+    xs ys zs us : List A
+    τ σ : xs ⊆ ys
+
+-- xs and ys are disjoint sublists of zs.
+-- (But zs may be bigger than their disjoint union.)
+
+data Disjoint : (τ : xs ⊆ zs) (σ : ys ⊆ zs) → Set (c ⊔ ℓ) where
+  []   : Disjoint [] []
+  _∷_  : ∀ x           → Disjoint τ σ → Disjoint (x  ∷ʳ τ) (x  ∷ʳ σ)
+  _∷ˡ_ : (x≈y : x ≈ y) → Disjoint τ σ → Disjoint (x≈y ∷ τ) (y  ∷ʳ σ)
+  _∷ʳ_ : (x≈y : x ≈ y) → Disjoint τ σ → Disjoint (y  ∷ʳ τ) (x≈y ∷ σ)
+
+-- Are xs and ys disjoint sublists of zs?
+
+⊆-disjoint? : (τ : xs ⊆ zs) (σ : ys ⊆ zs) → Dec (Disjoint τ σ)
+⊆-disjoint? [] [] = yes []
+-- Present in both sublists: not disjoint
+⊆-disjoint? (x≈z ∷ τ) (y≈z ∷ σ) = no λ()
+-- Present in either sublist: ok
+⊆-disjoint? (y ∷ʳ τ) (x≈y ∷ σ) with ⊆-disjoint? τ σ
+... | yes d = yes (x≈y ∷ʳ d)
+... | no ¬d = no λ{ (_ ∷ʳ d) → ¬d d }
+⊆-disjoint? (x≈y ∷ τ) (y ∷ʳ σ) with ⊆-disjoint? τ σ
+... | yes d = yes (x≈y ∷ˡ d)
+... | no ¬d = no λ{ (_ ∷ˡ d) → ¬d d }
+-- Present in neither sublist: ok
+⊆-disjoint? (y ∷ʳ τ) (.y ∷ʳ σ) with ⊆-disjoint? τ σ
+... | yes d = yes (y ∷ d)
+... | no ¬d = no λ{ (_ ∷ d) → ¬d d }
+
+record Union xs ys : Set (c ⊔ ℓ) where
+  field
+    {union} : List A
+    inj₁ : xs ⊆ union
+    inj₂ : ys ⊆ union
+
+open Union
+
+∷ˡ-union : Union xs ys → Union (x ∷ xs) ys
+∷ˡ-union u = record
+  { inj₁ = refl ∷ u .inj₁
+  ; inj₂ = _   ∷ʳ u .inj₂
+  }
+
+∷ʳ-union : Union xs ys → Union xs (y ∷ ys)
+∷ʳ-union u = record
+  { inj₁ = _   ∷ʳ u .inj₁
+  ; inj₂ = refl ∷ u .inj₂
+  }
+
+⊆-disjoint-union : {τ : xs ⊆ zs} {σ : ys ⊆ zs} → Disjoint τ σ → Union xs ys
+⊆-disjoint-union [] = record { inj₁ = [] ; inj₂ = [] }
+⊆-disjoint-union (x ∷ d) = ⊆-disjoint-union d
+⊆-disjoint-union (x≈y ∷ˡ d) = ∷ˡ-union (⊆-disjoint-union d)
+⊆-disjoint-union (x≈y ∷ʳ d) = ∷ʳ-union (⊆-disjoint-union d)
+
+record IsWeakCoproduct (τ : xs ⊆ zs) (σ : ys ⊆ zs) (τ+σ : us ⊆ zs) : Set (c ⊔ ℓ) where
+  field
+    inj₁ : xs ⊆ us
+    inj₂ : ys ⊆ us
+    -- slice₁ : ⊆-trans inj₁ τ+σ ≋ τ
