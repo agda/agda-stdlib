@@ -129,13 +129,7 @@ open HeterogeneousProperties.Antisymmetry {R = _≈_} {S = _≈_} (λ x≈y _ �
 -- Such a property is given e.g. if _≈_ is proof irrelevant
 -- or forms a groupoid.
 
-private
-  variable
-    x y z    : A
-    xs ys zs : List A
-    τ σ      : xs ⊆ ys
-
-record RawPushout (τ : xs ⊆ ys) (σ : xs ⊆ zs) : Set (c ⊔ ℓ) where
+record RawPushout {xs ys zs : List A} (τ : xs ⊆ ys) (σ : xs ⊆ zs) : Set (c ⊔ ℓ) where
   field
     {upperBound} : List A
     leg₁         : ys ⊆ upperBound
@@ -148,7 +142,8 @@ open RawPushout
 
 -- Extending the right upper corner.
 
-_∷ʳ₁_ : ∀ y → RawPushout τ σ → RawPushout (y ∷ʳ τ) σ
+_∷ʳ₁_ : ∀ {xs ys zs : List A} {τ : xs ⊆ ys} {σ : xs ⊆ zs} →
+        (y : A) → RawPushout τ σ → RawPushout (y ∷ʳ τ) σ
 y ∷ʳ₁ rpo = record
   { leg₁ = refl ∷ leg₁ rpo
   ; leg₂ = y   ∷ʳ leg₂ rpo
@@ -156,7 +151,8 @@ y ∷ʳ₁ rpo = record
 
 -- Extending the left lower corner.
 
-_∷ʳ₂_ : ∀ z → RawPushout τ σ → RawPushout τ (z ∷ʳ σ)
+_∷ʳ₂_ : ∀ {xs ys zs : List A} {τ : xs ⊆ ys} {σ : xs ⊆ zs} →
+        (z : A) → RawPushout τ σ → RawPushout τ (z ∷ʳ σ)
 z ∷ʳ₂ rpo = record
   { leg₁ = z   ∷ʳ leg₁ rpo
   ; leg₂ = refl ∷ leg₂ rpo
@@ -164,7 +160,8 @@ z ∷ʳ₂ rpo = record
 
 -- Extending both of these corners with equal elements.
 
-∷-rpo : (x≈y : x ≈ y) (x≈z : x ≈ z) → RawPushout τ σ → RawPushout (x≈y ∷ τ) (x≈z ∷ σ)
+∷-rpo : ∀ {x y z : A} {xs ys zs : List A} {τ : xs ⊆ ys} {σ : xs ⊆ zs} →
+        (x≈y : x ≈ y) (x≈z : x ≈ z) → RawPushout τ σ → RawPushout (x≈y ∷ τ) (x≈z ∷ σ)
 ∷-rpo x≈y x≈z rpo = record
   { leg₁ = sym x≈y ∷ leg₁ rpo
   ; leg₂ = sym x≈z ∷ leg₂ rpo
@@ -173,7 +170,8 @@ z ∷ʳ₂ rpo = record
 ------------------------------------------------------------------------
 -- Left-biased pushout: add elements of left extension first.
 
-⊆-pushoutˡ : (τ : xs ⊆ ys) (σ : xs ⊆ zs) → RawPushout τ σ
+⊆-pushoutˡ : ∀ {xs ys zs : List A} →
+             (τ : xs ⊆ ys) (σ : xs ⊆ zs) → RawPushout τ σ
 ⊆-pushoutˡ []        σ         = record { leg₁ = σ ; leg₂ = ⊆-refl }
 ⊆-pushoutˡ (y  ∷ʳ τ) σ         = y ∷ʳ₁ ⊆-pushoutˡ τ σ
 ⊆-pushoutˡ τ@(_ ∷ _) (z  ∷ʳ σ) = z ∷ʳ₂ ⊆-pushoutˡ τ σ
@@ -182,7 +180,8 @@ z ∷ʳ₂ rpo = record
 -- Join two extensions, returning the upper bound and the diagonal
 -- of the pushout square.
 
-⊆-joinˡ : (τ : xs ⊆ ys) (σ : xs ⊆ zs) → ∃ λ us → xs ⊆ us
+⊆-joinˡ : ∀ {xs ys zs : List A} →
+          (τ : xs ⊆ ys) (σ : xs ⊆ zs) → ∃ λ us → xs ⊆ us
 ⊆-joinˡ τ σ = upperBound rpo , ⊆-trans τ (leg₁ rpo)
   where
   rpo = ⊆-pushoutˡ τ σ
