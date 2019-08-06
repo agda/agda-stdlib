@@ -252,6 +252,11 @@ record CospanMorphism' {xs ys zs}
 ⊆-trans-∷ˡ⁻ₗ {σ = refl ∷ σ} {τ = y   ∷ʳ τ} = cong (y ∷ʳ_) ⊆-trans-∷ˡ⁻ₗ
 ⊆-trans-∷ˡ⁻ₗ {σ = refl ∷ σ} {τ = refl ∷ τ} = refl
 
+⊆-∷ˡ⁻trans-∷ : ∷ˡ⁻ (⊆-trans (refl ∷ τ) σ) ≡ ⊆-trans (y ∷ʳ τ) σ
+⊆-∷ˡ⁻trans-∷ {σ = y   ∷ʳ σ} = cong (y ∷ʳ_) ⊆-∷ˡ⁻trans-∷
+⊆-∷ˡ⁻trans-∷ {σ = refl ∷ σ} = refl
+
+
 {-
 _∷ᵣ-ub′_ : ∀ {x} {xs ys zs} {τ : x ∷ xs ⊆ zs} {σ : ys ⊆ zs} {y} →
          (x≡y : x ≡ y) → UpperBound (∷ˡ⁻ τ) σ → UpperBound τ {!!} -- (x≡y ∷ σ)
@@ -387,9 +392,62 @@ cs1 {x} {xs} {ys} {z} {τ} {σ}
   cs .(_ ∷ _) ρ (refl ∷ τ') (refl ∷ σ') = {!!}
 -}
 
-cs1 : ∀ {x} {xs ys zs} {τ : (x ∷ xs) ⊆ zs} {σ : ys ⊆ zs} →
+_∷ʳ-cospan_ : ∀ y → Cospan τ σ → Cospan (y ∷ʳ τ) (y ∷ʳ σ)
+y ∷ʳ-cospan
+    record
+    { upperBound = record
+      { theUpperBound = us
+      ; sub = ρ
+      ; inj₁ = τ'
+      ; inj₂ = σ'
+      }
+    ; isCospan = record
+      { tri₁ = τ'∘ρ≡τ
+      ; tri₂ = σ'∘ρ≡σ
+      }
+    }
+  = record
+    { upperBound = record
+      { theUpperBound = us
+      ; sub = y ∷ʳ ρ
+      ; inj₁ = τ'
+      ; inj₂ = σ'
+      }
+    ; isCospan = record
+      { tri₁ = cong (y ∷ʳ_) τ'∘ρ≡τ
+      ; tri₂ = cong (y ∷ʳ_) σ'∘ρ≡σ
+      }
+    }
+_∷ʳ-cospanˡ_ : ∀ y → Cospan τ σ → Cospan (y ∷ʳ τ) (refl ∷ σ)
+y ∷ʳ-cospanˡ
+    record
+    { upperBound = record
+      { theUpperBound = us
+      ; sub = ρ
+      ; inj₁ = τ'
+      ; inj₂ = σ'
+      }
+    ; isCospan = record
+      { tri₁ = τ'∘ρ≡τ
+      ; tri₂ = σ'∘ρ≡σ
+      }
+    }
+  = record
+    { upperBound = record
+      { theUpperBound = y ∷ us
+      ; sub = refl ∷ ρ
+      ; inj₁ = y ∷ʳ τ'
+      ; inj₂ = refl ∷ σ'
+      }
+    ; isCospan = record
+      { tri₁ = cong (y ∷ʳ_) τ'∘ρ≡τ
+      ; tri₂ = cong (refl ∷_) σ'∘ρ≡σ
+      }
+    }
+
+∷ˡ⁻-csˡ : ∀ {x} {xs ys zs} {τ : (x ∷ xs) ⊆ zs} {σ : ys ⊆ zs} →
       Cospan τ σ → Cospan (∷ˡ⁻ τ) σ
-cs1 {x} {xs} {ys} {z} {τ} {σ}
+∷ˡ⁻-csˡ {x} {xs} {τ = τ} {σ}
   record
     { upperBound = record
       { theUpperBound = us
@@ -409,9 +467,71 @@ cs1 {x} {xs} {ys} {z} {τ} {σ}
        (τ'∘ρ≡τ : ⊆-trans τ' ρ ≡ τ)
        (σ'∘ρ≡σ : ⊆-trans σ' ρ ≡ σ) →
        Cospan (∷ˡ⁻ τ) σ
+
+
+  -- Case: newest element z of zs not needed in upper bound.
+
+  -- Subcase: z cannot be first of x∷xs, would contradict left triangle
+  cs {τ = refl ∷ τ}              _  (z ∷ʳ ρ) _ _ ()
+
+  -- Subcase: z cannot be first of ys, would contradict right triangle
+  cs              {σ = refl ∷ σ} _  (z ∷ʳ ρ) _ _ _ ()
+
+  -- Subcase: z not first of x∷xs nor ys: recurse
+  cs {τ = z ∷ʳ τ} {σ = z   ∷ʳ σ} us (z ∷ʳ ρ) τ' σ' τ'∘ρ≡τ σ'∘ρ≡σ =
+    z ∷ʳ-cospan (cs us ρ τ' σ' (∷ʳ-injective τ'∘ρ≡τ) (∷ʳ-injective σ'∘ρ≡σ))
+
+  -- Case: newest element z of zs first of upper bound.
+
+  -- Subcase: z=x
+  -- Subsubcase: ys does not start with x: drop x from upper bound.
+  cs {τ = refl ∷ τ} (x ∷ us) (refl ∷ ρ) (x≡x ∷ τ') (y ∷ʳ σ') τ'∘ρ≡τ σ'∘ρ≡σ = record
+    { upperBound = record
+      { theUpperBound = us
+      ; sub  = x ∷ʳ ρ
+      ; inj₁ = τ'
+      ; inj₂ = σ'
+      }
+    ; isCospan = record
+      { tri₁ = cong (x ∷ʳ_) (∷-injectiveʳ τ'∘ρ≡τ)
+      ; tri₂ = σ'∘ρ≡σ
+      }
+    }
+
+  -- Subsubcase: ys also starts with x: keep x in upper bound
+  cs {τ = refl ∷ τ} (x ∷ us) (refl ∷ ρ) (x≡x ∷ τ') (refl ∷ σ') τ'∘ρ≡τ σ'∘ρ≡σ = record
+    { upperBound = record
+      { theUpperBound = x ∷ us
+      ; sub  = refl ∷ ρ
+      ; inj₁ = x ∷ʳ τ'
+      ; inj₂ = refl ∷ σ'
+      }
+    ; isCospan = record
+      { tri₁ = cong (x ∷ʳ_) (∷-injectiveʳ τ'∘ρ≡τ)
+      ; tri₂ = σ'∘ρ≡σ
+      }
+    }
+
+  -- Subcase z≠x: we need to peel off z and recurse
+
+  -- Subsubcase: z is first of ys
+  cs {τ = z ∷ʳ τ} {σ = z   ∷ʳ σ} (z ∷ us) (refl ∷ ρ) (z ∷ʳ τ') (z≡z ∷ σ') τ'∘ρ≡τ ()
+  cs {τ = z ∷ʳ τ} {σ = refl ∷ σ} (z ∷ us) (refl ∷ ρ) (z ∷ʳ τ') (z≡z ∷ σ') τ'∘ρ≡τ σ'∘ρ≡σ =
+    z ∷ʳ-cospanˡ (cs us ρ τ' σ' (∷ʳ-injective τ'∘ρ≡τ) (∷-injectiveʳ σ'∘ρ≡σ))
+
+  -- Subsubcase: z is not first of ys: we can drop z (or could keep it)
+  cs {τ = z ∷ʳ τ} {σ = z ∷ʳ σ} (z ∷ us) (refl ∷ ρ) (z ∷ʳ τ') (z ∷ʳ σ') τ'∘ρ≡τ σ'∘ρ≡σ =
+    z ∷ʳ-cospan (cs us ρ τ' σ' (∷ʳ-injective τ'∘ρ≡τ) (∷ʳ-injective σ'∘ρ≡σ))
+
+{-
+
+  -- Case: newest element y not needed in upper bound: drop.
   cs (y ∷ us) ρ (y ∷ʳ τ') (y ∷ʳ σ') refl refl = cs us (∷ˡ⁻ ρ) τ' σ' ⊆-trans-∷ˡ⁻ᵣ ⊆-trans-∷ˡ⁻ᵣ
 
-  cs {τ = z ∷ʳ τ} {σ = z ∷ʳ σ} (y ∷ us) (.z ∷ʳ ρ) (y ∷ʳ τ') (refl ∷ σ') τ'∘ρ≡τ refl = {!!}
+  -- Case: newest element y needed by σ' but not by τ'
+
+  cs {τ = z ∷ʳ τ} {σ = z ∷ʳ σ} (y ∷ us) (.z ∷ʳ ρ) (y ∷ʳ τ') (refl ∷ σ') refl refl = {!!}
+
     -- σ'∘ρ≡σ = {! ∷ₙ-ub (cs (y ∷ us) ρ (y ∷ʳ τ') (refl ∷ σ')) !}
   cs {σ = z ∷ʳ σ} _ (refl ∷ ρ) _ (refl ∷ σ') _ ()
   cs {τ = z   ∷ʳ τ} {σ = refl ∷ σ} (y ∷ us) ρ (y ∷ʳ τ') (refl ∷ σ') τ'∘ρ≡τ σ'∘ρ≡σ = {!!}
@@ -420,42 +540,55 @@ cs1 {x} {xs} {ys} {z} {τ} {σ}
 
   -- cs {τ = τ} {σ = σ} (y ∷ us) ρ (y ∷ʳ τ') (refl ∷ σ') τ'∘ρ≡τ σ'∘ρ≡σ = {! aux τ σ !}
 
-  cs (x ∷ us) ρ (refl ∷ τ') (x ∷ʳ σ') refl refl = record
+
+  -- Case: newest element x needed by τ' but not by σ': can be dropped
+
+  -- Subcase: x is also newest element of zs
+
+  cs (x ∷ us) (refl ∷ ρ) (refl ∷ τ') (x ∷ʳ σ') refl σ'∘ρ≡σ = record
     { upperBound = record
       { theUpperBound = us
-      ; sub =  ∷ˡ⁻ ρ
+      ; sub  = x ∷ʳ ρ
       ; inj₁ = τ'
       ; inj₂ = σ'
       }
     ; isCospan = record
-      { tri₁ = {! τ'∘ρ≡τ !}
-      ; tri₂ = {! σ'∘ρ≡σ !}
+      { tri₁ = refl
+      ; tri₂ = σ'∘ρ≡σ
       }
     }
-  cs (x ∷ us) ρ (refl ∷ τ') (x ∷ʳ σ') τ'∘ρ≡τ σ'∘ρ≡σ = record
-    { upperBound = record
-      { theUpperBound = us
-      ; sub =  ∷ˡ⁻ ρ
-      ; inj₁ = τ'
-      ; inj₂ = σ'
-      }
-    ; isCospan = record
-      { tri₁ = {! τ'∘ρ≡τ !}
-      ; tri₂ = {! σ'∘ρ≡σ !}
-      }
-    }
-  cs (x ∷ us) ρ (refl ∷ τ') (refl ∷ σ') τ'∘ρ≡τ σ'∘ρ≡σ = record
+
+  -- -- Subcase: x is not newest element of zs
+
+  -- cs (x ∷ us) (z ∷ʳ ρ) (refl ∷ τ') (x ∷ʳ σ') refl refl = record
+  --   { upperBound = record
+  --     { theUpperBound = us
+  --     ; sub =  {!ρ !}
+  --     ; inj₁ = τ'
+  --     ; inj₂ = σ'
+  --     }
+  --   ; isCospan = record
+  --     { tri₁ = {! trans ⊆-trans-∷ˡ⁻ᵣ {!!} !}
+  --     ; tri₂ = {!  !}
+  --     }
+  --   }
+
+  -- Case: newest element x needed by both τ' and σ'
+
+  cs (x ∷ us) (refl ∷ ρ) (refl ∷ τ') (refl ∷ σ') τ'∘ρ≡τ σ'∘ρ≡σ = record
     { upperBound = record
       { theUpperBound = x ∷ us
-      ; sub  = ρ
+      ; sub  = {! ρ !}
       ; inj₁ = x ∷ʳ τ'
       ; inj₂ = refl ∷ σ'
       }
     ; isCospan = record
-      { tri₁ = {! τ'∘ρ≡τ !}
-      ; tri₂ = {! σ'∘ρ≡σ !}
+      { tri₁ = trans (sym ⊆-∷ˡ⁻trans-∷) (cong ∷ˡ⁻ τ'∘ρ≡τ)
+      ; tri₂ = σ'∘ρ≡σ
       }
     }
+
+{-
   cs (y ∷ us) ρ (y ∷ʳ τ') (refl ∷ σ') τ'∘ρ≡τ σ'∘ρ≡σ =  record
     { upperBound = record
       { theUpperBound = us
@@ -468,14 +601,20 @@ cs1 {x} {xs} {ys} {z} {τ} {σ}
       ; tri₂ = {! σ'∘ρ≡σ !}
       }
     }
+-}
+-- -}
 
-{-
 foo : ∀{xs ys zs}
       {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs} (d : Disjoint τ₁ τ₂)
       {zs'} (σ : zs ⊆ zs')
       {τ₁' : xs ⊆ zs'} {τ₂' : ys ⊆ zs'} (c : Cospan τ₁' τ₂') →
       CospanMorphism'  (⊆-disjoint-union-cospan d) σ c
-foo [] σ c = record { morphism = minimum _ ; square = []⊆-irrelevant _ _ }
+
+foo [] σ c = record
+  { morphism = minimum _
+  ; square   = []⊆-irrelevant _ _
+  }
+
 foo (y ∷ₙ d) σ c = let bar = foo d (∷ˡ⁻ σ) c in record
   { morphism = CospanMorphism'.morphism bar
   ; square = trans (CospanMorphism'.square bar) ⊆-trans-∷ˡ⁻ᵣ
@@ -484,10 +623,12 @@ foo (y ∷ₙ d) σ c = let bar = foo d (∷ˡ⁻ σ) c in record
   aux : ⊆-trans (UpperBound.sub (⊆-disjoint-union d)) (∷ˡ⁻ σ)
       ≡ ⊆-trans (UpperBound.sub (⊆-disjoint-union (y ∷ₙ d))) σ
   aux = {!!}
-foo (x≈y ∷ₗ d) σ c = let bar = foo d (∷ˡ⁻ σ) (cs1 c) in record
-  { morphism = ⊆-trans {!!} (CospanMorphism'.morphism bar)
+
+foo (x≈y ∷ₗ d) σ c = let bar = foo d (∷ˡ⁻ σ) (∷ˡ⁻-csˡ c) in record
+  { morphism = {!CospanMorphism'.morphism bar!} -- ⊆-trans {!!} (CospanMorphism'.morphism bar)
   ; square = {!!}
   }
+
 foo (x≈y ∷ᵣ d) σ c = record { morphism = {!!} ; square = {!!} }
 
 ⊆-disjoint-union-minimal : (d : Disjoint τ₁ τ₂) (c : Cospan τ₁ τ₂) →
