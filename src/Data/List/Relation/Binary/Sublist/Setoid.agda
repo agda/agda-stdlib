@@ -228,21 +228,16 @@ data Disjoint : ∀ {xs ys zs} (τ : xs ⊆ zs) (σ : ys ⊆ zs) → Set (c ⊔ 
 
 
 ------------------------------------------------------------------------
--- Disjoint union
---
--- Two non-overlapping sublists can be joined in a unique way.
+-- Upper bound of two sublists xs,ys ⊆ zs
 
--- xs and ys are disjoint sublists of zs.
--- (But zs may be bigger than their disjoint union.)
-
-record Union {xs ys zs} (τ : xs ⊆ zs) (σ : ys ⊆ zs) : Set (c ⊔ ℓ) where
+record UpperBound {xs ys zs} (τ : xs ⊆ zs) (σ : ys ⊆ zs) : Set (c ⊔ ℓ) where
   field
-    {union} : List A
-    sub  : union ⊆ zs
-    inj₁ : xs ⊆ union
-    inj₂ : ys ⊆ union
+    {theUpperBound} : List A
+    sub  : theUpperBound ⊆ zs
+    inj₁ : xs ⊆ theUpperBound
+    inj₂ : ys ⊆ theUpperBound
 
-open Union
+open UpperBound
 
 private
   variable
@@ -251,22 +246,22 @@ private
     xs ys zs us : List A
     τ σ : xs ⊆ ys
 
-∷ₙ-union : Union τ σ → Union (x ∷ʳ τ) (x ∷ʳ σ)
-∷ₙ-union u = record
+∷ₙ-ub : UpperBound τ σ → UpperBound (x ∷ʳ τ) (x ∷ʳ σ)
+∷ₙ-ub u = record
   { sub  = _ ∷ʳ u .sub
   ; inj₁ = u .inj₁
   ; inj₂ = u .inj₂
   }
 
-_∷ₗ-union_ : (x≈y : x ≈ y) → Union τ σ → Union (x≈y ∷ τ) (y ∷ʳ σ)
-x≈y ∷ₗ-union u = record
+_∷ₗ-ub_ : (x≈y : x ≈ y) → UpperBound τ σ → UpperBound (x≈y ∷ τ) (y ∷ʳ σ)
+x≈y ∷ₗ-ub u = record
   { sub = refl ∷ u .sub
   ; inj₁ = x≈y ∷ u .inj₁
   ; inj₂ = _  ∷ʳ u .inj₂
   }
 
-_∷ᵣ-union_ : (x≈y : x ≈ y) → Union τ σ → Union (y ∷ʳ τ) (x≈y ∷ σ)
-x≈y ∷ᵣ-union u = record
+_∷ᵣ-ub_ : (x≈y : x ≈ y) → UpperBound τ σ → UpperBound (y ∷ʳ τ) (x≈y ∷ σ)
+x≈y ∷ᵣ-ub u = record
   { sub  = refl ∷ u .sub
   ; inj₁ = _   ∷ʳ u .inj₁
   ; inj₂ = x≈y  ∷ u .inj₂
@@ -281,11 +276,11 @@ x≈y ∷ᵣ-union u = record
 -- xs and ys are disjoint sublists of zs.
 -- (But zs may be bigger than their disjoint union.)
 
-⊆-disjoint-union : {τ : xs ⊆ zs} {σ : ys ⊆ zs} → Disjoint τ σ → Union τ σ
+⊆-disjoint-union : {τ : xs ⊆ zs} {σ : ys ⊆ zs} → Disjoint τ σ → UpperBound τ σ
 ⊆-disjoint-union []         = record { sub = [] ; inj₁ = [] ; inj₂ = [] }
-⊆-disjoint-union (x   ∷ₙ d) = ∷ₙ-union (⊆-disjoint-union d)
-⊆-disjoint-union (x≈y ∷ₗ d) = x≈y ∷ₗ-union (⊆-disjoint-union d)
-⊆-disjoint-union (x≈y ∷ᵣ d) = x≈y ∷ᵣ-union (⊆-disjoint-union d)
+⊆-disjoint-union (x   ∷ₙ d) = ∷ₙ-ub (⊆-disjoint-union d)
+⊆-disjoint-union (x≈y ∷ₗ d) = x≈y ∷ₗ-ub (⊆-disjoint-union d)
+⊆-disjoint-union (x≈y ∷ᵣ d) = x≈y ∷ᵣ-ub (⊆-disjoint-union d)
 
 {-
 

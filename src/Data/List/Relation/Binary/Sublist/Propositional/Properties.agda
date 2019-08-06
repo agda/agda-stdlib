@@ -171,10 +171,10 @@ private
 
 -- module _ {xs ys zs : List A} {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs} where
 
-record IsCospan (u : Union τ₁ τ₂) : Set a where
+record IsCospan (u : UpperBound τ₁ τ₂) : Set a where
   field
-    tri₁ : ⊆-trans (Union.inj₁ u) (Union.sub u) ≡ τ₁
-    tri₂ : ⊆-trans (Union.inj₂ u) (Union.sub u) ≡ τ₂
+    tri₁ : ⊆-trans (UpperBound.inj₁ u) (UpperBound.sub u) ≡ τ₁
+    tri₂ : ⊆-trans (UpperBound.inj₂ u) (UpperBound.sub u) ≡ τ₂
 
 open IsCospan
 
