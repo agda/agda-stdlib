@@ -188,45 +188,52 @@ z ∷ʳ₂ rpo = record
   rpo = ⊆-pushoutˡ τ σ
 
 ------------------------------------------------------------------------
--- Disjoint union
+-- Disjoint sublists xs,ys ⊆ zs
 --
--- Two non-overlapping sublists can be joined in a unique way.
+-- NB: This does not imply that xs and ys partition zs;
+-- zs may have additional elements.
 
-private
-  variable
-    x y z : A
-    x≈y x≈z y≈z : x ≈ y
-    xs ys zs us : List A
-    τ σ : xs ⊆ ys
-
--- xs and ys are disjoint sublists of zs.
--- (But zs may be bigger than their disjoint union.)
-
-data Disjoint : (τ : xs ⊆ zs) (σ : ys ⊆ zs) → Set (c ⊔ ℓ) where
+data Disjoint : ∀ {xs ys zs} (τ : xs ⊆ zs) (σ : ys ⊆ zs) → Set (c ⊔ ℓ) where
   []   : Disjoint [] []
-  _∷ₙ_ : ∀ x           → Disjoint τ σ → Disjoint (x  ∷ʳ τ) (x  ∷ʳ σ)
-  _∷ₗ_ : (x≈y : x ≈ y) → Disjoint τ σ → Disjoint (x≈y ∷ τ) (y  ∷ʳ σ)
-  _∷ᵣ_ : (x≈y : x ≈ y) → Disjoint τ σ → Disjoint (y  ∷ʳ τ) (x≈y ∷ σ)
+
+  -- Element y of zs is neither in xs nor in ys:
+  _∷ₙ_ : ∀ {xs ys zs} {τ : xs ⊆ zs} {σ : ys ⊆ zs} →
+         (y : A)       → Disjoint τ σ → Disjoint (y  ∷ʳ τ) (y  ∷ʳ σ)
+
+  -- Element y of zs is in xs as x with x≈y:
+  _∷ₗ_ : ∀ {xs ys zs} {τ : xs ⊆ zs} {σ : ys ⊆ zs} {x y} →
+         (x≈y : x ≈ y) → Disjoint τ σ → Disjoint (x≈y ∷ τ) (y  ∷ʳ σ)
+
+  -- Element y of zs is in ys as x with x≈y:
+  _∷ᵣ_ : ∀ {xs ys zs} {τ : xs ⊆ zs} {σ : ys ⊆ zs} {x y} →
+         (x≈y : x ≈ y) → Disjoint τ σ → Disjoint (y  ∷ʳ τ) (x≈y ∷ σ)
 
 -- Are xs and ys disjoint sublists of zs?
 
-⊆-disjoint? : (τ : xs ⊆ zs) (σ : ys ⊆ zs) → Dec (Disjoint τ σ)
+⊆-disjoint? : ∀ {xs ys zs} (τ : xs ⊆ zs) (σ : ys ⊆ zs) → Dec (Disjoint τ σ)
 ⊆-disjoint? [] [] = yes []
--- Present in both sublists: not disjoint
+-- Present in both sublists: not disjoint.
 ⊆-disjoint? (x≈z ∷ τ) (y≈z ∷ σ) = no λ()
--- Present in either sublist: ok
+-- Present in either sublist: ok.
 ⊆-disjoint? (y ∷ʳ τ) (x≈y ∷ σ) with ⊆-disjoint? τ σ
 ... | yes d = yes (x≈y ∷ᵣ d)
 ... | no ¬d = no λ{ (_ ∷ᵣ d) → ¬d d }
 ⊆-disjoint? (x≈y ∷ τ) (y ∷ʳ σ) with ⊆-disjoint? τ σ
 ... | yes d = yes (x≈y ∷ₗ d)
 ... | no ¬d = no λ{ (_ ∷ₗ d) → ¬d d }
--- Present in neither sublist: ok
+-- Present in neither sublist: ok.
 ⊆-disjoint? (y ∷ʳ τ) (.y ∷ʳ σ) with ⊆-disjoint? τ σ
 ... | yes d = yes (y ∷ₙ d)
 ... | no ¬d = no λ{ (_ ∷ₙ d) → ¬d d }
 
 
+------------------------------------------------------------------------
+-- Disjoint union
+--
+-- Two non-overlapping sublists can be joined in a unique way.
+
+-- xs and ys are disjoint sublists of zs.
+-- (But zs may be bigger than their disjoint union.)
 
 record Union {xs ys zs} (τ : xs ⊆ zs) (σ : ys ⊆ zs) : Set (c ⊔ ℓ) where
   field
@@ -236,6 +243,13 @@ record Union {xs ys zs} (τ : xs ⊆ zs) (σ : ys ⊆ zs) : Set (c ⊔ ℓ) wher
     inj₂ : ys ⊆ union
 
 open Union
+
+private
+  variable
+    x y z : A
+    x≈y x≈z y≈z : x ≈ y
+    xs ys zs us : List A
+    τ σ : xs ⊆ ys
 
 ∷ₙ-union : Union τ σ → Union (x ∷ʳ τ) (x ∷ʳ σ)
 ∷ₙ-union u = record
@@ -258,6 +272,14 @@ x≈y ∷ᵣ-union u = record
   ; inj₂ = x≈y  ∷ u .inj₂
   }
 
+
+------------------------------------------------------------------------
+-- Disjoint union
+--
+-- Two non-overlapping sublists can be joined in a unique way.
+
+-- xs and ys are disjoint sublists of zs.
+-- (But zs may be bigger than their disjoint union.)
 
 ⊆-disjoint-union : {τ : xs ⊆ zs} {σ : ys ⊆ zs} → Disjoint τ σ → Union τ σ
 ⊆-disjoint-union []         = record { sub = [] ; inj₁ = [] ; inj₂ = [] }
