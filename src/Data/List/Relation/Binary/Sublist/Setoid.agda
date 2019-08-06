@@ -204,9 +204,9 @@ private
 
 data Disjoint : (τ : xs ⊆ zs) (σ : ys ⊆ zs) → Set (c ⊔ ℓ) where
   []   : Disjoint [] []
-  _∷_  : ∀ x           → Disjoint τ σ → Disjoint (x  ∷ʳ τ) (x  ∷ʳ σ)
-  _∷ˡ_ : (x≈y : x ≈ y) → Disjoint τ σ → Disjoint (x≈y ∷ τ) (y  ∷ʳ σ)
-  _∷ʳ_ : (x≈y : x ≈ y) → Disjoint τ σ → Disjoint (y  ∷ʳ τ) (x≈y ∷ σ)
+  _∷ₙ_ : ∀ x           → Disjoint τ σ → Disjoint (x  ∷ʳ τ) (x  ∷ʳ σ)
+  _∷ₗ_ : (x≈y : x ≈ y) → Disjoint τ σ → Disjoint (x≈y ∷ τ) (y  ∷ʳ σ)
+  _∷ᵣ_ : (x≈y : x ≈ y) → Disjoint τ σ → Disjoint (y  ∷ʳ τ) (x≈y ∷ σ)
 
 -- Are xs and ys disjoint sublists of zs?
 
@@ -216,15 +216,15 @@ data Disjoint : (τ : xs ⊆ zs) (σ : ys ⊆ zs) → Set (c ⊔ ℓ) where
 ⊆-disjoint? (x≈z ∷ τ) (y≈z ∷ σ) = no λ()
 -- Present in either sublist: ok
 ⊆-disjoint? (y ∷ʳ τ) (x≈y ∷ σ) with ⊆-disjoint? τ σ
-... | yes d = yes (x≈y ∷ʳ d)
-... | no ¬d = no λ{ (_ ∷ʳ d) → ¬d d }
+... | yes d = yes (x≈y ∷ᵣ d)
+... | no ¬d = no λ{ (_ ∷ᵣ d) → ¬d d }
 ⊆-disjoint? (x≈y ∷ τ) (y ∷ʳ σ) with ⊆-disjoint? τ σ
-... | yes d = yes (x≈y ∷ˡ d)
-... | no ¬d = no λ{ (_ ∷ˡ d) → ¬d d }
+... | yes d = yes (x≈y ∷ₗ d)
+... | no ¬d = no λ{ (_ ∷ₗ d) → ¬d d }
 -- Present in neither sublist: ok
 ⊆-disjoint? (y ∷ʳ τ) (.y ∷ʳ σ) with ⊆-disjoint? τ σ
-... | yes d = yes (y ∷ d)
-... | no ¬d = no λ{ (_ ∷ d) → ¬d d }
+... | yes d = yes (y ∷ₙ d)
+... | no ¬d = no λ{ (_ ∷ₙ d) → ¬d d }
 
 
 
@@ -237,22 +237,22 @@ record Union {xs ys zs} (τ : xs ⊆ zs) (σ : ys ⊆ zs) : Set (c ⊔ ℓ) wher
 
 open Union
 
-∷-union : Union τ σ → Union (x ∷ʳ τ) (x ∷ʳ σ)
-∷-union u = record
+∷ₙ-union : Union τ σ → Union (x ∷ʳ τ) (x ∷ʳ σ)
+∷ₙ-union u = record
   { sub  = _ ∷ʳ u .sub
   ; inj₁ = u .inj₁
   ; inj₂ = u .inj₂
   }
 
-_∷ˡ-union_ : (x≈y : x ≈ y) → Union τ σ → Union (x≈y ∷ τ) (y ∷ʳ σ)
-x≈y ∷ˡ-union u = record
+_∷ₗ-union_ : (x≈y : x ≈ y) → Union τ σ → Union (x≈y ∷ τ) (y ∷ʳ σ)
+x≈y ∷ₗ-union u = record
   { sub = refl ∷ u .sub
   ; inj₁ = x≈y ∷ u .inj₁
   ; inj₂ = _  ∷ʳ u .inj₂
   }
 
-_∷ʳ-union_ : (x≈y : x ≈ y) → Union τ σ → Union (y ∷ʳ τ) (x≈y ∷ σ)
-x≈y ∷ʳ-union u = record
+_∷ᵣ-union_ : (x≈y : x ≈ y) → Union τ σ → Union (y ∷ʳ τ) (x≈y ∷ σ)
+x≈y ∷ᵣ-union u = record
   { sub  = refl ∷ u .sub
   ; inj₁ = _   ∷ʳ u .inj₁
   ; inj₂ = x≈y  ∷ u .inj₂
@@ -261,22 +261,11 @@ x≈y ∷ʳ-union u = record
 
 ⊆-disjoint-union : {τ : xs ⊆ zs} {σ : ys ⊆ zs} → Disjoint τ σ → Union τ σ
 ⊆-disjoint-union []         = record { sub = [] ; inj₁ = [] ; inj₂ = [] }
-⊆-disjoint-union (x   ∷  d) = ∷-union (⊆-disjoint-union d)
-⊆-disjoint-union (x≈y ∷ˡ d) = x≈y ∷ˡ-union (⊆-disjoint-union d)
-⊆-disjoint-union (x≈y ∷ʳ d) = x≈y ∷ʳ-union (⊆-disjoint-union d)
+⊆-disjoint-union (x   ∷ₙ d) = ∷ₙ-union (⊆-disjoint-union d)
+⊆-disjoint-union (x≈y ∷ₗ d) = x≈y ∷ₗ-union (⊆-disjoint-union d)
+⊆-disjoint-union (x≈y ∷ᵣ d) = x≈y ∷ᵣ-union (⊆-disjoint-union d)
 
 {-
-∷ʳ-union : Union xs ys → Union xs (y ∷ ys)
-∷ʳ-union u = record
-  { inj₁ = _   ∷ʳ u .inj₁
-  ; inj₂ = refl ∷ u .inj₂
-  }
-
-⊆-disjoint-union : {τ : xs ⊆ zs} {σ : ys ⊆ zs} → Disjoint τ σ → Union xs ys
-⊆-disjoint-union [] = record { inj₁ = [] ; inj₂ = [] }
-⊆-disjoint-union (x ∷ d) = ⊆-disjoint-union d
-⊆-disjoint-union (x≈y ∷ˡ d) = ∷ˡ-union (⊆-disjoint-union d)
-⊆-disjoint-union (x≈y ∷ʳ d) = ∷ʳ-union (⊆-disjoint-union d)
 
 record IsWeakCoproduct (τ : xs ⊆ zs) (σ : ys ⊆ zs) (τ+σ : us ⊆ zs) : Set (c ⊔ ℓ) where
   field
