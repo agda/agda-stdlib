@@ -410,17 +410,28 @@ cs1 {x} {xs} {ys} {z} {τ} {σ}
        (σ'∘ρ≡σ : ⊆-trans σ' ρ ≡ σ) →
        Cospan (∷ˡ⁻ τ) σ
   cs (y ∷ us) ρ (y ∷ʳ τ') (y ∷ʳ σ') refl refl = cs us (∷ˡ⁻ ρ) τ' σ' ⊆-trans-∷ˡ⁻ᵣ ⊆-trans-∷ˡ⁻ᵣ
-  cs (y ∷ us) ρ (y ∷ʳ τ') (y ∷ʳ σ') τ'∘ρ≡τ σ'∘ρ≡σ = cs us (∷ˡ⁻ ρ) τ' σ' {!!} {!!}
 
   cs {τ = z ∷ʳ τ} {σ = z ∷ʳ σ} (y ∷ us) (.z ∷ʳ ρ) (y ∷ʳ τ') (refl ∷ σ') τ'∘ρ≡τ refl = {!!}
     -- σ'∘ρ≡σ = {! ∷ₙ-ub (cs (y ∷ us) ρ (y ∷ʳ τ') (refl ∷ σ')) !}
-  cs {τ = z ∷ʳ τ} {σ = z ∷ʳ σ} (z ∷ us) (refl ∷ ρ) (z ∷ʳ τ') (refl ∷ σ') τ'∘ρ≡τ ()
+  cs {σ = z ∷ʳ σ} _ (refl ∷ ρ) _ (refl ∷ σ') _ ()
   cs {τ = z   ∷ʳ τ} {σ = refl ∷ σ} (y ∷ us) ρ (y ∷ʳ τ') (refl ∷ σ') τ'∘ρ≡τ σ'∘ρ≡σ = {!!}
   cs {τ = refl ∷ τ} {σ = z   ∷ʳ σ} (y ∷ us) ρ (y ∷ʳ τ') (refl ∷ σ') τ'∘ρ≡τ σ'∘ρ≡σ = {!!}
   cs {τ = refl ∷ τ} {σ = refl ∷ σ} (y ∷ us) ρ (y ∷ʳ τ') (refl ∷ σ') τ'∘ρ≡τ σ'∘ρ≡σ = {!!}
 
   -- cs {τ = τ} {σ = σ} (y ∷ us) ρ (y ∷ʳ τ') (refl ∷ σ') τ'∘ρ≡τ σ'∘ρ≡σ = {! aux τ σ !}
 
+  cs (x ∷ us) ρ (refl ∷ τ') (x ∷ʳ σ') refl refl = record
+    { upperBound = record
+      { theUpperBound = us
+      ; sub =  ∷ˡ⁻ ρ
+      ; inj₁ = τ'
+      ; inj₂ = σ'
+      }
+    ; isCospan = record
+      { tri₁ = {! τ'∘ρ≡τ !}
+      ; tri₂ = {! σ'∘ρ≡σ !}
+      }
+    }
   cs (x ∷ us) ρ (refl ∷ τ') (x ∷ʳ σ') τ'∘ρ≡τ σ'∘ρ≡σ = record
     { upperBound = record
       { theUpperBound = us
