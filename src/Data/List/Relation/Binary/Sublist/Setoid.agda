@@ -187,6 +187,7 @@ z ∷ʳ₂ rpo = record
   where
   rpo = ⊆-pushoutˡ τ σ
 
+
 ------------------------------------------------------------------------
 -- Disjoint sublists xs,ys ⊆ zs
 --
@@ -226,7 +227,6 @@ data Disjoint : ∀ {xs ys zs} (τ : xs ⊆ zs) (σ : ys ⊆ zs) → Set (c ⊔ 
 ... | yes d = yes (y ∷ₙ d)
 ... | no ¬d = no λ{ (_ ∷ₙ d) → ¬d d }
 
-
 ------------------------------------------------------------------------
 -- Upper bound of two sublists xs,ys ⊆ zs
 
@@ -239,58 +239,48 @@ record UpperBound {xs ys zs} (τ : xs ⊆ zs) (σ : ys ⊆ zs) : Set (c ⊔ ℓ)
 
 open UpperBound
 
-private
-  variable
-    x y z : A
-    x≈y x≈z y≈z : x ≈ y
-    xs ys zs us : List A
-    τ σ : xs ⊆ ys
-
-∷ₙ-ub : UpperBound τ σ → UpperBound (x ∷ʳ τ) (x ∷ʳ σ)
+∷ₙ-ub : ∀ {xs ys zs} {τ : xs ⊆ zs} {σ : ys ⊆ zs} {x} →
+        UpperBound τ σ → UpperBound (x ∷ʳ τ) (x ∷ʳ σ)
 ∷ₙ-ub u = record
   { sub  = _ ∷ʳ u .sub
   ; inj₁ = u .inj₁
   ; inj₂ = u .inj₂
   }
 
-_∷ₗ-ub_ : (x≈y : x ≈ y) → UpperBound τ σ → UpperBound (x≈y ∷ τ) (y ∷ʳ σ)
+_∷ₗ-ub_ : ∀ {xs ys zs} {τ : xs ⊆ zs} {σ : ys ⊆ zs} {x y} →
+         (x≈y : x ≈ y) → UpperBound τ σ → UpperBound (x≈y ∷ τ) (y ∷ʳ σ)
 x≈y ∷ₗ-ub u = record
   { sub = refl ∷ u .sub
   ; inj₁ = x≈y ∷ u .inj₁
   ; inj₂ = _  ∷ʳ u .inj₂
   }
 
-_∷ᵣ-ub_ : (x≈y : x ≈ y) → UpperBound τ σ → UpperBound (y ∷ʳ τ) (x≈y ∷ σ)
+_∷ᵣ-ub_ : ∀ {xs ys zs} {τ : xs ⊆ zs} {σ : ys ⊆ zs} {x y} →
+         (x≈y : x ≈ y) → UpperBound τ σ → UpperBound (y ∷ʳ τ) (x≈y ∷ σ)
 x≈y ∷ᵣ-ub u = record
   { sub  = refl ∷ u .sub
   ; inj₁ = _   ∷ʳ u .inj₁
   ; inj₂ = x≈y  ∷ u .inj₂
   }
 
-
 ------------------------------------------------------------------------
 -- Disjoint union
 --
--- Two non-overlapping sublists can be joined in a unique way.
+-- Two non-overlapping sublists τ : xs ⊆ zs and σ : ys ⊆ zs
+-- can be joined in a unique way if τ and σ are respected.
+--
+-- For instance, if τ : [x] ⊆ [x,y,x] and σ : [y] ⊆ [x,y,x]
+-- then the union will be [x,y] or [y,x], depending on whether
+-- τ picks the first x or the second one.
+--
+-- NB: If the content of τ and σ were ignored then the union would not
+-- be unique.  Expressing uniqueness would require a notion of equality
+-- of sublist proofs, which we do not (yet) have for the setoid case
+-- (however, for the propositional case).
 
--- xs and ys are disjoint sublists of zs.
--- (But zs may be bigger than their disjoint union.)
-
-⊆-disjoint-union : {τ : xs ⊆ zs} {σ : ys ⊆ zs} → Disjoint τ σ → UpperBound τ σ
+⊆-disjoint-union : ∀ {xs ys zs} {τ : xs ⊆ zs} {σ : ys ⊆ zs} →
+                   Disjoint τ σ → UpperBound τ σ
 ⊆-disjoint-union []         = record { sub = [] ; inj₁ = [] ; inj₂ = [] }
 ⊆-disjoint-union (x   ∷ₙ d) = ∷ₙ-ub (⊆-disjoint-union d)
 ⊆-disjoint-union (x≈y ∷ₗ d) = x≈y ∷ₗ-ub (⊆-disjoint-union d)
 ⊆-disjoint-union (x≈y ∷ᵣ d) = x≈y ∷ᵣ-ub (⊆-disjoint-union d)
-
-{-
-
-record IsWeakCoproduct (τ : xs ⊆ zs) (σ : ys ⊆ zs) (τ+σ : us ⊆ zs) : Set (c ⊔ ℓ) where
-  field
-    inj₁ : xs ⊆ us
-    inj₂ : ys ⊆ us
-    -- slice₁ : ⊆-trans inj₁ τ+σ ≋ τ
-
--- -}
--- -}
--- -}
--- -}
