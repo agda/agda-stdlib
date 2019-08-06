@@ -134,9 +134,9 @@ module _ {as bs : List A} where
 ------------------------------------------------------------------------
 -- take
 
-module _  where
+module _ {m n} {xs} where
 
-  take⁺ : ∀ {m n} {xs} → m ≤ n → take m xs ⊆ take n xs
+  take⁺ : m ≤ n → take m xs ⊆ take n xs
   take⁺ m≤n = HeteroProperties.take⁺ m≤n ≋-refl
 
 ------------------------------------------------------------------------
