@@ -158,3 +158,50 @@ IsWeakPushout {τ = τ} {σ = σ} rpo =
 ⊆-pushoutˡ-is-wpo {τ = y   ∷ʳ _}                = cong (y   ∷ʳ_) ⊆-pushoutˡ-is-wpo
 ⊆-pushoutˡ-is-wpo {τ = _   ∷  _} {σ = z   ∷ʳ _} = cong (z   ∷ʳ_) ⊆-pushoutˡ-is-wpo
 ⊆-pushoutˡ-is-wpo {τ = refl ∷ _} {σ = refl ∷ _} = cong (refl ∷_) ⊆-pushoutˡ-is-wpo
+
+------------------------------------------------------------------------
+-- A Union where the triangles commute is a
+-- cospan in the slice category (_ ⊆ zs)
+
+private
+  variable
+    xs ys zs : List A
+    τ₁ : xs ⊆ zs
+    τ₂ : ys ⊆ zs
+
+-- module _ {xs ys zs : List A} {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs} where
+
+record IsCospan (u : Union τ₁ τ₂) : Set a where
+  field
+    tri₁ : ⊆-trans (Union.inj₁ u) (Union.sub u) ≡ τ₁
+    tri₂ : ⊆-trans (Union.inj₂ u) (Union.sub u) ≡ τ₂
+
+open IsCospan
+
+module _ {x : A} (d : Disjoint τ₁ τ₂) (c : IsCospan (⊆-disjoint-union d)) where
+
+  ∷ₙ-cospan : IsCospan (⊆-disjoint-union (x ∷ₙ d))
+  ∷ₙ-cospan = record
+    { tri₁ = cong (x ∷ʳ_) (c .tri₁)
+    ; tri₂ = cong (x ∷ʳ_) (c .tri₂)
+    }
+
+  ∷ₗ-cospan : IsCospan (⊆-disjoint-union (refl {x = x} ∷ₗ d))
+  ∷ₗ-cospan = record
+    { tri₁ = cong (refl ∷_) (c .tri₁)
+    ; tri₂ = cong (x   ∷ʳ_) (c .tri₂)
+    }
+
+  ∷ᵣ-cospan : IsCospan (⊆-disjoint-union (refl {x = x} ∷ᵣ d))
+  ∷ᵣ-cospan = record
+    { tri₁ = cong (x   ∷ʳ_) (c .tri₁)
+    ; tri₂ = cong (refl ∷_) (c .tri₂)
+    }
+
+⊆-disjoint-union-is-cospan : (d : Disjoint τ₁ τ₂) → IsCospan (⊆-disjoint-union d)
+⊆-disjoint-union-is-cospan [] = record { tri₁ = refl ; tri₂ = refl }
+⊆-disjoint-union-is-cospan (x    ∷ₙ d) = ∷ₙ-cospan d (⊆-disjoint-union-is-cospan d)
+⊆-disjoint-union-is-cospan (refl ∷ₗ d) = ∷ₗ-cospan d (⊆-disjoint-union-is-cospan d)
+⊆-disjoint-union-is-cospan (refl ∷ᵣ d) = ∷ᵣ-cospan d (⊆-disjoint-union-is-cospan d)
+
+-- -}
