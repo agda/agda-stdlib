@@ -198,3 +198,8 @@ Other minor additions
   levelOfType : ∀ {a} → Set a → Level
   levelOfTerm : ∀ {a} {A : Set a} → A → Level
   ```
+
+* Re-exported the maximum function for sizes in `Size`
+  ```agda
+  _⊔ˢ_   : Size → Size → Size
+  ```
