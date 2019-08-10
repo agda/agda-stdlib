@@ -217,3 +217,8 @@ Other minor additions
       _≈_             : Rel Carrier ℓ
       isPartialEquivalence : IsPartialEquivalence _≈_
   ```
+
+* Re-exported the maximum function for sizes in `Size`
+  ```agda
+  _⊔ˢ_   : Size → Size → Size
+  ```
