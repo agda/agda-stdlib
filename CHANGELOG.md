@@ -108,6 +108,8 @@ The following new modules have been added to the library:
   Function.Structures
 
   Relation.Binary.Properties.Setoid
+  Relation.Binary.Reasoning.Base.Partial
+  Relation.Binary.Reasoning.PartialSetoid
   ```
 
 Relocated modules
@@ -197,6 +199,23 @@ Other minor additions
   ```agda
   levelOfType : ∀ {a} → Set a → Level
   levelOfTerm : ∀ {a} {A : Set a} → A → Level
+  ```
+
+* Added Partial Equivalence Relations to `Relation.Binary.Core`:
+  ```agda
+  record IsPartialEquivalence {A : Set a} (_≈_ : Rel A ℓ) : Set (a ⊔ ℓ) where
+  field
+      sym   : Symmetric _≈_
+      trans : Transitive _≈_
+  ```
+
+* Added Partial Setoids to `Relation.Binary`:
+  ```agda
+  record PartialSetoid a ℓ : Set (suc (a ⊔ ℓ)) where
+  field
+      Carrier         : Set a
+      _≈_             : Rel Carrier ℓ
+      isPartialEquivalence : IsPartialEquivalence _≈_
   ```
 
 * Re-exported the maximum function for sizes in `Size`
