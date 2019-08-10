@@ -240,38 +240,55 @@
     <a id="NonEmpty.proof"></a><a id="6487" href="Relation.Binary.Core.html#6487" class="Field">proof</a> <a id="6493" class="Symbol">:</a> <a id="6495" href="Relation.Binary.Core.html#6385" class="Bound">T</a> <a id="6497" href="Relation.Binary.Core.html#6460" class="Field">x</a> <a id="6499" href="Relation.Binary.Core.html#6474" class="Field">y</a>
 
 <a id="6502" class="Comment">------------------------------------------------------------------------</a>
-<a id="6575" class="Comment">-- Equivalence relations</a>
+<a id="6575" class="Comment">-- Partial Equivalence relations</a>
 
-<a id="6601" class="Comment">-- The preorders of this library are defined in terms of an underlying</a>
-<a id="6672" class="Comment">-- equivalence relation, and hence equivalence relations are not</a>
-<a id="6737" class="Comment">-- defined in terms of preorders.</a>
+<a id="6609" class="Comment">-- To preserve backwards compatability, equivalence relations are</a>
+<a id="6675" class="Comment">-- not defined in terms of their partial counterparts.</a>
 
-<a id="6772" class="Comment">-- This record is defined here instead of with the rest of the</a>
-<a id="6835" class="Comment">-- structures in `Relation.Binary` due to dependency cyles with</a>
-<a id="6899" class="Comment">-- `Relation.Binary.PropositionalEquality`.</a>
+<a id="6731" class="Keyword">record</a> <a id="IsPartialEquivalence"></a><a id="6738" href="Relation.Binary.Core.html#6738" class="Record">IsPartialEquivalence</a> <a id="6759" class="Symbol">{</a><a id="6760" href="Relation.Binary.Core.html#6760" class="Bound">A</a> <a id="6762" class="Symbol">:</a> <a id="6764" class="PrimitiveType">Set</a> <a id="6768" href="Relation.Binary.Core.html#695" class="Generalizable">a</a><a id="6769" class="Symbol">}</a> <a id="6771" class="Symbol">(</a><a id="6772" href="Relation.Binary.Core.html#6772" class="Bound Operator">_≈_</a> <a id="6776" class="Symbol">:</a> <a id="6778" href="Relation.Binary.Core.html#1076" class="Function">Rel</a> <a id="6782" href="Relation.Binary.Core.html#6760" class="Bound">A</a> <a id="6784" href="Relation.Binary.Core.html#701" class="Generalizable">ℓ</a><a id="6785" class="Symbol">)</a> <a id="6787" class="Symbol">:</a> <a id="6789" class="PrimitiveType">Set</a> <a id="6793" class="Symbol">(</a><a id="6794" href="Relation.Binary.Core.html#6768" class="Bound">a</a> <a id="6796" href="Agda.Primitive.html#657" class="Primitive Operator">⊔</a> <a id="6798" href="Relation.Binary.Core.html#6784" class="Bound">ℓ</a><a id="6799" class="Symbol">)</a> <a id="6801" class="Keyword">where</a>
+  <a id="6809" class="Keyword">field</a>
+    <a id="IsPartialEquivalence.sym"></a><a id="6819" href="Relation.Binary.Core.html#6819" class="Field">sym</a>   <a id="6825" class="Symbol">:</a> <a id="6827" href="Relation.Binary.Core.html#2485" class="Function">Symmetric</a> <a id="6837" href="Relation.Binary.Core.html#6772" class="Bound Operator">_≈_</a>
+    <a id="IsPartialEquivalence.trans"></a><a id="6845" href="Relation.Binary.Core.html#6845" class="Field">trans</a> <a id="6851" class="Symbol">:</a> <a id="6853" href="Relation.Binary.Core.html#2853" class="Function">Transitive</a> <a id="6864" href="Relation.Binary.Core.html#6772" class="Bound Operator">_≈_</a>
 
-<a id="6944" class="Keyword">record</a> <a id="IsEquivalence"></a><a id="6951" href="Relation.Binary.Core.html#6951" class="Record">IsEquivalence</a> <a id="6965" class="Symbol">{</a><a id="6966" href="Relation.Binary.Core.html#6966" class="Bound">A</a> <a id="6968" class="Symbol">:</a> <a id="6970" class="PrimitiveType">Set</a> <a id="6974" href="Relation.Binary.Core.html#695" class="Generalizable">a</a><a id="6975" class="Symbol">}</a> <a id="6977" class="Symbol">(</a><a id="6978" href="Relation.Binary.Core.html#6978" class="Bound Operator">_≈_</a> <a id="6982" class="Symbol">:</a> <a id="6984" href="Relation.Binary.Core.html#1076" class="Function">Rel</a> <a id="6988" href="Relation.Binary.Core.html#6966" class="Bound">A</a> <a id="6990" href="Relation.Binary.Core.html#701" class="Generalizable">ℓ</a><a id="6991" class="Symbol">)</a> <a id="6993" class="Symbol">:</a> <a id="6995" class="PrimitiveType">Set</a> <a id="6999" class="Symbol">(</a><a id="7000" href="Relation.Binary.Core.html#6974" class="Bound">a</a> <a id="7002" href="Agda.Primitive.html#657" class="Primitive Operator">⊔</a> <a id="7004" href="Relation.Binary.Core.html#6990" class="Bound">ℓ</a><a id="7005" class="Symbol">)</a> <a id="7007" class="Keyword">where</a>
-  <a id="7015" class="Keyword">field</a>
-    <a id="IsEquivalence.refl"></a><a id="7025" href="Relation.Binary.Core.html#7025" class="Field">refl</a>  <a id="7031" class="Symbol">:</a> <a id="7033" href="Relation.Binary.Core.html#2326" class="Function">Reflexive</a> <a id="7043" href="Relation.Binary.Core.html#6978" class="Bound Operator">_≈_</a>
-    <a id="IsEquivalence.sym"></a><a id="7051" href="Relation.Binary.Core.html#7051" class="Field">sym</a>   <a id="7057" class="Symbol">:</a> <a id="7059" href="Relation.Binary.Core.html#2485" class="Function">Symmetric</a> <a id="7069" href="Relation.Binary.Core.html#6978" class="Bound Operator">_≈_</a>
-    <a id="IsEquivalence.trans"></a><a id="7077" href="Relation.Binary.Core.html#7077" class="Field">trans</a> <a id="7083" class="Symbol">:</a> <a id="7085" href="Relation.Binary.Core.html#2853" class="Function">Transitive</a> <a id="7096" href="Relation.Binary.Core.html#6978" class="Bound Operator">_≈_</a>
+<a id="6869" class="Comment">------------------------------------------------------------------------</a>
+<a id="6942" class="Comment">-- Equivalence relations</a>
 
-  <a id="IsEquivalence.reflexive"></a><a id="7103" href="Relation.Binary.Core.html#7103" class="Function">reflexive</a> <a id="7113" class="Symbol">:</a> <a id="7115" href="Agda.Builtin.Equality.html#125" class="Datatype Operator">_≡_</a> <a id="7119" href="Relation.Binary.Core.html#1388" class="Function Operator">⇒</a> <a id="7121" href="Relation.Binary.Core.html#6978" class="Bound Operator">_≈_</a>
-  <a id="7127" href="Relation.Binary.Core.html#7103" class="Function">reflexive</a> <a id="7137" href="Agda.Builtin.Equality.html#182" class="InductiveConstructor">≡-refl</a> <a id="7144" class="Symbol">=</a> <a id="7146" href="Relation.Binary.Core.html#7025" class="Field">refl</a>
+<a id="6968" class="Comment">-- The preorders of this library are defined in terms of an underlying</a>
+<a id="7039" class="Comment">-- equivalence relation, and hence equivalence relations are not</a>
+<a id="7104" class="Comment">-- defined in terms of preorders.</a>
+
+<a id="7139" class="Comment">-- This record is defined here instead of with the rest of the</a>
+<a id="7202" class="Comment">-- structures in `Relation.Binary` due to dependency cyles with</a>
+<a id="7266" class="Comment">-- `Relation.Binary.PropositionalEquality`.</a>
+
+<a id="7311" class="Keyword">record</a> <a id="IsEquivalence"></a><a id="7318" href="Relation.Binary.Core.html#7318" class="Record">IsEquivalence</a> <a id="7332" class="Symbol">{</a><a id="7333" href="Relation.Binary.Core.html#7333" class="Bound">A</a> <a id="7335" class="Symbol">:</a> <a id="7337" class="PrimitiveType">Set</a> <a id="7341" href="Relation.Binary.Core.html#695" class="Generalizable">a</a><a id="7342" class="Symbol">}</a> <a id="7344" class="Symbol">(</a><a id="7345" href="Relation.Binary.Core.html#7345" class="Bound Operator">_≈_</a> <a id="7349" class="Symbol">:</a> <a id="7351" href="Relation.Binary.Core.html#1076" class="Function">Rel</a> <a id="7355" href="Relation.Binary.Core.html#7333" class="Bound">A</a> <a id="7357" href="Relation.Binary.Core.html#701" class="Generalizable">ℓ</a><a id="7358" class="Symbol">)</a> <a id="7360" class="Symbol">:</a> <a id="7362" class="PrimitiveType">Set</a> <a id="7366" class="Symbol">(</a><a id="7367" href="Relation.Binary.Core.html#7341" class="Bound">a</a> <a id="7369" href="Agda.Primitive.html#657" class="Primitive Operator">⊔</a> <a id="7371" href="Relation.Binary.Core.html#7357" class="Bound">ℓ</a><a id="7372" class="Symbol">)</a> <a id="7374" class="Keyword">where</a>
+  <a id="7382" class="Keyword">field</a>
+    <a id="IsEquivalence.refl"></a><a id="7392" href="Relation.Binary.Core.html#7392" class="Field">refl</a>  <a id="7398" class="Symbol">:</a> <a id="7400" href="Relation.Binary.Core.html#2326" class="Function">Reflexive</a> <a id="7410" href="Relation.Binary.Core.html#7345" class="Bound Operator">_≈_</a>
+    <a id="IsEquivalence.sym"></a><a id="7418" href="Relation.Binary.Core.html#7418" class="Field">sym</a>   <a id="7424" class="Symbol">:</a> <a id="7426" href="Relation.Binary.Core.html#2485" class="Function">Symmetric</a> <a id="7436" href="Relation.Binary.Core.html#7345" class="Bound Operator">_≈_</a>
+    <a id="IsEquivalence.trans"></a><a id="7444" href="Relation.Binary.Core.html#7444" class="Field">trans</a> <a id="7450" class="Symbol">:</a> <a id="7452" href="Relation.Binary.Core.html#2853" class="Function">Transitive</a> <a id="7463" href="Relation.Binary.Core.html#7345" class="Bound Operator">_≈_</a>
+
+  <a id="IsEquivalence.reflexive"></a><a id="7470" href="Relation.Binary.Core.html#7470" class="Function">reflexive</a> <a id="7480" class="Symbol">:</a> <a id="7482" href="Agda.Builtin.Equality.html#125" class="Datatype Operator">_≡_</a> <a id="7486" href="Relation.Binary.Core.html#1388" class="Function Operator">⇒</a> <a id="7488" href="Relation.Binary.Core.html#7345" class="Bound Operator">_≈_</a>
+  <a id="7494" href="Relation.Binary.Core.html#7470" class="Function">reflexive</a> <a id="7504" href="Agda.Builtin.Equality.html#182" class="InductiveConstructor">≡-refl</a> <a id="7511" class="Symbol">=</a> <a id="7513" href="Relation.Binary.Core.html#7392" class="Field">refl</a>
+
+  <a id="IsEquivalence.isPartialEquivalence"></a><a id="7521" href="Relation.Binary.Core.html#7521" class="Function">isPartialEquivalence</a> <a id="7542" class="Symbol">:</a> <a id="7544" href="Relation.Binary.Core.html#6738" class="Record">IsPartialEquivalence</a> <a id="7565" href="Relation.Binary.Core.html#7345" class="Bound Operator">_≈_</a>
+  <a id="7571" href="Relation.Binary.Core.html#7521" class="Function">isPartialEquivalence</a> <a id="7592" class="Symbol">=</a> <a id="7594" class="Keyword">record</a>
+    <a id="7605" class="Symbol">{</a> <a id="7607" href="Relation.Binary.Core.html#6819" class="Field">sym</a> <a id="7611" class="Symbol">=</a> <a id="7613" href="Relation.Binary.Core.html#7418" class="Field">sym</a>
+    <a id="7621" class="Symbol">;</a> <a id="7623" href="Relation.Binary.Core.html#6845" class="Field">trans</a> <a id="7629" class="Symbol">=</a> <a id="7631" href="Relation.Binary.Core.html#7444" class="Field">trans</a>
+    <a id="7641" class="Symbol">}</a>
 
 
 
-<a id="7154" class="Comment">------------------------------------------------------------------------</a>
-<a id="7227" class="Comment">-- DEPRECATED NAMES</a>
-<a id="7247" class="Comment">------------------------------------------------------------------------</a>
-<a id="7320" class="Comment">-- Please use the new names as continuing support for the old names is</a>
-<a id="7391" class="Comment">-- not guaranteed.</a>
+<a id="7646" class="Comment">------------------------------------------------------------------------</a>
+<a id="7719" class="Comment">-- DEPRECATED NAMES</a>
+<a id="7739" class="Comment">------------------------------------------------------------------------</a>
+<a id="7812" class="Comment">-- Please use the new names as continuing support for the old names is</a>
+<a id="7883" class="Comment">-- not guaranteed.</a>
 
-<a id="7411" class="Comment">-- Version 1.1</a>
+<a id="7903" class="Comment">-- Version 1.1</a>
 
-<a id="Conn"></a><a id="7427" href="Relation.Binary.Core.html#7427" class="Function">Conn</a> <a id="7432" class="Symbol">=</a> <a id="7434" href="Relation.Binary.Core.html#3480" class="Function">Connex</a>
-<a id="7441" class="Symbol">{-#</a> <a id="7445" class="Keyword">WARNING_ON_USAGE</a> <a id="7462" class="Pragma">Conn</a>
-<a id="7467" class="String">&quot;Warning: Conn was deprecated in v1.1.
+<a id="Conn"></a><a id="7919" href="Relation.Binary.Core.html#7919" class="Function">Conn</a> <a id="7924" class="Symbol">=</a> <a id="7926" href="Relation.Binary.Core.html#3480" class="Function">Connex</a>
+<a id="7933" class="Symbol">{-#</a> <a id="7937" class="Keyword">WARNING_ON_USAGE</a> <a id="7954" class="Pragma">Conn</a>
+<a id="7959" class="String">&quot;Warning: Conn was deprecated in v1.1.
 Please use Connex instead.&quot;</a>
-<a id="7534" class="Symbol">#-}</a>
+<a id="8026" class="Symbol">#-}</a>
 </pre></body></html>
