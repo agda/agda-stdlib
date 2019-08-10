@@ -98,6 +98,9 @@ New modules
   Data.Trie
   Data.Trie.NonEmpty
 
+  Data.Word.Base
+  Data.Word.Properties
+
   Relation.Binary.Construct.Closure.Equivalence.Properties
   Relation.Binary.Rewriting
 
@@ -214,6 +217,12 @@ been attached to all deprecated names.
 * In `Foreign.Haskell` the terms `Unit` and `unit` have been deprecated in
   favour of `⊤` and `tt` from `Data.Unit`, as it turns out that the latter
   have been automatically mapped to the Haskell equivalent for quite some time.
+
+* The module `Data.Word.Unsafe` has been deprecated as there are no
+  longer any unsafe operations.
+
+* Renamed a few `-identity` lemmas in `Codata.Stream.Properties` as they were
+  proving two streams bisimilar rather than propositionally equal.
 
 * In `Reflection`:
   ```agda
@@ -575,6 +584,15 @@ Other minor additions
 
   _<?_ : Decidable _<_
   ```
+
+* Added new definitions to `Data.Word.Base`:
+  ```agda
+  _≈_ : Rel Word64 zero
+  _<_ : Rel Word64 zero
+  ```
+
+* Decidable equality over words has been made safe and so `_≟_` has been
+  moved from `Data.Word.Unsafe` to `Data.Word.Properties`.
 
 * The special term `Setω` is now exported by `Level`.
 
