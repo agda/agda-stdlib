@@ -22,7 +22,7 @@ open import Data.Nat.Base
 open import Data.Product
 open import Data.Sum
 open import Data.Unit using (tt)
-open import Function
+open import Function.Core
 open import Function.Injection using (_↣_)
 open import Level using (0ℓ)
 open import Relation.Binary
@@ -81,6 +81,9 @@ m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
   ; _≈_              = _≡_
   ; isDecEquivalence = ≡-isDecEquivalence
   }
+
+0≢1+n : ∀ {n} → 0 ≢ suc n
+0≢1+n ()
 
 1+n≢0 : ∀ {n} → suc n ≢ 0
 1+n≢0 ()
@@ -149,6 +152,9 @@ suc m ≤? n with T? (m <ᵇ n)
 
 _≥?_ : Decidable _≥_
 _≥?_ = flip _≤?_
+
+n<1+n : ∀ {n} → n < suc n
+n<1+n = ≤-refl
 
 ------------------------------------------------------------------------
 -- Structures
@@ -477,6 +483,19 @@ suc[pred[n]]≡n {suc n} n≢0 = refl
 ------------------------------------------------------------------------
 -- Packages
 
++-rawMagma : RawMagma 0ℓ 0ℓ
++-rawMagma = record
+  { _≈_ = _≡_
+  ; _∙_ = _+_
+  }
+
++-0-rawMonoid : RawMonoid 0ℓ 0ℓ
++-0-rawMonoid = record
+  { _≈_ = _≡_
+  ; _∙_ = _+_
+  ; ε   = 0
+  }
+
 +-magma : Magma 0ℓ 0ℓ
 +-magma = record
   { isMagma = +-isMagma
@@ -508,6 +527,9 @@ m≢1+n+m m m≡1+n+m = m≢1+m+n m (trans m≡1+n+m (cong suc (+-comm _ m)))
 
 m+1+n≢m : ∀ m {n} → m + suc n ≢ m
 m+1+n≢m (suc m) = (m+1+n≢m m) ∘ suc-injective
+
+m+1+n≢0 : ∀ m {n} → m + suc n ≢ 0
+m+1+n≢0 m {n} rewrite +-suc m n = λ()
 
 m+n≡0⇒m≡0 : ∀ m {n} → m + n ≡ 0 → m ≡ 0
 m+n≡0⇒m≡0 zero eq = refl
@@ -602,11 +624,11 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
 -- Properties of _*_
 ------------------------------------------------------------------------
 
-+-*-suc : ∀ m n → m * suc n ≡ m + m * n
-+-*-suc zero    n = refl
-+-*-suc (suc m) n = begin-equality
+*-suc : ∀ m n → m * suc n ≡ m + m * n
+*-suc zero    n = refl
+*-suc (suc m) n = begin-equality
   suc m * suc n         ≡⟨⟩
-  suc n + m * suc n     ≡⟨ cong (suc n +_) (+-*-suc m n) ⟩
+  suc n + m * suc n     ≡⟨ cong (suc n +_) (*-suc m n) ⟩
   suc n + (m + m * n)   ≡⟨⟩
   suc (n + (m + m * n)) ≡⟨ cong suc (sym (+-assoc n m (m * n))) ⟩
   suc (n + m + m * n)   ≡⟨ cong (λ x → suc (x + m * n)) (+-comm n m) ⟩
@@ -642,7 +664,7 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
 *-comm (suc m) n = begin-equality
   suc m * n  ≡⟨⟩
   n + m * n  ≡⟨ cong (n +_) (*-comm m n) ⟩
-  n + n * m  ≡⟨ sym (+-*-suc n m) ⟩
+  n + n * m  ≡⟨ sym (*-suc n m) ⟩
   n * suc m  ∎
 
 *-distribʳ-+ : _*_ DistributesOverʳ _+_
@@ -717,6 +739,19 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
 
 ------------------------------------------------------------------------
 -- Packages
+
+*-rawMagma : RawMagma 0ℓ 0ℓ
+*-rawMagma = record
+  { _≈_ = _≡_
+  ; _∙_ = _*_
+  }
+
+*-1-rawMonoid : RawMonoid 0ℓ 0ℓ
+*-1-rawMonoid = record
+  { _≈_ = _≡_
+  ; _∙_ = _*_
+  ; ε   = 1
+  }
 
 *-magma : Magma 0ℓ 0ℓ
 *-magma = record
@@ -873,7 +908,7 @@ m<m*n {suc m-1} {suc (suc n-2)} (s≤s _) (s≤s (s≤s _)) = begin-strict
 ^-*-assoc m n (suc o) = begin-equality
   (m ^ n) * ((m ^ n) ^ o) ≡⟨ cong ((m ^ n) *_) (^-*-assoc m n o) ⟩
   (m ^ n) * (m ^ (n * o)) ≡⟨ sym (^-distribˡ-+-* m n (n * o)) ⟩
-  m ^ (n + n * o)         ≡⟨ cong (m ^_) (sym (+-*-suc n o)) ⟩
+  m ^ (n + n * o)         ≡⟨ cong (m ^_) (sym (*-suc n o)) ⟩
   m ^ (n * (suc o)) ∎
 
 m^n≡0⇒m≡0 : ∀ m n → m ^ n ≡ 0 → m ≡ 0
@@ -1478,6 +1513,14 @@ m∸[m∸n]≡n {suc m} {suc n} (s≤s n≤m) = begin-equality
 *-distrib-∸ : _*_ DistributesOver _∸_
 *-distrib-∸ = *-distribˡ-∸ , *-distribʳ-∸
 
+even≢odd :  ∀ m n → 2 * m ≢ suc (2 * n)
+even≢odd (suc m) zero    eq = contradiction (suc-injective eq) (m+1+n≢0 m)
+even≢odd (suc m) (suc n) eq = even≢odd m n (suc-injective (begin-equality
+  suc (2 * m)         ≡⟨ sym (+-suc m _) ⟩
+  m + suc (m + 0)     ≡⟨ suc-injective eq ⟩
+  suc n + suc (n + 0) ≡⟨ cong suc (+-suc n _) ⟩
+  suc (suc (2 * n))   ∎))
+
 ------------------------------------------------------------------------
 -- Properties of _∸_ and _⊓_ and _⊔_
 
@@ -2034,4 +2077,12 @@ Please use m≤n+m∸n instead (note, you will need to switch the argument order
 {-# WARNING_ON_USAGE ∣n-m∣≡[n∸m]∨[m∸n]
 "Warning: ∣n-m∣≡[n∸m]∨[m∸n] was deprecated in v1.1.
 Please use ∣m-n∣≡[m∸n]∨[n∸m] instead (note, you will need to switch the argument order)."
+#-}
+
+-- Version 1.2
+
++-*-suc = *-suc
+{-# WARNING_ON_USAGE +-*-suc
+"Warning: +-*-suc was deprecated in v1.2.
+Please use *-suc instead."
 #-}

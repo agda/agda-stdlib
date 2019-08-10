@@ -95,7 +95,7 @@ after_success:
   - git config --global user.email "travis-ci-bot@travis.fake"
   - git remote add upstream https://$GH_TOKEN@github.com/agda/agda-stdlib.git &>/dev/null
   - git fetch upstream && git reset upstream/gh-pages
-  - git checkout HEAD -- *.html v0.16/ v0.17/ v1.0/ v1.1/
+  - git checkout HEAD -- *.html v0.16/ v0.17/ v1.0/ v1.1/ experimental/
   - git add -f \*.html
   - git commit -m "Automatic HTML update via Travis"
   - if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS_BRANCH" = "experimental" ];

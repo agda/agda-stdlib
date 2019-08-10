@@ -11,7 +11,7 @@ module Data.Product.Relation.Binary.Pointwise.Dependent.WithK where
 
 open import Data.Product
 open import Data.Product.Relation.Binary.Pointwise.Dependent
-open import Function
+open import Function.Core
 open import Function.Inverse using (Inverse)
 open import Relation.Binary using (_⇒_)
 open import Relation.Binary.HeterogeneousEquality as H using (_≅_)

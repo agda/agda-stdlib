@@ -16,7 +16,7 @@ open import Agda.Builtin.Equality using (_≡_) renaming (refl to ≡-refl)
 open import Data.Maybe.Base using (Maybe)
 open import Data.Product using (_×_)
 open import Data.Sum.Base using (_⊎_)
-open import Function using (_on_; flip)
+open import Function.Core using (_on_; flip)
 open import Level
 open import Relation.Nullary using (Dec; ¬_)
 

@@ -16,7 +16,7 @@ open import Data.Empty
 open import Data.Fin using (Fin; zero; suc; punchOut)
 open import Data.Fin.Properties
   using (suc-injective; punchOut-injective)
-open import Function
+open import Function.Core
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Injection
   using (Injection; module Injection)

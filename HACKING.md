@@ -131,3 +131,23 @@ you are never committing anything with a whitespace violation:
 
    fix-agda-whitespace --check
    ```
+
+Type-checking the README directory
+----------------------------------
+
+* By default the README directory is not exported in the
+  `standard-library.agda-lib` file in order to avoid clashing with other people's
+  README files. This means that by default type-checking a file in the README
+  directory fails.
+
+* If you wish to type-check a README file, then you will need to change the line:
+  ```
+  include: src
+  ```
+  to
+  ```
+  include: src .
+  ```
+  in the `standard-library.agda-lib` file.
+
+* Please do not include this change in your pull request.
