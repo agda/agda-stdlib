@@ -377,6 +377,109 @@ y ∷ʳ-cospanˡ
     z ∷ʳ-cospan (cs us ρ τ' σ' (∷ʳ-injective τ'∘ρ≡τ) (∷ʳ-injective σ'∘ρ≡σ))
 
 
+lemma : (d : Disjoint τ σ) (c : Cospan τ σ)
+      → UpperBound.theUpperBound (⊆-disjoint-union d) ⊆ theUpperBound (∷ˡ⁻-cospanˡ c)
+      → UpperBound.theUpperBound (⊆-disjoint-union (x≈y ∷ₗ d)) ⊆ theUpperBound c
+lemma {σ = σ} {τ = τ}  d
+  record
+  { upperBound = record
+    { theUpperBound = us
+    ; sub = ρ
+    ; inj₁ = τ'
+    ; inj₂ = σ'
+    }
+  ; isCospan = record
+    { tri₁ = τ'∘ρ≡τ
+    ; tri₂ = σ'∘ρ≡σ
+    }
+  } = lem {τ = τ} {σ} us ρ τ' σ' τ'∘ρ≡τ σ'∘ρ≡σ
+  where
+  lem : ∀ {ys zs} {τ : (x ∷ xs) ⊆ zs} {σ : ys ⊆ zs}
+       us (ρ : us ⊆ zs) (τ' : x ∷ xs ⊆ us) (σ' : ys ⊆ us)
+       (τ'∘ρ≡τ : ⊆-trans τ' ρ ≡ τ)
+       (σ'∘ρ≡σ : ⊆-trans σ' ρ ≡ σ) →
+       {! ? !} ⊆ {! us !}
+
+  -- Case: newest element z of zs not needed in upper bound.
+
+  -- Subcase: z cannot be first of x∷xs, would contradict left triangle
+  lem {τ = refl ∷ τ}              _  (z ∷ʳ ρ) _ _ ()
+
+  -- Subcase: z cannot be first of ys, would contradict right triangle
+  lem              {σ = refl ∷ σ} _  (z ∷ʳ ρ) _ _ _ ()
+
+  -- Subcase: z not first of x∷xs nor ys: recurse
+  lem {τ = z ∷ʳ τ} {σ = z   ∷ʳ σ} us (z ∷ʳ ρ) τ' σ' τ'∘ρ≡τ σ'∘ρ≡σ =
+    {! z ∷ʳ-cospan (lem us ρ τ' σ' (∷ʳ-injective τ'∘ρ≡τ) (∷ʳ-injective σ'∘ρ≡σ)) !}
+
+  -- Case: newest element z of zs first of upper bound.
+
+  -- Subcase: z=x
+  -- Subsubcase: ys does not start with x: drop x from upper bound.
+  lem {τ = refl ∷ τ} (x ∷ us) (refl ∷ ρ) (x≡x ∷ τ') (y ∷ʳ σ') τ'∘ρ≡τ σ'∘ρ≡σ = ?
+    -- record
+    -- { upperBound = record
+    --   { theUpperBound = us
+    --   ; sub  = x ∷ʳ ρ
+    --   ; inj₁ = τ'
+    --   ; inj₂ = σ'
+    --   }
+    -- ; isCospan = record
+    --   { tri₁ = cong (x ∷ʳ_) (∷-injectiveʳ τ'∘ρ≡τ)
+    --   ; tri₂ = σ'∘ρ≡σ
+    --   }
+    -- }
+
+  -- Subsubcase: ys also starts with x: keep x in upper bound
+  lem {τ = refl ∷ τ} (x ∷ us) (refl ∷ ρ) (x≡x ∷ τ') (refl ∷ σ') τ'∘ρ≡τ σ'∘ρ≡σ = ?
+    -- record
+    -- { upperBound = record
+    --   { theUpperBound = x ∷ us
+    --   ; sub  = refl ∷ ρ
+    --   ; inj₁ = x ∷ʳ τ'
+    --   ; inj₂ = refl ∷ σ'
+    --   }
+    -- ; isCospan = record
+    --   { tri₁ = cong (x ∷ʳ_) (∷-injectiveʳ τ'∘ρ≡τ)
+    --   ; tri₂ = σ'∘ρ≡σ
+    --   }
+    -- }
+
+  -- Subcase z≠x: we need to peel off z and recurse
+
+  -- Subsubcase: z is first of ys
+  lem {τ = z ∷ʳ τ} {σ = z   ∷ʳ σ} (z ∷ us) (refl ∷ ρ) (z ∷ʳ τ') (z≡z ∷ σ') τ'∘ρ≡τ ()
+  lem {τ = z ∷ʳ τ} {σ = refl ∷ σ} (z ∷ us) (refl ∷ ρ) (z ∷ʳ τ') (z≡z ∷ σ') τ'∘ρ≡τ σ'∘ρ≡σ =
+    {! z ∷ʳ-cospanˡ (lem us ρ τ' σ' (∷ʳ-injective τ'∘ρ≡τ) (∷-injectiveʳ σ'∘ρ≡σ)) !}
+
+  -- Subsubcase: z is not first of ys: we can drop z (or could keep it)
+  lem {τ = z ∷ʳ τ} {σ = z ∷ʳ σ} (z ∷ us) (refl ∷ ρ) (z ∷ʳ τ') (z ∷ʳ σ') τ'∘ρ≡τ σ'∘ρ≡σ =
+    {! z ∷ʳ-cospan (lem us ρ τ' σ' (∷ʳ-injective τ'∘ρ≡τ) (∷ʳ-injective σ'∘ρ≡σ)) !}
+
+
+
+variable
+  c c' : Cospan τ₁ τ₂
+
+record CospanMorphism (c c' : Cospan τ₁ τ₂) : Set a where
+  field
+    morphism : theUpperBound c ⊆ theUpperBound c'
+    tri      : ⊆-trans morphism (sub c') ≡ sub c
+
+
+record CospanMorphism' {xs ys zs}
+      {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs} (c : Cospan τ₁ τ₂)
+      {zs'} (σ : zs ⊆ zs')
+      {τ₁' : xs ⊆ zs'} {τ₂' : ys ⊆ zs'} (c' : Cospan τ₁' τ₂')
+      : Set a where
+  field
+    morphism : theUpperBound c ⊆ theUpperBound c'
+    square   : ⊆-trans morphism (sub c') ≡ ⊆-trans (sub c) σ
+
+-- aux : ∀
+--       CospanMorphism' (⊆-disjoint-union-cospan d) (∷ˡ⁻ σ) c →
+--       CospanMorphism' (⊆-disjoint-union-cospan (y ∷ₙ d)) σ c
+
 
 foo : ∀{xs ys zs}
       {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs} (d : Disjoint τ₁ τ₂)
