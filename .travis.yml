@@ -28,9 +28,10 @@ install:
   - cabal update
   - sed -i 's/^jobs:/-- jobs:/' $HOME/.cabal/config
   # installing the dev version of Agda
+  - cd ../
   - git clone https://github.com/agda/agda
   - cd agda
-  - git checkout 39c273eb6eb3ab68c23b0de7a19eaadd84f0e5fb
+  - git checkout 08dd23df8dd894737af98463f0b3f69d616e7b48
   # checking whether .ghc is still valid
   - cabal install alex happy
   - cabal install --only-dependencies --dry -v > $HOME/installplan.txt
@@ -60,6 +61,7 @@ install:
   - cabal install fix-agda-whitespace.cabal
   - cd ../../..
   - yes | rm -R agda/
+  - cd agda-stdlib
   # generating Everything.agda
   - cabal install lib.cabal
   - runghc GenerateEverything.hs
