@@ -68,6 +68,25 @@ map⁺ {B = B} f = SetoidProperties.map⁺ (setoid A) (setoid B) (cong f)
 ⊆-trans-assoc {τ₁ = []}       {[]}     {[]}     = refl
 
 ------------------------------------------------------------------------
+-- Laws concerning ⊆-trans and ∷ˡ⁻
+
+⊆-trans-∷ˡ⁻ᵣ : ∀ {y} {xs ys zs : List A} {τ : xs ⊆ ys} {σ : (y ∷ ys) ⊆ zs} →
+               ⊆-trans τ (∷ˡ⁻ σ) ≡ ⊆-trans (y ∷ʳ τ) σ
+⊆-trans-∷ˡ⁻ᵣ {σ = x ∷ σ} = refl
+⊆-trans-∷ˡ⁻ᵣ {σ = y ∷ʳ σ} = cong (y ∷ʳ_) ⊆-trans-∷ˡ⁻ᵣ
+
+⊆-trans-∷ˡ⁻ₗ : ∀ {x} {xs ys zs : List A} {τ : (x ∷ xs) ⊆ ys} {σ : ys ⊆ zs} →
+              ⊆-trans (∷ˡ⁻ τ) σ ≡ ∷ˡ⁻ (⊆-trans τ σ)
+⊆-trans-∷ˡ⁻ₗ                {σ = y   ∷ʳ σ} = cong (y ∷ʳ_) ⊆-trans-∷ˡ⁻ₗ
+⊆-trans-∷ˡ⁻ₗ {τ = y   ∷ʳ τ} {σ = refl ∷ σ} = cong (y ∷ʳ_) ⊆-trans-∷ˡ⁻ₗ
+⊆-trans-∷ˡ⁻ₗ {τ = refl ∷ τ} {σ = refl ∷ σ} = refl
+
+⊆-∷ˡ⁻trans-∷ : ∀ {y} {xs ys zs : List A} {τ : xs ⊆ ys} {σ : (y ∷ ys) ⊆ zs} →
+               ∷ˡ⁻ (⊆-trans (refl ∷ τ) σ) ≡ ⊆-trans (y ∷ʳ τ) σ
+⊆-∷ˡ⁻trans-∷ {σ = y   ∷ʳ σ} = cong (y ∷ʳ_) ⊆-∷ˡ⁻trans-∷
+⊆-∷ˡ⁻trans-∷ {σ = refl ∷ σ} = refl
+
+------------------------------------------------------------------------
 -- Relationships to other predicates
 
 -- All P is a contravariant functor from _⊆_ to Set.
@@ -161,19 +180,9 @@ IsWeakPushout {τ = τ} {σ = σ} rpo =
 
 ------------------------------------------------------------------------
 -- A Union where the triangles commute is a
--- cospan in the slice category (_ ⊆ zs)
+-- Cospan in the slice category (_ ⊆ zs).
 
-private
-  variable
-    xs ys zs : List A
-    τ₁ : xs ⊆ zs
-    τ₂ : ys ⊆ zs
-    σ τ : ys ⊆ zs
-    x y z : A
-
--- module _ {xs ys zs : List A} {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs} where
-
-record IsCospan (u : UpperBound τ₁ τ₂) : Set a where
+record IsCospan {xs ys zs : List A} {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs} (u : UpperBound τ₁ τ₂) : Set a where
   field
     tri₁ : ⊆-trans (UpperBound.inj₁ u) (UpperBound.sub u) ≡ τ₁
     tri₂ : ⊆-trans (UpperBound.inj₂ u) (UpperBound.sub u) ≡ τ₂
@@ -189,16 +198,9 @@ record Cospan {xs ys zs : List A} (τ₁ : xs ⊆ zs) (τ₂ : ys ⊆ zs) : Set 
 open IsCospan
 open Cospan
 
-variable
-  c c' : Cospan τ₁ τ₂
-
-record CospanMorphism (c c' : Cospan τ₁ τ₂) : Set a where
-  field
-    morphism : theUpperBound c ⊆ theUpperBound c'
-    tri      : ⊆-trans morphism (sub c') ≡ sub c
-
-
-module _ {x : A} (d : Disjoint τ₁ τ₂) (c : IsCospan (⊆-disjoint-union d)) where
+module _
+  {x : A} {xs ys zs : List A} {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs}
+  (d : Disjoint τ₁ τ₂) (c : IsCospan (⊆-disjoint-union d)) where
 
   ∷ₙ-cospan : IsCospan (⊆-disjoint-union (x ∷ₙ d))
   ∷ₙ-cospan = record
@@ -218,43 +220,29 @@ module _ {x : A} (d : Disjoint τ₁ τ₂) (c : IsCospan (⊆-disjoint-union d)
     ; tri₂ = cong (refl ∷_) (c .tri₂)
     }
 
-⊆-disjoint-union-is-cospan : (d : Disjoint τ₁ τ₂) → IsCospan (⊆-disjoint-union d)
+⊆-disjoint-union-is-cospan : ∀ {xs ys zs : List A} {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs} →
+  (d : Disjoint τ₁ τ₂) → IsCospan (⊆-disjoint-union d)
 ⊆-disjoint-union-is-cospan [] = record { tri₁ = refl ; tri₂ = refl }
 ⊆-disjoint-union-is-cospan (x    ∷ₙ d) = ∷ₙ-cospan d (⊆-disjoint-union-is-cospan d)
 ⊆-disjoint-union-is-cospan (refl ∷ₗ d) = ∷ₗ-cospan d (⊆-disjoint-union-is-cospan d)
 ⊆-disjoint-union-is-cospan (refl ∷ᵣ d) = ∷ᵣ-cospan d (⊆-disjoint-union-is-cospan d)
 
-⊆-disjoint-union-cospan : Disjoint τ₁ τ₂ → Cospan τ₁ τ₂
+⊆-disjoint-union-cospan : ∀ {xs ys zs : List A} {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs} →
+  Disjoint τ₁ τ₂ → Cospan τ₁ τ₂
 ⊆-disjoint-union-cospan d = record
   { upperBound = ⊆-disjoint-union d
   ; isCospan   = ⊆-disjoint-union-is-cospan d
   }
 
-record CospanMorphism' {xs ys zs}
-      {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs} (c : Cospan τ₁ τ₂)
-      {zs'} (σ : zs ⊆ zs')
-      {τ₁' : xs ⊆ zs'} {τ₂' : ys ⊆ zs'} (c' : Cospan τ₁' τ₂')
-      : Set a where
-  field
-    morphism : theUpperBound c ⊆ theUpperBound c'
-    square   : ⊆-trans morphism (sub c') ≡ ⊆-trans (sub c) σ
 
--- aux : ∀
---       CospanMorphism' (⊆-disjoint-union-cospan d) (∷ˡ⁻ σ) c →
---       CospanMorphism' (⊆-disjoint-union-cospan (y ∷ₙ d)) σ c
-
-⊆-trans-∷ˡ⁻ᵣ : ⊆-trans τ (∷ˡ⁻ σ) ≡ ⊆-trans (y ∷ʳ τ) σ
-⊆-trans-∷ˡ⁻ᵣ {σ = x ∷ σ} = refl
-⊆-trans-∷ˡ⁻ᵣ {σ = y ∷ʳ σ} = cong (y ∷ʳ_) ⊆-trans-∷ˡ⁻ᵣ
-
-⊆-trans-∷ˡ⁻ₗ : ⊆-trans (∷ˡ⁻ τ) σ ≡ ∷ˡ⁻ (⊆-trans τ σ)
-⊆-trans-∷ˡ⁻ₗ {σ = y ∷ʳ σ}                  = cong (y ∷ʳ_) ⊆-trans-∷ˡ⁻ₗ
-⊆-trans-∷ˡ⁻ₗ {σ = refl ∷ σ} {τ = y   ∷ʳ τ} = cong (y ∷ʳ_) ⊆-trans-∷ˡ⁻ₗ
-⊆-trans-∷ˡ⁻ₗ {σ = refl ∷ σ} {τ = refl ∷ τ} = refl
-
-⊆-∷ˡ⁻trans-∷ : ∷ˡ⁻ (⊆-trans (refl ∷ τ) σ) ≡ ⊆-trans (y ∷ʳ τ) σ
-⊆-∷ˡ⁻trans-∷ {σ = y   ∷ʳ σ} = cong (y ∷ʳ_) ⊆-∷ˡ⁻trans-∷
-⊆-∷ˡ⁻trans-∷ {σ = refl ∷ σ} = refl
+private
+  variable
+    xs ys zs : List A
+    τ₁ : xs ⊆ zs
+    τ₂ : ys ⊆ zs
+    σ τ : ys ⊆ zs
+    x y z : A
+    x≈y : x ≡ y
 
 
 _∷ʳ-cospan_ : ∀ y → Cospan τ σ → Cospan (y ∷ʳ τ) (y ∷ʳ σ)
@@ -310,9 +298,9 @@ y ∷ʳ-cospanˡ
       }
     }
 
-∷ˡ⁻-csˡ : ∀ {x} {xs ys zs} {τ : (x ∷ xs) ⊆ zs} {σ : ys ⊆ zs} →
+∷ˡ⁻-cospanˡ : ∀ {x} {xs ys zs} {τ : (x ∷ xs) ⊆ zs} {σ : ys ⊆ zs} →
       Cospan τ σ → Cospan (∷ˡ⁻ τ) σ
-∷ˡ⁻-csˡ {x} {xs} {τ = τ} {σ}
+∷ˡ⁻-cospanˡ {x} {xs} {τ = τ} {σ}
   record
     { upperBound = record
       { theUpperBound = us
@@ -410,12 +398,14 @@ foo (y ∷ₙ d) σ c = let bar = foo d (∷ˡ⁻ σ) c in record
       ≡ ⊆-trans (UpperBound.sub (⊆-disjoint-union (y ∷ₙ d))) σ
   aux = {!!}
 
-foo (x≈y ∷ₗ d) σ c = let bar = foo d (∷ˡ⁻ σ) (∷ˡ⁻-csˡ c) in record
+foo (x≈y ∷ₗ d) σ c = let bar = foo d (∷ˡ⁻ σ) (∷ˡ⁻-cospanˡ c) in record
   { morphism = {!CospanMorphism'.morphism bar!} -- ⊆-trans {!!} (CospanMorphism'.morphism bar)
   ; square = {!!}
   }
 
 foo (x≈y ∷ᵣ d) σ c = record { morphism = {!!} ; square = {!!} }
+
+
 
 ⊆-disjoint-union-minimal : (d : Disjoint τ₁ τ₂) (c : Cospan τ₁ τ₂) →
   CospanMorphism (⊆-disjoint-union-cospan d) c
