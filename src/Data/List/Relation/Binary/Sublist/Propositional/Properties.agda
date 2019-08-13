@@ -152,9 +152,11 @@ lookup-⊆-trans = Any-resp-⊆-trans
 
 lookup-injective : ∀ {P : Pred A ℓ} {xs ys} {τ : xs ⊆ ys} {i j : Any P xs} →
                    lookup τ i ≡ lookup τ j → i ≡ j
-lookup-injective {τ = _   ∷ʳ _}                     = lookup-injective ∘′ there-injective
-lookup-injective {τ = refl ∷ _} {here  _} {here  _} = cong here ∘′ here-injective
-lookup-injective {τ = _    ∷ _} {there _} {there _} = cong there ∘′ lookup-injective ∘′ there-injective
+lookup-injective {τ = _  ∷ʳ _}                     = lookup-injective ∘′ there-injective
+lookup-injective {τ = x≡y ∷ _} {here  _} {here  _} = cong here ∘′ subst-injective x≡y ∘′ here-injective
+  -- Note: instead of using subst-injective, we could match x≡y against refl on the lhs.
+  -- However, this turns the following clause into a non-strict match.
+lookup-injective {τ = _   ∷ _} {there _} {there _} = cong there ∘′ lookup-injective ∘′ there-injective
 
 ------------------------------------------------------------------------
 -- Weak pushout (wpo)
