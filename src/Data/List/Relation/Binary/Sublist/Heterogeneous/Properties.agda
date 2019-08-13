@@ -484,6 +484,13 @@ module Disjointness {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   DisjointUnion-[]ʳ {ε = y ∷ʳ ε} {τ = y  ∷ʳ τ} = y   ∷ₙ DisjointUnion-[]ʳ
   DisjointUnion-[]ʳ {ε = y ∷ʳ ε} {τ = x≈y ∷ τ} = x≈y ∷ₗ DisjointUnion-[]ʳ
 
+  -- A sublist τ : x∷xs ⊆ ys can be split into two disjoint sublists
+  -- [x] ⊆ ys (canonical choice) and (∷ˡ⁻ τ) : xs ⊆ ys.
+
+  DisjointUnion-fromAny∘toAny-∷ˡ⁻ : ∀ {x xs ys} (τ : (x ∷ xs) ⊆ ys) → DisjointUnion (fromAny (toAny τ)) (∷ˡ⁻ τ) τ
+  DisjointUnion-fromAny∘toAny-∷ˡ⁻ (y  ∷ʳ τ) = y   ∷ₙ DisjointUnion-fromAny∘toAny-∷ˡ⁻ τ
+  DisjointUnion-fromAny∘toAny-∷ˡ⁻ (xRy ∷ τ) = xRy ∷ₗ DisjointUnion-[]ˡ
+
   -- Disjoint union of three mutually disjoint lists.
   --
   -- τᵢⱼ denotes the disjoint union of τᵢ and τⱼ: DisjointUnion τᵢ τⱼ τᵢⱼ
