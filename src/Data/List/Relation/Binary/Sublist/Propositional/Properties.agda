@@ -18,6 +18,7 @@ open import Data.List.Relation.Binary.Sublist.Propositional
   hiding (map)
 import Data.List.Relation.Binary.Sublist.Setoid.Properties
   as SetoidProperties
+open import Data.Product using (∃; _,_; proj₂)
 open import Function.Core
 open import Level using (Level)
 open import Relation.Binary using (_Respects_)
@@ -192,6 +193,27 @@ IsWeakPushout {τ = τ} {σ = σ} rpo =
 ⊆-pushoutˡ-is-wpo {τ = y   ∷ʳ _}                = cong (y   ∷ʳ_) ⊆-pushoutˡ-is-wpo
 ⊆-pushoutˡ-is-wpo {τ = _   ∷  _} {σ = z   ∷ʳ _} = cong (z   ∷ʳ_) ⊆-pushoutˡ-is-wpo
 ⊆-pushoutˡ-is-wpo {τ = refl ∷ _} {σ = refl ∷ _} = cong (refl ∷_) ⊆-pushoutˡ-is-wpo
+
+------------------------------------------------------------------------
+-- Properties of disjointness
+
+-- From τ ⊎ σ = ρ, compute the difference τ′ such that τ = ⊆-trans τ′ ρ.
+
+DisjointUnion-diffˡ : ∀ {xs ys zs us : List A} {τ : xs ⊆ zs} {σ : ys ⊆ zs} {ρ : us ⊆ zs} →
+                      DisjointUnion τ σ ρ → ∃ λ (τ′ : xs ⊆ us) → ⊆-trans τ′ ρ ≡ τ
+DisjointUnion-diffˡ []         = []       , refl
+DisjointUnion-diffˡ (y   ∷ₙ d) = _        , cong (y  ∷ʳ_) (proj₂ (DisjointUnion-diffˡ d))
+DisjointUnion-diffˡ (x≈y ∷ₗ d) = refl ∷ _ , cong (x≈y ∷_) (proj₂ (DisjointUnion-diffˡ d))
+DisjointUnion-diffˡ (x≈y ∷ᵣ d) = _ ∷ʳ _   , cong (_  ∷ʳ_) (proj₂ (DisjointUnion-diffˡ d))
+
+-- From τ ⊎ σ = ρ, compute the difference σ′ such that σ = ⊆-trans σ′ ρ.
+
+DisjointUnion-diffʳ : ∀ {xs ys zs us : List A} {τ : xs ⊆ zs} {σ : ys ⊆ zs} {ρ : us ⊆ zs} →
+                      DisjointUnion τ σ ρ → ∃ λ (σ′ : ys ⊆ us) → ⊆-trans σ′ ρ ≡ σ
+DisjointUnion-diffʳ []         = []       , refl
+DisjointUnion-diffʳ (y   ∷ₙ d) = _        , cong (y  ∷ʳ_) (proj₂ (DisjointUnion-diffʳ d))
+DisjointUnion-diffʳ (x≈y ∷ᵣ d) = refl ∷ _ , cong (x≈y ∷_) (proj₂ (DisjointUnion-diffʳ d))
+DisjointUnion-diffʳ (x≈y ∷ₗ d) = _ ∷ʳ _   , cong (_  ∷ʳ_) (proj₂ (DisjointUnion-diffʳ d))
 
 ------------------------------------------------------------------------
 -- A Union where the triangles commute is a
