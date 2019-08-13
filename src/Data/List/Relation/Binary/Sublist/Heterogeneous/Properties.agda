@@ -8,6 +8,8 @@
 
 module Data.List.Relation.Binary.Sublist.Heterogeneous.Properties where
 
+open import Level
+
 open import Data.Empty
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.List.Base as List hiding (map; _∷ʳ_)
@@ -20,7 +22,7 @@ open import Data.List.Relation.Binary.Sublist.Heterogeneous
 open import Data.Maybe.Relation.Unary.All as MAll using (nothing; just)
 open import Data.Nat using (ℕ; _≤_; _≥_); open ℕ; open _≤_
 import Data.Nat.Properties as ℕₚ
-open import Data.Product using (_×_; uncurry)
+open import Data.Product using (_×_; _,_; uncurry)
 
 open import Function.Core
 open import Function.Bijection   using (_⤖_; bijection)
@@ -29,7 +31,7 @@ open import Function.Equivalence using (_⇔_ ; equivalence)
 open import Relation.Nullary using (yes; no; ¬_)
 open import Relation.Nullary.Negation using (¬?)
 import Relation.Nullary.Decidable as Dec
-open import Relation.Unary as U using (Pred; _⊆_)
+open import Relation.Unary as U using (Pred)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
@@ -444,3 +446,179 @@ module _ {a e r} where
   decPoset ER-poset = record
     { isDecPartialOrder = isDecPartialOrder ER.isDecPartialOrder
     } where module ER = DecPoset ER-poset
+
+------------------------------------------------------------------------
+-- Properties of disjoint sublists
+
+module Disjointness {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
+
+  private
+    infix 4 _⊆_
+    _⊆_ = Sublist R
+
+  -- Symmetry
+
+  DisjointUnion-symmetric : ∀ {xs ys xys} {zs} {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs} {τ : xys ⊆ zs} →
+    DisjointUnion τ₁ τ₂ τ → DisjointUnion τ₂ τ₁ τ
+  DisjointUnion-symmetric []         = []
+  DisjointUnion-symmetric (y   ∷ₙ d) = y ∷ₙ DisjointUnion-symmetric d
+  DisjointUnion-symmetric (x≈y ∷ₗ d) = x≈y ∷ᵣ DisjointUnion-symmetric d
+  DisjointUnion-symmetric (x≈y ∷ᵣ d) = x≈y ∷ₗ DisjointUnion-symmetric d
+
+  Disjoint-sym : ∀ {xs ys} {zs} {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs} →
+    Disjoint τ₁ τ₂ → Disjoint τ₂ τ₁
+  Disjoint-sym []         = []
+  Disjoint-sym (y   ∷ₙ d) = y ∷ₙ Disjoint-sym d
+  Disjoint-sym (x≈y ∷ₗ d) = x≈y ∷ᵣ Disjoint-sym d
+  Disjoint-sym (x≈y ∷ᵣ d) = x≈y ∷ₗ Disjoint-sym d
+
+  -- Empty sublist
+
+  DisjointUnion-[]ˡ : ∀{xs ys} {ε : [] ⊆ ys} {τ : xs ⊆ ys} → DisjointUnion ε τ τ
+  DisjointUnion-[]ˡ {ε = []}     {τ = []} = []
+  DisjointUnion-[]ˡ {ε = y ∷ʳ ε} {τ = y  ∷ʳ τ} = y   ∷ₙ DisjointUnion-[]ˡ
+  DisjointUnion-[]ˡ {ε = y ∷ʳ ε} {τ = x≈y ∷ τ} = x≈y ∷ᵣ DisjointUnion-[]ˡ
+
+  DisjointUnion-[]ʳ : ∀{xs ys} {ε : [] ⊆ ys} {τ : xs ⊆ ys} → DisjointUnion τ ε τ
+  DisjointUnion-[]ʳ {ε = []}     {τ = []} = []
+  DisjointUnion-[]ʳ {ε = y ∷ʳ ε} {τ = y  ∷ʳ τ} = y   ∷ₙ DisjointUnion-[]ʳ
+  DisjointUnion-[]ʳ {ε = y ∷ʳ ε} {τ = x≈y ∷ τ} = x≈y ∷ₗ DisjointUnion-[]ʳ
+
+  -- Disjoint union of three mutually disjoint lists.
+  --
+  -- τᵢⱼ denotes the disjoint union of τᵢ and τⱼ: DisjointUnion τᵢ τⱼ τᵢⱼ
+
+  record DisjointUnion³
+    {xs ys zs ts} (τ₁  : xs  ⊆ ts) (τ₂  : ys  ⊆ ts) (τ₃  : zs  ⊆ ts)
+    {xys xzs yzs} (τ₁₂ : xys ⊆ ts) (τ₁₃ : xzs ⊆ ts) (τ₂₃ : yzs ⊆ ts) : Set (a ⊔ b ⊔ r) where
+    field
+      {union³} : List A
+      sub³  : union³ ⊆ ts
+      join₁ : DisjointUnion τ₁ τ₂₃ sub³
+      join₂ : DisjointUnion τ₂ τ₁₃ sub³
+      join₃ : DisjointUnion τ₃ τ₁₂ sub³
+
+  -- Weakening the target list ts of a disjoint union.
+
+  _∷ʳ-DisjointUnion³_ :
+    ∀ {xs ys zs ts} {τ₁ : xs ⊆ ts} {τ₂ : ys ⊆ ts} {τ₃ : zs ⊆ ts} →
+    ∀ {xys xzs yzs} {τ₁₂ : xys ⊆ ts} {τ₁₃ : xzs ⊆ ts} {τ₂₃ : yzs ⊆ ts} →
+    ∀ y →
+    DisjointUnion³ τ₁ τ₂ τ₃ τ₁₂ τ₁₃ τ₂₃ →
+    DisjointUnion³ (y ∷ʳ τ₁) (y ∷ʳ τ₂) (y ∷ʳ τ₃) (y ∷ʳ τ₁₂) (y ∷ʳ τ₁₃) (y ∷ʳ τ₂₃)
+  y ∷ʳ-DisjointUnion³ record{ sub³ = σ ; join₁ = d₁ ; join₂ = d₂ ; join₃ = d₃ } = record
+    { sub³  = y ∷ʳ σ
+    ; join₁ = y ∷ₙ d₁
+    ; join₂ = y ∷ₙ d₂
+    ; join₃ = y ∷ₙ d₃
+    }
+
+  -- Adding an element to the first list.
+
+  _∷₁-DisjointUnion³_ :
+    ∀ {xs ys zs ts} {τ₁ : xs ⊆ ts} {τ₂ : ys ⊆ ts} {τ₃ : zs ⊆ ts} →
+    ∀ {xys xzs yzs} {τ₁₂ : xys ⊆ ts} {τ₁₃ : xzs ⊆ ts} {τ₂₃ : yzs ⊆ ts} →
+    ∀ {x y} (xRy : R x y) →
+    DisjointUnion³ τ₁ τ₂ τ₃ τ₁₂ τ₁₃ τ₂₃ →
+    DisjointUnion³ (xRy ∷ τ₁) (y ∷ʳ τ₂) (y ∷ʳ τ₃) (xRy ∷ τ₁₂) (xRy ∷ τ₁₃) (y ∷ʳ τ₂₃)
+  xRy ∷₁-DisjointUnion³ record{ sub³ = σ ; join₁ = d₁ ; join₂ = d₂ ; join₃ = d₃ } = record
+    { sub³  = xRy ∷ σ
+    ; join₁ = xRy ∷ₗ d₁
+    ; join₂ = xRy ∷ᵣ d₂
+    ; join₃ = xRy ∷ᵣ d₃
+    }
+
+  -- Adding an element to the second list.
+
+  _∷₂-DisjointUnion³_ :
+    ∀ {xs ys zs ts} {τ₁ : xs ⊆ ts} {τ₂ : ys ⊆ ts} {τ₃ : zs ⊆ ts} →
+    ∀ {xys xzs yzs} {τ₁₂ : xys ⊆ ts} {τ₁₃ : xzs ⊆ ts} {τ₂₃ : yzs ⊆ ts} →
+    ∀ {x y} (xRy : R x y) →
+    DisjointUnion³ τ₁ τ₂ τ₃ τ₁₂ τ₁₃ τ₂₃ →
+    DisjointUnion³ (y ∷ʳ τ₁) (xRy ∷ τ₂) (y ∷ʳ τ₃) (xRy ∷ τ₁₂) (y ∷ʳ τ₁₃) (xRy ∷ τ₂₃)
+  xRy ∷₂-DisjointUnion³ record{ sub³ = σ ; join₁ = d₁ ; join₂ = d₂ ; join₃ = d₃ } = record
+    { sub³  = xRy ∷ σ
+    ; join₁ = xRy ∷ᵣ d₁
+    ; join₂ = xRy ∷ₗ d₂
+    ; join₃ = xRy ∷ᵣ d₃
+    }
+
+  -- Adding an element to the third list.
+
+  _∷₃-DisjointUnion³_ :
+    ∀ {xs ys zs ts} {τ₁ : xs ⊆ ts} {τ₂ : ys ⊆ ts} {τ₃ : zs ⊆ ts} →
+    ∀ {xys xzs yzs} {τ₁₂ : xys ⊆ ts} {τ₁₃ : xzs ⊆ ts} {τ₂₃ : yzs ⊆ ts} →
+    ∀ {x y} (xRy : R x y) →
+    DisjointUnion³ τ₁ τ₂ τ₃ τ₁₂ τ₁₃ τ₂₃ →
+    DisjointUnion³ (y ∷ʳ τ₁) (y ∷ʳ τ₂) (xRy ∷ τ₃) (y ∷ʳ τ₁₂) (xRy ∷ τ₁₃) (xRy ∷ τ₂₃)
+  xRy ∷₃-DisjointUnion³ record{ sub³ = σ ; join₁ = d₁ ; join₂ = d₂ ; join₃ = d₃ } = record
+    { sub³  = xRy ∷ σ
+    ; join₁ = xRy ∷ᵣ d₁
+    ; join₂ = xRy ∷ᵣ d₂
+    ; join₃ = xRy ∷ₗ d₃
+    }
+
+  -- Computing the disjoint union of three disjoint lists.
+
+  disjointUnion³ : ∀{xs ys zs ts} {τ₁ : xs ⊆ ts} {τ₂ : ys ⊆ ts} {τ₃ : zs ⊆ ts}
+    {xys xzs yzs} {τ₁₂ : xys ⊆ ts} {τ₁₃ : xzs ⊆ ts} {τ₂₃ : yzs ⊆ ts} →
+    DisjointUnion τ₁ τ₂ τ₁₂ →
+    DisjointUnion τ₁ τ₃ τ₁₃ →
+    DisjointUnion τ₂ τ₃ τ₂₃ →
+    DisjointUnion³ τ₁ τ₂ τ₃ τ₁₂ τ₁₃ τ₂₃
+  disjointUnion³ [] [] [] = record { sub³ = [] ; join₁ = [] ; join₂ = [] ; join₃ = [] }
+  disjointUnion³ (y   ∷ₙ d₁₂) (.y  ∷ₙ d₁₃) (.y   ∷ₙ d₂₃) = y ∷ʳ-DisjointUnion³ disjointUnion³ d₁₂ d₁₃ d₂₃
+  disjointUnion³ (y   ∷ₙ d₁₂) (xRy ∷ᵣ d₁₃) (.xRy ∷ᵣ d₂₃) = xRy ∷₃-DisjointUnion³ disjointUnion³ d₁₂ d₁₃ d₂₃
+  disjointUnion³ (xRy ∷ᵣ d₁₂) (y   ∷ₙ d₁₃) (.xRy ∷ₗ d₂₃) = xRy ∷₂-DisjointUnion³ disjointUnion³ d₁₂ d₁₃ d₂₃
+  disjointUnion³ (xRy ∷ₗ d₁₂) (.xRy ∷ₗ d₁₃) (y    ∷ₙ d₂₃) = xRy ∷₁-DisjointUnion³ disjointUnion³ d₁₂ d₁₃ d₂₃
+  disjointUnion³ (xRy ∷ᵣ d₁₂) (xRy′ ∷ᵣ d₁₃) ()
+
+  -- If a sublist τ is disjoint to two lists σ₁ and σ₂,
+  -- then also to their disjoint union σ.
+
+  disjoint⇒disjoint-to-union : ∀{xs ys zs yzs ts}
+    {τ : xs ⊆ ts} {σ₁ : ys ⊆ ts} {σ₂ : zs ⊆ ts} {σ : yzs ⊆ ts} →
+    Disjoint τ σ₁ → Disjoint τ σ₂ →  DisjointUnion σ₁ σ₂ σ → Disjoint τ σ
+  disjoint⇒disjoint-to-union d₁ d₂ u = let
+       _ , _ , u₁ = Disjoint→DisjointUnion d₁
+       _ , _ , u₂ = Disjoint→DisjointUnion d₂
+    in DisjointUnion→Disjoint ( DisjointUnion³.join₁ (disjointUnion³ u₁ u₂ u) )
+
+open Disjointness public
+
+-- Monotonicity of disjointness.
+
+module DisjointnessMonotonicity
+    {a b c r s t} {A : Set a} {B : Set b} {C : Set c}
+    {R : REL A B r} {S : REL B C s} {T : REL A C t}
+    (rs⇒t : Trans R S T) where
+
+  -- We can enlarge and convert the target list of a disjoint union.
+
+  weakenDisjointUnion : ∀ {xs ys xys zs ws}
+    {τ₁ : Sublist R xs zs}
+    {τ₂ : Sublist R ys zs}
+    {τ : Sublist R xys zs} (σ : Sublist S zs ws) →
+    DisjointUnion τ₁ τ₂ τ →
+    DisjointUnion (trans rs⇒t τ₁ σ) (trans rs⇒t τ₂ σ) (trans rs⇒t τ σ)
+  weakenDisjointUnion [] [] = []
+  weakenDisjointUnion (w  ∷ʳ σ) d         = w ∷ₙ weakenDisjointUnion σ d
+  weakenDisjointUnion (_   ∷ σ) (y   ∷ₙ d) = _ ∷ₙ weakenDisjointUnion σ d
+  weakenDisjointUnion (zSw ∷ σ) (xRz ∷ₗ d) = rs⇒t xRz zSw ∷ₗ weakenDisjointUnion σ d
+  weakenDisjointUnion (zSw ∷ σ) (yRz ∷ᵣ d) = rs⇒t yRz zSw ∷ᵣ weakenDisjointUnion σ d
+
+-- Lists remain disjoint when elements are removed.
+
+  shrinkDisjoint : ∀ {us vs xs ys zs}
+                      (σ₁ : Sublist R us xs) {τ₁ : Sublist S xs zs}
+                      (σ₂ : Sublist R vs ys) {τ₂ : Sublist S ys zs} →
+                      Disjoint τ₁ τ₂ →
+                      Disjoint (trans rs⇒t σ₁ τ₁) (trans rs⇒t σ₂ τ₂)
+  shrinkDisjoint σ₁         σ₂ (y   ∷ₙ d) = y ∷ₙ shrinkDisjoint σ₁ σ₂ d
+  shrinkDisjoint (x  ∷ʳ σ₁) σ₂ (xSz ∷ₗ d) = _ ∷ₙ shrinkDisjoint σ₁ σ₂ d
+  shrinkDisjoint (uRx ∷ σ₁) σ₂ (xSz ∷ₗ d) = rs⇒t uRx xSz ∷ₗ shrinkDisjoint σ₁ σ₂ d
+  shrinkDisjoint σ₁ (y  ∷ʳ σ₂) (ySz ∷ᵣ d) = _ ∷ₙ shrinkDisjoint σ₁ σ₂ d
+  shrinkDisjoint σ₁ (vRy ∷ σ₂) (ySz ∷ᵣ d) = rs⇒t vRy ySz ∷ᵣ shrinkDisjoint σ₁ σ₂ d
+  shrinkDisjoint [] []         []         = []
+
+open DisjointnessMonotonicity public

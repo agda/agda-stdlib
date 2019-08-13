@@ -252,7 +252,10 @@ module _ {x xs} where
   [x]⊆xs⤖x∈xs = HeteroProperties.Sublist-[x]-bijection
 
 ------------------------------------------------------------------------
--- Properties of Disjoint and DisjointUnion
+-- Properties of Disjoint(ness) and DisjointUnion
+
+open HeteroProperties.Disjointness {R = _≈_} public
+open HeteroProperties.DisjointnessMonotonicity {R = _≈_} {S = _≈_} {T = _≈_} trans public
 
 -- Irreflexivity
 
@@ -260,144 +263,31 @@ Disjoint-irrefl : ∀{xs ys} {τ : xs ⊆ ys} → Disjoint τ τ → xs ≋ []
 Disjoint-irrefl [] = ≋-refl
 Disjoint-irrefl (y ∷ₙ d) = Disjoint-irrefl d
 
--- Symmetry
+-- Shrinking one of two disjoint lists preserves disjointness.
 
-DisjointUnion-symmetric : ∀ {xs ys xys zs : List A} {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs} {τ : xys ⊆ zs} →
-  DisjointUnion τ₁ τ₂ τ → DisjointUnion τ₂ τ₁ τ
-DisjointUnion-symmetric []         = []
-DisjointUnion-symmetric (y   ∷ₙ d) = y ∷ₙ DisjointUnion-symmetric d
-DisjointUnion-symmetric (x≈y ∷ₗ d) = x≈y ∷ᵣ DisjointUnion-symmetric d
-DisjointUnion-symmetric (x≈y ∷ᵣ d) = x≈y ∷ₗ DisjointUnion-symmetric d
+-- We would have liked to define  shrinkDisjointˡ σ = shrinkDisjoint σ ⊆-refl
+-- but alas, this is only possible for groupoids, not setoids in general.
 
-Disjoint-sym : ∀ {xs ys zs : List A} {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs} →
-  Disjoint τ₁ τ₂ → Disjoint τ₂ τ₁
-Disjoint-sym []         = []
-Disjoint-sym (y   ∷ₙ d) = y ∷ₙ Disjoint-sym d
-Disjoint-sym (x≈y ∷ₗ d) = x≈y ∷ᵣ Disjoint-sym d
-Disjoint-sym (x≈y ∷ᵣ d) = x≈y ∷ₗ Disjoint-sym d
+shrinkDisjointˡ : ∀ {xs ys zs us} {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs} (σ : us ⊆ xs) →
+    Disjoint τ₁ τ₂ →
+    Disjoint (⊆-trans σ τ₁) τ₂
+-- Not affected by σ:
+shrinkDisjointˡ σ          (y   ∷ₙ d) = y             ∷ₙ shrinkDisjointˡ σ d
+shrinkDisjointˡ σ          (y≈z ∷ᵣ d) = y≈z           ∷ᵣ shrinkDisjointˡ σ d
+-- In σ: keep x.
+shrinkDisjointˡ (u≈x ∷ σ)  (x≈z ∷ₗ d) = trans u≈x x≈z ∷ₗ shrinkDisjointˡ σ d
+-- Not in σ: drop x.
+shrinkDisjointˡ (x  ∷ʳ σ)  (x≈z ∷ₗ d) = _             ∷ₙ shrinkDisjointˡ σ d
+shrinkDisjointˡ []         []         = []
 
--- Monotonicity
-
-Disjoint-monotoneˡ : ∀ {xs ys zs} {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs} →
-  Disjoint τ₁ τ₂ → ∀ {ws} (σ : ws ⊆ xs) →
-  Disjoint (⊆-trans σ τ₁) τ₂
--- In σ: keep.
-Disjoint-monotoneˡ (x≈y ∷ₗ d) (x′≈x ∷ σ) = trans x′≈x x≈y ∷ₗ Disjoint-monotoneˡ d σ
--- Not in σ: drop.
-Disjoint-monotoneˡ (x≈y ∷ₗ d) (y ∷ʳ σ)   = _ ∷ₙ Disjoint-monotoneˡ d σ
--- Not affected by σ since not coming from τ₁:
-Disjoint-monotoneˡ (x≈y ∷ᵣ d) σ          = x≈y ∷ᵣ Disjoint-monotoneˡ d σ
-Disjoint-monotoneˡ (y   ∷ₙ d) σ          = y ∷ₙ Disjoint-monotoneˡ d σ
-Disjoint-monotoneˡ []         []         = []
-
-Disjoint-monotoneʳ : ∀ {xs ys zs} {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs} →
-  Disjoint τ₁ τ₂ → ∀ {ws} (σ : ws ⊆ ys) →
+shrinkDisjointʳ : ∀ {xs ys zs vs} {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs} (σ : vs ⊆ ys) →
+  Disjoint τ₁ τ₂ →
   Disjoint τ₁ (⊆-trans σ τ₂)
-Disjoint-monotoneʳ d σ = Disjoint-sym (Disjoint-monotoneˡ (Disjoint-sym d) σ)
-
--- Empty sublist
-
-DisjointUnion-[]ˡ : ∀{xs ys} {ε : [] ⊆ ys} {τ : xs ⊆ ys} → DisjointUnion ε τ τ
-DisjointUnion-[]ˡ {ε = []}     {τ = []} = []
-DisjointUnion-[]ˡ {ε = y ∷ʳ ε} {τ = y  ∷ʳ τ} = y   ∷ₙ DisjointUnion-[]ˡ
-DisjointUnion-[]ˡ {ε = y ∷ʳ ε} {τ = x≈y ∷ τ} = x≈y ∷ᵣ DisjointUnion-[]ˡ
-
-DisjointUnion-[]ʳ : ∀{xs ys} {ε : [] ⊆ ys} {τ : xs ⊆ ys} → DisjointUnion τ ε τ
-DisjointUnion-[]ʳ {ε = []}     {τ = []} = []
-DisjointUnion-[]ʳ {ε = y ∷ʳ ε} {τ = y  ∷ʳ τ} = y   ∷ₙ DisjointUnion-[]ʳ
-DisjointUnion-[]ʳ {ε = y ∷ʳ ε} {τ = x≈y ∷ τ} = x≈y ∷ₗ DisjointUnion-[]ʳ
-
-
-record DisjointUnion³
-  {xs ys zs ts} (τ₁  : xs  ⊆ ts) (τ₂  : ys  ⊆ ts) (τ₃  : zs  ⊆ ts)
-  {xys xzs yzs} (τ₁₂ : xys ⊆ ts) (τ₁₃ : xzs ⊆ ts) (τ₂₃ : yzs ⊆ ts) : Set (c ⊔ ℓ) where
-  field
-    {union³} : List A
-    sub³  : union³ ⊆ ts
-    join₁ : DisjointUnion τ₁ τ₂₃ sub³
-    join₂ : DisjointUnion τ₂ τ₁₃ sub³
-    join₃ : DisjointUnion τ₃ τ₁₂ sub³
-
-_∷ʳ-DisjointUnion³_ :
-  ∀ {xs ys zs ts} {τ₁ : xs ⊆ ts} {τ₂ : ys ⊆ ts} {τ₃ : zs ⊆ ts} →
-  ∀ {xys xzs yzs} {τ₁₂ : xys ⊆ ts} {τ₁₃ : xzs ⊆ ts} {τ₂₃ : yzs ⊆ ts} →
-  ∀ y →
-  DisjointUnion³ τ₁ τ₂ τ₃ τ₁₂ τ₁₃ τ₂₃ →
-  DisjointUnion³ (y ∷ʳ τ₁) (y ∷ʳ τ₂) (y ∷ʳ τ₃) (y ∷ʳ τ₁₂) (y ∷ʳ τ₁₃) (y ∷ʳ τ₂₃)
-y ∷ʳ-DisjointUnion³ record{ sub³ = σ ; join₁ = d₁ ; join₂ = d₂ ; join₃ = d₃ } = record
-  { sub³  = y ∷ʳ σ
-  ; join₁ = y ∷ₙ d₁
-  ; join₂ = y ∷ₙ d₂
-  ; join₃ = y ∷ₙ d₃
-  }
-
-_∷₁-DisjointUnion³_ :
-  ∀ {xs ys zs ts} {τ₁ : xs ⊆ ts} {τ₂ : ys ⊆ ts} {τ₃ : zs ⊆ ts} →
-  ∀ {xys xzs yzs} {τ₁₂ : xys ⊆ ts} {τ₁₃ : xzs ⊆ ts} {τ₂₃ : yzs ⊆ ts} →
-  ∀ {x y} (x≈y : x ≈ y) →
-  DisjointUnion³ τ₁ τ₂ τ₃ τ₁₂ τ₁₃ τ₂₃ →
-  DisjointUnion³ (x≈y ∷ τ₁) (y ∷ʳ τ₂) (y ∷ʳ τ₃) (x≈y ∷ τ₁₂) (x≈y ∷ τ₁₃) (y ∷ʳ τ₂₃)
-x≈y ∷₁-DisjointUnion³ record{ sub³ = σ ; join₁ = d₁ ; join₂ = d₂ ; join₃ = d₃ } = record
-  { sub³  = x≈y ∷ σ
-  ; join₁ = x≈y ∷ₗ d₁
-  ; join₂ = x≈y ∷ᵣ d₂
-  ; join₃ = x≈y ∷ᵣ d₃
-  }
-
-_∷₂-DisjointUnion³_ :
-  ∀ {xs ys zs ts} {τ₁ : xs ⊆ ts} {τ₂ : ys ⊆ ts} {τ₃ : zs ⊆ ts} →
-  ∀ {xys xzs yzs} {τ₁₂ : xys ⊆ ts} {τ₁₃ : xzs ⊆ ts} {τ₂₃ : yzs ⊆ ts} →
-  ∀ {x y} (x≈y : x ≈ y) →
-  DisjointUnion³ τ₁ τ₂ τ₃ τ₁₂ τ₁₃ τ₂₃ →
-  DisjointUnion³ (y ∷ʳ τ₁) (x≈y ∷ τ₂) (y ∷ʳ τ₃) (x≈y ∷ τ₁₂) (y ∷ʳ τ₁₃) (x≈y ∷ τ₂₃)
-x≈y ∷₂-DisjointUnion³ record{ sub³ = σ ; join₁ = d₁ ; join₂ = d₂ ; join₃ = d₃ } = record
-  { sub³  = x≈y ∷ σ
-  ; join₁ = x≈y ∷ᵣ d₁
-  ; join₂ = x≈y ∷ₗ d₂
-  ; join₃ = x≈y ∷ᵣ d₃
-  }
-
-_∷₃-DisjointUnion³_ :
-  ∀ {xs ys zs ts} {τ₁ : xs ⊆ ts} {τ₂ : ys ⊆ ts} {τ₃ : zs ⊆ ts} →
-  ∀ {xys xzs yzs} {τ₁₂ : xys ⊆ ts} {τ₁₃ : xzs ⊆ ts} {τ₂₃ : yzs ⊆ ts} →
-  ∀ {x y} (x≈y : x ≈ y) →
-  DisjointUnion³ τ₁ τ₂ τ₃ τ₁₂ τ₁₃ τ₂₃ →
-  DisjointUnion³ (y ∷ʳ τ₁) (y ∷ʳ τ₂) (x≈y ∷ τ₃) (y ∷ʳ τ₁₂) (x≈y ∷ τ₁₃) (x≈y ∷ τ₂₃)
-x≈y ∷₃-DisjointUnion³ record{ sub³ = σ ; join₁ = d₁ ; join₂ = d₂ ; join₃ = d₃ } = record
-  { sub³  = x≈y ∷ σ
-  ; join₁ = x≈y ∷ᵣ d₁
-  ; join₂ = x≈y ∷ᵣ d₂
-  ; join₃ = x≈y ∷ₗ d₃
-  }
-
-disjointUnion³ : ∀{xs ys zs ts} {τ₁ : xs ⊆ ts} {τ₂ : ys ⊆ ts} {τ₃ : zs ⊆ ts}
-  {xys xzs yzs} {τ₁₂ : xys ⊆ ts} {τ₁₃ : xzs ⊆ ts} {τ₂₃ : yzs ⊆ ts} →
-  DisjointUnion τ₁ τ₂ τ₁₂ →
-  DisjointUnion τ₁ τ₃ τ₁₃ →
-  DisjointUnion τ₂ τ₃ τ₂₃ →
-  DisjointUnion³ τ₁ τ₂ τ₃ τ₁₂ τ₁₃ τ₂₃
-disjointUnion³ [] [] [] = record { sub³ = [] ; join₁ = [] ; join₂ = [] ; join₃ = [] }
-disjointUnion³ (y   ∷ₙ d₁₂) (.y  ∷ₙ d₁₃) (.y   ∷ₙ d₂₃) = y ∷ʳ-DisjointUnion³ disjointUnion³ d₁₂ d₁₃ d₂₃
-disjointUnion³ (y   ∷ₙ d₁₂) (x≈y ∷ᵣ d₁₃) (.x≈y ∷ᵣ d₂₃) = x≈y ∷₃-DisjointUnion³ disjointUnion³ d₁₂ d₁₃ d₂₃
-disjointUnion³ (x≈y ∷ᵣ d₁₂) (y   ∷ₙ d₁₃) (.x≈y ∷ₗ d₂₃) = x≈y ∷₂-DisjointUnion³ disjointUnion³ d₁₂ d₁₃ d₂₃
-disjointUnion³ (x≈y ∷ₗ d₁₂) (.x≈y ∷ₗ d₁₃) (y    ∷ₙ d₂₃) = x≈y ∷₁-DisjointUnion³ disjointUnion³ d₁₂ d₁₃ d₂₃
-disjointUnion³ (x≈y ∷ᵣ d₁₂) (x≈y′ ∷ᵣ d₁₃) ()
-
-disjoint⇒disjoint-to-union : ∀{xs ys zs yzs ts} {τ : xs ⊆ ts} {σ₁ : ys ⊆ ts} {σ₂ : zs ⊆ ts} {σ : yzs ⊆ ts} →
-  DisjointUnion σ₁ σ₂ σ → Disjoint τ σ₁ → Disjoint τ σ₂ → Disjoint τ σ
-disjoint⇒disjoint-to-union u d₁ d₂ = let
-     _ , _ , u₁ = Disjoint→DisjointUnion d₁
-     _ , _ , u₂ = Disjoint→DisjointUnion d₂
-  in DisjointUnion→Disjoint ( DisjointUnion³.join₁ (disjointUnion³ u₁ u₂ u) )
-
-
--- -- Needs proof-irrelevant setoid (K)
--- DisjointUnion-from∈-∷ˡ⁻ : ∀ {y : A} {xs ys : List A} (y∈ys : y ∈ ys) (τ : (y ∷ xs) ⊆ ys) → DisjointUnion (from∈ y∈ys) (∷ˡ⁻ τ) τ
--- DisjointUnion-from∈-∷ˡ⁻ (Any.here x≈y) (y ∷ʳ τ) = {!x≈y ∷ₗ ?!}
--- DisjointUnion-from∈-∷ˡ⁻ (Any.here x≈y) (x≈y' ∷ τ) = {!x≈y' ∷ₗ ?!}
--- DisjointUnion-from∈-∷ˡ⁻ (Any.there y∈ys) (y ∷ʳ τ) = {!!}
--- DisjointUnion-from∈-∷ˡ⁻ (Any.there y∈ys) (x ∷ τ) = {!!}
-
--- -}
--- -}
--- -}
+-- Not affected by σ:
+shrinkDisjointʳ σ          (y   ∷ₙ d) = y             ∷ₙ shrinkDisjointʳ σ d
+shrinkDisjointʳ σ          (x≈z ∷ₗ d) = x≈z           ∷ₗ shrinkDisjointʳ σ d
+-- In σ: keep y.
+shrinkDisjointʳ (v≈y ∷ σ)  (y≈z ∷ᵣ d) = trans v≈y y≈z ∷ᵣ shrinkDisjointʳ σ d
+-- Not in σ: drop y.
+shrinkDisjointʳ (y  ∷ʳ σ)  (y≈z ∷ᵣ d) = _             ∷ₙ shrinkDisjointʳ σ d
+shrinkDisjointʳ []         []         = []
