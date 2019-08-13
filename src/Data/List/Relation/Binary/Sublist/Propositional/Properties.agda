@@ -158,6 +158,19 @@ lookup-injective {τ = x≡y ∷ _} {here  _} {here  _} = cong here ∘′ subst
   -- However, this turns the following clause into a non-strict match.
 lookup-injective {τ = _   ∷ _} {there _} {there _} = cong there ∘′ lookup-injective ∘′ there-injective
 
+-------------------------------------------------------------------------
+-- from∈ ∘ to∈ turns a sublist morphism τ : x∷xs ⊆ ys into a morphism
+-- [x] ⊆ ys.  The same morphism is obtained by pre-composing τ with
+-- the canonial morphism [x] ⊆ x∷xs.
+--
+-- Note: This lemma does not hold for Sublist.Setoid, but could hold for
+-- a hypothetical Sublist.Groupoid where trans refl = id.
+
+from∈∘to∈ : ∀ {x : A} {xs ys} (τ : x ∷ xs ⊆ ys) →
+            from∈ (to∈ τ) ≡ ⊆-trans (refl ∷ minimum xs) τ
+from∈∘to∈ (x≡y ∷ τ) = cong (x≡y ∷_) ([]⊆-irrelevant _ _)
+from∈∘to∈ (y  ∷ʳ τ) = cong (y  ∷ʳ_) (from∈∘to∈ τ)
+
 ------------------------------------------------------------------------
 -- Weak pushout (wpo)
 
