@@ -15,7 +15,7 @@ open import Data.Empty
 open import Data.Fin using (Fin) renaming (zero to fzero; suc to fsuc)
 open import Data.List.Base
 open import Data.List.Membership.Propositional
-open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
+open import Data.List.Relation.Unary.All as All using (All; []; _∷_; Null)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 import Data.List.Relation.Binary.Equality.Setoid as ListEq using (_≋_; []; _∷_)
 open import Data.List.Relation.Binary.Pointwise using (Pointwise; []; _∷_)
@@ -43,6 +43,16 @@ private
     A : Set a
     B : Set b
     C : Set c
+
+------------------------------------------------------------------------
+-- Properties regarding Null
+
+Null⇒null : ∀{xs : List A} → Null xs → T (null xs)
+Null⇒null [] = _
+
+null⇒Null : ∀{xs : List A} → T (null xs) → Null xs
+null⇒Null {xs = []   } _ = []
+null⇒Null {xs = _ ∷ _} ()
 
 ------------------------------------------------------------------------
 -- Lemmas relating Any, All and negation.

@@ -257,12 +257,6 @@ module _ {x xs} where
 open HeteroProperties.Disjointness {R = _≈_} public
 open HeteroProperties.DisjointnessMonotonicity {R = _≈_} {S = _≈_} {T = _≈_} trans public
 
--- Irreflexivity
-
-Disjoint-irrefl : ∀{xs ys} {τ : xs ⊆ ys} → Disjoint τ τ → xs ≋ []
-Disjoint-irrefl [] = ≋-refl
-Disjoint-irrefl (y ∷ₙ d) = Disjoint-irrefl d
-
 -- Shrinking one of two disjoint lists preserves disjointness.
 
 -- We would have liked to define  shrinkDisjointˡ σ = shrinkDisjoint σ ⊆-refl

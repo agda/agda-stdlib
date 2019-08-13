@@ -11,6 +11,7 @@ module Data.List.Relation.Binary.Sublist.Heterogeneous.Properties where
 open import Level
 
 open import Data.Empty
+open import Data.List.Relation.Unary.All using (Null; [])
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.List.Base as List hiding (map; _∷ʳ_)
 import Data.List.Properties as Lₚ
@@ -455,6 +456,12 @@ module Disjointness {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   private
     infix 4 _⊆_
     _⊆_ = Sublist R
+
+  -- Irreflexivity
+
+  Disjoint-irrefl : ∀{xs ys} {τ : xs ⊆ ys} → Disjoint τ τ → Null xs
+  Disjoint-irrefl []       = []
+  Disjoint-irrefl (y ∷ₙ d) = Disjoint-irrefl d
 
   -- Symmetry
 
