@@ -44,7 +44,8 @@ minimum (x ∷ xs) = x ∷ʳ minimum xs
 ------------------------------------------------------------------------
 -- Conversion to and from Any
 
-toAny : ∀ {a bs} → Sublist R [ a ] bs → Any (R a) bs
+-- Special case: Sublist R [ a ] bs → Any (R a) bs
+toAny : ∀ {a as bs} → Sublist R (a ∷ as) bs → Any (R a) bs
 toAny (y ∷ʳ rs) = there (toAny rs)
 toAny (r ∷ rs)  = here r
 
