@@ -5,8 +5,11 @@
 -- Data.List.Relation.Binary.Sublist.Heterogeneous.
 ------------------------------------------------------------------------
 
--- This module should be removable if and when Agda issue
--- https://github.com/agda/agda/issues/3210 is fixed
+-- This module has R as explicit parameter, in contrast to the implicit
+-- parameter R of the main module Sublist.Heterogeneous.
+
+-- Parameterized data modules (https://github.com/agda/agda/issues/3210)
+-- may simplify this setup, making this module obsolete.
 
 {-# OPTIONS --without-K --safe #-}
 
@@ -17,7 +20,7 @@ module Data.List.Relation.Binary.Sublist.Heterogeneous.Core
        where
 
 open import Level using (_⊔_)
-open import Data.List.Base using (List; []; _∷_; [_])
+open import Data.List.Base using (List; []; _∷_)
 
 data Sublist : REL (List A) (List B) (a ⊔ b ⊔ r) where
   []   : Sublist [] []
