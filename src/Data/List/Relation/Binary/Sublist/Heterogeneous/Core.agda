@@ -22,6 +22,8 @@ module Data.List.Relation.Binary.Sublist.Heterogeneous.Core
 open import Level using (_⊔_)
 open import Data.List.Base using (List; []; _∷_)
 
+infixr 5 _∷_ _∷ʳ_
+
 data Sublist : REL (List A) (List B) (a ⊔ b ⊔ r) where
   []   : Sublist [] []
   _∷ʳ_ : ∀ {xs ys} → ∀ y → Sublist xs ys → Sublist xs (y ∷ ys)
