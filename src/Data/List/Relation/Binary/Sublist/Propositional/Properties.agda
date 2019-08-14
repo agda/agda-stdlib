@@ -185,14 +185,14 @@ IsWeakPushout {τ = τ} {σ = σ} rpo =
 
 -- Joining two list extensions with ⊆-pushout produces a weak pushout.
 
-⊆-pushoutˡ-is-wpo : ∀{xs ys zs : List A} {τ : xs ⊆ ys} {σ : xs ⊆ zs} →
-                 IsWeakPushout (⊆-pushoutˡ τ σ)
-⊆-pushoutˡ-is-wpo {τ = []} {σ = σ}
+⊆-pushoutˡ-is-wpo : ∀{xs ys zs : List A} (τ : xs ⊆ ys) (σ : xs ⊆ zs) →
+                    IsWeakPushout (⊆-pushoutˡ τ σ)
+⊆-pushoutˡ-is-wpo [] σ
   rewrite ⊆-trans-idʳ {τ = σ}
         = ⊆-trans-idˡ {xs = []}
-⊆-pushoutˡ-is-wpo {τ = y   ∷ʳ _}                = cong (y   ∷ʳ_) ⊆-pushoutˡ-is-wpo
-⊆-pushoutˡ-is-wpo {τ = _   ∷  _} {σ = z   ∷ʳ _} = cong (z   ∷ʳ_) ⊆-pushoutˡ-is-wpo
-⊆-pushoutˡ-is-wpo {τ = refl ∷ _} {σ = refl ∷ _} = cong (refl ∷_) ⊆-pushoutˡ-is-wpo
+⊆-pushoutˡ-is-wpo (y   ∷ʳ τ) σ          = cong (y   ∷ʳ_) (⊆-pushoutˡ-is-wpo τ σ)
+⊆-pushoutˡ-is-wpo (x≡y  ∷ τ) (z   ∷ʳ σ) = cong (z   ∷ʳ_) (⊆-pushoutˡ-is-wpo (x≡y ∷ τ) σ)
+⊆-pushoutˡ-is-wpo (refl ∷ τ) (refl ∷ σ) = cong (refl ∷_) (⊆-pushoutˡ-is-wpo τ σ)
 
 ------------------------------------------------------------------------
 -- Properties of disjointness
