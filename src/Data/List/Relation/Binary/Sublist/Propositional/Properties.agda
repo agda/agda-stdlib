@@ -215,6 +215,21 @@ DisjointUnion-diffʳ (y   ∷ₙ d) = _        , cong (y  ∷ʳ_) (proj₂ (Disj
 DisjointUnion-diffʳ (x≈y ∷ᵣ d) = refl ∷ _ , cong (x≈y ∷_) (proj₂ (DisjointUnion-diffʳ d))
 DisjointUnion-diffʳ (x≈y ∷ₗ d) = _ ∷ʳ _   , cong (_  ∷ʳ_) (proj₂ (DisjointUnion-diffʳ d))
 
+-- A sublist σ disjoint to both τ₁ and τ₂ is an equalizer
+-- for the separators of τ₁ and τ₂.
+
+equalize-separators : ∀ {us xs ys zs : List A}
+  {σ : us ⊆ zs} {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs} (let s = separateˡ τ₁ τ₂) →
+  Disjoint σ τ₁ → Disjoint σ τ₂ →
+  ⊆-trans σ (Separation.separator₁ s) ≡
+  ⊆-trans σ (Separation.separator₂ s)
+equalize-separators [] [] = refl
+equalize-separators (y    ∷ₙ d₁) (.y   ∷ₙ d₂) = cong (y ∷ʳ_) (equalize-separators d₁ d₂)
+equalize-separators (y    ∷ₙ d₁) (refl ∷ᵣ d₂) = cong (y ∷ʳ_) (equalize-separators d₁ d₂)
+equalize-separators (refl ∷ᵣ d₁) (y    ∷ₙ d₂) = cong (y ∷ʳ_) (equalize-separators d₁ d₂)
+equalize-separators (refl ∷ᵣ d₁) (refl ∷ᵣ d₂) = cong (_ ∷ʳ_) (cong (_ ∷ʳ_) (equalize-separators d₁ d₂))
+equalize-separators (x≈y  ∷ₗ d₁) (.x≈y ∷ₗ d₂) = cong (trans x≈y refl ∷_) (equalize-separators d₁ d₂)
+
 ------------------------------------------------------------------------
 -- A Union where the triangles commute is a
 -- Cospan in the slice category (_ ⊆ zs).
