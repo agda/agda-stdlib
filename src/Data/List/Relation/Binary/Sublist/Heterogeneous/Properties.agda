@@ -621,7 +621,18 @@ module DisjointnessMonotonicity
   weakenDisjointUnion (zSw ∷ σ) (xRz ∷ₗ d) = rs⇒t xRz zSw ∷ₗ weakenDisjointUnion σ d
   weakenDisjointUnion (zSw ∷ σ) (yRz ∷ᵣ d) = rs⇒t yRz zSw ∷ᵣ weakenDisjointUnion σ d
 
--- Lists remain disjoint when elements are removed.
+  weakenDisjoint : ∀ {xs ys zs ws}
+    {τ₁ : Sublist R xs zs}
+    {τ₂ : Sublist R ys zs} (σ : Sublist S zs ws) →
+    Disjoint τ₁ τ₂ →
+    Disjoint (trans rs⇒t τ₁ σ) (trans rs⇒t τ₂ σ)
+  weakenDisjoint [] [] = []
+  weakenDisjoint (w  ∷ʳ σ) d         = w ∷ₙ weakenDisjoint σ d
+  weakenDisjoint (_   ∷ σ) (y   ∷ₙ d) = _ ∷ₙ weakenDisjoint σ d
+  weakenDisjoint (zSw ∷ σ) (xRz ∷ₗ d) = rs⇒t xRz zSw ∷ₗ weakenDisjoint σ d
+  weakenDisjoint (zSw ∷ σ) (yRz ∷ᵣ d) = rs⇒t yRz zSw ∷ᵣ weakenDisjoint σ d
+
+  -- Lists remain disjoint when elements are removed.
 
   shrinkDisjoint : ∀ {us vs xs ys zs}
                       (σ₁ : Sublist R us xs) {τ₁ : Sublist S xs zs}
