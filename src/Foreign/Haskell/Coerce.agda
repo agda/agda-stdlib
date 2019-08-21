@@ -60,7 +60,7 @@ postulate Coercible : (A : Set a) (B : Set b) → Set (a ⊔ b)
 -- Once we get our hands on a proof that `Coercible A B` we know that
 -- it is safe to an `A` to a `B`. This is done by using `unsafeCoerce`.
 
-postulate coerce : {{Coercible A B}} → A → B
+postulate coerce : {{_ : Coercible A B}} → A → B
 
 {-# FOREIGN GHC import Unsafe.Coerce #-}
 {-# COMPILE GHC coerce = \ _ _ _ _ _ -> unsafeCoerce #-}
@@ -69,10 +69,10 @@ postulate coerce : {{Coercible A B}} → A → B
 -- Variants
 
 Coercible₁ : ∀ a c → (T : Set a → Set b) (U : Set c → Set d) → Set _
-Coercible₁ _ _ T U = ∀ {A B} → {{Coercible A B}} → Coercible (T A) (U B)
+Coercible₁ _ _ T U = ∀ {A B} → {{_ : Coercible A B}} → Coercible (T A) (U B)
 
 Coercible₂ : ∀ a b d e → (T : Set a → Set b → Set c) (U : Set d → Set e → Set f) → Set _
-Coercible₂ _ _ _ _ T U = ∀ {A B} → {{Coercible A B}} → Coercible₁ _ _ (T A) (U B)
+Coercible₂ _ _ _ _ T U = ∀ {A B} → {{_ : Coercible A B}} → Coercible₁ _ _ (T A) (U B)
 
 ------------------------------------------------------------------------
 -- Instances
@@ -90,15 +90,11 @@ instance
 
 -- Maybe
 
-instance
-  postulate
     maybe-toFFI   : Coercible₁ a b STD.Maybe FFI.Maybe
     maybe-fromFFI : Coercible₁ a b FFI.Maybe STD.Maybe
 
 -- Product
 
-instance
-  postulate
     pair-toFFI   : Coercible₂ a b c d STD._×_ FFI.Pair
     pair-fromFFI : Coercible₂ a b c d FFI.Pair STD._×_
 
@@ -106,12 +102,8 @@ instance
 
 -- Functions are contravariant in their domain.
 
-instance
-  postulate
-    coerce-fun : {{Coercible A B}} → Coercible₁ c d (λ C → B → C) (λ D → A → D)
+    coerce-fun : {{_ : Coercible A B}} → Coercible₁ c d (λ C → B → C) (λ D → A → D)
 
 -- Reflexivity
 
-instance
-  postulate
     coerce-refl : Coercible A A
