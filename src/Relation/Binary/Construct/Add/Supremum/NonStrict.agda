@@ -65,7 +65,7 @@ data _≤⁺_ : Rel (A ⁺) (a ⊔ ℓ) where
 ≤⁺-reflexive-≡ ≤-reflexive {⊤⁺}    refl = ⊤⁺ ≤⊤⁺
 
 ≤⁺-antisym-≡ : Antisymmetric _≡_ _≤_ → Antisymmetric _≡_ _≤⁺_
-≤⁺-antisym-≡ antisym (⊤⁺ ≤⊤⁺) (⊥⁺ ≤⊤⁺) = refl
+≤⁺-antisym-≡ antisym (_ ≤⊤⁺) (_ ≤⊤⁺) = refl
 ≤⁺-antisym-≡ antisym [ p ] [ q ]       = P.cong [_] (antisym p q)
 
 ------------------------------------------------------------------------
@@ -80,8 +80,8 @@ module _ {e} {_≈_ : Rel A e} where
   ≤⁺-reflexive ≤-reflexive ⊤⁺≈⊤⁺ = ⊤⁺ ≤⊤⁺
 
   ≤⁺-antisym : Antisymmetric _≈_ _≤_ → Antisymmetric _≈⁺_ _≤⁺_
-  ≤⁺-antisym ≤-antisym [ p ]    [ q ]    = [ ≤-antisym p q ]
-  ≤⁺-antisym ≤-antisym (⊤⁺ ≤⊤⁺) (⊤⁺ ≤⊤⁺) = ⊤⁺≈⊤⁺
+  ≤⁺-antisym ≤-antisym [ p ]    [ q ]  = [ ≤-antisym p q ]
+  ≤⁺-antisym ≤-antisym (_ ≤⊤⁺) (_ ≤⊤⁺) = ⊤⁺≈⊤⁺
 
 ------------------------------------------------------------------------
 -- Structures + propositional equality

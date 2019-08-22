@@ -66,7 +66,7 @@ data _≤₋_ : Rel (A ₋) (a ⊔ ℓ) where
 ≤₋-reflexive-≡ ≤-reflexive {⊥₋}    refl = ⊥₋≤ ⊥₋
 
 ≤₋-antisym-≡ : Antisymmetric _≡_ _≤_ → Antisymmetric _≡_ _≤₋_
-≤₋-antisym-≡ antisym (⊥₋≤ ⊥₋) (⊥₋≤ ⊥₋) = refl
+≤₋-antisym-≡ antisym (⊥₋≤ _) (⊥₋≤ _) = refl
 ≤₋-antisym-≡ antisym [ p ] [ q ]       = P.cong [_] (antisym p q)
 
 ------------------------------------------------------------------------
@@ -81,7 +81,7 @@ module _ {e} {_≈_ : Rel A e} where
   ≤₋-reflexive ≤-reflexive [ p ] = [ ≤-reflexive p ]
 
   ≤₋-antisym : Antisymmetric _≈_ _≤_ → Antisymmetric _≈₋_ _≤₋_
-  ≤₋-antisym ≤≥⇒≈ (⊥₋≤ ⊥₋) (⊥₋≤ ⊥₋) = ⊥₋≈⊥₋
+  ≤₋-antisym ≤≥⇒≈ (⊥₋≤ _) (⊥₋≤ _) = ⊥₋≈⊥₋
   ≤₋-antisym ≤≥⇒≈ [ p ] [ q ] = [ ≤≥⇒≈ p q ]
 
 ------------------------------------------------------------------------
