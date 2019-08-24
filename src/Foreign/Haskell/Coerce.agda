@@ -35,6 +35,7 @@ open import Level using (Level; _⊔_)
 open import Agda.Builtin.Nat
 open import Agda.Builtin.Int
 
+import Data.List.Base  as STD
 import Data.Maybe.Base as STD
 import Data.Product    as STD
 
@@ -49,16 +50,26 @@ private
     C : Set c
     D : Set d
 
--- We postulate a type `Coercible`. A value of `Coercible A B` is a
--- proof that ̀A` and `B` have the same underlying representation.
+-- We define a simple indexed datatype `Coercible`. A value of `Coercible A B`
+-- is a proof that ̀A` and `B` have the same underlying runtime representation.
+-- The only possible proof is an incantation from the implementer begging to
+-- be trusted.
 
-postulate Coercible : (A : Set a) (B : Set b) → Set (a ⊔ b)
+-- We need this type to be concrete so that overlapping instances can be checked
+-- for equality: we do not care what proof we get as long as we get one.
 
-{-# FOREIGN GHC type AgdaCoerce l1 l2 a b = () #-}
-{-# COMPILE GHC Coercible = type AgdaCoerce #-}
+-- We need for it to be a data type rather than a record type so that Agda does
+-- not mistakenly build arbitrary instances by η-expansion.
 
--- Once we get our hands on a proof that `Coercible A B` we know that
--- it is safe to an `A` to a `B`. This is done by using `unsafeCoerce`.
+data Coercible (A : Set a) (B : Set b) : Set where
+  TrustMe : Coercible A B
+
+{-# FOREIGN GHC data AgdaCoercible l1 l2 a b = TrustMe #-}
+{-# COMPILE GHC Coercible = data AgdaCoercible (TrustMe) #-}
+
+-- Once we get our hands on a proof that `Coercible A B` we postulate that it
+-- is safe to convert an `A` into a `B`. This is done under the hood by using
+-- `unsafeCoerce`.
 
 postulate coerce : {{_ : Coercible A B}} → A → B
 
@@ -66,7 +77,7 @@ postulate coerce : {{_ : Coercible A B}} → A → B
 {-# COMPILE GHC coerce = \ _ _ _ _ _ -> unsafeCoerce #-}
 
 ------------------------------------------------------------------------
--- Variants
+-- Unary and binary variants for covariant type constructors
 
 Coercible₁ : ∀ a c → (T : Set a → Set b) (U : Set c → Set d) → Set _
 Coercible₁ _ _ T U = ∀ {A B} → {{_ : Coercible A B}} → Coercible (T A) (U B)
@@ -79,31 +90,58 @@ Coercible₂ _ _ _ _ T U = ∀ {A B} → {{_ : Coercible A B}} → Coercible₁ 
 
 -- Nat
 
--- Our first example of such a case reveals one of Agda's secrets:
--- natural numbers are represented by (arbitrary precision) integers
--- at runtime! Note that we may only coerce in one direction: integers
--- may actually be negative.
+-- Our first instance reveals one of Agda's secrets: natural numbers are
+-- represented by (arbitrary precision) integers at runtime! Note that we
+-- may only coerce in one direction: arbitrary integers may actually be
+-- negative and will not do as mere natural numbers.
 
 instance
-  postulate
-    nat-toInt : Coercible Nat Int
+
+  nat-toInt : Coercible Nat Int
+  nat-toInt = TrustMe
+
+-- We then proceed to state that data types from the standard library
+-- can be converted to their FFI equivalents which are bound to actual
+-- Haskell types.
 
 -- Maybe
 
-    maybe-toFFI   : Coercible₁ a b STD.Maybe FFI.Maybe
-    maybe-fromFFI : Coercible₁ a b FFI.Maybe STD.Maybe
+  maybe-toFFI : Coercible₁ a b STD.Maybe FFI.Maybe
+  maybe-toFFI = TrustMe
+
+  maybe-fromFFI : Coercible₁ a b FFI.Maybe STD.Maybe
+  maybe-fromFFI = TrustMe
 
 -- Product
 
-    pair-toFFI   : Coercible₂ a b c d STD._×_ FFI.Pair
-    pair-fromFFI : Coercible₂ a b c d FFI.Pair STD._×_
+  pair-toFFI : Coercible₂ a b c d STD._×_ FFI.Pair
+  pair-toFFI = TrustMe
+
+  pair-fromFFI : Coercible₂ a b c d FFI.Pair STD._×_
+  pair-fromFFI = TrustMe
+
+-- We follow up with purely structural rules for builtin data types which
+-- already have known low-level representations.
+
+-- List
+
+  coerce-list : Coercible₁ a b STD.List STD.List
+  coerce-list = TrustMe
 
 -- Function
+-- Note that functions are contravariant in their domain.
 
--- Functions are contravariant in their domain.
+  coerce-fun : {{_ : Coercible A B}} → Coercible₁ c d (λ C → B → C) (λ D → A → D)
+  coerce-fun = TrustMe
 
-    coerce-fun : {{_ : Coercible A B}} → Coercible₁ c d (λ C → B → C) (λ D → A → D)
+-- Finally we add a reflexivity proof to discharge all the dangling constraints
+-- involving type variables and concrete builtin types such as `Bool`.
 
--- Reflexivity
+-- This rule overlaps with the purely structural ones: when attempting to prove
+-- `Coercible (List A) (List A)`, should Agda use the proof obtained by `coerce-refl`
+-- or the one obtained by `coerce-list coerce-refl`? Because we are using a
+-- datatype with a single constructor these distinctions do not matter: both proofs
+-- are definitionally equal.
 
-    coerce-refl : Coercible A A
+  coerce-refl : Coercible A A
+  coerce-refl = TrustMe
