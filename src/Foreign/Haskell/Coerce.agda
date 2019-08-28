@@ -35,6 +35,7 @@ open import Level using (Level; _⊔_)
 open import Agda.Builtin.Nat
 open import Agda.Builtin.Int
 
+import IO.Primitive    as STD
 import Data.List.Base  as STD
 import Data.Maybe.Base as STD
 import Data.Product    as STD
@@ -127,6 +128,11 @@ instance
 
   coerce-list : Coercible₁ a b STD.List STD.List
   coerce-list = TrustMe
+
+-- IO
+
+  coerce-IO : Coercible₁ a b STD.IO STD.IO
+  coerce-IO = TrustMe
 
 -- Function
 -- Note that functions are contravariant in their domain.
