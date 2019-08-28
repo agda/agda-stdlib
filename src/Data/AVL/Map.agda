@@ -26,69 +26,69 @@ open StrictTotalOrder strictTotalOrder renaming (Carrier to Key)
 ------------------------------------------------------------------------
 -- The map type
 
-Map : ∀ {i} → (v : Set i) → Set (a ⊔ i ⊔ ℓ₂)
+Map : ∀ {v} → (V : Set v) → Set (a ⊔ v ⊔ ℓ₂)
 Map v = AVL.Tree (AVL.const v)
 
 ------------------------------------------------------------------------
 -- Repackaged functions
 
-module _ {i} {v : Set i} where
+module _ {v} {V : Set v} where
 
-  empty : Map v
+  empty : Map V
   empty = AVL.empty
 
-  singleton : Key → v → Map v
+  singleton : Key → V → Map V
   singleton = AVL.singleton
 
-  insert : Key → v → Map v → Map v
+  insert : Key → V → Map V → Map V
   insert = AVL.insert
 
-  insertWith : Key → (Maybe v → v) → Map v → Map v
+  insertWith : Key → (Maybe V → V) → Map V → Map V
   insertWith = AVL.insertWith
 
-  delete : Key → Map v → Map v
+  delete : Key → Map V → Map V
   delete = AVL.delete
 
-  lookup : Key → Map v → Maybe v
+  lookup : Key → Map V → Maybe V
   lookup = AVL.lookup
 
-module _ {i j} {v : Set i} {w : Set j} where
+module _ {v w} {V : Set v} {W : Set w} where
 
-  map : (v → w) → Map v → Map w
+  map : (V → W) → Map V → Map W
   map f = AVL.map f
 
-module _ {i} {v : Set i} where
+module _ {v} {V : Set v} where
 
   infix 4 _∈?_
 
-  _∈?_ : Key → Map v → Bool
+  _∈?_ : Key → Map V → Bool
   _∈?_ = AVL._∈?_
 
-  headTail : Map v → Maybe ((Key × v) × Map v)
+  headTail : Map V → Maybe ((Key × V) × Map V)
   headTail = AVL.headTail
 
-  initLast : Map v → Maybe (Map v × (Key × v))
+  initLast : Map V → Maybe (Map V × (Key × V))
   initLast = AVL.initLast
 
-  fromList : List (Key × v) → Map v
+  fromList : List (Key × V) → Map V
   fromList = AVL.fromList
 
-  toList : Map v → List (Key × v)
+  toList : Map V → List (Key × V)
   toList = AVL.toList
 
-module _ {i j} {v : Set i} {w : Set j} where
+module _ {v w} {V : Set v} {W : Set w} where
 
-  unionWith : (v → Maybe w → w) →
-              Map v → Map w → Map w
+  unionWith : (V → Maybe W → W) →
+              Map V → Map W → Map W
   unionWith f = AVL.unionWith f
 
-module _ {i} {v : Set i} where
+module _ {v} {V : Set v} where
 
-  union : Map v → Map v → Map v
+  union : Map V → Map V → Map V
   union = AVL.union
 
-  unionsWith : (v → Maybe v → v) → List (Map v) → Map v
+  unionsWith : (V → Maybe V → V) → List (Map V) → Map V
   unionsWith f = AVL.unionsWith f
 
-  unions : List (Map v) → Map v
+  unions : List (Map V) → Map V
   unions = AVL.unions
