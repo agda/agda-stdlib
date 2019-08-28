@@ -10,6 +10,7 @@ module Data.List.Relation.Binary.Sublist.Propositional.Properties
   {a} {A : Set a} where
 
 open import Data.List using (List; []; _∷_;  map)
+open import Data.List.Membership.Propositional using (_∈_)
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.List.Relation.Unary.Any.Properties
@@ -172,6 +173,12 @@ from∈∘to∈ : ∀ {x : A} {xs ys} (τ : x ∷ xs ⊆ ys) →
 from∈∘to∈ (x≡y ∷ τ) = cong (x≡y ∷_) ([]⊆-irrelevant _ _)
 from∈∘to∈ (y  ∷ʳ τ) = cong (y  ∷ʳ_) (from∈∘to∈ τ)
 
+from∈∘lookup : ∀{x : A} {xs ys} (τ : xs ⊆ ys) (i : x ∈ xs) →
+               from∈ (lookup τ i) ≡ ⊆-trans (from∈ i) τ
+from∈∘lookup (y   ∷ʳ τ)  i          = cong (y ∷ʳ_) (from∈∘lookup τ i)
+from∈∘lookup (_    ∷ τ) (there i)   = cong (_ ∷ʳ_) (from∈∘lookup τ i)
+from∈∘lookup (refl ∷ τ) (here refl) = cong (refl ∷_) ([]⊆-irrelevant _ _)
+
 ------------------------------------------------------------------------
 -- Weak pushout (wpo)
 
@@ -197,23 +204,23 @@ IsWeakPushout {τ = τ} {σ = σ} rpo =
 ------------------------------------------------------------------------
 -- Properties of disjointness
 
--- From τ ⊎ σ = ρ, compute the difference τ′ such that τ = ⊆-trans τ′ ρ.
+-- From τ₁ ⊎ τ₂ = τ, compute the injection ι₁ such that τ₁ = ⊆-trans ι₁ τ.
 
-DisjointUnion-diffˡ : ∀ {xs ys zs us : List A} {τ : xs ⊆ zs} {σ : ys ⊆ zs} {ρ : us ⊆ zs} →
-                      DisjointUnion τ σ ρ → ∃ λ (τ′ : xs ⊆ us) → ⊆-trans τ′ ρ ≡ τ
-DisjointUnion-diffˡ []         = []       , refl
-DisjointUnion-diffˡ (y   ∷ₙ d) = _        , cong (y  ∷ʳ_) (proj₂ (DisjointUnion-diffˡ d))
-DisjointUnion-diffˡ (x≈y ∷ₗ d) = refl ∷ _ , cong (x≈y ∷_) (proj₂ (DisjointUnion-diffˡ d))
-DisjointUnion-diffˡ (x≈y ∷ᵣ d) = _ ∷ʳ _   , cong (_  ∷ʳ_) (proj₂ (DisjointUnion-diffˡ d))
+DisjointUnion-inj₁ : ∀ {xs ys zs xys : List A} {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs} {τ : xys ⊆ zs} →
+                      DisjointUnion τ₁ τ₂ τ → ∃ λ (ι₁ : xs ⊆ xys) → ⊆-trans ι₁ τ ≡ τ₁
+DisjointUnion-inj₁ []         = []       , refl
+DisjointUnion-inj₁ (y   ∷ₙ d) = _        , cong (y  ∷ʳ_) (proj₂ (DisjointUnion-inj₁ d))
+DisjointUnion-inj₁ (x≈y ∷ₗ d) = refl ∷ _ , cong (x≈y ∷_) (proj₂ (DisjointUnion-inj₁ d))
+DisjointUnion-inj₁ (x≈y ∷ᵣ d) = _ ∷ʳ _   , cong (_  ∷ʳ_) (proj₂ (DisjointUnion-inj₁ d))
 
--- From τ ⊎ σ = ρ, compute the difference σ′ such that σ = ⊆-trans σ′ ρ.
+-- From τ₁ ⊎ τ₂ = τ, compute the injection ι₂ such that τ₂ = ⊆-trans ι₂ τ.
 
-DisjointUnion-diffʳ : ∀ {xs ys zs us : List A} {τ : xs ⊆ zs} {σ : ys ⊆ zs} {ρ : us ⊆ zs} →
-                      DisjointUnion τ σ ρ → ∃ λ (σ′ : ys ⊆ us) → ⊆-trans σ′ ρ ≡ σ
-DisjointUnion-diffʳ []         = []       , refl
-DisjointUnion-diffʳ (y   ∷ₙ d) = _        , cong (y  ∷ʳ_) (proj₂ (DisjointUnion-diffʳ d))
-DisjointUnion-diffʳ (x≈y ∷ᵣ d) = refl ∷ _ , cong (x≈y ∷_) (proj₂ (DisjointUnion-diffʳ d))
-DisjointUnion-diffʳ (x≈y ∷ₗ d) = _ ∷ʳ _   , cong (_  ∷ʳ_) (proj₂ (DisjointUnion-diffʳ d))
+DisjointUnion-inj₂ : ∀ {xs ys zs xys : List A} {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs} {τ : xys ⊆ zs} →
+                      DisjointUnion τ₁ τ₂ τ → ∃ λ (ι₂ : ys ⊆ xys) → ⊆-trans ι₂ τ ≡ τ₂
+DisjointUnion-inj₂ []         = []       , refl
+DisjointUnion-inj₂ (y   ∷ₙ d) = _        , cong (y  ∷ʳ_) (proj₂ (DisjointUnion-inj₂ d))
+DisjointUnion-inj₂ (x≈y ∷ᵣ d) = refl ∷ _ , cong (x≈y ∷_) (proj₂ (DisjointUnion-inj₂ d))
+DisjointUnion-inj₂ (x≈y ∷ₗ d) = _ ∷ʳ _   , cong (_  ∷ʳ_) (proj₂ (DisjointUnion-inj₂ d))
 
 -- A sublist σ disjoint to both τ₁ and τ₂ is an equalizer
 -- for the separators of τ₁ and τ₂.
