@@ -196,20 +196,22 @@ module _ {R : Setoid a ℓ₁} {S : Setoid b ℓ₂} {T : Setoid c ℓ₃} where
 ------------------------------------------------------------------------
 -- Propositional packages
 
-↣ : A ↣ B → B ↣ C → A ↣ C
-↣ = injection
+infix 8 _∘-↣_ _∘-↠_ _∘-⤖_ _∘-⇔_ _∘-↞_ _∘-↔_
 
-↠ : A ↠ B → B ↠ C → A ↠ C
-↠ = surjection
+_∘-↣_ : A ↣ B → B ↣ C → A ↣ C
+_∘-↣_ = injection
 
-⤖ : A ⤖ B → B ⤖ C → A ⤖ C
-⤖ = bijection
+_∘-↠_ : A ↠ B → B ↠ C → A ↠ C
+_∘-↠_ = surjection
 
-⇔ : A ⇔ B → B ⇔ C → A ⇔ C
-⇔ = equivalence
+_∘-⤖_ : A ⤖ B → B ⤖ C → A ⤖ C
+_∘-⤖_ = bijection
 
-↞ : A ↞ B → B ↞ C → A ↞ C
-↞ = leftInverse
+_∘-⇔_ : A ⇔ B → B ⇔ C → A ⇔ C
+_∘-⇔_ = equivalence
 
-↔ : A ↔ B → B ↔ C → A ↔ C
-↔ = inverse
+_∘-↞_ : A ↞ B → B ↞ C → A ↞ C
+_∘-↞_ = leftInverse
+
+_∘-↔_ : A ↔ B → B ↔ C → A ↔ C
+_∘-↔_ = inverse

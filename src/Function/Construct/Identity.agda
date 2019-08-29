@@ -166,20 +166,20 @@ module _ (A : Set a) where
 
   open Function {A = A} {A} _≡_ _≡_
 
-  ↣ : A ↣ A
-  ↣ = injection (setoid A)
+  id-↣ : A ↣ A
+  id-↣ = injection (setoid A)
 
-  ↠ : A ↠ A
-  ↠ = surjection (setoid A)
+  id-↠ : A ↠ A
+  id-↠ = surjection (setoid A)
 
-  ⤖ : A ⤖ A
-  ⤖ = bijection (setoid A)
+  id-⤖ : A ⤖ A
+  id-⤖ = bijection (setoid A)
 
-  ⇔ : A ⇔ A
-  ⇔ = equivalence (setoid A)
+  id-⇔ : A ⇔ A
+  id-⇔ = equivalence (setoid A)
 
-  ↞ : A ↞ A
-  ↞ = leftInverse (setoid A)
+  id-↞ : A ↞ A
+  id-↞ = leftInverse (setoid A)
 
-  ↔ : A ↔ A
-  ↔ = inverse (setoid A)
+  id-↔ : A ↔ A
+  id-↔ = inverse (setoid A)
