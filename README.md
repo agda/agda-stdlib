@@ -32,12 +32,14 @@ module you feel could do with some more documentation.
 ## Installation instructions
 
 See the instructions [here](https://github.com/agda/agda-stdlib/blob/master/notes/installation-guide.md)
-for how to install version 1.1 of the standard library.
+for how to install the latest version of the standard library.
 
 #### Old versions of Agda
 
 If you're using an old version of Agda, you can download the corresponding version
 of the standard library on the [Agda wiki](http://wiki.portal.chalmers.se/agda/pmwiki.php?n=Libraries.StandardLibrary).
+The index for older versions of the library can be found at, for example, https://agda.github.io/agda-stdlib/v0.17/
+where 0.17 can be replaced as required.
 
 #### Development version of Agda
 
