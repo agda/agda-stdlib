@@ -89,7 +89,7 @@ open import Relation.Nullary.Negation
 -- example program using uncons, catMaybes, and testChar
 
 main = run $
-  ♯ readFiniteFile "Haskell.agda" {- read this file -} >>= λ f →
+  ♯ readFiniteFile "README/Foreign/Haskell.agda" {- read this file -} >>= λ f →
   ♯ let chars   = toList f in
     let cleanup = catMaybes ∘ List.map (λ c → if testChar c then just c else nothing) in
     let cleaned = dropWhile ('\n' ≟_) $ cleanup chars in
