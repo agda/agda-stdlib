@@ -40,19 +40,22 @@ private
 --   simplify certain proofs.
 
 infixr 5 _&_ ∹_
-mutual
-  -- Non-Empty Lists
-  record _⁺ {a} (A : Set a) : Set a where
-    inductive
-    constructor _&_
-    field
-      head : A
-      tail : A ⋆
 
-  -- Possibly Empty Lists
-  data _⋆ {a} (A : Set a) : Set a where
-    [] : A ⋆
-    ∹_ : A ⁺ → A ⋆
+record _⁺ {a} (A : Set a) : Set a
+data _⋆ {a} (A : Set a) : Set a
+
+-- Non-Empty Lists
+record _⁺ A where
+  inductive
+  constructor _&_
+  field
+    head : A
+    tail : A ⋆
+
+-- Possibly Empty Lists
+data _⋆ A where
+  [] : A ⋆
+  ∹_ : A ⁺ → A ⋆
 open _⁺ public
 
 ------------------------------------------------------------------------
