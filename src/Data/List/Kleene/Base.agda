@@ -14,8 +14,8 @@ open import Data.Maybe   as Maybe   using (Maybe; just; nothing)
 open import Data.Sum     as Sum     using (_⊎_; inj₁; inj₂)
 open import Level        as Level   using (Level)
 
-open import Algebra
-open import Function
+open import Algebra.FunctionProperties using (Op₂)
+open import Function.Core
 
 private
   variable
@@ -68,19 +68,13 @@ uncons (∹ xs) = just xs
 ------------------------------------------------------------------------
 -- FoldMap
 
-module _ {c ℓ} (sgrp : Semigroup c ℓ) where
-  open Semigroup sgrp
+foldMap+ : Op₂ B → (A → B) → A + → B
+foldMap+ _∙_ f (x & [])   = f x
+foldMap+ _∙_ f (x & ∹ xs) = f x ∙ foldMap+ _∙_ f xs
 
-  foldMap+ : (A → Carrier) → A + → Carrier
-  foldMap+ f (x & []) = f x
-  foldMap+ f (x & ∹ xs) = f x ∙ foldMap+ f xs
-
-module _ {c ℓ} (mon : Monoid c ℓ) where
-  open Monoid mon
-
-  foldMap* : (A → Carrier) → A * → Carrier
-  foldMap* f [] = ε
-  foldMap* f (∹ xs) = foldMap+ semigroup f xs
+foldMap* : Op₂ B → B → (A → B) → A * → B
+foldMap* _∙_ ε f []     = ε
+foldMap* _∙_ ε f (∹ xs) = foldMap+ _∙_ f xs
 
 ------------------------------------------------------------------------
 -- Folds
@@ -91,7 +85,7 @@ module _ (f : A → B → B) (b : B) where
 
   foldr+ (x & xs) = f x (foldr* xs)
 
-  foldr* [] = b
+  foldr* []     = b
   foldr* (∹ xs) = foldr+ xs
 
 module _ (f : B → A → B) where
@@ -100,7 +94,7 @@ module _ (f : B → A → B) where
 
   foldl+ b (x & xs) = foldl* (f b x) xs
 
-  foldl* b [] = b
+  foldl* b []     = b
   foldl* b (∹ xs) = foldl+ b xs
 
 ------------------------------------------------------------------------
@@ -133,7 +127,7 @@ module _  (f : A → B) where
   head (map+ xs) = f (head xs)
   tail (map+ xs) = map* (tail xs)
 
-  map* [] = []
+  map* []     = []
   map* (∹ xs) = ∹ map+ xs
 
 module _ (f : A → Maybe B) where
@@ -141,10 +135,10 @@ module _ (f : A → Maybe B) where
   mapMaybe* : A * → B *
 
   mapMaybe+ (x & xs) with f x
-  mapMaybe+ (x & xs) | just y  = ∹ y & mapMaybe* xs
-  mapMaybe+ (x & xs) | nothing = mapMaybe* xs
+  ... | just y  = ∹ y & mapMaybe* xs
+  ... | nothing = mapMaybe* xs
 
-  mapMaybe* [] = []
+  mapMaybe* []     = []
   mapMaybe* (∹ xs) = mapMaybe+ xs
 
 ------------------------------------------------------------------------
@@ -192,7 +186,7 @@ module Bind where
 
   []     *>>=+ k = []
   (∹ xs) *>>=+ k = ∹ xs +>>=+ k
-open Bind public using  () renaming (_*>>=*_ to _>>=*_; _+>>=+_ to _>>=+_)
+open Bind public using () renaming (_*>>=*_ to _>>=*_; _+>>=+_ to _>>=+_)
 
 ------------------------------------------------------------------------
 -- Scans
@@ -211,14 +205,13 @@ open Scanr public using (scanr+; scanr*)
 
 module _ (f : B → A → B) where
   scanl* : B → A * → B +
-  head (scanl* b xs) = b
-  tail (scanl* b []) = []
+  head (scanl* b xs)     = b
+  tail (scanl* b [])     = []
   tail (scanl* b (∹ xs)) = ∹ scanl* (f b (head xs)) (tail xs)
 
   scanl+ : B → A + → B +
   head (scanl+ b xs) = b
   tail (scanl+ b xs) = ∹ scanl* (f b (head xs)) (tail xs)
-
 
   scanl₁ : B → A + → B +
   scanl₁ b xs = scanl* (f b (head xs)) (tail xs)
@@ -230,7 +223,7 @@ module _ (f : B → A → (B × C)) where
   mapAccumˡ* : B → A * → (B × C *)
   mapAccumˡ+ : B → A + → (B × C +)
 
-  mapAccumˡ* b [] = b , []
+  mapAccumˡ* b []     = b , []
   mapAccumˡ* b (∹ xs) = map₂ ∹_ (mapAccumˡ+ b xs)
 
   mapAccumˡ+ b (x & xs) =
@@ -254,12 +247,12 @@ module _ (f : A → B → (C × B)) (b : B) where
 -- Non-Empty Folds
 
 last : A + → A
-last (x & []) = x
+last (x & [])   = x
 last (_ & ∹ xs) = last xs
 
 module _ (f : A → A → A) where
   foldr₁ : A + → A
-  foldr₁ (x & []) = x
+  foldr₁ (x & [])   = x
   foldr₁ (x & ∹ xs) = f x (foldr₁ xs)
 
   foldl₁ : A + → A
@@ -269,7 +262,7 @@ module _ (f : A → Maybe B → B) where
   foldrMaybe* : A * → Maybe B
   foldrMaybe+ : A + → B
 
-  foldrMaybe* [] = nothing
+  foldrMaybe* []     = nothing
   foldrMaybe* (∹ xs) = just (foldrMaybe+ xs)
 
   foldrMaybe+ xs = f (head xs) (foldrMaybe* (tail xs))
@@ -313,13 +306,13 @@ module ZipWith (f : A → B → C) where
   head (+zipWith+ xs ys) = f (head xs) (head ys)
   tail (+zipWith+ xs ys) = *zipWith* (tail xs) (tail ys)
 
-  *zipWith+ [] ys = []
+  *zipWith+ [] ys     = []
   *zipWith+ (∹ xs) ys = ∹ +zipWith+ xs ys
 
-  +zipWith* xs [] = []
+  +zipWith* xs []     = []
   +zipWith* xs (∹ ys) = ∹ +zipWith+ xs ys
 
-  *zipWith* [] ys = []
+  *zipWith* [] ys     = []
   *zipWith* (∹ xs) ys = +zipWith* xs ys
 open ZipWith public renaming (+zipWith+ to zipWith+; *zipWith* to zipWith*)
 
@@ -356,7 +349,7 @@ tails+ : A + → (A +) +
 head (tails+ xs) = xs
 tail (tails+ xs) = tails* (tail xs)
 
-tails* [] = []
+tails* []     = []
 tails* (∹ xs) = ∹ tails+ xs
 
 reverse* : A * → A *
