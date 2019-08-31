@@ -13,7 +13,7 @@ open import Data.Product
 open import Data.Product.Function.NonDependent.Setoid
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
 open import Relation.Binary
-open import Function
+open import Function.Core
 open import Function.Equality using (_⟶_; _⟨$⟩_)
 open import Function.Equivalence as Equiv using (_⇔_; module Equivalence)
 open import Function.HalfAdjointEquivalence using (↔→≃; _≃_)

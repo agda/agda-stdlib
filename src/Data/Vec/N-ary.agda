@@ -11,7 +11,7 @@ module Data.Vec.N-ary where
 open import Data.Nat.Base hiding (_⊔_)
 open import Data.Product as Prod
 open import Data.Vec
-open import Function
+open import Function.Core
 open import Function.Equivalence using (_⇔_; equivalence)
 open import Level using (Level; _⊔_)
 open import Relation.Binary

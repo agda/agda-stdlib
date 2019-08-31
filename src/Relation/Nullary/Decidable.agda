@@ -9,7 +9,7 @@
 module Relation.Nullary.Decidable where
 
 open import Level using (Level)
-open import Function
+open import Function.Core
 open import Function.Equality    using (_⟨$⟩_; module Π)
 open import Function.Equivalence using (_⇔_; equivalence; module Equivalence)
 open import Function.Injection   using (Injection; module Injection)

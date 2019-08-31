@@ -8,7 +8,7 @@
 
 module Function.Equality where
 
-import Function as Fun
+import Function.Core as Fun
 open import Level
 open import Relation.Binary using (Setoid)
 open import Relation.Binary.Indexed.Heterogeneous

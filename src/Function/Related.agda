@@ -10,7 +10,7 @@
 module Function.Related where
 
 open import Level
-open import Function
+open import Function.Core
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence as Eq      using (Equivalence)
 open import Function.Injection   as Inj     using (Injection; _↣_)

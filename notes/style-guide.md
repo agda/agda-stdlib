@@ -123,11 +123,38 @@ This is very much a work-in-progress and is not exhaustive.
     }
   ```
 
-#### Other
-
-* Non-trivial proofs in `private` blocks are generally discouraged.
+#### `where` blocks
 
 * `where` blocks are preferred rather than the `let` construction.
+
+* The `where` should be placed on the line below the main proof,
+  indented by two spaces.
+
+* If the contents of the block is non-trivial then types should be
+  provided alongside the terms, and all terms should be on lines after
+  the `where`, e.g.
+  ```agda
+  statement : Statement
+  statement = proof
+    where
+        proof : Proof
+        proof = some-very-long-proof
+  ```
+
+* If the contents of the block is trivial or is an `open` statement then
+  it can provided on the same line as the `where` and a type can be
+  omitted, e.g.
+  ```agda
+  statement : Statement
+  statement = proof
+    where proof = x
+  ```
+
+#### Other
+
+* Non-trivial proofs in `private` blocks are generally discouraged. If its
+  non-trivial then the chances are someone will want to reuse it as some
+  point!
 
 * The `with` syntax is preferred over the use of `case` from the `Function`
   module.

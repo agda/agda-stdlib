@@ -876,8 +876,8 @@ m-n≤m m n = ≤-steps-neg n ≤-refl
 m≤n⇒m-n≤0 : ∀ {m n} → m ≤ n → m - n ≤ + 0
 m≤n⇒m-n≤0 (-≤+ {n = n})         = ≤-steps-neg n -≤+
 m≤n⇒m-n≤0 (-≤- {n = n} n≤m)     = ≤-trans (⊖-monoʳ-≥-≤ n n≤m) (≤-reflexive (n⊖n≡0 n))
-m≤n⇒m-n≤0 (+≤+ {n = 0} z≤n)     = +≤+ z≤n
-m≤n⇒m-n≤0 (+≤+ {n = suc n} z≤n) = -≤+
+m≤n⇒m-n≤0 {n = + 0}     (+≤+ z≤n) = +≤+ z≤n
+m≤n⇒m-n≤0 {n = + suc n} (+≤+ z≤n) = -≤+
 m≤n⇒m-n≤0 (+≤+ (s≤s {m} m≤n))   = ≤-trans (⊖-monoʳ-≥-≤ m m≤n) (≤-reflexive (n⊖n≡0 m))
 
 m-n≤0⇒m≤n : ∀ {m n} → m - n ≤ + 0 → m ≤ n
@@ -1283,11 +1283,20 @@ abs-*-commute i j = abs-◃ _ _
         | *-comm i k
         = *-cancelʳ-≡ j k i
 
-[1+m]*n≡n+m*n : ∀ m n → sucℤ m * n ≡ n + m * n
-[1+m]*n≡n+m*n m n = begin
+suc-* : ∀ m n → sucℤ m * n ≡ n + m * n
+suc-* m n = begin
   sucℤ m * n      ≡⟨ *-distribʳ-+ n (+ 1) m ⟩
   + 1 * n + m * n ≡⟨ cong (_+ m * n) (*-identityˡ n) ⟩
-  n + m * n       ∎ where open ≡-Reasoning
+  n + m * n       ∎
+  where open ≡-Reasoning
+
+*-suc : ∀ m n → m * sucℤ n ≡ m + m * n
+*-suc m n = begin
+  m * sucℤ n ≡⟨ *-comm m _ ⟩
+  sucℤ n * m ≡⟨ suc-* n m ⟩
+  m + n * m  ≡⟨ cong (λ v → m + v) (*-comm n m) ⟩
+  m + m * n  ∎
+  where open ≡-Reasoning
 
 -1*n≡-n : ∀ n → -[1+ 0 ] * n ≡ - n
 -1*n≡-n -[1+ n ] = cong (λ v → + suc v) (ℕₚ.+-identityʳ n)
@@ -1355,8 +1364,8 @@ neg-distribʳ-* x y = begin
 *-monoʳ-≤-pos _ (-≤+             {n = suc _})     = -≤+
 *-monoʳ-≤-pos x (-≤-                         n≤m) =
   -≤- (ℕₚ.≤-pred (ℕₚ.*-mono-≤ (s≤s n≤m) (ℕₚ.≤-refl {x = suc x})))
-*-monoʳ-≤-pos _ (+≤+ {m = 0}     {n = 0}     m≤n) = +≤+ m≤n
-*-monoʳ-≤-pos _ (+≤+ {m = 0}     {n = suc _} m≤n) = +≤+ z≤n
+*-monoʳ-≤-pos k {+ 0} {+ 0}     (+≤+ m≤n) = +≤+ m≤n
+*-monoʳ-≤-pos k {+ 0} {+ suc _} (+≤+ m≤n) = +≤+ z≤n
 *-monoʳ-≤-pos x (+≤+ {m = suc _} {n = suc _} m≤n) =
   +≤+ ((ℕₚ.*-mono-≤ m≤n (ℕₚ.≤-refl {x = suc x})))
 
@@ -1840,4 +1849,12 @@ m<′n⇒m≤pred[n] {m} {n} m<n = begin
 {-# WARNING_ON_USAGE m<′n⇒m≤pred[n]
 "Warning: _<′_ was deprecated in v1.1.
 Please use _<_ instead."
+#-}
+
+-- Version 1.2
+
+[1+m]*n≡n+m*n = suc-*
+{-# WARNING_ON_USAGE [1+m]*n≡n+m*n
+"Warning: [1+m]*n≡n+m*n was deprecated in v1.1.
+Please use suc-* instead."
 #-}

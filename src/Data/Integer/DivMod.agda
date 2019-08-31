@@ -131,7 +131,7 @@ n<s[n/ℕd]*d : ∀ n d {d≢0} → n ℤ.< suc ((n divℕ d) {d≢0}) ℤ.* ℤ
 n<s[n/ℕd]*d n sd@(ℕ.suc d) = begin-strict
   n                           ≡⟨ a≡a%ℕn+[a/ℕn]*n n sd ⟩
   ℤ.+ r ℤ.+ q ℤ.* + sd        <⟨ +-monoˡ-< (q ℤ.* + sd) (ℤ.+<+ (n%ℕd<d n sd)) ⟩
-  + sd  ℤ.+ q ℤ.* + sd        ≡⟨ sym ([1+m]*n≡n+m*n q (+ sd)) ⟩
+  + sd  ℤ.+ q ℤ.* + sd        ≡⟨ sym (suc-* q (+ sd)) ⟩
   suc (n divℕ ℕ.suc d) * + sd ∎ where
   open ≤-Reasoning; q = n divℕ sd; r = n modℕ sd
 

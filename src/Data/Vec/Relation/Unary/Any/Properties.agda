@@ -22,7 +22,7 @@ open import Data.Vec.Membership.Propositional
   using (_∈_; mapWith∈; find; lose)
 open import Data.Vec.Relation.Binary.Pointwise.Inductive
   using (Pointwise; []; _∷_)
-open import Function
+open import Function.Core
 open import Function.Inverse using (_↔_; inverse)
   renaming (_∘_ to _∘↔_; id to id↔)
 open import Level using (Level)

@@ -16,7 +16,7 @@ open import Data.Bool.Base using (Bool; false; true; not; T)
 open import Data.Unit.Base using (⊤)
 open import Data.Empty
 open import Data.Product
-open import Function
+open import Function.Core
 
 open import Agda.Builtin.Equality
 open import Relation.Nullary

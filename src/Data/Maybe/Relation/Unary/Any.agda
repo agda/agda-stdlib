@@ -10,7 +10,7 @@ module Data.Maybe.Relation.Unary.Any where
 
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Product as Prod using (∃; _,_; -,_)
-open import Function using (id)
+open import Function.Core using (id)
 open import Function.Equivalence using (_⇔_; equivalence)
 open import Level
 open import Relation.Binary.PropositionalEquality as P using (_≡_; cong)

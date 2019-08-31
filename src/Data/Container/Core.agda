@@ -10,7 +10,7 @@ module Data.Container.Core where
 
 open import Level
 open import Data.Product as Prod using (Σ-syntax)
-open import Function
+open import Function.Core
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse using (_↔_; module Inverse)
 open import Relation.Unary using (Pred; _⊆_)

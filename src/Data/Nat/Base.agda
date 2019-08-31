@@ -9,7 +9,6 @@
 module Data.Nat.Base where
 
 open import Level using (0ℓ)
-open import Function using (_∘_; flip)
 open import Relation.Binary
 open import Relation.Binary.Core
 open import Agda.Builtin.Equality

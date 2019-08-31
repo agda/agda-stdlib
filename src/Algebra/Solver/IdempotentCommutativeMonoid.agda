@@ -1,9 +1,9 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Solver for equations in commutative monoids
+-- Solver for equations in idempotent commutative monoids
 --
--- Adapted from Algebra.Monoid-solver
+-- Adapted from Algebra.Solver.CommutativeMonoid
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -78,12 +78,12 @@ Normal n = Vec Bool n
 ------------------------------------------------------------------------
 -- Constructions on normal forms
 
--- The empty bag.
+-- The empty set.
 
 empty : ∀{n} → Normal n
 empty = replicate false
 
--- A singleton bag.
+-- A singleton set.
 
 sg : ∀{n} (i : Fin n) → Normal n
 sg zero    = true ∷ empty
@@ -98,13 +98,13 @@ _•_  : ∀{n} (v w : Normal n) → Normal n
 ------------------------------------------------------------------------
 -- Correctness of the constructions on normal forms
 
--- The empty bag stands for the unit ε.
+-- The empty set stands for the unit ε.
 
 empty-correct : ∀{n} (ρ : Env n) → ⟦ empty ⟧⇓ ρ ≈ ε
-empty-correct [] = refl
+empty-correct []      = refl
 empty-correct (a ∷ ρ) = empty-correct ρ
 
--- The singleton bag stands for a single variable.
+-- The singleton set stands for a single variable.
 
 sg-correct : ∀{n} (x : Fin n) (ρ : Env n) →  ⟦ sg x ⟧⇓ ρ ≈ lookup ρ x
 sg-correct zero (x ∷ ρ) = begin
@@ -124,7 +124,7 @@ flip12 a b c = begin
 
 distr : ∀ a b c → a ∙ (b ∙ c) ≈ (a ∙ b) ∙ (a ∙ c)
 distr a b c = begin
-    a ∙ (b ∙ c)  ≈⟨ ∙-cong (sym (idem a)) refl ⟩
+    a ∙ (b ∙ c)        ≈⟨ ∙-cong (sym (idem a)) refl ⟩
     (a ∙ a) ∙ (b ∙ c)  ≈⟨ assoc _ _ _ ⟩
     a ∙ (a ∙ (b ∙ c))  ≈⟨ ∙-congˡ (sym (assoc _ _ _)) ⟩
     a ∙ ((a ∙ b) ∙ c)  ≈⟨ ∙-congˡ (∙-congʳ (comm _ _)) ⟩
@@ -160,7 +160,7 @@ normalise-correct : ∀ {n} (e : Expr n) (ρ : Env n) →
     ⟦ normalise e ⟧⇓ ρ ≈ ⟦ e ⟧ ρ
 normalise-correct (var x)   ρ = sg-correct x ρ
 normalise-correct id        ρ = empty-correct ρ
-normalise-correct (e₁ ⊕ e₂) ρ =  begin
+normalise-correct (e₁ ⊕ e₂) ρ = begin
 
     ⟦ normalise e₁ • normalise e₂ ⟧⇓ ρ
 
@@ -209,5 +209,3 @@ prove _ e₁ e₂ = from-just (prove′ e₁ e₂)
 -- prove : ∀ n (es : Expr n × Expr n) →
 --         From-just (uncurry prove′ es)
 -- prove _ = from-just ∘ uncurry prove′
-
--- -}

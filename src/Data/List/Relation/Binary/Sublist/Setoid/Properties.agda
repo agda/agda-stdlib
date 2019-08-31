@@ -21,7 +21,7 @@ open import Data.List.Relation.Unary.Any using (Any)
 open import Data.Nat using (_≤_; _≥_; z≤n; s≤s)
 import Data.Nat.Properties as ℕₚ
 import Data.Maybe.Relation.Unary.All as Maybe
-open import Function
+open import Function.Core
 open import Function.Bijection   using (_⤖_)
 open import Function.Equivalence using (_⇔_)
 
@@ -200,7 +200,7 @@ module _ {as bs : List A} where
 -- Inversion lemmas
 ------------------------------------------------------------------------
 
-module _ {a b} {A : Set a} {B : Set b} {a as b bs} where
+module _ {a as b bs} where
 
   ∷⁻¹ : a ≈ b → as ⊆ bs ⇔ a ∷ as ⊆ b ∷ bs
   ∷⁻¹ = HeteroProperties.∷⁻¹
@@ -225,8 +225,6 @@ module _ where
 
 ------------------------------------------------------------------------
 -- Irrelevant special case
-
-module _ {a b} {A : Set a} {B : Set b}  where
 
   []⊆-irrelevant : Irrelevant ([] ⊆_)
   []⊆-irrelevant = HeteroProperties.Sublist-[]-irrelevant

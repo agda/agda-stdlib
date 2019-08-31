@@ -14,7 +14,7 @@ open import Data.Product as Prod using (_×_; _,_; uncurry; uncurry′)
 open import Data.Vec as Vec
 open import Data.Vec.Relation.Unary.All as All using (All; []; _∷_)
 open import Level using (Level)
-open import Function using (_∘_; id)
+open import Function.Core using (_∘_; id)
 open import Function.Inverse using (_↔_; inverse)
 open import Relation.Unary using (Pred) renaming (_⊆_ to _⋐_)
 open import Relation.Binary.PropositionalEquality

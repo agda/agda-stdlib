@@ -8,7 +8,7 @@
 
 module Data.Product where
 
-open import Function
+open import Function.Core
 open import Level
 open import Relation.Nullary
 open import Agda.Builtin.Equality

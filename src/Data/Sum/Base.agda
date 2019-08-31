@@ -8,7 +8,7 @@
 
 module Data.Sum.Base where
 
-open import Function using (_∘_; _-[_]-_ ; id)
+open import Function.Core using (_∘_; _-[_]-_ ; id)
 open import Relation.Nullary using (Dec; yes; no; ¬_)
 open import Level using (Level; _⊔_)
 

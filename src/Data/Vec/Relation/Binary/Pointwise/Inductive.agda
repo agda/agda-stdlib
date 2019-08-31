@@ -15,7 +15,7 @@ open import Data.Product using (_×_; _,_)
 open import Data.Vec as Vec hiding ([_]; head; tail; map; lookup)
 open import Data.Vec.Relation.Unary.All using (All; []; _∷_)
 open import Level using (Level; _⊔_)
-open import Function using (_∘_)
+open import Function.Core using (_∘_)
 open import Function.Equivalence using (_⇔_; equivalence)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)

@@ -16,7 +16,7 @@ open import Agda.Builtin.Equality using (_≡_) renaming (refl to ≡-refl)
 open import Data.Maybe.Base using (Maybe)
 open import Data.Product using (_×_)
 open import Data.Sum.Base using (_⊎_)
-open import Function using (_on_; flip)
+open import Function.Core using (_on_; flip)
 open import Level
 open import Relation.Nullary using (Dec; ¬_)
 
@@ -239,6 +239,17 @@ record NonEmpty {A : Set a} {B : Set b}
     proof : T x y
 
 ------------------------------------------------------------------------
+-- Partial Equivalence relations
+
+-- To preserve backwards compatability, equivalence relations are
+-- not defined in terms of their partial counterparts.
+
+record IsPartialEquivalence {A : Set a} (_≈_ : Rel A ℓ) : Set (a ⊔ ℓ) where
+  field
+    sym   : Symmetric _≈_
+    trans : Transitive _≈_
+
+------------------------------------------------------------------------
 -- Equivalence relations
 
 -- The preorders of this library are defined in terms of an underlying
@@ -257,6 +268,12 @@ record IsEquivalence {A : Set a} (_≈_ : Rel A ℓ) : Set (a ⊔ ℓ) where
 
   reflexive : _≡_ ⇒ _≈_
   reflexive ≡-refl = refl
+
+  isPartialEquivalence : IsPartialEquivalence _≈_
+  isPartialEquivalence = record
+    { sym = sym
+    ; trans = trans
+    }
 
 
 

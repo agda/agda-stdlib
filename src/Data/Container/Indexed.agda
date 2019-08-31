@@ -15,7 +15,7 @@ open import Level
 open import Codata.Musical.M.Indexed
 open import Data.Product as Prod hiding (map)
 open import Data.W.Indexed
-open import Function renaming (id to ⟨id⟩; _∘_ to _⟨∘⟩_)
+open import Function.Core renaming (id to ⟨id⟩; _∘_ to _⟨∘⟩_)
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse using (_↔_; module Inverse)
 open import Relation.Unary using (Pred; _⊆_)

@@ -8,9 +8,12 @@
 
 module Relation.Binary.PropositionalEquality where
 
+open import Algebra
+open import Algebra.Structures
+open import Algebra.FunctionProperties
 import Axiom.Extensionality.Propositional as Ext
 open import Axiom.UniquenessOfIdentityProofs
-open import Function
+open import Function.Core
 open import Function.Equality using (Π; _⟶_; ≡-setoid)
 open import Level using (Level; _⊔_)
 open import Data.Product using (∃)
@@ -212,7 +215,19 @@ module _ (_≟_ : Decidable {A = A} _≡_) where
   ≢-≟-identity : ∀ {x y : A} → x ≢ y → ∃ λ ¬eq → x ≟ y ≡ no ¬eq
   ≢-≟-identity {x} {y} ¬eq = dec-no (x ≟ y) ¬eq
 
+------------------------------------------------------------------------
+-- Any operation forms a magma over _≡_
 
+isMagma : (_∙_ : Op₂ A) → IsMagma _≡_ _∙_
+isMagma _∙_ = record
+  { isEquivalence = isEquivalence
+  ; ∙-cong        = cong₂ _∙_
+  }
+
+magma : (_∙_ : Op₂ A) → Magma _ _
+magma _∙_ = record
+  { isMagma = isMagma _∙_
+  }
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

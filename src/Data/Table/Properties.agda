@@ -24,7 +24,7 @@ open import Data.Product as Product using (Σ; ∃; _,_; proj₁; proj₂)
 open import Data.Vec as V using (Vec; _∷_; [])
 import Data.Vec.Properties as VP
 open import Level using (Level)
-open import Function using (_∘_; flip)
+open import Function.Core using (_∘_; flip)
 open import Function.Inverse using (Inverse)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; cong)
