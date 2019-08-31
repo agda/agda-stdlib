@@ -7,7 +7,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Data.KleeneList.AsList where
+module Data.List.Kleene.AsList where
 
 open import Level as Level using (Level)
 
@@ -18,11 +18,11 @@ private
     B : Set b
     C : Set c
 
-import Data.KleeneList.Base as Kleene
+import Data.List.Kleene.Base as Kleene
 
 -- Here we import half of the functions from Data.KleeneList: the half
 -- for possibly-empty lists.
-open import Data.KleeneList.Base
+open import Data.List.Kleene.Base
   using
     ( []
     )

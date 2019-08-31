@@ -7,9 +7,9 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Data.KleeneList where
+module Data.List.Kleene where
 
 ------------------------------------------------------------------------
 -- Types and basic operations
 
-open import Data.KleeneList.Base public
+open import Data.List.Kleene.Base public
