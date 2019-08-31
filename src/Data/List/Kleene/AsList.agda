@@ -27,24 +27,24 @@ open import Data.List.Kleene.Base
     ( []
     )
   renaming
-    ( _⋆ to List
-    ; foldr⋆ to foldr
-    ; foldl⋆ to foldl
-    ; _++⋆_ to _++_
-    ; map⋆ to map
-    ; mapMaybe⋆ to mapMaybe
-    ; pure⋆ to pure
-    ; _<*>⋆_ to _<*>_
-    ; _>>=⋆_ to _>>=_
-    ; mapAccumˡ⋆ to mapAccumˡ
-    ; mapAccumʳ⋆ to mapAccumʳ
-    ; _[_]⋆ to _[_]
-    ; applyUpTo⋆ to applyUpTo
-    ; upTo⋆ to upTo
-    ; zipWith⋆ to zipWith
-    ; unzipWith⋆ to unzipWith
-    ; partitionSumsWith⋆ to partitionSumsWith
-    ; reverse⋆ to reverse
+    ( _* to List
+    ; foldr* to foldr
+    ; foldl* to foldl
+    ; _++*_ to _++_
+    ; map* to map
+    ; mapMaybe* to mapMaybe
+    ; pure* to pure
+    ; _<*>*_ to _<*>_
+    ; _>>=*_ to _>>=_
+    ; mapAccumˡ* to mapAccumˡ
+    ; mapAccumʳ* to mapAccumʳ
+    ; _[_]* to _[_]
+    ; applyUpTo* to applyUpTo
+    ; upTo* to upTo
+    ; zipWith* to zipWith
+    ; unzipWith* to unzipWith
+    ; partitionSumsWith* to partitionSumsWith
+    ; reverse* to reverse
     )
   public
 
@@ -52,14 +52,14 @@ open import Data.List.Kleene.Base
 infixr 5 _∷_
 pattern _∷_ x xs = Kleene.∹ x Kleene.& xs
 
--- The following functions change the type of the list (from ⁺ to ⋆ or vice
+-- The following functions change the type of the list (from ⁺ to * or vice
 -- versa) in Data.KleeneList, so we reimplement them here to keep the
 -- type the same.
 scanr : (A → B → B) → B → List A → List B
-scanr f b xs = Kleene.∹ Kleene.scanr⋆ f b xs
+scanr f b xs = Kleene.∹ Kleene.scanr* f b xs
 
 scanl : (B → A → B) → B → List A → List B
-scanl f b xs = Kleene.∹ Kleene.scanl⋆ f b xs
+scanl f b xs = Kleene.∹ Kleene.scanl* f b xs
 
 tails : List A → List (List A)
-tails xs = foldr (λ x xs → (Kleene.∹ x) ∷ xs) ([] ∷ []) (Kleene.tails⋆ xs)
+tails xs = foldr (λ x xs → (Kleene.∹ x) ∷ xs) ([] ∷ []) (Kleene.tails* xs)
