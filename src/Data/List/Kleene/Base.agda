@@ -325,10 +325,7 @@ open ZipWith public renaming (+zipWith+ to zipWith+; *zipWith* to zipWith*)
 
 module Unzip (f : A → B × C) where
   cons : B × C → B * × C * → B + × C +
-  head (proj₁ (cons x xs)) = proj₁ x
-  tail (proj₁ (cons x xs)) = proj₁ xs
-  head (proj₂ (cons x xs)) = proj₂ x
-  tail (proj₂ (cons x xs)) = proj₂ xs
+  cons = Product.zip′ _&_ _&_
 
   unzipWith* : A * → B * × C *
   unzipWith+ : A + → B + × C +
