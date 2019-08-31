@@ -4,6 +4,8 @@
 -- The identity function
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 module Function.Construct.Identity where
 
 open import Data.Product using (_,_)
