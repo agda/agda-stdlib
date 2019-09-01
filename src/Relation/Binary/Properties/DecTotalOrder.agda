@@ -92,12 +92,6 @@ open StrictTotalOrder <-strictTotalOrder public
 
 -- Version 1.2
 
-strictPartialOrder = <-strictPartialOrder
-{-# WARNING_ON_USAGE strictPartialOrder
-"Warning: strictPartialOrder was deprecated in v1.2.
-Please use <-strictPartialOrder instead."
-#-}
-
 strictTotalOrder = <-strictTotalOrder
 {-# WARNING_ON_USAGE strictTotalOrder
 "Warning: strictTotalOrder was deprecated in v1.2.

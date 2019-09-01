@@ -141,6 +141,18 @@ attached to all deprecated names to discourage their use.
   +-*-suc ↦ *-suc
   ```
 
+* In `Relation.Binary.Properties.Poset`:
+  ```agda
+  invIsPartialOrder  ↦ ≥-isPartialOrder
+  invPoset           ↦ ≥-poset
+  strictPartialOrder ↦ <-strictPartialOrder
+  ```
+
+* In `Relation.Binary.Properties.DecTotalOrder`
+  ```agda
+  strictTotalOrder = <-strictTotalOrder
+  ```
+
 Other minor additions
 ---------------------
 
