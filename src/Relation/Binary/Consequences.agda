@@ -49,13 +49,13 @@ module _ {_∼_ : Rel A ℓ} {P : A → Set p} where
 module _ {_≈_ : Rel A ℓ₁} {_≤_ : Rel A ℓ₂} where
 
   total⟶refl : _≤_ Respects₂ _≈_ → Symmetric _≈_ →
-                 Total _≤_ → _≈_ ⇒ _≤_
+               Total _≤_ → _≈_ ⇒ _≤_
   total⟶refl (respʳ , respˡ) sym total {x} {y} x≈y with total x y
   ... | inj₁ x∼y = x∼y
   ... | inj₂ y∼x = respʳ x≈y (respˡ (sym x≈y) y∼x)
 
   total+dec⟶dec : _≈_ ⇒ _≤_ → Antisymmetric _≈_ _≤_ →
-                    Total _≤_ → Decidable _≈_ → Decidable _≤_
+                  Total _≤_ → Decidable _≈_ → Decidable _≤_
   total+dec⟶dec refl antisym total _≟_ x y with total x y
   ... | inj₁ x≤y = yes x≤y
   ... | inj₂ y≤x with x ≟ y
@@ -81,7 +81,7 @@ module _ {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ₂} where
   asym⟶antisym asym x<y y<x = ⊥-elim (asym x<y y<x)
 
   asym⟶irr : _<_ Respects₂ _≈_ → Symmetric _≈_ →
-               Asymmetric _<_ → Irreflexive _≈_ _<_
+             Asymmetric _<_ → Irreflexive _≈_ _<_
   asym⟶irr (respʳ , respˡ) sym asym {x} {y} x≈y x<y =
     asym x<y (respʳ (sym x≈y) (respˡ x≈y x<y))
 
@@ -144,7 +144,6 @@ module _  {_R_ : Rel A ℓ₁} {Q : Rel A ℓ₂} where
   ... | inj₁ aRb = prf a b aRb
   ... | inj₂ bRa = q-sym (prf b a bRa)
 
-
 ------------------------------------------------------------------------
 -- Other proofs
 
@@ -167,5 +166,5 @@ module _ {P : REL A B ℓ₁} {Q : REL B A ℓ₂} where
 
 module _ {r} {R : REL A B r} where
 
-     dec⟶recomputable : Decidable R → Recomputable R
-     dec⟶recomputable dec {a} {b} = recompute $ dec a b
+  dec⟶recomputable : Decidable R → Recomputable R
+  dec⟶recomputable dec {a} {b} = recompute $ dec a b
