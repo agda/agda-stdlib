@@ -167,20 +167,20 @@ module _ {t} (L : Lexer t) where
 -- A small set of keywords for a language with expressions of the form
 -- `let x = e in b`.
 
-
-letIn : Lexer 0ℓ
-letIn = record { LetIn } module LetIn where
+module LetIn where
 
   data TOK : Set where
     LET EQ IN : TOK
     LPAR RPAR : TOK
     ID : String → TOK
 
+  keywords : List# (String × TOK) (λ a b → ⌊ ¬? ((proj₁ a) String.≟ (proj₁ b)) ⌋)
   keywords =  ("let" , LET)
            ∷# ("="   , EQ)
            ∷# ("in"  , IN)
            ∷# []
 
+  -- Breaking characters: spaces (thrown away) and parentheses (kept)
   breaking : Char → ∃ (λ b → if b then Maybe TOK else Lift 0ℓ ⊤)
   breaking c = if isSpace c then true , nothing else parens c where
 
@@ -189,9 +189,11 @@ letIn = record { LetIn } module LetIn where
     parens ')' = true , just RPAR
     parens _   = false , _
 
+  default : String → TOK
   default = ID
 
--- Breaking characters: spaces (thrown away) and parentheses (kept)
+letIn : Lexer 0ℓ
+letIn = record { LetIn }
 
 open import Agda.Builtin.Equality
 
