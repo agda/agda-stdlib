@@ -36,8 +36,8 @@ _ = cons 0 (cons 1 (cons 3 (cons 10 [] _)
 ISortedList : Set
 ISortedList = List# ℕ ⌊ _<?_ ⌋
 
--- The same example is now much shorter, looking almost just like a normal list
--- except that we now for sure that it is well order.
+-- The same example is now much shorter. It looks pretty much like a normal list
+-- except that we know for sure that it is well ordered.
 
 ins : ISortedList
 ins = 0 ∷# 1 ∷# 3 ∷# 10 ∷# []
