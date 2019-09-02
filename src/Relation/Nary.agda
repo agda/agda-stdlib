@@ -14,7 +14,9 @@ module Relation.Nary where
 -- behind the design decisions.
 ------------------------------------------------------------------------
 
-open import Level using (Level; _⊔_)
+open import Level using (Level; _⊔_; Lift)
+open import Data.Unit.Base
+open import Data.Empty
 open import Data.Nat.Base using (zero; suc)
 open import Data.Product as Prod using (_×_; _,_)
 open import Data.Product.Nary.NonDependent
@@ -154,3 +156,54 @@ _∪_ = liftₙ 2 _ _⊎_
 
 ∁ : ∀ {n ls r} {as : Sets n ls} → as ⇉ Set r → as ⇉ Set r
 ∁ = liftₙ 1 _ ¬_
+
+
+apply⊤ₙ : ∀ {n ls r} {as : Sets n ls} {R : as ⇉ Set r} →
+          Π[ R ] → (vs : Product⊤ n as) → uncurry⊤ₙ n R vs
+apply⊤ₙ {zero}  prf vs       = prf
+apply⊤ₙ {suc n} prf (v , vs) = apply⊤ₙ (prf v) vs
+
+applyₙ : ∀ {n ls r} {as : Sets n ls} {R : as ⇉ Set r} →
+         Π[ R ] → (vs : Product n as) → uncurry⊤ₙ n R (toProduct⊤ n vs)
+applyₙ {n} prf vs = apply⊤ₙ prf (toProduct⊤ n vs)
+
+iapply⊤ₙ : ∀ {n ls r} {as : Sets n ls} {R : as ⇉ Set r} →
+           ∀[ R ] → {vs : Product⊤ n as} → uncurry⊤ₙ n R vs
+iapply⊤ₙ {zero}  prf = prf
+iapply⊤ₙ {suc n} prf = iapply⊤ₙ {n} prf
+
+iapplyₙ : ∀ {n ls r} {as : Sets n ls} {R : as ⇉ Set r} →
+          ∀[ R ] → {vs : Product n as} → uncurry⊤ₙ n R (toProduct⊤ n vs)
+iapplyₙ {n} prf = iapply⊤ₙ {n} prf
+
+------------------------------------------------------------------------
+-- Properties of N-ary relations
+
+-- Decidability
+
+Decidable : ∀ {n ls r} {as : Sets n ls} → as ⇉ Set r → Set (r ⊔ ⨆ n ls)
+Decidable R = Π[ mapₙ _ Dec R ]
+
+-- erasure
+
+⌊_⌋ : ∀ {n ls r} {as : Sets n ls} {R : as ⇉ Set r} → Decidable R → as ⇉ Set r
+⌊_⌋ {zero}  R? with R?
+... | yes _ = Lift _ ⊤
+... | no  _ = Lift _ ⊥
+⌊_⌋ {suc n} R? a = ⌊ R? a ⌋
+
+-- equivalence between R and its erasure
+
+fromWitness : ∀ {n ls r} {as : Sets n ls} (R : as ⇉ Set r) (R? : Decidable R) →
+              ∀[ ⌊ R? ⌋ ⇒ R ]
+fromWitness {zero} R R? with R?
+... | yes r = λ _ → r
+... | no _  = λ ()
+fromWitness {suc n} R R? = fromWitness (R _) (R? _)
+
+toWitness : ∀ {n ls r} {as : Sets n ls} (R : as ⇉ Set r) (R? : Decidable R) →
+              ∀[ R ⇒ ⌊ R? ⌋ ]
+toWitness {zero} R R? with R?
+... | yes _ = _
+... | no ¬r = ⊥-elim ∘′ ¬r
+toWitness {suc n} R R? = toWitness (R _) (R? _)

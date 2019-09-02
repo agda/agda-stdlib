@@ -100,6 +100,8 @@ The following new modules have been added to the library:
   Data.Bin.Base
   Data.Bin.Properties
 
+  Data.List.Fresh
+
   Data.List.Kleene
   Data.List.Kleene.AsList
   Data.List.Kleene.Base
@@ -220,6 +222,24 @@ Other minor additions
       Carrier         : Set a
       _≈_             : Rel Carrier ℓ
       isPartialEquivalence : IsPartialEquivalence _≈_
+  ```
+
+* Added new definitions to `Relation.Nary`:
+  ```agda
+  apply⊤ₙ  : Π[ R ] → (vs : Product⊤ n as) → uncurry⊤ₙ n R vs
+  applyₙ   : Π[ R ] → (vs : Product n as) → uncurry⊤ₙ n R (toProduct⊤ n vs)
+  iapply⊤ₙ : ∀[ R ] → {vs : Product⊤ n as} → uncurry⊤ₙ n R vs
+  iapplyₙ  : ∀[ R ] → {vs : Product n as} → uncurry⊤ₙ n R (toProduct⊤ n vs)
+
+  Decidable   : as ⇉ Set r → Set (r ⊔ ⨆ n ls)
+  ⌊_⌋         : Decidable R → as ⇉ Set r
+  fromWitness : (R : as ⇉ Set r) (R? : Decidable R) → ∀[ ⌊ R? ⌋ ⇒ R ]
+  toWitness   : (R : as ⇉ Set r) (R? : Decidable R) → ∀[ R ⇒ ⌊ R? ⌋ ]
+  ```
+
+* Added new definitions to `Relation.Unary`:
+  ```agda
+  ⌊_⌋ : {P : Pred A ℓ} → Decidable P → Pred A ℓ
   ```
 
 * Re-exported the maximum function for sizes in `Size`
