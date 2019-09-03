@@ -1,7 +1,9 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Fresh lists
+-- Fresh lists, a proof relevant variant of Catarina Coquand's contexts in
+-- "A Formalised Proof of the Soundness and Completeness of a Simply Typed
+-- Lambda-Calculus with Explicit Substitutions"
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
