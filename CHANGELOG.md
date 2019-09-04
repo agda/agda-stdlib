@@ -101,6 +101,10 @@ The following new modules have been added to the library:
   Data.Bin.Properties
 
   Data.List.Fresh
+  Data.List.Fresh.Properties
+  Data.List.Fresh.Relation.Unary.All
+  Data.List.Fresh.Relation.Unary.Any
+  Data.List.Fresh.Relation.Unary.Any.Properties
 
   Data.List.Kleene
   Data.List.Kleene.AsList
