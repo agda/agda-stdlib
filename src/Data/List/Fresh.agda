@@ -10,7 +10,7 @@
 
 module Data.List.Fresh where
 
-open import Level
+open import Level using (Level; _⊔_; Lift)
 open import Data.Unit.Base
 open import Data.Product
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
@@ -61,6 +61,22 @@ module _ {a} (A : Set a) (R : Rel A r) where
 infix 5 _#_
 _#_ : {R : Rel A r} (a : A) (as : List# A R) → Set r
 _#_ = fresh _ _
+
+------------------------------------------------------------------------
+-- Views
+
+data Empty {A : Set a} {R : Rel A r} : List# A R → Set (a ⊔ r) where
+  [] : Empty []
+
+data NonEmpty {A : Set a} {R : Rel A r} : List# A R → Set (a ⊔ r) where
+  cons : ∀ x xs pr → NonEmpty (cons x xs pr)
+
+------------------------------------------------------------------------
+-- Operations for reducing fresh lists
+
+length : List# A R → ℕ
+length []        = 0
+length (_ ∷# xs) = suc (length xs)
 
 ------------------------------------------------------------------------
 -- Operations for constructing fresh lists
@@ -156,3 +172,12 @@ toList (cons x xs ps) = -, toAll xs ps ∷ proj₂ (toList xs)
 
 toAll []            ps       = []
 toAll (cons a as _) (p , ps) = p ∷ toAll as ps
+
+fromList   : ∀ {xs} → AllPairs R xs → List# A R
+fromList-# : ∀ {x xs} (ps : AllPairs R xs) → All (R x) xs → x # fromList ps
+
+fromList []       = []
+fromList (r ∷ rs) = cons _ (fromList rs) (fromList-# rs r)
+
+fromList-# []       _        = _
+fromList-# (p ∷ ps) (r ∷ rs) = r , fromList-# ps rs
