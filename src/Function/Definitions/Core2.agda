@@ -22,7 +22,7 @@ open import Level using (Level; _⊔_)
 -- Definitions
 
 Surjective : ∀ {a} {A : Set a} → (A → B) → Set (a ⊔ b ⊔ ℓ₂)
-Surjective f = ∀ x → ∃ λ y → y ≈₂ f x
+Surjective f = ∀ y → ∃ λ x → f x ≈₂ y
 
 -- (Note the name `LeftInverse` is used for the package)
 Inverseˡ : ∀ {a} {A : Set a} → (A → B) → (B → A) → Set (b ⊔ ℓ₂)

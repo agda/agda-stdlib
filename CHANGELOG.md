@@ -118,6 +118,10 @@ The following new modules have been added to the library:
   Data.Bin.Base
   Data.Bin.Properties
 
+  Data.List.Kleene
+  Data.List.Kleene.AsList
+  Data.List.Kleene.Base
+
   Data.Rational.Unnormalised
   Data.Rational.Unnormalised.Properties
 
