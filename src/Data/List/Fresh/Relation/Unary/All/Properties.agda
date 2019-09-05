@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Properties of Any predicate transformer for fresh lists
+-- Properties of All predicate transformer for fresh lists
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
