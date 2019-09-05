@@ -170,8 +170,8 @@ toAll  : ∀ {a} as → fresh A R a as → All (R a) (proj₁ (toList as))
 toList []             = -, []
 toList (cons x xs ps) = -, toAll xs ps ∷ proj₂ (toList xs)
 
-toAll []            ps       = []
-toAll (cons a as _) (p , ps) = p ∷ toAll as ps
+toAll []        ps       = []
+toAll (a ∷# as) (p , ps) = p ∷ toAll as ps
 
 fromList   : ∀ {xs} → AllPairs R xs → List# A R
 fromList-# : ∀ {x xs} (ps : AllPairs R xs) → All (R x) xs → x # fromList ps

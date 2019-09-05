@@ -9,7 +9,7 @@
 module Data.List.Fresh.Relation.Unary.Any where
 
 open import Level using (Level; _⊔_; Lift)
-open import Data.Product using (_,_)
+open import Data.Product using (∃; _,_; -,_)
 open import Relation.Unary  as U
 open import Relation.Binary as B using (Rel)
 
@@ -33,6 +33,10 @@ module _ {A : Set a} {R : Rel A r} (P : Pred A p) where
 map : {xs : List# A R} → ∀[ P ⇒ Q ] → Any P xs → Any Q xs
 map p⇒q (here p)  = here (p⇒q p)
 map p⇒q (there p) = there (map p⇒q p)
+
+witness : {xs : List# A R} → Any P xs → ∃ P
+witness (here p)   = -, p
+witness (there ps) = witness ps
 
 remove   : (xs : List# A R) → Any P xs → List# A R
 remove-# : ∀ {x} {xs : List# A R} (p : Any P xs) → x # xs → x # (remove xs p)

@@ -14,11 +14,13 @@ open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Product using (_,_)
 open import Function using (_∘′_)
 open import Relation.Nullary
-open import Relation.Unary  as U
+open import Relation.Unary  as U using (Pred)
 open import Relation.Binary as B using (Rel)
+open import Relation.Nary
 open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong)
 
 open import Data.List.Fresh
+open import Data.List.Fresh.Relation.Unary.All
 open import Data.List.Fresh.Relation.Unary.Any
 
 private
@@ -38,21 +40,31 @@ Any⇒NonEmpty : {xs : List# A R} → Any P xs → NonEmpty xs
 Any⇒NonEmpty {xs = cons x xs pr} p  = cons x xs pr
 
 ------------------------------------------------------------------------
--- NonEmpty
+-- Correspondence between Any and All
 
-module _ {x} {R : Rel A r} (R? : B.Decidable R) (¬R⇒S : ∀ {y} → ¬ R x y → S x y) where
+module _ {P : Pred A p} {Q : Pred A q} (P⇒¬Q : ∀[ P ⇒ ∁ Q ]) where
 
-  ¬Any⇒fresh : {xs : List# A R} → ¬ (Any (S x) xs) → x # xs
-  ¬Any⇒fresh {[]}      ¬S = _
-  ¬Any⇒fresh {a ∷# as} ¬S with R? x a
-  ... | yes pr = pr , ¬Any⇒fresh (¬S ∘′ there)
-  ... | no ¬pr = ⊥-elim (¬S (here (¬R⇒S ¬pr)))
+  Any⇒¬All : {xs : List# A R} → Any P xs → ¬ (All Q xs)
+  Any⇒¬All (here p)   (q ∷ _)  = P⇒¬Q p q
+  Any⇒¬All (there ps) (_ ∷ qs) = Any⇒¬All ps qs
 
-module _ {x} {R : Rel A r} (R⇒¬S : ∀ {y} → R x y → ¬ (S x y)) where
+  All⇒¬Any : {xs : List# A R} → All P xs → ¬ (Any Q xs)
+  All⇒¬Any (p ∷ _)  (here q)   = P⇒¬Q p q
+  All⇒¬Any (_ ∷ ps) (there qs) = All⇒¬Any ps qs
 
-  fresh⇒¬Any : {xs : List# A R} → x # xs → ¬ (Any (S x) xs)
-  fresh⇒¬Any {a ∷# as} (p , ps) (here s)  = ⊥-elim (R⇒¬S p s)
-  fresh⇒¬Any {a ∷# as} (p , ps) (there q) = fresh⇒¬Any ps q
+module _ {P : Pred A p} {Q : Pred A q} (P? : Decidable P) where
+
+  ¬All⇒Any : {xs : List# A R} → ¬ (All P xs) → Any (∁ P) xs
+  ¬All⇒Any {xs = []}      ¬ps = ⊥-elim (¬ps [])
+  ¬All⇒Any {xs = x ∷# xs} ¬ps with P? x
+  ... | yes p = there (¬All⇒Any (¬ps ∘′ (p ∷_)))
+  ... | no ¬p = here ¬p
+
+  ¬Any⇒All : {xs : List# A R} → ¬ (Any P xs) → All (∁ P) xs
+  ¬Any⇒All {xs = []}      ¬ps = []
+  ¬Any⇒All {xs = x ∷# xs} ¬ps with P? x
+  ... | yes p = ⊥-elim (¬ps (here p))
+  ... | no ¬p = ¬p ∷ ¬Any⇒All (¬ps ∘′ there)
 
 ------------------------------------------------------------------------
 -- remove
