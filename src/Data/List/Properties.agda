@@ -34,7 +34,7 @@ open import Relation.Binary.PropositionalEquality as P
 open import Relation.Nullary using (Dec; ¬_; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Nullary.Product using (_×-dec_)
-open import Relation.Nullary.Decidable as Dec using (⌊_⌋)
+open import Relation.Nullary.Decidable as Decidable using (⌊_⌋)
 open import Relation.Unary using (Pred; Decidable; ∁)
 open import Relation.Unary.Properties using (∁?)
 
@@ -62,7 +62,7 @@ module _ {x y : A} {xs ys : List A} where
   ∷-injectiveʳ refl = refl
 
   ∷-dec : Dec (x ≡ y) → Dec (xs ≡ ys) → Dec (x List.∷ xs ≡ y ∷ ys)
-  ∷-dec x≟y xs≟ys = Dec.map′ (uncurry (cong₂ _∷_)) ∷-injective (x≟y ×-dec xs≟ys)
+  ∷-dec x≟y xs≟ys = Decidable.map′ (uncurry (cong₂ _∷_)) ∷-injective (x≟y ×-dec xs≟ys)
 
 ≡-dec : DecidableEquality A → DecidableEquality (List A)
 ≡-dec _≟_ []       []       = yes refl
