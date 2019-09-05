@@ -102,6 +102,8 @@ The following new modules have been added to the library:
   Algebra.Properties.Semigroup
   Algebra.Properties.CommutativeSemigroup
 
+  Data.AVL.Map
+
   Data.Bin
   Data.Bin.Base
   Data.Bin.Properties
