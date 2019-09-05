@@ -180,8 +180,11 @@ module _ (A : Set a) where
   id-⇔ : A ⇔ A
   id-⇔ = equivalence (setoid A)
 
-  id-↞ : A ↞ A
-  id-↞ = leftInverse (setoid A)
+  id-↩ : A ↩ A
+  id-↩ = leftInverse (setoid A)
+
+  id-↪ : A ↪ A
+  id-↪ = rightInverse (setoid A)
 
   id-↔ : A ↔ A
   id-↔ = inverse (setoid A)
