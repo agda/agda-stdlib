@@ -55,12 +55,13 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       ; isEquivalence₂ = isEquivalence To
       }
 
+    open IsCongruent isCongruent public using (module Eq₁; module Eq₂)
+
     isInjection : IsInjection f
     isInjection = record
       { isCongruent = isCongruent
       ; injective   = injective
       }
-
 
   record Surjection : Set (a ⊔ b ⊔ suc (ℓ₁ ⊔ ℓ₂)) where
     field
@@ -74,6 +75,8 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       ; isEquivalence₁ = isEquivalence From
       ; isEquivalence₂ = isEquivalence To
       }
+
+    open IsCongruent isCongruent public using (module Eq₁; module Eq₂)
 
     isSurjection : IsSurjection f
     isSurjection = record
@@ -115,6 +118,8 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       ; surjective  = surjective
       }
 
+    open IsBijection isBijection public using (module Eq₁; module Eq₂)
+
 
   record Equivalence : Set (a ⊔ b ⊔ suc (ℓ₁ ⊔ ℓ₂)) where
     field
@@ -138,6 +143,8 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       ; isEquivalence₁ = isEquivalence From
       ; isEquivalence₂ = isEquivalence To
       }
+
+    open IsCongruent isCongruent public using (module Eq₁; module Eq₂)
 
     isLeftInverse : IsLeftInverse f g
     isLeftInverse = record
@@ -218,6 +225,8 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       { isLeftInverse = isLeftInverse
       ; inverseʳ      = inverseʳ
       }
+
+    open IsInverse isInverse public using (module Eq₁; module Eq₂)
 
 ------------------------------------------------------------------------
 -- Packages specialised for propositional equality
