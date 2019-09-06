@@ -132,3 +132,19 @@ module _ {R : Rel A r} (R⇒≉ : ∀[ R ⇒ _≉_ ]) where
     step : ∀ {y} → y ∈ xs → y ∈ (ys ─ x∈ys)
     step {y} y∈xs = fromInj₂ (λ x≈y → ⊥-elim (x∉xs (≈-subst-∈ (sym x≈y) y∈xs)))
                   $ remove-inv x∈ys (inj y∈xs)
+
+
+------------------------------------------------------------------------
+-- proof irrelevance
+
+module _ {R : Rel A r} (R⇒≉ : ∀[ R ⇒ _≉_ ]) (≈-irrelevant : B.Irrelevant _≈_) where
+
+  ∈-irrelevant : ∀ {x} {xs : List# A R} → Irrelevant (x ∈ xs)
+  -- positive cases
+  ∈-irrelevant (here x≈y₁)   (here x≈y₂)   = P.cong here (≈-irrelevant x≈y₁ x≈y₂)
+  ∈-irrelevant (there x∈xs₁) (there x∈xs₂) = P.cong there (∈-irrelevant x∈xs₁ x∈xs₂)
+  -- absurd cases
+  ∈-irrelevant {xs = cons x xs pr} (here x≈y)    (there x∈xs₂) =
+    ⊥-elim (distinct x∈xs₂ (fresh⇒∉ R⇒≉ pr) x≈y)
+  ∈-irrelevant {xs = cons x xs pr} (there x∈xs₁) (here x≈y)    =
+    ⊥-elim (distinct x∈xs₁ (fresh⇒∉ R⇒≉ pr) x≈y)
