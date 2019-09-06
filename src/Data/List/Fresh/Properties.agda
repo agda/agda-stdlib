@@ -9,18 +9,28 @@
 module Data.List.Fresh.Properties where
 
 open import Level using (Level; _⊔_; Lift)
+open import Data.Product using (_,_)
 open import Relation.Nullary
 open import Relation.Unary as U using (Pred)
 open import Relation.Binary as B using (Rel)
-
 
 open import Data.List.Fresh
 
 private
   variable
-    a b p r : Level
+    a b e p r : Level
     A : Set a
     B : Set b
+
+------------------------------------------------------------------------
+-- Fresh congruence
+
+module _ {R : Rel A r} {_≈_ : Rel A e} (R≈ : R B.Respectsˡ _≈_) where
+
+  fresh-respectsˡ : ∀ {x y} {xs : List# A R} → x ≈ y → x # xs → y # xs
+  fresh-respectsˡ {xs = []}      x≈y x#xs       = _
+  fresh-respectsˡ {xs = x ∷# xs} x≈y (r , x#xs) =
+    R≈ x≈y r , fresh-respectsˡ x≈y x#xs
 
 ------------------------------------------------------------------------
 -- Empty and NotEmpty

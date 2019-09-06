@@ -202,6 +202,12 @@ Other minor additions
   *-1-rawMonoid  : RawMonoid 0ℓ 0ℓ
   ```
 
+* Added new functions to `Data.Sum.Base`:
+  ```agda
+  fromInj₁ : (B → A) → A ⊎ B → A
+  fromInj₂ : (A → B) → A ⊎ B → B
+  ```
+
 * Added new proofs to `Relation.Binary.PropositionalEquality`:
   ```agda
   isMagma : (_∙_ : Op₂ A) → IsMagma _≡_ _∙_
