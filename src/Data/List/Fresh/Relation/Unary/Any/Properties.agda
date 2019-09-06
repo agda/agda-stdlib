@@ -12,6 +12,7 @@ open import Level using (Level; _⊔_; Lift)
 open import Data.Empty
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Product using (_,_)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Function using (_∘′_)
 open import Relation.Nullary
 open import Relation.Unary  as U using (Pred)
@@ -73,3 +74,24 @@ module _ {R : Rel A r} {P : Pred A p} where
     length xs ≡ suc (length (xs ─ k))
   length-remove (here _)  = refl
   length-remove (there p) = cong suc (length-remove p)
+
+------------------------------------------------------------------------
+-- append
+
+module _ {R : Rel A r} {P : Pred A p} where
+
+  append⁺ˡ : {xs ys : List# A R} {ps : All (_# ys) xs} →
+             Any P xs → Any P (append xs ys ps)
+  append⁺ˡ (here px) = here px
+  append⁺ˡ (there p) = there (append⁺ˡ p)
+
+  append⁺ʳ : {xs ys : List# A R} {ps : All (_# ys) xs} →
+             Any P ys → Any P (append xs ys ps)
+  append⁺ʳ {xs = []}      p = p
+  append⁺ʳ {xs = x ∷# xs} p = there (append⁺ʳ p)
+
+  append⁻ : ∀ xs {ys : List# A R} {ps : All (_# ys) xs} →
+            Any P (append xs ys ps) → Any P xs ⊎ Any P ys
+  append⁻ []        p         = inj₂ p
+  append⁻ (x ∷# xs) (here px) = inj₁ (here px)
+  append⁻ (x ∷# xs) (there p) = Sum.map₁ there (append⁻ xs p)

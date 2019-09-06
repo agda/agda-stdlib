@@ -23,7 +23,7 @@ open import Data.List.Fresh.Relation.Unary.All
 
 private
   variable
-    a r : Level
+    a p r : Level
     A : Set a
 
 module _ {R : Rel A r} where
@@ -35,3 +35,10 @@ module _ {R : Rel A r} where
   toAll : ∀ {x} {xs : List# A R} → x # xs → All (R x) xs
   toAll {xs = []}      _        = []
   toAll {xs = a ∷# as} (p , ps) = p ∷ toAll ps
+
+module _ {R : Rel A r} {P : Pred A p} where
+
+  append⁺ : {xs ys : List# A R} {ps : All (_# ys) xs} →
+            All P xs → All P ys → All P (append xs ys ps)
+  append⁺ []         pys = pys
+  append⁺ (px ∷ pxs) pys = px ∷ append⁺ pxs pys

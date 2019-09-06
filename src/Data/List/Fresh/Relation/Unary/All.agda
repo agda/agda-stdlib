@@ -36,6 +36,19 @@ module _ {R : Rel A r} {P : Pred A p} where
            All P (cons x xs pr) → P x × All P xs
   uncons (p ∷ ps) = p , ps
 
+module _ {R : Rel A r} where
+
+  append   : (xs ys : List# A R) → All (_# ys) xs → List# A R
+  append-# : ∀ {x} xs ys {ps} → x # xs → x # ys → x # append xs ys ps
+
+  append []             ys _  = ys
+  append (cons x xs pr) ys ps =
+    let (p , ps) = uncons ps in
+    cons x (append xs ys ps) (append-# xs ys pr p)
+
+  append-# []             ys x#xs       x#ys = x#ys
+  append-# (cons x xs pr) ys (r , x#xs) x#ys = r , append-# xs ys x#xs x#ys
+
 module _ {R : Rel A r} {P : Pred A p} {Q : Pred A q} where
 
   map : ∀ {xs : List# A R} → ∀[ P ⇒ Q ] → All P xs → All Q xs
