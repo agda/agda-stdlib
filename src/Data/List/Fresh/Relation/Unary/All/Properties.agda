@@ -23,19 +23,15 @@ open import Data.List.Fresh.Relation.Unary.All
 
 private
   variable
-    a b p q r s : Level
+    a r : Level
     A : Set a
-    B : Set b
-    P : Pred A p
-    Q : Pred A q
-    R : Rel A r
-    S : Rel A s
 
+module _ {R : Rel A r} where
 
-fromAll : ∀ {x} {xs : List# A R} → All (R x) xs → x # xs
-fromAll []       = _
-fromAll (p ∷ ps) = p , fromAll ps
+  fromAll : ∀ {x} {xs : List# A R} → All (R x) xs → x # xs
+  fromAll []       = _
+  fromAll (p ∷ ps) = p , fromAll ps
 
-toAll : ∀ {x} {xs : List# A R} → x # xs → All (R x) xs
-toAll {xs = []}      _        = []
-toAll {xs = a ∷# as} (p , ps) = p ∷ toAll ps
+  toAll : ∀ {x} {xs : List# A R} → x # xs → All (R x) xs
+  toAll {xs = []}      _        = []
+  toAll {xs = a ∷# as} (p , ps) = p ∷ toAll ps

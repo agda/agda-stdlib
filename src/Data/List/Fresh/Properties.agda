@@ -21,21 +21,20 @@ private
     a b p r : Level
     A : Set a
     B : Set b
-    R : Rel A r
 
 ------------------------------------------------------------------------
 -- Empty and NotEmpty
 
-Empty⇒¬NonEmpty : {xs : List# A R} → Empty xs → ¬ (NonEmpty xs)
+Empty⇒¬NonEmpty : {R : Rel A r} {xs : List# A R} → Empty xs → ¬ (NonEmpty xs)
 Empty⇒¬NonEmpty [] ()
 
-NonEmpty⇒¬Empty : {xs : List# A R} → NonEmpty xs → ¬ (Empty xs)
+NonEmpty⇒¬Empty : {R : Rel A r} {xs : List# A R} → NonEmpty xs → ¬ (Empty xs)
 NonEmpty⇒¬Empty () []
 
-empty? : (xs : List# A R) → Dec (Empty xs)
+empty? : {R : Rel A r} (xs : List# A R) → Dec (Empty xs)
 empty? []       = yes []
 empty? (_ ∷# _) = no (λ ())
 
-nonEmpty? : (xs : List# A R) → Dec (NonEmpty xs)
+nonEmpty? : {R : Rel A r} (xs : List# A R) → Dec (NonEmpty xs)
 nonEmpty? []             = no (λ ())
 nonEmpty? (cons x xs pr) = yes (cons x xs pr)

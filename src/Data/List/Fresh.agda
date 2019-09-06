@@ -25,10 +25,8 @@ open import Relation.Nary
 
 private
   variable
-    a b p r : Level
+    a p r : Level
     A : Set a
-    B : Set b
-    R : Rel A r
 
 ------------------------------------------------------------------------
 -- Basic type
@@ -74,7 +72,7 @@ data NonEmpty {A : Set a} {R : Rel A r} : List# A R → Set (a ⊔ r) where
 ------------------------------------------------------------------------
 -- Operations for reducing fresh lists
 
-length : List# A R → ℕ
+length : {R : Rel A r} → List# A R → ℕ
 length []        = 0
 length (_ ∷# xs) = suc (length xs)
 
@@ -83,7 +81,7 @@ length (_ ∷# xs) = suc (length xs)
 
 pattern [_] a = a ∷# []
 
-fromMaybe : Maybe A → List# A R
+fromMaybe : {R : Rel A r} → Maybe A → List# A R
 fromMaybe nothing  = []
 fromMaybe (just a) = [ a ]
 
@@ -101,18 +99,18 @@ module _ {R : Rel A r} (R-refl : B.Reflexive R) where
 ------------------------------------------------------------------------
 -- Operations for deconstructing fresh lists
 
-uncons : List# A R → Maybe (A × List# A R)
+uncons : {R : Rel A r} → List# A R → Maybe (A × List# A R)
 uncons []        = nothing
 uncons (a ∷# as) = just (a , as)
 
-head : List# A R → Maybe A
+head : {R : Rel A r} → List# A R → Maybe A
 head = Maybe.map proj₁ ∘′ uncons
 
-tail : List# A R → Maybe (List# A R)
+tail : {R : Rel A r} → List# A R → Maybe (List# A R)
 tail = Maybe.map proj₂ ∘′ uncons
 
-take   : ℕ → List# A R → List# A R
-take-# : ∀ (n : ℕ) a (as : List# A R) → a # as → a # take n as
+take   : {R : Rel A r} → ℕ → List# A R → List# A R
+take-# : {R : Rel A r} → ∀ n a (as : List# A R) → a # as → a # take n as
 
 take zero    xs             = []
 take (suc n) []             = []
@@ -122,15 +120,15 @@ take-# zero    a xs        _        = _
 take-# (suc n) a []        ps       = _
 take-# (suc n) a (x ∷# xs) (p , ps) = p , take-# n a xs ps
 
-drop : ℕ → List# A R → List# A R
+drop : {R : Rel A r} → ℕ → List# A R → List# A R
 drop zero    as        = as
 drop (suc n) []        = []
 drop (suc n) (a ∷# as) = drop n as
 
 module _ {P : Pred A p} (P? : U.Decidable P) where
 
-  takeWhile   : List# A R → List# A R
-  takeWhile-# : ∀ a (as : List# A R) → a # as → a # takeWhile as
+  takeWhile   : {R : Rel A r} → List# A R → List# A R
+  takeWhile-# : ∀ {R : Rel A r} a (as : List# A R) → a # as → a # takeWhile as
 
   takeWhile []             = []
   takeWhile (cons a as ps) with P? a
@@ -142,14 +140,14 @@ module _ {P : Pred A p} (P? : U.Decidable P) where
   ... | yes _ = p , takeWhile-# a xs ps
   ... | no _  = _
 
-  dropWhile : List# A R → List# A R
+  dropWhile : {R : Rel A r} → List# A R → List# A R
   dropWhile []            = []
   dropWhile aas@(a ∷# as) with P? a
   ... | yes _ = dropWhile as
   ... | no _  = aas
 
-  filter   : List# A R → List# A R
-  filter-# : ∀ a (as : List# A R) → a # as → a # filter as
+  filter   : {R : Rel A r} → List# A R → List# A R
+  filter-# : ∀ {R : Rel A r} a (as : List# A R) → a # as → a # filter as
 
   filter []             = []
   filter (cons a as ps) with P? a
@@ -164,8 +162,8 @@ module _ {P : Pred A p} (P? : U.Decidable P) where
 ------------------------------------------------------------------------
 -- Relationship to List and AllPairs
 
-toList : List# A R → ∃ (AllPairs R)
-toAll  : ∀ {a} as → fresh A R a as → All (R a) (proj₁ (toList as))
+toList : {R : Rel A r} → List# A R → ∃ (AllPairs R)
+toAll  : ∀ {R : Rel A r} {a} as → fresh A R a as → All (R a) (proj₁ (toList as))
 
 toList []             = -, []
 toList (cons x xs ps) = -, toAll xs ps ∷ proj₂ (toList xs)
@@ -173,8 +171,9 @@ toList (cons x xs ps) = -, toAll xs ps ∷ proj₂ (toList xs)
 toAll []        ps       = []
 toAll (a ∷# as) (p , ps) = p ∷ toAll as ps
 
-fromList   : ∀ {xs} → AllPairs R xs → List# A R
-fromList-# : ∀ {x xs} (ps : AllPairs R xs) → All (R x) xs → x # fromList ps
+fromList   : ∀ {R : Rel A r} {xs} → AllPairs R xs → List# A R
+fromList-# : ∀ {R : Rel A r} {x xs} (ps : AllPairs R xs) →
+             All (R x) xs → x # fromList ps
 
 fromList []       = []
 fromList (r ∷ rs) = cons _ (fromList rs) (fromList-# rs r)

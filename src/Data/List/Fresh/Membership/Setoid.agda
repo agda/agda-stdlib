@@ -20,10 +20,9 @@ open Setoid S renaming (Carrier to A)
 private
   variable
     r : Level
-    R : Rel A r
 
-_∈_ : A → List# A R → Set _
+_∈_ : {R : Rel A r} → A → List# A R → Set _
 x ∈ xs = Any (x ≈_) xs
 
-_∉_ : A → List# A R → Set _
+_∉_ : {R : Rel A r} → A → List# A R → Set _
 x ∉ xs = ¬ (x ∈ xs)

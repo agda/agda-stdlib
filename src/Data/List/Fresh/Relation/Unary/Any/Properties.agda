@@ -28,21 +28,19 @@ private
     a b p q r s : Level
     A : Set a
     B : Set b
-    P : Pred A p
-    Q : Pred A q
-    R : Rel A r
-    S : Rel A s
 
 ------------------------------------------------------------------------
 -- NonEmpty
 
-Any⇒NonEmpty : {xs : List# A R} → Any P xs → NonEmpty xs
-Any⇒NonEmpty {xs = cons x xs pr} p  = cons x xs pr
+module _ {R : Rel A r} {P : Pred A p} where
+
+  Any⇒NonEmpty : {xs : List# A R} → Any P xs → NonEmpty xs
+  Any⇒NonEmpty {xs = cons x xs pr} p  = cons x xs pr
 
 ------------------------------------------------------------------------
 -- Correspondence between Any and All
 
-module _ {P : Pred A p} {Q : Pred A q} (P⇒¬Q : ∀[ P ⇒ ∁ Q ]) where
+module _ {R : Rel A r} {P : Pred A p} {Q : Pred A q} (P⇒¬Q : ∀[ P ⇒ ∁ Q ]) where
 
   Any⇒¬All : {xs : List# A R} → Any P xs → ¬ (All Q xs)
   Any⇒¬All (here p)   (q ∷ _)  = P⇒¬Q p q
@@ -52,7 +50,7 @@ module _ {P : Pred A p} {Q : Pred A q} (P⇒¬Q : ∀[ P ⇒ ∁ Q ]) where
   All⇒¬Any (p ∷ _)  (here q)   = P⇒¬Q p q
   All⇒¬Any (_ ∷ ps) (there qs) = All⇒¬Any ps qs
 
-module _ {P : Pred A p} {Q : Pred A q} (P? : Decidable P) where
+module _ {R : Rel A r} {P : Pred A p} {Q : Pred A q} (P? : Decidable P) where
 
   ¬All⇒Any : {xs : List# A R} → ¬ (All P xs) → Any (∁ P) xs
   ¬All⇒Any {xs = []}      ¬ps = ⊥-elim (¬ps [])
@@ -69,7 +67,9 @@ module _ {P : Pred A p} {Q : Pred A q} (P? : Decidable P) where
 ------------------------------------------------------------------------
 -- remove
 
-length-remove : {xs : List# A R} (k : Any P xs) →
-  length xs ≡ suc (length (xs ─ k))
-length-remove (here _)  = refl
-length-remove (there p) = cong suc (length-remove p)
+module _ {R : Rel A r} {P : Pred A p} where
+
+  length-remove : {xs : List# A R} (k : Any P xs) →
+    length xs ≡ suc (length (xs ─ k))
+  length-remove (here _)  = refl
+  length-remove (there p) = cong suc (length-remove p)

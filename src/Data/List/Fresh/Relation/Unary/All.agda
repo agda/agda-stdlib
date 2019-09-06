@@ -21,12 +21,8 @@ open import Data.List.Fresh.Relation.Unary.Any as Any using (Any; here; there)
 
 private
   variable
-    a b p q r : Level
+    a p q r : Level
     A : Set a
-    B : Set b
-    P : Pred A p
-    Q : Pred A q
-    R : Rel A r
 
 module _ {A : Set a} {R : Rel A r} (P : Pred A p) where
 
@@ -34,18 +30,24 @@ module _ {A : Set a} {R : Rel A r} (P : Pred A p) where
     []  : All []
     _∷_ : ∀ {x xs pr} → P x → All xs → All (cons x xs pr)
 
-uncons : ∀ {x} {xs : List# A R} {pr} → All P (cons x xs pr) → P x × All P xs
-uncons (p ∷ ps) = p , ps
+module _ {R : Rel A r} {P : Pred A p} where
 
-map : {xs : List# A R} → ∀[ P ⇒ Q ] → All P xs → All Q xs
-map p⇒q []       = []
-map p⇒q (p ∷ ps) = p⇒q p ∷ map p⇒q ps
+  uncons : ∀ {x} {xs : List# A R} {pr} →
+           All P (cons x xs pr) → P x × All P xs
+  uncons (p ∷ ps) = p , ps
 
-lookup : {xs : List# A R} (ps : Any P xs) → All Q xs → Q (proj₁ (Any.witness ps))
-lookup (here _)   (q ∷ _)  = q
-lookup (there ps) (_ ∷ qs) = lookup ps qs
+module _ {R : Rel A r} {P : Pred A p} {Q : Pred A q} where
 
-module _ {P : Pred A p} (P? : Decidable P) where
+  map : ∀ {xs : List# A R} → ∀[ P ⇒ Q ] → All P xs → All Q xs
+  map p⇒q []       = []
+  map p⇒q (p ∷ ps) = p⇒q p ∷ map p⇒q ps
+
+  lookup : ∀ {xs : List# A R} → All Q xs → (ps : Any P xs) →
+           Q (proj₁ (Any.witness ps))
+  lookup (q ∷ _)  (here _)  = q
+  lookup (_ ∷ qs) (there k) = lookup qs k
+
+module _ {R : Rel A r} {P : Pred A p} (P? : Decidable P) where
 
   all? : (xs : List# A R) → Dec (All P xs)
   all? []        = yes []

@@ -25,18 +25,16 @@ open Setoid S renaming (Carrier to A)
 private
   variable
     p r : Level
-    P : Pred A p
-    R : Rel A r
 
 ------------------------------------------------------------------------
 -- Transport
 
-≈-subst-∈ : ∀ {x y} {xs : List# A R} → x ≈ y → x ∈ xs → y ∈ xs
+≈-subst-∈ : ∀ {R : Rel A r} {x y} {xs : List# A R} → x ≈ y → x ∈ xs → y ∈ xs
 ≈-subst-∈ x≈y (here x≈x′)  = here (trans (sym x≈y) x≈x′)
 ≈-subst-∈ x≈y (there x∈xs) = there (≈-subst-∈ x≈y x∈xs)
 
 ------------------------------------------------------------------------
 -- Disjointness
 
-distinct : ∀ {x y} {xs : List# A R} → x ∈ xs → y ∉ xs → x ≉ y
+distinct : ∀ {R : Rel A r} {x y} {xs : List# A R} → x ∈ xs → y ∉ xs → x ≉ y
 distinct x∈xs y∉xs x≈y = y∉xs (≈-subst-∈ x≈y x∈xs)
