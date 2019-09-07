@@ -20,7 +20,7 @@ Other non-backwards compatible changes
 
 #### New function hierarchy
 
-The main problems with the current way various types of functions are
+* The main problems with the current way various types of functions are
 handled are:
   1. The raw functions were wrapped in the  equality-preserving
          type `_⟶_` from `Function.Equality`. As the rest of the library
@@ -40,7 +40,7 @@ handled are:
      possible to specify that for example an operation is commutative
      without providing all the proofs associated with the equality relation.
 
-To address these problems a new function hierarchy similar to the ones in
+* To address these problems a new function hierarchy similar to the ones in
 `Relation.Binary` and `Algebra` has been created. The new modules are as
 follows:
   - `Function.Definitions` containing definitions like `Injective`,
@@ -55,13 +55,19 @@ follows:
   - The old file `Function` has been moved to `Function.Core` and `Function`
     now exports the whole of this hierarchy, just like `Relation.Binary`.
 
-These changes are nearly entirely backwards compatible. The only problem will occur
+* These changes are nearly entirely backwards compatible. The only problem will occur
 is when code imports both `Function` and e.g. `Function.Injection` in which case the
 old and new definitions of `Injection` will clash. In the short term this can
 immediately be fixed by importing `Function.Core` instead of `Function`. However
 we would encourage to the new hierarchy in the medium to long term.
 
-The old modules will probably be deprecated (NOT COMPLETED AS OF YET)
+* The list of new modules is as follows:
+  ```agda
+  Function.Construct.Identity
+  Function.Construct.Composition
+  ```
+
+* The old modules will probably be deprecated (NOT COMPLETED AS OF YET)
   ```agda
   Function.Equivalence
   Function.Equality
@@ -96,17 +102,28 @@ The following new modules have been added to the library:
   Algebra.Properties.Semigroup
   Algebra.Properties.CommutativeSemigroup
 
+  Data.AVL.Map
+
   Data.Bin
   Data.Bin.Base
   Data.Bin.Induction
   Data.Bin.Ordering
   Data.Bin.Properties
 
+  Data.List.Kleene
+  Data.List.Kleene.AsList
+  Data.List.Kleene.Base
+
+  Data.Rational.Unnormalised
+  Data.Rational.Unnormalised.Properties
+
   Function.Definitions
   Function.Packages
   Function.Structures
 
   Relation.Binary.Properties.Setoid
+  Relation.Binary.Reasoning.Base.Partial
+  Relation.Binary.Reasoning.PartialSetoid
   ```
 
 Relocated modules
@@ -142,9 +159,37 @@ attached to all deprecated names to discourage their use.
 Other minor additions
 ---------------------
 
+* Added new constants to `Data.Integer.Base`:
+  ```agda
+  -1ℤ = -[1+ 0 ]
+   0ℤ = +0
+   1ℤ = +[1+ 0 ]
+  ```
+
 * Added new proof to `Data.Integer.Properties`:
   ```agda
   *-suc : m * sucℤ n ≡ m + m * n
+  ```
+
+* Added new relations to `Data.List.Relation.Binary.Sublist.Setoid/Propositional`:
+  ```agda
+  xs ⊇ ys = ys ⊆ xs
+  xs ⊈ ys = ¬ (xs ⊆ ys)
+  xs ⊉ ys = ¬ (xs ⊇ ys)
+  ```
+
+* Added new proofs to `Data.List.Relation.Binary.Sublist.Propositional.Properties`:
+  ```agda
+  ⊆-trans-idˡ      : ⊆-trans ⊆-refl τ ≡ τ
+  ⊆-trans-idʳ      : ⊆-trans τ ⊆-refl ≡ τ
+  ⊆-trans-assoc    : ⊆-trans τ₁ (⊆-trans τ₂ τ₃) ≡ ⊆-trans (⊆-trans τ₁ τ₂) τ₃
+  All-resp-⊆       : (All P) Respects _⊇_
+  Any-resp-⊆       : (Any P) Respects _⊆_
+  All-resp-⊆-refl  : All-resp-⊆ ⊆-refl ≗ id
+  All-resp-⊆-trans : All-resp-⊆ (⊆-trans τ τ′) ≗ All-resp-⊆ τ ∘ All-resp-⊆ τ′
+  Any-resp-⊆-refl  : Any-resp-⊆ ⊆-refl ≗ id
+  Any-resp-⊆-trans : Any-resp-⊆ (⊆-trans τ τ′) ≗ Any-resp-⊆ τ′ ∘ Any-resp-⊆ τ
+  lookup-injective : lookup τ i ≡ lookup τ j → i ≡ j
   ```
 
 * Added new proofs to `Data.Nat.Properties`:
@@ -171,4 +216,26 @@ Other minor additions
   ```agda
   levelOfType : ∀ {a} → Set a → Level
   levelOfTerm : ∀ {a} {A : Set a} → A → Level
+  ```
+
+* Added Partial Equivalence Relations to `Relation.Binary.Core`:
+  ```agda
+  record IsPartialEquivalence {A : Set a} (_≈_ : Rel A ℓ) : Set (a ⊔ ℓ) where
+  field
+      sym   : Symmetric _≈_
+      trans : Transitive _≈_
+  ```
+
+* Added Partial Setoids to `Relation.Binary`:
+  ```agda
+  record PartialSetoid a ℓ : Set (suc (a ⊔ ℓ)) where
+  field
+      Carrier         : Set a
+      _≈_             : Rel Carrier ℓ
+      isPartialEquivalence : IsPartialEquivalence _≈_
+  ```
+
+* Re-exported the maximum function for sizes in `Size`
+  ```agda
+  _⊔ˢ_   : Size → Size → Size
   ```

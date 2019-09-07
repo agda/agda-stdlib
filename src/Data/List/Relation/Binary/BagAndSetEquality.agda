@@ -86,8 +86,9 @@ module ⊆-Reasoning where
   private
     module PreOrder {a} {A : Set a} = PreorderReasoning (⊆-preorder A)
 
-    open PreOrder public
-      hiding (_≈⟨_⟩_; _≈˘⟨_⟩_) renaming (_∼⟨_⟩_ to _⊆⟨_⟩_)
+    open PreOrder
+      hiding (_≈⟨_⟩_; _≈˘⟨_⟩_)
+      renaming (_∼⟨_⟩_ to _⊆⟨_⟩_)
 
   infixr 2 _∼⟨_⟩_
   infix  1 _∈⟨_⟩_
