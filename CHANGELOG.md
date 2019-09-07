@@ -119,6 +119,8 @@ The following new modules have been added to the library:
   Function.Packages
   Function.Structures
 
+  Foreign.Haskell.Coerce
+
   Relation.Binary.Properties.Setoid
   Relation.Binary.Reasoning.Base.Partial
   Relation.Binary.Reasoning.PartialSetoid
