@@ -623,6 +623,10 @@ m+n≤o⇒n≤o (suc m) m+n<o = m+n≤o⇒n≤o m (<⇒≤ m+n<o)
 m+1+n≰m : ∀ m {n} → m + suc n ≰ m
 m+1+n≰m (suc m) le = m+1+n≰m m (≤-pred le)
 
+m<m+n : ∀ m {n} → n > 0 → m < m + n
+m<m+n zero    n>0 = n>0
+m<m+n (suc m) n>0 = s≤s (m<m+n m n>0)
+
 m+n≮n : ∀ m n → m + n ≮ n
 m+n≮n zero    n                   = n≮n n
 m+n≮n (suc m) (suc n) (s≤s m+n<n) = m+n≮n m (suc n) (≤-step m+n<n)
