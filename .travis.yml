@@ -78,6 +78,8 @@ script:
   - agda $RTS_OPTIONS -i . -i src/ --safe EverythingSafeSizedTypes.agda
   # detecting basic compilation errors
   - agda $RTS_OPTIONS -i . -i src/ -c --no-main Everything.agda
+  # compiling & running the examples using the FFI
+  - agda $RTS_OPTIONS -i . -i src/ -c README/Foreign/Haskell.agda && ./Haskell
   # building the docs
   - agda $RTS_OPTIONS -i . -i src/ --html safe.agda
   - agda $RTS_OPTIONS -i . -i src/ --html index.agda
