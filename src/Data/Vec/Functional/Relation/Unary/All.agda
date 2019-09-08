@@ -22,86 +22,85 @@ private
     a b p q ℓ : Level
     A : Set a
     B : Set b
-    P : Pred A p
-    Q : Pred A q
-    m n : ℕ
 
 ------------------------------------------------------------------------
 -- Definition
 
-All : Pred A ℓ → Vector A n → Set ℓ
+All : Pred A ℓ → ∀ {n} → Vector A n → Set ℓ
 All P u = ∀ i → P (u i)
 
 ------------------------------------------------------------------------
 -- Operations
 
-map : P ⊆ Q → All {n = n} P ⊆ All Q
+map : {P : Pred A p} {Q : Pred A q} → P ⊆ Q → ∀ {n} → All P {n = n} ⊆ All Q
 map f ps i = f (ps i)
 
 ------------------------------------------------------------------------
 -- map
 
 map⁺ : {P : Pred A p} {Q : Pred B q} {f : A → B} →
-       (∀ {x} → P x → Q (f x)) →
-       (∀ {xs} → All {n = n} P xs → All Q (VF.map f xs))
+       (∀ {x} → P x → Q (f x)) → ∀ {n} →
+       (∀ {xs} → All P {n = n} xs → All Q (VF.map f xs))
 map⁺ f ps i = f (ps i)
 
 ------------------------------------------------------------------------
 -- replicate
 
-replicate⁺ : ∀ {x} → P x → All P (replicate {n = n} x)
+replicate⁺ : ∀ {P : Pred A p} {x n} → P x → All P (replicate {n = n} x)
 replicate⁺ = const
 
 ------------------------------------------------------------------------
 -- _⊛_
 
-⊛⁺ : ∀ {P : Pred A p} {Q : Pred B q} {fs : Vector (A → B) n} {xs} →
+⊛⁺ : ∀ {P : Pred A p} {Q : Pred B q} {n} {fs : Vector (A → B) n} {xs} →
      All (λ f → ∀ {x} → P x → Q (f x)) fs → All P xs → All Q (fs ⊛ xs)
 ⊛⁺ fs xs i = (fs i) (xs i)
 
 ------------------------------------------------------------------------
 -- head
 
-head⁺ : ∀ (P : Pred A p) {v} → All P v → P (head {n = n} v)
+head⁺ : ∀ (P : Pred A p) {n v} → All P v → P (head {n = n} v)
 head⁺ P ps = ps zero
 
 ------------------------------------------------------------------------
 -- tail
 
-tail⁺ : ∀ (P : Pred A p) {v} → All P v → All P (tail {n = n} v)
+tail⁺ : ∀ (P : Pred A p) {n v} → All P v → All P (tail {n = n} v)
 tail⁺ P ps = ps ∘ suc
 
 ------------------------------------------------------------------------
 -- Properties of predicates preserved by All
 
-all : ∀ {n} → Decidable P → Decidable (All {n = n} P)
-all p? u = all? λ i → p? (u i)
+module _ {P : Pred A p} where
 
-universal : Universal P → Universal (All {n = n} P)
-universal uni u i = uni (u i)
+  all : Decidable P → ∀ {n} → Decidable (All P {n = n})
+  all p? u = all? λ i → p? (u i)
 
-satisfiable : Satisfiable P → Satisfiable (All {n = n} P)
-satisfiable {P = P} (x , px) = replicate x , replicate⁺ {P = P} px
+  universal : Universal P → ∀ {n} → Universal (All P {n = n})
+  universal uni u i = uni (u i)
+
+  satisfiable : Satisfiable P → ∀ {n} → Satisfiable (All P {n = n})
+  satisfiable (x , px) = replicate x , replicate⁺ {P = P} px
 
 ------------------------------------------------------------------------
 -- ++
 
-++⁺ : ∀ (P : Pred A p) {xs ys} →
-      All {n = m} P xs → All {n = n} P ys → All P (xs ++ ys)
-++⁺ {m = zero} P pxs pys = pys
-++⁺ {m = suc m} P pxs pys zero = head⁺ P pxs
-++⁺ {m = suc m} P pxs pys (suc i) = ++⁺ P (tail⁺ P pxs) pys i
+++⁺ : ∀ (P : Pred A p) {m n xs ys} →
+      All P {n = m} xs → All P {n = n} ys → All P (xs ++ ys)
+++⁺ P {m = zero} pxs pys = pys
+++⁺ P {m = suc m} pxs pys zero = head⁺ P pxs
+++⁺ P {m = suc m} pxs pys (suc i) = ++⁺ P (tail⁺ P pxs) pys i
 
-++⁻ˡ : ∀ (P : Pred A p) (xs : Vector A m) {ys : Vector A n} →
+++⁻ˡ : ∀ (P : Pred A p) {m n} (xs : Vector A m) {ys : Vector A n} →
        All P (xs ++ ys) → All P xs
 ++⁻ˡ P _ ps zero = head⁺ P ps
 ++⁻ˡ P _ ps (suc i) = ++⁻ˡ P _ (tail⁺ P ps) i
 
-++⁻ʳ : ∀ (P : Pred A p) (xs : Vector A m) {ys : Vector A n} →
+++⁻ʳ : ∀ (P : Pred A p) {m n} (xs : Vector A m) {ys : Vector A n} →
        All P (xs ++ ys) → All P ys
-++⁻ʳ {m = zero} P _ ps = ps
-++⁻ʳ {m = suc m} P _ ps = ++⁻ʳ P _ (tail⁺ P ps)
+++⁻ʳ P {m = zero} _ ps = ps
+++⁻ʳ P {m = suc m} _ ps = ++⁻ʳ P _ (tail⁺ P ps)
 
-++⁻ : ∀ (P : Pred A p) (xs : Vector A m) {ys : Vector A n} →
+++⁻ : ∀ (P : Pred A p) {m n} (xs : Vector A m) {ys : Vector A n} →
       All P (xs ++ ys) → All P xs × All P ys
 ++⁻ P _ ps = ++⁻ˡ P _ ps , ++⁻ʳ P _ ps

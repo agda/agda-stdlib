@@ -22,30 +22,27 @@ private
     a b p q ℓ : Level
     A : Set a
     B : Set b
-    P : Pred A p
-    Q : Pred A q
-    m n : ℕ
 
 ------------------------------------------------------------------------
 -- Definition
 
-Any : Pred A ℓ → Vector A n → Set ℓ
+Any : Pred A ℓ → ∀ {n} → Vector A n → Set ℓ
 Any P u = ∃ \ i → P (u i)
 
 ------------------------------------------------------------------------
 -- Operations
 
-map : P ⊆ Q → Any {n = n} P ⊆ Any Q
+map : {P : Pred A p} {Q : Pred A q} → P ⊆ Q → ∀ {n} → Any P {n = n} ⊆ Any Q
 map f = Σ.map id f
 
-here : ∀ {x} {v : Vector A n} → P x → Any P (x ∷ v)
+here : ∀ {P : Pred A p} {x n} {v : Vector A n} → P x → Any P (x ∷ v)
 here px = zero , px
 
-there : ∀ {x} {v : Vector A n} → Any P v → Any P (x ∷ v)
+there : ∀ {P : Pred A p} {x n} {v : Vector A n} → Any P v → Any P (x ∷ v)
 there = Σ.map suc id
 
 ------------------------------------------------------------------------
 -- Properties of predicates preserved by Any
 
-any : Decidable P → Decidable (Any {n = n} P)
+any : {P : Pred A p} → Decidable P → ∀ {n} → Decidable (Any P {n = n})
 any p? u = any? \ i → p? (u i)
