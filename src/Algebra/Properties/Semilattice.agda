@@ -18,7 +18,7 @@ open import Data.Product
 open import Relation.Binary
 import Relation.Binary.Construct.NaturalOrder.Left _≈_ _∧_ as LeftNaturalOrder
 open import Relation.Binary.Lattice
-import Relation.Binary.Properties.Poset as R
+import Relation.Binary.Properties.Poset as PosetProperties
 open import Relation.Binary.Reasoning.Setoid setoid
 
 ------------------------------------------------------------------------
@@ -29,6 +29,7 @@ poset : Poset c ℓ ℓ
 poset = LeftNaturalOrder.poset isSemilattice
 
 open Poset poset using (_≤_; isPartialOrder)
+open PosetProperties poset using (_≥_; ≥-isPartialOrder)
 
 ------------------------------------------------------------------------
 -- Every algebraic semilattice can be turned into an order-theoretic one.
@@ -39,9 +40,9 @@ open Poset poset using (_≤_; isPartialOrder)
   ; infimum        = LeftNaturalOrder.infimum isSemilattice
   }
 
-∧-isOrderTheoreticJoinSemilattice : IsJoinSemilattice _≈_ (flip _≤_) _∧_
+∧-isOrderTheoreticJoinSemilattice : IsJoinSemilattice _≈_ _≥_ _∧_
 ∧-isOrderTheoreticJoinSemilattice = record
-  { isPartialOrder = R.invIsPartialOrder poset
+  { isPartialOrder = ≥-isPartialOrder
   ; supremum       = IsMeetSemilattice.infimum
                        ∧-isOrderTheoreticMeetSemilattice
   }

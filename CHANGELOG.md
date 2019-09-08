@@ -155,6 +155,18 @@ attached to all deprecated names to discourage their use.
   +-*-suc ↦ *-suc
   ```
 
+* In `Relation.Binary.Properties.Poset`:
+  ```agda
+  invIsPartialOrder  ↦ ≥-isPartialOrder
+  invPoset           ↦ ≥-poset
+  strictPartialOrder ↦ <-strictPartialOrder
+  ```
+
+* In `Relation.Binary.Properties.DecTotalOrder`
+  ```agda
+  strictTotalOrder = <-strictTotalOrder
+  ```
+
 Other minor additions
 ---------------------
 
@@ -209,30 +221,69 @@ Other minor additions
   magma   : (_∙_ : Op₂ A) → Magma a a
   ```
 
-* Added functions to extract the universe level from a type and a term.
+* Added new functions to `Data.Level`.
   ```agda
   levelOfType : ∀ {a} → Set a → Level
   levelOfTerm : ∀ {a} {A : Set a} → A → Level
   ```
 
-* Added Partial Equivalence Relations to `Relation.Binary.Core`:
+* Added new definition to `Relation.Binary.Core`:
   ```agda
   record IsPartialEquivalence {A : Set a} (_≈_ : Rel A ℓ) : Set (a ⊔ ℓ) where
-  field
+    field
       sym   : Symmetric _≈_
       trans : Transitive _≈_
   ```
 
-* Added Partial Setoids to `Relation.Binary`:
+* Added new definition to `Relation.Binary`:
   ```agda
   record PartialSetoid a ℓ : Set (suc (a ⊔ ℓ)) where
-  field
+    field
       Carrier         : Set a
       _≈_             : Rel Carrier ℓ
       isPartialEquivalence : IsPartialEquivalence _≈_
   ```
 
+* Added new proofs to `Relation.Binary.Construct.NonStrictToStrict`:
+  ```agda
+  <⇒≉   : x < y → x ≉ y
+  ≤∧≉⇒< : x ≤ y → x ≉ y → x < y
+  <⇒≱   : Antisymmetric _≈_ _≤_ → ∀ {x y} → x < y → ¬ (y ≤ x)
+  ≤⇒≯   : Antisymmetric _≈_ _≤_ → ∀ {x y} → x ≤ y → ¬ (y < x)
+  ≰⇒>   : Symmetric _≈_ → (_≈_ ⇒ _≤_) → Total _≤_ → ∀ {x y} → ¬ (x ≤ y) → y < x
+  ≮⇒≥   : Symmetric _≈_ → Decidable _≈_ → _≈_ ⇒ _≤_ → Total _≤_ → ∀ {x y} → ¬ (x < y) → y ≤ x
+  ```
+
+* Each module in the following list now re-export relevant proofs and relations from the previous modules.
+  ```
+  Relation.Binary.Properties.Preorder
+  Relation.Binary.Properties.Poset
+  Relation.Binary.Properties.TotalOrder
+  Relation.Binary.Properties.DecTotalOrder
+  ```
+
+* Added new relations and proofs to `Relation.Binary.Properties.Poset`:
+  ```agda
+  x ≥ y = y ≤ x
+  x < y = ¬ (y ≈ x)
+
+  <⇒≉   : x < y → x ≉ y
+  ≤∧≉⇒< : x ≤ y → x ≉ y → x < y
+  <⇒≱   : x < y → ¬ (y ≤ x)
+  ≤⇒≯   : x ≤ y → ¬ (y < x)
+  ```
+
+* Added new proof to `Relation.Binary.Properties.TotalOrder`:
+  ```agda
+  ≰⇒> : ¬ (x ≤ y) → y < x
+  ```
+
+* Added new proof to `Relation.Binary.Properties.DecTotalOrder`:
+  ```agda
+  ≮⇒≥ : ¬ (x < y) → y ≤ x
+  ```
+
 * Re-exported the maximum function for sizes in `Size`
   ```agda
-  _⊔ˢ_   : Size → Size → Size
+  _⊔ˢ_ : Size → Size → Size
   ```
