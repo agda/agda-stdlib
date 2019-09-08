@@ -29,10 +29,11 @@ import Relation.Binary.Reasoning.Base.Triple as InequalityReasoning
 open import Relation.Nullary using (¬_; yes; no)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Negation using (contradiction)
+
 open import Algebra.FunctionProperties {A = Bin} _≡_
 open import Algebra.Structures {A = Bin} _≡_
 import Algebra.Properties.CommutativeSemigroup ℕₚ.+-semigroup ℕₚ.+-comm
-  as ℕ-commutativeSemigroup
+  as ℕ-+-commutativeSemigroup
 import Relation.Binary.Construct.StrictToNonStrict _≡_ _<_
   as StrictToNonStrict
 open +-*-Solver
@@ -840,7 +841,7 @@ toℕ-homo-* x y =  aux x y (size x ℕ.+ size y) ℕₚ.≤-refl
     open ≡-Reasoning;   m = toℕ x;  n = toℕ y;  1+m = ℕ.suc m;  2[1+m] = 2 ℕ.* (ℕ.suc m)
 
     eq : size x ℕ.+ (ℕ.suc (size y)) ≡ size y ℕ.+ (ℕ.suc (size x))
-    eq = ℕ-commutativeSemigroup.x∙yz≈z∙yx (size x) 1 _
+    eq = ℕ-+-commutativeSemigroup.x∙yz≈z∙yx (size x) 1 _
 
     |y|+1+|x|≤cnt =  subst (ℕ._≤ cnt) eq |x|+1+|y|≤cnt
 
@@ -883,7 +884,7 @@ toℕ-homo-* x y =  aux x y (size x ℕ.+ size y) ℕₚ.≤-refl
     1+2x = 1+[2 x ];   [1+2x]' = toℕ 1+2x
 
     eq : size x ℕ.+ (ℕ.suc (size y)) ≡ size y ℕ.+ (ℕ.suc (size x))
-    eq = ℕ-commutativeSemigroup.x∙yz≈z∙yx (size x) 1 _
+    eq = ℕ-+-commutativeSemigroup.x∙yz≈z∙yx (size x) 1 _
 
     |y|+1+|x|≤cnt = subst (ℕ._≤ cnt) eq |x|+1+|y|≤cnt
 
