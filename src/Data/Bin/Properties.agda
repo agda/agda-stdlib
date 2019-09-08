@@ -137,7 +137,7 @@ fromℕ-injective {x} {y} f[x]≡f[y] = begin
   toℕ (fromℕ y) ≡⟨ toℕ-fromℕ y ⟩
   y             ∎
   where open ≡-Reasoning
-  
+
 fromℕ-toℕ :  fromℕ ∘ toℕ ≗ id
 fromℕ-toℕ =  toℕ-injective ∘ toℕ-fromℕ ∘ toℕ
 
@@ -465,7 +465,7 @@ x ≤? y with <-cmp x y
 ≤-decTotalOrder = record
   { isDecTotalOrder = ≤-isDecTotalOrder
   }
-  
+
 ------------------------------------------------------------------------------
 -- Equational reasoning for _≤_ and _<_
 
@@ -1320,7 +1320,7 @@ pred-mono-≤ {x} {y} x≤y =  begin
   pred (fromℕ n)     ≡⟨ cong pred (fromℕ-toℕ y) ⟩
   pred y             ∎
   where
-  open ≤-Reasoning;  m = toℕ x;  n = toℕ y 
+  open ≤-Reasoning;  m = toℕ x;  n = toℕ y
 
 pred[x]<x :  ∀ {x} → x ≢ zero → pred x < x
 pred[x]<x {x} x≢0 =  begin-strict

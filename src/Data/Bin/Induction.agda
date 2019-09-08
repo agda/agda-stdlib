@@ -22,7 +22,7 @@ open import Relation.Nullary.Negation using (contradiction)
 -- _<_ is wellFounded
 
 -- Derived via wellfoundedness of _<_ on ℕ
-  
+
 <-wellFounded : WellFounded _<_
 <-wellFounded x = Subrelation.accessible <⇒<ℕ toℕ[x]-acc
   where
