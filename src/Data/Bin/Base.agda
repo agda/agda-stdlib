@@ -10,14 +10,55 @@ module Data.Bin.Base where
 
 open import Algebra.FunctionProperties using (Op₂)
 open import Data.Nat.Base as ℕ using (ℕ)
+open import Data.Sum using (_⊎_)
+open import Function using (_on_)
+open import Level using (0ℓ)
+open import Relation.Binary using (Rel)
+open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Relation.Nullary using (¬_)
 
 ------------------------------------------------------------------------
 -- Definition
 
 data Bin : Set where
   zero   : Bin
-  2[1+_] : Bin → Bin    -- n → 2*(1+n)  arbitrary nonzero even
-  1+[2_] : Bin → Bin    -- n → 1 + 2*n  arbitrary odd
+  2[1+_] : Bin → Bin    -- n → 2*(1+n) = nonzero even numbers
+  1+[2_] : Bin → Bin    -- n → 1 + 2*n = odd numbers
+
+------------------------------------------------------------------------
+-- Ordering relations
+
+infix 4 _<_ _>_ _≤_ _≮_ _≯_ _≰_ _≱_
+
+data _<_ : Rel Bin 0ℓ  where
+  0<even    : ∀ {x} → zero < 2[1+ x ]
+  0<odd     : ∀ {x} → zero < 1+[2 x ]
+  even<even : ∀ {x y} → x < y → 2[1+ x ] < 2[1+ y ]
+  even<odd  : ∀ {x y} → x < y → 2[1+ x ] < 1+[2 y ]
+  odd<even  : ∀ {x y} → x < y ⊎ x ≡ y → 1+[2 x ] < 2[1+ y ]
+  odd<odd   : ∀ {x y} → x < y → 1+[2 x ] < 1+[2 y ]
+  -- In these constructors "even" stands for nonzero even.
+
+_>_ : Rel Bin 0ℓ
+x > y = y < x
+
+_≤_ : Rel Bin 0ℓ
+x ≤ y = x < y ⊎ x ≡ y
+
+_≥_ : Rel Bin 0ℓ
+x ≥ y = y ≤ x
+
+_≮_ : Rel Bin 0ℓ
+x ≮ y = ¬ (x < y)
+
+_≯_ : Rel Bin 0ℓ
+x ≯ y = ¬ (x > y)
+
+_≰_ : Rel Bin 0ℓ
+x ≰ y = ¬ (x ≤ y)
+
+_≱_ : Rel Bin 0ℓ
+x ≱ y = ¬ (x ≥ y)
 
 ------------------------------------------------------------------------
 -- Basic operations
@@ -46,7 +87,7 @@ infixl 7 _*_
 _+_ : Op₂ Bin
 zero     + y        =  y
 x        + zero     =  x
-2[1+ x ] + 2[1+ y ] =  2[1+ (suc (x + y)) ]
+2[1+ x ] + 2[1+ y ] =  2[1+ suc (x + y) ]
 2[1+ x ] + 1+[2 y ] =  suc 2[1+ (x + y) ]
 1+[2 x ] + 2[1+ y ] =  suc 2[1+ (x + y) ]
 1+[2 x ] + 1+[2 y ] =  suc 1+[2 (x + y) ]
@@ -54,10 +95,10 @@ x        + zero     =  x
 _*_ : Op₂ Bin
 zero     * _        =  zero
 _        * zero     =  zero
-2[1+ x ] * 2[1+ y ] =  double 2[1+ (x + (y + x * y)) ]
-2[1+ x ] * 1+[2 y ] =  2[1+ (x + y * 2[1+ x ]) ]
-1+[2 x ] * 2[1+ y ] =  2[1+ (y + x * 2[1+ y ]) ]
-1+[2 x ] * 1+[2 y ] =  1+[2 (x + y * 1+[2 x ]) ]
+2[1+ x ] * 2[1+ y ] =  double 2[1+ x + (y + x * y) ]
+2[1+ x ] * 1+[2 y ] =  2[1+ x + y * 2[1+ x ] ]
+1+[2 x ] * 2[1+ y ] =  2[1+ y + x * 2[1+ y ] ]
+1+[2 x ] * 1+[2 y ] =  1+[2 x + y * 1+[2 x ] ]
 
 ------------------------------------------------------------------------
 -- Conversion between Bin and ℕ
@@ -71,6 +112,13 @@ toℕ 1+[2 x ] =  ℕ.suc (2 ℕ.* (toℕ x))
 fromℕ : ℕ → Bin
 fromℕ 0         = zero
 fromℕ (ℕ.suc n) = suc (fromℕ n)
+
+-- An alternative ordering lifted from ℕ
+
+infix 4 _<ℕ_
+
+_<ℕ_ :  Rel Bin 0ℓ
+_<ℕ_ =  ℕ._<_ on toℕ
 
 ------------------------------------------------------------------------
 -- Other functions

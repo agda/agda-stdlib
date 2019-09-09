@@ -106,6 +106,8 @@ The following new modules have been added to the library:
 
   Data.Bin
   Data.Bin.Base
+  Data.Bin.Induction
+  Data.Bin.Ordering
   Data.Bin.Properties
 
   Data.List.Kleene
@@ -153,6 +155,7 @@ attached to all deprecated names to discourage their use.
 * In `Data.Nat.Properties`:
   ```agda
   +-*-suc ↦ *-suc
+
   ```
 
 * In `Relation.Binary.Properties.Poset`:
@@ -205,9 +208,12 @@ Other minor additions
 
 * Added new proofs to `Data.Nat.Properties`:
   ```agda
-  even≢odd : ∀ m n → 2 * m ≢ suc (2 * n)
-  0≢1+n    : ∀ {n} → 0 ≢ suc n
-  n<1+n    : ∀ {n} → n < suc n
+  even≢odd     : ∀ m n → 2 * m ≢ suc (2 * n)
+  0≢1+n        : 0 ≢ suc n
+  n<1+n        : n < suc n
+  0<1+n        : 0 < suc n
+  m<m+n        : n > 0 → m < m + n
+  m≤n⇒m<n∨m≡n  : m ≤ n → m < n ⊎ m ≡ n
 
   +-rawMagma     : RawMagma 0ℓ 0ℓ
   *-rawMagma     : RawMagma 0ℓ 0ℓ
