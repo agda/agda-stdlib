@@ -11,7 +11,7 @@ module Data.Vec.Functional.Relation.Binary.Pointwise where
 open import Data.Fin
 open import Data.Fin.Properties
 open import Data.Nat
-open import Data.Product using (_×_; _,_)
+open import Data.Product using (_×_; _,_; proj₁; proj₂)
 open import Data.Vec.Functional as VF hiding (map)
 open import Function
 open import Level using (Level)
@@ -19,11 +19,13 @@ open import Relation.Binary
 
 private
   variable
-    a a′ b b′ r s ℓ : Level
+    a a′ a″ b b′ b″ r s t ℓ : Level
     A : Set a
     B : Set b
     A′ : Set a′
     B′ : Set b′
+    A″ : Set a″
+    B″ : Set b″
 
 ------------------------------------------------------------------------
 -- Definition
@@ -120,3 +122,28 @@ replicate⁺ = const
      Pointwise (λ f g → ∀ {x y} → R x y → S (f x) (g y)) fs gs →
      Pointwise R xs ys → Pointwise S (fs ⊛ xs) (gs ⊛ ys)
 ⊛⁺ fs xs i = (fs i) (xs i)
+
+------------------------------------------------------------------------
+-- zipWith
+
+zipWith⁺ : ∀ {R : REL A B r} {S : REL A′ B′ s} {T : REL A″ B″ t}
+             {n xs ys xs′ ys′ f f′} →
+           (∀ {x y x′ y′} → R x y → S x′ y′ → T (f x x′) (f′ y y′)) →
+           Pointwise R xs ys → Pointwise S xs′ ys′ →
+           Pointwise T (zipWith f xs xs′) (zipWith f′ {n = n} ys ys′)
+zipWith⁺ t rs ss i = t (rs i) (ss i)
+
+------------------------------------------------------------------------
+-- zip
+
+zip⁺ : ∀ {R : REL A B r} {S : REL A′ B′ s} {n xs ys xs′ ys′} →
+       Pointwise R xs ys → Pointwise S xs′ ys′ →
+       Pointwise (λ xx yy → R (proj₁ xx) (proj₁ yy) × S (proj₂ xx) (proj₂ yy))
+                 (zip xs xs′) (zip {n = n} ys ys′)
+zip⁺ xs ys i = xs i , ys i
+
+zip⁻ : ∀ {R : REL A B r} {S : REL A′ B′ s} {n xs ys xs′ ys′} →
+       Pointwise (λ xx yy → R (proj₁ xx) (proj₁ yy) × S (proj₂ xx) (proj₂ yy))
+                 (zip xs xs′) (zip {n = n} ys ys′) →
+       Pointwise R xs ys × Pointwise S xs′ ys′
+zip⁻ rss = proj₁ ∘ rss , proj₂ ∘ rss

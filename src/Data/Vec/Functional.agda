@@ -15,13 +15,15 @@ open import Data.Vec as V using (Vec)
 open import Function
 open import Level using (Level)
 
-infixr 5 _∷_
+infixr 5 _∷_ _++_
+infixl 4 _⊛_
 
 private
   variable
-    a b : Level
+    a b c : Level
     A : Set a
     B : Set b
+    C : Set c
 
 Vector : Set a → ℕ → Set a
 Vector A n = Fin n → A
@@ -72,3 +74,9 @@ replicate = const
 
 _⊛_ : ∀ {n} → Vector (A → B) n → Vector A n → Vector B n
 _⊛_ = _ˢ_
+
+zipWith : (A → B → C) → ∀ {n} → Vector A n → Vector B n → Vector C n
+zipWith f xs ys = replicate f ⊛ xs ⊛ ys
+
+zip : ∀ {n} → Vector A n → Vector B n → Vector (A × B) n
+zip = zipWith _,_

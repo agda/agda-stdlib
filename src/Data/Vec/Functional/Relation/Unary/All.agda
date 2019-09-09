@@ -11,7 +11,7 @@ module Data.Vec.Functional.Relation.Unary.All where
 open import Data.Fin
 open import Data.Fin.Properties
 open import Data.Nat
-open import Data.Product using (_×_; _,_)
+open import Data.Product as Σ using (_×_; _,_; proj₁; proj₂; uncurry)
 open import Data.Vec.Functional as VF hiding (map)
 open import Function
 open import Level using (Level)
@@ -19,9 +19,10 @@ open import Relation.Unary
 
 private
   variable
-    a b p q ℓ : Level
+    a b c p q r ℓ : Level
     A : Set a
     B : Set b
+    C : Set c
 
 ------------------------------------------------------------------------
 -- Definition
@@ -55,6 +56,25 @@ replicate⁺ = const
 ⊛⁺ : ∀ {P : Pred A p} {Q : Pred B q} {n} {fs : Vector (A → B) n} {xs} →
      All (λ f → ∀ {x} → P x → Q (f x)) fs → All P xs → All Q (fs ⊛ xs)
 ⊛⁺ fs xs i = (fs i) (xs i)
+
+------------------------------------------------------------------------
+-- zipWith
+
+zipWith⁺ : ∀ {P : Pred A p} {Q : Pred B q} {R : Pred C r} {n xs ys f} →
+           (∀ {x y} → P x → Q y → R (f x y)) →
+           All P xs → All Q ys → All R (zipWith f {n = n} xs ys)
+zipWith⁺ f xs ys i = f (xs i) (ys i)
+
+------------------------------------------------------------------------
+-- zip
+
+zip⁺ : ∀ {P : Pred A p} {Q : Pred B q} {n xs ys} →
+       All P xs → All Q ys → All (uncurry _×_ ∘ Σ.map P Q) (zip {n = n} xs ys)
+zip⁺ xs ys i = xs i , ys i
+
+zip⁻ : ∀ {P : Pred A p} {Q : Pred B q} {n xs ys} →
+       All (uncurry _×_ ∘ Σ.map P Q) (zip {n = n} xs ys) → All P xs × All Q ys
+zip⁻ xys = proj₁ ∘ xys , proj₂ ∘ xys
 
 ------------------------------------------------------------------------
 -- head
