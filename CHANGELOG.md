@@ -79,10 +79,10 @@ we would encourage to the new hierarchy in the medium to long term.
 
 #### Re-implementation of `Data.Bin`
 
-* The current implementation of naturals represented natively in Agda in `Data.Bin` 
-  has proven hard to work with. Therefore a new, simpler implementation which avoids 
+* The current implementation of naturals represented natively in Agda in `Data.Bin`
+  has proven hard to work with. Therefore a new, simpler implementation which avoids
   using `List` has been added as `Data.Nat.Binary`. This representation was inspired
-  by the letter by Martin Escardo to the Agda mailing list. The original code resides at 
+  by the letter by Martin Escardo to the Agda mailing list. The original code resides at
   http://www.cs.bham.ac.uk/~mhe/agda-new/BinaryNaturals.html
 
 * The existing modules `Data.Bin` and `Data.Bin.Properties` still exist but have been
