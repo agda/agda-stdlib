@@ -198,8 +198,9 @@ Other minor additions
   0≢1+n        : 0 ≢ suc n
   n<1+n        : n < suc n
   0<1+n        : 0 < suc n
-  m≤n⇒m<n∨m≡n : m ≤ n → m < n ⊎ m ≡ n
-
+  m<m+n        : n > 0 → m < m + n
+  m≤n⇒m<n∨m≡n  : m ≤ n → m < n ⊎ m ≡ n
+  
   +-rawMagma     : RawMagma 0ℓ 0ℓ
   *-rawMagma     : RawMagma 0ℓ 0ℓ
   +-0-rawMonoid  : RawMonoid 0ℓ 0ℓ
