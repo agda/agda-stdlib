@@ -29,8 +29,9 @@ private
 -- Definition
 
 data Maybe (A : Set a) : Set a where
-  just    : (x : A) → Maybe A
   nothing : Maybe A
+  just    : (x : A) → Maybe A
+
 
 ------------------------------------------------------------------------
 -- Some operations
