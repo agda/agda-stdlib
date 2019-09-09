@@ -90,6 +90,11 @@ we would encourage to the new hierarchy in the medium to long term.
    e-mail list. The referred code (of 2016) resides on
    http://www.cs.bham.ac.uk/~mhe/agda-new/BinaryNaturals.html
 
+#### Other
+
+* The proofs `isPreorder` and `preorder` have been moved from the `Setoid`
+  record to the module `Relation.Binary.Properties.Setoid`.
+
 New modules
 -----------
 The following new modules have been added to the library:

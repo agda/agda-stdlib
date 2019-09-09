@@ -62,7 +62,7 @@ mkℚ n₁ d₁ _ ≟ mkℚ n₂ d₂ _ with n₁ ℤ.≟ n₂ | d₁ ℕ.≟ d�
 ≡⇒≃ refl = refl
 
 ≃⇒≡ : _≃_ ⇒ _≡_
-≃⇒≡ {i = mkℚ n₁ d₁ c₁} {j = mkℚ n₂ d₂ c₂} eq = helper
+≃⇒≡ {x = mkℚ n₁ d₁ c₁} {y = mkℚ n₂ d₂ c₂} eq = helper
   where
   open ≡-Reasoning
 

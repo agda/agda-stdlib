@@ -15,6 +15,7 @@ open import Data.Empty.Irrelevant using (⊥-elim)
 open import Function.Core using (_∘_; _$_; flip)
 open import Level using (Level)
 open import Relation.Binary.Core
+open import Relation.Binary.Definitions
 open import Relation.Nullary using (yes; no; recompute)
 open import Relation.Unary using (∁)
 
