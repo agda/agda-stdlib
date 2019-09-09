@@ -27,13 +27,13 @@ private
 -- Definition
 
 Any : Pred A ℓ → ∀ {n} → Vector A n → Set ℓ
-Any P u = ∃ \ i → P (u i)
+Any P xs = ∃ \ i → P (xs i)
 
 ------------------------------------------------------------------------
 -- Operations
 
 map : {P : Pred A p} {Q : Pred A q} → P ⊆ Q → ∀ {n} → Any P {n = n} ⊆ Any Q
-map f = Σ.map id f
+map pq = Σ.map id pq
 
 here : ∀ {P : Pred A p} {x n} {v : Vector A n} → P x → Any P (x ∷ v)
 here px = zero , px
@@ -45,4 +45,4 @@ there = Σ.map suc id
 -- Properties of predicates preserved by Any
 
 any : {P : Pred A p} → Decidable P → ∀ {n} → Decidable (Any P {n = n})
-any p? u = any? \ i → p? (u i)
+any p? xs = any? \ i → p? (xs i)

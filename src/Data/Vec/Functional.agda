@@ -29,39 +29,39 @@ Vector : Set a → ℕ → Set a
 Vector A n = Fin n → A
 
 map : (A → B) → ∀ {n} → (Vector A n → Vector B n)
-map f v = f ∘ v
+map f xs = f ∘ xs
 
 rearrange : ∀ {m n} → (Fin m → Fin n) → (Vector A n → Vector A m)
-rearrange r v = v ∘ r
+rearrange r xs = xs ∘ r
 
 [] : Vector A zero
 [] ()
 
 _∷_ : ∀ {n} → A → Vector A n → Vector A (suc n)
-(x ∷ v) zero = x
-(x ∷ v) (suc i) = v i
+(x ∷ xs) zero = x
+(x ∷ xs) (suc i) = xs i
 
 head : ∀ {n} → Vector A (suc n) → A
-head v = v zero
+head xs = xs zero
 
 tail : ∀ {n} → Vector A (suc n) → Vector A n
-tail v = v ∘ suc
+tail xs = xs ∘ suc
 
 uncons : ∀ {n} → Vector A (suc n) → A × Vector A n
-uncons v = head v , tail v
+uncons xs = head xs , tail xs
 
 _++_ : ∀ {m n} → Vector A m → Vector A n → Vector A (m + n)
-_++_ {m = zero} u v i = v i
-_++_ {m = suc m} u v zero = u zero
-_++_ {m = suc m} u v (suc i) = (tail u ++ v) i
+_++_ {m = zero} xs ys i = ys i
+_++_ {m = suc m} xs ys zero = xs zero
+_++_ {m = suc m} xs ys (suc i) = (tail xs ++ ys) i
 
 foldr : (A → B → B) → B → ∀ {n} → Vector A n → B
-foldr f z {n = zero} v = z
-foldr f z {n = suc n} v = f (head v) (foldr f z (tail v))
+foldr f z {n = zero} xs = z
+foldr f z {n = suc n} xs = f (head xs) (foldr f z (tail xs))
 
 foldl : (B → A → B) → B → ∀ {n} → Vector A n → B
-foldl f z {n = zero} v = z
-foldl f z {n = suc n} v = foldl f (f z (head v)) (tail v)
+foldl f z {n = zero} xs = z
+foldl f z {n = suc n} xs = foldl f (f z (head xs)) (tail xs)
 
 toVec : ∀ {n} → Vector A n → Vec A n
 toVec = V.tabulate

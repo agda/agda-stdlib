@@ -31,7 +31,7 @@ private
 -- Definition
 
 Pointwise : REL A B ℓ → ∀ {n} → Vector A n → Vector B n → Set ℓ
-Pointwise R u v = ∀ i → R (u i) (v i)
+Pointwise R xs ys = ∀ i → R (xs i) (ys i)
 
 ------------------------------------------------------------------------
 -- Operations
@@ -49,13 +49,13 @@ module _ {R : Rel A ℓ} where
   refl r i = r
 
   sym : Symmetric R → ∀ {n} → Symmetric (Pointwise R {n = n})
-  sym s uv i = s (uv i)
+  sym s xsys i = s (xsys i)
 
   trans : Transitive R → ∀ {n} → Transitive (Pointwise R {n = n})
-  trans t uv vw i = t (uv i) (vw i)
+  trans t xsys yszs i = t (xsys i) (yszs i)
 
   decidable : Decidable R → ∀ {n} → Decidable (Pointwise R {n = n})
-  decidable r? u v = all? λ i → r? (u i) (v i)
+  decidable r? xs ys = all? λ i → r? (xs i) (ys i)
 
 ------------------------------------------------------------------------
 -- map
@@ -69,15 +69,15 @@ map⁺ f rs i = f (rs i)
 ------------------------------------------------------------------------
 -- head
 
-head⁺ : ∀ (R : REL A B r) {n u v} →
-        Pointwise R u v → R (head u) (head {n = n} v)
+head⁺ : ∀ (R : REL A B r) {n xs ys} →
+        Pointwise R xs ys → R (head xs) (head {n = n} ys)
 head⁺ R rs = rs zero
 
 ------------------------------------------------------------------------
 -- tail
 
-tail⁺ : ∀ (R : REL A B r) {n u v} →
-        Pointwise R u v → Pointwise R (tail u) (tail {n = n} v)
+tail⁺ : ∀ (R : REL A B r) {n xs ys} →
+        Pointwise R xs ys → Pointwise R (tail xs) (tail {n = n} ys)
 tail⁺ R rs = rs ∘ suc
 
 ------------------------------------------------------------------------
@@ -121,7 +121,7 @@ replicate⁺ = const
        {fs : Vector (A → A′) n} {gs : Vector (B → B′) n} {xs ys} →
      Pointwise (λ f g → ∀ {x y} → R x y → S (f x) (g y)) fs gs →
      Pointwise R xs ys → Pointwise S (fs ⊛ xs) (gs ⊛ ys)
-⊛⁺ fs xs i = (fs i) (xs i)
+⊛⁺ rss rs i = (rss i) (rs i)
 
 ------------------------------------------------------------------------
 -- zipWith
@@ -140,7 +140,7 @@ zip⁺ : ∀ {R : REL A B r} {S : REL A′ B′ s} {n xs ys xs′ ys′} →
        Pointwise R xs ys → Pointwise S xs′ ys′ →
        Pointwise (λ xx yy → R (proj₁ xx) (proj₁ yy) × S (proj₂ xx) (proj₂ yy))
                  (zip xs xs′) (zip {n = n} ys ys′)
-zip⁺ xs ys i = xs i , ys i
+zip⁺ rs ss i = rs i , ss i
 
 zip⁻ : ∀ {R : REL A B r} {S : REL A′ B′ s} {n xs ys xs′ ys′} →
        Pointwise (λ xx yy → R (proj₁ xx) (proj₁ yy) × S (proj₂ xx) (proj₂ yy))

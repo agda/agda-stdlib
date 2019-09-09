@@ -28,13 +28,13 @@ private
 -- Definition
 
 All : Pred A ℓ → ∀ {n} → Vector A n → Set ℓ
-All P u = ∀ i → P (u i)
+All P xs = ∀ i → P (xs i)
 
 ------------------------------------------------------------------------
 -- Operations
 
 map : {P : Pred A p} {Q : Pred A q} → P ⊆ Q → ∀ {n} → All P {n = n} ⊆ All Q
-map f ps i = f (ps i)
+map pq ps i = pq (ps i)
 
 ------------------------------------------------------------------------
 -- map
@@ -42,7 +42,7 @@ map f ps i = f (ps i)
 map⁺ : {P : Pred A p} {Q : Pred B q} {f : A → B} →
        (∀ {x} → P x → Q (f x)) → ∀ {n} →
        (∀ {xs} → All P {n = n} xs → All Q (VF.map f xs))
-map⁺ f ps i = f (ps i)
+map⁺ pq ps i = pq (ps i)
 
 ------------------------------------------------------------------------
 -- replicate
@@ -55,7 +55,7 @@ replicate⁺ = const
 
 ⊛⁺ : ∀ {P : Pred A p} {Q : Pred B q} {n} {fs : Vector (A → B) n} {xs} →
      All (λ f → ∀ {x} → P x → Q (f x)) fs → All P xs → All Q (fs ⊛ xs)
-⊛⁺ fs xs i = (fs i) (xs i)
+⊛⁺ pqs ps i = (pqs i) (ps i)
 
 ------------------------------------------------------------------------
 -- zipWith
@@ -63,18 +63,18 @@ replicate⁺ = const
 zipWith⁺ : ∀ {P : Pred A p} {Q : Pred B q} {R : Pred C r} {n xs ys f} →
            (∀ {x y} → P x → Q y → R (f x y)) →
            All P xs → All Q ys → All R (zipWith f {n = n} xs ys)
-zipWith⁺ f xs ys i = f (xs i) (ys i)
+zipWith⁺ pqr ps qs i = pqr (ps i) (qs i)
 
 ------------------------------------------------------------------------
 -- zip
 
 zip⁺ : ∀ {P : Pred A p} {Q : Pred B q} {n xs ys} →
        All P xs → All Q ys → All (uncurry _×_ ∘ Σ.map P Q) (zip {n = n} xs ys)
-zip⁺ xs ys i = xs i , ys i
+zip⁺ ps qs i = ps i , qs i
 
 zip⁻ : ∀ {P : Pred A p} {Q : Pred B q} {n xs ys} →
        All (uncurry _×_ ∘ Σ.map P Q) (zip {n = n} xs ys) → All P xs × All Q ys
-zip⁻ xys = proj₁ ∘ xys , proj₂ ∘ xys
+zip⁻ pqs = proj₁ ∘ pqs , proj₂ ∘ pqs
 
 ------------------------------------------------------------------------
 -- head
@@ -94,10 +94,10 @@ tail⁺ P ps = ps ∘ suc
 module _ {P : Pred A p} where
 
   all : Decidable P → ∀ {n} → Decidable (All P {n = n})
-  all p? u = all? λ i → p? (u i)
+  all p? xs = all? λ i → p? (xs i)
 
   universal : Universal P → ∀ {n} → Universal (All P {n = n})
-  universal uni u i = uni (u i)
+  universal uni xs i = uni (xs i)
 
   satisfiable : Satisfiable P → ∀ {n} → Satisfiable (All P {n = n})
   satisfiable (x , px) = replicate x , replicate⁺ {P = P} px
