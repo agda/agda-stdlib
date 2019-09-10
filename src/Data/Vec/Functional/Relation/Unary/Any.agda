@@ -27,7 +27,7 @@ private
 -- Definition
 
 Any : Pred A ℓ → ∀ {n} → Vector A n → Set ℓ
-Any P xs = ∃ \ i → P (xs i)
+Any P xs = ∃ λ i → P (xs i)
 
 ------------------------------------------------------------------------
 -- Operations
@@ -45,4 +45,4 @@ there = Σ.map suc id
 -- Properties of predicates preserved by Any
 
 any : {P : Pred A p} → Decidable P → ∀ {n} → Decidable (Any P {n = n})
-any p? xs = any? \ i → p? (xs i)
+any p? xs = any? λ i → p? (xs i)
