@@ -20,7 +20,7 @@ Other non-backwards compatible changes
 
 #### New function hierarchy
 
-The main problems with the current way various types of functions are
+* The main problems with the current way various types of functions are
 handled are:
   1. The raw functions were wrapped in the  equality-preserving
          type `_⟶_` from `Function.Equality`. As the rest of the library
@@ -40,7 +40,7 @@ handled are:
      possible to specify that for example an operation is commutative
      without providing all the proofs associated with the equality relation.
 
-To address these problems a new function hierarchy similar to the ones in
+* To address these problems a new function hierarchy similar to the ones in
 `Relation.Binary` and `Algebra` has been created. The new modules are as
 follows:
   - `Function.Definitions` containing definitions like `Injective`,
@@ -55,13 +55,19 @@ follows:
   - The old file `Function` has been moved to `Function.Core` and `Function`
     now exports the whole of this hierarchy, just like `Relation.Binary`.
 
-These changes are nearly entirely backwards compatible. The only problem will occur
+* These changes are nearly entirely backwards compatible. The only problem will occur
 is when code imports both `Function` and e.g. `Function.Injection` in which case the
 old and new definitions of `Injection` will clash. In the short term this can
 immediately be fixed by importing `Function.Core` instead of `Function`. However
 we would encourage to the new hierarchy in the medium to long term.
 
-The old modules will probably be deprecated (NOT COMPLETED AS OF YET)
+* The list of new modules is as follows:
+  ```agda
+  Function.Construct.Identity
+  Function.Construct.Composition
+  ```
+
+* The old modules will probably be deprecated (NOT COMPLETED AS OF YET)
   ```agda
   Function.Equivalence
   Function.Equality
@@ -96,9 +102,17 @@ The following new modules have been added to the library:
   Algebra.Properties.Semigroup
   Algebra.Properties.CommutativeSemigroup
 
+  Data.AVL.Map
+
   Data.Bin
   Data.Bin.Base
+  Data.Bin.Induction
+  Data.Bin.Ordering
   Data.Bin.Properties
+
+  Data.List.Kleene
+  Data.List.Kleene.AsList
+  Data.List.Kleene.Base
 
   Data.Rational.Unnormalised
   Data.Rational.Unnormalised.Properties
@@ -106,6 +120,8 @@ The following new modules have been added to the library:
   Function.Definitions
   Function.Packages
   Function.Structures
+
+  Foreign.Haskell.Coerce
 
   Relation.Binary.Properties.Setoid
   Relation.Binary.Reasoning.Base.Partial
@@ -139,6 +155,19 @@ attached to all deprecated names to discourage their use.
 * In `Data.Nat.Properties`:
   ```agda
   +-*-suc ↦ *-suc
+
+  ```
+
+* In `Relation.Binary.Properties.Poset`:
+  ```agda
+  invIsPartialOrder  ↦ ≥-isPartialOrder
+  invPoset           ↦ ≥-poset
+  strictPartialOrder ↦ <-strictPartialOrder
+  ```
+
+* In `Relation.Binary.Properties.DecTotalOrder`
+  ```agda
+  strictTotalOrder = <-strictTotalOrder
   ```
 
 Other minor additions
@@ -185,8 +214,10 @@ Other minor additions
 
   0<1+n          : 0 < suc n
   n<1+n          : n < suc n
+  m<m+n          : n > 0 → m < m + n
   m<n⇒n≢0        : m < n → n ≢ 0
   m<n⇒m≤1+n      : m < n → m ≤ suc n
+  m≤n⇒m<n∨m≡n    : m ≤ n → m < n ⊎ m ≡ n
   ∀[m≤n:m≢o]⇒o<n : (∀ {m} → m ≤ n → m ≢ o) → n < o
   ∀[m<n:m≢o]⇒o≤n : (∀ {m} → m < n → m ≢ o) → n ≤ o
 
@@ -217,30 +248,69 @@ Other minor additions
   magma   : (_∙_ : Op₂ A) → Magma a a
   ```
 
-* Added functions to extract the universe level from a type and a term.
+* Added new functions to `Data.Level`.
   ```agda
   levelOfType : ∀ {a} → Set a → Level
   levelOfTerm : ∀ {a} {A : Set a} → A → Level
   ```
 
-* Added Partial Equivalence Relations to `Relation.Binary.Core`:
+* Added new definition to `Relation.Binary.Core`:
   ```agda
   record IsPartialEquivalence {A : Set a} (_≈_ : Rel A ℓ) : Set (a ⊔ ℓ) where
-  field
+    field
       sym   : Symmetric _≈_
       trans : Transitive _≈_
   ```
 
-* Added Partial Setoids to `Relation.Binary`:
+* Added new definition to `Relation.Binary`:
   ```agda
   record PartialSetoid a ℓ : Set (suc (a ⊔ ℓ)) where
-  field
+    field
       Carrier         : Set a
       _≈_             : Rel Carrier ℓ
       isPartialEquivalence : IsPartialEquivalence _≈_
   ```
 
+* Added new proofs to `Relation.Binary.Construct.NonStrictToStrict`:
+  ```agda
+  <⇒≉   : x < y → x ≉ y
+  ≤∧≉⇒< : x ≤ y → x ≉ y → x < y
+  <⇒≱   : Antisymmetric _≈_ _≤_ → ∀ {x y} → x < y → ¬ (y ≤ x)
+  ≤⇒≯   : Antisymmetric _≈_ _≤_ → ∀ {x y} → x ≤ y → ¬ (y < x)
+  ≰⇒>   : Symmetric _≈_ → (_≈_ ⇒ _≤_) → Total _≤_ → ∀ {x y} → ¬ (x ≤ y) → y < x
+  ≮⇒≥   : Symmetric _≈_ → Decidable _≈_ → _≈_ ⇒ _≤_ → Total _≤_ → ∀ {x y} → ¬ (x < y) → y ≤ x
+  ```
+
+* Each module in the following list now re-export relevant proofs and relations from the previous modules.
+  ```
+  Relation.Binary.Properties.Preorder
+  Relation.Binary.Properties.Poset
+  Relation.Binary.Properties.TotalOrder
+  Relation.Binary.Properties.DecTotalOrder
+  ```
+
+* Added new relations and proofs to `Relation.Binary.Properties.Poset`:
+  ```agda
+  x ≥ y = y ≤ x
+  x < y = ¬ (y ≈ x)
+
+  <⇒≉   : x < y → x ≉ y
+  ≤∧≉⇒< : x ≤ y → x ≉ y → x < y
+  <⇒≱   : x < y → ¬ (y ≤ x)
+  ≤⇒≯   : x ≤ y → ¬ (y < x)
+  ```
+
+* Added new proof to `Relation.Binary.Properties.TotalOrder`:
+  ```agda
+  ≰⇒> : ¬ (x ≤ y) → y < x
+  ```
+
+* Added new proof to `Relation.Binary.Properties.DecTotalOrder`:
+  ```agda
+  ≮⇒≥ : ¬ (x < y) → y ≤ x
+  ```
+
 * Re-exported the maximum function for sizes in `Size`
   ```agda
-  _⊔ˢ_   : Size → Size → Size
+  _⊔ˢ_ : Size → Size → Size
   ```

@@ -24,8 +24,8 @@ import Function.Structures as FunctionStructures
 open import Level using (Level; _⊔_; suc)
 open import Data.Product using (proj₁; proj₂)
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality
-  using () renaming (setoid to ≡-setoid)
+open import Relation.Binary.PropositionalEquality as ≡
+  using (_≡_)
 open Setoid using (isEquivalence)
 
 private
@@ -55,12 +55,13 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       ; isEquivalence₂ = isEquivalence To
       }
 
+    open IsCongruent isCongruent public using (module Eq₁; module Eq₂)
+
     isInjection : IsInjection f
     isInjection = record
       { isCongruent = isCongruent
       ; injective   = injective
       }
-
 
   record Surjection : Set (a ⊔ b ⊔ suc (ℓ₁ ⊔ ℓ₂)) where
     field
@@ -74,6 +75,8 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       ; isEquivalence₁ = isEquivalence From
       ; isEquivalence₂ = isEquivalence To
       }
+
+    open IsCongruent isCongruent public using (module Eq₁; module Eq₂)
 
     isSurjection : IsSurjection f
     isSurjection = record
@@ -115,6 +118,8 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       ; surjective  = surjective
       }
 
+    open IsBijection isBijection public using (module Eq₁; module Eq₂)
+
 
   record Equivalence : Set (a ⊔ b ⊔ suc (ℓ₁ ⊔ ℓ₂)) where
     field
@@ -138,6 +143,8 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       ; isEquivalence₁ = isEquivalence From
       ; isEquivalence₂ = isEquivalence To
       }
+
+    open IsCongruent isCongruent public using (module Eq₁; module Eq₂)
 
     isLeftInverse : IsLeftInverse f g
     isLeftInverse = record
@@ -219,25 +226,81 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       ; inverseʳ      = inverseʳ
       }
 
+    open IsInverse isInverse public using (module Eq₁; module Eq₂)
+
 ------------------------------------------------------------------------
 -- Packages specialised for propositional equality
 
 infix 3 _↣_ _↠_ _⤖_ _⇔_ _↞_ _↔_
 
 _↣_ : Set a → Set b → Set _
-A ↣ B = Injection (≡-setoid A) (≡-setoid B)
+A ↣ B = Injection (≡.setoid A) (≡.setoid B)
 
 _↠_ : Set a → Set b → Set _
-A ↠ B = Surjection (≡-setoid A) (≡-setoid B)
+A ↠ B = Surjection (≡.setoid A) (≡.setoid B)
 
 _⤖_ : Set a → Set b → Set _
-A ⤖ B = Bijection (≡-setoid A) (≡-setoid B)
+A ⤖ B = Bijection (≡.setoid A) (≡.setoid B)
 
 _⇔_ : Set a → Set b → Set _
-A ⇔ B = Equivalence (≡-setoid A) (≡-setoid B)
+A ⇔ B = Equivalence (≡.setoid A) (≡.setoid B)
 
 _↞_ : Set a → Set b → Set _
-A ↞ B = LeftInverse (≡-setoid A) (≡-setoid B)
+A ↞ B = LeftInverse (≡.setoid A) (≡.setoid B)
 
 _↔_ : Set a → Set b → Set _
-A ↔ B = Inverse (≡-setoid A) (≡-setoid B)
+A ↔ B = Inverse (≡.setoid A) (≡.setoid B)
+
+-- We now define some constructors for the above that
+-- automatically provide the required congruency proofs.
+
+module _ {A : Set a} {B : Set b} where
+
+  open FunctionDefinitions {A = A} {B} _≡_ _≡_
+
+  mk↣ : ∀ {f : A → B} → Injective f → A ↣ B
+  mk↣ {f} inj = record
+    { f         = f
+    ; cong      = ≡.cong f
+    ; injective = inj
+    }
+
+  mk↠ : ∀ {f : A → B} → Surjective f → A ↠ B
+  mk↠ {f} surj = record
+    { f          = f
+    ; cong       = ≡.cong f
+    ; surjective = surj
+    }
+
+  mk⤖ : ∀ {f : A → B} → Bijective f → A ⤖ B
+  mk⤖ {f} bij = record
+    { f         = f
+    ; cong      = ≡.cong f
+    ; bijective = bij
+    }
+
+  mk⇔ : ∀ (f : A → B) (g : B → A) → A ⇔ B
+  mk⇔ f g = record
+    { f     = f
+    ; g     = g
+    ; cong₁ = ≡.cong f
+    ; cong₂ = ≡.cong g
+    }
+
+  mk↞ : ∀ {f : A → B} {g : B → A} → Inverseˡ f g → A ↞ B
+  mk↞ {f} {g} invˡ = record
+    { f        = f
+    ; g        = g
+    ; cong₁    = ≡.cong f
+    ; cong₂    = ≡.cong g
+    ; inverseˡ = invˡ
+    }
+
+  mk↔ : ∀ {f : A → B} {f⁻¹ : B → A} → Inverseᵇ f f⁻¹ → A ↔ B
+  mk↔ {f} {f⁻¹} inv = record
+    { f       = f
+    ; f⁻¹     = f⁻¹
+    ; cong₁   = ≡.cong f
+    ; cong₂   = ≡.cong f⁻¹
+    ; inverse = inv
+    }

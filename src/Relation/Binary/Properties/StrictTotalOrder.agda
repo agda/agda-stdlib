@@ -18,7 +18,7 @@ import Relation.Binary.Properties.StrictPartialOrder as SPO
 open import Relation.Binary.Consequences
 
 ------------------------------------------------------------------------
--- Strict total orders can be converted to decidable total orders
+-- _<_ - the strict version is a strict total order
 
 decTotalOrder : DecTotalOrder _ _ _
 decTotalOrder = record

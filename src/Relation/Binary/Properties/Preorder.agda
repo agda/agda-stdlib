@@ -9,13 +9,14 @@
 open import Relation.Binary
 
 module Relation.Binary.Properties.Preorder
-         {p₁ p₂ p₃} (P : Preorder p₁ p₂ p₃) where
+  {p₁ p₂ p₃} (P : Preorder p₁ p₂ p₃) where
 
 open import Function
 open import Data.Product as Prod
 
-open Relation.Binary.Preorder P
+open Preorder P
 
+------------------------------------------------------------------------
 -- The inverse relation is also a preorder.
 
 invIsPreorder : IsPreorder _≈_ (flip _∼_)
@@ -26,7 +27,9 @@ invIsPreorder = record
   }
 
 invPreorder : Preorder p₁ p₂ p₃
-invPreorder = record { isPreorder = invIsPreorder }
+invPreorder = record
+  { isPreorder = invIsPreorder
+  }
 
 ------------------------------------------------------------------------
 -- For every preorder there is an induced equivalence
