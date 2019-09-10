@@ -370,7 +370,7 @@ n<1+n n = ≤-refl
 
 n≢0⇒n>0 : ∀ {n} → n ≢ 0 → n > 0
 n≢0⇒n>0 {zero}  0≢0 =  contradiction refl 0≢0
-n≢0⇒n>0 {suc n} _   =  s≤s z≤n
+n≢0⇒n>0 {suc n} _   =  0<1+n
 
 m<n⇒n≢0 : ∀ {m n} → m < n → n ≢ 0
 m<n⇒n≢0 (s≤s m≤n) ()
@@ -380,8 +380,8 @@ m<n⇒m≤1+n (s≤s z≤n)       = z≤n
 m<n⇒m≤1+n (s≤s (s≤s m<n)) = s≤s (m<n⇒m≤1+n (s≤s m<n))
 
 ∀[m≤n:m≢o]⇒o<n : ∀ n o → (∀ {m} → m ≤ n → m ≢ o) → n < o
-∀[m≤n:m≢o]⇒o<n _       zero    m≤n⇒n≢0     = contradiction refl (m≤n⇒n≢0 z≤n)
-∀[m≤n:m≢o]⇒o<n zero    (suc o) _           = s≤s z≤n
+∀[m≤n:m≢o]⇒o<n _       zero    m≤n⇒n≢0 = contradiction refl (m≤n⇒n≢0 z≤n)
+∀[m≤n:m≢o]⇒o<n zero    (suc o) _       = 0<1+n
 ∀[m≤n:m≢o]⇒o<n (suc n) (suc o) m≤n⇒n≢o = s≤s (∀[m≤n:m≢o]⇒o<n n o rec)
   where
   rec : ∀ {m} → m ≤ n → m ≢ o
@@ -389,7 +389,7 @@ m<n⇒m≤1+n (s≤s (s≤s m<n)) = s≤s (m<n⇒m≤1+n (s≤s m<n))
 
 ∀[m<n:m≢o]⇒o≤n : ∀ n o → (∀ {m} → m < n → m ≢ o) → n ≤ o
 ∀[m<n:m≢o]⇒o≤n zero    n       _       = z≤n
-∀[m<n:m≢o]⇒o≤n (suc n) zero    m<n⇒m≢0 = contradiction refl (m<n⇒m≢0 (s≤s z≤n))
+∀[m<n:m≢o]⇒o≤n (suc n) zero    m<n⇒m≢0 = contradiction refl (m<n⇒m≢0 0<1+n)
 ∀[m<n:m≢o]⇒o≤n (suc n) (suc o) m<n⇒m≢o = s≤s (∀[m<n:m≢o]⇒o≤n n o rec)
   where
   rec : ∀ {m} → m < n → m ≢ o
@@ -599,9 +599,6 @@ m≤m+n (suc m) n = s≤s (m≤m+n m n)
 
 m≤n+m : ∀ m n → m ≤ n + m
 m≤n+m m n = subst (m ≤_) (+-comm m n) (m≤m+n m n)
-
-0<1+n : ∀ {n} → 0 < suc n
-0<1+n {n} =  m≤m+n 1 n
 
 m≤n⇒m<n∨m≡n :  ∀ {m n} → m ≤ n → m < n ⊎ m ≡ n
 m≤n⇒m<n∨m≡n {0}     {0}     _          =  inj₂ refl
@@ -888,16 +885,15 @@ m≤m*n m {n} 0<n = begin
   m * n ∎
 
 m<m*n :  ∀ {m n} → 0 < m → 1 < n → m < m * n
-m<m*n {suc m-1} {suc (suc n-2)} (s≤s _) (s≤s (s≤s _)) = begin-strict
+m<m*n {m@(suc m-1)} {n@(suc (suc n-2))} (s≤s _) (s≤s (s≤s _)) = begin-strict
   m           <⟨ s≤s (s≤s (m≤n+m m-1 n-2)) ⟩
-  n + m-1     ≤⟨ +-monoʳ-≤ n (m≤m*n m-1 (s≤s z≤n)) ⟩
+  n + m-1     ≤⟨ +-monoʳ-≤ n (m≤m*n m-1 0<1+n) ⟩
   n + m-1 * n ≡⟨⟩
   m * n       ∎
-  where m = suc m-1; n = suc (suc n-2)
 
 *-cancelʳ-< : RightCancellative _<_ _*_
-*-cancelʳ-< {zero}  zero    (suc o) _     = s≤s z≤n
-*-cancelʳ-< {suc m} zero    (suc o) _     = s≤s z≤n
+*-cancelʳ-< {zero}  zero    (suc o) _     = 0<1+n
+*-cancelʳ-< {suc m} zero    (suc o) _     = 0<1+n
 *-cancelʳ-< {m}     (suc n) (suc o) nm<om =
   s≤s (*-cancelʳ-< n o (+-cancelˡ-< m nm<om))
 
@@ -1473,7 +1469,7 @@ m≮m∸n (suc m) (suc n) = m≮m∸n m n ∘ ≤-trans (n≤1+n (suc m))
 
 ∸-cancelʳ-< : ∀ {m n o} → o ∸ m < o ∸ n → n < m
 ∸-cancelʳ-< {zero}  {n}     {o}     o<o∸n   = contradiction o<o∸n (m≮m∸n o n)
-∸-cancelʳ-< {suc m} {zero}  {_}     o∸n<o∸m = s≤s z≤n
+∸-cancelʳ-< {suc m} {zero}  {_}     o∸n<o∸m = 0<1+n
 ∸-cancelʳ-< {suc m} {suc n} {suc o} o∸n<o∸m = s≤s (∸-cancelʳ-< o∸n<o∸m)
 
 ∸-cancelˡ-≡ :  ∀ {m n o} → n ≤ m → o ≤ m → m ∸ n ≡ m ∸ o → n ≡ o
@@ -1491,7 +1487,7 @@ m≤n⇒m∸n≡0 {n = n} z≤n      = 0∸n≡0 n
 m≤n⇒m∸n≡0 {_}    (s≤s m≤n) = m≤n⇒m∸n≡0 m≤n
 
 m<n⇒0<n∸m : ∀ {m n} → m < n → 0 < n ∸ m
-m<n⇒0<n∸m {zero}  {suc n} _         = s≤s z≤n
+m<n⇒0<n∸m {zero}  {suc n} _         = 0<1+n
 m<n⇒0<n∸m {suc m} {suc n} (s≤s m<n) = m<n⇒0<n∸m m<n
 
 m∸n≢0⇒n<m : ∀ {m n} → m ∸ n ≢ 0 → n < m
