@@ -2,8 +2,9 @@
 
 open import Algebra
 open import Data.Bool using (Bool; true; false; T)
+open import Algebra.Construct.Polynomial.Parameters
 
-module Algebra.Construct.Polynomial.Base {ℓ} (rng : RawRing ℓ) (Zero-C : RawRing.Carrier rng → Bool) where
+module Algebra.Construct.Polynomial.Base {ℓ} (coeffs : RawCoeff ℓ) where
 
 open import Data.Nat as ℕ          using (ℕ; suc; zero; _≤′_; compare)
 open import Relation.Nullary       using (¬_; Dec; yes; no)
@@ -16,10 +17,12 @@ open import Induction.WellFounded  using (Acc; acc)
 open import Induction.Nat          using (<′-wellFounded)
 open import Data.Fin               using (Fin)
 
+open RawCoeff coeffs
+
 open import Data.List.Kleene
 open import Function
 open import Algebra.Construct.Polynomial.InjectionIndex
-open import Algebra.Construct.Polynomial.Exponentiation rng
+open import Algebra.Construct.Polynomial.Exponentiation rawRing
 
 infixl 6 _Δ_
 record PowInd {c} (C : Set c) : Set c where
@@ -30,7 +33,6 @@ record PowInd {c} (C : Set c) : Set c where
     pow   : ℕ
 open PowInd public
 
-open RawRing rng
 
 record Poly (n : ℕ) : Set ℓ
 data FlatPoly : ℕ → Set ℓ
