@@ -11,7 +11,7 @@ module Data.List.Relation.Binary.Sublist.Heterogeneous.Properties where
 open import Level
 
 open import Data.Empty
-open import Data.List.Relation.Unary.All using (Null; [])
+open import Data.List.Relation.Unary.All using (Null; []; _∷_)
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.List.Base as List hiding (map; _∷ʳ_)
 import Data.List.Properties as Lₚ
@@ -457,23 +457,42 @@ module Disjointness {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
     infix 4 _⊆_
     _⊆_ = Sublist R
 
+  -- Disjoint is proof-irrelevant
+
+  Disjoint-irrelevant : ∀{xs ys zs} → Irrelevant (Disjoint {R = R} {xs} {ys} {zs})
+  Disjoint-irrelevant [] [] = P.refl
+  Disjoint-irrelevant (y   ∷ₙ d₁) (.y   ∷ₙ d₂) = P.cong (y ∷ₙ_) (Disjoint-irrelevant d₁ d₂)
+  Disjoint-irrelevant (x≈y ∷ₗ d₁) (.x≈y ∷ₗ d₂) = P.cong (x≈y ∷ₗ_) (Disjoint-irrelevant d₁ d₂)
+  Disjoint-irrelevant (x≈y ∷ᵣ d₁) (.x≈y ∷ᵣ d₂) = P.cong (x≈y ∷ᵣ_) (Disjoint-irrelevant d₁ d₂)
+
+  -- Note: DisjointUnion is not proof-irrelevant unless the underlying relation R is.
+  -- The proof is not entirely trivial, thus, we leave it for future work:
+  --
+  -- DisjointUnion-irrelevant : Irrelevant R →
+  --                            ∀{xs ys us zs} {τ : us ⊆ zs} →
+  --                            Irrelevant (λ (τ₁ : xs ⊆ zs) (τ₂ : ys ⊆ zs) → DisjointUnion τ₁ τ₂ τ)
+
   -- Irreflexivity
 
-  Disjoint-irrefl : ∀{xs ys} {τ : xs ⊆ ys} → Disjoint τ τ → Null xs
-  Disjoint-irrefl []       = []
-  Disjoint-irrefl (y ∷ₙ d) = Disjoint-irrefl d
+  Disjoint-irrefl′ : ∀{xs ys} {τ : xs ⊆ ys} → Disjoint τ τ → Null xs
+  Disjoint-irrefl′ []       = []
+  Disjoint-irrefl′ (y ∷ₙ d) = Disjoint-irrefl′ d
+
+  Disjoint-irrefl : ∀{x xs ys} → Irreflexive {A = x ∷ xs ⊆ ys } _≡_ Disjoint
+  Disjoint-irrefl P.refl x with Disjoint-irrefl′ x
+  ... | () ∷ _
 
   -- Symmetry
 
-  DisjointUnion-symmetric : ∀ {xs ys xys} {zs} {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs} {τ : xys ⊆ zs} →
-    DisjointUnion τ₁ τ₂ τ → DisjointUnion τ₂ τ₁ τ
-  DisjointUnion-symmetric []         = []
-  DisjointUnion-symmetric (y   ∷ₙ d) = y ∷ₙ DisjointUnion-symmetric d
-  DisjointUnion-symmetric (x≈y ∷ₗ d) = x≈y ∷ᵣ DisjointUnion-symmetric d
-  DisjointUnion-symmetric (x≈y ∷ᵣ d) = x≈y ∷ₗ DisjointUnion-symmetric d
+  DisjointUnion-sym : ∀ {xs ys xys} {zs} {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs} {τ : xys ⊆ zs} →
+                            DisjointUnion τ₁ τ₂ τ → DisjointUnion τ₂ τ₁ τ
+  DisjointUnion-sym []         = []
+  DisjointUnion-sym (y   ∷ₙ d) = y ∷ₙ DisjointUnion-sym d
+  DisjointUnion-sym (x≈y ∷ₗ d) = x≈y ∷ᵣ DisjointUnion-sym d
+  DisjointUnion-sym (x≈y ∷ᵣ d) = x≈y ∷ₗ DisjointUnion-sym d
 
   Disjoint-sym : ∀ {xs ys} {zs} {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs} →
-    Disjoint τ₁ τ₂ → Disjoint τ₂ τ₁
+                 Disjoint τ₁ τ₂ → Disjoint τ₂ τ₁
   Disjoint-sym []         = []
   Disjoint-sym (y   ∷ₙ d) = y ∷ₙ Disjoint-sym d
   Disjoint-sym (x≈y ∷ₗ d) = x≈y ∷ᵣ Disjoint-sym d
@@ -592,11 +611,11 @@ module Disjointness {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
   disjoint⇒disjoint-to-union : ∀{xs ys zs yzs ts}
     {τ : xs ⊆ ts} {σ₁ : ys ⊆ ts} {σ₂ : zs ⊆ ts} {σ : yzs ⊆ ts} →
-    Disjoint τ σ₁ → Disjoint τ σ₂ →  DisjointUnion σ₁ σ₂ σ → Disjoint τ σ
+    Disjoint τ σ₁ → Disjoint τ σ₂ → DisjointUnion σ₁ σ₂ σ → Disjoint τ σ
   disjoint⇒disjoint-to-union d₁ d₂ u = let
        _ , _ , u₁ = Disjoint→DisjointUnion d₁
        _ , _ , u₂ = Disjoint→DisjointUnion d₂
-    in DisjointUnion→Disjoint ( DisjointUnion³.join₁ (disjointUnion³ u₁ u₂ u) )
+    in DisjointUnion→Disjoint (DisjointUnion³.join₁ (disjointUnion³ u₁ u₂ u))
 
 open Disjointness public
 
