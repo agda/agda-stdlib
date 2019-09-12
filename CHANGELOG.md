@@ -80,7 +80,8 @@ we would encourage to the new hierarchy in the medium to long term.
 #### Re-implementation of `Data.Bin`
 
 * `Data/Bin.agda` and `Data.Bin/*.agda`  of lib-1.0 are removed,
-  added new `Data.Bin.Base, Data.Bin.Properties`.
+   added new `Data.Bin.Base, Data.Bin.Induction, Data.Bin.Minus,
+   Data.Bin.Properties`.
   This total change of the Bin part is done for the following reasons.
   1) Many necessary functions and proofs are added.
   2) After this has been done, the author noticed (decided) that the whole
@@ -107,7 +108,7 @@ The following new modules have been added to the library:
   Data.Bin
   Data.Bin.Base
   Data.Bin.Induction
-  Data.Bin.Ordering
+  Data.Bin.Minus
   Data.Bin.Properties
 
   Data.List.Kleene
