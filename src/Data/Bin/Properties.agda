@@ -224,7 +224,8 @@ x≢0⇒x>0 {1+[2 _ ]} _   =  0<odd
 <-trans (odd<odd x<y) (odd<even (inj₂ refl))   =  odd<even (inj₁ x<y)
 <-trans (odd<odd x<y) (odd<odd y<z)            =  odd<odd (<-trans x<y y<z)
 
-<-cmp :  ∀ (x y) → Tri (x < y) (x ≡ y) (x > y)
+
+<-cmp :  ∀ x y → Tri (x < y) (x ≡ y) (x > y)
 <-cmp zero     zero      = tri≈ x≮0    refl  x≮0
 <-cmp zero     2[1+ _ ]  = tri< 0<even (λ()) x≮0
 <-cmp zero     1+[2 _ ]  = tri< 0<odd  (λ()) x≮0
@@ -737,14 +738,14 @@ module _ where
 +-monoʳ-< :  ∀ x → (x +_) Preserves _<_ ⟶ _<_
 +-monoʳ-< x y<z =  +-mono-≤-< (≤-refl {x}) y<z
 
-x≤y+x :  ∀ (x y) → x ≤ y + x
+x≤y+x :  ∀ x y → x ≤ y + x
 x≤y+x x y =  begin
   x        ≡⟨ sym (+-identityˡ x) ⟩
   0B + x   ≤⟨ +-monoˡ-≤ x (0≤x y) ⟩
   y + x    ∎
   where open ≤-Reasoning
 
-x≤x+y :  ∀ (x y) → x ≤ x + y
+x≤x+y :  ∀ x y → x ≤ x + y
 x≤x+y x y =  begin
   x        ≤⟨ x≤y+x x y ⟩
   y + x    ≡⟨ +-comm y x ⟩
@@ -1272,7 +1273,7 @@ suc-* x y = begin
   x + x * y    ∎
   where open ≡-Reasoning
 
-x≤suc[y]*x :  ∀ (x y) → x ≤ (suc y) * x
+x≤suc[y]*x :  ∀ x y → x ≤ (suc y) * x
 x≤suc[y]*x x y =  begin
   x             ≤⟨ x≤x+y x (y * x) ⟩
   x + y * x     ≡⟨ sym (suc-* y x) ⟩
