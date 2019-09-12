@@ -8,10 +8,10 @@
 
 module Reflection.Pattern where
 
-open import Data.List.Base
+open import Data.List.Base hiding (_++_)
 open import Data.List.Properties
 open import Data.Product
-import Data.String as String
+open import Data.String as String using (String; braces; _++_)
 import Reflection.Literal as Literal
 import Reflection.Name as Name
 open import Relation.Nullary
@@ -25,8 +25,40 @@ open import Reflection.Argument
 ------------------------------------------------------------------------
 -- Re-exporting the builtin type and constructors
 
-open import Agda.Builtin.Reflection public using (Pattern)
+open import Agda.Builtin.Reflection as Builtin public using (Pattern)
 open Pattern public
+
+------------------------------------------------------------------------
+-- Showing
+
+mutual
+
+  showPatterns : List (Arg Pattern) → String
+  showPatterns [] = ""
+  showPatterns (a ∷ ps) = showArg a ++ showPatterns ps
+    where
+      showRel : Builtin.Relevance → String
+      showRel Builtin.relevant = ""
+      showRel Builtin.irrelevant = "."
+
+      showArg : Arg Pattern → String
+      showArg (arg (Builtin.arg-info Builtin.visible r) p) =
+        showRel r ++ show p
+      showArg (arg (Builtin.arg-info Builtin.hidden r) p) =
+        braces (showRel r ++ show p)
+      showArg (arg (Builtin.arg-info Builtin.instance′ r) p) =
+        braces (braces (showRel r ++ show p))
+
+
+  show : Pattern → String
+  show (con c []) = Name.show c
+  show (con c ps) =
+    String.parens (Name.show c ++ " " ++ showPatterns ps )
+  show dot = "._"
+  show (var s) = s
+  show (lit l) = Literal.show l
+  show (proj f) = Name.show f
+  show absurd = "()"
 
 ------------------------------------------------------------------------
 -- Decidable equality

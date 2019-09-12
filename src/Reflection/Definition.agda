@@ -8,9 +8,13 @@
 
 module Reflection.Definition where
 
+open import Data.List using (map; intersperse)
 import Data.List.Properties as Listₚ
 import Data.Nat.Properties as ℕₚ
+import Data.Nat.Show as NatShow
 open import Data.Product using (_×_; <_,_>; uncurry)
+open import Data.String as String using (String; braces; parens; _++_)
+open import Function using (_∘′_)
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Product using (_×-dec_)
@@ -33,6 +37,21 @@ open import Agda.Builtin.Reflection public
   renaming ( record-type to record′
            ; data-cons   to constructor′
            ; prim-fun    to primitive′ )
+
+------------------------------------------------------------------------
+-- Showing
+
+show : Definition → String
+show (function cs) = "function " ++ braces (Term.showClauses cs)
+show (data-type pars cs) =
+ "datatype " ++ NatShow.show pars ++ " " ++
+ braces (String.concat (intersperse ", " (map Name.show cs)))
+show (record′ c fs) =
+ "record " ++ Name.show c ++ " " ++
+ braces (String.concat (intersperse ", " (map (Name.show ∘′ Arg.unArg) fs)))
+show (constructor′ d) = "constructor " ++ Name.show d
+show axiom = "axiom"
+show primitive′ = "primitive"
 
 ------------------------------------------------------------------------
 -- Decidable equality

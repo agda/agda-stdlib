@@ -8,6 +8,7 @@
 
 module Reflection.Argument.Visibility where
 
+open import Data.String as String using (String)
 open import Relation.Nullary
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
@@ -17,6 +18,17 @@ open import Relation.Binary.PropositionalEquality
 
 open import Agda.Builtin.Reflection public using (Visibility)
 open Visibility public
+
+------------------------------------------------------------------------
+-- Showing
+
+show : Visibility → String
+show visible = "visible"
+show hidden = "hidden"
+show instance′ = "instance"
+
+------------------------------------------------------------------------
+-- Decidable equality
 
 _≟_ : DecidableEquality Visibility
 visible   ≟ visible   = yes refl

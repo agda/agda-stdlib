@@ -28,6 +28,9 @@ open import Agda.Builtin.Reflection public
   using ( Literal )
 open Literal public
 
+------------------------------------------------------------------------
+-- Showing
+
 show : Literal → String
 show (nat x)    = ℕ.show x
 show (word64 x) = ℕ.show (Word.toℕ x)

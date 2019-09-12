@@ -22,3 +22,9 @@ open import Data.String.Properties using (_≈?_; _≟_; _<?_; _==_) public
 
 toVec : (s : String) → Vec Char (length s)
 toVec s = Vec.fromList (toList s)
+
+parens : String → String
+parens s = "(" ++ s ++ ")"
+
+braces : String → String
+braces s = "{" ++ s ++ "}"

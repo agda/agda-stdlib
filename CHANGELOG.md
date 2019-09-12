@@ -333,3 +333,25 @@ Other minor additions
   ```agda
   _⊔ˢ_ : Size → Size → Size
   ```
+
+* Added convenience functions to `Data.String`:
+  ```agda
+  parens : String → String
+  braces : String → String
+  ```
+
+* Added show functions to `Reflection.Argument.Relevance`,
+  `Reflection.Argument.Visibility`, `Reflection.Pattern`,
+  `Reflection.Term`, and `Reflection.Definition`:
+  ```agda
+  Reflection.Argument.Relevance.show : Relevance → String
+  Reflection.Argument.Visibility.show : Visibility → String
+  Reflection.Pattern.show : Pattern → String
+  Reflection.Pattern.showPatterns : List (Arg Pattern) → String
+  Reflection.Term.show : Term → String
+  Reflection.Term.showTerms : List (Arg Term) → String
+  Reflection.Term.showSort : Sort → String
+  Reflection.Term.showClause : Clause → String
+  Reflection.Term.showClauses : List Clause → String
+  Reflection.Definition.show : Definition → String
+  ```
