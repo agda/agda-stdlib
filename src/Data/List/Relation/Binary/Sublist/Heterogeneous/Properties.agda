@@ -23,13 +23,13 @@ open import Data.List.Relation.Binary.Sublist.Heterogeneous
 open import Data.Maybe.Relation.Unary.All as MAll using (nothing; just)
 open import Data.Nat using (ℕ; _≤_; _≥_); open ℕ; open _≤_
 import Data.Nat.Properties as ℕₚ
-open import Data.Product using (_×_; _,_; uncurry)
+open import Data.Product using (∃₂; _×_; _,_; proj₂; uncurry)
 
 open import Function.Core
 open import Function.Bijection   using (_⤖_; bijection)
 open import Function.Equivalence using (_⇔_ ; equivalence)
 
-open import Relation.Nullary using (yes; no; ¬_)
+open import Relation.Nullary using (Dec; yes; no; ¬_)
 open import Relation.Nullary.Negation using (¬?)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Unary as U using (Pred)
@@ -457,6 +457,42 @@ module Disjointness {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
     infix 4 _⊆_
     _⊆_ = Sublist R
 
+  -- Forgetting the union
+
+  DisjointUnion→Disjoint : ∀ {xs ys zs us} {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs} {τ : us ⊆ zs} →
+    DisjointUnion τ₁ τ₂ τ → Disjoint τ₁ τ₂
+  DisjointUnion→Disjoint []         = []
+  DisjointUnion→Disjoint (y   ∷ₙ u) = y   ∷ₙ DisjointUnion→Disjoint u
+  DisjointUnion→Disjoint (x≈y ∷ₗ u) = x≈y ∷ₗ DisjointUnion→Disjoint u
+  DisjointUnion→Disjoint (x≈y ∷ᵣ u) = x≈y ∷ᵣ DisjointUnion→Disjoint u
+
+  -- Reconstructing the union
+
+  Disjoint→DisjointUnion : ∀ {xs ys zs} {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs} →
+    Disjoint τ₁ τ₂ → ∃₂ λ us (τ : us ⊆ zs) → DisjointUnion τ₁ τ₂ τ
+  Disjoint→DisjointUnion []         = _ , _ , []
+  Disjoint→DisjointUnion (y   ∷ₙ u) = _ , _ , y   ∷ₙ proj₂ (proj₂ (Disjoint→DisjointUnion u))
+  Disjoint→DisjointUnion (x≈y ∷ₗ u) = _ , _ , x≈y ∷ₗ proj₂ (proj₂ (Disjoint→DisjointUnion u))
+  Disjoint→DisjointUnion (x≈y ∷ᵣ u) = _ , _ , x≈y ∷ᵣ proj₂ (proj₂ (Disjoint→DisjointUnion u))
+
+  -- Disjoint is decidable
+
+  ⊆-disjoint? : ∀ {xs ys zs} (τ₁ : xs ⊆ zs) (τ₂ : ys ⊆ zs) → Dec (Disjoint τ₁ τ₂)
+  ⊆-disjoint? [] [] = yes []
+  -- Present in both sublists: not disjoint.
+  ⊆-disjoint? (x≈z ∷ τ₁) (y≈z ∷ τ₂) = no λ()
+  -- Present in either sublist: ok.
+  ⊆-disjoint? (y ∷ʳ τ₁) (x≈y ∷ τ₂) with ⊆-disjoint? τ₁ τ₂
+  ... | yes d = yes (x≈y ∷ᵣ d)
+  ... | no ¬d = no λ{ (_ ∷ᵣ d) → ¬d d }
+  ⊆-disjoint? (x≈y ∷ τ₁) (y ∷ʳ τ₂) with ⊆-disjoint? τ₁ τ₂
+  ... | yes d = yes (x≈y ∷ₗ d)
+  ... | no ¬d = no λ{ (_ ∷ₗ d) → ¬d d }
+  -- Present in neither sublist: ok.
+  ⊆-disjoint? (y ∷ʳ τ₁) (.y ∷ʳ τ₂) with ⊆-disjoint? τ₁ τ₂
+  ... | yes d = yes (y ∷ₙ d)
+  ... | no ¬d = no λ{ (_ ∷ₙ d) → ¬d d }
+
   -- Disjoint is proof-irrelevant
 
   Disjoint-irrelevant : ∀{xs ys zs} → Irrelevant (Disjoint {R = R} {xs} {ys} {zs})
@@ -530,6 +566,8 @@ module Disjointness {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
       join₁ : DisjointUnion τ₁ τ₂₃ sub³
       join₂ : DisjointUnion τ₂ τ₁₃ sub³
       join₃ : DisjointUnion τ₃ τ₁₂ sub³
+
+  infixr 5 _∷ʳ-DisjointUnion³_ _∷₁-DisjointUnion³_ _∷₂-DisjointUnion³_ _∷₃-DisjointUnion³_
 
   -- Weakening the target list ts of a disjoint union.
 

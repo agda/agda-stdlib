@@ -18,11 +18,9 @@ open import Level using (_⊔_)
 
 open import Data.List.Base using (List; []; _∷_; [_])
 open import Data.List.Relation.Unary.Any using (Any; here; there)
-open import Data.Product using (∃₂; _,_; proj₂)
 
 open import Function
 
-open import Relation.Nullary using (Dec; yes; no)
 open import Relation.Unary using (Pred)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
@@ -78,6 +76,8 @@ private
   infix 4 _⊆_
   _⊆_ = Sublist R
 
+infixr 5 _∷ₙ_ _∷ₗ_ _∷ᵣ_
+
 data Disjoint : ∀ {xs ys zs} (τ₁ : xs ⊆ zs) (τ₂ : ys ⊆ zs) → Set (a ⊔ b ⊔ r) where
   []   : Disjoint [] []
 
@@ -92,24 +92,6 @@ data Disjoint : ∀ {xs ys zs} (τ₁ : xs ⊆ zs) (τ₂ : ys ⊆ zs) → Set (
   -- Element y of zs is in ys as x with x≈y:
   _∷ᵣ_ : ∀ {xs ys zs} {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs} {x y} →
          (x≈y : R x y) → Disjoint τ₁ τ₂ → Disjoint (y  ∷ʳ τ₁) (x≈y ∷ τ₂)
-
--- Are xs and ys disjoint sublists of zs?
-
-⊆-disjoint? : ∀ {xs ys zs} (τ₁ : xs ⊆ zs) (τ₂ : ys ⊆ zs) → Dec (Disjoint τ₁ τ₂)
-⊆-disjoint? [] [] = yes []
--- Present in both sublists: not disjoint.
-⊆-disjoint? (x≈z ∷ τ₁) (y≈z ∷ τ₂) = no λ()
--- Present in either sublist: ok.
-⊆-disjoint? (y ∷ʳ τ₁) (x≈y ∷ τ₂) with ⊆-disjoint? τ₁ τ₂
-... | yes d = yes (x≈y ∷ᵣ d)
-... | no ¬d = no λ{ (_ ∷ᵣ d) → ¬d d }
-⊆-disjoint? (x≈y ∷ τ₁) (y ∷ʳ τ₂) with ⊆-disjoint? τ₁ τ₂
-... | yes d = yes (x≈y ∷ₗ d)
-... | no ¬d = no λ{ (_ ∷ₗ d) → ¬d d }
--- Present in neither sublist: ok.
-⊆-disjoint? (y ∷ʳ τ₁) (.y ∷ʳ τ₂) with ⊆-disjoint? τ₁ τ₂
-... | yes d = yes (y ∷ₙ d)
-... | no ¬d = no λ{ (_ ∷ₙ d) → ¬d d }
 
 ------------------------------------------------------------------------
 -- Disjoint union of two sublists xs,ys ⊆ zs
@@ -132,17 +114,3 @@ data DisjointUnion : ∀ {xs ys zs us} (τ₁ : xs ⊆ zs) (τ₂ : ys ⊆ zs) (
   -- Element y of zs is in ys as x with x≈y: add to us.
   _∷ᵣ_ : ∀ {xs ys zs us} {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs} {τ : us ⊆ zs} {x y} →
          (x≈y : R x y) → DisjointUnion τ₁ τ₂ τ → DisjointUnion (y  ∷ʳ τ₁) (x≈y ∷ τ₂) (x≈y ∷ τ)
-
-DisjointUnion→Disjoint : ∀ {xs ys zs us} {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs} {τ : us ⊆ zs} →
-  DisjointUnion τ₁ τ₂ τ → Disjoint τ₁ τ₂
-DisjointUnion→Disjoint []         = []
-DisjointUnion→Disjoint (y   ∷ₙ u) = y   ∷ₙ DisjointUnion→Disjoint u
-DisjointUnion→Disjoint (x≈y ∷ₗ u) = x≈y ∷ₗ DisjointUnion→Disjoint u
-DisjointUnion→Disjoint (x≈y ∷ᵣ u) = x≈y ∷ᵣ DisjointUnion→Disjoint u
-
-Disjoint→DisjointUnion : ∀ {xs ys zs} {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs} →
-  Disjoint τ₁ τ₂ → ∃₂ λ us (τ : us ⊆ zs) → DisjointUnion τ₁ τ₂ τ
-Disjoint→DisjointUnion []         = _ , _ , []
-Disjoint→DisjointUnion (y   ∷ₙ u) = _ , _ , y   ∷ₙ proj₂ (proj₂ (Disjoint→DisjointUnion u))
-Disjoint→DisjointUnion (x≈y ∷ₗ u) = _ , _ , x≈y ∷ₗ proj₂ (proj₂ (Disjoint→DisjointUnion u))
-Disjoint→DisjointUnion (x≈y ∷ᵣ u) = _ , _ , x≈y ∷ᵣ proj₂ (proj₂ (Disjoint→DisjointUnion u))

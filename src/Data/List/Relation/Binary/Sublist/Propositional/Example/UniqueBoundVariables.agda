@@ -21,7 +21,7 @@ open import Data.List.Relation.Binary.Sublist.Propositional using
   ; ⊆-refl; ⊆-trans; minimum
   ; from∈; to∈; lookup
   ; ⊆-pushoutˡ; RawPushout
-  ; Disjoint; DisjointUnion; Disjoint→DisjointUnion; DisjointUnion→Disjoint
+  ; Disjoint; DisjointUnion
   ; separateˡ; Separation
   )
 open import Data.List.Relation.Binary.Sublist.Propositional.Properties using
@@ -29,6 +29,7 @@ open import Data.List.Relation.Binary.Sublist.Propositional.Properties using
   ; ⊆-trans-assoc
   ; from∈∘to∈; from∈∘lookup; lookup-⊆-trans
   ; ⊆-pushoutˡ-is-wpo
+  ; Disjoint→DisjointUnion; DisjointUnion→Disjoint
   ; Disjoint-sym; DisjointUnion-inj₁; DisjointUnion-inj₂; DisjointUnion-[]ʳ
   ; weakenDisjoint; weakenDisjointUnion; shrinkDisjointˡ
   ; disjoint⇒disjoint-to-union; DisjointUnion-fromAny∘toAny-∷ˡ⁻
@@ -143,8 +144,8 @@ variable
 --
 -- The judgement will imply the disjointness of Δ and B.
 
--- variable
---   δ yδ : Δ ⊆ Γ
+variable
+  δ yδ : Δ ⊆ Γ
 
 data _⊢_~_▷_ {Γ Δ : Cxt} (δ : Δ ⊆ Γ) : ∀{a} (e : Exp Δ a) {B} (β : B ⊆ Γ) (t : Tm β a) → Set where
 

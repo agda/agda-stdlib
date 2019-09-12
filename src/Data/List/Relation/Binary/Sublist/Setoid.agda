@@ -146,6 +146,8 @@ open RawPushout
 
 -- Extending the right upper corner.
 
+infixr 5 _∷ʳ₁_ _∷ʳ₂_
+
 _∷ʳ₁_ : ∀ {xs ys zs : List A} {τ : xs ⊆ ys} {σ : xs ⊆ zs} →
         (y : A) → RawPushout τ σ → RawPushout (y ∷ʳ τ) σ
 y ∷ʳ₁ rpo = record
@@ -202,6 +204,8 @@ record UpperBound {xs ys zs} (τ : xs ⊆ zs) (σ : ys ⊆ zs) : Set (c ⊔ ℓ)
     inj₂ : ys ⊆ theUpperBound
 
 open UpperBound
+
+infixr 5 _∷ₗ-ub_ _∷ᵣ-ub_
 
 ∷ₙ-ub : ∀ {xs ys zs} {τ : xs ⊆ zs} {σ : ys ⊆ zs} {x} →
         UpperBound τ σ → UpperBound (x ∷ʳ τ) (x ∷ʳ σ)
