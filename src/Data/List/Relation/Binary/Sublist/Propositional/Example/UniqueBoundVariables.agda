@@ -264,8 +264,8 @@ dB→Named (var x) = record
 --
 -- We keep Γ and produce embedding δ : Δ ⊆ Γ and bound variables z ⊎ β.
 
-dB→Named {Δ = Δ} {a = a ⇒ b} (abs e) with
-  record{ glob = Γ; emb = zδ; bound = β; relate = d } ← dB→Named e =
+dB→Named {Δ = Δ} {a = a ⇒ b} (abs e) with dB→Named e
+... | record{ glob = Γ; emb = zδ; bound = β; relate = d } =
   record
     { glob   = Γ
     ; emb    = δ̇
@@ -324,9 +324,8 @@ dB→Named {Δ = Δ} {a = a ⇒ b} (abs e) with
 --
 -- Thus, we can return either of them as δ.
 
-dB→Named (app f e)
-  with mkNamedOf {Γ₁} δ₁ β₁ {t} d₁ ← dB→Named f
-     | mkNamedOf {Γ₂} δ₂ β₂ {u} d₂ ← dB→Named e =
+dB→Named (app f e) with dB→Named f | dB→Named e
+... | mkNamedOf {Γ₁} δ₁ β₁ {t} d₁ | mkNamedOf {Γ₂} δ₂ β₂ {u} d₂ =
   mkNamedOf δ̇ β̇ (app d₁″ d₂″ β₁″⊎β₂″)
   where
   -- Disjointness of δᵢ and βᵢ from induction hypotheses.
