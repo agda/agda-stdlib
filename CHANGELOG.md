@@ -23,9 +23,9 @@ Other non-backwards compatible changes
 * The main problems with the current way various types of functions are
 handled are:
   1. The raw functions were wrapped in the  equality-preserving
-         type `_⟶_` from `Function.Equality`. As the rest of the library
+     type `_⟶_` from `Function.Equality`. As the rest of the library
      very rarely used such wrapped functions, it was almost impossible
-     to write code that interfaces neatly  between the `Function` hierarchy
+     to write code that interfaced neatly  between the `Function` hierarchy
      and, for example, the `Algebra` hierarchy.
   2. The symbol `_⟶_` that was used for equality preserving functions
      was almost indistinguishable from ordinary functions `_→_` in many fonts,
@@ -76,6 +76,9 @@ we would encourage to the new hierarchy in the medium to long term.
   Function.Surjection
   Function.LeftInverse
   ```
+
+* Minor change: the propositional package for left inverses has been renamed
+from `_↞_` to `_↩_` in order to make room for the new package for right inverse `_↪_`.
 
 #### Re-implementation of `Data.Bin`
 
