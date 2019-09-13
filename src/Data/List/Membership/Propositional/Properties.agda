@@ -301,6 +301,14 @@ finite inj (x ∷ xs) fᵢ∈x∷xs = excluded-middle helper
       }
 
 ------------------------------------------------------------------------
+-- Different members
+
+there-injective-≢∈ : ∀ {xs} {x y z : A} {x∈xs : x ∈ xs} {y∈xs : y ∈ xs} →
+                     there {x = z} x∈xs ≢∈ there y∈xs →
+                     x∈xs ≢∈ y∈xs
+there-injective-≢∈ neq refl eq = neq refl (P.cong there eq)
+
+------------------------------------------------------------------------
 -- DEPRECATED
 ------------------------------------------------------------------------
 -- Please use the new names as continuing support for the old names is
