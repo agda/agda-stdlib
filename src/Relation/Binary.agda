@@ -59,6 +59,23 @@ record Preorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
 
   open IsPreorder isPreorder public
 
+
+------------------------------------------------------------------------
+-- Partial Setoids
+
+-- Partial Equivalence relations are defined in Relation.Binary.Core.
+
+record PartialSetoid a ℓ : Set (suc (a ⊔ ℓ)) where
+  field
+    Carrier         : Set a
+    _≈_             : Rel Carrier ℓ
+    isPartialEquivalence : IsPartialEquivalence _≈_
+
+  _≉_ : Rel Carrier _
+  x ≉ y = ¬ (x ≈ y)
+
+  open IsPartialEquivalence isPartialEquivalence public
+
 ------------------------------------------------------------------------
 -- Setoids
 
@@ -85,6 +102,11 @@ record Setoid c ℓ : Set (suc (c ⊔ ℓ)) where
 
   preorder : Preorder c c ℓ
   preorder = record { isPreorder = isPreorder }
+
+  partialSetoid : PartialSetoid c ℓ
+  partialSetoid = record
+    { isPartialEquivalence = isPartialEquivalence
+    }
 
 ------------------------------------------------------------------------
 -- Decidable equivalence relations
@@ -245,7 +267,7 @@ record IsDecStrictPartialOrder {a ℓ₁ ℓ₂} {A : Set a}
 
   private
     module SPO = IsStrictPartialOrder isStrictPartialOrder
-    open SPO public hiding (module Eq)
+    open SPO hiding (module Eq)
 
   module Eq where
 
@@ -267,7 +289,7 @@ record DecStrictPartialOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂
 
   private
     module DSPO = IsDecStrictPartialOrder isDecStrictPartialOrder
-    open DSPO public hiding (module Eq)
+    open DSPO hiding (module Eq)
 
   strictPartialOrder : StrictPartialOrder c ℓ₁ ℓ₂
   strictPartialOrder = record { isStrictPartialOrder = isStrictPartialOrder }

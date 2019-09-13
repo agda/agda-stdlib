@@ -10,6 +10,7 @@ module Data.List.Relation.Unary.All where
 
 open import Category.Applicative
 open import Category.Monad
+open import Data.Empty using (⊥)
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Membership.Propositional using (_∈_)
@@ -38,6 +39,11 @@ infixr 5 _∷_
 data All {A : Set a} (P : Pred A p) : Pred (List A) (a ⊔ p) where
   []  : All P []
   _∷_ : ∀ {x xs} (px : P x) (pxs : All P xs) → All P (x ∷ xs)
+
+-- A list is empty if having an element is impossible.
+
+Null : Pred (List A) _
+Null = All (λ _ → ⊥)
 
 ------------------------------------------------------------------------
 -- Operations on All

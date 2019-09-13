@@ -13,4 +13,5 @@ open import Agda.Builtin.Size public
   using    ( Size                --  Size   : SizeUniv
            ; Size<_              --  Size<_ : Size → SizeUniv
            ; ↑_                  --  ↑_     : Size → Size
+           ; _⊔ˢ_                --  _⊔ˢ_   : Size → Size → Size
            ; ∞ )                 --  ∞      : Size
