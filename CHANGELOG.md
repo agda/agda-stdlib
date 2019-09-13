@@ -113,6 +113,9 @@ The following new modules have been added to the library:
   Data.Bin.Ordering
   Data.Bin.Properties
 
+  Data.Integer.GCD
+  Data.Integer.LCM
+
   Data.List.Kleene
   Data.List.Kleene.AsList
   Data.List.Kleene.Base
