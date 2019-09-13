@@ -362,9 +362,6 @@ _>?_ = flip _<?_
 n≮n : ∀ n → n ≮ n
 n≮n n = <-irrefl (refl {x = n})
 
-0<1+n : ∀ {n} → 0 < suc n
-0<1+n = s≤s z≤n
-
 m<n⇒n≢0 : ∀ {m n} → m < n → n ≢ 0
 m<n⇒n≢0 (s≤s m≤n) ()
 
