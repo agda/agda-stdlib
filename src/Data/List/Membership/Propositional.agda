@@ -10,7 +10,7 @@
 module Data.List.Membership.Propositional {a} {A : Set a} where
 
 open import Data.List.Relation.Unary.Any using (Any)
-open import Relation.Binary.PropositionalEquality using (setoid; subst)
+open import Relation.Binary.PropositionalEquality using (_≡_; _≢_; setoid; subst)
 
 import Data.List.Membership.Setoid as SetoidMembership
 
@@ -18,6 +18,12 @@ import Data.List.Membership.Setoid as SetoidMembership
 -- Re-export contents of setoid membership
 
 open SetoidMembership (setoid A) public hiding (lose)
+
+------------------------------------------------------------------------
+-- Different members
+
+_≢∈_ : ∀ {x y : A} {xs} → x ∈ xs → y ∈ xs → Set _
+_≢∈_ x∈xs y∈xs = ∀ x≡y → subst (_∈ _) x≡y x∈xs ≢ y∈xs
 
 ------------------------------------------------------------------------
 -- Other operations

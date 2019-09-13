@@ -23,9 +23,9 @@ Other non-backwards compatible changes
 * The main problems with the current way various types of functions are
 handled are:
   1. The raw functions were wrapped in the  equality-preserving
-         type `_⟶_` from `Function.Equality`. As the rest of the library
+     type `_⟶_` from `Function.Equality`. As the rest of the library
      very rarely used such wrapped functions, it was almost impossible
-     to write code that interfaces neatly  between the `Function` hierarchy
+     to write code that interfaced neatly  between the `Function` hierarchy
      and, for example, the `Algebra` hierarchy.
   2. The symbol `_⟶_` that was used for equality preserving functions
      was almost indistinguishable from ordinary functions `_→_` in many fonts,
@@ -77,6 +77,9 @@ we would encourage to the new hierarchy in the medium to long term.
   Function.LeftInverse
   ```
 
+* Minor change: the propositional package for left inverses has been renamed
+from `_↞_` to `_↩_` in order to make room for the new package for right inverse `_↪_`.
+
 #### Re-implementation of `Data.Bin`
 
 * `Data/Bin.agda` and `Data.Bin/*.agda`  of lib-1.0 are removed,
@@ -106,7 +109,12 @@ The following new modules have been added to the library:
 
   Data.Bin
   Data.Bin.Base
+  Data.Bin.Induction
+  Data.Bin.Ordering
   Data.Bin.Properties
+
+  Data.Integer.GCD
+  Data.Integer.LCM
 
   Data.List.Fresh
   Data.List.Fresh.Properties
@@ -120,6 +128,8 @@ The following new modules have been added to the library:
   Data.List.Kleene
   Data.List.Kleene.AsList
   Data.List.Kleene.Base
+
+  Data.List.Relation.Binary.Sublist.Propositional.Disjoint
 
   Data.Rational.Unnormalised
   Data.Rational.Unnormalised.Properties
@@ -162,6 +172,7 @@ attached to all deprecated names to discourage their use.
 * In `Data.Nat.Properties`:
   ```agda
   +-*-suc ↦ *-suc
+
   ```
 
 * In `Relation.Binary.Properties.Poset`:
@@ -196,11 +207,44 @@ Other minor additions
   *-suc : m * sucℤ n ≡ m + m * n
   ```
 
-* Added new relations to `Data.List.Relation.Binary.Sublist.Setoid/Propositional`:
+* Added new definitions to `Data.List.Relation.Unary.All`:
+  ```agda
+  Null = All (λ _ → ⊥)
+  ```
+
+* Generalized type of `Data.List.Relation.Binary.Sublist.Heterogeneous.toAny` to
+  `Sublist R (a ∷ as) bs → Any (R a) bs`.
+
+* Added new relations to `Data.List.Relation.Binary.Sublist.Heterogeneous`:
+  ```agda
+  Disjoint (τ₁ : xs ⊆ zs) (τ₂ : ys ⊆ zs)
+  DisjointUnion (τ₁ : xs ⊆ zs) (τ₂ : ys ⊆ zs) (τ : xys ⊆ zs)
+  ```
+  Some of their properties have been added to
+  `Data.List.Relation.Binary.Sublist.Heterogeneous.Properties`.
+
+* Added new relations to `Data.List.Relation.Binary.Sublist.Setoid`:
   ```agda
   xs ⊇ ys = ys ⊆ xs
   xs ⊈ ys = ¬ (xs ⊆ ys)
   xs ⊉ ys = ¬ (xs ⊇ ys)
+  ```
+
+* Added new definitions to `Data.List.Relation.Binary.Sublist.Setoid`:
+  ```agda
+  UpperBound (τ₁ : xs ⊆ zs) (τ₂ : ys ⊆ zs)
+  ⊆-disjoint-union : Disjoint τ σ → UpperBound τ σ
+  ```
+
+* Added new proofs to `Data.List.Relation.Binary.Sublist.Setoid.Properties`:
+  ```agda
+  shrinkDisjointˡ : Disjoint τ₁ τ₂ → Disjoint (⊆-trans σ τ₁) τ₂
+  shrinkDisjointʳ : Disjoint τ₁ τ₂ → Disjoint τ₁ (⊆-trans σ τ₂)
+  ```
+
+* Added new definitions to `Data.List.Relation.Binary.Sublist.Propositional`:
+  ```agda
+  separateˡ : (τ₁ : xs ⊆ zs) (τ₂ : ys ⊆ zs) → Separation τ₁ τ₂
   ```
 
 * Added new proofs to `Data.List.Relation.Binary.Sublist.Propositional.Properties`:
@@ -219,9 +263,12 @@ Other minor additions
 
 * Added new proofs to `Data.Nat.Properties`:
   ```agda
-  even≢odd : ∀ m n → 2 * m ≢ suc (2 * n)
-  0≢1+n    : ∀ {n} → 0 ≢ suc n
-  n<1+n    : ∀ {n} → n < suc n
+  even≢odd     : ∀ m n → 2 * m ≢ suc (2 * n)
+  0≢1+n        : 0 ≢ suc n
+  n<1+n        : n < suc n
+  0<1+n        : 0 < suc n
+  m<m+n        : n > 0 → m < m + n
+  m≤n⇒m<n∨m≡n  : m ≤ n → m < n ⊎ m ≡ n
 
   +-rawMagma     : RawMagma 0ℓ 0ℓ
   *-rawMagma     : RawMagma 0ℓ 0ℓ
