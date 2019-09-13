@@ -33,7 +33,7 @@ open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; _≗_; refl ; sym ; cong)
 open import Relation.Nullary using (¬_; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Nullary.Decidable using (⌊_⌋)
+open import Relation.Nullary.Decidable using (isYes)
 open import Relation.Unary using (Pred; Decidable; ∁)
 open import Relation.Unary.Properties using (∁?)
 
@@ -941,7 +941,7 @@ module _ (p : A → Bool) where
 
 module _ (P : A → Set p) (P? : Decidable P) where
 
-  boolFilter-filters : ∀ xs → All P (boolFilter (⌊_⌋ ∘ P?) xs)
+  boolFilter-filters : ∀ xs → All P (boolFilter (isYes ∘ P?) xs)
   boolFilter-filters []       = []
   boolFilter-filters (x ∷ xs) with P? x
   ... | yes px = px ∷ boolFilter-filters xs

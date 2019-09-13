@@ -171,9 +171,14 @@ attached to all deprecated names to discourage their use.
   strictPartialOrder ↦ <-strictPartialOrder
   ```
 
-* In `Relation.Binary.Properties.DecTotalOrder`
+* In `Relation.Binary.Properties.DecTotalOrder`:
   ```agda
-  strictTotalOrder = <-strictTotalOrder
+  strictTotalOrder ↦ <-strictTotalOrder
+  ```
+
+* In `Relation.Nullary.Decidable.Core`:
+  ```agda
+  ⌊_⌋ ↦ isYes
   ```
 
 Other minor additions
