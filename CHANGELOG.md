@@ -114,6 +114,8 @@ The following new modules have been added to the library:
   Data.List.Kleene.AsList
   Data.List.Kleene.Base
 
+  Data.List.Relation.Binary.Sublist.Propositional.Disjoint
+
   Data.Rational.Unnormalised
   Data.Rational.Unnormalised.Properties
 
@@ -185,11 +187,44 @@ Other minor additions
   *-suc : m * sucℤ n ≡ m + m * n
   ```
 
-* Added new relations to `Data.List.Relation.Binary.Sublist.Setoid/Propositional`:
+* Added new definitions to `Data.List.Relation.Unary.All`:
+  ```agda
+  Null = All (λ _ → ⊥)
+  ```
+
+* Generalized type of `Data.List.Relation.Binary.Sublist.Heterogeneous.toAny` to
+  `Sublist R (a ∷ as) bs → Any (R a) bs`.
+
+* Added new relations to `Data.List.Relation.Binary.Sublist.Heterogeneous`:
+  ```agda
+  Disjoint (τ₁ : xs ⊆ zs) (τ₂ : ys ⊆ zs)
+  DisjointUnion (τ₁ : xs ⊆ zs) (τ₂ : ys ⊆ zs) (τ : xys ⊆ zs)
+  ```
+  Some of their properties have been added to
+  `Data.List.Relation.Binary.Sublist.Heterogeneous.Properties`.
+
+* Added new relations to `Data.List.Relation.Binary.Sublist.Setoid`:
   ```agda
   xs ⊇ ys = ys ⊆ xs
   xs ⊈ ys = ¬ (xs ⊆ ys)
   xs ⊉ ys = ¬ (xs ⊇ ys)
+  ```
+
+* Added new definitions to `Data.List.Relation.Binary.Sublist.Setoid`:
+  ```agda
+  UpperBound (τ₁ : xs ⊆ zs) (τ₂ : ys ⊆ zs)
+  ⊆-disjoint-union : Disjoint τ σ → UpperBound τ σ
+  ```
+
+* Added new proofs to `Data.List.Relation.Binary.Sublist.Setoid.Properties`:
+  ```agda
+  shrinkDisjointˡ : Disjoint τ₁ τ₂ → Disjoint (⊆-trans σ τ₁) τ₂
+  shrinkDisjointʳ : Disjoint τ₁ τ₂ → Disjoint τ₁ (⊆-trans σ τ₂)
+  ```
+
+* Added new definitions to `Data.List.Relation.Binary.Sublist.Propositional`:
+  ```agda
+  separateˡ : (τ₁ : xs ⊆ zs) (τ₂ : ys ⊆ zs) → Separation τ₁ τ₂
   ```
 
 * Added new proofs to `Data.List.Relation.Binary.Sublist.Propositional.Properties`:

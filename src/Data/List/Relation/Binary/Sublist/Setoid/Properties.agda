@@ -11,6 +11,8 @@ open import Relation.Binary using (Setoid; _⇒_; _Preserves_⟶_)
 module Data.List.Relation.Binary.Sublist.Setoid.Properties
   {c ℓ} (S : Setoid c ℓ) where
 
+open import Level
+
 open import Data.List.Base hiding (_∷ʳ_)
 import Data.List.Relation.Binary.Equality.Setoid as SetoidEquality
 import Data.List.Relation.Binary.Sublist.Setoid as SetoidSublist
@@ -18,19 +20,22 @@ import Data.List.Relation.Binary.Sublist.Heterogeneous.Properties
   as HeteroProperties
 import Data.List.Membership.Setoid as SetoidMembership
 open import Data.List.Relation.Unary.Any using (Any)
+
+import Data.Maybe.Relation.Unary.All as Maybe
 open import Data.Nat using (_≤_; _≥_; z≤n; s≤s)
 import Data.Nat.Properties as ℕₚ
-import Data.Maybe.Relation.Unary.All as Maybe
+open import Data.Product using (∃; _,_; proj₂)
+
 open import Function.Core
 open import Function.Bijection   using (_⤖_)
 open import Function.Equivalence using (_⇔_)
 
-open import Relation.Binary.PropositionalEquality using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong)
 open import Relation.Unary using (Pred; Decidable; Irrelevant)
 open import Relation.Nullary using (¬_)
 open import Relation.Nullary.Negation using (¬?)
 
-open Setoid S using (_≈_) renaming (Carrier to A)
+open Setoid S using (_≈_; trans) renaming (Carrier to A; refl to ≈-refl)
 open SetoidEquality S using (_≋_; ≋-refl)
 open SetoidSublist S hiding (map)
 open SetoidMembership S using (_∈_)
@@ -134,9 +139,9 @@ module _ {as bs : List A} where
 ------------------------------------------------------------------------
 -- take
 
-module _  where
+module _ {m n} {xs} where
 
-  take⁺ : ∀ {m n} {xs} → m ≤ n → take m xs ⊆ take n xs
+  take⁺ : m ≤ n → take m xs ⊆ take n xs
   take⁺ m≤n = HeteroProperties.take⁺ m≤n ≋-refl
 
 ------------------------------------------------------------------------
@@ -245,3 +250,38 @@ module _ {x xs} where
 
   [x]⊆xs⤖x∈xs : ([ x ] ⊆ xs) ⤖ (x ∈ xs)
   [x]⊆xs⤖x∈xs = HeteroProperties.Sublist-[x]-bijection
+
+------------------------------------------------------------------------
+-- Properties of Disjoint(ness) and DisjointUnion
+
+open HeteroProperties.Disjointness {R = _≈_} public
+open HeteroProperties.DisjointnessMonotonicity {R = _≈_} {S = _≈_} {T = _≈_} trans public
+
+-- Shrinking one of two disjoint lists preserves disjointness.
+
+-- We would have liked to define  shrinkDisjointˡ σ = shrinkDisjoint σ ⊆-refl
+-- but alas, this is only possible for groupoids, not setoids in general.
+
+shrinkDisjointˡ : ∀ {xs ys zs us} {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs} (σ : us ⊆ xs) →
+    Disjoint τ₁ τ₂ →
+    Disjoint (⊆-trans σ τ₁) τ₂
+-- Not affected by σ:
+shrinkDisjointˡ σ          (y   ∷ₙ d) = y             ∷ₙ shrinkDisjointˡ σ d
+shrinkDisjointˡ σ          (y≈z ∷ᵣ d) = y≈z           ∷ᵣ shrinkDisjointˡ σ d
+-- In σ: keep x.
+shrinkDisjointˡ (u≈x ∷ σ)  (x≈z ∷ₗ d) = trans u≈x x≈z ∷ₗ shrinkDisjointˡ σ d
+-- Not in σ: drop x.
+shrinkDisjointˡ (x  ∷ʳ σ)  (x≈z ∷ₗ d) = _             ∷ₙ shrinkDisjointˡ σ d
+shrinkDisjointˡ []         []         = []
+
+shrinkDisjointʳ : ∀ {xs ys zs vs} {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs} (σ : vs ⊆ ys) →
+  Disjoint τ₁ τ₂ →
+  Disjoint τ₁ (⊆-trans σ τ₂)
+-- Not affected by σ:
+shrinkDisjointʳ σ          (y   ∷ₙ d) = y             ∷ₙ shrinkDisjointʳ σ d
+shrinkDisjointʳ σ          (x≈z ∷ₗ d) = x≈z           ∷ₗ shrinkDisjointʳ σ d
+-- In σ: keep y.
+shrinkDisjointʳ (v≈y ∷ σ)  (y≈z ∷ᵣ d) = trans v≈y y≈z ∷ᵣ shrinkDisjointʳ σ d
+-- Not in σ: drop y.
+shrinkDisjointʳ (y  ∷ʳ σ)  (y≈z ∷ᵣ d) = _             ∷ₙ shrinkDisjointʳ σ d
+shrinkDisjointʳ []         []         = []
