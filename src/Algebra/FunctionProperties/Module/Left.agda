@@ -17,13 +17,12 @@ module Algebra.FunctionProperties.Module.Left
   {a b ℓa ℓb} {A : Set a} {B : Set b} (_≈ᴬ_ : Rel A ℓa) (_≈ᴮ_ : Rel B ℓb)
   where
 
-open import Algebra.FunctionProperties.Core
 open import Data.Product
 
 ------------------------------------------------------------------------
 -- Binary operations
 
-open import Algebra.FunctionProperties.Module.Core public
+open import Algebra.FunctionProperties.Core public
 
 ------------------------------------------------------------------------
 -- Properties of operations

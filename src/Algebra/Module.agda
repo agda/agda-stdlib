@@ -12,7 +12,6 @@ module Algebra.Module where
 open import Algebra
 import Algebra.Structures.Module as Str
 open import Algebra.FunctionProperties.Core
-open import Algebra.FunctionProperties.Module.Core
 import Algebra.FunctionProperties.Module.Left as LFP
 import Algebra.FunctionProperties.Module.Right as RFP
 open import Function

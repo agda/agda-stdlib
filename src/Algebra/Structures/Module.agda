@@ -14,7 +14,6 @@ module Algebra.Structures.Module
 
 open import Algebra
 open import Algebra.FunctionProperties.Core
-open import Algebra.FunctionProperties.Module.Core
 import Algebra.FunctionProperties as FP
 import Algebra.FunctionProperties.Consequences as Consequences
 import Algebra.FunctionProperties.Module.Left as L
