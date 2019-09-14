@@ -151,3 +151,17 @@ module _ {r ℓr} (commutativeRing : CommutativeRing r ℓr) where
       isLeftModule : IsLeftModule ring +ᴹ *ₗ 0ᴹ -ᴹ
 
     open IsLeftModule isLeftModule public
+
+    isSemimodule : IsSemimodule commutativeSemiring +ᴹ *ₗ 0ᴹ
+    isSemimodule = record
+      { isLeftSemimodule = record
+        { +ᴹ-isCommutativeMonoid = +ᴹ-isCommutativeMonoid
+        ; *ₗ-cong = *ₗ-cong
+        ; *ₗ-zeroˡ = *ₗ-zeroˡ
+        ; *ₗ-distribʳ = *ₗ-distribʳ
+        ; *ₗ-identityˡ = *ₗ-identityˡ
+        ; *ₗ-assoc = *ₗ-assoc
+        ; *ₗ-zeroʳ = *ₗ-zeroʳ
+        ; *ₗ-distribˡ = *ₗ-distribˡ
+        }
+      }
