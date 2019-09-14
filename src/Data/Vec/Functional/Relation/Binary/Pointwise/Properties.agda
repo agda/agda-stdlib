@@ -76,7 +76,7 @@ tail⁺ R rs = rs ∘ suc
 ++⁺ : ∀ (R : REL A B r) {m n xs ys xs′ ys′} →
       Pointwise R {n = m} xs ys → Pointwise R {n = n} xs′ ys′ →
       Pointwise R (xs ++ xs′) (ys ++ ys′)
-++⁺ R {m} rs rs′ i with split+ m i
+++⁺ R {m} rs rs′ i with splitAt m i
 ... | inj₁ i′ = rs i′
 ... | inj₂ j′ = rs′ j′
 
@@ -84,13 +84,13 @@ tail⁺ R rs = rs ∘ suc
          {xs′ : Vector A n} {ys′ : Vector B n} →
        Pointwise R (xs ++ xs′) (ys ++ ys′) → Pointwise R xs ys
 ++⁻ˡ R {m} {n} _ _ rs i with rs (inject+ n i)
-... | r rewrite split+-inject+ m n i = r
+... | r rewrite splitAt-inject+ m n i = r
 
 ++⁻ʳ : ∀ (R : REL A B r) {m n} (xs : Vector A m) (ys : Vector B m)
          {xs′ : Vector A n} {ys′ : Vector B n} →
        Pointwise R (xs ++ xs′) (ys ++ ys′) → Pointwise R xs′ ys′
 ++⁻ʳ R {m} {n} _ _ rs i with rs (raise m i)
-... | r rewrite split+-raise m n i = r
+... | r rewrite splitAt-raise m n i = r
 
 ++⁻ : ∀ (R : REL A B r) {m n} xs ys {xs′ ys′} →
       Pointwise R (xs ++ xs′) (ys ++ ys′) →

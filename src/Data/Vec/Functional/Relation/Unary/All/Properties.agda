@@ -83,19 +83,19 @@ tail⁺ P ps = ps ∘ suc
 
 ++⁺ : ∀ (P : Pred A p) {m n xs ys} →
       All P {n = m} xs → All P {n = n} ys → All P (xs ++ ys)
-++⁺ P {m} {n} pxs pys i with split+ m i
+++⁺ P {m} {n} pxs pys i with splitAt m i
 ... | inj₁ i′ = pxs i′
 ... | inj₂ j′ = pys j′
 
 ++⁻ˡ : ∀ (P : Pred A p) {m n} (xs : Vector A m) {ys : Vector A n} →
        All P (xs ++ ys) → All P xs
 ++⁻ˡ P {m} {n} _ ps i with ps (inject+ n i)
-... | p rewrite split+-inject+ m n i = p
+... | p rewrite splitAt-inject+ m n i = p
 
 ++⁻ʳ : ∀ (P : Pred A p) {m n} (xs : Vector A m) {ys : Vector A n} →
        All P (xs ++ ys) → All P ys
 ++⁻ʳ P {m} {n} _ ps i with ps (raise m i)
-... | p rewrite split+-raise m n i = p
+... | p rewrite splitAt-raise m n i = p
 
 ++⁻ : ∀ (P : Pred A p) {m n} (xs : Vector A m) {ys : Vector A n} →
       All P (xs ++ ys) → All P xs × All P ys

@@ -121,13 +121,14 @@ strengthen : ∀ {n} (i : Fin n) → Fin′ (suc i)
 strengthen zero    = zero
 strengthen (suc i) = suc (strengthen i)
 
--- split+ m "i" = inj₁ "i"      if i < m
---                inj₂ "i - m"  if i ≥ m
+-- splitAt m "i" = inj₁ "i"      if i < m
+--                 inj₂ "i - m"  if i ≥ m
+-- This is dual to splitAt from Data.Vec.
 
-split+ : ∀ m {n} → Fin (m ℕ.+ n) → Fin m ⊎ Fin n
-split+ zero i = inj₂ i
-split+ (suc m) zero = inj₁ zero
-split+ (suc m) (suc i) = ⊎.map suc id (split+ m i)
+splitAt : ∀ m {n} → Fin (m ℕ.+ n) → Fin m ⊎ Fin n
+splitAt zero i = inj₂ i
+splitAt (suc m) zero = inj₁ zero
+splitAt (suc m) (suc i) = ⊎.map suc id (splitAt m i)
 
 ------------------------------------------------------------------------
 -- Operations

@@ -384,13 +384,13 @@ inject≤-idempotent {_} {suc n} {suc k} (suc i) _ _ _ =
 ------------------------------------------------------------------------
 -- Fin (m + n) ≃ Fin m ⊎ Fin n
 
-split+-inject+ : ∀ m n i → split+ m (inject+ n i) ≡ inj₁ i
-split+-inject+ (suc m) n zero = refl
-split+-inject+ (suc m) n (suc i) rewrite split+-inject+ m n i = refl
+splitAt-inject+ : ∀ m n i → splitAt m (inject+ n i) ≡ inj₁ i
+splitAt-inject+ (suc m) n zero = refl
+splitAt-inject+ (suc m) n (suc i) rewrite splitAt-inject+ m n i = refl
 
-split+-raise : ∀ m n i → split+ m (raise {n} m i) ≡ inj₂ i
-split+-raise zero n i = refl
-split+-raise (suc m) n i rewrite split+-raise m n i = refl
+splitAt-raise : ∀ m n i → splitAt m (raise {n} m i) ≡ inj₂ i
+splitAt-raise zero n i = refl
+splitAt-raise (suc m) n i rewrite splitAt-raise m n i = refl
 
 ------------------------------------------------------------------------
 -- _≺_
