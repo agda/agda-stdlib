@@ -17,8 +17,8 @@ private
   variable
     c ℓ : Level
 
-self-leftSemimodule : (R : Semiring c ℓ) → LeftSemimodule R c ℓ
-self-leftSemimodule semiring = record
+semiring⇒leftSemimodule : (R : Semiring c ℓ) → LeftSemimodule R c ℓ
+semiring⇒leftSemimodule semiring = record
   { Carrierᴹ = Carrier
   ; _≈ᴹ_ = _≈_
   ; _+ᴹ_ = _+_
@@ -36,8 +36,8 @@ self-leftSemimodule semiring = record
     }
   } where open Semiring semiring
 
-self-rightSemimodule : (R : Semiring c ℓ) → RightSemimodule R c ℓ
-self-rightSemimodule semiring = record
+semiring⇒rightSemimodule : (R : Semiring c ℓ) → RightSemimodule R c ℓ
+semiring⇒rightSemimodule semiring = record
   { Carrierᴹ = Carrier
   ; _≈ᴹ_ = _≈_
   ; _+ᴹ_ = _+_
@@ -55,43 +55,44 @@ self-rightSemimodule semiring = record
     }
   } where open Semiring semiring
 
-self-semimodule : (R : CommutativeSemiring c ℓ) → Semimodule R c ℓ
-self-semimodule commutativeSemiring = record
+commutativeSemiring⇒semimodule :
+  (R : CommutativeSemiring c ℓ) → Semimodule R c ℓ
+commutativeSemiring⇒semimodule commutativeSemiring = record
   { isSemimodule = record
     { isLeftSemimodule =
-      let open LeftSemimodule (self-leftSemimodule semiring) in
+      let open LeftSemimodule (semiring⇒leftSemimodule semiring) in
       isLeftSemimodule
     }
   } where open CommutativeSemiring commutativeSemiring
 
-self-leftModule : (R : Ring c ℓ) → LeftModule R c ℓ
-self-leftModule ring = record
+ring⇒leftModule : (R : Ring c ℓ) → LeftModule R c ℓ
+ring⇒leftModule ring = record
   { -ᴹ_ = -_
   ; isLeftModule = record
     { isLeftSemimodule =
-      let open LeftSemimodule (self-leftSemimodule semiring) in
+      let open LeftSemimodule (semiring⇒leftSemimodule semiring) in
       isLeftSemimodule
     ; -ᴹ‿cong = -‿cong
     ; -ᴹ‿inverse = -‿inverse
     }
   } where open Ring ring
 
-self-rightModule : (R : Ring c ℓ) → RightModule R c ℓ
-self-rightModule ring = record
+ring⇒rightModule : (R : Ring c ℓ) → RightModule R c ℓ
+ring⇒rightModule ring = record
   { -ᴹ_ = -_
   ; isRightModule = record
     { isRightSemimodule =
-      let open RightSemimodule (self-rightSemimodule semiring) in
+      let open RightSemimodule (semiring⇒rightSemimodule semiring) in
       isRightSemimodule
     ; -ᴹ‿cong = -‿cong
     ; -ᴹ‿inverse = -‿inverse
     }
   } where open Ring ring
 
-self-module : (R : CommutativeRing c ℓ) → Module R c ℓ
-self-module commutativeRing = record
+commutativeRing⇒module : (R : CommutativeRing c ℓ) → Module R c ℓ
+commutativeRing⇒module commutativeRing = record
   { isModule = record
     { isLeftModule =
-      let open LeftModule (self-leftModule ring) in isLeftModule
+      let open LeftModule (ring⇒leftModule ring) in isLeftModule
     }
   } where open CommutativeRing commutativeRing
