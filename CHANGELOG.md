@@ -15,10 +15,10 @@ Bug-fixes
 
 
 
-Other non-backwards compatible changes
---------------------------------------
+Non-backwards compatible changes
+--------------------------------
 
-#### New function hierarchy
+### New function hierarchy
 
 * The main problems with the current way various types of functions are
 handled are:
@@ -80,7 +80,7 @@ we would encourage to the new hierarchy in the medium to long term.
 * Minor change: the propositional package for left inverses has been renamed
 from `_↞_` to `_↩_` in order to make room for the new package for right inverse `_↪_`.
 
-#### Re-implementation of `Data.Bin`
+### Re-implementation of `Data.Bin`
 
 * `Data/Bin.agda` and `Data.Bin/*.agda`  of lib-1.0 are removed,
   added new `Data.Bin.Base, Data.Bin.Properties`.
@@ -93,11 +93,41 @@ from `_↞_` to `_↩_` in order to make room for the new package for right inve
    e-mail list. The referred code (of 2016) resides on
    http://www.cs.bham.ac.uk/~mhe/agda-new/BinaryNaturals.html
 
+### Other breaking changes
+
+#### Harmonizing `List.All` and `Vec` in their role as finite maps.
+
+`Data.List.Relation.Unary.All.updateAt` is analogous to
+`Data.Vec.updateAt` and thus, the API for `All` has been changed to
+match the one for `Vec`:
+
+* The "points-to" relation `_[_]=_` for vectors has been ported to `All`.
+
+* The property
+  `Data.List.Relation.Unary.All.Properties.updateAt-updates` is now
+  formulated in terms of the new "points-to" relation `_[_]=_` rather than
+  the `lookup` function.  The old property is (in a minor variant)
+  available under the name `lookup∘updateAt`.
+
+* `updateAt-cong` has been renamed to `updateAt-cong-relative`, and a new
+  `updateAt-cong` has been ported from `Vec`.
+
+* Further properties of `Vec` have been ported to `All`:
+  ```
+  []=lookup
+  []=⇒lookup
+  lookup⇒[]=
+  updateAt-minimal
+  updateAt-id-relative
+  updateAt-compose-relative
+  updateAt-commutes
+  ```
+
+
 New modules
 -----------
 The following new modules have been added to the library:
 
-* The following new modules have been added to the library:
   ```
   Algebra.Morphism.RawMagma
   Algebra.Morphism.RawMonoid

@@ -13,9 +13,18 @@ open import Data.Bool.Base using (Bool; T)
 open import Data.Bool.Properties using (T-∧)
 open import Data.Empty
 open import Data.Fin using (Fin) renaming (zero to fzero; suc to fsuc)
-open import Data.List.Base
+open import Data.List.Base as List using
+  ( List; []; _∷_; [_]; _∷ʳ_; fromMaybe; null; _++_; concat; map; mapMaybe
+  ; inits; tails; drop; take; applyUpTo; applyDownFrom; replicate; tabulate
+  ; filter; zipWith; all
+  )
 open import Data.List.Membership.Propositional
-open import Data.List.Relation.Unary.All as All using (All; []; _∷_; Null)
+open import Data.List.Membership.Propositional.Properties
+open import Data.List.Relation.Unary.All as All using
+  ( All; []; _∷_; lookup; updateAt
+  ; _[_]=_; here; there
+  ; Null
+  )
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 import Data.List.Relation.Binary.Equality.Setoid as ListEq using (_≋_; []; _∷_)
 open import Data.List.Relation.Binary.Pointwise using (Pointwise; []; _∷_)
@@ -32,7 +41,8 @@ open import Function.Inverse using (_↔_; inverse)
 open import Function.Surjection using (_↠_; surjection)
 open import Level using (Level)
 open import Relation.Binary using (REL; Setoid; _Respects_)
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.PropositionalEquality
+  using (_≡_; refl; cong; cong₂; _≗_)
 open import Relation.Nullary
 open import Relation.Unary
   using (Decidable; Pred; Universal) renaming (_⊆_ to _⋐_)
@@ -53,6 +63,22 @@ Null⇒null [] = _
 null⇒Null : ∀{xs : List A} → T (null xs) → Null xs
 null⇒Null {xs = []   } _ = []
 null⇒Null {xs = _ ∷ _} ()
+
+------------------------------------------------------------------------
+-- Properties of the "points-to" relation _[_]=_
+
+module _ {p} {P : Pred A p} where
+
+  -- Relation _[_]=_ is deterministic: each index points to a single value.
+
+  []=-injective : ∀ {x xs} {px qx : P x} {pxs : All P xs} {i : x ∈ xs} →
+                  pxs [ i ]= px →
+                  pxs [ i ]= qx →
+                  px ≡ qx
+  []=-injective here          here          = refl
+  []=-injective (there x↦px) (there x↦qx) = []=-injective x↦px x↦qx
+
+  -- See also Data.List.Relation.Unary.All.Properties.WithK.[]=-irrelevant.
 
 ------------------------------------------------------------------------
 -- Lemmas relating Any, All and negation.
@@ -81,8 +107,8 @@ module _ {P : A → Set p} where
   ¬Any↠All¬ = surjection (¬Any⇒All¬ _) All¬⇒¬Any to∘from
     where
     to∘from : ∀ {xs} (¬p : All (¬_ ∘ P) xs) → ¬Any⇒All¬ xs (All¬⇒¬Any ¬p) ≡ ¬p
-    to∘from []         = P.refl
-    to∘from (¬p ∷ ¬ps) = P.cong₂ _∷_ P.refl (to∘from ¬ps)
+    to∘from []         = refl
+    to∘from (¬p ∷ ¬ps) = cong₂ _∷_ refl (to∘from ¬ps)
 
     -- If equality of functions were extensional, then the surjection
     -- could be strengthened to a bijection.
@@ -91,8 +117,8 @@ module _ {P : A → Set p} where
               ∀ xs → (¬p : ¬ Any P xs) → All¬⇒¬Any (¬Any⇒All¬ xs ¬p) ≡ ¬p
     from∘to ext []       ¬p = ext λ ()
     from∘to ext (x ∷ xs) ¬p = ext λ
-      { (here p)  → P.refl
-      ; (there p) → P.cong (λ f → f p) $ from∘to ext xs (¬p ∘ there)
+      { (here p)  → refl
+      ; (there p) → cong (λ f → f p) $ from∘to ext xs (¬p ∘ there)
       }
 
   Any¬⇔¬All : ∀ {xs} → Decidable P → Any (¬_ ∘ P) xs ⇔ (¬ All P xs)
@@ -116,67 +142,195 @@ module _ {_~_ : REL (List A) B ℓ} where
     All-swap (x~ys ∷ (All.map All.tail pxss))
 
 ------------------------------------------------------------------------
+-- Defining properties of lookup and _[_]=_
+--
+-- pxs [ i ]= px  if and only if  lookup pxs i = px.
+
+module _ {P : A → Set p} where
+
+  -- `i` points to `lookup pxs i` in `pxs`.
+
+  []=lookup : ∀{x xs} (pxs : All P xs) (i : x ∈ xs) →
+              pxs [ i ]= lookup pxs i
+  []=lookup (px ∷ pxs) (here refl) = here
+  []=lookup (px ∷ pxs) (there i)   = there ([]=lookup pxs i)
+
+  -- If `i` points to `px` in `pxs`, then `lookup pxs i ≡ px`.
+
+  []=⇒lookup : ∀{x xs} {px : P x} {pxs : All P xs} {i : x ∈ xs} →
+               pxs [ i ]= px →
+               lookup pxs i ≡ px
+  []=⇒lookup x↦px = []=-injective ([]=lookup _ _) x↦px
+
+  -- If `lookup pxs i ≡ px`, then `i` points to `px` in `pxs`.
+
+  lookup⇒[]= : ∀{x xs} {px : P x} (pxs : All P xs) (i : x ∈ xs) →
+               lookup pxs i ≡ px →
+               pxs [ i ]= px
+  lookup⇒[]= pxs i refl = []=lookup pxs i
+
+------------------------------------------------------------------------
 -- Properties of operations over `All`
 ------------------------------------------------------------------------
 -- map
 
 module _ {P : Pred A p} {Q : Pred A q} {f : P ⋐ Q} where
 
-  map-cong : ∀ {xs} {g : P ⋐ Q} (ps : All P xs) →
-             (∀ {x} → f {x} P.≗ g) → All.map f ps ≡ All.map g ps
-  map-cong []        _   = P.refl
-  map-cong (px ∷ ps) feq = P.cong₂ _∷_ (feq px) (map-cong ps feq)
+  map-cong : ∀ {xs} {g : P ⋐ Q} (pxs : All P xs) →
+             (∀ {x} → f {x} ≗ g) → All.map f pxs ≡ All.map g pxs
+  map-cong []         _   = refl
+  map-cong (px ∷ pxs) feq = cong₂ _∷_ (feq px) (map-cong pxs feq)
 
-  map-id : ∀ {xs} (ps : All P xs) → All.map id ps ≡ ps
-  map-id []        = P.refl
-  map-id (px ∷ ps) = P.cong (px ∷_)  (map-id ps)
+  map-id : ∀ {xs} (pxs : All P xs) → All.map id pxs ≡ pxs
+  map-id []         = refl
+  map-id (px ∷ pxs) = cong (px ∷_)  (map-id pxs)
 
-  map-compose : ∀ {r} {R : Pred A r} {xs} {g : Q ⋐ R} (ps : All P xs) →
-                All.map g (All.map f ps) ≡ All.map (g ∘ f) ps
-  map-compose []        = P.refl
-  map-compose (px ∷ ps) = P.cong (_ ∷_) (map-compose ps)
+  map-compose : ∀ {r} {R : Pred A r} {xs} {g : Q ⋐ R} (pxs : All P xs) →
+                All.map g (All.map f pxs) ≡ All.map (g ∘ f) pxs
+  map-compose []         = refl
+  map-compose (px ∷ pxs) = cong (_ ∷_) (map-compose pxs)
 
-  lookup-map : ∀ {xs x} (ps : All P xs) (i : x ∈ xs) →
-               All.lookup (All.map f ps) i ≡ f (All.lookup ps i)
-  lookup-map (px ∷ pxs) (here P.refl) = P.refl
-  lookup-map (px ∷ pxs) (there i) = lookup-map pxs i
+  lookup-map : ∀ {xs x} (pxs : All P xs) (i : x ∈ xs) →
+               lookup (All.map f pxs) i ≡ f (lookup pxs i)
+  lookup-map (px ∷ pxs) (here refl) = refl
+  lookup-map (px ∷ pxs) (there i)   = lookup-map pxs i
 
 ------------------------------------------------------------------------
--- _[_]%=_/updateAt
+-- _[_]%=_ / updateAt
 
 module _ {P : Pred A p} where
 
-  updateAt-updates : ∀ {x xs px} (pxs : All P xs) (i : x ∈ xs)
-                     {f : P x → P x} → All.lookup pxs i ≡ px →
-                     All.lookup (pxs All.[ i ]%= f) i ≡ f px
-  updateAt-updates (px ∷ pxs) (here P.refl) P.refl = P.refl
-  updateAt-updates (px ∷ pxs) (there i) = updateAt-updates pxs i
+  -- Defining properties of updateAt:
 
-  updateAt-cong : ∀ {x xs} (pxs : All P xs) (i : x ∈ xs)
-                  {f g : P x → P x} →
-                  f (All.lookup pxs i) ≡ g (All.lookup pxs i) →
-                  (pxs All.[ i ]%= f) ≡ (pxs All.[ i ]%= g)
-  updateAt-cong (px ∷ pxs) (here P.refl)     = P.cong (_∷ pxs)
-  updateAt-cong (px ∷ pxs) (there i)     f≗g = P.cong (px ∷_) (updateAt-cong pxs i f≗g)
+  -- (+) updateAt actually updates the element at the given index.
 
-  updateAt-id : ∀ {x xs} (pxs : All P xs) (i : x ∈ xs) →
-                (pxs All.[ i ]%= id) ≡ pxs
-  updateAt-id (px ∷ pxs) (here P.refl) = P.refl
-  updateAt-id (px ∷ pxs) (there i)     = P.cong (px ∷_) (updateAt-id pxs i)
+  updateAt-updates : ∀ {x xs} (i : x ∈ xs) {f : P x → P x} {px : P x} (pxs : All P xs) →
+                     pxs              [ i ]= px →
+                     updateAt i f pxs [ i ]= f px
+  updateAt-updates (here  refl) (px ∷ pxs) here         = here
+  updateAt-updates (there i)    (px ∷ pxs) (there x↦px) =
+    there (updateAt-updates i pxs x↦px)
 
-  updateAt-compose : ∀ {x xs} (pxs : All P xs) (i : x ∈ xs) {f g : P x → P x} →
-                     (pxs All.[ i ]%= f All.[ i ]%= g) ≡ pxs All.[ i ]%= (g ∘ f)
-  updateAt-compose (px ∷ pxs) (here P.refl) = P.refl
-  updateAt-compose (px ∷ pxs) (there i)     = P.cong (px ∷_) (updateAt-compose pxs i)
+  -- (-) updateAt i does not touch the elements at other indices.
+
+  updateAt-minimal : ∀ {x y xs} (i : x ∈ xs) (j : y ∈ xs) →
+                     ∀ {f : P y → P y} {px : P x} (pxs : All P xs) →
+                     i ≢∈ j →
+                     pxs              [ i ]= px →
+                     updateAt j f pxs [ i ]= px
+  updateAt-minimal (here .refl) (here refl) (px ∷ pxs) i≢j here        =
+    ⊥-elim (i≢j refl refl)
+  updateAt-minimal (here .refl) (there j)   (px ∷ pxs) i≢j here        = here
+  updateAt-minimal (there i)    (here refl) (px ∷ pxs) i≢j (there val) = there val
+  updateAt-minimal (there i)    (there j)   (px ∷ pxs) i≢j (there val) =
+    there (updateAt-minimal i j pxs (there-injective-≢∈ i≢j) val)
+
+  -- lookup after updateAt reduces.
+
+  -- For same index this is an easy consequence of updateAt-updates
+  -- using []=↔lookup.
+
+  lookup∘updateAt : ∀ {x xs} (pxs : All P xs) (i : x ∈ xs) {f : P x → P x} →
+                    lookup (updateAt i f pxs) i ≡ f (lookup pxs i)
+  lookup∘updateAt pxs i =
+    []=⇒lookup (updateAt-updates i pxs (lookup⇒[]= pxs i refl))
+
+  -- For different indices it easily follows from updateAt-minimal.
+
+  lookup∘updateAt′ : ∀ {x y xs} (i : x ∈ xs) (j : y ∈ xs) →
+                     ∀ {f : P y → P y} {px : P x} (pxs : All P xs) →
+                     i ≢∈ j →
+                     lookup (updateAt j f pxs) i ≡ lookup pxs i
+  lookup∘updateAt′ i j pxs i≢j =
+    []=⇒lookup (updateAt-minimal i j pxs i≢j (lookup⇒[]= pxs i refl))
+
+  -- The other properties are consequences of (+) and (-).
+  -- We spell the most natural properties out.
+  -- Direct inductive proofs are in most cases easier than just using
+  -- the defining properties.
+
+  -- In the explanations, we make use of shorthand  f = g ↾ x
+  -- meaning that f and g agree at point x, i.e.  f x ≡ g x.
+
+  -- updateAt (i : x ∈ xs)  is a morphism
+  -- from the monoid of endofunctions  P x → P x
+  -- to the monoid of endofunctions  All P xs → All P xs.
+
+  -- 1a. relative identity:  f = id ↾ (lookup pxs i)
+  --                implies  updateAt i f = id ↾ pxs
+
+  updateAt-id-relative : ∀ {x xs} (i : x ∈ xs) {f : P x → P x} (pxs : All P xs) →
+                         f (lookup pxs i) ≡ lookup pxs i →
+                         updateAt i f pxs ≡ pxs
+  updateAt-id-relative (here refl)(px ∷ pxs) eq = cong (_∷ pxs) eq
+  updateAt-id-relative (there i)  (px ∷ pxs) eq = cong (px ∷_) (updateAt-id-relative i pxs eq)
+
+  -- 1b. identity:  updateAt i id ≗ id
+
+  updateAt-id : ∀ {x xs} (i : x ∈ xs) (pxs : All P xs) →
+                updateAt i id pxs ≡ pxs
+  updateAt-id i pxs = updateAt-id-relative i pxs refl
+
+  -- 2a. relative composition:  f ∘ g = h ↾ (lookup i pxs)
+  --                   implies  updateAt i f ∘ updateAt i g = updateAt i h ↾ pxs
+
+  updateAt-compose-relative : ∀ {x xs} (i : x ∈ xs) {f g h : P x → P x} (pxs : All P xs) →
+                              f (g (lookup pxs i)) ≡ h (lookup pxs i) →
+                              updateAt i f (updateAt i g pxs) ≡ updateAt i h pxs
+  updateAt-compose-relative (here refl) (px ∷ pxs) fg=h = cong (_∷ pxs) fg=h
+  updateAt-compose-relative (there i)   (px ∷ pxs) fg=h =
+    cong (px ∷_) (updateAt-compose-relative i pxs fg=h)
+
+  -- 2b. composition:  updateAt i f ∘ updateAt i g ≗ updateAt i (f ∘ g)
+
+  updateAt-compose : ∀ {x xs} (i : x ∈ xs) {f g : P x → P x} →
+                     updateAt {P = P} i f ∘ updateAt i g ≗ updateAt i (f ∘ g)
+  updateAt-compose (here refl) (px ∷ pxs) = refl
+  updateAt-compose (there i)   (px ∷ pxs) = cong (px ∷_) (updateAt-compose i pxs)
+
+  -- 3. congruence:  updateAt i  is a congruence wrt. extensional equality.
+
+  -- 3a.  If    f = g ↾ (lookup pxs i)
+  --      then  updateAt i f = updateAt i g ↾ pxs
+
+  updateAt-cong-relative : ∀ {x xs} (i : x ∈ xs) {f g : P x → P x} (pxs : All P xs) →
+                           f (lookup pxs i) ≡ g (lookup pxs i) →
+                           updateAt i f pxs ≡ updateAt i g pxs
+  updateAt-cong-relative (here refl) (px ∷ pxs) f=g = cong (_∷ pxs) f=g
+  updateAt-cong-relative (there i)   (px ∷ pxs) f=g = cong (px ∷_) (updateAt-cong-relative i pxs f=g)
+
+  -- 3b. congruence:  f ≗ g → updateAt i f ≗ updateAt i g
+
+  updateAt-cong : ∀ {x xs} (i : x ∈ xs) {f g : P x → P x} →
+                  f ≗ g →
+                  updateAt i f ≗ updateAt i g
+  updateAt-cong i f≗g pxs = updateAt-cong-relative i pxs (f≗g (lookup pxs i))
+
+
+  -- The order of updates at different indices i ≢ j does not matter.
+
+  -- This a consequence of updateAt-updates and updateAt-minimal
+  -- but easier to prove inductively.
+
+  updateAt-commutes : ∀ {x y xs} (i : x ∈ xs) (j : y ∈ xs) →
+                      ∀ {f : P x → P x} {g : P y → P y} →
+                      i ≢∈ j →
+                      updateAt i f ∘ updateAt j g ≗ updateAt j g ∘ updateAt i f
+  updateAt-commutes (here refl) (here refl) i≢j (px ∷ pxs) =
+    ⊥-elim (i≢j refl refl)
+  updateAt-commutes (here refl) (there j)   i≢j (px ∷ pxs) = refl
+  updateAt-commutes (there i)   (here refl) i≢j (px ∷ pxs) = refl
+  updateAt-commutes (there i)   (there j)   i≢j (px ∷ pxs) =
+    cong (px ∷_) (updateAt-commutes i j (there-injective-≢∈ i≢j) pxs)
 
 module _ {P : Pred A p} {Q : Pred A q} where
 
   map-updateAt : ∀ {x xs} {f : P ⋐ Q} {g : P x → P x} {h : Q x → Q x}
                  (pxs : All P xs) (i : x ∈ xs) →
-                 f (g (All.lookup pxs i)) ≡ h (f (All.lookup pxs i)) →
+                 f (g (lookup pxs i)) ≡ h (f (lookup pxs i)) →
                  All.map f (pxs All.[ i ]%= g) ≡ (All.map f pxs) All.[ i ]%= h
-  map-updateAt (px ∷ pxs) (here P.refl) = P.cong (_∷ _)
-  map-updateAt (px ∷ pxs) (there i) feq = P.cong (_ ∷_) (map-updateAt pxs i feq)
+  map-updateAt (px ∷ pxs) (here refl) = cong (_∷ _)
+  map-updateAt (px ∷ pxs) (there i) feq = cong (_ ∷_) (map-updateAt pxs i feq)
 
 ------------------------------------------------------------------------
 -- Introduction (⁺) and elimination (⁻) rules for list operations
@@ -238,13 +392,13 @@ module _ {P : A → Set p} where
     where
     ++⁺∘++⁻ : ∀ xs {ys} (p : All P (xs ++ ys)) →
               uncurry′ ++⁺ (++⁻ xs p) ≡ p
-    ++⁺∘++⁻ []       p          = P.refl
-    ++⁺∘++⁻ (x ∷ xs) (px ∷ pxs) = P.cong (_∷_ px) $ ++⁺∘++⁻ xs pxs
+    ++⁺∘++⁻ []       p          = refl
+    ++⁺∘++⁻ (x ∷ xs) (px ∷ pxs) = cong (_∷_ px) $ ++⁺∘++⁻ xs pxs
 
     ++⁻∘++⁺ : ∀ {xs ys} (p : All P xs × All P ys) →
               ++⁻ xs (uncurry ++⁺ p) ≡ p
-    ++⁻∘++⁺ ([]       , pys) = P.refl
-    ++⁻∘++⁺ (px ∷ pxs , pys) rewrite ++⁻∘++⁺ (pxs , pys) = P.refl
+    ++⁻∘++⁺ ([]       , pys) = refl
+    ++⁻∘++⁺ (px ∷ pxs , pys) rewrite ++⁻∘++⁺ (pxs , pys) = refl
 
 ------------------------------------------------------------------------
 -- concat
@@ -452,7 +606,7 @@ module _ (p : A → Bool) where
 -- All is anti-monotone.
 
 anti-mono : ∀ {P : A → Set p} {xs ys} → xs ⊆ ys → All P ys → All P xs
-anti-mono xs⊆ys pys = All.tabulate (All.lookup pys ∘ xs⊆ys)
+anti-mono xs⊆ys pys = All.tabulate (lookup pys ∘ xs⊆ys)
 
 all-anti-mono : ∀ (p : A → Bool) {xs ys} →
                 xs ⊆ ys → T (all p ys) → T (all p xs)
