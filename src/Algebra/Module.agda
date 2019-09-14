@@ -209,28 +209,24 @@ record Semimodule {r ℓr} (commutativeSemiring : CommutativeSemiring r ℓr) m 
   *ᵣ-comm : R.Commutative _*ᵣ_
   *ᵣ-comm m x y = *ₗ-comm y x m
 
-  rightSemimodule : RightSemimodule semiring m ℓm
-  rightSemimodule = record
-    { Carrierᴹ = Carrierᴹ
-    ; _≈ᴹ_ = _≈ᴹ_
-    ; _+ᴹ_ = _+ᴹ_
-    ; _*ᵣ_ = _*ᵣ_
-    ; 0ᴹ = 0ᴹ
-    ; isRightSemimodule = record
-      { +ᴹ-isCommutativeMonoid = +ᴹ-isCommutativeMonoid
-      ; *ᵣ-cong = flip *ₗ-cong
-      ; *ᵣ-zeroʳ = *ₗ-zeroˡ
-      ; *ᵣ-distribˡ = λ m x y → *ₗ-distribʳ m x y
-      ; *ᵣ-identityʳ = λ m → *ₗ-identityˡ m
-      ; *ᵣ-assoc = λ m x y → M-trans (*ₗ-comm y x m) (M-sym (*ₗ-assoc x y m))
-      ; *ᵣ-zeroˡ = *ₗ-zeroʳ
-      ; *ᵣ-distribʳ = λ x m n → *ₗ-distribˡ x m n
-      }
+  isRightSemimodule : IsRightSemimodule semiring _+ᴹ_ _*ᵣ_ 0ᴹ
+  isRightSemimodule = record
+    { +ᴹ-isCommutativeMonoid = +ᴹ-isCommutativeMonoid
+    ; *ᵣ-cong = flip *ₗ-cong
+    ; *ᵣ-zeroʳ = *ₗ-zeroˡ
+    ; *ᵣ-distribˡ = λ m x y → *ₗ-distribʳ m x y
+    ; *ᵣ-identityʳ = λ m → *ₗ-identityˡ m
+    ; *ᵣ-assoc = λ m x y → M-trans (*ₗ-comm y x m) (M-sym (*ₗ-assoc x y m))
+    ; *ᵣ-zeroˡ = *ₗ-zeroʳ
+    ; *ᵣ-distribʳ = λ x m n → *ₗ-distribˡ x m n
     }
+
+  rightSemimodule : RightSemimodule semiring m ℓm
+  rightSemimodule = record { isRightSemimodule = isRightSemimodule }
 
   open RightSemimodule rightSemimodule public
     using ( *ᵣ-cong; *ᵣ-zeroʳ; *ᵣ-distribˡ; *ᵣ-identityʳ; *ᵣ-assoc; *ᵣ-zeroˡ
-          ; *ᵣ-distribʳ; isRightSemimodule)
+          ; *ᵣ-distribʳ)
 
 record Module {r ℓr} (commutativeRing : CommutativeRing r ℓr) m ℓm
               : Set (r ⊔ ℓr ⊔ suc (m ⊔ ℓm)) where
@@ -255,20 +251,14 @@ record Module {r ℓr} (commutativeRing : CommutativeRing r ℓr) m ℓm
   open IsModule isModule public
 
   semimodule : Semimodule commutativeSemiring m ℓm
-  semimodule = record
-    { _≈ᴹ_ = _≈ᴹ_
-    ; _+ᴹ_ = _+ᴹ_
-    ; _*ₗ_ = _*ₗ_
-    ; 0ᴹ = 0ᴹ
-    ; isSemimodule = isSemimodule
-    }
+  semimodule = record { isSemimodule = isSemimodule }
 
   open Semimodule semimodule public
-    using ( leftSemimodule; isLeftSemimodule; _*ᵣ_; *ₗ-comm; *ᵣ-comm
-          ; rightSemimodule; isRightSemimodule; *ᵣ-cong; *ᵣ-zeroʳ; *ᵣ-distribˡ
-          ; *ᵣ-identityʳ; *ᵣ-assoc; *ᵣ-zeroˡ; *ᵣ-distribʳ
-          ; +ᴹ-commutativeMonoid; +ᴹ-monoid; +ᴹ-semigroup; +ᴹ-magma
-          ; +ᴹ-rawMonoid; +ᴹ-rawMagma)
+    using ( leftSemimodule; isLeftSemimodule; rightSemimodule
+          ; isRightSemimodule; _*ᵣ_; *ₗ-comm; *ᵣ-comm; *ᵣ-cong
+          ; *ᵣ-zeroʳ; *ᵣ-distribˡ; *ᵣ-identityʳ; *ᵣ-assoc; *ᵣ-zeroˡ
+          ; *ᵣ-distribʳ; +ᴹ-commutativeMonoid; +ᴹ-monoid; +ᴹ-semigroup
+          ; +ᴹ-magma ; +ᴹ-rawMonoid; +ᴹ-rawMagma)
 
   leftModule : LeftModule ring m ℓm
   leftModule = record { isLeftModule = isLeftModule }
