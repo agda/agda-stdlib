@@ -146,7 +146,7 @@ module _ {_~_ : REL (List A) B ℓ} where
 --
 -- pxs [ i ]= px  if and only if  lookup pxs i = px.
 
-module _ {a p} {A : Set a} {P : A → Set p} where
+module _ {P : A → Set p} where
 
   -- `i` points to `lookup pxs i` in `pxs`.
 
