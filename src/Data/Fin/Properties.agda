@@ -23,6 +23,7 @@ open import Data.Nat as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_)
 import Data.Nat.Properties as ℕₚ
 open import Data.Unit using (tt)
 open import Data.Product using (∃; ∃₂; ∄; _×_; _,_; map; proj₁)
+open import Data.Sum as ⊎ using (_⊎_; inj₁; inj₂)
 open import Function.Core using (_∘_; id)
 open import Function.Injection using (_↣_)
 open import Relation.Binary as B hiding (Decidable)
@@ -379,6 +380,17 @@ inject≤-idempotent : ∀ {m n k} (i : Fin m)
 inject≤-idempotent {_} {suc n} {suc k} zero    _ _ _ = refl
 inject≤-idempotent {_} {suc n} {suc k} (suc i) _ _ _ =
   cong suc (inject≤-idempotent i _ _ _)
+
+------------------------------------------------------------------------
+-- Fin (m + n) ≃ Fin m ⊎ Fin n
+
+split+-inject+ : ∀ m n i → split+ m (inject+ n i) ≡ inj₁ i
+split+-inject+ (suc m) n zero = refl
+split+-inject+ (suc m) n (suc i) rewrite split+-inject+ m n i = refl
+
+split+-raise : ∀ m n i → split+ m (raise {n} m i) ≡ inj₂ i
+split+-raise zero n i = refl
+split+-raise (suc m) n i rewrite split+-raise m n i = refl
 
 ------------------------------------------------------------------------
 -- _≺_

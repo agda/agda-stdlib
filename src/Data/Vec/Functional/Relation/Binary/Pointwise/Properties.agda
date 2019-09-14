@@ -12,11 +12,13 @@ open import Data.Fin
 open import Data.Fin.Properties
 open import Data.Nat
 open import Data.Product using (_×_; _,_; proj₁; proj₂)
+open import Data.Sum using (_⊎_; inj₁; inj₂; [_,_])
 open import Data.Vec.Functional as VF hiding (map)
 open import Data.Vec.Functional.Relation.Binary.Pointwise
 open import Function
 open import Level using (Level)
 open import Relation.Binary
+open import Relation.Binary.PropositionalEquality as ≡ using (_≡_)
 
 private
   variable
@@ -74,21 +76,21 @@ tail⁺ R rs = rs ∘ suc
 ++⁺ : ∀ (R : REL A B r) {m n xs ys xs′ ys′} →
       Pointwise R {n = m} xs ys → Pointwise R {n = n} xs′ ys′ →
       Pointwise R (xs ++ xs′) (ys ++ ys′)
-++⁺ R {m = zero} rs rs′ i = rs′ i
-++⁺ R {m = suc m} rs rs′ zero = rs zero
-++⁺ R {m = suc m} rs rs′ (suc i) = ++⁺ R (rs ∘ suc) rs′ i
+++⁺ R {m} rs rs′ i with split+ m i
+... | inj₁ i′ = rs i′
+... | inj₂ j′ = rs′ j′
 
 ++⁻ˡ : ∀ (R : REL A B r) {m n} (xs : Vector A m) (ys : Vector B m)
          {xs′ : Vector A n} {ys′ : Vector B n} →
        Pointwise R (xs ++ xs′) (ys ++ ys′) → Pointwise R xs ys
-++⁻ˡ R _ _ rs zero = rs zero
-++⁻ˡ R _ _ rs (suc i) = ++⁻ˡ R _ _ (tail⁺ R rs) i
+++⁻ˡ R {m} {n} _ _ rs i with rs (inject+ n i)
+... | r rewrite split+-inject+ m n i = r
 
 ++⁻ʳ : ∀ (R : REL A B r) {m n} (xs : Vector A m) (ys : Vector B m)
          {xs′ : Vector A n} {ys′ : Vector B n} →
        Pointwise R (xs ++ xs′) (ys ++ ys′) → Pointwise R xs′ ys′
-++⁻ʳ R {m = zero} _ _ rs = rs
-++⁻ʳ R {m = suc m} _ _ rs = ++⁻ʳ R _ _ (tail⁺ R rs)
+++⁻ʳ R {m} {n} _ _ rs i with rs (raise m i)
+... | r rewrite split+-raise m n i = r
 
 ++⁻ : ∀ (R : REL A B r) {m n} xs ys {xs′ ys′} →
       Pointwise R (xs ++ xs′) (ys ++ ys′) →

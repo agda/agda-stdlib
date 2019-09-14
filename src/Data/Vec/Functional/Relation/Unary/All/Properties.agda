@@ -9,8 +9,10 @@
 module Data.Vec.Functional.Relation.Unary.All.Properties where
 
 open import Data.Fin
+open import Data.Fin.Properties
 open import Data.Nat
 open import Data.Product as Σ using (_×_; _,_; proj₁; proj₂; uncurry)
+open import Data.Sum using (_⊎_; inj₁; inj₂; [_,_])
 open import Data.Vec.Functional as VF hiding (map)
 open import Data.Vec.Functional.Relation.Unary.All
 open import Function
@@ -81,19 +83,19 @@ tail⁺ P ps = ps ∘ suc
 
 ++⁺ : ∀ (P : Pred A p) {m n xs ys} →
       All P {n = m} xs → All P {n = n} ys → All P (xs ++ ys)
-++⁺ P {m = zero} pxs pys = pys
-++⁺ P {m = suc m} pxs pys zero = head⁺ P pxs
-++⁺ P {m = suc m} pxs pys (suc i) = ++⁺ P (tail⁺ P pxs) pys i
+++⁺ P {m} {n} pxs pys i with split+ m i
+... | inj₁ i′ = pxs i′
+... | inj₂ j′ = pys j′
 
 ++⁻ˡ : ∀ (P : Pred A p) {m n} (xs : Vector A m) {ys : Vector A n} →
        All P (xs ++ ys) → All P xs
-++⁻ˡ P _ ps zero = head⁺ P ps
-++⁻ˡ P _ ps (suc i) = ++⁻ˡ P _ (tail⁺ P ps) i
+++⁻ˡ P {m} {n} _ ps i with ps (inject+ n i)
+... | p rewrite split+-inject+ m n i = p
 
 ++⁻ʳ : ∀ (P : Pred A p) {m n} (xs : Vector A m) {ys : Vector A n} →
        All P (xs ++ ys) → All P ys
-++⁻ʳ P {m = zero} _ ps = ps
-++⁻ʳ P {m = suc m} _ ps = ++⁻ʳ P _ (tail⁺ P ps)
+++⁻ʳ P {m} {n} _ ps i with ps (raise m i)
+... | p rewrite split+-raise m n i = p
 
 ++⁻ : ∀ (P : Pred A p) {m n} (xs : Vector A m) {ys : Vector A n} →
       All P (xs ++ ys) → All P xs × All P ys

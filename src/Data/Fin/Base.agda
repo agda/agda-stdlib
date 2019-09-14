@@ -14,7 +14,8 @@ module Data.Fin.Base where
 
 open import Data.Empty using (⊥-elim)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; z≤n; s≤s)
-open import Function.Core using (_∘_; _on_)
+open import Data.Sum as ⊎ using (_⊎_; inj₁; inj₂)
+open import Function.Core using (id; _∘_; _on_)
 import Data.Nat.Properties as ℕₚ
 open import Level using () renaming (zero to ℓ₀)
 open import Relation.Nullary using (yes; no)
@@ -119,6 +120,14 @@ lower₁ {suc n} (suc i) ne = suc (lower₁ i λ x → ne (cong suc x))
 strengthen : ∀ {n} (i : Fin n) → Fin′ (suc i)
 strengthen zero    = zero
 strengthen (suc i) = suc (strengthen i)
+
+-- split+ m "i" = inj₁ "i"      if i < m
+--                inj₂ "i - m"  if i ≥ m
+
+split+ : ∀ m {n} → Fin (m ℕ.+ n) → Fin m ⊎ Fin n
+split+ zero i = inj₂ i
+split+ (suc m) zero = inj₁ zero
+split+ (suc m) (suc i) = ⊎.map suc id (split+ m i)
 
 ------------------------------------------------------------------------
 -- Operations

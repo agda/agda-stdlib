@@ -8,9 +8,10 @@
 
 module Data.Vec.Functional where
 
-open import Data.Fin using (Fin; zero; suc)
+open import Data.Fin using (Fin; zero; suc; split+)
 open import Data.Nat using (ℕ; zero; suc; _+_)
 open import Data.Product using (Σ; ∃; _×_; _,_; proj₁; proj₂)
+open import Data.Sum using (_⊎_; inj₁; inj₂; [_,_])
 open import Data.Vec as V using (Vec)
 open import Function
 open import Level using (Level)
@@ -51,9 +52,7 @@ uncons : ∀ {n} → Vector A (suc n) → A × Vector A n
 uncons xs = head xs , tail xs
 
 _++_ : ∀ {m n} → Vector A m → Vector A n → Vector A (m + n)
-_++_ {m = zero} xs ys i = ys i
-_++_ {m = suc m} xs ys zero = xs zero
-_++_ {m = suc m} xs ys (suc i) = (tail xs ++ ys) i
+_++_ {m = m} xs ys i = [ xs , ys ] (split+ m i)
 
 foldr : (A → B → B) → B → ∀ {n} → Vector A n → B
 foldr f z {n = zero} xs = z
