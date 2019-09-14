@@ -12,8 +12,8 @@ module Algebra.Module where
 open import Algebra
 import Algebra.Structures.Module as Str
 open import Algebra.FunctionProperties.Core
-import Algebra.FunctionProperties.Module.Left as LFP
-import Algebra.FunctionProperties.Module.Right as RFP
+import Algebra.FunctionProperties.LeftAction as LFP
+import Algebra.FunctionProperties.RightAction as RFP
 open import Function
 open import Level
 open import Relation.Binary

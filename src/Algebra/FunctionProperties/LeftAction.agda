@@ -13,7 +13,7 @@ open import Data.Sum
 -- The properties are parameterised by the following "equality"
 -- relations
 
-module Algebra.FunctionProperties.Module.Left
+module Algebra.FunctionProperties.LeftAction
   {a b ℓa ℓb} {A : Set a} {B : Set b} (_≈ᴬ_ : Rel A ℓa) (_≈ᴮ_ : Rel B ℓb)
   where
 

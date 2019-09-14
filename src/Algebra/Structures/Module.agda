@@ -16,8 +16,8 @@ open import Algebra
 open import Algebra.FunctionProperties.Core
 import Algebra.FunctionProperties as FP
 import Algebra.FunctionProperties.Consequences as Consequences
-import Algebra.FunctionProperties.Module.Left as L
-import Algebra.FunctionProperties.Module.Right as R
+import Algebra.FunctionProperties.LeftAction as L
+import Algebra.FunctionProperties.RightAction as R
 open import Algebra.Structures
 open import Data.Product using (_,_; proj₁; proj₂)
 open import Level using (_⊔_)
