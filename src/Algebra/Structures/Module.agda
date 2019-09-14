@@ -100,17 +100,21 @@ module _ {r ℓr} (ring : Ring r ℓr) where
 
     open IsLeftSemimodule isLeftSemimodule public
 
-    +ᴹ-isGroup : IsGroup _≈ᴹ_ +ᴹ 0ᴹ -ᴹ
-    +ᴹ-isGroup = record
-      { isMonoid = +ᴹ-isMonoid
-      ; inverse = -ᴹ‿inverse
-      ; ⁻¹-cong = -ᴹ‿cong
+    +ᴹ-isAbelianGroup : IsAbelianGroup _≈ᴹ_ +ᴹ 0ᴹ -ᴹ
+    +ᴹ-isAbelianGroup = record
+      { isGroup = record
+        { isMonoid = +ᴹ-isMonoid
+        ; inverse = -ᴹ‿inverse
+        ; ⁻¹-cong = -ᴹ‿cong
+        }
+      ; comm = +ᴹ-comm
       }
 
-    open IsGroup +ᴹ-isGroup public
+    open IsAbelianGroup +ᴹ-isAbelianGroup public
       using ()
-      renaming (inverseˡ to -ᴹ‿inverseˡ; inverseʳ to -ᴹ‿inverseʳ
-               ; uniqueˡ-⁻¹ to uniqueˡ‿-ᴹ ; uniqueʳ-⁻¹ to uniqueʳ‿-ᴹ)
+      renaming ( isGroup to +ᴹ-isGroup; inverseˡ to -ᴹ‿inverseˡ
+               ; inverseʳ to -ᴹ‿inverseʳ ; uniqueˡ-⁻¹ to uniqueˡ‿-ᴹ
+               ; uniqueʳ-⁻¹ to uniqueʳ‿-ᴹ)
 
   record IsRightModule (+ᴹ : Op₂ M) (*ᵣ : Opᵣ R M) (0ᴹ : M) (-ᴹ : Op₁ M)
                        : Set (r ⊔ m ⊔ ℓr ⊔ ℓm) where
@@ -122,17 +126,21 @@ module _ {r ℓr} (ring : Ring r ℓr) where
 
     open IsRightSemimodule isRightSemimodule public
 
-    +ᴹ-isGroup : IsGroup _≈ᴹ_ +ᴹ 0ᴹ -ᴹ
-    +ᴹ-isGroup = record
-      { isMonoid = +ᴹ-isMonoid
-      ; inverse = -ᴹ‿inverse
-      ; ⁻¹-cong = -ᴹ‿cong
+    +ᴹ-isAbelianGroup : IsAbelianGroup _≈ᴹ_ +ᴹ 0ᴹ -ᴹ
+    +ᴹ-isAbelianGroup = record
+      { isGroup = record
+        { isMonoid = +ᴹ-isMonoid
+        ; inverse = -ᴹ‿inverse
+        ; ⁻¹-cong = -ᴹ‿cong
+        }
+      ; comm = +ᴹ-comm
       }
 
-    open IsGroup +ᴹ-isGroup public
+    open IsAbelianGroup +ᴹ-isAbelianGroup public
       using ()
-      renaming (inverseˡ to -ᴹ‿inverseˡ; inverseʳ to -ᴹ‿inverseʳ
-               ; uniqueˡ-⁻¹ to uniqueˡ‿-ᴹ ; uniqueʳ-⁻¹ to uniqueʳ‿-ᴹ)
+      renaming ( isGroup to +ᴹ-isGroup; inverseˡ to -ᴹ‿inverseˡ
+               ; inverseʳ to -ᴹ‿inverseʳ ; uniqueˡ-⁻¹ to uniqueˡ‿-ᴹ
+               ; uniqueʳ-⁻¹ to uniqueʳ‿-ᴹ)
 
 module _ {r ℓr} (commutativeRing : CommutativeRing r ℓr) where
   open CommutativeRing commutativeRing renaming (Carrier to R)

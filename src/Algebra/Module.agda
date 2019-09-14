@@ -43,6 +43,16 @@ record LeftSemimodule {r ℓr} (semiring : Semiring r ℓr) m ℓm
 
   open IsLeftSemimodule isLeftSemimodule public
 
+  +ᴹ-commutativeMonoid : CommutativeMonoid m ℓm
+  +ᴹ-commutativeMonoid =
+    record { isCommutativeMonoid = +ᴹ-isCommutativeMonoid }
+
+  open CommutativeMonoid +ᴹ-commutativeMonoid public
+    using ()
+    renaming ( monoid to +ᴹ-monoid; semigroup to +ᴹ-semigroup
+             ; magma to +ᴹ-magma; rawMagma to +ᴹ-rawMagma
+             ; rawMonoid to +ᴹ-rawMonoid)
+
 record LeftModule {r ℓr} (ring : Ring r ℓr) m ℓm
                   : Set (r ⊔ ℓr ⊔ suc (m ⊔ ℓm)) where
   open Ring ring
@@ -68,6 +78,17 @@ record LeftModule {r ℓr} (ring : Ring r ℓr) m ℓm
   leftSemimodule : LeftSemimodule semiring m ℓm
   leftSemimodule = record { isLeftSemimodule = isLeftSemimodule }
 
+  open LeftSemimodule leftSemimodule public
+    using (+ᴹ-monoid; +ᴹ-semigroup; +ᴹ-magma; +ᴹ-rawMagma; +ᴹ-rawMonoid)
+
+  +ᴹ-abelianGroup : AbelianGroup m ℓm
+  +ᴹ-abelianGroup =
+    record { isAbelianGroup = +ᴹ-isAbelianGroup }
+
+  open AbelianGroup +ᴹ-abelianGroup public
+    using ()
+    renaming (group to +ᴹ-group)
+
 ------------------------------------------------------------------------
 -- Right modules
 ------------------------------------------------------------------------
@@ -91,6 +112,16 @@ record RightSemimodule {r ℓr} (semiring : Semiring r ℓr) m ℓm
     isRightSemimodule : IsRightSemimodule semiring _+ᴹ_ _*ᵣ_ 0ᴹ
 
   open IsRightSemimodule isRightSemimodule public
+
+  +ᴹ-commutativeMonoid : CommutativeMonoid m ℓm
+  +ᴹ-commutativeMonoid =
+    record { isCommutativeMonoid = +ᴹ-isCommutativeMonoid }
+
+  open CommutativeMonoid +ᴹ-commutativeMonoid public
+    using ()
+    renaming ( monoid to +ᴹ-monoid; semigroup to +ᴹ-semigroup
+             ; magma to +ᴹ-magma; rawMagma to +ᴹ-rawMagma
+             ; rawMonoid to +ᴹ-rawMonoid)
 
 record RightModule {r ℓr} (ring : Ring r ℓr) m ℓm
                    : Set (r ⊔ ℓr ⊔ suc (m ⊔ ℓm)) where
@@ -148,6 +179,10 @@ record Semimodule {r ℓr} (commutativeSemiring : CommutativeSemiring r ℓr) m 
 
   leftSemimodule : LeftSemimodule semiring m ℓm
   leftSemimodule = record { isLeftSemimodule = isLeftSemimodule }
+
+  open LeftSemimodule leftSemimodule public
+    using ( +ᴹ-commutativeMonoid; +ᴹ-monoid; +ᴹ-semigroup; +ᴹ-magma
+          ; +ᴹ-rawMonoid; +ᴹ-rawMagma)
 
   _*ᵣ_ : Opᵣ Carrier Carrierᴹ
   _*ᵣ_ = flip _*ₗ_
@@ -229,10 +264,15 @@ record Module {r ℓr} (commutativeRing : CommutativeRing r ℓr) m ℓm
   open Semimodule semimodule public
     using ( leftSemimodule; isLeftSemimodule; _*ᵣ_; *ₗ-comm; *ᵣ-comm
           ; rightSemimodule; isRightSemimodule; *ᵣ-cong; *ᵣ-zeroʳ; *ᵣ-distribˡ
-          ; *ᵣ-identityʳ; *ᵣ-assoc; *ᵣ-zeroˡ; *ᵣ-distribʳ)
+          ; *ᵣ-identityʳ; *ᵣ-assoc; *ᵣ-zeroˡ; *ᵣ-distribʳ
+          ; +ᴹ-commutativeMonoid; +ᴹ-monoid; +ᴹ-semigroup; +ᴹ-magma
+          ; +ᴹ-rawMonoid; +ᴹ-rawMagma)
 
   leftModule : LeftModule ring m ℓm
   leftModule = record { isLeftModule = isLeftModule }
+
+  open LeftModule leftModule public
+    using (+ᴹ-abelianGroup; +ᴹ-group)
 
   isRightModule : IsRightModule ring _+ᴹ_ _*ᵣ_ 0ᴹ -ᴹ_
   isRightModule = record
