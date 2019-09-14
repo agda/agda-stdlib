@@ -121,7 +121,12 @@ module _ {P : Pred A p} (P? : U.Decidable P) (resp : P Respects _≈_)
   filter⁺ xs≋ys = PW.filter⁺ P? P? resp (resp ∘ sym) xs≋ys
 
 ------------------------------------------------------------------------
--- filter
+-- reverse
+
+infixr 5 _ʳ++⁺_
+
+_ʳ++⁺_ : ∀{xs xs′ ys ys′} → xs ≋ xs′ → ys ≋ ys′ → xs ʳ++ ys ≋ xs′ ʳ++ ys′
+_ʳ++⁺_ = PW._ʳ++⁺_
 
 reverse⁺ : ∀ {xs ys} → xs ≋ ys → reverse xs ≋ reverse ys
 reverse⁺ = PW.reverse⁺
