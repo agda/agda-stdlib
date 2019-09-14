@@ -79,7 +79,8 @@ record LeftModule {r ℓr} (ring : Ring r ℓr) m ℓm
   leftSemimodule = record { isLeftSemimodule = isLeftSemimodule }
 
   open LeftSemimodule leftSemimodule public
-    using (+ᴹ-monoid; +ᴹ-semigroup; +ᴹ-magma; +ᴹ-rawMagma; +ᴹ-rawMonoid)
+    using ( +ᴹ-commutativeMonoid; +ᴹ-monoid; +ᴹ-semigroup; +ᴹ-magma
+          ; +ᴹ-rawMagma; +ᴹ-rawMonoid)
 
   +ᴹ-abelianGroup : AbelianGroup m ℓm
   +ᴹ-abelianGroup =
@@ -147,6 +148,18 @@ record RightModule {r ℓr} (ring : Ring r ℓr) m ℓm
 
   rightSemimodule : RightSemimodule semiring m ℓm
   rightSemimodule = record { isRightSemimodule = isRightSemimodule }
+
+  open RightSemimodule rightSemimodule public
+    using ( +ᴹ-commutativeMonoid; +ᴹ-monoid; +ᴹ-semigroup; +ᴹ-magma
+          ; +ᴹ-rawMagma; +ᴹ-rawMonoid)
+
+  +ᴹ-abelianGroup : AbelianGroup m ℓm
+  +ᴹ-abelianGroup =
+    record { isAbelianGroup = +ᴹ-isAbelianGroup }
+
+  open AbelianGroup +ᴹ-abelianGroup public
+    using ()
+    renaming (group to +ᴹ-group)
 
 ------------------------------------------------------------------------
 -- Modules over commutative structures
