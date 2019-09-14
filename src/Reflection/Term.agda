@@ -15,7 +15,7 @@ import Data.List.Properties as Lₚ
 import Data.Nat as ℕ
 import Data.Nat.Show as NatShow
 open import Data.Product
-open import Data.String as String using (String; braces; parens; _++_)
+open import Data.String as String using (String; braces; parens; _++_; _<+>_)
 open import Reflection.Abstraction
 open import Reflection.Argument
 open import Reflection.Argument.Information using (visibility)
@@ -66,8 +66,8 @@ private
   -- enclose string with parens if it contains a space character
   parensIfSpace : String -> String
   parensIfSpace s with ' ' ∈? String.toList s
-  ...             | yes _ = parens s
-  ...             | no _  = s
+  ... | yes _ = parens s
+  ... | no _  = s
 
   -- add appropriate parens depending on the given visibility
   visibilityParen : Builtin.Visibility → String → String
@@ -78,41 +78,36 @@ private
 mutual
 
   showTerms : List (Arg Term) → String
-  showTerms [] = ""
-  showTerms (arg i t ∷ []) = visibilityParen (visibility i) (show t)
-  showTerms (arg i t ∷ ts) = visibilityParen (visibility i) (show t) ++ " " ++ showTerms ts
+  showTerms []             = ""
+  showTerms (arg i t ∷ ts) = visibilityParen (visibility i) (show t) <+> showTerms ts
 
   show : Term → String
-  show (var x []) = "var " ++ NatShow.show x
-  show (var x args) = "var " ++ NatShow.show x ++ " " ++ showTerms args
-  show (con c []) = Name.show c
-  show (con c args) = Name.show c ++ " " ++ showTerms args
-  show (def f []) = Name.show f
-  show (def f args) = Name.show f ++ " " ++ showTerms args
-  show (lam v (abs s x)) = "lam " ++ visibilityParen v s ++ " → " ++ show x
-  show (pat-lam cs []) = "lam { " ++ showClauses cs ++ " }"
-  show (pat-lam cs args) = "lam { " ++ showClauses cs ++ " } " ++ showTerms args
+  show (var x args)         = "var" <+> NatShow.show x <+> showTerms args
+  show (con c args)         = Name.show c <+> showTerms args
+  show (def f args)         = Name.show f <+> showTerms args
+  show (lam v (abs s x))    = "λ" <+> visibilityParen v s <+> "→" <+> show x
+  show (pat-lam cs args)    =
+    "λ {" <+> showClauses cs <+> "}" <+> showTerms args
   show (Π[ x ∶ arg i a ] b) =
-    "pi (" ++ visibilityParen (visibility i) x ++ " : " ++
-    parensIfSpace (show a) ++ ") " ++ parensIfSpace (show b)
-  show (sort s) = showSort s
-  show (lit l) = Literal.show l
-  show (meta x args) = Meta.show x ++ " " ++ showTerms args
-  show unknown = "unknown"
+    "Π (" ++ visibilityParen (visibility i) x <+> ":" <+>
+    parensIfSpace (show a) ++ ")" <+> parensIfSpace (show b)
+  show (sort s)             = showSort s
+  show (lit l)              = Literal.show l
+  show (meta x args)        = Meta.show x <+> showTerms args
+  show unknown              = "unknown"
 
   showSort : Sort → String
-  showSort (set t) = "Set " ++ parensIfSpace (show t)
-  showSort (lit n) = "Set" ++ NatShow.show n
+  showSort (set t) = "Set" <+> parensIfSpace (show t)
+  showSort (lit n) = "Set" ++ NatShow.show n -- no space to disambiguate from set t
   showSort unknown = "unknown"
 
   showClause : Clause → String
-  showClause (clause ps t) = Pattern.showPatterns ps ++ " → " ++ show t
+  showClause (clause ps t)      = Pattern.showPatterns ps <+> "→" <+> show t
   showClause (absurd-clause ps) = Pattern.showPatterns ps
 
   showClauses : List Clause → String
-  showClauses [] = ""
-  showClauses (c ∷ []) = showClause c
-  showClauses (c ∷ cs) = showClause c ++ "; " ++ showClauses cs
+  showClauses []       = ""
+  showClauses (c ∷ cs) = showClause c <+> ";" <+> showClauses cs
 
 ------------------------------------------------------------------------
 -- Decidable equality

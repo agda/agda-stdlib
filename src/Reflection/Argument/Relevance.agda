@@ -23,7 +23,7 @@ open Relevance public
 -- Showing
 
 show : Relevance → String
-show relevant = "relevant"
+show relevant   = "relevant"
 show irrelevant = "irrelevant"
 
 ------------------------------------------------------------------------

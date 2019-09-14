@@ -74,7 +74,26 @@ replicate n = fromList ∘ List.replicate n
 concat : List String → String
 concat = List.foldr _++_ ""
 
+intersperse : String → List String → String
+intersperse sep = concat ∘′ (List.intersperse sep)
+
 -- String-specific functions
 
 unlines : List String → String
-unlines = concat ∘ List.intersperse "\n"
+unlines = intersperse "\n"
+
+unwords : List String → String
+unwords = intersperse " "
+
+parens : String → String
+parens s = "(" ++ s ++ ")"
+
+braces : String → String
+braces s = "{" ++ s ++ "}"
+
+-- append that also introduces spaces, if necessary
+infixr 5 _<+>_
+_<+>_ : String → String → String
+"" <+> b = b
+a <+> "" = a
+a <+> b = a ++ " " ++ b

@@ -23,8 +23,8 @@ open Visibility public
 -- Showing
 
 show : Visibility → String
-show visible = "visible"
-show hidden = "hidden"
+show visible   = "visible"
+show hidden    = "hidden"
 show instance′ = "instance"
 
 ------------------------------------------------------------------------

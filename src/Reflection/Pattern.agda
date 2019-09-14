@@ -11,7 +11,7 @@ module Reflection.Pattern where
 open import Data.List.Base hiding (_++_)
 open import Data.List.Properties
 open import Data.Product
-open import Data.String as String using (String; braces; _++_)
+open import Data.String as String using (String; braces; parens; _++_; _<+>_)
 import Reflection.Literal as Literal
 import Reflection.Name as Name
 open import Relation.Nullary
@@ -21,11 +21,14 @@ open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
 
 open import Reflection.Argument
+open import Reflection.Argument.Visibility using (Visibility); open Visibility
+open import Reflection.Argument.Relevance using (Relevance); open Relevance
+open import Reflection.Argument.Information using (ArgInfo); open ArgInfo
 
 ------------------------------------------------------------------------
 -- Re-exporting the builtin type and constructors
 
-open import Agda.Builtin.Reflection as Builtin public using (Pattern)
+open import Agda.Builtin.Reflection public using (Pattern)
 open Pattern public
 
 ------------------------------------------------------------------------
@@ -34,31 +37,27 @@ open Pattern public
 mutual
 
   showPatterns : List (Arg Pattern) → String
-  showPatterns [] = ""
+  showPatterns []       = ""
   showPatterns (a ∷ ps) = showArg a ++ showPatterns ps
     where
-      showRel : Builtin.Relevance → String
-      showRel Builtin.relevant = ""
-      showRel Builtin.irrelevant = "."
+      showRel : Relevance → String
+      showRel relevant   = ""
+      showRel irrelevant = "."
 
       showArg : Arg Pattern → String
-      showArg (arg (Builtin.arg-info Builtin.visible r) p) =
-        showRel r ++ show p
-      showArg (arg (Builtin.arg-info Builtin.hidden r) p) =
-        braces (showRel r ++ show p)
-      showArg (arg (Builtin.arg-info Builtin.instance′ r) p) =
-        braces (braces (showRel r ++ show p))
+      showArg (arg (arg-info visible r) p)   = showRel r ++ show p
+      showArg (arg (arg-info hidden r) p)    = braces (showRel r ++ show p)
+      showArg (arg (arg-info instance′ r) p) = braces (braces (showRel r ++ show p))
 
 
   show : Pattern → String
   show (con c []) = Name.show c
-  show (con c ps) =
-    String.parens (Name.show c ++ " " ++ showPatterns ps )
-  show dot = "._"
-  show (var s) = s
-  show (lit l) = Literal.show l
-  show (proj f) = Name.show f
-  show absurd = "()"
+  show (con c ps) = parens (Name.show c <+> showPatterns ps)
+  show dot        = "._"
+  show (var s)    = s
+  show (lit l)    = Literal.show l
+  show (proj f)   = Name.show f
+  show absurd     = "()"
 
 ------------------------------------------------------------------------
 -- Decidable equality

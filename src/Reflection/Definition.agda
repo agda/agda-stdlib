@@ -8,12 +8,12 @@
 
 module Reflection.Definition where
 
-open import Data.List using (map; intersperse)
+open import Data.List using (map)
 import Data.List.Properties as Listₚ
 import Data.Nat.Properties as ℕₚ
 import Data.Nat.Show as NatShow
 open import Data.Product using (_×_; <_,_>; uncurry)
-open import Data.String as String using (String; braces; parens; _++_)
+open import Data.String as String using (String; _<+>_; intersperse; braces)
 open import Function using (_∘′_)
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
@@ -42,16 +42,14 @@ open import Agda.Builtin.Reflection public
 -- Showing
 
 show : Definition → String
-show (function cs) = "function " ++ braces (Term.showClauses cs)
+show (function cs)       = "function" <+> braces (Term.showClauses cs)
 show (data-type pars cs) =
- "datatype " ++ NatShow.show pars ++ " " ++
- braces (String.concat (intersperse ", " (map Name.show cs)))
-show (record′ c fs) =
- "record " ++ Name.show c ++ " " ++
- braces (String.concat (intersperse ", " (map (Name.show ∘′ Arg.unArg) fs)))
-show (constructor′ d) = "constructor " ++ Name.show d
-show axiom = "axiom"
-show primitive′ = "primitive"
+ "datatype" <+> NatShow.show pars <+> braces (intersperse ", " (map Name.show cs))
+show (record′ c fs)      =
+ "record" <+> Name.show c <+> braces (intersperse ", " (map (Name.show ∘′ Arg.unArg) fs))
+show (constructor′ d)    = "constructor" <+> Name.show d
+show axiom               = "axiom"
+show primitive′          = "primitive"
 
 ------------------------------------------------------------------------
 -- Decidable equality
