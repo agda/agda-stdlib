@@ -75,7 +75,7 @@ _⊛_ : ∀ {n} → Vector (A → B) n → Vector A n → Vector B n
 _⊛_ = _ˢ_
 
 zipWith : (A → B → C) → ∀ {n} → Vector A n → Vector B n → Vector C n
-zipWith f xs ys = replicate f ⊛ xs ⊛ ys
+zipWith f xs ys i = f (xs i) (ys i)
 
 zip : ∀ {n} → Vector A n → Vector B n → Vector (A × B) n
 zip = zipWith _,_
