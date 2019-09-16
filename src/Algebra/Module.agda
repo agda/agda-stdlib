@@ -10,7 +10,7 @@
 module Algebra.Module where
 
 open import Algebra
-import Algebra.Structures.Module as Str
+open import Algebra.Structures.Module
 open import Algebra.FunctionProperties.Core
 import Algebra.FunctionProperties.LeftAction as LFP
 import Algebra.FunctionProperties.RightAction as RFP
@@ -33,12 +33,10 @@ record LeftSemimodule {r ℓr} (semiring : Semiring r ℓr) m ℓm
   field
     Carrierᴹ : Set m
     _≈ᴹ_ : Rel Carrierᴹ ℓm
-  open Str _≈ᴹ_
-  field
     _+ᴹ_ : Op₂ Carrierᴹ
     _*ₗ_ : Opₗ Carrier Carrierᴹ
     0ᴹ : Carrierᴹ
-    isLeftSemimodule : IsLeftSemimodule semiring _+ᴹ_ _*ₗ_ 0ᴹ
+    isLeftSemimodule : IsLeftSemimodule _≈ᴹ_ semiring _+ᴹ_ _*ₗ_ 0ᴹ
 
   open IsLeftSemimodule isLeftSemimodule public
 
@@ -65,13 +63,11 @@ record LeftModule {r ℓr} (ring : Ring r ℓr) m ℓm
   field
     Carrierᴹ : Set m
     _≈ᴹ_ : Rel Carrierᴹ ℓm
-  open Str _≈ᴹ_
-  field
     _+ᴹ_ : Op₂ Carrierᴹ
     _*ₗ_ : Opₗ Carrier Carrierᴹ
     0ᴹ : Carrierᴹ
     -ᴹ_ : Op₁ Carrierᴹ
-    isLeftModule : IsLeftModule ring _+ᴹ_ _*ₗ_ 0ᴹ -ᴹ_
+    isLeftModule : IsLeftModule _≈ᴹ_ ring _+ᴹ_ _*ₗ_ 0ᴹ -ᴹ_
 
   open IsLeftModule isLeftModule public
 
@@ -104,12 +100,10 @@ record RightSemimodule {r ℓr} (semiring : Semiring r ℓr) m ℓm
   field
     Carrierᴹ : Set m
     _≈ᴹ_ : Rel Carrierᴹ ℓm
-  open Str _≈ᴹ_
-  field
     _+ᴹ_ : Op₂ Carrierᴹ
     _*ᵣ_ : Opᵣ Carrier Carrierᴹ
     0ᴹ : Carrierᴹ
-    isRightSemimodule : IsRightSemimodule semiring _+ᴹ_ _*ᵣ_ 0ᴹ
+    isRightSemimodule : IsRightSemimodule _≈ᴹ_ semiring _+ᴹ_ _*ᵣ_ 0ᴹ
 
   open IsRightSemimodule isRightSemimodule public
 
@@ -136,13 +130,11 @@ record RightModule {r ℓr} (ring : Ring r ℓr) m ℓm
   field
     Carrierᴹ : Set m
     _≈ᴹ_ : Rel Carrierᴹ ℓm
-  open Str _≈ᴹ_
-  field
     _+ᴹ_ : Op₂ Carrierᴹ
     _*ᵣ_ : Opᵣ Carrier Carrierᴹ
     0ᴹ : Carrierᴹ
     -ᴹ_ : Op₁ Carrierᴹ
-    isRightModule : IsRightModule ring _+ᴹ_ _*ᵣ_ 0ᴹ -ᴹ_
+    isRightModule : IsRightModule _≈ᴹ_ ring _+ᴹ_ _*ᵣ_ 0ᴹ -ᴹ_
 
   open IsRightModule isRightModule public
 
@@ -176,12 +168,10 @@ record Semimodule {r ℓr} (commutativeSemiring : CommutativeSemiring r ℓr) m 
   field
     Carrierᴹ : Set m
     _≈ᴹ_ : Rel Carrierᴹ ℓm
-  open Str _≈ᴹ_
-  field
     _+ᴹ_ : Op₂ Carrierᴹ
     _*ₗ_ : Opₗ Carrier Carrierᴹ
     0ᴹ : Carrierᴹ
-    isSemimodule : IsSemimodule commutativeSemiring _+ᴹ_ _*ₗ_ 0ᴹ
+    isSemimodule : IsSemimodule _≈ᴹ_ commutativeSemiring _+ᴹ_ _*ₗ_ 0ᴹ
 
   open IsSemimodule isSemimodule public
 
@@ -208,7 +198,7 @@ record Semimodule {r ℓr} (commutativeSemiring : CommutativeSemiring r ℓr) m 
   *ᵣ-comm : R.Commutative _*ᵣ_
   *ᵣ-comm m x y = *ₗ-comm y x m
 
-  isRightSemimodule : IsRightSemimodule semiring _+ᴹ_ _*ᵣ_ 0ᴹ
+  isRightSemimodule : IsRightSemimodule _≈ᴹ_ semiring _+ᴹ_ _*ᵣ_ 0ᴹ
   isRightSemimodule = record
     { +ᴹ-isCommutativeMonoid = +ᴹ-isCommutativeMonoid
     ; *ᵣ-cong = flip *ₗ-cong
@@ -239,13 +229,11 @@ record Module {r ℓr} (commutativeRing : CommutativeRing r ℓr) m ℓm
   field
     Carrierᴹ : Set m
     _≈ᴹ_ : Rel Carrierᴹ ℓm
-  open Str _≈ᴹ_
-  field
     _+ᴹ_ : Op₂ Carrierᴹ
     _*ₗ_ : Opₗ Carrier Carrierᴹ
     0ᴹ : Carrierᴹ
     -ᴹ_ : Op₁ Carrierᴹ
-    isModule : IsModule commutativeRing _+ᴹ_ _*ₗ_ 0ᴹ -ᴹ_
+    isModule : IsModule _≈ᴹ_ commutativeRing _+ᴹ_ _*ₗ_ 0ᴹ -ᴹ_
 
   open IsModule isModule public
 
@@ -265,7 +253,7 @@ record Module {r ℓr} (commutativeRing : CommutativeRing r ℓr) m ℓm
   open LeftModule leftModule public
     using (+ᴹ-abelianGroup; +ᴹ-group)
 
-  isRightModule : IsRightModule ring _+ᴹ_ _*ᵣ_ 0ᴹ -ᴹ_
+  isRightModule : IsRightModule _≈ᴹ_ ring _+ᴹ_ _*ᵣ_ 0ᴹ -ᴹ_
   isRightModule = record
     { isRightSemimodule = record
       { +ᴹ-isCommutativeMonoid = +ᴹ-isCommutativeMonoid
