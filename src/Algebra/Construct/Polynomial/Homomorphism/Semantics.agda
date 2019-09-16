@@ -1,6 +1,6 @@
 {-# OPTIONS --without-K --safe #-}
 
-open import Polynomial.Parameters
+open import Algebra.Construct.Polynomial.Parameters
 
 module Algebra.Construct.Polynomial.Homomorphism.Semantics
   {r₁ r₂ r₃}
@@ -9,18 +9,20 @@ module Algebra.Construct.Polynomial.Homomorphism.Semantics
 
 
 open import Data.Product    using (_,_)
-open import Data.List       using ([])
 open import Data.Vec as Vec using (Vec)
 open import Data.Fin        using (Fin)
-
+open import Data.List.Kleene
 open import Function
 
-open import Algebra.Construct.Polynomial.Homomorphism.Lemmas homo
-open import Polynomial.NormalForm homo
 open Homomorphism homo
-open import Polynomial.Reasoning ring
 
-open import Polynomial.Exponentiation rawRing
+open import Algebra.Construct.Polynomial.Homomorphism.Lemmas homo
+open import Algebra.Construct.Polynomial.Base (Homomorphism.from homo)
+open import Algebra.Construct.Polynomial.Reasoning (Homomorphism.to homo)
+open import Algebra.Construct.Polynomial.Semantics homo
+open import Algebra.Construct.Polynomial.InjectionIndex
+
+open import Algebra.Construct.Polynomial.Exponentiation rawRing
 
 κ-hom : ∀ {n}
       → (x : Raw.Carrier)

@@ -1,6 +1,6 @@
 {-# OPTIONS --without-K --safe #-}
 
-open import Polynomial.Parameters
+open import Algebra.Construct.Polynomial.Parameters
 
 module Algebra.Construct.Polynomial.Homomorphism.Multiplication
   {r₁ r₂ r₃}
@@ -9,24 +9,24 @@ module Algebra.Construct.Polynomial.Homomorphism.Multiplication
 
 open import Data.Nat as ℕ          using (ℕ; suc; zero)
 open import Data.Product           using (_×_; _,_; proj₁; proj₂; map₁)
-open import Data.List              using (_∷_; [])
+open import Data.List.Kleene              using (_∷_; [])
 open import Data.Vec               using (Vec)
 open import Induction.WellFounded  using (Acc; acc)
 open import Induction.Nat          using (<′-wellFounded)
 
 open import Function
 
+open Homomorphism homo
+
 open import Algebra.Construct.Polynomial.Homomorphism.Lemmas homo
 open import Algebra.Construct.Polynomial.Homomorphism.Addition homo
-open import Polynomial.NormalForm homo
+open import Algebra.Construct.Polynomial.Base from
 
-open Homomorphism homo
-open import Polynomial.Reasoning ring
+open import Algebra.Construct.Polynomial.Reasoning to
 
-open import Polynomial.Exponentiation rawRing
+open import Algebra.Construct.Polynomial.Exponentiation rawRing
 
 open import Relation.Unary
-open import Reader
 
 reassoc : ∀ {y} x z → x * (y * z) ≈ y * (x * z)
 reassoc {y} x z = sym (*-assoc x y z) ⟨ trans ⟩ ((≪* *-comm x y) ⟨ trans ⟩ *-assoc y x z)
