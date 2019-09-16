@@ -6,18 +6,17 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Level
 open import Relation.Binary
-open import Data.Sum
 
 -- The properties are parameterised by the following "equality"
 -- relations
 
 module Algebra.FunctionProperties.RightAction
-  {a b ℓa ℓb} {A : Set a} {B : Set b} (_≈ᴬ_ : Rel A ℓa) (_≈ᴮ_ : Rel B ℓb)
+  {a b ℓb} (A : Set a) {B : Set b} (_≈_ : Rel B ℓb)
   where
 
 open import Data.Product
+open import Data.Sum
 
 ------------------------------------------------------------------------
 -- Binary operations
@@ -28,27 +27,27 @@ open import Algebra.FunctionProperties.Core public
 -- Properties of operations
 
 RightIdentity : A → Opᵣ A B → Set _
-RightIdentity a _∙ᴮ_ = ∀ m → (m ∙ᴮ a) ≈ᴮ m
+RightIdentity a _∙ᴮ_ = ∀ m → (m ∙ᴮ a) ≈ m
 
 Associative : Op₂ A → Opᵣ A B → Set _
-Associative _∙ᴬ_ _∙ᴮ_ = ∀ m x y → ((m ∙ᴮ x) ∙ᴮ y) ≈ᴮ (m ∙ᴮ (x ∙ᴬ y))
+Associative _∙ᴬ_ _∙ᴮ_ = ∀ m x y → ((m ∙ᴮ x) ∙ᴮ y) ≈ (m ∙ᴮ (x ∙ᴬ y))
 
 _DistributesOverˡ_⟶_ : Opᵣ A B → Op₂ A → Op₂ B → Set _
 _*_ DistributesOverˡ _+ᴬ_ ⟶ _+ᴮ_ =
-  ∀ m x y → (m * (x +ᴬ y)) ≈ᴮ ((m * x) +ᴮ (m * y))
+  ∀ m x y → (m * (x +ᴬ y)) ≈ ((m * x) +ᴮ (m * y))
 
 _DistributesOverʳ_ : Opᵣ A B → Op₂ B → Set _
 _*_ DistributesOverʳ _+_ =
-  ∀ x m n → ((m + n) * x) ≈ᴮ ((m * x) + (n * x))
+  ∀ x m n → ((m + n) * x) ≈ ((m * x) + (n * x))
 
 LeftZero : B → Opᵣ A B → Set _
-LeftZero z _∙_ = ∀ x → (z ∙ x) ≈ᴮ z
+LeftZero z _∙_ = ∀ x → (z ∙ x) ≈ z
 
 RightZero : A → B → Opᵣ A B → Set _
-RightZero zᴬ zᴮ _∙_ = ∀ x → (x ∙ zᴬ) ≈ᴮ zᴮ
+RightZero zᴬ zᴮ _∙_ = ∀ x → (x ∙ zᴬ) ≈ zᴮ
 
 Commutative : Opᵣ A B → Set _
-Commutative _∙_ = ∀ m x y → ((m ∙ x) ∙ y) ≈ᴮ ((m ∙ y) ∙ x)
+Commutative _∙_ = ∀ m x y → ((m ∙ x) ∙ y) ≈ ((m ∙ y) ∙ x)
 
-Congruent : Opᵣ A B → Set _
-Congruent _∙_ = ∀ {m m′ x x′} → m ≈ᴮ m′ → x ≈ᴬ x′ → (m ∙ x) ≈ᴮ (m′ ∙ x′)
+Congruent : ∀ {ℓa} → Rel A ℓa → Opᵣ A B → Set _
+Congruent _≈ᴬ_ _∙_ = ∀ {m m′ x x′} → m ≈ m′ → x ≈ᴬ x′ → (m ∙ x) ≈ (m′ ∙ x′)
