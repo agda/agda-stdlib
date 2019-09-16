@@ -1,6 +1,6 @@
 {-# OPTIONS --without-K --safe #-}
 
-open import Polynomial.Parameters
+open import Algebra.Construct.Polynomial.Parameters
 
 module Algebra.Construct.Polynomial.Homomorphism.Exponentiation
   {r₁ r₂ r₃}
@@ -11,7 +11,7 @@ open import Function
 
 open import Data.Nat as ℕ using (ℕ; suc; zero; compare)
 open import Data.Product  using (_,_; _×_; proj₁; proj₂)
-open import Data.List     using (_∷_; [])
+open import Data.List.Kleene
 open import Data.Vec      using (Vec)
 
 import Data.Nat.Properties as ℕ-Prop
@@ -19,14 +19,15 @@ import Relation.Binary.PropositionalEquality as ≡
 
 open Homomorphism homo
 open import Algebra.Construct.Polynomial.Homomorphism.Lemmas homo
-open import Polynomial.NormalForm homo
-open import Polynomial.Reasoning ring
+open import Algebra.Construct.Polynomial.Base from
+open import Algebra.Construct.Polynomial.Reasoning to
 open import Algebra.Construct.Polynomial.Homomorphism.Semantics homo
 open import Algebra.Construct.Polynomial.Homomorphism.Multiplication homo
+open import Algebra.Construct.Polynomial.Semantics homo
 
-import Polynomial.Exponentiation
-module RawPow = Polynomial.Exponentiation rawRing
-module CoPow = Polynomial.Exponentiation (RawCoeff.coeffs coeffs)
+import Algebra.Construct.Polynomial.Exponentiation
+module RawPow = Algebra.Construct.Polynomial.Exponentiation rawRing
+module CoPow = Algebra.Construct.Polynomial.Exponentiation (RawCoeff.rawRing from)
 
 pow-eval-hom : ∀ x i → ⟦ x CoPow.^ i +1 ⟧ᵣ ≈ ⟦ x ⟧ᵣ RawPow.^ i +1
 pow-eval-hom x ℕ.zero = refl
@@ -38,7 +39,7 @@ pow-eval-hom x (suc i) = (*-homo _ x) ⟨ trans ⟩ (≪* pow-eval-hom x i)
 
 ⊡-+1-hom : ∀ {n} → (xs : Poly n) → (i : ℕ) → ∀ ρ → ⟦ xs ⊡ i +1 ⟧ ρ ≈ ⟦ xs ⟧ ρ RawPow.^ i +1
 ⊡-+1-hom (Κ x  Π i≤n) i ρ = pow-eval-hom x i
-⊡-+1-hom xs@(Σ (_ & [ _ ]) Π i≤n) i ρ = ⊡-mult-hom i xs ρ
+⊡-+1-hom xs@(Σ (_ & ∹ _) Π i≤n) i ρ = ⊡-mult-hom i xs ρ
 ⊡-+1-hom (Σ (x ≠0 Δ j & []) Π i≤n) i ρ =
   begin
     ⟦ x ⊡ i +1 Δ (j ℕ.+ i ℕ.* j) ∷↓ [] Π↓ i≤n ⟧ ρ

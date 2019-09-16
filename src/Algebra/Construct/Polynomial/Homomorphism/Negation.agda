@@ -1,6 +1,6 @@
 {-# OPTIONS --without-K --safe #-}
 
-open import Polynomial.Parameters
+open import Algebra.Construct.Polynomial.Parameters
 
 module Algebra.Construct.Polynomial.Homomorphism.Negation
   {r₁ r₂ r₃}
@@ -11,13 +11,15 @@ open import Data.Product          using (_,_)
 open import Data.Vec              using (Vec)
 open import Induction.WellFounded using (Acc; acc)
 open import Induction.Nat         using (<′-wellFounded)
+open import Data.Nat using (_<′_)
 
 open import Function
 
 open Homomorphism homo
 open import Algebra.Construct.Polynomial.Homomorphism.Lemmas homo
-open import Polynomial.Reasoning ring
-open import Polynomial.NormalForm homo
+open import Algebra.Construct.Polynomial.Reasoning to
+open import Algebra.Construct.Polynomial.Base from
+open import Algebra.Construct.Polynomial.Semantics homo
 
 ⊟-step-hom : ∀ {n} (a : Acc _<′_ n) → (xs : Poly n) → ∀ ρ → ⟦ ⊟-step a xs ⟧ ρ ≈ - (⟦ xs ⟧ ρ)
 ⊟-step-hom (acc _ ) (Κ x  Π i≤n) ρ = -‿homo x
