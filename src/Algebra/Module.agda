@@ -186,8 +186,8 @@ record Semimodule {r ℓr} (commutativeSemiring : CommutativeSemiring r ℓr) m 
   open IsSemimodule isSemimodule public
 
   private
-    module L = LFP _≈_ _≈ᴹ_
-    module R = RFP _≈_ _≈ᴹ_
+    module L = LFP Carrier _≈ᴹ_
+    module R = RFP Carrier _≈ᴹ_
 
   leftSemimodule : LeftSemimodule semiring m ℓm
   leftSemimodule = record { isLeftSemimodule = isLeftSemimodule }

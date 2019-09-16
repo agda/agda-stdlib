@@ -27,10 +27,10 @@ module _ {r ℓr} (semiring : Semiring r ℓr) where
 
   record IsLeftSemimodule (+ᴹ : Op₂ M) (*ₗ : Opₗ R M) (0ᴹ : M)
                           : Set (r ⊔ m ⊔ ℓr ⊔ ℓm) where
-    open L _≈_ _≈ᴹ_
+    open L R _≈ᴹ_
     field
       +ᴹ-isCommutativeMonoid : IsCommutativeMonoid _≈ᴹ_ +ᴹ 0ᴹ
-      *ₗ-cong : Congruent *ₗ
+      *ₗ-cong : Congruent _≈_ *ₗ
       *ₗ-zeroˡ : LeftZero 0# 0ᴹ *ₗ
       *ₗ-distribʳ : *ₗ DistributesOverʳ _+_ ⟶ +ᴹ
       *ₗ-identityˡ : LeftIdentity 1# *ₗ
@@ -52,10 +52,10 @@ module _ {r ℓr} (semiring : Semiring r ℓr) where
 
   record IsRightSemimodule (+ᴹ : Op₂ M) (*ᵣ : Opᵣ R M) (0ᴹ : M)
                            : Set (r ⊔ m ⊔ ℓr ⊔ ℓm) where
-    open R _≈_ _≈ᴹ_
+    open R R _≈ᴹ_
     field
       +ᴹ-isCommutativeMonoid : IsCommutativeMonoid _≈ᴹ_ +ᴹ 0ᴹ
-      *ᵣ-cong : Congruent *ᵣ
+      *ᵣ-cong : Congruent _≈_ *ᵣ
       *ᵣ-zeroʳ : RightZero 0# 0ᴹ *ᵣ
       *ᵣ-distribˡ : *ᵣ DistributesOverˡ _+_ ⟶ +ᴹ
       *ᵣ-identityʳ : RightIdentity 1# *ᵣ
