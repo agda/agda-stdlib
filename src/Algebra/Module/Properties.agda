@@ -60,8 +60,7 @@ commutativeSemiring⇒semimodule :
 commutativeSemiring⇒semimodule commutativeSemiring = record
   { isSemimodule = record
     { isLeftSemimodule =
-      let open LeftSemimodule (semiring⇒leftSemimodule semiring) in
-      isLeftSemimodule
+      LeftSemimodule.isLeftSemimodule (semiring⇒leftSemimodule semiring)
     }
   } where open CommutativeSemiring commutativeSemiring
 
@@ -70,8 +69,7 @@ ring⇒leftModule ring = record
   { -ᴹ_ = -_
   ; isLeftModule = record
     { isLeftSemimodule =
-      let open LeftSemimodule (semiring⇒leftSemimodule semiring) in
-      isLeftSemimodule
+      LeftSemimodule.isLeftSemimodule (semiring⇒leftSemimodule semiring)
     ; -ᴹ‿cong = -‿cong
     ; -ᴹ‿inverse = -‿inverse
     }
@@ -82,8 +80,7 @@ ring⇒rightModule ring = record
   { -ᴹ_ = -_
   ; isRightModule = record
     { isRightSemimodule =
-      let open RightSemimodule (semiring⇒rightSemimodule semiring) in
-      isRightSemimodule
+      RightSemimodule.isRightSemimodule (semiring⇒rightSemimodule semiring)
     ; -ᴹ‿cong = -‿cong
     ; -ᴹ‿inverse = -‿inverse
     }
@@ -92,7 +89,6 @@ ring⇒rightModule ring = record
 commutativeRing⇒module : (R : CommutativeRing c ℓ) → Module R c ℓ
 commutativeRing⇒module commutativeRing = record
   { isModule = record
-    { isLeftModule =
-      let open LeftModule (ring⇒leftModule ring) in isLeftModule
+    { isLeftModule = LeftModule.isLeftModule (ring⇒leftModule ring)
     }
   } where open CommutativeRing commutativeRing
