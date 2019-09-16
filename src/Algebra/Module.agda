@@ -43,8 +43,9 @@ record LeftSemimodule {r ℓr} (semiring : Semiring r ℓr) m ℓm
   open IsLeftSemimodule isLeftSemimodule public
 
   +ᴹ-commutativeMonoid : CommutativeMonoid m ℓm
-  +ᴹ-commutativeMonoid =
-    record { isCommutativeMonoid = +ᴹ-isCommutativeMonoid }
+  +ᴹ-commutativeMonoid = record
+    { isCommutativeMonoid = +ᴹ-isCommutativeMonoid
+    }
 
   open CommutativeMonoid +ᴹ-commutativeMonoid public
     using ()
@@ -82,8 +83,7 @@ record LeftModule {r ℓr} (ring : Ring r ℓr) m ℓm
           ; +ᴹ-rawMagma; +ᴹ-rawMonoid)
 
   +ᴹ-abelianGroup : AbelianGroup m ℓm
-  +ᴹ-abelianGroup =
-    record { isAbelianGroup = +ᴹ-isAbelianGroup }
+  +ᴹ-abelianGroup = record { isAbelianGroup = +ᴹ-isAbelianGroup }
 
   open AbelianGroup +ᴹ-abelianGroup public
     using ()
@@ -114,8 +114,9 @@ record RightSemimodule {r ℓr} (semiring : Semiring r ℓr) m ℓm
   open IsRightSemimodule isRightSemimodule public
 
   +ᴹ-commutativeMonoid : CommutativeMonoid m ℓm
-  +ᴹ-commutativeMonoid =
-    record { isCommutativeMonoid = +ᴹ-isCommutativeMonoid }
+  +ᴹ-commutativeMonoid = record
+    { isCommutativeMonoid = +ᴹ-isCommutativeMonoid
+    }
 
   open CommutativeMonoid +ᴹ-commutativeMonoid public
     using ()
@@ -153,8 +154,7 @@ record RightModule {r ℓr} (ring : Ring r ℓr) m ℓm
           ; +ᴹ-rawMagma; +ᴹ-rawMonoid)
 
   +ᴹ-abelianGroup : AbelianGroup m ℓm
-  +ᴹ-abelianGroup =
-    record { isAbelianGroup = +ᴹ-isAbelianGroup }
+  +ᴹ-abelianGroup = record { isAbelianGroup = +ᴹ-isAbelianGroup }
 
   open AbelianGroup +ᴹ-abelianGroup public
     using ()
