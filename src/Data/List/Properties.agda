@@ -773,21 +773,21 @@ module _ {a} {A : Set a} where
 
   -- Defining property of reverse-append _ʳ++_.
 
-  ʳ++=reverse++ : ∀ (xs : List A) {ys} → xs ʳ++ ys ≡ reverse xs ++ ys
-  ʳ++=reverse++ [] = refl
-  ʳ++=reverse++ (x ∷ xs) {ys} = begin
+  ʳ++-defn : ∀ (xs : List A) {ys} → xs ʳ++ ys ≡ reverse xs ++ ys
+  ʳ++-defn [] = refl
+  ʳ++-defn (x ∷ xs) {ys} = begin
     (x ∷ xs)             ʳ++ ys   ≡⟨⟩
     xs         ʳ++   x     ∷ ys   ≡⟨⟩
-    xs         ʳ++ [ x ]  ++ ys   ≡⟨ ʳ++=reverse++ xs  ⟩
+    xs         ʳ++ [ x ]  ++ ys   ≡⟨ ʳ++-defn xs  ⟩
     reverse xs  ++ [ x ]  ++ ys   ≡⟨ P.sym (++-assoc (reverse xs) _ _) ⟩
-    (reverse xs ++ [ x ]) ++ ys   ≡⟨ P.cong (_++ ys) (P.sym (ʳ++=reverse++ xs)) ⟩
+    (reverse xs ++ [ x ]) ++ ys   ≡⟨ P.cong (_++ ys) (P.sym (ʳ++-defn xs)) ⟩
     (xs ʳ++ [ x ])        ++ ys   ≡⟨⟩
     reverse (x ∷ xs)      ++ ys   ∎
 
   -- Corollary: reverse of cons is snoc of reverse.
 
   unfold-reverse : ∀ (x : A) xs → reverse (x ∷ xs) ≡ reverse xs ∷ʳ x
-  unfold-reverse x xs = ʳ++=reverse++ xs
+  unfold-reverse x xs = ʳ++-defn xs
 
   -- Reverse-append of append is reverse-append after reverse-append.
   -- Simple inductive proof.
@@ -808,7 +808,7 @@ module _ {a} {A : Set a} where
     reverse (xs ++ ys)         ≡⟨⟩
     (xs ++ ys) ʳ++ []          ≡⟨ ʳ++-++ xs ⟩
     ys ʳ++ xs ʳ++ []           ≡⟨⟩
-    ys ʳ++ reverse xs          ≡⟨ ʳ++=reverse++ ys ⟩
+    ys ʳ++ reverse xs          ≡⟨ ʳ++-defn ys ⟩
     reverse ys ++ reverse xs   ∎
 
   -- Reverse-append of reverse-append is commuted reverse-append after append.
