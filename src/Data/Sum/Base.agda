@@ -8,6 +8,7 @@
 
 module Data.Sum.Base where
 
+open import Data.Bool.Base using (Bool; if_then_else_)
 open import Function.Core using (_∘_; _-[_]-_ ; id)
 open import Relation.Nullary using (Dec; yes; no; ¬_)
 open import Level using (Level; _⊔_)
@@ -67,3 +68,8 @@ fromDec (no ¬p) = inj₂ ¬p
 toDec : A ⊎ ¬ A → Dec A
 toDec (inj₁ p)  = yes p
 toDec (inj₂ ¬p) = no ¬p
+
+-- Conversion from Bool
+
+fromBool : Bool → A → A ⊎ A
+fromBool b = if b then inj₁ else inj₂

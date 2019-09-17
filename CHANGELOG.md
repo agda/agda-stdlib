@@ -292,16 +292,15 @@ Other minor additions
   *-1-rawMonoid  : RawMonoid 0ℓ 0ℓ
   ```
 
-* Added new proofs to `Relation.Binary.PropositionalEquality`:
-  ```agda
-  isMagma : (_∙_ : Op₂ A) → IsMagma _≡_ _∙_
-  magma   : (_∙_ : Op₂ A) → Magma a a
-  ```
-
 * Added new functions to `Data.Level`.
   ```agda
   levelOfType : ∀ {a} → Set a → Level
   levelOfTerm : ∀ {a} {A : Set a} → A → Level
+  ```
+
+* Added new function to `Data.Sum.Base`:
+  ```agda
+  fromBool : Bool → A → A ⊎ A
   ```
 
 * Added new definition to `Relation.Binary.Core`:
@@ -358,6 +357,12 @@ Other minor additions
 * Added new proof to `Relation.Binary.Properties.DecTotalOrder`:
   ```agda
   ≮⇒≥ : ¬ (x < y) → y ≤ x
+  ```
+
+* Added new proofs to `Relation.Binary.PropositionalEquality`:
+  ```agda
+  isMagma : (_∙_ : Op₂ A) → IsMagma _≡_ _∙_
+  magma   : (_∙_ : Op₂ A) → Magma a a
   ```
 
 * Re-exported the maximum function for sizes in `Size`
