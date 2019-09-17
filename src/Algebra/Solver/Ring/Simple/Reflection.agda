@@ -5,10 +5,10 @@ module Algebra.Solver.Ring.Simple.Reflection where
 open import Agda.Builtin.Reflection
 open import Reflection.Helpers
 
-open import Polynomial.Simple.Solver renaming (solve to solve-fn)
+open import Algebra.Solver.Ring.Simple.Solver renaming (solve to solve-fn)
 open AlmostCommutativeRing
 
-open import Data.Nat.Table
+open import Data.NatSet
 
 open import Data.Fin   as Fin   using (Fin)
 open import Data.Vec   as Vec   using (Vec; _∷_; [])
@@ -26,10 +26,10 @@ module Internal where
   _∈Ring : Term → TC Term
   ring ∈Ring = checkType ring (def (quote AlmostCommutativeRing) (unknown ⟨∷⟩ unknown ⟨∷⟩ []))
 
-  vars : Term → Maybe Table
+  vars : Term → Maybe NatSet
   vars = go []
     where
-    go : Table → Term → Maybe Table
+    go : NatSet → Term → Maybe NatSet
     go t (con (quote List._∷_) (_ ∷ _ ∷ var i [] ⟨∷⟩ xs ⟨∷⟩ _)) = go (insert i t) xs
     go t (con (quote List.List.[]) _) = just t
     go _ _ = nothing
@@ -135,7 +135,7 @@ module Internal where
           Ι′ i = if i < numVars then just (var i []) else nothing
           open ToExpr Ι′
 
-        constructSoln : Table → Term → Term → Term
+        constructSoln : NatSet → Term → Term → Term
         constructSoln t lhs rhs =
             quote trans ⟨ def ⟩ 2 ⋯⟅∷⟆ ring ⟨∷⟩ 3 ⋯⟅∷⟆
               (quote sym ⟨ def ⟩ 2 ⋯⟅∷⟆ ring ⟨∷⟩ 2 ⋯⟅∷⟆

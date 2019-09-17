@@ -9,7 +9,7 @@ open import Data.Nat as ℕ using (ℕ; suc; zero)
 open import Data.Nat.GeneralisedArithmetic using (fold)
 open import Data.Fin as Fin using (Fin)
 open import Data.Vec as Vec using (Vec)
-open import Data.Nat.Table as Table using (Table)
+open import Data.NatSet as NatSet using (NatSet)
 open import Data.String using (String)
 open import Data.Maybe as Maybe using (Maybe; just; nothing)
 
@@ -68,8 +68,8 @@ Fin′ : ℕ → Term
 Fin′ zero = quote Fin.zero ⟨ con ⟩ 1 ⋯⟅∷⟆ []
 Fin′ (suc i) = quote Fin.suc ⟨ con ⟩ 1 ⋯⟅∷⟆ Fin′ i ⟨∷⟩ []
 
-curriedTerm : Table → Term
-curriedTerm = List.foldr go (quote Vec.[] ⟨ con ⟩ 2 ⋯⟅∷⟆ []) ∘ Table.toList
+curriedTerm : NatSet → Term
+curriedTerm = List.foldr go (quote Vec.[] ⟨ con ⟩ 2 ⋯⟅∷⟆ []) ∘ NatSet.toList
   where
   go : ℕ → Term → Term
   go x xs = quote Vec._∷_ ⟨ con ⟩ 3 ⋯⟅∷⟆ var x [] ⟨∷⟩ xs ⟨∷⟩ []
