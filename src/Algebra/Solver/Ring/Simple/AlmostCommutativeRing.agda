@@ -24,7 +24,7 @@ record IsAlmostCommutativeRing
 
   open IsCommutativeSemiring isCommutativeSemiring public
 
-import Algebra.Construct.Polynomial.Exponentiation as Exp
+import Algebra.Operations.Ring.Compact as Exp
 
 record AlmostCommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 -_

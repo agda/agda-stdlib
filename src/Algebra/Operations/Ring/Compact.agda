@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K --safe #-}
 
+
 -- This module gives the definition of _^_ which is used throughout
 -- the library. It's a little different from the normal definition:
 --
@@ -25,7 +26,7 @@
 
 open import Algebra
 
-module Algebra.Construct.Polynomial.Exponentiation {ℓ} (ring : RawRing ℓ) where
+module Algebra.Operations.Ring.Compact {ℓ} (ring : RawRing ℓ) where
 
 open import Data.Nat as ℕ using (ℕ; suc; zero)
 

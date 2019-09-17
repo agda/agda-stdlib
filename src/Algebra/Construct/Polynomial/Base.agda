@@ -22,7 +22,7 @@ open RawCoeff coeffs
 open import Data.List.Kleene
 open import Function
 open import Algebra.Construct.Polynomial.InjectionIndex
-open import Algebra.Construct.Polynomial.Exponentiation rawRing
+open import Algebra.Operations.Ring.Compact rawRing
 
 infixl 6 _Δ_
 record PowInd {c} (C : Set c) : Set c where

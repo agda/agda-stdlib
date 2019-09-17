@@ -29,7 +29,7 @@ open import Algebra.Construct.Polynomial.Reasoning to
 open import Algebra.Construct.Polynomial.Base from
 open import Algebra.Construct.Polynomial.Semantics homo
 
-open import Algebra.Construct.Polynomial.Exponentiation rawRing
+open import Algebra.Operations.Ring.Compact rawRing
 
 pow-add′ : ∀ x i j → (x ^ i +1) * (x ^ j +1) ≈ x ^ (j ℕ.+ suc i) +1
 pow-add′ x i ℕ.zero = refl

@@ -22,7 +22,7 @@ open import Algebra.Construct.Polynomial.Homomorphism.Lemmas homo
 open import Algebra.Construct.Polynomial.Homomorphism.Addition homo
 open import Algebra.Construct.Polynomial.Base from
 open import Algebra.Construct.Polynomial.Reasoning to
-open import Algebra.Construct.Polynomial.Exponentiation rawRing
+open import Algebra.Operations.Ring.Compact rawRing
 open import Algebra.Construct.Polynomial.Semantics homo
 open import Algebra.Construct.Polynomial.InjectionIndex
 open import Relation.Unary

@@ -18,7 +18,7 @@ open import Algebra.Construct.Polynomial.InjectionIndex
 open Homomorphism homo
 open import Algebra.Construct.Polynomial.Base from
 
-open import Algebra.Construct.Polynomial.Exponentiation rawRing
+open import Algebra.Operations.Ring.Compact rawRing
 
 drop : ∀ {i n} → i ≤′ n → Vec Carrier n → Vec Carrier i
 drop ≤′-refl Ρ = Ρ

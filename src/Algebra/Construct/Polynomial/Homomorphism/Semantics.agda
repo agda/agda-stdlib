@@ -22,7 +22,7 @@ open import Algebra.Construct.Polynomial.Reasoning (Homomorphism.to homo)
 open import Algebra.Construct.Polynomial.Semantics homo
 open import Algebra.Construct.Polynomial.InjectionIndex
 
-open import Algebra.Construct.Polynomial.Exponentiation rawRing
+open import Algebra.Operations.Ring.Compact rawRing
 
 κ-hom : ∀ {n}
       → (x : Raw.Carrier)
