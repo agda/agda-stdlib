@@ -231,7 +231,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
 ------------------------------------------------------------------------
 -- Packages specialised for propositional equality
 
-infix 3 _↣_ _↠_ _⤖_ _⇔_ _↞_ _↔_
+infix 3 _↣_ _↠_ _⤖_ _⇔_ _↩_ _↪_ _↔_
 
 _↣_ : Set a → Set b → Set _
 A ↣ B = Injection (≡.setoid A) (≡.setoid B)
@@ -245,8 +245,11 @@ A ⤖ B = Bijection (≡.setoid A) (≡.setoid B)
 _⇔_ : Set a → Set b → Set _
 A ⇔ B = Equivalence (≡.setoid A) (≡.setoid B)
 
-_↞_ : Set a → Set b → Set _
-A ↞ B = LeftInverse (≡.setoid A) (≡.setoid B)
+_↩_ : Set a → Set b → Set _
+A ↩ B = LeftInverse (≡.setoid A) (≡.setoid B)
+
+_↪_ : Set a → Set b → Set _
+A ↪ B = RightInverse (≡.setoid A) (≡.setoid B)
 
 _↔_ : Set a → Set b → Set _
 A ↔ B = Inverse (≡.setoid A) (≡.setoid B)
@@ -287,13 +290,22 @@ module _ {A : Set a} {B : Set b} where
     ; cong₂ = ≡.cong g
     }
 
-  mk↞ : ∀ {f : A → B} {g : B → A} → Inverseˡ f g → A ↞ B
-  mk↞ {f} {g} invˡ = record
+  mk↩ : ∀ {f : A → B} {g : B → A} → Inverseˡ f g → A ↩ B
+  mk↩ {f} {g} invˡ = record
     { f        = f
     ; g        = g
     ; cong₁    = ≡.cong f
     ; cong₂    = ≡.cong g
     ; inverseˡ = invˡ
+    }
+
+  mk↪ : ∀ {f : A → B} {g : B → A} → Inverseʳ f g → A ↪ B
+  mk↪ {f} {g} invʳ = record
+    { f        = f
+    ; g        = g
+    ; cong₁    = ≡.cong f
+    ; cong₂    = ≡.cong g
+    ; inverseʳ = invʳ
     }
 
   mk↔ : ∀ {f : A → B} {f⁻¹ : B → A} → Inverseᵇ f f⁻¹ → A ↔ B

@@ -15,17 +15,17 @@ Bug-fixes
 
 
 
-Other non-backwards compatible changes
---------------------------------------
+Non-backwards compatible changes
+--------------------------------
 
-#### New function hierarchy
+### New function hierarchy
 
 * The main problems with the current way various types of functions are
 handled are:
   1. The raw functions were wrapped in the  equality-preserving
-         type `_⟶_` from `Function.Equality`. As the rest of the library
+     type `_⟶_` from `Function.Equality`. As the rest of the library
      very rarely used such wrapped functions, it was almost impossible
-     to write code that interfaces neatly  between the `Function` hierarchy
+     to write code that interfaced neatly  between the `Function` hierarchy
      and, for example, the `Algebra` hierarchy.
   2. The symbol `_⟶_` that was used for equality preserving functions
      was almost indistinguishable from ordinary functions `_→_` in many fonts,
@@ -77,7 +77,10 @@ we would encourage to the new hierarchy in the medium to long term.
   Function.LeftInverse
   ```
 
-#### Re-implementation of `Data.Bin`
+* Minor change: the propositional package for left inverses has been renamed
+from `_↞_` to `_↩_` in order to make room for the new package for right inverse `_↪_`.
+
+### Re-implementation of `Data.Bin`
 
 * The current implementation of naturals represented natively in Agda in `Data.Bin`
   has proven hard to work with. Therefore a new, simpler implementation which avoids
@@ -88,11 +91,41 @@ we would encourage to the new hierarchy in the medium to long term.
 * The existing modules `Data.Bin` and `Data.Bin.Properties` still exist but have been
   deprecated and may be removed in some future release of the library.
 
+### Other breaking changes
+
+#### Harmonizing `List.All` and `Vec` in their role as finite maps.
+
+`Data.List.Relation.Unary.All.updateAt` is analogous to
+`Data.Vec.updateAt` and thus, the API for `All` has been changed to
+match the one for `Vec`:
+
+* The "points-to" relation `_[_]=_` for vectors has been ported to `All`.
+
+* The property
+  `Data.List.Relation.Unary.All.Properties.updateAt-updates` is now
+  formulated in terms of the new "points-to" relation `_[_]=_` rather than
+  the `lookup` function.  The old property is (in a minor variant)
+  available under the name `lookup∘updateAt`.
+
+* `updateAt-cong` has been renamed to `updateAt-cong-relative`, and a new
+  `updateAt-cong` has been ported from `Vec`.
+
+* Further properties of `Vec` have been ported to `All`:
+  ```
+  []=lookup
+  []=⇒lookup
+  lookup⇒[]=
+  updateAt-minimal
+  updateAt-id-relative
+  updateAt-compose-relative
+  updateAt-commutes
+  ```
+
+
 New modules
 -----------
 The following new modules have been added to the library:
 
-* The following new modules have been added to the library:
   ```
   Algebra.Morphism.RawMagma
   Algebra.Morphism.RawMonoid
@@ -108,9 +141,14 @@ The following new modules have been added to the library:
   Data.Bin.Ordering
   Data.Bin.Properties
 
+  Data.Integer.GCD
+  Data.Integer.LCM
+
   Data.List.Kleene
   Data.List.Kleene.AsList
   Data.List.Kleene.Base
+
+  Data.List.Relation.Binary.Sublist.Propositional.Disjoint
 
   Data.Rational.Unnormalised
   Data.Rational.Unnormalised.Properties
@@ -183,11 +221,44 @@ Other minor additions
   *-suc : m * sucℤ n ≡ m + m * n
   ```
 
-* Added new relations to `Data.List.Relation.Binary.Sublist.Setoid/Propositional`:
+* Added new definitions to `Data.List.Relation.Unary.All`:
+  ```agda
+  Null = All (λ _ → ⊥)
+  ```
+
+* Generalized type of `Data.List.Relation.Binary.Sublist.Heterogeneous.toAny` to
+  `Sublist R (a ∷ as) bs → Any (R a) bs`.
+
+* Added new relations to `Data.List.Relation.Binary.Sublist.Heterogeneous`:
+  ```agda
+  Disjoint (τ₁ : xs ⊆ zs) (τ₂ : ys ⊆ zs)
+  DisjointUnion (τ₁ : xs ⊆ zs) (τ₂ : ys ⊆ zs) (τ : xys ⊆ zs)
+  ```
+  Some of their properties have been added to
+  `Data.List.Relation.Binary.Sublist.Heterogeneous.Properties`.
+
+* Added new relations to `Data.List.Relation.Binary.Sublist.Setoid`:
   ```agda
   xs ⊇ ys = ys ⊆ xs
   xs ⊈ ys = ¬ (xs ⊆ ys)
   xs ⊉ ys = ¬ (xs ⊇ ys)
+  ```
+
+* Added new definitions to `Data.List.Relation.Binary.Sublist.Setoid`:
+  ```agda
+  UpperBound (τ₁ : xs ⊆ zs) (τ₂ : ys ⊆ zs)
+  ⊆-disjoint-union : Disjoint τ σ → UpperBound τ σ
+  ```
+
+* Added new proofs to `Data.List.Relation.Binary.Sublist.Setoid.Properties`:
+  ```agda
+  shrinkDisjointˡ : Disjoint τ₁ τ₂ → Disjoint (⊆-trans σ τ₁) τ₂
+  shrinkDisjointʳ : Disjoint τ₁ τ₂ → Disjoint τ₁ (⊆-trans σ τ₂)
+  ```
+
+* Added new definitions to `Data.List.Relation.Binary.Sublist.Propositional`:
+  ```agda
+  separateˡ : (τ₁ : xs ⊆ zs) (τ₂ : ys ⊆ zs) → Separation τ₁ τ₂
   ```
 
 * Added new proofs to `Data.List.Relation.Binary.Sublist.Propositional.Properties`:

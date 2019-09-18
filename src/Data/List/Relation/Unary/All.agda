@@ -10,6 +10,7 @@ module Data.List.Relation.Unary.All where
 
 open import Category.Applicative
 open import Category.Monad
+open import Data.Empty using (⊥)
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Membership.Propositional using (_∈_)
@@ -28,7 +29,7 @@ private
     B : Set b
 
 ------------------------------------------------------------------------
--- Definition
+-- Definitions
 
 -- Given a predicate P, then All P xs means that every element in xs
 -- satisfies P. See `Relation.Unary` for an explanation of predicates.
@@ -39,10 +40,31 @@ data All {A : Set a} (P : Pred A p) : Pred (List A) (a ⊔ p) where
   []  : All P []
   _∷_ : ∀ {x xs} (px : P x) (pxs : All P xs) → All P (x ∷ xs)
 
+-- All P xs is a finite map from indices x ∈ xs to content P x.
+-- Relation pxs [ i ]= px states that, in map pxs, key i : x ∈ xs points to value px.
+
+infix 4 _[_]=_
+
+data _[_]=_ {A : Set a} {P : Pred A p} :
+            ∀ {x xs} → All P xs → x ∈ xs → P x → Set (a ⊔ p) where
+
+  here  : ∀ {x xs} {px : P x} {pxs : All P xs} →
+          px ∷ pxs [ here refl ]= px
+
+  there : ∀ {x xs y} {px : P x} {pxs : All P xs} {py : P y} {i : x ∈ xs} →
+          pxs [ i ]= px →
+          py ∷ pxs [ there i ]= px
+
+-- A list is empty if having an element is impossible.
+
+Null : Pred (List A) _
+Null = All (λ _ → ⊥)
+
 ------------------------------------------------------------------------
 -- Operations on All
 
 module _ {P : Pred A p} where
+
   uncons : ∀ {x xs} → All P (x ∷ xs) → P x × All P xs
   uncons (px ∷ pxs) = px , pxs
 
