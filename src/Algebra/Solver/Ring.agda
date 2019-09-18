@@ -12,7 +12,7 @@ open import Algebra.Construct.Expr public
 open import Algebra.Solver.Ring.AlmostCommutativeRing
 
 open Homomorphism homo
-open Eval homo
+open Eval rawRing ⟦_⟧ᵣ
 
 open import Algebra.Construct.Polynomial.Base from
   using (Poly; _⊞_; _⊠_; ⊟_; _⊡_; κ; ι)

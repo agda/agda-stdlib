@@ -6,6 +6,9 @@ module Algebra.Construct.Expr where
 
 open import Data.Nat using (ℕ)
 open import Data.Fin using (Fin)
+open import Data.Vec as Vec using (Vec)
+
+open import Algebra
 
 infixl 6 _⊕_
 infixl 7 _⊗_
@@ -18,15 +21,12 @@ data Expr  {ℓ} (A : Set ℓ) (n : ℕ) : Set ℓ where
   _⊛_ : Expr A n → ℕ → Expr A n
   ⊝_  : Expr A n → Expr A n
 
-open import Algebra.Construct.Polynomial.Parameters
 
-module Eval {r₁ r₂ r₃} (homo : Homomorphism r₁ r₂ r₃) where
-  open Homomorphism homo
+module Eval {ℓ₁ ℓ₂} (rawRing : RawRing ℓ₁) {A : Set ℓ₂} (⟦_⟧ᵣ : A → RawRing.Carrier rawRing) where
+  open RawRing rawRing
   open import Algebra.Operations.Ring.Compact rawRing
 
-  open import Data.Vec as Vec using (Vec)
-
-  ⟦_⟧ : ∀ {n} → Expr Raw.Carrier n → Vec Carrier n → Carrier
+  ⟦_⟧ : ∀ {n} → Expr A n → Vec Carrier n → Carrier
   ⟦ Κ x ⟧ ρ = ⟦ x ⟧ᵣ
   ⟦ Ι x ⟧ ρ = Vec.lookup ρ x
   ⟦ x ⊕ y ⟧ ρ = ⟦ x ⟧ ρ + ⟦ y ⟧ ρ
