@@ -82,16 +82,14 @@ from `_↞_` to `_↩_` in order to make room for the new package for right inve
 
 ### Re-implementation of `Data.Bin`
 
-* `Data/Bin.agda` and `Data.Bin/*.agda`  of lib-1.0 are removed,
-  added new `Data.Bin.Base, Data.Bin.Properties`.
-  This total change of the Bin part is done for the following reasons.
-  1) Many necessary functions and proofs are added.
-  2) After this has been done, the author noticed (decided) that the whole
-   thing is implemented much simpler with using another representation for Bin:
-   the one with certain three constructors. This representation is taken
-   (with renaming the constructors) from the letter by Martin Escardo to the
-   e-mail list. The referred code (of 2016) resides on
-   http://www.cs.bham.ac.uk/~mhe/agda-new/BinaryNaturals.html
+* The current implementation of naturals represented natively in Agda in `Data.Bin`
+  has proven hard to work with. Therefore a new, simpler implementation which avoids
+  using `List` has been added as `Data.Nat.Binary`. This representation was inspired
+  by the letter by Martin Escardo to the Agda mailing list. The original code resides at
+  http://www.cs.bham.ac.uk/~mhe/agda-new/BinaryNaturals.html
+
+* The existing modules `Data.Bin` and `Data.Bin.Properties` still exist but have been
+  deprecated and may be removed in some future release of the library.
 
 ### Other breaking changes
 
