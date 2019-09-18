@@ -20,7 +20,6 @@ open import Algebra.Construct.Polynomial.Homomorphism.Lemmas homo
 open import Algebra.Construct.Polynomial.Base (Homomorphism.from homo)
 open import Algebra.Construct.Polynomial.Reasoning (Homomorphism.to homo)
 open import Algebra.Construct.Polynomial.Semantics homo
-open import Algebra.Construct.Polynomial.InjectionIndex
 
 open import Algebra.Operations.Ring.Compact rawRing
 

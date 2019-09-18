@@ -8,13 +8,12 @@ module Algebra.Construct.Polynomial.Semantics
   (homo : Homomorphism r₁ r₂ r₃)
   where
 
-open import Data.Nat     using (ℕ; suc; zero)
+open import Data.Nat     using (ℕ; suc; zero; _≤′_; ≤′-step; ≤′-refl)
 open import Data.Vec     using (Vec; []; _∷_)
 open import Data.List    using ([]; _∷_)
 open import Data.Product using (_,_; _×_)
 open import Data.List.Kleene
 
-open import Algebra.Construct.Polynomial.InjectionIndex
 open Homomorphism homo
 open import Algebra.Construct.Polynomial.Base from
 

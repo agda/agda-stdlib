@@ -9,7 +9,8 @@ module Algebra.Construct.Polynomial.Homomorphism.Lemmas
 
 open import Data.List                                  using (_∷_; [])
 open import Relation.Nullary                           using (Dec; yes; no)
-open import Data.Nat as ℕ                              using (ℕ; suc; zero; compare)
+open import Data.Nat as ℕ                              using (ℕ; suc; zero; compare; _≤′_; ≤′-step; ≤′-refl)
+open import Data.Nat.Properties                        using (≤′-trans)
 open import Data.Vec as Vec                            using (Vec; _∷_)
 open import Level                                      using (lift)
 open import Data.Fin                                   using (Fin)
@@ -22,7 +23,6 @@ open import Data.Unit using (tt)
 open import Function
 import Data.Nat.Properties as ℕ-Prop
 open import Data.List.Kleene
-open import Algebra.Construct.Polynomial.InjectionIndex
 
 open Homomorphism homo
 open import Algebra.Construct.Polynomial.Reasoning to

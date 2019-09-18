@@ -9,7 +9,8 @@ module Algebra.Construct.Polynomial.Homomorphism.Addition
 
 open import Function
 
-open import Data.Nat as ℕ using (ℕ; suc; zero; compare)
+open import Data.Nat as ℕ using (ℕ; suc; zero; compare; _≤′_; ≤′-step; ≤′-refl)
+open import Data.Nat.Properties using (≤′-trans)
 open import Data.Product  using (_,_; _×_; proj₂)
 open import Data.List     using (_∷_; [])
 open import Data.Vec      using (Vec)
@@ -23,7 +24,6 @@ open import Algebra.Construct.Polynomial.Base from
 open import Algebra.Construct.Polynomial.Reasoning to
 open import Algebra.Construct.Polynomial.Semantics homo
 open import Algebra.Operations.Ring.Compact rawRing
-open import Algebra.Construct.Polynomial.InjectionIndex
 open import Data.List.Kleene
 open import Relation.Unary
 

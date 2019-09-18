@@ -7,7 +7,8 @@ module Algebra.Construct.Polynomial.Homomorphism.Multiplication
   (homo : Homomorphism r₁ r₂ r₃)
   where
 
-open import Data.Nat as ℕ          using (ℕ; suc; zero; _<′_; _≤′_)
+open import Data.Nat as ℕ          using (ℕ; suc; zero; _<′_; _≤′_; ≤′-step; ≤′-refl)
+open import Data.Nat.Properties using (≤′-trans)
 open import Data.Product           using (_×_; _,_; proj₁; proj₂; map₁)
 open import Data.List.Kleene
 open import Data.Vec               using (Vec)
@@ -24,7 +25,6 @@ open import Algebra.Construct.Polynomial.Base from
 open import Algebra.Construct.Polynomial.Reasoning to
 open import Algebra.Operations.Ring.Compact rawRing
 open import Algebra.Construct.Polynomial.Semantics homo
-open import Algebra.Construct.Polynomial.InjectionIndex
 open import Relation.Unary
 
 open import Data.Nat.Induction

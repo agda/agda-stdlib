@@ -15,14 +15,56 @@ open import Data.Nat.Properties    using (z≤′n)
 open import Data.Product           using (_×_; _,_; map₁; curry; uncurry)
 open import Induction.WellFounded  using (Acc; acc)
 open import Induction.Nat          using (<′-wellFounded)
-open import Data.Fin               using (Fin)
+open import Data.Fin as Fin        using (Fin)
 
 open RawCoeff coeffs
 
 open import Data.List.Kleene
 open import Function
-open import Algebra.Construct.Polynomial.InjectionIndex
 open import Algebra.Operations.Ring.Compact rawRing
+
+open import Data.Nat using (_≤′_; ≤′-refl; ≤′-step; _<′_)
+open import Data.Nat.Properties using (≤′-trans)
+open import Function
+
+data InjectionOrdering {n : ℕ} : ∀ {i j}
+                      → (i≤n : i ≤′ n)
+                      → (j≤n : j ≤′ n)
+                      → Set
+                      where
+  inj-lt : ∀ {i j-1}
+     → (i≤j-1 : i ≤′ j-1)
+     → (j≤n : suc j-1 ≤′ n)
+     → InjectionOrdering (≤′-step i≤j-1 ⟨ ≤′-trans ⟩ j≤n) j≤n
+  inj-gt : ∀ {i-1 j}
+     → (i≤n : suc i-1 ≤′ n)
+     → (j≤i-1 : j ≤′ i-1)
+     → InjectionOrdering i≤n (≤′-step j≤i-1 ⟨ ≤′-trans ⟩ i≤n)
+  inj-eq : ∀ {i} → (i≤n : i ≤′ n) → InjectionOrdering i≤n i≤n
+
+inj-compare : ∀ {i j n}
+    → (x : i ≤′ n)
+    → (y : j ≤′ n)
+    → InjectionOrdering x y
+inj-compare ≤′-refl ≤′-refl = inj-eq ≤′-refl
+inj-compare ≤′-refl (≤′-step y) = inj-gt ≤′-refl y
+inj-compare (≤′-step x) ≤′-refl = inj-lt x ≤′-refl
+inj-compare (≤′-step x) (≤′-step y) = case inj-compare x y of
+    λ { (inj-lt i≤j-1 .y) → inj-lt i≤j-1 (≤′-step y)
+      ; (inj-gt .x j≤i-1) → inj-gt (≤′-step x) j≤i-1
+      ; (inj-eq .x) → inj-eq (≤′-step x)
+      }
+
+space : ∀ {n} → Fin n → ℕ
+space f = suc (go f)
+  where
+  go : ∀ {n} → Fin n → ℕ
+  go {suc n} Fin.zero = n
+  go (Fin.suc x) = go x
+
+Fin⇒≤ : ∀ {n} (x : Fin n) → space x ≤′ n
+Fin⇒≤ Fin.zero = ≤′-refl
+Fin⇒≤ (Fin.suc x) = ≤′-step (Fin⇒≤ x)
 
 infixl 6 _Δ_
 record PowInd {c} (C : Set c) : Set c where
