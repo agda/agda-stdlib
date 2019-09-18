@@ -22,7 +22,7 @@ open import Algebra.Construct.Polynomial.Parameters
 
 module Eval {r₁ r₂ r₃} (homo : Homomorphism r₁ r₂ r₃) where
   open Homomorphism homo
-  open import Algebra.Construct.Polynomial.Exponentiation rawRing
+  open import Algebra.Operations.Ring.Compact rawRing
 
   open import Data.Vec as Vec using (Vec)
 

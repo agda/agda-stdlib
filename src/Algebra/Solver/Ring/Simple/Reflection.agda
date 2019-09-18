@@ -145,7 +145,7 @@ module Internal where
               []
           where
           Ι′ : ℕ → Maybe Term
-          Ι′ i = Maybe.map (λ x → quote Ι ⟨ con ⟩ E⟅∷⟆ Fin′ x ⟨∷⟩ []) (member i t)
+          Ι′ i = Maybe.map (λ x → quote Ι ⟨ con ⟩ E⟅∷⟆ Fin′ x ⟨∷⟩ []) (lookup i t)
 
           open ToExpr Ι′
           ρ : Term
