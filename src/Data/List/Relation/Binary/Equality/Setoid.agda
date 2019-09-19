@@ -123,10 +123,8 @@ module _ {P : Pred A p} (P? : U.Decidable P) (resp : P Respects _≈_)
 ------------------------------------------------------------------------
 -- reverse
 
-infixr 5 _ʳ++⁺_
-
-_ʳ++⁺_ : ∀{xs xs′ ys ys′} → xs ≋ xs′ → ys ≋ ys′ → xs ʳ++ ys ≋ xs′ ʳ++ ys′
-_ʳ++⁺_ = PW._ʳ++⁺_
+ʳ++⁺ : ∀{xs xs′ ys ys′} → xs ≋ xs′ → ys ≋ ys′ → xs ʳ++ ys ≋ xs′ ʳ++ ys′
+ʳ++⁺ = PW.ʳ++⁺
 
 reverse⁺ : ∀ {xs ys} → xs ≋ ys → reverse xs ≋ reverse ys
 reverse⁺ = PW.reverse⁺
