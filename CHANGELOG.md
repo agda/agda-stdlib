@@ -149,6 +149,15 @@ The following new modules have been added to the library:
   Data.Integer.GCD
   Data.Integer.LCM
 
+  Data.List.Fresh
+  Data.List.Fresh.Properties
+  Data.List.Fresh.Relation.Unary.All
+  Data.List.Fresh.Relation.Unary.All.Properties
+  Data.List.Fresh.Relation.Unary.Any
+  Data.List.Fresh.Relation.Unary.Any.Properties
+  Data.List.Fresh.Membership
+  Data.List.Fresh.Membership.Properties
+
   Data.List.Kleene
   Data.List.Kleene.AsList
   Data.List.Kleene.Base
@@ -206,9 +215,14 @@ attached to all deprecated names to discourage their use.
   strictPartialOrder ↦ <-strictPartialOrder
   ```
 
-* In `Relation.Binary.Properties.DecTotalOrder`
+* In `Relation.Binary.Properties.DecTotalOrder`:
   ```agda
-  strictTotalOrder = <-strictTotalOrder
+  strictTotalOrder ↦ <-strictTotalOrder
+  ```
+
+* In `Relation.Nullary.Decidable.Core`:
+  ```agda
+  ⌊_⌋ ↦ isYes
   ```
 
 Other minor additions
@@ -299,6 +313,12 @@ Other minor additions
   *-1-rawMonoid  : RawMonoid 0ℓ 0ℓ
   ```
 
+* Added new functions to `Data.Sum.Base`:
+  ```agda
+  fromInj₁ : (B → A) → A ⊎ B → A
+  fromInj₂ : (A → B) → A ⊎ B → B
+  ```
+
 * Added new proofs to `Relation.Binary.PropositionalEquality`:
   ```agda
   isMagma : (_∙_ : Op₂ A) → IsMagma _≡_ _∙_
@@ -365,6 +385,24 @@ Other minor additions
 * Added new proof to `Relation.Binary.Properties.DecTotalOrder`:
   ```agda
   ≮⇒≥ : ¬ (x < y) → y ≤ x
+  ```
+
+* Added new definitions to `Relation.Nary`:
+  ```agda
+  apply⊤ₙ  : Π[ R ] → (vs : Product⊤ n as) → uncurry⊤ₙ n R vs
+  applyₙ   : Π[ R ] → (vs : Product n as) → uncurry⊤ₙ n R (toProduct⊤ n vs)
+  iapply⊤ₙ : ∀[ R ] → {vs : Product⊤ n as} → uncurry⊤ₙ n R vs
+  iapplyₙ  : ∀[ R ] → {vs : Product n as} → uncurry⊤ₙ n R (toProduct⊤ n vs)
+
+  Decidable   : as ⇉ Set r → Set (r ⊔ ⨆ n ls)
+  ⌊_⌋         : Decidable R → as ⇉ Set r
+  fromWitness : (R : as ⇉ Set r) (R? : Decidable R) → ∀[ ⌊ R? ⌋ ⇒ R ]
+  toWitness   : (R : as ⇉ Set r) (R? : Decidable R) → ∀[ R ⇒ ⌊ R? ⌋ ]
+  ```
+
+* Added new definitions to `Relation.Unary`:
+  ```agda
+  ⌊_⌋ : {P : Pred A ℓ} → Decidable P → Pred A ℓ
   ```
 
 * Re-exported the maximum function for sizes in `Size`

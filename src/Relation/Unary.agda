@@ -161,6 +161,14 @@ syntax IUniversal P = ∀[ P ]
 Decidable : Pred A ℓ → Set _
 Decidable P = ∀ x → Dec (P x)
 
+-- Erasure: A decidable predicate gives rise to another one, more
+-- amenable to η-expansion
+
+⌊_⌋ : {P : Pred A ℓ} → Decidable P → Pred A ℓ
+⌊ P? ⌋ a with P? a
+... | yes _ = Lift _ ⊤
+... | no _  = Lift _ ⊥
+
 -- Irrelevance - any two proofs that an element satifies P are
 -- indistinguishable.
 

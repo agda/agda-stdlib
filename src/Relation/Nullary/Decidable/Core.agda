@@ -27,15 +27,18 @@ private
     P : Set p
     Q : Set q
 
-⌊_⌋ : Dec P → Bool
-⌊ yes _ ⌋ = true
-⌊ no  _ ⌋ = false
+isYes : Dec P → Bool
+isYes (yes _) = true
+isYes (no _)  = false
+
+isNo : Dec P → Bool
+isNo = not ∘ isYes
 
 True : Dec P → Set
-True Q = T ⌊ Q ⌋
+True Q = T (isYes Q)
 
 False : Dec P → Set
-False Q = T (not ⌊ Q ⌋)
+False Q = T (isNo Q)
 
 -- Gives a witness to the "truth".
 
@@ -97,3 +100,18 @@ dec-no (no ¬p′) ¬p = ¬p′ , refl
 dec-yes-irr : (p? : Dec P) → Irrelevant P → (p : P) → p? ≡ yes p
 dec-yes-irr p? irr p with dec-yes p? p
 ... | p′ , eq rewrite irr p p′ = eq
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 1.2
+
+⌊_⌋ = isYes
+{-# WARNING_ON_USAGE ⌊_⌋
+"Warning: ⌊_⌋ was deprecated in v1.2.
+Please use isYes instead."
+#-}

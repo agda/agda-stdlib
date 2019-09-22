@@ -24,7 +24,7 @@ open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence
   using () renaming (module Equivalence to Eq)
 open import Relation.Binary.PropositionalEquality as P using (_≡_; _≢_; refl)
-open import Relation.Nullary.Decidable using (⌊_⌋)
+open import Relation.Nullary.Decidable using (isYes)
 
 ------------------------------------------------------------------------
 -- Non-empty lists
@@ -317,7 +317,7 @@ private
   split-false = refl
 
   split-≡1 :
-    split (λ n → ⌊ n Nat.≟ 1 ⌋) (1 ∷ 2 ∷ 3 ∷ 1 ∷ 1 ∷ 2 ∷ 1 ∷ []) ≡
+    split (λ n → isYes (n Nat.≟ 1)) (1 ∷ 2 ∷ 3 ∷ 1 ∷ 1 ∷ 2 ∷ 1 ∷ []) ≡
     inj₁ [ 1 , tt ] ∷ inj₂ ((2 , tt) ∷⁺ [ 3 , tt ]) ∷
     inj₁ ((1 , tt) ∷⁺ [ 1 , tt ]) ∷ inj₂ [ 2 , tt ] ∷ inj₁ [ 1 , tt ] ∷
     []
@@ -331,6 +331,6 @@ private
   wordsBy-false = refl
 
   wordsBy-≡1 :
-    wordsBy (λ n → ⌊ n Nat.≟ 1 ⌋) (1 ∷ 2 ∷ 3 ∷ 1 ∷ 1 ∷ 2 ∷ 1 ∷ []) ≡
+    wordsBy (λ n → isYes (n Nat.≟ 1)) (1 ∷ 2 ∷ 3 ∷ 1 ∷ 1 ∷ 2 ∷ 1 ∷ []) ≡
     (2 ∷⁺ [ 3 ]) ∷ [ 2 ] ∷ []
   wordsBy-≡1 = refl
