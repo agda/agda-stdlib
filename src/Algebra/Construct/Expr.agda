@@ -1,6 +1,6 @@
 {-# OPTIONS --without-K --safe #-}
 
--- This module provides the basic expression type for polynomials.
+-- This module provides a type for expressions in a ring.
 
 module Algebra.Construct.Expr where
 
@@ -18,7 +18,7 @@ data Expr  {ℓ} (A : Set ℓ) (n : ℕ) : Set ℓ where
   Ι   : Fin n → Expr A n
   _⊕_ : Expr A n → Expr A n → Expr A n
   _⊗_ : Expr A n → Expr A n → Expr A n
-  _⊛_ : Expr A n → ℕ → Expr A n
+  _⊛_ : Expr A n → ℕ → Expr A n -- exponentiation
   ⊝_  : Expr A n → Expr A n
 
 

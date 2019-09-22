@@ -1,32 +1,54 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Sparse polynomials in a commutative ring, encoded in Horner normal
+-- form.
+------------------------------------------------------------------------
+
 {-# OPTIONS --safe --without-K #-}
 
-open import Algebra
-open import Data.Bool using (Bool; true; false; T)
 open import Algebra.Construct.Polynomial.Parameters
 
 module Algebra.Construct.Polynomial.Base {ℓ} (coeffs : RawCoeff ℓ) where
 
-open import Data.Nat as ℕ          using (ℕ; suc; zero; _≤′_; compare)
+open import Data.Bool              using (Bool; true; false; T)
+open import Data.Nat as ℕ          using (ℕ; suc; zero; _≤′_; compare; ≤′-refl; ≤′-step; _<′_)
+open import Data.Nat.Properties    using (z≤′n; ≤′-trans)
 open import Relation.Nullary       using (¬_; Dec; yes; no)
-open import Level                  using (_⊔_)
 open import Data.Empty             using (⊥)
 open import Data.Unit              using (⊤; tt)
-open import Data.Nat.Properties    using (z≤′n)
 open import Data.Product           using (_×_; _,_; map₁; curry; uncurry)
 open import Induction.WellFounded  using (Acc; acc)
 open import Induction.Nat          using (<′-wellFounded)
 open import Data.Fin as Fin        using (Fin)
 
-open RawCoeff coeffs
-
+open import Algebra
+open import Function
 open import Data.List.Kleene
 open import Function
+
+open RawCoeff coeffs
 open import Algebra.Operations.Ring.Compact rawRing
 
-open import Data.Nat using (_≤′_; ≤′-refl; ≤′-step; _<′_)
-open import Data.Nat.Properties using (≤′-trans)
-open import Function
+------------------------------------------------------------------------
+-- Injection indices.
+--
+-- The injection index is the encoding of the exponent in a polynomial.
+-- For efficiency reasons, we encode the exponent as a "gap". i.e., for
+-- the polynomial:
+--
+--   2 + x² + 4x³
+--
+-- We encode it as:
+--
+--    [(2,0), (1,1), (4,0)]
+--
+-- For proof reasons, we don't use ℕ to encode the gap directly, rather
+-- we use _≤′_.
 
+-- First, we define comparisons on _≤′_.
+-- The following is analagous to Ordering and compare from
+-- Data.Nat.Base.
 data InjectionOrdering {n : ℕ} : ∀ {i j}
                       → (i≤n : i ≤′ n)
                       → (j≤n : j ≤′ n)
@@ -55,6 +77,8 @@ inj-compare (≤′-step x) (≤′-step y) = case inj-compare x y of
       ; (inj-eq .x) → inj-eq (≤′-step x)
       }
 
+-- The "space" above a Fin n is the number of unique "Fin n"s greater
+-- than or equal to it.
 space : ∀ {n} → Fin n → ℕ
 space f = suc (go f)
   where
@@ -65,6 +89,9 @@ space f = suc (go f)
 Fin⇒≤ : ∀ {n} (x : Fin n) → space x ≤′ n
 Fin⇒≤ Fin.zero = ≤′-refl
 Fin⇒≤ (Fin.suc x) = ≤′-step (Fin⇒≤ x)
+
+-------------------------------------------------------------------------
+-- Definition
 
 infixl 6 _Δ_
 record PowInd {c} (C : Set c) : Set c where
@@ -182,6 +209,7 @@ _Π↓_ : ∀ {i n} → Coeff i * → suc i ≤′ n → Poly n
 {-# INLINE _Π↓_ #-}
 
 --------------------------------------------------------------------------------
+-- Folds
 -- These folds allow us to abstract over the proofs later: we try to avoid
 -- using ∷↓ and Π↓ directly anywhere except here, so if we prove that this fold
 -- acts the same on a normalised or non-normalised polynomial, we can prove th
@@ -199,6 +227,9 @@ para f (x ≠0 Δ i & ∹ xs) = case f (x , para f xs) of λ { (y , ys) → y Δ
 poly-map : ∀ {i} → (Poly i → Poly i) → Coeff i + → Coeff i *
 poly-map f = para (λ { (x , y) → (f x , y)})
 {-# INLINE poly-map #-}
+
+----------------------------------------------------------------------
+-- Operations
 
 ----------------------------------------------------------------------
 -- Addition
