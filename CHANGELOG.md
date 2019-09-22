@@ -167,6 +167,11 @@ The following new modules have been added to the library:
   Data.Rational.Unnormalised
   Data.Rational.Unnormalised.Properties
 
+  Data.Vec.Functional
+  Data.Vec.Functional.Relation.Binary.Pointwise
+  Data.Vec.Functional.Relation.Unary.All
+  Data.Vec.Functional.Relation.Unary.Any
+
   Function.Definitions
   Function.Packages
   Function.Structures
