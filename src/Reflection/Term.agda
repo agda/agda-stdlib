@@ -8,12 +8,17 @@
 
 module Reflection.Term where
 
-open import Data.List.Base
+import Data.Char.Properties as CP using (_≟_)
+open import Data.List.Base hiding (_++_)
+import Data.List.Membership.DecPropositional as ListMembership
 import Data.List.Properties as Lₚ
 import Data.Nat as ℕ
+import Data.Nat.Show as NatShow
 open import Data.Product
+open import Data.String as String using (String; braces; parens; _++_; _<+>_)
 open import Reflection.Abstraction
 open import Reflection.Argument
+open import Reflection.Argument.Information using (visibility)
 import Reflection.Argument.Visibility as Visibility; open Visibility.Visibility
 import Reflection.Literal as Literal
 import Reflection.Meta as Meta
@@ -28,7 +33,7 @@ open import Relation.Binary.PropositionalEquality
 ------------------------------------------------------------------------
 -- Re-exporting the builtin type and constructors
 
-open import Agda.Builtin.Reflection public using (Sort; Type; Term; Clause)
+open import Agda.Builtin.Reflection as Builtin public using (Sort; Type; Term; Clause)
 open Sort public
 open Term public renaming (agda-sort to sort)
 open Clause public
@@ -48,6 +53,61 @@ pattern Π[_∶_]_ s a ty     = pi a (abs s ty)
 pattern vΠ[_∶_]_ s a ty    = Π[ s ∶ (vArg a) ] ty
 pattern hΠ[_∶_]_ s a ty    = Π[ s ∶ (hArg a) ] ty
 pattern iΠ[_∶_]_ s a ty    = Π[ s ∶ (iArg a) ] ty
+
+------------------------------------------------------------------------
+-- Showing
+
+-- Note that Reflection.termErr can also be used directly in tactic error
+-- messages.
+
+private
+  open ListMembership CP._≟_
+
+  -- enclose string with parens if it contains a space character
+  parensIfSpace : String -> String
+  parensIfSpace s with ' ' ∈? String.toList s
+  ... | yes _ = parens s
+  ... | no _  = s
+
+  -- add appropriate parens depending on the given visibility
+  visibilityParen : Builtin.Visibility → String → String
+  visibilityParen visible   s = parensIfSpace s
+  visibilityParen hidden    s = braces s
+  visibilityParen instance′ s = braces (braces s)
+
+mutual
+
+  showTerms : List (Arg Term) → String
+  showTerms []             = ""
+  showTerms (arg i t ∷ ts) = visibilityParen (visibility i) (show t) <+> showTerms ts
+
+  show : Term → String
+  show (var x args)         = "var" <+> NatShow.show x <+> showTerms args
+  show (con c args)         = Name.show c <+> showTerms args
+  show (def f args)         = Name.show f <+> showTerms args
+  show (lam v (abs s x))    = "λ" <+> visibilityParen v s <+> "→" <+> show x
+  show (pat-lam cs args)    =
+    "λ {" <+> showClauses cs <+> "}" <+> showTerms args
+  show (Π[ x ∶ arg i a ] b) =
+    "Π (" ++ visibilityParen (visibility i) x <+> ":" <+>
+    parensIfSpace (show a) ++ ")" <+> parensIfSpace (show b)
+  show (sort s)             = showSort s
+  show (lit l)              = Literal.show l
+  show (meta x args)        = Meta.show x <+> showTerms args
+  show unknown              = "unknown"
+
+  showSort : Sort → String
+  showSort (set t) = "Set" <+> parensIfSpace (show t)
+  showSort (lit n) = "Set" ++ NatShow.show n -- no space to disambiguate from set t
+  showSort unknown = "unknown"
+
+  showClause : Clause → String
+  showClause (clause ps t)      = Pattern.showPatterns ps <+> "→" <+> show t
+  showClause (absurd-clause ps) = Pattern.showPatterns ps
+
+  showClauses : List Clause → String
+  showClauses []       = ""
+  showClauses (c ∷ cs) = showClause c <+> ";" <+> showClauses cs
 
 ------------------------------------------------------------------------
 -- Decidable equality

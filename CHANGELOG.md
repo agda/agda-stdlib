@@ -333,3 +333,13 @@ Other minor additions
   ```agda
   _⊔ˢ_ : Size → Size → Size
   ```
+
+* Added convenience functions to `Data.String.Base`:
+  ```agda
+  parens : String → String
+  braces : String → String
+  intersperse : String → List String → String
+  unwords : List String → String
+  _<+>_ : String → String → String -- space-introducing append
+  ```
+
