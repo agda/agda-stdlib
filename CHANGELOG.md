@@ -140,11 +140,10 @@ The following new modules have been added to the library:
 
   Data.AVL.Map
 
-  Data.Bin
-  Data.Bin.Base
-  Data.Bin.Induction
-  Data.Bin.Ordering
-  Data.Bin.Properties
+  Data.Nat.Binary
+  Data.Nat.Binary.Base
+  Data.Nat.Binary.Induction
+  Data.Nat.Binary.Properties
 
   Data.Integer.GCD
   Data.Integer.LCM
