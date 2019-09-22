@@ -122,6 +122,11 @@ match the one for `Vec`:
   ```
 
 
+#### Other
+
+* The proofs `isPreorder` and `preorder` have been moved from the `Setoid`
+  record to the module `Relation.Binary.Properties.Setoid`.
+
 New modules
 -----------
 The following new modules have been added to the library:

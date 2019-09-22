@@ -15,6 +15,7 @@ open import Data.Product using (_,_)
 open import Function.Core using (_∘_)
 open import Level
 open import Relation.Binary.Core
+open import Relation.Binary.Definitions
 open import Relation.Nullary using (¬_)
 
 private
@@ -55,13 +56,6 @@ respʳ _∼_ refl x∼y = x∼y
 
 resp₂ : ∀ (∼ : Rel A ℓ) → ∼ Respects₂ _≡_
 resp₂ _∼_ = respʳ _∼_ , respˡ _∼_
-
-isEquivalence : IsEquivalence {A = A} _≡_
-isEquivalence = record
-  { refl  = refl
-  ; sym   = sym
-  ; trans = trans
-  }
 
 ------------------------------------------------------------------------
 -- Various equality rearrangement lemmas
