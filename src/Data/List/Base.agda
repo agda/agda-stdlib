@@ -314,6 +314,13 @@ reverseAcc = foldl (flip _∷_)
 reverse : List A → List A
 reverse = reverseAcc []
 
+-- "Reverse append" xs ʳ++ ys = reverse xs ++ ys
+
+infixr 5 _ʳ++_
+
+_ʳ++_ : List A → List A → List A
+_ʳ++_ = flip reverseAcc
+
 -- Snoc.
 
 infixl 5 _∷ʳ_

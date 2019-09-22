@@ -221,6 +221,10 @@ Other minor additions
   *-suc : m * sucℤ n ≡ m + m * n
   ```
 
+* Added to `Data.List` the reverse-append function `_ʳ++_`
+  which is `reverseAcc` with the intuitive argument order.
+  Generalized the properties of `reverse` to `_ʳ++_`.
+
 * Added new definitions to `Data.List.Relation.Unary.All`:
   ```agda
   Null = All (λ _ → ⊥)

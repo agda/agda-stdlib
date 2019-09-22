@@ -764,84 +764,152 @@ module _ {P : A → Set p} (P? : Decidable P) where
   ...  | no ¬Px = P.cong (Prod.map id (x ∷_)) (partition-defn xs)
 
 ------------------------------------------------------------------------
--- reverse
+-- reverse is an involution in the list monoid
 
 module _ {a} {A : Set a} where
 
   open FunctionProperties {A = List A} _≡_
+  open P.≡-Reasoning
+
+  -- Defining property of reverse-append _ʳ++_.
+
+  ʳ++-defn : ∀ (xs : List A) {ys} → xs ʳ++ ys ≡ reverse xs ++ ys
+  ʳ++-defn [] = refl
+  ʳ++-defn (x ∷ xs) {ys} = begin
+    (x ∷ xs)             ʳ++ ys   ≡⟨⟩
+    xs         ʳ++   x     ∷ ys   ≡⟨⟩
+    xs         ʳ++ [ x ]  ++ ys   ≡⟨ ʳ++-defn xs  ⟩
+    reverse xs  ++ [ x ]  ++ ys   ≡⟨ P.sym (++-assoc (reverse xs) _ _) ⟩
+    (reverse xs ++ [ x ]) ++ ys   ≡⟨ P.cong (_++ ys) (P.sym (ʳ++-defn xs)) ⟩
+    (xs ʳ++ [ x ])        ++ ys   ≡⟨⟩
+    reverse (x ∷ xs)      ++ ys   ∎
+
+  -- Corollary: reverse of cons is snoc of reverse.
 
   unfold-reverse : ∀ (x : A) xs → reverse (x ∷ xs) ≡ reverse xs ∷ʳ x
-  unfold-reverse x xs = helper [ x ] xs
-    where
-    open P.≡-Reasoning
-    helper : (xs ys : List A) → foldl (flip _∷_) xs ys ≡ reverse ys ++ xs
-    helper xs []       = refl
-    helper xs (y ∷ ys) = begin
-      foldl (flip _∷_) (y ∷ xs) ys  ≡⟨ helper (y ∷ xs) ys ⟩
-      reverse ys ++ y ∷ xs          ≡⟨ P.sym (++-assoc (reverse ys) _ _) ⟩
-      (reverse ys ∷ʳ y) ++ xs       ≡⟨ P.sym $ P.cong (_++ xs) (unfold-reverse y ys) ⟩
-      reverse (y ∷ ys) ++ xs        ∎
+  unfold-reverse x xs = ʳ++-defn xs
+
+  -- Reverse-append of append is reverse-append after reverse-append.
+  -- Simple inductive proof.
+
+  ʳ++-++ : ∀ (xs {ys zs} : List A) → (xs ++ ys) ʳ++ zs ≡ ys ʳ++ xs ʳ++ zs
+  ʳ++-++ [] = refl
+  ʳ++-++ (x ∷ xs) {ys} {zs} = begin
+    (x ∷ xs ++ ys) ʳ++ zs   ≡⟨⟩
+    (xs ++ ys) ʳ++ x ∷ zs   ≡⟨ ʳ++-++ xs ⟩
+    ys ʳ++ xs ʳ++ x ∷ zs    ≡⟨⟩
+    ys ʳ++ (x ∷ xs) ʳ++ zs  ∎
+
+  -- Corollary: reverse is an involution with respect to append.
 
   reverse-++-commute : (xs ys : List A) →
                        reverse (xs ++ ys) ≡ reverse ys ++ reverse xs
-  reverse-++-commute []       ys = P.sym (++-identityʳ _)
-  reverse-++-commute (x ∷ xs) ys = begin
-    reverse (x ∷ xs ++ ys)               ≡⟨ unfold-reverse x (xs ++ ys) ⟩
-    reverse (xs ++ ys) ++ [ x ]          ≡⟨ P.cong (_++ [ x ]) (reverse-++-commute xs ys) ⟩
-    (reverse ys ++ reverse xs) ++ [ x ]  ≡⟨ ++-assoc (reverse ys) _ _ ⟩
-    reverse ys ++ (reverse xs ++ [ x ])  ≡⟨ P.sym $ P.cong (reverse ys ++_) (unfold-reverse x xs) ⟩
-    reverse ys ++ reverse (x ∷ xs)       ∎
-    where open P.≡-Reasoning
+  reverse-++-commute xs ys = begin
+    reverse (xs ++ ys)         ≡⟨⟩
+    (xs ++ ys) ʳ++ []          ≡⟨ ʳ++-++ xs ⟩
+    ys ʳ++ xs ʳ++ []           ≡⟨⟩
+    ys ʳ++ reverse xs          ≡⟨ ʳ++-defn ys ⟩
+    reverse ys ++ reverse xs   ∎
+
+  -- Reverse-append of reverse-append is commuted reverse-append after append.
+  -- Simple inductive proof.
+
+  ʳ++-ʳ++ : ∀ (xs {ys zs} : List A) → (xs ʳ++ ys) ʳ++ zs ≡ ys ʳ++ xs ++ zs
+  ʳ++-ʳ++ [] = refl
+  ʳ++-ʳ++ (x ∷ xs) {ys} {zs} = begin
+    ((x ∷ xs) ʳ++ ys) ʳ++ zs   ≡⟨⟩
+    (xs ʳ++ x ∷ ys) ʳ++ zs     ≡⟨ ʳ++-ʳ++ xs ⟩
+    (x ∷ ys) ʳ++ xs ++ zs      ≡⟨⟩
+    ys ʳ++ (x ∷ xs) ++ zs      ∎
+
+  -- Corollary: reverse is involutive.
 
   reverse-involutive : Involutive reverse
-  reverse-involutive [] = refl
-  reverse-involutive (x ∷ xs) = begin
-    reverse (reverse (x ∷ xs))   ≡⟨ P.cong reverse $ unfold-reverse x xs ⟩
-    reverse (reverse xs ∷ʳ x)    ≡⟨ reverse-++-commute (reverse xs) ([ x ]) ⟩
-    x ∷ reverse (reverse (xs))   ≡⟨ P.cong (x ∷_) $ reverse-involutive xs ⟩
-    x ∷ xs                       ∎
-    where open P.≡-Reasoning
+  reverse-involutive xs = begin
+    reverse (reverse xs)  ≡⟨⟩
+    (xs ʳ++ []) ʳ++ []    ≡⟨ ʳ++-ʳ++ xs ⟩
+    [] ʳ++  xs ++ []      ≡⟨⟩
+    xs ++ []              ≡⟨ ++-identityʳ xs ⟩
+    xs                    ∎
 
-  length-reverse : (xs : List A) → length (reverse xs) ≡ length xs
-  length-reverse []       = refl
-  length-reverse (x ∷ xs) = begin
-    length (reverse (x ∷ xs))   ≡⟨ P.cong length $ unfold-reverse x xs ⟩
-    length (reverse xs ∷ʳ x)    ≡⟨ length-++ (reverse xs) ⟩
-    length (reverse xs) + 1     ≡⟨ P.cong (_+ 1) (length-reverse xs) ⟩
-    length xs + 1               ≡⟨ +-comm _ 1 ⟩
-    suc (length xs)             ∎
-    where open P.≡-Reasoning
+  -- length of reverse-append
 
-reverse-map-commute : (f : A → B) (xs : List A) →
-                      map f (reverse xs) ≡ reverse (map f xs)
-reverse-map-commute f []       = refl
-reverse-map-commute f (x ∷ xs) = begin
-  map f (reverse (x ∷ xs))   ≡⟨ P.cong (map f) $ unfold-reverse x xs ⟩
-  map f (reverse xs ∷ʳ x)    ≡⟨ map-++-commute f (reverse xs) ([ x ]) ⟩
-  map f (reverse xs) ∷ʳ f x  ≡⟨ P.cong (_∷ʳ f x) $ reverse-map-commute f xs ⟩
-  reverse (map f xs) ∷ʳ f x  ≡⟨ P.sym $ unfold-reverse (f x) (map f xs) ⟩
-  reverse (map f (x ∷ xs))   ∎
-  where open P.≡-Reasoning
+  length-ʳ++ : ∀ (xs {ys} : List A) → length (xs ʳ++ ys) ≡ length xs + length ys
+  length-ʳ++ [] = refl
+  length-ʳ++ (x ∷ xs) {ys} = begin
+    length ((x ∷ xs) ʳ++ ys)      ≡⟨⟩
+    length (xs ʳ++ x ∷ ys)        ≡⟨ length-ʳ++ xs ⟩
+    length xs + length (x ∷ ys)   ≡⟨ +-suc _ _ ⟩
+    length (x ∷ xs) + length ys   ∎
 
-reverse-foldr : ∀ (f : A → B → B) x ys →
-                foldr f x (reverse ys) ≡ foldl (flip f) x ys
-reverse-foldr f x []       = refl
-reverse-foldr f x (y ∷ ys) = begin
-  foldr f x (reverse (y ∷ ys)) ≡⟨ P.cong (foldr f x) (unfold-reverse y ys) ⟩
-  foldr f x ((reverse ys) ∷ʳ y) ≡⟨ foldr-∷ʳ f x y (reverse ys) ⟩
-  foldr f (f y x) (reverse ys)  ≡⟨ reverse-foldr f (f y x) ys ⟩
-  foldl (flip f) (f y x) ys     ∎
-  where open P.≡-Reasoning
+  -- Corollary: reverse preserves the length.
 
-reverse-foldl : ∀ (f : A → B → A) x ys →
-                foldl f x (reverse ys) ≡ foldr (flip f) x ys
-reverse-foldl f x []       = refl
-reverse-foldl f x (y ∷ ys) = begin
-  foldl f x (reverse (y ∷ ys)) ≡⟨ P.cong (foldl f x) (unfold-reverse y ys) ⟩
-  foldl f x ((reverse ys) ∷ʳ y) ≡⟨ foldl-∷ʳ f x y (reverse ys) ⟩
-  f (foldl f x (reverse ys)) y ≡⟨ P.cong (flip f y) (reverse-foldl f x ys) ⟩
-  f (foldr (flip f) x ys) y    ∎
-  where open P.≡-Reasoning
+  length-reverse : length ∘ reverse ≗ length
+  length-reverse xs = begin
+    length (reverse xs)   ≡⟨⟩
+    length (xs ʳ++ [])    ≡⟨ length-ʳ++ xs ⟩
+    length xs + 0         ≡⟨ +-identityʳ _ ⟩
+    length xs             ∎
+
+  -- map distributes over reverse-append.
+
+  map-ʳ++ : (f : A → B) (xs {ys} : List A) →
+            map f (xs ʳ++ ys) ≡ map f xs ʳ++ map f ys
+  map-ʳ++ f []            = refl
+  map-ʳ++ f (x ∷ xs) {ys} = begin
+    map f ((x ∷ xs) ʳ++ ys)         ≡⟨⟩
+    map f (xs ʳ++ x ∷ ys)           ≡⟨ map-ʳ++ f xs ⟩
+    map f xs ʳ++ map f (x ∷ ys)     ≡⟨⟩
+    map f xs ʳ++ f x ∷ map f ys     ≡⟨⟩
+    (f x ∷ map f xs) ʳ++ map f ys   ≡⟨⟩
+    map f (x ∷ xs)   ʳ++ map f ys   ∎
+
+  -- Instance of map-ʳ++: map commutes with reverse.
+
+  reverse-map-commute : (f : A → B) → map f ∘ reverse ≗ reverse ∘ map f
+  reverse-map-commute f xs = begin
+    map f (reverse xs) ≡⟨⟩
+    map f (xs ʳ++ [])  ≡⟨ map-ʳ++ f xs ⟩
+    map f xs ʳ++ []    ≡⟨⟩
+    reverse (map f xs) ∎
+
+  -- A foldr after a reverse is a foldl.
+  -- Simple inductive proof.
+
+  foldr-ʳ++ : ∀ (f : A → B → B) b xs {ys} →
+              foldr f b (xs ʳ++ ys) ≡ foldl (flip f) (foldr f b ys) xs
+  foldr-ʳ++ f b [] = refl
+  foldr-ʳ++ f b (x ∷ xs) {ys} = begin
+    foldr f b ((x ∷ xs) ʳ++ ys)              ≡⟨⟩
+    foldr f b (xs ʳ++ x ∷ ys)                ≡⟨ foldr-ʳ++ f b xs ⟩
+    foldl (flip f) (foldr f b (x ∷ ys)) xs   ≡⟨⟩
+    foldl (flip f) (f x (foldr f b ys)) xs   ≡⟨⟩
+    foldl (flip f) (foldr f b ys) (x ∷ xs)   ∎
+
+  -- Instantiation to reverse.
+
+  reverse-foldr : ∀ (f : A → B → B) b →
+                  foldr f b ∘ reverse ≗ foldl (flip f) b
+  reverse-foldr f b xs = foldr-ʳ++ f b xs
+
+  -- A foldl after a reverse is a foldr.
+  -- Simple inductive proof.
+
+  foldl-ʳ++ : ∀ (f : B → A → B) b xs {ys} →
+              foldl f b (xs ʳ++ ys) ≡ foldl f (foldr (flip f) b xs) ys
+  foldl-ʳ++ f b [] = refl
+  foldl-ʳ++ f b (x ∷ xs) {ys} = begin
+    foldl f b ((x ∷ xs) ʳ++ ys)              ≡⟨⟩
+    foldl f b (xs ʳ++ x ∷ ys)                ≡⟨ foldl-ʳ++ f b xs ⟩
+    foldl f (foldr (flip f) b xs) (x ∷ ys)   ≡⟨⟩
+    foldl f (f (foldr (flip f) b xs) x) ys   ≡⟨⟩
+    foldl f (foldr (flip f) b (x ∷ xs)) ys   ∎
+
+  -- Instantiation to reverse.
+
+  reverse-foldl : ∀ (f : B → A → B) b xs →
+                  foldl f b (reverse xs) ≡ foldr (flip f) b xs
+  reverse-foldl f b xs = foldl-ʳ++ f b xs
 
 ------------------------------------------------------------------------
 -- _∷ʳ_
