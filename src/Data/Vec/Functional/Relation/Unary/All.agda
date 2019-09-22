@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- All lifting of predicates to index notation vectors
+-- Universal lifting of predicates over Vectors
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -30,8 +30,10 @@ All P xs = ∀ i → P (xs i)
 ------------------------------------------------------------------------
 -- Operations
 
-map : {P : Pred A p} {Q : Pred A q} → P ⊆ Q → ∀ {n} → All P {n = n} ⊆ All Q
-map pq ps i = pq (ps i)
+module _ {P : Pred A p} {Q : Pred A q} where
+
+  map : P ⊆ Q → ∀ {n} → All P {n = n} ⊆ All Q
+  map pq ps i = pq (ps i)
 
 ------------------------------------------------------------------------
 -- Properties of predicates preserved by All

@@ -1,8 +1,15 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Vectors defined via index notation
+-- Vectors defined as functions from a finite set to a type.
 ------------------------------------------------------------------------
+
+-- This implementation is designed for reasoning about fixed-size
+-- vectors where ease of retrieval of elements is prioritised.
+
+-- See `Data.Vec` for an alternative implementation using inductive
+-- data-types, which is more suitable for reasoning about vectors that
+-- will grow or shrink in size.
 
 {-# OPTIONS --without-K --safe #-}
 
@@ -26,20 +33,29 @@ private
     B : Set b
     C : Set c
 
+------------------------------------------------------------------------
+-- Definition
+
 Vector : Set a → ℕ → Set a
 Vector A n = Fin n → A
 
-map : (A → B) → ∀ {n} → (Vector A n → Vector B n)
-map f xs = f ∘ xs
+------------------------------------------------------------------------
+-- Conversion
 
-rearrange : ∀ {m n} → (Fin m → Fin n) → (Vector A n → Vector A m)
-rearrange r xs = xs ∘ r
+toVec : ∀ {n} → Vector A n → Vec A n
+toVec = V.tabulate
+
+fromVec : ∀ {n} → Vec A n → Vector A n
+fromVec = V.lookup
+
+------------------------------------------------------------------------
+-- Construction and deconstruction
 
 [] : Vector A zero
 [] ()
 
 _∷_ : ∀ {n} → A → Vector A n → Vector A (suc n)
-(x ∷ xs) zero = x
+(x ∷ xs) zero    = x
 (x ∷ xs) (suc i) = xs i
 
 head : ∀ {n} → Vector A (suc n) → A
@@ -51,25 +67,28 @@ tail xs = xs ∘ suc
 uncons : ∀ {n} → Vector A (suc n) → A × Vector A n
 uncons xs = head xs , tail xs
 
+replicate : ∀ {n} → A → Vector A n
+replicate = const
+
+------------------------------------------------------------------------
+-- Transformations
+
+map : (A → B) → ∀ {n} → Vector A n → Vector B n
+map f xs = f ∘ xs
+
 _++_ : ∀ {m n} → Vector A m → Vector A n → Vector A (m + n)
 _++_ {m = m} xs ys i = [ xs , ys ] (splitAt m i)
 
 foldr : (A → B → B) → B → ∀ {n} → Vector A n → B
-foldr f z {n = zero} xs = z
+foldr f z {n = zero}  xs = z
 foldr f z {n = suc n} xs = f (head xs) (foldr f z (tail xs))
 
 foldl : (B → A → B) → B → ∀ {n} → Vector A n → B
-foldl f z {n = zero} xs = z
+foldl f z {n = zero}  xs = z
 foldl f z {n = suc n} xs = foldl f (f z (head xs)) (tail xs)
 
-toVec : ∀ {n} → Vector A n → Vec A n
-toVec = V.tabulate
-
-fromVec : ∀ {n} → Vec A n → Vector A n
-fromVec = V.lookup
-
-replicate : ∀ {n} → A → Vector A n
-replicate = const
+rearrange : ∀ {m n} → (Fin m → Fin n) → Vector A n → Vector A m
+rearrange r xs = xs ∘ r
 
 _⊛_ : ∀ {n} → Vector (A → B) n → Vector A n → Vector B n
 _⊛_ = _ˢ_

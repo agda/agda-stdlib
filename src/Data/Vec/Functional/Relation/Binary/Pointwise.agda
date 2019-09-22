@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Pointwise lifting of relations to index notation vectors
+-- Pointwise lifting of relations over Vector
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -29,6 +29,7 @@ Pointwise R xs ys = ∀ i → R (xs i) (ys i)
 ------------------------------------------------------------------------
 -- Operations
 
-map : {R : REL A B r} {S : REL A B s} →
-      R ⇒ S → ∀ {n} → Pointwise R ⇒ Pointwise S {n = n}
-map f rs i = f (rs i)
+module _ {R : REL A B r} {S : REL A B s} where
+
+  map : R ⇒ S → ∀ {n} → Pointwise R ⇒ Pointwise S {n = n}
+  map f rs i = f (rs i)

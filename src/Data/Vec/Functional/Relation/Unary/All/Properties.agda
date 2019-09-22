@@ -29,42 +29,48 @@ private
 ------------------------------------------------------------------------
 -- map
 
-map⁺ : {P : Pred A p} {Q : Pred B q} {f : A → B} →
-       (∀ {x} → P x → Q (f x)) → ∀ {n} →
-       (∀ {xs} → All P {n = n} xs → All Q (VF.map f xs))
-map⁺ pq ps i = pq (ps i)
+module _ {P : Pred A p} {Q : Pred B q} {f : A → B} where
+
+  map⁺ :  (∀ {x} → P x → Q (f x)) →
+          ∀ {n xs} → All P {n = n} xs → All Q (VF.map f xs)
+  map⁺ pq ps i = pq (ps i)
 
 ------------------------------------------------------------------------
 -- replicate
 
-replicate⁺ : ∀ {P : Pred A p} {x n} → P x → All P (replicate {n = n} x)
-replicate⁺ = const
+module _ {P : Pred A p} {x : A} {n : ℕ} where
+
+  replicate⁺ : P x → All P (replicate {n = n} x)
+  replicate⁺ = const
 
 ------------------------------------------------------------------------
 -- _⊛_
 
-⊛⁺ : ∀ {P : Pred A p} {Q : Pred B q} {n} {fs : Vector (A → B) n} {xs} →
-     All (λ f → ∀ {x} → P x → Q (f x)) fs → All P xs → All Q (fs ⊛ xs)
-⊛⁺ pqs ps i = (pqs i) (ps i)
+module _ {P : Pred A p} {Q : Pred B q} where
+
+  ⊛⁺ : ∀ {n} {fs : Vector (A → B) n} {xs} →
+       All (λ f → ∀ {x} → P x → Q (f x)) fs → All P xs → All Q (fs ⊛ xs)
+  ⊛⁺ pqs ps i = (pqs i) (ps i)
 
 ------------------------------------------------------------------------
 -- zipWith
 
-zipWith⁺ : ∀ {P : Pred A p} {Q : Pred B q} {R : Pred C r} {n xs ys f} →
-           (∀ {x y} → P x → Q y → R (f x y)) →
-           All P xs → All Q ys → All R (zipWith f {n = n} xs ys)
-zipWith⁺ pqr ps qs i = pqr (ps i) (qs i)
+module _ {P : Pred A p} {Q : Pred B q} {R : Pred C r} where
+
+  zipWith⁺ : ∀ {f} → (∀ {x y} → P x → Q y → R (f x y)) → ∀ {n xs ys} →
+             All P xs → All Q ys → All R (zipWith f {n = n} xs ys)
+  zipWith⁺ pqr ps qs i = pqr (ps i) (qs i)
 
 ------------------------------------------------------------------------
 -- zip
 
-zip⁺ : ∀ {P : Pred A p} {Q : Pred B q} {n xs ys} →
-       All P xs → All Q ys → All (uncurry _×_ ∘ Σ.map P Q) (zip {n = n} xs ys)
-zip⁺ ps qs i = ps i , qs i
+module _ {P : Pred A p} {Q : Pred B q} {n} {xs : Vector A n} {ys} where
 
-zip⁻ : ∀ {P : Pred A p} {Q : Pred B q} {n xs ys} →
-       All (uncurry _×_ ∘ Σ.map P Q) (zip {n = n} xs ys) → All P xs × All Q ys
-zip⁻ pqs = proj₁ ∘ pqs , proj₂ ∘ pqs
+  zip⁺ : All P xs → All Q ys → All (P ⟨×⟩ Q) (zip xs ys)
+  zip⁺ ps qs i = ps i , qs i
+
+  zip⁻ : All (P ⟨×⟩ Q) (zip xs ys) → All P xs × All Q ys
+  zip⁻ pqs = proj₁ ∘ pqs , proj₂ ∘ pqs
 
 ------------------------------------------------------------------------
 -- head
@@ -81,8 +87,8 @@ tail⁺ P ps = ps ∘ suc
 ------------------------------------------------------------------------
 -- ++
 
-++⁺ : ∀ (P : Pred A p) {m n xs ys} →
-      All P {n = m} xs → All P {n = n} ys → All P (xs ++ ys)
+++⁺ : ∀ (P : Pred A p) {m n} {xs : Vector A m} {ys : Vector A n} →
+      All P xs → All P ys → All P (xs ++ ys)
 ++⁺ P {m} {n} pxs pys i with splitAt m i
 ... | inj₁ i′ = pxs i′
 ... | inj₂ j′ = pys j′

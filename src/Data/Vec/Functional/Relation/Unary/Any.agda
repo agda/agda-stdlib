@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Existence of an index at which a predicate holds
+-- Existential lifting of predicates over Vectors
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -32,17 +32,23 @@ Any P xs = ∃ λ i → P (xs i)
 ------------------------------------------------------------------------
 -- Operations
 
-map : {P : Pred A p} {Q : Pred A q} → P ⊆ Q → ∀ {n} → Any P {n = n} ⊆ Any Q
-map pq = Σ.map id pq
+module _ {P : Pred A p} where
 
-here : ∀ {P : Pred A p} {x n} {v : Vector A n} → P x → Any P (x ∷ v)
-here px = zero , px
+  here : ∀ {x n} {v : Vector A n} → P x → Any P (x ∷ v)
+  here px = zero , px
 
-there : ∀ {P : Pred A p} {x n} {v : Vector A n} → Any P v → Any P (x ∷ v)
-there = Σ.map suc id
+  there : ∀ {x n} {v : Vector A n} → Any P v → Any P (x ∷ v)
+  there = Σ.map suc id
+
+module _ {P : Pred A p} {Q : Pred A q} where
+
+  map : P ⊆ Q → ∀ {n} → Any P {n = n} ⊆ Any Q
+  map pq = Σ.map id pq
 
 ------------------------------------------------------------------------
 -- Properties of predicates preserved by Any
 
-any : {P : Pred A p} → Decidable P → ∀ {n} → Decidable (Any P {n = n})
-any p? xs = any? λ i → p? (xs i)
+module _ {P : Pred A p} where
+
+  any : Decidable P → ∀ {n} → Decidable (Any P {n = n})
+  any p? xs = any? λ i → p? (xs i)
