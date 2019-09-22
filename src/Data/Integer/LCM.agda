@@ -35,11 +35,11 @@ j∣lcm[i,j] i j = ℕ.n∣lcm[m,n] ∣ i ∣ ∣ j ∣
 lcm-least : ∀ {i j c} → i ∣ c → j ∣ c → lcm i j ∣ c
 lcm-least c∣i c∣j = ℕ.lcm-least c∣i c∣j
 
-lcm[0,i]≡0 : ∀ n → lcm 0ℤ i ≡ 0ℤ
-lcm[0,i]≡0 n = cong (+_) (ℕ.lcm[0,n]≡0 ∣ n ∣)
+lcm[0,i]≡0 : ∀ i → lcm 0ℤ i ≡ 0ℤ
+lcm[0,i]≡0 i = cong (+_) (ℕ.lcm[0,n]≡0 ∣ i ∣)
 
-lcm[i,0]≡0 : ∀ n → lcm i 0ℤ ≡ 0ℤ
-lcm[i,0]≡0 n = cong (+_) (ℕ.lcm[n,0]≡0 ∣ n ∣)
+lcm[i,0]≡0 : ∀ i → lcm i 0ℤ ≡ 0ℤ
+lcm[i,0]≡0 i = cong (+_) (ℕ.lcm[n,0]≡0 ∣ i ∣)
 
 lcm-comm : ∀ i j → lcm i j ≡ lcm j i
 lcm-comm i j = cong (+_) (ℕ.lcm-comm ∣ i ∣ ∣ j ∣)
