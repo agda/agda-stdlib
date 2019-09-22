@@ -88,6 +88,9 @@ m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
 1+n≢0 : ∀ {n} → suc n ≢ 0
 1+n≢0 ()
 
+1+n≢n : ∀ {n} → suc n ≢ n
+1+n≢n {suc n} = 1+n≢n ∘ suc-injective
+
 ------------------------------------------------------------------------
 -- Properties of _<ᵇ_
 ------------------------------------------------------------------------
@@ -152,9 +155,6 @@ suc m ≤? n with T? (m <ᵇ n)
 
 _≥?_ : Decidable _≥_
 _≥?_ = flip _≤?_
-
-n<1+n : ∀ {n} → n < suc n
-n<1+n = ≤-refl
 
 ------------------------------------------------------------------------
 -- Structures
@@ -362,12 +362,38 @@ _>?_ = flip _<?_
 n≮n : ∀ n → n ≮ n
 n≮n n = <-irrefl (refl {x = n})
 
-m<n⇒n≢0 : ∀ {m n} → m < n → n ≢ 0
-m<n⇒n≢0 (s≤s m≤n) ()
+0<1+n : ∀ {n} → 0 < suc n
+0<1+n = s≤s z≤n
+
+n<1+n : ∀ n → n < suc n
+n<1+n n = ≤-refl
 
 n≢0⇒n>0 : ∀ {n} → n ≢ 0 → n > 0
 n≢0⇒n>0 {zero}  0≢0 =  contradiction refl 0≢0
-n≢0⇒n>0 {suc n} _   =  s≤s z≤n
+n≢0⇒n>0 {suc n} _   =  0<1+n
+
+m<n⇒n≢0 : ∀ {m n} → m < n → n ≢ 0
+m<n⇒n≢0 (s≤s m≤n) ()
+
+m<n⇒m≤1+n : ∀ {m n} → m < n → m ≤ suc n
+m<n⇒m≤1+n (s≤s z≤n)       = z≤n
+m<n⇒m≤1+n (s≤s (s≤s m<n)) = s≤s (m<n⇒m≤1+n (s≤s m<n))
+
+∀[m≤n⇒m≢o]⇒o<n : ∀ n o → (∀ {m} → m ≤ n → m ≢ o) → n < o
+∀[m≤n⇒m≢o]⇒o<n _       zero    m≤n⇒n≢0 = contradiction refl (m≤n⇒n≢0 z≤n)
+∀[m≤n⇒m≢o]⇒o<n zero    (suc o) _       = 0<1+n
+∀[m≤n⇒m≢o]⇒o<n (suc n) (suc o) m≤n⇒n≢o = s≤s (∀[m≤n⇒m≢o]⇒o<n n o rec)
+  where
+  rec : ∀ {m} → m ≤ n → m ≢ o
+  rec m≤n refl = m≤n⇒n≢o (s≤s m≤n) refl
+
+∀[m<n⇒m≢o]⇒o≤n : ∀ n o → (∀ {m} → m < n → m ≢ o) → n ≤ o
+∀[m<n⇒m≢o]⇒o≤n zero    n       _       = z≤n
+∀[m<n⇒m≢o]⇒o≤n (suc n) zero    m<n⇒m≢0 = contradiction refl (m<n⇒m≢0 0<1+n)
+∀[m<n⇒m≢o]⇒o≤n (suc n) (suc o) m<n⇒m≢o = s≤s (∀[m<n⇒m≢o]⇒o≤n n o rec)
+  where
+  rec : ∀ {m} → m < n → m ≢ o
+  rec x<m refl = m<n⇒m≢o (s≤s x<m) refl
 
 ------------------------------------------------------------------------
 -- A module for reasoning about the _≤_ and _<_ relations
@@ -573,9 +599,6 @@ m≤m+n (suc m) n = s≤s (m≤m+n m n)
 
 m≤n+m : ∀ m n → m ≤ n + m
 m≤n+m m n = subst (m ≤_) (+-comm m n) (m≤m+n m n)
-
-0<1+n : ∀ {n} → 0 < suc n
-0<1+n {n} =  m≤m+n 1 n
 
 m≤n⇒m<n∨m≡n :  ∀ {m n} → m ≤ n → m < n ⊎ m ≡ n
 m≤n⇒m<n∨m≡n {0}     {0}     _          =  inj₂ refl
@@ -862,16 +885,15 @@ m≤m*n m {n} 0<n = begin
   m * n ∎
 
 m<m*n :  ∀ {m n} → 0 < m → 1 < n → m < m * n
-m<m*n {suc m-1} {suc (suc n-2)} (s≤s _) (s≤s (s≤s _)) = begin-strict
+m<m*n {m@(suc m-1)} {n@(suc (suc n-2))} (s≤s _) (s≤s (s≤s _)) = begin-strict
   m           <⟨ s≤s (s≤s (m≤n+m m-1 n-2)) ⟩
-  n + m-1     ≤⟨ +-monoʳ-≤ n (m≤m*n m-1 (s≤s z≤n)) ⟩
+  n + m-1     ≤⟨ +-monoʳ-≤ n (m≤m*n m-1 0<1+n) ⟩
   n + m-1 * n ≡⟨⟩
   m * n       ∎
-  where m = suc m-1; n = suc (suc n-2)
 
 *-cancelʳ-< : RightCancellative _<_ _*_
-*-cancelʳ-< {zero}  zero    (suc o) _     = s≤s z≤n
-*-cancelʳ-< {suc m} zero    (suc o) _     = s≤s z≤n
+*-cancelʳ-< {zero}  zero    (suc o) _     = 0<1+n
+*-cancelʳ-< {suc m} zero    (suc o) _     = 0<1+n
 *-cancelʳ-< {m}     (suc n) (suc o) nm<om =
   s≤s (*-cancelʳ-< n o (+-cancelˡ-< m nm<om))
 
@@ -1422,6 +1444,9 @@ m≮m∸n : ∀ m n → m ≮ m ∸ n
 m≮m∸n m       zero    = n≮n m
 m≮m∸n (suc m) (suc n) = m≮m∸n m n ∘ ≤-trans (n≤1+n (suc m))
 
+1+m≢m∸n : ∀ {m} n → suc m ≢ m ∸ n
+1+m≢m∸n {m} n eq = m≮m∸n m n (≤-reflexive eq)
+
 ∸-mono : _∸_ Preserves₂ _≤_ ⟶ _≥_ ⟶ _≤_
 ∸-mono z≤n         (s≤s n₁≥n₂)    = z≤n
 ∸-mono (s≤s m₁≤m₂) (s≤s n₁≥n₂)    = ∸-mono m₁≤m₂ n₁≥n₂
@@ -1433,6 +1458,26 @@ m≮m∸n (suc m) (suc n) = m≮m∸n m n ∘ ≤-trans (n≤1+n (suc m))
 ∸-monoʳ-≤ : ∀ {m n} o → m ≤ n → o ∸ m ≥ o ∸ n
 ∸-monoʳ-≤ _ m≤n = ∸-mono ≤-refl m≤n
 
+∸-monoʳ-< : ∀ {m n o} → o < n → n ≤ m → m ∸ n < m ∸ o
+∸-monoʳ-< {n = suc n} {zero}  (s≤s o<n) (s≤s n<m) = s≤s (n∸m≤n n _)
+∸-monoʳ-< {n = suc n} {suc o} (s≤s o<n) (s≤s n<m) = ∸-monoʳ-< o<n n<m
+
+∸-cancelʳ-≤ : ∀ {m n o} → m ≤ o → o ∸ n ≤ o ∸ m → m ≤ n
+∸-cancelʳ-≤ {_}     {_}     z≤n       _       = z≤n
+∸-cancelʳ-≤ {suc m} {zero}  (s≤s _)   o<o∸m   = contradiction o<o∸m (m≮m∸n _ m)
+∸-cancelʳ-≤ {suc m} {suc n} (s≤s m≤o) o∸n<o∸m = s≤s (∸-cancelʳ-≤ m≤o o∸n<o∸m)
+
+∸-cancelʳ-< : ∀ {m n o} → o ∸ m < o ∸ n → n < m
+∸-cancelʳ-< {zero}  {n}     {o}     o<o∸n   = contradiction o<o∸n (m≮m∸n o n)
+∸-cancelʳ-< {suc m} {zero}  {_}     o∸n<o∸m = 0<1+n
+∸-cancelʳ-< {suc m} {suc n} {suc o} o∸n<o∸m = s≤s (∸-cancelʳ-< o∸n<o∸m)
+
+∸-cancelˡ-≡ :  ∀ {m n o} → n ≤ m → o ≤ m → m ∸ n ≡ m ∸ o → n ≡ o
+∸-cancelˡ-≡ {_}         z≤n       z≤n       _  = refl
+∸-cancelˡ-≡ {o = suc o} z≤n       (s≤s _)   eq = contradiction eq (1+m≢m∸n o)
+∸-cancelˡ-≡ {n = suc n} (s≤s _)   z≤n       eq = contradiction (sym eq) (1+m≢m∸n n)
+∸-cancelˡ-≡ {_}         (s≤s n≤m) (s≤s o≤m) eq = cong suc (∸-cancelˡ-≡ n≤m o≤m eq)
+
 m∸n≡0⇒m≤n : ∀ {m n} → m ∸ n ≡ 0 → m ≤ n
 m∸n≡0⇒m≤n {zero}  {_}    _   = z≤n
 m∸n≡0⇒m≤n {suc m} {suc n} eq = s≤s (m∸n≡0⇒m≤n eq)
@@ -1441,10 +1486,17 @@ m≤n⇒m∸n≡0 : ∀ {m n} → m ≤ n → m ∸ n ≡ 0
 m≤n⇒m∸n≡0 {n = n} z≤n      = 0∸n≡0 n
 m≤n⇒m∸n≡0 {_}    (s≤s m≤n) = m≤n⇒m∸n≡0 m≤n
 
+m<n⇒0<n∸m : ∀ {m n} → m < n → 0 < n ∸ m
+m<n⇒0<n∸m {zero}  {suc n} _         = 0<1+n
+m<n⇒0<n∸m {suc m} {suc n} (s≤s m<n) = m<n⇒0<n∸m m<n
+
 m∸n≢0⇒n<m : ∀ {m n} → m ∸ n ≢ 0 → n < m
 m∸n≢0⇒n<m {m} {n} m∸n≢0 with n <? m
 ... | yes n<m = n<m
 ... | no  n≮m = contradiction (m≤n⇒m∸n≡0 (≮⇒≥ n≮m)) m∸n≢0
+
+m>n⇒m∸n≢0 : ∀ {m n} → m > n → m ∸ n ≢ 0
+m>n⇒m∸n≢0 {n = suc n} (s≤s m>n) = m>n⇒m∸n≢0 m>n
 
 ---------------------------------------------------------------
 -- Properties of _∸_ and _+_
@@ -1621,6 +1673,16 @@ m∸n≤∣m-n∣ m n with ≤-total m n
 ∣m-n∣≤m⊔n (suc m) zero    = ≤-refl
 ∣m-n∣≤m⊔n (suc m) (suc n) = ≤-step (∣m-n∣≤m⊔n m n)
 
+∣-∣-identityˡ : LeftIdentity 0 ∣_-_∣
+∣-∣-identityˡ x = refl
+
+∣-∣-identityʳ : RightIdentity 0 ∣_-_∣
+∣-∣-identityʳ zero    = refl
+∣-∣-identityʳ (suc x) = refl
+
+∣-∣-identity : Identity 0 ∣_-_∣
+∣-∣-identity = ∣-∣-identityˡ , ∣-∣-identityʳ
+
 ∣-∣-comm : Commutative ∣_-_∣
 ∣-∣-comm zero    zero    = refl
 ∣-∣-comm zero    (suc n) = refl
@@ -1658,6 +1720,17 @@ private
 
 *-distrib-∣-∣ : _*_ DistributesOver ∣_-_∣
 *-distrib-∣-∣ = *-distribˡ-∣-∣ , *-distribʳ-∣-∣
+
+m≤n+∣n-m∣ : ∀ m n → m ≤ n + ∣ n - m ∣
+m≤n+∣n-m∣ zero    n       = z≤n
+m≤n+∣n-m∣ (suc m) zero    = ≤-refl
+m≤n+∣n-m∣ (suc m) (suc n) = s≤s (m≤n+∣n-m∣ m n)
+
+m≤n+∣m-n∣ : ∀ m n → m ≤ n + ∣ m - n ∣
+m≤n+∣m-n∣ m n = subst (m ≤_) (cong (n +_) (∣-∣-comm n m)) (m≤n+∣n-m∣ m n)
+
+m≤∣m-n∣+n : ∀ m n → m ≤ ∣ m - n ∣ + n
+m≤∣m-n∣+n m n = subst (m ≤_) (+-comm n _) (m≤n+∣m-n∣ m n)
 
 ------------------------------------------------------------------------
 -- Properties of ⌊_/2⌋

@@ -305,17 +305,38 @@ Other minor additions
 
 * Added new proofs to `Data.Nat.Properties`:
   ```agda
-  even≢odd     : ∀ m n → 2 * m ≢ suc (2 * n)
-  0≢1+n        : 0 ≢ suc n
-  n<1+n        : n < suc n
-  0<1+n        : 0 < suc n
-  m<m+n        : n > 0 → m < m + n
-  m≤n⇒m<n∨m≡n  : m ≤ n → m < n ⊎ m ≡ n
+  0≢1+n          : 0 ≢ suc n
+  1+n≢n          : suc n ≢ n
+  even≢odd       : 2 * m ≢ suc (2 * n)
+
+  0<1+n          : 0 < suc n
+  n<1+n          : n < suc n
+  m<m+n          : n > 0 → m < m + n
+  m<n⇒n≢0        : m < n → n ≢ 0
+  m<n⇒m≤1+n      : m < n → m ≤ suc n
+  m≤n⇒m<n∨m≡n    : m ≤ n → m < n ⊎ m ≡ n
+  ∀[m≤n⇒m≢o]⇒o<n : (∀ {m} → m ≤ n → m ≢ o) → n < o
+  ∀[m<n⇒m≢o]⇒o≤n : (∀ {m} → m < n → m ≢ o) → n ≤ o
 
   +-rawMagma     : RawMagma 0ℓ 0ℓ
   *-rawMagma     : RawMagma 0ℓ 0ℓ
   +-0-rawMonoid  : RawMonoid 0ℓ 0ℓ
   *-1-rawMonoid  : RawMonoid 0ℓ 0ℓ
+
+  1+m≢m∸n        : suc m ≢ m ∸ n
+  ∸-monoʳ-<      : o < n → n ≤ m → m ∸ n < m ∸ o
+  ∸-cancelʳ-≤    : m ≤ o → o ∸ n ≤ o ∸ m → m ≤ n
+  ∸-cancelʳ-<    : o ∸ m < o ∸ n → n < m
+  ∸-cancelˡ-≡    : n ≤ m → o ≤ m → m ∸ n ≡ m ∸ o → n ≡ o
+  m<n⇒0<n∸m      : m < n → 0 < n ∸ m
+  m>n⇒m∸n≢0      : m > n → m ∸ n ≢ 0
+
+  ∣-∣-identityˡ  : LeftIdentity 0 ∣_-_∣
+  ∣-∣-identityʳ  : RightIdentity 0 ∣_-_∣
+  ∣-∣-identity   : Identity 0 ∣_-_∣
+  m≤n+∣n-m∣      : m ≤ n + ∣ n - m ∣
+  m≤n+∣m-n∣      : m ≤ n + ∣ m - n ∣
+  m≤∣m-n∣+n      : m ≤ ∣ m - n ∣ + n
   ```
 
 * Added new functions to `Data.Sum.Base`:
