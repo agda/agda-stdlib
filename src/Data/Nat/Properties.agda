@@ -379,18 +379,18 @@ m<n⇒m≤1+n : ∀ {m n} → m < n → m ≤ suc n
 m<n⇒m≤1+n (s≤s z≤n)       = z≤n
 m<n⇒m≤1+n (s≤s (s≤s m<n)) = s≤s (m<n⇒m≤1+n (s≤s m<n))
 
-∀[m≤n:m≢o]⇒o<n : ∀ n o → (∀ {m} → m ≤ n → m ≢ o) → n < o
-∀[m≤n:m≢o]⇒o<n _       zero    m≤n⇒n≢0 = contradiction refl (m≤n⇒n≢0 z≤n)
-∀[m≤n:m≢o]⇒o<n zero    (suc o) _       = 0<1+n
-∀[m≤n:m≢o]⇒o<n (suc n) (suc o) m≤n⇒n≢o = s≤s (∀[m≤n:m≢o]⇒o<n n o rec)
+∀[m≤n⇒m≢o]⇒o<n : ∀ n o → (∀ {m} → m ≤ n → m ≢ o) → n < o
+∀[m≤n⇒m≢o]⇒o<n _       zero    m≤n⇒n≢0 = contradiction refl (m≤n⇒n≢0 z≤n)
+∀[m≤n⇒m≢o]⇒o<n zero    (suc o) _       = 0<1+n
+∀[m≤n⇒m≢o]⇒o<n (suc n) (suc o) m≤n⇒n≢o = s≤s (∀[m≤n⇒m≢o]⇒o<n n o rec)
   where
   rec : ∀ {m} → m ≤ n → m ≢ o
   rec m≤n refl = m≤n⇒n≢o (s≤s m≤n) refl
 
-∀[m<n:m≢o]⇒o≤n : ∀ n o → (∀ {m} → m < n → m ≢ o) → n ≤ o
-∀[m<n:m≢o]⇒o≤n zero    n       _       = z≤n
-∀[m<n:m≢o]⇒o≤n (suc n) zero    m<n⇒m≢0 = contradiction refl (m<n⇒m≢0 0<1+n)
-∀[m<n:m≢o]⇒o≤n (suc n) (suc o) m<n⇒m≢o = s≤s (∀[m<n:m≢o]⇒o≤n n o rec)
+∀[m<n⇒m≢o]⇒o≤n : ∀ n o → (∀ {m} → m < n → m ≢ o) → n ≤ o
+∀[m<n⇒m≢o]⇒o≤n zero    n       _       = z≤n
+∀[m<n⇒m≢o]⇒o≤n (suc n) zero    m<n⇒m≢0 = contradiction refl (m<n⇒m≢0 0<1+n)
+∀[m<n⇒m≢o]⇒o≤n (suc n) (suc o) m<n⇒m≢o = s≤s (∀[m<n⇒m≢o]⇒o≤n n o rec)
   where
   rec : ∀ {m} → m < n → m ≢ o
   rec x<m refl = m<n⇒m≢o (s≤s x<m) refl

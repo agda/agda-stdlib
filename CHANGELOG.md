@@ -218,8 +218,8 @@ Other minor additions
   m<n⇒n≢0        : m < n → n ≢ 0
   m<n⇒m≤1+n      : m < n → m ≤ suc n
   m≤n⇒m<n∨m≡n    : m ≤ n → m < n ⊎ m ≡ n
-  ∀[m≤n:m≢o]⇒o<n : (∀ {m} → m ≤ n → m ≢ o) → n < o
-  ∀[m<n:m≢o]⇒o≤n : (∀ {m} → m < n → m ≢ o) → n ≤ o
+  ∀[m≤n⇒m≢o]⇒o<n : (∀ {m} → m ≤ n → m ≢ o) → n < o
+  ∀[m<n⇒m≢o]⇒o≤n : (∀ {m} → m < n → m ≢ o) → n ≤ o
 
   +-rawMagma     : RawMagma 0ℓ 0ℓ
   *-rawMagma     : RawMagma 0ℓ 0ℓ
