@@ -4,8 +4,7 @@
 -- Structures for homogeneous binary relations
 ------------------------------------------------------------------------
 
--- Note that the definitions in this file are all re-exported by
--- `Relation.Binary`.
+-- The contents of this module should be accessed via `Relation.Binary`.
 
 {-# OPTIONS --without-K --safe #-}
 

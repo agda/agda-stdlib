@@ -4,8 +4,7 @@
 -- Properties of binary relations
 ------------------------------------------------------------------------
 
--- Note that all the definitions in this file are re-exported by
--- `Relation.Binary`.
+-- The contents of this module should be accessed via `Relation.Binary`.
 
 {-# OPTIONS --without-K --safe #-}
 
