@@ -356,7 +356,7 @@ Other minor additions
   levelOfTerm : ∀ {a} {A : Set a} → A → Level
   ```
 
-* Added new definition to `Relation.Binary.Core`:
+* Added new definition to `Relation.Binary.Structures`:
   ```agda
   record IsPartialEquivalence {A : Set a} (_≈_ : Rel A ℓ) : Set (a ⊔ ℓ) where
     field
@@ -364,13 +364,18 @@ Other minor additions
       trans : Transitive _≈_
   ```
 
-* Added new definition to `Relation.Binary`:
+* Added new definition to `Relation.Binary.Packages`:
   ```agda
   record PartialSetoid a ℓ : Set (suc (a ⊔ ℓ)) where
     field
       Carrier         : Set a
       _≈_             : Rel Carrier ℓ
       isPartialEquivalence : IsPartialEquivalence _≈_
+  ```
+
+* Added new proofs to `Relation.Binary.PropositionalEquality`:
+  ```agda
+  isDecEquivalence : Decidable _≡_ → IsDecEquivalence _≡_
   ```
 
 * Added new proofs to `Relation.Binary.Construct.NonStrictToStrict`:
