@@ -143,6 +143,7 @@ The following new modules have been added to the library:
   Data.Nat.Binary
   Data.Nat.Binary.Base
   Data.Nat.Binary.Induction
+  Data.Nat.Binary.Minus
   Data.Nat.Binary.Properties
 
   Data.Integer.GCD

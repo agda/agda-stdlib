@@ -208,6 +208,48 @@ x≢0⇒x>0 {1+[2 _ ]} _   =  0<odd
 <-irrefl refl (even<even x<x) =  <-irrefl refl x<x
 <-irrefl refl (odd<odd x<x)   =  <-irrefl refl x<x
 
+
+-- BEGIN **************************************************
+-- to move to Relation.Binary...DecTotalOrder...
+
+-- These three functons make it possible to write "tri-< lt" instead of
+-- "tri< lt (<⇒≢ lt) (<⇒≯ lt)".  This simplifies the code a lot.
+
+tri-< :  ∀ {x y} → x < y → Tri (x < y) (x ≡ y) (x > y)
+tri-< lt =  tri< lt (<⇒≢ lt) (<⇒≯ lt)
+
+tri-≈ :  ∀ {x y} → x ≡ y → Tri (x < y) (x ≡ y) (x > y)
+tri-≈ refl =  tri≈ (<-irrefl refl) refl (<-irrefl refl)
+
+tri-> :  ∀ {x y} → x > y → Tri (x < y) (x ≡ y) (x > y)
+tri-> gt =  tri> (>⇒≮ gt) (>⇒≢ gt) gt
+
+-- END *************************************************************
+
+
+
+------------------------------------------------------------------------------
+-- Lifting the result of _<_ by the constructors 2[1+_], 1+[2_]
+
+even<even-mono-cmp : ∀ {x y} → Tri (x < y) (x ≡ y) (x > y) →
+                     let x' = 2[1+ x ];  y' = 2[1+ y ]
+                     in
+                     Tri (x' < y') (x' ≡ y') (x' > y')
+even<even-mono-cmp (tri< x<y _    _  ) =  tri-< (even<even x<y)
+even<even-mono-cmp (tri≈ _   refl _  ) =  tri-≈ refl
+even<even-mono-cmp (tri> _ _      x>y) =  tri-> (even<even x>y)
+
+odd<odd-mono-cmp : ∀ {x y} → Tri (x < y) (x ≡ y) (x > y) →
+                   let x' = 1+[2 x ];  y' = 1+[2 y ]
+                   in
+                   Tri (x' < y') (x' ≡ y') (x' > y')
+odd<odd-mono-cmp (tri< x<y _    _  ) =  tri-< (odd<odd x<y)
+odd<odd-mono-cmp (tri≈ _   refl _  ) =  tri-≈ refl
+odd<odd-mono-cmp (tri> _ _      x>y) =  tri-> (odd<odd x>y)
+
+-----------------------------------------------------------------------------
+-- Further properties of _<_
+
 <-trans : Transitive _<_
 <-trans {zero} {_}      {2[1+ _ ]} _  _        =  0<even
 <-trans {zero} {_}      {1+[2 _ ]} _  _        =  0<odd
@@ -689,8 +731,20 @@ module _ where
   { isCommutativeMonoid = +-0-isCommutativeMonoid
   }
 
+import Algebra.Properties.CommutativeSemigroup +-semigroup +-comm
+  as ℕᵇ-+-semigroupProperties
+
 ------------------------------------------------------------------------------
 -- Properties of _+_ and _≤_
+
+x+suc[y]≡suc[x]+y : ∀ x y → x + suc y ≡ suc x + y
+x+suc[y]≡suc[x]+y x y =  begin
+  x + suc y     ≡⟨ +-comm x _ ⟩
+  suc y + x     ≡⟨ suc-+ y x ⟩
+  suc (y + x)   ≡⟨ cong suc (+-comm y x) ⟩
+  suc (x + y)   ≡⟨ sym (suc-+ x y) ⟩
+  suc x + y     ∎
+  where open ≡-Reasoning
 
 +-mono-≤ :  _+_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
 +-mono-≤ {x} {x'} {y} {y'} x≤x' y≤y' =  begin
@@ -1119,6 +1173,9 @@ x≢0∧y≢0⇒x*y≢0 {x} {_} x≢0 y≢0 xy≡0  with x*y≡0⇒x≡0∨y≡0
 -- Properties of double
 ------------------------------------------------------------------------
 
+x≡0⇒double[x]≡0 : ∀ {x} → x ≡ 0ᵇ → double x ≡ 0ᵇ
+x≡0⇒double[x]≡0 x≡0 =  cong double x≡0
+
 double[x]≡0⇒x≡0 : ∀ {x} → double x ≡ zero → x ≡ zero
 double[x]≡0⇒x≡0 {zero} _ = refl
 
@@ -1152,6 +1209,13 @@ double-distrib-+ x y = begin
   2ᵇ * (x + y)           ≡⟨ *-distribˡ-+ 2ᵇ x y ⟩
   (2ᵇ * x) + (2ᵇ * y)    ≡⟨ sym (cong₂ _+_ (double≗2* x) (double≗2* y)) ⟩
   double x + double y    ∎
+  where open ≡-Reasoning
+
+double-suc :  ∀ x →  double (suc x) ≡ 2ᵇ + double x
+double-suc x =  begin
+  double (suc x)   ≡⟨ cong double (suc≗1+ x) ⟩
+  double (1ᵇ + x)  ≡⟨ double-distrib-+ 1ᵇ x ⟩
+  2ᵇ + double x    ∎
   where open ≡-Reasoning
 
 double-mono-≤ :  double Preserves _≤_ ⟶ _≤_
@@ -1305,10 +1369,45 @@ pred-suc zero     =  refl
 pred-suc 2[1+ x ] =  sym (2[1+_]-double-suc x)
 pred-suc 1+[2 x ] =  refl
 
-suc-pred : ∀ {x} → x ≢ zero → suc (pred x) ≡ x
+suc-pred : ∀ {x} → x ≢ 0ᵇ → suc (pred x) ≡ x
 suc-pred {zero}     0≢0 =  contradiction refl 0≢0
 suc-pred {2[1+ _ ]} _   =  refl
 suc-pred {1+[2 x ]} _   =  sym (1+[2_]-suc-double x)
+
+pred[x]+y≡x+pred[y] :  ∀ {x y} → x ≢ 0ᵇ → y ≢ 0ᵇ → (pred x) + y ≡ x + pred y
+pred[x]+y≡x+pred[y] {x} {y} x≢0 y≢0 =  begin
+  px + y           ≡⟨ cong (px +_) (sym (suc-pred y≢0)) ⟩
+  px + suc py      ≡⟨ cong (px +_) (suc≗1+ py) ⟩
+  px + (1ᵇ + py)   ≡⟨ ℕᵇ-+-semigroupProperties.x∙yz≈yx∙z px 1ᵇ py ⟩
+  (1ᵇ + px) + py   ≡⟨ cong (_+ py) (sym (suc≗1+ px)) ⟩
+  (suc px) + py    ≡⟨ cong (_+ py) (suc-pred x≢0) ⟩
+  x + py           ∎
+  where open ≡-Reasoning;  px = pred x;  py = pred y
+
+pred-+ :  ∀ {x y} → x ≢ 0ᵇ → y ≢ 0ᵇ → (pred x) + y ≡ pred (x + y)
+pred-+ {zero}     {_} 0≢0 _ =  contradiction refl 0≢0
+pred-+ {2[1+ x ]} {y} _   _ =  begin
+  pred 2[1+ x ] + y       ≡⟨ cong ((_+ y) ∘ pred) eq ⟩
+  pred (suc 1+2x) + y     ≡⟨ cong (_+ y) (pred-suc 1+2x) ⟩
+  1+2x + y                ≡⟨ sym (pred-suc (1+2x + y)) ⟩
+  pred (suc (1+2x + y))   ≡⟨ cong pred $ sym $ suc-+ 1+2x y ⟩
+  pred (suc 1+2x + y)     ≡⟨ cong (pred ∘ (_+ y)) (sym eq) ⟩
+  pred (2[1+ x ] + y)     ∎
+  where
+  open ≡-Reasoning;  2x = double x;  1+2x = 1ᵇ + 2x
+  eq = begin
+    2[1+ x ]        ≡⟨ 2[1+_]-double-suc x ⟩
+    double (suc x)  ≡⟨ double-suc x ⟩
+    suc 1ᵇ + 2x     ≡⟨ suc-+ 1ᵇ 2x ⟩
+    suc 1+2x        ∎
+pred-+ {1+[2 x ]} {y} _ _ =  begin
+  pred 1+[2 x ] + y     ≡⟨⟩
+  2x + y                ≡⟨ sym (pred-suc (2x + y)) ⟩
+  pred (suc (2x + y))   ≡⟨ cong pred (sym (suc-+ 2x y)) ⟩
+  pred (suc 2x + y)     ≡⟨ cong (pred ∘ (_+ y)) (sym (1+[2_]-suc-double x)) ⟩
+  pred (1+[2 x ] + y)   ∎
+  where
+  open ≡-Reasoning;  2x = double x
 
 pred-mono-≤ :  pred Preserves _≤_ ⟶ _≤_
 pred-mono-≤ {x} {y} x≤y =  begin
