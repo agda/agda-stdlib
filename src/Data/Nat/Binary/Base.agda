@@ -12,7 +12,7 @@
 
 module Data.Nat.Binary.Base where
 
-open import Algebra.FunctionProperties using (Op₂)
+open import Algebra.Core using (Op₂)
 open import Data.Nat.Base as ℕ using (ℕ)
 open import Data.Sum using (_⊎_)
 open import Function using (_on_)

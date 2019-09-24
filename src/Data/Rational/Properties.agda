@@ -25,7 +25,7 @@ open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (yes; no; recompute)
 open import Relation.Nullary.Decidable as Dec using (True; fromWitness)
 
-open import Algebra.FunctionProperties {A = ℚ} _≡_
+open import Algebra.Definitions {A = ℚ} _≡_
 open import Algebra.FunctionProperties.Consequences.Propositional
 
 ------------------------------------------------------------------------

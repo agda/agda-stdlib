@@ -11,7 +11,7 @@
 
 module Data.Integer.Properties where
 
-open import Algebra
+open import Algebra.Packages
 import Algebra.Morphism as Morphism
 import Algebra.Properties.AbelianGroup
 open import Data.Integer.Base renaming (suc to sucℤ)
@@ -32,7 +32,7 @@ open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 import Relation.Nullary.Decidable as Dec
 
-open import Algebra.FunctionProperties {A = ℤ} _≡_
+open import Algebra.Definitions {A = ℤ} _≡_
 open import Algebra.FunctionProperties.Consequences.Propositional
 open import Algebra.Structures {A = ℤ} _≡_
 module ℤtoℕ = Morphism.Definitions ℤ ℕ _≡_

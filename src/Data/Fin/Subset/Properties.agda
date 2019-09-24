@@ -8,9 +8,9 @@
 
 module Data.Fin.Subset.Properties where
 
-open import Algebra
-import Algebra.FunctionProperties as AlgebraicProperties
+import Algebra.Definitions as AlgebraicDefinitions
 import Algebra.Structures as AlgebraicStructures
+open import Algebra.Packages
 import Algebra.Properties.Lattice as L
 import Algebra.Properties.DistributiveLattice as DL
 import Algebra.Properties.BooleanAlgebra as BA
@@ -197,7 +197,7 @@ p⊆q⇒∣p∣<∣q∣ {p = inside  ∷ p} {inside  ∷ q} p⊆q = s≤s (p⊆q
 
 module _ {n : ℕ} where
 
-  open AlgebraicProperties {A = Subset n} _≡_
+  open AlgebraicDefinitions {A = Subset n} _≡_
 
   ∩-assoc : Associative _∩_
   ∩-assoc = zipWith-assoc ∧-assoc
@@ -343,7 +343,7 @@ x∈p∩q⁻ (s      ∷ p) (t      ∷ q) (there x∈p∩q) =
 
 module _ {n : ℕ} where
 
-  open AlgebraicProperties {A = Subset n} _≡_
+  open AlgebraicDefinitions {A = Subset n} _≡_
 
   ∪-assoc : Associative _∪_
   ∪-assoc = zipWith-assoc ∨-assoc

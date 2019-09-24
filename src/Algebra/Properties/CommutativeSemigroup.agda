@@ -7,7 +7,7 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Algebra using (Semigroup)
-open import Algebra.FunctionProperties using (Commutative)
+open import Algebra.Definitions using (Commutative)
 
 module Algebra.Properties.CommutativeSemigroup
   {a ℓ} (S : Semigroup a ℓ) (open Semigroup S) (comm : Commutative _≈_ _∙_)

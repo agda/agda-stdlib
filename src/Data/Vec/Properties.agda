@@ -8,7 +8,7 @@
 
 module Data.Vec.Properties where
 
-open import Algebra.FunctionProperties
+open import Algebra.Definitions
 open import Data.Empty using (⊥-elim)
 open import Data.Fin as Fin using (Fin; zero; suc; toℕ; fromℕ)
 open import Data.List.Base as List using (List)

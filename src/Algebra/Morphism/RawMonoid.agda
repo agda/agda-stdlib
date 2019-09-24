@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra
+open import Algebra.Packages
 open import Algebra.Morphism
 open import Function
 open RawMonoid using (Carrier; _≈_)
@@ -19,9 +19,8 @@ module Algebra.Morphism.RawMonoid
   where
 
 open import Relation.Binary
-open import Algebra
 open import Algebra.Structures
-open import Algebra.FunctionProperties
+open import Algebra.Definitions
 open import Data.Product using (_,_)
 open import Function
 open import Level

@@ -11,7 +11,8 @@ open import Relation.Binary using (Trans; TotalOrder; Setoid)
 module Data.List.Extrema.Core
   {b ℓ₁ ℓ₂} (totalOrder : TotalOrder b ℓ₁ ℓ₂) where
 
-open import Algebra.FunctionProperties
+open import Algebra.Core
+open import Algebra.Definitions
 import Algebra.Construct.NaturalChoice.Min as Min
 import Algebra.Construct.NaturalChoice.Max as Max
 open import Data.Product using (_×_; _,_)
@@ -20,7 +21,6 @@ open import Level using (Level)
 open import Relation.Binary.PropositionalEquality using (_≡_)
 
 open import Algebra.Construct.LiftedChoice
--- import RoutingLib.Relation.Binary.Construct.NonStrictToStrict.TotalOrder as NonStrictToStrict
 
 open TotalOrder totalOrder renaming (Carrier to B)
 open import Relation.Binary.Construct.NonStrictToStrict _≈_ _≤_

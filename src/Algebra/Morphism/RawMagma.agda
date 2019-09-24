@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra
+open import Algebra.Packages
 open import Algebra.Morphism
 open import Algebra.Structures
 open import Function
@@ -19,7 +19,7 @@ module Algebra.Morphism.RawMagma
   (f-injective : Injective (_≈_ From) (_≈_ To) f)
   where
 
-open import Algebra.FunctionProperties
+open import Algebra.Definitions
 open import Data.Product
 open import Data.Sum using (inj₁; inj₂)
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning

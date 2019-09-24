@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra
+open import Algebra.Packages
 
 module Algebra.Properties.CommutativeMonoid
   {g₁ g₂} (M : CommutativeMonoid g₁ g₂) where
@@ -44,7 +44,7 @@ open CommutativeMonoid M
   ; assoc     to +-assoc
   ; comm      to +-comm
   )
-open import Algebra.FunctionProperties _≈_
+open import Algebra.Definitions _≈_
 open import Relation.Binary.Reasoning.Setoid setoid
 
 module _ {n} where

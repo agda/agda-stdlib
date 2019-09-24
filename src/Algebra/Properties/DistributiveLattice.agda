@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra
+open import Algebra.Packages
 
 module Algebra.Properties.DistributiveLattice
   {dl₁ dl₂} (DL : DistributiveLattice dl₁ dl₂)
@@ -15,7 +15,7 @@ module Algebra.Properties.DistributiveLattice
 open DistributiveLattice DL
 import Algebra.Properties.Lattice as LatticeProperties
 open import Algebra.Structures
-open import Algebra.FunctionProperties _≈_
+open import Algebra.Definitions _≈_
 open import Relation.Binary
 open import Relation.Binary.Reasoning.Setoid setoid
 open import Function.Core

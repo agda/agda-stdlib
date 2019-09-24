@@ -5,6 +5,8 @@
 -- etc.)
 ------------------------------------------------------------------------
 
+-- The contents of this module should be accessed via `Algebra`.
+
 {-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary using (Rel; Setoid; IsEquivalence)
@@ -15,7 +17,8 @@ module Algebra.Structures {a ℓ} {A : Set a} (_≈_ : Rel A ℓ) where
 -- The file is divided into sections depending on the arities of the
 -- components of the algebraic structure.
 
-open import Algebra.FunctionProperties _≈_
+open import Algebra.Core
+open import Algebra.Definitions _≈_
 import Algebra.FunctionProperties.Consequences as Consequences
 open import Data.Product using (_,_; proj₁; proj₂)
 open import Level using (_⊔_)

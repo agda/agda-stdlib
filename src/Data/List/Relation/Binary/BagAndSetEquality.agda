@@ -8,8 +8,7 @@
 
 module Data.List.Relation.Binary.BagAndSetEquality where
 
-open import Algebra using (CommutativeSemiring; CommutativeMonoid)
-open import Algebra.FunctionProperties using (Idempotent)
+open import Algebra using (Idempotent; CommutativeMonoid)
 open import Category.Monad using (RawMonad)
 open import Data.Empty
 open import Data.Fin
