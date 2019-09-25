@@ -176,6 +176,7 @@ The following new modules have been added to the library:
   Function.Structures
 
   Foreign.Haskell.Coerce
+  Foreign.Haskell.Either
 
   Relation.Binary.Properties.Setoid
   Relation.Binary.Reasoning.Base.Partial
