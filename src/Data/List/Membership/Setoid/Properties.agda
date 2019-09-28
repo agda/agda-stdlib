@@ -149,8 +149,10 @@ module _ {c ℓ} (S : Setoid c ℓ) where
   ∈-++⁺ˡ : ∀ {v xs ys} → v ∈ xs → v ∈ xs ++ ys
   ∈-++⁺ˡ = Any.++⁺ˡ
 
-  ∈-++⁺ʳ : ∀ {v} xs {ys} → v ∈ ys → v ∈ xs ++ ys
-  ∈-++⁺ʳ = Any.++⁺ʳ
+  infixr 5 _∈-++⁺ʳ_
+
+  _∈-++⁺ʳ_ : ∀ {v} xs {ys} → v ∈ ys → v ∈ xs ++ ys
+  _∈-++⁺ʳ_ = Any._++⁺ʳ_
 
   ∈-++⁻ : ∀ {v} xs {ys} → v ∈ xs ++ ys → (v ∈ xs) ⊎ (v ∈ ys)
   ∈-++⁻ = Any.++⁻

@@ -103,8 +103,10 @@ module _ {v : A} where
   ∈-++⁺ˡ : ∀ {xs ys} → v ∈ xs → v ∈ xs ++ ys
   ∈-++⁺ˡ = Membershipₛ.∈-++⁺ˡ (P.setoid A)
 
-  ∈-++⁺ʳ : ∀ xs {ys} → v ∈ ys → v ∈ xs ++ ys
-  ∈-++⁺ʳ = Membershipₛ.∈-++⁺ʳ (P.setoid A)
+  infixr 5 _∈-++⁺ʳ_
+
+  _∈-++⁺ʳ_ : ∀ xs {ys} → v ∈ ys → v ∈ xs ++ ys
+  _∈-++⁺ʳ_ = Membershipₛ._∈-++⁺ʳ_ (P.setoid A)
 
   ∈-++⁻ : ∀ xs {ys} → v ∈ xs ++ ys → (v ∈ xs) ⊎ (v ∈ ys)
   ∈-++⁻ = Membershipₛ.∈-++⁻ (P.setoid A)

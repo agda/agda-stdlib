@@ -203,10 +203,14 @@ module _ {_∼_ : REL A B ℓ} where
 
 module _ {_∼_ : REL A B ℓ} where
 
-  ++⁺ : ∀ {ws xs ys zs} → Pointwise _∼_ ws xs → Pointwise _∼_ ys zs →
-        Pointwise _∼_ (ws ++ ys) (xs ++ zs)
-  ++⁺ []            ys∼zs = ys∼zs
-  ++⁺ (w∼x ∷ ws∼xs) ys∼zs = w∼x ∷ ++⁺ ws∼xs ys∼zs
+  infixr 5 _++⁺_
+
+  _++⁺_ : ∀ {ws xs ys zs} →
+          Pointwise _∼_ ws xs →
+          Pointwise _∼_ ys zs →
+          Pointwise _∼_ (ws ++ ys) (xs ++ zs)
+  []            ++⁺ ys∼zs = ys∼zs
+  (w∼x ∷ ws∼xs) ++⁺ ys∼zs = w∼x ∷ ws∼xs ++⁺ ys∼zs
 
 module _ {_∼_ : Rel₂ A ℓ} where
 
@@ -228,29 +232,28 @@ module _ {_∼_ : Rel₂ A ℓ} where
 
 module _ {_∼_ : REL A B ℓ} where
 
-  concat⁺ : ∀ {xss yss} → Pointwise (Pointwise _∼_) xss yss →
+  concat⁺ : ∀ {xss yss} →
+            Pointwise (Pointwise _∼_) xss yss →
             Pointwise _∼_ (concat xss) (concat yss)
   concat⁺ []                = []
-  concat⁺ (xs∼ys ∷ xss∼yss) = ++⁺ xs∼ys (concat⁺ xss∼yss)
+  concat⁺ (xs∼ys ∷ xss∼yss) = xs∼ys ++⁺ concat⁺ xss∼yss
 
 ------------------------------------------------------------------------
 -- reverse
 
 module _ {R : REL A B ℓ} where
 
-  reverseAcc⁺ : ∀ {as bs as′ bs′} → Pointwise R as′ bs′ → Pointwise R as bs →
-                Pointwise R (reverseAcc as′ as) (reverseAcc bs′ bs)
-  reverseAcc⁺ rs′ []       = rs′
-  reverseAcc⁺ rs′ (r ∷ rs) = reverseAcc⁺ (r ∷ rs′) rs
+  infixr 5 _ʳ++⁺_
 
-  ʳ++⁺ : ∀ {as bs as′ bs′} →
+  _ʳ++⁺_ : ∀ {as bs as′ bs′} →
            Pointwise R as bs →
            Pointwise R as′ bs′ →
            Pointwise R (as ʳ++ as′) (bs ʳ++ bs′)
-  ʳ++⁺ rs rs′ = reverseAcc⁺ rs′ rs
+  []       ʳ++⁺ rs′ = rs′
+  (r ∷ rs) ʳ++⁺ rs′ = rs ʳ++⁺ (r ∷ rs′)
 
   reverse⁺ : ∀ {as bs} → Pointwise R as bs → Pointwise R (reverse as) (reverse bs)
-  reverse⁺ = reverseAcc⁺ []
+  reverse⁺ = _ʳ++⁺ []
 
 ------------------------------------------------------------------------
 -- map
@@ -363,4 +366,17 @@ decidable-≡ = ≡-dec
 {-# WARNING_ON_USAGE decidable-≡
 "Warning: decidable-≡ was deprecated in v1.0.
 Please use ≡-dec from `Data.List.Properties` instead."
+#-}
+
+-- Version 1.2
+
+reverseAcc⁺ : ∀ {R : REL A B ℓ} {as bs as′ bs′} →
+              Pointwise R as′ bs′ →
+              Pointwise R as bs →
+              Pointwise R (as ʳ++ as′) (bs ʳ++ bs′)  -- Pointwise R (reverseAcc as′ as) (reverseAcc bs′ bs)
+reverseAcc⁺ rs′ = _ʳ++⁺ rs′
+
+{-# WARNING_ON_USAGE reverseAcc⁺
+"Warning: reverseAcc⁺ was deprecated in v1.2.
+Please use _ʳ++⁺_ instead."
 #-}

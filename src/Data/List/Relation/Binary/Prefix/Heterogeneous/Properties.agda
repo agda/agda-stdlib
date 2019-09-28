@@ -69,10 +69,14 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
 module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
-  ++⁺ : ∀ {as bs cs ds} → Pointwise R as bs →
-        Prefix R cs ds → Prefix R (as ++ cs) (bs ++ ds)
-  ++⁺ []       cs⊆ds = cs⊆ds
-  ++⁺ (r ∷ rs) cs⊆ds = r ∷ (++⁺ rs cs⊆ds)
+  infixr 5 _++⁺_
+
+  _++⁺_ : ∀ {as bs cs ds} →
+          Pointwise R as bs →
+          Prefix R cs ds →
+          Prefix R (as ++ cs) (bs ++ ds)
+  []       ++⁺ cs⊆ds = cs⊆ds
+  (r ∷ rs) ++⁺ cs⊆ds = r ∷ (rs ++⁺ cs⊆ds)
 
   ++⁻ : ∀ {as bs cs ds} → length as ≡ length bs →
         Prefix R (as ++ cs) (bs ++ ds) → Prefix R cs ds

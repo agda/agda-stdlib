@@ -145,9 +145,12 @@ module _ {ℓ k} {A B : Set ℓ} {f g : A → B} {xs ys} where
 
 module _ {a k} {A : Set a} {xs₁ xs₂ ys₁ ys₂ : List A} where
 
-  ++-cong : xs₁ ∼[ k ] xs₂ → ys₁ ∼[ k ] ys₂ →
-            xs₁ ++ ys₁ ∼[ k ] xs₂ ++ ys₂
-  ++-cong xs₁≈xs₂ ys₁≈ys₂ {x} =
+  infixr 5 _++-cong_
+
+  _++-cong_ : xs₁ ∼[ k ] xs₂ →
+              ys₁ ∼[ k ] ys₂ →
+              xs₁ ++ ys₁ ∼[ k ] xs₂ ++ ys₂
+  _++-cong_ xs₁≈xs₂ ys₁≈ys₂ {x} =
     x ∈ xs₁ ++ ys₁       ↔⟨ SK-sym $ ++↔ ⟩
     (x ∈ xs₁ ⊎ x ∈ ys₁)  ∼⟨ xs₁≈xs₂ ⊎-cong ys₁≈ys₂ ⟩
     (x ∈ xs₂ ⊎ x ∈ ys₂)  ↔⟨ ++↔ ⟩
@@ -220,7 +223,7 @@ commutativeMonoid {a} k A = record
     { isSemigroup = record
       { isMagma = record
         { isEquivalence = Eq.isEquivalence
-        ; ∙-cong        = ++-cong
+        ; ∙-cong        = _++-cong_
         }
       ; assoc         = λ xs ys zs →
                           Eq.reflexive (LP.++-assoc xs ys zs)

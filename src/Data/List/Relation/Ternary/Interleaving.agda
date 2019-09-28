@@ -24,6 +24,8 @@ open import Relation.Binary.PropositionalEquality as P using (_≡_)
 module _ {a b c l r} {A : Set a} {B : Set b} {C : Set c}
          (L : REL A C l) (R : REL B C r) where
 
+  infixr 5 _∷ˡ_ _∷ʳ_
+
   data Interleaving : List A → List B → List C → Set (a ⊔ b ⊔ c ⊔ l ⊔ r) where
     []   : Interleaving [] [] []
     _∷ˡ_ : ∀ {a c l r cs} → L a c → Interleaving l r cs → Interleaving (a ∷ l) r (c ∷ cs)

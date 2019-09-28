@@ -371,9 +371,11 @@ module _ (P : B → Set p) {f : A → Maybe B} where
 
 module _ {P : A → Set p} where
 
-  ++⁺ : ∀ {xs ys} → All P xs → All P ys → All P (xs ++ ys)
-  ++⁺ []         pys = pys
-  ++⁺ (px ∷ pxs) pys = px ∷ ++⁺ pxs pys
+  infixr 5 _++⁺_
+
+  _++⁺_ : ∀ {xs ys} → All P xs → All P ys → All P (xs ++ ys)
+  []         ++⁺ pys = pys
+  (px ∷ pxs) ++⁺ pys = px ∷ (pxs ++⁺ pys)
 
   ++⁻ˡ : ∀ xs {ys} → All P (xs ++ ys) → All P xs
   ++⁻ˡ []       p          = []
@@ -388,15 +390,15 @@ module _ {P : A → Set p} where
   ++⁻ (x ∷ xs) (px ∷ pxs) = Prod.map (px ∷_) id (++⁻ _ pxs)
 
   ++↔ : ∀ {xs ys} → (All P xs × All P ys) ↔ All P (xs ++ ys)
-  ++↔ {xs} = inverse (uncurry ++⁺) (++⁻ xs) ++⁻∘++⁺ (++⁺∘++⁻ xs)
+  ++↔ {xs} = inverse (uncurry _++⁺_) (++⁻ xs) ++⁻∘++⁺ (++⁺∘++⁻ xs)
     where
     ++⁺∘++⁻ : ∀ xs {ys} (p : All P (xs ++ ys)) →
-              uncurry′ ++⁺ (++⁻ xs p) ≡ p
+              uncurry′ _++⁺_ (++⁻ xs p) ≡ p
     ++⁺∘++⁻ []       p          = refl
     ++⁺∘++⁻ (x ∷ xs) (px ∷ pxs) = cong (_∷_ px) $ ++⁺∘++⁻ xs pxs
 
     ++⁻∘++⁺ : ∀ {xs ys} (p : All P xs × All P ys) →
-              ++⁻ xs (uncurry ++⁺ p) ≡ p
+              ++⁻ xs (uncurry _++⁺_ p) ≡ p
     ++⁻∘++⁺ ([]       , pys) = refl
     ++⁻∘++⁺ (px ∷ pxs , pys) rewrite ++⁻∘++⁺ (pxs , pys) = refl
 
@@ -407,7 +409,7 @@ module _ {P : A → Set p} where
 
   concat⁺ : ∀ {xss} → All (All P) xss → All P (concat xss)
   concat⁺ []           = []
-  concat⁺ (pxs ∷ pxss) = ++⁺ pxs (concat⁺ pxss)
+  concat⁺ (pxs ∷ pxss) = pxs ++⁺ concat⁺ pxss
 
   concat⁻ : ∀ {xss} → All P (concat xss) → All (All P) xss
   concat⁻ {[]}       []  = []
@@ -529,8 +531,10 @@ module _ {P : A → Set p} where
 
 module _ {P : A → Set p} {x xs} where
 
-  ∷ʳ⁺ : All P xs → P x → All P (xs ∷ʳ x)
-  ∷ʳ⁺ pxs px = ++⁺ pxs (px ∷ [])
+  infixl 5 _∷ʳ⁺_
+
+  _∷ʳ⁺_ : All P xs → P x → All P (xs ∷ʳ x)
+  pxs ∷ʳ⁺ px = pxs ++⁺ (px ∷ [])
 
   ∷ʳ⁻ : All P (xs ∷ʳ x) → All P xs × P x
   ∷ʳ⁻ pxs = Prod.map₂ singleton⁻ $ ++⁻ xs pxs

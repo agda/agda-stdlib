@@ -138,18 +138,20 @@ shift {v} {w} v≈w (x ∷ xs) ys = begin
   x ∷ w ∷ xs ++ ys        <<⟨ refl ⟩
   w ∷ x ∷ xs ++ ys        ∎
 
-++⁺ˡ : ∀ xs {ys zs : List A} → ys ↭ zs → xs ++ ys ↭ xs ++ zs
-++⁺ˡ []       ys↭zs = ys↭zs
-++⁺ˡ (x ∷ xs) ys↭zs = prep ≈-refl (++⁺ˡ xs ys↭zs)
+infixr 5 _++⁺ˡ_ _++⁺ʳ_ _++⁺_
 
-++⁺ʳ : ∀ {xs ys : List A} zs → xs ↭ ys → xs ++ zs ↭ ys ++ zs
-++⁺ʳ zs refl          = refl
-++⁺ʳ zs (prep x ↭)    = prep x (++⁺ʳ zs ↭)
-++⁺ʳ zs (swap x y ↭)  = swap x y (++⁺ʳ zs ↭)
-++⁺ʳ zs (trans ↭₁ ↭₂) = trans (++⁺ʳ zs ↭₁) (++⁺ʳ zs ↭₂)
+_++⁺ˡ_ : ∀ xs {ys zs : List A} → ys ↭ zs → xs ++ ys ↭ xs ++ zs
+[]       ++⁺ˡ ys↭zs = ys↭zs
+(x ∷ xs) ++⁺ˡ ys↭zs = prep ≈-refl (xs ++⁺ˡ ys↭zs)
 
-++⁺ : _++_ Preserves₂ _↭_ ⟶ _↭_ ⟶ _↭_
-++⁺ ws↭xs ys↭zs = trans (++⁺ʳ _ ws↭xs) (++⁺ˡ _ ys↭zs)
+_++⁺ʳ_ : ∀ {xs ys : List A} → xs ↭ ys → ∀ zs → xs ++ zs ↭ ys ++ zs
+refl        ++⁺ʳ zs = refl
+prep x ↭    ++⁺ʳ zs = prep x (↭ ++⁺ʳ zs)
+swap x y ↭  ++⁺ʳ zs = swap x y (↭ ++⁺ʳ zs)
+trans ↭₁ ↭₂ ++⁺ʳ zs = trans (↭₁ ++⁺ʳ zs) (↭₂ ++⁺ʳ zs)
+
+_++⁺_ : _++_ Preserves₂ _↭_ ⟶ _↭_ ⟶ _↭_
+ws↭xs ++⁺ ys↭zs = trans (ws↭xs ++⁺ʳ _ ) (_ ++⁺ˡ ys↭zs)
 
 -- Algebraic properties
 
@@ -170,7 +172,7 @@ shift {v} {w} v≈w (x ∷ xs) ys = begin
 ++-comm (x ∷ xs) ys = begin
   x ∷ xs ++ ys         ↭⟨ prep ≈-refl (++-comm xs ys) ⟩
   x ∷ ys ++ xs         ≡⟨ cong (λ v → x ∷ v ++ xs) (≡.sym (Lₚ.++-identityʳ _)) ⟩
-  (x ∷ ys ++ []) ++ xs ↭⟨ ++⁺ʳ xs (↭-sym (shift ≈-refl ys [])) ⟩
+  (x ∷ ys ++ []) ++ xs ↭⟨ ↭-sym (shift ≈-refl ys []) ++⁺ʳ xs ⟩
   (ys ++ [ x ]) ++ xs  ↭⟨ ++-assoc ys [ x ] xs ⟩
   ys ++ ([ x ] ++ xs)  ≡⟨⟩
   ys ++ (x ∷ xs)       ∎
@@ -180,7 +182,7 @@ shift {v} {w} v≈w (x ∷ xs) ys = begin
 ++-isMagma : IsMagma _↭_ _++_
 ++-isMagma = record
   { isEquivalence = ↭-isEquivalence
-  ; ∙-cong        = ++⁺
+  ; ∙-cong        = _++⁺_
   }
 
 ++-isSemigroup : IsSemigroup _↭_ _++_
@@ -227,16 +229,16 @@ shift {v} {w} v≈w (x ∷ xs) ys = begin
 -- Some other useful lemmas
 
 zoom : ∀ h {t xs ys : List A} → xs ↭ ys → h ++ xs ++ t ↭ h ++ ys ++ t
-zoom h {t} = ++⁺ˡ h ∘ ++⁺ʳ t
+zoom h {t} = (h ++⁺ˡ_) ∘ (_++⁺ʳ t)
 
 inject : ∀  (v : A) {ws xs ys zs} → ws ↭ ys → xs ↭ zs →
          ws ++ [ v ] ++ xs ↭ ys ++ [ v ] ++ zs
-inject v ws↭ys xs↭zs = trans (++⁺ˡ _ (prep ≈-refl xs↭zs)) (++⁺ʳ _ ws↭ys)
+inject v ws↭ys xs↭zs = trans (_ ++⁺ˡ prep ≈-refl xs↭zs) (ws↭ys ++⁺ʳ _)
 
 shifts : ∀ xs ys {zs : List A} → xs ++ ys ++ zs ↭ ys ++ xs ++ zs
 shifts xs ys {zs} = begin
    xs ++ ys  ++ zs ↭˘⟨ ++-assoc xs ys zs ⟩
-  (xs ++ ys) ++ zs ↭⟨ ++⁺ʳ zs (++-comm xs ys) ⟩
+  (xs ++ ys) ++ zs ↭⟨ ++-comm xs ys ++⁺ʳ zs ⟩
   (ys ++ xs) ++ zs ↭⟨ ++-assoc ys xs zs ⟩
    ys ++ xs  ++ zs ∎
 

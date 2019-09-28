@@ -38,13 +38,15 @@ module _ {a b p q} {A : Set a} {B : Set b} {P : Pred B p} {Q : Pred B q} where
 
 module _ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} where
 
-  ++⁺ : ∀ {xs ys} → All P xs → First P Q ys → First P Q (xs List.++ ys)
-  ++⁺ []         pqys = pqys
-  ++⁺ (px ∷ pxs) pqys = px ∷ ++⁺ pxs pqys
+  infixr 5 _++⁺_ _⁺++_
 
-  ⁺++ : ∀ {xs} → First P Q xs → ∀ ys → First P Q (xs List.++ ys)
-  ⁺++ [ qx ]      ys = [ qx ]
-  ⁺++ (px ∷ pqxs) ys = px ∷ ⁺++ pqxs ys
+  _++⁺_ : ∀ {xs ys} → All P xs → First P Q ys → First P Q (xs List.++ ys)
+  []         ++⁺ pqys = pqys
+  (px ∷ pxs) ++⁺ pqys = px ∷ (pxs ++⁺ pqys)
+
+  _⁺++_ : ∀ {xs} → First P Q xs → ∀ ys → First P Q (xs List.++ ys)
+  [ qx ]      ⁺++ ys = [ qx ]
+  (px ∷ pqxs) ⁺++ ys = px ∷ pqxs ⁺++ ys
 
 ------------------------------------------------------------------------
 -- Relationship to All
@@ -109,4 +111,4 @@ module _ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} where
   ... | pxs ++  qy ∷ ys = (px ∷ pxs) ++ qy ∷ ys
 
   fromView : ∀ {as} → FirstView P Q as → First P Q as
-  fromView (pxs ++ qy ∷ ys) = ++⁺ pxs [ qy ]
+  fromView (pxs ++ qy ∷ ys) = pxs ++⁺ [ qy ]

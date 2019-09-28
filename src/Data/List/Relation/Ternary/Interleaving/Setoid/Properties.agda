@@ -30,7 +30,7 @@ open import Data.List.Relation.Ternary.Interleaving.Properties public
 -- _++_
 
 ++-linear : (xs ys : List A) → Interleaving xs ys (xs ++ ys)
-++-linear xs ys = ++-disjoint (left ≋-refl) (right ≋-refl)
+++-linear xs ys = (left ≋-refl) ++-disjoint (right ≋-refl)
 
 ------------------------------------------------------------------------
 -- filter

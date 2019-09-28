@@ -332,9 +332,11 @@ module _ {P : A → Set p} where
   ++⁺ˡ (here p)  = here p
   ++⁺ˡ (there p) = there (++⁺ˡ p)
 
-  ++⁺ʳ : ∀ xs {ys} → Any P ys → Any P (xs ++ ys)
-  ++⁺ʳ []       p = p
-  ++⁺ʳ (x ∷ xs) p = there (++⁺ʳ xs p)
+  infixr 5 _++⁺ʳ_
+
+  _++⁺ʳ_ : ∀ xs {ys} → Any P ys → Any P (xs ++ ys)
+  []       ++⁺ʳ p = p
+  (x ∷ xs) ++⁺ʳ p = there (xs ++⁺ʳ p)
 
   ++⁻ : ∀ xs {ys} → Any P (xs ++ ys) → Any P xs ⊎ Any P ys
   ++⁻ []       p         = inj₂ p
@@ -342,7 +344,7 @@ module _ {P : A → Set p} where
   ++⁻ (x ∷ xs) (there p) = Sum.map there id (++⁻ xs p)
 
   ++⁺∘++⁻ : ∀ xs {ys} (p : Any P (xs ++ ys)) →
-            [ ++⁺ˡ , ++⁺ʳ xs ]′ (++⁻ xs p) ≡ p
+            [ ++⁺ˡ , xs ++⁺ʳ_ ]′ (++⁻ xs p) ≡ p
   ++⁺∘++⁻ []       p         = refl
   ++⁺∘++⁻ (x ∷ xs) (here  p) = refl
   ++⁺∘++⁻ (x ∷ xs) (there p) with ++⁻ xs p | ++⁺∘++⁻ xs p
@@ -350,17 +352,17 @@ module _ {P : A → Set p} where
   ++⁺∘++⁻ (x ∷ xs) (there p) | inj₂ p′ | ih = P.cong there ih
 
   ++⁻∘++⁺ : ∀ xs {ys} (p : Any P xs ⊎ Any P ys) →
-            ++⁻ xs ([ ++⁺ˡ , ++⁺ʳ xs ]′ p) ≡ p
+            ++⁻ xs ([ ++⁺ˡ , xs ++⁺ʳ_ ]′ p) ≡ p
   ++⁻∘++⁺ []            (inj₂ p)         = refl
   ++⁻∘++⁺ (x ∷ xs)      (inj₁ (here  p)) = refl
   ++⁻∘++⁺ (x ∷ xs) {ys} (inj₁ (there p)) rewrite ++⁻∘++⁺ xs {ys} (inj₁ p) = refl
   ++⁻∘++⁺ (x ∷ xs)      (inj₂ p)         rewrite ++⁻∘++⁺ xs      (inj₂ p) = refl
 
   ++↔ : ∀ {xs ys} → (Any P xs ⊎ Any P ys) ↔ Any P (xs ++ ys)
-  ++↔ {xs = xs} = inverse [ ++⁺ˡ , ++⁺ʳ xs ]′ (++⁻ xs) (++⁻∘++⁺ xs) (++⁺∘++⁻ xs)
+  ++↔ {xs = xs} = inverse [ ++⁺ˡ , xs ++⁺ʳ_ ]′ (++⁻ xs) (++⁻∘++⁺ xs) (++⁺∘++⁻ xs)
 
   ++-comm : ∀ xs ys → Any P (xs ++ ys) → Any P (ys ++ xs)
-  ++-comm xs ys = [ ++⁺ʳ ys , ++⁺ˡ ]′ ∘ ++⁻ xs
+  ++-comm xs ys = [ ys ++⁺ʳ_ , ++⁺ˡ ]′ ∘ ++⁻ xs
 
   ++-comm∘++-comm : ∀ xs {ys} (p : Any P (xs ++ ys)) →
                     ++-comm ys xs (++-comm xs ys p) ≡ p
@@ -369,11 +371,11 @@ module _ {P : A → Set p} where
   ++-comm∘++-comm (x ∷ xs) {ys} (here p)
     rewrite ++⁻∘++⁺ ys {ys = x ∷ xs} (inj₂ (here p)) = refl
   ++-comm∘++-comm (x ∷ xs)      (there p) with ++⁻ xs p | ++-comm∘++-comm xs p
-  ++-comm∘++-comm (x ∷ xs) {ys} (there .([ ++⁺ʳ xs , ++⁺ˡ ]′ (++⁻ ys (++⁺ʳ ys p))))
+  ++-comm∘++-comm (x ∷ xs) {ys} (there .([ xs ++⁺ʳ_ , ++⁺ˡ ]′ (++⁻ ys (ys ++⁺ʳ p))))
     | inj₁ p | refl
     rewrite ++⁻∘++⁺ ys (inj₂                 p)
             | ++⁻∘++⁺ ys (inj₂ $ there {x = x} p) = refl
-  ++-comm∘++-comm (x ∷ xs) {ys} (there .([ ++⁺ʳ xs , ++⁺ˡ ]′ (++⁻ ys (++⁺ˡ p))))
+  ++-comm∘++-comm (x ∷ xs) {ys} (there .([ xs ++⁺ʳ_ , ++⁺ˡ ]′ (++⁻ ys (++⁺ˡ p))))
     | inj₂ p | refl
     rewrite ++⁻∘++⁺ ys {ys =     xs} (inj₁ p)
             | ++⁻∘++⁺ ys {ys = x ∷ xs} (inj₁ p) = refl
@@ -383,7 +385,7 @@ module _ {P : A → Set p} where
                         (++-comm∘++-comm xs) (++-comm∘++-comm ys)
 
   ++-insert : ∀ xs {ys x} → P x → Any P (xs ++ [ x ] ++ ys)
-  ++-insert xs Px = ++⁺ʳ xs (++⁺ˡ (singleton⁺ Px))
+  ++-insert xs Px = xs ++⁺ʳ (++⁺ˡ (singleton⁺ Px))
 
 ------------------------------------------------------------------------
 -- concat
@@ -392,7 +394,7 @@ module _ {P : A → Set p} where
 
   concat⁺ : ∀ {xss} → Any (Any P) xss → Any P (concat xss)
   concat⁺ (here p)           = ++⁺ˡ p
-  concat⁺ (there {x = xs} p) = ++⁺ʳ xs (concat⁺ p)
+  concat⁺ (there {x = xs} p) = xs ++⁺ʳ (concat⁺ p)
 
   concat⁻ : ∀ xss → Any P (concat xss) → Any (Any P) xss
   concat⁻ ([]       ∷ xss) p         = there $ concat⁻ xss p
@@ -407,7 +409,7 @@ module _ {P : A → Set p} where
   concat⁻∘++⁺ˡ xss (there p) rewrite concat⁻∘++⁺ˡ xss p = refl
 
   concat⁻∘++⁺ʳ : ∀ xs xss (p : Any P (concat xss)) →
-                   concat⁻ (xs ∷ xss) (++⁺ʳ xs p) ≡ there (concat⁻ xss p)
+                   concat⁻ (xs ∷ xss) (xs ++⁺ʳ p) ≡ there (concat⁻ xss p)
   concat⁻∘++⁺ʳ []       xss p = refl
   concat⁻∘++⁺ʳ (x ∷ xs) xss p rewrite concat⁻∘++⁺ʳ xs xss p = refl
 
@@ -417,8 +419,8 @@ module _ {P : A → Set p} where
   concat⁺∘concat⁻ ((x ∷ xs) ∷ xss) (here p)  = refl
   concat⁺∘concat⁻ ((x ∷ xs) ∷ xss) (there p)
                 with concat⁻ (xs ∷ xss) p | concat⁺∘concat⁻ (xs ∷ xss) p
-  concat⁺∘concat⁻ ((x ∷ xs) ∷ xss) (there .(++⁺ˡ p′))              | here  p′ | refl = refl
-  concat⁺∘concat⁻ ((x ∷ xs) ∷ xss) (there .(++⁺ʳ xs (concat⁺ p′))) | there p′ | refl = refl
+  concat⁺∘concat⁻ ((x ∷ xs) ∷ xss) (there .(++⁺ˡ p′))            | here  p′ | refl = refl
+  concat⁺∘concat⁻ ((x ∷ xs) ∷ xss) (there .(xs ++⁺ʳ concat⁺ p′)) | there p′ | refl = refl
 
   concat⁻∘concat⁺ : ∀ {xss} (p : Any (Any P) xss) → concat⁻ xss (concat⁺ p) ≡ p
   concat⁻∘concat⁺ (here                      p) = concat⁻∘++⁺ˡ _ p

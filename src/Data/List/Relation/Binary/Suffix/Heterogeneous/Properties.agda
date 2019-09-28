@@ -120,10 +120,14 @@ module _ {a b e r s} {A : Set a} {B : Set b}
 
 module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
-  ++⁺ : ∀ {as bs cs ds} → Suffix R as bs → Pointwise R cs ds →
-        Suffix R (as ++ cs) (bs ++ ds)
-  ++⁺ (here rs)   rs′ = here (Pw.++⁺ rs rs′)
-  ++⁺ (there suf) rs′ = there (++⁺ suf rs′)
+  infixr 5 _++⁺_
+
+  _++⁺_ : ∀ {as bs cs ds} →
+          Suffix R as bs →
+          Pointwise R cs ds →
+          Suffix R (as ++ cs) (bs ++ ds)
+  here rs   ++⁺ rs′ = here (rs Pw.++⁺ rs′)
+  there suf ++⁺ rs′ = there (suf ++⁺ rs′)
 
   ++⁻ : ∀ {as bs cs ds} → length cs ≡ length ds →
         Suffix R (as ++ cs) (bs ++ ds) → Pointwise R cs ds

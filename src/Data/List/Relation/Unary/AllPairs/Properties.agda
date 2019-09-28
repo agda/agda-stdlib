@@ -42,7 +42,7 @@ module _ {a ℓ} {A : Set a} {R : Rel A ℓ} where
   ++⁺ : ∀ {xs ys} → AllPairs R xs → AllPairs R ys →
         All (λ x → All (R x) ys) xs → AllPairs R (xs ++ ys)
   ++⁺ []         Rys _              = Rys
-  ++⁺ (px ∷ Rxs) Rys (Rxys ∷ Rxsys) = All.++⁺ px Rxys ∷ ++⁺ Rxs Rys Rxsys
+  ++⁺ (px ∷ Rxs) Rys (Rxys ∷ Rxsys) = (px All.++⁺ Rxys) ∷ ++⁺ Rxs Rys Rxsys
 
 ------------------------------------------------------------------------
 -- concat

@@ -113,11 +113,11 @@ flatten (t <> u) =
 private
 
   keep-it : ∀ {n a b} → a ⊆I b → (xs ys : RList n) → xs ⊆R ys → (a ∷ xs) ⊆R (b ∷ ys)
-  keep-it (var a≡b) xs ys hyp ρ = ++⁺ (reflexive R-refl (cong _ a≡b)) (hyp ρ)
+  keep-it (var a≡b) xs ys hyp ρ = reflexive R-refl (cong _ a≡b) ++⁺ hyp ρ
   keep-it (val rab) xs ys hyp ρ = rab ∷ hyp ρ
 
   skip-it : ∀ {n} it (d e : RList n) → d ⊆R e → d ⊆R (it ∷ e)
-  skip-it it d ys hyp ρ = ++ˡ (⟦ it ⟧I ρ) (hyp ρ)
+  skip-it it d ys hyp ρ = ⟦ it ⟧I ρ ++ˡ hyp ρ
 
 -- Solver for items
 solveI : ∀ {n} (a b : Item n) → Maybe (a ⊆I b)

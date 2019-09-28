@@ -37,20 +37,22 @@ module _ {a b c l r} {A : Set a} {B : Set b} {C : Set c}
 ------------------------------------------------------------------------
 -- _++_
 
-  ++⁺ : ∀ {as₁ as₂ l₁ l₂ r₁ r₂} →
-        Interleaving L R as₁ l₁ r₁ →
-        Interleaving L R as₂ l₂ r₂ →
-        Interleaving L R (as₁ ++ as₂) (l₁ ++ l₂) (r₁ ++ r₂)
-  ++⁺ []         sp₂ = sp₂
-  ++⁺ (l ∷ˡ sp₁) sp₂ = l ∷ˡ (++⁺ sp₁ sp₂)
-  ++⁺ (r ∷ʳ sp₁) sp₂ = r ∷ʳ (++⁺ sp₁ sp₂)
+  infixr 5 _++⁺_ _++-disjoint_
 
-  ++-disjoint : ∀ {as₁ as₂ l₁ r₂} →
-                Interleaving L R l₁ [] as₁ →
-                Interleaving L R [] r₂ as₂ →
-                Interleaving L R l₁ r₂ (as₁ ++ as₂)
-  ++-disjoint []         sp₂ = sp₂
-  ++-disjoint (l ∷ˡ sp₁) sp₂ = l ∷ˡ ++-disjoint sp₁ sp₂
+  _++⁺_ : ∀ {as₁ as₂ l₁ l₂ r₁ r₂} →
+          Interleaving L R as₁ l₁ r₁ →
+          Interleaving L R as₂ l₂ r₂ →
+          Interleaving L R (as₁ ++ as₂) (l₁ ++ l₂) (r₁ ++ r₂)
+  []         ++⁺ sp₂ = sp₂
+  (l ∷ˡ sp₁) ++⁺ sp₂ = l ∷ˡ (sp₁ ++⁺ sp₂)
+  (r ∷ʳ sp₁) ++⁺ sp₂ = r ∷ʳ (sp₁ ++⁺ sp₂)
+
+  _++-disjoint_ : ∀ {as₁ as₂ l₁ r₂} →
+                  Interleaving L R l₁ [] as₁ →
+                  Interleaving L R [] r₂ as₂ →
+                  Interleaving L R l₁ r₂ (as₁ ++ as₂)
+  []         ++-disjoint sp₂ = sp₂
+  (l ∷ˡ sp₁) ++-disjoint sp₂ = l ∷ˡ (sp₁ ++-disjoint sp₂)
 
 ------------------------------------------------------------------------
 -- map
@@ -85,27 +87,46 @@ module _ {a b c l r} {A : Set a} {B : Set b} {C : Set c}
          {L : REL A C l} {R : REL B C r}
          where
 
-  reverseAcc⁺ : ∀ {as₁ as₂ l₁ l₂ r₁ r₂} →
-                Interleaving L R l₁ r₁ as₁ →
-                Interleaving L R l₂ r₂ as₂ →
-                Interleaving L R (reverseAcc l₁ l₂) (reverseAcc r₁ r₂) (reverseAcc as₁ as₂)
-  reverseAcc⁺ sp₁ []         = sp₁
-  reverseAcc⁺ sp₁ (l ∷ˡ sp₂) = reverseAcc⁺ (l ∷ˡ sp₁) sp₂
-  reverseAcc⁺ sp₁ (r ∷ʳ sp₂) = reverseAcc⁺ (r ∷ʳ sp₁) sp₂
+  infixr 5 _ʳ++⁺_
 
-  ʳ++⁺ : ∀ {as₁ as₂ l₁ l₂ r₁ r₂} →
-         Interleaving L R l₁ r₁ as₁ →
-         Interleaving L R l₂ r₂ as₂ →
-         Interleaving L R (l₁ ʳ++ l₂) (r₁ ʳ++ r₂) (as₁ ʳ++ as₂)
-  ʳ++⁺ sp₁ sp₂ = reverseAcc⁺ sp₂ sp₁
+  _ʳ++⁺_ : ∀ {as₁ as₂ l₁ l₂ r₁ r₂} →
+           Interleaving L R l₁ r₁ as₁ →
+           Interleaving L R l₂ r₂ as₂ →
+           Interleaving L R (l₁ ʳ++ l₂) (r₁ ʳ++ r₂) (as₁ ʳ++ as₂)
+  []         ʳ++⁺ sp₂ = sp₂
+  (l ∷ˡ sp₁) ʳ++⁺ sp₂ = sp₁ ʳ++⁺ (l ∷ˡ sp₂)
+  (r ∷ʳ sp₁) ʳ++⁺ sp₂ = sp₁ ʳ++⁺ (r ∷ʳ sp₂)
 
-  reverse⁺ : ∀ {as l r} → Interleaving L R l r as →
+  reverse⁺ : ∀ {as l r} →
+             Interleaving L R l r as →
              Interleaving L R (reverse l) (reverse r) (reverse as)
-  reverse⁺ = reverseAcc⁺ []
+  reverse⁺ sp = sp ʳ++⁺ []
 
-  reverse⁻ : ∀ {as l r} → Interleaving L R (reverse l) (reverse r) (reverse as) →
+  reverse⁻ : ∀ {as l r} →
+             Interleaving L R (reverse l) (reverse r) (reverse as) →
              Interleaving L R l r as
   reverse⁻ {as} {l} {r} sp with reverse⁺ sp
   ... | sp′ rewrite reverse-involutive as
                   | reverse-involutive l
                   | reverse-involutive r = sp′
+
+  ------------------------------------------------------------------------
+  -- DEPRECATED NAMES
+  ------------------------------------------------------------------------
+  -- Please use the new names as continuing support for the old names is
+  -- not guaranteed.
+
+  -- Version 1.2
+
+  reverseAcc⁺ : ∀ {as₁ as₂ l₁ l₂ r₁ r₂} →
+                Interleaving L R l₁ r₁ as₁ →
+                Interleaving L R l₂ r₂ as₂ →
+                Interleaving L R (l₂ ʳ++ l₁) (r₂ ʳ++ r₁) (as₂ ʳ++ as₁ )
+                -- Or: Interleaving L R (reverseAcc l₁ l₂) (reverseAcc r₁ r₂) (reverseAcc as₁ as₂)
+                -- but reverseAcc is deprecated itself.
+  reverseAcc⁺ sp₁ sp₂ = sp₂ ʳ++⁺ sp₁
+
+  {-# WARNING_ON_USAGE reverseAcc⁺
+  "Warning: reverseAcc⁺ was deprecated in v1.2.
+  Please use _ʳ++⁺_ instead."
+  #-}

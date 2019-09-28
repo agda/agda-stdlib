@@ -45,7 +45,7 @@ Word = List Key
 
 eat : ∀ {v} → Value v → Word → Value v
 family   (eat V ks) = family   V ∘′ (ks ++_)
-respects (eat V ks) = respects V ∘′ ++⁺ ≋-refl
+respects (eat V ks) = respects V ∘′ (≋-refl ++⁺_)
 
 data Trie⁺ {v} (V : Value v) : Size → Set (v ⊔ k ⊔ e ⊔ r)
 Tries⁺ : ∀ {v} (V : Value v) (i : Size) → Set (v ⊔ k ⊔ e ⊔ r)

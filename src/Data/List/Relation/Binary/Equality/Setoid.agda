@@ -85,8 +85,10 @@ module _ {b ℓ₂} (T : Setoid b ℓ₂) where
 ------------------------------------------------------------------------
 -- _++_
 
-++⁺ : ∀ {ws xs ys zs} → ws ≋ xs → ys ≋ zs → ws ++ ys ≋ xs ++ zs
-++⁺ = PW.++⁺
+infixr 5 _++⁺_
+
+_++⁺_ : ∀ {ws xs ys zs} → ws ≋ xs → ys ≋ zs → ws ++ ys ≋ xs ++ zs
+_++⁺_ = PW._++⁺_
 
 ++-cancelˡ : ∀ xs {ys zs} → xs ++ ys ≋ xs ++ zs → ys ≋ zs
 ++-cancelˡ = PW.++-cancelˡ
@@ -123,8 +125,10 @@ module _ {P : Pred A p} (P? : U.Decidable P) (resp : P Respects _≈_)
 ------------------------------------------------------------------------
 -- reverse
 
-ʳ++⁺ : ∀{xs xs′ ys ys′} → xs ≋ xs′ → ys ≋ ys′ → xs ʳ++ ys ≋ xs′ ʳ++ ys′
-ʳ++⁺ = PW.ʳ++⁺
+infixr 5 _ʳ++⁺_
+
+_ʳ++⁺_ : ∀{xs xs′ ys ys′} → xs ≋ xs′ → ys ≋ ys′ → xs ʳ++ ys ≋ xs′ ʳ++ ys′
+_ʳ++⁺_ = PW._ʳ++⁺_
 
 reverse⁺ : ∀ {xs ys} → xs ≋ ys → reverse xs ≋ reverse ys
 reverse⁺ = PW.reverse⁺

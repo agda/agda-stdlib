@@ -82,28 +82,36 @@ module _ {a b} {A : Set a} {B : Set b} (f : A → B) where
 
 module _ {a} {A : Set a} where
 
+  infixr 5 _++⁺ˡ_ _++⁺ʳ_
 
-  ++⁺ˡ : ∀ xs {ys zs : List A} → ys ↭ zs → xs ++ ys ↭ xs ++ zs
-  ++⁺ˡ []       ys↭zs = ys↭zs
-  ++⁺ˡ (x ∷ xs) ys↭zs = prep x (++⁺ˡ xs ys↭zs)
+  _++⁺ˡ_ : ∀ xs {ys zs : List A} →
+           ys ↭ zs →
+           xs ++ ys ↭ xs ++ zs
+  []       ++⁺ˡ ys↭zs = ys↭zs
+  (x ∷ xs) ++⁺ˡ ys↭zs = prep x (xs ++⁺ˡ ys↭zs)
 
-  ++⁺ʳ : ∀ {xs ys : List A} zs → xs ↭ ys → xs ++ zs ↭ ys ++ zs
-  ++⁺ʳ zs refl          = refl
-  ++⁺ʳ zs (prep x ↭)    = prep x (++⁺ʳ zs ↭)
-  ++⁺ʳ zs (swap x y ↭)  = swap x y (++⁺ʳ zs ↭)
-  ++⁺ʳ zs (trans ↭₁ ↭₂) = trans (++⁺ʳ zs ↭₁) (++⁺ʳ zs ↭₂)
+  _++⁺ʳ_ : ∀ {xs ys : List A} →
+           xs ↭ ys →
+           ∀ zs →
+           xs ++ zs ↭ ys ++ zs
+  refl        ++⁺ʳ zs = refl
+  prep x ↭    ++⁺ʳ zs = prep x (↭ ++⁺ʳ zs)
+  swap x y ↭  ++⁺ʳ zs = swap x y (↭ ++⁺ʳ zs)
+  trans ↭₁ ↭₂ ++⁺ʳ zs = trans (↭₁ ++⁺ʳ zs) (↭₂ ++⁺ʳ zs)
 
-  ++⁺ : _++_ Preserves₂ _↭_ ⟶ _↭_ ⟶ _↭_
-  ++⁺ ws↭xs ys↭zs = trans (++⁺ʳ _ ws↭xs) (++⁺ˡ _ ys↭zs)
+  infixr 5 _++⁺_
+
+  _++⁺_ : _++_ Preserves₂ _↭_ ⟶ _↭_ ⟶ _↭_
+  ws↭xs ++⁺ ys↭zs = trans (ws↭xs ++⁺ʳ _) (_ ++⁺ˡ ys↭zs)
 
   -- Some useful lemmas
 
   zoom : ∀ h {t xs ys : List A} → xs ↭ ys → h ++ xs ++ t ↭ h ++ ys ++ t
-  zoom h {t} = ++⁺ˡ h ∘ ++⁺ʳ t
+  zoom h {t} = (h ++⁺ˡ_) ∘ (_++⁺ʳ t)
 
   inject : ∀  (v : A) {ws xs ys zs} → ws ↭ ys → xs ↭ zs →
            ws ++ [ v ] ++ xs ↭ ys ++ [ v ] ++ zs
-  inject v ws↭ys xs↭zs = trans (++⁺ˡ _ (prep v xs↭zs)) (++⁺ʳ _ ws↭ys)
+  inject v ws↭ys xs↭zs = trans (_ ++⁺ˡ prep v xs↭zs) (ws↭ys ++⁺ʳ _)
 
   shift : ∀ v (xs ys : List A) → xs ++ [ v ] ++ ys ↭ v ∷ xs ++ ys
   shift v []       ys = refl
@@ -183,7 +191,7 @@ module _ {a} {A : Set a} where
   ++-comm (x ∷ xs) ys = begin
     x ∷ xs ++ ys         ↭⟨ prep x (++-comm xs ys) ⟩
     x ∷ ys ++ xs         ≡⟨ cong (λ v → x ∷ v ++ xs) (≡.sym (Lₚ.++-identityʳ _)) ⟩
-    (x ∷ ys ++ []) ++ xs ↭⟨ ++⁺ʳ xs (↭-sym (shift x ys [])) ⟩
+    (x ∷ ys ++ []) ++ xs ↭⟨ ↭-sym (shift x ys []) ++⁺ʳ xs ⟩
     (ys ++ [ x ]) ++ xs  ↭⟨ ++-assoc ys [ x ] xs ⟩
     ys ++ ([ x ] ++ xs)  ≡⟨⟩
     ys ++ (x ∷ xs)       ∎
@@ -191,7 +199,7 @@ module _ {a} {A : Set a} where
   ++-isMagma : IsMagma _↭_ _++_
   ++-isMagma = record
     { isEquivalence = ↭-isEquivalence
-    ; ∙-cong        = ++⁺
+    ; ∙-cong        = _++⁺_
     }
 
   ++-magma : Magma _ _
@@ -238,7 +246,7 @@ module _ {a} {A : Set a} where
   shifts : ∀ xs ys {zs : List A} → xs ++ ys ++ zs ↭ ys ++ xs ++ zs
   shifts xs ys {zs} = begin
      xs ++ ys  ++ zs ↭˘⟨ ++-assoc xs ys zs ⟩
-    (xs ++ ys) ++ zs ↭⟨ ++⁺ʳ zs (++-comm xs ys) ⟩
+    (xs ++ ys) ++ zs ↭⟨ ++-comm xs ys ++⁺ʳ zs ⟩
     (ys ++ xs) ++ zs ↭⟨ ++-assoc ys xs zs ⟩
      ys ++ xs  ++ zs ∎
 

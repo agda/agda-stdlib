@@ -308,18 +308,17 @@ _─_ : (xs : List A) → Fin (length xs) → List A
 ------------------------------------------------------------------------
 -- Operations for reversing lists
 
-reverseAcc : List A → List A → List A
-reverseAcc = foldl (flip _∷_)
-
-reverse : List A → List A
-reverse = reverseAcc []
-
 -- "Reverse append" xs ʳ++ ys = reverse xs ++ ys
 
 infixr 5 _ʳ++_
 
 _ʳ++_ : List A → List A → List A
-_ʳ++_ = flip reverseAcc
+xs ʳ++ ys = foldl (flip _∷_) ys xs
+
+-- Reverse.
+
+reverse : List A → List A
+reverse = _ʳ++ []
 
 -- Snoc.
 
@@ -390,3 +389,13 @@ boolSpan p (x ∷ xs) with p x
 
 boolBreak : (A → Bool) → List A → (List A × List A)
 boolBreak p = boolSpan (not ∘ p)
+
+-- Version 1.2
+
+reverseAcc : List A → List A → List A
+reverseAcc = foldl (flip _∷_)
+
+{-# WARNING_ON_USAGE reverseAcc
+"Warning: reverseAcc was deprecated in v1.2.
+Please use _ʳ++_ instead."
+#-}

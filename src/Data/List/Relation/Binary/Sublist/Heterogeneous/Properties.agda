@@ -176,34 +176,43 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 ------------------------------------------------------------------------
 -- _++_
 
-  ++⁺ : ∀ {as bs cs ds} → Sublist R as bs → Sublist R cs ds →
-        Sublist R (as ++ cs) (bs ++ ds)
-  ++⁺ []         cds = cds
-  ++⁺ (y ∷ʳ abs) cds = y ∷ʳ ++⁺ abs cds
-  ++⁺ (ab ∷ abs) cds = ab ∷ ++⁺ abs cds
+  infixr 5 _++⁺_ _++ʳ_ _++ˡ_
+
+  _++⁺_ : ∀ {as bs cs ds} →
+          Sublist R as bs →
+          Sublist R cs ds →
+          Sublist R (as ++ cs) (bs ++ ds)
+  []         ++⁺ cds = cds
+  (y ∷ʳ abs) ++⁺ cds = y ∷ʳ  abs ++⁺ cds
+  (ab ∷ abs) ++⁺ cds = ab ∷  abs ++⁺ cds
 
   ++⁻ : ∀ {as bs cs ds} → length as ≡ length bs →
         Sublist R (as ++ cs) (bs ++ ds) → Sublist R cs ds
   ++⁻ {[]}     {[]}     eq rs = rs
   ++⁻ {a ∷ as} {b ∷ bs} eq rs = ++⁻ (ℕₚ.suc-injective eq) (∷⁻ rs)
 
-  ++ˡ : ∀ {as bs} (cs : List B) → Sublist R as bs → Sublist R as (cs ++ bs)
-  ++ˡ zs = ++⁺ (minimum zs)
+  _++ˡ_ : ∀ {as bs} (cs : List B) →
+          Sublist R as bs →
+          Sublist R as (cs ++ bs)
+  _++ˡ_ zs = minimum zs ++⁺_
 
-  ++ʳ : ∀ {as bs} (cs : List B) → Sublist R as bs → Sublist R as (bs ++ cs)
-  ++ʳ cs []        = minimum cs
-  ++ʳ cs (y ∷ʳ rs) = y ∷ʳ ++ʳ cs rs
-  ++ʳ cs (r ∷ rs)  = r ∷ ++ʳ cs rs
+  _++ʳ_ : ∀ {as bs} →
+          Sublist R as bs → (cs : List B) →
+          Sublist R as (bs ++ cs)
+  []        ++ʳ cs = minimum cs
+  (y ∷ʳ rs) ++ʳ cs = y ∷ʳ rs ++ʳ cs
+  (r ∷  rs) ++ʳ cs = r ∷  rs ++ʳ cs
 
 
 ------------------------------------------------------------------------
 -- concat
 
-  concat⁺ : ∀ {ass bss} → Sublist (Sublist R) ass bss →
+  concat⁺ : ∀ {ass bss} →
+            Sublist (Sublist R) ass bss →
             Sublist R (concat ass) (concat bss)
   concat⁺ []          = []
-  concat⁺ (y  ∷ʳ rss) = ++ˡ y (concat⁺ rss)
-  concat⁺ (rs ∷  rss) = ++⁺ rs (concat⁺ rss)
+  concat⁺ (y  ∷ʳ rss) = y ++ˡ concat⁺ rss
+  concat⁺ (rs ∷  rss) = rs ++⁺ concat⁺ rss
 
 ------------------------------------------------------------------------
 -- take / drop
@@ -286,20 +295,18 @@ module _ {a r p} {A : Set a} {R : Rel A r} {P : Pred A p} (P? : U.Decidable P) w
 
 module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
-  reverseAcc⁺ : ∀ {as bs cs ds} → Sublist R as bs → Sublist R cs ds →
-                Sublist R (reverseAcc cs as) (reverseAcc ds bs)
-  reverseAcc⁺ []         cds = cds
-  reverseAcc⁺ (y ∷ʳ abs) cds = reverseAcc⁺ abs (y ∷ʳ cds)
-  reverseAcc⁺ (r ∷ abs)  cds = reverseAcc⁺ abs (r ∷ cds)
+  infixr 5 _ʳ++⁺_
 
-  ʳ++⁺ : ∀ {as bs cs ds} →
-         Sublist R as bs →
-         Sublist R cs ds →
-         Sublist R (as ʳ++ cs) (bs ʳ++ ds)
-  ʳ++⁺ = reverseAcc⁺
+  _ʳ++⁺_ : ∀ {as bs cs ds} →
+           Sublist R as bs →
+           Sublist R cs ds →
+           Sublist R (as ʳ++ cs) (bs ʳ++ ds)
+  []         ʳ++⁺ cds = cds
+  (y ∷ʳ abs) ʳ++⁺ cds = abs ʳ++⁺ (y ∷ʳ cds)
+  (r ∷  abs) ʳ++⁺ cds = abs ʳ++⁺ (r ∷  cds)
 
   reverse⁺ : ∀ {as bs} → Sublist R as bs → Sublist R (reverse as) (reverse bs)
-  reverse⁺ rs = reverseAcc⁺ rs []
+  reverse⁺ rs = rs ʳ++⁺ []
 
   reverse⁻ : ∀ {as bs} → Sublist R (reverse as) (reverse bs) → Sublist R as bs
   reverse⁻ {as} {bs} p = cast (reverse⁺ p) where
@@ -710,3 +717,18 @@ module DisjointnessMonotonicity
   shrinkDisjoint [] []         []         = []
 
 open DisjointnessMonotonicity public
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 1.2
+
+reverseAcc⁺ = _ʳ++⁺_
+{-# WARNING_ON_USAGE reverseAcc⁺
+"Warning: reverseAcc⁺ was deprecated in v1.2.
+Please use _ʳ++⁺_ instead."
+#-}

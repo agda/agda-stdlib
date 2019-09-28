@@ -124,14 +124,16 @@ module _ {b ℓ} (R : Setoid b ℓ) where
 
 module _ {as bs : List A} where
 
-  ++⁺ˡ : ∀ cs → as ⊆ bs → as ⊆ cs ++ bs
-  ++⁺ˡ = HeteroProperties.++ˡ
+  infixr 5 _++⁺ˡ_ _++⁺ʳ_ _++⁺_
 
-  ++⁺ʳ : ∀ cs → as ⊆ bs → as ⊆ bs ++ cs
-  ++⁺ʳ = HeteroProperties.++ʳ
+  _++⁺ˡ_ : ∀ cs → as ⊆ bs → as ⊆ cs ++ bs
+  _++⁺ˡ_ = HeteroProperties._++ˡ_
 
-  ++⁺ : ∀ {cs ds} → as ⊆ bs → cs ⊆ ds → as ++ cs ⊆ bs ++ ds
-  ++⁺ = HeteroProperties.++⁺
+  _++⁺ʳ_ : as ⊆ bs → ∀ cs → as ⊆ bs ++ cs
+  _++⁺ʳ_ = HeteroProperties._++ʳ_
+
+  _++⁺_ : ∀ {cs ds} → as ⊆ bs → cs ⊆ ds → as ++ cs ⊆ bs ++ ds
+  _++⁺_ = HeteroProperties._++⁺_
 
   ++⁻ : ∀ {cs ds} → length as ≡ length bs → as ++ cs ⊆ bs ++ ds → cs ⊆ ds
   ++⁻ = HeteroProperties.++⁻
@@ -191,15 +193,11 @@ module _ {p q} {P : Pred A p} {Q : Pred A q}
 
 module _ {as bs : List A} where
 
-  reverseAcc⁺ : ∀ {cs ds} → as ⊆ bs → cs ⊆ ds →
-                reverseAcc cs as ⊆ reverseAcc ds bs
-  reverseAcc⁺ = HeteroProperties.reverseAcc⁺
-
-  ʳ++⁺ : ∀ {cs ds} →
-         as ⊆ bs →
-         cs ⊆ ds →
-         as ʳ++ cs ⊆ bs ʳ++ ds
-  ʳ++⁺ = reverseAcc⁺
+  _ʳ++⁺_ : ∀ {cs ds} →
+           as ⊆ bs →
+           cs ⊆ ds →
+           as ʳ++ cs ⊆ bs ʳ++ ds
+  _ʳ++⁺_ = HeteroProperties._ʳ++⁺_
 
   reverse⁺ : as ⊆ bs → reverse as ⊆ reverse bs
   reverse⁺ = HeteroProperties.reverse⁺
@@ -291,3 +289,17 @@ shrinkDisjointʳ (v≈y ∷ σ)  (y≈z ∷ᵣ d) = trans v≈y y≈z ∷ᵣ shr
 -- Not in σ: drop y.
 shrinkDisjointʳ (y  ∷ʳ σ)  (y≈z ∷ᵣ d) = _             ∷ₙ shrinkDisjointʳ σ d
 shrinkDisjointʳ []         []         = []
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 1.2
+
+reverseAcc⁺ = _ʳ++⁺_
+{-# WARNING_ON_USAGE reverseAcc⁺
+"Warning: reverseAcc⁺ was deprecated in v1.2.
+Please use _ʳ++⁺_ instead."
+#-}
