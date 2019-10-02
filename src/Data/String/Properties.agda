@@ -18,9 +18,6 @@ open import Function
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable using (map′; isYes)
 open import Relation.Binary
-  using ( _⇒_; Reflexive; Symmetric; Transitive; Substitutive
-        ; Decidable; IsEquivalence; IsDecEquivalence
-        ; Setoid; DecSetoid; StrictTotalOrder)
 open import Relation.Binary.PropositionalEquality.Core
 import Relation.Binary.Construct.On as On
 import Relation.Binary.PropositionalEquality as PropEq
@@ -103,6 +100,24 @@ x ≟ y = map′ ≈⇒≡ ≈-reflexive $ x ≈? y
 infix 4 _<?_
 _<?_ : Decidable _<_
 x <? y = StrictLex.<-decidable Charₚ._≈?_ Charₚ._<?_ (toList x) (toList y)
+
+<-isStrictPartialOrder-≈ : IsStrictPartialOrder _≈_ _<_
+<-isStrictPartialOrder-≈ =
+  On.isStrictPartialOrder
+    toList
+    (StrictLex.<-isStrictPartialOrder Charₚ.<-isStrictPartialOrder-≈)
+
+<-isStrictTotalOrder-≈ : IsStrictTotalOrder _≈_ _<_
+<-isStrictTotalOrder-≈ =
+  On.isStrictTotalOrder
+    toList
+    (StrictLex.<-isStrictTotalOrder Charₚ.<-isStrictTotalOrder-≈)
+
+<-strictPartialOrder-≈ : StrictPartialOrder _ _ _
+<-strictPartialOrder-≈ =
+  On.strictPartialOrder
+    (StrictLex.<-strictPartialOrder Charₚ.<-strictPartialOrder-≈)
+    toList
 
 <-strictTotalOrder-≈ : StrictTotalOrder _ _ _
 <-strictTotalOrder-≈ =
