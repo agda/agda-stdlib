@@ -18,8 +18,9 @@ open import Data.Nat using (ℕ; zero; suc)
 open import Data.Nat.Properties
 open import Level
 open import Relation.Nullary hiding (Irrelevant)
+open import Relation.Nullary.Decidable using (map′)
 open import Relation.Nullary.Negation using (contradiction)
-import Relation.Nullary.Decidable as Dec using (map′)
+open import Relation.Nullary.Product using (_×-dec_)
 open import Relation.Unary as U using (Pred)
 open import Relation.Binary renaming (Rel to Rel₂)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
@@ -112,15 +113,15 @@ respects₂ {_≈_ = _≈_} {_∼_} resp = respʳ , respˡ
   respˡ (x≈y ∷ xs≈ys) (x∼z ∷ xs∼zs) =
     proj₂ resp x≈y x∼z ∷ respˡ xs≈ys xs∼zs
 
-decidable : ∀ {_∼_ : REL A B ℓ} → Decidable _∼_ → Decidable (Pointwise _∼_)
-decidable dec []       []       = yes []
-decidable dec []       (y ∷ ys) = no (λ ())
-decidable dec (x ∷ xs) []       = no (λ ())
-decidable dec (x ∷ xs) (y ∷ ys) with dec x y
-... | no ¬x∼y = no (¬x∼y ∘ head)
-... | yes x∼y with decidable dec xs ys
-...   | no ¬xs∼ys = no (¬xs∼ys ∘ tail)
-...   | yes xs∼ys = yes (x∼y ∷ xs∼ys)
+module _ {_∼_ : REL A B ℓ} (_∼?_ : Decidable _∼_) where
+
+  decidable : Decidable (Pointwise _∼_)
+  decidable []       []       = yes []
+  decidable []       (y ∷ ys) = no (λ ())
+  decidable (x ∷ xs) []       = no (λ ())
+  decidable (x ∷ xs) (y ∷ ys) =
+    map′ (uncurry _∷_) (λ { (x∼y ∷ xs∼ys) → x∼y , xs∼ys })
+         (x ∼? y ×-dec decidable xs ys)
 
 module _ {_≈_ : Rel₂ A ℓ} where
 

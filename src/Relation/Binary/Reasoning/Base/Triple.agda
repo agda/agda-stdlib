@@ -25,7 +25,7 @@ open import Level using (Level; _⊔_; Lift; lift)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; refl; sym)
 open import Relation.Nullary using (Dec; yes; no)
-open import Relation.Nullary.Decidable using (True; toWitness)
+open import Relation.Nullary.Decidable using (True!; toWitness!)
 
 open IsPreorder isPreorder
   renaming
@@ -82,11 +82,11 @@ begin (strict    x<y) = <⇒≤ x<y
 begin (nonstrict x≤y) = x≤y
 begin (equals    x≈y) = ≤-reflexive x≈y
 
-begin-strict_ : ∀ {x y} (r : x IsRelatedTo y) → {s : True (IsStrict? r)} → x < y
-begin-strict_ r {s} = extractStrict (toWitness s)
+begin-strict_ : ∀ {x y} (r : x IsRelatedTo y) → {s : True! (IsStrict? r)} → x < y
+begin-strict_ r {s} = extractStrict (toWitness! s)
 
-begin-equality_ : ∀ {x y} (r : x IsRelatedTo y) → {s : True (IsEquality? r)} → x ≈ y
-begin-equality_ r {s} = extractEquality (toWitness s)
+begin-equality_ : ∀ {x y} (r : x IsRelatedTo y) → {s : True! (IsEquality? r)} → x ≈ y
+begin-equality_ r {s} = extractEquality (toWitness! s)
 
 _<⟨_⟩_ : ∀ (x : A) {y z} → x < y → y IsRelatedTo z → x IsRelatedTo z
 x <⟨ x<y ⟩ strict    y<z = strict (<-trans x<y y<z)

@@ -107,11 +107,12 @@ trans : ∀ {P : REL A B ℓ} {Q : REL B C ℓ} {R : REL A C ℓ} {n} →
 trans trns xs∼ys ys∼zs = ext λ i →
   trns (Pointwise.app xs∼ys i) (Pointwise.app ys∼zs i)
 
-decidable : ∀ {_∼_ : REL A B ℓ} →
-            Decidable _∼_ → ∀ {n} → Decidable (Pointwise _∼_ {n = n})
-decidable dec xs ys = Dec.map
-  (Setoid.sym (⇔-setoid _) equivalent)
-  (Inductive.decidable dec xs ys)
+module _ {_∼_ : REL A B ℓ} (_∼?_ : Decidable _∼_) where
+
+  decidable : ∀ {n} → Decidable (Pointwise _∼_ {n = n})
+  decidable xs ys = Dec.map
+    (Setoid.sym (⇔-setoid _) equivalent)
+    (Inductive.decidable _∼?_ xs ys)
 
 isEquivalence : ∀ {_∼_ : Rel A ℓ} {n} →
                 IsEquivalence _∼_ → IsEquivalence (Pointwise _∼_ {n = n})

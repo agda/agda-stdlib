@@ -64,11 +64,11 @@ module _ {a b c r₁ r₂ r₃} {A : Set a} {B : Set b} {C : Set c}
 
 module _ {a r} {A : Set a} {R : Rel A r} where
 
-  dec : Decidable R → Decidable (Pointwise R)
-  dec R-dec (just x) (just y) = Dec.map just-equivalence (R-dec x y)
-  dec R-dec (just x) nothing  = no (λ ())
-  dec R-dec nothing  (just y) = no (λ ())
-  dec R-dec nothing  nothing  = yes nothing
+  decidable : Decidable R → Decidable (Pointwise R)
+  decidable R-dec (just x) (just y) = Dec.map just-equivalence (R-dec x y)
+  decidable R-dec (just x) nothing  = no (λ ())
+  decidable R-dec nothing  (just y) = no (λ ())
+  decidable R-dec nothing  nothing  = yes nothing
 
   isEquivalence : IsEquivalence R → IsEquivalence (Pointwise R)
   isEquivalence R-isEquivalence = record
@@ -80,7 +80,7 @@ module _ {a r} {A : Set a} {R : Rel A r} where
   isDecEquivalence : IsDecEquivalence R → IsDecEquivalence (Pointwise R)
   isDecEquivalence R-isDecEquivalence = record
     { isEquivalence = isEquivalence R.isEquivalence
-    ; _≟_           = dec R._≟_
+    ; _≟_           = decidable R._≟_
     } where module R = IsDecEquivalence R-isDecEquivalence
 
 module _ {c ℓ} where

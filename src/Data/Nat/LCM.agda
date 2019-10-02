@@ -22,13 +22,13 @@ open import Function
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; refl; sym; trans; cong; cong₂; module ≡-Reasoning)
 open import Relation.Binary
-open import Relation.Nullary.Decidable using (False; fromWitnessFalse)
+open import Relation.Nullary.Decidable using (False!; fromWitnessFalse!)
 
 open +-*-Solver
 
 private
-  gcd≢0′ : ∀ m n → False (gcd (suc m) n ≟ 0)
-  gcd≢0′ m n = fromWitnessFalse (gcd[m,n]≢0 (suc m) n (inj₁ (λ())))
+  gcd≢0′ : ∀ m n → False! (gcd (suc m) n ≟ 0)
+  gcd≢0′ m n = fromWitnessFalse! (gcd[m,n]≢0 (suc m) n (inj₁ (λ())))
 
 ------------------------------------------------------------------------
 -- Definition

@@ -15,7 +15,7 @@ open import Data.List using (List; []; _∷_; map; reverse)
 open import Data.Nat
 open import Data.Product using (proj₁)
 open import Data.String as String using (String)
-open import Relation.Nullary.Decidable using (True)
+open import Relation.Nullary.Decidable using (True!)
 
 ------------------------------------------------------------------------
 -- Conversion from unary representation to the representation by the
@@ -39,8 +39,8 @@ show = String.fromList ∘ toDecimalChars
 -- O(n) instead of the expected O(log(n)).
 
 showInBase : (base : ℕ)
-             {base≥2 : True (2 ≤? base)}
-             {base≤16 : True (base ≤? 16)} →
+             {base≥2 : True! (2 ≤? base)}
+             {base≤16 : True! (base ≤? 16)} →
              ℕ → String
 showInBase base {base≥2} {base≤16} n =
   String.fromList $

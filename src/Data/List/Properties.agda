@@ -31,9 +31,8 @@ import Relation.Binary as B
 import Relation.Binary.Reasoning.Setoid as EqR
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; _≗_; refl ; sym ; cong)
-open import Relation.Nullary using (¬_; yes; no)
+open import Relation.Nullary using (¬_; yes; no; isYes)
 open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Nullary.Decidable using (isYes)
 open import Relation.Unary using (Pred; Decidable; ∁)
 open import Relation.Unary.Properties using (∁?)
 

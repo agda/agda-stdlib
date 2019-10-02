@@ -11,7 +11,7 @@ module Data.Vec.Relation.Binary.Pointwise.Inductive where
 open import Algebra.FunctionProperties
 open import Data.Fin using (Fin; zero; suc)
 open import Data.Nat using (ℕ; zero; suc)
-open import Data.Product using (_×_; _,_)
+open import Data.Product using (_×_; _,_; uncurry)
 open import Data.Vec as Vec hiding ([_]; head; tail; map; lookup)
 open import Data.Vec.Relation.Unary.All using (All; []; _∷_)
 open import Level using (Level; _⊔_)
@@ -20,6 +20,8 @@ open import Function.Equivalence using (_⇔_; equivalence)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Nullary
+open import Relation.Nullary.Decidable using (map′)
+open import Relation.Nullary.Product using (_×-dec_)
 open import Relation.Unary using (Pred)
 
 private
@@ -94,16 +96,15 @@ trans trns []             []             = []
 trans trns (x∼y ∷ xs∼ys) (y∼z ∷ ys∼zs) =
   trns x∼y y∼z ∷ trans trns xs∼ys ys∼zs
 
-decidable : ∀ {_∼_ : REL A B ℓ} →
-            Decidable _∼_ → ∀ {m n} → Decidable (Pointwise _∼_ {m} {n})
-decidable dec []       []       = yes []
-decidable dec []       (y ∷ ys) = no λ()
-decidable dec (x ∷ xs) []       = no λ()
-decidable dec (x ∷ xs) (y ∷ ys) with dec x y
-... | no ¬x∼y = no (¬x∼y ∘ head)
-... | yes x∼y with decidable dec xs ys
-...   | no ¬xs∼ys = no (¬xs∼ys ∘ tail)
-...   | yes xs∼ys = yes (x∼y ∷ xs∼ys)
+module _ {_∼_ : REL A B ℓ} (_∼?_ : Decidable _∼_) where
+
+  decidable : ∀ {m n} → Decidable (Pointwise _∼_ {m} {n})
+  decidable []       []       = yes []
+  decidable []       (y ∷ ys) = no λ()
+  decidable (x ∷ xs) []       = no λ()
+  decidable (x ∷ xs) (y ∷ ys) =
+    map′ (uncurry _∷_) (λ { (x∼y ∷ xs∼ys) → x∼y , xs∼ys })
+         (x ∼? y ×-dec decidable xs ys)
 
 ------------------------------------------------------------------------
 -- Structures

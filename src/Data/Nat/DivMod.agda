@@ -17,7 +17,7 @@ open import Data.Nat.DivMod.Core
 open import Data.Nat.Divisibility.Core
 open import Data.Nat.Properties
 open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary.Decidable using (False)
+open import Relation.Nullary.Decidable using (False!)
 
 open ≤-Reasoning
 
@@ -36,12 +36,12 @@ infixl 7 _/_ _%_
 
 -- Natural division
 
-_/_ : (dividend divisor : ℕ) .{≢0 : False (divisor ≟ 0)} → ℕ
+_/_ : (dividend divisor : ℕ) .{≢0 : False! (divisor ≟ 0)} → ℕ
 m / (suc n) = div-helper 0 n m n
 
 -- Natural remainder/modulus
 
-_%_ : (dividend divisor : ℕ) .{≢0 : False (divisor ≟ 0)} → ℕ
+_%_ : (dividend divisor : ℕ) .{≢0 : False! (divisor ≟ 0)} → ℕ
 m % (suc n) = mod-helper 0 n m n
 
 ------------------------------------------------------------------------
@@ -196,13 +196,13 @@ record DivMod (dividend divisor : ℕ) : Set where
 
 infixl 7 _div_ _mod_ _divMod_
 
-_div_ : (dividend divisor : ℕ) .{≢0 : False (divisor ≟ 0)} → ℕ
+_div_ : (dividend divisor : ℕ) .{≢0 : False! (divisor ≟ 0)} → ℕ
 _div_ = _/_
 
-_mod_ : (dividend divisor : ℕ) .{≢0 : False (divisor ≟ 0)} → Fin divisor
+_mod_ : (dividend divisor : ℕ) .{≢0 : False! (divisor ≟ 0)} → Fin divisor
 m mod (suc n) = fromℕ≤ (m%n<n m n)
 
-_divMod_ : (dividend divisor : ℕ) .{≢0 : False (divisor ≟ 0)} →
+_divMod_ : (dividend divisor : ℕ) .{≢0 : False! (divisor ≟ 0)} →
            DivMod dividend divisor
 m divMod n@(suc n-1) = result (m / n) (m mod n) (begin-equality
   m                                     ≡⟨ m≡m%n+[m/n]*n m n-1 ⟩

@@ -24,7 +24,7 @@ open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence
   using () renaming (module Equivalence to Eq)
 open import Relation.Binary.PropositionalEquality as P using (_≡_; _≢_; refl)
-open import Relation.Nullary.Decidable using (isYes)
+open import Relation.Nullary using (isYes)
 
 ------------------------------------------------------------------------
 -- Non-empty lists

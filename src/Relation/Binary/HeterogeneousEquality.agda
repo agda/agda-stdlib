@@ -186,11 +186,11 @@ indexedSetoid B = record
 
 decSetoid : Decidable {A = A} {B = A} (λ x y → x ≅ y) →
             DecSetoid _ _
-decSetoid dec = record
+decSetoid _≟_ = record
   { _≈_              = λ x y → x ≅ y
   ; isDecEquivalence = record
       { isEquivalence = isEquivalence
-      ; _≟_           = dec
+      ; _≟_           = _≟_
       }
   }
 

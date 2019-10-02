@@ -104,9 +104,9 @@ module _ {a} p {A : Set a} {P : Pred A (a ⊔ p)} {M}
 
 module _ {a p} {A : Set a} {P : Pred A p} where
 
-  dec : Decidable P → Decidable (All P)
-  dec P-dec nothing  = yes nothing
-  dec P-dec (just x) = Dec.map just-equivalence (P-dec x)
+  decidable : Decidable P → Decidable (All P)
+  decidable P-dec nothing  = yes nothing
+  decidable P-dec (just x) = Dec.map just-equivalence (P-dec x)
 
   universal : Universal P → Universal (All P)
   universal P-universal (just x) = just (P-universal x)

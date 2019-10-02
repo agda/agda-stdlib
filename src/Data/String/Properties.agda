@@ -16,7 +16,7 @@ import Data.List.Relation.Binary.Lex.Strict as StrictLex
 open import Data.String.Base
 open import Function
 open import Relation.Nullary using (yes; no)
-open import Relation.Nullary.Decidable using (map′; isYes)
+open import Relation.Nullary.Decidable using (map′; isYes!)
 open import Relation.Binary
   using ( _⇒_; Reflexive; Symmetric; Transitive; Substitutive
         ; Decidable; IsEquivalence; IsDecEquivalence
@@ -120,7 +120,7 @@ x <? y = StrictLex.<-decidable Charₚ._≈?_ Charₚ._<?_ (toList x) (toList y)
 
 infix 4 _==_
 _==_ : String → String → Bool
-s₁ == s₂ = isYes (s₁ ≟ s₂)
+s₁ == s₂ = isYes! (s₁ ≟ s₂)
 
 private
 

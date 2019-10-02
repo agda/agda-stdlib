@@ -48,7 +48,7 @@ Bit     = Digit 2
 ------------------------------------------------------------------------
 -- Converting between `ℕ` and `expansions of ℕ`
 
-toNatDigits : (base : ℕ) {base≤16 : True (1 ≤? base)} → ℕ → List ℕ
+toNatDigits : (base : ℕ) {base≤16 : True! (1 ≤? base)} → ℕ → List ℕ
 toNatDigits base@(suc zero)    n = replicate n 1
 toNatDigits base@(suc (suc b)) n = aux (<-wellFounded n) []
   where
@@ -80,7 +80,7 @@ fromDigits {base} (d ∷ ds) = toℕ d + fromDigits ds * base
 --
 -- Note that the list of digits is always non-empty.
 
-toDigits : (base : ℕ) {base≥2 : True (2 ≤? base)} (n : ℕ) →
+toDigits : (base : ℕ) {base≥2 : True! (2 ≤? base)} (n : ℕ) →
            ∃ λ (ds : Expansion base) → fromDigits ds ≡ n
 toDigits (suc (suc k)) n = <′-rec Pred helper n
   where
@@ -123,6 +123,6 @@ digitChars =
 
 -- showDigit shows digits in base ≤ 16.
 
-showDigit : ∀ {base} {base≤16 : True (base ≤? 16)} → Digit base → Char
+showDigit : ∀ {base} {base≤16 : True! (base ≤? 16)} → Digit base → Char
 showDigit {base≤16 = base≤16} d =
-  Vec.lookup digitChars (Fin.inject≤ d (toWitness base≤16))
+  Vec.lookup digitChars (Fin.inject≤ d (toWitness! base≤16))

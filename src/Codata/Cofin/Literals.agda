@@ -17,7 +17,7 @@ open import Relation.Nullary.Decidable
 
 number : ∀ n → Number (Cofin n)
 number n = record
-  { Constraint = λ k → True (suc k ℕ≤? n)
-  ; fromNat    = λ n {{p}} → fromℕ< (toWitness p)
+  { Constraint = λ k → True! (suc k ℕ≤? n)
+  ; fromNat    = λ n {{p}} → fromℕ< (toWitness! p)
   }
 

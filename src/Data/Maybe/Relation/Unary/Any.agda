@@ -65,9 +65,9 @@ module _ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} where
 
 module _ {a p} {A : Set a} {P : Pred A p} where
 
-  dec : Decidable P → Decidable (Any P)
-  dec P-dec nothing  = no λ ()
-  dec P-dec (just x) = Dec.map just-equivalence (P-dec x)
+  decidable : Decidable P → Decidable (Any P)
+  decidable P-dec nothing  = no λ ()
+  decidable P-dec (just x) = Dec.map just-equivalence (P-dec x)
 
   irrelevant : Irrelevant P → Irrelevant (Any P)
   irrelevant P-irrelevant (just p) (just q) = cong just (P-irrelevant p q)

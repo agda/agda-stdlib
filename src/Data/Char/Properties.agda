@@ -16,7 +16,7 @@ import Data.Nat.Properties as ℕₚ
 
 open import Function
 open import Relation.Nullary using (yes; no)
-open import Relation.Nullary.Decidable using (map′; isYes)
+open import Relation.Nullary.Decidable using (map′; isYes!)
 open import Relation.Binary
   using ( _⇒_; Reflexive; Symmetric; Transitive; Substitutive
         ; Decidable; IsEquivalence; IsDecEquivalence
@@ -103,7 +103,7 @@ x ≟ y = map′ ≈⇒≡ ≈-reflexive (x ≈? y)
 
 infix 4 _==_
 _==_ : Char → Char → Bool
-c₁ == c₂ = isYes (c₁ ≟ c₂)
+c₁ == c₂ = isYes! (c₁ ≟ c₂)
 
 private
 

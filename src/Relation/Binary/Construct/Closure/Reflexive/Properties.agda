@@ -15,7 +15,7 @@ open import Level
 open import Relation.Binary
 open import Relation.Binary.Construct.Closure.Reflexive
 open import Relation.Binary.PropositionalEquality as PropEq using (_≡_; refl)
-open import Relation.Nullary
+open import Relation.Nullary hiding (dec)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred)
 

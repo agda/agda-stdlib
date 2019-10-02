@@ -9,7 +9,7 @@
 module Data.List.Relation.Unary.All.Properties where
 
 open import Axiom.Extensionality.Propositional using (Extensionality)
-open import Data.Bool.Base using (Bool; T)
+open import Data.Bool.Base using (Bool; true; false; T)
 open import Data.Bool.Properties using (T-∧)
 open import Data.Empty
 open import Data.Fin using (Fin) renaming (zero to fzero; suc to fsuc)
@@ -93,11 +93,13 @@ module _ {P : A → Set p} where
   All¬⇒¬Any (¬p ∷ _)  (here  p) = ¬p p
   All¬⇒¬Any (_  ∷ ¬p) (there p) = All¬⇒¬Any ¬p p
 
-  ¬All⇒Any¬ : Decidable P → ∀ xs → ¬ All P xs → Any (¬_ ∘ P) xs
-  ¬All⇒Any¬ dec []       ¬∀ = ⊥-elim (¬∀ [])
-  ¬All⇒Any¬ dec (x ∷ xs) ¬∀ with dec x
-  ... | yes p = there (¬All⇒Any¬ dec xs (¬∀ ∘ _∷_ p))
-  ... | no ¬p = here ¬p
+  module _ (p? : Decidable P) where
+
+    ¬All⇒Any¬ : ∀ xs → ¬ All P xs → Any (¬_ ∘ P) xs
+    ¬All⇒Any¬ []       ¬∀ = ⊥-elim (¬∀ [])
+    ¬All⇒Any¬ (x ∷ xs) ¬∀ with p? x
+    ... | yes p = there (¬All⇒Any¬ xs (¬∀ ∘ (p ∷_)))
+    ... | no ¬p = here ¬p
 
   Any¬→¬All : ∀ {xs} → Any (¬_ ∘ P) xs → ¬ All P xs
   Any¬→¬All (here  ¬p) = ¬p           ∘ All.head
@@ -122,12 +124,12 @@ module _ {P : A → Set p} where
       }
 
   Any¬⇔¬All : ∀ {xs} → Decidable P → Any (¬_ ∘ P) xs ⇔ (¬ All P xs)
-  Any¬⇔¬All dec = equivalence Any¬→¬All (¬All⇒Any¬ dec _)
+  Any¬⇔¬All p? = equivalence Any¬→¬All (¬All⇒Any¬ p? _)
     where
     -- If equality of functions were extensional, then the logical
     -- equivalence could be strengthened to a surjection.
     to∘from : Extensionality _ _ →
-              ∀ {xs} (¬∀ : ¬ All P xs) → Any¬→¬All (¬All⇒Any¬ dec xs ¬∀) ≡ ¬∀
+              ∀ {xs} (¬∀ : ¬ All P xs) → Any¬→¬All (¬All⇒Any¬ p? xs ¬∀) ≡ ¬∀
     to∘from ext ¬∀ = ext (⊥-elim ∘ ¬∀)
 
 module _ {_~_ : REL (List A) B ℓ} where

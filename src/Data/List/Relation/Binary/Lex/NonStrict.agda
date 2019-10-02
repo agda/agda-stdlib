@@ -89,9 +89,9 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
 
     <-isStrictTotalOrder : Decidable _≈_ → IsTotalOrder _≈_ _≼_ →
                            IsStrictTotalOrder _≋_ _<_
-    <-isStrictTotalOrder dec tot =
+    <-isStrictTotalOrder _≟_ tot =
       Strict.<-isStrictTotalOrder
-        (Conv.<-isStrictTotalOrder₁ _ _ dec tot)
+        (Conv.<-isStrictTotalOrder₁ _ _ _≟_ tot)
 
 <-strictPartialOrder : ∀ {a ℓ₁ ℓ₂} → Poset a ℓ₁ ℓ₂ →
                        StrictPartialOrder _ _ _
@@ -163,9 +163,9 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
 
     ≤-isTotalOrder : Decidable _≈_ → IsTotalOrder _≈_ _≼_ →
                      IsTotalOrder _≋_ _≤_
-    ≤-isTotalOrder dec tot =
+    ≤-isTotalOrder _≟_ tot =
       Strict.≤-isTotalOrder
-        (Conv.<-isStrictTotalOrder₁ _ _ dec tot)
+        (Conv.<-isStrictTotalOrder₁ _ _ _≟_ tot)
 
     ≤-isDecTotalOrder : IsDecTotalOrder _≈_ _≼_ →
                         IsDecTotalOrder _≋_ _≤_
