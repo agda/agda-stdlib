@@ -8,6 +8,7 @@
 
 module Relation.Nullary.Sum where
 
+open import Data.Bool.Base using (Bool; true; false; _∨_)
 open import Data.Sum
 open import Data.Empty
 open import Level
@@ -29,10 +30,7 @@ _¬-⊎_ : ¬ P → ¬ Q → ¬ (P ⊎ Q)
 (¬p ¬-⊎ ¬q) (inj₂ q) = ¬q q
 
 _⊎-dec_ : Dec P → Dec Q → Dec (P ⊎ Q)
-yes p ⊎-dec _     = yes (inj₁ p)
-_     ⊎-dec yes q = yes (inj₂ q)
-no ¬p ⊎-dec no ¬q = no helper
-  where
-  helper : _ ⊎ _ → ⊥
-  helper (inj₁ p) = ¬p p
-  helper (inj₂ q) = ¬q q
+isYes (p? ⊎-dec q?) = isYes p? ∨ isYes q?
+reflects (yes p ⊎-dec q?) = true (inj₁ p)
+reflects (no ¬p ⊎-dec yes q) = true (inj₂ q)
+reflects (no ¬p ⊎-dec no ¬q) = false [ ¬p , ¬q ]

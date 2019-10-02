@@ -8,6 +8,7 @@
 
 module Relation.Nullary.Product where
 
+open import Data.Bool.Base using (Bool; true; false; _∧_)
 open import Data.Product
 open import Function
 open import Level
@@ -25,6 +26,7 @@ private
 infixr 2 _×-dec_
 
 _×-dec_ : Dec P → Dec Q → Dec (P × Q)
-yes p ×-dec yes q = yes (p , q)
-no ¬p ×-dec _     = no (¬p ∘ proj₁)
-_     ×-dec no ¬q = no (¬q ∘ proj₂)
+isYes (p? ×-dec q?) = isYes p? ∧ isYes q?
+reflects (yes p ×-dec yes q) = true (p , q)
+reflects (yes p ×-dec no ¬q) = false (¬q ∘ proj₂)
+reflects (no ¬p ×-dec q?) = false (¬p ∘ proj₁)

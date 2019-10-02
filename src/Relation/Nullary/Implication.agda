@@ -8,7 +8,9 @@
 
 module Relation.Nullary.Implication where
 
+open import Data.Bool.Base
 open import Data.Empty
+open import Function using (_∘_; _$_)
 open import Relation.Nullary
 open import Level
 
@@ -24,6 +26,7 @@ private
 infixr 2 _→-dec_
 
 _→-dec_ : Dec P → Dec Q → Dec (P → Q)
-yes p →-dec no ¬q = no  (λ f → ¬q (f p))
-yes p →-dec yes q = yes (λ _ → q)
-no ¬p →-dec _     = yes (λ p → ⊥-elim (¬p p))
+isYes (p? →-dec q?) = not (isYes p?) ∨ isYes q?
+reflects (yes p →-dec yes q) = true (λ _ → q)
+reflects (yes p →-dec no ¬q) = false (¬q ∘ (_$ p))
+reflects (no ¬p →-dec q?) = true (⊥-elim ∘ ¬p)
