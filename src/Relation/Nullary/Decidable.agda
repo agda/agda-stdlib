@@ -31,8 +31,9 @@ open import Relation.Nullary.Decidable.Core public
 -- Maps
 
 map : P ⇔ Q → Dec P → Dec Q
-map P⇔Q (yes p) = yes (Equivalence.to P⇔Q ⟨$⟩ p)
-map P⇔Q (no ¬p) = no (¬p ∘ _⟨$⟩_ (Equivalence.from P⇔Q))
+isYes (map P⇔Q p?) = isYes p?
+reflects (map P⇔Q (yes p)) = true (Equivalence.to P⇔Q ⟨$⟩ p)
+reflects (map P⇔Q (no ¬p)) = false (¬p ∘ (Equivalence.from P⇔Q ⟨$⟩_))
 
 map′ : (P → Q) → (Q → P) → Dec P → Dec Q
 map′ P→Q Q→P = map (equivalence P→Q Q→P)
@@ -48,6 +49,6 @@ module _ {a₁ a₂ b₁ b₂} {A : Setoid a₁ a₂} {B : Setoid b₁ b₂} whe
   -- equivalence relation is also decidable.
 
   via-injection : Injection A B → Decidable _≈B_ → Decidable _≈A_
-  via-injection inj dec x y with dec (to inj ⟨$⟩ x) (to inj ⟨$⟩ y)
-  ... | yes injx≈injy = yes (Injection.injective inj injx≈injy)
-  ... | no  injx≉injy = no (λ x≈y → injx≉injy (Π.cong (to inj) x≈y))
+  via-injection inj _≟_ x y =
+    map′ (Injection.injective inj) (Π.cong (to inj))
+         ((to inj ⟨$⟩ x) ≟ (to inj ⟨$⟩ y))
