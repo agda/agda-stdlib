@@ -153,6 +153,9 @@ The following new modules have been added to the library:
   Data.Rational.Unnormalised
   Data.Rational.Unnormalised.Properties
 
+  Data.Unit.Polymorphic
+  Data.Unit.Polymorphic.Properties
+
   Function.Definitions
   Function.Packages
   Function.Structures
