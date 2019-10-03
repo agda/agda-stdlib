@@ -171,9 +171,6 @@ The following new modules have been added to the library:
   Data.Vec.Functional.Relation.Unary.All
   Data.Vec.Functional.Relation.Unary.Any
 
-  Data.Unit.Polymorphic
-  Data.Unit.Polymorphic.Properties
-
   Function.Definitions
   Function.Packages
   Function.Structures
