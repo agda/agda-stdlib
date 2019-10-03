@@ -130,7 +130,6 @@ match the one for `Vec`:
 New modules
 -----------
 The following new modules have been added to the library:
-
   ```
   Algebra.Morphism.RawMagma
   Algebra.Morphism.RawMonoid
@@ -181,6 +180,10 @@ The following new modules have been added to the library:
   Relation.Binary.Properties.Setoid
   Relation.Binary.Reasoning.Base.Partial
   Relation.Binary.Reasoning.PartialSetoid
+
+  Relation.Binary.Morphism
+  Relation.Binary.Morphism.RawOrder
+  Relation.Binary.Morphism.RawRelation
   ```
 
 Relocated modules
@@ -322,6 +325,8 @@ Other minor additions
   *-rawMagma     : RawMagma 0ℓ 0ℓ
   +-0-rawMonoid  : RawMonoid 0ℓ 0ℓ
   *-1-rawMonoid  : RawMonoid 0ℓ 0ℓ
+
+  *-cancelˡ-≤    : suc o * m ≤ suc o * n → m ≤ n
 
   1+m≢m∸n        : suc m ≢ m ∸ n
   ∸-monoʳ-<      : o < n → n ≤ m → m ∸ n < m ∸ o

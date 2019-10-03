@@ -23,6 +23,8 @@ open import Function.Definitions using (Injective)
 open import Function.Definitions.Core2 using (Surjective)
 open import Level using (0ℓ)
 open import Relation.Binary
+open import Relation.Binary.Morphism
+import Relation.Binary.Morphism.RawOrder as RawOrderMorphism
 open import Relation.Binary.PropositionalEquality
 import Relation.Binary.Reasoning.Base.Triple as InequalityReasoning
 open import Relation.Nullary using (¬_; yes; no)
@@ -199,98 +201,6 @@ x≢0⇒x>0 {1+[2 _ ]} _   =  0<odd
 <⇒≤ = inj₁
 
 ------------------------------------------------------------------------------
--- Relational properties of _<_
-
--- TO-DO, ideally with the isomorphism proofs below these should all be
--- derivable via the properties of ℕ
-
-<-irrefl : Irreflexive _≡_ _<_
-<-irrefl refl (even<even x<x) =  <-irrefl refl x<x
-<-irrefl refl (odd<odd x<x)   =  <-irrefl refl x<x
-
-<-trans : Transitive _<_
-<-trans {zero} {_}      {2[1+ _ ]} _  _        =  0<even
-<-trans {zero} {_}      {1+[2 _ ]} _  _        =  0<odd
-<-trans (even<even x<y) (even<even y<z)        =  even<even (<-trans x<y y<z)
-<-trans (even<even x<y) (even<odd y<z)         =  even<odd (<-trans x<y y<z)
-<-trans (even<odd x<y)  (odd<even (inj₁ y<z))  =  even<even (<-trans x<y y<z)
-<-trans (even<odd x<y)  (odd<even (inj₂ refl)) =  even<even x<y
-<-trans (even<odd x<y)  (odd<odd y<z)          =  even<odd (<-trans x<y y<z)
-<-trans (odd<even (inj₁ x<y))  (even<even y<z) =  odd<even (inj₁ (<-trans x<y y<z))
-<-trans (odd<even (inj₂ refl)) (even<even x<z) =  odd<even (inj₁ x<z)
-<-trans (odd<even (inj₁ x<y))  (even<odd y<z)  =  odd<odd (<-trans x<y y<z)
-<-trans (odd<even (inj₂ refl)) (even<odd x<z)  =  odd<odd x<z
-<-trans (odd<odd x<y) (odd<even (inj₁ y<z))    =  odd<even (inj₁ (<-trans x<y y<z))
-<-trans (odd<odd x<y) (odd<even (inj₂ refl))   =  odd<even (inj₁ x<y)
-<-trans (odd<odd x<y) (odd<odd y<z)            =  odd<odd (<-trans x<y y<z)
-
-<-cmp :  ∀ (x y) → Tri (x < y) (x ≡ y) (x > y)
-<-cmp zero     zero      = tri≈ x≮0    refl  x≮0
-<-cmp zero     2[1+ _ ]  = tri< 0<even (λ()) x≮0
-<-cmp zero     1+[2 _ ]  = tri< 0<odd  (λ()) x≮0
-<-cmp 2[1+ _ ] zero      = tri> (λ())  (λ()) 0<even
-<-cmp 2[1+ x ] 2[1+ y ]  with <-cmp x y
-... | tri< x<y _    _   =  tri< lt (<⇒≢ lt) (<⇒≯ lt)  where lt = even<even x<y
-... | tri≈ _   refl _   =  tri≈ (<-irrefl refl) refl (<-irrefl refl)
-... | tri> _   _    x>y =  tri> (>⇒≮ gt) (>⇒≢ gt) gt  where gt = even<even x>y
-
-<-cmp 2[1+ x ] 1+[2 y ]  with <-cmp x y
-... | tri< x<y _    _ =  tri< lt (<⇒≢ lt) (<⇒≯ lt)  where lt = even<odd x<y
-... | tri≈ _   refl _ =  tri> (>⇒≮ gt) (>⇒≢ gt) gt
-  where
-  gt = subst (_< 2[1+ x ]) refl (1+[2x]<2[1+x] x)
-
-... | tri> _ _ y<x =  tri> (>⇒≮ gt) (>⇒≢ gt) gt  where gt = odd<even (inj₁ y<x)
-
-<-cmp 1+[2 _ ] zero =  tri> (>⇒≮ gt) (>⇒≢ gt) gt  where gt = 0<odd
-<-cmp 1+[2 x ] 2[1+ y ]  with <-cmp x y
-... | tri< x<y _ _ =  tri< lt (<⇒≢ lt) (<⇒≯ lt)  where lt = odd<even (inj₁ x<y)
-... | tri≈ _ x≡y _ =  tri< lt (<⇒≢ lt) (<⇒≯ lt)  where lt = odd<even (inj₂ x≡y)
-... | tri> _ _ x>y =  tri> (>⇒≮ gt) (>⇒≢ gt) gt  where gt = even<odd x>y
-
-<-cmp 1+[2 x ] 1+[2 y ]  with <-cmp x y
-... | tri< x<y _  _   =  tri< lt (<⇒≢ lt) (<⇒≯ lt)  where lt = odd<odd x<y
-... | tri≈ _ refl _   =  tri≈ (≡⇒≮ refl) refl (≡⇒≯ refl)
-... | tri> _ _    x>y =  tri> (>⇒≮ gt) (>⇒≢ gt) gt  where gt = odd<odd x>y
-
-_<?_ : Decidable _<_
-x <? y  with <-cmp x y
-... | tri< lt  _ _ =  yes lt
-... | tri≈ ¬lt _ _ =  no ¬lt
-... | tri> ¬lt _ _ =  no ¬lt
-
-------------------------------------------------------------------------------
--- Structures for _<_
-
-<-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
-<-isStrictPartialOrder = record
-  { isEquivalence = isEquivalence
-  ; irrefl        = <-irrefl
-  ; trans         = <-trans
-  ; <-resp-≈      = resp₂ _<_
-  }
-
-<-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_
-<-isStrictTotalOrder = record
-  { isEquivalence =  isEquivalence
-  ; trans         =  <-trans
-  ; compare       =  <-cmp
-  }
-
-------------------------------------------------------------------------------
--- Packages for _<_
-
-<-strictPartialOrder : StrictPartialOrder _ _ _
-<-strictPartialOrder = record
-  { isStrictPartialOrder = <-isStrictPartialOrder
-  }
-
-<-strictTotalOrder : StrictTotalOrder _ _ _
-<-strictTotalOrder = record
-  { isStrictTotalOrder =  <-isStrictTotalOrder
-  }
-
-------------------------------------------------------------------------------
 -- Properties of _<_ and toℕ & fromℕ.
 
 toℕ-mono-< :  toℕ Preserves _<_ ⟶ ℕ._<_
@@ -316,17 +226,73 @@ toℕ-mono-< {1+[2 x ]} {2[1+ .x ]} (odd<even (inj₂ refl)) =
 toℕ-mono-< {1+[2 x ]} {1+[2 y ]} (odd<odd x<y) =  ℕₚ.+-monoʳ-< 1 (ℕₚ.*-monoʳ-< 1 xN<yN)
   where xN = toℕ x;  yN = toℕ y;  xN<yN = toℕ-mono-< x<y
 
+toℕ-cancel-< : ∀ {x y} → toℕ x ℕ.< toℕ y → x < y
+toℕ-cancel-< {zero}     {2[1+ y ]} x<y = 0<even
+toℕ-cancel-< {zero}     {1+[2 y ]} x<y = 0<odd
+toℕ-cancel-< {2[1+ x ]} {2[1+ y ]} x<y =
+  even<even (toℕ-cancel-< (ℕ.≤-pred (ℕₚ.*-cancelˡ-< 2 x<y)))
+toℕ-cancel-< {2[1+ x ]} {1+[2 y ]} x<y
+  rewrite ℕₚ.*-distribˡ-+ 2 1 (toℕ x) =
+  even<odd (toℕ-cancel-< (ℕₚ.*-cancelˡ-< 2 (ℕₚ.≤-trans (s≤s (ℕₚ.n≤1+n _)) (ℕₚ.≤-pred x<y))))
+toℕ-cancel-< {1+[2 x ]} {2[1+ y ]} x<y with toℕ x ℕₚ.≟ toℕ y
+... | yes x≡y = odd<even (inj₂ (toℕ-injective x≡y))
+... | no  x≢y
+  rewrite ℕₚ.+-suc (toℕ y) (toℕ y ℕ.+ 0) =
+  odd<even (inj₁ (toℕ-cancel-< (ℕₚ.≤∧≢⇒< (ℕₚ.*-cancelˡ-≤ 1 (ℕₚ.+-cancelˡ-≤ 2 x<y)) x≢y)))
+toℕ-cancel-< {1+[2 x ]} {1+[2 y ]} x<y =
+  odd<odd (toℕ-cancel-< (ℕₚ.*-cancelˡ-< 2 (ℕ.≤-pred x<y)))
+
 fromℕ-cancel-< : ∀ {x y} → fromℕ x < fromℕ y → x ℕ.< y
 fromℕ-cancel-< = subst₂ ℕ._<_ (toℕ-fromℕ _) (toℕ-fromℕ _) ∘ toℕ-mono-<
 
 fromℕ-mono-< :  fromℕ Preserves ℕ._<_ ⟶ _<_
-fromℕ-mono-< {x} {y} x<y with <-cmp (fromℕ x) (fromℕ y)
-... | tri< f[x]<f[y] _ _ = f[x]<f[y]
-... | tri≈ _ f[x]≡f[y] _ = contradiction (fromℕ-injective f[x]≡f[y]) (ℕₚ.<⇒≢ x<y)
-... | tri> _ _ f[y]<f[x] = contradiction x<y (ℕₚ.<⇒≯ (fromℕ-cancel-< f[y]<f[x]))
+fromℕ-mono-< = toℕ-cancel-< ∘ subst₂ ℕ._<_ (sym (toℕ-fromℕ _)) (sym (toℕ-fromℕ _))
 
-toℕ-cancel-< : ∀ {x y} → toℕ x ℕ.< toℕ y → x < y
-toℕ-cancel-< = subst₂ _<_ (fromℕ-toℕ _) (fromℕ-toℕ _) ∘ fromℕ-mono-<
+toℕ-<-isRawOrderMorphism : IsRawOrderMorphism _≡_ _<_ _≡_ ℕ._<_ toℕ
+toℕ-<-isRawOrderMorphism = record
+  { cong     = cong toℕ
+  ; monotone = toℕ-mono-<
+  }
+
+------------------------------------------------------------------------------
+-- Relational properties of _<_
+
+private
+  module <-Morphism = RawOrderMorphism toℕ-injective toℕ-cancel-< toℕ-<-isRawOrderMorphism
+
+<-irrefl : Irreflexive _≡_ _<_
+<-irrefl = <-Morphism.irrefl ℕₚ.<-irrefl
+
+<-trans : Transitive _<_
+<-trans = <-Morphism.trans ℕₚ.<-trans
+
+<-cmp :  ∀ (x y) → Tri (x < y) (x ≡ y) (x > y)
+<-cmp = <-Morphism.compare ℕₚ.<-cmp
+
+_<?_ : Decidable _<_
+_<?_ = <-Morphism.dec ℕₚ._<?_
+
+------------------------------------------------------------------------------
+-- Structures for _<_
+
+<-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
+<-isStrictPartialOrder = <-Morphism.isStrictPartialOrder ℕₚ.<-isStrictPartialOrder
+
+<-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_
+<-isStrictTotalOrder = <-Morphism.isStrictTotalOrder ℕₚ.<-isStrictTotalOrder
+
+------------------------------------------------------------------------------
+-- Packages for _<_
+
+<-strictPartialOrder : StrictPartialOrder _ _ _
+<-strictPartialOrder = record
+  { isStrictPartialOrder = <-isStrictPartialOrder
+  }
+
+<-strictTotalOrder : StrictTotalOrder _ _ _
+<-strictTotalOrder = record
+  { isStrictTotalOrder =  <-isStrictTotalOrder
+  }
 
 ------------------------------------------------------------------------------
 -- Other properties of _<_
@@ -379,6 +345,32 @@ x≤0⇒x≡0 :  ∀ {x} → x ≤ zero → x ≡ zero
 x≤0⇒x≡0 (inj₂ x≡0) = x≡0
 
 ------------------------------------------------------------------------------
+-- Properties of _<_ and toℕ & fromℕ.
+
+fromℕ-mono-≤ :  fromℕ Preserves ℕ._≤_ ⟶ _≤_
+fromℕ-mono-≤ m≤n  with ℕₚ.m≤n⇒m<n∨m≡n m≤n
+... | inj₁ m<n =  inj₁ (fromℕ-mono-< m<n)
+... | inj₂ m≡n =  inj₂ (cong fromℕ m≡n)
+
+toℕ-mono-≤ :  toℕ Preserves _≤_ ⟶ ℕ._≤_
+toℕ-mono-≤ (inj₁ x<y)  =  ℕₚ.<⇒≤ (toℕ-mono-< x<y)
+toℕ-mono-≤ (inj₂ refl) =  ℕₚ.≤-reflexive refl
+
+toℕ-cancel-≤ : ∀ {x y} → toℕ x ℕ.≤ toℕ y → x ≤ y
+toℕ-cancel-≤ = subst₂ _≤_ (fromℕ-toℕ _) (fromℕ-toℕ _) ∘ fromℕ-mono-≤
+
+fromℕ-cancel-≤ : ∀ {x y} → fromℕ x ≤ fromℕ y → x ℕ.≤ y
+fromℕ-cancel-≤ = subst₂ ℕ._≤_ (toℕ-fromℕ _) (toℕ-fromℕ _) ∘ toℕ-mono-≤
+
+toℕ-≤-isRawOrderMorphism : IsRawOrderMorphism _≡_ _≤_ _≡_ ℕ._≤_ toℕ
+toℕ-≤-isRawOrderMorphism = record
+  { cong     = cong toℕ
+  ; monotone = toℕ-mono-≤
+  }
+
+module ≤-Morphism = RawOrderMorphism toℕ-injective toℕ-cancel-≤ toℕ-≤-isRawOrderMorphism
+
+------------------------------------------------------------------------------
 -- Relational properties of _≤_
 
 ≤-refl :  Reflexive _≤_
@@ -388,7 +380,7 @@ x≤0⇒x≡0 (inj₂ x≡0) = x≡0
 ≤-reflexive {x} {_} refl =  ≤-refl {x}
 
 ≤-trans : Transitive _≤_
-≤-trans = StrictToNonStrict.trans isEquivalence (resp₂ _<_) <-trans
+≤-trans = ≤-Morphism.trans ℕₚ.≤-trans
 
 <-≤-trans :  ∀ {x y z} → x < y → y ≤ z → x < z
 <-≤-trans x<y (inj₁ y<z)  =  <-trans x<y y<z
@@ -399,48 +391,28 @@ x≤0⇒x≡0 (inj₂ x≡0) = x≡0
 ≤-<-trans (inj₂ refl) y<z =  y<z
 
 ≤-antisym : Antisymmetric _≡_ _≤_
-≤-antisym = StrictToNonStrict.antisym isEquivalence <-trans <-irrefl
+≤-antisym = ≤-Morphism.antisym ℕₚ.≤-antisym
 
 ≤-total : Total _≤_
-≤-total x y with <-cmp x y
-... | tri< x<y _  _   = inj₁ (<⇒≤ x<y)
-... | tri≈ _  x≡y _   = inj₁ (≤-reflexive x≡y)
-... | tri> _  _   y<x = inj₂ (<⇒≤ y<x)
+≤-total = ≤-Morphism.total ℕₚ.≤-total
 
 _≤?_ : Decidable _≤_
-x ≤? y with <-cmp x y
-... | tri< x<y _   _   = yes (<⇒≤ x<y)
-... | tri≈ _   x≡y _   = yes (≤-reflexive x≡y)
-... | tri> _   _   y<x = no (<⇒≱ y<x)
+_≤?_ = ≤-Morphism.dec ℕₚ._≤?_
 
 ------------------------------------------------------------------------------
 -- Structures
 
 ≤-isPreorder :  IsPreorder _≡_ _≤_
-≤-isPreorder =  record
-  { isEquivalence = isEquivalence
-  ; reflexive     = ≤-reflexive
-  ; trans         = ≤-trans
-  }
+≤-isPreorder = ≤-Morphism.isPreorder ℕₚ.≤-isPreorder
 
 ≤-isPartialOrder :  IsPartialOrder _≡_ _≤_
-≤-isPartialOrder =  record
-  { isPreorder = ≤-isPreorder
-  ; antisym    = ≤-antisym
-  }
+≤-isPartialOrder = ≤-Morphism.isPartialOrder ℕₚ.≤-isPartialOrder
 
 ≤-isTotalOrder : IsTotalOrder _≡_ _≤_
-≤-isTotalOrder = record
-  { isPartialOrder = ≤-isPartialOrder
-  ; total          = ≤-total
-  }
+≤-isTotalOrder = ≤-Morphism.isTotalOrder ℕₚ.≤-isTotalOrder
 
 ≤-isDecTotalOrder : IsDecTotalOrder _≡_ _≤_
-≤-isDecTotalOrder = record
-  { isTotalOrder = ≤-isTotalOrder
-  ; _≟_          = _≟_
-  ; _≤?_         = _≤?_
-  }
+≤-isDecTotalOrder = ≤-Morphism.isDecTotalOrder ℕₚ.≤-isDecTotalOrder
 
 ------------------------------------------------------------------------------
 -- Packages
@@ -476,24 +448,6 @@ module ≤-Reasoning where
     <-≤-trans ≤-<-trans
     public
     hiding (_≈⟨_⟩_; _≈˘⟨_⟩_)
-
-------------------------------------------------------------------------------
--- Properties of _<_ and toℕ & fromℕ.
-
-fromℕ-mono-≤ :  fromℕ Preserves ℕ._≤_ ⟶ _≤_
-fromℕ-mono-≤ m≤n  with ℕₚ.m≤n⇒m<n∨m≡n m≤n
-... | inj₁ m<n =  inj₁ (fromℕ-mono-< m<n)
-... | inj₂ m≡n =  inj₂ (cong fromℕ m≡n)
-
-toℕ-mono-≤ :  toℕ Preserves _≤_ ⟶ ℕ._≤_
-toℕ-mono-≤ (inj₁ x<y)  =  ℕₚ.<⇒≤ (toℕ-mono-< x<y)
-toℕ-mono-≤ (inj₂ refl) =  ℕₚ.≤-reflexive refl
-
-toℕ-cancel-≤ : ∀ {x y} → toℕ x ℕ.≤ toℕ y → x ≤ y
-toℕ-cancel-≤ = subst₂ _≤_ (fromℕ-toℕ _) (fromℕ-toℕ _) ∘ fromℕ-mono-≤
-
-fromℕ-cancel-≤ : ∀ {x y} → fromℕ x ≤ fromℕ y → x ℕ.≤ y
-fromℕ-cancel-≤ = subst₂ ℕ._≤_ (toℕ-fromℕ _) (toℕ-fromℕ _) ∘ toℕ-mono-≤
 
 ------------------------------------------------------------------------------
 -- Properties of _<ℕ_
