@@ -125,3 +125,21 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} {_≈₁_ : Rel A ℓ₁} {_≈₂_ : Rel
     ; distribʳ      = λ x y z → to (NS.distribʳ x y z)
     ; zeroˡ         = to ∘ NS.zeroˡ
     } where module NS = IsNearSemiring NS
+
+  isSemiringWithoutOne : ∀ {+ * 0#} →
+    IsSemiringWithoutOne _≈₁_ + * 0# → IsSemiringWithoutOne _≈₂_ + * 0#
+  isSemiringWithoutOne SWO = record
+    { +-isCommutativeMonoid = isCommutativeMonoid SWO.+-isCommutativeMonoid
+    ; *-isSemigroup         = isSemigroup SWO.*-isSemigroup
+    ; distrib               = Prod.map (λ f x y z → to (f x y z))
+                                       (λ f x y z → to (f x y z)) SWO.distrib
+    ; zero                  = Prod.map (to ∘_) (to ∘_) SWO.zero
+    } where module SWO = IsSemiringWithoutOne SWO
+
+  isCommutativeSemiringWithoutOne : ∀ {+ * 0#} →
+    IsCommutativeSemiringWithoutOne _≈₁_ + * 0# →
+    IsCommutativeSemiringWithoutOne _≈₂_ + * 0#
+  isCommutativeSemiringWithoutOne CSWO = record
+    { isSemiringWithoutOne = isSemiringWithoutOne CSWO.isSemiringWithoutOne
+    ; *-comm               = λ x y → to (CSWO.*-comm x y)
+    } where module CSWO = IsCommutativeSemiringWithoutOne CSWO
