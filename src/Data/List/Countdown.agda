@@ -12,6 +12,7 @@ open import Relation.Binary
 
 module Data.List.Countdown (D : DecSetoid 0ℓ 0ℓ) where
 
+open import Data.Bool.Base using (true; false)
 open import Data.Empty
 open import Data.Fin using (Fin; zero; suc; punchOut)
 open import Data.Fin.Properties
@@ -46,8 +47,8 @@ private
   first-occurrence : ∀ {xs} x → x ∈ xs → x ∈ xs
   first-occurrence x (here x≈y)           = here x≈y
   first-occurrence x (there {x = y} x∈xs) with x ≟ y
-  ... | yes x≈y = here x≈y
-  ... | no  _   = there $ first-occurrence x x∈xs
+  ... | yes     x≈y = here x≈y
+  ... | dec false _ = there $ first-occurrence x x∈xs
 
   -- The index of the first occurrence of x in xs.
 
@@ -70,10 +71,10 @@ private
     ... | yes x₁≈x = refl
     ... | no  x₁≉x = ⊥-elim (x₁≉x (trans x₁≈x₂ x₂≈x))
     helper (there {x = x} x₁∈xs) (there x₂∈xs) with x₁ ≟ x | x₂ ≟ x
-    ... | yes x₁≈x | yes x₂≈x = refl
-    ... | yes x₁≈x | no  x₂≉x = ⊥-elim (x₂≉x (trans (sym x₁≈x₂) x₁≈x))
-    ... | no  x₁≉x | yes x₂≈x = ⊥-elim (x₁≉x (trans x₁≈x₂ x₂≈x))
-    ... | no  x₁≉x | no  x₂≉x = cong suc $ helper x₁∈xs x₂∈xs
+    ... | yes x₁≈x    | yes x₂≈x    = refl
+    ... | dec false _ | dec false _ = cong suc $ helper x₁∈xs x₂∈xs
+    ... | yes x₁≈x    | no  x₂≉x    = ⊥-elim (x₂≉x (trans (sym x₁≈x₂) x₁≈x))
+    ... | no  x₁≉x    | yes x₂≈x    = ⊥-elim (x₁≉x (trans x₁≈x₂ x₂≈x))
 
   -- first-index is injective in its first argument.
 
@@ -87,14 +88,10 @@ private
     helper (here x₁≈x) (here x₂≈x)             _  = trans x₁≈x (sym x₂≈x)
     helper (here x₁≈x) (there {x = x} x₂∈xs)   _  with x₂ ≟ x
     helper (here x₁≈x) (there {x = x} x₂∈xs)   _  | yes x₂≈x = trans x₁≈x (sym x₂≈x)
-    helper (here x₁≈x) (there {x = x} x₂∈xs)   () | no  x₂≉x
     helper (there {x = x} x₁∈xs) (here x₂≈x)   _  with x₁ ≟ x
     helper (there {x = x} x₁∈xs) (here x₂≈x)   _  | yes x₁≈x = trans x₁≈x (sym x₂≈x)
-    helper (there {x = x} x₁∈xs) (here x₂≈x)   () | no  x₁≉x
     helper (there {x = x} x₁∈xs) (there x₂∈xs) _  with x₁ ≟ x | x₂ ≟ x
     helper (there {x = x} x₁∈xs) (there x₂∈xs) _  | yes x₁≈x | yes x₂≈x = trans x₁≈x (sym x₂≈x)
-    helper (there {x = x} x₁∈xs) (there x₂∈xs) () | yes x₁≈x | no  x₂≉x
-    helper (there {x = x} x₁∈xs) (there x₂∈xs) () | no  x₁≉x | yes x₂≈x
     helper (there {x = x} x₁∈xs) (there x₂∈xs) eq | no  x₁≉x | no  x₂≉x =
       helper x₁∈xs x₂∈xs (suc-injective eq)
 
@@ -190,11 +187,7 @@ insert {counted} {n} counted⊕1+n x x∉counted =
   inj : ∀ {y z i} → kind′ y ≡ inj₂ i → kind′ z ≡ inj₂ i → y ≈ z
   inj {y} {z} eq₁ eq₂ with y ≟ x | z ≟ x | kind x | kind y | kind z
                          | helper x y | helper x z | helper y z
-  inj ()  _   | yes _ | _     | _              | _      | _      | _ | _ | _
-  inj _   ()  | _     | yes _ | _              | _      | _      | _ | _ | _
   inj _   _   | no  _ | no  _ | inj₁ x∈counted | _      | _      | _ | _ | _ = ⊥-elim (x∉counted x∈counted)
-  inj ()  _   | no  _ | no  _ | inj₂ _         | inj₁ _ | _      | _ | _ | _
-  inj _   ()  | no  _ | no  _ | inj₂ _         | _      | inj₁ _ | _ | _ | _
   inj eq₁ eq₂ | no  _ | no  _ | inj₂ i         | inj₂ _ | inj₂ _ | _ | _ | hlp =
     hlp _ refl refl $
       punchOut-injective {i = i} _ _ $

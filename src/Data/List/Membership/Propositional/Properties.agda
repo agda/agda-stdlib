@@ -10,7 +10,7 @@ module Data.List.Membership.Propositional.Properties where
 
 open import Algebra.FunctionProperties using (Op₂; Selective)
 open import Category.Monad using (RawMonad)
-open import Data.Bool.Base using (Bool; false; true; T)
+open import Data.Bool.Base using (Bool; false; true; T; if_then_else_)
 open import Data.Fin using (Fin)
 open import Data.List as List
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
@@ -39,7 +39,7 @@ open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; trans; cong; subst; →-to-⟶; _≗_)
 import Relation.Binary.Properties.DecTotalOrder as DTOProperties
 open import Relation.Unary using (_⟨×⟩_; Decidable)
-open import Relation.Nullary using (¬_; Dec; yes; no)
+open import Relation.Nullary using (¬_; Dec; dec; isYes; yes; no)
 open import Relation.Nullary.Negation
 
 private
@@ -273,9 +273,9 @@ finite inj (x ∷ xs) fᵢ∈x∷xs = excluded-middle helper
   helper (yes (i , fᵢ≡x)) = finite f′-inj xs f′ⱼ∈xs
     where
     f′ : ℕ → _
-    f′ j with i ≤? j
-    ... | yes i≤j = f (suc j)
-    ... | no  i≰j = f j
+    f′ j = if isYes (i ≤? j)
+      then f (suc j)
+      else f j
 
     ∈-if-not-i : ∀ {j} → i ≢ j → f j ∈ xs
     ∈-if-not-i i≢j = not-x (i≢j ∘ f-inj ∘ trans fᵢ≡x ∘ sym)
@@ -290,10 +290,10 @@ finite inj (x ∷ xs) fᵢ∈x∷xs = excluded-middle helper
 
     f′-injective′ : Injective {B = P.setoid _} (→-to-⟶ f′)
     f′-injective′ {j} {k} eq with i ≤? j | i ≤? k
-    ... | yes _   | yes _   = P.cong pred (f-inj eq)
-    ... | yes i≤j | no  i≰k = contradiction (f-inj eq) (lemma i≤j i≰k)
-    ... | no  i≰j | yes i≤k = contradiction (f-inj eq) (lemma i≤k i≰j ∘ sym)
-    ... | no  _   | no  _   = f-inj eq
+    ... | dec true  _ | dec true  _ = P.cong pred (f-inj eq)
+    ... | dec false _ | dec false _ = f-inj eq
+    ... | yes i≤j     | no  i≰k     = contradiction (f-inj eq) (lemma i≤j i≰k)
+    ... | no  i≰j     | yes i≤k     = contradiction (f-inj eq) (lemma i≤k i≰j ∘ sym)
 
     f′-inj = record
       { to        = →-to-⟶ f′

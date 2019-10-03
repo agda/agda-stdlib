@@ -495,16 +495,16 @@ module _ {P : A → Set p} (P? : Decidable P) where
   all-filter : ∀ xs → All P (filter P? xs)
   all-filter []       = []
   all-filter (x ∷ xs) with P? x
-  ... | yes Px = Px ∷ all-filter xs
-  ... | no  _  = all-filter xs
+  ... | yes      Px = Px ∷ all-filter xs
+  ... | dec false _ = all-filter xs
 
 module _ {P : A → Set p} {Q : A → Set q} (P? : Decidable P) where
 
   filter⁺ : ∀ {xs} → All Q xs → All Q (filter P? xs)
   filter⁺ {xs = _}     [] = []
   filter⁺ {xs = x ∷ _} (Qx ∷ Qxs) with P? x
-  ... | no  _ = filter⁺ Qxs
-  ... | yes _ = Qx ∷ filter⁺ Qxs
+  ... | dec false _ = filter⁺ Qxs
+  ... | dec true  _ = Qx ∷ filter⁺ Qxs
 
 ------------------------------------------------------------------------
 -- zipWith

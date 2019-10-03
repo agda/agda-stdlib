@@ -8,6 +8,7 @@
 
 module Data.List.Relation.Unary.AllPairs.Properties where
 
+open import Data.Bool.Base using (true; false)
 open import Data.List hiding (any)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 import Data.List.Relation.Unary.All.Properties as All
@@ -20,7 +21,7 @@ open import Function using (_∘_; flip)
 open import Relation.Binary using (Rel; DecSetoid)
 open import Relation.Binary.PropositionalEquality using (_≢_)
 open import Relation.Unary using (Pred; Decidable)
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary using (isYes)
 
 ------------------------------------------------------------------------
 -- Introduction (⁺) and elimination (⁻) rules for list operations
@@ -120,6 +121,6 @@ module _ {a ℓ p} {A : Set a} {R : Rel A ℓ}
 
   filter⁺ : ∀ {xs} → AllPairs R xs → AllPairs R (filter P? xs)
   filter⁺ {_}      []           = []
-  filter⁺ {x ∷ xs} (x∉xs ∷ xs!) with P? x
-  ... | no  _ = filter⁺ xs!
-  ... | yes _ = All.filter⁺ P? x∉xs ∷ filter⁺ xs!
+  filter⁺ {x ∷ xs} (x∉xs ∷ xs!) with isYes (P? x)
+  ... | false = filter⁺ xs!
+  ... | true  = All.filter⁺ P? x∉xs ∷ filter⁺ xs!

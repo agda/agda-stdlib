@@ -10,6 +10,7 @@ module Data.List.Relation.Binary.Pointwise where
 
 open import Function.Core
 open import Function.Inverse using (Inverse)
+open import Data.Bool.Base using (true; false)
 open import Data.Product hiding (map)
 open import Data.List.Base as List hiding (map; head; tail)
 open import Data.List.Properties using (≡-dec; length-++)
@@ -284,10 +285,10 @@ module _ {R : REL A B ℓ} {P : Pred A p} {Q : Pred B q}
   filter⁺ : ∀ {as bs} → Pointwise R as bs → Pointwise R (filter P? as) (filter Q? bs)
   filter⁺ []       = []
   filter⁺ {a ∷ _} {b ∷ _} (r ∷ rs) with P? a | Q? b
-  ... | yes p | yes q = r ∷ filter⁺ rs
-  ... | yes p | no ¬q = contradiction (P⇒Q r p) ¬q
-  ... | no ¬p | yes q = contradiction (Q⇒P r q) ¬p
-  ... | no ¬p | no ¬q = filter⁺ rs
+  ... | dec true  _ | dec true  _ = r ∷ filter⁺ rs
+  ... | dec false _ | dec false _ = filter⁺ rs
+  ... | yes p       | no ¬q       = contradiction (P⇒Q r p) ¬q
+  ... | no ¬p       | yes q       = contradiction (Q⇒P r q) ¬p
 
 ------------------------------------------------------------------------
 -- replicate
