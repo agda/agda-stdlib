@@ -4,6 +4,14 @@
 -- Vectors
 ------------------------------------------------------------------------
 
+-- This implementation is designed for reasoning about dynamic
+-- vectors which may increase or decrease in size.
+
+-- See `Data.Vec.Functional` for an alternative implementation as
+-- functions from finite sets, which is more suitable for reasoning
+-- about fixed sized vectors and for when ease of retrevial is
+-- important.
+
 {-# OPTIONS --without-K --safe #-}
 
 module Data.Vec where

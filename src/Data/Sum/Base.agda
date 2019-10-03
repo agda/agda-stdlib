@@ -41,6 +41,12 @@ data _⊎_ (A : Set a) (B : Set b) : Set (a ⊔ b) where
 [_,_]′ : (A → C) → (B → C) → (A ⊎ B → C)
 [_,_]′ = [_,_]
 
+fromInj₁ : (B → A) → A ⊎ B → A
+fromInj₁ = [ id ,_]′
+
+fromInj₂ : (A → B) → A ⊎ B → B
+fromInj₂ = [_, id ]′
+
 swap : A ⊎ B → B ⊎ A
 swap (inj₁ x) = inj₂ x
 swap (inj₂ x) = inj₁ x

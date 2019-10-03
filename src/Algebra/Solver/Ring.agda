@@ -19,7 +19,7 @@
 
 open import Algebra
 open import Algebra.Solver.Ring.AlmostCommutativeRing
-open import Relation.Binary.Core using (WeaklyDecidable)
+open import Relation.Binary.Definitions using (WeaklyDecidable)
 
 module Algebra.Solver.Ring
   {r₁ r₂ r₃}

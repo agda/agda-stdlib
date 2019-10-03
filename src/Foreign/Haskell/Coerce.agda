@@ -39,9 +39,11 @@ import IO.Primitive    as STD
 import Data.List.Base  as STD
 import Data.Maybe.Base as STD
 import Data.Product    as STD
+import Data.Sum        as STD
 
-import Foreign.Haskell.Maybe as FFI
-import Foreign.Haskell.Pair  as FFI
+import Foreign.Haskell.Maybe  as FFI
+import Foreign.Haskell.Pair   as FFI
+import Foreign.Haskell.Either as FFI
 
 private
   variable
@@ -120,6 +122,14 @@ instance
 
   pair-fromFFI : Coercible₂ a b c d FFI.Pair STD._×_
   pair-fromFFI = TrustMe
+
+-- Sum
+
+  either-toFFI : Coercible₂ a b c d STD._⊎_ FFI.Either
+  either-toFFI = TrustMe
+
+  either-fromFFI : Coercible₂ a b c d FFI.Either STD._⊎_
+  either-fromFFI = TrustMe
 
 -- We follow up with purely structural rules for builtin data types which
 -- already have known low-level representations.

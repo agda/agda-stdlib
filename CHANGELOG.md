@@ -122,6 +122,11 @@ match the one for `Vec`:
   ```
 
 
+#### Other
+
+* The proofs `isPreorder` and `preorder` have been moved from the `Setoid`
+  record to the module `Relation.Binary.Properties.Setoid`.
+
 New modules
 -----------
 The following new modules have been added to the library:
@@ -135,14 +140,22 @@ The following new modules have been added to the library:
 
   Data.AVL.Map
 
-  Data.Bin
-  Data.Bin.Base
-  Data.Bin.Induction
-  Data.Bin.Ordering
-  Data.Bin.Properties
+  Data.Nat.Binary
+  Data.Nat.Binary.Base
+  Data.Nat.Binary.Induction
+  Data.Nat.Binary.Properties
 
   Data.Integer.GCD
   Data.Integer.LCM
+
+  Data.List.Fresh
+  Data.List.Fresh.Properties
+  Data.List.Fresh.Relation.Unary.All
+  Data.List.Fresh.Relation.Unary.All.Properties
+  Data.List.Fresh.Relation.Unary.Any
+  Data.List.Fresh.Relation.Unary.Any.Properties
+  Data.List.Fresh.Membership
+  Data.List.Fresh.Membership.Properties
 
   Data.List.Kleene
   Data.List.Kleene.AsList
@@ -153,14 +166,21 @@ The following new modules have been added to the library:
   Data.Rational.Unnormalised
   Data.Rational.Unnormalised.Properties
 
+
   Data.Unit.Polymorphic
   Data.Unit.Polymorphic.Properties
+
+  Data.Vec.Functional
+  Data.Vec.Functional.Relation.Binary.Pointwise
+  Data.Vec.Functional.Relation.Unary.All
+  Data.Vec.Functional.Relation.Unary.Any
 
   Function.Definitions
   Function.Packages
   Function.Structures
 
   Foreign.Haskell.Coerce
+  Foreign.Haskell.Either
 
   Relation.Binary.Properties.Setoid
   Relation.Binary.Reasoning.Base.Partial
@@ -204,9 +224,14 @@ attached to all deprecated names to discourage their use.
   strictPartialOrder ↦ <-strictPartialOrder
   ```
 
-* In `Relation.Binary.Properties.DecTotalOrder`
+* In `Relation.Binary.Properties.DecTotalOrder`:
   ```agda
-  strictTotalOrder = <-strictTotalOrder
+  strictTotalOrder ↦ <-strictTotalOrder
+  ```
+
+* In `Relation.Nullary.Decidable.Core`:
+  ```agda
+  ⌊_⌋ ↦ isYes
   ```
 
 Other minor additions
@@ -223,6 +248,10 @@ Other minor additions
   ```agda
   *-suc : m * sucℤ n ≡ m + m * n
   ```
+
+* Added to `Data.List` the reverse-append function `_ʳ++_`
+  which is `reverseAcc` with the intuitive argument order.
+  Generalized the properties of `reverse` to `_ʳ++_`.
 
 * Added new definitions to `Data.List.Relation.Unary.All`:
   ```agda
@@ -280,17 +309,44 @@ Other minor additions
 
 * Added new proofs to `Data.Nat.Properties`:
   ```agda
-  even≢odd     : ∀ m n → 2 * m ≢ suc (2 * n)
-  0≢1+n        : 0 ≢ suc n
-  n<1+n        : n < suc n
-  0<1+n        : 0 < suc n
-  m<m+n        : n > 0 → m < m + n
-  m≤n⇒m<n∨m≡n  : m ≤ n → m < n ⊎ m ≡ n
+  0≢1+n          : 0 ≢ suc n
+  1+n≢n          : suc n ≢ n
+  even≢odd       : 2 * m ≢ suc (2 * n)
+
+  0<1+n          : 0 < suc n
+  n<1+n          : n < suc n
+  m<m+n          : n > 0 → m < m + n
+  m<n⇒n≢0        : m < n → n ≢ 0
+  m<n⇒m≤1+n      : m < n → m ≤ suc n
+  m≤n⇒m<n∨m≡n    : m ≤ n → m < n ⊎ m ≡ n
+  ∀[m≤n⇒m≢o]⇒o<n : (∀ {m} → m ≤ n → m ≢ o) → n < o
+  ∀[m<n⇒m≢o]⇒o≤n : (∀ {m} → m < n → m ≢ o) → n ≤ o
 
   +-rawMagma     : RawMagma 0ℓ 0ℓ
   *-rawMagma     : RawMagma 0ℓ 0ℓ
   +-0-rawMonoid  : RawMonoid 0ℓ 0ℓ
   *-1-rawMonoid  : RawMonoid 0ℓ 0ℓ
+
+  1+m≢m∸n        : suc m ≢ m ∸ n
+  ∸-monoʳ-<      : o < n → n ≤ m → m ∸ n < m ∸ o
+  ∸-cancelʳ-≤    : m ≤ o → o ∸ n ≤ o ∸ m → m ≤ n
+  ∸-cancelʳ-<    : o ∸ m < o ∸ n → n < m
+  ∸-cancelˡ-≡    : n ≤ m → o ≤ m → m ∸ n ≡ m ∸ o → n ≡ o
+  m<n⇒0<n∸m      : m < n → 0 < n ∸ m
+  m>n⇒m∸n≢0      : m > n → m ∸ n ≢ 0
+
+  ∣-∣-identityˡ  : LeftIdentity 0 ∣_-_∣
+  ∣-∣-identityʳ  : RightIdentity 0 ∣_-_∣
+  ∣-∣-identity   : Identity 0 ∣_-_∣
+  m≤n+∣n-m∣      : m ≤ n + ∣ n - m ∣
+  m≤n+∣m-n∣      : m ≤ n + ∣ m - n ∣
+  m≤∣m-n∣+n      : m ≤ ∣ m - n ∣ + n
+  ```
+
+* Added new functions to `Data.Sum.Base`:
+  ```agda
+  fromInj₁ : (B → A) → A ⊎ B → A
+  fromInj₂ : (A → B) → A ⊎ B → B
   ```
 
 * Added new proofs to `Relation.Binary.PropositionalEquality`:
@@ -305,7 +361,7 @@ Other minor additions
   levelOfTerm : ∀ {a} {A : Set a} → A → Level
   ```
 
-* Added new definition to `Relation.Binary.Core`:
+* Added new definition to `Relation.Binary.Structures`:
   ```agda
   record IsPartialEquivalence {A : Set a} (_≈_ : Rel A ℓ) : Set (a ⊔ ℓ) where
     field
@@ -313,13 +369,18 @@ Other minor additions
       trans : Transitive _≈_
   ```
 
-* Added new definition to `Relation.Binary`:
+* Added new definition to `Relation.Binary.Packages`:
   ```agda
   record PartialSetoid a ℓ : Set (suc (a ⊔ ℓ)) where
     field
       Carrier         : Set a
       _≈_             : Rel Carrier ℓ
       isPartialEquivalence : IsPartialEquivalence _≈_
+  ```
+
+* Added new proofs to `Relation.Binary.PropositionalEquality`:
+  ```agda
+  isDecEquivalence : Decidable _≡_ → IsDecEquivalence _≡_
   ```
 
 * Added new proofs to `Relation.Binary.Construct.NonStrictToStrict`:
@@ -359,6 +420,24 @@ Other minor additions
 * Added new proof to `Relation.Binary.Properties.DecTotalOrder`:
   ```agda
   ≮⇒≥ : ¬ (x < y) → y ≤ x
+  ```
+
+* Added new definitions to `Relation.Nary`:
+  ```agda
+  apply⊤ₙ  : Π[ R ] → (vs : Product⊤ n as) → uncurry⊤ₙ n R vs
+  applyₙ   : Π[ R ] → (vs : Product n as) → uncurry⊤ₙ n R (toProduct⊤ n vs)
+  iapply⊤ₙ : ∀[ R ] → {vs : Product⊤ n as} → uncurry⊤ₙ n R vs
+  iapplyₙ  : ∀[ R ] → {vs : Product n as} → uncurry⊤ₙ n R (toProduct⊤ n vs)
+
+  Decidable   : as ⇉ Set r → Set (r ⊔ ⨆ n ls)
+  ⌊_⌋         : Decidable R → as ⇉ Set r
+  fromWitness : (R : as ⇉ Set r) (R? : Decidable R) → ∀[ ⌊ R? ⌋ ⇒ R ]
+  toWitness   : (R : as ⇉ Set r) (R? : Decidable R) → ∀[ R ⇒ ⌊ R? ⌋ ]
+  ```
+
+* Added new definitions to `Relation.Unary`:
+  ```agda
+  ⌊_⌋ : {P : Pred A ℓ} → Decidable P → Pred A ℓ
   ```
 
 * Re-exported the maximum function for sizes in `Size`

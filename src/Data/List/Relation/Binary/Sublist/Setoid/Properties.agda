@@ -195,6 +195,12 @@ module _ {as bs : List A} where
                 reverseAcc cs as ⊆ reverseAcc ds bs
   reverseAcc⁺ = HeteroProperties.reverseAcc⁺
 
+  ʳ++⁺ : ∀ {cs ds} →
+         as ⊆ bs →
+         cs ⊆ ds →
+         as ʳ++ cs ⊆ bs ʳ++ ds
+  ʳ++⁺ = reverseAcc⁺
+
   reverse⁺ : as ⊆ bs → reverse as ⊆ reverse bs
   reverse⁺ = HeteroProperties.reverse⁺
 

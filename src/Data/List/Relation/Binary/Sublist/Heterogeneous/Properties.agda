@@ -292,6 +292,12 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   reverseAcc⁺ (y ∷ʳ abs) cds = reverseAcc⁺ abs (y ∷ʳ cds)
   reverseAcc⁺ (r ∷ abs)  cds = reverseAcc⁺ abs (r ∷ cds)
 
+  ʳ++⁺ : ∀ {as bs cs ds} →
+         Sublist R as bs →
+         Sublist R cs ds →
+         Sublist R (as ʳ++ cs) (bs ʳ++ ds)
+  ʳ++⁺ = reverseAcc⁺
+
   reverse⁺ : ∀ {as bs} → Sublist R as bs → Sublist R (reverse as) (reverse bs)
   reverse⁺ rs = reverseAcc⁺ rs []
 

@@ -11,6 +11,7 @@ module Axiom.UniquenessOfIdentityProofs where
 open import Data.Empty
 open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Binary.Core
+open import Relation.Binary.Definitions
 open import Relation.Binary.PropositionalEquality.Core
 
 ------------------------------------------------------------------------

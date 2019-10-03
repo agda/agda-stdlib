@@ -91,7 +91,7 @@ infix 4 _∈_
 
 _∈_ : ∀ {s} → Label → Signature s → Set
 ℓ ∈ Sig =
-  foldr (λ ℓ′ → if ⌊ ℓ ≟ ℓ′ ⌋ then (λ _ → ⊤) else id) ⊥ (labels Sig)
+  foldr (λ ℓ′ → if isYes (ℓ ≟ ℓ′) then (λ _ → ⊤) else id) ⊥ (labels Sig)
 
 ------------------------------------------------------------------------
 -- Projections

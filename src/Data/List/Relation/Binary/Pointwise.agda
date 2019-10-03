@@ -243,6 +243,12 @@ module _ {R : REL A B ℓ} where
   reverseAcc⁺ rs′ []       = rs′
   reverseAcc⁺ rs′ (r ∷ rs) = reverseAcc⁺ (r ∷ rs′) rs
 
+  ʳ++⁺ : ∀ {as bs as′ bs′} →
+           Pointwise R as bs →
+           Pointwise R as′ bs′ →
+           Pointwise R (as ʳ++ as′) (bs ʳ++ bs′)
+  ʳ++⁺ rs rs′ = reverseAcc⁺ rs′ rs
+
   reverse⁺ : ∀ {as bs} → Pointwise R as bs → Pointwise R (reverse as) (reverse bs)
   reverse⁺ = reverseAcc⁺ []
 
