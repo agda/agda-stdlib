@@ -9,7 +9,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Data.Bool.Base using (if_then_else_)
+open import Data.Bool.Base using (Bool; true; false; if_then_else_)
 open import Data.Empty
 open import Data.List.Base
 open import Data.Product hiding (proj₁; proj₂)
@@ -102,12 +102,12 @@ _∈_ : ∀ {s} → Label → Signature s → Set
 Restrict : ∀ {s} (Sig : Signature s) (ℓ : Label) → ℓ ∈ Sig →
            Signature s
 Restrict ∅              ℓ ()
-Restrict (Sig , ℓ′ ∶ A) ℓ ℓ∈ with ℓ ≟ ℓ′
-... | yes _ = Sig
-... | no  _ = Restrict Sig ℓ ℓ∈
-Restrict (Sig , ℓ′ ≔ a) ℓ ℓ∈ with ℓ ≟ ℓ′
-... | yes _ = Sig
-... | no  _ = Restrict Sig ℓ ℓ∈
+Restrict (Sig , ℓ′ ∶ A) ℓ ℓ∈ with isYes (ℓ ≟ ℓ′)
+... | true  = Sig
+... | false = Restrict Sig ℓ ℓ∈
+Restrict (Sig , ℓ′ ≔ a) ℓ ℓ∈ with isYes (ℓ ≟ ℓ′)
+... | true  = Sig
+... | false = Restrict Sig ℓ ℓ∈
 
 Restricted : ∀ {s} (Sig : Signature s) (ℓ : Label) → ℓ ∈ Sig → Set s
 Restricted Sig ℓ ℓ∈ = Record (Restrict Sig ℓ ℓ∈)
@@ -115,12 +115,12 @@ Restricted Sig ℓ ℓ∈ = Record (Restrict Sig ℓ ℓ∈)
 Proj : ∀ {s} (Sig : Signature s) (ℓ : Label) {ℓ∈ : ℓ ∈ Sig} →
        Restricted Sig ℓ ℓ∈ → Set s
 Proj ∅              ℓ {}
-Proj (Sig , ℓ′ ∶ A) ℓ {ℓ∈} with ℓ ≟ ℓ′
-... | yes _ = A
-... | no  _ = Proj Sig ℓ {ℓ∈}
-Proj (_,_≔_ Sig ℓ′ {A = A} a) ℓ {ℓ∈} with ℓ ≟ ℓ′
-... | yes _ = A
-... | no  _ = Proj Sig ℓ {ℓ∈}
+Proj (Sig , ℓ′ ∶ A) ℓ {ℓ∈} with isYes (ℓ ≟ ℓ′)
+... | true  = A
+... | false = Proj Sig ℓ {ℓ∈}
+Proj (_,_≔_ Sig ℓ′ {A = A} a) ℓ {ℓ∈} with isYes (ℓ ≟ ℓ′)
+... | true  = A
+... | false = Proj Sig ℓ {ℓ∈}
 
 -- Record restriction and projection.
 
@@ -129,12 +129,12 @@ infixl 5 _∣_
 _∣_ : ∀ {s} {Sig : Signature s} → Record Sig →
       (ℓ : Label) {ℓ∈ : ℓ ∈ Sig} → Restricted Sig ℓ ℓ∈
 _∣_ {Sig = ∅}            r       ℓ {}
-_∣_ {Sig = Sig , ℓ′ ∶ A} (rec r) ℓ {ℓ∈} with ℓ ≟ ℓ′
-... | yes _ = Σ.proj₁ r
-... | no  _ = _∣_ (Σ.proj₁ r) ℓ {ℓ∈}
-_∣_ {Sig = Sig , ℓ′ ≔ a} (rec r) ℓ {ℓ∈} with ℓ ≟ ℓ′
-... | yes _ = Manifest-Σ.proj₁ r
-... | no  _ = _∣_ (Manifest-Σ.proj₁ r) ℓ {ℓ∈}
+_∣_ {Sig = Sig , ℓ′ ∶ A} (rec r) ℓ {ℓ∈} with isYes (ℓ ≟ ℓ′)
+... | true  = Σ.proj₁ r
+... | false = _∣_ (Σ.proj₁ r) ℓ {ℓ∈}
+_∣_ {Sig = Sig , ℓ′ ≔ a} (rec r) ℓ {ℓ∈} with isYes (ℓ ≟ ℓ′)
+... | true  = Manifest-Σ.proj₁ r
+... | false = _∣_ (Manifest-Σ.proj₁ r) ℓ {ℓ∈}
 
 infixl 5 _·_
 
@@ -142,12 +142,12 @@ _·_ : ∀ {s} {Sig : Signature s} (r : Record Sig)
       (ℓ : Label) {ℓ∈ : ℓ ∈ Sig} →
       Proj Sig ℓ {ℓ∈} (r ∣ ℓ)
 _·_ {Sig = ∅}            r       ℓ {}
-_·_ {Sig = Sig , ℓ′ ∶ A} (rec r) ℓ {ℓ∈} with ℓ ≟ ℓ′
-... | yes _ = Σ.proj₂ r
-... | no  _ = _·_ (Σ.proj₁ r) ℓ {ℓ∈}
-_·_ {Sig = Sig , ℓ′ ≔ a} (rec r) ℓ {ℓ∈} with ℓ ≟ ℓ′
-... | yes _ = Manifest-Σ.proj₂ r
-... | no  _ = _·_ (Manifest-Σ.proj₁ r) ℓ {ℓ∈}
+_·_ {Sig = Sig , ℓ′ ∶ A} (rec r) ℓ {ℓ∈} with isYes (ℓ ≟ ℓ′)
+... | true  = Σ.proj₂ r
+... | false = _·_ (Σ.proj₁ r) ℓ {ℓ∈}
+_·_ {Sig = Sig , ℓ′ ≔ a} (rec r) ℓ {ℓ∈} with isYes (ℓ ≟ ℓ′)
+... | true  = Manifest-Σ.proj₂ r
+... | false = _·_ (Manifest-Σ.proj₁ r) ℓ {ℓ∈}
 
 ------------------------------------------------------------------------
 -- With
@@ -161,20 +161,20 @@ mutual
   _With_≔_ : ∀ {s} (Sig : Signature s) (ℓ : Label) {ℓ∈ : ℓ ∈ Sig} →
              ((r : Restricted Sig ℓ ℓ∈) → Proj Sig ℓ r) → Signature s
   _With_≔_ ∅ ℓ {} a
-  _With_≔_ (Sig , ℓ′ ∶ A)   ℓ {ℓ∈} a with ℓ ≟ ℓ′
-  ... | yes _ = Sig                   , ℓ′ ≔ a
-  ... | no  _ = _With_≔_ Sig ℓ {ℓ∈} a , ℓ′ ∶ A ∘ drop-With
-  _With_≔_  (Sig , ℓ′ ≔ a′) ℓ {ℓ∈} a with ℓ ≟ ℓ′
-  ... | yes _ = Sig                   , ℓ′ ≔ a
-  ... | no  _ = _With_≔_ Sig ℓ {ℓ∈} a , ℓ′ ≔ a′ ∘ drop-With
+  _With_≔_ (Sig , ℓ′ ∶ A)   ℓ {ℓ∈} a with isYes (ℓ ≟ ℓ′)
+  ... | true  = Sig                   , ℓ′ ≔ a
+  ... | false = _With_≔_ Sig ℓ {ℓ∈} a , ℓ′ ∶ A ∘ drop-With
+  _With_≔_  (Sig , ℓ′ ≔ a′) ℓ {ℓ∈} a with isYes (ℓ ≟ ℓ′)
+  ... | true  = Sig                   , ℓ′ ≔ a
+  ... | false = _With_≔_ Sig ℓ {ℓ∈} a , ℓ′ ≔ a′ ∘ drop-With
 
   drop-With : ∀ {s} {Sig : Signature s} {ℓ : Label} {ℓ∈ : ℓ ∈ Sig}
               {a : (r : Restricted Sig ℓ ℓ∈) → Proj Sig ℓ r} →
               Record (_With_≔_ Sig ℓ {ℓ∈} a) → Record Sig
   drop-With {Sig = ∅} {ℓ∈ = ()}      r
-  drop-With {Sig = Sig , ℓ′ ∶ A} {ℓ} (rec r) with ℓ ≟ ℓ′
-  ... | yes _ = rec (Manifest-Σ.proj₁ r , Manifest-Σ.proj₂ r)
-  ... | no  _ = rec (drop-With (Σ.proj₁ r) , Σ.proj₂ r)
-  drop-With {Sig = Sig , ℓ′ ≔ a} {ℓ} (rec r) with ℓ ≟ ℓ′
-  ... | yes _ = rec (Manifest-Σ.proj₁ r ,)
-  ... | no  _ = rec (drop-With (Manifest-Σ.proj₁ r) ,)
+  drop-With {Sig = Sig , ℓ′ ∶ A} {ℓ} (rec r) with isYes (ℓ ≟ ℓ′)
+  ... | true  = rec (Manifest-Σ.proj₁ r , Manifest-Σ.proj₂ r)
+  ... | false = rec (drop-With (Σ.proj₁ r) , Σ.proj₂ r)
+  drop-With {Sig = Sig , ℓ′ ≔ a} {ℓ} (rec r) with isYes (ℓ ≟ ℓ′)
+  ... | true  = rec (Manifest-Σ.proj₁ r ,)
+  ... | false = rec (drop-With (Manifest-Σ.proj₁ r) ,)

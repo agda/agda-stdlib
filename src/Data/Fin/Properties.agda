@@ -12,6 +12,7 @@ module Data.Fin.Properties where
 open import Algebra.FunctionProperties using (Involutive)
 open import Category.Applicative using (RawApplicative)
 open import Category.Functor using (RawFunctor)
+open import Data.Bool.Base using (Bool; true; false; _∧_)
 open import Data.Empty using (⊥-elim)
 open import Data.Fin.Base
 open import Data.Nat as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_)
@@ -22,17 +23,19 @@ open import Data.Nat as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_)
   )
 import Data.Nat.Properties as ℕₚ
 open import Data.Unit using (tt)
-open import Data.Product using (∃; ∃₂; ∄; _×_; _,_; map; proj₁)
-open import Data.Sum using (_⊎_; inj₁; inj₂)
-open import Function.Core using (_∘_; id)
+open import Data.Product using (∃; ∃₂; ∄; _×_; _,_; map; proj₁; uncurry; <_,_>)
+open import Data.Sum using (_⊎_; inj₁; inj₂; [_,_])
+open import Function.Core using (_∘_; id; _$_; const)
 open import Function.Injection using (_↣_)
 open import Relation.Binary as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; trans; cong; subst; module ≡-Reasoning)
-open import Relation.Nullary using (¬_)
-import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Decidable as Dec using (map′)
 open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Nullary using (Dec; yes; no; ¬_)
+open import Relation.Nullary.Reflects using (invert)
+open import Relation.Nullary using (Dec; dec; isYes; yes; no; ¬_)
+open import Relation.Nullary.Product using (_×-dec_)
+open import Relation.Nullary.Sum using (_⊎-dec_)
 open import Relation.Unary as U using (U; Pred; Decidable; _⊆_)
 open import Relation.Unary.Properties using (U?)
 
@@ -54,9 +57,7 @@ _≟_ : ∀ {n} → B.Decidable {A = Fin n} _≡_
 zero  ≟ zero  = yes refl
 zero  ≟ suc y = no λ()
 suc x ≟ zero  = no λ()
-suc x ≟ suc y with x ≟ y
-... | yes x≡y = yes (cong suc x≡y)
-... | no  x≢y = no  (x≢y ∘ suc-injective)
+suc x ≟ suc y = map′ (cong suc) suc-injective (x ≟ y)
 
 preorder : ℕ → Preorder _ _ _
 preorder n = P.preorder (Fin n)
@@ -501,29 +502,44 @@ punchOut-punchIn (suc i) {suc j} = cong suc (begin
 decFinSubset : ∀ {n p q} {P : Pred (Fin n) p} {Q : Pred (Fin n) q} →
                Decidable Q → (∀ {f} → Q f → Dec (P f)) → Dec (Q ⊆ P)
 decFinSubset {zero}  {_}     {_} _  _  = yes λ{}
-decFinSubset {suc n} {P = P} {Q} Q? P? with decFinSubset (Q? ∘ suc) P?
-... | no ¬q⟶p = no (λ q⟶p → ¬q⟶p (q⟶p))
-... | yes q⟶p with Q? zero
-...   | no ¬q₀ = yes (∀-cons {P = Q U.⇒ P} (⊥-elim ∘ ¬q₀) (λ _ → q⟶p) _)
-...   | yes q₀ with P? q₀
-...     | no ¬p₀ = no (λ q⟶p → ¬p₀ (q⟶p q₀))
-...     | yes p₀ = yes (∀-cons {P = Q U.⇒ P} (λ _ → p₀) (λ _ → q⟶p) _)
+decFinSubset {suc n} {P = P} {Q} Q? P? with Q? zero
+... | dec false r =
+  map′ (λ qs→ps {f} → ∀-cons {P = λ f → Q f → P f}
+                             (⊥-elim ∘ invert r)
+                             (λ f → qs→ps {f})
+                             f)
+       (λ q→p {f} qs → q→p {suc f} qs)
+       (decFinSubset (Q? ∘ suc) P?)
+... | dec true  r =
+  map′ (uncurry λ p₀ qs→ps {f} → ∀-cons {P = λ f → Q f → P f}
+                                        (const p₀)
+                                        (λ f → qs→ps {f})
+                                        f)
+       < _$ (invert r) , (λ q→p {f} → q→p {suc f}) >
+       (P? {zero} (invert r) ×-dec decFinSubset (Q? ∘ suc) P?)
 
 any? : ∀ {n p} {P : Fin n → Set p} → Decidable P → Dec (∃ P)
-any? {zero}  {_} P? = no λ { (() , _) }
-any? {suc n} {P} P? with P? zero | any? (P? ∘ suc)
-... | yes P₀ | _              = yes (_ , P₀)
-... | no  _  | yes (_ , P₁₊ᵢ) = yes (_ , P₁₊ᵢ)
-... | no ¬P₀ | no ¬P₁₊ᵢ       = no λ
-  { (zero  , P₀)   → ¬P₀ P₀
-  ; (suc f , P₁₊ᵢ) → ¬P₁₊ᵢ (_ , P₁₊ᵢ)
-  }
+any? {zero}  {P = _} P? = no λ { (() , _) }
+any? {suc n} {P = P} P? =
+  map′ [ zero ,_ , map suc id ] helper (P? zero ⊎-dec any? (P? ∘ suc))
+  where
+  helper : ∃ P → P zero ⊎ ∃ (P ∘ suc)
+  helper (zero  , P₀) = inj₁ P₀
+  helper (suc f , P₁₊) = inj₂ (f , P₁₊)
 
 all? : ∀ {n p} {P : Pred (Fin n) p} →
        Decidable P → Dec (∀ f → P f)
-all? P? with decFinSubset U? (λ {f} _ → P? f)
-... | yes ∀p = yes (λ f → ∀p tt)
-... | no ¬∀p = no  (λ ∀p → ¬∀p (λ _ → ∀p _))
+all? P? = map′ (λ ∀p f → ∀p tt) (λ ∀p {x} _ → ∀p x)
+               (decFinSubset U? (λ {f} _ → P? f))
+
+private
+  -- A nice computational property of `all?`:
+  -- The boolean component of the result is just the
+  -- obvious fold of boolean tests (`foldr _∧_ true`).
+  note : ∀ {p} {P : Pred (Fin 3) p} (P? : Decidable P) →
+         ∃ λ z → isYes (all? P?) ≡ z
+  note P? = isYes (P? 0F) ∧ isYes (P? 1F) ∧ isYes (P? 2F) ∧ true
+          , refl
 
 -- If a decidable predicate P over a finite set is sometimes false,
 -- then we can find the smallest value for which this is the case.

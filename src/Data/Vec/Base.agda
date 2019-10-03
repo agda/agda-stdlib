@@ -8,6 +8,7 @@
 
 module Data.Vec.Base where
 
+open import Data.Bool.Base using (if_then_else_)
 open import Data.Nat.Base
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base as List using (List)
@@ -16,7 +17,7 @@ open import Data.These.Base as These using (These; this; that; these)
 open import Function
 open import Level using (Level)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary using (isYes)
 open import Relation.Unary using (Pred; Decidable)
 
 private
@@ -194,9 +195,9 @@ sum = foldr _ _+_ 0
 
 count : ∀ {P : Pred A p} → Decidable P → ∀ {n} → Vec A n → ℕ
 count P? []       = zero
-count P? (x ∷ xs) with P? x
-... | yes _ = suc (count P? xs)
-... | no  _ = count P? xs
+count P? (x ∷ xs) = if isYes (P? x)
+  then suc (count P? xs)
+  else count P? xs
 
 ------------------------------------------------------------------------
 -- Operations for building vectors

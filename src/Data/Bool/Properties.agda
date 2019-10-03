@@ -20,7 +20,7 @@ open import Function.Equivalence
 open import Level using (Level; 0ℓ)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality hiding ([_])
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary using (Dec; isYes; reflects; yes; no; true; false)
 open import Relation.Nullary.Decidable using (True)
 import Relation.Unary as U
 
@@ -626,8 +626,9 @@ T-irrelevant : U.Irrelevant T
 T-irrelevant {true}  _  _  = refl
 
 T? : U.Decidable T
-T? true  = yes _
-T? false = no (λ ())
+isYes (T? x) = x
+reflects (T? false) = false id
+reflects (T? true ) = true  _
 
 T?-diag : ∀ b → T b → True (T? b)
 T?-diag true  _ = _

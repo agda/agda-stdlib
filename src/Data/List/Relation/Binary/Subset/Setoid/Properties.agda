@@ -17,7 +17,7 @@ import Data.List.Membership.Setoid as Membership
 open import Data.List.Membership.Setoid.Properties
 import Data.List.Relation.Binary.Subset.Setoid as Sublist
 import Data.List.Relation.Binary.Equality.Setoid as Equality
-open import Relation.Nullary using (¬_; yes; no)
+open import Relation.Nullary using (¬_; isYes)
 open import Relation.Unary using (Pred; Decidable)
 import Relation.Binary.Reasoning.Preorder as PreorderReasoning
 
@@ -77,8 +77,8 @@ module _ {a p ℓ} (S : Setoid a ℓ)
   open Sublist S
 
   filter⁺ : ∀ xs → filter P? xs ⊆ xs
-  filter⁺ (x ∷ xs) y∈f[x∷xs] with P? x
-  ... | no  _ = there (filter⁺ xs y∈f[x∷xs])
-  ... | yes _ with y∈f[x∷xs]
+  filter⁺ (x ∷ xs) y∈f[x∷xs] with isYes (P? x)
+  ... | false = there (filter⁺ xs y∈f[x∷xs])
+  ... | true  with y∈f[x∷xs]
   ...   | here  y≈x     = here y≈x
   ...   | there y∈f[xs] = there (filter⁺ xs y∈f[xs])

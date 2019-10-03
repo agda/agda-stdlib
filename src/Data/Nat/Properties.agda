@@ -148,10 +148,8 @@ m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
 infix 4 _≤?_ _≥?_
 
 _≤?_ : Decidable _≤_
-zero  ≤? _     = yes z≤n
-suc m ≤? n with T? (m <ᵇ n)
-... | yes m<n = yes (<ᵇ⇒< m n m<n)
-... | no  m≮n = no  (m≮n ∘ <⇒<ᵇ)
+zero  ≤? _ = yes z≤n
+suc m ≤? n = map′ (<ᵇ⇒< m n) <⇒<ᵇ (T? (m <ᵇ n))
 
 _≥?_ : Decidable _≥_
 _≥?_ = flip _≤?_

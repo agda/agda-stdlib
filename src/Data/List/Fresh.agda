@@ -11,6 +11,7 @@
 module Data.List.Fresh where
 
 open import Level using (Level; _⊔_; Lift)
+open import Data.Bool.Base
 open import Data.Unit.Base
 open import Data.Product using (∃; _×_; _,_; -,_; proj₁; proj₂)
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
@@ -18,7 +19,7 @@ open import Data.List.Relation.Unary.AllPairs using (AllPairs; []; _∷_)
 open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Function using (_∘′_; flip; id; _on_)
-open import Relation.Nullary      using (yes; no)
+open import Relation.Nullary      using (isYes)
 open import Relation.Unary   as U using (Pred)
 open import Relation.Binary  as B using (Rel)
 open import Relation.Nary
@@ -156,33 +157,33 @@ module _ {P : Pred A p} (P? : U.Decidable P) where
   takeWhile-# : ∀ {R : Rel A r} a (as : List# A R) → a # as → a # takeWhile as
 
   takeWhile []             = []
-  takeWhile (cons a as ps) with P? a
-  ... | yes _ = cons a (takeWhile as) (takeWhile-# a as ps)
-  ... | no _  = []
+  takeWhile (cons a as ps) = if isYes (P? a)
+    then cons a (takeWhile as) (takeWhile-# a as ps)
+    else []
 
   takeWhile-# a []        _        = _
-  takeWhile-# a (x ∷# xs) (p , ps) with P? x
-  ... | yes _ = p , takeWhile-# a xs ps
-  ... | no _  = _
+  takeWhile-# a (x ∷# xs) (p , ps) with isYes (P? x)
+  ... | true  = p , takeWhile-# a xs ps
+  ... | false = _
 
   dropWhile : {R : Rel A r} → List# A R → List# A R
   dropWhile []            = []
-  dropWhile aas@(a ∷# as) with P? a
-  ... | yes _ = dropWhile as
-  ... | no _  = aas
+  dropWhile aas@(a ∷# as) = if isYes (P? a)
+    then dropWhile as
+    else aas
 
   filter   : {R : Rel A r} → List# A R → List# A R
   filter-# : ∀ {R : Rel A r} a (as : List# A R) → a # as → a # filter as
 
   filter []             = []
-  filter (cons a as ps) with P? a
-  ... | yes _ = cons a (filter as) (filter-# a as ps)
-  ... | no _  = filter as
+  filter (cons a as ps) = if isYes (P? a)
+    then cons a (filter as) (filter-# a as ps)
+    else filter as
 
   filter-# a []        _        = _
-  filter-# a (x ∷# xs) (p , ps) with P? x
-  ... | yes _ = p , filter-# a xs ps
-  ... | no _  = filter-# a xs ps
+  filter-# a (x ∷# xs) (p , ps) with isYes (P? x)
+  ... | true  = p , filter-# a xs ps
+  ... | false = filter-# a xs ps
 
 ------------------------------------------------------------------------
 -- Relationship to List and AllPairs

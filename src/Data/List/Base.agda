@@ -18,7 +18,7 @@ open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
 open import Data.These.Base as These using (These; this; that; these)
 open import Function using (id; _∘_ ; _∘′_; const; flip)
 open import Level using (Level)
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary using (isYes)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Unary.Properties using (∁?)
 
@@ -258,33 +258,34 @@ splitAt (suc n) (x ∷ xs) with splitAt n xs
 
 takeWhile : ∀ {P : Pred A p} → Decidable P → List A → List A
 takeWhile P? []       = []
-takeWhile P? (x ∷ xs) with P? x
-... | yes _ = x ∷ takeWhile P? xs
-... | no  _ = []
+takeWhile P? (x ∷ xs) = if isYes (P? x)
+  then x ∷ takeWhile P? xs
+  else []
 
 dropWhile : ∀ {P : Pred A p} → Decidable P → List A → List A
 dropWhile P? []       = []
-dropWhile P? (x ∷ xs) with P? x
-... | yes _ = dropWhile P? xs
-... | no  _ = x ∷ xs
+dropWhile P? (x ∷ xs) = if isYes (P? x)
+  then dropWhile P? xs
+  else x ∷ xs
 
 filter : ∀ {P : Pred A p} → Decidable P → List A → List A
 filter P? [] = []
-filter P? (x ∷ xs) with P? x
-... | no  _ = filter P? xs
-... | yes _ = x ∷ filter P? xs
+filter P? (x ∷ xs) = if isYes (P? x)
+  then x ∷ filter P? xs
+  else filter P? xs
 
 partition : ∀ {P : Pred A p} → Decidable P → List A → (List A × List A)
 partition P? []       = ([] , [])
-partition P? (x ∷ xs) with P? x | partition P? xs
-... | yes _ | (ys , zs) = (x ∷ ys , zs)
-... | no  _ | (ys , zs) = (ys , x ∷ zs)
+partition P? (x ∷ xs) =
+  (if isYes (P? x) then Prod.map (x ∷_) id
+                   else Prod.map id (x ∷_))
+    (partition P? xs)
 
 span : ∀ {P : Pred A p} → Decidable P → List A → (List A × List A)
 span P? []       = ([] , [])
-span P? (x ∷ xs) with P? x
-... | yes _ = Prod.map (x ∷_) id (span P? xs)
-... | no  _ = ([] , x ∷ xs)
+span P? (x ∷ xs) = if isYes (P? x)
+  then Prod.map (x ∷_) id (span P? xs)
+  else ([] , x ∷ xs)
 
 break : ∀ {P : Pred A p} → Decidable P → List A → (List A × List A)
 break P? = span (∁? P?)

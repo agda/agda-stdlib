@@ -8,11 +8,14 @@
 
 module Data.These.Properties where
 
+open import Data.Product
 open import Data.These
 open import Function using (_∘_)
 open import Relation.Binary using (Decidable)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Decidable using (map′)
+open import Relation.Nullary.Product using (_×-dec_)
 
 ------------------------------------------------------------------------
 -- Equality
@@ -31,6 +34,9 @@ module _ {a b} {A : Set a} {B : Set b} where
   these-injectiveʳ : ∀ {x y : A} {a b : B} → these x a ≡ these y b → a ≡ b
   these-injectiveʳ refl = refl
 
+  these-injective : ∀ {x y : A} {a b : B} → these x a ≡ these y b → x ≡ y × a ≡ b
+  these-injective = < these-injectiveˡ , these-injectiveʳ >
+
   ≡-dec : Decidable _≡_ → Decidable _≡_ → Decidable {A = These A B} _≡_
   ≡-dec dec₁ dec₂ (this x)    (this y)    with dec₁ x y
   ... | yes refl = yes refl
@@ -44,7 +50,5 @@ module _ {a b} {A : Set a} {B : Set b} where
   ≡-dec dec₁ dec₂ (that x)    (these y b) = no λ()
   ≡-dec dec₁ dec₂ (these x a) (this y)    = no λ()
   ≡-dec dec₁ dec₂ (these x a) (that y)    = no λ()
-  ≡-dec dec₁ dec₂ (these x a) (these y b) with dec₁ x y | dec₂ a b
-  ... | yes refl | yes refl = yes refl
-  ... | no  x≢y  | _        = no (x≢y ∘ these-injectiveˡ)
-  ... | yes _    | no  a≢b  = no (a≢b ∘ these-injectiveʳ)
+  ≡-dec dec₁ dec₂ (these x a) (these y b) =
+    map′ (uncurry (cong₂ these)) these-injective (dec₁ x y ×-dec dec₂ a b)

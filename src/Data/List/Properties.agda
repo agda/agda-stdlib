@@ -30,9 +30,11 @@ open import Level using (Level)
 import Relation.Binary as B
 import Relation.Binary.Reasoning.Setoid as EqR
 open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; _≢_; _≗_; refl ; sym ; cong)
-open import Relation.Nullary using (¬_; yes; no; isYes)
+  using (_≡_; _≢_; _≗_; refl ; sym ; cong; cong₂)
+open import Relation.Nullary using (¬_; dec; yes; no; isYes)
+open import Relation.Nullary.Decidable using (map′)
 open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Product using (_×-dec_)
 open import Relation.Unary using (Pred; Decidable; ∁)
 open import Relation.Unary.Properties using (∁?)
 
@@ -59,14 +61,14 @@ module _ {x y : A} {xs ys : List A} where
   ∷-injectiveʳ : x ∷ xs ≡ y List.∷ ys → xs ≡ ys
   ∷-injectiveʳ refl = refl
 
-≡-dec : B.Decidable _≡_ → B.Decidable {A = List A} _≡_
-≡-dec _≟_ []       []       = yes refl
-≡-dec _≟_ (x ∷ xs) []       = no λ()
-≡-dec _≟_ []       (y ∷ ys) = no λ()
-≡-dec _≟_ (x ∷ xs) (y ∷ ys) with x ≟ y | ≡-dec _≟_ xs ys
-... | no  x≢y  | _        = no (x≢y   ∘ ∷-injectiveˡ)
-... | yes _    | no xs≢ys = no (xs≢ys ∘ ∷-injectiveʳ)
-... | yes refl | yes refl = yes refl
+module _ (_≟_ : B.Decidable {A = A} _≡_) where
+
+  ≡-dec : B.Decidable {A = List A} _≡_
+  ≡-dec []       []       = yes refl
+  ≡-dec (x ∷ xs) []       = no λ()
+  ≡-dec []       (y ∷ ys) = no λ()
+  ≡-dec (x ∷ xs) (y ∷ ys) =
+    map′ (uncurry (cong₂ _∷_)) ∷-injective (x ≟ y ×-dec ≡-dec xs ys)
 
 ------------------------------------------------------------------------
 -- map
@@ -695,15 +697,15 @@ module _ {P : Pred A p} (P? : Decidable P) where
 
   takeWhile++dropWhile : ∀ xs → takeWhile P? xs ++ dropWhile P? xs ≡ xs
   takeWhile++dropWhile []       = refl
-  takeWhile++dropWhile (x ∷ xs) with P? x
-  ... | yes _ = P.cong (x ∷_) (takeWhile++dropWhile xs)
-  ... | no  _ = refl
+  takeWhile++dropWhile (x ∷ xs) with isYes (P? x)
+  ... | true  = P.cong (x ∷_) (takeWhile++dropWhile xs)
+  ... | false = refl
 
   span-defn : span P? ≗ < takeWhile P? , dropWhile P? >
   span-defn []       = refl
-  span-defn (x ∷ xs) with P? x
-  ... | yes _ = P.cong (Prod.map (x ∷_) id) (span-defn xs)
-  ... | no  _ = refl
+  span-defn (x ∷ xs) with isYes (P? x)
+  ... | true  = P.cong (Prod.map (x ∷_) id) (span-defn xs)
+  ... | false = refl
 
 ------------------------------------------------------------------------
 -- filter
@@ -712,44 +714,44 @@ module _ {P : A → Set p} (P? : Decidable P) where
 
   length-filter : ∀ xs → length (filter P? xs) ≤ length xs
   length-filter []       = z≤n
-  length-filter (x ∷ xs) with P? x
-  ... | no  _ = ≤-step (length-filter xs)
-  ... | yes _ = s≤s (length-filter xs)
+  length-filter (x ∷ xs) with isYes (P? x)
+  ... | false = ≤-step (length-filter xs)
+  ... | true  = s≤s (length-filter xs)
 
   filter-all : ∀ {xs} → All P xs → filter P? xs ≡ xs
   filter-all {[]}     []         = refl
   filter-all {x ∷ xs} (px ∷ pxs) with P? x
-  ... | no  ¬px = contradiction px ¬px
-  ... | yes _   = P.cong (x ∷_) (filter-all pxs)
+  ... | no     ¬px = contradiction px ¬px
+  ... | dec true _ = P.cong (x ∷_) (filter-all pxs)
 
   filter-notAll : ∀ xs → Any (∁ P) xs → length (filter P? xs) < length xs
   filter-notAll (x ∷ xs) (here ¬px) with P? x
-  ... | no  _  = s≤s (length-filter xs)
-  ... | yes px = contradiction px ¬px
-  filter-notAll (x ∷ xs) (there any) with P? x
-  ... | no  _ = ≤-step (filter-notAll xs any)
-  ... | yes _ = s≤s (filter-notAll xs any)
+  ... | dec false _ = s≤s (length-filter xs)
+  ... | yes      px = contradiction px ¬px
+  filter-notAll (x ∷ xs) (there any) with isYes (P? x)
+  ... | false = ≤-step (filter-notAll xs any)
+  ... | true  = s≤s (filter-notAll xs any)
 
   filter-some : ∀ {xs} → Any P xs → 0 < length (filter P? xs)
   filter-some {x ∷ xs} (here px)   with P? x
-  ... | yes _  = s≤s z≤n
-  ... | no ¬px = contradiction px ¬px
-  filter-some {x ∷ xs} (there pxs) with P? x
-  ... | yes _ = ≤-step (filter-some pxs)
-  ... | no  _ = filter-some pxs
+  ... | dec true _ = s≤s z≤n
+  ... | no     ¬px = contradiction px ¬px
+  filter-some {x ∷ xs} (there pxs) with isYes (P? x)
+  ... | true  = ≤-step (filter-some pxs)
+  ... | false = filter-some pxs
 
   filter-none : ∀ {xs} → All (∁ P) xs → filter P? xs ≡ []
   filter-none {[]}     []           = refl
   filter-none {x ∷ xs} (¬px ∷ ¬pxs) with P? x
-  ... | no  _  = filter-none ¬pxs
-  ... | yes px = contradiction px ¬px
+  ... | dec false _ = filter-none ¬pxs
+  ... | yes      px = contradiction px ¬px
 
   filter-complete : ∀ {xs} → length (filter P? xs) ≡ length xs →
                     filter P? xs ≡ xs
   filter-complete {[]}     eq = refl
-  filter-complete {x ∷ xs} eq with P? x
-  ... | no ¬px = contradiction eq (<⇒≢ (s≤s (length-filter xs)))
-  ... | yes px = P.cong (x ∷_) (filter-complete (suc-injective eq))
+  filter-complete {x ∷ xs} eq with isYes (P? x)
+  ... | false = contradiction eq (<⇒≢ (s≤s (length-filter xs)))
+  ... | true  = P.cong (x ∷_) (filter-complete (suc-injective eq))
 
 ------------------------------------------------------------------------
 -- partition
@@ -758,9 +760,9 @@ module _ {P : A → Set p} (P? : Decidable P) where
 
   partition-defn : partition P? ≗ < filter P? , filter (∁? P?) >
   partition-defn []       = refl
-  partition-defn (x ∷ xs) with P? x
-  ...  | yes Px = P.cong (Prod.map (x ∷_) id) (partition-defn xs)
-  ...  | no ¬Px = P.cong (Prod.map id (x ∷_)) (partition-defn xs)
+  partition-defn (x ∷ xs) with isYes (P? x)
+  ...  | true  = P.cong (Prod.map (x ∷_) id) (partition-defn xs)
+  ...  | false = P.cong (Prod.map id (x ∷_)) (partition-defn xs)
 
 ------------------------------------------------------------------------
 -- reverse is an involution in the list monoid

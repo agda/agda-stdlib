@@ -48,8 +48,8 @@ is-nothing : Maybe A → Bool
 is-nothing = not ∘ is-just
 
 decToMaybe : Dec A → Maybe A
-decToMaybe (yes x) = just x
-decToMaybe (no _)  = nothing
+decToMaybe (yes       x) = just x
+decToMaybe (dec false _) = nothing
 
 -- A dependent eliminator.
 
