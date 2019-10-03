@@ -28,15 +28,11 @@ private
 open import Relation.Nullary.Decidable.Core public
 
 ------------------------------------------------------------------------
--- Maps
+-- Preserve the boolean content non-strictly, but change the proofs
 
 map : P ⇔ Q → Dec P → Dec Q
-isYes (map P⇔Q p?) = isYes p?
-reflects (map P⇔Q (yes p)) = true (Equivalence.to P⇔Q ⟨$⟩ p)
-reflects (map P⇔Q (no ¬p)) = false (¬p ∘ (Equivalence.from P⇔Q ⟨$⟩_))
-
-map′ : (P → Q) → (Q → P) → Dec P → Dec Q
-map′ P→Q Q→P = map (equivalence P→Q Q→P)
+map P⇔Q = map′ (to P⇔Q ⟨$⟩_) (from P⇔Q ⟨$⟩_)
+  where open Equivalence
 
 module _ {a₁ a₂ b₁ b₂} {A : Setoid a₁ a₂} {B : Setoid b₁ b₂} where
 

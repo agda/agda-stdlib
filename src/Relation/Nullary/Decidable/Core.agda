@@ -25,6 +25,7 @@ private
   variable
     p q : Level
     P : Set p
+    Q : Set q
     p? : Set q
 
 -- `isYes!` is a stricter version of `isYes`, a field of `Dec`.
@@ -137,6 +138,14 @@ dec-false (dec false _)  _ = refl
 dec-yes-irr : (p? : Dec P) → Irrelevant P → (p : P) → p? ≡ yes p
 dec-yes-irr p? irr p with dec-yes p? p
 ... | p′ , eq rewrite irr p p′ = eq
+
+------------------------------------------------------------------------
+-- Preserve the boolean content non-strictly, but change the proofs
+
+map′ : (P → Q) → (Q → P) → Dec P → Dec Q
+isYes (map′ P→Q Q→P p?) = isYes p?
+reflects (map′ P→Q Q→P (yes p)) = true (P→Q p)
+reflects (map′ P→Q Q→P (no ¬p)) = false (¬p ∘ Q→P)
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
