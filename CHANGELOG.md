@@ -140,6 +140,8 @@ The following new modules have been added to the library:
 
   Data.AVL.Map
 
+  Data.Empty.Polymorphic
+
   Data.Nat.Binary
   Data.Nat.Binary.Base
   Data.Nat.Binary.Induction
