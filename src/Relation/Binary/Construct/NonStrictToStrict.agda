@@ -15,7 +15,8 @@ open import Data.Product using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum using (inj₁; inj₂)
 open import Function using (_∘_; flip)
 open import Relation.Nullary using (¬_; yes; no)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Negation using (contradiction; ¬?)
+open import Relation.Nullary.Product using (_×-dec_)
 
 private
   _≉_ : Rel A ℓ₁
@@ -106,10 +107,7 @@ x < y = x ≤ y × x ≉ y
 ...   | inj₂ y≤x = tri> (x≉y ∘ flip antisym y≤x ∘ proj₁) x≉y (y≤x , x≉y ∘ ≈-sym)
 
 <-decidable : Decidable _≈_ → Decidable _≤_ → Decidable _<_
-<-decidable _≟_ _≤?_ x y with x ≟ y | x ≤? y
-... | yes x≈y | _       = no  (flip proj₂ x≈y)
-... | no  x≉y | yes x≤y = yes (x≤y , x≉y)
-... | no  x≉y | no  x≰y = no  (x≰y ∘ proj₁)
+<-decidable _≟_ _≤?_ x y = x ≤? y ×-dec ¬? (x ≟ y)
 
 ------------------------------------------------------------------------
 -- Structures

@@ -30,10 +30,11 @@ open import Level using (Level)
 import Relation.Binary as B
 import Relation.Binary.Reasoning.Setoid as EqR
 open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; _≢_; _≗_; refl ; sym ; cong)
+  using (_≡_; _≢_; _≗_; refl ; sym ; cong; cong₂)
 open import Relation.Nullary using (¬_; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Nullary.Decidable using (isYes)
+open import Relation.Nullary.Decidable using (isYes; map′)
+open import Relation.Nullary.Product using (_×-dec_)
 open import Relation.Unary using (Pred; Decidable; ∁)
 open import Relation.Unary.Properties using (∁?)
 
@@ -60,14 +61,14 @@ module _ {x y : A} {xs ys : List A} where
   ∷-injectiveʳ : x ∷ xs ≡ y List.∷ ys → xs ≡ ys
   ∷-injectiveʳ refl = refl
 
-≡-dec : B.Decidable _≡_ → B.Decidable {A = List A} _≡_
-≡-dec _≟_ []       []       = yes refl
-≡-dec _≟_ (x ∷ xs) []       = no λ()
-≡-dec _≟_ []       (y ∷ ys) = no λ()
-≡-dec _≟_ (x ∷ xs) (y ∷ ys) with x ≟ y | ≡-dec _≟_ xs ys
-... | no  x≢y  | _        = no (x≢y   ∘ ∷-injectiveˡ)
-... | yes _    | no xs≢ys = no (xs≢ys ∘ ∷-injectiveʳ)
-... | yes refl | yes refl = yes refl
+module _ (_≟_ : B.Decidable {A = A} _≡_) where
+
+  ≡-dec : B.Decidable {A = List A} _≡_
+  ≡-dec []       []       = yes refl
+  ≡-dec (x ∷ xs) []       = no λ()
+  ≡-dec []       (y ∷ ys) = no λ()
+  ≡-dec (x ∷ xs) (y ∷ ys) =
+    map′ (uncurry (cong₂ _∷_)) ∷-injective (x ≟ y ×-dec ≡-dec xs ys)
 
 ------------------------------------------------------------------------
 -- map

@@ -69,6 +69,6 @@ module _ {R : Rel A r} {P : Pred A p} (P? : Decidable P) where
 
   any? : (xs : List# A R) → Dec (Any P xs)
   any? []        = no (λ ())
-  any? (x ∷# xs) with P? x
-  ... | yes p = yes (here p)
-  ... | no ¬p = Dec.map′ there (tail ¬p) (any? xs)
+  any? (x ∷# xs) =
+    Dec.map′ [ here , there ]′ (λ{ (here x) → inj₁ x ; (there z) → inj₂ z })
+             (P? x ⊎-dec any? xs)
