@@ -31,11 +31,8 @@ open import Relation.Nullary.Decidable.Core public
 -- Maps
 
 map : P ⇔ Q → Dec P → Dec Q
-map P⇔Q (yes p) = yes (Equivalence.to P⇔Q ⟨$⟩ p)
-map P⇔Q (no ¬p) = no (¬p ∘ _⟨$⟩_ (Equivalence.from P⇔Q))
-
-map′ : (P → Q) → (Q → P) → Dec P → Dec Q
-map′ P→Q Q→P = map (equivalence P→Q Q→P)
+map P⇔Q = map′ (to ⟨$⟩_) (from ⟨$⟩_)
+  where open Equivalence P⇔Q
 
 module _ {a₁ a₂ b₁ b₂} {A : Setoid a₁ a₂} {B : Setoid b₁ b₂} where
 
