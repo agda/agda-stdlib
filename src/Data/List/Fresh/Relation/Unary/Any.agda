@@ -12,6 +12,7 @@ open import Level using (Level; _⊔_; Lift)
 open import Data.Empty
 open import Data.Product using (∃; _,_; -,_)
 open import Data.Sum.Base using (_⊎_; [_,_]′; inj₁; inj₂)
+open import Function.Equivalence using (_⇔_; equivalence)
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Sum using (_⊎-dec_)
@@ -41,6 +42,11 @@ module _ {R : Rel A r} {P : Pred A p} {x} {xs : List# A R} {pr} where
   tail ¬head (here p)   = ⊥-elim (¬head p)
   tail ¬head (there ps) = ps
 
+  Any-cons-⇔ : (P x ⊎ Any P xs) ⇔ Any P (cons x xs pr)
+  Any-cons-⇔ = equivalence
+    [ here , there ]′
+    (λ{ (here x) → inj₁ x ; (there z) → inj₂ z })
+
 module _ {R : Rel A r} {P : Pred A p} {Q : Pred A q} where
 
   map : {xs : List# A R} → ∀[ P ⇒ Q ] → Any P xs → Any Q xs
@@ -69,6 +75,4 @@ module _ {R : Rel A r} {P : Pred A p} (P? : Decidable P) where
 
   any? : (xs : List# A R) → Dec (Any P xs)
   any? []        = no (λ ())
-  any? (x ∷# xs) =
-    Dec.map′ [ here , there ]′ (λ{ (here x) → inj₁ x ; (there z) → inj₂ z })
-             (P? x ⊎-dec any? xs)
+  any? (x ∷# xs) = Dec.map Any-cons-⇔ (P? x ⊎-dec any? xs)

@@ -30,7 +30,7 @@ open import Relation.Binary as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; cong; cong₂; subst; isEquivalence)
 open import Relation.Nullary using (Dec; yes; no)
-open import Relation.Nullary.Decidable using (map′)
+import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Nullary.Sum using (_⊎-dec_)
 open import Relation.Unary using (Pred; Decidable)
@@ -44,6 +44,14 @@ drop-there (there x∈p) = x∈p
 drop-∷-⊆ : ∀ {n s₁ s₂} {p₁ p₂ : Subset n} → s₁ ∷ p₁ ⊆ s₂ ∷ p₂ → p₁ ⊆ p₂
 drop-∷-⊆ p₁s₁⊆p₂s₂ x∈p₁ = drop-there (p₁s₁⊆p₂s₂ (there x∈p₁))
 
+outside∷-⊆-⇔ : ∀ {n y} {p q : Subset n} → p ⊆ q ⇔ outside ∷ p ⊆ y ∷ q
+outside∷-⊆-⇔ = equivalence (λ { p⊆q (there ∈p) → there (p⊆q ∈p) }) drop-∷-⊆
+
+inside∷-⊆-⇔ : ∀ {n} {p q : Subset n} → p ⊆ q ⇔ inside ∷ p ⊆ inside ∷ q
+inside∷-⊆-⇔ = equivalence
+  (λ { p⊆q here → here ; p⊆q (there ∈p) → there (p⊆q ∈p) })
+  drop-∷-⊆
+
 ------------------------------------------------------------------------
 -- _∈_
 
@@ -51,7 +59,7 @@ infix 4 _∈?_
 _∈?_ : ∀ {n} x (p : Subset n) → Dec (x ∈ p)
 zero  ∈? inside  ∷ p = yes here
 zero  ∈? outside ∷ p = no  λ()
-suc n ∈? s       ∷ p = map′ there drop-there (n ∈? p)
+suc n ∈? s       ∷ p = Dec.map′ there drop-there (n ∈? p)
 
 ------------------------------------------------------------------------
 -- Empty
@@ -152,12 +160,9 @@ x∈⁅y⁆⇔x≡y {_} {x} {y} = equivalence
 infix 4 _⊆?_
 _⊆?_ : ∀ {n} → B.Decidable (_⊆_ {n = n})
 []          ⊆? []          = yes id
-outside ∷ p ⊆? y ∷ q =
-  map′ (λ { p⊆q (there v∈p) → there (p⊆q v∈p) }) drop-∷-⊆ (p ⊆? q)
+outside ∷ p ⊆?       y ∷ q = Dec.map outside∷-⊆-⇔ (p ⊆? q)
 inside  ∷ p ⊆? outside ∷ q = no (λ p⊆q → case (p⊆q here) of λ())
-inside  ∷ p ⊆? inside  ∷ q =
-  map′ (λ { p⊆q here → here ; p⊆q (there v∈p) → there (p⊆q v∈p) }) drop-∷-⊆
-       (p ⊆? q)
+inside  ∷ p ⊆? inside  ∷ q = Dec.map inside∷-⊆-⇔ (p ⊆? q)
 
 module _ (n : ℕ) where
 
@@ -574,12 +579,20 @@ Lift? P? p = decFinSubset (_∈? p) (λ {x} _ → P? x)
 ------------------------------------------------------------------------
 -- Other
 
+∃-Subset-[]-⇔ : {P : Subset zero → Set} → P [] ⇔ ∃ P
+∃-Subset-[]-⇔ = equivalence ([] ,_) λ { ([] , P[]) → P[] }
+
+∃-Subset-∷-⇔ : ∀ {n} {P : Subset (suc n) → Set} →
+             (∃ (P ∘ (inside ∷_)) ⊎ ∃ (P ∘ (outside ∷_))) ⇔ ∃ P
+∃-Subset-∷-⇔ = equivalence
+  [ Product.map _ id , Product.map _ id ]′
+  λ { (outside ∷ p , Pp) → inj₂ (p , Pp)
+    ; ( inside ∷ p , Pp) → inj₁ (p , Pp)
+    }
+
 anySubset? : ∀ {n} {P : Subset n → Set} → Decidable P → Dec (∃ P)
-anySubset? {zero}  P? = map′ ([] ,_) (λ { ([] , P[]) → P[] }) (P? [])
+anySubset? {zero}  P? = Dec.map ∃-Subset-[]-⇔ (P? [])
 anySubset? {suc n} P? =
-  map′ [ Product.map _ id , Product.map _ id ]′
-       (λ { (outside ∷ p , Pp) → inj₂ (p , Pp)
-          ; ( inside ∷ p , Pp) → inj₁ (p , Pp)
-          })
-       (anySubset? (P? ∘ (inside ∷_)) ⊎-dec anySubset? (P? ∘ (outside ∷_)))
+  Dec.map ∃-Subset-∷-⇔ (anySubset? (P? ∘ ( inside ∷_)) ⊎-dec
+                        anySubset? (P? ∘ (outside ∷_)))
 

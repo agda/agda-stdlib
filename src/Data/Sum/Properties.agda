@@ -23,13 +23,13 @@ module _ {a b} {A : Set a} {B : Set b} where
   inj₂-injective : ∀ {x y} → (A ⊎ B ∋ inj₂ x) ≡ inj₂ y → x ≡ y
   inj₂-injective refl = refl
 
-  ≡-dec : Decidable _≡_ → Decidable _≡_ → Decidable {A = A ⊎ B} _≡_
-  ≡-dec dec₁ dec₂ (inj₁ x) (inj₁ y) =
-    map′ (cong inj₁) inj₁-injective (dec₁ x y)
-  ≡-dec dec₁ dec₂ (inj₁ x) (inj₂ y) = no λ()
-  ≡-dec dec₁ dec₂ (inj₂ x) (inj₁ y) = no λ()
-  ≡-dec dec₁ dec₂ (inj₂ x) (inj₂ y) =
-    map′ (cong inj₂) inj₂-injective (dec₂ x y)
+  module _ (dec₁ : Decidable _≡_) (dec₂ : Decidable _≡_) where
+
+    ≡-dec : Decidable {A = A ⊎ B} _≡_
+    ≡-dec (inj₁ x) (inj₁ y) = map′ (cong inj₁) inj₁-injective (dec₁ x y)
+    ≡-dec (inj₁ x) (inj₂ y) = no λ()
+    ≡-dec (inj₂ x) (inj₁ y) = no λ()
+    ≡-dec (inj₂ x) (inj₂ y) = map′ (cong inj₂) inj₂-injective (dec₂ x y)
 
   swap-involutive : swap {A = A} {B = B} ∘ swap ≗ id
   swap-involutive = [ (λ _ → refl) , (λ _ → refl) ]

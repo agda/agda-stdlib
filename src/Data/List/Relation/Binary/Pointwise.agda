@@ -117,12 +117,14 @@ respects₂ {_≈_ = _≈_} {_∼_} resp = respʳ , respˡ
   respˡ (x≈y ∷ xs≈ys) (x∼z ∷ xs∼zs) =
     proj₂ resp x≈y x∼z ∷ respˡ xs≈ys xs∼zs
 
-decidable : ∀ {_∼_ : REL A B ℓ} → Decidable _∼_ → Decidable (Pointwise _∼_)
-decidable dec []       []       = yes []
-decidable dec []       (y ∷ ys) = no (λ ())
-decidable dec (x ∷ xs) []       = no (λ ())
-decidable dec (x ∷ xs) (y ∷ ys) =
-  Dec.map′ (uncurry _∷_) uncons (dec x y ×-dec decidable dec xs ys)
+module _ {_∼_ : REL A B ℓ} (dec : Decidable _∼_) where
+
+  decidable : Decidable (Pointwise _∼_)
+  decidable []       []       = yes []
+  decidable []       (y ∷ ys) = no (λ ())
+  decidable (x ∷ xs) []       = no (λ ())
+  decidable (x ∷ xs) (y ∷ ys) =
+    Dec.map′ (uncurry _∷_) uncons (dec x y ×-dec decidable xs ys)
 
 module _ {_≈_ : Rel₂ A ℓ} where
 

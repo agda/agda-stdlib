@@ -10,13 +10,14 @@ module Relation.Binary.Construct.Closure.Reflexive.Properties where
 
 open import Data.Product as Prod
 open import Data.Sum as Sum
-open import Function
+open import Function.Equivalence using (_⇔_; equivalence)
+open import Function using (id)
 open import Level
 open import Relation.Binary
 open import Relation.Binary.Construct.Closure.Reflexive
 open import Relation.Binary.PropositionalEquality as PropEq using (_≡_; refl)
 open import Relation.Nullary
-open import Relation.Nullary.Decidable using (map′)
+import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Nullary.Sum using (_⊎-dec_)
 open import Relation.Unary using (Pred)
@@ -60,11 +61,13 @@ module _ {_~_ : Rel A ℓ} where
   ... | tri≈ _ refl _ = inj₁ refl
   ... | tri> _ _    c = inj₂ [ c ]
 
+  Refl-⇔ : ∀ {a b} → (a ≡ b ⊎ a ~ b) ⇔ Refl _~_ a b
+  Refl-⇔ = equivalence
+    [ (λ { refl → refl }) , [_] ]′
+    (λ { refl → inj₁ refl ; [ x∼y ] → inj₂ x∼y })
+
   dec : Decidable {A = A} _≡_ → Decidable _~_ → Decidable (Refl _~_)
-  dec ≡-dec ~-dec a b =
-    map′ Sum.[ (λ { refl → refl }) , [_] ]
-         (λ { refl → inj₁ refl ; [ x∼y ] → inj₂ x∼y })
-         (≡-dec a b ⊎-dec ~-dec a b)
+  dec ≡-dec ~-dec a b = Dec.map Refl-⇔ (≡-dec a b ⊎-dec ~-dec a b)
 
   decidable : Trichotomous _≡_ _~_ → Decidable (Refl _~_)
   decidable ~-tri a b with ~-tri a b

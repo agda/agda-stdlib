@@ -10,13 +10,14 @@ module Data.List.Relation.Binary.Lex.Core where
 
 open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Unit.Base using (⊤; tt)
-open import Function using (_∘_; flip; id)
-open import Data.Product using (_,_; proj₁; proj₂; uncurry)
+open import Data.Product using (_×_; _,_; proj₁; proj₂; uncurry)
 open import Data.List.Base using (List; []; _∷_)
 open import Data.Sum using (_⊎_; inj₁; inj₂; [_,_])
+open import Function.Equivalence using (_⇔_; equivalence)
+open import Function using (_∘_; flip; id)
 open import Level using (_⊔_)
 open import Relation.Nullary using (Dec; yes; no; ¬_)
-open import Relation.Nullary.Decidable using (map′)
+import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Product using (_×-dec_)
 open import Relation.Nullary.Sum using (_⊎-dec_)
 open import Relation.Binary
@@ -98,16 +99,22 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} {P : Set}
     resp² (x≈z ∷ xs≋zs) (next x≈y xs<ys) =
       next (trans (sym x≈z) x≈y) (resp² xs≋zs xs<ys)
 
+  []<[]-⇔ : P ⇔ [] < []
+  []<[]-⇔ = equivalence base (λ { (base p) → p })
+
+  ∷<∷-⇔ : ∀ {x y xs ys} → (x ≺ y ⊎ (x ≈ y × xs < ys)) ⇔ (x ∷ xs) < (y ∷ ys)
+  ∷<∷-⇔ = equivalence
+    [ this , uncurry next ]
+    (λ { (this x≺y      ) → inj₁ x≺y
+       ; (next x≈y xs<ys) → inj₂ (x≈y , xs<ys)
+       })
+
   module _ (dec-P : Dec P) (dec-≈ : Decidable _≈_) (dec-≺ : Decidable _≺_)
     where
 
     decidable : Decidable _<_
-    decidable []       []       =
-      map′ base (λ{ (base p) → p }) dec-P
+    decidable []       []       = Dec.map []<[]-⇔ dec-P
     decidable []       (y ∷ ys) = yes halt
     decidable (x ∷ xs) []       = no λ()
     decidable (x ∷ xs) (y ∷ ys) =
-      map′ [ this , uncurry next ] (λ { (this x≺y) → inj₁ x≺y
-                                      ; (next x≈y z) → inj₂ (x≈y , z)
-                                      })
-           (dec-≺ x y ⊎-dec (dec-≈ x y ×-dec decidable xs ys))
+      Dec.map ∷<∷-⇔ (dec-≺ x y ⊎-dec (dec-≈ x y ×-dec decidable xs ys))
