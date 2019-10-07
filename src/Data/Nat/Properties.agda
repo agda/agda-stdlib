@@ -2178,5 +2178,5 @@ n∸m≤n : ∀ m n → n ∸ m ≤ n
 n∸m≤n m n = m∸n≤m n m
 {-# WARNING_ON_USAGE n∸m≤n
 "Warning: n∸m≤n was deprecated in v1.2.
-Please use n∸m≤n instead (note, you will need to switch the argument order)."
+Please use m∸n≤m instead (note, you will need to switch the argument order)."
 #-}
