@@ -4,11 +4,12 @@
 -- Properties of functions, such as associativity and commutativity
 ------------------------------------------------------------------------
 
--- The contents of this module should be accessed via `Algebra`.
+-- The contents of this module should be accessed via `Algebra`, unless
+-- you want to parameterise it via the equality relation.
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Relation.Binary
+open import Relation.Binary.Core
 
 module Algebra.Definitions
   {a ℓ} {A : Set a}   -- The underlying set

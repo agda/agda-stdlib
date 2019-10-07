@@ -8,10 +8,8 @@
 
 open import Relation.Binary using (Rel)
 
-module Algebra.FunctionProperties where
-{-
+module Algebra.FunctionProperties
   {a ℓ} {A : Set a} (_≈_ : Rel A ℓ) where
 
 open import Algebra.Core public
 open import Algebra.Definitions _≈_ public
--}

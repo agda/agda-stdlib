@@ -5,15 +5,18 @@
 -- etc.)
 ------------------------------------------------------------------------
 
--- The contents of this module should be accessed via `Algebra`.
+-- The contents of this module should be accessed via `Algebra`, unless
+-- you want to parameterise it via the equality relation.
 
 {-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary using (Rel; Setoid; IsEquivalence)
 
-module Algebra.Structures {a ℓ} {A : Set a} (_≈_ : Rel A ℓ) where
+module Algebra.Structures
+  {a ℓ} {A : Set a}  -- The underlying set
+  (_≈_ : Rel A ℓ)    -- The underlying equality relation
+  where
 
--- All the structures are parameterised by the equivalence relation _≈_.
 -- The file is divided into sections depending on the arities of the
 -- components of the algebraic structure.
 
