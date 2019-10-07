@@ -24,7 +24,8 @@ import Data.Nat.Properties as ℕₚ
 open import Data.Unit using (tt)
 open import Data.Product using (∃; ∃₂; ∄; _×_; _,_; map; proj₁; uncurry; <_,_>)
 open import Data.Sum using (_⊎_; inj₁; inj₂; [_,_])
-open import Function.Core using (_∘_; id)
+open import Function.Core using (_∘_; id; _$_)
+open import Function.Equivalence using (_⇔_; equivalence)
 open import Function.Injection using (_↣_)
 open import Relation.Binary as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P
@@ -492,10 +493,27 @@ punchOut-punchIn (suc i) {suc j} = cong suc (begin
 ------------------------------------------------------------------------
 -- Quantification
 
-∀-cons : ∀ {n p} {P : Pred (Fin (suc n)) p} →
-         P zero → (∀ i → P (suc i)) → (∀ i → P i)
-∀-cons z s zero    = z
-∀-cons z s (suc i) = s i
+module _ {n p} {P : Pred (Fin (suc n)) p} where
+
+  ∀-cons : P zero → (∀ i → P (suc i)) → (∀ i → P i)
+  ∀-cons z s zero    = z
+  ∀-cons z s (suc i) = s i
+
+  ∀-cons-⇔ : (P zero × (∀ i → P (suc i))) ⇔ (∀ i → P i)
+  ∀-cons-⇔ = equivalence (uncurry ∀-cons) < _$ zero , _∘ suc >
+
+  ∃-here : P zero → ∃ P
+  ∃-here = zero ,_
+
+  ∃-there : ∃ (P ∘ suc) → ∃ P
+  ∃-there = map suc id
+
+  ∃-cons-⇔ : (P zero ⊎ ∃ (P ∘ suc)) ⇔ ∃ P
+  ∃-cons-⇔ = equivalence
+    [ ∃-here , ∃-there ]
+    λ { (zero  , P₀ ) → inj₁ P₀
+      ; (suc f , P₁₊) → inj₂ (f , P₁₊)
+      }
 
 decFinSubset : ∀ {n p q} {P : Pred (Fin n) p} {Q : Pred (Fin n) q} →
                Decidable Q → (∀ {f} → Q f → Dec (P f)) → Dec (Q ⊆ P)
@@ -510,12 +528,7 @@ decFinSubset {suc n} {P = P} {Q} Q? P? with decFinSubset (Q? ∘ suc) P?
 
 any? : ∀ {n p} {P : Fin n → Set p} → Decidable P → Dec (∃ P)
 any? {zero}  {P = _} P? = no λ { (() , _) }
-any? {suc n} {P = P} P? =
-  map′ [ zero ,_ , map suc id ] helper (P? zero ⊎-dec any? (P? ∘ suc))
-  where
-  helper : ∃ P → P zero ⊎ ∃ (P ∘ suc)
-  helper (zero  , P₀) = inj₁ P₀
-  helper (suc f , P₁₊) = inj₂ (f , P₁₊)
+any? {suc n} {P = P} P? = Dec.map ∃-cons-⇔ (P? zero ⊎-dec any? (P? ∘ suc))
 
 all? : ∀ {n p} {P : Pred (Fin n) p} →
        Decidable P → Dec (∀ f → P f)
