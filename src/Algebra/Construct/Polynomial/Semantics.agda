@@ -9,10 +9,10 @@ module Algebra.Construct.Polynomial.Semantics
   where
 
 open import Data.Nat     using (ℕ; suc; zero; _≤′_; ≤′-step; ≤′-refl)
-open import Data.Vec     using (Vec; []; _∷_)
+open import Data.Vec     using (Vec; []; _∷_; uncons)
 open import Data.List    using ([]; _∷_)
 open import Data.Product using (_,_; _×_)
-open import Data.List.Kleene
+open import Data.List.Kleene using (_+; _*; ∹_; _&_; [])
 
 open Homomorphism homo
 open import Algebra.Construct.Polynomial.Base from
@@ -23,12 +23,8 @@ drop : ∀ {i n} → i ≤′ n → Vec Carrier n → Vec Carrier i
 drop ≤′-refl Ρ = Ρ
 drop (≤′-step si≤n) (_ ∷ Ρ) = drop si≤n Ρ
 
-vec-uncons : ∀ {n} → Vec Carrier (suc n) → Carrier × Vec Carrier n
-vec-uncons (x ∷ xs) = x , xs
-{-# INLINE vec-uncons #-}
-
 drop-1 : ∀ {i n} → suc i ≤′ n → Vec Carrier n → Carrier × Vec Carrier i
-drop-1 si≤n xs = vec-uncons (drop si≤n xs)
+drop-1 si≤n xs = uncons (drop si≤n xs)
 {-# INLINE drop-1 #-}
 
 _*⟨_⟩^_ : Carrier → Carrier → ℕ → Carrier
