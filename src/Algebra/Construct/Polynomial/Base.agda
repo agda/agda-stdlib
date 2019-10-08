@@ -3,6 +3,42 @@
 --
 -- Sparse polynomials in a commutative ring, encoded in Horner normal
 -- form.
+--
+-- Horner normal form encodes a polynomial as a list of coefficients.
+-- As an example take the polynomial:
+--
+--   3 + 2x² + 4x⁵ + 2x⁷
+--
+-- Then expand it out, filling in the missing coefficients:
+--
+--   3x⁰ + 0x¹ + 2x² + 0x³ + 0x⁴ + 4x⁵ + 0x⁶ + 2x⁷
+--
+-- And then encode that as a list:
+--
+--   [3, 0, 2, 0, 0, 4, 0, 2]
+--
+-- The representation we use here is optimised from the above. First,
+-- we remove the zero terms, and add a "gap" index next to every
+-- coefficient:
+--
+--   [(3,0),(2,1),(4,2),(2,1)]
+--
+-- Which can be thought of as a representation of the expression:
+--
+--   x⁰ * (3 + x * x¹ * (2 + x * x² * (4 + x * x¹ * (2 + x * 0))))
+--
+-- This is "sparse" Horner normal form.
+--
+-- The second optimisation deals with representing multiple variables
+-- in a polynomial. The standard trick is to encode a polynomial in n
+-- variables as a polynomial with coefficients in n-1 variables,
+-- recursing until you hit 0 which is simply the type of the coefficient
+-- itself.
+--
+-- We again encode "gaps" here, with the injection index. Since the
+-- number of variables in a polynomial is contained in its type,
+-- however, operations on this gap are type-relevant, so it's not
+-- convenient to simply use ℕ. We use _≤′_ instead.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --safe --without-K #-}
@@ -32,19 +68,6 @@ open import Algebra.Operations.Ring.Compact rawRing
 
 ------------------------------------------------------------------------
 -- Injection indices.
---
--- The injection index is the encoding of the exponent in a polynomial.
--- For efficiency reasons, we encode the exponent as a "gap". i.e., for
--- the polynomial:
---
---   2 + x² + 4x³
---
--- We encode it as:
---
---    [(2,0), (1,1), (4,0)]
---
--- For proof reasons, we don't use ℕ to encode the gap directly, rather
--- we use _≤′_.
 
 -- First, we define comparisons on _≤′_.
 -- The following is analagous to Ordering and compare from
@@ -123,21 +146,6 @@ data FlatPoly where
   Κ : Carrier → FlatPoly zero
   Σ : ∀ {n} → (xs : Coeff n +) → .{xn : Norm xs} → FlatPoly (suc n)
 
--- A list of coefficients, paired with the exponent *gap* from the
--- preceding coefficient. In other words, to represent the
--- polynomial:
---
---   3 + 2x² + 4x⁵ + 2x⁷
---
--- We write:
---
---   [(3,0),(2,1),(4,2),(2,1)]
---
--- Which can be thought of as a representation of the expression:
---
---   x⁰ * (3 + x * x¹ * (2 + x * x² * (4 + x * x¹ * (2 + x * 0))))
---
--- This is sparse Horner normal form.
 
 Coeff n = PowInd (NonZero n)
 
