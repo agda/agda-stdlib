@@ -95,7 +95,6 @@ Fin⇒≤ (Fin.suc x) = ≤′-step (Fin⇒≤ x)
 
 infixl 6 _Δ_
 record PowInd {c} (C : Set c) : Set c where
-  inductive
   constructor _Δ_
   field
     coeff : C
@@ -195,7 +194,7 @@ x Δ i ∷↓ xs = case zero? x of
     }
 {-# INLINE _∷↓_ #-}
 
--- Inject a polynomial into a larger polynomoial with more variables
+-- Inject a polynomial into a larger polynomial with more variables
 _Π↑_ : ∀ {n m} → Poly n → (suc n ≤′ m) → Poly m
 (xs Π i≤n) Π↑ n≤m = xs Π (≤′-step i≤n ⟨ ≤′-trans ⟩ n≤m)
 {-# INLINE _Π↑_ #-}
