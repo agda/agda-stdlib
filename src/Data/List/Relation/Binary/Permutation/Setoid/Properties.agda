@@ -13,8 +13,6 @@ module Data.List.Relation.Binary.Permutation.Setoid.Properties
   where
 
 open import Algebra
-open import Algebra.FunctionProperties
-open import Algebra.Structures
 open import Data.List.Base as List
 open import Data.List.Relation.Binary.Pointwise using (Pointwise)
 import Data.List.Relation.Binary.Equality.Setoid as Equality
