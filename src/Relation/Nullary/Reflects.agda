@@ -19,6 +19,12 @@ variable
 ------------------------------------------------------------------------
 -- `Reflects P b` is equivalent to `if b then P else ¬ P`.
 
+-- These lemmas are intended to be used mostly when `b` is a value, so
+-- that the `if` expressions have already been evaluated away.
+-- In this case, `of` works like the relevant constructor (`ofⁿ` or
+-- `ofʸ`), and `invert` strips off the constructor to just give either
+-- the proof of `P` or the proof of `¬ P`.
+
 of : ∀ {b} → if b then P else ¬ P → Reflects P b
 of {b = false} ¬p = ofⁿ ¬p
 of {b = true }  p = ofʸ p
