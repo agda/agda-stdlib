@@ -12,6 +12,7 @@ open import Data.Vec as Vec using (Vec)
 open import Data.NatSet as NatSet using (NatSet)
 open import Data.String using (String)
 open import Data.Maybe as Maybe using (Maybe; just; nothing)
+open import Data.Product
 
 module _ {a} {A : Set a} where
   pure : A → TC A
@@ -98,7 +99,6 @@ getArgs n (def _ xs) = Maybe.map Vec.reverse (List.foldl f b (List.mapMaybe getV
   b (suc _ ) = nothing
 getArgs _ _ = nothing
 
-open import Data.Product
 
 underPi : Term → ∃[ n ] (Vec String n × Term)
 underPi = go (λ xs y → _ , xs , y)
