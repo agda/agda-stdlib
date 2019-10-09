@@ -35,7 +35,8 @@ open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Nullary using (Dec; yes; no; ¬_)
 open import Relation.Nullary.Product using (_×-dec_)
 open import Relation.Nullary.Sum using (_⊎-dec_)
-open import Relation.Unary as U using (U; Pred; Decidable; _⊆_)
+open import Relation.Unary as U
+  using (U; Pred; Decidable; _⊆_; Satisfiable; Universal)
 open import Relation.Unary.Properties using (U?)
 
 ------------------------------------------------------------------------
@@ -495,25 +496,25 @@ punchOut-punchIn (suc i) {suc j} = cong suc (begin
 
 module _ {n p} {P : Pred (Fin (suc n)) p} where
 
-  ∀-cons : P zero → (∀ i → P (suc i)) → (∀ i → P i)
+  ∀-cons : P zero → Π[ P ∘ suc ] → Π[ P ]
   ∀-cons z s zero    = z
   ∀-cons z s (suc i) = s i
 
-  ∀-cons-⇔ : (P zero × (∀ i → P (suc i))) ⇔ (∀ i → P i)
+  ∀-cons-⇔ : (P zero × Π[ P ∘ suc ]) ⇔ Π[ P ]
   ∀-cons-⇔ = equivalence (uncurry ∀-cons) < _$ zero , _∘ suc >
 
-  ∃-here : P zero → ∃ P
+  ∃-here : P zero → ∃⟨ P ⟩
   ∃-here = zero ,_
 
-  ∃-there : ∃ (P ∘ suc) → ∃ P
+  ∃-there : ∃⟨ P ∘ suc ⟩ → ∃⟨ P ⟩
   ∃-there = map suc id
 
-  ∃-toSum : ∃ P → P zero ⊎ ∃ (P ∘ suc)
+  ∃-toSum : ∃⟨ P ⟩ → P zero ⊎ ∃⟨ P ∘ suc ⟩
   ∃-toSum ( zero , P₀ ) = inj₁ P₀
   ∃-toSum (suc f , P₁₊) = inj₂ (f , P₁₊)
 
-  ∃-cons-⇔ : (P zero ⊎ ∃ (P ∘ suc)) ⇔ ∃ P
-  ∃-cons-⇔ = equivalence [ ∃-here , ∃-there ] ∃-toSum
+  ⊎⇔∃ : (P zero ⊎ ∃⟨ P ∘ suc ⟩) ⇔ ∃⟨ P ⟩
+  ⊎⇔∃ = equivalence [ ∃-here , ∃-there ] ∃-toSum
 
 decFinSubset : ∀ {n p q} {P : Pred (Fin n) p} {Q : Pred (Fin n) q} →
                Decidable Q → (∀ {f} → Q f → Dec (P f)) → Dec (Q ⊆ P)
@@ -528,7 +529,7 @@ decFinSubset {suc n} {P = P} {Q} Q? P? with decFinSubset (Q? ∘ suc) P?
 
 any? : ∀ {n p} {P : Fin n → Set p} → Decidable P → Dec (∃ P)
 any? {zero}  {P = _} P? = no λ { (() , _) }
-any? {suc n} {P = P} P? = Dec.map ∃-cons-⇔ (P? zero ⊎-dec any? (P? ∘ suc))
+any? {suc n} {P = P} P? = Dec.map ⊎⇔∃ (P? zero ⊎-dec any? (P? ∘ suc))
 
 all? : ∀ {n p} {P : Pred (Fin n) p} →
        Decidable P → Dec (∀ f → P f)

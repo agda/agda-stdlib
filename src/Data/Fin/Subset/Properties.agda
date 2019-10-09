@@ -33,7 +33,7 @@ open import Relation.Nullary using (Dec; yes; no)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Nullary.Sum using (_⊎-dec_)
-open import Relation.Unary using (Pred; Decidable)
+open import Relation.Unary using (Pred; Decidable; Satisfiable)
 
 ------------------------------------------------------------------------
 -- Constructor mangling
@@ -588,24 +588,24 @@ Lift? P? p = decFinSubset (_∈? p) (λ {x} _ → P? x)
 
 module _ {p} {P : Pred (Subset zero) p} where
 
-  ∃-Subset-zero : ∃ P → P []
+  ∃-Subset-zero : ∃⟨ P ⟩ → P []
   ∃-Subset-zero ([] , P[]) = P[]
 
-  ∃-Subset-[]-⇔ : P [] ⇔ ∃ P
+  ∃-Subset-[]-⇔ : P [] ⇔ ∃⟨ P ⟩
   ∃-Subset-[]-⇔ = equivalence ([] ,_) ∃-Subset-zero
 
 module _ {p n} {P : Pred (Subset (suc n)) p} where
 
-  ∃-Subset-suc : ∃ P → ∃ (P ∘ (inside ∷_)) ⊎ ∃ (P ∘ (outside ∷_))
+  ∃-Subset-suc : ∃⟨ P ⟩ → ∃⟨ P ∘ (inside ∷_) ⟩ ⊎ ∃⟨ P ∘ (outside ∷_) ⟩
   ∃-Subset-suc (outside ∷ p , Pop) = inj₂ (p , Pop)
   ∃-Subset-suc ( inside ∷ p , Pip) = inj₁ (p , Pip)
 
-  ∃-Subset-∷-⇔ : (∃ (P ∘ (inside ∷_)) ⊎ ∃ (P ∘ (outside ∷_))) ⇔ ∃ P
+  ∃-Subset-∷-⇔ : (∃⟨ P ∘ (inside ∷_) ⟩ ⊎ ∃⟨ P ∘ (outside ∷_) ⟩) ⇔ ∃⟨ P ⟩
   ∃-Subset-∷-⇔ = equivalence
     [ Product.map _ id , Product.map _ id ]′
     ∃-Subset-suc
 
-anySubset? : ∀ {p n} {P : Pred (Subset n) p} → Decidable P → Dec (∃ P)
+anySubset? : ∀ {p n} {P : Pred (Subset n) p} → Decidable P → Dec ∃⟨ P ⟩
 anySubset? {n = zero}  P? = Dec.map ∃-Subset-[]-⇔ (P? [])
 anySubset? {n = suc n} P? =
   Dec.map ∃-Subset-∷-⇔ (anySubset? (P? ∘ ( inside ∷_)) ⊎-dec
