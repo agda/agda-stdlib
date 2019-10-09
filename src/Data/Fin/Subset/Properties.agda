@@ -44,13 +44,20 @@ drop-there (there x∈p) = x∈p
 drop-∷-⊆ : ∀ {n s₁ s₂} {p₁ p₂ : Subset n} → s₁ ∷ p₁ ⊆ s₂ ∷ p₂ → p₁ ⊆ p₂
 drop-∷-⊆ p₁s₁⊆p₂s₂ x∈p₁ = drop-there (p₁s₁⊆p₂s₂ (there x∈p₁))
 
-outside∷-⊆-⇔ : ∀ {n y} {p q : Subset n} → p ⊆ q ⇔ outside ∷ p ⊆ y ∷ q
-outside∷-⊆-⇔ = equivalence (λ { p⊆q (there ∈p) → there (p⊆q ∈p) }) drop-∷-⊆
+module _ {n} {p q : Subset n} where
 
-inside∷-⊆-⇔ : ∀ {n} {p q : Subset n} → p ⊆ q ⇔ inside ∷ p ⊆ inside ∷ q
-inside∷-⊆-⇔ = equivalence
-  (λ { p⊆q here → here ; p⊆q (there ∈p) → there (p⊆q ∈p) })
-  drop-∷-⊆
+  out⊆ : ∀ {y} → p ⊆ q → outside ∷ p ⊆ y ∷ q
+  out⊆ p⊆q (there ∈p) = there (p⊆q ∈p)
+
+  out⊆-⇔ : ∀ {y} → p ⊆ q ⇔ outside ∷ p ⊆ y ∷ q
+  out⊆-⇔ = equivalence out⊆ drop-∷-⊆
+
+  in⊆in : p ⊆ q → inside ∷ p ⊆ inside ∷ q
+  in⊆in p⊆q here = here
+  in⊆in p⊆q (there ∈p) = there (p⊆q ∈p)
+
+  in⊆in-⇔ : p ⊆ q ⇔ inside ∷ p ⊆ inside ∷ q
+  in⊆in-⇔ = equivalence in⊆in drop-∷-⊆
 
 ------------------------------------------------------------------------
 -- _∈_
@@ -160,9 +167,9 @@ x∈⁅y⁆⇔x≡y {_} {x} {y} = equivalence
 infix 4 _⊆?_
 _⊆?_ : ∀ {n} → B.Decidable (_⊆_ {n = n})
 []          ⊆? []          = yes id
-outside ∷ p ⊆?       y ∷ q = Dec.map outside∷-⊆-⇔ (p ⊆? q)
+outside ∷ p ⊆?       y ∷ q = Dec.map out⊆-⇔ (p ⊆? q)
 inside  ∷ p ⊆? outside ∷ q = no (λ p⊆q → case (p⊆q here) of λ())
-inside  ∷ p ⊆? inside  ∷ q = Dec.map inside∷-⊆-⇔ (p ⊆? q)
+inside  ∷ p ⊆? inside  ∷ q = Dec.map in⊆in-⇔ (p ⊆? q)
 
 module _ (n : ℕ) where
 
@@ -579,20 +586,28 @@ Lift? P? p = decFinSubset (_∈? p) (λ {x} _ → P? x)
 ------------------------------------------------------------------------
 -- Other
 
-∃-Subset-[]-⇔ : {P : Subset zero → Set} → P [] ⇔ ∃ P
-∃-Subset-[]-⇔ = equivalence ([] ,_) λ { ([] , P[]) → P[] }
+module _ {p} {P : Pred (Subset zero) p} where
 
-∃-Subset-∷-⇔ : ∀ {n} {P : Subset (suc n) → Set} →
-             (∃ (P ∘ (inside ∷_)) ⊎ ∃ (P ∘ (outside ∷_))) ⇔ ∃ P
-∃-Subset-∷-⇔ = equivalence
-  [ Product.map _ id , Product.map _ id ]′
-  λ { (outside ∷ p , Pp) → inj₂ (p , Pp)
-    ; ( inside ∷ p , Pp) → inj₁ (p , Pp)
-    }
+  ∃-Subset-zero : ∃ P → P []
+  ∃-Subset-zero ([] , P[]) = P[]
 
-anySubset? : ∀ {n} {P : Subset n → Set} → Decidable P → Dec (∃ P)
-anySubset? {zero}  P? = Dec.map ∃-Subset-[]-⇔ (P? [])
-anySubset? {suc n} P? =
+  ∃-Subset-[]-⇔ : P [] ⇔ ∃ P
+  ∃-Subset-[]-⇔ = equivalence ([] ,_) ∃-Subset-zero
+
+module _ {p n} {P : Pred (Subset (suc n)) p} where
+
+  ∃-Subset-suc : ∃ P → ∃ (P ∘ (inside ∷_)) ⊎ ∃ (P ∘ (outside ∷_))
+  ∃-Subset-suc (outside ∷ p , Pop) = inj₂ (p , Pop)
+  ∃-Subset-suc ( inside ∷ p , Pip) = inj₁ (p , Pip)
+
+  ∃-Subset-∷-⇔ : (∃ (P ∘ (inside ∷_)) ⊎ ∃ (P ∘ (outside ∷_))) ⇔ ∃ P
+  ∃-Subset-∷-⇔ = equivalence
+    [ Product.map _ id , Product.map _ id ]′
+    ∃-Subset-suc
+
+anySubset? : ∀ {p n} {P : Pred (Subset n) p} → Decidable P → Dec (∃ P)
+anySubset? {n = zero}  P? = Dec.map ∃-Subset-[]-⇔ (P? [])
+anySubset? {n = suc n} P? =
   Dec.map ∃-Subset-∷-⇔ (anySubset? (P? ∘ ( inside ∷_)) ⊎-dec
                         anySubset? (P? ∘ (outside ∷_)))
 

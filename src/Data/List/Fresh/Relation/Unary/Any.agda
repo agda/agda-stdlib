@@ -42,10 +42,15 @@ module _ {R : Rel A r} {P : Pred A p} {x} {xs : List# A R} {pr} where
   tail ¬head (here p)   = ⊥-elim (¬head p)
   tail ¬head (there ps) = ps
 
-  Any-cons-⇔ : (P x ⊎ Any P xs) ⇔ Any P (cons x xs pr)
-  Any-cons-⇔ = equivalence
-    [ here , there ]′
-    (λ{ (here x) → inj₁ x ; (there z) → inj₂ z })
+  toSum : Any P (cons x xs pr) → P x ⊎ Any P xs
+  toSum (here p) = inj₁ p
+  toSum (there ps) = inj₂ ps
+
+  fromSum : P x ⊎ Any P xs → Any P (cons x xs pr)
+  fromSum = [ here , there ]′
+
+  ⊎⇔Any : (P x ⊎ Any P xs) ⇔ Any P (cons x xs pr)
+  ⊎⇔Any = equivalence fromSum toSum
 
 module _ {R : Rel A r} {P : Pred A p} {Q : Pred A q} where
 
@@ -75,4 +80,4 @@ module _ {R : Rel A r} {P : Pred A p} (P? : Decidable P) where
 
   any? : (xs : List# A R) → Dec (Any P xs)
   any? []        = no (λ ())
-  any? (x ∷# xs) = Dec.map Any-cons-⇔ (P? x ⊎-dec any? xs)
+  any? (x ∷# xs) = Dec.map ⊎⇔Any (P? x ⊎-dec any? xs)

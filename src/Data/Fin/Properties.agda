@@ -508,12 +508,12 @@ module _ {n p} {P : Pred (Fin (suc n)) p} where
   ∃-there : ∃ (P ∘ suc) → ∃ P
   ∃-there = map suc id
 
+  ∃-toSum : ∃ P → P zero ⊎ ∃ (P ∘ suc)
+  ∃-toSum ( zero , P₀ ) = inj₁ P₀
+  ∃-toSum (suc f , P₁₊) = inj₂ (f , P₁₊)
+
   ∃-cons-⇔ : (P zero ⊎ ∃ (P ∘ suc)) ⇔ ∃ P
-  ∃-cons-⇔ = equivalence
-    [ ∃-here , ∃-there ]
-    λ { (zero  , P₀ ) → inj₁ P₀
-      ; (suc f , P₁₊) → inj₂ (f , P₁₊)
-      }
+  ∃-cons-⇔ = equivalence [ ∃-here , ∃-there ] ∃-toSum
 
 decFinSubset : ∀ {n p q} {P : Pred (Fin n) p} {Q : Pred (Fin n) q} →
                Decidable Q → (∀ {f} → Q f → Dec (P f)) → Dec (Q ⊆ P)

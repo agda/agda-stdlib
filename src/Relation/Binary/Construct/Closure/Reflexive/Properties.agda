@@ -61,13 +61,19 @@ module _ {_~_ : Rel A ℓ} where
   ... | tri≈ _ refl _ = inj₁ refl
   ... | tri> _ _    c = inj₂ [ c ]
 
-  Refl-⇔ : ∀ {a b} → (a ≡ b ⊎ a ~ b) ⇔ Refl _~_ a b
-  Refl-⇔ = equivalence
-    [ (λ { refl → refl }) , [_] ]′
-    (λ { refl → inj₁ refl ; [ x∼y ] → inj₂ x∼y })
+  fromSum : ∀ {a b} → a ≡ b ⊎ a ~ b → Refl _~_ a b
+  fromSum (inj₁ refl) = refl
+  fromSum (inj₂ y) = [ y ]
+
+  toSum : ∀ {a b} → Refl _~_ a b → a ≡ b ⊎ a ~ b
+  toSum [ x∼y ] = inj₂ x∼y
+  toSum refl = inj₁ refl
+
+  ⊎⇔Refl : ∀ {a b} → (a ≡ b ⊎ a ~ b) ⇔ Refl _~_ a b
+  ⊎⇔Refl = equivalence fromSum toSum
 
   dec : Decidable {A = A} _≡_ → Decidable _~_ → Decidable (Refl _~_)
-  dec ≡-dec ~-dec a b = Dec.map Refl-⇔ (≡-dec a b ⊎-dec ~-dec a b)
+  dec ≡-dec ~-dec a b = Dec.map ⊎⇔Refl (≡-dec a b ⊎-dec ~-dec a b)
 
   decidable : Trichotomous _≡_ _~_ → Decidable (Refl _~_)
   decidable ~-tri a b with ~-tri a b

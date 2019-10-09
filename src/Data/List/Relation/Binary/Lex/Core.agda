@@ -102,12 +102,12 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} {P : Set}
   []<[]-⇔ : P ⇔ [] < []
   []<[]-⇔ = equivalence base (λ { (base p) → p })
 
+  toSum : ∀ {x y xs ys} → (x ∷ xs) < (y ∷ ys) → (x ≺ y ⊎ (x ≈ y × xs < ys))
+  toSum (this x≺y) = inj₁ x≺y
+  toSum (next x≈y xs<ys) = inj₂ (x≈y , xs<ys)
+
   ∷<∷-⇔ : ∀ {x y xs ys} → (x ≺ y ⊎ (x ≈ y × xs < ys)) ⇔ (x ∷ xs) < (y ∷ ys)
-  ∷<∷-⇔ = equivalence
-    [ this , uncurry next ]
-    (λ { (this x≺y      ) → inj₁ x≺y
-       ; (next x≈y xs<ys) → inj₂ (x≈y , xs<ys)
-       })
+  ∷<∷-⇔ = equivalence [ this , uncurry next ] toSum
 
   module _ (dec-P : Dec P) (dec-≈ : Decidable _≈_) (dec-≺ : Decidable _≺_)
     where
