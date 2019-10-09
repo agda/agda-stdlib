@@ -38,7 +38,7 @@ mutual
 
   showPatterns : List (Arg Pattern) → String
   showPatterns []       = ""
-  showPatterns (a ∷ ps) = showArg a ++ showPatterns ps
+  showPatterns (a ∷ ps) = showArg a <+> showPatterns ps
     where
       showRel : Relevance → String
       showRel relevant   = ""
