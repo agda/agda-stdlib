@@ -233,6 +233,13 @@ attached to all deprecated names to discourage their use.
 Other minor additions
 ---------------------
 
+* Added new bundles to `Data.Char.Properties`:
+  ```agda
+  <-isStrictPartialOrder-≈ : IsStrictPartialOrder _≈_ _<_
+  <-isStrictTotalOrder-≈   : IsStrictTotalOrder _≈_ _<_
+  <-strictPartialOrder-≈   : StrictPartialOrder _ _ _
+  ```
+
 * Added new constants to `Data.Integer.Base`:
   ```agda
   -1ℤ = -[1+ 0 ]
@@ -337,6 +344,13 @@ Other minor additions
   m≤n+∣n-m∣      : m ≤ n + ∣ n - m ∣
   m≤n+∣m-n∣      : m ≤ n + ∣ m - n ∣
   m≤∣m-n∣+n      : m ≤ ∣ m - n ∣ + n
+  ```
+
+* Added new bundles to `Data.String.Properties`:
+  ```agda
+  <-isStrictPartialOrder-≈ : IsStrictPartialOrder _≈_ _<_
+  <-isStrictTotalOrder-≈   : IsStrictTotalOrder _≈_ _<_
+  <-strictPartialOrder-≈   : StrictPartialOrder _ _ _
   ```
 
 * Added new functions to `Data.Sum.Base`:

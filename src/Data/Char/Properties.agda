@@ -18,9 +18,6 @@ open import Function
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable using (map′; isYes)
 open import Relation.Binary
-  using ( _⇒_; Reflexive; Symmetric; Transitive; Substitutive
-        ; Decidable; IsEquivalence; IsDecEquivalence
-        ; Setoid; DecSetoid; StrictTotalOrder)
 open import Relation.Binary.PropositionalEquality.Core
 import Relation.Binary.Construct.On as On
 import Relation.Binary.PropositionalEquality as PropEq
@@ -122,6 +119,15 @@ private
 infix 4 _<?_
 _<?_ : Decidable _<_
 _<?_ = On.decidable toℕ ℕ._<_ ℕₚ._<?_
+
+<-isStrictPartialOrder-≈ : IsStrictPartialOrder _≈_ _<_
+<-isStrictPartialOrder-≈ = On.isStrictPartialOrder toℕ ℕₚ.<-isStrictPartialOrder
+
+<-isStrictTotalOrder-≈ : IsStrictTotalOrder _≈_ _<_
+<-isStrictTotalOrder-≈ = On.isStrictTotalOrder toℕ ℕₚ.<-isStrictTotalOrder
+
+<-strictPartialOrder-≈ : StrictPartialOrder _ _ _
+<-strictPartialOrder-≈ = On.strictPartialOrder ℕₚ.<-strictPartialOrder toℕ
 
 <-strictTotalOrder-≈ : StrictTotalOrder _ _ _
 <-strictTotalOrder-≈ = On.strictTotalOrder ℕₚ.<-strictTotalOrder toℕ
