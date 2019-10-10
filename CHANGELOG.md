@@ -13,7 +13,9 @@ Highlights
 Bug-fixes
 ---------
 
-
+* In `Relation.Binary`:
+  - `IsStrictTotalOrder` now exports `isDecStrictPartialOrder`
+  - `IsDecStrictPartialOrder` now re-exports the contents of `IsStrictPartialOrder`.
 
 Non-backwards compatible changes
 --------------------------------
