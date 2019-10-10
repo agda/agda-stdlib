@@ -2,15 +2,16 @@
 -- The Agda standard library
 --
 -- Properties of the polymorphic unit type
+-- Defines Decidable Equality and Decidable Ordering as well
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
 module Data.Unit.Polymorphic.Properties where
 
-open import Data.Sum
-open import Data.Unit.Polymorphic
 open import Level
+open import Data.Sum using (inj₁)
+open import Data.Unit.Polymorphic.Base using (⊤; tt; _≤_)
 open import Relation.Nullary
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
@@ -18,6 +19,19 @@ open import Relation.Binary.PropositionalEquality
 private
   variable
     ℓ ℓ′ a b e : Level
+
+------------------------------------------------------------------------
+-- Decidable Equality and Ordering
+
+infix 4 _≟_
+
+_≟_ : {ℓ : Level} → Decidable {A = ⊤ {ℓ}} _≡_
+_ ≟ _ = yes refl
+
+infix 4 _≤?_
+
+_≤?_ : {a b ℓ : Level} → Decidable {a} {_} {b} {ℓ = ℓ}  _≤_
+_ ≤? _ = yes _
 
 ------------------------------------------------------------------------
 -- Setoid
@@ -74,7 +88,7 @@ private
   ; _≤?_         = _≤?_
   }
 
--- Packages
+-- Bundles
 
 ≤-poset : Poset ℓ ℓ b
 ≤-poset = record

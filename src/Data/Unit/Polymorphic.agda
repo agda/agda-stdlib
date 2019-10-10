@@ -8,31 +8,11 @@
 
 module Data.Unit.Polymorphic where
 
-open import Level
-open import Relation.Nullary
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality
+-- Re-export contents of Base module
+open import Data.Unit.Polymorphic.Base public
 
 ------------------------------------------------------------------------
--- A unit type defined as a record type
+-- Re-export query operations
 
-record ⊤ {ℓ : Level} : Set ℓ where
-  constructor tt
-
-------------------------------------------------------------------------
--- An ordering relation over the unit type
-
-record _≤_ {ℓ ℓ′ e : Level} (x : ⊤ {ℓ}) (y : ⊤ {ℓ′}) : Set e where
-
-------------------------------------------------------------------------
--- Decidable Equality and Ordering
-
-infix 4 _≟_
-
-_≟_ : {ℓ : Level} → Decidable {A = ⊤ {ℓ}} _≡_
-_ ≟ _ = yes refl
-
-infix 4 _≤?_
-
-_≤?_ : {a b ℓ : Level} → Decidable {a} {_} {b} {ℓ = ℓ}  _≤_
-_ ≤? _ = yes _
+open import Data.Unit.Polymorphic.Properties public
+  using (_≟_; _≤?_)
