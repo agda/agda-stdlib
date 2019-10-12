@@ -10,10 +10,11 @@ module Codata.Cofin where
 
 open import Size
 open import Codata.Thunk
-open import Codata.Conat as Conat using (Conat; zero; suc; infinity; _ℕ<_; sℕ≤s; _ℕ≤infinity)
+open import Codata.Conat as Conat
+  using (Conat; zero; suc; infinity; _ℕ<_; sℕ≤s; _ℕ≤infinity)
 open import Codata.Conat.Bisimilarity as Bisim using (_⊢_≲_ ; s≲s)
 open import Data.Nat
-open import Data.Fin as Fin hiding (fromℕ; fromℕ≤; toℕ)
+open import Data.Fin as Fin hiding (fromℕ; fromℕ≤; fromℕ<; toℕ)
 open import Function
 open import Relation.Binary.PropositionalEquality
 

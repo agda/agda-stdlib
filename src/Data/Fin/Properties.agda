@@ -15,11 +15,6 @@ open import Category.Functor using (RawFunctor)
 open import Data.Empty using (⊥-elim)
 open import Data.Fin.Base
 open import Data.Nat as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_)
-  renaming
-  ( _≤_ to _ℕ≤_
-  ; _<_ to _ℕ<_
-  ; _+_ to _ℕ+_
-  )
 import Data.Nat.Properties as ℕₚ
 open import Data.Unit using (tt)
 open import Data.Product using (∃; ∃₂; ∄; _×_; _,_; map; proj₁)
@@ -38,12 +33,14 @@ open import Relation.Unary.Properties using (U?)
 
 ------------------------------------------------------------------------
 -- Fin
+------------------------------------------------------------------------
 
 ¬Fin0 : ¬ Fin 0
 ¬Fin0 ()
 
 ------------------------------------------------------------------------
 -- Properties of _≡_
+------------------------------------------------------------------------
 
 suc-injective : ∀ {o} {m n : Fin o} → Fin.suc m ≡ suc n → m ≡ n
 suc-injective refl = refl
@@ -58,27 +55,32 @@ suc x ≟ suc y with x ≟ y
 ... | yes x≡y = yes (cong suc x≡y)
 ... | no  x≢y = no  (x≢y ∘ suc-injective)
 
-preorder : ℕ → Preorder _ _ _
-preorder n = P.preorder (Fin n)
+------------------------------------------------------------------------
+-- Structures
 
-setoid : ℕ → Setoid _ _
-setoid n = P.setoid (Fin n)
-
-isDecEquivalence : ∀ {n} → IsDecEquivalence (_≡_ {A = Fin n})
-isDecEquivalence = record
+≡-isDecEquivalence : ∀ {n} → IsDecEquivalence (_≡_ {A = Fin n})
+≡-isDecEquivalence = record
   { isEquivalence = P.isEquivalence
   ; _≟_           = _≟_
   }
 
-decSetoid : ℕ → DecSetoid _ _
-decSetoid n = record
-  { Carrier          = Fin n
-  ; _≈_              = _≡_
-  ; isDecEquivalence = isDecEquivalence
+------------------------------------------------------------------------
+-- Bundles
+
+≡-preorder : ℕ → Preorder _ _ _
+≡-preorder n = P.preorder (Fin n)
+
+≡-setoid : ℕ → Setoid _ _
+≡-setoid n = P.setoid (Fin n)
+
+≡-decSetoid : ℕ → DecSetoid _ _
+≡-decSetoid n = record
+  { isDecEquivalence = ≡-isDecEquivalence {n}
   }
 
 ------------------------------------------------------------------------
 -- toℕ
+------------------------------------------------------------------------
 
 toℕ-injective : ∀ {n} {i j : Fin n} → toℕ i ≡ toℕ j → i ≡ j
 toℕ-injective {zero}  {}      {}      _
@@ -90,15 +92,15 @@ toℕ-strengthen : ∀ {n} (i : Fin n) → toℕ (strengthen i) ≡ toℕ i
 toℕ-strengthen zero    = refl
 toℕ-strengthen (suc i) = cong suc (toℕ-strengthen i)
 
-toℕ-raise : ∀ {m} n (i : Fin m) → toℕ (raise n i) ≡ n ℕ+ toℕ i
+toℕ-raise : ∀ {m} n (i : Fin m) → toℕ (raise n i) ≡ n ℕ.+ toℕ i
 toℕ-raise zero    i = refl
 toℕ-raise (suc n) i = cong suc (toℕ-raise n i)
 
-toℕ<n : ∀ {n} (i : Fin n) → toℕ i ℕ< n
+toℕ<n : ∀ {n} (i : Fin n) → toℕ i ℕ.< n
 toℕ<n zero    = s≤s z≤n
 toℕ<n (suc i) = s≤s (toℕ<n i)
 
-toℕ≤pred[n] : ∀ {n} (i : Fin n) → toℕ i ℕ≤ ℕ.pred n
+toℕ≤pred[n] : ∀ {n} (i : Fin n) → toℕ i ℕ.≤ ℕ.pred n
 toℕ≤pred[n] zero                 = z≤n
 toℕ≤pred[n] (suc {n = suc n} i)  = s≤s (toℕ≤pred[n] i)
 
@@ -106,11 +108,12 @@ toℕ≤pred[n] (suc {n = suc n} i)  = s≤s (toℕ≤pred[n] i)
 -- however, with a different reduction behavior.
 -- If no one needs the reduction behavior of toℕ≤pred[n],
 -- it can be removed in favor of toℕ≤pred[n]′.
-toℕ≤pred[n]′ : ∀ {n} (i : Fin n) → toℕ i ℕ≤ ℕ.pred n
+toℕ≤pred[n]′ : ∀ {n} (i : Fin n) → toℕ i ℕ.≤ ℕ.pred n
 toℕ≤pred[n]′ i = ℕₚ.<⇒≤pred (toℕ<n i)
 
 ------------------------------------------------------------------------
 -- fromℕ
+------------------------------------------------------------------------
 
 toℕ-fromℕ : ∀ n → toℕ (fromℕ n) ≡ n
 toℕ-fromℕ zero    = refl
@@ -121,39 +124,42 @@ fromℕ-toℕ zero    = refl
 fromℕ-toℕ (suc i) = cong suc (fromℕ-toℕ i)
 
 ------------------------------------------------------------------------
--- fromℕ≤
+-- fromℕ<
+------------------------------------------------------------------------
 
-fromℕ≤-toℕ : ∀ {m} (i : Fin m) (i<m : toℕ i ℕ< m) → fromℕ≤ i<m ≡ i
-fromℕ≤-toℕ zero    (s≤s z≤n)       = refl
-fromℕ≤-toℕ (suc i) (s≤s (s≤s m≤n)) = cong suc (fromℕ≤-toℕ i (s≤s m≤n))
+fromℕ<-toℕ : ∀ {m} (i : Fin m) (i<m : toℕ i ℕ.< m) → fromℕ< i<m ≡ i
+fromℕ<-toℕ zero    (s≤s z≤n)       = refl
+fromℕ<-toℕ (suc i) (s≤s (s≤s m≤n)) = cong suc (fromℕ<-toℕ i (s≤s m≤n))
 
-toℕ-fromℕ≤ : ∀ {m n} (m<n : m ℕ< n) → toℕ (fromℕ≤ m<n) ≡ m
-toℕ-fromℕ≤ (s≤s z≤n)       = refl
-toℕ-fromℕ≤ (s≤s (s≤s m<n)) = cong suc (toℕ-fromℕ≤ (s≤s m<n))
+toℕ-fromℕ< : ∀ {m n} (m<n : m ℕ.< n) → toℕ (fromℕ< m<n) ≡ m
+toℕ-fromℕ< (s≤s z≤n)       = refl
+toℕ-fromℕ< (s≤s (s≤s m<n)) = cong suc (toℕ-fromℕ< (s≤s m<n))
 
--- fromℕ is a special case of fromℕ≤.
-fromℕ-def : ∀ n → fromℕ n ≡ fromℕ≤ ℕₚ.≤-refl
+-- fromℕ is a special case of fromℕ<.
+fromℕ-def : ∀ n → fromℕ n ≡ fromℕ< ℕₚ.≤-refl
 fromℕ-def zero    = refl
 fromℕ-def (suc n) = cong suc (fromℕ-def n)
 
 ------------------------------------------------------------------------
--- fromℕ≤″
+-- fromℕ<″
+------------------------------------------------------------------------
 
-fromℕ≤≡fromℕ≤″ : ∀ {m n} (m<n : m ℕ< n) (m<″n : m ℕ.<″ n) →
-                  fromℕ≤ m<n ≡ fromℕ≤″ m m<″n
-fromℕ≤≡fromℕ≤″ (s≤s z≤n)       (ℕ.less-than-or-equal refl) = refl
-fromℕ≤≡fromℕ≤″ (s≤s (s≤s m<n)) (ℕ.less-than-or-equal refl) =
-  cong suc (fromℕ≤≡fromℕ≤″ (s≤s m<n) (ℕ.less-than-or-equal refl))
+fromℕ<≡fromℕ<″ : ∀ {m n} (m<n : m ℕ.< n) (m<″n : m ℕ.<″ n) →
+                 fromℕ< m<n ≡ fromℕ<″ m m<″n
+fromℕ<≡fromℕ<″ (s≤s z≤n)       (ℕ.less-than-or-equal refl) = refl
+fromℕ<≡fromℕ<″ (s≤s (s≤s m<n)) (ℕ.less-than-or-equal refl) =
+  cong suc (fromℕ<≡fromℕ<″ (s≤s m<n) (ℕ.less-than-or-equal refl))
 
-toℕ-fromℕ≤″ : ∀ {m n} (m<n : m ℕ.<″ n) → toℕ (fromℕ≤″ m m<n) ≡ m
-toℕ-fromℕ≤″ {m} {n} m<n = begin
-  toℕ (fromℕ≤″ m m<n)  ≡⟨ cong toℕ (sym (fromℕ≤≡fromℕ≤″ (ℕₚ.≤″⇒≤ m<n) m<n)) ⟩
-  toℕ (fromℕ≤ _)       ≡⟨ toℕ-fromℕ≤ (ℕₚ.≤″⇒≤ m<n) ⟩
+toℕ-fromℕ<″ : ∀ {m n} (m<n : m ℕ.<″ n) → toℕ (fromℕ<″ m m<n) ≡ m
+toℕ-fromℕ<″ {m} {n} m<n = begin
+  toℕ (fromℕ<″ m m<n)  ≡⟨ cong toℕ (sym (fromℕ<≡fromℕ<″ (ℕₚ.≤″⇒≤ m<n) m<n)) ⟩
+  toℕ (fromℕ< _)       ≡⟨ toℕ-fromℕ< (ℕₚ.≤″⇒≤ m<n) ⟩
   m ∎
   where open ≡-Reasoning
 
 ------------------------------------------------------------------------
 -- cast
+------------------------------------------------------------------------
 
 toℕ-cast : ∀ {m n} .(eq : m ≡ n) (k : Fin m) → toℕ (cast eq k) ≡ toℕ k
 toℕ-cast {n = suc n} eq zero    = refl
@@ -161,8 +167,9 @@ toℕ-cast {n = suc n} eq (suc k) = cong suc (toℕ-cast (cong ℕ.pred eq) k)
 
 ------------------------------------------------------------------------
 -- Properties of _≤_
-
+------------------------------------------------------------------------
 -- Relational properties
+
 ≤-reflexive : ∀ {n} → _≡_ ⇒ (_≤_ {n})
 ≤-reflexive refl = ℕₚ.≤-refl
 
@@ -178,6 +185,9 @@ toℕ-cast {n = suc n} eq (suc k) = cong suc (toℕ-cast (cong ℕ.pred eq) k)
 ≤-total : ∀ {n} → Total (_≤_ {n})
 ≤-total x y = ℕₚ.≤-total (toℕ x) (toℕ y)
 
+≤-irrelevant : ∀ {n} → Irrelevant (_≤_ {n})
+≤-irrelevant = ℕₚ.≤-irrelevant
+
 infix 4 _≤?_ _<?_
 
 _≤?_ : ∀ {n} → B.Decidable (_≤_ {n})
@@ -186,16 +196,14 @@ a ≤? b = toℕ a ℕ.≤? toℕ b
 _<?_ : ∀ {n} → B.Decidable (_<_ {n})
 m <? n = suc (toℕ m) ℕ.≤? toℕ n
 
+------------------------------------------------------------------------
+-- Structures
+
 ≤-isPreorder : ∀ {n} → IsPreorder _≡_ (_≤_ {n})
 ≤-isPreorder = record
   { isEquivalence = P.isEquivalence
   ; reflexive     = ≤-reflexive
   ; trans         = ≤-trans
-  }
-
-≤-preorder : ℕ → Preorder _ _ _
-≤-preorder n = record
-  { isPreorder = ≤-isPreorder {n}
   }
 
 ≤-isPartialOrder : ∀ {n} → IsPartialOrder _≡_ (_≤_ {n})
@@ -204,20 +212,11 @@ m <? n = suc (toℕ m) ℕ.≤? toℕ n
   ; antisym    = ≤-antisym
   }
 
-≤-poset : ℕ → Poset _ _ _
-≤-poset n = record
-  { isPartialOrder = ≤-isPartialOrder {n}
-  }
 
 ≤-isTotalOrder : ∀ {n} → IsTotalOrder _≡_ (_≤_ {n})
 ≤-isTotalOrder = record
   { isPartialOrder = ≤-isPartialOrder
   ; total          = ≤-total
-  }
-
-≤-totalOrder : ℕ → TotalOrder _ _ _
-≤-totalOrder n = record
-  { isTotalOrder = ≤-isTotalOrder {n}
   }
 
 ≤-isDecTotalOrder : ∀ {n} → IsDecTotalOrder _≡_ (_≤_ {n})
@@ -227,19 +226,34 @@ m <? n = suc (toℕ m) ℕ.≤? toℕ n
   ; _≤?_         = _≤?_
   }
 
+------------------------------------------------------------------------
+-- Bundles
+
+≤-preorder : ℕ → Preorder _ _ _
+≤-preorder n = record
+  { isPreorder = ≤-isPreorder {n}
+  }
+
+≤-poset : ℕ → Poset _ _ _
+≤-poset n = record
+  { isPartialOrder = ≤-isPartialOrder {n}
+  }
+
+≤-totalOrder : ℕ → TotalOrder _ _ _
+≤-totalOrder n = record
+  { isTotalOrder = ≤-isTotalOrder {n}
+  }
+
 ≤-decTotalOrder : ℕ → DecTotalOrder _ _ _
 ≤-decTotalOrder n = record
   { isDecTotalOrder = ≤-isDecTotalOrder {n}
   }
 
--- Other properties
-≤-irrelevant : ∀ {n} → Irrelevant (_≤_ {n})
-≤-irrelevant = ℕₚ.≤-irrelevant
-
 ------------------------------------------------------------------------
 -- Properties of _<_
-
+------------------------------------------------------------------------
 -- Relational properties
+
 <-irrefl : ∀ {n} → Irreflexive _≡_ (_<_ {n})
 <-irrefl refl = ℕₚ.<-irrefl refl
 
@@ -267,17 +281,18 @@ m <? n = suc (toℕ m) ℕ.≤? toℕ n
 <-resp₂-≡ : ∀ {n} → (_<_ {n}) Respects₂ _≡_
 <-resp₂-≡ = <-respʳ-≡ , <-respˡ-≡
 
+<-irrelevant : ∀ {n} → Irrelevant (_<_ {n})
+<-irrelevant = ℕₚ.<-irrelevant
+
+------------------------------------------------------------------------
+-- Structures
+
 <-isStrictPartialOrder : ∀ {n} → IsStrictPartialOrder _≡_ (_<_ {n})
 <-isStrictPartialOrder = record
   { isEquivalence = P.isEquivalence
   ; irrefl        = <-irrefl
   ; trans         = <-trans
   ; <-resp-≈      = <-resp₂-≡
-  }
-
-<-strictPartialOrder : ℕ → StrictPartialOrder _ _ _
-<-strictPartialOrder n = record
-  { isStrictPartialOrder = <-isStrictPartialOrder {n}
   }
 
 <-isStrictTotalOrder : ∀ {n} → IsStrictTotalOrder _≡_ (_<_ {n})
@@ -287,14 +302,21 @@ m <? n = suc (toℕ m) ℕ.≤? toℕ n
   ; compare       = <-cmp
   }
 
+------------------------------------------------------------------------
+-- Bundles
+
+<-strictPartialOrder : ℕ → StrictPartialOrder _ _ _
+<-strictPartialOrder n = record
+  { isStrictPartialOrder = <-isStrictPartialOrder {n}
+  }
+
 <-strictTotalOrder : ℕ → StrictTotalOrder _ _ _
 <-strictTotalOrder n = record
   { isStrictTotalOrder = <-isStrictTotalOrder {n}
   }
 
+------------------------------------------------------------------------
 -- Other properties
-<-irrelevant : ∀ {n} → Irrelevant (_<_ {n})
-<-irrelevant = ℕₚ.<-irrelevant
 
 <⇒≢ : ∀ {n} {i j : Fin n} → i < j → i ≢ j
 <⇒≢ i<i refl = ℕₚ.n≮n _ i<i
@@ -307,6 +329,7 @@ m <? n = suc (toℕ m) ℕ.≤? toℕ n
 
 ------------------------------------------------------------------------
 -- inject
+------------------------------------------------------------------------
 
 toℕ-inject : ∀ {n} {i : Fin n} (j : Fin′ i) →
              toℕ (inject j) ≡ toℕ j
@@ -315,6 +338,7 @@ toℕ-inject {i = suc i} (suc j) = cong suc (toℕ-inject j)
 
 ------------------------------------------------------------------------
 -- inject+
+------------------------------------------------------------------------
 
 toℕ-inject+ : ∀ {m} n (i : Fin m) → toℕ i ≡ toℕ (inject+ n i)
 toℕ-inject+ n zero    = refl
@@ -322,6 +346,7 @@ toℕ-inject+ n (suc i) = cong suc (toℕ-inject+ n i)
 
 ------------------------------------------------------------------------
 -- inject₁
+------------------------------------------------------------------------
 
 inject₁-injective : ∀ {n} {i j : Fin n} → inject₁ i ≡ inject₁ j → i ≡ j
 inject₁-injective {i = zero}  {zero}  i≡j = refl
@@ -364,24 +389,28 @@ lower₁-irrelevant {suc n} (suc i)  _   _ =
 
 ------------------------------------------------------------------------
 -- inject≤
+------------------------------------------------------------------------
 
-toℕ-inject≤ : ∀ {m n} (i : Fin m) .(le : m ℕ≤ n) →
+toℕ-inject≤ : ∀ {m n} (i : Fin m) .(le : m ℕ.≤ n) →
                 toℕ (inject≤ i le) ≡ toℕ i
 toℕ-inject≤ {_} {suc n} zero    _  = refl
 toℕ-inject≤ {_} {suc n} (suc i) le = cong suc (toℕ-inject≤ i (ℕ.≤-pred le))
 
-inject≤-refl : ∀ {n} (i : Fin n) .(n≤n : n ℕ≤ n) → inject≤ i n≤n ≡ i
+inject≤-refl : ∀ {n} (i : Fin n) .(n≤n : n ℕ.≤ n) → inject≤ i n≤n ≡ i
 inject≤-refl {suc n} zero    _   = refl
 inject≤-refl {suc n} (suc i) n≤n = cong suc (inject≤-refl i (ℕ.≤-pred n≤n))
 
 inject≤-idempotent : ∀ {m n k} (i : Fin m)
-                     .(m≤n : m ℕ≤ n) .(n≤k : n ℕ≤ k) .(m≤k : m ℕ≤ k) →
+                     .(m≤n : m ℕ.≤ n) .(n≤k : n ℕ.≤ k) .(m≤k : m ℕ.≤ k) →
                      inject≤ (inject≤ i m≤n) n≤k ≡ inject≤ i m≤k
 inject≤-idempotent {_} {suc n} {suc k} zero    _ _ _ = refl
 inject≤-idempotent {_} {suc n} {suc k} (suc i) _ _ _ =
   cong suc (inject≤-idempotent i _ _ _)
 
 ------------------------------------------------------------------------
+-- splitAt
+------------------------------------------------------------------------
+
 -- Fin (m + n) ≃ Fin m ⊎ Fin n
 
 splitAt-inject+ : ∀ m n i → splitAt m (inject+ n i) ≡ inj₁ i
@@ -394,6 +423,7 @@ splitAt-raise (suc m) n i rewrite splitAt-raise m n i = refl
 
 ------------------------------------------------------------------------
 -- _≺_
+------------------------------------------------------------------------
 
 ≺⇒<′ : _≺_ ⇒ ℕ._<′_
 ≺⇒<′ (n ≻toℕ i) = ℕₚ.≤⇒≤′ (toℕ<n i)
@@ -406,23 +436,26 @@ splitAt-raise (suc m) n i rewrite splitAt-raise m n i = refl
 
 ------------------------------------------------------------------------
 -- pred
+------------------------------------------------------------------------
 
 <⇒≤pred : ∀ {n} {i j : Fin n} → j < i → j ≤ pred i
 <⇒≤pred {i = suc i} {zero}  j<i       = z≤n
 <⇒≤pred {i = suc i} {suc j} (s≤s j<i) =
-  subst (_ ℕ≤_) (sym (toℕ-inject₁ i)) j<i
+  subst (_ ℕ.≤_) (sym (toℕ-inject₁ i)) j<i
 
 ------------------------------------------------------------------------
--- ℕ-
+-- _ℕ-_
+------------------------------------------------------------------------
 
 toℕ‿ℕ- : ∀ n i → toℕ (n ℕ- i) ≡ n ∸ toℕ i
 toℕ‿ℕ- n       zero     = toℕ-fromℕ n
 toℕ‿ℕ- (suc n) (suc i)  = toℕ‿ℕ- n i
 
 ------------------------------------------------------------------------
--- ℕ-ℕ
+-- _ℕ-ℕ_
+------------------------------------------------------------------------
 
-nℕ-ℕi≤n : ∀ n i → n ℕ-ℕ i ℕ≤ n
+nℕ-ℕi≤n : ∀ n i → n ℕ-ℕ i ℕ.≤ n
 nℕ-ℕi≤n n       zero     = ℕₚ.≤-refl
 nℕ-ℕi≤n (suc n) (suc i)  = begin
   n ℕ-ℕ i  ≤⟨ nℕ-ℕi≤n n i ⟩
@@ -432,6 +465,7 @@ nℕ-ℕi≤n (suc n) (suc i)  = begin
 
 ------------------------------------------------------------------------
 -- punchIn
+------------------------------------------------------------------------
 
 punchIn-injective : ∀ {m} i (j k : Fin m) →
                     punchIn i j ≡ punchIn i k → j ≡ k
@@ -445,6 +479,7 @@ punchInᵢ≢i (suc i) (suc j) = punchInᵢ≢i i j ∘ suc-injective
 
 ------------------------------------------------------------------------
 -- punchOut
+------------------------------------------------------------------------
 
 -- A version of 'cong' for 'punchOut' in which the inequality argument can be
 -- changed out arbitrarily (reflecting the proof-irrelevance of that argument).
@@ -492,6 +527,7 @@ punchOut-punchIn (suc i) {suc j} = cong suc (begin
 
 ------------------------------------------------------------------------
 -- Quantification
+------------------------------------------------------------------------
 
 ∀-cons : ∀ {n p} {P : Pred (Fin (suc n)) p} →
          P zero → (∀ i → P (suc i)) → (∀ i → P i)
@@ -557,6 +593,7 @@ pigeonhole (s≤s (s≤s m≤n)) f with any? (λ k → f zero ≟ f (suc k))
 
 ------------------------------------------------------------------------
 -- Categorical
+------------------------------------------------------------------------
 
 module _ {f} {F : Set f → Set f} (RA : RawApplicative F) where
 
@@ -677,9 +714,52 @@ Please use <-irrelevant instead."
 -- Version 1.1
 
 infixl 6 _+′_
-_+′_ : ∀ {m n} (i : Fin m) (j : Fin n) → Fin (ℕ.pred m ℕ+ n)
+_+′_ : ∀ {m n} (i : Fin m) (j : Fin n) → Fin (ℕ.pred m ℕ.+ n)
 i +′ j = inject≤ (i + j) (ℕₚ.+-monoˡ-≤ _ (toℕ≤pred[n] i))
 {-# WARNING_ON_USAGE _+′_
 "Warning: _+′_ was deprecated in v1.1.
 Please use `raise` or `inject+` from `Data.Fin` instead."
+#-}
+
+-- Version 1.2
+
+fromℕ≤-toℕ = fromℕ<-toℕ
+{-# WARNING_ON_USAGE fromℕ≤-toℕ
+"Warning: fromℕ≤-toℕ was deprecated in v1.2.
+Please use fromℕ<-toℕ instead."
+#-}
+toℕ-fromℕ≤ = toℕ-fromℕ<
+{-# WARNING_ON_USAGE toℕ-fromℕ≤
+"Warning: toℕ-fromℕ≤ was deprecated in v1.2.
+Please use toℕ-fromℕ< instead."
+#-}
+fromℕ≤≡fromℕ≤″ = fromℕ<≡fromℕ<″
+{-# WARNING_ON_USAGE fromℕ≤≡fromℕ≤″
+"Warning: fromℕ≤≡fromℕ≤″ was deprecated in v1.2.
+Please use fromℕ<≡fromℕ<″ instead."
+#-}
+toℕ-fromℕ≤″ = toℕ-fromℕ<″
+{-# WARNING_ON_USAGE toℕ-fromℕ≤″
+"Warning: toℕ-fromℕ≤″ was deprecated in v1.2.
+Please use toℕ-fromℕ<″ instead."
+#-}
+isDecEquivalence = ≡-isDecEquivalence
+{-# WARNING_ON_USAGE isDecEquivalence
+"Warning: isDecEquivalence was deprecated in v1.2.
+Please use ≡-isDecEquivalence instead."
+#-}
+preorder = ≡-preorder
+{-# WARNING_ON_USAGE preorder
+"Warning: preorder was deprecated in v1.2.
+Please use ≡-preorder instead."
+#-}
+setoid = ≡-setoid
+{-# WARNING_ON_USAGE setoid
+"Warning: setoid was deprecated in v1.2.
+Please use ≡-setoid instead."
+#-}
+decSetoid = ≡-decSetoid
+{-# WARNING_ON_USAGE decSetoid
+"Warning: decSetoid was deprecated in v1.2.
+Please use ≡-decSetoid instead."
 #-}

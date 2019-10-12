@@ -64,16 +64,16 @@ fromℕ (suc n) = suc (fromℕ n)
 
 -- fromℕ≤ {m} _ = "m".
 
-fromℕ≤ : ∀ {m n} → .(m ℕ.< n) → Fin n
-fromℕ≤ {zero}  {suc n} m≤n = zero
-fromℕ≤ {suc m} {suc n} m≤n = suc (fromℕ≤ (ℕₚ.≤-pred m≤n))
+fromℕ< : ∀ {m n} → .(m ℕ.< n) → Fin n
+fromℕ< {zero}  {suc n} m≤n = zero
+fromℕ< {suc m} {suc n} m≤n = suc (fromℕ< (ℕₚ.≤-pred m≤n))
 
 -- fromℕ≤″ m _ = "m".
 
-fromℕ≤″ : ∀ m {n} → m ℕ.<″ n → Fin n
-fromℕ≤″ zero    (ℕ.less-than-or-equal refl) = zero
-fromℕ≤″ (suc m) (ℕ.less-than-or-equal refl) =
-  suc (fromℕ≤″ m (ℕ.less-than-or-equal refl))
+fromℕ<″ : ∀ m {n} → m ℕ.<″ n → Fin n
+fromℕ<″ zero    (ℕ.less-than-or-equal refl) = zero
+fromℕ<″ (suc m) (ℕ.less-than-or-equal refl) =
+  suc (fromℕ<″ m (ℕ.less-than-or-equal refl))
 
 -- raise m "i" = "m + i".
 
@@ -126,8 +126,8 @@ strengthen (suc i) = suc (strengthen i)
 -- This is dual to splitAt from Data.Vec.
 
 splitAt : ∀ m {n} → Fin (m ℕ.+ n) → Fin m ⊎ Fin n
-splitAt zero i = inj₂ i
-splitAt (suc m) zero = inj₁ zero
+splitAt zero    i       = inj₂ i
+splitAt (suc m) zero    = inj₁ zero
 splitAt (suc m) (suc i) = Sum.map suc id (splitAt m i)
 
 ------------------------------------------------------------------------
@@ -258,3 +258,23 @@ pattern 6F = suc 5F
 pattern 7F = suc 6F
 pattern 8F = suc 7F
 pattern 9F = suc 8F
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 1.2
+
+fromℕ≤ = fromℕ<
+{-# WARNING_ON_USAGE fromℕ≤
+"Warning: fromℕ≤ was deprecated in v1.2.
+Please use fromℕ< instead."
+#-}
+fromℕ≤″ = fromℕ<″
+{-# WARNING_ON_USAGE fromℕ≤″
+"Warning: fromℕ≤″ was deprecated in v1.2.
+Please use fromℕ<″ instead."
+#-}

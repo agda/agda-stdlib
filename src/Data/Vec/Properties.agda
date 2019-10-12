@@ -316,7 +316,7 @@ module _ {m} {ys ys' : Vec A m} where
 
 lookup-++-< : ∀ {m n} (xs : Vec A m) (ys : Vec A n) →
               ∀ i (i<m : toℕ i < m) →
-              lookup (xs ++ ys) i  ≡ lookup xs (Fin.fromℕ≤ i<m)
+              lookup (xs ++ ys) i  ≡ lookup xs (Fin.fromℕ< i<m)
 lookup-++-< (x ∷ xs) ys zero    (s≤s z≤n)       = refl
 lookup-++-< (x ∷ xs) ys (suc i) (s≤s (s≤s i<m)) =
   lookup-++-< xs ys i (s≤s i<m)

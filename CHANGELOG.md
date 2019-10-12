@@ -207,6 +207,24 @@ is encouraged. Although not anticipated any time soon, they may eventually
 be removed in some future release of the library. Automated warnings are
 attached to all deprecated names to discourage their use.
 
+* In `Data.Fin`:
+  ```agda
+  fromℕ≤  ↦ fromℕ<
+  fromℕ≤″ ↦ fromℕ<″
+  ```
+
+* In `Data.Fin.Properties`
+  ```agda
+  fromℕ≤-toℕ       ↦ fromℕ<-toℕ
+  toℕ-fromℕ≤       ↦ toℕ-fromℕ<
+  fromℕ≤≡fromℕ≤″   ↦ fromℕ<≡fromℕ<″
+  toℕ-fromℕ≤″      ↦ toℕ-fromℕ<″
+  isDecEquivalence ↦ ≡-isDecEquivalence
+  preorder         ↦ ≡-preorder
+  setoid           ↦ ≡-setoid
+  decSetoid        ↦ ≡-decSetoid
+  ```
+
 * In `Data.Integer.Properties`:
   ```agda
   [1+m]*n≡n+m*n ↦ suc-*
@@ -215,7 +233,6 @@ attached to all deprecated names to discourage their use.
 * In `Data.Nat.Properties`:
   ```agda
   +-*-suc ↦ *-suc
-
   ```
 
 * In `Relation.Binary.Properties.Poset`:

@@ -10,8 +10,8 @@ module Data.Nat.DivMod where
 
 open import Agda.Builtin.Nat using (div-helper; mod-helper)
 
-open import Data.Fin using (Fin; toℕ; fromℕ≤)
-open import Data.Fin.Properties using (toℕ-fromℕ≤)
+open import Data.Fin using (Fin; toℕ; fromℕ<)
+open import Data.Fin.Properties using (toℕ-fromℕ<)
 open import Data.Nat as Nat
 open import Data.Nat.DivMod.Core
 open import Data.Nat.Divisibility.Core
@@ -200,14 +200,14 @@ _div_ : (dividend divisor : ℕ) .{≢0 : False (divisor ≟ 0)} → ℕ
 _div_ = _/_
 
 _mod_ : (dividend divisor : ℕ) .{≢0 : False (divisor ≟ 0)} → Fin divisor
-m mod (suc n) = fromℕ≤ (m%n<n m n)
+m mod (suc n) = fromℕ< (m%n<n m n)
 
 _divMod_ : (dividend divisor : ℕ) .{≢0 : False (divisor ≟ 0)} →
            DivMod dividend divisor
 m divMod n@(suc n-1) = result (m / n) (m mod n) (begin-equality
   m                                     ≡⟨ m≡m%n+[m/n]*n m n-1 ⟩
-  m % n                      + [m/n]*n  ≡⟨ cong (_+ [m/n]*n) (sym (toℕ-fromℕ≤ (m%n<n m n-1))) ⟩
-  toℕ (fromℕ≤ (m%n<n m n-1)) + [m/n]*n  ∎)
+  m % n                      + [m/n]*n  ≡⟨ cong (_+ [m/n]*n) (sym (toℕ-fromℕ< (m%n<n m n-1))) ⟩
+  toℕ (fromℕ< (m%n<n m n-1)) + [m/n]*n  ∎)
   where [m/n]*n = m / n * n
 
 ------------------------------------------------------------------------
