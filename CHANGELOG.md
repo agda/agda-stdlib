@@ -130,7 +130,6 @@ match the one for `Vec`:
 New modules
 -----------
 The following new modules have been added to the library:
-
   ```
   Algebra.Morphism.RawMagma
   Algebra.Morphism.RawMonoid
@@ -139,6 +138,8 @@ The following new modules have been added to the library:
   Algebra.Properties.CommutativeSemigroup
 
   Data.AVL.Map
+
+  Data.Empty.Polymorphic
 
   Data.Nat.Binary
   Data.Nat.Binary.Base
@@ -185,6 +186,10 @@ The following new modules have been added to the library:
   Relation.Binary.Properties.Setoid
   Relation.Binary.Reasoning.Base.Partial
   Relation.Binary.Reasoning.PartialSetoid
+
+  Relation.Binary.Morphism
+  Relation.Binary.Morphism.RawOrder
+  Relation.Binary.Morphism.RawRelation
   ```
 
 Relocated modules
@@ -236,6 +241,13 @@ attached to all deprecated names to discourage their use.
 
 Other minor additions
 ---------------------
+
+* Added new bundles to `Data.Char.Properties`:
+  ```agda
+  <-isStrictPartialOrder-≈ : IsStrictPartialOrder _≈_ _<_
+  <-isStrictTotalOrder-≈   : IsStrictTotalOrder _≈_ _<_
+  <-strictPartialOrder-≈   : StrictPartialOrder _ _ _
+  ```
 
 * Added new constants to `Data.Integer.Base`:
   ```agda
@@ -327,6 +339,8 @@ Other minor additions
   +-0-rawMonoid  : RawMonoid 0ℓ 0ℓ
   *-1-rawMonoid  : RawMonoid 0ℓ 0ℓ
 
+  *-cancelˡ-≤    : suc o * m ≤ suc o * n → m ≤ n
+
   1+m≢m∸n        : suc m ≢ m ∸ n
   ∸-monoʳ-<      : o < n → n ≤ m → m ∸ n < m ∸ o
   ∸-cancelʳ-≤    : m ≤ o → o ∸ n ≤ o ∸ m → m ≤ n
@@ -341,6 +355,13 @@ Other minor additions
   m≤n+∣n-m∣      : m ≤ n + ∣ n - m ∣
   m≤n+∣m-n∣      : m ≤ n + ∣ m - n ∣
   m≤∣m-n∣+n      : m ≤ ∣ m - n ∣ + n
+  ```
+
+* Added new bundles to `Data.String.Properties`:
+  ```agda
+  <-isStrictPartialOrder-≈ : IsStrictPartialOrder _≈_ _<_
+  <-isStrictTotalOrder-≈   : IsStrictTotalOrder _≈_ _<_
+  <-strictPartialOrder-≈   : StrictPartialOrder _ _ _
   ```
 
 * Added new functions to `Data.Sum.Base`:

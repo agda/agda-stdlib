@@ -20,7 +20,7 @@ open import Data.Bool.Properties using (T?)
 open import Data.Empty
 open import Data.Nat.Base
 open import Data.Product
-open import Data.Sum
+open import Data.Sum as Sum
 open import Data.Unit using (tt)
 open import Function.Core
 open import Function.Injection using (_↣_)
@@ -852,6 +852,9 @@ m*n≡1⇒n≡1 m n eq = m*n≡1⇒m≡1 n m (trans (*-comm n m) eq)
 *-cancelʳ-≤ zero    _       _ _  = z≤n
 *-cancelʳ-≤ (suc m) (suc n) o le =
   s≤s (*-cancelʳ-≤ m n o (+-cancelˡ-≤ (suc o) le))
+
+*-cancelˡ-≤ : ∀ {m n} o → suc o * m ≤ suc o * n → m ≤ n
+*-cancelˡ-≤ {m} {n} o rewrite *-comm (suc o) m | *-comm (suc o) n = *-cancelʳ-≤ m n o
 
 *-mono-≤ : _*_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
 *-mono-≤ z≤n       _   = z≤n
