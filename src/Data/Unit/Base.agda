@@ -15,8 +15,3 @@ open import Agda.Builtin.Unit public
   using (⊤; tt)
 
 -- Note that the name of this type is "\top", not T.
-
-------------------------------------------------------------------------
--- An ordering relation over the unit type
-
-record _≤_ (x y : ⊤) : Set where
