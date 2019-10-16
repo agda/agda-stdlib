@@ -130,7 +130,7 @@ data FlatPoly : ℕ → Set ℓ
 Coeff : ℕ → Set ℓ
 record NonZero (i : ℕ) : Set ℓ
 Zero : ∀ {n} → Poly n → Set
-Norm : ∀ {i} → Coeff i + → Set
+Normalised : ∀ {i} → Coeff i + → Set
 
 -- A Polynomial is indexed by the number of variables it contains.
 infixl 6 _Π_
@@ -144,7 +144,7 @@ record Poly n where
 
 data FlatPoly where
   Κ : Carrier → FlatPoly zero
-  Σ : ∀ {n} → (xs : Coeff n +) → .{xn : Norm xs} → FlatPoly (suc n)
+  Σ : ∀ {n} → (xs : Coeff n +) → .{xn : Normalised xs} → FlatPoly (suc n)
 
 
 Coeff n = PowInd (NonZero n)
@@ -167,9 +167,9 @@ Zero (Σ _ Π _) = ⊥
 -- This predicate is used to ensure that all polynomials are in
 -- normal form: if a particular level is constant, than it can
 -- be collapsed into the level below it.
-Norm (_ Δ zero  & [])  = ⊥
-Norm (_ Δ zero  & ∹ _) = ⊤
-Norm (_ Δ suc _ & _)   = ⊤
+Normalised (_ Δ zero  & [])  = ⊥
+Normalised (_ Δ zero  & ∹ _) = ⊤
+Normalised (_ Δ suc _ & _)   = ⊤
 open NonZero public
 open Poly public
 
