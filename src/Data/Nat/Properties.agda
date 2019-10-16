@@ -1511,7 +1511,7 @@ m>n⇒m∸n≢0 {n = suc n} (s≤s m>n) = m>n⇒m∸n≢0 m>n
 
 ∸-+-assoc : ∀ m n o → (m ∸ n) ∸ o ≡ m ∸ (n + o)
 ∸-+-assoc zero zero o = refl
-∸-+-assoc zero (suc n) o rewrite 0∸n≡0 o = refl
+∸-+-assoc zero (suc n) o = 0∸n≡0 o
 ∸-+-assoc (suc m) zero o = refl
 ∸-+-assoc (suc m) (suc n) o = ∸-+-assoc m n o
 
