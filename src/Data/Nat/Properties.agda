@@ -1510,11 +1510,10 @@ m>n⇒m∸n≢0 {n = suc n} (s≤s m>n) = m>n⇒m∸n≢0 m>n
 +-∸-comm {suc m} n {suc o} (s≤s o≤m) = +-∸-comm n o≤m
 
 ∸-+-assoc : ∀ m n o → (m ∸ n) ∸ o ≡ m ∸ (n + o)
-∸-+-assoc m       n       zero    = cong (m ∸_) (sym $ +-identityʳ n)
-∸-+-assoc zero    zero    (suc o) = refl
-∸-+-assoc zero    (suc n) (suc o) = refl
-∸-+-assoc (suc m) zero    (suc o) = refl
-∸-+-assoc (suc m) (suc n) (suc o) = ∸-+-assoc m n (suc o)
+∸-+-assoc zero zero o = refl
+∸-+-assoc zero (suc n) o rewrite 0∸n≡0 o = refl
+∸-+-assoc (suc m) zero o = refl
+∸-+-assoc (suc m) (suc n) o = ∸-+-assoc m n o
 
 +-∸-assoc : ∀ m {n o} → o ≤ n → (m + n) ∸ o ≡ m + (n ∸ o)
 +-∸-assoc m (z≤n {n = n})             = begin-equality m + n ∎
