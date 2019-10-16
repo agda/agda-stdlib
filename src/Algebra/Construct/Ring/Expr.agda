@@ -2,7 +2,7 @@
 
 -- This module provides a type for expressions in a ring.
 
-module Algebra.Construct.Expr where
+module Algebra.Construct.Ring.Expr where
 
 open import Data.Nat using (ℕ)
 open import Data.Fin using (Fin)

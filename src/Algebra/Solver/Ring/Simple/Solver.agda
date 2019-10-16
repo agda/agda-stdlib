@@ -2,7 +2,7 @@
 
 module Algebra.Solver.Ring.Simple.Solver where
 
-open import Algebra.Construct.Expr public
+open import Algebra.Construct.Ring.Expr public
 open import Algebra.Solver.Ring.Simple.AlmostCommutativeRing public hiding (-raw-almostCommutative⟶)
 open import Data.Vec hiding (_⊛_)
 open import Algebra.Solver.Ring.AlmostCommutativeRing using (-raw-almostCommutative⟶)
