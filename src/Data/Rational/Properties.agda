@@ -164,7 +164,7 @@ p ≤? q = Dec.map′ *≤* drop-*≤* ((↥ p ℤ.* ↧ q) ℤ.≤? (↥ q ℤ.
   }
 
 ------------------------------------------------------------------------
--- Packages
+-- Bundles
 
 ≤-decTotalOrder : DecTotalOrder _ _ _
 ≤-decTotalOrder = record
@@ -270,7 +270,7 @@ p <? q = Dec.map′ *<* drop-*<* ((↥ p ℤ.* ↧ q) ℤ.<? (↥ q ℤ.* ↧ p)
   }
 
 ------------------------------------------------------------------------
--- Packages
+-- Bundles
 
 <-strictPartialOrder : StrictPartialOrder 0ℓ 0ℓ 0ℓ
 <-strictPartialOrder = record

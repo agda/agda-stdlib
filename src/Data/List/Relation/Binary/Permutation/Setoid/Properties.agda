@@ -200,7 +200,7 @@ shift {v} {w} v≈w (x ∷ xs) ys = begin
   ; comm        = ++-comm
   }
 
--- Packages
+-- Bundles
 
 ++-magma : Magma a (a ⊔ ℓ)
 ++-magma = record

@@ -8,7 +8,7 @@
 
 module Data.Sign.Properties where
 
-open import Algebra.Packages
+open import Algebra.Bundles
 open import Data.Empty
 open import Data.Sign.Base
 open import Data.Product using (_,_)

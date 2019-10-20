@@ -126,7 +126,7 @@ module _ {_∼_ : Rel A ℓ} where
     } where module Eq = IsDecEquivalence decEquiv
 
 ------------------------------------------------------------------------
--- Packages
+-- Bundles
 
 setoid : Setoid a ℓ → ℕ → Setoid a (a ⊔ ℓ)
 setoid S n = record

@@ -17,7 +17,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra.Packages
+open import Algebra.Bundles
 open import Algebra.Solver.Ring.AlmostCommutativeRing
 open import Relation.Binary.Definitions using (WeaklyDecidable)
 

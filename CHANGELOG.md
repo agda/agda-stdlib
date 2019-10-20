@@ -123,7 +123,7 @@ updated to use the new hierarchy:
   ```
 
 * Minor change: the propositional bundle for left inverses in `Function.Bundles`
-  has been renamed from `_↞_` to `_↩_` in order to make room for the new package
+  has been renamed from `_↞_` to `_↩_` in order to make room for the new bundle
   for right inverse `_↪_`.
 
 ### Re-implementation of `Data.Bin`
@@ -222,8 +222,8 @@ The following new modules have been added to the library:
   Data.Vec.Functional.Relation.Unary.All
   Data.Vec.Functional.Relation.Unary.Any
 
+  Function.Bundles
   Function.Definitions
-  Function.Packages
   Function.Structures
 
   Foreign.Haskell.Coerce
@@ -436,7 +436,7 @@ Other minor additions
       trans : Transitive _≈_
   ```
 
-* Added new definition to `Relation.Binary.Packages`:
+* Added new definition to `Relation.Binary.Bundles`:
   ```agda
   record PartialSetoid a ℓ : Set (suc (a ⊔ ℓ)) where
     field

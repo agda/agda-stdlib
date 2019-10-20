@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra.Packages
+open import Algebra.Bundles
 
 module Algebra.Properties.Lattice {l₁ l₂} (L : Lattice l₁ l₂) where
 
