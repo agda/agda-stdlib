@@ -551,6 +551,14 @@ Other minor additions
   uncons : AllPairs R (x ∷ xs) → All (R x) xs × AllPairs R xs
   ```
 
+* Added new proofs to `Data.List.Properties`:
+  ```agda
+  filter-accept : P x → filter P? (x ∷ xs) ≡ x ∷ (filter P? xs)
+  filter-reject : ¬ P x → filter P? (x ∷ xs) ≡ filter P? xs
+  filter-idem   : filter P? ∘ filter P? ≗ filter P?
+  filter-++     : filter P? (xs ++ ys) ≡ filter P? xs ++ filter P? ys
+  ```
+
 * Added new definitions to `Data.These.Properties`:
   ```agda
   these-injective : these x a ≡ these y b → x ≡ y × a ≡ b
