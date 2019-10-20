@@ -12,7 +12,7 @@
 module Data.Nat.Properties where
 
 open import Axiom.UniquenessOfIdentityProofs
-open import Algebra
+open import Algebra.Packages
 open import Algebra.Morphism
 open import Algebra.FunctionProperties.Consequences.Propositional
 open import Data.Bool.Base using (Bool; false; true; T)
@@ -32,9 +32,9 @@ open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Nullary.Decidable using (True; via-injection; map′)
 open import Relation.Nullary.Negation using (contradiction)
 
-open import Algebra.FunctionProperties {A = ℕ} _≡_
+open import Algebra.Definitions {A = ℕ} _≡_
   hiding (LeftCancellative; RightCancellative; Cancellative)
-open import Algebra.FunctionProperties
+open import Algebra.Definitions
   using (LeftCancellative; RightCancellative; Cancellative)
 open import Algebra.Structures {A = ℕ} _≡_
 

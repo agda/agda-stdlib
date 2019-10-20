@@ -8,7 +8,7 @@
 
 module Data.Nat.Binary.Properties where
 
-open import Algebra
+open import Algebra.Packages
 open import Algebra.Morphism
 import Algebra.Morphism.RawMonoid as MonoidMorphisms
 open import Algebra.FunctionProperties.Consequences.Propositional
@@ -31,7 +31,7 @@ open import Relation.Nullary using (¬_; yes; no)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Negation using (contradiction)
 
-open import Algebra.FunctionProperties {A = ℕᵇ} _≡_
+open import Algebra.Definitions {A = ℕᵇ} _≡_
 open import Algebra.Structures {A = ℕᵇ} _≡_
 import Algebra.Properties.CommutativeSemigroup ℕₚ.+-semigroup ℕₚ.+-comm
   as ℕ-+-semigroupProperties

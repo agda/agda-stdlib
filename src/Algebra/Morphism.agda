@@ -10,8 +10,6 @@ module Algebra.Morphism where
 
 open import Relation.Binary
 open import Algebra
-open import Algebra.Structures
-open import Algebra.FunctionProperties hiding (LeftInverse)
 import Algebra.Properties.Group as GroupP
 open import Function
 open import Level

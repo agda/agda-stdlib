@@ -11,9 +11,9 @@
 
 module Data.List.Properties where
 
-open import Algebra
+open import Algebra.Packages
 import Algebra.Structures as Structures
-import Algebra.FunctionProperties as FunctionProperties
+import Algebra.Definitions as Definitions
 open import Data.Bool.Base using (Bool; false; true; not; if_then_else_)
 open import Data.Fin using (Fin; zero; suc; cast; toℕ)
 open import Data.List as List
@@ -138,8 +138,8 @@ length-++ (x ∷ xs) = P.cong suc (length-++ xs)
 
 module _ {A : Set a} where
 
-  open FunctionProperties {A = List A} _≡_
-  open Structures         {A = List A} _≡_
+  open Definitions {A = List A} _≡_
+  open Structures  {A = List A} _≡_
 
   ++-assoc : Associative _++_
   ++-assoc []       ys zs = refl
@@ -453,7 +453,7 @@ foldr-∷ʳ f x y (z ∷ ys) = P.cong (f z) (foldr-∷ʳ f x y ys)
 
 module _ {P : Pred A p} {f : A → A → A} where
 
-  open FunctionProperties
+  open Definitions
 
   foldr-forcesᵇ : (∀ x y → P (f x y) → P x × P y) →
                   ∀ e xs → P (foldr f e xs) → All P xs
@@ -768,7 +768,7 @@ module _ {P : A → Set p} (P? : Decidable P) where
 
 module _ {a} {A : Set a} where
 
-  open FunctionProperties {A = List A} _≡_
+  open Definitions {A = List A} _≡_
   open P.≡-Reasoning
 
   -- Defining property of reverse-append _ʳ++_.

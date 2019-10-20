@@ -9,10 +9,8 @@
 module Data.Rational.Unnormalised.Properties where
 
 open import Algebra
-open import Algebra.Structures
-open import Algebra.FunctionProperties
 open import Algebra.FunctionProperties.Consequences.Propositional
-import Data.Nat using (suc)
+open import Data.Nat using (suc)
 import Data.Nat.Properties as ℕ
 open import Data.Integer as ℤ using (ℤ; +0; +[1+_]; 0ℤ; 1ℤ)
 open import Data.Integer.Solver renaming (module +-*-Solver to ℤ-solver)
@@ -243,4 +241,121 @@ p ≃? q = Dec.map′ *≡* drop-*≡* (↥ p ℤ.* ↧ q ℤ.≟ ↥ q ℤ.* �
 +-0-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
 +-0-commutativeMonoid = record
   { isCommutativeMonoid = +-0-isCommutativeMonoid
+  }
+
+------------------------------------------------------------------------
+-- Properties of _*_
+------------------------------------------------------------------------
+
+*-cong : Congruent₂ _≃_ _*_
+*-cong {x} {y} {u} {v} (*≡* ↥x↧y≡↥y↧x) (*≡* ↥u↧v≡↥v↧u) = *≡* (begin
+  (↥ x ℤ.* ↥ u) ℤ.* (↧ y ℤ.* ↧ v) ≡⟨ solve 4 (λ ↥x ↥u ↧y ↧v →
+                                       (↥x :* ↥u) :* (↧y :* ↧v) :=
+                                       (↥u :* ↧v) :* (↥x :* ↧y))
+                                       refl (↥ x) (↥ u) (↧ y) (↧ v) ⟩
+  (↥ u ℤ.* ↧ v) ℤ.* (↥ x ℤ.* ↧ y) ≡⟨ cong₂ ℤ._*_ ↥u↧v≡↥v↧u ↥x↧y≡↥y↧x ⟩
+  (↥ v ℤ.* ↧ u) ℤ.* (↥ y ℤ.* ↧ x) ≡⟨ solve 4 (λ ↥v ↧u ↥y ↧x →
+                                       (↥v :* ↧u) :* (↥y :* ↧x) :=
+                                       (↥y :* ↥v) :* (↧x :* ↧u))
+                                       refl (↥ v) (↧ u) (↥ y) (↧ x) ⟩
+  (↥ y ℤ.* ↥ v) ℤ.* (↧ x ℤ.* ↧ u) ∎)
+  where open ≡-Reasoning; open ℤ-solver
+
+-- Associativity
+
+*-assoc-↥ : Associative (_≡_ on ↥_) _*_
+*-assoc-↥ p q r = ℤ.*-assoc (↥ p) (↥ q) (↥ r)
+
+*-assoc-↧ : Associative (_≡_ on ↧ₙ_) _*_
+*-assoc-↧ p q r = ℕ.*-assoc (↧ₙ p) (↧ₙ q) (↧ₙ r)
+
+*-assoc-≡ : Associative _≡_ _*_
+*-assoc-≡ p q r = ↥↧≡⇒≡ (*-assoc-↥ p q r) (*-assoc-↧ p q r)
+
+*-assoc : Associative _≃_ _*_
+*-assoc p q r = ≃-reflexive (*-assoc-≡ p q r)
+
+-- Commutativity
+
+*-comm-↥ : Commutative (_≡_ on ↥_) _*_
+*-comm-↥ p q = ℤ.*-comm (↥ p) (↥ q)
+
+*-comm-↧ : Commutative (_≡_ on ↧ₙ_) _*_
+*-comm-↧ p q = ℕ.*-comm (↧ₙ p) (↧ₙ q)
+
+*-comm-≡ : Commutative _≡_ _*_
+*-comm-≡ p q = ↥↧≡⇒≡ (*-comm-↥ p q) (*-comm-↧ p q)
+
+*-comm : Commutative _≃_ _*_
+*-comm p q = ≃-reflexive (*-comm-≡ p q)
+
+-- Identities
+
+*-identityˡ-≡ : LeftIdentity _≡_ 1ℚᵘ _*_
+*-identityˡ-≡ p = ↥↧≡⇒≡ (ℤ.*-identityˡ (↥ p)) (ℕ.+-identityʳ (↧ₙ p))
+
+*-identityʳ-≡ : RightIdentity _≡_ 1ℚᵘ _*_
+*-identityʳ-≡ = comm+idˡ⇒idʳ *-comm-≡ {e = 1ℚᵘ} *-identityˡ-≡
+
+*-identity-≡ : Identity _≡_ 1ℚᵘ _*_
+*-identity-≡ = *-identityˡ-≡ , *-identityʳ-≡
+
+*-identityˡ : LeftIdentity _≃_ 1ℚᵘ _*_
+*-identityˡ p = ≃-reflexive (*-identityˡ-≡ p)
+
+*-identityʳ : RightIdentity _≃_ 1ℚᵘ _*_
+*-identityʳ p = ≃-reflexive (*-identityʳ-≡ p)
+
+*-identity : Identity _≃_ 1ℚᵘ _*_
+*-identity = *-identityˡ , *-identityʳ
+
+------------------------------------------------------------------------
+-- Algebraic structures
+
+*-isMagma : IsMagma _≃_ _*_
+*-isMagma = record
+  { isEquivalence = ≃-isEquivalence
+  ; ∙-cong        = *-cong
+  }
+
+*-isSemigroup : IsSemigroup _≃_ _*_
+*-isSemigroup = record
+  { isMagma = *-isMagma
+  ; assoc   = *-assoc
+  }
+
+*-1-isMonoid : IsMonoid _≃_ _*_ 1ℚᵘ
+*-1-isMonoid = record
+  { isSemigroup = *-isSemigroup
+  ; identity    = *-identity
+  }
+
+*-1-isCommutativeMonoid : IsCommutativeMonoid _≃_ _*_ 1ℚᵘ
+*-1-isCommutativeMonoid = record
+  { isSemigroup = *-isSemigroup
+  ; identityˡ   = *-identityˡ
+  ; comm        = *-comm
+  }
+
+------------------------------------------------------------------------
+-- Algebraic packages
+
+*-magma : Magma 0ℓ 0ℓ
+*-magma = record
+  { isMagma = *-isMagma
+  }
+
+*-semigroup : Semigroup 0ℓ 0ℓ
+*-semigroup = record
+  { isSemigroup = *-isSemigroup
+  }
+
+*-1-monoid : Monoid 0ℓ 0ℓ
+*-1-monoid = record
+  { isMonoid = *-1-isMonoid
+  }
+
+*-1-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
+*-1-commutativeMonoid = record
+  { isCommutativeMonoid = *-1-isCommutativeMonoid
   }

@@ -8,14 +8,15 @@
 {-# OPTIONS --without-K --safe #-}
 
 module Algebra.FunctionProperties.Consequences.Propositional
-       {a} {A : Set a} where
+  {a} {A : Set a} where
 
 open import Data.Sum using (inj₁; inj₂)
 open import Relation.Binary using (Rel; Setoid; Symmetric; Total)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Unary using (Pred)
 
-open import Algebra.FunctionProperties {A = A} _≡_
+open import Algebra.Core
+open import Algebra.Definitions {A = A} _≡_
 import Algebra.FunctionProperties.Consequences (setoid A) as FP⇒
 
 ------------------------------------------------------------------------

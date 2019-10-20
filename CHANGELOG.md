@@ -8,7 +8,7 @@ Changes since 1.1:
 Highlights
 ----------
 
-
+* New function record hierarchy.
 
 Bug-fixes
 ---------
@@ -20,21 +20,63 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
+### Standardisation of record hierarchies
+
+* Currently the main record hierarchies `Algebra`, `Relation.Binary`
+  and `Function` are inconsistently structured.
+
+* For example if you import `Relation.Binary` you get all parts of the hierarchy,
+  e.g. `Reflexive`, `IsPreorder` and `Preorder`. Whereas you have
+  to import `Associative` from `Algebra.FunctionProperties`, `IsSemigroup`
+  from `Algebra.Structures` and `Semigroup` from `Algebra`.
+
+* Consequently all hierarchies have been re-organised to follow the
+  same pattern:
+  ```agda
+  X.Core         -- Contains: Rel, Op₂, Fun etc.
+  X.Definitions  -- Contains: Reflexive, Associative, Injective etc.
+  X.Structures   -- Contains: IsEquivalence, IsSemigroup, IsInjection etc.
+  X.Bundles      -- Contains: Setoid, Semigroup, Injection etc.
+  X              -- Publicly re-exports all of the above
+  ```
+
+* For `Relation.Binary` this means:
+  * New module `Relation.Binary.Bundles`
+  * New module `Relation.Binary.Definitions`
+  * Fully backwards compatible.
+
+* For `Algebra` this means:
+  * `Algebra.FunctionProperties` has been deprecated in favour of `Algebra.Definitions`.
+  * `Algebra` now exports the contents of `Algebra.Definitions` and `Algebra.Structures`,
+  not just that of `Algebra.Bundles`.
+  * **Compatibility:** In modules which previously imported both `Algebra` and
+  `Algebra.FunctionProperties/Structures` where the latter was parameterised by an
+  equality relation `_≈_`, it will be necessary to import `Algebra.Bundles` instead of `Algebra`.
+
+* A new hiearchy has been created for `Function` (see the next section).
+
+* Other smaller record hierarchies have undergone the same treatment:
+  ```agda
+  Relation.Binary.Indexed.Homogeneous
+  Relation.Binary.Indexed.Heterogeneous
+  ```
+
 ### New function hierarchy
 
-* The main problems with the current way various types of functions are
-handled are:
-  1. The raw functions were wrapped in the  equality-preserving
+* The old way the function hierarchy is represented in the library
+had several problems:
+  1. The raw functions were wrapped in the equality-preserving
      type `_⟶_` from `Function.Equality`. As the rest of the library
      very rarely used such wrapped functions, it was almost impossible
-     to write code that interfaced neatly  between the `Function` hierarchy
+     to write code that interfaced neatly between the `Function` hierarchy
      and, for example, the `Algebra` hierarchy.
   2. The symbol `_⟶_` that was used for equality preserving functions
      was almost indistinguishable from ordinary functions `_→_` in many fonts,
      leading to confusion when reading code.
   3. The hierarchy didn't follow the same pattern as the other record
-     hierarchies in the standard library. Coupled with point 1., this meant
-     that anecdotally people are scared away from it.
+     hierarchies in the standard library, e.g. `Injective`, `IsInjection`
+         and `Injection`. Coupled with point 1., anecdotally this meant that
+         people found it difficult to understand and use.
   4. There was no way of specifying a function has a specific property
      (e.g. is injective) without specifying all the properties required
      of the equality relation as well. This is in contrast to the
@@ -43,33 +85,28 @@ handled are:
      without providing all the proofs associated with the equality relation.
 
 * To address these problems a new function hierarchy similar to the ones in
-`Relation.Binary` and `Algebra` has been created. The new modules are as
-follows:
-  - `Function.Definitions` containing definitions like `Injective`,
-    `Surjective` parameterised by the function and the equality relations
-     over the domain and codomain.
-  - `Function.Structures` containing definitions like `IsInjection`,
-     `IsSurjection`, once again parameterised by the function and the equality
-     relations but also wrapping up all the equality and congruence lemmas.
-  - `Function.Packages` containing definitions like `Injection`, `Surjection`
-     which provides essentially the same top-level interface as currently exists,
+`Relation.Binary` and `Algebra` has been created:
+  - The contents of `Function` has been moved to `Function.Core`
+  - New module `Function.Definitions` containing definitions like `Injective`,
+    `Surjective` which is parameterised by the equality relations
+    over the domain and codomain.
+  - New module `Function.Structures` containing definitions like `IsInjection`,
+    `IsSurjection`, once again parameterised the equality relations.
+  - New module `Function.Bundles` containing definitions like `Injection`, `Surjection`
+     which provide essentially the same top-level interface as currently exists,
      i.e. parameterised by setoids but hiding the function.
-  - The old file `Function` has been moved to `Function.Core` and `Function`
-    now exports the whole of this hierarchy, just like `Relation.Binary`.
+  - The module `Function` now re-exports the whole of this hierarchy.
 
-* These changes are nearly entirely backwards compatible. The only problem will occur
-is when code imports both `Function` and e.g. `Function.Injection` in which case the
-old and new definitions of `Injection` will clash. In the short term this can
-immediately be fixed by importing `Function.Core` instead of `Function`. However
-we would encourage to the new hierarchy in the medium to long term.
+* **Compatibility:** As most of the above modules are new, these changes are nearly
+entirely backwards compatible. The only problem is when code imports both `Function`
+and e.g. `Function.Injection` in which case the old and new definitions of `Injection`
+will clash. In the short term this can be fixed immediately by importing `Function.Core`
+instead of `Function`. However we would encourage migrating to the new hierarchy in
+the medium to long term.
 
-* The list of new modules is as follows:
-  ```agda
-  Function.Construct.Identity
-  Function.Construct.Composition
-  ```
-
-* The old modules will probably be deprecated (NOT COMPLETED AS OF YET)
+* The following modules containing the old hierarchy will be deprecated at some
+point in the future when contents in other parts of the library has been
+updated to use the new hierarchy:
   ```agda
   Function.Equivalence
   Function.Equality
@@ -79,8 +116,15 @@ we would encourage to the new hierarchy in the medium to long term.
   Function.LeftInverse
   ```
 
-* Minor change: the propositional package for left inverses has been renamed
-from `_↞_` to `_↩_` in order to make room for the new package for right inverse `_↪_`.
+* The list of new modules is as follows:
+  ```agda
+  Function.Construct.Identity
+  Function.Construct.Composition
+  ```
+
+* Minor change: the propositional bundle for left inverses in `Function.Bundles`
+  has been renamed from `_↞_` to `_↩_` in order to make room for the new package
+  for right inverse `_↪_`.
 
 ### Re-implementation of `Data.Bin`
 

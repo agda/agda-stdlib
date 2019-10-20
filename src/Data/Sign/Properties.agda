@@ -8,7 +8,7 @@
 
 module Data.Sign.Properties where
 
-open import Algebra
+open import Algebra.Packages
 open import Data.Empty
 open import Data.Sign.Base
 open import Data.Product using (_,_)
@@ -19,7 +19,7 @@ open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (yes; no)
 
 open import Algebra.Structures {A = Sign} _≡_
-open import Algebra.FunctionProperties {A = Sign} _≡_
+open import Algebra.Definitions {A = Sign} _≡_
 
 ------------------------------------------------------------------------
 -- Equality

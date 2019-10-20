@@ -9,7 +9,6 @@
 
 module Data.Fin.Properties where
 
-open import Algebra.FunctionProperties using (Involutive)
 open import Category.Applicative using (RawApplicative)
 open import Category.Functor using (RawFunctor)
 open import Data.Empty using (⊥-elim)

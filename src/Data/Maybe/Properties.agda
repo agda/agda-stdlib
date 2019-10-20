@@ -8,9 +8,9 @@
 
 module Data.Maybe.Properties where
 
-open import Algebra
+open import Algebra.Packages
 import Algebra.Structures as Structures
-import Algebra.FunctionProperties as FunctionProperties
+import Algebra.Definitions as Definitions
 open import Data.Maybe.Base
 open import Data.Maybe.Relation.Unary.All using (All; just; nothing)
 open import Data.Product using (_,_)
@@ -88,7 +88,7 @@ maybe′-map = maybe-map
 
 module _ {A : Set a} where
 
-  open FunctionProperties {A = Maybe A} _≡_
+  open Definitions {A = Maybe A} _≡_
 
   <∣>-assoc : Associative _<∣>_
   <∣>-assoc (just x) y z = refl

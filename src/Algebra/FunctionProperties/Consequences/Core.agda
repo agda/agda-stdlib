@@ -10,7 +10,8 @@
 module Algebra.FunctionProperties.Consequences.Core
   {a} {A : Set a} where
 
-open import Algebra.FunctionProperties
+open import Algebra.Core
+open import Algebra.Definitions
 open import Data.Sum
 open import Relation.Binary
 
