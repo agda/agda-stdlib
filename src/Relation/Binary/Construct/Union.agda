@@ -14,6 +14,7 @@ open import Function using (_∘_)
 open import Level using (_⊔_)
 open import Relation.Binary
 open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Sum using (_⊎-dec_)
 
 ------------------------------------------------------------------------
 -- Definition
@@ -62,7 +63,4 @@ module _ {a b ℓ₁ ℓ₂ ℓ₃} {A : Set a} {B : Set b}
 module _ {a b ℓ₁ ℓ₂} {A : Set a} {B : Set b} {L : REL A B ℓ₁} {R : REL A B ℓ₂} where
 
   decidable : Decidable L → Decidable R → Decidable (L ∪ R)
-  decidable L? R? x y with L? x y | R? x y
-  ... | yes Lxy | _       = yes (inj₁ Lxy)
-  ... | no  _   | yes Rxy = yes (inj₂ Rxy)
-  ... | no ¬Lxy | no ¬Rxy = no [ ¬Lxy , ¬Rxy ]
+  decidable L? R? x y = L? x y ⊎-dec R? x y

@@ -22,9 +22,11 @@ open import Function.Inverse using (_↔_; inverse)
 open import Level using (Level)
 open import Relation.Binary as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; _≢_; refl; _≗_)
+  using (_≡_; _≢_; refl; _≗_; cong₂)
 open import Relation.Unary using (Pred; Decidable)
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary using (Dec; yes; no)
+open import Relation.Nullary.Decidable using (map′)
+open import Relation.Nullary.Product using (_×-dec_)
 
 private
   variable
@@ -50,10 +52,9 @@ module _ {n} {x y : A} {xs ys : Vec A n} where
 
 ≡-dec : B.Decidable _≡_ → ∀ {n} → B.Decidable {A = Vec A n} _≡_
 ≡-dec _≟_ []       []       = yes refl
-≡-dec _≟_ (x ∷ xs) (y ∷ ys) with x ≟ y | ≡-dec _≟_ xs ys
-... | yes refl | yes refl = yes refl
-... | no  x≢y  | _        = no (x≢y   ∘ ∷-injectiveˡ)
-... | yes _    | no xs≢ys = no (xs≢ys ∘ ∷-injectiveʳ)
+≡-dec _≟_ (x ∷ xs) (y ∷ ys) =
+  map′ (uncurry (cong₂ _∷_)) ∷-injective
+       (x ≟ y ×-dec ≡-dec _≟_ xs ys)
 
 ------------------------------------------------------------------------
 -- _[_]=_

@@ -511,3 +511,64 @@ Other minor additions
   ```agda
   _⊔ˢ_ : Size → Size → Size
   ```
+
+* Added new definitions to `Data.Fin.Properties`:
+  ```agda
+  ∀-cons-⇔ : (P zero × Π[ P ∘ suc ]) ⇔ Π[ P ]
+  ∃-here   : P zero → ∃⟨ P ⟩
+  ∃-there  : ∃⟨ P ∘ suc ⟩ → ∃⟨ P ⟩
+  ∃-toSum  : ∃⟨ P ⟩ → P zero ⊎ ∃⟨ P ∘ suc ⟩
+  ⊎⇔∃      : (P zero ⊎ ∃⟨ P ∘ suc ⟩) ⇔ ∃⟨ P ⟩
+  ```
+
+* Added new definitions to `Data.Fin.Subset.Properties`:
+  ```agda
+  out⊆    : p ⊆ q → outside ∷ p ⊆      y ∷ q
+  out⊆-⇔  : p ⊆ q ⇔ outside ∷ p ⊆      y ∷ q
+  in⊆in   : p ⊆ q →  inside ∷ p ⊆ inside ∷ q
+  in⊆in-⇔ : p ⊆ q ⇔  inside ∷ p ⊆ inside ∷ q
+
+  ∃-Subset-zero : ∃⟨ P ⟩ → P []
+  ∃-Subset-[]-⇔ : P [] ⇔ ∃⟨ P ⟩
+  ∃-Subset-suc  : ∃⟨ P ⟩ → ∃⟨ P ∘ (inside ∷_) ⟩ ⊎ ∃⟨ P ∘ (outside ∷_) ⟩
+  ∃-Subset-∷-⇔  : (∃⟨ P ∘ (inside ∷_) ⟩ ⊎ ∃⟨ P ∘ (outside ∷_) ⟩) ⇔ ∃⟨ P ⟩
+  ```
+
+* Added new definitions to `Data.List.Relation.Binary.Lex.Core`:
+  ```agda
+  []<[]-⇔ : P ⇔ [] < []
+  toSum   : (x ∷ xs) < (y ∷ ys) → (x ≺ y ⊎ (x ≈ y × xs < ys))
+  ∷<∷-⇔   : (x ≺ y ⊎ (x ≈ y × xs < ys)) ⇔ (x ∷ xs) < (y ∷ ys)
+  ```
+
+* Added new definitions to `Data.List.Relation.Binary.Pointwise`:
+  ```agda
+  uncons : Pointwise _∼_ (x ∷ xs) (y ∷ ys) → x ∼ y × Pointwise _∼_ xs ys
+  ```
+
+* Added new definitions to `Data.List.Relation.Unary.AllPairs`:
+  ```agda
+  uncons : AllPairs R (x ∷ xs) → All (R x) xs × AllPairs R xs
+  ```
+
+* Added new definitions to `Data.These.Properties`:
+  ```agda
+  these-injective : these x a ≡ these y b → x ≡ y × a ≡ b
+  ```
+
+* Added new definitions to `Data.Vec.Relation.Binary.Pointwise.Inductive`:
+  ```agda
+  uncons : Pointwise _∼_ (x ∷ xs) (y ∷ ys) → x ∼ y × Pointwise _∼_ xs ys
+  ```
+
+* Added new definitions to `Data.Vec.Relation.Unary.All`:
+  ```agda
+  uncons : All P (x ∷ xs) → P x × All P xs
+  ```
+
+* Added new definitions to `Relation.Binary.Construct.Closure.Reflexive.Properties`:
+  ```agda
+  fromSum :  a ≡ b ⊎ a ~ b  → Refl _~_ a b
+  toSum   :  Refl _~_ a b   → a ≡ b ⊎ a ~ b
+  ⊎⇔Refl  : (a ≡ b ⊎ a ~ b) ⇔ Refl _~_ a b
+  ```

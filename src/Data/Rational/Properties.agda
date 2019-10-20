@@ -17,13 +17,14 @@ open import Data.Nat as ℕ using (ℕ; zero; suc)
 import Data.Nat.Properties as ℕ
 open import Data.Nat.Coprimality as C using (Coprime; coprime?)
 open import Data.Nat.Divisibility hiding (/-cong)
-open import Data.Product using (_,_)
+open import Data.Product using (_×_; _,_)
 open import Data.Sum
 open import Level using (0ℓ)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (yes; no; recompute)
-open import Relation.Nullary.Decidable as Dec using (True; fromWitness)
+open import Relation.Nullary.Decidable as Dec using (True; fromWitness; map′)
+open import Relation.Nullary.Product using (_×-dec_)
 
 open import Algebra.Definitions {A = ℚ} _≡_
 open import Algebra.FunctionProperties.Consequences.Propositional
@@ -40,13 +41,16 @@ private
 -- Propositional equality
 ------------------------------------------------------------------------
 
+mkℚ-injective : ∀ {n₁ n₂ d₁ d₂} .{c₁ : Coprime ∣ n₁ ∣ (suc d₁)}
+                                .{c₂ : Coprime ∣ n₂ ∣ (suc d₂)} →
+                mkℚ n₁ d₁ c₁ ≡ mkℚ n₂ d₂ c₂ → n₁ ≡ n₂ × d₁ ≡ d₂
+mkℚ-injective refl = refl , refl
+
 infix 4 _≟_
 
 _≟_ : Decidable {A = ℚ} _≡_
-mkℚ n₁ d₁ _ ≟ mkℚ n₂ d₂ _ with n₁ ℤ.≟ n₂ | d₁ ℕ.≟ d₂
-... | yes refl | yes refl = yes refl
-... | no n₁≢n₂ | _        = no λ { refl → n₁≢n₂ refl }
-... | _        | no d₁≢d₂ = no λ { refl → d₁≢d₂ refl }
+mkℚ n₁ d₁ _ ≟ mkℚ n₂ d₂ _ =
+  map′ (λ { (refl , refl) → refl }) mkℚ-injective (n₁ ℤ.≟ n₂ ×-dec d₁ ℕ.≟ d₂)
 
 ≡-setoid : Setoid 0ℓ 0ℓ
 ≡-setoid = setoid ℚ
