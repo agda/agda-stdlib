@@ -33,7 +33,7 @@ open import Relation.Nullary.Negation using (contradiction)
 
 open import Algebra.Definitions {A = ℕᵇ} _≡_
 open import Algebra.Structures {A = ℕᵇ} _≡_
-import Algebra.Properties.CommutativeSemigroup ℕₚ.+-semigroup ℕₚ.+-comm
+import Algebra.Properties.CommutativeSemigroup ℕₚ.+-commutativeSemigroup
   as ℕ-+-semigroupProperties
 import Relation.Binary.Construct.StrictToNonStrict _≡_ _<_
   as StrictToNonStrict

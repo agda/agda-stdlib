@@ -63,6 +63,14 @@ record IsBand (∙ : Op₂ A) : Set (a ⊔ ℓ) where
   open IsSemigroup isSemigroup public
 
 
+record IsCommutativeSemigroup (∙ : Op₂ A) : Set (a ⊔ ℓ) where
+  field
+    isSemigroup : IsSemigroup ∙
+    comm        : Commutative ∙
+
+  open IsSemigroup isSemigroup public
+
+
 record IsSemilattice (∧ : Op₂ A) : Set (a ⊔ ℓ) where
   field
     isBand : IsBand ∧
@@ -78,6 +86,7 @@ record IsSelectiveMagma (∙ : Op₂ A) : Set (a ⊔ ℓ) where
     sel     : Selective ∙
 
   open IsMagma isMagma public
+
 
 ------------------------------------------------------------------------
 -- Structures with 1 binary operation & 1 element

@@ -25,7 +25,7 @@ import Relation.Nullary.Decidable as Dec
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
 
-open import Algebra.Properties.CommutativeSemigroup ℤ.*-semigroup ℤ.*-comm
+open import Algebra.Properties.CommutativeSemigroup ℤ.*-commutativeSemigroup
 
 ------------------------------------------------------------------------
 -- Properties of ↥_ and ↧_
