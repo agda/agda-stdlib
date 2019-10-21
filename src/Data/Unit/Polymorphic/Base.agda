@@ -15,8 +15,3 @@ open import Level
 
 record ⊤ {ℓ : Level} : Set ℓ where
   constructor tt
-
-------------------------------------------------------------------------
--- An ordering relation over the unit type
-
-record _≤_ {ℓ ℓ′ e : Level} (x : ⊤ {ℓ}) (y : ⊤ {ℓ′}) : Set e where

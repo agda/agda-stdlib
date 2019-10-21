@@ -42,22 +42,26 @@ decSetoid = Data.Unit.Properties.≡-decSetoid
 "Warning: decSetoid was deprecated in v1.1.
 Please use ≡-decSetoid from Data.Unit.Properties instead."
 #-}
-total = Data.Unit.Properties.≤-total
+
+-- Version 1.2
+total = Data.Unit.Properties.≡-total
 {-# WARNING_ON_USAGE total
-"Warning: total was deprecated in v1.1.
-Please use ≤-total from Data.Unit.Properties instead."
+"Warning: total was deprecated in v1.2.
+Please use Data.Unit.Properties.≡-total instead"
 #-}
-poset = Data.Unit.Properties.≤-poset
+poset = Data.Unit.Properties.≡-poset
 {-# WARNING_ON_USAGE poset
-"Warning: poset was deprecated in v1.1.
-Please use ≤-poset from Data.Unit.Properties instead."
+"Warning: poset was deprecated in v1.2.
+Please use ≡-poset from Data.Unit.Properties instead."
 #-}
-decTotalOrder = Data.Unit.Properties.≤-decTotalOrder
+decTotalOrder = Data.Unit.Properties.≡-decTotalOrder
 {-# WARNING_ON_USAGE decTotalOrder
-"Warning: decTotalOrder was deprecated in v1.1.
-Please use ≤-decTotalOrder from Data.Unit.Properties instead."
+"Warning: decTotalOrder was deprecated in v1.2.
+Please use ≡-decTotalOrder from Data.Unit.Properties instead."
 #-}
 preorder = PropEq.preorder ⊤
 {-# WARNING_ON_USAGE decTotalOrder
-"Warning: preorder was deprecated in v1.1."
+"Warning: preorder was deprecated in v1.2."
 #-}
+
+-- Version 1.2

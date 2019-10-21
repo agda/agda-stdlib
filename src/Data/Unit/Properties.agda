@@ -30,63 +30,119 @@ _ ≟ _ = yes refl
 ≡-decSetoid = decSetoid _≟_
 
 ------------------------------------------------------------------------
--- _≤_
 
 -- Relational properties
+-- These are all deprecated as _≤_ is _≡_ now
 
-≤-reflexive : _≡_ ⇒ _≤_
-≤-reflexive _ = _
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
 
-≤-trans : Transitive _≤_
-≤-trans _ _ = _
+-- Version 1.2
 
-≤-antisym : Antisymmetric _≡_ _≤_
-≤-antisym  _ _ = refl
+≤-reflexive : _⇒_ {A = ⊤} _≡_ _≡_
+≤-reflexive p = p
+{-# WARNING_ON_USAGE ≤-reflexive
+"Warning: ≤-reflexive was deprecated in v1.2.
+Please use id from Function instead."
+#-}
 
-≤-total : Total _≤_
-≤-total _ _ = inj₁ _
+≤-trans : Transitive {A = ⊤} _≡_
+≤-trans = trans
+{-# WARNING_ON_USAGE ≤-trans
+"Warning: ≤-trans was deprecated in v1.2.
+Please use trans from Relation.Binary.PropositionalEquality instead."
+#-}
+
+≤-antisym : Antisymmetric {A = ⊤} _≡_ _≡_
+≤-antisym p _ = p
+{-# WARNING_ON_USAGE ≤-antisym
+"Warning: ≤-antisym was deprecated in v1.2."
+#-}
+
+≡-total : Total {A = ⊤} _≡_
+≡-total _ _ = inj₁ refl
+≤-total = ≡-total
+{-# WARNING_ON_USAGE ≤-total
+"Warning: ≤-total was deprecated in v1.2."
+#-}
 
 infix 4 _≤?_
 
-_≤?_ : Decidable _≤_
-_ ≤? _ = yes _
+_≤?_ = _≟_
+{-# WARNING_ON_USAGE _≤?_
+"Warning: _≤_ was deprecated in v1.2.
+Please use _≟_ from Relation.Binary.PropositionalEquality instead."
+#-}
 
 -- Structures
 
-≤-isPreorder : IsPreorder _≡_ _≤_
-≤-isPreorder = record
+≡-isPreorder : IsPreorder {A = ⊤} _≡_ _≡_
+≡-isPreorder = record
   { isEquivalence = isEquivalence
-  ; reflexive     = ≤-reflexive
-  ; trans         = ≤-trans
+  ; reflexive     = λ x → x
+  ; trans         = trans
   }
+≤-isPreorder = ≡-isPreorder
+{-# WARNING_ON_USAGE ≤-isPreorder
+"Warning: ≤-isPreorder was deprecated in v1.2.
+Please use ≡-isPreorder instead."
+#-}
 
-≤-isPartialOrder : IsPartialOrder _≡_ _≤_
-≤-isPartialOrder = record
-  { isPreorder = ≤-isPreorder
-  ; antisym    = ≤-antisym
+≡-isPartialOrder : IsPartialOrder _≡_ _≡_
+≡-isPartialOrder = record
+  { isPreorder = ≡-isPreorder
+  ; antisym    = λ p _ → p
   }
+≤-isPartialOrder = ≡-isPartialOrder
+{-# WARNING_ON_USAGE ≤-isPartialOrder
+"Warning: ≤-isPartialOrder was deprecated in v1.2.
+Please use ≡-isPartialOrder instead."
+#-}
 
-≤-isTotalOrder : IsTotalOrder _≡_ _≤_
-≤-isTotalOrder = record
-  { isPartialOrder = ≤-isPartialOrder
-  ; total          = ≤-total
+≡-isTotalOrder : IsTotalOrder _≡_ _≡_
+≡-isTotalOrder = record
+  { isPartialOrder = ≡-isPartialOrder
+  ; total          = λ _ _ → inj₁ refl
   }
+≤-isTotalOrder = ≡-isTotalOrder
+{-# WARNING_ON_USAGE ≤-isTotalOrder
+"Warning: ≤-isTotalOrder was deprecated in v1.2.
+Please use ≡-isTotalOrder instead."
+#-}
 
-≤-isDecTotalOrder : IsDecTotalOrder _≡_ _≤_
-≤-isDecTotalOrder = record
-  { isTotalOrder = ≤-isTotalOrder
+≡-isDecTotalOrder : IsDecTotalOrder _≡_ _≡_
+≡-isDecTotalOrder = record
+  { isTotalOrder = ≡-isTotalOrder
   ; _≟_          = _≟_
-  ; _≤?_         = _≤?_
+  ; _≤?_         = _≟_
   }
+≤-isDecTotalOrder = ≡-isDecTotalOrder
+{-# WARNING_ON_USAGE ≤-isDecTotalOrder
+"Warning: ≤-isDecTotalOrder was deprecated in v1.2.
+Please use ≡-isDecTotalOrder instead."
+#-}
 
 -- Packages
 
-≤-poset : Poset 0ℓ 0ℓ 0ℓ
-≤-poset = record
-  { isPartialOrder = ≤-isPartialOrder
+≡-poset : Poset 0ℓ 0ℓ 0ℓ
+≡-poset = record
+  { isPartialOrder = ≡-isPartialOrder
   }
+≤-poset = ≡-poset
+{-# WARNING_ON_USAGE ≤-poset
+"Warning: ≤-poset was deprecated in v1.2.
+Please use ≡-poset instead."
+#-}
 
-≤-decTotalOrder : DecTotalOrder 0ℓ 0ℓ 0ℓ
-≤-decTotalOrder = record
-  { isDecTotalOrder = ≤-isDecTotalOrder
+≡-decTotalOrder : DecTotalOrder 0ℓ 0ℓ 0ℓ
+≡-decTotalOrder = record
+  { isDecTotalOrder = ≡-isDecTotalOrder
   }
+≤-decTotalOrder = ≡-decTotalOrder
+{-# WARNING_ON_USAGE ≤-decTotalOrder
+"Warning: ≤-decTotalOrder was deprecated in v1.2.
+Please use ≡-decTotalOrder instead."
+#-}

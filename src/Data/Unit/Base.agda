@@ -6,6 +6,8 @@
 
 {-# OPTIONS --without-K --safe #-}
 
+open import Agda.Builtin.Equality using (_≡_)
+
 module Data.Unit.Base where
 
 ------------------------------------------------------------------------
@@ -13,10 +15,21 @@ module Data.Unit.Base where
 
 open import Agda.Builtin.Unit public
   using (⊤; tt)
-
 -- Note that the name of this type is "\top", not T.
 
-------------------------------------------------------------------------
--- An ordering relation over the unit type
 
-record _≤_ (x y : ⊤) : Set where
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 1.2
+
+_≤_ : (x y : ⊤) → Set
+_≤_ = _≡_
+
+{-# WARNING_ON_USAGE _≤_
+"Warning: _≤_ was deprecated in v1.2.
+Please use _≡_ from Relation.Binary.PropositionalEquality instead."
+#-}

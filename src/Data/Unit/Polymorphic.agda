@@ -14,5 +14,4 @@ open import Data.Unit.Polymorphic.Base public
 ------------------------------------------------------------------------
 -- Re-export query operations
 
-open import Data.Unit.Polymorphic.Properties public
-  using (_≟_; _≤?_)
+open import Data.Unit.Polymorphic.Properties public using (_≟_)
