@@ -6,6 +6,9 @@
 
 {-# OPTIONS --without-K --safe #-}
 
+-- Disabled to prevent warnings from deprecation warnings for _≤_
+{-# OPTIONS --warn=noUserWarning #-}
+
 module Data.Unit.Properties where
 
 open import Data.Sum
@@ -30,9 +33,55 @@ _ ≟ _ = yes refl
 ≡-decSetoid = decSetoid _≟_
 
 ------------------------------------------------------------------------
-
 -- Relational properties
--- These are all deprecated as _≤_ is _≡_ now
+
+≡-total : Total {A = ⊤} _≡_
+≡-total _ _ = inj₁ refl
+
+≡-antisym : Antisymmetric {A = ⊤} _≡_ _≡_
+≡-antisym eq _ = eq
+
+------------------------------------------------------------------------
+-- Structures
+
+≡-isPreorder : IsPreorder {A = ⊤} _≡_ _≡_
+≡-isPreorder = record
+  { isEquivalence = isEquivalence
+  ; reflexive     = λ x → x
+  ; trans         = trans
+  }
+
+≡-isPartialOrder : IsPartialOrder _≡_ _≡_
+≡-isPartialOrder = record
+  { isPreorder = ≡-isPreorder
+  ; antisym    = ≡-antisym
+  }
+
+≡-isTotalOrder : IsTotalOrder _≡_ _≡_
+≡-isTotalOrder = record
+  { isPartialOrder = ≡-isPartialOrder
+  ; total          = ≡-total
+  }
+
+≡-isDecTotalOrder : IsDecTotalOrder _≡_ _≡_
+≡-isDecTotalOrder = record
+  { isTotalOrder = ≡-isTotalOrder
+  ; _≟_          = _≟_
+  ; _≤?_         = _≟_
+  }
+
+------------------------------------------------------------------------
+-- Bundles
+
+≡-poset : Poset 0ℓ 0ℓ 0ℓ
+≡-poset = record
+  { isPartialOrder = ≡-isPartialOrder
+  }
+
+≡-decTotalOrder : DecTotalOrder 0ℓ 0ℓ 0ℓ
+≡-decTotalOrder = record
+  { isDecTotalOrder = ≡-isDecTotalOrder
+  }
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
@@ -42,106 +91,87 @@ _ ≟ _ = yes refl
 
 -- Version 1.2
 
-≤-reflexive : _⇒_ {A = ⊤} _≡_ _≡_
-≤-reflexive p = p
+≤-reflexive : _≡_ ⇒ _≤_
+≤-reflexive _ = _
 {-# WARNING_ON_USAGE ≤-reflexive
 "Warning: ≤-reflexive was deprecated in v1.2.
 Please use id from Function instead."
 #-}
-
-≤-trans : Transitive {A = ⊤} _≡_
-≤-trans = trans
+≤-trans : Transitive _≤_
+≤-trans _ _ = _
 {-# WARNING_ON_USAGE ≤-trans
 "Warning: ≤-trans was deprecated in v1.2.
 Please use trans from Relation.Binary.PropositionalEquality instead."
 #-}
-
-≤-antisym : Antisymmetric {A = ⊤} _≡_ _≡_
-≤-antisym p _ = p
+≤-antisym : Antisymmetric _≡_ _≤_
+≤-antisym  _ _ = refl
 {-# WARNING_ON_USAGE ≤-antisym
-"Warning: ≤-antisym was deprecated in v1.2."
+"Warning: ≤-antisym was deprecated in v1.2.
+Please use ≡-antisym instead."
 #-}
-
-≡-total : Total {A = ⊤} _≡_
-≡-total _ _ = inj₁ refl
-≤-total = ≡-total
+≤-total : Total _≤_
+≤-total _ _ = inj₁ _
 {-# WARNING_ON_USAGE ≤-total
-"Warning: ≤-total was deprecated in v1.2."
+"Warning: ≤-total was deprecated in v1.2.
+Please use ≡-total instead."
 #-}
-
 infix 4 _≤?_
-
-_≤?_ = _≟_
+_≤?_ : Decidable _≤_
+_ ≤? _ = yes _
 {-# WARNING_ON_USAGE _≤?_
 "Warning: _≤_ was deprecated in v1.2.
-Please use _≟_ from Relation.Binary.PropositionalEquality instead."
+Please use _≟_  instead."
 #-}
-
--- Structures
-
-≡-isPreorder : IsPreorder {A = ⊤} _≡_ _≡_
-≡-isPreorder = record
+≤-isPreorder : IsPreorder _≡_ _≤_
+≤-isPreorder = record
   { isEquivalence = isEquivalence
-  ; reflexive     = λ x → x
-  ; trans         = trans
+  ; reflexive     = ≤-reflexive
+  ; trans         = ≤-trans
   }
-≤-isPreorder = ≡-isPreorder
 {-# WARNING_ON_USAGE ≤-isPreorder
 "Warning: ≤-isPreorder was deprecated in v1.2.
 Please use ≡-isPreorder instead."
 #-}
-
-≡-isPartialOrder : IsPartialOrder _≡_ _≡_
-≡-isPartialOrder = record
-  { isPreorder = ≡-isPreorder
-  ; antisym    = λ p _ → p
+≤-isPartialOrder : IsPartialOrder _≡_ _≤_
+≤-isPartialOrder = record
+  { isPreorder = ≤-isPreorder
+  ; antisym    = ≤-antisym
   }
-≤-isPartialOrder = ≡-isPartialOrder
 {-# WARNING_ON_USAGE ≤-isPartialOrder
 "Warning: ≤-isPartialOrder was deprecated in v1.2.
 Please use ≡-isPartialOrder instead."
 #-}
-
-≡-isTotalOrder : IsTotalOrder _≡_ _≡_
-≡-isTotalOrder = record
-  { isPartialOrder = ≡-isPartialOrder
-  ; total          = λ _ _ → inj₁ refl
+≤-isTotalOrder : IsTotalOrder _≡_ _≤_
+≤-isTotalOrder = record
+  { isPartialOrder = ≤-isPartialOrder
+  ; total          = ≤-total
   }
-≤-isTotalOrder = ≡-isTotalOrder
 {-# WARNING_ON_USAGE ≤-isTotalOrder
 "Warning: ≤-isTotalOrder was deprecated in v1.2.
 Please use ≡-isTotalOrder instead."
 #-}
-
-≡-isDecTotalOrder : IsDecTotalOrder _≡_ _≡_
-≡-isDecTotalOrder = record
-  { isTotalOrder = ≡-isTotalOrder
+≤-isDecTotalOrder : IsDecTotalOrder _≡_ _≤_
+≤-isDecTotalOrder = record
+  { isTotalOrder = ≤-isTotalOrder
   ; _≟_          = _≟_
-  ; _≤?_         = _≟_
+  ; _≤?_         = _≤?_
   }
-≤-isDecTotalOrder = ≡-isDecTotalOrder
 {-# WARNING_ON_USAGE ≤-isDecTotalOrder
 "Warning: ≤-isDecTotalOrder was deprecated in v1.2.
 Please use ≡-isDecTotalOrder instead."
 #-}
-
--- Packages
-
-≡-poset : Poset 0ℓ 0ℓ 0ℓ
-≡-poset = record
-  { isPartialOrder = ≡-isPartialOrder
+≤-poset : Poset 0ℓ 0ℓ 0ℓ
+≤-poset = record
+  { isPartialOrder = ≤-isPartialOrder
   }
-≤-poset = ≡-poset
 {-# WARNING_ON_USAGE ≤-poset
 "Warning: ≤-poset was deprecated in v1.2.
 Please use ≡-poset instead."
 #-}
-
-≡-decTotalOrder : DecTotalOrder 0ℓ 0ℓ 0ℓ
-≡-decTotalOrder = record
-  { isDecTotalOrder = ≡-isDecTotalOrder
+≤-decTotalOrder : DecTotalOrder 0ℓ 0ℓ 0ℓ
+≤-decTotalOrder = record
+  { isDecTotalOrder = ≤-isDecTotalOrder
   }
-≤-decTotalOrder = ≡-decTotalOrder
 {-# WARNING_ON_USAGE ≤-decTotalOrder
 "Warning: ≤-decTotalOrder was deprecated in v1.2.
 Please use ≡-decTotalOrder instead."

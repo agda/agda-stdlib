@@ -8,7 +8,9 @@
 
 module Data.Unit.Polymorphic where
 
+------------------------------------------------------------------------
 -- Re-export contents of Base module
+
 open import Data.Unit.Polymorphic.Base public
 
 ------------------------------------------------------------------------

@@ -15,6 +15,7 @@ module Data.Unit.Base where
 
 open import Agda.Builtin.Unit public
   using (⊤; tt)
+
 -- Note that the name of this type is "\top", not T.
 
 
@@ -26,9 +27,7 @@ open import Agda.Builtin.Unit public
 
 -- Version 1.2
 
-_≤_ : (x y : ⊤) → Set
-_≤_ = _≡_
-
+record _≤_ (x y : ⊤) : Set where
 {-# WARNING_ON_USAGE _≤_
 "Warning: _≤_ was deprecated in v1.2.
 Please use _≡_ from Relation.Binary.PropositionalEquality instead."

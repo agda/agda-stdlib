@@ -21,15 +21,13 @@ private
     ℓ : Level
 
 ------------------------------------------------------------------------
--- Decidable Equality and Ordering
+-- Equality
+------------------------------------------------------------------------
 
 infix 4 _≟_
 
-_≟_ : {ℓ : Level} → Decidable {A = ⊤ {ℓ}} _≡_
+_≟_ : Decidable {A = ⊤ {ℓ}} _≡_
 _ ≟ _ = yes refl
-
-------------------------------------------------------------------------
--- Setoid
 
 ≡-setoid : Setoid ℓ ℓ
 ≡-setoid = setoid ⊤
@@ -38,8 +36,16 @@ _ ≟ _ = yes refl
 ≡-decSetoid = decSetoid _≟_
 
 ------------------------------------------------------------------------
--- Relational properties
+-- Ordering
+------------------------------------------------------------------------
 
+≡-total : Total {A = ⊤ {ℓ}} _≡_
+≡-total _ _ = inj₁ refl
+
+≡-antisym : Antisymmetric {A = ⊤ {ℓ}} _≡_ _≡_
+≡-antisym p _ = p
+
+------------------------------------------------------------------------
 -- Structures
 
 ≡-isPreorder : IsPreorder {ℓ} {_} {⊤ {ℓ}} _≡_ _≡_
@@ -52,13 +58,13 @@ _ ≟ _ = yes refl
 ≡-isPartialOrder : IsPartialOrder {ℓ} _≡_ _≡_
 ≡-isPartialOrder = record
   { isPreorder = ≡-isPreorder
-  ; antisym    = λ p _ → p
+  ; antisym    = ≡-antisym
   }
 
 ≡-isTotalOrder : IsTotalOrder {ℓ} _≡_ _≡_
 ≡-isTotalOrder = record
   { isPartialOrder = ≡-isPartialOrder
-  ; total          = λ _ _ → inj₁ refl
+  ; total          = ≡-total
   }
 
 ≡-isDecTotalOrder : IsDecTotalOrder {ℓ} _≡_ _≡_
@@ -68,6 +74,7 @@ _ ≟ _ = yes refl
   ; _≤?_         = _≟_
   }
 
+------------------------------------------------------------------------
 -- Bundles
 
 ≡-poset : Poset ℓ ℓ ℓ
