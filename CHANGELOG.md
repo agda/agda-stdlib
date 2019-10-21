@@ -572,3 +572,5 @@ Other minor additions
   toSum   :  Refl _~_ a b   → a ≡ b ⊎ a ~ b
   ⊎⇔Refl  : (a ≡ b ⊎ a ~ b) ⇔ Refl _~_ a b
   ```
+
+* Started documenting design decisions about the library in `DESIGN.md`
