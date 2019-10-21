@@ -56,6 +56,6 @@ Please use ≡-decTotalOrder from Data.Unit.Properties instead."
 #-}
 preorder = PropEq.preorder ⊤
 {-# WARNING_ON_USAGE decTotalOrder
-"Warning: preorder was deprecated in v1.1."
+"Warning: preorder was deprecated in v1.1.
 Please use ≡-preorder from Data.Unit.Properties instead."
 #-}
