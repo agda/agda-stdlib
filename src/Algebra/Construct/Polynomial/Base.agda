@@ -165,7 +165,7 @@ Zero (Κ x ⊐ _) = T (Zero-C x)
 Zero (Σ _ ⊐ _) = ⊥
 
 -- This predicate is used to ensure that all polynomials are in
--- normal form: if a particular level is constant, than it can
+-- normal form: if a particular level is constant, then it can
 -- be collapsed into the level below it.
 Normalised (_ Δ zero  & [])  = ⊥
 Normalised (_ Δ zero  & ∹ _) = ⊤
