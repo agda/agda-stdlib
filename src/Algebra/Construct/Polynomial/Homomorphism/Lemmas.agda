@@ -119,8 +119,8 @@ pow-cong ℕ.zero x≈y = refl
 pow-cong (suc i) x≈y = pow-cong-+1 i x≈y
 
 zero-hom : ∀ {n} (p : Poly n) → Zero p → (ρs : Vec Carrier n) → 0# ≈ ⟦ p ⟧ ρs
-zero-hom (Σ _ Π _) ()
-zero-hom (Κ x  Π i≤n) p≡0 ρs = Zero-C⟶Zero-R x p≡0
+zero-hom (Σ _ ⊐ _) ()
+zero-hom (Κ x  ⊐ i≤n) p≡0 ρs = Zero-C⟶Zero-R x p≡0
 
 pow-suc : ∀ x i → x ^ suc i ≈ x * x ^ i
 pow-suc x ℕ.zero = sym (*-identityʳ _)
@@ -191,23 +191,23 @@ pow′-hom (suc i) [] ρ ρs = zeroʳ _
 ⟦∷⟧-hom x [] ρ ρs = sym ((≪+ zeroʳ _) ⟨ trans ⟩ +-identityˡ _)
 ⟦∷⟧-hom x (∹ xs ) ρ ρs = refl
 
-Σ-Π↑-hom : ∀ {i n m}
+Σ-⊐↑-hom : ∀ {i n m}
          → (xs : Coeff i +)
          → (si≤n : suc i ≤′ n)
          → (sn≤m : suc n ≤′ m)
          → ∀ ρ
          → Σ⟦ xs ⟧ (drop-1 (≤′-step si≤n ⟨ ≤′-trans ⟩ sn≤m) ρ)
          ≈ Σ⟦ xs ⟧ (drop-1 si≤n (proj₂ (drop-1 sn≤m ρ)))
-Σ-Π↑-hom xs si≤n ≤′-refl (_ ∷ _) = refl
-Σ-Π↑-hom xs si≤n (≤′-step sn≤m) (_ ∷ ρ) = Σ-Π↑-hom xs si≤n sn≤m ρ
+Σ-⊐↑-hom xs si≤n ≤′-refl (_ ∷ _) = refl
+Σ-⊐↑-hom xs si≤n (≤′-step sn≤m) (_ ∷ ρ) = Σ-⊐↑-hom xs si≤n sn≤m ρ
 
-Π↑-hom : ∀ {n m}
+⊐↑-hom : ∀ {n m}
        → (x : Poly n)
        → (sn≤m : suc n ≤′ m)
        → ∀ ρ
-       → ⟦ x Π↑ sn≤m ⟧ ρ ≈ ⟦ x ⟧ (proj₂ (drop-1 sn≤m ρ))
-Π↑-hom (Κ x  Π i≤sn) _ _ = refl
-Π↑-hom (Σ xs Π i≤sn) = Σ-Π↑-hom xs i≤sn
+       → ⟦ x ⊐↑ sn≤m ⟧ ρ ≈ ⟦ x ⟧ (proj₂ (drop-1 sn≤m ρ))
+⊐↑-hom (Κ x  ⊐ i≤sn) _ _ = refl
+⊐↑-hom (Σ xs ⊐ i≤sn) = Σ-⊐↑-hom xs i≤sn
 
 trans-join-coeffs-hom : ∀ {i j-1 n}
                       → (i≤j-1 : suc i ≤′ j-1)
@@ -223,24 +223,24 @@ trans-join-hom : ∀ {i j-1 n}
       → (j≤n   : suc j-1 ≤′ n)
       → (x : FlatPoly i)
       → ∀ ρ
-      → ⟦ x Π i≤j-1 ⟧ (proj₂ (drop-1 j≤n ρ)) ≈ ⟦ x Π (≤′-step i≤j-1 ⟨ ≤′-trans ⟩ j≤n) ⟧ ρ
+      → ⟦ x ⊐ i≤j-1 ⟧ (proj₂ (drop-1 j≤n ρ)) ≈ ⟦ x ⊐ (≤′-step i≤j-1 ⟨ ≤′-trans ⟩ j≤n) ⟧ ρ
 trans-join-hom i≤j-1 j≤n (Κ x) _ = refl
 trans-join-hom i≤j-1 j≤n (Σ x) = trans-join-coeffs-hom i≤j-1 j≤n x
 
-Π↓-hom : ∀ {n m}
+⊐↓-hom : ∀ {n m}
        → (xs : Coeff n *)
        → (sn≤m : suc n ≤′ m)
        → ∀ ρ
-       → ⟦ xs Π↓ sn≤m ⟧ ρ ≈ Σ?⟦ xs ⟧ (drop-1 sn≤m ρ)
-Π↓-hom []                       sn≤m _ = 0-homo
-Π↓-hom (∹ x₁   Δ zero  & ∹ xs) sn≤m _ = refl
-Π↓-hom (∹ x    Δ suc j & xs )      sn≤m _ = refl
-Π↓-hom (∹ _≠0 x {x≠0} Δ zero  & []) sn≤m ρs =
+       → ⟦ xs ⊐↓ sn≤m ⟧ ρ ≈ Σ?⟦ xs ⟧ (drop-1 sn≤m ρ)
+⊐↓-hom []                       sn≤m _ = 0-homo
+⊐↓-hom (∹ x₁   Δ zero  & ∹ xs) sn≤m _ = refl
+⊐↓-hom (∹ x    Δ suc j & xs )      sn≤m _ = refl
+⊐↓-hom (∹ _≠0 x {x≠0} Δ zero  & []) sn≤m ρs =
   let (ρ , ρs′) = drop-1 sn≤m ρs
   in
   begin
-    ⟦ x Π↑ sn≤m ⟧ ρs
-  ≈⟨ Π↑-hom x sn≤m ρs ⟩
+    ⟦ x ⊐↑ sn≤m ⟧ ρs
+  ≈⟨ ⊐↑-hom x sn≤m ρs ⟩
     ⟦ x ⟧ ρs′
   ∎
 

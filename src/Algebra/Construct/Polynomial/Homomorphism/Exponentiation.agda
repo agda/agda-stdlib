@@ -38,12 +38,12 @@ pow-eval-hom x (suc i) = (*-homo _ x) ⟨ trans ⟩ (≪* pow-eval-hom x i)
 ⊡-mult-hom (suc i) xs ρ =  ⊠-hom (⊡-mult i xs) xs ρ ⟨ trans ⟩ (≪* ⊡-mult-hom i xs ρ)
 
 ⊡-+1-hom : ∀ {n} → (xs : Poly n) → (i : ℕ) → ∀ ρ → ⟦ xs ⊡ i +1 ⟧ ρ ≈ ⟦ xs ⟧ ρ RawPow.^ i +1
-⊡-+1-hom (Κ x  Π i≤n) i ρ = pow-eval-hom x i
-⊡-+1-hom xs@(Σ (_ & ∹ _) Π i≤n) i ρ = ⊡-mult-hom i xs ρ
-⊡-+1-hom (Σ (x ≠0 Δ j & []) Π i≤n) i ρ =
+⊡-+1-hom (Κ x  ⊐ i≤n) i ρ = pow-eval-hom x i
+⊡-+1-hom xs@(Σ (_ & ∹ _) ⊐ i≤n) i ρ = ⊡-mult-hom i xs ρ
+⊡-+1-hom (Σ (x ≠0 Δ j & []) ⊐ i≤n) i ρ =
   begin
-    ⟦ x ⊡ i +1 Δ (j ℕ.+ i ℕ.* j) ∷↓ [] Π↓ i≤n ⟧ ρ
-  ≈⟨ Π↓-hom (x ⊡ i +1 Δ (j ℕ.+ i ℕ.* j) ∷↓ []) i≤n ρ ⟩
+    ⟦ x ⊡ i +1 Δ (j ℕ.+ i ℕ.* j) ∷↓ [] ⊐↓ i≤n ⟧ ρ
+  ≈⟨ ⊐↓-hom (x ⊡ i +1 Δ (j ℕ.+ i ℕ.* j) ∷↓ []) i≤n ρ ⟩
     Σ?⟦ x ⊡ i +1 Δ (j ℕ.+ i ℕ.* j) ∷↓ [] ⟧ (drop-1 i≤n ρ)
   ≈⟨ ∷↓-hom (x ⊡ i +1) (j ℕ.+ i ℕ.* j) [] ρ′ Ρ ⟩
     (ρ′ RawPow.^ (j ℕ.+ i ℕ.* j)) * (⟦ x ⊡ i +1 ⟧ Ρ)

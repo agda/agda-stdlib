@@ -34,8 +34,8 @@ open import Algebra.Operations.Ring.Compact rawRing
   let (ρ , Ρ) = drop-1 (Fin⇒≤ i) Ρ′
   in
   begin
-    ⟦ (κ Raw.1# Δ 1 ∷↓ []) Π↓ Fin⇒≤ i ⟧ Ρ′
-  ≈⟨ Π↓-hom (κ Raw.1# Δ 1 ∷↓ []) (Fin⇒≤ i) Ρ′ ⟩
+    ⟦ (κ Raw.1# Δ 1 ∷↓ []) ⊐↓ Fin⇒≤ i ⟧ Ρ′
+  ≈⟨ ⊐↓-hom (κ Raw.1# Δ 1 ∷↓ []) (Fin⇒≤ i) Ρ′ ⟩
     Σ?⟦ κ Raw.1# Δ 1 ∷↓ [] ⟧ (ρ , Ρ)
   ≈⟨ ∷↓-hom-s (κ Raw.1#) 0 [] ρ Ρ  ⟩
     ρ * ⟦ κ Raw.1# ⟧ Ρ

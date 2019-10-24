@@ -35,14 +35,14 @@ reassoc {y} x z = sym (*-assoc x y z) ⟨ trans ⟩ ((≪* *-comm x y) ⟨ trans
 
 mutual
   ⊠-step′-hom : ∀ {n} → (a : Acc _<′_ n) → (xs ys : Poly n) → ∀ ρ → ⟦ ⊠-step′ a xs ys ⟧ ρ ≈ ⟦ xs ⟧ ρ * ⟦ ys ⟧ ρ
-  ⊠-step′-hom a (x Π p) = ⊠-step-hom a x p
+  ⊠-step′-hom a (x ⊐ p) = ⊠-step-hom a x p
 
   ⊠-step-hom : ∀ {i n}
              → (a : Acc _<′_ n)
              → (xs : FlatPoly i)
              → (i≤n : i ≤′ n)
              → (ys : Poly n)
-             → ∀ ρ → ⟦ ⊠-step a xs i≤n ys ⟧ ρ ≈ ⟦ xs Π i≤n ⟧ ρ * ⟦ ys ⟧ ρ
+             → ∀ ρ → ⟦ ⊠-step a xs i≤n ys ⟧ ρ ≈ ⟦ xs ⊐ i≤n ⟧ ρ * ⟦ ys ⟧ ρ
   ⊠-step-hom a (Κ x) i≤n = ⊠-Κ-hom a x
   ⊠-step-hom a (Σ xs) i≤n = ⊠-Σ-hom a xs i≤n
 
@@ -52,11 +52,11 @@ mutual
           → (ys : Poly n)
           → ∀ ρ
           → ⟦ ⊠-Κ a x ys ⟧ ρ ≈ ⟦ x ⟧ᵣ * ⟦ ys ⟧ ρ
-  ⊠-Κ-hom  (acc _) x (Κ y  Π i≤n) ρ = *-homo x y
-  ⊠-Κ-hom (acc wf) x (Σ xs Π i≤n) ρ =
+  ⊠-Κ-hom  (acc _) x (Κ y  ⊐ i≤n) ρ = *-homo x y
+  ⊠-Κ-hom (acc wf) x (Σ xs ⊐ i≤n) ρ =
     begin
-      ⟦ ⊠-Κ-inj (wf _ i≤n) x xs Π↓ i≤n ⟧ ρ
-    ≈⟨ Π↓-hom (⊠-Κ-inj (wf _ i≤n) x xs) i≤n ρ ⟩
+      ⟦ ⊠-Κ-inj (wf _ i≤n) x xs ⊐↓ i≤n ⟧ ρ
+    ≈⟨ ⊐↓-hom (⊠-Κ-inj (wf _ i≤n) x xs) i≤n ρ ⟩
       Σ?⟦ ⊠-Κ-inj (wf _ i≤n) x xs ⟧ (drop-1 i≤n ρ)
     ≈⟨ ⊠-Κ-inj-hom (wf _ i≤n) x xs (drop-1 i≤n ρ) ⟩
       ⟦ x ⟧ᵣ * Σ⟦ xs ⟧ (drop-1 i≤n ρ)
@@ -88,11 +88,11 @@ mutual
           → (ys : Poly n)
           → ∀ ρ
           → ⟦ ⊠-Σ a xs i<n ys ⟧ ρ ≈ Σ⟦ xs ⟧ (drop-1 i<n ρ) * ⟦ ys ⟧ ρ
-  ⊠-Σ-hom (acc wf) xs i<n (Σ ys Π j≤n) = ⊠-match-hom (acc wf) (inj-compare i<n j≤n) xs ys
-  ⊠-Σ-hom (acc wf) xs i<n (Κ y  Π _) ρ =
+  ⊠-Σ-hom (acc wf) xs i<n (Σ ys ⊐ j≤n) = ⊠-match-hom (acc wf) (inj-compare i<n j≤n) xs ys
+  ⊠-Σ-hom (acc wf) xs i<n (Κ y  ⊐ _) ρ =
     begin
-      ⟦ ⊠-Κ-inj (wf _ i<n) y xs Π↓ i<n ⟧ ρ
-    ≈⟨ Π↓-hom (⊠-Κ-inj (wf _ i<n) y xs) i<n ρ ⟩
+      ⟦ ⊠-Κ-inj (wf _ i<n) y xs ⊐↓ i<n ⟧ ρ
+    ≈⟨ ⊐↓-hom (⊠-Κ-inj (wf _ i<n) y xs) i<n ρ ⟩
       Σ?⟦ ⊠-Κ-inj (wf _ i<n) y xs ⟧ (drop-1 i<n ρ)
     ≈⟨ ⊠-Κ-inj-hom (wf _ i<n) y xs (drop-1 i<n ρ) ⟩
       ⟦ y ⟧ᵣ * Σ⟦ xs ⟧ (drop-1 i<n ρ)
@@ -107,11 +107,11 @@ mutual
               → (ys : Poly k)
               → ∀ ρ
               → ⟦ ⊠-Σ-inj a i<k xs ys ⟧ ρ ≈ Σ⟦ xs ⟧ (drop-1 i<k ρ) * ⟦ ys ⟧ ρ
-  ⊠-Σ-inj-hom (acc wf) i<k x (Σ ys Π j≤k) = ⊠-match-hom (acc wf) (inj-compare i<k j≤k) x ys
-  ⊠-Σ-inj-hom (acc wf) i<k x (Κ y Π j≤k) ρ =
+  ⊠-Σ-inj-hom (acc wf) i<k x (Σ ys ⊐ j≤k) = ⊠-match-hom (acc wf) (inj-compare i<k j≤k) x ys
+  ⊠-Σ-inj-hom (acc wf) i<k x (Κ y ⊐ j≤k) ρ =
     begin
-      ⟦ ⊠-Κ-inj (wf _ i<k) y x Π↓ i<k ⟧ ρ
-    ≈⟨ Π↓-hom (⊠-Κ-inj (wf _ i<k) y x) i<k ρ ⟩
+      ⟦ ⊠-Κ-inj (wf _ i<k) y x ⊐↓ i<k ⟧ ρ
+    ≈⟨ ⊐↓-hom (⊠-Κ-inj (wf _ i<k) y x) i<k ρ ⟩
       Σ?⟦ ⊠-Κ-inj (wf _ i<k) y x ⟧ (drop-1 i<k ρ)
     ≈⟨ ⊠-Κ-inj-hom (wf _ i<k) y x (drop-1 i<k ρ) ⟩
       ⟦ y ⟧ᵣ * Σ⟦ x ⟧ (drop-1 i<k ρ)
@@ -134,8 +134,8 @@ mutual
         xs′ = Σ⟦ xs ⟧ (drop-1 (≤′-trans (≤′-step i≤j-1) j≤n) Ρ′)
     in
     begin
-      ⟦ poly-map ( (⊠-Σ-inj (wf _ j≤n) i≤j-1 xs)) ys Π↓ j≤n ⟧ Ρ′
-    ≈⟨ Π↓-hom (poly-map ( (⊠-Σ-inj (wf _ j≤n) i≤j-1 xs)) ys) j≤n Ρ′ ⟩
+      ⟦ poly-map ( (⊠-Σ-inj (wf _ j≤n) i≤j-1 xs)) ys ⊐↓ j≤n ⟧ Ρ′
+    ≈⟨ ⊐↓-hom (poly-map ( (⊠-Σ-inj (wf _ j≤n) i≤j-1 xs)) ys) j≤n Ρ′ ⟩
       Σ?⟦ poly-map ( (⊠-Σ-inj (wf _ j≤n) i≤j-1 xs)) ys ⟧ (ρ , Ρ)
     ≈⟨ poly-mapR ρ Ρ (⊠-Σ-inj (wf _ j≤n) i≤j-1 xs)
                      (_ *_)
@@ -153,8 +153,8 @@ mutual
         ys′ = Σ⟦ ys ⟧ (drop-1 (≤′-step j≤i-1 ⟨ ≤′-trans ⟩ i≤n) Ρ′)
     in
     begin
-      ⟦ poly-map ( (⊠-Σ-inj (wf _ i≤n) j≤i-1 ys)) xs Π↓ i≤n ⟧ Ρ′
-    ≈⟨ Π↓-hom (poly-map ( (⊠-Σ-inj (wf _ i≤n) j≤i-1 ys)) xs) i≤n Ρ′ ⟩
+      ⟦ poly-map ( (⊠-Σ-inj (wf _ i≤n) j≤i-1 ys)) xs ⊐↓ i≤n ⟧ Ρ′
+    ≈⟨ ⊐↓-hom (poly-map ( (⊠-Σ-inj (wf _ i≤n) j≤i-1 ys)) xs) i≤n Ρ′ ⟩
       Σ?⟦ poly-map ( (⊠-Σ-inj (wf _ i≤n) j≤i-1 ys)) xs ⟧ (ρ , Ρ)
     ≈⟨ poly-mapR ρ Ρ (⊠-Σ-inj (wf _ i≤n) j≤i-1 ys)
                      (_ *_)
@@ -171,8 +171,8 @@ mutual
     ∎
   ⊠-match-hom (acc wf) (inj-eq ij≤n) xs ys Ρ =
     begin
-      ⟦ ⊠-coeffs (wf _ ij≤n) xs ys Π↓ ij≤n ⟧ Ρ
-    ≈⟨ Π↓-hom (⊠-coeffs (wf _ ij≤n) xs ys) ij≤n Ρ ⟩
+      ⟦ ⊠-coeffs (wf _ ij≤n) xs ys ⊐↓ ij≤n ⟧ Ρ
+    ≈⟨ ⊐↓-hom (⊠-coeffs (wf _ ij≤n) xs ys) ij≤n Ρ ⟩
       Σ?⟦ ⊠-coeffs (wf _ ij≤n) xs ys ⟧ (drop-1 ij≤n Ρ)
     ≈⟨ ⊠-coeffs-hom (wf _ ij≤n) xs ys (drop-1 ij≤n Ρ) ⟩
       Σ⟦ xs ⟧ (drop-1 ij≤n Ρ) * Σ⟦ ys ⟧ (drop-1 ij≤n Ρ)
@@ -226,8 +226,8 @@ mutual
   -- ⊠-cons-hom a y [] xs ρ Ρ = {!!}
   ⊠-cons-hom a y ys xs ρ Ρ = poly-foldR ρ Ρ (⊠-cons a y ys) (flip _*_ (ρ * Σ⟦ ys ⟧ (ρ , Ρ) + ⟦ y ⟧ Ρ)) (flip *-cong refl) (λ x y → sym (*-assoc x y _)) step (zeroˡ _) xs
     where
-    step = λ { (z Π j≤n) {ys₁} zs ys≋zs →
-      let x′  = ⟦ z Π j≤n ⟧ Ρ
+    step = λ { (z ⊐ j≤n) {ys₁} zs ys≋zs →
+      let x′  = ⟦ z ⊐ j≤n ⟧ Ρ
           xs′ = Σ?⟦ zs ⟧ (ρ , Ρ)
           y′  = ⟦ y ⟧ Ρ
           ys′ = Σ⟦ ys ⟧ (ρ , Ρ)
@@ -253,4 +253,4 @@ mutual
       → (xs : Poly n)
       → (ys : Poly n)
       → ∀ ρ → ⟦ xs ⊠ ys ⟧ ρ ≈ ⟦ xs ⟧ ρ * ⟦ ys ⟧ ρ
-⊠-hom (xs Π i≤n) = ⊠-step-hom (<′-wellFounded _) xs i≤n
+⊠-hom (xs ⊐ i≤n) = ⊠-step-hom (<′-wellFounded _) xs i≤n
