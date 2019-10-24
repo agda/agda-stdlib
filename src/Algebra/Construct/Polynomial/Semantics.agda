@@ -42,16 +42,16 @@ x *⟨ ρ ⟩^ suc i = ρ ^ i +1 * x
 mutual
   _⟦∷⟧_ : ∀ {n} → Poly n × Coeff n * → Carrier × Vec Carrier n → Carrier
   (x , []) ⟦∷⟧ (ρ , ρs) = ⟦ x ⟧ ρs
-  (x , (∹ xs )) ⟦∷⟧ (ρ , ρs) = ρ * Σ⟦ xs ⟧ (ρ , ρs) + ⟦ x ⟧ ρs
+  (x , (∹ xs )) ⟦∷⟧ (ρ , ρs) = ρ * ⅀⟦ xs ⟧ (ρ , ρs) + ⟦ x ⟧ ρs
 
-  Σ⟦_⟧ : ∀ {n} → Coeff n + → (Carrier × Vec Carrier n) → Carrier
-  Σ⟦ x ≠0 Δ i & xs ⟧ (ρ , ρs) = ((x , xs) ⟦∷⟧ (ρ , ρs)) *⟨ ρ ⟩^ i
+  ⅀⟦_⟧ : ∀ {n} → Coeff n + → (Carrier × Vec Carrier n) → Carrier
+  ⅀⟦ x ≠0 Δ i & xs ⟧ (ρ , ρs) = ((x , xs) ⟦∷⟧ (ρ , ρs)) *⟨ ρ ⟩^ i
 
   ⟦_⟧ : ∀ {n} → Poly n → Vec Carrier n → Carrier
   ⟦ Κ x  ⊐ i≤n ⟧ _ = ⟦ x ⟧ᵣ
-  ⟦ Σ xs ⊐ i≤n ⟧ Ρ = Σ⟦ xs ⟧ (drop-1 i≤n Ρ)
+  ⟦ ⅀ xs ⊐ i≤n ⟧ Ρ = ⅀⟦ xs ⟧ (drop-1 i≤n Ρ)
 {-# INLINE ⟦_⟧ #-}
-{-# INLINE Σ⟦_⟧ #-}
+{-# INLINE ⅀⟦_⟧ #-}
 --------------------------------------------------------------------------------
 -- Performance
 --------------------------------------------------------------------------------
@@ -60,10 +60,10 @@ mutual
 -- important component is the *order of the arguments*. For instance, if
 -- we change:
 --
---   (x , xs) ⟦∷⟧ (ρ , ρs) = ρ * Σ⟦ xs ⟧ (ρ , ρs) + ⟦ x ⟧ ρs
+--   (x , xs) ⟦∷⟧ (ρ , ρs) = ρ * ⅀⟦ xs ⟧ (ρ , ρs) + ⟦ x ⟧ ρs
 --
 -- To:
 --
---   (x , xs) ⟦∷⟧ (ρ , ρs) = ⟦ x ⟧ ρs +  Σ⟦ xs ⟧ (ρ , ρs) * ρ
+--   (x , xs) ⟦∷⟧ (ρ , ρs) = ⟦ x ⟧ ρs +  ⅀⟦ xs ⟧ (ρ , ρs) * ρ
 --
 -- We get a function that's several orders of magnitude slower!

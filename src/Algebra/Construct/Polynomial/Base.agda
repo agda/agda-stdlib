@@ -144,7 +144,7 @@ record Poly n where
 
 data FlatPoly where
   Κ : Carrier → FlatPoly zero
-  Σ : ∀ {n} → (xs : Coeff n +) → {xn : Normalised xs} → FlatPoly (suc n)
+  ⅀ : ∀ {n} → (xs : Coeff n +) → {xn : Normalised xs} → FlatPoly (suc n)
 
 
 Coeff n = PowInd (NonZero n)
@@ -162,7 +162,7 @@ record NonZero i where
 -- This predicate is used (in its negation) to ensure that no
 -- coefficient is zero, preventing any trailing zeroes.
 Zero (Κ x ⊐ _) = T (Zero-C x)
-Zero (Σ _ ⊐ _) = ⊥
+Zero (⅀ _ ⊐ _) = ⊥
 
 -- This predicate is used to ensure that all polynomials are in
 -- normal form: if a particular level is constant, then it can
@@ -176,7 +176,7 @@ open Poly public
 
 -- Decision procedure for Zero
 zero? : ∀ {n} → (p : Poly n) → Dec (Zero p)
-zero? (Σ _ ⊐ _) = no (λ z → z)
+zero? (⅀ _ ⊐ _) = no (λ z → z)
 zero? (Κ x ⊐ _) with Zero-C x
 ... | true = yes tt
 ... | false = no (λ z → z)
@@ -211,8 +211,8 @@ infixr 4 _⊐↓_
 _⊐↓_ : ∀ {i n} → Coeff i * → suc i ≤′ n → Poly n
 []                        ⊐↓ i≤n = Κ 0# ⊐ z≤′n
 (∹ (x ≠0 Δ zero  & []    )) ⊐↓ i≤n = x ⊐↑ i≤n
-(∹ (x    Δ zero  & ∹ xs )) ⊐↓ i≤n = Σ (x Δ zero  & ∹ xs) ⊐ i≤n
-(∹ (x    Δ suc j & xs    )) ⊐↓ i≤n = Σ (x Δ suc j & xs) ⊐ i≤n
+(∹ (x    Δ zero  & ∹ xs )) ⊐↓ i≤n = ⅀ (x Δ zero  & ∹ xs) ⊐ i≤n
+(∹ (x    Δ suc j & xs    )) ⊐↓ i≤n = ⅀ (x Δ suc j & xs) ⊐ i≤n
 {-# INLINE _⊐↓_ #-}
 
 --------------------------------------------------------------------------------
@@ -276,9 +276,9 @@ mutual
         → FlatPoly j
         → Poly n
   ⊞-match (inj-eq i&j≤n)     (Κ x)  (Κ y)  = Κ (x + y)         ⊐  i&j≤n
-  ⊞-match (inj-eq i&j≤n)     (Σ (x Δ i & xs)) (Σ (y Δ j & ys)) = ⊞-zip (compare i j) x xs y ys ⊐↓ i&j≤n
-  ⊞-match (inj-lt i≤j-1 j≤n)  xs    (Σ ys) = ⊞-inj i≤j-1 xs ys ⊐↓ j≤n
-  ⊞-match (inj-gt i≤n j≤i-1) (Σ xs)  ys    = ⊞-inj j≤i-1 ys xs ⊐↓ i≤n
+  ⊞-match (inj-eq i&j≤n)     (⅀ (x Δ i & xs)) (⅀ (y Δ j & ys)) = ⊞-zip (compare i j) x xs y ys ⊐↓ i&j≤n
+  ⊞-match (inj-lt i≤j-1 j≤n)  xs    (⅀ ys) = ⊞-inj i≤j-1 xs ys ⊐↓ j≤n
+  ⊞-match (inj-gt i≤n j≤i-1) (⅀ xs)  ys    = ⊞-inj j≤i-1 ys xs ⊐↓ i≤n
 
   ⊞-inj : ∀ {i k}
         → (i ≤′ k)
@@ -317,7 +317,7 @@ mutual
 
 ⊟-step : ∀ {n} → Acc _<′_ n → Poly n → Poly n
 ⊟-step (acc wf) (Κ x  ⊐ i≤n) = Κ (- x) ⊐ i≤n
-⊟-step (acc wf) (Σ xs ⊐ i≤n) = poly-map (⊟-step (wf _ i≤n)) xs ⊐↓ i≤n
+⊟-step (acc wf) (⅀ xs ⊐ i≤n) = poly-map (⊟-step (wf _ i≤n)) xs ⊐↓ i≤n
 
 ⊟_ : ∀ {n} → Poly n → Poly n
 ⊟_ = ⊟-step (<′-wellFounded _)
@@ -332,27 +332,27 @@ mutual
 
   ⊠-step : ∀ {i n} → Acc _<′_ n → FlatPoly i → i ≤′ n → Poly n → Poly n
   ⊠-step a (Κ x) _ = ⊠-Κ a x
-  ⊠-step a (Σ xs)  = ⊠-Σ a xs
+  ⊠-step a (⅀ xs)  = ⊠-⅀ a xs
 
   ⊠-Κ : ∀ {n} → Acc _<′_ n → Carrier → Poly n → Poly n
   ⊠-Κ (acc _ ) x (Κ y  ⊐ i≤n) = Κ (x * y) ⊐ i≤n
-  ⊠-Κ (acc wf) x (Σ xs ⊐ i≤n) = ⊠-Κ-inj (wf _ i≤n) x xs ⊐↓ i≤n
+  ⊠-Κ (acc wf) x (⅀ xs ⊐ i≤n) = ⊠-Κ-inj (wf _ i≤n) x xs ⊐↓ i≤n
 
-  ⊠-Σ : ∀ {i n} → Acc _<′_ n → Coeff i + → i <′ n → Poly n → Poly n
-  ⊠-Σ (acc wf) xs i≤n (Σ ys ⊐ j≤n) = ⊠-match  (acc wf) (inj-compare i≤n j≤n) xs ys
-  ⊠-Σ (acc wf) xs i≤n (Κ y ⊐ _) = ⊠-Κ-inj (wf _ i≤n) y xs ⊐↓ i≤n
+  ⊠-⅀ : ∀ {i n} → Acc _<′_ n → Coeff i + → i <′ n → Poly n → Poly n
+  ⊠-⅀ (acc wf) xs i≤n (⅀ ys ⊐ j≤n) = ⊠-match  (acc wf) (inj-compare i≤n j≤n) xs ys
+  ⊠-⅀ (acc wf) xs i≤n (Κ y ⊐ _) = ⊠-Κ-inj (wf _ i≤n) y xs ⊐↓ i≤n
 
   ⊠-Κ-inj : ∀ {i}  → Acc _<′_ i → Carrier → Coeff i + → Coeff i *
   ⊠-Κ-inj a x xs = poly-map (⊠-Κ a x) (xs)
 
-  ⊠-Σ-inj : ∀ {i k}
+  ⊠-⅀-inj : ∀ {i k}
           → Acc _<′_ k
           → i <′ k
           → Coeff i +
           → Poly k
           → Poly k
-  ⊠-Σ-inj (acc wf) i≤k x (Σ y ⊐ j≤k) = ⊠-match (acc wf) (inj-compare i≤k j≤k) x y
-  ⊠-Σ-inj (acc wf) i≤k x (Κ y ⊐ j≤k) = ⊠-Κ-inj (wf _ i≤k) y x ⊐↓ i≤k
+  ⊠-⅀-inj (acc wf) i≤k x (⅀ y ⊐ j≤k) = ⊠-match (acc wf) (inj-compare i≤k j≤k) x y
+  ⊠-⅀-inj (acc wf) i≤k x (Κ y ⊐ j≤k) = ⊠-Κ-inj (wf _ i≤k) y x ⊐↓ i≤k
 
   ⊠-match : ∀ {i j n}
           → Acc _<′_ n
@@ -363,8 +363,8 @@ mutual
           → Coeff j +
           → Poly n
   ⊠-match (acc wf) (inj-eq i&j≤n)     xs ys = ⊠-coeffs (wf _ i&j≤n) xs ys               ⊐↓ i&j≤n
-  ⊠-match (acc wf) (inj-lt i≤j-1 j≤n) xs ys = poly-map (⊠-Σ-inj (wf _ j≤n) i≤j-1 xs) (ys) ⊐↓ j≤n
-  ⊠-match (acc wf) (inj-gt i≤n j≤i-1) xs ys = poly-map (⊠-Σ-inj (wf _ i≤n) j≤i-1 ys) (xs) ⊐↓ i≤n
+  ⊠-match (acc wf) (inj-lt i≤j-1 j≤n) xs ys = poly-map (⊠-⅀-inj (wf _ j≤n) i≤j-1 xs) (ys) ⊐↓ j≤n
+  ⊠-match (acc wf) (inj-gt i≤n j≤i-1) xs ys = poly-map (⊠-⅀-inj (wf _ i≤n) j≤i-1 ys) (xs) ⊐↓ i≤n
 
   ⊠-coeffs : ∀ {n} → Acc _<′_ n → Coeff n + → Coeff n + → Coeff n *
   ⊠-coeffs a (xs) (y ≠0 Δ j & []) = poly-map (⊠-step′ a y) (xs) ⍓* j
@@ -412,8 +412,8 @@ _⊠_ = ⊠-step′ (<′-wellFounded _)
 
 _⊡_+1 : ∀ {n} → Poly n → ℕ → Poly n
 (Κ x  ⊐ i≤n) ⊡ i +1  = Κ (x ^ i +1) ⊐ i≤n
-(Σ (x Δ j & []) ⊐ i≤n) ⊡ i +1  = x .poly ⊡ i +1 Δ (j ℕ.+ i ℕ.* j) ∷↓ [] ⊐↓ i≤n
-xs@(Σ (_ & ∹ _) ⊐ i≤n) ⊡ i +1  = ⊡-mult i xs
+(⅀ (x Δ j & []) ⊐ i≤n) ⊡ i +1  = x .poly ⊡ i +1 Δ (j ℕ.+ i ℕ.* j) ∷↓ [] ⊐↓ i≤n
+xs@(⅀ (_ & ∹ _) ⊐ i≤n) ⊡ i +1  = ⊡-mult i xs
 
 infixr 8 _⊡_
 _⊡_ : ∀ {n} → Poly n → ℕ → Poly n

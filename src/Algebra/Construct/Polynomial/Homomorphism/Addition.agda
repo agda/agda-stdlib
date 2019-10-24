@@ -42,39 +42,39 @@ mutual
               → (ys : FlatPoly j)
               → ∀ ρ → ⟦ ⊞-match i-cmp-j xs ys ⟧ ρ ≈ ⟦ xs ⊐ i≤n ⟧ ρ + ⟦ ys ⊐ j≤n ⟧ ρ
   ⊞-match-hom (inj-eq ij≤n) (Κ x) (Κ y) Ρ = +-homo x y
-  ⊞-match-hom (inj-eq ij≤n) (Σ (x Δ i & xs)) (Σ (y Δ j & ys)) Ρ =
+  ⊞-match-hom (inj-eq ij≤n) (⅀ (x Δ i & xs)) (⅀ (y Δ j & ys)) Ρ =
     begin
       ⟦ ⊞-zip (compare i j) x xs y ys ⊐↓ ij≤n ⟧ Ρ
     ≈⟨ ⊐↓-hom (⊞-zip (compare i j) x xs y ys) ij≤n Ρ ⟩
-      Σ?⟦ ⊞-zip (compare i j) x xs y ys ⟧ (drop-1 ij≤n Ρ)
+      ⅀?⟦ ⊞-zip (compare i j) x xs y ys ⟧ (drop-1 ij≤n Ρ)
     ≈⟨ ⊞-zip-hom (compare i j) x xs y ys (drop-1 ij≤n Ρ) ⟩
-      Σ⟦ x Δ i & xs ⟧ (drop-1 ij≤n Ρ) + Σ⟦ y Δ j & ys ⟧ (drop-1 ij≤n Ρ)
+      ⅀⟦ x Δ i & xs ⟧ (drop-1 ij≤n Ρ) + ⅀⟦ y Δ j & ys ⟧ (drop-1 ij≤n Ρ)
     ∎
-  ⊞-match-hom (inj-gt i≤n j≤i-1) (Σ xs) ys Ρ =
+  ⊞-match-hom (inj-gt i≤n j≤i-1) (⅀ xs) ys Ρ =
     let (ρ , Ρ′) = drop-1 i≤n Ρ
     in
     begin
       ⟦ ⊞-inj j≤i-1 ys xs ⊐↓ i≤n ⟧ Ρ
     ≈⟨ ⊐↓-hom (⊞-inj j≤i-1 ys xs) i≤n Ρ ⟩
-      Σ?⟦ ⊞-inj j≤i-1 ys xs ⟧ (drop-1 i≤n Ρ)
+      ⅀?⟦ ⊞-inj j≤i-1 ys xs ⟧ (drop-1 i≤n Ρ)
     ≈⟨ ⊞-inj-hom j≤i-1 ys xs ρ Ρ′ ⟩
-      ⟦ ys ⊐ j≤i-1 ⟧ (proj₂ (drop-1 i≤n Ρ)) + Σ⟦ xs ⟧ (drop-1 i≤n Ρ)
+      ⟦ ys ⊐ j≤i-1 ⟧ (proj₂ (drop-1 i≤n Ρ)) + ⅀⟦ xs ⟧ (drop-1 i≤n Ρ)
     ≈⟨ ≪+ trans-join-hom j≤i-1 i≤n ys Ρ ⟩
-      ⟦ ys ⊐ (≤′-step j≤i-1 ⟨ ≤′-trans ⟩ i≤n) ⟧ Ρ + Σ⟦ xs ⟧ (drop-1 i≤n Ρ)
+      ⟦ ys ⊐ (≤′-step j≤i-1 ⟨ ≤′-trans ⟩ i≤n) ⟧ Ρ + ⅀⟦ xs ⟧ (drop-1 i≤n Ρ)
     ≈⟨ +-comm _ _ ⟩
-      Σ⟦ xs ⟧ (drop-1 i≤n Ρ) + ⟦ ys ⊐ (≤′-step j≤i-1 ⟨ ≤′-trans ⟩ i≤n) ⟧ Ρ
+      ⅀⟦ xs ⟧ (drop-1 i≤n Ρ) + ⟦ ys ⊐ (≤′-step j≤i-1 ⟨ ≤′-trans ⟩ i≤n) ⟧ Ρ
     ∎
-  ⊞-match-hom (inj-lt i≤j-1 j≤n) xs (Σ ys) Ρ =
+  ⊞-match-hom (inj-lt i≤j-1 j≤n) xs (⅀ ys) Ρ =
     let (ρ , Ρ′) = drop-1 j≤n Ρ
     in
     begin
       ⟦ ⊞-inj i≤j-1 xs ys ⊐↓ j≤n ⟧ Ρ
     ≈⟨ ⊐↓-hom (⊞-inj i≤j-1 xs ys) j≤n Ρ ⟩
-      Σ?⟦ ⊞-inj i≤j-1 xs ys ⟧ (drop-1 j≤n Ρ)
+      ⅀?⟦ ⊞-inj i≤j-1 xs ys ⟧ (drop-1 j≤n Ρ)
     ≈⟨ ⊞-inj-hom i≤j-1 xs ys ρ Ρ′ ⟩
-      ⟦ xs ⊐ i≤j-1 ⟧ (proj₂ (drop-1 j≤n Ρ)) + Σ⟦ ys ⟧ (drop-1 j≤n Ρ)
+      ⟦ xs ⊐ i≤j-1 ⟧ (proj₂ (drop-1 j≤n Ρ)) + ⅀⟦ ys ⟧ (drop-1 j≤n Ρ)
     ≈⟨ ≪+ trans-join-hom i≤j-1 j≤n xs Ρ ⟩
-      ⟦ xs ⊐ (≤′-step i≤j-1 ⟨ ≤′-trans ⟩ j≤n) ⟧ Ρ + Σ⟦ ys ⟧ (drop-1 j≤n Ρ)
+      ⟦ xs ⊐ (≤′-step i≤j-1 ⟨ ≤′-trans ⟩ j≤n) ⟧ Ρ + ⅀⟦ ys ⟧ (drop-1 j≤n Ρ)
     ∎
 
   ⊞-inj-hom : ∀ {i k}
@@ -83,10 +83,10 @@ mutual
             → (ys : Coeff k +)
             → (ρ : Carrier)
             → (Ρ : Vec Carrier k)
-            → Σ?⟦ ⊞-inj i≤k x ys ⟧ (ρ , Ρ) ≈ ⟦ x ⊐ i≤k ⟧ Ρ + Σ⟦ ys ⟧ (ρ , Ρ)
+            → ⅀?⟦ ⊞-inj i≤k x ys ⟧ (ρ , Ρ) ≈ ⟦ x ⊐ i≤k ⟧ Ρ + ⅀⟦ ys ⟧ (ρ , Ρ)
   ⊞-inj-hom i≤k xs (y ⊐ j≤k ≠0 Δ 0 & []) ρ Ρ =
     begin
-      Σ?⟦ ⊞-match (inj-compare j≤k i≤k) y xs Δ 0 ∷↓ [] ⟧ (ρ , Ρ)
+      ⅀?⟦ ⊞-match (inj-compare j≤k i≤k) y xs Δ 0 ∷↓ [] ⟧ (ρ , Ρ)
     ≈⟨ ∷↓-hom-0 ((⊞-match (inj-compare j≤k i≤k) y xs)) [] ρ Ρ ⟩
       ⟦ ⊞-match (inj-compare j≤k i≤k) y xs ⟧ Ρ
     ≈⟨ ⊞-match-hom (inj-compare j≤k i≤k) y xs Ρ ⟩
@@ -96,28 +96,28 @@ mutual
     ∎
   ⊞-inj-hom i≤k xs (y ⊐ j≤k ≠0 Δ 0 & (∹ ys )) ρ Ρ =
     begin
-      Σ?⟦ ⊞-match (inj-compare j≤k i≤k) y xs Δ 0 ∷↓ (∹ ys ) ⟧ (ρ , Ρ)
+      ⅀?⟦ ⊞-match (inj-compare j≤k i≤k) y xs Δ 0 ∷↓ (∹ ys ) ⟧ (ρ , Ρ)
     ≈⟨ ∷↓-hom-0 ((⊞-match (inj-compare j≤k i≤k) y xs)) (∹ ys ) ρ Ρ ⟩
-      ρ * Σ⟦ ys ⟧ (ρ , Ρ) + ⟦ ⊞-match (inj-compare j≤k i≤k) y xs ⟧ Ρ
+      ρ * ⅀⟦ ys ⟧ (ρ , Ρ) + ⟦ ⊞-match (inj-compare j≤k i≤k) y xs ⟧ Ρ
     ≈⟨ +≫ ⊞-match-hom (inj-compare j≤k i≤k) y xs Ρ ⟩
-      ρ * Σ⟦ ys ⟧ (ρ , Ρ) + (⟦ y ⊐ j≤k ⟧ Ρ + ⟦ xs ⊐ i≤k ⟧ Ρ)
+      ρ * ⅀⟦ ys ⟧ (ρ , Ρ) + (⟦ y ⊐ j≤k ⟧ Ρ + ⟦ xs ⊐ i≤k ⟧ Ρ)
     ≈⟨ sym (+-assoc _ _ _) ⟨ trans ⟩ +-comm _ _ ⟩
-      ⟦ xs ⊐ i≤k ⟧ Ρ + (ρ * Σ⟦ ys ⟧ (ρ , Ρ) + ⟦ y ⊐ j≤k ⟧ Ρ)
+      ⟦ xs ⊐ i≤k ⟧ Ρ + (ρ * ⅀⟦ ys ⟧ (ρ , Ρ) + ⟦ y ⊐ j≤k ⟧ Ρ)
     ∎
   ⊞-inj-hom i≤k xs (y Δ suc j & ys) ρ Ρ =
     let y′ = NonZero.poly y
     in
     begin
-      Σ?⟦ ⊞-inj i≤k xs (y Δ suc j & ys) ⟧ (ρ , Ρ)
+      ⅀?⟦ ⊞-inj i≤k xs (y Δ suc j & ys) ⟧ (ρ , Ρ)
     ≡⟨⟩
-      Σ?⟦ xs ⊐ i≤k Δ 0 ∷↓ (∹ y Δ j & ys ) ⟧ (ρ , Ρ)
+      ⅀?⟦ xs ⊐ i≤k Δ 0 ∷↓ (∹ y Δ j & ys ) ⟧ (ρ , Ρ)
     ≈⟨ ∷↓-hom-0 (xs ⊐ i≤k) (∹ y Δ j & ys ) ρ Ρ ⟩
-      ρ * Σ⟦ y Δ j & ys ⟧ (ρ , Ρ) + ⟦ xs ⊐ i≤k ⟧ Ρ
+      ρ * ⅀⟦ y Δ j & ys ⟧ (ρ , Ρ) + ⟦ xs ⊐ i≤k ⟧ Ρ
     ≈⟨ +-comm _ _ ⟩
-      ⟦ xs ⊐ i≤k ⟧ Ρ + ρ * Σ⟦ y Δ j & ys ⟧ (ρ , Ρ)
+      ⟦ xs ⊐ i≤k ⟧ Ρ + ρ * ⅀⟦ y Δ j & ys ⟧ (ρ , Ρ)
     ≈⟨ +≫ (
         begin
-          ρ * Σ⟦ y Δ j & ys ⟧ (ρ , Ρ)
+          ρ * ⅀⟦ y Δ j & ys ⟧ (ρ , Ρ)
         ≡⟨⟩
           ρ * (((poly y , ys) ⟦∷⟧ (ρ , Ρ)) *⟨ ρ ⟩^ j)
         ≈⟨ *≫ pow-opt _ ρ j ⟩
@@ -125,16 +125,16 @@ mutual
         ≈⟨ sym (*-assoc ρ _ _) ⟩
           ρ * ρ ^ j * ((poly y , ys) ⟦∷⟧ (ρ , Ρ))
         ≈⟨ ≪* sym (pow-suc ρ j) ⟩
-          Σ⟦ y Δ suc j & ys ⟧ (ρ , Ρ)
+          ⅀⟦ y Δ suc j & ys ⟧ (ρ , Ρ)
         ∎) ⟩
-      ⟦ xs ⊐ i≤k ⟧ Ρ + Σ⟦ y Δ suc j & ys ⟧ (ρ , Ρ)
+      ⟦ xs ⊐ i≤k ⟧ Ρ + ⅀⟦ y Δ suc j & ys ⟧ (ρ , Ρ)
     ∎
 
   ⊞-coeffs-hom : ∀ {n}
               → (xs : Coeff n *)
               → (ys : Coeff n *)
-              → ∀ ρ → Σ?⟦ ⊞-coeffs xs ys ⟧ ρ ≈ Σ?⟦ xs ⟧ ρ + Σ?⟦ ys ⟧ ρ
-  ⊞-coeffs-hom [] ys Ρ = sym (+-identityˡ (Σ?⟦ ys ⟧ Ρ))
+              → ∀ ρ → ⅀?⟦ ⊞-coeffs xs ys ⟧ ρ ≈ ⅀?⟦ xs ⟧ ρ + ⅀?⟦ ys ⟧ ρ
+  ⊞-coeffs-hom [] ys Ρ = sym (+-identityˡ (⅀?⟦ ys ⟧ Ρ))
   ⊞-coeffs-hom (∹ x Δ i & xs ) = ⊞-zip-r-hom i x xs
 
   ⊞-zip-hom : ∀ {n i j}
@@ -143,21 +143,21 @@ mutual
            → (xs : Coeff n *)
            → (y : NonZero n)
            → (ys : Coeff n *)
-           → ∀ ρ → Σ?⟦ ⊞-zip c x xs y ys ⟧ ρ ≈ Σ⟦ x Δ i & xs ⟧ ρ + Σ⟦ y Δ j & ys ⟧ ρ
+           → ∀ ρ → ⅀?⟦ ⊞-zip c x xs y ys ⟧ ρ ≈ ⅀⟦ x Δ i & xs ⟧ ρ + ⅀⟦ y Δ j & ys ⟧ ρ
   ⊞-zip-hom (ℕ.equal i) (x ≠0) xs (y ≠0) ys (ρ , Ρ) =
     let x′  = ⟦ x ⟧ Ρ
         y′  = ⟦ y ⟧ Ρ
-        xs′ = Σ?⟦ xs ⟧ (ρ , Ρ)
-        ys′ = Σ?⟦ ys ⟧ (ρ , Ρ)
+        xs′ = ⅀?⟦ xs ⟧ (ρ , Ρ)
+        ys′ = ⅀?⟦ ys ⟧ (ρ , Ρ)
     in
     begin
-      Σ?⟦ x ⊞ y Δ i ∷↓ ⊞-coeffs xs ys ⟧ (ρ , Ρ)
+      ⅀?⟦ x ⊞ y Δ i ∷↓ ⊞-coeffs xs ys ⟧ (ρ , Ρ)
     ≈⟨ ∷↓-hom (x ⊞ y) i (⊞-coeffs xs ys) ρ Ρ ⟩
       ρ ^ i * (((x ⊞ y) , (⊞-coeffs xs ys)) ⟦∷⟧ (ρ , Ρ))
     ≈⟨ *≫ ⟦∷⟧-hom (x ⊞ y) (⊞-coeffs xs ys) ρ Ρ ⟩
-      ρ ^ i * (ρ * Σ?⟦ ⊞-coeffs xs ys ⟧ (ρ , Ρ) + ⟦ x ⊞ y ⟧ Ρ)
+      ρ ^ i * (ρ * ⅀?⟦ ⊞-coeffs xs ys ⟧ (ρ , Ρ) + ⟦ x ⊞ y ⟧ Ρ)
     ≈⟨ *≫ begin
-           ρ * Σ?⟦ ⊞-coeffs xs ys ⟧ (ρ , Ρ) + ⟦ x ⊞ y ⟧ Ρ
+           ρ * ⅀?⟦ ⊞-coeffs xs ys ⟧ (ρ , Ρ) + ⟦ x ⊞ y ⟧ Ρ
           ≈⟨ (*≫ ⊞-coeffs-hom xs ys (ρ , Ρ)) ⟨ +-cong ⟩ ⊞-hom x y Ρ  ⟩
             ρ * (xs′ + ys′) + (x′ + y′)
           ≈⟨ ≪+ distribˡ ρ xs′ ys′ ⟩
@@ -183,19 +183,19 @@ mutual
                   → (xs : Coeff n *)
                   → (y : NonZero n)
                   → (ys : Coeff n *)
-                  → ∀ ρ → Σ⟦ y Δ j & ⊞-zip-r x k xs ys ⟧ ρ ≈ Σ⟦ x Δ suc (j ℕ.+ k) & xs ⟧ ρ + Σ⟦ y Δ j & ys ⟧ ρ
+                  → ∀ ρ → ⅀⟦ y Δ j & ⊞-zip-r x k xs ys ⟧ ρ ≈ ⅀⟦ x Δ suc (j ℕ.+ k) & xs ⟧ ρ + ⅀⟦ y Δ j & ys ⟧ ρ
   ⊞-zip-r-step-hom j k x xs y ys (ρ , Ρ) =
     let x′  = ⟦ NonZero.poly x ⟧ Ρ
         y′  = ⟦ NonZero.poly y ⟧ Ρ
-        xs′ = Σ?⟦ xs ⟧ (ρ , Ρ)
-        ys′ = Σ?⟦ ys ⟧ (ρ , Ρ)
+        xs′ = ⅀?⟦ xs ⟧ (ρ , Ρ)
+        ys′ = ⅀?⟦ ys ⟧ (ρ , Ρ)
     in
     begin
       ((poly y , ⊞-zip-r x k xs ys) ⟦∷⟧ (ρ , Ρ)) *⟨ ρ ⟩^ j
     ≈⟨ pow-mul-cong (⟦∷⟧-hom (poly y) (⊞-zip-r x k xs ys) ρ Ρ) ρ j ⟩
-      (ρ * Σ?⟦ ⊞-zip-r x k xs ys ⟧ (ρ , Ρ) + y′) *⟨ ρ ⟩^ j
+      (ρ * ⅀?⟦ ⊞-zip-r x k xs ys ⟧ (ρ , Ρ) + y′) *⟨ ρ ⟩^ j
     ≈⟨ pow-opt _ ρ j ⟩
-      ρ ^ j * (ρ * Σ?⟦ ⊞-zip-r x k xs ys ⟧ (ρ , Ρ) + y′)
+      ρ ^ j * (ρ * ⅀?⟦ ⊞-zip-r x k xs ys ⟧ (ρ , Ρ) + y′)
     ≈⟨ *≫ ≪+ *≫ (⊞-zip-r-hom k x xs ys (ρ , Ρ) ⟨ trans ⟩ (≪+ pow-mul-cong (⟦∷⟧-hom (poly x) xs ρ Ρ) ρ k)) ⟩
       ρ ^ j * (ρ * ((ρ * xs′ + x′) *⟨ ρ ⟩^ k + ys′) + y′)
     ≈⟨ *≫ ≪+ distribˡ ρ _ _ ⟩
@@ -206,13 +206,13 @@ mutual
       ρ ^ j * (ρ * (ρ * xs′ + x′) *⟨ ρ ⟩^ k) + ρ ^ j * (ρ * ys′ + y′)
     ≈⟨ sym (pow-opt _ ρ j) ⟨ flip +-cong ⟩
          (begin
-            ρ ^ j * (ρ * ((ρ * Σ?⟦ xs ⟧ (ρ , Ρ) + ⟦ poly x ⟧ Ρ) *⟨ ρ ⟩^ k))
+            ρ ^ j * (ρ * ((ρ * ⅀?⟦ xs ⟧ (ρ , Ρ) + ⟦ poly x ⟧ Ρ) *⟨ ρ ⟩^ k))
           ≈⟨ (sym (*-assoc _ _ _) ⟨ trans ⟩ (≪* sym (pow-sucʳ ρ j))) ⟩
-            ρ ^ suc j * ((ρ * Σ?⟦ xs ⟧ (ρ , Ρ) + ⟦ poly x ⟧ Ρ) *⟨ ρ ⟩^ k)
+            ρ ^ suc j * ((ρ * ⅀?⟦ xs ⟧ (ρ , Ρ) + ⟦ poly x ⟧ Ρ) *⟨ ρ ⟩^ k)
           ≈⟨ pow-add _ _ k j ⟩
-            (ρ * Σ?⟦ xs ⟧ (ρ , Ρ) + ⟦ poly x ⟧ Ρ) *⟨ ρ ⟩^ (k ℕ.+ suc j)
-            ≡⟨ ≡.cong (λ i → (ρ * Σ?⟦ xs ⟧ (ρ , Ρ) + ⟦ poly x ⟧ Ρ) *⟨ ρ ⟩^ i) (ℕ-Prop.+-comm k (suc j)) ⟩
-            (ρ * Σ?⟦ xs ⟧ (ρ , Ρ) + ⟦ poly x ⟧ Ρ) *⟨ ρ ⟩^ (suc j ℕ.+ k)
+            (ρ * ⅀?⟦ xs ⟧ (ρ , Ρ) + ⟦ poly x ⟧ Ρ) *⟨ ρ ⟩^ (k ℕ.+ suc j)
+            ≡⟨ ≡.cong (λ i → (ρ * ⅀?⟦ xs ⟧ (ρ , Ρ) + ⟦ poly x ⟧ Ρ) *⟨ ρ ⟩^ i) (ℕ-Prop.+-comm k (suc j)) ⟩
+            (ρ * ⅀?⟦ xs ⟧ (ρ , Ρ) + ⟦ poly x ⟧ Ρ) *⟨ ρ ⟩^ (suc j ℕ.+ k)
           ∎)
     ⟩
       (ρ * xs′ + x′) *⟨ ρ ⟩^ suc (j ℕ.+ k) + (ρ * ys′ + y′) *⟨ ρ ⟩^ j
@@ -225,6 +225,6 @@ mutual
              → (xs : Coeff n *)
              → (ys : Coeff n *)
              → (Ρ : Carrier × Vec Carrier n)
-             → Σ?⟦ ⊞-zip-r x i xs ys ⟧ (Ρ) ≈ Σ⟦ x Δ i & xs ⟧ ( Ρ) + Σ?⟦ ys ⟧ ( Ρ)
+             → ⅀?⟦ ⊞-zip-r x i xs ys ⟧ (Ρ) ≈ ⅀⟦ x Δ i & xs ⟧ ( Ρ) + ⅀?⟦ ys ⟧ ( Ρ)
   ⊞-zip-r-hom i x xs [] (ρ , Ρ) = sym (+-identityʳ _)
   ⊞-zip-r-hom i x xs (∹ (y Δ j) & ys ) = ⊞-zip-hom (compare i j) x xs y ys

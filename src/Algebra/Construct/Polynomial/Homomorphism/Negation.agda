@@ -23,7 +23,7 @@ open import Algebra.Construct.Polynomial.Semantics homo
 
 ⊟-step-hom : ∀ {n} (a : Acc _<′_ n) → (xs : Poly n) → ∀ ρ → ⟦ ⊟-step a xs ⟧ ρ ≈ - (⟦ xs ⟧ ρ)
 ⊟-step-hom (acc _ ) (Κ x  ⊐ i≤n) ρ = -‿homo x
-⊟-step-hom (acc wf) (Σ xs ⊐ i≤n) ρ′ =
+⊟-step-hom (acc wf) (⅀ xs ⊐ i≤n) ρ′ =
   let (ρ , ρs) = drop-1 i≤n ρ′
       neg-zero =
         begin
@@ -39,9 +39,9 @@ open import Algebra.Construct.Polynomial.Semantics homo
   begin
     ⟦ poly-map (⊟-step (wf _ i≤n)) xs ⊐↓ i≤n ⟧ ρ′
   ≈⟨ ⊐↓-hom (poly-map (⊟-step (wf _ i≤n)) xs) i≤n ρ′ ⟩
-    Σ?⟦ poly-map (⊟-step  (wf _ i≤n)) xs ⟧ (ρ , ρs)
+    ⅀?⟦ poly-map (⊟-step  (wf _ i≤n)) xs ⟧ (ρ , ρs)
   ≈⟨ poly-mapR ρ ρs (⊟-step (wf _ i≤n)) -_ (-‿cong) (λ x y → *-comm x (- y) ⟨ trans ⟩ -‿*-distribˡ y x ⟨ trans ⟩ -‿cong (*-comm _ _)) (λ x y → sym (-‿+-comm x y)) (flip (⊟-step-hom (wf _ i≤n)) ρs) (sym neg-zero ) xs ⟩
-    - Σ⟦ xs ⟧ (ρ , ρs)
+    - ⅀⟦ xs ⟧ (ρ , ρs)
   ∎
 
 ⊟-hom : ∀ {n}
