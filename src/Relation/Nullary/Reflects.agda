@@ -9,7 +9,9 @@
 module Relation.Nullary.Reflects where
 
 open import Data.Bool.Base
+open import Data.Empty
 open import Level
+open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary
 
 variable
@@ -32,3 +34,13 @@ of {b = true }  p = ofʸ p
 invert : ∀ {b} → Reflects P b → if b then P else ¬ P
 invert (ofʸ  p) = p
 invert (ofⁿ ¬p) = ¬p
+
+------------------------------------------------------------------------
+-- Other lemmas
+
+-- `Reflects` is deterministic.
+det : ∀ {b b′} → Reflects P b → Reflects P b′ → b ≡ b′
+det (ofʸ  p) (ofʸ  p′) = refl
+det (ofʸ  p) (ofⁿ ¬p′) = ⊥-elim (¬p′ p)
+det (ofⁿ ¬p) (ofʸ  p′) = ⊥-elim (¬p p′)
+det (ofⁿ ¬p) (ofⁿ ¬p′) = refl
