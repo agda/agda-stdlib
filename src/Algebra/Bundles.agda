@@ -566,12 +566,14 @@ record CommutativeSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
 
 -- A raw ring is a ring without any laws.
 
-record RawRing c : Set (suc c) where
+record RawRing c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 -_
   infixl 7 _*_
   infixl 6 _+_
+  infix  4 _≈_
   field
     Carrier : Set c
+    _≈_     : Rel Carrier ℓ
     _+_     : Op₂ Carrier
     _*_     : Op₂ Carrier
     -_      : Op₁ Carrier
@@ -615,9 +617,10 @@ record Ring c ℓ : Set (suc (c ⊔ ℓ)) where
   open AbelianGroup +-abelianGroup public
     using () renaming (group to +-group)
 
-  rawRing : RawRing _
+  rawRing : RawRing _ _
   rawRing = record
-    { _+_ = _+_
+    { _≈_ = _≈_
+    ; _+_ = _+_
     ; _*_ = _*_
     ; -_  = -_
     ; 0#  = 0#
