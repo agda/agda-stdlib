@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra.Packages
+open import Algebra.Bundles
 
 module Algebra.Properties.BooleanAlgebra
   {b₁ b₂} (B : BooleanAlgebra b₁ b₂)

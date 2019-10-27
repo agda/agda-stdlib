@@ -9,7 +9,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Algebra.Packages where
+module Algebra.Bundles where
 
 open import Algebra.Core
 open import Algebra.Structures
@@ -18,7 +18,7 @@ open import Function.Core
 open import Level
 
 ------------------------------------------------------------------------
--- Packages with 1 binary operation
+-- Bundles with 1 binary operation
 ------------------------------------------------------------------------
 
 record RawMagma c ℓ : Set (suc (c ⊔ ℓ)) where
@@ -113,7 +113,7 @@ record SelectiveMagma c ℓ : Set (suc (c ⊔ ℓ)) where
   open Magma magma public using (rawMagma)
 
 ------------------------------------------------------------------------
--- Packages with 1 binary operation & 1 element
+-- Bundles with 1 binary operation & 1 element
 ------------------------------------------------------------------------
 
 -- A raw monoid is a monoid without any laws.
@@ -203,7 +203,7 @@ module BoundedLattice {c ℓ} (idemCommMonoid : IdempotentCommutativeMonoid c �
 
 
 ------------------------------------------------------------------------
--- Packages with 1 binary operation, 1 unary operation & 1 element
+-- Bundles with 1 binary operation, 1 unary operation & 1 element
 ------------------------------------------------------------------------
 
 record RawGroup c ℓ : Set (suc (c ⊔ ℓ)) where
@@ -277,7 +277,7 @@ record AbelianGroup c ℓ : Set (suc (c ⊔ ℓ)) where
 
 
 ------------------------------------------------------------------------
--- Packages with 2 binary operations
+-- Bundles with 2 binary operations
 ------------------------------------------------------------------------
 
 record Lattice c ℓ : Set (suc (c ⊔ ℓ)) where
@@ -317,7 +317,7 @@ record DistributiveLattice c ℓ : Set (suc (c ⊔ ℓ)) where
 
 
 ------------------------------------------------------------------------
--- Packages with 2 binary operations & 1 element
+-- Bundles with 2 binary operations & 1 element
 ------------------------------------------------------------------------
 
 record NearSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
@@ -414,7 +414,7 @@ record CommutativeSemiringWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
     )
 
 ------------------------------------------------------------------------
--- Packages with 2 binary operations & 2 elements
+-- Bundles with 2 binary operations & 2 elements
 ------------------------------------------------------------------------
 
 record RawSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
@@ -561,7 +561,7 @@ record CommutativeSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
 
 
 ------------------------------------------------------------------------
--- Packages with 2 binary operations, 1 unary operation & 2 elements
+-- Bundles with 2 binary operations, 1 unary operation & 2 elements
 ------------------------------------------------------------------------
 
 -- A raw ring is a ring without any laws.

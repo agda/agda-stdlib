@@ -10,7 +10,7 @@ module Data.Fin.Subset.Properties where
 
 import Algebra.Definitions as AlgebraicDefinitions
 import Algebra.Structures as AlgebraicStructures
-open import Algebra.Packages
+open import Algebra.Bundles
 import Algebra.Properties.Lattice as L
 import Algebra.Properties.DistributiveLattice as DL
 import Algebra.Properties.BooleanAlgebra as BA

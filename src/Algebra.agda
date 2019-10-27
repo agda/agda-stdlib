@@ -12,4 +12,4 @@ module Algebra where
 open import Algebra.Core public
 open import Algebra.Definitions public
 open import Algebra.Structures public
-open import Algebra.Packages public
+open import Algebra.Bundles public

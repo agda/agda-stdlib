@@ -79,7 +79,7 @@ _ ≤? _ = yes _
   ; _≤?_         = _≤?_
   }
 
--- Packages
+-- Bundles
 
 ≤-poset : Poset 0ℓ 0ℓ 0ℓ
 ≤-poset = record

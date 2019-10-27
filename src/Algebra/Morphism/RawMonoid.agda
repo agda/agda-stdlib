@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra.Packages
+open import Algebra.Bundles
 open import Algebra.Morphism
 open import Function
 open RawMonoid using (Carrier; _≈_)
