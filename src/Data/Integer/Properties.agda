@@ -11,7 +11,7 @@
 
 module Data.Integer.Properties where
 
-open import Algebra.Packages
+open import Algebra.Bundles
 import Algebra.Morphism as Morphism
 import Algebra.Properties.AbelianGroup
 open import Data.Integer.Base renaming (suc to sucℤ)
@@ -143,7 +143,7 @@ _≤?_ : Decidable _≤_
   }
 
 ------------------------------------------------------------------------
--- Packages
+-- Bundles
 
 ≤-preorder : Preorder 0ℓ 0ℓ 0ℓ
 ≤-preorder = record
@@ -272,7 +272,7 @@ _<?_ : Decidable _<_
   }
 
 ------------------------------------------------------------------------
--- Packages
+-- Bundles
 
 <-strictPartialOrder : StrictPartialOrder 0ℓ 0ℓ 0ℓ
 <-strictPartialOrder = record
@@ -677,7 +677,7 @@ distribʳ-⊖-+-neg a b c = begin
   }
 
 ------------------------------------------------------------------------
--- Packages
+-- Bundles
 
 +-magma : Magma 0ℓ 0ℓ
 +-magma = record
@@ -1206,7 +1206,7 @@ private
   }
 
 ------------------------------------------------------------------------
--- Packages
+-- Bundles
 
 *-magma : Magma 0ℓ 0ℓ
 *-magma = record

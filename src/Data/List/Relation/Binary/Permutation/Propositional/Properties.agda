@@ -8,7 +8,7 @@
 
 module Data.List.Relation.Binary.Permutation.Propositional.Properties where
 
-open import Algebra.Packages
+open import Algebra.Bundles
 open import Algebra.Definitions
 open import Algebra.Structures
 open import Data.List.Base as List

@@ -98,7 +98,7 @@ module _ {_≈_ : Rel A ℓ} (isEq : IsEquivalence _≈_) where
     }
 
 ------------------------------------------------------------------------
--- Setoid packages
+-- Setoid bundles
 
 module _ (S : Setoid a ℓ) where
 
@@ -162,7 +162,7 @@ module _ (S : Setoid a ℓ) where
     }
 
 ------------------------------------------------------------------------
--- Propositional packages
+-- Propositional bundles
 
 module _ (A : Set a) where
 

@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra.Packages
+open import Algebra.Bundles
 
 module Algebra.Properties.Group {g₁ g₂} (G : Group g₁ g₂) where
 
