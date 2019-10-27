@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra.Packages
+open import Algebra.Bundles
 
 module Algebra.Properties.DistributiveLattice
   {dl₁ dl₂} (DL : DistributiveLattice dl₁ dl₂)

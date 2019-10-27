@@ -8,7 +8,7 @@
 
 module Data.Nat.Binary.Properties where
 
-open import Algebra.Packages
+open import Algebra.Bundles
 open import Algebra.Morphism
 import Algebra.Morphism.RawMonoid as MonoidMorphisms
 open import Algebra.FunctionProperties.Consequences.Propositional
@@ -282,7 +282,7 @@ _<?_ = <-Morphism.dec ℕₚ._<?_
 <-isStrictTotalOrder = <-Morphism.isStrictTotalOrder ℕₚ.<-isStrictTotalOrder
 
 ------------------------------------------------------------------------------
--- Packages for _<_
+-- Bundles for _<_
 
 <-strictPartialOrder : StrictPartialOrder _ _ _
 <-strictPartialOrder = record
@@ -415,7 +415,7 @@ _≤?_ = ≤-Morphism.dec ℕₚ._≤?_
 ≤-isDecTotalOrder = ≤-Morphism.isDecTotalOrder ℕₚ.≤-isDecTotalOrder
 
 ------------------------------------------------------------------------------
--- Packages
+-- Bundles
 
 ≤-preorder : Preorder 0ℓ 0ℓ 0ℓ
 ≤-preorder = record
@@ -622,7 +622,7 @@ module _ where
   +-0-isCommutativeMonoid = isCommutativeMonoid-homo ℕₚ.+-0-isCommutativeMonoid
 
 ------------------------------------------------------------------------
--- Packages for _+_
+-- Bundles for _+_
 
 +-magma : Magma 0ℓ 0ℓ
 +-magma = magma _+_
@@ -960,7 +960,7 @@ module _ where
   }
 
 ------------------------------------------------------------------------
--- Packages
+-- Bundles
 
 *-magma : Magma 0ℓ 0ℓ
 *-magma = record

@@ -14,7 +14,7 @@ module Relation.Binary.Indexed.Homogeneous where
 open import Relation.Binary.Indexed.Homogeneous.Core public
 open import Relation.Binary.Indexed.Homogeneous.Definitions public
 open import Relation.Binary.Indexed.Homogeneous.Structures public
-open import Relation.Binary.Indexed.Homogeneous.Packages public
+open import Relation.Binary.Indexed.Homogeneous.Bundles public
 
 
 ------------------------------------------------------------------------

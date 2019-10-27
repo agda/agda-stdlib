@@ -12,7 +12,7 @@
 module Data.Nat.Properties where
 
 open import Axiom.UniquenessOfIdentityProofs
-open import Algebra.Packages
+open import Algebra.Bundles
 open import Algebra.Morphism
 open import Algebra.FunctionProperties.Consequences.Propositional
 open import Data.Bool.Base using (Bool; false; true; T)
@@ -184,7 +184,7 @@ _≥?_ = flip _≤?_
   }
 
 ------------------------------------------------------------------------
--- Packages
+-- Bundles
 
 ≤-preorder : Preorder 0ℓ 0ℓ 0ℓ
 ≤-preorder = record
@@ -327,7 +327,7 @@ _>?_ = flip _<?_
 <-resp₂-≡ = subst (_ <_) , subst (_< _)
 
 ------------------------------------------------------------------------
--- Packages
+-- Bundles
 
 <-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
 <-isStrictPartialOrder = record
@@ -511,7 +511,7 @@ suc[pred[n]]≡n {suc n} n≢0 = refl
   }
 
 ------------------------------------------------------------------------
--- Packages
+-- Bundles
 
 +-rawMagma : RawMagma 0ℓ 0ℓ
 +-rawMagma = record
@@ -784,7 +784,7 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
   }
 
 ------------------------------------------------------------------------
--- Packages
+-- Bundles
 
 *-rawMagma : RawMagma 0ℓ 0ℓ
 *-rawMagma = record
@@ -1044,7 +1044,7 @@ m^n≡1⇒n≡0∨m≡1 m (suc n) eq = inj₂ (m*n≡1⇒m≡1 m (m ^ n) eq)
   }
 
 ------------------------------------------------------------------------
--- Packages
+-- Bundles
 
 ⊔-magma : Magma 0ℓ 0ℓ
 ⊔-magma = record
@@ -1298,7 +1298,7 @@ m⊔n≤m+n m n with ⊔-sel m n
   }
 
 ------------------------------------------------------------------------
--- Packages
+-- Bundles
 
 ⊓-magma : Magma 0ℓ 0ℓ
 ⊓-magma = record

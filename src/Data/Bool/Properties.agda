@@ -8,7 +8,7 @@
 
 module Data.Bool.Properties where
 
-open import Algebra.Packages
+open import Algebra.Bundles
 open import Data.Bool.Base
 open import Data.Empty
 open import Data.Product
@@ -121,7 +121,7 @@ true  ≤? true  = yes b≤b
   ; _≤?_         = _≤?_
   }
 
--- Packages
+-- Bundles
 
 ≤-poset : Poset 0ℓ 0ℓ 0ℓ
 ≤-poset = record
@@ -199,7 +199,7 @@ true  <? _     = no  (λ())
   ; compare       = <-cmp
   }
 
--- Packages
+-- Bundles
 
 <-strictPartialOrder : StrictPartialOrder 0ℓ 0ℓ 0ℓ
 <-strictPartialOrder = record

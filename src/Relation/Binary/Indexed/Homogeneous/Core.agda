@@ -40,7 +40,7 @@ IRel A = IREL A A
 -- Lifting to non-indexed binary relations
 
 -- Ideally this should be in: `Construct.Lift` but we want this relation
--- to be exported by the various structures & packages.
+-- to be exported by the various structures & bundles.
 
 Lift : (A : I → Set a) → IRel A ℓ → Rel (∀ i → A i) _
 Lift _ _∼_ x y = ∀ i → x i ∼ y i

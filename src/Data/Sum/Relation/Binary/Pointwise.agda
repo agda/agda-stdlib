@@ -170,7 +170,7 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
     where open IsStrictPartialOrder
 
 ------------------------------------------------------------------------
--- Packages
+-- Bundles
 
 module _ {a b c d} where
 

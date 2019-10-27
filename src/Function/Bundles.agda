@@ -1,12 +1,12 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Packages for types of functions
+-- Bundles for types of functions
 ------------------------------------------------------------------------
 
 -- The contents of this file should usually be accessed from `Function`.
 
--- Note that these packages differ from those found elsewhere in other
+-- Note that these bundles differ from those found elsewhere in other
 -- library hierarchies as they take Setoids as parameters. This is
 -- because a function is of no use without knowing what its domain and
 -- codomain is, as well which equalities are being considered over them.
@@ -17,7 +17,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Function.Packages where
+module Function.Bundles where
 
 import Function.Definitions as FunctionDefinitions
 import Function.Structures as FunctionStructures
@@ -33,7 +33,7 @@ private
     a b ℓ₁ ℓ₂ : Level
 
 ------------------------------------------------------------------------
--- Setoid packages
+-- Setoid bundles
 
 module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
 
@@ -229,7 +229,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
     open IsInverse isInverse public using (module Eq₁; module Eq₂)
 
 ------------------------------------------------------------------------
--- Packages specialised for propositional equality
+-- Bundles specialised for propositional equality
 
 infix 3 _↣_ _↠_ _⤖_ _⇔_ _↩_ _↪_ _↔_
 
