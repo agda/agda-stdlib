@@ -79,6 +79,23 @@ record Band c ℓ : Set (suc (c ⊔ ℓ)) where
   open Semigroup semigroup public using (magma; rawMagma)
 
 
+record CommutativeSemigroup c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _∙_
+  infix  4 _≈_
+  field
+    Carrier                 : Set c
+    _≈_                     : Rel Carrier ℓ
+    _∙_                     : Op₂ Carrier
+    isCommutativeSemigroup  : IsCommutativeSemigroup _≈_ _∙_
+
+  open IsCommutativeSemigroup isCommutativeSemigroup public
+
+  semigroup : Semigroup c ℓ
+  semigroup = record { isSemigroup = isSemigroup }
+
+  open Semigroup semigroup public using (magma; rawMagma)
+
+
 record Semilattice c ℓ : Set (suc (c ⊔ ℓ)) where
   infixr 7 _∧_
   infix  4 _≈_

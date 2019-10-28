@@ -305,6 +305,16 @@ attached to all deprecated names to discourage their use.
 Other minor additions
 ---------------------
 
+* Added new definition to `Algebra.Structures`:
+  ```agda
+  record IsCommutativeSemigroup (∙ : Op₂ A) : Set (a ⊔ ℓ)
+  ```
+
+* Added new definition to `Algebra.Bundles`:
+  ```agda
+  record CommutativeSemigroup c ℓ : Set (suc (c ⊔ ℓ))
+  ```
+
 * Added new bundles to `Data.Char.Properties`:
   ```agda
   <-isStrictPartialOrder-≈ : IsStrictPartialOrder _≈_ _<_
@@ -322,6 +332,11 @@ Other minor additions
 * Added new proof to `Data.Integer.Properties`:
   ```agda
   *-suc : m * sucℤ n ≡ m + m * n
+
+  +-isCommutativeSemigroup : IsCommutativeSemigroup _+_
+  *-isCommutativeSemigroup : IsCommutativeSemigroup _*_
+  +-commutativeSemigroup   : CommutativeSemigroup 0ℓ 0ℓ
+  *-commutativeSemigroup   : CommutativeSemigroup 0ℓ 0ℓ
   ```
 
 * Added to `Data.List` the reverse-append function `_ʳ++_`
@@ -418,6 +433,9 @@ Other minor additions
   m≤n+∣n-m∣      : m ≤ n + ∣ n - m ∣
   m≤n+∣m-n∣      : m ≤ n + ∣ m - n ∣
   m≤∣m-n∣+n      : m ≤ ∣ m - n ∣ + n
+
+  +-isCommutativeSemigroup : IsCommutativeSemigroup _+_
+  +-commutativeSemigroup   : CommutativeSemigroup 0ℓ 0ℓ
   ```
 
 * Added new bundles to `Data.String.Properties`:

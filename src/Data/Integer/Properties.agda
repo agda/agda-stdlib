@@ -650,6 +650,12 @@ distribʳ-⊖-+-neg a b c = begin
   ; assoc   = +-assoc
   }
 
++-isCommutativeSemigroup : IsCommutativeSemigroup _+_
++-isCommutativeSemigroup = record
+  { isSemigroup = +-isSemigroup
+  ; comm        = +-comm
+  }
+
 +-0-isMonoid : IsMonoid _+_ +0
 +-0-isMonoid = record
   { isSemigroup = +-isSemigroup
@@ -687,6 +693,11 @@ distribʳ-⊖-+-neg a b c = begin
 +-semigroup : Semigroup 0ℓ 0ℓ
 +-semigroup = record
   { isSemigroup = +-isSemigroup
+  }
+
++-commutativeSemigroup : CommutativeSemigroup 0ℓ 0ℓ
++-commutativeSemigroup = record
+  { isCommutativeSemigroup = +-isCommutativeSemigroup
   }
 
 +-0-monoid : Monoid 0ℓ 0ℓ
@@ -1171,6 +1182,12 @@ private
   ; assoc   = *-assoc
   }
 
+*-isCommutativeSemigroup : IsCommutativeSemigroup _*_
+*-isCommutativeSemigroup = record
+  { isSemigroup = *-isSemigroup
+  ; comm        = *-comm
+  }
+
 *-1-isMonoid : IsMonoid _*_ (+ 1)
 *-1-isMonoid = record
   { isSemigroup = *-isSemigroup
@@ -1216,6 +1233,11 @@ private
 *-semigroup : Semigroup 0ℓ 0ℓ
 *-semigroup = record
   { isSemigroup = *-isSemigroup
+  }
+
+*-commutativeSemigroup : CommutativeSemigroup 0ℓ 0ℓ
+*-commutativeSemigroup = record
+  { isCommutativeSemigroup = *-isCommutativeSemigroup
   }
 
 *-1-monoid : Monoid 0ℓ 0ℓ

@@ -491,6 +491,12 @@ suc[pred[n]]≡n {suc n} n≢0 = refl
   ; assoc   = +-assoc
   }
 
++-isCommutativeSemigroup : IsCommutativeSemigroup _+_
++-isCommutativeSemigroup = record
+  { isSemigroup = +-isSemigroup
+  ; comm        = +-comm
+  }
+
 +-0-isMonoid : IsMonoid _+_ 0
 +-0-isMonoid = record
   { isSemigroup = +-isSemigroup
@@ -528,6 +534,11 @@ suc[pred[n]]≡n {suc n} n≢0 = refl
 +-semigroup : Semigroup 0ℓ 0ℓ
 +-semigroup = record
   { isSemigroup = +-isSemigroup
+  }
+
++-commutativeSemigroup : CommutativeSemigroup 0ℓ 0ℓ
++-commutativeSemigroup = record
+  { isCommutativeSemigroup = +-isCommutativeSemigroup
   }
 
 +-0-monoid : Monoid 0ℓ 0ℓ
