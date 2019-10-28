@@ -8,7 +8,8 @@
 
 module Data.Nat.Binary.Properties where
 
-open import Algebra.Packages
+open import Algebra.Bundles
+open import Algebra.Morphism.Structures 
 import Algebra.Morphism.MonoidMonomorphism as MonoidMonomorphism
 open import Algebra.FunctionProperties.Consequences.Propositional
 open import Data.Nat.Binary.Base
@@ -32,8 +33,7 @@ open import Relation.Nullary.Negation using (contradiction)
 
 open import Algebra.Definitions {A = ℕᵇ} _≡_
 open import Algebra.Structures {A = ℕᵇ} _≡_
-open import Algebra.Morphism.Structures {A = ℕᵇ} _≡_ {B = ℕ} _≡_
-import Algebra.Properties.CommutativeSemigroup ℕₚ.+-semigroup ℕₚ.+-comm
+import Algebra.Properties.CommutativeSemigroup ℕₚ.+-commutativeSemigroup
   as ℕ-+-semigroupProperties
 import Relation.Binary.Construct.StrictToNonStrict _≡_ _<_
   as StrictToNonStrict
@@ -289,7 +289,7 @@ _<?_ = <-Monomorphism.dec ℕₚ._<?_
 <-isStrictTotalOrder = <-Monomorphism.isStrictTotalOrder ℕₚ.<-isStrictTotalOrder
 
 ------------------------------------------------------------------------------
--- Packages for _<_
+-- Bundles for _<_
 
 <-strictPartialOrder : StrictPartialOrder _ _ _
 <-strictPartialOrder = record
@@ -430,7 +430,7 @@ _≤?_ = ≤-Monomorphism.dec ℕₚ._≤?_
 ≤-isDecTotalOrder = ≤-Monomorphism.isDecTotalOrder ℕₚ.≤-isDecTotalOrder
 
 ------------------------------------------------------------------------------
--- Packages
+-- Bundles
 
 ≤-preorder : Preorder 0ℓ 0ℓ 0ℓ
 ≤-preorder = record
@@ -482,6 +482,22 @@ module ≤-Reasoning where
 ------------------------------------------------------------------------
 -- Properties of _+_
 ------------------------------------------------------------------------
+
+------------------------------------------------------------------------
+-- Raw bundles for _+_
+
++-rawMagma : RawMagma 0ℓ 0ℓ
++-rawMagma = record
+  { _≈_ = _≡_
+  ; _∙_ = _+_
+  }
+
++-0-rawMonoid : RawMonoid 0ℓ 0ℓ
++-0-rawMonoid = record
+  { _≈_ = _≡_
+  ; _∙_ = _+_
+  ; ε   = 0ᵇ
+  }
 
 ------------------------------------------------------------------------
 -- toℕ/fromℕ are homomorphisms for _+_
@@ -537,19 +553,19 @@ toℕ-homo-+ 1+[2 x ] 1+[2 y ] = begin
   toℕ 1+[2 x ] ℕ.+ toℕ 1+[2 y ]           ∎
   where open ≡-Reasoning;  m = toℕ x;  n = toℕ y
 
-toℕ-isMagmaHomomorphism-+ : IsMagmaHomomorphism _+_ ℕ._+_ toℕ
+toℕ-isMagmaHomomorphism-+ : IsMagmaHomomorphism +-rawMagma ℕₚ.+-rawMagma toℕ
 toℕ-isMagmaHomomorphism-+ = record
   { isRelHomomorphism = toℕ-isRelHomomorphism
   ; homo              = toℕ-homo-+
   }
 
-toℕ-isMonoidHomomorphism-+ : IsMonoidHomomorphism _+_ ℕ._+_ 0ᵇ 0 toℕ
+toℕ-isMonoidHomomorphism-+ : IsMonoidHomomorphism +-0-rawMonoid ℕₚ.+-0-rawMonoid toℕ
 toℕ-isMonoidHomomorphism-+ = record
   { isMagmaHomomorphism = toℕ-isMagmaHomomorphism-+
   ; ε-homo              = refl
   }
 
-toℕ-isMonoidMonomorphism-+ : IsMonoidMonomorphism _+_ ℕ._+_ 0ᵇ 0 toℕ
+toℕ-isMonoidMonomorphism-+ : IsMonoidMonomorphism +-0-rawMonoid ℕₚ.+-0-rawMonoid toℕ
 toℕ-isMonoidMonomorphism-+ = record
   { isMonoidHomomorphism = toℕ-isMonoidHomomorphism-+
   ; injective            = toℕ-injective
@@ -589,28 +605,28 @@ fromℕ-homo-+ (ℕ.suc m) n = begin
 -- by `toℕ`/`fromℕ`.
 
 private
-  module +-Monomorphism = MonoidMonomorphism toℕ-isMonoidMonomorphism-+ ℕₚ.+-isMagma
+  module +-Monomorphism = MonoidMonomorphism toℕ-isMonoidMonomorphism-+
 
 +-assoc :  Associative _+_
-+-assoc = +-Monomorphism.assoc ℕₚ.+-assoc
++-assoc = +-Monomorphism.assoc ℕₚ.+-isMagma ℕₚ.+-assoc
 
 +-comm :  Commutative _+_
-+-comm = +-Monomorphism.comm ℕₚ.+-comm
++-comm = +-Monomorphism.comm ℕₚ.+-isMagma ℕₚ.+-comm
 
 +-identityˡ : LeftIdentity zero _+_
 +-identityˡ _ = refl
 
 +-identityʳ : RightIdentity zero _+_
-+-identityʳ = +-Monomorphism.identityʳ ℕₚ.+-identityʳ
++-identityʳ = +-Monomorphism.identityʳ ℕₚ.+-isMagma ℕₚ.+-identityʳ
 
 +-identity : Identity zero _+_
 +-identity = +-identityˡ , +-identityʳ
 
 +-cancelˡ-≡ : LeftCancellative _+_
-+-cancelˡ-≡ = +-Monomorphism.cancelˡ ℕₚ.+-cancelˡ-≡
++-cancelˡ-≡ = +-Monomorphism.cancelˡ ℕₚ.+-isMagma ℕₚ.+-cancelˡ-≡
 
 +-cancelʳ-≡ : RightCancellative _+_
-+-cancelʳ-≡ = +-Monomorphism.cancelʳ ℕₚ.+-cancelʳ-≡
++-cancelʳ-≡ = +-Monomorphism.cancelʳ ℕₚ.+-isMagma ℕₚ.+-cancelʳ-≡
 
 ------------------------------------------------------------------------
 -- Structures for _+_
@@ -628,20 +644,7 @@ private
 +-0-isCommutativeMonoid = +-Monomorphism.isCommutativeMonoid ℕₚ.+-0-isCommutativeMonoid
 
 ------------------------------------------------------------------------
--- Packages for _+_
-
-+-rawMagma : RawMagma 0ℓ 0ℓ
-+-rawMagma = record
-  { _≈_ = _≡_
-  ; _∙_ = _+_
-  }
-
-+-0-rawMonoid : RawMonoid 0ℓ 0ℓ
-+-0-rawMonoid = record
-  { _≈_ = _≡_
-  ; _∙_ = _+_
-  ; ε   = 0ᵇ
-  }
+-- Bundles for _+_
 
 +-magma : Magma 0ℓ 0ℓ
 +-magma = magma _+_
@@ -754,6 +757,22 @@ x≢0⇒x+y≢0 {zero}     _    0≢0 =  contradiction refl 0≢0
 ------------------------------------------------------------------------
 
 ------------------------------------------------------------------------
+-- Raw bundles for _*_
+
+*-rawMagma : RawMagma 0ℓ 0ℓ
+*-rawMagma = record
+  { _≈_ = _≡_
+  ; _∙_ = _*_
+  }
+
+*-1-rawMonoid : RawMonoid 0ℓ 0ℓ
+*-1-rawMonoid = record
+  { _≈_ = _≡_
+  ; _∙_ = _*_
+  ; ε   = 1ᵇ
+  }
+
+------------------------------------------------------------------------
 -- toℕ/fromℕ are homomorphisms for _*_
 
 private  2*ₙ2*ₙ =  (2 ℕ.*_) ∘ (2 ℕ.*_)
@@ -848,19 +867,19 @@ toℕ-homo-* x y =  aux x y (size x ℕ.+ size y) ℕₚ.≤-refl
     |y|+1+|x|≤cnt = subst (ℕ._≤ cnt) eq |x|+1+|y|≤cnt
 
 
-toℕ-isMagmaHomomorphism-* : IsMagmaHomomorphism _*_ ℕ._*_ toℕ
+toℕ-isMagmaHomomorphism-* : IsMagmaHomomorphism *-rawMagma ℕₚ.*-rawMagma toℕ
 toℕ-isMagmaHomomorphism-* = record
   { isRelHomomorphism = toℕ-isRelHomomorphism
   ; homo              = toℕ-homo-*
   }
 
-toℕ-isMonoidHomomorphism-* : IsMonoidHomomorphism _*_ ℕ._*_ 1ᵇ 1 toℕ
+toℕ-isMonoidHomomorphism-* : IsMonoidHomomorphism *-1-rawMonoid ℕₚ.*-1-rawMonoid toℕ
 toℕ-isMonoidHomomorphism-* = record
   { isMagmaHomomorphism = toℕ-isMagmaHomomorphism-*
   ; ε-homo              = refl
   }
 
-toℕ-isMonoidMonomorphism-* : IsMonoidMonomorphism _*_ ℕ._*_ 1ᵇ 1 toℕ
+toℕ-isMonoidMonomorphism-* : IsMonoidMonomorphism *-1-rawMonoid ℕₚ.*-1-rawMonoid toℕ
 toℕ-isMonoidMonomorphism-* = record
   { isMonoidHomomorphism = toℕ-isMonoidHomomorphism-*
   ; injective            = toℕ-injective
@@ -878,7 +897,7 @@ fromℕ-homo-* m n = begin
   m≡aN = sym (toℕ-fromℕ m);   n≡bN = sym (toℕ-fromℕ n)
 
 private
-  module *-Monomorphism = MonoidMonomorphism toℕ-isMonoidMonomorphism-* ℕₚ.*-isMagma
+  module *-Monomorphism = MonoidMonomorphism toℕ-isMonoidMonomorphism-*
 
 ------------------------------------------------------------------------
 -- Algebraic properties of _*_
@@ -887,13 +906,13 @@ private
 -- by `toℕ`/`fromℕ`.
 
 *-assoc :  Associative _*_
-*-assoc = *-Monomorphism.assoc ℕₚ.*-assoc
+*-assoc = *-Monomorphism.assoc ℕₚ.*-isMagma ℕₚ.*-assoc
 
 *-comm : Commutative _*_
-*-comm = *-Monomorphism.comm ℕₚ.*-comm
+*-comm = *-Monomorphism.comm ℕₚ.*-isMagma ℕₚ.*-comm
 
 *-identityˡ : LeftIdentity 1ᵇ _*_
-*-identityˡ = *-Monomorphism.identityˡ ℕₚ.*-identityˡ
+*-identityˡ = *-Monomorphism.identityˡ ℕₚ.*-isMagma ℕₚ.*-identityˡ
 
 *-identityʳ : RightIdentity 1ᵇ _*_
 *-identityʳ x =  trans (*-comm x 1ᵇ) (*-identityˡ x)
@@ -968,20 +987,7 @@ private
   }
 
 ------------------------------------------------------------------------
--- Packages
-
-*-rawMagma : RawMagma 0ℓ 0ℓ
-*-rawMagma = record
-  { _≈_ = _≡_
-  ; _∙_ = _*_
-  }
-
-*-1-rawMonoid : RawMonoid 0ℓ 0ℓ
-*-1-rawMonoid = record
-  { _≈_ = _≡_
-  ; _∙_ = _*_
-  ; ε   = 1ᵇ
-  }
+-- Bundles
 
 *-magma : Magma 0ℓ 0ℓ
 *-magma = record
@@ -1307,5 +1313,5 @@ pred[x]<x {x} x≢0 =  begin-strict
 -- Properties of size
 ------------------------------------------------------------------------
 
-|x|≡0⇒x≡0 :  ∀ {x} → size x ≡ 0 → x ≡ 0ᵇ
+|x|≡0⇒x≡0 : ∀ {x} → size x ≡ 0 → x ≡ 0ᵇ
 |x|≡0⇒x≡0 {zero} refl =  refl

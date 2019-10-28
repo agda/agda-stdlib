@@ -123,7 +123,7 @@ updated to use the new hierarchy:
   ```
 
 * Minor change: the propositional bundle for left inverses in `Function.Bundles`
-  has been renamed from `_↞_` to `_↩_` in order to make room for the new package
+  has been renamed from `_↞_` to `_↩_` in order to make room for the new bundle
   for right inverse `_↪_`.
 
 ### Re-implementation of `Data.Bin`
@@ -222,8 +222,8 @@ The following new modules have been added to the library:
   Data.Vec.Functional.Relation.Unary.All
   Data.Vec.Functional.Relation.Unary.Any
 
+  Function.Bundles
   Function.Definitions
-  Function.Packages
   Function.Structures
 
   Foreign.Haskell.Coerce
@@ -257,6 +257,23 @@ is encouraged. Although not anticipated any time soon, they may eventually
 be removed in some future release of the library. Automated warnings are
 attached to all deprecated names to discourage their use.
 
+* In `Data.Unit`:
+  `_≤_` was really not very useful as defined, as it was isomorphic to
+  `_≡_` which is now its definition.  Multiple names have been
+  deprecated because of this. `≤-reflexive` is just `id`, and
+  `≤-trans` is `trans`.
+
+  ```agda
+  ≤-total ↦ ≡-total
+  _≤?_ ↦ _≟_
+  ≤-isPreorder ↦ ≡-isPreorder
+  ≤-isPartialOrder ↦ ≡-isPartialOrder
+  ≤-isTotalOrder ↦ ≡-isTotalOrder
+  ≤-isDecTotalOrder ↦ ≡-isDecTotalOrder
+  ≤-poset ↦ ≡-poset
+  ≤-decTotalOrder ↦ ≡-decTotalOrder
+  ```
+
 * In `Data.Integer.Properties`:
   ```agda
   [1+m]*n≡n+m*n ↦ suc-*
@@ -288,6 +305,16 @@ attached to all deprecated names to discourage their use.
 Other minor additions
 ---------------------
 
+* Added new definition to `Algebra.Structures`:
+  ```agda
+  record IsCommutativeSemigroup (∙ : Op₂ A) : Set (a ⊔ ℓ)
+  ```
+
+* Added new definition to `Algebra.Bundles`:
+  ```agda
+  record CommutativeSemigroup c ℓ : Set (suc (c ⊔ ℓ))
+  ```
+
 * Added new bundles to `Data.Char.Properties`:
   ```agda
   <-isStrictPartialOrder-≈ : IsStrictPartialOrder _≈_ _<_
@@ -305,6 +332,11 @@ Other minor additions
 * Added new proof to `Data.Integer.Properties`:
   ```agda
   *-suc : m * sucℤ n ≡ m + m * n
+
+  +-isCommutativeSemigroup : IsCommutativeSemigroup _+_
+  *-isCommutativeSemigroup : IsCommutativeSemigroup _*_
+  +-commutativeSemigroup   : CommutativeSemigroup 0ℓ 0ℓ
+  *-commutativeSemigroup   : CommutativeSemigroup 0ℓ 0ℓ
   ```
 
 * Added to `Data.List` the reverse-append function `_ʳ++_`
@@ -401,6 +433,9 @@ Other minor additions
   m≤n+∣n-m∣      : m ≤ n + ∣ n - m ∣
   m≤n+∣m-n∣      : m ≤ n + ∣ m - n ∣
   m≤∣m-n∣+n      : m ≤ ∣ m - n ∣ + n
+
+  +-isCommutativeSemigroup : IsCommutativeSemigroup _+_
+  +-commutativeSemigroup   : CommutativeSemigroup 0ℓ 0ℓ
   ```
 
 * Added new bundles to `Data.String.Properties`:
@@ -436,7 +471,7 @@ Other minor additions
       trans : Transitive _≈_
   ```
 
-* Added new definition to `Relation.Binary.Packages`:
+* Added new definition to `Relation.Binary.Bundles`:
   ```agda
   record PartialSetoid a ℓ : Set (suc (a ⊔ ℓ)) where
     field
@@ -549,6 +584,14 @@ Other minor additions
 * Added new definitions to `Data.List.Relation.Unary.AllPairs`:
   ```agda
   uncons : AllPairs R (x ∷ xs) → All (R x) xs × AllPairs R xs
+  ```
+
+* Added new proofs to `Data.List.Properties`:
+  ```agda
+  filter-accept : P x → filter P? (x ∷ xs) ≡ x ∷ (filter P? xs)
+  filter-reject : ¬ P x → filter P? (x ∷ xs) ≡ filter P? xs
+  filter-idem   : filter P? ∘ filter P? ≗ filter P?
+  filter-++     : filter P? (xs ++ ys) ≡ filter P? xs ++ filter P? ys
   ```
 
 * Added new definitions to `Data.These.Properties`:

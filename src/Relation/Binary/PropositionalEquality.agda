@@ -76,7 +76,7 @@ isPreorder = record
   }
 
 ------------------------------------------------------------------------
--- Packages for equality as a binary relation
+-- Bundles for equality as a binary relation
 
 setoid : Set a → Setoid _ _
 setoid A = record

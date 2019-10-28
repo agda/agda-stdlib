@@ -8,7 +8,7 @@
 
 module Data.Maybe.Properties where
 
-open import Algebra.Packages
+open import Algebra.Bundles
 import Algebra.Structures as Structures
 import Algebra.Definitions as Definitions
 open import Data.Maybe.Base

@@ -9,74 +9,74 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra.Core
-open import Algebra.Structures
+open import Algebra.Bundles
 open import Algebra.Morphism.Structures
 open import Relation.Binary.Core
 
 module Algebra.Morphism.MonoidMonomorphism
-  {a b} {A : Set a} {B : Set b}
-  {ℓ₁ ℓ₂} {_≈₁_ : Rel A ℓ₁} {_≈₂_ : Rel B ℓ₂}
-  {_∙_ : Op₂ A} {_◦_ : Op₂ B} {f : A → B}
-  {ε₁ : A} {ε₂ : B}
-  (isMonoidMonomorphism : IsMonoidMonomorphism _≈₁_ _≈₂_ _∙_ _◦_ ε₁ ε₂ f)
-  (◦-isMagma : IsMagma _≈₂_ _◦_)
+  {a b ℓ₁ ℓ₂} {M₁ : RawMonoid a ℓ₁} {M₂ : RawMonoid b ℓ₂} {⟦_⟧}
+  (isMonoidMonomorphism : IsMonoidMonomorphism M₁ M₂ ⟦_⟧)
   where
 
 open IsMonoidMonomorphism isMonoidMonomorphism
-open IsMagma ◦-isMagma renaming (∙-cong to ◦-cong)
+open RawMonoid M₁ renaming (Carrier to A; _≈_ to _≈₁_; _∙_ to _∙_; ε to ε₁)
+open RawMonoid M₂ renaming (Carrier to B; _≈_ to _≈₂_; _∙_ to _◦_; ε to ε₂)
 
-open import Relation.Binary
 open import Algebra.Definitions
+open import Algebra.Structures
 open import Data.Product using (map)
+open import Relation.Binary
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning
-
-open SetoidReasoning setoid
 
 ------------------------------------------------------------------------
 -- Re-export all properties of magma monomorphisms
 
 open import Algebra.Morphism.MagmaMonomorphism
-  isMagmaMonomorphism ◦-isMagma public
+  isMagmaMonomorphism public
 
 ------------------------------------------------------------------------
 -- Properties
 
-identityˡ : LeftIdentity _≈₂_ ε₂ _◦_ → LeftIdentity _≈₁_ ε₁ _∙_
-identityˡ idˡ x = injective (begin
-  f (ε₁ ∙ x)  ≈⟨ homo ε₁ x ⟩
-  f ε₁ ◦ f x  ≈⟨ ◦-cong ε-homo refl ⟩
-  ε₂ ◦ f x    ≈⟨ idˡ (f x) ⟩
-  f x         ∎)
+module _ (◦-isMagma : IsMagma _≈₂_ _◦_) where
 
-identityʳ : RightIdentity _≈₂_ ε₂ _◦_ → RightIdentity _≈₁_ ε₁ _∙_
-identityʳ idʳ x = injective (begin
-  f (x ∙ ε₁)  ≈⟨ homo x ε₁ ⟩
-  f x ◦ f ε₁  ≈⟨ ◦-cong refl ε-homo ⟩
-  f x ◦ ε₂    ≈⟨ idʳ (f x) ⟩
-  f x         ∎)
+  open IsMagma ◦-isMagma renaming (∙-cong to ◦-cong)
+  open SetoidReasoning setoid
 
-identity : Identity _≈₂_ ε₂ _◦_ → Identity _≈₁_ ε₁ _∙_
-identity = map identityˡ identityʳ
+  identityˡ : LeftIdentity _≈₂_ ε₂ _◦_ → LeftIdentity _≈₁_ ε₁ _∙_
+  identityˡ idˡ x = injective (begin
+    ⟦ ε₁ ∙ x ⟧      ≈⟨ homo ε₁ x ⟩
+    ⟦ ε₁ ⟧ ◦ ⟦ x ⟧  ≈⟨ ◦-cong ε-homo refl ⟩
+    ε₂ ◦ ⟦ x ⟧      ≈⟨ idˡ ⟦ x ⟧ ⟩
+    ⟦ x ⟧           ∎)
 
-zeroˡ : LeftZero _≈₂_ ε₂ _◦_ → LeftZero _≈₁_ ε₁ _∙_
-zeroˡ zeˡ x = injective (begin
-  f (ε₁ ∙ x) ≈⟨  homo ε₁ x ⟩
-  f ε₁ ◦ f x ≈⟨  ◦-cong ε-homo refl ⟩
-  ε₂   ◦ f x ≈⟨  zeˡ (f x) ⟩
-  ε₂         ≈˘⟨ ε-homo ⟩
-  f ε₁       ∎)
+  identityʳ : RightIdentity _≈₂_ ε₂ _◦_ → RightIdentity _≈₁_ ε₁ _∙_
+  identityʳ idʳ x = injective (begin
+    ⟦ x ∙ ε₁ ⟧      ≈⟨ homo x ε₁ ⟩
+    ⟦ x ⟧ ◦ ⟦ ε₁ ⟧  ≈⟨ ◦-cong refl ε-homo ⟩
+    ⟦ x ⟧ ◦ ε₂      ≈⟨ idʳ ⟦ x ⟧ ⟩
+    ⟦ x ⟧           ∎)
 
-zeroʳ : RightZero _≈₂_ ε₂ _◦_ → RightZero _≈₁_ ε₁ _∙_
-zeroʳ zeʳ x = injective (begin
-  f (x ∙ ε₁) ≈⟨  homo x ε₁ ⟩
-  f x ◦ f ε₁ ≈⟨  ◦-cong refl ε-homo ⟩
-  f x ◦ ε₂   ≈⟨  zeʳ (f x) ⟩
-  ε₂         ≈˘⟨ ε-homo ⟩
-  f ε₁       ∎)
+  identity : Identity _≈₂_ ε₂ _◦_ → Identity _≈₁_ ε₁ _∙_
+  identity = map identityˡ identityʳ
 
-zero : Zero _≈₂_ ε₂ _◦_ → Zero _≈₁_ ε₁ _∙_
-zero = map zeroˡ zeroʳ
+  zeroˡ : LeftZero _≈₂_ ε₂ _◦_ → LeftZero _≈₁_ ε₁ _∙_
+  zeroˡ zeˡ x = injective (begin
+    ⟦ ε₁ ∙ x ⟧     ≈⟨  homo ε₁ x ⟩
+    ⟦ ε₁ ⟧ ◦ ⟦ x ⟧ ≈⟨  ◦-cong ε-homo refl ⟩
+    ε₂   ◦ ⟦ x ⟧   ≈⟨  zeˡ ⟦ x ⟧ ⟩
+    ε₂             ≈˘⟨ ε-homo ⟩
+    ⟦ ε₁ ⟧         ∎)
+
+  zeroʳ : RightZero _≈₂_ ε₂ _◦_ → RightZero _≈₁_ ε₁ _∙_
+  zeroʳ zeʳ x = injective (begin
+    ⟦ x ∙ ε₁ ⟧     ≈⟨  homo x ε₁ ⟩
+    ⟦ x ⟧ ◦ ⟦ ε₁ ⟧ ≈⟨  ◦-cong refl ε-homo ⟩
+    ⟦ x ⟧ ◦ ε₂     ≈⟨  zeʳ ⟦ x ⟧ ⟩
+    ε₂             ≈˘⟨ ε-homo ⟩
+    ⟦ ε₁ ⟧         ∎)
+
+  zero : Zero _≈₂_ ε₂ _◦_ → Zero _≈₁_ ε₁ _∙_
+  zero = map zeroˡ zeroʳ
 
 ------------------------------------------------------------------------
 -- Properties
@@ -84,13 +84,13 @@ zero = map zeroˡ zeroʳ
 isMonoid : IsMonoid _≈₂_ _◦_ ε₂ → IsMonoid _≈₁_ _∙_ ε₁
 isMonoid isMonoid = record
   { isSemigroup = isSemigroup M.isSemigroup
-  ; identity    = identity    M.identity
+  ; identity    = identity    M.isMagma M.identity
   } where module M = IsMonoid isMonoid
 
 isCommutativeMonoid : IsCommutativeMonoid _≈₂_ _◦_ ε₂ →
                       IsCommutativeMonoid _≈₁_ _∙_ ε₁
 isCommutativeMonoid isCommMonoid = record
   { isSemigroup = isSemigroup C.isSemigroup
-  ; identityˡ   = identityˡ   C.identityˡ
-  ; comm        = comm        C.comm
+  ; identityˡ   = identityˡ   C.isMagma C.identityˡ
+  ; comm        = comm        C.isMagma C.comm
   } where module C = IsCommutativeMonoid isCommMonoid

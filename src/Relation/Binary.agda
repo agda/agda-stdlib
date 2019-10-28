@@ -14,4 +14,4 @@ module Relation.Binary where
 open import Relation.Binary.Core public
 open import Relation.Binary.Definitions public
 open import Relation.Binary.Structures public
-open import Relation.Binary.Packages public
+open import Relation.Binary.Bundles public

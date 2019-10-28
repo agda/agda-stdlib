@@ -11,7 +11,7 @@
 
 module Data.List.Properties where
 
-open import Algebra.Bundles
+open import Algebra.Packages
 import Algebra.Structures as Structures
 import Algebra.Definitions as Definitions
 open import Data.Bool.Base using (Bool; false; true; not; if_then_else_)
@@ -766,8 +766,8 @@ module _ {P : Pred A p} (P? : Decidable P) where
   filter-idem : filter P? ∘ filter P? ≗ filter P?
   filter-idem []       = refl
   filter-idem (x ∷ xs) with P? x | inspect P? x
-  ... | no  _ | _                   = filter-idem xs
-  ... | yes _ | P.[ eq ] rewrite eq = cong (x ∷_) (filter-idem xs)
+  ... | no  _ | _        = filter-idem xs
+  ... | yes _ | P.[ eq ] = cong (x ∷_) (filter-idem xs)
 
   filter-++ : ∀ xs ys → filter P? (xs ++ ys) ≡ filter P? xs ++ filter P? ys
   filter-++ []       ys = refl

@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra.Packages
+open import Algebra.Bundles
 
 module Algebra.Properties.CommutativeMonoid
   {g₁ g₂} (M : CommutativeMonoid g₁ g₂) where
