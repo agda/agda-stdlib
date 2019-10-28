@@ -79,7 +79,7 @@ module _ (◦-isMagma : IsMagma _≈₂_ _◦_) where
   zero = map zeroˡ zeroʳ
 
 ------------------------------------------------------------------------
--- Properties
+-- Structures
 
 isMonoid : IsMonoid _≈₂_ _◦_ ε₂ → IsMonoid _≈₁_ _∙_ ε₁
 isMonoid isMonoid = record
