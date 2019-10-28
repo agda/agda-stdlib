@@ -37,7 +37,7 @@ module _ (◦-isMagma : IsMagma _≈₂_ _◦_) where
 
   open IsMagma ◦-isMagma renaming (∙-cong to ◦-cong)
   open SetoidReasoning setoid
-  
+
   cong : Congruent₂ _≈₁_ _∙_
   cong {x} {y} {u} {v} x≈y u≈v = injective (begin
     ⟦ x ∙ u ⟧      ≈⟨  homo x u ⟩

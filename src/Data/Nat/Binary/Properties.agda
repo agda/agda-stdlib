@@ -9,7 +9,7 @@
 module Data.Nat.Binary.Properties where
 
 open import Algebra.Bundles
-open import Algebra.Morphism.Structures 
+open import Algebra.Morphism.Structures
 import Algebra.Morphism.MonoidMonomorphism as MonoidMonomorphism
 open import Algebra.FunctionProperties.Consequences.Propositional
 open import Data.Nat.Binary.Base
