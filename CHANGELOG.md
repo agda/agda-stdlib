@@ -137,6 +137,47 @@ updated to use the new hierarchy:
 * The existing modules `Data.Bin` and `Data.Bin.Properties` still exist but have been
   deprecated and may be removed in some future release of the library.
 
+### Addition of the `Reflects` idiom
+
+* A version of the `Reflects` idiom, as seen in SSReflect, has been introduced
+in `Relation.Nullary`. Some properties of it have been added in
+`Relation.Nullary.Reflects`. The definition is as follows
+  ```agda
+  data Reflects {p} (P : Set p) : Bool → Set p where
+    ofʸ : ( p :   P) → Reflects P true
+    ofⁿ : (¬p : ¬ P) → Reflects P false
+  ```
+
+* `Dec` has been redefined in terms of `Reflects`.
+  ```agda
+  record Dec {p} (P : Set p) : Set p where
+    constructor _because_
+    field
+      does : Bool
+      proof : Reflects P does
+
+  open Dec public
+
+  pattern yes p =  true because ofʸ  p
+  pattern no ¬p = false because ofⁿ ¬p
+  ```
+This change should be backwards compatible thanks to the pattern synonyms.
+However, decision procedures can now be built in such a way that a boolean
+result is given independently of the proof that it is the correct decision.
+See, for example, this proof of decidability of _≤_ on natural numbers.
+  ```agda
+  _≤?_ : (m n : ℕ) → Dec (m ≤ n)
+  zero  ≤?    n = yes z≤n
+  suc m ≤? zero = no λ ()
+  does  (suc m ≤? suc n) = does (m ≤? n)
+  proof (suc m ≤? suc n) with m ≤? n
+  ... | yes p = ofʸ (s≤s p)
+  ... | no ¬p = ofⁿ (¬p ∘ ≤-pred)
+  ```
+Notice that if we project the `does` field, we get a function which behaves
+identically to what we would expect of a boolean test. This can have
+advantages for both performance and reasoning.
+
 ### Other breaking changes
 
 #### Harmonizing `List.All` and `Vec` in their role as finite maps.
@@ -236,6 +277,8 @@ The following new modules have been added to the library:
   Relation.Binary.Morphism
   Relation.Binary.Morphism.RawOrder
   Relation.Binary.Morphism.RawRelation
+
+  Relation.Nullary.Reflects
   ```
 
 Relocated modules
