@@ -6,7 +6,7 @@ open import Algebra.Construct.Ring.Expr public
 open import Algebra.Solver.Ring.Simple.AlmostCommutativeRing public hiding (-raw-almostCommutative⟶)
 open import Data.Vec hiding (_⊛_)
 open import Algebra.Solver.Ring.AlmostCommutativeRing using (-raw-almostCommutative⟶)
-open import Algebra.Construct.Polynomial.Parameters
+open import Algebra.Construct.CommutativeRing.Polynomial.Parameters
 open import Function
 open import Data.Maybe
 open import Data.Vec.N-ary
@@ -47,7 +47,7 @@ module Ops {ℓ₁ ℓ₂} (ring : AlmostCommutativeRing ℓ₁ ℓ₂) where
   ⟦ ⊝ x ⟧ ρ = - ⟦ x ⟧ ρ
   ⟦ x ⊛ i ⟧ ρ = ⟦ x ⟧ ρ ^ i
 
-  open import Algebra.Construct.Polynomial.Base (Homomorphism.from homo)
+  open import Algebra.Construct.CommutativeRing.Polynomial.Base (Homomorphism.from homo)
 
   norm : ∀ {n} → Expr Carrier n → Poly n
   norm = go
@@ -63,13 +63,13 @@ module Ops {ℓ₁ ℓ₂} (ring : AlmostCommutativeRing ℓ₁ ℓ₂) where
   ⟦_⇓⟧ : ∀ {n} → Expr Carrier n → Vec Carrier n → Carrier
   ⟦ expr ⇓⟧ = ⟦ norm expr ⟧ₚ where
 
-    open import Algebra.Construct.Polynomial.Semantics homo
+    open import Algebra.Construct.CommutativeRing.Polynomial.Semantics homo
       renaming (⟦_⟧ to ⟦_⟧ₚ)
 
   correct : ∀ {n} (expr : Expr Carrier n) ρ → ⟦ expr ⇓⟧ ρ ≈ ⟦ expr ⟧ ρ
   correct {n = n} = go
     where
-    open import Algebra.Construct.Polynomial.Homomorphism homo
+    open import Algebra.Construct.CommutativeRing.Polynomial.Homomorphism homo
 
     go : ∀ (expr : Expr Carrier n) ρ → ⟦ expr ⇓⟧ ρ ≈ ⟦ expr ⟧ ρ
     go (Κ x) ρ = κ-hom x ρ

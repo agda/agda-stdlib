@@ -1,6 +1,6 @@
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra.Construct.Polynomial.Parameters
+open import Algebra.Construct.CommutativeRing.Polynomial.Parameters
 
 module Algebra.Solver.Ring
   {r₁ r₂ r₃}
@@ -14,7 +14,7 @@ open import Algebra.Solver.Ring.AlmostCommutativeRing
 open Homomorphism homo
 open Eval rawRing ⟦_⟧ᵣ
 
-open import Algebra.Construct.Polynomial.Base from
+open import Algebra.Construct.CommutativeRing.Polynomial.Base from
   using (Poly; _⊞_; _⊠_; ⊟_; _⊡_; κ; ι)
 
 norm : ∀ {n} → Expr Raw.Carrier n → Poly n
@@ -25,13 +25,13 @@ norm (x ⊗ y) = norm x ⊠ norm y
 norm (x ⊛ i) = norm x ⊡ i
 norm (⊝ x) = ⊟ norm x
 
-open import Algebra.Construct.Polynomial.Semantics homo
+open import Algebra.Construct.CommutativeRing.Polynomial.Semantics homo
   renaming (⟦_⟧ to ⟦_⟧ₚ)
 
 ⟦_⇓⟧ : ∀ {n} → Expr Raw.Carrier n → Vec Carrier n → Carrier
 ⟦ x ⇓⟧ = ⟦ norm x ⟧ₚ
 
-import Algebra.Construct.Polynomial.Homomorphism homo
+import Algebra.Construct.CommutativeRing.Polynomial.Homomorphism homo
   as Hom
 open import Function
 

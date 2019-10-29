@@ -43,9 +43,9 @@
 
 {-# OPTIONS --safe --without-K #-}
 
-open import Algebra.Construct.Polynomial.Parameters
+open import Algebra.Construct.CommutativeRing.Polynomial.Parameters
 
-module Algebra.Construct.Polynomial.Base {ℓ} (coeffs : RawCoeff ℓ) where
+module Algebra.Construct.CommutativeRing.Polynomial.Base {ℓ} (coeffs : RawCoeff ℓ) where
 
 open import Data.Bool              using (Bool; true; false; T)
 open import Data.Nat as ℕ          using (ℕ; suc; zero; _≤′_; compare; ≤′-refl; ≤′-step; _<′_)

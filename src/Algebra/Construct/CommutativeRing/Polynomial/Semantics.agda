@@ -1,9 +1,9 @@
 {-# OPTIONS --without-K --safe #-}
 
 -- "Evaluating" a polynomial, using Horner's method.
-open import Algebra.Construct.Polynomial.Parameters
+open import Algebra.Construct.CommutativeRing.Polynomial.Parameters
 
-module Algebra.Construct.Polynomial.Semantics
+module Algebra.Construct.CommutativeRing.Polynomial.Semantics
   {r₁ r₂ r₃}
   (homo : Homomorphism r₁ r₂ r₃)
   where
@@ -15,7 +15,7 @@ open import Data.Product using (_,_; _×_)
 open import Data.List.Kleene using (_+; _*; ∹_; _&_; [])
 
 open Homomorphism homo
-open import Algebra.Construct.Polynomial.Base from
+open import Algebra.Construct.CommutativeRing.Polynomial.Base from
 
 open import Algebra.Operations.Ring.Compact rawRing
 

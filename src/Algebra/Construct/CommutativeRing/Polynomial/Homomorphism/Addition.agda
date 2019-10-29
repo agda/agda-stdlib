@@ -1,8 +1,8 @@
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra.Construct.Polynomial.Parameters
+open import Algebra.Construct.CommutativeRing.Polynomial.Parameters
 
-module Algebra.Construct.Polynomial.Homomorphism.Addition
+module Algebra.Construct.CommutativeRing.Polynomial.Homomorphism.Addition
   {r₁ r₂ r₃}
   (homo : Homomorphism r₁ r₂ r₃)
   where
@@ -19,10 +19,10 @@ import Data.Nat.Properties as ℕ-Prop
 import Relation.Binary.PropositionalEquality as ≡
 
 open Homomorphism homo
-open import Algebra.Construct.Polynomial.Homomorphism.Lemmas homo
-open import Algebra.Construct.Polynomial.Base from
-open import Algebra.Construct.Polynomial.Reasoning to
-open import Algebra.Construct.Polynomial.Semantics homo
+open import Algebra.Construct.CommutativeRing.Polynomial.Homomorphism.Lemmas homo
+open import Algebra.Construct.CommutativeRing.Polynomial.Base from
+open import Algebra.Construct.CommutativeRing.Polynomial.Reasoning to
+open import Algebra.Construct.CommutativeRing.Polynomial.Semantics homo
 open import Algebra.Operations.Ring.Compact rawRing
 open import Data.List.Kleene
 open import Relation.Unary

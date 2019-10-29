@@ -1,8 +1,8 @@
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra.Construct.Polynomial.Parameters
+open import Algebra.Construct.CommutativeRing.Polynomial.Parameters
 
-module Algebra.Construct.Polynomial.Homomorphism.Semantics
+module Algebra.Construct.CommutativeRing.Polynomial.Homomorphism.Semantics
   {r₁ r₂ r₃}
   (homo : Homomorphism r₁ r₂ r₃)
   where
@@ -16,10 +16,10 @@ open import Function
 
 open Homomorphism homo
 
-open import Algebra.Construct.Polynomial.Homomorphism.Lemmas homo
-open import Algebra.Construct.Polynomial.Base (Homomorphism.from homo)
-open import Algebra.Construct.Polynomial.Reasoning (Homomorphism.to homo)
-open import Algebra.Construct.Polynomial.Semantics homo
+open import Algebra.Construct.CommutativeRing.Polynomial.Homomorphism.Lemmas homo
+open import Algebra.Construct.CommutativeRing.Polynomial.Base (Homomorphism.from homo)
+open import Algebra.Construct.CommutativeRing.Polynomial.Reasoning (Homomorphism.to homo)
+open import Algebra.Construct.CommutativeRing.Polynomial.Semantics homo
 
 open import Algebra.Operations.Ring.Compact rawRing
 

@@ -3,7 +3,7 @@
 -- This module packages up all the stuff that's passed to the other
 -- modules in a convenient form.
 
-module Algebra.Construct.Polynomial.Parameters where
+module Algebra.Construct.CommutativeRing.Polynomial.Parameters where
 
 open import Function
 open import Algebra

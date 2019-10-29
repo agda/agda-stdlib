@@ -3,7 +3,7 @@
 open import Algebra.Solver.Ring.AlmostCommutativeRing
 
 -- Some specialised tools for equaltional reasoning.
-module Algebra.Construct.Polynomial.Reasoning
+module Algebra.Construct.CommutativeRing.Polynomial.Reasoning
   {a ℓ}
   (ring : AlmostCommutativeRing a ℓ)
   where
