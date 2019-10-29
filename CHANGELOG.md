@@ -251,6 +251,9 @@ The following new modules have been added to the library:
   Data.List.Kleene.AsList
   Data.List.Kleene.Base
 
+  Data.List.Relation.Unary.AllNeighbours
+  Data.List.Relation.Unary.AllNeighbours.Properties
+
   Data.List.Relation.Binary.Sublist.Propositional.Disjoint
 
   Data.Rational.Unnormalised
