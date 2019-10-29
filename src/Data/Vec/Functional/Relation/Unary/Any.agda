@@ -43,7 +43,7 @@ module _ {P : Pred A p} where
 module _ {P : Pred A p} {Q : Pred A q} where
 
   map : P ⊆ Q → ∀ {n} → Any P {n = n} ⊆ Any Q
-  map pq = Σ.map id pq
+  map p⊆q = Σ.map id p⊆q
 
 ------------------------------------------------------------------------
 -- Properties of predicates preserved by Any

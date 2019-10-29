@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Pointwise table equality
+-- This module is DEPRECATED. Please use `Data.Vec.Functional` instead.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
