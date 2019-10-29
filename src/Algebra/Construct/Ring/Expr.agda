@@ -14,12 +14,12 @@ infixl 6 _⊕_
 infixl 7 _⊗_
 infixr 8 _⊛_
 data Expr  {ℓ} (A : Set ℓ) (n : ℕ) : Set ℓ where
-  Κ   : A → Expr A n
-  Ι   : Fin n → Expr A n
-  _⊕_ : Expr A n → Expr A n → Expr A n
-  _⊗_ : Expr A n → Expr A n → Expr A n
-  _⊛_ : Expr A n → ℕ → Expr A n -- exponentiation
-  ⊝_  : Expr A n → Expr A n
+  Κ   : A → Expr A n                   -- Constant
+  Ι   : Fin n → Expr A n               -- Variable
+  _⊕_ : Expr A n → Expr A n → Expr A n -- Addition
+  _⊗_ : Expr A n → Expr A n → Expr A n -- Multiplication
+  _⊛_ : Expr A n → ℕ → Expr A n        -- Exponentiation
+  ⊝_  : Expr A n → Expr A n            -- Negation
 
 
 module Eval {ℓ₁ ℓ₂} (rawRing : RawRing ℓ₁) {A : Set ℓ₂} (⟦_⟧ᵣ : A → RawRing.Carrier rawRing) where
