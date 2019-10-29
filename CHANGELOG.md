@@ -177,8 +177,10 @@ New modules
 -----------
 The following new modules have been added to the library:
   ```
-  Algebra.Morphism.RawMagma
-  Algebra.Morphism.RawMonoid
+  Algebra.Morphism.Definitions
+  Algebra.Morphism.Structures
+  Algebra.Morphism.MagmaMonomorphism
+  Algebra.Morphism.MonoidMonomorphism
 
   Algebra.Properties.Semigroup
   Algebra.Properties.CommutativeSemigroup
@@ -234,8 +236,10 @@ The following new modules have been added to the library:
   Relation.Binary.Reasoning.PartialSetoid
 
   Relation.Binary.Morphism
-  Relation.Binary.Morphism.RawOrder
-  Relation.Binary.Morphism.RawRelation
+  Relation.Binary.Morphism.Definitions
+  Relation.Binary.Morphism.Structures
+  Relation.Binary.Morphism.RelMonomorphism
+  Relation.Binary.Morphism.OrderMonomorphism
   ```
 
 Relocated modules
