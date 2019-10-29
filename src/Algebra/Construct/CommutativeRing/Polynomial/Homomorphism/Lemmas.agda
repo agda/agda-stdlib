@@ -1,3 +1,9 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Lemmas for use in proving the polynomial homomorphism.
+------------------------------------------------------------------------
+
 {-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Construct.CommutativeRing.Polynomial.Parameters
@@ -31,6 +37,20 @@ open import Algebra.Construct.CommutativeRing.Polynomial.Semantics homo
 
 open import Algebra.Operations.Ring.Compact rawRing
 
+------------------------------------------------------------------------
+-- Power lemmas
+--
+-- We prove some things about our odd exponentiation operator (described
+-- in Algebra.Operations.Ring.Compact) here.
+
+-- First, that the optimised operator is the same as normal
+-- exponentiation.
+pow-opt : ∀ x ρ i → x *⟨ ρ ⟩^ i ≈ ρ ^ i * x
+pow-opt x ρ ℕ.zero = sym (*-identityˡ x)
+pow-opt x ρ (suc i) = refl
+
+-- Some normal identities on exponentiation.
+--  xⁿxᵐ = xⁿ⁺ᵐ
 pow-add′ : ∀ x i j → (x ^ i +1) * (x ^ j +1) ≈ x ^ (j ℕ.+ suc i) +1
 pow-add′ x i ℕ.zero = refl
 pow-add′ x i (suc j) =
@@ -41,7 +61,6 @@ pow-add′ x i (suc j) =
   ≈⟨ ≪* pow-add′ x i j ⟩
     x ^ (j ℕ.+ suc i) +1 * x
   ∎
-
 
 pow-add : ∀ x y i j → y ^ j +1 * x *⟨ y ⟩^ i  ≈ x *⟨ y ⟩^ (i ℕ.+ suc j)
 pow-add x y ℕ.zero j = refl
@@ -60,10 +79,9 @@ pow-add x y (suc i) j = go x y i j
       y ^ suc (i ℕ.+ suc j) +1 * x
     ∎
 
-pow-opt : ∀ x ρ i → x *⟨ ρ ⟩^ i ≈ ρ ^ i * x
-pow-opt x ρ ℕ.zero = sym (*-identityˡ x)
-pow-opt x ρ (suc i) = refl
-
+-- Here we show a homomorphism on exponentiation, i.e. that using the
+-- exponentiation function on polynomials and then evaluating is the same
+-- as evaluating and then exponentiating.
 pow-hom : ∀ {n} i
         → (xs : Coeff n +)
         → ∀ ρ ρs
@@ -76,11 +94,14 @@ pow-hom (suc i) (x ≠0 Δ j & xs) ρ ρs =
     (((x , xs) ⟦∷⟧ (ρ , ρs)) *⟨ ρ ⟩^ (j ℕ.+ suc i))
   ∎
 
-
+-- Proving a congruence (we don't get this for free because we're using
+-- setoids).
 pow-mul-cong : ∀ {x y} → x ≈ y → ∀ ρ i → x *⟨ ρ ⟩^ i ≈ y *⟨ ρ ⟩^ i
 pow-mul-cong x≈y ρ ℕ.zero = x≈y
 pow-mul-cong x≈y ρ (suc i₁) = *≫ x≈y
 
+-- The identity:
+--  (xy)ⁿ = xⁿyⁿ
 pow-distrib-+1 : ∀ x y i → (x * y) ^ i +1 ≈ x ^ i +1 * y ^ i +1
 pow-distrib-+1 x y ℕ.zero = refl
 pow-distrib-+1 x y (suc i) =
@@ -99,6 +120,10 @@ pow-distrib : ∀ x y i
 pow-distrib x y ℕ.zero = sym (*-identityˡ _)
 pow-distrib x y (suc i) = pow-distrib-+1 x y i
 
+-- This proves the identity:
+--   (xⁿ)ᵐ = xⁿᵐ
+-- The reason it looks different is because we're using the special exponentiation
+-- operator.
 pow-mult-+1 : ∀ x i j → (x ^ i +1) ^ j +1 ≈ x ^ (i ℕ.+ j ℕ.* suc i) +1
 pow-mult-+1 x i ℕ.zero rewrite ℕ-Prop.+-identityʳ i = refl
 pow-mult-+1 x i (suc j) =
@@ -118,18 +143,25 @@ pow-cong : ∀ {x y} i → x ≈ y → x ^ i ≈ y ^ i
 pow-cong ℕ.zero x≈y = refl
 pow-cong (suc i) x≈y = pow-cong-+1 i x≈y
 
+-- Demonstrating that the proof of zeroness is correct.
 zero-hom : ∀ {n} (p : Poly n) → Zero p → (ρs : Vec Carrier n) → 0# ≈ ⟦ p ⟧ ρs
 zero-hom (⅀ _ ⊐ _) ()
 zero-hom (Κ x  ⊐ i≤n) p≡0 ρs = Zero-C⟶Zero-R x p≡0
 
+--   x¹⁺ⁿ = xxⁿ
 pow-suc : ∀ x i → x ^ suc i ≈ x * x ^ i
 pow-suc x ℕ.zero = sym (*-identityʳ _)
 pow-suc x (suc i) = *-comm _ _
 
+--   x¹⁺ⁿ = xⁿx
 pow-sucʳ : ∀ x i → x ^ suc i ≈ x ^ i * x
 pow-sucʳ x ℕ.zero = sym (*-identityˡ _)
 pow-sucʳ x (suc i) = refl
 
+-- In the proper evaluation function, we avoid ever inserting an unnecessary 0#
+-- like we do here. However, it is easier to prove with the form that does insert
+-- 0#. So we write one here, and then prove that it's equivalent to the one that
+-- adds a 0#.
 ⅀?⟦_⟧ : ∀ {n} (xs : Coeff n *) → Carrier × Vec Carrier n → Carrier
 ⅀?⟦ [] ⟧ _ = 0#
 ⅀?⟦ ∹ x ⟧ = ⅀⟦ x ⟧
@@ -149,6 +181,9 @@ pow′-hom i (∹ xs ) ρ ρs = pow-hom i xs ρ ρs
 pow′-hom zero [] ρ ρs = refl
 pow′-hom (suc i) [] ρ ρs = zeroʳ _
 
+-- Here, we show that the normalising cons is correct.
+-- This lets us prove with respect to the non-normalising form, especially
+-- when we're using the folds.
 ∷↓-hom-0 : ∀ {n} (x : Poly n) → ∀ xs ρ ρs → ⅀?⟦ x Δ 0 ∷↓ xs ⟧ (ρ , ρs) ≈ (x , xs) ⟦∷⟧ (ρ , ρs)
 ∷↓-hom-0 x xs ρ ρs with zero? x
 ∷↓-hom-0 x xs ρ ρs | no ¬p = refl
@@ -191,6 +226,9 @@ pow′-hom (suc i) [] ρ ρs = zeroʳ _
 ⟦∷⟧-hom x [] ρ ρs = sym ((≪+ zeroʳ _) ⟨ trans ⟩ +-identityˡ _)
 ⟦∷⟧-hom x (∹ xs ) ρ ρs = refl
 
+-- This proves that injecting a polynomial into more variables is correct.
+-- Basically, we show that if a polynomial doesn't care about the first few
+-- variables, we can drop them from the input vector.
 ⅀-⊐↑-hom : ∀ {i n m}
          → (xs : Coeff i +)
          → (si≤n : suc i ≤′ n)
@@ -251,6 +289,11 @@ drop-1⇒lookup : ∀ {n}
 drop-1⇒lookup Fin.zero (ρ ∷ ρs) = ≡.refl
 drop-1⇒lookup (Fin.suc i) (ρ ∷ ρs) = drop-1⇒lookup i ρs
 
+-- The fold: this function saves us hundreds of lines of proofs in the rest of the
+-- homomorphism proof.
+-- Many of the functions on polynomials are defined using para: this function allows
+-- us to prove properties of those functions (in a foldr-fusion style) *ignoring*
+-- optimisations we have made to the polynomial structure.
 poly-foldR : ∀ {n} ρ ρs
         → ([f] : Fold n)
         → (f : Carrier → Carrier)
