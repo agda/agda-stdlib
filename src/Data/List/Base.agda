@@ -112,6 +112,7 @@ foldr : (A → B → B) → B → List A → B
 foldr c n []       = n
 foldr c n (x ∷ xs) = c x (foldr c n xs)
 
+-- A paramorphism.
 para : (A → List A → B → B) → B → List A → B
 para f b [] = b
 para f b (x ∷ xs) = f x xs (para f b xs)
