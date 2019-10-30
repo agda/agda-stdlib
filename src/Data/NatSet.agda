@@ -6,15 +6,16 @@
 -- Since ℕ is represented as unary numbers, simply having an ordered list of
 -- numbers to represent a set is quite inefficient. For instance, to see if
 -- 6 is in the set {1, 3, 4}, we have to do a comparison with 1, then 3, and
--- then 4.
+-- then 4. But 4 is equal to suc 3, so we should be able to share the work
+-- accross those two comparisons.
 --
--- This module defines a representation that represents {1, 3, 4} as:
+-- This module defines a type that represents {1, 3, 4} as:
 --
 --   1 ∷ 1 ∷ 0 ∷ []
 --
 -- i.e. we only store the gaps. When checking if a number (the needle) is in the
--- set (the haystack), we subtract each successive member of the set from the
--- haystack as we go. For example, to check if 6 is in the above set, we do the
+-- set (the haystack), we subtract each successive member of the haystack from the
+-- needle as we go. For example, to check if 6 is in the above set, we do the
 -- following:
 --
 --   start:                  6 ∈? (1 ∷ 1 ∷ 0 ∷ [])
@@ -73,6 +74,7 @@ lookup x xs = List.foldr f (const (const nothing)) xs x 0
   ... | ℕ.less .x k = nothing
   ... | ℕ.equal .y = just i
   ... | ℕ.greater .y k = ys k (suc i)
+
 
 member : ℕ → NatSet → Bool
 member x = Maybe.is-just ∘ lookup x
