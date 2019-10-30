@@ -160,6 +160,9 @@ Please use ≡-isTotalOrder instead."
 "Warning: ≤-isDecTotalOrder was deprecated in v1.2.
 Please use ≡-isDecTotalOrder instead."
 #-}
+
+-- Bundles
+
 ≤-poset : Poset 0ℓ 0ℓ 0ℓ
 ≤-poset = record
   { isPartialOrder = ≤-isPartialOrder

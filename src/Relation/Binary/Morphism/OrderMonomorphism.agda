@@ -1,8 +1,11 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Lifting orders via injective morphisms
+-- Consequences of a monomorphism between orders
 ------------------------------------------------------------------------
+
+-- See Data.Nat.Binary.Properties for examples of how this and similar
+-- modules can be used to easily translate properties between types.
 
 {-# OPTIONS --without-K --safe #-}
 
@@ -10,54 +13,52 @@ open import Function
 open import Relation.Binary
 open import Relation.Binary.Morphism
 
-module Relation.Binary.Morphism.RawOrder
+module Relation.Binary.Morphism.OrderMonomorphism
   {a b ℓ₁ ℓ₂ ℓ₃ ℓ₄} {A : Set a} {B : Set b}
-  {_≈₁_ : Rel A ℓ₁} {_∼₁_ : Rel A ℓ₂} {_≈₂_ : Rel B ℓ₃} {_∼₂_ : Rel B ℓ₄}
-  {f : A → B} (injective : Injective _≈₁_ _≈₂_ f)
-  (anti-monotone : Injective _∼₁_ _∼₂_ f)
-  (isRawOrderMorphism : IsRawOrderMorphism _≈₁_ _∼₁_ _≈₂_ _∼₂_ f)
+  {_≈₁_ : Rel A ℓ₁} {_≈₂_ : Rel B ℓ₃}
+  {_∼₁_ : Rel A ℓ₂} {_∼₂_ : Rel B ℓ₄}
+  {⟦_⟧ : A → B}
+  (isOrderMonomorphism : IsOrderMonomorphism _≈₁_ _≈₂_ _∼₁_ _∼₂_ ⟦_⟧)
   where
 
-open import Data.Product as Prod
-open import Relation.Nullary using (yes; no)
-open import Relation.Nullary.Decidable
-import Relation.Binary.Morphism.RawRelation as RawRelation
+open import Data.Product using (map)
+import Relation.Binary.Morphism.RelMonomorphism as RawRelation
 
-open IsRawOrderMorphism isRawOrderMorphism
+open IsOrderMonomorphism isOrderMonomorphism
 
 ------------------------------------------------------------------------
 -- Re-export equivalence proofs
 
-module EqM = RawRelation injective Eq.isRawRelationMorphism
+module EqM = RawRelation Eq.isRelMonomorphism
 
-open RawRelation anti-monotone isRawRelationMorphism public
+open RawRelation isRelMonomorphism public
 
 ------------------------------------------------------------------------
 -- Properties
 
 reflexive : _≈₂_ ⇒ _∼₂_ → _≈₁_ ⇒ _∼₁_
-reflexive refl x≈y = anti-monotone (refl (cong x≈y))
+reflexive refl x≈y = cancel (refl (cong x≈y))
 
 irrefl : Irreflexive _≈₂_ _∼₂_ → Irreflexive _≈₁_ _∼₁_
-irrefl irrefl x≈y x∼y = irrefl (cong x≈y) (monotone x∼y)
+irrefl irrefl x≈y x∼y = irrefl (cong x≈y) (mono x∼y)
 
 antisym : Antisymmetric _≈₂_ _∼₂_ → Antisymmetric _≈₁_ _∼₁_
-antisym antisym x∼y y∼x = injective (antisym (monotone x∼y) (monotone y∼x))
+antisym antisym x∼y y∼x = injective (antisym (mono x∼y) (mono y∼x))
 
 compare : Trichotomous _≈₂_ _∼₂_ → Trichotomous _≈₁_ _∼₁_
-compare compare x y with compare (f x) (f y)
-... | tri< a ¬b ¬c = tri< (anti-monotone a) (¬b ∘ cong) (¬c ∘ monotone)
-... | tri≈ ¬a b ¬c = tri≈ (¬a ∘ monotone) (injective b) (¬c ∘ monotone)
-... | tri> ¬a ¬b c = tri> (¬a ∘ monotone) (¬b ∘ cong) (anti-monotone c)
+compare compare x y with compare ⟦ x ⟧ ⟦ y ⟧
+... | tri< a ¬b ¬c = tri< (cancel a) (¬b ∘ cong) (¬c ∘ mono)
+... | tri≈ ¬a b ¬c = tri≈ (¬a ∘ mono) (injective b) (¬c ∘ mono)
+... | tri> ¬a ¬b c = tri> (¬a ∘ mono) (¬b ∘ cong) (cancel c)
 
 respˡ : _∼₂_ Respectsˡ _≈₂_ → _∼₁_ Respectsˡ _≈₁_
-respˡ resp x≈y x∼z = anti-monotone (resp (cong x≈y) (monotone x∼z))
+respˡ resp x≈y x∼z = cancel (resp (cong x≈y) (mono x∼z))
 
 respʳ : _∼₂_ Respectsʳ _≈₂_ → _∼₁_ Respectsʳ _≈₁_
-respʳ resp x≈y y∼z = anti-monotone (resp (cong x≈y) (monotone y∼z))
+respʳ resp x≈y y∼z = cancel (resp (cong x≈y) (mono y∼z))
 
 resp : _∼₂_ Respects₂ _≈₂_ → _∼₁_ Respects₂ _≈₁_
-resp resp = Prod.map respʳ respˡ resp
+resp = map respʳ respˡ
 
 ------------------------------------------------------------------------
 -- Structures
@@ -103,5 +104,4 @@ isStrictTotalOrder O = record
   { isEquivalence = EqM.isEquivalence O.isEquivalence
   ; trans         = trans O.trans
   ; compare       = compare O.compare
-  }
-  where module O = IsStrictTotalOrder O
+  } where module O = IsStrictTotalOrder O

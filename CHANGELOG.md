@@ -123,7 +123,7 @@ updated to use the new hierarchy:
   ```
 
 * Minor change: the propositional bundle for left inverses in `Function.Bundles`
-  has been renamed from `_↞_` to `_↩_` in order to make room for the new package
+  has been renamed from `_↞_` to `_↩_` in order to make room for the new bundle
   for right inverse `_↪_`.
 
 ### Re-implementation of `Data.Bin`
@@ -136,6 +136,47 @@ updated to use the new hierarchy:
 
 * The existing modules `Data.Bin` and `Data.Bin.Properties` still exist but have been
   deprecated and may be removed in some future release of the library.
+
+### Addition of the `Reflects` idiom
+
+* A version of the `Reflects` idiom, as seen in SSReflect, has been introduced
+in `Relation.Nullary`. Some properties of it have been added in
+`Relation.Nullary.Reflects`. The definition is as follows
+  ```agda
+  data Reflects {p} (P : Set p) : Bool → Set p where
+    ofʸ : ( p :   P) → Reflects P true
+    ofⁿ : (¬p : ¬ P) → Reflects P false
+  ```
+
+* `Dec` has been redefined in terms of `Reflects`.
+  ```agda
+  record Dec {p} (P : Set p) : Set p where
+    constructor _because_
+    field
+      does : Bool
+      proof : Reflects P does
+
+  open Dec public
+
+  pattern yes p =  true because ofʸ  p
+  pattern no ¬p = false because ofⁿ ¬p
+  ```
+This change should be backwards compatible thanks to the pattern synonyms.
+However, decision procedures can now be built in such a way that a boolean
+result is given independently of the proof that it is the correct decision.
+See, for example, this proof of decidability of _≤_ on natural numbers.
+  ```agda
+  _≤?_ : (m n : ℕ) → Dec (m ≤ n)
+  zero  ≤?    n = yes z≤n
+  suc m ≤? zero = no λ ()
+  does  (suc m ≤? suc n) = does (m ≤? n)
+  proof (suc m ≤? suc n) with m ≤? n
+  ... | yes p = ofʸ (s≤s p)
+  ... | no ¬p = ofⁿ (¬p ∘ ≤-pred)
+  ```
+Notice that if we project the `does` field, we get a function which behaves
+identically to what we would expect of a boolean test. This can have
+advantages for both performance and reasoning.
 
 ### Other breaking changes
 
@@ -177,8 +218,10 @@ New modules
 -----------
 The following new modules have been added to the library:
   ```
-  Algebra.Morphism.RawMagma
-  Algebra.Morphism.RawMonoid
+  Algebra.Morphism.Definitions
+  Algebra.Morphism.Structures
+  Algebra.Morphism.MagmaMonomorphism
+  Algebra.Morphism.MonoidMonomorphism
 
   Algebra.Properties.Semigroup
   Algebra.Properties.CommutativeSemigroup
@@ -208,6 +251,9 @@ The following new modules have been added to the library:
   Data.List.Kleene.AsList
   Data.List.Kleene.Base
 
+  Data.List.Relation.Unary.AllNeighbours
+  Data.List.Relation.Unary.AllNeighbours.Properties
+
   Data.List.Relation.Binary.Sublist.Propositional.Disjoint
 
   Data.Rational.Unnormalised
@@ -222,8 +268,8 @@ The following new modules have been added to the library:
   Data.Vec.Functional.Relation.Unary.All
   Data.Vec.Functional.Relation.Unary.Any
 
+  Function.Bundles
   Function.Definitions
-  Function.Packages
   Function.Structures
 
   Foreign.Haskell.Coerce
@@ -234,8 +280,12 @@ The following new modules have been added to the library:
   Relation.Binary.Reasoning.PartialSetoid
 
   Relation.Binary.Morphism
-  Relation.Binary.Morphism.RawOrder
-  Relation.Binary.Morphism.RawRelation
+  Relation.Binary.Morphism.Definitions
+  Relation.Binary.Morphism.Structures
+  Relation.Binary.Morphism.RelMonomorphism
+  Relation.Binary.Morphism.OrderMonomorphism
+
+  Relation.Nullary.Reflects
   ```
 
 Relocated modules
@@ -305,6 +355,16 @@ attached to all deprecated names to discourage their use.
 Other minor additions
 ---------------------
 
+* Added new definition to `Algebra.Structures`:
+  ```agda
+  record IsCommutativeSemigroup (∙ : Op₂ A) : Set (a ⊔ ℓ)
+  ```
+
+* Added new definition to `Algebra.Bundles`:
+  ```agda
+  record CommutativeSemigroup c ℓ : Set (suc (c ⊔ ℓ))
+  ```
+
 * Added new bundles to `Data.Char.Properties`:
   ```agda
   <-isStrictPartialOrder-≈ : IsStrictPartialOrder _≈_ _<_
@@ -322,6 +382,11 @@ Other minor additions
 * Added new proof to `Data.Integer.Properties`:
   ```agda
   *-suc : m * sucℤ n ≡ m + m * n
+
+  +-isCommutativeSemigroup : IsCommutativeSemigroup _+_
+  *-isCommutativeSemigroup : IsCommutativeSemigroup _*_
+  +-commutativeSemigroup   : CommutativeSemigroup 0ℓ 0ℓ
+  *-commutativeSemigroup   : CommutativeSemigroup 0ℓ 0ℓ
   ```
 
 * Added to `Data.List` the reverse-append function `_ʳ++_`
@@ -418,6 +483,9 @@ Other minor additions
   m≤n+∣n-m∣      : m ≤ n + ∣ n - m ∣
   m≤n+∣m-n∣      : m ≤ n + ∣ m - n ∣
   m≤∣m-n∣+n      : m ≤ ∣ m - n ∣ + n
+
+  +-isCommutativeSemigroup : IsCommutativeSemigroup _+_
+  +-commutativeSemigroup   : CommutativeSemigroup 0ℓ 0ℓ
   ```
 
 * Added new bundles to `Data.String.Properties`:
@@ -453,7 +521,7 @@ Other minor additions
       trans : Transitive _≈_
   ```
 
-* Added new definition to `Relation.Binary.Packages`:
+* Added new definition to `Relation.Binary.Bundles`:
   ```agda
   record PartialSetoid a ℓ : Set (suc (a ⊔ ℓ)) where
     field
@@ -566,6 +634,14 @@ Other minor additions
 * Added new definitions to `Data.List.Relation.Unary.AllPairs`:
   ```agda
   uncons : AllPairs R (x ∷ xs) → All (R x) xs × AllPairs R xs
+  ```
+
+* Added new proofs to `Data.List.Properties`:
+  ```agda
+  filter-accept : P x → filter P? (x ∷ xs) ≡ x ∷ (filter P? xs)
+  filter-reject : ¬ P x → filter P? (x ∷ xs) ≡ filter P? xs
+  filter-idem   : filter P? ∘ filter P? ≗ filter P?
+  filter-++     : filter P? (xs ++ ys) ≡ filter P? xs ++ filter P? ys
   ```
 
 * Added new definitions to `Data.These.Properties`:

@@ -155,7 +155,7 @@ isDecTotalOrder latt sel _≟_ = record
   }
 
 ------------------------------------------------------------------------
--- Packages
+-- Bundles
 
 preorder : IsBand _∙_ → Preorder a ℓ ℓ
 preorder band = record
