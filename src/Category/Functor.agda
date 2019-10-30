@@ -15,7 +15,7 @@ open import Level
 
 open import Relation.Binary.PropositionalEquality
 
-record RawFunctor {ℓ} (F : Set ℓ → Set ℓ) : Set (suc ℓ) where
+record RawFunctor {ℓ ℓ′} (F : Set ℓ → Set ℓ′) : Set (suc ℓ ⊔ ℓ′) where
   infixl 4 _<$>_ _<$_
   infixl 1 _<&>_
 
@@ -31,9 +31,9 @@ record RawFunctor {ℓ} (F : Set ℓ → Set ℓ) : Set (suc ℓ) where
 -- A functor morphism from F₁ to F₂ is an operation op such that
 -- op (F₁ f x) ≡ F₂ f (op x)
 
-record Morphism {ℓ} {F₁ F₂ : Set ℓ → Set ℓ}
+record Morphism {ℓ ℓ′ ℓ″} {F₁ : Set ℓ → Set ℓ′} {F₂ : Set ℓ → Set ℓ″}
                 (fun₁ : RawFunctor F₁)
-                (fun₂ : RawFunctor F₂) : Set (suc ℓ) where
+                (fun₂ : RawFunctor F₂) : Set ((suc ℓ) ⊔ (ℓ′ ⊔ ℓ″)) where
   open RawFunctor
   field
     op     : ∀{X} → F₁ X → F₂ X
