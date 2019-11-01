@@ -130,11 +130,11 @@ module _ {P : A → Set p} where
               ∀ {xs} (¬∀ : ¬ All P xs) → Any¬→¬All (¬All⇒Any¬ dec xs ¬∀) ≡ ¬∀
     to∘from ext ¬∀ = ext (⊥-elim ∘ ¬∀)
 
-module _ {_~_ : REL (List A) B ℓ} where
+module _ {_~_ : REL A B ℓ} where
 
-  All-swap : ∀ {xss ys} →
-             All (λ xs → All (xs ~_) ys) xss →
-             All (λ y → All (_~ y) xss) ys
+  All-swap : ∀ {xs ys} →
+             All (λ x → All (x ~_) ys) xs →
+             All (λ y → All (_~ y) xs) ys
   All-swap {ys = []}     _   = []
   All-swap {ys = y ∷ ys} []  = All.universal (λ _ → []) (y ∷ ys)
   All-swap {ys = y ∷ ys} ((x~y ∷ x~ys) ∷ pxss) =
