@@ -23,15 +23,6 @@ open import Algebra.Properties.Group group public
 ------------------------------------------------------------------------
 -- Properties of abelian groups
 
-private
-  lemma₂ : ∀ x y → x ∙ (y ∙ (x ∙ y) ⁻¹ ∙ y ⁻¹) ≈ y ⁻¹
-  lemma₂ x y = begin
-    x ∙ (y ∙ (x ∙ y) ⁻¹ ∙ y ⁻¹)  ≈˘⟨ assoc _ _ _ ⟩
-    x ∙ (y ∙ (x ∙ y) ⁻¹) ∙ y ⁻¹  ≈˘⟨ ∙-congʳ $ assoc _ _ _ ⟩
-    x ∙ y ∙ (x ∙ y) ⁻¹ ∙ y ⁻¹    ≈⟨  ∙-congʳ $ inverseʳ _ ⟩
-    ε ∙ y ⁻¹                     ≈⟨  identityˡ _ ⟩
-    y ⁻¹                         ∎
-
 xyx⁻¹≈y : ∀ x y → x ∙ y ∙ x ⁻¹ ≈ y
 xyx⁻¹≈y x y = begin
   x ∙ y ∙ x ⁻¹    ≈⟨ ∙-congʳ $ comm _ _ ⟩
@@ -42,8 +33,6 @@ xyx⁻¹≈y x y = begin
 
 ⁻¹-∙-comm : ∀ x y → x ⁻¹ ∙ y ⁻¹ ≈ (x ∙ y) ⁻¹
 ⁻¹-∙-comm x y = begin
-  x ⁻¹ ∙ y ⁻¹                         ≈⟨  comm _ _ ⟩
-  y ⁻¹ ∙ x ⁻¹                         ≈˘⟨ ∙-congʳ $ lemma₂ x y ⟩
-  x ∙ (y ∙ (x ∙ y) ⁻¹ ∙ y ⁻¹) ∙ x ⁻¹  ≈⟨  xyx⁻¹≈y x _ ⟩
-  y ∙ (x ∙ y) ⁻¹ ∙ y ⁻¹               ≈⟨  xyx⁻¹≈y y _ ⟩
-  (x ∙ y) ⁻¹                          ∎
+  x ⁻¹ ∙ y ⁻¹ ≈˘⟨ ⁻¹-anti-homo y x ⟩
+  (y ∙ x) ⁻¹  ≈⟨ ⁻¹-cong $ comm y x ⟩
+  (x ∙ y) ⁻¹  ∎

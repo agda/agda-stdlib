@@ -62,6 +62,21 @@ private
   x ⁻¹ ⁻¹ ∙ (x ⁻¹ ∙ x) ≈˘⟨ right-helper (x ⁻¹) x ⟩
   x                    ∎
 
+⁻¹-injective : ∀ {x y} → x ⁻¹ ≈ y ⁻¹ → x ≈ y
+⁻¹-injective {x} {y} eq = ∙-cancelʳ x y ( begin
+  x ∙ x ⁻¹ ≈⟨ inverseʳ x ⟩
+  ε        ≈˘⟨ inverseʳ y ⟩
+  y ∙ y ⁻¹ ≈˘⟨ ∙-congˡ eq ⟩
+  y ∙ x ⁻¹ ∎ )
+
+⁻¹-anti-homo : ∀ x y → (x ∙ y) ⁻¹ ≈ y ⁻¹ ∙ x ⁻¹
+⁻¹-anti-homo x y = ∙-cancelˡ _ ( begin
+  x ∙ y ∙ (x ∙ y) ⁻¹    ≈⟨ inverseʳ _ ⟩
+  ε                     ≈˘⟨ inverseʳ _ ⟩
+  x ∙ x ⁻¹              ≈⟨ ∙-congʳ (left-helper x y) ⟩
+  (x ∙ y) ∙ y ⁻¹ ∙ x ⁻¹ ≈⟨ assoc (x ∙ y) (y ⁻¹) (x ⁻¹) ⟩
+  x ∙ y ∙ (y ⁻¹ ∙ x ⁻¹) ∎ )
+
 identityˡ-unique : ∀ x y → x ∙ y ≈ y → x ≈ ε
 identityˡ-unique x y eq = begin
   x              ≈⟨ left-helper x y ⟩
