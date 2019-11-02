@@ -26,6 +26,8 @@ open AbelianGroupProperties +-abelianGroup public
   ; ∙-cancelʳ        to +-cancelʳ
   ; ∙-cancel         to +-cancel
   ; ⁻¹-involutive    to -‿involutive
+  ; ⁻¹-injective     to -‿injective
+  ; ⁻¹-anti-homo     to -‿anti-homo
   ; identityˡ-unique to +-identityˡ-unique
   ; identityʳ-unique to +-identityʳ-unique
   ; identity-unique  to +-identity-unique
