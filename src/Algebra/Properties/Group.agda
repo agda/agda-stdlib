@@ -22,40 +22,6 @@ open import Data.Product
   ε ⁻¹ ∙ ε  ≈⟨ inverseˡ ε ⟩
   ε         ∎
 
-∙-cancelˡ : LeftCancellative _∙_
-∙-cancelˡ x {y} {z} eq = begin
-  y               ≈⟨ sym $ identityˡ y ⟩
-  ε ∙ y           ≈⟨ sym $ ∙-congʳ $ inverseˡ x ⟩
-  (x ⁻¹ ∙ x) ∙ y  ≈⟨ assoc (x ⁻¹) x y ⟩
-  x ⁻¹ ∙ (x ∙ y)  ≈⟨ ∙-congˡ eq ⟩
-  x ⁻¹ ∙ (x ∙ z)  ≈⟨ sym $ assoc (x ⁻¹) x z ⟩
-  (x ⁻¹ ∙ x) ∙ z  ≈⟨ ∙-congʳ $ inverseˡ x ⟩
-  ε ∙ z           ≈⟨ identityˡ z ⟩
-  z               ∎
-
-∙-cancelʳ : RightCancellative _∙_
-∙-cancelʳ {x} y z eq = begin
-  y               ≈⟨ sym $ identityʳ y ⟩
-  y ∙ ε           ≈⟨ sym $ ∙-congˡ $ inverseʳ x ⟩
-  y ∙ (x ∙ x ⁻¹)  ≈⟨ sym $ assoc y x (x ⁻¹) ⟩
-  (y ∙ x) ∙ x ⁻¹  ≈⟨ ∙-congʳ eq ⟩
-  (z ∙ x) ∙ x ⁻¹  ≈⟨ assoc z x (x ⁻¹) ⟩
-  z ∙ (x ∙ x ⁻¹)  ≈⟨ ∙-congˡ $ inverseʳ x ⟩
-  z ∙ ε           ≈⟨ identityʳ z ⟩
-  z               ∎
-
-∙-cancel : Cancellative _∙_
-∙-cancel = ∙-cancelˡ , ∙-cancelʳ
-
-⁻¹-involutive : ∀ x → x ⁻¹ ⁻¹ ≈ x
-⁻¹-involutive x = begin
-  x ⁻¹ ⁻¹               ≈⟨ sym $ identityʳ _ ⟩
-  x ⁻¹ ⁻¹ ∙ ε           ≈⟨ ∙-congˡ $ sym (inverseˡ _) ⟩
-  x ⁻¹ ⁻¹ ∙ (x ⁻¹ ∙ x)  ≈⟨ sym $ assoc _ _ _ ⟩
-  x ⁻¹ ⁻¹ ∙ x ⁻¹ ∙ x    ≈⟨ ∙-congʳ $ inverseˡ _ ⟩
-  ε ∙ x                 ≈⟨ identityˡ _ ⟩
-  x                     ∎
-
 private
 
   left-helper : ∀ x y → x ≈ (x ∙ y) ∙ y ⁻¹
@@ -71,6 +37,30 @@ private
     ε          ∙ y ≈⟨ ∙-congʳ $ sym (inverseˡ x) ⟩
     (x ⁻¹ ∙ x) ∙ y ≈⟨ assoc (x ⁻¹) x y ⟩
     x ⁻¹ ∙ (x ∙ y) ∎
+
+∙-cancelˡ : LeftCancellative _∙_
+∙-cancelˡ x {y} {z} eq = begin
+              y  ≈⟨ right-helper x y ⟩
+  x ⁻¹ ∙ (x ∙ y) ≈⟨ ∙-congˡ eq ⟩
+  x ⁻¹ ∙ (x ∙ z) ≈˘⟨ right-helper x z ⟩
+              z  ∎
+
+∙-cancelʳ : RightCancellative _∙_
+∙-cancelʳ {x} y z eq = begin
+  y            ≈⟨ left-helper y x ⟩
+  y ∙ x ∙ x ⁻¹ ≈⟨ ∙-congʳ eq ⟩
+  z ∙ x ∙ x ⁻¹ ≈˘⟨ left-helper z x ⟩
+  z            ∎
+
+∙-cancel : Cancellative _∙_
+∙-cancel = ∙-cancelˡ , ∙-cancelʳ
+
+⁻¹-involutive : ∀ x → x ⁻¹ ⁻¹ ≈ x
+⁻¹-involutive x = begin
+  x ⁻¹ ⁻¹              ≈˘⟨ identityʳ _ ⟩
+  x ⁻¹ ⁻¹ ∙ ε          ≈˘⟨ ∙-congˡ $ inverseˡ _ ⟩
+  x ⁻¹ ⁻¹ ∙ (x ⁻¹ ∙ x) ≈˘⟨ right-helper (x ⁻¹) x ⟩
+  x                    ∎
 
 identityˡ-unique : ∀ x y → x ∙ y ≈ y → x ≈ ε
 identityˡ-unique x y eq = begin
