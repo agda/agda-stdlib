@@ -1,15 +1,14 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Packages for homogeneous binary relations
+-- Bundles for homogeneous binary relations
 ------------------------------------------------------------------------
 
--- Note that the definitions in this file are all re-exported by
--- `Relation.Binary`.
+-- The contents of this module should be accessed via `Relation.Binary`.
 
 {-# OPTIONS --without-K --safe #-}
 
-module Relation.Binary.Packages where
+module Relation.Binary.Bundles where
 
 open import Level
 open import Relation.Nullary using (¬_)

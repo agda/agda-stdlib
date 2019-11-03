@@ -4,8 +4,7 @@
 -- Structures for homogeneous binary relations
 ------------------------------------------------------------------------
 
--- Note that the definitions in this file are all re-exported by
--- `Relation.Binary`.
+-- The contents of this module should be accessed via `Relation.Binary`.
 
 {-# OPTIONS --without-K --safe #-}
 
@@ -167,7 +166,8 @@ record IsDecStrictPartialOrder (_<_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂)
 
   private
     module SPO = IsStrictPartialOrder isStrictPartialOrder
-    open SPO hiding (module Eq)
+
+  open SPO public hiding (module Eq)
 
   module Eq where
 
@@ -246,6 +246,13 @@ record IsStrictTotalOrder (_<_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) wher
     ; irrefl        = tri⟶irr compare
     ; trans         = trans
     ; <-resp-≈      = trans∧tri⟶resp≈ Eq.sym Eq.trans trans compare
+    }
+
+  isDecStrictPartialOrder : IsDecStrictPartialOrder _<_
+  isDecStrictPartialOrder = record
+    { isStrictPartialOrder = isStrictPartialOrder
+    ; _≟_                  = _≟_
+    ; _<?_                 = _<?_
     }
 
   open IsStrictPartialOrder isStrictPartialOrder public

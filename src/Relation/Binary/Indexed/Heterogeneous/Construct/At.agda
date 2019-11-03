@@ -38,7 +38,7 @@ module _ {a i} {I : Set i} {A : I → Set a} where
     where module O = IsIndexedPreorder isPreorder
 
 ------------------------------------------------------------------------
--- Packages
+-- Bundles
 
 module _ {a i} {I : Set i} where
 

@@ -11,7 +11,8 @@ open import Relation.Binary
 module Algebra.Construct.NaturalChoice.Max
   {a ℓ₁ ℓ₂} (totalOrder : TotalOrder a ℓ₁ ℓ₂) where
 
-open import Algebra.FunctionProperties
+open import Algebra.Core
+open import Algebra.Definitions
 open import Relation.Binary.Construct.Converse using ()
   renaming (totalOrder to flip)
 

@@ -18,13 +18,15 @@ open import Data.Nat
   using (ℕ; zero; z≤n; s≤s)
   renaming (suc to 1+_; _+_ to _+ℕ_; _*_ to _*ℕ_; _≤_ to _≤ℕ_)
 import Data.Nat.Properties as ℕₚ
-open import Data.Product using (proj₁; proj₂)
+open import Data.Product using (proj₁; proj₂; uncurry)
 open import Function using (_∘_)
 open import Relation.Binary
 open import Relation.Binary.Consequences
 open import Relation.Binary.PropositionalEquality
-  using (_≡_; _≢_; refl; sym; isEquivalence; resp₂; decSetoid)
+  using (_≡_; _≢_; refl; sym; isEquivalence; resp₂; decSetoid; cong; cong₂)
 open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Decidable using (map′)
+open import Relation.Nullary.Product using (_×-dec_)
 
 ------------------------------------------------------------------------
 -- (Bin, _≡_) is a decidable setoid
@@ -38,18 +40,14 @@ _≟ₑ_ : ∀ {base} → Decidable (_≡_ {A = Expansion base})
 _≟ₑ_ []       []       = yes refl
 _≟ₑ_ []       (_ ∷ _)  = no λ()
 _≟ₑ_ (_ ∷ _) []        = no λ()
-_≟ₑ_ (x ∷ xs) (y ∷ ys) with x Fin.≟ y | xs ≟ₑ ys
-... | _        | no xs≢ys = no (xs≢ys ∘ proj₂ ∘ ∷-injective)
-... | no  x≢y  | _        = no (x≢y   ∘ proj₁ ∘ ∷-injective)
-... | yes refl | yes refl = yes refl
+_≟ₑ_ (x ∷ xs) (y ∷ ys) =
+  map′ (uncurry (cong₂ _∷_)) ∷-injective (x Fin.≟ y ×-dec xs ≟ₑ ys)
 
 _≟_ : Decidable {A = Bin} _≡_
 0#    ≟ 0#    = yes refl
 0#    ≟ bs 1# = no λ()
 as 1# ≟ 0#    = no λ()
-as 1# ≟ bs 1# with as ≟ₑ bs
-... | yes refl  = yes refl
-... | no  as≢bs = no (as≢bs ∘ 1#-injective)
+as 1# ≟ bs 1# = map′ (cong _1#) 1#-injective (as ≟ₑ bs)
 
 ≡-isDecEquivalence : IsDecEquivalence _≡_
 ≡-isDecEquivalence = record

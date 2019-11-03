@@ -13,7 +13,7 @@ module Relation.Binary.Properties.BoundedMeetSemilattice
 
 open BoundedMeetSemilattice M
 
-import Algebra.FunctionProperties as P; open P _≈_
+open import Algebra.Definitions _≈_
 open import Data.Product
 open import Function using (_∘_; flip)
 open import Relation.Binary

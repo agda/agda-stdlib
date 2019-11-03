@@ -23,7 +23,7 @@ import Relation.Binary.Reasoning.Base.Triple as InequalityReasoning
 open import Relation.Nullary using (Dec; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 open import Algebra.FunctionProperties {A = ℕᵇ} _≡_
-open import Algebra.Properties.CommutativeSemigroup +-semigroup +-comm
+open import Algebra.Properties.CommutativeSemigroup +-commSemigroup
      using (xy∙z≈y∙xz; x∙yz≈y∙xz; xy∙zu≈xz∙yu)
 
 private

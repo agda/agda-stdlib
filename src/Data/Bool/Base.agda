@@ -11,7 +11,6 @@ module Data.Bool.Base where
 open import Data.Unit.Base using (⊤)
 open import Data.Empty
 open import Level using (Level)
-open import Relation.Nullary
 
 private
   variable
