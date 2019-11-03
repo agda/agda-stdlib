@@ -17,6 +17,9 @@ Bug-fixes
   - `IsStrictTotalOrder` now exports `isDecStrictPartialOrder`
   - `IsDecStrictPartialOrder` now re-exports the contents of `IsStrictPartialOrder`.
 
+* In `Algebra` the bundle `RawRing` now contains an equality relation to
+  make it consistent with the othor `Raw` bundles.
+
 Non-backwards compatible changes
 --------------------------------
 
