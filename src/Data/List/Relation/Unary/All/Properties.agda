@@ -137,9 +137,9 @@ module _ {_~_ : REL A B ℓ} where
              All (λ y → All (_~ y) xs) ys
   All-swap {ys = []}     _   = []
   All-swap {ys = y ∷ ys} []  = All.universal (λ _ → []) (y ∷ ys)
-  All-swap {ys = y ∷ ys} ((x~y ∷ x~ys) ∷ pxss) =
-    (x~y ∷ (All.map All.head pxss)) ∷
-    All-swap (x~ys ∷ (All.map All.tail pxss))
+  All-swap {ys = y ∷ ys} ((x~y ∷ x~ys) ∷ pxs) =
+    (x~y ∷ (All.map All.head pxs)) ∷
+    All-swap (x~ys ∷ (All.map All.tail pxs))
 
 ------------------------------------------------------------------------
 -- Defining properties of lookup and _[_]=_
