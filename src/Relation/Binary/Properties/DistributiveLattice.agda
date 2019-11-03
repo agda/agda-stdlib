@@ -13,7 +13,7 @@ module Relation.Binary.Properties.DistributiveLattice
 
 open DistributiveLattice L hiding (refl)
 
-open import Algebra.FunctionProperties _≈_
+open import Algebra.Definitions _≈_
 open import Data.Product using (_,_)
 open import Relation.Binary
 open import Relation.Binary.Reasoning.Setoid setoid

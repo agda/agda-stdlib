@@ -17,7 +17,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra
+open import Algebra.Bundles
 open import Algebra.Solver.Ring.AlmostCommutativeRing
 open import Relation.Binary.Definitions using (WeaklyDecidable)
 
@@ -29,11 +29,12 @@ module Algebra.Solver.Ring
   (_coeff≟_ : WeaklyDecidable (Induced-equivalence morphism))
   where
 
+open import Algebra.Core
 open import Algebra.Solver.Ring.Lemmas Coeff R morphism
 private module C = RawRing Coeff
 open AlmostCommutativeRing R
   renaming (zero to *-zero; zeroˡ to *-zeroˡ; zeroʳ to *-zeroʳ)
-open import Algebra.FunctionProperties _≈_
+open import Algebra.Definitions _≈_
 open import Algebra.Morphism
 open _-Raw-AlmostCommutative⟶_ morphism renaming (⟦_⟧ to ⟦_⟧′)
 open import Algebra.Operations.Semiring semiring

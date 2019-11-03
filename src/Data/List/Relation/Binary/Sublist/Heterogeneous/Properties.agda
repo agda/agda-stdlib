@@ -488,16 +488,13 @@ module Disjointness {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   -- Present in both sublists: not disjoint.
   ⊆-disjoint? (x≈z ∷ τ₁) (y≈z ∷ τ₂) = no λ()
   -- Present in either sublist: ok.
-  ⊆-disjoint? (y ∷ʳ τ₁) (x≈y ∷ τ₂) with ⊆-disjoint? τ₁ τ₂
-  ... | yes d = yes (x≈y ∷ᵣ d)
-  ... | no ¬d = no λ{ (_ ∷ᵣ d) → ¬d d }
-  ⊆-disjoint? (x≈y ∷ τ₁) (y ∷ʳ τ₂) with ⊆-disjoint? τ₁ τ₂
-  ... | yes d = yes (x≈y ∷ₗ d)
-  ... | no ¬d = no λ{ (_ ∷ₗ d) → ¬d d }
+  ⊆-disjoint? (y ∷ʳ τ₁) (x≈y ∷ τ₂) =
+    Dec.map′ (x≈y ∷ᵣ_) (λ{ (_ ∷ᵣ d) → d }) (⊆-disjoint? τ₁ τ₂)
+  ⊆-disjoint? (x≈y ∷ τ₁) (y ∷ʳ τ₂) =
+    Dec.map′ (x≈y ∷ₗ_) (λ{ (_ ∷ₗ d) → d }) (⊆-disjoint? τ₁ τ₂)
   -- Present in neither sublist: ok.
-  ⊆-disjoint? (y ∷ʳ τ₁) (.y ∷ʳ τ₂) with ⊆-disjoint? τ₁ τ₂
-  ... | yes d = yes (y ∷ₙ d)
-  ... | no ¬d = no λ{ (_ ∷ₙ d) → ¬d d }
+  ⊆-disjoint? (y ∷ʳ τ₁) (.y ∷ʳ τ₂) =
+    Dec.map′ (y ∷ₙ_) (λ{ (_ ∷ₙ d) → d }) (⊆-disjoint? τ₁ τ₂)
 
   -- Disjoint is proof-irrelevant
 

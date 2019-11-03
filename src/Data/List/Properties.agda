@@ -11,9 +11,9 @@
 
 module Data.List.Properties where
 
-open import Algebra
+open import Algebra.Bundles
 import Algebra.Structures as Structures
-import Algebra.FunctionProperties as FunctionProperties
+import Algebra.Definitions as Definitions
 open import Data.Bool.Base using (Bool; false; true; not; if_then_else_)
 open import Data.Fin using (Fin; zero; suc; cast; toℕ)
 open import Data.List as List
@@ -30,10 +30,11 @@ open import Level using (Level)
 import Relation.Binary as B
 import Relation.Binary.Reasoning.Setoid as EqR
 open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; _≢_; _≗_; refl ; sym ; cong)
+  using (_≡_; _≢_; _≗_; refl ; sym ; cong; cong₂; inspect)
 open import Relation.Nullary using (¬_; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Nullary.Decidable using (isYes)
+open import Relation.Nullary.Decidable using (isYes; map′)
+open import Relation.Nullary.Product using (_×-dec_)
 open import Relation.Unary using (Pred; Decidable; ∁)
 open import Relation.Unary.Properties using (∁?)
 
@@ -60,14 +61,14 @@ module _ {x y : A} {xs ys : List A} where
   ∷-injectiveʳ : x ∷ xs ≡ y List.∷ ys → xs ≡ ys
   ∷-injectiveʳ refl = refl
 
-≡-dec : B.Decidable _≡_ → B.Decidable {A = List A} _≡_
-≡-dec _≟_ []       []       = yes refl
-≡-dec _≟_ (x ∷ xs) []       = no λ()
-≡-dec _≟_ []       (y ∷ ys) = no λ()
-≡-dec _≟_ (x ∷ xs) (y ∷ ys) with x ≟ y | ≡-dec _≟_ xs ys
-... | no  x≢y  | _        = no (x≢y   ∘ ∷-injectiveˡ)
-... | yes _    | no xs≢ys = no (xs≢ys ∘ ∷-injectiveʳ)
-... | yes refl | yes refl = yes refl
+module _ (_≟_ : B.Decidable {A = A} _≡_) where
+
+  ≡-dec : B.Decidable {A = List A} _≡_
+  ≡-dec []       []       = yes refl
+  ≡-dec (x ∷ xs) []       = no λ()
+  ≡-dec []       (y ∷ ys) = no λ()
+  ≡-dec (x ∷ xs) (y ∷ ys) =
+    map′ (uncurry (cong₂ _∷_)) ∷-injective (x ≟ y ×-dec ≡-dec xs ys)
 
 ------------------------------------------------------------------------
 -- map
@@ -138,8 +139,8 @@ length-++ (x ∷ xs) = P.cong suc (length-++ xs)
 
 module _ {A : Set a} where
 
-  open FunctionProperties {A = List A} _≡_
-  open Structures         {A = List A} _≡_
+  open Definitions {A = List A} _≡_
+  open Structures  {A = List A} _≡_
 
   ++-assoc : Associative _++_
   ++-assoc []       ys zs = refl
@@ -453,7 +454,7 @@ foldr-∷ʳ f x y (z ∷ ys) = P.cong (f z) (foldr-∷ʳ f x y ys)
 
 module _ {P : Pred A p} {f : A → A → A} where
 
-  open FunctionProperties
+  open Definitions
 
   foldr-forcesᵇ : (∀ x y → P (f x y) → P x × P y) →
                   ∀ e xs → P (foldr f e xs) → All P xs
@@ -709,7 +710,7 @@ module _ {P : Pred A p} (P? : Decidable P) where
 ------------------------------------------------------------------------
 -- filter
 
-module _ {P : A → Set p} (P? : Decidable P) where
+module _ {P : Pred A p} (P? : Decidable P) where
 
   length-filter : ∀ xs → length (filter P? xs) ≤ length xs
   length-filter []       = z≤n
@@ -752,10 +753,32 @@ module _ {P : A → Set p} (P? : Decidable P) where
   ... | no ¬px = contradiction eq (<⇒≢ (s≤s (length-filter xs)))
   ... | yes px = P.cong (x ∷_) (filter-complete (suc-injective eq))
 
+  filter-accept : ∀ {x xs} → P x → filter P? (x ∷ xs) ≡ x ∷ (filter P? xs)
+  filter-accept {x} Px with P? x
+  ... | yes _  = refl
+  ... | no ¬Px = contradiction Px ¬Px
+
+  filter-reject : ∀ {x xs} → ¬ P x → filter P? (x ∷ xs) ≡ filter P? xs
+  filter-reject {x} ¬Px with P? x
+  ... | yes Px = contradiction Px ¬Px
+  ... | no  _  = refl
+
+  filter-idem : filter P? ∘ filter P? ≗ filter P?
+  filter-idem []       = refl
+  filter-idem (x ∷ xs) with P? x | inspect P? x
+  ... | no  _ | _                   = filter-idem xs
+  ... | yes _ | P.[ eq ] rewrite eq = cong (x ∷_) (filter-idem xs)
+
+  filter-++ : ∀ xs ys → filter P? (xs ++ ys) ≡ filter P? xs ++ filter P? ys
+  filter-++ []       ys = refl
+  filter-++ (x ∷ xs) ys with P? x
+  ... | yes _ = cong (x ∷_) (filter-++ xs ys)
+  ... | no  _ = filter-++ xs ys
+
 ------------------------------------------------------------------------
 -- partition
 
-module _ {P : A → Set p} (P? : Decidable P) where
+module _ {P : Pred A p} (P? : Decidable P) where
 
   partition-defn : partition P? ≗ < filter P? , filter (∁? P?) >
   partition-defn []       = refl
@@ -768,7 +791,7 @@ module _ {P : A → Set p} (P? : Decidable P) where
 
 module _ {a} {A : Set a} where
 
-  open FunctionProperties {A = List A} _≡_
+  open Definitions {A = List A} _≡_
   open P.≡-Reasoning
 
   -- Defining property of reverse-append _ʳ++_.

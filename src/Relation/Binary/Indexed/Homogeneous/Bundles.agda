@@ -9,7 +9,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Relation.Binary.Indexed.Homogeneous.Packages where
+module Relation.Binary.Indexed.Homogeneous.Bundles where
 
 open import Data.Product using (_,_)
 open import Function using (_⟨_⟩_)

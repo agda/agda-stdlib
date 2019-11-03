@@ -15,7 +15,7 @@ import Data.Nat.Properties as ℕₚ
 open import Data.Product using (proj₂)
 open import Relation.Nullary using (yes; no)
 open import Relation.Binary.PropositionalEquality
-open import Algebra.FunctionProperties using (Involutive)
+open import Algebra.Definitions using (Involutive)
 open ≡-Reasoning
 
 --------------------------------------------------------------------------------

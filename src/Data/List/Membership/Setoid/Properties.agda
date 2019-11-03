@@ -8,7 +8,7 @@
 
 module Data.List.Membership.Setoid.Properties where
 
-open import Algebra.FunctionProperties using (Op₂; Selective)
+open import Algebra using (Op₂; Selective)
 open import Data.Fin using (Fin; zero; suc)
 open import Data.List
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)

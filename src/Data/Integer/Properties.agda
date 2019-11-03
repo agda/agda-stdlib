@@ -11,7 +11,7 @@
 
 module Data.Integer.Properties where
 
-open import Algebra
+open import Algebra.Bundles
 import Algebra.Morphism as Morphism
 import Algebra.Properties.AbelianGroup
 open import Data.Integer.Base renaming (suc to sucℤ)
@@ -32,7 +32,7 @@ open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 import Relation.Nullary.Decidable as Dec
 
-open import Algebra.FunctionProperties {A = ℤ} _≡_
+open import Algebra.Definitions {A = ℤ} _≡_
 open import Algebra.FunctionProperties.Consequences.Propositional
 open import Algebra.Structures {A = ℤ} _≡_
 module ℤtoℕ = Morphism.Definitions ℤ ℕ _≡_
@@ -143,7 +143,7 @@ _≤?_ : Decidable _≤_
   }
 
 ------------------------------------------------------------------------
--- Packages
+-- Bundles
 
 ≤-preorder : Preorder 0ℓ 0ℓ 0ℓ
 ≤-preorder = record
@@ -272,7 +272,7 @@ _<?_ : Decidable _<_
   }
 
 ------------------------------------------------------------------------
--- Packages
+-- Bundles
 
 <-strictPartialOrder : StrictPartialOrder 0ℓ 0ℓ 0ℓ
 <-strictPartialOrder = record
@@ -650,6 +650,12 @@ distribʳ-⊖-+-neg a b c = begin
   ; assoc   = +-assoc
   }
 
++-isCommutativeSemigroup : IsCommutativeSemigroup _+_
++-isCommutativeSemigroup = record
+  { isSemigroup = +-isSemigroup
+  ; comm        = +-comm
+  }
+
 +-0-isMonoid : IsMonoid _+_ +0
 +-0-isMonoid = record
   { isSemigroup = +-isSemigroup
@@ -677,7 +683,7 @@ distribʳ-⊖-+-neg a b c = begin
   }
 
 ------------------------------------------------------------------------
--- Packages
+-- Bundles
 
 +-magma : Magma 0ℓ 0ℓ
 +-magma = record
@@ -687,6 +693,11 @@ distribʳ-⊖-+-neg a b c = begin
 +-semigroup : Semigroup 0ℓ 0ℓ
 +-semigroup = record
   { isSemigroup = +-isSemigroup
+  }
+
++-commutativeSemigroup : CommutativeSemigroup 0ℓ 0ℓ
++-commutativeSemigroup = record
+  { isCommutativeSemigroup = +-isCommutativeSemigroup
   }
 
 +-0-monoid : Monoid 0ℓ 0ℓ
@@ -1171,6 +1182,12 @@ private
   ; assoc   = *-assoc
   }
 
+*-isCommutativeSemigroup : IsCommutativeSemigroup _*_
+*-isCommutativeSemigroup = record
+  { isSemigroup = *-isSemigroup
+  ; comm        = *-comm
+  }
+
 *-1-isMonoid : IsMonoid _*_ (+ 1)
 *-1-isMonoid = record
   { isSemigroup = *-isSemigroup
@@ -1206,7 +1223,7 @@ private
   }
 
 ------------------------------------------------------------------------
--- Packages
+-- Bundles
 
 *-magma : Magma 0ℓ 0ℓ
 *-magma = record
@@ -1216,6 +1233,11 @@ private
 *-semigroup : Semigroup 0ℓ 0ℓ
 *-semigroup = record
   { isSemigroup = *-isSemigroup
+  }
+
+*-commutativeSemigroup : CommutativeSemigroup 0ℓ 0ℓ
+*-commutativeSemigroup = record
+  { isCommutativeSemigroup = *-isCommutativeSemigroup
   }
 
 *-1-monoid : Monoid 0ℓ 0ℓ

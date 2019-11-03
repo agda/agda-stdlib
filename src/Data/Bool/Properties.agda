@@ -8,7 +8,7 @@
 
 module Data.Bool.Properties where
 
-open import Algebra
+open import Algebra.Bundles
 open import Data.Bool.Base
 open import Data.Empty
 open import Data.Product
@@ -24,7 +24,7 @@ open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable using (True)
 import Relation.Unary as U
 
-open import Algebra.FunctionProperties {A = Bool} _≡_
+open import Algebra.Definitions {A = Bool} _≡_
 open import Algebra.Structures {A = Bool} _≡_
 open ≡-Reasoning
 
@@ -121,7 +121,7 @@ true  ≤? true  = yes b≤b
   ; _≤?_         = _≤?_
   }
 
--- Packages
+-- Bundles
 
 ≤-poset : Poset 0ℓ 0ℓ 0ℓ
 ≤-poset = record
@@ -199,7 +199,7 @@ true  <? _     = no  (λ())
   ; compare       = <-cmp
   }
 
--- Packages
+-- Bundles
 
 <-strictPartialOrder : StrictPartialOrder 0ℓ 0ℓ 0ℓ
 <-strictPartialOrder = record

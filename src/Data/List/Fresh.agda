@@ -12,12 +12,12 @@ module Data.List.Fresh where
 
 open import Level using (Level; _⊔_; Lift)
 open import Data.Unit.Base
-open import Data.Product
+open import Data.Product using (∃; _×_; _,_; -,_; proj₁; proj₂)
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
 open import Data.List.Relation.Unary.AllPairs using (AllPairs; []; _∷_)
 open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
 open import Data.Nat.Base using (ℕ; zero; suc)
-open import Function using (_∘′_; flip)
+open import Function using (_∘′_; flip; id; _on_)
 open import Relation.Nullary      using (yes; no)
 open import Relation.Unary   as U using (Pred)
 open import Relation.Binary  as B using (Rel)
@@ -25,8 +25,9 @@ open import Relation.Nary
 
 private
   variable
-    a p r : Level
+    a b p r s : Level
     A : Set a
+    B : Set b
 
 ------------------------------------------------------------------------
 -- Basic type
@@ -59,6 +60,30 @@ module _ {a} (A : Set a) (R : Rel A r) where
 infix 5 _#_
 _#_ : {R : Rel A r} (a : A) (as : List# A R) → Set r
 _#_ = fresh _ _
+
+------------------------------------------------------------------------
+-- Operations for modifying fresh lists
+
+module _ {R : Rel A r} {S : Rel B s} (f : A → B) (R⇒S : ∀[ R ⇒ (S on f) ]) where
+
+  map   : List# A R → List# B S
+  map-# : ∀ {a} as → a # as → f a # map as
+
+  map []             = []
+  map (cons a as ps) = cons (f a) (map as) (map-# as ps)
+
+  map-# []        _        = _
+  map-# (a ∷# as) (p , ps) = R⇒S p , map-# as ps
+
+module _ {R : Rel B r} (f : A → B) where
+
+  map₁ : List# A (R on f) → List# B R
+  map₁ = map f id
+
+module _ {R : Rel A r} {S : Rel A s} (R⇒S : ∀[ R ⇒ S ]) where
+
+  map₂ : List# A R → List# A S
+  map₂ = map id R⇒S
 
 ------------------------------------------------------------------------
 -- Views

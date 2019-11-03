@@ -14,6 +14,7 @@ open import Algebra
 open import Algebra.Structures
 open import Algebra.FunctionProperties
 import Algebra.Morphism as Morphism
+import Algebra.Morphism.Definitions as MorphismDefinitions
 open import Function
 open import Level
 
@@ -78,7 +79,7 @@ record _-Raw-AlmostCommutative⟶_
   private
     module F = RawRing From
     module T = AlmostCommutativeRing To
-  open Morphism.Definitions F.Carrier T.Carrier T._≈_
+  open MorphismDefinitions F.Carrier T.Carrier T._≈_
   field
     ⟦_⟧    : Morphism
     +-homo : Homomorphic₂ ⟦_⟧ F._+_ T._+_

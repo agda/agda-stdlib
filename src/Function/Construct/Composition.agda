@@ -133,7 +133,7 @@ module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} {≈₃ : Rel C ℓ₃}
     } where module F = IsInverse _ _ f-inv; module G = IsInverse _ _ g-inv
 
 ------------------------------------------------------------------------
--- Setoid packages
+-- Setoid bundles
 
 module _ {R : Setoid a ℓ₁} {S : Setoid b ℓ₂} {T : Setoid c ℓ₃} where
 
@@ -196,7 +196,7 @@ module _ {R : Setoid a ℓ₁} {S : Setoid b ℓ₂} {T : Setoid c ℓ₃} where
     } where module F = Inverse inv₁; module G = Inverse inv₂
 
 ------------------------------------------------------------------------
--- Propositional packages
+-- Propositional bundles
 
 infix 8 _∘-↣_ _∘-↠_ _∘-⤖_ _∘-⇔_ _∘-↩_ _∘-↪_ _∘-↔_
 

@@ -31,6 +31,9 @@ isYes : Dec P → Bool
 isYes (yes _) = true
 isYes (no _)  = false
 
+-- The traditional name for isYes is ⌊_⌋, indicating the stripping of evidence.
+⌊_⌋ = isYes
+
 isNo : Dec P → Bool
 isNo = not ∘ isYes
 
@@ -101,17 +104,9 @@ dec-yes-irr : (p? : Dec P) → Irrelevant P → (p : P) → p? ≡ yes p
 dec-yes-irr p? irr p with dec-yes p? p
 ... | p′ , eq rewrite irr p p′ = eq
 
-
 ------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
+-- Maps
 
--- Version 1.2
-
-⌊_⌋ = isYes
-{-# WARNING_ON_USAGE ⌊_⌋
-"Warning: ⌊_⌋ was deprecated in v1.2.
-Please use isYes instead."
-#-}
+map′ : (P → Q) → (Q → P) → Dec P → Dec Q
+map′ P→Q Q→P (yes p) = yes (P→Q p)
+map′ P→Q Q→P (no ¬p) = no (¬p ∘ Q→P)
