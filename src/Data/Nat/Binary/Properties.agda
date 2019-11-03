@@ -23,6 +23,7 @@ open import Function.Definitions using (Injective)
 open import Function.Definitions.Core2 using (Surjective)
 open import Level using (0ℓ)
 open import Relation.Binary
+open import Relation.Binary.Consequences
 open import Relation.Binary.Morphism
 import Relation.Binary.Morphism.OrderMonomorphism as OrderMonomorphism
 open import Relation.Binary.PropositionalEquality
@@ -273,11 +274,35 @@ private
 <-trans : Transitive _<_
 <-trans = <-Monomorphism.trans ℕₚ.<-trans
 
-<-cmp :  ∀ (x y) → Tri (x < y) (x ≡ y) (x > y)
-<-cmp = <-Monomorphism.compare ℕₚ.<-cmp
+-- Comparisons and decidability are not implemented via the morphism so as
+-- to avoid reverting to linear time for the decision procedures.
+<-cmp : Trichotomous _≡_ _<_
+<-cmp zero     zero      = tri≈ x≮0    refl  x≮0
+<-cmp zero     2[1+ _ ]  = tri< 0<even (λ()) x≮0
+<-cmp zero     1+[2 _ ]  = tri< 0<odd  (λ()) x≮0
+<-cmp 2[1+ _ ] zero      = tri> (λ())  (λ()) 0<even
+<-cmp 2[1+ x ] 2[1+ y ]  with <-cmp x y
+... | tri< x<y _    _   =  tri< lt (<⇒≢ lt) (<⇒≯ lt)  where lt = even<even x<y
+... | tri≈ _   refl _   =  tri≈ (<-irrefl refl) refl (<-irrefl refl)
+... | tri> _   _    x>y =  tri> (>⇒≮ gt) (>⇒≢ gt) gt  where gt = even<even x>y
+<-cmp 2[1+ x ] 1+[2 y ]  with <-cmp x y
+... | tri< x<y _    _ =  tri< lt (<⇒≢ lt) (<⇒≯ lt)  where lt = even<odd x<y
+... | tri≈ _   refl _ =  tri> (>⇒≮ gt) (>⇒≢ gt) gt
+  where
+  gt = subst (_< 2[1+ x ]) refl (1+[2x]<2[1+x] x)
+... | tri> _ _ y<x =  tri> (>⇒≮ gt) (>⇒≢ gt) gt  where gt = odd<even (inj₁ y<x)
+<-cmp 1+[2 _ ] zero =  tri> (>⇒≮ gt) (>⇒≢ gt) gt  where gt = 0<odd
+<-cmp 1+[2 x ] 2[1+ y ]  with <-cmp x y
+... | tri< x<y _ _ =  tri< lt (<⇒≢ lt) (<⇒≯ lt)  where lt = odd<even (inj₁ x<y)
+... | tri≈ _ x≡y _ =  tri< lt (<⇒≢ lt) (<⇒≯ lt)  where lt = odd<even (inj₂ x≡y)
+... | tri> _ _ x>y =  tri> (>⇒≮ gt) (>⇒≢ gt) gt  where gt = even<odd x>y
+<-cmp 1+[2 x ] 1+[2 y ]  with <-cmp x y
+... | tri< x<y _  _   =  tri< lt (<⇒≢ lt) (<⇒≯ lt)  where lt = odd<odd x<y
+... | tri≈ _ refl _   =  tri≈ (≡⇒≮ refl) refl (≡⇒≯ refl)
+... | tri> _ _    x>y =  tri> (>⇒≮ gt) (>⇒≢ gt) gt  where gt = odd<odd x>y
 
 _<?_ : Decidable _<_
-_<?_ = <-Monomorphism.dec ℕₚ._<?_
+_<?_ = tri⟶dec< <-cmp
 
 ------------------------------------------------------------------------------
 -- Structures for _<_
@@ -286,7 +311,11 @@ _<?_ = <-Monomorphism.dec ℕₚ._<?_
 <-isStrictPartialOrder = <-Monomorphism.isStrictPartialOrder ℕₚ.<-isStrictPartialOrder
 
 <-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_
-<-isStrictTotalOrder = <-Monomorphism.isStrictTotalOrder ℕₚ.<-isStrictTotalOrder
+<-isStrictTotalOrder = record
+  { isEquivalence = isEquivalence
+  ; trans         = <-trans
+  ; compare       = <-cmp
+  }
 
 ------------------------------------------------------------------------------
 -- Bundles for _<_
@@ -411,8 +440,14 @@ private
 ≤-total : Total _≤_
 ≤-total = ≤-Monomorphism.total ℕₚ.≤-total
 
+-- Decidability is not implemented via the morphism so as to avoid
+-- reverting to linear time for the decision procedure.
 _≤?_ : Decidable _≤_
-_≤?_ = ≤-Monomorphism.dec ℕₚ._≤?_
+x ≤? y with <-cmp x y
+... | tri< x<y _   _   = yes (<⇒≤ x<y)
+... | tri≈ _   x≡y _   = yes (≤-reflexive x≡y)
+... | tri> _   _   y<x = no (<⇒≱ y<x)
+
 
 ------------------------------------------------------------------------------
 -- Structures
@@ -427,7 +462,11 @@ _≤?_ = ≤-Monomorphism.dec ℕₚ._≤?_
 ≤-isTotalOrder = ≤-Monomorphism.isTotalOrder ℕₚ.≤-isTotalOrder
 
 ≤-isDecTotalOrder : IsDecTotalOrder _≡_ _≤_
-≤-isDecTotalOrder = ≤-Monomorphism.isDecTotalOrder ℕₚ.≤-isDecTotalOrder
+≤-isDecTotalOrder = record
+  { isTotalOrder = ≤-isTotalOrder
+  ; _≟_          = _≟_
+  ; _≤?_         = _≤?_
+  }
 
 ------------------------------------------------------------------------------
 -- Bundles
