@@ -178,6 +178,25 @@ Notice that if we project the `does` field, we get a function which behaves
 identically to what we would expect of a boolean test. This can have
 advantages for both performance and reasoning.
 
+* Functions and lemmas about `Dec` have been rewritten to reflect the changes to
+  its definition.
+  In particular, `map′` and `map` produce their `does` result without any
+  pattern matching, and `isYes` matches only on the `does` field, and not the
+  `proof` field.
+  The change to `map′` and `map` means that `does (map q X?)` is definitionally
+  equal to `does X?`, which is a useful property whenever a computation depends
+  only on the yes/no result.
+  The function `isYes` still exists to be used in conjunction with `toWitness`
+  and similar (in proof automation), but doesn't require evaluation of the
+  `proof` part straight away.
+
+* The rest of the `Relation.Nullary` subtree has been updated to reflect the
+  changes to `Dec`.
+  All of the connective lemmas like `_×-dec_` have a `does` field written in
+  terms of boolean functions like `_∧_`.
+  As well as being less strict than the previous definitions, this should
+  improve readability when only the `does` field is involved.
+
 ### Other breaking changes
 
 #### Harmonizing `List.All` and `Vec` in their role as finite maps.
@@ -657,4 +676,30 @@ Other minor additions
   fromSum :  a ≡ b ⊎ a ~ b  → Refl _~_ a b
   toSum   :  Refl _~_ a b   → a ≡ b ⊎ a ~ b
   ⊎⇔Refl  : (a ≡ b ⊎ a ~ b) ⇔ Refl _~_ a b
+  ```
+
+* Added new definitions to `Relation.Nullary.Decidable`:
+  ```agda
+  dec-true  : (p? : Dec P) →   P → does p? ≡ true
+  dec-false : (p? : Dec P) → ¬ P → does p? ≡ false
+  ```
+
+* Added new definitions to `Relation.Nullary.Implication`:
+  ```agda
+  _→-reflects_ : Reflects P bp → Reflects Q bq → Reflects (P → Q) (not bp ∨ bq)
+  ```
+
+* Added new definitions to `Relation.Nullary.Negation`:
+  ```agda
+  ¬-reflects : Reflects P b → Reflects (¬ P) (not b)
+  ```
+
+* Added new definitions to `Relation.Nullary.Product`:
+  ```agda
+  _×-reflects_ : Reflects P bp → Reflects Q bq → Reflects (P × Q) (bp ∧ bq)
+  ```
+
+* Added new definitions to `Relation.Nullary.Sum`:
+  ```agda
+  _⊎-reflects_ : Reflects P bp → Reflects Q bq → Reflects (P ⊎ Q) (bp ∨ bq)
   ```
