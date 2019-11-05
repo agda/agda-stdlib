@@ -69,8 +69,8 @@ private
   y ∙ y ⁻¹ ≈˘⟨ ∙-congˡ eq ⟩
   y ∙ x ⁻¹ ∎ )
 
-⁻¹-anti-homo : ∀ x y → (x ∙ y) ⁻¹ ≈ y ⁻¹ ∙ x ⁻¹
-⁻¹-anti-homo x y = ∙-cancelˡ _ ( begin
+⁻¹-anti-homo-∙ : ∀ x y → (x ∙ y) ⁻¹ ≈ y ⁻¹ ∙ x ⁻¹
+⁻¹-anti-homo-∙ x y = ∙-cancelˡ _ ( begin
   x ∙ y ∙ (x ∙ y) ⁻¹    ≈⟨ inverseʳ _ ⟩
   ε                     ≈˘⟨ inverseʳ _ ⟩
   x ∙ x ⁻¹              ≈⟨ ∙-congʳ (left-helper x y) ⟩

@@ -367,8 +367,8 @@ Other minor additions
 
 * Added new proofs to `Algebra.Properties.Group`:
   ```agda
-  ⁻¹-injective : x ⁻¹ ≈ y ⁻¹ → x ≈ y
-  ⁻¹-anti-homo : (x ∙ y) ⁻¹ ≈ y ⁻¹ ∙ x ⁻¹
+  ⁻¹-injective   : x ⁻¹ ≈ y ⁻¹ → x ≈ y
+  ⁻¹-anti-homo-∙ : (x ∙ y) ⁻¹ ≈ y ⁻¹ ∙ x ⁻¹
   ```
 
 * Added new bundles to `Data.Char.Properties`:
