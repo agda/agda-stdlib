@@ -467,6 +467,9 @@ Other minor additions
   lookup-injective : lookup τ i ≡ lookup τ j → i ≡ j
   ```
 
+* Generalized type of `Data.List.Relation.Unary.All.Properties.All-swap` to
+  `{xs : List A} {ys : List B} → All (λ x → All (x ~_) ys) xs → All (λ y → All (_~ y) xs) ys`.
+
 * Added new proofs to `Data.Nat.Properties`:
   ```agda
   0≢1+n          : 0 ≢ suc n
