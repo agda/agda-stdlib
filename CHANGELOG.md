@@ -310,6 +310,9 @@ The following new modules have been added to the library:
 Deprecated modules
 ------------------
 
+* The module `Data.Table` and associated submodules have been deprecated
+  in favour of `Data.Vec.Functional`.
+
 * `Data.BoundedVec` and `Data.BoundedVec.Inefficient` have been deprecated
 in favour of `Data.Vec.Bounded` introduced in `v1.1`.
 
