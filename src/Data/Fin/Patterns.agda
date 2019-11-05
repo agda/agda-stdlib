@@ -1,17 +1,25 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Order morphisms
+-- Patterns for Fin
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Relation.Binary.Core
+module Data.Fin.Patterns where
 
-module Relation.Binary.Morphism where
+open import Data.Fin.Base
 
 ------------------------------------------------------------------------
--- Re-export contents of morphisms
+-- Constants
 
-open import Relation.Binary.Morphism.Definitions public
-open import Relation.Binary.Morphism.Structures public
+pattern 0F = zero
+pattern 1F = suc 0F
+pattern 2F = suc 1F
+pattern 3F = suc 2F
+pattern 4F = suc 3F
+pattern 5F = suc 4F
+pattern 6F = suc 5F
+pattern 7F = suc 6F
+pattern 8F = suc 7F
+pattern 9F = suc 8F

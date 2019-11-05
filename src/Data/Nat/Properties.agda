@@ -511,7 +511,7 @@ suc[pred[n]]≡n {suc n} n≢0 = refl
   }
 
 ------------------------------------------------------------------------
--- Bundles
+-- Raw bundles
 
 +-rawMagma : RawMagma 0ℓ 0ℓ
 +-rawMagma = record
@@ -525,6 +525,9 @@ suc[pred[n]]≡n {suc n} n≢0 = refl
   ; _∙_ = _+_
   ; ε   = 0
   }
+
+------------------------------------------------------------------------
+-- Bundles
 
 +-magma : Magma 0ℓ 0ℓ
 +-magma = record

@@ -64,7 +64,7 @@ fromℕ (suc n) = suc (fromℕ n)
 
 -- fromℕ≤ {m} _ = "m".
 
-fromℕ≤ : ∀ {m n} → .(m ℕ.< n) → Fin n
+fromℕ≤ : ∀ {m n} → m ℕ.< n → Fin n
 fromℕ≤ {zero}  {suc n} m≤n = zero
 fromℕ≤ {suc m} {suc n} m≤n = suc (fromℕ≤ (ℕₚ.≤-pred m≤n))
 
@@ -105,7 +105,7 @@ inject₁ : ∀ {m} → Fin m → Fin (suc m)
 inject₁ zero    = zero
 inject₁ (suc i) = suc (inject₁ i)
 
-inject≤ : ∀ {m n} → Fin m → .(m ℕ.≤ n) → Fin n
+inject≤ : ∀ {m n} → Fin m → m ℕ.≤ n → Fin n
 inject≤ {_} {suc n} zero    le = zero
 inject≤ {_} {suc n} (suc i) le = suc (inject≤ i (ℕₚ.≤-pred le))
 
@@ -244,17 +244,3 @@ compare (suc i) (suc j) with compare i j
 ... | less    greatest least = less    (suc greatest) (suc least)
 ... | greater greatest least = greater (suc greatest) (suc least)
 ... | equal   i              = equal   (suc i)
-
-------------------------------------------------------------------------
--- Constants
-
-pattern 0F = zero
-pattern 1F = suc 0F
-pattern 2F = suc 1F
-pattern 3F = suc 2F
-pattern 4F = suc 3F
-pattern 5F = suc 4F
-pattern 6F = suc 5F
-pattern 7F = suc 6F
-pattern 8F = suc 7F
-pattern 9F = suc 8F

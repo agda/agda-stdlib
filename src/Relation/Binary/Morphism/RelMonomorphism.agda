@@ -1,8 +1,11 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Lifting equivalences via injective morphisms
+-- Consequences of a monomorphism between binary relations
 ------------------------------------------------------------------------
+
+-- See Data.Nat.Binary.Properties for examples of how this and similar
+-- modules can be used to easily translate properties between types.
 
 {-# OPTIONS --without-K --safe #-}
 
@@ -10,18 +13,17 @@ open import Function
 open import Relation.Binary
 open import Relation.Binary.Morphism
 
-module Relation.Binary.Morphism.RawRelation
+module Relation.Binary.Morphism.RelMonomorphism
   {a b ℓ₁ ℓ₂} {A : Set a} {B : Set b}
   {_∼₁_ : Rel A ℓ₁} {_∼₂_ : Rel B ℓ₂}
-  {f : A → B} (injective : Injective _∼₁_ _∼₂_ f)
-  (isRawRelationMorphism : IsRawRelationMorphism _∼₁_ _∼₂_ f)
+  {⟦_⟧ : A → B} (isMonomorphism : IsRelMonomorphism _∼₁_ _∼₂_ ⟦_⟧)
   where
 
 open import Data.Sum as Sum
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable
 
-open IsRawRelationMorphism isRawRelationMorphism
+open IsRelMonomorphism isMonomorphism
 
 ------------------------------------------------------------------------
 -- Properties
@@ -36,13 +38,13 @@ trans : Transitive _∼₂_ → Transitive _∼₁_
 trans trans x∼y y∼z = injective (trans (cong x∼y) (cong y∼z))
 
 total : Total _∼₂_ → Total _∼₁_
-total total x y = Sum.map injective injective (total (f x) (f y))
+total total x y = Sum.map injective injective (total ⟦ x ⟧ ⟦ y ⟧)
 
 asym : Asymmetric _∼₂_ → Asymmetric _∼₁_
 asym asym x∼y y∼x = asym (cong x∼y) (cong y∼x)
 
 dec : Decidable _∼₂_ → Decidable _∼₁_
-dec _∼?_ x y = map′ injective cong (f x ∼? f y)
+dec _∼?_ x y = map′ injective cong (⟦ x ⟧ ∼? ⟦ y ⟧)
 
 ------------------------------------------------------------------------
 -- Structures

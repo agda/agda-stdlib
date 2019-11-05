@@ -12,8 +12,8 @@ open import Algebra
 open import Algebra.Solver.Ring.AlmostCommutativeRing
 
 module Algebra.Solver.Ring.Lemmas
-  {r₁ r₂ r₃}
-  (coeff : RawRing r₁)
+  {r₁ r₂ r₃ r₄}
+  (coeff : RawRing r₁ r₄)
   (r : AlmostCommutativeRing r₂ r₃)
   (morphism : coeff -Raw-AlmostCommutative⟶ r)
   where

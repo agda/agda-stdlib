@@ -17,6 +17,9 @@ Bug-fixes
   - `IsStrictTotalOrder` now exports `isDecStrictPartialOrder`
   - `IsDecStrictPartialOrder` now re-exports the contents of `IsStrictPartialOrder`.
 
+* In `Algebra` the bundle `RawRing` now contains an equality relation to
+  make it consistent with the othor `Raw` bundles.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -208,18 +211,36 @@ match the one for `Vec`:
   updateAt-commutes
   ```
 
+#### Removing irrelevance where not strictly necessary
+
+* Version 1.1 in the library added irrelevance to various places in the library.
+  Unfortunately this exposed the library to several irrelevance related bugs.
+  The decision has therefore been taken to roll-back these additions until
+  irrelevance is more stable. In particular it has been removed from the
+  following functions:
+
+* In `Data.Nat.DivMod`: `_%_`, `_/_`, `_div_`, `_mod_`.
+
+* In `Data.Fin.Base`: `fromℕ≤`, `inject≤`.
 
 #### Other
 
 * The proofs `isPreorder` and `preorder` have been moved from the `Setoid`
   record to the module `Relation.Binary.Properties.Setoid`.
 
+* Due to bug #3879 in Agda, the pattern synonyms `0F`, `1F`, ... introduced in
+  version `1.1` in `Data.Fin.Base` have been moved to `Data.Fin.Patterns`.
+  This prevents unavoidable and undesirable case splitting behaviour when
+  splitting on `ℕ` when `Data.Fin` has been imported.
+
 New modules
 -----------
 The following new modules have been added to the library:
   ```
-  Algebra.Morphism.RawMagma
-  Algebra.Morphism.RawMonoid
+  Algebra.Morphism.Definitions
+  Algebra.Morphism.Structures
+  Algebra.Morphism.MagmaMonomorphism
+  Algebra.Morphism.MonoidMonomorphism
 
   Algebra.Properties.Semigroup
   Algebra.Properties.CommutativeSemigroup
@@ -249,6 +270,9 @@ The following new modules have been added to the library:
   Data.List.Kleene.AsList
   Data.List.Kleene.Base
 
+  Data.List.Relation.Unary.AllNeighbours
+  Data.List.Relation.Unary.AllNeighbours.Properties
+
   Data.List.Relation.Binary.Sublist.Propositional.Disjoint
 
   Data.Rational.Unnormalised
@@ -275,17 +299,22 @@ The following new modules have been added to the library:
   Relation.Binary.Reasoning.PartialSetoid
 
   Relation.Binary.Morphism
-  Relation.Binary.Morphism.RawOrder
-  Relation.Binary.Morphism.RawRelation
+  Relation.Binary.Morphism.Definitions
+  Relation.Binary.Morphism.Structures
+  Relation.Binary.Morphism.RelMonomorphism
+  Relation.Binary.Morphism.OrderMonomorphism
 
   Relation.Nullary.Reflects
   ```
 
 Deprecated modules
------------------
+------------------
 
 * The module `Data.Table` and associated submodules have been deprecated
   in favour of `Data.Vec.Functional`.
+
+* `Data.BoundedVec` and `Data.BoundedVec.Inefficient` have been deprecated
+in favour of `Data.Vec.Bounded` introduced in `v1.1`.
 
 Deprecated names
 ----------------
@@ -352,6 +381,11 @@ Other minor additions
 * Added new definition to `Algebra.Bundles`:
   ```agda
   record CommutativeSemigroup c ℓ : Set (suc (c ⊔ ℓ))
+  ```
+
+* The function `tail` in `Codata.Stream` has a new, more general type:
+  ```agda
+  tail : ∀ {i} {j : Size< i} → Stream A i → Stream A j
   ```
 
 * Added new bundles to `Data.Char.Properties`:
@@ -435,6 +469,9 @@ Other minor additions
   Any-resp-⊆-trans : Any-resp-⊆ (⊆-trans τ τ′) ≗ Any-resp-⊆ τ′ ∘ Any-resp-⊆ τ
   lookup-injective : lookup τ i ≡ lookup τ j → i ≡ j
   ```
+
+* Generalized type of `Data.List.Relation.Unary.All.Properties.All-swap` to
+  `{xs : List A} {ys : List B} → All (λ x → All (x ~_) ys) xs → All (λ y → All (_~ y) xs) ys`.
 
 * Added new proofs to `Data.Nat.Properties`:
   ```agda
