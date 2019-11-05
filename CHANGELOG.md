@@ -380,6 +380,11 @@ Other minor additions
   record CommutativeSemigroup c ℓ : Set (suc (c ⊔ ℓ))
   ```
 
+* The function `tail` in `Codata.Stream` has a new, more general type:
+  ```agda
+  tail : ∀ {i} {j : Size< i} → Stream A i → Stream A j
+  ```
+
 * Added new bundles to `Data.Char.Properties`:
   ```agda
   <-isStrictPartialOrder-≈ : IsStrictPartialOrder _≈_ _<_
