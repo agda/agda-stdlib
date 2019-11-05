@@ -15,7 +15,7 @@ import Data.Nat.Properties as ℕₚ
 open import Data.Product using (proj₂)
 open import Relation.Nullary using (yes; no)
 open import Relation.Binary.PropositionalEquality
-open import Algebra.FunctionProperties using (Involutive)
+open import Algebra.Definitions using (Involutive)
 open ≡-Reasoning
 
 --------------------------------------------------------------------------------
@@ -53,7 +53,7 @@ transpose-inverse i j {k} with k ≟ j
 
 reverse-prop : ∀ {n} → (i : Fin n) → toℕ (reverse i) ≡ n ∸ suc (toℕ i)
 reverse-prop {suc n} i = begin
-  toℕ (inject≤ (n ℕ- i) _)  ≡⟨ toℕ-inject≤ _ _ ⟩
+  toℕ (inject≤ (n ℕ- i) _)  ≡⟨ toℕ-inject≤ _ (ℕₚ.n∸m≤n (toℕ i) (suc n)) ⟩
   toℕ (n ℕ- i)              ≡⟨ toℕ‿ℕ- n i ⟩
   n ∸ toℕ i                 ∎
 

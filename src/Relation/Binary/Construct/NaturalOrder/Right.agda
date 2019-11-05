@@ -8,7 +8,7 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary
-open import Algebra.FunctionProperties using (Op₂)
+open import Algebra.Core using (Op₂)
 
 module Relation.Binary.Construct.NaturalOrder.Right
   {a ℓ} {A : Set a} (_≈_ : Rel A ℓ) (_∙_ : Op₂ A) where
@@ -16,7 +16,7 @@ module Relation.Binary.Construct.NaturalOrder.Right
 open import Data.Product using (_,_; _×_)
 open import Data.Sum using (inj₁; inj₂)
 open import Relation.Nullary using (¬_)
-open import Algebra.FunctionProperties _≈_
+open import Algebra.Definitions _≈_
 open import Algebra.Structures _≈_
 import Relation.Binary.Reasoning.Setoid as EqReasoning
 
@@ -126,7 +126,7 @@ isDecTotalOrder latt sel _≟_ = record
   }
 
 ------------------------------------------------------------------------
--- Packages
+-- Bundles
 
 preorder : IsBand _∙_ → Preorder a ℓ ℓ
 preorder band = record

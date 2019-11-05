@@ -9,7 +9,6 @@
 module Data.Fin.Subset where
 
 open import Algebra
-open import Algebra.FunctionProperties using (Op₁; Op₂)
 import Algebra.Properties.BooleanAlgebra as BoolAlgProp
 import Algebra.Properties.BooleanAlgebra.Expression as BAExpr
 open import Data.Bool using (not; _∧_; _∨_; _≟_)

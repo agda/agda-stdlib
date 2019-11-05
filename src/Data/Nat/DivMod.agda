@@ -36,12 +36,12 @@ infixl 7 _/_ _%_
 
 -- Natural division
 
-_/_ : (dividend divisor : ℕ) .{≢0 : False (divisor ≟ 0)} → ℕ
+_/_ : (dividend divisor : ℕ) {≢0 : False (divisor ≟ 0)} → ℕ
 m / (suc n) = div-helper 0 n m n
 
 -- Natural remainder/modulus
 
-_%_ : (dividend divisor : ℕ) .{≢0 : False (divisor ≟ 0)} → ℕ
+_%_ : (dividend divisor : ℕ) {≢0 : False (divisor ≟ 0)} → ℕ
 m % (suc n) = mod-helper 0 n m n
 
 ------------------------------------------------------------------------
@@ -127,49 +127,49 @@ m<[1+n%d]⇒m≤[n%d] {m} n (suc d-1) = k<1+a[modₕ]n⇒k≤a[modₕ]n 0 m n d-
 ------------------------------------------------------------------------
 -- Properties of _/_
 
-0/n≡0 : ∀ n .{≢0} → (0 / n) {≢0} ≡ 0
+0/n≡0 : ∀ n {≢0} → (0 / n) {≢0} ≡ 0
 0/n≡0 (suc n-1) = refl
 
 n/1≡n : ∀ n → n / 1 ≡ n
 n/1≡n n = a[divₕ]1≡a 0 n
 
-n/n≡1 : ∀ n .{≢0} → (n / n) {≢0} ≡ 1
+n/n≡1 : ∀ n {≢0} → (n / n) {≢0} ≡ 1
 n/n≡1 (suc n-1) = n[divₕ]n≡1 n-1 n-1
 
-m*n/n≡m : ∀ m n .{≢0} → (m * n / n) {≢0} ≡ m
+m*n/n≡m : ∀ m n {≢0} → (m * n / n) {≢0} ≡ m
 m*n/n≡m m (suc n-1) = a*n[divₕ]n≡a 0 m n-1
 
-m/n*n≡m : ∀ {m n} .{≢0} → n ∣ m → (m / n) {≢0} * n ≡ m
+m/n*n≡m : ∀ {m n} {≢0} → n ∣ m → (m / n) {≢0} * n ≡ m
 m/n*n≡m {_} {n@(suc n-1)} (divides q refl) = cong (_* n) (m*n/n≡m q n)
 
-m*[n/m]≡n : ∀ {m n} .{≢0} → m ∣ n → m * (n / m) {≢0} ≡ n
+m*[n/m]≡n : ∀ {m n} {≢0} → m ∣ n → m * (n / m) {≢0} ≡ n
 m*[n/m]≡n {m} m∣n = trans (*-comm m (_ / m)) (m/n*n≡m m∣n)
 
-m/n*n≤m : ∀ m n .{≢0} → (m / n) {≢0} * n ≤ m
+m/n*n≤m : ∀ m n {≢0} → (m / n) {≢0} * n ≤ m
 m/n*n≤m m n@(suc n-1) = begin
   (m / n) * n          ≤⟨ m≤m+n ((m / n) * n) (m % n) ⟩
   (m / n) * n + m % n  ≡⟨ +-comm _ (m % n) ⟩
   m % n + (m / n) * n  ≡⟨ sym (m≡m%n+[m/n]*n m n-1) ⟩
   m                    ∎
 
-m/n<m : ∀ m n .{≢0} → m ≥ 1 → n ≥ 2 → (m / n) {≢0} < m
+m/n<m : ∀ m n {≢0} → m ≥ 1 → n ≥ 2 → (m / n) {≢0} < m
 m/n<m m n@(suc n-1) m≥1 n≥2 = *-cancelʳ-< {n} (m / n) m (begin-strict
   (m / n) * n ≤⟨ m/n*n≤m m n ⟩
   m           <⟨ m<m*n m≥1 n≥2 ⟩
   m * n       ∎)
 
-+-distrib-/ : ∀ m n {d} .{≢0} → (m % d) {≢0} + (n % d) {≢0} < d →
++-distrib-/ : ∀ m n {d} {≢0} → (m % d) {≢0} + (n % d) {≢0} < d →
               ((m + n) / d) {≢0} ≡ (m / d) {≢0} + (n / d) {≢0}
 +-distrib-/ m n {suc d-1} leq = +-distrib-divₕ 0 0 m n d-1 leq
 
-+-distrib-/-∣ˡ : ∀ {m} n {d} .{≢0} → d ∣ m →
++-distrib-/-∣ˡ : ∀ {m} n {d} {≢0} → d ∣ m →
                  ((m + n) / d) {≢0} ≡ (m / d) {≢0} + (n / d) {≢0}
 +-distrib-/-∣ˡ {m} n {d@(suc d-1)} (divides p refl) = +-distrib-/ m n (begin-strict
   p * d % d + n % d ≡⟨ cong (_+ n % d) (m*n%n≡0 p d-1) ⟩
   n % d             <⟨ m%n<n n d-1 ⟩
   d                 ∎)
 
-+-distrib-/-∣ʳ : ∀ {m} n {d} .{≢0} → d ∣ n →
++-distrib-/-∣ʳ : ∀ {m} n {d} {≢0} → d ∣ n →
                  ((m + n) / d) {≢0} ≡ (m / d) {≢0} + (n / d) {≢0}
 +-distrib-/-∣ʳ {m} n {d@(suc d-1)} (divides p refl) = +-distrib-/ m n (begin-strict
   m % d + p * d % d ≡⟨ cong (m % d +_) (m*n%n≡0 p d-1) ⟩
@@ -196,13 +196,13 @@ record DivMod (dividend divisor : ℕ) : Set where
 
 infixl 7 _div_ _mod_ _divMod_
 
-_div_ : (dividend divisor : ℕ) .{≢0 : False (divisor ≟ 0)} → ℕ
+_div_ : (dividend divisor : ℕ) {≢0 : False (divisor ≟ 0)} → ℕ
 _div_ = _/_
 
-_mod_ : (dividend divisor : ℕ) .{≢0 : False (divisor ≟ 0)} → Fin divisor
+_mod_ : (dividend divisor : ℕ) {≢0 : False (divisor ≟ 0)} → Fin divisor
 m mod (suc n) = fromℕ< (m%n<n m n)
 
-_divMod_ : (dividend divisor : ℕ) .{≢0 : False (divisor ≟ 0)} →
+_divMod_ : (dividend divisor : ℕ) {≢0 : False (divisor ≟ 0)} →
            DivMod dividend divisor
 m divMod n@(suc n-1) = result (m / n) (m mod n) (begin-equality
   m                                     ≡⟨ m≡m%n+[m/n]*n m n-1 ⟩

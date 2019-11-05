@@ -9,7 +9,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Relation.Binary.Indexed.Heterogeneous.Packages where
+module Relation.Binary.Indexed.Heterogeneous.Bundles where
 
 open import Function.Core
 open import Level using (suc; _⊔_)

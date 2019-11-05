@@ -103,3 +103,10 @@ dec-no (no ¬p′) ¬p = ¬p′ , refl
 dec-yes-irr : (p? : Dec P) → Irrelevant P → (p : P) → p? ≡ yes p
 dec-yes-irr p? irr p with dec-yes p? p
 ... | p′ , eq rewrite irr p p′ = eq
+
+------------------------------------------------------------------------
+-- Maps
+
+map′ : (P → Q) → (Q → P) → Dec P → Dec Q
+map′ P→Q Q→P (yes p) = yes (P→Q p)
+map′ P→Q Q→P (no ¬p) = no (¬p ∘ Q→P)

@@ -24,7 +24,7 @@ open import Induction.Lexicographic using (_⊗_; [_⊗_])
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; subst; cong)
-open import Relation.Nullary using (Dec; yes; no)
+open import Relation.Nullary using (Dec)
 open import Relation.Nullary.Negation using (contradiction)
 import Relation.Nullary.Decidable as Dec
 
@@ -201,9 +201,9 @@ mkGCD m n = gcd m n , gcd-GCD m n
 -- gcd as a proposition is decidable
 
 gcd? : (m n d : ℕ) → Dec (GCD m n d)
-gcd? m n d with gcd m n ≟ d
-... | yes P.refl = yes (gcd-GCD m n)
-... | no  gcd≢d  = no (gcd≢d ∘ GCD.unique (gcd-GCD m n))
+gcd? m n d =
+  Dec.map′ (λ { P.refl → gcd-GCD m n }) (GCD.unique (gcd-GCD m n))
+           (gcd m n ≟ d)
 
 ------------------------------------------------------------------------
 -- Calculating the gcd

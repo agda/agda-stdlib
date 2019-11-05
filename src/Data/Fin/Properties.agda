@@ -9,7 +9,6 @@
 
 module Data.Fin.Properties where
 
-open import Algebra.FunctionProperties using (Involutive)
 open import Category.Applicative using (RawApplicative)
 open import Category.Functor using (RawFunctor)
 open import Data.Empty using (⊥-elim)
@@ -17,18 +16,21 @@ open import Data.Fin.Base
 open import Data.Nat as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_)
 import Data.Nat.Properties as ℕₚ
 open import Data.Unit using (tt)
-open import Data.Product using (∃; ∃₂; ∄; _×_; _,_; map; proj₁)
-open import Data.Sum using (_⊎_; inj₁; inj₂)
-open import Function.Core using (_∘_; id)
+open import Data.Product using (∃; ∃₂; ∄; _×_; _,_; map; proj₁; uncurry; <_,_>)
+open import Data.Sum using (_⊎_; inj₁; inj₂; [_,_])
+open import Function.Core using (_∘_; id; _$_)
+open import Function.Equivalence using (_⇔_; equivalence)
 open import Function.Injection using (_↣_)
 open import Relation.Binary as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; trans; cong; subst; module ≡-Reasoning)
-open import Relation.Nullary using (¬_)
-import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Decidable as Dec using (map′)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Nullary using (Dec; yes; no; ¬_)
-open import Relation.Unary as U using (U; Pred; Decidable; _⊆_)
+open import Relation.Nullary.Product using (_×-dec_)
+open import Relation.Nullary.Sum using (_⊎-dec_)
+open import Relation.Unary as U
+  using (U; Pred; Decidable; _⊆_; Satisfiable; Universal)
 open import Relation.Unary.Properties using (U?)
 
 ------------------------------------------------------------------------
@@ -51,9 +53,7 @@ _≟_ : ∀ {n} → B.Decidable {A = Fin n} _≡_
 zero  ≟ zero  = yes refl
 zero  ≟ suc y = no λ()
 suc x ≟ zero  = no λ()
-suc x ≟ suc y with x ≟ y
-... | yes x≡y = yes (cong suc x≡y)
-... | no  x≢y = no  (x≢y ∘ suc-injective)
+suc x ≟ suc y = map′ (cong suc) suc-injective (x ≟ y)
 
 ------------------------------------------------------------------------
 -- Structures
@@ -391,21 +391,21 @@ lower₁-irrelevant {suc n} (suc i)  _   _ =
 -- inject≤
 ------------------------------------------------------------------------
 
-toℕ-inject≤ : ∀ {m n} (i : Fin m) .(le : m ℕ.≤ n) →
+toℕ-inject≤ : ∀ {m n} (i : Fin m) (le : m ℕ.≤ n) →
                 toℕ (inject≤ i le) ≡ toℕ i
 toℕ-inject≤ {_} {suc n} zero    _  = refl
 toℕ-inject≤ {_} {suc n} (suc i) le = cong suc (toℕ-inject≤ i (ℕ.≤-pred le))
 
-inject≤-refl : ∀ {n} (i : Fin n) .(n≤n : n ℕ.≤ n) → inject≤ i n≤n ≡ i
+inject≤-refl : ∀ {n} (i : Fin n) (n≤n : n ℕ.≤ n) → inject≤ i n≤n ≡ i
 inject≤-refl {suc n} zero    _   = refl
 inject≤-refl {suc n} (suc i) n≤n = cong suc (inject≤-refl i (ℕ.≤-pred n≤n))
 
 inject≤-idempotent : ∀ {m n k} (i : Fin m)
-                     .(m≤n : m ℕ.≤ n) .(n≤k : n ℕ.≤ k) .(m≤k : m ℕ.≤ k) →
+                     (m≤n : m ℕ.≤ n) (n≤k : n ℕ.≤ k) (m≤k : m ℕ.≤ k) →
                      inject≤ (inject≤ i m≤n) n≤k ≡ inject≤ i m≤k
-inject≤-idempotent {_} {suc n} {suc k} zero    _ _ _ = refl
-inject≤-idempotent {_} {suc n} {suc k} (suc i) _ _ _ =
-  cong suc (inject≤-idempotent i _ _ _)
+inject≤-idempotent {_} {suc n} {suc k} zero    _   _   _ = refl
+inject≤-idempotent {_} {suc n} {suc k} (suc i) m≤n n≤k _ =
+  cong suc (inject≤-idempotent i (ℕ.≤-pred m≤n) (ℕ.≤-pred n≤k) _)
 
 ------------------------------------------------------------------------
 -- splitAt
@@ -529,10 +529,27 @@ punchOut-punchIn (suc i) {suc j} = cong suc (begin
 -- Quantification
 ------------------------------------------------------------------------
 
-∀-cons : ∀ {n p} {P : Pred (Fin (suc n)) p} →
-         P zero → (∀ i → P (suc i)) → (∀ i → P i)
-∀-cons z s zero    = z
-∀-cons z s (suc i) = s i
+module _ {n p} {P : Pred (Fin (suc n)) p} where
+
+  ∀-cons : P zero → Π[ P ∘ suc ] → Π[ P ]
+  ∀-cons z s zero    = z
+  ∀-cons z s (suc i) = s i
+
+  ∀-cons-⇔ : (P zero × Π[ P ∘ suc ]) ⇔ Π[ P ]
+  ∀-cons-⇔ = equivalence (uncurry ∀-cons) < _$ zero , _∘ suc >
+
+  ∃-here : P zero → ∃⟨ P ⟩
+  ∃-here = zero ,_
+
+  ∃-there : ∃⟨ P ∘ suc ⟩ → ∃⟨ P ⟩
+  ∃-there = map suc id
+
+  ∃-toSum : ∃⟨ P ⟩ → P zero ⊎ ∃⟨ P ∘ suc ⟩
+  ∃-toSum ( zero , P₀ ) = inj₁ P₀
+  ∃-toSum (suc f , P₁₊) = inj₂ (f , P₁₊)
+
+  ⊎⇔∃ : (P zero ⊎ ∃⟨ P ∘ suc ⟩) ⇔ ∃⟨ P ⟩
+  ⊎⇔∃ = equivalence [ ∃-here , ∃-there ] ∃-toSum
 
 decFinSubset : ∀ {n p q} {P : Pred (Fin n) p} {Q : Pred (Fin n) q} →
                Decidable Q → (∀ {f} → Q f → Dec (P f)) → Dec (Q ⊆ P)
@@ -546,20 +563,13 @@ decFinSubset {suc n} {P = P} {Q} Q? P? with decFinSubset (Q? ∘ suc) P?
 ...     | yes p₀ = yes (∀-cons {P = Q U.⇒ P} (λ _ → p₀) (λ _ → q⟶p) _)
 
 any? : ∀ {n p} {P : Fin n → Set p} → Decidable P → Dec (∃ P)
-any? {zero}  {_} P? = no λ { (() , _) }
-any? {suc n} {P} P? with P? zero | any? (P? ∘ suc)
-... | yes P₀ | _              = yes (_ , P₀)
-... | no  _  | yes (_ , P₁₊ᵢ) = yes (_ , P₁₊ᵢ)
-... | no ¬P₀ | no ¬P₁₊ᵢ       = no λ
-  { (zero  , P₀)   → ¬P₀ P₀
-  ; (suc f , P₁₊ᵢ) → ¬P₁₊ᵢ (_ , P₁₊ᵢ)
-  }
+any? {zero}  {P = _} P? = no λ { (() , _) }
+any? {suc n} {P = P} P? = Dec.map ⊎⇔∃ (P? zero ⊎-dec any? (P? ∘ suc))
 
 all? : ∀ {n p} {P : Pred (Fin n) p} →
        Decidable P → Dec (∀ f → P f)
-all? P? with decFinSubset U? (λ {f} _ → P? f)
-... | yes ∀p = yes (λ f → ∀p tt)
-... | no ¬∀p = no  (λ ∀p → ¬∀p (λ _ → ∀p _))
+all? P? = map′ (λ ∀p f → ∀p tt) (λ ∀p {x} _ → ∀p x)
+               (decFinSubset U? (λ {f} _ → P? f))
 
 -- If a decidable predicate P over a finite set is sometimes false,
 -- then we can find the smallest value for which this is the case.

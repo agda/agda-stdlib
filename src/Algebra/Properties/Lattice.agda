@@ -6,13 +6,13 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra
+open import Algebra.Bundles
 
 module Algebra.Properties.Lattice {l₁ l₂} (L : Lattice l₁ l₂) where
 
 open Lattice L
 open import Algebra.Structures _≈_
-open import Algebra.FunctionProperties _≈_
+open import Algebra.Definitions _≈_
 import Algebra.Properties.Semilattice as SemilatticeProperties
 open import Relation.Binary
 import Relation.Binary.Lattice as R

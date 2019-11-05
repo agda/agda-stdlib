@@ -15,7 +15,7 @@ open Lattice L
 
 import Algebra as Alg
 import Algebra.Structures as Alg
-open import Algebra.FunctionProperties _≈_
+open import Algebra.Definitions _≈_
 open import Data.Product using (_,_)
 open import Function using (flip)
 open import Relation.Binary

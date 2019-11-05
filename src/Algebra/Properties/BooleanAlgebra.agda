@@ -6,16 +6,18 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra
+open import Algebra.Bundles
 
 module Algebra.Properties.BooleanAlgebra
   {b₁ b₂} (B : BooleanAlgebra b₁ b₂)
   where
 
 open BooleanAlgebra B
+
 import Algebra.Properties.DistributiveLattice as DistribLatticeProperties
+open import Algebra.Core
 open import Algebra.Structures _≈_
-open import Algebra.FunctionProperties _≈_
+open import Algebra.Definitions _≈_
 open import Algebra.FunctionProperties.Consequences setoid
 open import Relation.Binary.Reasoning.Setoid setoid
 open import Relation.Binary

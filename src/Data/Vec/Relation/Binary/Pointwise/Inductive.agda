@@ -11,7 +11,7 @@ module Data.Vec.Relation.Binary.Pointwise.Inductive where
 open import Algebra.FunctionProperties
 open import Data.Fin using (Fin; zero; suc)
 open import Data.Nat using (ℕ; zero; suc)
-open import Data.Product using (_×_; _,_)
+open import Data.Product using (_×_; _,_; uncurry; <_,_>)
 open import Data.Vec as Vec hiding ([_]; head; tail; map; lookup)
 open import Data.Vec.Relation.Unary.All using (All; []; _∷_)
 open import Level using (Level; _⊔_)
@@ -20,6 +20,8 @@ open import Function.Equivalence using (_⇔_; equivalence)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Nullary
+open import Relation.Nullary.Decidable using (map′)
+open import Relation.Nullary.Product using (_×-dec_)
 open import Relation.Unary using (Pred)
 
 private
@@ -64,6 +66,10 @@ module _ {_∼_ : REL A B ℓ} where
          Pointwise _∼_ (x ∷ xs) (y ∷ ys) → Pointwise _∼_ xs ys
   tail (x∼y ∷ xs∼ys) = xs∼ys
 
+  uncons : ∀ {m n x y} {xs : Vec A m} {ys : Vec B n} →
+           Pointwise _∼_ (x ∷ xs) (y ∷ ys) → x ∼ y × Pointwise _∼_ xs ys
+  uncons = < head , tail >
+
   lookup : ∀ {n} {xs : Vec A n} {ys : Vec B n} → Pointwise _∼_ xs ys →
            ∀ i → (Vec.lookup xs i) ∼ (Vec.lookup ys i)
   lookup (x∼y ∷ _)     zero    = x∼y
@@ -99,11 +105,8 @@ decidable : ∀ {_∼_ : REL A B ℓ} →
 decidable dec []       []       = yes []
 decidable dec []       (y ∷ ys) = no λ()
 decidable dec (x ∷ xs) []       = no λ()
-decidable dec (x ∷ xs) (y ∷ ys) with dec x y
-... | no ¬x∼y = no (¬x∼y ∘ head)
-... | yes x∼y with decidable dec xs ys
-...   | no ¬xs∼ys = no (¬xs∼ys ∘ tail)
-...   | yes xs∼ys = yes (x∼y ∷ xs∼ys)
+decidable dec (x ∷ xs) (y ∷ ys) =
+  map′ (uncurry _∷_) uncons (dec x y ×-dec decidable dec xs ys)
 
 ------------------------------------------------------------------------
 -- Structures
@@ -126,7 +129,7 @@ module _ {_∼_ : Rel A ℓ} where
     } where module Eq = IsDecEquivalence decEquiv
 
 ------------------------------------------------------------------------
--- Packages
+-- Bundles
 
 setoid : Setoid a ℓ → ℕ → Setoid a (a ⊔ ℓ)
 setoid S n = record
