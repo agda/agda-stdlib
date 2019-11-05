@@ -17,6 +17,9 @@ Bug-fixes
   - `IsStrictTotalOrder` now exports `isDecStrictPartialOrder`
   - `IsDecStrictPartialOrder` now re-exports the contents of `IsStrictPartialOrder`.
 
+* In `Algebra` the bundle `RawRing` now contains an equality relation to
+  make it consistent with the othor `Raw` bundles.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -208,6 +211,17 @@ match the one for `Vec`:
   updateAt-commutes
   ```
 
+#### Removing irrelevance where not strictly necessary
+
+* Version 1.1 in the library added irrelevance to various places in the library.
+  Unfortunately this exposed the library to several irrelevance related bugs.
+  The decision has therefore been taken to roll-back these additions until
+  irrelevance is more stable. In particular it has been removed from the
+  following functions:
+
+* In `Data.Nat.DivMod`: `_%_`, `_/_`, `_div_`, `_mod_`.
+
+* In `Data.Fin.Base`: `fromℕ≤`, `inject≤`.
 
 #### Other
 
@@ -218,6 +232,11 @@ match the one for `Vec`:
   in terms of a direct division of the numerator and denominator via the
   GCD. Although less elegant than the previous implementation, it's
   reduction behaviour is much easier to reason about.
+
+* Due to bug #3879 in Agda, the pattern synonyms `0F`, `1F`, ... introduced in
+  version `1.1` in `Data.Fin.Base` have been moved to `Data.Fin.Patterns`.
+  This prevents unavoidable and undesirable case splitting behaviour when
+  splitting on `ℕ` when `Data.Fin` has been imported.
 
 New modules
 -----------
@@ -293,15 +312,14 @@ The following new modules have been added to the library:
   Relation.Nullary.Reflects
   ```
 
-Relocated modules
------------------
-The following modules have been moved as part of a drive to improve
-usability and consistency across the library. The old modules still exist and
-therefore all existing code should still work, however they have been deprecated
-and, although not anticipated any time soon, they may eventually
-be removed in some future release of the library. After the next release of Agda
-automated warnings will be attached to these modules to discourage their use.
+Deprecated modules
+------------------
 
+* The module `Data.Table` and associated submodules have been deprecated
+  in favour of `Data.Vec.Functional`.
+
+* `Data.BoundedVec` and `Data.BoundedVec.Inefficient` have been deprecated
+in favour of `Data.Vec.Bounded` introduced in `v1.1`.
 
 Deprecated names
 ----------------
@@ -375,6 +393,11 @@ Other minor additions
 * Added new definition to `Algebra.Bundles`:
   ```agda
   record CommutativeSemigroup c ℓ : Set (suc (c ⊔ ℓ))
+  ```
+
+* The function `tail` in `Codata.Stream` has a new, more general type:
+  ```agda
+  tail : ∀ {i} {j : Size< i} → Stream A i → Stream A j
   ```
 
 * Added new bundles to `Data.Char.Properties`:
@@ -491,6 +514,9 @@ Other minor additions
   GCD-/          : {n≢0} → c ∣ m → c ∣ n → c ∣ d → GCD m n d → GCD (m / c) (n / c) (d / c)
   GCD-/gcd       : {gcd≢0} → GCD (m / gcd m n) (n / gcd m n) 1
   ```
+
+* Generalized type of `Data.List.Relation.Unary.All.Properties.All-swap` to
+  `{xs : List A} {ys : List B} → All (λ x → All (x ~_) ys) xs → All (λ y → All (_~ y) xs) ys`.
 
 * Added new proofs to `Data.Nat.Properties`:
   ```agda

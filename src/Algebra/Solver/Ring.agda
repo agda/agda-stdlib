@@ -22,8 +22,8 @@ open import Algebra.Solver.Ring.AlmostCommutativeRing
 open import Relation.Binary.Definitions using (WeaklyDecidable)
 
 module Algebra.Solver.Ring
-  {r₁ r₂ r₃}
-  (Coeff : RawRing r₁)               -- Coefficient "ring".
+  {r₁ r₂ r₃ r₄}
+  (Coeff : RawRing r₁ r₄)            -- Coefficient "ring".
   (R : AlmostCommutativeRing r₂ r₃)  -- Main "ring".
   (morphism : Coeff -Raw-AlmostCommutative⟶ R)
   (_coeff≟_ : WeaklyDecidable (Induced-equivalence morphism))

@@ -87,22 +87,22 @@ tail⁺ P ps = ps ∘ suc
 ------------------------------------------------------------------------
 -- ++
 
-++⁺ : ∀ (P : Pred A p) {m n} {xs : Vector A m} {ys : Vector A n} →
-      All P xs → All P ys → All P (xs ++ ys)
-++⁺ P {m} {n} pxs pys i with splitAt m i
-... | inj₁ i′ = pxs i′
-... | inj₂ j′ = pys j′
+module _ (P : Pred A p) {m n : ℕ} {xs : Vector A m} {ys : Vector A n} where
 
-++⁻ˡ : ∀ (P : Pred A p) {m n} (xs : Vector A m) {ys : Vector A n} →
-       All P (xs ++ ys) → All P xs
-++⁻ˡ P {m} {n} _ ps i with ps (inject+ n i)
-... | p rewrite splitAt-inject+ m n i = p
+  ++⁺ : All P xs → All P ys → All P (xs ++ ys)
+  ++⁺ pxs pys i with splitAt m i
+  ... | inj₁ i′ = pxs i′
+  ... | inj₂ j′ = pys j′
 
-++⁻ʳ : ∀ (P : Pred A p) {m n} (xs : Vector A m) {ys : Vector A n} →
-       All P (xs ++ ys) → All P ys
-++⁻ʳ P {m} {n} _ ps i with ps (raise m i)
-... | p rewrite splitAt-raise m n i = p
+module _ (P : Pred A p) {m n : ℕ} (xs : Vector A m) {ys : Vector A n} where
 
-++⁻ : ∀ (P : Pred A p) {m n} (xs : Vector A m) {ys : Vector A n} →
-      All P (xs ++ ys) → All P xs × All P ys
-++⁻ P _ ps = ++⁻ˡ P _ ps , ++⁻ʳ P _ ps
+  ++⁻ˡ : All P (xs ++ ys) → All P xs
+  ++⁻ˡ ps i with ps (inject+ n i)
+  ... | p rewrite splitAt-inject+ m n i = p
+
+  ++⁻ʳ : All P (xs ++ ys) → All P ys
+  ++⁻ʳ ps i with ps (raise m i)
+  ... | p rewrite splitAt-raise m n i = p
+
+  ++⁻ : All P (xs ++ ys) → All P xs × All P ys
+  ++⁻ ps = ++⁻ˡ ps , ++⁻ʳ ps
