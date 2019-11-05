@@ -211,6 +211,17 @@ match the one for `Vec`:
   updateAt-commutes
   ```
 
+#### Removing irrelevance where not strictly necessary
+
+* Version 1.1 in the library added irrelevance to various places in the library.
+  Unfortunately this exposed the library to several irrelevance related bugs.
+  The decision has therefore been taken to roll-back these additions until
+  irrelevance is more stable. In particular it has been removed from the
+  following functions:
+
+* In `Data.Nat.DivMod`: `_%_`, `_/_`, `_div_`, `_mod_`.
+
+* In `Data.Fin.Base`: `fromℕ≤`, `inject≤`.
 
 #### Other
 
