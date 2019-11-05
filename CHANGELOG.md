@@ -383,7 +383,6 @@ Other minor additions
   record CommutativeSemigroup c ℓ : Set (suc (c ⊔ ℓ))
   ```
 
-
 * Added new proofs to `Algebra.Properties.Group`:
   ```agda
   ⁻¹-injective   : x ⁻¹ ≈ y ⁻¹ → x ≈ y
