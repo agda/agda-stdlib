@@ -15,7 +15,8 @@
 
 module Data.Vec.Functional where
 
-open import Data.Fin using (Fin; zero; suc; splitAt)
+open import Data.Fin using (Fin; zero; suc; splitAt; punchIn)
+open import Data.List.Base as L using (List)
 open import Data.Nat using (ℕ; zero; suc; _+_)
 open import Data.Product using (Σ; ∃; _×_; _,_; proj₁; proj₂)
 open import Data.Sum using (_⊎_; inj₁; inj₂; [_,_])
@@ -48,6 +49,12 @@ toVec = V.tabulate
 fromVec : ∀ {n} → Vec A n → Vector A n
 fromVec = V.lookup
 
+toList : ∀ {n} → Vector A n → List A
+toList = L.tabulate
+
+fromList : ∀ (xs : List A) → Vector A (L.length xs)
+fromList = L.lookup
+
 ------------------------------------------------------------------------
 -- Construction and deconstruction
 
@@ -69,6 +76,9 @@ uncons xs = head xs , tail xs
 
 replicate : ∀ {n} → A → Vector A n
 replicate = const
+
+remove : ∀ {n} → Fin (suc n) → Vector A (suc n) → Vector A n
+remove i t = t ∘ punchIn i
 
 ------------------------------------------------------------------------
 -- Transformations

@@ -10,6 +10,7 @@ module Data.Vec.Functional.Relation.Binary.Pointwise.Properties where
 
 open import Data.Fin
 open import Data.Fin.Properties
+  hiding (isDecEquivalence; setoid; decSetoid)
 open import Data.Nat
 open import Data.Product using (_×_; _,_; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
@@ -37,17 +38,47 @@ private
 
 module _ {R : Rel A ℓ} where
 
-  refl : Reflexive R → ∀ {n} → Reflexive (Pointwise R {n = n})
+  refl : Reflexive R → ∀ {n} → Reflexive (Pointwise R {n})
   refl r i = r
 
-  sym : Symmetric R → ∀ {n} → Symmetric (Pointwise R {n = n})
+  sym : Symmetric R → ∀ {n} → Symmetric (Pointwise R {n})
   sym s xsys i = s (xsys i)
 
-  trans : Transitive R → ∀ {n} → Transitive (Pointwise R {n = n})
+  trans : Transitive R → ∀ {n} → Transitive (Pointwise R {n})
   trans t xsys yszs i = t (xsys i) (yszs i)
 
-  decidable : Decidable R → ∀ {n} → Decidable (Pointwise R {n = n})
+  decidable : Decidable R → ∀ {n} → Decidable (Pointwise R {n})
   decidable r? xs ys = all? λ i → r? (xs i) (ys i)
+
+------------------------------------------------------------------------
+-- Structures
+
+  isEquivalence : IsEquivalence R → ∀ n → IsEquivalence (Pointwise R {n})
+  isEquivalence isEq n = record
+    { refl  = refl  Eq.refl
+    ; sym   = sym   Eq.sym
+    ; trans = trans Eq.trans
+    } where module Eq = IsEquivalence isEq
+
+  isDecEquivalence : IsDecEquivalence R →
+                     ∀ n → IsDecEquivalence (Pointwise R {n})
+  isDecEquivalence isDecEq n = record
+    { isEquivalence = isEquivalence Eq.isEquivalence n
+    ; _≟_           = decidable Eq._≟_
+    } where module Eq = IsDecEquivalence isDecEq
+
+------------------------------------------------------------------------
+-- Bundles
+
+setoid : Setoid a ℓ → ℕ → Setoid a ℓ
+setoid S n = record
+  { isEquivalence = isEquivalence S.isEquivalence n
+  } where module S = Setoid S
+
+decSetoid : DecSetoid a ℓ → ℕ → DecSetoid a ℓ
+decSetoid S n = record
+  { isDecEquivalence = isDecEquivalence S.isDecEquivalence n
+  } where module S = DecSetoid S
 
 ------------------------------------------------------------------------
 -- map
@@ -145,3 +176,18 @@ module _ {R : REL A B r} {S : REL A′ B′ s} {n xs ys xs′ ys′} where
                    (zip xs xs′) (zip {n = n} ys ys′) →
          Pointwise R xs ys × Pointwise S xs′ ys′
   zip⁻ rss = proj₁ ∘ rss , proj₂ ∘ rss
+
+------------------------------------------------------------------------
+-- foldr
+
+module _ {R : REL A B r} {S : REL A′ B′ s}
+         {f : A → A′ → A′} {g : B → B′ → B′}
+         where
+
+  foldr-cong : (∀ {w x y z} → R w x → S y z → S (f w y) (g x z)) →
+               ∀ {d : A′} {e : B′} → S d e →
+               ∀ {n} {xs : Vector A n} {ys : Vector B n} →
+               Pointwise R xs ys → S (foldr f d xs) (foldr g e ys)
+  foldr-cong fg-cong d~e {zero}  rss = d~e
+  foldr-cong fg-cong d~e {suc n} rss =
+    fg-cong (rss zero) (foldr-cong fg-cong d~e (rss ∘ suc))

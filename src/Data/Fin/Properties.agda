@@ -365,21 +365,21 @@ lower₁-irrelevant {suc n} (suc i)  _   _ =
 ------------------------------------------------------------------------
 -- inject≤
 
-toℕ-inject≤ : ∀ {m n} (i : Fin m) .(le : m ℕ≤ n) →
+toℕ-inject≤ : ∀ {m n} (i : Fin m) (le : m ℕ≤ n) →
                 toℕ (inject≤ i le) ≡ toℕ i
 toℕ-inject≤ {_} {suc n} zero    _  = refl
 toℕ-inject≤ {_} {suc n} (suc i) le = cong suc (toℕ-inject≤ i (ℕ.≤-pred le))
 
-inject≤-refl : ∀ {n} (i : Fin n) .(n≤n : n ℕ≤ n) → inject≤ i n≤n ≡ i
+inject≤-refl : ∀ {n} (i : Fin n) (n≤n : n ℕ≤ n) → inject≤ i n≤n ≡ i
 inject≤-refl {suc n} zero    _   = refl
 inject≤-refl {suc n} (suc i) n≤n = cong suc (inject≤-refl i (ℕ.≤-pred n≤n))
 
 inject≤-idempotent : ∀ {m n k} (i : Fin m)
-                     .(m≤n : m ℕ≤ n) .(n≤k : n ℕ≤ k) .(m≤k : m ℕ≤ k) →
+                     (m≤n : m ℕ≤ n) (n≤k : n ℕ≤ k) (m≤k : m ℕ≤ k) →
                      inject≤ (inject≤ i m≤n) n≤k ≡ inject≤ i m≤k
-inject≤-idempotent {_} {suc n} {suc k} zero    _ _ _ = refl
-inject≤-idempotent {_} {suc n} {suc k} (suc i) _ _ _ =
-  cong suc (inject≤-idempotent i _ _ _)
+inject≤-idempotent {_} {suc n} {suc k} zero    _   _   _ = refl
+inject≤-idempotent {_} {suc n} {suc k} (suc i) m≤n n≤k _ =
+  cong suc (inject≤-idempotent i (ℕ.≤-pred m≤n) (ℕ.≤-pred n≤k) _)
 
 ------------------------------------------------------------------------
 -- Fin (m + n) ≃ Fin m ⊎ Fin n

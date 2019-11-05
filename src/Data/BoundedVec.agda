@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Bounded vectors
+-- This module is DEPRECATED. Please use `Data.Vec.Bounded` instead.
 ------------------------------------------------------------------------
 
 -- Vectors of a specified maximum length.
