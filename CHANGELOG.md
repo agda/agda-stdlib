@@ -217,6 +217,11 @@ match the one for `Vec`:
 * The proofs `isPreorder` and `preorder` have been moved from the `Setoid`
   record to the module `Relation.Binary.Properties.Setoid`.
 
+* Due to bug #3879 in Agda, the pattern synonyms `0F`, `1F`, ... introduced in
+  version `1.1` in `Data.Fin.Base` have been moved to `Data.Fin.Patterns`.
+  This prevents unavoidable and undesirable case splitting behaviour when
+  splitting on `ℕ` when `Data.Fin` has been imported.
+
 New modules
 -----------
 The following new modules have been added to the library:
