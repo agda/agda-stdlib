@@ -24,6 +24,7 @@ open import Data.Product
 open import Data.Unit
 open import Function
 open import Relation.Binary.PropositionalEquality
+open import Relation.Nary
 open import Relation.Nullary.Product
 
 infix 4 _≟₀_ _≟₁_ _≟₂_
@@ -106,7 +107,7 @@ _ = λ m n → refl
 -- `map′` can be used in conjunction with combinators such as `_⊎-dec_` and
 -- `_×-dec_` to build complex (simply typed) decision procedures.
 
-module ListDecEq {a} {A : Set a} (_≟ᴬ_ : (x y : A) → Dec (x ≡ y)) where
+module ListDecEq₀ {a} {A : Set a} (_≟ᴬ_ : (x y : A) → Dec (x ≡ y)) where
 
   _≟ᴸᴬ_ : (xs ys : List A) → Dec (xs ≡ ys)
   []       ≟ᴸᴬ []       = yes refl
@@ -117,3 +118,15 @@ module ListDecEq {a} {A : Set a} (_≟ᴬ_ : (x y : A) → Dec (x ≡ y)) where
 
 -- The final case says that `x ∷ xs ≡ y ∷ ys` exactly when `x ≡ y` *and*
 -- `xs ≡ ys`. The proofs are updated by the first two arguments to `map′`.
+
+-- In the case of ≡-equality tests, the pattern
+-- `map′ (congₙ c) c-injective (x₀ ≟ y₀ ×-dec ... ×-dec xₙ₋₁ ≟ yₙ₋₁)`
+-- is captured by `≟-mapₙ n c c-injective (x₀ ≟ y₀) ... (xₙ₋₁ ≟ yₙ₋₁)`.
+
+module ListDecEq₁ {a} {A : Set a} (_≟ᴬ_ : (x y : A) → Dec (x ≡ y)) where
+
+  _≟ᴸᴬ_ : (xs ys : List A) → Dec (xs ≡ ys)
+  []       ≟ᴸᴬ []       = yes refl
+  []       ≟ᴸᴬ (y ∷ ys) = no λ ()
+  (x ∷ xs) ≟ᴸᴬ []       = no λ ()
+  (x ∷ xs) ≟ᴸᴬ (y ∷ ys) = ≟-mapₙ 2 _∷_ ∷-injective (x ≟ᴬ y) (xs ≟ᴸᴬ ys)
