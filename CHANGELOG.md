@@ -228,6 +228,11 @@ match the one for `Vec`:
 * The proofs `isPreorder` and `preorder` have been moved from the `Setoid`
   record to the module `Relation.Binary.Properties.Setoid`.
 
+* The function `normalize` in `Data.Rational.Base` has been reimplemented
+  in terms of a direct division of the numerator and denominator via the
+  GCD. Although less elegant than the previous implementation, it's
+  reduction behaviour is much easier to reason about.
+
 * Due to bug #3879 in Agda, the pattern synonyms `0F`, `1F`, ... introduced in
   version `1.1` in `Data.Fin.Base` have been moved to `Data.Fin.Patterns`.
   This prevents unavoidable and undesirable case splitting behaviour when
@@ -347,11 +352,18 @@ attached to all deprecated names to discourage their use.
   [1+m]*n≡n+m*n ↦ suc-*
   ```
 
+* In `Data.Nat.Coprimality`:
+  ```agda
+  coprime-gcd ↦ coprime⇒GCD≡1
+  gcd-coprime ↦ GCD≡1⇒coprime
+  ```
+
 * In `Data.Nat.Properties`:
   ```agda
   +-*-suc ↦ *-suc
-
+  n∸m≤n   ↦ m∸n≤m
   ```
+  (Note that the latter will require the arguments to be reversed)
 
 * In `Relation.Binary.Properties.Poset`:
   ```agda
@@ -470,6 +482,39 @@ Other minor additions
   lookup-injective : lookup τ i ≡ lookup τ j → i ≡ j
   ```
 
+* Added new proofs to `Data.Nat.Coprimality`:
+  ```agda
+  coprime⇒gcd≡1 : Coprime m n → gcd m n ≡ 1
+  gcd≡1⇒coprime : gcd m n ≡ 1 → Coprime m n
+  coprime-/gcd  : Coprime (m / gcd m n) (n / gcd m n)
+  ```
+
+* Added new proof to `Data.Nat.Divisibility`:
+  ```agda
+  >⇒∤ : m > suc n → m ∤ suc n
+  ```
+
+* Added new proofs to `Data.Nat.DivMod`:
+  ```agda
+  /-congˡ   : {o≢0}     → m ≡ n → m / o ≡ n / o
+  /-congʳ   : {n≢0 o≢0} → n ≡ o → m / n ≡ m / o
+  /-mono-≤  : {o≢0 p≢0} → m ≤ n → o ≥ p → m / o ≤ n / p
+  /-monoˡ-≤ : {o≢0}     → m ≤ n → m / o ≤ n / o
+  /-monoʳ-≤ : {n≢0 o≢0} → n ≥ o → m / n ≤ m / o
+  m≥n⇒m/n>0 : {n≢0}     → m ≥ n → m / n > 0
+  ```
+
+* Added new proofs to `Data.Nat.GCD`:
+  ```agda
+  gcd[m,n]≡0⇒m≡0 : gcd m n ≡ 0 → m ≡ 0
+  gcd[m,n]≡0⇒n≡0 : gcd m n ≡ 0 → n ≡ 0
+  gcd[m,n]≤n     : gcd m (suc n) ≤ suc n
+  n/gcd[m,n]≢0   : {n≢0 gcd≢0} → n / gcd m n ≢ 0
+  GCD-*          : GCD (m * suc c) (n * suc c) (d * suc c) → GCD m n d
+  GCD-/          : {n≢0} → c ∣ m → c ∣ n → c ∣ d → GCD m n d → GCD (m / c) (n / c) (d / c)
+  GCD-/gcd       : {gcd≢0} → GCD (m / gcd m n) (n / gcd m n) 1
+  ```
+
 * Generalized type of `Data.List.Relation.Unary.All.Properties.All-swap` to
   `{xs : List A} {ys : List B} → All (λ x → All (x ~_) ys) xs → All (λ y → All (_~ y) xs) ys`.
 
@@ -519,6 +564,59 @@ Other minor additions
   <-isStrictPartialOrder-≈ : IsStrictPartialOrder _≈_ _<_
   <-isStrictTotalOrder-≈   : IsStrictTotalOrder _≈_ _<_
   <-strictPartialOrder-≈   : StrictPartialOrder _ _ _
+  ```
+
+* Added new functions to `Data.Rational.Base`:
+  ```agda
+  mkℚ+   : ∀ n d → .{d≢0 : d ≢0} → .(Coprime n d) → ℚ
+
+  toℚᵘ   : ℚ → ℚᵘ
+  fromℚᵘ : ℚᵘ → ℚ
+  ```
+
+* Added new proofs to `Data.Rational.Properties`:
+  ```agda
+  mkℚ-cong          : n₁ ≡ n₂ → d₁ ≡ d₂ → mkℚ n₁ d₁ c₁ ≡ mkℚ n₂ d₂ c₂
+  mkℚ+-cong         : n₁ ≡ n₂ → d₁ ≡ d₂ → mkℚ+ n₁ d₁ c₁ ≡ mkℚ+ n₂ d₂ c₂
+  normalize-coprime : .(c : Coprime n (suc d-1)) → normalize n (suc d-1) ≡ mkℚ (+ n) d-1 c
+
+  ↥-mkℚ+            : ↥ (mkℚ+ n d c)                      ≡ + n
+  ↧-mkℚ+            : ↧ (mkℚ+ n d c)                      ≡ + d
+  ↥-neg             : ↥ (- p)                             ≡ - (↥ p)
+  ↧-neg             : ↧ (- p)                             ≡ ↧ p
+  ↥-normalise       : ↥ (normalize i n) * gcd (+ i) (+ n) ≡ + i
+  ↧-normalise       : ↧ (normalize i n) * gcd (+ i) (+ n) ≡ + n
+  ↥-/               : ↥ (i / n)         * gcd i (+ n)     ≡ i
+  ↧-/               : ↧ (i / n)         * gcd i (+ n)     ≡ + n
+  ↥-+               : ↥ (p + q)         * gcd (...) (...) ≡ ↥ p * ↧ q ℤ.+ ↥ q * ↧ p
+  ↧-+               : ↧ (p + q)         * gcd (...) (...) ≡ ↧ p * ↧ q
+
+  ↥p/↧p≡p           : ↥ p / ↧ₙ p ≡ p
+  0/n≡0             : 0ℤ / n ≡ 0ℚ
+
+  toℚᵘ-cong         : toℚᵘ Preserves _≡_ ⟶ _≃ᵘ_
+  toℚᵘ-injective    : Injective _≡_ _≃ᵘ_ toℚᵘ
+  fromℚᵘ-toℚᵘ       : fromℚᵘ (toℚᵘ p) ≡ p
+
+  toℚᵘ-homo-+                : Homomorphic₂ toℚᵘ _+_ ℚᵘ._+_
+  toℚᵘ-+-isRawMagmaMorphism  : IsRawMagmaMorphism +-rawMagma ℚᵘ.+-rawMagma toℚᵘ
+  toℚᵘ-+-isRawMonoidMorphism : IsRawMonoidMorphism +-rawMonoid ℚᵘ.+-rawMonoid toℚᵘ
+
+  +-assoc                    : Associative _+_
+  +-comm                     : Commutative _+_
+  +-identityˡ                : LeftIdentity 0ℚ _+_
+  +-identityʳ                : RightIdentity 0ℚ _+_
+  +-identity                 : Identity 0ℚ _+_
+  +-isMagma                  : IsMagma _≡_ _+_
+  +-isSemigroup              : IsSemigroup _≡_ _+_
+  +-0-isMonoid               : IsMonoid _≡_ _+_ 0ℚ
+  +-0-isCommutativeMonoid    : IsCommutativeMonoid _≡_ _+_ 0ℚ
+  +-rawMagma                 : RawMagma 0ℓ 0ℓ
+  +-rawMonoid                : RawMonoid 0ℓ 0ℓ
+  +-magma                    : Magma 0ℓ 0ℓ
+  +-semigroup                : Semigroup 0ℓ 0ℓ
+  +-0-monoid                 : Monoid 0ℓ 0ℓ
+  +-0-commutativeMonoid      : CommutativeMonoid 0ℓ 0ℓ
   ```
 
 * Added new functions to `Data.Sum.Base`:
