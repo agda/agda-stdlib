@@ -1450,10 +1450,10 @@ n∸n≡0 (suc n) = n∸n≡0 n
 ------------------------------------------------------------------------
 -- Properties of _∸_ and _≤_/_<_
 
-n∸m≤n : ∀ m n → n ∸ m ≤ n
-n∸m≤n zero    n       = ≤-refl
-n∸m≤n (suc m) zero    = ≤-refl
-n∸m≤n (suc m) (suc n) = ≤-trans (n∸m≤n m n) (n≤1+n n)
+m∸n≤m : ∀ m n → m ∸ n ≤ m
+m∸n≤m n       zero    = ≤-refl
+m∸n≤m zero    (suc n) = ≤-refl
+m∸n≤m (suc m) (suc n) = ≤-trans (m∸n≤m m n) (n≤1+n m)
 
 m≮m∸n : ∀ m n → m ≮ m ∸ n
 m≮m∸n m       zero    = n≮n m
@@ -1465,7 +1465,7 @@ m≮m∸n (suc m) (suc n) = m≮m∸n m n ∘ ≤-trans (n≤1+n (suc m))
 ∸-mono : _∸_ Preserves₂ _≤_ ⟶ _≥_ ⟶ _≤_
 ∸-mono z≤n         (s≤s n₁≥n₂)    = z≤n
 ∸-mono (s≤s m₁≤m₂) (s≤s n₁≥n₂)    = ∸-mono m₁≤m₂ n₁≥n₂
-∸-mono m₁≤m₂       (z≤n {n = n₁}) = ≤-trans (n∸m≤n n₁ _) m₁≤m₂
+∸-mono m₁≤m₂       (z≤n {n = n₁}) = ≤-trans (m∸n≤m _ n₁) m₁≤m₂
 
 ∸-monoˡ-≤ : ∀ {m n} o → m ≤ n → m ∸ o ≤ n ∸ o
 ∸-monoˡ-≤ o m≤n = ∸-mono {u = o} m≤n ≤-refl
@@ -1474,7 +1474,7 @@ m≮m∸n (suc m) (suc n) = m≮m∸n m n ∘ ≤-trans (n≤1+n (suc m))
 ∸-monoʳ-≤ _ m≤n = ∸-mono ≤-refl m≤n
 
 ∸-monoʳ-< : ∀ {m n o} → o < n → n ≤ m → m ∸ n < m ∸ o
-∸-monoʳ-< {n = suc n} {zero}  (s≤s o<n) (s≤s n<m) = s≤s (n∸m≤n n _)
+∸-monoʳ-< {n = suc n} {zero}  (s≤s o<n) (s≤s n<m) = s≤s (m∸n≤m _ n)
 ∸-monoʳ-< {n = suc n} {suc o} (s≤s o<n) (s≤s n<m) = ∸-monoʳ-< o<n n<m
 
 ∸-cancelʳ-≤ : ∀ {m n o} → m ≤ o → o ∸ n ≤ o ∸ m → m ≤ n
@@ -1566,7 +1566,7 @@ m∸n+n≡m {m} {n} n≤m = begin-equality
 m∸[m∸n]≡n : ∀ {m n} → n ≤ m → m ∸ (m ∸ n) ≡ n
 m∸[m∸n]≡n {m}     {_}     z≤n       = n∸n≡0 m
 m∸[m∸n]≡n {suc m} {suc n} (s≤s n≤m) = begin-equality
-  suc m ∸ (m ∸ n)   ≡⟨ +-∸-assoc 1 (n∸m≤n n m) ⟩
+  suc m ∸ (m ∸ n)   ≡⟨ +-∸-assoc 1 (m∸n≤m m n) ⟩
   suc (m ∸ (m ∸ n)) ≡⟨ cong suc (m∸[m∸n]≡n n≤m) ⟩
   suc n             ∎
 
@@ -1620,8 +1620,8 @@ m⊓n+n∸m≡n (suc m) (suc n) = cong suc $ m⊓n+n∸m≡n m n
 ∸-distribˡ-⊓-⊔ zero    zero    (suc o) = refl
 ∸-distribˡ-⊓-⊔ zero    (suc n) zero    = refl
 ∸-distribˡ-⊓-⊔ zero    (suc n) (suc o) = refl
-∸-distribˡ-⊓-⊔ (suc m) (suc n) zero    = sym (m≤n⇒m⊔n≡n (≤-step (n∸m≤n n m)))
-∸-distribˡ-⊓-⊔ (suc m) zero    (suc o) = sym (m≤n⇒n⊔m≡n (≤-step (n∸m≤n o m)))
+∸-distribˡ-⊓-⊔ (suc m) (suc n) zero    = sym (m≤n⇒m⊔n≡n (≤-step (m∸n≤m m n)))
+∸-distribˡ-⊓-⊔ (suc m) zero    (suc o) = sym (m≤n⇒n⊔m≡n (≤-step (m∸n≤m m o)))
 ∸-distribˡ-⊓-⊔ (suc m) (suc n) (suc o) = ∸-distribˡ-⊓-⊔ m n o
 
 ∸-distribʳ-⊓ : _∸_ DistributesOverʳ _⊓_
@@ -1634,8 +1634,8 @@ m⊓n+n∸m≡n (suc m) (suc n) = cong suc $ m⊓n+n∸m≡n m n
 ∸-distribˡ-⊔-⊓ m       zero    zero    = sym (⊓-idem m)
 ∸-distribˡ-⊔-⊓ zero    zero    o       = 0∸n≡0 o
 ∸-distribˡ-⊔-⊓ zero    (suc n) o       = 0∸n≡0 (suc n ⊔ o)
-∸-distribˡ-⊔-⊓ (suc m) (suc n) zero    = sym (m≤n⇒m⊓n≡m (≤-step (n∸m≤n n m)))
-∸-distribˡ-⊔-⊓ (suc m) zero    (suc o) = sym (m≤n⇒n⊓m≡m (≤-step (n∸m≤n o m)))
+∸-distribˡ-⊔-⊓ (suc m) (suc n) zero    = sym (m≤n⇒m⊓n≡m (≤-step (m∸n≤m m n)))
+∸-distribˡ-⊔-⊓ (suc m) zero    (suc o) = sym (m≤n⇒n⊓m≡m (≤-step (m∸n≤m m o)))
 ∸-distribˡ-⊔-⊓ (suc m) (suc n) (suc o) = ∸-distribˡ-⊔-⊓ m n o
 
 ∸-distribʳ-⊔ : _∸_ DistributesOverʳ _⊔_
@@ -2186,4 +2186,11 @@ Please use ∣m-n∣≡[m∸n]∨[n∸m] instead (note, you will need to switch 
 {-# WARNING_ON_USAGE +-*-suc
 "Warning: +-*-suc was deprecated in v1.2.
 Please use *-suc instead."
+#-}
+
+n∸m≤n : ∀ m n → n ∸ m ≤ n
+n∸m≤n m n = m∸n≤m n m
+{-# WARNING_ON_USAGE n∸m≤n
+"Warning: n∸m≤n was deprecated in v1.2.
+Please use m∸n≤m instead (note, you will need to switch the argument order)."
 #-}
