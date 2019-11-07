@@ -262,17 +262,28 @@ toℕ-isMonomorphism-< = record
   ; cancel              = toℕ-cancel-<
   }
 
-private
-  module <-Monomorphism = OrderMonomorphism toℕ-isMonomorphism-<
-
 ------------------------------------------------------------------------------
 -- Relational properties of _<_
 
 <-irrefl : Irreflexive _≡_ _<_
-<-irrefl = <-Monomorphism.irrefl ℕₚ.<-irrefl
+<-irrefl refl (even<even x<x) =  <-irrefl refl x<x
+<-irrefl refl (odd<odd x<x)   =  <-irrefl refl x<x
 
 <-trans : Transitive _<_
-<-trans = <-Monomorphism.trans ℕₚ.<-trans
+<-trans {zero} {_}      {2[1+ _ ]} _  _        =  0<even
+<-trans {zero} {_}      {1+[2 _ ]} _  _        =  0<odd
+<-trans (even<even x<y) (even<even y<z)        =  even<even (<-trans x<y y<z)
+<-trans (even<even x<y) (even<odd y<z)         =  even<odd (<-trans x<y y<z)
+<-trans (even<odd x<y)  (odd<even (inj₁ y<z))  =  even<even (<-trans x<y y<z)
+<-trans (even<odd x<y)  (odd<even (inj₂ refl)) =  even<even x<y
+<-trans (even<odd x<y)  (odd<odd y<z)          =  even<odd (<-trans x<y y<z)
+<-trans (odd<even (inj₁ x<y))  (even<even y<z) =  odd<even (inj₁ (<-trans x<y y<z))
+<-trans (odd<even (inj₂ refl)) (even<even x<z) =  odd<even (inj₁ x<z)
+<-trans (odd<even (inj₁ x<y))  (even<odd y<z)  =  odd<odd (<-trans x<y y<z)
+<-trans (odd<even (inj₂ refl)) (even<odd x<z)  =  odd<odd x<z
+<-trans (odd<odd x<y) (odd<even (inj₁ y<z))    =  odd<even (inj₁ (<-trans x<y y<z))
+<-trans (odd<odd x<y) (odd<even (inj₂ refl))   =  odd<even (inj₁ x<y)
+<-trans (odd<odd x<y) (odd<odd y<z)            =  odd<odd (<-trans x<y y<z)
 
 -- Comparisons and decidability are not implemented via the morphism so as
 -- to avoid reverting to linear time for the decision procedures.
@@ -308,7 +319,12 @@ _<?_ = tri⟶dec< <-cmp
 -- Structures for _<_
 
 <-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
-<-isStrictPartialOrder = <-Monomorphism.isStrictPartialOrder ℕₚ.<-isStrictPartialOrder
+<-isStrictPartialOrder = record
+  { isEquivalence = isEquivalence
+  ; irrefl        = <-irrefl
+  ; trans         = <-trans
+  ; <-resp-≈      = resp₂ _<_
+  }
 
 <-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_
 <-isStrictTotalOrder = record
@@ -411,9 +427,6 @@ toℕ-isMonomorphism-≤ = record
   ; cancel              = toℕ-cancel-≤
   }
 
-private
-  module ≤-Monomorphism = OrderMonomorphism toℕ-isMonomorphism-≤
-
 ------------------------------------------------------------------------------
 -- Relational properties of _≤_
 
@@ -424,7 +437,7 @@ private
 ≤-reflexive {x} {_} refl =  ≤-refl {x}
 
 ≤-trans : Transitive _≤_
-≤-trans = ≤-Monomorphism.trans ℕₚ.≤-trans
+≤-trans = StrictToNonStrict.trans isEquivalence (resp₂ _<_) <-trans
 
 <-≤-trans :  ∀ {x y z} → x < y → y ≤ z → x < z
 <-≤-trans x<y (inj₁ y<z)  =  <-trans x<y y<z
@@ -435,10 +448,13 @@ private
 ≤-<-trans (inj₂ refl) y<z =  y<z
 
 ≤-antisym : Antisymmetric _≡_ _≤_
-≤-antisym = ≤-Monomorphism.antisym ℕₚ.≤-antisym
+≤-antisym = StrictToNonStrict.antisym isEquivalence <-trans <-irrefl
 
 ≤-total : Total _≤_
-≤-total = ≤-Monomorphism.total ℕₚ.≤-total
+≤-total x y with <-cmp x y
+... | tri< x<y _  _   = inj₁ (<⇒≤ x<y)
+... | tri≈ _  x≡y _   = inj₁ (≤-reflexive x≡y)
+... | tri> _  _   y<x = inj₂ (<⇒≤ y<x)
 
 -- Decidability is not implemented via the morphism so as to avoid
 -- reverting to linear time for the decision procedure.
@@ -453,13 +469,23 @@ x ≤? y with <-cmp x y
 -- Structures
 
 ≤-isPreorder :  IsPreorder _≡_ _≤_
-≤-isPreorder = ≤-Monomorphism.isPreorder ℕₚ.≤-isPreorder
+≤-isPreorder = record
+  { isEquivalence = isEquivalence
+  ; reflexive     = ≤-reflexive
+  ; trans         = ≤-trans
+  }
 
 ≤-isPartialOrder :  IsPartialOrder _≡_ _≤_
-≤-isPartialOrder = ≤-Monomorphism.isPartialOrder ℕₚ.≤-isPartialOrder
+≤-isPartialOrder = record
+  { isPreorder = ≤-isPreorder
+  ; antisym    = ≤-antisym
+  }
 
 ≤-isTotalOrder : IsTotalOrder _≡_ _≤_
-≤-isTotalOrder = ≤-Monomorphism.isTotalOrder ℕₚ.≤-isTotalOrder
+≤-isTotalOrder = record
+  { isPartialOrder = ≤-isPartialOrder
+  ; total          = ≤-total
+  }
 
 ≤-isDecTotalOrder : IsDecTotalOrder _≡_ _≤_
 ≤-isDecTotalOrder = record
