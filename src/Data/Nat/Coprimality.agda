@@ -12,8 +12,8 @@
 module Data.Nat.Coprimality where
 
 open import Data.Empty
-open import Data.Fin using (toℕ; fromℕ≤)
-open import Data.Fin.Properties using (toℕ-fromℕ≤)
+open import Data.Fin using (toℕ; fromℕ<)
+open import Data.Fin.Properties using (toℕ-fromℕ<)
 open import Data.Nat
 open import Data.Nat.Divisibility
 open import Data.Nat.GCD
@@ -154,9 +154,9 @@ prime⇒coprime (suc (suc m)) p (suc n) _ 1+n<2+m {suc (suc i)}
     1 + n <⟨ 1+n<2+m ⟩
     2 + m ∎)
 
-  2+i′∣2+m : 2 + toℕ (fromℕ≤ i<m) ∣ 2 + m
+  2+i′∣2+m : 2 + toℕ (fromℕ< i<m) ∣ 2 + m
   2+i′∣2+m = subst (_∣ 2 + m)
-    (P.sym (cong (2 +_) (toℕ-fromℕ≤ i<m)))
+    (P.sym (cong (2 +_) (toℕ-fromℕ< i<m)))
     2+i∣2+m
 
 
