@@ -34,7 +34,7 @@ private
 
 isYes : Dec P → Bool
 isYes ( true because _) = true
-isYes (false because _)  = false
+isYes (false because _) = false
 
 -- The traditional name for isYes is ⌊_⌋, indicating the stripping of evidence.
 ⌊_⌋ = isYes
@@ -51,23 +51,23 @@ False Q = T (isNo Q)
 -- Gives a witness to the "truth".
 
 toWitness : {Q : Dec P} → True Q → P
-toWitness {Q =  true because [p]} _  = invert [p]
+toWitness {Q = true  because [p]} _  = invert [p]
 toWitness {Q = false because  _ } ()
 
 -- Establishes a "truth", given a witness.
 
 fromWitness : {Q : Dec P} → P → True Q
-fromWitness {Q =  true because   _ } = const _
+fromWitness {Q = true  because   _ } = const _
 fromWitness {Q = false because [¬p]} = invert [¬p]
 
 -- Variants for False.
 
 toWitnessFalse : {Q : Dec P} → False Q → ¬ P
-toWitnessFalse {Q =  true because   _ }  ()
+toWitnessFalse {Q = true  because   _ } ()
 toWitnessFalse {Q = false because [¬p]} _  = invert [¬p]
 
 fromWitnessFalse : {Q : Dec P} → ¬ P → False Q
-fromWitnessFalse {Q =  true because [p]} = flip _$_ (invert [p])
+fromWitnessFalse {Q = true  because [p]} = flip _$_ (invert [p])
 fromWitnessFalse {Q = false because  _ } = const _
 
 -- If a decision procedure returns "yes", then we can extract the
@@ -76,11 +76,11 @@ fromWitnessFalse {Q = false because  _ } = const _
 module _ {p} {P : Set p} where
 
   From-yes : Dec P → Set p
-  From-yes ( true because _) = P
+  From-yes (true  because _) = P
   From-yes (false because _) = Lift p ⊤
 
   from-yes : (p : Dec P) → From-yes p
-  from-yes (true because [p]) = invert [p]
+  from-yes (true  because [p]) = invert [p]
   from-yes (false because _ ) = _
 
 -- If a decision procedure returns "no", then we can extract the proof
@@ -88,22 +88,22 @@ module _ {p} {P : Set p} where
 
   From-no : Dec P → Set p
   From-no (false because _) = ¬ P
-  From-no ( true because _) = Lift p ⊤
+  From-no (true  because _) = Lift p ⊤
 
   from-no : (p : Dec P) → From-no p
   from-no (false because [¬p]) = invert [¬p]
-  from-no ( true because   _ ) = _
+  from-no (true  because   _ ) = _
 
 ------------------------------------------------------------------------
 -- Result of decidability
 
 dec-true : (p? : Dec P) → P → does p? ≡ true
-dec-true ( true because   _ ) p = refl
+dec-true (true  because   _ ) p = refl
 dec-true (false because [¬p]) p = ⊥-elim (invert [¬p] p)
 
 dec-false : (p? : Dec P) → ¬ P → does p? ≡ false
 dec-false (false because  _ ) ¬p = refl
-dec-false ( true because [p]) ¬p = ⊥-elim (¬p (invert [p]))
+dec-false (true  because [p]) ¬p = ⊥-elim (¬p (invert [p]))
 
 dec-yes : (p? : Dec P) → P → ∃ λ p′ → p? ≡ yes p′
 dec-yes p? p with dec-true p? p
@@ -121,6 +121,6 @@ dec-yes-irr p? irr p with dec-yes p? p
 -- Maps
 
 map′ : (P → Q) → (Q → P) → Dec P → Dec Q
-does  (map′ P→Q Q→P p?) = does p?
-proof (map′ P→Q Q→P ( true because  [p])) = ofʸ (P→Q (invert [p]))
+does  (map′ P→Q Q→P p?)                   = does p?
+proof (map′ P→Q Q→P (true  because  [p])) = ofʸ (P→Q (invert [p]))
 proof (map′ P→Q Q→P (false because [¬p])) = ofⁿ (invert [¬p] ∘ Q→P)
