@@ -262,6 +262,10 @@ import IO
 -- More documentation
 ------------------------------------------------------------------------
 
+-- Examples of how decidability is handled in the library.
+
+import README.Decidability
+
 -- Some examples showing how the case expression can be used.
 
 import README.Case

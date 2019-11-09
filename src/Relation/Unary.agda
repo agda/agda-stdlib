@@ -25,7 +25,7 @@ private
     C : Set c
 
 ------------------------------------------------------------------------
--- Unary relations
+-- Definition
 
 -- Unary relations are known as predicates and `Pred A ℓ` can be viewed
 -- as some property that elements of type A might satisfy.

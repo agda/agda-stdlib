@@ -2,7 +2,12 @@
 -- The Agda standard library
 --
 -- Integers, basic types and operations
-------------------------------------------------------------------------
+-------------------------------------------------------------
+-----------
+
+-- See README.Data.Integer for examples of how to use and reason
+about
+-- integers.
 
 {-# OPTIONS --without-K --safe #-}
 
