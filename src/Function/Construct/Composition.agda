@@ -82,28 +82,28 @@ module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} {≈₃ : Rel C ℓ₃}
     { cong           = G.cong ∘ F.cong
     ; isEquivalence₁ = F.isEquivalence₁
     ; isEquivalence₂ = G.isEquivalence₂
-    } where module F = IsCongruent _ _ f-cong; module G = IsCongruent _ _ g-cong
+    } where module F = IsCongruent f-cong; module G = IsCongruent g-cong
 
   isInjection : IsInjection ≈₁ ≈₂ f → IsInjection ≈₂ ≈₃ g →
                 IsInjection ≈₁ ≈₃ (g ∘ f)
   isInjection f-inj g-inj = record
     { isCongruent = isCongruent F.isCongruent G.isCongruent
     ; injective   = injective ≈₁ ≈₂ ≈₃ F.injective G.injective
-    } where module F = IsInjection _ _ f-inj; module G = IsInjection _ _ g-inj
+    } where module F = IsInjection f-inj; module G = IsInjection g-inj
 
   isSurjection : IsSurjection ≈₁ ≈₂ f → IsSurjection ≈₂ ≈₃ g →
                  IsSurjection ≈₁ ≈₃ (g ∘ f)
   isSurjection f-surj g-surj = record
     { isCongruent = isCongruent F.isCongruent G.isCongruent
     ; surjective   = surjective ≈₁ ≈₂ ≈₃ G.Eq₂.trans G.cong F.surjective G.surjective
-    } where module F = IsSurjection _ _ f-surj; module G = IsSurjection _ _ g-surj
+    } where module F = IsSurjection f-surj; module G = IsSurjection g-surj
 
   isBijection : IsBijection ≈₁ ≈₂ f → IsBijection ≈₂ ≈₃ g →
                 IsBijection ≈₁ ≈₃ (g ∘ f)
   isBijection f-bij g-bij = record
     { isInjection = isInjection F.isInjection G.isInjection
     ; surjective  = surjective ≈₁ ≈₂ ≈₃ G.Eq₂.trans G.cong F.surjective G.surjective
-    } where module F = IsBijection _ _ f-bij; module G = IsBijection _ _ g-bij
+    } where module F = IsBijection f-bij; module G = IsBijection g-bij
 
 module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} {≈₃ : Rel C ℓ₃}
          {f : A → B} {g : B → C} {f⁻¹ : B → A} {g⁻¹ : C → B}
@@ -115,7 +115,7 @@ module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} {≈₃ : Rel C ℓ₃}
     { isCongruent = isCongruent F.isCongruent G.isCongruent
     ; cong₂       = congruent ≈₃ ≈₂ ≈₁ G.cong₂ F.cong₂
     ; inverseˡ    = inverseˡ ≈₁ ≈₂ ≈₃ f _ G.Eq₂.trans G.cong₁ F.inverseˡ G.inverseˡ
-    } where module F = IsLeftInverse _ _ f-invˡ; module G = IsLeftInverse _ _ g-invˡ
+    } where module F = IsLeftInverse f-invˡ; module G = IsLeftInverse g-invˡ
 
   isRightInverse : IsRightInverse ≈₁ ≈₂ f f⁻¹ → IsRightInverse ≈₂ ≈₃ g g⁻¹ →
                    IsRightInverse ≈₁ ≈₃ (g ∘ f) (f⁻¹ ∘ g⁻¹)
@@ -123,14 +123,14 @@ module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} {≈₃ : Rel C ℓ₃}
     { isCongruent = isCongruent F.isCongruent G.isCongruent
     ; cong₂       = congruent ≈₃ ≈₂ ≈₁ G.cong₂ F.cong₂
     ; inverseʳ    = inverseʳ ≈₁ ≈₂ ≈₃ _ g⁻¹ F.Eq₁.trans F.cong₂ F.inverseʳ G.inverseʳ
-    } where module F = IsRightInverse _ _ f-invʳ; module G = IsRightInverse _ _ g-invʳ
+    } where module F = IsRightInverse f-invʳ; module G = IsRightInverse g-invʳ
 
   isInverse : IsInverse ≈₁ ≈₂ f f⁻¹ → IsInverse ≈₂ ≈₃ g g⁻¹ →
               IsInverse ≈₁ ≈₃ (g ∘ f) (f⁻¹ ∘ g⁻¹)
   isInverse f-inv g-inv = record
     { isLeftInverse = isLeftInverse F.isLeftInverse G.isLeftInverse
     ; inverseʳ      = inverseʳ ≈₁ ≈₂ ≈₃ _ g⁻¹ F.Eq₁.trans F.cong₂ F.inverseʳ G.inverseʳ
-    } where module F = IsInverse _ _ f-inv; module G = IsInverse _ _ g-inv
+    } where module F = IsInverse f-inv; module G = IsInverse g-inv
 
 ------------------------------------------------------------------------
 -- Setoid bundles

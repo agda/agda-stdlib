@@ -9,7 +9,10 @@
 module Function.Construct.Identity where
 
 open import Data.Product using (_,_)
-import Function
+open import Function using (id)
+open import Function.Bundles
+import Function.Definitions as Definitions
+import Function.Structures as Structures
 open import Level
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality using (_≡_; setoid)
@@ -24,7 +27,7 @@ private
 
 module _ (_≈_ : Rel A ℓ) where
 
-  open Function _≈_ _≈_
+  open Definitions _≈_ _≈_
 
   injective : Injective id
   injective = id
@@ -49,7 +52,7 @@ module _ (_≈_ : Rel A ℓ) where
 
 module _ {_≈_ : Rel A ℓ} (isEq : IsEquivalence _≈_) where
 
-  open Function _≈_ _≈_
+  open Structures _≈_ _≈_
   open IsEquivalence isEq
 
   isCongruent : IsCongruent id
@@ -103,7 +106,6 @@ module _ {_≈_ : Rel A ℓ} (isEq : IsEquivalence _≈_) where
 module _ (S : Setoid a ℓ) where
 
   open Setoid S
-  open Function _≈_ _≈_
 
   injection : Injection S S
   injection = record
@@ -165,8 +167,6 @@ module _ (S : Setoid a ℓ) where
 -- Propositional bundles
 
 module _ (A : Set a) where
-
-  open Function {A = A} {A} _≡_ _≡_
 
   id-↣ : A ↣ A
   id-↣ = injection (setoid A)
