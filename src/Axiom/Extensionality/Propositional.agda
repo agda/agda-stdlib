@@ -8,7 +8,7 @@
 
 module Axiom.Extensionality.Propositional where
 
-open import Function.Core
+open import Function.Utilities
 open import Level using (Level; _⊔_; suc; lift)
 open import Relation.Binary.Core
 open import Relation.Binary.PropositionalEquality.Core

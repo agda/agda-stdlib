@@ -26,7 +26,7 @@ open import Data.Nat using (_≤_; _≥_; z≤n; s≤s)
 import Data.Nat.Properties as ℕₚ
 open import Data.Product using (∃; _,_; proj₂)
 
-open import Function.Core
+open import Function.Utilities
 open import Function.Bijection   using (_⤖_)
 open import Function.Equivalence using (_⇔_)
 

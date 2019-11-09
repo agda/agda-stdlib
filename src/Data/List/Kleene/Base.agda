@@ -15,7 +15,7 @@ open import Data.Sum     as Sum     using (_⊎_; inj₁; inj₂)
 open import Level        as Level   using (Level)
 
 open import Algebra.Core using (Op₂)
-open import Function.Core
+open import Function.Utilities
 
 private
   variable

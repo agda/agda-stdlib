@@ -25,7 +25,7 @@ open import Data.Nat using (ℕ; _≤_; _≥_); open ℕ; open _≤_
 import Data.Nat.Properties as ℕₚ
 open import Data.Product using (∃₂; _×_; _,_; proj₂; uncurry)
 
-open import Function.Core
+open import Function.Utilities
 open import Function.Bijection   using (_⤖_; bijection)
 open import Function.Equivalence using (_⇔_ ; equivalence)
 

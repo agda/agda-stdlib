@@ -12,7 +12,7 @@
 module Relation.Binary.PropositionalEquality.Core where
 
 open import Data.Product using (_,_)
-open import Function.Core using (_∘_)
+open import Function.Utilities using (_∘_)
 open import Level
 open import Relation.Binary.Core
 open import Relation.Binary.Definitions

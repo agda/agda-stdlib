@@ -14,7 +14,7 @@ module Algebra.Bundles where
 open import Algebra.Core
 open import Algebra.Structures
 open import Relation.Binary
-open import Function.Core
+open import Function.Utilities
 open import Level
 
 ------------------------------------------------------------------------

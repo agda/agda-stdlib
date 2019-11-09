@@ -13,7 +13,7 @@ open import Algebra.Structures
 open import Algebra.FunctionProperties
 import Axiom.Extensionality.Propositional as Ext
 open import Axiom.UniquenessOfIdentityProofs
-open import Function.Core
+open import Function.Utilities
 open import Function.Equality using (Π; _⟶_; ≡-setoid)
 open import Level using (Level; _⊔_)
 open import Data.Product using (∃)
