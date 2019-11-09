@@ -4,8 +4,7 @@
 -- Integers
 ------------------------------------------------------------------------
 
--- See README.Data.Integer for examples of how to use and reason
-about
+-- See README.Data.Integer for examples of how to use and reason about
 -- integers.
 
 {-# OPTIONS --without-K --safe #-}

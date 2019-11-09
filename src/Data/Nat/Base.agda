@@ -4,8 +4,7 @@
 -- Natural numbers, basic types and operations
 ------------------------------------------------------------------------
 
--- See README.Data.Nat for examples of how to use and reason
-about
+-- See README.Data.Nat for examples of how to use and reason about
 -- naturals.
 
 {-# OPTIONS --without-K --safe #-}
