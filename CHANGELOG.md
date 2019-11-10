@@ -12,14 +12,14 @@ Highlights
 
 * Fresh lists.
 
-* First algebraic proofs for ℚ.
+* First proofs of algebraic properties for operations over ℚ.
 
 * Improved reduction behaviour for all decidability proofs.
 
 Bug-fixes
 ---------
 
-* The record `RawRing` from `Algebra` now contains an equality relation to
+* The record `RawRing` from `Algebra` now includes an equality relation to
   make it consistent with the othor `Raw` bundles.
 
 * In `Relation.Binary`:
@@ -27,10 +27,9 @@ Bug-fixes
   - `IsDecStrictPartialOrder` now re-exports the contents of `IsStrictPartialOrder`.
 
 * Due to bug #3879 in Agda, the pattern synonyms `0F`, `1F`, ... added to
-  `Data.Fin.Base` in version 1.1 have been found to result in unavoidable and
-  undesirable behaviour when case splitting on `ℕ` when `Data.Fin` has been
-  imported. These pattern synonyms have therefore been moved to the new module
-  `Data.Fin.Patterns`.
+  `Data.Fin.Base` in version 1.1 resulted in unavoidable and undesirable behaviour
+  when case splitting on `ℕ` when `Data.Fin` has been imported. These pattern
+  synonyms have therefore been moved to the new module `Data.Fin.Patterns`.
 
 Non-backwards compatible changes
 --------------------------------
@@ -71,16 +70,16 @@ Non-backwards compatible changes
   not just that of `Algebra.Bundles`.
   * **Compatibility:** Modules which previously imported both `Algebra` and
   `Algebra.FunctionProperties` and/or `Algebra.Structures` will need small changes.
-  - If either of `FunctionProperties` or `Structures` are explicitly parameterised by an
-  equality relation then import `Algebra.Bundles` instead of `Algebra`.
-  - Otherwise just remove the `FunctionProperties` and `Structures` imports entirely.
+          - If either of `FunctionProperties` or `Structures` are explicitly parameterised by an
+          equality relation then import `Algebra.Bundles` instead of `Algebra`.
+          - Otherwise just remove the `FunctionProperties` and `Structures` imports entirely.
 
 ### New function hierarchy
 
-* The current function hierarchy has several deeper problems than the other two:
+* The problems with the current function hierarchy run deeper problems than the other two:
   1. The raw functions are wrapped in the equality-preserving
      type `_⟶_` from `Function.Equality`. As the rest of the library
-     very rarely uses such wrapped functions, it is almost impossible
+     rarely uses such wrapped functions, it is very difficult
      to write code that interfaces neatly between the `Function` hierarchy
      and, for example, the `Algebra` hierarchy.
   2. The hierarchy doesn't follow the same pattern as the other record
@@ -129,16 +128,17 @@ Non-backwards compatible changes
   that occurs is when importing both `Function` and e.g. `Function.Injection`. In this
   case the old and new definitions of `Injection` will clash. In the short term this
   can be fixed immediately by importing `Function.Base` instead of `Function`.
-  However in the longer term it is encouraged to migrate to the new hierarchy.
+  However in the longer term it is encouraged to migrate away from `Function.Injection`
+  and to use the new hierarchy instead.
 
-* Finally in the new hierarchy the propositional bundle for left inverses in
-  `Function.Bundles` has been renamed from `_↞_` to `_↩_` in order to make room for
+* Finally the propositional bundle for left inverses in `Function.Bundles` has been
+  renamed in the new hierarchy from `_↞_` to `_↩_`. This is in order to make room for
   the new bundle for right inverse `_↪_`.
 
 #### Harmonizing `List.All` and `Vec` in their role as finite maps.
 
 * The function `updateAt` in `Data.List.Relation.Unary.All` is analogous
-  to `updateAt` in `Data.Vec.Base` and hence, the API for the former has
+  to `updateAt` in `Data.Vec.Base` and hence the API for the former has
   been refactored to match the latter.
 
 * Added a new "points-to" relation `_[_]=_` in `Data.List.Relation.Unary.All`:
@@ -151,19 +151,14 @@ Non-backwards compatible changes
   relation rather than the function `lookup`. The old proofs are available with
   minor variations under the names `lookup∘updateAt` and `updateAt-cong-relative`.
 
-#### Removing irrelevance where not strictly necessary
+#### Other
 
 * Version 1.1 in the library added irrelevance to various places in the library.
-  Unfortunately this exposed the library to several irrelevance related bugs.
+  Unfortunately this exposed the library to several irrelevance-related bugs.
   The decision has therefore been taken to roll-back these additions until
-  irrelevance is more stable. In particular it has been removed from the
-  following functions:
-
-* In `Data.Nat.DivMod`: `_%_`, `_/_`, `_div_`, `_mod_`.
-
-* In `Data.Fin.Base`: `fromℕ≤`, `inject≤`.
-
-#### Other
+  irrelevance is more stable. In particular it has been removed from
+  `_%_`, `_/_`, `_div_`, `_mod_` in `Data.Nat.DivMod` and from `fromℕ≤`, `inject≤`
+  in `Data.Fin.Base`.
 
 * The proofs `isPreorder` and `preorder` have been moved from the `Setoid`
   record to the module `Relation.Binary.Properties.Setoid`.
@@ -173,14 +168,14 @@ Non-backwards compatible changes
   GCD. Although less elegant than the previous implementation, it's
   reduction behaviour is much easier to reason about.
 
-Re-implementations/deprecations
+Re-implementations and deprecations
 -------------------------------
 
 ### `Data.Bin` → `Data.Nat.Binary`
 
-* The current implementation of naturals represented in binary natively in Agda
-  has proven hard to work with. Therefore a new, simpler implementation which avoids
-  using `List` has been added as `Data.Nat.Binary`.
+* The current implementation of binary naturals in Agda has proven hard to work with.
+  Therefore a new, simpler implementation which avoids using `List` has been added
+  as `Data.Nat.Binary`.
   ```agda
   Data.Nat.Binary
   Data.Nat.Binary.Base
@@ -309,26 +304,27 @@ Other major additions
 
 ### Other new modules
 
-* Properties for `Semigroup` and `CommutativeSemigroup`.
+* Properties for `Semigroup` and `CommutativeSemigroup`. Contains all the
+  non-trivial 3 element permutations. Useful for equational reasoning.
   ```agda
   Algebra.Properties.Semigroup
   Algebra.Properties.CommutativeSemigroup
   ```
-  Contains all the non-trivial 3 element permutations. Useful for equational
-  reasoning.
+
 
 * A map interface for AVL trees.
   ```agda
   Data.AVL.Map
   ```
 
-* Level polymorphic versions for the bottom and top types.
+* Level polymorphic versions for the bottom and top types. Useful in
+  getting rid of the need to use `Lift`.
   ```agda
   Data.Unit.Polymorphic
   Data.Unit.Polymorphic.Properties
   Data.Empty.Polymorphic
   ```
-  Useful in getting rid of the need to use `Lift`.
+
 
 * Greatest common divisor and least common multiples for integers:
   ```agda
@@ -348,23 +344,25 @@ Other major additions
   Data.List.Fresh.Membership.Properties
   ```
 
-* Kleene lists.
+* Kleene lists. Useful when needing to distinguish between empty and non-empty lists.
   ```agda
   Data.List.Kleene
   Data.List.Kleene.AsList
   Data.List.Kleene.Base
   ```
-  Useful when needing to distinguish between empty and non-empty lists.
+
 
 * Predicate over lists in which every neighbouring pair of elements is related.
+  Useful for implementing paths in graphs.
   ```agda
   Data.List.Relation.Unary.Linked
   Data.List.Relation.Unary.Linked.Properties
   ```
-  Useful for implementing paths.
 
-*
+* Disjoint sublists.
+  ```agda
   Data.List.Relation.Binary.Sublist.Propositional.Disjoint
+  ```
 
 * Rationals whose numerator and denominator are not necessarily normalised (i.e. coprime).
   ```
@@ -375,7 +373,8 @@ Other major additions
   and that evaluation is inefficient as the top and the bottom will inevitably
   blow up. However they are significantly easier to reason about then the existing
   normalised implementation in `Data.Rational`. The new monomorphism infrastructure
-  (see below) can therefore be used to transfer proofs to the normalised implementation.
+  (see below) is used to transfer proofs from these new unnormalised rationals
+  to the existing normalised implementation.
 
 * Basic constructions for the new funciton hierarchy.
   ```agda
@@ -389,12 +388,12 @@ Other major additions
   Foreign.Haskell.Either
   ```
 
-* Properties of setoids
+* Properties of setoids.
   ```agda
   Relation.Binary.Properties.Setoid
   ```
 
-* New modules for reasoning over partial setoids.
+* Reasoning over partial setoids.
   ```
   Relation.Binary.Reasoning.Base.Partial
   Relation.Binary.Reasoning.PartialSetoid
