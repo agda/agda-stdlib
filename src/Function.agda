@@ -20,7 +20,7 @@ module Function
   where
 
 open import Function.Core public
+open import Function.Base public
 open import Function.Definitions _≈₁_ _≈₂_ public
 open import Function.Structures  _≈₁_ _≈₂_ public
 open import Function.Bundles public
-open import Function.Utilities public

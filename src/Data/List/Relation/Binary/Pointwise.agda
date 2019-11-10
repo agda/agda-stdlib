@@ -8,7 +8,7 @@
 
 module Data.List.Relation.Binary.Pointwise where
 
-open import Function.Utilities
+open import Function.Base
 open import Function.Inverse using (Inverse)
 open import Data.Product hiding (map)
 open import Data.List.Base as List hiding (map; head; tail; uncons)

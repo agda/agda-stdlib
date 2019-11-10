@@ -101,7 +101,7 @@ Non-backwards compatible changes
   created that follows the same structure found in `Relation.Binary` and `Algebra`.
   In particular:
   - The `Fun1` and `Fun2` from `Function` have been moved to `Function.Core`.
-  - The rest of the old contents of `Function` have been moved to `Function.Utilities`.
+  - The rest of the old contents of `Function` have been moved to `Function.Base`.
   - Added a new module `Function.Definitions` containing definitions like
         `Injective`, `Surjective` which are parameterised by the equality relations
     over the domain and codomain.
@@ -128,7 +128,7 @@ Non-backwards compatible changes
 * **Compatibility:** As most of changes involve adding new modules, the only problem
   that occurs is when importing both `Function` and e.g. `Function.Injection`. In this
   case the old and new definitions of `Injection` will clash. In the short term this
-  can be fixed immediately by importing `Function.Utilities` instead of `Function`.
+  can be fixed immediately by importing `Function.Base` instead of `Function`.
   However in the longer term it is encouraged to migrate to the new hierarchy.
 
 * Finally in the new hierarchy the propositional bundle for left inverses in

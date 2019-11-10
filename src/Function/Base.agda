@@ -8,7 +8,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Function.Utilities where
+module Function.Base where
 
 open import Level
 open import Strict

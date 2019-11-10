@@ -15,7 +15,7 @@ module Function.Structures
   where
 
 open import Data.Product using (∃; _×_; _,_)
-open import Function.Utilities
+open import Function.Base
 open import Function.Definitions
 open import Level using (_⊔_)
 

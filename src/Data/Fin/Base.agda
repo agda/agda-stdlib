@@ -15,7 +15,7 @@ module Data.Fin.Base where
 open import Data.Empty using (⊥-elim)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; z≤n; s≤s)
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
-open import Function.Utilities using (id; _∘_; _on_)
+open import Function.Base using (id; _∘_; _on_)
 import Data.Nat.Properties as ℕₚ
 open import Level using () renaming (zero to ℓ₀)
 open import Relation.Nullary using (yes; no)

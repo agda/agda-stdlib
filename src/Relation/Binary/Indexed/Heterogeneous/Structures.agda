@@ -15,7 +15,7 @@ module Relation.Binary.Indexed.Heterogeneous.Structures
   {i a ℓ} {I : Set i} (A : I → Set a) (_≈_ : IRel A ℓ)
   where
 
-open import Function.Utilities
+open import Function.Base
 open import Level using (suc; _⊔_)
 open import Relation.Binary using (_⇒_)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)

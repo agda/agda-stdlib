@@ -10,7 +10,7 @@
 
 module Relation.Binary.Core where
 
-open import Function.Utilities using (_on_)
+open import Function.Base using (_on_)
 open import Level using (Level; _⊔_; suc)
 
 private

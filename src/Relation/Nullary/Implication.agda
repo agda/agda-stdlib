@@ -10,7 +10,7 @@ module Relation.Nullary.Implication where
 
 open import Data.Bool.Base
 open import Data.Empty
-open import Function.Utilities
+open import Function.Base
 open import Relation.Nullary
 open import Level
 

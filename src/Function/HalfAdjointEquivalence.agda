@@ -8,7 +8,7 @@
 
 module Function.HalfAdjointEquivalence where
 
-open import Function.Utilities
+open import Function.Base
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse as Inv using (_↔_; module Inverse)
 open import Level
