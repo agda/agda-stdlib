@@ -11,7 +11,7 @@
 
 module Relation.Binary.Indexed.Heterogeneous.Bundles where
 
-open import Function.Core
+open import Function.Base
 open import Level using (suc; _⊔_)
 open import Relation.Binary using (_⇒_)
 open import Relation.Binary.PropositionalEquality.Core as P using (_≡_)

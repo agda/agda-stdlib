@@ -12,7 +12,7 @@ open import Data.Maybe.Base using (just; nothing; decToMaybe)
 open import Data.Sum as Sum using (inj₁; inj₂)
 open import Data.Product using (_,_)
 open import Data.Empty.Irrelevant using (⊥-elim)
-open import Function.Core using (_∘_; _$_; flip)
+open import Function.Base using (_∘_; _$_; flip)
 open import Level using (Level)
 open import Relation.Binary.Core
 open import Relation.Binary.Definitions

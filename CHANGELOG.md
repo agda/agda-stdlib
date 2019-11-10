@@ -100,12 +100,13 @@ Non-backwards compatible changes
 * To address these problems a new standardised function hierarchy has been
   created that follows the same structure found in `Relation.Binary` and `Algebra`.
   In particular:
-  - The contents of `Function` has been moved to `Function.Core`
+  - The `Fun1` and `Fun2` from `Function` have been moved to `Function.Core`.
+  - The rest of the old contents of `Function` have been moved to `Function.Base`.
   - Added a new module `Function.Definitions` containing definitions like
         `Injective`, `Surjective` which are parameterised by the equality relations
     over the domain and codomain.
   - Added a new module `Function.Structures` containing definitions like
-        `IsInjection`, `IsSurjection`, once again parameterised the equality relations.
+    `IsInjection`, `IsSurjection`, once again parameterised the equality relations.
   - New module `Function.Bundles` containing definitions like `Injection`, `Surjection`
     which provide essentially the same top-level interface as currently exists,
     i.e. parameterised by setoids but hiding the function.
@@ -127,7 +128,7 @@ Non-backwards compatible changes
 * **Compatibility:** As most of changes involve adding new modules, the only problem
   that occurs is when importing both `Function` and e.g. `Function.Injection`. In this
   case the old and new definitions of `Injection` will clash. In the short term this
-  can be fixed immediately by importing `Function.Core` instead of `Function`.
+  can be fixed immediately by importing `Function.Base` instead of `Function`.
   However in the longer term it is encouraged to migrate to the new hierarchy.
 
 * Finally in the new hierarchy the propositional bundle for left inverses in
