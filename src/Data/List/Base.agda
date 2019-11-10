@@ -4,6 +4,9 @@
 -- Lists, basic types and operations
 ------------------------------------------------------------------------
 
+-- See README.Data.List for examples of how to use and reason about
+-- lists.
+
 {-# OPTIONS --without-K --safe #-}
 
 module Data.List.Base where

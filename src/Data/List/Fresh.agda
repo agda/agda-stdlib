@@ -6,6 +6,9 @@
 -- Lambda-Calculus with Explicit Substitutions"
 ------------------------------------------------------------------------
 
+-- See README.Data.List.Fresh and README.Data.Trie.NonDependent for
+-- examples of how to use fresh lists.
+
 {-# OPTIONS --without-K --safe #-}
 
 module Data.List.Fresh where

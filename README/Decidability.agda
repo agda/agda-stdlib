@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module README.Dec where
+module README.Decidability where
 
 -- Reflects and Dec are defined in Relation.Nullary, and operations on them can
 -- be found in Relation.Nullary.Reflects and Relation.Nullary.Decidable.
