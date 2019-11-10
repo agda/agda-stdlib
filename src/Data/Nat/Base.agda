@@ -4,6 +4,9 @@
 -- Natural numbers, basic types and operations
 ------------------------------------------------------------------------
 
+-- See README.Data.Nat for examples of how to use and reason about
+-- naturals.
+
 {-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.Base where

@@ -9,6 +9,8 @@
 -- The search tree invariant is specified using the technique
 -- described by Conor McBride in his talk "Pivotal pragmatism".
 
+-- See README.Data.AVL for examples of how to use AVL trees.
+
 {-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary using (StrictTotalOrder)
