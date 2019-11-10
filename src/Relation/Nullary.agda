@@ -42,9 +42,9 @@ data Reflects {p} (P : Set p) : Bool → Set p where
 -- the boolean result and the `proof` term which contains a proof that
 -- reflects the boolean result. This definition allows the boolean
 -- part of the decision procedure to compute independently from the
--- proof portion. This translates to better computational properties
--- when we only care about the result and not the proof. See
--- README.Decidability for further details.
+-- proof. This leads to better computational behaviour when we only care
+-- about the result and not the proof. See README.Decidability for
+-- further details.
 
 record Dec {p} (P : Set p) : Set p where
   constructor _because_
