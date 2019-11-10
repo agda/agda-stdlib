@@ -38,15 +38,18 @@ data Reflects {p} (P : Set p) : Bool → Set p where
 ------------------------------------------------------------------------
 -- Decidability.
 
--- This definition allows the boolean portion of the value to compute
--- independently from the proof portion. This translates to better
--- computational properties when we only care about the result and not
--- the proof. See README.Decidability for further details.
+-- Decidability proofs have two parts: the `does` term which contains
+-- the boolean result and the `proof` term which contains a proof that
+-- reflects the boolean result. This definition allows the boolean
+-- part of the decision procedure to compute independently from the
+-- proof portion. This translates to better computational properties
+-- when we only care about the result and not the proof. See
+-- README.Decidability for further details.
 
 record Dec {p} (P : Set p) : Set p where
   constructor _because_
   field
-    does : Bool
+    does  : Bool
     proof : Reflects P does
 
 open Dec public
