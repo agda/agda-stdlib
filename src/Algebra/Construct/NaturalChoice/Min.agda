@@ -12,13 +12,14 @@ module Algebra.Construct.NaturalChoice.Min
   {a ℓ₁ ℓ₂} (totalOrder : TotalOrder a ℓ₁ ℓ₂)
   where
 
-open import Algebra
+open import Algebra.Core
+open import Algebra.Bundles
 open import Data.Sum using (inj₁; inj₂; [_,_])
 open import Data.Product using (_,_)
 open import Function using (id)
 
 open TotalOrder totalOrder renaming (Carrier to A)
-open import Algebra.FunctionProperties _≈_
+open import Algebra.Definitions _≈_
 open import Algebra.Structures _≈_
 
 ----------------------------------------------------------------------------
@@ -163,7 +164,7 @@ x ⊓ y with total x y
   }
 
 ----------------------------------------------------------------------------
--- Algebraic packages
+-- Algebraic bundles
 
 ⊓-magma : Magma a ℓ₁
 ⊓-magma = record

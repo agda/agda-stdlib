@@ -8,14 +8,16 @@
 
 module Relation.Binary.Consequences where
 
-open import Data.Maybe.Base using (just; nothing)
+open import Data.Maybe.Base using (just; nothing; decToMaybe)
 open import Data.Sum as Sum using (inj₁; inj₂)
 open import Data.Product using (_,_)
 open import Data.Empty.Irrelevant using (⊥-elim)
-open import Function.Core using (_∘_; _$_; flip)
+open import Function.Base using (_∘_; _$_; flip)
 open import Level using (Level)
 open import Relation.Binary.Core
+open import Relation.Binary.Definitions
 open import Relation.Nullary using (yes; no; recompute)
+open import Relation.Nullary.Decidable.Core using (map′)
 open import Relation.Unary using (∁)
 
 private
@@ -58,9 +60,7 @@ module _ {_≈_ : Rel A ℓ₁} {_≤_ : Rel A ℓ₂} where
                   Total _≤_ → Decidable _≈_ → Decidable _≤_
   total+dec⟶dec refl antisym total _≟_ x y with total x y
   ... | inj₁ x≤y = yes x≤y
-  ... | inj₂ y≤x with x ≟ y
-  ...   | yes x≈y = yes (refl x≈y)
-  ...   | no  x≉y = no (λ x≤y → x≉y (antisym x≤y y≤x))
+  ... | inj₂ y≤x = map′ refl (flip antisym y≤x) (x ≟ y)
 
 ------------------------------------------------------------------------
 -- Proofs for strict orders
@@ -150,9 +150,7 @@ module _  {_R_ : Rel A ℓ₁} {Q : Rel A ℓ₂} where
 module _ {P : REL A B p} where
 
   dec⟶weaklyDec : Decidable P → WeaklyDecidable P
-  dec⟶weaklyDec dec x y with dec x y
-  ... | yes p = just p
-  ... | no _ = nothing
+  dec⟶weaklyDec dec x y = decToMaybe (dec x y)
 
 module _ {P : REL A B ℓ₁} {Q : REL A B ℓ₂} where
 

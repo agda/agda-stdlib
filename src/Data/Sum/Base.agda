@@ -8,7 +8,7 @@
 
 module Data.Sum.Base where
 
-open import Function.Core using (_∘_; _-[_]-_ ; id)
+open import Function.Base using (_∘_; _-[_]-_ ; id)
 open import Relation.Nullary using (Dec; yes; no; ¬_)
 open import Level using (Level; _⊔_)
 
@@ -40,6 +40,12 @@ data _⊎_ (A : Set a) (B : Set b) : Set (a ⊔ b) where
 
 [_,_]′ : (A → C) → (B → C) → (A ⊎ B → C)
 [_,_]′ = [_,_]
+
+fromInj₁ : (B → A) → A ⊎ B → A
+fromInj₁ = [ id ,_]′
+
+fromInj₂ : (A → B) → A ⊎ B → B
+fromInj₂ = [_, id ]′
 
 swap : A ⊎ B → B ⊎ A
 swap (inj₁ x) = inj₂ x

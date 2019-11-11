@@ -1,12 +1,12 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Packages for types of functions
+-- Bundles for types of functions
 ------------------------------------------------------------------------
 
 -- The contents of this file should usually be accessed from `Function`.
 
--- Note that these packages differ from those found elsewhere in other
+-- Note that these bundles differ from those found elsewhere in other
 -- library hierarchies as they take Setoids as parameters. This is
 -- because a function is of no use without knowing what its domain and
 -- codomain is, as well which equalities are being considered over them.
@@ -17,7 +17,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Function.Packages where
+module Function.Bundles where
 
 import Function.Definitions as FunctionDefinitions
 import Function.Structures as FunctionStructures
@@ -33,7 +33,7 @@ private
     a b ℓ₁ ℓ₂ : Level
 
 ------------------------------------------------------------------------
--- Setoid packages
+-- Setoid bundles
 
 module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
 
@@ -42,7 +42,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
   open FunctionDefinitions _≈₁_ _≈₂_
   open FunctionStructures  _≈₁_ _≈₂_
 
-  record Injection : Set (a ⊔ b ⊔ suc (ℓ₁ ⊔ ℓ₂)) where
+  record Injection : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       f           : A → B
       cong        : f Preserves _≈₁_ ⟶ _≈₂_
@@ -63,7 +63,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       ; injective   = injective
       }
 
-  record Surjection : Set (a ⊔ b ⊔ suc (ℓ₁ ⊔ ℓ₂)) where
+  record Surjection : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       f          : A → B
       cong       : f Preserves _≈₁_ ⟶ _≈₂_
@@ -85,7 +85,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       }
 
 
-  record Bijection : Set (a ⊔ b ⊔ suc (ℓ₁ ⊔ ℓ₂)) where
+  record Bijection : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       f         : A → B
       cong      : f Preserves _≈₁_ ⟶ _≈₂_
@@ -121,7 +121,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
     open IsBijection isBijection public using (module Eq₁; module Eq₂)
 
 
-  record Equivalence : Set (a ⊔ b ⊔ suc (ℓ₁ ⊔ ℓ₂)) where
+  record Equivalence : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       f     : A → B
       g     : B → A
@@ -129,7 +129,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       cong₂ : g Preserves _≈₂_ ⟶ _≈₁_
 
 
-  record LeftInverse : Set (a ⊔ b ⊔ suc (ℓ₁ ⊔ ℓ₂)) where
+  record LeftInverse : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       f         : A → B
       g         : B → A
@@ -160,7 +160,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       }
 
 
-  record RightInverse : Set (a ⊔ b ⊔ suc (ℓ₁ ⊔ ℓ₂)) where
+  record RightInverse : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       f         : A → B
       g         : B → A
@@ -189,7 +189,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       }
 
 
-  record Inverse : Set (a ⊔ b ⊔ suc (ℓ₁ ⊔ ℓ₂)) where
+  record Inverse : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       f         : A → B
       f⁻¹       : B → A
@@ -229,9 +229,9 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
     open IsInverse isInverse public using (module Eq₁; module Eq₂)
 
 ------------------------------------------------------------------------
--- Packages specialised for propositional equality
+-- Bundles specialised for propositional equality
 
-infix 3 _↣_ _↠_ _⤖_ _⇔_ _↞_ _↔_
+infix 3 _↣_ _↠_ _⤖_ _⇔_ _↩_ _↪_ _↔_
 
 _↣_ : Set a → Set b → Set _
 A ↣ B = Injection (≡.setoid A) (≡.setoid B)
@@ -245,8 +245,11 @@ A ⤖ B = Bijection (≡.setoid A) (≡.setoid B)
 _⇔_ : Set a → Set b → Set _
 A ⇔ B = Equivalence (≡.setoid A) (≡.setoid B)
 
-_↞_ : Set a → Set b → Set _
-A ↞ B = LeftInverse (≡.setoid A) (≡.setoid B)
+_↩_ : Set a → Set b → Set _
+A ↩ B = LeftInverse (≡.setoid A) (≡.setoid B)
+
+_↪_ : Set a → Set b → Set _
+A ↪ B = RightInverse (≡.setoid A) (≡.setoid B)
 
 _↔_ : Set a → Set b → Set _
 A ↔ B = Inverse (≡.setoid A) (≡.setoid B)
@@ -287,13 +290,22 @@ module _ {A : Set a} {B : Set b} where
     ; cong₂ = ≡.cong g
     }
 
-  mk↞ : ∀ {f : A → B} {g : B → A} → Inverseˡ f g → A ↞ B
-  mk↞ {f} {g} invˡ = record
+  mk↩ : ∀ {f : A → B} {g : B → A} → Inverseˡ f g → A ↩ B
+  mk↩ {f} {g} invˡ = record
     { f        = f
     ; g        = g
     ; cong₁    = ≡.cong f
     ; cong₂    = ≡.cong g
     ; inverseˡ = invˡ
+    }
+
+  mk↪ : ∀ {f : A → B} {g : B → A} → Inverseʳ f g → A ↪ B
+  mk↪ {f} {g} invʳ = record
+    { f        = f
+    ; g        = g
+    ; cong₁    = ≡.cong f
+    ; cong₂    = ≡.cong g
+    ; inverseʳ = invʳ
     }
 
   mk↔ : ∀ {f : A → B} {f⁻¹ : B → A} → Inverseᵇ f f⁻¹ → A ↔ B

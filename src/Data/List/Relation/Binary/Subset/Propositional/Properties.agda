@@ -23,7 +23,7 @@ import Data.List.Relation.Binary.Subset.Setoid.Properties as Setoidₚ
 open import Data.List.Relation.Binary.Subset.Propositional
 import Data.Product as Prod
 import Data.Sum as Sum
-open import Function.Core using (_∘_; _∘′_; id; _$_)
+open import Function.Base using (_∘_; _∘′_; id; _$_)
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse as Inv using (_↔_; module Inverse)
 open import Function.Equivalence using (module Equivalence)
@@ -115,9 +115,9 @@ module _ {a} {A : Set a} {xss yss : List (List A)} where
 
   concat-mono : xss ⊆ yss → concat xss ⊆ concat yss
   concat-mono xss⊆yss =
-    _⟨$⟩_ (Inverse.to $ concat-∈↔ {a = a}) ∘
+    _⟨$⟩_ (Inverse.to $ concat-∈↔ {A = A}) ∘
     Prod.map id (Prod.map id xss⊆yss) ∘
-    _⟨$⟩_ (Inverse.from $ concat-∈↔ {a = a})
+    _⟨$⟩_ (Inverse.from $ concat-∈↔ {A = A})
 
 ------------------------------------------------------------------------
 -- _>>=_
@@ -126,9 +126,9 @@ module _ {ℓ} {A B : Set ℓ} (f g : A → List B) {xs ys} where
 
   >>=-mono : xs ⊆ ys → (∀ {x} → f x ⊆ g x) → (xs >>= f) ⊆ (ys >>= g)
   >>=-mono xs⊆ys f⊆g =
-    _⟨$⟩_ (Inverse.to $ >>=-∈↔ {ℓ = ℓ}) ∘
+    _⟨$⟩_ (Inverse.to $ >>=-∈↔ {A = A}) ∘
     Prod.map id (Prod.map xs⊆ys f⊆g) ∘
-    _⟨$⟩_ (Inverse.from $ >>=-∈↔ {ℓ = ℓ})
+    _⟨$⟩_ (Inverse.from $ >>=-∈↔ {A = A})
 
 ------------------------------------------------------------------------
 -- _⊛_
@@ -148,9 +148,9 @@ module _ {ℓ} {A B : Set ℓ} {xs₁ ys₁ : List A} {xs₂ ys₂ : List B} whe
 
   _⊗-mono_ : xs₁ ⊆ ys₁ → xs₂ ⊆ ys₂ → (xs₁ ⊗ xs₂) ⊆ (ys₁ ⊗ ys₂)
   xs₁⊆ys₁ ⊗-mono xs₂⊆ys₂ =
-    _⟨$⟩_ (Inverse.to $ ⊗-∈↔ {ℓ = ℓ}) ∘
+    _⟨$⟩_ (Inverse.to $ ⊗-∈↔ {A = A}) ∘
     Prod.map xs₁⊆ys₁ xs₂⊆ys₂ ∘
-    _⟨$⟩_ (Inverse.from $ ⊗-∈↔ {ℓ = ℓ})
+    _⟨$⟩_ (Inverse.from $ ⊗-∈↔ {A = A})
 
 ------------------------------------------------------------------------
 -- any

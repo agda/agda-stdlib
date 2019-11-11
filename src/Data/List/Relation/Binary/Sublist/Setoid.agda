@@ -7,6 +7,7 @@
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --postfix-projections #-}
 
 open import Relation.Binary using (Setoid; Rel)
 
@@ -22,11 +23,11 @@ import Data.List.Relation.Binary.Sublist.Heterogeneous.Core
   as HeterogeneousCore
 import Data.List.Relation.Binary.Sublist.Heterogeneous.Properties
   as HeterogeneousProperties
-open import Data.Product using (∃; _,_)
+open import Data.Product using (∃; ∃₂; _,_; proj₂)
 
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary using (¬_; Dec; yes; no)
 
 open Setoid S renaming (Carrier to A)
 open SetoidEquality S
@@ -55,6 +56,9 @@ open HeterogeneousCore _≈_ using ([]; _∷_; _∷ʳ_) public
 open Heterogeneous {R = _≈_} hiding (Sublist; []; _∷_; _∷ʳ_) public
   renaming
   (toAny to to∈; fromAny to from∈)
+
+open Disjoint      public using ([])
+open DisjointUnion public using ([])
 
 ------------------------------------------------------------------------
 -- Relational properties holding for Setoid case
@@ -142,6 +146,8 @@ open RawPushout
 
 -- Extending the right upper corner.
 
+infixr 5 _∷ʳ₁_ _∷ʳ₂_
+
 _∷ʳ₁_ : ∀ {xs ys zs : List A} {τ : xs ⊆ ys} {σ : xs ⊆ zs} →
         (y : A) → RawPushout τ σ → RawPushout (y ∷ʳ τ) σ
 y ∷ʳ₁ rpo = record
@@ -185,3 +191,64 @@ z ∷ʳ₂ rpo = record
 ⊆-joinˡ τ σ = upperBound rpo , ⊆-trans τ (leg₁ rpo)
   where
   rpo = ⊆-pushoutˡ τ σ
+
+
+------------------------------------------------------------------------
+-- Upper bound of two sublists xs,ys ⊆ zs
+
+record UpperBound {xs ys zs} (τ : xs ⊆ zs) (σ : ys ⊆ zs) : Set (c ⊔ ℓ) where
+  field
+    {theUpperBound} : List A
+    sub  : theUpperBound ⊆ zs
+    inj₁ : xs ⊆ theUpperBound
+    inj₂ : ys ⊆ theUpperBound
+
+open UpperBound
+
+infixr 5 _∷ₗ-ub_ _∷ᵣ-ub_
+
+∷ₙ-ub : ∀ {xs ys zs} {τ : xs ⊆ zs} {σ : ys ⊆ zs} {x} →
+        UpperBound τ σ → UpperBound (x ∷ʳ τ) (x ∷ʳ σ)
+∷ₙ-ub u = record
+  { sub  = _ ∷ʳ u .sub
+  ; inj₁ = u .inj₁
+  ; inj₂ = u .inj₂
+  }
+
+_∷ₗ-ub_ : ∀ {xs ys zs} {τ : xs ⊆ zs} {σ : ys ⊆ zs} {x y} →
+         (x≈y : x ≈ y) → UpperBound τ σ → UpperBound (x≈y ∷ τ) (y ∷ʳ σ)
+x≈y ∷ₗ-ub u = record
+  { sub = refl ∷ u .sub
+  ; inj₁ = x≈y ∷ u .inj₁
+  ; inj₂ = _  ∷ʳ u .inj₂
+  }
+
+_∷ᵣ-ub_ : ∀ {xs ys zs} {τ : xs ⊆ zs} {σ : ys ⊆ zs} {x y} →
+         (x≈y : x ≈ y) → UpperBound τ σ → UpperBound (y ∷ʳ τ) (x≈y ∷ σ)
+x≈y ∷ᵣ-ub u = record
+  { sub  = refl ∷ u .sub
+  ; inj₁ = _   ∷ʳ u .inj₁
+  ; inj₂ = x≈y  ∷ u .inj₂
+  }
+
+------------------------------------------------------------------------
+-- Disjoint union
+--
+-- Two non-overlapping sublists τ : xs ⊆ zs and σ : ys ⊆ zs
+-- can be joined in a unique way if τ and σ are respected.
+--
+-- For instance, if τ : [x] ⊆ [x,y,x] and σ : [y] ⊆ [x,y,x]
+-- then the union will be [x,y] or [y,x], depending on whether
+-- τ picks the first x or the second one.
+--
+-- NB: If the content of τ and σ were ignored then the union would not
+-- be unique.  Expressing uniqueness would require a notion of equality
+-- of sublist proofs, which we do not (yet) have for the setoid case
+-- (however, for the propositional case).
+
+⊆-disjoint-union : ∀ {xs ys zs} {τ : xs ⊆ zs} {σ : ys ⊆ zs} →
+                   Disjoint τ σ → UpperBound τ σ
+⊆-disjoint-union []         = record { sub = [] ; inj₁ = [] ; inj₂ = [] }
+⊆-disjoint-union (x   ∷ₙ d) = ∷ₙ-ub (⊆-disjoint-union d)
+⊆-disjoint-union (x≈y ∷ₗ d) = x≈y ∷ₗ-ub (⊆-disjoint-union d)
+⊆-disjoint-union (x≈y ∷ᵣ d) = x≈y ∷ᵣ-ub (⊆-disjoint-union d)

@@ -13,7 +13,7 @@ module Relation.Binary.Properties.MeetSemilattice
 
 open MeetSemilattice M
 
-import Algebra.FunctionProperties as P; open P _≈_
+open import Algebra.Definitions _≈_
 open import Data.Product
 open import Function using (flip)
 open import Relation.Binary

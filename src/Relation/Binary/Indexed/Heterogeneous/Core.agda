@@ -4,8 +4,8 @@
 -- Indexed binary relations
 ------------------------------------------------------------------------
 
--- This file contains some core definitions which are re-exported by
--- Relation.Binary.Indexed.Heterogeneous.
+-- The contents of this module should be accessed via
+-- `Relation.Binary.Indexed.Heterogeneous`.
 
 {-# OPTIONS --without-K --safe #-}
 
@@ -13,6 +13,7 @@ module Relation.Binary.Indexed.Heterogeneous.Core where
 
 open import Level
 import Relation.Binary.Core as B
+import Relation.Binary.Definitions as B
 import Relation.Binary.PropositionalEquality.Core as P
 
 ------------------------------------------------------------------------
@@ -30,17 +31,6 @@ IRel : ∀ {i a} {I : Set i} → (I → Set a) → (ℓ : Level) → Set _
 IRel A ℓ = IREL A A ℓ
 
 ------------------------------------------------------------------------
--- Simple properties of indexed binary relations
-
-Reflexive : ∀ {i a ℓ} {I : Set i} (A : I → Set a) → IRel A ℓ → Set _
-Reflexive _ _∼_ = ∀ {i} → B.Reflexive (_∼_ {i})
-
-Symmetric : ∀ {i a ℓ} {I : Set i} (A : I → Set a) → IRel A ℓ → Set _
-Symmetric _ _∼_ = ∀ {i j} → B.Sym (_∼_ {i} {j}) _∼_
-
-Transitive : ∀ {i a ℓ} {I : Set i} (A : I → Set a) → IRel A ℓ → Set _
-Transitive _ _∼_ = ∀ {i j k} → B.Trans _∼_ (_∼_ {j}) (_∼_ {i} {k})
-
 -- Generalised implication.
 
 infixr 4 _=[_]⇒_

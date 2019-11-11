@@ -35,6 +35,7 @@ unsafeModules = map modToFile
   , "Debug.Trace"
   , "Foreign.Haskell"
   , "Foreign.Haskell.Coerce"
+  , "Foreign.Haskell.Either"
   , "Foreign.Haskell.Maybe"
   , "Foreign.Haskell.Pair"
   , "IO"

@@ -193,7 +193,7 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
     where open IsStrictTotalOrder
 
 ------------------------------------------------------------------------
--- "Packages" can also be combined.
+-- "Bundles" can also be combined.
 
 module _ {a b c d e f} where
 

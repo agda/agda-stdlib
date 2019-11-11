@@ -1,8 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- This module is DEPRECATED. Please use
--- Data.Table.Relation.Binary.Equality directly.
+-- This module is DEPRECATED. Please use `Data.Vec.Functional` instead.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

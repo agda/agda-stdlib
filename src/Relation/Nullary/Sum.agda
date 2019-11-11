@@ -8,9 +8,11 @@
 
 module Relation.Nullary.Sum where
 
+open import Data.Bool.Base
 open import Data.Sum
 open import Data.Empty
 open import Level
+open import Relation.Nullary.Reflects
 open import Relation.Nullary
 
 private
@@ -22,17 +24,17 @@ private
 ------------------------------------------------------------------------
 -- Some properties which are preserved by _⊎_.
 
-infixr 1 _¬-⊎_ _⊎-dec_
+infixr 1 _¬-⊎_ _⊎-reflects_ _⊎-dec_
 
 _¬-⊎_ : ¬ P → ¬ Q → ¬ (P ⊎ Q)
-(¬p ¬-⊎ ¬q) (inj₁ p) = ¬p p
-(¬p ¬-⊎ ¬q) (inj₂ q) = ¬q q
+_¬-⊎_ = [_,_]
+
+_⊎-reflects_ : ∀ {bp bq} → Reflects P bp → Reflects Q bq →
+                           Reflects (P ⊎ Q) (bp ∨ bq)
+ofʸ  p ⊎-reflects      _ = ofʸ (inj₁ p)
+ofⁿ ¬p ⊎-reflects ofʸ  q = ofʸ (inj₂ q)
+ofⁿ ¬p ⊎-reflects ofⁿ ¬q = ofⁿ (¬p ¬-⊎ ¬q)
 
 _⊎-dec_ : Dec P → Dec Q → Dec (P ⊎ Q)
-yes p ⊎-dec _     = yes (inj₁ p)
-_     ⊎-dec yes q = yes (inj₂ q)
-no ¬p ⊎-dec no ¬q = no helper
-  where
-  helper : _ ⊎ _ → ⊥
-  helper (inj₁ p) = ¬p p
-  helper (inj₂ q) = ¬q q
+does  (p? ⊎-dec q?) = does p? ∨ does q?
+proof (p? ⊎-dec q?) = proof p? ⊎-reflects proof q?

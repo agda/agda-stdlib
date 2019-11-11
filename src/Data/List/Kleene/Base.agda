@@ -14,8 +14,8 @@ open import Data.Maybe   as Maybe   using (Maybe; just; nothing)
 open import Data.Sum     as Sum     using (_⊎_; inj₁; inj₂)
 open import Level        as Level   using (Level)
 
-open import Algebra.FunctionProperties using (Op₂)
-open import Function.Core
+open import Algebra.Core using (Op₂)
+open import Function.Base
 
 private
   variable

@@ -14,10 +14,11 @@ open import Data.Bool.Base using (Bool; false; true)
 open import Data.Nat using (ℕ; zero; suc; _+_)
 open import Data.Product as Prod hiding (map)
 open import Data.Sum using (_⊎_; inj₁; inj₂)
-open import Function.Core
+open import Function.Base
 open import Function.Equivalence using (_⇔_; equivalence)
 open import Level using (_⊔_)
 open import Relation.Binary as B hiding (Rel)
+import Relation.Binary.Properties.Setoid as SetoidProperties
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Nullary
 open import Relation.Nullary.Decidable hiding (map)
@@ -280,7 +281,7 @@ module _ {a ℓ} {A : Set a} {_∼_ : A → A → Set ℓ} where
   private
     preorder′ : IsEquivalence _∼_ → Kind → Preorder _ _ _
     preorder′ equiv =
-      preorder (Setoid.isPreorder (record { isEquivalence = equiv }))
+      preorder (SetoidProperties.isPreorder (record { isEquivalence = equiv }))
 
   -- The two equalities are equivalence relations.
 

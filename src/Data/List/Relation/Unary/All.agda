@@ -10,14 +10,17 @@ module Data.List.Relation.Unary.All where
 
 open import Category.Applicative
 open import Category.Monad
+open import Data.Empty using (⊥)
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Membership.Propositional using (_∈_)
-open import Data.Product as Prod using (∃; -,_; _×_; _,_; proj₁; proj₂)
+open import Data.Product as Prod
+  using (∃; -,_; _×_; _,_; proj₁; proj₂; uncurry)
 open import Function
 open import Level
 open import Relation.Nullary hiding (Irrelevant)
 import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Product using (_×-dec_)
 open import Relation.Unary hiding (_∈_)
 open import Relation.Binary.PropositionalEquality as P
 
@@ -28,7 +31,7 @@ private
     B : Set b
 
 ------------------------------------------------------------------------
--- Definition
+-- Definitions
 
 -- Given a predicate P, then All P xs means that every element in xs
 -- satisfies P. See `Relation.Unary` for an explanation of predicates.
@@ -39,10 +42,31 @@ data All {A : Set a} (P : Pred A p) : Pred (List A) (a ⊔ p) where
   []  : All P []
   _∷_ : ∀ {x xs} (px : P x) (pxs : All P xs) → All P (x ∷ xs)
 
+-- All P xs is a finite map from indices x ∈ xs to content P x.
+-- Relation pxs [ i ]= px states that, in map pxs, key i : x ∈ xs points to value px.
+
+infix 4 _[_]=_
+
+data _[_]=_ {A : Set a} {P : Pred A p} :
+            ∀ {x xs} → All P xs → x ∈ xs → P x → Set (a ⊔ p) where
+
+  here  : ∀ {x xs} {px : P x} {pxs : All P xs} →
+          px ∷ pxs [ here refl ]= px
+
+  there : ∀ {x xs y} {px : P x} {pxs : All P xs} {py : P y} {i : x ∈ xs} →
+          pxs [ i ]= px →
+          py ∷ pxs [ there i ]= px
+
+-- A list is empty if having an element is impossible.
+
+Null : Pred (List A) _
+Null = All (λ _ → ⊥)
+
 ------------------------------------------------------------------------
 -- Operations on All
 
 module _ {P : Pred A p} where
+
   uncons : ∀ {x xs} → All P (x ∷ xs) → P x × All P xs
   uncons (px ∷ pxs) = px , pxs
 
@@ -179,9 +203,7 @@ module _ {P : Pred A p} where
 
   all : Decidable P → Decidable (All P)
   all p []       = yes []
-  all p (x ∷ xs) with p x
-  ... | yes px = Dec.map′ (px ∷_) tail (all p xs)
-  ... | no ¬px = no (¬px ∘ head)
+  all p (x ∷ xs) = Dec.map′ (uncurry _∷_) uncons (p x ×-dec all p xs)
 
   universal : Universal P → Universal (All P)
   universal u []       = []

@@ -4,6 +4,9 @@
 -- Integers, basic types and operations
 ------------------------------------------------------------------------
 
+-- See README.Data.Integer for examples of how to use and reason about
+-- integers.
+
 {-# OPTIONS --without-K --safe #-}
 
 -- Disabled to prevent warnings from deprecated names
