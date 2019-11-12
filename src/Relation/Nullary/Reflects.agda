@@ -8,15 +8,16 @@
 
 module Relation.Nullary.Reflects where
 
+open import Agda.Builtin.Equality
 open import Data.Bool.Base
 open import Data.Empty
 open import Level
-open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary
 
-variable
-  p : Level
-  P : Set p
+private
+  variable
+    p : Level
+    P : Set p
 
 ------------------------------------------------------------------------
 -- `Reflects P b` is equivalent to `if b then P else ¬ P`.

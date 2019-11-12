@@ -16,6 +16,12 @@ open CommutativeSemigroup CS
 
 open import Relation.Binary.Reasoning.Setoid setoid
 
+------------------------------------------------------------------------------
+-- Re-export the contents of semigroup
+
+open import Algebra.Properties.Semigroup semigroup public
+
+------------------------------------------------------------------------------
 -- Permutation laws for _∙_ for three factors.
 
 ------------------------------------------------------------------------------

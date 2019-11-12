@@ -23,6 +23,7 @@ open import Function.Definitions using (Injective)
 open import Function.Definitions.Core2 using (Surjective)
 open import Level using (0ℓ)
 open import Relation.Binary
+open import Relation.Binary.Consequences
 open import Relation.Binary.Morphism
 import Relation.Binary.Morphism.OrderMonomorphism as OrderMonomorphism
 open import Relation.Binary.PropositionalEquality
@@ -261,32 +262,76 @@ toℕ-isMonomorphism-< = record
   ; cancel              = toℕ-cancel-<
   }
 
-private
-  module <-Monomorphism = OrderMonomorphism toℕ-isMonomorphism-<
-
 ------------------------------------------------------------------------------
 -- Relational properties of _<_
 
 <-irrefl : Irreflexive _≡_ _<_
-<-irrefl = <-Monomorphism.irrefl ℕₚ.<-irrefl
+<-irrefl refl (even<even x<x) =  <-irrefl refl x<x
+<-irrefl refl (odd<odd x<x)   =  <-irrefl refl x<x
 
 <-trans : Transitive _<_
-<-trans = <-Monomorphism.trans ℕₚ.<-trans
+<-trans {zero} {_}      {2[1+ _ ]} _  _        =  0<even
+<-trans {zero} {_}      {1+[2 _ ]} _  _        =  0<odd
+<-trans (even<even x<y) (even<even y<z)        =  even<even (<-trans x<y y<z)
+<-trans (even<even x<y) (even<odd y<z)         =  even<odd (<-trans x<y y<z)
+<-trans (even<odd x<y)  (odd<even (inj₁ y<z))  =  even<even (<-trans x<y y<z)
+<-trans (even<odd x<y)  (odd<even (inj₂ refl)) =  even<even x<y
+<-trans (even<odd x<y)  (odd<odd y<z)          =  even<odd (<-trans x<y y<z)
+<-trans (odd<even (inj₁ x<y))  (even<even y<z) =  odd<even (inj₁ (<-trans x<y y<z))
+<-trans (odd<even (inj₂ refl)) (even<even x<z) =  odd<even (inj₁ x<z)
+<-trans (odd<even (inj₁ x<y))  (even<odd y<z)  =  odd<odd (<-trans x<y y<z)
+<-trans (odd<even (inj₂ refl)) (even<odd x<z)  =  odd<odd x<z
+<-trans (odd<odd x<y) (odd<even (inj₁ y<z))    =  odd<even (inj₁ (<-trans x<y y<z))
+<-trans (odd<odd x<y) (odd<even (inj₂ refl))   =  odd<even (inj₁ x<y)
+<-trans (odd<odd x<y) (odd<odd y<z)            =  odd<odd (<-trans x<y y<z)
 
-<-cmp :  ∀ (x y) → Tri (x < y) (x ≡ y) (x > y)
-<-cmp = <-Monomorphism.compare ℕₚ.<-cmp
+-- Comparisons and decidability are not implemented via the morphism so as
+-- to avoid reverting to linear time for the decision procedures.
+<-cmp : Trichotomous _≡_ _<_
+<-cmp zero     zero      = tri≈ x≮0    refl  x≮0
+<-cmp zero     2[1+ _ ]  = tri< 0<even (λ()) x≮0
+<-cmp zero     1+[2 _ ]  = tri< 0<odd  (λ()) x≮0
+<-cmp 2[1+ _ ] zero      = tri> (λ())  (λ()) 0<even
+<-cmp 2[1+ x ] 2[1+ y ]  with <-cmp x y
+... | tri< x<y _    _   =  tri< lt (<⇒≢ lt) (<⇒≯ lt)  where lt = even<even x<y
+... | tri≈ _   refl _   =  tri≈ (<-irrefl refl) refl (<-irrefl refl)
+... | tri> _   _    x>y =  tri> (>⇒≮ gt) (>⇒≢ gt) gt  where gt = even<even x>y
+<-cmp 2[1+ x ] 1+[2 y ]  with <-cmp x y
+... | tri< x<y _    _ =  tri< lt (<⇒≢ lt) (<⇒≯ lt)  where lt = even<odd x<y
+... | tri≈ _   refl _ =  tri> (>⇒≮ gt) (>⇒≢ gt) gt
+  where
+  gt = subst (_< 2[1+ x ]) refl (1+[2x]<2[1+x] x)
+... | tri> _ _ y<x =  tri> (>⇒≮ gt) (>⇒≢ gt) gt  where gt = odd<even (inj₁ y<x)
+<-cmp 1+[2 _ ] zero =  tri> (>⇒≮ gt) (>⇒≢ gt) gt  where gt = 0<odd
+<-cmp 1+[2 x ] 2[1+ y ]  with <-cmp x y
+... | tri< x<y _ _ =  tri< lt (<⇒≢ lt) (<⇒≯ lt)  where lt = odd<even (inj₁ x<y)
+... | tri≈ _ x≡y _ =  tri< lt (<⇒≢ lt) (<⇒≯ lt)  where lt = odd<even (inj₂ x≡y)
+... | tri> _ _ x>y =  tri> (>⇒≮ gt) (>⇒≢ gt) gt  where gt = even<odd x>y
+<-cmp 1+[2 x ] 1+[2 y ]  with <-cmp x y
+... | tri< x<y _  _   =  tri< lt (<⇒≢ lt) (<⇒≯ lt)  where lt = odd<odd x<y
+... | tri≈ _ refl _   =  tri≈ (≡⇒≮ refl) refl (≡⇒≯ refl)
+... | tri> _ _    x>y =  tri> (>⇒≮ gt) (>⇒≢ gt) gt  where gt = odd<odd x>y
 
 _<?_ : Decidable _<_
-_<?_ = <-Monomorphism.dec ℕₚ._<?_
+_<?_ = tri⟶dec< <-cmp
 
 ------------------------------------------------------------------------------
 -- Structures for _<_
 
 <-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
-<-isStrictPartialOrder = <-Monomorphism.isStrictPartialOrder ℕₚ.<-isStrictPartialOrder
+<-isStrictPartialOrder = record
+  { isEquivalence = isEquivalence
+  ; irrefl        = <-irrefl
+  ; trans         = <-trans
+  ; <-resp-≈      = resp₂ _<_
+  }
 
 <-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_
-<-isStrictTotalOrder = <-Monomorphism.isStrictTotalOrder ℕₚ.<-isStrictTotalOrder
+<-isStrictTotalOrder = record
+  { isEquivalence = isEquivalence
+  ; trans         = <-trans
+  ; compare       = <-cmp
+  }
 
 ------------------------------------------------------------------------------
 -- Bundles for _<_
@@ -382,9 +427,6 @@ toℕ-isMonomorphism-≤ = record
   ; cancel              = toℕ-cancel-≤
   }
 
-private
-  module ≤-Monomorphism = OrderMonomorphism toℕ-isMonomorphism-≤
-
 ------------------------------------------------------------------------------
 -- Relational properties of _≤_
 
@@ -395,7 +437,7 @@ private
 ≤-reflexive {x} {_} refl =  ≤-refl {x}
 
 ≤-trans : Transitive _≤_
-≤-trans = ≤-Monomorphism.trans ℕₚ.≤-trans
+≤-trans = StrictToNonStrict.trans isEquivalence (resp₂ _<_) <-trans
 
 <-≤-trans :  ∀ {x y z} → x < y → y ≤ z → x < z
 <-≤-trans x<y (inj₁ y<z)  =  <-trans x<y y<z
@@ -406,28 +448,51 @@ private
 ≤-<-trans (inj₂ refl) y<z =  y<z
 
 ≤-antisym : Antisymmetric _≡_ _≤_
-≤-antisym = ≤-Monomorphism.antisym ℕₚ.≤-antisym
+≤-antisym = StrictToNonStrict.antisym isEquivalence <-trans <-irrefl
 
 ≤-total : Total _≤_
-≤-total = ≤-Monomorphism.total ℕₚ.≤-total
+≤-total x y with <-cmp x y
+... | tri< x<y _  _   = inj₁ (<⇒≤ x<y)
+... | tri≈ _  x≡y _   = inj₁ (≤-reflexive x≡y)
+... | tri> _  _   y<x = inj₂ (<⇒≤ y<x)
 
+-- Decidability is not implemented via the morphism so as to avoid
+-- reverting to linear time for the decision procedure.
 _≤?_ : Decidable _≤_
-_≤?_ = ≤-Monomorphism.dec ℕₚ._≤?_
+x ≤? y with <-cmp x y
+... | tri< x<y _   _   = yes (<⇒≤ x<y)
+... | tri≈ _   x≡y _   = yes (≤-reflexive x≡y)
+... | tri> _   _   y<x = no (<⇒≱ y<x)
+
 
 ------------------------------------------------------------------------------
 -- Structures
 
 ≤-isPreorder :  IsPreorder _≡_ _≤_
-≤-isPreorder = ≤-Monomorphism.isPreorder ℕₚ.≤-isPreorder
+≤-isPreorder = record
+  { isEquivalence = isEquivalence
+  ; reflexive     = ≤-reflexive
+  ; trans         = ≤-trans
+  }
 
 ≤-isPartialOrder :  IsPartialOrder _≡_ _≤_
-≤-isPartialOrder = ≤-Monomorphism.isPartialOrder ℕₚ.≤-isPartialOrder
+≤-isPartialOrder = record
+  { isPreorder = ≤-isPreorder
+  ; antisym    = ≤-antisym
+  }
 
 ≤-isTotalOrder : IsTotalOrder _≡_ _≤_
-≤-isTotalOrder = ≤-Monomorphism.isTotalOrder ℕₚ.≤-isTotalOrder
+≤-isTotalOrder = record
+  { isPartialOrder = ≤-isPartialOrder
+  ; total          = ≤-total
+  }
 
 ≤-isDecTotalOrder : IsDecTotalOrder _≡_ _≤_
-≤-isDecTotalOrder = ≤-Monomorphism.isDecTotalOrder ℕₚ.≤-isDecTotalOrder
+≤-isDecTotalOrder = record
+  { isTotalOrder = ≤-isTotalOrder
+  ; _≟_          = _≟_
+  ; _≤?_         = _≤?_
+  }
 
 ------------------------------------------------------------------------------
 -- Bundles

@@ -34,7 +34,7 @@ open import Data.Maybe.Relation.Unary.All as MAll using (just; nothing)
 open import Data.Nat using (zero; suc; z≤n; s≤s; _<_)
 open import Data.Nat.Properties using (≤-refl; ≤-step)
 open import Data.Product as Prod using (_×_; _,_; uncurry; uncurry′)
-open import Function.Core
+open import Function.Base
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence using (_⇔_; equivalence; Equivalence)
 open import Function.Inverse using (_↔_; inverse)
@@ -57,10 +57,10 @@ private
 ------------------------------------------------------------------------
 -- Properties regarding Null
 
-Null⇒null : ∀{xs : List A} → Null xs → T (null xs)
+Null⇒null : ∀ {xs : List A} → Null xs → T (null xs)
 Null⇒null [] = _
 
-null⇒Null : ∀{xs : List A} → T (null xs) → Null xs
+null⇒Null : ∀ {xs : List A} → T (null xs) → Null xs
 null⇒Null {xs = []   } _ = []
 null⇒Null {xs = _ ∷ _} ()
 
@@ -150,14 +150,14 @@ module _ {P : A → Set p} where
 
   -- `i` points to `lookup pxs i` in `pxs`.
 
-  []=lookup : ∀{x xs} (pxs : All P xs) (i : x ∈ xs) →
+  []=lookup : ∀ {x xs} (pxs : All P xs) (i : x ∈ xs) →
               pxs [ i ]= lookup pxs i
   []=lookup (px ∷ pxs) (here refl) = here
   []=lookup (px ∷ pxs) (there i)   = there ([]=lookup pxs i)
 
   -- If `i` points to `px` in `pxs`, then `lookup pxs i ≡ px`.
 
-  []=⇒lookup : ∀{x xs} {px : P x} {pxs : All P xs} {i : x ∈ xs} →
+  []=⇒lookup : ∀ {x xs} {px : P x} {pxs : All P xs} {i : x ∈ xs} →
                pxs [ i ]= px →
                lookup pxs i ≡ px
   []=⇒lookup x↦px = []=-injective ([]=lookup _ _) x↦px

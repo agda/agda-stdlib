@@ -13,11 +13,12 @@ open import Data.Nat
 open import Data.Nat.DivMod
 open import Data.Nat.Properties
 open import Data.Product
-open import Function.Core
+open import Function.Base
 open import Function.Equivalence using (_⇔_; equivalence)
 open import Level using (0ℓ)
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable as Dec using (False)
+open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Binary
 import Relation.Binary.Reasoning.PartialOrder as POR
 open import Relation.Binary.PropositionalEquality as PropEq
@@ -49,7 +50,7 @@ m%n≡0⇔n∣m : ∀ m n → m % suc n ≡ 0 ⇔ suc n ∣ m
 m%n≡0⇔n∣m m n = equivalence (m%n≡0⇒n∣m m n) (n∣m⇒m%n≡0 m n)
 
 ------------------------------------------------------------------------
--- _∣_ is a partial order
+-- Properties of _∣_ and _≤_
 
 ∣⇒≤ : ∀ {m n} → m ∣ suc n → m ≤ suc n
 ∣⇒≤ {m} {n} (divides (suc q) eq) = begin
@@ -57,6 +58,12 @@ m%n≡0⇔n∣m m n = equivalence (m%n≡0⇒n∣m m n) (n∣m⇒m%n≡0 m n)
   suc q * m  ≡⟨ sym eq ⟩
   suc n      ∎
   where open ≤-Reasoning
+
+>⇒∤ : ∀ {m n} → m > suc n → m ∤ suc n
+>⇒∤ (s≤s m>n) m∣n = contradiction (∣⇒≤ m∣n) (≤⇒≯ m>n)
+
+------------------------------------------------------------------------
+-- _∣_ is a partial order
 
 ∣-reflexive : _≡_ ⇒ _∣_
 ∣-reflexive {n} refl = divides 1 (sym (*-identityˡ n))

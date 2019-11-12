@@ -17,7 +17,7 @@ open import Data.Nat.Properties using (+-assoc; ≤-step)
 open import Data.Product as Prod
   using (_×_; _,_; proj₁; proj₂; <_,_>; uncurry)
 open import Data.Vec
-open import Function.Core
+open import Function.Base
 open import Function.Inverse using (_↔_; inverse)
 open import Level using (Level)
 open import Relation.Binary as B hiding (Decidable)
@@ -317,7 +317,7 @@ module _ {m} {ys ys' : Vec A m} where
 
 lookup-++-< : ∀ {m n} (xs : Vec A m) (ys : Vec A n) →
               ∀ i (i<m : toℕ i < m) →
-              lookup (xs ++ ys) i  ≡ lookup xs (Fin.fromℕ≤ i<m)
+              lookup (xs ++ ys) i  ≡ lookup xs (Fin.fromℕ< i<m)
 lookup-++-< (x ∷ xs) ys zero    (s≤s z≤n)       = refl
 lookup-++-< (x ∷ xs) ys (suc i) (s≤s (s≤s i<m)) =
   lookup-++-< xs ys i (s≤s i<m)

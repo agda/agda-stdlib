@@ -18,7 +18,8 @@ import Data.Integer.Properties as ℤ
 import Data.Integer.Properties
 open import Data.Rational.Unnormalised
 open import Data.Product using (_,_)
-open import Function using (_on_)
+open import Data.Sum using ([_,_]′; inj₁; inj₂)
+open import Function.Base using (_on_; _$_; _∘_)
 open import Level using (0ℓ)
 open import Relation.Nullary using (yes; no)
 import Relation.Nullary.Decidable as Dec
@@ -85,6 +86,88 @@ p ≃? q = Dec.map′ *≡* drop-*≡* (↥ p ℤ.* ↧ q ℤ.≟ ↥ q ℤ.* �
 ≃-decSetoid : DecSetoid 0ℓ 0ℓ
 ≃-decSetoid = record
   { isDecEquivalence = ≃-isDecEquivalence
+  }
+
+------------------------------------------------------------------------
+-- Properties of _≤_
+------------------------------------------------------------------------
+-- Relational properties
+
+drop-*≤* : ∀ {p q} → p ≤ q → (↥ p ℤ.* ↧ q) ℤ.≤ (↥ q ℤ.* ↧ p)
+drop-*≤* (*≤* pq≤qp) = pq≤qp
+
+≤-reflexive : _≃_ ⇒ _≤_
+≤-reflexive (*≡* eq) = *≤* (ℤ.≤-reflexive eq)
+
+≤-refl : Reflexive _≤_
+≤-refl = ≤-reflexive ≃-refl
+
+≤-trans : Transitive _≤_
+≤-trans {i = p@(mkℚᵘ n₁ d₁-1)} {j = q@(mkℚᵘ n₂ d₂-1)} {k = r@(mkℚᵘ n₃ d₃-1)} (*≤* eq₁) (*≤* eq₂)
+  = let d₁ = ↧ p; d₂ = ↧ q; d₃ = ↧ r in *≤* $
+  ℤ.*-cancelʳ-≤-pos (n₁ ℤ.* d₃) (n₃ ℤ.* d₁) d₂-1 $ begin
+  (n₁  ℤ.* d₃) ℤ.* d₂  ≡⟨ ℤ.*-assoc n₁ d₃ d₂ ⟩
+  n₁   ℤ.* (d₃ ℤ.* d₂) ≡⟨ cong (n₁ ℤ.*_) (ℤ.*-comm d₃ d₂) ⟩
+  n₁   ℤ.* (d₂ ℤ.* d₃) ≡⟨ sym (ℤ.*-assoc n₁ d₂ d₃) ⟩
+  (n₁  ℤ.* d₂) ℤ.* d₃  ≤⟨ ℤ.*-monoʳ-≤-pos d₃-1 eq₁ ⟩
+  (n₂  ℤ.* d₁) ℤ.* d₃  ≡⟨ cong (ℤ._* d₃) (ℤ.*-comm n₂ d₁) ⟩
+  (d₁ ℤ.* n₂)  ℤ.* d₃  ≡⟨ ℤ.*-assoc d₁ n₂ d₃ ⟩
+  d₁  ℤ.* (n₂  ℤ.* d₃) ≤⟨ ℤ.*-monoˡ-≤-pos d₁-1 eq₂ ⟩
+  d₁  ℤ.* (n₃  ℤ.* d₂) ≡⟨ sym (ℤ.*-assoc d₁ n₃ d₂) ⟩
+  (d₁ ℤ.* n₃)  ℤ.* d₂  ≡⟨ cong (ℤ._* d₂) (ℤ.*-comm d₁ n₃) ⟩
+  (n₃  ℤ.* d₁) ℤ.* d₂  ∎
+  where open ℤ.≤-Reasoning
+
+≤-antisym : Antisymmetric _≃_ _≤_
+≤-antisym (*≤* le₁) (*≤* le₂) = *≡* (ℤ.≤-antisym le₁ le₂)
+
+≤-total : Total _≤_
+≤-total p q = [ inj₁ ∘ *≤* , inj₂ ∘ *≤* ]′ (ℤ.≤-total
+  (↥ p ℤ.* ↧ q)
+  (↥ q ℤ.* ↧ p))
+
+infix 4 _≤?_
+_≤?_ : Decidable _≤_
+p ≤? q = Dec.map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* ↧ p)
+
+≤-irrelevant : Irrelevant _≤_
+≤-irrelevant (*≤* p≤q₁) (*≤* p≤q₂) = cong *≤* (ℤ.≤-irrelevant p≤q₁ p≤q₂)
+
+------------------------------------------------------------------------
+-- Structures
+
+≤-isPreorder : IsPreorder _≃_ _≤_
+≤-isPreorder = record
+  { isEquivalence = ≃-isEquivalence
+  ; reflexive     = ≤-reflexive
+  ; trans         = ≤-trans
+  }
+
+≤-isPartialOrder : IsPartialOrder _≃_ _≤_
+≤-isPartialOrder = record
+  { isPreorder = ≤-isPreorder
+  ; antisym    = ≤-antisym
+  }
+
+≤-isTotalOrder : IsTotalOrder _≃_ _≤_
+≤-isTotalOrder = record
+  { isPartialOrder = ≤-isPartialOrder
+  ; total          = ≤-total
+  }
+
+≤-isDecTotalOrder : IsDecTotalOrder _≃_ _≤_
+≤-isDecTotalOrder = record
+  { isTotalOrder = ≤-isTotalOrder
+  ; _≟_          = _≃?_
+  ; _≤?_         = _≤?_
+  }
+
+------------------------------------------------------------------------
+-- Bundles
+
+≤-decTotalOrder : DecTotalOrder 0ℓ 0ℓ 0ℓ
+≤-decTotalOrder = record
+  { isDecTotalOrder = ≤-isDecTotalOrder
   }
 
 ------------------------------------------------------------------------

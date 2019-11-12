@@ -28,4 +28,4 @@ open import Data.Fin.Properties public
 infix 10 #_
 
 #_ : ∀ m {n} {m<n : True (suc m ℕₚ.≤? n)} → Fin n
-#_ _ {m<n = m<n} = fromℕ≤ (toWitness m<n)
+#_ _ {m<n = m<n} = fromℕ< (toWitness m<n)
