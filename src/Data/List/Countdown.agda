@@ -66,17 +66,17 @@ private
     helper : ∀ {xs} (x₁∈xs : x₁ ∈ xs) (x₂∈xs : x₂ ∈ xs) →
              first-index x₁ x₁∈xs ≡ first-index x₂ x₂∈xs
     helper (here x₁≈x) (here x₂≈x)           = refl
-    helper (here x₁≈x) (there {x = x} x₂∈xs) with x₂ ≟ x
-    ... | yes x₂≈x = refl
-    ... | no  x₂≉x = ⊥-elim (x₂≉x (trans (sym x₁≈x₂) x₁≈x))
-    helper (there {x = x} x₁∈xs) (here x₂≈x) with x₁ ≟ x
-    ... | yes x₁≈x = refl
-    ... | no  x₁≉x = ⊥-elim (x₁≉x (trans x₁≈x₂ x₂≈x))
+    helper (here x₁≈x) (there {x = x} x₂∈xs)
+      with x₂ ≟ x | dec-true (x₂ ≟ x) (trans (sym x₁≈x₂) x₁≈x)
+    ... | _ | refl = refl
+    helper (there {x = x} x₁∈xs) (here x₂≈x)
+      with x₁ ≟ x | dec-true (x₁ ≟ x) (trans x₁≈x₂ x₂≈x)
+    ... | _ | refl = refl
     helper (there {x = x} x₁∈xs) (there x₂∈xs) with x₁ ≟ x | x₂ ≟ x
-    ... | yes x₁≈x | yes x₂≈x = refl
+    ... | true  because _ | true  because _ = refl
+    ... | false because _ | false because _ = cong suc $ helper x₁∈xs x₂∈xs
     ... | yes x₁≈x | no  x₂≉x = ⊥-elim (x₂≉x (trans (sym x₁≈x₂) x₁≈x))
     ... | no  x₁≉x | yes x₂≈x = ⊥-elim (x₁≉x (trans x₁≈x₂ x₂≈x))
-    ... | no  x₁≉x | no  x₂≉x = cong suc $ helper x₁∈xs x₂∈xs
 
   -- first-index is injective in its first argument.
 

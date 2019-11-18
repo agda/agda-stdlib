@@ -674,15 +674,15 @@ module _ {P : Pred A p} (P? : Decidable P) where
 
   takeWhile++dropWhile : ∀ xs → takeWhile P? xs ++ dropWhile P? xs ≡ xs
   takeWhile++dropWhile []       = refl
-  takeWhile++dropWhile (x ∷ xs) with P? x
-  ... | yes _ = cong (x ∷_) (takeWhile++dropWhile xs)
-  ... | no  _ = refl
+  takeWhile++dropWhile (x ∷ xs) with does (P? x)
+  ... | true  = cong (x ∷_) (takeWhile++dropWhile xs)
+  ... | false = refl
 
   span-defn : span P? ≗ < takeWhile P? , dropWhile P? >
   span-defn []       = refl
-  span-defn (x ∷ xs) with P? x
-  ... | yes _ = cong (Prod.map (x ∷_) id) (span-defn xs)
-  ... | no  _ = refl
+  span-defn (x ∷ xs) with does (P? x)
+  ... | true  = cong (Prod.map (x ∷_) id) (span-defn xs)
+  ... | false = refl
 
 ------------------------------------------------------------------------
 -- filter
@@ -691,66 +691,66 @@ module _ {P : Pred A p} (P? : Decidable P) where
 
   length-filter : ∀ xs → length (filter P? xs) ≤ length xs
   length-filter []       = z≤n
-  length-filter (x ∷ xs) with P? x
-  ... | no  _ = ≤-step (length-filter xs)
-  ... | yes _ = s≤s (length-filter xs)
+  length-filter (x ∷ xs) with does (P? x)
+  ... | false = ≤-step (length-filter xs)
+  ... | true  = s≤s (length-filter xs)
 
   filter-all : ∀ {xs} → All P xs → filter P? xs ≡ xs
   filter-all {[]}     []         = refl
   filter-all {x ∷ xs} (px ∷ pxs) with P? x
-  ... | no  ¬px = contradiction px ¬px
-  ... | yes _   = cong (x ∷_) (filter-all pxs)
+  ... | no          ¬px = contradiction px ¬px
+  ... | true  because _ = cong (x ∷_) (filter-all pxs)
 
   filter-notAll : ∀ xs → Any (∁ P) xs → length (filter P? xs) < length xs
   filter-notAll (x ∷ xs) (here ¬px) with P? x
-  ... | no  _  = s≤s (length-filter xs)
-  ... | yes px = contradiction px ¬px
-  filter-notAll (x ∷ xs) (there any) with P? x
-  ... | no  _ = ≤-step (filter-notAll xs any)
-  ... | yes _ = s≤s (filter-notAll xs any)
+  ... | false because _ = s≤s (length-filter xs)
+  ... | yes          px = contradiction px ¬px
+  filter-notAll (x ∷ xs) (there any) with does (P? x)
+  ... | false = ≤-step (filter-notAll xs any)
+  ... | true  = s≤s (filter-notAll xs any)
 
   filter-some : ∀ {xs} → Any P xs → 0 < length (filter P? xs)
   filter-some {x ∷ xs} (here px)   with P? x
-  ... | yes _  = s≤s z≤n
-  ... | no ¬px = contradiction px ¬px
-  filter-some {x ∷ xs} (there pxs) with P? x
-  ... | yes _ = ≤-step (filter-some pxs)
-  ... | no  _ = filter-some pxs
+  ... | true because _ = s≤s z≤n
+  ... | no         ¬px = contradiction px ¬px
+  filter-some {x ∷ xs} (there pxs) with does (P? x)
+  ... | true  = ≤-step (filter-some pxs)
+  ... | false = filter-some pxs
 
   filter-none : ∀ {xs} → All (∁ P) xs → filter P? xs ≡ []
   filter-none {[]}     []           = refl
   filter-none {x ∷ xs} (¬px ∷ ¬pxs) with P? x
-  ... | no  _  = filter-none ¬pxs
-  ... | yes px = contradiction px ¬px
+  ... | false because _ = filter-none ¬pxs
+  ... | yes          px = contradiction px ¬px
 
   filter-complete : ∀ {xs} → length (filter P? xs) ≡ length xs →
                     filter P? xs ≡ xs
   filter-complete {[]}     eq = refl
-  filter-complete {x ∷ xs} eq with P? x
-  ... | no ¬px = contradiction eq (<⇒≢ (s≤s (length-filter xs)))
-  ... | yes px = cong (x ∷_) (filter-complete (suc-injective eq))
+  filter-complete {x ∷ xs} eq with does (P? x)
+  ... | false = contradiction eq (<⇒≢ (s≤s (length-filter xs)))
+  ... | true  = cong (x ∷_) (filter-complete (suc-injective eq))
 
   filter-accept : ∀ {x xs} → P x → filter P? (x ∷ xs) ≡ x ∷ (filter P? xs)
   filter-accept {x} Px with P? x
-  ... | yes _  = refl
-  ... | no ¬Px = contradiction Px ¬Px
+  ... | true because _ = refl
+  ... | no         ¬Px = contradiction Px ¬Px
 
   filter-reject : ∀ {x xs} → ¬ P x → filter P? (x ∷ xs) ≡ filter P? xs
   filter-reject {x} ¬Px with P? x
-  ... | yes Px = contradiction Px ¬Px
-  ... | no  _  = refl
+  ... | yes          Px = contradiction Px ¬Px
+  ... | false because _ = refl
 
   filter-idem : filter P? ∘ filter P? ≗ filter P?
   filter-idem []       = refl
-  filter-idem (x ∷ xs) with P? x | inspect P? x
-  ... | no  _ | _                   = filter-idem xs
-  ... | yes _ | P.[ eq ] rewrite eq = cong (x ∷_) (filter-idem xs)
+  filter-idem (x ∷ xs) with does (P? x) | inspect does (P? x)
+  ... | false | _                   = filter-idem xs
+  ... | true  | P.[ eq ] rewrite eq = cong (x ∷_) (filter-idem xs)
 
   filter-++ : ∀ xs ys → filter P? (xs ++ ys) ≡ filter P? xs ++ filter P? ys
   filter-++ []       ys = refl
-  filter-++ (x ∷ xs) ys with P? x
-  ... | yes _ = cong (x ∷_) (filter-++ xs ys)
-  ... | no  _ = filter-++ xs ys
+  filter-++ (x ∷ xs) ys with does (P? x)
+  ... | true  = cong (x ∷_) (filter-++ xs ys)
+  ... | false = filter-++ xs ys
 
 ------------------------------------------------------------------------
 -- partition
@@ -759,9 +759,9 @@ module _ {P : Pred A p} (P? : Decidable P) where
 
   partition-defn : partition P? ≗ < filter P? , filter (∁? P?) >
   partition-defn []       = refl
-  partition-defn (x ∷ xs) with P? x
-  ...  | yes Px = cong (Prod.map (x ∷_) id) (partition-defn xs)
-  ...  | no ¬Px = cong (Prod.map id (x ∷_)) (partition-defn xs)
+  partition-defn (x ∷ xs) with does (P? x)
+  ...  | true  = cong (Prod.map (x ∷_) id) (partition-defn xs)
+  ...  | false = cong (Prod.map id (x ∷_)) (partition-defn xs)
 
 ------------------------------------------------------------------------
 -- _ʳ++_
