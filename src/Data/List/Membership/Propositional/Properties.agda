@@ -39,7 +39,8 @@ open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; trans; cong; subst; →-to-⟶; _≗_)
 import Relation.Binary.Properties.DecTotalOrder as DTOProperties
 open import Relation.Unary using (_⟨×⟩_; Decidable)
-open import Relation.Nullary using (¬_; Dec; yes; no)
+open import Relation.Nullary.Reflects using (invert)
+open import Relation.Nullary using (¬_; Dec; does; yes; no)
 open import Relation.Nullary.Negation
 
 private
@@ -273,9 +274,9 @@ finite inj (x ∷ xs) fᵢ∈x∷xs = excluded-middle helper
   helper (yes (i , fᵢ≡x)) = finite f′-inj xs f′ⱼ∈xs
     where
     f′ : ℕ → _
-    f′ j with i ≤? j
-    ... | yes i≤j = f (suc j)
-    ... | no  i≰j = f j
+    f′ j with does (i ≤? j)
+    ... | true  = f (suc j)
+    ... | false = f j
 
     ∈-if-not-i : ∀ {j} → i ≢ j → f j ∈ xs
     ∈-if-not-i i≢j = not-x (i≢j ∘ f-inj ∘ trans fᵢ≡x ∘ sym)

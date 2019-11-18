@@ -8,12 +8,16 @@
 
 module Data.Fin.Permutation.Components where
 
+open import Data.Bool.Base using (Bool; true; false)
 open import Data.Fin
 open import Data.Fin.Properties
 open import Data.Nat as ℕ using (zero; suc; _∸_)
 import Data.Nat.Properties as ℕₚ
 open import Data.Product using (proj₂)
-open import Relation.Nullary using (yes; no)
+open import Function.Core using (_∘_)
+open import Relation.Nullary.Reflects using (invert)
+open import Relation.Nullary using (does; _because_; yes; no)
+open import Relation.Nullary.Decidable using (dec-true; dec-false)
 open import Relation.Binary.PropositionalEquality
 open import Algebra.Definitions using (Involutive)
 open ≡-Reasoning
@@ -25,11 +29,11 @@ open ≡-Reasoning
 -- 'tranpose i j' swaps the places of 'i' and 'j'.
 
 transpose : ∀ {n} → Fin n → Fin n → Fin n → Fin n
-transpose i j k with k ≟ i
-... | yes _ = j
-... | no  _ with k ≟ j
-...   | yes _ = i
-...   | no  _ = k
+transpose i j k with does (k ≟ i)
+... | true  = j
+... | false with does (k ≟ j)
+...   | true  = i
+...   | false = k
 
 -- reverse i = n ∸ 1 ∸ i
 

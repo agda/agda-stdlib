@@ -20,13 +20,16 @@ open import Function.Base
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Injection
   using (Injection; module Injection)
+open import Data.Bool.Base using (true; false)
 open import Data.List hiding (lookup)
 open import Data.List.Relation.Unary.Any as Any using (here; there)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Product
 open import Data.Sum
 open import Data.Sum.Properties
+open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary
+open import Relation.Nullary.Decidable using (dec-true; dec-false)
 open import Relation.Binary.PropositionalEquality as PropEq
   using (_≡_; _≢_; refl; cong)
 open PropEq.≡-Reasoning
@@ -46,8 +49,8 @@ private
   first-occurrence : ∀ {xs} x → x ∈ xs → x ∈ xs
   first-occurrence x (here x≈y)           = here x≈y
   first-occurrence x (there {x = y} x∈xs) with x ≟ y
-  ... | yes x≈y = here x≈y
-  ... | no  _   = there $ first-occurrence x x∈xs
+  ... | true  because [x≈y] = here (invert [x≈y])
+  ... | false because   _   = there $ first-occurrence x x∈xs
 
   -- The index of the first occurrence of x in xs.
 

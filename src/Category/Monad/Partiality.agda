@@ -910,9 +910,9 @@ private
   -- McCarthy's f91:
 
   f91′ : ℕ → ℕ ⊥P
-  f91′ n with n ≤? 100
-  ... | yes _ = later (♯ (f91′ (11 + n) >>= f91′))
-  ... | no  _ = now (n ∸ 10)
+  f91′ n with does (n ≤? 100)
+  ... | true  = later (♯ (f91′ (11 + n) >>= f91′))
+  ... | false = now (n ∸ 10)
 
   f91 : ℕ → ℕ ⊥
   f91 n = ⟦ f91′ n ⟧P

@@ -30,7 +30,8 @@ open import Level using (Level)
 import Relation.Binary as B
 import Relation.Binary.Reasoning.Setoid as EqR
 open import Relation.Binary.PropositionalEquality as P hiding ([_])
-open import Relation.Nullary using (¬_; yes; no)
+open import Relation.Nullary.Reflects using (invert)
+open import Relation.Nullary using (¬_; does; _because_; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Nullary.Decidable using (isYes; map′)
 open import Relation.Nullary.Product using (_×-dec_)
@@ -1000,8 +1001,8 @@ module _ (P : A → Set p) (P? : Decidable P) where
   boolFilter-filters : ∀ xs → All P (boolFilter (isYes ∘ P?) xs)
   boolFilter-filters []       = []
   boolFilter-filters (x ∷ xs) with P? x
-  ... | yes px = px ∷ boolFilter-filters xs
-  ... | no ¬px = boolFilter-filters xs
+  ... | true  because [px] = invert [px] ∷ boolFilter-filters xs
+  ... | false because  _   = boolFilter-filters xs
   {-# WARNING_ON_USAGE boolFilter-filters
   "Warning: boolFilter was deprecated in v0.16.
   Please use filter instead."

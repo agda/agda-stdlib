@@ -8,12 +8,14 @@
 
 module Data.Product.Properties.WithK where
 
+open import Data.Bool.Base
 open import Data.Product
 open import Data.Product.Properties using (,-injectiveˡ)
 open import Function
 open import Relation.Binary using (Decidable)
 open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Reflects
+open import Relation.Nullary using (Dec; _because_; yes; no)
 open import Relation.Nullary.Decidable using (map′)
 
 ------------------------------------------------------------------------
@@ -34,5 +36,5 @@ module _ {a b} {A : Set a} {B : A → Set b} where
   ≡-dec : Decidable _≡_ → (∀ {a} → Decidable {A = B a} _≡_) →
           Decidable {A = Σ A B} _≡_
   ≡-dec dec₁ dec₂ (a , x) (b , y) with dec₁ a b
-  ... | no  a≢b  = no (a≢b ∘ ,-injectiveˡ)
+  ... | false because [a≢b] = no (invert [a≢b] ∘ ,-injectiveˡ)
   ... | yes refl = map′ (cong (a ,_)) ,-injectiveʳ (dec₂ x y)

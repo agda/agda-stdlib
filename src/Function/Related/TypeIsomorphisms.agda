@@ -11,6 +11,7 @@ module Function.Related.TypeIsomorphisms where
 
 open import Algebra
 open import Axiom.Extensionality.Propositional using (Extensionality)
+open import Data.Bool.Base using (true; false)
 open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Product as Prod hiding (swap)
 open import Data.Product.Function.NonDependent.Propositional
@@ -26,7 +27,8 @@ open import Function.Inverse as Inv using (_↔_; Inverse; inverse)
 open import Function.Related
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_; _≗_)
-open import Relation.Nullary using (Dec; ¬_; yes; no)
+open import Relation.Nullary.Reflects using (invert)
+open import Relation.Nullary using (Dec; ¬_; _because_)
 open import Relation.Nullary.Decidable using (True)
 
 ------------------------------------------------------------------------
@@ -332,8 +334,10 @@ Related-cong {A = A} {B} {C} {D} A≈B C≈D =
 
 True↔ : ∀ {p} {P : Set p}
         (dec : Dec P) → ((p₁ p₂ : P) → p₁ ≡ p₂) → True dec ↔ P
-True↔ (yes p) irr = inverse (λ _ → p) (λ _ → _) (λ _ → P.refl) (irr p)
-True↔ (no ¬p) _   = inverse (λ()) ¬p (λ()) (⊥-elim ∘ ¬p)
+True↔ ( true because  [p]) irr =
+  inverse (λ _ → invert [p]) (λ _ → _) (λ _ → P.refl) (irr _)
+True↔ (false because [¬p]) _   =
+  inverse (λ()) (invert [¬p]) (λ()) (⊥-elim ∘ invert [¬p])
 
 ------------------------------------------------------------------------
 -- Equality between pairs can be expressed as a pair of equalities
