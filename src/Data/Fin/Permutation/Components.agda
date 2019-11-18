@@ -14,7 +14,7 @@ open import Data.Fin.Properties
 open import Data.Nat as ℕ using (zero; suc; _∸_)
 import Data.Nat.Properties as ℕₚ
 open import Data.Product using (proj₂)
-open import Function.Core using (_∘_)
+open import Function.Base using (_∘_)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary using (does; _because_; yes; no)
 open import Relation.Nullary.Decidable using (dec-true; dec-false)
