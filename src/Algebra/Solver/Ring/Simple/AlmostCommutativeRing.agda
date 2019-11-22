@@ -48,8 +48,9 @@ record AlmostCommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
   open import Data.Nat as ℕ using (ℕ)
 
   commutativeSemiring : CommutativeSemiring _ _
-  commutativeSemiring =
-    record { isCommutativeSemiring = isCommutativeSemiring }
+  commutativeSemiring = record
+    { isCommutativeSemiring = isCommutativeSemiring
+    }
 
   open CommutativeSemiring commutativeSemiring public
          using ( +-semigroup; +-monoid; +-commutativeMonoid
