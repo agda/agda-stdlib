@@ -120,6 +120,14 @@ strengthen : ∀ {n} (i : Fin n) → Fin′ (suc i)
 strengthen zero    = zero
 strengthen (suc i) = suc (strengthen i)
 
+-- The "space" above a Fin n is the number of unique "Fin n"s greater
+-- than or equal to it.
+space : ∀ {n} → Fin n → ℕ
+space f = suc (go f)
+  where
+  go : ∀ {n} → Fin n → ℕ
+  go {suc n} Fin.zero = n
+  go (Fin.suc x) = go x
 ------------------------------------------------------------------------
 -- Operations
 
