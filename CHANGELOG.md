@@ -29,6 +29,8 @@ Other minor additions
   _⊄_ : Subset n → Subset n → Set
   ```
 
+* Added induction over subsets to `Data.Fin.Subset.Induction`.
+
 * Added new proofs to `Data.Fin.Subset.Properties`:
   ```agda
   s⊆s : p ⊆ q → s ∷ p ⊆ s ∷ q
