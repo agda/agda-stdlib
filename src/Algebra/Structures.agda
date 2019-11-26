@@ -108,23 +108,10 @@ record IsMonoid (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
 
 record IsCommutativeMonoid (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
   field
-    isSemigroup : IsSemigroup ∙
-    identityˡ   : LeftIdentity ε ∙
-    comm        : Commutative ∙
+    isMonoid : IsMonoid ∙ ε
+    comm     : Commutative ∙
 
-  open IsSemigroup isSemigroup public
-
-  identityʳ : RightIdentity ε ∙
-  identityʳ = Consequences.comm+idˡ⇒idʳ setoid comm identityˡ
-
-  identity : Identity ε ∙
-  identity = (identityˡ , identityʳ)
-
-  isMonoid : IsMonoid ∙ ε
-  isMonoid = record
-    { isSemigroup = isSemigroup
-    ; identity    = identity
-    }
+  open IsMonoid isMonoid public
 
   isCommutativeSemigroup : IsCommutativeSemigroup ∙
   isCommutativeSemigroup = record
@@ -132,6 +119,61 @@ record IsCommutativeMonoid (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
     ; comm        = comm
     }
 
+record IsCommutativeMonoidˡ (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
+  field
+    isSemigroup : IsSemigroup ∙
+    identityˡ   : LeftIdentity ε ∙
+    comm        : Commutative ∙
+
+  open IsSemigroup isSemigroup
+
+  private
+
+    identityʳ : RightIdentity ε ∙
+    identityʳ = Consequences.comm+idˡ⇒idʳ setoid comm identityˡ
+
+    identity : Identity ε ∙
+    identity = (identityˡ , identityʳ)
+
+  isCommutativeMonoid : IsCommutativeMonoid ∙ ε
+  isCommutativeMonoid = record
+    { isMonoid = record
+      { isSemigroup = isSemigroup
+      ; identity    = identity
+      }
+    ; comm = comm
+    }
+
+  open IsCommutativeMonoid isCommutativeMonoid public
+    hiding (identityˡ)
+
+record IsCommutativeMonoidʳ (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
+  field
+    isSemigroup : IsSemigroup ∙
+    identityʳ   : RightIdentity ε ∙
+    comm        : Commutative ∙
+
+  open IsSemigroup isSemigroup
+
+  private
+
+    identityˡ : LeftIdentity ε ∙
+    identityˡ = Consequences.comm+idʳ⇒idˡ setoid comm identityʳ
+
+    identity : Identity ε ∙
+    identity = (identityˡ , identityʳ)
+
+  isCommutativeMonoid : IsCommutativeMonoid ∙ ε
+  isCommutativeMonoid = record
+    { isMonoid = record
+      { isSemigroup = isSemigroup
+      ; identity    = identity
+      }
+    ; comm = comm
+    }
+
+  open IsCommutativeMonoid isCommutativeMonoid public
+    hiding (identityʳ)
 
 record IsIdempotentCommutativeMonoid (∙ : Op₂ A)
                                      (ε : A) : Set (a ⊔ ℓ) where
@@ -195,9 +237,8 @@ record IsAbelianGroup (∙ : Op₂ A)
 
   isCommutativeMonoid : IsCommutativeMonoid ∙ ε
   isCommutativeMonoid = record
-    { isSemigroup = isSemigroup
-    ; identityˡ   = identityˡ
-    ; comm        = comm
+    { isMonoid = isMonoid
+    ; comm     = comm
     }
 
   open IsCommutativeMonoid isCommutativeMonoid public
@@ -548,9 +589,8 @@ record IsCommutativeRing
 
   *-isCommutativeMonoid : IsCommutativeMonoid * 1#
   *-isCommutativeMonoid =  record
-    { isSemigroup = *-isSemigroup
-    ; identityˡ   = *-identityˡ
-    ; comm        = *-comm
+    { isMonoid = *-isMonoid
+    ; comm     = *-comm
     }
 
   isCommutativeSemiring : IsCommutativeSemiring + * 0# 1#
