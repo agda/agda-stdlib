@@ -565,6 +565,7 @@ record IsRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
     +-isAbelianGroup : IsAbelianGroup + 0# -_
     *-isMonoid       : IsMonoid * 1#
     distrib          : * DistributesOver +
+    zero             : Zero 0# *
 
   open IsAbelianGroup +-isAbelianGroup public
     renaming
@@ -603,15 +604,10 @@ record IsRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
     )
 
   zeroˡ : LeftZero 0# *
-  zeroˡ = Consequences.assoc+distribʳ+idʳ+invʳ⇒zeˡ setoid
-           +-cong *-cong +-assoc (proj₂ distrib) +-identityʳ -‿inverseʳ
+  zeroˡ = proj₁ zero
 
   zeroʳ : RightZero 0# *
-  zeroʳ = Consequences.assoc+distribˡ+idʳ+invʳ⇒zeʳ setoid
-           +-cong *-cong +-assoc (proj₁ distrib) +-identityʳ -‿inverseʳ
-
-  zero : Zero 0# *
-  zero = (zeroˡ , zeroʳ)
+  zeroʳ = proj₂ zero
 
   isSemiringWithoutAnnihilatingZero
     : IsSemiringWithoutAnnihilatingZero + * 0# 1#
@@ -630,6 +626,43 @@ record IsRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
 
   open IsSemiring isSemiring public
     using (distribˡ; distribʳ; isNearSemiring; isSemiringWithoutOne)
+
+-- We can recover a ring without proving that 0# annihilates *.
+record IsRingWithoutAnnihilatingZero (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A)
+                                     : Set (a ⊔ ℓ) where
+  field
+    +-isAbelianGroup : IsAbelianGroup + 0# -_
+    *-isMonoid       : IsMonoid * 1#
+    distrib          : * DistributesOver +
+
+  private
+
+    module + = IsAbelianGroup +-isAbelianGroup
+    module * = IsMonoid *-isMonoid
+
+    open + using (setoid) renaming (∙-cong to +-cong)
+    open * using ()       renaming (∙-cong to *-cong)
+
+    zeroˡ : LeftZero 0# *
+    zeroˡ = Consequences.assoc+distribʳ+idʳ+invʳ⇒zeˡ setoid
+             +-cong *-cong +.assoc (proj₂ distrib) +.identityʳ +.inverseʳ
+
+    zeroʳ : RightZero 0# *
+    zeroʳ = Consequences.assoc+distribˡ+idʳ+invʳ⇒zeʳ setoid
+             +-cong *-cong +.assoc (proj₁ distrib) +.identityʳ +.inverseʳ
+
+    zero : Zero 0# *
+    zero = (zeroˡ , zeroʳ)
+
+  isRing : IsRing + * -_ 0# 1#
+  isRing = record
+    { +-isAbelianGroup = +-isAbelianGroup
+    ; *-isMonoid = *-isMonoid
+    ; distrib = distrib
+    ; zero = zero
+    }
+
+  open IsRing isRing public
 
 
 record IsCommutativeRing
