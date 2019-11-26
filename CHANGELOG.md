@@ -23,8 +23,16 @@ Other minor additions
   not-injective : not x ≡ not y → x ≡ y
   ```
 
+* Added new properties to `Data.Fin.Subset`:
+  ```agda
+  _⊂_ : Subset n → Subset n → Set
+  _⊄_ : Subset n → Subset n → Set
+  ```
+
 * Added new proofs to `Data.Fin.Subset.Properties`:
   ```agda
+  s⊆s : p ⊆ q → s ∷ p ⊆ s ∷ q
+
   x∈s⇒x∉∁s : x ∈ s → x ∉ ∁ s
   x∈∁s⇒x∉s : x ∈ ∁ s → x ∉ s
   x∉∁s⇒x∈s : x ∉ ∁ s → x ∈ s
