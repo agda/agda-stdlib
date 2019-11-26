@@ -14,6 +14,7 @@ open import Algebra.Bundles
 import Algebra.Properties.Lattice as L
 import Algebra.Properties.DistributiveLattice as DL
 import Algebra.Properties.BooleanAlgebra as BA
+open import Data.Bool using (not)
 open import Data.Bool.Properties
 open import Data.Fin using (Fin; suc; zero)
 open import Data.Fin.Subset
@@ -28,7 +29,7 @@ open import Function.Base using (_∘_; const; id; case_of_)
 open import Function.Equivalence using (_⇔_; equivalence)
 open import Relation.Binary as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality
-  using (_≡_; refl; cong; cong₂; subst; isEquivalence)
+  using (_≡_; refl; cong; cong₂; subst; sym; isEquivalence; inspect; [_])
 open import Relation.Nullary using (Dec; yes; no)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Negation using (contradiction)
@@ -202,6 +203,25 @@ p⊆q⇒∣p∣<∣q∣ {p = outside ∷ p} {outside ∷ q} p⊆q = p⊆q⇒∣p
 p⊆q⇒∣p∣<∣q∣ {p = outside ∷ p} {inside  ∷ q} p⊆q = ≤-step (p⊆q⇒∣p∣<∣q∣ (drop-∷-⊆ p⊆q))
 p⊆q⇒∣p∣<∣q∣ {p = inside  ∷ p} {outside ∷ q} p⊆q = contradiction (p⊆q here) λ()
 p⊆q⇒∣p∣<∣q∣ {p = inside  ∷ p} {inside  ∷ q} p⊆q = s≤s (p⊆q⇒∣p∣<∣q∣ (drop-∷-⊆ p⊆q))
+
+------------------------------------------------------------------------
+-- ∁
+
+x∈s⇒x∉∁s : ∀ {n} → {x : Fin n} → {s : Subset n} → x ∈ s → x ∉ ∁ s
+x∈s⇒x∉∁s (there x∈s) (there x∈∁s) = x∈s⇒x∉∁s x∈s x∈∁s
+
+x∈∁s⇒x∉s : ∀ {n} → {x : Fin n} → {s : Subset n} → x ∈ ∁ s → x ∉ s
+x∈∁s⇒x∉s (there x∈∁s) (there x∈s) = x∈∁s⇒x∉s x∈∁s x∈s
+
+x∉∁s⇒x∈s : ∀ {n} → {x : Fin n} → {s : Subset n} → x ∉ ∁ s → x ∈ s
+x∉∁s⇒x∈s {x = zero}  {outside ∷ s} x∉∁s = contradiction here x∉∁s
+x∉∁s⇒x∈s {x = zero}  {inside  ∷ s} x∉∁s = here
+x∉∁s⇒x∈s {x = suc x} {_       ∷ s} x∉∁s = there (x∉∁s⇒x∈s (x∉∁s ∘ there))
+
+x∉s⇒x∈∁s : ∀ {n} → {x : Fin n} → {s : Subset n} → x ∉ s → x ∈ ∁ s
+x∉s⇒x∈∁s {x = zero}  {outside ∷ s} x∉s = here
+x∉s⇒x∈∁s {x = zero}  {inside  ∷ s} x∉s = contradiction here x∉s
+x∉s⇒x∈∁s {x = suc x} {_       ∷ s} x∉s = there (x∉s⇒x∈∁s (x∉s ∘ there))
 
 ------------------------------------------------------------------------
 -- _∩_

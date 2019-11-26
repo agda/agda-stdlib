@@ -22,3 +22,11 @@ Other minor additions
   ```agda
   not-injective : not x ≡ not y → x ≡ y
   ```
+
+* Added new proofs to `Data.Fin.Subset.Properties`:
+  ```agda
+  x∈s⇒x∉∁s : x ∈ s → x ∉ ∁ s
+  x∈∁s⇒x∉s : x ∈ ∁ s → x ∉ s
+  x∉∁s⇒x∈s : x ∉ ∁ s → x ∈ s
+  x∉s⇒x∈∁s : x ∉ s → x ∈ ∁ s
+  ```
