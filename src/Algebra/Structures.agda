@@ -455,6 +455,26 @@ record IsSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
 
 record IsCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
   field
+    isSemiring : IsSemiring + * 0# 1#
+    *-comm     : Commutative *
+
+  open IsSemiring isSemiring public
+
+  isCommutativeSemiringWithoutOne :
+    IsCommutativeSemiringWithoutOne + * 0#
+  isCommutativeSemiringWithoutOne = record
+    { isSemiringWithoutOne = isSemiringWithoutOne
+    ; *-comm = *-comm
+    }
+
+  *-isCommutativeMonoid : IsCommutativeMonoid * 1#
+  *-isCommutativeMonoid = record
+    { isMonoid = *-isMonoid
+    ; comm = *-comm
+    }
+
+record IsCommutativeSemiringˡ (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
+  field
     +-isCommutativeMonoid : IsCommutativeMonoid + 0#
     *-isCommutativeMonoid : IsCommutativeMonoid * 1#
     distribʳ              : * DistributesOverʳ +
@@ -465,42 +485,75 @@ record IsCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
     open module *-CM = IsCommutativeMonoid *-isCommutativeMonoid public
            using () renaming (comm to *-comm)
 
-  distribˡ : * DistributesOverˡ +
-  distribˡ = Consequences.comm+distrʳ⇒distrˡ
-              +-CM.setoid +-CM.∙-cong *-comm distribʳ
+    distribˡ : * DistributesOverˡ +
+    distribˡ = Consequences.comm+distrʳ⇒distrˡ
+                +-CM.setoid +-CM.∙-cong *-comm distribʳ
 
-  distrib : * DistributesOver +
-  distrib = (distribˡ , distribʳ)
+    distrib : * DistributesOver +
+    distrib = (distribˡ , distribʳ)
 
-  zeroʳ : RightZero 0# *
-  zeroʳ = Consequences.comm+zeˡ⇒zeʳ +-CM.setoid *-comm zeroˡ
+    zeroʳ : RightZero 0# *
+    zeroʳ = Consequences.comm+zeˡ⇒zeʳ +-CM.setoid *-comm zeroˡ
 
-  zero : Zero 0# *
-  zero = (zeroˡ , zeroʳ)
+    zero : Zero 0# *
+    zero = (zeroˡ , zeroʳ)
 
-  isSemiring : IsSemiring + * 0# 1#
-  isSemiring = record
-    { isSemiringWithoutAnnihilatingZero = record
-      { +-isCommutativeMonoid = +-isCommutativeMonoid
-      ; *-isMonoid            = *-CM.isMonoid
-      ; distrib               = distrib
+  isCommutativeSemiring : IsCommutativeSemiring + * 0# 1#
+  isCommutativeSemiring = record
+    { isSemiring = record
+      { isSemiringWithoutAnnihilatingZero = record
+        { +-isCommutativeMonoid = +-isCommutativeMonoid
+        ; *-isMonoid = *-CM.isMonoid
+        ; distrib = distrib
+        }
+      ; zero = zero
       }
-    ; zero                    = zero
+    ; *-comm = *-comm
     }
 
-  open IsSemiring isSemiring public
-    hiding
-    ( distrib; distribʳ; distribˡ
-    ; zero; zeroˡ; zeroʳ
-    ; +-isCommutativeMonoid
-    )
+  open IsCommutativeSemiring isCommutativeSemiring public
+    hiding (*-isCommutativeMonoid; distribʳ; zeroˡ)
 
-  isCommutativeSemiringWithoutOne :
-    IsCommutativeSemiringWithoutOne + * 0#
-  isCommutativeSemiringWithoutOne = record
-    { isSemiringWithoutOne = isSemiringWithoutOne
-    ; *-comm               = *-CM.comm
+record IsCommutativeSemiringʳ (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
+  field
+    +-isCommutativeMonoid : IsCommutativeMonoid + 0#
+    *-isCommutativeMonoid : IsCommutativeMonoid * 1#
+    distribˡ              : * DistributesOverˡ +
+    zeroʳ                 : RightZero 0# *
+
+  private
+    module +-CM = IsCommutativeMonoid +-isCommutativeMonoid
+    open module *-CM = IsCommutativeMonoid *-isCommutativeMonoid public
+           using () renaming (comm to *-comm)
+
+    distribʳ : * DistributesOverʳ +
+    distribʳ = Consequences.comm+distrˡ⇒distrʳ
+                +-CM.setoid +-CM.∙-cong *-comm distribˡ
+
+    distrib : * DistributesOver +
+    distrib = (distribˡ , distribʳ)
+
+    zeroˡ : LeftZero 0# *
+    zeroˡ = Consequences.comm+zeʳ⇒zeˡ +-CM.setoid *-comm zeroʳ
+
+    zero : Zero 0# *
+    zero = (zeroˡ , zeroʳ)
+
+  isCommutativeSemiring : IsCommutativeSemiring + * 0# 1#
+  isCommutativeSemiring = record
+    { isSemiring = record
+      { isSemiringWithoutAnnihilatingZero = record
+        { +-isCommutativeMonoid = +-isCommutativeMonoid
+        ; *-isMonoid = *-CM.isMonoid
+        ; distrib = distrib
+        }
+      ; zero = zero
+      }
+    ; *-comm = *-comm
     }
+
+  open IsCommutativeSemiring isCommutativeSemiring public
+    hiding (*-isCommutativeMonoid; distribˡ; zeroʳ)
 
 
 ------------------------------------------------------------------------
@@ -595,10 +648,8 @@ record IsCommutativeRing
 
   isCommutativeSemiring : IsCommutativeSemiring + * 0# 1#
   isCommutativeSemiring = record
-    { +-isCommutativeMonoid = +-isCommutativeMonoid
-    ; *-isCommutativeMonoid = *-isCommutativeMonoid
-    ; distribʳ              = distribʳ
-    ; zeroˡ                 = zeroˡ
+    { isSemiring = isSemiring
+    ; *-comm = *-comm
     }
 
   open IsCommutativeSemiring isCommutativeSemiring public
