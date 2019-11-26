@@ -17,3 +17,8 @@ Other major additions
 
 Other minor additions
 ---------------------
+
+* Added new proofs to `Data.Bool`:
+  ```agda
+  not-injective : not x ≡ not y → x ≡ y
+  ```
