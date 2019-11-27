@@ -295,27 +295,17 @@ record Module {r ℓr} (commutativeRing : CommutativeRing r ℓr) m ℓm
 
   open IsModule isModule public
 
+  bimodule : Bimodule ring ring m ℓm
+  bimodule = record { isBimodule = isBimodule }
+
+  open Bimodule bimodule public
+    using ( leftModule; rightModule; leftSemimodule; rightSemimodule
+          ; +ᴹ-abelianGroup; +ᴹ-group; +ᴹ-commutativeMonoid; +ᴹ-monoid
+          ; +ᴹ-semigroup; +ᴹ-magma ; +ᴹ-rawMonoid; +ᴹ-rawMagma)
+
   {- TODO: #898
   semimodule : Semimodule commutativeSemiring m ℓm
   semimodule = record { isSemimodule = isSemimodule }
 
-  open Semimodule semimodule public
-    using ( leftSemimodule; isLeftSemimodule; rightSemimodule
-          ; isRightSemimodule; _*ᵣ_; *ₗ-comm; *ᵣ-comm; *ᵣ-cong
-          ; *ᵣ-zeroʳ; *ᵣ-distribˡ; *ᵣ-identityʳ; *ᵣ-assoc; *ᵣ-zeroˡ
-          ; *ᵣ-distribʳ)
+  open Semimodule semimodule public using (*ₗ-comm; *ᵣ-comm)
   -}
-
-  leftModule : LeftModule ring m ℓm
-  leftModule = record { isLeftModule = isLeftModule }
-
-  open LeftModule leftModule public
-    using ( leftSemimodule
-          ; +ᴹ-abelianGroup; +ᴹ-group; +ᴹ-commutativeMonoid; +ᴹ-monoid
-          ; +ᴹ-semigroup; +ᴹ-magma ; +ᴹ-rawMonoid; +ᴹ-rawMagma)
-
-  rightModule : RightModule ring m ℓm
-  rightModule = record { isRightModule = isRightModule }
-
-  open RightModule rightModule public
-    using (rightSemimodule)
