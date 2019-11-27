@@ -9,8 +9,8 @@
 
 module Algebra.Module.Properties where
 
-open import Algebra
-open import Algebra.Module
+open import Algebra.Bundles
+open import Algebra.Module.Bundles
 open import Level
 
 private
@@ -26,13 +26,15 @@ semiring⇒leftSemimodule semiring = record
   ; 0ᴹ = 0#
   ; isLeftSemimodule = record
     { +ᴹ-isCommutativeMonoid = +-isCommutativeMonoid
-    ; *ₗ-cong = *-cong
-    ; *ₗ-zeroˡ = zeroˡ
-    ; *ₗ-distribʳ = distribʳ
-    ; *ₗ-identityˡ = *-identityˡ
-    ; *ₗ-assoc = *-assoc
-    ; *ₗ-zeroʳ = zeroʳ
-    ; *ₗ-distribˡ = distribˡ
+    ; isPreleftSemimodule = record
+      { *ₗ-cong = *-cong
+      ; *ₗ-zeroˡ = zeroˡ
+      ; *ₗ-distribʳ = distribʳ
+      ; *ₗ-identityˡ = *-identityˡ
+      ; *ₗ-assoc = *-assoc
+      ; *ₗ-zeroʳ = zeroʳ
+      ; *ₗ-distribˡ = distribˡ
+      }
     }
   } where open Semiring semiring
 
@@ -45,13 +47,15 @@ semiring⇒rightSemimodule semiring = record
   ; 0ᴹ = 0#
   ; isRightSemimodule = record
     { +ᴹ-isCommutativeMonoid = +-isCommutativeMonoid
-    ; *ᵣ-cong = *-cong
-    ; *ᵣ-zeroʳ = zeroʳ
-    ; *ᵣ-distribˡ = distribˡ
-    ; *ᵣ-identityʳ = *-identityʳ
-    ; *ᵣ-assoc = *-assoc
-    ; *ᵣ-zeroˡ = zeroˡ
-    ; *ᵣ-distribʳ = distribʳ
+    ; isPrerightSemimodule = record
+      { *ᵣ-cong = *-cong
+      ; *ᵣ-zeroʳ = zeroʳ
+      ; *ᵣ-distribˡ = distribˡ
+      ; *ᵣ-identityʳ = *-identityʳ
+      ; *ᵣ-assoc = *-assoc
+      ; *ᵣ-zeroˡ = zeroˡ
+      ; *ᵣ-distribʳ = distribʳ
+      }
     }
   } where open Semiring semiring
 
@@ -59,8 +63,14 @@ commutativeSemiring⇒semimodule :
   (R : CommutativeSemiring c ℓ) → Semimodule R c ℓ
 commutativeSemiring⇒semimodule commutativeSemiring = record
   { isSemimodule = record
-    { isLeftSemimodule =
-      LeftSemimodule.isLeftSemimodule (semiring⇒leftSemimodule semiring)
+    { isBisemimodule = record
+      { +ᴹ-isCommutativeMonoid = +-isCommutativeMonoid
+      ; isPreleftSemimodule =
+        LeftSemimodule.isPreleftSemimodule (semiring⇒leftSemimodule semiring)
+      ; isPrerightSemimodule =
+        RightSemimodule.isPrerightSemimodule (semiring⇒rightSemimodule semiring)
+      ; *ₗ-*ᵣ-assoc = *-assoc
+      }
     }
   } where open CommutativeSemiring commutativeSemiring
 
@@ -86,9 +96,37 @@ ring⇒rightModule ring = record
     }
   } where open Ring ring
 
+-- TODO: #898 would allow refactoring using
+-- Semimodule.isBisemimodule
+--  (commutativeSemiring⇒semimodule commutativeSemiring)
 commutativeRing⇒module : (R : CommutativeRing c ℓ) → Module R c ℓ
 commutativeRing⇒module commutativeRing = record
   { isModule = record
-    { isLeftModule = LeftModule.isLeftModule (ring⇒leftModule ring)
+    { isBimodule = record
+      { isBisemimodule = record
+        { +ᴹ-isCommutativeMonoid = +-isCommutativeMonoid
+        ; isPreleftSemimodule = record
+            { *ₗ-cong = *-cong
+            ; *ₗ-zeroˡ = zeroˡ
+            ; *ₗ-distribʳ = distribʳ
+            ; *ₗ-identityˡ = *-identityˡ
+            ; *ₗ-assoc = *-assoc
+            ; *ₗ-zeroʳ = zeroʳ
+            ; *ₗ-distribˡ = distribˡ
+            }
+        ; isPrerightSemimodule = record
+          { *ᵣ-cong = *-cong
+          ; *ᵣ-zeroʳ = zeroʳ
+          ; *ᵣ-distribˡ = distribˡ
+          ; *ᵣ-identityʳ = *-identityʳ
+          ; *ᵣ-assoc = *-assoc
+          ; *ᵣ-zeroˡ = zeroˡ
+          ; *ᵣ-distribʳ = distribʳ
+          }
+        ; *ₗ-*ᵣ-assoc = *-assoc
+        }
+      ; -ᴹ‿cong = -‿cong
+      ; -ᴹ‿inverse = -‿inverse
+      }
     }
   } where open CommutativeRing commutativeRing
