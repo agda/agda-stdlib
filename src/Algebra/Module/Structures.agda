@@ -297,3 +297,78 @@ module _ {r ℓr} (commutativeRing : CommutativeRing r ℓr) where
 
     -- NOTE: We want the following, but can't get it because of issue #898.
     -- isSemimodule : IsSemimodule commutativeSemiring +ᴹ *ₗ *ᵣ 0ᴹ
+
+  record IsModuleFromLeft (+ᴹ : Op₂ M) (*ₗ : Opₗ R M) (0ᴹ : M) (-ᴹ : Op₁ M)
+                          : Set (r ⊔ m ⊔ ℓr ⊔ ℓm) where
+    field
+      isLeftModule : IsLeftModule ring +ᴹ *ₗ 0ᴹ -ᴹ
+
+    open IsLeftModule isLeftModule
+
+    -- TODO #898: use IsSemimodulefromLeft.isSemimodule to fill the
+    -- isBisemimodule field.
+    isModule : IsModule +ᴹ *ₗ (flip *ₗ) 0ᴹ -ᴹ
+    isModule = record
+      { isBimodule = record
+        { isBisemimodule = record
+          { +ᴹ-isCommutativeMonoid = +ᴹ-isCommutativeMonoid
+          ; isPreleftSemimodule = isPreleftSemimodule
+          ; isPrerightSemimodule = record
+            { *ᵣ-cong = flip *ₗ-cong
+            ; *ᵣ-zeroʳ = *ₗ-zeroˡ
+            ; *ᵣ-distribˡ = *ₗ-distribʳ
+            ; *ᵣ-identityʳ = *ₗ-identityˡ
+            ; *ᵣ-assoc = λ m r s → M-trans (M-sym (*ₗ-assoc s r m))
+                                           (*ₗ-cong (*-comm s r) M-refl)
+            ; *ᵣ-zeroˡ = *ₗ-zeroʳ
+            ; *ᵣ-distribʳ = *ₗ-distribˡ
+            }
+          ; *ₗ-*ᵣ-assoc = λ r m s →
+            M-trans (M-sym (*ₗ-assoc s r m))
+                    (M-trans (*ₗ-cong (*-comm s r) M-refl)
+                             (*ₗ-assoc r s m))
+          }
+        ; -ᴹ‿cong = -ᴹ‿cong
+        ; -ᴹ‿inverse = -ᴹ‿inverse
+        }
+      }
+
+    open IsModule isModule public
+      hiding (isLeftModule)
+
+  record IsModuleFromRight (+ᴹ : Op₂ M) (*ᵣ : Opᵣ R M) (0ᴹ : M) (-ᴹ : Op₁ M)
+                           : Set (r ⊔ m ⊔ ℓr ⊔ ℓm) where
+    field
+      isRightModule : IsRightModule ring +ᴹ *ᵣ 0ᴹ -ᴹ
+
+    open IsRightModule isRightModule
+
+    -- TODO #898: see IsModuleFromLeft
+    isModule : IsModule +ᴹ (flip *ᵣ) *ᵣ 0ᴹ -ᴹ
+    isModule = record
+      { isBimodule = record
+        { isBisemimodule = record
+          { +ᴹ-isCommutativeMonoid = +ᴹ-isCommutativeMonoid
+          ; isPreleftSemimodule = record
+            { *ₗ-cong = flip *ᵣ-cong
+            ; *ₗ-zeroˡ = *ᵣ-zeroʳ
+            ; *ₗ-distribʳ = *ᵣ-distribˡ
+            ; *ₗ-identityˡ = *ᵣ-identityʳ
+            ; *ₗ-assoc = λ r s m → M-trans (*ᵣ-cong M-refl (*-comm r s))
+                                           (M-sym (*ᵣ-assoc m s r))
+            ; *ₗ-zeroʳ = *ᵣ-zeroˡ
+            ; *ₗ-distribˡ = *ᵣ-distribʳ
+            }
+          ; isPrerightSemimodule = isPrerightSemimodule
+          ; *ₗ-*ᵣ-assoc = λ r m s →
+            M-trans (*ᵣ-assoc m r s)
+                    (M-trans (*ᵣ-cong M-refl (*-comm r s))
+                             (M-sym (*ᵣ-assoc m s r)))
+          }
+        ; -ᴹ‿cong = -ᴹ‿cong
+        ; -ᴹ‿inverse = -ᴹ‿inverse
+        }
+      }
+
+    open IsModule isModule public
+      hiding (isRightModule)
