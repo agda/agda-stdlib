@@ -295,8 +295,32 @@ module _ {r ℓr} (commutativeRing : CommutativeRing r ℓr) where
 
     open IsBimodule isBimodule public
 
-    -- NOTE: We want the following, but can't get it because of issue #898.
-    -- isSemimodule : IsSemimodule commutativeSemiring +ᴹ *ₗ *ᵣ 0ᴹ
+    -- TODO #898: this should be trivial, but currently is not.
+    isSemimodule : IsSemimodule commutativeSemiring +ᴹ *ₗ *ᵣ 0ᴹ
+    isSemimodule = record
+      { isBisemimodule = record
+        { +ᴹ-isCommutativeMonoid = +ᴹ-isCommutativeMonoid
+        ; isPreleftSemimodule = record
+          { *ₗ-cong = *ₗ-cong
+          ; *ₗ-zeroˡ = *ₗ-zeroˡ
+          ; *ₗ-distribʳ = *ₗ-distribʳ
+          ; *ₗ-identityˡ = *ₗ-identityˡ
+          ; *ₗ-assoc = *ₗ-assoc
+          ; *ₗ-zeroʳ = *ₗ-zeroʳ
+          ; *ₗ-distribˡ = *ₗ-distribˡ
+          }
+        ; isPrerightSemimodule = record
+          { *ᵣ-cong = *ᵣ-cong
+          ; *ᵣ-zeroʳ = *ᵣ-zeroʳ
+          ; *ᵣ-distribˡ = *ᵣ-distribˡ
+          ; *ᵣ-identityʳ = *ᵣ-identityʳ
+          ; *ᵣ-assoc = *ᵣ-assoc
+          ; *ᵣ-zeroˡ = *ᵣ-zeroˡ
+          ; *ᵣ-distribʳ = *ᵣ-distribʳ
+          }
+        ; *ₗ-*ᵣ-assoc = *ₗ-*ᵣ-assoc
+        }
+      }
 
   record IsModuleFromLeft (+ᴹ : Op₂ M) (*ₗ : Opₗ R M) (0ᴹ : M) (-ᴹ : Op₁ M)
                           : Set (r ⊔ m ⊔ ℓr ⊔ ℓm) where

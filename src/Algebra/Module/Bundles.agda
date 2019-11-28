@@ -303,9 +303,7 @@ record Module {r ℓr} (commutativeRing : CommutativeRing r ℓr) m ℓm
           ; +ᴹ-abelianGroup; +ᴹ-group; +ᴹ-commutativeMonoid; +ᴹ-monoid
           ; +ᴹ-semigroup; +ᴹ-magma ; +ᴹ-rawMonoid; +ᴹ-rawMagma)
 
-  {- TODO: #898
   semimodule : Semimodule commutativeSemiring m ℓm
   semimodule = record { isSemimodule = isSemimodule }
 
   open Semimodule semimodule public using (*ₗ-comm; *ᵣ-comm)
-  -}
