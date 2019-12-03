@@ -586,6 +586,10 @@ not-involutive : Involutive not
 not-involutive true  = refl
 not-involutive false = refl
 
+not-injective : ∀ {x y} → not x ≡ not y → x ≡ y
+not-injective {false} {false} nx≢ny = refl
+not-injective {true}  {true}  nx≢ny = refl
+
 not-¬ : ∀ {x y} → x ≡ y → x ≢ not y
 not-¬ {true}  refl ()
 not-¬ {false} refl ()
