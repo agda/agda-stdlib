@@ -57,10 +57,10 @@ Other minor additions
   `does` field, wherever possible. Furthermore, branching on the `proof` field
   has been made as late as possible, using the `invert` lemma from
   `Relation.Nullary.Reflects`.
-  
+
   For example, the old definition of `filter` in `Data.List.Base` used the
   `yes` and `no` patterns, which desugared to the following.
-  
+
   ```agda
   filter : ∀ {P : Pred A p} → Decidable P → List A → List A
   filter P? [] = []
@@ -68,7 +68,7 @@ Other minor additions
   ... | false because ofⁿ _ = filter P? xs
   ... |  true because ofʸ _ = x ∷ filter P? xs
   ```
-  
+
   Because the proofs (`ofⁿ _` and `ofʸ _`) are not giving us any information,
   we do not need to match on them. We end up with the following definition,
   where the `proof` field has been projected away.
@@ -80,17 +80,17 @@ Other minor additions
   ... | false = filter P? xs
   ... | true  = x ∷ filter P? xs
   ```
-  
+
   Correspondingly, when proving a property of `filter`, we can often make a
   similar change, but sometimes need the proof eventually. The following
   example is adapted from `Data.List.Membership.Setoid.Properties`.
-  
+
   ```agda
   module _ {c ℓ p} (S : Setoid c ℓ) {P : Pred (Carrier S) p}
            (P? : Decidable P) (resp : P Respects (Setoid._≈_ S)) where
-  
+
     open Membership S using (_∈_)
-  
+
     ∈-filter⁺ : ∀ {v xs} → v ∈ xs → P v → v ∈ filter P? xs
     ∈-filter⁺ {xs = x ∷ _} (here v≈x) Pv with P? x
     -- There is no matching on the proof, so we can emit the result without
