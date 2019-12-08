@@ -26,6 +26,12 @@ Other major additions
 Other minor additions
 ---------------------
 
+* Added new proofs to `Algebra.Properties.Group`:
+  ```agda
+  ⁻¹-injective   : x ⁻¹ ≈ y ⁻¹ → x ≈ y
+  ⁻¹-anti-homo-∙ : (x ∙ y) ⁻¹ ≈ y ⁻¹ ∙ x ⁻¹
+  ```
+
 * Added new proofs to `Data.Bool`:
   ```agda
   not-injective : not x ≡ not y → x ≡ y
