@@ -9,6 +9,7 @@
 module Data.List.Relation.Binary.BagAndSetEquality where
 
 open import Algebra using (Idempotent; CommutativeMonoid)
+open import Algebra.Structures.Biased using (IsCommutativeMonoidˡ)
 open import Category.Monad using (RawMonad)
 open import Data.Empty
 open import Data.Fin
@@ -215,7 +216,8 @@ commutativeMonoid {a} k A = record
   ; _≈_                 = _∼[ ⌊ k ⌋ ]_
   ; _∙_                 = _++_
   ; ε                   = []
-  ; isCommutativeMonoid = record
+  ; isCommutativeMonoid =
+    IsCommutativeMonoidˡ.isCommutativeMonoid record
     { isSemigroup = record
       { isMagma = record
         { isEquivalence = Eq.isEquivalence

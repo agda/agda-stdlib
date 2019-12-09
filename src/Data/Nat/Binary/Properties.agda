@@ -1045,10 +1045,8 @@ private
 
 *-+-isCommutativeSemiring : IsCommutativeSemiring _+_ _*_ zero 1ᵇ
 *-+-isCommutativeSemiring = record
-  { +-isCommutativeMonoid = +-0-isCommutativeMonoid
-  ; *-isCommutativeMonoid = *-1-isCommutativeMonoid
-  ; distribʳ              = *-distribʳ-+
-  ; zeroˡ                 = *-zeroˡ
+  { isSemiring = *-+-isSemiring
+  ; *-comm = *-comm
   }
 
 ------------------------------------------------------------------------

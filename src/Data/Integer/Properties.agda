@@ -664,9 +664,8 @@ distribʳ-⊖-+-neg a b c = begin
 
 +-0-isCommutativeMonoid : IsCommutativeMonoid _+_ +0
 +-0-isCommutativeMonoid = record
-  { isSemigroup = +-isSemigroup
-  ; identityˡ   = +-identityˡ
-  ; comm        = +-comm
+  { isMonoid = +-0-isMonoid
+  ; comm     = +-comm
   }
 
 +-0-isGroup : IsGroup _+_ +0 (-_)
@@ -1196,17 +1195,24 @@ private
 
 *-1-isCommutativeMonoid : IsCommutativeMonoid _*_ (+ 1)
 *-1-isCommutativeMonoid = record
-  { isSemigroup = *-isSemigroup
-  ; identityˡ   = *-identityˡ
-  ; comm        = *-comm
+  { isMonoid = *-1-isMonoid
+  ; comm     = *-comm
+  }
+
++-*-isSemiring : IsSemiring _+_ _*_ +0 (+ 1)
++-*-isSemiring = record
+  { isSemiringWithoutAnnihilatingZero = record
+    { +-isCommutativeMonoid = +-0-isCommutativeMonoid
+    ; *-isMonoid = *-1-isMonoid
+    ; distrib = *-distrib-+
+    }
+  ; zero = *-zero
   }
 
 +-*-isCommutativeSemiring : IsCommutativeSemiring _+_ _*_ +0 (+ 1)
 +-*-isCommutativeSemiring = record
-  { +-isCommutativeMonoid = +-0-isCommutativeMonoid
-  ; *-isCommutativeMonoid = *-1-isCommutativeMonoid
-  ; distribʳ              = *-distribʳ-+
-  ; zeroˡ                 = *-zeroˡ
+  { isSemiring = +-*-isSemiring
+  ; *-comm = *-comm
   }
 
 +-*-isRing : IsRing _+_ _*_ -_ +0 (+ 1)
@@ -1214,6 +1220,7 @@ private
   { +-isAbelianGroup = +-isAbelianGroup
   ; *-isMonoid       = *-1-isMonoid
   ; distrib          = *-distrib-+
+  ; zero             = *-zero
   }
 
 +-*-isCommutativeRing : IsCommutativeRing _+_ _*_ -_ +0 (+ 1)
@@ -1248,6 +1255,11 @@ private
 *-1-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
 *-1-commutativeMonoid = record
   { isCommutativeMonoid = *-1-isCommutativeMonoid
+  }
+
++-*-semiring : Semiring 0ℓ 0ℓ
++-*-semiring = record
+  { isSemiring = +-*-isSemiring
   }
 
 +-*-ring : Ring 0ℓ 0ℓ

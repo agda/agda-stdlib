@@ -298,9 +298,8 @@ p ≤? q = Dec.map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* �
 
 +-0-isCommutativeMonoid : IsCommutativeMonoid _≃_ _+_ 0ℚᵘ
 +-0-isCommutativeMonoid = record
-  { isSemigroup = +-isSemigroup
-  ; identityˡ   = +-identityˡ
-  ; comm        = +-comm
+  { isMonoid = +-0-isMonoid
+  ; comm     = +-comm
   }
 
 ------------------------------------------------------------------------
@@ -415,9 +414,8 @@ p ≤? q = Dec.map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* �
 
 *-1-isCommutativeMonoid : IsCommutativeMonoid _≃_ _*_ 1ℚᵘ
 *-1-isCommutativeMonoid = record
-  { isSemigroup = *-isSemigroup
-  ; identityˡ   = *-identityˡ
-  ; comm        = *-comm
+  { isMonoid = *-1-isMonoid
+  ; comm     = *-comm
   }
 
 ------------------------------------------------------------------------
