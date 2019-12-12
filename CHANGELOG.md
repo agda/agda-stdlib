@@ -17,3 +17,8 @@ Other major additions
 
 Other minor additions
 ---------------------
+
+* Added new proofs to `Induction.WellFounded`
+  ```agda
+  wfRecFixp : ∀ {x} → All.wfRec P f x ≡ f x λ y _ → All.wfRec P f y
+  ```
