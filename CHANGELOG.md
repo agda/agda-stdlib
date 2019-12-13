@@ -471,6 +471,11 @@ Other minor additions
   _∷ʳ_ : DiffList A → A → DiffList A
   ```
 
+* Added new proofs to `Data.Nat.DivMod`:
+  ```agda
+  %-distribˡ-* : (m * n) % d ≡ ((m % d) * (n % d)) % d
+  ```
+
 * Added new proofs to `Data.Nat.Properties`:
   ```agda
   1+n≤1+m⇒n≤m : suc m ≤ suc n → m ≤ n

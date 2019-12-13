@@ -115,6 +115,26 @@ m<[1+n%d]⇒m≤[n%d] {m} n (suc d-1) = k<1+a[modₕ]n⇒k≤a[modₕ]n 0 m n d-
   (m % d +  n % d + (n / d) * d)  % d ≡⟨ [m+kn]%n≡m%n (m % d + n % d) (n / d) d-1 ⟩
   (m % d +  n % d)                % d ∎
 
+%-distribˡ-* : ∀ m n d {≢0} → ((m * n) % d) {≢0} ≡ (((m % d) {≢0} * (n % d) {≢0}) % d) {≢0}
+%-distribˡ-* m n d@(suc d-1) = begin-equality
+  (m * n)                                             % d ≡⟨ cong (λ h → (h * n) % d) (m≡m%n+[m/n]*n m d-1) ⟩
+  ((m′ + k * d) * n)                                  % d ≡⟨ cong (λ h → h % d) (*-distribʳ-+ n m′ (k * d)) ⟩
+  (m′ * n + (k * d) * n)                              % d ≡⟨ cong (λ h → (m′ * h + (k * d) * h) % d) (m≡m%n+[m/n]*n n d-1) ⟩
+  (m′ * (n′ + j * d) + (k * d) * (n′ + j * d))        % d ≡⟨ cong (λ h → (h + (k * d) * (n′ + j * d)) % d) (*-distribˡ-+ m′ n′ (j * d)) ⟩
+  ((m′ * n′ + m′ * (j * d)) + (k * d) * (n′ + j * d)) % d ≡⟨ cong (λ h → h % d) (+-assoc (m′ * n′) (m′ * (j * d)) ((k * d) * (n′ + j * d))) ⟩
+  (m′ * n′ + (m′ * (j * d) + (k * d) * (n′ + j * d))) % d ≡˘⟨ cong (λ h → (m′ * n′ + (h + (k * d) * (n′ + j * d))) % d) (*-assoc m′ j d) ⟩
+  (m′ * n′ + ((m′ * j) * d + (k * d) * (n′ + j * d))) % d ≡⟨ cong (λ h → (m′ * n′ + ((m′ * j) * d + h)) % d) (*-comm (k * d) (n′ + j * d)) ⟩
+  (m′ * n′ + ((m′ * j) * d + (n′ + j * d) * (k * d))) % d ≡˘⟨ cong (λ h → (m′ * n′ + ((m′ * j) * d + h)) % d) (*-assoc (n′ + j * d) k d) ⟩
+  (m′ * n′ + ((m′ * j) * d + ((n′ + j * d) * k) * d)) % d ≡˘⟨ cong (λ h → (m′ * n′ + h) % d) (*-distribʳ-+ d (m′ * j) ((n′ + j * d) * k)) ⟩
+  (m′ * n′ + (m′ * j + (n′ + j * d) * k) * d)         % d ≡⟨ [m+kn]%n≡m%n (m′ * n′) (m′ * j + (n′ + j * d) * k) d-1 ⟩
+  (m′ * n′)                                           % d ≡⟨⟩
+  ((m % d) * (n % d)) % d ∎
+  where
+    m′ = m % d
+    n′ = n % d
+    k = m / d
+    j = n / d
+
 %-remove-+ˡ : ∀ {m} n {d} {≢0} → d ∣ m → ((m + n) % d) {≢0} ≡ (n % d) {≢0}
 %-remove-+ˡ {m} n {d@(suc d-1)} (divides p refl) = begin-equality
   (p * d + n) % d ≡⟨ cong (_% d) (+-comm (p * d) n) ⟩
