@@ -9,6 +9,7 @@
 module Data.Vec.Properties where
 
 open import Algebra.Definitions
+open import Data.Bool.Base using (true; false)
 open import Data.Empty using (⊥-elim)
 open import Data.Fin as Fin using (Fin; zero; suc; toℕ; fromℕ)
 open import Data.List.Base as List using (List)
@@ -24,7 +25,7 @@ open import Relation.Binary as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; _≗_; cong₂)
 open import Relation.Unary using (Pred; Decidable)
-open import Relation.Nullary using (Dec; yes; no)
+open import Relation.Nullary using (Dec; does; yes; no)
 open import Relation.Nullary.Decidable using (map′)
 open import Relation.Nullary.Product using (_×-dec_)
 
@@ -651,9 +652,9 @@ module _ {P : Pred A p} (P? : Decidable P) where
 
   count≤n : ∀ {n} (xs : Vec A n) → count P? xs ≤ n
   count≤n []       = z≤n
-  count≤n (x ∷ xs) with P? x
-  ... | yes _ = s≤s (count≤n xs)
-  ... | no  _ = ≤-step (count≤n xs)
+  count≤n (x ∷ xs) with does (P? x)
+  ... | true  = s≤s (count≤n xs)
+  ... | false = ≤-step (count≤n xs)
 
 ------------------------------------------------------------------------
 -- insert

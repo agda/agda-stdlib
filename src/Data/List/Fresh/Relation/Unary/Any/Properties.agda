@@ -9,11 +9,13 @@
 module Data.List.Fresh.Relation.Unary.Any.Properties where
 
 open import Level using (Level; _⊔_; Lift)
+open import Data.Bool.Base using (true; false)
 open import Data.Empty
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Product using (_,_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Function using (_∘′_)
+open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary
 open import Relation.Unary  as U using (Pred)
 open import Relation.Binary as B using (Rel)
@@ -56,14 +58,14 @@ module _ {R : Rel A r} {P : Pred A p} {Q : Pred A q} (P? : Decidable P) where
   ¬All⇒Any : {xs : List# A R} → ¬ (All P xs) → Any (∁ P) xs
   ¬All⇒Any {xs = []}      ¬ps = ⊥-elim (¬ps [])
   ¬All⇒Any {xs = x ∷# xs} ¬ps with P? x
-  ... | yes p = there (¬All⇒Any (¬ps ∘′ (p ∷_)))
-  ... | no ¬p = here ¬p
+  ... |  true because  [p] = there (¬All⇒Any (¬ps ∘′ (invert [p] ∷_)))
+  ... | false because [¬p] = here (invert [¬p])
 
   ¬Any⇒All : {xs : List# A R} → ¬ (Any P xs) → All (∁ P) xs
   ¬Any⇒All {xs = []}      ¬ps = []
   ¬Any⇒All {xs = x ∷# xs} ¬ps with P? x
-  ... | yes p = ⊥-elim (¬ps (here p))
-  ... | no ¬p = ¬p ∷ ¬Any⇒All (¬ps ∘′ there)
+  ... |  true because  [p] = ⊥-elim (¬ps (here (invert [p])))
+  ... | false because [¬p] = invert [¬p] ∷ ¬Any⇒All (¬ps ∘′ there)
 
 ------------------------------------------------------------------------
 -- remove

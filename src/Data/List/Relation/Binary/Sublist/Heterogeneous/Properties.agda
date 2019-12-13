@@ -10,6 +10,7 @@ module Data.List.Relation.Binary.Sublist.Heterogeneous.Properties where
 
 open import Level
 
+open import Data.Bool.Base using (true; false)
 open import Data.Empty
 open import Data.List.Relation.Unary.All using (Null; []; _∷_)
 open import Data.List.Relation.Unary.Any using (Any; here; there)
@@ -29,7 +30,8 @@ open import Function.Base
 open import Function.Bijection   using (_⤖_; bijection)
 open import Function.Equivalence using (_⇔_ ; equivalence)
 
-open import Relation.Nullary using (Dec; yes; no; ¬_)
+open import Relation.Nullary.Reflects using (invert)
+open import Relation.Nullary using (Dec; does; _because_; yes; no; ¬_)
 open import Relation.Nullary.Negation using (¬?)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Unary as U using (Pred)
@@ -108,23 +110,23 @@ module _ {a b r p} {A : Set a} {B : Set b}
   takeWhile-Sublist : ∀ {as bs} → Sublist R as bs → Sublist R (takeWhile P? as) bs
   takeWhile-Sublist []        = []
   takeWhile-Sublist (y ∷ʳ rs) = y ∷ʳ takeWhile-Sublist rs
-  takeWhile-Sublist {a ∷ as} (r ∷ rs) with P? a
-  ... | yes pa = r ∷ takeWhile-Sublist rs
-  ... | no ¬pa = minimum _
+  takeWhile-Sublist {a ∷ as} (r ∷ rs) with does (P? a)
+  ... | true  = r ∷ takeWhile-Sublist rs
+  ... | false = minimum _
 
   dropWhile-Sublist : ∀ {as bs} → Sublist R as bs → Sublist R (dropWhile P? as) bs
   dropWhile-Sublist []        = []
   dropWhile-Sublist (y ∷ʳ rs) = y ∷ʳ dropWhile-Sublist rs
-  dropWhile-Sublist {a ∷ as} (r ∷ rs) with P? a
-  ... | yes pa = _ ∷ʳ dropWhile-Sublist rs
-  ... | no ¬pa = r ∷ rs
+  dropWhile-Sublist {a ∷ as} (r ∷ rs) with does (P? a)
+  ... | true  = _ ∷ʳ dropWhile-Sublist rs
+  ... | false = r ∷ rs
 
   filter-Sublist : ∀ {as bs} → Sublist R as bs → Sublist R (filter P? as) bs
   filter-Sublist []        = []
   filter-Sublist (y ∷ʳ rs) = y ∷ʳ filter-Sublist rs
-  filter-Sublist {a ∷ as} (r ∷ rs) with P? a
-  ... | yes pa = r ∷ filter-Sublist rs
-  ... | no ¬pa = _ ∷ʳ filter-Sublist rs
+  filter-Sublist {a ∷ as} (r ∷ rs) with does (P? a)
+  ... | true  = r ∷ filter-Sublist rs
+  ... | false = _ ∷ʳ filter-Sublist rs
 
 ------------------------------------------------------------------------
 -- Various functions are increasing wrt _⊆_
@@ -238,48 +240,48 @@ module _ {a b r p q} {A : Set a} {B : Set b}
     Pointwise R as bs → Sublist R (takeWhile P? as) (takeWhile Q? bs)
   ⊆-takeWhile-Sublist rp⇒q [] = []
   ⊆-takeWhile-Sublist {a ∷ as} {b ∷ bs} rp⇒q (p ∷ ps) with P? a | Q? b
-  ... | yes pa | yes qb = p ∷ ⊆-takeWhile-Sublist rp⇒q ps
-  ... | yes pa | no ¬qb = ⊥-elim $ ¬qb $ rp⇒q p pa
-  ... | no ¬pa | yes qb = minimum _
-  ... | no ¬pa | no ¬qb = []
+  ... | false because _ | _               = minimum _
+  ... | true  because _ | true  because _ = p ∷ ⊆-takeWhile-Sublist rp⇒q ps
+  ... | yes pa          | no ¬qb          = ⊥-elim $ ¬qb $ rp⇒q p pa
 
   ⊇-dropWhile-Sublist : ∀ {as bs} →
     (∀ {a b} → R a b → Q b → P a) →
     Pointwise R as bs → Sublist R (dropWhile P? as) (dropWhile Q? bs)
   ⊇-dropWhile-Sublist rq⇒p [] = []
   ⊇-dropWhile-Sublist {a ∷ as} {b ∷ bs} rq⇒p (p ∷ ps) with P? a | Q? b
-  ... | yes pa | yes qb = ⊇-dropWhile-Sublist rq⇒p ps
-  ... | yes pa | no ¬qb = b ∷ʳ dropWhile-Sublist P? (fromPointwise ps)
-  ... | no ¬pa | yes qb = ⊥-elim $ ¬pa $ rq⇒p p qb
-  ... | no ¬pa | no ¬qb = p ∷ fromPointwise ps
+  ... | true  because _ | true  because _ = ⊇-dropWhile-Sublist rq⇒p ps
+  ... | true  because _ | false because _ =
+    b ∷ʳ dropWhile-Sublist P? (fromPointwise ps)
+  ... | false because _ | false because _ = p ∷ fromPointwise ps
+  ... | no ¬pa          | yes qb          = ⊥-elim $ ¬pa $ rq⇒p p qb
 
   ⊆-filter-Sublist : ∀ {as bs} → (∀ {a b} → R a b → P a → Q b) →
                      Sublist R as bs → Sublist R (filter P? as) (filter Q? bs)
   ⊆-filter-Sublist rp⇒q [] = []
-  ⊆-filter-Sublist rp⇒q (y ∷ʳ rs) with Q? y
-  ... | yes qb = y ∷ʳ ⊆-filter-Sublist rp⇒q rs
-  ... | no ¬qb = ⊆-filter-Sublist rp⇒q rs
+  ⊆-filter-Sublist rp⇒q (y ∷ʳ rs) with does (Q? y)
+  ... | true  = y ∷ʳ ⊆-filter-Sublist rp⇒q rs
+  ... | false = ⊆-filter-Sublist rp⇒q rs
   ⊆-filter-Sublist {a ∷ as} {b ∷ bs} rp⇒q (r ∷ rs) with P? a | Q? b
-  ... | yes pa | yes qb = r ∷ ⊆-filter-Sublist rp⇒q rs
-  ... | yes pa | no ¬qb = ⊥-elim $ ¬qb $ rp⇒q r pa
-  ... | no ¬pa | yes qb = _ ∷ʳ ⊆-filter-Sublist rp⇒q rs
-  ... | no ¬pa | no ¬qb = ⊆-filter-Sublist rp⇒q rs
+  ... | true  because _ | true  because _ = r ∷ ⊆-filter-Sublist rp⇒q rs
+  ... | false because _ | true  because _ = _ ∷ʳ ⊆-filter-Sublist rp⇒q rs
+  ... | false because _ | false because _ = ⊆-filter-Sublist rp⇒q rs
+  ... | yes pa          | no ¬qb          = ⊥-elim $ ¬qb $ rp⇒q r pa
 
 module _ {a r p} {A : Set a} {R : Rel A r} {P : Pred A p} (P? : U.Decidable P) where
 
   takeWhile-filter : ∀ {as} → Pointwise R as as →
                      Sublist R (takeWhile P? as) (filter P? as)
   takeWhile-filter [] = []
-  takeWhile-filter {a ∷ as} (p ∷ ps) with P? a
-  ... | yes pa = p ∷ takeWhile-filter ps
-  ... | no ¬pa = minimum _
+  takeWhile-filter {a ∷ as} (p ∷ ps) with does (P? a)
+  ... | true  = p ∷ takeWhile-filter ps
+  ... | false = minimum _
 
   filter-dropWhile : ∀ {as} → Pointwise R as as →
                      Sublist R (filter P? as) (dropWhile (¬? ∘ P?) as)
   filter-dropWhile [] = []
-  filter-dropWhile {a ∷ as} (p ∷ ps) with P? a
-  ... | yes pa = p ∷ filter-Sublist P? (fromPointwise ps)
-  ... | no ¬pa = filter-dropWhile ps
+  filter-dropWhile {a ∷ as} (p ∷ ps) with does (P? a)
+  ... | true  = p ∷ filter-Sublist P? (fromPointwise ps)
+  ... | false = filter-dropWhile ps
 
 ------------------------------------------------------------------------
 -- reverse
@@ -411,8 +413,10 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} (R? : Decidable R) wher
   sublist? []       ys       = yes (minimum ys)
   sublist? (x ∷ xs) []       = no λ ()
   sublist? (x ∷ xs) (y ∷ ys) with R? x y
-  ... | yes r = Dec.map (∷⁻¹   r) (sublist? xs ys)
-  ... | no ¬r = Dec.map (∷ʳ⁻¹ ¬r) (sublist? (x ∷ xs) ys)
+  ... | true  because  [r] =
+    Dec.map (∷⁻¹  (invert  [r])) (sublist? xs ys)
+  ... | false because [¬r] =
+    Dec.map (∷ʳ⁻¹ (invert [¬r])) (sublist? (x ∷ xs) ys)
 
 module _ {a e r} {A : Set a} {E : Rel A e} {R : Rel A r} where
 

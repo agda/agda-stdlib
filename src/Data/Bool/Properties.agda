@@ -20,7 +20,7 @@ open import Function.Equivalence
 open import Level using (Level; 0ℓ)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality hiding ([_])
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary using (ofʸ; ofⁿ; does; proof; yes; no)
 open import Relation.Nullary.Decidable using (True)
 import Relation.Unary as U
 
@@ -586,6 +586,10 @@ not-involutive : Involutive not
 not-involutive true  = refl
 not-involutive false = refl
 
+not-injective : ∀ {x y} → not x ≡ not y → x ≡ y
+not-injective {false} {false} nx≢ny = refl
+not-injective {true}  {true}  nx≢ny = refl
+
 not-¬ : ∀ {x y} → x ≡ y → x ≢ not y
 not-¬ {true}  refl ()
 not-¬ {false} refl ()
@@ -626,8 +630,9 @@ T-irrelevant : U.Irrelevant T
 T-irrelevant {true}  _  _  = refl
 
 T? : U.Decidable T
-T? true  = yes _
-T? false = no (λ ())
+does  (T? b) = b
+proof (T? true ) = ofʸ _
+proof (T? false) = ofⁿ λ()
 
 T?-diag : ∀ b → T b → True (T? b)
 T?-diag true  _ = _
