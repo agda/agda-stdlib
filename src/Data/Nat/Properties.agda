@@ -225,6 +225,9 @@ n≤1+n _ = ≤-step ≤-refl
 n≤0⇒n≡0 : ∀ {n} → n ≤ 0 → n ≡ 0
 n≤0⇒n≡0 z≤n = refl
 
+1+n≤1+m⇒n≤m : ∀ {m n} → suc m ≤ suc n → m ≤ n
+1+n≤1+m⇒n≤m (s≤s le) = le
+
 ------------------------------------------------------------------------
 -- Properties of _<_
 ------------------------------------------------------------------------
@@ -377,18 +380,18 @@ m<n⇒m≤1+n : ∀ {m n} → m < n → m ≤ suc n
 m<n⇒m≤1+n (s≤s z≤n)       = z≤n
 m<n⇒m≤1+n (s≤s (s≤s m<n)) = s≤s (m<n⇒m≤1+n (s≤s m<n))
 
-∀[m≤n⇒m≢o]⇒o<n : ∀ n o → (∀ {m} → m ≤ n → m ≢ o) → n < o
-∀[m≤n⇒m≢o]⇒o<n _       zero    m≤n⇒n≢0 = contradiction refl (m≤n⇒n≢0 z≤n)
-∀[m≤n⇒m≢o]⇒o<n zero    (suc o) _       = 0<1+n
-∀[m≤n⇒m≢o]⇒o<n (suc n) (suc o) m≤n⇒n≢o = s≤s (∀[m≤n⇒m≢o]⇒o<n n o rec)
+∀[m≤n⇒m≢o]⇒n<o : ∀ n o → (∀ {m} → m ≤ n → m ≢ o) → n < o
+∀[m≤n⇒m≢o]⇒n<o _       zero    m≤n⇒n≢0 = contradiction refl (m≤n⇒n≢0 z≤n)
+∀[m≤n⇒m≢o]⇒n<o zero    (suc o) _       = 0<1+n
+∀[m≤n⇒m≢o]⇒n<o (suc n) (suc o) m≤n⇒n≢o = s≤s (∀[m≤n⇒m≢o]⇒n<o n o rec)
   where
   rec : ∀ {m} → m ≤ n → m ≢ o
   rec m≤n refl = m≤n⇒n≢o (s≤s m≤n) refl
 
-∀[m<n⇒m≢o]⇒o≤n : ∀ n o → (∀ {m} → m < n → m ≢ o) → n ≤ o
-∀[m<n⇒m≢o]⇒o≤n zero    n       _       = z≤n
-∀[m<n⇒m≢o]⇒o≤n (suc n) zero    m<n⇒m≢0 = contradiction refl (m<n⇒m≢0 0<1+n)
-∀[m<n⇒m≢o]⇒o≤n (suc n) (suc o) m<n⇒m≢o = s≤s (∀[m<n⇒m≢o]⇒o≤n n o rec)
+∀[m<n⇒m≢o]⇒n≤o : ∀ n o → (∀ {m} → m < n → m ≢ o) → n ≤ o
+∀[m<n⇒m≢o]⇒n≤o zero    n       _       = z≤n
+∀[m<n⇒m≢o]⇒n≤o (suc n) zero    m<n⇒m≢0 = contradiction refl (m<n⇒m≢0 0<1+n)
+∀[m<n⇒m≢o]⇒n≤o (suc n) (suc o) m<n⇒m≢o = s≤s (∀[m<n⇒m≢o]⇒n≤o n o rec)
   where
   rec : ∀ {m} → m < n → m ≢ o
   rec x<m refl = m<n⇒m≢o (s≤s x<m) refl
@@ -1017,10 +1020,25 @@ m^n≡1⇒n≡0∨m≡1 m (suc n) eq = inj₂ (m*n≡1⇒m≡1 m (m ^ n) eq)
 ⊔-idem : Idempotent _⊔_
 ⊔-idem = sel⇒idem ⊔-sel
 
+⊔-greatest : ∀ {m n o} → m ≥ o ⊎ n ≥ o → m ⊔ n ≥ o
+⊔-greatest {zero} {n} (inj₁ z≤n) = z≤n
+⊔-greatest {suc m} {zero} (inj₁ m≥o) = m≥o
+⊔-greatest {suc m} {suc n} (inj₁ z≤n) = z≤n
+⊔-greatest {suc m} {suc n} (inj₁ (s≤s m≥o)) = s≤s (⊔-greatest (inj₁ m≥o))
+⊔-greatest {zero} {n} (inj₂ n≥o) = n≥o
+⊔-greatest {suc m} {zero} (inj₂ z≤n) = z≤n
+⊔-greatest {suc m} {suc n} (inj₂ z≤n) = z≤n
+⊔-greatest {suc m} {suc n} (inj₂ (s≤s n≥o)) = s≤s (⊔-greatest (inj₂ n≥o))
+
 ⊔-least : ∀ {m n o} → m ≤ o → n ≤ o → m ⊔ n ≤ o
 ⊔-least {m} {n} m≤o n≤o with ⊔-sel m n
 ... | inj₁ m⊔n≡m rewrite m⊔n≡m = m≤o
 ... | inj₂ m⊔n≡n rewrite m⊔n≡n = n≤o
+
+⊔-suc : ∀ m n → suc m ⊔ suc n ≡ suc (m ⊔ n)
+⊔-suc zero n = refl
+⊔-suc (suc m) zero = refl
+⊔-suc (suc m) (suc n) = cong suc (⊔-suc m n)
 
 ------------------------------------------------------------------------
 -- Structures
@@ -1228,6 +1246,14 @@ m⊔n≤m+n m n with ⊔-sel m n
 ⊓-greatest {m} {n} m≥o n≥o with ⊓-sel m n
 ... | inj₁ m⊓n≡m rewrite m⊓n≡m = m≥o
 ... | inj₂ m⊓n≡n rewrite m⊓n≡n = n≥o
+
+⊓-least : ∀ {m n o} → m ≤ o ⊎ n ≤ o → m ⊓ n ≤ o
+⊓-least {zero}  {n}     (inj₁ m≤o)       = z≤n
+⊓-least {suc m} {zero}  (inj₁ m≤o)       = z≤n
+⊓-least {suc m} {suc n} (inj₁ (s≤s m≤o)) = s≤s (⊓-least (inj₁ m≤o))
+⊓-least {zero}  {n}     (inj₂ n≤o)       = z≤n
+⊓-least {suc m} {zero}  (inj₂ n≤o)       = n≤o
+⊓-least {suc m} {suc n} (inj₂ (s≤s n≤o)) = s≤s (⊓-least (inj₂ n≤o))
 
 ⊓-distribʳ-⊔ : _⊓_ DistributesOverʳ _⊔_
 ⊓-distribʳ-⊔ (suc m) (suc n) (suc o) = cong suc $ ⊓-distribʳ-⊔ m n o
@@ -1474,6 +1500,14 @@ n∸n≡0 : ∀ n → n ∸ n ≡ 0
 n∸n≡0 zero    = refl
 n∸n≡0 (suc n) = n∸n≡0 n
 
+1+[n∸m]≡1+n∸m : ∀ n m → m ≤ n → suc (n ∸ m) ≡ suc n ∸ m
+1+[n∸m]≡1+n∸m  n       zero    0≤n      = refl
+1+[n∸m]≡1+n∸m (suc n) (suc m) (s≤s m≤n) = 1+[n∸m]≡1+n∸m n m m≤n
+
+1+n∸n≡1 : ∀ n → suc n ∸ n ≡ 1
+1+n∸n≡1 zero    = refl
+1+n∸n≡1 (suc n) = 1+n∸n≡1 n
+
 ------------------------------------------------------------------------
 -- Properties of _∸_ and _≤_/_<_
 
@@ -1519,6 +1553,10 @@ m≮m∸n (suc m) (suc n) = m≮m∸n m n ∘ ≤-trans (n≤1+n (suc m))
 ∸-cancelˡ-≡ {o = suc o} z≤n       (s≤s _)   eq = contradiction eq (1+m≢m∸n o)
 ∸-cancelˡ-≡ {n = suc n} (s≤s _)   z≤n       eq = contradiction (sym eq) (1+m≢m∸n n)
 ∸-cancelˡ-≡ {_}         (s≤s n≤m) (s≤s o≤m) eq = cong suc (∸-cancelˡ-≡ n≤m o≤m eq)
+
+∸-cancelʳ-≡ :  ∀ {m n o} → o ≤ m → o ≤ n → m ∸ o ≡ n ∸ o → m ≡ n
+∸-cancelʳ-≡  z≤n       z≤n      eq = eq
+∸-cancelʳ-≡ (s≤s o≤m) (s≤s o≤n) eq = cong suc (∸-cancelʳ-≡ o≤m o≤n eq)
 
 m∸n≡0⇒m≤n : ∀ {m n} → m ∸ n ≡ 0 → m ≤ n
 m∸n≡0⇒m≤n {zero}  {_}    _   = z≤n
@@ -1672,6 +1710,13 @@ m⊓n+n∸m≡n (suc m) (suc n) = cong suc $ m⊓n+n∸m≡n m n
 ∸-distribʳ-⊔ (suc m) (suc n) (suc o) = ∸-distribʳ-⊔ m n o
 
 ------------------------------------------------------------------------
+-- Other properties of _∸_
+
+n∸[n∸m]≡m : ∀ {n m} → (m ≤ n) → n ∸ (n ∸ m) ≡ m
+n∸[n∸m]≡m {n}     {zero}   m≤n      = n∸n≡0 n
+n∸[n∸m]≡m {suc n} {suc m} (s≤s m≤n) = trans (sym (1+[n∸m]≡1+n∸m n (n ∸ m) (m∸n≤m n m))) (cong suc (n∸[n∸m]≡m m≤n))
+
+------------------------------------------------------------------------
 -- Properties of ∣_-_∣
 ------------------------------------------------------------------------
 
@@ -1797,6 +1842,22 @@ m≤∣m-n∣+n m n = subst (m ≤_) (+-comm n _) (m≤n+∣m-n∣ m n)
   suc ⌊ n /2⌋ + ⌊ suc n /2⌋   ≡⟨⟩
   suc (⌊ n /2⌋ + ⌊ suc n /2⌋) ≡⟨ cong suc (⌊n/2⌋+⌈n/2⌉≡n n) ⟩
   suc n                       ∎
+
+⌊n/2⌋≤n : ∀ n → ⌊ n /2⌋ ≤ n
+⌊n/2⌋≤n zero          = z≤n
+⌊n/2⌋≤n (suc zero)    = z≤n
+⌊n/2⌋≤n (suc (suc n)) = s≤s (≤-step (⌊n/2⌋≤n n))
+
+⌊n/2⌋<n : ∀ n → ⌊ suc n /2⌋ < suc n
+⌊n/2⌋<n zero    = s≤s z≤n
+⌊n/2⌋<n (suc n) = s≤s (s≤s (⌊n/2⌋≤n n))
+
+⌈n/2⌉≤n : ∀ n → ⌈ n /2⌉ ≤ n
+⌈n/2⌉≤n zero = z≤n
+⌈n/2⌉≤n (suc n) = s≤s (⌊n/2⌋≤n n)
+
+⌈n/2⌉<n : ∀ n → ⌈ suc (suc n) /2⌉ < suc (suc n)
+⌈n/2⌉<n n = s≤s (⌊n/2⌋<n n)
 
 ------------------------------------------------------------------------
 -- Properties of _≤′_ and _<′_
@@ -2233,4 +2294,19 @@ n∸m≤n m n = m∸n≤m n m
 {-# WARNING_ON_USAGE n∸m≤n
 "Warning: n∸m≤n was deprecated in v1.2.
 Please use m∸n≤m instead (note, you will need to switch the argument order)."
+#-}
+
+-- Version 1.3
+
+∀[m≤n⇒m≢o]⇒o<n : ∀ n o → (∀ {m} → m ≤ n → m ≢ o) → n < o
+∀[m≤n⇒m≢o]⇒o<n = ∀[m≤n⇒m≢o]⇒n<o
+{-# WARNING_ON_USAGE n∸m≤∣n-m∣
+"Warning: ∀[m≤n⇒m≢o]⇒o<n was deprecated in v1.3.
+Please use ∀[m≤n⇒m≢o]⇒n<o instead."
+#-}
+∀[m<n⇒m≢o]⇒o≤n : ∀ n o → (∀ {m} → m < n → m ≢ o) → n ≤ o
+∀[m<n⇒m≢o]⇒o≤n = ∀[m<n⇒m≢o]⇒n≤o
+{-# WARNING_ON_USAGE n∸m≤∣n-m∣
+"Warning: ∀[m<n⇒m≢o]⇒o≤n was deprecated in v1.3.
+Please use ∀[m<n⇒m≢o]⇒n≤o instead."
 #-}

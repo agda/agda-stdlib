@@ -254,6 +254,12 @@ attached to all deprecated names to discourage their use.
   Any¬→¬All  ↦  Any¬⇒¬All
   ```
 
+* In `Data.Nat.Properties
+  ```agda
+  ∀[m≤n⇒m≢o]⇒o<n  ↦  ∀[m≤n⇒m≢o]⇒n<o
+  ∀[m<n⇒m≢o]⇒o≤n  ↦  ∀[m<n⇒m≢o]⇒n≤o
+  ```
+
 Other major additions
 ---------------------
 
@@ -463,6 +469,23 @@ Other minor additions
 * Added new function to `Data.Difference.List`:
   ```agda
   _∷ʳ_ : DiffList A → A → DiffList A
+  ```
+
+* Added new proofs to `Data.Nat.Properties`:
+  ```agda
+  1+n≤1+m⇒n≤m : suc m ≤ suc n → m ≤ n
+  ⊔-greatest : m ≥ o ⊎ n ≥ o → m ⊔ n ≥ o
+  ⊔-suc : suc m ⊔ suc n ≡ suc (m ⊔ n)
+  ⊓-least : m ≤ o ⊎ n ≤ o → m ⊓ n ≤ o
+  1+[n∸m]≡1+n∸m : m ≤ n → suc (n ∸ m) ≡ suc n ∸ m
+  1+n∸n≡1 : ∀ n → suc n ∸ n ≡ 1
+  ∸-cancelʳ-≡ : o ≤ m → o ≤ n → m ∸ o ≡ n ∸ o → m ≡ n
+  n∸[n∸m]≡m : (m ≤ n) → n ∸ (n ∸ m) ≡ m
+  ⌊n/2⌋+⌈n/2⌉≡n : ⌊ n /2⌋ + ⌈ n /2⌉ ≡ n
+  ⌊n/2⌋≤n : ⌊ n /2⌋ ≤ n
+  ⌊n/2⌋<n : ⌊ suc n /2⌋ < suc n
+  ⌈n/2⌉≤n : ⌈ n /2⌉ ≤ n
+  ⌈n/2⌉<n : ⌈ suc (suc n) /2⌉ < suc (suc n)
   ```
 
 * Added new properties to `Data.Fin.Subset`:
