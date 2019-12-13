@@ -18,6 +18,11 @@ Bug-fixes
 * The incorrectly named proof `p⊆q⇒∣p∣<∣q∣ : p ⊆ q → ∣ p ∣ ≤ ∣ q ∣` in
   `Data.Fin.Subset.Properties` now has the correct name `p⊆q⇒∣p∣≤∣q∣`.
 
+* The incorrectly named proofs `∀[m≤n⇒m≢o]⇒o<n : (∀ {m} → m ≤ n → m ≢ o) → n < o`
+  and `∀[m<n⇒m≢o]⇒o≤n : (∀ {m} → m < n → m ≢ o) → n ≤ o` in `Data.Nat.Properties`
+  now has the correct names `∀[m≤n⇒m≢o]⇒n<o` and `∀[m<n⇒m≢o]⇒n≤o`.
+
+
 * Changed the definition of `_⊓_` for `Codata.Conat`; it was mistakenly using
   `_⊔_` in a recursive call.
 
@@ -254,6 +259,12 @@ attached to all deprecated names to discourage their use.
   Any¬→¬All  ↦  Any¬⇒¬All
   ```
 
+* In `Data.Nat.Properties
+  ```agda
+  ∀[m≤n⇒m≢o]⇒o<n  ↦  ∀[m≤n⇒m≢o]⇒n<o
+  ∀[m<n⇒m≢o]⇒o≤n  ↦  ∀[m<n⇒m≢o]⇒n≤o
+  ```
+
 Other major additions
 ---------------------
 
@@ -463,6 +474,16 @@ Other minor additions
 * Added new function to `Data.Difference.List`:
   ```agda
   _∷ʳ_ : DiffList A → A → DiffList A
+  ```
+
+* Added new proofs to `Data.Nat.Properties`:
+  ```agda
+  ∸-cancelʳ-≡ : o ≤ m → o ≤ n → m ∸ o ≡ n ∸ o → m ≡ n
+  ⌊n/2⌋+⌈n/2⌉≡n : ⌊ n /2⌋ + ⌈ n /2⌉ ≡ n
+  ⌊n/2⌋≤n : ⌊ n /2⌋ ≤ n
+  ⌊n/2⌋<n : ⌊ suc n /2⌋ < suc n
+  ⌈n/2⌉≤n : ⌈ n /2⌉ ≤ n
+  ⌈n/2⌉<n : ⌈ suc (suc n) /2⌉ < suc (suc n)
   ```
 
 * Added new properties to `Data.Fin.Subset`:
