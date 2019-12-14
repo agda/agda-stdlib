@@ -8,6 +8,7 @@
 
 module Data.Sum.Properties where
 
+open import Level
 open import Data.Sum
 open import Function
 open import Relation.Binary using (Decidable)
@@ -33,3 +34,19 @@ module _ {a b} {A : Set a} {B : Set b} where
 
   swap-involutive : swap {A = A} {B = B} ∘ swap ≗ id
   swap-involutive = [ (λ _ → refl) , (λ _ → refl) ]
+
+module _ where
+  private
+    variable
+      a b c d e : Level
+      A : Set a
+      B : Set b
+      C : Set c
+      D : Set d
+      E : Set e
+
+  [,]-map-comm : ∀ {f′ : C → E} {f : A → C}
+                 {g′ : D → E} {g : B → D} x →
+                 [ f′ , g′ ]′ ((map f g) x) ≡ [ f′ ∘ f , g′ ∘ g ]′ x
+  [,]-map-comm (inj₁ _) = refl
+  [,]-map-comm (inj₂ _) = refl
