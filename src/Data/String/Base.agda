@@ -76,5 +76,13 @@ concat = List.foldr _++_ ""
 
 -- String-specific functions
 
+padLeft : ℕ → Char → String → String
+padLeft n c str = replicate (n Nat.∸ length str) c ++ str
+
+padRight : ℕ → Char → String → String
+padRight n c str with n Nat.∸ length str
+... | 0 = str
+... | l = str ++ replicate l c
+
 unlines : List String → String
 unlines = concat ∘ List.intersperse "\n"

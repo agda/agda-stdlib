@@ -60,10 +60,24 @@ Other minor additions
   x∉s⇒x∈∁s : x ∉ s → x ∈ ∁ s
   ```
 
+* Added new functions to `Data.String.Base`:
+  ```agda
+  padLeft  : ℕ → Char → String → String
+  padRight : ℕ → Char → String → String
+  ```
+
+* Added new functions to `Data.Vec`:
+  ```
+  rectangle  : ∀[ Vec≤ A ⇒ Vec A ] → List (∃ (Vec A)) → ∃ (List ∘ Vec A)
+  rectangleˡ : A → List (∃ (Vec A)) → ∃ (List ∘ Vec A)
+  rectangleʳ : A → List (∃ (Vec A)) → ∃ (List ∘ Vec A)
+  ```
+
 * Added new functions to `Data.Vec.Bounded.Base`:
   ```agda
-  padLeft  : A → Vec≤ A n → Vec A n
-  padRight : A → Vec≤ A n → Vec A n
+  padLeft   : A → Vec≤ A n → Vec A n
+  padRight  : A → Vec≤ A n → Vec A n
+  rectangle : List (∃ (Vec≤ A)) → ∃ (List ∘ Vec≤ A)
   ```
 
 * Added a new proof to `Relation.Nullary.Decidable`:

@@ -11,7 +11,12 @@ module Data.Vec.Bounded.Base where
 open import Level using (Level)
 open import Data.Nat.Base
 import Data.Nat.Properties as ℕₚ
-open import Data.Product using (_×_; _,_)
+open import Data.List.Base as List using (List)
+open import Data.List.Extrema ℕₚ.≤-totalOrder
+open import Data.List.Relation.Unary.All as All using (All)
+import Data.List.Relation.Unary.All.Properties as Allₚ
+open import Data.List.Membership.Propositional using (mapWith∈)
+open import Data.Product using (∃; _×_; _,_; proj₁)
 open import Data.Vec.Base as Vec using (Vec)
 open import Data.These.Base as These using (These)
 open import Function
@@ -95,3 +100,20 @@ zip = zipWith _,_
 
 align : ∀ {n} → Vec≤ A n → Vec≤ B n → Vec≤ (These A B) n
 align = alignWith id
+
+
+------------------------------------------------------------------------
+-- Lifting a collection of bounded vectors to the same size
+
+rectangle : List (∃ (Vec≤ A)) → ∃ (List ∘ Vec≤ A)
+rectangle {A = A} rows = width , padded where
+
+  sizes = List.map proj₁ rows
+  width = max 0 sizes
+
+  all≤ : All (λ v → proj₁ v ≤ width) rows
+  all≤ = Allₚ.map⁻ (xs≤max 0 sizes)
+
+  padded : List (Vec≤ A width)
+  padded = mapWith∈ rows $ λ {x@(_ , row)} x∈rows →
+    ≤-cast (All.lookup all≤ x∈rows) row
