@@ -53,6 +53,13 @@ Other minor additions
   x∈∁s⇒x∉s : x ∈ ∁ s → x ∉ s
   x∉∁s⇒x∈s : x ∉ ∁ s → x ∈ s
   x∉s⇒x∈∁s : x ∉ s → x ∈ ∁ s
+  ```
+
+* Added new functions to `Data.Vec.Bounded.Base`:
+  ```agda
+  padLeft  : A → Vec≤ A n → Vec A n
+  padRight : A → Vec≤ A n → Vec A n
+  ```
 
 * Added a new proof to `Relation.Nullary.Decidable`:
   ```agda

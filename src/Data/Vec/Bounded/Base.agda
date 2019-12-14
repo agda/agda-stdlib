@@ -17,7 +17,7 @@ open import Data.These.Base as These using (These)
 open import Function
 open import Relation.Nullary
 open import Relation.Unary
-open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Relation.Binary.PropositionalEquality as P using (_≡_; refl)
 
 private
   variable
@@ -37,10 +37,25 @@ record Vec≤ (A : Set a) (n : ℕ) : Set a where
         .bound   : length ≤ n
 
 ------------------------------------------------------------------------
--- Creating new Vec≤ vectors
+-- Conversion between Vec and Vec≤ vectors
 
 fromVec : ∀ {n} → Vec A n → Vec≤ A n
 fromVec v = v , ℕₚ.≤-refl
+
+padRight : ∀ {n} → A → Vec≤ A n → Vec A n
+padRight a (vs , m≤n)
+  with recompute (_ ℕₚ.≤″? _) (ℕₚ.≤⇒≤″ m≤n)
+... | less-than-or-equal refl = vs Vec.++ Vec.replicate a
+
+padLeft : ∀ {n} → A → Vec≤ A n → Vec A n
+padLeft a as@(vs , m≤n)
+  with recompute (_ ℕₚ.≤″? _) (ℕₚ.≤⇒≤″ m≤n)
+... | less-than-or-equal {k} ∣as∣+k≡n
+  with P.trans (ℕₚ.+-comm k (Vec≤.length as)) ∣as∣+k≡n
+... | refl = Vec.replicate a Vec.++ vs
+
+------------------------------------------------------------------------
+-- Creating new Vec≤ vectors
 
 replicate : ∀ {m n} .(m≤n : m ≤ n) → A → Vec≤ A n
 replicate m≤n a = Vec.replicate a , m≤n
