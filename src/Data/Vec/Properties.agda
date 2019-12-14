@@ -348,9 +348,8 @@ lookup-splitAt : ∀ m {n} (xs : Vec A m) (ys : Vec A n) i →
 lookup-splitAt zero    []       ys i       = refl
 lookup-splitAt (suc m) (x ∷ xs) ys zero    = refl
 lookup-splitAt (suc m) (x ∷ xs) ys (suc i) = P.subst id
-  (P.cong (LHS ≡_) (P.sym ([,]-map-comm (Fin.splitAt m i))))
+  (P.cong (_ ≡_) (P.sym ([,]-map-comm (Fin.splitAt m i))))
   (lookup-splitAt m xs ys i)
-  where LHS = lookup (xs ++ ys) i
 
 ------------------------------------------------------------------------
 -- zipWith
