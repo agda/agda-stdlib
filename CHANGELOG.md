@@ -23,6 +23,11 @@ Non-backwards compatible changes
 Other major additions
 ---------------------
 
+* New modules
+  ```
+  Data.List.Show.Core
+  ```
+
 Other minor additions
 ---------------------
 
