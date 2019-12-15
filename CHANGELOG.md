@@ -68,8 +68,9 @@ Other minor additions
   _∷ʳ?_ : List A → Maybe A → List A
   ```
 
-* Added new property to `Data.Nat.Properties`:
+* Added new properties to `Data.Nat.Properties`:
   ```
+  ⌊n/2⌋≤⌈n/2⌉   : ⌊ n /2⌋ ≤ ⌈ n /2⌉
   ⌊n/2⌋+⌈n/2⌉≡n : ⌊ n /2⌋ + ⌈ n /2⌉ ≡ n
   ```
 

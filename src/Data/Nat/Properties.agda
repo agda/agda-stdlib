@@ -1758,6 +1758,11 @@ m≤∣m-n∣+n m n = subst (m ≤_) (+-comm n _) (m≤n+∣m-n∣ m n)
 ⌈n/2⌉-mono : ⌈_/2⌉ Preserves _≤_ ⟶ _≤_
 ⌈n/2⌉-mono m≤n = ⌊n/2⌋-mono (s≤s m≤n)
 
+⌊n/2⌋≤⌈n/2⌉ : ∀ n → ⌊ n /2⌋ ≤ ⌈ n /2⌉
+⌊n/2⌋≤⌈n/2⌉ zero          = z≤n
+⌊n/2⌋≤⌈n/2⌉ (suc zero)    = z≤n
+⌊n/2⌋≤⌈n/2⌉ (suc (suc n)) = s≤s (⌊n/2⌋≤⌈n/2⌉ n)
+
 ⌊n/2⌋+⌈n/2⌉≡n : ∀ n → ⌊ n /2⌋ + ⌈ n /2⌉ ≡ n
 ⌊n/2⌋+⌈n/2⌉≡n zero    = refl
 ⌊n/2⌋+⌈n/2⌉≡n (suc n) = begin-equality
