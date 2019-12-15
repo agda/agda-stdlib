@@ -73,3 +73,6 @@ rectangleˡ a = rectangle (Vec≤.padLeft a)
 
 rectangleʳ : A → List (∃ (Vec A)) → ∃ (List ∘ Vec A)
 rectangleʳ a = rectangle (Vec≤.padRight a)
+
+rectangleᶜ : A → A → List (∃ (Vec A)) → ∃ (List ∘ Vec A)
+rectangleᶜ aₗ aᵣ = rectangle (Vec≤.padBoth aₗ aᵣ)

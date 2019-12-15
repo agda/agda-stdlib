@@ -1747,7 +1747,7 @@ m≤∣m-n∣+n : ∀ m n → m ≤ ∣ m - n ∣ + n
 m≤∣m-n∣+n m n = subst (m ≤_) (+-comm n _) (m≤n+∣m-n∣ m n)
 
 ------------------------------------------------------------------------
--- Properties of ⌊_/2⌋
+-- Properties of ⌊_/2⌋ and ⌈_/2⌉
 ------------------------------------------------------------------------
 
 ⌊n/2⌋-mono : ⌊_/2⌋ Preserves _≤_ ⟶ _≤_
@@ -1757,6 +1757,14 @@ m≤∣m-n∣+n m n = subst (m ≤_) (+-comm n _) (m≤n+∣m-n∣ m n)
 
 ⌈n/2⌉-mono : ⌈_/2⌉ Preserves _≤_ ⟶ _≤_
 ⌈n/2⌉-mono m≤n = ⌊n/2⌋-mono (s≤s m≤n)
+
+⌊n/2⌋+⌈n/2⌉≡n : ∀ n → ⌊ n /2⌋ + ⌈ n /2⌉ ≡ n
+⌊n/2⌋+⌈n/2⌉≡n zero    = refl
+⌊n/2⌋+⌈n/2⌉≡n (suc n) = begin-equality
+  ⌊ suc n /2⌋ + suc ⌊ n /2⌋   ≡⟨ +-comm ⌊ suc n /2⌋ (suc ⌊ n /2⌋) ⟩
+  suc ⌊ n /2⌋ + ⌊ suc n /2⌋   ≡⟨⟩
+  suc (⌊ n /2⌋ + ⌊ suc n /2⌋) ≡⟨ cong suc (⌊n/2⌋+⌈n/2⌉≡n n) ⟩
+  suc n                       ∎
 
 ------------------------------------------------------------------------
 -- Properties of _≤′_ and _<′_

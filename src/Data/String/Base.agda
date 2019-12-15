@@ -9,7 +9,7 @@
 module Data.String.Base where
 
 open import Level using (zero)
-open import Data.Nat.Base as Nat using (ℕ)
+open import Data.Nat.Base as Nat using (ℕ; ⌊_/2⌋; ⌈_/2⌉)
 import Data.Nat.Properties as ℕₚ
 open import Data.List.Base as List using (List; [_])
 open import Data.List.NonEmpty as NE using (List⁺)
@@ -90,6 +90,11 @@ padRight c n str with n Nat.∸ length str
 ... | 0 = str
 ... | l = str ++ replicate l c
 
+padBoth : Char → Char → ℕ → String → String
+padBoth cₗ cᵣ n str with n Nat.∸ length str
+... | 0 = str
+... | l = replicate ⌊ l /2⌋ cₗ ++ str ++ replicate ⌈ l /2⌉ cᵣ
+
 rectangle : ∀ {n} → (ℕ → String → String) →
             Vec String n → Vec String n
 rectangle pad cells = Vec.map (pad width) cells where
@@ -102,3 +107,6 @@ rectangleˡ c = rectangle (padLeft c)
 
 rectangleʳ : ∀ {n} → Char → Vec String n → Vec String n
 rectangleʳ c = rectangle (padRight c)
+
+rectangleᶜ : ∀ {n} → Char → Char → Vec String n → Vec String n
+rectangleᶜ cₗ cᵣ = rectangle (padBoth cₗ cᵣ)

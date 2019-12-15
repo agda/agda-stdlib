@@ -68,13 +68,21 @@ Other minor additions
   _∷ʳ?_ : List A → Maybe A → List A
   ```
 
+* Added new property to `Data.Nat.Properties`:
+  ```
+  ⌊n/2⌋+⌈n/2⌉≡n : ⌊ n /2⌋ + ⌈ n /2⌉ ≡ n
+  ```
+
 * Added new functions to `Data.String.Base`:
   ```agda
   padLeft    : Char → ℕ → String → String
   padRight   : Char → ℕ → String → String
+  padBoth    : Char → Char → ℕ → String → String
+
   rectangle  : (ℕ → String → String) → Vec String n → Vec String n
   rectangleˡ : Char → Vec String n → Vec String n
   rectangleʳ : Char → Vec String n → Vec String n
+  rectangleᶜ : Char → Char → Vec String n → Vec String n
   ```
 
 * Added new functions to `Data.Vec.Base`:
@@ -87,12 +95,15 @@ Other minor additions
   rectangle  : ∀[ Vec≤ A ⇒ Vec A ] → List (∃ (Vec A)) → ∃ (List ∘ Vec A)
   rectangleˡ : A → List (∃ (Vec A)) → ∃ (List ∘ Vec A)
   rectangleʳ : A → List (∃ (Vec A)) → ∃ (List ∘ Vec A)
+  rectangleᶜ : A → A → List (∃ (Vec A)) → ∃ (List ∘ Vec A)
   ```
 
 * Added new functions to `Data.Vec.Bounded.Base`:
   ```agda
   padLeft   : A → Vec≤ A n → Vec A n
   padRight  : A → Vec≤ A n → Vec A n
+  padBoth : ∀ {n} → A → A → Vec≤ A n → Vec A n
+
   rectangle : List (∃ (Vec≤ A)) → ∃ (List ∘ Vec≤ A)
   ```
 
