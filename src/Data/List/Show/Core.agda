@@ -122,8 +122,10 @@ whitespace .row = λ where
 whitespace .bot = nothing
 
 -- /!\ Invariants:
+-- * the table is presented as a list of rows
 -- * header has the same length as each one of the rows
--- * All of the Strings have the same length
+--   i.e. we have a rectangular table
+-- * all of the strings in a given column have the same length
 
 table : Config → List (List String) → String
 table _ []              = ""
