@@ -122,7 +122,7 @@ whitespace .row = λ where
 whitespace .bot = nothing
 
 -- /!\ Invariants:
--- * header as the same length as each one of the rows
+-- * header has the same length as each one of the rows
 -- * All of the Strings have the same length
 
 table : Config → List (List String) → String
