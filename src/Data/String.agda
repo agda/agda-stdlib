@@ -22,3 +22,6 @@ open import Data.String.Properties using (_≈?_; _≟_; _<?_; _==_) public
 
 toVec : (s : String) → Vec Char (length s)
 toVec s = Vec.fromList (toList s)
+
+fromVec : ∀ {n} → Vec Char n → String
+fromVec = fromList ∘ Vec.toList
