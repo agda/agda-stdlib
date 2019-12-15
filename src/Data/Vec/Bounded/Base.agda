@@ -42,7 +42,7 @@ record Vec≤ (A : Set a) (n : ℕ) : Set a where
         .bound   : length ≤ n
 
 ------------------------------------------------------------------------
--- Conversion between Vec and Vec≤ vectors
+-- Conversion functions
 
 fromVec : ∀ {n} → Vec A n → Vec≤ A n
 fromVec v = v , ℕₚ.≤-refl
@@ -58,6 +58,12 @@ padLeft a as@(vs , m≤n)
 ... | less-than-or-equal {k} ∣as∣+k≡n
   with P.trans (ℕₚ.+-comm k (Vec≤.length as)) ∣as∣+k≡n
 ... | refl = Vec.replicate a Vec.++ vs
+
+fromList : (as : List A) → Vec≤ A (List.length as)
+fromList = fromVec ∘ Vec.fromList
+
+toList : ∀ {n} → Vec≤ A n → List A
+toList = Vec.toList ∘ Vec≤.vec
 
 ------------------------------------------------------------------------
 -- Creating new Vec≤ vectors

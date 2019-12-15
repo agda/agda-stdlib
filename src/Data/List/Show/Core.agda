@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Fancy display functions for Lists
+-- Fancy display functions for List
 -- This is a core module because we have (unenforced) invariants.
 -- If you cannot guarantee that your data respects these invariants,
 -- you should instead use Data.List.Show.

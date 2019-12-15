@@ -26,6 +26,7 @@ Other major additions
 * New modules
   ```
   Data.List.Show.Core
+  Data.List.Show
   Data.Vec.Show
   ```
 
