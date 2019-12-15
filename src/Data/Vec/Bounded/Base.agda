@@ -16,7 +16,7 @@ open import Data.List.Extrema ℕₚ.≤-totalOrder
 open import Data.List.Relation.Unary.All as All using (All)
 import Data.List.Relation.Unary.All.Properties as Allₚ
 open import Data.List.Membership.Propositional using (mapWith∈)
-open import Data.Product using (∃; _×_; _,_; proj₁)
+open import Data.Product using (∃; _×_; _,_; proj₁; proj₂)
 open import Data.Vec.Base as Vec using (Vec)
 open import Data.These.Base as These using (These)
 open import Function
@@ -155,5 +155,5 @@ rectangle {A = A} rows = width , padded where
   all≤ = Allₚ.map⁻ (xs≤max 0 sizes)
 
   padded : List (Vec≤ A width)
-  padded = mapWith∈ rows $ λ {x@(_ , row)} x∈rows →
-    ≤-cast (All.lookup all≤ x∈rows) row
+  padded = mapWith∈ rows $ λ {x} x∈rows →
+    ≤-cast (All.lookup all≤ x∈rows) (proj₂ x)
