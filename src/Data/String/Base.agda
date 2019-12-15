@@ -16,6 +16,7 @@ open import Data.List.NonEmpty as NE using (List⁺)
 open import Data.List.Extrema ℕₚ.≤-totalOrder
 open import Data.List.Relation.Binary.Pointwise using (Pointwise)
 open import Data.List.Relation.Binary.Lex.Strict using (Lex-<)
+open import Data.Vec.Base as Vec using (Vec)
 open import Data.Char.Base as Char using (Char)
 open import Function
 open import Relation.Binary using (Rel)
@@ -89,15 +90,15 @@ padRight c n str with n Nat.∸ length str
 ... | 0 = str
 ... | l = str ++ replicate l c
 
-rectangle : (ℕ → String → String) →
-            List String → List String
-rectangle pad cells = List.map (pad width) cells where
+rectangle : ∀ {n} → (ℕ → String → String) →
+            Vec String n → Vec String n
+rectangle pad cells = Vec.map (pad width) cells where
 
-  sizes = List.map length cells
+  sizes = List.map length (Vec.toList cells)
   width = max 0 sizes
 
-rectangleˡ : Char → List String → List String
+rectangleˡ : ∀ {n} → Char → Vec String n → Vec String n
 rectangleˡ c = rectangle (padLeft c)
 
-rectangleʳ : Char → List String → List String
+rectangleʳ : ∀ {n} → Char → Vec String n → Vec String n
 rectangleʳ c = rectangle (padRight c)

@@ -64,9 +64,9 @@ Other minor additions
   ```agda
   padLeft    : Char → ℕ → String → String
   padRight   : Char → ℕ → String → String
-  rectangle  : (ℕ → String → String) → List String → List String
-  rectangleˡ : Char → List String → List String
-  rectangleʳ : Char → List String → List String
+  rectangle  : (ℕ → String → String) → Vec String n → Vec String n
+  rectangleˡ : Char → Vec String n → Vec String n
+  rectangleʳ : Char → Vec String n → Vec String n
   ```
 
 * Added new functions to `Data.Vec`:
