@@ -4,6 +4,8 @@
 -- Fancy display functions for Vec
 ------------------------------------------------------------------------
 
+{-# OPTIONS --safe --without-K #-}
+
 module Data.Vec.Show where
 
 import Data.List.Show.Core as Show

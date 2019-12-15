@@ -7,6 +7,8 @@
 -- you should instead use Data.List.Show.
 ------------------------------------------------------------------------
 
+{-# OPTIONS --safe --without-K #-}
+
 module Data.List.Show.Core where
 
 open import Data.Bool.Base using (if_then_else_)
@@ -16,7 +18,7 @@ open import Data.List.Base as List
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; maybe)
 open import Data.Nat.Base
 open import Data.String.Base as String
-  using (String; unlines; replicate; length)
+  using (String; fromChar; unlines; replicate; length)
 open import Function.Base
 open import Agda.Builtin.Equality
 
@@ -92,6 +94,22 @@ module _ where
   noborder c .sep = Maybe.map dropBorder (c .sep)
   noborder c .row = dropBorder (c .row)
   noborder c .bot = nothing
+
+module _ where
+
+  private
+    space : Line → Line
+    space l = let pad = maybe fromChar " " (l .cont) in λ where
+      .left  → Maybe.map (String._++ pad) (l .left)
+      .cont  → l .cont
+      .sep   → pad String.++ l .sep String.++ pad
+      .right → Maybe.map (pad String.++_) (l .right)
+
+  addSpace : Config → Config
+  addSpace c .top = Maybe.map space (c .top)
+  addSpace c .sep = Maybe.map space (c .sep)
+  addSpace c .row = space (c .row)
+  addSpace c .bot = Maybe.map space (c .bot)
 
 whitespace : Config
 whitespace .top = nothing
@@ -189,6 +207,20 @@ _ : table (noborder $ compact unicode)
   ≡ "foo│bar
 \   \  1│  2
 \   \  4│  3"
+_ = refl
+
+_ : table (addSpace unicode)
+          ( ("foo" ∷ "bar" ∷ [])
+          ∷ ("  1" ∷ "  2" ∷ [])
+          ∷ ("  4" ∷ "  3" ∷ [])
+          ∷ [])
+  ≡ "┌─────┬─────┐
+\   \│ foo │ bar │
+\   \├─────┼─────┤
+\   \│   1 │   2 │
+\   \├─────┼─────┤
+\   \│   4 │   3 │
+\   \└─────┴─────┘"
 _ = refl
 
 _ : table ascii

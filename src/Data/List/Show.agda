@@ -4,6 +4,8 @@
 -- Fancy display functions for List
 ------------------------------------------------------------------------
 
+{-# OPTIONS --safe --without-K #-}
+
 module Data.List.Show where
 
 open import Data.String using (String; rectangleʳ)
