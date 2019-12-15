@@ -15,8 +15,17 @@ import Data.Vec.Show as Show
 open import Function.Base
 open import Agda.Builtin.Equality
 
-table : List (List String) → String
-table rows = Show.table rectangle where
+open import Data.List.Show.Core using
+  ( Line
+  ; Config
+  ; unicode
+  ; ascii
+  ; whitespace
+  ; compact
+  ) public
+
+table : Config → List (List String) → String
+table c rows = Show.table c rectangle where
 
   rectangle : Vec (Vec String _) _
   rectangle = Vec.fromList
@@ -25,7 +34,8 @@ table rows = Show.table rectangle where
             $ Vec≤.rectangle
             $ map (λ row → -, Vec≤.fromList row) rows
 
-_ : table ( ("foo" ∷ "bar" ∷ [])
+_ : table unicode
+          ( ("foo" ∷ "bar" ∷ [])
           ∷ ("partial" ∷ [])
           ∷ ("3" ∷ "2" ∷ "1" ∷ "⋯" ∷ "surprise!" ∷ [])
           ∷ [])

@@ -62,6 +62,12 @@ Other minor additions
   x∉s⇒x∈∁s : x ∉ s → x ∈ ∁ s
   ```
 
+* Added new functions to `Data.List.Base`:
+  ```agda
+  _?∷_  : Maybe A → List A → List A
+  _∷ʳ?_ : List A → Maybe A → List A
+  ```
+
 * Added new functions to `Data.String.Base`:
   ```agda
   padLeft    : Char → ℕ → String → String
