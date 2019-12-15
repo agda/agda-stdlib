@@ -26,6 +26,7 @@ Other major additions
 * New modules
   ```
   Data.List.Show.Core
+  Data.Vec.Show
   ```
 
 Other minor additions
@@ -67,6 +68,11 @@ Other minor additions
   rectangle  : (ℕ → String → String) → Vec String n → Vec String n
   rectangleˡ : Char → Vec String n → Vec String n
   rectangleʳ : Char → Vec String n → Vec String n
+  ```
+
+* Added new functions to `Data.Vec.Base`:
+  ```
+  transpose : Vec (Vec A n) m → Vec (Vec A m) n
   ```
 
 * Added new functions to `Data.Vec`:

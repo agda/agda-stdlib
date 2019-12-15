@@ -284,3 +284,10 @@ init .(ys ∷ʳ y) | (ys , y , refl) = ys
 last : ∀ {n} → Vec A (1 + n) → A
 last xs         with initLast xs
 last .(ys ∷ʳ y) | (ys , y , refl) = y
+
+------------------------------------------------------------------------
+-- Other operations
+
+transpose : ∀ {m n} → Vec (Vec A n) m → Vec (Vec A m) n
+transpose []         = replicate []
+transpose (as ∷ ass) = replicate _∷_ ⊛ as ⊛ transpose ass
