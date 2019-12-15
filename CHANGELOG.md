@@ -62,8 +62,11 @@ Other minor additions
 
 * Added new functions to `Data.String.Base`:
   ```agda
-  padLeft  : ℕ → Char → String → String
-  padRight : ℕ → Char → String → String
+  padLeft    : Char → ℕ → String → String
+  padRight   : Char → ℕ → String → String
+  rectangle  : (ℕ → String → String) → List String → List String
+  rectangleˡ : Char → List String → List String
+  rectangleʳ : Char → List String → List String
   ```
 
 * Added new functions to `Data.Vec`:

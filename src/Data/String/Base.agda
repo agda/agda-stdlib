@@ -10,8 +10,10 @@ module Data.String.Base where
 
 open import Level using (zero)
 open import Data.Nat.Base as Nat using (ℕ)
+import Data.Nat.Properties as ℕₚ
 open import Data.List.Base as List using (List; [_])
 open import Data.List.NonEmpty as NE using (List⁺)
+open import Data.List.Extrema ℕₚ.≤-totalOrder
 open import Data.List.Relation.Binary.Pointwise using (Pointwise)
 open import Data.List.Relation.Binary.Lex.Strict using (Lex-<)
 open import Data.Char.Base as Char using (Char)
@@ -76,13 +78,26 @@ concat = List.foldr _++_ ""
 
 -- String-specific functions
 
-padLeft : ℕ → Char → String → String
-padLeft n c str = replicate (n Nat.∸ length str) c ++ str
+unlines : List String → String
+unlines = concat ∘ List.intersperse "\n"
 
-padRight : ℕ → Char → String → String
-padRight n c str with n Nat.∸ length str
+padLeft : Char → ℕ → String → String
+padLeft c n str = replicate (n Nat.∸ length str) c ++ str
+
+padRight : Char → ℕ → String → String
+padRight c n str with n Nat.∸ length str
 ... | 0 = str
 ... | l = str ++ replicate l c
 
-unlines : List String → String
-unlines = concat ∘ List.intersperse "\n"
+rectangle : (ℕ → String → String) →
+            List String → List String
+rectangle pad cells = List.map (pad width) cells where
+
+  sizes = List.map length cells
+  width = max 0 sizes
+
+rectangleˡ : Char → List String → List String
+rectangleˡ c = rectangle (padLeft c)
+
+rectangleʳ : Char → List String → List String
+rectangleʳ c = rectangle (padRight c)
