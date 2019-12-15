@@ -80,7 +80,10 @@ Other minor additions
   padRight   : Char → ℕ → String → String
   padBoth    : Char → Char → ℕ → String → String
 
-  rectangle  : (ℕ → String → String) → Vec String n → Vec String n
+  data Align : Set where Left Center Right : Align
+  fromAlign  : Align → ℕ → String → String
+
+  rectangle  : Vec (ℕ → String → String) n → Vec String n → Vec String n
   rectangleˡ : Char → Vec String n → Vec String n
   rectangleʳ : Char → Vec String n → Vec String n
   rectangleᶜ : Char → Char → Vec String n → Vec String n
@@ -101,6 +104,9 @@ Other minor additions
 
 * Added new functions to `Data.Vec.Bounded.Base`:
   ```agda
+  take : n → Vec≤ A m → Vec≤ A n
+  drop : n → Vec≤ A m → Vec≤ A (m ∸ n)
+
   padLeft   : A → Vec≤ A n → Vec A n
   padRight  : A → Vec≤ A n → Vec A n
   padBoth : ∀ {n} → A → A → Vec≤ A n → Vec A n

@@ -130,6 +130,17 @@ zip = zipWith _,_
 align : ∀ {n} → Vec≤ A n → Vec≤ B n → Vec≤ (These A B) n
 align = alignWith id
 
+-- take and drop
+
+take : ∀ {m} n → Vec≤ A m → Vec≤ A n
+take zero    _                = []
+take (suc n) (Vec.[] , p)     = []
+take (suc n) (a Vec.∷ as , p) = a ∷ take n (as , ℕₚ.≤-trans (ℕₚ.n≤1+n _) p)
+
+drop : ∀ {m} n → Vec≤ A m → Vec≤ A (m ∸ n)
+drop             zero    v                = v
+drop             (suc n) (Vec.[] , p)     = []
+drop {m = suc m} (suc n) (a Vec.∷ as , p) = drop n (as , ℕₚ.≤-pred p)
 
 ------------------------------------------------------------------------
 -- Lifting a collection of bounded vectors to the same size

@@ -82,6 +82,9 @@ concat = List.foldr _++_ ""
 unlines : List String → String
 unlines = concat ∘ List.intersperse "\n"
 
+------------------------------------------------------------------------
+-- Alignment
+
 padLeft : Char → ℕ → String → String
 padLeft c n str = replicate (n Nat.∸ length str) c ++ str
 
@@ -95,18 +98,25 @@ padBoth cₗ cᵣ n str with n Nat.∸ length str
 ... | 0 = str
 ... | l = replicate ⌊ l /2⌋ cₗ ++ str ++ replicate ⌈ l /2⌉ cᵣ
 
-rectangle : ∀ {n} → (ℕ → String → String) →
+data Align : Set where Left Center Right : Align
+
+fromAlign : Align → ℕ → String → String
+fromAlign Left   = padRight ' '
+fromAlign Center = padBoth ' ' ' '
+fromAlign Right  = padLeft ' '
+
+rectangle : ∀ {n} → Vec (ℕ → String → String) n →
             Vec String n → Vec String n
-rectangle pad cells = Vec.map (pad width) cells where
+rectangle pads cells = Vec.zipWith (λ p c → p width c) pads cells where
 
   sizes = List.map length (Vec.toList cells)
   width = max 0 sizes
 
 rectangleˡ : ∀ {n} → Char → Vec String n → Vec String n
-rectangleˡ c = rectangle (padLeft c)
+rectangleˡ c = rectangle (Vec.replicate $ padLeft c)
 
 rectangleʳ : ∀ {n} → Char → Vec String n → Vec String n
-rectangleʳ c = rectangle (padRight c)
+rectangleʳ c = rectangle (Vec.replicate $ padRight c)
 
 rectangleᶜ : ∀ {n} → Char → Char → Vec String n → Vec String n
-rectangleᶜ cₗ cᵣ = rectangle (padBoth cₗ cᵣ)
+rectangleᶜ cₗ cᵣ = rectangle (Vec.replicate $ padBoth cₗ cᵣ)
