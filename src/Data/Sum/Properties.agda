@@ -16,37 +16,41 @@ open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable using (map′)
 
-module _ {a b} {A : Set a} {B : Set b} where
+private
+  variable
+    a b c d e : Level
+    A : Set a
+    B : Set b
+    C : Set c
+    D : Set d
+    E : Set e
 
-  inj₁-injective : ∀ {x y} → (A ⊎ B ∋ inj₁ x) ≡ inj₁ y → x ≡ y
-  inj₁-injective refl = refl
+inj₁-injective : ∀ {x y} → (A ⊎ B ∋ inj₁ x) ≡ inj₁ y → x ≡ y
+inj₁-injective refl = refl
 
-  inj₂-injective : ∀ {x y} → (A ⊎ B ∋ inj₂ x) ≡ inj₂ y → x ≡ y
-  inj₂-injective refl = refl
+inj₂-injective : ∀ {x y} → (A ⊎ B ∋ inj₂ x) ≡ inj₂ y → x ≡ y
+inj₂-injective refl = refl
 
-  module _ (dec₁ : Decidable _≡_) (dec₂ : Decidable _≡_) where
+module _ (dec₁ : Decidable {A = A} {B = A} _≡_)
+         (dec₂ : Decidable {A = B} {B = B} _≡_) where
 
-    ≡-dec : Decidable {A = A ⊎ B} _≡_
-    ≡-dec (inj₁ x) (inj₁ y) = map′ (cong inj₁) inj₁-injective (dec₁ x y)
-    ≡-dec (inj₁ x) (inj₂ y) = no λ()
-    ≡-dec (inj₂ x) (inj₁ y) = no λ()
-    ≡-dec (inj₂ x) (inj₂ y) = map′ (cong inj₂) inj₂-injective (dec₂ x y)
+  ≡-dec : Decidable {A = A ⊎ B} _≡_
+  ≡-dec (inj₁ x) (inj₁ y) = map′ (cong inj₁) inj₁-injective (dec₁ x y)
+  ≡-dec (inj₁ x) (inj₂ y) = no λ()
+  ≡-dec (inj₂ x) (inj₁ y) = no λ()
+  ≡-dec (inj₂ x) (inj₂ y) = map′ (cong inj₂) inj₂-injective (dec₂ x y)
 
-  swap-involutive : swap {A = A} {B = B} ∘ swap ≗ id
-  swap-involutive = [ (λ _ → refl) , (λ _ → refl) ]
+swap-involutive : swap {A = A} {B = B} ∘ swap ≗ id
+swap-involutive = [ (λ _ → refl) , (λ _ → refl) ]
 
-module _ where
-  private
-    variable
-      a b c d e : Level
-      A : Set a
-      B : Set b
-      C : Set c
-      D : Set d
-      E : Set e
+[,]-map-commute : ∀ {f : A → C} {g : B → D}
+                  {f′ : C → E} {g′ : D → E} x →
+                  [ f′ , g′ ]′ ((map f g) x) ≡ [ f′ ∘ f , g′ ∘ g ]′ x
+[,]-map-commute (inj₁ _) = refl
+[,]-map-commute (inj₂ _) = refl
 
-  [,]-map-comm : ∀ {f′ : C → E} {f : A → C}
-                 {g′ : D → E} {g : B → D} x →
-                 [ f′ , g′ ]′ ((map f g) x) ≡ [ f′ ∘ f , g′ ∘ g ]′ x
-  [,]-map-comm (inj₁ _) = refl
-  [,]-map-comm (inj₂ _) = refl
+map-commute : ∀ {f : A → C} {g : B → D}
+             {f′ : C → E} {g′ : D → E} x →
+             ((map f′ g′) ∘ (map f g)) x ≡ map (f′ ∘ f) (g′ ∘ g) x
+map-commute (inj₁ _) = refl
+map-commute (inj₂ _) = refl
