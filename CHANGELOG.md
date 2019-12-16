@@ -28,7 +28,9 @@ Other minor additions
 
 * Added new proofs to `Induction.WellFounded`:
   ```agda
-  wfRecFixp : ∀ {x} → All.wfRec P f x ≡ f x λ y _ → All.wfRec P f y
+  someWfRecInvar : ∀ x → (q q' : Acc _<_ x) → Some.wfRec P f x q ≡ Some.wfRec P f x q'
+  wfRecBuilder-wfRec : ∀ {x y} y<x → All.wfRecBuilder P f x y y<x ≡ All.wfRec P f y
+  wfRecFixpoint : ∀ {x} → All.wfRec P f x ≡ f x λ y _ → All.wfRec P f y
   ```
 
 * Added new proofs to `Algebra.Properties.Group`:

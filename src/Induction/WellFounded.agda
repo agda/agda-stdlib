@@ -30,9 +30,9 @@ WfRec _<_ P x = ∀ y → y < x → P y
 data Acc {a ℓ} {A : Set a} (_<_ : Rel A ℓ) (x : A) : Set (a ⊔ ℓ) where
   acc : (rs : WfRec _<_ (Acc _<_) x) → Acc _<_ x
 
-acc-inv : ∀ {a ℓ} {A : Set a} {_<_ : Rel A ℓ} {x : A} (q : Acc _<_ x) →
-          {y : A} → y < x → Acc _<_ y
-acc-inv (acc rs) y<x = rs _ y<x
+acc-inverse : ∀ {a ℓ} {A : Set a} {_<_ : Rel A ℓ} {x : A} (q : Acc _<_ x) →
+              (y : A) → y < x → Acc _<_ y
+acc-inverse (acc rs) y y<x = rs y y<x
 
 -- The accessibility predicate encodes what it means to be
 -- well-founded; if all elements are accessible, then _<_ is
@@ -59,9 +59,9 @@ module Some {a lt} {A : Set a} {_<_ : Rel A lt} {ℓ} where
   wfRec : SubsetRecursor (Acc _<_) (WfRec _<_)
   wfRec = subsetBuild wfRecBuilder
 
-  wfRecFixp : (P : Pred A ℓ) (f : WfRec _<_ P ⊆′ P) {x : A} (q : Acc _<_ x) →
-              wfRec P f x q ≡ f x (λ y y<x → wfRec P f y (acc-inv q y<x))
-  wfRecFixp P f (acc rs) = refl
+  wfRecFixpoint : (P : Pred A ℓ) (f : WfRec _<_ P ⊆′ P) {x : A} (q : Acc _<_ x) →
+                  wfRec P f x q ≡ f x (λ y y<x → wfRec P f y (acc-inverse q y y<x))
+  wfRecFixpoint P f (acc rs) = refl
 
   wfRec-builder = wfRecBuilder
   {-# WARNING_ON_USAGE wfRec-builder
@@ -92,21 +92,21 @@ module All {a lt} {A : Set a} {_<_ : Rel A lt}
 module FixPoint
   {a ℓ} {A : Set a} {_<_ : Rel A ℓ} (wf : WellFounded _<_)
   (P : Pred A ℓ) (f : WfRec _<_ P ⊆′ P)
-  (f-ext : (x : A) {IH IH' : WfRec _<_ P x} → (∀ y y<x → IH y y<x ≡ IH' y y<x) → f x IH ≡ f x IH')
+  (f-ext : (x : A) {IH IH' : WfRec _<_ P x} → (∀ {y} y<x → IH y y<x ≡ IH' y y<x) → f x IH ≡ f x IH')
   where
 
-  someWfRecInv : ∀ x → (q q' : Acc _<_ x) → Some.wfRec P f x q ≡ Some.wfRec P f x q'
-  someWfRecInv = All.wfRec wf (a ⊔ ℓ)
-                           (λ x → (q q' : Acc _<_ x) → Some.wfRec P f x q ≡ Some.wfRec P f x q')
-                           (λ { x IH (acc rs) (acc rs') → f-ext x λ y y<x → IH y y<x (rs y y<x) (rs' y y<x) })
+  someWfRecInvar : ∀ x → (q q' : Acc _<_ x) → Some.wfRec P f x q ≡ Some.wfRec P f x q'
+  someWfRecInvar = All.wfRec wf (a ⊔ ℓ)
+                             (λ x → (q q' : Acc _<_ x) → Some.wfRec P f x q ≡ Some.wfRec P f x q')
+                             (λ { x IH (acc rs) (acc rs') → f-ext x (λ y<x → IH _ y<x (rs _ y<x) (rs' _ y<x)) })
 
   open All wf ℓ
-  wfRecFixpLemma : ∀ {x} y y<x → wfRecBuilder P f x y y<x ≡ wfRec P f y
-  wfRecFixpLemma {x} y y<x with wf x
-  wfRecFixpLemma {x} y y<x | acc rs = someWfRecInv y (rs y y<x) (wf y)
+  wfRecBuilder-wfRec : ∀ {x y} y<x → wfRecBuilder P f x y y<x ≡ wfRec P f y
+  wfRecBuilder-wfRec {x} {y} y<x with wf x
+  ... | acc rs = someWfRecInvar y (rs y y<x) (wf y)
 
-  wfRecFixp : ∀ {x} → wfRec P f x ≡ f x λ y _ → wfRec P f y
-  wfRecFixp {x} = f-ext x wfRecFixpLemma
+  wfRecFixpoint : ∀ {x} → wfRec P f x ≡ f x (λ y _ → wfRec P f y)
+  wfRecFixpoint {x} = f-ext x wfRecBuilder-wfRec
 
 
 ------------------------------------------------------------------------
