@@ -20,6 +20,11 @@ Non-backwards compatible changes
   Definitions that are sensitive to the behaviour of these lemmas, rather than
   just their existence, may need to be revised.
 
+* The fixity level of `Data.List.Base`'s `_∷ʳ_` was changed from 5 to 6.
+  This means that `x ∷ xs ∷ʳ y` and `x ++ xs ∷ʳ y` are not ambiguous
+  anymore: they both are parenthesised to the right (the more efficient
+  variant).
+
 Other major additions
 ---------------------
 
@@ -80,8 +85,8 @@ Other minor additions
   padRight   : Char → ℕ → String → String
   padBoth    : Char → Char → ℕ → String → String
 
-  data Align : Set where Left Center Right : Align
-  fromAlign  : Align → ℕ → String → String
+  data Alignment : Set where Left Center Right : Alignment
+  fromAlignment  : Alignment → ℕ → String → String
 
   rectangle  : Vec (ℕ → String → String) n → Vec String n → Vec String n
   rectangleˡ : Char → Vec String n → Vec String n

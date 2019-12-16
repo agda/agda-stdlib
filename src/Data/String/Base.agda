@@ -9,7 +9,7 @@
 module Data.String.Base where
 
 open import Level using (zero)
-open import Data.Nat.Base as Nat using (ℕ; ⌊_/2⌋; ⌈_/2⌉)
+open import Data.Nat.Base as ℕ using (ℕ; _∸_; ⌊_/2⌋; ⌈_/2⌉)
 import Data.Nat.Properties as ℕₚ
 open import Data.List.Base as List using (List; [_])
 open import Data.List.NonEmpty as NE using (List⁺)
@@ -83,27 +83,53 @@ unlines : List String → String
 unlines = concat ∘ List.intersperse "\n"
 
 ------------------------------------------------------------------------
--- Alignment
+-- Padding
+
+-- Each one of the padding functions should verify the following
+-- invariant:
+--   If length str ≤ n then length (padLeft c n str) ≡ n
+--   and otherwise padLeft c n str ≡ str.
+
+-- Appending an empty string is expensive (append for Haskell's
+-- Text creates a fresh Text value in which both contents are
+-- copied) so we precompute `n ∸ length str` and check whether
+-- it is equal to 0.
 
 padLeft : Char → ℕ → String → String
-padLeft c n str = replicate (n Nat.∸ length str) c ++ str
+padLeft c n str with n ∸ length str
+... | 0 = str
+... | l = replicate l c ++ str
 
 padRight : Char → ℕ → String → String
-padRight c n str with n Nat.∸ length str
+padRight c n str with n ∸ length str
 ... | 0 = str
 ... | l = str ++ replicate l c
 
 padBoth : Char → Char → ℕ → String → String
-padBoth cₗ cᵣ n str with n Nat.∸ length str
+padBoth cₗ cᵣ n str with n ∸ length str
 ... | 0 = str
 ... | l = replicate ⌊ l /2⌋ cₗ ++ str ++ replicate ⌈ l /2⌉ cᵣ
 
-data Align : Set where Left Center Right : Align
+------------------------------------------------------------------------
+-- Alignment
 
-fromAlign : Align → ℕ → String → String
-fromAlign Left   = padRight ' '
-fromAlign Center = padBoth ' ' ' '
-fromAlign Right  = padLeft ' '
+-- We can align a String left, center or right in a column of a given
+-- width by padding it with whitespace.
+
+data Alignment : Set where
+  Left Center Right : Alignment
+
+fromAlignment : Alignment → ℕ → String → String
+fromAlignment Left   = padRight ' '
+fromAlignment Center = padBoth ' ' ' '
+fromAlignment Right  = padLeft ' '
+
+------------------------------------------------------------------------
+-- Rectangle
+
+-- Build a rectangular column by:
+-- Given a vector of cells and a padding function for each one
+-- Compute the max of the widths, and pad the strings accordingly.
 
 rectangle : ∀ {n} → Vec (ℕ → String → String) n →
             Vec String n → Vec String n
@@ -111,6 +137,8 @@ rectangle pads cells = Vec.zipWith (λ p c → p width c) pads cells where
 
   sizes = List.map length (Vec.toList cells)
   width = max 0 sizes
+
+-- Special cases for left, center, and right alignment
 
 rectangleˡ : ∀ {n} → Char → Vec String n → Vec String n
 rectangleˡ c = rectangle (Vec.replicate $ padLeft c)

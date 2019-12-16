@@ -59,27 +59,24 @@ padLeft a as@(vs , m≤n)
   with P.trans (ℕₚ.+-comm k (Vec≤.length as)) ∣as∣+k≡n
 ... | refl = Vec.replicate a Vec.++ vs
 
-module _ where
+private
+  split : ∀ {m n} k → m + k ≡ n → ⌊ k /2⌋ + (m + ⌈ k /2⌉) ≡ n
+  split {m} {n} k eq = begin
+    ⌊ k /2⌋ + (m + ⌈ k /2⌉) ≡⟨ ℕₚ.+-comm ⌊ k /2⌋ _ ⟩
+    m + ⌈ k /2⌉ + ⌊ k /2⌋   ≡⟨ ℕₚ.+-assoc m ⌈ k /2⌉ ⌊ k /2⌋ ⟩
+    m + (⌈ k /2⌉ + ⌊ k /2⌋) ≡⟨ P.cong (m +_) (ℕₚ.+-comm ⌈ k /2⌉ ⌊ k /2⌋) ⟩
+    m + (⌊ k /2⌋ + ⌈ k /2⌉) ≡⟨ P.cong (m +_) (ℕₚ.⌊n/2⌋+⌈n/2⌉≡n k) ⟩
+    m + k                   ≡⟨ eq ⟩
+    n                       ∎ where open P.≡-Reasoning
 
-  private
-    split : ∀ {m n} k → m + k ≡ n → ⌊ k /2⌋ + (m + ⌈ k /2⌉) ≡ n
-    split {m} {n} k eq = begin
-      ⌊ k /2⌋ + (m + ⌈ k /2⌉) ≡⟨ ℕₚ.+-comm ⌊ k /2⌋ _ ⟩
-      m + ⌈ k /2⌉ + ⌊ k /2⌋   ≡⟨ ℕₚ.+-assoc m ⌈ k /2⌉ ⌊ k /2⌋ ⟩
-      m + (⌈ k /2⌉ + ⌊ k /2⌋) ≡⟨ P.cong (m +_) (ℕₚ.+-comm ⌈ k /2⌉ ⌊ k /2⌋) ⟩
-      m + (⌊ k /2⌋ + ⌈ k /2⌉) ≡⟨ P.cong (m +_) (ℕₚ.⌊n/2⌋+⌈n/2⌉≡n k) ⟩
-      m + k                   ≡⟨ eq ⟩
-      n                       ∎ where open P.≡-Reasoning
-
-
-  padBoth : ∀ {n} → A → A → Vec≤ A n → Vec A n
-  padBoth aₗ aᵣ as@(vs , m≤n)
-    with recompute (_ ℕₚ.≤″? _) (ℕₚ.≤⇒≤″ m≤n)
-  ... | less-than-or-equal {k} ∣as∣+k≡n
-    with split k ∣as∣+k≡n
-  ... | refl = Vec.replicate {n = ⌊ k /2⌋} aₗ
-        Vec.++ vs
-        Vec.++ Vec.replicate {n = ⌈ k /2⌉} aᵣ
+padBoth : ∀ {n} → A → A → Vec≤ A n → Vec A n
+padBoth aₗ aᵣ as@(vs , m≤n)
+  with recompute (_ ℕₚ.≤″? _) (ℕₚ.≤⇒≤″ m≤n)
+... | less-than-or-equal {k} ∣as∣+k≡n
+  with split k ∣as∣+k≡n
+... | refl = Vec.replicate {n = ⌊ k /2⌋} aₗ
+      Vec.++ vs
+      Vec.++ Vec.replicate {n = ⌈ k /2⌉} aᵣ
 
 
 fromList : (as : List A) → Vec≤ A (List.length as)

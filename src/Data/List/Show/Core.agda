@@ -83,33 +83,30 @@ ascii .bot = just λ where
 compact : Config → Config
 compact c = record c { sep = nothing }
 
-module _ where
+private
+  dropBorder : Line → Line
+  dropBorder l = record l { left = nothing; right = nothing }
 
-  private
-    dropBorder : Line → Line
-    dropBorder l = record l { left = nothing; right = nothing }
+noborder : Config → Config
+noborder c .top = nothing
+noborder c .sep = Maybe.map dropBorder (c .sep)
+noborder c .row = dropBorder (c .row)
+noborder c .bot = nothing
 
-  noborder : Config → Config
-  noborder c .top = nothing
-  noborder c .sep = Maybe.map dropBorder (c .sep)
-  noborder c .row = dropBorder (c .row)
-  noborder c .bot = nothing
 
-module _ where
+private
+  space : Line → Line
+  space l = let pad = maybe fromChar " " (l .cont) in λ where
+    .left  → Maybe.map (String._++ pad) (l .left)
+    .cont  → l .cont
+    .sep   → pad String.++ l .sep String.++ pad
+    .right → Maybe.map (pad String.++_) (l .right)
 
-  private
-    space : Line → Line
-    space l = let pad = maybe fromChar " " (l .cont) in λ where
-      .left  → Maybe.map (String._++ pad) (l .left)
-      .cont  → l .cont
-      .sep   → pad String.++ l .sep String.++ pad
-      .right → Maybe.map (pad String.++_) (l .right)
-
-  addSpace : Config → Config
-  addSpace c .top = Maybe.map space (c .top)
-  addSpace c .sep = Maybe.map space (c .sep)
-  addSpace c .row = space (c .row)
-  addSpace c .bot = Maybe.map space (c .bot)
+addSpace : Config → Config
+addSpace c .top = Maybe.map space (c .top)
+addSpace c .sep = Maybe.map space (c .sep)
+addSpace c .row = space (c .row)
+addSpace c .bot = Maybe.map space (c .bot)
 
 whitespace : Config
 whitespace .top = nothing
