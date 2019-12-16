@@ -70,7 +70,7 @@ script:
   # generating index.agda
   - ./index.sh
   # detecting whitespace violations
-  - make check-whitespace
+  - fix-whitespace --check
   # expose the value of RTS_OPTIONS
   - echo $RTS_OPTIONS
   # checking safe modules build with --safe
