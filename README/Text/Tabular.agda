@@ -22,7 +22,7 @@ import Text.Tabular.Vec  as Tabularᵛ
 ------------------------------------------------------------------------
 -- VEC
 --
--- If you hae a matrix of strings, you simply need to:
+-- If you have a matrix of strings, you simply need to:
 --   * pick a configuration (see below)
 --   * pick an alignment for each column
 --   * pass the matrix
@@ -105,7 +105,7 @@ _ = refl
 -- Modifiers: altering existing configurations
 
 -- In these examples we will be using unicode as the base configuration.
--- However these modifiers apply to all configuration (and can even be
+-- However these modifiers apply to all configurations (and can even be
 -- combined)
 
 -- compact: drop the horizontal line between each row
@@ -162,9 +162,9 @@ _ = refl
 ------------------------------------------------------------------------
 -- LIST
 --
--- Same thing as for vectors except that if the list of list is not
+-- Same thing as for vectors except that if the list of lists is not
 -- rectangular, it is padded with empty strings to make it so. If there
--- not enough alignment directives, we arbitrarily pick Left.
+-- are not enough alignment directives, we arbitrarily pick Left.
 ------------------------------------------------------------------------
 
 _ : Tabularˡ.display unicode
