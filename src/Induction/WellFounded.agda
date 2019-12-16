@@ -59,9 +59,9 @@ module Some {a lt} {A : Set a} {_<_ : Rel A lt} {ℓ} where
   wfRec : SubsetRecursor (Acc _<_) (WfRec _<_)
   wfRec = subsetBuild wfRecBuilder
 
-  wfRecFixpoint : (P : Pred A ℓ) (f : WfRec _<_ P ⊆′ P) {x : A} (q : Acc _<_ x) →
-                  wfRec P f x q ≡ f x (λ y y<x → wfRec P f y (acc-inverse q y y<x))
-  wfRecFixpoint P f (acc rs) = refl
+  unfold-wfRec : (P : Pred A ℓ) (f : WfRec _<_ P ⊆′ P) {x : A} (q : Acc _<_ x) →
+                 wfRec P f x q ≡ f x (λ y y<x → wfRec P f y (acc-inverse q y y<x))
+  unfold-wfRec P f (acc rs) = refl
 
   wfRec-builder = wfRecBuilder
   {-# WARNING_ON_USAGE wfRec-builder
@@ -95,18 +95,18 @@ module FixPoint
   (f-ext : (x : A) {IH IH' : WfRec _<_ P x} → (∀ {y} y<x → IH y y<x ≡ IH' y y<x) → f x IH ≡ f x IH')
   where
 
-  someWfRecInvar : ∀ x → (q q' : Acc _<_ x) → Some.wfRec P f x q ≡ Some.wfRec P f x q'
-  someWfRecInvar = All.wfRec wf (a ⊔ ℓ)
-                             (λ x → (q q' : Acc _<_ x) → Some.wfRec P f x q ≡ Some.wfRec P f x q')
-                             (λ { x IH (acc rs) (acc rs') → f-ext x (λ y<x → IH _ y<x (rs _ y<x) (rs' _ y<x)) })
+  some-wfRec-irrelevant : ∀ x → (q q' : Acc _<_ x) → Some.wfRec P f x q ≡ Some.wfRec P f x q'
+  some-wfRec-irrelevant = All.wfRec wf (a ⊔ ℓ)
+                                   (λ x → (q q' : Acc _<_ x) → Some.wfRec P f x q ≡ Some.wfRec P f x q')
+                                   (λ { x IH (acc rs) (acc rs') → f-ext x (λ y<x → IH _ y<x (rs _ y<x) (rs' _ y<x)) })
 
   open All wf ℓ
   wfRecBuilder-wfRec : ∀ {x y} y<x → wfRecBuilder P f x y y<x ≡ wfRec P f y
   wfRecBuilder-wfRec {x} {y} y<x with wf x
-  ... | acc rs = someWfRecInvar y (rs y y<x) (wf y)
+  ... | acc rs = some-wfRec-irrelevant y (rs y y<x) (wf y)
 
-  wfRecFixpoint : ∀ {x} → wfRec P f x ≡ f x (λ y _ → wfRec P f y)
-  wfRecFixpoint {x} = f-ext x wfRecBuilder-wfRec
+  unfold-wfRec : ∀ {x} → wfRec P f x ≡ f x (λ y _ → wfRec P f y)
+  unfold-wfRec {x} = f-ext x wfRecBuilder-wfRec
 
 
 ------------------------------------------------------------------------
