@@ -12,6 +12,8 @@ Highlights
   `NonPositive`, `NonNegative`, especially designed to work as instance
   arguments.
 
+* Metric functions and metric spaces
+
 Bug-fixes
 ---------
 
@@ -143,11 +145,6 @@ New modules
   Relation.Binary.Construct.Subst.Equality
   ```
 
-* Consequences for basic morphism properties
-  ```
-  Algebra.Morphism.Consequences
-  ```
-
 * Subtraction for binary naturals:
   ```
   Data.Nat.Binary.Subtraction
@@ -193,6 +190,25 @@ New modules
   Data.Vec.Relation.Unary.Unique.Setoid
   Data.Vec.Relation.Unary.Unique.Setoid.Properties
   ```
+
+* Added a hierarchy for metric spaces:
+  ```
+  Function.Metric
+  Function.Metric.Core
+  Function.Metric.Definitions
+  Function.Metric.Structures
+  Function.Metric.Definitions
+  ```
+  The distance functions above are defined over an arbitrary type for the image.
+  Specialisations to the natural numbers are provided in the following modules:
+  ```
+  Function.Metric.Nat
+  Function.Metric.Nat.Core
+  Function.Metric.Nat.Definitions
+  Function.Metric.Nat.Structures
+  Function.Metric.Nat.Definitions
+  ```
+  and other specialisations can be created in a similar fashion.
 
 Other major changes
 -------------------
