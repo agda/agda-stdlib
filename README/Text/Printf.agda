@@ -6,7 +6,7 @@
 
 {-# OPTIONS --safe --without-K #-}
 
-module README.Text where
+module README.Text.Printf where
 
 open import Data.Nat.Base
 open import Data.Char.Base

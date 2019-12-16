@@ -25,14 +25,18 @@ Non-backwards compatible changes
   anymore: they both are parenthesised to the right (the more efficient
   variant).
 
+* Moved module `README.Text` to `README.Text.Printf`.
+
 Other major additions
 ---------------------
 
 * New modules
   ```
-  Data.List.Show.Core
-  Data.List.Show
-  Data.Vec.Show
+  README.Text.Tabular
+
+  Text.Tabular.Base
+  Text.Tabular.List
+  Text.Tabular.Vec
   ```
 
 Other minor additions
