@@ -17,9 +17,9 @@ open import Text.Tabular.Base
 
 display : ∀ {m n} → TabularConfig → Vec Alignment n → Vec (Vec String n) m → String
 display c a = unsafeDisplay c
-          ∘ toList
-          ∘ map toList
-          ∘ transpose
-          ∘ map (uncurry rectangle ∘ unzip)
-          ∘ transpose
-          ∘ map (zip (map fromAlignment a))
+            ∘ toList
+            ∘ map toList
+            ∘ transpose
+            ∘ map (uncurry rectangle ∘ unzip)
+            ∘ transpose
+            ∘ map (zip (map fromAlignment a))
