@@ -132,6 +132,25 @@ Automated warnings are attached to all deprecated names to discourage their use.
 Other major additions
 ---------------------
 
+* Added a hierarchy for metric spaces:
+  ```
+  Function.Metric
+  Function.Metric.Core
+  Function.Metric.Definitions
+  Function.Metric.Structures
+  Function.Metric.Definitions
+  ```
+  The distance functions above are defined over an arbitrary type for the image.
+  Specialisations to the natural numbers are provided in the following modules:
+  ```
+  Function.Metric.Nat
+  Function.Metric.Nat.Core
+  Function.Metric.Nat.Definitions
+  Function.Metric.Nat.Structures
+  Function.Metric.Nat.Definitions
+  ```
+  and other specialisations can be created in a similar fashion.
+
 * New modules
   ```
   README.Text.Tabular
