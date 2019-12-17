@@ -38,13 +38,19 @@ applicative = record
 
 -- The monad instance also requires some mucking about with universe levels.
 monadT : RawMonadT (_∘′ Sumₗ)
-monadT M = record
-  { return = M.pure ∘ inj₂
-  ; _>>=_  = λ ma f → ma M.>>= [ M.pure ∘′ inj₁ , f ]′
-  } where module M = RawMonad M
+monadT = record
+  { rawIMonadT = rawIMonadT
+  ; lift       = λ M → let open RawMonad M in inj₂ <$>_
+  } where
+
+  rawIMonadT : ∀ {M} → RawMonad M → RawMonad (M ∘′ Sumₗ)
+  rawIMonadT M = record
+    { return = M.pure ∘ inj₂
+    ; _>>=_  = λ ma f → ma M.>>= [ M.pure ∘′ inj₁ , f ]′
+    } where module M = RawMonad M
 
 monad : RawMonad Sumₗ
-monad = monadT Id.monad
+monad = Id.monadT-identity monadT
 
 ------------------------------------------------------------------------
 -- Get access to other monadic functions

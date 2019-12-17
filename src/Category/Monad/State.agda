@@ -111,6 +111,19 @@ module RawMonadState {f} {S : Set f} {M : Set f → Set f}
 StateT : ∀ {f} → Set f → (Set f → Set f) → Set f → Set f
 StateT S M = IStateT {I = ⊤} (λ _ → S) M _ _
 
+monadT : ∀ {i f} {I : Set i} (S : Set f) →
+         RawIMonadT (λ (M : IFun I f) i j → StateT S (M i j))
+monadT S = record
+  { rawIMonadT = rawIMonadT
+  ; lift       = λ M → let open RawIMonad M in λ m s → (_, s) <$> m
+  } where
+
+  rawIMonadT : ∀ {M} → RawIMonad M → RawIMonad (λ i j → StateT S (M i j))
+  rawIMonadT M = record
+    { return = λ a s → pure (a , s)
+    ; _>>=_  = λ m f s → m s >>= uncurry f
+    } where open RawIMonad M
+
 StateTMonad : ∀ {f} (S : Set f) {M} → RawMonad M → RawMonad (StateT S M)
 StateTMonad S = StateTIMonad (λ _ → S)
 

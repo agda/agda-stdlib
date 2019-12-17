@@ -48,8 +48,11 @@ record RawIMonad {i f} {I : Set i} (M : IFun I f) :
 
   open RawIApplicative rawIApplicative public
 
-RawIMonadT : ∀ {i f} {I : Set i} (T : IFun I f → IFun I f) → Set (i ⊔ suc f)
-RawIMonadT T = ∀ {M} → RawIMonad M → RawIMonad (T M)
+record RawIMonadT {i f} {I : Set i} (T : IFun I f → IFun I f) :
+                  Set (i ⊔ suc f) where
+  field
+    rawIMonadT : ∀ {M} → RawIMonad M → RawIMonad (T M)
+    lift       : ∀ {M i j A} → RawIMonad M → M i j A → T M i j A
 
 record RawIMonadZero {i f} {I : Set i} (M : IFun I f) :
                      Set (i ⊔ suc f) where

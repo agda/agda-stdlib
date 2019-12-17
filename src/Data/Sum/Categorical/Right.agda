@@ -30,13 +30,19 @@ applicative = record
   }
 
 monadT : RawMonadT (_∘′ Sumᵣ)
-monadT M = record
-  { return = M.pure ∘′ inj₁
-  ; _>>=_  = λ ma f → ma M.>>= [ f , M.pure ∘′ inj₂ ]′
-  } where module M = RawMonad M
+monadT = record
+  { rawIMonadT = rawIMonadT
+  ; lift       = λ M → let open RawMonad M in inj₁ <$>_
+  } where
+
+  rawIMonadT : ∀ {M} → RawMonad M → RawMonad (M ∘′ Sumᵣ)
+  rawIMonadT M = record
+    { return = M.pure ∘ inj₁
+    ; _>>=_  = λ ma f → ma M.>>= [ f , M.pure ∘′ inj₂ ]′
+    } where module M = RawMonad M
 
 monad : RawMonad Sumᵣ
-monad = monadT Id.monad
+monad = Id.monadT-identity monadT
 
 ------------------------------------------------------------------------
 -- Get access to other monadic functions

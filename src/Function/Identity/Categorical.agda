@@ -11,6 +11,7 @@ module Function.Identity.Categorical {ℓ} where
 open import Category.Functor
 open import Category.Applicative
 open import Category.Monad
+open import Category.Monad.Indexed
 open import Category.Comonad
 open import Function
 
@@ -39,3 +40,6 @@ comonad = record
   { extract = id
   ; extend  = id
   }
+
+monadT-identity : ∀ {T} → RawIMonadT T → RawIMonad (T (λ _ _ → Identity))
+monadT-identity M = RawIMonadT.rawIMonadT M monad

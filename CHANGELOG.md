@@ -20,6 +20,9 @@ Non-backwards compatible changes
   Definitions that are sensitive to the behaviour of these lemmas, rather than
   just their existence, may need to be revised.
 
+* `RawIMonadT T` has been turned into a record type to allow the addition
+  of a lift field of type `∀ {M i j A} → RawIMonad M → M i j A → T M i j A`.
+
 Other major additions
 ---------------------
 
@@ -53,6 +56,11 @@ Other minor additions
   x∈∁s⇒x∉s : x ∈ ∁ s → x ∉ s
   x∉∁s⇒x∈s : x ∉ ∁ s → x ∈ s
   x∉s⇒x∈∁s : x ∉ s → x ∈ ∁ s
+
+* Added a new proof to `Function.Identity.Categorical`:
+  ```agda
+  monadT-identity : RawIMonadT T → RawIMonad (T (λ _ _ → Identity))
+  ```
 
 * Added a new proof to `Relation.Nullary.Decidable`:
   ```agda

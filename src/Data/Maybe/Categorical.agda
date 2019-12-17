@@ -8,7 +8,7 @@
 
 module Data.Maybe.Categorical where
 
-open import Data.Maybe.Base
+open import Data.Maybe.Base using (Maybe; map; just; nothing; maybe; _<∣>_)
 open import Category.Functor
 open import Category.Applicative
 open import Category.Monad
@@ -44,18 +44,23 @@ alternative = record
 ------------------------------------------------------------------------
 -- Maybe monad transformer
 
-monadT : ∀ {f} → RawMonadT {f} (_∘′ Maybe)
-monadT M = record
-  { return = M.return ∘ just
-  ; _>>=_  = λ m f → m M.>>= maybe f (M.return nothing)
-  }
-  where module M = RawMonad M
+monadT : ∀ {ℓ} → RawMonadT {ℓ} (_∘′ Maybe)
+monadT = record
+  { rawIMonadT = rawIMonadT
+  ; lift       = λ M → let open RawMonad M in just <$>_
+  } where
+
+  rawIMonadT : ∀ {M} → RawMonad M → RawMonad (M ∘′ Maybe)
+  rawIMonadT M = record
+    { return = pure ∘′ just
+    ; _>>=_  = λ m f → m >>= maybe f (return nothing)
+    } where open RawMonad M
 
 ------------------------------------------------------------------------
 -- Maybe monad
 
 monad : ∀ {f} → RawMonad {f} Maybe
-monad = monadT Id.monad
+monad = Id.monadT-identity monadT
 
 monadZero : ∀ {f} → RawMonadZero {f} Maybe
 monadZero = record

@@ -26,6 +26,8 @@ RawMonadZero M = RawIMonadZero {I = ⊤} (λ _ _ → M)
 RawMonadPlus : ∀ {f} → (Set f → Set f) → Set _
 RawMonadPlus M = RawIMonadPlus {I = ⊤} (λ _ _ → M)
 
+module RawMonadT = RawIMonadT
+
 module RawMonad {f} {M : Set f → Set f}
                 (Mon : RawMonad M) where
   open RawIMonad Mon public

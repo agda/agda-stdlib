@@ -42,13 +42,19 @@ applicative = record
   }
 
 monadT : RawMonadT (_∘′ Productᵣ)
-monadT M = record
-  { return = pure ∘′ (_, ε)
-  ; _>>=_  = λ ma f → ma >>= uncurry λ x b → map₂ (b ∙_) <$> f x
-  } where open RawMonad M
+monadT = record
+  { rawIMonadT = rawIMonadT
+  ; lift       = λ M → let open RawMonad M in (_, ε) <$>_
+  } where
+
+  rawIMonadT : ∀ {M} → RawMonad M → RawMonad (M ∘′ Productᵣ)
+  rawIMonadT M = record
+    { return = pure ∘′ (_, ε)
+    ; _>>=_  = λ ma f → ma >>= uncurry λ x b → map₂ (b ∙_) <$> f x
+    } where open RawMonad M
 
 monad : RawMonad Productᵣ
-monad = monadT Id.monad
+monad = Id.monadT-identity monadT
 
 ------------------------------------------------------------------------
 -- Get access to other monadic functions

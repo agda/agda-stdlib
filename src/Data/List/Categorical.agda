@@ -96,10 +96,16 @@ module TraversableM {m M} (Mon : RawMonad {m} M) where
 -- List monad transformer
 
 monadT : ∀ {ℓ} → RawMonadT {ℓ} (_∘′ List)
-monadT M = record
-  { return = pure ∘′ [_]
-  ; _>>=_  = λ mas f → mas >>= λ as → concat <$> mapM f as
-  } where open RawMonad M; open TraversableM M
+monadT = record
+  { rawIMonadT = rawIMonadT
+  ; lift       = λ M → let open RawMonad M in [_] <$>_
+  } where
+
+  rawIMonadT : ∀ {M} → RawMonad M → RawMonad (M ∘′ List)
+  rawIMonadT M = record
+    { return = pure ∘′ [_]
+    ; _>>=_  = λ mas f → mas >>= λ as → concat <$> mapM f as
+    } where open RawMonad M; open TraversableM M
 
 ------------------------------------------------------------------------
 -- The list monad.

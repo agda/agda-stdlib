@@ -43,13 +43,19 @@ applicative = record
 
 -- The monad instance also requires some mucking about with universe levels.
 monadT : RawMonadT (_∘′ Productₗ)
-monadT M = record
-  { return = pure ∘′ (ε ,_)
-  ; _>>=_  = λ ma f → ma >>= uncurry λ a x → map₁ (a ∙_) <$> f x
-  } where open RawMonad M
+monadT = record
+  { rawIMonadT = rawIMonadT
+  ; lift       = λ M → let open RawMonad M in (ε ,_) <$>_
+  } where
+
+  rawIMonadT : ∀ {M} → RawMonad M → RawMonad (M ∘′ Productₗ)
+  rawIMonadT M = record
+    { return = pure ∘′ (ε ,_)
+    ; _>>=_  = λ ma f → ma >>= uncurry λ a x → map₁ (a ∙_) <$> f x
+    } where open RawMonad M
 
 monad : RawMonad Productₗ
-monad = monadT Id.monad
+monad = Id.monadT-identity monadT
 
 ------------------------------------------------------------------------
 -- Get access to other monadic functions
