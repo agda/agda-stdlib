@@ -10,7 +10,7 @@
 module Function.Related.TypeIsomorphisms where
 
 open import Algebra
-open import Algebra.Structures.Biased
+open import Algebra.Structures.Biased using (isCommutativeSemiringˡ)
 open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Bool.Base using (true; false)
 open import Data.Empty using (⊥; ⊥-elim)
@@ -222,8 +222,7 @@ open import Relation.Nullary.Decidable using (True)
 
 ×-⊎-isCommutativeSemiring : ∀ k ℓ →
   IsCommutativeSemiring (Related ⌊ k ⌋) _⊎_ _×_ (Lift ℓ ⊥) (Lift ℓ ⊤)
-×-⊎-isCommutativeSemiring k ℓ =
-  IsCommutativeSemiringˡ.isCommutativeSemiring record
+×-⊎-isCommutativeSemiring k ℓ = isCommutativeSemiringˡ record
   { +-isCommutativeMonoid = ⊎-isCommutativeMonoid k ℓ
   ; *-isCommutativeMonoid = ×-isCommutativeMonoid k ℓ
   ; distribʳ              = λ A B C → ↔⇒ (×-distribʳ-⊎ ℓ A B C)

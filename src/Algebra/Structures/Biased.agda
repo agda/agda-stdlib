@@ -49,6 +49,9 @@ record IsCommutativeMonoidˡ (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
     ; comm = comm
     }
 
+open IsCommutativeMonoidˡ public
+  using () renaming (isCommutativeMonoid to isCommutativeMonoidˡ)
+
 
 record IsCommutativeMonoidʳ (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
   field
@@ -74,6 +77,9 @@ record IsCommutativeMonoidʳ (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
       }
     ; comm = comm
     }
+
+open IsCommutativeMonoidʳ public
+  using () renaming (isCommutativeMonoid to isCommutativeMonoidʳ)
 
 
 ------------------------------------------------------------------------
@@ -117,6 +123,9 @@ record IsCommutativeSemiringˡ (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) whe
     ; *-comm = *-comm
     }
 
+open IsCommutativeSemiringˡ public
+  using () renaming (isCommutativeSemiring to isCommutativeSemiringˡ)
+
 
 record IsCommutativeSemiringʳ (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
   field
@@ -156,6 +165,9 @@ record IsCommutativeSemiringʳ (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) whe
     ; *-comm = *-comm
     }
 
+open IsCommutativeSemiringʳ public
+  using () renaming (isCommutativeSemiring to isCommutativeSemiringʳ)
+
 
 ------------------------------------------------------------------------
 -- IsRing
@@ -194,3 +206,6 @@ record IsRingWithoutAnnihilatingZero (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A)
     ; distrib = distrib
     ; zero = zero
     }
+
+open IsRingWithoutAnnihilatingZero public
+  using () renaming (isRing to isRingWithoutAnnihilatingZero)
