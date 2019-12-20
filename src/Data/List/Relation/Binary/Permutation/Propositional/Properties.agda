@@ -112,7 +112,7 @@ module _ {a} {A : Set a} where
     x ∷ v ∷ xs ++ ys        <<⟨ refl ⟩
     v ∷ x ∷ xs ++ ys        ∎
 
-  drop-mid-≡ : ∀ {x} ws xs {ys} {zs} →
+  drop-mid-≡ : ∀ {x : A} ws xs {ys} {zs} →
                ws ++ [ x ] ++ ys ≡ xs ++ [ x ] ++ zs →
                ws ++ ys ↭ xs ++ zs
   drop-mid-≡ []       []       eq   with cong tail eq
@@ -291,7 +291,7 @@ module _ {a} {A : Set a} where
     ... | res rewrite ↭-sym-involutive p = res
 
   ∼bag⇒↭ : _∼[ bag ]_ ⇒ _↭_
-  ∼bag⇒↭ {[]} eq with empty-unique (Inv.sym eq)
+  ∼bag⇒↭ {[]} eq with empty-unique {A = A} (Inv.sym eq)
   ... | refl = refl
   ∼bag⇒↭ {x ∷ xs} eq with ∈-∃++ (to ⟨$⟩ (here ≡.refl))
     where open Inv.Inverse (eq {x})
