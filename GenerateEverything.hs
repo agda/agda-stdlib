@@ -98,6 +98,8 @@ isWithKModule =
     , "Relation.Binary.HeterogeneousEquality.Quotients.Examples"
     , "Relation.Binary.HeterogeneousEquality.Quotients"
     , "Relation.Binary.PropositionalEquality.TrustMe"
+    , "Text.Pretty.Core"
+    , "Text.Pretty"
     ]
 
 unqualifiedModuleName :: FilePath -> String
