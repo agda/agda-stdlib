@@ -4,19 +4,19 @@ Style guide for the standard library
 This is very much a work-in-progress and is not exhaustive.
 
 ## File structure
+Agda programs are structured in modules. The first module in each file of the library is the top-level module whose name always matches the filename.
 
-#### Module imports
+#### Module import guidelines
 
 * All module imports should be placed at the top of the file immediately
   after the module declaration.
 
-* If the module takes parameters that require imports from other files
+* If the module takes parameters that require imports from other files,
   then those imports only may be placed above the module declaration.
 
 * If it is important that certain names only come into scope later in
   the file then the module should still be imported at the top of the
-  file but it can be given a shorter name using `as` and then opened
-  later on in the file when needed, e.g.
+  file but it can be given a shorter name using the keyword `as` and then opened later on in the file when needed, e.g.
   ```agda
   import Data.List.Relation.Binary.Equality.Setoid as SetoidEquality
   ...
@@ -24,11 +24,24 @@ This is very much a work-in-progress and is not exhaustive.
   open SetoidEquality S
   ```
 
-* The list of module imports should be in alphabetical order.
+* Changing the naming of an imported item is performed with the `renaming` directive, e.g.
+```agda
+open import Agda.Builtin.Nat public
+  using (zero; suc) renaming (Nat to ℕ)
+```
 
-* When using only a few items from a module, the items should be
-  enumerated in the import with `using` in order to make dependencies
-  clearer.
+* The list of module imports should be declared in alphabetical order.
+
+* When using only a few items from a module, it is a good practice to enumerate the items that will be used by declaring the import statement with the directive `using`. This makes the dependencies clearer, e.g.
+```agda
+open import Data.Nat.Properties public
+  using
+  ( _≟_
+  ; _≤?_ ; _≥?_ ; _<?_ ; _>?_
+  ; _≤′?_; _≥′?_; _<′?_; _>′?_
+  ; _≤″?_; _<″?_; _≥″?_; _>″?_
+  )
+```
 
 #### Indentation
 
