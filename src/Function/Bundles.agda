@@ -42,7 +42,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
   open FunctionDefinitions _≈₁_ _≈₂_
   open FunctionStructures  _≈₁_ _≈₂_
 
-  record Injection : Set (a ⊔ b ⊔ suc (ℓ₁ ⊔ ℓ₂)) where
+  record Injection : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       f           : A → B
       cong        : f Preserves _≈₁_ ⟶ _≈₂_
@@ -63,7 +63,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       ; injective   = injective
       }
 
-  record Surjection : Set (a ⊔ b ⊔ suc (ℓ₁ ⊔ ℓ₂)) where
+  record Surjection : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       f          : A → B
       cong       : f Preserves _≈₁_ ⟶ _≈₂_
@@ -85,7 +85,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       }
 
 
-  record Bijection : Set (a ⊔ b ⊔ suc (ℓ₁ ⊔ ℓ₂)) where
+  record Bijection : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       f         : A → B
       cong      : f Preserves _≈₁_ ⟶ _≈₂_
@@ -121,7 +121,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
     open IsBijection isBijection public using (module Eq₁; module Eq₂)
 
 
-  record Equivalence : Set (a ⊔ b ⊔ suc (ℓ₁ ⊔ ℓ₂)) where
+  record Equivalence : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       f     : A → B
       g     : B → A
@@ -129,7 +129,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       cong₂ : g Preserves _≈₂_ ⟶ _≈₁_
 
 
-  record LeftInverse : Set (a ⊔ b ⊔ suc (ℓ₁ ⊔ ℓ₂)) where
+  record LeftInverse : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       f         : A → B
       g         : B → A
@@ -160,7 +160,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       }
 
 
-  record RightInverse : Set (a ⊔ b ⊔ suc (ℓ₁ ⊔ ℓ₂)) where
+  record RightInverse : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       f         : A → B
       g         : B → A
@@ -189,7 +189,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       }
 
 
-  record Inverse : Set (a ⊔ b ⊔ suc (ℓ₁ ⊔ ℓ₂)) where
+  record Inverse : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       f         : A → B
       f⁻¹       : B → A

@@ -9,7 +9,7 @@
 module Data.List.Relation.Unary.All.Properties where
 
 open import Axiom.Extensionality.Propositional using (Extensionality)
-open import Data.Bool.Base using (Bool; T)
+open import Data.Bool.Base using (Bool; T; true; false)
 open import Data.Bool.Properties using (T-∧)
 open import Data.Empty
 open import Data.Fin using (Fin) renaming (zero to fzero; suc to fsuc)
@@ -34,7 +34,7 @@ open import Data.Maybe.Relation.Unary.All as MAll using (just; nothing)
 open import Data.Nat using (zero; suc; z≤n; s≤s; _<_)
 open import Data.Nat.Properties using (≤-refl; ≤-step)
 open import Data.Product as Prod using (_×_; _,_; uncurry; uncurry′)
-open import Function.Core
+open import Function.Base
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence using (_⇔_; equivalence; Equivalence)
 open import Function.Inverse using (_↔_; inverse)
@@ -43,6 +43,7 @@ open import Level using (Level)
 open import Relation.Binary using (REL; Setoid; _Respects_)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; cong; cong₂; _≗_)
+open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary
 open import Relation.Unary
   using (Decidable; Pred; Universal) renaming (_⊆_ to _⋐_)
@@ -57,10 +58,10 @@ private
 ------------------------------------------------------------------------
 -- Properties regarding Null
 
-Null⇒null : ∀{xs : List A} → Null xs → T (null xs)
+Null⇒null : ∀ {xs : List A} → Null xs → T (null xs)
 Null⇒null [] = _
 
-null⇒Null : ∀{xs : List A} → T (null xs) → Null xs
+null⇒Null : ∀ {xs : List A} → T (null xs) → Null xs
 null⇒Null {xs = []   } _ = []
 null⇒Null {xs = _ ∷ _} ()
 
@@ -96,8 +97,8 @@ module _ {P : A → Set p} where
   ¬All⇒Any¬ : Decidable P → ∀ xs → ¬ All P xs → Any (¬_ ∘ P) xs
   ¬All⇒Any¬ dec []       ¬∀ = ⊥-elim (¬∀ [])
   ¬All⇒Any¬ dec (x ∷ xs) ¬∀ with dec x
-  ... | yes p = there (¬All⇒Any¬ dec xs (¬∀ ∘ _∷_ p))
-  ... | no ¬p = here ¬p
+  ... |  true because  [p] = there (¬All⇒Any¬ dec xs (¬∀ ∘ _∷_ (invert [p])))
+  ... | false because [¬p] = here (invert [¬p])
 
   Any¬→¬All : ∀ {xs} → Any (¬_ ∘ P) xs → ¬ All P xs
   Any¬→¬All (here  ¬p) = ¬p           ∘ All.head
@@ -130,16 +131,16 @@ module _ {P : A → Set p} where
               ∀ {xs} (¬∀ : ¬ All P xs) → Any¬→¬All (¬All⇒Any¬ dec xs ¬∀) ≡ ¬∀
     to∘from ext ¬∀ = ext (⊥-elim ∘ ¬∀)
 
-module _ {_~_ : REL (List A) B ℓ} where
+module _ {_~_ : REL A B ℓ} where
 
-  All-swap : ∀ {xss ys} →
-             All (λ xs → All (xs ~_) ys) xss →
-             All (λ y → All (_~ y) xss) ys
+  All-swap : ∀ {xs ys} →
+             All (λ x → All (x ~_) ys) xs →
+             All (λ y → All (_~ y) xs) ys
   All-swap {ys = []}     _   = []
   All-swap {ys = y ∷ ys} []  = All.universal (λ _ → []) (y ∷ ys)
-  All-swap {ys = y ∷ ys} ((x~y ∷ x~ys) ∷ pxss) =
-    (x~y ∷ (All.map All.head pxss)) ∷
-    All-swap (x~ys ∷ (All.map All.tail pxss))
+  All-swap {ys = y ∷ ys} ((x~y ∷ x~ys) ∷ pxs) =
+    (x~y ∷ (All.map All.head pxs)) ∷
+    All-swap (x~ys ∷ (All.map All.tail pxs))
 
 ------------------------------------------------------------------------
 -- Defining properties of lookup and _[_]=_
@@ -150,14 +151,14 @@ module _ {P : A → Set p} where
 
   -- `i` points to `lookup pxs i` in `pxs`.
 
-  []=lookup : ∀{x xs} (pxs : All P xs) (i : x ∈ xs) →
+  []=lookup : ∀ {x xs} (pxs : All P xs) (i : x ∈ xs) →
               pxs [ i ]= lookup pxs i
   []=lookup (px ∷ pxs) (here refl) = here
   []=lookup (px ∷ pxs) (there i)   = there ([]=lookup pxs i)
 
   -- If `i` points to `px` in `pxs`, then `lookup pxs i ≡ px`.
 
-  []=⇒lookup : ∀{x xs} {px : P x} {pxs : All P xs} {i : x ∈ xs} →
+  []=⇒lookup : ∀ {x xs} {px : P x} {pxs : All P xs} {i : x ∈ xs} →
                pxs [ i ]= px →
                lookup pxs i ≡ px
   []=⇒lookup x↦px = []=-injective ([]=lookup _ _) x↦px
@@ -493,16 +494,16 @@ module _ {P : A → Set p} (P? : Decidable P) where
   all-filter : ∀ xs → All P (filter P? xs)
   all-filter []       = []
   all-filter (x ∷ xs) with P? x
-  ... | yes Px = Px ∷ all-filter xs
-  ... | no  _  = all-filter xs
+  ... |  true because [Px] = invert [Px] ∷ all-filter xs
+  ... | false because  _   = all-filter xs
 
 module _ {P : A → Set p} {Q : A → Set q} (P? : Decidable P) where
 
   filter⁺ : ∀ {xs} → All Q xs → All Q (filter P? xs)
   filter⁺ {xs = _}     [] = []
-  filter⁺ {xs = x ∷ _} (Qx ∷ Qxs) with P? x
-  ... | no  _ = filter⁺ Qxs
-  ... | yes _ = Qx ∷ filter⁺ Qxs
+  filter⁺ {xs = x ∷ _} (Qx ∷ Qxs) with does (P? x)
+  ... | false = filter⁺ Qxs
+  ... | true  = Qx ∷ filter⁺ Qxs
 
 ------------------------------------------------------------------------
 -- zipWith

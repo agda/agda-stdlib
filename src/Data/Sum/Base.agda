@@ -8,8 +8,10 @@
 
 module Data.Sum.Base where
 
-open import Function.Core using (_∘_; _-[_]-_ ; id)
-open import Relation.Nullary using (Dec; yes; no; ¬_)
+open import Data.Bool.Base using (true; false)
+open import Function.Base using (_∘_; _-[_]-_ ; id)
+open import Relation.Nullary.Reflects using (invert)
+open import Relation.Nullary using (Dec; yes; no; _because_; ¬_)
 open import Level using (Level; _⊔_)
 
 private
@@ -67,8 +69,8 @@ f -⊎- g = f -[ _⊎_ ]- g
 -- Conversion back and forth with Dec
 
 fromDec : Dec A → A ⊎ ¬ A
-fromDec (yes p) = inj₁ p
-fromDec (no ¬p) = inj₂ ¬p
+fromDec ( true because  [p]) = inj₁ (invert  [p])
+fromDec (false because [¬p]) = inj₂ (invert [¬p])
 
 toDec : A ⊎ ¬ A → Dec A
 toDec (inj₁ p)  = yes p

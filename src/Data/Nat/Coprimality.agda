@@ -12,20 +12,22 @@
 module Data.Nat.Coprimality where
 
 open import Data.Empty
-open import Data.Fin using (toℕ; fromℕ≤)
-open import Data.Fin.Properties using (toℕ-fromℕ≤)
+open import Data.Fin using (toℕ; fromℕ<)
+open import Data.Fin.Properties using (toℕ-fromℕ<)
 open import Data.Nat
 open import Data.Nat.Divisibility
 open import Data.Nat.GCD
 open import Data.Nat.GCD.Lemmas
 open import Data.Nat.Primality
 open import Data.Nat.Properties
+open import Data.Nat.DivMod
 open import Data.Product as Prod
 open import Function
 open import Level using (0ℓ)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; cong; subst; module ≡-Reasoning)
 open import Relation.Nullary
+open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Binary
 
 open ≤-Reasoning
@@ -42,16 +44,22 @@ Coprime m n = ∀ {i} → i ∣ m × i ∣ n → i ≡ 1
 ------------------------------------------------------------------------
 -- Relationship between GCD and coprimality
 
-coprime-gcd : ∀ {m n} → Coprime m n → GCD m n 1
-coprime-gcd {m} {n} c = GCD.is (1∣ m , 1∣ n) greatest
-  where
-  greatest : ∀ {d} → d ∣ m × d ∣ n → d ∣ 1
-  greatest cd with c cd
-  ... | refl = 1∣ 1
+coprime⇒GCD≡1 : ∀ {m n} → Coprime m n → GCD m n 1
+coprime⇒GCD≡1 {m} {n} c = GCD.is (1∣ m , 1∣ n) (∣-reflexive ∘ c)
 
-gcd-coprime : ∀ {m n} → GCD m n 1 → Coprime m n
-gcd-coprime g cd with GCD.greatest g cd
+GCD≡1⇒coprime : ∀ {m n} → GCD m n 1 → Coprime m n
+GCD≡1⇒coprime g cd with GCD.greatest g cd
 ... | divides q eq = m*n≡1⇒n≡1 q _ (P.sym eq)
+
+coprime⇒gcd≡1 : ∀ {m n} → Coprime m n → gcd m n ≡ 1
+coprime⇒gcd≡1 coprime = GCD.unique (gcd-GCD _ _) (coprime⇒GCD≡1 coprime)
+
+gcd≡1⇒coprime : ∀ {m n} → gcd m n ≡ 1 → Coprime m n
+gcd≡1⇒coprime gcd≡1 = GCD≡1⇒coprime (subst (GCD _ _) gcd≡1 (gcd-GCD _ _))
+
+coprime-/gcd : ∀ m n {gcd≢0} →
+               Coprime ((m / gcd m n) {gcd≢0}) ((n / gcd m n) {gcd≢0})
+coprime-/gcd m n {gcd≢0} = GCD≡1⇒coprime (GCD-/gcd m n {gcd≢0})
 
 ------------------------------------------------------------------------
 -- Relational properties of Coprime
@@ -68,9 +76,9 @@ private
 
 coprime? : Decidable Coprime
 coprime? i j with mkGCD i j
-... | (0           , g) = no  (0≢1  ∘ GCD.unique g ∘ coprime-gcd)
-... | (1           , g) = yes (gcd-coprime g)
-... | (suc (suc d) , g) = no  (2+≢1 ∘ GCD.unique g ∘ coprime-gcd)
+... | (0           , g) = no  (0≢1  ∘ GCD.unique g ∘ coprime⇒GCD≡1)
+... | (1           , g) = yes (GCD≡1⇒coprime g)
+... | (suc (suc d) , g) = no  (2+≢1 ∘ GCD.unique g ∘ coprime⇒GCD≡1)
 
 ------------------------------------------------------------------------
 -- Other basic properties
@@ -107,7 +115,7 @@ Bézout-coprime (Bézout.-+ x y eq) (divides q₁ refl , divides q₂ refl) =
 -- Coprime numbers satisfy Bézout's identity.
 
 coprime-Bézout : ∀ {i j} → Coprime i j → Bézout.Identity 1 i j
-coprime-Bézout = Bézout.identity ∘ coprime-gcd
+coprime-Bézout = Bézout.identity ∘ coprime⇒GCD≡1
 
 -- If i divides jk and is coprime to j, then it divides k.
 
@@ -146,9 +154,9 @@ prime⇒coprime (suc (suc m)) p (suc n) _ 1+n<2+m {suc (suc i)}
     1 + n <⟨ 1+n<2+m ⟩
     2 + m ∎)
 
-  2+i′∣2+m : 2 + toℕ (fromℕ≤ i<m) ∣ 2 + m
+  2+i′∣2+m : 2 + toℕ (fromℕ< i<m) ∣ 2 + m
   2+i′∣2+m = subst (_∣ 2 + m)
-    (P.sym (cong (2 +_) (toℕ-fromℕ≤ i<m)))
+    (P.sym (cong (2 +_) (toℕ-fromℕ< i<m)))
     2+i∣2+m
 
 
@@ -185,4 +193,17 @@ mkGCD′ : ∀ m n → ∃ λ d → GCD′ m n d
 mkGCD′ m n = Prod.map id gcd-gcd′ (mkGCD m n)
 {-# WARNING_ON_USAGE mkGCD′
 "Warning: mkGCD′ was deprecated in v1.1."
+#-}
+
+-- Version 1.2
+
+coprime-gcd = coprime⇒GCD≡1
+{-# WARNING_ON_USAGE coprime-gcd
+"Warning: coprime-gcd was deprecated in v1.2.
+Please use coprime⇒GCD≡1 instead."
+#-}
+gcd-coprime = GCD≡1⇒coprime
+{-# WARNING_ON_USAGE gcd-coprime
+"Warning: gcd-coprime was deprecated in v1.2.
+Please use GCD≡1⇒coprime instead."
 #-}

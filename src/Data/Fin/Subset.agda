@@ -15,7 +15,7 @@ open import Data.Bool using (not; _∧_; _∨_; _≟_)
 open import Data.Fin using (Fin; zero; suc)
 open import Data.List.Base using (List; foldr; foldl)
 open import Data.Nat using (ℕ)
-open import Data.Product using (∃)
+open import Data.Product using (∃; _×_)
 open import Data.Vec hiding (foldr; foldl)
 import Data.Vec.Relation.Binary.Pointwise.Extensional as Pointwise
 open import Relation.Nullary
@@ -52,7 +52,7 @@ Subset = Vec Side
 ------------------------------------------------------------------------
 -- Membership and subset predicates
 
-infix 4 _∈_ _∉_ _⊆_ _⊈_
+infix 4 _∈_ _∉_ _⊆_ _⊈_ _⊂_ _⊄_
 
 _∈_ : ∀ {n} → Fin n → Subset n → Set
 x ∈ p = p [ x ]= inside
@@ -65,6 +65,12 @@ p ⊆ q = ∀ {x} → x ∈ p → x ∈ q
 
 _⊈_ : ∀ {n} → Subset n → Subset n → Set
 p ⊈ q = ¬ (p ⊆ q)
+
+_⊂_ : ∀ {n} → Subset n → Subset n → Set
+p ⊂ q = p ⊆ q × ∃ (λ x → x ∈ q × x ∉ p)
+
+_⊄_ : ∀ {n} → Subset n → Subset n → Set
+p ⊄ q = ¬ (p ⊂ q)
 
 ------------------------------------------------------------------------
 -- Set operations

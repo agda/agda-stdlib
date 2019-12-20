@@ -29,11 +29,11 @@ infix 4 _≟_
 _≟_ : Decidable {A = ⊤ {ℓ}} _≡_
 _ ≟ _ = yes refl
 
-≡-setoid : Setoid ℓ ℓ
-≡-setoid = setoid ⊤
+≡-setoid : ∀ ℓ → Setoid ℓ ℓ
+≡-setoid _ = setoid ⊤
 
-≡-decSetoid : DecSetoid ℓ ℓ
-≡-decSetoid = decSetoid _≟_
+≡-decSetoid : ∀ ℓ → DecSetoid ℓ ℓ
+≡-decSetoid _ = decSetoid _≟_
 
 ------------------------------------------------------------------------
 -- Ordering
@@ -48,28 +48,28 @@ _ ≟ _ = yes refl
 ------------------------------------------------------------------------
 -- Structures
 
-≡-isPreorder : IsPreorder {ℓ} {_} {⊤ {ℓ}} _≡_ _≡_
-≡-isPreorder = record
+≡-isPreorder : ∀ ℓ → IsPreorder {ℓ} {_} {⊤} _≡_ _≡_
+≡-isPreorder ℓ = record
   { isEquivalence = isEquivalence
   ; reflexive     = λ x → x
   ; trans         = trans
   }
 
-≡-isPartialOrder : IsPartialOrder {ℓ} _≡_ _≡_
-≡-isPartialOrder = record
-  { isPreorder = ≡-isPreorder
+≡-isPartialOrder : ∀ ℓ → IsPartialOrder {ℓ} _≡_ _≡_
+≡-isPartialOrder ℓ = record
+  { isPreorder = ≡-isPreorder ℓ
   ; antisym    = ≡-antisym
   }
 
-≡-isTotalOrder : IsTotalOrder {ℓ} _≡_ _≡_
-≡-isTotalOrder = record
-  { isPartialOrder = ≡-isPartialOrder
+≡-isTotalOrder : ∀ ℓ → IsTotalOrder {ℓ} _≡_ _≡_
+≡-isTotalOrder ℓ = record
+  { isPartialOrder = ≡-isPartialOrder ℓ
   ; total          = ≡-total
   }
 
-≡-isDecTotalOrder : IsDecTotalOrder {ℓ} _≡_ _≡_
-≡-isDecTotalOrder = record
-  { isTotalOrder = ≡-isTotalOrder
+≡-isDecTotalOrder : ∀ ℓ → IsDecTotalOrder {ℓ} _≡_ _≡_
+≡-isDecTotalOrder ℓ = record
+  { isTotalOrder = ≡-isTotalOrder ℓ
   ; _≟_          = _≟_
   ; _≤?_         = _≟_
   }
@@ -77,12 +77,22 @@ _ ≟ _ = yes refl
 ------------------------------------------------------------------------
 -- Bundles
 
-≡-poset : Poset ℓ ℓ ℓ
-≡-poset = record
-  { isPartialOrder = ≡-isPartialOrder
+≡-preorder : ∀ ℓ → Preorder ℓ ℓ ℓ
+≡-preorder ℓ = record
+  { isPreorder = ≡-isPreorder ℓ
   }
 
-≡-decTotalOrder : DecTotalOrder ℓ ℓ ℓ
-≡-decTotalOrder = record
-  { isDecTotalOrder = ≡-isDecTotalOrder
+≡-poset : ∀ ℓ → Poset ℓ ℓ ℓ
+≡-poset ℓ = record
+  { isPartialOrder = ≡-isPartialOrder ℓ
+  }
+
+≡-totalOrder : ∀ ℓ → TotalOrder ℓ ℓ ℓ
+≡-totalOrder ℓ = record
+  { isTotalOrder = ≡-isTotalOrder ℓ
+  }
+
+≡-decTotalOrder : ∀ ℓ → DecTotalOrder ℓ ℓ ℓ
+≡-decTotalOrder ℓ = record
+  { isDecTotalOrder = ≡-isDecTotalOrder ℓ
   }

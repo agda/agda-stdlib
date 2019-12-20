@@ -10,20 +10,30 @@ module Data.Rational.Base where
 
 open import Function using (id)
 open import Data.Integer as ℤ using (ℤ; ∣_∣; +_; -[1+_])
+import Data.Integer.GCD as ℤ
+import Data.Integer.DivMod as ℤ
 open import Data.Nat.GCD
 open import Data.Nat.Divisibility as ℕDiv using (divides; 0∣⇒≡0)
-open import Data.Nat.Coprimality as C using (Coprime; Bézout-coprime)
-open import Data.Nat as ℕ using (ℕ; zero; suc)
+open import Data.Nat.Coprimality as C using (Coprime; Bézout-coprime; coprime-/gcd)
+open import Data.Nat as ℕ using (ℕ; zero; suc) hiding (module ℕ)
+import Data.Nat.DivMod as ℕ
+open import Data.Rational.Unnormalised using (ℚᵘ; mkℚᵘ)
 open import Data.Product
+open import Data.Sum using (inj₂)
 open import Level using (0ℓ)
 open import Relation.Nullary using (¬_)
-open import Relation.Nullary.Decidable using (False)
+open import Relation.Nullary.Decidable using (False; fromWitnessFalse; toWitnessFalse)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Binary using (Rel)
 open import Relation.Binary.PropositionalEquality
-  using (_≡_; refl; subst; cong; cong₂; module ≡-Reasoning)
+  using (_≡_; _≢_; refl; subst; cong; cong₂; module ≡-Reasoning)
 
 open ≡-Reasoning
+
+private
+  infix 4 _≢0
+  _≢0 : ℕ → Set
+  n ≢0 = False (n ℕ.≟ 0)
 
 -- Note, these are re-exported publicly to maintain backwards
 -- compatability. Although we are unable (?) to put a warning on them,
@@ -55,6 +65,9 @@ open ℚ public using ()
   ; denominator  to ↧_
   ; denominatorℕ to ↧ₙ_
   )
+
+mkℚ+ : ∀ n d → .{d≢0 : d ≢0} → .(Coprime n d) → ℚ
+mkℚ+ n (suc d) coprime = mkℚ (+ n) d coprime
 
 ------------------------------------------------------------------------
 -- Equality of rational numbers (coincides with _≡_)
@@ -104,26 +117,22 @@ x ≯ y = ¬ (x > y)
 ------------------------------------------------------------------------
 -- Constructing rationals
 
-infix 4 _≢0
-_≢0 : ℕ → Set
-n ≢0 = False (n ℕ.≟ 0)
-
 -- A constructor for ℚ that takes two natural numbers, say 6 and 21,
 -- and returns them in a normalized form, e.g. say 2 and 7
 
-normalize : ∀ (m n : ℕ) → .{n≢0 : n ≢0} → ℚ
-normalize zero    n       = mkℚ +0 0 (C.sym (C.1-coprimeTo 0))
-normalize (suc m) (suc n) with mkGCD (suc m) (suc n)
-... | zero  , GCD.is (1+m∣0 , _) _ = contradiction (0∣⇒≡0 1+m∣0) λ()
-... | suc g , G@(GCD.is (divides (suc p) refl , divides (suc q) refl) _)
-  = mkℚ (+ suc p) q (Bézout-coprime (Bézout.identity G))
+normalize : ∀ (m n : ℕ) {n≢0 : n ≢0} → ℚ
+normalize m n {n≢0} = mkℚ+ (m ℕ./ gcd m n) (n ℕ./ gcd m n)
+  {n/g≢0} (coprime-/gcd m n {g≢0})
+  where
+  g≢0   = fromWitnessFalse (gcd[m,n]≢0 m n (inj₂ (toWitnessFalse n≢0)))
+  n/g≢0 = fromWitnessFalse (n/gcd[m,n]≢0 m n {n≢0} {g≢0})
 
 -- A constructor for ℚ that (unlike mkℚ) automatically normalises it's
 -- arguments. See the constants section below for how to use this operator.
 
 infixl 7 _/_
 
-_/_ : (n : ℤ) (d : ℕ) → .{d≢0 : d ≢0} → ℚ
+_/_ : (n : ℤ) (d : ℕ) → {d≢0 : d ≢0} → ℚ
 (+ n      / d) {d≢0} =   normalize n       d {d≢0}
 (-[1+ n ] / d) {d≢0} = - normalize (suc n) d {d≢0}
 
@@ -173,4 +182,13 @@ p - q = p + (- q)
 -- division: requires a proof that the denominator is not zero
 
 _÷_ : (p q : ℚ) → .{n≢0 : ∣ ↥ q ∣ ≢0} → ℚ
-(p ÷ q) {n≢0} = p * (1/_ q {n≢0})
+(p ÷ q) {n≢0} = p * (1/ q) {n≢0}
+
+------------------------------------------------------------------------
+-- Conversion to and from unnormalized rationals
+
+toℚᵘ : ℚ → ℚᵘ
+toℚᵘ (mkℚ n d-1 _) = mkℚᵘ n d-1
+
+fromℚᵘ : ℚᵘ → ℚ
+fromℚᵘ (mkℚᵘ n d-1) = n / suc d-1

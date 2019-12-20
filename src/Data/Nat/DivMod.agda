@@ -10,8 +10,8 @@ module Data.Nat.DivMod where
 
 open import Agda.Builtin.Nat using (div-helper; mod-helper)
 
-open import Data.Fin using (Fin; toℕ; fromℕ≤)
-open import Data.Fin.Properties using (toℕ-fromℕ≤)
+open import Data.Fin using (Fin; toℕ; fromℕ<)
+open import Data.Fin.Properties using (toℕ-fromℕ<)
 open import Data.Nat as Nat
 open import Data.Nat.DivMod.Core
 open import Data.Nat.Divisibility.Core
@@ -36,12 +36,12 @@ infixl 7 _/_ _%_
 
 -- Natural division
 
-_/_ : (dividend divisor : ℕ) .{≢0 : False (divisor ≟ 0)} → ℕ
+_/_ : (dividend divisor : ℕ) {≢0 : False (divisor ≟ 0)} → ℕ
 m / (suc n) = div-helper 0 n m n
 
 -- Natural remainder/modulus
 
-_%_ : (dividend divisor : ℕ) .{≢0 : False (divisor ≟ 0)} → ℕ
+_%_ : (dividend divisor : ℕ) {≢0 : False (divisor ≟ 0)} → ℕ
 m % (suc n) = mod-helper 0 n m n
 
 ------------------------------------------------------------------------
@@ -127,49 +127,71 @@ m<[1+n%d]⇒m≤[n%d] {m} n (suc d-1) = k<1+a[modₕ]n⇒k≤a[modₕ]n 0 m n d-
 ------------------------------------------------------------------------
 -- Properties of _/_
 
-0/n≡0 : ∀ n .{≢0} → (0 / n) {≢0} ≡ 0
+/-congˡ : ∀ {m n o : ℕ} {o≢0} → m ≡ n → (m / o) {o≢0} ≡ (n / o) {o≢0}
+/-congˡ refl = refl
+
+/-congʳ : ∀ {m n o : ℕ} {n≢0 o≢0} → n ≡ o →
+         (m / n) {n≢0} ≡ (m / o) {o≢0}
+/-congʳ {_} {suc _} {suc _} refl = refl
+
+0/n≡0 : ∀ n {≢0} → (0 / n) {≢0} ≡ 0
 0/n≡0 (suc n-1) = refl
 
 n/1≡n : ∀ n → n / 1 ≡ n
 n/1≡n n = a[divₕ]1≡a 0 n
 
-n/n≡1 : ∀ n .{≢0} → (n / n) {≢0} ≡ 1
+n/n≡1 : ∀ n {≢0} → (n / n) {≢0} ≡ 1
 n/n≡1 (suc n-1) = n[divₕ]n≡1 n-1 n-1
 
-m*n/n≡m : ∀ m n .{≢0} → (m * n / n) {≢0} ≡ m
+m*n/n≡m : ∀ m n {≢0} → (m * n / n) {≢0} ≡ m
 m*n/n≡m m (suc n-1) = a*n[divₕ]n≡a 0 m n-1
 
-m/n*n≡m : ∀ {m n} .{≢0} → n ∣ m → (m / n) {≢0} * n ≡ m
+m/n*n≡m : ∀ {m n} {≢0} → n ∣ m → (m / n) {≢0} * n ≡ m
 m/n*n≡m {_} {n@(suc n-1)} (divides q refl) = cong (_* n) (m*n/n≡m q n)
 
-m*[n/m]≡n : ∀ {m n} .{≢0} → m ∣ n → m * (n / m) {≢0} ≡ n
+m*[n/m]≡n : ∀ {m n} {≢0} → m ∣ n → m * (n / m) {≢0} ≡ n
 m*[n/m]≡n {m} m∣n = trans (*-comm m (_ / m)) (m/n*n≡m m∣n)
 
-m/n*n≤m : ∀ m n .{≢0} → (m / n) {≢0} * n ≤ m
+m/n*n≤m : ∀ m n {≢0} → (m / n) {≢0} * n ≤ m
 m/n*n≤m m n@(suc n-1) = begin
   (m / n) * n          ≤⟨ m≤m+n ((m / n) * n) (m % n) ⟩
   (m / n) * n + m % n  ≡⟨ +-comm _ (m % n) ⟩
   m % n + (m / n) * n  ≡⟨ sym (m≡m%n+[m/n]*n m n-1) ⟩
   m                    ∎
 
-m/n<m : ∀ m n .{≢0} → m ≥ 1 → n ≥ 2 → (m / n) {≢0} < m
+m/n<m : ∀ m n {≢0} → m ≥ 1 → n ≥ 2 → (m / n) {≢0} < m
 m/n<m m n@(suc n-1) m≥1 n≥2 = *-cancelʳ-< {n} (m / n) m (begin-strict
   (m / n) * n ≤⟨ m/n*n≤m m n ⟩
   m           <⟨ m<m*n m≥1 n≥2 ⟩
   m * n       ∎)
 
-+-distrib-/ : ∀ m n {d} .{≢0} → (m % d) {≢0} + (n % d) {≢0} < d →
+/-mono-≤ : ∀ {m n o p} {o≢0 p≢0} → m ≤ n → o ≥ p → (m / o) {o≢0} ≤ (n / p) {p≢0}
+/-mono-≤ m≤n (s≤s o≥p) = divₕ-mono-≤ 0 m≤n o≥p
+
+/-monoˡ-≤ : ∀ {m n o} {o≢0} → m ≤ n → (m / o) {o≢0} ≤ (n / o) {o≢0}
+/-monoˡ-≤ {o≢0 = o≢0} m≤n = /-mono-≤ {o≢0 = o≢0} {o≢0} m≤n ≤-refl
+
+/-monoʳ-≤ : ∀ m {n o} {n≢0 o≢0} → n ≥ o → (m / n) {n≢0} ≤ (m / o) {o≢0}
+/-monoʳ-≤ _ {n≢0 = n≢0} {o≢0} n≥o = /-mono-≤ {o≢0 = n≢0} {o≢0} ≤-refl n≥o
+
+m≥n⇒m/n>0 : ∀ {m n n≢0} → m ≥ n → (m / n) {n≢0} > 0
+m≥n⇒m/n>0 {m@(suc m-1)} {n@(suc n-1)} m≥n = begin
+  1     ≡⟨ sym (n/n≡1 m) ⟩
+  m / m ≤⟨ /-monoʳ-≤ m m≥n ⟩
+  m / n ∎
+
++-distrib-/ : ∀ m n {d} {≢0} → (m % d) {≢0} + (n % d) {≢0} < d →
               ((m + n) / d) {≢0} ≡ (m / d) {≢0} + (n / d) {≢0}
 +-distrib-/ m n {suc d-1} leq = +-distrib-divₕ 0 0 m n d-1 leq
 
-+-distrib-/-∣ˡ : ∀ {m} n {d} .{≢0} → d ∣ m →
++-distrib-/-∣ˡ : ∀ {m} n {d} {≢0} → d ∣ m →
                  ((m + n) / d) {≢0} ≡ (m / d) {≢0} + (n / d) {≢0}
 +-distrib-/-∣ˡ {m} n {d@(suc d-1)} (divides p refl) = +-distrib-/ m n (begin-strict
   p * d % d + n % d ≡⟨ cong (_+ n % d) (m*n%n≡0 p d-1) ⟩
   n % d             <⟨ m%n<n n d-1 ⟩
   d                 ∎)
 
-+-distrib-/-∣ʳ : ∀ {m} n {d} .{≢0} → d ∣ n →
++-distrib-/-∣ʳ : ∀ {m} n {d} {≢0} → d ∣ n →
                  ((m + n) / d) {≢0} ≡ (m / d) {≢0} + (n / d) {≢0}
 +-distrib-/-∣ʳ {m} n {d@(suc d-1)} (divides p refl) = +-distrib-/ m n (begin-strict
   m % d + p * d % d ≡⟨ cong (m % d +_) (m*n%n≡0 p d-1) ⟩
@@ -196,18 +218,18 @@ record DivMod (dividend divisor : ℕ) : Set where
 
 infixl 7 _div_ _mod_ _divMod_
 
-_div_ : (dividend divisor : ℕ) .{≢0 : False (divisor ≟ 0)} → ℕ
+_div_ : (dividend divisor : ℕ) {≢0 : False (divisor ≟ 0)} → ℕ
 _div_ = _/_
 
-_mod_ : (dividend divisor : ℕ) .{≢0 : False (divisor ≟ 0)} → Fin divisor
-m mod (suc n) = fromℕ≤ (m%n<n m n)
+_mod_ : (dividend divisor : ℕ) {≢0 : False (divisor ≟ 0)} → Fin divisor
+m mod (suc n) = fromℕ< (m%n<n m n)
 
-_divMod_ : (dividend divisor : ℕ) .{≢0 : False (divisor ≟ 0)} →
+_divMod_ : (dividend divisor : ℕ) {≢0 : False (divisor ≟ 0)} →
            DivMod dividend divisor
 m divMod n@(suc n-1) = result (m / n) (m mod n) (begin-equality
   m                                     ≡⟨ m≡m%n+[m/n]*n m n-1 ⟩
-  m % n                      + [m/n]*n  ≡⟨ cong (_+ [m/n]*n) (sym (toℕ-fromℕ≤ (m%n<n m n-1))) ⟩
-  toℕ (fromℕ≤ (m%n<n m n-1)) + [m/n]*n  ∎)
+  m % n                      + [m/n]*n  ≡⟨ cong (_+ [m/n]*n) (sym (toℕ-fromℕ< (m%n<n m n-1))) ⟩
+  toℕ (fromℕ< (m%n<n m n-1)) + [m/n]*n  ∎)
   where [m/n]*n = m / n * n
 
 ------------------------------------------------------------------------

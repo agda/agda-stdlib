@@ -33,7 +33,7 @@ All P xs = ∀ i → P (xs i)
 module _ {P : Pred A p} {Q : Pred A q} where
 
   map : P ⊆ Q → ∀ {n} → All P {n = n} ⊆ All Q
-  map pq ps i = pq (ps i)
+  map p⊆q ps i = p⊆q (ps i)
 
 ------------------------------------------------------------------------
 -- Properties of predicates preserved by All

@@ -12,9 +12,10 @@ open import Data.Empty
 open import Data.Unit.Base using (⊤)
 open import Data.Product
 open import Data.Sum using (_⊎_; [_,_])
-open import Function.Core
+open import Function.Base
 open import Level
 open import Relation.Nullary hiding (Irrelevant)
+open import Relation.Nullary.Decidable.Core using (True)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
 private
@@ -25,7 +26,7 @@ private
     C : Set c
 
 ------------------------------------------------------------------------
--- Unary relations
+-- Definition
 
 -- Unary relations are known as predicates and `Pred A ℓ` can be viewed
 -- as some property that elements of type A might satisfy.
@@ -165,9 +166,7 @@ Decidable P = ∀ x → Dec (P x)
 -- amenable to η-expansion
 
 ⌊_⌋ : {P : Pred A ℓ} → Decidable P → Pred A ℓ
-⌊ P? ⌋ a with P? a
-... | yes _ = Lift _ ⊤
-... | no _  = Lift _ ⊥
+⌊ P? ⌋ a = Lift _ (True (P? a))
 
 -- Irrelevance - any two proofs that an element satifies P are
 -- indistinguishable.

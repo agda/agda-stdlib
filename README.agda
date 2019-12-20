@@ -1,7 +1,7 @@
 module README where
 
 ------------------------------------------------------------------------
--- The Agda standard library, version 1.2-dev
+-- The Agda standard library, version 1.3-dev
 --
 -- Authors: Nils Anders Danielsson, Matthew Daggitt, Guillaume Allais
 -- with contributions from Andreas Abel, Stevan Andjelkovic,
@@ -261,6 +261,10 @@ import IO
 ------------------------------------------------------------------------
 -- More documentation
 ------------------------------------------------------------------------
+
+-- Examples of how decidability is handled in the library.
+
+import README.Decidability
 
 -- Some examples showing how the case expression can be used.
 

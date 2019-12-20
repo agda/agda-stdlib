@@ -15,7 +15,7 @@ module Data.Fin.Base where
 open import Data.Empty using (⊥-elim)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; z≤n; s≤s)
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
-open import Function.Core using (id; _∘_; _on_)
+open import Function.Base using (id; _∘_; _on_)
 import Data.Nat.Properties as ℕₚ
 open import Level using () renaming (zero to ℓ₀)
 open import Relation.Nullary using (yes; no)
@@ -64,16 +64,16 @@ fromℕ (suc n) = suc (fromℕ n)
 
 -- fromℕ≤ {m} _ = "m".
 
-fromℕ≤ : ∀ {m n} → .(m ℕ.< n) → Fin n
-fromℕ≤ {zero}  {suc n} m≤n = zero
-fromℕ≤ {suc m} {suc n} m≤n = suc (fromℕ≤ (ℕₚ.≤-pred m≤n))
+fromℕ< : ∀ {m n} → m ℕ.< n → Fin n
+fromℕ< {zero}  {suc n} m≤n = zero
+fromℕ< {suc m} {suc n} m≤n = suc (fromℕ< (ℕₚ.≤-pred m≤n))
 
 -- fromℕ≤″ m _ = "m".
 
-fromℕ≤″ : ∀ m {n} → m ℕ.<″ n → Fin n
-fromℕ≤″ zero    (ℕ.less-than-or-equal refl) = zero
-fromℕ≤″ (suc m) (ℕ.less-than-or-equal refl) =
-  suc (fromℕ≤″ m (ℕ.less-than-or-equal refl))
+fromℕ<″ : ∀ m {n} → m ℕ.<″ n → Fin n
+fromℕ<″ zero    (ℕ.less-than-or-equal refl) = zero
+fromℕ<″ (suc m) (ℕ.less-than-or-equal refl) =
+  suc (fromℕ<″ m (ℕ.less-than-or-equal refl))
 
 -- raise m "i" = "m + i".
 
@@ -105,7 +105,7 @@ inject₁ : ∀ {m} → Fin m → Fin (suc m)
 inject₁ zero    = zero
 inject₁ (suc i) = suc (inject₁ i)
 
-inject≤ : ∀ {m n} → Fin m → .(m ℕ.≤ n) → Fin n
+inject≤ : ∀ {m n} → Fin m → m ℕ.≤ n → Fin n
 inject≤ {_} {suc n} zero    le = zero
 inject≤ {_} {suc n} (suc i) le = suc (inject≤ i (ℕₚ.≤-pred le))
 
@@ -126,8 +126,8 @@ strengthen (suc i) = suc (strengthen i)
 -- This is dual to splitAt from Data.Vec.
 
 splitAt : ∀ m {n} → Fin (m ℕ.+ n) → Fin m ⊎ Fin n
-splitAt zero i = inj₂ i
-splitAt (suc m) zero = inj₁ zero
+splitAt zero    i       = inj₂ i
+splitAt (suc m) zero    = inj₁ zero
 splitAt (suc m) (suc i) = Sum.map suc id (splitAt m i)
 
 ------------------------------------------------------------------------
@@ -245,16 +245,22 @@ compare (suc i) (suc j) with compare i j
 ... | greater greatest least = greater (suc greatest) (suc least)
 ... | equal   i              = equal   (suc i)
 
-------------------------------------------------------------------------
--- Constants
 
-pattern 0F = zero
-pattern 1F = suc 0F
-pattern 2F = suc 1F
-pattern 3F = suc 2F
-pattern 4F = suc 3F
-pattern 5F = suc 4F
-pattern 6F = suc 5F
-pattern 7F = suc 6F
-pattern 8F = suc 7F
-pattern 9F = suc 8F
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 1.2
+
+fromℕ≤ = fromℕ<
+{-# WARNING_ON_USAGE fromℕ≤
+"Warning: fromℕ≤ was deprecated in v1.2.
+Please use fromℕ< instead."
+#-}
+fromℕ≤″ = fromℕ<″
+{-# WARNING_ON_USAGE fromℕ≤″
+"Warning: fromℕ≤″ was deprecated in v1.2.
+Please use fromℕ<″ instead."
+#-}

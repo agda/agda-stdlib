@@ -14,7 +14,7 @@ module Relation.Binary.Morphism.Definitions
   where
 
 open import Algebra.Core
-open import Function.Core
+open import Function.Base
 open import Level using (Level)
 
 private

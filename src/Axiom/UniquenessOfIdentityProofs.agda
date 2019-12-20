@@ -8,7 +8,9 @@
 
 module Axiom.UniquenessOfIdentityProofs where
 
+open import Data.Bool.Base using (true; false)
 open import Data.Empty
+open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Binary.Core
 open import Relation.Binary.Definitions
@@ -62,13 +64,13 @@ module Decidable⇒UIP
 
   ≡-normalise : _≡_ {A = A} ⇒ _≡_
   ≡-normalise {a} {b} a≡b with a ≟ b
-  ... | yes p = p
-  ... | no ¬p = ⊥-elim (¬p a≡b)
+  ... | true  because  [p] = invert [p]
+  ... | false because [¬p] = ⊥-elim (invert [¬p] a≡b)
 
   ≡-normalise-constant : ∀ {a b} (p q : a ≡ b) → ≡-normalise p ≡ ≡-normalise q
   ≡-normalise-constant {a} {b} p q with a ≟ b
-  ... | yes _ = refl
-  ... | no ¬p = ⊥-elim (¬p p)
+  ... | true  because   _  = refl
+  ... | false because [¬p] = ⊥-elim (invert [¬p] p)
 
   ≡-irrelevant : UIP A
   ≡-irrelevant = Constant⇒UIP.≡-irrelevant ≡-normalise ≡-normalise-constant

@@ -8,7 +8,7 @@
 
 module Relation.Binary.Construct.Closure.Transitive where
 
-open import Function.Core
+open import Function.Base
 open import Function.Equivalence as Equiv using (_⇔_)
 open import Level
 open import Relation.Binary

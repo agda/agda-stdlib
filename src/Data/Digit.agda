@@ -12,13 +12,14 @@ open import Data.Nat
 open import Data.Nat.Properties
 open import Data.Nat.Solver
 open import Data.Fin as Fin using (Fin; zero; suc; toℕ)
+open import Data.Bool.Base using (Bool; true; false)
 open import Data.Char using (Char)
 open import Data.List.Base
 open import Data.Product
 open import Data.Vec as Vec using (Vec; _∷_; [])
 open import Data.Nat.DivMod
 open import Data.Nat.Induction
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary using (does)
 open import Relation.Nullary.Decidable
 open import Relation.Binary using (Decidable)
 open import Relation.Binary.PropositionalEquality as P using (_≡_; refl)
@@ -54,9 +55,9 @@ toNatDigits base@(suc (suc b)) n = aux (<-wellFounded n) []
   where
   aux : {n : ℕ} → Acc _<_ n → List ℕ → List ℕ
   aux {zero}        _        xs =  (0 ∷ xs)
-  aux {n@(suc n-1)} (acc wf) xs with 0 <? n / base
-  ... | no _    =  (n % base) ∷ xs
-  ... | yes 0<q =  aux (wf (n / base) q<n) ((n % base) ∷ xs)
+  aux {n@(suc n-1)} (acc wf) xs with does (0 <? n / base)
+  ... | false =  (n % base) ∷ xs
+  ... | true  =  aux (wf (n / base) q<n) ((n % base) ∷ xs)
     where
     q<n : n / base < n
     q<n = m/n<m n base (s≤s z≤n) (s≤s (s≤s z≤n))

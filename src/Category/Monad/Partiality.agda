@@ -14,7 +14,7 @@ open import Data.Bool.Base using (Bool; false; true)
 open import Data.Nat using (ℕ; zero; suc; _+_)
 open import Data.Product as Prod hiding (map)
 open import Data.Sum using (_⊎_; inj₁; inj₂)
-open import Function.Core
+open import Function.Base
 open import Function.Equivalence using (_⇔_; equivalence)
 open import Level using (_⊔_)
 open import Relation.Binary as B hiding (Rel)
@@ -910,9 +910,9 @@ private
   -- McCarthy's f91:
 
   f91′ : ℕ → ℕ ⊥P
-  f91′ n with n ≤? 100
-  ... | yes _ = later (♯ (f91′ (11 + n) >>= f91′))
-  ... | no  _ = now (n ∸ 10)
+  f91′ n with does (n ≤? 100)
+  ... | true  = later (♯ (f91′ (11 + n) >>= f91′))
+  ... | false = now (n ∸ 10)
 
   f91 : ℕ → ℕ ⊥
   f91 n = ⟦ f91′ n ⟧P
