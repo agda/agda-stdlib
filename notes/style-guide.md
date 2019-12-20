@@ -63,7 +63,7 @@ open import Data.Nat.Properties public
   ```
 
 * As can be seen in the example above, function arrows at line breaks
-  should  always go at the end of the line rather the beginning of the
+  should  always go at the end of the line rather than the beginning of the
   next line.
 
 #### Module parameters
@@ -72,10 +72,10 @@ open import Data.Nat.Properties public
 
 * If they don't fit on a single line, then they should be spread out
   over multiple lines, each indented by two spaces. If they can be
-  grouped logically by line then it is fine to do so, otherwise a line
+  grouped logically by line then it is fine to do so, otherwise, a line
   each is probably clearest.
 
-* The `where` should go on it's own line at the end.
+* The `where` keyword should be placed on an additional line of code at the end.
 
 * For example:
   ```agda
@@ -89,8 +89,7 @@ open import Data.Nat.Properties public
 
 * The `begin` clause should go on the same line as the rest of the proof.
 
-* Every subsequent combinator `_≡⟨_⟩_` should go on its own line,
-  indented by two spaces.
+* Every subsequent combinator `_≡⟨_⟩_` should be placed on an additional line of code, indented by two spaces.
 
 * The relation sign (e.g. `≡`) for each line should be aligned if possible.
 
@@ -140,10 +139,10 @@ open import Data.Nat.Properties public
 
 * `where` blocks are preferred rather than the `let` construction.
 
-* The `where` should be placed on the line below the main proof,
+* The `where` keyword should be placed on the line below the main proof,
   indented by two spaces.
 
-* If the contents of the block is non-trivial then types should be
+* If the content of the block is non-trivial then types should be
   provided alongside the terms, and all terms should be on lines after
   the `where`, e.g.
   ```agda
@@ -154,8 +153,8 @@ open import Data.Nat.Properties public
         proof = some-very-long-proof
   ```
 
-* If the contents of the block is trivial or is an `open` statement then
-  it can provided on the same line as the `where` and a type can be
+* If the content of the block is trivial or is an `open` statement then
+  it can be provided on the same line as the `where` and a type can be
   omitted, e.g.
   ```agda
   statement : Statement
@@ -165,8 +164,8 @@ open import Data.Nat.Properties public
 
 #### Other
 
-* Non-trivial proofs in `private` blocks are generally discouraged. If its
-  non-trivial then the chances are someone will want to reuse it as some
+* Non-trivial proofs in `private` blocks are generally discouraged. If it is
+  non-trivial, then chances are that someone will want to reuse it at some
   point!
 
 * The `with` syntax is preferred over the use of `case` from the `Function`
@@ -176,29 +175,27 @@ open import Data.Nat.Properties public
 
 #### Implicit and explicit arguments
 
-* Functions arguments should be implicit if they can "almost always"
+* Function's arguments should be implicit if they can "almost always"
   be inferred. If there are common cases where they cannot be inferred
   then they should be left explicit.
 
 * If there are lots of implicit arguments that are common to a collection
   of proofs they should be extracted by using an anonymous module.
 
-* Implicit of type `Level` and `Set` can be generalised using `variable`.
-  At the moment the policy is *not* to generalise over any other types in
-  order to minimise the amount of information that users have to keep in
-  their head concurrently.
+* Implicit of type `Level` and `Set` can be generalized using the keyword `variable`. At the moment the policy is *not* to generalize over any other types to minimize the amount of information that users have to keep in their head concurrently.
 
 ## Naming conventions
 
 * Names should be descriptive - i.e. given the name of a proof and the
-  module it lives in then users should be able to make a reasonable
-  guess at what it contains.
+  module it lives in, then users should be able to make a reasonable
+  guess at its meaning.
 
 * Terms from other modules should only be renamed to avoid name clashes,
-  otherwise all names should be used as defined.
+  otherwise, all names should be used as defined.
 
-* Datatype names should be capitalised and function names should be
-  lowercase.
+* Datatype names should be capitalized, being its first letter in uppercase and the remaining letters in lowercase.
+
+* Function names should be not capitalized, being all letters in lowercase.
 
 #### Variables
 
@@ -208,7 +205,7 @@ open import Data.Nat.Properties public
 
 * Rational variables are named `p`, `q`, `r`, ... (default `p`)
 
-* When naming proofs, the variables should occur in order, e.g.
+* When naming proofs, the variables should occur in alphabetical order, e.g.
   `m≤n+m` rather than `n≤m+n`.
 
 * Collections of elements are usually indicated by appending an `s`
@@ -219,7 +216,7 @@ open import Data.Nat.Properties public
 #### Preconditions and postconditions
 
 * Preconditions should only be included in names of results if
-  "important" (mostly judgement call).
+  "important" (mostly judgment call).
 
 * Preconditions of results should be prepended to a description
   of the result by using the symbol `⇒` in names (e.g. `asym⇒antisym`)
@@ -227,22 +224,21 @@ open import Data.Nat.Properties public
 * Preconditions and postconditions should be combined using the symbols
   `∨` and `∧` (e.g. `m*n≡0⇒m≡0∨n≡0`)
 
-* Try to avoid the need for bracketing but if necessary use square
+* Try to avoid the need for bracketing, but if necessary use square
   brackets (e.g. `[m∸n]⊓[n∸m]≡0`)
 
 #### Operators and relations
 
 * Operators and relations should be defined using mixfix notation where
-  applicable (e.g. `_+_`, `_<_`)
+  applicable (e.g. `_+_`, `_<_`). In a name containing one or more `_`, each underscore can be interpreted as the place where each argument goes.
 
 * Common properties such as those in rings/orders/equivalences etc.
   have defined abbreviations (e.g. commutativity is shortened to `comm`).
   `Data.Nat.Properties` is a good place to look for examples.
 
-* Properties should be by prefixed by the relevant operator/relation
-  (e.g. commutativity of `_+_` is named `+-comm`)
+* Properties should be prefixed by the relevant operator/relation and separated from its name by a hyphen `-` (e.g. commutativity of `_+_` results in a compositional name `+-comm` composed by `+` which denotes the sum operation over the natural numbers, `-` which is the separator of the different sub-names, and `comm` which denotes the commutative property of sum)
 
-* If the relevant unicode characters are available, negated forms of
+* If the relevant Unicode characters are available, negated forms of
   relations should be used over the `¬` symbol (e.g. `m+n≮n` should be
   used instead of `¬m+n<n`).
 
