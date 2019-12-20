@@ -33,7 +33,7 @@ record RawFunctor {ℓ ℓ′} (F : Set ℓ → Set ℓ′) : Set (suc ℓ ⊔ �
 
 record Morphism {ℓ ℓ′ ℓ″} {F₁ : Set ℓ → Set ℓ′} {F₂ : Set ℓ → Set ℓ″}
                 (fun₁ : RawFunctor F₁)
-                (fun₂ : RawFunctor F₂) : Set ((suc ℓ) ⊔ (ℓ′ ⊔ ℓ″)) where
+                (fun₂ : RawFunctor F₂) : Set (suc ℓ ⊔ ℓ′ ⊔ ℓ″) where
   open RawFunctor
   field
     op     : ∀{X} → F₁ X → F₂ X
