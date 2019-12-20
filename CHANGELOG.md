@@ -142,6 +142,12 @@ Other minor additions
   AllPairs-resp-Pointwise : R Respects₂ _∼_ → (AllPairs R) Respects (Pointwise _∼_)
   ```
 
+* Added new combinators to `Data.List.Relation.Binary.Permutation.Setoid.PermutationReasoning`:
+  ```agda
+  _≋⟨_⟩_  : x ≋ y → y IsRelatedTo z → x IsRelatedTo z
+  _≋˘⟨_⟩_ : y ≋ x → y IsRelatedTo z → x IsRelatedTo z
+  ```
+
 * Added a new proof to `Relation.Nullary.Decidable`:
   ```agda
   isYes≗does : (P? : Dec P) → isYes P? ≡ does P?

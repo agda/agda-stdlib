@@ -67,7 +67,7 @@ module PermutationReasoning where
     using (begin_ ; _∎ ; _≡⟨⟩_; _≡⟨_⟩_)
     renaming (_≈⟨_⟩_ to _↭⟨_⟩_; _≈˘⟨_⟩_ to _↭˘⟨_⟩_)
 
-  infixr 2 _∷_<⟨_⟩_  _∷_∷_<<⟨_⟩_
+  infixr 2 _∷_<⟨_⟩_  _∷_∷_<<⟨_⟩_ _≋⟨_⟩_ _≋˘⟨_⟩_
 
   -- Skip reasoning on the first element
   _∷_<⟨_⟩_ : ∀ x xs {ys zs : List A} → xs ↭ ys →
@@ -79,3 +79,8 @@ module PermutationReasoning where
                   (y ∷ x ∷ ys) IsRelatedTo zs → (x ∷ y ∷ xs) IsRelatedTo zs
   x ∷ y ∷ xs <<⟨ xs↭ys ⟩ rel = relTo (trans (swap Eq.refl Eq.refl xs↭ys) (begin rel))
 
+  _≋⟨_⟩_ : ∀ x {y z} → x ≋ y → y IsRelatedTo z → x IsRelatedTo z
+  x ≋⟨ x≈y ⟩ (relTo y↔z) = relTo (trans (refl x≈y) y↔z)
+
+  _≋˘⟨_⟩_ : ∀ x {y z} → y ≋ x → y IsRelatedTo z → x IsRelatedTo z
+  x ≋˘⟨ y≈x ⟩ y∼z = x ≋⟨ ≋-sym y≈x ⟩ y∼z
