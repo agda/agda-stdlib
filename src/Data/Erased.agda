@@ -2,7 +2,7 @@
 -- The Agda standard library
 --
 -- Wrapper for the erased modality
--- This allows us to store erased proof in a record an use projections
+-- This allows us to store erased proofs in a record an use projections
 -- to manipulate them without having to turn on the unsafe option
 -- --irrelevant-projections.
 ------------------------------------------------------------------------
