@@ -135,7 +135,7 @@ shift {v} {w} v≈w (x ∷ xs) ys = begin
 
 ++⁺ˡ : ∀ xs {ys zs : List A} → ys ↭ zs → xs ++ ys ↭ xs ++ zs
 ++⁺ˡ []       ys↭zs = ys↭zs
-++⁺ˡ (x ∷ xs) ys↭zs = prep ≈-refl (++⁺ˡ xs ys↭zs)
+++⁺ˡ (x ∷ xs) ys↭zs = ↭-prep _ (++⁺ˡ xs ys↭zs)
 
 ++⁺ʳ : ∀ {xs ys : List A} zs → xs ↭ ys → xs ++ zs ↭ ys ++ zs
 ++⁺ʳ zs (refl xs≋ys)  = refl (Pointwise.++⁺ xs≋ys ≋-refl)
@@ -163,7 +163,7 @@ shift {v} {w} v≈w (x ∷ xs) ys = begin
 ++-comm : Commutative _↭_ _++_
 ++-comm []       ys = ↭-sym (++-identityʳ ys)
 ++-comm (x ∷ xs) ys = begin
-  x ∷ xs ++ ys         ↭⟨ prep ≈-refl (++-comm xs ys) ⟩
+  x ∷ xs ++ ys         <⟨ ++-comm xs ys ⟩
   x ∷ ys ++ xs         ≡⟨ cong (λ v → x ∷ v ++ xs) (≡.sym (Lₚ.++-identityʳ _)) ⟩
   (x ∷ ys ++ []) ++ xs ↭⟨ ++⁺ʳ xs (↭-sym (shift ≈-refl ys [])) ⟩
   (ys ++ [ x ]) ++ xs  ↭⟨ ++-assoc ys [ x ] xs ⟩
@@ -226,7 +226,7 @@ zoom h {t} = ++⁺ˡ h ∘ ++⁺ʳ t
 
 inject : ∀  (v : A) {ws xs ys zs} → ws ↭ ys → xs ↭ zs →
          ws ++ [ v ] ++ xs ↭ ys ++ [ v ] ++ zs
-inject v ws↭ys xs↭zs = trans (++⁺ˡ _ (prep ≈-refl xs↭zs)) (++⁺ʳ _ ws↭ys)
+inject v ws↭ys xs↭zs = trans (++⁺ˡ _ (↭-prep _ xs↭zs)) (++⁺ʳ _ ws↭ys)
 
 shifts : ∀ xs ys {zs : List A} → xs ++ ys ++ zs ↭ ys ++ xs ++ zs
 shifts xs ys {zs} = begin

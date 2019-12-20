@@ -56,6 +56,18 @@ _↭_ = Homogeneous.Permutation _≈_
 ↭-setoid = Homogeneous.setoid {R = _≈_} Eq.refl Eq.sym
 
 ------------------------------------------------------------------------
+-- Aliases
+
+-- These provide aliases for `swap` and `prep` when the elements being
+-- swapped or prepended are propositionally equal
+
+↭-prep : ∀ x {xs ys} → xs ↭ ys → x ∷ xs ↭ x ∷ ys
+↭-prep x xs↭ys = prep Eq.refl xs↭ys
+
+↭-swap : ∀ x y {xs ys} → xs ↭ ys → x ∷ y ∷ xs ↭ y ∷ x ∷ ys
+↭-swap x y xs↭ys = swap Eq.refl Eq.refl xs↭ys
+
+------------------------------------------------------------------------
 -- A reasoning API to chain permutation proofs
 
 module PermutationReasoning where
@@ -72,12 +84,12 @@ module PermutationReasoning where
   -- Skip reasoning on the first element
   _∷_<⟨_⟩_ : ∀ x xs {ys zs : List A} → xs ↭ ys →
                (x ∷ ys) IsRelatedTo zs → (x ∷ xs) IsRelatedTo zs
-  x ∷ xs <⟨ xs↭ys ⟩ rel = relTo (trans (prep Eq.refl xs↭ys) (begin rel))
+  x ∷ xs <⟨ xs↭ys ⟩ rel = relTo (trans (↭-prep _ xs↭ys) (begin rel))
 
   -- Skip reasoning about the first two elements
   _∷_∷_<<⟨_⟩_ : ∀ x y xs {ys zs : List A} → xs ↭ ys →
                   (y ∷ x ∷ ys) IsRelatedTo zs → (x ∷ y ∷ xs) IsRelatedTo zs
-  x ∷ y ∷ xs <<⟨ xs↭ys ⟩ rel = relTo (trans (swap Eq.refl Eq.refl xs↭ys) (begin rel))
+  x ∷ y ∷ xs <<⟨ xs↭ys ⟩ rel = relTo (trans (↭-swap _ _ xs↭ys) (begin rel))
 
   _≋⟨_⟩_ : ∀ x {y z} → x ≋ y → y IsRelatedTo z → x IsRelatedTo z
   x ≋⟨ x≈y ⟩ (relTo y↔z) = relTo (trans (refl x≈y) y↔z)
