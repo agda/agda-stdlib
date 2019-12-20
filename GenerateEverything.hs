@@ -46,6 +46,8 @@ unsafeModules = map toAgdaFilePath
   , "IO.Primitive"
   , "Reflection"
   , "Relation.Binary.PropositionalEquality.TrustMe"
+  , "Text.Pretty.Core"
+  , "Text.Pretty"
   ] where
 
   toAgdaFilePath :: String -> FilePath
