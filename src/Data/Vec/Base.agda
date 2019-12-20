@@ -46,6 +46,9 @@ data _[_]=_ {A : Set a} : ∀ {n} → Vec A n → Fin n → A → Set a where
 ------------------------------------------------------------------------
 -- Basic operations
 
+length : ∀ {n} → Vec A n → ℕ
+length {n = n} _ = n
+
 head : ∀ {n} → Vec A (1 + n) → A
 head (x ∷ xs) = x
 

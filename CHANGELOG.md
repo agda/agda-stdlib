@@ -100,6 +100,7 @@ Other minor additions
 
 * Added new functions to `Data.Vec.Base`:
   ```
+  length    : Vec A n → ℕ
   transpose : Vec (Vec A n) m → Vec (Vec A m) n
   ```
 
@@ -113,7 +114,7 @@ Other minor additions
 
 * Added new functions to `Data.Vec.Bounded.Base`:
   ```agda
-  take : n → Vec≤ A m → Vec≤ A n
+  take : n → Vec≤ A m → Vec≤ A (n ⊓ m)
   drop : n → Vec≤ A m → Vec≤ A (m ∸ n)
 
   padLeft   : A → Vec≤ A n → Vec A n
