@@ -13,6 +13,7 @@ module Data.List.Relation.Binary.Permutation.Setoid
 
 open import Data.List using (List; _∷_)
 import Data.List.Relation.Binary.Permutation.Homogeneous as Homogeneous
+import Data.List.Relation.Binary.Pointwise as Pointwise
 open import Data.List.Relation.Binary.Equality.Setoid S
 open import Level using (_⊔_)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)
@@ -37,7 +38,7 @@ _↭_ = Homogeneous.Permutation _≈_
 -- _↭_ is an equivalence
 
 ↭-reflexive : _≡_ ⇒ _↭_
-↭-reflexive refl = refl
+↭-reflexive refl = refl (Pointwise.refl Eq.refl)
 
 ↭-refl : Reflexive _↭_
 ↭-refl = ↭-reflexive refl
@@ -49,10 +50,10 @@ _↭_ = Homogeneous.Permutation _≈_
 ↭-trans = trans
 
 ↭-isEquivalence : IsEquivalence _↭_
-↭-isEquivalence = Homogeneous.isEquivalence Eq.sym
+↭-isEquivalence = Homogeneous.isEquivalence Eq.refl Eq.sym
 
 ↭-setoid : Setoid _ _
-↭-setoid = Homogeneous.setoid {R = _≈_} Eq.sym
+↭-setoid = Homogeneous.setoid {R = _≈_} Eq.refl Eq.sym
 
 ------------------------------------------------------------------------
 -- A reasoning API to chain permutation proofs
