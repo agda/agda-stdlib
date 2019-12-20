@@ -70,7 +70,7 @@ Other minor additions
 
 * Added new proofs to `Data.String.Unsafe`:
   ```agda
-  toList-++        : toList (s ++ t) ≡ toList s List.++ toList t
+  toList-++        : toList (s ++ t) ≡ toList s ++ toList t
   length-++        : length (s ++ t) ≡ length s + length t
   length-replicate : length (replicate n c) ≡ n
   ```

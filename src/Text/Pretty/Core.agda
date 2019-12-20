@@ -55,7 +55,7 @@ All : ∀ {p} (P : String → Set p) → (Content → Set p)
 All P = Allᴹ.All (Allᴾ.All P (Allᵀ.All P))
 
 All≤ : ℕ → Content → Set
-All≤ n = All (λ s → String.length s ≤ n)
+All≤ n = All (λ s → length s ≤ n)
 
 record Block : Set where
   field
@@ -63,7 +63,7 @@ record Block : Set where
     block     : [ xs ∈ Content ∣ size xs ≡ height ]
   -- last line
     lastWidth : ℕ
-    last      : [ s ∈ String ∣ String.length s ≡ lastWidth ]
+    last      : [ s ∈ String ∣ length s ≡ lastWidth ]
   -- max of all the widths
     maxWidth  : [ n ∈ ℕ ∣ lastWidth ≤ n × All≤ n (block .value) ]
 
@@ -104,7 +104,7 @@ node? nothing         y ys = just (y , ys)
   step = flip ≤-trans m≤n
 
 All≤-node? : ∀ {l m r n} →
-  All≤ n l → String.length m ≤ n → Allᵀ.All (λ s → String.length s ≤ n) r →
+  All≤ n l → length m ≤ n → Allᵀ.All (λ s → length s ≤ n) r →
   All≤ n (node? l m r)
 All≤-node? nothing           py pys = just (py , pys)
 All≤-node? (just (px , pxs)) py pys = just (px , node pxs py pys)
@@ -138,7 +138,7 @@ private
     ... | 0 = nothing
     ... | l = just (replicate l ' ')
 
-    size-pad : maybe′ String.length 0 pad ≡ x.lastWidth
+    size-pad : maybe′ length 0 pad ≡ x.lastWidth
     size-pad with x.lastWidth
     ... | 0         = refl
     ... | l@(suc _) = length-replicate l
@@ -146,8 +146,8 @@ private
     indent : Maybe String → String → String
     indent = maybe′ _++_ id
 
-    size-indent : ∀ ma str → String.length (indent ma str)
-                ≡ maybe′ String.length 0 ma + String.length str
+    size-indent : ∀ ma str → length (indent ma str)
+                ≡ maybe′ length 0 ma + length str
     size-indent nothing    str = refl
     size-indent (just pad) str = length-++ pad str
 
@@ -205,9 +205,9 @@ private
     block .proof = ⦇ isBlock (Block.block x .proof) (Block.block y .proof) ⦈
       where open Erased
 
-    isLastLine : String.length lastx ≡ x.lastWidth →
-                 String.length lasty ≡ y.lastWidth →
-                 String.length vLast ≡ lastWidth
+    isLastLine : length lastx ≡ x.lastWidth →
+                 length lasty ≡ y.lastWidth →
+                 length vLast ≡ lastWidth
     isLastLine ∣x∣ ∣y∣ with blocky
     ... | nothing        = begin
       length (lastx ++ lasty)       ≡⟨ length-++ lastx lasty ⟩
@@ -218,7 +218,7 @@ private
       maybe′ length 0 pad + length lasty ≡⟨ cong₂ _+_ size-pad ∣y∣ ⟩
       x.lastWidth + y.lastWidth          ∎ where open ≡-Reasoning
 
-    last : [ s ∈ String ∣ String.length s ≡ lastWidth ]
+    last : [ s ∈ String ∣ length s ≡ lastWidth ]
     last .value = vLast
     last .proof = ⦇ isLastLine (Block.last x .proof) (Block.last y .proof) ⦈
       where open Erased
@@ -232,7 +232,7 @@ private
       x.lastWidth + widthy ≤⟨ n≤m⊔n _ _ ⟩
       vMaxWidth            ∎ where open ≤-Reasoning
 
-    isMaxWidth₂ : String.length lastx ≡ x.lastWidth →
+    isMaxWidth₂ : length lastx ≡ x.lastWidth →
                   x.lastWidth ≤ widthx →
                   All≤ widthx blockx →
                   All≤ widthy blocky →
@@ -247,7 +247,7 @@ private
                  $ Allᵀ.map⁺ (indent pad) (Allᵀ.map (indented _) ∣tl∣))
       where
 
-      middle : String.length (lastx ++ hd) ≤ vMaxWidth
+      middle : length (lastx ++ hd) ≤ vMaxWidth
       middle = begin
         length (lastx ++ hd)     ≡⟨ length-++ lastx hd ⟩
         length lastx + length hd ≡⟨ cong (_+ _) ∣x∣≡ ⟩
@@ -255,8 +255,8 @@ private
         x.lastWidth + widthy     ≤⟨ n≤m⊔n _ _ ⟩
         vMaxWidth                ∎ where open ≤-Reasoning
 
-      indented : ∀ s → String.length s ≤ widthy →
-                 String.length (indent pad s) ≤ vMaxWidth
+      indented : ∀ s → length s ≤ widthy →
+                 length (indent pad s) ≤ vMaxWidth
       indented s ∣s∣ = begin
         length (indent pad s)          ≡⟨ size-indent pad s ⟩
         maybe′ length 0 pad + length s ≡⟨ cong (_+ _) size-pad ⟩
@@ -291,11 +291,11 @@ private
     widthx  = x.maxWidth .value
     heightx = x.height
 
-    height    = suc (Block.height x)
+    height    = suc heightx
     lastWidth = 0
     vMaxWidth = widthx
 
-    last : [ s ∈ String ∣ String.length s ≡ lastWidth ]
+    last : [ s ∈ String ∣ length s ≡ lastWidth ]
     last = "" , ⦇ refl ⦈ where open Erased
 
     vContent = node? blockx lastx leaf
