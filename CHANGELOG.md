@@ -23,6 +23,20 @@ Non-backwards compatible changes
 Other major additions
 ---------------------
 
+* Added new modules:
+  ```agda
+  Data.Erased
+  Data.Product.Relation.Unary.All
+  Data.Refinement
+  Data.Refinement.Relation.Unary.All
+  Data.Tree.Binary
+  Data.Tree.Binary.Properties
+  Data.Tree.Binary.Relation.Unary.All
+
+  Text.Pretty.Core
+  Text.Pretty
+  ```
+
 Other minor additions
 ---------------------
 
@@ -53,6 +67,13 @@ Other minor additions
   x∈∁s⇒x∉s : x ∈ ∁ s → x ∉ s
   x∉∁s⇒x∈s : x ∉ ∁ s → x ∈ s
   x∉s⇒x∈∁s : x ∉ s → x ∈ ∁ s
+
+* Added new proofs to `Data.String.Unsafe`:
+  ```agda
+  toList-++        : toList (s ++ t) ≡ toList s List.++ toList t
+  length-++        : length (s ++ t) ≡ length s + length t
+  length-replicate : length (replicate n c) ≡ n
+  ```
 
 * Added a new proof to `Relation.Nullary.Decidable`:
   ```agda
