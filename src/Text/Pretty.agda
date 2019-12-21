@@ -91,12 +91,15 @@ xs <> ys = filter (Core.valid width) (Core._<>_ <$> xs ⊛ ys)
 flush : Doc → Doc
 flush = map Core.flush
 
+infixr 5 _<+>_
 _<+>_ : Doc → Doc → Doc
 x <+> y = x <> space <> y
 
+infixr 5 _$$_
 _$$_ : Doc → Doc → Doc
 x $$ y = flush x <> y
 
+infixr 4 _<|>_
 _<|>_ : Doc → Doc → Doc
 x <|> y = x ++ y
 
@@ -115,3 +118,15 @@ vcat = foldDoc _$$_
 sep : List Doc → Doc
 sep [] = empty
 sep xs = hsep xs <|> vcat xs
+
+------------------------------------------------------------------------
+-- Defined combinators
+
+parens : Doc → Doc
+parens d = lparen <> d <> rparen
+
+commaSep : List Doc → Doc
+commaSep = foldDoc (λ d e → d <> comma <+> e)
+
+newline : Doc
+newline = flush empty

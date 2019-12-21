@@ -294,6 +294,10 @@ import README.Inspect
 
 import README.Text
 
+-- Showcasing the pretty printing module
+
+import README.Text.Pretty
+
 ------------------------------------------------------------------------
 -- Core modules
 ------------------------------------------------------------------------

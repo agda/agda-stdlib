@@ -35,6 +35,7 @@ Other major additions
 
   Text.Pretty.Core
   Text.Pretty
+  README.Text.Pretty
   ```
 
 Other minor additions
