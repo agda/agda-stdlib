@@ -114,14 +114,3 @@ xy∙z≈yz∙x x y z =  trans (xy∙z≈y∙zx x y z) (sym (assoc y z x))
 
 xy∙z≈zx∙y :  ∀ x y z → (x ∙ y) ∙ z ≈ (z ∙ x) ∙ y
 xy∙z≈zx∙y x y z =  trans (xy∙z≈z∙xy x y z) (sym (assoc z x y))
-
-------------------------------------------------------------------------------
--- Some permutation laws for _∙_ for four factors.
-------------------------------------------------------------------------------
-
-xy∙zu≈xz∙yu :  ∀ x y z u → (x ∙ y) ∙ (z ∙ u) ≈ (x ∙ z) ∙ (y ∙ u)
-xy∙zu≈xz∙yu x y z u =  begin
-  (x ∙ y) ∙ (z ∙ u)   ≈⟨ assoc x y _ ⟩
-  x ∙ (y ∙ (z ∙ u))   ≈⟨ ∙-congˡ (x∙yz≈y∙xz y z u) ⟩
-  x ∙ (z ∙ (y ∙ u))   ≈⟨ sym (assoc x z _) ⟩
-  (x ∙ z) ∙ (y ∙ u)   ∎

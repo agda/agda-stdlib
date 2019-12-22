@@ -660,8 +660,8 @@ private
   { isSemigroup = +-isSemigroup
   }
 
-+-commSemigroup : CommutativeSemigroup 0ℓ 0ℓ
-+-commSemigroup = record
++-commutativeSemigroup : CommutativeSemigroup 0ℓ 0ℓ
++-commutativeSemigroup = record
   { isCommutativeSemigroup = +-isCommutativeSemigroup
   }
 
@@ -675,7 +675,7 @@ private
   { isCommutativeMonoid = +-0-isCommutativeMonoid
   }
 
-open import Algebra.Properties.CommutativeSemigroup +-commSemigroup
+open import Algebra.Properties.CommutativeSemigroup +-commutativeSemigroup
 
 ------------------------------------------------------------------------------
 -- Properties of _+_ and _≤_

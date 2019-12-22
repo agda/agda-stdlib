@@ -16,10 +16,11 @@ open import Data.Fin using (Fin) renaming (zero to fzero; suc to fsuc)
 open import Data.List.Base as List using
   ( List; []; _∷_; [_]; _∷ʳ_; fromMaybe; null; _++_; concat; map; mapMaybe
   ; inits; tails; drop; take; applyUpTo; applyDownFrom; replicate; tabulate
-  ; filter; zipWith; all
+  ; filter; zipWith; all; reverse
   )
 open import Data.List.Membership.Propositional
 open import Data.List.Membership.Propositional.Properties
+open import Data.List.Properties using (unfold-reverse)
 open import Data.List.Relation.Unary.All as All using
   ( All; []; _∷_; lookup; updateAt
   ; _[_]=_; here; there
@@ -42,7 +43,7 @@ open import Function.Surjection using (_↠_; surjection)
 open import Level using (Level)
 open import Relation.Binary using (REL; Setoid; _Respects_)
 open import Relation.Binary.PropositionalEquality
-  using (_≡_; refl; cong; cong₂; _≗_)
+  using (_≡_; refl; sym; cong; cong₂; _≗_; subst)
 open import Relation.Nullary
 open import Relation.Unary
   using (Decidable; Pred; Universal) renaming (_⊆_ to _⋐_)
@@ -399,6 +400,14 @@ module _ {P : A → Set p} where
               ++⁻ xs (uncurry ++⁺ p) ≡ p
     ++⁻∘++⁺ ([]       , pys) = refl
     ++⁻∘++⁺ (px ∷ pxs , pys) rewrite ++⁻∘++⁺ (pxs , pys) = refl
+
+  all-reverse : ∀ {xs} → All P xs → All P (reverse xs)
+  all-reverse {[]}      _          =  []
+  all-reverse {x ∷ xs} (Px ∷ P-xs) =  subst (All P) [rev-xs]:x≡rev-xxs P-[rev-xs]:x
+    where
+    P-rev-xs           = all-reverse P-xs
+    P-[rev-xs]:x       = ++⁺ P-rev-xs (Px ∷ [])
+    [rev-xs]:x≡rev-xxs = sym (unfold-reverse x xs)
 
 ------------------------------------------------------------------------
 -- concat

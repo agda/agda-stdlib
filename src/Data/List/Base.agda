@@ -268,6 +268,13 @@ dropWhile P? (x ∷ xs) with P? x
 ... | yes _ = dropWhile P? xs
 ... | no  _ = x ∷ xs
 
+-- delete the first x such that P x
+delete : ∀ {P : Pred A p} → Decidable P → List A → List A
+delete _  []        =  []
+delete P? (x ∷ xs)  with P? x
+... | yes _ =  xs
+... | no _  =  x ∷ (delete P? xs)
+
 filter : ∀ {P : Pred A p} → Decidable P → List A → List A
 filter P? [] = []
 filter P? (x ∷ xs) with P? x

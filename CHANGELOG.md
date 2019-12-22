@@ -131,10 +131,11 @@ updated to use the new hierarchy:
 
 ### Re-implementation of `Data.Bin`
 
-* The current implementation of naturals represented natively in Agda in `Data.Bin`
-  has proven hard to work with. Therefore a new, simpler implementation which avoids
-  using `List` has been added as `Data.Nat.Binary`. This representation was inspired
-  by the letter by Martin Escardo to the Agda mailing list. The original code resides at
+* The current implementation of binary naturals in Agda has not enough functionality
+  and has proven hard to work with. Therefore a new, simpler implementation which is
+  based on a different representation for binary numbers has been added as
+  Data.Nat.Binary. This representation was inspired by the letter by Martin Escardo
+  to the Agda mailing list. The original code resides at
   http://www.cs.bham.ac.uk/~mhe/agda-new/BinaryNaturals.html
 
 * The existing modules `Data.Bin` and `Data.Bin.Properties` still exist but have been
@@ -397,11 +398,18 @@ Other minor additions
   which is `reverseAcc` with the intuitive argument order.
   Generalized the properties of `reverse` to `_ʳ++_`.
 
+  Added the function 'delete' -- delete the first x such that P x
+
 * Added new definitions to `Data.List.Relation.Unary.All`:
   ```agda
   Null = All (λ _ → ⊥)
   ```
+* Added a proof to `Data.List.Relation.Unary.All.Properties`:
+  all-reverse : ∀ {xs} → All P xs → All P (reverse xs)
 
+* Added a function to `Data.List.Relation.Unary.Any`:
+  search : Decidable P → (xs : List A) → (∃ (\x → P x)) ⊎ (¬ Any P xs)
+	
 * Generalized type of `Data.List.Relation.Binary.Sublist.Heterogeneous.toAny` to
   `Sublist R (a ∷ as) bs → Any (R a) bs`.
 
@@ -465,7 +473,8 @@ Other minor additions
   m≤n⇒m<n∨m≡n    : m ≤ n → m < n ⊎ m ≡ n
   ∀[m≤n⇒m≢o]⇒o<n : (∀ {m} → m ≤ n → m ≢ o) → n < o
   ∀[m<n⇒m≢o]⇒o≤n : (∀ {m} → m < n → m ≢ o) → n ≤ o
-
+  pred-n≤n         : ∀ {n} → pred n ≤ n
+	 
   +-rawMagma     : RawMagma 0ℓ 0ℓ
   *-rawMagma     : RawMagma 0ℓ 0ℓ
   +-0-rawMonoid  : RawMonoid 0ℓ 0ℓ

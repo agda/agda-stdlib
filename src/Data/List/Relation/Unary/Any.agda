@@ -100,3 +100,9 @@ module _ {P : Pred A p} where
 
   satisfiable : Satisfiable P → Satisfiable (Any P)
   satisfiable (x , Px) = [ x ] , here Px
+
+  search : Decidable P → (xs : List A) → (∃ (\x → P x)) ⊎ (¬ Any P xs)
+  search P? xs  with any P? xs
+  ... | yes anyP-xs =  inj₁ (satisfied anyP-xs)
+  ... | no ¬anyP-xs =  inj₂ ¬anyP-xs
+

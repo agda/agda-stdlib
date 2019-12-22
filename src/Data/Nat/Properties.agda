@@ -429,6 +429,9 @@ pred-mono (s≤s le) = le
 <⇒≤pred : ∀ {m n} → m < n → m ≤ pred n
 <⇒≤pred (s≤s le) = le
 
+pred-n≤n : ∀ {n} → pred n ≤ n
+pred-n≤n = ≤⇒pred≤ ≤-refl
+
 suc[pred[n]]≡n : ∀ {n} → n ≢ 0 → suc (pred n) ≡ n
 suc[pred[n]]≡n {zero}  n≢0 = contradiction refl n≢0
 suc[pred[n]]≡n {suc n} n≢0 = refl
