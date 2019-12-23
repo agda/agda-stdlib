@@ -31,17 +31,19 @@ open String
         ) public
 
 record TabularLine : Set where
-  field left  : Maybe String
-        cont  : Maybe Char
-        sep   : String
-        right : Maybe String
+  field
+    left  : Maybe String
+    cont  : Maybe Char
+    sep   : String
+    right : Maybe String
 open TabularLine
 
 record TabularConfig : Set where
-  field top : Maybe TabularLine
-        sep : Maybe TabularLine
-        row : TabularLine
-        bot : Maybe TabularLine
+  field
+    top : Maybe TabularLine
+    sep : Maybe TabularLine
+    row : TabularLine
+    bot : Maybe TabularLine
 open TabularConfig
 
 unicode : TabularConfig
