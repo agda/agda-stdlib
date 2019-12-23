@@ -26,6 +26,13 @@ Other major additions
 Other minor additions
 ---------------------
 
+* Added new proofs to `Induction.WellFounded`:
+  ```agda
+  some-wfRec-irrelevant : Some.wfRec P f x q ≡ Some.wfRec P f x q'
+  wfRecBuilder-wfRec    : All.wfRecBuilder P f x y y<x ≡ All.wfRec P f y
+  unfold-wfRec          : All.wfRec P f x ≡ f x λ y _ → All.wfRec P f y
+  ```
+
 * Added new proofs to `Algebra.Properties.Group`:
   ```agda
   ⁻¹-injective   : x ⁻¹ ≈ y ⁻¹ → x ≈ y
