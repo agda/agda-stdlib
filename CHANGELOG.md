@@ -104,14 +104,6 @@ Other minor additions
   transpose : Vec (Vec A n) m → Vec (Vec A m) n
   ```
 
-* Added new functions to `Data.Vec`:
-  ```
-  rectangle  : ∀[ Vec≤ A ⇒ Vec A ] → List (∃ (Vec A)) → ∃ (List ∘ Vec A)
-  rectangleˡ : A → List (∃ (Vec A)) → ∃ (List ∘ Vec A)
-  rectangleʳ : A → List (∃ (Vec A)) → ∃ (List ∘ Vec A)
-  rectangleᶜ : A → A → List (∃ (Vec A)) → ∃ (List ∘ Vec A)
-  ```
-
 * Added new functions to `Data.Vec.Bounded.Base`:
   ```agda
   take : n → Vec≤ A m → Vec≤ A (n ⊓ m)
