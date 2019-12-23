@@ -30,10 +30,10 @@ ex₂ = refl
 -- Data.Nat.Properties contains a number of properties about natural
 -- numbers.
 
-import Data.Nat.Properties as Nat using (*-comm; +-identityʳ)
+open import Data.Nat.Properties using (*-comm; +-identityʳ)
 
 ex₃ : ∀ m n → m * n ≡ n * m
-ex₃ m n = Nat.*-comm m n
+ex₃ m n = *-comm m n
 
 -- The module ≡-Reasoning in Relation.Binary.PropositionalEquality
 -- provides some combinators for equational reasoning.
@@ -43,8 +43,8 @@ open ≡-Reasoning using (begin_; _≡⟨_⟩_; _∎)
 
 ex₄ : ∀ m n → m * (n + 0) ≡ n * m
 ex₄ m n = begin
-  m * (n + 0)  ≡⟨ cong (_*_ m) (Nat.+-identityʳ n) ⟩
-  m * n        ≡⟨ Nat.*-comm m n ⟩
+  m * (n + 0)  ≡⟨ cong (_*_ m) (+-identityʳ n) ⟩
+  m * n        ≡⟨ *-comm m n ⟩
   n * m        ∎
 
 -- The module SemiringSolver in Data.Nat.Solver contains a solver
