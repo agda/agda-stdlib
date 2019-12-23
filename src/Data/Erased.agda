@@ -21,10 +21,16 @@ private
     B : Set b
     C : Set c
 
+------------------------------------------------------------------------
+-- Type
+
 record Erased (A : Set a) : Set a where
   constructor [_]
   field .erased : A
 open Erased public
+
+------------------------------------------------------------------------
+-- Algebraic structure: Functor, Appplicative and Monad-like
 
 map : (A → B) → Erased A → Erased B
 map f [ a ] = [ f a ]
@@ -39,6 +45,9 @@ _<*>_ : Erased (A → B) → Erased A → Erased B
 infixl 1 _>>=_
 _>>=_ : Erased A → (.A → Erased B) → Erased B
 [ a ] >>= f = f a
+
+------------------------------------------------------------------------
+-- Other functions
 
 zipWith : (A → B → C) → Erased A → Erased B → Erased C
 zipWith f a b = ⦇ f a b ⦈
