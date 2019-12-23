@@ -336,7 +336,7 @@ flush x = record { flush x }
 
 render : Block → String
 render x = unlines
-  $ maybe′ (uncurry (λ hd tl → hd ∷ Tree.toList tl)) []
+  $ maybe′ (uncurry (λ hd tl → hd ∷ Tree.Infix.toList tl)) []
   $ node? (Block.block x .value) (Block.last x .value) leaf
 
 valid : (width : ℕ) (b : Block) → Dec (Block.maxWidth b .value ≤ width)
