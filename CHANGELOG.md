@@ -52,6 +52,11 @@ Other minor additions
   not-injective : not x ≡ not y → x ≡ y
   ```
 
+* Added new function to `Data.Difference.List`:
+  ```agda
+  _∷ʳ_ : DiffList A → A → DiffList A
+  ```
+
 * Added new properties to `Data.Fin.Subset`:
   ```agda
   _⊂_ : Subset n → Subset n → Set
