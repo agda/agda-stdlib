@@ -54,6 +54,13 @@ Other minor additions
   x∉∁s⇒x∈s : x ∉ ∁ s → x ∈ s
   x∉s⇒x∈∁s : x ∉ s → x ∈ ∁ s
 
+* Added new proofs to `Data.Integer.Properties`, useful to migrate to 1.1's new `_<_`.
+
+  ```agda
+  m+1≤n⇒m<n : sucℤ m ≤ n → m < n
+  m<n⇒m+1≤n : m < n → sucℤ m ≤ n
+  ```
+
 * Added a new proof to `Relation.Nullary.Decidable`:
   ```agda
   isYes≗does : (P? : Dec P) → isYes P? ≡ does P?
