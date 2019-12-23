@@ -45,8 +45,8 @@ module Prefix where
   toDiffList : Tree A → DiffList A
   toDiffList = foldr (λ l m r → m ∷ l ++ r) []
 
-  depthFirst : Tree A → List A
-  depthFirst = DiffList.toList ∘′ toDiffList
+  toList : Tree A → List A
+  toList = DiffList.toList ∘′ toDiffList
 
 module Infix where
 
@@ -61,5 +61,5 @@ module Suffix where
   toDiffList : Tree A → DiffList A
   toDiffList = foldr (λ l m r → l ++ r ∷ʳ m) []
 
-  depthFirst : Tree A → List A
-  depthFirst = DiffList.toList ∘′ toDiffList
+  toList : Tree A → List A
+  toList = DiffList.toList ∘′ toDiffList
