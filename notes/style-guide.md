@@ -4,9 +4,8 @@ Style guide for the standard library
 This is very much a work-in-progress and is not exhaustive.
 
 ## File structure
-Agda programs are structured in modules. The first module in each file of the library is the top-level module whose name always matches the filename.
 
-#### Module import guidelines
+#### Module imports
 
 * All module imports should be placed at the top of the file immediately
   after the module declaration.
@@ -16,7 +15,8 @@ Agda programs are structured in modules. The first module in each file of the li
 
 * If it is important that certain names only come into scope later in
   the file then the module should still be imported at the top of the
-  file but it can be given a shorter name using the keyword `as` and then opened later on in the file when needed, e.g.
+  file but it can be given a shorter name using the keyword `as` and then
+  opened later on in the file when needed, e.g.
   ```agda
   import Data.List.Relation.Binary.Equality.Setoid as SetoidEquality
   ...
@@ -24,24 +24,27 @@ Agda programs are structured in modules. The first module in each file of the li
   open SetoidEquality S
   ```
 
-* Changing the naming of an imported item is performed with the `renaming` directive, e.g.
-```agda
-open import Agda.Builtin.Nat public
-  using (zero; suc) renaming (Nat to ℕ)
-```
+* Changing the naming of an imported item is performed with the [renaming](https://agda.readthedocs.io/en/latest/language/module-system.html#name-modifiers)
+  directive, e.g.
+  ```agda
+  open import Agda.Builtin.Nat public
+    using (zero; suc) renaming (Nat to ℕ)
+  ```
 
 * The list of module imports should be declared in alphabetical order.
 
-* When using only a few items from a module, it is a good practice to enumerate the items that will be used by declaring the import statement with the directive `using`. This makes the dependencies clearer, e.g.
-```agda
-open import Data.Nat.Properties public
-  using
-  ( _≟_
-  ; _≤?_ ; _≥?_ ; _<?_ ; _>?_
-  ; _≤′?_; _≥′?_; _<′?_; _>′?_
-  ; _≤″?_; _<″?_; _≥″?_; _>″?_
-  )
-```
+* When using only a few items from a module, it is a good practice to
+  enumerate the items that will be used by declaring the import statement
+  with the directive `using`. This makes the dependencies clearer, e.g.
+  ```agda
+  open import Data.Nat.Properties public
+    using
+    ( _≟_
+    ; _≤?_ ; _≥?_ ; _<?_ ; _>?_
+    ; _≤′?_; _≥′?_; _<′?_; _>′?_
+    ; _≤″?_; _<″?_; _≥″?_; _>″?_
+    )
+  ```
 
 #### Indentation
 
@@ -63,7 +66,7 @@ open import Data.Nat.Properties public
   ```
 
 * As can be seen in the example above, function arrows at line breaks
-  should  always go at the end of the line rather than the beginning of the
+  should always go at the end of the line rather than the beginning of the
   next line.
 
 #### Module parameters
@@ -89,7 +92,8 @@ open import Data.Nat.Properties public
 
 * The `begin` clause should go on the same line as the rest of the proof.
 
-* Every subsequent combinator `_≡⟨_⟩_` should be placed on an additional line of code, indented by two spaces.
+* Every subsequent combinator `_≡⟨_⟩_` should be placed on an additional
+line of code, indented by two spaces.
 
 * The relation sign (e.g. `≡`) for each line should be aligned if possible.
 
@@ -175,14 +179,17 @@ open import Data.Nat.Properties public
 
 #### Implicit and explicit arguments
 
-* Function's arguments should be implicit if they can "almost always"
+* Function arguments should be implicit if they can "almost always"
   be inferred. If there are common cases where they cannot be inferred
   then they should be left explicit.
 
 * If there are lots of implicit arguments that are common to a collection
   of proofs they should be extracted by using an anonymous module.
 
-* Implicit of type `Level` and `Set` can be generalized using the keyword `variable`. At the moment the policy is *not* to generalize over any other types to minimize the amount of information that users have to keep in their head concurrently.
+* Implicit of type `Level` and `Set` can be generalized using the keyword
+`variable`. At the moment the policy is *not* to generalize over any other
+types to minimize the amount of information that users have to keep in
+their head concurrently.
 
 ## Naming conventions
 
@@ -193,9 +200,11 @@ open import Data.Nat.Properties public
 * Terms from other modules should only be renamed to avoid name clashes,
   otherwise, all names should be used as defined.
 
-* Datatype names should be capitalized, being its first letter in uppercase and the remaining letters in lowercase.
+* Datatype names should be capitalized, being its first letter in uppercase
+and the remaining letters in lowercase.
 
-* Function names should be not capitalized, being all letters in lowercase.
+* Function names should follow the camelCase naming convention, in which each
+word within a compound word is capitalized except for the first word.
 
 #### Variables
 
@@ -229,14 +238,16 @@ open import Data.Nat.Properties public
 
 #### Operators and relations
 
-* Operators and relations should be defined using mixfix notation where
-  applicable (e.g. `_+_`, `_<_`). In a name containing one or more `_`, each underscore can be interpreted as the place where each argument goes.
+* Operators and relations should be defined using [mixfix](https://agda.readthedocs.io/en/latest/language/mixfix-operators.html) notation where
+  applicable (e.g. `_+_`, `_<_`)
 
 * Common properties such as those in rings/orders/equivalences etc.
   have defined abbreviations (e.g. commutativity is shortened to `comm`).
   `Data.Nat.Properties` is a good place to look for examples.
 
-* Properties should be prefixed by the relevant operator/relation and separated from its name by a hyphen `-` (e.g. commutativity of `_+_` results in a compositional name `+-comm` composed by `+` which denotes the sum operation over the natural numbers, `-` which is the separator of the different sub-names, and `comm` which denotes the commutative property of sum)
+* Properties should be prefixed by the relevant operator/relation and
+  separated from its name by a hyphen `-` (e.g. commutativity of sum
+  results in a compositional name `+-comm` where `-` acts as a separator).
 
 * If the relevant Unicode characters are available, negated forms of
   relations should be used over the `¬` symbol (e.g. `m+n≮n` should be
