@@ -22,6 +22,7 @@ import Data.Product.Relation.Unary.All as Allᴾ
 
 open import Data.Tree.Binary as Tree using (Tree; leaf; node)
 open import Data.Tree.Binary.Relation.Unary.All as Allᵀ using (leaf; node)
+import Data.Tree.Binary.Relation.Unary.All.Properties as Allᵀₚ
 import Data.Tree.Binary.Properties as Treeₚ
 
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; maybe′)
@@ -244,7 +245,7 @@ private
       All≤-node? (≤-Content (m≤m⊔n _ _) ∣xs∣)
                  middle
                  (subst (Allᵀ.All _) (sym $ unfold-indents pad tl)
-                 $ Allᵀ.map⁺ (indent pad) (Allᵀ.map (indented _) ∣tl∣))
+                 $ Allᵀₚ.map⁺ (indent pad) (Allᵀ.map (indented _) ∣tl∣))
       where
 
       middle : length (lastx ++ hd) ≤ vMaxWidth

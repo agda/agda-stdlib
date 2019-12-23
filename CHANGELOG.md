@@ -32,6 +32,7 @@ Other major additions
   Data.Tree.Binary
   Data.Tree.Binary.Properties
   Data.Tree.Binary.Relation.Unary.All
+  Data.Tree.Binary.Relation.Unary.All.Properties
 
   Text.Pretty.Core
   Text.Pretty

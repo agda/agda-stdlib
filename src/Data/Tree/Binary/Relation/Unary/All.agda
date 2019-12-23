@@ -27,9 +27,3 @@ module _ {P : A → Set p} {Q : A → Set q} where
   map : ∀[ P ⇒ Q ] → ∀[ All P ⇒ All Q ]
   map f leaf         = leaf
   map f (node l m r) = node (map f l) (f m) (map f r)
-
-module _ {P : B → Set p} where
-
-  map⁺ : (f : A → B) → ∀[ All (f ⊢ P) ⇒ Tree.map f ⊢ All P ]
-  map⁺ f leaf         = leaf
-  map⁺ f (node l m r) = node (map⁺ f l) m (map⁺ f r)
