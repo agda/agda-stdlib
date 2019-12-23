@@ -99,14 +99,16 @@ node? nothing         y ys = just (y , ys)
 ∣node?∣ nothing         y ys = refl
 
 ≤-Content : ∀ {m n} {b : Content} → m ≤ n → All≤ m b → All≤ n b
-≤-Content {m} {n} m≤n = Allᴹ.map (Prod.map step (Allᵀ.map step)) where
+≤-Content {m} {n} m≤n = Allᴹ.map (Prod.map step (Allᵀ.map step))
+
+  where
 
   step : ∀ {p} → p ≤ m → p ≤ n
   step = flip ≤-trans m≤n
 
 All≤-node? : ∀ {l m r n} →
-  All≤ n l → length m ≤ n → Allᵀ.All (λ s → length s ≤ n) r →
-  All≤ n (node? l m r)
+             All≤ n l → length m ≤ n → Allᵀ.All (λ s → length s ≤ n) r →
+             All≤ n (node? l m r)
 All≤-node? nothing           py pys = just (py , pys)
 All≤-node? (just (px , pxs)) py pys = just (px , node pxs py pys)
 
