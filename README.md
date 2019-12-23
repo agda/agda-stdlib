@@ -69,4 +69,5 @@ for a full list of modules that use axiom K.
 If you would like to suggest improvements, feel free to use the `Issues` tab.
 Even better if you would like to make the improvements yourself, we have instructions
 in [HACKING](https://github.com/agda/agda-stdlib/blob/master/HACKING.md) to help
-you get started.
+you get started. For those who would simply like to help out, issues marked with
+the [status:low-hanging-fruit](https://github.com/agda/agda-stdlib/issues?q=is%3Aopen+is%3Aissue+label%3A%22status%3A+low-hanging-fruit%22) tag are a good starting point.
