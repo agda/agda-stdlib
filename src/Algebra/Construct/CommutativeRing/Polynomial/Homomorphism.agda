@@ -6,8 +6,8 @@ open import Algebra.Construct.CommutativeRing.Polynomial.Parameters
 -- defined on polynomials and those on the underlying ring.
 
 module Algebra.Construct.CommutativeRing.Polynomial.Homomorphism
-  {r₁ r₂ r₃}
-  (homo : Homomorphism r₁ r₂ r₃)
+  {r₁ r₂ r₃ r₄}
+  (homo : Homomorphism r₁ r₂ r₃ r₄)
   where
 
 -- The lemmas are the general-purpose proofs we reuse in each other section

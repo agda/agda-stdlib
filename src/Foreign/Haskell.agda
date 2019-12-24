@@ -20,6 +20,15 @@ open import Foreign.Haskell.Pair public
   )
 
 ------------------------------------------------------------------------
+-- Sums
+
+open import Foreign.Haskell.Either public
+  renaming
+  ( toForeign   to toForeignEither
+  ; fromForeign to fromForeignEither
+  )
+
+------------------------------------------------------------------------
 -- Maybe
 
 open import Foreign.Haskell.Maybe public

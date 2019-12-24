@@ -22,7 +22,7 @@ data Expr  {ℓ} (A : Set ℓ) (n : ℕ) : Set ℓ where
   ⊝_  : Expr A n → Expr A n            -- Negation
 
 
-module Eval {ℓ₁ ℓ₂} (rawRing : RawRing ℓ₁) {A : Set ℓ₂} (⟦_⟧ᵣ : A → RawRing.Carrier rawRing) where
+module Eval {a ℓ₁ ℓ₂} (rawRing : RawRing ℓ₁ ℓ₂) {A : Set a} (⟦_⟧ᵣ : A → RawRing.Carrier rawRing) where
   open RawRing rawRing
   open import Algebra.Operations.Ring.Compact rawRing
 

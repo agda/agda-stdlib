@@ -9,7 +9,7 @@
 module Relation.Nullary.Decidable where
 
 open import Level using (Level)
-open import Function.Core
+open import Function.Base
 open import Function.Equality    using (_⟨$⟩_; module Π)
 open import Function.Equivalence using (_⇔_; equivalence; module Equivalence)
 open import Function.Injection   using (Injection; module Injection)
@@ -31,15 +31,14 @@ open import Relation.Nullary.Decidable.Core public
 -- Maps
 
 map : P ⇔ Q → Dec P → Dec Q
-map P⇔Q (yes p) = yes (Equivalence.to P⇔Q ⟨$⟩ p)
-map P⇔Q (no ¬p) = no (¬p ∘ _⟨$⟩_ (Equivalence.from P⇔Q))
+map P⇔Q = map′ (to ⟨$⟩_) (from ⟨$⟩_)
+  where open Equivalence P⇔Q
 
-map′ : (P → Q) → (Q → P) → Dec P → Dec Q
-map′ P→Q Q→P = map (equivalence P→Q Q→P)
+module _ {a₁ a₂ b₁ b₂} {A : Setoid a₁ a₂} {B : Setoid b₁ b₂}
+         (inj : Injection A B)
+  where
 
-module _ {a₁ a₂ b₁ b₂} {A : Setoid a₁ a₂} {B : Setoid b₁ b₂} where
-
-  open Injection
+  open Injection inj
   open Setoid A using () renaming (_≈_ to _≈A_)
   open Setoid B using () renaming (_≈_ to _≈B_)
 
@@ -47,7 +46,6 @@ module _ {a₁ a₂ b₁ b₂} {A : Setoid a₁ a₂} {B : Setoid b₁ b₂} whe
   -- latter's equivalence relation is decidable, then the former's
   -- equivalence relation is also decidable.
 
-  via-injection : Injection A B → Decidable _≈B_ → Decidable _≈A_
-  via-injection inj dec x y with dec (to inj ⟨$⟩ x) (to inj ⟨$⟩ y)
-  ... | yes injx≈injy = yes (Injection.injective inj injx≈injy)
-  ... | no  injx≉injy = no (λ x≈y → injx≉injy (Π.cong (to inj) x≈y))
+  via-injection : Decidable _≈B_ → Decidable _≈A_
+  via-injection dec x y =
+    map′ injective (Π.cong to) (dec (to ⟨$⟩ x) (to ⟨$⟩ y))

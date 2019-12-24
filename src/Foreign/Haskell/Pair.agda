@@ -27,7 +27,7 @@ record Pair (A : Set a) (B : Set b) : Set (a ⊔ b) where
 open Pair public
 
 {-# FOREIGN GHC type AgdaPair l1 l2 a b = (a , b) #-}
-{-# COMPILE GHC Pair = data MAlonzo.Code.Foreign.Haskell.AgdaPair ((,)) #-}
+{-# COMPILE GHC Pair = data MAlonzo.Code.Foreign.Haskell.Pair.AgdaPair ((,)) #-}
 
 ------------------------------------------------------------------------
 -- Conversion

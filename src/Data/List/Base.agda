@@ -4,6 +4,9 @@
 -- Lists, basic types and operations
 ------------------------------------------------------------------------
 
+-- See README.Data.List for examples of how to use and reason about
+-- lists.
+
 {-# OPTIONS --without-K --safe #-}
 
 module Data.List.Base where
@@ -18,7 +21,7 @@ open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
 open import Data.These.Base as These using (These; this; that; these)
 open import Function using (id; _∘_ ; _∘′_; const; flip)
 open import Level using (Level)
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary using (does)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Unary.Properties using (∁?)
 
@@ -263,33 +266,33 @@ splitAt (suc n) (x ∷ xs) with splitAt n xs
 
 takeWhile : ∀ {P : Pred A p} → Decidable P → List A → List A
 takeWhile P? []       = []
-takeWhile P? (x ∷ xs) with P? x
-... | yes _ = x ∷ takeWhile P? xs
-... | no  _ = []
+takeWhile P? (x ∷ xs) with does (P? x)
+... | true  = x ∷ takeWhile P? xs
+... | false = []
 
 dropWhile : ∀ {P : Pred A p} → Decidable P → List A → List A
 dropWhile P? []       = []
-dropWhile P? (x ∷ xs) with P? x
-... | yes _ = dropWhile P? xs
-... | no  _ = x ∷ xs
+dropWhile P? (x ∷ xs) with does (P? x)
+... | true  = dropWhile P? xs
+... | false = x ∷ xs
 
 filter : ∀ {P : Pred A p} → Decidable P → List A → List A
 filter P? [] = []
-filter P? (x ∷ xs) with P? x
-... | no  _ = filter P? xs
-... | yes _ = x ∷ filter P? xs
+filter P? (x ∷ xs) with does (P? x)
+... | false = filter P? xs
+... | true  = x ∷ filter P? xs
 
 partition : ∀ {P : Pred A p} → Decidable P → List A → (List A × List A)
 partition P? []       = ([] , [])
-partition P? (x ∷ xs) with P? x | partition P? xs
-... | yes _ | (ys , zs) = (x ∷ ys , zs)
-... | no  _ | (ys , zs) = (ys , x ∷ zs)
+partition P? (x ∷ xs) with does (P? x) | partition P? xs
+... | true  | (ys , zs) = (x ∷ ys , zs)
+... | false | (ys , zs) = (ys , x ∷ zs)
 
 span : ∀ {P : Pred A p} → Decidable P → List A → (List A × List A)
 span P? []       = ([] , [])
-span P? (x ∷ xs) with P? x
-... | yes _ = Prod.map (x ∷_) id (span P? xs)
-... | no  _ = ([] , x ∷ xs)
+span P? (x ∷ xs) with does (P? x)
+... | true  = Prod.map (x ∷_) id (span P? xs)
+... | false = ([] , x ∷ xs)
 
 break : ∀ {P : Pred A p} → Decidable P → List A → (List A × List A)
 break P? = span (∁? P?)
@@ -318,6 +321,13 @@ reverseAcc = foldl (flip _∷_)
 
 reverse : List A → List A
 reverse = reverseAcc []
+
+-- "Reverse append" xs ʳ++ ys = reverse xs ++ ys
+
+infixr 5 _ʳ++_
+
+_ʳ++_ : List A → List A → List A
+_ʳ++_ = flip reverseAcc
 
 -- Snoc.
 

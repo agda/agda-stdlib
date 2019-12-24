@@ -8,30 +8,33 @@
 
 module Data.Fin.Subset.Properties where
 
-open import Algebra
-import Algebra.FunctionProperties as AlgebraicProperties
+import Algebra.Definitions as AlgebraicDefinitions
 import Algebra.Structures as AlgebraicStructures
+open import Algebra.Bundles
 import Algebra.Properties.Lattice as L
 import Algebra.Properties.DistributiveLattice as DL
 import Algebra.Properties.BooleanAlgebra as BA
+open import Data.Bool using (not)
 open import Data.Bool.Properties
 open import Data.Fin using (Fin; suc; zero)
 open import Data.Fin.Subset
 open import Data.Fin.Properties using (any?; decFinSubset)
-open import Data.Nat.Base using (ℕ; zero; suc; z≤n; s≤s; _≤_)
+open import Data.Nat.Base using (ℕ; zero; suc; z≤n; s≤s; _≤_; _<_)
 open import Data.Nat.Properties using (≤-step)
-open import Data.Product as Product using (∃; ∄; _×_; _,_)
-open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
+open import Data.Product as Product using (∃; ∄; _×_; _,_; proj₁)
+open import Data.Sum as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Vec
 open import Data.Vec.Properties
-open import Function.Core using (_∘_; const; id; case_of_)
+open import Function.Base using (_∘_; const; id; case_of_)
 open import Function.Equivalence using (_⇔_; equivalence)
 open import Relation.Binary as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality
-  using (_≡_; refl; cong; cong₂; subst; isEquivalence)
-open import Relation.Nullary.Negation using (contradiction)
+  using (_≡_; refl; cong; cong₂; subst; sym; isEquivalence; inspect; [_])
 open import Relation.Nullary using (Dec; yes; no)
-open import Relation.Unary using (Pred; Decidable)
+import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Sum using (_⊎-dec_)
+open import Relation.Unary using (Pred; Decidable; Satisfiable)
 
 ------------------------------------------------------------------------
 -- Constructor mangling
@@ -39,8 +42,52 @@ open import Relation.Unary using (Pred; Decidable)
 drop-there : ∀ {s n x} {p : Subset n} → suc x ∈ s ∷ p → x ∈ p
 drop-there (there x∈p) = x∈p
 
+drop-not-there : ∀ {s n x} {p : Subset n} → suc x ∉ s ∷ p → x ∉ p
+drop-not-there x∉sp x∈p = contradiction (there x∈p) x∉sp
+
 drop-∷-⊆ : ∀ {n s₁ s₂} {p₁ p₂ : Subset n} → s₁ ∷ p₁ ⊆ s₂ ∷ p₂ → p₁ ⊆ p₂
 drop-∷-⊆ p₁s₁⊆p₂s₂ x∈p₁ = drop-there (p₁s₁⊆p₂s₂ (there x∈p₁))
+
+drop-∷-⊂ : ∀ {n s} {p₁ p₂ : Subset n} → s ∷ p₁ ⊂ s ∷ p₂ → p₁ ⊂ p₂
+drop-∷-⊂ {s = inside} (_       , zero  ,      x∈sp₂ , x∉sp₁) = contradiction here x∉sp₁
+drop-∷-⊂ {s}          (sp₁⊆sp₂ , suc x , there x∈p₂ , x∉sp₁) = drop-∷-⊆ sp₁⊆sp₂ , x , x∈p₂ , drop-not-there x∉sp₁
+
+module _ {n} {p q : Subset n} where
+
+  out⊆ : ∀ {y} → p ⊆ q → outside ∷ p ⊆ y ∷ q
+  out⊆ p⊆q (there ∈p) = there (p⊆q ∈p)
+
+  out⊆-⇔ : ∀ {y} → p ⊆ q ⇔ outside ∷ p ⊆ y ∷ q
+  out⊆-⇔ = equivalence out⊆ drop-∷-⊆
+
+  in⊆in : p ⊆ q → inside ∷ p ⊆ inside ∷ q
+  in⊆in p⊆q here = here
+  in⊆in p⊆q (there ∈p) = there (p⊆q ∈p)
+
+  in⊆in-⇔ : p ⊆ q ⇔ inside ∷ p ⊆ inside ∷ q
+  in⊆in-⇔ = equivalence in⊆in drop-∷-⊆
+
+  s⊆s : ∀ {s} →  p ⊆ q → s ∷ p ⊆ s ∷ q
+  s⊆s p⊆q here = here
+  s⊆s p⊆q (there ∈p) = there (p⊆q ∈p)
+
+  out⊂ : ∀ {y} → p ⊂ q → outside ∷ p ⊂ y ∷ q
+  out⊂ (p⊆q , x , x∈q , x∉p) = out⊆ p⊆q , suc x , there x∈q , x∉p ∘ drop-there
+
+  out⊂in : p ⊆ q → outside ∷ p ⊂ inside ∷ q
+  out⊂in p⊆q = out⊆ p⊆q , zero , here , λ ()
+
+  out⊂in-⇔ : p ⊆ q ⇔ outside ∷ p ⊂ inside ∷ q
+  out⊂in-⇔ = equivalence out⊂in (drop-∷-⊆ ∘ proj₁)
+
+  out⊂out-⇔ : p ⊂ q ⇔ outside ∷ p ⊂ outside ∷ q
+  out⊂out-⇔ = equivalence out⊂ drop-∷-⊂
+
+  in⊂in : p ⊂ q → inside ∷ p ⊂ inside ∷ q
+  in⊂in (p⊆q , x , x∈q , x∉p) = in⊆in p⊆q , suc x , there x∈q , x∉p ∘ drop-there
+
+  in⊂in-⇔ : p ⊂ q ⇔ inside ∷ p ⊂ inside ∷ q
+  in⊂in-⇔ = equivalence in⊂in drop-∷-⊂
 
 ------------------------------------------------------------------------
 -- _∈_
@@ -49,9 +96,7 @@ infix 4 _∈?_
 _∈?_ : ∀ {n} x (p : Subset n) → Dec (x ∈ p)
 zero  ∈? inside  ∷ p = yes here
 zero  ∈? outside ∷ p = no  λ()
-suc n ∈? s       ∷ p with n ∈? p
-... | yes n∈p = yes (there n∈p)
-... | no  n∉p = no  (n∉p ∘ drop-there)
+suc n ∈? s       ∷ p = Dec.map′ there drop-there (n ∈? p)
 
 ------------------------------------------------------------------------
 -- Empty
@@ -152,13 +197,9 @@ x∈⁅y⁆⇔x≡y {_} {x} {y} = equivalence
 infix 4 _⊆?_
 _⊆?_ : ∀ {n} → B.Decidable (_⊆_ {n = n})
 []          ⊆? []          = yes id
-outside ∷ p ⊆? y ∷ q with p ⊆? q
-... | yes p⊆q = yes λ { (there v∈p) → there (p⊆q v∈p)}
-... | no  p⊈q = no (p⊈q ∘ drop-∷-⊆)
+outside ∷ p ⊆?       y ∷ q = Dec.map out⊆-⇔ (p ⊆? q)
 inside  ∷ p ⊆? outside ∷ q = no (λ p⊆q → case (p⊆q here) of λ())
-inside  ∷ p ⊆? inside  ∷ q with p ⊆? q
-... | yes p⊆q = yes λ { here → here ; (there v) → there (p⊆q v)}
-... | no  p⊈q = no (p⊈q ∘ drop-∷-⊆)
+inside  ∷ p ⊆? inside  ∷ q = Dec.map in⊆in-⇔ (p ⊆? q)
 
 module _ (n : ℕ) where
 
@@ -192,12 +233,99 @@ p⊆q⇒∣p∣<∣q∣ {p = outside ∷ p} {inside  ∷ q} p⊆q = ≤-step (p�
 p⊆q⇒∣p∣<∣q∣ {p = inside  ∷ p} {outside ∷ q} p⊆q = contradiction (p⊆q here) λ()
 p⊆q⇒∣p∣<∣q∣ {p = inside  ∷ p} {inside  ∷ q} p⊆q = s≤s (p⊆q⇒∣p∣<∣q∣ (drop-∷-⊆ p⊆q))
 
+
+------------------------------------------------------------------------
+-- _⊂_
+
+p⊂q⇒p⊆q : ∀ {n} → {p q : Subset n} → p ⊂ q → p ⊆ q
+p⊂q⇒p⊆q = proj₁
+
+⊂-trans : ∀ {n} → Transitive (_⊂_ {n})
+⊂-trans (p⊆q , x , x∈q , x∉p) (q⊆r , _ , _ , _) = ⊆-trans p⊆q q⊆r , x , q⊆r x∈q , x∉p
+
+⊂-⊆-trans : ∀ {n} → Trans {A = Subset n} _⊂_ _⊆_ _⊂_
+⊂-⊆-trans (p⊆q , x , x∈q , x∉p) q⊆r = ⊆-trans p⊆q q⊆r , x , q⊆r x∈q , x∉p
+
+⊆-⊂-trans : ∀ {n} → Trans {A = Subset n} _⊆_ _⊂_ _⊂_
+⊆-⊂-trans p⊆q (q⊆r , x , x∈r , x∉q) = ⊆-trans p⊆q q⊆r , x , x∈r , x∉q ∘ p⊆q
+
+⊂-irref : ∀ {n} → Irreflexive _≡_ (_⊂_ {n})
+⊂-irref refl (_ , x , x∈p , x∉q) = contradiction x∈p x∉q
+
+⊂-antisym : ∀ {n} → Antisymmetric _≡_ (_⊂_ {n})
+⊂-antisym (p⊆q , _) (q⊆p , _) = ⊆-antisym p⊆q q⊆p
+
+⊂-asymmetric : ∀ {n} → Asymmetric (_⊂_ {n})
+⊂-asymmetric (p⊆q , _) (_ , x , x∈p , x∉q) = contradiction (p⊆q x∈p) x∉q
+
+infix 4 _⊂?_
+
+_⊂?_ : ∀ {n} → B.Decidable (_⊂_ {n = n})
+[]          ⊂? []          = no λ ()
+outside ∷ p ⊂? outside ∷ q = Dec.map out⊂out-⇔ (p ⊂? q)
+outside ∷ p ⊂? inside  ∷ q = Dec.map out⊂in-⇔ (p ⊆? q)
+inside  ∷ p ⊂? outside ∷ q = no (λ {(p⊆q , _) → case (p⊆q here) of λ ()})
+inside  ∷ p ⊂? inside  ∷ q = Dec.map in⊂in-⇔ (p ⊂? q)
+
+module _ (n : ℕ) where
+
+  ⊂-isStrictPartialOrder : IsStrictPartialOrder _≡_ (_⊂_ {n})
+  ⊂-isStrictPartialOrder = record
+    { isEquivalence = isEquivalence
+    ; irrefl = ⊂-irref
+    ; trans = ⊂-trans
+    ; <-resp-≈ = (λ {refl → id}) , (λ {refl → id})
+    }
+
+  ⊂-strictPartialOrder : StrictPartialOrder _ _ _
+  ⊂-strictPartialOrder = record
+    { isStrictPartialOrder = ⊂-isStrictPartialOrder
+    }
+
+  ⊂-isDecStrictPartialOrder : IsDecStrictPartialOrder _≡_ (_⊂_ {n})
+  ⊂-isDecStrictPartialOrder = record
+    { isStrictPartialOrder = ⊂-isStrictPartialOrder
+    ; _≟_ = ≡-dec _≟_
+    ; _<?_ = _⊂?_
+    }
+
+  ⊂-decStrictPartialOrder : DecStrictPartialOrder _ _ _
+  ⊂-decStrictPartialOrder = record
+    { isDecStrictPartialOrder = ⊂-isDecStrictPartialOrder
+    }
+
+p⊂q⇒∣p∣<∣q∣ : ∀ {n} → {p q : Subset n} → p ⊂ q → ∣ p ∣ < ∣ q ∣
+p⊂q⇒∣p∣<∣q∣ {p = outside ∷ p} {outside ∷ q} op⊂oq@(_     , _     , _ , _)    = p⊂q⇒∣p∣<∣q∣ (drop-∷-⊂ op⊂oq)
+p⊂q⇒∣p∣<∣q∣ {p = outside ∷ p} {inside  ∷ q}       (op⊆iq , _     , _ , _)    = s≤s (p⊆q⇒∣p∣<∣q∣ (drop-∷-⊆ op⊆iq))
+p⊂q⇒∣p∣<∣q∣ {p = inside  ∷ p} {outside ∷ q}       (ip⊆oq , _     , _ , _)    = contradiction (ip⊆oq here) (λ ())
+p⊂q⇒∣p∣<∣q∣ {p = inside  ∷ p} {inside  ∷ q}       (_     , zero  , _ , x∉ip) = contradiction here x∉ip
+p⊂q⇒∣p∣<∣q∣ {p = inside  ∷ p} {inside  ∷ q} ip⊂iq@(_     , suc x , _ , _)    = s≤s (p⊂q⇒∣p∣<∣q∣ (drop-∷-⊂ ip⊂iq))
+
+------------------------------------------------------------------------
+-- ∁
+
+x∈s⇒x∉∁s : ∀ {n} → {x : Fin n} → {s : Subset n} → x ∈ s → x ∉ ∁ s
+x∈s⇒x∉∁s (there x∈s) (there x∈∁s) = x∈s⇒x∉∁s x∈s x∈∁s
+
+x∈∁s⇒x∉s : ∀ {n} → {x : Fin n} → {s : Subset n} → x ∈ ∁ s → x ∉ s
+x∈∁s⇒x∉s (there x∈∁s) (there x∈s) = x∈∁s⇒x∉s x∈∁s x∈s
+
+x∉∁s⇒x∈s : ∀ {n} → {x : Fin n} → {s : Subset n} → x ∉ ∁ s → x ∈ s
+x∉∁s⇒x∈s {x = zero}  {outside ∷ s} x∉∁s = contradiction here x∉∁s
+x∉∁s⇒x∈s {x = zero}  {inside  ∷ s} x∉∁s = here
+x∉∁s⇒x∈s {x = suc x} {_       ∷ s} x∉∁s = there (x∉∁s⇒x∈s (x∉∁s ∘ there))
+
+x∉s⇒x∈∁s : ∀ {n} → {x : Fin n} → {s : Subset n} → x ∉ s → x ∈ ∁ s
+x∉s⇒x∈∁s {x = zero}  {outside ∷ s} x∉s = here
+x∉s⇒x∈∁s {x = zero}  {inside  ∷ s} x∉s = contradiction here x∉s
+x∉s⇒x∈∁s {x = suc x} {_       ∷ s} x∉s = there (x∉s⇒x∈∁s (x∉s ∘ there))
+
 ------------------------------------------------------------------------
 -- _∩_
 
 module _ {n : ℕ} where
 
-  open AlgebraicProperties {A = Subset n} _≡_
+  open AlgebraicDefinitions {A = Subset n} _≡_
 
   ∩-assoc : Associative _∩_
   ∩-assoc = zipWith-assoc ∧-assoc
@@ -343,7 +471,7 @@ x∈p∩q⁻ (s      ∷ p) (t      ∷ q) (there x∈p∩q) =
 
 module _ {n : ℕ} where
 
-  open AlgebraicProperties {A = Subset n} _≡_
+  open AlgebraicDefinitions {A = Subset n} _≡_
 
   ∪-assoc : Associative _∪_
   ∪-assoc = zipWith-assoc ∨-assoc
@@ -575,16 +703,28 @@ Lift? P? p = decFinSubset (_∈? p) (λ {x} _ → P? x)
 ------------------------------------------------------------------------
 -- Other
 
-anySubset? : ∀ {n} {P : Subset n → Set} → Decidable P → Dec (∃ P)
-anySubset? {zero}  P? with P? []
-... | yes P[] = yes (_ , P[])
-... | no ¬P[] = no (λ {([] , P[]) → ¬P[] P[]})
-anySubset? {suc n} P? with anySubset? (P? ∘ (inside ∷_))
-... | yes (_ , Pp) = yes (_ , Pp)
-... | no  ¬Pp      with anySubset? (P? ∘ (outside ∷_))
-...   | yes (_ , Pp) = yes (_ , Pp)
-...   | no ¬Pp'      = no λ
-  { (inside  ∷ p , Pp)  → ¬Pp  (_ , Pp)
-  ; (outside ∷ p , Pp') → ¬Pp' (_ , Pp')
-  }
+module _ {p} {P : Pred (Subset zero) p} where
+
+  ∃-Subset-zero : ∃⟨ P ⟩ → P []
+  ∃-Subset-zero ([] , P[]) = P[]
+
+  ∃-Subset-[]-⇔ : P [] ⇔ ∃⟨ P ⟩
+  ∃-Subset-[]-⇔ = equivalence ([] ,_) ∃-Subset-zero
+
+module _ {p n} {P : Pred (Subset (suc n)) p} where
+
+  ∃-Subset-suc : ∃⟨ P ⟩ → ∃⟨ P ∘ (inside ∷_) ⟩ ⊎ ∃⟨ P ∘ (outside ∷_) ⟩
+  ∃-Subset-suc (outside ∷ p , Pop) = inj₂ (p , Pop)
+  ∃-Subset-suc ( inside ∷ p , Pip) = inj₁ (p , Pip)
+
+  ∃-Subset-∷-⇔ : (∃⟨ P ∘ (inside ∷_) ⟩ ⊎ ∃⟨ P ∘ (outside ∷_) ⟩) ⇔ ∃⟨ P ⟩
+  ∃-Subset-∷-⇔ = equivalence
+    [ Product.map _ id , Product.map _ id ]′
+    ∃-Subset-suc
+
+anySubset? : ∀ {p n} {P : Pred (Subset n) p} → Decidable P → Dec ∃⟨ P ⟩
+anySubset? {n = zero}  P? = Dec.map ∃-Subset-[]-⇔ (P? [])
+anySubset? {n = suc n} P? =
+  Dec.map ∃-Subset-∷-⇔ (anySubset? (P? ∘ ( inside ∷_)) ⊎-dec
+                        anySubset? (P? ∘ (outside ∷_)))
 

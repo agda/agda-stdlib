@@ -13,7 +13,7 @@ open import Algebra.Structures
 open import Algebra.FunctionProperties
 import Axiom.Extensionality.Propositional as Ext
 open import Axiom.UniquenessOfIdentityProofs
-open import Function.Core
+open import Function.Base
 open import Function.Equality using (Π; _⟶_; ≡-setoid)
 open import Level using (Level; _⊔_)
 open import Data.Product using (∃)
@@ -55,6 +55,29 @@ cong₂ f refl refl = refl
 ------------------------------------------------------------------------
 -- Structure of equality as a binary relation
 
+isEquivalence : IsEquivalence {A = A} _≡_
+isEquivalence = record
+  { refl  = refl
+  ; sym   = sym
+  ; trans = trans
+  }
+
+isDecEquivalence : Decidable _≡_ → IsDecEquivalence {A = A} _≡_
+isDecEquivalence _≟_ = record
+  { isEquivalence = isEquivalence
+  ; _≟_           = _≟_
+  }
+
+isPreorder : IsPreorder {A = A} _≡_ _≡_
+isPreorder = record
+  { isEquivalence = isEquivalence
+  ; reflexive     = id
+  ; trans         = trans
+  }
+
+------------------------------------------------------------------------
+-- Bundles for equality as a binary relation
+
 setoid : Set a → Setoid _ _
 setoid A = record
   { Carrier       = A
@@ -63,19 +86,9 @@ setoid A = record
   }
 
 decSetoid : Decidable {A = A} _≡_ → DecSetoid _ _
-decSetoid dec = record
+decSetoid _≟_ = record
   { _≈_              = _≡_
-  ; isDecEquivalence = record
-      { isEquivalence = isEquivalence
-      ; _≟_           = dec
-      }
-  }
-
-isPreorder : IsPreorder {A = A} _≡_ _≡_
-isPreorder = record
-  { isEquivalence = isEquivalence
-  ; reflexive     = id
-  ; trans         = trans
+  ; isDecEquivalence = isDecEquivalence _≟_
   }
 
 preorder : Set a → Preorder _ _ _
@@ -207,13 +220,13 @@ cong-≡id {f = f} {x} f≡id =
   f≡id (f x)                                     ∎
   where open ≡-Reasoning; fx≡x = f≡id x; f²x≡x = f≡id (f x)
 
-module _ (_≟_ : Decidable {A = A} _≡_) where
+module _ (_≟_ : Decidable {A = A} _≡_) {x y : A} where
 
-  ≡-≟-identity : ∀ {x y : A} (eq : x ≡ y) → x ≟ y ≡ yes eq
-  ≡-≟-identity {x} {y} eq = dec-yes-irr (x ≟ y) (Decidable⇒UIP.≡-irrelevant _≟_) eq
+  ≡-≟-identity : (eq : x ≡ y) → x ≟ y ≡ yes eq
+  ≡-≟-identity eq = dec-yes-irr (x ≟ y) (Decidable⇒UIP.≡-irrelevant _≟_) eq
 
-  ≢-≟-identity : ∀ {x y : A} → x ≢ y → ∃ λ ¬eq → x ≟ y ≡ no ¬eq
-  ≢-≟-identity {x} {y} ¬eq = dec-no (x ≟ y) ¬eq
+  ≢-≟-identity : x ≢ y → ∃ λ ¬eq → x ≟ y ≡ no ¬eq
+  ≢-≟-identity ¬eq = dec-no (x ≟ y) ¬eq
 
 ------------------------------------------------------------------------
 -- Any operation forms a magma over _≡_

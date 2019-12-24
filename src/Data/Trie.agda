@@ -4,6 +4,9 @@
 -- Trie, basic type and operations
 ------------------------------------------------------------------------
 
+-- See README.Data.Trie.NonDependent for an example of using a trie to
+-- build a lexer.
+
 {-# OPTIONS --without-K --safe --sized-types #-}
 
 open import Relation.Binary using (Rel; StrictTotalOrder)

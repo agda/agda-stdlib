@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Table-related properties
+-- This module is DEPRECATED. Please use `Data.Vec.Functional` instead.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -24,11 +24,12 @@ open import Data.Product as Product using (Σ; ∃; _,_; proj₁; proj₂)
 open import Data.Vec as V using (Vec; _∷_; [])
 import Data.Vec.Properties as VP
 open import Level using (Level)
-open import Function.Core using (_∘_; flip)
+open import Function.Base using (_∘_; flip)
 open import Function.Inverse using (Inverse)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; cong)
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary using (does)
+open import Relation.Nullary.Decidable using (dec-true; dec-false)
 open import Relation.Nullary.Negation using (contradiction)
 
 private
@@ -43,27 +44,24 @@ private
 
 select-const : ∀ {n} (z : A) (i : Fin n) t →
                select z i t ≗ select z i (replicate (lookup t i))
-select-const z i t j with j ≟ i
-... | yes _ = refl
-... | no  _ = refl
+select-const z i t j with does (j ≟ i)
+... | true  = refl
+... | false = refl
 
 -- Selecting an element from a table then looking it up is the same as looking
 -- up the index in the original table
 
 select-lookup : ∀ {n x i} (t : Table A n) →
                 lookup (select x i t) i ≡ lookup t i
-select-lookup {i = i} t with i ≟ i
-... | yes _  = refl
-... | no i≢i = contradiction refl i≢i
+select-lookup {i = i} t rewrite dec-true (i ≟ i) refl = refl
 
 -- Selecting an element from a table then removing the same element produces a
 -- constant table
 
 select-remove : ∀ {n x} i (t : Table A (suc n)) →
                 remove i (select x i t) ≗ replicate {n = n} x
-select-remove i t j with punchIn i j ≟ i
-... | yes p = contradiction p (FP.punchInᵢ≢i _ _)
-... | no ¬p = refl
+select-remove i t j rewrite dec-false (punchIn i j ≟ i) (FP.punchInᵢ≢i _ _)
+                          = refl
 
 
 ------------------------------------------------------------------------

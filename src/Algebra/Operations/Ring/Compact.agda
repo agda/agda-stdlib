@@ -26,7 +26,9 @@
 
 open import Algebra
 
-module Algebra.Operations.Ring.Compact {ℓ} (ring : RawRing ℓ) where
+module Algebra.Operations.Ring.Compact
+  {ℓ₁ ℓ₂} (ring : RawRing ℓ₁ ℓ₂)
+  where
 
 open import Data.Nat as ℕ using (ℕ; suc; zero)
 

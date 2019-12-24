@@ -8,23 +8,23 @@
 
 module Data.Bool.Properties where
 
-open import Algebra
+open import Algebra.Bundles
 open import Data.Bool.Base
 open import Data.Empty
 open import Data.Product
 open import Data.Sum
-open import Function.Core
+open import Function.Base
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence
   using (_⇔_; equivalence; module Equivalence)
 open import Level using (Level; 0ℓ)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality hiding ([_])
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary using (ofʸ; ofⁿ; does; proof; yes; no)
 open import Relation.Nullary.Decidable using (True)
 import Relation.Unary as U
 
-open import Algebra.FunctionProperties {A = Bool} _≡_
+open import Algebra.Definitions {A = Bool} _≡_
 open import Algebra.Structures {A = Bool} _≡_
 open ≡-Reasoning
 
@@ -121,7 +121,7 @@ true  ≤? true  = yes b≤b
   ; _≤?_         = _≤?_
   }
 
--- Packages
+-- Bundles
 
 ≤-poset : Poset 0ℓ 0ℓ 0ℓ
 ≤-poset = record
@@ -199,7 +199,7 @@ true  <? _     = no  (λ())
   ; compare       = <-cmp
   }
 
--- Packages
+-- Bundles
 
 <-strictPartialOrder : StrictPartialOrder 0ℓ 0ℓ 0ℓ
 <-strictPartialOrder = record
@@ -586,6 +586,10 @@ not-involutive : Involutive not
 not-involutive true  = refl
 not-involutive false = refl
 
+not-injective : ∀ {x y} → not x ≡ not y → x ≡ y
+not-injective {false} {false} nx≢ny = refl
+not-injective {true}  {true}  nx≢ny = refl
+
 not-¬ : ∀ {x y} → x ≡ y → x ≢ not y
 not-¬ {true}  refl ()
 not-¬ {false} refl ()
@@ -626,8 +630,9 @@ T-irrelevant : U.Irrelevant T
 T-irrelevant {true}  _  _  = refl
 
 T? : U.Decidable T
-T? true  = yes _
-T? false = no (λ ())
+does  (T? b) = b
+proof (T? true ) = ofʸ _
+proof (T? false) = ofⁿ λ()
 
 T?-diag : ∀ b → T b → True (T? b)
 T?-diag true  _ = _

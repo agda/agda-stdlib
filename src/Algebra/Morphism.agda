@@ -8,96 +8,30 @@
 
 module Algebra.Morphism where
 
+import Algebra.Morphism.Definitions as MorphismDefinitions
 open import Relation.Binary
 open import Algebra
-open import Algebra.Structures
-open import Algebra.FunctionProperties hiding (LeftInverse)
 import Algebra.Properties.Group as GroupP
 open import Function
 open import Level
 import Relation.Binary.Reasoning.Setoid as EqR
 
-------------------------------------------------------------------------
--- Basic definitions
-
-module Definitions {f t ℓ}
-                   (From : Set f) (To : Set t) (_≈_ : Rel To ℓ) where
-  Morphism : Set _
-  Morphism = From → To
-
-  Homomorphic₀ : Morphism → From → To → Set _
-  Homomorphic₀ ⟦_⟧ ∙ ∘ = ⟦ ∙ ⟧ ≈ ∘
-
-  Homomorphic₁ : Morphism → Fun₁ From → Op₁ To → Set _
-  Homomorphic₁ ⟦_⟧ ∙_ ∘_ = ∀ x → ⟦ ∙ x ⟧ ≈ (∘ ⟦ x ⟧)
-
-  Homomorphic₂ : Morphism → Fun₂ From → Op₂ To → Set _
-  Homomorphic₂ ⟦_⟧ _∙_ _∘_ =
-    ∀ x y → ⟦ x ∙ y ⟧ ≈ (⟦ x ⟧ ∘ ⟦ y ⟧)
+private
+  variable
+    a b ℓ₁ ℓ₂ : Level
+    A : Set a
+    B : Set b
 
 ------------------------------------------------------------------------
--- Raw structure homomorphisms
+--
 
-module _ {c₁ ℓ₁ c₂ ℓ₂}
-         (From : RawMagma c₁ ℓ₁)
-         (To   : RawMagma c₂ ℓ₂) where
+module Definitions {a b ℓ₁} (A : Set a) (B : Set b) (_≈_ : Rel B ℓ₁) where
+  open MorphismDefinitions A B _≈_ public
 
-  private
-    module F = RawMagma From
-    module T = RawMagma To
-  open Definitions F.Carrier T.Carrier T._≈_
-
-  record IsRawMagmaMorphism (⟦_⟧ : Morphism) :
-         Set (c₁ ⊔ ℓ₁ ⊔ c₂ ⊔ ℓ₂) where
-    field
-      F-isMagma : IsMagma F._≈_ F._∙_
-      T-isMagma : IsMagma T._≈_ T._∙_
-      ⟦⟧-cong : ⟦_⟧ Preserves F._≈_ ⟶ T._≈_
-      ∙-homo  : Homomorphic₂ ⟦_⟧ F._∙_ T._∙_
-
-    open IsMagma F-isMagma public using ()
-      renaming
-      ( ∙-cong  to F-∙-cong
-      ; ∙-congˡ to F-∙-congˡ
-      ; ∙-congʳ to F-∙-congʳ
-      ; setoid  to F-setoid
-      )
-
-    open IsMagma T-isMagma public using ()
-      renaming
-      ( ∙-cong  to T-∙-cong
-      ; ∙-congˡ to T-∙-congˡ
-      ; ∙-congʳ to T-∙-congʳ
-      ; setoid  to T-setoid
-      )
-
-  IsRawMagmaMorphism-syntax = IsRawMagmaMorphism
-  syntax IsRawMagmaMorphism-syntax From To F = F Is From -RawMagma⟶ To
-
-
-module _ {c₁ ℓ₁ c₂ ℓ₂}
-         (From : RawMonoid c₁ ℓ₁)
-         (To   : RawMonoid c₂ ℓ₂) where
-
-  private
-    module F = RawMonoid From
-    module T = RawMonoid To
-  open Definitions F.Carrier T.Carrier T._≈_
-
-  record IsRawMonoidMorphism (⟦_⟧ : Morphism) :
-         Set (c₁ ⊔ ℓ₁ ⊔ c₂ ⊔ ℓ₂) where
-    field
-      magma-homo : IsRawMagmaMorphism F.rawMagma T.rawMagma ⟦_⟧
-      ε-homo     : Homomorphic₀ ⟦_⟧ F.ε T.ε
-
-    open IsRawMagmaMorphism magma-homo public
-
-  IsRawMonoidMorphism-syntax = IsRawMonoidMorphism
-  syntax IsRawMonoidMorphism-syntax From To F = F Is From -RawMonoid⟶ To
-
+open import Algebra.Morphism.Structures public
 
 ------------------------------------------------------------------------
--- Structure homomorphisms
+-- Bundle homomorphisms
 
 module _ {c₁ ℓ₁ c₂ ℓ₂}
          (From : Semigroup c₁ ℓ₁)

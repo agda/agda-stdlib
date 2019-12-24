@@ -183,6 +183,10 @@ import README.Data.AVL
 
 import README.Data.List
 
+-- Some examples showing how the Fresh list can be used.
+
+import README.Data.List.Fresh
+
 -- Using List's Interleaving to define a fully certified filter function.
 
 import README.Data.Interleaving

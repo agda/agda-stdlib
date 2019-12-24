@@ -9,8 +9,8 @@
 open import Algebra.Construct.CommutativeRing.Polynomial.Parameters
 
 module Algebra.Construct.CommutativeRing.Polynomial.Homomorphism.Lemmas
-  {r₁ r₂ r₃}
-  (homo : Homomorphism r₁ r₂ r₃)
+  {r₁ r₂ r₃ r₄}
+  (homo : Homomorphism r₁ r₂ r₃ r₄)
   where
 
 open import Data.List                                  using (_∷_; [])

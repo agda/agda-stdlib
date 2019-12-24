@@ -38,14 +38,16 @@ module _ {a b c l r} {A : Set a} {B : Set b} {C : Set c}
 -- _++_
 
   ++⁺ : ∀ {as₁ as₂ l₁ l₂ r₁ r₂} →
-        Interleaving L R as₁ l₁ r₁ → Interleaving L R as₂ l₂ r₂ →
+        Interleaving L R as₁ l₁ r₁ →
+        Interleaving L R as₂ l₂ r₂ →
         Interleaving L R (as₁ ++ as₂) (l₁ ++ l₂) (r₁ ++ r₂)
   ++⁺ []         sp₂ = sp₂
   ++⁺ (l ∷ˡ sp₁) sp₂ = l ∷ˡ (++⁺ sp₁ sp₂)
   ++⁺ (r ∷ʳ sp₁) sp₂ = r ∷ʳ (++⁺ sp₁ sp₂)
 
   ++-disjoint : ∀ {as₁ as₂ l₁ r₂} →
-                Interleaving L R l₁ [] as₁ → Interleaving L R [] r₂ as₂ →
+                Interleaving L R l₁ [] as₁ →
+                Interleaving L R [] r₂ as₂ →
                 Interleaving L R l₁ r₂ (as₁ ++ as₂)
   ++-disjoint []         sp₂ = sp₂
   ++-disjoint (l ∷ˡ sp₁) sp₂ = l ∷ˡ ++-disjoint sp₁ sp₂
@@ -90,6 +92,12 @@ module _ {a b c l r} {A : Set a} {B : Set b} {C : Set c}
   reverseAcc⁺ sp₁ []         = sp₁
   reverseAcc⁺ sp₁ (l ∷ˡ sp₂) = reverseAcc⁺ (l ∷ˡ sp₁) sp₂
   reverseAcc⁺ sp₁ (r ∷ʳ sp₂) = reverseAcc⁺ (r ∷ʳ sp₁) sp₂
+
+  ʳ++⁺ : ∀ {as₁ as₂ l₁ l₂ r₁ r₂} →
+         Interleaving L R l₁ r₁ as₁ →
+         Interleaving L R l₂ r₂ as₂ →
+         Interleaving L R (l₁ ʳ++ l₂) (r₁ ʳ++ r₂) (as₁ ʳ++ as₂)
+  ʳ++⁺ sp₁ sp₂ = reverseAcc⁺ sp₂ sp₁
 
   reverse⁺ : ∀ {as l r} → Interleaving L R l r as →
              Interleaving L R (reverse l) (reverse r) (reverse as)

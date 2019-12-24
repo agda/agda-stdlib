@@ -15,7 +15,6 @@ open import Data.Nat.GCD.Lemmas
 open import Data.Nat.Properties
 open import Data.Nat.Induction
   using (Acc; acc; <′-Rec; <′-recBuilder; <-wellFounded)
-open import Data.Nat.Properties using (+-suc)
 open import Data.Product
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
 open import Function
@@ -24,7 +23,7 @@ open import Induction.Lexicographic using (_⊗_; [_⊗_])
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; subst; cong)
-open import Relation.Nullary using (Dec; yes; no)
+open import Relation.Nullary using (Dec)
 open import Relation.Nullary.Negation using (contradiction)
 import Relation.Nullary.Decidable as Dec
 
@@ -96,6 +95,14 @@ gcd[m,n]≢0 : ∀ m n → m ≢ 0 ⊎ n ≢ 0 → gcd m n ≢ 0
 gcd[m,n]≢0 m n (inj₁ m≢0) eq = m≢0 (0∣⇒≡0 (subst (_∣ m) eq (gcd[m,n]∣m m n)))
 gcd[m,n]≢0 m n (inj₂ n≢0) eq = n≢0 (0∣⇒≡0 (subst (_∣ n) eq (gcd[m,n]∣n m n)))
 
+gcd[m,n]≡0⇒m≡0 : ∀ {m n} → gcd m n ≡ 0 → m ≡ 0
+gcd[m,n]≡0⇒m≡0 {zero}  {n} eq = P.refl
+gcd[m,n]≡0⇒m≡0 {suc m} {n} eq = contradiction eq (gcd[m,n]≢0 (suc m) n (inj₁ λ()))
+
+gcd[m,n]≡0⇒n≡0 : ∀ m {n} → gcd m n ≡ 0 → n ≡ 0
+gcd[m,n]≡0⇒n≡0 m {zero}  eq = P.refl
+gcd[m,n]≡0⇒n≡0 m {suc n} eq = contradiction eq (gcd[m,n]≢0 m (suc n) (inj₂ λ()))
+
 gcd-comm : ∀ m n → gcd m n ≡ gcd n m
 gcd-comm m n = ∣-antisym
   (gcd-greatest (gcd[m,n]∣n m n) (gcd[m,n]∣m m n))
@@ -131,6 +138,12 @@ c*gcd[m,n]≡gcd[cm,cn] c@(suc c-1) m n = begin
   c * (gcd (c * m) (c * n) / c) ≡⟨ m*[n/m]≡n (gcd-greatest (m∣m*n m) (m∣m*n n)) ⟩
   gcd (c * m) (c * n)           ∎
   where open P.≡-Reasoning
+
+gcd[m,n]≤n : ∀ m n → gcd m (suc n) ≤ suc n
+gcd[m,n]≤n m n = ∣⇒≤ (gcd[m,n]∣n m (suc n))
+
+n/gcd[m,n]≢0 : ∀ m n {n≢0 : Dec.False (n ≟ 0)} {gcd≢0} → (n / gcd m n) {gcd≢0} ≢ 0
+n/gcd[m,n]≢0 m n@(suc n-1) {n≢0} {gcd≢0} = m<n⇒n≢0 (m≥n⇒m/n>0 {n} {gcd m n} {gcd≢0} (gcd[m,n]≤n m n-1))
 
 ------------------------------------------------------------------------
 -- A formal specification of GCD
@@ -201,9 +214,24 @@ mkGCD m n = gcd m n , gcd-GCD m n
 -- gcd as a proposition is decidable
 
 gcd? : (m n d : ℕ) → Dec (GCD m n d)
-gcd? m n d with gcd m n ≟ d
-... | yes P.refl = yes (gcd-GCD m n)
-... | no  gcd≢d  = no (gcd≢d ∘ GCD.unique (gcd-GCD m n))
+gcd? m n d =
+  Dec.map′ (λ { P.refl → gcd-GCD m n }) (GCD.unique (gcd-GCD m n))
+           (gcd m n ≟ d)
+
+GCD-* : ∀ {m n d c} → GCD (m * suc c) (n * suc c) (d * suc c) → GCD m n d
+GCD-* (GCD.is (dc∣nc , dc∣mc) dc-greatest) =
+  GCD.is (*-cancelʳ-∣ _ dc∣nc , *-cancelʳ-∣ _ dc∣mc)
+  λ {_} → *-cancelʳ-∣ _ ∘ dc-greatest ∘ map (*-monoˡ-∣ _) (*-monoˡ-∣ _)
+
+GCD-/ : ∀ {m n d c} {≢0} → c ∣ m → c ∣ n → c ∣ d →
+        GCD m n d → GCD ((m / c) {≢0}) ((n / c) {≢0}) ((d / c) {≢0})
+GCD-/ {m} {n} {d} {c@(suc c-1)}
+  (divides p P.refl) (divides q P.refl) (divides r P.refl) gcd
+  rewrite m*n/n≡m p c {_} | m*n/n≡m q c {_} | m*n/n≡m r c {_} = GCD-* gcd
+
+GCD-/gcd : ∀ m n {≢0} → GCD ((m / gcd m n) {≢0}) ((n / gcd m n) {≢0}) 1
+GCD-/gcd m n {≢0} rewrite P.sym (n/n≡1 (gcd m n) {≢0}) =
+  GCD-/ {≢0 = ≢0} (gcd[m,n]∣m m n) (gcd[m,n]∣n m n) ∣-refl (gcd-GCD m n)
 
 ------------------------------------------------------------------------
 -- Calculating the gcd

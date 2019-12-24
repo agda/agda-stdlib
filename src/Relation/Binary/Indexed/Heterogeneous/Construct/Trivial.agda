@@ -42,7 +42,7 @@ module _ {a} {A : Set a} where
     where open IsPreorder isPreorder
 
 ------------------------------------------------------------------------
--- Packages
+-- Bundles
 
 indexedSetoid : ∀ {a ℓ} → Setoid a ℓ → IndexedSetoid I a ℓ
 indexedSetoid S = record

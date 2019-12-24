@@ -45,7 +45,8 @@
 
 open import Algebra.Construct.CommutativeRing.Polynomial.Parameters
 
-module Algebra.Construct.CommutativeRing.Polynomial.Base {ℓ} (coeffs : RawCoeff ℓ) where
+module Algebra.Construct.CommutativeRing.Polynomial.Base
+  {ℓ₁ ℓ₂} (coeffs : RawCoeff ℓ₁ ℓ₂) where
 
 open import Data.Bool              using (Bool; true; false; T)
 open import Data.Nat as ℕ          using (ℕ; suc; zero; _≤′_; compare; ≤′-refl; ≤′-step; _<′_)
@@ -56,9 +57,9 @@ open import Data.Unit              using (⊤; tt)
 open import Data.Product           using (_×_; _,_; map₁; curry; uncurry)
 open import Induction.WellFounded  using (Acc; acc)
 open import Induction.Nat          using (<′-wellFounded)
-open import Data.Fin as Fin        using (Fin)
+open import Data.Fin as Fin        using (Fin; space)
 
-open import Algebra
+open import Algebra.Bundles
 open import Function
 open import Data.List.Kleene
 open import Function
@@ -117,10 +118,10 @@ record PowInd {c} (C : Set c) : Set c where
 open PowInd public
 
 
-record Poly (n : ℕ) : Set ℓ
-data FlatPoly : ℕ → Set ℓ
-Coeff : ℕ → Set ℓ
-record NonZero (i : ℕ) : Set ℓ
+record Poly (n : ℕ) : Set ℓ₁
+data FlatPoly : ℕ → Set ℓ₁
+Coeff : ℕ → Set ℓ₁
+record NonZero (i : ℕ) : Set ℓ₁
 Zero : ∀ {n} → Poly n → Set
 Normalised : ∀ {i} → Coeff i + → Set
 
@@ -213,10 +214,10 @@ _⊐↓_ : ∀ {i n} → Coeff i * → suc i ≤′ n → Poly n
 -- using ∷↓ and ⊐↓ directly anywhere except here, so if we prove that this fold
 -- acts the same on a normalised or non-normalised polynomial, we can prove th
 -- same about any operation which uses it.
-PolyF : ℕ → Set ℓ
+PolyF : ℕ → Set ℓ₁
 PolyF i = Poly i × Coeff i *
 
-Fold : ℕ → Set ℓ
+Fold : ℕ → Set ℓ₁
 Fold i = PolyF i → PolyF i
 
 para : ∀ {i} → Fold i → Coeff i + → Coeff i *

@@ -12,7 +12,7 @@ open import Data.Product as Prod
 open import Data.Product.Properties using (≡-dec)
 open import Data.Sum
 open import Data.Unit.Base using (⊤)
-open import Function.Core
+open import Function.Base
 open import Function.Equality as F using (_⟶_; _⟨$⟩_)
 open import Function.Equivalence as Eq
   using (Equivalence; _⇔_; module Equivalence)
@@ -182,7 +182,7 @@ module _ {a₁ a₂ ℓ₁ ℓ₂} {A₁ : Set a₁} {A₂ : Set a₂} where
     where open IsStrictPartialOrder
 
 ------------------------------------------------------------------------
--- "Packages" can also be combined.
+-- "Bundles" can also be combined.
 
 module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} where
 

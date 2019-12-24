@@ -23,7 +23,7 @@ open import Data.List.Base using (List; []; _∷_)
 open import Data.List.NonEmpty using (List⁺; _∷_)
 open import Data.Product as Prod using (∃; _×_; _,_)
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
-open import Function.Core
+open import Function.Base
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse as Inv using (_↔_; _↔̇_; Inverse; inverse)
 open import Level using (_⊔_)
@@ -32,6 +32,7 @@ import Relation.Binary.Construct.FromRel as Ind
 import Relation.Binary.Reasoning.Preorder as PreR
 import Relation.Binary.Reasoning.PartialOrder as POR
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary
 open import Relation.Nullary.Negation
 
@@ -527,8 +528,9 @@ finite-or-infinite :
 finite-or-infinite xs = helper <$> excluded-middle
   where
   helper : Dec (Finite xs) → Finite xs ⊎ Infinite xs
-  helper (yes fin) = inj₁ fin
-  helper (no ¬fin) = inj₂ $ not-finite-is-infinite xs ¬fin
+  helper ( true because  [fin]) = inj₁ (invert [fin])
+  helper (false because [¬fin]) =
+    inj₂ $ not-finite-is-infinite xs (invert [¬fin])
 
 -- Colists are not both finite and infinite.
 

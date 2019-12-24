@@ -1,228 +1,151 @@
-Version 1.2-dev
+Version 1.3-dev
 ===============
 
 The library has been tested using Agda version 2.6.0.1.
 
-Changes since 1.1:
-
 Highlights
 ----------
-
-
 
 Bug-fixes
 ---------
 
+Non-backwards compatible changes
+--------------------------------
 
+* The following lemmas may have breaking changes in their computational
+  behaviour.
+  - `Data.Fin.Permutation.Components`: `transpose-inverse`
+  - `Data.Fin.Properties`: `decFinSubset`, `all?`
 
-Other non-backwards compatible changes
---------------------------------------
+  Definitions that are sensitive to the behaviour of these lemmas, rather than
+  just their existence, may need to be revised.
 
-#### New function hierarchy
-
-The main problems with the current way various types of functions are
-handled are:
-  1. The raw functions were wrapped in the  equality-preserving
-         type `_⟶_` from `Function.Equality`. As the rest of the library
-     very rarely used such wrapped functions, it was almost impossible
-     to write code that interfaces neatly  between the `Function` hierarchy
-     and, for example, the `Algebra` hierarchy.
-  2. The symbol `_⟶_` that was used for equality preserving functions
-     was almost indistinguishable from ordinary functions `_→_` in many fonts,
-     leading to confusion when reading code.
-  3. The hierarchy didn't follow the same pattern as the other record
-     hierarchies in the standard library. Coupled with point 1., this meant
-     that anecdotally people are scared away from it.
-  4. There was no way of specifying a function has a specific property
-     (e.g. is injective) without specifying all the properties required
-     of the equality relation as well. This is in contrast to the
-     `Relation.Binary` and `Algebra` hierarchies where it is perfectly
-     possible to specify that for example an operation is commutative
-     without providing all the proofs associated with the equality relation.
-
-To address these problems a new function hierarchy similar to the ones in
-`Relation.Binary` and `Algebra` has been created. The new modules are as
-follows:
-  - `Function.Definitions` containing definitions like `Injective`,
-    `Surjective` parameterised by the function and the equality relations
-     over the domain and codomain.
-  - `Function.Structures` containing definitions like `IsInjection`,
-     `IsSurjection`, once again parameterised by the function and the equality
-     relations but also wrapping up all the equality and congruence lemmas.
-  - `Function.Packages` containing definitions like `Injection`, `Surjection`
-     which provides essentially the same top-level interface as currently exists,
-     i.e. parameterised by setoids but hiding the function.
-  - The old file `Function` has been moved to `Function.Core` and `Function`
-    now exports the whole of this hierarchy, just like `Relation.Binary`.
-
-These changes are nearly entirely backwards compatible. The only problem will occur
-is when code imports both `Function` and e.g. `Function.Injection` in which case the
-old and new definitions of `Injection` will clash. In the short term this can
-immediately be fixed by importing `Function.Core` instead of `Function`. However
-we would encourage to the new hierarchy in the medium to long term.
-
-The old modules will probably be deprecated (NOT COMPLETED AS OF YET)
-  ```agda
-  Function.Equivalence
-  Function.Equality
-  Function.Bijection
-  Function.Injection
-  Function.Surjection
-  Function.LeftInverse
-  ```
-
-#### Re-implementation of `Data.Bin`
-
-* `Data/Bin.agda` and `Data.Bin/*.agda`  of lib-1.0 are removed,
-  added new `Data.Bin.Base, Data.Bin.Properties`.
-  This total change of the Bin part is done for the following reasons.
-  1) Many necessary functions and proofs are added.
-  2) After this has been done, the author noticed (decided) that the whole
-   thing is implemented much simpler with using another representation for Bin:
-   the one with certain three constructors. This representation is taken
-   (with renaming the constructors) from the letter by Martin Escardo to the
-   e-mail list. The referred code (of 2016) resides on
-   http://www.cs.bham.ac.uk/~mhe/agda-new/BinaryNaturals.html
-
-New modules
------------
-The following new modules have been added to the library:
-
-* The following new modules have been added to the library:
-  ```
-  Algebra.Morphism.RawMagma
-  Algebra.Morphism.RawMonoid
-
-  Algebra.Properties.Semigroup
-  Algebra.Properties.CommutativeSemigroup
-
-  Data.Bin
-  Data.Bin.Base
-  Data.Bin.Properties
-
-  Data.List.Kleene
-  Data.List.Kleene.AsList
-  Data.List.Kleene.Base
-
-  Data.Rational.Unnormalised
-  Data.Rational.Unnormalised.Properties
-
-  Function.Definitions
-  Function.Packages
-  Function.Structures
-
-  Relation.Binary.Properties.Setoid
-  Relation.Binary.Reasoning.Base.Partial
-  Relation.Binary.Reasoning.PartialSetoid
-  ```
-
-Relocated modules
------------------
-The following modules have been moved as part of a drive to improve
-usability and consistency across the library. The old modules still exist and
-therefore all existing code should still work, however they have been deprecated
-and, although not anticipated any time soon, they may eventually
-be removed in some future release of the library. After the next release of Agda
-automated warnings will be attached to these modules to discourage their use.
-
-
-Deprecated names
-----------------
-The following deprecations have occurred as part of a drive to improve
-consistency across the library. The deprecated names still exist and
-therefore all existing code should still work, however use of the new names
-is encouraged. Although not anticipated any time soon, they may eventually
-be removed in some future release of the library. Automated warnings are
-attached to all deprecated names to discourage their use.
-
-* In `Data.Integer.Properties`:
-  ```agda
-  [1+m]*n≡n+m*n ↦ suc-*
-  ```
-
-* In `Data.Nat.Properties`:
-  ```agda
-  +-*-suc ↦ *-suc
-  ```
+Other major additions
+---------------------
 
 Other minor additions
 ---------------------
 
-* Added new constants to `Data.Integer.Base`:
+* Added new proofs to `Induction.WellFounded`:
   ```agda
-  -1ℤ = -[1+ 0 ]
-   0ℤ = +0
-   1ℤ = +[1+ 0 ]
+  some-wfRec-irrelevant : Some.wfRec P f x q ≡ Some.wfRec P f x q'
+  wfRecBuilder-wfRec    : All.wfRecBuilder P f x y y<x ≡ All.wfRec P f y
+  unfold-wfRec          : All.wfRec P f x ≡ f x λ y _ → All.wfRec P f y
   ```
 
-* Added new proof to `Data.Integer.Properties`:
+* Added new proofs to `Algebra.Properties.Group`:
   ```agda
-  *-suc : m * sucℤ n ≡ m + m * n
+  ⁻¹-injective   : x ⁻¹ ≈ y ⁻¹ → x ≈ y
+  ⁻¹-anti-homo-∙ : (x ∙ y) ⁻¹ ≈ y ⁻¹ ∙ x ⁻¹
   ```
 
-* Added new relations to `Data.List.Relation.Binary.Sublist.Setoid/Propositional`:
+* Made `RawFunctor`,  `RawApplicative` and `IFun` more level polymorphic
+  (in `Category.Functor`, `Category.Applicative` and
+  `Category.Applicative.Indexed`
+  respectively).
+
+* Added new proofs to `Data.Bool`:
   ```agda
-  xs ⊇ ys = ys ⊆ xs
-  xs ⊈ ys = ¬ (xs ⊆ ys)
-  xs ⊉ ys = ¬ (xs ⊇ ys)
+  not-injective : not x ≡ not y → x ≡ y
   ```
 
-* Added new proofs to `Data.List.Relation.Binary.Sublist.Propositional.Properties`:
+* Added new properties to `Data.Fin.Subset`:
   ```agda
-  ⊆-trans-idˡ      : ⊆-trans ⊆-refl τ ≡ τ
-  ⊆-trans-idʳ      : ⊆-trans τ ⊆-refl ≡ τ
-  ⊆-trans-assoc    : ⊆-trans τ₁ (⊆-trans τ₂ τ₃) ≡ ⊆-trans (⊆-trans τ₁ τ₂) τ₃
-  All-resp-⊆       : (All P) Respects _⊇_
-  Any-resp-⊆       : (Any P) Respects _⊆_
-  All-resp-⊆-refl  : All-resp-⊆ ⊆-refl ≗ id
-  All-resp-⊆-trans : All-resp-⊆ (⊆-trans τ τ′) ≗ All-resp-⊆ τ ∘ All-resp-⊆ τ′
-  Any-resp-⊆-refl  : Any-resp-⊆ ⊆-refl ≗ id
-  Any-resp-⊆-trans : Any-resp-⊆ (⊆-trans τ τ′) ≗ Any-resp-⊆ τ′ ∘ Any-resp-⊆ τ
-  lookup-injective : lookup τ i ≡ lookup τ j → i ≡ j
+  _⊂_ : Subset n → Subset n → Set
+  _⊄_ : Subset n → Subset n → Set
   ```
 
-* Added new proofs to `Data.Nat.Properties`:
-  ```agda
-  even≢odd : ∀ m n → 2 * m ≢ suc (2 * n)
-  0≢1+n    : ∀ {n} → 0 ≢ suc n
-  n<1+n    : ∀ {n} → n < suc n
+* Added induction over subsets to `Data.Fin.Subset.Induction`.
 
-  +-rawMagma     : RawMagma 0ℓ 0ℓ
-  *-rawMagma     : RawMagma 0ℓ 0ℓ
-  +-0-rawMonoid  : RawMonoid 0ℓ 0ℓ
-  *-1-rawMonoid  : RawMonoid 0ℓ 0ℓ
+* Added new proofs to `Data.Fin.Subset.Properties`:
+  ```agda
+  s⊆s : p ⊆ q → s ∷ p ⊆ s ∷ q
+
+  x∈s⇒x∉∁s : x ∈ s → x ∉ ∁ s
+  x∈∁s⇒x∉s : x ∈ ∁ s → x ∉ s
+  x∉∁s⇒x∈s : x ∉ ∁ s → x ∈ s
+  x∉s⇒x∈∁s : x ∉ s → x ∈ ∁ s
+
+* Added a new proof to `Relation.Nullary.Decidable`:
+  ```agda
+  isYes≗does : (P? : Dec P) → isYes P? ≡ does P?
   ```
 
-* Added new proofs to `Relation.Binary.PropositionalEquality`:
+* Rewrote definitions branching on a `Dec` value to branch only on the boolean
+  `does` field, wherever possible. Furthermore, branching on the `proof` field
+  has been made as late as possible, using the `invert` lemma from
+  `Relation.Nullary.Reflects`.
+
+  For example, the old definition of `filter` in `Data.List.Base` used the
+  `yes` and `no` patterns, which desugared to the following.
+
   ```agda
-  isMagma : (_∙_ : Op₂ A) → IsMagma _≡_ _∙_
-  magma   : (_∙_ : Op₂ A) → Magma a a
+  filter : ∀ {P : Pred A p} → Decidable P → List A → List A
+  filter P? [] = []
+  filter P? (x ∷ xs) with P? x
+  ... | false because ofⁿ _ = filter P? xs
+  ... |  true because ofʸ _ = x ∷ filter P? xs
   ```
 
-* Added functions to extract the universe level from a type and a term.
+  Because the proofs (`ofⁿ _` and `ofʸ _`) are not giving us any information,
+  we do not need to match on them. We end up with the following definition,
+  where the `proof` field has been projected away.
+
   ```agda
-  levelOfType : ∀ {a} → Set a → Level
-  levelOfTerm : ∀ {a} {A : Set a} → A → Level
+  filter : ∀ {P : Pred A p} → Decidable P → List A → List A
+  filter P? [] = []
+  filter P? (x ∷ xs) with does (P? x)
+  ... | false = filter P? xs
+  ... | true  = x ∷ filter P? xs
   ```
 
-* Added Partial Equivalence Relations to `Relation.Binary.Core`:
+  Correspondingly, when proving a property of `filter`, we can often make a
+  similar change, but sometimes need the proof eventually. The following
+  example is adapted from `Data.List.Membership.Setoid.Properties`.
+
   ```agda
-  record IsPartialEquivalence {A : Set a} (_≈_ : Rel A ℓ) : Set (a ⊔ ℓ) where
-  field
-      sym   : Symmetric _≈_
-      trans : Transitive _≈_
+  module _ {c ℓ p} (S : Setoid c ℓ) {P : Pred (Carrier S) p}
+           (P? : Decidable P) (resp : P Respects (Setoid._≈_ S)) where
+
+    open Membership S using (_∈_)
+
+    ∈-filter⁺ : ∀ {v xs} → v ∈ xs → P v → v ∈ filter P? xs
+    ∈-filter⁺ {xs = x ∷ _} (here v≈x) Pv with P? x
+    -- There is no matching on the proof, so we can emit the result without
+    -- computing the proof at all.
+    ... |  true because   _   = here v≈x
+    -- `invert` is used to get the proof just when it is needed.
+    ... | false because [¬Px] = contradiction (resp v≈x Pv) (invert [¬Px])
+    -- In the remaining cases, we make no use of the proof.
+    ∈-filter⁺ {xs = x ∷ _} (there v∈xs) Pv with does (P? x)
+    ... | true  = there (∈-filter⁺ v∈xs Pv)
+    ... | false = ∈-filter⁺ v∈xs Pv
   ```
 
-* Added Partial Setoids to `Relation.Binary`:
+* Added new proofs to `Data.Rational.Properties`:
   ```agda
-  record PartialSetoid a ℓ : Set (suc (a ⊔ ℓ)) where
-  field
-      Carrier         : Set a
-      _≈_             : Rel Carrier ℓ
-      isPartialEquivalence : IsPartialEquivalence _≈_
-  ```
+  ↥-* : ↥ (p * q) ℤ.* *-nf p q ≡ ↥ p ℤ.* ↥ q
+  ↧-* : ↧ (p * q) ℤ.* *-nf p q ≡ ↧ p ℤ.* ↧ q
 
-* Re-exported the maximum function for sizes in `Size`
-  ```agda
-  _⊔ˢ_   : Size → Size → Size
+  toℚᵘ-homo-*                 : Homomorphic₂ toℚᵘ _*_ ℚᵘ._*_
+  toℚᵘ-isMagmaHomomorphism-*  : IsMagmaHomomorphism *-rawMagma ℚᵘ.*-rawMagma toℚᵘ
+  toℚᵘ-isMonoidHomomorphism-* : IsMonoidHomomorphism *-rawMonoid ℚᵘ.*-rawMonoid toℚᵘ
+  toℚᵘ-isMonoidMonomorphism-* : IsMonoidMonomorphism *-rawMonoid ℚᵘ.*-rawMonoid toℚᵘ
+
+  *-assoc     : Associative _*_
+  *-comm      : Commutative _*_
+  *-identityˡ : LeftIdentity 1ℚ _*_
+  *-identityʳ : RightIdentity 1ℚ _*_
+  *-identity  : Identity 1ℚ _*_
+
+  *-isMagma               : IsMagma _*_
+  *-isSemigroup           : IsSemigroup _*
+  *-1-isMonoid            : IsMonoid _*_ 1ℚ
+  *-1-isCommutativeMonoid : IsCommutativeMonoid _*_ 1ℚ
+  *-rawMagma              : RawMagma 0ℓ 0ℓ
+  *-rawMonoid             : RawMonoid 0ℓ 0ℓ
+  *-magma                 : Magma 0ℓ 0ℓ
+  *-semigroup             : Semigroup 0ℓ 0ℓ
+  *-1-monoid              : Monoid 0ℓ 0ℓ
+  *-1-commutativeMonoid   : CommutativeMonoid 0ℓ 0ℓ
   ```

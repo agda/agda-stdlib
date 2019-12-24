@@ -21,7 +21,7 @@ open import Data.Fin as Fin
 import Data.Fin.Properties as FP
 import Data.Fin.Permutation.Components as PC
 open import Data.Product as Prod using (∃; _×_; _,_)
-open import Data.Maybe.Base using (Maybe; nothing; just)
+open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; decToMaybe)
 open import Data.Empty
 open import Data.Unit.Base using (⊤; tt)
 open import Data.Vec as Vec using (Vec; []; _∷_)
@@ -237,9 +237,7 @@ preds (c & g) (suc i) =
             (List.map (Prod.map suc id) $ preds g i)
   where
   p : ∀ {e} {E : Set e} {n} (i : Fin n) → E × Fin n → Maybe (Fin′ (suc i) × E)
-  p i (e , j)  with i ≟ j
-  p i (e , .i) | yes P.refl = just (zero , e)
-  p i (e , j)  | no _       = nothing
+  p i (e , j) = Maybe.map (λ{ P.refl → zero , e }) (decToMaybe (i ≟ j))
 
 private
 
