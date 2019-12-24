@@ -76,6 +76,12 @@ Other minor additions
   length-alignWith           : i ⊢ length (alignWith al as bs) ≈ length as ⊔ length bs
   map-zipWith                : i ⊢ map f (zipWith zp as bs) ≈ zipWith (λ a → f ∘ zp a) as bs
   length-zipWith             : i ⊢ length (zipWith zp as bs) ≈ length as ⊓ length bs
+  drop-nil                   : i ⊢ drop {A = A} m [] ≈ []
+  drop-drop-fusion           : i ⊢ drop n (drop m as) ≈ drop (m ℕ.+ n) as
+  map-drop                   : i ⊢ map f (drop m as) ≈ drop m (map f as)
+  length-drop                : i ⊢ length (drop m as) ≈ length as ∸ m
+  length-cotake              : i ⊢ length (cotake n as) ≈ n
+  map-cotake                 : i ⊢ map f (cotake n as) ≈ cotake n (Stream.map f as)
   ```
 
 * Added new definitions to `Codata.Conat.Bisimilarity`:
@@ -84,6 +90,12 @@ Other minor additions
   setoid        : Size → Setoid 0ℓ 0ℓ
   module ≈-Reasoning
   ```
+
+* Added new proof to `Codata.Conat.Properties`:
+  ```agda
+  0∸m≈0 : ∀ m → i ⊢ zero ∸ m ≈ zero
+  ```
+
 
 * Added new proofs to `Data.Bool`:
   ```agda

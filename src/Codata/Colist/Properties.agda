@@ -11,14 +11,16 @@ module Codata.Colist.Properties where
 open import Level using (Level)
 open import Size
 open import Codata.Thunk using (Thunk; force)
-open import Codata.Conat
 open import Codata.Colist
 open import Codata.Colist.Bisimilarity
+open import Codata.Conat
 open import Codata.Conat.Bisimilarity as coℕᵇ using (zero; suc)
+import Codata.Conat.Properties as coℕₚ
+open import Codata.Stream as Stream using (Stream; _∷_)
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just)
 import Data.Maybe.Properties as Maybeₚ
 open import Data.Maybe.Relation.Unary.All using (All; nothing; just)
-open import Data.Nat.Base using (zero; suc)
+open import Data.Nat.Base as ℕ using (zero; suc)
 open import Data.Product as Prod using (_×_; _,_; uncurry)
 open import Data.These.Base as These using (These; this; that; these)
 open import Function.Base
@@ -180,3 +182,41 @@ length-zipWith zp []         bs       = zero
 length-zipWith zp as@(_ ∷ _) []       = zero
 length-zipWith zp (a ∷ as)   (b ∷ bs) =
   suc λ where .force → length-zipWith zp (as .force) (bs .force)
+
+------------------------------------------------------------------------
+-- Properties of drop
+
+drop-nil : ∀ m → i ⊢ drop {A = A} m [] ≈ []
+drop-nil zero    = []
+drop-nil (suc m) = []
+
+drop-drop-fusion : ∀ m n (as : Colist A ∞) →
+                   i ⊢ drop n (drop m as) ≈ drop (m ℕ.+ n) as
+drop-drop-fusion zero    n as       = refl
+drop-drop-fusion (suc m) n []       = drop-nil n
+drop-drop-fusion (suc m) n (a ∷ as) = drop-drop-fusion m n (as .force)
+
+map-drop : ∀ (f : A → B) m as → i ⊢ map f (drop m as) ≈ drop m (map f as)
+map-drop f zero    as       = refl
+map-drop f (suc m) []       = []
+map-drop f (suc m) (a ∷ as) = map-drop f m (as .force)
+
+length-drop : ∀ m (as : Colist A ∞) → i coℕᵇ.⊢ length (drop m as) ≈ length as ∸ m
+length-drop zero    as       = coℕᵇ.refl
+length-drop (suc m) []       = coℕᵇ.sym (coℕₚ.0∸m≈0 m)
+length-drop (suc m) (a ∷ as) = length-drop m (as .force)
+
+------------------------------------------------------------------------
+-- Properties of cotake
+
+length-cotake : ∀ n (as : Stream A ∞) → i coℕᵇ.⊢ length (cotake n as) ≈ n
+length-cotake zero    as       = zero
+length-cotake (suc n) (a ∷ as) =
+  suc λ where .force → length-cotake (n .force) (as .force)
+
+map-cotake : ∀ (f : A → B) n as →
+             i ⊢ map f (cotake n as) ≈ cotake n (Stream.map f as)
+map-cotake f zero    as       = []
+map-cotake f (suc n) (a ∷ as) =
+  Eq.refl ∷ λ where .force → map-cotake f (n .force) (as .force)
+
