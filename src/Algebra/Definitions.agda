@@ -117,3 +117,6 @@ RightCancellative _•_ = ∀ {x} y z → (y • x) ≈ (z • x) → y ≈ z
 
 Cancellative : Op₂ A → Set _
 Cancellative _•_ = (LeftCancellative _•_) × (RightCancellative _•_)
+
+_CommutesWith_ : Op₂ A → Op₂ A → Set _
+_∘_ CommutesWith _∙_ = ∀ w x y z → ((w ∙ x) ∘ (y ∙ z)) ≈ ((w ∘ y) ∙ (x ∘ z))
