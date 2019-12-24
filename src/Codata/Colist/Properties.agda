@@ -20,15 +20,17 @@ import Data.Maybe.Properties as Maybeₚ
 open import Data.Maybe.Relation.Unary.All using (All; nothing; just)
 open import Data.Nat.Base using (zero; suc)
 open import Data.Product as Prod using (_×_; _,_; uncurry)
+open import Data.These.Base as These using (These; this; that; these)
 open import Function.Base
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_; [_])
 
 private
   variable
-    a b c : Level
+    a b c d : Level
     A : Set a
     B : Set b
     C : Set c
+    D : Set d
     i : Size
 
 ------------------------------------------------------------------------
@@ -56,6 +58,9 @@ fromCowriter∘toCowriter≗id (a ∷ as) =
 ------------------------------------------------------------------------
 -- Properties of length
 
+length-∷ : ∀ (a : A) as → i coℕᵇ.⊢ length (a ∷ as) ≈ 1 ℕ+ length (as .force)
+length-∷ a as = suc (λ where .force → coℕᵇ.refl)
+
 length-replicate : ∀ n (a : A) → i coℕᵇ.⊢ length (replicate n a) ≈ n
 length-replicate zero    a = zero
 length-replicate (suc n) a = suc λ where .force → length-replicate (n .force) a
@@ -64,6 +69,10 @@ length-++ : (as bs : Colist A ∞) →
             i coℕᵇ.⊢ length (as ++ bs) ≈ length as + length bs
 length-++ []       bs = coℕᵇ.refl
 length-++ (a ∷ as) bs = suc λ where .force → length-++ (as .force) bs
+
+length-map : ∀ (f : A → B) as → i coℕᵇ.⊢ length (map f as) ≈ length as
+length-map f []       = zero
+length-map f (a ∷ as) = suc λ where .force → length-map f (as .force)
 
 ------------------------------------------------------------------------
 -- Properties of replicate
@@ -104,6 +113,19 @@ module _ {alg : A → Maybe (A × B)} {a} where
   unfold-just eq with alg a
   unfold-just Eq.refl | just (a′ , b) = Eq.refl ∷ λ where .force → refl
 
+------------------------------------------------------------------------
+-- Properties of scanl
+
+length-scanl : ∀ (c : B → A → B) n as →
+               i coℕᵇ.⊢ length (scanl c n as) ≈ 1 ℕ+ length as
+length-scanl c n []       = suc λ where .force → zero
+length-scanl c n (a ∷ as) = suc λ { .force → begin
+  length (scanl c (c n a) (as .force))
+    ≈⟨ length-scanl c (c n a) (as .force) ⟩
+  1 ℕ+ length (as .force)
+    ≈˘⟨ length-∷ a as ⟩
+  length (a ∷ as) ∎ } where open coℕᵇ.≈-Reasoning
+
 module _ (cons : C → B → C) (alg : A → Maybe (A × B)) where
 
   private
@@ -124,3 +146,37 @@ module _ (cons : C → B → C) (alg : A → Maybe (A × B)) where
     (cons nil b ∷ _)
      ≈˘⟨ unfold-just (Maybeₚ.map-just eq) ⟩
     unfold alg′ (a , nil) ∎ } where open ≈-Reasoning
+
+------------------------------------------------------------------------
+-- Properties of alignwith
+
+map-alignWith : ∀ (f : C → D) (al : These A B → C) as bs →
+                i ⊢ map f (alignWith al as bs) ≈ alignWith (f ∘ al) as bs
+map-alignWith f al []         bs       = map-map-fusion (al ∘′ that) f bs
+map-alignWith f al as@(_ ∷ _) []       = map-map-fusion (al ∘′ this) f as
+map-alignWith f al (a ∷ as)   (b ∷ bs) =
+  Eq.refl ∷ λ where .force → map-alignWith f al (as .force) (bs .force)
+
+length-alignWith : ∀ (al : These A B → C) as bs →
+                   i coℕᵇ.⊢ length (alignWith al as bs) ≈ length as ⊔ length bs
+length-alignWith al []         bs       = length-map (al ∘ that) bs
+length-alignWith al as@(_ ∷ _) []       = length-map (al ∘ this) as
+length-alignWith al (a ∷ as)   (b ∷ bs) =
+  suc λ where .force → length-alignWith al (as .force) (bs .force)
+
+------------------------------------------------------------------------
+-- Properties of zipwith
+
+map-zipWith : ∀ (f : C → D) (zp : A → B → C) as bs →
+              i ⊢ map f (zipWith zp as bs) ≈ zipWith (λ a → f ∘ zp a) as bs
+map-zipWith f zp []       _        = []
+map-zipWith f zp (_ ∷ _)  []       = []
+map-zipWith f zp (a ∷ as) (b ∷ bs) =
+  Eq.refl ∷ λ where .force → map-zipWith f zp (as .force) (bs .force)
+
+length-zipWith : ∀ (zp : A → B → C) as bs →
+                 i coℕᵇ.⊢ length (zipWith zp as bs) ≈ length as ⊓ length bs
+length-zipWith zp []         bs       = zero
+length-zipWith zp as@(_ ∷ _) []       = zero
+length-zipWith zp (a ∷ as)   (b ∷ bs) =
+  suc λ where .force → length-zipWith zp (as .force) (bs .force)

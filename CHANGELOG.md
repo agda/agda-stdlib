@@ -60,8 +60,11 @@ Other minor additions
 * Added new proofs to `Codata.Colist.Properties`:
   ```agda
   fromCowriter∘toCowriter≗id : i ⊢ fromCowriter (toCowriter as) ≈ as
+  length-∷                   : i ⊢ length (a ∷ as) ≈ 1 ℕ+ length (as .force)
   length-replicate           : i ⊢ length (replicate n a) ≈ n
   length-++                  : i ⊢ length (as ++ bs) ≈ length as + length bs
+  length-map                 : i ⊢ length (map f as) ≈ length as
+  length-scanl               : i ⊢ length (scanl c n as) ≈ 1 ℕ+ length as
   replicate-+                : i ⊢ replicate (m + n) a ≈ replicate m a ++ replicate n a
   map-replicate              : i ⊢ map f (replicate n a) ≈ replicate n (f a)
   lookup-replicate           : All (a ≡_) (lookup k (replicate n a))
@@ -69,6 +72,17 @@ Other minor additions
   unfold-nothing             : alg a ≡ nothing → unfold alg a ≡ []
   unfold-just                : i ⊢ unfold alg a ≈ b ∷ λ where .force → unfold alg a′
   scanl-unfold               : i ⊢ scanl cons nil (unfold alg a) ≈ nil ∷ (λ where .force → unfold alg′ (a , nil))
+  map-alignWith              : i ⊢ map f (alignWith al as bs) ≈ alignWith (f ∘ al) as bs
+  length-alignWith           : i ⊢ length (alignWith al as bs) ≈ length as ⊔ length bs
+  map-zipWith                : i ⊢ map f (zipWith zp as bs) ≈ zipWith (λ a → f ∘ zp a) as bs
+  length-zipWith             : i ⊢ length (zipWith zp as bs) ≈ length as ⊓ length bs
+  ```
+
+* Added new definitions to `Codata.Conat.Bisimilarity`:
+  ```agda
+  isEquivalence : IsEquivalence (i ⊢_≈_)
+  setoid        : Size → Setoid 0ℓ 0ℓ
+  module ≈-Reasoning
   ```
 
 * Added new proofs to `Data.Bool`:
