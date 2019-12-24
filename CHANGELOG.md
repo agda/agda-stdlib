@@ -39,6 +39,11 @@ Other minor additions
   ⁻¹-anti-homo-∙ : (x ∙ y) ⁻¹ ≈ y ⁻¹ ∙ x ⁻¹
   ```
 
+* Made `RawFunctor`,  `RawApplicative` and `IFun` more level polymorphic
+  (in `Category.Functor`, `Category.Applicative` and
+  `Category.Applicative.Indexed`
+  respectively).
+
 * Added new proofs to `Data.Bool`:
   ```agda
   not-injective : not x ≡ not y → x ≡ y
