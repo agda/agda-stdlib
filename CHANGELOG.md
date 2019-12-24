@@ -44,6 +44,33 @@ Other minor additions
   `Category.Applicative.Indexed`
   respectively).
 
+* Added new functions to `Codata.Colist`:
+  ```agda
+  drop : ℕ → Colist A ∞ → Colist A ∞
+  ```
+
+* Added new definitions to `Codata.Colist.Bisimilarity`:
+  ```agda
+  fromEq        : as ≡ bs → i ⊢ as ≈ bs
+  isEquivalence : IsEquivalence R → IsEquivalence (Bisim R i)
+  setoid        : Setoid a r → Size → Setoid a (a ⊔ r)
+  module ≈-Reasoning
+  ```
+
+* Added new proofs to `Codata.Colist.Properties`:
+  ```agda
+  fromCowriter∘toCowriter≗id : i ⊢ fromCowriter (toCowriter as) ≈ as
+  length-replicate           : i ⊢ length (replicate n a) ≈ n
+  length-++                  : i ⊢ length (as ++ bs) ≈ length as + length bs
+  replicate-+                : i ⊢ replicate (m + n) a ≈ replicate m a ++ replicate n a
+  map-replicate              : i ⊢ map f (replicate n a) ≈ replicate n (f a)
+  lookup-replicate           : All (a ≡_) (lookup k (replicate n a))
+  map-unfold                 : i ⊢ map f (unfold alg a) ≈ unfold (Maybe.map (Prod.map₂ f) ∘ alg) a
+  unfold-nothing             : alg a ≡ nothing → unfold alg a ≡ []
+  unfold-just                : i ⊢ unfold alg a ≈ b ∷ λ where .force → unfold alg a′
+  scanl-unfold               : i ⊢ scanl cons nil (unfold alg a) ≈ nil ∷ (λ where .force → unfold alg′ (a , nil))
+  ```
+
 * Added new proofs to `Data.Bool`:
   ```agda
   not-injective : not x ≡ not y → x ≡ y
@@ -65,6 +92,12 @@ Other minor additions
   x∈∁s⇒x∉s : x ∈ ∁ s → x ∉ s
   x∉∁s⇒x∈s : x ∉ ∁ s → x ∈ s
   x∉s⇒x∈∁s : x ∉ s → x ∈ ∁ s
+
+* Added new proofs to `Data.Maybe.Properties`:
+  ```agda
+  map-nothing : ma ≡ nothing → map f ma ≡ nothing
+  map-just    : ma ≡ just a → map f ma ≡ just (f a)
+  ```
 
 * Added a new proof to `Relation.Nullary.Decidable`:
   ```agda

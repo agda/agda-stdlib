@@ -26,7 +26,6 @@ open import Codata.Cowriter as CW using (Cowriter; _∷_)
 open import Codata.Delay as Delay using (Delay ; now ; later)
 open import Codata.Stream using (Stream ; _∷_)
 
-
 data Colist {a} (A : Set a) (i : Size) : Set a where
   []  : Colist A i
   _∷_ : A → Thunk (Colist A) i → Colist A i
@@ -76,7 +75,7 @@ module _ {a} {A : Set a} where
   colookup (suc n) (a ∷ as) =
     later λ where .force → colookup (n .force) (as .force)
 
-  take : ∀ (n : ℕ) → Colist A ∞ → BoundedVec A n
+  take : (n : ℕ) → Colist A ∞ → BoundedVec A n
   take zero    xs       = BVec.[]
   take n       []       = BVec.[]
   take (suc n) (x ∷ xs) = x BVec.∷ take n (xs .force)
@@ -84,6 +83,11 @@ module _ {a} {A : Set a} where
   cotake : ∀ {i} → Conat i → Stream A i → Colist A i
   cotake zero    xs       = []
   cotake (suc n) (x ∷ xs) = x ∷ λ where .force → cotake (n .force) (xs .force)
+
+  drop : ℕ → Colist A ∞ → Colist A ∞
+  drop zero    xs       = xs
+  drop (suc n) []       = []
+  drop (suc n) (x ∷ xs) = drop n (xs .force)
 
   fromList : List A → Colist A ∞
   fromList []       = []
