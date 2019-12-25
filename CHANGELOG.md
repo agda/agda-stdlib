@@ -54,7 +54,8 @@ Other minor additions
 
 * Added new functions to `Codata.Colist`:
   ```agda
-  drop : ℕ → Colist A ∞ → Colist A ∞
+  drop   : ℕ → Colist A ∞ → Colist A ∞
+  concat : Colist (List⁺ A) i → Colist A i
   ```
 
 * Added new definitions to `Codata.Colist.Bisimilarity`:

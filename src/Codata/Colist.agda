@@ -8,6 +8,7 @@
 
 module Codata.Colist where
 
+open import Level using (Level)
 open import Size
 open import Data.Unit
 open import Data.Nat.Base
@@ -15,7 +16,7 @@ open import Data.Product using (_×_ ; _,_)
 open import Data.These using (These; this; that; these)
 open import Data.Maybe using (Maybe; nothing; just)
 open import Data.List.Base using (List; []; _∷_)
-open import Data.List.NonEmpty using (List⁺; _∷_)
+open import Data.List.NonEmpty as List⁺ using (List⁺; _∷_)
 open import Data.Vec as Vec using (Vec; []; _∷_)
 open import Data.Vec.Bounded as Vec≤ using (Vec≤)
 open import Function
@@ -28,80 +29,92 @@ open import Codata.Stream using (Stream ; _∷_)
 
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 
-data Colist {a} (A : Set a) (i : Size) : Set a where
+private
+  variable
+    a b c w : Level
+    i : Size
+    A : Set a
+    B : Set b
+    C : Set c
+    W : Set w
+
+data Colist (A : Set a) (i : Size) : Set a where
   []  : Colist A i
   _∷_ : A → Thunk (Colist A) i → Colist A i
-
-module _ {w a} {W : Set w} {A : Set a} where
 
 ------------------------------------------------------------------------
 -- Relationship to Cowriter.
 
-  fromCowriter : ∀ {i} → Cowriter W A i → Colist W i
-  fromCowriter CW.[ _ ] = []
-  fromCowriter (w ∷ ca) = w ∷ λ where .force → fromCowriter (ca .force)
+fromCowriter : Cowriter W A i → Colist W i
+fromCowriter CW.[ _ ] = []
+fromCowriter (w ∷ ca) = w ∷ λ where .force → fromCowriter (ca .force)
 
-module _ {a} {A : Set a} where
-
-  toCowriter : ∀ {i} → Colist A i → Cowriter A ⊤ i
-  toCowriter []       = CW.[ _ ]
-  toCowriter (a ∷ as) = a ∷ λ where .force → toCowriter (as .force)
+toCowriter : Colist A i → Cowriter A ⊤ i
+toCowriter []       = CW.[ _ ]
+toCowriter (a ∷ as) = a ∷ λ where .force → toCowriter (as .force)
 
 ------------------------------------------------------------------------
 -- Basic functions.
 
-  [_] : A → Colist A ∞
-  [ a ] = a ∷ λ where .force → []
+[_] : A → Colist A ∞
+[ a ] = a ∷ λ where .force → []
 
-  length : ∀ {i} → Colist A i → Conat i
-  length []       = zero
-  length (x ∷ xs) = suc λ where .force → length (xs .force)
+length : Colist A i → Conat i
+length []       = zero
+length (x ∷ xs) = suc λ where .force → length (xs .force)
 
-  replicate : ∀ {i} → Conat i → A → Colist A i
-  replicate zero    a = []
-  replicate (suc n) a = a ∷ λ where .force → replicate (n .force) a
+replicate : Conat i → A → Colist A i
+replicate zero    a = []
+replicate (suc n) a = a ∷ λ where .force → replicate (n .force) a
 
-  infixr 5 _++_ _⁺++_
-  _++_ : ∀ {i} → Colist A i → Colist A i → Colist A i
-  []       ++ ys = ys
-  (x ∷ xs) ++ ys = x ∷ λ where .force → xs .force ++ ys
+infixr 5 _++_ _⁺++_
+_++_ : Colist A i → Colist A i → Colist A i
+[]       ++ ys = ys
+(x ∷ xs) ++ ys = x ∷ λ where .force → xs .force ++ ys
 
-  lookup : ℕ → Colist A ∞ → Maybe A
-  lookup n       []       = nothing
-  lookup zero    (a ∷ as) = just a
-  lookup (suc n) (a ∷ as) = lookup n (as .force)
+lookup : ℕ → Colist A ∞ → Maybe A
+lookup n       []       = nothing
+lookup zero    (a ∷ as) = just a
+lookup (suc n) (a ∷ as) = lookup n (as .force)
 
-  colookup : ∀ {i} → Conat i → Colist A i → Delay (Maybe A) i
-  colookup n       []       = now nothing
-  colookup zero    (a ∷ as) = now (just a)
-  colookup (suc n) (a ∷ as) =
-    later λ where .force → colookup (n .force) (as .force)
+colookup : Conat i → Colist A i → Delay (Maybe A) i
+colookup n       []       = now nothing
+colookup zero    (a ∷ as) = now (just a)
+colookup (suc n) (a ∷ as) =
+  later λ where .force → colookup (n .force) (as .force)
 
-  take : (n : ℕ) → Colist A ∞ → Vec≤ A n
-  take zero    xs       = Vec≤.[]
-  take n       []       = Vec≤.[]
-  take (suc n) (x ∷ xs) = x Vec≤.∷ take n (xs .force)
+take : (n : ℕ) → Colist A ∞ → Vec≤ A n
+take zero    xs       = Vec≤.[]
+take n       []       = Vec≤.[]
+take (suc n) (x ∷ xs) = x Vec≤.∷ take n (xs .force)
 
-  cotake : ∀ {i} → Conat i → Stream A i → Colist A i
-  cotake zero    xs       = []
-  cotake (suc n) (x ∷ xs) = x ∷ λ where .force → cotake (n .force) (xs .force)
+cotake : Conat i → Stream A i → Colist A i
+cotake zero    xs       = []
+cotake (suc n) (x ∷ xs) = x ∷ λ where .force → cotake (n .force) (xs .force)
 
-  drop : ℕ → Colist A ∞ → Colist A ∞
-  drop zero    xs       = xs
-  drop (suc n) []       = []
-  drop (suc n) (x ∷ xs) = drop n (xs .force)
+drop : ℕ → Colist A ∞ → Colist A ∞
+drop zero    xs       = xs
+drop (suc n) []       = []
+drop (suc n) (x ∷ xs) = drop n (xs .force)
 
-  fromList : List A → Colist A ∞
-  fromList []       = []
-  fromList (x ∷ xs) = x ∷ λ where .force → fromList xs
+fromList : List A → Colist A ∞
+fromList []       = []
+fromList (x ∷ xs) = x ∷ λ where .force → fromList xs
 
-  _⁺++_ : ∀ {i} → List⁺ A → Thunk (Colist A) i → Colist A i
-  (x ∷ xs) ⁺++ ys = x ∷ λ where .force → fromList xs ++ ys .force
+fromList⁺ : List⁺ A → Colist A ∞
+fromList⁺ = fromList ∘′ List⁺.toList
 
-  fromStream : ∀ {i} → Stream A i → Colist A i
-  fromStream = cotake Conat.infinity
+_⁺++_ : List⁺ A → Thunk (Colist A) i → Colist A i
+(x ∷ xs) ⁺++ ys = x ∷ λ where .force → fromList xs ++ ys .force
 
-module ChunksOf (n : ℕ) {a} {A : Set a} where
+concat : Colist (List⁺ A) i → Colist A i
+concat []         = []
+concat (as ∷ ass) = as ⁺++ λ where .force → concat (ass .force)
+
+fromStream : Stream A i → Colist A i
+fromStream = cotake Conat.infinity
+
+module ChunksOf (n : ℕ) where
 
   chunksOf : Colist A ∞ → Cowriter (Vec A n) (Vec≤ A n) ∞
   chunksOfAcc : ∀ {i} m →
@@ -129,42 +142,36 @@ _ : chunksOf 3 (fromList (1 ∷ 2 ∷ 3 ∷ 4 ∷ []))
   ≡ (1 ∷ 2 ∷ 3 ∷ []) ∷ _
 _ = refl
 
-module _ {a b} {A : Set a} {B : Set b} where
+map : (A → B) → Colist A i → Colist B i
+map f []       = []
+map f (a ∷ as) = f a ∷ λ where .force → map f (as .force)
 
- map : ∀ {i} (f : A → B) → Colist A i → Colist B i
- map f []       = []
- map f (a ∷ as) = f a ∷ λ where .force → map f (as .force)
+unfold : (A → Maybe (A × B)) → A → Colist B i
+unfold next seed with next seed
+... | nothing          = []
+... | just (seed′ , b) = b ∷ λ where .force → unfold next seed′
 
- unfold :  ∀ {i} → (A → Maybe (A × B)) → A → Colist B i
- unfold next seed with next seed
- ... | nothing          = []
- ... | just (seed′ , b) = b ∷ λ where .force → unfold next seed′
+scanl : (B → A → B) → B → Colist A i → Colist B i
+scanl c n []       = n ∷ λ where .force → []
+scanl c n (a ∷ as) = n ∷ λ where .force → scanl c (c n a) (as .force)
 
- scanl : ∀ {i} → (B → A → B) → B → Colist A i → Colist B i
- scanl c n []       = n ∷ λ where .force → []
- scanl c n (a ∷ as) = n ∷ λ where .force → scanl c (c n a) (as .force)
+alignWith : (These A B → C) → Colist A i → Colist B i → Colist C i
+alignWith f []         bs       = map (f ∘′ that) bs
+alignWith f as@(_ ∷ _) []       = map (f ∘′ this) as
+alignWith f (a ∷ as)   (b ∷ bs) =
+  f (these a b) ∷ λ where .force → alignWith f (as .force) (bs .force)
 
-module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
+zipWith : (A → B → C) → Colist A i → Colist B i → Colist C i
+zipWith f []       bs       = []
+zipWith f as       []       = []
+zipWith f (a ∷ as) (b ∷ bs) =
+  f a b ∷ λ where .force → zipWith f (as .force) (bs .force)
 
-  alignWith : ∀ {i} → (These A B → C) → Colist A i → Colist B i → Colist C i
-  alignWith f []         bs       = map (f ∘′ that) bs
-  alignWith f as@(_ ∷ _) []       = map (f ∘′ this) as
-  alignWith f (a ∷ as)   (b ∷ bs) =
-    f (these a b) ∷ λ where .force → alignWith f (as .force) (bs .force)
+align : Colist A i → Colist B i → Colist (These A B) i
+align = alignWith id
 
-  zipWith : ∀ {i} → (A → B → C) → Colist A i → Colist B i → Colist C i
-  zipWith f []       bs       = []
-  zipWith f as       []       = []
-  zipWith f (a ∷ as) (b ∷ bs) =
-    f a b ∷ λ where .force → zipWith f (as .force) (bs .force)
+zip : Colist A i → Colist B i → Colist (A × B) i
+zip = zipWith _,_
 
-module _ {a b} {A : Set a} {B : Set b} where
-
-  align : ∀ {i} → Colist A i → Colist B i → Colist (These A B) i
-  align = alignWith id
-
-  zip : ∀ {i} → Colist A i → Colist B i → Colist (A × B) i
-  zip = zipWith _,_
-
-  ap : ∀ {i} → Colist (A → B) i → Colist A i → Colist B i
-  ap = zipWith _$′_
+ap : Colist (A → B) i → Colist A i → Colist B i
+ap = zipWith _$′_
