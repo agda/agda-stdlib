@@ -17,10 +17,12 @@ open import Codata.Conat
 open import Codata.Conat.Bisimilarity as coℕᵇ using (zero; suc)
 import Codata.Conat.Properties as coℕₚ
 open import Codata.Stream as Stream using (Stream; _∷_)
+open import Data.List.Base as List using (List; []; _∷_)
+open import Data.List.NonEmpty as List⁺ using (List⁺; _∷_)
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just)
 import Data.Maybe.Properties as Maybeₚ
 open import Data.Maybe.Relation.Unary.All using (All; nothing; just)
-open import Data.Nat.Base as ℕ using (zero; suc)
+open import Data.Nat.Base as ℕ using (zero; suc; z≤n; s≤s)
 open import Data.Product as Prod using (_×_; _,_; uncurry)
 open import Data.These.Base as These using (These; this; that; these)
 open import Function.Base
@@ -205,6 +207,26 @@ length-drop : ∀ m (as : Colist A ∞) → i coℕᵇ.⊢ length (drop m as) �
 length-drop zero    as       = coℕᵇ.refl
 length-drop (suc m) []       = coℕᵇ.sym (coℕₚ.0∸m≈0 m)
 length-drop (suc m) (a ∷ as) = length-drop m (as .force)
+
+drop-fromList-++-identity : ∀ (as : List A) bs →
+                            drop (List.length as) (fromList as ++ bs) ≡ bs
+drop-fromList-++-identity []       bs = Eq.refl
+drop-fromList-++-identity (a ∷ as) bs = drop-fromList-++-identity as bs
+
+drop-fromList-++-≤ : ∀ (as : List A) bs {m} → m ℕ.≤ List.length as →
+                     drop m (fromList as ++ bs) ≡ fromList (List.drop m as) ++ bs
+drop-fromList-++-≤ []       bs z≤n     = Eq.refl
+drop-fromList-++-≤ (a ∷ as) bs z≤n     = Eq.refl
+drop-fromList-++-≤ (a ∷ as) bs (s≤s p) = drop-fromList-++-≤ as bs p
+
+drop-fromList-++-≥ : ∀ (as : List A) bs {m} → m ℕ.≥ List.length as →
+                     drop m (fromList as ++ bs) ≡ drop (m ℕ.∸ List.length as) bs
+drop-fromList-++-≥ []       bs z≤n     = Eq.refl
+drop-fromList-++-≥ (a ∷ as) bs (s≤s p) = drop-fromList-++-≥ as bs p
+
+drop-++⁺-identity : ∀ (as : List⁺ A) bs →
+                    drop (List⁺.length as) (as ⁺++ bs) ≡ bs .force
+drop-++⁺-identity (a ∷ as) bs = drop-fromList-++-identity as (bs .force)
 
 ------------------------------------------------------------------------
 -- Properties of cotake

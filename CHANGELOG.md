@@ -82,6 +82,10 @@ Other minor additions
   length-drop                : i ⊢ length (drop m as) ≈ length as ∸ m
   length-cotake              : i ⊢ length (cotake n as) ≈ n
   map-cotake                 : i ⊢ map f (cotake n as) ≈ cotake n (Stream.map f as)
+  drop-fromList-++-identity  : drop (length as) (fromList as ++ bs) ≡ bs
+  drop-fromList-++-≤         : drop m (fromList as ++ bs) ≡ fromList (drop m as) ++ bs
+  drop-fromList-++-≥         : drop m (fromList as ++ bs) ≡ drop (m ℕ.∸ length as) bs
+  drop-++⁺-identity          : drop (length as) (as ⁺++ bs) ≡ bs .force
   ```
 
 * Added new definitions to `Codata.Conat.Bisimilarity`:
