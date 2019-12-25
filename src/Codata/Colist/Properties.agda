@@ -16,7 +16,10 @@ open import Codata.Colist.Bisimilarity
 open import Codata.Conat
 open import Codata.Conat.Bisimilarity as coℕᵇ using (zero; suc)
 import Codata.Conat.Properties as coℕₚ
+open import Codata.Cowriter as Cowriter using ([_]; _∷_)
+open import Codata.Cowriter.Bisimilarity as coWriterᵇ using ([_]; _∷_)
 open import Codata.Stream as Stream using (Stream; _∷_)
+open import Data.Vec.Bounded as Vec≤ using (Vec≤)
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.NonEmpty as List⁺ using (List⁺; _∷_)
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just)
@@ -25,6 +28,7 @@ open import Data.Maybe.Relation.Unary.All using (All; nothing; just)
 open import Data.Nat.Base as ℕ using (zero; suc; z≤n; s≤s)
 open import Data.Product as Prod using (_×_; _,_; uncurry)
 open import Data.These.Base as These using (These; this; that; these)
+open import Data.Vec.Base as Vec using (Vec; []; _∷_)
 open import Function.Base
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_; [_])
 
@@ -224,9 +228,9 @@ drop-fromList-++-≥ : ∀ (as : List A) bs {m} → m ℕ.≥ List.length as →
 drop-fromList-++-≥ []       bs z≤n     = Eq.refl
 drop-fromList-++-≥ (a ∷ as) bs (s≤s p) = drop-fromList-++-≥ as bs p
 
-drop-++⁺-identity : ∀ (as : List⁺ A) bs →
+drop-⁺++-identity : ∀ (as : List⁺ A) bs →
                     drop (List⁺.length as) (as ⁺++ bs) ≡ bs .force
-drop-++⁺-identity (a ∷ as) bs = drop-fromList-++-identity as (bs .force)
+drop-⁺++-identity (a ∷ as) bs = drop-fromList-++-identity as (bs .force)
 
 ------------------------------------------------------------------------
 -- Properties of cotake
@@ -242,3 +246,29 @@ map-cotake f zero    as       = []
 map-cotake f (suc n) (a ∷ as) =
   Eq.refl ∷ λ where .force → map-cotake f (n .force) (as .force)
 
+------------------------------------------------------------------------
+-- Properties of chunksOf
+
+module Map-ChunksOf (f : A → B) n where
+
+  open ChunksOf n using (chunksOfAcc)
+
+  map-chunksOf : ∀ as →
+    i coWriterᵇ.⊢ Cowriter.map (Vec.map f) (Vec≤.map f) (chunksOf n as)
+                ≈ chunksOf n (map f as)
+  map-chunksOfAcc : ∀ m as {k≤ k≡ k≤′ k≡′} →
+    (∀ vs → Vec≤.map f (k≤ vs) ≡ k≤′ (Vec≤.map f vs)) →
+    (∀ vs → Vec.map f (k≡ vs) ≡ k≡′ (Vec.map f vs)) →
+    i coWriterᵇ.⊢ Cowriter.map (Vec.map f) (Vec≤.map f)
+                    (chunksOfAcc m k≤ k≡ as)
+                ≈ chunksOfAcc m k≤′ k≡′ (map f as)
+
+  map-chunksOf as = map-chunksOfAcc n as (λ vs → Eq.refl) (λ vs → Eq.refl)
+
+  map-chunksOfAcc zero    as       eq-≤ eq-≡ =
+      eq-≡ [] ∷ λ where .force → map-chunksOf as
+  map-chunksOfAcc (suc m) []       eq-≤ eq-≡ = coWriterᵇ.[ eq-≤ Vec≤.[] ]
+  map-chunksOfAcc (suc m) (a ∷ as) eq-≤ eq-≡ =
+    map-chunksOfAcc m (as .force) (eq-≤ ∘ (a Vec≤.∷_)) (eq-≡ ∘ (a Vec.∷_))
+
+open Map-ChunksOf using (map-chunksOf) public

@@ -17,7 +17,7 @@ open import Data.Maybe using (Maybe; nothing; just)
 open import Data.List.Base using (List; []; _∷_)
 open import Data.List.NonEmpty using (List⁺; _∷_)
 open import Data.Vec as Vec using (Vec; []; _∷_)
-open import Data.BoundedVec as BVec using (BoundedVec)
+open import Data.Vec.Bounded as Vec≤ using (Vec≤)
 open import Function
 
 open import Codata.Thunk using (Thunk; force)
@@ -25,6 +25,8 @@ open import Codata.Conat as Conat using (Conat ; zero ; suc)
 open import Codata.Cowriter as CW using (Cowriter; _∷_)
 open import Codata.Delay as Delay using (Delay ; now ; later)
 open import Codata.Stream using (Stream ; _∷_)
+
+open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 
 data Colist {a} (A : Set a) (i : Size) : Set a where
   []  : Colist A i
@@ -75,10 +77,10 @@ module _ {a} {A : Set a} where
   colookup (suc n) (a ∷ as) =
     later λ where .force → colookup (n .force) (as .force)
 
-  take : (n : ℕ) → Colist A ∞ → BoundedVec A n
-  take zero    xs       = BVec.[]
-  take n       []       = BVec.[]
-  take (suc n) (x ∷ xs) = x BVec.∷ take n (xs .force)
+  take : (n : ℕ) → Colist A ∞ → Vec≤ A n
+  take zero    xs       = Vec≤.[]
+  take n       []       = Vec≤.[]
+  take (suc n) (x ∷ xs) = x Vec≤.∷ take n (xs .force)
 
   cotake : ∀ {i} → Conat i → Stream A i → Colist A i
   cotake zero    xs       = []
@@ -99,22 +101,33 @@ module _ {a} {A : Set a} where
   fromStream : ∀ {i} → Stream A i → Colist A i
   fromStream = cotake Conat.infinity
 
-module _ {ℓ} {A : Set ℓ} where
+module ChunksOf (n : ℕ) {a} {A : Set a} where
 
-  chunksOf : (n : ℕ) → Colist A ∞ → Cowriter (Vec A n) (BoundedVec A n) ∞
-  chunksOf n = chunksOfAcc n id id module ChunksOf where
+  chunksOf : Colist A ∞ → Cowriter (Vec A n) (Vec≤ A n) ∞
+  chunksOfAcc : ∀ {i} m →
+    -- We have two continuations but we are only ever going to use one.
+    -- If we had linear types, we'd write the type using the & conjunction here.
+    (k≤ : Vec≤ A m → Vec≤ A n) →
+    (k≡ : Vec A m → Vec A n) →
+    -- Finally we chop up the input stream.
+    Colist A ∞ → Cowriter (Vec A n) (Vec≤ A n) i
 
-    chunksOfAcc : ∀ {i} m →
-      -- We have two continuations but we are only ever going to use one.
-      -- If we had linear types, we would write the type using the & conjunction here.
-      (k≤ : BoundedVec A m → BoundedVec A n) →
-      (k≡ : Vec A m → Vec A n) →
-      -- Finally we chop up the input stream.
-      Colist A ∞ → Cowriter (Vec A n) (BoundedVec A n) i
-    chunksOfAcc zero    k≤ k≡ as       = k≡ [] ∷ λ where .force → chunksOfAcc n id id as
-    chunksOfAcc (suc k) k≤ k≡ []       = CW.[ k≤ BVec.[] ]
-    chunksOfAcc (suc k) k≤ k≡ (a ∷ as) =
-      chunksOfAcc k (k≤ ∘ (a BVec.∷_)) (k≡ ∘ (a ∷_)) (as .force)
+  chunksOf = chunksOfAcc n id id
+
+  chunksOfAcc zero    k≤ k≡ as       =
+    k≡ [] ∷ λ where .force → chunksOfAcc n id id as
+    -- here we would like to use chunksOf unfortunately the termination
+    -- checker would not be happy
+  chunksOfAcc (suc k) k≤ k≡ []       = CW.[ k≤ Vec≤.[] ]
+  chunksOfAcc (suc k) k≤ k≡ (a ∷ as) =
+    chunksOfAcc k (k≤ ∘ (a Vec≤.∷_)) (k≡ ∘ (a ∷_)) (as .force)
+
+open ChunksOf using (chunksOf) public
+
+-- Test to make sure that the values are kept in the same order
+_ : chunksOf 3 (fromList (1 ∷ 2 ∷ 3 ∷ 4 ∷ []))
+  ≡ (1 ∷ 2 ∷ 3 ∷ []) ∷ _
+_ = refl
 
 module _ {a b} {A : Set a} {B : Set b} where
 

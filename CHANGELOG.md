@@ -20,8 +20,16 @@ Non-backwards compatible changes
   Definitions that are sensitive to the behaviour of these lemmas, rather than
   just their existence, may need to be revised.
 
+* In `Codata.Colist`, replaced all the uses of `Data.BoundedVec` with the more
+  up to date `Data.Vec.Bounded`.
+
 Other major additions
 ---------------------
+
+* Added new module:
+  ```agda
+  Codata.Cowriter.Bisimilarity
+  ```
 
 Other minor additions
 ---------------------
@@ -84,8 +92,9 @@ Other minor additions
   map-cotake                 : i ⊢ map f (cotake n as) ≈ cotake n (Stream.map f as)
   drop-fromList-++-identity  : drop (length as) (fromList as ++ bs) ≡ bs
   drop-fromList-++-≤         : m ≤ length as → drop m (fromList as ++ bs) ≡ fromList (drop m as) ++ bs
-  drop-fromList-++-≥         : m ≥ length as → drop m (fromList as ++ bs) ≡ drop (m ℕ.∸ length as) bs
-  drop-++⁺-identity          : drop (length as) (as ⁺++ bs) ≡ bs .force
+  drop-fromList-++-≥         : m ≥ length as → drop m (fromList as ++ bs) ≡ drop (m ∸ length as) bs
+  drop-⁺++-identity          : drop (length as) (as ⁺++ bs) ≡ bs .force
+  map-chunksOf               : i ⊢ map (map f) (map f) (chunksOf n as) ≈ chunksOf n (map f as)
   ```
 
 * Added new definitions to `Codata.Conat.Bisimilarity`:
