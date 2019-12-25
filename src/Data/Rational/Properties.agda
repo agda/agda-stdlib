@@ -8,6 +8,8 @@
 
 module Data.Rational.Properties where
 
+open import Algebra.Core
+open import Algebra.Structures
 open import Algebra.Morphism
 open import Algebra.Bundles
 import Algebra.Morphism.MonoidMonomorphism as MonoidMonomorphisms
@@ -44,7 +46,6 @@ open import Relation.Nullary.Decidable as Dec using (True; fromWitness; map′)
 open import Relation.Nullary.Product using (_×-dec_)
 
 open import Algebra.Definitions {A = ℚ} _≡_
-open import Algebra.Structures {A = ℚ} _≡_
 open import Algebra.FunctionProperties.Consequences.Propositional
 
 private
@@ -585,16 +586,16 @@ private
 ------------------------------------------------------------------------
 -- Structures
 
-+-isMagma : IsMagma _+_
++-isMagma : IsMagma _≡_ _+_
 +-isMagma = +-Monomorphism.isMagma ℚᵘ.+-isMagma
 
-+-isSemigroup : IsSemigroup _+_
++-isSemigroup : IsSemigroup _≡_ _+_
 +-isSemigroup = +-Monomorphism.isSemigroup ℚᵘ.+-isSemigroup
 
-+-0-isMonoid : IsMonoid _+_ 0ℚ
++-0-isMonoid : IsMonoid _≡_ _+_ 0ℚ
 +-0-isMonoid = +-Monomorphism.isMonoid ℚᵘ.+-0-isMonoid
 
-+-0-isCommutativeMonoid : IsCommutativeMonoid _+_ 0ℚ
++-0-isCommutativeMonoid : IsCommutativeMonoid _≡_ _+_ 0ℚ
 +-0-isCommutativeMonoid = +-Monomorphism.isCommutativeMonoid ℚᵘ.+-0-isCommutativeMonoid
 
 ------------------------------------------------------------------------
@@ -619,140 +620,6 @@ private
 +-0-commutativeMonoid = record
   { isCommutativeMonoid = +-0-isCommutativeMonoid
   }
-
-
-------------------------------------------------------------------------
--- Properties of _*_
-------------------------------------------------------------------------
-
-private
-  *-nf : ℚ → ℚ → ℤ
-  *-nf p q = gcd (↥ p ℤ.* ↥ q) (↧ p ℤ.* ↧ q)
-
-↥-* : ∀ p q → ↥ (p * q) ℤ.* *-nf p q ≡ ↥ p ℤ.* ↥ q
-↥-* p q = ↥-/ (↥ p ℤ.* ↥ q) (↧ₙ p ℕ.* ↧ₙ q)
-
-↧-* : ∀ p q → ↧ (p * q) ℤ.* *-nf p q ≡ ↧ p ℤ.* ↧ q
-↧-* p q = ↧-/ (↥ p ℤ.* ↥ q) (↧ₙ p ℕ.* ↧ₙ q)
-
-------------------------------------------------------------------------
--- Raw bundles
-
-*-rawMagma : RawMagma 0ℓ 0ℓ
-*-rawMagma = record
-  { _≈_ = _≡_
-  ; _∙_ = _*_
-  }
-
-*-rawMonoid : RawMonoid 0ℓ 0ℓ
-*-rawMonoid = record
-  { _≈_ = _≡_
-  ; _∙_ = _*_
-  ; ε   = 1ℚ
-  }
-
-------------------------------------------------------------------------
--- Monomorphic to unnormalised _*_
-
-toℚᵘ-homo-* : Homomorphic₂ toℚᵘ _*_ ℚᵘ._*_
-toℚᵘ-homo-* p q with *-nf p q ℤ.≟ 0ℤ
-... | yes nf[p,q]≡0 = *≡* (begin
-  ↥ (p * q)     ℤ.* (↧ p ℤ.* ↧ q) ≡⟨ cong (ℤ._* (↧ p ℤ.* ↧ q)) eq ⟩
-  0ℤ            ℤ.* (↧ p ℤ.* ↧ q) ≡⟨⟩
-  0ℤ            ℤ.* ↧ (p * q)     ≡⟨ cong (ℤ._* ↧ (p * q)) (sym eq2) ⟩
-  (↥ p ℤ.* ↥ q) ℤ.* ↧ (p * q)     ∎)
-  where
-  open ≡-Reasoning
-  eq2 : ↥ p ℤ.* ↥ q ≡ 0ℤ
-  eq2 = gcd[i,j]≡0⇒i≡0 (↥ p ℤ.* ↥ q) (↧ p ℤ.* ↧ q) nf[p,q]≡0
-
-  eq : ↥ (p * q) ≡ 0ℤ
-  eq rewrite eq2 = cong ↥_ (0/n≡0 (↧ₙ p ℕ.* ↧ₙ q))
-... | no  nf[p,q]≢0 = *≡* (ℤ.*-cancelʳ-≡ _ _ (*-nf p q) nf[p,q]≢0 (begin
-  ↥ (p * q)     ℤ.* (↧ p ℤ.* ↧ q) ℤ.* *-nf p q ≡⟨ xy∙z≈xz∙y (↥ (p * q)) _ _ ⟩
-  ↥ (p * q)     ℤ.* *-nf p q ℤ.* (↧ p ℤ.* ↧ q) ≡⟨ cong (ℤ._* (↧ p ℤ.* ↧ q)) (↥-* p q) ⟩
-  (↥ p ℤ.* ↥ q) ℤ.* (↧ p ℤ.* ↧ q)              ≡⟨ cong ((↥ p ℤ.* ↥ q) ℤ.*_) (sym (↧-* p q)) ⟩
-  (↥ p ℤ.* ↥ q) ℤ.* (↧ (p * q) ℤ.* *-nf p q)   ≡⟨ x∙yz≈xy∙z (↥ p ℤ.* ↥ q) _ _ ⟩
-  (↥ p ℤ.* ↥ q) ℤ.* ↧ (p * q)  ℤ.* *-nf p q    ∎))
-  where open ≡-Reasoning; open CommSemigroupProperties ℤ.*-commutativeSemigroup
-
-toℚᵘ-isMagmaHomomorphism-* : IsMagmaHomomorphism *-rawMagma ℚᵘ.*-rawMagma toℚᵘ
-toℚᵘ-isMagmaHomomorphism-* = record
-  { isRelHomomorphism = toℚᵘ-isRelHomomorphism
-  ; homo              = toℚᵘ-homo-*
-  }
-
-toℚᵘ-isMonoidHomomorphism-* : IsMonoidHomomorphism *-rawMonoid ℚᵘ.*-rawMonoid toℚᵘ
-toℚᵘ-isMonoidHomomorphism-* = record
-  { isMagmaHomomorphism = toℚᵘ-isMagmaHomomorphism-*
-  ; ε-homo              = ℚᵘ.≃-refl
-  }
-
-toℚᵘ-isMonoidMonomorphism-* : IsMonoidMonomorphism *-rawMonoid ℚᵘ.*-rawMonoid toℚᵘ
-toℚᵘ-isMonoidMonomorphism-* = record
-  { isMonoidHomomorphism = toℚᵘ-isMonoidHomomorphism-*
-  ; injective            = toℚᵘ-injective
-  }
-
-------------------------------------------------------------------------
--- Algebraic properties
-
-private
-  module *-Monomorphism = MonoidMonomorphisms toℚᵘ-isMonoidMonomorphism-*
-
-*-assoc : Associative _*_
-*-assoc = *-Monomorphism.assoc ℚᵘ.*-isMagma ℚᵘ.*-assoc
-
-*-comm : Commutative _*_
-*-comm = *-Monomorphism.comm ℚᵘ.*-isMagma ℚᵘ.*-comm
-
-*-identityˡ : LeftIdentity 1ℚ _*_
-*-identityˡ = *-Monomorphism.identityˡ ℚᵘ.*-isMagma ℚᵘ.*-identityˡ
-
-*-identityʳ : RightIdentity 1ℚ _*_
-*-identityʳ = *-Monomorphism.identityʳ ℚᵘ.*-isMagma ℚᵘ.*-identityʳ
-
-*-identity : Identity 1ℚ _*_
-*-identity = *-identityˡ , *-identityʳ
-
-------------------------------------------------------------------------
--- Structures
-
-*-isMagma : IsMagma _*_
-*-isMagma = *-Monomorphism.isMagma ℚᵘ.*-isMagma
-
-*-isSemigroup : IsSemigroup _*_
-*-isSemigroup = *-Monomorphism.isSemigroup ℚᵘ.*-isSemigroup
-
-*-1-isMonoid : IsMonoid _*_ 1ℚ
-*-1-isMonoid = *-Monomorphism.isMonoid ℚᵘ.*-1-isMonoid
-
-*-1-isCommutativeMonoid : IsCommutativeMonoid _*_ 1ℚ
-*-1-isCommutativeMonoid = *-Monomorphism.isCommutativeMonoid ℚᵘ.*-1-isCommutativeMonoid
-
-------------------------------------------------------------------------
--- Packages
-
-*-magma : Magma 0ℓ 0ℓ
-*-magma = record
-  { isMagma = *-isMagma
-  }
-
-*-semigroup : Semigroup 0ℓ 0ℓ
-*-semigroup = record
-  { isSemigroup = *-isSemigroup
-  }
-
-*-1-monoid : Monoid 0ℓ 0ℓ
-*-1-monoid = record
-  { isMonoid = *-1-isMonoid
-  }
-
-*-1-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
-*-1-commutativeMonoid = record
-  { isCommutativeMonoid = *-1-isCommutativeMonoid
-  }
-
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
