@@ -64,6 +64,9 @@ Other minor additions
   isEquivalence : IsEquivalence R → IsEquivalence (Bisim R i)
   setoid        : Setoid a r → Size → Setoid a (a ⊔ r)
   module ≈-Reasoning
+
+  ++⁺  : Pointwise R as bs → Bisim R i xs ys → Bisim R i (fromList as ++ xs) (fromList bs ++ ys)
+  ⁺++⁺ : Pointwise R (toList as) (toList bs) → Thunk^R (Bisim R) i xs ys → Bisim R i (as ⁺++ xs) (bs ⁺++ ys)
   ```
 
 * Added new proofs to `Codata.Colist.Properties`:
@@ -96,6 +99,15 @@ Other minor additions
   drop-fromList-++-≥         : m ≥ length as → drop m (fromList as ++ bs) ≡ drop (m ∸ length as) bs
   drop-⁺++-identity          : drop (length as) (as ⁺++ bs) ≡ bs .force
   map-chunksOf               : i ⊢ map (map f) (map f) (chunksOf n as) ≈ chunksOf n (map f as)
+  fromList-++                : i ⊢ fromList (as ++ bs) ≈ fromList as ++ fromList bs
+  fromList-scanl             : i ⊢ scanl c n (fromList as) ≈ fromList (scanl c n as)
+  map-fromList               : i ⊢ map f (fromList as) ≈ fromList (map f as)
+  length-fromList            : i co⊢ length (fromList as) ≈ fromℕ (length as)
+  fromStream-++              : i ⊢ fromStream (as ++ bs) ≈ fromList as ++ fromStream bs
+  fromStream-⁺++             : i ⊢ fromStream (as ⁺++ bs) ≈ fromList⁺ as ++ fromStream (bs .force)
+  fromStream-concat          : i ⊢ concat (fromStream ass) ≈ fromStream (concat ass)
+  fromStream-scanl           : i ⊢ scanl c n (fromStream as) ≈ fromStream (scanl c n as)
+  map-fromStream             : i ⊢ map f (fromStream as) ≈ fromStream (map f as)
   ```
 
 * Added new definitions to `Codata.Conat.Bisimilarity`:

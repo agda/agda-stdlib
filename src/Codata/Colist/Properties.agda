@@ -10,7 +10,7 @@ module Codata.Colist.Properties where
 
 open import Level using (Level)
 open import Size
-open import Codata.Thunk using (Thunk; force)
+open import Codata.Thunk as Thunk using (Thunk; force)
 open import Codata.Colist
 open import Codata.Colist.Bisimilarity
 open import Codata.Conat
@@ -22,6 +22,7 @@ open import Codata.Stream as Stream using (Stream; _∷_)
 open import Data.Vec.Bounded as Vec≤ using (Vec≤)
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.NonEmpty as List⁺ using (List⁺; _∷_)
+open import Data.List.Relation.Binary.Equality.Propositional using (≋-refl)
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just)
 import Data.Maybe.Properties as Maybeₚ
 open import Data.Maybe.Relation.Unary.All using (All; nothing; just)
@@ -272,3 +273,61 @@ module Map-ChunksOf (f : A → B) n where
     map-chunksOfAcc m (as .force) (eq-≤ ∘ (a Vec≤.∷_)) (eq-≡ ∘ (a Vec.∷_))
 
 open Map-ChunksOf using (map-chunksOf) public
+
+------------------------------------------------------------------------
+-- Properties of fromList
+
+fromList-++ : (as bs : List A) →
+              i ⊢ fromList (as List.++ bs) ≈ fromList as ++ fromList bs
+fromList-++ []       bs = refl
+fromList-++ (a ∷ as) bs = Eq.refl ∷ λ where .force → fromList-++ as bs
+
+fromList-scanl : ∀ (c : B → A → B) n as →
+                 i ⊢ scanl c n (fromList as) ≈ fromList (List.scanl c n as)
+fromList-scanl c n []       = Eq.refl ∷ λ where .force → refl
+fromList-scanl c n (a ∷ as) =
+  Eq.refl ∷ λ where .force → fromList-scanl c (c n a) as
+
+map-fromList : ∀ (f : A → B) as →
+               i ⊢ map f (fromList as) ≈ fromList (List.map f as)
+map-fromList f []       = []
+map-fromList f (a ∷ as) = Eq.refl ∷ λ where .force → map-fromList f as
+
+length-fromList : (as : List A) →
+                  i coℕᵇ.⊢ length (fromList as) ≈ fromℕ (List.length as)
+length-fromList []       = zero
+length-fromList (a ∷ as) = suc (λ where .force → length-fromList as)
+
+------------------------------------------------------------------------
+-- Properties of fromStream
+
+fromStream-++ : ∀ (as : List A) bs →
+                i ⊢ fromStream (as Stream.++ bs) ≈ fromList as ++ fromStream bs
+fromStream-++ []       bs = refl
+fromStream-++ (a ∷ as) bs = Eq.refl ∷ λ where .force → fromStream-++ as bs
+
+fromStream-⁺++ : ∀ (as : List⁺ A) bs →
+                 i ⊢ fromStream (as Stream.⁺++ bs)
+                   ≈ fromList⁺ as ++ fromStream (bs .force)
+fromStream-⁺++ (a ∷ as) bs =
+  Eq.refl ∷ λ where .force → fromStream-++ as (bs .force)
+
+fromStream-concat : (ass : Stream (List⁺ A) ∞) →
+                    i ⊢ concat (fromStream ass) ≈ fromStream (Stream.concat ass)
+fromStream-concat (as@(a ∷ _) ∷ ass) = begin
+  concat (fromStream (as ∷ ass))
+    ≈⟨ Eq.refl ∷ (λ { .force → ++⁺ ≋-refl (fromStream-concat (ass .force))}) ⟩
+  a ∷ _
+    ≈⟨ sym (fromStream-⁺++ as _) ⟩
+  fromStream (Stream.concat (as ∷ ass)) ∎ where open ≈-Reasoning
+
+fromStream-scanl : ∀ (c : B → A → B) n as →
+                   i ⊢ scanl c n (fromStream as)
+                     ≈ fromStream (Stream.scanl c n as)
+fromStream-scanl c n (a ∷ as) =
+  Eq.refl ∷ λ where .force → fromStream-scanl c (c n a) (as .force)
+
+map-fromStream : ∀ (f : A → B) as →
+                 i ⊢ map f (fromStream as) ≈ fromStream (Stream.map f as)
+map-fromStream f (a ∷ as) =
+  Eq.refl ∷ λ where .force → map-fromStream f (as .force)

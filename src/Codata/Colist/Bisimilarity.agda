@@ -12,6 +12,9 @@ open import Level using (Level; _⊔_)
 open import Size
 open import Codata.Thunk
 open import Codata.Colist
+open import Data.List.Base using (List; []; _∷_)
+open import Data.List.Relation.Binary.Pointwise using (Pointwise; []; _∷_)
+open import Data.List.NonEmpty as List⁺  using (List⁺; _∷_)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
@@ -48,8 +51,22 @@ module _ {P : REL A B p} {Q : REL B C q} {R : REL A C r} where
  transitive trans^PQR (p ∷ ps) (q ∷ qs) =
    trans^PQR p q ∷ λ where .force → transitive trans^PQR (ps .force) (qs .force)
 
--- Pointwise Equality as a Bisimilarity
 ------------------------------------------------------------------------
+-- Congruence rules
+
+module _ {R : REL A B r} where
+
+  ++⁺ : ∀ {as bs xs ys} → Pointwise R as bs →
+        Bisim R i xs ys → Bisim R i (fromList as ++ xs) (fromList bs ++ ys)
+  ++⁺ []       rs = rs
+  ++⁺ (r ∷ pw) rs = r ∷ λ where .force → ++⁺ pw rs
+
+  ⁺++⁺ : ∀ {as bs xs ys} → Pointwise R (List⁺.toList as) (List⁺.toList bs) →
+         Thunk^R (Bisim R) i xs ys → Bisim R i (as ⁺++ xs) (bs ⁺++ ys)
+  ⁺++⁺ (r ∷ pw) rs = r ∷ λ where .force → ++⁺ pw (rs .force)
+
+------------------------------------------------------------------------
+-- Pointwise Equality as a Bisimilarity
 
 module _ {A : Set a} where
 
