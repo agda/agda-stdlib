@@ -70,7 +70,7 @@ Other minor additions
   lookup-replicate           : All (a ≡_) (lookup k (replicate n a))
   map-unfold                 : i ⊢ map f (unfold alg a) ≈ unfold (Maybe.map (Prod.map₂ f) ∘ alg) a
   unfold-nothing             : alg a ≡ nothing → unfold alg a ≡ []
-  unfold-just                : i ⊢ unfold alg a ≈ b ∷ λ where .force → unfold alg a′
+  unfold-just                : alg a ≡ just (a′ , b) → i ⊢ unfold alg a ≈ b ∷ λ where .force → unfold alg a′
   scanl-unfold               : i ⊢ scanl cons nil (unfold alg a) ≈ nil ∷ (λ where .force → unfold alg′ (a , nil))
   map-alignWith              : i ⊢ map f (alignWith al as bs) ≈ alignWith (f ∘ al) as bs
   length-alignWith           : i ⊢ length (alignWith al as bs) ≈ length as ⊔ length bs
@@ -83,8 +83,8 @@ Other minor additions
   length-cotake              : i ⊢ length (cotake n as) ≈ n
   map-cotake                 : i ⊢ map f (cotake n as) ≈ cotake n (Stream.map f as)
   drop-fromList-++-identity  : drop (length as) (fromList as ++ bs) ≡ bs
-  drop-fromList-++-≤         : drop m (fromList as ++ bs) ≡ fromList (drop m as) ++ bs
-  drop-fromList-++-≥         : drop m (fromList as ++ bs) ≡ drop (m ℕ.∸ length as) bs
+  drop-fromList-++-≤         : m ≤ length as → drop m (fromList as ++ bs) ≡ fromList (drop m as) ++ bs
+  drop-fromList-++-≥         : m ≥ length as → drop m (fromList as ++ bs) ≡ drop (m ℕ.∸ length as) bs
   drop-++⁺-identity          : drop (length as) (as ⁺++ bs) ≡ bs .force
   ```
 
