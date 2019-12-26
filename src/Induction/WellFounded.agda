@@ -14,7 +14,6 @@ open import Data.Product
 open import Function
 open import Induction
 open import Level
-open import Relation.Binary.PropositionalEquality hiding (trans)
 open import Relation.Unary
 
 -- When using well-founded recursion you can recurse arbitrarily, as
@@ -29,10 +28,6 @@ WfRec _<_ P x = ∀ y → y < x → P y
 
 data Acc {a ℓ} {A : Set a} (_<_ : Rel A ℓ) (x : A) : Set (a ⊔ ℓ) where
   acc : (rs : WfRec _<_ (Acc _<_) x) → Acc _<_ x
-
-acc-inverse : ∀ {a ℓ} {A : Set a} {_<_ : Rel A ℓ} {x : A} (q : Acc _<_ x) →
-              (y : A) → y < x → Acc _<_ y
-acc-inverse (acc rs) y y<x = rs y y<x
 
 -- The accessibility predicate encodes what it means to be
 -- well-founded; if all elements are accessible, then _<_ is
@@ -59,16 +54,11 @@ module Some {a lt} {A : Set a} {_<_ : Rel A lt} {ℓ} where
   wfRec : SubsetRecursor (Acc _<_) (WfRec _<_)
   wfRec = subsetBuild wfRecBuilder
 
-  unfold-wfRec : (P : Pred A ℓ) (f : WfRec _<_ P ⊆′ P) {x : A} (q : Acc _<_ x) →
-                 wfRec P f x q ≡ f x (λ y y<x → wfRec P f y (acc-inverse q y y<x))
-  unfold-wfRec P f (acc rs) = refl
-
   wfRec-builder = wfRecBuilder
   {-# WARNING_ON_USAGE wfRec-builder
   "Warning: wfRec-builder was deprecated in v0.15.
   Please use wfRecBuilder instead."
   #-}
-
 
 ------------------------------------------------------------------------
 -- Well-founded induction for all elements, assuming they are all
@@ -88,26 +78,6 @@ module All {a lt} {A : Set a} {_<_ : Rel A lt}
   "Warning: wfRec-builder was deprecated in v0.15.
   Please use wfRecBuilder instead."
   #-}
-
-module FixPoint
-  {a ℓ} {A : Set a} {_<_ : Rel A ℓ} (wf : WellFounded _<_)
-  (P : Pred A ℓ) (f : WfRec _<_ P ⊆′ P)
-  (f-ext : (x : A) {IH IH' : WfRec _<_ P x} → (∀ {y} y<x → IH y y<x ≡ IH' y y<x) → f x IH ≡ f x IH')
-  where
-
-  some-wfRec-irrelevant : ∀ x → (q q' : Acc _<_ x) → Some.wfRec P f x q ≡ Some.wfRec P f x q'
-  some-wfRec-irrelevant = All.wfRec wf (a ⊔ ℓ)
-                                   (λ x → (q q' : Acc _<_ x) → Some.wfRec P f x q ≡ Some.wfRec P f x q')
-                                   (λ { x IH (acc rs) (acc rs') → f-ext x (λ y<x → IH _ y<x (rs _ y<x) (rs' _ y<x)) })
-
-  open All wf ℓ
-  wfRecBuilder-wfRec : ∀ {x y} y<x → wfRecBuilder P f x y y<x ≡ wfRec P f y
-  wfRecBuilder-wfRec {x} {y} y<x with wf x
-  ... | acc rs = some-wfRec-irrelevant y (rs y y<x) (wf y)
-
-  unfold-wfRec : ∀ {x} → wfRec P f x ≡ f x (λ y _ → wfRec P f y)
-  unfold-wfRec {x} = f-ext x wfRecBuilder-wfRec
-
 
 ------------------------------------------------------------------------
 -- It might be useful to establish proofs of Acc or Well-founded using

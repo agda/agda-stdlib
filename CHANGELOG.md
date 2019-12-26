@@ -26,13 +26,6 @@ Other major additions
 Other minor additions
 ---------------------
 
-* Added new proofs to `Induction.WellFounded`:
-  ```agda
-  some-wfRec-irrelevant : Some.wfRec P f x q ≡ Some.wfRec P f x q'
-  wfRecBuilder-wfRec    : All.wfRecBuilder P f x y y<x ≡ All.wfRec P f y
-  unfold-wfRec          : All.wfRec P f x ≡ f x λ y _ → All.wfRec P f y
-  ```
-
 * Added new proofs to `Algebra.Properties.Group`:
   ```agda
   ⁻¹-injective   : x ⁻¹ ≈ y ⁻¹ → x ≈ y
@@ -120,32 +113,4 @@ Other minor additions
     ∈-filter⁺ {xs = x ∷ _} (there v∈xs) Pv with does (P? x)
     ... | true  = there (∈-filter⁺ v∈xs Pv)
     ... | false = ∈-filter⁺ v∈xs Pv
-  ```
-
-* Added new proofs to `Data.Rational.Properties`:
-  ```agda
-  ↥-* : ↥ (p * q) ℤ.* *-nf p q ≡ ↥ p ℤ.* ↥ q
-  ↧-* : ↧ (p * q) ℤ.* *-nf p q ≡ ↧ p ℤ.* ↧ q
-
-  toℚᵘ-homo-*                 : Homomorphic₂ toℚᵘ _*_ ℚᵘ._*_
-  toℚᵘ-isMagmaHomomorphism-*  : IsMagmaHomomorphism *-rawMagma ℚᵘ.*-rawMagma toℚᵘ
-  toℚᵘ-isMonoidHomomorphism-* : IsMonoidHomomorphism *-rawMonoid ℚᵘ.*-rawMonoid toℚᵘ
-  toℚᵘ-isMonoidMonomorphism-* : IsMonoidMonomorphism *-rawMonoid ℚᵘ.*-rawMonoid toℚᵘ
-
-  *-assoc     : Associative _*_
-  *-comm      : Commutative _*_
-  *-identityˡ : LeftIdentity 1ℚ _*_
-  *-identityʳ : RightIdentity 1ℚ _*_
-  *-identity  : Identity 1ℚ _*_
-
-  *-isMagma               : IsMagma _*_
-  *-isSemigroup           : IsSemigroup _*
-  *-1-isMonoid            : IsMonoid _*_ 1ℚ
-  *-1-isCommutativeMonoid : IsCommutativeMonoid _*_ 1ℚ
-  *-rawMagma              : RawMagma 0ℓ 0ℓ
-  *-rawMonoid             : RawMonoid 0ℓ 0ℓ
-  *-magma                 : Magma 0ℓ 0ℓ
-  *-semigroup             : Semigroup 0ℓ 0ℓ
-  *-1-monoid              : Monoid 0ℓ 0ℓ
-  *-1-commutativeMonoid   : CommutativeMonoid 0ℓ 0ℓ
   ```
