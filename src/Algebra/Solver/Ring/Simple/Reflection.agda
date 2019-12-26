@@ -7,6 +7,8 @@ open import Agda.Builtin.Nat    using (_<_)
 
 open import Data.NatSet
 
+open import Algebra
+open import Algebra.Operations.Ring using (_^_)
 open import Algebra.Solver.Ring.Simple.Solver renaming (solve to solve-fn)
 open import Data.Fin   as Fin   using (Fin)
 open import Data.Vec   as Vec   using (Vec; _∷_; [])
@@ -24,7 +26,8 @@ open AlmostCommutativeRing
 
 record Ring⇓ : Set where
   constructor +⇒_*⇒_^⇒_-⇒_
-  field +′ *′ ^′ -′ : Maybe Name
+  field
+    +′ *′ ^′ -′ : Maybe Name
 
 module Internal where
   _∈Ring : Term → TC Term
@@ -44,14 +47,13 @@ module Internal where
       checkType t
         (quote List ⟨ def ⟩ 1 ⋯⟅∷⟆ def (quote Carrier) (2 ⋯⟅∷⟆ ring ⟨∷⟩ []) ⟨∷⟩ []) >>= normalise
 
+    ⟦_⇓⟧ₙ : Name → TC (Maybe Name)
+    ⟦ nm ⇓⟧ₙ = normalise (nm ⟨ def ⟩ 2 ⋯⟅∷⟆ ring ⟨∷⟩ []) <&> λ where
+      (def f args) → just f
+      _            → nothing
+    
     ring⇓ : TC Ring⇓
     ring⇓ = ⦇ +⇒ ⟦ quote _+_ ⇓⟧ₙ *⇒ ⟦ quote _*_ ⇓⟧ₙ ^⇒ ⟦ quote _^_ ⇓⟧ₙ -⇒ ⟦ quote -_ ⇓⟧ₙ ⦈
-      where
-      ⟦_⇓⟧ₙ : Name → TC (Maybe Name)
-      ⟦ nm ⇓⟧ₙ =
-        normalise (nm ⟨ def ⟩ 2 ⋯⟅∷⟆ ring ⟨∷⟩ [])
-          <&> λ where (def f args) → just f
-                      _ → nothing
 
     module _ (nms : Ring⇓) where
       open Ring⇓ nms

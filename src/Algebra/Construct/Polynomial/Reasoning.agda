@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra.Solver.Ring.AlmostCommutativeRing
+open import Algebra
 
 -- Some specialised tools for equaltional reasoning.
 module Algebra.Construct.Polynomial.Reasoning

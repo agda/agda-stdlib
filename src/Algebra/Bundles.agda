@@ -712,6 +712,46 @@ record BooleanAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
     using (setoid; lattice)
 
 
+record AlmostCommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
+  infix  8 -_
+  infixl 7 _*_
+  infixl 6 _+_
+  infix  4 _≈_
+  field
+    Carrier                 : Set c
+    _≈_                     : Rel Carrier ℓ
+    _+_                     : Op₂ Carrier
+    _*_                     : Op₂ Carrier
+    -_                      : Op₁ Carrier
+    0#                      : Carrier
+    1#                      : Carrier
+    isAlmostCommutativeRing : IsAlmostCommutativeRing _≈_ _+_ _*_ -_ 0# 1#
+
+  open IsAlmostCommutativeRing isAlmostCommutativeRing public
+
+  commutativeSemiring : CommutativeSemiring _ _
+  commutativeSemiring = record
+    { isCommutativeSemiring = isCommutativeSemiring
+    }
+
+  open CommutativeSemiring commutativeSemiring public
+    using
+    ( +-magma; +-semigroup
+    ; *-magma; *-semigroup; *-commutativeSemigroup
+    ; +-monoid; +-commutativeMonoid
+    ; *-monoid; *-commutativeMonoid
+    ; semiring
+    )
+
+  rawRing : RawRing _ _
+  rawRing = record
+    { _≈_ = _≈_
+    ; _+_ = _+_
+    ; _*_ = _*_
+    ; -_  = -_
+    ; 0#  = 0#
+    ; 1#  = 1#
+    }
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

@@ -1,25 +1,27 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Algebra.Solver.Ring.Simple.Solver where
-
-open import Algebra.Construct.Ring.Expr public
-open import Algebra.Solver.Ring.Simple.AlmostCommutativeRing public
-  hiding (-raw-almostCommutative⟶)
-open import Algebra.Solver.Ring.AlmostCommutativeRing
-  using (-raw-almostCommutative⟶)
-open import Algebra.Construct.Polynomial.Parameters
-open import Function
+open import Algebra
 open import Data.Bool using (Bool; true; false; T; if_then_else_)
-open import Data.Empty using (⊥-elim)
 open import Data.Maybe
+
+module Algebra.Solver.Ring.Simple.Solver
+  {ℓ₁ ℓ₂} (ring : AlmostCommutativeRing ℓ₁ ℓ₂)
+  (let open AlmostCommutativeRing ring)
+  (0≟_ : (x : Carrier) → Maybe (0# ≈ x)) 
+  where
+
+open import Algebra.Construct.Polynomial.Parameters
+open import Algebra.Morphism
+open import Function
+open import Data.Empty using (⊥-elim)
 open import Data.Nat using (ℕ)
 open import Data.Product
 open import Data.Vec hiding (_⊛_)
 open import Data.Vec.N-ary
 
-module Ops {ℓ₁ ℓ₂} (ring : AlmostCommutativeRing ℓ₁ ℓ₂) where
-  open AlmostCommutativeRing ring
+open import Algebra.Construct.Ring.Expr public
 
+module Ops where
   zero-homo : ∀ x → T (is-just (0≟ x)) → 0# ≈ x
   zero-homo x _ with 0≟ x
   zero-homo x _  | just p = p
@@ -34,12 +36,12 @@ module Ops {ℓ₁ ℓ₂} (ring : AlmostCommutativeRing ℓ₁ ℓ₂) where
     ; to = record
       { isAlmostCommutativeRing = record
           { isCommutativeSemiring = isCommutativeSemiring
-          ; -‿cong = -‿cong
+          ; -‿cong       = -‿cong
           ; -‿*-distribˡ = -‿*-distribˡ
-          ; -‿+-comm = -‿+-comm
+          ; -‿+-comm     = -‿+-comm
           }
       }
-    ; morphism = -raw-almostCommutative⟶ _
+    ; morphism      = -raw-almostCommutative⟶ ring
     ; Zero-C⟶Zero-R = zero-homo
     }
   open Eval rawRing id public
@@ -70,27 +72,21 @@ module Ops {ℓ₁ ℓ₂} (ring : AlmostCommutativeRing ℓ₁ ℓ₂) where
     go (Ι x)   ρ = ι-hom x ρ
     go (x ⊕ y) ρ = ⊞-hom (norm x) (norm y) ρ ⟨ trans ⟩ (go x ρ ⟨ +-cong ⟩ go y ρ)
     go (x ⊗ y) ρ = ⊠-hom (norm x) (norm y) ρ ⟨ trans ⟩ (go x ρ ⟨ *-cong ⟩ go y ρ)
-    go (⊝ x)   ρ = ⊟-hom (norm x) ρ ⟨ trans ⟩ -‿cong (go x ρ)
+    go (⊝ x)   ρ = ⊟-hom (norm x) ρ   ⟨ trans ⟩ -‿cong (go x ρ)
     go (x ⊛ i) ρ = ⊡-hom (norm x) i ρ ⟨ trans ⟩ pow-cong i (go x ρ)
 
   open import Relation.Binary.Reflection setoid Ι ⟦_⟧ ⟦_⇓⟧ correct public
 
-solve : ∀ {ℓ₁ ℓ₂}
-      → (ring : AlmostCommutativeRing ℓ₁ ℓ₂)
-      → (n : ℕ)
-      → (f : N-ary n (Expr (AlmostCommutativeRing.Carrier ring) n) (Expr (AlmostCommutativeRing.Carrier ring) n × Expr (AlmostCommutativeRing.Carrier ring) n))
-      → Eqʰ n (AlmostCommutativeRing._≈_ ring) (curryⁿ (Ops.⟦_⇓⟧ ring  (proj₁ (Ops.close ring n f)))) (curryⁿ (Ops.⟦_⇓⟧ ring (proj₂ (Ops.close ring n f))))
-      → Eq  n (AlmostCommutativeRing._≈_ ring) (curryⁿ (Ops.⟦_⟧ ring (proj₁ (Ops.close ring n f)))) (curryⁿ (Ops.⟦_⟧ ring (proj₂ (Ops.close ring n f))))
-solve ring = solve′
-  where
-  open Ops ring renaming (solve to solve′)
+solve : ∀ (n : ℕ) →
+        (f : N-ary n (Expr Carrier n) (Expr Carrier n × Expr Carrier n)) →
+        Eqʰ n _≈_ (curryⁿ (Ops.⟦_⇓⟧ (proj₁ (Ops.close n f)))) (curryⁿ (Ops.⟦_⇓⟧ (proj₂ (Ops.close n f)))) →
+        Eq  n _≈_ (curryⁿ (Ops.⟦_⟧  (proj₁ (Ops.close n f)))) (curryⁿ (Ops.⟦_⟧  (proj₂ (Ops.close n f))))
+solve = Ops.solve
 {-# INLINE solve #-}
 
-_⊜_ : ∀ {ℓ₁ ℓ₂}
-    → (ring : AlmostCommutativeRing ℓ₁ ℓ₂)
-    → (n : ℕ)
-    → Expr (AlmostCommutativeRing.Carrier ring) n
-    → Expr (AlmostCommutativeRing.Carrier ring) n
-    → Expr (AlmostCommutativeRing.Carrier ring) n × Expr (AlmostCommutativeRing.Carrier ring) n
-_⊜_ _ _ = _,_
+_⊜_ : ∀ (n : ℕ) →
+      Expr Carrier n →
+      Expr Carrier n →
+      Expr Carrier n × Expr Carrier n
+_⊜_ _ = _,_
 {-# INLINE _⊜_ #-}

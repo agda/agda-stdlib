@@ -21,7 +21,6 @@ open import Data.List.Kleene using (_+; _*; ∹_; _&_; [])
 
 open Homomorphism homo
 open import Algebra.Construct.Polynomial.Base from
-
 open import Algebra.Operations.Ring rawRing
 
 drop : ∀ {i n} → i ≤′ n → Vec Carrier n → Vec Carrier i
@@ -44,10 +43,12 @@ x *⟨ ρ ⟩^ suc i = ρ ^ i +1 * x
 --
 -- These three functions are the main bottleneck for all of the proofs: as such,
 -- slight changes can dramatically affect the length of proof code.
+
 mutual
+
   _⟦∷⟧_ : ∀ {n} → Poly n × Coeff n * → Carrier × Vec Carrier n → Carrier
-  (x , [])      ⟦∷⟧ (ρ , ρs) = ⟦ x ⟧ ρs
-  (x , (∹ xs )) ⟦∷⟧ (ρ , ρs) = ρ * ⅀⟦ xs ⟧ (ρ , ρs) + ⟦ x ⟧ ρs
+  (x , [])     ⟦∷⟧ (ρ , ρs) = ⟦ x ⟧ ρs
+  (x , (∹ xs)) ⟦∷⟧ (ρ , ρs) = ρ * ⅀⟦ xs ⟧ (ρ , ρs) + ⟦ x ⟧ ρs
 
   ⅀⟦_⟧ : ∀ {n} → Coeff n + → (Carrier × Vec Carrier n) → Carrier
   ⅀⟦ x ≠0 Δ i & xs ⟧ (ρ , ρs) = ((x , xs) ⟦∷⟧ (ρ , ρs)) *⟨ ρ ⟩^ i

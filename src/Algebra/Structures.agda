@@ -579,3 +579,13 @@ record IsBooleanAlgebra
     ¬-cong                : Congruent₁ ¬
 
   open IsDistributiveLattice isDistributiveLattice public
+
+
+record IsAlmostCommutativeRing (_+_ _*_ : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
+  field
+    isCommutativeSemiring : IsCommutativeSemiring _+_ _*_ 0# 1#
+    -‿cong                : Congruent₁ -_
+    -‿*-distribˡ          : ∀ x y → ((- x) * y)     ≈ (- (x * y))
+    -‿+-comm              : ∀ x y → ((- x) + (- y)) ≈ (- (x + y))
+
+  open IsCommutativeSemiring isCommutativeSemiring public

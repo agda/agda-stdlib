@@ -13,11 +13,9 @@ module Algebra.Construct.Polynomial.Homomorphism
 -- The lemmas are the general-purpose proofs we reuse in each other section
 open import Algebra.Construct.Polynomial.Homomorphism.Lemmas         homo using (pow-cong) public
 
--- Proofs which deal with variables and constants
-open import Algebra.Construct.Polynomial.Homomorphism.Semantics      homo using (κ-hom; ι-hom) public
-
--- Proofs for each operation
+-- Proofs for each component of the polynomial
 open import Algebra.Construct.Polynomial.Homomorphism.Addition       homo using (⊞-hom) public
 open import Algebra.Construct.Polynomial.Homomorphism.Multiplication homo using (⊠-hom) public
 open import Algebra.Construct.Polynomial.Homomorphism.Negation       homo using (⊟-hom) public
 open import Algebra.Construct.Polynomial.Homomorphism.Exponentiation homo using (⊡-hom) public
+open import Algebra.Construct.Polynomial.Homomorphism.Semantics      homo using (κ-hom; ι-hom) public

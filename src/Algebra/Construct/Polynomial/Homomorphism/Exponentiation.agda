@@ -25,9 +25,8 @@ open import Algebra.Construct.Polynomial.Homomorphism.Semantics homo
 open import Algebra.Construct.Polynomial.Homomorphism.Multiplication homo
 open import Algebra.Construct.Polynomial.Semantics homo
 
-import Algebra.Operations.Ring.Compact
-module RawPow = Algebra.Operations.Ring.Compact rawRing
-module CoPow = Algebra.Operations.Ring.Compact (RawCoeff.rawRing from)
+import Algebra.Operations.Ring rawRing as RawPow
+import Algebra.Operations.Ring (RawCoeff.rawRing from) as CoPow
 
 pow-eval-hom : ∀ x i → ⟦ x CoPow.^ i +1 ⟧ᵣ ≈ ⟦ x ⟧ᵣ RawPow.^ i +1
 pow-eval-hom x ℕ.zero = refl

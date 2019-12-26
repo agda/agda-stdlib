@@ -2,6 +2,7 @@
 
 module Algebra.Solver.Ring.Simple.AlmostCommutativeRing.Instances where
 
+{-
 open import Algebra.Solver.Ring.Simple.AlmostCommutativeRing
 open import Level using (0ℓ)
 open import Agda.Builtin.Reflection
@@ -46,3 +47,4 @@ module Int where
     macro
       ∀⟨_⟩ : Term → Term → TC ⊤
       ∀⟨ n ⟩ = solveOver-macro n (quote ring)
+-}

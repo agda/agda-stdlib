@@ -5,12 +5,12 @@
 
 module Algebra.Construct.Polynomial.Parameters where
 
-open import Function
 open import Algebra
-open import Relation.Unary
-open import Level
-open import Algebra.Solver.Ring.AlmostCommutativeRing
+open import Algebra.Morphism
 open import Data.Bool using (Bool; T)
+open import Function
+open import Level
+open import Relation.Unary
 
 -- This record stores all the stuff we need for the coefficients:
 --

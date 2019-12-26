@@ -1,4 +1,4 @@
-module RingSolver where
+module README.RingSolver where
 
 -- You can ignore this bit! We're just overloading the literals Agda uses for
 -- numbers This bit isn't necessary if you're just using Nats, or if you
