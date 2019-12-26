@@ -97,11 +97,11 @@ private
   dropBorder : TabularLine → TabularLine
   dropBorder l = record l { left = nothing; right = nothing }
 
-noborder : TabularConfig → TabularConfig
-noborder c .top = nothing
-noborder c .sep = Maybe.map dropBorder (c .sep)
-noborder c .row = dropBorder (c .row)
-noborder c .bot = nothing
+noBorder : TabularConfig → TabularConfig
+noBorder c .top = nothing
+noBorder c .sep = Maybe.map dropBorder (c .sep)
+noBorder c .row = dropBorder (c .row)
+noBorder c .bot = nothing
 
 
 private
@@ -112,11 +112,11 @@ private
     .sep   → pad String.++ l .sep String.++ pad
     .right → Maybe.map (pad String.++_) (l .right)
 
-addspace : TabularConfig → TabularConfig
-addspace c .top = Maybe.map space (c .top)
-addspace c .sep = Maybe.map space (c .sep)
-addspace c .row = space (c .row)
-addspace c .bot = Maybe.map space (c .bot)
+addSpace : TabularConfig → TabularConfig
+addSpace c .top = Maybe.map space (c .top)
+addSpace c .sep = Maybe.map space (c .sep)
+addSpace c .row = space (c .row)
+addSpace c .bot = Maybe.map space (c .bot)
 
 whitespace : TabularConfig
 whitespace .top = nothing

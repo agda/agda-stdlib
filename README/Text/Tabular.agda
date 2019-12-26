@@ -120,9 +120,9 @@ _ : Tabularᵛ.display (compact unicode)
 \   \└───┴───┘"
 _ = refl
 
--- noborder: drop the outside borders
+-- noBorder: drop the outside borders
 
-_ : Tabularᵛ.display (noborder unicode)
+_ : Tabularᵛ.display (noBorder unicode)
             (Right ∷ Left ∷ [])
             foobar
   ≡ "foo│bar
@@ -132,9 +132,9 @@ _ : Tabularᵛ.display (noborder unicode)
 \   \  4│3  "
 _ = refl
 
--- addspace : add whitespace space inside cells
+-- addSpace : add whitespace space inside cells
 
-_ : Tabularᵛ.display (addspace unicode)
+_ : Tabularᵛ.display (addSpace unicode)
             (Right ∷ Left ∷ [])
             foobar
   ≡ "┌─────┬─────┐
@@ -146,9 +146,9 @@ _ : Tabularᵛ.display (addspace unicode)
 \   \└─────┴─────┘"
 _ = refl
 
--- compact together with addspace
+-- compact together with addSpace
 
-_ : Tabularᵛ.display (compact (addspace unicode))
+_ : Tabularᵛ.display (compact (addSpace unicode))
             (Right ∷ Left ∷ [])
             foobar
   ≡ "┌─────┬─────┐
