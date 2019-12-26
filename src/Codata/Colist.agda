@@ -116,8 +116,8 @@ fromStream = cotake Conat.infinity
 
 module ChunksOf (n : ℕ) where
 
-  chunksOf : Colist A ∞ → Cowriter (Vec A n) (Vec≤ A n) ∞
-  chunksOfAcc : ∀ {i} m →
+  chunksOf : Colist A ∞ → Cowriter (Vec A n) (Vec≤ A n) i
+  chunksOfAcc : ∀ m →
     -- We have two continuations but we are only ever going to use one.
     -- If we had linear types, we'd write the type using the & conjunction here.
     (k≤ : Vec≤ A m → Vec≤ A n) →
@@ -127,10 +127,7 @@ module ChunksOf (n : ℕ) where
 
   chunksOf = chunksOfAcc n id id
 
-  chunksOfAcc zero    k≤ k≡ as       =
-    k≡ [] ∷ λ where .force → chunksOfAcc n id id as
-    -- here we would like to use chunksOf unfortunately the termination
-    -- checker would not be happy
+  chunksOfAcc zero    k≤ k≡ as       = k≡ [] ∷ λ where .force → chunksOf as
   chunksOfAcc (suc k) k≤ k≡ []       = CW.[ k≤ Vec≤.[] ]
   chunksOfAcc (suc k) k≤ k≡ (a ∷ as) =
     chunksOfAcc k (k≤ ∘ (a Vec≤.∷_)) (k≡ ∘ (a ∷_)) (as .force)
