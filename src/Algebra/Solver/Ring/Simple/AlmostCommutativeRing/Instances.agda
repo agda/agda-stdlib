@@ -1,8 +1,8 @@
 {-# OPTIONS --without-K --safe #-}
 
-module Polynomial.Simple.AlmostCommutativeRing.Instances where
+module Algebra.Solver.Ring.Simple.AlmostCommutativeRing.Instances where
 
-open import Polynomial.Simple.AlmostCommutativeRing
+open import Algebra.Solver.Ring.Simple.AlmostCommutativeRing
 open import Level using (0ℓ)
 open import Agda.Builtin.Reflection
 
@@ -19,7 +19,7 @@ module Nat where
       λ { zero → just refl; _ → nothing }
 
   module Reflection where
-    open import Polynomial.Simple.Reflection using (solveOver-macro)
+    open import Algebra.Solver.Ring.Simple.Reflection using (solveOver-macro)
     open import Data.Unit using (⊤)
 
     macro

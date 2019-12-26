@@ -1,20 +1,25 @@
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra.Construct.CommutativeRing.Polynomial.Parameters
+open import Algebra.Construct.Polynomial.Parameters
 
 module Algebra.Solver.Ring
   {r₁ r₂ r₃ r₄}
   (homo : Homomorphism r₁ r₂ r₃ r₄)
   where
 
-open import Data.Vec as Vec using (Vec)
-open import Algebra.Construct.Ring.Expr public
 open import Algebra.Solver.Ring.AlmostCommutativeRing
+import Algebra.Construct.Polynomial.Homomorphism homo as Hom
+open import Algebra.Construct.Polynomial.Semantics homo
+  renaming (⟦_⟧ to ⟦_⟧ₚ)
+open import Data.Vec as Vec using (Vec)
+open import Function
+
+open import Algebra.Construct.Ring.Expr public
 
 open Homomorphism homo
 open Eval rawRing ⟦_⟧ᵣ
 
-open import Algebra.Construct.CommutativeRing.Polynomial.Base from
+open import Algebra.Construct.Polynomial.Base from
   using (Poly; _⊞_; _⊠_; ⊟_; _⊡_; κ; ι)
 
 norm : ∀ {n} → Expr Raw.Carrier n → Poly n
@@ -25,15 +30,8 @@ norm (x ⊗ y) = norm x ⊠ norm y
 norm (x ⊛ i) = norm x ⊡ i
 norm (⊝ x)   = ⊟ norm x
 
-open import Algebra.Construct.CommutativeRing.Polynomial.Semantics homo
-  renaming (⟦_⟧ to ⟦_⟧ₚ)
-
 ⟦_⇓⟧ : ∀ {n} → Expr Raw.Carrier n → Vec Carrier n → Carrier
 ⟦ x ⇓⟧ = ⟦ norm x ⟧ₚ
-
-import Algebra.Construct.CommutativeRing.Polynomial.Homomorphism homo
-  as Hom
-open import Function
 
 correct : ∀ {n} (e : Expr Raw.Carrier n) ρ → ⟦ e ⇓⟧ ρ ≈ ⟦ e ⟧ ρ
 correct (Κ x)   ρ = Hom.κ-hom x ρ

@@ -43,71 +43,60 @@
 
 {-# OPTIONS --safe --without-K #-}
 
-open import Algebra.Construct.CommutativeRing.Polynomial.Parameters
+open import Algebra.Construct.Polynomial.Parameters
 
-module Algebra.Construct.CommutativeRing.Polynomial.Base
+module Algebra.Construct.Polynomial.Base
   {ℓ₁ ℓ₂} (coeffs : RawCoeff ℓ₁ ℓ₂) where
 
+open RawCoeff coeffs
+
 open import Data.Bool              using (Bool; true; false; T)
+open import Data.Empty             using (⊥)
+open import Data.Fin as Fin        using (Fin; zero; suc; space)
+open import Data.Fin.Properties    using (space≤′n)
+open import Data.List.Kleene
 open import Data.Nat as ℕ          using (ℕ; suc; zero; _≤′_; compare; ≤′-refl; ≤′-step; _<′_)
 open import Data.Nat.Properties    using (z≤′n; ≤′-trans)
-open import Relation.Nullary       using (¬_; Dec; yes; no)
-open import Data.Empty             using (⊥)
-open import Data.Unit              using (⊤; tt)
 open import Data.Product           using (_×_; _,_; map₁; curry; uncurry)
+open import Data.Unit              using (⊤; tt)
+open import Function.Base
 open import Induction.WellFounded  using (Acc; acc)
 open import Induction.Nat          using (<′-wellFounded)
-open import Data.Fin as Fin        using (Fin; space)
+open import Relation.Nullary       using (¬_; Dec; yes; no)
 
-open import Algebra.Bundles
-open import Function
-open import Data.List.Kleene
-open import Function
-
-open RawCoeff coeffs
-open import Algebra.Operations.Ring.Compact rawRing
+open import Algebra.Operations.Ring rawRing
 
 ------------------------------------------------------------------------
 -- Injection indices.
+------------------------------------------------------------------------
 
 -- First, we define comparisons on _≤′_.
 -- The following is analagous to Ordering and compare from
 -- Data.Nat.Base.
-data InjectionOrdering {n : ℕ} : ∀ {i j}
-                      → (i≤n : i ≤′ n)
-                      → (j≤n : j ≤′ n)
-                      → Set
+data InjectionOrdering {n : ℕ} : ∀ {i j} (i≤n : i ≤′ n) (j≤n : j ≤′ n) → Set
                       where
-  inj-lt : ∀ {i j-1}
-     → (i≤j-1 : i ≤′ j-1)
-     → (j≤n : suc j-1 ≤′ n)
-     → InjectionOrdering (≤′-step i≤j-1 ⟨ ≤′-trans ⟩ j≤n) j≤n
-  inj-gt : ∀ {i-1 j}
-     → (i≤n : suc i-1 ≤′ n)
-     → (j≤i-1 : j ≤′ i-1)
-     → InjectionOrdering i≤n (≤′-step j≤i-1 ⟨ ≤′-trans ⟩ i≤n)
-  inj-eq : ∀ {i} → (i≤n : i ≤′ n) → InjectionOrdering i≤n i≤n
+  inj-lt : ∀ {i j-1} (i≤j-1 : i ≤′ j-1) (j≤n : suc j-1 ≤′ n) →
+           InjectionOrdering (≤′-step i≤j-1 ⟨ ≤′-trans ⟩ j≤n) j≤n
+           
+  inj-gt : ∀ {i-1 j} (i≤n : suc i-1 ≤′ n) (j≤i-1 : j ≤′ i-1) →
+           InjectionOrdering i≤n (≤′-step j≤i-1 ⟨ ≤′-trans ⟩ i≤n)
+           
+  inj-eq : ∀ {i} (i≤n : i ≤′ n) →
+           InjectionOrdering i≤n i≤n
 
-inj-compare : ∀ {i j n}
-    → (x : i ≤′ n)
-    → (y : j ≤′ n)
-    → InjectionOrdering x y
-inj-compare ≤′-refl ≤′-refl = inj-eq ≤′-refl
-inj-compare ≤′-refl (≤′-step y) = inj-gt ≤′-refl y
-inj-compare (≤′-step x) ≤′-refl = inj-lt x ≤′-refl
+inj-compare : ∀ {i j n} (x : i ≤′ n) (y : j ≤′ n) → InjectionOrdering x y
+inj-compare ≤′-refl     ≤′-refl     = inj-eq ≤′-refl
+inj-compare ≤′-refl     (≤′-step y) = inj-gt ≤′-refl y
+inj-compare (≤′-step x) ≤′-refl     = inj-lt x ≤′-refl
 inj-compare (≤′-step x) (≤′-step y) = case inj-compare x y of
-    λ { (inj-lt i≤j-1 .y) → inj-lt i≤j-1 (≤′-step y)
-      ; (inj-gt .x j≤i-1) → inj-gt (≤′-step x) j≤i-1
-      ; (inj-eq .x) → inj-eq (≤′-step x)
+    λ { (inj-lt i≤j-1 y) → inj-lt i≤j-1 (≤′-step y)
+      ; (inj-gt x j≤i-1) → inj-gt (≤′-step x) j≤i-1
+      ; (inj-eq x)       → inj-eq (≤′-step x)
       }
-
-
-Fin⇒≤ : ∀ {n} (x : Fin n) → space x ≤′ n
-Fin⇒≤ Fin.zero = ≤′-refl
-Fin⇒≤ (Fin.suc x) = ≤′-step (Fin⇒≤ x)
 
 -------------------------------------------------------------------------
 -- Definition
+-------------------------------------------------------------------------
 
 infixl 6 _Δ_
 record PowInd {c} (C : Set c) : Set c where
@@ -137,7 +126,7 @@ record Poly n where
 
 data FlatPoly where
   Κ : Carrier → FlatPoly zero
-  ⅀ : ∀ {n} → (xs : Coeff n +) → {xn : Normalised xs} → FlatPoly (suc n)
+  ⅀ : ∀ {n} (xs : Coeff n +) {xn : Normalised xs} → FlatPoly (suc n)
 
 
 Coeff n = PowInd (NonZero n)
@@ -149,12 +138,12 @@ record NonZero i where
   inductive
   constructor _≠0
   field
-    poly : Poly i
+    poly      : Poly i
     .{poly≠0} : ¬ Zero poly
 
 -- This predicate is used (in its negation) to ensure that no
 -- coefficient is zero, preventing any trailing zeroes.
-Zero (Κ x ⊐ _) = T (Zero-C x)
+Zero (Κ x ⊐ _) = T (isZero x)
 Zero (⅀ _ ⊐ _) = ⊥
 
 -- This predicate is used to ensure that all polynomials are in
@@ -166,13 +155,15 @@ Normalised (_ Δ suc _ & _)   = ⊤
 open NonZero public
 open Poly public
 
+----------------------------------------------------------------------
+-- Special operations
 
 -- Decision procedure for Zero
 zero? : ∀ {n} → (p : Poly n) → Dec (Zero p)
-zero? (⅀ _ ⊐ _) = no (λ z → z)
-zero? (Κ x ⊐ _) with Zero-C x
-... | true = yes tt
-... | false = no (λ z → z)
+zero? (⅀ _ ⊐ _) = no id
+zero? (Κ x ⊐ _) with isZero x
+... | true  = yes tt
+... | false = no  id
 {-# INLINE zero? #-}
 
 -- Exponentiate the first variable of a polynomial
@@ -184,8 +175,8 @@ _⍓+_ : ∀ {n} → Coeff n + → ℕ → Coeff n +
 (∹ xs) ⍓* i = ∹ xs ⍓+ i
 
 coeff (head (xs ⍓+ i)) = coeff (head xs)
-pow (head (xs ⍓+ i)) = pow (head xs) ℕ.+ i
-tail (xs ⍓+ i) = tail xs
+pow   (head (xs ⍓+ i)) = pow (head xs) ℕ.+ i
+tail  (xs ⍓+ i)        = tail xs
 
 infixr 5 _∷↓_
 _∷↓_ : ∀ {n} → PowInd (Poly n) → Coeff n * → Coeff n *
@@ -203,17 +194,23 @@ _⊐↑_ : ∀ {n m} → Poly n → (suc n ≤′ m) → Poly m
 infixr 4 _⊐↓_
 _⊐↓_ : ∀ {i n} → Coeff i * → suc i ≤′ n → Poly n
 []                        ⊐↓ i≤n = Κ 0# ⊐ z≤′n
-(∹ (x ≠0 Δ zero  & []    )) ⊐↓ i≤n = x ⊐↑ i≤n
-(∹ (x    Δ zero  & ∹ xs )) ⊐↓ i≤n = ⅀ (x Δ zero  & ∹ xs) ⊐ i≤n
-(∹ (x    Δ suc j & xs    )) ⊐↓ i≤n = ⅀ (x Δ suc j & xs) ⊐ i≤n
+(∹ (x ≠0 Δ zero  & []  )) ⊐↓ i≤n = x ⊐↑ i≤n
+(∹ (x    Δ zero  & ∹ xs)) ⊐↓ i≤n = ⅀ (x Δ zero  & ∹ xs) ⊐ i≤n
+(∹ (x    Δ suc j & xs  )) ⊐↓ i≤n = ⅀ (x Δ suc j & xs)   ⊐ i≤n
 {-# INLINE _⊐↓_ #-}
 
---------------------------------------------------------------------------------
+----------------------------------------------------------------------
+-- Standard operations
+----------------------------------------------------------------------
+
+----------------------------------------------------------------------
 -- Folds
+
 -- These folds allow us to abstract over the proofs later: we try to avoid
 -- using ∷↓ and ⊐↓ directly anywhere except here, so if we prove that this fold
 -- acts the same on a normalised or non-normalised polynomial, we can prove th
 -- same about any operation which uses it.
+
 PolyF : ℕ → Set ℓ₁
 PolyF i = Poly i × Coeff i *
 
@@ -221,19 +218,16 @@ Fold : ℕ → Set ℓ₁
 Fold i = PolyF i → PolyF i
 
 para : ∀ {i} → Fold i → Coeff i + → Coeff i *
-para f (x ≠0 Δ i & []) = case f (x , []) of λ { (y , ys) → y Δ i ∷↓ ys }
-para f (x ≠0 Δ i & ∹ xs) = case f (x , para f xs) of λ { (y , ys) → y Δ i ∷↓ ys }
+para f (x ≠0 Δ i & [])   = case f (x , [])        of λ {(y , ys) → y Δ i ∷↓ ys}
+para f (x ≠0 Δ i & ∹ xs) = case f (x , para f xs) of λ {(y , ys) → y Δ i ∷↓ ys}
 
 poly-map : ∀ {i} → (Poly i → Poly i) → Coeff i + → Coeff i *
-poly-map f = para (λ { (x , y) → (f x , y)})
+poly-map f = para (map₁ f)
 {-# INLINE poly-map #-}
 
 ----------------------------------------------------------------------
--- Operations
-
-----------------------------------------------------------------------
 -- Addition
-----------------------------------------------------------------------
+
 -- The reason the following code is so verbose is termination
 -- checking. For instance, in the third case for ⊞-coeffs, we call a
 -- helper function. Instead, you could conceivably use a with-block
@@ -254,8 +248,8 @@ poly-map f = para (λ { (x , y) → (f x , y)})
 -- _⊞_ {zero} (lift x) (lift y) = lift (x + y)
 -- _⊞_ {suc n} [] ys = ys
 -- _⊞_ {suc n} (x ∷ xs) [] = x ∷ xs
--- _⊞_ {suc n} ((x , p) ∷ xs) ((y , q) ∷ ys) =
---   ⊞-zip (ℕ.compare p q) x xs y ys
+-- _⊞_ {suc n} ((x , p) ∷ xs) ((y , q) ∷ ys) = ⊞-zip (ℕ.compare p q) x xs y ys
+
 mutual
   infixl 6 _⊞_
   _⊞_ : ∀ {n} → Poly n → Poly n → Poly n
@@ -278,12 +272,12 @@ mutual
         → FlatPoly i
         → Coeff k +
         → Coeff k *
-  ⊞-inj i≤k xs (y ⊐ j≤k ≠0 Δ zero & ys) = ⊞-match (inj-compare j≤k i≤k) y xs Δ zero ∷↓ ys
-  ⊞-inj i≤k xs (y Δ suc j & ys) = xs ⊐ i≤k Δ zero ∷↓ ∹ y Δ j & ys 
+  ⊞-inj i≤k xs (y ⊐ j≤k ≠0 Δ zero  & ys) = ⊞-match (inj-compare j≤k i≤k) y xs Δ zero ∷↓ ys
+  ⊞-inj i≤k xs (y          Δ suc j & ys) = xs ⊐ i≤k Δ zero ∷↓ ∹ y Δ j & ys 
 
   ⊞-coeffs : ∀ {n} → Coeff n * → Coeff n * → Coeff n *
   ⊞-coeffs (∹ x Δ i & xs) ys = ⊞-zip-r x i xs ys
-  ⊞-coeffs [] ys = ys
+  ⊞-coeffs []             ys = ys
 
   ⊞-zip : ∀ {p q n}
         → ℕ.Ordering p q
@@ -295,15 +289,14 @@ mutual
   ⊞-zip (ℕ.less    i k) x xs y ys = ∹ x Δ i & ⊞-zip-r y k ys xs
   ⊞-zip (ℕ.greater j k) x xs y ys = ∹ y Δ j & ⊞-zip-r x k xs ys
   ⊞-zip (ℕ.equal   i  ) x xs y ys = (x .poly ⊞ y .poly) Δ i ∷↓ ⊞-coeffs xs ys
+  {-# INLINE ⊞-zip #-}
 
   ⊞-zip-r : ∀ {n} → NonZero n → ℕ → Coeff n * → Coeff n * → Coeff n *
   ⊞-zip-r x i xs [] = ∹ x Δ i & xs
   ⊞-zip-r x i xs (∹ y Δ j & ys) = ⊞-zip (compare i j) x xs y ys
-{-# INLINE ⊞-zip #-}
 
 ----------------------------------------------------------------------
 -- Negation
-----------------------------------------------------------------------
 
 -- recurse on acc directly
 -- https://github.com/agda/agda/issues/3190#issuecomment-416900716
@@ -318,7 +311,7 @@ mutual
 
 ----------------------------------------------------------------------
 -- Multiplication
-----------------------------------------------------------------------
+
 mutual
   ⊠-step′ : ∀ {n} → Acc _<′_ n → Poly n → Poly n → Poly n
   ⊠-step′ a (x ⊐ i≤n) = ⊠-step a x i≤n
@@ -330,10 +323,11 @@ mutual
   ⊠-Κ : ∀ {n} → Acc _<′_ n → Carrier → Poly n → Poly n
   ⊠-Κ (acc _ ) x (Κ y  ⊐ i≤n) = Κ (x * y) ⊐ i≤n
   ⊠-Κ (acc wf) x (⅀ xs ⊐ i≤n) = ⊠-Κ-inj (wf _ i≤n) x xs ⊐↓ i≤n
+  {-# INLINE ⊠-Κ #-}
 
   ⊠-⅀ : ∀ {i n} → Acc _<′_ n → Coeff i + → i <′ n → Poly n → Poly n
   ⊠-⅀ (acc wf) xs i≤n (⅀ ys ⊐ j≤n) = ⊠-match  (acc wf) (inj-compare i≤n j≤n) xs ys
-  ⊠-⅀ (acc wf) xs i≤n (Κ y ⊐ _) = ⊠-Κ-inj (wf _ i≤n) y xs ⊐↓ i≤n
+  ⊠-⅀ (acc wf) xs i≤n (Κ y ⊐ _)    = ⊠-Κ-inj (wf _ i≤n) y xs ⊐↓ i≤n
 
   ⊠-Κ-inj : ∀ {i}  → Acc _<′_ i → Carrier → Coeff i + → Coeff i *
   ⊠-Κ-inj a x xs = poly-map (⊠-Κ a x) (xs)
@@ -360,20 +354,18 @@ mutual
   ⊠-match (acc wf) (inj-gt i≤n j≤i-1) xs ys = poly-map (⊠-⅀-inj (wf _ i≤n) j≤i-1 ys) (xs) ⊐↓ i≤n
 
   ⊠-coeffs : ∀ {n} → Acc _<′_ n → Coeff n + → Coeff n + → Coeff n *
-  ⊠-coeffs a (xs) (y ≠0 Δ j & []) = poly-map (⊠-step′ a y) (xs) ⍓* j
+  ⊠-coeffs a (xs) (y ≠0 Δ j & [])   = poly-map (⊠-step′ a y) (xs) ⍓* j
   ⊠-coeffs a (xs) (y ≠0 Δ j & ∹ ys) = para (⊠-cons a y ys) (xs) ⍓* j
+  {-# INLINE ⊠-coeffs #-}
 
   ⊠-cons : ∀ {n}
           → Acc _<′_ n
           → Poly n
           → Coeff n +
           → Fold n
-  -- ⊠-cons a y [] (x ⊐ j≤n , xs) = ⊠-step a x j≤n y , xs
   ⊠-cons a y ys (x ⊐ j≤n , xs) =
     ⊠-step a x j≤n y , ⊞-coeffs (poly-map (⊠-step a x j≤n) ys) xs
-{-# INLINE ⊠-Κ #-}
-{-# INLINE ⊠-coeffs #-}
-{-# INLINE ⊠-cons #-}
+  {-# INLINE ⊠-cons #-}
 
 infixl 7 _⊠_
 _⊠_ : ∀ {n} → Poly n → Poly n → Poly n
@@ -381,8 +373,7 @@ _⊠_ = ⊠-step′ (<′-wellFounded _)
 {-# INLINE _⊠_ #-}
 
 ----------------------------------------------------------------------
--- Constants and Variables
-----------------------------------------------------------------------
+-- Constants and variables
 
 -- The constant polynomial
 κ : ∀ {n} → Carrier → Poly n
@@ -391,25 +382,26 @@ _⊠_ = ⊠-step′ (<′-wellFounded _)
 
 -- A variable
 ι : ∀ {n} → Fin n → Poly n
-ι i = (κ 1# Δ 1 ∷↓ []) ⊐↓ Fin⇒≤ i
+ι i = (κ 1# Δ 1 ∷↓ []) ⊐↓ space≤′n i
 {-# INLINE ι #-}
 
 ----------------------------------------------------------------------
 -- Exponentiation
-----------------------------------------------------------------------
+
 -- We try very hard to never do things like multiply by 1
 -- unnecessarily. That's what all the weirdness here is for.
+
 ⊡-mult : ∀ {n} → ℕ → Poly n → Poly n
-⊡-mult zero xs = xs
+⊡-mult zero    xs = xs
 ⊡-mult (suc n) xs = ⊡-mult n xs ⊠ xs
 
 _⊡_+1 : ∀ {n} → Poly n → ℕ → Poly n
-(Κ x  ⊐ i≤n) ⊡ i +1  = Κ (x ^ i +1) ⊐ i≤n
+(Κ x  ⊐ i≤n)           ⊡ i +1  = Κ (x ^ i +1) ⊐ i≤n
 (⅀ (x Δ j & []) ⊐ i≤n) ⊡ i +1  = x .poly ⊡ i +1 Δ (j ℕ.+ i ℕ.* j) ∷↓ [] ⊐↓ i≤n
 xs@(⅀ (_ & ∹ _) ⊐ i≤n) ⊡ i +1  = ⊡-mult i xs
 
 infixr 8 _⊡_
 _⊡_ : ∀ {n} → Poly n → ℕ → Poly n
-_ ⊡ zero = κ 1#
+_  ⊡ zero  = κ 1#
 xs ⊡ suc i = xs ⊡ i +1
 {-# INLINE _⊡_ #-}

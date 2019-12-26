@@ -567,9 +567,15 @@ record CommutativeSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
     ; rawSemiring
     )
 
+  *-commutativeSemigroup : CommutativeSemigroup _ _
+  *-commutativeSemigroup = record
+    { isCommutativeSemigroup = *-isCommutativeSemigroup
+    }
+  
   *-commutativeMonoid : CommutativeMonoid _ _
-  *-commutativeMonoid =
-    record { isCommutativeMonoid = *-isCommutativeMonoid }
+  *-commutativeMonoid = record
+    { isCommutativeMonoid = *-isCommutativeMonoid
+    }
 
   commutativeSemiringWithoutOne : CommutativeSemiringWithoutOne _ _
   commutativeSemiringWithoutOne = record

@@ -1,5 +1,10 @@
-{-# OPTIONS --without-K --safe #-}
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Some defined operations over Rings
+------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
 
 -- This module gives the definition of _^_ which is used throughout
 -- the library. It's a little different from the normal definition:
@@ -26,7 +31,7 @@
 
 open import Algebra
 
-module Algebra.Operations.Ring.Compact
+module Algebra.Operations.Ring
   {ℓ₁ ℓ₂} (ring : RawRing ℓ₁ ℓ₂)
   where
 

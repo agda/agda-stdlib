@@ -1,8 +1,8 @@
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra.Construct.CommutativeRing.Polynomial.Parameters
+open import Algebra.Construct.Polynomial.Parameters
 
-module Algebra.Construct.CommutativeRing.Polynomial.Homomorphism.Negation
+module Algebra.Construct.Polynomial.Homomorphism.Negation
   {r₁ r₂ r₃ r₄}
   (homo : Homomorphism r₁ r₂ r₃ r₄)
   where
@@ -16,10 +16,10 @@ open import Data.Nat using (_<′_)
 open import Function
 
 open Homomorphism homo
-open import Algebra.Construct.CommutativeRing.Polynomial.Homomorphism.Lemmas homo
-open import Algebra.Construct.CommutativeRing.Polynomial.Reasoning to
-open import Algebra.Construct.CommutativeRing.Polynomial.Base from
-open import Algebra.Construct.CommutativeRing.Polynomial.Semantics homo
+open import Algebra.Construct.Polynomial.Homomorphism.Lemmas homo
+open import Algebra.Construct.Polynomial.Reasoning to
+open import Algebra.Construct.Polynomial.Base from
+open import Algebra.Construct.Polynomial.Semantics homo
 
 ⊟-step-hom : ∀ {n} (a : Acc _<′_ n) → (xs : Poly n) → ∀ ρ → ⟦ ⊟-step a xs ⟧ ρ ≈ - (⟦ xs ⟧ ρ)
 ⊟-step-hom (acc _ ) (Κ x  ⊐ i≤n) ρ = -‿homo x

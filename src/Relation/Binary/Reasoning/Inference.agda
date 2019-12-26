@@ -1,5 +1,3 @@
-{-# OPTIONS --without-K --safe #-}
-
 --------------------------------------------------------------------------------
 -- Equational reasoning combinators
 --
@@ -18,13 +16,12 @@
 open import Relation.Binary
 
 module Relation.Binary.Reasoning.Inference
-  {a ℓ}
-  (setoid : Setoid a ℓ)
+  {a ℓ} (S : Setoid a ℓ)
   where
 
 open import Relation.Binary.PropositionalEquality as ≡ using (_≡_)
 
-open Setoid setoid
+open Setoid S
 
 infix  4 _IsRelatedTo_
 infix  3 _∎

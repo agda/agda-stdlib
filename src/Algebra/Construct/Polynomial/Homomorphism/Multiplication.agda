@@ -1,34 +1,30 @@
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra.Construct.CommutativeRing.Polynomial.Parameters
+open import Algebra.Construct.Polynomial.Parameters
 
-module Algebra.Construct.CommutativeRing.Polynomial.Homomorphism.Multiplication
+module Algebra.Construct.Polynomial.Homomorphism.Multiplication
   {r₁ r₂ r₃ r₄}
   (homo : Homomorphism r₁ r₂ r₃ r₄)
   where
 
 open import Data.Nat as ℕ          using (ℕ; suc; zero; _<′_; _≤′_; ≤′-step; ≤′-refl)
 open import Data.Nat.Properties    using (≤′-trans)
+open import Data.Nat.Induction
 open import Data.Product           using (_×_; _,_; proj₁; proj₂; map₁)
 open import Data.List.Kleene
 open import Data.Vec               using (Vec)
-open import Induction.WellFounded  using (Acc; acc)
-open import Induction.Nat          using (<′-wellFounded)
-
 open import Function
+open import Induction.WellFounded
+open import Relation.Unary
 
 open Homomorphism homo
 
-open import Algebra.Construct.CommutativeRing.Polynomial.Homomorphism.Lemmas homo
-open import Algebra.Construct.CommutativeRing.Polynomial.Homomorphism.Addition homo
-open import Algebra.Construct.CommutativeRing.Polynomial.Base from
-open import Algebra.Construct.CommutativeRing.Polynomial.Reasoning to
-open import Algebra.Operations.Ring.Compact rawRing
-open import Algebra.Construct.CommutativeRing.Polynomial.Semantics homo
-open import Relation.Unary
-
-open import Data.Nat.Induction
-open import Induction.WellFounded
+open import Algebra.Construct.Polynomial.Homomorphism.Lemmas homo
+open import Algebra.Construct.Polynomial.Homomorphism.Addition homo
+open import Algebra.Construct.Polynomial.Base from
+open import Algebra.Construct.Polynomial.Reasoning to
+open import Algebra.Construct.Polynomial.Semantics homo
+open import Algebra.Operations.Ring rawRing
 
 reassoc : ∀ {y} x z → x * (y * z) ≈ y * (x * z)
 reassoc {y} x z = sym (*-assoc x y z) ⟨ trans ⟩ ((≪* *-comm x y) ⟨ trans ⟩ *-assoc y x z)
@@ -52,7 +48,7 @@ mutual
           → (ys : Poly n)
           → ∀ ρ
           → ⟦ ⊠-Κ a x ys ⟧ ρ ≈ ⟦ x ⟧ᵣ * ⟦ ys ⟧ ρ
-  ⊠-Κ-hom  (acc _) x (Κ y  ⊐ i≤n) ρ = *-homo x y
+  ⊠-Κ-hom (acc _)  x (Κ y  ⊐ i≤n) ρ = *-homo x y
   ⊠-Κ-hom (acc wf) x (⅀ xs ⊐ i≤n) ρ =
     begin
       ⟦ ⊠-Κ-inj (wf _ i≤n) x xs ⊐↓ i≤n ⟧ ρ
@@ -180,8 +176,7 @@ mutual
 
   ⊠-coeffs-hom : ∀ {n}
                → (a : Acc _<′_ n)
-               → (xs : Coeff n +)
-               → (ys : Coeff n +)
+               → (xs ys : Coeff n +)
                → ∀ ρ → ⅀?⟦ ⊠-coeffs a xs ys ⟧ ρ ≈ ⅀⟦ xs ⟧ ρ * ⅀⟦ ys ⟧ ρ
   ⊠-coeffs-hom a xs (y ≠0 Δ j & []) (ρ , Ρ) =
     begin
@@ -217,8 +212,7 @@ mutual
   ⊠-cons-hom : ∀ {n}
              → (a : Acc _<′_ n)
              → (y : Poly n)
-             → (ys : Coeff n +)
-             → (xs : Coeff n +)
+             → (ys xs : Coeff n +)
              → (ρ : Carrier)
              → (Ρ : Vec Carrier n)
              → ⅀?⟦ para (⊠-cons a y ys) xs ⟧ (ρ , Ρ)
@@ -249,8 +243,6 @@ mutual
         (ρ * xs′ + x′) * (ρ * ys′ + y′)
       ∎ }
 
-⊠-hom : ∀ {n}
-      → (xs : Poly n)
-      → (ys : Poly n)
-      → ∀ ρ → ⟦ xs ⊠ ys ⟧ ρ ≈ ⟦ xs ⟧ ρ * ⟦ ys ⟧ ρ
+⊠-hom : ∀ {n} (xs ys : Poly n) →
+        ∀ ρ → ⟦ xs ⊠ ys ⟧ ρ ≈ ⟦ xs ⟧ ρ * ⟦ ys ⟧ ρ
 ⊠-hom (xs ⊐ i≤n) = ⊠-step-hom (<′-wellFounded _) xs i≤n

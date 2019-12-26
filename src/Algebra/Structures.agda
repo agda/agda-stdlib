@@ -421,8 +421,13 @@ record IsCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
 
   private
     module +-CM = IsCommutativeMonoid +-isCommutativeMonoid
-    open module *-CM = IsCommutativeMonoid *-isCommutativeMonoid public
-           using () renaming (comm to *-comm)
+    module *-CM = IsCommutativeMonoid *-isCommutativeMonoid
+
+  open *-CM public
+    using () renaming
+    ( comm to *-comm
+    ; isCommutativeSemigroup to *-isCommutativeSemigroup
+    )
 
   distribˡ : * DistributesOverˡ +
   distribˡ = Consequences.comm+distrʳ⇒distrˡ

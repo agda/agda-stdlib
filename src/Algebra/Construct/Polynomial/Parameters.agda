@@ -3,7 +3,7 @@
 -- This module packages up all the stuff that's passed to the other
 -- modules in a convenient form.
 
-module Algebra.Construct.CommutativeRing.Polynomial.Parameters where
+module Algebra.Construct.Polynomial.Parameters where
 
 open import Function
 open import Algebra
@@ -21,7 +21,7 @@ open import Data.Bool using (Bool; T)
 record RawCoeff ℓ₁ ℓ₂ : Set (suc (ℓ₁ ⊔ ℓ₂)) where
   field
     rawRing : RawRing ℓ₁ ℓ₂
-    Zero-C  : RawRing.Carrier rawRing → Bool
+    isZero  : RawRing.Carrier rawRing → Bool
 
   open RawRing rawRing public
 
@@ -32,9 +32,9 @@ record Homomorphism ℓ₁ ℓ₂ ℓ₃ ℓ₄ : Set (suc (ℓ₁ ⊔ ℓ₂ �
     from : RawCoeff ℓ₁ ℓ₂
   module Raw = RawCoeff from
   field
-    to     : AlmostCommutativeRing ℓ₃ ℓ₄
+    to       : AlmostCommutativeRing ℓ₃ ℓ₄
     morphism : Raw.rawRing -Raw-AlmostCommutative⟶ to
   open _-Raw-AlmostCommutative⟶_ morphism renaming (⟦_⟧ to ⟦_⟧ᵣ) public
   open AlmostCommutativeRing to public
   field
-    Zero-C⟶Zero-R : ∀ x → T (Raw.Zero-C x) → 0# ≈  ⟦ x ⟧ᵣ
+    Zero-C⟶Zero-R : ∀ x → T (Raw.isZero x) → 0# ≈  ⟦ x ⟧ᵣ

@@ -6,9 +6,9 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra.Construct.CommutativeRing.Polynomial.Parameters
+open import Algebra.Construct.Polynomial.Parameters
 
-module Algebra.Construct.CommutativeRing.Polynomial.Homomorphism.Lemmas
+module Algebra.Construct.Polynomial.Homomorphism.Lemmas
   {r₁ r₂ r₃ r₄}
   (homo : Homomorphism r₁ r₂ r₃ r₄)
   where
@@ -19,7 +19,8 @@ open import Data.Nat as ℕ                              using (ℕ; suc; zero; 
 open import Data.Nat.Properties                        using (≤′-trans)
 open import Data.Vec as Vec                            using (Vec; _∷_)
 open import Level                                      using (lift)
-open import Data.Fin                                   using (Fin)
+open import Data.Fin                                   using (Fin; zero; suc)
+open import Data.Fin.Properties                        using (space≤′n)
 open import Relation.Binary.PropositionalEquality as ≡ using (_≡_)
 open import Data.Product                               using (_,_; proj₁; proj₂; map₁; _×_)
 open import Data.Empty                                 using (⊥-elim)
@@ -31,11 +32,11 @@ import Data.Nat.Properties as ℕ-Prop
 open import Data.List.Kleene
 
 open Homomorphism homo
-open import Algebra.Construct.CommutativeRing.Polynomial.Reasoning to
-open import Algebra.Construct.CommutativeRing.Polynomial.Base from
-open import Algebra.Construct.CommutativeRing.Polynomial.Semantics homo
+open import Algebra.Construct.Polynomial.Reasoning to
+open import Algebra.Construct.Polynomial.Base from
+open import Algebra.Construct.Polynomial.Semantics homo
 
-open import Algebra.Operations.Ring.Compact rawRing
+open import Algebra.Operations.Ring rawRing
 
 ------------------------------------------------------------------------
 -- Power lemmas
@@ -145,17 +146,16 @@ pow-cong (suc i) x≈y = pow-cong-+1 i x≈y
 
 -- Demonstrating that the proof of zeroness is correct.
 zero-hom : ∀ {n} (p : Poly n) → Zero p → (ρs : Vec Carrier n) → 0# ≈ ⟦ p ⟧ ρs
-zero-hom (⅀ _ ⊐ _) ()
 zero-hom (Κ x  ⊐ i≤n) p≡0 ρs = Zero-C⟶Zero-R x p≡0
 
 --   x¹⁺ⁿ = xxⁿ
 pow-suc : ∀ x i → x ^ suc i ≈ x * x ^ i
-pow-suc x ℕ.zero = sym (*-identityʳ _)
+pow-suc x ℕ.zero  = sym (*-identityʳ _)
 pow-suc x (suc i) = *-comm _ _
 
 --   x¹⁺ⁿ = xⁿx
 pow-sucʳ : ∀ x i → x ^ suc i ≈ x ^ i * x
-pow-sucʳ x ℕ.zero = sym (*-identityˡ _)
+pow-sucʳ x ℕ.zero  = sym (*-identityˡ _)
 pow-sucʳ x (suc i) = refl
 
 -- In the proper evaluation function, we avoid ever inserting an unnecessary 0#
@@ -163,8 +163,8 @@ pow-sucʳ x (suc i) = refl
 -- 0#. So we write one here, and then prove that it's equivalent to the one that
 -- adds a 0#.
 ⅀?⟦_⟧ : ∀ {n} (xs : Coeff n *) → Carrier × Vec Carrier n → Carrier
-⅀?⟦ [] ⟧ _ = 0#
-⅀?⟦ ∹ x ⟧ = ⅀⟦ x ⟧
+⅀?⟦ []  ⟧ _ = 0#
+⅀?⟦ ∹ x ⟧   = ⅀⟦ x ⟧
 
 _⟦∷⟧?_ : ∀ {n} (x : Poly n × Coeff n *) → Carrier × Vec Carrier n → Carrier
 (x , xs) ⟦∷⟧? (ρ , ρs) = ρ * ⅀?⟦ xs ⟧ (ρ , ρs) + ⟦ x ⟧ ρs
@@ -185,9 +185,9 @@ pow′-hom (suc i) [] ρ ρs = zeroʳ _
 -- This lets us prove with respect to the non-normalising form, especially
 -- when we're using the folds.
 ∷↓-hom-0 : ∀ {n} (x : Poly n) → ∀ xs ρ ρs → ⅀?⟦ x Δ 0 ∷↓ xs ⟧ (ρ , ρs) ≈ (x , xs) ⟦∷⟧ (ρ , ρs)
-∷↓-hom-0 x xs ρ ρs with zero? x
-∷↓-hom-0 x xs ρ ρs | no ¬p = refl
-∷↓-hom-0 x [] ρ ρs | yes p = zero-hom x p ρs
+∷↓-hom-0 x xs      ρ ρs with zero? x
+∷↓-hom-0 x xs      ρ ρs | no ¬p = refl
+∷↓-hom-0 x []      ρ ρs | yes p = zero-hom x p ρs
 ∷↓-hom-0 x (∹ xs ) ρ ρs | yes p =
   begin
     ⅀⟦ xs ⍓+ 1 ⟧ (ρ , ρs)
@@ -216,15 +216,15 @@ pow′-hom (suc i) [] ρ ρs = zeroʳ _
        → (x : Poly n)
        → ∀ i xs ρ ρs
        → ⅀?⟦ x Δ i ∷↓ xs ⟧ (ρ , ρs) ≈ ρ ^ i * ((x , xs) ⟦∷⟧ (ρ , ρs))
-∷↓-hom x ℕ.zero xs ρ ρs = ∷↓-hom-0 x xs ρ ρs ⟨ trans ⟩ sym (*-identityˡ _)
+∷↓-hom x ℕ.zero  xs ρ ρs = ∷↓-hom-0 x xs ρ ρs ⟨ trans ⟩ sym (*-identityˡ _)
 ∷↓-hom x (suc i) xs ρ ρs = ∷↓-hom-s x i xs ρ ρs
 
 ⟦∷⟧-hom : ∀ {n}
        → (x : Poly n)
        → (xs : Coeff n *)
        → ∀ ρ ρs → (x , xs) ⟦∷⟧ (ρ , ρs) ≈ ρ * ⅀?⟦ xs ⟧ (ρ , ρs) + ⟦ x ⟧ ρs
-⟦∷⟧-hom x [] ρ ρs = sym ((≪+ zeroʳ _) ⟨ trans ⟩ +-identityˡ _)
-⟦∷⟧-hom x (∹ xs ) ρ ρs = refl
+⟦∷⟧-hom x []     ρ ρs = sym ((≪+ zeroʳ _) ⟨ trans ⟩ +-identityˡ _)
+⟦∷⟧-hom x (∹ xs) ρ ρs = refl
 
 -- This proves that injecting a polynomial into more variables is correct.
 -- Basically, we show that if a polynomial doesn't care about the first few
@@ -236,7 +236,7 @@ pow′-hom (suc i) [] ρ ρs = zeroʳ _
          → ∀ ρ
          → ⅀⟦ xs ⟧ (drop-1 (≤′-step si≤n ⟨ ≤′-trans ⟩ sn≤m) ρ)
          ≈ ⅀⟦ xs ⟧ (drop-1 si≤n (proj₂ (drop-1 sn≤m ρ)))
-⅀-⊐↑-hom xs si≤n ≤′-refl (_ ∷ _) = refl
+⅀-⊐↑-hom xs si≤n ≤′-refl        (_ ∷ _) = refl
 ⅀-⊐↑-hom xs si≤n (≤′-step sn≤m) (_ ∷ ρ) = ⅀-⊐↑-hom xs si≤n sn≤m ρ
 
 ⊐↑-hom : ∀ {n m}
@@ -253,7 +253,7 @@ trans-join-coeffs-hom : ∀ {i j-1 n}
                       → (xs : Coeff i +)
                       → ∀ ρ
                       → ⅀⟦ xs ⟧ (drop-1 i≤j-1 (proj₂ (drop-1 j≤n ρ))) ≈ ⅀⟦ xs ⟧ (drop-1 (≤′-step i≤j-1 ⟨ ≤′-trans ⟩ j≤n) ρ)
-trans-join-coeffs-hom i<j-1 ≤′-refl xs (_ ∷ _) = refl
+trans-join-coeffs-hom i<j-1 ≤′-refl       xs (_ ∷ _) = refl
 trans-join-coeffs-hom i<j-1 (≤′-step j<n) xs (_ ∷ ρ) = trans-join-coeffs-hom i<j-1 j<n xs ρ
 
 trans-join-hom : ∀ {i j-1 n}
@@ -282,12 +282,10 @@ trans-join-hom i≤j-1 j≤n (⅀ x) = trans-join-coeffs-hom i≤j-1 j≤n x
     ⟦ x ⟧ ρs′
   ∎
 
-drop-1⇒lookup : ∀ {n}
-              → (i : Fin n)
-              → (ρs : Vec Carrier n)
-              → proj₁ (drop-1 (Fin⇒≤ i) ρs) ≡ Vec.lookup ρs i
-drop-1⇒lookup Fin.zero (ρ ∷ ρs) = ≡.refl
-drop-1⇒lookup (Fin.suc i) (ρ ∷ ρs) = drop-1⇒lookup i ρs
+drop-1⇒lookup : ∀ {n} (i : Fin n) (ρs : Vec Carrier n) →
+                proj₁ (drop-1 (space≤′n i) ρs) ≡ Vec.lookup ρs i
+drop-1⇒lookup zero    (ρ ∷ ρs) = ≡.refl
+drop-1⇒lookup (suc i) (ρ ∷ ρs) = drop-1⇒lookup i ρs
 
 -- The fold: this function saves us hundreds of lines of proofs in the rest of the
 -- homomorphism proof.

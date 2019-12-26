@@ -1,9 +1,14 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- "Evaluating" a polynomial, using Horner's method.
+------------------------------------------------------------------------
+
 {-# OPTIONS --without-K --safe #-}
 
--- "Evaluating" a polynomial, using Horner's method.
-open import Algebra.Construct.CommutativeRing.Polynomial.Parameters
+open import Algebra.Construct.Polynomial.Parameters
 
-module Algebra.Construct.CommutativeRing.Polynomial.Semantics
+module Algebra.Construct.Polynomial.Semantics
   {r₁ r₂ r₃ r₄}
   (homo : Homomorphism r₁ r₂ r₃ r₄)
   where
@@ -15,13 +20,13 @@ open import Data.Product using (_,_; _×_)
 open import Data.List.Kleene using (_+; _*; ∹_; _&_; [])
 
 open Homomorphism homo
-open import Algebra.Construct.CommutativeRing.Polynomial.Base from
+open import Algebra.Construct.Polynomial.Base from
 
-open import Algebra.Operations.Ring.Compact rawRing
+open import Algebra.Operations.Ring rawRing
 
 drop : ∀ {i n} → i ≤′ n → Vec Carrier n → Vec Carrier i
-drop ≤′-refl Ρ = Ρ
-drop (≤′-step si≤n) (_ ∷ Ρ) = drop si≤n Ρ
+drop ≤′-refl         xs       = xs
+drop (≤′-step i+1≤n) (_ ∷ xs) = drop i+1≤n xs
 
 drop-1 : ∀ {i n} → suc i ≤′ n → Vec Carrier n → Carrier × Vec Carrier i
 drop-1 si≤n xs = uncons (drop si≤n xs)
@@ -41,17 +46,18 @@ x *⟨ ρ ⟩^ suc i = ρ ^ i +1 * x
 -- slight changes can dramatically affect the length of proof code.
 mutual
   _⟦∷⟧_ : ∀ {n} → Poly n × Coeff n * → Carrier × Vec Carrier n → Carrier
-  (x , []) ⟦∷⟧ (ρ , ρs) = ⟦ x ⟧ ρs
+  (x , [])      ⟦∷⟧ (ρ , ρs) = ⟦ x ⟧ ρs
   (x , (∹ xs )) ⟦∷⟧ (ρ , ρs) = ρ * ⅀⟦ xs ⟧ (ρ , ρs) + ⟦ x ⟧ ρs
 
   ⅀⟦_⟧ : ∀ {n} → Coeff n + → (Carrier × Vec Carrier n) → Carrier
   ⅀⟦ x ≠0 Δ i & xs ⟧ (ρ , ρs) = ((x , xs) ⟦∷⟧ (ρ , ρs)) *⟨ ρ ⟩^ i
+  {-# INLINE ⅀⟦_⟧ #-}
 
   ⟦_⟧ : ∀ {n} → Poly n → Vec Carrier n → Carrier
   ⟦ Κ x  ⊐ i≤n ⟧ _ = ⟦ x ⟧ᵣ
   ⟦ ⅀ xs ⊐ i≤n ⟧ Ρ = ⅀⟦ xs ⟧ (drop-1 i≤n Ρ)
-{-# INLINE ⟦_⟧ #-}
-{-# INLINE ⅀⟦_⟧ #-}
+  {-# INLINE ⟦_⟧ #-}
+
 --------------------------------------------------------------------------------
 -- Performance
 --------------------------------------------------------------------------------

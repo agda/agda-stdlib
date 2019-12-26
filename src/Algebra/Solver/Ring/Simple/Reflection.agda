@@ -3,24 +3,28 @@
 module Algebra.Solver.Ring.Simple.Reflection where
 
 open import Agda.Builtin.Reflection
-open import Reflection.Helpers
-
-open import Algebra.Solver.Ring.Simple.Solver renaming (solve to solve-fn)
-open AlmostCommutativeRing
+open import Agda.Builtin.Nat    using (_<_)
 
 open import Data.NatSet
 
+open import Algebra.Solver.Ring.Simple.Solver renaming (solve to solve-fn)
 open import Data.Fin   as Fin   using (Fin)
 open import Data.Vec   as Vec   using (Vec; _∷_; [])
 open import Data.List  as List  using (List; _∷_; [])
 open import Data.Maybe as Maybe using (Maybe; just; nothing; fromMaybe)
-open import Agda.Builtin.Nat    using (_<_)
 open import Data.Nat            using (ℕ; suc; zero)
 open import Data.Bool           using (Bool; if_then_else_; true; false)
 open import Data.Unit           using (⊤)
 open import Data.String         using (String)
 open import Data.Product        using (_,_)
 open import Function
+open import Reflection.Helpers
+
+open AlmostCommutativeRing
+
+record Ring⇓ : Set where
+  constructor +⇒_*⇒_^⇒_-⇒_
+  field +′ *′ ^′ -′ : Maybe Name
 
 module Internal where
   _∈Ring : Term → TC Term
@@ -39,10 +43,6 @@ module Internal where
     t ∈List⟨Carrier⟩ =
       checkType t
         (quote List ⟨ def ⟩ 1 ⋯⟅∷⟆ def (quote Carrier) (2 ⋯⟅∷⟆ ring ⟨∷⟩ []) ⟨∷⟩ []) >>= normalise
-
-    record Ring⇓ : Set where
-      constructor +⇒_*⇒_^⇒_-⇒_
-      field +′ *′ ^′ -′ : Maybe Name
 
     ring⇓ : TC Ring⇓
     ring⇓ = ⦇ +⇒ ⟦ quote _+_ ⇓⟧ₙ *⇒ ⟦ quote _*_ ⇓⟧ₙ ^⇒ ⟦ quote _^_ ⇓⟧ₙ -⇒ ⟦ quote -_ ⇓⟧ₙ ⦈
@@ -87,18 +87,18 @@ module Internal where
             -- by just taking the last two explicit arguments.
             E⟨_⟩₂ : Name → List (Arg Term) → Term
             E⟨ nm ⟩₂ (x ⟨∷⟩ y ⟨∷⟩ []) = nm ⟨ con ⟩ E⟅∷⟆ E x ⟨∷⟩ E y ⟨∷⟩ []
-            E⟨ nm ⟩₂ (x ∷ xs) = E⟨ nm ⟩₂ xs
-            E⟨ nm ⟩₂ _ = unknown
+            E⟨ nm ⟩₂ (x ∷ xs)         = E⟨ nm ⟩₂ xs
+            E⟨ nm ⟩₂ _                = unknown
 
             E⟨_⟩₁ : Name → List (Arg Term) → Term
             E⟨ nm ⟩₁ (x ⟨∷⟩ []) = nm ⟨ con ⟩ E⟅∷⟆ E x ⟨∷⟩ []
-            E⟨ nm ⟩₁ (x ∷ xs) = E⟨ nm ⟩₁ xs
-            E⟨ _ ⟩₁ _ = unknown
+            E⟨ nm ⟩₁ (x ∷ xs)   = E⟨ nm ⟩₁ xs
+            E⟨ _  ⟩₁ _          = unknown
 
             E⟨^⟩ : List (Arg Term) → Term
             E⟨^⟩ (x ⟨∷⟩ y ⟨∷⟩ []) = quote _⊛_ ⟨ con ⟩ E⟅∷⟆ E x ⟨∷⟩ y ⟨∷⟩ []
-            E⟨^⟩ (x ∷ xs) = E⟨^⟩ xs
-            E⟨^⟩ _ = unknown
+            E⟨^⟩ (x ∷ xs)         = E⟨^⟩ xs
+            E⟨^⟩ _                = unknown
 
             -- When trying to figure out the shape of an expression, one of
             -- the difficult tasks is recognizing where constants in the
@@ -115,14 +115,14 @@ module Internal where
             E (def (quote _+_) xs) = E⟨ quote _⊕_ ⟩₂ xs
             E (def (quote _*_) xs) = E⟨ quote _⊗_ ⟩₂ xs
             E (def (quote _^_) xs) = E⟨^⟩ xs
-            E (def (quote -_) xs) = E⟨ quote ⊝_ ⟩₁ xs
-            E (def nm xs) = if +′ ⇓≟ nm then E⟨ quote _⊕_ ⟩₂ xs else
-                            if *′ ⇓≟ nm then E⟨ quote _⊗_ ⟩₂ xs else
-                            if ^′ ⇓≟ nm then E⟨^⟩ xs else
-                            if -′ ⇓≟ nm then E⟨ quote ⊝_ ⟩₁ xs else
-                            Κ′ (def nm xs)
-            E v@(var x _) = fromMaybe (Κ′ v) (Ι′ x)
-            E t = Κ′ t
+            E (def (quote -_)  xs) = E⟨ quote ⊝_ ⟩₁ xs
+            E (def nm          xs) = if +′ ⇓≟ nm then E⟨ quote _⊕_ ⟩₂ xs else
+                                     if *′ ⇓≟ nm then E⟨ quote _⊗_ ⟩₂ xs else
+                                     if ^′ ⇓≟ nm then E⟨^⟩ xs else
+                                     if -′ ⇓≟ nm then E⟨ quote ⊝_ ⟩₁ xs else
+                                     Κ′ (def nm xs)
+            E v@(var x _)          = fromMaybe (Κ′ v) (Ι′ x)
+            E t                    = Κ′ t
 
         callSolver : Vec String numVars → Term → Term → List (Arg Type)
         callSolver nms lhs rhs =
@@ -206,16 +206,16 @@ solveOver-macro i ring hole = do
   hole′ ← inferType hole >>= reduce
   just vars′ ← pure (vars i′)
     where nothing → typeError (strErr "Malformed call to solveOver." ∷
-                                strErr "First argument should be a list of free variables." ∷
-                                strErr "Instead: " ∷
-                                termErr i′ ∷
-                                [])
+                               strErr "First argument should be a list of free variables." ∷
+                               strErr "Instead: " ∷
+                               termErr i′ ∷
+                               [])
   just (lhs ∷ rhs ∷ []) ← pure (getArgs 2 hole′)
     where nothing → typeError (strErr "Malformed call to solveOver." ∷
-                                strErr "First argument should be a list of free variables." ∷
-                                strErr "Instead: " ∷
-                                termErr hole′ ∷
-                                [])
+                               strErr "First argument should be a list of free variables." ∷
+                               strErr "Instead: " ∷
+                               termErr hole′ ∷
+                               [])
   unify hole (constructSoln nms (List.length vars′) vars′ lhs rhs)
 
 macro

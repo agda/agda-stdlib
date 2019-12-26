@@ -51,14 +51,18 @@ record AlmostCommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
   open IsAlmostCommutativeRing isAlmostCommutativeRing public
 
   commutativeSemiring : CommutativeSemiring _ _
-  commutativeSemiring =
-    record { isCommutativeSemiring = isCommutativeSemiring }
+  commutativeSemiring = record
+    { isCommutativeSemiring = isCommutativeSemiring
+    }
 
   open CommutativeSemiring commutativeSemiring public
-         using ( +-semigroup; +-monoid; +-commutativeMonoid
-               ; *-semigroup; *-monoid; *-commutativeMonoid
-               ; semiring
-               )
+    using
+    ( +-magma; +-semigroup
+    ; +-monoid; +-commutativeMonoid
+    ; *-semigroup; *-commutativeSemigroup
+    ; *-monoid; *-commutativeMonoid
+    ; semiring
+    )
 
   rawRing : RawRing _ _
   rawRing = record

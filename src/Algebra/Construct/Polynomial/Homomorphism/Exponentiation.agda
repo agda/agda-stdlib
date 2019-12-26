@@ -1,8 +1,8 @@
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra.Construct.CommutativeRing.Polynomial.Parameters
+open import Algebra.Construct.Polynomial.Parameters
 
-module Algebra.Construct.CommutativeRing.Polynomial.Homomorphism.Exponentiation
+module Algebra.Construct.Polynomial.Homomorphism.Exponentiation
   {r₁ r₂ r₃ r₄}
   (homo : Homomorphism r₁ r₂ r₃ r₄)
   where
@@ -18,12 +18,12 @@ import Data.Nat.Properties as ℕ-Prop
 import Relation.Binary.PropositionalEquality as ≡
 
 open Homomorphism homo
-open import Algebra.Construct.CommutativeRing.Polynomial.Homomorphism.Lemmas homo
-open import Algebra.Construct.CommutativeRing.Polynomial.Base from
-open import Algebra.Construct.CommutativeRing.Polynomial.Reasoning to
-open import Algebra.Construct.CommutativeRing.Polynomial.Homomorphism.Semantics homo
-open import Algebra.Construct.CommutativeRing.Polynomial.Homomorphism.Multiplication homo
-open import Algebra.Construct.CommutativeRing.Polynomial.Semantics homo
+open import Algebra.Construct.Polynomial.Homomorphism.Lemmas homo
+open import Algebra.Construct.Polynomial.Base from
+open import Algebra.Construct.Polynomial.Reasoning to
+open import Algebra.Construct.Polynomial.Homomorphism.Semantics homo
+open import Algebra.Construct.Polynomial.Homomorphism.Multiplication homo
+open import Algebra.Construct.Polynomial.Semantics homo
 
 import Algebra.Operations.Ring.Compact
 module RawPow = Algebra.Operations.Ring.Compact rawRing

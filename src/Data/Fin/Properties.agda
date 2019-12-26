@@ -15,7 +15,8 @@ open import Data.Bool.Base using (Bool; true; false; not; _∧_; _∨_)
 open import Data.Empty using (⊥-elim)
 open import Data.Fin.Base
 open import Data.Fin.Patterns
-open import Data.Nat as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_)
+open import Data.Nat as ℕ
+  using (ℕ; zero; suc; s≤s; z≤n; _∸_; _≤′_; ≤′-refl; ≤′-step)
 import Data.Nat.Properties as ℕₚ
 open import Data.Unit using (tt)
 open import Data.Product using (∃; ∃₂; ∄; _×_; _,_; map; proj₁; uncurry; <_,_>)
@@ -528,6 +529,13 @@ punchOut-punchIn (suc i) {suc j} = cong suc (begin
   punchOut (punchInᵢ≢i i j ∘ sym)                             ≡⟨ punchOut-punchIn i ⟩
   j                                                           ∎)
   where open ≡-Reasoning
+
+------------------------------------------------------------------------
+-- space
+
+space≤′n : ∀ {n} (x : Fin n) → space x ≤′ n
+space≤′n zero    = ≤′-refl
+space≤′n (suc x) = ≤′-step (space≤′n x)
 
 ------------------------------------------------------------------------
 -- Quantification
