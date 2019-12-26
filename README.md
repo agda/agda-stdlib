@@ -3,16 +3,16 @@
 The Agda standard library
 =========================
 
-The standard library aims to contain all the tools needed to easily
-write both programs and proofs. While we always try and write efficient
-code, we prioritise ease of proof over type-checking and normalisation
+The standard library aims to contain all the tools needed to write both
+programs and proofs easily. While we always try and write efficient
+code, we prioritize ease of proof over type-checking and normalization
 performance. If computational performance is important to you, then
 perhaps try [agda-prelude](https://github.com/UlfNorell/agda-prelude)
 instead.
 
 ## Getting started
 
-If you're looking to find your way around the library, there's various
+If you're looking to find your way around the library, there are several
 different ways to get started:
 
 - The library's structure and the associated design choices are described
@@ -24,11 +24,11 @@ use some of the more common modules. Feel free to open a new
 [issue](https://github.com/agda/agda-stdlib/issues/new) if there's a particular
 module you feel could do with some more documentation.
 
-- You can browse the library's source code in glorious clickable html
+- You can browse the library's source code in glorious clickable HTML
 [here](https://agda.github.io/agda-stdlib/README.html).
 
-- Finally you can get an overview of the entire library by looking at the
-[index](https://agda.github.io/agda-stdlib/) which lists every module it contains
+- Finally, you can get an overview of the entire library by looking at the
+[index](https://agda.github.io/agda-stdlib/), which lists every module it contains
 (minus any deprecated modules).
 
 ## Installation instructions
@@ -45,9 +45,9 @@ where 0.17 can be replaced as required.
 
 #### Development version of Agda
 
-If you're using a development version of Agda rather than the latest official release
+If you're using a development version of Agda rather than the latest official release,
 you should use the `experimental` branch of the standard library rather than `master`.
-The `experimental` branch contains non-backwards compatible patches for upcoming
+The `experimental` branch contains non-backward compatible patches for upcoming
 changes to the language.
 
 ## Type-checking with flags
@@ -67,7 +67,7 @@ for a full list of modules that use axiom K.
 ## Contributing to the library
 
 If you would like to suggest improvements, feel free to use the `Issues` tab.
-Even better if you would like to make the improvements yourself, we have instructions
+Even better, if you would like to make the improvements yourself, we have instructions
 in [HACKING](https://github.com/agda/agda-stdlib/blob/master/HACKING.md) to help
 you get started. For those who would simply like to help out, issues marked with
 the [status:low-hanging-fruit](https://github.com/agda/agda-stdlib/issues?q=is%3Aopen+is%3Aissue+label%3A%22status%3A+low-hanging-fruit%22) tag are a good starting point.
