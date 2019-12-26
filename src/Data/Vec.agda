@@ -18,12 +18,9 @@ module Data.Vec where
 
 open import Level
 open import Data.Bool.Base
-open import Data.List.Base as List using (List)
 import Data.Nat.Properties as ℕₚ
-open import Data.Product as Prod using (∃)
 open import Data.Vec.Bounded.Base as Vec≤
   using (Vec≤; ≤-cast; fromVec)
-open import Function.Base
 open import Relation.Nullary
 open import Relation.Unary
 
