@@ -20,28 +20,27 @@ in the [README.agda](https://github.com/agda/agda-stdlib/tree/master/README.agda
 
 - The [README folder](https://github.com/agda/agda-stdlib/tree/master/README),
 which mirrors the structure of the main library, contains examples of how to
-use some of the more common modules. Feel free to open a new
-[issue](https://github.com/agda/agda-stdlib/issues/new) if there's a particular
-module you feel could do with some more documentation.
+use some of the more common modules. Feel free to [open a new issue](https://github.com/agda/agda-stdlib/issues/new) if there's a particular module you feel could do with
+some more documentation.
 
-- You can browse the library's source code in glorious clickable HTML
-[here](https://agda.github.io/agda-stdlib/README.html).
+- You can [browse the library's source code](https://agda.github.io/agda-stdlib/README.html)
+in glorious clickable HTML.
 
 - Finally, you can get an overview of the entire library by looking at the
-[index](https://agda.github.io/agda-stdlib/), which lists every module it contains
-(minus any deprecated modules).
+[module index](https://agda.github.io/agda-stdlib/), which lists all modules
+in the library except the deprecated ones.
 
 ## Installation instructions
 
-See the instructions [here](https://github.com/agda/agda-stdlib/blob/master/notes/installation-guide.md)
-for how to install the latest version of the standard library.
+See the [installation instructions](https://github.com/agda/agda-stdlib/blob/master/notes/installation-guide.md) for the latest version of the standard library.
 
 #### Old versions of Agda
 
 If you're using an old version of Agda, you can download the corresponding version
 of the standard library on the [Agda wiki](http://wiki.portal.chalmers.se/agda/pmwiki.php?n=Libraries.StandardLibrary).
-The index for older versions of the library can be found at, for example, https://agda.github.io/agda-stdlib/v0.17/
-where 0.17 can be replaced as required.
+The module index for older versions of the library is also available. For example,
+version 0.17 can be found at https://agda.github.io/agda-stdlib/v0.17/, just
+replace in the URL 0.17 for the version that you need.
 
 #### Development version of Agda
 
