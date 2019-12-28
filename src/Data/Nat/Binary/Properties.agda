@@ -148,7 +148,7 @@ fromℕ-pred n = begin
   fromℕ (ℕ.pred n)        ≡⟨ cong (fromℕ ∘ ℕ.pred) (sym (toℕ-fromℕ n)) ⟩
   fromℕ (ℕ.pred (toℕ x))  ≡⟨ cong fromℕ (sym (toℕ-pred x)) ⟩
   fromℕ (toℕ (pred x))    ≡⟨ fromℕ-toℕ (pred x) ⟩
-  pred x                  ≡⟨ refl ⟩
+  pred x                  ≡⟨⟩
   pred (fromℕ n)          ∎
   where open ≡-Reasoning;  x = fromℕ n
 
@@ -653,16 +653,6 @@ suc-+ 1+[2 x ] 1+[2 y ] =  refl
 1+≗suc : (1ᵇ +_) ≗ suc
 1+≗suc = suc-+ zero
 
-fromℕ-homo-+ : ∀ m n → fromℕ (m ℕ.+ n) ≡ fromℕ m + fromℕ n
-fromℕ-homo-+ 0         _ = refl
-fromℕ-homo-+ (ℕ.suc m) n = begin
-  fromℕ ((ℕ.suc m) ℕ.+ n)          ≡⟨⟩
-  suc (fromℕ (m ℕ.+ n))            ≡⟨ cong suc (fromℕ-homo-+ m n) ⟩
-  suc (a + b)                      ≡⟨ sym (suc-+ a b) ⟩
-  (suc a) + b                      ≡⟨⟩
-  (fromℕ (ℕ.suc m)) + (fromℕ n)    ∎
-  where open ≡-Reasoning;  a = fromℕ m;  b = fromℕ n
-
 ------------------------------------------------------------------------
 -- Algebraic properties of _+_
 
@@ -693,6 +683,15 @@ private
 +-cancelʳ-≡ : RightCancellative _+_
 +-cancelʳ-≡ = +-Monomorphism.cancelʳ ℕₚ.+-isMagma ℕₚ.+-cancelʳ-≡
 
+x+suc[y]≡suc[x]+y : ∀ x y → x + suc y ≡ suc x + y
+x+suc[y]≡suc[x]+y x y =  begin
+  x + suc y     ≡⟨ +-comm x _ ⟩
+  suc y + x     ≡⟨ suc-+ y x ⟩
+  suc (y + x)   ≡⟨ cong suc (+-comm y x) ⟩
+  suc (x + y)   ≡⟨ sym (suc-+ x y) ⟩
+  suc x + y     ∎
+  where open ≡-Reasoning
+
 ------------------------------------------------------------------------
 -- Structures for _+_
 
@@ -701,6 +700,12 @@ private
 
 +-isSemigroup : IsSemigroup _+_
 +-isSemigroup = +-Monomorphism.isSemigroup ℕₚ.+-isSemigroup
+
++-isCommutativeSemigroup : IsCommutativeSemigroup _+_
++-isCommutativeSemigroup = record
+  { isSemigroup = +-isSemigroup
+  ; comm        = +-comm
+  }
 
 +-0-isMonoid : IsMonoid _+_ 0ᵇ
 +-0-isMonoid = +-Monomorphism.isMonoid ℕₚ.+-0-isMonoid
@@ -719,6 +724,11 @@ private
   { isSemigroup = +-isSemigroup
   }
 
++-commutativeSemigroup : CommutativeSemigroup 0ℓ 0ℓ
++-commutativeSemigroup = record
+  { isCommutativeSemigroup = +-isCommutativeSemigroup
+  }
+
 +-0-monoid : Monoid 0ℓ 0ℓ
 +-0-monoid = record
   { ε        = zero
@@ -729,6 +739,15 @@ private
 +-0-commutativeMonoid = record
   { isCommutativeMonoid = +-0-isCommutativeMonoid
   }
+
+import Algebra.Properties.CommutativeSemigroup +-commutativeSemigroup
+  as Bin+CSemigroup
+import Algebra.Morphism.TwoMagmas +-magma ℕₚ.+-magma
+  as Magmas+ℕᵇ-ℕ
+
+fromℕ-homo-+ :  ∀ m n → fromℕ (m ℕ.+ n) ≡ fromℕ m + fromℕ n
+fromℕ-homo-+ =  Magmas+ℕᵇ-ℕ.IsHomo⇒IsHomo-rev toℕ fromℕ (cong fromℕ)
+                                                 fromℕ-toℕ toℕ-fromℕ toℕ-homo-+
 
 ------------------------------------------------------------------------------
 -- Properties of _+_ and _≤_
@@ -950,17 +969,6 @@ toℕ-isMonoidMonomorphism-* = record
   ; injective            = toℕ-injective
   }
 
-fromℕ-homo-* : ∀ m n → fromℕ (m ℕ.* n) ≡ fromℕ m * fromℕ n
-fromℕ-homo-* m n = begin
-  fromℕ (m ℕ.* n)           ≡⟨ cong fromℕ (cong₂ ℕ._*_ m≡aN n≡bN) ⟩
-  fromℕ (toℕ a ℕ.* toℕ b)   ≡⟨ cong fromℕ (sym (toℕ-homo-* a b)) ⟩
-  fromℕ (toℕ (a * b))       ≡⟨ fromℕ-toℕ (a * b) ⟩
-  a * b                     ∎
-  where
-  open ≡-Reasoning
-  a    = fromℕ m;             b    = fromℕ n
-  m≡aN = sym (toℕ-fromℕ m);   n≡bN = sym (toℕ-fromℕ n)
-
 private
   module *-Monomorphism = MonoidMonomorphism toℕ-isMonoidMonomorphism-*
 
@@ -1084,6 +1092,13 @@ private
   { isCommutativeSemiring = *-+-isCommutativeSemiring
   }
 
+import Algebra.Morphism.TwoMagmas *-magma ℕₚ.*-magma
+  as Magmas*ℕᵇ-ℕ
+
+fromℕ-homo-* : ∀ m n → fromℕ (m ℕ.* n) ≡ fromℕ m * fromℕ n
+fromℕ-homo-* =  Magmas*ℕᵇ-ℕ.IsHomo⇒IsHomo-rev toℕ fromℕ (cong fromℕ)
+                                        fromℕ-toℕ toℕ-fromℕ toℕ-homo-*
+
 ------------------------------------------------------------------------
 -- Properties of _*_ and _≤_ & _<_
 
@@ -1168,6 +1183,10 @@ x≢0∧y≢0⇒x*y≢0 {x} {_} x≢0 y≢0 xy≡0  with x*y≡0⇒x≡0∨y≡0
 double[x]≡0⇒x≡0 : ∀ {x} → double x ≡ zero → x ≡ zero
 double[x]≡0⇒x≡0 {zero} _ = refl
 
+x≡0⇒double[x]≡0 : ∀ {x} → x ≡ 0ᵇ → double x ≡ 0ᵇ
+x≡0⇒double[x]≡0 =
+                cong double
+
 x≢0⇒double[x]≢0 : ∀ {x} → x ≢ zero → double x ≢ zero
 x≢0⇒double[x]≢0 x≢0 = x≢0 ∘ double[x]≡0⇒x≡0
 
@@ -1198,6 +1217,13 @@ double-distrib-+ x y = begin
   2ᵇ * (x + y)           ≡⟨ *-distribˡ-+ 2ᵇ x y ⟩
   (2ᵇ * x) + (2ᵇ * y)    ≡⟨ sym (cong₂ _+_ (double≗2* x) (double≗2* y)) ⟩
   double x + double y    ∎
+  where open ≡-Reasoning
+
+double-suc : ∀ x →  double (suc x) ≡ 2ᵇ + double x
+double-suc x =  begin
+  double (suc x)   ≡⟨ cong double (suc≗1+ x) ⟩
+  double (1ᵇ + x)  ≡⟨ double-distrib-+ 1ᵇ x ⟩
+  2ᵇ + double x    ∎
   where open ≡-Reasoning
 
 double-mono-≤ : double Preserves _≤_ ⟶ _≤_
@@ -1373,6 +1399,16 @@ pred[x]<x {x} x≢0 =  begin-strict
   suc (pred x) ≡⟨ suc-pred x≢0 ⟩
   x            ∎
   where open ≤-Reasoning
+
+pred[x]+y≡x+pred[y] :  ∀ {x y} → x ≢ 0ᵇ → y ≢ 0ᵇ → (pred x) + y ≡ x + pred y
+pred[x]+y≡x+pred[y] {x} {y} x≢0 y≢0 =  begin
+  px + y           ≡⟨ cong (px +_) (sym (suc-pred y≢0)) ⟩
+  px + suc py      ≡⟨ cong (px +_) (suc≗1+ py) ⟩
+  px + (1ᵇ + py)   ≡⟨ Bin+CSemigroup.x∙yz≈yx∙z px 1ᵇ py ⟩
+  (1ᵇ + px) + py   ≡⟨ cong (_+ py) (sym (suc≗1+ px)) ⟩
+  (suc px) + py    ≡⟨ cong (_+ py) (suc-pred x≢0) ⟩
+  x + py           ∎
+  where open ≡-Reasoning;  px = pred x;  py = pred y
 
 ------------------------------------------------------------------------
 -- Properties of size
