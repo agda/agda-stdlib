@@ -45,7 +45,6 @@ Other major additions
 
 * Added induction over subsets to `Data.Fin.Subset.Induction`.
 
-
 * Rewrote definitions branching on a `Dec` value to branch only on the boolean
   `does` field, wherever possible. Furthermore, branching on the `proof` field
   has been made as late as possible, using the `invert` lemma from
