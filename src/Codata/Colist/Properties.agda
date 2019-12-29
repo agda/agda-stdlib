@@ -258,11 +258,11 @@ module Map-ChunksOf (f : A → B) n where
     i coWriterᵇ.⊢ Cowriter.map (Vec.map f) (Vec≤.map f) (chunksOf n as)
                 ≈ chunksOf n (map f as)
   map-chunksOfAcc : ∀ m as {k≤ k≡ k≤′ k≡′} →
-    (∀ vs → Vec≤.map f (k≤ vs) ≡ k≤′ (Vec≤.map f vs)) →
-    (∀ vs → Vec.map f (k≡ vs) ≡ k≡′ (Vec.map f vs)) →
-    i coWriterᵇ.⊢ Cowriter.map (Vec.map f) (Vec≤.map f)
-                    (chunksOfAcc m k≤ k≡ as)
-                ≈ chunksOfAcc m k≤′ k≡′ (map f as)
+                    (∀ vs → Vec≤.map f (k≤ vs) ≡ k≤′ (Vec≤.map f vs)) →
+                    (∀ vs → Vec.map f (k≡ vs) ≡ k≡′ (Vec.map f vs)) →
+                    i coWriterᵇ.⊢ Cowriter.map (Vec.map f) (Vec≤.map f)
+                                        (chunksOfAcc m k≤ k≡ as)
+                                ≈ chunksOfAcc m k≤′ k≡′ (map f as)
 
   map-chunksOf as = map-chunksOfAcc n as (λ vs → Eq.refl) (λ vs → Eq.refl)
 
@@ -283,7 +283,7 @@ fromList-++ []       bs = refl
 fromList-++ (a ∷ as) bs = Eq.refl ∷ λ where .force → fromList-++ as bs
 
 fromList-scanl : ∀ (c : B → A → B) n as →
-                 i ⊢ scanl c n (fromList as) ≈ fromList (List.scanl c n as)
+                 i ⊢ fromList (List.scanl c n as) ≈ scanl c n (fromList as)
 fromList-scanl c n []       = Eq.refl ∷ λ where .force → refl
 fromList-scanl c n (a ∷ as) =
   Eq.refl ∷ λ where .force → fromList-scanl c (c n a) as

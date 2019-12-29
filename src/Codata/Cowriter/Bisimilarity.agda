@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Bisimilarity for Colists
+-- Bisimilarity for Cowriter
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe --sized-types #-}

@@ -9,6 +9,9 @@ Highlights
 Bug-fixes
 ---------
 
+Changed the definition of `_⊓_` for `Codata.Conat`; it was mistakenly using
+`_⊔_` in a recursive call.
+
 Non-backwards compatible changes
 --------------------------------
 
