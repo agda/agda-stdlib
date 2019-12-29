@@ -110,6 +110,13 @@ Other major additions
     ... | false = ∈-filter⁺ v∈xs Pv
   ```
 
+* Standardised the `Eq` modules in structures and bundles in `Relation.Binary` hierarchy.
+  - `IsDecTotalOrder.Eq` now exports `isDecPartialOrder`.
+  - `DecSetoid.Eq` now exports `partialSetoid` and `_≉_`.
+  - `Poset.Eq` and `TotalOrder.Eq` now export `setoid`.
+  - `DecTotalOrder.Eq` and `StrictTotalOrder.Eq` now export `decSetoid`.
+  - `DecTotalOrder.decSetoid` is now deprecated in favour of the above `DecTotalOrder.Eq.decSetoid`.
+
 Other minor additions
 ---------------------
 

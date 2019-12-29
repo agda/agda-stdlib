@@ -41,13 +41,12 @@ record Setoid c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open IsEquivalence isEquivalence public
 
-  _≉_ : Rel Carrier _
-  x ≉ y = ¬ (x ≈ y)
-
   partialSetoid : PartialSetoid c ℓ
   partialSetoid = record
     { isPartialEquivalence = isPartialEquivalence
     }
+
+  open PartialSetoid public using (_≉_)
 
 
 record DecSetoid c ℓ : Set (suc (c ⊔ ℓ)) where
@@ -64,6 +63,8 @@ record DecSetoid c ℓ : Set (suc (c ⊔ ℓ)) where
     { isEquivalence = isEquivalence
     }
 
+  open Setoid setoid public using (partialSetoid; _≉_)
+
 
 ------------------------------------------------------------------------
 -- Preorders
@@ -78,7 +79,15 @@ record Preorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
     isPreorder : IsPreorder _≈_ _∼_
 
   open IsPreorder isPreorder public
+    hiding (module Eq)
 
+  module Eq where
+    setoid : Setoid c ℓ₁
+    setoid = record
+      { isEquivalence = isEquivalence
+      }
+
+    open Setoid setoid public
 
 ------------------------------------------------------------------------
 -- Partial orders
@@ -93,11 +102,15 @@ record Poset c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
     isPartialOrder : IsPartialOrder _≈_ _≤_
 
   open IsPartialOrder isPartialOrder public
+    hiding (module Eq)
 
   preorder : Preorder c ℓ₁ ℓ₂
   preorder = record
     { isPreorder = isPreorder
     }
+
+  open Preorder preorder public
+    using (module Eq)
 
 
 record DecPoset c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
@@ -117,10 +130,10 @@ record DecPoset c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
     { isPartialOrder = isPartialOrder
     }
 
-  open Poset poset public using (preorder)
+  open Poset poset public
+    using (preorder)
 
   module Eq where
-
     decSetoid : DecSetoid c ℓ₁
     decSetoid = record
       { isDecEquivalence = DPO.Eq.isDecEquivalence
@@ -138,6 +151,15 @@ record StrictPartialOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) 
     isStrictPartialOrder : IsStrictPartialOrder _≈_ _<_
 
   open IsStrictPartialOrder isStrictPartialOrder public
+    hiding (module Eq)
+
+  module Eq where
+    setoid : Setoid c ℓ₁
+    setoid = record
+      { isEquivalence = isEquivalence
+      }
+
+    open Setoid setoid public
 
 
 record DecStrictPartialOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
@@ -150,7 +172,7 @@ record DecStrictPartialOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂
 
   private
     module DSPO = IsDecStrictPartialOrder isDecStrictPartialOrder
-    open DSPO hiding (module Eq)
+  open DSPO public hiding (module Eq)
 
   strictPartialOrder : StrictPartialOrder c ℓ₁ ℓ₂
   strictPartialOrder = record
@@ -180,13 +202,15 @@ record TotalOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
     isTotalOrder : IsTotalOrder _≈_ _≤_
 
   open IsTotalOrder isTotalOrder public
+    hiding (module Eq)
 
   poset : Poset c ℓ₁ ℓ₂
   poset = record
     { isPartialOrder = isPartialOrder
     }
 
-  open Poset poset public using (preorder)
+  open Poset poset public
+    using (module Eq; preorder)
 
 
 record DecTotalOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
@@ -208,14 +232,12 @@ record DecTotalOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
 
   open TotalOrder totalOrder public using (poset; preorder)
 
-  module Eq where
+  decPoset : DecPoset c ℓ₁ ℓ₂
+  decPoset = record
+    { isDecPartialOrder = isDecPartialOrder
+    }
 
-    decSetoid : DecSetoid c ℓ₁
-    decSetoid = record
-      { isDecEquivalence = DTO.Eq.isDecEquivalence
-      }
-
-    open DecSetoid decSetoid public
+  open DecPoset decPoset public using (module Eq)
 
 
 -- Note that these orders are decidable. The current implementation
@@ -235,10 +257,18 @@ record StrictTotalOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) wh
     hiding (module Eq)
 
   strictPartialOrder : StrictPartialOrder c ℓ₁ ℓ₂
-  strictPartialOrder =
-    record { isStrictPartialOrder = isStrictPartialOrder }
+  strictPartialOrder = record
+    { isStrictPartialOrder = isStrictPartialOrder
+    }
+
+  open StrictPartialOrder strictPartialOrder public
+    using (module Eq)
 
   decSetoid : DecSetoid c ℓ₁
-  decSetoid = record { isDecEquivalence = isDecEquivalence }
-
-  module Eq = DecSetoid decSetoid
+  decSetoid = record
+    { isDecEquivalence = isDecEquivalence
+    }
+  {-# WARNING_ON_USAGE decSetoid
+  "Warning: decSetoid was deprecated in v1.3.
+  Please use Eq.decSetoid instead."
+  #-}
