@@ -27,6 +27,20 @@ Non-backwards compatible changes
 
 * Moved module `README.Text` to `README.Text.Printf`.
 
+Deprecated names
+----------------
+
+The following deprecations have occurred as part of a drive to improve consistency
+across the library. The deprecated names still exist and therefore all existing code
+should still work, however use of the new names is encouraged. Although not anticipated
+any time soon, they may eventually be removed in some future release of the library.
+Automated warnings are attached to all deprecated names to discourage their use.
+
+* In `Data.List.Relation.Unary.All.Properties`:
+  ```agda
+  Any¬→¬All  ↦  Any¬⇒¬All
+  ```
+
 Other major additions
 ---------------------
 
@@ -47,6 +61,11 @@ Other minor additions
   ⁻¹-injective   : x ⁻¹ ≈ y ⁻¹ → x ≈ y
   ⁻¹-anti-homo-∙ : (x ∙ y) ⁻¹ ≈ y ⁻¹ ∙ x ⁻¹
   ```
+
+* Made `RawFunctor`,  `RawApplicative` and `IFun` more level polymorphic
+  (in `Category.Functor`, `Category.Applicative` and
+  `Category.Applicative.Indexed`
+  respectively).
 
 * Added new proofs to `Data.Bool`:
   ```agda
@@ -114,6 +133,13 @@ Other minor additions
   padBoth : ∀ {n} → A → A → Vec≤ A n → Vec A n
 
   rectangle : List (∃ (Vec≤ A)) → ∃ (List ∘ Vec≤ A)
+  ```
+
+* Added new proofs to `Data.Integer.Properties`, useful to migrate to 1.1's new `_<_`.
+
+  ```agda
+  m+1≤n⇒m<n : sucℤ m ≤ n → m < n
+  m<n⇒m+1≤n : m < n → sucℤ m ≤ n
   ```
 
 * Added a new proof to `Relation.Nullary.Decidable`:
