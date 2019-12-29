@@ -14,6 +14,9 @@ open import Data.Bool.Base using (true; false)
 open import Data.Product hiding (map)
 open import Data.List.Base as List hiding (map; head; tail; uncons)
 open import Data.List.Properties using (≡-dec; length-++)
+open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
+open import Data.List.Relation.Unary.AllPairs using (AllPairs; []; _∷_)
+open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.Fin using (Fin) renaming (zero to fzero; suc to fsuc)
 open import Data.Nat using (ℕ; zero; suc)
 open import Data.Nat.Properties
@@ -28,7 +31,7 @@ open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
 private
   variable
-    a b c d p q ℓ ℓ₁ ℓ₂ ℓ₃ : Level
+    a b c d p q r ℓ ℓ₁ ℓ₂ ℓ₃ : Level
     A : Set a
     B : Set b
     C : Set c
@@ -177,6 +180,27 @@ poset : Poset a ℓ₁ ℓ₂ → Poset _ _ _
 poset p = record
   { isPartialOrder = isPartialOrder (Poset.isPartialOrder p)
   }
+
+------------------------------------------------------------------------
+-- Relationships to other predicates
+
+module _ {_∼_ : Rel₂ A ℓ} {P : Pred A p} where
+
+  All-resp-Pointwise : P Respects _∼_ → (All P) Respects (Pointwise _∼_)
+  All-resp-Pointwise resp []         []         = []
+  All-resp-Pointwise resp (x∼y ∷ xs) (px ∷ pxs) =
+    resp x∼y px ∷ All-resp-Pointwise resp xs pxs
+
+  Any-resp-Pointwise : P Respects _∼_ → (Any P) Respects (Pointwise _∼_)
+  Any-resp-Pointwise resp (x∼y ∷ xs) (here px)   = here (resp x∼y px)
+  Any-resp-Pointwise resp (x∼y ∷ xs) (there pxs) = there (Any-resp-Pointwise resp xs pxs)
+
+module _ {_∼_ : Rel₂ A ℓ} {R : Rel₂ A r} where
+
+  AllPairs-resp-Pointwise : R Respects₂ _∼_ → (AllPairs R) Respects (Pointwise _∼_)
+  AllPairs-resp-Pointwise _                    []         []         = []
+  AllPairs-resp-Pointwise resp@(respₗ , respᵣ) (x∼y ∷ xs) (px ∷ pxs) =
+    All-resp-Pointwise respₗ xs (All.map (respᵣ x∼y) px) ∷ (AllPairs-resp-Pointwise resp xs pxs)
 
 ------------------------------------------------------------------------
 -- length
