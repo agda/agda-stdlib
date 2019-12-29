@@ -9,6 +9,9 @@ Highlights
 Bug-fixes
 ---------
 
+* The incorrectly named proof `p⊆q⇒∣p∣<∣q∣ : p ⊆ q → ∣ p ∣ ≤ ∣ q ∣` in
+  `Data.Fin.Subset.Properties` now has the correct name `p⊆q⇒∣p∣≤∣q∣`.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -132,12 +135,25 @@ Other minor additions
 
 * Added new proofs to `Data.Fin.Subset.Properties`:
   ```agda
-  s⊆s : p ⊆ q → s ∷ p ⊆ s ∷ q
+  s⊆s           : p ⊆ q → s ∷ p ⊆ s ∷ q
+  ∣p∣≡n⇒p≡⊤     : ∣ p ∣ ≡ n → p ≡ ⊤
 
-  x∈s⇒x∉∁s : x ∈ s → x ∉ ∁ s
-  x∈∁s⇒x∉s : x ∈ ∁ s → x ∉ s
-  x∉∁s⇒x∈s : x ∉ ∁ s → x ∈ s
-  x∉s⇒x∈∁s : x ∉ s → x ∈ ∁ s
+  p∪∁p≡⊤        : p ∪ ∁ p ≡ ⊤
+  ∣∁p∣≡n∸∣p∣    : ∣ ∁ p ∣ ≡ n ∸ ∣ p ∣
+  x∈p⇒x∉∁p      : x ∈ p → x ∉ ∁ p
+  x∈∁p⇒x∉p      : x ∈ ∁ p → x ∉ p
+  x∉∁p⇒x∈p      : x ∉ ∁ p → x ∈ p
+  x∉p⇒x∈∁p      : x ∉ p → x ∈ ∁ p
+
+  x≢y⇒x∉⁅y⁆     : x ≢ y → x ∉ ⁅ y ⁆
+  x∉⁅y⁆⇒x≢y     : x ∉ ⁅ y ⁆ → x ≢ y
+
+  ∣p∩q∣≤∣p∣     : ∣ p ∩ q ∣ ≤ ∣ p ∣
+  ∣p∩q∣≤∣q∣     : ∣ p ∩ q ∣ ≤ ∣ q ∣
+  ∣p∩q∣≤∣p∣⊓∣q∣ : ∣ p ∩ q ∣ ≤ ∣ p ∣ ⊓ ∣ q ∣
+  ∣p∣≤∣p∪q∣     : ∣ p ∣ ≤ ∣ p ∪ q ∣
+  ∣q∣≤∣p∪q∣     : ∣ q ∣ ≤ ∣ p ∪ q ∣
+  ∣p∣⊔∣q∣≤∣p∪q∣ : ∣ p ∣ ⊔ ∣ q ∣ ≤ ∣ p ∪ q ∣
   ```
 
 * Added new proofs to `Data.List.Relation.Binary.Equality.Setoid`:
@@ -162,6 +178,14 @@ Other minor additions
 
   ↭-prep : xs ↭ ys → x ∷ xs ↭ x ∷ ys
   ↭-swap : xs ↭ ys → x ∷ y ∷ xs ↭ y ∷ x ∷ ys
+  ```
+
+* Added new proofs to `Data.Nat.Properties`:
+  ```agda
+  ⊔-pres-≤m : n ≤ m → o ≤ m → n ⊔ o ≤ m
+  ⊔-pres-<m : n < m → o < m → n ⊔ o < m
+  ⊓-pres-m≤ : m ≤ n → m ≤ o → m ≤ n ⊓ o
+  ⊓-pres-m< : m < n → m < o → m < n ⊓ o
   ```
 
 * Added a new proof to `Relation.Nullary.Decidable`:

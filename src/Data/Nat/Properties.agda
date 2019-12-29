@@ -1147,6 +1147,12 @@ m⊔n<o⇒n<o m n m⊔n<o = <-transʳ (n≤m⊔n m n) m⊔n<o
 ⊔-mono-< : _⊔_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
 ⊔-mono-< = ⊔-mono-≤
 
+⊔-pres-≤m : ∀ {m n o} → n ≤ m → o ≤ m → n ⊔ o ≤ m
+⊔-pres-≤m {m} n≤m o≤m = subst (_ ≤_) (⊔-idem m) (⊔-mono-≤ n≤m o≤m)
+
+⊔-pres-<m : ∀ {m n o} → n < m → o < m → n ⊔ o < m
+⊔-pres-<m {m} n<m o<m = subst (_ <_) (⊔-idem m) (⊔-mono-< n<m o<m)
+
 ------------------------------------------------------------------------
 -- Other properties of _⊔_ and _+_
 
@@ -1416,6 +1422,12 @@ m⊓n≤m⊔n : ∀ m n → m ⊓ n ≤ m ⊔ n
 m⊓n≤m⊔n zero    n       = z≤n
 m⊓n≤m⊔n (suc m) zero    = z≤n
 m⊓n≤m⊔n (suc m) (suc n) = s≤s (m⊓n≤m⊔n m n)
+
+⊓-pres-m≤ : ∀ {m n o} → m ≤ n → m ≤ o → m ≤ n ⊓ o
+⊓-pres-m≤ {m} m≤n m≤o = subst (_≤ _) (⊓-idem m) (⊓-mono-≤ m≤n m≤o)
+
+⊓-pres-m< : ∀ {m n o} → m < n → m < o → m < n ⊓ o
+⊓-pres-m< {m} m<n m<o = subst (_< _) (⊓-idem m) (⊓-mono-< m<n m<o)
 
 ------------------------------------------------------------------------
 -- Other properties of _⊓_ and _+_
