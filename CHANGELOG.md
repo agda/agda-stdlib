@@ -20,6 +20,20 @@ Non-backwards compatible changes
   Definitions that are sensitive to the behaviour of these lemmas, rather than
   just their existence, may need to be revised.
 
+Deprecated names
+----------------
+
+The following deprecations have occurred as part of a drive to improve consistency
+across the library. The deprecated names still exist and therefore all existing code
+should still work, however use of the new names is encouraged. Although not anticipated
+any time soon, they may eventually be removed in some future release of the library.
+Automated warnings are attached to all deprecated names to discourage their use.
+
+* In `Data.List.Relation.Unary.All.Properties`:
+  ```agda
+  Any¬→¬All  ↦  Any¬⇒¬All
+  ```
+
 Other major additions
 ---------------------
 
