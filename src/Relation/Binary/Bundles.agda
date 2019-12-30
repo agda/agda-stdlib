@@ -46,7 +46,7 @@ record Setoid c ℓ : Set (suc (c ⊔ ℓ)) where
     { isPartialEquivalence = isPartialEquivalence
     }
 
-  open PartialSetoid public using (_≉_)
+  open PartialSetoid partialSetoid public using (_≉_)
 
 
 record DecSetoid c ℓ : Set (suc (c ⊔ ℓ)) where
