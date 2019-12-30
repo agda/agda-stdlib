@@ -27,7 +27,7 @@ some more documentation.
 in glorious clickable HTML.
 
 - Finally, you can get an overview of the entire library by looking at the
-[module index](https://agda.github.io/agda-stdlib/), which lists all modules
+[index](https://agda.github.io/agda-stdlib/), which lists all modules
 in the library except the deprecated ones.
 
 ## Installation instructions
@@ -40,7 +40,7 @@ If you're using an old version of Agda, you can download the corresponding versi
 of the standard library on the [Agda wiki](http://wiki.portal.chalmers.se/agda/pmwiki.php?n=Libraries.StandardLibrary).
 The module index for older versions of the library is also available. For example,
 version 0.17 can be found at https://agda.github.io/agda-stdlib/v0.17/, just
-replace in the URL 0.17 for the version that you need.
+replace in the URL 0.17 with the version that you need.
 
 #### Development version of Agda
 
