@@ -124,6 +124,13 @@ Other minor additions
   not-injective : not x ≡ not y → x ≡ y
   ```
 
+* Added new properties to `Data.Fin.Properties`:
+  ```agda
+  lift-injective : ∀ {m n} (f : Fin m → Fin n) →
+                   (∀ {x y} → f x ≡ f y → x ≡ y) →
+                   ∀ k {x y} → lift k f x ≡ lift k f y → x ≡ y
+  ```
+
 * Added new properties to `Data.Fin.Subset`:
   ```agda
   _⊂_ : Subset n → Subset n → Set
