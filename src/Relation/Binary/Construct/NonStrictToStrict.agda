@@ -121,6 +121,14 @@ x < y = x ≤ y × x ≉ y
   ; <-resp-≈      = <-resp-≈ isEquivalence ≤-resp-≈
   } where open IsPartialOrder po
 
+<-isDecStrictPartialOrder : IsDecPartialOrder _≈_ _≤_ →
+                            IsDecStrictPartialOrder _≈_ _<_
+<-isDecStrictPartialOrder dpo = record
+  { isStrictPartialOrder = <-isStrictPartialOrder isPartialOrder
+  ; _≟_ = _≟_
+  ; _<?_ = <-decidable _≟_ _≤?_
+  } where open IsDecPartialOrder dpo
+
 <-isStrictTotalOrder₁ : Decidable _≈_ → IsTotalOrder _≈_ _≤_ →
                         IsStrictTotalOrder _≈_ _<_
 <-isStrictTotalOrder₁ ≟ tot = record
