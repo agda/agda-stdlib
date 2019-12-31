@@ -362,6 +362,8 @@ Other major additions
 Other minor additions
 ---------------------
 
+* Added commutativeSemigroup to Algebra.Bundles.CommutativeMonoid
+
 * Added new proofs to `Data.Sum.Properties`:
   ```agda
   [,]-map-commute : [ f′ , g′ ]′ ∘ (map f g) ≗ [ f′ ∘ f , g′ ∘ g ]′
