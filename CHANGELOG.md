@@ -277,6 +277,7 @@ Other major additions
   Data.Tree.Binary.Relation.Unary.All.Properties
   Data.Tree.Rose
   Data.Tree.Rose.Properties
+  Data.Vec.Relation.Binary.Lex
 
   Reflection.TCMonadSyntax
   
