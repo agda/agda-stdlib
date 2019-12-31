@@ -72,7 +72,7 @@ suc m ⊔ suc n = suc λ where .force → m .force ⊔ n .force
 _⊓_ : ∀ {i} → Conat i → Conat i → Conat i
 zero  ⊓ n     = zero
 m     ⊓ zero  = zero
-suc m ⊓ suc n = suc λ where .force → m .force ⊔ n .force
+suc m ⊓ suc n = suc λ where .force → m .force ⊓ n .force
 
 ------------------------------------------------------------------------
 -- Finiteness

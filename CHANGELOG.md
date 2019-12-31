@@ -9,6 +9,9 @@ Highlights
 Bug-fixes
 ---------
 
+Changed the definition of `_⊓_` for `Codata.Conat`; it was mistakenly using
+`_⊔_` in a recursive call.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -43,6 +46,9 @@ Non-backwards compatible changes
 * `RawIMonadT T` has been turned into a record type to allow the addition
   of a lift field of type `∀ {M i j A} → RawIMonad M → M i j A → T M i j A`.
 
+* In `Codata.Colist`, replaced all the uses of `Data.BoundedVec` with the more
+  up to date `Data.Vec.Bounded`.
+
 Deprecated names
 ----------------
 
@@ -59,6 +65,11 @@ Automated warnings are attached to all deprecated names to discourage their use.
 
 Other major additions
 ---------------------
+
+* Added new module:
+  ```agda
+  Codata.Cowriter.Bisimilarity
+  ```
 
 * Added induction over subsets to `Data.Fin.Subset.Induction`.
 
@@ -113,6 +124,11 @@ Other major additions
     ... | false = ∈-filter⁺ v∈xs Pv
   ```
 
+* Made `RawFunctor`,  `RawApplicative` and `IFun` more level polymorphic
+  (in `Category.Functor`, `Category.Applicative` and
+  `Category.Applicative.Indexed`
+  respectively).
+
 Other minor additions
 ---------------------
 
@@ -120,6 +136,76 @@ Other minor additions
   ```agda
   ⁻¹-injective   : x ⁻¹ ≈ y ⁻¹ → x ≈ y
   ⁻¹-anti-homo-∙ : (x ∙ y) ⁻¹ ≈ y ⁻¹ ∙ x ⁻¹
+  ```
+
+* Added new functions to `Codata.Colist`:
+  ```agda
+  drop   : ℕ → Colist A ∞ → Colist A ∞
+  concat : Colist (List⁺ A) i → Colist A i
+  ```
+
+* Added new definitions to `Codata.Colist.Bisimilarity`:
+  ```agda
+  fromEq        : as ≡ bs → i ⊢ as ≈ bs
+  isEquivalence : IsEquivalence R → IsEquivalence (Bisim R i)
+  setoid        : Setoid a r → Size → Setoid a (a ⊔ r)
+  module ≈-Reasoning
+
+  ++⁺  : Pointwise R as bs → Bisim R i xs ys → Bisim R i (fromList as ++ xs) (fromList bs ++ ys)
+  ⁺++⁺ : Pointwise R (toList as) (toList bs) → Thunk^R (Bisim R) i xs ys → Bisim R i (as ⁺++ xs) (bs ⁺++ ys)
+  ```
+
+* Added new proofs to `Codata.Colist.Properties`:
+  ```agda
+  fromCowriter∘toCowriter≗id : i ⊢ fromCowriter (toCowriter as) ≈ as
+  length-∷                   : i ⊢ length (a ∷ as) ≈ 1 ℕ+ length (as .force)
+  length-replicate           : i ⊢ length (replicate n a) ≈ n
+  length-++                  : i ⊢ length (as ++ bs) ≈ length as + length bs
+  length-map                 : i ⊢ length (map f as) ≈ length as
+  length-scanl               : i ⊢ length (scanl c n as) ≈ 1 ℕ+ length as
+  replicate-+                : i ⊢ replicate (m + n) a ≈ replicate m a ++ replicate n a
+  map-replicate              : i ⊢ map f (replicate n a) ≈ replicate n (f a)
+  lookup-replicate           : All (a ≡_) (lookup k (replicate n a))
+  map-unfold                 : i ⊢ map f (unfold alg a) ≈ unfold (Maybe.map (Prod.map₂ f) ∘ alg) a
+  unfold-nothing             : alg a ≡ nothing → unfold alg a ≡ []
+  unfold-just                : alg a ≡ just (a′ , b) → i ⊢ unfold alg a ≈ b ∷ λ where .force → unfold alg a′
+  scanl-unfold               : i ⊢ scanl cons nil (unfold alg a) ≈ nil ∷ (λ where .force → unfold alg′ (a , nil))
+  map-alignWith              : i ⊢ map f (alignWith al as bs) ≈ alignWith (f ∘ al) as bs
+  length-alignWith           : i ⊢ length (alignWith al as bs) ≈ length as ⊔ length bs
+  map-zipWith                : i ⊢ map f (zipWith zp as bs) ≈ zipWith (λ a → f ∘ zp a) as bs
+  length-zipWith             : i ⊢ length (zipWith zp as bs) ≈ length as ⊓ length bs
+  drop-nil                   : i ⊢ drop {A = A} m [] ≈ []
+  drop-drop-fusion           : i ⊢ drop n (drop m as) ≈ drop (m ℕ.+ n) as
+  map-drop                   : i ⊢ map f (drop m as) ≈ drop m (map f as)
+  length-drop                : i ⊢ length (drop m as) ≈ length as ∸ m
+  length-cotake              : i ⊢ length (cotake n as) ≈ n
+  map-cotake                 : i ⊢ map f (cotake n as) ≈ cotake n (Stream.map f as)
+  drop-fromList-++-identity  : drop (length as) (fromList as ++ bs) ≡ bs
+  drop-fromList-++-≤         : m ≤ length as → drop m (fromList as ++ bs) ≡ fromList (drop m as) ++ bs
+  drop-fromList-++-≥         : m ≥ length as → drop m (fromList as ++ bs) ≡ drop (m ∸ length as) bs
+  drop-⁺++-identity          : drop (length as) (as ⁺++ bs) ≡ bs .force
+  map-chunksOf               : i ⊢ map (map f) (map f) (chunksOf n as) ≈ chunksOf n (map f as)
+  fromList-++                : i ⊢ fromList (as ++ bs) ≈ fromList as ++ fromList bs
+  fromList-scanl             : i ⊢ scanl c n (fromList as) ≈ fromList (scanl c n as)
+  map-fromList               : i ⊢ map f (fromList as) ≈ fromList (map f as)
+  length-fromList            : i co⊢ length (fromList as) ≈ fromℕ (length as)
+  fromStream-++              : i ⊢ fromStream (as ++ bs) ≈ fromList as ++ fromStream bs
+  fromStream-⁺++             : i ⊢ fromStream (as ⁺++ bs) ≈ fromList⁺ as ++ fromStream (bs .force)
+  fromStream-concat          : i ⊢ concat (fromStream ass) ≈ fromStream (concat ass)
+  fromStream-scanl           : i ⊢ scanl c n (fromStream as) ≈ fromStream (scanl c n as)
+  map-fromStream             : i ⊢ map f (fromStream as) ≈ fromStream (map f as)
+  ```
+
+* Added new definitions to `Codata.Conat.Bisimilarity`:
+  ```agda
+  isEquivalence : IsEquivalence (i ⊢_≈_)
+  setoid        : Size → Setoid 0ℓ 0ℓ
+  module ≈-Reasoning
+  ```
+
+* Added new proof to `Codata.Conat.Properties`:
+  ```agda
+  0∸m≈0 : ∀ m → i ⊢ zero ∸ m ≈ zero
   ```
 
 * Added new proofs to `Data.Bool`:
@@ -141,6 +227,11 @@ Other minor additions
   x∈∁s⇒x∉s : x ∈ ∁ s → x ∉ s
   x∉∁s⇒x∈s : x ∉ ∁ s → x ∈ s
   x∉s⇒x∈∁s : x ∉ s → x ∈ ∁ s
+
+* Added new proofs to `Data.Maybe.Properties`:
+  ```agda
+  map-nothing : ma ≡ nothing → map f ma ≡ nothing
+  map-just    : ma ≡ just a → map f ma ≡ just (f a)
   ```
 
 * Added new proofs to `Data.List.Relation.Binary.Equality.Setoid`:
