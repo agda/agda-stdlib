@@ -13,10 +13,12 @@ module Data.List.Relation.Binary.Equality.Setoid {a ℓ} (S : Setoid a ℓ) wher
 open import Data.Fin
 open import Data.List.Base
 open import Data.List.Relation.Binary.Pointwise as PW using (Pointwise)
+open import Data.List.Relation.Unary.Unique.Setoid S using (Unique)
 open import Function using (_∘_)
 open import Level
 open import Relation.Binary renaming (Rel to Rel₂)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Relation.Binary.Properties.Setoid S using (≉-resp₂)
 open import Relation.Unary as U using (Pred)
 
 open Setoid S renaming (Carrier to A)
@@ -34,7 +36,7 @@ infix 4 _≋_
 _≋_ : Rel₂ (List A) (a ⊔ ℓ)
 _≋_ = Pointwise _≈_
 
-open Pointwise public
+open PW public
   using ([]; _∷_)
 
 ------------------------------------------------------------------------
@@ -60,7 +62,21 @@ open Pointwise public
 ≋-setoid = PW.setoid S
 
 ------------------------------------------------------------------------
--- List Operations
+-- Relationships to predicates
+------------------------------------------------------------------------
+
+open PW public
+  using () renaming
+  ( Any-resp-Pointwise      to Any-resp-≋
+  ; All-resp-Pointwise      to All-resp-≋
+  ; AllPairs-resp-Pointwise to AllPairs-resp-≋
+  )
+
+Unique-resp-≋ : Unique Respects _≋_
+Unique-resp-≋ = AllPairs-resp-≋ ≉-resp₂
+
+------------------------------------------------------------------------
+-- List operations
 ------------------------------------------------------------------------
 
 ------------------------------------------------------------------------

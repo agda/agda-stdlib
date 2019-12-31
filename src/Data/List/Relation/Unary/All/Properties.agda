@@ -100,9 +100,9 @@ module _ {P : A → Set p} where
   ... |  true because  [p] = there (¬All⇒Any¬ dec xs (¬∀ ∘ _∷_ (invert [p])))
   ... | false because [¬p] = here (invert [¬p])
 
-  Any¬→¬All : ∀ {xs} → Any (¬_ ∘ P) xs → ¬ All P xs
-  Any¬→¬All (here  ¬p) = ¬p           ∘ All.head
-  Any¬→¬All (there ¬p) = Any¬→¬All ¬p ∘ All.tail
+  Any¬⇒¬All : ∀ {xs} → Any (¬_ ∘ P) xs → ¬ All P xs
+  Any¬⇒¬All (here  ¬p) = ¬p           ∘ All.head
+  Any¬⇒¬All (there ¬p) = Any¬⇒¬All ¬p ∘ All.tail
 
   ¬Any↠All¬ : ∀ {xs} → (¬ Any P xs) ↠ All (¬_ ∘ P) xs
   ¬Any↠All¬ = surjection (¬Any⇒All¬ _) All¬⇒¬Any to∘from
@@ -123,12 +123,12 @@ module _ {P : A → Set p} where
       }
 
   Any¬⇔¬All : ∀ {xs} → Decidable P → Any (¬_ ∘ P) xs ⇔ (¬ All P xs)
-  Any¬⇔¬All dec = equivalence Any¬→¬All (¬All⇒Any¬ dec _)
+  Any¬⇔¬All dec = equivalence Any¬⇒¬All (¬All⇒Any¬ dec _)
     where
     -- If equality of functions were extensional, then the logical
     -- equivalence could be strengthened to a surjection.
     to∘from : Extensionality _ _ →
-              ∀ {xs} (¬∀ : ¬ All P xs) → Any¬→¬All (¬All⇒Any¬ dec xs ¬∀) ≡ ¬∀
+              ∀ {xs} (¬∀ : ¬ All P xs) → Any¬⇒¬All (¬All⇒Any¬ dec xs ¬∀) ≡ ¬∀
     to∘from ext ¬∀ = ext (⊥-elim ∘ ¬∀)
 
 module _ {_~_ : REL A B ℓ} where
@@ -667,4 +667,12 @@ filter⁺₂ = filter⁺
 {-# WARNING_ON_USAGE filter⁺₂
 "Warning: filter⁺₂ was deprecated in v1.0.
 Please use filter⁺ instead."
+#-}
+
+-- Version 1.3
+
+Any¬→¬All = Any¬⇒¬All
+{-# WARNING_ON_USAGE Any¬→¬All
+"Warning: Any¬→¬All was deprecated in v1.3.
+Please use Any¬⇒¬All instead."
 #-}

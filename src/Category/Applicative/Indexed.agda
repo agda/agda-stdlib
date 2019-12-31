@@ -17,7 +17,7 @@ open import Function
 open import Level
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
-IFun : ∀ {i} → Set i → (ℓ : Level) → Set _
+IFun : ∀ {i} → Set i → (ℓ : Level) → Set (i ⊔ suc ℓ)
 IFun I ℓ = I → I → Set ℓ → Set ℓ
 
 ------------------------------------------------------------------------

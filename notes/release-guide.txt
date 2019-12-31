@@ -43,6 +43,8 @@ procedure should be followed:
 
     git push --follow-tags
 
+* Make a new release on Github at https://github.com/agda/agda-stdlib/releases
+
 * Submit a pull request to update the version of standard library on Homebrew
   (https://github.com/Homebrew/homebrew-core/blob/master/Formula/agda.rb)
 
