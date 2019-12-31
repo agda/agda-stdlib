@@ -285,8 +285,8 @@ toℕ-isMonomorphism-< = record
 <-trans (odd<odd x<y) (odd<even (inj₂ refl))   =  odd<even (inj₁ x<y)
 <-trans (odd<odd x<y) (odd<odd y<z)            =  odd<odd (<-trans x<y y<z)
 
--- Comparisons and decidability are not implemented via the morphism so as
--- to avoid reverting to linear time for the decision procedures.
+-- Should not be implemented via the morphism `toℕ` in order to
+-- preserve O(log n) time requirement.
 <-cmp : Trichotomous _≡_ _<_
 <-cmp zero     zero      = tri≈ x≮0    refl  x≮0
 <-cmp zero     2[1+ _ ]  = tri< 0<even (λ()) x≮0
@@ -456,8 +456,8 @@ toℕ-isMonomorphism-≤ = record
 ... | tri≈ _  x≡y _   = inj₁ (≤-reflexive x≡y)
 ... | tri> _  _   y<x = inj₂ (<⇒≤ y<x)
 
--- Decidability is not implemented via the morphism so as to avoid
--- reverting to linear time for the decision procedure.
+-- Should not be implemented via the morphism `toℕ` in order to
+-- preserve O(log n) time requirement.
 _≤?_ : Decidable _≤_
 x ≤? y with <-cmp x y
 ... | tri< x<y _   _   = yes (<⇒≤ x<y)

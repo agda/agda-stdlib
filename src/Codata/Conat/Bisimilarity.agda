@@ -8,6 +8,7 @@
 
 module Codata.Conat.Bisimilarity where
 
+open import Level using (0ℓ)
 open import Size
 open import Codata.Thunk
 open import Codata.Conat
@@ -29,6 +30,22 @@ sym (suc eq) = suc λ where .force → sym (eq .force)
 trans : ∀ {i m n p} → i ⊢ m ≈ n → i ⊢ n ≈ p → i ⊢ m ≈ p
 trans zero      zero      = zero
 trans (suc eq₁) (suc eq₂) = suc λ where .force → trans (eq₁ .force) (eq₂ .force)
+
+isEquivalence : ∀ {i} → IsEquivalence (i ⊢_≈_)
+isEquivalence = record
+  { refl  = refl
+  ; sym   = sym
+  ; trans = trans
+  }
+
+setoid : Size → Setoid 0ℓ 0ℓ
+setoid i = record
+  { isEquivalence = isEquivalence {i = i}
+  }
+
+module ≈-Reasoning {i} where
+
+  open import Relation.Binary.Reasoning.Setoid (setoid i) public
 
 infix 1 _⊢_≲_
 data _⊢_≲_ i : (m n : Conat ∞) → Set where

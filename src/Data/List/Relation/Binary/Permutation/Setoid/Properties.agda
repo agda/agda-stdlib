@@ -14,7 +14,7 @@ module Data.List.Relation.Binary.Permutation.Setoid.Properties
 
 open import Algebra
 open import Data.List.Base as List
-open import Data.List.Relation.Binary.Pointwise using (Pointwise)
+open import Data.List.Relation.Binary.Pointwise as Pointwise using (Pointwise)
 import Data.List.Relation.Binary.Equality.Setoid as Equality
 import Data.List.Relation.Binary.Permutation.Setoid as Permutation
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
@@ -32,6 +32,7 @@ open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse as Inv using (inverse)
 open import Level
 open import Relation.Unary using (Pred)
+open import Relation.Binary.Properties.Setoid S using (≉-resp₂)
 open import Relation.Binary.PropositionalEquality as ≡
   using (_≡_ ; refl ; cong; cong₂; subst; _≢_; inspect)
 
@@ -43,7 +44,7 @@ open Setoid S using (_≈_) renaming (Carrier to A; refl to ≈-refl; sym to ≈
 open Permutation S
 open Membership S
 open Unique S using (Unique)
-open Equality S using (_≋_; []; _∷_; ≋-refl; ≋-sym; ≋-trans)
+open Equality S using (_≋_; []; _∷_; ≋-refl; ≋-sym; ≋-trans; All-resp-≋; Any-resp-≋; AllPairs-resp-≋)
 open PermutationReasoning
 
 ------------------------------------------------------------------------
@@ -51,13 +52,13 @@ open PermutationReasoning
 ------------------------------------------------------------------------
 
 All-resp-↭ : ∀ {P : Pred A p} → P Respects _≈_ → (All P) Respects _↭_
-All-resp-↭ resp refl           pxs             = pxs
+All-resp-↭ resp (refl xs≋ys)   pxs             = All-resp-≋ resp xs≋ys pxs
 All-resp-↭ resp (prep x≈y p)   (px ∷ pxs)      = resp x≈y px ∷ All-resp-↭ resp p pxs
 All-resp-↭ resp (swap ≈₁ ≈₂ p) (px ∷ py ∷ pxs) = resp ≈₂ py ∷ resp ≈₁ px ∷ All-resp-↭ resp p pxs
 All-resp-↭ resp (trans p₁ p₂)  pxs             = All-resp-↭ resp p₂ (All-resp-↭ resp p₁ pxs)
 
 Any-resp-↭ : ∀ {P : Pred A p} → P Respects _≈_ → (Any P) Respects _↭_
-Any-resp-↭ resp refl         pxs                 = pxs
+Any-resp-↭ resp (refl xs≋ys) pxs                 = Any-resp-≋ resp xs≋ys pxs
 Any-resp-↭ resp (prep x≈y p) (here px)           = here (resp x≈y px)
 Any-resp-↭ resp (prep x≈y p) (there pxs)         = there (Any-resp-↭ resp p pxs)
 Any-resp-↭ resp (swap x y p) (here px)           = there (here (resp x px))
@@ -66,7 +67,7 @@ Any-resp-↭ resp (swap x y p) (there (there pxs)) = there (there (Any-resp-↭ 
 Any-resp-↭ resp (trans p₁ p₂) pxs                = Any-resp-↭ resp p₂ (Any-resp-↭ resp p₁ pxs)
 
 AllPairs-resp-↭ : ∀ {R : Rel A r} → Symmetric R → R Respects₂ _≈_ → (AllPairs R) Respects _↭_
-AllPairs-resp-↭ sym _    refl             pxs             = pxs
+AllPairs-resp-↭ sym resp (refl xs≋ys)     pxs             = AllPairs-resp-≋ resp xs≋ys pxs
 AllPairs-resp-↭ sym resp (prep x≈y p)     (∼ ∷ pxs)       =
   All-resp-↭ (proj₁ resp) p (All.map (proj₂ resp x≈y) ∼) ∷
   AllPairs-resp-↭ sym resp p pxs
@@ -80,29 +81,25 @@ AllPairs-resp-↭ sym resp (trans p₁ p₂)    pxs             =
 ∈-resp-↭ : ∀ {x} → (x ∈_) Respects _↭_
 ∈-resp-↭ = Any-resp-↭ (flip ≈-trans)
 
--- Note should be possible to simplify once ≉-respˡ from #783 is
--- merged in
 Unique-resp-↭ : Unique Respects _↭_
-Unique-resp-↭ = AllPairs-resp-↭ (_∘ ≈-sym)
-  ((λ z≈y x≉z x≈y → x≉z (≈-trans x≈y (≈-sym z≈y))) ,
-  λ x≈z x≉y z≈y → x≉y (≈-trans x≈z z≈y))
+Unique-resp-↭ = AllPairs-resp-↭ (_∘ ≈-sym) ≉-resp₂
 
 ------------------------------------------------------------------------
--- Relationships to other predicates
+-- Relationships to other relations
 ------------------------------------------------------------------------
 
 ≋⇒↭ : _≋_ ⇒ _↭_
-≋⇒↭ []            = refl
+≋⇒↭ []            = ↭-refl
 ≋⇒↭ (x≈y ∷ xs≋ys) = prep x≈y (≋⇒↭ xs≋ys)
 
 ↭-respʳ-≋ : _↭_ Respectsʳ _≋_
-↭-respʳ-≋ xs≋ys               refl                 = ≋⇒↭ xs≋ys
+↭-respʳ-≋ xs≋ys               (refl zs≋xs)         = ≋⇒↭ (≋-trans zs≋xs xs≋ys)
 ↭-respʳ-≋ (x≈y ∷ xs≋ys)       (prep eq zs↭xs)      = prep (≈-trans eq x≈y) (↭-respʳ-≋ xs≋ys zs↭xs)
 ↭-respʳ-≋ (x≈y ∷ w≈z ∷ xs≋ys) (swap eq₁ eq₂ zs↭xs) = swap (≈-trans eq₁ w≈z) (≈-trans eq₂ x≈y) (↭-respʳ-≋ xs≋ys zs↭xs)
 ↭-respʳ-≋ xs≋ys               (trans ws↭zs zs↭xs)  = trans ws↭zs (↭-respʳ-≋ xs≋ys zs↭xs)
 
 ↭-respˡ-≋ : _↭_ Respectsˡ _≋_
-↭-respˡ-≋ xs≋ys               refl                 = ≋⇒↭ (≋-sym xs≋ys)
+↭-respˡ-≋ xs≋ys               (refl ys≋zs)         = ≋⇒↭ (≋-trans (≋-sym xs≋ys) ys≋zs)
 ↭-respˡ-≋ (x≈y ∷ xs≋ys)       (prep eq zs↭xs)      = prep (≈-trans (≈-sym x≈y) eq) (↭-respˡ-≋ xs≋ys zs↭xs)
 ↭-respˡ-≋ (x≈y ∷ w≈z ∷ xs≋ys) (swap eq₁ eq₂ zs↭xs) = swap (≈-trans (≈-sym x≈y) eq₁) (≈-trans (≈-sym w≈z) eq₂) (↭-respˡ-≋ xs≋ys zs↭xs)
 ↭-respˡ-≋ xs≋ys               (trans ws↭zs zs↭xs)  = trans (↭-respˡ-≋ xs≋ys ws↭zs) zs↭xs
@@ -121,7 +118,7 @@ module _ (T : Setoid b ℓ) where
 
   map⁺ : ∀ {f} → f Preserves _≈_ ⟶ _≈′_ →
          ∀ {xs ys} → xs ↭ ys → map f xs ↭′ map f ys
-  map⁺ pres refl          = refl
+  map⁺ pres (refl xs≋ys)  = refl (Pointwise.map⁺ _ _ (Pointwise.map pres xs≋ys))
   map⁺ pres (prep x p)    = prep (pres x) (map⁺ pres p)
   map⁺ pres (swap x y p)  = swap (pres x) (pres y) (map⁺ pres p)
   map⁺ pres (trans p₁ p₂) = trans (map⁺ pres p₁) (map⁺ pres p₂)
@@ -130,18 +127,18 @@ module _ (T : Setoid b ℓ) where
 -- _++_
 
 shift : ∀ {v w} → v ≈ w → (xs ys : List A) → xs ++ [ v ] ++ ys ↭ w ∷ xs ++ ys
-shift {v} {w} v≈w []       ys = prep v≈w refl
+shift {v} {w} v≈w []       ys = prep v≈w ↭-refl
 shift {v} {w} v≈w (x ∷ xs) ys = begin
   x ∷ (xs ++ [ v ] ++ ys) <⟨ shift v≈w xs ys ⟩
-  x ∷ w ∷ xs ++ ys        <<⟨ refl ⟩
+  x ∷ w ∷ xs ++ ys        <<⟨ ↭-refl ⟩
   w ∷ x ∷ xs ++ ys        ∎
 
 ++⁺ˡ : ∀ xs {ys zs : List A} → ys ↭ zs → xs ++ ys ↭ xs ++ zs
 ++⁺ˡ []       ys↭zs = ys↭zs
-++⁺ˡ (x ∷ xs) ys↭zs = prep ≈-refl (++⁺ˡ xs ys↭zs)
+++⁺ˡ (x ∷ xs) ys↭zs = ↭-prep _ (++⁺ˡ xs ys↭zs)
 
 ++⁺ʳ : ∀ {xs ys : List A} zs → xs ↭ ys → xs ++ zs ↭ ys ++ zs
-++⁺ʳ zs refl          = refl
+++⁺ʳ zs (refl xs≋ys)  = refl (Pointwise.++⁺ xs≋ys ≋-refl)
 ++⁺ʳ zs (prep x ↭)    = prep x (++⁺ʳ zs ↭)
 ++⁺ʳ zs (swap x y ↭)  = swap x y (++⁺ʳ zs ↭)
 ++⁺ʳ zs (trans ↭₁ ↭₂) = trans (++⁺ʳ zs ↭₁) (++⁺ʳ zs ↭₂)
@@ -152,7 +149,7 @@ shift {v} {w} v≈w (x ∷ xs) ys = begin
 -- Algebraic properties
 
 ++-identityˡ : LeftIdentity _↭_ [] _++_
-++-identityˡ xs = refl
+++-identityˡ xs = ↭-refl
 
 ++-identityʳ : RightIdentity _↭_ [] _++_
 ++-identityʳ xs = ↭-reflexive (Lₚ.++-identityʳ xs)
@@ -166,7 +163,7 @@ shift {v} {w} v≈w (x ∷ xs) ys = begin
 ++-comm : Commutative _↭_ _++_
 ++-comm []       ys = ↭-sym (++-identityʳ ys)
 ++-comm (x ∷ xs) ys = begin
-  x ∷ xs ++ ys         ↭⟨ prep ≈-refl (++-comm xs ys) ⟩
+  x ∷ xs ++ ys         <⟨ ++-comm xs ys ⟩
   x ∷ ys ++ xs         ≡⟨ cong (λ v → x ∷ v ++ xs) (≡.sym (Lₚ.++-identityʳ _)) ⟩
   (x ∷ ys ++ []) ++ xs ↭⟨ ++⁺ʳ xs (↭-sym (shift ≈-refl ys [])) ⟩
   (ys ++ [ x ]) ++ xs  ↭⟨ ++-assoc ys [ x ] xs ⟩
@@ -228,7 +225,7 @@ zoom h {t} = ++⁺ˡ h ∘ ++⁺ʳ t
 
 inject : ∀  (v : A) {ws xs ys zs} → ws ↭ ys → xs ↭ zs →
          ws ++ [ v ] ++ xs ↭ ys ++ [ v ] ++ zs
-inject v ws↭ys xs↭zs = trans (++⁺ˡ _ (prep ≈-refl xs↭zs)) (++⁺ʳ _ ws↭ys)
+inject v ws↭ys xs↭zs = trans (++⁺ˡ _ (↭-prep _ xs↭zs)) (++⁺ʳ _ ws↭ys)
 
 shifts : ∀ xs ys {zs : List A} → xs ++ ys ++ zs ↭ ys ++ xs ++ zs
 shifts xs ys {zs} = begin
