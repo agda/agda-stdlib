@@ -134,11 +134,10 @@ whitespace .bot = nothing
 --   i.e. we have a rectangular table
 -- * all of the strings in a given column have the same length
 
-unsafeDisplay : TabularConfig → List (List String) → String
-unsafeDisplay _ []              = ""
+unsafeDisplay : TabularConfig → List (List String) → List String
+unsafeDisplay _ []              = []
 unsafeDisplay c (header ∷ rows) =
-  unlines $ map String.concat
-          $ th ++ (trs ∷ʳ? lbot) where
+  map String.concat $ th ++ (trs ∷ʳ? lbot) where
 
   cellsOf : Maybe Char → List String → List String
   cellsOf nothing  = id

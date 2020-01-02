@@ -29,14 +29,18 @@ import Text.Tabular.Vec  as Tabularᵛ
 --
 -- The display function will then pad each string on the left, right,
 -- or both to respect the alignment constraints.
+-- It will return a list of strings corresponding to each line in the
+-- table. You may then:
+---  * use Data.String.Base's unlines to produce a String
+--   * use Text.Pretty's text and vcat to produce a Doc (i.e. indentable!)
 ------------------------------------------------------------------------
 
-_ : Tabularᵛ.display unicode
+_ : unlines (Tabularᵛ.display unicode
             (Right ∷ Left ∷ Center ∷ [])
           ( ("foo" ∷ "bar" ∷ "baz" ∷ [])
           ∷ ("1"   ∷ "2"   ∷ "3" ∷ [])
           ∷ ("6"   ∷ "5"   ∷ "4" ∷ [])
-          ∷ [])
+          ∷ []))
   ≡ "┌───┬───┬───┐
 \   \│foo│bar│baz│
 \   \├───┼───┼───┤
@@ -65,9 +69,9 @@ foobar = ("foo" ∷ "bar" ∷ [])
 
 -- unicode
 
-_ : Tabularᵛ.display unicode
+_ : unlines (Tabularᵛ.display unicode
             (Right ∷ Left ∷ [])
-            foobar
+            foobar)
   ≡ "┌───┬───┐
 \   \│foo│bar│
 \   \├───┼───┤
@@ -79,9 +83,9 @@ _ = refl
 
 -- ascii
 
-_ : Tabularᵛ.display ascii
+_ : unlines (Tabularᵛ.display ascii
             (Right ∷ Left ∷ [])
-            foobar
+            foobar)
   ≡ "+-------+
 \   \|foo|bar|
 \   \|---+---|
@@ -93,9 +97,9 @@ _ = refl
 
 -- whitespace
 
-_ : Tabularᵛ.display whitespace
+_ : unlines (Tabularᵛ.display whitespace
             (Right ∷ Left ∷ [])
-            foobar
+            foobar)
   ≡ "foo bar
 \   \  1 2  
 \   \  4 3  "
@@ -110,9 +114,9 @@ _ = refl
 
 -- compact: drop the horizontal line between each row
 
-_ : Tabularᵛ.display (compact unicode)
+_ : unlines (Tabularᵛ.display (compact unicode)
             (Right ∷ Left ∷ [])
-            foobar
+            foobar)
   ≡ "┌───┬───┐
 \   \│foo│bar│
 \   \│  1│2  │
@@ -122,9 +126,9 @@ _ = refl
 
 -- noBorder: drop the outside borders
 
-_ : Tabularᵛ.display (noBorder unicode)
+_ : unlines (Tabularᵛ.display (noBorder unicode)
             (Right ∷ Left ∷ [])
-            foobar
+            foobar)
   ≡ "foo│bar
 \   \───┼───
 \   \  1│2  
@@ -134,9 +138,9 @@ _ = refl
 
 -- addSpace : add whitespace space inside cells
 
-_ : Tabularᵛ.display (addSpace unicode)
+_ : unlines (Tabularᵛ.display (addSpace unicode)
             (Right ∷ Left ∷ [])
-            foobar
+            foobar)
   ≡ "┌─────┬─────┐
 \   \│ foo │ bar │
 \   \├─────┼─────┤
@@ -148,9 +152,9 @@ _ = refl
 
 -- compact together with addSpace
 
-_ : Tabularᵛ.display (compact (addSpace unicode))
+_ : unlines (Tabularᵛ.display (compact (addSpace unicode))
             (Right ∷ Left ∷ [])
-            foobar
+            foobar)
   ≡ "┌─────┬─────┐
 \   \│ foo │ bar │
 \   \│   1 │ 2   │
@@ -167,12 +171,12 @@ _ = refl
 -- are not enough alignment directives, we arbitrarily pick Left.
 ------------------------------------------------------------------------
 
-_ : Tabularˡ.display unicode
+_ : unlines (Tabularˡ.display unicode
           (Center ∷ Right ∷ [])
           ( ("foo" ∷ "bar" ∷ [])
           ∷ ("partial" ∷ "rows" ∷ "are" ∷ "ok" ∷ [])
           ∷ ("3" ∷ "2" ∷ "1" ∷ "..." ∷ "surprise!" ∷ [])
-          ∷ [])
+          ∷ []))
   ≡ "┌───────┬────┬───┬───┬─────────┐
 \   \│  foo  │ bar│   │   │         │
 \   \├───────┼────┼───┼───┼─────────┤
@@ -195,11 +199,11 @@ _ = refl
 -- processed.
 ------------------------------------------------------------------------
 
-_ : unsafeDisplay (compact unicode)
+_ : unlines (unsafeDisplay (compact unicode)
           ( ("foo" ∷ "bar" ∷ [])
           ∷ ("  1" ∷ "  2" ∷ [])
           ∷ ("  4" ∷ "  3" ∷ [])
-          ∷ [])
+          ∷ []))
   ≡ "┌───┬───┐
 \   \│foo│bar│
 \   \│  1│  2│

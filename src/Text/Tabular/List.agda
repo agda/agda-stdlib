@@ -19,7 +19,7 @@ open import Function.Base
 open import Text.Tabular.Base
 import Text.Tabular.Vec as Show
 
-display : TabularConfig → List Alignment → List (List String) → String
+display : TabularConfig → List Alignment → List (List String) → List String
 display c a rows = Show.display c alignment rectangle where
 
   alignment : Vec Alignment _
