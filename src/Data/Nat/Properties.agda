@@ -505,9 +505,8 @@ suc[pred[n]]≡n {suc n} n≢0 = refl
 
 +-0-isCommutativeMonoid : IsCommutativeMonoid _+_ 0
 +-0-isCommutativeMonoid = record
-  { isSemigroup = +-isSemigroup
-  ; identityˡ    = +-identityˡ
-  ; comm        = +-comm
+  { isMonoid = +-0-isMonoid
+  ; comm     = +-comm
   }
 
 ------------------------------------------------------------------------
@@ -763,9 +762,8 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
 
 *-1-isCommutativeMonoid : IsCommutativeMonoid _*_ 1
 *-1-isCommutativeMonoid = record
-  { isSemigroup = *-isSemigroup
-  ; identityˡ    = *-identityˡ
-  ; comm        = *-comm
+  { isMonoid = *-1-isMonoid
+  ; comm     = *-comm
   }
 
 *-+-isSemiring : IsSemiring _+_ _*_ 0 1
@@ -780,10 +778,8 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
 
 *-+-isCommutativeSemiring : IsCommutativeSemiring _+_ _*_ 0 1
 *-+-isCommutativeSemiring = record
-  { +-isCommutativeMonoid = +-0-isCommutativeMonoid
-  ; *-isCommutativeMonoid = *-1-isCommutativeMonoid
-  ; distribʳ              = *-distribʳ-+
-  ; zeroˡ                 = *-zeroˡ
+  { isSemiring = *-+-isSemiring
+  ; *-comm = *-comm
   }
 
 ------------------------------------------------------------------------
@@ -1039,11 +1035,16 @@ m^n≡1⇒n≡0∨m≡1 m (suc n) eq = inj₂ (m*n≡1⇒m≡1 m (m ^ n) eq)
   ; comm   = ⊔-comm
   }
 
+⊔-0-isMonoid : IsMonoid _⊔_ 0
+⊔-0-isMonoid = record
+  { isSemigroup = ⊔-isSemigroup
+  ; identity = ⊔-identity
+  }
+
 ⊔-0-isCommutativeMonoid : IsCommutativeMonoid _⊔_ 0
 ⊔-0-isCommutativeMonoid = record
-  { isSemigroup = ⊔-isSemigroup
-  ; identityˡ   = ⊔-identityˡ
-  ; comm        = ⊔-comm
+  { isMonoid = ⊔-0-isMonoid
+  ; comm = ⊔-comm
   }
 
 ------------------------------------------------------------------------

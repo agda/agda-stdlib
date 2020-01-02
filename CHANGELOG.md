@@ -46,6 +46,62 @@ Non-backwards compatible changes
 * `RawIMonadT T` has been turned into a record type to allow the addition
   of a lift field of type `∀ {M i j A} → RawIMonad M → M i j A → T M i j A`.
 
+* The following record definitions in `Algebra.Structures` have been changed.
+
+  - `IsCommutativeMonoid`
+  - `IsCommutativeSemiring`
+  - `IsRing`
+
+  In all of these cases, the change has been to give each of these structures
+  access to *all* of the fields of structures below (weaker) in the hierarchy.
+  For example, consider `IsCommutativeMonoid`. The old definition effectively
+  required the following fields.
+
+  - Associativity
+  - Left identity
+  - Commutativity
+
+  The new definition also requires:
+
+  - Right identity.
+
+  The justification for not including a right identity proof was that, given
+  left identity and commutativity, right identity can be proven. However,
+  omitting the right identity proof caused problems:
+
+  1. It made the definition longer and more complex, as less code was reused.
+  2. The forgetful map turning a commutative monoid into a monoid was not a
+     retraction of all maps which augment a monoid with commutativity. To see
+     that the forgetful map was not a retraction, notice that the augmentation
+     must have discarded the right identity proof as there was no field for it
+     in `IsCommutativeMonoid`.
+  3. There was no easy way to give only the right identity proof, and have
+     the left identity proof be generically derived.
+
+  Point 2, and in particular the fact that it did not hold definitionally,
+  caused problems when indexing over monoids and commutative monoids and
+  requiring some compatibility between the two indexings.
+
+  With the new definition, we address point 3 and recover the convenience of
+  the old definition simultaneously. We do this by introducing *biased*
+  structures, found in `Algebra.Structures.Biased`. In particular, one can
+  generally convert old instances of `IsCommutativeMonoid` to new instances
+  using the `IsCommutativeMonoidˡ` biased structure. This is introduced by
+  the function `isCommutativeMonoidˡ`, so old instances can be converted as
+  follows.
+
+  ```agda
+  --    Add this part:  ↓----↓----↓----↓----↓
+  isCommutativeMonoid = isCommutativeMonoidˡ record
+    { isSemigroup = ...  -- Everything
+    ; identityˡ   = ...  -- else is
+    ; comm        = ...  -- the same.
+    }
+  ```
+
+  For `IsCommutativeSemiring`, we have `IsCommutativeSemiringˡ`, and for
+  `IsRing`, we have `IsRingWithoutAnnihilatingZero`.
+
 * In `Codata.Colist`, replaced all the uses of `Data.BoundedVec` with the more
   up to date `Data.Vec.Bounded`.
 
@@ -263,6 +319,13 @@ Other minor additions
   monadT-identity : RawIMonadT T → RawIMonad (T (λ _ _ → Identity))
   ```
 
+* Added new proofs to `Induction.WellFounded`:
+  ```agda
+  some-wfRec-irrelevant : Some.wfRec P f x q ≡ Some.wfRec P f x q'
+  wfRecBuilder-wfRec    : All.wfRecBuilder P f x y y<x ≡ All.wfRec P f y
+  unfold-wfRec          : All.wfRec P f x ≡ f x λ y _ → All.wfRec P f y
+  ```
+
 * Added a new proof to `Relation.Nullary.Decidable`:
   ```agda
   isYes≗does : (P? : Dec P) → isYes P? ≡ does P?
@@ -271,4 +334,32 @@ Other minor additions
 * Added new proofs to `Relation.Binary.Setoid.Properties`:
   ```agda
   ≉-resp₂ : _≉_ Respects₂ _≈_
+  ```
+
+* Added new proofs to `Data.Rational.Properties`:
+  ```agda
+  ↥-* : ↥ (p * q) ℤ.* *-nf p q ≡ ↥ p ℤ.* ↥ q
+  ↧-* : ↧ (p * q) ℤ.* *-nf p q ≡ ↧ p ℤ.* ↧ q
+
+  toℚᵘ-homo-*                 : Homomorphic₂ toℚᵘ _*_ ℚᵘ._*_
+  toℚᵘ-isMagmaHomomorphism-*  : IsMagmaHomomorphism *-rawMagma ℚᵘ.*-rawMagma toℚᵘ
+  toℚᵘ-isMonoidHomomorphism-* : IsMonoidHomomorphism *-rawMonoid ℚᵘ.*-rawMonoid toℚᵘ
+  toℚᵘ-isMonoidMonomorphism-* : IsMonoidMonomorphism *-rawMonoid ℚᵘ.*-rawMonoid toℚᵘ
+
+  *-assoc     : Associative _*_
+  *-comm      : Commutative _*_
+  *-identityˡ : LeftIdentity 1ℚ _*_
+  *-identityʳ : RightIdentity 1ℚ _*_
+  *-identity  : Identity 1ℚ _*_
+
+  *-isMagma               : IsMagma _*_
+  *-isSemigroup           : IsSemigroup _*
+  *-1-isMonoid            : IsMonoid _*_ 1ℚ
+  *-1-isCommutativeMonoid : IsCommutativeMonoid _*_ 1ℚ
+  *-rawMagma              : RawMagma 0ℓ 0ℓ
+  *-rawMonoid             : RawMonoid 0ℓ 0ℓ
+  *-magma                 : Magma 0ℓ 0ℓ
+  *-semigroup             : Semigroup 0ℓ 0ℓ
+  *-1-monoid              : Monoid 0ℓ 0ℓ
+  *-1-commutativeMonoid   : CommutativeMonoid 0ℓ 0ℓ
   ```
