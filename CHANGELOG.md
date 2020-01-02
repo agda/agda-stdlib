@@ -125,6 +125,11 @@ Other major additions
 * Added new module:
   ```agda
   Codata.Cowriter.Bisimilarity
+
+  Data.Tree.Rose
+  Data.Tree.Rose.Properties
+  Text.Tree.Linear
+  README.Text.Tree
   ```
 
 * Added induction over subsets to `Data.Fin.Subset.Induction`.

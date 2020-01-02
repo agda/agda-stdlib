@@ -294,6 +294,10 @@ import README.Inspect
 
 import README.Text
 
+-- Showing how to print a tree
+
+import README.Text.Tree
+
 ------------------------------------------------------------------------
 -- Core modules
 ------------------------------------------------------------------------
