@@ -222,7 +222,7 @@ toℕ-mono-< {1+[2 x ]} {2[1+ y ]} (odd<even (inj₁ x<y)) =   begin
   2 ℕ.* yN                    ≤⟨ ℕₚ.*-monoʳ-≤ 2 (ℕₚ.≤-step ℕₚ.≤-refl) ⟩
   2 ℕ.* (ℕ.suc yN)            ∎
   where open ℕₚ.≤-Reasoning;  xN = toℕ x;  yN = toℕ y;  xN<yN = toℕ-mono-< x<y
-toℕ-mono-< {1+[2 x ]} {2[1+ .x ]} (odd<even (inj₂ refl)) =
+toℕ-mono-< {1+[2 x ]} {2[1+ x ]} (odd<even (inj₂ refl)) =
   ℕₚ.≤-reflexive (sym (ℕₚ.*-distribˡ-+ 2 1 (toℕ x)))
 toℕ-mono-< {1+[2 x ]} {1+[2 y ]} (odd<odd x<y) =  ℕₚ.+-monoʳ-< 1 (ℕₚ.*-monoʳ-< 1 xN<yN)
   where xN = toℕ x;  yN = toℕ y;  xN<yN = toℕ-mono-< x<y
@@ -747,7 +747,7 @@ import Algebra.Morphism.TwoMagmas +-magma ℕₚ.+-magma
 
 fromℕ-homo-+ :  ∀ m n → fromℕ (m ℕ.+ n) ≡ fromℕ m + fromℕ n
 fromℕ-homo-+ =  Magmas+ℕᵇ-ℕ.IsHomo⇒IsHomo-rev toℕ fromℕ (cong fromℕ)
-                                                 fromℕ-toℕ toℕ-fromℕ toℕ-homo-+
+                                          (fromℕ-toℕ , toℕ-fromℕ) toℕ-homo-+
 
 ------------------------------------------------------------------------------
 -- Properties of _+_ and _≤_
@@ -1097,7 +1097,7 @@ import Algebra.Morphism.TwoMagmas *-magma ℕₚ.*-magma
 
 fromℕ-homo-* : ∀ m n → fromℕ (m ℕ.* n) ≡ fromℕ m * fromℕ n
 fromℕ-homo-* =  Magmas*ℕᵇ-ℕ.IsHomo⇒IsHomo-rev toℕ fromℕ (cong fromℕ)
-                                        fromℕ-toℕ toℕ-fromℕ toℕ-homo-*
+                                          (fromℕ-toℕ , toℕ-fromℕ) toℕ-homo-*
 
 ------------------------------------------------------------------------
 -- Properties of _*_ and _≤_ & _<_

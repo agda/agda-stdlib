@@ -77,6 +77,13 @@ Other minor additions
   x∈∁s⇒x∉s : x ∈ ∁ s → x ∉ s
   x∉∁s⇒x∈s : x ∉ ∁ s → x ∈ s
   x∉s⇒x∈∁s : x ∉ s → x ∈ ∁ s
+  ```
+
+* Added to `Data.Nat.Properties`:
+  ```agda
+  +∸-magma : Magma 0ℓ 0ℓ
+  ```
+
 
 * Added a new proof to `Relation.Nullary.Decidable`:
   ```agda
@@ -162,4 +169,14 @@ Other minor additions
   *-1-commutativeMonoid   : CommutativeMonoid 0ℓ 0ℓ
   ```
 
-* Several minor proofs added to `Data.Nat.Binary.Properties`.
+* Added new proofs to `Data.Nat.Binary.Properties`:
+  ```agda
+  x+suc[y]≡suc[x]+y        : ∀ x y → x + suc y ≡ suc x + y
+  +-isCommutativeSemigroup : IsCommutativeSemigroup _+_
+  +-commutativeSemigroup   : CommutativeSemigroup 0ℓ 0ℓ
+  x≡0⇒double[x]≡0          : x ≡ 0ᵇ → double x ≡ 0ᵇ
+  double-suc               : ∀ x → double (suc x) ≡ 2ᵇ + double x
+  pred[x]+y≡x+pred[y]      : x ≢ 0ᵇ → y ≢ 0ᵇ → (pred x) + y ≡ x + pred y
+
+  ```
+
