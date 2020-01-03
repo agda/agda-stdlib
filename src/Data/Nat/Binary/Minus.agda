@@ -259,7 +259,7 @@ import Algebra.Morphism.TwoMagmas ∸-magma ℕₚ.∸-magma
 
 fromℕ-homo-∸ : ∀ m n → fromℕ (m ℕ.∸ n) ≡ (fromℕ m) ∸ (fromℕ n)
 fromℕ-homo-∸ = Magmas∸ℕᵇ-ℕ.IsHomo⇒IsHomo-rev toℕ fromℕ (cong fromℕ)
-                                             (fromℕ-toℕ , toℕ-fromℕ) toℕ-homo-∸
+                                             (toℕ-fromℕ , fromℕ-toℕ) toℕ-homo-∸
 
 ∸-+-assoc : ∀ x y o → (x ∸ y) ∸ o ≡ x ∸ (y + o)
 ∸-+-assoc x y o = begin-equality

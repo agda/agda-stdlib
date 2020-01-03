@@ -23,10 +23,6 @@ Non-backwards compatible changes
 Other major additions
 ---------------------
 
-* Added new module `Algebra.Morphism.ToSetoid`,
-  that defines the equality `≈∘` as a generalization for `≗`,
-  and implements the corresponding Setoid instance.
-
 * Added new module `Algebra.Morphism.TwoMagmas`,
   that provids a certain proof for the inverse magma homomorphism,
   and gives a room for various possible proofs for relations between
