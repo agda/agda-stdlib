@@ -97,6 +97,13 @@ x < y = x ≤ y × x ≉ y
   <-respʳ-≈ sym trans respʳ , <-respˡ-≈ trans respˡ
   where open IsEquivalence eq
 
+<-total : Symmetric _≈_ → Decidable _≈_ → Total _≤_ → TotalNonStrict _≈_ _<_
+<-total ≈-sym _≟_ ≤-total x y with x ≟ y
+... | yes x≈y = semi≈ x≈y
+... | no  x≉y with ≤-total x y
+...   | inj₁ x≤y = semi< (x≤y , x≉y)
+...   | inj₂ x≥y = semi> (x≥y , x≉y ∘ ≈-sym)
+
 <-trichotomous : Symmetric _≈_ → Decidable _≈_ →
                  Antisymmetric _≈_ _≤_ → Total _≤_ →
                  Trichotomous _≈_ _<_

@@ -573,6 +573,12 @@ Other minor additions
   AllPairs-resp-Pointwise : R Respects₂ _∼_ → (AllPairs R) Respects (Pointwise _∼_)
   ```
 
+* Added new relations to Relation.Binary.Definitions
+  ```agda
+  Semiconnex E P Q = ∀ x y → E x y ⊎ P x y ⊎ Q y x
+  TotalNonStrict _≈_ _<_ = Semiconnex _≈_ _<_ _<_
+  ```
+
 * Added new functions to `Data.List.Relation.Binary.Permutation.Setoid`:
   ```agda
   ↭-prep : xs ↭ ys → x ∷ xs ↭ x ∷ ys

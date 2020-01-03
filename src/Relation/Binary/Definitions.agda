@@ -92,10 +92,25 @@ Asymmetric _<_ = ∀ {x y} → x < y → ¬ (y < x)
 Connex : REL A B ℓ₁ → REL B A ℓ₂ → Set _
 Connex P Q = ∀ x y → P x y ⊎ Q y x
 
+-- Semiconnect - exactly one of the three relations hold.
+
+data Semi (A : Set a) (B : Set b) (C : Set c) : Set (a ⊔ b ⊔ c) where
+  semi< : (a : A) → Semi A B C
+  semi≈ : (b : B) → Semi A B C
+  semi> : (c : C) → Semi A B C
+
+Semiconnex : REL A B ℓ₁ → REL A B ℓ₂ → REL A B ℓ₃ → Set _
+Semiconnex P E Q = ∀ x y → Semi (P x y) (E x y) (Q x y)
+
 -- Totality.
 
 Total : Rel A ℓ → Set _
 Total _∼_ = Connex _∼_ _∼_
+
+-- Non-strict total order.
+
+TotalNonStrict : Rel A ℓ₁ → Rel A ℓ₂ → Set _
+TotalNonStrict _≈_ _<_ = Semiconnex _<_ _≈_ (flip _<_)
 
 -- Generalised trichotomy - exactly one of three types has a witness.
 

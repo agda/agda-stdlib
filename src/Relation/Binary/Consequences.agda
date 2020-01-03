@@ -109,6 +109,17 @@ module _ {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ₂} where
   ... | tri≈ x≮y _ _ = no  x≮y
   ... | tri> x≮y _ _ = no  x≮y
 
+  tri⟶total : Trichotomous _≈_ _<_ → TotalNonStrict _≈_ _<_
+  tri⟶total compare x y with compare x y
+  tri⟶total compare x y | tri< x<y _ _ = semi< x<y
+  tri⟶total compare x y | tri≈ _ x≈y _ = semi≈ x≈y
+  tri⟶total compare x y | tri> _ _ x>y = semi> x>y
+
+  total⟶nstotal : Total _<_ → TotalNonStrict _≈_ _<_
+  total⟶nstotal <-total x y with <-total x y
+  total⟶nstotal <-total x y | inj₁ x<y = semi< x<y
+  total⟶nstotal <-total x y | inj₂ x>y = semi> x>y
+
   trans∧tri⟶respʳ≈ : Symmetric _≈_ → Transitive _≈_ →
                      Transitive _<_ → Trichotomous _≈_ _<_ →
                      _<_ Respectsʳ _≈_
@@ -131,6 +142,12 @@ module _ {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ₂} where
   trans∧tri⟶resp≈ sym ≈-tr <-tr tri =
     trans∧tri⟶respʳ≈ sym ≈-tr <-tr tri ,
     trans∧tri⟶respˡ≈ ≈-tr <-tr tri
+
+  sym∧asym∧irref∧total⟶tri : Symmetric _≈_ → Asymmetric _<_ → Irreflexive _≈_ _<_ → TotalNonStrict _≈_ _<_ → Trichotomous _≈_ _<_
+  sym∧asym∧irref∧total⟶tri ≈-sym <-asym <-irrefl <-total x y with <-total x y
+  sym∧asym∧irref∧total⟶tri ≈-sym <-asym <-irrefl <-total x y | semi≈ x≈y = tri≈ (<-irrefl x≈y) x≈y (<-irrefl (≈-sym x≈y))
+  sym∧asym∧irref∧total⟶tri ≈-sym <-asym <-irrefl <-total x y | semi< x<y = tri< x<y (λ x≈y → <-irrefl x≈y x<y) (<-asym x<y)
+  sym∧asym∧irref∧total⟶tri ≈-sym <-asym <-irrefl <-total x y | semi> x>y = tri> (<-asym x>y) (λ x≈y → <-irrefl (≈-sym x≈y) x>y) x>y
 
 ------------------------------------------------------------------------
 -- Without Loss of Generality

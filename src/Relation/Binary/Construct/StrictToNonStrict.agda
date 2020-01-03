@@ -93,6 +93,12 @@ total <-tri x y with <-tri x y
 ... | tri≈ x≮y x≈y x≯y = inj₁ (inj₂ x≈y)
 ... | tri> x≮y x≉y x>y = inj₂ (inj₁ x>y)
 
+total′ : TotalNonStrict _≈_ _<_ → Total _≤_
+total′ <-total x y with <-total x y
+... | semi< x<y = inj₁ (inj₁ x<y)
+... | semi≈ x≈y = inj₁ (inj₂ x≈y)
+... | semi> x>y = inj₂ (inj₁ x>y)
+
 decidable : Decidable _≈_ → Decidable _<_ → Decidable _≤_
 decidable ≈-dec <-dec x y = <-dec x y ⊎-dec ≈-dec x y
 
