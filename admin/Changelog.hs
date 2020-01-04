@@ -20,11 +20,17 @@ import Debug.Trace
 changesFP :: FilePath
 changesFP = "changes"
 
+highlightsFP :: FilePath
+highlightsFP = "highlights"
+
 newFP :: FilePath
 newFP = "new"
 
 deprecatedFP :: FilePath
 deprecatedFP = "deprecated"
+
+type HIGHLIGHTS = [[String]]
+  -- Items
 
 type DEPRECATED = Map String [(String,String)]
   -- ^ map of module name * renamings
@@ -32,7 +38,8 @@ type NEW = Map String [String]
   -- ^ map of module name * new definitions
 
 data CHANGELOG = CHANGELOG
-  { deprecated :: DEPRECATED
+  { highlights :: HIGHLIGHTS
+  , deprecated :: DEPRECATED
   , new        :: NEW
   }
 
@@ -47,7 +54,7 @@ evalChangeM :: ChangeM a -> STATE -> IO a
 evalChangeM = evalStateT . runChangeM
 
 initCHANGELOG :: CHANGELOG
-initCHANGELOG = CHANGELOG Map.empty Map.empty
+initCHANGELOG = CHANGELOG [] Map.empty Map.empty
 
 getFilePaths :: (FilePath -> IO Bool) -> FilePath -> IO [FilePath]
 getFilePaths p fp = do
@@ -81,6 +88,21 @@ nonEmptyLinesOf fp = do
   ls <- lines <$> readFile fp
   pure $ filter (not . all isSpace) ls
 
+paragraphs :: [String] -> [[String]]
+paragraphs [] = []
+paragraphs xs = case break (all isSpace) xs of
+  ([], p:ps) -> paragraphs ps
+  (p , []  ) -> [p]
+  (p , _:ps) -> p : paragraphs ps
+
+mkHIGHLIGHTS :: ChangeM HIGHLIGHTS
+mkHIGHLIGHTS = do
+  fps <- map (</> highlightsFP) . pullRequests <$> get
+  fps <- liftIO $ filterM doesFileExist fps
+  fmap concat $ forM fps $ \ fp -> do
+    ls <- liftIO (lines <$> readFile fp)
+    pure (paragraphs ls)
+
 mkDEPRECATED :: ChangeM DEPRECATED
 mkDEPRECATED = fmap ($ []) <$> do
   fps  <- inspect deprecatedFP
@@ -104,7 +126,10 @@ mkNEW = fmap ($ []) <$> do
   pure $ foldr (Map.unionWith (.)) Map.empty news
 
 mkCHANGELOG :: ChangeM CHANGELOG
-mkCHANGELOG = CHANGELOG <$> mkDEPRECATED <*> mkNEW
+mkCHANGELOG = CHANGELOG
+          <$> mkHIGHLIGHTS
+          <*> mkDEPRECATED
+          <*> mkNEW
 
 prAGDA :: [String] -> [String]
 prAGDA ls = concat
@@ -112,6 +137,20 @@ prAGDA ls = concat
   , ls
   , [ "  ```" ]
   ]
+
+prHIGHLIGHTS :: HIGHLIGHTS -> [String]
+prHIGHLIGHTS h = (preamble ++) $ intercalate [""] $ do
+  ls <- h
+  pure $ zipWith (++) ("* " : repeat "  ") ls
+
+  where
+
+  preamble =
+    [ ""
+    , "Highlights"
+    , "----------"
+    , ""
+    ]
 
 prNEW :: NEW -> [String]
 prNEW n = (preamble ++) $ intercalate [""] $ do
@@ -153,7 +192,8 @@ unlessNull f t = if null t then [] else f t
 
 pretty :: CHANGELOG -> [String]
 pretty c = concat
-  [ unlessNull prDEPRECATED (deprecated c)
+  [ unlessNull prHIGHLIGHTS (highlights c)
+  , unlessNull prDEPRECATED (deprecated c)
   , unlessNull prNEW (new c)
   ]
 
