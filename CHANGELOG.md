@@ -9,8 +9,11 @@ Highlights
 Bug-fixes
 ---------
 
-Changed the definition of `_⊓_` for `Codata.Conat`; it was mistakenly using
-`_⊔_` in a recursive call.
+* Changed the definition of `_⊓_` for `Codata.Conat`; it was mistakenly using
+  `_⊔_` in a recursive call.
+
+* Changed the type of `max≈v⁺` in `Data.List.Extrema`; it was mistakenly talking
+  about `min` rather than `max`.
 
 Non-backwards compatible changes
 --------------------------------
@@ -45,6 +48,13 @@ Non-backwards compatible changes
 
 * `RawIMonadT T` has been turned into a record type to allow the addition
   of a lift field of type `∀ {M i j A} → RawIMonad M → M i j A → T M i j A`.
+
+* The fixity level of `Data.List.Base`'s `_∷ʳ_` was changed from 5 to 6.
+  This means that `x ∷ xs ∷ʳ y` and `x ++ xs ∷ʳ y` are not ambiguous
+  anymore: they both are parenthesised to the right (the more efficient
+  variant).
+
+* Moved module `README.Text` to `README.Text.Printf`.
 
 * The following record definitions in `Algebra.Structures` have been changed.
 
@@ -122,6 +132,15 @@ Automated warnings are attached to all deprecated names to discourage their use.
 Other major additions
 ---------------------
 
+* New modules
+  ```
+  README.Text.Tabular
+
+  Text.Tabular.Base
+  Text.Tabular.List
+  Text.Tabular.Vec
+  ```
+
 * Added new module:
   ```agda
   Codata.Cowriter.Bisimilarity
@@ -180,11 +199,6 @@ Other major additions
     ... | false = ∈-filter⁺ v∈xs Pv
   ```
 
-* Made `RawFunctor`,  `RawApplicative` and `IFun` more level polymorphic
-  (in `Category.Functor`, `Category.Applicative` and
-  `Category.Applicative.Indexed`
-  respectively).
-
 Other minor additions
 ---------------------
 
@@ -193,6 +207,11 @@ Other minor additions
   ⁻¹-injective   : x ⁻¹ ≈ y ⁻¹ → x ≈ y
   ⁻¹-anti-homo-∙ : (x ∙ y) ⁻¹ ≈ y ⁻¹ ∙ x ⁻¹
   ```
+
+* Made `RawFunctor`,  `RawApplicative` and `IFun` more level polymorphic
+  (in `Category.Functor`, `Category.Applicative` and
+  `Category.Applicative.Indexed`
+  respectively).
 
 * Added new functions to `Codata.Colist`:
   ```agda
@@ -298,6 +317,33 @@ Other minor additions
   Unique-resp-≋   : Unique Respects _≋_
   ```
 
+* Added new functions to `Data.List.Base`:
+  ```agda
+  _?∷_  : Maybe A → List A → List A
+  _∷ʳ?_ : List A → Maybe A → List A
+  ```
+
+* Added new properties to `Data.Nat.Properties`:
+  ```
+  ⌊n/2⌋≤⌈n/2⌉   : ⌊ n /2⌋ ≤ ⌈ n /2⌉
+  ⌊n/2⌋+⌈n/2⌉≡n : ⌊ n /2⌋ + ⌈ n /2⌉ ≡ n
+  ```
+
+* Added new functions to `Data.String.Base`:
+  ```agda
+  padLeft    : Char → ℕ → String → String
+  padRight   : Char → ℕ → String → String
+  padBoth    : Char → Char → ℕ → String → String
+
+  data Alignment : Set where Left Center Right : Alignment
+  fromAlignment  : Alignment → ℕ → String → String
+
+  rectangle  : Vec (ℕ → String → String) n → Vec String n → Vec String n
+  rectangleˡ : Char → Vec String n → Vec String n
+  rectangleʳ : Char → Vec String n → Vec String n
+  rectangleᶜ : Char → Char → Vec String n → Vec String n
+  ```
+
 * Added new proofs to `Data.List.Relation.Binary.Pointwise`:
   ```agda
   Any-resp-Pointwise      : P Respects _∼_ → (Any P) Respects (Pointwise _∼_)
@@ -317,6 +363,24 @@ Other minor additions
 * Added a new proof to `Function.Identity.Categorical`:
   ```agda
   monadT-identity : RawIMonadT T → RawIMonad (T (λ _ _ → Identity))
+  ```
+
+* Added new functions to `Data.Vec.Base`:
+  ```
+  length    : Vec A n → ℕ
+  transpose : Vec (Vec A n) m → Vec (Vec A m) n
+  ```
+
+* Added new functions to `Data.Vec.Bounded.Base`:
+  ```agda
+  take : n → Vec≤ A m → Vec≤ A (n ⊓ m)
+  drop : n → Vec≤ A m → Vec≤ A (m ∸ n)
+
+  padLeft   : A → Vec≤ A n → Vec A n
+  padRight  : A → Vec≤ A n → Vec A n
+  padBoth : ∀ {n} → A → A → Vec≤ A n → Vec A n
+
+  rectangle : List (∃ (Vec≤ A)) → ∃ (List ∘ Vec≤ A)
   ```
 
 * Added new proofs to `Induction.WellFounded`:

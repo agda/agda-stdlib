@@ -227,8 +227,8 @@ v<max⁺ = v<f[argmax]⁺
 xs≤max : ∀ ⊥ xs → All (_≤ max ⊥ xs) xs
 xs≤max = f[xs]≤f[argmax]
 
-max≈v⁺ : ∀ {v ⊤ xs} → v ∈ xs → All (v ≤_) xs → v ≤ ⊤ → min ⊤ xs ≈ v
-max≈v⁺ = f[argmin]≈f[v]⁺
+max≈v⁺ : ∀ {v ⊤ xs} → v ∈ xs → All (_≤ v) xs → ⊤ ≤ v → max ⊤ xs ≈ v
+max≈v⁺ = f[argmax]≈f[v]⁺
 
 max[xs]≤max[ys]⁺ : ∀ {⊥₁} ⊥₂ {xs} ys → ⊥₁ ≤ ⊥₂ ⊎ Any (⊥₁ ≤_) ys →
                    All (λ x → x ≤ ⊥₂ ⊎ Any (x ≤_) ys) xs →
