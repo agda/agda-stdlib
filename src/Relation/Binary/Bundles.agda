@@ -150,7 +150,7 @@ record DecStrictPartialOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂
 
   private
     module DSPO = IsDecStrictPartialOrder isDecStrictPartialOrder
-    open DSPO hiding (module Eq)
+  open DSPO public hiding (module Eq)
 
   strictPartialOrder : StrictPartialOrder c ℓ₁ ℓ₂
   strictPartialOrder = record

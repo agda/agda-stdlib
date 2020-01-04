@@ -15,6 +15,10 @@ Bug-fixes
 * Changed the type of `max≈v⁺` in `Data.List.Extrema`; it was mistakenly talking
   about `min` rather than `max`.
 
+* The module `⊆-Reasoning` in `Data.List.Relation.Binary.BagAndSetEquality` now exports the correct set of combinators.
+
+* The record `DecStrictPartialOrder` now correctly re-exports the contents of its `IsDecStrictPartialOrder` field.
+
 Non-backwards compatible changes
 --------------------------------
 
