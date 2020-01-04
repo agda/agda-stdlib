@@ -1,0 +1,8 @@
+
+data Alignment : Set where Left Center Right : Alignment
+fromAlignment  : Alignment → ℕ → String → String
+
+rectangle  : Vec (ℕ → String → String) n → Vec String n → Vec String n
+rectangleˡ : Char → Vec String n → Vec String n
+rectangleʳ : Char → Vec String n → Vec String n
+rectangleᶜ : Char → Char → Vec String n → Vec String n
