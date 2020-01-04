@@ -14,6 +14,11 @@ import Changelog.Types
 import Changelog.Utils
 import Changelog.Pretty
 
+getPRFiles :: FilePath -> ChangeM [FilePath]
+getPRFiles fp = do
+  fps <- map (</> fp) . pullRequests <$> get
+  liftIO $ filterM doesFileExist fps
+
 inspect :: FilePath -> ChangeM [FilePath]
 inspect fp = do
   dirs <- map (</> fp) . pullRequests <$> get
@@ -22,8 +27,7 @@ inspect fp = do
 
 items :: FilePath -> ChangeM [[String]]
 items fp = do
-  fps <- map (</> fp) . pullRequests <$> get
-  fps <- liftIO $ filterM doesFileExist fps
+  fps <- getPRFiles fp
   fmap concat $ forM fps $ \ fp -> do
     ls <- liftIO (lines <$> readFile fp)
     pure (paragraphs ls)
