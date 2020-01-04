@@ -8,54 +8,96 @@
 
 module Codata.Colist.Bisimilarity where
 
-open import Level using (_⊔_)
+open import Level using (Level; _⊔_)
 open import Size
 open import Codata.Thunk
 open import Codata.Colist
+open import Data.List.Base using (List; []; _∷_)
+open import Data.List.Relation.Binary.Pointwise using (Pointwise; []; _∷_)
+open import Data.List.NonEmpty as List⁺  using (List⁺; _∷_)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
-data Bisim {a b r} {A : Set a} {B : Set b} (R : A → B → Set r) (i : Size) :
-           (xs : Colist A ∞) (ys : Colist B ∞) → Set (r ⊔ a ⊔ b) where
+private
+  variable
+    a b c p q r : Level
+    A : Set a
+    B : Set b
+    C : Set c
+    i : Size
+
+data Bisim {A : Set a} {B : Set b} (R : REL A B r) (i : Size) :
+           REL (Colist A ∞) (Colist B ∞) (r ⊔ a ⊔ b) where
   []  : Bisim R i [] []
-  _∷_ : ∀ {x y xs ys} → R x y → Thunk^R (Bisim R) i xs ys → Bisim R i (x ∷ xs) (y ∷ ys)
+  _∷_ : ∀ {x y xs ys} → R x y → Thunk^R (Bisim R) i xs ys →
+        Bisim R i (x ∷ xs) (y ∷ ys)
 
+module _ {R : Rel A r} where
 
-module _ {a r} {A : Set a} {R : A → A → Set r} where
+ reflexive : Reflexive R → Reflexive (Bisim R i)
+ reflexive refl^R {[]}     = []
+ reflexive refl^R {r ∷ rs} = refl^R ∷ λ where .force → reflexive refl^R
 
- reflexive : Reflexive R → ∀ {i} → Reflexive (Bisim R i)
- reflexive refl^R {i} {[]}     = []
- reflexive refl^R {i} {r ∷ rs} = refl^R ∷ λ where .force → reflexive refl^R
+module _ {P : REL A B p} {Q : REL B A q} where
 
-module _ {a b} {A : Set a} {B : Set b}
-         {r} {P : A → B → Set r} {Q : B → A → Set r} where
-
- symmetric : Sym P Q → ∀ {i} → Sym (Bisim P i) (Bisim Q i)
+ symmetric : Sym P Q → Sym (Bisim P i) (Bisim Q i)
  symmetric sym^PQ []       = []
  symmetric sym^PQ (p ∷ ps) = sym^PQ p ∷ λ where .force → symmetric sym^PQ (ps .force)
 
-module _ {a b c} {A : Set a} {B : Set b} {C : Set c}
-         {r} {P : A → B → Set r} {Q : B → C → Set r} {R : A → C → Set r} where
+module _ {P : REL A B p} {Q : REL B C q} {R : REL A C r} where
 
- transitive : Trans P Q R → ∀ {i} → Trans (Bisim P i) (Bisim Q i) (Bisim R i)
+ transitive : Trans P Q R → Trans (Bisim P i) (Bisim Q i) (Bisim R i)
  transitive trans^PQR []       []       = []
  transitive trans^PQR (p ∷ ps) (q ∷ qs) =
    trans^PQR p q ∷ λ where .force → transitive trans^PQR (ps .force) (qs .force)
 
--- Pointwise Equality as a Bisimilarity
 ------------------------------------------------------------------------
+-- Congruence rules
 
-module _ {ℓ} {A : Set ℓ} where
+module _ {R : REL A B r} where
 
- infix 1 _⊢_≈_
- _⊢_≈_ : ∀ i → Colist A ∞ → Colist A ∞ → Set ℓ
- _⊢_≈_ = Bisim _≡_
+  ++⁺ : ∀ {as bs xs ys} → Pointwise R as bs →
+        Bisim R i xs ys → Bisim R i (fromList as ++ xs) (fromList bs ++ ys)
+  ++⁺ []       rs = rs
+  ++⁺ (r ∷ pw) rs = r ∷ λ where .force → ++⁺ pw rs
 
- refl : ∀ {i} → Reflexive (i ⊢_≈_)
- refl = reflexive Eq.refl
+  ⁺++⁺ : ∀ {as bs xs ys} → Pointwise R (List⁺.toList as) (List⁺.toList bs) →
+         Thunk^R (Bisim R) i xs ys → Bisim R i (as ⁺++ xs) (bs ⁺++ ys)
+  ⁺++⁺ (r ∷ pw) rs = r ∷ λ where .force → ++⁺ pw (rs .force)
 
- sym : ∀ {i} → Symmetric (i ⊢_≈_)
- sym = symmetric Eq.sym
+------------------------------------------------------------------------
+-- Pointwise Equality as a Bisimilarity
 
- trans : ∀ {i} → Transitive (i ⊢_≈_)
- trans = transitive Eq.trans
+module _ {A : Set a} where
+
+  infix 1 _⊢_≈_
+  _⊢_≈_ : ∀ i → Colist A ∞ → Colist A ∞ → Set a
+  _⊢_≈_ = Bisim _≡_
+
+  refl : Reflexive (i ⊢_≈_)
+  refl = reflexive Eq.refl
+
+  fromEq : ∀ {as bs} → as ≡ bs → i ⊢ as ≈ bs
+  fromEq Eq.refl = refl
+
+  sym : Symmetric (i ⊢_≈_)
+  sym = symmetric Eq.sym
+
+  trans : Transitive (i ⊢_≈_)
+  trans = transitive Eq.trans
+
+isEquivalence : {R : Rel A r} → IsEquivalence R → IsEquivalence (Bisim R i)
+isEquivalence equiv^R = record
+  { refl  = reflexive equiv^R.refl
+  ; sym   = symmetric equiv^R.sym
+  ; trans = transitive equiv^R.trans
+  } where module equiv^R = IsEquivalence equiv^R
+
+setoid : Setoid a r → Size → Setoid a (a ⊔ r)
+setoid S i = record
+  { isEquivalence = isEquivalence {i = i} (Setoid.isEquivalence S)
+  }
+
+module ≈-Reasoning {a} {A : Set a} {i} where
+
+  open import Relation.Binary.Reasoning.Setoid (setoid (Eq.setoid A) i) public

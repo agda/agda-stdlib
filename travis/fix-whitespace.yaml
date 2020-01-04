@@ -1,0 +1,10 @@
+included-dirs:
+  - src
+  - README
+
+included-files:
+  - "**.agda"
+
+excluded-files:
+  - "README/Text/Tabular.agda"
+
