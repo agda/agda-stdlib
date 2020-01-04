@@ -305,13 +305,36 @@ Other minor additions
   AllPairs-resp-Pointwise : R Respects₂ _∼_ → (AllPairs R) Respects (Pointwise _∼_)
   ```
 
-* Added new combinators and functions to `Data.List.Relation.Binary.Permutation.Setoid.PermutationReasoning`:
+* Added new functions to `Data.List.Relation.Binary.Permutation.Setoid`:
+  ```agda
+  ↭-prep : xs ↭ ys → x ∷ xs ↭ x ∷ ys
+  ↭-swap : xs ↭ ys → x ∷ y ∷ xs ↭ y ∷ x ∷ ys
+
+  steps  : xs ↭ ys → ℕ
+  ```
+
+* Added new combinators to `Data.List.Relation.Binary.Permutation.Setoid.PermutationReasoning`:
   ```agda
   _≋⟨_⟩_  : x ≋ y → y IsRelatedTo z → x IsRelatedTo z
   _≋˘⟨_⟩_ : y ≋ x → y IsRelatedTo z → x IsRelatedTo z
+  ```
 
-  ↭-prep : xs ↭ ys → x ∷ xs ↭ x ∷ ys
-  ↭-swap : xs ↭ ys → x ∷ y ∷ xs ↭ y ∷ x ∷ ys
+* Added new functions to ` Data.List.Relation.Binary.Permutation.Setoid.Properties`:
+  ```agda
+  0<steps     : (xs↭ys : xs ↭ ys) → 0 < steps xs↭ys
+  steps-respˡ : (ys≋xs : ys ≋ xs) (ys↭zs : ys ↭ zs) → steps (↭-respˡ-≋ ys≋xs ys↭zs) ≡ steps ys↭zs
+  steps-respʳ : (xs≋ys : xs ≋ ys) (zs↭xs : zs ↭ xs) → steps (↭-respʳ-≋ xs≋ys zs↭xs) ≡ steps zs↭xs
+
+  drop-mid-≋  : ws ++ [ x ] ++ ys ≋ xs ++ [ x ] ++ zs → ws ++ ys ↭ xs ++ zs
+  drop-mid    : ws ++ [ v ] ++ ys ↭ xs ++ [ v ] ++ zs → ws ++ ys ↭ xs ++ zs
+  split       : xs ↭ as ++ [ v ] ++ bs → ∃₂ λ ps qs → xs ≋ ps ++ [ v ] ++ qs
+
+  filter⁺     : xs ↭ ys → filter P? xs ↭ filter P? ys
+  ```
+
+* Added new proof to `Data.Nat.Properties`:
+  ```agda
+  m<n+m : n > 0 → m < n + m
   ```
 
 * Added new proofs to `Induction.WellFounded`:
