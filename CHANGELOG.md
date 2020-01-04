@@ -9,8 +9,11 @@ Highlights
 Bug-fixes
 ---------
 
-Changed the definition of `_⊓_` for `Codata.Conat`; it was mistakenly using
-`_⊔_` in a recursive call.
+* Changed the definition of `_⊓_` for `Codata.Conat`; it was mistakenly using
+  `_⊔_` in a recursive call.
+
+* Changed the type of `max≈v⁺` in `Data.List.Extrema`; it was mistakenly talking
+  about `min` rather than `max`.
 
 Non-backwards compatible changes
 --------------------------------
