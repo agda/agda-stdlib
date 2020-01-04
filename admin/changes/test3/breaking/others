@@ -1,7 +1,7 @@
-* The proofs `isPreorder` and `preorder` have been moved from the `Setoid`
-  record to the module `Relation.Binary.Properties.Setoid`.
+The proofs `isPreorder` and `preorder` have been moved from the `Setoid`
+record to the module `Relation.Binary.Properties.Setoid`.
 
-* The function `normalize` in `Data.Rational.Base` has been reimplemented
-  in terms of a direct division of the numerator and denominator by their
-  GCD. Although less elegant than the previous implementation, it's
-  reduction behaviour is much easier to reason about.
+The function `normalize` in `Data.Rational.Base` has been reimplemented
+in terms of a direct division of the numerator and denominator by their
+GCD. Although less elegant than the previous implementation, it's
+reduction behaviour is much easier to reason about.
