@@ -18,7 +18,7 @@ getDirectories = getFilePaths doesDirectoryExist
 getFiles :: FilePath -> IO [FilePath]
 getFiles = getFilePaths (\ fp -> (check fp &&) <$> doesFileExist fp)
 
-  where check = all (\ c -> isAlphaNum c || c `elem` "./")
+  where check = all (\ c -> isAlphaNum c || c `elem` "./-")
 
 nonEmptyLinesOf :: FilePath -> IO [String]
 nonEmptyLinesOf fp = do

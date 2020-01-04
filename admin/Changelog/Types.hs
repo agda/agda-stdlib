@@ -1,4 +1,5 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE DeriveFoldable             #-}
 
 module Changelog.Types where
 
@@ -9,8 +10,12 @@ import Changelog.Configuration
 import Changelog.Utils
 
 type HIGHLIGHTS = [[String]]
-type BUGFIXES = [[String]]
-  -- Items
+data BUGFIXES' a = BUGFIXES
+  { raw    :: [a]
+  , others :: [[a]]
+  } deriving (Foldable)
+type BUGFIXES = BUGFIXES' String
+  -- ^ Markdown for major ones + other items
 
 type DEPRECATED = Map String [(String,String)]
   -- ^ map of module name * renamings

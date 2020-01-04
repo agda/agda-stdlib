@@ -28,14 +28,23 @@ prHIGHLIGHTS h = preamble ++ prItems h where
     ]
 
 prBUGFIXES :: BUGFIXES -> [String]
-prBUGFIXES h = preamble ++ prItems h where
+prBUGFIXES (BUGFIXES raw others) = concat
+  [ preamble
+  , unlessNull ("":) raw
+  , unlessNull rest others
+  ] where
 
   preamble =
     [ ""
     , "Bug fixes"
     , "---------"
-    , ""
     ]
+
+  rest o =
+    [ ""
+    , "#### Others"
+    , ""
+    ] ++ prItems o
 
 prNEW :: NEW -> [String]
 prNEW n = (preamble ++) $ intercalate [""] $ do
@@ -72,8 +81,8 @@ prDEPRECATED d = (preamble ++) $ intercalate [""] $ do
     , ""
     ]
 
-unlessNull :: Foldable t => (t a -> [b]) -> t a -> [b]
-unlessNull f t = if null t then [] else f t
+unlessNull :: (Monoid b, Foldable t) => (t a -> b) -> t a -> b
+unlessNull f t = if null t then mempty else f t
 
 pretty :: CHANGELOG -> [String]
 pretty c = concat

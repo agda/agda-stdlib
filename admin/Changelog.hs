@@ -2,6 +2,7 @@ module Changelog where
 
 import Control.Monad.State
 
+import Data.List
 import qualified Data.Map.Strict as Map
 
 import System.Directory
@@ -36,7 +37,18 @@ mkHIGHLIGHTS :: ChangeM HIGHLIGHTS
 mkHIGHLIGHTS = items highlightsFP
 
 mkBUGFIXES :: ChangeM BUGFIXES
-mkBUGFIXES = items bugfixesFP
+mkBUGFIXES = do
+  fps <- inspect bugfixesFP
+  bfs <- forM fps $ \ fp -> case takeFileName fp of
+    "others" -> do
+      ls <- liftIO (lines <$> readFile fp)
+      pure ([], paragraphs ls)
+    _ -> do
+      ls <- liftIO (lines <$> readFile fp)
+      pure (ls, [])
+  let (rs, iss) = unzip bfs
+  let raw = filter (not . null) rs
+  pure $ BUGFIXES (intercalate [""] raw) (concat iss)
 
 mkDEPRECATED :: ChangeM DEPRECATED
 mkDEPRECATED = fmap ($ []) <$> do
