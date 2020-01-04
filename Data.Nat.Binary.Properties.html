@@ -74,7 +74,7 @@
 <a id="≡-setoid"></a><a id="2523" href="Data.Nat.Binary.Properties.html#2523" class="Function">≡-setoid</a> <a id="2532" class="Symbol">:</a> <a id="2534" href="Relation.Binary.Bundles.html#995" class="Record">Setoid</a> <a id="2541" href="Level.html#512" class="Function">0ℓ</a> <a id="2544" href="Level.html#512" class="Function">0ℓ</a>
 <a id="2547" href="Data.Nat.Binary.Properties.html#2523" class="Function">≡-setoid</a> <a id="2556" class="Symbol">=</a> <a id="2558" href="Relation.Binary.PropositionalEquality.html#2290" class="Function">setoid</a> <a id="2565" href="Data.Nat.Binary.Base.html#862" class="Datatype">ℕᵇ</a>
 
-<a id="≡-decSetoid"></a><a id="2569" href="Data.Nat.Binary.Properties.html#2569" class="Function">≡-decSetoid</a> <a id="2581" class="Symbol">:</a> <a id="2583" href="Relation.Binary.Bundles.html#1365" class="Record">DecSetoid</a> <a id="2593" href="Level.html#512" class="Function">0ℓ</a> <a id="2596" href="Level.html#512" class="Function">0ℓ</a>
+<a id="≡-decSetoid"></a><a id="2569" href="Data.Nat.Binary.Properties.html#2569" class="Function">≡-decSetoid</a> <a id="2581" class="Symbol">:</a> <a id="2583" href="Relation.Binary.Bundles.html#1377" class="Record">DecSetoid</a> <a id="2593" href="Level.html#512" class="Function">0ℓ</a> <a id="2596" href="Level.html#512" class="Function">0ℓ</a>
 <a id="2599" href="Data.Nat.Binary.Properties.html#2569" class="Function">≡-decSetoid</a> <a id="2611" class="Symbol">=</a> <a id="2613" href="Relation.Binary.PropositionalEquality.html#2421" class="Function">decSetoid</a> <a id="2623" href="Data.Nat.Binary.Properties.html#2045" class="Function Operator">_≟_</a>
 
 <a id="2628" class="Comment">------------------------------------------------------------------------</a>
@@ -327,24 +327,24 @@
   <a id="12451" class="Symbol">;</a> <a id="12453" href="Relation.Binary.Structures.html#3857" class="Field">&lt;-resp-≈</a>      <a id="12467" class="Symbol">=</a> <a id="12469" href="Relation.Binary.PropositionalEquality.Core.html#1334" class="Function">resp₂</a> <a id="12475" href="Data.Nat.Binary.Base.html#1141" class="Datatype Operator">_&lt;_</a>
   <a id="12481" class="Symbol">}</a>
 
-<a id="&lt;-isStrictTotalOrder"></a><a id="12484" href="Data.Nat.Binary.Properties.html#12484" class="Function">&lt;-isStrictTotalOrder</a> <a id="12505" class="Symbol">:</a> <a id="12507" href="Relation.Binary.Structures.html#5960" class="Record">IsStrictTotalOrder</a> <a id="12526" href="Agda.Builtin.Equality.html#125" class="Datatype Operator">_≡_</a> <a id="12530" href="Data.Nat.Binary.Base.html#1141" class="Datatype Operator">_&lt;_</a>
+<a id="&lt;-isStrictTotalOrder"></a><a id="12484" href="Data.Nat.Binary.Properties.html#12484" class="Function">&lt;-isStrictTotalOrder</a> <a id="12505" class="Symbol">:</a> <a id="12507" href="Relation.Binary.Structures.html#6133" class="Record">IsStrictTotalOrder</a> <a id="12526" href="Agda.Builtin.Equality.html#125" class="Datatype Operator">_≡_</a> <a id="12530" href="Data.Nat.Binary.Base.html#1141" class="Datatype Operator">_&lt;_</a>
 <a id="12534" href="Data.Nat.Binary.Properties.html#12484" class="Function">&lt;-isStrictTotalOrder</a> <a id="12555" class="Symbol">=</a> <a id="12557" class="Keyword">record</a>
-  <a id="12566" class="Symbol">{</a> <a id="12568" href="Relation.Binary.Structures.html#6033" class="Field">isEquivalence</a> <a id="12582" class="Symbol">=</a> <a id="12584" href="Relation.Binary.PropositionalEquality.html#1745" class="Function">isEquivalence</a>
-  <a id="12600" class="Symbol">;</a> <a id="12602" href="Relation.Binary.Structures.html#6067" class="Field">trans</a>         <a id="12616" class="Symbol">=</a> <a id="12618" href="Data.Nat.Binary.Properties.html#9600" class="Function">&lt;-trans</a>
-  <a id="12628" class="Symbol">;</a> <a id="12630" href="Relation.Binary.Structures.html#6102" class="Field">compare</a>       <a id="12644" class="Symbol">=</a> <a id="12646" href="Data.Nat.Binary.Properties.html#10738" class="Function">&lt;-cmp</a>
+  <a id="12566" class="Symbol">{</a> <a id="12568" href="Relation.Binary.Structures.html#6206" class="Field">isEquivalence</a> <a id="12582" class="Symbol">=</a> <a id="12584" href="Relation.Binary.PropositionalEquality.html#1745" class="Function">isEquivalence</a>
+  <a id="12600" class="Symbol">;</a> <a id="12602" href="Relation.Binary.Structures.html#6240" class="Field">trans</a>         <a id="12616" class="Symbol">=</a> <a id="12618" href="Data.Nat.Binary.Properties.html#9600" class="Function">&lt;-trans</a>
+  <a id="12628" class="Symbol">;</a> <a id="12630" href="Relation.Binary.Structures.html#6275" class="Field">compare</a>       <a id="12644" class="Symbol">=</a> <a id="12646" href="Data.Nat.Binary.Properties.html#10738" class="Function">&lt;-cmp</a>
   <a id="12654" class="Symbol">}</a>
 
 <a id="12657" class="Comment">------------------------------------------------------------------------------</a>
 <a id="12736" class="Comment">-- Bundles for _&lt;_</a>
 
-<a id="&lt;-strictPartialOrder"></a><a id="12756" href="Data.Nat.Binary.Properties.html#12756" class="Function">&lt;-strictPartialOrder</a> <a id="12777" class="Symbol">:</a> <a id="12779" href="Relation.Binary.Bundles.html#3293" class="Record">StrictPartialOrder</a> <a id="12798" class="Symbol">_</a> <a id="12800" class="Symbol">_</a> <a id="12802" class="Symbol">_</a>
+<a id="&lt;-strictPartialOrder"></a><a id="12756" href="Data.Nat.Binary.Properties.html#12756" class="Function">&lt;-strictPartialOrder</a> <a id="12777" class="Symbol">:</a> <a id="12779" href="Relation.Binary.Bundles.html#3605" class="Record">StrictPartialOrder</a> <a id="12798" class="Symbol">_</a> <a id="12800" class="Symbol">_</a> <a id="12802" class="Symbol">_</a>
 <a id="12804" href="Data.Nat.Binary.Properties.html#12756" class="Function">&lt;-strictPartialOrder</a> <a id="12825" class="Symbol">=</a> <a id="12827" class="Keyword">record</a>
-  <a id="12836" class="Symbol">{</a> <a id="12838" href="Relation.Binary.Bundles.html#3499" class="Field">isStrictPartialOrder</a> <a id="12859" class="Symbol">=</a> <a id="12861" href="Data.Nat.Binary.Properties.html#12272" class="Function">&lt;-isStrictPartialOrder</a>
+  <a id="12836" class="Symbol">{</a> <a id="12838" href="Relation.Binary.Bundles.html#3811" class="Field">isStrictPartialOrder</a> <a id="12859" class="Symbol">=</a> <a id="12861" href="Data.Nat.Binary.Properties.html#12272" class="Function">&lt;-isStrictPartialOrder</a>
   <a id="12886" class="Symbol">}</a>
 
-<a id="&lt;-strictTotalOrder"></a><a id="12889" href="Data.Nat.Binary.Properties.html#12889" class="Function">&lt;-strictTotalOrder</a> <a id="12908" class="Symbol">:</a> <a id="12910" href="Relation.Binary.Bundles.html#5812" class="Record">StrictTotalOrder</a> <a id="12927" class="Symbol">_</a> <a id="12929" class="Symbol">_</a> <a id="12931" class="Symbol">_</a>
+<a id="&lt;-strictTotalOrder"></a><a id="12889" href="Data.Nat.Binary.Properties.html#12889" class="Function">&lt;-strictTotalOrder</a> <a id="12908" class="Symbol">:</a> <a id="12910" href="Relation.Binary.Bundles.html#6313" class="Record">StrictTotalOrder</a> <a id="12927" class="Symbol">_</a> <a id="12929" class="Symbol">_</a> <a id="12931" class="Symbol">_</a>
 <a id="12933" href="Data.Nat.Binary.Properties.html#12889" class="Function">&lt;-strictTotalOrder</a> <a id="12952" class="Symbol">=</a> <a id="12954" class="Keyword">record</a>
-  <a id="12963" class="Symbol">{</a> <a id="12965" href="Relation.Binary.Bundles.html#6010" class="Field">isStrictTotalOrder</a> <a id="12984" class="Symbol">=</a>  <a id="12987" href="Data.Nat.Binary.Properties.html#12484" class="Function">&lt;-isStrictTotalOrder</a>
+  <a id="12963" class="Symbol">{</a> <a id="12965" href="Relation.Binary.Bundles.html#6511" class="Field">isStrictTotalOrder</a> <a id="12984" class="Symbol">=</a>  <a id="12987" href="Data.Nat.Binary.Properties.html#12484" class="Function">&lt;-isStrictTotalOrder</a>
   <a id="13010" class="Symbol">}</a>
 
 <a id="13013" class="Comment">------------------------------------------------------------------------------</a>
@@ -498,24 +498,24 @@
 <a id="17223" class="Comment">------------------------------------------------------------------------------</a>
 <a id="17302" class="Comment">-- Bundles</a>
 
-<a id="≤-preorder"></a><a id="17314" href="Data.Nat.Binary.Properties.html#17314" class="Function">≤-preorder</a> <a id="17325" class="Symbol">:</a> <a id="17327" href="Relation.Binary.Bundles.html#1838" class="Record">Preorder</a> <a id="17336" href="Level.html#512" class="Function">0ℓ</a> <a id="17339" href="Level.html#512" class="Function">0ℓ</a> <a id="17342" href="Level.html#512" class="Function">0ℓ</a>
+<a id="≤-preorder"></a><a id="17314" href="Data.Nat.Binary.Properties.html#17314" class="Function">≤-preorder</a> <a id="17325" class="Symbol">:</a> <a id="17327" href="Relation.Binary.Bundles.html#1906" class="Record">Preorder</a> <a id="17336" href="Level.html#512" class="Function">0ℓ</a> <a id="17339" href="Level.html#512" class="Function">0ℓ</a> <a id="17342" href="Level.html#512" class="Function">0ℓ</a>
 <a id="17345" href="Data.Nat.Binary.Properties.html#17314" class="Function">≤-preorder</a> <a id="17356" class="Symbol">=</a> <a id="17358" class="Keyword">record</a>
-  <a id="17367" class="Symbol">{</a> <a id="17369" href="Relation.Binary.Bundles.html#2051" class="Field">isPreorder</a> <a id="17380" class="Symbol">=</a> <a id="17382" href="Data.Nat.Binary.Properties.html#16647" class="Function">≤-isPreorder</a>
+  <a id="17367" class="Symbol">{</a> <a id="17369" href="Relation.Binary.Bundles.html#2119" class="Field">isPreorder</a> <a id="17380" class="Symbol">=</a> <a id="17382" href="Data.Nat.Binary.Properties.html#16647" class="Function">≤-isPreorder</a>
   <a id="17397" class="Symbol">}</a>
 
-<a id="≤-partialOrder"></a><a id="17400" href="Data.Nat.Binary.Properties.html#17400" class="Function">≤-partialOrder</a> <a id="17415" class="Symbol">:</a> <a id="17417" href="Relation.Binary.Bundles.html#2294" class="Record">Poset</a> <a id="17423" href="Level.html#512" class="Function">0ℓ</a> <a id="17426" href="Level.html#512" class="Function">0ℓ</a> <a id="17429" href="Level.html#512" class="Function">0ℓ</a>
+<a id="≤-partialOrder"></a><a id="17400" href="Data.Nat.Binary.Properties.html#17400" class="Function">≤-partialOrder</a> <a id="17415" class="Symbol">:</a> <a id="17417" href="Relation.Binary.Bundles.html#2525" class="Record">Poset</a> <a id="17423" href="Level.html#512" class="Function">0ℓ</a> <a id="17426" href="Level.html#512" class="Function">0ℓ</a> <a id="17429" href="Level.html#512" class="Function">0ℓ</a>
 <a id="17432" href="Data.Nat.Binary.Properties.html#17400" class="Function">≤-partialOrder</a> <a id="17447" class="Symbol">=</a> <a id="17449" class="Keyword">record</a>
-  <a id="17458" class="Symbol">{</a> <a id="17460" href="Relation.Binary.Bundles.html#2469" class="Field">isPartialOrder</a> <a id="17475" class="Symbol">=</a> <a id="17477" href="Data.Nat.Binary.Properties.html#16802" class="Function">≤-isPartialOrder</a>
+  <a id="17458" class="Symbol">{</a> <a id="17460" href="Relation.Binary.Bundles.html#2700" class="Field">isPartialOrder</a> <a id="17475" class="Symbol">=</a> <a id="17477" href="Data.Nat.Binary.Properties.html#16802" class="Function">≤-isPartialOrder</a>
   <a id="17496" class="Symbol">}</a>
 
-<a id="≤-totalOrder"></a><a id="17499" href="Data.Nat.Binary.Properties.html#17499" class="Function">≤-totalOrder</a> <a id="17512" class="Symbol">:</a> <a id="17514" href="Relation.Binary.Bundles.html#4483" class="Record">TotalOrder</a> <a id="17525" href="Level.html#512" class="Function">0ℓ</a> <a id="17528" href="Level.html#512" class="Function">0ℓ</a> <a id="17531" href="Level.html#512" class="Function">0ℓ</a>
+<a id="≤-totalOrder"></a><a id="17499" href="Data.Nat.Binary.Properties.html#17499" class="Function">≤-totalOrder</a> <a id="17512" class="Symbol">:</a> <a id="17514" href="Relation.Binary.Bundles.html#4964" class="Record">TotalOrder</a> <a id="17525" href="Level.html#512" class="Function">0ℓ</a> <a id="17528" href="Level.html#512" class="Function">0ℓ</a> <a id="17531" href="Level.html#512" class="Function">0ℓ</a>
 <a id="17534" href="Data.Nat.Binary.Properties.html#17499" class="Function">≤-totalOrder</a> <a id="17547" class="Symbol">=</a> <a id="17549" class="Keyword">record</a>
-  <a id="17558" class="Symbol">{</a> <a id="17560" href="Relation.Binary.Bundles.html#4657" class="Field">isTotalOrder</a> <a id="17573" class="Symbol">=</a> <a id="17575" href="Data.Nat.Binary.Properties.html#16932" class="Function">≤-isTotalOrder</a>
+  <a id="17558" class="Symbol">{</a> <a id="17560" href="Relation.Binary.Bundles.html#5138" class="Field">isTotalOrder</a> <a id="17573" class="Symbol">=</a> <a id="17575" href="Data.Nat.Binary.Properties.html#16932" class="Function">≤-isTotalOrder</a>
   <a id="17592" class="Symbol">}</a>
 
-<a id="≤-decTotalOrder"></a><a id="17595" href="Data.Nat.Binary.Properties.html#17595" class="Function">≤-decTotalOrder</a> <a id="17611" class="Symbol">:</a> <a id="17613" href="Relation.Binary.Bundles.html#4873" class="Record">DecTotalOrder</a> <a id="17627" href="Level.html#512" class="Function">0ℓ</a> <a id="17630" href="Level.html#512" class="Function">0ℓ</a> <a id="17633" href="Level.html#512" class="Function">0ℓ</a>
+<a id="≤-decTotalOrder"></a><a id="17595" href="Data.Nat.Binary.Properties.html#17595" class="Function">≤-decTotalOrder</a> <a id="17611" class="Symbol">:</a> <a id="17613" href="Relation.Binary.Bundles.html#5392" class="Record">DecTotalOrder</a> <a id="17627" href="Level.html#512" class="Function">0ℓ</a> <a id="17630" href="Level.html#512" class="Function">0ℓ</a> <a id="17633" href="Level.html#512" class="Function">0ℓ</a>
 <a id="17636" href="Data.Nat.Binary.Properties.html#17595" class="Function">≤-decTotalOrder</a> <a id="17652" class="Symbol">=</a> <a id="17654" class="Keyword">record</a>
-  <a id="17663" class="Symbol">{</a> <a id="17665" href="Relation.Binary.Bundles.html#5059" class="Field">isDecTotalOrder</a> <a id="17681" class="Symbol">=</a> <a id="17683" href="Data.Nat.Binary.Properties.html#17066" class="Function">≤-isDecTotalOrder</a>
+  <a id="17663" class="Symbol">{</a> <a id="17665" href="Relation.Binary.Bundles.html#5578" class="Field">isDecTotalOrder</a> <a id="17681" class="Symbol">=</a> <a id="17683" href="Data.Nat.Binary.Properties.html#17066" class="Function">≤-isDecTotalOrder</a>
   <a id="17703" class="Symbol">}</a>
 
 <a id="17706" class="Comment">------------------------------------------------------------------------------</a>
