@@ -33,12 +33,9 @@ items fp = do
     ls <- liftIO (lines <$> readFile fp)
     pure (paragraphs ls)
 
-mkHIGHLIGHTS :: ChangeM HIGHLIGHTS
-mkHIGHLIGHTS = items highlightsFP
-
-mkBUGFIXES :: ChangeM BUGFIXES
-mkBUGFIXES = do
-  fps <- inspect bugfixesFP
+oneOrTheOther :: FilePath -> ChangeM (OneOrTheOther String)
+oneOrTheOther fp = do
+  fps <- inspect fp
   bfs <- forM fps $ \ fp -> case takeFileName fp of
     "others" -> do
       ls <- liftIO (lines <$> readFile fp)
@@ -48,7 +45,16 @@ mkBUGFIXES = do
       pure (ls, [])
   let (rs, iss) = unzip bfs
   let raw = filter (not . null) rs
-  pure $ BUGFIXES (intercalate [""] raw) (concat iss)
+  pure $ OneOrTheOther (intercalate [""] raw) (concat iss)
+
+mkHIGHLIGHTS :: ChangeM HIGHLIGHTS
+mkHIGHLIGHTS = items highlightsFP
+
+mkBUGFIXES :: ChangeM BUGFIXES
+mkBUGFIXES = oneOrTheOther bugfixesFP
+
+mkBREAKING :: ChangeM BREAKING
+mkBREAKING = oneOrTheOther breakingFP
 
 mkDEPRECATED :: ChangeM DEPRECATED
 mkDEPRECATED = fmap ($ []) <$> do
@@ -58,7 +64,7 @@ mkDEPRECATED = fmap ($ []) <$> do
     pqs <- forM ls $ \ l -> case words l of
       [p,q] -> pure (p,q)
       _     -> error $ unlines [ "ERROR: invalid line"
-                               , l
+                               , "  " ++ l
                                , "in file " ++ fp
                                ]
     pure $ Map.singleton (takeFileName fp) (pqs ++)
@@ -76,6 +82,7 @@ mkCHANGELOG :: ChangeM CHANGELOG
 mkCHANGELOG = CHANGELOG
           <$> mkHIGHLIGHTS
           <*> mkBUGFIXES
+          <*> mkBREAKING
           <*> mkDEPRECATED
           <*> mkNEW
 

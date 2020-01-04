@@ -6,6 +6,9 @@ changesFP = "changes"
 bugfixesFP :: FilePath
 bugfixesFP = "bugfixes"
 
+breakingFP :: FilePath
+breakingFP = "breaking"
+
 highlightsFP :: FilePath
 highlightsFP = "highlights"
 

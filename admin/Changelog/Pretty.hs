@@ -27,11 +27,23 @@ prHIGHLIGHTS h = preamble ++ prItems h where
     , ""
     ]
 
+prOneOrTheOther :: OneOrTheOther String -> [String]
+prOneOrTheOther (OneOrTheOther raw others) = concat
+  [ unlessNull ("":)          [] raw
+  , unlessNull (("":) . rest) [] others
+  ] where
+
+  rest o = unlessNull (const (banner ++)) id raw $ prItems o
+
+  banner =
+    [ "#### Other"
+    , ""
+    ]
+
 prBUGFIXES :: BUGFIXES -> [String]
-prBUGFIXES (BUGFIXES raw others) = concat
+prBUGFIXES b = concat
   [ preamble
-  , unlessNull ("":) raw
-  , unlessNull rest others
+  , prOneOrTheOther b
   ] where
 
   preamble =
@@ -40,11 +52,17 @@ prBUGFIXES (BUGFIXES raw others) = concat
     , "---------"
     ]
 
-  rest o =
+prBREAKING :: BREAKING -> [String]
+prBREAKING b = concat
+  [ preamble
+  , prOneOrTheOther b
+  ] where
+
+  preamble =
     [ ""
-    , "#### Others"
-    , ""
-    ] ++ prItems o
+    , "Non-backwards compatible changes"
+    , "---------"
+    ]
 
 prNEW :: NEW -> [String]
 prNEW n = (preamble ++) $ intercalate [""] $ do
@@ -81,13 +99,14 @@ prDEPRECATED d = (preamble ++) $ intercalate [""] $ do
     , ""
     ]
 
-unlessNull :: (Monoid b, Foldable t) => (t a -> b) -> t a -> b
-unlessNull f t = if null t then mempty else f t
+unlessNull :: Foldable t => (t a -> b) -> b -> t a -> b
+unlessNull f b t = if null t then b else f t
 
 pretty :: CHANGELOG -> [String]
 pretty c = concat
-  [ unlessNull prHIGHLIGHTS (highlights c)
-  , unlessNull prBUGFIXES   (bugfixes c)
-  , unlessNull prDEPRECATED (deprecated c)
-  , unlessNull prNEW        (new c)
+  [ unlessNull prHIGHLIGHTS [] (highlights c)
+  , unlessNull prBUGFIXES   [] (bugfixes c)
+  , unlessNull prBREAKING   [] (breaking c)
+  , unlessNull prDEPRECATED [] (deprecated c)
+  , unlessNull prNEW        [] (new c)
   ]

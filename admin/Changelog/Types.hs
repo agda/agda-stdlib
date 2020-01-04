@@ -9,14 +9,17 @@ import Data.Map.Strict (Map)
 import Changelog.Configuration
 import Changelog.Utils
 
-type HIGHLIGHTS = [[String]]
-data BUGFIXES' a = BUGFIXES
-  { raw    :: [a]
-  , others :: [[a]]
+data OneOrTheOther a = OneOrTheOther
+  { one      :: [a]
+  , theOther :: [[a]]
   } deriving (Foldable)
-type BUGFIXES = BUGFIXES' String
-  -- ^ Markdown for major ones + other items
+-- ^ Foldable
 
+type HIGHLIGHTS = [[String]]
+type BUGFIXES   = OneOrTheOther String
+  -- ^ Markdown for major ones + other items
+type BREAKING   = OneOrTheOther String
+  -- ^ Markdown for major ones + other items
 type DEPRECATED = Map String [(String,String)]
   -- ^ map of module name * renamings
 type NEW = Map String [String]
@@ -25,6 +28,7 @@ type NEW = Map String [String]
 data CHANGELOG = CHANGELOG
   { highlights :: HIGHLIGHTS
   , bugfixes   :: BUGFIXES
+  , breaking   :: BREAKING
   , deprecated :: DEPRECATED
   , new        :: NEW
   }
