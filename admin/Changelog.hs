@@ -20,6 +20,9 @@ import Debug.Trace
 changesFP :: FilePath
 changesFP = "changes"
 
+bugfixesFP :: FilePath
+bugfixesFP = "bugfixes"
+
 highlightsFP :: FilePath
 highlightsFP = "highlights"
 
@@ -30,6 +33,7 @@ deprecatedFP :: FilePath
 deprecatedFP = "deprecated"
 
 type HIGHLIGHTS = [[String]]
+type BUGFIXES = [[String]]
   -- Items
 
 type DEPRECATED = Map String [(String,String)]
@@ -39,6 +43,7 @@ type NEW = Map String [String]
 
 data CHANGELOG = CHANGELOG
   { highlights :: HIGHLIGHTS
+  , bugfixes   :: BUGFIXES
   , deprecated :: DEPRECATED
   , new        :: NEW
   }
@@ -52,9 +57,6 @@ newtype ChangeM a = ChangeM { runChangeM :: StateT STATE IO a }
 
 evalChangeM :: ChangeM a -> STATE -> IO a
 evalChangeM = evalStateT . runChangeM
-
-initCHANGELOG :: CHANGELOG
-initCHANGELOG = CHANGELOG [] Map.empty Map.empty
 
 getFilePaths :: (FilePath -> IO Bool) -> FilePath -> IO [FilePath]
 getFilePaths p fp = do
@@ -95,13 +97,19 @@ paragraphs xs = case break (all isSpace) xs of
   (p , []  ) -> [p]
   (p , _:ps) -> p : paragraphs ps
 
-mkHIGHLIGHTS :: ChangeM HIGHLIGHTS
-mkHIGHLIGHTS = do
-  fps <- map (</> highlightsFP) . pullRequests <$> get
+items :: FilePath -> ChangeM [[String]]
+items fp = do
+  fps <- map (</> fp) . pullRequests <$> get
   fps <- liftIO $ filterM doesFileExist fps
   fmap concat $ forM fps $ \ fp -> do
     ls <- liftIO (lines <$> readFile fp)
     pure (paragraphs ls)
+
+mkHIGHLIGHTS :: ChangeM HIGHLIGHTS
+mkHIGHLIGHTS = items highlightsFP
+
+mkBUGFIXES :: ChangeM BUGFIXES
+mkBUGFIXES = items bugfixesFP
 
 mkDEPRECATED :: ChangeM DEPRECATED
 mkDEPRECATED = fmap ($ []) <$> do
@@ -128,6 +136,7 @@ mkNEW = fmap ($ []) <$> do
 mkCHANGELOG :: ChangeM CHANGELOG
 mkCHANGELOG = CHANGELOG
           <$> mkHIGHLIGHTS
+          <*> mkBUGFIXES
           <*> mkDEPRECATED
           <*> mkNEW
 
@@ -138,17 +147,28 @@ prAGDA ls = concat
   , [ "  ```" ]
   ]
 
-prHIGHLIGHTS :: HIGHLIGHTS -> [String]
-prHIGHLIGHTS h = (preamble ++) $ intercalate [""] $ do
-  ls <- h
+prItems :: [[String]] -> [String]
+prItems is = intercalate [""] $ do
+  ls <- is
   pure $ zipWith (++) ("* " : repeat "  ") ls
 
-  where
+prHIGHLIGHTS :: HIGHLIGHTS -> [String]
+prHIGHLIGHTS h = preamble ++ prItems h where
 
   preamble =
     [ ""
     , "Highlights"
     , "----------"
+    , ""
+    ]
+
+prBUGFIXES :: BUGFIXES -> [String]
+prBUGFIXES h = preamble ++ prItems h where
+
+  preamble =
+    [ ""
+    , "Bug fixes"
+    , "---------"
     , ""
     ]
 
@@ -193,8 +213,9 @@ unlessNull f t = if null t then [] else f t
 pretty :: CHANGELOG -> [String]
 pretty c = concat
   [ unlessNull prHIGHLIGHTS (highlights c)
+  , unlessNull prBUGFIXES   (bugfixes c)
   , unlessNull prDEPRECATED (deprecated c)
-  , unlessNull prNEW (new c)
+  , unlessNull prNEW        (new c)
   ]
 
 main :: IO ()
