@@ -61,7 +61,7 @@ prBREAKING b = concat
   preamble =
     [ ""
     , "Non-backwards compatible changes"
-    , "---------"
+    , "--------------------------------"
     ]
 
 prNEW :: NEW -> [String]
