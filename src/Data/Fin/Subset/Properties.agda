@@ -448,9 +448,8 @@ module _ (n : ℕ) where
 
   ∩-isCommutativeMonoid : IsCommutativeMonoid _∩_ ⊤
   ∩-isCommutativeMonoid = record
-    { isSemigroup = ∩-isSemigroup
-    ; identityˡ   = ∩-identityˡ
-    ; comm        = ∩-comm
+    { isMonoid = ∩-isMonoid
+    ; comm     = ∩-comm
     }
 
   ∩-commutativeMonoid : CommutativeMonoid _ _
@@ -629,9 +628,8 @@ module _ (n : ℕ) where
 
   ∪-isCommutativeMonoid : IsCommutativeMonoid _∪_ ⊥
   ∪-isCommutativeMonoid = record
-    { isSemigroup = ∪-isSemigroup
-    ; identityˡ   = ∪-identityˡ
-    ; comm        = ∪-comm
+    { isMonoid = ∪-isMonoid
+    ; comm     = ∪-comm
     }
 
   ∪-commutativeMonoid : CommutativeMonoid _ _
