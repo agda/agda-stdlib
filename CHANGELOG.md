@@ -271,6 +271,7 @@ Other major additions
   Data.Product.Relation.Unary.All
   Data.Refinement
   Data.Refinement.Relation.Unary.All
+  Data.List.Relation.Unary.Sorted
   Data.Tree.Binary
   Data.Tree.Binary.Properties
   Data.Tree.Binary.Relation.Unary.All
