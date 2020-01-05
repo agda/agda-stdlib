@@ -1,3 +1,6 @@
+padLeft  : Char → ℕ → String → String
+padRight : Char → ℕ → String → String
+padBoth  : Char → Char → ℕ → String → String
 
 data Alignment : Set where Left Center Right : Alignment
 fromAlignment  : Alignment → ℕ → String → String

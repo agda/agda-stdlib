@@ -1,3 +1,0 @@
-padLeft : Char → ℕ → String → String
-padRight : Char → ℕ → String → String
-padBoth : Char → Char → ℕ → String → String

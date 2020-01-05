@@ -1,19 +1,21 @@
 module Changelog.Configuration where
 
+import System.FilePath
+
 changesFP :: FilePath
 changesFP = "changes"
 
 bugfixesFP :: FilePath
-bugfixesFP = "bugfixes"
+bugfixesFP = changesFP </> "bugfixes"
 
 breakingFP :: FilePath
-breakingFP = "breaking"
+breakingFP = changesFP </> "breaking"
 
 highlightsFP :: FilePath
-highlightsFP = "highlights"
+highlightsFP = changesFP </> "highlights"
 
 newFP :: FilePath
-newFP = "new"
+newFP = changesFP </> "new"
 
 deprecatedFP :: FilePath
-deprecatedFP = "deprecated"
+deprecatedFP = changesFP </> "deprecated"

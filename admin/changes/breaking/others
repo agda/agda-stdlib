@@ -4,3 +4,10 @@ The decision has therefore been taken to roll-back these additions until
 irrelevance is more stable. In particular it has been removed from
 `_%_`, `_/_`, `_div_`, `_mod_` in `Data.Nat.DivMod` and from `fromℕ≤`,
 `inject≤` in `Data.Fin.Base`.
+The proofs `isPreorder` and `preorder` have been moved from the `Setoid`
+record to the module `Relation.Binary.Properties.Setoid`.
+
+The function `normalize` in `Data.Rational.Base` has been reimplemented
+in terms of a direct division of the numerator and denominator by their
+GCD. Although less elegant than the previous implementation, it's
+reduction behaviour is much easier to reason about.

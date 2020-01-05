@@ -33,18 +33,8 @@ data CHANGELOG = CHANGELOG
   , new        :: NEW
   }
 
-data STATE = STATE
-  { pullRequests :: [String]  -- one directory per PR
-  }
+newtype ChangeM a = ChangeM { runChangeM :: IO a }
+  deriving (Functor, Applicative, Monad, MonadIO)
 
-newtype ChangeM a = ChangeM { runChangeM :: StateT STATE IO a }
-  deriving (Functor, Applicative, Monad, MonadState STATE, MonadIO)
-
-evalChangeM :: ChangeM a -> STATE -> IO a
-evalChangeM = evalStateT . runChangeM
-
-initSTATE :: IO STATE
-initSTATE = do
-  -- one directory per PR
-  dirs <- getDirectories changesFP
-  pure $ STATE dirs
+evalChangeM :: ChangeM a -> IO a
+evalChangeM = runChangeM

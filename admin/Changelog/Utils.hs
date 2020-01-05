@@ -7,7 +7,7 @@ import System.FilePath
 
 getFilePaths :: (FilePath -> IO Bool) -> FilePath -> IO [FilePath]
 getFilePaths p fp = do
-  b  <- doesDirectoryExist fp
+  b <- doesDirectoryExist fp
   if not b then pure [] else do
     fps <- map (fp </>) <$> listDirectory fp
     filterM p fps
