@@ -69,6 +69,12 @@ map-compose : {g : B → C} {f : A → B} → map (g ∘ f) ≗ map g ∘ map f
 map-compose (just x) = refl
 map-compose nothing  = refl
 
+map-nothing : ∀ {f : A → B} {ma} → ma ≡ nothing → map f ma ≡ nothing
+map-nothing refl = refl
+
+map-just : ∀ {f : A → B} {ma a} → ma ≡ just a → map f ma ≡ just (f a)
+map-just refl = refl
+
 ------------------------------------------------------------------------
 -- maybe
 
