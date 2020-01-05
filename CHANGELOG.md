@@ -579,6 +579,17 @@ Other minor additions
   TotalNonStrict _≈_ _<_ = Semiconnex _≈_ _<_ _<_
   ```
 
+* Added new proofs to `Data.List.Relation.Binary.Permutation.Propositional`
+
+  ```agda
+  x∷xs++ys↭xs++x∷ys : x ∷ xs ++ ys ↭ xs ++ x ∷ ys
+  xs++ys↭ys++xs : xs ++ ys ↭ ys ++ xs
+  ++-congˡ-↭ : LeftCongruent _↭_ _++_
+  ++-congʳ-↭ : RightCongruent _↭_ _++_
+  ↭-resp-all : xs ↭ ys → All P xs → All P ys
+  ↭-resp-any : xs ↭ ys → Any P xs → Any P ys
+  ```
+
 * Added new functions to `Data.List.Relation.Binary.Permutation.Setoid`:
   ```agda
   ↭-prep : xs ↭ ys → x ∷ xs ↭ x ∷ ys
@@ -586,6 +597,7 @@ Other minor additions
 
   steps  : xs ↭ ys → ℕ
   ```
+
 
 * Added new combinators to `Data.List.Relation.Binary.Permutation.Setoid.PermutationReasoning`:
   ```agda
