@@ -423,6 +423,13 @@ Other minor additions
   ≉-resp₂ : _≉_ Respects₂ _≈_
   ```
 
+* Added new proofs to `Relation.Binary.Construct.Union`:
+  ```agda
+  respˡ : L Respectsˡ ≈ → R Respectsˡ ≈ → (L ∪ R) Respectsˡ ≈
+  respʳ : L Respectsʳ ≈ → R Respectsʳ ≈ → (L ∪ R) Respectsʳ ≈
+  resp₂ : L Respects₂ ≈ → R Respects₂ ≈ → (L ∪ R) Respects₂ ≈
+  ```
+
 * Added new proofs to `Data.Rational.Properties`:
   ```agda
   ↥-* : ↥ (p * q) ℤ.* *-nf p q ≡ ↥ p ℤ.* ↥ q
