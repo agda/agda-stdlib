@@ -412,10 +412,16 @@ record IsCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
     ; *-comm = *-comm
     }
 
+  *-isCommutativeSemigroup : IsCommutativeSemigroup *
+  *-isCommutativeSemigroup = record
+    { isSemigroup = *-isSemigroup
+    ; comm        = *-comm
+    }
+  
   *-isCommutativeMonoid : IsCommutativeMonoid * 1#
   *-isCommutativeMonoid = record
     { isMonoid = *-isMonoid
-    ; comm = *-comm
+    ; comm     = *-comm
     }
 
 

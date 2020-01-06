@@ -81,49 +81,6 @@ record AlmostCommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
   refl : ∀ {x} → x ≈ x
   refl = IsAlmostCommutativeRing.refl isAlmostCommutativeRing
 
-flipped : ∀ {c ℓ} → AlmostCommutativeRing c ℓ → AlmostCommutativeRing c ℓ
-flipped rng = record
-  { Carrier = Carrier
-  ; _≈_ = _≈_
-  ; _+_ = flip _+_
-  ; _*_ = flip _*_
-  ; -_ = -_
-  ; 0# = 0#
-  ; 0≟_ = 0≟_
-  ; 1# = 1#
-  ; isAlmostCommutativeRing = record
-    { -‿cong = -‿cong
-    ; -‿*-distribˡ = λ x y → *-comm y (- x) ⟨ trans ⟩ (-‿*-distribˡ x y ⟨ trans ⟩ -‿cong (*-comm x y))
-    ; -‿+-comm = λ x y → -‿+-comm y x
-    ; isCommutativeSemiring = record
-      { +-isCommutativeMonoid = record
-        { isSemigroup = record
-          { isMagma = record
-            { isEquivalence = isEquivalence
-            ; ∙-cong = flip (+-cong )
-            }
-          ; assoc = λ x y z → sym (+-assoc z y x)
-          }
-        ; identityˡ = +-identityʳ
-        ; comm = λ x y → +-comm y x
-        }
-      ; *-isCommutativeMonoid = record
-        { isSemigroup = record
-          { isMagma = record
-            { isEquivalence = isEquivalence
-            ; ∙-cong = flip (*-cong )
-            }
-          ; assoc = λ x y z → sym (*-assoc z y x)
-          }
-          ; identityˡ = *-identityʳ
-          ; comm = λ x y → *-comm y x
-        }
-      ; distribʳ = λ x y z → distribˡ _ _ _
-      ; zeroˡ = zeroʳ
-      }
-    }
-  } where open AlmostCommutativeRing rng
-
 record _-Raw-AlmostCommutative⟶_
          {r₁ r₂ r₃ r₄}
          (From : RawRing r₁ r₂)

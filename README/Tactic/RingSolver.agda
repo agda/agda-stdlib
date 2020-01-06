@@ -4,7 +4,7 @@
 -- Examples showing how the reflective ring solver may be used.
 ------------------------------------------------------------------------
 
-module README.Tactics.RingSolver where
+module README.Tactic.RingSolver where
 
 -- You can ignore this bit! We're just overloading the literals Agda uses for
 -- numbers. This bit isn't necessary if you're just using Nats, or if you
@@ -34,9 +34,9 @@ open import Relation.Binary.PropositionalEquality as ≡ using (subst; _≡_)
 open import Data.Bool as Bool using (Bool; true; false; if_then_else_)
 open import Data.Unit using (⊤; tt)
 
-open import Tactics.RingSolver.Core.AlmostCommutativeRing using (AlmostCommutativeRing)
-open import Tactics.RingSolver.Instances
-open import Tactics.RingSolver
+open import Tactic.RingSolver.Core.AlmostCommutativeRing using (AlmostCommutativeRing)
+open import Tactic.RingSolver.Instances
+open import Tactic.RingSolver
 
 ------------------------------------------------------------------------------
 -- Integer examples
