@@ -202,6 +202,13 @@ record IsDecTotalOrder (_≤_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
   open IsTotalOrder isTotalOrder public
     hiding (module Eq)
 
+  isDecPartialOrder : IsDecPartialOrder _≤_
+  isDecPartialOrder = record
+    { isPartialOrder = isPartialOrder
+    ; _≟_            = _≟_
+    ; _≤?_           = _≤?_
+    }
+
   module Eq where
 
     isDecEquivalence : IsDecEquivalence

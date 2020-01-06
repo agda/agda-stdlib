@@ -664,9 +664,8 @@ distribʳ-⊖-+-neg a b c = begin
 
 +-0-isCommutativeMonoid : IsCommutativeMonoid _+_ +0
 +-0-isCommutativeMonoid = record
-  { isSemigroup = +-isSemigroup
-  ; identityˡ   = +-identityˡ
-  ; comm        = +-comm
+  { isMonoid = +-0-isMonoid
+  ; comm     = +-comm
   }
 
 +-0-isGroup : IsGroup _+_ +0 (-_)
@@ -946,6 +945,18 @@ suc-mono (-≤+ {m}) = 0⊖m≤+ m
 suc-mono (-≤- n≤m) = ⊖-monoʳ-≥-≤ zero n≤m
 suc-mono (+≤+ m≤n) = +≤+ (s≤s m≤n)
 
+m+1≤n⇒m<n : ∀ {m n} → sucℤ m ≤ n → m < n
+m+1≤n⇒m<n {+ m}           {+ _}       (+≤+ m≤n) = +<+ m≤n
+m+1≤n⇒m<n { -[1+ 0 ]}     {+ n}       p         = -<+
+m+1≤n⇒m<n { -[1+ suc m ]} {+ n}       -≤+       = -<+
+m+1≤n⇒m<n { -[1+ suc m ]} { -[1+ n ]} (-≤- n≤m) = -<- (ℕ.s≤s n≤m)
+
+m<n⇒m+1≤n : ∀ {m n} → m < n → sucℤ m ≤ n
+m<n⇒m+1≤n {+ _}           {+ _}       (+<+ m<n) = +≤+ m<n
+m<n⇒m+1≤n { -[1+ 0 ]}     {+ _}       -<+       = +≤+ z≤n
+m<n⇒m+1≤n { -[1+ suc m ]} { -[1+ _ ]} (-<- n<m) = -≤- (ℕ.≤-pred n<m)
+m<n⇒m+1≤n { -[1+ suc m ]} {+ _}       -<+       = -≤+
+
 ------------------------------------------------------------------------
 -- Properties of pred
 ------------------------------------------------------------------------
@@ -1196,17 +1207,24 @@ private
 
 *-1-isCommutativeMonoid : IsCommutativeMonoid _*_ (+ 1)
 *-1-isCommutativeMonoid = record
-  { isSemigroup = *-isSemigroup
-  ; identityˡ   = *-identityˡ
-  ; comm        = *-comm
+  { isMonoid = *-1-isMonoid
+  ; comm     = *-comm
+  }
+
++-*-isSemiring : IsSemiring _+_ _*_ +0 (+ 1)
++-*-isSemiring = record
+  { isSemiringWithoutAnnihilatingZero = record
+    { +-isCommutativeMonoid = +-0-isCommutativeMonoid
+    ; *-isMonoid = *-1-isMonoid
+    ; distrib = *-distrib-+
+    }
+  ; zero = *-zero
   }
 
 +-*-isCommutativeSemiring : IsCommutativeSemiring _+_ _*_ +0 (+ 1)
 +-*-isCommutativeSemiring = record
-  { +-isCommutativeMonoid = +-0-isCommutativeMonoid
-  ; *-isCommutativeMonoid = *-1-isCommutativeMonoid
-  ; distribʳ              = *-distribʳ-+
-  ; zeroˡ                 = *-zeroˡ
+  { isSemiring = +-*-isSemiring
+  ; *-comm = *-comm
   }
 
 +-*-isRing : IsRing _+_ _*_ -_ +0 (+ 1)
@@ -1214,6 +1232,7 @@ private
   { +-isAbelianGroup = +-isAbelianGroup
   ; *-isMonoid       = *-1-isMonoid
   ; distrib          = *-distrib-+
+  ; zero             = *-zero
   }
 
 +-*-isCommutativeRing : IsCommutativeRing _+_ _*_ -_ +0 (+ 1)
@@ -1248,6 +1267,11 @@ private
 *-1-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
 *-1-commutativeMonoid = record
   { isCommutativeMonoid = *-1-isCommutativeMonoid
+  }
+
++-*-semiring : Semiring 0ℓ 0ℓ
++-*-semiring = record
+  { isSemiring = +-*-isSemiring
   }
 
 +-*-ring : Ring 0ℓ 0ℓ
