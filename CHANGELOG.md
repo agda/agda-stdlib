@@ -9,6 +9,9 @@ Highlights
 Bug-fixes
 ---------
 
+* The incorrectly named proof `p⊆q⇒∣p∣<∣q∣ : p ⊆ q → ∣ p ∣ ≤ ∣ q ∣` in
+  `Data.Fin.Subset.Properties` now has the correct name `p⊆q⇒∣p∣≤∣q∣`.
+
 * Changed the definition of `_⊓_` for `Codata.Conat`; it was mistakenly using
   `_⊔_` in a recursive call.
 
@@ -321,12 +324,25 @@ Other minor additions
 
 * Added new proofs to `Data.Fin.Subset.Properties`:
   ```agda
-  s⊆s : p ⊆ q → s ∷ p ⊆ s ∷ q
+  s⊆s           : p ⊆ q → s ∷ p ⊆ s ∷ q
+  ∣p∣≡n⇒p≡⊤     : ∣ p ∣ ≡ n → p ≡ ⊤
 
-  x∈s⇒x∉∁s : x ∈ s → x ∉ ∁ s
-  x∈∁s⇒x∉s : x ∈ ∁ s → x ∉ s
-  x∉∁s⇒x∈s : x ∉ ∁ s → x ∈ s
-  x∉s⇒x∈∁s : x ∉ s → x ∈ ∁ s
+  p∪∁p≡⊤        : p ∪ ∁ p ≡ ⊤
+  ∣∁p∣≡n∸∣p∣    : ∣ ∁ p ∣ ≡ n ∸ ∣ p ∣
+  x∈p⇒x∉∁p      : x ∈ p → x ∉ ∁ p
+  x∈∁p⇒x∉p      : x ∈ ∁ p → x ∉ p
+  x∉∁p⇒x∈p      : x ∉ ∁ p → x ∈ p
+  x∉p⇒x∈∁p      : x ∉ p → x ∈ ∁ p
+
+  x≢y⇒x∉⁅y⁆     : x ≢ y → x ∉ ⁅ y ⁆
+  x∉⁅y⁆⇒x≢y     : x ∉ ⁅ y ⁆ → x ≢ y
+
+  ∣p∩q∣≤∣p∣     : ∣ p ∩ q ∣ ≤ ∣ p ∣
+  ∣p∩q∣≤∣q∣     : ∣ p ∩ q ∣ ≤ ∣ q ∣
+  ∣p∩q∣≤∣p∣⊓∣q∣ : ∣ p ∩ q ∣ ≤ ∣ p ∣ ⊓ ∣ q ∣
+  ∣p∣≤∣p∪q∣     : ∣ p ∣ ≤ ∣ p ∪ q ∣
+  ∣q∣≤∣p∪q∣     : ∣ q ∣ ≤ ∣ p ∪ q ∣
+  ∣p∣⊔∣q∣≤∣p∪q∣ : ∣ p ∣ ⊔ ∣ q ∣ ≤ ∣ p ∪ q ∣
   ```
 
 * Added new proofs to `Data.Maybe.Properties`:
@@ -386,6 +402,14 @@ Other minor additions
   ↭-swap : xs ↭ ys → x ∷ y ∷ xs ↭ y ∷ x ∷ ys
   ```
 
+* Added new proofs to `Data.Nat.Properties`:
+  ```agda
+  ⊔-pres-≤m : n ≤ m → o ≤ m → n ⊔ o ≤ m
+  ⊔-pres-<m : n < m → o < m → n ⊔ o < m
+  ⊓-pres-m≤ : m ≤ n → m ≤ o → m ≤ n ⊓ o
+  ⊓-pres-m< : m < n → m < o → m < n ⊓ o
+  ```
+
 * Added new proofs to `Data.String.Unsafe`:
   ```agda
   toList-++        : toList (s ++ t) ≡ toList s ++ toList t
@@ -394,7 +418,7 @@ Other minor additions
   ```
 
 * Added new functions to `Data.Vec.Base`:
-  ```
+  ```agda
   length    : Vec A n → ℕ
   transpose : Vec (Vec A n) m → Vec (Vec A m) n
   ```
