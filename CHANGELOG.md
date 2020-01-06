@@ -457,3 +457,13 @@ Other minor additions
   *-1-monoid              : Monoid 0ℓ 0ℓ
   *-1-commutativeMonoid   : CommutativeMonoid 0ℓ 0ℓ
   ```
+
+* Added new proofs to `Data.Rational.Unnormalised.Properties`:
+  ```agda
+  +-inverseˡ  : LeftInverse _≃_ 0ℚᵘ -_ _+_
+  +-inverseʳ  : RightInverse _≃_ 0ℚᵘ -_ _+_
+  +-inverse   : Inverse _≃_ 0ℚᵘ -_ _+_
+  +-cong⁻¹    : Congruent₁ _≃_ (-_)
+  +-0-isGroup : IsGroup _≃_ _+_ 0ℚᵘ (-_)
+  +-0-group : Group 0ℓ 0ℓ
+  ```
