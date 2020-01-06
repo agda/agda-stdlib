@@ -303,6 +303,11 @@ Other minor additions
   not-injective : not x ≡ not y → x ≡ y
   ```
 
+* Added new properties to `Data.Fin.Properties`:
+  ```agda
+  lift-injective : (∀ {x y} → f x ≡ f y → x ≡ y) → ∀ k {x y} → lift k f x ≡ lift k f y → x ≡ y
+  ```
+
 * Added new function to `Data.Difference.List`:
   ```agda
   _∷ʳ_ : DiffList A → A → DiffList A
