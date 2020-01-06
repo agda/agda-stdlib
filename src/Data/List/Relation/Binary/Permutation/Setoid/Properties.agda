@@ -192,9 +192,8 @@ shift {v} {w} v≈w (x ∷ xs) ys = begin
 
 ++-isCommutativeMonoid : IsCommutativeMonoid _↭_ _++_ []
 ++-isCommutativeMonoid = record
-  { isSemigroup = ++-isSemigroup
-  ; identityˡ   = ++-identityˡ
-  ; comm        = ++-comm
+  { isMonoid = ++-isMonoid
+  ; comm     = ++-comm
   }
 
 -- Bundles
