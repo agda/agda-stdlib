@@ -1,8 +1,14 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Homomorphism proofs for exponentiation over polynomials
+------------------------------------------------------------------------
+
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra.Construct.Polynomial.Parameters
+open import Tactic.RingSolver.Core.Polynomial.Parameters
 
-module Algebra.Construct.Polynomial.Homomorphism.Exponentiation
+module Tactic.RingSolver.Core.Polynomial.Homomorphism.Exponentiation
   {r₁ r₂ r₃ r₄}
   (homo : Homomorphism r₁ r₂ r₃ r₄)
   where
@@ -18,12 +24,12 @@ import Data.Nat.Properties as ℕ-Prop
 import Relation.Binary.PropositionalEquality as ≡
 
 open Homomorphism homo
-open import Algebra.Construct.Polynomial.Homomorphism.Lemmas homo
-open import Algebra.Construct.Polynomial.Base from
-open import Algebra.Construct.Polynomial.Reasoning to
-open import Algebra.Construct.Polynomial.Homomorphism.Semantics homo
-open import Algebra.Construct.Polynomial.Homomorphism.Multiplication homo
-open import Algebra.Construct.Polynomial.Semantics homo
+open import Tactic.RingSolver.Core.Polynomial.Homomorphism.Lemmas homo
+open import Tactic.RingSolver.Core.Polynomial.Base from
+open import Tactic.RingSolver.Core.Polynomial.Reasoning to
+open import Tactic.RingSolver.Core.Polynomial.Homomorphism.Semantics homo
+open import Tactic.RingSolver.Core.Polynomial.Homomorphism.Multiplication homo
+open import Tactic.RingSolver.Core.Polynomial.Semantics homo
 
 import Algebra.Operations.Ring rawRing as RawPow
 import Algebra.Operations.Ring (RawCoeff.rawRing from) as CoPow

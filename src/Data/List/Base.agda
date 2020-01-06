@@ -115,11 +115,6 @@ foldr : (A → B → B) → B → List A → B
 foldr c n []       = n
 foldr c n (x ∷ xs) = c x (foldr c n xs)
 
--- A paramorphism.
-para : (A → List A → B → B) → B → List A → B
-para f b [] = b
-para f b (x ∷ xs) = f x xs (para f b xs)
-
 foldl : (A → B → A) → A → List B → A
 foldl c n []       = n
 foldl c n (x ∷ xs) = foldl c (c n x) xs
@@ -154,6 +149,10 @@ product = foldr _*_ 1
 
 length : List A → ℕ
 length = foldr (const suc) 0
+
+para : (A → List A → B → B) → B → List A → B
+para f b []       = b
+para f b (x ∷ xs) = f x xs (para f b xs)
 
 ------------------------------------------------------------------------
 -- Operations for constructing lists

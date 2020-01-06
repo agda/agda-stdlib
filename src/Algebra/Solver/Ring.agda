@@ -541,7 +541,7 @@ correct (:- p) ρ = begin
   - ⟦ p ⟧ ρ              ∎
 
 ------------------------------------------------------------------------
--- "Tactics"
+-- "Tactic.
 
 open Reflection setoid var ⟦_⟧ ⟦_⟧↓ correct public
   using (prove; solve) renaming (_⊜_ to _:=_)

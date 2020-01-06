@@ -1,8 +1,14 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Homomorphism proofs for negation over polynomials
+------------------------------------------------------------------------
+
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra.Construct.Polynomial.Parameters
+open import Tactic.RingSolver.Core.Polynomial.Parameters
 
-module Algebra.Construct.Polynomial.Homomorphism.Negation
+module Tactic.RingSolver.Core.Polynomial.Homomorphism.Negation
   {r₁ r₂ r₃ r₄}
   (homo : Homomorphism r₁ r₂ r₃ r₄)
   where
@@ -16,10 +22,10 @@ open import Data.Nat using (_<′_)
 open import Function
 
 open Homomorphism homo
-open import Algebra.Construct.Polynomial.Homomorphism.Lemmas homo
-open import Algebra.Construct.Polynomial.Reasoning to
-open import Algebra.Construct.Polynomial.Base from
-open import Algebra.Construct.Polynomial.Semantics homo
+open import Tactic.RingSolver.Core.Polynomial.Homomorphism.Lemmas homo
+open import Tactic.RingSolver.Core.Polynomial.Reasoning to
+open import Tactic.RingSolver.Core.Polynomial.Base from
+open import Tactic.RingSolver.Core.Polynomial.Semantics homo
 
 ⊟-step-hom : ∀ {n} (a : Acc _<′_ n) → (xs : Poly n) → ∀ ρ → ⟦ ⊟-step a xs ⟧ ρ ≈ - (⟦ xs ⟧ ρ)
 ⊟-step-hom (acc _ ) (Κ x  ⊐ i≤n) ρ = -‿homo x

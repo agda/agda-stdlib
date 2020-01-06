@@ -1,18 +1,16 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Macro that uses reflection to obtain the input of the solver, hence
--- avoiding the need to spell out the equation manually.
+-- A solver that uses reflection to automatically obtain and solve
+-- equations over rings.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
-module Tactics.RingSolver.Core.Reflection where
+module Tactic.RingSolver where
 
 open import Agda.Builtin.Reflection
 open import Agda.Builtin.Nat    using (_<_)
-
-open import Data.NatSet
 
 open import Algebra
 open import Data.Fin   as Fin   using (Fin)
@@ -25,20 +23,21 @@ open import Data.Unit           using (⊤)
 open import Data.String         using (String)
 open import Data.Product        using (_,_)
 open import Function
-open import Reflection.Helpers
+open import Reflection.TCMonadSyntax
 
-open import Tactics.RingSolver.Core.Solver renaming (solve to solve-fn)
-open import Tactics.RingSolver.Core.AlmostCommutativeRing
+open import Tactic.RingSolver.Manual1 renaming (solve to solve-fn)
+open import Tactic.RingSolver.Core.AlmostCommutativeRing
+open import Tactic.RingSolver.Core.NatSet as NatSet
+open import Tactic.RingSolver.Core.ReflectionHelp
 
 open AlmostCommutativeRing
 
+private
+  record Ring⇓ : Set where
+    constructor +⇒_*⇒_^⇒_-⇒_
+    field
+      +′ *′ ^′ -′ : Maybe Name
 
-record Ring⇓ : Set where
-  constructor +⇒_*⇒_^⇒_-⇒_
-  field
-    +′ *′ ^′ -′ : Maybe Name
-
-module Internal where
   _∈Ring : Term → TC Term
   ring ∈Ring = checkType ring (def (quote AlmostCommutativeRing) (unknown ⟨∷⟩ unknown ⟨∷⟩ []))
 
@@ -161,7 +160,6 @@ module Internal where
           open ToExpr Ι′
           ρ : Term
           ρ = curriedTerm t
-open Internal
 
 -- This is the main macro you'll probably be using. Call it like this:
 --

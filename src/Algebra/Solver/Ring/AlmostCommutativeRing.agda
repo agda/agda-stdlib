@@ -16,7 +16,7 @@ open import Level
 open import Relation.Binary
 
 
-record IsAlmostCommutativeRing {a ℓ} {A : Set a} (_≈_ : Rel A ℓ) 
+record IsAlmostCommutativeRing {a ℓ} {A : Set a} (_≈_ : Rel A ℓ)
                                (_+_ _*_ : Op₂ A) (-_ : Op₁ A)
                                (0# 1# : A) : Set (a ⊔ ℓ) where
   field

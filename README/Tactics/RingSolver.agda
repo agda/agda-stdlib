@@ -1,4 +1,10 @@
-module README.Solvers.Ring where
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Examples showing how the reflective ring solver may be used.
+------------------------------------------------------------------------
+
+module README.Tactics.RingSolver where
 
 -- You can ignore this bit! We're just overloading the literals Agda uses for
 -- numbers. This bit isn't necessary if you're just using Nats, or if you
@@ -8,16 +14,16 @@ module README.Solvers.Ring where
 open import Agda.Builtin.FromNat
 open import Data.Nat using (ℕ)
 open import Data.Integer using (ℤ)
+import Data.Nat.Literals as ℕ
+import Data.Integer.Literals as ℤ
 
 instance
   numberNat : Number ℕ
-  numberNat = Data.Nat.Literals.number
-    where import Data.Nat.Literals
+  numberNat = ℕ.number
 
 instance
   numberInt : Number ℤ
-  numberInt = Data.Integer.Literals.number
-    where import Data.Integer.Literals
+  numberInt = ℤ.number
 
 ------------------------------------------------------------------------------
 -- Imports!
@@ -30,13 +36,13 @@ open import Data.Unit using (⊤; tt)
 
 open import Tactics.RingSolver.Core.AlmostCommutativeRing using (AlmostCommutativeRing)
 open import Tactics.RingSolver.Instances
-open import Tactics.RingSolver.Core.Reflection
+open import Tactics.RingSolver
 
 ------------------------------------------------------------------------------
 -- Integer examples
 ------------------------------------------------------------------------------
 
-module IntExamples where
+module IntegerExamples where
   open AlmostCommutativeRing Int.ring
   -- Everything is automatic: you just ask Agda to solve it and it does!
   lemma₁ : ∀ x y → x + y * 1 + 3 ≈ 3 + 1 + y + x + - 1
@@ -55,25 +61,15 @@ module IntExamples where
     3 + y + x     ≡⟨⟩
     2 + 1 + y + x ∎
 
-  open Int.Reflection
-
-  -- There's a shorthand included for Int and Nat.
-  lemma₄ : ∀ x y → x + y * 1 + 3 ≈ 2 + 1 + y + x
-  lemma₄ x y = begin
-    x + y * 1 + 3 ≈⟨ +-comm x (y * 1) ⟨ +-cong ⟩ refl ⟩
-    y * 1 + x + 3 ≈⟨ ∀⟨ x ∷ y ∷ [] ⟩ ⟩
-    3 + y + x     ≡⟨⟩
-    2 + 1 + y + x ∎
-
 ------------------------------------------------------------------------------
 -- Natural examples
 ------------------------------------------------------------------------------
 
-module NatExamples where
+module NaturalExamples where
 
   open AlmostCommutativeRing Nat.ring
 
-  -- The solver is flexible enough to work with Nats (even though it asks
+  -- The solver is flexible enough to work with ℕ (even though it asks
   -- for rings!)
   lemma₁ : ∀ x y → x + y * 1 + 3 ≈ 2 + 1 + y + x
   lemma₁ = solve Nat.ring
@@ -97,16 +93,14 @@ module _ {a} {A : Set a} (_≤_ : A → A → Bool) where
   -- A substitution operator, to clean things up.
   _⇒_ : ∀ {n} → Tree n → ∀ {m} → n ≈ m → Tree m
   x ⇒ n≈m  = subst Tree n≈m x
-
-  open Nat.Reflection
 {-
   _∪_ : ∀ {n m} → Tree n → Tree m → Tree (n + m)
-  leaf ∪ ys = ys
-  node {a} {b} x xl xr ∪ leaf =
-    node x xl xr ⇒ ∀⟨ a ∷ b ∷ [] ⟩
+  leaf                 ∪ ys                   = ys
+  node {a} {b} x xl xr ∪ leaf                 =
+    node x xl xr ⇒ solveOver (a ∷ b ∷ []) Nat.ring
   node {a} {b} x xl xr ∪ node {c} {d} y yl yr = if x ≤ y
-            then node x (node y yl yr ∪ xr) xl
-                  ⇒ ∀⟨ a ∷ b ∷ c ∷ d ∷ [] ⟩
-            else (node y (node x xl xr ∪ yr) yl
-                  ⇒ ∀⟨ a ∷ b ∷ c ∷ d ∷ [] ⟩)
+    then node x (node y yl yr ∪ xr) xl
+      ⇒ (solveOver (a ∷ b ∷ c ∷ d ∷ []) Nat.ring)
+    else (node y (node x xl xr ∪ yr) yl
+      ⇒ (solveOver (a ∷ b ∷ c ∷ d ∷ []) Nat.ring))
 -}

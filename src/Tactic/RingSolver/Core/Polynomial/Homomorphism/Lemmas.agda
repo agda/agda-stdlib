@@ -6,9 +6,9 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra.Construct.Polynomial.Parameters
+open import Tactic.RingSolver.Core.Polynomial.Parameters
 
-module Algebra.Construct.Polynomial.Homomorphism.Lemmas
+module Tactic.RingSolver.Core.Polynomial.Homomorphism.Lemmas
   {r₁ r₂ r₃ r₄}
   (homo : Homomorphism r₁ r₂ r₃ r₄)
   where
@@ -31,9 +31,9 @@ open import Relation.Nullary                           using (Dec; yes; no)
 open import Relation.Binary.PropositionalEquality as ≡ using (_≡_)
 
 open Homomorphism homo hiding (_^_)
-open import Algebra.Construct.Polynomial.Reasoning to
-open import Algebra.Construct.Polynomial.Base from
-open import Algebra.Construct.Polynomial.Semantics homo
+open import Tactic.RingSolver.Core.Polynomial.Reasoning to
+open import Tactic.RingSolver.Core.Polynomial.Base from
+open import Tactic.RingSolver.Core.Polynomial.Semantics homo
 
 open import Algebra.Operations.Ring rawRing
 

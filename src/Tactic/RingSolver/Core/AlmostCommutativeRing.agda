@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Tactics.RingSolver.Core.AlmostCommutativeRing where
+module Tactic.RingSolver.Core.AlmostCommutativeRing where
 
 open import Level
 open import Relation.Binary
@@ -107,7 +107,7 @@ flipped rng = record
         ; identityˡ = +-identityʳ
         ; comm = λ x y → +-comm y x
         }
-      ; *-isCommutativeMonoid = record 
+      ; *-isCommutativeMonoid = record
         { isSemigroup = record
           { isMagma = record
             { isEquivalence = isEquivalence

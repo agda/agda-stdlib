@@ -6,9 +6,9 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra.Construct.Polynomial.Parameters
+open import Tactic.RingSolver.Core.Polynomial.Parameters
 
-module Algebra.Construct.Polynomial.Semantics
+module Tactic.RingSolver.Core.Polynomial.Semantics
   {r₁ r₂ r₃ r₄}
   (homo : Homomorphism r₁ r₂ r₃ r₄)
   where
@@ -20,7 +20,7 @@ open import Data.Product using (_,_; _×_)
 open import Data.List.Kleene using (_+; _*; ∹_; _&_; [])
 
 open Homomorphism homo
-open import Algebra.Construct.Polynomial.Base from
+open import Tactic.RingSolver.Core.Polynomial.Base from
 open import Algebra.Operations.Ring rawRing
 
 drop : ∀ {i n} → i ≤′ n → Vec Carrier n → Vec Carrier i

@@ -1,6 +1,9 @@
---------------------------------------------------------------------------------
--- Equational reasoning combinators
+------------------------------------------------------------------------
+-- The Agda standard library
 --
+-- Equational reasoning combinators for use with the ring solver
+------------------------------------------------------------------------
+
 -- These are different from the equational reasoning combinators in the order of
 -- their arguments. This helps (and speeds up) type checking, and lets us use
 -- the combinators with the automated solver.
@@ -9,7 +12,6 @@
 -- combinators can be used in the same way that the old ones are.
 --
 -- https://lists.chalmers.se/pipermail/agda/2016/009090.html
---------------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 

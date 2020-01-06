@@ -6,10 +6,10 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Tactics.RingSolver.Core.AlmostCommutativeRing
+open import Tactic.RingSolver.Core.AlmostCommutativeRing
 
 -- Some specialised tools for equational reasoning.
-module Algebra.Construct.Polynomial.Reasoning
+module Tactic.RingSolver.Core.Polynomial.Reasoning
   {a ℓ} (ring : AlmostCommutativeRing a ℓ)
   where
 

@@ -1,8 +1,14 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Homomorphism proofs for variables and constants over polynomials
+------------------------------------------------------------------------
+
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra.Construct.Polynomial.Parameters
+open import Tactic.RingSolver.Core.Polynomial.Parameters
 
-module Algebra.Construct.Polynomial.Homomorphism.Semantics
+module Tactic.RingSolver.Core.Polynomial.Homomorphism.Semantics
   {r₁ r₂ r₃ r₄}
   (homo : Homomorphism r₁ r₂ r₃ r₄)
   where
@@ -16,10 +22,10 @@ open import Function
 
 open Homomorphism homo
 
-open import Algebra.Construct.Polynomial.Homomorphism.Lemmas homo
-open import Algebra.Construct.Polynomial.Base (Homomorphism.from homo)
-open import Algebra.Construct.Polynomial.Reasoning (Homomorphism.to homo)
-open import Algebra.Construct.Polynomial.Semantics homo
+open import Tactic.RingSolver.Core.Polynomial.Homomorphism.Lemmas homo
+open import Tactic.RingSolver.Core.Polynomial.Base (Homomorphism.from homo)
+open import Tactic.RingSolver.Core.Polynomial.Reasoning (Homomorphism.to homo)
+open import Tactic.RingSolver.Core.Polynomial.Semantics homo
 
 open import Algebra.Operations.Ring rawRing
 

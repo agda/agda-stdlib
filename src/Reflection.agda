@@ -41,6 +41,7 @@ private
   variable
     a b c d : Level
     A B C D : Set a
+
 ------------------------------------------------------------------------
 -- Names
 
@@ -172,6 +173,7 @@ pattern Π[_∶_]_ s a ty     = pi a (abs s ty)
 pattern vΠ[_∶_]_ s a ty    = Π[ s ∶ (vArg a) ] ty
 pattern hΠ[_∶_]_ s a ty    = Π[ s ∶ (hArg a) ] ty
 pattern iΠ[_∶_]_ s a ty    = Π[ s ∶ (iArg a) ] ty
+
 ------------------------------------------------------------------------
 -- Definitions
 

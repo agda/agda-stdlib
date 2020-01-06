@@ -43,9 +43,9 @@
 
 {-# OPTIONS --safe --without-K #-}
 
-open import Algebra.Construct.Polynomial.Parameters
+open import Tactic.RingSolver.Core.Polynomial.Parameters
 
-module Algebra.Construct.Polynomial.Base
+module Tactic.RingSolver.Core.Polynomial.Base
   {ℓ₁ ℓ₂} (coeffs : RawCoeff ℓ₁ ℓ₂) where
 
 open RawCoeff coeffs

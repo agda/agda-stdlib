@@ -1,25 +1,32 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- An implementation of the ring solver that requires you to manually
+-- pass the equation you wish to solve.
+------------------------------------------------------------------------
+
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra.Construct.Polynomial.Parameters
+open import Tactic.RingSolver.Core.Polynomial.Parameters
 
-module Tactics.RingSolver
+module Tactic.RingSolver.Manual2
   {r₁ r₂ r₃ r₄}
   (homo : Homomorphism r₁ r₂ r₃ r₄)
   where
 
 open import Algebra.Solver.Ring.AlmostCommutativeRing
-import Algebra.Construct.Polynomial.Homomorphism homo as Hom
-open import Algebra.Construct.Polynomial.Semantics homo
-  renaming (⟦_⟧ to ⟦_⟧ₚ)
-open import Data.Vec as Vec using (Vec)
-open import Function
+open import Data.Vec using (Vec)
+open import Function.Base using (_⟨_⟩_)
 
-open import Tactics.RingSolver.Core.Expression public
+open import Tactic.RingSolver.Core.Expression public
+import Tactic.RingSolver.Core.Polynomial.Homomorphism homo as Hom
+open import Tactic.RingSolver.Core.Polynomial.Semantics homo
+  renaming (⟦_⟧ to ⟦_⟧ₚ)
 
 open Homomorphism homo
 open Eval rawRing ⟦_⟧ᵣ
 
-open import Algebra.Construct.Polynomial.Base from
+open import Tactic.RingSolver.Core.Polynomial.Base from
   using (Poly; _⊞_; _⊠_; ⊟_; _⊡_; κ; ι)
 
 norm : ∀ {n} → Expr Raw.Carrier n → Poly n

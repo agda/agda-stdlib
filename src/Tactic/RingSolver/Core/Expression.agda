@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Tactics.RingSolver.Core.Expression where
+module Tactic.RingSolver.Core.Expression where
 
 open import Data.Nat using (ℕ)
 open import Data.Fin using (Fin)

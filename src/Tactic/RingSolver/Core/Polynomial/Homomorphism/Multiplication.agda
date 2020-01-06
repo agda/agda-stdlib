@@ -1,8 +1,14 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Homomorphism proofs for multiplication over polynomials
+------------------------------------------------------------------------
+
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra.Construct.Polynomial.Parameters
+open import Tactic.RingSolver.Core.Polynomial.Parameters
 
-module Algebra.Construct.Polynomial.Homomorphism.Multiplication
+module Tactic.RingSolver.Core.Polynomial.Homomorphism.Multiplication
   {r₁ r₂ r₃ r₄}
   (homo : Homomorphism r₁ r₂ r₃ r₄)
   where
@@ -19,11 +25,11 @@ open import Relation.Unary
 
 open Homomorphism homo hiding (_^_)
 
-open import Algebra.Construct.Polynomial.Homomorphism.Lemmas homo
-open import Algebra.Construct.Polynomial.Homomorphism.Addition homo
-open import Algebra.Construct.Polynomial.Base from
-open import Algebra.Construct.Polynomial.Reasoning to
-open import Algebra.Construct.Polynomial.Semantics homo
+open import Tactic.RingSolver.Core.Polynomial.Homomorphism.Lemmas homo
+open import Tactic.RingSolver.Core.Polynomial.Homomorphism.Addition homo
+open import Tactic.RingSolver.Core.Polynomial.Base from
+open import Tactic.RingSolver.Core.Polynomial.Reasoning to
+open import Tactic.RingSolver.Core.Polynomial.Semantics homo
 open import Algebra.Operations.Ring rawRing
 
 reassoc : ∀ {y} x z → x * (y * z) ≈ y * (x * z)

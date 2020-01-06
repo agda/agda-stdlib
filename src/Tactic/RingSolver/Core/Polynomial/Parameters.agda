@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- 
+-- Bundles of parameters for passing to the Ring Solver
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -9,14 +9,14 @@
 -- This module packages up all the stuff that's passed to the other
 -- modules in a convenient form.
 
-module Algebra.Construct.Polynomial.Parameters where
+module Tactic.RingSolver.Core.Polynomial.Parameters where
 
 open import Algebra.Bundles using (RawRing)
 open import Data.Bool using (Bool; T)
 open import Function
 open import Level
 open import Relation.Unary
-open import Tactics.RingSolver.Core.AlmostCommutativeRing
+open import Tactic.RingSolver.Core.AlmostCommutativeRing
 
 -- This record stores all the stuff we need for the coefficients:
 --
@@ -37,7 +37,7 @@ record Homomorphism ℓ₁ ℓ₂ ℓ₃ ℓ₄ : Set (suc (ℓ₁ ⊔ ℓ₂ �
   field
     from : RawCoeff ℓ₁ ℓ₂
     to   : AlmostCommutativeRing ℓ₃ ℓ₄
-  
+
   module Raw = RawCoeff from
   open AlmostCommutativeRing to public
 

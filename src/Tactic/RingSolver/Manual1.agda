@@ -1,31 +1,34 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- The core solver code
+-- An implementation of the ring solver that requires you to manually
+-- pass the equation you wish to solve.
 ------------------------------------------------------------------------
+
+-- You'll probably want to use `Tactic.RingSolver` instead which uses
+-- reflection to automatically extract the equation.
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Tactics.RingSolver.Core.AlmostCommutativeRing
+open import Tactic.RingSolver.Core.AlmostCommutativeRing
 
-open import Data.Bool using (Bool; true; false; T; if_then_else_)
-open import Data.Maybe
-
-module Tactics.RingSolver.Core.Solver
+module Tactic.RingSolver.Manual1
   {ℓ₁ ℓ₂} (ring : AlmostCommutativeRing ℓ₁ ℓ₂)
   (let open AlmostCommutativeRing ring)
   where
 
-open import Algebra.Construct.Polynomial.Parameters
 open import Algebra.Morphism
 open import Function
+open import Data.Bool using (Bool; true; false; T; if_then_else_)
+open import Data.Maybe
 open import Data.Empty using (⊥-elim)
 open import Data.Nat using (ℕ)
 open import Data.Product
 open import Data.Vec hiding (_⊛_)
 open import Data.Vec.N-ary
 
-open import Tactics.RingSolver.Core.Expression public
+open import Tactic.RingSolver.Core.Polynomial.Parameters
+open import Tactic.RingSolver.Core.Expression public
 
 module Ops where
   zero-homo : ∀ x → T (is-just (0≟ x)) → 0# ≈ x
@@ -52,7 +55,7 @@ module Ops where
     }
   open Eval rawRing id public
 
-  open import Algebra.Construct.Polynomial.Base (Homomorphism.from homo)
+  open import Tactic.RingSolver.Core.Polynomial.Base (Homomorphism.from homo)
 
   norm : ∀ {n} → Expr Carrier n → Poly n
   norm (Κ x)   = κ x
@@ -65,13 +68,13 @@ module Ops where
   ⟦_⇓⟧ : ∀ {n} → Expr Carrier n → Vec Carrier n → Carrier
   ⟦ expr ⇓⟧ = ⟦ norm expr ⟧ₚ where
 
-    open import Algebra.Construct.Polynomial.Semantics homo
+    open import Tactic.RingSolver.Core.Polynomial.Semantics homo
       renaming (⟦_⟧ to ⟦_⟧ₚ)
 
   correct : ∀ {n} (expr : Expr Carrier n) ρ → ⟦ expr ⇓⟧ ρ ≈ ⟦ expr ⟧ ρ
   correct {n = n} = go
     where
-    open import Algebra.Construct.Polynomial.Homomorphism homo
+    open import Tactic.RingSolver.Core.Polynomial.Homomorphism homo
 
     go : ∀ (expr : Expr Carrier n) ρ → ⟦ expr ⇓⟧ ρ ≈ ⟦ expr ⟧ ρ
     go (Κ x)   ρ = κ-hom x ρ

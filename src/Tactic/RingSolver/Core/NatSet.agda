@@ -1,6 +1,6 @@
-{-# OPTIONS --without-K --safe #-}
-
---------------------------------------------------------------------------------
+------------------------------------------------------------------------
+-- The Agda standard library
+--
 -- Simple implementation of sets of ℕ.
 --
 -- Since ℕ is represented as unary numbers, simply having an ordered list of
@@ -29,10 +29,12 @@
 --   not equal, so continue: (2 - 1 - 1) ∈? []
 --   empty list:             false
 --
--- In this way, we change the membership test from 𝒪(n²) to 𝒪(n).
---------------------------------------------------------------------------------
+-- In this way, we change the membership test from O(n²) to O(n).
+------------------------------------------------------------------------
 
-module Data.NatSet where
+{-# OPTIONS --without-K --safe #-}
+
+module Tactic.RingSolver.Core.NatSet where
 
 open import Data.Nat   as ℕ     using (ℕ; suc; zero)
 open import Data.List  as List  using (List; _∷_; [])
@@ -60,10 +62,10 @@ delete x xs = List.para f (const []) xs x
   where
   f : ℕ → NatSet → (ℕ → NatSet) → ℕ → NatSet
   f y ys c x with ℕ.compare x y
-  f y ys c x | ℕ.less .x k = y ∷ ys
-  f y ys c x | ℕ.greater .y k = y ∷ c k
-  f y [] c x | ℕ.equal .x = []
-  f y₁ (y₂ ∷ ys) c x | ℕ.equal .x = suc x ℕ.+ y₂ ∷ ys
+  f y ys c x         | ℕ.less    x k = y ∷ ys
+  f y [] c x         | ℕ.equal   x   = []
+  f y₁ (y₂ ∷ ys) c x | ℕ.equal   x   = suc x ℕ.+ y₂ ∷ ys
+  f y ys c x         | ℕ.greater y k = y ∷ c k
 
 -- Returns the position of the element, if it's present.
 lookup : ℕ → NatSet → Maybe ℕ
@@ -71,9 +73,9 @@ lookup x xs = List.foldr f (const (const nothing)) xs x 0
   where
   f : ℕ → (ℕ → ℕ → Maybe ℕ) → ℕ → ℕ → Maybe ℕ
   f y ys x i with ℕ.compare x y
-  ... | ℕ.less .x k = nothing
-  ... | ℕ.equal .y = just i
-  ... | ℕ.greater .y k = ys k (suc i)
+  ... | ℕ.less     x k = nothing
+  ... | ℕ.equal    y   = just i
+  ... | ℕ.greater  y k = ys k (suc i)
 
 
 member : ℕ → NatSet → Bool
