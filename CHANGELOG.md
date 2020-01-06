@@ -112,20 +112,18 @@ Non-backwards compatible changes
   For `IsCommutativeSemiring`, we have `IsCommutativeSemiringˡ`, and for
   `IsRing`, we have `IsRingWithoutAnnihilatingZero`.
 
-Other major additions
----------------------
-
 * In `Codata.Colist`, replaced all the uses of `Data.BoundedVec` with the more
   up to date `Data.Vec.Bounded`.
 
 Deprecated names
 ----------------
 
-The following deprecations have occurred as part of a drive to improve consistency
-across the library. The deprecated names still exist and therefore all existing code
-should still work, however use of the new names is encouraged. Although not anticipated
-any time soon, they may eventually be removed in some future release of the library.
-Automated warnings are attached to all deprecated names to discourage their use.
+The following deprecations have occurred as part of a drive to improve
+consistency across the library. The deprecated names still exist and
+therefore all existing code should still work, however use of the new
+names is encouraged. Although not anticipated any time soon, they may
+eventually be removed in some future release of the library. Automated
+warnings are attached to all deprecated names to discourage their use.
 
 * In `Data.List.Relation.Unary.All.Properties`:
   ```agda
@@ -136,17 +134,27 @@ Other major additions
 ---------------------
 
 * New modules
-  ```
-  README.Text.Tabular
+  ```agda
+  Codata.Cowriter.Bisimilarity
+
+  Data.Erased
+  Data.Product.Relation.Unary.All
+  Data.Refinement
+  Data.Refinement.Relation.Unary.All
+  Data.Tree.Binary
+  Data.Tree.Binary.Properties
+  Data.Tree.Binary.Relation.Unary.All
+  Data.Tree.Binary.Relation.Unary.All.Properties
+
+  Text.Pretty.Core
+  Text.Pretty
 
   Text.Tabular.Base
   Text.Tabular.List
   Text.Tabular.Vec
-  ```
 
-* Added new module:
-  ```agda
-  Codata.Cowriter.Bisimilarity
+  README.Text.Pretty
+  README.Text.Tabular
   ```
 
 * Added induction over subsets to `Data.Fin.Subset.Induction`.
@@ -298,6 +306,11 @@ Other minor additions
   not-injective : not x ≡ not y → x ≡ y
   ```
 
+* Added new function to `Data.Difference.List`:
+  ```agda
+  _∷ʳ_ : DiffList A → A → DiffList A
+  ```
+
 * Added new properties to `Data.Fin.Subset`:
   ```agda
   _⊂_ : Subset n → Subset n → Set
@@ -391,7 +404,14 @@ Other minor additions
   ⊓-pres-m≤ : m ≤ n → m ≤ o → m ≤ n ⊓ o
   ⊓-pres-m< : m < n → m < o → m < n ⊓ o
   ```
-  
+
+* Added new proofs to `Data.String.Unsafe`:
+  ```agda
+  toList-++        : toList (s ++ t) ≡ toList s ++ toList t
+  length-++        : length (s ++ t) ≡ length s + length t
+  length-replicate : length (replicate n c) ≡ n
+  ```
+
 * Added new functions to `Data.Vec.Base`:
   ```agda
   length    : Vec A n → ℕ
@@ -425,6 +445,13 @@ Other minor additions
 * Added new proofs to `Relation.Binary.Setoid.Properties`:
   ```agda
   ≉-resp₂ : _≉_ Respects₂ _≈_
+  ```
+
+* Added new proofs to `Relation.Binary.Construct.Union`:
+  ```agda
+  respˡ : L Respectsˡ ≈ → R Respectsˡ ≈ → (L ∪ R) Respectsˡ ≈
+  respʳ : L Respectsʳ ≈ → R Respectsʳ ≈ → (L ∪ R) Respectsʳ ≈
+  resp₂ : L Respects₂ ≈ → R Respects₂ ≈ → (L ∪ R) Respects₂ ≈
   ```
 
 * Added new proofs to `Data.Rational.Properties`:

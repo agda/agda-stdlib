@@ -298,6 +298,10 @@ import README.Text.Printf
 
 import README.Text.Tabular
 
+-- Showcasing the pretty printing module
+
+import README.Text.Pretty
+
 ------------------------------------------------------------------------
 -- Core modules
 ------------------------------------------------------------------------
