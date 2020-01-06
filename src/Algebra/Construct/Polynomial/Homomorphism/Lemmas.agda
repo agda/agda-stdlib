@@ -13,25 +13,24 @@ module Algebra.Construct.Polynomial.Homomorphism.Lemmas
   (homo : Homomorphism r₁ r₂ r₃ r₄)
   where
 
-open import Data.List                                  using (_∷_; [])
-open import Relation.Nullary                           using (Dec; yes; no)
+open import Data.Bool                                  using (Bool;true;false)
 open import Data.Nat as ℕ                              using (ℕ; suc; zero; compare; _≤′_; ≤′-step; ≤′-refl)
-open import Data.Nat.Properties                        using (≤′-trans)
+open import Data.Nat.Properties as ℕₚ                  using (≤′-trans)
 open import Data.Vec as Vec                            using (Vec; _∷_)
-open import Level                                      using (lift)
 open import Data.Fin                                   using (Fin; zero; suc)
 open import Data.Fin.Properties                        using (space≤′n)
-open import Relation.Binary.PropositionalEquality as ≡ using (_≡_)
+open import Data.List                                  using (_∷_; [])
+open import Data.Unit using (tt)
+open import Data.List.Kleene
 open import Data.Product                               using (_,_; proj₁; proj₂; map₁; _×_)
 open import Data.Empty                                 using (⊥-elim)
 open import Data.Maybe                                 using (nothing; just)
-open import Data.Bool using (Bool;true;false)
-open import Data.Unit using (tt)
 open import Function
-import Data.Nat.Properties as ℕ-Prop
-open import Data.List.Kleene
+open import Level                                      using (lift)
+open import Relation.Nullary                           using (Dec; yes; no)
+open import Relation.Binary.PropositionalEquality as ≡ using (_≡_)
 
-open Homomorphism homo
+open Homomorphism homo hiding (_^_)
 open import Algebra.Construct.Polynomial.Reasoning to
 open import Algebra.Construct.Polynomial.Base from
 open import Algebra.Construct.Polynomial.Semantics homo
@@ -87,7 +86,7 @@ pow-hom : ∀ {n} i
         → (xs : Coeff n +)
         → ∀ ρ ρs
         → ⅀⟦ xs ⟧ (ρ , ρs) *⟨ ρ ⟩^ i ≈ ⅀⟦ xs ⍓+ i ⟧ (ρ , ρs)
-pow-hom ℕ.zero (x Δ j & xs) ρ ρs rewrite ℕ-Prop.+-identityʳ j = refl
+pow-hom ℕ.zero (x Δ j & xs) ρ ρs rewrite ℕₚ.+-identityʳ j = refl
 pow-hom (suc i) (x ≠0 Δ j & xs) ρ ρs =
   begin
     ρ ^ i +1 * (((x , xs) ⟦∷⟧ (ρ , ρs)) *⟨ ρ ⟩^ j)
@@ -116,8 +115,7 @@ pow-distrib-+1 x y (suc i) =
     (x ^ i +1 * x) * (y ^ i +1 * y)
   ∎
 
-pow-distrib : ∀ x y i
-            → (x * y) ^ i ≈ x ^ i * y ^ i
+pow-distrib : ∀ x y i → (x * y) ^ i ≈ x ^ i * y ^ i
 pow-distrib x y ℕ.zero = sym (*-identityˡ _)
 pow-distrib x y (suc i) = pow-distrib-+1 x y i
 
@@ -126,7 +124,7 @@ pow-distrib x y (suc i) = pow-distrib-+1 x y i
 -- The reason it looks different is because we're using the special exponentiation
 -- operator.
 pow-mult-+1 : ∀ x i j → (x ^ i +1) ^ j +1 ≈ x ^ (i ℕ.+ j ℕ.* suc i) +1
-pow-mult-+1 x i ℕ.zero rewrite ℕ-Prop.+-identityʳ i = refl
+pow-mult-+1 x i ℕ.zero rewrite ℕₚ.+-identityʳ i = refl
 pow-mult-+1 x i (suc j) =
   begin
     (x ^ i +1) ^ j +1 * (x ^ i +1)

@@ -13,8 +13,8 @@
 
 open import Algebra
 
-module Algebra.Solver.Ring.Old.NaturalCoefficients.Default
-         {r₁ r₂} (R : CommutativeSemiring r₁ r₂) where
+module Algebra.Solver.Ring.NaturalCoefficients.Default
+  {r₁ r₂} (R : CommutativeSemiring r₁ r₂) where
 
 import Algebra.Operations.Semiring as SemiringOps
 open import Data.Maybe.Base using (Maybe; map)
@@ -29,4 +29,4 @@ private
   dec : ∀ m n → Maybe (m × 1# ≈ n × 1#)
   dec m n = map (λ { P.refl → refl }) (dec⟶weaklyDec _≟_ m n)
 
-open import Algebra.Solver.Ring.Old.NaturalCoefficients R dec public
+open import Algebra.Solver.Ring.NaturalCoefficients R dec public

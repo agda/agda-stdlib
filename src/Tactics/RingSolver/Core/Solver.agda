@@ -1,13 +1,19 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- The core solver code
+------------------------------------------------------------------------
+
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra
+open import Tactics.RingSolver.Core.AlmostCommutativeRing
+
 open import Data.Bool using (Bool; true; false; T; if_then_else_)
 open import Data.Maybe
 
-module Algebra.Solver.Ring.Simple.Solver
+module Tactics.RingSolver.Core.Solver
   {ℓ₁ ℓ₂} (ring : AlmostCommutativeRing ℓ₁ ℓ₂)
   (let open AlmostCommutativeRing ring)
-  (0≟_ : (x : Carrier) → Maybe (0# ≈ x)) 
   where
 
 open import Algebra.Construct.Polynomial.Parameters
@@ -19,7 +25,7 @@ open import Data.Product
 open import Data.Vec hiding (_⊛_)
 open import Data.Vec.N-ary
 
-open import Algebra.Construct.Ring.Expr public
+open import Tactics.RingSolver.Core.Expression public
 
 module Ops where
   zero-homo : ∀ x → T (is-just (0≟ x)) → 0# ≈ x

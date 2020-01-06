@@ -1,15 +1,21 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Instantiates the ring solver with two copies of the same ring with
+-- decidable equality
+------------------------------------------------------------------------
+
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra
-open import Data.Bool using (Bool; true; false; T; if_then_else_)
-open import Data.Maybe
-open import Relation.Binary using (Decidable)
-open import Relation.Nullary.Decidable using ()
+open import Algebra.Solver.Ring.AlmostCommutativeRing
+open import Relation.Binary
+open import Relation.Binary.Consequences using (dec⟶weaklyDec)
 
 module Algebra.Solver.Ring.Simple
-  {ℓ₁ ℓ₂} (ring : AlmostCommutativeRing ℓ₁ ℓ₂)
-  (let open AlmostCommutativeRing ring)
-  (_≟_ : Decidable _≈_) 
+  {r₁ r₂} (R : AlmostCommutativeRing r₁ r₂)
+  (_≟_ : Decidable (AlmostCommutativeRing._≈_ R))
   where
 
-open import Algebra.Solver.Ring.Simple.Solver ring (λ x → decToMaybe (0# ≟ x)) public
+open AlmostCommutativeRing R
+import Algebra.Solver.Ring as RS
+open RS rawRing R (-raw-almostCommutative⟶ R) (dec⟶weaklyDec _≟_) public

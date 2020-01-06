@@ -7,7 +7,6 @@ module Algebra.Construct.Polynomial.Homomorphism.Semantics
   (homo : Homomorphism r₁ r₂ r₃ r₄)
   where
 
-
 open import Data.Product        using (_,_)
 open import Data.Vec as Vec     using (Vec)
 open import Data.Fin            using (Fin)

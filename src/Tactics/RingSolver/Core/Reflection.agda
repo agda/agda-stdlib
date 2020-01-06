@@ -1,6 +1,13 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Macro that uses reflection to obtain the input of the solver, hence
+-- avoiding the need to spell out the equation manually.
+------------------------------------------------------------------------
+
 {-# OPTIONS --without-K --safe #-}
 
-module Algebra.Solver.Ring.Simple.Reflection where
+module Tactics.RingSolver.Core.Reflection where
 
 open import Agda.Builtin.Reflection
 open import Agda.Builtin.Nat    using (_<_)
@@ -8,8 +15,6 @@ open import Agda.Builtin.Nat    using (_<_)
 open import Data.NatSet
 
 open import Algebra
-open import Algebra.Operations.Ring using (_^_)
-open import Algebra.Solver.Ring.Simple.Solver renaming (solve to solve-fn)
 open import Data.Fin   as Fin   using (Fin)
 open import Data.Vec   as Vec   using (Vec; _∷_; [])
 open import Data.List  as List  using (List; _∷_; [])
@@ -22,7 +27,11 @@ open import Data.Product        using (_,_)
 open import Function
 open import Reflection.Helpers
 
+open import Tactics.RingSolver.Core.Solver renaming (solve to solve-fn)
+open import Tactics.RingSolver.Core.AlmostCommutativeRing
+
 open AlmostCommutativeRing
+
 
 record Ring⇓ : Set where
   constructor +⇒_*⇒_^⇒_-⇒_
@@ -51,7 +60,7 @@ module Internal where
     ⟦ nm ⇓⟧ₙ = normalise (nm ⟨ def ⟩ 2 ⋯⟅∷⟆ ring ⟨∷⟩ []) <&> λ where
       (def f args) → just f
       _            → nothing
-    
+
     ring⇓ : TC Ring⇓
     ring⇓ = ⦇ +⇒ ⟦ quote _+_ ⇓⟧ₙ *⇒ ⟦ quote _*_ ⇓⟧ₙ ^⇒ ⟦ quote _^_ ⇓⟧ₙ -⇒ ⟦ quote -_ ⇓⟧ₙ ⦈
 
@@ -129,7 +138,7 @@ module Internal where
         callSolver : Vec String numVars → Term → Term → List (Arg Type)
         callSolver nms lhs rhs =
             2 ⋯⟅∷⟆ ring ⟨∷⟩ ℕ′ numVars ⟨∷⟩
-            vlams nms (quote _⊜_ ⟨ def ⟩ 2 ⋯⟅∷⟆ ring ⟨∷⟩ ℕ′ numVars ⟨∷⟩ E lhs ⟨∷⟩ E rhs ⟨∷⟩ []) ⟨∷⟩
+            vlams nms (quote _⊜_  ⟨ def ⟩ 2 ⋯⟅∷⟆ ring ⟨∷⟩ ℕ′ numVars ⟨∷⟩ E lhs ⟨∷⟩ E rhs ⟨∷⟩ []) ⟨∷⟩
             hlams nms (quote refl ⟨ def ⟩ 2 ⋯⟅∷⟆ ring ⟨∷⟩ 1 ⋯⟅∷⟆ []) ⟨∷⟩
             []
           where
@@ -167,7 +176,7 @@ macro
     ring′ ← def ring [] ∈Ring
     commitTC
     let open OverRing ring′
-    nms ← ring⇓
+    nms   ← ring⇓
     hole′ ← inferType hole >>= reduce
     let i , k , xs = underPi hole′
     just (lhs ∷ rhs ∷ []) ← pure (getArgs 2 xs)

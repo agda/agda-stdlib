@@ -77,10 +77,10 @@ data InjectionOrdering {n : ℕ} : ∀ {i j} (i≤n : i ≤′ n) (j≤n : j ≤
                       where
   inj-lt : ∀ {i j-1} (i≤j-1 : i ≤′ j-1) (j≤n : suc j-1 ≤′ n) →
            InjectionOrdering (≤′-step i≤j-1 ⟨ ≤′-trans ⟩ j≤n) j≤n
-           
+
   inj-gt : ∀ {i-1 j} (i≤n : suc i-1 ≤′ n) (j≤i-1 : j ≤′ i-1) →
            InjectionOrdering i≤n (≤′-step j≤i-1 ⟨ ≤′-trans ⟩ i≤n)
-           
+
   inj-eq : ∀ {i} (i≤n : i ≤′ n) →
            InjectionOrdering i≤n i≤n
 
@@ -273,7 +273,7 @@ mutual
         → Coeff k +
         → Coeff k *
   ⊞-inj i≤k xs (y ⊐ j≤k ≠0 Δ zero  & ys) = ⊞-match (inj-compare j≤k i≤k) y xs Δ zero ∷↓ ys
-  ⊞-inj i≤k xs (y          Δ suc j & ys) = xs ⊐ i≤k Δ zero ∷↓ ∹ y Δ j & ys 
+  ⊞-inj i≤k xs (y          Δ suc j & ys) = xs ⊐ i≤k Δ zero ∷↓ ∹ y Δ j & ys
 
   ⊞-coeffs : ∀ {n} → Coeff n * → Coeff n * → Coeff n *
   ⊞-coeffs (∹ x Δ i & xs) ys = ⊞-zip-r x i xs ys

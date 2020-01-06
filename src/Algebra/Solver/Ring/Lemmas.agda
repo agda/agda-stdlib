@@ -9,9 +9,9 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Algebra
-open import Algebra.Solver.Ring.Old.AlmostCommutativeRing
+open import Algebra.Solver.Ring.AlmostCommutativeRing
 
-module Algebra.Solver.Ring.Old.Lemmas
+module Algebra.Solver.Ring.Lemmas
   {r₁ r₂ r₃ r₄}
   (coeff : RawRing r₁ r₄)
   (r : AlmostCommutativeRing r₂ r₃)

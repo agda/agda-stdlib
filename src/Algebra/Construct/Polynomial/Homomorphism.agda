@@ -1,3 +1,9 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Some specialised instances of the ring solver
+------------------------------------------------------------------------
+
 {-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Construct.Polynomial.Parameters

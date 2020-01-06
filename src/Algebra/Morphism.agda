@@ -175,37 +175,3 @@ module _ {c₁ ℓ₁ c₂ ℓ₂}
 
   IsRingMorphism-syntax = IsRingMorphism
   syntax IsRingMorphism-syntax From To F = F Is From -Ring⟶ To
-
-
-
-------------------------------------------------------------------------
--- Homomorphisms
-
-record _-Raw-AlmostCommutative⟶_
-  {r₁ r₂ r₃ r₄}
-  (From : RawRing r₁ r₄)
-  (To : AlmostCommutativeRing r₂ r₃) : Set (r₁ ⊔ r₂ ⊔ r₃) where
-  private
-    module F = RawRing From
-    module T = AlmostCommutativeRing To
-  open MorphismDefinitions F.Carrier T.Carrier T._≈_
-  field
-    ⟦_⟧    : Morphism
-    +-homo : Homomorphic₂ ⟦_⟧ F._+_ T._+_
-    *-homo : Homomorphic₂ ⟦_⟧ F._*_ T._*_
-    -‿homo : Homomorphic₁ ⟦_⟧ F.-_  T.-_
-    0-homo : Homomorphic₀ ⟦_⟧ F.0#  T.0#
-    1-homo : Homomorphic₀ ⟦_⟧ F.1#  T.1#
-
--raw-almostCommutative⟶ :
-  ∀ {r₁ r₂} (R : AlmostCommutativeRing r₁ r₂) →
-  AlmostCommutativeRing.rawRing R -Raw-AlmostCommutative⟶ R
--raw-almostCommutative⟶ R = record
-  { ⟦_⟧    = id
-  ; +-homo = λ _ _ → refl
-  ; *-homo = λ _ _ → refl
-  ; -‿homo = λ _ → refl
-  ; 0-homo = refl
-  ; 1-homo = refl
-  }
-  where open AlmostCommutativeRing R

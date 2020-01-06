@@ -10,8 +10,8 @@
 
 module Data.Integer.Solver where
 
-import Algebra.Solver.Ring.Old.Simple as Solver
-import Algebra.Solver.Ring.Old.AlmostCommutativeRing as ACR
+import Algebra.Solver.Ring.Simple as Solver
+import Algebra.Solver.Ring.AlmostCommutativeRing as ACR
 open import Data.Integer using (_≟_)
 open import Data.Integer.Properties using (+-*-commutativeRing)
 

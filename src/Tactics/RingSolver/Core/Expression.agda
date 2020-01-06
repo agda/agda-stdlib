@@ -1,12 +1,12 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- This module provides a type for expressions in a ring.
+-- A type for expressions over a raw ring.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
-module Algebra.Construct.Ring.Expr where
+module Tactics.RingSolver.Core.Expression where
 
 open import Data.Nat using (ℕ)
 open import Data.Fin using (Fin)
@@ -29,9 +29,9 @@ data Expr {a} (A : Set a) (n : ℕ) : Set a where
 
 module Eval
   {ℓ₁ ℓ₂} (rawRing : RawRing ℓ₁ ℓ₂)
-  {a} {A : Set a} (⟦_⟧ᵣ : A → RawRing.Carrier rawRing) where
-  
-  open RawRing rawRing
+  (let open RawRing rawRing)
+  {a} {A : Set a} (⟦_⟧ᵣ : A → Carrier) where
+
   open import Algebra.Operations.Ring rawRing
 
   ⟦_⟧ : ∀ {n} → Expr A n → Vec Carrier n → Carrier
@@ -39,5 +39,5 @@ module Eval
   ⟦ Ι x   ⟧ ρ = Vec.lookup ρ x
   ⟦ x ⊕ y ⟧ ρ = ⟦ x ⟧ ρ + ⟦ y ⟧ ρ
   ⟦ x ⊗ y ⟧ ρ = ⟦ x ⟧ ρ * ⟦ y ⟧ ρ
-  ⟦ ⊝ x   ⟧ ρ = - ⟦ x ⟧ ρ
+  ⟦   ⊝ x ⟧ ρ = - ⟦ x ⟧ ρ
   ⟦ x ⊛ i ⟧ ρ = ⟦ x ⟧ ρ ^ i

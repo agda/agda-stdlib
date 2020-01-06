@@ -17,7 +17,7 @@ open import Function
 open import Induction.WellFounded
 open import Relation.Unary
 
-open Homomorphism homo
+open Homomorphism homo hiding (_^_)
 
 open import Algebra.Construct.Polynomial.Homomorphism.Lemmas homo
 open import Algebra.Construct.Polynomial.Homomorphism.Addition homo

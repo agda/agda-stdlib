@@ -18,7 +18,7 @@ open import Relation.Unary
 
 import Relation.Binary.PropositionalEquality as ≡
 
-open Homomorphism homo
+open Homomorphism homo hiding (_^_)
 open import Algebra.Construct.Polynomial.Homomorphism.Lemmas homo
 open import Algebra.Construct.Polynomial.Base from
 open import Algebra.Construct.Polynomial.Reasoning to
