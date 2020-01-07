@@ -417,7 +417,7 @@ record IsCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
     { isSemigroup = *-isSemigroup
     ; comm        = *-comm
     }
-  
+
   *-isCommutativeMonoid : IsCommutativeMonoid * 1#
   *-isCommutativeMonoid = record
     { isMonoid = *-isMonoid
