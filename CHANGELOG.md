@@ -220,6 +220,11 @@ Other major additions
 Other minor additions
 ---------------------
 
+* Added new definition to `Algebra.Definitions`:
+  ```agda
+  Interchangable _∘_ _∙_ = ∀ w x y z → ((w ∙ x) ∘ (y ∙ z)) ≈ ((w ∘ y) ∙ (x ∘ z))
+  ```
+
 * Added new proofs to `Algebra.Properties.Group`:
   ```agda
   ⁻¹-injective   : x ⁻¹ ≈ y ⁻¹ → x ≈ y
