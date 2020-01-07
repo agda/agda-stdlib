@@ -139,7 +139,7 @@ Other major additions
   Function.Metric.Core
   Function.Metric.Definitions
   Function.Metric.Structures
-  Function.Metric.Definitions
+  Function.Metric.Bundles
   ```
   The distance functions above are defined over an arbitrary type for the image.
   Specialisations to the natural numbers are provided in the following modules:
@@ -148,7 +148,7 @@ Other major additions
   Function.Metric.Nat.Core
   Function.Metric.Nat.Definitions
   Function.Metric.Nat.Structures
-  Function.Metric.Nat.Definitions
+  Function.Metric.Nat.Bundles
   ```
   and other specialisations can be created in a similar fashion.
 
