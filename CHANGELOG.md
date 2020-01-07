@@ -9,8 +9,11 @@ Highlights
 Bug-fixes
 ---------
 
-Changed the definition of `_⊓_` for `Codata.Conat`; it was mistakenly using
-`_⊔_` in a recursive call.
+* Changed the definition of `_⊓_` for `Codata.Conat`; it was mistakenly using
+  `_⊔_` in a recursive call.
+
+* Changed the type of `max≈v⁺` in `Data.List.Extrema`; it was mistakenly talking
+  about `min` rather than `max`.
 
 Non-backwards compatible changes
 --------------------------------
@@ -42,6 +45,13 @@ Non-backwards compatible changes
 
   Definitions that are sensitive to the behaviour of these lemmas, rather than
   just their existence, may need to be revised.
+
+* The fixity level of `Data.List.Base`'s `_∷ʳ_` was changed from 5 to 6.
+  This means that `x ∷ xs ∷ʳ y` and `x ++ xs ∷ʳ y` are not ambiguous
+  anymore: they both are parenthesised to the right (the more efficient
+  variant).
+
+* Moved module `README.Text` to `README.Text.Printf`.
 
 * The following record definitions in `Algebra.Structures` have been changed.
 
@@ -99,9 +109,6 @@ Non-backwards compatible changes
   For `IsCommutativeSemiring`, we have `IsCommutativeSemiringˡ`, and for
   `IsRing`, we have `IsRingWithoutAnnihilatingZero`.
 
-Other major additions
----------------------
-
 * In `Codata.Colist`, replaced all the uses of `Data.BoundedVec` with the more
   up to date `Data.Vec.Bounded`.
 
@@ -122,13 +129,19 @@ Automated warnings are attached to all deprecated names to discourage their use.
 Other major additions
 ---------------------
 
-* Added new module:
+* Added new modules:
   ```agda
   Codata.Cowriter.Bisimilarity
 
   Data.Tree.Rose
   Data.Tree.Rose.Properties
+
+  Text.Tabular.Base
+  Text.Tabular.List
+  Text.Tabular.Vec
   Text.Tree.Linear
+
+  README.Text.Tabular
   README.Text.Tree
   ```
 
@@ -185,10 +198,12 @@ Other major additions
     ... | false = ∈-filter⁺ v∈xs Pv
   ```
 
-* Made `RawFunctor`,  `RawApplicative` and `IFun` more level polymorphic
-  (in `Category.Functor`, `Category.Applicative` and
-  `Category.Applicative.Indexed`
-  respectively).
+* Standardised the `Eq` modules in structures and bundles in `Relation.Binary` hierarchy.
+  - `IsDecTotalOrder.Eq` now exports `isDecPartialOrder`.
+  - `DecSetoid.Eq` now exports `partialSetoid` and `_≉_`.
+  - `Poset.Eq` and `TotalOrder.Eq` now export `setoid`.
+  - `DecTotalOrder.Eq` and `StrictTotalOrder.Eq` now export `decSetoid`.
+  - `DecTotalOrder.decSetoid` is now deprecated in favour of the above `DecTotalOrder.Eq.decSetoid`.
 
 Other minor additions
 ---------------------
@@ -198,6 +213,11 @@ Other minor additions
   ⁻¹-injective   : x ⁻¹ ≈ y ⁻¹ → x ≈ y
   ⁻¹-anti-homo-∙ : (x ∙ y) ⁻¹ ≈ y ⁻¹ ∙ x ⁻¹
   ```
+
+* Made `RawFunctor`,  `RawApplicative` and `IFun` more level polymorphic
+  (in `Category.Functor`, `Category.Applicative` and
+  `Category.Applicative.Indexed`
+  respectively).
 
 * Added new functions to `Codata.Colist`:
   ```agda
@@ -303,6 +323,33 @@ Other minor additions
   Unique-resp-≋   : Unique Respects _≋_
   ```
 
+* Added new functions to `Data.List.Base`:
+  ```agda
+  _?∷_  : Maybe A → List A → List A
+  _∷ʳ?_ : List A → Maybe A → List A
+  ```
+
+* Added new properties to `Data.Nat.Properties`:
+  ```
+  ⌊n/2⌋≤⌈n/2⌉   : ⌊ n /2⌋ ≤ ⌈ n /2⌉
+  ⌊n/2⌋+⌈n/2⌉≡n : ⌊ n /2⌋ + ⌈ n /2⌉ ≡ n
+  ```
+
+* Added new functions to `Data.String.Base`:
+  ```agda
+  padLeft    : Char → ℕ → String → String
+  padRight   : Char → ℕ → String → String
+  padBoth    : Char → Char → ℕ → String → String
+
+  data Alignment : Set where Left Center Right : Alignment
+  fromAlignment  : Alignment → ℕ → String → String
+
+  rectangle  : Vec (ℕ → String → String) n → Vec String n → Vec String n
+  rectangleˡ : Char → Vec String n → Vec String n
+  rectangleʳ : Char → Vec String n → Vec String n
+  rectangleᶜ : Char → Char → Vec String n → Vec String n
+  ```
+
 * Added new proofs to `Data.List.Relation.Binary.Pointwise`:
   ```agda
   Any-resp-Pointwise      : P Respects _∼_ → (Any P) Respects (Pointwise _∼_)
@@ -317,6 +364,24 @@ Other minor additions
 
   ↭-prep : xs ↭ ys → x ∷ xs ↭ x ∷ ys
   ↭-swap : xs ↭ ys → x ∷ y ∷ xs ↭ y ∷ x ∷ ys
+  ```
+
+* Added new functions to `Data.Vec.Base`:
+  ```
+  length    : Vec A n → ℕ
+  transpose : Vec (Vec A n) m → Vec (Vec A m) n
+  ```
+
+* Added new functions to `Data.Vec.Bounded.Base`:
+  ```agda
+  take : n → Vec≤ A m → Vec≤ A (n ⊓ m)
+  drop : n → Vec≤ A m → Vec≤ A (m ∸ n)
+
+  padLeft   : A → Vec≤ A n → Vec A n
+  padRight  : A → Vec≤ A n → Vec A n
+  padBoth : ∀ {n} → A → A → Vec≤ A n → Vec A n
+
+  rectangle : List (∃ (Vec≤ A)) → ∃ (List ∘ Vec≤ A)
   ```
 
 * Added new proofs to `Induction.WellFounded`:

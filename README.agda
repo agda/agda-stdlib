@@ -292,7 +292,11 @@ import README.Inspect
 
 -- Explaining string formats and the behaviour of printf
 
-import README.Text
+import README.Text.Printf
+
+-- Explaining how to display tables of strings:
+
+import README.Text.Tabular
 
 -- Showing how to print a tree
 
