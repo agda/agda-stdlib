@@ -30,8 +30,22 @@ private
 Congruent : Rel A ℓ → DistanceFunction A → Set _
 Congruent _≈ₐ_ d = Base.Congruent _≈ₐ_ _≡_ d
 
+Indiscernable : Rel A ℓ → DistanceFunction A → Set _
+Indiscernable _≈ₐ_ d = Base.Indiscernable _≈ₐ_ _≡_ d 0
+
+Definite : Rel A ℓ → DistanceFunction A → Set _
+Definite _≈ₐ_ d = Base.Definite _≈ₐ_ _≡_ d 0
+
 Symmetric : DistanceFunction A → Set _
 Symmetric = Base.Symmetric _≡_
+
+Bounded : DistanceFunction A → Set _
+Bounded = Base.Bounded _≤_
+
+TranslationInvariant : Op₂ A → DistanceFunction A → Set _
+TranslationInvariant = Base.TranslationInvariant _≡_
+
+-- Inequalities
 
 TriangleInequality : DistanceFunction A → Set _
 TriangleInequality = Base.TriangleInequality _≤_ _+_
@@ -52,11 +66,3 @@ StrictlyContracting _≈_ = Base.StrictlyContracting _≈_ _<_
 
 StrictlyContractingOnOrbits : Rel A ℓ → (A → A) → DistanceFunction A → Set _
 StrictlyContractingOnOrbits _≈_ = Base.StrictlyContractingOnOrbits _≈_ _<_
-
--- Other
-
-Bounded : DistanceFunction A → Set _
-Bounded = Base.Bounded _≤_
-
-TranslationInvariant : Op₂ A → DistanceFunction A → Set _
-TranslationInvariant = Base.TranslationInvariant _≡_

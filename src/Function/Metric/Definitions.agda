@@ -32,8 +32,11 @@ Congruent _≈ₐ_ _≈ᵢ_ d = d Preserves₂ _≈ₐ_ ⟶ _≈ₐ_ ⟶ _≈ᵢ
 Indiscernable : Rel A ℓ₁ → Rel I ℓ₂ → DistanceFunction A I → I → Set _
 Indiscernable _≈ₐ_ _≈ᵢ_ d 0# = ∀ {x y} → d x y ≈ᵢ 0# → x ≈ₐ y
 
-PositiveDefinite : Rel A ℓ₁ → Rel I ℓ₂ → DistanceFunction A I → I → Set _
-PositiveDefinite _≈ₐ_ _≈ᵢ_ d 0# = ∀ {x y} → x ≈ₐ y → d x y ≈ᵢ 0#
+Definite : Rel A ℓ₁ → Rel I ℓ₂ → DistanceFunction A I → I → Set _
+Definite _≈ₐ_ _≈ᵢ_ d 0# = ∀ {x y} → x ≈ₐ y → d x y ≈ᵢ 0#
+
+NonNegative : Rel I ℓ₂ → DistanceFunction A I → I → Set _
+NonNegative _≤_ d 0# = ∀ {x y} → 0# ≤ d x y
 
 Symmetric : Rel I ℓ → DistanceFunction A I → Set _
 Symmetric _≈_ d = ∀ x y → d x y ≈ d y x

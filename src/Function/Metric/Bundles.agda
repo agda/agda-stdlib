@@ -115,6 +115,9 @@ record SemiMetric (a i ℓ₁ ℓ₂ ℓ₃ : Level)
 -- `Function.Metric.Rational` for more specialised `Metric` and
 -- `UltraMetric` packages.
 
+-- See the discussion accompanying the `IsGeneralMetric` structure for
+-- more details.
+
 record GeneralMetric (a i ℓ₁ ℓ₂ ℓ₃ : Level)
                    : Set (suc (a ⊔ i ⊔ ℓ₁ ⊔ ℓ₂ ⊔ ℓ₃)) where
   field
