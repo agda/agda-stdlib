@@ -425,6 +425,19 @@ splitAt-raise : ∀ m n i → splitAt m (raise {n} m i) ≡ inj₂ i
 splitAt-raise zero n i = refl
 splitAt-raise (suc m) n i rewrite splitAt-raise m n i = refl
 
+
+------------------------------------------------------------------------
+-- lift
+------------------------------------------------------------------------
+
+lift-injective : ∀ {m n} (f : Fin m → Fin n) →
+                 (∀ {x y} → f x ≡ f y → x ≡ y) →
+                 ∀ k {x y} → lift k f x ≡ lift k f y → x ≡ y
+lift-injective f inj zero                    eq = inj eq
+lift-injective f inj (suc k) {0F} {0F}       eq = refl
+lift-injective f inj (suc k) {suc i} {suc y} eq = cong suc (lift-injective f inj k (suc-injective eq))
+
+
 ------------------------------------------------------------------------
 -- _≺_
 ------------------------------------------------------------------------

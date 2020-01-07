@@ -9,6 +9,9 @@ Highlights
 Bug-fixes
 ---------
 
+* The incorrectly named proof `p⊆q⇒∣p∣<∣q∣ : p ⊆ q → ∣ p ∣ ≤ ∣ q ∣` in
+  `Data.Fin.Subset.Properties` now has the correct name `p⊆q⇒∣p∣≤∣q∣`.
+
 * Changed the definition of `_⊓_` for `Codata.Conat`; it was mistakenly using
   `_⊔_` in a recursive call.
 
@@ -113,20 +116,18 @@ Non-backwards compatible changes
   For `IsCommutativeSemiring`, we have `IsCommutativeSemiringˡ`, and for
   `IsRing`, we have `IsRingWithoutAnnihilatingZero`.
 
-Other major additions
----------------------
-
 * In `Codata.Colist`, replaced all the uses of `Data.BoundedVec` with the more
   up to date `Data.Vec.Bounded`.
 
 Deprecated names
 ----------------
 
-The following deprecations have occurred as part of a drive to improve consistency
-across the library. The deprecated names still exist and therefore all existing code
-should still work, however use of the new names is encouraged. Although not anticipated
-any time soon, they may eventually be removed in some future release of the library.
-Automated warnings are attached to all deprecated names to discourage their use.
+The following deprecations have occurred as part of a drive to improve
+consistency across the library. The deprecated names still exist and
+therefore all existing code should still work, however use of the new
+names is encouraged. Although not anticipated any time soon, they may
+eventually be removed in some future release of the library. Automated
+warnings are attached to all deprecated names to discourage their use.
 
 * In `Data.List.Relation.Unary.All.Properties`:
   ```agda
@@ -137,17 +138,27 @@ Other major additions
 ---------------------
 
 * New modules
-  ```
-  README.Text.Tabular
+  ```agda
+  Codata.Cowriter.Bisimilarity
+
+  Data.Erased
+  Data.Product.Relation.Unary.All
+  Data.Refinement
+  Data.Refinement.Relation.Unary.All
+  Data.Tree.Binary
+  Data.Tree.Binary.Properties
+  Data.Tree.Binary.Relation.Unary.All
+  Data.Tree.Binary.Relation.Unary.All.Properties
+
+  Text.Pretty.Core
+  Text.Pretty
 
   Text.Tabular.Base
   Text.Tabular.List
   Text.Tabular.Vec
-  ```
 
-* Added new module:
-  ```agda
-  Codata.Cowriter.Bisimilarity
+  README.Text.Pretty
+  README.Text.Tabular
   ```
 
 * Added induction over subsets to `Data.Fin.Subset.Induction`.
@@ -203,8 +214,20 @@ Other major additions
     ... | false = ∈-filter⁺ v∈xs Pv
   ```
 
+* Standardised the `Eq` modules in structures and bundles in `Relation.Binary` hierarchy.
+  - `IsDecTotalOrder.Eq` now exports `isDecPartialOrder`.
+  - `DecSetoid.Eq` now exports `partialSetoid` and `_≉_`.
+  - `Poset.Eq` and `TotalOrder.Eq` now export `setoid`.
+  - `DecTotalOrder.Eq` and `StrictTotalOrder.Eq` now export `decSetoid`.
+  - `DecTotalOrder.decSetoid` is now deprecated in favour of the above `DecTotalOrder.Eq.decSetoid`.
+
 Other minor additions
 ---------------------
+
+* Added new definition to `Algebra.Definitions`:
+  ```agda
+  Interchangable _∘_ _∙_ = ∀ w x y z → ((w ∙ x) ∘ (y ∙ z)) ≈ ((w ∘ y) ∙ (x ∘ z))
+  ```
 
 * Added new proofs to `Algebra.Properties.Group`:
   ```agda
@@ -292,6 +315,16 @@ Other minor additions
   not-injective : not x ≡ not y → x ≡ y
   ```
 
+* Added new properties to `Data.Fin.Properties`:
+  ```agda
+  lift-injective : (∀ {x y} → f x ≡ f y → x ≡ y) → ∀ k {x y} → lift k f x ≡ lift k f y → x ≡ y
+  ```
+
+* Added new function to `Data.Difference.List`:
+  ```agda
+  _∷ʳ_ : DiffList A → A → DiffList A
+  ```
+
 * Added new properties to `Data.Fin.Subset`:
   ```agda
   _⊂_ : Subset n → Subset n → Set
@@ -300,12 +333,26 @@ Other minor additions
 
 * Added new proofs to `Data.Fin.Subset.Properties`:
   ```agda
-  s⊆s : p ⊆ q → s ∷ p ⊆ s ∷ q
+  s⊆s           : p ⊆ q → s ∷ p ⊆ s ∷ q
+  ∣p∣≡n⇒p≡⊤     : ∣ p ∣ ≡ n → p ≡ ⊤
 
-  x∈s⇒x∉∁s : x ∈ s → x ∉ ∁ s
-  x∈∁s⇒x∉s : x ∈ ∁ s → x ∉ s
-  x∉∁s⇒x∈s : x ∉ ∁ s → x ∈ s
-  x∉s⇒x∈∁s : x ∉ s → x ∈ ∁ s
+  p∪∁p≡⊤        : p ∪ ∁ p ≡ ⊤
+  ∣∁p∣≡n∸∣p∣    : ∣ ∁ p ∣ ≡ n ∸ ∣ p ∣
+  x∈p⇒x∉∁p      : x ∈ p → x ∉ ∁ p
+  x∈∁p⇒x∉p      : x ∈ ∁ p → x ∉ p
+  x∉∁p⇒x∈p      : x ∉ ∁ p → x ∈ p
+  x∉p⇒x∈∁p      : x ∉ p → x ∈ ∁ p
+
+  x≢y⇒x∉⁅y⁆     : x ≢ y → x ∉ ⁅ y ⁆
+  x∉⁅y⁆⇒x≢y     : x ∉ ⁅ y ⁆ → x ≢ y
+
+  ∣p∩q∣≤∣p∣     : ∣ p ∩ q ∣ ≤ ∣ p ∣
+  ∣p∩q∣≤∣q∣     : ∣ p ∩ q ∣ ≤ ∣ q ∣
+  ∣p∩q∣≤∣p∣⊓∣q∣ : ∣ p ∩ q ∣ ≤ ∣ p ∣ ⊓ ∣ q ∣
+  ∣p∣≤∣p∪q∣     : ∣ p ∣ ≤ ∣ p ∪ q ∣
+  ∣q∣≤∣p∪q∣     : ∣ q ∣ ≤ ∣ p ∪ q ∣
+  ∣p∣⊔∣q∣≤∣p∪q∣ : ∣ p ∣ ⊔ ∣ q ∣ ≤ ∣ p ∪ q ∣
+  ```
 
 * Added new proofs to `Data.Maybe.Properties`:
   ```agda
@@ -364,8 +411,23 @@ Other minor additions
   ↭-swap : xs ↭ ys → x ∷ y ∷ xs ↭ y ∷ x ∷ ys
   ```
 
-* Added new functions to `Data.Vec.Base`:
+* Added new proofs to `Data.Nat.Properties`:
+  ```agda
+  ⊔-pres-≤m : n ≤ m → o ≤ m → n ⊔ o ≤ m
+  ⊔-pres-<m : n < m → o < m → n ⊔ o < m
+  ⊓-pres-m≤ : m ≤ n → m ≤ o → m ≤ n ⊓ o
+  ⊓-pres-m< : m < n → m < o → m < n ⊓ o
   ```
+
+* Added new proofs to `Data.String.Unsafe`:
+  ```agda
+  toList-++        : toList (s ++ t) ≡ toList s ++ toList t
+  length-++        : length (s ++ t) ≡ length s + length t
+  length-replicate : length (replicate n c) ≡ n
+  ```
+
+* Added new functions to `Data.Vec.Base`:
+  ```agda
   length    : Vec A n → ℕ
   transpose : Vec (Vec A n) m → Vec (Vec A m) n
   ```
@@ -397,6 +459,13 @@ Other minor additions
 * Added new proofs to `Relation.Binary.Setoid.Properties`:
   ```agda
   ≉-resp₂ : _≉_ Respects₂ _≈_
+  ```
+
+* Added new proofs to `Relation.Binary.Construct.Union`:
+  ```agda
+  respˡ : L Respectsˡ ≈ → R Respectsˡ ≈ → (L ∪ R) Respectsˡ ≈
+  respʳ : L Respectsʳ ≈ → R Respectsʳ ≈ → (L ∪ R) Respectsʳ ≈
+  resp₂ : L Respects₂ ≈ → R Respects₂ ≈ → (L ∪ R) Respects₂ ≈
   ```
 
 * Added new proofs to `Data.Rational.Properties`:
