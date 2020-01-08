@@ -4,13 +4,17 @@
 -- Bundles for metrics over ℕ
 ------------------------------------------------------------------------
 
+-- Unfortunately, unlike definitions and structures, the bundles over
+-- general metric spaces cannot be reused as it is impossible to
+-- constrain the image set to ℕ.
+
 {-# OPTIONS --without-K --safe #-}
 
 module Function.Metric.Nat.Bundles where
 
-open import Data.Nat.Base hiding (suc)
+open import Data.Nat.Base hiding (suc; _⊔_)
 open import Function using (const)
-open import Level using (Level; 0ℓ; suc) renaming (_⊔_ to _⊔ₗ_)
+open import Level using (Level; suc; _⊔_)
 open import Relation.Binary.Core
 open import Relation.Binary.PropositionalEquality
   using (_≡_; isEquivalence)
@@ -21,19 +25,78 @@ open import Function.Metric.Bundles as Base
   using (GeneralMetric)
 
 ------------------------------------------------------------------------
--- Many of the simpler packages are simply re-exported
+-- Proto-metric
 
-open Base public using
-  ( ProtoMetric
-  ; PreMetric
-  ; QuasiSemiMetric
-  ; SemiMetric
-  )
+record ProtoMetric a ℓ : Set (suc (a ⊔ ℓ)) where
+  field
+    Carrier       : Set a
+    _≈_           : Rel Carrier ℓ
+    d             : DistanceFunction Carrier
+    isProtoMetric : IsProtoMetric _≈_ d
+
+  open IsProtoMetric isProtoMetric public
+
+------------------------------------------------------------------------
+-- PreMetric
+
+record PreMetric a ℓ : Set (suc (a ⊔ ℓ)) where
+  field
+    Carrier     : Set a
+    _≈_         : Rel Carrier ℓ
+    d           : DistanceFunction Carrier
+    isPreMetric : IsPreMetric _≈_ d
+
+  open IsPreMetric isPreMetric public
+
+  protoMetric : ProtoMetric a ℓ
+  protoMetric = record
+    { isProtoMetric = isProtoMetric
+    }
+
+------------------------------------------------------------------------
+-- QuasiSemiMetric
+
+record QuasiSemiMetric a ℓ : Set (suc (a ⊔ ℓ)) where
+  field
+    Carrier           : Set a
+    _≈_               : Rel Carrier ℓ
+    d                 : DistanceFunction Carrier
+    isQuasiSemiMetric : IsQuasiSemiMetric _≈_ d
+
+  open IsQuasiSemiMetric isQuasiSemiMetric public
+
+  preMetric : PreMetric a ℓ
+  preMetric = record
+    { isPreMetric = isPreMetric
+    }
+
+  open PreMetric preMetric public
+    using (protoMetric)
+
+------------------------------------------------------------------------
+-- SemiMetric
+
+record SemiMetric a ℓ : Set (suc (a ⊔ ℓ)) where
+  field
+    Carrier      : Set a
+    _≈_          : Rel Carrier ℓ
+    d            : DistanceFunction Carrier
+    isSemiMetric : IsSemiMetric _≈_ d
+
+  open IsSemiMetric isSemiMetric public
+
+  quasiSemiMetric : QuasiSemiMetric a ℓ
+  quasiSemiMetric = record
+    { isQuasiSemiMetric = isQuasiSemiMetric
+    }
+
+  open QuasiSemiMetric quasiSemiMetric public
+    using (protoMetric; preMetric)
 
 ------------------------------------------------------------------------
 -- Metrics
 
-record Metric a ℓ : Set (suc (a ⊔ₗ ℓ)) where
+record Metric a ℓ : Set (suc (a ⊔ ℓ)) where
   field
     Carrier  : Set a
     _≈_      : Rel Carrier ℓ
@@ -42,21 +105,18 @@ record Metric a ℓ : Set (suc (a ⊔ₗ ℓ)) where
 
   open IsMetric isMetric public
 
-  generalMetric : GeneralMetric a 0ℓ ℓ 0ℓ 0ℓ
-  generalMetric = record
-    { isGeneralMetric = isMetric
+  semiMetric : SemiMetric a ℓ
+  semiMetric = record
+    { isSemiMetric = isSemiMetric
     }
 
-  open GeneralMetric generalMetric public
-    using
-    ( protoMetric; preMetric
-    ; quasiSemiMetric; semiMetric
-    )
+  open SemiMetric semiMetric public
+    using (protoMetric; preMetric; quasiSemiMetric)
 
 ------------------------------------------------------------------------
 -- UltraMetrics
 
-record UltraMetric a ℓ : Set (suc (a ⊔ₗ ℓ)) where
+record UltraMetric a ℓ : Set (suc (a ⊔ ℓ)) where
   field
     Carrier       : Set a
     _≈_           : Rel Carrier ℓ
@@ -65,13 +125,10 @@ record UltraMetric a ℓ : Set (suc (a ⊔ₗ ℓ)) where
 
   open IsUltraMetric isUltraMetric public
 
-  generalMetric : GeneralMetric a 0ℓ ℓ 0ℓ 0ℓ
-  generalMetric = record
-    { isGeneralMetric = isUltraMetric
+  semiMetric : SemiMetric a ℓ
+  semiMetric = record
+    { isSemiMetric = isSemiMetric
     }
 
-  open GeneralMetric generalMetric public
-    using
-    ( protoMetric; preMetric
-    ; quasiSemiMetric; semiMetric
-    )
+  open SemiMetric semiMetric public
+    using (protoMetric; preMetric; quasiSemiMetric)
