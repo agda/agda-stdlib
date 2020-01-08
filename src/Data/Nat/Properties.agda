@@ -1787,19 +1787,19 @@ m≤∣m-n∣+n m n = subst (m ≤_) (+-comm n _) (m≤n+∣m-n∣ m n)
   { isTotalOrder    = ≤-isTotalOrder
   ; ≈-isEquivalence = isEquivalence
   ; cong            = cong₂ ∣_-_∣
-  ; positive        = z≤n
+  ; nonNegative     = z≤n
   }
 
 ∣-∣-isPreMetric : IsPreMetric _≡_ ∣_-_∣
 ∣-∣-isPreMetric = record
   { isProtoMetric = ∣-∣-isProtoMetric
-  ; eq⇒0          = m≡n⇒∣m-n∣≡0
+  ; ≈⇒0           = m≡n⇒∣m-n∣≡0
   }
 
 ∣-∣-isQuasiSemiMetric : IsQuasiSemiMetric _≡_ ∣_-_∣
 ∣-∣-isQuasiSemiMetric = record
   { isPreMetric = ∣-∣-isPreMetric
-  ; 0⇒eq        = ∣m-n∣≡0⇒m≡n
+  ; 0⇒≈         = ∣m-n∣≡0⇒m≡n
   }
 
 ∣-∣-isSemiMetric : IsSemiMetric _≡_ ∣_-_∣
