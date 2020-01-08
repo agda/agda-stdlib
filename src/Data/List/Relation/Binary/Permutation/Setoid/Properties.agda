@@ -266,107 +266,113 @@ shifts xs ys {zs} = begin
   (ys ++ xs) ++ zs ↭⟨ ++-assoc ys xs zs ⟩
    ys ++ xs  ++ zs ∎
 
-drop-mid-≋ : ∀ {x} ws xs {ys} {zs} →
+dropMiddleElement-≋ : ∀ {x} ws xs {ys} {zs} →
            ws ++ [ x ] ++ ys ≋ xs ++ [ x ] ++ zs →
            ws ++ ys ↭ xs ++ zs
-drop-mid-≋ []       []       (_   ∷ eq) = ≋⇒↭ eq
-drop-mid-≋ []       (x ∷ xs) (w≈v ∷ eq) = ↭-respˡ-≋ (≋-sym eq) (shift w≈v xs _)
-drop-mid-≋ (w ∷ ws) []       (w≈x ∷ eq) = ↭-respʳ-≋ eq (↭-sym (shift (≈-sym w≈x) ws _))
-drop-mid-≋ (w ∷ ws) (x ∷ xs) (w≈x ∷ eq) = prep w≈x (drop-mid-≋ ws xs eq)
+dropMiddleElement-≋ []       []       (_   ∷ eq) = ≋⇒↭ eq
+dropMiddleElement-≋ []       (x ∷ xs) (w≈v ∷ eq) = ↭-respˡ-≋ (≋-sym eq) (shift w≈v xs _)
+dropMiddleElement-≋ (w ∷ ws) []       (w≈x ∷ eq) = ↭-respʳ-≋ eq (↭-sym (shift (≈-sym w≈x) ws _))
+dropMiddleElement-≋ (w ∷ ws) (x ∷ xs) (w≈x ∷ eq) = prep w≈x (dropMiddleElement-≋ ws xs eq)
 
-drop-mid : ∀ {v} ws xs {ys zs} →
-         ws ++ [ v ] ++ ys ↭ xs ++ [ v ] ++ zs →
-         ws ++ ys ↭ xs ++ zs
-drop-mid {v} ws xs {ys} {zs} p = drop-mid′ p ws xs ≋-refl ≋-refl
+dropMiddleElement : ∀ {v} ws xs {ys zs} →
+                    ws ++ [ v ] ++ ys ↭ xs ++ [ v ] ++ zs →
+                    ws ++ ys ↭ xs ++ zs
+dropMiddleElement {v} ws xs {ys} {zs} p = helper p ws xs ≋-refl ≋-refl
   where
-  help : ∀ {w x y z} → w ≈ x → x ≈ y → z ≈ y → w ≈ z
-  help w≈x x≈y z≈y = ≈-trans (≈-trans w≈x x≈y) (≈-sym z≈y)
+  lemma : ∀ {w x y z} → w ≈ x → x ≈ y → z ≈ y → w ≈ z
+  lemma w≈x x≈y z≈y = ≈-trans (≈-trans w≈x x≈y) (≈-sym z≈y)
 
   open PermutationReasoning
 
   -- The l′ & l″ could be eliminated at the cost of making the `trans` case
   -- much more difficult to prove. At the very least would require using `Acc`.
-  drop-mid′ : ∀ {l′ l″ : List A} → l′ ↭ l″ →
-              ∀ ws xs {ys zs : List A} →
-              ws ++ [ v ] ++ ys ≋ l′ →
-              xs ++ [ v ] ++ zs ≋ l″ →
-              ws ++ ys ↭ xs ++ zs
-  drop-mid′ {as}     {bs}     (refl eq3) ws xs {ys} {zs} eq1 eq2 =
-    drop-mid-≋ ws xs (≋-trans (≋-trans eq1 eq3) (≋-sym eq2))
-  drop-mid′ {_ ∷ as} {_ ∷ bs} (prep _ as↭bs) [] [] {ys} {zs} (_ ∷ ys≋as) (_ ∷ zs≋bs) = begin
+  helper : ∀ {l′ l″ : List A} → l′ ↭ l″ →
+           ∀ ws xs {ys zs : List A} →
+           ws ++ [ v ] ++ ys ≋ l′ →
+           xs ++ [ v ] ++ zs ≋ l″ →
+           ws ++ ys ↭ xs ++ zs
+  helper {as}     {bs}     (refl eq3) ws xs {ys} {zs} eq1 eq2 =
+    dropMiddleElement-≋ ws xs (≋-trans (≋-trans eq1 eq3) (≋-sym eq2))
+  helper {_ ∷ as} {_ ∷ bs} (prep _ as↭bs) [] [] {ys} {zs} (_ ∷ ys≋as) (_ ∷ zs≋bs) = begin
     ys               ≋⟨  ys≋as ⟩
     as               ↭⟨  as↭bs ⟩
     bs               ≋˘⟨ zs≋bs ⟩
     zs               ∎
-  drop-mid′ {_ ∷ as} {_ ∷ bs} (prep a≈b as↭bs) [] (x ∷ xs) {ys} {zs} (≈₁ ∷ ≋₁) (≈₂ ∷ ≋₂) = begin
+  helper {_ ∷ as} {_ ∷ bs} (prep a≈b as↭bs) [] (x ∷ xs) {ys} {zs} (≈₁ ∷ ≋₁) (≈₂ ∷ ≋₂) = begin
     ys               ≋⟨  ≋₁ ⟩
     as               ↭⟨  as↭bs ⟩
     bs               ≋˘⟨ ≋₂ ⟩
-    xs ++ v ∷ zs     ↭⟨  shift (help ≈₁ a≈b ≈₂) xs zs ⟩
+    xs ++ v ∷ zs     ↭⟨  shift (lemma ≈₁ a≈b ≈₂) xs zs ⟩
     x ∷ xs ++ zs     ∎
-  drop-mid′ {_ ∷ as} {_ ∷ bs} (prep v≈w p) (w ∷ ws) [] {ys} {zs} (≈₁ ∷ ≋₁) (≈₂ ∷ ≋₂) = begin
-    w ∷ ws ++ ys     ↭⟨  ↭-sym (shift (help ≈₂ (≈-sym v≈w) ≈₁) ws ys) ⟩
+  helper {_ ∷ as} {_ ∷ bs} (prep v≈w p) (w ∷ ws) [] {ys} {zs} (≈₁ ∷ ≋₁) (≈₂ ∷ ≋₂) = begin
+    w ∷ ws ++ ys     ↭⟨  ↭-sym (shift (lemma ≈₂ (≈-sym v≈w) ≈₁) ws ys) ⟩
     ws ++ v ∷ ys     ≋⟨  ≋₁ ⟩
     as               ↭⟨  p ⟩
     bs               ≋˘⟨ ≋₂ ⟩
     zs               ∎
-  drop-mid′ {_ ∷ as} {_ ∷ bs} (prep w≈x p) (w ∷ ws) (x ∷ xs) {ys} {zs} (≈₁ ∷ ≋₁) (≈₂ ∷ ≋₂) = begin
-    w ∷ ws ++ ys     ↭⟨ prep (help ≈₁ w≈x ≈₂) (drop-mid′ p ws xs ≋₁ ≋₂) ⟩
+  helper {_ ∷ as} {_ ∷ bs} (prep w≈x p) (w ∷ ws) (x ∷ xs) {ys} {zs} (≈₁ ∷ ≋₁) (≈₂ ∷ ≋₂) = begin
+    w ∷ ws ++ ys     ↭⟨ prep (lemma ≈₁ w≈x ≈₂) (helper p ws xs ≋₁ ≋₂) ⟩
     x ∷ xs ++ zs     ∎
-  drop-mid′ {_ ∷ a ∷ as} {_ ∷ b ∷ bs} (swap v≈x y≈v p) [] [] {ys} {zs} (≈₁ ∷ ≋₁) (≈₂ ∷ ≋₂) = begin
+  helper {_ ∷ a ∷ as} {_ ∷ b ∷ bs} (swap v≈x y≈v p) [] [] {ys} {zs} (≈₁ ∷ ≋₁) (≈₂ ∷ ≋₂) = begin
     ys               ≋⟨  ≋₁ ⟩
     a ∷ as           ↭⟨  prep (≈-trans (≈-trans (≈-trans y≈v (≈-sym ≈₂)) ≈₁) v≈x) p ⟩
     b ∷ bs           ≋˘⟨ ≋₂ ⟩
     zs               ∎
-  drop-mid′ {_ ∷ a ∷ as} {_ ∷ b ∷ bs} (swap v≈w y≈w p) [] (x ∷ []) {ys} {zs} (≈₁ ∷ ≋₁) (≈₂ ∷ ≋₂) = begin
+  helper {_ ∷ a ∷ as} {_ ∷ b ∷ bs} (swap v≈w y≈w p) [] (x ∷ []) {ys} {zs} (≈₁ ∷ ≋₁) (≈₂ ∷ ≋₂) = begin
     ys               ≋⟨  ≋₁ ⟩
     a ∷ as           ↭⟨  prep y≈w p ⟩
     _ ∷ bs           ≋˘⟨ ≈₂ ∷ tail ≋₂ ⟩
     x ∷ zs           ∎
-  drop-mid′ {_ ∷ a ∷ as} {_ ∷ b ∷ bs} (swap v≈w y≈x p) [] (x ∷ w ∷ xs) {ys} {zs} (≈₁ ∷ ≋₁) (≈₂ ∷ ≋₂) = begin
+  helper {_ ∷ a ∷ as} {_ ∷ b ∷ bs} (swap v≈w y≈x p) [] (x ∷ w ∷ xs) {ys} {zs} (≈₁ ∷ ≋₁) (≈₂ ∷ ≋₂) = begin
     ys               ≋⟨ ≋₁ ⟩
     a ∷ as           ↭⟨ prep y≈x p ⟩
     _ ∷ bs           ≋⟨ ≋-sym (≈₂ ∷ tail ≋₂) ⟩
-    x ∷ xs ++ v ∷ zs ↭⟨ prep ≈-refl (shift (help ≈₁ v≈w (head ≋₂)) xs zs) ⟩
+    x ∷ xs ++ v ∷ zs ↭⟨ prep ≈-refl (shift (lemma ≈₁ v≈w (head ≋₂)) xs zs) ⟩
     x ∷ w ∷ xs ++ zs ∎
-  drop-mid′ {_ ∷ a ∷ as} {_ ∷ b ∷ bs} (swap w≈x _ p) (w ∷ []) [] {ys} {zs} (≈₁ ∷ ≋₁) (≈₂ ∷ ≋₂) = begin
+  helper {_ ∷ a ∷ as} {_ ∷ b ∷ bs} (swap w≈x _ p) (w ∷ []) [] {ys} {zs} (≈₁ ∷ ≋₁) (≈₂ ∷ ≋₂) = begin
     w ∷ ys           ≋⟨ ≈₁ ∷ tail (≋₁) ⟩
     _ ∷ as           ↭⟨ prep w≈x p ⟩
     b ∷ bs           ≋⟨ ≋-sym ≋₂ ⟩
     zs               ∎
-  drop-mid′ {_ ∷ a ∷ as} {_ ∷ b ∷ bs} (swap w≈y x≈v p) (w ∷ x ∷ ws) [] {ys} {zs} (≈₁ ∷ ≋₁) (≈₂ ∷ ≋₂) = begin
-    w ∷ x ∷ ws ++ ys ↭⟨ prep ≈-refl (↭-sym (shift (help ≈₂ (≈-sym x≈v) (head ≋₁)) ws ys)) ⟩
+  helper {_ ∷ a ∷ as} {_ ∷ b ∷ bs} (swap w≈y x≈v p) (w ∷ x ∷ ws) [] {ys} {zs} (≈₁ ∷ ≋₁) (≈₂ ∷ ≋₂) = begin
+    w ∷ x ∷ ws ++ ys ↭⟨ prep ≈-refl (↭-sym (shift (lemma ≈₂ (≈-sym x≈v) (head ≋₁)) ws ys)) ⟩
     w ∷ ws ++ v ∷ ys ≋⟨ ≈₁ ∷ tail ≋₁ ⟩
     _ ∷ as           ↭⟨ prep w≈y p ⟩
     b ∷ bs           ≋⟨ ≋-sym ≋₂ ⟩
     zs               ∎
-  drop-mid′ {_ ∷ a ∷ as} {_ ∷ b ∷ bs} (swap x≈v v≈y p) (x ∷ []) (y ∷ []) {ys} {zs} (≈₁ ∷ ≋₁) (≈₂ ∷ ≋₂) = begin
+  helper {_ ∷ a ∷ as} {_ ∷ b ∷ bs} (swap x≈v v≈y p) (x ∷ []) (y ∷ []) {ys} {zs} (≈₁ ∷ ≋₁) (≈₂ ∷ ≋₂) = begin
     x ∷ ys           ≋⟨ ≈₁ ∷ tail ≋₁ ⟩
     _ ∷ as           ↭⟨ prep (≈-trans x≈v (≈-trans (≈-sym (head ≋₂)) (≈-trans (head ≋₁) v≈y))) p ⟩
     _ ∷ bs           ≋⟨ ≋-sym (≈₂ ∷ tail ≋₂) ⟩
     y ∷ zs           ∎
-  drop-mid′ {_ ∷ a ∷ as} {_ ∷ b ∷ bs} (swap y≈w v≈z p) (y ∷ []) (z ∷ w ∷ xs) {ys} {zs} (≈₁ ∷ ≋₁) (≈₂ ∷ ≋₂) = begin
+  helper {_ ∷ a ∷ as} {_ ∷ b ∷ bs} (swap y≈w v≈z p) (y ∷ []) (z ∷ w ∷ xs) {ys} {zs} (≈₁ ∷ ≋₁) (≈₂ ∷ ≋₂) = begin
     y ∷ ys           ≋⟨ ≈₁ ∷ tail ≋₁ ⟩
     _ ∷ as           ↭⟨ prep y≈w p ⟩
     _ ∷ bs           ≋⟨ ≋-sym ≋₂ ⟩
     w ∷ xs ++ v ∷ zs ↭⟨ ↭-prep w (shift ≈-refl xs zs) ⟩
-    w ∷ v ∷ xs ++ zs ↭⟨ swap ≈-refl (help (head ≋₁) v≈z ≈₂) ↭-refl ⟩
+    w ∷ v ∷ xs ++ zs ↭⟨ swap ≈-refl (lemma (head ≋₁) v≈z ≈₂) ↭-refl ⟩
     z ∷ w ∷ xs ++ zs ∎
-  drop-mid′ {_ ∷ a ∷ as} {_ ∷ b ∷ bs} (swap y≈v w≈z p) (y ∷ w ∷ ws) (z ∷ []) {ys} {zs}    (≈₁ ∷ ≋₁) (≈₂ ∷ ≋₂) = begin
-    y ∷ w ∷ ws ++ ys ↭⟨ swap (help ≈₁ y≈v (head ≋₂)) ≈-refl ↭-refl ⟩
+  helper {_ ∷ a ∷ as} {_ ∷ b ∷ bs} (swap y≈v w≈z p) (y ∷ w ∷ ws) (z ∷ []) {ys} {zs}    (≈₁ ∷ ≋₁) (≈₂ ∷ ≋₂) = begin
+    y ∷ w ∷ ws ++ ys ↭⟨ swap (lemma ≈₁ y≈v (head ≋₂)) ≈-refl ↭-refl ⟩
     w ∷ v ∷ ws ++ ys ↭⟨ ↭-prep w (↭-sym (shift ≈-refl ws ys)) ⟩
     w ∷ ws ++ v ∷ ys ≋⟨ ≋₁ ⟩
     _ ∷ as           ↭⟨ prep w≈z p ⟩
     _ ∷ bs           ≋⟨ ≋-sym (≈₂ ∷ tail ≋₂) ⟩
     z ∷ zs           ∎
-  drop-mid′ (swap x≈z y≈w p) (x ∷ y ∷ ws) (w ∷ z ∷ xs) {ys} {zs} (≈₁ ∷ ≈₃ ∷ ≋₁) (≈₂ ∷ ≈₄ ∷ ≋₂) = begin
-    x ∷ y ∷ ws ++ ys ↭⟨ swap (help ≈₁ x≈z ≈₄) (help ≈₃ y≈w ≈₂) (drop-mid′ p ws xs ≋₁ ≋₂) ⟩
+  helper (swap x≈z y≈w p) (x ∷ y ∷ ws) (w ∷ z ∷ xs) {ys} {zs} (≈₁ ∷ ≈₃ ∷ ≋₁) (≈₂ ∷ ≈₄ ∷ ≋₂) = begin
+    x ∷ y ∷ ws ++ ys ↭⟨ swap (lemma ≈₁ x≈z ≈₄) (lemma ≈₃ y≈w ≈₂) (helper p ws xs ≋₁ ≋₂) ⟩
     w ∷ z ∷ xs ++ zs ∎
-  drop-mid′ {as} {bs} (trans p₁ p₂) ws xs eq1 eq2
+  helper {as} {bs} (trans p₁ p₂) ws xs eq1 eq2
     with ∈-∃++ S (∈-resp-↭ (↭-respˡ-≋ (≋-sym eq1) p₁) (∈-insert S ws ≈-refl))
   ... | (h , t , w , v≈w , eq) = trans
-    (drop-mid′ p₁ ws h eq1 (≋-trans (≋.++⁺ ≋-refl (v≈w ∷ ≋-refl)) (≋-sym eq)))
-    (drop-mid′ p₂ h xs (≋-trans (≋.++⁺ ≋-refl (v≈w ∷ ≋-refl)) (≋-sym eq)) eq2)
+    (helper p₁ ws h eq1 (≋-trans (≋.++⁺ ≋-refl (v≈w ∷ ≋-refl)) (≋-sym eq)))
+    (helper p₂ h xs (≋-trans (≋.++⁺ ≋-refl (v≈w ∷ ≋-refl)) (≋-sym eq)) eq2)
+
+dropMiddle : ∀ {vs} ws xs {ys zs} →
+             ws ++ vs ++ ys ↭ xs ++ vs ++ zs →
+             ws ++ ys ↭ xs ++ zs
+dropMiddle {[]}     ws xs p = p
+dropMiddle {v ∷ vs} ws xs p = dropMiddle ws xs (dropMiddleElement ws xs p)
 
 split : ∀ (v : A) as bs {xs} → xs ↭ as ++ [ v ] ++ bs → ∃₂ λ ps qs → xs ≋ ps ++ [ v ] ++ qs
 split v as bs p = helper as bs p (<-wellFounded (steps p))

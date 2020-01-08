@@ -321,15 +321,16 @@ Other minor additions
 
 * Added new functions to ` Data.List.Relation.Binary.Permutation.Setoid.Properties`:
   ```agda
-  0<steps     : (xs↭ys : xs ↭ ys) → 0 < steps xs↭ys
-  steps-respˡ : (ys≋xs : ys ≋ xs) (ys↭zs : ys ↭ zs) → steps (↭-respˡ-≋ ys≋xs ys↭zs) ≡ steps ys↭zs
-  steps-respʳ : (xs≋ys : xs ≋ ys) (zs↭xs : zs ↭ xs) → steps (↭-respʳ-≋ xs≋ys zs↭xs) ≡ steps zs↭xs
+  0<steps              : (xs↭ys : xs ↭ ys) → 0 < steps xs↭ys
+  steps-respˡ          : (ys≋xs : ys ≋ xs) (ys↭zs : ys ↭ zs) → steps (↭-respˡ-≋ ys≋xs ys↭zs) ≡ steps ys↭zs
+  steps-respʳ          : (xs≋ys : xs ≋ ys) (zs↭xs : zs ↭ xs) → steps (↭-respʳ-≋ xs≋ys zs↭xs) ≡ steps zs↭xs
 
-  drop-mid-≋  : ws ++ [ x ] ++ ys ≋ xs ++ [ x ] ++ zs → ws ++ ys ↭ xs ++ zs
-  drop-mid    : ws ++ [ v ] ++ ys ↭ xs ++ [ v ] ++ zs → ws ++ ys ↭ xs ++ zs
-  split       : xs ↭ as ++ [ v ] ++ bs → ∃₂ λ ps qs → xs ≋ ps ++ [ v ] ++ qs
+  split                : xs ↭ as ++ [ v ] ++ bs → ∃₂ λ ps qs → xs ≋ ps ++ [ v ] ++ qs
+  dropMiddle           : ws ++ vs ++ ys ↭ xs ++ vs ++ zs → ws ++ ys ↭ xs ++ zs
+  dropMiddleElement    : ws ++ [ v ] ++ ys ↭ xs ++ [ v ] ++ zs → ws ++ ys ↭ xs ++ zs
+  dropMiddleElement-≋  : ws ++ [ v ] ++ ys ≋ xs ++ [ v ] ++ zs → ws ++ ys ↭ xs ++ zs
 
-  filter⁺     : xs ↭ ys → filter P? xs ↭ filter P? ys
+  filter⁺              : xs ↭ ys → filter P? xs ↭ filter P? ys
   ```
 
 * Added new proof to `Data.Nat.Properties`:
