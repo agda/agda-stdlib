@@ -295,32 +295,8 @@ module _ {r ℓr} (commutativeRing : CommutativeRing r ℓr) where
 
     open IsBimodule isBimodule public
 
-    -- TODO #898: this should be trivial, but currently is not.
     isSemimodule : IsSemimodule commutativeSemiring +ᴹ *ₗ *ᵣ 0ᴹ
-    isSemimodule = record
-      { isBisemimodule = record
-        { +ᴹ-isCommutativeMonoid = +ᴹ-isCommutativeMonoid
-        ; isPreleftSemimodule = record
-          { *ₗ-cong = *ₗ-cong
-          ; *ₗ-zeroˡ = *ₗ-zeroˡ
-          ; *ₗ-distribʳ = *ₗ-distribʳ
-          ; *ₗ-identityˡ = *ₗ-identityˡ
-          ; *ₗ-assoc = *ₗ-assoc
-          ; *ₗ-zeroʳ = *ₗ-zeroʳ
-          ; *ₗ-distribˡ = *ₗ-distribˡ
-          }
-        ; isPrerightSemimodule = record
-          { *ᵣ-cong = *ᵣ-cong
-          ; *ᵣ-zeroʳ = *ᵣ-zeroʳ
-          ; *ᵣ-distribˡ = *ᵣ-distribˡ
-          ; *ᵣ-identityʳ = *ᵣ-identityʳ
-          ; *ᵣ-assoc = *ᵣ-assoc
-          ; *ᵣ-zeroˡ = *ᵣ-zeroˡ
-          ; *ᵣ-distribʳ = *ᵣ-distribʳ
-          }
-        ; *ₗ-*ᵣ-assoc = *ₗ-*ᵣ-assoc
-        }
-      }
+    isSemimodule = record { isBisemimodule = isBisemimodule }
 
   record IsModuleFromLeft (+ᴹ : Op₂ M) (*ₗ : Opₗ R M) (0ᴹ : M) (-ᴹ : Op₁ M)
                           : Set (r ⊔ m ⊔ ℓr ⊔ ℓm) where
@@ -329,29 +305,12 @@ module _ {r ℓr} (commutativeRing : CommutativeRing r ℓr) where
 
     open IsLeftModule isLeftModule
 
-    -- TODO #898: use IsSemimodulefromLeft.isSemimodule to fill the
-    -- isBisemimodule field.
     isModule : IsModule +ᴹ *ₗ (flip *ₗ) 0ᴹ -ᴹ
     isModule = record
       { isBimodule = record
-        { isBisemimodule = record
-          { +ᴹ-isCommutativeMonoid = +ᴹ-isCommutativeMonoid
-          ; isPreleftSemimodule = isPreleftSemimodule
-          ; isPrerightSemimodule = record
-            { *ᵣ-cong = flip *ₗ-cong
-            ; *ᵣ-zeroʳ = *ₗ-zeroˡ
-            ; *ᵣ-distribˡ = *ₗ-distribʳ
-            ; *ᵣ-identityʳ = *ₗ-identityˡ
-            ; *ᵣ-assoc = λ m r s → M-trans (M-sym (*ₗ-assoc s r m))
-                                           (*ₗ-cong (*-comm s r) M-refl)
-            ; *ᵣ-zeroˡ = *ₗ-zeroʳ
-            ; *ᵣ-distribʳ = *ₗ-distribˡ
-            }
-          ; *ₗ-*ᵣ-assoc = λ r m s →
-            M-trans (M-sym (*ₗ-assoc s r m))
-                    (M-trans (*ₗ-cong (*-comm s r) M-refl)
-                             (*ₗ-assoc r s m))
-          }
+        { isBisemimodule = IsSemimoduleFromLeft.isBisemimodule
+          {commutativeSemiring = commutativeSemiring}
+          (record { isLeftSemimodule = isLeftSemimodule })
         ; -ᴹ‿cong = -ᴹ‿cong
         ; -ᴹ‿inverse = -ᴹ‿inverse
         }
@@ -367,28 +326,12 @@ module _ {r ℓr} (commutativeRing : CommutativeRing r ℓr) where
 
     open IsRightModule isRightModule
 
-    -- TODO #898: see IsModuleFromLeft
     isModule : IsModule +ᴹ (flip *ᵣ) *ᵣ 0ᴹ -ᴹ
     isModule = record
       { isBimodule = record
-        { isBisemimodule = record
-          { +ᴹ-isCommutativeMonoid = +ᴹ-isCommutativeMonoid
-          ; isPreleftSemimodule = record
-            { *ₗ-cong = flip *ᵣ-cong
-            ; *ₗ-zeroˡ = *ᵣ-zeroʳ
-            ; *ₗ-distribʳ = *ᵣ-distribˡ
-            ; *ₗ-identityˡ = *ᵣ-identityʳ
-            ; *ₗ-assoc = λ r s m → M-trans (*ᵣ-cong M-refl (*-comm r s))
-                                           (M-sym (*ᵣ-assoc m s r))
-            ; *ₗ-zeroʳ = *ᵣ-zeroˡ
-            ; *ₗ-distribˡ = *ᵣ-distribʳ
-            }
-          ; isPrerightSemimodule = isPrerightSemimodule
-          ; *ₗ-*ᵣ-assoc = λ r m s →
-            M-trans (*ᵣ-assoc m r s)
-                    (M-trans (*ᵣ-cong M-refl (*-comm r s))
-                             (M-sym (*ᵣ-assoc m s r)))
-          }
+        { isBisemimodule = IsSemimoduleFromRight.isBisemimodule
+          {commutativeSemiring = commutativeSemiring}
+          (record { isRightSemimodule = isRightSemimodule })
         ; -ᴹ‿cong = -ᴹ‿cong
         ; -ᴹ‿inverse = -ᴹ‿inverse
         }

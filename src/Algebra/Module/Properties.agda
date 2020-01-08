@@ -96,35 +96,13 @@ ring⇒rightModule ring = record
     }
   } where open Ring ring
 
--- TODO: #898 would allow refactoring using
--- Semimodule.isBisemimodule
---  (commutativeSemiring⇒semimodule commutativeSemiring)
 commutativeRing⇒module : (R : CommutativeRing c ℓ) → Module R c ℓ
 commutativeRing⇒module commutativeRing = record
   { isModule = record
     { isBimodule = record
-      { isBisemimodule = record
-        { +ᴹ-isCommutativeMonoid = +-isCommutativeMonoid
-        ; isPreleftSemimodule = record
-            { *ₗ-cong = *-cong
-            ; *ₗ-zeroˡ = zeroˡ
-            ; *ₗ-distribʳ = distribʳ
-            ; *ₗ-identityˡ = *-identityˡ
-            ; *ₗ-assoc = *-assoc
-            ; *ₗ-zeroʳ = zeroʳ
-            ; *ₗ-distribˡ = distribˡ
-            }
-        ; isPrerightSemimodule = record
-          { *ᵣ-cong = *-cong
-          ; *ᵣ-zeroʳ = zeroʳ
-          ; *ᵣ-distribˡ = distribˡ
-          ; *ᵣ-identityʳ = *-identityʳ
-          ; *ᵣ-assoc = *-assoc
-          ; *ᵣ-zeroˡ = zeroˡ
-          ; *ᵣ-distribʳ = distribʳ
-          }
-        ; *ₗ-*ᵣ-assoc = *-assoc
-        }
+      { isBisemimodule =
+        Semimodule.isBisemimodule
+          (commutativeSemiring⇒semimodule commutativeSemiring)
       ; -ᴹ‿cong = -‿cong
       ; -ᴹ‿inverse = -‿inverse
       }
