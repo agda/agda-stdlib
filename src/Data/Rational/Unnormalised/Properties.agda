@@ -288,12 +288,12 @@ p ≤? q = Dec.map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* �
   n ℤ.* d ℤ.+ (ℤ.- n) ℤ.* d          ≡˘⟨ cong (λ n+d → n ℤ.* d ℤ.+ n+d) (ℤ.neg-distribˡ-* n d) ⟩
   n ℤ.* d ℤ.+ ℤ.- (n ℤ.* d)          ≡⟨ ℤ.+-inverseʳ (n ℤ.* d) ⟩
   0ℤ ∎ where open ≡-Reasoning
-  
+
 +-inverse : Inverse _≃_ 0ℚᵘ -_ _+_
 +-inverse = +-inverseˡ , +-inverseʳ
- 
-+-inverse-cong : Congruent₁ _≃_ (-_)
-+-inverse-cong {p} {q} (*≡* p≡q) = *≡* (begin
+
+-‿cong : Congruent₁ _≃_ (-_)
+-‿cong {p} {q} (*≡* p≡q) = *≡* (begin
   ↥(- p) ℤ.* ↧ q             ≡˘⟨ ℤ.*-identityˡ (ℤ.-(↥ p) ℤ.* ↧ q) ⟩
   1ℤ ℤ.* (↥(- p) ℤ.* ↧ q)    ≡⟨ sym (ℤ.*-assoc 1ℤ (↥(- p)) (↧ q)) ⟩
   (1ℤ ℤ.* ℤ.-(↥ p)) ℤ.* ↧ q  ≡˘⟨ cong (ℤ._* ↧ q) (ℤ.neg-distribʳ-* 1ℤ (↥ p)) ⟩
@@ -338,7 +338,7 @@ p ≤? q = Dec.map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* �
 +-0-isGroup = record
   { isMonoid = +-0-isMonoid
   ; inverse  = +-inverse
-  ; ⁻¹-cong  = +-inverse-cong
+  ; ⁻¹-cong  = -‿cong
   }
 
 ------------------------------------------------------------------------
@@ -362,6 +362,16 @@ p ≤? q = Dec.map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* �
 +-0-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
 +-0-commutativeMonoid = record
   { isCommutativeMonoid = +-0-isCommutativeMonoid
+  }
+
++-0-group : Group 0ℓ 0ℓ
++-0-group = record
+  { Carrier = ℚᵘ
+  ; _≈_     = _≃_
+  ; _∙_     = _+_
+  ; ε       = 0ℚᵘ
+  ; _⁻¹     = -_
+  ; isGroup = +-0-isGroup
   }
 
 ------------------------------------------------------------------------

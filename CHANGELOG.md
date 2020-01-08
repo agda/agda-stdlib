@@ -463,7 +463,7 @@ Other minor additions
   +-inverseˡ  : LeftInverse _≃_ 0ℚᵘ -_ _+_
   +-inverseʳ  : RightInverse _≃_ 0ℚᵘ -_ _+_
   +-inverse   : Inverse _≃_ 0ℚᵘ -_ _+_
-  +-cong⁻¹    : Congruent₁ _≃_ (-_)
+  -‿cong      : Congruent₁ _≃_ (-_)
   +-0-isGroup : IsGroup _≃_ _+_ 0ℚᵘ (-_)
-  +-0-group : Group 0ℓ 0ℓ
+  +-0-group   : Group 0ℓ 0ℓ
   ```
