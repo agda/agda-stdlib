@@ -406,7 +406,7 @@ module ≤-Reasoning where
     <-transˡ
     <-transʳ
     public
-    hiding (_≈⟨_⟩_)
+    hiding (step-≈; step-≈˘)
 
 open ≤-Reasoning
 

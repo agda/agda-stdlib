@@ -86,19 +86,24 @@ module ⊆-Reasoning where
     module PreOrder {a} {A : Set a} = PreorderReasoning (⊆-preorder A)
 
     open PreOrder
-      hiding (_≈⟨_⟩_; _≈˘⟨_⟩_)
-      renaming (_∼⟨_⟩_ to _⊆⟨_⟩_)
+      hiding (step-≈; step-≈˘; step-∼)
 
-  infixr 2 _∼⟨_⟩_
-  infix  1 _∈⟨_⟩_
+  infixr 2 step-∼ step-⊆
+  infix  1 step-∈
 
-  _∈⟨_⟩_ : ∀ {a} {A : Set a} x {xs ys : List A} →
-           x ∈ xs → xs IsRelatedTo ys → x ∈ ys
-  x ∈⟨ x∈xs ⟩ xs⊆ys = (begin xs⊆ys) x∈xs
+  step-⊆ = PreOrder.step-∼
 
-  _∼⟨_⟩_ : ∀ {k a} {A : Set a} xs {ys zs : List A} →
-           xs ∼[ ⌊ k ⌋→ ] ys → ys IsRelatedTo zs → xs IsRelatedTo zs
-  xs ∼⟨ xs≈ys ⟩ ys≈zs = xs ⊆⟨ ⇒→ xs≈ys ⟩ ys≈zs
+  step-∈ : ∀ {a} {A : Set a} x {xs ys : List A} →
+           xs IsRelatedTo ys → x ∈ xs → x ∈ ys
+  step-∈ x xs⊆ys x∈xs = (begin xs⊆ys) x∈xs
+
+  step-∼ : ∀ {k a} {A : Set a} xs {ys zs : List A} →
+           ys IsRelatedTo zs → xs ∼[ ⌊ k ⌋→ ] ys → xs IsRelatedTo zs
+  step-∼ xs ys⊆zs xs≈ys = step-⊆ xs ys⊆zs (⇒→ xs≈ys)
+
+  syntax step-∈ x  xs⊆ys x∈xs  = x ∈⟨ x∈xs ⟩ xs⊆ys
+  syntax step-∼ xs ys⊆zs xs≈ys = xs ∼⟨ xs≈ys ⟩ ys⊆zs
+  syntax step-⊆ xs ys⊆zs xs⊆ys = xs ⊆⟨ xs⊆ys ⟩ ys⊆zs
 
 ------------------------------------------------------------------------
 -- Congruence lemmas

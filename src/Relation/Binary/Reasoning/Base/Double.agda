@@ -18,7 +18,7 @@ module Relation.Binary.Reasoning.Base.Double {a ℓ₁ ℓ₂} {A : Set a}
 
 open import Data.Product using (proj₁; proj₂)
 open import Level using (Level; _⊔_; Lift; lift)
-open import Function.Core using (case_of_; id)
+open import Function.Base using (case_of_; id)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; refl; sym)
 open import Relation.Nullary using (Dec; yes; no)
@@ -111,5 +111,5 @@ x ∎ = equals Eq.refl
 syntax step-∼  x y∼z x∼y = x ∼⟨  x∼y ⟩ y∼z
 syntax step-≈  x y∼z x≈y = x ≈⟨  x≈y ⟩ y∼z
 syntax step-≈˘ x y∼z y≈x = x ≈˘⟨ y≈x ⟩ y∼z
-syntax step-≡  x y∼z x≡y = x ≈⟨  x≡y ⟩ y∼z
-syntax step-≡˘ x y∼z y≡x = x ≈˘⟨ y≡x ⟩ y∼z
+syntax step-≡  x y∼z x≡y = x ≡⟨  x≡y ⟩ y∼z
+syntax step-≡˘ x y∼z y≡x = x ≡˘⟨ y≡x ⟩ y∼z

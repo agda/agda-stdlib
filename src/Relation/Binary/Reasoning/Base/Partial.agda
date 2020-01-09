@@ -68,7 +68,7 @@ step-≡˘ _ x∼z P.refl = x∼z
 -- Step with a trivial propositional equality
 
 _≡⟨⟩_ : ∀ x {y} → x IsRelatedTo y → x IsRelatedTo y
-_ ≡⟨⟩ x∼y = _ ≡⟨ P.refl ⟩ x∼y
+_ ≡⟨⟩ x∼y = x∼y
 
 -- Termination step
 

@@ -520,14 +520,12 @@ x ≤? y with <-cmp x y
 ------------------------------------------------------------------------------
 -- Equational reasoning for _≤_ and _<_
 
-module ≤-Reasoning where
-  open InequalityReasoning
-    ≤-isPreorder
-    <-trans
-    (resp₂ _<_) <⇒≤
-    <-≤-trans ≤-<-trans
-    public
-    hiding (_≈⟨_⟩_; _≈˘⟨_⟩_)
+module ≤-Reasoning = InequalityReasoning
+  ≤-isPreorder
+  <-trans
+  (resp₂ _<_) <⇒≤
+  <-≤-trans ≤-<-trans
+  hiding (step-≈; step-≈˘)
 
 ------------------------------------------------------------------------------
 -- Properties of _<ℕ_
