@@ -1,14 +1,15 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- An inductive definition for the permutation relation
+-- This module is DEPRECATED. Please use
+-- Data.List.Relation.Binary.Permutation.Propositional directly.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
-module Data.List.Relation.Binary.Permutation.Inductive
-  {a} {A : Set a} where
+module Data.List.Relation.Binary.Permutation.Inductive where
 
+<<<<<<< HEAD
 open import Data.List using (List; []; _∷_)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)
@@ -90,3 +91,6 @@ module PermutationReasoning where
   _∷_∷_<<⟨_⟩_ : ∀ x y xs {ys zs : List A} → xs ↭ ys →
                   (y ∷ x ∷ ys) IsRelatedTo zs → (x ∷ y ∷ xs) IsRelatedTo zs
   x ∷ y ∷ xs <<⟨ xs↭ys ⟩ rel = relTo (trans (swap x y xs↭ys) (begin rel))
+=======
+open import Data.List.Relation.Binary.Permutation.Propositional public
+>>>>>>> origin/master

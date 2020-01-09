@@ -39,7 +39,7 @@ module TmApp {ℓ} {T : ℕ → Set ℓ} (l : Lift T Tm) where
   infix 8 _/_
 
   _/_ : ∀ {m n} → Tm m → Sub T m n → Tm n
-  var x   / ρ = lift (lookup x ρ)
+  var x   / ρ = lift (lookup ρ x)
   ƛ t     / ρ = ƛ (t / ρ ↑)
   t₁ · t₂ / ρ = (t₁ / ρ) · (t₂ / ρ)
 

@@ -13,15 +13,11 @@ open import Data.Sign as Sign using (Sign)
 open import Data.String.Base using (String; _++_)
 
 ------------------------------------------------------------------------
--- Integers, basic types and operations
+-- Re-export basic definition, operations and queries
 
 open import Data.Integer.Base public
-
-------------------------------------------------------------------------
--- Re-export queries from the properties modules
-
 open import Data.Integer.Properties public
-  using (_≟_; _≤?_)
+  using (_≟_; _≤?_; _<?_)
 
 ------------------------------------------------------------------------
 -- Conversions

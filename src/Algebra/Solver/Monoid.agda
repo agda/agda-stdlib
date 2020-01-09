@@ -52,7 +52,7 @@ Env n = Vec Carrier n
 -- a value.
 
 ⟦_⟧ : ∀ {n} → Expr n → Env n → Carrier
-⟦ var x   ⟧ ρ = lookup x ρ
+⟦ var x   ⟧ ρ = lookup ρ x
 ⟦ id      ⟧ ρ = ε
 ⟦ e₁ ⊕ e₂ ⟧ ρ = ⟦ e₁ ⟧ ρ ∙ ⟦ e₂ ⟧ ρ
 
@@ -68,7 +68,7 @@ Normal n = List (Fin n)
 
 ⟦_⟧⇓ : ∀ {n} → Normal n → Env n → Carrier
 ⟦ []     ⟧⇓ ρ = ε
-⟦ x ∷ nf ⟧⇓ ρ = lookup x ρ ∙ ⟦ nf ⟧⇓ ρ
+⟦ x ∷ nf ⟧⇓ ρ = lookup ρ x ∙ ⟦ nf ⟧⇓ ρ
 
 -- A normaliser.
 
@@ -85,17 +85,17 @@ homomorphic [] nf₂ ρ = begin
   ⟦ nf₂ ⟧⇓ ρ      ≈⟨ sym $ identityˡ _ ⟩
   ε ∙ ⟦ nf₂ ⟧⇓ ρ  ∎
 homomorphic (x ∷ nf₁) nf₂ ρ = begin
-  lookup x ρ ∙ ⟦ nf₁ ++ nf₂ ⟧⇓ ρ          ≈⟨ ∙-cong refl (homomorphic nf₁ nf₂ ρ) ⟩
-  lookup x ρ ∙ (⟦ nf₁ ⟧⇓ ρ ∙ ⟦ nf₂ ⟧⇓ ρ)  ≈⟨ sym $ assoc _ _ _ ⟩
-  lookup x ρ ∙ ⟦ nf₁ ⟧⇓ ρ ∙ ⟦ nf₂ ⟧⇓ ρ    ∎
+  lookup ρ x ∙ ⟦ nf₁ ++ nf₂ ⟧⇓ ρ          ≈⟨ ∙-congˡ (homomorphic nf₁ nf₂ ρ) ⟩
+  lookup ρ x ∙ (⟦ nf₁ ⟧⇓ ρ ∙ ⟦ nf₂ ⟧⇓ ρ)  ≈⟨ sym $ assoc _ _ _ ⟩
+  lookup ρ x ∙ ⟦ nf₁ ⟧⇓ ρ ∙ ⟦ nf₂ ⟧⇓ ρ    ∎
 
 -- The normaliser preserves the semantics of the expression.
 
 normalise-correct :
   ∀ {n} (e : Expr n) (ρ : Env n) → ⟦ normalise e ⟧⇓ ρ ≈ ⟦ e ⟧ ρ
 normalise-correct (var x) ρ = begin
-  lookup x ρ ∙ ε  ≈⟨ identityʳ _ ⟩
-  lookup x ρ      ∎
+  lookup ρ x ∙ ε  ≈⟨ identityʳ _ ⟩
+  lookup ρ x      ∎
 normalise-correct id ρ = begin
   ε  ∎
 normalise-correct (e₁ ⊕ e₂) ρ = begin

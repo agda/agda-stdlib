@@ -11,18 +11,27 @@
 
 module Relation.Binary.HeterogeneousEquality.Core where
 
+open import Level using (Level)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
+
+private
+  variable
+    a b : Level
+    A : Set a
 
 ------------------------------------------------------------------------
 -- Heterogeneous equality
 
 infix 4 _≅_
 
-data _≅_ {ℓ} {A : Set ℓ} (x : A) : {B : Set ℓ} → B → Set ℓ where
+data _≅_ {A : Set a} (x : A) : {B : Set b} → B → Set a where
    refl : x ≅ x
 
 ------------------------------------------------------------------------
 -- Conversion
 
-≅-to-≡ : ∀ {a} {A : Set a} {x y : A} → x ≅ y → x ≡ y
+≅-to-≡ : ∀ {x y : A} → x ≅ y → x ≡ y
 ≅-to-≡ refl = refl
+
+≡-to-≅ : ∀ {x y : A} → x ≡ y → x ≅ y
+≡-to-≅ refl = refl

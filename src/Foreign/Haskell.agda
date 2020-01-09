@@ -4,27 +4,47 @@
 -- Type(s) used (only) when calling out to Haskell via the FFI
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --without-K #-}
 
 module Foreign.Haskell where
 
 open import Level
 
--- A unit type.
+------------------------------------------------------------------------
+-- Pairs
 
-data Unit : Set where
-  unit : Unit
+open import Foreign.Haskell.Pair public
+  renaming
+  ( toForeign   to toForeignPair
+  ; fromForeign to fromForeignPair
+  )
 
-{-# COMPILE GHC Unit = data () (()) #-}
-{-# COMPILE UHC Unit = data __UNIT__ (__UNIT__) #-}
+------------------------------------------------------------------------
+-- Maybe
 
--- A pair type
+open import Foreign.Haskell.Maybe public
+  renaming
+  ( toForeign   to toForeignMaybe
+  ; fromForeign to fromForeignMaybe
+  )
 
-record Pair {ℓ ℓ′ : Level} (A : Set ℓ) (B : Set ℓ′) : Set (ℓ ⊔ ℓ′) where
-  constructor _,_
-  field  fst : A
-         snd : B
-open Pair public
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
 
-{-# FOREIGN GHC type AgdaPair l1 l2 a b = (a , b) #-}
-{-# COMPILE GHC Pair = data MAlonzo.Code.Foreign.Haskell.AgdaPair ((,)) #-}
+open import Data.Unit using (⊤; tt)
+
+-- Version 1.1
+
+Unit = ⊤
+{-# WARNING_ON_USAGE Unit
+"Warning: Unit was deprecated in v1.1.
+Please use ⊤ from Data.Unit instead."
+#-}
+unit = tt
+{-# WARNING_ON_USAGE unit
+"Warning: unit was deprecated in v1.1.
+Please use tt from Data.Unit instead."
+#-}

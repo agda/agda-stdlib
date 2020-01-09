@@ -13,7 +13,7 @@ module Data.List.Membership.Setoid {c ℓ} (S : Setoid c ℓ) where
 open import Function using (_∘_; id; flip)
 open import Data.Fin using (Fin; zero; suc)
 open import Data.List.Base as List using (List; []; _∷_; length; lookup)
-open import Data.List.Relation.Unary.Any as Any
+open import Data.List.Relation.Unary.Any
   using (Any; index; map; here; there)
 open import Data.Product as Prod using (∃; _×_; _,_)
 open import Relation.Unary using (Pred)
@@ -35,17 +35,12 @@ x ∉ xs = ¬ x ∈ xs
 ------------------------------------------------------------------------
 -- Operations
 
+open Data.List.Relation.Unary.Any using (_∷=_; _─_) public
+
 mapWith∈ : ∀ {b} {B : Set b}
            (xs : List A) → (∀ {x} → x ∈ xs → B) → List B
 mapWith∈ []       f = []
 mapWith∈ (x ∷ xs) f = f (here refl) ∷ mapWith∈ xs (f ∘ there)
-
-_∷=_ : ∀ {xs x} → x ∈ xs → A → List A
-_∷=_ {xs} x∈xs v = xs List.[ index x∈xs ]∷= v
-
-infixl 4 _─_
-_─_ : ∀ xs {x} → x ∈ xs → List A
-xs ─ x∈xs = xs List.─ index x∈xs
 
 ------------------------------------------------------------------------
 -- Finding and losing witnesses

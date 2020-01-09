@@ -32,6 +32,7 @@ open FP⇒ public
   ; comm⇒sym[distribˡ]
   ; subst+comm⇒sym
   ; wlog
+  ; sel⇒idem
   )
 
 ------------------------------------------------------------------------
@@ -81,6 +82,14 @@ module _ {_•_ _◦_ : Op₂ A} (•-comm : Commutative _•_) where
   comm⇒sym[distribˡ] = FP⇒.comm⇒sym[distribˡ] (cong₂ _◦_) •-comm
 
 ------------------------------------------------------------------------
+-- Selectivity
+
+module _ {_•_ : Op₂ A} where
+
+  sel⇒idem : Selective _•_ → Idempotent _•_
+  sel⇒idem = FP⇒.sel⇒idem _≡_
+
+------------------------------------------------------------------------
 -- Without Loss of Generality
 
 module _ {p} {P : Pred A p} where
@@ -94,11 +103,3 @@ module _ {p} {P : Pred A p} where
          (∀ a b → a R b → P (f a b)) →
          ∀ a b → P (f a b)
   wlog = FP⇒.wlog {P = P} subst
-
-------------------------------------------------------------------------
--- Selectivity
-
-sel⇒idem : ∀ {_•_ : Op₂ A} → Selective _•_ → Idempotent _•_
-sel⇒idem sel x with sel x x
-... | inj₁ x•x≈x = x•x≈x
-... | inj₂ x•x≈x = x•x≈x

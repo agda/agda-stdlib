@@ -24,13 +24,13 @@ Always = Const (Lift _ ⊤)
 
 module _ {a} (A : Set a) ℓ where
 
-  refl : Reflexive {ℓ = ℓ} {A} Always
+  refl : Reflexive {A = A} {ℓ = ℓ} Always
   refl = lift tt
 
-  sym : Symmetric {ℓ = ℓ} {A} Always
+  sym : Symmetric {A = A} {ℓ = ℓ} Always
   sym _ = lift tt
 
-  trans : Transitive {ℓ = ℓ} {A} Always
+  trans : Transitive {A = A} {ℓ = ℓ} Always
   trans _ _ = lift tt
 
   isEquivalence : IsEquivalence {ℓ = ℓ} {A} Always

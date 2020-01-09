@@ -22,12 +22,12 @@ open import Data.List.Membership.Propositional using (_∈_)
 open import Data.List.Relation.Binary.Subset.Propositional.Properties
   using (⊆-preorder)
 open import Data.Product as Prod hiding (map)
-import Data.Product.Relation.Binary.Pointwise.Dependent as Σ
+import Data.Product.Function.Dependent.Propositional as Σ
 open import Data.Sum as Sum hiding (map)
 open import Data.Sum.Properties
-open import Data.Sum.Relation.Binary.Pointwise using (_⊎-cong_)
+open import Data.Sum.Function.Propositional using (_⊎-cong_)
 open import Data.Unit
-open import Function
+open import Function.Core
 open import Function.Equality using (_⟨$⟩_)
 import Function.Equivalence as FE
 open import Function.Inverse as Inv using (_↔_; Inverse; inverse)
@@ -86,8 +86,9 @@ module ⊆-Reasoning where
   private
     module PreOrder {a} {A : Set a} = PreorderReasoning (⊆-preorder A)
 
-    open PreOrder public
-      hiding (_≈⟨_⟩_; _≈˘⟨_⟩_) renaming (_∼⟨_⟩_ to _⊆⟨_⟩_)
+    open PreOrder
+      hiding (_≈⟨_⟩_; _≈˘⟨_⟩_)
+      renaming (_∼⟨_⟩_ to _⊆⟨_⟩_)
 
   infixr 2 _∼⟨_⟩_
   infix  1 _∈⟨_⟩_
@@ -313,32 +314,25 @@ drop-cons {A = A} {x} {xs} {ys} x∷xs≈x∷ys =
 
   -- TODO: Some of the code below could perhaps be exposed to users.
 
-  -- Finds the element at the given position.
-
-  index : ∀ {a} {A : Set a} (xs : List A) → Fin (length xs) → A
-  index []       ()
-  index (x ∷ xs) zero    = x
-  index (x ∷ xs) (suc i) = index xs i
-
   -- List membership can be expressed as "there is an index which
   -- points to the element".
 
   ∈-index : ∀ {a} {A : Set a} {z}
-            (xs : List A) → z ∈ xs ↔ ∃ λ i → z ≡ index xs i
+            (xs : List A) → z ∈ xs ↔ ∃ λ i → z ≡ lookup xs i
   ∈-index {z = z} [] =
     z ∈ []                              ↔⟨ SK-sym ⊥↔Any[] ⟩
     ⊥                                   ↔⟨ SK-sym $ inverse (λ { (() , _) }) (λ ()) (λ { (() , _) }) (λ ()) ⟩
-    (∃ λ (i : Fin 0) → z ≡ index [] i)  ∎
+    (∃ λ (i : Fin 0) → z ≡ lookup [] i)  ∎
     where
     open Related.EquationalReasoning
   ∈-index {z = z} (x ∷ xs) =
-    z ∈ x ∷ xs                        ↔⟨ SK-sym (∷↔ _) ⟩
-    (z ≡ x ⊎ z ∈ xs)                  ↔⟨ K-refl ⊎-cong ∈-index xs ⟩
-    (z ≡ x ⊎ ∃ λ i → z ≡ index xs i)  ↔⟨ SK-sym $ inverse (λ { (zero , p) → inj₁ p; (suc i , p) → inj₂ (i , p) })
+    z ∈ x ∷ xs                         ↔⟨ SK-sym (∷↔ _) ⟩
+    (z ≡ x ⊎ z ∈ xs)                   ↔⟨ K-refl ⊎-cong ∈-index xs ⟩
+    (z ≡ x ⊎ ∃ λ i → z ≡ lookup xs i)  ↔⟨ SK-sym $ inverse (λ { (zero , p) → inj₁ p; (suc i , p) → inj₂ (i , p) })
                                                           (λ { (inj₁ p) → zero , p; (inj₂ (i , p)) → suc i , p })
                                                           (λ { (zero , _) → refl; (suc _ , _) → refl })
                                                           (λ { (inj₁ _) → refl; (inj₂ _) → refl }) ⟩
-    (∃ λ i → z ≡ index (x ∷ xs) i)    ∎
+    (∃ λ i → z ≡ lookup (x ∷ xs) i)    ∎
     where
     open Related.EquationalReasoning
 
@@ -357,11 +351,11 @@ drop-cons {A = A} {x} {xs} {ys} x∷xs≈x∷ys =
   Fin-length : ∀ {a} {A : Set a}
                (xs : List A) → (∃ λ z → z ∈ xs) ↔ Fin (length xs)
   Fin-length xs =
-    (∃ λ z → z ∈ xs)                  ↔⟨ Σ.cong K-refl (∈-index xs) ⟩
-    (∃ λ z → ∃ λ i → z ≡ index xs i)  ↔⟨ ∃∃↔∃∃ _ ⟩
-    (∃ λ i → ∃ λ z → z ≡ index xs i)  ↔⟨ Σ.cong K-refl (inverse _ (λ _ → _ , refl) (λ { (_ , refl) → refl }) (λ _ → refl)) ⟩
-    (Fin (length xs) × Lift _ ⊤)      ↔⟨ ×-identityʳ _ _ ⟩
-    Fin (length xs)                   ∎
+    (∃ λ z → z ∈ xs)                   ↔⟨ Σ.cong K-refl (∈-index xs) ⟩
+    (∃ λ z → ∃ λ i → z ≡ lookup xs i)  ↔⟨ ∃∃↔∃∃ _ ⟩
+    (∃ λ i → ∃ λ z → z ≡ lookup xs i)  ↔⟨ Σ.cong K-refl (inverse _ (λ _ → _ , refl) (λ { (_ , refl) → refl }) (λ _ → refl)) ⟩
+    (Fin (length xs) × Lift _ ⊤)       ↔⟨ ×-identityʳ _ _ ⟩
+    Fin (length xs)                    ∎
     where
     open Related.EquationalReasoning
 
@@ -410,7 +404,7 @@ drop-cons {A = A} {x} {xs} {ys} x∷xs≈x∷ys =
         (from (Fin-length xs) ⟨$⟩ (to (Fin-length xs) ⟨$⟩ (z , p))))
     lemma z p with to (Fin-length xs) ⟨$⟩ (z , p)
                  | left-inverse-of (Fin-length xs) (z , p)
-    lemma .(index xs i) .(from (∈-index xs) ⟨$⟩ (i , refl)) | i | refl =
+    lemma .(lookup xs i) .(from (∈-index xs) ⟨$⟩ (i , refl)) | i | refl =
       refl
 
   -- Bag equivalence isomorphisms preserve index equality. Note that

@@ -9,7 +9,7 @@
 module Function.Inverse where
 
 open import Level
-open import Function using (flip)
+open import Function.Core using (flip)
 open import Function.Bijection hiding (id; _∘_; bijection)
 open import Function.Equality as F
   using (_⟶_) renaming (_∘_ to _⟪∘⟫_)

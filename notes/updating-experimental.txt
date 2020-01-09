@@ -9,6 +9,6 @@ following:
   git checkout master
   git pull
   git checkout experimental
-  git pull --rebase . master
-  git push -f
+  git merge master
+  git push
   ```

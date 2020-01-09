@@ -77,7 +77,6 @@ module _ {a p ℓ} (S : Setoid a ℓ)
   open Sublist S
 
   filter⁺ : ∀ xs → filter P? xs ⊆ xs
-  filter⁺ []       ()
   filter⁺ (x ∷ xs) y∈f[x∷xs] with P? x
   ... | no  _ = there (filter⁺ xs y∈f[x∷xs])
   ... | yes _ with y∈f[x∷xs]

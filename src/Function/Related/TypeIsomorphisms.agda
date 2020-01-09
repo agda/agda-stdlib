@@ -11,16 +11,17 @@ module Function.Related.TypeIsomorphisms where
 
 open import Algebra
 import Algebra.FunctionProperties as FP
+open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Algebra.Structures
 open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Product as Prod hiding (swap)
-open import Data.Product.Relation.Binary.Pointwise.NonDependent
+open import Data.Product.Function.NonDependent.Propositional
 open import Data.Sum as Sum
 open import Data.Sum.Properties using (swap-involutive)
-open import Data.Sum.Relation.Binary.Pointwise using (_⊎-cong_)
+open import Data.Sum.Function.Propositional using (_⊎-cong_)
 open import Data.Unit using (⊤)
 open import Level using (Level; Lift; lower; 0ℓ; suc)
-open import Function
+open import Function.Core
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence as Eq using (_⇔_; Equivalence)
 open import Function.Inverse as Inv using (_↔_; Inverse; inverse)
@@ -271,7 +272,7 @@ A⇔B →-cong-⇔ C⇔D = Eq.equivalence
 
 →-cong :
   ∀ {a b c d} →
-  P.Extensionality a c → P.Extensionality b d →
+  Extensionality a c → Extensionality b d →
   ∀ {k} {A : Set a} {B : Set b} {C : Set c} {D : Set d} →
   A ∼[ ⌊ k ⌋ ] B → C ∼[ ⌊ k ⌋ ] D → (A → C) ∼[ ⌊ k ⌋ ] (B → D)
 →-cong extAC extBD {equivalence} A⇔B C⇔D = A⇔B →-cong-⇔ C⇔D
@@ -303,9 +304,7 @@ A⇔B →-cong-⇔ C⇔D = Eq.equivalence
 ¬-cong-⇔ A⇔B = A⇔B →-cong-⇔ (⊥ ∎)
   where open EquationalReasoning
 
-¬-cong : ∀ {a b} →
-         P.Extensionality a 0ℓ →
-         P.Extensionality b 0ℓ →
+¬-cong : ∀ {a b} → Extensionality a 0ℓ → Extensionality b 0ℓ →
          ∀ {k} {A : Set a} {B : Set b} →
          A ∼[ ⌊ k ⌋ ] B → (¬ A) ∼[ ⌊ k ⌋ ] (¬ B)
 ¬-cong extA extB A≈B = →-cong extA extB A≈B (⊥ ∎)

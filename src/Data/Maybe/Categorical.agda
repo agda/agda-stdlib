@@ -29,6 +29,18 @@ applicative = record
   ; _⊛_  = maybe map (const nothing)
   }
 
+applicativeZero : ∀ {f} → RawApplicativeZero {f} Maybe
+applicativeZero = record
+  { applicative = applicative
+  ; ∅           = nothing
+  }
+
+alternative : ∀ {f} → RawAlternative {f} Maybe
+alternative = record
+  { applicativeZero = applicativeZero
+  ; _∣_             = _<∣>_
+  }
+
 ------------------------------------------------------------------------
 -- Maybe monad transformer
 
@@ -47,20 +59,20 @@ monad = monadT Id.monad
 
 monadZero : ∀ {f} → RawMonadZero {f} Maybe
 monadZero = record
-  { monad = monad
-  ; ∅     = nothing
+  { monad           = monad
+  ; applicativeZero = applicativeZero
   }
 
 monadPlus : ∀ {f} → RawMonadPlus {f} Maybe
 monadPlus {f} = record
-  { monadZero = monadZero
-  ; _∣_       = _<∣>_
+  { monad       = monad
+  ; alternative = alternative
   }
 
 ------------------------------------------------------------------------
 -- Get access to other monadic functions
 
-module _ {f F} (App : RawApplicative {f} F) where
+module TraversableA {f F} (App : RawApplicative {f} F) where
 
   open RawApplicative App
 
@@ -74,10 +86,13 @@ module _ {f F} (App : RawApplicative {f} F) where
   forA : ∀ {a} {A : Set a} {B} → Maybe A → (A → F B) → F (Maybe B)
   forA = flip mapA
 
-module _ {m M} (Mon : RawMonad {m} M) where
+module TraversableM {m M} (Mon : RawMonad {m} M) where
 
-  private App = RawMonad.rawIApplicative Mon
+  open RawMonad Mon
 
-  sequenceM = sequenceA App
-  mapM = mapA App
-  forM = forA App
+  open TraversableA rawIApplicative public
+    renaming
+    ( sequenceA to sequenceM
+    ; mapA      to mapM
+    ; forA      to forM
+    )

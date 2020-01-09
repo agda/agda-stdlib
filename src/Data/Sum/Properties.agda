@@ -32,5 +32,5 @@ module _ {a b} {A : Set a} {B : Set b} where
   ... | yes refl = yes refl
   ... | no  x≢y  = no (x≢y ∘ inj₂-injective)
 
-  swap-involutive : swap {A = A} {B} ∘ swap ≗ id
+  swap-involutive : swap {A = A} {B = B} ∘ swap ≗ id
   swap-involutive = [ (λ _ → refl) , (λ _ → refl) ]

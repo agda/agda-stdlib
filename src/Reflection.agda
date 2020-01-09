@@ -15,10 +15,14 @@ open import Data.Nat using (ℕ) renaming (_≟_ to _≟-ℕ_)
 open import Data.Nat.Show renaming (show to showNat)
 open import Data.Float using (Float) renaming (show to showFloat)
 open import Data.Float.Unsafe using () renaming (_≟_ to _≟f_)
-open import Data.Char using (Char) renaming (show to showChar)
-open import Data.Char.Unsafe using () renaming (_≟_ to _≟c_)
-open import Data.String using (String) renaming (show to showString)
-open import Data.String.Unsafe using () renaming (_≟_ to _≟s_)
+open import Data.Char using (Char)
+  renaming ( show to showChar
+           ; _≟_ to _≟c_
+           )
+open import Data.String using (String)
+  renaming ( show to showString
+           ; _≟_ to _≟s_
+           )
 open import Data.Word using (Word64) renaming (toℕ to wordToℕ)
 open import Data.Word.Unsafe using () renaming (_≟_ to _≟w_)
 open import Data.Product
@@ -33,6 +37,10 @@ open import Relation.Nullary.Product
 
 import Agda.Builtin.Reflection as Builtin
 
+private
+  variable
+    a b c d : Level
+    A B C D : Set a
 ------------------------------------------------------------------------
 -- Names
 
@@ -40,6 +48,8 @@ import Agda.Builtin.Reflection as Builtin
 
 open Builtin public using (Name)
 
+Names : Set
+Names = List Name
 -- Equality of names is decidable.
 
 infix 4 _==_ _≟-Name_
@@ -59,6 +69,14 @@ s₁ ≟-Name s₂ with s₁ == s₂
 
 showName : Name → String
 showName = Builtin.primShowQName
+
+------------------------------------------------------------------------
+-- Fixity
+
+open Builtin public using (non-assoc; related; unrelated; fixity)
+  renaming ( left-assoc  to assocˡ
+           ; right-assoc to assocʳ
+           ; primQNameFixity to getFixity)
 
 ------------------------------------------------------------------------
 -- Metavariables
@@ -111,6 +129,19 @@ relevance (arg-info _ r) = r
 open Builtin public using (Arg; arg)
 open Builtin public using (Abs; abs)
 
+-- TODO: make the following universe-polymorphic once agda/agda#3793 is merged.
+Args : (A : Set) → Set
+Args A = List (Arg A)
+
+map-Arg : {A B : Set} → (A → B) → Arg A → Arg B
+map-Arg f (arg i x) = arg i (f x)
+
+map-Args : {A B : Set} → (A → B) → Args A → Args B
+map-Args f xs = Data.List.Base.map (map-Arg f) xs
+
+map-Abs : {A B : Set} → (A → B) → Abs A → Abs B
+map-Abs f (abs s x) = abs s (f x)
+
 -- Literals.
 
 open Builtin public using (Literal; nat; word64; float; char; string; name; meta)
@@ -129,6 +160,18 @@ open Builtin public
 
 Clauses = List Clause
 
+-- Pattern synonyms for more compact presentation
+
+pattern vArg ty            = arg (arg-info visible relevant)   ty
+pattern hArg ty            = arg (arg-info hidden relevant)    ty
+pattern iArg ty            = arg (arg-info instance′ relevant) ty
+pattern vLam s t           = lam visible   (abs s t)
+pattern hLam s t           = lam hidden    (abs s t)
+pattern iLam s t           = lam instance′ (abs s t)
+pattern Π[_∶_]_ s a ty     = pi a (abs s ty)
+pattern vΠ[_∶_]_ s a ty    = Π[ s ∶ (vArg a) ] ty
+pattern hΠ[_∶_]_ s a ty    = Π[ s ∶ (hArg a) ] ty
+pattern iΠ[_∶_]_ s a ty    = Π[ s ∶ (iArg a) ] ty
 ------------------------------------------------------------------------
 -- Definitions
 
@@ -159,10 +202,23 @@ open Builtin public using (ErrorPart; strErr; termErr; nameErr)
 
 -- The monad
 open Builtin public
-  using ( TC; returnTC; bindTC; unify; typeError; inferType; checkType
-        ; normalise; catchTC; getContext; extendContext; inContext
-        ; freshName; declareDef; defineFun; getType; getDefinition
-        ; blockOnMeta; quoteTC; unquoteTC )
+  using ( TC; bindTC; unify; typeError; inferType; checkType
+        ; normalise; reduce
+        ; catchTC; quoteTC; unquoteTC
+        ; getContext; extendContext; inContext; freshName
+        ; declareDef; declarePostulate; defineFun; getType; getDefinition
+        ; blockOnMeta; commitTC; isMacro; withNormalisation
+        ; debugPrint; noConstraints; runSpeculative)
+  renaming (returnTC to return)
+
+infixl 1 _>>=_
+infixl 1 _>>_
+
+_>>=_ : ∀ {a b} {A : Set a} {B : Set b} → TC A → (A → TC B) → TC B
+ma >>= f = bindTC ma f
+
+_>>_ :  ∀ {a b} {A : Set a} {B : Set b} → TC A → TC B → TC B
+ma >> mb = ma >>= (λ _ → mb)
 
 newMeta : Type → TC Term
 newMeta = checkType unknown
@@ -174,26 +230,24 @@ newMeta = checkType unknown
 
 private
 
-  cong₂′ : ∀ {a b c : Level} {A : Set a} {B : Set b} {C : Set c}
-          (f : A → B → C) {x y u v} →
+  cong₂′ : ∀ (f : A → B → C) {x y u v} →
           x ≡ y × u ≡ v → f x u ≡ f y v
   cong₂′ f = uncurry (cong₂ f)
 
-  cong₃′ : ∀ {a b c d : Level} {A : Set a} {B : Set b} {C : Set c}
-             {D : Set d} (f : A → B → C → D) {x y u v r s} →
+  cong₃′ : ∀ (f : A → B → C → D) {x y u v r s} →
            x ≡ y × u ≡ v × r ≡ s → f x u r ≡ f y v s
   cong₃′ f (refl , refl , refl) = refl
 
-  arg₁ : ∀ {A i i′} {x x′ : A} → arg i x ≡ arg i′ x′ → i ≡ i′
+  arg₁ : ∀ {i i′} {x x′ : A} → arg i x ≡ arg i′ x′ → i ≡ i′
   arg₁ refl = refl
 
-  arg₂ : ∀ {A i i′} {x x′ : A} → arg i x ≡ arg i′ x′ → x ≡ x′
+  arg₂ : ∀ {i i′} {x x′ : A} → arg i x ≡ arg i′ x′ → x ≡ x′
   arg₂ refl = refl
 
-  abs₁ : ∀ {A i i′} {x x′ : A} → abs i x ≡ abs i′ x′ → i ≡ i′
+  abs₁ : ∀ {i i′} {x x′ : A} → abs i x ≡ abs i′ x′ → i ≡ i′
   abs₁ refl = refl
 
-  abs₂ : ∀ {A i i′} {x x′ : A} → abs i x ≡ abs i′ x′ → x ≡ x′
+  abs₂ : ∀ {i i′} {x x′ : A} → abs i x ≡ abs i′ x′ → x ≡ x′
   abs₂ refl = refl
 
   arg-info₁ : ∀ {v v′ r r′} → arg-info v r ≡ arg-info v′ r′ → v ≡ v′
@@ -202,10 +256,10 @@ private
   arg-info₂ : ∀ {v v′ r r′} → arg-info v r ≡ arg-info v′ r′ → r ≡ r′
   arg-info₂ refl = refl
 
-  cons₁ : ∀ {a} {A : Set a} {x y} {xs ys : List A} → x ∷ xs ≡ y ∷ ys → x ≡ y
+  cons₁ : ∀ {x y} {xs ys : List A} → x ∷ xs ≡ y ∷ ys → x ≡ y
   cons₁ refl = refl
 
-  cons₂ : ∀ {a} {A : Set a} {x y} {xs ys : List A} → x ∷ xs ≡ y ∷ ys → xs ≡ ys
+  cons₂ : ∀ {x y} {xs ys : List A} → x ∷ xs ≡ y ∷ ys → xs ≡ ys
   cons₂ refl = refl
 
   var₁ : ∀ {x x′ args args′} → Term.var x args ≡ var x′ args′ → x ≡ x′
@@ -417,7 +471,7 @@ mutual
              < arg₁ , arg₂ >
              (i ≟-Arg-info i′ ×-dec a ≟-Pattern a′)
 
-  _≟-Args_ : Decidable (_≡_ {A = List (Arg Term)})
+  _≟-Args_ : Decidable (_≡_ {A = Args Term})
   []       ≟-Args []       = yes refl
   (x ∷ xs) ≟-Args (y ∷ ys) = Dec.map′ (cong₂′ _∷_) < cons₁ , cons₂ > (x ≟-ArgTerm y ×-dec xs ≟-Args ys)
   []       ≟-Args (_ ∷ _)  = no λ()
@@ -473,7 +527,7 @@ mutual
   absurd ≟-Pattern proj x = no (λ ())
   absurd ≟-Pattern absurd = yes refl
 
-  _≟-ArgPatterns_ : Decidable (_≡_ {A = List (Arg Pattern)})
+  _≟-ArgPatterns_ : Decidable (_≡_ {A = Args Pattern})
   []       ≟-ArgPatterns []       = yes refl
   (x ∷ xs) ≟-ArgPatterns (y ∷ ys) = Dec.map′ (cong₂′ _∷_) < cons₁ , cons₂ > (x ≟-ArgPattern y ×-dec xs ≟-ArgPatterns ys)
   []       ≟-ArgPatterns (_ ∷ _)  = no λ()
@@ -593,3 +647,18 @@ mutual
   lit _   ≟-Sort unknown = no λ()
   unknown ≟-Sort set _   = no λ()
   unknown ≟-Sort lit _   = no λ()
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 1.1
+
+returnTC = return
+{-# WARNING_ON_USAGE returnTC
+"Warning: returnTC was deprecated in v1.1.
+Please use return instead."
+#-}

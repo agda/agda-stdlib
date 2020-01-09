@@ -29,7 +29,7 @@ open import Relation.Unary
 
 open StrictTotalOrder strictTotalOrder renaming (Carrier to Key)
 import Data.AVL.Indexed strictTotalOrder as Indexed
-open Indexed using (K&_ ; ⊥⁺ ; ⊤⁺)
+open Indexed using (K&_ ; ⊥⁺ ; ⊤⁺; ⊥⁺<⊤⁺; ⊥⁺<[_]<⊤⁺; ⊥⁺<[_]; [_]<⊤⁺)
 
 ------------------------------------------------------------------------
 -- Re-export some core definitions publically
@@ -48,23 +48,23 @@ module _ {v} {V : Value v} where
     Val = Value.family V
 
   empty : Tree V
-  empty = tree $′ Indexed.empty _
+  empty = tree $′ Indexed.empty ⊥⁺<⊤⁺
 
   singleton : (k : Key) → Val k → Tree V
-  singleton k v = tree (Indexed.singleton k v _)
+  singleton k v = tree (Indexed.singleton k v ⊥⁺<[ k ]<⊤⁺)
 
   insert : (k : Key) → Val k → Tree V → Tree V
-  insert k v (tree t) = tree $′ proj₂ $ Indexed.insert k v t _
+  insert k v (tree t) = tree $′ proj₂ $ Indexed.insert k v t ⊥⁺<[ k ]<⊤⁺
 
   insertWith : (k : Key) → (Maybe (Val k) → Val k) →
                Tree V → Tree V
-  insertWith k f (tree t) = tree $′ proj₂ $ Indexed.insertWith k f t _
+  insertWith k f (tree t) = tree $′ proj₂ $ Indexed.insertWith k f t ⊥⁺<[ k ]<⊤⁺
 
   delete : Key → Tree V → Tree V
-  delete k (tree t) = tree $′ proj₂ $ Indexed.delete k t _
+  delete k (tree t) = tree $′ proj₂ $ Indexed.delete k t ⊥⁺<[ k ]<⊤⁺
 
   lookup : (k : Key) → Tree V → Maybe (Val k)
-  lookup k (tree t) = Indexed.lookup k t _
+  lookup k (tree t) = Indexed.lookup k t ⊥⁺<[ k ]<⊤⁺
 
 module _ {v w} {V : Value v} {W : Value w} where
 
@@ -89,12 +89,12 @@ module _ {v} {V : Value v} where
   headTail : Tree V → Maybe ((K& V) × Tree V)
   headTail (tree (Indexed.leaf _)) = nothing
   headTail (tree {h = suc _} t)    with Indexed.headTail t
-  ... | (k , _ , _ , t′) = just (k , tree (Indexed.castˡ _ t′))
+  ... | (k , _ , _ , t′) = just (k , tree (Indexed.castˡ ⊥⁺<[ _ ] t′))
 
   initLast : Tree V → Maybe (Tree V × (K& V))
   initLast (tree (Indexed.leaf _)) = nothing
   initLast (tree {h = suc _} t)    with Indexed.initLast t
-  ... | (k , _ , _ , t′) = just (tree (Indexed.castʳ t′ _) , k)
+  ... | (k , _ , _ , t′) = just (tree (Indexed.castʳ t′ [ _ ]<⊤⁺) , k)
 
   -- The input does not need to be ordered.
 

@@ -23,7 +23,7 @@ import Data.List.Relation.Binary.Subset.Setoid.Properties as Setoidₚ
 open import Data.List.Relation.Binary.Subset.Propositional
 import Data.Product as Prod
 import Data.Sum as Sum
-open import Function using (_∘_; _∘′_; id; _$_)
+open import Function.Core using (_∘_; _∘′_; id; _$_)
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse as Inv using (_↔_; module Inverse)
 open import Function.Equivalence using (module Equivalence)
@@ -197,7 +197,6 @@ module _ {a p} {A : Set a} {P : A → Set p} (P? : Decidable P) where
 
 boolFilter-⊆ : ∀ {a} {A : Set a} (p : A → Bool) →
                (xs : List A) → boolFilter p xs ⊆ xs
-boolFilter-⊆ _ []       = λ ()
 boolFilter-⊆ p (x ∷ xs) with p x | boolFilter-⊆ p xs
 ... | false | hyp = there ∘ hyp
 ... | true  | hyp =

@@ -10,6 +10,8 @@
 
 module Relation.Nullary where
 
+open import Agda.Builtin.Equality
+
 open import Data.Empty hiding (⊥-elim)
 open import Data.Empty.Irrelevant
 open import Level
@@ -32,3 +34,6 @@ data Dec {p} (P : Set p) : Set p where
 recompute : ∀ {a} {A : Set a} → Dec A → .A → A
 recompute (yes x) _ = x
 recompute (no ¬p) x = ⊥-elim (¬p x)
+
+Irrelevant : ∀ {p} → Set p → Set p
+Irrelevant P = ∀ (p₁ p₂ : P) → p₁ ≡ p₂

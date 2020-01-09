@@ -31,6 +31,18 @@ applicative = record
   ; _⊛_  = λ fs as → concatMap (λ f → map f as) fs
   }
 
+applicativeZero : ∀ {ℓ} → RawApplicativeZero {ℓ} List
+applicativeZero = record
+  { applicative = applicative
+  ; ∅           = []
+  }
+
+alternative : ∀ {ℓ} → RawAlternative {ℓ} List
+alternative = record
+  { applicativeZero = applicativeZero
+  ; _∣_             = _++_
+  }
+
 ------------------------------------------------------------------------
 -- List monad
 
@@ -42,20 +54,20 @@ monad = record
 
 monadZero : ∀ {ℓ} → RawMonadZero {ℓ} List
 monadZero = record
-  { monad = monad
-  ; ∅     = []
+  { monad           = monad
+  ; applicativeZero = applicativeZero
   }
 
 monadPlus : ∀ {ℓ} → RawMonadPlus {ℓ} List
 monadPlus = record
-  { monadZero = monadZero
-  ; _∣_       = _++_
+  { monad = monad
+  ; alternative = alternative
   }
 
 ------------------------------------------------------------------------
 -- Get access to other monadic functions
 
-module _ {f F} (App : RawApplicative {f} F) where
+module TraversableA {f F} (App : RawApplicative {f} F) where
 
   open RawApplicative App
 
@@ -69,13 +81,16 @@ module _ {f F} (App : RawApplicative {f} F) where
   forA : ∀ {a} {A : Set a} {B} → List A → (A → F B) → F (List B)
   forA = flip mapA
 
-module _ {m M} (Mon : RawMonad {m} M) where
+module TraversableM {m M} (Mon : RawMonad {m} M) where
 
-  private App = RawMonad.rawIApplicative Mon
+  open RawMonad Mon
 
-  sequenceM = sequenceA App
-  mapM = mapA App
-  forM = forA App
+  open TraversableA rawIApplicative public
+    renaming
+    ( sequenceA to sequenceM
+    ; mapA      to mapM
+    ; forA      to forM
+    )
 
 ------------------------------------------------------------------------
 -- List monad transformer
@@ -83,8 +98,8 @@ module _ {m M} (Mon : RawMonad {m} M) where
 monadT : ∀ {ℓ} → RawMonadT {ℓ} (_∘′ List)
 monadT M = record
   { return = pure ∘′ [_]
-  ; _>>=_  = λ mas f → mas >>= λ as → concat <$> mapM M f as
-  } where open RawMonad M
+  ; _>>=_  = λ mas f → mas >>= λ as → concat <$> mapM f as
+  } where open RawMonad M; open TraversableM M
 
 ------------------------------------------------------------------------
 -- The list monad.

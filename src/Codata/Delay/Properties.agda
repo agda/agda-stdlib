@@ -4,7 +4,7 @@
 -- Properties of operations on the Delay type
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --without-K --safe --sized-types #-}
 
 module Codata.Delay.Properties where
 

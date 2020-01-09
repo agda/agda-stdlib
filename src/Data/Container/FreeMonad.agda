@@ -4,7 +4,7 @@
 -- The free monad construction on containers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --without-K --safe --sized-types #-}
 
 module Data.Container.FreeMonad where
 
@@ -20,7 +20,6 @@ infixl 1 _⋆C_
 infix  1 _⋆_
 
 ------------------------------------------------------------------------
-
 -- The free monad construction over a container and a set is, in
 -- universal algebra terminology, also known as the term algebra over a
 -- signature (a container) and a set (of variable symbols). The return

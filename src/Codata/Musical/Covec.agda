@@ -4,7 +4,7 @@
 -- Coinductive vectors
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --without-K --guardedness --sized-types #-}
 
 module Codata.Musical.Covec where
 
@@ -170,3 +170,20 @@ map-cong f (x ∷ xs≈) = f x ∷ ♯ map-cong f (♭ xs≈)
 take-⊑ : ∀ {a} {A : Set a} m {n} (xs : Covec A (m + n)) → take m xs ⊑ xs
 take-⊑ zero    xs       = []
 take-⊑ (suc n) (x ∷ xs) = x ∷ ♯ take-⊑ (♭ n) (♭ xs)
+
+------------------------------------------------------------------------
+-- Legacy
+
+import Codata.Covec as C
+open import Codata.Thunk
+import Size
+
+module _ {a} {A : Set a} where
+
+  fromMusical : ∀ {i n} → Covec A n → C.Covec A i (Coℕ.fromMusical n)
+  fromMusical []       = C.[]
+  fromMusical (x ∷ xs) = x C.∷ λ where .force → fromMusical (♭ xs)
+
+  toMusical : ∀ {n} → C.Covec A Size.∞ n → Covec A (Coℕ.toMusical n)
+  toMusical C.[]       = []
+  toMusical (x C.∷ xs) = x ∷ ♯ toMusical (xs .force)

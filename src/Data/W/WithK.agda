@@ -13,8 +13,8 @@ open import Data.Container.Core
 open import Data.W
 open import Agda.Builtin.Equality
 
-module _ {s p} {C : Container s p} (open Container C)
-         {s : Shape} {f : Position s → W C} where
+module _ {s p} {C : Container s p}
+         {s : Shape C} {f : Position C s → W C} where
 
  sup-injective₂ : ∀ {g} → sup (s , f) ≡ sup (s , g) → f ≡ g
  sup-injective₂ refl = refl

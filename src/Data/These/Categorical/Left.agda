@@ -3,12 +3,13 @@
 --
 -- Left-biased universe-sensitive functor and monad instances for These.
 --
+------------------------------------------------------------------------
+
 -- To minimize the universe level of the RawFunctor, we require that
 -- elements of B are "lifted" to a copy of B at a higher universe level
 -- (a ⊔ b).
 -- See the Data.Product.Categorical.Examples for how this is done in a
 -- Product-based similar setting.
-------------------------------------------------------------------------
 
 -- This functor can be understood as a notion of computation which can
 -- either fail (this), succeed (that) or accumulate warnings whilst

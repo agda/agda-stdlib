@@ -1,9 +1,9 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Solver for equations in commutative monoids
+-- Solver for equations in idempotent commutative monoids
 --
--- Adapted from Algebra.Monoid-solver
+-- Adapted from Algebra.Solver.CommutativeMonoid
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -57,7 +57,7 @@ Env n = Vec Carrier n
 -- a value.
 
 ⟦_⟧ : ∀ {n} → Expr n → Env n → Carrier
-⟦ var x   ⟧ ρ = lookup x ρ
+⟦ var x   ⟧ ρ = lookup ρ x
 ⟦ id      ⟧ ρ = ε
 ⟦ e₁ ⊕ e₂ ⟧ ρ = ⟦ e₁ ⟧ ρ ∙ ⟦ e₂ ⟧ ρ
 
@@ -78,12 +78,12 @@ Normal n = Vec Bool n
 ------------------------------------------------------------------------
 -- Constructions on normal forms
 
--- The empty bag.
+-- The empty set.
 
 empty : ∀{n} → Normal n
 empty = replicate false
 
--- A singleton bag.
+-- A singleton set.
 
 sg : ∀{n} (i : Fin n) → Normal n
 sg zero    = true ∷ empty
@@ -98,17 +98,17 @@ _•_  : ∀{n} (v w : Normal n) → Normal n
 ------------------------------------------------------------------------
 -- Correctness of the constructions on normal forms
 
--- The empty bag stands for the unit ε.
+-- The empty set stands for the unit ε.
 
 empty-correct : ∀{n} (ρ : Env n) → ⟦ empty ⟧⇓ ρ ≈ ε
-empty-correct [] = refl
+empty-correct []      = refl
 empty-correct (a ∷ ρ) = empty-correct ρ
 
--- The singleton bag stands for a single variable.
+-- The singleton set stands for a single variable.
 
-sg-correct : ∀{n} (x : Fin n) (ρ : Env n) →  ⟦ sg x ⟧⇓ ρ ≈ lookup x ρ
+sg-correct : ∀{n} (x : Fin n) (ρ : Env n) →  ⟦ sg x ⟧⇓ ρ ≈ lookup ρ x
 sg-correct zero (x ∷ ρ) = begin
-    x ∙ ⟦ empty ⟧⇓ ρ   ≈⟨ ∙-cong refl (empty-correct ρ) ⟩
+    x ∙ ⟦ empty ⟧⇓ ρ   ≈⟨ ∙-congˡ (empty-correct ρ) ⟩
     x ∙ ε              ≈⟨ identityʳ _ ⟩
     x                  ∎
 sg-correct (suc x) (m ∷ ρ) = sg-correct x ρ
@@ -118,17 +118,17 @@ sg-correct (suc x) (m ∷ ρ) = sg-correct x ρ
 flip12 : ∀ a b c → a ∙ (b ∙ c) ≈ b ∙ (a ∙ c)
 flip12 a b c = begin
     a ∙ (b ∙ c)  ≈⟨ sym (assoc _ _ _) ⟩
-    (a ∙ b) ∙ c  ≈⟨ ∙-cong (comm _ _) refl ⟩
+    (a ∙ b) ∙ c  ≈⟨ ∙-congʳ (comm _ _) ⟩
     (b ∙ a) ∙ c  ≈⟨ assoc _ _ _ ⟩
     b ∙ (a ∙ c)  ∎
 
 distr : ∀ a b c → a ∙ (b ∙ c) ≈ (a ∙ b) ∙ (a ∙ c)
 distr a b c = begin
-    a ∙ (b ∙ c)  ≈⟨ ∙-cong (sym (idem a)) refl ⟩
+    a ∙ (b ∙ c)        ≈⟨ ∙-cong (sym (idem a)) refl ⟩
     (a ∙ a) ∙ (b ∙ c)  ≈⟨ assoc _ _ _ ⟩
-    a ∙ (a ∙ (b ∙ c))  ≈⟨ ∙-cong refl (sym (assoc _ _ _)) ⟩
-    a ∙ ((a ∙ b) ∙ c)  ≈⟨ ∙-cong refl (∙-cong (comm _ _) refl) ⟩
-    a ∙ ((b ∙ a) ∙ c)  ≈⟨ ∙-cong refl (assoc _ _ _) ⟩
+    a ∙ (a ∙ (b ∙ c))  ≈⟨ ∙-congˡ (sym (assoc _ _ _)) ⟩
+    a ∙ ((a ∙ b) ∙ c)  ≈⟨ ∙-congˡ (∙-congʳ (comm _ _)) ⟩
+    a ∙ ((b ∙ a) ∙ c)  ≈⟨ ∙-congˡ (assoc _ _ _) ⟩
     a ∙ (b ∙ (a ∙ c))  ≈⟨ sym (assoc _ _ _) ⟩
     (a ∙ b) ∙ (a ∙ c)  ∎
 
@@ -136,11 +136,11 @@ comp-correct : ∀ {n} (v w : Normal n) (ρ : Env n) →
               ⟦ v • w ⟧⇓ ρ ≈ (⟦ v ⟧⇓ ρ ∙ ⟦ w ⟧⇓ ρ)
 comp-correct [] [] ρ = sym (identityˡ _)
 comp-correct (true ∷ v) (true ∷ w) (a ∷ ρ) =
-  trans (∙-cong refl (comp-correct v w ρ)) (distr _ _ _)
+  trans (∙-congˡ (comp-correct v w ρ)) (distr _ _ _)
 comp-correct (true ∷ v) (false ∷ w) (a ∷ ρ) =
-  trans (∙-cong refl (comp-correct v w ρ)) (sym (assoc _ _ _))
+  trans (∙-congˡ (comp-correct v w ρ)) (sym (assoc _ _ _))
 comp-correct (false ∷ v) (true ∷ w) (a ∷ ρ) =
-  trans (∙-cong refl (comp-correct v w ρ)) (flip12 _ _ _)
+  trans (∙-congˡ (comp-correct v w ρ)) (flip12 _ _ _)
 comp-correct (false ∷ v) (false ∷ w) (a ∷ ρ) =
   comp-correct v w ρ
 
@@ -160,7 +160,7 @@ normalise-correct : ∀ {n} (e : Expr n) (ρ : Env n) →
     ⟦ normalise e ⟧⇓ ρ ≈ ⟦ e ⟧ ρ
 normalise-correct (var x)   ρ = sg-correct x ρ
 normalise-correct id        ρ = empty-correct ρ
-normalise-correct (e₁ ⊕ e₂) ρ =  begin
+normalise-correct (e₁ ⊕ e₂) ρ = begin
 
     ⟦ normalise e₁ • normalise e₂ ⟧⇓ ρ
 
@@ -209,5 +209,3 @@ prove _ e₁ e₂ = from-just (prove′ e₁ e₂)
 -- prove : ∀ n (es : Expr n × Expr n) →
 --         From-just (uncurry prove′ es)
 -- prove _ = from-just ∘ uncurry prove′
-
--- -}

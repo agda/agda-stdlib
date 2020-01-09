@@ -23,16 +23,17 @@ open import Data.List.Categorical using (monad)
 open import Data.Nat using (ℕ; zero; suc; pred; s≤s; _≤_; _<_; _≤?_)
 open import Data.Nat.Properties
 open import Data.Product hiding (map)
-open import Data.Product.Relation.Binary.Pointwise.NonDependent using (_×-cong_)
-import Data.Product.Relation.Binary.Pointwise.Dependent as Σ
+open import Data.Product.Function.NonDependent.Propositional using (_×-cong_)
+import Data.Product.Function.Dependent.Propositional as Σ
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
-open import Function
+open import Function.Core
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence using (module Equivalence)
 open import Function.Injection using (Injection; Injective; _↣_)
 open import Function.Inverse as Inv using (_↔_; module Inverse)
 import Function.Related as Related
 open import Function.Related.TypeIsomorphisms
+open import Level using (Level)
 open import Relation.Binary hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; trans; cong; subst; →-to-⟶; _≗_)
@@ -322,7 +323,6 @@ module _ {a} {A : Set a} where
 
 boolFilter-∈ : ∀ {a} {A : Set a} (p : A → Bool) (xs : List A) {x} →
            x ∈ xs → p x ≡ true → x ∈ boolFilter p xs
-boolFilter-∈ p []       ()          _
 boolFilter-∈ p (x ∷ xs) (here refl) px≡true rewrite px≡true = here refl
 boolFilter-∈ p (y ∷ xs) (there pxs) px≡true with p y
 ... | true  = there (boolFilter-∈ p xs pxs px≡true)

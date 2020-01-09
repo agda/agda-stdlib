@@ -59,7 +59,6 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
 
   ⊎-<-asymmetric : Asymmetric ∼₁ → Asymmetric ∼₂ →
                    Asymmetric (∼₁ ⊎-< ∼₂)
-  ⊎-<-asymmetric asym₁ asym₂ ₁∼₂ ()
   ⊎-<-asymmetric asym₁ asym₂ (₁∼₁ x∼₁y) (₁∼₁ x∼₁y₁) = asym₁ x∼₁y x∼₁y₁
   ⊎-<-asymmetric asym₁ asym₂ (₂∼₂ x∼₂y) (₂∼₂ x∼₂y₁) = asym₂ x∼₂y x∼₂y₁
 
@@ -98,8 +97,6 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
                       Antisymmetric (Pointwise ≈₁ ≈₂) (∼₁ ⊎-< ∼₂)
   ⊎-<-antisymmetric antisym₁ antisym₂ (₁∼₁ x∼₁y) (₁∼₁ x∼₁y₁) = inj₁ (antisym₁ x∼₁y x∼₁y₁)
   ⊎-<-antisymmetric antisym₁ antisym₂ (₂∼₂ x∼₂y) (₂∼₂ x∼₂y₁) = inj₂ (antisym₂ x∼₂y x∼₂y₁)
-  -- Remove in Agda 2.6.0?
-  ⊎-<-antisymmetric antisym₁ antisym₂ ₁∼₂ ()
 
   ⊎-<-respectsʳ : ∼₁ Respectsʳ ≈₁ → ∼₂ Respectsʳ ≈₂ →
                   (∼₁ ⊎-< ∼₂) Respectsʳ (Pointwise ≈₁ ≈₂)

@@ -11,75 +11,114 @@ open import Algebra
 module Algebra.Properties.Lattice {l₁ l₂} (L : Lattice l₁ l₂) where
 
 open Lattice L
-open import Algebra.Structures
+open import Algebra.Structures _≈_
 open import Algebra.FunctionProperties _≈_
-import Algebra.Properties.Semilattice as SL
+import Algebra.Properties.Semilattice as SemilatticeProperties
 open import Relation.Binary
 import Relation.Binary.Lattice as R
 open import Relation.Binary.Reasoning.Setoid  setoid
-open import Function
+open import Function.Core
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence using (_⇔_; module Equivalence)
 open import Data.Product using (_,_; swap)
 
 ------------------------------------------------------------------------
--- Every lattice contains two semilattices.
+-- _∧_ is a semilattice
 
-∧-idempotent : Idempotent _∧_
-∧-idempotent x = begin
-  x ∧ x            ≈⟨ refl ⟨ ∧-cong ⟩ sym (∨-absorbs-∧ _ _) ⟩
+∧-idem : Idempotent _∧_
+∧-idem x = begin
+  x ∧ x            ≈⟨ ∧-congˡ (sym (∨-absorbs-∧ _ _)) ⟩
   x ∧ (x ∨ x ∧ x)  ≈⟨ ∧-absorbs-∨ _ _ ⟩
   x                ∎
 
-∨-idempotent : Idempotent _∨_
-∨-idempotent x = begin
-  x ∨ x      ≈⟨ refl ⟨ ∨-cong ⟩ sym (∧-idempotent _) ⟩
-  x ∨ x ∧ x  ≈⟨ ∨-absorbs-∧ _ _ ⟩
-  x          ∎
+∧-isMagma : IsMagma _∧_
+∧-isMagma = record
+  { isEquivalence = isEquivalence
+  ; ∙-cong        = ∧-cong
+  }
 
-∧-isSemilattice : IsSemilattice _≈_ _∧_
+∧-isSemigroup : IsSemigroup _∧_
+∧-isSemigroup = record
+  { isMagma = ∧-isMagma
+  ; assoc   = ∧-assoc
+  }
+
+∧-isBand : IsBand _∧_
+∧-isBand = record
+  { isSemigroup = ∧-isSemigroup
+  ; idem        = ∧-idem
+  }
+
+∧-isSemilattice : IsSemilattice _∧_
 ∧-isSemilattice = record
-  { isBand = record
-    { isSemigroup = record
-      { isMagma = record
-        { isEquivalence = isEquivalence
-        ; ∙-cong        = ∧-cong
-        }
-      ; assoc         = ∧-assoc
-      }
-    ; idem = ∧-idempotent
-    }
+  { isBand = ∧-isBand
   ; comm   = ∧-comm
   }
 
 ∧-semilattice : Semilattice l₁ l₂
-∧-semilattice = record { isSemilattice = ∧-isSemilattice }
+∧-semilattice = record
+  { isSemilattice = ∧-isSemilattice
+  }
 
-∨-isSemilattice : IsSemilattice _≈_ _∨_
+open SemilatticeProperties ∧-semilattice public
+  using
+  ( ∧-isOrderTheoreticMeetSemilattice
+  ; ∧-isOrderTheoreticJoinSemilattice
+  ; ∧-orderTheoreticMeetSemilattice
+  ; ∧-orderTheoreticJoinSemilattice
+  )
+
+------------------------------------------------------------------------
+-- _∨_ is a semilattice
+
+∨-idem : Idempotent _∨_
+∨-idem x = begin
+  x ∨ x      ≈⟨ ∨-congˡ (sym (∧-idem _)) ⟩
+  x ∨ x ∧ x  ≈⟨ ∨-absorbs-∧ _ _ ⟩
+  x          ∎
+
+∨-isMagma : IsMagma _∨_
+∨-isMagma = record
+  { isEquivalence = isEquivalence
+  ; ∙-cong        = ∨-cong
+  }
+
+∨-isSemigroup : IsSemigroup _∨_
+∨-isSemigroup = record
+  { isMagma = ∨-isMagma
+  ; assoc   = ∨-assoc
+  }
+
+∨-isBand : IsBand _∨_
+∨-isBand = record
+  { isSemigroup = ∨-isSemigroup
+  ; idem        = ∨-idem
+  }
+
+∨-isSemilattice : IsSemilattice _∨_
 ∨-isSemilattice = record
-  { isBand = record
-    { isSemigroup = record
-      { isMagma = record
-        { isEquivalence = isEquivalence
-        ; ∙-cong        = ∨-cong
-        }
-      ; assoc         = ∨-assoc
-      }
-    ; idem = ∨-idempotent
-    }
+  { isBand = ∨-isBand
   ; comm   = ∨-comm
   }
 
 ∨-semilattice : Semilattice l₁ l₂
-∨-semilattice = record { isSemilattice = ∨-isSemilattice }
+∨-semilattice = record
+  { isSemilattice = ∨-isSemilattice
+  }
 
-open SL ∧-semilattice public using (poset)
-open Poset poset using (_≤_; isPartialOrder)
+open SemilatticeProperties ∨-semilattice public
+  using ()
+  renaming
+  ( ∧-isOrderTheoreticMeetSemilattice to ∨-isOrderTheoreticMeetSemilattice
+  ; ∧-isOrderTheoreticJoinSemilattice to ∨-isOrderTheoreticJoinSemilattice
+  ; ∧-orderTheoreticMeetSemilattice   to ∨-orderTheoreticMeetSemilattice
+  ; ∧-orderTheoreticJoinSemilattice   to ∨-orderTheoreticJoinSemilattice
+  )
 
 ------------------------------------------------------------------------
 -- The dual construction is also a lattice.
 
-∧-∨-isLattice : IsLattice _≈_ _∧_ _∨_
+∧-∨-isLattice : IsLattice _∧_ _∨_
 ∧-∨-isLattice = record
   { isEquivalence = isEquivalence
   ; ∨-comm        = ∧-comm
@@ -92,48 +131,53 @@ open Poset poset using (_≤_; isPartialOrder)
   }
 
 ∧-∨-lattice : Lattice _ _
-∧-∨-lattice = record { isLattice = ∧-∨-isLattice }
+∧-∨-lattice = record
+  { isLattice = ∧-∨-isLattice
+  }
 
 ------------------------------------------------------------------------
 -- Every algebraic lattice can be turned into an order-theoretic one.
 
-isOrderTheoreticLattice : R.IsLattice _≈_ _≤_ _∨_ _∧_
-isOrderTheoreticLattice = record
+open SemilatticeProperties ∧-semilattice public using (poset)
+open Poset poset using (_≤_; isPartialOrder)
+
+∨-∧-isOrderTheoreticLattice : R.IsLattice _≈_ _≤_ _∨_ _∧_
+∨-∧-isOrderTheoreticLattice = record
   { isPartialOrder = isPartialOrder
   ; supremum       = supremum
   ; infimum        = infimum
   }
   where
-  ∧-meetSemilattice = SL.orderTheoreticMeetSemilattice ∧-semilattice
-  ∨-joinSemilattice = SL.orderTheoreticJoinSemilattice ∨-semilattice
-  open R.MeetSemilattice ∧-meetSemilattice using (infimum)
-  open R.JoinSemilattice ∨-joinSemilattice using ()
-    renaming (supremum to supremum′; _≤_ to _≤′_)
+  open R.MeetSemilattice ∧-orderTheoreticMeetSemilattice using (infimum)
+  open R.JoinSemilattice ∨-orderTheoreticJoinSemilattice using (x≤x∨y; y≤x∨y; ∨-least)
+    renaming (_≤_ to _≤′_)
 
   -- An alternative but equivalent interpretation of the order _≤_.
 
   sound : ∀ {x y} → x ≤′ y → x ≤ y
   sound {x} {y} y≈y∨x = sym $ begin
-    x ∧ y        ≈⟨ ∧-congʳ y≈y∨x ⟩
-    x ∧ (y ∨ x)  ≈⟨ ∧-congʳ (∨-comm y x) ⟩
+    x ∧ y        ≈⟨ ∧-congˡ y≈y∨x ⟩
+    x ∧ (y ∨ x)  ≈⟨ ∧-congˡ (∨-comm y x) ⟩
     x ∧ (x ∨ y)  ≈⟨ ∧-absorbs-∨ x y ⟩
     x            ∎
 
   complete : ∀ {x y} → x ≤ y → x ≤′ y
   complete {x} {y} x≈x∧y = sym $ begin
-    y ∨ x        ≈⟨ ∨-congʳ x≈x∧y ⟩
-    y ∨ (x ∧ y)  ≈⟨ ∨-congʳ (∧-comm x y) ⟩
+    y ∨ x        ≈⟨ ∨-congˡ x≈x∧y ⟩
+    y ∨ (x ∧ y)  ≈⟨ ∨-congˡ (∧-comm x y) ⟩
     y ∨ (y ∧ x)  ≈⟨ ∨-absorbs-∧ y x ⟩
     y            ∎
 
   supremum : R.Supremum _≤_ _∨_
   supremum x y =
-    let x∨y≥x , x∨y≥y , greatest = supremum′ x y
-    in sound x∨y≥x , sound x∨y≥y ,
-       λ z x≤z y≤z → sound (greatest z (complete x≤z) (complete y≤z))
+     sound (x≤x∨y x y) ,
+     sound (y≤x∨y x y) ,
+     λ z x≤z y≤z → sound (∨-least (complete x≤z) (complete y≤z))
 
-orderTheoreticLattice : R.Lattice _ _ _
-orderTheoreticLattice = record { isLattice = isOrderTheoreticLattice }
+∨-∧-orderTheoreticLattice : R.Lattice _ _ _
+∨-∧-orderTheoreticLattice = record
+  { isLattice = ∨-∧-isOrderTheoreticLattice
+  }
 
 ------------------------------------------------------------------------
 -- One can replace the underlying equality with an equivalent one.
@@ -160,3 +204,33 @@ replace-equality {_≈′_} ≈⇔≈′ = record
                  , (λ x y → to ⟨$⟩ ∧-absorbs-∨ x y)
     }
   } where open module E {x y} = Equivalence (≈⇔≈′ {x} {y})
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 1.1
+
+∧-idempotent = ∧-idem
+{-# WARNING_ON_USAGE ∧-idempotent
+"Warning: ∧-idempotent was deprecated in v1.1.
+Please use ∧-idem instead."
+#-}
+∨-idempotent = ∨-idem
+{-# WARNING_ON_USAGE ∨-idempotent
+"Warning: ∨-idempotent was deprecated in v1.1.
+Please use ∨-idem instead."
+#-}
+isOrderTheoreticLattice = ∨-∧-isOrderTheoreticLattice
+{-# WARNING_ON_USAGE isOrderTheoreticLattice
+"Warning: isOrderTheoreticLattice was deprecated in v1.1.
+Please use ∨-∧-isOrderTheoreticLattice instead."
+#-}
+orderTheoreticLattice = ∨-∧-orderTheoreticLattice
+{-# WARNING_ON_USAGE orderTheoreticLattice
+"Warning: orderTheoreticLattice was deprecated in v1.1.
+Please use ∨-∧-orderTheoreticLattice instead."
+#-}

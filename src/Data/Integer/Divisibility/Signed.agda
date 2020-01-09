@@ -54,7 +54,7 @@ open _∣_ using (quotient) public
   sign-eq = sym $ begin
     sign (((S._*_ on sign) i k ◃ ℕ.suc q') * k)
       ≡⟨ cong (λ m → sign (sign ikq' S.* sign k ◃ ∣ ikq' ∣ ℕ.* m))
-              (sym (ℕ.m≢0⇒suc[pred[m]]≡m (¬k≠0 ∘ ∣n∣≡0⇒n≡0))) ⟩
+              (sym (ℕ.suc[pred[n]]≡n (¬k≠0 ∘ ∣n∣≡0⇒n≡0))) ⟩
     sign (sign ikq' S.* sign k ◃ ∣ ikq' ∣ ℕ.* k')
       ≡⟨ cong (λ m → sign (sign ikq' S.* sign k ◃ m ℕ.* k'))
               (abs-◃ (sign i S.* sign k) (ℕ.suc q')) ⟩

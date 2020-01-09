@@ -9,7 +9,7 @@
 module Data.Product.Properties.WithK where
 
 open import Data.Product
-open import Data.Product.Properties
+open import Data.Product.Properties using (,-injectiveˡ)
 open import Function
 open import Relation.Binary using (Decidable)
 open import Relation.Binary.PropositionalEquality

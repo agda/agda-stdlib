@@ -3,22 +3,15 @@ procedure should be followed:
 
 #### Pre-release changes
 
-* Update README.agda:
+* Update `README.agda` by replacing 'development version' by 'version X.Y' in the title.
 
-  ** Replace 'development version' by 'version X.Y' in the title.
+* Update `README.md`
 
-  ** After the list of authors, replace
+* Update `lib.cabal` version to `X.Y`.
 
-     -- The development version of the library often requires the latest
-     -- development version of Agda.
+* Update `notes/installation-guide.txt`
 
-     by
-
-     -- This version of the library has been tested using Agda A.B.C.
-
-* Update the lib.cabal version to X.Y.
-
-* Finish the CHANGELOG.
+* Update `CHANGELOG.md`.
 
 * Update the copyright year range in the LICENSE file, if necessary.
 
@@ -35,7 +28,7 @@ procedure should be followed:
 
 * Run the tests involving the library:
 
-    make lib-succeed
+    make test
 
 * Commit the changes and push
 

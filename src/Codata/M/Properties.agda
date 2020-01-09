@@ -4,7 +4,7 @@
 -- Properties of operations on M-types
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --without-K --safe --sized-types #-}
 
 module Codata.M.Properties where
 
@@ -13,11 +13,18 @@ open import Size
 open import Codata.Thunk using (Thunk; force)
 open import Codata.M
 open import Codata.M.Bisimilarity
-open import Data.Container as C hiding (map) renaming (module Morphism to Mp)
+open import Data.Container.Core as C hiding (map)
+import Data.Container.Morphism as Mp
 open import Data.Product as Prod using (_,_)
 open import Data.Product.Properties
 open import Function
 import Relation.Binary.PropositionalEquality as P
+
+open import Data.Container.Relation.Binary.Pointwise using (_,_)
+import Data.Container.Relation.Binary.Equality.Setoid as EqSetoid
+
+private module Eq {a} (A : Set a) = EqSetoid (P.setoid A)
+open Eq using (Eq)
 
 module _ {s p} {C : Container s p} where
 
@@ -27,7 +34,7 @@ module _ {s p} {C : Container s p} where
 module _ {s₁ s₂ p₁ p₂} {C₁ : Container s₁ p₁} {C₂ : Container s₂ p₂} where
 
   map-cong : ∀ {i} {f g : C₁ ⇒ C₂} →
-             (∀ {X : Set (s₁ ⊔ p₁)} t → Eq C₂ {X = X} P._≡_ (⟪ f ⟫ t) (⟪ g ⟫ t)) →
+             (∀ {X} t → Eq X C₂ (⟪ f ⟫ t) (⟪ g ⟫ t)) →
              ∀ c₁ → Bisim C₂ i (map f c₁) (map g c₁)
   map-cong {f = f} {g} f≗g (inf t@(s , n)) with f≗g t
   ... | eqs , eqf = inf (eqs , λ where

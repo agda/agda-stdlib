@@ -77,11 +77,11 @@ infixr 6 _∪_
 ∁ : ∀ {n} → Op₁ (Subset n)
 ∁ p = map not p
 
--- Union
+-- Intersection
 _∩_ : ∀ {n} → Op₂ (Subset n)
 p ∩ q = zipWith _∧_ p q
 
--- Intersection
+-- Union
 _∪_ : ∀ {n} → Op₂ (Subset n)
 p ∪ q = zipWith _∨_ p q
 

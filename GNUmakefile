@@ -1,4 +1,6 @@
-AGDA=agda
+AGDA_EXEC=agda
+RTS_OPTIONS=+RTS -M2.5G -H2.5G -A128M -RTS
+AGDA=$(AGDA_EXEC) $(RTS_OPTIONS)
 
 # Before running `make test` the `fix-agda-whitespace` program should
 # be installed:

@@ -4,7 +4,7 @@
 -- Coinductive "natural" numbers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --without-K --guardedness --sized-types #-}
 
 module Codata.Musical.Conat where
 
@@ -39,8 +39,6 @@ fromℕ (suc n) = suc (♯ fromℕ n)
 
 fromℕ-injective : ∀ {m n} → fromℕ m ≡ fromℕ n → m ≡ n
 fromℕ-injective {zero}  {zero}  eq = P.refl
-fromℕ-injective {zero}  {suc n} ()
-fromℕ-injective {suc m} {zero}  ()
 fromℕ-injective {suc m} {suc n} eq = P.cong suc (fromℕ-injective (P.cong pred eq))
 
 ∞ℕ : Coℕ
@@ -86,3 +84,18 @@ setoid = record
   trans : Transitive _≈_
   trans zero      zero      = zero
   trans (suc m≈n) (suc n≈k) = suc (♯ trans (♭ m≈n) (♭ n≈k))
+
+------------------------------------------------------------------------
+-- Legacy
+
+import Codata.Conat as C
+open import Codata.Thunk
+import Size
+
+fromMusical : ∀ {i} → Coℕ → C.Conat i
+fromMusical zero    = C.zero
+fromMusical (suc n) = C.suc λ where .force → fromMusical (♭ n)
+
+toMusical : C.Conat Size.∞ → Coℕ
+toMusical C.zero    = zero
+toMusical (C.suc n) = suc (♯ toMusical (n .force))

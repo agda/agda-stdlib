@@ -98,7 +98,7 @@ sem [*] = _*_
 ⟦_⟧ : ∀ {n} → Polynomial n → Vec Carrier n → Carrier
 ⟦ op o p₁ p₂ ⟧ ρ = ⟦ p₁ ⟧ ρ ⟨ sem o ⟩ ⟦ p₂ ⟧ ρ
 ⟦ con c      ⟧ ρ = ⟦ c ⟧′
-⟦ var x      ⟧ ρ = lookup x ρ
+⟦ var x      ⟧ ρ = lookup ρ x
 ⟦ p :^ n     ⟧ ρ = ⟦ p ⟧ ρ ^ n
 ⟦ :- p       ⟧ ρ = - ⟦ p ⟧ ρ
 
@@ -509,12 +509,11 @@ correct-con c (x ∷ ρ) = begin
   ⟦ c ⟧′                                   ∎
 
 correct-var : ∀ {n} (i : Fin n) →
-              ∀ ρ → ⟦ normalise-var i ⟧N ρ ≈ lookup i ρ
-correct-var ()      []
+              ∀ ρ → ⟦ normalise-var i ⟧N ρ ≈ lookup ρ i
 correct-var (suc i) (x ∷ ρ) = begin
   ⟦ ∅ *x+HN normalise-var i ⟧H (x ∷ ρ)  ≈⟨ ∅*x+HN-homo (normalise-var i) x ρ ⟩
   ⟦ normalise-var i ⟧N ρ                ≈⟨ correct-var i ρ ⟩
-  lookup i ρ                            ∎
+  lookup ρ i                            ∎
 correct-var zero (x ∷ ρ) = begin
   (0# * x + ⟦ 1N ⟧N ρ) * x + ⟦ 0N ⟧N ρ  ≈⟨ ((refl ⟨ +-cong ⟩ 1N-homo ρ) ⟨ *-cong ⟩ refl) ⟨ +-cong ⟩ 0N-homo ρ ⟩
   (0# * x + 1#) * x + 0#                ≈⟨ lemma₅ _ ⟩

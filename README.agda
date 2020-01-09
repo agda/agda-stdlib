@@ -1,38 +1,28 @@
 module README where
 
 ------------------------------------------------------------------------
--- The Agda standard library, development version
+-- The Agda standard library, version 1.2-dev
 --
--- Authors: Nils Anders Danielsson, with contributions from Andreas
--- Abel, Stevan Andjelkovic, Jean-Philippe Bernardy, Peter Berry,
--- Bradley Hardy Joachim Breitner, Samuel Bronson, Daniel Brown,
--- James Chapman, Liang-Ting Chen, Matthew Daggitt, Dominique Devriese,
--- Dan Doel, Érdi Gergő, Helmut Grohne, Simon Foster, Liyang Hu,
--- Jason Hu, Patrik Jansson, Alan Jeffrey, Wen Kokke, Evgeny Kotelnikov,
--- Sergei Meshveliani, Eric Mertens, Darin Morrison, Guilhem Moulin,
--- Shin-Cheng Mu, Ulf Norell, Noriyuki Ohkawa, Nicolas Pouillard,
--- Andrés Sicard-Ramírez, Sandro Stucki, Milo Turner, Noam Zeilberger
--- and some anonymous contributors.
+-- Authors: Nils Anders Danielsson, Matthew Daggitt, Guillaume Allais
+-- with contributions from Andreas Abel, Stevan Andjelkovic,
+-- Jean-Philippe Bernardy, Peter Berry, Bradley Hardy Joachim Breitner,
+-- Samuel Bronson, Daniel Brown, James Chapman, Liang-Ting Chen,
+-- Dominique Devriese, Dan Doel, Érdi Gergő, Zack Grannan,
+-- Helmut Grohne, Simon Foster, Liyang Hu, Jason Hu, Patrik Jansson,
+-- Alan Jeffrey, Wen Kokke, Evgeny Kotelnikov, Sergei Meshveliani,
+-- Eric Mertens, Darin Morrison, Guilhem Moulin, Shin-Cheng Mu,
+-- Ulf Norell, Noriyuki Ohkawa, Nicolas Pouillard,
+-- Andrés Sicard-Ramírez, Lex van der Stoep, Sandro Stucki, Milo Turner,
+-- Noam Zeilberger and other anonymous contributors.
 ------------------------------------------------------------------------
 
--- This version of the library has been tested using Agda 2.5.4.1.
-
--- Note that no guarantees are currently made about forwards or
--- backwards compatibility, the library is still at an experimental
--- stage.
+-- This version of the library has been tested using Agda 2.6.0.1.
 
 -- The library comes with a .agda-lib file, for use with the library
 -- management system.
 
 -- Currently the library does not support the JavaScript compiler
 -- backend.
-
--- Contributions to this library are welcome (but to avoid wasted work
--- it is suggested that you discuss large changes before implementing
--- them). Please send contributions in the form of git pull requests,
--- patch bundles or ask for commmit rights to the repository.  It is
--- appreciated if every patch contains a single, complete change, and
--- if the coding style used in the library is adhered to.
 
 ------------------------------------------------------------------------
 -- Module hierarchy
@@ -46,39 +36,56 @@ module README where
 --     properties needed to specify these structures (associativity,
 --     commutativity, etc.), and operations on and proofs about the
 --     structures.
+
+-- • Axiom
+--     Types and consequences of various additional axioms not
+--     necessarily included in Agda, e.g. uniqueness of identity
+--     proofs, function extensionality and excluded middle.
+
+import README.Axiom
+
 -- • Category
 --     Category theory-inspired idioms used to structure functional
 --     programs (functors and monads, for instance).
+
 -- • Codata
 --     Coinductive data types and properties. There are two different
 --     approaches taken. The `Codata` folder contains the new more
 --     standard approach using sized types. The `Codata.Musical`
 --     folder contains modules using the old musical notation.
+
 -- • Data
 --     Data types and properties.
+
+import README.Data
+
 -- • Function
 --     Combinators and properties related to functions.
+
 -- • Foreign
 --     Related to the foreign function interface.
+
 -- • Induction
 --     A general framework for induction (includes lexicographic and
 --     well-founded induction).
+
 -- • IO
 --     Input/output-related functions.
+
 -- • Level
 --     Universe levels.
--- • Record
---     An encoding of record types with manifest fields and "with".
+
 -- • Reflection
 --     Support for reflection.
+
 -- • Relation
 --     Properties of and proofs about relations.
+
 -- • Size
 --     Sizes used by the sized types mechanism.
+
 -- • Strict
 --     Provides access to the builtins relating to strictness.
--- • Universe
---     A definition of universes.
 
 ------------------------------------------------------------------------
 -- A selection of useful library modules
@@ -120,7 +127,7 @@ import Category.Monad        -- Monads.
 import Relation.Binary.PropositionalEquality
 
 -- Convenient syntax for "equational reasoning" using a preorder:
-import Relation.Binary.PreorderReasoning
+import Relation.Binary.Reasoning.Preorder
 
 -- Solver for commutative ring or semiring equalities:
 import Algebra.Solver.Ring
@@ -145,7 +152,7 @@ import Induction
 import Induction.WellFounded
 
 -- Various forms of induction for natural numbers:
-import Induction.Nat
+import Data.Nat.Induction
 
 -- • Support for coinduction
 
@@ -184,7 +191,7 @@ import IO
 --
 --     open IsSemigroup isSemigroup public
 --
--- Note here that open IsSemigroup isSemigroup public ensures that the
+-- Note here that `open IsSemigroup isSemigroup public` ensures that the
 -- fields of the isSemigroup record can be accessed directly; this
 -- technique enables the user of an IsMonoid record to use underlying
 -- records without having to manually open an entire record hierarchy.
@@ -210,7 +217,7 @@ import IO
 -- in IsPreorder.
 
 -- Records packing up properties with the corresponding operations,
--- sets, etc. are sometimes also defined:
+-- sets, etc. are also defined:
 --
 --   record Semigroup : Set₁ where
 --     infixl 7 _∙_
@@ -255,29 +262,9 @@ import IO
 -- More documentation
 ------------------------------------------------------------------------
 
--- Some examples showing where the natural numbers/integers and some
--- related operations and properties are defined, and how they can be
--- used:
-
-import README.Nat
-import README.Integer
-
--- Some examples showing how the AVL tree module can be used.
-
-import README.AVL
-
--- An example showing how the Record module can be used.
-
-import README.Record
-
--- An example showing how the case expression can be used.
+-- Some examples showing how the case expression can be used.
 
 import README.Case
-
--- An example showing how the free monad construction on containers can be
--- used
-
-import README.Container.FreeMonad
 
 -- Some examples showing how combinators can be used to emulate
 -- "functional reasoning"
@@ -288,6 +275,20 @@ import README.Function.Reasoning
 -- the behaviour of compiled Agda programs.
 
 import README.Debug.Trace
+
+-- An exploration of the generic programs acting on n-ary functions and
+-- n-ary heterogeneous products
+
+import README.Nary
+
+-- Explaining the inspect idiom: use case, equivalent handwritten
+-- auxiliary definitions, and implementation details.
+
+import README.Inspect
+
+-- Explaining string formats and the behaviour of printf
+
+import README.Text
 
 ------------------------------------------------------------------------
 -- Core modules

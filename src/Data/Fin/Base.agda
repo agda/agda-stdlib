@@ -13,15 +13,14 @@
 module Data.Fin.Base where
 
 open import Data.Empty using (⊥-elim)
-open import Data.Nat as ℕ
-  using (ℕ; zero; suc; z≤n; s≤s)
-open import Function using (_∘_; _on_)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc; z≤n; s≤s)
+open import Function.Core using (_∘_; _on_)
+import Data.Nat.Properties as ℕₚ
 open import Level using () renaming (zero to ℓ₀)
 open import Relation.Nullary using (yes; no)
-open import Relation.Nullary.Decidable using (True; toWitness)
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality
-  using (_≡_; _≢_; refl; cong)
+open import Relation.Nullary.Decidable.Core using (True; toWitness)
+open import Relation.Binary.Core
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≢_; refl; cong)
 
 ------------------------------------------------------------------------
 -- Types
@@ -32,7 +31,7 @@ data Fin : ℕ → Set where
   zero : {n : ℕ} → Fin (suc n)
   suc  : {n : ℕ} (i : Fin n) → Fin (suc n)
 
--- A conversion: toℕ "n" = n.
+-- A conversion: toℕ "i" = i.
 
 toℕ : ∀ {n} → Fin n → ℕ
 toℕ zero    = 0
@@ -50,8 +49,6 @@ cast : ∀ {m n} → .(_ : m ≡ n) → Fin m → Fin n
 cast {zero}  {zero}  eq k       = k
 cast {suc m} {suc n} eq zero    = zero
 cast {suc m} {suc n} eq (suc k) = suc (cast (cong ℕ.pred eq) k)
-cast {zero}  {suc n} ()
-cast {suc m} {zero}  ()
 
 ------------------------------------------------------------------------
 -- Conversions
@@ -66,9 +63,9 @@ fromℕ (suc n) = suc (fromℕ n)
 
 -- fromℕ≤ {m} _ = "m".
 
-fromℕ≤ : ∀ {m n} → m ℕ.< n → Fin n
-fromℕ≤ (s≤s z≤n)       = zero
-fromℕ≤ (s≤s (s≤s m≤n)) = suc (fromℕ≤ (s≤s m≤n))
+fromℕ≤ : ∀ {m n} → .(m ℕ.< n) → Fin n
+fromℕ≤ {zero}  {suc n} m≤n = zero
+fromℕ≤ {suc m} {suc n} m≤n = suc (fromℕ≤ (ℕₚ.≤-pred m≤n))
 
 -- fromℕ≤″ m _ = "m".
 
@@ -77,36 +74,25 @@ fromℕ≤″ zero    (ℕ.less-than-or-equal refl) = zero
 fromℕ≤″ (suc m) (ℕ.less-than-or-equal refl) =
   suc (fromℕ≤″ m (ℕ.less-than-or-equal refl))
 
--- # m = "m".
-
-infix 10 #_
-
-#_ : ∀ m {n} {m<n : True (suc m ℕ.≤? n)} → Fin n
-#_ _ {m<n = m<n} = fromℕ≤ (toWitness m<n)
-
--- raise m "n" = "m + n".
+-- raise m "i" = "m + i".
 
 raise : ∀ {m} n → Fin m → Fin (n ℕ.+ m)
 raise zero    i = i
 raise (suc n) i = suc (raise n i)
 
--- reduce≥ "m + n" _ = "n".
+-- reduce≥ "m + i" _ = "i".
 
 reduce≥ : ∀ {m n} (i : Fin (m ℕ.+ n)) (i≥m : toℕ i ℕ.≥ m) → Fin n
 reduce≥ {zero}  i       i≥m       = i
-reduce≥ {suc m} zero    ()
 reduce≥ {suc m} (suc i) (s≤s i≥m) = reduce≥ i i≥m
 
--- inject⋆ m "n" = "n".
+-- inject⋆ m "i" = "i".
 
 inject : ∀ {n} {i : Fin n} → Fin′ i → Fin n
-inject {i = zero}  ()
 inject {i = suc i} zero    = zero
 inject {i = suc i} (suc j) = suc (inject j)
 
 inject! : ∀ {n} {i : Fin (suc n)} → Fin′ i → Fin n
-inject! {n = zero}  {i = suc ()} _
-inject!             {i = zero}   ()
 inject! {n = suc _} {i = suc _}  zero    = zero
 inject! {n = suc _} {i = suc _}  (suc j) = suc (inject! j)
 
@@ -118,9 +104,16 @@ inject₁ : ∀ {m} → Fin m → Fin (suc m)
 inject₁ zero    = zero
 inject₁ (suc i) = suc (inject₁ i)
 
-inject≤ : ∀ {m n} → Fin m → m ℕ.≤ n → Fin n
-inject≤ zero    (s≤s le) = zero
-inject≤ (suc i) (s≤s le) = suc (inject≤ i le)
+inject≤ : ∀ {m n} → Fin m → .(m ℕ.≤ n) → Fin n
+inject≤ {_} {suc n} zero    le = zero
+inject≤ {_} {suc n} (suc i) le = suc (inject≤ i (ℕₚ.≤-pred le))
+
+-- lower₁ "i" _ = "i".
+
+lower₁ : ∀ {n} → (i : Fin (suc n)) → (n ≢ toℕ i) → Fin n
+lower₁ {zero} zero ne = ⊥-elim (ne refl)
+lower₁ {suc n} zero _ = zero
+lower₁ {suc n} (suc i) ne = suc (lower₁ i λ x → ne (cong suc x))
 
 -- A strengthening injection into the minimal Fin fibre.
 strengthen : ∀ {n} (i : Fin n) → Fin′ (suc i)
@@ -144,7 +137,6 @@ fold′ : ∀ {n t} (T : Fin (suc n) → Set t) →
         T zero →
         ∀ i → T i
 fold′             T f x zero     = x
-fold′ {n = zero}  T f x (suc ())
 fold′ {n = suc n} T f x (suc i)  =
   f i (fold′ (T ∘ inject₁) (f ∘ inject₁) x i)
 
@@ -155,7 +147,7 @@ lift zero    f i       = f i
 lift (suc k) f zero    = zero
 lift (suc k) f (suc i) = suc (lift k f i)
 
--- "m" + "n" = "m + n".
+-- "i" + "j" = "i + j".
 
 infixl 6 _+_
 
@@ -163,34 +155,31 @@ _+_ : ∀ {m n} (i : Fin m) (j : Fin n) → Fin (toℕ i ℕ.+ n)
 zero  + j = j
 suc i + j = suc (i + j)
 
--- "m" - "n" = "m ∸ n".
+-- "i" - "j" = "i ∸ j".
 
 infixl 6 _-_
 
 _-_ : ∀ {m} (i : Fin m) (j : Fin′ (suc i)) → Fin (m ℕ.∸ toℕ j)
 i     - zero   = i
-zero  - suc ()
 suc i - suc j  = i - j
 
--- m ℕ- "n" = "m ∸ n".
+-- m ℕ- "i" = "m ∸ i".
 
 infixl 6 _ℕ-_
 
 _ℕ-_ : (n : ℕ) (j : Fin (suc n)) → Fin (suc n ℕ.∸ toℕ j)
 n     ℕ- zero   = fromℕ n
-zero  ℕ- suc ()
 suc n ℕ- suc i  = n ℕ- i
 
--- m ℕ-ℕ "n" = m ∸ n.
+-- m ℕ-ℕ "i" = m ∸ i.
 
 infixl 6 _ℕ-ℕ_
 
 _ℕ-ℕ_ : (n : ℕ) → Fin (suc n) → ℕ
 n     ℕ-ℕ zero   = n
-zero  ℕ-ℕ suc ()
 suc n ℕ-ℕ suc i  = n ℕ-ℕ i
 
--- pred "n" = "pred n".
+-- pred "i" = "pred i".
 
 pred : ∀ {n} → Fin n → Fin n
 pred zero    = zero
@@ -203,7 +192,6 @@ pred (suc i) = inject₁ i
 punchOut : ∀ {m} {i j : Fin (suc m)} → i ≢ j → Fin m
 punchOut {_}     {zero}   {zero}  i≢j = ⊥-elim (i≢j refl)
 punchOut {_}     {zero}   {suc j} _   = j
-punchOut {zero}  {suc ()}
 punchOut {suc m} {suc i}  {zero}  _   = zero
 punchOut {suc m} {suc i}  {suc j} i≢j = suc (punchOut (i≢j ∘ cong suc))
 
@@ -243,9 +231,20 @@ compare zero    zero    = equal   zero
 compare zero    (suc j) = less    (suc j) zero
 compare (suc i) zero    = greater (suc i) zero
 compare (suc i) (suc j) with compare i j
-compare (suc .(inject least)) (suc .greatest) | less    greatest least =
-  less    (suc greatest) (suc least)
-compare (suc .greatest) (suc .(inject least)) | greater greatest least =
-  greater (suc greatest) (suc least)
-compare (suc .i)        (suc .i)              | equal i =
-  equal (suc i)
+... | less    greatest least = less    (suc greatest) (suc least)
+... | greater greatest least = greater (suc greatest) (suc least)
+... | equal   i              = equal   (suc i)
+
+------------------------------------------------------------------------
+-- Constants
+
+pattern 0F = zero
+pattern 1F = suc 0F
+pattern 2F = suc 1F
+pattern 3F = suc 2F
+pattern 4F = suc 3F
+pattern 5F = suc 4F
+pattern 6F = suc 5F
+pattern 7F = suc 6F
+pattern 8F = suc 7F
+pattern 9F = suc 8F

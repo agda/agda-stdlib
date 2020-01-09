@@ -8,47 +8,80 @@
 
 open import Algebra
 
-module Algebra.Properties.Semilattice {l₁ l₂} (L : Semilattice l₁ l₂) where
+module Algebra.Properties.Semilattice {c ℓ} (L : Semilattice c ℓ) where
 
 open Semilattice L
+
 open import Algebra.Structures
-open import Relation.Binary
-import Relation.Binary.Construct.NaturalOrder.Left as LeftNaturalOrder
-import Relation.Binary.Lattice as R
-import Relation.Binary.Properties.Poset as R
-open import Relation.Binary.EqReasoning setoid
 open import Function
 open import Data.Product
+open import Relation.Binary
+import Relation.Binary.Construct.NaturalOrder.Left _≈_ _∧_ as LeftNaturalOrder
+open import Relation.Binary.Lattice
+import Relation.Binary.Properties.Poset as R
+open import Relation.Binary.Reasoning.Setoid setoid
 
 ------------------------------------------------------------------------
 -- Every semilattice can be turned into a poset via the left natural
 -- order.
 
-poset : Poset _ _ _
-poset = LeftNaturalOrder.poset _≈_ _∧_ isSemilattice
+poset : Poset c ℓ ℓ
+poset = LeftNaturalOrder.poset isSemilattice
 
 open Poset poset using (_≤_; isPartialOrder)
 
 ------------------------------------------------------------------------
 -- Every algebraic semilattice can be turned into an order-theoretic one.
 
-isOrderTheoreticMeetSemilattice : R.IsMeetSemilattice _≈_ _≤_ _∧_
-isOrderTheoreticMeetSemilattice = record
+∧-isOrderTheoreticMeetSemilattice : IsMeetSemilattice _≈_ _≤_ _∧_
+∧-isOrderTheoreticMeetSemilattice = record
   { isPartialOrder = isPartialOrder
-  ; infimum        = LeftNaturalOrder.infimum _≈_ _∧_ isSemilattice
+  ; infimum        = LeftNaturalOrder.infimum isSemilattice
   }
 
-orderTheoreticMeetSemilattice : R.MeetSemilattice _ _ _
-orderTheoreticMeetSemilattice = record
-  { isMeetSemilattice = isOrderTheoreticMeetSemilattice }
-
-isOrderTheoreticJoinSemilattice : R.IsJoinSemilattice _≈_ (flip _≤_) _∧_
-isOrderTheoreticJoinSemilattice = record
+∧-isOrderTheoreticJoinSemilattice : IsJoinSemilattice _≈_ (flip _≤_) _∧_
+∧-isOrderTheoreticJoinSemilattice = record
   { isPartialOrder = R.invIsPartialOrder poset
-  ; supremum       = R.IsMeetSemilattice.infimum
-                       isOrderTheoreticMeetSemilattice
+  ; supremum       = IsMeetSemilattice.infimum
+                       ∧-isOrderTheoreticMeetSemilattice
   }
 
-orderTheoreticJoinSemilattice : R.JoinSemilattice _ _ _
-orderTheoreticJoinSemilattice = record
-  { isJoinSemilattice = isOrderTheoreticJoinSemilattice }
+∧-orderTheoreticMeetSemilattice : MeetSemilattice c ℓ ℓ
+∧-orderTheoreticMeetSemilattice = record
+  { isMeetSemilattice = ∧-isOrderTheoreticMeetSemilattice
+  }
+
+∧-orderTheoreticJoinSemilattice : JoinSemilattice c ℓ ℓ
+∧-orderTheoreticJoinSemilattice = record
+  { isJoinSemilattice = ∧-isOrderTheoreticJoinSemilattice
+  }
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 1.1
+
+isOrderTheoreticMeetSemilattice = ∧-isOrderTheoreticMeetSemilattice
+{-# WARNING_ON_USAGE isOrderTheoreticMeetSemilattice
+"Warning: isOrderTheoreticMeetSemilattice was deprecated in v1.1.
+Please use ∧-isOrderTheoreticMeetSemilattice instead."
+#-}
+isOrderTheoreticJoinSemilattice = ∧-isOrderTheoreticJoinSemilattice
+{-# WARNING_ON_USAGE isOrderTheoreticJoinSemilattice
+"Warning: isOrderTheoreticJoinSemilattice was deprecated in v1.1.
+Please use ∧-isOrderTheoreticJoinSemilattice instead."
+#-}
+orderTheoreticMeetSemilattice = ∧-orderTheoreticMeetSemilattice
+{-# WARNING_ON_USAGE orderTheoreticMeetSemilattice
+"Warning: orderTheoreticMeetSemilattice was deprecated in v1.1.
+Please use ∧-orderTheoreticMeetSemilattice instead."
+#-}
+orderTheoreticJoinSemilattice = ∧-orderTheoreticJoinSemilattice
+{-# WARNING_ON_USAGE orderTheoreticJoinSemilattice
+"Warning: orderTheoreticJoinSemilattice was deprecated in v1.1.
+Please use ∧-orderTheoreticJoinSemilattice instead."
+#-}

@@ -19,11 +19,11 @@ open import Data.These as These using (These; this; that; these)
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
 open import Data.Unit
 open import Data.Vec as Vec using (Vec; []; _∷_)
-open import Function
+open import Function.Core
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence
   using () renaming (module Equivalence to Eq)
-open import Relation.Binary.PropositionalEquality as P using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality as P using (_≡_; _≢_; refl)
 open import Relation.Nullary.Decidable using (⌊_⌋)
 
 ------------------------------------------------------------------------
@@ -85,6 +85,9 @@ lift f xs = fromVec (proj₂ (f (toVec xs)))
 
 map : ∀ {a b} {A : Set a} {B : Set b} → (A → B) → List⁺ A → List⁺ B
 map f (x ∷ xs) = (f x ∷ List.map f xs)
+
+replicate : ∀ {a} {A : Set a} n → n ≢ 0 → A → List⁺ A
+replicate n n≢0 a = a ∷ List.replicate (pred n) a
 
 -- Right fold. Note that s is only applied to the last element (see
 -- the examples below).

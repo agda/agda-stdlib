@@ -30,7 +30,6 @@ module _ {a b p q} {A : Set a} {B : Set b} {P : Pred B p} {Q : Pred B q} where
   map⁺ (pfxs ∷ pqfxs) = pfxs ∷ map⁺ pqfxs
 
   map⁻ : {f : A → B} → First P Q ∘′ List.map f ⊆ First (P ∘′ f) (Q ∘′ f)
-  map⁻ {f} {[]}     ()
   map⁻ {f} {x ∷ xs} [ qfx ]       = [ qfx ]
   map⁻ {f} {x ∷ xs} (pfx ∷ pqfxs) = pfx ∷ map⁻ pqfxs
 
@@ -53,7 +52,6 @@ module _ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} where
 module _ {a p q} {A : Set a} {P : Pred A p} {Q : Pred A q} where
 
   All⇒¬First : P ⊆ ∁ Q → All P ⊆ ∁ (First P Q)
-  All⇒¬First p⇒¬q []         ()
   All⇒¬First p⇒¬q (px ∷ pxs) [ qx ]   = ⊥-elim (p⇒¬q px qx)
   All⇒¬First p⇒¬q (_ ∷ pxs)  (_ ∷ hf) = All⇒¬First p⇒¬q pxs hf
 

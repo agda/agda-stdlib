@@ -4,7 +4,7 @@
 -- A categorical view of Delay
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --without-K --safe --sized-types #-}
 
 module Codata.Delay.Categorical where
 
@@ -13,6 +13,7 @@ open import Function
 open import Category.Functor
 open import Category.Applicative
 open import Category.Monad
+open import Data.These using (leftMost)
 
 functor : ∀ {i ℓ} → RawFunctor {ℓ} (λ A → Delay A i)
 functor = record { _<$>_ = λ f → map f }
@@ -25,6 +26,12 @@ module Sequential where
     ; _⊛_  = λ df da → bind df (λ f → map f da)
     }
 
+  applicativeZero : ∀ {i ℓ} → RawApplicativeZero {ℓ} (λ A → Delay A i)
+  applicativeZero = record
+    { applicative = applicative
+    ; ∅           = never
+    }
+
   monad : ∀ {i ℓ} → RawMonad {ℓ} (λ A → Delay A i)
   monad = record
     { return = now
@@ -33,8 +40,8 @@ module Sequential where
 
   monadZero : ∀ {i ℓ} → RawMonadZero {ℓ} (λ A → Delay A i)
   monadZero = record
-    { monad = monad
-    ; ∅     = never
+    { monad           = monad
+    ; applicativeZero = applicativeZero
     }
 
 module Zippy where
@@ -45,19 +52,14 @@ module Zippy where
     ; _⊛_  = zipWith id
     }
 
-  -- We do not have `RawApplicativeZero` and `RawApplicativePlus` yet but here is what
-  -- they would look like
-
-  {-
   applicativeZero : ∀ {i ℓ} → RawApplicativeZero {ℓ} (λ A → Delay A i)
   applicativeZero = record
     { applicative = applicative
     ; ∅           = never
     }
 
-  applicativePlus : ∀ {i ℓ} → RawApplicativeZero {ℓ} (λ A → Delay A i)
-  applicativePlus = record
+  alternative : ∀ {i ℓ} → RawAlternative {ℓ} (λ A → Delay A i)
+  alternative = record
     { applicativeZero = applicativeZero
     ; _∣_             = alignWith leftMost
     }
-  -}

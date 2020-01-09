@@ -2,7 +2,7 @@
 -- The Agda standard library
 --
 -- This module is DEPRECATED. Please use
--- Data.List.Relation.Unary.Any.Properties directly.
+-- Data.List.Relation.Binary.BagAndSetEquality directly.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
