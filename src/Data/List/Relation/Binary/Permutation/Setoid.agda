@@ -90,7 +90,7 @@ module PermutationReasoning where
   -- Step with flipped pointwise list equality
   step-≋˘ : ∀ x {y z} → y IsRelatedTo z → y ≋ x → x IsRelatedTo z
   step-≋˘ x y↭z y≋x = x ≋⟨ ≋-sym y≋x ⟩ y↭z
-  
+
   -- Skip reasoning on the first element
   step-prep : ∀ x xs {ys zs : List A} → (x ∷ ys) IsRelatedTo zs →
               xs ↭ ys → (x ∷ xs) IsRelatedTo zs
