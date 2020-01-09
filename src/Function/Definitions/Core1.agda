@@ -20,6 +20,6 @@ open import Level using (_⊔_)
 ------------------------------------------------------------------------
 -- Definitions
 
--- (Note the name `RightInverse` is used for the package)
+-- (Note the name `RightInverse` is used for the bundle)
 Inverseʳ : ∀ {b} {B : Set b} → (A → B) → (B → A) → Set (a ⊔ ℓ₁)
 Inverseʳ f g = ∀ x → g (f x) ≈₁ x

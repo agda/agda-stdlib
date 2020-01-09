@@ -9,14 +9,17 @@
 module Relation.Binary.Construct.Closure.Reflexive.Properties where
 
 open import Data.Product as Prod
-open import Data.Sum
-open import Function
+open import Data.Sum as Sum
+open import Function.Equivalence using (_⇔_; equivalence)
+open import Function using (id)
 open import Level
 open import Relation.Binary
 open import Relation.Binary.Construct.Closure.Reflexive
 open import Relation.Binary.PropositionalEquality as PropEq using (_≡_; refl)
 open import Relation.Nullary
+import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Sum using (_⊎-dec_)
 open import Relation.Unary using (Pred)
 
 private
@@ -58,11 +61,19 @@ module _ {_~_ : Rel A ℓ} where
   ... | tri≈ _ refl _ = inj₁ refl
   ... | tri> _ _    c = inj₂ [ c ]
 
+  fromSum : ∀ {a b} → a ≡ b ⊎ a ~ b → Refl _~_ a b
+  fromSum (inj₁ refl) = refl
+  fromSum (inj₂ y) = [ y ]
+
+  toSum : ∀ {a b} → Refl _~_ a b → a ≡ b ⊎ a ~ b
+  toSum [ x∼y ] = inj₂ x∼y
+  toSum refl = inj₁ refl
+
+  ⊎⇔Refl : ∀ {a b} → (a ≡ b ⊎ a ~ b) ⇔ Refl _~_ a b
+  ⊎⇔Refl = equivalence fromSum toSum
+
   dec : Decidable {A = A} _≡_ → Decidable _~_ → Decidable (Refl _~_)
-  dec ≡-dec ~-dec a b with ≡-dec a b | ~-dec a b
-  ... | _        | yes q = yes [ q ]
-  ... | yes refl | _     = yes refl
-  ... | no ¬p    | no ¬q = no λ { refl → ¬p refl; [ p ] → ¬q p }
+  dec ≡-dec ~-dec a b = Dec.map ⊎⇔Refl (≡-dec a b ⊎-dec ~-dec a b)
 
   decidable : Trichotomous _≡_ _~_ → Decidable (Refl _~_)
   decidable ~-tri a b with ~-tri a b

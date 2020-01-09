@@ -8,8 +8,7 @@
 
 module Data.List.Relation.Binary.BagAndSetEquality where
 
-open import Algebra using (CommutativeSemiring; CommutativeMonoid)
-open import Algebra.FunctionProperties using (Idempotent)
+open import Algebra using (Idempotent; CommutativeMonoid)
 open import Category.Monad using (RawMonad)
 open import Data.Empty
 open import Data.Fin
@@ -27,7 +26,7 @@ open import Data.Sum as Sum hiding (map)
 open import Data.Sum.Properties
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
 open import Data.Unit
-open import Function.Core
+open import Function.Base
 open import Function.Equality using (_⟨$⟩_)
 import Function.Equivalence as FE
 open import Function.Inverse as Inv using (_↔_; Inverse; inverse)

@@ -12,8 +12,9 @@ module Data.List.Relation.Ternary.Interleaving.Setoid.Properties
   {c ℓ} (S : Setoid c ℓ) where
 
 open import Data.List.Base using (List; []; _∷_; filter; _++_)
+open import Data.Bool.Base using (true; false)
 open import Relation.Unary using (Decidable)
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary using (does)
 open import Relation.Nullary.Negation using (¬?)
 open import Function
 
@@ -39,6 +40,6 @@ module _ {p} {P : A → Set p} (P? : Decidable P) where
 
   filter⁺ : ∀ xs → Interleaving (filter P? xs) (filter (¬? ∘ P?) xs) xs
   filter⁺ []       = []
-  filter⁺ (x ∷ xs) with P? x
-  ... | yes px = refl ∷ˡ filter⁺ xs
-  ... | no ¬px = refl ∷ʳ filter⁺ xs
+  filter⁺ (x ∷ xs) with does (P? x)
+  ... | true  = refl ∷ˡ filter⁺ xs
+  ... | false = refl ∷ʳ filter⁺ xs

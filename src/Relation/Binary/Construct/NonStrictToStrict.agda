@@ -15,19 +15,52 @@ open import Data.Product using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum using (inj₁; inj₂)
 open import Function using (_∘_; flip)
 open import Relation.Nullary using (¬_; yes; no)
+open import Relation.Nullary.Negation using (contradiction; ¬?)
+open import Relation.Nullary.Product using (_×-dec_)
+
+private
+  _≉_ : Rel A ℓ₁
+  x ≉ y = ¬ (x ≈ y)
 
 ------------------------------------------------------------------------
 -- _≤_ can be turned into _<_ as follows:
 
 _<_ : Rel A _
-x < y = (x ≤ y) × ¬ (x ≈ y)
+x < y = x ≤ y × x ≉ y
 
 ------------------------------------------------------------------------
--- The converted relations have certain properties
--- (if the original relations have certain other properties)
+-- Relationship between relations
 
 <⇒≤ : _<_ ⇒ _≤_
 <⇒≤ = proj₁
+
+<⇒≉ : ∀ {x y} → x < y → x ≉ y
+<⇒≉ = proj₂
+
+≤∧≉⇒< : ∀ {x y} → x ≤ y → x ≉ y → x < y
+≤∧≉⇒< = _,_
+
+<⇒≱ : Antisymmetric _≈_ _≤_ → ∀ {x y} → x < y → ¬ (y ≤ x)
+<⇒≱ antisym (x≤y , x≉y) y≤x = x≉y (antisym x≤y y≤x)
+
+≤⇒≯ : Antisymmetric _≈_ _≤_ → ∀ {x y} → x ≤ y → ¬ (y < x)
+≤⇒≯ antisym x≤y y<x = <⇒≱ antisym y<x x≤y
+
+≰⇒> : Symmetric _≈_ → (_≈_ ⇒ _≤_) → Total _≤_ →
+      ∀ {x y} → ¬ (x ≤ y) → y < x
+≰⇒> sym refl total {x} {y} x≰y with total x y
+... | inj₁ x≤y = contradiction x≤y x≰y
+... | inj₂ y≤x = y≤x , x≰y ∘ refl ∘ sym
+
+≮⇒≥ : Symmetric _≈_ → Decidable _≈_ → _≈_ ⇒ _≤_ → Total _≤_ →
+      ∀ {x y} → ¬ (x < y) → y ≤ x
+≮⇒≥ sym _≟_ ≤-refl _≤?_ {x} {y} x≮y with x ≟ y | y ≤? x
+... | yes x≈y  | _        = ≤-refl (sym x≈y)
+... | _        | inj₁ y≤x = y≤x
+... | no  x≉y  | inj₂ x≤y = contradiction (x≤y , x≉y) x≮y
+
+------------------------------------------------------------------------
+-- Relational properties
 
 <-irrefl : Irreflexive _≈_ _<_
 <-irrefl x≈y (_ , x≉y) = x≉y x≈y
@@ -52,11 +85,11 @@ x < y = (x ≤ y) × ¬ (x ≈ y)
 
 <-respˡ-≈ : Transitive _≈_ → _≤_ Respectsˡ _≈_ → _<_ Respectsˡ _≈_
 <-respˡ-≈ trans respˡ y≈z (y≤x , y≉x) =
-  (respˡ y≈z y≤x) , (λ z≈x → y≉x (trans y≈z z≈x))
+  respˡ y≈z y≤x , y≉x ∘ trans y≈z
 
 <-respʳ-≈ : Symmetric _≈_ → Transitive _≈_ →
             _≤_ Respectsʳ _≈_ → _<_ Respectsʳ _≈_
-<-respʳ-≈ sym trans respʳ {x} {y} {z} y≈z (x≤y , x≉y) =
+<-respʳ-≈ sym trans respʳ y≈z (x≤y , x≉y) =
   (respʳ y≈z x≤y) , λ x≈z → x≉y (trans x≈z (sym y≈z))
 
 <-resp-≈ : IsEquivalence _≈_ → _≤_ Respects₂ _≈_ → _<_ Respects₂ _≈_
@@ -70,16 +103,14 @@ x < y = (x ≤ y) × ¬ (x ≈ y)
 <-trichotomous ≈-sym _≟_ antisym total x y with x ≟ y
 ... | yes x≈y = tri≈ (<-irrefl x≈y) x≈y (<-irrefl (≈-sym x≈y))
 ... | no  x≉y with total x y
-...   | inj₁ x≤y = tri< (x≤y , x≉y) x≉y
-                        (x≉y ∘ antisym x≤y ∘ proj₁)
-...   | inj₂ x≥y = tri> (x≉y ∘ flip antisym x≥y ∘ proj₁) x≉y
-                        (x≥y , x≉y ∘ ≈-sym)
+...   | inj₁ x≤y = tri< (x≤y , x≉y) x≉y (x≉y ∘ antisym x≤y ∘ proj₁)
+...   | inj₂ y≤x = tri> (x≉y ∘ flip antisym y≤x ∘ proj₁) x≉y (y≤x , x≉y ∘ ≈-sym)
 
 <-decidable : Decidable _≈_ → Decidable _≤_ → Decidable _<_
-<-decidable _≟_ _≤?_ x y with x ≟ y | x ≤? y
-... | yes x≈y | _       = no (flip proj₂ x≈y)
-... | no  x≉y | yes x≤y = yes (x≤y , x≉y)
-... | no  x≉y | no  x≰y = no (x≰y ∘ proj₁)
+<-decidable _≟_ _≤?_ x y = x ≤? y ×-dec ¬? (x ≟ y)
+
+------------------------------------------------------------------------
+-- Structures
 
 <-isStrictPartialOrder : IsPartialOrder _≈_ _≤_ →
                          IsStrictPartialOrder _≈_ _<_

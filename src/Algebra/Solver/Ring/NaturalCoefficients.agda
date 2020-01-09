@@ -23,6 +23,7 @@ open import Algebra.Solver.Ring.AlmostCommutativeRing
 open import Data.Nat.Base as ℕ
 open import Data.Product using (module Σ)
 open import Function
+open import Relation.Binary.PropositionalEquality using (_≡_)
 
 open CommutativeSemiring R
 open SemiringOps semiring
@@ -32,9 +33,10 @@ private
 
   -- The coefficient "ring".
 
-  ℕ-ring : RawRing _
+  ℕ-ring : RawRing _ _
   ℕ-ring = record
     { Carrier = ℕ
+    ; _≈_     = _≡_
     ; _+_     = ℕ._+_
     ; _*_     = ℕ._*_
     ; -_      = id

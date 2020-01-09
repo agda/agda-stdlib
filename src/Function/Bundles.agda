@@ -1,12 +1,12 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Packages for types of functions
+-- Bundles for types of functions
 ------------------------------------------------------------------------
 
 -- The contents of this file should usually be accessed from `Function`.
 
--- Note that these packages differ from those found elsewhere in other
+-- Note that these bundles differ from those found elsewhere in other
 -- library hierarchies as they take Setoids as parameters. This is
 -- because a function is of no use without knowing what its domain and
 -- codomain is, as well which equalities are being considered over them.
@@ -17,15 +17,15 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Function.Packages where
+module Function.Bundles where
 
 import Function.Definitions as FunctionDefinitions
 import Function.Structures as FunctionStructures
 open import Level using (Level; _⊔_; suc)
 open import Data.Product using (proj₁; proj₂)
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality
-  using () renaming (setoid to ≡-setoid)
+open import Relation.Binary.PropositionalEquality as ≡
+  using (_≡_)
 open Setoid using (isEquivalence)
 
 private
@@ -33,7 +33,7 @@ private
     a b ℓ₁ ℓ₂ : Level
 
 ------------------------------------------------------------------------
--- Setoid packages
+-- Setoid bundles
 
 module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
 
@@ -42,7 +42,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
   open FunctionDefinitions _≈₁_ _≈₂_
   open FunctionStructures  _≈₁_ _≈₂_
 
-  record Injection : Set (a ⊔ b ⊔ suc (ℓ₁ ⊔ ℓ₂)) where
+  record Injection : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       f           : A → B
       cong        : f Preserves _≈₁_ ⟶ _≈₂_
@@ -55,14 +55,15 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       ; isEquivalence₂ = isEquivalence To
       }
 
+    open IsCongruent isCongruent public using (module Eq₁; module Eq₂)
+
     isInjection : IsInjection f
     isInjection = record
       { isCongruent = isCongruent
       ; injective   = injective
       }
 
-
-  record Surjection : Set (a ⊔ b ⊔ suc (ℓ₁ ⊔ ℓ₂)) where
+  record Surjection : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       f          : A → B
       cong       : f Preserves _≈₁_ ⟶ _≈₂_
@@ -75,6 +76,8 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       ; isEquivalence₂ = isEquivalence To
       }
 
+    open IsCongruent isCongruent public using (module Eq₁; module Eq₂)
+
     isSurjection : IsSurjection f
     isSurjection = record
       { isCongruent = isCongruent
@@ -82,7 +85,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       }
 
 
-  record Bijection : Set (a ⊔ b ⊔ suc (ℓ₁ ⊔ ℓ₂)) where
+  record Bijection : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       f         : A → B
       cong      : f Preserves _≈₁_ ⟶ _≈₂_
@@ -115,8 +118,10 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       ; surjective  = surjective
       }
 
+    open IsBijection isBijection public using (module Eq₁; module Eq₂)
 
-  record Equivalence : Set (a ⊔ b ⊔ suc (ℓ₁ ⊔ ℓ₂)) where
+
+  record Equivalence : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       f     : A → B
       g     : B → A
@@ -124,7 +129,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       cong₂ : g Preserves _≈₂_ ⟶ _≈₁_
 
 
-  record LeftInverse : Set (a ⊔ b ⊔ suc (ℓ₁ ⊔ ℓ₂)) where
+  record LeftInverse : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       f         : A → B
       g         : B → A
@@ -138,6 +143,8 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       ; isEquivalence₁ = isEquivalence From
       ; isEquivalence₂ = isEquivalence To
       }
+
+    open IsCongruent isCongruent public using (module Eq₁; module Eq₂)
 
     isLeftInverse : IsLeftInverse f g
     isLeftInverse = record
@@ -153,7 +160,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       }
 
 
-  record RightInverse : Set (a ⊔ b ⊔ suc (ℓ₁ ⊔ ℓ₂)) where
+  record RightInverse : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       f         : A → B
       g         : B → A
@@ -182,7 +189,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       }
 
 
-  record Inverse : Set (a ⊔ b ⊔ suc (ℓ₁ ⊔ ℓ₂)) where
+  record Inverse : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       f         : A → B
       f⁻¹       : B → A
@@ -219,25 +226,93 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       ; inverseʳ      = inverseʳ
       }
 
-------------------------------------------------------------------------
--- Packages specialised for propositional equality
+    open IsInverse isInverse public using (module Eq₁; module Eq₂)
 
-infix 3 _↣_ _↠_ _⤖_ _⇔_ _↞_ _↔_
+------------------------------------------------------------------------
+-- Bundles specialised for propositional equality
+
+infix 3 _↣_ _↠_ _⤖_ _⇔_ _↩_ _↪_ _↔_
 
 _↣_ : Set a → Set b → Set _
-A ↣ B = Injection (≡-setoid A) (≡-setoid B)
+A ↣ B = Injection (≡.setoid A) (≡.setoid B)
 
 _↠_ : Set a → Set b → Set _
-A ↠ B = Surjection (≡-setoid A) (≡-setoid B)
+A ↠ B = Surjection (≡.setoid A) (≡.setoid B)
 
 _⤖_ : Set a → Set b → Set _
-A ⤖ B = Bijection (≡-setoid A) (≡-setoid B)
+A ⤖ B = Bijection (≡.setoid A) (≡.setoid B)
 
 _⇔_ : Set a → Set b → Set _
-A ⇔ B = Equivalence (≡-setoid A) (≡-setoid B)
+A ⇔ B = Equivalence (≡.setoid A) (≡.setoid B)
 
-_↞_ : Set a → Set b → Set _
-A ↞ B = LeftInverse (≡-setoid A) (≡-setoid B)
+_↩_ : Set a → Set b → Set _
+A ↩ B = LeftInverse (≡.setoid A) (≡.setoid B)
+
+_↪_ : Set a → Set b → Set _
+A ↪ B = RightInverse (≡.setoid A) (≡.setoid B)
 
 _↔_ : Set a → Set b → Set _
-A ↔ B = Inverse (≡-setoid A) (≡-setoid B)
+A ↔ B = Inverse (≡.setoid A) (≡.setoid B)
+
+-- We now define some constructors for the above that
+-- automatically provide the required congruency proofs.
+
+module _ {A : Set a} {B : Set b} where
+
+  open FunctionDefinitions {A = A} {B} _≡_ _≡_
+
+  mk↣ : ∀ {f : A → B} → Injective f → A ↣ B
+  mk↣ {f} inj = record
+    { f         = f
+    ; cong      = ≡.cong f
+    ; injective = inj
+    }
+
+  mk↠ : ∀ {f : A → B} → Surjective f → A ↠ B
+  mk↠ {f} surj = record
+    { f          = f
+    ; cong       = ≡.cong f
+    ; surjective = surj
+    }
+
+  mk⤖ : ∀ {f : A → B} → Bijective f → A ⤖ B
+  mk⤖ {f} bij = record
+    { f         = f
+    ; cong      = ≡.cong f
+    ; bijective = bij
+    }
+
+  mk⇔ : ∀ (f : A → B) (g : B → A) → A ⇔ B
+  mk⇔ f g = record
+    { f     = f
+    ; g     = g
+    ; cong₁ = ≡.cong f
+    ; cong₂ = ≡.cong g
+    }
+
+  mk↩ : ∀ {f : A → B} {g : B → A} → Inverseˡ f g → A ↩ B
+  mk↩ {f} {g} invˡ = record
+    { f        = f
+    ; g        = g
+    ; cong₁    = ≡.cong f
+    ; cong₂    = ≡.cong g
+    ; inverseˡ = invˡ
+    }
+
+  mk↪ : ∀ {f : A → B} {g : B → A} → Inverseʳ f g → A ↪ B
+  mk↪ {f} {g} invʳ = record
+    { f        = f
+    ; g        = g
+    ; cong₁    = ≡.cong f
+    ; cong₂    = ≡.cong g
+    ; inverseʳ = invʳ
+    }
+
+  mk↔ : ∀ {f : A → B} {f⁻¹ : B → A} → Inverseᵇ f f⁻¹ → A ↔ B
+  mk↔ {f} {f⁻¹} inv = record
+    { f       = f
+    ; f⁻¹     = f⁻¹
+    ; cong₁   = ≡.cong f
+    ; cong₂   = ≡.cong f⁻¹
+    ; inverse = inv
+    }

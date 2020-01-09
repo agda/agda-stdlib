@@ -16,17 +16,20 @@ open import Data.Empty
 open import Data.Fin using (Fin; zero; suc; punchOut)
 open import Data.Fin.Properties
   using (suc-injective; punchOut-injective)
-open import Function.Core
+open import Function.Base
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Injection
   using (Injection; module Injection)
+open import Data.Bool.Base using (true; false)
 open import Data.List hiding (lookup)
 open import Data.List.Relation.Unary.Any as Any using (here; there)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Product
 open import Data.Sum
 open import Data.Sum.Properties
+open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary
+open import Relation.Nullary.Decidable using (dec-true; dec-false)
 open import Relation.Binary.PropositionalEquality as PropEq
   using (_≡_; _≢_; refl; cong)
 open PropEq.≡-Reasoning
@@ -46,8 +49,8 @@ private
   first-occurrence : ∀ {xs} x → x ∈ xs → x ∈ xs
   first-occurrence x (here x≈y)           = here x≈y
   first-occurrence x (there {x = y} x∈xs) with x ≟ y
-  ... | yes x≈y = here x≈y
-  ... | no  _   = there $ first-occurrence x x∈xs
+  ... | true  because [x≈y] = here (invert [x≈y])
+  ... | false because   _   = there $ first-occurrence x x∈xs
 
   -- The index of the first occurrence of x in xs.
 
@@ -63,17 +66,17 @@ private
     helper : ∀ {xs} (x₁∈xs : x₁ ∈ xs) (x₂∈xs : x₂ ∈ xs) →
              first-index x₁ x₁∈xs ≡ first-index x₂ x₂∈xs
     helper (here x₁≈x) (here x₂≈x)           = refl
-    helper (here x₁≈x) (there {x = x} x₂∈xs) with x₂ ≟ x
-    ... | yes x₂≈x = refl
-    ... | no  x₂≉x = ⊥-elim (x₂≉x (trans (sym x₁≈x₂) x₁≈x))
-    helper (there {x = x} x₁∈xs) (here x₂≈x) with x₁ ≟ x
-    ... | yes x₁≈x = refl
-    ... | no  x₁≉x = ⊥-elim (x₁≉x (trans x₁≈x₂ x₂≈x))
+    helper (here x₁≈x) (there {x = x} x₂∈xs)
+      with x₂ ≟ x | dec-true (x₂ ≟ x) (trans (sym x₁≈x₂) x₁≈x)
+    ... | _ | refl = refl
+    helper (there {x = x} x₁∈xs) (here x₂≈x)
+      with x₁ ≟ x | dec-true (x₁ ≟ x) (trans x₁≈x₂ x₂≈x)
+    ... | _ | refl = refl
     helper (there {x = x} x₁∈xs) (there x₂∈xs) with x₁ ≟ x | x₂ ≟ x
-    ... | yes x₁≈x | yes x₂≈x = refl
+    ... | true  because _ | true  because _ = refl
+    ... | false because _ | false because _ = cong suc $ helper x₁∈xs x₂∈xs
     ... | yes x₁≈x | no  x₂≉x = ⊥-elim (x₂≉x (trans (sym x₁≈x₂) x₁≈x))
     ... | no  x₁≉x | yes x₂≈x = ⊥-elim (x₁≉x (trans x₁≈x₂ x₂≈x))
-    ... | no  x₁≉x | no  x₂≉x = cong suc $ helper x₁∈xs x₂∈xs
 
   -- first-index is injective in its first argument.
 

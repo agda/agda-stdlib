@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/agda/agda-stdlib.svg?branch=master)](https://travis-ci.org/agda/agda-stdlib)
+
 The Agda standard library
 =========================
 
@@ -8,21 +10,38 @@ performance. If computational performance is important to you, then
 perhaps try [agda-prelude](https://github.com/UlfNorell/agda-prelude)
 instead.
 
-If you're looking to find your way around the library, its structure
-is described in the [README.agda](https://github.com/agda/agda-stdlib/tree/master/README.agda)
-and the associated [README folder](https://github.com/agda/agda-stdlib/tree/master/README).
-You can browse the library source code in glorious clickable html
+## Getting started
+
+If you're looking to find your way around the library, there's various
+different ways to get started:
+
+- The library's structure and the associated design choices are described
+in the [README.agda](https://github.com/agda/agda-stdlib/tree/master/README.agda).
+
+- The [README folder](https://github.com/agda/agda-stdlib/tree/master/README),
+which mirrors the structure of the main library, contains examples of how to
+use some of the more common modules. Feel free to open a new
+[issue](https://github.com/agda/agda-stdlib/issues/new) if there's a particular
+module you feel could do with some more documentation.
+
+- You can browse the library's source code in glorious clickable html
 [here](https://agda.github.io/agda-stdlib/README.html).
+
+- Finally you can get an overview of the entire library by looking at the
+[index](https://agda.github.io/agda-stdlib/) which lists every module it contains
+(minus any deprecated modules).
 
 ## Installation instructions
 
 See the instructions [here](https://github.com/agda/agda-stdlib/blob/master/notes/installation-guide.md)
-for how to install version 1.1 of the standard library.
+for how to install the latest version of the standard library.
 
 #### Old versions of Agda
 
 If you're using an old version of Agda, you can download the corresponding version
 of the standard library on the [Agda wiki](http://wiki.portal.chalmers.se/agda/pmwiki.php?n=Libraries.StandardLibrary).
+The index for older versions of the library can be found at, for example, https://agda.github.io/agda-stdlib/v0.17/
+where 0.17 can be replaced as required.
 
 #### Development version of Agda
 
@@ -50,4 +69,5 @@ for a full list of modules that use axiom K.
 If you would like to suggest improvements, feel free to use the `Issues` tab.
 Even better if you would like to make the improvements yourself, we have instructions
 in [HACKING](https://github.com/agda/agda-stdlib/blob/master/HACKING.md) to help
-you get started.
+you get started. For those who would simply like to help out, issues marked with
+the [status:low-hanging-fruit](https://github.com/agda/agda-stdlib/issues?q=is%3Aopen+is%3Aissue+label%3A%22status%3A+low-hanging-fruit%22) tag are a good starting point.
