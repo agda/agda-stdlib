@@ -12,7 +12,7 @@ test: Everything.agda check-whitespace
 	$(AGDA) -i. -isrc README.agda
 
 check-whitespace:
-	cabal exec -- fix-agda-whitespace --check
+	cabal exec -- fix-whitespace --check
 
 setup: Everything.agda
 

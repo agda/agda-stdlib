@@ -6,7 +6,7 @@
 -- "A Pretty But Not Greedy Printer"
 ------------------------------------------------------------------------
 
-{-# OPTIONS --with-K #-}
+{-# OPTIONS --with-K --sized-types #-}
 
 module Text.Pretty.Core where
 

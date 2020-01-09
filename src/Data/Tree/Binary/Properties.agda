@@ -4,7 +4,7 @@
 -- Properties of binary trees
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe #-}
+{-# OPTIONS --without-K --safe --sized-types #-}
 
 module Data.Tree.Binary.Properties where
 
