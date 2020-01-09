@@ -8,56 +8,77 @@
 
 module Data.DifferenceList where
 
-open import Data.List.Base as L using (List)
+open import Level using (Level)
+open import Data.List.Base as List using (List)
 open import Function
 open import Data.Nat.Base
 
-infixr 5 _∷_ _++_
+private
+  variable
+    a b : Level
+    A : Set a
+    B : Set b
 
-DiffList : ∀ {ℓ} → Set ℓ → Set ℓ
+------------------------------------------------------------------------
+-- Type definition and list function lifting
+
+DiffList : Set a → Set a
 DiffList A = List A → List A
 
-lift : ∀ {a} {A : Set a} →
-       (List A → List A) → (DiffList A → DiffList A)
+lift : (List A → List A) → (DiffList A → DiffList A)
 lift f xs = λ k → f (xs k)
 
-[] : ∀ {a} {A : Set a} → DiffList A
+------------------------------------------------------------------------
+-- Building difference lists
+
+infixr 5 _∷_ _++_
+
+[] : DiffList A
 [] = λ k → k
 
-_∷_ : ∀ {a} {A : Set a} → A → DiffList A → DiffList A
-_∷_ x = lift (L._∷_ x)
+_∷_ : A → DiffList A → DiffList A
+_∷_ x = lift (x List.∷_)
 
-[_] : ∀ {a} {A : Set a} → A → DiffList A
+[_] : A → DiffList A
 [ x ] = x ∷ []
 
-_++_ : ∀ {a} {A : Set a} → DiffList A → DiffList A → DiffList A
+_++_ : DiffList A → DiffList A → DiffList A
 xs ++ ys = λ k → xs (ys k)
 
-toList : ∀ {a} {A : Set a} → DiffList A → List A
-toList xs = xs L.[]
+infixl 6 _∷ʳ_
+_∷ʳ_ : DiffList A → A → DiffList A
+xs ∷ʳ x = λ k → xs (x List.∷ k)
+
+------------------------------------------------------------------------
+-- Conversion back and forth with List
+
+toList : DiffList A → List A
+toList xs = xs List.[]
 
 -- fromList xs is linear in the length of xs.
 
-fromList : ∀ {a} {A : Set a} → List A → DiffList A
-fromList xs = λ k → xs ⟨ L._++_ ⟩ k
+fromList : List A → DiffList A
+fromList xs = λ k → xs ⟨ List._++_ ⟩ k
 
--- It is OK to use L._++_ here, since map is linear in the length of
+------------------------------------------------------------------------
+-- Transforming difference lists
+
+-- It is OK to use List._++_ here, since map is linear in the length of
 -- the list anyway.
 
-map : ∀ {a b} {A : Set a} {B : Set b} →
-      (A → B) → DiffList A → DiffList B
-map f xs = λ k → L.map f (toList xs) ⟨ L._++_ ⟩ k
+map : (A → B) → DiffList A → DiffList B
+map f xs = λ k → List.map f (toList xs) ⟨ List._++_ ⟩ k
 
 -- concat is linear in the length of the outer list.
 
-concat : ∀ {a} {A : Set a} → DiffList (DiffList A) → DiffList A
+concat : DiffList (DiffList A) → DiffList A
 concat xs = concat' (toList xs)
   where
-  concat' : ∀ {a} {A : Set a} → List (DiffList A) → DiffList A
-  concat' = L.foldr _++_ []
+  concat' : List (DiffList A) → DiffList A
+  concat' = List.foldr _++_ []
 
-take : ∀ {a} {A : Set a} → ℕ → DiffList A → DiffList A
-take n = lift (L.take n)
+take : ℕ → DiffList A → DiffList A
+take n = lift (List.take n)
 
-drop : ∀ {a} {A : Set a} → ℕ → DiffList A → DiffList A
-drop n = lift (L.drop n)
+drop : ℕ → DiffList A → DiffList A
+drop n = lift (List.drop n)

@@ -8,6 +8,7 @@
 
 module Codata.Stream.Properties where
 
+open import Level using (Level)
 open import Size
 open import Codata.Thunk as Thunk using (Thunk; force)
 open import Codata.Stream
@@ -25,33 +26,39 @@ open import Data.Vec as Vec using (_∷_)
 open import Function
 open import Relation.Binary.PropositionalEquality as P using (_≡_; _≢_)
 
+private
+  variable
+    a b c : Level
+    A : Set a
+    B : Set b
+    C : Set c
+    i : Size
+
 ------------------------------------------------------------------------
 -- repeat
 
-module _ {a} {A : Set a} where
+lookup-repeat-identity : (n : ℕ) (a : A) → lookup n (repeat a) ≡ a
+lookup-repeat-identity zero    a = P.refl
+lookup-repeat-identity (suc n) a = lookup-repeat-identity n a
 
-  lookup-repeat-identity : (n : ℕ) (a : A) → lookup n (repeat a) ≡ a
-  lookup-repeat-identity zero    a = P.refl
-  lookup-repeat-identity (suc n) a = lookup-repeat-identity n a
+take-repeat-identity : (n : ℕ) (a : A) → take n (repeat a) ≡ Vec.replicate a
+take-repeat-identity zero    a = P.refl
+take-repeat-identity (suc n) a = P.cong (a Vec.∷_) (take-repeat-identity n a)
 
-  take-repeat-identity : (n : ℕ) (a : A) → take n (repeat a) ≡ Vec.replicate a
-  take-repeat-identity zero    a = P.refl
-  take-repeat-identity (suc n) a = P.cong (a Vec.∷_) (take-repeat-identity n a)
+splitAt-repeat-identity : (n : ℕ) (a : A) → splitAt n (repeat a) ≡ (Vec.replicate a , repeat a)
+splitAt-repeat-identity zero    a = P.refl
+splitAt-repeat-identity (suc n) a = P.cong (Prod.map₁ (a ∷_)) (splitAt-repeat-identity n a)
 
-  splitAt-repeat-identity : (n : ℕ) (a : A) → splitAt n (repeat a) ≡ (Vec.replicate a , repeat a)
-  splitAt-repeat-identity zero    a = P.refl
-  splitAt-repeat-identity (suc n) a = P.cong (Prod.map₁ (a ∷_)) (splitAt-repeat-identity n a)
+replicate-repeat : ∀ {i} (n : ℕ) (a : A) → i ⊢ List.replicate n a ++ repeat a ≈ repeat a
+replicate-repeat zero    a = refl
+replicate-repeat (suc n) a = P.refl ∷ λ where .force → replicate-repeat n a
 
-  replicate-repeat : ∀ {i} (n : ℕ) (a : A) → i ⊢ List.replicate n a ++ repeat a ≈ repeat a
-  replicate-repeat zero    a = refl
-  replicate-repeat (suc n) a = P.refl ∷ λ where .force → replicate-repeat n a
-
-  cycle-replicate : ∀ {i} (n : ℕ) (n≢0 : n ≢ 0) (a : A) → i ⊢ cycle (List⁺.replicate n n≢0 a) ≈ repeat a
-  cycle-replicate {i} n n≢0 a = let as = List⁺.replicate n n≢0 a in begin
-    cycle as                           ≡⟨⟩
-    as ⁺++ _                           ≈⟨ ⁺++⁺ Eq.≋-refl (λ where .force → cycle-replicate n n≢0 a) ⟩
-    as ⁺++ (λ where .force → repeat a) ≈⟨ P.refl ∷ (λ where .force → replicate-repeat (pred n) a) ⟩
-    repeat a                           ∎ where open ≈-Reasoning
+cycle-replicate : ∀ {i} (n : ℕ) (n≢0 : n ≢ 0) (a : A) → i ⊢ cycle (List⁺.replicate n n≢0 a) ≈ repeat a
+cycle-replicate {i} n n≢0 a = let as = List⁺.replicate n n≢0 a in begin
+  cycle as                           ≡⟨⟩
+  as ⁺++ _                           ≈⟨ ⁺++⁺ Eq.≋-refl (λ where .force → cycle-replicate n n≢0 a) ⟩
+  as ⁺++ (λ where .force → repeat a) ≈⟨ P.refl ∷ (λ where .force → replicate-repeat (pred n) a) ⟩
+  repeat a                           ∎ where open ≈-Reasoning
 
 module _ {a b} {A : Set a} {B : Set b} where
 
@@ -83,42 +90,33 @@ module _ {a b} {A : Set a} {B : Set b} where
 ------------------------------------------------------------------------
 -- Functor laws
 
-module _ {a} {A : Set a} where
+map-identity : ∀ (as : Stream A ∞) → i ⊢ map id as ≈ as
+map-identity (a ∷ as) = P.refl ∷ λ where .force → map-identity (as .force)
 
- map-identity : ∀ (as : Stream A ∞) {i} → i ⊢ map id as ≈ as
- map-identity (a ∷ as) = P.refl ∷ λ where .force → map-identity (as .force)
-
-module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
-
- map-map-fusion : ∀ (f : A → B) (g : B → C) as {i} → i ⊢ map g (map f as) ≈ map (g ∘ f) as
- map-map-fusion f g (a ∷ as) = P.refl ∷ λ where .force → map-map-fusion f g (as .force)
+map-map-fusion : ∀ (f : A → B) (g : B → C) as → i ⊢ map g (map f as) ≈ map (g ∘ f) as
+map-map-fusion f g (a ∷ as) = P.refl ∷ λ where .force → map-map-fusion f g (as .force)
 
 
 ------------------------------------------------------------------------
 -- splitAt
 
-module _ {a b} {A : Set a} {B : Set b} where
-
-  splitAt-map : ∀ n (f : A → B) xs →
-    splitAt n (map f xs) ≡ Prod.map (Vec.map f) (map f) (splitAt n xs)
-  splitAt-map zero    f xs       = P.refl
-  splitAt-map (suc n) f (x ∷ xs) =
-    P.cong (Prod.map₁ (f x Vec.∷_)) (splitAt-map n f (xs .force))
+splitAt-map : ∀ n (f : A → B) xs →
+  splitAt n (map f xs) ≡ Prod.map (Vec.map f) (map f) (splitAt n xs)
+splitAt-map zero    f xs       = P.refl
+splitAt-map (suc n) f (x ∷ xs) =
+  P.cong (Prod.map₁ (f x Vec.∷_)) (splitAt-map n f (xs .force))
 
 ------------------------------------------------------------------------
 -- iterate
 
-module _ {a} {A : Set a} where
-
-  lookup-iterate-identity : ∀ n f (a : A) → lookup n (iterate f a) ≡ fold a f n
-  lookup-iterate-identity zero     f a = P.refl
-  lookup-iterate-identity (suc n)  f a = begin
-    lookup (suc n) (iterate f a) ≡⟨⟩
-    lookup n (iterate f (f a))   ≡⟨ lookup-iterate-identity n f (f a) ⟩
-    fold (f a) f n               ≡⟨ fold-pull (const ∘′ f) (f a) P.refl (λ _ → P.refl) n ⟩
-    f (fold a f n)               ≡⟨⟩
-    fold a f (suc n)             ∎ where open P.≡-Reasoning
-
+lookup-iterate-identity : ∀ n f (a : A) → lookup n (iterate f a) ≡ fold a f n
+lookup-iterate-identity zero     f a = P.refl
+lookup-iterate-identity (suc n)  f a = begin
+  lookup (suc n) (iterate f a) ≡⟨⟩
+  lookup n (iterate f (f a))   ≡⟨ lookup-iterate-identity n f (f a) ⟩
+  fold (f a) f n               ≡⟨ fold-pull (const ∘′ f) (f a) P.refl (λ _ → P.refl) n ⟩
+  f (fold a f n)               ≡⟨⟩
+  fold a f (suc n)             ∎ where open P.≡-Reasoning
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
