@@ -154,6 +154,7 @@ Other major additions
   Text.Tabular.List
   Text.Tabular.Vec
   Text.Tree.Linear
+  Text.Tree.Linear.Binary
 
   README.Text.Pretty
   README.Text.Tabular
