@@ -133,7 +133,7 @@ warnings are attached to all deprecated names to discourage their use.
 Other major additions
 ---------------------
 
-* New modules
+* Added new modules:
   ```agda
   Codata.Cowriter.Bisimilarity
 
@@ -145,16 +145,19 @@ Other major additions
   Data.Tree.Binary.Properties
   Data.Tree.Binary.Relation.Unary.All
   Data.Tree.Binary.Relation.Unary.All.Properties
+  Data.Tree.Rose
+  Data.Tree.Rose.Properties
 
   Text.Pretty.Core
   Text.Pretty
-
   Text.Tabular.Base
   Text.Tabular.List
   Text.Tabular.Vec
+  Text.Tree.Linear
 
   README.Text.Pretty
   README.Text.Tabular
+  README.Text.Tree
   ```
 
 * Added induction over subsets to `Data.Fin.Subset.Induction`.
