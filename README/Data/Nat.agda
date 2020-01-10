@@ -39,13 +39,13 @@ ex₃ m n = *-comm m n
 -- provides some combinators for equational reasoning.
 
 open Relation.Binary.PropositionalEquality using (cong; module ≡-Reasoning)
-open ≡-Reasoning using (begin_; _≡⟨_⟩_; _∎)
 
 ex₄ : ∀ m n → m * (n + 0) ≡ n * m
 ex₄ m n = begin
   m * (n + 0)  ≡⟨ cong (_*_ m) (+-identityʳ n) ⟩
   m * n        ≡⟨ *-comm m n ⟩
   n * m        ∎
+  where open ≡-Reasoning
 
 -- The module SemiringSolver in Data.Nat.Solver contains a solver
 -- for natural number equalities involving variables, constants, _+_

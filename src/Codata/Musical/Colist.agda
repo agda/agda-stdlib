@@ -457,10 +457,15 @@ Any-∈ {P = P} = record
   antisym []       [] = []
   antisym (x ∷ p₁) p₂ = x ∷ ♯ antisym (♭ p₁) (tail p₂)
 
-module ⊑-Reasoning where
-  private
-    open module R {a} {A : Set a} = POR (⊑-Poset A)
-      public renaming (_≤⟨_⟩_ to _⊑⟨_⟩_)
+module ⊑-Reasoning {a} {A : Set a} where
+  private module Base = POR (⊑-Poset A)
+
+  open Base public
+    hiding (step-<; begin-strict_; step-≤)
+
+  infixr 2 step-⊑
+  step-⊑ = Base.step-≤
+  syntax step-⊑ x ys⊑zs xs⊑ys = x ⊑⟨ xs⊑ys ⟩ ys⊑zs
 
 -- The subset relation forms a preorder.
 
@@ -469,16 +474,22 @@ module ⊑-Reasoning where
                  (λ xs≈ys → ⊑⇒⊆ (⊑P.reflexive xs≈ys))
   where module ⊑P = Poset (⊑-Poset A)
 
-module ⊆-Reasoning where
-  private
-    open module R {a} {A : Set a} = PreR (⊆-Preorder A)
-      public renaming (_∼⟨_⟩_ to _⊆⟨_⟩_)
+module ⊆-Reasoning {a} {A : Set a} where
+  private module Base = PreR (⊆-Preorder A)
 
-  infix 1 _∈⟨_⟩_
+  open Base public
+    hiding (step-∼)
 
-  _∈⟨_⟩_ : ∀ {a} {A : Set a} (x : A) {xs ys} →
-           x ∈ xs → xs IsRelatedTo ys → x ∈ ys
-  x ∈⟨ x∈xs ⟩ xs⊆ys = (begin xs⊆ys) x∈xs
+  infixr 2 step-⊆
+  infix  1 step-∈
+
+  step-⊆ = Base.step-∼
+
+  step-∈ : ∀ (x : A) {xs ys} → xs IsRelatedTo ys → x ∈ xs → x ∈ ys
+  step-∈ x xs⊆ys x∈xs = (begin xs⊆ys) x∈xs
+
+  syntax step-⊆ xs ys⊆zs xs⊆ys = xs ⊆⟨ xs⊆ys ⟩ ys⊆zs
+  syntax step-∈ x  xs⊆ys x∈xs  = x  ∈⟨ x∈xs  ⟩ xs⊆ys
 
 -- take returns a prefix.
 

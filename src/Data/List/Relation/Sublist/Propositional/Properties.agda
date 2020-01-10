@@ -11,3 +11,8 @@ module Data.List.Relation.Sublist.Propositional.Properties where
 
 open import Data.List.Relation.Binary.Sublist.Propositional.Properties
   public
+
+{-# WARNING_ON_IMPORT
+"Data.List.Relation.Sublist.Propositional.Properties was deprecated in v1.0.
+Use Data.List.Relation.Binary.Sublist.Propositional.Properties instead."
+#-}

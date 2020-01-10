@@ -9,11 +9,7 @@
 module Data.Word where
 
 ------------------------------------------------------------------------
--- Re-export built-ins publically
+-- Re-export base definitions and decidability of equality
 
-open import Agda.Builtin.Word public
-  using (Word64)
-  renaming
-  ( primWord64ToNat   to toℕ
-  ; primWord64FromNat to fromℕ
-  )
+open import Data.Word.Base public
+open import Data.Word.Properties using (_≈?_; _<?_; _≟_; _==_) public
