@@ -306,7 +306,7 @@ module ≤-Reasoning where
     <-≤-trans
     ≤-<-trans
     public
-    hiding (_≈⟨_⟩_; _≈˘⟨_⟩_)
+    hiding (step-≈; step-≈˘)
 
 ------------------------------------------------------------------------
 -- Properties of -_

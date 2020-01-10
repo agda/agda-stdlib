@@ -21,6 +21,67 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
+#### Changes to how equational reasoning is implemented
+
+* NOTE: __Uses__ of equational reasoning remains unchanged. These changes should only
+  affect users who are renaming/hiding the library's equational reasoning combinators.
+
+* Previously all equational reasoning combinators (e.g. `_≈⟨_⟩_`, `_≡⟨_⟩_`, `_≤⟨_⟩_`)
+  have been defined in the following style:
+  ```agda
+  infixr 2 _≡⟨_⟩_
+
+  _≡⟨_⟩_ : ∀ x {y z : A} → x ≡ y → y ≡ z → x ≡ z
+  _ ≡⟨ x≡y ⟩ y≡z = trans x≡y y≡z
+  ```
+  The type checker therefore infers the RHS of the equational step from the LHS + the
+  type of the proof. For example for `x ≈⟨ x≈y ⟩ y ∎` it is inferred that `y ∎`
+  must have type `y IsRelatedTo y` from `x : A` and `x≈y : x ≈ y`.
+
+* There are two problems with this. Firstly, it means that the reasoning combinators are
+  not compatible with macros (i.e. tactics) that attempt to automatically generate proofs
+  for `x≈y`. This is because the reflection machinary does not have access to the type of RHS
+  as it cannot be inferred. In practice this meant that the new reflective solvers
+  `Tactic.RingSolver` and `Tactic.MonoidSolver` could not be used inside the equational
+  reasoning. Secondly the inference procedure itself is slower as described in this
+  [exchange](https://lists.chalmers.se/pipermail/agda/2016/009090.html)
+  on the Agda mailing list.
+
+* Therefore, as suggested on the mailing list, the order of arguments to the combinators
+  have been reversed so that instead the type of the proof is inferred from the LHS + RHS.
+  ```agda
+  infixr -2 step-≡
+
+  step-≡ : ∀ x {y z : A} → y ≡ z → x ≡ y → x ≡ z
+  step-≡ y≡z x≡y = trans x≡y y≡z
+
+  syntax step-≡ x y≡z x≡y = x ≡⟨ x≡y ⟩ y≡z
+  ```
+  where the `syntax` declaration is then used to recover the original order of the arguments.
+  This change enables the use of macros and anecdotally speeds up type checking by a
+  factor of 5.
+
+* No changes are needed when defining new combinators, as the old and new styles are
+  compatible. Having said that you may want to switch to the new style for the benefits
+  described above.
+
+* One drawback is that hiding and renaming the combinators no longer works as before,
+  as `_≡⟨_⟩_` etc. are now syntax instead of names. For example instead of:
+  ```agda
+  open SetoidReasoning hiding (_≈⟨_⟩_) renaming (_≡⟨_⟩_ to _↭⟨_⟩_)
+  ```
+  one must now write :
+  ```agda
+  open SetoidReasoning hiding (step-≈; step-≡)
+
+  infixr 2 step-↭
+  step-↭ = step-≡
+  syntax step-↭ x y≡z x≡y = x ≡⟨ x≡y ⟩ y≡z
+  ```
+  This is more verbose than before, but we hope that the advantages outlined above
+  outweigh this minor inconvenience. (As an aside, it is hoped that at some point Agda might
+  provide the ability to rename syntax that automatically generates the above boilerplate).
+
 #### Tweak to definition of `Permutation.refl`
 
 * The definition of `refl` in `Data.List.Relation.Binary.Permutation.Homogeneous/Setoid`

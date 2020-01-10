@@ -8,17 +8,30 @@
 
 open import Relation.Binary
 
-module Relation.Binary.Reasoning.PartialSetoid {s₁ s₂} (S : PartialSetoid s₁ s₂) where
+module Relation.Binary.Reasoning.PartialSetoid
+  {s₁ s₂} (S : PartialSetoid s₁ s₂) where
 
 open PartialSetoid S
+import Relation.Binary.Reasoning.Base.Partial _≈_ trans as Base
 
 ------------------------------------------------------------------------
--- Publicly re-export base contents
+-- Re-export the contents of the base module
 
-open import Relation.Binary.Reasoning.Base.Partial _≈_ trans public
-  renaming (_∼⟨_⟩_ to _≈⟨_⟩_)
+open Base public
+  hiding (step-∼)
 
-infixr 2 _≈˘⟨_⟩_
+------------------------------------------------------------------------
+-- Additional reasoning combinators
 
-_≈˘⟨_⟩_ : ∀ x {y z} → y ≈ x → y IsRelatedTo z → x IsRelatedTo z
-x ≈˘⟨ x≈y ⟩ y∼z = x ≈⟨ sym x≈y ⟩ y∼z
+infixr 2 step-≈ step-≈˘
+
+-- A step using an equality
+
+step-≈ = Base.step-∼
+syntax step-≈ x y≈z x≈y = x ≈⟨ x≈y ⟩ y≈z
+
+-- A step using a symmetric equality
+
+step-≈˘ : ∀ x {y z} → y IsRelatedTo z → y ≈ x → x IsRelatedTo z
+step-≈˘ x y∼z y≈x = x ≈⟨ sym y≈x ⟩ y∼z
+syntax step-≈˘ x y≈z y≈x = x ≈˘⟨ y≈x ⟩ y≈z

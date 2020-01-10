@@ -90,7 +90,7 @@ trans-symʳ refl = refl
 module ≡-Reasoning {A : Set a} where
 
   infix  3 _∎
-  infixr 2 _≡⟨⟩_ _≡⟨_⟩_ _≡˘⟨_⟩_
+  infixr 2 _≡⟨⟩_ step-≡ step-≡˘
   infix  1 begin_
 
   begin_ : ∀{x y : A} → x ≡ y → x ≡ y
@@ -99,11 +99,14 @@ module ≡-Reasoning {A : Set a} where
   _≡⟨⟩_ : ∀ (x {y} : A) → x ≡ y → x ≡ y
   _ ≡⟨⟩ x≡y = x≡y
 
-  _≡⟨_⟩_ : ∀ (x {y z} : A) → x ≡ y → y ≡ z → x ≡ z
-  _ ≡⟨ x≡y ⟩ y≡z = trans x≡y y≡z
+  step-≡ : ∀ (x {y z} : A) → y ≡ z → x ≡ y → x ≡ z
+  step-≡ _ y≡z x≡y = trans x≡y y≡z
 
-  _≡˘⟨_⟩_ : ∀ (x {y z} : A) → y ≡ x → y ≡ z → x ≡ z
-  _ ≡˘⟨ y≡x ⟩ y≡z = trans (sym y≡x) y≡z
+  step-≡˘ : ∀ (x {y z} : A) → y ≡ z → y ≡ x → x ≡ z
+  step-≡˘ _ y≡z y≡x = trans (sym y≡x) y≡z
 
   _∎ : ∀ (x : A) → x ≡ x
   _∎ _ = refl
+
+  syntax step-≡  x y≡z x≡y = x ≡⟨  x≡y ⟩ y≡z
+  syntax step-≡˘ x y≡z y≡x = x ≡˘⟨ y≡x ⟩ y≡z
