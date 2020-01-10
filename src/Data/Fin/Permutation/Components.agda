@@ -8,12 +8,16 @@
 
 module Data.Fin.Permutation.Components where
 
+open import Data.Bool.Base using (Bool; true; false)
 open import Data.Fin
 open import Data.Fin.Properties
 open import Data.Nat as ℕ using (zero; suc; _∸_)
 import Data.Nat.Properties as ℕₚ
 open import Data.Product using (proj₂)
-open import Relation.Nullary using (yes; no)
+open import Function.Base using (_∘_)
+open import Relation.Nullary.Reflects using (invert)
+open import Relation.Nullary using (does; _because_; yes; no)
+open import Relation.Nullary.Decidable using (dec-true; dec-false)
 open import Relation.Binary.PropositionalEquality
 open import Algebra.Definitions using (Involutive)
 open ≡-Reasoning
@@ -25,11 +29,11 @@ open ≡-Reasoning
 -- 'tranpose i j' swaps the places of 'i' and 'j'.
 
 transpose : ∀ {n} → Fin n → Fin n → Fin n → Fin n
-transpose i j k with k ≟ i
-... | yes _ = j
-... | no  _ with k ≟ j
-...   | yes _ = i
-...   | no  _ = k
+transpose i j k with does (k ≟ i)
+... | true  = j
+... | false with does (k ≟ j)
+...   | true  = i
+...   | false = k
 
 -- reverse i = n ∸ 1 ∸ i
 
@@ -43,13 +47,14 @@ reverse {suc n} i  = inject≤ (n ℕ- i) (ℕₚ.m∸n≤m (suc n) (toℕ i))
 transpose-inverse : ∀ {n} (i j : Fin n) {k} →
                     transpose i j (transpose j i k) ≡ k
 transpose-inverse i j {k} with k ≟ j
-... | yes p rewrite ≡-≟-identity _≟_ {x = i} refl = sym p
-... | no ¬p with k ≟ i
-...   | no ¬q rewrite proj₂ (≢-≟-identity _≟_ ¬q)
-                    | proj₂ (≢-≟-identity _≟_ ¬p) = refl
-...   | yes q with j ≟ i
-...     | yes r = trans r (sym q)
-...     | no ¬r rewrite ≡-≟-identity _≟_ {x = j} refl = sym q
+... | true  because [k≡j] rewrite dec-true (i ≟ i) refl = sym (invert [k≡j])
+... | false because [k≢j] with k ≟ i
+...   | true  because [k≡i]
+        rewrite dec-false (j ≟ i) (invert [k≢j] ∘ trans (invert [k≡i]) ∘ sym)
+                | dec-true (j ≟ j) refl
+                = sym (invert [k≡i])
+...   | false because [k≢i] rewrite dec-false (k ≟ i) (invert [k≢i])
+                                  | dec-false (k ≟ j) (invert [k≢j]) = refl
 
 reverse-prop : ∀ {n} → (i : Fin n) → toℕ (reverse i) ≡ n ∸ suc (toℕ i)
 reverse-prop {suc n} i = begin

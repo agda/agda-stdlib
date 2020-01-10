@@ -20,7 +20,7 @@ open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable as Dec using (False)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Binary
-import Relation.Binary.Reasoning.PartialOrder as POR
+import Relation.Binary.Reasoning.Preorder as PreorderReasoning
 open import Relation.Binary.PropositionalEquality as PropEq
   using (_≡_; _≢_; refl; sym; trans; cong; cong₂; subst)
 
@@ -113,9 +113,16 @@ suc n ∣? m      = Dec.map (m%n≡0⇔n∣m m n) (m % suc n ≟ 0)
 ------------------------------------------------------------------------
 -- A reasoning module for the _∣_ relation
 
-module ∣-Reasoning = POR ∣-poset
-  hiding   (_≈⟨_⟩_; _≈˘⟨_⟩_; _<⟨_⟩_)
-  renaming (_≤⟨_⟩_ to _∣⟨_⟩_)
+module ∣-Reasoning where
+  private
+    module Base = PreorderReasoning ∣-preorder
+
+  open Base public
+    hiding (step-≈; step-≈˘; step-∼)
+
+  infixr 2 step-∣
+  step-∣ = Base.step-∼
+  syntax step-∣ x y∣z x∣y = x ∣⟨ x∣y ⟩ y∣z
 
 ------------------------------------------------------------------------
 -- Simple properties of _∣_

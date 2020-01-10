@@ -10,7 +10,7 @@ module Data.List.Relation.Unary.Linked {a} {A : Set a} where
 
 open import Data.List using (List; []; _∷_)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
-open import Data.Product as Prod using (_,_; _×_)
+open import Data.Product as Prod using (_,_; _×_; uncurry; <_,_>)
 open import Function using (id; _∘_)
 open import Level using (Level; _⊔_)
 open import Relation.Binary as B using (Rel; _⇒_)
@@ -18,7 +18,8 @@ open import Relation.Binary.Construct.Intersection renaming (_∩_ to _∩ᵇ_)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Unary as U renaming (_∩_ to _∩ᵘ_) hiding (_⇒_)
 open import Relation.Nullary using (yes; no)
-import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Decidable as Dec using (map′)
+open import Relation.Nullary.Product using (_×-dec_)
 
 private
   variable
@@ -83,10 +84,8 @@ module _ {R : Rel A ℓ} where
   linked? : B.Decidable R → U.Decidable (Linked R)
   linked? R? []           = yes []
   linked? R? (x ∷ [])     = yes [-]
-  linked? R? (x ∷ y ∷ xs) with R? x y | linked? R? (y ∷ xs)
-  ... | yes Rxy | yes Rxs = yes (Rxy ∷ Rxs)
-  ... | no ¬Rxy | _       = no (¬Rxy ∘ head)
-  ... | _       | no ¬Rxs = no (¬Rxs ∘ tail)
+  linked? R? (x ∷ y ∷ xs) =
+    map′ (uncurry _∷_) < head , tail > (R? x y ×-dec linked? R? (y ∷ xs))
 
   irrelevant : B.Irrelevant R → U.Irrelevant (Linked R)
   irrelevant irr []           []           = refl

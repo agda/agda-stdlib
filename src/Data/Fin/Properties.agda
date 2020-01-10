@@ -11,8 +11,10 @@ module Data.Fin.Properties where
 
 open import Category.Applicative using (RawApplicative)
 open import Category.Functor using (RawFunctor)
+open import Data.Bool.Base using (Bool; true; false; not; _∧_; _∨_)
 open import Data.Empty using (⊥-elim)
 open import Data.Fin.Base
+open import Data.Fin.Patterns
 open import Data.Nat as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_)
 import Data.Nat.Properties as ℕₚ
 open import Data.Unit using (tt)
@@ -25,8 +27,10 @@ open import Relation.Binary as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; trans; cong; subst; module ≡-Reasoning)
 open import Relation.Nullary.Decidable as Dec using (map′)
+open import Relation.Nullary.Reflects
 open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Nullary using (Dec; yes; no; ¬_)
+open import Relation.Nullary
+  using (Reflects; ofʸ; ofⁿ; Dec; _because_; does; proof; yes; no; ¬_)
 open import Relation.Nullary.Product using (_×-dec_)
 open import Relation.Nullary.Sum using (_⊎-dec_)
 open import Relation.Unary as U
@@ -421,6 +425,19 @@ splitAt-raise : ∀ m n i → splitAt m (raise {n} m i) ≡ inj₂ i
 splitAt-raise zero n i = refl
 splitAt-raise (suc m) n i rewrite splitAt-raise m n i = refl
 
+
+------------------------------------------------------------------------
+-- lift
+------------------------------------------------------------------------
+
+lift-injective : ∀ {m n} (f : Fin m → Fin n) →
+                 (∀ {x y} → f x ≡ f y → x ≡ y) →
+                 ∀ k {x y} → lift k f x ≡ lift k f y → x ≡ y
+lift-injective f inj zero                    eq = inj eq
+lift-injective f inj (suc k) {0F} {0F}       eq = refl
+lift-injective f inj (suc k) {suc i} {suc y} eq = cong suc (lift-injective f inj k (suc-injective eq))
+
+
 ------------------------------------------------------------------------
 -- _≺_
 ------------------------------------------------------------------------
@@ -553,14 +570,17 @@ module _ {n p} {P : Pred (Fin (suc n)) p} where
 
 decFinSubset : ∀ {n p q} {P : Pred (Fin n) p} {Q : Pred (Fin n) q} →
                Decidable Q → (∀ {f} → Q f → Dec (P f)) → Dec (Q ⊆ P)
-decFinSubset {zero}  {_}     {_} _  _  = yes λ{}
-decFinSubset {suc n} {P = P} {Q} Q? P? with decFinSubset (Q? ∘ suc) P?
-... | no ¬q⟶p = no (λ q⟶p → ¬q⟶p (q⟶p))
-... | yes q⟶p with Q? zero
-...   | no ¬q₀ = yes (∀-cons {P = Q U.⇒ P} (⊥-elim ∘ ¬q₀) (λ _ → q⟶p) _)
-...   | yes q₀ with P? q₀
-...     | no ¬p₀ = no (λ q⟶p → ¬p₀ (q⟶p q₀))
-...     | yes p₀ = yes (∀-cons {P = Q U.⇒ P} (λ _ → p₀) (λ _ → q⟶p) _)
+decFinSubset {zero} Q? P? = yes λ {}
+decFinSubset {suc n} {P = P} {Q} Q? P?
+  with Q? zero | ∀-cons {P = λ x → Q x → P x}
+... | false because [¬Q0] | cons =
+  map′ (λ f {x} → cons (⊥-elim ∘ invert [¬Q0]) (λ x → f {x}) x)
+       (λ f {x} → f {suc x})
+       (decFinSubset (Q? ∘ suc) P?)
+... | true  because  [Q0] | cons =
+  map′ (uncurry λ P0 rec {x} → cons (λ _ → P0) (λ x → rec {x}) x)
+       < _$ invert [Q0] , (λ f {x} → f {suc x}) >
+       (P? (invert [Q0]) ×-dec decFinSubset (Q? ∘ suc) P?)
 
 any? : ∀ {n p} {P : Fin n → Set p} → Decidable P → Dec (∃ P)
 any? {zero}  {P = _} P? = no λ { (() , _) }
@@ -571,6 +591,15 @@ all? : ∀ {n p} {P : Pred (Fin n) p} →
 all? P? = map′ (λ ∀p f → ∀p tt) (λ ∀p {x} _ → ∀p x)
                (decFinSubset U? (λ {f} _ → P? f))
 
+private
+  -- A nice computational property of `all?`:
+  -- The boolean component of the result is exactly the
+  -- obvious fold of boolean tests (`foldr _∧_ true`).
+  note : ∀ {p} {P : Pred (Fin 3) p} (P? : Decidable P) →
+         ∃ λ z → does (all? P?) ≡ z
+  note P? = does (P? 0F) ∧ does (P? 1F) ∧ does (P? 2F) ∧ true
+          , refl
+
 -- If a decidable predicate P over a finite set is sometimes false,
 -- then we can find the smallest value for which this is the case.
 
@@ -578,9 +607,9 @@ all? P? = map′ (λ ∀p f → ∀p tt) (λ ∀p {x} _ → ∀p x)
                  ¬ (∀ i → P i) → ∃ λ i → ¬ P i × ((j : Fin′ i) → P (inject j))
 ¬∀⟶∃¬-smallest zero    P P? ¬∀P = contradiction (λ()) ¬∀P
 ¬∀⟶∃¬-smallest (suc n) P P? ¬∀P with P? zero
-... | no ¬P₀ = (zero , ¬P₀ , λ ())
-... | yes P₀ = map suc (map id (∀-cons P₀))
-  (¬∀⟶∃¬-smallest n (P ∘ suc) (P? ∘ suc) (¬∀P ∘ (∀-cons P₀)))
+... | false because [¬P₀] = (zero , invert [¬P₀] , λ ())
+... |  true because  [P₀] = map suc (map id (∀-cons (invert [P₀])))
+  (¬∀⟶∃¬-smallest n (P ∘ suc) (P? ∘ suc) (¬∀P ∘ (∀-cons (invert [P₀]))))
 
 -- When P is a decidable predicate over a finite set the following
 -- lemma can be proved.

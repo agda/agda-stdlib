@@ -223,9 +223,8 @@ module _ {a} {A : Set a} where
 
   ++-isCommutativeMonoid : IsCommutativeMonoid _↭_ _++_ []
   ++-isCommutativeMonoid = record
-    { isSemigroup = ++-isSemigroup
-    ; identityˡ   = ++-identityˡ
-    ; comm        = ++-comm
+    { isMonoid = ++-isMonoid
+    ; comm     = ++-comm
     }
 
   ++-commutativeMonoid : CommutativeMonoid _ _

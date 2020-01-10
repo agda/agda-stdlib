@@ -1,17 +1,17 @@
 module README where
 
 ------------------------------------------------------------------------
--- The Agda standard library, version 1.2
+-- The Agda standard library, version 1.3-dev
 --
 -- Authors: Nils Anders Danielsson, Matthew Daggitt, Guillaume Allais
 -- with contributions from Andreas Abel, Stevan Andjelkovic,
 -- Jean-Philippe Bernardy, Peter Berry, Bradley Hardy Joachim Breitner,
--- Samuel Bronson, Daniel Brown, James Chapman, Liang-Ting Chen,
--- Dominique Devriese, Dan Doel, Érdi Gergő, Zack Grannan,
--- Helmut Grohne, Simon Foster, Liyang Hu, Jason Hu, Patrik Jansson,
--- Alan Jeffrey, Wen Kokke, Evgeny Kotelnikov, Sergei Meshveliani,
--- Eric Mertens, Darin Morrison, Guilhem Moulin, Shin-Cheng Mu,
--- Ulf Norell, Noriyuki Ohkawa, Nicolas Pouillard,
+-- Samuel Bronson, Daniel Brown, Jacques Carette, James Chapman,
+-- Liang-Ting Chen, Dominique Devriese, Dan Doel, Érdi Gergő,
+-- Zack Grannan, Helmut Grohne, Simon Foster, Liyang Hu, Jason Hu,
+-- Patrik Jansson, Alan Jeffrey, Wen Kokke, Evgeny Kotelnikov,
+-- Sergei Meshveliani, Eric Mertens, Darin Morrison, Guilhem Moulin,
+-- Shin-Cheng Mu, Ulf Norell, Noriyuki Ohkawa, Nicolas Pouillard,
 -- Andrés Sicard-Ramírez, Lex van der Stoep, Sandro Stucki, Milo Turner,
 -- Noam Zeilberger and other anonymous contributors.
 ------------------------------------------------------------------------
@@ -292,7 +292,20 @@ import README.Inspect
 
 -- Explaining string formats and the behaviour of printf
 
-import README.Text
+import README.Text.Printf
+
+-- Showcasing the pretty printing module
+
+import README.Text.Pretty
+
+-- Explaining how to display tables of strings:
+
+import README.Text.Tabular
+
+-- Explaining how to display a tree:
+
+import README.Text.Tree
+
 
 ------------------------------------------------------------------------
 -- Core modules

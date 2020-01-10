@@ -41,6 +41,8 @@ unsafeModules = map modToFile
   , "IO"
   , "IO.Primitive"
   , "Relation.Binary.PropositionalEquality.TrustMe"
+  , "Text.Pretty.Core"
+  , "Text.Pretty"
   ] where
 
 isUnsafeModule :: FilePath -> Bool
@@ -65,6 +67,8 @@ withKModules = map modToFile
   , "Relation.Binary.HeterogeneousEquality.Quotients.Examples"
   , "Relation.Binary.HeterogeneousEquality.Quotients"
   , "Relation.Binary.PropositionalEquality.TrustMe"
+  , "Text.Pretty.Core"
+  , "Text.Pretty"
   ]
 
 isWithKModule :: FilePath -> Bool
@@ -107,7 +111,7 @@ extractHeader mod = extract
     , (info, d2 : rest) <- span ("-- " `List.isPrefixOf`) ss
     , delimiter d2
     = info
-  extract (d1 : _)
+  extract (d1@(_:_) : _)
     | not (delimiter d1)
     , last d1 == '\r'
     = error $ mod ++ " contains \\r, probably due to git misconfiguration; maybe set autocrf to input?"

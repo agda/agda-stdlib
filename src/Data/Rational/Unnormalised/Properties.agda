@@ -298,9 +298,8 @@ p ≤? q = Dec.map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* �
 
 +-0-isCommutativeMonoid : IsCommutativeMonoid _≃_ _+_ 0ℚᵘ
 +-0-isCommutativeMonoid = record
-  { isSemigroup = +-isSemigroup
-  ; identityˡ   = +-identityˡ
-  ; comm        = +-comm
+  { isMonoid = +-0-isMonoid
+  ; comm     = +-comm
   }
 
 ------------------------------------------------------------------------
@@ -329,6 +328,25 @@ p ≤? q = Dec.map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* �
 ------------------------------------------------------------------------
 -- Properties of _*_
 ------------------------------------------------------------------------
+
+------------------------------------------------------------------------
+-- Raw bundles
+
+*-rawMagma : RawMagma 0ℓ 0ℓ
+*-rawMagma = record
+  { _≈_ = _≃_
+  ; _∙_ = _*_
+  }
+
+*-rawMonoid : RawMonoid 0ℓ 0ℓ
+*-rawMonoid = record
+  { _≈_ = _≃_
+  ; _∙_ = _*_
+  ; ε   = 1ℚᵘ
+  }
+
+------------------------------------------------------------------------
+-- Algebraic properties
 
 *-cong : Congruent₂ _≃_ _*_
 *-cong {x} {y} {u} {v} (*≡* ↥x↧y≡↥y↧x) (*≡* ↥u↧v≡↥v↧u) = *≡* (begin
@@ -415,9 +433,8 @@ p ≤? q = Dec.map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* �
 
 *-1-isCommutativeMonoid : IsCommutativeMonoid _≃_ _*_ 1ℚᵘ
 *-1-isCommutativeMonoid = record
-  { isSemigroup = *-isSemigroup
-  ; identityˡ   = *-identityˡ
-  ; comm        = *-comm
+  { isMonoid = *-1-isMonoid
+  ; comm     = *-comm
   }
 
 ------------------------------------------------------------------------

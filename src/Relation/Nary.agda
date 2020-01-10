@@ -16,6 +16,7 @@ module Relation.Nary where
 
 open import Level using (Level; _⊔_; Lift)
 open import Data.Unit.Base
+open import Data.Bool.Base using (true; false)
 open import Data.Empty
 open import Data.Nat.Base using (zero; suc)
 open import Data.Product as Prod using (_×_; _,_)
@@ -23,7 +24,7 @@ open import Data.Product.Nary.NonDependent
 open import Data.Sum using (_⊎_)
 open import Function using (_$_; _∘′_)
 open import Function.Nary.NonDependent
-open import Relation.Nullary using (¬_; Dec; yes; no)
+open import Relation.Nullary using (¬_; Dec; yes; no; _because_)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Product using (_×-dec_)
 import Relation.Unary as Unary
@@ -187,9 +188,7 @@ Decidable R = Π[ mapₙ _ Dec R ]
 -- erasure
 
 ⌊_⌋ : ∀ {n ls r} {as : Sets n ls} {R : as ⇉ Set r} → Decidable R → as ⇉ Set r
-⌊_⌋ {zero}  R? with R?
-... | yes _ = Lift _ ⊤
-... | no  _ = Lift _ ⊥
+⌊_⌋ {zero}  R? = Lift _ (Dec.True R?)
 ⌊_⌋ {suc n} R? a = ⌊ R? a ⌋
 
 -- equivalence between R and its erasure
@@ -197,13 +196,13 @@ Decidable R = Π[ mapₙ _ Dec R ]
 fromWitness : ∀ {n ls r} {as : Sets n ls} (R : as ⇉ Set r) (R? : Decidable R) →
               ∀[ ⌊ R? ⌋ ⇒ R ]
 fromWitness {zero} R R? with R?
-... | yes r = λ _ → r
-... | no _  = λ ()
+... | yes           r = λ _ → r
+... | false because _ = λ ()
 fromWitness {suc n} R R? = fromWitness (R _) (R? _)
 
 toWitness : ∀ {n ls r} {as : Sets n ls} (R : as ⇉ Set r) (R? : Decidable R) →
               ∀[ R ⇒ ⌊ R? ⌋ ]
 toWitness {zero} R R? with R?
-... | yes _ = _
-... | no ¬r = ⊥-elim ∘′ ¬r
+... | true because _ = _
+... | no          ¬r = ⊥-elim ∘′ ¬r
 toWitness {suc n} R R? = toWitness (R _) (R? _)

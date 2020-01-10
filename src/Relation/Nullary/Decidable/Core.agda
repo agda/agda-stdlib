@@ -36,6 +36,10 @@ isYes : Dec P → Bool
 isYes ( true because _) = true
 isYes (false because _) = false
 
+isYes≗does : (P? : Dec P) → isYes P? ≡ does P?
+isYes≗does ( true because _) = refl
+isYes≗does (false because _) = refl
+
 -- The traditional name for isYes is ⌊_⌋, indicating the stripping of evidence.
 ⌊_⌋ = isYes
 

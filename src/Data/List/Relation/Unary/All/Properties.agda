@@ -9,7 +9,7 @@
 module Data.List.Relation.Unary.All.Properties where
 
 open import Axiom.Extensionality.Propositional using (Extensionality)
-open import Data.Bool.Base using (Bool; T)
+open import Data.Bool.Base using (Bool; T; true; false)
 open import Data.Bool.Properties using (T-∧)
 open import Data.Empty
 open import Data.Fin using (Fin) renaming (zero to fzero; suc to fsuc)
@@ -43,6 +43,7 @@ open import Level using (Level)
 open import Relation.Binary using (REL; Setoid; _Respects_)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; cong; cong₂; _≗_)
+open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary
 open import Relation.Unary
   using (Decidable; Pred; Universal) renaming (_⊆_ to _⋐_)
@@ -96,12 +97,12 @@ module _ {P : A → Set p} where
   ¬All⇒Any¬ : Decidable P → ∀ xs → ¬ All P xs → Any (¬_ ∘ P) xs
   ¬All⇒Any¬ dec []       ¬∀ = ⊥-elim (¬∀ [])
   ¬All⇒Any¬ dec (x ∷ xs) ¬∀ with dec x
-  ... | yes p = there (¬All⇒Any¬ dec xs (¬∀ ∘ _∷_ p))
-  ... | no ¬p = here ¬p
+  ... |  true because  [p] = there (¬All⇒Any¬ dec xs (¬∀ ∘ _∷_ (invert [p])))
+  ... | false because [¬p] = here (invert [¬p])
 
-  Any¬→¬All : ∀ {xs} → Any (¬_ ∘ P) xs → ¬ All P xs
-  Any¬→¬All (here  ¬p) = ¬p           ∘ All.head
-  Any¬→¬All (there ¬p) = Any¬→¬All ¬p ∘ All.tail
+  Any¬⇒¬All : ∀ {xs} → Any (¬_ ∘ P) xs → ¬ All P xs
+  Any¬⇒¬All (here  ¬p) = ¬p           ∘ All.head
+  Any¬⇒¬All (there ¬p) = Any¬⇒¬All ¬p ∘ All.tail
 
   ¬Any↠All¬ : ∀ {xs} → (¬ Any P xs) ↠ All (¬_ ∘ P) xs
   ¬Any↠All¬ = surjection (¬Any⇒All¬ _) All¬⇒¬Any to∘from
@@ -122,12 +123,12 @@ module _ {P : A → Set p} where
       }
 
   Any¬⇔¬All : ∀ {xs} → Decidable P → Any (¬_ ∘ P) xs ⇔ (¬ All P xs)
-  Any¬⇔¬All dec = equivalence Any¬→¬All (¬All⇒Any¬ dec _)
+  Any¬⇔¬All dec = equivalence Any¬⇒¬All (¬All⇒Any¬ dec _)
     where
     -- If equality of functions were extensional, then the logical
     -- equivalence could be strengthened to a surjection.
     to∘from : Extensionality _ _ →
-              ∀ {xs} (¬∀ : ¬ All P xs) → Any¬→¬All (¬All⇒Any¬ dec xs ¬∀) ≡ ¬∀
+              ∀ {xs} (¬∀ : ¬ All P xs) → Any¬⇒¬All (¬All⇒Any¬ dec xs ¬∀) ≡ ¬∀
     to∘from ext ¬∀ = ext (⊥-elim ∘ ¬∀)
 
 module _ {_~_ : REL A B ℓ} where
@@ -493,16 +494,16 @@ module _ {P : A → Set p} (P? : Decidable P) where
   all-filter : ∀ xs → All P (filter P? xs)
   all-filter []       = []
   all-filter (x ∷ xs) with P? x
-  ... | yes Px = Px ∷ all-filter xs
-  ... | no  _  = all-filter xs
+  ... |  true because [Px] = invert [Px] ∷ all-filter xs
+  ... | false because  _   = all-filter xs
 
 module _ {P : A → Set p} {Q : A → Set q} (P? : Decidable P) where
 
   filter⁺ : ∀ {xs} → All Q xs → All Q (filter P? xs)
   filter⁺ {xs = _}     [] = []
-  filter⁺ {xs = x ∷ _} (Qx ∷ Qxs) with P? x
-  ... | no  _ = filter⁺ Qxs
-  ... | yes _ = Qx ∷ filter⁺ Qxs
+  filter⁺ {xs = x ∷ _} (Qx ∷ Qxs) with does (P? x)
+  ... | false = filter⁺ Qxs
+  ... | true  = Qx ∷ filter⁺ Qxs
 
 ------------------------------------------------------------------------
 -- zipWith
@@ -666,4 +667,12 @@ filter⁺₂ = filter⁺
 {-# WARNING_ON_USAGE filter⁺₂
 "Warning: filter⁺₂ was deprecated in v1.0.
 Please use filter⁺ instead."
+#-}
+
+-- Version 1.3
+
+Any¬→¬All = Any¬⇒¬All
+{-# WARNING_ON_USAGE Any¬→¬All
+"Warning: Any¬→¬All was deprecated in v1.3.
+Please use Any¬⇒¬All instead."
 #-}

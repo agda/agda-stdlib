@@ -9,6 +9,7 @@
 module Data.List.Membership.Setoid.Properties where
 
 open import Algebra using (Op₂; Selective)
+open import Data.Bool.Base using (true; false)
 open import Data.Fin using (Fin; zero; suc)
 open import Data.List
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
@@ -25,7 +26,8 @@ open import Function using (_$_; flip; _∘_; id)
 open import Relation.Binary as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Unary as U using (Decidable; Pred)
-open import Relation.Nullary using (¬_; yes; no)
+open import Relation.Nullary.Reflects using (invert)
+open import Relation.Nullary using (¬_; does; _because_)
 open import Relation.Nullary.Negation using (contradiction)
 open Setoid using (Carrier)
 
@@ -228,17 +230,17 @@ module _ {c ℓ p} (S : Setoid c ℓ) {P : Pred (Carrier S) p}
 
   ∈-filter⁺ : ∀ {v xs} → v ∈ xs → P v → v ∈ filter P? xs
   ∈-filter⁺ {xs = x ∷ _} (here v≈x) Pv with P? x
-  ... | yes _   = here v≈x
-  ... | no  ¬Px = contradiction (resp v≈x Pv) ¬Px
-  ∈-filter⁺ {xs = x ∷ _} (there v∈xs) Pv with P? x
-  ... | yes _ = there (∈-filter⁺ v∈xs Pv)
-  ... | no  _ = ∈-filter⁺ v∈xs Pv
+  ... |  true because   _   = here v≈x
+  ... | false because [¬Px] = contradiction (resp v≈x Pv) (invert [¬Px])
+  ∈-filter⁺ {xs = x ∷ _} (there v∈xs) Pv with does (P? x)
+  ... | true  = there (∈-filter⁺ v∈xs Pv)
+  ... | false = ∈-filter⁺ v∈xs Pv
 
   ∈-filter⁻ : ∀ {v xs} → v ∈ filter P? xs → v ∈ xs × P v
   ∈-filter⁻ {xs = x ∷ xs} v∈f[x∷xs] with P? x
-  ... | no  _  = Prod.map there id (∈-filter⁻ v∈f[x∷xs])
-  ... | yes Px with v∈f[x∷xs]
-  ...   | here  v≈x   = here v≈x , resp (sym v≈x) Px
+  ... | false because  _   = Prod.map there id (∈-filter⁻ v∈f[x∷xs])
+  ... |  true because [Px] with v∈f[x∷xs]
+  ...   | here  v≈x   = here v≈x , resp (sym v≈x) (invert [Px])
   ...   | there v∈fxs = Prod.map there id (∈-filter⁻ v∈fxs)
 
 ------------------------------------------------------------------------

@@ -70,7 +70,7 @@ module _ {a} (A : Set a) where
 
 module ⊆-Reasoning {a} (A : Set a) where
   open Setoidₚ.⊆-Reasoning (setoid A) public
-    hiding (_≋⟨_⟩_; _≋˘⟨_⟩_; _≋⟨⟩_)
+    hiding (step-≋; step-≋˘; _≋⟨⟩_)
 
 ------------------------------------------------------------------------
 -- Properties relating _⊆_ to various list functions
