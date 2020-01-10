@@ -6,6 +6,8 @@ The library has been tested using Agda version 2.6.0.1.
 Highlights
 ----------
 
+* New warnings when importing deprecated modules.
+
 Bug-fixes
 ---------
 
@@ -186,9 +188,6 @@ is encouraged. Although not anticipated any time soon, they may eventually
 be removed in some future release of the library. Automated warnings are
 attached to all deprecated names to discourage their use.
 
-Other minor additions
----------------------
-
 * In `Data.Fin`:
   ```agda
   fromℕ≤  ↦ fromℕ<
@@ -246,6 +245,8 @@ Other major additions
   README.Text.Tabular
   README.Text.Tree
   ```
+
+* The module `Reflection` is no longer unsafe.
 
 * Added induction over subsets to `Data.Fin.Subset.Induction`.
 
