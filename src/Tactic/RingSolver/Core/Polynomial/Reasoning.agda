@@ -14,7 +14,7 @@ module Tactic.RingSolver.Core.Polynomial.Reasoning
   where
 
 open AlmostCommutativeRing ring
-open import Relation.Binary.Reasoning.Inference setoid public
+open import Relation.Binary.Reasoning.Setoid setoid public
 
 infixr 1 ≪+_ +≫_ ≪*_ *≫_
 infixr 0 _⊙_

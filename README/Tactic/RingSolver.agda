@@ -30,7 +30,8 @@ instance
 
 open import Data.List as List using (List; _∷_; [])
 open import Function
-open import Relation.Binary.PropositionalEquality as ≡ using (subst; _≡_)
+open import Relation.Binary.PropositionalEquality as ≡
+  using (subst; _≡_; module ≡-Reasoning)
 open import Data.Bool as Bool using (Bool; true; false; if_then_else_)
 open import Data.Unit using (⊤; tt)
 
@@ -51,15 +52,14 @@ module IntegerExamples where
   lemma₂ : ∀ x y → (x + y) ^ 2 ≈ x ^ 2 + 2 * x * y + y ^ 2
   lemma₂ = solve Int.ring
 
-  open import Relation.Binary.Reasoning.Inference setoid
-
   -- It can interact with manual proofs as well.
   lemma₃ : ∀ x y → x + y * 1 + 3 ≈ 2 + 1 + y + x
   lemma₃ x y = begin
-    x + y * 1 + 3 ≈⟨ +-comm x (y * 1) ⟨ +-cong ⟩ refl ⟩
-    y * 1 + x + 3 ≈⟨ solveOver (x ∷ y ∷ []) Int.ring ⟩
+    x + y * 1 + 3 ≡⟨ +-comm x (y * 1) ⟨ +-cong ⟩ refl ⟩
+    y * 1 + x + 3 ≡⟨ solveOver (x ∷ y ∷ []) Int.ring ⟩
     3 + y + x     ≡⟨⟩
     2 + 1 + y + x ∎
+    where open ≡-Reasoning
 
 ------------------------------------------------------------------------------
 -- Natural examples
