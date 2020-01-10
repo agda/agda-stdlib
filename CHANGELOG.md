@@ -6,6 +6,9 @@ The library has been tested using Agda version 2.6.0.1.
 Highlights
 ----------
 
+* New monoid and ring tactics that are capable of solving equalities
+  without having to restate the equation.
+
 Bug-fixes
 ---------
 
@@ -234,6 +237,8 @@ Other major additions
   Data.Tree.Binary.Relation.Unary.All.Properties
   Data.Tree.Rose
   Data.Tree.Rose.Properties
+
+  Tactic.MonoidSolver
 
   Text.Pretty.Core
   Text.Pretty
