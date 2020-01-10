@@ -109,6 +109,10 @@ private
             E⟨^⟩ (x ∷ xs)         = E⟨^⟩ xs
             E⟨^⟩ _                = unknown
 
+            ETop : List (Arg Term) → Term
+            ETop (x ⟨∷⟩ []) = E x
+            ETop _          = unknown
+
             -- When trying to figure out the shape of an expression, one of
             -- the difficult tasks is recognizing where constants in the
             -- underlying ring are used. If we were only dealing with ℕ, we
@@ -130,6 +134,7 @@ private
                                      if ^′ ⇓≟ nm then E⟨^⟩ xs else
                                      if -′ ⇓≟ nm then E⟨ quote ⊝_ ⟩₁ xs else
                                      Κ′ (def nm xs)
+            E (con (quote ℕ.suc) (x ⟨∷⟩ [])) = quote _⊕_ ⟨ con ⟩ E⟅∷⟆ Κ′ (ℕ′ (ℕ.suc ℕ.zero)) ⟨∷⟩ E x ⟨∷⟩ []
             E v@(var x _)          = fromMaybe (Κ′ v) (Ι′ x)
             E t                    = Κ′ t
 
