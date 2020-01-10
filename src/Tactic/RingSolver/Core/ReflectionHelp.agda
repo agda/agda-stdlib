@@ -9,7 +9,6 @@
 module Tactic.RingSolver.Core.ReflectionHelp where
 
 open import Agda.Builtin.Reflection
-open import Reflection
 
 open import Data.List as List using (List; []; _∷_)
 open import Data.Nat as ℕ using (ℕ; suc; zero)
@@ -56,8 +55,8 @@ vlams : ∀ {n} → Vec String n → Term → Term
 vlams vs xs = Vec.foldr (const Term) (λ v vs → lam visible (abs v vs)) xs vs
 
 getVisible : Arg Term → Maybe Term
-getVisible (vArg x) = just x
-getVisible _        = nothing
+getVisible (arg (arg-info visible relevant) x) = just x
+getVisible _                                   = nothing
 
 getArgs : ∀ n → Term → Maybe (Vec Term n)
 getArgs n (def _ xs) = Maybe.map Vec.reverse (List.foldl f c (List.mapMaybe getVisible xs) n)

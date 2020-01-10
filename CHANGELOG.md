@@ -178,6 +178,13 @@ Non-backwards compatible changes
 * In `Codata.Colist`, replaced all the uses of `Data.BoundedVec` with the more
   up to date `Data.Vec.Bounded`.
 
+Deprecated modules
+------------------
+
+* The module `Data.Nat.Solver` and `Data.Integer.Solver` have been
+  deprecated in favour of `Data.Nat.Tactic.RingSolver` and
+  `Data.Integer.Tactic.RingSolver` respectively.
+
 Deprecated names
 ----------------
 
@@ -234,7 +241,10 @@ Other major additions
   Data.Tree.Rose
   Data.Tree.Rose.Properties
 
-  Text.Pretty.Core
+  Tactic.RingSolver
+  Tactic.RingSolver.Manual1
+  Tactic.RingSolver.Manual2
+
   Text.Pretty
   Text.Tabular.Base
   Text.Tabular.List
@@ -244,6 +254,7 @@ Other major additions
   README.Text.Pretty
   README.Text.Tabular
   README.Text.Tree
+  README.Tactic.RingSolver
   ```
 
 * The module `Reflection` is no longer unsafe.

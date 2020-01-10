@@ -167,22 +167,25 @@ private
 --
 -- where TypRing is your implementation of AlmostCommutativeRing. (Find some
 -- example implementations in Polynomial.Solver.Ring.AlmostCommutativeRing.Instances).
+solve-macro : Name → Term → TC ⊤
+solve-macro ring hole = do
+  ring′ ← def ring [] ∈Ring
+  commitTC
+  let open OverRing ring′
+  nms   ← ring⇓
+  hole′ ← inferType hole >>= reduce
+  let i , k , xs = underPi hole′
+  just (lhs ∷ rhs ∷ []) ← pure (getArgs 2 xs)
+    where nothing → typeError (strErr "Malformed call to solve." ∷
+                               strErr "Expected target type to be like: ∀ x y → x + y ≈ y + x." ∷
+                               strErr "Instead: " ∷
+                               termErr hole′ ∷
+                               [])
+  unify hole (quote solve-fn ⟨ def ⟩ callSolver nms i k lhs rhs)
+
 macro
   solve : Name → Term → TC ⊤
-  solve ring hole = do
-    ring′ ← def ring [] ∈Ring
-    commitTC
-    let open OverRing ring′
-    nms   ← ring⇓
-    hole′ ← inferType hole >>= reduce
-    let i , k , xs = underPi hole′
-    just (lhs ∷ rhs ∷ []) ← pure (getArgs 2 xs)
-      where nothing → typeError (strErr "Malformed call to solve." ∷
-                                 strErr "Expected target type to be like: ∀ x y → x + y ≈ y + x." ∷
-                                 strErr "Instead: " ∷
-                                 termErr hole′ ∷
-                                 [])
-    unify hole (quote solve-fn ⟨ def ⟩ callSolver nms i k lhs rhs)
+  solve = solve-macro
 
 -- Use this macro when you want to solve something *under* a lambda. For example:
 -- say you have a long proof, and you just want the solver to deal with an

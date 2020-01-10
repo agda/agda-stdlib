@@ -12,7 +12,6 @@ module Data.Nat.Solver where
 
 import Algebra.Solver.Ring.Simple as Solver
 import Algebra.Solver.Ring.AlmostCommutativeRing as ACR
-open import Data.Nat using (_≟_)
 open import Data.Nat.Properties
 
 ------------------------------------------------------------------------
