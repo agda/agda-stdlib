@@ -173,18 +173,14 @@ Non-backwards compatible changes
   For `IsCommutativeSemiring`, we have `IsCommutativeSemiringˡ`, and for
   `IsRing`, we have `IsRingWithoutAnnihilatingZero`.
 
-<<<<<<< HEAD
-=======
 * In `Codata.Colist`, replaced all the uses of `Data.BoundedVec` with the more
   up to date `Data.Vec.Bounded`.
->>>>>>> master
 
 Deprecated names
 ----------------
 
 The following deprecations have occurred as part of a drive to improve
 consistency across the library. The deprecated names still exist and
-<<<<<<< HEAD
 therefore all existing code should still work, however use of the new names
 is encouraged. Although not anticipated any time soon, they may eventually
 be removed in some future release of the library. Automated warnings are
@@ -215,12 +211,6 @@ Other minor additions
   ```agda
   [1+m]*n≡n+m*n ↦ suc-*
   ```
-=======
-therefore all existing code should still work, however use of the new
-names is encouraged. Although not anticipated any time soon, they may
-eventually be removed in some future release of the library. Automated
-warnings are attached to all deprecated names to discourage their use.
->>>>>>> master
 
 * In `Data.List.Relation.Unary.All.Properties`:
   ```agda
