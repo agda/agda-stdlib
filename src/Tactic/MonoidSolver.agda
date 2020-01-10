@@ -70,7 +70,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Algebra.Solver.Monoid.Reflection where
+module Tactic.MonoidSolver where
 
 open import Algebra
 open import Function
