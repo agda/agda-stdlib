@@ -2,6 +2,7 @@ module Changelog where
 
 import Control.Monad.State
 
+import Data.Char
 import Data.List
 import qualified Data.Map.Strict as Map
 
@@ -59,9 +60,26 @@ mkDEPRECATED = fmap ($ []) <$> do
     pure $ Map.singleton (takeFileName fp) (pqs ++)
   pure $ foldr (Map.unionWith (.)) Map.empty rens
 
-mkNEW :: ChangeM NEW
-mkNEW = fmap ($ []) <$> do
-  fps  <- liftIO $ getFiles newFP
+mkMODULES :: ChangeM MODULES
+mkMODULES = do
+  fps <- liftIO $ getFiles modulesFP
+  bfs <- forM fps $ \ fp -> do
+    ls <- lines <$> (liftIO $ readFile fp)
+    pure $ case takeFileName fp of
+      "others" -> ([], ls)
+      _ -> case break (all isSpace) ls of
+        (hd, _:ps) -> case break (not . all isSpace) ps of
+          (_, ps) -> ([(unlines (zipWith (++) ("* " : repeat "  ") hd)
+                        , ps)
+                       ], [])
+        _ -> error $ unlines [ "ERROR: invalid file format " ++ fp ]
+  let (rs, iss) = unzip bfs
+  pure (concat rs, concat iss)
+
+
+mkMINOR :: ChangeM MINOR
+mkMINOR = fmap ($ []) <$> do
+  fps  <- liftIO $ getFiles minorFP
   news <- forM fps $ \ fp -> do
     ls <- liftIO $ lines <$> readFile fp
     pure $ Map.singleton (takeFileName fp) (ls ++)
@@ -73,7 +91,8 @@ mkCHANGELOG = CHANGELOG
           <*> mkBUGFIXES
           <*> mkBREAKING
           <*> mkDEPRECATED
-          <*> mkNEW
+          <*> mkMODULES
+          <*> mkMINOR
 
 main :: IO ()
 main = do

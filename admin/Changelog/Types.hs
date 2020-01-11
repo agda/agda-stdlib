@@ -22,7 +22,9 @@ type BREAKING   = OneOrTheOther String
   -- ^ Markdown for major ones + other items
 type DEPRECATED = Map String [(String,String)]
   -- ^ map of module name * renamings
-type NEW = Map String [String]
+type MODULES = ([(String, [String])], [String])
+  -- ^ Header + list of modules for major ones + other items
+type MINOR = Map String [String]
   -- ^ map of module name * new definitions
 
 data CHANGELOG = CHANGELOG
@@ -30,7 +32,8 @@ data CHANGELOG = CHANGELOG
   , bugfixes   :: BUGFIXES
   , breaking   :: BREAKING
   , deprecated :: DEPRECATED
-  , new        :: NEW
+  , modules    :: MODULES
+  , minor      :: MINOR
   }
 
 newtype ChangeM a = ChangeM { runChangeM :: IO a }

@@ -14,8 +14,11 @@ breakingFP = changesFP </> "breaking"
 highlightsFP :: FilePath
 highlightsFP = changesFP </> "highlights"
 
-newFP :: FilePath
-newFP = changesFP </> "new"
+modulesFP :: FilePath
+modulesFP = changesFP </> "new_modules"
+
+minorFP :: FilePath
+minorFP = changesFP </> "minor_additions"
 
 deprecatedFP :: FilePath
 deprecatedFP = changesFP </> "deprecated"

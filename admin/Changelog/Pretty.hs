@@ -5,10 +5,17 @@ import qualified Data.Map.Strict as Map
 
 import Changelog.Types
 
+preamble :: String -> [String]
+preamble str =
+  [ ""
+  , str
+  , replicate (length str) '-'
+  ]
+
 prAGDA :: [String] -> [String]
 prAGDA ls = concat
   [ [ "  ```agda" ]
-  , ls
+  , map ("  " ++) ls
   , [ "  ```" ]
   ]
 
@@ -18,14 +25,7 @@ prItems is = intercalate [""] $ do
   pure $ zipWith (++) ("* " : repeat "  ") ls
 
 prHIGHLIGHTS :: HIGHLIGHTS -> [String]
-prHIGHLIGHTS h = preamble ++ prItems h where
-
-  preamble =
-    [ ""
-    , "Highlights"
-    , "----------"
-    , ""
-    ]
+prHIGHLIGHTS h = preamble "Highlights" ++ prItems h where
 
 prOneOrTheOther :: OneOrTheOther String -> [String]
 prOneOrTheOther (OneOrTheOther raw others) = concat
@@ -33,50 +33,37 @@ prOneOrTheOther (OneOrTheOther raw others) = concat
   , unlessNull (("":) . rest) [] others
   ] where
 
+  banner = [ "#### Other", "" ]
   rest o = unlessNull (const (banner ++)) id raw $ prItems o
-
-  banner =
-    [ "#### Other"
-    , ""
-    ]
 
 prBUGFIXES :: BUGFIXES -> [String]
 prBUGFIXES b = concat
-  [ preamble
+  [ preamble "Bug fixes"
   , prOneOrTheOther b
-  ] where
-
-  preamble =
-    [ ""
-    , "Bug fixes"
-    , "---------"
-    ]
+  ]
 
 prBREAKING :: BREAKING -> [String]
 prBREAKING b = concat
-  [ preamble
+  [ preamble "Non-backwards compatible changes"
   , prOneOrTheOther b
+  ]
+
+prMODULES :: MODULES -> [String]
+prMODULES (is, others) = concat
+  [ preamble "New modules"
+  , unlessNull ("":)          [] (map highlighted is)
+  , unlessNull (("":) . rest) [] others
   ] where
 
-  preamble =
-    [ ""
-    , "Non-backwards compatible changes"
-    , "--------------------------------"
-    ]
+  banner = [ "#### Other", "" ]
+  rest = unlessNull (const (banner ++)) id is . prAGDA
+  highlighted (hd, ms) = unlines $ hd : "" : prAGDA ms
 
-prNEW :: NEW -> [String]
-prNEW n = (preamble ++) $ intercalate [""] $ do
+prMINOR :: MINOR -> [String]
+prMINOR n = (preamble "Other minor additions" ++) . ("" :) $ intercalate [""] $ do
   (mod, defs) <- Map.toAscList n
   pure $ concat ["* New definitions in `", mod, "`:"]
-       : prAGDA (map additions defs)
-  where
-  additions = ("  " ++)
-  preamble =
-    [ ""
-    , "Other minor additions"
-    , "---------------------"
-    , ""
-    ]
+       : prAGDA defs
 
 prDEPRECATED :: DEPRECATED -> [String]
 prDEPRECATED d = (preamble ++) $ intercalate [""] $ do
@@ -84,7 +71,7 @@ prDEPRECATED d = (preamble ++) $ intercalate [""] $ do
   pure $ concat [ "* In `", mod, "`:" ]
        : prAGDA (map renamings pairs)
   where
-  renamings (p, q) = concat [ "  ", p, " ↦ ", q ]
+  renamings (p, q) = concat [ p, " ↦ ", q ]
   preamble =
     [ ""
     , "Deprecated names"
@@ -108,5 +95,6 @@ pretty c = concat
   , unlessNull prBUGFIXES   [] (bugfixes c)
   , unlessNull prBREAKING   [] (breaking c)
   , unlessNull prDEPRECATED [] (deprecated c)
-  , unlessNull prNEW        [] (new c)
+  , unlessNull prMODULES    [] (modules c)
+  , unlessNull prMINOR      [] (minor c)
   ]
