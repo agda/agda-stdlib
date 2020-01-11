@@ -294,9 +294,18 @@ import README.Inspect
 
 import README.Text.Printf
 
+-- Showcasing the pretty printing module
+
+import README.Text.Pretty
+
 -- Explaining how to display tables of strings:
 
 import README.Text.Tabular
+
+-- Explaining how to display a tree:
+
+import README.Text.Tree
+
 
 ------------------------------------------------------------------------
 -- Core modules

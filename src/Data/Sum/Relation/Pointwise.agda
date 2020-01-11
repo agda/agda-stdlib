@@ -10,3 +10,8 @@
 module Data.Sum.Relation.Pointwise where
 
 open import Data.Sum.Relation.Binary.Pointwise public
+
+{-# WARNING_ON_IMPORT
+"Data.Sum.Relation.Pointwise was deprecated in v1.0.
+Use Data.Sum.Relation.Binary.Pointwise instead."
+#-}

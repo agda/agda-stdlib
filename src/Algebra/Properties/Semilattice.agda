@@ -16,6 +16,7 @@ open import Algebra.Structures
 open import Function
 open import Data.Product
 open import Relation.Binary
+open import Relation.Binary.Reasoning.Setoid setoid
 import Relation.Binary.Construct.NaturalOrder.Left _≈_ _∧_ as LeftNaturalOrder
 open import Relation.Binary.Lattice
 import Relation.Binary.Properties.Poset as PosetProperties

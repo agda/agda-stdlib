@@ -110,9 +110,19 @@ open _∣_ using (quotient) public
 ∣-preorder : Preorder _ _ _
 ∣-preorder = record { isPreorder = ∣-isPreorder }
 
-module ∣-Reasoning = PreorderReasoning ∣-preorder
-  hiding   (_≈⟨_⟩_)
-  renaming (_∼⟨_⟩_ to _∣⟨_⟩_)
+------------------------------------------------------------------------
+-- Divisibility reasoning
+
+module ∣-Reasoning where
+  private
+    module Base = PreorderReasoning ∣-preorder
+
+  open Base public
+    hiding (step-∼; step-≈; step-≈˘)
+
+  infixr 2 step-∣
+  step-∣ = Base.step-∼
+  syntax step-∣ x y∣z x∣y = x ∣⟨ x∣y ⟩ y∣z
 
 ------------------------------------------------------------------------
 -- Other properties of _∣_

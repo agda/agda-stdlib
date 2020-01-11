@@ -32,7 +32,7 @@ open import Relation.Unary using (Decidable)
 open import Relation.Binary using (_⇒_)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; _≗_; isEquivalence; refl; setoid; module ≡-Reasoning)
-import Relation.Binary.PreorderReasoning as PreorderReasoning
+import Relation.Binary.Reasoning.Preorder as PreorderReasoning
 
 private
   open module ListMonad {ℓ} = RawMonad (monad {ℓ = ℓ})
@@ -70,7 +70,7 @@ module _ {a} (A : Set a) where
 
 module ⊆-Reasoning {a} (A : Set a) where
   open Setoidₚ.⊆-Reasoning (setoid A) public
-    hiding (_≋⟨_⟩_; _≋˘⟨_⟩_; _≋⟨⟩_)
+    hiding (step-≋; step-≋˘; _≋⟨⟩_)
 
 ------------------------------------------------------------------------
 -- Properties relating _⊆_ to various list functions
