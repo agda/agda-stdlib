@@ -11,11 +11,12 @@
 
 module Category.Applicative where
 
+open import Level using (suc; _⊔_)
 open import Data.Unit
 open import Category.Applicative.Indexed
 
-RawApplicative : ∀ {f} → (Set f → Set f) → Set _
-RawApplicative F = RawIApplicative {I = ⊤} (λ _ _ → F)
+RawApplicative : ∀ {f} → (Set f → Set f) → Set (suc f)
+RawApplicative F = RawIApplicative {I = ⊤} λ _ _ → F
 
 module RawApplicative {f} {F : Set f → Set f}
                       (app : RawApplicative F) where

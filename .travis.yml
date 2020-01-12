@@ -27,6 +27,11 @@ before_install:
 install:
   - cabal update
   - sed -i 's/^jobs:/-- jobs:/' $HOME/.cabal/config
+  # installing the dev version of Agda
+  - cd ../
+  - git clone https://github.com/agda/agda
+  - cd agda
+  - git checkout 08dd23df8dd894737af98463f0b3f69d616e7b48
   # checking whether .ghc is still valid
   - cabal install alex happy
   - cabal install --only-dependencies --dry -v > $HOME/installplan.txt
@@ -45,18 +50,20 @@ install:
       mkdir -p $HOME/.ghc $HOME/.cabal/lib $HOME/.cabal/share $HOME/.cabal/bin;
     fi
   - cabal install cpphs
-  - cabal install Agda
+  - cabal install
   # snapshot package-db on cache miss
   - echo "snapshotting package-db to build-cache";
     mkdir $HOME/.cabsnap;
     cp -a $HOME/.ghc $HOME/.cabsnap/ghc;
     cp -a $HOME/.cabal/lib $HOME/.cabal/share $HOME/.cabal/bin $HOME/installplan.txt $HOME/.cabsnap/;
+  # returning to stdlib directory
+  - cd ../agda-stdlib
   # installing fix-agda-whitespace
-  - git clone https://github.com/agda/agda --depth=1
-  - cd agda/src/fix-agda-whitespace
-  - cabal install fix-agda-whitespace.cabal
+  - git clone https://github.com/agda/fix-whitespace --depth=1
+  - cd fix-whitespace
+  - cabal install fix-whitespace.cabal
   - cd -
-  - yes | rm -R agda/
+  - yes | rm -R fix-whitespace/
   # generating Everything.agda
   - cabal install lib.cabal
   - runghc GenerateEverything.hs
@@ -70,7 +77,7 @@ script:
   # generating index.agda
   - ./index.sh
   # detecting whitespace violations
-  - make check-whitespace
+  - fix-whitespace --check
   # expose the value of RTS_OPTIONS
   - echo $RTS_OPTIONS
   # checking safe modules build with --safe
@@ -83,8 +90,9 @@ script:
   # building the docs
   - agda $RTS_OPTIONS -i . -i src/ --html safe.agda
   - agda $RTS_OPTIONS -i . -i src/ --html index.agda
-  # moving everything to the doc directory
-  - mv html/* .
+  # moving everything to the experimental directory
+  - mkdir -p experimental
+  - mv html/* experimental/
 
 after_success:
   # uploading to gh-pages
@@ -93,10 +101,10 @@ after_success:
   - git config --global user.email "travis-ci-bot@travis.fake"
   - git remote add upstream https://$GH_TOKEN@github.com/agda/agda-stdlib.git &>/dev/null
   - git fetch upstream && git reset upstream/gh-pages
-  - git checkout HEAD -- v0.16/ v0.17/ v1.0/ v1.1/ experimental/
+  - git checkout HEAD -- *.html v0.16/ v0.17/ v1.0/ v1.1/ experimental/
   - git add -f \*.html
   - git commit -m "Automatic HTML update via Travis"
-  - if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS_BRANCH" = "master" ];
+  - if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS_BRANCH" = "experimental" ];
     then git push -q upstream HEAD:gh-pages &>/dev/null;
     fi
 

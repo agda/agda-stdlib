@@ -406,7 +406,7 @@ module ≤-Reasoning where
     <-transˡ
     <-transʳ
     public
-    hiding (_≈⟨_⟩_)
+    hiding (step-≈; step-≈˘)
 
 open ≤-Reasoning
 
@@ -505,9 +505,8 @@ suc[pred[n]]≡n {suc n} n≢0 = refl
 
 +-0-isCommutativeMonoid : IsCommutativeMonoid _+_ 0
 +-0-isCommutativeMonoid = record
-  { isSemigroup = +-isSemigroup
-  ; identityˡ    = +-identityˡ
-  ; comm        = +-comm
+  { isMonoid = +-0-isMonoid
+  ; comm     = +-comm
   }
 
 ------------------------------------------------------------------------
@@ -763,9 +762,8 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
 
 *-1-isCommutativeMonoid : IsCommutativeMonoid _*_ 1
 *-1-isCommutativeMonoid = record
-  { isSemigroup = *-isSemigroup
-  ; identityˡ    = *-identityˡ
-  ; comm        = *-comm
+  { isMonoid = *-1-isMonoid
+  ; comm     = *-comm
   }
 
 *-+-isSemiring : IsSemiring _+_ _*_ 0 1
@@ -780,10 +778,8 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
 
 *-+-isCommutativeSemiring : IsCommutativeSemiring _+_ _*_ 0 1
 *-+-isCommutativeSemiring = record
-  { +-isCommutativeMonoid = +-0-isCommutativeMonoid
-  ; *-isCommutativeMonoid = *-1-isCommutativeMonoid
-  ; distribʳ              = *-distribʳ-+
-  ; zeroˡ                 = *-zeroˡ
+  { isSemiring = *-+-isSemiring
+  ; *-comm = *-comm
   }
 
 ------------------------------------------------------------------------
@@ -1039,11 +1035,16 @@ m^n≡1⇒n≡0∨m≡1 m (suc n) eq = inj₂ (m*n≡1⇒m≡1 m (m ^ n) eq)
   ; comm   = ⊔-comm
   }
 
+⊔-0-isMonoid : IsMonoid _⊔_ 0
+⊔-0-isMonoid = record
+  { isSemigroup = ⊔-isSemigroup
+  ; identity = ⊔-identity
+  }
+
 ⊔-0-isCommutativeMonoid : IsCommutativeMonoid _⊔_ 0
 ⊔-0-isCommutativeMonoid = record
-  { isSemigroup = ⊔-isSemigroup
-  ; identityˡ   = ⊔-identityˡ
-  ; comm        = ⊔-comm
+  { isMonoid = ⊔-0-isMonoid
+  ; comm = ⊔-comm
   }
 
 ------------------------------------------------------------------------
@@ -1146,6 +1147,12 @@ m⊔n<o⇒n<o m n m⊔n<o = <-transʳ (n≤m⊔n m n) m⊔n<o
 
 ⊔-mono-< : _⊔_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
 ⊔-mono-< = ⊔-mono-≤
+
+⊔-pres-≤m : ∀ {m n o} → n ≤ m → o ≤ m → n ⊔ o ≤ m
+⊔-pres-≤m {m} n≤m o≤m = subst (_ ≤_) (⊔-idem m) (⊔-mono-≤ n≤m o≤m)
+
+⊔-pres-<m : ∀ {m n o} → n < m → o < m → n ⊔ o < m
+⊔-pres-<m {m} n<m o<m = subst (_ <_) (⊔-idem m) (⊔-mono-< n<m o<m)
 
 ------------------------------------------------------------------------
 -- Other properties of _⊔_ and _+_
@@ -1416,6 +1423,12 @@ m⊓n≤m⊔n : ∀ m n → m ⊓ n ≤ m ⊔ n
 m⊓n≤m⊔n zero    n       = z≤n
 m⊓n≤m⊔n (suc m) zero    = z≤n
 m⊓n≤m⊔n (suc m) (suc n) = s≤s (m⊓n≤m⊔n m n)
+
+⊓-pres-m≤ : ∀ {m n o} → m ≤ n → m ≤ o → m ≤ n ⊓ o
+⊓-pres-m≤ {m} m≤n m≤o = subst (_≤ _) (⊓-idem m) (⊓-mono-≤ m≤n m≤o)
+
+⊓-pres-m< : ∀ {m n o} → m < n → m < o → m < n ⊓ o
+⊓-pres-m< {m} m<n m<o = subst (_< _) (⊓-idem m) (⊓-mono-< m<n m<o)
 
 ------------------------------------------------------------------------
 -- Other properties of _⊓_ and _+_
@@ -1747,7 +1760,7 @@ m≤∣m-n∣+n : ∀ m n → m ≤ ∣ m - n ∣ + n
 m≤∣m-n∣+n m n = subst (m ≤_) (+-comm n _) (m≤n+∣m-n∣ m n)
 
 ------------------------------------------------------------------------
--- Properties of ⌊_/2⌋
+-- Properties of ⌊_/2⌋ and ⌈_/2⌉
 ------------------------------------------------------------------------
 
 ⌊n/2⌋-mono : ⌊_/2⌋ Preserves _≤_ ⟶ _≤_
@@ -1757,6 +1770,19 @@ m≤∣m-n∣+n m n = subst (m ≤_) (+-comm n _) (m≤n+∣m-n∣ m n)
 
 ⌈n/2⌉-mono : ⌈_/2⌉ Preserves _≤_ ⟶ _≤_
 ⌈n/2⌉-mono m≤n = ⌊n/2⌋-mono (s≤s m≤n)
+
+⌊n/2⌋≤⌈n/2⌉ : ∀ n → ⌊ n /2⌋ ≤ ⌈ n /2⌉
+⌊n/2⌋≤⌈n/2⌉ zero          = z≤n
+⌊n/2⌋≤⌈n/2⌉ (suc zero)    = z≤n
+⌊n/2⌋≤⌈n/2⌉ (suc (suc n)) = s≤s (⌊n/2⌋≤⌈n/2⌉ n)
+
+⌊n/2⌋+⌈n/2⌉≡n : ∀ n → ⌊ n /2⌋ + ⌈ n /2⌉ ≡ n
+⌊n/2⌋+⌈n/2⌉≡n zero    = refl
+⌊n/2⌋+⌈n/2⌉≡n (suc n) = begin-equality
+  ⌊ suc n /2⌋ + suc ⌊ n /2⌋   ≡⟨ +-comm ⌊ suc n /2⌋ (suc ⌊ n /2⌋) ⟩
+  suc ⌊ n /2⌋ + ⌊ suc n /2⌋   ≡⟨⟩
+  suc (⌊ n /2⌋ + ⌊ suc n /2⌋) ≡⟨ cong suc (⌊n/2⌋+⌈n/2⌉≡n n) ⟩
+  suc n                       ∎
 
 ------------------------------------------------------------------------
 -- Properties of _≤′_ and _<′_

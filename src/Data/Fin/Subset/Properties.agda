@@ -19,8 +19,8 @@ open import Data.Bool.Properties
 open import Data.Fin using (Fin; suc; zero)
 open import Data.Fin.Subset
 open import Data.Fin.Properties using (any?; decFinSubset)
-open import Data.Nat.Base using (ℕ; zero; suc; z≤n; s≤s; _≤_; _<_)
-open import Data.Nat.Properties using (≤-step)
+open import Data.Nat.Base
+import Data.Nat.Properties as ℕₚ
 open import Data.Product as Product using (∃; ∄; _×_; _,_; proj₁)
 open import Data.Sum as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Vec
@@ -29,7 +29,6 @@ open import Function.Base using (_∘_; const; id; case_of_)
 open import Function.Equivalence using (_⇔_; equivalence)
 open import Relation.Binary as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality
-  using (_≡_; refl; cong; cong₂; subst; sym; isEquivalence; inspect; [_])
 open import Relation.Nullary using (Dec; yes; no)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Negation using (contradiction)
@@ -146,6 +145,11 @@ nonempty? p = any? (_∈? p)
 ∣⊤∣≡n zero    = refl
 ∣⊤∣≡n (suc n) = cong suc (∣⊤∣≡n n)
 
+∣p∣≡n⇒p≡⊤ : ∀ {n} {p : Subset n} → ∣ p ∣ ≡ n → p ≡ ⊤
+∣p∣≡n⇒p≡⊤ {p = []}          _     = refl
+∣p∣≡n⇒p≡⊤ {p = outside ∷ p} |p|≡n = contradiction |p|≡n (ℕₚ.<⇒≢ (s≤s (∣p∣≤n p)))
+∣p∣≡n⇒p≡⊤ {p = inside  ∷ p} |p|≡n = cong (inside ∷_) (∣p∣≡n⇒p≡⊤ (ℕₚ.suc-injective |p|≡n))
+
 ------------------------------------------------------------------------
 -- ⁅_⁆
 
@@ -162,6 +166,12 @@ x∈⁅y⁆⇔x≡y : ∀ {n} {x y : Fin n} → x ∈ ⁅ y ⁆ ⇔ x ≡ y
 x∈⁅y⁆⇔x≡y {_} {x} {y} = equivalence
   (x∈⁅y⁆⇒x≡y y)
   (λ x≡y → subst (λ y → x ∈ ⁅ y ⁆) x≡y (x∈⁅x⁆ x))
+
+x≢y⇒x∉⁅y⁆ : ∀ {n} {x y : Fin n} → x ≢ y → x ∉ ⁅ y ⁆
+x≢y⇒x∉⁅y⁆ x≢y = x≢y ∘ x∈⁅y⁆⇒x≡y _
+
+x∉⁅y⁆⇒x≢y : ∀ {n} {x y : Fin n} → x ∉ ⁅ y ⁆ → x ≢ y
+x∉⁅y⁆⇒x≢y x∉⁅x⁆ refl = x∉⁅x⁆ (x∈⁅x⁆ _)
 
 ∣⁅x⁆∣≡1 : ∀ {n} (i : Fin n) → ∣ ⁅ i ⁆ ∣ ≡ 1
 ∣⁅x⁆∣≡1 {suc n} zero    = cong suc (∣⊥∣≡0 n)
@@ -226,12 +236,12 @@ module _ (n : ℕ) where
     { isPartialOrder = ⊆-isPartialOrder
     }
 
-p⊆q⇒∣p∣<∣q∣ : ∀ {n} {p q : Subset n} → p ⊆ q → ∣ p ∣ ≤ ∣ q ∣
-p⊆q⇒∣p∣<∣q∣ {p = []}          {[]}          p⊆q = z≤n
-p⊆q⇒∣p∣<∣q∣ {p = outside ∷ p} {outside ∷ q} p⊆q = p⊆q⇒∣p∣<∣q∣ (drop-∷-⊆ p⊆q)
-p⊆q⇒∣p∣<∣q∣ {p = outside ∷ p} {inside  ∷ q} p⊆q = ≤-step (p⊆q⇒∣p∣<∣q∣ (drop-∷-⊆ p⊆q))
-p⊆q⇒∣p∣<∣q∣ {p = inside  ∷ p} {outside ∷ q} p⊆q = contradiction (p⊆q here) λ()
-p⊆q⇒∣p∣<∣q∣ {p = inside  ∷ p} {inside  ∷ q} p⊆q = s≤s (p⊆q⇒∣p∣<∣q∣ (drop-∷-⊆ p⊆q))
+p⊆q⇒∣p∣≤∣q∣ : ∀ {n} {p q : Subset n} → p ⊆ q → ∣ p ∣ ≤ ∣ q ∣
+p⊆q⇒∣p∣≤∣q∣ {p = []}          {[]}          p⊆q = z≤n
+p⊆q⇒∣p∣≤∣q∣ {p = outside ∷ p} {outside ∷ q} p⊆q = p⊆q⇒∣p∣≤∣q∣ (drop-∷-⊆ p⊆q)
+p⊆q⇒∣p∣≤∣q∣ {p = outside ∷ p} {inside  ∷ q} p⊆q = ℕₚ.≤-step (p⊆q⇒∣p∣≤∣q∣ (drop-∷-⊆ p⊆q))
+p⊆q⇒∣p∣≤∣q∣ {p = inside  ∷ p} {outside ∷ q} p⊆q = contradiction (p⊆q here) λ()
+p⊆q⇒∣p∣≤∣q∣ {p = inside  ∷ p} {inside  ∷ q} p⊆q = s≤s (p⊆q⇒∣p∣≤∣q∣ (drop-∷-⊆ p⊆q))
 
 
 ------------------------------------------------------------------------
@@ -296,7 +306,7 @@ module _ (n : ℕ) where
 
 p⊂q⇒∣p∣<∣q∣ : ∀ {n} → {p q : Subset n} → p ⊂ q → ∣ p ∣ < ∣ q ∣
 p⊂q⇒∣p∣<∣q∣ {p = outside ∷ p} {outside ∷ q} op⊂oq@(_     , _     , _ , _)    = p⊂q⇒∣p∣<∣q∣ (drop-∷-⊂ op⊂oq)
-p⊂q⇒∣p∣<∣q∣ {p = outside ∷ p} {inside  ∷ q}       (op⊆iq , _     , _ , _)    = s≤s (p⊆q⇒∣p∣<∣q∣ (drop-∷-⊆ op⊆iq))
+p⊂q⇒∣p∣<∣q∣ {p = outside ∷ p} {inside  ∷ q}       (op⊆iq , _     , _ , _)    = s≤s (p⊆q⇒∣p∣≤∣q∣ (drop-∷-⊆ op⊆iq))
 p⊂q⇒∣p∣<∣q∣ {p = inside  ∷ p} {outside ∷ q}       (ip⊆oq , _     , _ , _)    = contradiction (ip⊆oq here) (λ ())
 p⊂q⇒∣p∣<∣q∣ {p = inside  ∷ p} {inside  ∷ q}       (_     , zero  , _ , x∉ip) = contradiction here x∉ip
 p⊂q⇒∣p∣<∣q∣ {p = inside  ∷ p} {inside  ∷ q} ip⊂iq@(_     , suc x , _ , _)    = s≤s (p⊂q⇒∣p∣<∣q∣ (drop-∷-⊂ ip⊂iq))
@@ -304,21 +314,35 @@ p⊂q⇒∣p∣<∣q∣ {p = inside  ∷ p} {inside  ∷ q} ip⊂iq@(_     , suc
 ------------------------------------------------------------------------
 -- ∁
 
-x∈s⇒x∉∁s : ∀ {n} → {x : Fin n} → {s : Subset n} → x ∈ s → x ∉ ∁ s
-x∈s⇒x∉∁s (there x∈s) (there x∈∁s) = x∈s⇒x∉∁s x∈s x∈∁s
+x∈p⇒x∉∁p : ∀ {n x} {p : Subset n} → x ∈ p → x ∉ ∁ p
+x∈p⇒x∉∁p (there x∈p) (there x∈∁p) = x∈p⇒x∉∁p x∈p x∈∁p
 
-x∈∁s⇒x∉s : ∀ {n} → {x : Fin n} → {s : Subset n} → x ∈ ∁ s → x ∉ s
-x∈∁s⇒x∉s (there x∈∁s) (there x∈s) = x∈∁s⇒x∉s x∈∁s x∈s
+x∈∁p⇒x∉p : ∀ {n x} {p : Subset n} → x ∈ ∁ p → x ∉ p
+x∈∁p⇒x∉p (there x∈∁p) (there x∈p) = x∈∁p⇒x∉p x∈∁p x∈p
 
-x∉∁s⇒x∈s : ∀ {n} → {x : Fin n} → {s : Subset n} → x ∉ ∁ s → x ∈ s
-x∉∁s⇒x∈s {x = zero}  {outside ∷ s} x∉∁s = contradiction here x∉∁s
-x∉∁s⇒x∈s {x = zero}  {inside  ∷ s} x∉∁s = here
-x∉∁s⇒x∈s {x = suc x} {_       ∷ s} x∉∁s = there (x∉∁s⇒x∈s (x∉∁s ∘ there))
+x∉∁p⇒x∈p : ∀ {n x} {p : Subset n} → x ∉ ∁ p → x ∈ p
+x∉∁p⇒x∈p {x = zero}  {outside ∷ p} x∉∁p = contradiction here x∉∁p
+x∉∁p⇒x∈p {x = zero}  {inside  ∷ p} x∉∁p = here
+x∉∁p⇒x∈p {x = suc x} {_       ∷ p} x∉∁p = there (x∉∁p⇒x∈p (x∉∁p ∘ there))
 
-x∉s⇒x∈∁s : ∀ {n} → {x : Fin n} → {s : Subset n} → x ∉ s → x ∈ ∁ s
-x∉s⇒x∈∁s {x = zero}  {outside ∷ s} x∉s = here
-x∉s⇒x∈∁s {x = zero}  {inside  ∷ s} x∉s = contradiction here x∉s
-x∉s⇒x∈∁s {x = suc x} {_       ∷ s} x∉s = there (x∉s⇒x∈∁s (x∉s ∘ there))
+x∉p⇒x∈∁p : ∀ {n x} {p : Subset n} → x ∉ p → x ∈ ∁ p
+x∉p⇒x∈∁p {x = zero}  {outside ∷ p} x∉p = here
+x∉p⇒x∈∁p {x = zero}  {inside  ∷ p} x∉p = contradiction here x∉p
+x∉p⇒x∈∁p {x = suc x} {_       ∷ p} x∉p = there (x∉p⇒x∈∁p (x∉p ∘ there))
+
+p∪∁p≡⊤ : ∀ {n} (p : Subset n) → p ∪ ∁ p ≡ ⊤
+p∪∁p≡⊤ []            = refl
+p∪∁p≡⊤ (outside ∷ p) = cong (inside ∷_) (p∪∁p≡⊤ p)
+p∪∁p≡⊤ (inside  ∷ p) = cong (inside ∷_) (p∪∁p≡⊤ p)
+
+∣∁p∣≡n∸∣p∣ : ∀ {n} (p : Subset n) → ∣ ∁ p ∣ ≡ n ∸ ∣ p ∣
+∣∁p∣≡n∸∣p∣ []            = refl
+∣∁p∣≡n∸∣p∣ (inside  ∷ p) = ∣∁p∣≡n∸∣p∣ p
+∣∁p∣≡n∸∣p∣ (outside ∷ p) = begin
+  suc ∣ ∁ p ∣     ≡⟨ cong suc (∣∁p∣≡n∸∣p∣ p) ⟩
+  suc (_ ∸ ∣ p ∣) ≡⟨ sym (ℕₚ.+-∸-assoc 1 (∣p∣≤n p)) ⟩
+  suc  _ ∸ ∣ p ∣  ∎
+  where open ≡-Reasoning
 
 ------------------------------------------------------------------------
 -- _∩_
@@ -424,9 +448,8 @@ module _ (n : ℕ) where
 
   ∩-isCommutativeMonoid : IsCommutativeMonoid _∩_ ⊤
   ∩-isCommutativeMonoid = record
-    { isSemigroup = ∩-isSemigroup
-    ; identityˡ   = ∩-identityˡ
-    ; comm        = ∩-comm
+    { isMonoid = ∩-isMonoid
+    ; comm     = ∩-comm
     }
 
   ∩-commutativeMonoid : CommutativeMonoid _ _
@@ -465,6 +488,17 @@ x∈p∩q⁻ (s      ∷ p) (t      ∷ q) (there x∈p∩q) =
 
 ∩⇔× : ∀ {n} {p q : Subset n} {x} → x ∈ p ∩ q ⇔ (x ∈ p × x ∈ q)
 ∩⇔× = equivalence (x∈p∩q⁻ _ _) x∈p∩q⁺
+
+module _ {n} (p q : Subset n) where
+
+  ∣p∩q∣≤∣p∣ : ∣ p ∩ q ∣ ≤ ∣ p ∣
+  ∣p∩q∣≤∣p∣ = p⊆q⇒∣p∣≤∣q∣ (p∩q⊆p p q)
+
+  ∣p∩q∣≤∣q∣ : ∣ p ∩ q ∣ ≤ ∣ q ∣
+  ∣p∩q∣≤∣q∣ = p⊆q⇒∣p∣≤∣q∣ (p∩q⊆q p q)
+
+  ∣p∩q∣≤∣p∣⊓∣q∣ : ∣ p ∩ q ∣ ≤ ∣ p ∣ ⊓ ∣ q ∣
+  ∣p∩q∣≤∣p∣⊓∣q∣ = ℕₚ.⊓-pres-m≤ ∣p∩q∣≤∣p∣ ∣p∩q∣≤∣q∣
 
 ------------------------------------------------------------------------
 -- _∪_
@@ -594,9 +628,8 @@ module _ (n : ℕ) where
 
   ∪-isCommutativeMonoid : IsCommutativeMonoid _∪_ ⊥
   ∪-isCommutativeMonoid = record
-    { isSemigroup = ∪-isSemigroup
-    ; identityˡ   = ∪-identityˡ
-    ; comm        = ∪-comm
+    { isMonoid = ∪-isMonoid
+    ; comm     = ∪-comm
     }
 
   ∪-commutativeMonoid : CommutativeMonoid _ _
@@ -694,6 +727,17 @@ x∈p∪q⁺ (inj₂ x∈q) = q⊆p∪q _ _ x∈q
 ∪⇔⊎ : ∀ {n} {p q : Subset n} {x} → x ∈ p ∪ q ⇔ (x ∈ p ⊎ x ∈ q)
 ∪⇔⊎ = equivalence (x∈p∪q⁻ _ _) x∈p∪q⁺
 
+module _ {n} (p q : Subset n) where
+
+  ∣p∣≤∣p∪q∣ : ∣ p ∣ ≤ ∣ p ∪ q ∣
+  ∣p∣≤∣p∪q∣ = p⊆q⇒∣p∣≤∣q∣ (p⊆p∪q {p = p} q)
+
+  ∣q∣≤∣p∪q∣ : ∣ q ∣ ≤ ∣ p ∪ q ∣
+  ∣q∣≤∣p∪q∣ = p⊆q⇒∣p∣≤∣q∣ (q⊆p∪q p q)
+
+  ∣p∣⊔∣q∣≤∣p∪q∣ : ∣ p ∣ ⊔ ∣ q ∣ ≤ ∣ p ∪ q ∣
+  ∣p∣⊔∣q∣≤∣p∪q∣ = ℕₚ.⊔-pres-≤m ∣p∣≤∣p∪q∣ ∣q∣≤∣p∪q∣
+
 ------------------------------------------------------------------------
 -- Lift
 
@@ -727,4 +771,3 @@ anySubset? {n = zero}  P? = Dec.map ∃-Subset-[]-⇔ (P? [])
 anySubset? {n = suc n} P? =
   Dec.map ∃-Subset-∷-⇔ (anySubset? (P? ∘ ( inside ∷_)) ⊎-dec
                         anySubset? (P? ∘ (outside ∷_)))
-

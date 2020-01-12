@@ -13,13 +13,13 @@ module Data.List.Base where
 
 open import Data.Bool.Base as Bool
   using (Bool; false; true; not; _∧_; _∨_; if_then_else_)
-open import Data.Fin using (Fin; zero; suc)
-open import Data.Maybe.Base as Maybe using (Maybe; nothing; just)
+open import Data.Fin.Base using (Fin; zero; suc)
+open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; maybe′)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _+_; _*_ ; _≤_ ; s≤s)
 open import Data.Product as Prod using (_×_; _,_)
-open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Data.These.Base as These using (These; this; that; these)
-open import Function using (id; _∘_ ; _∘′_; const; flip)
+open import Function.Base using (id; _∘_ ; _∘′_; const; flip)
 open import Level using (Level)
 open import Relation.Nullary using (does)
 open import Relation.Unary using (Pred; Decidable)
@@ -326,10 +326,21 @@ _ʳ++_ = flip reverseAcc
 
 -- Snoc.
 
-infixl 5 _∷ʳ_
+infixl 6 _∷ʳ_
 
 _∷ʳ_ : List A → A → List A
 xs ∷ʳ x = xs ++ [ x ]
+
+-- Conditional versions of cons and snoc
+
+infixr 5 _?∷_
+_?∷_ : Maybe A → List A → List A
+_?∷_ = maybe′ _∷_ id
+
+infixl 6 _∷ʳ?_
+_∷ʳ?_ : List A → Maybe A → List A
+xs ∷ʳ? x = maybe′ (xs ∷ʳ_) xs x
+
 
 -- Backwards initialisation
 

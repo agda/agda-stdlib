@@ -174,6 +174,11 @@ Decidable _∼_ = ∀ x y → Dec (x ∼ y)
 WeaklyDecidable : REL A B ℓ → Set _
 WeaklyDecidable _∼_ = ∀ x y → Maybe (x ∼ y)
 
+-- Propositional equality is decidable for the type.
+
+DecidableEquality : (A : Set a) → Set _
+DecidableEquality A = Decidable {A = A} _≡_
+
 -- Irrelevancy - all proofs that a given pair of elements are related
 -- are indistinguishable.
 
