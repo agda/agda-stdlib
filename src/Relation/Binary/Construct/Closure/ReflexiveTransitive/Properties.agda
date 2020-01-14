@@ -108,10 +108,17 @@ module _ {i t} {I : Set i} (T : Rel I t) where
 -- Preorder reasoning for Star
 
 module StarReasoning {i t} {I : Set i} (T : Rel I t) where
-  open PreR (preorder T) public
-    hiding (_≈⟨_⟩_) renaming (_∼⟨_⟩_ to _⟶⋆⟨_⟩_)
+  private module Base = PreR (preorder T)
 
-  infixr 2 _⟶⟨_⟩_
+  open Base public
+    hiding (step-≈; step-∼)
 
-  _⟶⟨_⟩_ : ∀ x {y z} → T x y → y IsRelatedTo z → x IsRelatedTo z
-  x ⟶⟨ x⟶y ⟩ y⟶⋆z = x ⟶⋆⟨ x⟶y ◅ ε ⟩ y⟶⋆z
+  infixr 2 step-⟶ step-⟶⋆
+
+  step-⟶⋆ = Base.step-∼
+
+  step-⟶ : ∀ x {y z} → y IsRelatedTo z → T x y → x IsRelatedTo z
+  step-⟶ x y⟶⋆z x⟶y = step-⟶⋆ x y⟶⋆z (x⟶y ◅ ε)
+
+  syntax step-⟶⋆ x y⟶⋆z x⟶⋆y = x ⟶⋆⟨ x⟶⋆y ⟩ y⟶⋆z
+  syntax step-⟶  x y⟶⋆z x⟶y  = x ⟶⟨ x⟶y ⟩ y⟶⋆z

@@ -13,7 +13,7 @@ open import Data.List.Base as List
 open import Data.List.NonEmpty as List⁺
 open import Data.Nat.Base
 open import Data.Product
-open import Data.String.Base
+open import Data.String.Base hiding (parens; _<+>_)
 open import Data.Vec.Base as Vec
 open import Function.Base
 
