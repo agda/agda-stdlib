@@ -18,12 +18,13 @@ open import Relation.Nullary.Decidable using (map′)
 
 private
   variable
-    a b c d e : Level
+    a b c d e f : Level
     A : Set a
     B : Set b
     C : Set c
     D : Set d
     E : Set e
+    F : Set f
 
 inj₁-injective : ∀ {x y} → (A ⊎ B ∋ inj₁ x) ≡ inj₁ y → x ≡ y
 inj₁-injective refl = refl
@@ -43,14 +44,14 @@ module _ (dec₁ : Decidable {A = A} {B = A} _≡_)
 swap-involutive : swap {A = A} {B = B} ∘ swap ≗ id
 swap-involutive = [ (λ _ → refl) , (λ _ → refl) ]
 
-[,]-map-commute : ∀ {f : A → C} {g : B → D}
-                  {f′ : C → E} {g′ : D → E} x →
-                  [ f′ , g′ ]′ ((map f g) x) ≡ [ f′ ∘ f , g′ ∘ g ]′ x
+[,]-map-commute : {f : A → B}  {g : C → D}
+                  {f′ : B → E} {g′ : D → E} →
+                  [ f′ , g′ ]′ ∘ (map f g) ≗ [ f′ ∘ f , g′ ∘ g ]′
 [,]-map-commute (inj₁ _) = refl
 [,]-map-commute (inj₂ _) = refl
 
-map-commute : ∀ {f : A → C} {g : B → D}
-             {f′ : C → E} {g′ : D → E} x →
-             ((map f′ g′) ∘ (map f g)) x ≡ map (f′ ∘ f) (g′ ∘ g) x
+map-commute : {f : A → B}  {g : C → D}
+              {f′ : B → E} {g′ : D → F} →
+              ((map f′ g′) ∘ (map f g)) ≗ map (f′ ∘ f) (g′ ∘ g)
 map-commute (inj₁ _) = refl
 map-commute (inj₂ _) = refl
