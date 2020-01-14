@@ -3,6 +3,7 @@
 --
 -- Unsigned divisibility
 ------------------------------------------------------------------------
+
 -- For signed divisibility see `Data.Integer.Divisibility.Signed`
 
 {-# OPTIONS --without-K --safe #-}

@@ -159,7 +159,7 @@ normalize-coprime : ∀ {n d-1} .(c : Coprime n (suc d-1)) →
 normalize-coprime {n} {d-1} c = begin
   normalize n d              ≡⟨⟩
   mkℚ+ (n ℕ./ g) (d ℕ./ g) _ ≡⟨ mkℚ+-cong n/g≢0 d/1≢0 {c₂ = c₂} (ℕ./-congʳ {n≢0 = g≢0} g≡1) (ℕ./-congʳ {n≢0 = g≢0} g≡1) ⟩
-  mkℚ+ (n ℕ./ 1) (d ℕ./ 1) _ ≡⟨ mkℚ+-cong d/1≢0 _ (ℕ.n/1≡n n) (ℕ.n/1≡n d) ⟩
+  mkℚ+ (n ℕ./ 1) (d ℕ./ 1) _ ≡⟨ mkℚ+-cong d/1≢0 _ {c₂ = c} (ℕ.n/1≡n n) (ℕ.n/1≡n d) ⟩
   mkℚ+ n d _                 ≡⟨⟩
   mkℚ (+ n) d-1 _            ∎
   where
@@ -439,7 +439,7 @@ module ≤-Reasoning where
     <-≤-trans
     ≤-<-trans
     public
-    hiding (_≈⟨_⟩_; _≈˘⟨_⟩_)
+    hiding (step-≈; step-≈˘)
 
 ------------------------------------------------------------------------
 -- Properties of _/_
