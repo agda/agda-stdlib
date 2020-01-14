@@ -86,8 +86,8 @@ module ⊆-Reasoning where
   private
     module PreOrder {a} {A : Set a} = PreorderReasoning (⊆-preorder A)
 
-    open PreOrder
-      hiding (step-≈; step-≈˘; step-∼)
+  open PreOrder public
+    hiding (step-≈; step-≈˘; step-∼)
 
   infixr 2 step-∼ step-⊆
   infix  1 step-∈
