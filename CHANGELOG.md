@@ -70,15 +70,18 @@ Non-backwards compatible changes
 * One drawback is that hiding and renaming the combinators no longer works as before,
   as `_≡⟨_⟩_` etc. are now syntax instead of names. For example instead of:
   ```agda
-  open SetoidReasoning hiding (_≈⟨_⟩_) renaming (_≡⟨_⟩_ to _↭⟨_⟩_)
+  open SetoidReasoning setoid public
+          hiding (_≈⟨_⟩_) renaming (_≡⟨_⟩_ to _↭⟨_⟩_)
   ```
   one must now write :
   ```agda
-  open SetoidReasoning hiding (step-≈; step-≡)
+  private
+    module Base = SetoidReasoning setoid
+  open Base public hiding (step-≈; step-≡)
 
   infixr 2 step-↭
-  step-↭ = step-≡
-  syntax step-↭ x y≡z x≡y = x ≡⟨ x≡y ⟩ y≡z
+  step-↭ = Base.step-≡
+  syntax step-↭ x y≡z x≡y = x ↭⟨ x≡y ⟩ y≡z
   ```
   This is more verbose than before, but we hope that the advantages outlined above
   outweigh this minor inconvenience. (As an aside, it is hoped that at some point Agda might
