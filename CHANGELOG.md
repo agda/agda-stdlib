@@ -586,6 +586,16 @@ Other minor additions
   *-1-commutativeMonoid   : CommutativeMonoid 0ℓ 0ℓ
   ```
 
+* Added new proofs to `Data.Rational.Unnormalised.Properties`:
+  ```agda
+  +-inverseˡ  : LeftInverse _≃_ 0ℚᵘ -_ _+_
+  +-inverseʳ  : RightInverse _≃_ 0ℚᵘ -_ _+_
+  +-inverse   : Inverse _≃_ 0ℚᵘ -_ _+_
+  -‿cong      : Congruent₁ _≃_ (-_)
+  +-0-isGroup : IsGroup _≃_ _+_ 0ℚᵘ (-_)
+  +-0-group   : Group 0ℓ 0ℓ
+  ```
+
 * Added convenience functions to `Data.String.Base`:
   ```agda
   parens : String → String
@@ -637,3 +647,4 @@ Version 2.6.1 changes
 * Added new definitions in `Relation.Binary.Core`:
   ```agda
   DecidableEquality A = Decidable {A = A} _≡_
+  ```
