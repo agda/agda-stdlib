@@ -661,6 +661,9 @@ m<m+n : ∀ m {n} → n > 0 → m < m + n
 m<m+n zero    n>0 = n>0
 m<m+n (suc m) n>0 = s≤s (m<m+n m n>0)
 
+m<n+m : ∀ m {n} → n > 0 → m < n + m
+m<n+m m {n} n>0 rewrite +-comm n m = m<m+n m n>0
+
 m+n≮n : ∀ m n → m + n ≮ n
 m+n≮n zero    n                   = n≮n n
 m+n≮n (suc m) (suc n) (s≤s m+n<n) = m+n≮n m (suc n) (≤-step m+n<n)

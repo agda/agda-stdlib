@@ -11,6 +11,7 @@
 *.tix
 *.vim
 dist
+dist-newstyle
 Everything.agda
 EverythingSafe.agda
 EverythingSafeGuardedness.agda

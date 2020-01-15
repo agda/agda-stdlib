@@ -20,6 +20,10 @@ Bug-fixes
 * Changed the type of `max≈v⁺` in `Data.List.Extrema`; it was mistakenly talking
   about `min` rather than `max`.
 
+* The module `⊆-Reasoning` in `Data.List.Relation.Binary.BagAndSetEquality` now exports the correct set of combinators.
+
+* The record `DecStrictPartialOrder` now correctly re-exports the contents of its `IsDecStrictPartialOrder` field.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -70,15 +74,18 @@ Non-backwards compatible changes
 * One drawback is that hiding and renaming the combinators no longer works as before,
   as `_≡⟨_⟩_` etc. are now syntax instead of names. For example instead of:
   ```agda
-  open SetoidReasoning hiding (_≈⟨_⟩_) renaming (_≡⟨_⟩_ to _↭⟨_⟩_)
+  open SetoidReasoning setoid public
+          hiding (_≈⟨_⟩_) renaming (_≡⟨_⟩_ to _↭⟨_⟩_)
   ```
   one must now write :
   ```agda
-  open SetoidReasoning hiding (step-≈; step-≡)
+  private
+    module Base = SetoidReasoning setoid
+  open Base public hiding (step-≈; step-≡)
 
   infixr 2 step-↭
-  step-↭ = step-≡
-  syntax step-↭ x y≡z x≡y = x ≡⟨ x≡y ⟩ y≡z
+  step-↭ = Base.step-≡
+  syntax step-↭ x y≡z x≡y = x ↭⟨ x≡y ⟩ y≡z
   ```
   This is more verbose than before, but we hope that the advantages outlined above
   outweigh this minor inconvenience. (As an aside, it is hoped that at some point Agda might
@@ -500,13 +507,37 @@ Other minor additions
   AllPairs-resp-Pointwise : R Respects₂ _∼_ → (AllPairs R) Respects (Pointwise _∼_)
   ```
 
-* Added new combinators and functions to `Data.List.Relation.Binary.Permutation.Setoid.PermutationReasoning`:
+* Added new functions to `Data.List.Relation.Binary.Permutation.Setoid`:
+  ```agda
+  ↭-prep : xs ↭ ys → x ∷ xs ↭ x ∷ ys
+  ↭-swap : xs ↭ ys → x ∷ y ∷ xs ↭ y ∷ x ∷ ys
+
+  steps  : xs ↭ ys → ℕ
+  ```
+
+* Added new combinators to `Data.List.Relation.Binary.Permutation.Setoid.PermutationReasoning`:
   ```agda
   _≋⟨_⟩_  : x ≋ y → y IsRelatedTo z → x IsRelatedTo z
   _≋˘⟨_⟩_ : y ≋ x → y IsRelatedTo z → x IsRelatedTo z
+  ```
 
-  ↭-prep : xs ↭ ys → x ∷ xs ↭ x ∷ ys
-  ↭-swap : xs ↭ ys → x ∷ y ∷ xs ↭ y ∷ x ∷ ys
+* Added new functions to ` Data.List.Relation.Binary.Permutation.Setoid.Properties`:
+  ```agda
+  0<steps              : (xs↭ys : xs ↭ ys) → 0 < steps xs↭ys
+  steps-respˡ          : (ys≋xs : ys ≋ xs) (ys↭zs : ys ↭ zs) → steps (↭-respˡ-≋ ys≋xs ys↭zs) ≡ steps ys↭zs
+  steps-respʳ          : (xs≋ys : xs ≋ ys) (zs↭xs : zs ↭ xs) → steps (↭-respʳ-≋ xs≋ys zs↭xs) ≡ steps zs↭xs
+
+  split                : xs ↭ as ++ [ v ] ++ bs → ∃₂ λ ps qs → xs ≋ ps ++ [ v ] ++ qs
+  dropMiddle           : ws ++ vs ++ ys ↭ xs ++ vs ++ zs → ws ++ ys ↭ xs ++ zs
+  dropMiddleElement    : ws ++ [ v ] ++ ys ↭ xs ++ [ v ] ++ zs → ws ++ ys ↭ xs ++ zs
+  dropMiddleElement-≋  : ws ++ [ v ] ++ ys ≋ xs ++ [ v ] ++ zs → ws ++ ys ↭ xs ++ zs
+
+  filter⁺              : xs ↭ ys → filter P? xs ↭ filter P? ys
+  ```
+
+* Added new proof to `Data.Nat.Properties`:
+  ```agda
+  m<n+m : n > 0 → m < n + m
   ```
 
 * Added new proofs to `Data.Nat.Properties`:
@@ -594,6 +625,16 @@ Other minor additions
   *-1-commutativeMonoid   : CommutativeMonoid 0ℓ 0ℓ
   ```
 
+* Added new proofs to `Data.Rational.Unnormalised.Properties`:
+  ```agda
+  +-inverseˡ  : LeftInverse _≃_ 0ℚᵘ -_ _+_
+  +-inverseʳ  : RightInverse _≃_ 0ℚᵘ -_ _+_
+  +-inverse   : Inverse _≃_ 0ℚᵘ -_ _+_
+  -‿cong      : Congruent₁ _≃_ (-_)
+  +-0-isGroup : IsGroup _≃_ _+_ 0ℚᵘ (-_)
+  +-0-group   : Group 0ℓ 0ℓ
+  ```
+
 * Added convenience functions to `Data.String.Base`:
   ```agda
   parens : String → String
@@ -645,3 +686,4 @@ Version 2.6.1 changes
 * Added new definitions in `Relation.Binary.Core`:
   ```agda
   DecidableEquality A = Decidable {A = A} _≡_
+  ```

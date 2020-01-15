@@ -56,6 +56,8 @@ install:
     mkdir $HOME/.cabsnap;
     cp -a $HOME/.ghc $HOME/.cabsnap/ghc;
     cp -a $HOME/.cabal/lib $HOME/.cabal/share $HOME/.cabal/bin $HOME/installplan.txt $HOME/.cabsnap/;
+  # returning to stdlib directory
+  - cd ../agda-stdlib
   # installing fix-agda-whitespace
   - git clone https://github.com/agda/fix-whitespace --depth=1
   - cd fix-whitespace
