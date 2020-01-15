@@ -189,6 +189,51 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       }
 
 
+  record BiEquivalence : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      f     : A → B
+      g₁    : B → A
+      g₂    : B → A
+      cong₁ : f Preserves _≈₁_ ⟶ _≈₂_
+      cong₂ : g₁ Preserves _≈₂_ ⟶ _≈₁_
+      cong₃ : g₂ Preserves _≈₂_ ⟶ _≈₁_
+
+
+  record BiInverse : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      f         : A → B
+      g₁        : B → A
+      g₂        : B → A
+      cong₁     : f Preserves _≈₁_ ⟶ _≈₂_
+      cong₂     : g₁ Preserves _≈₂_ ⟶ _≈₁_
+      cong₃     : g₂ Preserves _≈₂_ ⟶ _≈₁_
+      inverseˡ  : Inverseˡ f g₁
+      inverseʳ  : Inverseʳ f g₂
+
+    isCongruent : IsCongruent f
+    isCongruent = record
+      { cong           = cong₁
+      ; isEquivalence₁ = isEquivalence From
+      ; isEquivalence₂ = isEquivalence To
+      }
+
+    isBiInverse : IsBiInverse f g₁ g₂
+    isBiInverse = record
+      { isCongruent = isCongruent
+      ; cong₂       = cong₂
+      ; inverseˡ    = inverseˡ
+      ; cong₃       = cong₃
+      ; inverseʳ    = inverseʳ
+      }
+
+    biEquivalence : BiEquivalence
+    biEquivalence = record
+      { cong₁ = cong₁
+      ; cong₂ = cong₂
+      ; cong₃ = cong₃
+      }
+
+
   record Inverse : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       f         : A → B

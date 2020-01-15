@@ -100,6 +100,19 @@ record IsRightInverse (f : A → B) (g : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ 
     renaming (cong to cong₁)
 
 
+record IsBiInverse
+  (f : A → B) (g₁ : B → A) (g₂ : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+  field
+    isCongruent : IsCongruent f
+    cong₂       : Congruent _≈₂_ _≈₁_ g₁
+    inverseˡ    : Inverseˡ _≈₁_ _≈₂_ f g₁
+    cong₃       : Congruent _≈₂_ _≈₁_ g₂
+    inverseʳ    : Inverseʳ _≈₁_ _≈₂_ f g₂
+
+  open IsCongruent isCongruent public
+    renaming (cong to cong₁)
+
+
 record IsInverse (f : A → B) (g : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   field
     isLeftInverse : IsLeftInverse f g
