@@ -6,7 +6,8 @@ The library has been tested using Agda version 2.6.0.1.
 Highlights
 ----------
 
-* New warnings when importing deprecated modules.
+* New warnings when importing deprecated modules. These can be disabled locally
+  by adding the pragma `{-# OPTIONS --warn=noUserWarning #-}` to the top of a module.
 
 Bug-fixes
 ---------
