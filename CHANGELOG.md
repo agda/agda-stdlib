@@ -185,6 +185,22 @@ Non-backwards compatible changes
 * In `Codata.Colist`, replaced all the uses of `Data.BoundedVec` with the more
   up to date `Data.Vec.Bounded`.
 
+Deprecated modules
+------------------
+
+The following modules have been renamed as part of a drive to improve
+consistency across the library. The deprecated modules still exist and
+therefore all existing code should still work, however use of the new names
+is encouraged. Automated warnings are attached to deprecated modules to
+discourage their use.
+
+* In `Algebra`:
+  ```
+  Algebra.FunctionProperties.Consequences.Core           ↦ Algebra.Consequences.Base
+  Algebra.FunctionProperties.Consequences.Propositional  ↦ Algebra.Consequences.Propositional
+  Algebra.FunctionProperties.Consequences                ↦ Algebra.Conseqeunces.Setoid
+  ```
+
 Deprecated names
 ----------------
 

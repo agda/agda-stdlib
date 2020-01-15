@@ -14,7 +14,7 @@ module Data.Nat.Properties where
 open import Axiom.UniquenessOfIdentityProofs
 open import Algebra.Bundles
 open import Algebra.Morphism
-open import Algebra.FunctionProperties.Consequences.Propositional
+open import Algebra.Consequences.Propositional
 open import Data.Bool.Base using (Bool; false; true; T)
 open import Data.Bool.Properties using (T?)
 open import Data.Empty

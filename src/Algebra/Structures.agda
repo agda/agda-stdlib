@@ -22,7 +22,7 @@ module Algebra.Structures
 
 open import Algebra.Core
 open import Algebra.Definitions _≈_
-import Algebra.FunctionProperties.Consequences as Consequences
+import Algebra.Consequences.Setoid as Consequences
 open import Data.Product using (_,_; proj₁; proj₂)
 open import Level using (_⊔_)
 
