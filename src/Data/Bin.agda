@@ -11,6 +11,11 @@
 
 module Data.Bin where
 
+{-# WARNING_ON_IMPORT
+"Data.Bin was deprecated in v1.2.
+Use Data.Nat.Binary instead."
+#-}
+
 open import Data.Nat as Nat
   using (ℕ; zero; z≤n; s≤s) renaming (suc to 1+_)
 open import Data.Digit  using (fromDigits; toDigits; Bit)
