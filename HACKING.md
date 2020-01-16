@@ -58,7 +58,7 @@ How to make changes
    thrown up until the tests are passed.
 
    Your proposed changes MUST pass these tests. Note that the tests
-   require the use of a tool called `fix-agda-whitespace`. See the
+   require the use of a tool called `fix-whitespace`. See the
    instructions at the end of this file for how to install this.
 
    If you are creating new modules, please make sure you are having a
@@ -110,17 +110,17 @@ How to make changes
 How to enforce whitespace policies
 ----------------------------------
 
-### Installing fix-agda-whitespace
+### Installing fix-whitespace
 
-This tool is kept in the main agda repository. It can be installed by
+This tool is kept in the main agda organization. It can be installed by
 following these instructions:
    ```
-   git clone https://github.com/agda/agda
-   cd agda/src/fix-agda-whitespace
+   git clone https://github.com/agda/fix-whitespace --depth 1
+   cd fix-whitespace/
    cabal install
    ```
 
-### Adding fix-agda-whitespace as a pre-commit hook
+### Adding fix-whitespace as a pre-commit hook
 
 You can add the following code to the file `.git/hooks/pre-commit` to
 get git to run fix-agda-whitespace before each `git commit` and ensure
@@ -129,7 +129,7 @@ you are never committing anything with a whitespace violation:
    ```
    #!/bin/sh
 
-   fix-agda-whitespace --check
+   fix-whitespace --check
    ```
 
 Type-checking the README directory
