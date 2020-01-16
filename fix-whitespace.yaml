@@ -4,7 +4,6 @@ included-dirs:
 
 included-files:
   - "**.agda"
-  - "**.md"
 
 excluded-files:
   - "README/Text/Tabular.agda"
