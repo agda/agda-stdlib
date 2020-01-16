@@ -123,7 +123,7 @@ following these instructions:
 ### Adding fix-whitespace as a pre-commit hook
 
 You can add the following code to the file `.git/hooks/pre-commit` to
-get git to run fix-agda-whitespace before each `git commit` and ensure
+get git to run fix-whitespace before each `git commit` and ensure
 you are never committing anything with a whitespace violation:
 
    ```
