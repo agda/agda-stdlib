@@ -318,6 +318,12 @@ Other major additions
 Other minor additions
 ---------------------
 
+* Added new proofs to `Data.Sum.Properties`:
+  ```agda
+  [,]-map-commute : [ f′ , g′ ]′ ∘ (map f g) ≗ [ f′ ∘ f , g′ ∘ g ]′
+  map-commute     : ((map f′ g′) ∘ (map f g)) ≗ map (f′ ∘ f) (g′ ∘ g)
+  ```
+
 * Added new definition to `Algebra.Definitions`:
   ```agda
   Interchangable _∘_ _∙_ = ∀ w x y z → ((w ∙ x) ∘ (y ∙ z)) ≈ ((w ∘ y) ∙ (x ∘ z))
