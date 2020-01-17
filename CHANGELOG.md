@@ -198,6 +198,8 @@ is encouraged. Although not anticipated any time soon, they may eventually
 be removed in some future release of the library. Automated warnings are
 attached to all deprecated names to discourage their use.
 
+* `Algebra.Solver.Monoid` and `Data.List.Solver`
+
 * In `Data.Fin`:
   ```agda
   fromℕ≤  ↦ fromℕ<
