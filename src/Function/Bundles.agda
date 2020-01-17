@@ -210,8 +210,8 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       inverseˡ  : Inverseˡ f g₁
       inverseʳ  : Inverseʳ f g₂
 
-    isCongruent : IsCongruent f
-    isCongruent = record
+    f-isCongruent : IsCongruent f
+    f-isCongruent = record
       { cong           = cong₁
       ; isEquivalence₁ = isEquivalence From
       ; isEquivalence₂ = isEquivalence To
@@ -219,11 +219,11 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
 
     isBiInverse : IsBiInverse f g₁ g₂
     isBiInverse = record
-      { isCongruent = isCongruent
-      ; cong₂       = cong₂
-      ; inverseˡ    = inverseˡ
-      ; cong₃       = cong₃
-      ; inverseʳ    = inverseʳ
+      { f-isCongruent = f-isCongruent
+      ; cong₂         = cong₂
+      ; inverseˡ      = inverseˡ
+      ; cong₃         = cong₃
+      ; inverseʳ      = inverseʳ
       }
 
     biEquivalence : BiEquivalence

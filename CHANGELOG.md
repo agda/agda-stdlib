@@ -632,6 +632,13 @@ Other minor additions
   unwords : List String → String
   _<+>_ : String → String → String -- space-introducing append
   ```
+* Added new records IsBiInverse to `Function.Structures` and BiInverse
+  to `Function.Bundles`:
+  ```agda
+  record IsBiInverse
+    (f : A → B) (g₁ : B → A) (g₂ : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
+  record BiInverse : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
+  ```
 
 Version 2.6.1 changes
 =====================
@@ -675,4 +682,4 @@ Version 2.6.1 changes
 * Added new definitions in `Relation.Binary.Core`:
   ```agda
   DecidableEquality A = Decidable {A = A} _≡_
-  ```
+  ```  ```
