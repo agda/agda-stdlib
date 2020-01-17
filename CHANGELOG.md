@@ -682,4 +682,4 @@ Version 2.6.1 changes
 * Added new definitions in `Relation.Binary.Core`:
   ```agda
   DecidableEquality A = Decidable {A = A} _≡_
-  ```  ```
+  ```
