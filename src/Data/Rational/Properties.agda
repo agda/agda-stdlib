@@ -8,6 +8,7 @@
 
 module Data.Rational.Properties where
 
+open import Algebra.Consequences.Propositional
 open import Algebra.Morphism
 open import Algebra.Bundles
 import Algebra.Morphism.MonoidMonomorphism as MonoidMonomorphisms
@@ -45,7 +46,6 @@ open import Relation.Nullary.Product using (_×-dec_)
 
 open import Algebra.Definitions {A = ℚ} _≡_
 open import Algebra.Structures {A = ℚ} _≡_
-open import Algebra.FunctionProperties.Consequences.Propositional
 
 private
   infix 4 _≢0
