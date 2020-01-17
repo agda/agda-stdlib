@@ -9,6 +9,9 @@ Highlights
 * New warnings when importing deprecated modules. These can be disabled locally
   by adding the pragma `{-# OPTIONS --warn=noUserWarning #-}` to the top of a module.
 
+* New monoid and ring tactics that are capable of solving equalities
+  without having to restate the equation.
+
 Bug-fixes
 ---------
 
@@ -196,6 +199,8 @@ is encouraged. Although not anticipated any time soon, they may eventually
 be removed in some future release of the library. Automated warnings are
 attached to all deprecated names to discourage their use.
 
+* `Algebra.Solver.Monoid` and `Data.List.Solver`
+
 * In `Data.Fin`:
   ```agda
   fromℕ≤  ↦ fromℕ<
@@ -241,6 +246,8 @@ Other major additions
   Data.Tree.Binary.Relation.Unary.All.Properties
   Data.Tree.Rose
   Data.Tree.Rose.Properties
+
+  Tactic.MonoidSolver
 
   Text.Pretty.Core
   Text.Pretty
@@ -318,6 +325,12 @@ Other major additions
 
 Other minor additions
 ---------------------
+
+* Added new proofs to `Data.Sum.Properties`:
+  ```agda
+  [,]-map-commute : [ f′ , g′ ]′ ∘ (map f g) ≗ [ f′ ∘ f , g′ ∘ g ]′
+  map-commute     : ((map f′ g′) ∘ (map f g)) ≗ map (f′ ∘ f) (g′ ∘ g)
+  ```
 
 * Added new definition to `Algebra.Definitions`:
   ```agda
