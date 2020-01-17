@@ -4,26 +4,28 @@
 -- An explanation about how to use the solver in Tactic.MonoidSolver.
 ------------------------------------------------------------------------
 
-module README.Tactic.MonoidSolver where
+open import Algebra
+
+module README.Tactic.MonoidSolver {a ℓ} (M : Monoid a ℓ) where
+
+open Monoid M
 
 open import Data.Nat as Nat using (ℕ; suc; zero; _+_)
 open import Data.Nat.Properties as Properties using (+-0-monoid; +-comm)
-open import Relation.Binary.PropositionalEquality
-open import Relation.Binary.Reasoning.Setoid (setoid ℕ)
+open import Relation.Binary.Reasoning.Setoid setoid
 
-open import Tactic.MonoidSolver
+open import Tactic.MonoidSolver using (solve; solve-macro)
 
--- Unlike the standard monoid solver, the reflective monoid solver is
--- capable to of solving equations without having to specify the
--- equation itself in the proof.
+-- The monoid solver is capable to of solving equations without having
+-- to specify the equation itself in the proof.
 
-example₁ : ∀ x y z → (x + y) + z ≡ x + (y + z) + 0
-example₁ x y z = solve +-0-monoid
+example₁ : ∀ x y z → (x ∙ y) ∙ z ≈ x ∙ (y ∙ z) ∙ ε
+example₁ x y z = solve M
 
 -- The solver can also be used in equational reasoning.
 
-example₂ : ∀ x y z → z + (x + y) ≡ x + (y + z) + 0
-example₂ x y z = begin
-  z + (x + y)      ≈⟨ +-comm z (x + y) ⟩
-  (x + y) + z      ≈⟨ solve +-0-monoid ⟩
-  x + (y + z) + 0  ∎
+example₂ : ∀ w x y z → w ≈ x → (w ∙ y) ∙ z ≈ x ∙ (y ∙ z) ∙ ε
+example₂ w x y z w≈x = begin
+  (w ∙ y) ∙ z      ≈⟨ ∙-congʳ (∙-congʳ w≈x) ⟩
+  (x ∙ y) ∙ z      ≈⟨ solve M ⟩
+  x ∙ (y ∙ z) ∙ ε  ∎

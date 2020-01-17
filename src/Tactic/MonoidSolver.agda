@@ -199,10 +199,10 @@ record MonoidNames : Set where
 findMonoidNames : Term → TC MonoidNames
 findMonoidNames mon = do
   ∙-name ← normalise (quote Monoid._∙_ ⟨ def ⟩ 2 ⋯⟅∷⟆ mon ⟨∷⟩ [])
-  ε-name ← normalise (quote Monoid.ε ⟨ def ⟩ 2 ⋯⟅∷⟆ mon ⟨∷⟩ [])
+  ε-name ← normalise (quote Monoid.ε   ⟨ def ⟩ 2 ⋯⟅∷⟆ mon ⟨∷⟩ [])
   returnTC record
     { is-∙ = buildMatcher (quote Monoid._∙_) (getName ∙-name)
-    ; is-ε = buildMatcher (quote Monoid.ε) (getName ε-name)
+    ; is-ε = buildMatcher (quote Monoid.ε)   (getName ε-name)
     }
   where
 
@@ -259,12 +259,15 @@ constructSoln mon names lhs rhs =
     (quote homo ⟨ def ⟩ 2 ⋯⟅∷⟆ mon ⟨∷⟩ E′ names rhs ⟨∷⟩ []) ⟨∷⟩
     []
 
+solve-macro : Term → Term → TC _
+solve-macro mon = λ hole → do
+  hole′ ← inferType hole >>= normalise
+  names ← findMonoidNames mon
+  just (lhs , rhs) ← returnTC (getArgs hole′)
+    where nothing → typeError (termErr hole′ ∷ [])
+  let soln = constructSoln mon names lhs rhs
+  unify hole soln
+
 macro
   solve : Term → Term → TC _
-  solve mon = λ hole → do
-    hole′ ← inferType hole >>= normalise
-    names ← findMonoidNames mon
-    just (lhs , rhs) ← returnTC (getArgs hole′)
-      where nothing → typeError (termErr hole′ ∷ [])
-    let soln = constructSoln mon names lhs rhs
-    unify hole soln
+  solve = solve-macro
