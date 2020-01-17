@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Automatic solvers for equations over lists
+-- This module is DEPRECATED.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
