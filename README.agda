@@ -87,6 +87,9 @@ import README.Data
 -- • Strict
 --     Provides access to the builtins relating to strictness.
 
+-- • Tactic
+--     Tactics for automatic proof generation
+
 ------------------------------------------------------------------------
 -- A selection of useful library modules
 ------------------------------------------------------------------------
@@ -306,6 +309,9 @@ import README.Text.Tabular
 
 import README.Text.Tree
 
+-- Explaining how to use the automatic solvers
+
+import README.Tactic.MonoidSolver
 
 ------------------------------------------------------------------------
 -- Core modules
