@@ -130,6 +130,12 @@ Non-backwards compatible changes
 
 * Moved module `README.Text` to `README.Text.Printf`.
 
+* In `Codata.Cowriter` and `Codata.Musical.Colist` the functions `splitAt`, `take`
+  and `take-⊑` have been changed to use bounded vectors as defined in 
+  `Data.Vec.Bounded` instead of the deprecated `Data.BoundedVec`. The old proofs 
+  still exist under the names `splitAt′`, `take′` and `take′-⊑` but have been 
+  deprecated.
+
 * The following record definitions in `Algebra.Structures` have been changed.
 
   - `IsCommutativeMonoid`
