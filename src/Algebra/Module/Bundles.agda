@@ -17,6 +17,7 @@ import Algebra.FunctionProperties.RightAction as RFP
 open import Function.Base
 open import Level
 open import Relation.Binary
+import Relation.Binary.Reasoning.Setoid as SetR
 
 ------------------------------------------------------------------------
 -- Left modules
@@ -46,10 +47,13 @@ record LeftSemimodule {r ℓr} (semiring : Semiring r ℓr) m ℓm
     }
 
   open CommutativeMonoid +ᴹ-commutativeMonoid public
-    using ()
-    renaming ( monoid to +ᴹ-monoid; semigroup to +ᴹ-semigroup
-             ; magma to +ᴹ-magma; rawMagma to +ᴹ-rawMagma
-             ; rawMonoid to +ᴹ-rawMonoid)
+    using () renaming
+    ( monoid    to +ᴹ-monoid
+    ; semigroup to +ᴹ-semigroup
+    ; magma     to +ᴹ-magma
+    ; rawMagma  to +ᴹ-rawMagma
+    ; rawMonoid to +ᴹ-rawMonoid
+    )
 
 record LeftModule {r ℓr} (ring : Ring r ℓr) m ℓm
                   : Set (r ⊔ ℓr ⊔ suc (m ⊔ ℓm)) where
@@ -82,8 +86,7 @@ record LeftModule {r ℓr} (ring : Ring r ℓr) m ℓm
   +ᴹ-abelianGroup = record { isAbelianGroup = +ᴹ-isAbelianGroup }
 
   open AbelianGroup +ᴹ-abelianGroup public
-    using ()
-    renaming (group to +ᴹ-group)
+    using () renaming (group to +ᴹ-group)
 
 ------------------------------------------------------------------------
 -- Right modules
@@ -113,10 +116,13 @@ record RightSemimodule {r ℓr} (semiring : Semiring r ℓr) m ℓm
     }
 
   open CommutativeMonoid +ᴹ-commutativeMonoid public
-    using ()
-    renaming ( monoid to +ᴹ-monoid; semigroup to +ᴹ-semigroup
-             ; magma to +ᴹ-magma; rawMagma to +ᴹ-rawMagma
-             ; rawMonoid to +ᴹ-rawMonoid)
+    using () renaming
+    ( monoid    to +ᴹ-monoid
+    ; semigroup to +ᴹ-semigroup
+    ; magma     to +ᴹ-magma
+    ; rawMagma  to +ᴹ-rawMagma
+    ; rawMonoid to +ᴹ-rawMonoid
+    )
 
 record RightModule {r ℓr} (ring : Ring r ℓr) m ℓm
                    : Set (r ⊔ ℓr ⊔ suc (m ⊔ ℓm)) where
@@ -149,8 +155,7 @@ record RightModule {r ℓr} (ring : Ring r ℓr) m ℓm
   +ᴹ-abelianGroup = record { isAbelianGroup = +ᴹ-isAbelianGroup }
 
   open AbelianGroup +ᴹ-abelianGroup public
-    using ()
-    renaming (group to +ᴹ-group)
+    using () renaming (group to +ᴹ-group)
 
 ------------------------------------------------------------------------
 -- Bimodules
@@ -262,17 +267,21 @@ record Semimodule {r ℓr} (commutativeSemiring : CommutativeSemiring r ℓr) m 
           ; +ᴹ-commutativeMonoid; +ᴹ-monoid; +ᴹ-semigroup; +ᴹ-magma; +ᴹ-rawMagma
           ; +ᴹ-rawMonoid)
 
+  open SetR M-setoid
+
   *ₗ-comm : L.Commutative _*ₗ_
-  *ₗ-comm x y m =
-    M-trans (M-sym (*ₗ-assoc x y m))
-            (M-trans (*ₗ-cong (*-comm _ _) M-refl)
-                     (*ₗ-assoc y x m))
+  *ₗ-comm x y m = begin
+    x *ₗ y *ₗ m   ≈⟨ M-sym (*ₗ-assoc x y m) ⟩
+    (x * y) *ₗ m  ≈⟨ *ₗ-cong (*-comm _ _) M-refl ⟩
+    (y * x) *ₗ m  ≈⟨ *ₗ-assoc y x m ⟩
+    y *ₗ x *ₗ m   ∎
 
   *ᵣ-comm : R.Commutative _*ᵣ_
-  *ᵣ-comm m x y =
-    M-trans (*ᵣ-assoc m x y)
-            (M-trans (*ᵣ-cong M-refl (*-comm _ _))
-                     (M-sym (*ᵣ-assoc m y x)))
+  *ᵣ-comm m x y = begin
+    m *ᵣ x *ᵣ y   ≈⟨ *ᵣ-assoc m x y ⟩
+    m *ᵣ (x * y)  ≈⟨ *ᵣ-cong M-refl (*-comm _ _) ⟩
+    m *ᵣ (y * x)  ≈⟨ M-sym (*ᵣ-assoc m y x) ⟩
+    m *ᵣ y *ᵣ x   ∎
 
 record Module {r ℓr} (commutativeRing : CommutativeRing r ℓr) m ℓm
               : Set (r ⊔ ℓr ⊔ suc (m ⊔ ℓm)) where

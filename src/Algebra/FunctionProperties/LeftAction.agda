@@ -21,7 +21,7 @@ open import Data.Product
 ------------------------------------------------------------------------
 -- Binary operations
 
-open import Algebra.FunctionProperties.Core public
+open import Algebra.Core
 
 ------------------------------------------------------------------------
 -- Properties of operations

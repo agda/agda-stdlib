@@ -59,18 +59,24 @@ semiring⇒rightSemimodule semiring = record
     }
   } where open Semiring semiring
 
+semiring⇒bisemimodule : (R : Semiring c ℓ) → Bisemimodule R R c ℓ
+semiring⇒bisemimodule semiring = record
+  { isBisemimodule = record
+    { +ᴹ-isCommutativeMonoid = +-isCommutativeMonoid
+    ; isPreleftSemimodule =
+      LeftSemimodule.isPreleftSemimodule (semiring⇒leftSemimodule semiring)
+    ; isPrerightSemimodule =
+      RightSemimodule.isPrerightSemimodule (semiring⇒rightSemimodule semiring)
+    ; *ₗ-*ᵣ-assoc = *-assoc
+    }
+  } where open Semiring semiring
+
 commutativeSemiring⇒semimodule :
   (R : CommutativeSemiring c ℓ) → Semimodule R c ℓ
 commutativeSemiring⇒semimodule commutativeSemiring = record
   { isSemimodule = record
-    { isBisemimodule = record
-      { +ᴹ-isCommutativeMonoid = +-isCommutativeMonoid
-      ; isPreleftSemimodule =
-        LeftSemimodule.isPreleftSemimodule (semiring⇒leftSemimodule semiring)
-      ; isPrerightSemimodule =
-        RightSemimodule.isPrerightSemimodule (semiring⇒rightSemimodule semiring)
-      ; *ₗ-*ᵣ-assoc = *-assoc
-      }
+    { isBisemimodule =
+      Bisemimodule.isBisemimodule (semiring⇒bisemimodule semiring)
     }
   } where open CommutativeSemiring commutativeSemiring
 
@@ -96,15 +102,19 @@ ring⇒rightModule ring = record
     }
   } where open Ring ring
 
+ring⇒bimodule : (R : Ring c ℓ) → Bimodule R R c ℓ
+ring⇒bimodule ring = record
+  { isBimodule = record
+    { isBisemimodule =
+      Bisemimodule.isBisemimodule (semiring⇒bisemimodule semiring)
+    ; -ᴹ‿cong = -‿cong
+    ; -ᴹ‿inverse = -‿inverse
+    }
+  } where open Ring ring
+
 commutativeRing⇒module : (R : CommutativeRing c ℓ) → Module R c ℓ
 commutativeRing⇒module commutativeRing = record
   { isModule = record
-    { isBimodule = record
-      { isBisemimodule =
-        Semimodule.isBisemimodule
-          (commutativeSemiring⇒semimodule commutativeSemiring)
-      ; -ᴹ‿cong = -‿cong
-      ; -ᴹ‿inverse = -‿inverse
-      }
+    { isBimodule = Bimodule.isBimodule (ring⇒bimodule ring)
     }
   } where open CommutativeRing commutativeRing

@@ -10,7 +10,7 @@
 
 module Algebra.Core where
 
-open import Level
+open import Level using (_⊔_)
 
 ------------------------------------------------------------------------
 -- Unary and binary operations
