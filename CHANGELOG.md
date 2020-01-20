@@ -6,7 +6,10 @@ The library has been tested using Agda version 2.6.0.1.
 Highlights
 ----------
 
-* New warnings when importing deprecated modules.
+* New monoid and ring tactics that are capable of solving equalities
+  without having to restate the equation.
+
+* Importing deprecated modules now results in warnings.
 
 Bug-fixes
 ---------
@@ -19,6 +22,10 @@ Bug-fixes
 
 * Changed the type of `max≈v⁺` in `Data.List.Extrema`; it was mistakenly talking
   about `min` rather than `max`.
+
+* The module `⊆-Reasoning` in `Data.List.Relation.Binary.BagAndSetEquality` now exports the correct set of combinators.
+
+* The record `DecStrictPartialOrder` now correctly re-exports the contents of its `IsDecStrictPartialOrder` field.
 
 Non-backwards compatible changes
 --------------------------------
@@ -191,6 +198,8 @@ is encouraged. Although not anticipated any time soon, they may eventually
 be removed in some future release of the library. Automated warnings are
 attached to all deprecated names to discourage their use.
 
+* `Algebra.Solver.Monoid` and `Data.List.Solver`
+
 * In `Data.Fin`:
   ```agda
   fromℕ≤  ↦ fromℕ<
@@ -236,6 +245,8 @@ Other major additions
   Data.Tree.Binary.Relation.Unary.All.Properties
   Data.Tree.Rose
   Data.Tree.Rose.Properties
+
+  Tactic.MonoidSolver
 
   Text.Pretty.Core
   Text.Pretty
@@ -313,6 +324,12 @@ Other major additions
 
 Other minor additions
 ---------------------
+
+* Added new proofs to `Data.Sum.Properties`:
+  ```agda
+  [,]-map-commute : [ f′ , g′ ]′ ∘ (map f g) ≗ [ f′ ∘ f , g′ ∘ g ]′
+  map-commute     : ((map f′ g′) ∘ (map f g)) ≗ map (f′ ∘ f) (g′ ∘ g)
+  ```
 
 * Added new definition to `Algebra.Definitions`:
   ```agda
@@ -492,13 +509,37 @@ Other minor additions
   AllPairs-resp-Pointwise : R Respects₂ _∼_ → (AllPairs R) Respects (Pointwise _∼_)
   ```
 
-* Added new combinators and functions to `Data.List.Relation.Binary.Permutation.Setoid.PermutationReasoning`:
+* Added new functions to `Data.List.Relation.Binary.Permutation.Setoid`:
+  ```agda
+  ↭-prep : xs ↭ ys → x ∷ xs ↭ x ∷ ys
+  ↭-swap : xs ↭ ys → x ∷ y ∷ xs ↭ y ∷ x ∷ ys
+
+  steps  : xs ↭ ys → ℕ
+  ```
+
+* Added new combinators to `Data.List.Relation.Binary.Permutation.Setoid.PermutationReasoning`:
   ```agda
   _≋⟨_⟩_  : x ≋ y → y IsRelatedTo z → x IsRelatedTo z
   _≋˘⟨_⟩_ : y ≋ x → y IsRelatedTo z → x IsRelatedTo z
+  ```
 
-  ↭-prep : xs ↭ ys → x ∷ xs ↭ x ∷ ys
-  ↭-swap : xs ↭ ys → x ∷ y ∷ xs ↭ y ∷ x ∷ ys
+* Added new functions to ` Data.List.Relation.Binary.Permutation.Setoid.Properties`:
+  ```agda
+  0<steps              : (xs↭ys : xs ↭ ys) → 0 < steps xs↭ys
+  steps-respˡ          : (ys≋xs : ys ≋ xs) (ys↭zs : ys ↭ zs) → steps (↭-respˡ-≋ ys≋xs ys↭zs) ≡ steps ys↭zs
+  steps-respʳ          : (xs≋ys : xs ≋ ys) (zs↭xs : zs ↭ xs) → steps (↭-respʳ-≋ xs≋ys zs↭xs) ≡ steps zs↭xs
+
+  split                : xs ↭ as ++ [ v ] ++ bs → ∃₂ λ ps qs → xs ≋ ps ++ [ v ] ++ qs
+  dropMiddle           : ws ++ vs ++ ys ↭ xs ++ vs ++ zs → ws ++ ys ↭ xs ++ zs
+  dropMiddleElement    : ws ++ [ v ] ++ ys ↭ xs ++ [ v ] ++ zs → ws ++ ys ↭ xs ++ zs
+  dropMiddleElement-≋  : ws ++ [ v ] ++ ys ≋ xs ++ [ v ] ++ zs → ws ++ ys ↭ xs ++ zs
+
+  filter⁺              : xs ↭ ys → filter P? xs ↭ filter P? ys
+  ```
+
+* Added new proof to `Data.Nat.Properties`:
+  ```agda
+  m<n+m : n > 0 → m < n + m
   ```
 
 * Added new proofs to `Data.Nat.Properties`:

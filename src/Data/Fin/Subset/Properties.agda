@@ -771,3 +771,19 @@ anySubset? {n = zero}  P? = Dec.map ∃-Subset-[]-⇔ (P? [])
 anySubset? {n = suc n} P? =
   Dec.map ∃-Subset-∷-⇔ (anySubset? (P? ∘ ( inside ∷_)) ⊎-dec
                         anySubset? (P? ∘ (outside ∷_)))
+
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 1.3
+
+p⊆q⇒∣p∣<∣q∣ = p⊆q⇒∣p∣≤∣q∣
+{-# WARNING_ON_USAGE p⊆q⇒∣p∣<∣q∣
+"Warning: p⊆q⇒∣p∣<∣q∣ was deprecated in v1.3.
+Please use p⊆q⇒∣p∣≤∣q∣ instead."
+#-}
