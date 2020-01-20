@@ -341,6 +341,12 @@ p ≤? q = Dec.map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* �
   ; ⁻¹-cong  = -‿cong
   }
 
++-0-isAbelianGroup : IsAbelianGroup _≃_ _+_ 0ℚᵘ (-_)
++-0-isAbelianGroup = record
+  { isGroup = +-0-isGroup
+  ; comm    = +-comm
+  }
+
 ------------------------------------------------------------------------
 -- Algebraic bundles
 
@@ -372,6 +378,16 @@ p ≤? q = Dec.map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* �
   ; ε       = 0ℚᵘ
   ; _⁻¹     = -_
   ; isGroup = +-0-isGroup
+  }
+
++-abelianGroup : AbelianGroup 0ℓ 0ℓ
++-abelianGroup = record
+  { Carrier        = ℚᵘ
+  ; _≈_            = _≃_
+  ; _∙_            = _+_
+  ; ε              = 0ℚᵘ
+  ; _⁻¹            = -_
+  ; isAbelianGroup = +-0-isAbelianGroup
   }
 
 ------------------------------------------------------------------------
