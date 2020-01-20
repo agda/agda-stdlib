@@ -372,22 +372,12 @@ p ≤? q = Dec.map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* �
 
 +-0-group : Group 0ℓ 0ℓ
 +-0-group = record
-  { Carrier = ℚᵘ
-  ; _≈_     = _≃_
-  ; _∙_     = _+_
-  ; ε       = 0ℚᵘ
-  ; _⁻¹     = -_
-  ; isGroup = +-0-isGroup
+  { isGroup = +-0-isGroup
   }
 
-+-abelianGroup : AbelianGroup 0ℓ 0ℓ
-+-abelianGroup = record
-  { Carrier        = ℚᵘ
-  ; _≈_            = _≃_
-  ; _∙_            = _+_
-  ; ε              = 0ℚᵘ
-  ; _⁻¹            = -_
-  ; isAbelianGroup = +-0-isAbelianGroup
++-0-abelianGroup : AbelianGroup 0ℓ 0ℓ
++-0-abelianGroup = record
+  { isAbelianGroup = +-0-isAbelianGroup
   }
 
 ------------------------------------------------------------------------
