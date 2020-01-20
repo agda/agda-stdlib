@@ -10,8 +10,8 @@
 module Algebra.Module.Bundles where
 
 open import Algebra.Bundles
+open import Algebra.Core
 open import Algebra.Module.Structures
-open import Algebra.FunctionProperties.Core
 import Algebra.FunctionProperties.LeftAction as LFP
 import Algebra.FunctionProperties.RightAction as RFP
 open import Function.Base
