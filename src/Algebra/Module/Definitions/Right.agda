@@ -11,7 +11,7 @@ open import Relation.Binary
 -- The properties are parameterised by the following "equality"
 -- relations
 
-module Algebra.FunctionProperties.RightAction
+module Algebra.Module.Definitions.Right
   {a b ℓb} (A : Set a) {B : Set b} (_≈_ : Rel B ℓb)
   where
 

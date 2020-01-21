@@ -12,8 +12,8 @@ module Algebra.Module.Bundles where
 open import Algebra.Bundles
 open import Algebra.Core
 open import Algebra.Module.Structures
-import Algebra.FunctionProperties.LeftAction as LFP
-import Algebra.FunctionProperties.RightAction as RFP
+import Algebra.Module.Definitions.Left as LFP
+import Algebra.Module.Definitions.Right as RFP
 open import Function.Base
 open import Level
 open import Relation.Binary

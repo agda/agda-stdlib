@@ -11,7 +11,7 @@ open import Relation.Binary
 -- The properties are parameterised by the two carriers and
 -- the result equality.
 
-module Algebra.FunctionProperties.LeftAction
+module Algebra.Module.Definitions.Left
   {a b ℓb} (A : Set a) {B : Set b} (_≈_ : Rel B ℓb)
   where
 
