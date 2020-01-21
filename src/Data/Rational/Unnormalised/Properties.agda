@@ -9,6 +9,7 @@
 module Data.Rational.Unnormalised.Properties where
 
 open import Algebra
+import Algebra.FunctionProperties.Consequences as FC
 open import Algebra.FunctionProperties.Consequences.Propositional
 open import Data.Nat using (suc)
 import Data.Nat.Properties as ℕ
@@ -465,6 +466,34 @@ p ≤? q = Dec.map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* �
 *-identity : Identity _≃_ 1ℚᵘ _*_
 *-identity = *-identityˡ , *-identityʳ
 
+*-zeroˡ : LeftZero _≃_ 0ℚᵘ _*_
+*-zeroˡ p = *≡* refl
+
+*-zeroʳ : RightZero _≃_ 0ℚᵘ _*_
+*-zeroʳ = FC.comm+zeˡ⇒zeʳ ≃-setoid *-comm *-zeroˡ
+
+*-zero : Zero _≃_ 0ℚᵘ _*_
+*-zero = *-zeroˡ , *-zeroʳ
+
+*-distribˡ-+ : _DistributesOverˡ_ _≃_ _*_ _+_
+*-distribˡ-+ p q r =
+  let ↥p = ↥ p; ↧p = ↧ p
+      ↥q = ↥ q; ↧q = ↧ q
+      ↥r = ↥ r; ↧r = ↧ r
+      eq : (↥p ℤ.* (↥q ℤ.* ↧r ℤ.+ ↥r ℤ.* ↧q)) ℤ.* (↧p ℤ.* ↧q ℤ.* (↧p ℤ.* ↧r)) ≡
+           (↥p ℤ.* ↥q ℤ.* (↧p ℤ.* ↧r) ℤ.+ ↥p ℤ.* ↥r ℤ.* (↧p ℤ.* ↧q)) ℤ.* (↧p ℤ.* (↧q ℤ.* ↧r))
+      eq = solve 6 (λ ↥p ↧p ↥q d e f →
+           (↥p :* (↥q :* f :+ e :* d)) :* (↧p :* d :* (↧p :* f)) :=
+           (↥p :* ↥q :* (↧p :* f) :+ ↥p :* e :* (↧p :* d)) :* (↧p :* (d :* f)))
+           refl ↥p ↧p ↥q ↧q ↥r ↧r
+  in *≡* eq where open ℤ-solver
+
+*-distribʳ-+ : _DistributesOverʳ_ _≃_ _*_ _+_
+*-distribʳ-+ = FC.comm+distrˡ⇒distrʳ ≃-setoid +-cong *-comm *-distribˡ-+
+
+*-distrib-+ : _DistributesOver_ _≃_ _*_ _+_
+*-distrib-+ = *-distribˡ-+ , *-distribʳ-+
+
 ------------------------------------------------------------------------
 -- Algebraic structures
 
@@ -492,6 +521,14 @@ p ≤? q = Dec.map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* �
   ; comm     = *-comm
   }
 
++-*-isRing : IsRing _≃_ _+_ _*_ -_ 0ℚᵘ 1ℚᵘ
++-*-isRing = record
+  { +-isAbelianGroup = +-0-isAbelianGroup
+  ; *-isMonoid       = *-1-isMonoid
+  ; distrib          = *-distrib-+
+  ; zero             = *-zero
+  }
+
 ------------------------------------------------------------------------
 -- Algebraic bundles
 
@@ -513,4 +550,9 @@ p ≤? q = Dec.map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* �
 *-1-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
 *-1-commutativeMonoid = record
   { isCommutativeMonoid = *-1-isCommutativeMonoid
+  }
+
++-*-ring : Ring 0ℓ 0ℓ
++-*-ring = record
+  { isRing = +-*-isRing
   }
