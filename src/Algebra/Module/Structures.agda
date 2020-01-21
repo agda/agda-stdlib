@@ -15,7 +15,6 @@ module Algebra.Module.Structures
 open import Algebra.Bundles
 open import Algebra.Core
 import Algebra.Definitions as Defs
-import Algebra.FunctionProperties.Consequences as Consequences
 import Algebra.Module.Definitions.Left as L
 import Algebra.Module.Definitions.Right as R
 open import Algebra.Structures
