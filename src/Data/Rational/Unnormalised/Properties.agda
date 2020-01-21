@@ -9,8 +9,8 @@
 module Data.Rational.Unnormalised.Properties where
 
 open import Algebra
-import Algebra.FunctionProperties.Consequences as FC
-open import Algebra.FunctionProperties.Consequences.Propositional
+import Algebra.Consequences.Setoid as FC
+open import Algebra.Consequences.Propositional
 open import Data.Nat using (suc)
 import Data.Nat.Properties as ℕ
 open import Data.Integer as ℤ using (ℤ; +0; +[1+_]; 0ℤ; 1ℤ)

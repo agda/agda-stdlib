@@ -18,7 +18,7 @@ import Algebra.Properties.DistributiveLattice as DistribLatticeProperties
 open import Algebra.Core
 open import Algebra.Structures _≈_
 open import Algebra.Definitions _≈_
-open import Algebra.FunctionProperties.Consequences setoid
+open import Algebra.Consequences.Setoid setoid
 open import Relation.Binary.Reasoning.Setoid setoid
 open import Relation.Binary
 open import Function.Base
