@@ -11,7 +11,7 @@ module Data.Nat.Binary.Properties where
 open import Algebra.Bundles
 open import Algebra.Morphism.Structures
 import Algebra.Morphism.MonoidMonomorphism as MonoidMonomorphism
-open import Algebra.FunctionProperties.Consequences.Propositional
+open import Algebra.Consequences.Propositional
 open import Data.Nat.Binary.Base
 open import Data.Nat as ℕ using (ℕ; z≤n; s≤s)
 import Data.Nat.Properties as ℕₚ

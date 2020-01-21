@@ -9,7 +9,7 @@
 module Data.Rational.Unnormalised.Properties where
 
 open import Algebra
-open import Algebra.FunctionProperties.Consequences.Propositional
+open import Algebra.Consequences.Propositional
 open import Data.Nat using (suc)
 import Data.Nat.Properties as ℕ
 open import Data.Integer as ℤ using (ℤ; +0; +[1+_]; 0ℤ; 1ℤ)
