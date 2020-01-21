@@ -20,9 +20,13 @@ import Algebra.FunctionProperties.LeftAction as L
 import Algebra.FunctionProperties.RightAction as R
 open import Algebra.Structures
 open import Data.Product using (_,_; proj₁; proj₂)
-open import Level using (_⊔_)
+open import Level using (Level; _⊔_)
 
-module _ {r ℓr} (semiring : Semiring r ℓr) where
+private
+  variable
+    r ℓr s ℓs : Level
+
+module _ (semiring : Semiring r ℓr) where
   open Semiring semiring renaming (Carrier to R)
 
   record IsPreleftSemimodule (+ᴹ : Op₂ M) (*ₗ : Opₗ R M) (0ᴹ : M)
@@ -111,7 +115,7 @@ module _ {r ℓr} (semiring : Semiring r ℓr) where
       ; ∙-congˡ              to +ᴹ-congˡ
       )
 
-module _ {r s ℓr ℓs} (R-semiring : Semiring r ℓr) (S-semiring : Semiring s ℓs)
+module _ (R-semiring : Semiring r ℓr) (S-semiring : Semiring s ℓs)
   where
 
   open Semiring R-semiring using () renaming (Carrier to R)
@@ -141,7 +145,7 @@ module _ {r s ℓr ℓs} (R-semiring : Semiring r ℓr) (S-semiring : Semiring s
       hiding (+ᴹ-isCommutativeMonoid; isPreleftSemimodule)
     open IsPrerightSemimodule isPrerightSemimodule public
 
-module _ {r ℓr} (commutativeSemiring : CommutativeSemiring r ℓr) where
+module _ (commutativeSemiring : CommutativeSemiring r ℓr) where
   open CommutativeSemiring commutativeSemiring renaming (Carrier to R)
 
   record IsSemimodule (+ᴹ : Op₂ M) (*ₗ : Opₗ R M) (*ᵣ : Opᵣ R M) (0ᴹ : M)
@@ -152,7 +156,7 @@ module _ {r ℓr} (commutativeSemiring : CommutativeSemiring r ℓr) where
     open IsBisemimodule isBisemimodule public
 
 
-module _ {r ℓr} (ring : Ring r ℓr) where
+module _ (ring : Ring r ℓr) where
   open Ring ring renaming (Carrier to R)
 
   record IsLeftModule (+ᴹ : Op₂ M) (*ₗ : Opₗ R M) (0ᴹ : M) (-ᴹ : Op₁ M)
@@ -212,7 +216,7 @@ module _ {r ℓr} (ring : Ring r ℓr) where
       ; uniqueʳ-⁻¹ to uniqueʳ‿-ᴹ
       )
 
-module _ {r s ℓr ℓs} (R-ring : Ring r ℓr) (S-ring : Ring s ℓs) where
+module _ (R-ring : Ring r ℓr) (S-ring : Ring s ℓs) where
 
   open Ring R-ring renaming (Carrier to R; semiring to R-semiring)
   open Ring S-ring renaming (Carrier to S; semiring to S-semiring)
@@ -245,7 +249,7 @@ module _ {r s ℓr ℓs} (R-ring : Ring r ℓr) (S-ring : Ring s ℓs) where
       ; -ᴹ‿inverse = -ᴹ‿inverse
       }
 
-module _ {r ℓr} (commutativeRing : CommutativeRing r ℓr) where
+module _ (commutativeRing : CommutativeRing r ℓr) where
   open CommutativeRing commutativeRing renaming (Carrier to R)
 
   record IsModule (+ᴹ : Op₂ M) (*ₗ : Opₗ R M) (*ᵣ : Opᵣ R M) (0ᴹ : M)
