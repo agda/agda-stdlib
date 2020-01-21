@@ -8,6 +8,11 @@
 
 module Data.Bin.Properties where
 
+{-# WARNING_ON_IMPORT
+"Data.Bin.Properties was deprecated in v1.2.
+Use Data.Nat.Binary.Properties instead."
+#-}
+
 open import Data.Bin
 open import Data.Digit using (Bit; Expansion)
 import Data.Fin as Fin

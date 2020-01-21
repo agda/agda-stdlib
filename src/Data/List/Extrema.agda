@@ -11,7 +11,6 @@ open import Relation.Binary using (TotalOrder; Setoid)
 module Data.List.Extrema
   {b ℓ₁ ℓ₂} (totalOrder : TotalOrder b ℓ₁ ℓ₂) where
 
-open import Algebra.FunctionProperties
 import Algebra.Construct.NaturalChoice.Min as Min
 import Algebra.Construct.NaturalChoice.Max as Max
 open import Data.List using (List; foldr)

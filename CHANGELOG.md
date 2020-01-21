@@ -6,10 +6,11 @@ The library has been tested using Agda version 2.6.0.1.
 Highlights
 ----------
 
+* New warnings when importing deprecated modules. These can be disabled locally
+  by adding the pragma `{-# OPTIONS --warn=noUserWarning #-}` to the top of a module.
+
 * New monoid and ring tactics that are capable of solving equalities
   without having to restate the equation.
-
-* Importing deprecated modules now results in warnings.
 
 Bug-fixes
 ---------
@@ -128,6 +129,12 @@ Non-backwards compatible changes
   variant).
 
 * Moved module `README.Text` to `README.Text.Printf`.
+
+* In `Codata.Cowriter` and `Codata.Musical.Colist` the functions `splitAt`, `take`
+  and `take-⊑` have been changed to use bounded vectors as defined in 
+  `Data.Vec.Bounded` instead of the deprecated `Data.BoundedVec`. The old proofs 
+  still exist under the names `splitAt′`, `take′` and `take′-⊑` but have been 
+  deprecated.
 
 * The following record definitions in `Algebra.Structures` have been changed.
 

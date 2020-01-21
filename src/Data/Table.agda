@@ -6,7 +6,15 @@
 
 {-# OPTIONS --without-K --safe #-}
 
+-- Disabled to prevent warnings from other Table modules
+{-# OPTIONS --warn=noUserWarning #-}
+
 module Data.Table where
+
+{-# WARNING_ON_IMPORT
+"Data.Table was deprecated in v1.2.
+Use Data.Vec.Functional instead."
+#-}
 
 open import Data.Table.Base public
 
