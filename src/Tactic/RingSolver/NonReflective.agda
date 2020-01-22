@@ -12,7 +12,7 @@
 
 open import Tactic.RingSolver.Core.AlmostCommutativeRing
 
-module Tactic.RingSolver.Manual1
+module Tactic.RingSolver.NonReflective
   {ℓ₁ ℓ₂} (ring : AlmostCommutativeRing ℓ₁ ℓ₂)
   (let open AlmostCommutativeRing ring)
   where

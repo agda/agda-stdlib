@@ -272,11 +272,9 @@ Other major additions
   Data.Tree.Rose
   Data.Tree.Rose.Properties
 
-  Tactic.RingSolver
-  Tactic.RingSolver.Manual1
-  Tactic.RingSolver.Manual2
-
   Tactic.MonoidSolver
+  Tactic.RingSolver
+  Tactic.RingSolver.NonReflective
 
   Text.Pretty.Core
   Text.Pretty

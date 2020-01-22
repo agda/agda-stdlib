@@ -24,7 +24,7 @@ open import Data.Product        using (_,_)
 open import Function
 open import Reflection.TCMonadSyntax
 
-open import Tactic.RingSolver.Manual1 renaming (solve to solve-fn)
+open import Tactic.RingSolver.NonReflective renaming (solve to solve-fn)
 open import Tactic.RingSolver.Core.AlmostCommutativeRing
 open import Tactic.RingSolver.Core.NatSet as NatSet
 open import Tactic.RingSolver.Core.ReflectionHelp
