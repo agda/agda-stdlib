@@ -6,10 +6,11 @@ The library has been tested using Agda version 2.6.0.1.
 Highlights
 ----------
 
+* New warnings when importing deprecated modules. These can be disabled locally
+  by adding the pragma `{-# OPTIONS --warn=noUserWarning #-}` to the top of a module.
+
 * New monoid and ring tactics that are capable of solving equalities
   without having to restate the equation.
-
-* Importing deprecated modules now results in warnings.
 
 Bug-fixes
 ---------
@@ -129,6 +130,12 @@ Non-backwards compatible changes
 
 * Moved module `README.Text` to `README.Text.Printf`.
 
+* In `Codata.Cowriter` and `Codata.Musical.Colist` the functions `splitAt`, `take`
+  and `take-⊑` have been changed to use bounded vectors as defined in 
+  `Data.Vec.Bounded` instead of the deprecated `Data.BoundedVec`. The old proofs 
+  still exist under the names `splitAt′`, `take′` and `take′-⊑` but have been 
+  deprecated.
+
 * The following record definitions in `Algebra.Structures` have been changed.
 
   - `IsCommutativeMonoid`
@@ -191,9 +198,21 @@ Non-backwards compatible changes
 Deprecated modules
 ------------------
 
-* The module `Data.Nat.Solver` and `Data.Integer.Solver` have been
-  deprecated in favour of `Data.Nat.Tactic.RingSolver` and
-  `Data.Integer.Tactic.RingSolver` respectively.
+The following modules have been renamed as part of a drive to improve
+consistency across the library. The deprecated modules still exist and
+therefore all existing code should still work, however use of the new names
+is encouraged. Automated warnings are attached to deprecated modules to
+discourage their use.
+
+* In `Algebra`:
+  ```
+  Algebra.FunctionProperties.Consequences.Core           ↦ Algebra.Consequences.Base
+  Algebra.FunctionProperties.Consequences.Propositional  ↦ Algebra.Consequences.Propositional
+  Algebra.FunctionProperties.Consequences                ↦ Algebra.Conseqeunces.Setoid
+  
+  Data.Nat.Solver      ↦ Data.Nat.Tactic.RingSolver
+  Data.Integer.Solver  ↦ Data.Integer.Tactic.RingSolver
+  ```
 
 Deprecated names
 ----------------

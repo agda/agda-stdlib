@@ -6,7 +6,15 @@
 
 {-# OPTIONS --without-K --safe #-}
 
+-- Disabled to prevent warnings from other Table modules
+{-# OPTIONS --warn=noUserWarning #-}
+
 module Data.Table.Properties where
+
+{-# WARNING_ON_IMPORT
+"Data.Table.Properties was deprecated in v1.2.
+Use Data.Vec.Functional.Properties instead."
+#-}
 
 open import Data.Table
 open import Data.Table.Relation.Binary.Equality
