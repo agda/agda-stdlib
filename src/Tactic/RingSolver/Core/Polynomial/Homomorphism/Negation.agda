@@ -15,9 +15,8 @@ module Tactic.RingSolver.Core.Polynomial.Homomorphism.Negation
 
 open import Data.Product          using (_,_)
 open import Data.Vec              using (Vec)
-open import Induction.WellFounded using (Acc; acc)
-open import Induction.Nat         using (<′-wellFounded)
-open import Data.Nat using (_<′_)
+open import Data.Nat              using (_<′_)
+open import Data.Nat.Induction
 
 open import Function
 

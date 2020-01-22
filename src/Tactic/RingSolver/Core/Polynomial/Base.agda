@@ -57,11 +57,10 @@ open import Data.Fin.Properties    using (space≤′n)
 open import Data.List.Kleene
 open import Data.Nat as ℕ          using (ℕ; suc; zero; _≤′_; compare; ≤′-refl; ≤′-step; _<′_)
 open import Data.Nat.Properties    using (z≤′n; ≤′-trans)
+open import Data.Nat.Induction
 open import Data.Product           using (_×_; _,_; map₁; curry; uncurry)
 open import Data.Unit              using (⊤; tt)
 open import Function.Base
-open import Induction.WellFounded  using (Acc; acc)
-open import Induction.Nat          using (<′-wellFounded)
 open import Relation.Nullary       using (¬_; Dec; yes; no)
 
 open import Algebra.Operations.Ring rawRing
