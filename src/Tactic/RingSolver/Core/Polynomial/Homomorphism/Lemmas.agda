@@ -18,7 +18,6 @@ open import Data.Nat as ℕ                              using (ℕ; suc; zero; 
 open import Data.Nat.Properties as ℕₚ                  using (≤′-trans)
 open import Data.Vec as Vec                            using (Vec; _∷_)
 open import Data.Fin                                   using (Fin; zero; suc)
-open import Data.Fin.Properties                        using (space≤′n)
 open import Data.List                                  using (_∷_; [])
 open import Data.Unit using (tt)
 open import Data.List.Kleene

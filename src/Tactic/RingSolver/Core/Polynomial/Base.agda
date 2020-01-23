@@ -52,8 +52,7 @@ open RawCoeff coeffs
 
 open import Data.Bool              using (Bool; true; false; T)
 open import Data.Empty             using (⊥)
-open import Data.Fin as Fin        using (Fin; zero; suc; space)
-open import Data.Fin.Properties    using (space≤′n)
+open import Data.Fin as Fin        using (Fin; zero; suc)
 open import Data.List.Kleene
 open import Data.Nat as ℕ          using (ℕ; suc; zero; _≤′_; compare; ≤′-refl; ≤′-step; _<′_)
 open import Data.Nat.Properties    using (z≤′n; ≤′-trans)
@@ -92,6 +91,19 @@ inj-compare (≤′-step x) (≤′-step y) = case inj-compare x y of
       ; (inj-gt x j≤i-1) → inj-gt (≤′-step x) j≤i-1
       ; (inj-eq x)       → inj-eq (≤′-step x)
       }
+
+-- The "space" above a Fin n is the number of unique "Fin n"s greater
+-- than or equal to it.
+space : ∀ {n} → Fin n → ℕ
+space f = suc (go f)
+  where
+  go : ∀ {n} → Fin n → ℕ
+  go {suc n} Fin.zero = n
+  go (Fin.suc x) = go x
+
+space≤′n : ∀ {n} (x : Fin n) → space x ≤′ n
+space≤′n zero    = ≤′-refl
+space≤′n (suc x) = ≤′-step (space≤′n x)
 
 -------------------------------------------------------------------------
 -- Definition

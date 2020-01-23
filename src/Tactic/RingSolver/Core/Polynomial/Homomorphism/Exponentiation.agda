@@ -27,7 +27,6 @@ open Homomorphism homo
 open import Tactic.RingSolver.Core.Polynomial.Homomorphism.Lemmas homo
 open import Tactic.RingSolver.Core.Polynomial.Base from
 open import Tactic.RingSolver.Core.Polynomial.Reasoning to
-open import Tactic.RingSolver.Core.Polynomial.Homomorphism.Semantics homo
 open import Tactic.RingSolver.Core.Polynomial.Homomorphism.Multiplication homo
 open import Tactic.RingSolver.Core.Polynomial.Semantics homo
 

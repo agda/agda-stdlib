@@ -544,13 +544,6 @@ punchOut-punchIn (suc i) {suc j} = cong suc (begin
   where open ≡-Reasoning
 
 ------------------------------------------------------------------------
--- space
-
-space≤′n : ∀ {n} (x : Fin n) → space x ≤′ n
-space≤′n zero    = ≤′-refl
-space≤′n (suc x) = ≤′-step (space≤′n x)
-
-------------------------------------------------------------------------
 -- Quantification
 ------------------------------------------------------------------------
 
