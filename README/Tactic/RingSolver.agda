@@ -36,8 +36,6 @@ open import Data.Bool as Bool using (Bool; true; false; if_then_else_)
 open import Data.Unit using (⊤; tt)
 
 open import Tactic.RingSolver.Core.AlmostCommutativeRing using (AlmostCommutativeRing)
--- open import Tactic.RingSolver
-
 
 ------------------------------------------------------------------------------
 -- Integer examples
@@ -50,16 +48,16 @@ module IntegerExamples where
 
   -- Everything is automatic: you just ask Agda to solve it and it does!
   lemma₁ : ∀ x y → x + y * 1 + 3 ≈ 3 + 1 + y + x + - 1
-  lemma₁ = solve
+  lemma₁ = solve-∀
 
   lemma₂ : ∀ x y → (x + y) ^ 2 ≈ x ^ 2 + 2 * x * y + y ^ 2
-  lemma₂ = solve
+  lemma₂ = solve-∀
 
   -- It can interact with manual proofs as well.
   lemma₃ : ∀ x y → x + y * 1 + 3 ≈ 2 + 1 + y + x
   lemma₃ x y = begin
     x + y * 1 + 3 ≡⟨ +-comm x (y * 1) ⟨ +-cong ⟩ refl ⟩
-    y * 1 + x + 3 ≡⟨ solveOver (x ∷ y ∷ []) ⟩
+    y * 1 + x + 3 ≡⟨ solve (x ∷ y ∷ []) ⟩
     3 + y + x     ≡⟨⟩
     2 + 1 + y + x ∎
     where open ≡-Reasoning
@@ -76,7 +74,7 @@ module NaturalExamples where
   -- The solver is flexible enough to work with ℕ (even though it asks
   -- for rings!)
   lemma₁ : ∀ x y → x + y * 1 + 3 ≈ 2 + 1 + y + x
-  lemma₁ = solve
+  lemma₁ = solve-∀
 
 ------------------------------------------------------------------------------
 -- Checking invariants
@@ -103,12 +101,12 @@ module _ {a} {A : Set a} (_≤_ : A → A → Bool) where
   _∪_ : ∀ {n m} → Tree n → Tree m → Tree (n + m)
   leaf                 ∪ ys                   = ys
   node {a} {b} x xl xr ∪ leaf                 =
-    node x xl xr ⇒ solveOver (a ∷ b ∷ [])
+    node x xl xr ⇒ solve (a ∷ b ∷ [])
   node {a} {b} x xl xr ∪ node {c} {d} y yl yr =
       if x ≤ y
         then node x (node y yl yr ∪ xr) xl ⇒ begin
-          1 + (1 + c + d + b) + a ≡⟨ solveOver (a ∷ b ∷ c ∷ d ∷ []) ⟩
+          1 + (1 + c + d + b) + a ≡⟨ solve (a ∷ b ∷ c ∷ d ∷ []) ⟩
           1 + a + b + (1 + c + d) ∎
         else node y (node x xl xr ∪ yr) yl ⇒ begin
-          1 + (1 + a + b + d) + c ≡⟨ solveOver (a ∷ b ∷ c ∷ d ∷ []) ⟩
+          1 + (1 + a + b + d) + c ≡⟨ solve (a ∷ b ∷ c ∷ d ∷ []) ⟩
           1 + a + b + (1 + c + d) ∎

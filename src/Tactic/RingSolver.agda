@@ -31,6 +31,10 @@ open import Tactic.RingSolver.Core.ReflectionHelp
 
 open AlmostCommutativeRing
 
+------------------------------------------------------------------------
+-- Processing
+------------------------------------------------------------------------
+
 private
   record Ring⇓ : Set where
     constructor +⇒_*⇒_^⇒_-⇒_
@@ -165,15 +169,21 @@ private
           ρ : Term
           ρ = curriedTerm t
 
--- This is the main macro you'll probably be using. Call it like this:
+------------------------------------------------------------------------
+-- Macros
+------------------------------------------------------------------------
+
+-- This is the main macro which solves for equations in which the variables
+-- are universally quantified over:
 --
 --   lemma : ∀ x y → x + y ≈ y + x
---   lemma = solve TypeRing
+--   lemma = solve-∀ TypeRing
 --
 -- where TypRing is your implementation of AlmostCommutativeRing. (Find some
 -- example implementations in Polynomial.Solver.Ring.AlmostCommutativeRing.Instances).
-solve-macro : Name → Term → TC ⊤
-solve-macro ring hole = do
+
+solve-∀-macro : Name → Term → TC ⊤
+solve-∀-macro ring hole = do
   ring′ ← def ring [] ∈Ring
   commitTC
   let open OverRing ring′
@@ -189,8 +199,8 @@ solve-macro ring hole = do
   unify hole (quote solve-fn ⟨ def ⟩ callSolver nms i k lhs rhs)
 
 macro
-  solve : Name → Term → TC ⊤
-  solve = solve-macro
+  solve-∀ : Name → Term → TC ⊤
+  solve-∀ = solve-∀-macro
 
 -- Use this macro when you want to solve something *under* a lambda. For example:
 -- say you have a long proof, and you just want the solver to deal with an
@@ -199,7 +209,7 @@ macro
 --   lemma₃ : ∀ x y → x + y * 1 + 3 ≈ 2 + 1 + y + x
 --   lemma₃ x y = begin
 --     x + y * 1 + 3 ≈⟨ +-comm x (y * 1) ⟨ +-cong ⟩ refl ⟩
---     y * 1 + x + 3 ≈⟨ solveOver (x ∷ y ∷ []) Int.ring ⟩
+--     y * 1 + x + 3 ≈⟨ solve (x ∷ y ∷ []) Int.ring ⟩
 --     3 + y + x     ≡⟨ refl ⟩
 --     2 + 1 + y + x ∎
 --
@@ -211,8 +221,8 @@ macro
 -- do. You'll need the combinators defined in Relation.Binary.Reasoning.Inference.
 -- These are just as powerful as the others, but have slightly better inference properties.
 
-solveOver-macro : Term → Name → Term → TC ⊤
-solveOver-macro i ring hole = do
+solve-macro : Term → Name → Term → TC ⊤
+solve-macro i ring hole = do
   ring′ ← def ring [] ∈Ring
   commitTC
   let open OverRing ring′
@@ -221,13 +231,13 @@ solveOver-macro i ring hole = do
   commitTC
   hole′ ← inferType hole >>= reduce
   just vars′ ← pure (vars i′)
-    where nothing → typeError (strErr "Malformed call to solveOver." ∷
+    where nothing → typeError (strErr "Malformed call to solve." ∷
                                strErr "First argument should be a list of free variables." ∷
                                strErr "Instead: " ∷
                                termErr i′ ∷
                                [])
   just (lhs ∷ rhs ∷ []) ← pure (getArgs 2 hole′)
-    where nothing → typeError (strErr "Malformed call to solveOver." ∷
+    where nothing → typeError (strErr "Malformed call to solve." ∷
                                strErr "First argument should be a list of free variables." ∷
                                strErr "Instead: " ∷
                                termErr hole′ ∷
@@ -235,5 +245,5 @@ solveOver-macro i ring hole = do
   unify hole (constructSoln nms (List.length vars′) vars′ lhs rhs)
 
 macro
-  solveOver : Term → Name → Term → TC ⊤
-  solveOver = solveOver-macro
+  solve : Term → Name → Term → TC ⊤
+  solve = solve-macro

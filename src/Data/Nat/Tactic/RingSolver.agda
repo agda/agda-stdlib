@@ -31,9 +31,9 @@ ring = ACR.fromCommutativeSemiring *-+-commutativeSemiring
   λ { zero → just refl; _ → nothing }
 
 macro
-  solve : Term → TC ⊤
-  solve = Solver.solve-macro (quote ring)
+  solve-∀ : Term → TC ⊤
+  solve-∀ = Solver.solve-∀-macro (quote ring)
 
 macro
-  solveOver : Term → Term → TC ⊤
-  solveOver n = Solver.solveOver-macro n (quote ring)
+  solve : Term → Term → TC ⊤
+  solve n = Solver.solve-macro n (quote ring)
