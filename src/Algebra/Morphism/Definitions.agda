@@ -23,11 +23,11 @@ open import Function.Core
 Morphism : Set _
 Morphism = A → B
 
-Homomorphic₀ : Morphism → A → B → Set _
+Homomorphic₀ : (A → B) → A → B → Set _
 Homomorphic₀ ⟦_⟧ ∙ ∘ = ⟦ ∙ ⟧ ≈ ∘
 
-Homomorphic₁ : Morphism → Fun₁ A → Op₁ B → Set _
+Homomorphic₁ : (A → B) → Op₁ A → Op₁ B → Set _
 Homomorphic₁ ⟦_⟧ ∙_ ∘_ = ∀ x → ⟦ ∙ x ⟧ ≈ (∘ ⟦ x ⟧)
 
-Homomorphic₂ : Morphism → Fun₂ A → Op₂ B → Set _
+Homomorphic₂ : (A → B) → Op₂ A → Op₂ B → Set _
 Homomorphic₂ ⟦_⟧ _∙_ _∘_ = ∀ x y → ⟦ x ∙ y ⟧ ≈ (⟦ x ⟧ ∘ ⟦ y ⟧)

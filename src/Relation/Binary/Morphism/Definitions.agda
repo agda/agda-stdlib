@@ -27,5 +27,5 @@ private
 Morphism : Set _
 Morphism = A → B
 
-Homomorphic₂ : Rel A ℓ₁ → Rel B ℓ₂ → Morphism → Set _
+Homomorphic₂ : Rel A ℓ₁ → Rel B ℓ₂ → (A → B) → Set _
 Homomorphic₂ _∼₁_ _∼₂_ ⟦_⟧ = ∀ {x y} → x ∼₁ y → ⟦ x ⟧ ∼₂ ⟦ y ⟧
