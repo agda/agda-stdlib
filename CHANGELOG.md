@@ -272,6 +272,8 @@ Other major additions
   Data.Tree.Rose
   Data.Tree.Rose.Properties
 
+  Reflection.TCMonadSyntax
+  
   Tactic.MonoidSolver
   Tactic.RingSolver
   Tactic.RingSolver.NonReflective
@@ -571,6 +573,9 @@ Other minor additions
 * Added new proof to `Data.Nat.Properties`:
   ```agda
   m<n+m : n > 0 → m < n + m
+
+  *-isCommutativeSemigroup : IsCommutativeSemigroup _*_
+  *-commutativeSemigroup   : CommutativeSemigroup 0ℓ 0ℓ
   ```
 
 * Added new proofs to `Data.Nat.Properties`:
@@ -590,6 +595,7 @@ Other minor additions
 
 * Added new functions to `Data.Vec.Base`:
   ```agda
+  uncons    : Vec A (suc n) → A × Vec A n
   length    : Vec A n → ℕ
   transpose : Vec (Vec A n) m → Vec (Vec A m) n
   ```

@@ -40,16 +40,28 @@ open import Data.Nat   as ℕ     using (ℕ; suc; zero)
 open import Data.List  as List  using (List; _∷_; [])
 open import Data.Maybe as Maybe using (Maybe; just; nothing)
 open import Data.Bool  as Bool  using (Bool)
-
 open import Function
-
 open import Relation.Binary.PropositionalEquality
+
+------------------------------------------------------------------------
+-- Helper methods
+
+para : ∀ {a b} {A : Set a} {B : Set b} →
+       (A → List A → B → B) → B → List A → B
+para f b []       = b
+para f b (x ∷ xs) = f x xs (para f b xs)
+
+------------------------------------------------------------------------
+-- Definition
 
 NatSet : Set
 NatSet = List ℕ
 
+------------------------------------------------------------------------
+-- Functions
+
 insert : ℕ → NatSet → NatSet
-insert x xs = List.para f (_∷ []) xs x
+insert x xs = para f (_∷ []) xs x
   where
   f : ℕ → NatSet → (ℕ → NatSet) → ℕ → NatSet
   f y ys c x with ℕ.compare x y
@@ -58,7 +70,7 @@ insert x xs = List.para f (_∷ []) xs x
   ... | ℕ.greater y k = y ∷ c k
 
 delete : ℕ → NatSet → NatSet
-delete x xs = List.para f (const []) xs x
+delete x xs = para f (const []) xs x
   where
   f : ℕ → NatSet → (ℕ → NatSet) → ℕ → NatSet
   f y ys c x with ℕ.compare x y
@@ -86,6 +98,9 @@ fromList = List.foldr insert []
 
 toList : NatSet → List ℕ
 toList = List.drop 1 ∘ List.map ℕ.pred ∘ List.scanl (λ x y → suc (y ℕ.+ x)) 0
+
+------------------------------------------------------------------------
+-- Tests
 
 private
   example₁ : fromList (4 ∷ 3 ∷ 1 ∷ 0 ∷ 2 ∷ []) ≡ (0 ∷ 0 ∷ 0 ∷ 0 ∷ 0 ∷ [])

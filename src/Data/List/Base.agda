@@ -150,10 +150,6 @@ product = foldr _*_ 1
 length : List A → ℕ
 length = foldr (const suc) 0
 
-para : (A → List A → B → B) → B → List A → B
-para f b []       = b
-para f b (x ∷ xs) = f x xs (para f b xs)
-
 ------------------------------------------------------------------------
 -- Operations for constructing lists
 

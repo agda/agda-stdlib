@@ -1,14 +1,14 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Homomorphism proofs for variables and constants over polynomials
+-- Homomorphism proofs for constants over polynomials
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
 open import Tactic.RingSolver.Core.Polynomial.Parameters
 
-module Tactic.RingSolver.Core.Polynomial.Homomorphism.Semantics
+module Tactic.RingSolver.Core.Polynomial.Homomorphism.Constants
   {r₁ r₂ r₃ r₄}
   (homo : Homomorphism r₁ r₂ r₃ r₄)
   where
@@ -31,21 +31,3 @@ open import Algebra.Operations.Ring rawRing
 
 κ-hom : ∀ {n} (x : Raw.Carrier) (Ρ : Vec Carrier n) → ⟦ κ x ⟧ Ρ ≈ ⟦ x ⟧ᵣ
 κ-hom x _ = refl
-
-ι-hom : ∀ {n} (i : Fin n) (Ρ : Vec Carrier n) → ⟦ ι i ⟧ Ρ ≈ Vec.lookup Ρ i
-ι-hom i Ρ′ =
-  let (ρ , Ρ) = drop-1 (space≤′n i) Ρ′
-  in
-  begin
-    ⟦ (κ Raw.1# Δ 1 ∷↓ []) ⊐↓ space≤′n i ⟧ Ρ′
-  ≈⟨ ⊐↓-hom (κ Raw.1# Δ 1 ∷↓ []) (space≤′n i) Ρ′ ⟩
-    ⅀?⟦ κ Raw.1# Δ 1 ∷↓ [] ⟧ (ρ , Ρ)
-  ≈⟨ ∷↓-hom-s (κ Raw.1#) 0 [] ρ Ρ  ⟩
-    ρ * ⟦ κ Raw.1# ⟧ Ρ
-  ≈⟨ *≫ 1-homo ⟩
-    ρ * 1#
-  ≈⟨ *-identityʳ ρ ⟩
-    ρ
-  ≡⟨ drop-1⇒lookup i Ρ′ ⟩
-    Vec.lookup Ρ′ i
-  ∎

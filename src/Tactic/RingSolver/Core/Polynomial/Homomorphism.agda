@@ -24,4 +24,5 @@ open import Tactic.RingSolver.Core.Polynomial.Homomorphism.Addition       homo u
 open import Tactic.RingSolver.Core.Polynomial.Homomorphism.Multiplication homo using (⊠-hom) public
 open import Tactic.RingSolver.Core.Polynomial.Homomorphism.Negation       homo using (⊟-hom) public
 open import Tactic.RingSolver.Core.Polynomial.Homomorphism.Exponentiation homo using (⊡-hom) public
-open import Tactic.RingSolver.Core.Polynomial.Homomorphism.Semantics      homo using (κ-hom; ι-hom) public
+open import Tactic.RingSolver.Core.Polynomial.Homomorphism.Constants      homo using (κ-hom) public
+open import Tactic.RingSolver.Core.Polynomial.Homomorphism.Variables      homo using (ι-hom) public
