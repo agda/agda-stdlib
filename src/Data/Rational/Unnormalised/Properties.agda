@@ -191,6 +191,26 @@ p ≤? q = Dec.map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* �
   ; ε   = 0ℚᵘ
   }
 
++-0-rawGroup : RawGroup 0ℓ 0ℓ
++-0-rawGroup = record
+  { Carrier = ℚᵘ
+  ; _≈_ = _≃_
+  ; _∙_ = _+_
+  ; ε = 0ℚᵘ
+  ; _⁻¹ = -_
+  }
+
++-*-rawRing : RawRing 0ℓ 0ℓ
++-*-rawRing = record
+  { Carrier = ℚᵘ
+  ; _≈_ = _≃_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; -_ = -_
+  ; 0# = 0ℚᵘ
+  ; 1# = 1ℚᵘ
+  }
+
 ------------------------------------------------------------------------
 -- Algebraic properties
 
@@ -529,6 +549,12 @@ p ≤? q = Dec.map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* �
   ; zero             = *-zero
   }
 
++-*-isCommutativeRing : IsCommutativeRing _≃_ _+_ _*_ -_ 0ℚᵘ 1ℚᵘ
++-*-isCommutativeRing = record
+  { isRing = +-*-isRing
+  ; *-comm = *-comm
+  }
+
 ------------------------------------------------------------------------
 -- Algebraic bundles
 
@@ -555,4 +581,9 @@ p ≤? q = Dec.map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* �
 +-*-ring : Ring 0ℓ 0ℓ
 +-*-ring = record
   { isRing = +-*-isRing
+  }
+
++-*-commutativeRing : CommutativeRing 0ℓ 0ℓ
++-*-commutativeRing = record
+  { isCommutativeRing = +-*-isCommutativeRing
   }

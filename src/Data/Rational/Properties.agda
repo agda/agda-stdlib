@@ -12,6 +12,8 @@ open import Algebra.Consequences.Propositional
 open import Algebra.Morphism
 open import Algebra.Bundles
 import Algebra.Morphism.MonoidMonomorphism as MonoidMonomorphisms
+import Algebra.Morphism.GroupMonomorphism as GroupMonomorphisms
+import Algebra.Morphism.RingMonomorphism as RingMonomorphisms
 import Algebra.Properties.CommutativeSemigroup as CommSemigroupProperties
 open import Data.Integer as ℤ using (ℤ; ∣_∣; +_; -[1+_]; 0ℤ; _◃_)
 open import Data.Integer.Coprimality using (coprime-divisor)
@@ -515,6 +517,24 @@ private
   ; ε   = 0ℚ
   }
 
++-0-rawGroup : RawGroup 0ℓ 0ℓ
++-0-rawGroup = record
+  { _≈_ = _≡_
+  ; _∙_ = _+_
+  ; ε   = 0ℚ
+  ; _⁻¹ = -_
+  }
+
++-*-rawRing : RawRing 0ℓ 0ℓ
++-*-rawRing = record
+  { _≈_ = _≡_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; -_  = -_
+  ; 0#  = 0ℚ
+  ; 1#  = 1ℚ
+  }
+
 ------------------------------------------------------------------------
 -- Monomorphic to unnormalised _+_
 
@@ -562,10 +582,31 @@ toℚᵘ-isMonoidMonomorphism-+ = record
   }
 
 ------------------------------------------------------------------------
+-- Monomorphic to unnormalised -_
+
+toℚᵘ-homo‿- : Homomorphic₁ toℚᵘ (-_) (ℚᵘ.-_)
+toℚᵘ-homo‿- (mkℚ +0       _ _) = *≡* refl
+toℚᵘ-homo‿- (mkℚ +[1+ _ ] _ _) = *≡* refl
+toℚᵘ-homo‿- (mkℚ -[1+ _ ] _ _) = *≡* refl
+
+toℚᵘ-isGroupHomomorphism-+ : IsGroupHomomorphism +-0-rawGroup ℚᵘ.+-0-rawGroup toℚᵘ
+toℚᵘ-isGroupHomomorphism-+ = record
+  { isMonoidHomomorphism = toℚᵘ-isMonoidHomomorphism-+
+  ; ⁻¹-homo              = toℚᵘ-homo‿-
+  }
+
+toℚᵘ-isGroupMonomorphism-+ : IsGroupMonomorphism +-0-rawGroup ℚᵘ.+-0-rawGroup toℚᵘ
+toℚᵘ-isGroupMonomorphism-+ = record
+  { isGroupHomomorphism = toℚᵘ-isGroupHomomorphism-+
+  ; injective           = toℚᵘ-injective
+  }
+
+------------------------------------------------------------------------
 -- Algebraic properties
 
 private
   module +-Monomorphism = MonoidMonomorphisms toℚᵘ-isMonoidMonomorphism-+
+  module +-0-Monomorphism = GroupMonomorphisms toℚᵘ-isGroupMonomorphism-+
 
 +-assoc : Associative _+_
 +-assoc = +-Monomorphism.assoc ℚᵘ.+-isMagma ℚᵘ.+-assoc
@@ -582,6 +623,18 @@ private
 +-identity : Identity 0ℚ _+_
 +-identity = +-identityˡ , +-identityʳ
 
++-inverseˡ : LeftInverse 0ℚ -_ _+_
++-inverseˡ = +-0-Monomorphism.inverseˡ ℚᵘ.+-0-isMonoid ℚᵘ.+-inverseˡ
+
++-inverseʳ : RightInverse 0ℚ -_ _+_
++-inverseʳ = +-0-Monomorphism.inverseʳ ℚᵘ.+-0-isMonoid ℚᵘ.+-inverseʳ
+
++-inverse : Inverse 0ℚ -_ _+_
++-inverse = +-0-Monomorphism.inverse ℚᵘ.+-0-isMonoid ℚᵘ.+-inverse
+
+-‿cong :  Congruent₁ (-_)
+-‿cong = +-0-Monomorphism.⁻¹-cong ℚᵘ.+-0-isMonoid ℚᵘ.-‿cong
+
 ------------------------------------------------------------------------
 -- Structures
 
@@ -596,6 +649,15 @@ private
 
 +-0-isCommutativeMonoid : IsCommutativeMonoid _+_ 0ℚ
 +-0-isCommutativeMonoid = +-Monomorphism.isCommutativeMonoid ℚᵘ.+-0-isCommutativeMonoid
+
++-0-isGroup : IsGroup _+_ 0ℚ (-_)
++-0-isGroup = +-0-Monomorphism.isGroup ℚᵘ.+-0-isGroup
+
++-0-isAbelianGroup : IsAbelianGroup _+_ 0ℚ (-_)
++-0-isAbelianGroup = +-0-Monomorphism.isAbelianGroup ℚᵘ.+-0-isAbelianGroup
+
++-0-isRing : IsRing _+_ _*_ -_ 0ℚ 1ℚ
++-0-isRing = {!!}
 
 ------------------------------------------------------------------------
 -- Packages
@@ -620,6 +682,15 @@ private
   { isCommutativeMonoid = +-0-isCommutativeMonoid
   }
 
++-0-group : Group 0ℓ 0ℓ
++-0-group = record
+  { isGroup = +-0-isGroup
+  }
+
++-0-abelianGroup : AbelianGroup 0ℓ 0ℓ
++-0-abelianGroup = record
+  { isAbelianGroup = +-0-isAbelianGroup
+  }
 
 ------------------------------------------------------------------------
 -- Properties of _*_
@@ -694,11 +765,24 @@ toℚᵘ-isMonoidMonomorphism-* = record
   ; injective            = toℚᵘ-injective
   }
 
+toℚᵘ-isRingHomomorphism-+-* : IsRingHomomorphism +-*-rawRing ℚᵘ.+-*-rawRing toℚᵘ
+toℚᵘ-isRingHomomorphism-+-* = record
+  { +-isGroupHomomorphism  = toℚᵘ-isGroupHomomorphism-+
+  ; *-isMonoidHomomorphism = toℚᵘ-isMonoidHomomorphism-*
+  }
+
+toℚᵘ-isRingMonomorphism-+-* : IsRingMonomorphism +-*-rawRing ℚᵘ.+-*-rawRing toℚᵘ
+toℚᵘ-isRingMonomorphism-+-* = record
+  { isRingHomomorphism = toℚᵘ-isRingHomomorphism-+-*
+  ; injective          = toℚᵘ-injective
+  }
+
 ------------------------------------------------------------------------
 -- Algebraic properties
 
 private
-  module *-Monomorphism = MonoidMonomorphisms toℚᵘ-isMonoidMonomorphism-*
+  module *-Monomorphism   = MonoidMonomorphisms toℚᵘ-isMonoidMonomorphism-*
+  module +-*-Monomorphism = RingMonomorphisms toℚᵘ-isRingMonomorphism-+-*
 
 *-assoc : Associative _*_
 *-assoc = *-Monomorphism.assoc ℚᵘ.*-isMagma ℚᵘ.*-assoc
@@ -730,6 +814,9 @@ private
 *-1-isCommutativeMonoid : IsCommutativeMonoid _*_ 1ℚ
 *-1-isCommutativeMonoid = *-Monomorphism.isCommutativeMonoid ℚᵘ.*-1-isCommutativeMonoid
 
++-*-isRing : IsRing _+_ _*_ -_ 0ℚ 1ℚ
++-*-isRing = +-*-Monomorphism.isRing ℚᵘ.+-*-isRing
+
 ------------------------------------------------------------------------
 -- Packages
 
@@ -753,6 +840,10 @@ private
   { isCommutativeMonoid = *-1-isCommutativeMonoid
   }
 
++-*-ring : Ring 0ℓ 0ℓ
++-*-ring = record
+  { isRing = +-*-isRing
+  }
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

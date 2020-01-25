@@ -32,7 +32,6 @@ module MagmaMorphisms (M₁ : RawMagma a ℓ₁) (M₂ : RawMagma b ℓ₂) wher
   open MorphismDefinitions A B _≈₂_
   open FunctionDefinitions _≈₁_ _≈₂_
 
-
   record IsMagmaHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       isRelHomomorphism : IsRelHomomorphism _≈₁_ _≈₂_ ⟦_⟧
@@ -89,7 +88,6 @@ module MonoidMorphisms (M₁ : RawMonoid a ℓ₁) (M₂ : RawMonoid b ℓ₂) w
 
     open IsMagmaHomomorphism isMagmaHomomorphism public
 
-
   record IsMonoidMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       isMonoidHomomorphism : IsMonoidHomomorphism ⟦_⟧
@@ -103,8 +101,8 @@ module MonoidMorphisms (M₁ : RawMonoid a ℓ₁) (M₂ : RawMonoid b ℓ₂) w
       ; injective           = injective
       }
 
-    open IsMagmaMonomorphism isMagmaMonomorphism public
-      using (isRelMonomorphism)
+    open IsMagmaMonomorphism isMagmaMonomorphism 
+      using (isRelMonomorphism) public
 
 
   record IsMonoidIsomorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
@@ -123,9 +121,132 @@ module MonoidMorphisms (M₁ : RawMonoid a ℓ₁) (M₂ : RawMonoid b ℓ₂) w
     open IsMagmaIsomorphism isMagmaIsomorphism public
       using (isRelIsomorphism)
 
+------------------------------------------------------------------------
+-- Morphisms over group-like structures
+------------------------------------------------------------------------
+
+module GroupMorphisms (G₁ : RawGroup a ℓ₁) (G₂ : RawGroup b ℓ₂) where
+
+  open RawGroup G₁ renaming
+    (Carrier to A; _≈_ to _≈₁_; _∙_ to _∙_; _⁻¹ to _⁻¹₁; ε to ε₁)
+  open RawGroup G₂ renaming
+    (Carrier to B; _≈_ to _≈₂_; _∙_ to _◦_; _⁻¹ to _⁻¹₂; ε to ε₂)
+  open MorphismDefinitions A B _≈₂_
+  open FunctionDefinitions _≈₁_ _≈₂_
+  open MagmaMorphisms (RawGroup.rawMagma G₁) (RawGroup.rawMagma G₂)
+  open MonoidMorphisms (RawGroup.rawMonoid G₁) (RawGroup.rawMonoid G₂)
+
+  record IsGroupHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      isMonoidHomomorphism : IsMonoidHomomorphism ⟦_⟧
+      ⁻¹-homo              : Homomorphic₁ ⟦_⟧ _⁻¹₁ _⁻¹₂
+
+    open IsMonoidHomomorphism isMonoidHomomorphism public
+
+  record IsGroupMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      isGroupHomomorphism : IsGroupHomomorphism ⟦_⟧
+      injective           : Injective ⟦_⟧
+
+    open IsGroupHomomorphism isGroupHomomorphism 
+      renaming (homo to +-homo) public
+
+    isMonoidMonomorphism : IsMonoidMonomorphism ⟦_⟧
+    isMonoidMonomorphism = record
+      { isMonoidHomomorphism = isMonoidHomomorphism
+      ; injective            = injective
+      }
+
+    open IsMonoidMonomorphism isMonoidMonomorphism public
+      using (isRelMonomorphism)
+
+  record IsGroupIsomorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      isGroupMonomorphism : IsGroupMonomorphism ⟦_⟧
+      surjective          : Surjective ⟦_⟧
+
+    open IsGroupMonomorphism isGroupMonomorphism public
+
+    isMonoidIsomorphism : IsMonoidIsomorphism ⟦_⟧
+    isMonoidIsomorphism = record
+      { isMonoidMonomorphism = isMonoidMonomorphism
+      ; surjective           = surjective
+      }
+
+    open IsMonoidIsomorphism isMonoidIsomorphism public
+      using (isRelIsomorphism)
+
+ 
+
+------------------------------------------------------------------------
+-- Morphisms over ring-like structures
+------------------------------------------------------------------------
+
+module RingMorphisms (R₁ : RawRing a ℓ₁) (R₂ : RawRing b ℓ₂) where
+
+  open RawRing R₁ renaming
+    ( Carrier to A; _≈_ to _≈₁_; +-rawAbelianGroup to +-rawAbelianGroup₁
+    ; *-rawMonoid to *-rawMonoid₁)
+
+  open RawAbelianGroup +-rawAbelianGroup₁
+    renaming (+-rawGroup to +-rawGroup₁)
+
+  open RawRing R₂ renaming
+    ( Carrier to B; _≈_ to _≈₂_; +-rawAbelianGroup to +-rawAbelianGroup₂
+    ; *-rawMonoid to *-rawMonoid₂)
+
+  open RawAbelianGroup +-rawAbelianGroup₂
+    renaming (+-rawGroup to +-rawGroup₂)
+
+  open GroupMorphisms +-rawGroup₁ +-rawGroup₂
+    renaming
+    ( IsGroupHomomorphism to +-IsGroupHomomorphism
+    ; IsGroupMonomorphism to +-IsGroupMonomorphism)
+
+  open MonoidMorphisms *-rawMonoid₁ *-rawMonoid₂ renaming
+    ( IsMonoidHomomorphism to *-IsMonoidHomomorphism
+    ; IsMonoidMonomorphism to *-IsMonoidMonomorphism)
+
+  open MorphismDefinitions A B _≈₂_
+  open FunctionDefinitions _≈₁_ _≈₂_
+
+  record IsRingHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      +-isGroupHomomorphism  : +-IsGroupHomomorphism  ⟦_⟧
+      *-isMonoidHomomorphism : *-IsMonoidHomomorphism ⟦_⟧
+
+    open +-IsGroupHomomorphism +-isGroupHomomorphism renaming
+      (homo to +-homo; ε-homo to 1-homo) public
+
+    open *-IsMonoidHomomorphism *-isMonoidHomomorphism renaming
+      (homo to *-homo; ε-homo to 0-homo) public
+
+  record IsRingMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      isRingHomomorphism : IsRingHomomorphism ⟦_⟧
+      injective          : Injective ⟦_⟧
+
+    open IsRingHomomorphism isRingHomomorphism public
+
+    +-isGroupMonomorphism : +-IsGroupMonomorphism ⟦_⟧
+    +-isGroupMonomorphism = record
+      { isGroupHomomorphism = +-isGroupHomomorphism
+      ; injective           = injective
+      }
+
+    *-isMonoidMonomorphism : *-IsMonoidMonomorphism ⟦_⟧
+    *-isMonoidMonomorphism = record
+      { isMonoidHomomorphism = *-isMonoidHomomorphism
+      ; injective            = injective
+      }
+
+    open *-IsMonoidMonomorphism *-isMonoidMonomorphism public
+      using (isRelMonomorphism)
 
 ------------------------------------------------------------------------
 -- Re-export contents of modules publicly
 
 open MagmaMorphisms public
 open MonoidMorphisms public
+open GroupMorphisms public
+open RingMorphisms public
