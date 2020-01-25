@@ -1,3 +1,12 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Consequences of a monomorphism between ring-like structures
+------------------------------------------------------------------------
+
+-- See Data.Nat.Binary.Properties for examples of how this and similar
+-- modules can be used to easily translate properties between types.
+
 {-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Bundles
@@ -29,13 +38,15 @@ open import Algebra.Morphism.GroupMonomorphism
 open import Algebra.Morphism.MonoidMonomorphism
   *-isMonoidMonomorphism using (isMonoid) public
 
+------------------------------------------------------------------------
+-- Properties
+
 module _ (+-isGroup  : IsGroup  _≈₂_ _⊕_ 0#₂ ⊝_)
          (*-isMonoid : IsMonoid _≈₂_ _⊛_ 1#₂) where
 
   open IsGroup +-isGroup
     renaming (∙-cong to +-cong) hiding (setoid; refl)
-  open IsMonoid *-isMonoid
-    renaming (∙-cong to *-cong)
+  open IsMonoid *-isMonoid renaming (∙-cong to *-cong)
   open SetoidReasoning setoid
 
   distribˡ : _DistributesOverˡ_ _≈₂_ _⊛_ _⊕_ → _DistributesOverˡ_ _≈₁_ _*_ _+_
@@ -61,24 +72,24 @@ module _ (+-isGroup  : IsGroup  _≈₂_ _⊕_ 0#₂ ⊝_)
 
   zeroˡ : LeftZero _≈₂_ 0#₂ _⊛_ → LeftZero _≈₁_ 0# _*_
   zeroˡ zeroˡ x = injective (begin
-    ⟦ 0# * x ⟧     ≈⟨ *-homo 0# x ⟩
-    ⟦ 0# ⟧ ⊛ ⟦ x ⟧ ≈⟨ *-cong ε-homo refl ⟩
-    0#₂ ⊛ ⟦ x ⟧    ≈⟨ zeroˡ ⟦ x ⟧ ⟩
-    0#₂            ≈˘⟨ ε-homo ⟩
+    ⟦ 0# * x ⟧    ≈⟨ *-homo 0# x ⟩
+    ⟦ 0# ⟧ ⊛ ⟦ x ⟧ ≈⟨ *-cong 0-homo refl ⟩
+    0#₂ ⊛ ⟦ x ⟧   ≈⟨ zeroˡ ⟦ x ⟧ ⟩
+    0#₂          ≈˘⟨ 0-homo ⟩
     ⟦ 0# ⟧ ∎)
 
   zeroʳ : RightZero _≈₂_ 0#₂ _⊛_ → RightZero _≈₁_ 0# _*_
   zeroʳ zeroʳ x = injective (begin
     ⟦ x * 0# ⟧    ≈⟨ *-homo x 0# ⟩
-    ⟦ x ⟧ ⊛ ⟦ 0# ⟧ ≈⟨ *-cong refl ε-homo ⟩
+    ⟦ x ⟧ ⊛ ⟦ 0# ⟧ ≈⟨ *-cong refl 0-homo ⟩
     ⟦ x ⟧ ⊛ 0#₂   ≈⟨ zeroʳ ⟦ x ⟧ ⟩
-    0#₂          ≈˘⟨ ε-homo ⟩
+    0#₂          ≈˘⟨ 0-homo ⟩
     ⟦ 0# ⟧ ∎)
 
   zero : Zero _≈₂_ 0#₂ _⊛_ → Zero _≈₁_ 0# _*_
   zero zero = zeroˡ (proj₁ zero) , zeroʳ (proj₂ zero)
 
-isRing : IsRing _≈₂_ _⊕_ _⊛_ ⊝_ 0#₂ 1#₂ → IsRing _≈₁_ _+_ _*_ -_ 0# 1rationals and u#
+isRing : IsRing _≈₂_ _⊕_ _⊛_ ⊝_ 0#₂ 1#₂ → IsRing _≈₁_ _+_ _*_ -_ 0# 1#
 isRing isRing = record
   { +-isAbelianGroup = isAbelianGroup R.+-isAbelianGroup
   ; *-isMonoid       = isMonoid R.*-isMonoid

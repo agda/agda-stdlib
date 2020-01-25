@@ -656,9 +656,6 @@ private
 +-0-isAbelianGroup : IsAbelianGroup _+_ 0ℚ (-_)
 +-0-isAbelianGroup = +-0-Monomorphism.isAbelianGroup ℚᵘ.+-0-isAbelianGroup
 
-+-0-isRing : IsRing _+_ _*_ -_ 0ℚ 1ℚ
-+-0-isRing = {!!}
-
 ------------------------------------------------------------------------
 -- Packages
 
@@ -798,6 +795,15 @@ private
 
 *-identity : Identity 1ℚ _*_
 *-identity = *-identityˡ , *-identityʳ
+
+*-distribˡ-+ : _*_ DistributesOverˡ _+_
+*-distribˡ-+ = +-*-Monomorphism.distribˡ ℚᵘ.+-0-isGroup ℚᵘ.*-1-isMonoid ℚᵘ.*-distribˡ-+
+
+*-distribʳ-+ : _*_ DistributesOverʳ _+_
+*-distribʳ-+ = +-*-Monomorphism.distribʳ ℚᵘ.+-0-isGroup ℚᵘ.*-1-isMonoid ℚᵘ.*-distribʳ-+
+
+*-distrib-+ : _*_ DistributesOver _+_
+*-distrib-+ = *-distribˡ-+ , *-distribʳ-+
 
 ------------------------------------------------------------------------
 -- Structures

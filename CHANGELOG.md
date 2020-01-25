@@ -256,6 +256,9 @@ Other major additions
 
 * Added new modules:
   ```agda
+  Algebra.Morphism.GroupMonomorphism
+  Algebra.Morphism.RingMonomorphism
+  
   Codata.Cowriter.Bisimilarity
 
   Data.Erased
@@ -347,6 +350,11 @@ Other major additions
 
 Other minor additions
 ---------------------
+
+* Added new record to `Algebra.Bundles`:
+  ```
+  record RawAbelianGroup c ℓ : Set (suc (c ⊔ ℓ)) where
+  ```
 
 * Added new proofs to `Data.Sum.Properties`:
   ```agda
@@ -631,23 +639,44 @@ Other minor additions
   toℚᵘ-isMagmaHomomorphism-*  : IsMagmaHomomorphism *-rawMagma ℚᵘ.*-rawMagma toℚᵘ
   toℚᵘ-isMonoidHomomorphism-* : IsMonoidHomomorphism *-rawMonoid ℚᵘ.*-rawMonoid toℚᵘ
   toℚᵘ-isMonoidMonomorphism-* : IsMonoidMonomorphism *-rawMonoid ℚᵘ.*-rawMonoid toℚᵘ
+  toℚᵘ-homo‿- : Homomorphic₁ toℚᵘ (-_) (ℚᵘ.-_)
+  toℚᵘ-isGroupHomomorphism-+  : IsGroupHomomorphism +-0-rawGroup ℚᵘ.+-0-rawGroup toℚᵘ
+  toℚᵘ-isGroupMonomorphism-+  : IsGroupMonomorphism +-0-rawGroup ℚᵘ.+-0-rawGroup toℚᵘ
+  toℚᵘ-isRingHomomorphism-|-* : IsRingHomomorphism +-*-rawRing ℚᵘ.+-*-rawRing toℚᵘ
+  toℚᵘ-isRingMonomorphism-|-* : IsRingMonomorphism +-*-rawRing ℚᵘ.+-*-rawRing toℚᵘ
 
   *-assoc     : Associative _*_
   *-comm      : Commutative _*_
   *-identityˡ : LeftIdentity 1ℚ _*_
   *-identityʳ : RightIdentity 1ℚ _*_
   *-identity  : Identity 1ℚ _*_
-
+  +-inverseˡ  : LeftInverse 0ℚ -_ _+_
+  +-inverseʳ  : RightInverse 0ℚ -_ _+_
+  +-inverse   : Inverse 0ℚ -_ _+_
+  -‿cong      :  Congruent₁ (-_)
+  
   *-isMagma               : IsMagma _*_
   *-isSemigroup           : IsSemigroup _*
   *-1-isMonoid            : IsMonoid _*_ 1ℚ
   *-1-isCommutativeMonoid : IsCommutativeMonoid _*_ 1ℚ
   *-rawMagma              : RawMagma 0ℓ 0ℓ
   *-rawMonoid             : RawMonoid 0ℓ 0ℓ
+  +-0-rawGroup            : RawGroup 0ℓ 0ℓ
+  +-*-rawRing             : RawRing 0ℓ 0ℓ
+  +-0-isGroup             : IsGroup _+_ 0ℚ (-_)
+  +-0-isAbelianGroup      : IsAbelianGroup _+_ 0ℚ (-_)
+  +-0-isRing              : IsRing _+_ _*_ -_ 0ℚ 1ℚ
+  +-0-group               : Group 0ℓ 0ℓ
+  +-0-abelianGroup        : AbelianGroup 0ℓ 0ℓ
+  *-distribˡ-+            : _*_ DistributesOverˡ _+_
+  *-distribʳ-+            : _*_ DistributesOverʳ _+_
+  *-distrib-+             : _*_ DistributesOver _+_
   *-magma                 : Magma 0ℓ 0ℓ
   *-semigroup             : Semigroup 0ℓ 0ℓ
   *-1-monoid              : Monoid 0ℓ 0ℓ
   *-1-commutativeMonoid   : CommutativeMonoid 0ℓ 0ℓ
+  +-*-isRing              : IsRing _+_ _*_ -_ 0ℚ 1ℚ
+  +-*-ring                : Ring 0ℓ 0ℓ
   ```
 
 * Added new proofs to `Data.Rational.Unnormalised.Properties`:
@@ -660,14 +689,18 @@ Other minor additions
   +-0-group          : Group 0ℓ 0ℓ
   +-0-isAbelianGroup : IsAbelianGroup _≃_ _+_ 0ℚᵘ (-_)
   +-0-abelianGroup   : AbelianGroup 0ℓ 0ℓ
-  *-zeroˡ : LeftZero _≃_ 0ℚᵘ _*_
-  *-zeroʳ : RightZero _≃_ 0ℚᵘ _*_
-  *-zero : Zero _≃_ 0ℚᵘ _*_
-  *-distribˡ-+ : _DistributesOverˡ_ _≃_ _*_ _+_
-  *-distribʳ-+ : _DistributesOverʳ_ _≃_ _*_ _+_
-  *-distrib-+ : _DistributesOver_ _≃_ _*_ _+_
-  +-*-isRing : IsRing _≃_ _+_ _*_ -_ 0ℚᵘ 1ℚ 
-  +-*-ring : Ring 0ℓ 0ℓ
+  *-zeroˡ            : LeftZero _≃_ 0ℚᵘ _*_
+  *-zeroʳ            : RightZero _≃_ 0ℚᵘ _*_
+  *-zero             : Zero _≃_ 0ℚᵘ _*_
+  *-distribˡ-+       : _DistributesOverˡ_ _≃_ _*_ _+_
+  *-distribʳ-+       : _DistributesOverʳ_ _≃_ _*_ _+_
+  *-distrib-+        : _DistributesOver_ _≃_ _*_ _+_
+  +-*-isRing         : IsRing _≃_ _+_ _*_ -_ 0ℚᵘ 1ℚ 
+  +-*-ring           : Ring 0ℓ 0ℓ
+  +-0-rawGroup       : RawGroup 0ℓ 0ℓ
+  +-*-rawRing        : RawRing 0ℓ 0ℓ
+  +-*-isCommutativeRing : IsCommutativeRing _≃_ _+_ _*_ -_ 0ℚᵘ 1ℚᵘ
+  +-*-commutativeRing : CommutativeRing 0ℓ 0ℓ
   ```
 
 * Added convenience functions to `Data.String.Base`:

@@ -101,7 +101,7 @@ module MonoidMorphisms (M₁ : RawMonoid a ℓ₁) (M₂ : RawMonoid b ℓ₂) w
       ; injective           = injective
       }
 
-    open IsMagmaMonomorphism isMagmaMonomorphism 
+    open IsMagmaMonomorphism isMagmaMonomorphism
       using (isRelMonomorphism) public
 
 
@@ -148,7 +148,7 @@ module GroupMorphisms (G₁ : RawGroup a ℓ₁) (G₂ : RawGroup b ℓ₂) wher
       isGroupHomomorphism : IsGroupHomomorphism ⟦_⟧
       injective           : Injective ⟦_⟧
 
-    open IsGroupHomomorphism isGroupHomomorphism 
+    open IsGroupHomomorphism isGroupHomomorphism
       renaming (homo to +-homo) public
 
     isMonoidMonomorphism : IsMonoidMonomorphism ⟦_⟧
@@ -176,8 +176,6 @@ module GroupMorphisms (G₁ : RawGroup a ℓ₁) (G₂ : RawGroup b ℓ₂) wher
     open IsMonoidIsomorphism isMonoidIsomorphism public
       using (isRelIsomorphism)
 
- 
-
 ------------------------------------------------------------------------
 -- Morphisms over ring-like structures
 ------------------------------------------------------------------------
@@ -201,11 +199,13 @@ module RingMorphisms (R₁ : RawRing a ℓ₁) (R₂ : RawRing b ℓ₂) where
   open GroupMorphisms +-rawGroup₁ +-rawGroup₂
     renaming
     ( IsGroupHomomorphism to +-IsGroupHomomorphism
-    ; IsGroupMonomorphism to +-IsGroupMonomorphism)
+    ; IsGroupMonomorphism to +-IsGroupMonomorphism
+    ; IsGroupIsomorphism  to +-IsGroupIsomorphism)
 
   open MonoidMorphisms *-rawMonoid₁ *-rawMonoid₂ renaming
     ( IsMonoidHomomorphism to *-IsMonoidHomomorphism
-    ; IsMonoidMonomorphism to *-IsMonoidMonomorphism)
+    ; IsMonoidMonomorphism to *-IsMonoidMonomorphism
+    ; IsMonoidIsomorphism  to *-IsMonoidIsomorphism)
 
   open MorphismDefinitions A B _≈₂_
   open FunctionDefinitions _≈₁_ _≈₂_
@@ -216,10 +216,10 @@ module RingMorphisms (R₁ : RawRing a ℓ₁) (R₂ : RawRing b ℓ₂) where
       *-isMonoidHomomorphism : *-IsMonoidHomomorphism ⟦_⟧
 
     open +-IsGroupHomomorphism +-isGroupHomomorphism renaming
-      (homo to +-homo; ε-homo to 1-homo) public
+      (homo to +-homo; ε-homo to 0-homo) public
 
     open *-IsMonoidHomomorphism *-isMonoidHomomorphism renaming
-      (homo to *-homo; ε-homo to 0-homo) public
+      (homo to *-homo; ε-homo to 1-homo) public
 
   record IsRingMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
     field
@@ -242,6 +242,28 @@ module RingMorphisms (R₁ : RawRing a ℓ₁) (R₂ : RawRing b ℓ₂) where
 
     open *-IsMonoidMonomorphism *-isMonoidMonomorphism public
       using (isRelMonomorphism)
+
+  record IsRingIsomorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      isRingMonomorphism : IsRingMonomorphism ⟦_⟧
+      surjective         : Surjective ⟦_⟧
+
+    open IsRingMonomorphism isRingMonomorphism public
+
+    +-isGroupIsomorphism : +-IsGroupIsomorphism ⟦_⟧
+    +-isGroupIsomorphism = record
+      { isGroupMonomorphism = +-isGroupMonomorphism
+      ; surjective          = surjective
+      }
+
+    *-isMonoidIsomorphism : *-IsMonoidIsomorphism ⟦_⟧
+    *-isMonoidIsomorphism = record
+      { isMonoidMonomorphism = *-isMonoidMonomorphism
+      ; surjective           = surjective
+      }
+
+    open *-IsMonoidIsomorphism *-isMonoidIsomorphism public
+      using (isRelIsomorphism)
 
 ------------------------------------------------------------------------
 -- Re-export contents of modules publicly
