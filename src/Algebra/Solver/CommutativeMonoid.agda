@@ -161,7 +161,7 @@ normalise-correct (e₁ ⊕ e₂) ρ =  begin
   ∎
 
 ------------------------------------------------------------------------
--- "Tactics"
+-- "Tactic.
 
 open module R = Reflection
                   setoid var ⟦_⟧ (⟦_⟧⇓ ∘ normalise) normalise-correct

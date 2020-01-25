@@ -209,6 +209,9 @@ discourage their use.
   Algebra.FunctionProperties.Consequences.Core           ↦ Algebra.Consequences.Base
   Algebra.FunctionProperties.Consequences.Propositional  ↦ Algebra.Consequences.Propositional
   Algebra.FunctionProperties.Consequences                ↦ Algebra.Conseqeunces.Setoid
+  
+  Data.Nat.Solver      ↦ Data.Nat.Tactic.RingSolver
+  Data.Integer.Solver  ↦ Data.Integer.Tactic.RingSolver
   ```
 
 Deprecated names
@@ -269,7 +272,11 @@ Other major additions
   Data.Tree.Rose
   Data.Tree.Rose.Properties
 
+  Reflection.TCMonadSyntax
+  
   Tactic.MonoidSolver
+  Tactic.RingSolver
+  Tactic.RingSolver.NonReflective
 
   Text.Pretty.Core
   Text.Pretty
@@ -281,6 +288,7 @@ Other major additions
   README.Text.Pretty
   README.Text.Tabular
   README.Text.Tree
+  README.Tactic.RingSolver
   ```
 
 * The module `Reflection` is no longer unsafe.
@@ -364,6 +372,8 @@ Other minor additions
   ⁻¹-injective   : x ⁻¹ ≈ y ⁻¹ → x ≈ y
   ⁻¹-anti-homo-∙ : (x ∙ y) ⁻¹ ≈ y ⁻¹ ∙ x ⁻¹
   ```
+
+* The record `IsCommutativeSemiring` now exports `*-isCommutativeSemigroup`.
 
 * Made `RawFunctor`,  `RawApplicative` and `IFun` more level polymorphic
   (in `Category.Functor`, `Category.Applicative` and
@@ -563,6 +573,9 @@ Other minor additions
 * Added new proof to `Data.Nat.Properties`:
   ```agda
   m<n+m : n > 0 → m < n + m
+
+  *-isCommutativeSemigroup : IsCommutativeSemigroup _*_
+  *-commutativeSemigroup   : CommutativeSemigroup 0ℓ 0ℓ
   ```
 
 * Added new proofs to `Data.Nat.Properties`:
@@ -582,6 +595,7 @@ Other minor additions
 
 * Added new functions to `Data.Vec.Base`:
   ```agda
+  uncons    : Vec A (suc n) → A × Vec A n
   length    : Vec A n → ℕ
   transpose : Vec (Vec A n) m → Vec (Vec A m) n
   ```

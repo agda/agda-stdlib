@@ -109,7 +109,7 @@ normalise-correct (e₁ ⊕ e₂) ρ = begin
   ⟦ e₁ ⟧ ρ ∙ ⟦ e₂ ⟧ ρ                        ∎
 
 ------------------------------------------------------------------------
--- "Tactics"
+-- "Tactic.
 
 open module R = Relation.Binary.Reflection
                   setoid var ⟦_⟧ (⟦_⟧⇓ ∘ normalise) normalise-correct
