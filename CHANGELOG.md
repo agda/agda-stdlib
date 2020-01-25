@@ -652,12 +652,22 @@ Other minor additions
 
 * Added new proofs to `Data.Rational.Unnormalised.Properties`:
   ```agda
-  +-inverseˡ  : LeftInverse _≃_ 0ℚᵘ -_ _+_
-  +-inverseʳ  : RightInverse _≃_ 0ℚᵘ -_ _+_
-  +-inverse   : Inverse _≃_ 0ℚᵘ -_ _+_
-  -‿cong      : Congruent₁ _≃_ (-_)
-  +-0-isGroup : IsGroup _≃_ _+_ 0ℚᵘ (-_)
-  +-0-group   : Group 0ℓ 0ℓ
+  +-inverseˡ         : LeftInverse _≃_ 0ℚᵘ -_ _+_
+  +-inverseʳ         : RightInverse _≃_ 0ℚᵘ -_ _+_
+  +-inverse          : Inverse _≃_ 0ℚᵘ -_ _+_
+  -‿cong             : Congruent₁ _≃_ (-_)
+  +-0-isGroup        : IsGroup _≃_ _+_ 0ℚᵘ (-_)
+  +-0-group          : Group 0ℓ 0ℓ
+  +-0-isAbelianGroup : IsAbelianGroup _≃_ _+_ 0ℚᵘ (-_)
+  +-0-abelianGroup   : AbelianGroup 0ℓ 0ℓ
+  *-zeroˡ : LeftZero _≃_ 0ℚᵘ _*_
+  *-zeroʳ : RightZero _≃_ 0ℚᵘ _*_
+  *-zero : Zero _≃_ 0ℚᵘ _*_
+  *-distribˡ-+ : _DistributesOverˡ_ _≃_ _*_ _+_
+  *-distribʳ-+ : _DistributesOverʳ_ _≃_ _*_ _+_
+  *-distrib-+ : _DistributesOver_ _≃_ _*_ _+_
+  +-*-isRing : IsRing _≃_ _+_ _*_ -_ 0ℚᵘ 1ℚ 
+  +-*-ring : Ring 0ℓ 0ℓ
   ```
 
 * Added convenience functions to `Data.String.Base`:
