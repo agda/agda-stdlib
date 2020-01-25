@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Solver for commutative ring or semiring equalities
+-- Old solver for commutative ring or semiring equalities
 ------------------------------------------------------------------------
 
 -- Uses ideas from the Coq ring tactic. See "Proving Equalities in a
@@ -142,7 +142,7 @@ mutual
 
   -- Note that the data types above do /not/ ensure uniqueness of
   -- normal forms: the zero polynomial of degree one can be
-  -- represented using both ∅ and ∅ *x+ con C.0#.
+  -- represented using both ∅ and ∅ *x+ con C.0#.
 
 mutual
 
@@ -541,7 +541,7 @@ correct (:- p) ρ = begin
   - ⟦ p ⟧ ρ              ∎
 
 ------------------------------------------------------------------------
--- "Tactics"
+-- "Tactic.
 
 open Reflection setoid var ⟦_⟧ ⟦_⟧↓ correct public
   using (prove; solve) renaming (_⊜_ to _:=_)
