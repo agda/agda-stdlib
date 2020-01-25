@@ -757,6 +757,12 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
   ; assoc   = *-assoc
   }
 
+*-isCommutativeSemigroup : IsCommutativeSemigroup _*_
+*-isCommutativeSemigroup = record
+  { isSemigroup = *-isSemigroup
+  ; comm        = *-comm
+  }
+
 *-1-isMonoid : IsMonoid _*_ 1
 *-1-isMonoid = record
   { isSemigroup = *-isSemigroup
@@ -809,6 +815,11 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
 *-semigroup : Semigroup 0ℓ 0ℓ
 *-semigroup = record
   { isSemigroup = *-isSemigroup
+  }
+
+*-commutativeSemigroup : CommutativeSemigroup 0ℓ 0ℓ
+*-commutativeSemigroup = record
+  { isCommutativeSemigroup = *-isCommutativeSemigroup
   }
 
 *-1-monoid : Monoid 0ℓ 0ℓ

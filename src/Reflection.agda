@@ -36,7 +36,7 @@ open import Reflection.Name as Name using (Name; Names) public
 open import Reflection.Meta as Meta using (Meta) public
 open import Reflection.Literal as Literal using (Literal) public
 open Literal.Literal public
-open import Reflection.Argument as Argument
+open import Reflection.Argument as Argument public
   using ( Arg; arg; Args
         ; vArg; hArg; iArg
         ) public
@@ -81,14 +81,10 @@ open Builtin public
         ; debugPrint; noConstraints; runSpeculative)
   renaming (returnTC to return)
 
-infixl 1 _>>=_
-infixl 1 _>>_
+-- Standard monad operators
 
-_>>=_ : ∀ {a b} {A : Set a} {B : Set b} → TC A → (A → TC B) → TC B
-ma >>= f = bindTC ma f
-
-_>>_ :  ∀ {a b} {A : Set a} {B : Set b} → TC A → TC B → TC B
-ma >> mb = ma >>= (λ _ → mb)
+open import Reflection.TCMonadSyntax public
+  using (_>>=_; _>>_)
 
 newMeta : Type → TC Term
 newMeta = checkType unknown

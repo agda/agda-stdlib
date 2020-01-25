@@ -11,7 +11,7 @@ module Data.Vec.Relation.Binary.Pointwise.Inductive where
 open import Data.Fin using (Fin; zero; suc)
 open import Data.Nat using (ℕ; zero; suc)
 open import Data.Product using (_×_; _,_; uncurry; <_,_>)
-open import Data.Vec as Vec hiding ([_]; head; tail; map; lookup)
+open import Data.Vec as Vec hiding ([_]; head; tail; map; lookup; uncons)
 open import Data.Vec.Relation.Unary.All using (All; []; _∷_)
 open import Level using (Level; _⊔_)
 open import Function.Base using (_∘_)

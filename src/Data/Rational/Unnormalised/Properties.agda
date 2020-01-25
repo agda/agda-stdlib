@@ -587,3 +587,4 @@ p ≤? q = Dec.map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* �
 +-*-commutativeRing = record
   { isCommutativeRing = +-*-isCommutativeRing
   }
+
