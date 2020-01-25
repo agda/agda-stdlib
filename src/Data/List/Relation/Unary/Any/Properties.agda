@@ -230,7 +230,7 @@ module _ {P : Pred A p} {Q : Pred B q} where
       | lose∘find q
       = refl
 
-    to∘from : ∀ pq → Any-×⁺ (Any-×⁻ pq) ≡ pq
+    to∘from : ∀ pq → Any-×⁺ {xs} (Any-×⁻ pq) ≡ pq
     to∘from pq
       with find pq
         | (λ (f : (proj₁ (find pq) ≡_) ⋐ _) → map∘find pq {f})

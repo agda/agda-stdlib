@@ -11,7 +11,6 @@ open import Relation.Binary using (TotalOrder; Setoid)
 module Data.List.Extrema
   {b ℓ₁ ℓ₂} (totalOrder : TotalOrder b ℓ₁ ℓ₂) where
 
-open import Algebra.FunctionProperties
 import Algebra.Construct.NaturalChoice.Min as Min
 import Algebra.Construct.NaturalChoice.Max as Max
 open import Data.List using (List; foldr)
@@ -227,8 +226,8 @@ v<max⁺ = v<f[argmax]⁺
 xs≤max : ∀ ⊥ xs → All (_≤ max ⊥ xs) xs
 xs≤max = f[xs]≤f[argmax]
 
-max≈v⁺ : ∀ {v ⊤ xs} → v ∈ xs → All (v ≤_) xs → v ≤ ⊤ → min ⊤ xs ≈ v
-max≈v⁺ = f[argmin]≈f[v]⁺
+max≈v⁺ : ∀ {v ⊤ xs} → v ∈ xs → All (_≤ v) xs → ⊤ ≤ v → max ⊤ xs ≈ v
+max≈v⁺ = f[argmax]≈f[v]⁺
 
 max[xs]≤max[ys]⁺ : ∀ {⊥₁} ⊥₂ {xs} ys → ⊥₁ ≤ ⊥₂ ⊎ Any (⊥₁ ≤_) ys →
                    All (λ x → x ≤ ⊥₂ ⊎ Any (x ≤_) ys) xs →

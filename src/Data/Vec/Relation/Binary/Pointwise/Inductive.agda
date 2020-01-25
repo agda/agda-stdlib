@@ -8,7 +8,6 @@
 
 module Data.Vec.Relation.Binary.Pointwise.Inductive where
 
-open import Algebra.FunctionProperties
 open import Data.Fin using (Fin; zero; suc)
 open import Data.Nat using (ℕ; zero; suc)
 open import Data.Product using (_×_; _,_; uncurry; <_,_>)

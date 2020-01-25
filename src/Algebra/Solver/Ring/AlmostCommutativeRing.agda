@@ -12,7 +12,7 @@ module Algebra.Solver.Ring.AlmostCommutativeRing where
 open import Relation.Binary
 open import Algebra
 open import Algebra.Structures
-open import Algebra.FunctionProperties
+open import Algebra.Definitions
 import Algebra.Morphism as Morphism
 import Algebra.Morphism.Definitions as MorphismDefinitions
 open import Function

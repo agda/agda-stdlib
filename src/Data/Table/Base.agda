@@ -8,6 +8,11 @@
 
 module Data.Table.Base where
 
+{-# WARNING_ON_IMPORT
+"Data.Table.Base was deprecated in v1.2.
+Use Data.Vec.Functional instead."
+#-}
+
 open import Data.Nat
 open import Data.Fin
 open import Data.Product using (_×_ ; _,_)

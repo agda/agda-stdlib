@@ -8,7 +8,15 @@
 
 {-# OPTIONS --without-K --safe #-}
 
+-- Disabled to prevent warnings from Data.BoundedVec.Inefficient
+{-# OPTIONS --warn=noUserWarning #-}
+
 module Data.BoundedVec where
+
+{-# WARNING_ON_IMPORT
+"Data.BoundedVec was deprecated in v1.2.
+Use Data.Vec.Bounded instead."
+#-}
 
 open import Data.Nat
 open import Data.List.Base as List using (List)

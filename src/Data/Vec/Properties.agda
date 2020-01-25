@@ -17,6 +17,8 @@ open import Data.Nat
 open import Data.Nat.Properties using (+-assoc; ≤-step)
 open import Data.Product as Prod
   using (_×_; _,_; proj₁; proj₂; <_,_>; uncurry)
+open import Data.Sum using ([_,_]′)
+open import Data.Sum.Properties using ([,]-map-commute)
 open import Data.Vec
 open import Function.Base
 open import Function.Inverse using (_↔_; inverse)
@@ -339,6 +341,15 @@ lookup-++ʳ : ∀ {m n} (xs : Vec A m) (ys : Vec A n) i →
 lookup-++ʳ []       ys       zero    = refl
 lookup-++ʳ []       (y ∷ xs) (suc i) = lookup-++ʳ [] xs i
 lookup-++ʳ (x ∷ xs) ys       i       = lookup-++ʳ xs ys i
+
+lookup-splitAt : ∀ m {n} (xs : Vec A m) (ys : Vec A n) i →
+                lookup (xs ++ ys) i ≡ [ lookup xs , lookup ys ]′
+                (Fin.splitAt m i)
+lookup-splitAt zero    []       ys i       = refl
+lookup-splitAt (suc m) (x ∷ xs) ys zero    = refl
+lookup-splitAt (suc m) (x ∷ xs) ys (suc i) = P.trans
+  (lookup-splitAt m xs ys i)
+  (P.sym ([,]-map-commute (Fin.splitAt m i)))
 
 ------------------------------------------------------------------------
 -- zipWith

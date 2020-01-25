@@ -90,7 +90,6 @@ isMonoid isMonoid = record
 isCommutativeMonoid : IsCommutativeMonoid _≈₂_ _◦_ ε₂ →
                       IsCommutativeMonoid _≈₁_ _∙_ ε₁
 isCommutativeMonoid isCommMonoid = record
-  { isSemigroup = isSemigroup C.isSemigroup
-  ; identityˡ   = identityˡ   C.isMagma C.identityˡ
-  ; comm        = comm        C.isMagma C.comm
+  { isMonoid = isMonoid C.isMonoid
+  ; comm     = comm     C.isMagma C.comm
   } where module C = IsCommutativeMonoid isCommMonoid

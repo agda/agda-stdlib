@@ -6,7 +6,15 @@
 
 {-# OPTIONS --without-K --safe #-}
 
+-- Disabled to prevent warnings from other Table modules
+{-# OPTIONS --warn=noUserWarning #-}
+
 module Data.Table.Relation.Binary.Equality where
+
+{-# WARNING_ON_IMPORT
+"Data.Table.Relation.Binary.Equality was deprecated in v1.2.
+Use Data.Vec.Functional.Relation.Binary.Pointwise instead."
+#-}
 
 open import Relation.Binary using (Setoid)
 open import Data.Table.Base

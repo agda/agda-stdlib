@@ -87,6 +87,9 @@ import README.Data
 -- • Strict
 --     Provides access to the builtins relating to strictness.
 
+-- • Tactic
+--     Tactics for automatic proof generation
+
 ------------------------------------------------------------------------
 -- A selection of useful library modules
 ------------------------------------------------------------------------
@@ -292,7 +295,23 @@ import README.Inspect
 
 -- Explaining string formats and the behaviour of printf
 
-import README.Text
+import README.Text.Printf
+
+-- Showcasing the pretty printing module
+
+import README.Text.Pretty
+
+-- Explaining how to display tables of strings:
+
+import README.Text.Tabular
+
+-- Explaining how to display a tree:
+
+import README.Text.Tree
+
+-- Explaining how to use the automatic solvers
+
+import README.Tactic.MonoidSolver
 
 ------------------------------------------------------------------------
 -- Core modules
