@@ -1,8 +1,8 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Construct the unit of the monoidal structure on R-modules, and
--- similar for weaker module-like structures.
+-- This module constructs the unit of the monoidal structure on
+-- R-modules, and similar for weaker module-like structures.
 -- The intended universal property is that the maps out of the tensor
 -- unit into M are isomorphic to the elements of M.
 ------------------------------------------------------------------------
