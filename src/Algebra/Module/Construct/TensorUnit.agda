@@ -19,7 +19,7 @@ private
   variable
     c ℓ : Level
 
-leftSemimodule : ∀ {R} → LeftSemimodule R c ℓ
+leftSemimodule : {R : Semiring c ℓ} → LeftSemimodule R c ℓ
 leftSemimodule {R = semiring} = record
   { Carrierᴹ = Carrier
   ; _≈ᴹ_ = _≈_
@@ -40,7 +40,7 @@ leftSemimodule {R = semiring} = record
     }
   } where open Semiring semiring
 
-rightSemimodule : ∀ {R} → RightSemimodule R c ℓ
+rightSemimodule : {R : Semiring c ℓ} → RightSemimodule R c ℓ
 rightSemimodule {R = semiring} = record
   { Carrierᴹ = Carrier
   ; _≈ᴹ_ = _≈_
@@ -61,7 +61,7 @@ rightSemimodule {R = semiring} = record
     }
   } where open Semiring semiring
 
-bisemimodule : ∀ {R} → Bisemimodule R R c ℓ
+bisemimodule : {R : Semiring c ℓ} → Bisemimodule R R c ℓ
 bisemimodule {R = semiring} = record
   { isBisemimodule = record
     { +ᴹ-isCommutativeMonoid = +-isCommutativeMonoid
@@ -73,14 +73,14 @@ bisemimodule {R = semiring} = record
     }
   } where open Semiring semiring
 
-semimodule : ∀ {R} → Semimodule R c ℓ
+semimodule : {R : CommutativeSemiring c ℓ} → Semimodule R c ℓ
 semimodule {R = commutativeSemiring} = record
   { isSemimodule = record
     { isBisemimodule = Bisemimodule.isBisemimodule bisemimodule
     }
   } where open CommutativeSemiring commutativeSemiring
 
-leftModule : ∀ {R} → LeftModule R c ℓ
+leftModule : {R : Ring c ℓ} → LeftModule R c ℓ
 leftModule {R = ring} = record
   { -ᴹ_ = -_
   ; isLeftModule = record
@@ -90,7 +90,7 @@ leftModule {R = ring} = record
     }
   } where open Ring ring
 
-rightModule : ∀ {R} → RightModule R c ℓ
+rightModule : {R : Ring c ℓ} → RightModule R c ℓ
 rightModule {R = ring} = record
   { -ᴹ_ = -_
   ; isRightModule = record
@@ -100,7 +100,7 @@ rightModule {R = ring} = record
     }
   } where open Ring ring
 
-bimodule : ∀ {R} → Bimodule R R c ℓ
+bimodule : {R : Ring c ℓ} → Bimodule R R c ℓ
 bimodule {R = ring} = record
   { isBimodule = record
     { isBisemimodule = Bisemimodule.isBisemimodule bisemimodule
@@ -109,7 +109,7 @@ bimodule {R = ring} = record
     }
   } where open Ring ring
 
-module′ : ∀ {R} → Module R c ℓ
+module′ : {R : CommutativeRing c ℓ} → Module R c ℓ
 module′ {R = commutativeRing} = record
   { isModule = record
     { isBimodule = Bimodule.isBimodule bimodule
