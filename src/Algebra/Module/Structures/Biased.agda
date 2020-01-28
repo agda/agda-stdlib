@@ -1,7 +1,8 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Abbreviations of some of the module-like definitions
+-- This module provides alternative ways of providing instances of
+-- structures in the Algebra.Module hierarchy.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
