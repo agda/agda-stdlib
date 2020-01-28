@@ -16,7 +16,7 @@ open import Data.List.Base as List using (List; []; _∷_)
 open import Data.Maybe.Base using (Maybe ; nothing; just)
 open import Data.Nat as Nat
 open import Data.Product as Prod using (∃; _×_; proj₁; proj₂; _,_; -,_)
-open import Data.These as These using (These; this; that; these)
+open import Data.These.Base as These using (These; this; that; these)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Data.Unit
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
