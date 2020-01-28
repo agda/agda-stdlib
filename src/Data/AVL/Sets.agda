@@ -12,7 +12,7 @@ module Data.AVL.Sets
   {a ℓ₁ ℓ₂} (strictTotalOrder : StrictTotalOrder a ℓ₁ ℓ₂)
   where
 
-open import Data.Bool
+open import Data.Bool.Base
 open import Data.List.Base as List using (List)
 open import Data.Maybe.Base as Maybe
 open import Data.Product as Prod using (_×_; _,_; proj₁)

@@ -15,7 +15,7 @@ open import Relation.Nullary as Nullary
 open import Relation.Nullary.Reflects
 open import Relation.Nullary.Decidable
 
-open import Data.Bool
+open import Data.Bool.Base
 open import Data.List.Base
 open import Data.List.Properties using (∷-injective)
 open import Data.Nat

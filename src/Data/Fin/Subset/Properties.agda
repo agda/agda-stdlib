@@ -14,7 +14,7 @@ open import Algebra.Bundles
 import Algebra.Properties.Lattice as L
 import Algebra.Properties.DistributiveLattice as DL
 import Algebra.Properties.BooleanAlgebra as BA
-open import Data.Bool using (not)
+open import Data.Bool.Base using (not)
 open import Data.Bool.Properties
 open import Data.Fin using (Fin; suc; zero)
 open import Data.Fin.Subset

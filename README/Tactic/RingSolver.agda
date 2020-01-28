@@ -32,7 +32,7 @@ open import Data.List as List using (List; _∷_; [])
 open import Function
 open import Relation.Binary.PropositionalEquality as ≡
   using (subst; _≡_; module ≡-Reasoning)
-open import Data.Bool as Bool using (Bool; true; false; if_then_else_)
+open import Data.Bool.Base as Bool using (Bool; true; false; if_then_else_)
 open import Data.Unit using (⊤; tt)
 
 open import Tactic.RingSolver.Core.AlmostCommutativeRing using (AlmostCommutativeRing)
