@@ -23,7 +23,7 @@ open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Nat
 open import Data.Nat.Properties
 open import Data.Product as Prod hiding (map; zip)
-open import Data.Sum using (_⊎_; inj₁; inj₂)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.These as These using (These; this; that; these)
 open import Function
 open import Level using (Level)

@@ -19,7 +19,7 @@ open import Data.Fin using (Fin; zero; suc; splitAt; punchIn)
 open import Data.List.Base as L using (List)
 open import Data.Nat using (ℕ; zero; suc; _+_)
 open import Data.Product using (Σ; ∃; _×_; _,_; proj₁; proj₂)
-open import Data.Sum using (_⊎_; inj₁; inj₂; [_,_])
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Data.Vec as V using (Vec)
 open import Function
 open import Level using (Level)

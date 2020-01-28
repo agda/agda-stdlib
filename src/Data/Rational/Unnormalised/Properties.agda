@@ -19,7 +19,7 @@ import Data.Integer.Properties as ℤ
 import Data.Integer.Properties
 open import Data.Rational.Unnormalised
 open import Data.Product using (_,_)
-open import Data.Sum using ([_,_]′; inj₁; inj₂)
+open import Data.Sum.Base using ([_,_]′; inj₁; inj₂)
 open import Function.Base using (_on_; _$_; _∘_)
 open import Level using (0ℓ)
 open import Relation.Nullary using (yes; no)

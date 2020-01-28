@@ -21,7 +21,7 @@ import Data.List.Relation.Unary.Unique.Setoid as Unique
 open import Data.Nat using (suc; z≤n; s≤s; _≤_; _<_)
 open import Data.Nat.Properties using (≤-trans; n≤1+n)
 open import Data.Product as Prod using (∃; _×_; _,_ ; ∃₂)
-open import Data.Sum using (_⊎_; inj₁; inj₂)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function using (_$_; flip; _∘_; id)
 open import Relation.Binary as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)

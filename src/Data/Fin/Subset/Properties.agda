@@ -22,7 +22,7 @@ open import Data.Fin.Properties using (any?; decFinSubset)
 open import Data.Nat.Base
 import Data.Nat.Properties as ℕₚ
 open import Data.Product as Product using (∃; ∄; _×_; _,_; proj₁)
-open import Data.Sum as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Vec
 open import Data.Vec.Properties
 open import Function.Base using (_∘_; const; id; case_of_)

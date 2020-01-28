@@ -22,7 +22,7 @@ open import Data.List.Membership.Propositional.Properties
 import Data.List.Relation.Binary.Subset.Setoid.Properties as Setoidₚ
 open import Data.List.Relation.Binary.Subset.Propositional
 import Data.Product as Prod
-import Data.Sum as Sum
+import Data.Sum.Base as Sum
 open import Function.Base using (_∘_; _∘′_; id; _$_)
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse as Inv using (_↔_; module Inverse)

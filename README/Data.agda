@@ -105,7 +105,7 @@ import Data.Sum.Properties
 
 import Data.List.Base
 import Data.Maybe
-import Data.Sum
+import Data.Sum.Base
 
 -- 4. A `Relation.Binary` folder where binary relations over the datatypes
 -- are stored. Because relations over container datatypes often depend on

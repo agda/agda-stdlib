@@ -12,7 +12,7 @@ open import Data.Empty
 open import Data.Fin
 open import Data.List.Base as List using (List; []; [_]; _∷_)
 open import Data.Product as Prod using (∃; _,_)
-open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Level using (Level; _⊔_)
 open import Relation.Nullary using (¬_; yes; no)
 import Relation.Nullary.Decidable as Dec

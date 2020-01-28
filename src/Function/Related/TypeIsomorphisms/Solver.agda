@@ -14,7 +14,7 @@ open import Algebra using (CommutativeSemiring)
 import Algebra.Solver.Ring.NaturalCoefficients.Default
 open import Data.Empty using (⊥)
 open import Data.Product using (_×_)
-open import Data.Sum using (_⊎_)
+open import Data.Sum.Base using (_⊎_)
 open import Data.Unit using (⊤)
 open import Level using (Level; Lift)
 open import Function.Inverse as Inv using (_↔_)

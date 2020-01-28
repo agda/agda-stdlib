@@ -20,7 +20,7 @@ open import Data.Bool.Properties using (T?)
 open import Data.Empty
 open import Data.Nat.Base
 open import Data.Product
-open import Data.Sum as Sum
+open import Data.Sum.Base as Sum
 open import Data.Unit using (tt)
 open import Function.Base
 open import Function.Injection using (_↣_)

@@ -12,7 +12,7 @@ open import Data.Fin
 open import Data.Fin.Properties
 open import Data.Nat
 open import Data.Product as Σ using (_×_; _,_; proj₁; proj₂; uncurry)
-open import Data.Sum using (_⊎_; inj₁; inj₂; [_,_])
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Data.Vec.Functional as VF hiding (map)
 open import Data.Vec.Functional.Relation.Unary.All
 open import Function

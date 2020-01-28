@@ -28,7 +28,7 @@ open import Data.Rational.Base
 open import Data.Rational.Unnormalised as ℚᵘ
   using (ℚᵘ; *≡*; *≤*) renaming (↥_ to ↥ᵘ_; ↧_ to ↧ᵘ_; _≃_ to _≃ᵘ_; _≤_ to _≤ᵘ_)
 import Data.Rational.Unnormalised.Properties as ℚᵘ
-open import Data.Sum
+open import Data.Sum.Base
 open import Data.Unit using (tt)
 import Data.Sign as S
 open import Function using (_∘_ ; _$_; Injective)

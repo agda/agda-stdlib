@@ -23,7 +23,7 @@ open import Data.Nat.Properties using (s≤′s)
 open import Data.List.Base using (List; []; _∷_)
 open import Data.List.NonEmpty using (List⁺; _∷_)
 open import Data.Product as Prod using (∃; _×_; _,_)
-open import Data.Sum as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Vec.Bounded as Vec≤ using (Vec≤)
 open import Function.Base
 open import Function.Equality using (_⟨$⟩_)

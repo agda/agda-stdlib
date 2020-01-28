@@ -17,7 +17,7 @@ open import Data.Nat
 open import Data.Nat.Properties using (+-assoc; ≤-step)
 open import Data.Product as Prod
   using (_×_; _,_; proj₁; proj₂; <_,_>; uncurry)
-open import Data.Sum using ([_,_]′)
+open import Data.Sum.Base using ([_,_]′)
 open import Data.Sum.Properties using ([,]-map-commute)
 open import Data.Vec
 open import Function.Base

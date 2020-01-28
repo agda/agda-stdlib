@@ -15,7 +15,7 @@ open import Data.Nat
 open import Data.Product using (_×_; _,_; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
   using () renaming (Pointwise to ×-Pointwise)
-open import Data.Sum using (_⊎_; inj₁; inj₂; [_,_])
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Data.Vec.Functional as VF hiding (map)
 open import Data.Vec.Functional.Relation.Binary.Pointwise
 open import Function

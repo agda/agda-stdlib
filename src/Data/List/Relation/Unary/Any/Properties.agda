@@ -30,7 +30,7 @@ open import Data.Product.Properties
 open import Data.Product.Function.NonDependent.Propositional
   using (_×-cong_)
 import Data.Product.Function.Dependent.Propositional as Σ
-open import Data.Sum as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
 open import Function.Base
 open import Function.Equality using (_⟨$⟩_)

@@ -10,7 +10,7 @@ module Data.Product.Relation.Binary.Pointwise.NonDependent where
 
 open import Data.Product as Prod
 open import Data.Product.Properties using (≡-dec)
-open import Data.Sum
+open import Data.Sum.Base
 open import Data.Unit.Base using (⊤)
 open import Function.Base
 open import Function.Equality as F using (_⟶_; _⟨$⟩_)

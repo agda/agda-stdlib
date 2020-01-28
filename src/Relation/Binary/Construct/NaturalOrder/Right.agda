@@ -14,7 +14,7 @@ module Relation.Binary.Construct.NaturalOrder.Right
   {a ℓ} {A : Set a} (_≈_ : Rel A ℓ) (_∙_ : Op₂ A) where
 
 open import Data.Product using (_,_; _×_)
-open import Data.Sum using (inj₁; inj₂)
+open import Data.Sum.Base using (inj₁; inj₂)
 open import Relation.Nullary using (¬_)
 open import Algebra.Definitions _≈_
 open import Algebra.Structures _≈_

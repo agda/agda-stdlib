@@ -19,7 +19,7 @@ open import Data.Nat as ℕ using (ℕ; zero; suc) hiding (module ℕ)
 import Data.Nat.DivMod as ℕ
 open import Data.Rational.Unnormalised using (ℚᵘ; mkℚᵘ)
 open import Data.Product
-open import Data.Sum using (inj₂)
+open import Data.Sum.Base using (inj₂)
 open import Level using (0ℓ)
 open import Relation.Nullary using (¬_)
 open import Relation.Nullary.Decidable using (False; fromWitnessFalse; toWitnessFalse)

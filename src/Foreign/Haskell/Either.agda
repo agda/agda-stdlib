@@ -9,7 +9,7 @@
 module Foreign.Haskell.Either where
 
 open import Level
-open import Data.Sum using (_⊎_; inj₁; inj₂)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 
 private
   variable

@@ -13,7 +13,7 @@ open import Agda.Builtin.Nat using ()
 
 open import Data.Nat
 open import Data.Nat.Properties
-open import Data.Sum using (_⊎_; inj₁; inj₂)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.Product using (_×_; _,_)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (yes; no)

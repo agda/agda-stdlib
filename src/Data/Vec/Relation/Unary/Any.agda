@@ -11,7 +11,7 @@ module Data.Vec.Relation.Unary.Any {a} {A : Set a} where
 open import Data.Empty
 open import Data.Fin
 open import Data.Nat using (zero; suc)
-open import Data.Sum using (_⊎_; inj₁; inj₂; [_,_]′)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Vec as Vec using (Vec; []; [_]; _∷_)
 open import Data.Product as Prod using (∃; _,_)
 open import Level using (_⊔_)

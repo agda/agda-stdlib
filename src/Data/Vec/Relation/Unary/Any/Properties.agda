@@ -13,7 +13,7 @@ open import Data.Fin using (Fin; zero; suc)
 open import Data.Empty using (⊥)
 open import Data.List.Base using ([]; _∷_)
 import Data.List.Relation.Unary.Any as List
-open import Data.Sum as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
 open import Data.Product as Prod using (∃; ∃₂; _×_; _,_; proj₁; proj₂)
 open import Data.Vec hiding (here; there)

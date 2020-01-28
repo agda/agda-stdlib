@@ -20,7 +20,7 @@ open import Data.Nat as ℕ
 import Data.Nat.Properties as ℕₚ
 open import Data.Unit using (tt)
 open import Data.Product using (∃; ∃₂; ∄; _×_; _,_; map; proj₁; uncurry; <_,_>)
-open import Data.Sum using (_⊎_; inj₁; inj₂; [_,_])
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Function.Base using (_∘_; id; _$_)
 open import Function.Equivalence using (_⇔_; equivalence)
 open import Function.Injection using (_↣_)

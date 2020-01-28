@@ -14,7 +14,7 @@ open import Data.Nat
 open import Data.Nat.Induction using (<′-wellFounded)
 open import Data.Nat.Properties
 open import Data.Product as Prod
-open import Data.Sum
+open import Data.Sum.Base
 open import Data.Sum.Properties
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
 open import Function.Base
