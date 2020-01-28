@@ -244,6 +244,20 @@ module _ {c ℓ p} (S : Setoid c ℓ) {P : Pred (Carrier S) p}
   ...   | there v∈fxs = Prod.map there id (∈-filter⁻ v∈fxs)
 
 ------------------------------------------------------------------------
+-- derun
+
+module _ {c ℓ r} (S : Setoid c ℓ) {R : Rel (Carrier S) r} (R? : B.Decidable R) where
+
+  open Setoid S using (_≈_)
+  open Membership S using (_∈_)
+
+  ∈-derun⁺ : _≈_ Respectsʳ R → ∀ {xs z} → z ∈ xs → z ∈ derun R? xs
+  ∈-derun⁺ ≈-resp-R z∈xs = Any.derun⁺ R? ≈-resp-R z∈xs
+
+  ∈-derun⁻ : ∀ xs {z} → z ∈ derun R? xs → z ∈ xs
+  ∈-derun⁻ xs z∈derun[R,xs] = Any.derun⁻ R? z∈derun[R,xs]
+
+------------------------------------------------------------------------
 -- length
 
 module _ {c ℓ} (S : Setoid c ℓ) where

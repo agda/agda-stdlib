@@ -24,6 +24,7 @@ open import Level using (Level)
 open import Relation.Nullary using (does)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Unary.Properties using (∁?)
+open import Relation.Binary as B using (Rel)
 
 private
   variable
@@ -291,6 +292,13 @@ span P? (x ∷ xs) with does (P? x)
 
 break : ∀ {P : Pred A p} → Decidable P → List A → (List A × List A)
 break P? = span (∁? P?)
+
+derun : ∀ {R : Rel A p} → B.Decidable R → List A → List A
+derun R? [] = []
+derun R? (x ∷ []) = x ∷ []
+derun R? (x ∷ y ∷ xs) with does (R? x y) | derun R? (y ∷ xs)
+... | true  | ys = ys
+... | false | ys = x ∷ ys
 
 ------------------------------------------------------------------------
 -- Actions on single elements

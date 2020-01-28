@@ -38,12 +38,13 @@ open import Function.Equivalence using (_⇔_; equivalence; Equivalence)
 open import Function.Inverse as Inv using (_↔_; inverse; Inverse)
 open import Function.Related as Related using (Kind; Related; SK-sym)
 open import Level using (Level)
-open import Relation.Binary
+open import Relation.Binary as B
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; refl; inspect)
-open import Relation.Unary
+open import Relation.Unary as U
   using (Pred; _⟨×⟩_; _⟨→⟩_) renaming (_⊆_ to _⋐_)
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary using (¬_; _because_; does; ofʸ; ofⁿ)
+open import Relation.Nullary.Negation using (contradiction)
 open Related.EquationalReasoning
 
 private
@@ -458,6 +459,54 @@ module _ {P : A → Set p} where
               Any P (tabulate f) → ∃ λ i → P (f i)
   tabulate⁻ {suc n} (here p)   = fzero , p
   tabulate⁻ {suc n} (there p) = Prod.map fsuc id (tabulate⁻ p)
+
+------------------------------------------------------------------------
+-- filter
+
+module _ {P : A → Set p} {Q : A → Set q} (Q? : U.Decidable Q) where
+
+  filter⁺ : ∀ {xs} → (p : Any P xs) → Any P (filter Q? xs) ⊎ ¬ Q (Any.lookup p)
+  filter⁺ {x ∷ xs} (here px) with Q? x
+  ... | true  because _       = inj₁ (here px)
+  ... | false because ofⁿ ¬Qx = inj₂ ¬Qx
+  filter⁺ {x ∷ xs} (there p) with Q? x
+  ... | true  because _       = Sum.map₁ there (filter⁺ p)
+  ... | false because _       = filter⁺ p
+
+  filter⁻ : ∀ {xs} → Any P (filter Q? xs) → Any P xs
+  filter⁻ {x ∷ xs} p with does (Q? x)
+  filter⁻ {x ∷ xs} (here px) | true  = here px
+  filter⁻ {x ∷ xs} (there p) | true  = there (filter⁻ p)
+  filter⁻ {x ∷ xs} p         | false = there (filter⁻ p)
+
+------------------------------------------------------------------------
+-- derun
+
+module _ {P : A → Set p} {R : A → A → Set r} (R? : B.Decidable R) where
+
+  private
+    derun⁺-aux : ∀ x xs → P Respects R → P x → Any P (derun R? (x ∷ xs))
+    derun⁺-aux x [] P-resp-R Px = here Px
+    derun⁺-aux x (y ∷ xs) P-resp-R Px with R? x y
+    ... | true  because ofʸ Rxy = derun⁺-aux y xs P-resp-R (P-resp-R Rxy Px)
+    ... | false because _       = here Px
+
+  derun⁺ : ∀ {xs} → P Respects R → Any P xs → Any P (derun R? xs)
+  derun⁺ {x ∷ xs} P-resp-R (here px) = derun⁺-aux x xs P-resp-R px
+  derun⁺ {x ∷ y ∷ xs} P-resp-R (there any[P,xs]) with R? x y
+  ... | true  because _ = derun⁺ P-resp-R any[P,xs]
+  ... | false because _ = there (derun⁺ P-resp-R any[P,xs])
+
+  private
+    derun⁻-aux : ∀ {x xs} → Any P (derun R? (x ∷ xs)) → Any P (x ∷ xs)
+    derun⁻-aux {x} {[]} (here px) = here px
+    derun⁻-aux {x} {y ∷ xs} any[P,derun[x∷y∷xs]] with R? x y
+    derun⁻-aux {x} {y ∷ xs} any[P,derun[y∷xs]]         | true  because _ = there (derun⁻-aux any[P,derun[y∷xs]])
+    derun⁻-aux {x} {y ∷ xs} (here px)                  | false because _ = here px
+    derun⁻-aux {x} {y ∷ xs} (there any[P,derun[y∷xs]]) | false because _ = there (derun⁻-aux any[P,derun[y∷xs]])
+
+  derun⁻ : ∀ {xs} → Any P (derun R? xs) → Any P xs
+  derun⁻ {x ∷ xs} any[P,derun[x∷xs]] = derun⁻-aux any[P,derun[x∷xs]]
 
 ------------------------------------------------------------------------
 -- map-with-∈.

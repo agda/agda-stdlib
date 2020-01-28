@@ -603,6 +603,11 @@ Other minor additions
   map-just    : ma ≡ just a → map f ma ≡ just (f a)
   ```
 
+* Added new functions to `Data.List`:
+  ``agda
+  derun : B.Decidable R → List A → List A
+  ```
+
 * Added new proofs to `Data.List.Relation.Binary.Equality.Setoid`:
   ```agda
   Any-resp-≋      : P Respects _≈_ → (Any P) Respects _≋_
@@ -643,11 +648,38 @@ Other minor additions
   rectangleᶜ : Char → Char → Vec String n → Vec String n
   ```
 
+* Added new proofs to `Data.List.Membership.Propositional.Properties`:
+  ```agda
+  ∈-derun⁺ : z ∈ xs → z ∈ derun R? xs
+  ∈-derun⁻ : z ∈ derun R? xs → z ∈ xs
+  ```
+
+* Added new proofs to `Data.List.Membership.Setoid.Properties`:
+  ```agda
+  ∈-derun⁺ : _≈_ Respectsʳ R → z ∈ xs → z ∈ derun R? xs
+  ∈-derun⁻ : ∀ xs {z} → z ∈ derun R? xs → z ∈ xs
+  ```
+
 * Added new proofs to `Data.List.Relation.Binary.Pointwise`:
   ```agda
   Any-resp-Pointwise      : P Respects _∼_ → (Any P) Respects (Pointwise _∼_)
   All-resp-Pointwise      : P Respects _∼_ → (All P) Respects (Pointwise _∼_)
   AllPairs-resp-Pointwise : R Respects₂ _∼_ → (AllPairs R) Respects (Pointwise _∼_)
+  ```
+
+* Added new proofs to `Data.List.Relation.Unary.All.Properties`:
+  ```agda
+  derun⁺ : All P xs → All P (derun Q? xs)
+  filter⁻ : All Q (filter P? xs) → All Q (filter (¬? ∘ P?) xs) → All Q xs
+  derun⁻ : All P (derun Q? xs) → All P xs
+  ```
+
+* Added new proofs to `Data.List.Relation.Unary.Any.Properties`:
+  ```agda
+  filter⁺ : (p : Any P xs) → Any P (filter Q? xs) ⊎ ¬ Q (Any.lookup p)
+  derun⁺ : P Respects Q → Any P xs → Any P (derun Q? xs)
+  filter⁻ : Any P (filter Q? xs) → Any P xs
+  derun⁻ : Any P (derun Q? xs) → Any P xs
   ```
 
 * Added new functions to `Data.List.Relation.Binary.Permutation.Setoid`:
