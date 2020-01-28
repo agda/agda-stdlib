@@ -19,7 +19,7 @@ open import Data.Fin as Fin hiding (_≟_)
 import Data.Fin.Properties as Fin
 open import Data.List.Base hiding (lookup)
 import Data.List.Relation.Binary.Equality.DecPropositional as ListEq
-open import Data.Maybe as Maybe
+open import Data.Maybe.Base as Maybe
   using (Maybe; decToMaybe; From-just; from-just)
 open import Data.Nat.Base using (ℕ)
 open import Data.Product

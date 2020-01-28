@@ -16,7 +16,7 @@ open import Category.Monad
 open import Data.Product as Prod using (∃; uncurry; -,_)
 open import Data.List.Base as List using (List; []; _∷_; _++_)
 open import Data.List.NonEmpty as List⁺ using (List⁺; [_]; concatMap)
-open import Data.Maybe as Maybe using (Maybe; nothing; just; maybe′) hiding (module Maybe)
+open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; maybe′) hiding (module Maybe)
 open import Data.These as These using (These; this; that; these)
 open import Function as F
 import Function.Identity.Categorical as Identity

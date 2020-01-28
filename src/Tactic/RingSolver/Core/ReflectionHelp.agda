@@ -16,7 +16,7 @@ open import Data.Nat.GeneralisedArithmetic using (fold)
 open import Data.Fin as Fin using (Fin)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
 open import Data.String using (String)
-open import Data.Maybe as Maybe using (Maybe; just; nothing)
+open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
 open import Data.Product
 open import Function
 open import Level using (Level)

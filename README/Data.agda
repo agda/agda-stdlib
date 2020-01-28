@@ -104,7 +104,7 @@ import Data.Sum.Properties
 -- Base module because of cyclic dependencies.
 
 import Data.List.Base
-import Data.Maybe
+import Data.Maybe.Base
 import Data.Sum.Base
 
 -- 4. A `Relation.Binary` folder where binary relations over the datatypes

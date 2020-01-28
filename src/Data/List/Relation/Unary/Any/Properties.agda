@@ -22,7 +22,7 @@ open import Data.List.Membership.Propositional.Properties.Core
 open import Data.List.Relation.Binary.Pointwise
   using (Pointwise; []; _∷_)
 open import Data.Nat using (zero; suc; _<_; z≤n; s≤s)
-open import Data.Maybe using (Maybe; just; nothing)
+open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.Any as MAny using (just)
 open import Data.Product as Prod
   using (_×_; _,_; ∃; ∃₂; proj₁; proj₂; uncurry′)

@@ -17,7 +17,7 @@ open import Algebra.Bundles using (RawRing; CommutativeRing; CommutativeSemiring
 import Algebra.Morphism as Morphism
 open import Function
 open import Level
-open import Data.Maybe as Maybe using (Maybe; just; nothing)
+open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
 
 record IsAlmostCommutativeRing
          {a ℓ} {A : Set a} (_≈_ : Rel A ℓ)

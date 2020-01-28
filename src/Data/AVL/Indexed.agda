@@ -14,7 +14,7 @@ module Data.AVL.Indexed
 open import Level using (_⊔_)
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Data.Product using (Σ; ∃; _×_; _,_; proj₁)
-open import Data.Maybe using (Maybe; just; nothing)
+open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.List.Base as List using (List)
 open import Data.DifferenceList using (DiffList; []; _∷_; _++_)
 open import Function as F hiding (const)
