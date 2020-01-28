@@ -536,6 +536,7 @@ Other minor additions
   ``agda
   nub-filter : Decidable _R_ → A → List A → List A
   nub : Decidable _R_ → List A → List A
+  _⨂_ : List A → List B → List (A × B)
   ```
 
 * Added new proofs to `Data.List.Relation.Binary.Equality.Setoid`:

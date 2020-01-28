@@ -110,6 +110,13 @@ partitionSums : List (A ⊎ B) → List A × List B
 partitionSums = partitionSumsWith id
 
 ------------------------------------------------------------------------
+-- Cross product
+
+_⨂_ : List A → List B → List (A × B)
+[]       ⨂ ys = []
+(x ∷ xs) ⨂ ys = map (x ,_) ys ++ xs ⨂ ys
+
+------------------------------------------------------------------------
 -- Operations for reducing lists
 
 foldr : (A → B → B) → B → List A → B
