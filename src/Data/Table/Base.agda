@@ -17,7 +17,7 @@ open import Data.Nat
 open import Data.Fin
 open import Data.Product using (_×_ ; _,_)
 open import Data.List.Base as List using (List)
-open import Data.Vec as Vec using (Vec)
+open import Data.Vec.Base as Vec using (Vec)
 open import Function using (_∘_; flip)
 open import Level using (Level)
 

@@ -19,7 +19,7 @@ open import Data.Product as Prod
   using (_×_; _,_; proj₁; proj₂; <_,_>; uncurry)
 open import Data.Sum.Base using ([_,_]′)
 open import Data.Sum.Properties using ([,]-map-commute)
-open import Data.Vec
+open import Data.Vec.Base
 open import Function.Base
 open import Function.Inverse using (_↔_; inverse)
 open import Level using (Level)

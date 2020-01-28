@@ -15,7 +15,7 @@ open import Data.Bool.Base using (_∨_)
 open import Data.Bool.Properties using (∨-idempotentCommutativeMonoid)
 
 open import Data.Fin using (zero; suc)
-open import Data.Vec using ([]; _∷_)
+open import Data.Vec.Base using ([]; _∷_)
 
 open import Algebra.Solver.IdempotentCommutativeMonoid
   ∨-idempotentCommutativeMonoid

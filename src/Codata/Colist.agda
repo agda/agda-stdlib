@@ -17,7 +17,7 @@ open import Data.These using (These; this; that; these)
 open import Data.Maybe using (Maybe; nothing; just)
 open import Data.List.Base using (List; []; _∷_)
 open import Data.List.NonEmpty as List⁺ using (List⁺; _∷_)
-open import Data.Vec as Vec using (Vec; []; _∷_)
+open import Data.Vec.Base as Vec using (Vec; []; _∷_)
 open import Data.Vec.Bounded as Vec≤ using (Vec≤)
 open import Function
 

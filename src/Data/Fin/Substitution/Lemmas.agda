@@ -12,7 +12,7 @@ import Category.Applicative.Indexed as Applicative
 open import Data.Fin.Substitution
 open import Data.Nat hiding (_⊔_)
 open import Data.Fin using (Fin; zero; suc; lift)
-open import Data.Vec
+open import Data.Vec.Base
 import Data.Vec.Properties as VecProp
 open import Function as Fun using (_∘_; _$_)
 open import Relation.Binary.PropositionalEquality as PropEq

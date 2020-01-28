@@ -14,7 +14,7 @@ open import Data.List as List using (List; []; _∷_)
 open import Data.Nat as ℕ using (ℕ; suc; zero)
 open import Data.Nat.GeneralisedArithmetic using (fold)
 open import Data.Fin as Fin using (Fin)
-open import Data.Vec as Vec using (Vec; []; _∷_)
+open import Data.Vec.Base as Vec using (Vec; []; _∷_)
 open import Data.String using (String)
 open import Data.Maybe as Maybe using (Maybe; just; nothing)
 open import Data.Product

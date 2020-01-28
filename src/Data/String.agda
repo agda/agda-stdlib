@@ -8,7 +8,7 @@
 
 module Data.String where
 
-open import Data.Vec as Vec using (Vec)
+open import Data.Vec.Base as Vec using (Vec)
 open import Data.Char as Char using (Char)
 open import Function.Base
 

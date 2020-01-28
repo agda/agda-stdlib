@@ -10,7 +10,7 @@
 module Data.Vec.Relation.Binary.Equality.Propositional.WithK
   {a} {A : Set a} where
 
-open import Data.Vec
+open import Data.Vec.Base
 open import Data.Vec.Relation.Binary.Equality.Propositional {A = A}
 open import Relation.Binary.PropositionalEquality
 open import Relation.Binary.HeterogeneousEquality as H using (_≅_)

@@ -18,7 +18,7 @@ open import Data.Maybe as Maybe
 open import Data.Nat as ℕ using (ℕ; zero; suc; _+_)
 open import Data.Nat.GeneralisedArithmetic using (fold)
 open import Data.Product using (_×_; uncurry)
-open import Data.Vec using (Vec; []; _∷_; lookup; replicate)
+open import Data.Vec.Base using (Vec; []; _∷_; lookup; replicate)
 
 open import Function using (_∘_)
 

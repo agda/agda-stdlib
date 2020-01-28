@@ -23,7 +23,7 @@ open import Data.Maybe as Maybe
   using (Maybe; decToMaybe; From-just; from-just)
 open import Data.Nat.Base using (ℕ)
 open import Data.Product
-open import Data.Vec using (Vec; lookup)
+open import Data.Vec.Base using (Vec; lookup)
 open import Function using (_∘_; _$_)
 open import Relation.Binary using (Decidable)
 

@@ -20,7 +20,7 @@ open import Category.Monad
 open import Data.Fin using (Fin)
 open import Data.Nat
 open import Data.Product using (_,_; proj₁; proj₂)
-open import Data.Vec as Vec using (Vec)
+open import Data.Vec.Base as Vec using (Vec)
 import Data.Vec.Categorical as VecCat
 import Function.Identity.Categorical as IdCat
 open import Data.Vec.Properties using (lookup-map)

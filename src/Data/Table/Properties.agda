@@ -29,7 +29,7 @@ open import Data.List.Base as L using (List; _∷_; [])
 open import Data.List.Relation.Unary.Any using (here; there; index)
 open import Data.List.Membership.Propositional using (_∈_)
 open import Data.Product as Product using (Σ; ∃; _,_; proj₁; proj₂)
-open import Data.Vec as V using (Vec; _∷_; [])
+open import Data.Vec.Base as V using (Vec; _∷_; [])
 import Data.Vec.Properties as VP
 open import Level using (Level)
 open import Function.Base using (_∘_; flip)

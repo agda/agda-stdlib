@@ -19,7 +19,7 @@ open import Data.Product as Prod using (∃; _×_; proj₁; proj₂; _,_; -,_)
 open import Data.These as These using (These; this; that; these)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Data.Unit
-open import Data.Vec as Vec using (Vec; []; _∷_)
+open import Data.Vec.Base as Vec using (Vec; []; _∷_)
 open import Function.Base
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence
