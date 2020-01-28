@@ -31,7 +31,7 @@ open import Data.List.Relation.Binary.Pointwise using (Pointwise; []; _∷_)
 open import Data.List.Relation.Binary.Subset.Propositional using (_⊆_)
 open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.All as MAll using (just; nothing)
-open import Data.Nat using (zero; suc; z≤n; s≤s; _<_)
+open import Data.Nat.Base using (zero; suc; z≤n; s≤s; _<_)
 open import Data.Nat.Properties using (≤-refl; ≤-step)
 open import Data.Product as Prod using (_×_; _,_; uncurry; uncurry′)
 open import Function.Base

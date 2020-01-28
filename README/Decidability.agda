@@ -18,7 +18,7 @@ open import Relation.Nullary.Decidable
 open import Data.Bool.Base
 open import Data.List.Base
 open import Data.List.Properties using (∷-injective)
-open import Data.Nat
+open import Data.Nat.Base
 open import Data.Nat.Properties using (suc-injective)
 open import Data.Product
 open import Data.Unit

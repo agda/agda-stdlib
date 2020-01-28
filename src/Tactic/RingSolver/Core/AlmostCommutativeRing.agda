@@ -51,7 +51,7 @@ record AlmostCommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
       IsAlmostCommutativeRing _≈_ _+_ _*_ -_ 0# 1#
 
   open IsAlmostCommutativeRing isAlmostCommutativeRing hiding (refl) public
-  open import Data.Nat as ℕ using (ℕ)
+  open import Data.Nat.Base as ℕ using (ℕ)
 
   commutativeSemiring : CommutativeSemiring _ _
   commutativeSemiring = record

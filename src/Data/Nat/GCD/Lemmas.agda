@@ -8,7 +8,7 @@
 
 module Data.Nat.GCD.Lemmas where
 
-open import Data.Nat
+open import Data.Nat.Base
 open import Data.Nat.Properties
 open import Data.Nat.Solver
 open import Function

@@ -52,7 +52,7 @@ import Data.Nat
 import Data.Integer
 import Data.Char
 import Data.String
-import Data.Bool.Base
+import Data.Bool
 
 -- 4. A `Solver` module (for those datatypes that have an algebraic solver)
 -- which can be used to automatically solve equalities over the basic datatype.

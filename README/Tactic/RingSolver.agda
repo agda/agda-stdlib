@@ -12,7 +12,7 @@ module README.Tactic.RingSolver where
 -- different numeric types in the same file.
 
 open import Agda.Builtin.FromNat
-open import Data.Nat using (ℕ)
+open import Data.Nat.Base using (ℕ)
 open import Data.Integer using (ℤ)
 import Data.Nat.Literals as ℕ
 import Data.Integer.Literals as ℤ

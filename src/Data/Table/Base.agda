@@ -13,7 +13,7 @@ module Data.Table.Base where
 Use Data.Vec.Functional instead."
 #-}
 
-open import Data.Nat
+open import Data.Nat.Base
 open import Data.Fin
 open import Data.Product using (_×_ ; _,_)
 open import Data.List.Base as List using (List)

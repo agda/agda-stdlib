@@ -11,7 +11,7 @@ module Data.Integer.GCD where
 open import Data.Integer
 open import Data.Integer.Divisibility
 open import Data.Integer.Properties
-open import Data.Nat
+open import Data.Nat.Base
 import Data.Nat.GCD as ℕ
 open import Relation.Binary.PropositionalEquality
 

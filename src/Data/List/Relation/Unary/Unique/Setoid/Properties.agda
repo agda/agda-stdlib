@@ -16,7 +16,7 @@ open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.List.Relation.Unary.AllPairs as AllPairs using (AllPairs)
 open import Data.List.Relation.Unary.Unique.Setoid
 import Data.List.Relation.Unary.AllPairs.Properties as AllPairs
-open import Data.Nat
+open import Data.Nat.Base
 open import Function using (_∘_)
 open import Relation.Binary using (Rel; Setoid)
 open import Relation.Binary.PropositionalEquality using (_≡_)

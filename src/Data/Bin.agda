@@ -16,7 +16,7 @@ module Data.Bin where
 Use Data.Nat.Binary instead."
 #-}
 
-open import Data.Nat as Nat
+open import Data.Nat.Base as Nat
   using (ℕ; zero; z≤n; s≤s) renaming (suc to 1+_)
 open import Data.Digit  using (fromDigits; toDigits; Bit)
 open import Data.Fin as Fin using (Fin; zero)

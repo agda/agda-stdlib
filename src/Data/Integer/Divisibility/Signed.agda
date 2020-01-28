@@ -14,7 +14,7 @@ open import Data.Integer.Properties
 open import Data.Integer.Divisibility as Unsigned
   using (divides)
   renaming (_∣_ to _∣ᵤ_)
-import Data.Nat as ℕ
+import Data.Nat.Base as ℕ
 import Data.Nat.Divisibility as ℕ
 import Data.Nat.Coprimality as ℕ
 import Data.Nat.Properties as ℕ

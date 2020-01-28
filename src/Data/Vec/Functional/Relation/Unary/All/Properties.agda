@@ -10,7 +10,7 @@ module Data.Vec.Functional.Relation.Unary.All.Properties where
 
 open import Data.Fin
 open import Data.Fin.Properties
-open import Data.Nat
+open import Data.Nat.Base
 open import Data.Product as Σ using (_×_; _,_; proj₁; proj₂; uncurry)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Data.Vec.Functional as VF hiding (map)

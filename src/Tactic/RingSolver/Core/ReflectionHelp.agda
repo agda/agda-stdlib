@@ -11,7 +11,7 @@ module Tactic.RingSolver.Core.ReflectionHelp where
 open import Agda.Builtin.Reflection
 
 open import Data.List as List using (List; []; _∷_)
-open import Data.Nat as ℕ using (ℕ; suc; zero)
+open import Data.Nat.Base as ℕ using (ℕ; suc; zero)
 open import Data.Nat.GeneralisedArithmetic using (fold)
 open import Data.Fin as Fin using (Fin)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)

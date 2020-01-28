@@ -19,7 +19,7 @@ import Data.Fin as Fin
 import Data.Fin.Properties as 𝔽ₚ
 open import Data.List.Base using (List; []; _∷_)
 open import Data.List.Properties using (∷-injective)
-open import Data.Nat
+open import Data.Nat.Base
   using (ℕ; zero; z≤n; s≤s)
   renaming (suc to 1+_; _+_ to _+ℕ_; _*_ to _*ℕ_; _≤_ to _≤ℕ_)
 import Data.Nat.Properties as ℕₚ

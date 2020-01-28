@@ -12,7 +12,7 @@ open import Data.Empty using (⊥-elim)
 open import Data.Fin
 open import Data.Fin.Properties
 import Data.Fin.Permutation.Components as PC
-open import Data.Nat using (ℕ; suc; zero)
+open import Data.Nat.Base using (ℕ; suc; zero)
 open import Data.Product using (proj₂)
 open import Function.Inverse as Inverse using (_↔_; Inverse; _InverseOf_)
 open import Function.Equality using (_⟨$⟩_)

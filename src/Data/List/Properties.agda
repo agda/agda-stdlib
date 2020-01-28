@@ -20,7 +20,7 @@ open import Data.List.Base as List
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.Maybe.Base using (Maybe; just; nothing)
-open import Data.Nat
+open import Data.Nat.Base
 open import Data.Nat.Properties
 open import Data.Product as Prod hiding (map; zip)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)

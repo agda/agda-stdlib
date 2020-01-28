@@ -18,7 +18,7 @@ module Data.BoundedVec where
 Use Data.Vec.Bounded instead."
 #-}
 
-open import Data.Nat
+open import Data.Nat.Base
 open import Data.List.Base as List using (List)
 open import Data.Vec.Base as Vec using (Vec)
 import Data.BoundedVec.Inefficient as Ineff

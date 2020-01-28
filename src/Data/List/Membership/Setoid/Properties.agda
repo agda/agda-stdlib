@@ -18,7 +18,7 @@ import Data.List.Relation.Unary.Any.Properties as Any
 import Data.List.Membership.Setoid as Membership
 import Data.List.Relation.Binary.Equality.Setoid as Equality
 import Data.List.Relation.Unary.Unique.Setoid as Unique
-open import Data.Nat using (suc; z≤n; s≤s; _≤_; _<_)
+open import Data.Nat.Base using (suc; z≤n; s≤s; _≤_; _<_)
 open import Data.Nat.Properties using (≤-trans; n≤1+n)
 open import Data.Product as Prod using (∃; _×_; _,_ ; ∃₂)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)

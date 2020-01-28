@@ -10,7 +10,7 @@ module Codata.Musical.Colist.Infinite-merge where
 
 open import Codata.Musical.Notation
 open import Codata.Musical.Colist as Colist hiding (_⋎_)
-open import Data.Nat
+open import Data.Nat.Base
 open import Data.Nat.Induction using (<′-wellFounded)
 open import Data.Nat.Properties
 open import Data.Product as Prod

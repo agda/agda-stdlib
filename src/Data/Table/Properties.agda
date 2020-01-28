@@ -20,7 +20,7 @@ open import Data.Table
 open import Data.Table.Relation.Binary.Equality
 
 open import Data.Bool.Base using (true; false; if_then_else_)
-open import Data.Nat using (zero; suc)
+open import Data.Nat.Base using (zero; suc)
 open import Data.Empty using (⊥-elim)
 open import Data.Fin using (Fin; suc; zero; _≟_; punchIn)
 import Data.Fin.Properties as FP

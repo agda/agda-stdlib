@@ -8,7 +8,7 @@
 
 module Data.Fin.Subset.Induction where
 
-open import Data.Nat using (ℕ)
+open import Data.Nat.Base using (ℕ)
 open import Data.Nat.Induction using (<-wellFounded)
 open import Data.Fin.Subset using (Subset; _⊂_; ∣_∣)
 open import Data.Fin.Subset.Properties

@@ -15,8 +15,7 @@ open import Data.Bool.Base using (Bool; true; false; not; _∧_; _∨_)
 open import Data.Empty using (⊥-elim)
 open import Data.Fin.Base
 open import Data.Fin.Patterns
-open import Data.Nat as ℕ
-  using (ℕ; zero; suc; s≤s; z≤n; _∸_; _≤′_; ≤′-refl; ≤′-step)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_)
 import Data.Nat.Properties as ℕₚ
 open import Data.Unit using (tt)
 open import Data.Product using (∃; ∃₂; ∄; _×_; _,_; map; proj₁; uncurry; <_,_>)
@@ -196,10 +195,10 @@ toℕ-cast {n = suc n} eq (suc k) = cong suc (toℕ-cast (cong ℕ.pred eq) k)
 infix 4 _≤?_ _<?_
 
 _≤?_ : ∀ {n} → B.Decidable (_≤_ {n})
-a ≤? b = toℕ a ℕ.≤? toℕ b
+a ≤? b = toℕ a ℕₚ.≤? toℕ b
 
 _<?_ : ∀ {n} → B.Decidable (_<_ {n})
-m <? n = suc (toℕ m) ℕ.≤? toℕ n
+m <? n = suc (toℕ m) ℕₚ.≤? toℕ n
 
 ------------------------------------------------------------------------
 -- Structures
@@ -399,18 +398,18 @@ lower₁-irrelevant {suc n} (suc i)  _   _ =
 toℕ-inject≤ : ∀ {m n} (i : Fin m) (le : m ℕ.≤ n) →
                 toℕ (inject≤ i le) ≡ toℕ i
 toℕ-inject≤ {_} {suc n} zero    _  = refl
-toℕ-inject≤ {_} {suc n} (suc i) le = cong suc (toℕ-inject≤ i (ℕ.≤-pred le))
+toℕ-inject≤ {_} {suc n} (suc i) le = cong suc (toℕ-inject≤ i (ℕₚ.≤-pred le))
 
 inject≤-refl : ∀ {n} (i : Fin n) (n≤n : n ℕ.≤ n) → inject≤ i n≤n ≡ i
 inject≤-refl {suc n} zero    _   = refl
-inject≤-refl {suc n} (suc i) n≤n = cong suc (inject≤-refl i (ℕ.≤-pred n≤n))
+inject≤-refl {suc n} (suc i) n≤n = cong suc (inject≤-refl i (ℕₚ.≤-pred n≤n))
 
 inject≤-idempotent : ∀ {m n k} (i : Fin m)
                      (m≤n : m ℕ.≤ n) (n≤k : n ℕ.≤ k) (m≤k : m ℕ.≤ k) →
                      inject≤ (inject≤ i m≤n) n≤k ≡ inject≤ i m≤k
 inject≤-idempotent {_} {suc n} {suc k} zero    _   _   _ = refl
 inject≤-idempotent {_} {suc n} {suc k} (suc i) m≤n n≤k _ =
-  cong suc (inject≤-idempotent i (ℕ.≤-pred m≤n) (ℕ.≤-pred n≤k) _)
+  cong suc (inject≤-idempotent i (ℕₚ.≤-pred m≤n) (ℕₚ.≤-pred n≤k) _)
 
 ------------------------------------------------------------------------
 -- splitAt

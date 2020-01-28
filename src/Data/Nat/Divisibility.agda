@@ -9,7 +9,7 @@
 module Data.Nat.Divisibility where
 
 open import Algebra
-open import Data.Nat
+open import Data.Nat.Base
 open import Data.Nat.DivMod
 open import Data.Nat.Properties
 open import Data.Product

@@ -15,9 +15,9 @@ import Data.Integer.DivMod as ℤ
 open import Data.Nat.GCD
 open import Data.Nat.Divisibility as ℕDiv using (divides; 0∣⇒≡0)
 open import Data.Nat.Coprimality as C using (Coprime; Bézout-coprime; coprime-/gcd)
-open import Data.Nat as ℕ using (ℕ; zero; suc) hiding (module ℕ)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc) hiding (module ℕ)
 import Data.Nat.DivMod as ℕ
-open import Data.Rational.Unnormalised using (ℚᵘ; mkℚᵘ)
+open import Data.Rational.Unnormalised using (ℚᵘ; mkℚᵘ; _≢0)
 open import Data.Product
 open import Data.Sum.Base using (inj₂)
 open import Level using (0ℓ)
@@ -29,11 +29,6 @@ open import Relation.Binary.PropositionalEquality
   using (_≡_; _≢_; refl; subst; cong; cong₂; module ≡-Reasoning)
 
 open ≡-Reasoning
-
-private
-  infix 4 _≢0
-  _≢0 : ℕ → Set
-  n ≢0 = False (n ℕ.≟ 0)
 
 -- Note, these are re-exported publicly to maintain backwards
 -- compatability. Although we are unable (?) to put a warning on them,

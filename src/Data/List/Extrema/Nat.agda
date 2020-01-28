@@ -11,7 +11,7 @@
 
 module Data.List.Extrema.Nat where
 
-open import Data.Nat using (ℕ; _≤_; _<_)
+open import Data.Nat.Base using (ℕ; _≤_; _<_)
 open import Data.Nat.Properties as ℕₚ using (≤∧≢⇒<; <⇒≤; <⇒≢)
 open import Data.Sum.Base as Sum using (_⊎_)
 open import Data.List.Base using (List)

@@ -9,7 +9,7 @@
 module Data.Nat.LCM where
 
 open import Algebra
-open import Data.Nat
+open import Data.Nat.Base
 open import Data.Nat.Coprimality using (Coprime)
 open import Data.Nat.Divisibility
 open import Data.Nat.DivMod

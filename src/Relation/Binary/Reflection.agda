@@ -8,7 +8,7 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Data.Fin
-open import Data.Nat
+open import Data.Nat.Base
 open import Data.Vec.Base as Vec
 open import Function.Base
 open import Function.Equality using (_⟨$⟩_)

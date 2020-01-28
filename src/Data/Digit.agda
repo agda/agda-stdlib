@@ -8,7 +8,7 @@
 
 module Data.Digit where
 
-open import Data.Nat
+open import Data.Nat.Base
 open import Data.Nat.Properties
 open import Data.Nat.Solver
 open import Data.Fin as Fin using (Fin; zero; suc; toℕ)

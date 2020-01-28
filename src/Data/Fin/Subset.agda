@@ -14,7 +14,7 @@ import Algebra.Properties.BooleanAlgebra.Expression as BAExpr
 open import Data.Bool using (not; _∧_; _∨_; _≟_)
 open import Data.Fin using (Fin; zero; suc)
 open import Data.List.Base using (List; foldr; foldl)
-open import Data.Nat using (ℕ)
+open import Data.Nat.Base using (ℕ)
 open import Data.Product using (∃; _×_)
 open import Data.Vec hiding (foldr; foldl)
 import Data.Vec.Relation.Binary.Pointwise.Extensional as Pointwise

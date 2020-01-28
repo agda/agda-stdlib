@@ -8,7 +8,7 @@
 
 module Data.Nat.GCD where
 
-open import Data.Nat
+open import Data.Nat.Base
 open import Data.Nat.Divisibility
 open import Data.Nat.DivMod
 open import Data.Nat.GCD.Lemmas

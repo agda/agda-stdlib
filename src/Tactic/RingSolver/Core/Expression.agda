@@ -8,7 +8,7 @@
 
 module Tactic.RingSolver.Core.Expression where
 
-open import Data.Nat using (ℕ)
+open import Data.Nat.Base using (ℕ)
 open import Data.Fin using (Fin)
 open import Data.Vec.Base as Vec using (Vec)
 

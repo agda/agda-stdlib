@@ -18,7 +18,7 @@ open import Category.Applicative
 import Category.Applicative.Indexed as Applicative
 open import Category.Monad
 open import Data.Fin using (Fin)
-open import Data.Nat
+open import Data.Nat.Base
 open import Data.Product using (_,_; proj₁; proj₂)
 open import Data.Vec.Base as Vec using (Vec)
 import Data.Vec.Categorical as VecCat
