@@ -244,6 +244,36 @@ module _ {c ℓ p} (S : Setoid c ℓ) {P : Pred (Carrier S) p}
   ...   | there v∈fxs = Prod.map there id (∈-filter⁻ v∈fxs)
 
 ------------------------------------------------------------------------
+-- nub
+
+module _ {c ℓ} (S : DecSetoid c ℓ) where
+
+  open DecSetoid S using (_≈_; _≟_; trans; sym)
+  open Membership (DecSetoid.setoid S) using (_∈_)
+
+  ∈-nub-filter⁺ : ∀ y {xs z} → z ∈ xs → z ∈ y ∷ nub-filter _≟_ y xs
+  ∈-nub-filter⁺ y {x ∷ xs} {z} (here z≈x) with y ≟ x
+  ... | true  because [y≈x] = here (trans z≈x (sym (invert [y≈x])))
+  ... | false because _   = there (here z≈x)
+  ∈-nub-filter⁺ y {x ∷ xs} {z} (there z∈xs) with does (y ≟ x)
+  ... | true  = ∈-nub-filter⁺ y z∈xs
+  ... | false = there (∈-nub-filter⁺ x z∈xs)
+
+  ∈-nub⁺ : ∀ xs {z} → z ∈ xs → z ∈ nub _≟_ xs
+  ∈-nub⁺ (x ∷ xs) (here z≈x) = here z≈x
+  ∈-nub⁺ (x ∷ xs) (there z∈xs) = ∈-nub-filter⁺ x z∈xs
+
+  ∈-nub-filter⁻ : ∀ y {xs z} → z ∈ nub-filter _≟_ y xs → z ∈ xs
+  ∈-nub-filter⁻ y {x ∷ xs} {z} z∈nub-filter[≟,y,xs] with does (y ≟ x)
+  ∈-nub-filter⁻ y {x ∷ xs} {z} z∈nub-filter[≟,y,xs]         | true  = there (∈-nub-filter⁻ y z∈nub-filter[≟,y,xs])
+  ∈-nub-filter⁻ y {x ∷ xs} {z} (here z≈x)                   | false = here z≈x
+  ∈-nub-filter⁻ y {x ∷ xs} {z} (there z∈nub-filter[≟,x,xs]) | false = there (∈-nub-filter⁻ x z∈nub-filter[≟,x,xs])
+
+  ∈-nub⁻ : ∀ xs {z} → z ∈ nub _≟_ xs → z ∈ xs
+  ∈-nub⁻ (x ∷ xs) {z} (here z≈x) = here z≈x
+  ∈-nub⁻ (x ∷ xs) {z} (there z∈nub[≟,xs]) = there (∈-nub-filter⁻ x z∈nub[≟,xs])
+
+------------------------------------------------------------------------
 -- length
 
 module _ {c ℓ} (S : Setoid c ℓ) where

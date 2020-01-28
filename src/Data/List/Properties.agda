@@ -30,6 +30,7 @@ open import Level using (Level)
 open import Relation.Binary as B using (DecidableEquality)
 import Relation.Binary.Reasoning.Setoid as EqR
 open import Relation.Binary.PropositionalEquality as P hiding ([_])
+open import Relation.Binary as B using (Rel)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary using (¬_; Dec; does; _because_; yes; no)
 open import Relation.Nullary.Negation using (contradiction)
@@ -751,6 +752,53 @@ module _ {P : Pred A p} (P? : Decidable P) where
   filter-++ (x ∷ xs) ys with does (P? x)
   ... | true  = cong (x ∷_) (filter-++ xs ys)
   ... | false = filter-++ xs ys
+
+------------------------------------------------------------------------
+-- nub
+
+module _ {R : Rel A p} (R? : B.Decidable R) where
+  length-nub-filter : ∀ y xs → length (nub-filter R? y xs) ≤ length xs
+  length-nub-filter y [] = ≤-refl
+  length-nub-filter y (x ∷ xs) with does (R? y x)
+  ... | true  = ≤-step (length-nub-filter y xs)
+  ... | false = s≤s (length-nub-filter x xs)
+
+  length-nub : ∀ xs → length (nub R? xs) ≤ length xs
+  length-nub [] = z≤n
+  length-nub (x ∷ xs) = s≤s (length-nub-filter x xs)
+
+  nub-filter-reject : ∀ y x xs → R y x → nub-filter R? y (x ∷ xs) ≡ nub-filter R? y xs
+  nub-filter-reject y x xs Ryx with R? y x
+  ... | true because _ = refl
+  ... | no ¬Ryx        = contradiction Ryx ¬Ryx
+
+  nub-filter-accept : ∀ y x xs → ¬ (R y x) → nub-filter R? y (x ∷ xs) ≡ x ∷ nub-filter R? x xs
+  nub-filter-accept y x xs ¬Ryx with R? y x
+  ... | yes Ryx         = contradiction Ryx ¬Ryx
+  ... | false because _ = refl
+
+  nub-filter-idem : ∀ y → nub-filter R? y ∘ nub-filter R? y ≗ nub-filter R? y
+  nub-filter-idem y [] = refl
+  nub-filter-idem y (x ∷ xs) with does (R? y x) | inspect does (R? y x)
+  ... | true  | _                   = nub-filter-idem y xs
+  ... | false | P.[ eq ] rewrite eq = cong (x ∷_) (nub-filter-idem x xs)
+
+  nub-idem : nub R? ∘ nub R? ≗ nub R?
+  nub-idem [] = refl
+  nub-idem (x ∷ xs) = cong (x ∷_) (nub-filter-idem x xs)
+
+module _ {b ℓ} (S : B.DecSetoid b ℓ) where
+  open B.DecSetoid S renaming (_≟_ to _≈?_; trans to ≈-trans; sym to ≈-sym)
+  nub-filter-resp-≈ : ∀ y₁ y₂ xs → y₁ ≈ y₂ → nub-filter _≈?_ y₁ xs ≡ nub-filter _≈?_ y₂ xs
+  nub-filter-resp-≈ y₁ y₂ [] y₁≈y₂ = P.refl
+  nub-filter-resp-≈ y₁ y₂ (x ∷ xs) y₁≈y₂ with y₁ ≈? x | y₂ ≈? x
+  ... | true  because _    | true  because _    = nub-filter-resp-≈ y₁ y₂ xs y₁≈y₂
+  ... | true  because y₁≈x | false because y₂≉x = contradiction (≈-trans (≈-sym y₁≈y₂) (invert y₁≈x)) (invert y₂≉x)
+  ... | false because y₁≉x | true  because y₂≈x = contradiction (≈-trans y₁≈y₂ (invert y₂≈x)) (invert y₁≉x)
+  ... | false because _    | false because _    = P.refl
+
+  nub-resp-≈ : ∀ x₁ x₂ xs → x₁ ≈ x₂ → nub _≈?_ (x₁ ∷ xs) ≡  (nub _≈?_ (x₂ ∷ xs)) [ zero ]∷= x₁
+  nub-resp-≈ x₁ x₂ xs x₁≈x₂ = cong (x₁ ∷_) (nub-filter-resp-≈ x₁ x₂ xs x₁≈x₂)
 
 ------------------------------------------------------------------------
 -- partition

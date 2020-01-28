@@ -15,7 +15,7 @@ open import Category.Monad
 open import Data.Bool.Base using (Bool; true; false; T)
 open import Data.List
 open import Data.List.Relation.Unary.Any using (Any; here; there)
-open import Data.List.Relation.Unary.Any.Properties
+open import Data.List.Relation.Unary.Any.Properties hiding (filter⁺)
 open import Data.List.Categorical
 open import Data.List.Membership.Propositional
 open import Data.List.Membership.Propositional.Properties

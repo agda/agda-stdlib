@@ -16,7 +16,7 @@ open import Data.Fin using (Fin) renaming (zero to fzero; suc to fsuc)
 open import Data.List.Base as List using
   ( List; []; _∷_; [_]; _∷ʳ_; fromMaybe; null; _++_; concat; map; mapMaybe
   ; inits; tails; drop; take; applyUpTo; applyDownFrom; replicate; tabulate
-  ; filter; zipWith; all
+  ; filter; zipWith; all; nub; nub-filter
   )
 open import Data.List.Membership.Propositional
 open import Data.List.Membership.Propositional.Properties
@@ -40,7 +40,7 @@ open import Function.Equivalence using (_⇔_; equivalence; Equivalence)
 open import Function.Inverse using (_↔_; inverse)
 open import Function.Surjection using (_↠_; surjection)
 open import Level using (Level)
-open import Relation.Binary using (REL; Setoid; _Respects_)
+open import Relation.Binary as B using (REL; Setoid; _Respects_)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; cong; cong₂; _≗_)
 open import Relation.Nullary.Reflects using (invert)
@@ -504,6 +504,20 @@ module _ {P : A → Set p} {Q : A → Set q} (P? : Decidable P) where
   filter⁺ {xs = x ∷ _} (Qx ∷ Qxs) with does (P? x)
   ... | false = filter⁺ Qxs
   ... | true  = Qx ∷ filter⁺ Qxs
+
+------------------------------------------------------------------------
+-- nub
+
+module _ {P : A → Set p} {Q : A → A → Set q} (Q? : B.Decidable Q) where
+  nub-filter⁺ : ∀ {y xs} → All P xs → All P (nub-filter Q? y xs)
+  nub-filter⁺ {y} {[]} [] = []
+  nub-filter⁺ {y} {(x ∷ xs)} (px ∷ all[P,xs]) with does (Q? y x)
+  ... | true  = nub-filter⁺ all[P,xs]
+  ... | false = px ∷ nub-filter⁺ all[P,xs]
+
+  nub⁺ : ∀ {xs} → All P xs → All P (nub Q? xs)
+  nub⁺ [] = []
+  nub⁺ (px ∷ all[P,xs]) = px ∷ nub-filter⁺ all[P,xs]
 
 ------------------------------------------------------------------------
 -- zipWith

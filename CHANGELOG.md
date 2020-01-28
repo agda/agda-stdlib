@@ -532,6 +532,12 @@ Other minor additions
   map-just    : ma ≡ just a → map f ma ≡ just (f a)
   ```
 
+* Added new functions to `Data.List`:
+  ``agda
+  nub-filter : Decidable _R_ → A → List A → List A
+  nub : Decidable _R_ → List A → List A
+  ```
+
 * Added new proofs to `Data.List.Relation.Binary.Equality.Setoid`:
   ```agda
   Any-resp-≋      : P Respects _≈_ → (Any P) Respects _≋_
@@ -572,6 +578,11 @@ Other minor additions
   Any-resp-Pointwise      : P Respects _∼_ → (Any P) Respects (Pointwise _∼_)
   All-resp-Pointwise      : P Respects _∼_ → (All P) Respects (Pointwise _∼_)
   AllPairs-resp-Pointwise : R Respects₂ _∼_ → (AllPairs R) Respects (Pointwise _∼_)
+  ```
+* Added new proofs to `Data.List.Relation.Unary.Any`:
+  ```agda
+  filter⁺ : P ⋐ Q → Any P xs → Any P (filter Q? xs)
+  filter⁻ : Any P (filter Q? xs) → Any P xs
   ```
 
 * Added new relations to Relation.Binary.Definitions

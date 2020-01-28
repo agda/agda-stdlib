@@ -38,12 +38,13 @@ open import Function.Equivalence using (_⇔_; equivalence; Equivalence)
 open import Function.Inverse as Inv using (_↔_; inverse; Inverse)
 open import Function.Related as Related using (Kind; Related; SK-sym)
 open import Level using (Level)
-open import Relation.Binary
+open import Relation.Binary as B
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; refl; inspect)
-open import Relation.Unary
+open import Relation.Unary as U
   using (Pred; _⟨×⟩_; _⟨→⟩_) renaming (_⊆_ to _⋐_)
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary using (¬_; _because_; ofʸ; ofⁿ)
+open import Relation.Nullary.Negation using (contradiction)
 open Related.EquationalReasoning
 
 private
@@ -458,6 +459,50 @@ module _ {P : A → Set p} where
               Any P (tabulate f) → ∃ λ i → P (f i)
   tabulate⁻ {suc n} (here p)   = fzero , p
   tabulate⁻ {suc n} (there p) = Prod.map fsuc id (tabulate⁻ p)
+
+------------------------------------------------------------------------
+-- filter
+
+module _ {P : A → Set p} {Q : A → Set p} (Q? : U.Decidable Q) where
+  filter⁺ : ∀ {xs} → P ⋐ Q → Any P xs → Any P (filter Q? xs)
+  filter⁺ {x ∷ xs} P⋐Q (here px) with Q? x
+  ... | true  because _       = here px
+  ... | false because ofⁿ ¬Qx = contradiction (P⋐Q px) ¬Qx
+  filter⁺ {x ∷ xs} P⋐Q (there p) with Q? x
+  ... | true  because _ = there (filter⁺ P⋐Q p)
+  ... | false because _ = filter⁺ P⋐Q p
+
+  filter⁻ : ∀ {xs} → Any P (filter Q? xs) → Any P xs
+  filter⁻ {x ∷ xs} p with Q? x
+  filter⁻ {x ∷ xs} (here px) | true  because _ = here px
+  filter⁻ {x ∷ xs} (there p) | true  because _ = there (filter⁻ p)
+  filter⁻ {x ∷ xs} p         | false because _ = there (filter⁻ p)
+
+------------------------------------------------------------------------
+-- nub
+
+module _ {P : A → Set p} {Q : A → A → Set q} (Q? : B.Decidable Q) where
+  nub-filter⁺ : ∀ y {xs} →  P Respects (flip Q) → Any P xs → P y ⊎ Any P (nub-filter Q? y xs)
+  nub-filter⁺ y {x ∷ xs} P-resp-Q (here px) with Q? y x
+  ... | true  because ofʸ Qyx = inj₁ (P-resp-Q Qyx px)
+  ... | false because _       = inj₂ (here px)
+  nub-filter⁺ y {x ∷ xs} P-resp-Q (there p) with Q? y x
+  ... | true  because _ = nub-filter⁺ y P-resp-Q p
+  ... | false because _ = inj₂ ([ here , there ]′ (nub-filter⁺ x P-resp-Q p))
+
+  nub⁺ : ∀ {xs} →  P Respects (flip Q) → Any P xs → Any P (nub Q? xs)
+  nub⁺ {x ∷ xs} P-resp-Q (here px) = here px
+  nub⁺ {x ∷ xs} P-resp-Q (there p) = [ here , there ]′ (nub-filter⁺ x P-resp-Q p)
+
+  nub-filter⁻ : ∀ y {xs} → Any P (nub-filter Q? y xs) → Any P xs
+  nub-filter⁻ y {x ∷ xs} p with Q? y x
+  nub-filter⁻ y {x ∷ xs} p         | true because _ = there (nub-filter⁻ y p)
+  nub-filter⁻ y {x ∷ xs} (here px) | false because _ = here px
+  nub-filter⁻ y {x ∷ xs} (there p) | false because _ = there (nub-filter⁻ x p)
+
+  nub⁻ : ∀ {xs} → Any P (nub Q? xs) → Any P xs
+  nub⁻ {x ∷ xs} (here px) = here px
+  nub⁻ {x ∷ xs} (there p) = there (nub-filter⁻ x p)
 
 ------------------------------------------------------------------------
 -- map-with-∈.

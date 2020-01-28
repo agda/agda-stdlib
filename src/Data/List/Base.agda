@@ -24,6 +24,7 @@ open import Level using (Level)
 open import Relation.Nullary using (does)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Unary.Properties using (∁?)
+open import Relation.Binary as B using (Rel)
 
 private
   variable
@@ -291,6 +292,16 @@ span P? (x ∷ xs) with does (P? x)
 
 break : ∀ {P : Pred A p} → Decidable P → List A → (List A × List A)
 break P? = span (∁? P?)
+
+nub-filter : ∀ {R : Rel A p} → B.Decidable R → A → List A → List A
+nub-filter R? y [] = []
+nub-filter R? y (x ∷ xs) with does (R? y x)
+... | true  = nub-filter R? y xs
+... | false = x ∷ nub-filter R? x xs
+
+nub : ∀ {R : Rel A p} → B.Decidable R → List A → List A
+nub R? []       = []
+nub R? (x ∷ xs) = x ∷ nub-filter R? x xs
 
 ------------------------------------------------------------------------
 -- Actions on single elements

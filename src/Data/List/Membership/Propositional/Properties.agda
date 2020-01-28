@@ -34,13 +34,13 @@ open import Function.Inverse as Inv using (_↔_; module Inverse)
 import Function.Related as Related
 open import Function.Related.TypeIsomorphisms
 open import Level using (Level)
-open import Relation.Binary hiding (Decidable)
+open import Relation.Binary as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; trans; cong; subst; →-to-⟶; _≗_)
 import Relation.Binary.Properties.DecTotalOrder as DTOProperties
 open import Relation.Unary using (_⟨×⟩_; Decidable)
 open import Relation.Nullary.Reflects using (invert)
-open import Relation.Nullary using (¬_; Dec; does; yes; no)
+open import Relation.Nullary using (¬_; Dec; does; yes; no; _because_)
 open import Relation.Nullary.Negation
 
 private
@@ -178,6 +178,33 @@ module _ {p} {P : A → Set p} (P? : Decidable P) where
 
   ∈-filter⁻ : ∀ {v xs} → v ∈ filter P? xs → v ∈ xs × P v
   ∈-filter⁻ = Membershipₛ.∈-filter⁻ (P.setoid A) P? (P.subst P)
+
+------------------------------------------------------------------------
+-- nub
+
+module _ {ℓ} {R : Rel A ℓ} (R? : B.Decidable R) where
+  ∈-nub-filter⁻ : ∀ y {xs z} → z ∈ nub-filter R? y xs → z ∈ xs
+  ∈-nub-filter⁻ y {x ∷ xs} z∈nub-filter[R?,y,xs] with does (R? y x)
+  ∈-nub-filter⁻ y {x ∷ xs} z∈nub-filter[R?,y,xs]         | true  = there (∈-nub-filter⁻ y z∈nub-filter[R?,y,xs])
+  ∈-nub-filter⁻ y {x ∷ xs} (here refl)                   | false = here P.refl
+  ∈-nub-filter⁻ y {x ∷ xs} (there z∈nub-filter[R?,x,xs]) | false = there (∈-nub-filter⁻ x z∈nub-filter[R?,x,xs])
+
+  ∈-nub⁻ : ∀ xs {z} → z ∈ nub R? xs → z ∈ xs
+  ∈-nub⁻ (x ∷ xs) (here refl) = here refl
+  ∈-nub⁻ (x ∷ xs) (there z∈nub[R?,xs]) = there (∈-nub-filter⁻ x z∈nub[R?,xs])
+
+module _ {ℓ} {R : Rel A ℓ} (_≈?_ : B.Decidable (_≡_ {A = A})) where
+  ∈-nub-filter⁺ : ∀ y {xs z} → z ∈ xs → z ∈ y ∷ nub-filter _≈?_ y xs
+  ∈-nub-filter⁺ y {x ∷ xs} (here refl) with y ≈? x
+  ... | yes refl = here refl
+  ... | no  _    = there (here refl)
+  ∈-nub-filter⁺ y {x ∷ xs} (there z∈xs) with does (y ≈? x)
+  ... | true     = ∈-nub-filter⁺ y z∈xs
+  ... | false    = there (∈-nub-filter⁺ x z∈xs)
+
+  ∈-nub⁺ : ∀ xs {z} → z ∈ xs → z ∈ nub _≈?_ xs
+  ∈-nub⁺ (x ∷ xs) {.x} (here refl) = here refl
+  ∈-nub⁺ (x ∷ xs) {z} (there z∈xs) = ∈-nub-filter⁺ x z∈xs
 
 ------------------------------------------------------------------------
 -- _>>=_
