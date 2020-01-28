@@ -103,7 +103,7 @@ import Data.Sum.Properties
 -- additional functions which could not be placed into the corresponding
 -- Base module because of cyclic dependencies.
 
-import Data.List
+import Data.List.Base
 import Data.Maybe
 import Data.Sum
 

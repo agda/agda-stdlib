@@ -8,7 +8,7 @@
 
 module Data.Vec.Relation.Unary.All.Properties where
 
-open import Data.List using ([]; _∷_)
+open import Data.List.Base using ([]; _∷_)
 open import Data.List.Relation.Unary.All as List using ([]; _∷_)
 open import Data.Product as Prod using (_×_; _,_; uncurry; uncurry′)
 open import Data.Vec as Vec

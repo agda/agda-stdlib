@@ -9,7 +9,7 @@
 module Data.List.Relation.Binary.Suffix.Heterogeneous.Properties where
 
 open import Data.Bool.Base using (true; false)
-open import Data.List as List
+open import Data.List.Base as List
   using (List; []; _∷_; _++_; length; filter; replicate; reverse; reverseAcc)
 open import Data.List.Relation.Binary.Pointwise as Pw
   using (Pointwise; []; _∷_; Pointwise-length)

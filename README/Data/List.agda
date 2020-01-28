@@ -21,7 +21,7 @@ open import Relation.Binary.PropositionalEquality
 ------------------------------------------------------------------------
 -- The `List` datatype is exported by the following file:
 
-open import Data.List
+open import Data.List.Base
   using
   (List
   ; []; _∷_

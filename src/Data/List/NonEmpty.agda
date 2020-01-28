@@ -12,7 +12,7 @@ open import Level using (Level)
 open import Category.Monad
 open import Data.Bool.Base using (Bool; false; true; not; T)
 open import Data.Bool.Properties
-open import Data.List as List using (List; []; _∷_)
+open import Data.List.Base as List using (List; []; _∷_)
 open import Data.Maybe.Base using (Maybe ; nothing; just)
 open import Data.Nat as Nat
 open import Data.Product as Prod using (∃; _×_; proj₁; proj₂; _,_; -,_)

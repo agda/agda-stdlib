@@ -11,7 +11,7 @@ module Data.List.Membership.Setoid.Properties where
 open import Algebra using (Op₂; Selective)
 open import Data.Bool.Base using (true; false)
 open import Data.Fin using (Fin; zero; suc)
-open import Data.List
+open import Data.List.Base
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Relation.Unary.All as All using (All)
 import Data.List.Relation.Unary.Any.Properties as Any

@@ -25,7 +25,7 @@ open import Data.Empty using (⊥-elim)
 open import Data.Fin using (Fin; suc; zero; _≟_; punchIn)
 import Data.Fin.Properties as FP
 open import Data.Fin.Permutation as Perm using (Permutation; _⟨$⟩ʳ_; _⟨$⟩ˡ_)
-open import Data.List as L using (List; _∷_; [])
+open import Data.List.Base as L using (List; _∷_; [])
 open import Data.List.Relation.Unary.Any using (here; there; index)
 open import Data.List.Membership.Propositional using (_∈_)
 open import Data.Product as Product using (Σ; ∃; _,_; proj₁; proj₂)

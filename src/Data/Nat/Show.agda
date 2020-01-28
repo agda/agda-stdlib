@@ -11,7 +11,7 @@ module Data.Nat.Show where
 open import Data.Char as Char using (Char)
 open import Data.Digit using (showDigit; toDigits; toNatDigits)
 open import Function using (_∘_; _$_)
-open import Data.List using (List; []; _∷_; map; reverse)
+open import Data.List.Base using (List; []; _∷_; map; reverse)
 open import Data.Nat
 open import Data.Product using (proj₁)
 open import Data.String as String using (String)

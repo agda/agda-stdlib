@@ -12,7 +12,7 @@ module README.Case where
 open import Data.Fin   hiding (pred)
 open import Data.Maybe hiding (from-just)
 open import Data.Nat   hiding (pred)
-open import Data.List
+open import Data.List.Base
 open import Data.Sum
 open import Data.Product
 open import Function

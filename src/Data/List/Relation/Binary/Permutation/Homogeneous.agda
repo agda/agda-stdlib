@@ -8,7 +8,7 @@
 
 module Data.List.Relation.Binary.Permutation.Homogeneous where
 
-open import Data.List using (List; _∷_)
+open import Data.List.Base using (List; _∷_)
 open import Data.List.Relation.Binary.Pointwise as Pointwise
   using (Pointwise)
 open import Level using (Level; _⊔_)

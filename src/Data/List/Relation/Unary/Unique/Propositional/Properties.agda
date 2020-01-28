@@ -9,7 +9,7 @@
 module Data.List.Relation.Unary.Unique.Propositional.Properties where
 
 open import Data.Fin using (Fin)
-open import Data.List
+open import Data.List.Base
 open import Data.List.Relation.Binary.Disjoint.Propositional
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.List.Relation.Unary.AllPairs as AllPairs using (AllPairs)

@@ -8,7 +8,7 @@
 
 module Data.List.Relation.Binary.Disjoint.Setoid.Properties where
 
-open import Data.List
+open import Data.List.Base
 open import Data.List.Relation.Binary.Disjoint.Setoid
 import Data.List.Relation.Unary.Any as Any
 open import Data.List.Relation.Unary.All as All
