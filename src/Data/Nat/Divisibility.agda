@@ -305,7 +305,7 @@ Please use n∣m*n instead."
 
 -- Version 0.17
 
-open import Data.Fin using (Fin; zero; suc; toℕ)
+open import Data.Fin.Base using (Fin; zero; suc; toℕ)
 import Data.Fin.Properties as FP
 open import Data.Nat.Solver
 open +-*-Solver

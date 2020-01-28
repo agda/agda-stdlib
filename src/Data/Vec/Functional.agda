@@ -15,7 +15,7 @@
 
 module Data.Vec.Functional where
 
-open import Data.Fin using (Fin; zero; suc; splitAt; punchIn)
+open import Data.Fin.Base using (Fin; zero; suc; splitAt; punchIn)
 open import Data.List.Base as L using (List)
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Data.Product using (Σ; ∃; _×_; _,_; proj₁; proj₂)

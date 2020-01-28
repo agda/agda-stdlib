@@ -16,7 +16,7 @@
 module Data.Fin.Substitution where
 
 open import Data.Nat hiding (_⊔_)
-open import Data.Fin using (Fin; zero; suc)
+open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Vec.Base
 open import Function as Fun using (flip)
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive

@@ -9,7 +9,7 @@
 module Data.Vec.Relation.Unary.Any.Properties where
 
 open import Data.Nat.Base using (suc; zero)
-open import Data.Fin using (Fin; zero; suc)
+open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Empty using (⊥)
 open import Data.List.Base using ([]; _∷_)
 import Data.List.Relation.Unary.Any as List

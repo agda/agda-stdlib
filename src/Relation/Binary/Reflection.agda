@@ -7,7 +7,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Data.Fin
+open import Data.Fin.Base
 open import Data.Nat.Base
 open import Data.Vec.Base as Vec
 open import Function.Base

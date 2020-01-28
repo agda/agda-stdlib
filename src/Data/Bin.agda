@@ -19,7 +19,7 @@ Use Data.Nat.Binary instead."
 open import Data.Nat.Base as Nat
   using (ℕ; zero; z≤n; s≤s) renaming (suc to 1+_)
 open import Data.Digit  using (fromDigits; toDigits; Bit)
-open import Data.Fin as Fin using (Fin; zero)
+open import Data.Fin.Base as Fin using (Fin; zero)
   renaming (suc to 1+_)
 open import Data.Fin.Properties as FP using (_+′_)
 open import Data.List.Base as List hiding (downFrom)

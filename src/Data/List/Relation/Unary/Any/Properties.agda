@@ -12,7 +12,7 @@ open import Category.Monad
 open import Data.Bool.Base using (Bool; false; true; T)
 open import Data.Bool.Properties
 open import Data.Empty using (⊥)
-open import Data.Fin using (Fin) renaming (zero to fzero; suc to fsuc)
+open import Data.Fin.Base using (Fin) renaming (zero to fzero; suc to fsuc)
 open import Data.List.Base as List
 open import Data.List.Categorical using (monad)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)

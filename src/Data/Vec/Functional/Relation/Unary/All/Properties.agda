@@ -8,7 +8,7 @@
 
 module Data.Vec.Functional.Relation.Unary.All.Properties where
 
-open import Data.Fin
+open import Data.Fin.Base
 open import Data.Fin.Properties
 open import Data.Nat.Base
 open import Data.Product as Σ using (_×_; _,_; proj₁; proj₂; uncurry)

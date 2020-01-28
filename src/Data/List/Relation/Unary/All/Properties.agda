@@ -12,7 +12,7 @@ open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Bool.Base using (Bool; T; true; false)
 open import Data.Bool.Properties using (T-∧)
 open import Data.Empty
-open import Data.Fin using (Fin) renaming (zero to fzero; suc to fsuc)
+open import Data.Fin.Base using (Fin) renaming (zero to fzero; suc to fsuc)
 open import Data.List.Base as List using
   ( List; []; _∷_; [_]; _∷ʳ_; fromMaybe; null; _++_; concat; map; mapMaybe
   ; inits; tails; drop; take; applyUpTo; applyDownFrom; replicate; tabulate

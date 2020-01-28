@@ -16,7 +16,7 @@ import Algebra.Properties.DistributiveLattice as DL
 import Algebra.Properties.BooleanAlgebra as BA
 open import Data.Bool.Base using (not)
 open import Data.Bool.Properties
-open import Data.Fin using (Fin; suc; zero)
+open import Data.Fin.Base using (Fin; suc; zero)
 open import Data.Fin.Subset
 open import Data.Fin.Properties using (any?; decFinSubset)
 open import Data.Nat.Base

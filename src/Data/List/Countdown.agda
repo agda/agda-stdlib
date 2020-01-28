@@ -13,7 +13,7 @@ open import Relation.Binary
 module Data.List.Countdown (D : DecSetoid 0ℓ 0ℓ) where
 
 open import Data.Empty
-open import Data.Fin using (Fin; zero; suc; punchOut)
+open import Data.Fin.Base using (Fin; zero; suc; punchOut)
 open import Data.Fin.Properties
   using (suc-injective; punchOut-injective)
 open import Function.Base

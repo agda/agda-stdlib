@@ -11,7 +11,7 @@
 open import Algebra
 
 open import Data.Bool as Bool using (Bool; true; false; if_then_else_; _∨_)
-open import Data.Fin using (Fin; zero; suc)
+open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Maybe.Base as Maybe
   using (Maybe; decToMaybe; From-just; from-just)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _+_)

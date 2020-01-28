@@ -8,7 +8,7 @@
 
 module Data.Vec.Functional.Relation.Binary.Pointwise.Properties where
 
-open import Data.Fin
+open import Data.Fin.Base
 open import Data.Fin.Properties
   hiding (isDecEquivalence; setoid; decSetoid)
 open import Data.Nat.Base

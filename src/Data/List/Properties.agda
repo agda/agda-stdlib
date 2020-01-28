@@ -15,7 +15,7 @@ open import Algebra.Bundles
 open import Algebra.Definitions as AlgebraicDefinitions using (Involutive)
 import Algebra.Structures as AlgebraicStructures
 open import Data.Bool.Base using (Bool; false; true; not; if_then_else_)
-open import Data.Fin using (Fin; zero; suc; cast; toℕ)
+open import Data.Fin.Base using (Fin; zero; suc; cast; toℕ)
 open import Data.List.Base as List
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Any using (Any; here; there)

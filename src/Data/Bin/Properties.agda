@@ -15,7 +15,7 @@ Use Data.Nat.Binary.Properties instead."
 
 open import Data.Bin
 open import Data.Digit using (Bit; Expansion)
-import Data.Fin as Fin
+import Data.Fin.Base as Fin
 import Data.Fin.Properties as 𝔽ₚ
 open import Data.List.Base using (List; []; _∷_)
 open import Data.List.Properties using (∷-injective)

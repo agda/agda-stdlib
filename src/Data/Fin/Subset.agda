@@ -12,7 +12,7 @@ open import Algebra
 import Algebra.Properties.BooleanAlgebra as BoolAlgProp
 import Algebra.Properties.BooleanAlgebra.Expression as BAExpr
 open import Data.Bool using (not; _∧_; _∨_; _≟_)
-open import Data.Fin using (Fin; zero; suc)
+open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base using (List; foldr; foldl)
 open import Data.Nat.Base using (ℕ)
 open import Data.Product using (∃; _×_)

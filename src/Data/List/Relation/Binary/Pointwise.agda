@@ -17,7 +17,7 @@ open import Data.List.Properties using (≡-dec; length-++)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.List.Relation.Unary.AllPairs using (AllPairs; []; _∷_)
 open import Data.List.Relation.Unary.Any using (Any; here; there)
-open import Data.Fin using (Fin) renaming (zero to fzero; suc to fsuc)
+open import Data.Fin.Base using (Fin) renaming (zero to fzero; suc to fsuc)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Nat.Properties
 open import Level

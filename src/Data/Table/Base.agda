@@ -14,7 +14,7 @@ Use Data.Vec.Functional instead."
 #-}
 
 open import Data.Nat.Base
-open import Data.Fin
+open import Data.Fin.Base
 open import Data.Product using (_×_ ; _,_)
 open import Data.List.Base as List using (List)
 open import Data.Vec.Base as Vec using (Vec)

@@ -12,7 +12,7 @@ open import Algebra
 
 module Algebra.Solver.CommutativeMonoid {m₁ m₂} (M : CommutativeMonoid m₁ m₂) where
 
-open import Data.Fin using (Fin; zero; suc)
+open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Maybe.Base as Maybe
   using (Maybe; decToMaybe; From-just; from-just)
 open import Data.Nat as ℕ using (ℕ; zero; suc; _+_)

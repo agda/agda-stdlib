@@ -9,7 +9,7 @@
 module Data.List.Relation.Unary.First.Properties where
 
 open import Data.Empty
-open import Data.Fin using (suc)
+open import Data.Fin.Base using (suc)
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Any as Any using (here; there)

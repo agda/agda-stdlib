@@ -13,7 +13,7 @@ open import Agda.Builtin.Reflection
 open import Data.List as List using (List; []; _∷_)
 open import Data.Nat.Base as ℕ using (ℕ; suc; zero)
 open import Data.Nat.GeneralisedArithmetic using (fold)
-open import Data.Fin as Fin using (Fin)
+open import Data.Fin.Base as Fin using (Fin)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
 open import Data.String using (String)
 open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)

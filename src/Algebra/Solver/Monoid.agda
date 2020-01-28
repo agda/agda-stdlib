@@ -15,7 +15,7 @@ module Algebra.Solver.Monoid {m₁ m₂} (M : Monoid m₁ m₂) where
 Use Tactic.MonoidSolver instead."
 #-}
 
-open import Data.Fin as Fin hiding (_≟_)
+open import Data.Fin.Base as Fin hiding (_≟_)
 import Data.Fin.Properties as Fin
 open import Data.List.Base hiding (lookup)
 import Data.List.Relation.Binary.Equality.DecPropositional as ListEq

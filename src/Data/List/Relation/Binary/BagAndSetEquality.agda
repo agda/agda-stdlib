@@ -12,7 +12,7 @@ open import Algebra using (Idempotent; CommutativeMonoid)
 open import Algebra.Structures.Biased using (isCommutativeMonoidˡ)
 open import Category.Monad using (RawMonad)
 open import Data.Empty
-open import Data.Fin
+open import Data.Fin.Base
 open import Data.List.Base
 open import Data.List.Categorical using (monad; module MonadProperties)
 import Data.List.Properties as LP

@@ -17,7 +17,7 @@ open BooleanAlgebra B
 open import Category.Applicative
 import Category.Applicative.Indexed as Applicative
 open import Category.Monad
-open import Data.Fin using (Fin)
+open import Data.Fin.Base using (Fin)
 open import Data.Nat.Base
 open import Data.Product using (_,_; proj₁; proj₂)
 open import Data.Vec.Base as Vec using (Vec)

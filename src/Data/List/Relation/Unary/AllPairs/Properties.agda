@@ -13,7 +13,7 @@ open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 import Data.List.Relation.Unary.All.Properties as All
 open import Data.List.Relation.Unary.AllPairs as AllPairs using (AllPairs; []; _∷_)
 open import Data.Bool.Base using (true; false)
-open import Data.Fin using (Fin)
+open import Data.Fin.Base using (Fin)
 open import Data.Fin.Properties using (suc-injective)
 open import Data.Nat.Base using (zero; suc; _<_; z≤n; s≤s)
 open import Data.Nat.Properties using (≤-refl; ≤-step)

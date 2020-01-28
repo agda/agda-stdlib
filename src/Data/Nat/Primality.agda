@@ -9,7 +9,7 @@
 module Data.Nat.Primality where
 
 open import Data.Empty using (⊥)
-open import Data.Fin using (Fin; toℕ)
+open import Data.Fin.Base using (Fin; toℕ)
 open import Data.Fin.Properties using (all?)
 open import Data.Nat.Base using (ℕ; suc; _+_)
 open import Data.Nat.Divisibility using (_∤_; _∣?_)

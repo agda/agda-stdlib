@@ -8,7 +8,7 @@
 
 module Data.Integer.DivMod where
 
-open import Data.Fin as Fin using (Fin)
+open import Data.Fin.Base as Fin using (Fin)
 import Data.Fin.Properties as FProp
 open import Data.Integer.Base as ℤ
 open import Data.Integer.Properties

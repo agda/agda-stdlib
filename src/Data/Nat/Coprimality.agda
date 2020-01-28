@@ -12,7 +12,7 @@
 module Data.Nat.Coprimality where
 
 open import Data.Empty
-open import Data.Fin using (toℕ; fromℕ<)
+open import Data.Fin.Base using (toℕ; fromℕ<)
 open import Data.Fin.Properties using (toℕ-fromℕ<)
 open import Data.Nat.Base
 open import Data.Nat.Divisibility

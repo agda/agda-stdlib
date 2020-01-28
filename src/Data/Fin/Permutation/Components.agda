@@ -9,7 +9,7 @@
 module Data.Fin.Permutation.Components where
 
 open import Data.Bool.Base using (Bool; true; false)
-open import Data.Fin
+open import Data.Fin.Base
 open import Data.Fin.Properties
 open import Data.Nat.Base as ℕ using (zero; suc; _∸_)
 import Data.Nat.Properties as ℕₚ

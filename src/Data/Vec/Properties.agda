@@ -11,7 +11,7 @@ module Data.Vec.Properties where
 open import Algebra.Definitions
 open import Data.Bool.Base using (true; false)
 open import Data.Empty using (⊥-elim)
-open import Data.Fin as Fin using (Fin; zero; suc; toℕ; fromℕ)
+open import Data.Fin.Base as Fin using (Fin; zero; suc; toℕ; fromℕ)
 open import Data.List.Base as List using (List)
 open import Data.Nat.Base
 open import Data.Nat.Properties using (+-assoc; ≤-step)

@@ -11,7 +11,7 @@ module Data.List.Relation.Unary.First {a} {A : Set a} where
 
 open import Level using (_⊔_)
 open import Data.Empty
-open import Data.Fin as Fin using (Fin; zero; suc)
+open import Data.Fin.Base as Fin using (Fin; zero; suc)
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
