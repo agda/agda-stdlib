@@ -20,7 +20,7 @@ open import Data.Nat as ℕ
 import Data.Nat.Properties as ℕₚ
 open import Data.Unit using (tt)
 open import Data.Product using (∃; ∃₂; ∄; _×_; _,_; map; proj₁; uncurry; <_,_>)
-open import Data.Sum as Sum using (_⊎_; inj₁; inj₂; [_,_])
+open import Data.Sum using (_⊎_; inj₁; inj₂; [_,_])
 open import Data.Sum.Properties using ([,]-map-commute; [,]-∘-distr)
 open import Function.Base using (_∘_; id; _$_)
 open import Function.Equivalence using (_⇔_; equivalence)
@@ -431,10 +431,10 @@ inject+-raise-splitAt : ∀ m n i → [ inject+ n , raise {n} m ] (splitAt m i) 
 inject+-raise-splitAt zero n i = refl
 inject+-raise-splitAt (suc m) n zero = refl
 inject+-raise-splitAt (suc m) n (suc i) = begin
-  [ _ , _ ] (Sum.map _ _ (splitAt m i))   ≡⟨ [,]-map-commute (splitAt m i) ⟩
-  [ _ , _ ] (splitAt m i)                 ≡˘⟨ [,]-∘-distr {f = suc} (splitAt m i) ⟩
-  suc ([ _ , _ ] (splitAt m i))           ≡⟨ cong suc (inject+-raise-splitAt m n i) ⟩
-  suc i                                   ∎
+  [ inject+ n , raise {n} (suc m) ] (splitAt (suc m) (suc i))  ≡⟨ [,]-map-commute (splitAt m i) ⟩
+  [ suc ∘ (inject+ n) , suc ∘ (raise {n} m) ] (splitAt m i)    ≡˘⟨ [,]-∘-distr {f = suc} (splitAt m i) ⟩
+  suc ([ inject+ n , raise {n} m ] (splitAt m i))              ≡⟨ cong suc (inject+-raise-splitAt m n i) ⟩
+  suc i                                                        ∎
   where open ≡-Reasoning
 
 
