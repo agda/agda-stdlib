@@ -187,6 +187,9 @@ record CommutativeMonoid c ℓ : Set (suc (c ⊔ ℓ)) where
   monoid : Monoid _ _
   monoid = record { isMonoid = isMonoid }
 
+  commutativeSemigroup : CommutativeSemigroup _ _
+  commutativeSemigroup = record { isCommutativeSemigroup = isCommutativeSemigroup }
+
   open Monoid monoid public using (rawMagma; magma; semigroup; rawMonoid)
 
 
