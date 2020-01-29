@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- TODO
+-- Relations between properties of scaling and other operations
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

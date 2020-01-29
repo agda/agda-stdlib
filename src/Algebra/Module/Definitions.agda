@@ -1,7 +1,8 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- TODO: description
+-- This module collects the property definitions for left-scaling
+-- (LeftDefs), right-scaling (RightDefs), and both (BiDefs).
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

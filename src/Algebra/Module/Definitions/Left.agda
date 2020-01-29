@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Properties of functions, such as associativity and commutativity
+-- Properties of left-scaling
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

@@ -1,14 +1,14 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- TODO: description
+-- Properties connecting left-scaling and right-scaling
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary
 
--- The properties are parameterised by the two carriers and
+-- The properties are parameterised by the three carriers and
 -- the result equality.
 
 module Algebra.Module.Definitions.Bi

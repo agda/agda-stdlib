@@ -1,15 +1,15 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Properties of functions, such as associativity and commutativity
+-- Properties of right-scaling
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary
 
--- The properties are parameterised by the following "equality"
--- relations
+-- The properties are parameterised by the two carriers and
+-- the result equality.
 
 module Algebra.Module.Definitions.Right
   {a b ℓb} (A : Set a) {B : Set b} (_≈_ : Rel B ℓb)
