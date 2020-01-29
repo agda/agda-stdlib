@@ -69,6 +69,12 @@ module _ (semiring : Semiring r ℓr) (≈ᴹ : Rel {m} M ℓm) (+ᴹ : Op₂ M)
       ; ∙-congˡ              to +ᴹ-congˡ
       )
 
+    *ₗ-congˡ : LeftCongruent *ₗ
+    *ₗ-congˡ mm = *ₗ-cong refl mm
+
+    *ₗ-congʳ : RightCongruent _≈_ *ₗ
+    *ₗ-congʳ xx = *ₗ-cong xx ≈ᴹ-refl
+
   record IsPrerightSemimodule (*ᵣ : Opᵣ R M) : Set (r ⊔ m ⊔ ℓr ⊔ ℓm) where
     open RightDefs R ≈ᴹ
     field
@@ -110,6 +116,12 @@ module _ (semiring : Semiring r ℓr) (≈ᴹ : Rel {m} M ℓm) (+ᴹ : Op₂ M)
       ; ∙-congˡ              to +ᴹ-congˡ
       )
 
+    *ᵣ-congˡ : LeftCongruent _≈_ *ᵣ
+    *ᵣ-congˡ xx = *ᵣ-cong ≈ᴹ-refl xx
+
+    *ᵣ-congʳ : RightCongruent *ᵣ
+    *ᵣ-congʳ mm = *ᵣ-cong mm refl
+
 module _ (R-semiring : Semiring r ℓr) (S-semiring : Semiring s ℓs)
          (≈ᴹ : Rel {m} M ℓm) (+ᴹ : Op₂ M) (0ᴹ : M)
   where
@@ -141,6 +153,8 @@ module _ (R-semiring : Semiring r ℓr) (S-semiring : Semiring s ℓs)
     open IsLeftSemimodule isLeftSemimodule public
       hiding (+ᴹ-isCommutativeMonoid; isPreleftSemimodule)
     open IsPrerightSemimodule isPrerightSemimodule public
+    open IsRightSemimodule isRightSemimodule public
+      using (*ᵣ-congˡ; *ᵣ-congʳ)
 
 module _ (commutativeSemiring : CommutativeSemiring r ℓr)
          (≈ᴹ : Rel {m} M ℓm) (+ᴹ : Op₂ M) (0ᴹ : M)

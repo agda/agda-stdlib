@@ -13,6 +13,7 @@ module Algebra.Module.Structures.Biased where
 
 open import Algebra.Bundles
 open import Algebra.Core
+open import Algebra.Module.Consequences
 open import Algebra.Module.Structures
 open import Function.Base using (flip)
 open import Level using (Level; _⊔_)
@@ -43,15 +44,13 @@ module _ (commutativeSemiring : CommutativeSemiring r ℓr) where
         ; *ᵣ-zeroʳ = *ₗ-zeroˡ
         ; *ᵣ-distribˡ = *ₗ-distribʳ
         ; *ᵣ-identityʳ = *ₗ-identityˡ
-        ; *ᵣ-assoc = λ m r s → ≈ᴹ-trans (≈ᴹ-sym (*ₗ-assoc s r m))
-                                        (*ₗ-cong (*-comm s r) ≈ᴹ-refl)
+        ; *ᵣ-assoc =
+          *ₗ-assoc+comm⇒*ᵣ-assoc _≈_ ≈ᴹ-setoid *ₗ-congʳ *ₗ-assoc *-comm
         ; *ᵣ-zeroˡ = *ₗ-zeroʳ
         ; *ᵣ-distribʳ = *ₗ-distribˡ
         }
-      ; *ₗ-*ᵣ-assoc = λ r m s →
-        ≈ᴹ-trans (≈ᴹ-sym (*ₗ-assoc s r m))
-                 (≈ᴹ-trans (*ₗ-cong (*-comm s r) ≈ᴹ-refl)
-                           (*ₗ-assoc r s m))
+      ; *ₗ-*ᵣ-assoc =
+        *ₗ-assoc+comm⇒*ₗ-*ᵣ-assoc _≈_ ≈ᴹ-setoid *ₗ-congʳ *ₗ-assoc *-comm
       }
 
     isSemimodule : IsSemimodule commutativeSemiring ≈ᴹ +ᴹ 0ᴹ *ₗ (flip *ₗ)
@@ -75,16 +74,14 @@ module _ (commutativeSemiring : CommutativeSemiring r ℓr) where
         ; *ₗ-zeroˡ = *ᵣ-zeroʳ
         ; *ₗ-distribʳ = *ᵣ-distribˡ
         ; *ₗ-identityˡ = *ᵣ-identityʳ
-        ; *ₗ-assoc = λ r s m → ≈ᴹ-trans (*ᵣ-cong ≈ᴹ-refl (*-comm r s))
-                                        (≈ᴹ-sym (*ᵣ-assoc m s r))
+        ; *ₗ-assoc =
+          *ᵣ-assoc+comm⇒*ₗ-assoc _≈_ ≈ᴹ-setoid *ᵣ-congˡ *ᵣ-assoc *-comm
         ; *ₗ-zeroʳ = *ᵣ-zeroˡ
         ; *ₗ-distribˡ = *ᵣ-distribʳ
         }
       ; isPrerightSemimodule = isPrerightSemimodule
-      ; *ₗ-*ᵣ-assoc = λ r m s →
-        ≈ᴹ-trans (*ᵣ-assoc m r s)
-                 (≈ᴹ-trans (*ᵣ-cong ≈ᴹ-refl (*-comm r s))
-                           (≈ᴹ-sym (*ᵣ-assoc m s r)))
+      ; *ₗ-*ᵣ-assoc =
+        *ᵣ-assoc+comm⇒*ₗ-*ᵣ-assoc _≈_ ≈ᴹ-setoid *ᵣ-congˡ *ᵣ-assoc *-comm
       }
 
     isSemimodule : IsSemimodule commutativeSemiring ≈ᴹ +ᴹ 0ᴹ (flip *ᵣ) *ᵣ

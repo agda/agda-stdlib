@@ -49,5 +49,11 @@ RightZero zᴬ zᴮ _∙_ = ∀ x → (x ∙ zᴬ) ≈ zᴮ
 Commutative : Opᵣ A B → Set _
 Commutative _∙_ = ∀ m x y → ((m ∙ x) ∙ y) ≈ ((m ∙ y) ∙ x)
 
+LeftCongruent : ∀ {ℓa} → Rel A ℓa → Opᵣ A B → Set _
+LeftCongruent ≈ᴬ _∙_ = ∀ {m} → (m ∙_) Preserves ≈ᴬ ⟶ _≈_
+
+RightCongruent : Opᵣ A B → Set _
+RightCongruent _∙_ = ∀ {x} → (_∙ x) Preserves _≈_ ⟶ _≈_
+
 Congruent : ∀ {ℓa} → Rel A ℓa → Opᵣ A B → Set _
-Congruent _≈ᴬ_ _∙_ = ∀ {m m′ x x′} → m ≈ m′ → x ≈ᴬ x′ → (m ∙ x) ≈ (m′ ∙ x′)
+Congruent ≈ᴬ ∙ = ∙ Preserves₂ _≈_ ⟶ ≈ᴬ ⟶ _≈_
