@@ -3,6 +3,22 @@
 --
 -- Definitions of algebraic structures defined over some other
 -- structure, like modules and vector spaces
+--
+-- Terminology of bundles:
+-- * There are both *semimodules* and *modules*.
+--   - For M an R-semimodule, R is a semiring, and M forms a commutative
+--     monoid.
+--   - For M an R-module, R is a ring, and M forms an Abelian group.
+-- * There are all four of *left modules*, *right modules*, *bimodules*,
+--   and *modules*.
+--   - Left modules have a left-scaling operation.
+--   - Right modules have a right-scaling operation.
+--   - Bimodules have two sorts of scalars. Left-scaling handles one and
+--     right-scaling handles the other. Left-scaling and right-scaling
+--     are furthermore compatible.
+--   - Modules are bimodules with a single sort of scalars and scalar
+--     multiplication must also be commutative. Left-scaling and
+--     right-scaling coincide.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
