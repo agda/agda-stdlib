@@ -9,7 +9,7 @@
 module Data.Vec.Relation.Binary.Pointwise.Extensional where
 
 open import Data.Fin using (zero; suc)
-open import Data.Nat using (zero; suc)
+open import Data.Nat using (ℕ; zero; suc)
 open import Data.Vec as Vec hiding ([_]; head; tail; map)
 open import Data.Vec.Relation.Binary.Pointwise.Inductive as Inductive
   using ([]; _∷_)
@@ -120,6 +120,11 @@ isEquivalence equiv = record
   ; sym   = sym   Eq.sym
   ; trans = trans Eq.trans
   } where module Eq = IsEquivalence equiv
+
+setoid : Setoid c ℓ → ℕ → Setoid c (c ⊔ ℓ)
+setoid S n = record
+  { isEquivalence = isEquivalence {n = n} S.isEquivalence
+  } where module S = Setoid S
 
 isDecEquivalence : ∀ {_∼_ : Rel A ℓ} {n} →
                    IsDecEquivalence _∼_ →

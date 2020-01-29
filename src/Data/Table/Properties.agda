@@ -1,7 +1,8 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- This module is DEPRECATED. Please use `Data.Vec.Functional` instead.
+-- This module is DEPRECATED.
+-- Please use `Data.Vec.Functional.Properties` instead.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

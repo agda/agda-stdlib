@@ -13,10 +13,11 @@ open import Data.Nat
 open import Data.Vec.Functional as VF hiding (map)
 open import Level using (Level)
 open import Relation.Binary
+open import Relation.Binary.PropositionalEquality using ()
 
 private
   variable
-    a b r s ℓ : Level
+    a b c r s ℓ : Level
     A : Set a
     B : Set b
 

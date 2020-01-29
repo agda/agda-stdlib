@@ -15,14 +15,18 @@
 
 module Data.Vec.Functional where
 
-open import Data.Fin using (Fin; zero; suc; splitAt; punchIn)
+open import Data.Bool.Base using (true; false)
+open import Data.Fin using (Fin; zero; suc; splitAt; punchIn; _≟_)
 open import Data.List.Base as L using (List)
 open import Data.Nat using (ℕ; zero; suc; _+_)
 open import Data.Product using (Σ; ∃; _×_; _,_; proj₁; proj₂)
 open import Data.Sum using (_⊎_; inj₁; inj₂; [_,_])
 open import Data.Vec as V using (Vec)
-open import Function
+open import Function.Base
+open import Function.Equality using (_⟨$⟩_)
+open import Function.Inverse using (Inverse; _↔_)
 open import Level using (Level)
+open import Relation.Nullary using (does)
 
 infixr 5 _∷_ _++_
 infixl 4 _⊛_
@@ -108,3 +112,21 @@ zipWith f xs ys i = f (xs i) (ys i)
 
 zip : ∀ {n} → Vector A n → Vector B n → Vector (A × B) n
 zip = zipWith _,_
+
+--------------------------------------------------------------------------------
+--  Combinators
+--------------------------------------------------------------------------------
+
+-- Changes the order of elements in the table according to a permutation (i.e.
+-- an 'Inverse' object on the indices).
+
+permute : ∀ {m n a} {A : Set a} → Fin m ↔ Fin n → Vector A n → Vector A m
+permute π = rearrange (Inverse.to π ⟨$⟩_)
+
+-- The result of 'select z i t' takes the value of 'lookup t i' at index 'i',
+-- and 'z' everywhere else.
+
+select : ∀ {n} {a} {A : Set a} → A → Fin n → Vector A n → Vector A n
+select z i t j with does (j ≟ i)
+... | true  = t i
+... | false = z
