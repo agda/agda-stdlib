@@ -322,6 +322,23 @@ Other major additions
   - `DecTotalOrder.Eq` and `StrictTotalOrder.Eq` now export `decSetoid`.
   - `DecTotalOrder.decSetoid` is now deprecated in favour of the above `DecTotalOrder.Eq.decSetoid`.
 
+* Added a hierarchy for algebraic modules:
+  ```
+  Algebra.Module
+  Algebra.Module.Bundles
+  Algebra.Module.Consequences
+  Algebra.Module.Construct.Biproduct
+  Algebra.Module.Construct.TensorUnit
+  Algebra.Module.Construct.Zero
+  Algebra.Module.Definitions
+  Algebra.Module.Definitions.Bi
+  Algebra.Module.Definitions.Left
+  Algebra.Module.Definitions.Right
+  Algebra.Module.Structures
+  Algebra.Module.Structures.Biased
+  ```
+  Supported are all of {left ,right , bi,}{semi,}modules.
+
 Other minor additions
 ---------------------
 
