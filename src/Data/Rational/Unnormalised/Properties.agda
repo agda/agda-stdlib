@@ -13,7 +13,7 @@ import Algebra.Consequences.Setoid as FC
 open import Algebra.Consequences.Propositional
 open import Data.Nat.Base using (suc)
 import Data.Nat.Properties as ℕ
-open import Data.Integer as ℤ using (ℤ; +0; +[1+_]; 0ℤ; 1ℤ)
+open import Data.Integer.Base as ℤ using (ℤ; +0; +[1+_]; 0ℤ; 1ℤ)
 open import Data.Integer.Solver renaming (module +-*-Solver to ℤ-solver)
 import Data.Integer.Properties as ℤ
 import Data.Integer.Properties

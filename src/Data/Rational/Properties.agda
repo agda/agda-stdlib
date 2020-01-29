@@ -13,7 +13,7 @@ open import Algebra.Morphism
 open import Algebra.Bundles
 import Algebra.Morphism.MonoidMonomorphism as MonoidMonomorphisms
 import Algebra.Properties.CommutativeSemigroup as CommSemigroupProperties
-open import Data.Integer as ℤ using (ℤ; ∣_∣; +_; -[1+_]; 0ℤ; _◃_)
+open import Data.Integer.Base as ℤ using (ℤ; ∣_∣; +_; -[1+_]; 0ℤ; _◃_)
 open import Data.Integer.Coprimality using (coprime-divisor)
 import Data.Integer.Properties as ℤ
 open import Data.Integer.GCD using (gcd; gcd[i,j]≡0⇒i≡0; gcd[i,j]≡0⇒j≡0)

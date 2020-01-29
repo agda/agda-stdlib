@@ -9,7 +9,7 @@
 module Data.Integer.Divisibility.Signed where
 
 open import Function
-open import Data.Integer
+open import Data.Integer.Base
 open import Data.Integer.Properties
 open import Data.Integer.Divisibility as Unsigned
   using (divides)

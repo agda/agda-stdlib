@@ -13,7 +13,7 @@ module README.Tactic.RingSolver where
 
 open import Agda.Builtin.FromNat
 open import Data.Nat.Base using (ℕ)
-open import Data.Integer using (ℤ)
+open import Data.Integer.Base using (ℤ)
 import Data.Nat.Literals as ℕ
 import Data.Integer.Literals as ℤ
 
