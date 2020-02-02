@@ -11,7 +11,7 @@ module README.Data.List where
 open import Algebra.Structures using (IsCommutativeMonoid)
 open import Data.Char.Base using (Char; fromℕ)
 open import Data.Char.Properties as CharProp hiding (setoid)
-open import Data.Nat.Base using (ℕ; _+_; _<_; s≤s; z≤n; _*_; _∸_; _≤_)
+open import Data.Nat using (ℕ; _+_; _<_; s≤s; z≤n; _*_; _∸_; _≤_)
 open import Data.Nat.Properties as NatProp
 open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; sym; cong; setoid)
@@ -21,7 +21,7 @@ open import Relation.Binary.PropositionalEquality
 ------------------------------------------------------------------------
 -- The `List` datatype is exported by the following file:
 
-open import Data.List.Base
+open import Data.List
   using
   (List
   ; []; _∷_

@@ -13,10 +13,10 @@ open import Level using (Level)
 open import Data.Nat.Base
 open import Data.Nat.Properties
 open import Data.Fin using (Fin; fromℕ; #_; inject₁)
-open import Data.List.Base
+open import Data.List
 open import Data.List.Properties
 open import Data.Product using (_×_; _,_)
-open import Data.Sum.Base using (inj₁; inj₂)
+open import Data.Sum using (inj₁; inj₂)
 open import Function
 open import Relation.Nullary
 open import Relation.Binary using (module Tri); open Tri

@@ -7,7 +7,7 @@
 
 module README.Data.Nat.Induction where
 
-open import Data.Nat.Base
+open import Data.Nat
 open import Data.Nat.Induction
 open import Data.Product using (_,_)
 open import Function using (_∘_)

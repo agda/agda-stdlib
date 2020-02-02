@@ -12,7 +12,7 @@ module README.Data.Nat where
 -- The natural numbers and various arithmetic operations are defined
 -- in Data.Nat.
 
-open import Data.Nat.Base using (ℕ; _+_; _*_)
+open import Data.Nat using (ℕ; _+_; _*_)
 
 -- _*_ has precedence 7 over precedence 6 of _+_
 -- precedence of both defined in module Agda.Builtin.Nat

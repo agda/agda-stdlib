@@ -10,7 +10,7 @@ module README.Tactic.MonoidSolver {a ℓ} (M : Monoid a ℓ) where
 
 open Monoid M
 
-open import Data.Nat.Base as Nat using (ℕ; suc; zero; _+_)
+open import Data.Nat as Nat using (ℕ; suc; zero; _+_)
 open import Data.Nat.Properties as Properties using (+-0-monoid; +-comm)
 open import Relation.Binary.Reasoning.Setoid setoid
 

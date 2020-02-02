@@ -103,9 +103,9 @@ import Data.Sum.Properties
 -- additional functions which could not be placed into the corresponding
 -- Base module because of cyclic dependencies.
 
-import Data.List.Base
-import Data.Maybe.Base
-import Data.Sum.Base
+import Data.List
+import Data.Maybe
+import Data.Sum
 
 -- 4. A `Relation.Binary` folder where binary relations over the datatypes
 -- are stored. Because relations over container datatypes often depend on
