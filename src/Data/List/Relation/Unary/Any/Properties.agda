@@ -44,7 +44,7 @@ open import Relation.Binary.PropositionalEquality as P
 open import Relation.Unary as U
   using (Pred; _⟨×⟩_; _⟨→⟩_) renaming (_⊆_ to _⋐_)
 open import Relation.Nullary using (¬_; _because_; does; ofʸ; ofⁿ)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Negation using (contradiction; ¬?; decidable-stable)
 open Related.EquationalReasoning
 
 private
@@ -114,6 +114,13 @@ map-∘ : ∀ {P : A → Set p} {Q : A → Set q} {R : A → Set r}
         Any.map (f ∘ g) p ≡ Any.map f (Any.map g p)
 map-∘ f g (here  p) = refl
 map-∘ f g (there p) = P.cong there $ map-∘ f g p
+
+------------------------------------------------------------------------
+-- lookup
+
+lookup-result : ∀ {P : Pred A p} {xs} → (p : Any P xs) → P (Any.lookup p)
+lookup-result (here px) = px
+lookup-result (there p) = lookup-result p
 
 ------------------------------------------------------------------------
 -- Swapping
@@ -480,7 +487,7 @@ module _ {P : A → Set p} {Q : A → Set q} (Q? : U.Decidable Q) where
   filter⁻ {x ∷ xs} p         | false = there (filter⁻ p)
 
 ------------------------------------------------------------------------
--- derun
+-- derun and deduplicate
 
 module _ {P : A → Set p} {R : A → A → Set r} (R? : B.Decidable R) where
 
@@ -497,6 +504,13 @@ module _ {P : A → Set p} {R : A → A → Set r} (R? : B.Decidable R) where
   ... | true  because _ = derun⁺ P-resp-R any[P,xs]
   ... | false because _ = there (derun⁺ P-resp-R any[P,xs])
 
+  deduplicate⁺ : ∀ {xs} → P Respects (flip R) → Any P xs → Any P (deduplicate R? xs)
+  deduplicate⁺ {x ∷ xs} P-resp-R (here px) = here px
+  deduplicate⁺ {x ∷ xs} P-resp-R (there any[P,xs]) with filter⁺ (¬? ∘ R? x) (deduplicate⁺ {xs} P-resp-R any[P,xs])
+  ... | inj₁ p = there p
+  ... | inj₂ ¬¬q with decidable-stable (R? x (Any.lookup (deduplicate⁺ P-resp-R any[P,xs]))) ¬¬q
+  ...  | q = here (P-resp-R q (lookup-result (deduplicate⁺ P-resp-R any[P,xs])))
+
   private
     derun⁻-aux : ∀ {x xs} → Any P (derun R? (x ∷ xs)) → Any P (x ∷ xs)
     derun⁻-aux {x} {[]} (here px) = here px
@@ -507,6 +521,10 @@ module _ {P : A → Set p} {R : A → A → Set r} (R? : B.Decidable R) where
 
   derun⁻ : ∀ {xs} → Any P (derun R? xs) → Any P xs
   derun⁻ {x ∷ xs} any[P,derun[x∷xs]] = derun⁻-aux any[P,derun[x∷xs]]
+
+  deduplicate⁻ : ∀ {xs} → Any P (deduplicate R? xs) → Any P xs
+  deduplicate⁻ {x ∷ xs} (here px) = here px
+  deduplicate⁻ {x ∷ xs} (there any[P,dedup[xs]]) = there (deduplicate⁻ (filter⁻ (¬? ∘ R? x) any[P,dedup[xs]]))
 
 ------------------------------------------------------------------------
 -- map-with-∈.

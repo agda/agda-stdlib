@@ -180,17 +180,23 @@ module _ {p} {P : A → Set p} (P? : Decidable P) where
   ∈-filter⁻ = Membershipₛ.∈-filter⁻ (P.setoid A) P? (P.subst P)
 
 ------------------------------------------------------------------------
--- derun
+-- derun and deduplicate
 
-module _ {ℓ} {R : Rel A ℓ} (R? : B.Decidable R) where
+module _ {r} {R : Rel A r} (R? : B.Decidable R) where
 
   ∈-derun⁻ : ∀ xs {z} → z ∈ derun R? xs → z ∈ xs
   ∈-derun⁻ xs z∈derun[R,xs] = Membershipₛ.∈-derun⁻ (P.setoid A) R? xs z∈derun[R,xs]
+
+  ∈-deduplicate⁻ : ∀ xs {z} → z ∈ deduplicate R? xs → z ∈ xs
+  ∈-deduplicate⁻ xs z∈dedup[R,xs] = Membershipₛ.∈-deduplicate⁻ (P.setoid A) R? xs z∈dedup[R,xs]
 
 module _ (_≈?_ : B.Decidable {A = A} _≡_) where
 
   ∈-derun⁺ : ∀ {xs z} → z ∈ xs → z ∈ derun _≈?_ xs
   ∈-derun⁺ z∈xs = Membershipₛ.∈-derun⁺ (P.setoid A) _≈?_ (flip trans) z∈xs
+
+  ∈-deduplicate⁺ : ∀ {xs z} → z ∈ xs → z ∈ deduplicate _≈?_ xs
+  ∈-deduplicate⁺ z∈xs = Membershipₛ.∈-deduplicate⁺ (P.setoid A) _≈?_ (λ c≡b a≡b → trans a≡b (sym c≡b)) z∈xs
 
 ------------------------------------------------------------------------
 -- _>>=_

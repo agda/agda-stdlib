@@ -16,7 +16,7 @@ open import Data.Fin.Base using (Fin) renaming (zero to fzero; suc to fsuc)
 open import Data.List.Base as List using
   ( List; []; _∷_; [_]; _∷ʳ_; fromMaybe; null; _++_; concat; map; mapMaybe
   ; inits; tails; drop; take; applyUpTo; applyDownFrom; replicate; tabulate
-  ; filter; zipWith; all; derun
+  ; filter; zipWith; all; derun; deduplicate
   )
 open import Data.List.Membership.Propositional
 open import Data.List.Membership.Propositional.Properties
@@ -45,6 +45,7 @@ open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; cong; cong₂; _≗_)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary
+open import Relation.Nullary.Negation using (¬?; contradiction; decidable-stable)
 open import Relation.Unary
   using (Decidable; Pred; Universal) renaming (_⊆_ to _⋐_)
 
@@ -514,7 +515,7 @@ module _ {P : A → Set p} {Q : A → Set q} (P? : Decidable P) where
   filter⁻ {x ∷ xs}       all⁺        all⁻  | no  ¬Px | no  ¬¬Px = contradiction ¬Px ¬¬Px
 
 ------------------------------------------------------------------------
--- derun
+-- derun and deduplicate
 
 module _ {P : A → Set p} {R : A → A → Set q} (R? : B.Decidable R) where
 
@@ -525,6 +526,10 @@ module _ {P : A → Set p} {R : A → A → Set q} (R? : B.Decidable R) where
   ... | false = px ∷ derun⁺ all[P,y∷xs]
   ... | true  = derun⁺ all[P,y∷xs]
 
+  deduplicate⁺ : ∀ {xs} → All P xs → All P (deduplicate R? xs)
+  deduplicate⁺ [] = []
+  deduplicate⁺ {x ∷ _} (px ∷ all[P,xs]) = px ∷ filter⁺ (¬? ∘ R? x) (deduplicate⁺ all[P,xs])
+
   derun⁻ : P B.Respects (flip R) → ∀ xs → All P (derun R? xs) → All P xs
   derun⁻ P-resp-R []       []          = []
   derun⁻ P-resp-R (x ∷ xs) all[P,x∷xs] = aux x xs all[P,x∷xs] where
@@ -534,6 +539,14 @@ module _ {P : A → Set p} {R : A → A → Set q} (R? : B.Decidable R) where
     aux x (y ∷ xs) all[P,y∷xs]        | yes Rxy with aux y xs all[P,y∷xs]
     aux x (y ∷ xs) all[P,y∷xs]        | yes Rxy | r@(py ∷ _) = P-resp-R Rxy py ∷ r
     aux x (y ∷ xs) (px ∷ all[P,y∷xs]) | no _ = px ∷ aux y xs all[P,y∷xs]
+
+  module _ (P-resp-R : P B.Respects R) where
+
+    deduplicate⁻ : ∀ xs → All P (deduplicate R? xs) → All P xs
+    deduplicate⁻ [] [] = []
+    deduplicate⁻ (x ∷ xs) (px ∷ app[P,dedup[xs]]) = px ∷ deduplicate⁻ xs (filter⁻ (¬? ∘ R? x) app[P,dedup[xs]] (All.tabulate aux)) where
+      aux : ∀ {z} → z ∈ filter (¬? ∘ ¬? ∘ R? x) (deduplicate R? xs) → P z
+      aux {z} z∈filter = P-resp-R (decidable-stable (R? x z) (Prod.proj₂ (∈-filter⁻ (¬? ∘ ¬? ∘ R? x) {z} {deduplicate R? xs} z∈filter))) px
 
 ------------------------------------------------------------------------
 -- zipWith

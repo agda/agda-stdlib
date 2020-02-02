@@ -33,7 +33,7 @@ open import Relation.Binary.PropositionalEquality as P hiding ([_])
 open import Relation.Binary as B using (Rel)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary using (¬_; Dec; does; _because_; yes; no)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Negation using (contradiction; ¬?)
 open import Relation.Nullary.Decidable as Decidable using (isYes; map′; ⌊_⌋)
 open import Relation.Nullary.Product using (_×-dec_)
 open import Relation.Unary using (Pred; Decidable; ∁)
@@ -754,7 +754,7 @@ module _ {P : Pred A p} (P? : Decidable P) where
   ... | false = filter-++ xs ys
 
 ------------------------------------------------------------------------
--- derun
+-- derun and deduplicate
 
 module _ {R : Rel A p} (R? : B.Decidable R) where
 
@@ -764,6 +764,16 @@ module _ {R : Rel A p} (R? : B.Decidable R) where
   length-derun (x ∷ y ∷ xs) with does (R? x y) | length-derun (y ∷ xs)
   ... | true  | r = ≤-step r
   ... | false | r = s≤s r
+
+  length-deduplicate : ∀ xs → length (deduplicate R? xs) ≤ length xs
+  length-deduplicate [] = z≤n
+  length-deduplicate (x ∷ xs) = ≤-begin
+    1 + length (filter (¬? ∘ R? x) r) ≤⟨ s≤s (length-filter (¬? ∘ R? x) r) ⟩
+    1 + length r                      ≤⟨ s≤s (length-deduplicate xs) ⟩
+    1 + length xs                     ≤-∎
+    where
+    open ≤-Reasoning renaming (begin_ to ≤-begin_; _∎ to _≤-∎)
+    r = deduplicate R? xs
 
   derun-reject : ∀ {x y} xs → R x y → derun R? (x ∷ y ∷ xs) ≡ derun R? (y ∷ xs)
   derun-reject {x} {y} xs Rxy with R? x y
