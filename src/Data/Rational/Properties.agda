@@ -679,7 +679,7 @@ private
   }
 
 +-0-group : Group 0ℓ 0ℓ
- gs+-0-group = record
++-0-group = record
   { isGroup = +-0-isGroup
   }
 
