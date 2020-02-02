@@ -294,6 +294,8 @@ Other major additions
   Codata.Cowriter.Bisimilarity
 
   Data.Erased
+  Data.List.Relation.Unary.Grouped
+  Data.List.Relation.Unary.Grouped.Properties
   Data.Product.Relation.Unary.All
   Data.Refinement
   Data.Refinement.Relation.Unary.All
