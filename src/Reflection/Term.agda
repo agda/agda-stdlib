@@ -12,17 +12,18 @@ import Data.Char.Properties as CP using (_≟_)
 open import Data.List.Base hiding (_++_)
 import Data.List.Membership.DecPropositional as ListMembership
 import Data.List.Properties as Lₚ
-import Data.Nat as ℕ
+open import Data.Nat as ℕ using (ℕ; zero; suc)
 import Data.Nat.Show as NatShow
 open import Data.Product
 open import Data.String as String using (String; braces; parens; _++_; _<+>_)
+open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Reflection.Abstraction
 open import Reflection.Argument
 open import Reflection.Argument.Information using (visibility)
 import Reflection.Argument.Visibility as Visibility; open Visibility.Visibility
 import Reflection.Literal as Literal
 import Reflection.Meta as Meta
-import Reflection.Name as Name
+open import Reflection.Name as Name using (Name)
 import Reflection.Pattern as Pattern
 open import Relation.Nullary
 open import Relation.Nullary.Product using (_×-dec_)
@@ -33,7 +34,8 @@ open import Relation.Binary.PropositionalEquality
 ------------------------------------------------------------------------
 -- Re-exporting the builtin type and constructors
 
-open import Agda.Builtin.Reflection as Builtin public using (Sort; Type; Term; Clause)
+open import Agda.Builtin.Reflection as Builtin public
+  using (Sort; Type; Term; Clause)
 open Sort public
 open Term public renaming (agda-sort to sort)
 open Clause public
@@ -53,6 +55,32 @@ pattern Π[_∶_]_ s a ty     = pi a (abs s ty)
 pattern vΠ[_∶_]_ s a ty    = Π[ s ∶ (vArg a) ] ty
 pattern hΠ[_∶_]_ s a ty    = Π[ s ∶ (hArg a) ] ty
 pattern iΠ[_∶_]_ s a ty    = Π[ s ∶ (iArg a) ] ty
+
+----------------------------------------------------------------------
+-- Utility functions
+
+getName : Term → Maybe Name
+getName (con c args) = just c
+getName (def f args) = just f
+getName _            = nothing
+
+-- "n ⋯⟅∷⟆ xs" prepends "n" visible unknown arguments to the list of
+-- arguments. Useful when constructing the list of arguments for a
+-- function with initial inferable arguments.
+infixr 5 _⋯⟨∷⟩_
+_⋯⟨∷⟩_ : ℕ → Args Term → Args Term
+zero  ⋯⟨∷⟩ xs = xs
+suc i ⋯⟨∷⟩ xs = unknown ⟨∷⟩ (i ⋯⟨∷⟩ xs)
+{-# INLINE _⋯⟨∷⟩_ #-}
+
+-- "n ⋯⟅∷⟆ xs" prepends "n" hidden unknown arguments to the list of
+-- arguments. Useful when constructing the list of arguments for a
+-- function with initial implicit arguments.
+infixr 5 _⋯⟅∷⟆_
+_⋯⟅∷⟆_ : ℕ → Args Term → Args Term
+zero  ⋯⟅∷⟆ xs = xs
+suc i ⋯⟅∷⟆ xs = unknown ⟅∷⟆ (i ⋯⟅∷⟆ xs)
+{-# INLINE _⋯⟅∷⟆_ #-}
 
 ------------------------------------------------------------------------
 -- Showing

@@ -8,8 +8,9 @@
 
 module Reflection.Argument where
 
-open import Data.List.Base as List using (List)
+open import Data.List.Base as List using (List; []; _∷_)
 open import Data.Product using (_×_; _,_; uncurry; <_,_>)
+open import Data.Nat using (ℕ)
 open import Reflection.Argument.Visibility
 open import Reflection.Argument.Relevance
 open import Reflection.Argument.Information as Information
@@ -26,7 +27,7 @@ private
     A B : Set a
 
 ------------------------------------------------------------------------
--- Re-exporting the builtins publically
+-- Re-exporting the builtins publicly
 
 open import Agda.Builtin.Reflection public using (Arg)
 open Arg public
@@ -38,13 +39,20 @@ pattern hArg ty = arg (arg-info hidden relevant)    ty
 pattern iArg ty = arg (arg-info instance′ relevant) ty
 
 ------------------------------------------------------------------------
+-- Lists of arguments
+
+Args : {a : Level} (A : Set a) → Set a
+Args A = List (Arg A)
+
+infixr 5 _⟨∷⟩_ _⟅∷⟆_
+pattern _⟨∷⟩_ x xs = vArg x ∷ xs
+pattern _⟅∷⟆_ x xs = hArg x ∷ xs
+
+------------------------------------------------------------------------
 -- Operations
 
 map : (A → B) → Arg A → Arg B
 map f (arg i x) = arg i (f x)
-
-Args : {a : Level} (A : Set a) → Set a
-Args A = List (Arg A)
 
 map-Args : (A → B) → Args A → Args B
 map-Args f xs = List.map (map f) xs
