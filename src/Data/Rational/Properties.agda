@@ -605,8 +605,7 @@ toℚᵘ-isGroupMonomorphism-+ = record
 -- Algebraic properties
 
 private
-  module +-Monomorphism = MonoidMonomorphisms toℚᵘ-isMonoidMonomorphism-+
-  module +-0-Monomorphism = GroupMonomorphisms toℚᵘ-isGroupMonomorphism-+
+  module +-Monomorphism = GroupMonomorphisms toℚᵘ-isGroupMonomorphism-+
 
 +-assoc : Associative _+_
 +-assoc = +-Monomorphism.assoc ℚᵘ.+-isMagma ℚᵘ.+-assoc
@@ -624,16 +623,16 @@ private
 +-identity = +-identityˡ , +-identityʳ
 
 +-inverseˡ : LeftInverse 0ℚ -_ _+_
-+-inverseˡ = +-0-Monomorphism.inverseˡ ℚᵘ.+-0-isMonoid ℚᵘ.+-inverseˡ
++-inverseˡ = +-Monomorphism.inverseˡ ℚᵘ.+-isMagma ℚᵘ.+-inverseˡ
 
 +-inverseʳ : RightInverse 0ℚ -_ _+_
-+-inverseʳ = +-0-Monomorphism.inverseʳ ℚᵘ.+-0-isMonoid ℚᵘ.+-inverseʳ
++-inverseʳ = +-Monomorphism.inverseʳ ℚᵘ.+-isMagma ℚᵘ.+-inverseʳ
 
 +-inverse : Inverse 0ℚ -_ _+_
-+-inverse = +-0-Monomorphism.inverse ℚᵘ.+-0-isMonoid ℚᵘ.+-inverse
++-inverse = +-Monomorphism.inverse ℚᵘ.+-isMagma ℚᵘ.+-inverse
 
 -‿cong :  Congruent₁ (-_)
--‿cong = +-0-Monomorphism.⁻¹-cong ℚᵘ.+-0-isMonoid ℚᵘ.-‿cong
+-‿cong = +-Monomorphism.⁻¹-cong ℚᵘ.+-isMagma ℚᵘ.-‿cong
 
 ------------------------------------------------------------------------
 -- Structures
@@ -651,10 +650,10 @@ private
 +-0-isCommutativeMonoid = +-Monomorphism.isCommutativeMonoid ℚᵘ.+-0-isCommutativeMonoid
 
 +-0-isGroup : IsGroup _+_ 0ℚ (-_)
-+-0-isGroup = +-0-Monomorphism.isGroup ℚᵘ.+-0-isGroup
++-0-isGroup = +-Monomorphism.isGroup ℚᵘ.+-0-isGroup
 
 +-0-isAbelianGroup : IsAbelianGroup _+_ 0ℚ (-_)
-+-0-isAbelianGroup = +-0-Monomorphism.isAbelianGroup ℚᵘ.+-0-isAbelianGroup
++-0-isAbelianGroup = +-Monomorphism.isAbelianGroup ℚᵘ.+-0-isAbelianGroup
 
 ------------------------------------------------------------------------
 -- Packages
@@ -680,7 +679,7 @@ private
   }
 
 +-0-group : Group 0ℓ 0ℓ
-+-0-group = record
+ gs+-0-group = record
   { isGroup = +-0-isGroup
   }
 
@@ -778,29 +777,28 @@ toℚᵘ-isRingMonomorphism-+-* = record
 -- Algebraic properties
 
 private
-  module *-Monomorphism   = MonoidMonomorphisms toℚᵘ-isMonoidMonomorphism-*
-  module +-*-Monomorphism = RingMonomorphisms toℚᵘ-isRingMonomorphism-+-*
+  module *-Monomorphism = RingMonomorphisms toℚᵘ-isRingMonomorphism-+-*
 
 *-assoc : Associative _*_
-*-assoc = *-Monomorphism.assoc ℚᵘ.*-isMagma ℚᵘ.*-assoc
+*-assoc = *-Monomorphism.*-assoc ℚᵘ.*-isMagma ℚᵘ.*-assoc
 
 *-comm : Commutative _*_
-*-comm = *-Monomorphism.comm ℚᵘ.*-isMagma ℚᵘ.*-comm
+*-comm = *-Monomorphism.*-comm ℚᵘ.*-isMagma ℚᵘ.*-comm
 
 *-identityˡ : LeftIdentity 1ℚ _*_
-*-identityˡ = *-Monomorphism.identityˡ ℚᵘ.*-isMagma ℚᵘ.*-identityˡ
+*-identityˡ = *-Monomorphism.*-identityˡ ℚᵘ.*-isMagma ℚᵘ.*-identityˡ
 
 *-identityʳ : RightIdentity 1ℚ _*_
-*-identityʳ = *-Monomorphism.identityʳ ℚᵘ.*-isMagma ℚᵘ.*-identityʳ
+*-identityʳ = *-Monomorphism.*-identityʳ ℚᵘ.*-isMagma ℚᵘ.*-identityʳ
 
 *-identity : Identity 1ℚ _*_
 *-identity = *-identityˡ , *-identityʳ
 
 *-distribˡ-+ : _*_ DistributesOverˡ _+_
-*-distribˡ-+ = +-*-Monomorphism.distribˡ ℚᵘ.+-0-isGroup ℚᵘ.*-1-isMonoid ℚᵘ.*-distribˡ-+
+*-distribˡ-+ = *-Monomorphism.distribˡ ℚᵘ.+-0-isGroup ℚᵘ.*-isMagma ℚᵘ.*-distribˡ-+
 
 *-distribʳ-+ : _*_ DistributesOverʳ _+_
-*-distribʳ-+ = +-*-Monomorphism.distribʳ ℚᵘ.+-0-isGroup ℚᵘ.*-1-isMonoid ℚᵘ.*-distribʳ-+
+*-distribʳ-+ = *-Monomorphism.distribʳ ℚᵘ.+-0-isGroup ℚᵘ.*-isMagma ℚᵘ.*-distribʳ-+
 
 *-distrib-+ : _*_ DistributesOver _+_
 *-distrib-+ = *-distribˡ-+ , *-distribʳ-+
@@ -809,19 +807,19 @@ private
 -- Structures
 
 *-isMagma : IsMagma _*_
-*-isMagma = *-Monomorphism.isMagma ℚᵘ.*-isMagma
+*-isMagma = *-Monomorphism.*-isMagma ℚᵘ.*-isMagma
 
 *-isSemigroup : IsSemigroup _*_
-*-isSemigroup = *-Monomorphism.isSemigroup ℚᵘ.*-isSemigroup
+*-isSemigroup = *-Monomorphism.*-isSemigroup ℚᵘ.*-isSemigroup
 
 *-1-isMonoid : IsMonoid _*_ 1ℚ
-*-1-isMonoid = *-Monomorphism.isMonoid ℚᵘ.*-1-isMonoid
+*-1-isMonoid = *-Monomorphism.*-isMonoid ℚᵘ.*-1-isMonoid
 
 *-1-isCommutativeMonoid : IsCommutativeMonoid _*_ 1ℚ
-*-1-isCommutativeMonoid = *-Monomorphism.isCommutativeMonoid ℚᵘ.*-1-isCommutativeMonoid
+*-1-isCommutativeMonoid = *-Monomorphism.*-isCommutativeMonoid ℚᵘ.*-1-isCommutativeMonoid
 
 +-*-isRing : IsRing _+_ _*_ -_ 0ℚ 1ℚ
-+-*-isRing = +-*-Monomorphism.isRing ℚᵘ.+-*-isRing
++-*-isRing = *-Monomorphism.isRing ℚᵘ.+-*-isRing
 
 ------------------------------------------------------------------------
 -- Packages

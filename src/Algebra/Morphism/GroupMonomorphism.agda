@@ -30,7 +30,7 @@ open import Data.Product
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning
 
 ------------------------------------------------------------------------
--- Re-export all properties of group monomorphisms
+-- Re-export all properties of monoid monomorphisms
 
 open import Algebra.Morphism.MonoidMonomorphism
   isMonoidMonomorphism public
@@ -38,15 +38,14 @@ open import Algebra.Morphism.MonoidMonomorphism
 ------------------------------------------------------------------------
 -- Properties
 
-module _ (◦-isMonoid : IsMonoid _≈₂_ _◦_ ε₂) where
+module _ (◦-isMagma : IsMagma _≈₂_ _◦_) where
 
-  open IsMonoid ◦-isMonoid renaming
-    (∙-cong to ◦-cong; identityˡ to ◦-identiyˡ; identityʳ to ◦-identiyʳ)
+  open IsMagma ◦-isMagma renaming (∙-cong to ◦-cong)
   open SetoidReasoning setoid
 
   inverseˡ : LeftInverse _≈₂_ ε₂ _⁻¹₂ _◦_ → LeftInverse _≈₁_ ε₁ _⁻¹₁  _∙_
   inverseˡ invˡ x = injective (begin
-    ⟦ x ⁻¹₁ ∙ x ⟧     ≈⟨ +-homo (x ⁻¹₁ ) x ⟩
+    ⟦ x ⁻¹₁ ∙ x ⟧     ≈⟨ ∙-homo (x ⁻¹₁ ) x ⟩
     ⟦ x ⁻¹₁ ⟧ ◦ ⟦ x ⟧ ≈⟨ ◦-cong (⁻¹-homo x) refl ⟩
     ⟦ x ⟧ ⁻¹₂ ◦ ⟦ x ⟧ ≈⟨ invˡ ⟦ x ⟧ ⟩
     ε₂                ≈˘⟨ ε-homo ⟩
@@ -54,7 +53,7 @@ module _ (◦-isMonoid : IsMonoid _≈₂_ _◦_ ε₂) where
 
   inverseʳ : RightInverse _≈₂_ ε₂ _⁻¹₂ _◦_ → RightInverse _≈₁_ ε₁ _⁻¹₁  _∙_
   inverseʳ invʳ x = injective (begin
-    ⟦ x ∙ x ⁻¹₁ ⟧     ≈⟨ +-homo x (x ⁻¹₁) ⟩
+    ⟦ x ∙ x ⁻¹₁ ⟧     ≈⟨ ∙-homo x (x ⁻¹₁) ⟩
     ⟦ x ⟧ ◦ ⟦ x ⁻¹₁ ⟧ ≈⟨ ◦-cong refl (⁻¹-homo x) ⟩
     ⟦ x ⟧ ◦ ⟦ x ⟧ ⁻¹₂ ≈⟨ invʳ ⟦ x ⟧ ⟩
     ε₂                ≈˘⟨ ε-homo ⟩
@@ -73,12 +72,11 @@ module _ (◦-isMonoid : IsMonoid _≈₂_ _◦_ ε₂) where
 isGroup : IsGroup _≈₂_ _◦_ ε₂ _⁻¹₂ → IsGroup _≈₁_ _∙_ ε₁ _⁻¹₁
 isGroup isGroup = record
   { isMonoid = isMonoid G.isMonoid
-  ; inverse  = inverse  G.isMonoid G.inverse
-  ; ⁻¹-cong  = ⁻¹-cong  G.isMonoid G.⁻¹-cong
+  ; inverse  = inverse  G.isMagma G.inverse
+  ; ⁻¹-cong  = ⁻¹-cong  G.isMagma G.⁻¹-cong
   } where module G = IsGroup isGroup
 
-isAbelianGroup : IsAbelianGroup _≈₂_ _◦_ ε₂ _⁻¹₂
-               → IsAbelianGroup _≈₁_ _∙_ ε₁ _⁻¹₁
+isAbelianGroup : IsAbelianGroup _≈₂_ _◦_ ε₂ _⁻¹₂ → IsAbelianGroup _≈₁_ _∙_ ε₁ _⁻¹₁
 isAbelianGroup isAbelianGroup = record
   { isGroup = isGroup G.isGroup
   ; comm    = comm G.isMagma G.comm
