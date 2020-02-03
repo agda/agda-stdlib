@@ -9,9 +9,6 @@
 
 open import Relation.Binary
 
--- The properties are parameterised by the two carriers and
--- the result equality.
-
 module Algebra.Module.Definitions where
 
   open import Algebra.Core

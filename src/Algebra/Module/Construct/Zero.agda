@@ -64,8 +64,8 @@ bimodule = record
   ; _≈ᴹ_ = λ _ _ → ⊤
   }
 
-module′ : {R : CommutativeRing r ℓr} → Module R zero zero
-module′ = record
+⟨module⟩ : {R : CommutativeRing r ℓr} → Module R zero zero
+⟨module⟩ = record
   { Carrierᴹ = ⊤
   ; _≈ᴹ_ = λ _ _ → ⊤
   }

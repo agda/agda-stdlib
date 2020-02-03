@@ -186,9 +186,9 @@ bimodule M N = record
   module M = Bimodule M
   module N = Bimodule N
 
-module′ : {R : CommutativeRing r ℓr} →
+⟨module⟩ : {R : CommutativeRing r ℓr} →
   Module R m ℓm → Module R m′ ℓm′ → Module R (m ⊔ m′) (ℓm ⊔ ℓm′)
-module′ M N = record
+⟨module⟩ M N = record
   { isModule = record
     { isBimodule = Bimodule.isBimodule (bimodule M.bimodule N.bimodule)
     }

@@ -109,8 +109,8 @@ bimodule {R = ring} = record
     }
   } where open Ring ring
 
-module′ : {R : CommutativeRing c ℓ} → Module R c ℓ
-module′ {R = commutativeRing} = record
+⟨module⟩ : {R : CommutativeRing c ℓ} → Module R c ℓ
+⟨module⟩ {R = commutativeRing} = record
   { isModule = record
     { isBimodule = Bimodule.isBimodule bimodule
     }
