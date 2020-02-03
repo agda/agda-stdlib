@@ -15,7 +15,7 @@ open import Algebra
 open import Data.Fin   as Fin   using (Fin)
 open import Data.Vec   as Vec   using (Vec; _∷_; [])
 open import Data.List  as List  using (List; _∷_; [])
-open import Data.Maybe as Maybe using (Maybe; just; nothing; fromMaybe)
+open import Data.Maybe.Base as Maybe using (Maybe; just; nothing; fromMaybe)
 open import Data.Nat            using (ℕ; suc; zero; _<ᵇ_)
 open import Data.Bool           using (Bool; if_then_else_; true; false)
 open import Data.Unit           using (⊤)

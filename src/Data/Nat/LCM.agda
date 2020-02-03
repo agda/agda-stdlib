@@ -9,7 +9,7 @@
 module Data.Nat.LCM where
 
 open import Algebra
-open import Data.Nat
+open import Data.Nat.Base
 open import Data.Nat.Coprimality using (Coprime)
 open import Data.Nat.Divisibility
 open import Data.Nat.DivMod
@@ -17,7 +17,7 @@ open import Data.Nat.Properties
 open import Data.Nat.Solver
 open import Data.Nat.GCD
 open import Data.Product
-open import Data.Sum using (_⊎_; inj₁; inj₂)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; refl; sym; trans; cong; cong₂; module ≡-Reasoning)

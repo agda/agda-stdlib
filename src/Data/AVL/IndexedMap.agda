@@ -19,7 +19,7 @@ module Data.AVL.IndexedMap
   where
 
 import Data.AVL
-open import Data.Bool
+open import Data.Bool.Base
 open import Data.List.Base as List using (List)
 open import Data.Maybe.Base as Maybe
 open import Function

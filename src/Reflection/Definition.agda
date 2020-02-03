@@ -8,7 +8,7 @@
 
 module Reflection.Definition where
 
-open import Data.List using (map)
+open import Data.List.Base using (map)
 import Data.List.Properties as Listₚ
 import Data.Nat.Properties as ℕₚ
 import Data.Nat.Show as NatShow

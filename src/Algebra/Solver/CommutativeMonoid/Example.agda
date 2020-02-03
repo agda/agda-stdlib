@@ -13,8 +13,8 @@ open import Relation.Binary.PropositionalEquality using (_≡_)
 open import Data.Bool.Base using (_∨_)
 open import Data.Bool.Properties using (∨-commutativeMonoid)
 
-open import Data.Fin using (zero; suc)
-open import Data.Vec using ([]; _∷_)
+open import Data.Fin.Base using (zero; suc)
+open import Data.Vec.Base using ([]; _∷_)
 
 open import Algebra.Solver.CommutativeMonoid ∨-commutativeMonoid
 

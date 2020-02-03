@@ -9,7 +9,7 @@
 module Data.Sum.Properties where
 
 open import Level
-open import Data.Sum
+open import Data.Sum.Base
 open import Function
 open import Relation.Binary using (Decidable)
 open import Relation.Binary.PropositionalEquality

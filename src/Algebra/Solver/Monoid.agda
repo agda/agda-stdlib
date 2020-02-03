@@ -15,15 +15,15 @@ module Algebra.Solver.Monoid {m₁ m₂} (M : Monoid m₁ m₂) where
 Use Tactic.MonoidSolver instead."
 #-}
 
-open import Data.Fin as Fin hiding (_≟_)
+open import Data.Fin.Base as Fin hiding (_≟_)
 import Data.Fin.Properties as Fin
 open import Data.List.Base hiding (lookup)
 import Data.List.Relation.Binary.Equality.DecPropositional as ListEq
-open import Data.Maybe as Maybe
+open import Data.Maybe.Base as Maybe
   using (Maybe; decToMaybe; From-just; from-just)
 open import Data.Nat.Base using (ℕ)
 open import Data.Product
-open import Data.Vec using (Vec; lookup)
+open import Data.Vec.Base using (Vec; lookup)
 open import Function using (_∘_; _$_)
 open import Relation.Binary using (Decidable)
 

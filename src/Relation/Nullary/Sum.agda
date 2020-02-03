@@ -9,7 +9,7 @@
 module Relation.Nullary.Sum where
 
 open import Data.Bool.Base
-open import Data.Sum
+open import Data.Sum.Base
 open import Data.Empty
 open import Level
 open import Relation.Nullary.Reflects

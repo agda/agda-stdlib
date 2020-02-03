@@ -16,7 +16,7 @@ module Relation.Binary.Construct.NaturalOrder.Left
 open import Algebra.Definitions _≈_
 open import Algebra.Structures _≈_
 open import Data.Product using (_,_; _×_)
-open import Data.Sum using (inj₁; inj₂)
+open import Data.Sum.Base using (inj₁; inj₂)
 open import Relation.Nullary using (¬_)
 import Relation.Binary.Reasoning.Setoid as EqReasoning
 open import Relation.Binary.Lattice using (Infimum)

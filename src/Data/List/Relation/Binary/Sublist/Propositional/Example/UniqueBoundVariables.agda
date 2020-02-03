@@ -13,7 +13,7 @@ module Data.List.Relation.Binary.Sublist.Propositional.Example.UniqueBoundVariab
 open import Relation.Binary.PropositionalEquality using (_≡_; refl; sym; cong; subst; module ≡-Reasoning)
 open ≡-Reasoning
 
-open import Data.List using (List; []; _∷_; [_])
+open import Data.List.Base using (List; []; _∷_; [_])
 open import Data.List.Membership.Propositional using (_∈_)
 open import Data.List.Relation.Unary.All using (Null; [])
 open import Data.List.Relation.Binary.Sublist.Propositional using

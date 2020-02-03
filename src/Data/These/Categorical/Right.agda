@@ -27,7 +27,7 @@ module Data.These.Categorical.Right (a : Level) {c ℓ} (W : Semigroup c ℓ) wh
 open Semigroup W
 open import Data.These.Categorical.Right.Base a Carrier public
 
-open import Data.These
+open import Data.These.Base
 open import Category.Applicative
 open import Category.Monad
 

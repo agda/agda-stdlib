@@ -16,7 +16,7 @@ module Data.AVL.Map
 
 open import Data.Bool.Base using (Bool)
 open import Data.List.Base using (List)
-open import Data.Maybe using (Maybe)
+open import Data.Maybe.Base using (Maybe)
 open import Data.Product using (_×_)
 open import Level using (_⊔_)
 

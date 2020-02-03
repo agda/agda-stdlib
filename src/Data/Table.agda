@@ -18,7 +18,7 @@ Use Data.Vec.Functional instead."
 
 open import Data.Table.Base public
 
-open import Data.Bool using (true; false)
+open import Data.Bool.Base using (true; false)
 open import Data.Fin using (Fin; _≟_)
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse using (Inverse; _↔_)

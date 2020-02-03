@@ -12,7 +12,7 @@ module Data.Integer.Tactic.RingSolver where
 
 open import Agda.Builtin.Reflection
 
-open import Data.Maybe using (just; nothing)
+open import Data.Maybe.Base using (just; nothing)
 open import Data.Integer.Base
 open import Data.Integer.Properties
 open import Level using (0ℓ)

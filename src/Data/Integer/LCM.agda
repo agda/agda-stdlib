@@ -8,10 +8,10 @@
 
 module Data.Integer.LCM where
 
-open import Data.Integer
+open import Data.Integer.Base
 open import Data.Integer.Divisibility
 open import Data.Integer.GCD
-open import Data.Nat using (ℕ)
+open import Data.Nat.Base using (ℕ)
 import Data.Nat.LCM as ℕ
 open import Relation.Binary.PropositionalEquality
 

@@ -11,7 +11,7 @@ open import Relation.Binary
 module Data.List.Relation.Binary.Subset.Setoid
   {c ℓ} (S : Setoid c ℓ) where
 
-open import Data.List using (List)
+open import Data.List.Base using (List)
 open import Data.List.Membership.Setoid S using (_∈_)
 open import Level using (_⊔_)
 open import Relation.Nullary using (¬_)

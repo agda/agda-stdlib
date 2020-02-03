@@ -12,8 +12,8 @@ open import Category.Monad
 open import Data.Bool.Base using (Bool; false; true; T)
 open import Data.Bool.Properties
 open import Data.Empty using (⊥)
-open import Data.Fin using (Fin) renaming (zero to fzero; suc to fsuc)
-open import Data.List as List
+open import Data.Fin.Base using (Fin) renaming (zero to fzero; suc to fsuc)
+open import Data.List.Base as List
 open import Data.List.Categorical using (monad)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Membership.Propositional
@@ -21,8 +21,8 @@ open import Data.List.Membership.Propositional.Properties.Core
   using (Any↔; find∘map; map∘find; lose∘find)
 open import Data.List.Relation.Binary.Pointwise
   using (Pointwise; []; _∷_)
-open import Data.Nat using (zero; suc; _<_; z≤n; s≤s)
-open import Data.Maybe using (Maybe; just; nothing)
+open import Data.Nat.Base using (zero; suc; _<_; z≤n; s≤s)
+open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.Any as MAny using (just)
 open import Data.Product as Prod
   using (_×_; _,_; ∃; ∃₂; proj₁; proj₂; uncurry′)
@@ -30,7 +30,7 @@ open import Data.Product.Properties
 open import Data.Product.Function.NonDependent.Propositional
   using (_×-cong_)
 import Data.Product.Function.Dependent.Propositional as Σ
-open import Data.Sum as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
 open import Function.Base
 open import Function.Equality using (_⟨$⟩_)
