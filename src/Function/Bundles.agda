@@ -276,7 +276,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
 ------------------------------------------------------------------------
 -- Bundles specialised for propositional equality
 
-infix 3 _↣_ _↠_ _⤖_ _⇔_ _↩_ _↪_ _↔_
+infix 3 _↣_ _↠_ _⤖_ _⇔_ _↩_ _↪_ _↩↪_ _↔_
 
 _↣_ : Set a → Set b → Set _
 A ↣ B = Injection (≡.setoid A) (≡.setoid B)
