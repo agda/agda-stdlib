@@ -136,9 +136,9 @@ Non-backwards compatible changes
 * Moved module `README.Text` to `README.Text.Printf`.
 
 * In `Codata.Cowriter` and `Codata.Musical.Colist` the functions `splitAt`, `take`
-  and `take-⊑` have been changed to use bounded vectors as defined in 
-  `Data.Vec.Bounded` instead of the deprecated `Data.BoundedVec`. The old proofs 
-  still exist under the names `splitAt′`, `take′` and `take′-⊑` but have been 
+  and `take-⊑` have been changed to use bounded vectors as defined in
+  `Data.Vec.Bounded` instead of the deprecated `Data.BoundedVec`. The old proofs
+  still exist under the names `splitAt′`, `take′` and `take′-⊑` but have been
   deprecated.
 
 * The following record definitions in `Algebra.Structures` have been changed.
@@ -219,6 +219,8 @@ discourage their use.
   Data.Integer.Solver  ↦ Data.Integer.Tactic.RingSolver
   ```
 
+* `Algebra.Solver.Monoid` and `Data.List.Solver`
+
 Deprecated names
 ----------------
 
@@ -228,8 +230,6 @@ therefore all existing code should still work, however use of the new names
 is encouraged. Although not anticipated any time soon, they may eventually
 be removed in some future release of the library. Automated warnings are
 attached to all deprecated names to discourage their use.
-
-* `Algebra.Solver.Monoid` and `Data.List.Solver`
 
 * In `Data.Fin`:
   ```agda
@@ -264,6 +264,10 @@ attached to all deprecated names to discourage their use.
   ∀[m≤n⇒m≢o]⇒o<n  ↦  ∀[m≤n⇒m≢o]⇒n<o
   ∀[m<n⇒m≢o]⇒o≤n  ↦  ∀[m<n⇒m≢o]⇒n≤o
   ```
+
+* In `Algebra.Morphism.Definitions` and `Relation.Binary.Morphism.Definitions`
+  the type `Morphism A B` has been deprecated in favour of the standard
+  function notation `A → B`.
 
 Other major additions
 ---------------------
