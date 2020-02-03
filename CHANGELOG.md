@@ -632,11 +632,17 @@ Other minor additions
   unwords : List String → String
   _<+>_ : String → String → String -- space-introducing append
   ```
-* Added new records IsBiInverse to `Function.Structures` and BiInverse
-  to `Function.Bundles`:
+* Added new records `IsBiEquivalence` and `IsBiInverse`
+  to `Function.Structures`:
   ```agda
+  record IsBiEquivalence
+    (f : A → B) (g₁ : B → A) (g₂ : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
   record IsBiInverse
     (f : A → B) (g₁ : B → A) (g₂ : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
+  ```
+
+* Added new record BiInverse to `Function.Bundles`:
+  ```agda
   record BiInverse : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
   ```
 
