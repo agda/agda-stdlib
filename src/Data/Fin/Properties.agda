@@ -424,12 +424,12 @@ splitAt-inject+ (suc m) n zero = refl
 splitAt-inject+ (suc m) n (suc i) rewrite splitAt-inject+ m n i = refl
 
 splitAt-raise : ∀ m n i → splitAt m (raise {n} m i) ≡ inj₂ i
-splitAt-raise zero n i = refl
+splitAt-raise zero    n i = refl
 splitAt-raise (suc m) n i rewrite splitAt-raise m n i = refl
 
 inject+-raise-splitAt : ∀ m n i → [ inject+ n , raise {n} m ] (splitAt m i) ≡ i
-inject+-raise-splitAt zero n i = refl
-inject+-raise-splitAt (suc m) n zero = refl
+inject+-raise-splitAt zero    n i       = refl
+inject+-raise-splitAt (suc m) n zero    = refl
 inject+-raise-splitAt (suc m) n (suc i) = begin
   [ inject+ n , raise {n} (suc m) ] (splitAt (suc m) (suc i))  ≡⟨ [,]-map-commute (splitAt m i) ⟩
   [ suc ∘ (inject+ n) , suc ∘ (raise {n} m) ] (splitAt m i)    ≡˘⟨ [,]-∘-distr {f = suc} (splitAt m i) ⟩
