@@ -12,7 +12,7 @@ open import Data.Nat using (ℕ; _+_; _*_; _≟_; zero; suc)
 open import Data.Nat.DivMod hiding (_mod_; _divMod_)
 open import Data.Nat.Properties using (≤⇒≤″)
 open import Data.Nat.WithK
-open import Data.Fin using (Fin; toℕ; fromℕ<″)
+open import Data.Fin.Base using (Fin; toℕ; fromℕ<″)
 open import Data.Fin.Properties using (toℕ-fromℕ<″)
 open import Function using (_$_)
 open import Relation.Nullary.Decidable using (False)

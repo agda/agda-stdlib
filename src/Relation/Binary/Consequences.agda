@@ -9,7 +9,7 @@
 module Relation.Binary.Consequences where
 
 open import Data.Maybe.Base using (just; nothing; decToMaybe)
-open import Data.Sum as Sum using (inj₁; inj₂)
+open import Data.Sum.Base as Sum using (inj₁; inj₂)
 open import Data.Product using (_,_)
 open import Data.Empty.Irrelevant using (⊥-elim)
 open import Function.Base using (_∘_; _$_; flip)

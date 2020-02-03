@@ -12,7 +12,7 @@ module Text.Pretty.Core where
 
 import Level
 
-open import Data.Bool using (Bool)
+open import Data.Bool.Base using (Bool)
 open import Data.Erased    as Erased using (Erased) hiding (module Erased)
 open import Data.List.Base as List   using (List; []; _∷_)
 open import Data.Nat.Base            using (ℕ; zero; suc; _+_; _⊔_; _≤_; z≤n)

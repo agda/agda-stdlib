@@ -209,7 +209,7 @@ discourage their use.
   Algebra.FunctionProperties.Consequences.Core           ↦ Algebra.Consequences.Base
   Algebra.FunctionProperties.Consequences.Propositional  ↦ Algebra.Consequences.Propositional
   Algebra.FunctionProperties.Consequences                ↦ Algebra.Conseqeunces.Setoid
-  
+
   Data.Nat.Solver      ↦ Data.Nat.Tactic.RingSolver
   Data.Integer.Solver  ↦ Data.Integer.Tactic.RingSolver
   ```
@@ -277,7 +277,7 @@ Other major additions
   Data.Tree.Rose.Properties
 
   Reflection.TCMonadSyntax
-  
+
   Tactic.MonoidSolver
   Tactic.RingSolver
   Tactic.RingSolver.NonReflective

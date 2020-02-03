@@ -18,7 +18,7 @@ open import Level as L using (Level; _⊔_; Lift; 0ℓ)
 open import Agda.Builtin.Unit
 open import Data.Product as Prod
 import Data.Product.Properties as Prodₚ
-open import Data.Sum using (_⊎_)
+open import Data.Sum.Base using (_⊎_)
 open import Data.Nat.Base using (ℕ; zero; suc; pred)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Function

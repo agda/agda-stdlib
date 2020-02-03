@@ -9,7 +9,7 @@
 module Codata.Conat.Properties where
 
 open import Size
-open import Data.Nat using (ℕ; zero; suc)
+open import Data.Nat.Base using (ℕ; zero; suc)
 open import Codata.Thunk
 open import Codata.Conat
 open import Codata.Conat.Bisimilarity

@@ -9,12 +9,12 @@
 module Data.Integer.Divisibility.Signed where
 
 open import Function
-open import Data.Integer
+open import Data.Integer.Base
 open import Data.Integer.Properties
 open import Data.Integer.Divisibility as Unsigned
   using (divides)
   renaming (_∣_ to _∣ᵤ_)
-import Data.Nat as ℕ
+import Data.Nat.Base as ℕ
 import Data.Nat.Divisibility as ℕ
 import Data.Nat.Coprimality as ℕ
 import Data.Nat.Properties as ℕ

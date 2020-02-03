@@ -9,7 +9,7 @@
 module Data.Sum.Categorical.Examples where
 
 open import Level
-open import Data.Sum
+open import Data.Sum.Base
 import Data.Sum.Categorical.Left as Sumₗ
 open import Category.Functor
 open import Category.Monad

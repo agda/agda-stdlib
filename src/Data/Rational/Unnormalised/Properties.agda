@@ -11,15 +11,15 @@ module Data.Rational.Unnormalised.Properties where
 open import Algebra
 import Algebra.Consequences.Setoid as FC
 open import Algebra.Consequences.Propositional
-open import Data.Nat using (suc)
+open import Data.Nat.Base using (suc)
 import Data.Nat.Properties as ℕ
-open import Data.Integer as ℤ using (ℤ; +0; +[1+_]; 0ℤ; 1ℤ)
+open import Data.Integer.Base as ℤ using (ℤ; +0; +[1+_]; 0ℤ; 1ℤ)
 open import Data.Integer.Solver renaming (module +-*-Solver to ℤ-solver)
 import Data.Integer.Properties as ℤ
 import Data.Integer.Properties
 open import Data.Rational.Unnormalised
 open import Data.Product using (_,_)
-open import Data.Sum using ([_,_]′; inj₁; inj₂)
+open import Data.Sum.Base using ([_,_]′; inj₁; inj₂)
 open import Function.Base using (_on_; _$_; _∘_)
 open import Level using (0ℓ)
 open import Relation.Nullary using (yes; no)

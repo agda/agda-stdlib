@@ -13,7 +13,7 @@ module Data.List.Relation.Binary.Permutation.Setoid.Properties
   where
 
 open import Algebra
-open import Data.Fin using (Fin)
+open import Data.Fin.Base using (Fin)
 open import Data.List.Base as List hiding (head; tail)
 open import Data.List.Relation.Binary.Pointwise as Pointwise
   using (Pointwise; head; tail)

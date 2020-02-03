@@ -18,7 +18,7 @@ module Algebra.Definitions
 
 open import Algebra.Core
 open import Data.Product
-open import Data.Sum
+open import Data.Sum.Base
 
 ------------------------------------------------------------------------
 -- Properties of operations

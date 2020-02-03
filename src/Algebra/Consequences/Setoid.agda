@@ -16,7 +16,7 @@ open Setoid S renaming (Carrier to A)
 
 open import Algebra.Core
 open import Algebra.Definitions _≈_
-open import Data.Sum using (inj₁; inj₂)
+open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.Product using (_,_)
 import Relation.Binary.Consequences as Bin
 open import Relation.Binary.Reasoning.Setoid S

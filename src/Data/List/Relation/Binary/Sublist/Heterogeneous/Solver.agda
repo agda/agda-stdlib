@@ -20,10 +20,10 @@ module Data.List.Relation.Binary.Sublist.Heterogeneous.Solver
 
 open import Level using (_⊔_)
 open import Data.Fin as Fin
-open import Data.Maybe as M
+open import Data.Maybe.Base as M
 open import Data.Nat.Base as Nat using (ℕ)
 open import Data.Product
-open import Data.Vec as Vec using (Vec ; lookup)
+open import Data.Vec.Base as Vec using (Vec ; lookup)
 open import Data.List hiding (lookup)
 open import Data.List.Properties
 open import Data.List.Relation.Binary.Sublist.Heterogeneous
