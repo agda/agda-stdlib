@@ -21,50 +21,50 @@ private
   variable
     r s ℓr ℓs : Level
 
-leftSemimodule : {R : Semiring r ℓr} → LeftSemimodule R zero zero
+leftSemimodule : {R : Semiring r ℓr} → LeftSemimodule R 0ℓ 0ℓ
 leftSemimodule = record
   { Carrierᴹ = ⊤
   ; _≈ᴹ_ = λ _ _ → ⊤
   }
 
-rightSemimodule : {S : Semiring s ℓs} → RightSemimodule S zero zero
+rightSemimodule : {S : Semiring s ℓs} → RightSemimodule S 0ℓ 0ℓ
 rightSemimodule = record
   { Carrierᴹ = ⊤
   ; _≈ᴹ_ = λ _ _ → ⊤
   }
 
 bisemimodule :
-  {R : Semiring r ℓr} {S : Semiring s ℓs} → Bisemimodule R S zero zero
+  {R : Semiring r ℓr} {S : Semiring s ℓs} → Bisemimodule R S 0ℓ 0ℓ
 bisemimodule = record
   { Carrierᴹ = ⊤
   ; _≈ᴹ_ = λ _ _ → ⊤
   }
 
-semimodule : {R : CommutativeSemiring r ℓr} → Semimodule R zero zero
+semimodule : {R : CommutativeSemiring r ℓr} → Semimodule R 0ℓ 0ℓ
 semimodule = record
   { Carrierᴹ = ⊤
   ; _≈ᴹ_ = λ _ _ → ⊤
   }
 
-leftModule : {R : Ring r ℓr} → LeftModule R zero zero
+leftModule : {R : Ring r ℓr} → LeftModule R 0ℓ 0ℓ
 leftModule = record
   { Carrierᴹ = ⊤
   ; _≈ᴹ_ = λ _ _ → ⊤
   }
 
-rightModule : {S : Ring s ℓs} → RightModule S zero zero
+rightModule : {S : Ring s ℓs} → RightModule S 0ℓ 0ℓ
 rightModule = record
   { Carrierᴹ = ⊤
   ; _≈ᴹ_ = λ _ _ → ⊤
   }
 
-bimodule : {R : Ring r ℓr} {S : Ring s ℓs} → Bimodule R S zero zero
+bimodule : {R : Ring r ℓr} {S : Ring s ℓs} → Bimodule R S 0ℓ 0ℓ
 bimodule = record
   { Carrierᴹ = ⊤
   ; _≈ᴹ_ = λ _ _ → ⊤
   }
 
-⟨module⟩ : {R : CommutativeRing r ℓr} → Module R zero zero
+⟨module⟩ : {R : CommutativeRing r ℓr} → Module R 0ℓ 0ℓ
 ⟨module⟩ = record
   { Carrierᴹ = ⊤
   ; _≈ᴹ_ = λ _ _ → ⊤
