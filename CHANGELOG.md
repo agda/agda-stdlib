@@ -640,6 +640,14 @@ Other minor additions
   record BiInverse : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
   ```
 
+* Added new BiInverse bundle `_↩↪_` and a new constructor `mk↩↪`
+  to `Funtion.Bundles`:
+  ```agda
+  _↩↪_ : Set a → Set b → Set _
+  mk↩↪ : ∀ {f : A → B} {g₁ : B → A} {g₂ : B → A}
+    → Inverseˡ f g₁ → Inverseʳ f g₂ → A ↩↪ B
+  ```
+
 Version 2.6.1 changes
 =====================
 

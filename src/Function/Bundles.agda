@@ -296,6 +296,9 @@ A ↩ B = LeftInverse (≡.setoid A) (≡.setoid B)
 _↪_ : Set a → Set b → Set _
 A ↪ B = RightInverse (≡.setoid A) (≡.setoid B)
 
+_↩↪_ : Set a → Set b → Set _
+A ↩↪ B = BiInverse (≡.setoid A) (≡.setoid B)
+
 _↔_ : Set a → Set b → Set _
 A ↔ B = Inverse (≡.setoid A) (≡.setoid B)
 
@@ -350,6 +353,19 @@ module _ {A : Set a} {B : Set b} where
     ; g        = g
     ; cong₁    = ≡.cong f
     ; cong₂    = ≡.cong g
+    ; inverseʳ = invʳ
+    }
+
+  mk↩↪ : ∀ {f : A → B} {g₁ : B → A} {g₂ : B → A}
+    → Inverseˡ f g₁ → Inverseʳ f g₂ → A ↩↪ B
+  mk↩↪ {f} {g₁} {g₂} invˡ invʳ = record
+    { f        = f
+    ; g₁       = g₁
+    ; g₂       = g₂
+    ; cong₁    = ≡.cong f
+    ; cong₂    = ≡.cong g₁
+    ; cong₃    = ≡.cong g₂
+    ; inverseˡ = invˡ
     ; inverseʳ = invʳ
     }
 
