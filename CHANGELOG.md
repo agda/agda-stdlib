@@ -389,9 +389,19 @@ Other major additions
 Other minor additions
 ---------------------
 
+* Added new proof to `Data.Fin.Properties`:
+  ```agda
+  inject+-raise-splitAt : [ inject+ n , raise {n} m ] (splitAt m i) ≡ i
+  ```
+
+* Added new proof to `Data.Sum.Properties`:
+  ```agda
+  [,]-∘-distr : f ∘ [ g , h ] ≗ [ f ∘ g , f ∘ h ]
+  ```
+
 * Added new proofs to `Data.Sum.Properties`:
   ```agda
-  [,]-map-commute : [ f′ , g′ ]′ ∘ (map f g) ≗ [ f′ ∘ f , g′ ∘ g ]′
+  [,]-map-commute : [ f′ , g′ ] ∘ (map f g) ≗ [ f′ ∘ f , g′ ∘ g ]
   map-commute     : ((map f′ g′) ∘ (map f g)) ≗ map (f′ ∘ f) (g′ ∘ g)
   ```
 
