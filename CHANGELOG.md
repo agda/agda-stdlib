@@ -654,6 +654,21 @@ Other minor additions
   _<_ : Rel Word64 zero
   ```
 
+* Added new definitions to `Function.Bundles`:
+  ```agda
+  record BiInverse
+  record BiEquivalence
+  
+  _↩↪_ : Set a → Set b → Set _
+  mk↩↪ : Inverseˡ f g₁ → Inverseʳ f g₂ → A ↩↪ B
+  ```
+
+* Added new definitions to `Function.Structures`:
+  ```agda
+  record IsBiEquivalence (f : A → B) (g₁ : B → A) (g₂ : B → A)
+  record IsBiInverse     (f : A → B) (g₁ : B → A) (g₂ : B → A)
+  ```
+
 * Added new proofs to `Induction.WellFounded`:
   ```agda
   some-wfRec-irrelevant : Some.wfRec P f x q ≡ Some.wfRec P f x q'
@@ -730,4 +745,3 @@ Other minor additions
   +-*-isRing : IsRing _≃_ _+_ _*_ -_ 0ℚᵘ 1ℚ 
   +-*-ring : Ring 0ℓ 0ℓ
   ```
-
