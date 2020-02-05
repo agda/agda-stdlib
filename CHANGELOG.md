@@ -361,7 +361,17 @@ Other minor additions
 
 * Added new record to `Algebra.Bundles`:
   ```
-  record RawAbelianGroup c ℓ : Set (suc (c ⊔ ℓ)) where
+  +-rawGroup : RawGroup c ℓ
+  ```
+  
+* Added new records to `Algebra.Morphism.Structures`:
+  ```
+  IsGroupHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
+  IsGroupMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
+  IsGroupIsomorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
+  IsRingHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
+  IsRingMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
+  IsRingIsomorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
   ```
 
 * Added new proofs to `Data.Sum.Properties`:
@@ -725,7 +735,7 @@ Other minor additions
   unwords : List String → String
   _<+>_ : String → String → String -- space-introducing append
   ```
-
+  
 Version 2.6.1 changes
 =====================
 
