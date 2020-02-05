@@ -14,9 +14,9 @@ open import Data.List.Relation.Unary.AllPairs as AllPairs
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Linked as Linked
   using (Linked; []; [-]; _∷_)
-open import Data.Fin using (Fin)
+open import Data.Fin.Base using (Fin)
 open import Data.Fin.Properties using (suc-injective)
-open import Data.Nat using (zero; suc; _<_; z≤n; s≤s)
+open import Data.Nat.Base using (zero; suc; _<_; z≤n; s≤s)
 open import Data.Nat.Properties using (≤-refl; ≤-pred; ≤-step)
 open import Level using (Level)
 open import Function using (_∘_; flip)

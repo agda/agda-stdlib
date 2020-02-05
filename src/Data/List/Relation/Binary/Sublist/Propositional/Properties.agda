@@ -9,7 +9,7 @@
 module Data.List.Relation.Binary.Sublist.Propositional.Properties
   {a} {A : Set a} where
 
-open import Data.List using (List; []; _∷_;  map)
+open import Data.List.Base using (List; []; _∷_;  map)
 open import Data.List.Membership.Propositional using (_∈_)
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Any using (Any; here; there)

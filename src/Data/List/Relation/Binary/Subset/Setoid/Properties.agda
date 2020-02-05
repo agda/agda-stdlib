@@ -10,8 +10,8 @@ open import Relation.Binary hiding (Decidable)
 
 module Data.List.Relation.Binary.Subset.Setoid.Properties where
 
-open import Data.Bool using (Bool; true; false)
-open import Data.List
+open import Data.Bool.Base using (Bool; true; false)
+open import Data.List.Base
 open import Data.List.Relation.Unary.Any using (here; there)
 import Data.List.Membership.Setoid as Membership
 open import Data.List.Membership.Setoid.Properties

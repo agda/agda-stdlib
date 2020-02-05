@@ -1,16 +1,19 @@
 Version 1.3-dev
 ===============
 
-The library has been tested using Agda version 2.6.0.1.
+The library has been tested using Agda version 2.6.1 release candidate 1.
 
 Highlights
 ----------
 
-* New warnings when importing deprecated modules. These can be disabled locally
+* Monoid and ring tactics that are capable of solving equalities
+  without having to restate the equation.
+
+* New tree types: binary and rose.
+
+* Warnings when importing deprecated modules. These can be disabled locally
   by adding the pragma `{-# OPTIONS --warn=noUserWarning #-}` to the top of a module.
 
-* New monoid and ring tactics that are capable of solving equalities
-  without having to restate the equation.
 
 Bug-fixes
 ---------
@@ -75,7 +78,7 @@ Non-backwards compatible changes
   compatible. Having said that you may want to switch to the new style for the benefits
   described above.
 
-* One drawback is that hiding and renaming the combinators no longer works as before,
+* The one drawback is that hiding and renaming the combinators no longer works as before,
   as `_≡⟨_⟩_` etc. are now syntax instead of names. For example instead of:
   ```agda
   open SetoidReasoning setoid public
@@ -111,30 +114,20 @@ Non-backwards compatible changes
   proofs and or functions over permutations.
 
 * Correspondingly the proofs `isEquivalence` and `setoid` in `Permutation.Homogeneous`
-  now take an extra argument that the base relation `R` must be reflexive.
+  now require that the base relation `R` is reflexive.
 
-#### Other
+#### Improved safety for `Word` and `Float`
 
-* The following lemmas may have breaking changes in their computational
-  behaviour.
-  - `Data.Fin.Permutation.Components`: `transpose-inverse`
-  - `Data.Fin.Properties`: `decFinSubset`, `all?`
+* Decidable equality over floating point numbers has been made safe and
+  so  `_≟_` has been moved from `Data.Float.Unsafe` to `Data.Float.Properties`.
 
-  Definitions that are sensitive to the behaviour of these lemmas, rather than
-  just their existence, may need to be revised.
+* Decidable equality over words has been made safe and so `_≟_` has been
+  moved from `Data.Word.Unsafe` to `Data.Word.Properties`.
 
-* The fixity level of `Data.List.Base`'s `_∷ʳ_` was changed from 5 to 6.
-  This means that `x ∷ xs ∷ʳ y` and `x ++ xs ∷ʳ y` are not ambiguous
-  anymore: they both are parenthesised to the right (the more efficient
-  variant).
+* The modules `Data.Word.Unsafe` and `Data.Float.Unsafe` have been removed
+  as there are no longer any unsafe operations.
 
-* Moved module `README.Text` to `README.Text.Printf`.
-
-* In `Codata.Cowriter` and `Codata.Musical.Colist` the functions `splitAt`, `take`
-  and `take-⊑` have been changed to use bounded vectors as defined in 
-  `Data.Vec.Bounded` instead of the deprecated `Data.BoundedVec`. The old proofs 
-  still exist under the names `splitAt′`, `take′` and `take′-⊑` but have been 
-  deprecated.
+#### Changes to the algebra hierarchy
 
 * The following record definitions in `Algebra.Structures` have been changed.
 
@@ -192,7 +185,28 @@ Non-backwards compatible changes
   For `IsCommutativeSemiring`, we have `IsCommutativeSemiringˡ`, and for
   `IsRing`, we have `IsRingWithoutAnnihilatingZero`.
 
-* In `Codata.Colist`, replaced all the uses of `Data.BoundedVec` with the more
+#### Other
+
+* The following lemmas may have breaking changes in their computational
+  behaviour.
+  - `transpose-inverse` in `Data.Fin.Permutation.Components`
+  - `decFinSubset` & `all?` in `Data.Fin.Properties`
+
+  Definitions that are sensitive to the behaviour of these lemmas, rather than
+  just their existence, may need to be revised.
+
+* The fixity level of `Data.List.Base`'s `_∷ʳ_` has been changed from 5 to 6.
+  This means that `x ∷ xs ∷ʳ y` and `x ++ xs ∷ʳ y` are not ambiguous
+  anymore: they both are parenthesised to the right (the more efficient
+  variant).
+
+* In `Codata.Cowriter` and `Codata.Musical.Colist` the functions `splitAt`, `take`
+  and `take-⊑` have been changed to use bounded vectors as defined in
+  `Data.Vec.Bounded` instead of the deprecated `Data.BoundedVec`. The old proofs
+  still exist under the names `splitAt′`, `take′` and `take′-⊑` but have been
+  deprecated.
+
+* In `Codata.Colist`, uses of `Data.BoundedVec` have been replaced with the more
   up to date `Data.Vec.Bounded`.
 
 Deprecated modules
@@ -209,10 +223,12 @@ discourage their use.
   Algebra.FunctionProperties.Consequences.Core           ↦ Algebra.Consequences.Base
   Algebra.FunctionProperties.Consequences.Propositional  ↦ Algebra.Consequences.Propositional
   Algebra.FunctionProperties.Consequences                ↦ Algebra.Conseqeunces.Setoid
-  
+
   Data.Nat.Solver      ↦ Data.Nat.Tactic.RingSolver
   Data.Integer.Solver  ↦ Data.Integer.Tactic.RingSolver
   ```
+
+* `Algebra.Solver.Monoid` and `Data.List.Solver`
 
 Deprecated names
 ----------------
@@ -223,8 +239,6 @@ therefore all existing code should still work, however use of the new names
 is encouraged. Although not anticipated any time soon, they may eventually
 be removed in some future release of the library. Automated warnings are
 attached to all deprecated names to discourage their use.
-
-* `Algebra.Solver.Monoid` and `Data.List.Solver`
 
 * In `Data.Fin`:
   ```agda
@@ -254,6 +268,10 @@ attached to all deprecated names to discourage their use.
   Any¬→¬All  ↦  Any¬⇒¬All
   ```
 
+* In `Algebra.Morphism.Definitions` and `Relation.Binary.Morphism.Definitions`
+  the type `Morphism A B` has been deprecated in favour of the standard
+  function notation `A → B`.
+
 Other major additions
 ---------------------
 
@@ -274,8 +292,23 @@ Other major additions
   Data.Tree.Binary.Relation.Unary.All.Properties
   Data.Tree.Rose
   Data.Tree.Rose.Properties
-
+  Data.Float.Base
+  Data.Float.Properties
+  Data.Word.Base
+  Data.Word.Properties
+  
+  Reflection.Abstraction
+  Reflection.Argument
+  Reflection.Argument.Information
+  Reflection.Argument.Relevance
+  Reflection.Argument.Visibility
+  Reflection.Definition
+  Reflection.Literal
+  Reflection.Meta
+  Reflection.Name
+  Reflection.Pattern
   Reflection.TCMonadSyntax
+  Reflection.Term
   
   Tactic.MonoidSolver
   Tactic.RingSolver
@@ -356,6 +389,23 @@ Other major additions
   - `DecTotalOrder.Eq` and `StrictTotalOrder.Eq` now export `decSetoid`.
   - `DecTotalOrder.decSetoid` is now deprecated in favour of the above `DecTotalOrder.Eq.decSetoid`.
 
+* Added a hierarchy for algebraic modules:
+  ```
+  Algebra.Module
+  Algebra.Module.Bundles
+  Algebra.Module.Consequences
+  Algebra.Module.Construct.Biproduct
+  Algebra.Module.Construct.TensorUnit
+  Algebra.Module.Construct.Zero
+  Algebra.Module.Definitions
+  Algebra.Module.Definitions.Bi
+  Algebra.Module.Definitions.Left
+  Algebra.Module.Definitions.Right
+  Algebra.Module.Structures
+  Algebra.Module.Structures.Biased
+  ```
+  Supported are all of {left ,right , bi,}{semi,}modules.
+
 Other minor additions
 ---------------------
 
@@ -372,11 +422,20 @@ Other minor additions
   IsRingHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
   IsRingMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
   IsRingIsomorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
+
+* Added new proof to `Data.Fin.Properties`:
+  ```agda
+  inject+-raise-splitAt : [ inject+ n , raise {n} m ] (splitAt m i) ≡ i
+  ```
+
+* Added new proof to `Data.Sum.Properties`:
+  ```agda
+  [,]-∘-distr : f ∘ [ g , h ] ≗ [ f ∘ g , f ∘ h ]
   ```
 
 * Added new proofs to `Data.Sum.Properties`:
   ```agda
-  [,]-map-commute : [ f′ , g′ ]′ ∘ (map f g) ≗ [ f′ ∘ f , g′ ∘ g ]′
+  [,]-map-commute : [ f′ , g′ ] ∘ (map f g) ≗ [ f′ ∘ f , g′ ∘ g ]
   map-commute     : ((map f′ g′) ∘ (map f g)) ≗ map (f′ ∘ f) (g′ ∘ g)
   ```
 
@@ -394,9 +453,7 @@ Other minor additions
 * The record `IsCommutativeSemiring` now exports `*-isCommutativeSemigroup`.
 
 * Made `RawFunctor`,  `RawApplicative` and `IFun` more level polymorphic
-  (in `Category.Functor`, `Category.Applicative` and
-  `Category.Applicative.Indexed`
-  respectively).
+  (in `Category.Functor`, `Category.Applicative` and `Category.Applicative.Indexed` respectively).
 
 * Added new functions to `Codata.Colist`:
   ```agda
@@ -540,9 +597,14 @@ Other minor additions
 
 * Added new functions to `Data.String.Base`:
   ```agda
-  padLeft    : Char → ℕ → String → String
-  padRight   : Char → ℕ → String → String
-  padBoth    : Char → Char → ℕ → String → String
+  parens      : String → String
+  braces      : String → String
+  intersperse : String → List String → String
+  unwords     : List String → String
+  _<+>_       : String → String → String
+  padLeft     : Char → ℕ → String → String
+  padRight    : Char → ℕ → String → String
+  padBoth     : Char → Char → ℕ → String → String
 
   data Alignment : Set where Left Center Right : Alignment
   fromAlignment  : Alignment → ℕ → String → String
@@ -630,6 +692,27 @@ Other minor additions
   rectangle : List (∃ (Vec≤ A)) → ∃ (List ∘ Vec≤ A)
   ```
 
+* Added new definitions to `Data.Word.Base`:
+  ```agda
+  _≈_ : Rel Word64 zero
+  _<_ : Rel Word64 zero
+  ```
+
+* Added new definitions to `Function.Bundles`:
+  ```agda
+  record BiInverse
+  record BiEquivalence
+  
+  _↩↪_ : Set a → Set b → Set _
+  mk↩↪ : Inverseˡ f g₁ → Inverseʳ f g₂ → A ↩↪ B
+  ```
+
+* Added new definitions to `Function.Structures`:
+  ```agda
+  record IsBiEquivalence (f : A → B) (g₁ : B → A) (g₂ : B → A)
+  record IsBiInverse     (f : A → B) (g₁ : B → A) (g₂ : B → A)
+  ```
+
 * Added new proofs to `Induction.WellFounded`:
   ```agda
   some-wfRec-irrelevant : Some.wfRec P f x q ≡ Some.wfRec P f x q'
@@ -640,6 +723,11 @@ Other minor additions
 * Added a new proof to `Relation.Nullary.Decidable`:
   ```agda
   isYes≗does : (P? : Dec P) → isYes P? ≡ does P?
+  ```
+
+* Added new definitions in `Relation.Binary.Core`:
+  ```agda
+  DecidableEquality A = Decidable {A = A} _≡_
   ```
 
 * Added new proofs to `Relation.Binary.Setoid.Properties`:

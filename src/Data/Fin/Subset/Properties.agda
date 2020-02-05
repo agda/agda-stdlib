@@ -14,16 +14,16 @@ open import Algebra.Bundles
 import Algebra.Properties.Lattice as L
 import Algebra.Properties.DistributiveLattice as DL
 import Algebra.Properties.BooleanAlgebra as BA
-open import Data.Bool using (not)
+open import Data.Bool.Base using (not)
 open import Data.Bool.Properties
-open import Data.Fin using (Fin; suc; zero)
+open import Data.Fin.Base using (Fin; suc; zero)
 open import Data.Fin.Subset
 open import Data.Fin.Properties using (any?; decFinSubset)
 open import Data.Nat.Base
 import Data.Nat.Properties as ℕₚ
 open import Data.Product as Product using (∃; ∄; _×_; _,_; proj₁)
-open import Data.Sum as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
-open import Data.Vec
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
+open import Data.Vec.Base
 open import Data.Vec.Properties
 open import Function.Base using (_∘_; const; id; case_of_)
 open import Function.Equivalence using (_⇔_; equivalence)

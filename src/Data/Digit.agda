@@ -8,15 +8,15 @@
 
 module Data.Digit where
 
-open import Data.Nat
+open import Data.Nat.Base
 open import Data.Nat.Properties
 open import Data.Nat.Solver
-open import Data.Fin as Fin using (Fin; zero; suc; toℕ)
+open import Data.Fin.Base as Fin using (Fin; zero; suc; toℕ)
 open import Data.Bool.Base using (Bool; true; false)
 open import Data.Char using (Char)
 open import Data.List.Base
 open import Data.Product
-open import Data.Vec as Vec using (Vec; _∷_; [])
+open import Data.Vec.Base as Vec using (Vec; _∷_; [])
 open import Data.Nat.DivMod
 open import Data.Nat.Induction
 open import Relation.Nullary using (does)

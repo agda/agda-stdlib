@@ -12,7 +12,7 @@
 
 module Data.Nat.Divisibility.Core where
 
-open import Data.Nat using (ℕ; _*_)
+open import Data.Nat.Base using (ℕ; _*_)
 open import Data.Nat.Properties
 open import Level using (0ℓ)
 open import Relation.Nullary using (¬_)

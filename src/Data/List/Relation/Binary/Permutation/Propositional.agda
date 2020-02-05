@@ -9,7 +9,7 @@
 module Data.List.Relation.Binary.Permutation.Propositional
   {a} {A : Set a} where
 
-open import Data.List using (List; []; _∷_)
+open import Data.List.Base using (List; []; _∷_)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 import Relation.Binary.Reasoning.Setoid as EqReasoning

@@ -13,7 +13,7 @@ module Relation.Binary.Properties.TotalOrder
 
 open TotalOrder T
 
-open import Data.Sum using (inj₁; inj₂)
+open import Data.Sum.Base using (inj₁; inj₂)
 import Relation.Binary.Construct.Converse as Converse
 import Relation.Binary.Construct.NonStrictToStrict _≈_ _≤_ as ToStrict
 import Relation.Binary.Properties.Poset poset as PosetProperties

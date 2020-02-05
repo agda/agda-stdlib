@@ -11,8 +11,8 @@ module Data.List.Membership.Propositional.Properties where
 open import Algebra using (Op₂; Selective)
 open import Category.Monad using (RawMonad)
 open import Data.Bool.Base using (Bool; false; true; T)
-open import Data.Fin using (Fin)
-open import Data.List as List
+open import Data.Fin.Base using (Fin)
+open import Data.List.Base as List
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Relation.Unary.Any.Properties
 open import Data.List.Membership.Propositional
@@ -20,12 +20,12 @@ import Data.List.Membership.Setoid.Properties as Membershipₛ
 open import Data.List.Relation.Binary.Equality.Propositional
   using (_≋_; ≡⇒≋; ≋⇒≡)
 open import Data.List.Categorical using (monad)
-open import Data.Nat using (ℕ; zero; suc; pred; s≤s; _≤_; _<_; _≤?_)
+open import Data.Nat.Base using (ℕ; zero; suc; pred; s≤s; _≤_; _<_)
 open import Data.Nat.Properties
 open import Data.Product hiding (map)
 open import Data.Product.Function.NonDependent.Propositional using (_×-cong_)
 import Data.Product.Function.Dependent.Propositional as Σ
-open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Function.Base
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence using (module Equivalence)

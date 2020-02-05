@@ -8,7 +8,7 @@
 
 module Data.List.Relation.Unary.Linked {a} {A : Set a} where
 
-open import Data.List using (List; []; _∷_)
+open import Data.List.Base using (List; []; _∷_)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.Product as Prod using (_,_; _×_; uncurry; <_,_>)
 open import Function using (id; _∘_)

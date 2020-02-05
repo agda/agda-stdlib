@@ -10,7 +10,7 @@ module Data.Nat.Binary.Induction where
 
 open import Data.Nat.Binary.Base
 open import Data.Nat.Binary.Properties
-open import Data.Nat as ℕ using (ℕ)
+open import Data.Nat.Base as ℕ using (ℕ)
 import Data.Nat.Induction as ℕ
 open import Induction.WellFounded
 

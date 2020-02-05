@@ -12,7 +12,7 @@ open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Bool.Base using (Bool; T; true; false)
 open import Data.Bool.Properties using (T-∧)
 open import Data.Empty
-open import Data.Fin using (Fin) renaming (zero to fzero; suc to fsuc)
+open import Data.Fin.Base using (Fin) renaming (zero to fzero; suc to fsuc)
 open import Data.List.Base as List using
   ( List; []; _∷_; [_]; _∷ʳ_; fromMaybe; null; _++_; concat; map; mapMaybe
   ; inits; tails; drop; take; applyUpTo; applyDownFrom; replicate; tabulate
@@ -29,9 +29,9 @@ open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 import Data.List.Relation.Binary.Equality.Setoid as ListEq using (_≋_; []; _∷_)
 open import Data.List.Relation.Binary.Pointwise using (Pointwise; []; _∷_)
 open import Data.List.Relation.Binary.Subset.Propositional using (_⊆_)
-open import Data.Maybe as Maybe using (Maybe; just; nothing)
+open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.All as MAll using (just; nothing)
-open import Data.Nat using (zero; suc; z≤n; s≤s; _<_)
+open import Data.Nat.Base using (zero; suc; z≤n; s≤s; _<_)
 open import Data.Nat.Properties using (≤-refl; ≤-step)
 open import Data.Product as Prod using (_×_; _,_; uncurry; uncurry′)
 open import Function.Base

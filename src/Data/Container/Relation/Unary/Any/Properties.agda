@@ -13,7 +13,7 @@ open import Algebra
 open import Data.Product as Prod using (∃; _×_; ∃₂; _,_; proj₂)
 open import Data.Product.Function.NonDependent.Propositional using (_×-cong_)
 import Data.Product.Function.Dependent.Propositional as Σ
-open import Data.Sum using (_⊎_; inj₁; inj₂; [_,_])
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Function.Base
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence using (equivalence)
