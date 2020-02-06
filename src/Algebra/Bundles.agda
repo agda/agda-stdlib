@@ -267,7 +267,6 @@ record Group c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open Monoid monoid public using (rawMagma; magma; semigroup; rawMonoid)
 
-
 record AbelianGroup c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 _⁻¹
   infixl 7 _∙_
@@ -603,6 +602,20 @@ record RawRing c ℓ : Set (suc (c ⊔ ℓ)) where
     0#      : Carrier
     1#      : Carrier
 
+  +-rawGroup : RawGroup c ℓ
+  +-rawGroup = record
+    { _≈_ = _≈_
+    ; _∙_ = _+_
+    ; ε   = 0#
+    ; _⁻¹ = -_
+    }
+
+  *-rawMonoid : RawMonoid c ℓ
+  *-rawMonoid = record
+    { _≈_     = _≈_
+    ; _∙_     = _*_
+    ; ε       = 1#
+    }
 
 record Ring c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 -_
