@@ -15,7 +15,7 @@ open import Data.Nat   hiding (pred)
 open import Data.List
 open import Data.Sum
 open import Data.Product
-open import Function
+open import Function -- case_of_ defined here
 open import Relation.Nullary
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
