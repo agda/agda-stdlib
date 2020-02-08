@@ -90,6 +90,7 @@ syntax ∄-syntax (λ x → B) = ∄[ x ] B
 
 infix  4 -,_
 infixr 2 _-×-_ _-,-_
+infixl 2 _<*>_
 
 -- Sometimes the first component can be inferred.
 
@@ -112,6 +113,18 @@ map₁ f = map f id
 map₂ : ∀ {A : Set a} {B : A → Set b} {C : A → Set c} →
        (∀ {x} → B x → C x) → Σ A B → Σ A C
 map₂ f = map id f
+
+-- A version of map where the output can depend on the input
+dmap : ∀ {B : A → Set b} {P : A → Set p} {Q : ∀ {a} → P a → B a → Set q} →
+       (f : (a : A) → B a) → (∀ {a} (p : P a) → Q p (f a)) →
+       (ap : Σ A P) → Σ (B (proj₁ ap)) (Q (proj₂ ap))
+dmap f g (x , y) = f x , g y
+
+-- dmap for non-dependent products
+_<*>_ : ∀ {x y} {X : A → Set x} {Y : B → Set y} →
+        ((a : A) → X a) × ((b : B) → Y b) →
+        (ab : A × B) → X (proj₁ ab) × Y (proj₂ ab)
+(f , g) <*> xy = dmap f g xy
 
 zip : ∀ {P : A → Set p} {Q : B → Set q} {R : C → Set r} →
       (_∙_ : A → B → C) →
