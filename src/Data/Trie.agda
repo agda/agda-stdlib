@@ -19,7 +19,7 @@ open import Data.List.Base using (List; []; _∷_; _++_)
 import Data.List.NonEmpty as List⁺
 open import Data.Maybe.Base as Maybe using (Maybe; just; nothing; maybe′)
 open import Data.Product as Prod using (∃)
-open import Data.These as These using (These)
+open import Data.These.Base as These using (These)
 open import Function
 open import Relation.Unary using (IUniversal; _⇒_)
 

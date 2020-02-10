@@ -14,7 +14,7 @@ open import Category.Monad.Predicate
 open import Data.Container.Indexed
 open import Data.Container.Indexed.Combinator hiding (id; _∘_)
 open import Data.Empty
-open import Data.Sum using (inj₁; inj₂)
+open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.Product
 open import Data.W.Indexed
 open import Relation.Unary

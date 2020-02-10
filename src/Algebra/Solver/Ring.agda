@@ -46,8 +46,8 @@ import Relation.Binary.PropositionalEquality as PropEq
 import Relation.Binary.Reflection as Reflection
 
 open import Data.Nat.Base using (ℕ; suc; zero)
-open import Data.Fin using (Fin; zero; suc)
-open import Data.Vec using (Vec; []; _∷_; lookup)
+open import Data.Fin.Base using (Fin; zero; suc)
+open import Data.Vec.Base using (Vec; []; _∷_; lookup)
 open import Data.Maybe.Base using (just; nothing)
 open import Function
 open import Level using (_⊔_)

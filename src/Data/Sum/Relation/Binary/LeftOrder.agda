@@ -8,7 +8,7 @@
 
 module Data.Sum.Relation.Binary.LeftOrder where
 
-open import Data.Sum as Sum
+open import Data.Sum.Base as Sum
 open import Data.Sum.Relation.Binary.Pointwise as PW
   using (Pointwise; inj₁; inj₂)
 open import Data.Product

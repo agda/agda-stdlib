@@ -9,7 +9,7 @@
 module Data.Nat.Divisibility where
 
 open import Algebra
-open import Data.Nat
+open import Data.Nat.Base
 open import Data.Nat.DivMod
 open import Data.Nat.Properties
 open import Data.Product
@@ -305,7 +305,7 @@ Please use n∣m*n instead."
 
 -- Version 0.17
 
-open import Data.Fin using (Fin; zero; suc; toℕ)
+open import Data.Fin.Base using (Fin; zero; suc; toℕ)
 import Data.Fin.Properties as FP
 open import Data.Nat.Solver
 open +-*-Solver

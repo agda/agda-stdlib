@@ -13,11 +13,11 @@ open import Size
 open import Data.Unit
 open import Data.Nat.Base
 open import Data.Product using (_×_ ; _,_)
-open import Data.These using (These; this; that; these)
-open import Data.Maybe using (Maybe; nothing; just)
+open import Data.These.Base using (These; this; that; these)
+open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Data.List.Base using (List; []; _∷_)
 open import Data.List.NonEmpty as List⁺ using (List⁺; _∷_)
-open import Data.Vec as Vec using (Vec; []; _∷_)
+open import Data.Vec.Base as Vec using (Vec; []; _∷_)
 open import Data.Vec.Bounded as Vec≤ using (Vec≤)
 open import Function
 

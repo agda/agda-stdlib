@@ -10,7 +10,7 @@ module Data.Vec.N-ary where
 
 open import Data.Nat.Base hiding (_⊔_)
 open import Data.Product as Prod
-open import Data.Vec
+open import Data.Vec.Base
 open import Function.Base
 open import Function.Equivalence using (_⇔_; equivalence)
 open import Level using (Level; _⊔_)

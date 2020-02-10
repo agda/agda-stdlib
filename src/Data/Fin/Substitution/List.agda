@@ -10,7 +10,7 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Data.Fin.Substitution.Lemmas
-open import Data.Nat using (ℕ)
+open import Data.Nat.Base using (ℕ)
 
 module Data.Fin.Substitution.List {ℓ} {T : ℕ → Set ℓ} (lemmas₄ : Lemmas₄ T) where
 

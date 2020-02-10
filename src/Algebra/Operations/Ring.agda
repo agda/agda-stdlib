@@ -35,7 +35,7 @@ module Algebra.Operations.Ring
   {ℓ₁ ℓ₂} (ring : RawRing ℓ₁ ℓ₂)
   where
 
-open import Data.Nat as ℕ using (ℕ; suc; zero)
+open import Data.Nat.Base as ℕ using (ℕ; suc; zero)
 
 open RawRing ring
 

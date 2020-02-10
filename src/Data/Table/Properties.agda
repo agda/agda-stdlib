@@ -19,17 +19,17 @@ Use Data.Vec.Functional.Properties instead."
 open import Data.Table
 open import Data.Table.Relation.Binary.Equality
 
-open import Data.Bool using (true; false; if_then_else_)
-open import Data.Nat using (zero; suc)
+open import Data.Bool.Base using (true; false; if_then_else_)
+open import Data.Nat.Base using (zero; suc)
 open import Data.Empty using (⊥-elim)
 open import Data.Fin using (Fin; suc; zero; _≟_; punchIn)
 import Data.Fin.Properties as FP
 open import Data.Fin.Permutation as Perm using (Permutation; _⟨$⟩ʳ_; _⟨$⟩ˡ_)
-open import Data.List as L using (List; _∷_; [])
+open import Data.List.Base as L using (List; _∷_; [])
 open import Data.List.Relation.Unary.Any using (here; there; index)
 open import Data.List.Membership.Propositional using (_∈_)
 open import Data.Product as Product using (Σ; ∃; _,_; proj₁; proj₂)
-open import Data.Vec as V using (Vec; _∷_; [])
+open import Data.Vec.Base as V using (Vec; _∷_; [])
 import Data.Vec.Properties as VP
 open import Level using (Level)
 open import Function.Base using (_∘_; flip)

@@ -8,7 +8,7 @@
 
 module Relation.Binary.Construct.Closure.Equivalence.Properties where
 
-open import Data.Sum using (inj₁)
+open import Data.Sum.Base using (inj₁)
 open import Function using (_∘′_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Construct.Closure.Equivalence

@@ -13,7 +13,7 @@ module Data.List.Extrema
 
 import Algebra.Construct.NaturalChoice.Min as Min
 import Algebra.Construct.NaturalChoice.Max as Max
-open import Data.List using (List; foldr)
+open import Data.List.Base using (List; foldr)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Relation.Unary.All using (All; []; _∷_; lookup; map; tabulate)
 open import Data.List.Membership.Propositional using (_∈_; lose)
@@ -21,7 +21,7 @@ open import Data.List.Membership.Propositional.Properties
   using (foldr-selective)
 open import Data.List.Relation.Binary.Subset.Propositional using (_⊆_)
 open import Data.List.Properties
-open import Data.Sum using (_⊎_; inj₁; inj₂)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function using (id; flip; _on_)
 open import Level using (Level)
 open import Relation.Unary using (Pred)

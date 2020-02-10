@@ -8,9 +8,9 @@
 
 module Data.Vec.Functional.Relation.Unary.Any where
 
-open import Data.Fin
+open import Data.Fin.Base
 open import Data.Fin.Properties
-open import Data.Nat
+open import Data.Nat.Base
 open import Data.Product as Σ using (Σ; ∃; _×_; _,_; proj₁; proj₂)
 open import Data.Vec.Functional as VF hiding (map)
 open import Function

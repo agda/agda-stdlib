@@ -15,7 +15,7 @@ module Relation.Binary.Construct.Add.Infimum.NonStrict
   {a ℓ} {A : Set a} (_≤_ : Rel A ℓ) where
 
 open import Level using (_⊔_)
-open import Data.Sum as Sum
+open import Data.Sum.Base as Sum
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; refl)
 import Relation.Binary.Construct.Add.Infimum.Equality as Equality

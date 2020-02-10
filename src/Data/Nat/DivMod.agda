@@ -10,9 +10,9 @@ module Data.Nat.DivMod where
 
 open import Agda.Builtin.Nat using (div-helper; mod-helper)
 
-open import Data.Fin using (Fin; toℕ; fromℕ<)
+open import Data.Fin.Base using (Fin; toℕ; fromℕ<)
 open import Data.Fin.Properties using (toℕ-fromℕ<)
-open import Data.Nat as Nat
+open import Data.Nat.Base as Nat
 open import Data.Nat.DivMod.Core
 open import Data.Nat.Divisibility.Core
 open import Data.Nat.Properties

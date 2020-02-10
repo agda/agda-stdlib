@@ -11,7 +11,7 @@ open import Relation.Binary
 module Data.Vec.Relation.Binary.Equality.Propositional {a} {A : Set a} where
 
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
-open import Data.Vec
+open import Data.Vec.Base
 open import Data.Vec.Relation.Binary.Pointwise.Inductive
   using (Pointwise-≡⇒≡; ≡⇒Pointwise-≡)
 import Data.Vec.Relation.Binary.Equality.Setoid as SEq

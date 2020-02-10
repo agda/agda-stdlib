@@ -15,7 +15,7 @@ open import Data.Empty
 open import Data.Nat.Base
 open import Data.Nat.Properties
 open import Data.Product using (∃; _×_; _,_)
-open import Data.Sum as Sum using (_⊎_; inj₁; inj₂; fromInj₂)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; fromInj₂)
 
 open import Function using (id; _∘′_; _$_)
 open import Relation.Nullary
