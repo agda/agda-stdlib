@@ -11,10 +11,14 @@ open import Relation.Binary
 module Relation.Unary.Closure.Base {a b} {A : Set a} (R : Rel A b) where
 
 open import Level
+open import Data.Product using (Σ-syntax; _×_; _,_; -,_)
+open import Function.Base using (flip)
 open import Relation.Unary using (Pred)
 
 ------------------------------------------------------------------------
 -- Definitions
+
+-- Box
 
 -- We start with the definition of □ ("box") which is named after the box
 -- modality in modal logic. `□ T x` states that all the elements one step
@@ -32,7 +36,26 @@ open import Relation.Unary using (Pred)
 --   `Data.List.Relation.Sublist.Inductive`, `∀ {Γ} → Tm Γ → □ T Γ`
 --   corresponds to the fact that we have a notion of weakening for `Tm`.
 
--- Closed: whenever we have a value in one context, we can get one in any
+-- Diamond
+
+-- We then have the definition of ◇ ("diamond") which is named after the
+-- diamond modality in modal logic. `◇ T x` states that there exists an
+-- element one step away from x with respect to thre relation R that
+-- satisfies T
+
+◇ : ∀ {t} → Pred A t → Pred A (a ⊔ b ⊔ t)
+◇ T x = Σ[ support ∈ A ] (R support x × T support)
+
+-- Use cases of ◇ include:
+-- * The characterization of strengthening: picking R to be
+--   `Data.List.Relation.Sublist.Inductive`, `∀ {Γ} → Tm Γ → ◇ Tm Γ`
+--   is the type of a function strengthening a term to its support:
+--   all the unused variables are discarded early on by the `related`
+--   proof.
+
+-- Closed
+
+-- Whenever we have a value in one context, we can get one in any
 -- related context.
 
 record Closed {t} (T : Pred A t) : Set (a ⊔ b ⊔ t) where
@@ -40,9 +63,20 @@ record Closed {t} (T : Pred A t) : Set (a ⊔ b ⊔ t) where
 
 
 ------------------------------------------------------------------------
+-- Basic functions relating □ and ◇
+
+module _ {t p} {T : Pred A t} {P : Pred A p} where
+
+  curry : (∀ {x} → ◇ T x → P x) → (∀ {x} → T x → □ P x)
+  curry f tx x∼y = f (-, x∼y , tx)
+
+  uncurry : (∀ {x} → T x → □ P x) → (∀ {x} → ◇ T x → P x)
+  uncurry f (_ , y∼x , ty) = f ty y∼x
+
+------------------------------------------------------------------------
 -- Properties
 
-module _ {t} {T : Pred A t} where
+module □ {t} {T : Pred A t} where
 
   reindex : Transitive R → ∀ {x y} → R x y → □ T x → □ T y
   reindex trans x∼y □Tx y∼z = □Tx (trans x∼y y∼z)
@@ -57,7 +91,30 @@ module _ {t} {T : Pred A t} where
   duplicate : Transitive R → ∀ {x} → □ T x → □ (□ T) x
   duplicate trans □Tx x∼y y∼z = □Tx (trans x∼y y∼z)
 
--- Provided that R is transitive, □ is the Closure operator
--- i.e. for any `T`, `□ T` is closed.
-□-closed : Transitive R → ∀ {t} {T : Pred A t} → Closed (□ T)
-□-closed trans = record { next = duplicate trans }
+  -- Provided that R is transitive, □ is a closure operator
+  -- i.e. for any `T`, `□ T` is closed.
+  closed : Transitive R → Closed (□ T)
+  closed trans = record { next = duplicate trans }
+
+module ◇ {t} {T : Pred A t} where
+
+  reindex : Transitive R → ∀ {x y} → R x y → ◇ T x → ◇ T y
+  reindex trans x∼y (z , z∼x , tz) = z , trans z∼x x∼y , tz
+
+  -- Provided that R is reflexive and Transitive, ◇ is a monad
+  map : ∀ {u} {U : Pred A u} {x} → (∀ {x} → T x → U x) → ◇ T x → ◇ U x
+  map f (y , y∼x , ty) = y , y∼x , f ty
+
+  pure : Reflexive R → ∀ {x} → T x → ◇ T x
+  pure refl tx = -, refl , tx
+
+  join : Transitive R → ∀ {x} → ◇ (◇ T) x → ◇ T x
+  join trans (_ , y∼x , _ , z∼y , tz) = _ , trans z∼y y∼x , tz
+
+  -- Provided that R is transitive, ◇ is a closure operator
+  -- i.e. for any `T`, `◇ T` is closed.
+  closed : Transitive R → Closed (◇ T)
+  closed trans = record { next = λ ◇Tx x∼y → reindex trans x∼y ◇Tx }
+
+  run : Closed T → ∀ {x} → ◇ T x → T x
+  run closed (_ , y∼x , ty) = Closed.next closed ty y∼x
