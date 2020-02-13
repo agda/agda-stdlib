@@ -40,7 +40,7 @@ open import Relation.Unary using (Pred)
 
 -- We then have the definition of ◇ ("diamond") which is named after the
 -- diamond modality in modal logic. `◇ T x` states that there exists an
--- element one step away from x with respect to thre relation R that
+-- element one step away from x with respect to the relation R that
 -- satisfies T
 
 ◇ : ∀ {t} → Pred A t → Pred A (a ⊔ b ⊔ t)
