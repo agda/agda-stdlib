@@ -90,9 +90,8 @@ script:
   # building the docs
   - agda $RTS_OPTIONS -i . -i src/ --html safe.agda
   - agda $RTS_OPTIONS -i . -i src/ --html index.agda
-  # moving everything to the experimental directory
-  - mkdir -p experimental
-  - mv html/* experimental/
+  # moving everything to the main directory
+  - mv html/* .
 
 after_success:
   # uploading to gh-pages
