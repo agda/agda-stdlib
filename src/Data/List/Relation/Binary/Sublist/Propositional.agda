@@ -10,7 +10,7 @@
 module Data.List.Relation.Binary.Sublist.Propositional
   {a} {A : Set a} where
 
-open import Data.List using (List)
+open import Data.List.Base using (List)
 open import Data.List.Relation.Binary.Equality.Propositional using (≋⇒≡)
 import Data.List.Relation.Binary.Sublist.Setoid as SetoidSublist
 open import Data.List.Relation.Unary.Any using (Any)

@@ -187,6 +187,9 @@ record CommutativeMonoid c ℓ : Set (suc (c ⊔ ℓ)) where
   monoid : Monoid _ _
   monoid = record { isMonoid = isMonoid }
 
+  commutativeSemigroup : CommutativeSemigroup _ _
+  commutativeSemigroup = record { isCommutativeSemigroup = isCommutativeSemigroup }
+
   open Monoid monoid public using (rawMagma; magma; semigroup; rawMonoid)
 
 
@@ -266,7 +269,6 @@ record Group c ℓ : Set (suc (c ⊔ ℓ)) where
   monoid = record { isMonoid = isMonoid }
 
   open Monoid monoid public using (rawMagma; magma; semigroup; rawMonoid)
-
 
 record AbelianGroup c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 _⁻¹
@@ -603,6 +605,20 @@ record RawRing c ℓ : Set (suc (c ⊔ ℓ)) where
     0#      : Carrier
     1#      : Carrier
 
+  +-rawGroup : RawGroup c ℓ
+  +-rawGroup = record
+    { _≈_ = _≈_
+    ; _∙_ = _+_
+    ; ε   = 0#
+    ; _⁻¹ = -_
+    }
+
+  *-rawMonoid : RawMonoid c ℓ
+  *-rawMonoid = record
+    { _≈_     = _≈_
+    ; _∙_     = _*_
+    ; ε       = 1#
+    }
 
 record Ring c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 -_

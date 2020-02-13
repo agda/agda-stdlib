@@ -8,7 +8,7 @@
 
 module Data.List.Relation.Ternary.Interleaving.Properties where
 
-open import Data.Nat
+open import Data.Nat.Base
 open import Data.Nat.Properties using (+-suc)
 open import Data.List.Base hiding (_∷ʳ_)
 open import Data.List.Properties using (reverse-involutive)

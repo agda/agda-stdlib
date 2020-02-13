@@ -8,9 +8,9 @@
 
 module Data.Vec.Relation.Binary.Pointwise.Extensional where
 
-open import Data.Fin using (zero; suc)
-open import Data.Nat using (ℕ; zero; suc)
-open import Data.Vec as Vec hiding ([_]; head; tail; map)
+open import Data.Fin.Base using (zero; suc)
+open import Data.Nat.Base using (zero; suc)
+open import Data.Vec.Base as Vec hiding ([_]; head; tail; map)
 open import Data.Vec.Relation.Binary.Pointwise.Inductive as Inductive
   using ([]; _∷_)
   renaming (Pointwise to IPointwise)

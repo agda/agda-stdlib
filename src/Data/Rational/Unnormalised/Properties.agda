@@ -11,15 +11,15 @@ module Data.Rational.Unnormalised.Properties where
 open import Algebra
 import Algebra.Consequences.Setoid as FC
 open import Algebra.Consequences.Propositional
-open import Data.Nat using (suc)
+open import Data.Nat.Base using (suc)
 import Data.Nat.Properties as ℕ
-open import Data.Integer as ℤ using (ℤ; +0; +[1+_]; 0ℤ; 1ℤ)
+open import Data.Integer.Base as ℤ using (ℤ; +0; +[1+_]; 0ℤ; 1ℤ)
 open import Data.Integer.Solver renaming (module +-*-Solver to ℤ-solver)
 import Data.Integer.Properties as ℤ
 import Data.Integer.Properties
 open import Data.Rational.Unnormalised
 open import Data.Product using (_,_)
-open import Data.Sum using ([_,_]′; inj₁; inj₂)
+open import Data.Sum.Base using ([_,_]′; inj₁; inj₂)
 open import Function.Base using (_on_; _$_; _∘_)
 open import Level using (0ℓ)
 open import Relation.Nullary using (yes; no)
@@ -189,6 +189,26 @@ p ≤? q = Dec.map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* �
   { _≈_ = _≃_
   ; _∙_ = _+_
   ; ε   = 0ℚᵘ
+  }
+
++-0-rawGroup : RawGroup 0ℓ 0ℓ
++-0-rawGroup = record
+  { Carrier = ℚᵘ
+  ; _≈_ = _≃_
+  ; _∙_ = _+_
+  ; ε = 0ℚᵘ
+  ; _⁻¹ = -_
+  }
+
++-*-rawRing : RawRing 0ℓ 0ℓ
++-*-rawRing = record
+  { Carrier = ℚᵘ
+  ; _≈_ = _≃_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; -_ = -_
+  ; 0# = 0ℚᵘ
+  ; 1# = 1ℚᵘ
   }
 
 ------------------------------------------------------------------------
@@ -529,6 +549,12 @@ p ≤? q = Dec.map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* �
   ; zero             = *-zero
   }
 
++-*-isCommutativeRing : IsCommutativeRing _≃_ _+_ _*_ -_ 0ℚᵘ 1ℚᵘ
++-*-isCommutativeRing = record
+  { isRing = +-*-isRing
+  ; *-comm = *-comm
+  }
+
 ------------------------------------------------------------------------
 -- Algebraic bundles
 
@@ -556,3 +582,9 @@ p ≤? q = Dec.map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* �
 +-*-ring = record
   { isRing = +-*-isRing
   }
+
++-*-commutativeRing : CommutativeRing 0ℓ 0ℓ
++-*-commutativeRing = record
+  { isCommutativeRing = +-*-isCommutativeRing
+  }
+

@@ -9,7 +9,7 @@
 module Data.List.NonEmpty.Properties where
 
 open import Category.Monad
-open import Data.List as List using (List; []; _∷_; _++_)
+open import Data.List.Base as List using (List; []; _∷_; _++_)
 open import Data.List.Categorical using () renaming (monad to listMonad)
 open import Data.List.NonEmpty.Categorical using () renaming (monad to list⁺Monad)
 open import Data.List.NonEmpty as List⁺

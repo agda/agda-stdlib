@@ -11,7 +11,7 @@ open import Relation.Binary
 module Data.List.Relation.Binary.Permutation.Setoid
   {a ℓ} (S : Setoid a ℓ) where
 
-open import Data.List using (List; _∷_)
+open import Data.List.Base using (List; _∷_)
 import Data.List.Relation.Binary.Permutation.Homogeneous as Homogeneous
 import Data.List.Relation.Binary.Pointwise as Pointwise
 open import Data.List.Relation.Binary.Equality.Setoid S

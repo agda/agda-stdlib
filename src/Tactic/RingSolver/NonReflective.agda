@@ -19,10 +19,10 @@ module Tactic.RingSolver.NonReflective
 
 open import Algebra.Morphism
 open import Function
-open import Data.Bool using (Bool; true; false; T; if_then_else_)
-open import Data.Maybe
+open import Data.Bool.Base using (Bool; true; false; T; if_then_else_)
+open import Data.Maybe.Base
 open import Data.Empty using (⊥-elim)
-open import Data.Nat using (ℕ)
+open import Data.Nat.Base using (ℕ)
 open import Data.Product
 open import Data.Vec hiding (_⊛_)
 open import Data.Vec.N-ary

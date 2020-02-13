@@ -13,7 +13,7 @@ module Algebra.Construct.LiftedChoice where
 open import Algebra.Consequences.Base
 open import Relation.Binary
 open import Relation.Nullary using (¬_; yes; no)
-open import Data.Sum as Sum using (_⊎_; inj₁; inj₂; [_,_])
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_])
 open import Data.Product using (_×_; _,_)
 open import Level using (Level; _⊔_)
 open import Function.Base using (id; _on_)

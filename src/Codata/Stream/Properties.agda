@@ -21,7 +21,7 @@ open import Data.List.Base as List using ([]; _∷_)
 open import Data.List.NonEmpty as List⁺ using (List⁺; _∷_)
 import Data.List.Relation.Binary.Equality.Propositional as Eq
 open import Data.Product as Prod using (_,_)
-open import Data.Vec as Vec using (_∷_)
+open import Data.Vec.Base as Vec using (_∷_)
 
 open import Function
 open import Relation.Binary.PropositionalEquality as P using (_≡_; _≢_)

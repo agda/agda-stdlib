@@ -14,7 +14,7 @@ module Data.Nat.Binary.Base where
 
 open import Algebra.Core using (Op₂)
 open import Data.Nat.Base as ℕ using (ℕ)
-open import Data.Sum using (_⊎_)
+open import Data.Sum.Base using (_⊎_)
 open import Function using (_on_)
 open import Level using (0ℓ)
 open import Relation.Binary using (Rel)

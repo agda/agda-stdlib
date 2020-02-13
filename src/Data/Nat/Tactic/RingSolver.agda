@@ -12,7 +12,7 @@ module Data.Nat.Tactic.RingSolver where
 
 open import Agda.Builtin.Reflection
 
-open import Data.Maybe using (just; nothing)
+open import Data.Maybe.Base using (just; nothing)
 open import Data.Nat.Base using (zero; suc)
 open import Data.Nat.Properties
 open import Level using (0ℓ)

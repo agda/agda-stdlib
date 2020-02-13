@@ -16,7 +16,7 @@ open import Relation.Binary.PropositionalEquality
 module Data.List.Relation.Binary.Equality.DecPropositional
   {a} {A : Set a} (_≟_ : Decidable {A = A} _≡_) where
 
-open import Data.List using (List)
+open import Data.List.Base using (List)
 open import Data.List.Properties using (≡-dec)
 import Data.List.Relation.Binary.Equality.Propositional as PropositionalEq
 import Data.List.Relation.Binary.Equality.DecSetoid as DecSetoidEq

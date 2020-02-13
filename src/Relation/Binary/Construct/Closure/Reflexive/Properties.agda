@@ -9,7 +9,7 @@
 module Relation.Binary.Construct.Closure.Reflexive.Properties where
 
 open import Data.Product as Prod
-open import Data.Sum as Sum
+open import Data.Sum.Base as Sum
 open import Function.Equivalence using (_⇔_; equivalence)
 open import Function using (id)
 open import Level

@@ -14,9 +14,9 @@ module Tactic.RingSolver.Core.Polynomial.Homomorphism.Lemmas
   where
 
 open import Data.Bool                                  using (Bool;true;false)
-open import Data.Nat as ℕ                              using (ℕ; suc; zero; compare; _≤′_; ≤′-step; ≤′-refl)
+open import Data.Nat.Base as ℕ                              using (ℕ; suc; zero; compare; _≤′_; ≤′-step; ≤′-refl)
 open import Data.Nat.Properties as ℕₚ                  using (≤′-trans)
-open import Data.Vec as Vec                            using (Vec; _∷_)
+open import Data.Vec.Base as Vec                            using (Vec; _∷_)
 open import Data.Fin                                   using (Fin; zero; suc)
 open import Data.List                                  using (_∷_; [])
 open import Data.Unit using (tt)

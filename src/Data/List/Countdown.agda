@@ -13,7 +13,7 @@ open import Relation.Binary
 module Data.List.Countdown (D : DecSetoid 0ℓ 0ℓ) where
 
 open import Data.Empty
-open import Data.Fin using (Fin; zero; suc; punchOut)
+open import Data.Fin.Base using (Fin; zero; suc; punchOut)
 open import Data.Fin.Properties
   using (suc-injective; punchOut-injective)
 open import Function.Base
@@ -25,7 +25,7 @@ open import Data.List hiding (lookup)
 open import Data.List.Relation.Unary.Any as Any using (here; there)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Product
-open import Data.Sum
+open import Data.Sum.Base
 open import Data.Sum.Properties
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary

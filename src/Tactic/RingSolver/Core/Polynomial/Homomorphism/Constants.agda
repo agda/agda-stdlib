@@ -15,7 +15,7 @@ module Tactic.RingSolver.Core.Polynomial.Homomorphism.Constants
 
 open Homomorphism homo
 
-open import Data.Vec using (Vec)
+open import Data.Vec.Base using (Vec)
 
 open import Tactic.RingSolver.Core.Polynomial.Base (Homomorphism.from homo)
 open import Tactic.RingSolver.Core.Polynomial.Semantics homo

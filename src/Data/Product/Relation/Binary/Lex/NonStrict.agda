@@ -12,7 +12,7 @@
 module Data.Product.Relation.Binary.Lex.NonStrict where
 
 open import Data.Product using (_×_; _,_; proj₁; proj₂)
-open import Data.Sum using (inj₁; inj₂)
+open import Data.Sum.Base using (inj₁; inj₂)
 open import Relation.Binary
 open import Relation.Binary.Consequences
 import Relation.Binary.Construct.NonStrictToStrict as Conv

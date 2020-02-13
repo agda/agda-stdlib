@@ -9,7 +9,7 @@
 
 module Data.List.Membership.Propositional.Properties.WithK where
 
-open import Data.List
+open import Data.List.Base
 open import Data.List.Relation.Unary.Unique.Propositional
 open import Data.List.Membership.Propositional
 import Data.List.Membership.Setoid.Properties as Membershipₛ

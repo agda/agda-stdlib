@@ -18,12 +18,12 @@ open import Codata.Conat
 open import Codata.Delay using (Delay; later; now)
 open import Codata.Stream as Stream using (Stream; _∷_)
 open import Data.Unit
-open import Data.List using (List; []; _∷_)
+open import Data.List.Base using (List; []; _∷_)
 open import Data.List.NonEmpty using (List⁺; _∷_)
 open import Data.Nat.Base as Nat using (ℕ; zero; suc)
 open import Data.Product as Prod using (_×_; _,_)
-open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
-open import Data.Vec using (Vec; []; _∷_)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
+open import Data.Vec.Base using (Vec; []; _∷_)
 open import Data.Vec.Bounded as Vec≤ using (Vec≤; _,_)
 open import Function
 

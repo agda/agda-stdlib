@@ -16,12 +16,12 @@
 module Data.Vec.Functional where
 
 open import Data.Bool.Base using (true; false)
-open import Data.Fin using (Fin; zero; suc; splitAt; punchIn; _≟_)
+open import Data.Fin.Base using (Fin; zero; suc; splitAt; punchIn)
 open import Data.List.Base as L using (List)
-open import Data.Nat using (ℕ; zero; suc; _+_)
+open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Data.Product using (Σ; ∃; _×_; _,_; proj₁; proj₂)
-open import Data.Sum using (_⊎_; inj₁; inj₂; [_,_])
-open import Data.Vec as V using (Vec)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
+open import Data.Vec.Base as V using (Vec)
 open import Function.Base
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse using (Inverse; _↔_)

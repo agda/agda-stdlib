@@ -17,7 +17,7 @@ open import Algebra.Bundles using (RawRing; CommutativeRing; CommutativeSemiring
 import Algebra.Morphism as Morphism
 open import Function
 open import Level
-open import Data.Maybe as Maybe using (Maybe; just; nothing)
+open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
 
 record IsAlmostCommutativeRing
          {a ℓ} {A : Set a} (_≈_ : Rel A ℓ)
@@ -51,7 +51,7 @@ record AlmostCommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
       IsAlmostCommutativeRing _≈_ _+_ _*_ -_ 0# 1#
 
   open IsAlmostCommutativeRing isAlmostCommutativeRing hiding (refl) public
-  open import Data.Nat as ℕ using (ℕ)
+  open import Data.Nat.Base as ℕ using (ℕ)
 
   commutativeSemiring : CommutativeSemiring _ _
   commutativeSemiring = record

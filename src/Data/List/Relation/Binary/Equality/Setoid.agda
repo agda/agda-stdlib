@@ -10,7 +10,7 @@ open import Relation.Binary using (Setoid)
 
 module Data.List.Relation.Binary.Equality.Setoid {a ℓ} (S : Setoid a ℓ) where
 
-open import Data.Fin
+open import Data.Fin.Base
 open import Data.List.Base
 open import Data.List.Relation.Binary.Pointwise as PW using (Pointwise)
 open import Data.List.Relation.Unary.Unique.Setoid S using (Unique)

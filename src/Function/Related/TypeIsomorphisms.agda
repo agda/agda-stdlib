@@ -16,7 +16,7 @@ open import Data.Bool.Base using (true; false)
 open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Product as Prod hiding (swap)
 open import Data.Product.Function.NonDependent.Propositional
-open import Data.Sum as Sum
+open import Data.Sum.Base as Sum
 open import Data.Sum.Properties using (swap-involutive)
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
 open import Data.Unit using (⊤)
