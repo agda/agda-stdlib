@@ -313,6 +313,11 @@ import README.Text.Tree
 
 import README.Tactic.MonoidSolver
 
+-- Explaining how the Haskell FFI works
+
+import README.Foreign.Haskell
+
+
 ------------------------------------------------------------------------
 -- Core modules
 ------------------------------------------------------------------------
