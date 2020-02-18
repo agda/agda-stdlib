@@ -103,7 +103,7 @@ after_success:
   - git checkout HEAD -- v0.16/ v0.17/ v1.0/ v1.1/ v1.2/ experimental/
   - git add -f \*.html
   - git commit -m "Automatic HTML update via Travis"
-  - if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS_BRANCH" = "experimental" ];
+  - if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS_BRANCH" = "master" ];
     then git push -q upstream HEAD:gh-pages &>/dev/null;
     fi
 
