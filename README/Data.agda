@@ -70,7 +70,7 @@ import Data.Integer.Coprimality
 -- Note that eventually there is a plan to re-organise the library to
 -- have the top-level module export a far wider range of properties and
 -- additional operations in order to minimise the number of imports
--- needed. Currently it is necessary to import each of these seperately
+-- needed. Currently it is necessary to import each of these separately
 -- however.
 
 ------------------------------------------------------------------------
@@ -129,7 +129,7 @@ import Data.Sum.Relation.Binary.Pointwise
 -- over the datatypes are stored. These can be viewed as properties
 -- over a single list.
 
--- For example a commmon, useful example is `Data.X.Relation.Unary.Any`
+-- For example a common, useful example is `Data.X.Relation.Unary.Any`
 -- that contains the types of proofs that at least one element in the
 -- container satisfies some predicate/property.
 
