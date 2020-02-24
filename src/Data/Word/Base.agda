@@ -15,7 +15,7 @@ open import Relation.Binary using (Rel)
 open import Relation.Binary.PropositionalEquality
 
 ------------------------------------------------------------------------
--- Re-export built-ins publically
+-- Re-export built-ins publicly
 
 open import Agda.Builtin.Word public
   using (Word64)

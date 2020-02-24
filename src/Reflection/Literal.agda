@@ -11,7 +11,6 @@ module Reflection.Literal where
 import Data.Char as Char
 import Data.Float as Float
 import Data.Nat as ℕ
-import Data.Nat.Show as ℕ
 open import Data.String as String using (String)
 import Data.Word as Word
 import Reflection.Meta as Meta
@@ -27,18 +26,6 @@ open import Relation.Binary.PropositionalEquality
 open import Agda.Builtin.Reflection public
   using ( Literal )
 open Literal public
-
-------------------------------------------------------------------------
--- Showing
-
-show : Literal → String
-show (nat x)    = ℕ.show x
-show (word64 x) = ℕ.show (Word.toℕ x)
-show (float x)  = Float.show x
-show (char x)   = Char.show x
-show (string x) = String.show x
-show (name x)   = Name.show x
-show (meta x)   = Meta.show x
 
 ------------------------------------------------------------------------
 -- Decidable equality
