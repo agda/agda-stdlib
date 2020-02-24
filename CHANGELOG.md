@@ -310,6 +310,9 @@ Other major additions
   Data.Word.Base
   Data.Word.Properties
   
+  Data.Nat.Reflection
+  Data.Fin.Reflection
+  
   Reflection.Abstraction
   Reflection.Argument
   Reflection.Argument.Information
