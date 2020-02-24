@@ -16,7 +16,7 @@ open import Data.Fin.Base using (Fin) renaming (zero to fzero; suc to fsuc)
 open import Data.List.Base as List using
   ( List; []; _∷_; [_]; _∷ʳ_; fromMaybe; null; _++_; concat; map; mapMaybe
   ; inits; tails; drop; take; applyUpTo; applyDownFrom; replicate; tabulate
-  ; filter; zipWith; all
+  ; filter; zipWith; all; derun; deduplicate
   )
 open import Data.List.Membership.Propositional
 open import Data.List.Membership.Propositional.Properties
@@ -40,17 +40,18 @@ open import Function.Equivalence using (_⇔_; equivalence; Equivalence)
 open import Function.Inverse using (_↔_; inverse)
 open import Function.Surjection using (_↠_; surjection)
 open import Level using (Level)
-open import Relation.Binary using (REL; Setoid; _Respects_)
+open import Relation.Binary as B using (REL; Setoid; _Respects_)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; cong; cong₂; _≗_)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary
+open import Relation.Nullary.Negation using (¬?; contradiction; decidable-stable)
 open import Relation.Unary
   using (Decidable; Pred; Universal) renaming (_⊆_ to _⋐_)
 
 private
   variable
-    a b c p q ℓ : Level
+    a b c p q r ℓ : Level
     A : Set a
     B : Set b
     C : Set c
@@ -504,6 +505,48 @@ module _ {P : A → Set p} {Q : A → Set q} (P? : Decidable P) where
   filter⁺ {xs = x ∷ _} (Qx ∷ Qxs) with does (P? x)
   ... | false = filter⁺ Qxs
   ... | true  = Qx ∷ filter⁺ Qxs
+
+  filter⁻ : ∀ {xs} → All Q (filter P? xs) → All Q (filter (¬? ∘ P?) xs) → All Q xs
+  filter⁻ {[]}         []          []                           = []
+  filter⁻ {x ∷ xs}       all⁺        all⁻ with P? x  | ¬? (P? x)
+  filter⁻ {x ∷ xs}       all⁺        all⁻  | yes  Px | yes  ¬Px = contradiction Px ¬Px
+  filter⁻ {x ∷ xs} (qx ∷ all⁺)       all⁻  | yes  Px | no  ¬¬Px = qx ∷ filter⁻ all⁺ all⁻
+  filter⁻ {x ∷ xs}       all⁺  (qx ∷ all⁻) | no    _ | yes  ¬Px = qx ∷ filter⁻ all⁺ all⁻
+  filter⁻ {x ∷ xs}       all⁺        all⁻  | no  ¬Px | no  ¬¬Px = contradiction ¬Px ¬¬Px
+
+------------------------------------------------------------------------
+-- derun and deduplicate
+
+module _ {P : A → Set p} {R : A → A → Set q} (R? : B.Decidable R) where
+
+  derun⁺ : ∀ {xs} → All P xs → All P (derun R? xs)
+  derun⁺ {[]} [] = []
+  derun⁺ {x ∷ []} (px ∷ []) = px ∷ []
+  derun⁺ {x ∷ y ∷ xs} (px ∷ all[P,y∷xs]) with does (R? x y)
+  ... | false = px ∷ derun⁺ all[P,y∷xs]
+  ... | true  = derun⁺ all[P,y∷xs]
+
+  deduplicate⁺ : ∀ {xs} → All P xs → All P (deduplicate R? xs)
+  deduplicate⁺ [] = []
+  deduplicate⁺ {x ∷ _} (px ∷ all[P,xs]) = px ∷ filter⁺ (¬? ∘ R? x) (deduplicate⁺ all[P,xs])
+
+  derun⁻ : P B.Respects (flip R) → ∀ xs → All P (derun R? xs) → All P xs
+  derun⁻ P-resp-R []       []          = []
+  derun⁻ P-resp-R (x ∷ xs) all[P,x∷xs] = aux x xs all[P,x∷xs] where
+    aux : ∀ x xs → All P (derun R? (x ∷ xs)) → All P (x ∷ xs)
+    aux x []       (px ∷ []) = px ∷ []
+    aux x (y ∷ xs) all[P,x∷y∷xs] with R? x y
+    aux x (y ∷ xs) all[P,y∷xs]        | yes Rxy with aux y xs all[P,y∷xs]
+    aux x (y ∷ xs) all[P,y∷xs]        | yes Rxy | r@(py ∷ _) = P-resp-R Rxy py ∷ r
+    aux x (y ∷ xs) (px ∷ all[P,y∷xs]) | no _ = px ∷ aux y xs all[P,y∷xs]
+
+  module _ (P-resp-R : P B.Respects R) where
+
+    deduplicate⁻ : ∀ xs → All P (deduplicate R? xs) → All P xs
+    deduplicate⁻ [] [] = []
+    deduplicate⁻ (x ∷ xs) (px ∷ app[P,dedup[xs]]) = px ∷ deduplicate⁻ xs (filter⁻ (¬? ∘ R? x) app[P,dedup[xs]] (All.tabulate aux)) where
+      aux : ∀ {z} → z ∈ filter (¬? ∘ ¬? ∘ R? x) (deduplicate R? xs) → P z
+      aux {z} z∈filter = P-resp-R (decidable-stable (R? x z) (Prod.proj₂ (∈-filter⁻ (¬? ∘ ¬? ∘ R? x) {z} {deduplicate R? xs} z∈filter))) px
 
 ------------------------------------------------------------------------
 -- zipWith
