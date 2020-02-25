@@ -36,7 +36,7 @@ map : (A → B) → Erased A → Erased B
 map f [ a ] = [ f a ]
 
 pure : A → Erased A
-pure = [_]
+pure x = [ x ]
 
 infixl 4 _<*>_
 _<*>_ : Erased (A → B) → Erased A → Erased B
