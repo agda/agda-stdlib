@@ -87,18 +87,18 @@ install:
     cp -a $HOME/.cabal/lib $HOME/.cabal/share $HOME/.cabal/bin $HOME/installplan.txt $HOME/.cabsnap/;
 
   - if [[ $TRAVIS_BRANCH = "master" ]]; then
-      cd ../agda-stdlib ;
+      cd ../ ;
     fi
 
   - if [[ $TRAVIS_BRANCH = "experimental" ]]; then
-      cd ../agda-stdlib ;
+      cd ../ ;
     fi
 
   # installing fix-whitespace
   - git clone https://github.com/agda/fix-whitespace --depth=1
   - cd fix-whitespace
   - cabal install fix-whitespace.cabal
-  - cd -
+  - cd ../
 
   # generating Everything.agda
   - cd agda-stdlib
