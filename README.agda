@@ -312,6 +312,7 @@ import README.Text.Tree
 -- Explaining how to use the automatic solvers
 
 import README.Tactic.MonoidSolver
+import README.Tactic.RingSolver
 
 -- Explaining how the Haskell FFI works
 
