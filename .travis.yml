@@ -134,6 +134,7 @@ script:
       mv html/* . ;
     fi
   - if [[ $TRAVIS_BRANCH = "experimental" ]]; then
+      mkdir -p experimental/ ;
       mv html/* experimental/ ;
     fi
 
