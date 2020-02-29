@@ -14,7 +14,7 @@
 open import Algebra
 
 module Algebra.Solver.Ring.NaturalCoefficients.Default
-         {r₁ r₂} (R : CommutativeSemiring r₁ r₂) where
+  {r₁ r₂} (R : CommutativeSemiring r₁ r₂) where
 
 import Algebra.Operations.Semiring as SemiringOps
 open import Data.Maybe.Base using (Maybe; map)

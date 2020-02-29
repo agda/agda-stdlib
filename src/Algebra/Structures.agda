@@ -22,7 +22,7 @@ module Algebra.Structures
 
 open import Algebra.Core
 open import Algebra.Definitions _≈_
-import Algebra.FunctionProperties.Consequences as Consequences
+import Algebra.Consequences.Setoid as Consequences
 open import Data.Product using (_,_; proj₁; proj₂)
 open import Level using (_⊔_)
 
@@ -412,10 +412,16 @@ record IsCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
     ; *-comm = *-comm
     }
 
+  *-isCommutativeSemigroup : IsCommutativeSemigroup *
+  *-isCommutativeSemigroup = record
+    { isSemigroup = *-isSemigroup
+    ; comm        = *-comm
+    }
+
   *-isCommutativeMonoid : IsCommutativeMonoid * 1#
   *-isCommutativeMonoid = record
     { isMonoid = *-isMonoid
-    ; comm = *-comm
+    ; comm     = *-comm
     }
 
 

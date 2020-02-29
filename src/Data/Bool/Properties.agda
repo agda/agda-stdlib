@@ -12,7 +12,7 @@ open import Algebra.Bundles
 open import Data.Bool.Base
 open import Data.Empty
 open import Data.Product
-open import Data.Sum
+open import Data.Sum.Base
 open import Function.Base
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence

@@ -12,7 +12,7 @@ module Relation.Binary.Rewriting where
 open import Agda.Builtin.Equality using (_≡_ ; refl)
 open import Data.Product using (_×_ ; ∃ ; -,_; _,_ ; proj₁ ; proj₂)
 open import Data.Empty
-open import Data.Sum as Sum using (_⊎_)
+open import Data.Sum.Base as Sum using (_⊎_)
 open import Function using (flip)
 open import Induction.WellFounded
 open import Level

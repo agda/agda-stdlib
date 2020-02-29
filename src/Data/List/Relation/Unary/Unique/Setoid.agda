@@ -12,7 +12,7 @@ module Data.List.Relation.Unary.Unique.Setoid {a ℓ} (S : Setoid a ℓ) where
 
 open Setoid S renaming (Carrier to A)
 
-open import Data.List
+open import Data.List.Base
 import Data.List.Relation.Unary.AllPairs as AllPairsM
 open import Level using (_⊔_)
 open import Relation.Unary using (Pred)

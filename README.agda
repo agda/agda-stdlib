@@ -87,6 +87,9 @@ import README.Data
 -- • Strict
 --     Provides access to the builtins relating to strictness.
 
+-- • Tactic
+--     Tactics for automatic proof generation
+
 ------------------------------------------------------------------------
 -- A selection of useful library modules
 ------------------------------------------------------------------------
@@ -305,6 +308,14 @@ import README.Text.Tabular
 -- Explaining how to display a tree:
 
 import README.Text.Tree
+
+-- Explaining how to use the automatic solvers
+
+import README.Tactic.MonoidSolver
+
+-- Explaining how the Haskell FFI works
+
+import README.Foreign.Haskell
 
 
 ------------------------------------------------------------------------

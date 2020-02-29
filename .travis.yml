@@ -56,8 +56,9 @@ install:
     mkdir $HOME/.cabsnap;
     cp -a $HOME/.ghc $HOME/.cabsnap/ghc;
     cp -a $HOME/.cabal/lib $HOME/.cabal/share $HOME/.cabal/bin $HOME/installplan.txt $HOME/.cabsnap/;
-  - cd -
-  # installing fix-agda-whitespace
+  # returning to stdlib directory
+  - cd ../agda-stdlib
+  # installing fix-whitespace
   - git clone https://github.com/agda/fix-whitespace --depth=1
   - cd fix-whitespace
   - cabal install fix-whitespace.cabal
@@ -89,9 +90,8 @@ script:
   # building the docs
   - agda $RTS_OPTIONS -i . -i src/ --html safe.agda
   - agda $RTS_OPTIONS -i . -i src/ --html index.agda
-  # moving everything to the experimental directory
-  - mkdir -p experimental
-  - mv html/* experimental/
+  # moving everything to the main directory
+  - mv html/* .
 
 after_success:
   # uploading to gh-pages
@@ -100,10 +100,10 @@ after_success:
   - git config --global user.email "travis-ci-bot@travis.fake"
   - git remote add upstream https://$GH_TOKEN@github.com/agda/agda-stdlib.git &>/dev/null
   - git fetch upstream && git reset upstream/gh-pages
-  - git checkout HEAD -- *.html v0.16/ v0.17/ v1.0/ v1.1/ v1.2/
+  - git checkout HEAD -- *.html v0.16/ v0.17/ v1.0/ v1.1/ v1.2/ experimental/
   - git add -f \*.html
   - git commit -m "Automatic HTML update via Travis"
-  - if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS_BRANCH" = "experimental" ];
+  - if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS_BRANCH" = "master" ];
     then git push -q upstream HEAD:gh-pages &>/dev/null;
     fi
 

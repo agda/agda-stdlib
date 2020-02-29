@@ -3,6 +3,10 @@
 The Agda standard library
 =========================
 
+**PLEASE NOTE**: due to the imminent release of Agda 2.6.1, both the `master`
+and the `experimental` branches currently require the latest development
+version of Agda.
+
 The standard library aims to contain all the tools needed to write both
 programs and proofs easily. While we always try and write efficient
 code, we prioritize ease of proof over type-checking and normalization

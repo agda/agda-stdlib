@@ -23,7 +23,7 @@ open import Data.Fin.Base as Fin using (Fin; zero; suc)
 open import Data.Product as Prod using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum.Base as Sum using (_⊎_)
 open import Data.Unit.Base
-open import Data.Vec as Vec using (Vec; _∷_)
+open import Data.Vec.Base as Vec using (Vec; _∷_)
 open import Function
 open import Relation.Unary
 open import Agda.Builtin.Equality using (_≡_)

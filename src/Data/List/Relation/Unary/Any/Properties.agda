@@ -12,8 +12,8 @@ open import Category.Monad
 open import Data.Bool.Base using (Bool; false; true; T)
 open import Data.Bool.Properties
 open import Data.Empty using (⊥)
-open import Data.Fin using (Fin) renaming (zero to fzero; suc to fsuc)
-open import Data.List as List
+open import Data.Fin.Base using (Fin) renaming (zero to fzero; suc to fsuc)
+open import Data.List.Base as List
 open import Data.List.Categorical using (monad)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Membership.Propositional
@@ -21,8 +21,8 @@ open import Data.List.Membership.Propositional.Properties.Core
   using (Any↔; find∘map; map∘find; lose∘find)
 open import Data.List.Relation.Binary.Pointwise
   using (Pointwise; []; _∷_)
-open import Data.Nat using (zero; suc; _<_; z≤n; s≤s)
-open import Data.Maybe using (Maybe; just; nothing)
+open import Data.Nat.Base using (zero; suc; _<_; z≤n; s≤s)
+open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.Any as MAny using (just)
 open import Data.Product as Prod
   using (_×_; _,_; ∃; ∃₂; proj₁; proj₂; uncurry′)
@@ -30,7 +30,7 @@ open import Data.Product.Properties
 open import Data.Product.Function.NonDependent.Propositional
   using (_×-cong_)
 import Data.Product.Function.Dependent.Propositional as Σ
-open import Data.Sum as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
 open import Function.Base
 open import Function.Equality using (_⟨$⟩_)
@@ -38,12 +38,13 @@ open import Function.Equivalence using (_⇔_; equivalence; Equivalence)
 open import Function.Inverse as Inv using (_↔_; inverse; Inverse)
 open import Function.Related as Related using (Kind; Related; SK-sym)
 open import Level using (Level)
-open import Relation.Binary
+open import Relation.Binary as B
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; refl; inspect)
-open import Relation.Unary
+open import Relation.Unary as U
   using (Pred; _⟨×⟩_; _⟨→⟩_) renaming (_⊆_ to _⋐_)
-open import Relation.Nullary using (¬_)
+open import Relation.Nullary using (¬_; _because_; does; ofʸ; ofⁿ)
+open import Relation.Nullary.Negation using (contradiction; ¬?; decidable-stable)
 open Related.EquationalReasoning
 
 private
@@ -113,6 +114,13 @@ map-∘ : ∀ {P : A → Set p} {Q : A → Set q} {R : A → Set r}
         Any.map (f ∘ g) p ≡ Any.map f (Any.map g p)
 map-∘ f g (here  p) = refl
 map-∘ f g (there p) = P.cong there $ map-∘ f g p
+
+------------------------------------------------------------------------
+-- lookup
+
+lookup-result : ∀ {P : Pred A p} {xs} → (p : Any P xs) → P (Any.lookup p)
+lookup-result (here px) = px
+lookup-result (there p) = lookup-result p
 
 ------------------------------------------------------------------------
 -- Swapping
@@ -458,6 +466,65 @@ module _ {P : A → Set p} where
               Any P (tabulate f) → ∃ λ i → P (f i)
   tabulate⁻ {suc n} (here p)   = fzero , p
   tabulate⁻ {suc n} (there p) = Prod.map fsuc id (tabulate⁻ p)
+
+------------------------------------------------------------------------
+-- filter
+
+module _ {P : A → Set p} {Q : A → Set q} (Q? : U.Decidable Q) where
+
+  filter⁺ : ∀ {xs} → (p : Any P xs) → Any P (filter Q? xs) ⊎ ¬ Q (Any.lookup p)
+  filter⁺ {x ∷ xs} (here px) with Q? x
+  ... | true  because _       = inj₁ (here px)
+  ... | false because ofⁿ ¬Qx = inj₂ ¬Qx
+  filter⁺ {x ∷ xs} (there p) with Q? x
+  ... | true  because _       = Sum.map₁ there (filter⁺ p)
+  ... | false because _       = filter⁺ p
+
+  filter⁻ : ∀ {xs} → Any P (filter Q? xs) → Any P xs
+  filter⁻ {x ∷ xs} p with does (Q? x)
+  filter⁻ {x ∷ xs} (here px) | true  = here px
+  filter⁻ {x ∷ xs} (there p) | true  = there (filter⁻ p)
+  filter⁻ {x ∷ xs} p         | false = there (filter⁻ p)
+
+------------------------------------------------------------------------
+-- derun and deduplicate
+
+module _ {P : A → Set p} {R : A → A → Set r} (R? : B.Decidable R) where
+
+  private
+    derun⁺-aux : ∀ x xs → P Respects R → P x → Any P (derun R? (x ∷ xs))
+    derun⁺-aux x [] P-resp-R Px = here Px
+    derun⁺-aux x (y ∷ xs) P-resp-R Px with R? x y
+    ... | true  because ofʸ Rxy = derun⁺-aux y xs P-resp-R (P-resp-R Rxy Px)
+    ... | false because _       = here Px
+
+  derun⁺ : ∀ {xs} → P Respects R → Any P xs → Any P (derun R? xs)
+  derun⁺ {x ∷ xs} P-resp-R (here px) = derun⁺-aux x xs P-resp-R px
+  derun⁺ {x ∷ y ∷ xs} P-resp-R (there any[P,xs]) with R? x y
+  ... | true  because _ = derun⁺ P-resp-R any[P,xs]
+  ... | false because _ = there (derun⁺ P-resp-R any[P,xs])
+
+  deduplicate⁺ : ∀ {xs} → P Respects (flip R) → Any P xs → Any P (deduplicate R? xs)
+  deduplicate⁺ {x ∷ xs} P-resp-R (here px) = here px
+  deduplicate⁺ {x ∷ xs} P-resp-R (there any[P,xs]) with filter⁺ (¬? ∘ R? x) (deduplicate⁺ {xs} P-resp-R any[P,xs])
+  ... | inj₁ p = there p
+  ... | inj₂ ¬¬q with decidable-stable (R? x (Any.lookup (deduplicate⁺ P-resp-R any[P,xs]))) ¬¬q
+  ...  | q = here (P-resp-R q (lookup-result (deduplicate⁺ P-resp-R any[P,xs])))
+
+  private
+    derun⁻-aux : ∀ {x xs} → Any P (derun R? (x ∷ xs)) → Any P (x ∷ xs)
+    derun⁻-aux {x} {[]} (here px) = here px
+    derun⁻-aux {x} {y ∷ xs} any[P,derun[x∷y∷xs]] with R? x y
+    derun⁻-aux {x} {y ∷ xs} any[P,derun[y∷xs]]         | true  because _ = there (derun⁻-aux any[P,derun[y∷xs]])
+    derun⁻-aux {x} {y ∷ xs} (here px)                  | false because _ = here px
+    derun⁻-aux {x} {y ∷ xs} (there any[P,derun[y∷xs]]) | false because _ = there (derun⁻-aux any[P,derun[y∷xs]])
+
+  derun⁻ : ∀ {xs} → Any P (derun R? xs) → Any P xs
+  derun⁻ {x ∷ xs} any[P,derun[x∷xs]] = derun⁻-aux any[P,derun[x∷xs]]
+
+  deduplicate⁻ : ∀ {xs} → Any P (deduplicate R? xs) → Any P xs
+  deduplicate⁻ {x ∷ xs} (here px) = here px
+  deduplicate⁻ {x ∷ xs} (there any[P,dedup[xs]]) = there (deduplicate⁻ (filter⁻ (¬? ∘ R? x) any[P,dedup[xs]]))
 
 ------------------------------------------------------------------------
 -- map-with-∈.

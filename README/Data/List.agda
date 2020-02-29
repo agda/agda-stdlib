@@ -228,7 +228,7 @@ module PermutationExplanation where
   -- The easiest-to-use formalisation of this relation is found in the
   -- module:
 
-  open import Data.List.Relation.Binary.Permutation.Inductive
+  open import Data.List.Relation.Binary.Permutation.Propositional
 
   -- The permutation relation is written as `_↭_` and has four
   -- constructors. The first `refl` says that a list is always
@@ -260,7 +260,7 @@ module PermutationExplanation where
   -- As might be expected, properties of the permutation relation may be
   -- found in `Data.List.Relation.Binary.Permutation.Inductive.Properties`.
 
-  open import Data.List.Relation.Binary.Permutation.Inductive.Properties
+  open import Data.List.Relation.Binary.Permutation.Propositional.Properties
 
   lem₃ : ∀ {xs ys : List ℕ} → xs ↭ ys → map fromℕ xs ↭ map fromℕ ys
   lem₃ = map⁺ fromℕ

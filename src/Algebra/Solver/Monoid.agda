@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Solver for monoid equalities
+-- This module is DEPRECATED. Please use Tactic.MonoidSolver instead
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -10,15 +10,20 @@ open import Algebra
 
 module Algebra.Solver.Monoid {m₁ m₂} (M : Monoid m₁ m₂) where
 
-open import Data.Fin as Fin hiding (_≟_)
+{-# WARNING_ON_IMPORT
+"Algebra.Solver.Monoid was deprecated in v1.3.
+Use Tactic.MonoidSolver instead."
+#-}
+
+open import Data.Fin.Base as Fin hiding (_≟_)
 import Data.Fin.Properties as Fin
 open import Data.List.Base hiding (lookup)
 import Data.List.Relation.Binary.Equality.DecPropositional as ListEq
-open import Data.Maybe as Maybe
+open import Data.Maybe.Base as Maybe
   using (Maybe; decToMaybe; From-just; from-just)
 open import Data.Nat.Base using (ℕ)
 open import Data.Product
-open import Data.Vec using (Vec; lookup)
+open import Data.Vec.Base using (Vec; lookup)
 open import Function using (_∘_; _$_)
 open import Relation.Binary using (Decidable)
 
@@ -104,7 +109,7 @@ normalise-correct (e₁ ⊕ e₂) ρ = begin
   ⟦ e₁ ⟧ ρ ∙ ⟦ e₂ ⟧ ρ                        ∎
 
 ------------------------------------------------------------------------
--- "Tactics"
+-- "Tactic.
 
 open module R = Relation.Binary.Reflection
                   setoid var ⟦_⟧ (⟦_⟧⇓ ∘ normalise) normalise-correct

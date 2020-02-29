@@ -8,11 +8,11 @@
 
 module Data.Vec.Membership.Propositional.Properties where
 
-open import Data.Fin using (Fin; zero; suc)
+open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Product as Prod using (_,_; ∃; _×_; -,_)
 open import Data.Vec hiding (here; there)
 open import Data.Vec.Relation.Unary.Any using (here; there)
-open import Data.List using ([]; _∷_)
+open import Data.List.Base using ([]; _∷_)
 open import Data.List.Relation.Unary.Any using (here; there)
 open import Data.Vec.Relation.Unary.Any using (Any; here; there)
 open import Data.Vec.Membership.Propositional

@@ -11,7 +11,7 @@ module Relation.Unary where
 open import Data.Empty
 open import Data.Unit.Base using (⊤)
 open import Data.Product
-open import Data.Sum using (_⊎_; [_,_])
+open import Data.Sum.Base using (_⊎_; [_,_])
 open import Function.Base
 open import Level
 open import Relation.Nullary hiding (Irrelevant)

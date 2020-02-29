@@ -9,12 +9,12 @@
 module Data.List.Relation.Unary.First.Properties where
 
 open import Data.Empty
-open import Data.Fin using (suc)
+open import Data.Fin.Base using (suc)
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Any as Any using (here; there)
 open import Data.List.Relation.Unary.First
-import Data.Sum as Sum
+import Data.Sum.Base as Sum
 open import Function
 open import Relation.Binary.PropositionalEquality as P using (_≡_; refl; _≗_)
 open import Relation.Unary

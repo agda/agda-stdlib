@@ -12,8 +12,8 @@ open import Algebra using (Idempotent; CommutativeMonoid)
 open import Algebra.Structures.Biased using (isCommutativeMonoidˡ)
 open import Category.Monad using (RawMonad)
 open import Data.Empty
-open import Data.Fin
-open import Data.List
+open import Data.Fin.Base
+open import Data.List.Base
 open import Data.List.Categorical using (monad; module MonadProperties)
 import Data.List.Properties as LP
 open import Data.List.Relation.Unary.Any using (Any; here; there)
@@ -23,7 +23,7 @@ open import Data.List.Relation.Binary.Subset.Propositional.Properties
   using (⊆-preorder)
 open import Data.Product as Prod hiding (map)
 import Data.Product.Function.Dependent.Propositional as Σ
-open import Data.Sum as Sum hiding (map)
+open import Data.Sum.Base as Sum hiding (map)
 open import Data.Sum.Properties
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
 open import Data.Unit
@@ -86,8 +86,8 @@ module ⊆-Reasoning where
   private
     module PreOrder {a} {A : Set a} = PreorderReasoning (⊆-preorder A)
 
-    open PreOrder
-      hiding (step-≈; step-≈˘; step-∼)
+  open PreOrder public
+    hiding (step-≈; step-≈˘; step-∼)
 
   infixr 2 step-∼ step-⊆
   infix  1 step-∈
