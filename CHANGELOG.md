@@ -310,6 +310,9 @@ Other major additions
   Data.Word.Base
   Data.Word.Properties
   
+  Data.Nat.Reflection
+  Data.Fin.Reflection
+  
   Reflection.Abstraction
   Reflection.Argument
   Reflection.Argument.Information
@@ -633,14 +636,15 @@ Other minor additions
 
 * Added new functions to `Data.String.Base`:
   ```agda
-  parens      : String → String
-  braces      : String → String
-  intersperse : String → List String → String
-  unwords     : List String → String
-  _<+>_       : String → String → String
-  padLeft     : Char → ℕ → String → String
-  padRight    : Char → ℕ → String → String
-  padBoth     : Char → Char → ℕ → String → String
+  parens        : String → String
+  parensIfSpace : String → String
+  braces        : String → String
+  intersperse   : String → List String → String
+  unwords       : List String → String
+  _<+>_         : String → String → String
+  padLeft       : Char → ℕ → String → String
+  padRight      : Char → ℕ → String → String
+  padBoth       : Char → Char → ℕ → String → String
 
   data Alignment : Set where Left Center Right : Alignment
   fromAlignment  : Alignment → ℕ → String → String

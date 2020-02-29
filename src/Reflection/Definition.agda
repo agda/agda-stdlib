@@ -39,19 +39,6 @@ open import Agda.Builtin.Reflection public
            ; prim-fun    to primitive′ )
 
 ------------------------------------------------------------------------
--- Showing
-
-show : Definition → String
-show (function cs)       = "function" <+> braces (Term.showClauses cs)
-show (data-type pars cs) =
- "datatype" <+> NatShow.show pars <+> braces (intersperse ", " (map Name.show cs))
-show (record′ c fs)      =
- "record" <+> Name.show c <+> braces (intersperse ", " (map (Name.show ∘′ Arg.unArg) fs))
-show (constructor′ d)    = "constructor" <+> Name.show d
-show axiom               = "axiom"
-show primitive′          = "primitive"
-
-------------------------------------------------------------------------
 -- Decidable equality
 
 function-injective : ∀ {cs cs′} → function cs ≡ function cs′ → cs ≡ cs′

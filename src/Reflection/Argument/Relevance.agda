@@ -8,7 +8,6 @@
 
 module Reflection.Argument.Relevance where
 
-open import Data.String as String using (String)
 open import Relation.Nullary
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
@@ -18,13 +17,6 @@ open import Relation.Binary.PropositionalEquality
 
 open import Agda.Builtin.Reflection public using (Relevance)
 open Relevance public
-
-------------------------------------------------------------------------
--- Showing
-
-show : Relevance → String
-show relevant   = "relevant"
-show irrelevant = "irrelevant"
 
 ------------------------------------------------------------------------
 -- Decidable equality

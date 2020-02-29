@@ -20,33 +20,16 @@ open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
 open import Data.Product
 open import Function
 open import Level using (Level)
+open import Reflection.Term
+open import Reflection.Argument
 
 open import Tactic.RingSolver.Core.NatSet as NatSet
-
 private
   variable
     a : Level
     A : Set a
 
 -- TO-DO - once `Reflection` is --safe after v1.3 a lot of this can be simplified
-
-infixr 5 _⟨∷⟩_ _⟅∷⟆_
-pattern _⟨∷⟩_ x xs = arg (arg-info visible relevant) x ∷ xs
-pattern _⟅∷⟆_ x xs = arg (arg-info hidden  relevant) x ∷ xs
-
-infixr 5 _⋯⟅∷⟆_
-_⋯⟅∷⟆_ : ℕ → List (Arg Term) → List (Arg Term)
-zero  ⋯⟅∷⟆ xs = xs
-suc i ⋯⟅∷⟆ xs = unknown ⟅∷⟆ i ⋯⟅∷⟆ xs
-{-# INLINE _⋯⟅∷⟆_ #-}
-
-ℕ′ : ℕ → Term
-ℕ′ zero    = con (quote zero) []
-ℕ′ (suc i) = con (quote suc)  (ℕ′ i ⟨∷⟩ [])
-
-Fin′ : ℕ → Term
-Fin′ zero    = con (quote Fin.zero) (1 ⋯⟅∷⟆ [])
-Fin′ (suc i) = con (quote Fin.suc)  (1 ⋯⟅∷⟆ Fin′ i ⟨∷⟩ [])
 
 hlams : ∀ {n} → Vec String n → Term → Term
 hlams vs xs = Vec.foldr (const Term) (λ v vs → lam hidden (abs v vs)) xs vs
