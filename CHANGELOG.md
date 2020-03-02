@@ -741,9 +741,12 @@ Other minor additions
   ⊓-pres-m< : m < n → m < o → m < n ⊓ o
   ```
 
-* Added new proofs to `Data.Product.Relation.Binary.Lex.Strict` and
-  increased the level polymorphism so that the equality and order
-  relations need not live at the same universe level:
+* Improved the universe polymorphism of 
+  `Data.Product.Relation.Binary.Lex.Strict/NonStrict`
+  so that the equality and order relations need not live at the
+  same universe level.
+
+* Added new proofs to `Data.Product.Relation.Binary.Lex.Strict`:
   ```
   ×-wellFounded : WellFounded _<₁_ → WellFounded _<₂_ → WellFounded _<ₗₑₓ_
   ```
