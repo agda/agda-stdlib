@@ -10,7 +10,7 @@ module Data.Vec.Functional.Relation.Binary.Pointwise.Properties where
 
 open import Data.Fin.Base
 open import Data.Fin.Properties
-  hiding (isDecEquivalence; setoid; decSetoid)
+  hiding (isDecEquivalence; setoid; ≡-setoid; decSetoid)
 open import Data.Nat.Base
 open import Data.Product using (_×_; _,_; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
@@ -79,6 +79,13 @@ decSetoid : DecSetoid a ℓ → ℕ → DecSetoid a ℓ
 decSetoid S n = record
   { isDecEquivalence = isDecEquivalence S.isDecEquivalence n
   } where module S = DecSetoid S
+
+≡-setoid : ∀ {a} → Set a → ℕ → Setoid _ _
+≡-setoid A = setoid (≡.setoid A)
+
+module _ {a} {A : Set a} {n} where
+  open Setoid (≡-setoid A n) public
+    using () renaming (_≈_ to _≗_)
 
 ------------------------------------------------------------------------
 -- map

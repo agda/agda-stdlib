@@ -24,10 +24,11 @@ open import Data.List.Base as List using ([]; _∷_)
 import Data.Fin.Properties as FP
 open import Data.Fin.Permutation as Perm using (Permutation; Permutation′; _⟨$⟩ˡ_; _⟨$⟩ʳ_)
 open import Data.Fin.Permutation.Components as PermC
-open import Data.Table as Table
-open import Data.Table.Relation.Binary.Equality as TE using (_≗_)
 open import Data.Unit using (tt)
-import Data.Table.Properties as TP
+open import Data.Vec.Functional as VF
+open import Data.Vec.Functional.Relation.Binary.Pointwise as VFP using ()
+open import Data.Vec.Functional.Relation.Binary.Pointwise.Properties as VFPP using (_≗_)
+import Data.Vec.Functional.Properties as VProp
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Nullary as Nullary using (¬_; does; _because_)
 open import Relation.Nullary.Negation using (contradiction)
@@ -50,13 +51,14 @@ open import Algebra.Definitions _≈_
 open import Relation.Binary.Reasoning.Setoid setoid
 
 module _ {n} where
-  open B.Setoid (TE.setoid setoid n) public
+  open B.Setoid (VFPP.setoid setoid n) public
     using ()
     renaming (_≈_ to _≋_)
 
+
 -- When summing over a function from a finite set, we can pull out any value and move it to the front.
 
-sumₜ-remove : ∀ {n} {i : Fin (suc n)} t → sumₜ t ≈ lookup t i + sumₜ (remove i t)
+sumₜ-remove : ∀ {n} {i : Fin (suc n)} t → sumₜ t ≈ t i + sumₜ (remove i t)
 sumₜ-remove {_}     {zero}   t = refl
 sumₜ-remove {suc n} {suc i}  t′ =
   begin
@@ -66,7 +68,7 @@ sumₜ-remove {suc n} {suc i}  t′ =
   where
   t = tail t′
   t₀ = head t′
-  tᵢ = lookup t i
+  tᵢ = t i
   ∑t = sumₜ t
   ∑t′ = sumₜ (remove i t)
 
@@ -133,26 +135,26 @@ sumₜ-permute {zero}  {zero}  t π = refl
 sumₜ-permute {zero}  {suc n} t π = contradiction π (Perm.refute λ())
 sumₜ-permute {suc m} {zero}  t π = contradiction π (Perm.refute λ())
 sumₜ-permute {suc m} {suc n} t π = begin
-  sumₜ t                                                                            ≡⟨⟩
-  lookup t 0i           + sumₜ (remove 0i t)                                        ≡⟨ P.cong₂ _+_ (P.cong (lookup t) (P.sym (Perm.inverseʳ π))) P.refl ⟩
-  lookup πt (π ⟨$⟩ˡ 0i) + sumₜ (remove 0i t)                                        ≈⟨ +-congˡ (sumₜ-permute (remove 0i t) (Perm.remove (π ⟨$⟩ˡ 0i) π)) ⟩
-  lookup πt (π ⟨$⟩ˡ 0i) + sumₜ (permute (Perm.remove (π ⟨$⟩ˡ 0i) π) (remove 0i t))  ≡⟨ P.cong₂ _+_ P.refl (sumₜ-cong-≡ (P.sym ∘ TP.remove-permute π 0i t)) ⟩
-  lookup πt (π ⟨$⟩ˡ 0i) + sumₜ (remove (π ⟨$⟩ˡ 0i) πt)                              ≈⟨ sym (sumₜ-remove (permute π t)) ⟩
+  sumₜ t                                                                     ≡⟨⟩
+  t 0i           + sumₜ (remove 0i t)                                        ≡⟨ P.cong₂ _+_ (P.cong t (P.sym (Perm.inverseʳ π))) P.refl ⟩
+  πt (π ⟨$⟩ˡ 0i) + sumₜ (remove 0i t)                                        ≈⟨ +-congˡ (sumₜ-permute (remove 0i t) (Perm.remove (π ⟨$⟩ˡ 0i) π)) ⟩
+  πt (π ⟨$⟩ˡ 0i) + sumₜ (permute (Perm.remove (π ⟨$⟩ˡ 0i) π) (remove 0i t))  ≡⟨ P.cong₂ _+_ P.refl (sumₜ-cong-≡ (P.sym ∘ VProp.remove-permute π 0i t)) ⟩
+  πt (π ⟨$⟩ˡ 0i) + sumₜ (remove (π ⟨$⟩ˡ 0i) πt)                              ≈⟨ sym (sumₜ-remove (permute π t)) ⟩
   sumₜ πt                                                                           ∎
   where
   0i = zero
   πt = permute π t
 
 ∑-permute : ∀ {m n} f (π : Permutation m n) → ∑[ i < n ] f i ≈ ∑[ i < m ] f (π ⟨$⟩ʳ i)
-∑-permute = sumₜ-permute ∘ tabulate
+∑-permute = sumₜ-permute -- ∘ tabulate
 
 -- If the function takes the same value at 'i' and 'j', then transposing 'i' and
 -- 'j' then selecting 'j' is the same as selecting 'i'.
 
 select-transpose :
-  ∀ {n} t (i j : Fin n) → lookup t i ≈ lookup t j →
-  ∀ k → (lookup (select 0# j t) ∘ PermC.transpose i j) k
-      ≈  lookup (select 0# i t) k
+  ∀ {n} t (i j : Fin n) → t i ≈ t j →
+  ∀ k → (select 0# j t ∘ PermC.transpose i j) k
+      ≈ select 0# i t k
 select-transpose _ i j e k with k FP.≟ i
 ... | true  because _ rewrite dec-true (j FP.≟ j) P.refl = sym e
 ... | false because [k≢i] with k FP.≟ j
@@ -163,13 +165,13 @@ select-transpose _ i j e k with k FP.≟ i
 
 -- Summing over a pulse gives you the single value picked out by the pulse.
 
-sumₜ-select : ∀ {n i} (t : Table Carrier n) → sumₜ (select 0# i t) ≈ lookup t i
+sumₜ-select : ∀ {n i} (t : Vector Carrier n) → sumₜ (select 0# i t) ≈ t i
 sumₜ-select {suc n} {i} t = begin
-  sumₜ (select 0# i t)                                        ≈⟨ sumₜ-remove {i = i} (select 0# i t) ⟩
-  lookup (select 0# i t) i + sumₜ (remove i (select 0# i t))  ≡⟨ P.cong₂ _+_ (TP.select-lookup t) (sumₜ-cong-≡ (TP.select-remove i t)) ⟩
-  lookup t i + sumₜ (replicate {n = n} 0#)                    ≈⟨ +-congˡ (sumₜ-zero n) ⟩
-  lookup t i + 0#                                             ≈⟨ +-identityʳ _ ⟩
-  lookup t i                                                  ∎
+  sumₜ (select 0# i t)                                 ≈⟨ sumₜ-remove {i = i} (select 0# i t) ⟩
+  select 0# i t i + sumₜ (remove i (select 0# i t))    ≡⟨ P.cong₂ _+_ (VProp.select-lookup t) (sumₜ-cong-≡ (VProp.select-remove i t)) ⟩
+  t i + sumₜ (replicate {n = n} 0#)                    ≈⟨ +-congˡ (sumₜ-zero n) ⟩
+  t i + 0#                                             ≈⟨ +-identityʳ _ ⟩
+  t i                                                  ∎
 
 -- Converting to a table then summing is the same as summing the original list
 
@@ -179,6 +181,6 @@ sumₜ-fromList (x ∷ xs) = P.cong (_ +_) (sumₜ-fromList xs)
 
 -- Converting to a list then summing is the same as summing the original table
 
-sumₜ-toList : ∀ {n} (t : Table Carrier n) → sumₜ t ≡ sumₗ (toList t)
+sumₜ-toList : ∀ {n} (t : Vector Carrier n) → sumₜ t ≡ sumₗ (toList t)
 sumₜ-toList {zero}  _ = P.refl
 sumₜ-toList {suc n} _ = P.cong (_ +_) (sumₜ-toList {n} _)

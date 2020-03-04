@@ -18,7 +18,7 @@ open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.List.Base as List using (List; []; _∷_; _++_)
 open import Data.Fin.Base using (Fin; zero)
 open import Data.Product using (proj₁; proj₂)
-open import Data.Table.Base as Table using (Table)
+open import Data.Vec.Functional as V
 open import Function using (_∘_; _⟨_⟩_)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
@@ -59,15 +59,15 @@ suc n ×′ x = x + n ×′ x
 sumₗ : List Carrier → Carrier
 sumₗ = List.foldr _+_ 0#
 
-sumₜ : ∀ {n} → Table Carrier n → Carrier
-sumₜ = Table.foldr _+_ 0#
+sumₜ : ∀ {n} → Vector Carrier n → Carrier
+sumₜ = V.foldr _+_ 0#
 
 -- An alternative mathematical-style syntax for sumₜ
 
 infixl 10 sumₜ-syntax
 
 sumₜ-syntax : ∀ n → (Fin n → Carrier) → Carrier
-sumₜ-syntax _ = sumₜ ∘ Table.tabulate
+sumₜ-syntax _ = sumₜ
 
 syntax sumₜ-syntax n (λ i → x) = ∑[ i < n ] x
 
