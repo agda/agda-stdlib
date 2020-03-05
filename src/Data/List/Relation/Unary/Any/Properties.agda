@@ -230,13 +230,40 @@ module _ {P : Pred A p} {Q : Pred B q} where
        (Any P xs × Any Q ys) ↔ Any (λ x → Any (λ y → P x × Q y) ys) xs
   ×↔ {xs} {ys} = inverse Any-×⁺ Any-×⁻ from∘to to∘from
     where
+    module Eq = P.≡-Reasoning
+
     from∘to : ∀ pq → Any-×⁻ (Any-×⁺ pq) ≡ pq
-    from∘to (p , q) rewrite
-        find∘map p (λ p → Any.map (λ q → (p , q)) q)
-      | find∘map q (λ q → proj₂ (proj₂ (find p)) , q)
-      | lose∘find p
-      | lose∘find q
-      = refl
+    from∘to (p , q) =
+
+      Any-×⁻ (Any-×⁺ (p , q))
+
+        Eq.≡⟨⟩
+
+      (let (x , x∈xs , pq)    = find (Any-×⁺ (p , q))
+           (y , y∈ys , p , q) = find pq
+       in  lose x∈xs p , lose y∈ys q)
+
+       Eq.≡⟨ P.cong (λ • → let (x , x∈xs , pq)    = •
+                               (y , y∈ys , p , q) = find pq
+                            in  lose x∈xs p , lose y∈ys q)
+                    (find∘map p (λ p → Any.map (p ,_) q)) ⟩
+
+      (let (x , x∈xs , p)     = find p
+           (y , y∈ys , p , q) = find (Any.map (p ,_) q)
+       in  lose x∈xs p , lose y∈ys q)
+
+       Eq.≡⟨ P.cong (λ • → let (x , x∈xs , p)     = find p
+                               (y , y∈ys , p , q) = •
+                           in  lose x∈xs p , lose y∈ys q)
+                    (find∘map q (proj₂ (proj₂ (find p)) ,_)) ⟩
+
+      (let (x , x∈xs , p) = find p
+           (y , y∈ys , q) = find q
+       in  lose x∈xs p , lose y∈ys q)
+
+       Eq.≡⟨ P.cong₂ _,_ (lose∘find p) (lose∘find q) ⟩
+
+      (p , q) Eq.∎
 
     to∘from : ∀ pq → Any-×⁺ {xs} (Any-×⁻ pq) ≡ pq
     to∘from pq
