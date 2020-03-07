@@ -55,27 +55,13 @@ open Builtin public
 ------------------------------------------------------------------------
 -- Type checking monad
 
--- Type errors
-open Builtin public using (ErrorPart; strErr; termErr; nameErr)
-
--- The monad
-open Builtin public
-  using ( TC; bindTC; unify; typeError; inferType; checkType
-        ; normalise; reduce
-        ; catchTC; quoteTC; unquoteTC
-        ; getContext; extendContext; inContext; freshName
-        ; declareDef; declarePostulate; defineFun; getType; getDefinition
-        ; blockOnMeta; commitTC; isMacro; withNormalisation
-        ; debugPrint; noConstraints; runSpeculative)
-  renaming (returnTC to return)
+open import Reflection.TCMonad public
 
 -- Standard monad operators
 
 open import Reflection.TCMonadSyntax public
   using (_>>=_; _>>_)
 
-newMeta : Type → TC Term
-newMeta = checkType unknown
 
 ------------------------------------------------------------------------
 -- Show
