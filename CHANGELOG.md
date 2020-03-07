@@ -900,6 +900,11 @@ Other minor additions
   _<+>_ : String → String → String -- space-introducing append
   ```
   
+* Added utility function to `Function.Base`:
+  ```agda
+  it : {A : Set a} → {{A}} → A
+  ```
+
 Version 2.6.1 changes
 =====================
 

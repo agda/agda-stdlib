@@ -175,3 +175,8 @@ A ∋ x = x
 
 typeOf : {A : Set a} → A → Set a
 typeOf {A = A} _ = A
+
+-- Construct an element of the given type by instance search.
+
+it : {A : Set a} → {{A}} → A
+it {{x}} = x
