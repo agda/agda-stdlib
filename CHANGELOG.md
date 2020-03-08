@@ -235,6 +235,9 @@ discourage their use.
 
 * `Algebra.Solver.Monoid` and `Data.List.Solver`
 
+* The module `Data.Induction.WellFounded.Lexicographic` is deprecated.
+  Please use the proofs in `Data.Product.Relation.Binary.Lex.Strict` instead.
+  
 Deprecated names
 ----------------
 
@@ -742,6 +745,16 @@ Other minor additions
   ⊓-pres-m< : m < n → m < o → m < n ⊓ o
   ```
 
+* Improved the universe polymorphism of 
+  `Data.Product.Relation.Binary.Lex.Strict/NonStrict`
+  so that the equality and order relations need not live at the
+  same universe level.
+
+* Added new proofs to `Data.Product.Relation.Binary.Lex.Strict`:
+  ```
+  ×-wellFounded : WellFounded _<₁_ → WellFounded _<₂_ → WellFounded _<ₗₑₓ_
+  ```
+  
 * Added new proofs to `Data.String.Unsafe`:
   ```agda
   toList-++        : toList (s ++ t) ≡ toList s ++ toList t
@@ -791,6 +804,7 @@ Other minor additions
 
 * Added new proofs to `Induction.WellFounded`:
   ```agda
+  Acc-resp-≈            : Symmetric _≈_ → _<_ Respectsʳ _≈_ → (Acc _<_) Respects _≈_
   some-wfRec-irrelevant : Some.wfRec P f x q ≡ Some.wfRec P f x q'
   wfRecBuilder-wfRec    : All.wfRecBuilder P f x y y<x ≡ All.wfRec P f y
   unfold-wfRec          : All.wfRec P f x ≡ f x λ y _ → All.wfRec P f y
