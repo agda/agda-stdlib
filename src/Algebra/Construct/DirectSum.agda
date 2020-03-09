@@ -141,3 +141,41 @@ idempotentCommutativeMonoid M N = record
   where
   module M = IdempotentCommutativeMonoid M
   module N = IdempotentCommutativeMonoid N
+
+rawGroup : RawGroup c cℓ → RawGroup d dℓ → RawGroup (c ⊔ d) (cℓ ⊔ dℓ)
+rawGroup G H = record
+  { Carrier = G.Carrier × H.Carrier
+  ; _≈_ = Pointwise G._≈_ H._≈_
+  ; _∙_ = zip G._∙_ H._∙_
+  ; ε = G.ε , H.ε
+  ; _⁻¹ = map G._⁻¹ H._⁻¹
+  }
+  where
+  module G = RawGroup G
+  module H = RawGroup H
+
+group : Group c cℓ → Group d dℓ → Group (c ⊔ d) (cℓ ⊔ dℓ)
+group G H = record
+  { _⁻¹ = map G._⁻¹ H._⁻¹
+  ; isGroup = record
+    { isMonoid = Monoid.isMonoid (monoid G.monoid H.monoid)
+    ; inverse = (λ x → (G.inverseˡ , H.inverseˡ) <*> x)
+              , (λ x → (G.inverseʳ , H.inverseʳ) <*> x)
+    ; ⁻¹-cong = map G.⁻¹-cong H.⁻¹-cong
+    }
+  }
+  where
+  module G = Group G
+  module H = Group H
+
+abelianGroup : AbelianGroup c cℓ → AbelianGroup d dℓ →
+               AbelianGroup (c ⊔ d) (cℓ ⊔ dℓ)
+abelianGroup G H = record
+  { isAbelianGroup = record
+    { isGroup = Group.isGroup (group G.group H.group)
+    ; comm = λ x y → (G.comm , H.comm) <*> x <*> y
+    }
+  }
+  where
+  module G = AbelianGroup G
+  module H = AbelianGroup H
