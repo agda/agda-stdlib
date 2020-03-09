@@ -19,7 +19,7 @@ module Relation.Binary.Morphism.RelMonomorphism
   {⟦_⟧ : A → B} (isMonomorphism : IsRelMonomorphism _∼₁_ _∼₂_ ⟦_⟧)
   where
 
-open import Data.Sum as Sum
+open import Data.Sum.Base as Sum
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable
 

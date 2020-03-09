@@ -8,11 +8,19 @@
 
 {-# OPTIONS --without-K --safe #-}
 
+-- Disabled to prevent warnings from Data.BoundedVec.Inefficient
+{-# OPTIONS --warn=noUserWarning #-}
+
 module Data.BoundedVec where
 
-open import Data.Nat
+{-# WARNING_ON_IMPORT
+"Data.BoundedVec was deprecated in v1.2.
+Use Data.Vec.Bounded instead."
+#-}
+
+open import Data.Nat.Base
 open import Data.List.Base as List using (List)
-open import Data.Vec as Vec using (Vec)
+open import Data.Vec.Base as Vec using (Vec)
 import Data.BoundedVec.Inefficient as Ineff
 open import Relation.Binary.PropositionalEquality
 open import Data.Nat.Solver

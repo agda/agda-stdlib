@@ -10,7 +10,7 @@ module Relation.Binary.PropositionalEquality where
 
 open import Algebra
 open import Algebra.Structures
-open import Algebra.FunctionProperties
+open import Algebra.Definitions
 import Axiom.Extensionality.Propositional as Ext
 open import Axiom.UniquenessOfIdentityProofs
 open import Function.Base

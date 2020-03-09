@@ -12,11 +12,10 @@ import Algebra.Operations.Semiring as SemiringOps
 open import Data.Maybe.Base using (Maybe; just; nothing; map)
 
 module Algebra.Solver.Ring.NaturalCoefficients
-         {r₁ r₂}
-         (R : CommutativeSemiring r₁ r₂)
-         (dec : let open CommutativeSemiring R
-                    open SemiringOps semiring in
-                ∀ m n → Maybe (m × 1# ≈ n × 1#)) where
+  {r₁ r₂} (R : CommutativeSemiring r₁ r₂)
+  (open CommutativeSemiring R)
+  (open SemiringOps semiring)
+  (dec : ∀ m n → Maybe (m × 1# ≈ n × 1#)) where
 
 import Algebra.Solver.Ring
 open import Algebra.Solver.Ring.AlmostCommutativeRing
@@ -25,8 +24,6 @@ open import Data.Product using (module Σ)
 open import Function
 open import Relation.Binary.PropositionalEquality using (_≡_)
 
-open CommutativeSemiring R
-open SemiringOps semiring
 open import Relation.Binary.Reasoning.Setoid setoid
 
 private

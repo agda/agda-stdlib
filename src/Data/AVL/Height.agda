@@ -10,7 +10,7 @@
 module Data.AVL.Height where
 
 open import Data.Nat.Base
-open import Data.Fin using (Fin; zero; suc)
+open import Data.Fin.Base using (Fin; zero; suc)
 
 ℕ₂ = Fin 2
 pattern 0# = zero

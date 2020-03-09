@@ -13,9 +13,17 @@ module Relation.Binary.Reasoning.Base.Single
   (refl : Reflexive _∼_) (trans : Transitive _∼_)
   where
 
+------------------------------------------------------------------------
+-- Reasoning combinators
+
+-- Re-export combinators from partial reasoning
+
 open import Relation.Binary.Reasoning.Base.Partial _∼_ trans public
+  hiding (_∎⟨_⟩)
+
+-- Redefine the terminating combinator now that we have reflexivity
 
 infix  3 _∎
 
 _∎ : ∀ x → x IsRelatedTo x
-x ∎ = x ∎⟨ refl ⟩
+x ∎ = relTo refl

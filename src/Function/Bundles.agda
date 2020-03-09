@@ -189,6 +189,51 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       }
 
 
+  record BiEquivalence : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      f     : A → B
+      g₁    : B → A
+      g₂    : B → A
+      cong₁ : f Preserves _≈₁_ ⟶ _≈₂_
+      cong₂ : g₁ Preserves _≈₂_ ⟶ _≈₁_
+      cong₃ : g₂ Preserves _≈₂_ ⟶ _≈₁_
+
+
+  record BiInverse : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      f         : A → B
+      g₁        : B → A
+      g₂        : B → A
+      cong₁     : f Preserves _≈₁_ ⟶ _≈₂_
+      cong₂     : g₁ Preserves _≈₂_ ⟶ _≈₁_
+      cong₃     : g₂ Preserves _≈₂_ ⟶ _≈₁_
+      inverseˡ  : Inverseˡ f g₁
+      inverseʳ  : Inverseʳ f g₂
+
+    f-isCongruent : IsCongruent f
+    f-isCongruent = record
+      { cong           = cong₁
+      ; isEquivalence₁ = isEquivalence From
+      ; isEquivalence₂ = isEquivalence To
+      }
+
+    isBiInverse : IsBiInverse f g₁ g₂
+    isBiInverse = record
+      { f-isCongruent = f-isCongruent
+      ; cong₂         = cong₂
+      ; inverseˡ      = inverseˡ
+      ; cong₃         = cong₃
+      ; inverseʳ      = inverseʳ
+      }
+
+    biEquivalence : BiEquivalence
+    biEquivalence = record
+      { cong₁ = cong₁
+      ; cong₂ = cong₂
+      ; cong₃ = cong₃
+      }
+
+
   record Inverse : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       f         : A → B
@@ -231,7 +276,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
 ------------------------------------------------------------------------
 -- Bundles specialised for propositional equality
 
-infix 3 _↣_ _↠_ _⤖_ _⇔_ _↩_ _↪_ _↔_
+infix 3 _↣_ _↠_ _⤖_ _⇔_ _↩_ _↪_ _↩↪_ _↔_
 
 _↣_ : Set a → Set b → Set _
 A ↣ B = Injection (≡.setoid A) (≡.setoid B)
@@ -250,6 +295,9 @@ A ↩ B = LeftInverse (≡.setoid A) (≡.setoid B)
 
 _↪_ : Set a → Set b → Set _
 A ↪ B = RightInverse (≡.setoid A) (≡.setoid B)
+
+_↩↪_ : Set a → Set b → Set _
+A ↩↪ B = BiInverse (≡.setoid A) (≡.setoid B)
 
 _↔_ : Set a → Set b → Set _
 A ↔ B = Inverse (≡.setoid A) (≡.setoid B)
@@ -305,6 +353,19 @@ module _ {A : Set a} {B : Set b} where
     ; g        = g
     ; cong₁    = ≡.cong f
     ; cong₂    = ≡.cong g
+    ; inverseʳ = invʳ
+    }
+
+  mk↩↪ : ∀ {f : A → B} {g₁ : B → A} {g₂ : B → A}
+    → Inverseˡ f g₁ → Inverseʳ f g₂ → A ↩↪ B
+  mk↩↪ {f} {g₁} {g₂} invˡ invʳ = record
+    { f        = f
+    ; g₁       = g₁
+    ; g₂       = g₂
+    ; cong₁    = ≡.cong f
+    ; cong₂    = ≡.cong g₁
+    ; cong₃    = ≡.cong g₂
+    ; inverseˡ = invˡ
     ; inverseʳ = invʳ
     }
 

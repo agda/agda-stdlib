@@ -16,7 +16,7 @@ open import Algebra.Definitions
 import Algebra.Construct.NaturalChoice.Min as Min
 import Algebra.Construct.NaturalChoice.Max as Max
 open import Data.Product using (_×_; _,_)
-open import Data.Sum using (_⊎_; inj₁; inj₂)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Level using (Level)
 open import Relation.Binary.PropositionalEquality using (_≡_)
 

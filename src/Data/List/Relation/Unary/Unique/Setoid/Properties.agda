@@ -8,15 +8,15 @@
 
 module Data.List.Relation.Unary.Unique.Setoid.Properties where
 
-open import Data.Fin using (Fin)
-open import Data.List
+open import Data.Fin.Base using (Fin)
+open import Data.List.Base
 open import Data.List.Relation.Binary.Disjoint.Setoid
 open import Data.List.Relation.Binary.Disjoint.Setoid.Properties
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.List.Relation.Unary.AllPairs as AllPairs using (AllPairs)
 open import Data.List.Relation.Unary.Unique.Setoid
 import Data.List.Relation.Unary.AllPairs.Properties as AllPairs
-open import Data.Nat
+open import Data.Nat.Base
 open import Function using (_∘_)
 open import Relation.Binary using (Rel; Setoid)
 open import Relation.Binary.PropositionalEquality using (_≡_)

@@ -12,7 +12,11 @@ cache:
 
 matrix:
   include:
-    - env: TEST=MAIN GHC_VER=8.4.4 BUILD=CABAL CABAL_VER=2.2
+    - env:
+        GHC_VER=8.4.4
+        CABAL_VER=2.2
+        ALEX_VER=3.2.5
+        HAPPY_VER=1.19.12
       addons:
         apt:
           packages:
@@ -22,14 +26,41 @@ matrix:
             - hvr-ghc
 
 before_install:
-  - export PATH=/opt/ghc/$GHC_VER/bin:/opt/cabal/$CABAL_VER/bin:/opt/alex/3.1.7/bin:/opt/happy/1.19.5/bin:~/.cabal/bin/:$PATH;
+  - export PATH=/opt/ghc/$GHC_VER/bin:/opt/cabal/$CABAL_VER/bin:/opt/alex/$ALEX_VER/bin:/opt/happy/$HAPPY_VER/bin:~/.cabal/bin/:$PATH;
 
 install:
   - cabal update
   - sed -i 's/^jobs:/-- jobs:/' $HOME/.cabal/config
+
+  # installing dependencies
+  - cabal install alex-$ALEX_VER happy-$HAPPY_VER cpphs
+
+  # installing Agda
+  # Even if there seems to be duplicated code for master & experimental,
+  # DO NOT refactor: they regularly get out of sync (typically master
+  # builds with the released version while experimental uses some dev
+  # version).
+
+  # No matter the path, we should generate a $HOME/installplan.txt to
+  # check whether the cache needs updating.
+
+  - if [[ $TRAVIS_BRANCH = "master" ]]; then
+       cd ../ &&
+       git clone https://github.com/agda/agda &&
+       cd agda &&
+       git checkout 08dd23df8dd894737af98463f0b3f69d616e7b48 &&
+       cabal install --only-dependencies --dry -v > $HOME/installplan.txt ;
+    fi
+
+  - if [[ $TRAVIS_BRANCH = "experimental" ]]; then
+       cd ../ &&
+       git clone https://github.com/agda/agda &&
+       cd agda &&
+       git checkout c2d5ec4b2403c68d615b81258d6131774e492797 &&
+       cabal install --only-dependencies --dry -v > $HOME/installplan.txt ;
+    fi
+
   # checking whether .ghc is still valid
-  - cabal install alex happy
-  - cabal install --only-dependencies --dry -v > $HOME/installplan.txt
   - sed -i -e '1,/^Resolving /d' $HOME/installplan.txt; cat $HOME/installplan.txt
   - touch $HOME/.cabsnap/installplan.txt
   - mkdir -p $HOME/.cabsnap/ghc $HOME/.cabsnap/lib $HOME/.cabsnap/share $HOME/.cabsnap/bin
@@ -44,22 +75,40 @@ install:
       rm -rf $HOME/.cabsnap;
       mkdir -p $HOME/.ghc $HOME/.cabal/lib $HOME/.cabal/share $HOME/.cabal/bin;
     fi
-  - cabal install cpphs
-  - cabal install Agda
+
+  - if [[ $TRAVIS_BRANCH = "master" ]]; then
+      cabal install ;
+    fi
+
+  - if [[ $TRAVIS_BRANCH = "experimental" ]]; then
+      cabal install ;
+    fi
+
   # snapshot package-db on cache miss
   - echo "snapshotting package-db to build-cache";
     mkdir $HOME/.cabsnap;
     cp -a $HOME/.ghc $HOME/.cabsnap/ghc;
     cp -a $HOME/.cabal/lib $HOME/.cabal/share $HOME/.cabal/bin $HOME/installplan.txt $HOME/.cabsnap/;
-  # installing fix-agda-whitespace
-  - git clone https://github.com/agda/agda --depth=1
-  - cd agda/src/fix-agda-whitespace
-  - cabal install fix-agda-whitespace.cabal
-  - cd -
-  - yes | rm -R agda/
+
+  - if [[ $TRAVIS_BRANCH = "master" ]]; then
+      cd ../ ;
+    fi
+
+  - if [[ $TRAVIS_BRANCH = "experimental" ]]; then
+      cd ../ ;
+    fi
+
+  # installing fix-whitespace
+  - git clone https://github.com/agda/fix-whitespace --depth=1
+  - cd fix-whitespace
+  - cabal install fix-whitespace.cabal
+  - cd ../
+
   # generating Everything.agda
+  - cd agda-stdlib
   - cabal install lib.cabal
   - runghc GenerateEverything.hs
+
   # setting up travis-specific scripts and files
   - cp travis/* .
 
@@ -70,7 +119,7 @@ script:
   # generating index.agda
   - ./index.sh
   # detecting whitespace violations
-  - make check-whitespace
+  - fix-whitespace --check
   # expose the value of RTS_OPTIONS
   - echo $RTS_OPTIONS
   # checking safe modules build with --safe
@@ -83,8 +132,14 @@ script:
   # building the docs
   - agda $RTS_OPTIONS -i . -i src/ --html safe.agda
   - agda $RTS_OPTIONS -i . -i src/ --html index.agda
-  # moving everything to the doc directory
-  - mv html/* .
+
+  # moving everything to the appropriate directory
+  - if [[ $TRAVIS_BRANCH = "master" ]]; then
+      mv html/* . ;
+    fi
+  - if [[ $TRAVIS_BRANCH = "experimental" ]]; then
+      mv html/* experimental/ ;
+    fi
 
 after_success:
   # uploading to gh-pages
@@ -93,11 +148,16 @@ after_success:
   - git config --global user.email "travis-ci-bot@travis.fake"
   - git remote add upstream https://$GH_TOKEN@github.com/agda/agda-stdlib.git &>/dev/null
   - git fetch upstream && git reset upstream/gh-pages
-  - git checkout HEAD -- v0.16/ v0.17/ v1.0/ v1.1/ experimental/
+  - if [[ $TRAVIS_BRANCH = "master" ]]; then
+      git checkout HEAD -- v0.16/ v0.17/ v1.0/ v1.1/ v1.2/ experimental/ ;
+    fi
+  - if [[ $TRAVIS_BRANCH = "experimental" ]]; then
+      git checkout HEAD -- *.html v0.16/ v0.17/ v1.0/ v1.1/ v1.2/ ;
+    fi
   - git add -f \*.html
   - git commit -m "Automatic HTML update via Travis"
-  - if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS_BRANCH" = "master" ];
-    then git push -q upstream HEAD:gh-pages &>/dev/null;
+  - if [[ $TRAVIS_PULL_REQUEST = "false" && ($TRAVIS_BRANCH = "master" || $TRAVIS_BRANCH = "experimental") ]]; then
+       git push -q upstream HEAD:gh-pages &>/dev/null;
     fi
 
 notifications:

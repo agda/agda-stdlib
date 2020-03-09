@@ -6,6 +6,9 @@
 
 {-# OPTIONS --without-K --safe #-}
 
+-- Disabled to prevent warnings from deprecated Table
+{-# OPTIONS --warn=noUserWarning #-}
+
 open import Algebra.Bundles
 
 module Algebra.Properties.CommutativeMonoid
@@ -18,9 +21,9 @@ open import Function
 open import Function.Equality using (_⟨$⟩_)
 open import Data.Product
 open import Data.Bool.Base using (Bool; true; false)
-open import Data.Nat using (ℕ; zero; suc)
-open import Data.Fin using (Fin; zero; suc)
-open import Data.List as List using ([]; _∷_)
+open import Data.Nat.Base using (ℕ; zero; suc)
+open import Data.Fin.Base using (Fin; zero; suc)
+open import Data.List.Base as List using ([]; _∷_)
 import Data.Fin.Properties as FP
 open import Data.Fin.Permutation as Perm using (Permutation; Permutation′; _⟨$⟩ˡ_; _⟨$⟩ʳ_)
 open import Data.Fin.Permutation.Components as PermC

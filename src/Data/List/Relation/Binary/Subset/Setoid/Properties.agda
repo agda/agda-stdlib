@@ -10,8 +10,8 @@ open import Relation.Binary hiding (Decidable)
 
 module Data.List.Relation.Binary.Subset.Setoid.Properties where
 
-open import Data.Bool using (Bool; true; false)
-open import Data.List
+open import Data.Bool.Base using (Bool; true; false)
+open import Data.List.Base
 open import Data.List.Relation.Unary.Any using (here; there)
 import Data.List.Membership.Setoid as Membership
 open import Data.List.Membership.Setoid.Properties
@@ -55,17 +55,27 @@ module _ {a ℓ} (S : Setoid a ℓ) where
 
   -- Reasoning over subsets
   module ⊆-Reasoning where
-    open PreorderReasoning ⊆-preorder public
-      renaming
-      ( _∼⟨_⟩_  to _⊆⟨_⟩_
-      ; _≈⟨_⟩_  to _≋⟨_⟩_
-      ; _≈˘⟨_⟩_ to _≋˘⟨_⟩_
-      ; _≈⟨⟩_   to _≋⟨⟩_
-      )
+    private
+      module Base = PreorderReasoning ⊆-preorder
 
-    infix 1 _∈⟨_⟩_
-    _∈⟨_⟩_ : ∀ x {xs ys} → x ∈ xs → xs IsRelatedTo ys → x ∈ ys
-    x ∈⟨ x∈xs ⟩ xs⊆ys = (begin xs⊆ys) x∈xs
+    open Base public
+      hiding (step-∼; step-≈; step-≈˘)
+      renaming (_≈⟨⟩_ to _≋⟨⟩_)
+
+    infix 2 step-⊆ step-≋ step-≋˘
+    infix 1 step-∈
+
+    step-∈ : ∀ x {xs ys} → xs IsRelatedTo ys → x ∈ xs → x ∈ ys
+    step-∈ x xs⊆ys x∈xs = (begin xs⊆ys) x∈xs
+
+    step-⊆  = Base.step-∼
+    step-≋  = Base.step-≈
+    step-≋˘ = Base.step-≈˘
+
+    syntax step-∈  x  xs⊆ys x∈xs  = x  ∈⟨  x∈xs  ⟩ xs⊆ys
+    syntax step-⊆  xs ys⊆zs xs⊆ys = xs ⊆⟨  xs⊆ys ⟩ ys⊆zs
+    syntax step-≋  xs ys⊆zs xs≋ys = xs ≋⟨  xs≋ys ⟩ ys⊆zs
+    syntax step-≋˘ xs ys⊆zs xs≋ys = xs ≋˘⟨ xs≋ys ⟩ ys⊆zs
 
 ------------------------------------------------------------------------
 -- filter

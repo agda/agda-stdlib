@@ -11,12 +11,12 @@
 open import Algebra
 
 open import Data.Bool as Bool using (Bool; true; false; if_then_else_; _∨_)
-open import Data.Fin using (Fin; zero; suc)
-open import Data.Maybe as Maybe
+open import Data.Fin.Base using (Fin; zero; suc)
+open import Data.Maybe.Base as Maybe
   using (Maybe; decToMaybe; From-just; from-just)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _+_)
 open import Data.Product using (_×_; uncurry)
-open import Data.Vec using (Vec; []; _∷_; lookup; replicate)
+open import Data.Vec.Base using (Vec; []; _∷_; lookup; replicate)
 
 open import Function using (_∘_)
 
@@ -174,7 +174,7 @@ normalise-correct (e₁ ⊕ e₂) ρ = begin
   ∎
 
 ------------------------------------------------------------------------
--- "Tactics"
+-- "Tactic.
 
 open module R = Reflection
                   setoid var ⟦_⟧ (⟦_⟧⇓ ∘ normalise) normalise-correct

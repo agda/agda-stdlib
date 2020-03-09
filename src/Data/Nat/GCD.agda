@@ -8,7 +8,7 @@
 
 module Data.Nat.GCD where
 
-open import Data.Nat
+open import Data.Nat.Base
 open import Data.Nat.Divisibility
 open import Data.Nat.DivMod
 open import Data.Nat.GCD.Lemmas
@@ -16,7 +16,7 @@ open import Data.Nat.Properties
 open import Data.Nat.Induction
   using (Acc; acc; <′-Rec; <′-recBuilder; <-wellFounded)
 open import Data.Product
-open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Function
 open import Induction using (build)
 open import Induction.Lexicographic using (_⊗_; [_⊗_])

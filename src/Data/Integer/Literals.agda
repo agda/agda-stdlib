@@ -11,7 +11,7 @@ module Data.Integer.Literals where
 open import Agda.Builtin.FromNat
 open import Agda.Builtin.FromNeg
 open import Data.Unit
-open import Data.Integer
+open import Data.Integer.Base
 
 number : Number ℤ
 number = record

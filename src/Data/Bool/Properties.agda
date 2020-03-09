@@ -12,7 +12,7 @@ open import Algebra.Bundles
 open import Data.Bool.Base
 open import Data.Empty
 open import Data.Product
-open import Data.Sum
+open import Data.Sum.Base
 open import Function.Base
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence
@@ -306,11 +306,16 @@ true  <? _     = no  (λ())
   { isSemilattice = ∨-isSemilattice
   }
 
+∨-isMonoid : IsMonoid _∨_ false
+∨-isMonoid = record
+  { isSemigroup = ∨-isSemigroup
+  ; identity = ∨-identity
+  }
+
 ∨-isCommutativeMonoid : IsCommutativeMonoid _∨_ false
 ∨-isCommutativeMonoid = record
-  { isSemigroup = ∨-isSemigroup
-  ; identityˡ   = ∨-identityˡ
-  ; comm        = ∨-comm
+  { isMonoid = ∨-isMonoid
+  ; comm = ∨-comm
   }
 
 ∨-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
@@ -464,11 +469,16 @@ true  <? _     = no  (λ())
   { isSemilattice = ∧-isSemilattice
   }
 
+∧-isMonoid : IsMonoid _∧_ true
+∧-isMonoid = record
+  { isSemigroup = ∧-isSemigroup
+  ; identity = ∧-identity
+  }
+
 ∧-isCommutativeMonoid : IsCommutativeMonoid _∧_ true
 ∧-isCommutativeMonoid = record
-  { isSemigroup = ∧-isSemigroup
-  ; identityˡ   = ∧-identityˡ
-  ; comm        = ∧-comm
+  { isMonoid = ∧-isMonoid
+  ; comm = ∧-comm
   }
 
 ∧-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
@@ -488,13 +498,21 @@ true  <? _     = no  (λ())
   { isIdempotentCommutativeMonoid = ∧-isIdempotentCommutativeMonoid
   }
 
+∨-∧-isSemiring : IsSemiring _∨_ _∧_ false true
+∨-∧-isSemiring = record
+  { isSemiringWithoutAnnihilatingZero = record
+    { +-isCommutativeMonoid = ∨-isCommutativeMonoid
+    ; *-isMonoid = ∧-isMonoid
+    ; distrib = ∧-distrib-∨
+    }
+  ; zero = ∧-zero
+  }
+
 ∨-∧-isCommutativeSemiring
   : IsCommutativeSemiring _∨_ _∧_ false true
 ∨-∧-isCommutativeSemiring = record
-  { +-isCommutativeMonoid = ∨-isCommutativeMonoid
-  ; *-isCommutativeMonoid = ∧-isCommutativeMonoid
-  ; distribʳ = ∧-distribʳ-∨
-  ; zeroˡ    = ∧-zeroˡ
+  { isSemiring = ∨-∧-isSemiring
+  ; *-comm = ∧-comm
   }
 
 ∨-∧-commutativeSemiring : CommutativeSemiring 0ℓ 0ℓ
@@ -506,13 +524,21 @@ true  <? _     = no  (λ())
   ; isCommutativeSemiring = ∨-∧-isCommutativeSemiring
   }
 
+∧-∨-isSemiring : IsSemiring _∧_ _∨_ true false
+∧-∨-isSemiring = record
+  { isSemiringWithoutAnnihilatingZero = record
+    { +-isCommutativeMonoid = ∧-isCommutativeMonoid
+    ; *-isMonoid = ∨-isMonoid
+    ; distrib = ∨-distrib-∧
+    }
+  ; zero = ∨-zero
+  }
+
 ∧-∨-isCommutativeSemiring
   : IsCommutativeSemiring _∧_ _∨_ true false
 ∧-∨-isCommutativeSemiring = record
-  { +-isCommutativeMonoid = ∧-isCommutativeMonoid
-  ; *-isCommutativeMonoid = ∨-isCommutativeMonoid
-  ; distribʳ = ∨-distribʳ-∧
-  ; zeroˡ    = ∨-zeroˡ
+  { isSemiring = ∧-∨-isSemiring
+  ; *-comm = ∨-comm
   }
 
 ∧-∨-commutativeSemiring : CommutativeSemiring 0ℓ 0ℓ

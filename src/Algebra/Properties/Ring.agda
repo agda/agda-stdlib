@@ -42,7 +42,7 @@ open AbelianGroupProperties +-abelianGroup public
   )
 
 ------------------------------------------------------------------------
--- Ring properties
+-- Properties of -_
 
 -‿distribˡ-* : ∀ x y → - (x * y) ≈ - x * y
 -‿distribˡ-* x y = sym $ begin

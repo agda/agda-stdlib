@@ -11,8 +11,8 @@ module Data.List.Membership.Propositional.Properties where
 open import Algebra using (Op₂; Selective)
 open import Category.Monad using (RawMonad)
 open import Data.Bool.Base using (Bool; false; true; T)
-open import Data.Fin using (Fin)
-open import Data.List as List
+open import Data.Fin.Base using (Fin)
+open import Data.List.Base as List
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Relation.Unary.Any.Properties
 open import Data.List.Membership.Propositional
@@ -20,12 +20,12 @@ import Data.List.Membership.Setoid.Properties as Membershipₛ
 open import Data.List.Relation.Binary.Equality.Propositional
   using (_≋_; ≡⇒≋; ≋⇒≡)
 open import Data.List.Categorical using (monad)
-open import Data.Nat using (ℕ; zero; suc; pred; s≤s; _≤_; _<_; _≤?_)
+open import Data.Nat.Base using (ℕ; zero; suc; pred; s≤s; _≤_; _<_)
 open import Data.Nat.Properties
 open import Data.Product hiding (map)
 open import Data.Product.Function.NonDependent.Propositional using (_×-cong_)
 import Data.Product.Function.Dependent.Propositional as Σ
-open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Function.Base
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence using (module Equivalence)
@@ -34,13 +34,13 @@ open import Function.Inverse as Inv using (_↔_; module Inverse)
 import Function.Related as Related
 open import Function.Related.TypeIsomorphisms
 open import Level using (Level)
-open import Relation.Binary hiding (Decidable)
+open import Relation.Binary as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; trans; cong; subst; →-to-⟶; _≗_)
 import Relation.Binary.Properties.DecTotalOrder as DTOProperties
 open import Relation.Unary using (_⟨×⟩_; Decidable)
 open import Relation.Nullary.Reflects using (invert)
-open import Relation.Nullary using (¬_; Dec; does; yes; no)
+open import Relation.Nullary using (¬_; Dec; does; yes; no; _because_)
 open import Relation.Nullary.Negation
 
 private
@@ -178,6 +178,25 @@ module _ {p} {P : A → Set p} (P? : Decidable P) where
 
   ∈-filter⁻ : ∀ {v xs} → v ∈ filter P? xs → v ∈ xs × P v
   ∈-filter⁻ = Membershipₛ.∈-filter⁻ (P.setoid A) P? (P.subst P)
+
+------------------------------------------------------------------------
+-- derun and deduplicate
+
+module _ {r} {R : Rel A r} (R? : B.Decidable R) where
+
+  ∈-derun⁻ : ∀ xs {z} → z ∈ derun R? xs → z ∈ xs
+  ∈-derun⁻ xs z∈derun[R,xs] = Membershipₛ.∈-derun⁻ (P.setoid A) R? xs z∈derun[R,xs]
+
+  ∈-deduplicate⁻ : ∀ xs {z} → z ∈ deduplicate R? xs → z ∈ xs
+  ∈-deduplicate⁻ xs z∈dedup[R,xs] = Membershipₛ.∈-deduplicate⁻ (P.setoid A) R? xs z∈dedup[R,xs]
+
+module _ (_≈?_ : B.Decidable {A = A} _≡_) where
+
+  ∈-derun⁺ : ∀ {xs z} → z ∈ xs → z ∈ derun _≈?_ xs
+  ∈-derun⁺ z∈xs = Membershipₛ.∈-derun⁺ (P.setoid A) _≈?_ (flip trans) z∈xs
+
+  ∈-deduplicate⁺ : ∀ {xs z} → z ∈ xs → z ∈ deduplicate _≈?_ xs
+  ∈-deduplicate⁺ z∈xs = Membershipₛ.∈-deduplicate⁺ (P.setoid A) _≈?_ (λ c≡b a≡b → trans a≡b (sym c≡b)) z∈xs
 
 ------------------------------------------------------------------------
 -- _>>=_

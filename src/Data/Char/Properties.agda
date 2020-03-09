@@ -8,7 +8,7 @@
 
 module Data.Char.Properties where
 
-open import Data.Bool using (Bool)
+open import Data.Bool.Base using (Bool)
 open import Data.Char.Base
 
 import Data.Nat.Base as ℕ

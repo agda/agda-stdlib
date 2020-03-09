@@ -9,9 +9,9 @@
 
 module Data.Vec.Properties.WithK where
 
-open import Data.Nat
+open import Data.Nat.Base
 open import Data.Nat.Properties using (+-assoc)
-open import Data.Vec
+open import Data.Vec.Base
 open import Relation.Binary.PropositionalEquality as P using (_≡_; refl)
 open import Relation.Binary.HeterogeneousEquality as H using (_≅_; refl)
 

@@ -10,7 +10,7 @@ open import Level
 
 module Data.Sum.Categorical.Right (a : Level) {b} (B : Set b) where
 
-open import Data.Sum
+open import Data.Sum.Base
 open import Category.Functor
 open import Category.Applicative
 open import Category.Monad

@@ -15,8 +15,9 @@ open import Data.Product
 open import Data.String
 open import Function using (flip)
 open import Level
-import Record
 open import Relation.Binary
+
+import Data.Record as Record
 
 -- Let us use strings as labels.
 

@@ -8,7 +8,7 @@
 
 module Codata.Cofin.Literals where
 
-open import Data.Nat
+open import Data.Nat.Base
 open import Agda.Builtin.FromNat
 open import Codata.Conat
 open import Codata.Conat.Properties

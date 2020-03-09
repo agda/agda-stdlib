@@ -11,13 +11,13 @@ module Data.Nat.Binary.Properties where
 open import Algebra.Bundles
 open import Algebra.Morphism.Structures
 import Algebra.Morphism.MonoidMonomorphism as MonoidMonomorphism
-open import Algebra.FunctionProperties.Consequences.Propositional
+open import Algebra.Consequences.Propositional
 open import Data.Nat.Binary.Base
 open import Data.Nat as ℕ using (ℕ; z≤n; s≤s)
 import Data.Nat.Properties as ℕₚ
 open import Data.Nat.Solver
 open import Data.Product using (_,_; proj₁; proj₂; ∃)
-open import Data.Sum using (_⊎_; inj₁; inj₂)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function using (_∘_; _$_; id)
 open import Function.Definitions using (Injective)
 open import Function.Definitions.Core2 using (Surjective)
@@ -285,8 +285,8 @@ toℕ-isMonomorphism-< = record
 <-trans (odd<odd x<y) (odd<even (inj₂ refl))   =  odd<even (inj₁ x<y)
 <-trans (odd<odd x<y) (odd<odd y<z)            =  odd<odd (<-trans x<y y<z)
 
--- Comparisons and decidability are not implemented via the morphism so as
--- to avoid reverting to linear time for the decision procedures.
+-- Should not be implemented via the morphism `toℕ` in order to
+-- preserve O(log n) time requirement.
 <-cmp : Trichotomous _≡_ _<_
 <-cmp zero     zero      = tri≈ x≮0    refl  x≮0
 <-cmp zero     2[1+ _ ]  = tri< 0<even (λ()) x≮0
@@ -456,8 +456,8 @@ toℕ-isMonomorphism-≤ = record
 ... | tri≈ _  x≡y _   = inj₁ (≤-reflexive x≡y)
 ... | tri> _  _   y<x = inj₂ (<⇒≤ y<x)
 
--- Decidability is not implemented via the morphism so as to avoid
--- reverting to linear time for the decision procedure.
+-- Should not be implemented via the morphism `toℕ` in order to
+-- preserve O(log n) time requirement.
 _≤?_ : Decidable _≤_
 x ≤? y with <-cmp x y
 ... | tri< x<y _   _   = yes (<⇒≤ x<y)
@@ -520,14 +520,12 @@ x ≤? y with <-cmp x y
 ------------------------------------------------------------------------------
 -- Equational reasoning for _≤_ and _<_
 
-module ≤-Reasoning where
-  open InequalityReasoning
-    ≤-isPreorder
-    <-trans
-    (resp₂ _<_) <⇒≤
-    <-≤-trans ≤-<-trans
-    public
-    hiding (_≈⟨_⟩_; _≈˘⟨_⟩_)
+module ≤-Reasoning = InequalityReasoning
+  ≤-isPreorder
+  <-trans
+  (resp₂ _<_) <⇒≤
+  <-≤-trans ≤-<-trans
+  hiding (step-≈; step-≈˘)
 
 ------------------------------------------------------------------------------
 -- Properties of _<ℕ_
@@ -1045,10 +1043,8 @@ private
 
 *-+-isCommutativeSemiring : IsCommutativeSemiring _+_ _*_ zero 1ᵇ
 *-+-isCommutativeSemiring = record
-  { +-isCommutativeMonoid = +-0-isCommutativeMonoid
-  ; *-isCommutativeMonoid = *-1-isCommutativeMonoid
-  ; distribʳ              = *-distribʳ-+
-  ; zeroˡ                 = *-zeroˡ
+  { isSemiring = *-+-isSemiring
+  ; *-comm = *-comm
   }
 
 ------------------------------------------------------------------------

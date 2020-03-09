@@ -13,3 +13,8 @@ module Data.List.Relation.Subset.Setoid
   {c ℓ} (S : Setoid c ℓ) where
 
 open import Data.List.Relation.Binary.Subset.Setoid S public
+
+{-# WARNING_ON_IMPORT
+"Data.List.Relation.Subset.Setoid was deprecated in v1.0.
+Use Data.List.Relation.Binary.Subset.Setoid instead."
+#-}

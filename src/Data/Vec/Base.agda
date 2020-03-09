@@ -46,6 +46,9 @@ data _[_]=_ {A : Set a} : ∀ {n} → Vec A n → Fin n → A → Set a where
 ------------------------------------------------------------------------
 -- Basic operations
 
+length : ∀ {n} → Vec A n → ℕ
+length {n = n} _ = n
+
 head : ∀ {n} → Vec A (1 + n) → A
 head (x ∷ xs) = x
 
@@ -247,6 +250,9 @@ split []           = ([]     , [])
 split (x ∷ [])     = (x ∷ [] , [])
 split (x ∷ y ∷ xs) = Prod.map (x ∷_) (y ∷_) (split xs)
 
+uncons : ∀ {n} → Vec A (suc n) → A × Vec A n
+uncons (x ∷ xs) = x , xs
+
 ------------------------------------------------------------------------
 -- Operations for converting between lists
 
@@ -284,3 +290,10 @@ init .(ys ∷ʳ y) | (ys , y , refl) = ys
 last : ∀ {n} → Vec A (1 + n) → A
 last xs         with initLast xs
 last .(ys ∷ʳ y) | (ys , y , refl) = y
+
+------------------------------------------------------------------------
+-- Other operations
+
+transpose : ∀ {m n} → Vec (Vec A n) m → Vec (Vec A m) n
+transpose []         = replicate []
+transpose (as ∷ ass) = replicate _∷_ ⊛ as ⊛ transpose ass

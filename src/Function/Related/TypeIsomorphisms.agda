@@ -10,12 +10,13 @@
 module Function.Related.TypeIsomorphisms where
 
 open import Algebra
+open import Algebra.Structures.Biased using (isCommutativeSemiringˡ)
 open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Bool.Base using (true; false)
 open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Product as Prod hiding (swap)
 open import Data.Product.Function.NonDependent.Propositional
-open import Data.Sum as Sum
+open import Data.Sum.Base as Sum
 open import Data.Sum.Properties using (swap-involutive)
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
 open import Data.Unit using (⊤)
@@ -163,9 +164,8 @@ open import Relation.Nullary.Decidable using (True)
 
 ×-isCommutativeMonoid : ∀ k ℓ → IsCommutativeMonoid (Related ⌊ k ⌋) _×_ (Lift ℓ ⊤)
 ×-isCommutativeMonoid k ℓ = record
-  { isSemigroup = ×-isSemigroup k ℓ
-  ; identityˡ   = ↔⇒ ∘ ×-identityˡ ℓ
-  ; comm        = λ _ _ → ↔⇒ (×-comm _ _)
+  { isMonoid = ×-isMonoid k ℓ
+  ; comm     = λ _ _ → ↔⇒ (×-comm _ _)
   }
 
 ×-commutativeMonoid : Symmetric-kind → (ℓ : Level) → CommutativeMonoid _ _
@@ -210,9 +210,8 @@ open import Relation.Nullary.Decidable using (True)
 
 ⊎-isCommutativeMonoid : ∀ k ℓ → IsCommutativeMonoid (Related ⌊ k ⌋) _⊎_ (Lift ℓ ⊥)
 ⊎-isCommutativeMonoid k ℓ = record
-  { isSemigroup = ⊎-isSemigroup k ℓ
-  ; identityˡ   = ↔⇒ ∘ ⊎-identityˡ ℓ
-  ; comm        = λ _ _ → ↔⇒ (⊎-comm _ _)
+  { isMonoid = ⊎-isMonoid k ℓ
+  ; comm     = λ _ _ → ↔⇒ (⊎-comm _ _)
   }
 
 ⊎-commutativeMonoid : Symmetric-kind → (ℓ : Level) →
@@ -223,7 +222,7 @@ open import Relation.Nullary.Decidable using (True)
 
 ×-⊎-isCommutativeSemiring : ∀ k ℓ →
   IsCommutativeSemiring (Related ⌊ k ⌋) _⊎_ _×_ (Lift ℓ ⊥) (Lift ℓ ⊤)
-×-⊎-isCommutativeSemiring k ℓ = record
+×-⊎-isCommutativeSemiring k ℓ = isCommutativeSemiringˡ record
   { +-isCommutativeMonoid = ⊎-isCommutativeMonoid k ℓ
   ; *-isCommutativeMonoid = ×-isCommutativeMonoid k ℓ
   ; distribʳ              = λ A B C → ↔⇒ (×-distribʳ-⊎ ℓ A B C)

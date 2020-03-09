@@ -25,7 +25,6 @@ open RawMonoid M₂ renaming (Carrier to B; _≈_ to _≈₂_; _∙_ to _◦_; �
 open import Algebra.Definitions
 open import Algebra.Structures
 open import Data.Product using (map)
-open import Relation.Binary
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning
 
 ------------------------------------------------------------------------
@@ -90,7 +89,6 @@ isMonoid isMonoid = record
 isCommutativeMonoid : IsCommutativeMonoid _≈₂_ _◦_ ε₂ →
                       IsCommutativeMonoid _≈₁_ _∙_ ε₁
 isCommutativeMonoid isCommMonoid = record
-  { isSemigroup = isSemigroup C.isSemigroup
-  ; identityˡ   = identityˡ   C.isMagma C.identityˡ
-  ; comm        = comm        C.isMagma C.comm
+  { isMonoid = isMonoid C.isMonoid
+  ; comm     = comm     C.isMagma C.comm
   } where module C = IsCommutativeMonoid isCommMonoid
