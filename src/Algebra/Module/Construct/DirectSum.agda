@@ -9,9 +9,10 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Algebra.Module.Construct.Biproduct where
+module Algebra.Module.Construct.DirectSum where
 
 open import Algebra.Bundles
+open import Algebra.Construct.DirectSum
 open import Algebra.Module.Bundles
 open import Data.Product
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
@@ -20,38 +21,6 @@ open import Level
 private
   variable
     r s ℓr ℓs m m′ ℓm ℓm′ : Level
-
--- TODO: This structure should go in the main Algebra hierarchy,
--- as it is purely about commutative monoids.
-commutativeMonoid :
-  CommutativeMonoid m ℓm → CommutativeMonoid m′ ℓm′ →
-  CommutativeMonoid (m ⊔ m′) (ℓm ⊔ ℓm′)
-commutativeMonoid M N = record
-  { Carrier = M.Carrier × N.Carrier
-  ; _≈_ = Pointwise M._≈_ N._≈_
-  ; _∙_ = zip M._∙_ N._∙_
-  ; ε = M.ε , N.ε
-  ; isCommutativeMonoid = record
-    { isMonoid = record
-      { isSemigroup = record
-        { isMagma = record
-          { isEquivalence = ×-isEquivalence M.isEquivalence N.isEquivalence
-          ; ∙-cong = λ where
-            (mm , nn) (mm′ , nn′) → M.∙-cong mm mm′ , N.∙-cong nn nn′
-          }
-        ; assoc = λ where
-          (m₀ , n₀) (m₁ , n₁) (m₂ , n₂) → M.assoc m₀ m₁ m₂ , N.assoc n₀ n₁ n₂
-        }
-      ; identity = λ where
-        .proj₁ (m , n) → M.identityˡ m , N.identityˡ n
-        .proj₂ (m , n) → M.identityʳ m , N.identityʳ n
-      }
-    ; comm = λ where (m , n) (m′ , n′) → M.comm m m′ , N.comm n n′
-    }
-  }
-  where
-  module M = CommutativeMonoid M
-  module N = CommutativeMonoid N
 
 leftSemimodule : {R : Semiring r ℓr} →
   LeftSemimodule R m ℓm → LeftSemimodule R m′ ℓm′ →
