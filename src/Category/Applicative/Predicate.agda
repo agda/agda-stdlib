@@ -18,9 +18,13 @@ open import Level
 open import Relation.Unary
 open import Relation.Unary.PredicateTransformer using (Pt)
 
+private
+  variable
+    i ℓ : Level
+
 ------------------------------------------------------------------------
 
-record RawPApplicative {i ℓ} {I : Set i} (F : Pt I ℓ) :
+record RawPApplicative {I : Set i} (F : Pt I ℓ) :
                        Set (i ⊔ suc ℓ) where
   infixl 4 _⊛_ _<⊛_ _⊛>_
   infix  4 _⊗_
