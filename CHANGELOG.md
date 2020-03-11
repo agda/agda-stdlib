@@ -266,11 +266,6 @@ attached to all deprecated names to discourage their use.
   decSetoid        ↦ ≡-decSetoid
   ```
 
-* In `Data.Integer.Properties`:
-  ```agda
-  [1+m]*n≡n+m*n ↦ suc-*
-  ```
-
 * In `Data.List.Relation.Unary.All.Properties`:
   ```agda
   Any¬→¬All  ↦  Any¬⇒¬All
@@ -603,6 +598,12 @@ Other minor additions
   ∣p∣≤∣p∪q∣     : ∣ p ∣ ≤ ∣ p ∪ q ∣
   ∣q∣≤∣p∪q∣     : ∣ q ∣ ≤ ∣ p ∪ q ∣
   ∣p∣⊔∣q∣≤∣p∪q∣ : ∣ p ∣ ⊔ ∣ q ∣ ≤ ∣ p ∪ q ∣
+  ```
+
+* Added new proofs to `Data.Integer.Properties`:
+  ```agda
+  suc[i]≤j⇒i<j : sucℤ i ≤ j → i < j
+  i<j⇒suc[i]≤j : i < j → sucℤ i ≤ j
   ```
 
 * Added new proofs to `Data.Maybe.Properties`:
