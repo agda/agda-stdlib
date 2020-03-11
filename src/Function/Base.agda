@@ -118,7 +118,7 @@ case x return B of f = f x
 -- operations are therefore provided below that sometimes have better
 -- inference properties.
 
-infixr 9 _∘′_
+infixr 9 _∘′_ _∘₂′_
 infixl 0 _|>′_
 infix  0 case_of_
 infixr -1 _$′_ _$!′_
@@ -127,6 +127,9 @@ infixr -1 _$′_ _$!′_
 
 _∘′_ : (B → C) → (A → B) → (A → C)
 f ∘′ g = _∘_ f g
+
+_∘₂′_ : (C → D) → (A → B → C) → (A → B → D)
+f ∘₂′ g = _∘₂_ f g
 
 -- Application
 
