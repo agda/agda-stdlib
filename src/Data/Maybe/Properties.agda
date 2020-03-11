@@ -65,6 +65,13 @@ map-cong₂ : ∀ {f g : A → B} {mx} →
 map-cong₂ (just eq) = cong just eq
 map-cong₂ nothing   = refl
 
+map-injective : ∀ {f : A → B} {mx my : Maybe A}
+              → (∀ {x y : A} → f x ≡ f y → x ≡ y)
+              → map f mx ≡ map f my
+              → mx ≡ my
+map-injective {f = f} {nothing} {nothing} f-inj p = refl
+map-injective {f = f} {just x} {just y} f-inj p = cong just (f-inj (just-injective p))
+
 map-compose : {g : B → C} {f : A → B} → map (g ∘ f) ≗ map g ∘ map f
 map-compose (just x) = refl
 map-compose nothing  = refl
