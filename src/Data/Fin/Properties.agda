@@ -105,6 +105,9 @@ toℕ<n : ∀ {n} (i : Fin n) → toℕ i ℕ.< n
 toℕ<n zero    = s≤s z≤n
 toℕ<n (suc i) = s≤s (toℕ<n i)
 
+toℕ≤n : ∀ {n} → (i : Fin n) → toℕ i ℕ.≤ n
+toℕ≤n = ℕₚ.<⇒≤ ∘ toℕ<n
+  
 toℕ≤pred[n] : ∀ {n} (i : Fin n) → toℕ i ℕ.≤ ℕ.pred n
 toℕ≤pred[n] zero                 = z≤n
 toℕ≤pred[n] (suc {n = suc n} i)  = s≤s (toℕ≤pred[n] i)
@@ -128,6 +131,10 @@ fromℕ-toℕ : ∀ {n} (i : Fin n) → fromℕ (toℕ i) ≡ strengthen i
 fromℕ-toℕ zero    = refl
 fromℕ-toℕ (suc i) = cong suc (fromℕ-toℕ i)
 
+≤fromℕ : ∀ {n} → (i : Fin (ℕ.suc n)) → i ≤ fromℕ n
+≤fromℕ {n} i = ℕₚ.≤-trans (ℕₚ.≤-pred (toℕ<n i))
+                           (ℕₚ.≤-reflexive (sym (toℕ-fromℕ n)))
+
 ------------------------------------------------------------------------
 -- fromℕ<
 ------------------------------------------------------------------------
@@ -144,6 +151,12 @@ toℕ-fromℕ< (s≤s (s≤s m<n)) = cong suc (toℕ-fromℕ< (s≤s m<n))
 fromℕ-def : ∀ n → fromℕ n ≡ fromℕ< ℕₚ.≤-refl
 fromℕ-def zero    = refl
 fromℕ-def (suc n) = cong suc (fromℕ-def n)
+
+fromℕ<-irrelevant : ∀ m n {o} → m ≡ n
+                  → (m<o : m ℕ.< o)
+                  → (n<o : n ℕ.< o)
+                  → fromℕ< m<o ≡ fromℕ< n<o
+fromℕ<-irrelevant _ _ refl _ _ = refl
 
 ------------------------------------------------------------------------
 -- fromℕ<″
@@ -365,6 +378,31 @@ toℕ-inject₁ (suc i) = cong suc (toℕ-inject₁ i)
 toℕ-inject₁-≢ : ∀ {n}(i : Fin n) → n ≢ toℕ (inject₁ i)
 toℕ-inject₁-≢ (suc i) = toℕ-inject₁-≢ i ∘ ℕₚ.suc-injective
 
+inject₁≢suc : ∀ {n} → (i : Fin n) → inject₁ i ≢ suc i
+inject₁≢suc (suc i) = inject₁≢suc i ∘ suc-injective
+
+inject₁ℕ< : ∀ {n} → (i : Fin n) → toℕ (inject₁ i) ℕ.< n
+inject₁ℕ< i = ℕₚ.<-transʳ (ℕₚ.≤-reflexive (toℕ-inject₁ i)) (toℕ<n i)
+
+inject₁ℕ≤ : ∀ {n} → (i : Fin n) → toℕ (inject₁ i) ℕ.≤ n
+inject₁ℕ≤ = ℕₚ.<⇒≤ ∘ inject₁ℕ<
+
+≤̄⇒inject₁< : ∀ {n} → {i i' : Fin n} → i' ≤ i → inject₁ i' < suc i
+≤̄⇒inject₁< {i' = i'} p = s≤s (ℕₚ.≤-trans (ℕₚ.≤-reflexive (toℕ-inject₁ i')) p)
+
+ℕ<⇒inject₁< : ∀ {n} → {i : Fin (ℕ.suc n)} → {i' : Fin n}
+            → toℕ i' ℕ.< toℕ i → inject₁ i' < i
+ℕ<⇒inject₁< {n} {suc i} {i'} (s≤s p) = ≤̄⇒inject₁< p
+
+------------------------------------------------------------------------
+-- lower₁
+------------------------------------------------------------------------
+
+toℕ-lower₁ : ∀ {m} x → (p : m ≢ toℕ x) → toℕ (lower₁ x p) ≡ toℕ x
+toℕ-lower₁ {ℕ.zero} zero p     = ⊥-elim (p refl)
+toℕ-lower₁ {ℕ.suc m} zero p    = refl
+toℕ-lower₁ {ℕ.suc m} (suc x) p = cong ℕ.suc (toℕ-lower₁ x (p ∘ cong ℕ.suc))
+
 ------------------------------------------------------------------------
 -- inject₁ and lower₁
 
@@ -392,6 +430,12 @@ lower₁-irrelevant {suc n} zero     _   _ = refl
 lower₁-irrelevant {suc n} (suc i)  _   _ =
   cong suc (lower₁-irrelevant i _ _)
 
+inject₁≡⇒lower₁≡ : ∀ {n} → {i : Fin n} → {i' : Fin (ℕ.suc n)}
+                   → (≢p : n ≢ (toℕ i'))
+                   → inject₁ i ≡ i'
+                   → lower₁ i' ≢p ≡ i
+inject₁≡⇒lower₁≡ ≢p ≡p = inject₁-injective (trans (inject₁-lower₁ _ ≢p) (sym ≡p))
+
 ------------------------------------------------------------------------
 -- inject≤
 ------------------------------------------------------------------------
@@ -411,6 +455,14 @@ inject≤-idempotent : ∀ {m n k} (i : Fin m)
 inject≤-idempotent {_} {suc n} {suc k} zero    _   _   _ = refl
 inject≤-idempotent {_} {suc n} {suc k} (suc i) m≤n n≤k _ =
   cong suc (inject≤-idempotent i (ℕₚ.≤-pred m≤n) (ℕₚ.≤-pred n≤k) _)
+
+------------------------------------------------------------------------
+-- pred
+------------------------------------------------------------------------
+
+pred< : ∀ {n} → (i : Fin (ℕ.suc n)) → i ≢ zero → pred i < i
+pred< zero p = ⊥-elim (p refl)
+pred< (suc i) p = ≤̄⇒inject₁< ℕₚ.≤-refl
 
 ------------------------------------------------------------------------
 -- splitAt
