@@ -61,3 +61,14 @@ map-commute : {f : A → B}  {g : C → D}
               ((map f′ g′) ∘ (map f g)) ≗ map (f′ ∘ f) (g′ ∘ g)
 map-commute (inj₁ _) = refl
 map-commute (inj₂ _) = refl
+
+[,]-resp-≗ : {f f′ : A → B} {g g′ : C → B} →
+             f ≗ f′ → g ≗ g′ →
+             [ f , g ] ≗ [ f′ , g′ ]
+[,]-resp-≗ = [_,_]
+
+map-resp-≗ : {f f′ : A → B} {g g′ : C → D} →
+             f ≗ f′ → g ≗ g′ →
+             map f g ≗ map f′ g′
+map-resp-≗ f≗f′ g≗g′ (inj₁ x) = cong inj₁ (f≗f′ x)
+map-resp-≗ f≗f′ g≗g′ (inj₂ x) = cong inj₂ (g≗g′ x)

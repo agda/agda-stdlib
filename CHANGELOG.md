@@ -424,6 +424,7 @@ Other major additions
 
 Other minor additions
 ---------------------
+* Added [,]-resp-≗ and map-resp-≗ to `Data.Sum.Properties`
 
 * Added commutativeSemigroup to `Algebra.Bundles.CommutativeMonoid`
 
