@@ -6,6 +6,9 @@
 --
 -- From monoids up, these are are zero-objects – i.e, both the initial
 -- and the terminal object in the relevant category.
+-- For structures without an identity element, we can't necessarily
+-- produce a homomorphism out of 0, because there is an instance of such
+-- a structure with an empty Carrier.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

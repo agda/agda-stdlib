@@ -3,15 +3,18 @@
 --
 -- Instances of algebraic structures made by taking two other instances
 -- A and B, and having elements of the new instance be pairs |A| × |B|.
--- In mathematics, this would usually be written A ⊕ B.
+-- In mathematics, this would usually be written A × B or A ⊕ B.
 --
--- From monoids up, these new instances are biproducts – i.e, both
--- products and coproducts of the relevant category.
+-- From semigroups up, these new instances are products of the relevant
+-- category.
+-- For structures with commutative addition (commutative monoids,
+-- Abelian groups, semirings, rings), the direct product is also the
+-- coproduct, making it a biproduct.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
-module Algebra.Construct.DirectSum where
+module Algebra.Construct.DirectProduct where
 
 open import Algebra
 open import Data.Product
