@@ -120,12 +120,6 @@ dmap : ∀ {B : A → Set b} {P : A → Set p} {Q : ∀ {a} → P a → B a → 
        (ap : Σ A P) → Σ (B (proj₁ ap)) (Q (proj₂ ap))
 dmap f g (x , y) = f x , g y
 
--- dmap for non-dependent products
-_<*>_ : ∀ {x y} {X : A → Set x} {Y : B → Set y} →
-        ((a : A) → X a) × ((b : B) → Y b) →
-        (ab : A × B) → X (proj₁ ab) × Y (proj₂ ab)
-(f , g) <*> xy = dmap f g xy
-
 zip : ∀ {P : A → Set p} {Q : B → Set q} {R : C → Set r} →
       (_∙_ : A → B → C) →
       (∀ {x y} → P x → Q y → R (x ∙ y)) →
@@ -159,6 +153,16 @@ curry′ = curry
 
 uncurry′ : (A → B → C) → (A × B → C)
 uncurry′ = uncurry
+
+dmap′ : ∀ {x y} {X : A → Set x} {Y : B → Set y} →
+        ((a : A) → X a) → ((b : B) → Y b) →
+        (ab : A × B) → X (proj₁ ab) × Y (proj₂ ab)
+dmap′ f g = dmap f g
+
+_<*>_ : ∀ {x y} {X : A → Set x} {Y : B → Set y} →
+        ((a : A) → X a) × ((b : B) → Y b) →
+        (ab : A × B) → X (proj₁ ab) × Y (proj₂ ab)
+_<*>_ = uncurry dmap′
 
 -- Operations that can only be defined for non-dependent products
 
