@@ -44,6 +44,10 @@ module _ (dec₁ : Decidable {A = A} {B = A} _≡_)
 swap-involutive : swap {A = A} {B = B} ∘ swap ≗ id
 swap-involutive = [ (λ _ → refl) , (λ _ → refl) ]
 
+map-id : map (id {A = A}) (id {A = B}) ≗ id
+map-id (inj₁ _) = refl
+map-id (inj₂ _) = refl
+
 [,]-∘-distr : {f : A → B}
               {g : C → A} {h : D → A} →
               f ∘ [ g , h ] ≗ [ f ∘ g , f ∘ h ]
