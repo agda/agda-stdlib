@@ -326,8 +326,8 @@ Other major additions
   Reflection.Meta
   Reflection.Name
   Reflection.Pattern
-  Reflection.TCMonadSyntax
   Reflection.Term
+  Reflection.TypeChecking.MonadSyntax
   
   Tactic.MonoidSolver
   Tactic.RingSolver

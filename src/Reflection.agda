@@ -71,7 +71,7 @@ open Builtin public
 
 -- Standard monad operators
 
-open import Reflection.TCMonadSyntax public
+open import Reflection.TypeChecking.MonadSyntax public
   using (_>>=_; _>>_)
 
 newMeta : Type → TC Term
