@@ -383,8 +383,8 @@ New modules
   Reflection.Meta
   Reflection.Name
   Reflection.Pattern
-  Reflection.TCMonadSyntax
   Reflection.Term
+  Reflection.TypeChecking.MonadSyntax
   ```
   
 * New tactics for monoid and ring solvers. See `README.Tactic.MonoidSolver/RingSolver` for details
