@@ -702,6 +702,10 @@ Other minor additions
   deduplicate⁻ : Any P (deduplicate Q? xs) → Any P xs
   ```
 
+* The implementation of `↭-trans` has been altered in 
+  `Data.List.Relation.Binary.Permutation.Inductive` to avoid
+  adding unnecessary `refl`s, hence improving it's performance.
+  
 * Added new functions to `Data.List.Relation.Binary.Permutation.Setoid`:
   ```agda
   ↭-prep : xs ↭ ys → x ∷ xs ↭ x ∷ ys
