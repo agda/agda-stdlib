@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- This module is DEPRECATED. Please use Tactic.MonoidSolver instead
+-- A solver for equations over monoids
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -10,12 +10,7 @@ open import Algebra
 
 module Algebra.Solver.Monoid {m₁ m₂} (M : Monoid m₁ m₂) where
 
-{-# WARNING_ON_IMPORT
-"Algebra.Solver.Monoid was deprecated in v1.3.
-Use Tactic.MonoidSolver instead."
-#-}
-
-open import Data.Fin.Base as Fin hiding (_≟_)
+open import Data.Fin.Base as Fin
 import Data.Fin.Properties as Fin
 open import Data.List.Base hiding (lookup)
 import Data.List.Relation.Binary.Equality.DecPropositional as ListEq
