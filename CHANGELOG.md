@@ -271,11 +271,6 @@ attached to all deprecated names to discourage their use.
   decSetoid        ↦ ≡-decSetoid
   ```
 
-* In `Data.Integer.Properties`:
-  ```agda
-  [1+m]*n≡n+m*n ↦ suc-*
-  ```
-
 * In `Data.List.Relation.Unary.All.Properties`:
   ```agda
   Any¬→¬All  ↦  Any¬⇒¬All
@@ -615,6 +610,12 @@ Other minor additions
   ∣p∣⊔∣q∣≤∣p∪q∣ : ∣ p ∣ ⊔ ∣ q ∣ ≤ ∣ p ∪ q ∣
   ```
 
+* Added new proofs to `Data.Integer.Properties`:
+  ```agda
+  suc[i]≤j⇒i<j : sucℤ i ≤ j → i < j
+  i<j⇒suc[i]≤j : i < j → sucℤ i ≤ j
+  ```
+
 * Added new functions to `Data.List`:
   ```agda
   derun       : B.Decidable R → List A → List A
@@ -671,6 +672,10 @@ Other minor additions
   deduplicate⁻  : Any P (deduplicate Q? xs) → Any P xs
   ```
 
+* The implementation of `↭-trans` has been altered in 
+  `Data.List.Relation.Binary.Permutation.Inductive` to avoid
+  adding unnecessary `refl`s, hence improving it's performance.
+  
 * Added new functions to `Data.List.Relation.Binary.Permutation.Setoid`:
   ```agda
   ↭-prep : xs ↭ ys → x ∷ xs ↭ x ∷ ys
