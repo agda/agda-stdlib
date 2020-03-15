@@ -45,7 +45,7 @@ Non-backwards compatible changes
   affect users who are renaming/hiding the library's equational reasoning combinators.
 
 * Previously all equational reasoning combinators (e.g. `_≈⟨_⟩_`, `_≡⟨_⟩_`, `_≤⟨_⟩_`)
-  have been defined in the following style:
+  were defined in the following style:
   ```agda
   infixr 2 _≡⟨_⟩_
 
@@ -83,8 +83,9 @@ Non-backwards compatible changes
   compatible. Having said that you may want to switch to the new style for the benefits
   described above.
 
-* **Changes required**: The one drawback is that hiding and renaming the combinators no longer works 
-  as before, as `_≡⟨_⟩_` etc. are now syntax instead of names. For example instead of:
+* **Changes required**: The only drawback to this change is that hiding and renaming the
+  combinators no longer works  as before, as `_≡⟨_⟩_` etc. are now syntax instead of names. 
+  For example instead of:
   ```agda
   open SetoidReasoning setoid public
     hiding (_≈⟨_⟩_) renaming (_≡⟨_⟩_ to _↭⟨_⟩_)
@@ -110,17 +111,18 @@ Non-backwards compatible changes
   - `IsCommutativeMonoid`
   - `IsCommutativeSemiring`
   - `IsRing`
-  In all of these cases, the change has been to give each of these structures
-  access to *all* of the fields of structures below (weaker) in the hierarchy.
   
-* For example, consider `IsCommutativeMonoid`. The old definition effectively
-  required the following fields.
-
+  In each case, the structure now requires fields for all the required properties, 
+  rather than just an (arbitrary) minimal set of properties.
+  
+* For example, whereas the old definition of `IsCommutativeMonoid` required 
+  the following fields:
+  
   - Associativity
   - Left identity
   - Commutativity
 
-  The new definition also requires:
+  the new definition also requires:
 
   - Right identity.
 
@@ -229,8 +231,7 @@ Deprecated modules
 The following modules have been renamed as part of a drive to improve
 consistency across the library. The deprecated modules still exist and
 therefore all existing code should still work, however use of the new names
-is encouraged. Automated warnings are attached to deprecated modules to
-discourage their use.
+is encouraged.
 
 * In `Algebra`:
   ```
@@ -276,7 +277,7 @@ attached to all deprecated names to discourage their use.
   Any¬→¬All  ↦  Any¬⇒¬All
   ```
 
-* In `Data.Nat.Properties
+* In `Data.Nat.Properties`:
   ```agda
   ∀[m≤n⇒m≢o]⇒o<n  ↦  ∀[m≤n⇒m≢o]⇒n<o
   ∀[m<n⇒m≢o]⇒o≤n  ↦  ∀[m<n⇒m≢o]⇒n≤o
@@ -304,7 +305,7 @@ New modules
   Algebra.Module.Structures
   Algebra.Module.Structures.Biased
   ```
-  Supported are all of {left ,right , bi,}{semi,}modules.
+  Supported are all of {left, right, bi} {semi} modules.
 
 * Morphisms over group and ring-like algebraic structures:
   ```agda
@@ -356,14 +357,15 @@ New modules
   Data.Tree.Rose
   Data.Tree.Rose.Properties
   ```
-  
+
+* New properties and functions over floats and words.
   ```agda
   Data.Float.Base
   Data.Float.Properties
   Data.Word.Base
   Data.Word.Properties
   ```
-  
+
 * Helper methods for using reflection with numeric data.
   ```agda
   Data.Nat.Reflection
@@ -399,14 +401,13 @@ Other major changes
 
 #### Improved performance of decision processes
 
-* Rewrote definitions branching on a `Dec` value to branch only on the boolean
-  `does` field, wherever possible. Furthermore, branching on the `proof` field
-  has been made as late as possible, using the `invert` lemma from
+* All definitions branching on a `Dec` value have been rewritten, wherever possible,
+  to branch only  on the boolean `does` field. Furthermore, branching on 
+  the `proof` field has been made as late as possible, using the `invert` lemma from
   `Relation.Nullary.Reflects`.
 
 * For example, the old definition of `filter` in `Data.List.Base` used the
-  `yes` and `no` patterns, which desugared to the following.
-
+  `yes` and `no` patterns, which desugared to the following:
   ```agda
   filter : ∀ {P : Pred A p} → Decidable P → List A → List A
   filter P? [] = []
@@ -449,7 +450,7 @@ Other major changes
 
 #### Other
 
-* The module `Reflection` is no longer unsafe.
+* The module `Reflection` is no longer `--unsafe`.
 
 * Standardised the `Eq` modules in structures and bundles in `Relation.Binary` hierarchy.
   - `IsDecTotalOrder.Eq` now exports `isDecPartialOrder`.
