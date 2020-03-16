@@ -1,7 +1,7 @@
-Version 1.3-dev
-===============
+Version 1.3
+===========
 
-The library has been tested using Agda version 2.6.1 release candidate 2.
+The library has been tested using Agda version 2.6.1.
 
 Highlights
 ----------
