@@ -16,30 +16,34 @@ open import Category.Monad.Indexed
 open import Function
 open import Level
 
+private
+  variable
+    i f : Level
+    I : Set i
+
 ------------------------------------------------------------------------
 -- Delimited continuation monads
 
-DContT : ∀ {i f} {I : Set i} → (I → Set f) → (Set f → Set f) → IFun I f
+DContT : (I → Set f) → (Set f → Set f) → IFun I f
 DContT K M r₂ r₁ a = (a → M (K r₁)) → M (K r₂)
 
-DCont : ∀ {i f} {I : Set i} → (I → Set f) → IFun I f
+DCont : (I → Set f) → IFun I f
 DCont K = DContT K Identity
 
-DContTIMonad : ∀ {i f} {I : Set i} (K : I → Set f) {M} →
-               RawMonad M → RawIMonad (DContT K M)
+DContTIMonad : ∀ (K : I → Set f) {M} → RawMonad M → RawIMonad (DContT K M)
 DContTIMonad K Mon = record
   { return = λ a k → k a
   ; _>>=_  = λ c f k → c (flip f k)
   }
   where open RawMonad Mon
 
-DContIMonad : ∀ {i f} {I : Set i} (K : I → Set f) → RawIMonad (DCont K)
+DContIMonad : (K : I → Set f) → RawIMonad (DCont K)
 DContIMonad K = DContTIMonad K Id.monad
 
 ------------------------------------------------------------------------
 -- Delimited continuation operations
 
-record RawIMonadDCont {i f} {I : Set i} (K : I → Set f)
+record RawIMonadDCont {I : Set i} (K : I → Set f)
                       (M : IFun I f) : Set (i ⊔ suc f) where
   field
     monad : RawIMonad M
@@ -49,7 +53,7 @@ record RawIMonadDCont {i f} {I : Set i} (K : I → Set f)
 
   open RawIMonad monad public
 
-DContTIMonadDCont : ∀ {i f} {I : Set i} (K : I → Set f) {M} →
+DContTIMonadDCont : ∀ (K : I → Set f) {M} →
                     RawMonad M → RawIMonadDCont K (DContT K M)
 DContTIMonadDCont K Mon = record
   { monad = DContTIMonad K Mon
@@ -59,6 +63,5 @@ DContTIMonadDCont K Mon = record
   where
   open RawIMonad Mon
 
-DContIMonadDCont : ∀ {i f} {I : Set i}
-                   (K : I → Set f) → RawIMonadDCont K (DCont K)
+DContIMonadDCont : (K : I → Set f) → RawIMonadDCont K (DCont K)
 DContIMonadDCont K = DContTIMonadDCont K Id.monad
