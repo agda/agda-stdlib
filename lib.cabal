@@ -1,5 +1,5 @@
 name:            lib
-version:         1.3-dev
+version:         1.3
 cabal-version:   >= 1.10
 build-type:      Simple
 description:     Helper programs.
@@ -8,7 +8,7 @@ tested-with:     GHC == 8.0.2
                  GHC == 8.2.2
                  GHC == 8.4.4
                  GHC == 8.6.2
-                 GHC == 8.8.1
+                 GHC == 8.8.3
 
 executable GenerateEverything
   hs-source-dirs:   .

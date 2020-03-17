@@ -32,34 +32,6 @@ open import Agda.Builtin.Reflection public using (Pattern)
 open Pattern public
 
 ------------------------------------------------------------------------
--- Showing
-
-mutual
-
-  showPatterns : List (Arg Pattern) → String
-  showPatterns []       = ""
-  showPatterns (a ∷ ps) = showArg a <+> showPatterns ps
-    where
-      showRel : Relevance → String
-      showRel relevant   = ""
-      showRel irrelevant = "."
-
-      showArg : Arg Pattern → String
-      showArg (arg (arg-info visible r) p)   = showRel r ++ show p
-      showArg (arg (arg-info hidden r) p)    = braces (showRel r ++ show p)
-      showArg (arg (arg-info instance′ r) p) = braces (braces (showRel r ++ show p))
-
-
-  show : Pattern → String
-  show (con c []) = Name.show c
-  show (con c ps) = parens (Name.show c <+> showPatterns ps)
-  show dot        = "._"
-  show (var s)    = s
-  show (lit l)    = Literal.show l
-  show (proj f)   = Name.show f
-  show absurd     = "()"
-
-------------------------------------------------------------------------
 -- Decidable equality
 
 con-injective₁ : ∀ {c c′ args args′} → con c args ≡ con c′ args′ → c ≡ c′

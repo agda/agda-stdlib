@@ -8,21 +8,18 @@
 
 module Reflection.Term where
 
-import Data.Char.Properties as CP using (_≟_)
 open import Data.List.Base hiding (_++_)
-import Data.List.Membership.DecPropositional as ListMembership
 import Data.List.Properties as Lₚ
-import Data.Nat as ℕ
-import Data.Nat.Show as NatShow
+open import Data.Nat as ℕ using (ℕ; zero; suc)
 open import Data.Product
-open import Data.String as String using (String; braces; parens; _++_; _<+>_)
+open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Reflection.Abstraction
 open import Reflection.Argument
 open import Reflection.Argument.Information using (visibility)
 import Reflection.Argument.Visibility as Visibility; open Visibility.Visibility
 import Reflection.Literal as Literal
 import Reflection.Meta as Meta
-import Reflection.Name as Name
+open import Reflection.Name as Name using (Name)
 import Reflection.Pattern as Pattern
 open import Relation.Nullary
 open import Relation.Nullary.Product using (_×-dec_)
@@ -33,7 +30,8 @@ open import Relation.Binary.PropositionalEquality
 ------------------------------------------------------------------------
 -- Re-exporting the builtin type and constructors
 
-open import Agda.Builtin.Reflection as Builtin public using (Sort; Type; Term; Clause)
+open import Agda.Builtin.Reflection as Builtin public
+  using (Sort; Type; Term; Clause)
 open Sort public
 open Term public renaming (agda-sort to sort)
 open Clause public
@@ -54,60 +52,31 @@ pattern vΠ[_∶_]_ s a ty    = Π[ s ∶ (vArg a) ] ty
 pattern hΠ[_∶_]_ s a ty    = Π[ s ∶ (hArg a) ] ty
 pattern iΠ[_∶_]_ s a ty    = Π[ s ∶ (iArg a) ] ty
 
-------------------------------------------------------------------------
--- Showing
+----------------------------------------------------------------------
+-- Utility functions
 
--- Note that Reflection.termErr can also be used directly in tactic error
--- messages.
+getName : Term → Maybe Name
+getName (con c args) = just c
+getName (def f args) = just f
+getName _            = nothing
 
-private
-  open ListMembership CP._≟_
+-- "n ⋯⟅∷⟆ xs" prepends "n" visible unknown arguments to the list of
+-- arguments. Useful when constructing the list of arguments for a
+-- function with initial inferable arguments.
+infixr 5 _⋯⟨∷⟩_
+_⋯⟨∷⟩_ : ℕ → Args Term → Args Term
+zero  ⋯⟨∷⟩ xs = xs
+suc i ⋯⟨∷⟩ xs = unknown ⟨∷⟩ (i ⋯⟨∷⟩ xs)
+{-# INLINE _⋯⟨∷⟩_ #-}
 
-  -- enclose string with parens if it contains a space character
-  parensIfSpace : String -> String
-  parensIfSpace s with ' ' ∈? String.toList s
-  ... | yes _ = parens s
-  ... | no _  = s
-
-  -- add appropriate parens depending on the given visibility
-  visibilityParen : Builtin.Visibility → String → String
-  visibilityParen visible   s = parensIfSpace s
-  visibilityParen hidden    s = braces s
-  visibilityParen instance′ s = braces (braces s)
-
-mutual
-
-  showTerms : List (Arg Term) → String
-  showTerms []             = ""
-  showTerms (arg i t ∷ ts) = visibilityParen (visibility i) (show t) <+> showTerms ts
-
-  show : Term → String
-  show (var x args)         = "var" <+> NatShow.show x <+> showTerms args
-  show (con c args)         = Name.show c <+> showTerms args
-  show (def f args)         = Name.show f <+> showTerms args
-  show (lam v (abs s x))    = "λ" <+> visibilityParen v s <+> "→" <+> show x
-  show (pat-lam cs args)    =
-    "λ {" <+> showClauses cs <+> "}" <+> showTerms args
-  show (Π[ x ∶ arg i a ] b) =
-    "Π (" ++ visibilityParen (visibility i) x <+> ":" <+>
-    parensIfSpace (show a) ++ ")" <+> parensIfSpace (show b)
-  show (sort s)             = showSort s
-  show (lit l)              = Literal.show l
-  show (meta x args)        = Meta.show x <+> showTerms args
-  show unknown              = "unknown"
-
-  showSort : Sort → String
-  showSort (set t) = "Set" <+> parensIfSpace (show t)
-  showSort (lit n) = "Set" ++ NatShow.show n -- no space to disambiguate from set t
-  showSort unknown = "unknown"
-
-  showClause : Clause → String
-  showClause (clause ps t)      = Pattern.showPatterns ps <+> "→" <+> show t
-  showClause (absurd-clause ps) = Pattern.showPatterns ps
-
-  showClauses : List Clause → String
-  showClauses []       = ""
-  showClauses (c ∷ cs) = showClause c <+> ";" <+> showClauses cs
+-- "n ⋯⟅∷⟆ xs" prepends "n" hidden unknown arguments to the list of
+-- arguments. Useful when constructing the list of arguments for a
+-- function with initial implicit arguments.
+infixr 5 _⋯⟅∷⟆_
+_⋯⟅∷⟆_ : ℕ → Args Term → Args Term
+zero  ⋯⟅∷⟆ xs = xs
+suc i ⋯⟅∷⟆ xs = unknown ⟅∷⟆ (i ⋯⟅∷⟆ xs)
+{-# INLINE _⋯⟅∷⟆_ #-}
 
 ------------------------------------------------------------------------
 -- Decidable equality

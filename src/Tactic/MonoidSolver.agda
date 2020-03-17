@@ -82,6 +82,9 @@ open import Data.Nat     as ℕ       using (ℕ; suc; zero)
 open import Data.Product as Product using (_×_; _,_)
 
 open import Agda.Builtin.Reflection
+open import Reflection.Argument
+open import Reflection.Term using (getName; _⋯⟅∷⟆_)
+open import Reflection.TypeChecking.MonadSyntax
 
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning
 
@@ -95,8 +98,10 @@ data Expr {a} (A : Set a) : Set a where
   ε′    : Expr A
   [_↑]  : A → Expr A
 
-module _ {m₁ m₂} (mon : Monoid m₁ m₂) where
-  open Monoid mon
+module _ {m₁ m₂} (monoid : Monoid m₁ m₂) where
+
+  open Monoid monoid
+  open SetoidReasoning setoid
 
   -- Convert the AST to an expression (i.e. evaluate it) without
   -- normalising.
@@ -119,8 +124,6 @@ module _ {m₁ m₂} (mon : Monoid m₁ m₂) where
 
   [_⇓] : Expr Carrier → Carrier
   [ x ⇓] = [ x ⇓]′ ε
-
-  open SetoidReasoning setoid
 
   homo′ : ∀ x y → [ x ⇓] ∙ y ≈ [ x ⇓]′ y
   homo′ ε′ y       = identityˡ y
@@ -149,35 +152,13 @@ module _ {m₁ m₂} (mon : Monoid m₁ m₂) where
 _==_ = primQNameEquality
 {-# INLINE _==_ #-}
 
-_>>=_ = bindTC
-{-# INLINE _>>=_ #-}
-
-_>>_ : ∀ {a b} {A : Set a} {B : Set b} → TC A → TC B → TC B
-xs >> ys = xs >>= λ _ → ys
-{-# INLINE _>>_ #-}
-
-infixr 5 _⟨∷⟩_ _⟅∷⟆_
-pattern _⟨∷⟩_ x xs = arg (arg-info visible relevant) x ∷ xs
-pattern _⟅∷⟆_ x xs = arg (arg-info hidden relevant) x ∷ xs
-
-infixr 5 _⋯⟅∷⟆_
-_⋯⟅∷⟆_ : ℕ → List (Arg Term) → List (Arg Term)
-zero  ⋯⟅∷⟆ xs = xs
-suc i ⋯⟅∷⟆ xs = unknown ⟅∷⟆ i ⋯⟅∷⟆ xs
-{-# INLINE _⋯⟅∷⟆_ #-}
-
-getName : Term → Maybe Name
-getName (con c args) = just c
-getName (def f args) = just f
-getName _ = nothing
-
 getArgs : Term → Maybe (Term × Term)
 getArgs (def _ xs) = go xs
   where
   go : List (Arg Term) → Maybe (Term × Term)
-  go (x ⟨∷⟩ y ⟨∷⟩ []) = just (x , y)
-  go (x ∷ xs) = go xs
-  go _ = nothing
+  go (vArg x ∷ vArg y ∷ []) = just (x , y)
+  go (x ∷ xs)               = go xs
+  go _                      = nothing
 getArgs _ = nothing
 
 ----------------------------------------------------------------------
@@ -188,7 +169,9 @@ getArgs _ = nothing
 -- The first is the field accessor for the monoid record itself.
 -- However, users will likely want to use the solver with
 -- expressions like:
+--
 --   xs ++ (ys ++ zs) ≡ (xs ++ ys) ++ zs
+--
 -- So we also evaluate the field accessor to find functions like ++.
 
 record MonoidNames : Set where
@@ -196,71 +179,86 @@ record MonoidNames : Set where
     is-∙ : Name → Bool
     is-ε : Name → Bool
 
+buildMatcher : Name → Maybe Name → Name → Bool
+buildMatcher n nothing  x = n == x
+buildMatcher n (just m) x = n == x ∨ m == x
+
 findMonoidNames : Term → TC MonoidNames
 findMonoidNames mon = do
-  ∙-name ← normalise (quote Monoid._∙_ ⟨ def ⟩ 2 ⋯⟅∷⟆ mon ⟨∷⟩ [])
-  ε-name ← normalise (quote Monoid.ε   ⟨ def ⟩ 2 ⋯⟅∷⟆ mon ⟨∷⟩ [])
+  ∙-altName ← normalise (def (quote Monoid._∙_) (2 ⋯⟅∷⟆ mon ⟨∷⟩ []))
+  ε-altName ← normalise (def (quote Monoid.ε)   (2 ⋯⟅∷⟆ mon ⟨∷⟩ []))
   returnTC record
-    { is-∙ = buildMatcher (quote Monoid._∙_) (getName ∙-name)
-    ; is-ε = buildMatcher (quote Monoid.ε)   (getName ε-name)
+    { is-∙ = buildMatcher (quote Monoid._∙_) (getName ∙-altName)
+    ; is-ε = buildMatcher (quote Monoid.ε)   (getName ε-altName)
     }
-  where
-
-  buildMatcher : Name → Maybe Name → Name → Bool
-  buildMatcher n = maybe (λ m x → n == x ∨ m == x) (n ==_)
 
 ----------------------------------------------------------------------
 -- Building Expr
 ----------------------------------------------------------------------
 
-ε″ : Term
-ε″ = quote ε′ ⟨ con ⟩ []
+-- We now define a function that takes an AST representing the LHS
+-- or RHS of the equation to solve and converts it into an AST
+-- respresenting the corresponding Expr.
+
+″ε″ : Term
+″ε″ = quote ε′ ⟨ con ⟩ []
 
 [_↑]′ : Term → Term
 [ t ↑]′ = quote [_↑] ⟨ con ⟩ (t ⟨∷⟩ [])
 
 module _ (names : MonoidNames) where
+
  open MonoidNames names
 
  mutual
-  ∙″ : List (Arg Term) → Term
-  ∙″ (x ⟨∷⟩ y ⟨∷⟩ []) = quote _∙′_ ⟨ con ⟩ E′ x ⟨∷⟩ E′ y ⟨∷⟩ []
-  ∙″ (x ∷ xs) = ∙″ xs
-  ∙″ _ = unknown
+  ″∙″ : List (Arg Term) → Term
+  ″∙″ (x ⟨∷⟩ y ⟨∷⟩ []) = quote _∙′_ ⟨ con ⟩ buildExpr x ⟨∷⟩ buildExpr y ⟨∷⟩ []
+  ″∙″ (x ∷ xs)         = ″∙″ xs
+  ″∙″ _                = unknown
 
-  E′ : Term → Term
-  E′ t@(def n xs) = if is-∙ n
-                      then ∙″ xs
-                    else if is-ε n
-                      then ε″
-                      else [ t ↑]′
-  E′ t@(con n xs) = if is-∙ n
-                      then ∙″ xs
-                    else if is-ε n
-                      then ε″
-                      else [ t ↑]′
-  E′ t = quote [_↑] ⟨ con ⟩ (t ⟨∷⟩ [])
+  buildExpr : Term → Term
+  buildExpr t@(def n xs) =
+    if is-∙ n
+      then ″∙″ xs
+    else if is-ε n
+      then ″ε″
+    else
+      [ t ↑]′
+  buildExpr t@(con n xs) =
+    if is-∙ n
+      then ″∙″ xs
+    else if is-ε n
+      then ″ε″
+    else [ t ↑]′
+  buildExpr t = quote [_↑] ⟨ con ⟩ (t ⟨∷⟩ [])
 
 ----------------------------------------------------------------------
 -- Constructing the solution
 ----------------------------------------------------------------------
 
 -- This function joins up the two homomorphism proofs. It constructs
--- an expression something like the following:
+-- a proof of the following form:
+--
 --   trans (sym (homo x)) (homo y)
+--
 -- where x and y are the Expr representations of each side of the
 -- goal equation.
+
 constructSoln : Term → MonoidNames → Term → Term → Term
 constructSoln mon names lhs rhs =
   quote Monoid.trans ⟨ def ⟩ 2 ⋯⟅∷⟆ mon ⟨∷⟩
     (quote Monoid.sym ⟨ def ⟩ 2 ⋯⟅∷⟆ mon ⟨∷⟩
-       (quote homo ⟨ def ⟩ 2 ⋯⟅∷⟆ mon ⟨∷⟩ E′ names lhs ⟨∷⟩ []) ⟨∷⟩ [])
+       (quote homo ⟨ def ⟩ 2 ⋯⟅∷⟆ mon ⟨∷⟩ buildExpr names lhs ⟨∷⟩ []) ⟨∷⟩ [])
     ⟨∷⟩
-    (quote homo ⟨ def ⟩ 2 ⋯⟅∷⟆ mon ⟨∷⟩ E′ names rhs ⟨∷⟩ []) ⟨∷⟩
+    (quote homo ⟨ def ⟩ 2 ⋯⟅∷⟆ mon ⟨∷⟩ buildExpr names rhs ⟨∷⟩ []) ⟨∷⟩
     []
 
+----------------------------------------------------------------------
+-- Macro
+----------------------------------------------------------------------
+
 solve-macro : Term → Term → TC _
-solve-macro mon = λ hole → do
+solve-macro mon hole = do
   hole′ ← inferType hole >>= normalise
   names ← findMonoidNames mon
   just (lhs , rhs) ← returnTC (getArgs hole′)

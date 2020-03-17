@@ -16,13 +16,10 @@ import Relation.Binary.Construct.On as On
 open import Relation.Binary.PropositionalEquality
 
 open import Agda.Builtin.Reflection public
-  using (Meta)
-  renaming ( primShowMeta to show
-           ; primMetaToNat to toℕ
-           )
+  using (Meta) renaming (primMetaToNat to toℕ)
 
 open import Agda.Builtin.Reflection.Properties public
-  renaming ( primMetaToNatInjective to toℕ-injective )
+  renaming (primMetaToNatInjective to toℕ-injective)
 
 -- Equality of metas is decidable.
 

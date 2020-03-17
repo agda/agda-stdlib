@@ -9,6 +9,7 @@
 module Data.String.Base where
 
 open import Level using (zero)
+open import Data.Bool using (true; false)
 open import Data.Nat.Base as ℕ using (ℕ; _∸_; ⌊_/2⌋; ⌈_/2⌉)
 import Data.Nat.Properties as ℕₚ
 open import Data.List.Base as List using (List; [_])
@@ -18,8 +19,12 @@ open import Data.List.Relation.Binary.Pointwise using (Pointwise)
 open import Data.List.Relation.Binary.Lex.Strict using (Lex-<)
 open import Data.Vec.Base as Vec using (Vec)
 open import Data.Char.Base as Char using (Char)
+import Data.Char.Properties as Char using (_≟_)
 open import Function
 open import Relation.Binary using (Rel)
+open import Relation.Nullary using (does)
+
+open import Data.List.Membership.DecPropositional Char._≟_
 
 ------------------------------------------------------------------------
 -- From Agda.Builtin: type and renamed primitives
@@ -90,6 +95,12 @@ unwords = intersperse " "
 
 parens : String → String
 parens s = "(" ++ s ++ ")"
+
+-- enclose string with parens if it contains a space character
+parensIfSpace : String → String
+parensIfSpace s with does (' ' ∈? toList s)
+... | true  = parens s
+... | false = s
 
 braces : String → String
 braces s = "{" ++ s ++ "}"

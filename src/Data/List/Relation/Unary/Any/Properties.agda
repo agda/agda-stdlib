@@ -45,7 +45,6 @@ open import Relation.Unary as U
   using (Pred; _⟨×⟩_; _⟨→⟩_) renaming (_⊆_ to _⋐_)
 open import Relation.Nullary using (¬_; _because_; does; ofʸ; ofⁿ)
 open import Relation.Nullary.Negation using (contradiction; ¬?; decidable-stable)
-open Related.EquationalReasoning
 
 private
   open module ListMonad {ℓ} = RawMonad (monad {ℓ = ℓ})
@@ -98,6 +97,7 @@ module _ {k : Kind} {P : Pred A p} {Q : Pred A q} where
     (∃ λ x → x ∈ xs × P x)  ∼⟨ Σ.cong Inv.id (xs≈ys ×-cong P↔Q _) ⟩
     (∃ λ x → x ∈ ys × Q x)  ↔⟨ Any↔ ⟩
     Any Q ys                ∎
+    where open Related.EquationalReasoning
 
 ------------------------------------------------------------------------
 -- map
@@ -230,13 +230,40 @@ module _ {P : Pred A p} {Q : Pred B q} where
        (Any P xs × Any Q ys) ↔ Any (λ x → Any (λ y → P x × Q y) ys) xs
   ×↔ {xs} {ys} = inverse Any-×⁺ Any-×⁻ from∘to to∘from
     where
+    open P.≡-Reasoning
+
     from∘to : ∀ pq → Any-×⁻ (Any-×⁺ pq) ≡ pq
-    from∘to (p , q) rewrite
-        find∘map p (λ p → Any.map (λ q → (p , q)) q)
-      | find∘map q (λ q → proj₂ (proj₂ (find p)) , q)
-      | lose∘find p
-      | lose∘find q
-      = refl
+    from∘to (p , q) =
+
+      Any-×⁻ (Any-×⁺ (p , q))
+
+        ≡⟨⟩
+
+      (let (x , x∈xs , pq)    = find (Any-×⁺ (p , q))
+           (y , y∈ys , p , q) = find pq
+       in  lose x∈xs p , lose y∈ys q)
+
+       ≡⟨ P.cong (λ • → let (x , x∈xs , pq)    = •
+                            (y , y∈ys , p , q) = find pq
+                        in  lose x∈xs p , lose y∈ys q)
+                 (find∘map p (λ p → Any.map (p ,_) q)) ⟩
+
+      (let (x , x∈xs , p)     = find p
+           (y , y∈ys , p , q) = find (Any.map (p ,_) q)
+       in  lose x∈xs p , lose y∈ys q)
+
+       ≡⟨ P.cong (λ • → let (x , x∈xs , p)     = find p
+                            (y , y∈ys , p , q) = •
+                        in  lose x∈xs p , lose y∈ys q)
+                 (find∘map q (proj₂ (proj₂ (find p)) ,_)) ⟩
+
+      (let (x , x∈xs , p) = find p
+           (y , y∈ys , q) = find q
+       in  lose x∈xs p , lose y∈ys q)
+
+       ≡⟨ P.cong₂ _,_ (lose∘find p) (lose∘find q) ⟩
+
+      (p , q) ∎
 
     to∘from : ∀ pq → Any-×⁺ {xs} (Any-×⁻ pq) ≡ pq
     to∘from pq
@@ -593,6 +620,7 @@ module _ (P : Pred A p) where
     (P x         ⊎ Any P xs)  ↔⟨ return↔ {P = P} ⊎-cong (Any P xs ∎) ⟩
     (Any P [ x ] ⊎ Any P xs)  ↔⟨ ++↔ {P = P} {xs = [ x ]} ⟩
     Any P (x ∷ xs)            ∎
+    where open Related.EquationalReasoning
 
 ------------------------------------------------------------------------
 -- _>>=_
@@ -604,6 +632,7 @@ module _ {A B : Set ℓ} {P : B → Set p} {f : A → List B} where
     Any (Any P ∘ f) xs           ↔⟨ map↔ ⟩
     Any (Any P) (List.map f xs)  ↔⟨ concat↔ ⟩
     Any P (xs >>= f)             ∎
+    where open Related.EquationalReasoning
 
 ------------------------------------------------------------------------
 -- _⊛_
@@ -615,6 +644,7 @@ module _ {A B : Set ℓ} {P : B → Set p} {f : A → List B} where
   Any (λ f → Any (Any P ∘ return ∘ f) xs) fs  ↔⟨ Any-cong (λ _ → >>=↔ ) (_ ∎) ⟩
   Any (λ f → Any P (xs >>= return ∘ f)) fs    ↔⟨ >>=↔ ⟩
   Any P (fs ⊛ xs)                             ∎
+  where open Related.EquationalReasoning
 
 -- An alternative introduction rule for _⊛_
 
@@ -634,6 +664,7 @@ module _ {A B : Set ℓ} {P : B → Set p} {f : A → List B} where
   Any (λ _,_ → Any (λ x → Any (λ y → P (x , y)) ys) xs) (return _,_)  ↔⟨ ⊛↔ ⟩
   Any (λ x, → Any (P ∘ x,) ys) (_,_ <$> xs)                           ↔⟨ ⊛↔ ⟩
   Any P (xs ⊗ ys)                                                     ∎
+  where open Related.EquationalReasoning
 
 ⊗↔′ : {P : A → Set ℓ} {Q : B → Set ℓ} {xs : List A} {ys : List B} →
       (Any P xs × Any Q ys) ↔ Any (P ⟨×⟩ Q) (xs ⊗ ys)
@@ -641,3 +672,4 @@ module _ {A B : Set ℓ} {P : B → Set p} {f : A → List B} where
   (Any P xs × Any Q ys)                    ↔⟨ ×↔ ⟩
   Any (λ x → Any (λ y → P x × Q y) ys) xs  ↔⟨ ⊗↔ ⟩
   Any (P ⟨×⟩ Q) (xs ⊗ ys)                  ∎
+  where open Related.EquationalReasoning
