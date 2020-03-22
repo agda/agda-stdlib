@@ -14,16 +14,18 @@ open import Relation.Unary
 
 private
   variable
-    a b p q : Level
+    a b c d p q r s : Level
     A : Set a
     B : Set b
+    C : Set c
+    D : Set d
 
-data All {A : Set a} (P : A → Set p) : Tree A → Set (a ⊔ p) where
-  leaf : All P leaf
-  node : ∀ {l m r} → All P l → P m → All P r → All P (node l m r)
+data All {A : Set a} {B : Set b} (P : A → Set p) (Q : B → Set q) : Tree A B → Set (a ⊔ b ⊔ p ⊔ q) where
+  leaf : ∀ {x} → Q x → All P Q (leaf x)
+  node : ∀ {l m r} → All P Q l → P m → All P Q r → All P Q (node l m r)
 
-module _ {P : A → Set p} {Q : A → Set q} where
+module _ {P : A → Set p} {Q : B → Set q} {R : A → Set r} {S : B → Set s} where
 
-  map : ∀[ P ⇒ Q ] → ∀[ All P ⇒ All Q ]
-  map f leaf         = leaf
-  map f (node l m r) = node (map f l) (f m) (map f r)
+  map : ∀[ P ⇒ R ] → ∀[ Q ⇒ S ] → ∀[ All P Q ⇒ All R S ]
+  map f g (leaf x)     = leaf (g x)
+  map f g (node l m r) = node (map f g l) (f m) (map f g r)

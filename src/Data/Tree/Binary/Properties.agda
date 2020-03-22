@@ -16,15 +16,22 @@ open import Relation.Binary.PropositionalEquality
 
 private
   variable
-    a b : Level
+    a b c d : Level
     A : Set a
     B : Set b
+    C : Set c
+    D : Set d
 
-size-map : ∀ (f : A → B) t → size (map f t) ≡ size t
-size-map f leaf         = refl
-size-map f (node l m r) =
-  cong₂ (λ l r → l + suc r) (size-map f l) (size-map f r)
+#nodes-map : ∀ (f : A → B) (g : C → D) t → #nodes (map f g t) ≡ #nodes t
+#nodes-map f g (leaf x)     = refl
+#nodes-map f g (node l m r) =
+  cong₂ (λ l r → l + suc r) (#nodes-map f g l) (#nodes-map f g r)
 
-map-id : ∀ (t : Tree A) → map id t ≡ t
-map-id leaf         = refl
+#leaves-map : ∀ (f : A → B) (g : C → D) t → #leaves (map f g t) ≡ #leaves t
+#leaves-map f g (leaf x)     = refl
+#leaves-map f g (node l m r) =
+  cong₂ _+_ (#leaves-map f g l) (#leaves-map f g r)
+
+map-id : ∀ (t : Tree A B) → map id id t ≡ t
+map-id (leaf x)     = refl
 map-id (node l v r) = cong₂ (flip node v) (map-id l) (map-id r)

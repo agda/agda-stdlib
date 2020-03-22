@@ -15,12 +15,14 @@ open import Relation.Unary
 
 private
   variable
-    a b p q : Level
+    a b c d p q : Level
     A : Set a
     B : Set b
+    C : Set c
+    D : Set d
 
-module _ {P : B → Set p} where
+module _ {P : C → Set p} {Q : D → Set q} where
 
-  map⁺ : (f : A → B) → ∀[ All (f ⊢ P) ⇒ Tree.map f ⊢ All P ]
-  map⁺ f leaf         = leaf
-  map⁺ f (node l m r) = node (map⁺ f l) m (map⁺ f r)
+  map⁺ : (f : A → C) → (g : B → D) → ∀[ All (f ⊢ P) (g ⊢ Q) ⇒ Tree.map f g ⊢ All P Q ]
+  map⁺ f g (leaf x)     = leaf x
+  map⁺ f g (node l m r) = node (map⁺ f g l) m (map⁺ f g r)
