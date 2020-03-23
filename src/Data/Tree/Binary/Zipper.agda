@@ -95,11 +95,14 @@ foldr {C = C} {A = A} {B = B} f g (mkZipper ctx foc) = List.foldl step (BT.foldr
 -- Attach nodes to the top most part of the zipper
 ------------------------------------------------------------------------
 
+attach : Zipper A B → List (Crumb A B) → Zipper A B
+attach (mkZipper ctx foc) xs = mkZipper (ctx ++ xs) foc
+
 infixr 5 _⟪_⟫ˡ_
 infixl 5 _⟪_⟫ʳ_
 
 _⟪_⟫ˡ_ : Tree A B → A → Zipper A B → Zipper A B
-l ⟪ m ⟫ˡ mkZipper ctx foc = mkZipper (ctx ++ [ (leftBranch m l) ]) foc
+l ⟪ m ⟫ˡ zp = attach zp [ leftBranch m l ]
 
 _⟪_⟫ʳ_ : Zipper A B → A → Tree A B → Zipper A B
-mkZipper ctx foc ⟪ m ⟫ʳ r = mkZipper (ctx ++ [ (rightBranch m r) ]) foc
+zp ⟪ m ⟫ʳ r = attach zp [ rightBranch m r ]
