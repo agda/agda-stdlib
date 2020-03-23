@@ -10,7 +10,7 @@ module Data.Tree.Binary.Zipper where
 
 open import Level using (Level; _⊔_)
 open import Data.Tree.Binary as BT using (Tree; node; leaf)
-open import Data.List as List using (List; []; _∷_; sum)
+open import Data.List as List using (List; []; _∷_; sum; _++_; [_])
 open import Data.Maybe using (Maybe; nothing; just)
 open import Data.Nat.Base using (ℕ; suc; _+_)
 open import Function
@@ -91,3 +91,15 @@ foldr {C = C} {A = A} {B = B} f g (mkZipper ctx foc) = List.foldl step (BT.foldr
     step : C → Crumb A B → C
     step val (leftBranch m x) = f (BT.foldr f g x) m val
     step val (rightBranch m x) = f val m (BT.foldr f g x)
+
+-- Attach nodes to the top most part of the zipper
+------------------------------------------------------------------------
+
+infixr 5 _⟪_⟫ˡ_
+infixl 5 _⟪_⟫ʳ_
+
+_⟪_⟫ˡ_ : Tree A B → A → Zipper A B → Zipper A B
+l ⟪ m ⟫ˡ mkZipper ctx foc = mkZipper (ctx ++ [ (leftBranch m l) ]) foc
+
+_⟪_⟫ʳ_ : Zipper A B → A → Tree A B → Zipper A B
+mkZipper ctx foc ⟪ m ⟫ʳ r = mkZipper (ctx ++ [ (rightBranch m r) ]) foc

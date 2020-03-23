@@ -108,3 +108,30 @@ toTree-foldr-commute {A = A} {B = B} f g (mkZipper c v) = helper c v
     helper [] foc = refl
     helper (leftBranch m l ∷ ctx) foc = helper ctx (node l m foc)
     helper (rightBranch m r ∷ ctx) foc = helper ctx (node foc m r)
+
+-- Properties of the building functions
+------------------------------------------------------------------------
+
+-- _⟪_⟫ˡ_ properties
+
+toTree-⟪⟫ˡ-commute : ∀ l m (zp : Zipper A B) → toTree (l ⟪ m ⟫ˡ zp) ≡ node l m (toTree zp)
+toTree-⟪⟫ˡ-commute {A = A} {B = B} l m (mkZipper c v) = helper c v
+  where
+    helper : (cs : List (Crumb A B))
+           → (t : Tree A B)
+           → toTree (l ⟪ m ⟫ˡ mkZipper cs t) ≡ node l m (toTree $ mkZipper cs t)
+    helper [] foc = refl
+    helper (leftBranch m l ∷ ctx) foc = helper ctx (node l m foc)
+    helper (rightBranch m r ∷ ctx) foc = helper ctx (node foc m r)
+
+-- _⟪_⟫ʳ_ properties
+
+toTree-⟪⟫ʳ-commute : ∀ (zp : Zipper A B) m r → toTree (zp ⟪ m ⟫ʳ r) ≡ node (toTree zp) m r
+toTree-⟪⟫ʳ-commute {A = A} {B = B} (mkZipper c v) m r = helper c v
+  where
+    helper : (cs : List (Crumb A B))
+           → (t : Tree A B)
+           → toTree (mkZipper cs t ⟪ m ⟫ʳ r) ≡ node (toTree $ mkZipper cs t) m r
+    helper [] foc = refl
+    helper (leftBranch m l ∷ ctx) foc = helper ctx (node l m foc)
+    helper (rightBranch m r ∷ ctx) foc = helper ctx (node foc m r)
