@@ -34,7 +34,6 @@ open import Data.String.Unsafe as Stringₚ
 open import Function.Base
 open import Relation.Nullary using (Dec)
 open import Relation.Unary using (IUniversal; _⇒_; U)
-open import Relation.Unary.Properties using (⊆-refl)
 open import Relation.Binary.PropositionalEquality
 
 open import Data.Refinement hiding (map)
@@ -101,7 +100,7 @@ node? nothing         y ys = just (y , ys)
 ∣node?∣ nothing         y ys = refl
 
 ≤-Content : ∀ {m n} {b : Content} → m ≤ n → All≤ m b → All≤ n b
-≤-Content {m} {n} m≤n = Allᴹ.map (Prod.map step (Allᵀ.map step (⊆-refl {A = ⊤})))
+≤-Content {m} {n} m≤n = Allᴹ.map (Prod.map step (Allᵀ.map₁ step))
 
   where
 
@@ -157,13 +156,13 @@ private
     size-indent (just pad) str = length-++ pad str
 
     indents : Maybe String → Tree String ⊤ → Tree String ⊤
-    indents = maybe′ (flip Tree.map id ∘ _++_) id
+    indents = maybe′ (Tree.map₁ ∘ _++_) id
 
     size-indents : ∀ ma t → Tree.#nodes (indents ma t) ≡ Tree.#nodes t
     size-indents nothing    t = refl
-    size-indents (just pad) t = Treeₚ.#nodes-map (pad ++_) id t
+    size-indents (just pad) t = Treeₚ.#nodes-map₁ (pad ++_) t
 
-    unfold-indents : ∀ ma t → indents ma t ≡ Tree.map (indent ma) id t
+    unfold-indents : ∀ ma t → indents ma t ≡ Tree.map₁ (indent ma) t
     unfold-indents nothing    t = sym (Treeₚ.map-id t)
     unfold-indents (just pad) t = refl
 
@@ -249,7 +248,7 @@ private
       All≤-node? (≤-Content (m≤m⊔n _ _) ∣xs∣)
                  middle
                  (subst (Allᵀ.All _ U) (sym $ unfold-indents pad tl)
-                 $ Allᵀₚ.map⁺ (indent pad) id (Allᵀ.map (indented _) (⊆-refl {A = ⊤}) ∣tl∣))
+                 $ Allᵀₚ.map₁⁺ (indent pad) (Allᵀ.map₁ (indented _) ∣tl∣))
       where
 
       middle : length (lastx ++ hd) ≤ vMaxWidth

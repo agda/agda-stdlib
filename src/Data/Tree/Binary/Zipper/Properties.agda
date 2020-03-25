@@ -55,20 +55,24 @@ toTree-#nodes-commute (mkZipper c v) = helper c v
            → (t : Tree A B)
            → #nodes (mkZipper cs t) ≡ BT.#nodes (toTree (mkZipper cs t))
     helper [] foc = +-identityʳ (BT.#nodes foc)
-    helper (leftBranch m l ∷ ctx) foc = let
-      x = sum (List.map (suc ∘ BT.#nodes ∘ getTree) ctx) in begin
-      BT.#nodes foc + (1 + (BT.#nodes l + x)) ≡˘⟨ +-assoc (BT.#nodes foc) 1 (BT.#nodes l + x) ⟩
-      BT.#nodes foc + 1 + (BT.#nodes l + x)   ≡⟨ cong (λ y → y + (BT.#nodes l + x)) (+-comm (BT.#nodes foc) 1) ⟩
-      1 + BT.#nodes foc + (BT.#nodes l + x)   ≡˘⟨ +-assoc (1 + BT.#nodes foc) (BT.#nodes l) x ⟩
-      1 + BT.#nodes foc + BT.#nodes l + x     ≡⟨ cong (λ y → y + x) (+-comm (1 + BT.#nodes foc) (BT.#nodes l)) ⟩
-      #nodes (mkZipper ctx (node l m foc))    ≡⟨ helper ctx (node l m foc) ⟩
-      BT.#nodes (toTree (mkZipper (leftBranch m l ∷ ctx) foc)) ∎
-    helper (rightBranch m r ∷ ctx) foc = let
-      x = sum (List.map (suc ∘ BT.#nodes ∘ getTree) ctx) in begin
-      BT.#nodes foc + (1 + (BT.#nodes r + x)) ≡˘⟨ cong (λ y → BT.#nodes foc + y) (+-assoc 1 (BT.#nodes r) (sum (List.map (λ x → suc (BT.#nodes (getTree x))) ctx))) ⟩
-      BT.#nodes foc + (1 + BT.#nodes r + x)   ≡˘⟨ +-assoc (BT.#nodes foc) (suc (BT.#nodes r)) x ⟩
-      #nodes (mkZipper ctx (node foc m r))    ≡⟨ helper ctx (node foc m r) ⟩
-      BT.#nodes (toTree (mkZipper ctx (node foc m r))) ∎
+    helper cs@(leftBranch m l ∷ ctx) foc = let
+      #ctx = sum (List.map (suc ∘ BT.#nodes ∘ getTree) ctx)
+      #foc = BT.#nodes foc
+      #l = BT.#nodes l in begin
+      #foc + (1 + (#l + #ctx))             ≡˘⟨ +-assoc #foc 1 (#l + #ctx) ⟩
+      #foc + 1 + (#l + #ctx)               ≡⟨ cong (_+ (#l + #ctx)) (+-comm #foc 1) ⟩
+      1 + #foc + (#l + #ctx)               ≡˘⟨ +-assoc (1 + #foc) #l #ctx ⟩
+      1 + #foc + #l + #ctx                 ≡⟨ cong (_+ #ctx) (+-comm (1 + #foc) #l) ⟩
+      #nodes (mkZipper ctx (node l m foc)) ≡⟨ helper ctx (node l m foc) ⟩
+      BT.#nodes (toTree (mkZipper cs foc)) ∎
+    helper cs@(rightBranch m r ∷ ctx) foc = let
+      #ctx = sum (List.map (suc ∘ BT.#nodes ∘ getTree) ctx)
+      #foc = BT.#nodes foc
+      #r = BT.#nodes r in begin
+      #foc + (1 + (#r + #ctx))             ≡˘⟨ cong (#foc +_) (+-assoc 1 #r #ctx) ⟩
+      #foc + (1 + #r + #ctx)               ≡˘⟨ +-assoc #foc (suc #r) #ctx ⟩
+      #nodes (mkZipper ctx (node foc m r)) ≡⟨ helper ctx (node foc m r) ⟩
+      BT.#nodes (toTree (mkZipper cs foc)) ∎
 
 toTree-#leaves-commute : ∀ (zp : Zipper A B) → #leaves zp ≡ BT.#leaves (toTree zp)
 toTree-#leaves-commute (mkZipper c v) = helper c v
@@ -77,17 +81,21 @@ toTree-#leaves-commute (mkZipper c v) = helper c v
            → (t : Tree A B)
            → #leaves (mkZipper cs t) ≡ BT.#leaves (toTree (mkZipper cs t))
     helper [] foc = +-identityʳ (BT.#leaves foc)
-    helper (leftBranch m l ∷ ctx) foc = let
-      x = sum (List.map (BT.#leaves ∘ getTree) ctx) in begin
-      BT.#leaves foc + (BT.#leaves l + x)   ≡˘⟨ +-assoc (BT.#leaves foc) (BT.#leaves l) (x) ⟩
-      BT.#leaves foc + BT.#leaves l + x     ≡⟨ cong (λ y → y + x) (+-comm (BT.#leaves foc) (BT.#leaves l)) ⟩
+    helper cs@(leftBranch m l ∷ ctx) foc = let
+      #ctx = sum (List.map (BT.#leaves ∘ getTree) ctx)
+      #foc = BT.#leaves foc
+      #l = BT.#leaves l in begin
+      #foc + (#l + #ctx)                    ≡˘⟨ +-assoc #foc #l #ctx ⟩
+      #foc + #l + #ctx                      ≡⟨ cong (_+ #ctx) (+-comm #foc #l) ⟩
       #leaves (mkZipper ctx (node l m foc)) ≡⟨ helper ctx (node l m foc) ⟩
-      BT.#leaves (toTree (mkZipper (leftBranch m l ∷ ctx) foc)) ∎
-    helper (rightBranch m r ∷ ctx) foc = let
-      x = sum (List.map (BT.#leaves ∘ getTree) ctx) in begin
-      BT.#leaves foc + (BT.#leaves r + x)   ≡˘⟨ +-assoc (BT.#leaves foc) (BT.#leaves r) (x) ⟩
+      BT.#leaves (toTree (mkZipper cs foc)) ∎
+    helper cs@(rightBranch m r ∷ ctx) foc = let
+      #ctx = sum (List.map (BT.#leaves ∘ getTree) ctx)
+      #foc = BT.#leaves foc
+      #r = BT.#leaves r in begin
+      #foc + (#r + #ctx)                    ≡˘⟨ +-assoc #foc #r #ctx ⟩
       #leaves (mkZipper ctx (node foc m r)) ≡⟨ helper ctx (node foc m r) ⟩
-      BT.#leaves (toTree (mkZipper (rightBranch m r ∷ ctx) foc)) ∎
+      BT.#leaves (toTree (mkZipper cs foc)) ∎
 
 toTree-map-commute : ∀ (f : A → C) (g : B → D) zp → toTree (map f g zp) ≡ BT.map f g (toTree zp)
 toTree-map-commute {A = A} {B = B} f g (mkZipper c v) = helper c v

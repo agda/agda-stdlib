@@ -30,6 +30,12 @@ map : (A → C) → (B → D) → Tree A B → Tree C D
 map f g (leaf x)     = leaf (g x)
 map f g (node l m r) = node (map f g l) (f m) (map f g r)
 
+map₁ : (A → C) → Tree A B → Tree C B
+map₁ f t = map f id t
+
+map₂ : (B → C) → Tree A B → Tree A C
+map₂ f t = map id f t
+
 #nodes : Tree A B → ℕ
 #nodes (leaf x)     = 0
 #nodes (node l m r) = #nodes l + suc (#nodes r)
