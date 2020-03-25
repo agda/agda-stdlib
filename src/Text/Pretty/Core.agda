@@ -20,7 +20,7 @@ open import Data.Nat.Properties
 open import Data.Product as Prod using (_×_; _,_; uncurry; proj₁; proj₂)
 import Data.Product.Relation.Unary.All as Allᴾ
 
-open import Data.Tree.Binary as Tree using (Tree; leaf; node)
+open import Data.Tree.Binary as Tree using (Tree; leaf; node; #nodes; map₁)
 open import Data.Tree.Binary.Relation.Unary.All as Allᵀ using (leaf; node)
 open import Data.Unit using (⊤; tt)
 import Data.Tree.Binary.Relation.Unary.All.Properties as Allᵀₚ
@@ -51,7 +51,7 @@ Content : Set
 Content = Maybe (String × Tree String ⊤)
 
 size : Content → ℕ
-size = maybe′ (suc ∘ Tree.#nodes ∘ proj₂) 0
+size = maybe′ (suc ∘ #nodes ∘ proj₂) 0
 
 All : ∀ {p} (P : String → Set p) → (Content → Set p)
 All P = Allᴹ.All (Allᴾ.All P (Allᵀ.All P U))
@@ -95,7 +95,7 @@ node? (just (x , xs)) y ys = just (x , node xs y ys)
 node? nothing         y ys = just (y , ys)
 
 ∣node?∣ : ∀ b y ys → size (node? b y ys)
-                   ≡ size b + suc (Tree.#nodes ys)
+                   ≡ size b + suc (#nodes ys)
 ∣node?∣ (just (x , xs)) y ys = refl
 ∣node?∣ nothing         y ys = refl
 
@@ -156,13 +156,13 @@ private
     size-indent (just pad) str = length-++ pad str
 
     indents : Maybe String → Tree String ⊤ → Tree String ⊤
-    indents = maybe′ (Tree.map₁ ∘ _++_) id
+    indents = maybe′ (map₁ ∘ _++_) id
 
-    size-indents : ∀ ma t → Tree.#nodes (indents ma t) ≡ Tree.#nodes t
+    size-indents : ∀ ma t → #nodes (indents ma t) ≡ #nodes t
     size-indents nothing    t = refl
     size-indents (just pad) t = Treeₚ.#nodes-map₁ (pad ++_) t
 
-    unfold-indents : ∀ ma t → indents ma t ≡ Tree.map₁ (indent ma) t
+    unfold-indents : ∀ ma t → indents ma t ≡ map₁ (indent ma) t
     unfold-indents nothing    t = sym (Treeₚ.map-id t)
     unfold-indents (just pad) t = refl
 
@@ -193,8 +193,8 @@ private
       x.height + y.height ∎ where open ≡-Reasoning
     ... | just (hd , tl) = begin
       ∣node∣                            ≡⟨ ∣node?∣ blockx middle rest ⟩
-      ∣blockx∣ + suc (Tree.#nodes rest) ≡⟨ cong ((size blockx +_) ∘′ suc) ∣rest∣ ⟩
-      ∣blockx∣ + suc (Tree.#nodes tl)   ≡⟨ cong₂ _+_ ∣x∣ ∣y∣ ⟩
+      ∣blockx∣ + suc (#nodes rest) ≡⟨ cong ((size blockx +_) ∘′ suc) ∣rest∣ ⟩
+      ∣blockx∣ + suc (#nodes tl)   ≡⟨ cong₂ _+_ ∣x∣ ∣y∣ ⟩
       x.height + y.height               ∎ where
 
       open ≡-Reasoning
