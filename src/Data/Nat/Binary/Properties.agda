@@ -700,6 +700,12 @@ private
 +-isSemigroup : IsSemigroup _+_
 +-isSemigroup = +-Monomorphism.isSemigroup ℕₚ.+-isSemigroup
 
++-isCommutativeSemigroup : IsCommutativeSemigroup _+_
++-isCommutativeSemigroup = record
+  { isSemigroup = +-isSemigroup
+  ; comm        = +-comm
+  }
+
 +-0-isMonoid : IsMonoid _+_ 0ᵇ
 +-0-isMonoid = +-Monomorphism.isMonoid ℕₚ.+-0-isMonoid
 
@@ -717,6 +723,11 @@ private
   { isSemigroup = +-isSemigroup
   }
 
++-commutativeSemigroup : CommutativeSemigroup 0ℓ 0ℓ
++-commutativeSemigroup = record
+  { isCommutativeSemigroup = +-isCommutativeSemigroup
+  }
+
 +-0-monoid : Monoid 0ℓ 0ℓ
 +-0-monoid = record
   { ε        = zero
@@ -727,6 +738,9 @@ private
 +-0-commutativeMonoid = record
   { isCommutativeMonoid = +-0-isCommutativeMonoid
   }
+
+import Algebra.Properties.CommutativeSemigroup +-commutativeSemigroup
+  as Bin+CSemigroup
 
 ------------------------------------------------------------------------------
 -- Properties of _+_ and _≤_
@@ -1044,7 +1058,7 @@ private
 *-+-isCommutativeSemiring : IsCommutativeSemiring _+_ _*_ zero 1ᵇ
 *-+-isCommutativeSemiring = record
   { isSemiring = *-+-isSemiring
-  ; *-comm = *-comm
+  ; *-comm     = *-comm
   }
 
 ------------------------------------------------------------------------
@@ -1061,7 +1075,7 @@ private
   }
 
 *-1-monoid : Monoid 0ℓ 0ℓ
-*-1-monoid = record
+*-1-monoid   = record
   { isMonoid = *-1-isMonoid
   }
 
@@ -1071,7 +1085,7 @@ private
   }
 
 *-+-semiring : Semiring 0ℓ 0ℓ
-*-+-semiring = record
+*-+-semiring   = record
   { isSemiring = *-+-isSemiring
   }
 
@@ -1085,10 +1099,10 @@ private
 
 *-mono-≤ : _*_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
 *-mono-≤ {x} {u} {y} {v} x≤u y≤v = toℕ-cancel-≤ (begin
-  toℕ (x * y)     ≡⟨ toℕ-homo-* x y ⟩
-  toℕ x ℕ.* toℕ y ≤⟨ ℕₚ.*-mono-≤ (toℕ-mono-≤ x≤u) (toℕ-mono-≤ y≤v) ⟩
-  toℕ u ℕ.* toℕ v ≡⟨ sym (toℕ-homo-* u v) ⟩
-  toℕ (u * v)     ∎)
+  toℕ (x * y)      ≡⟨ toℕ-homo-* x y ⟩
+  toℕ x ℕ.* toℕ y  ≤⟨ ℕₚ.*-mono-≤ (toℕ-mono-≤ x≤u) (toℕ-mono-≤ y≤v) ⟩
+  toℕ u ℕ.* toℕ v  ≡⟨ sym (toℕ-homo-* u v) ⟩
+  toℕ (u * v)      ∎)
   where open ℕₚ.≤-Reasoning
 
 *-monoʳ-≤ : ∀ x → (x *_) Preserves _≤_ ⟶ _≤_
@@ -1099,10 +1113,10 @@ private
 
 *-mono-< : _*_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
 *-mono-< {x} {u} {y} {v} x<u y<v = toℕ-cancel-< (begin-strict
-  toℕ (x * y)     ≡⟨ toℕ-homo-* x y ⟩
-  toℕ x ℕ.* toℕ y <⟨ ℕₚ.*-mono-< (toℕ-mono-< x<u) (toℕ-mono-< y<v) ⟩
-  toℕ u ℕ.* toℕ v ≡⟨ sym (toℕ-homo-* u v) ⟩
-  toℕ (u * v)     ∎)
+  toℕ (x * y)      ≡⟨ toℕ-homo-* x y ⟩
+  toℕ x ℕ.* toℕ y  <⟨ ℕₚ.*-mono-< (toℕ-mono-< x<u) (toℕ-mono-< y<v) ⟩
+  toℕ u ℕ.* toℕ v  ≡⟨ sym (toℕ-homo-* u v) ⟩
+  toℕ (u * v)      ∎)
   where open ℕₚ.≤-Reasoning
 
 *-monoʳ-< : ∀ x → ((1ᵇ + x) *_) Preserves _<_ ⟶ _<_
@@ -1163,6 +1177,9 @@ x≢0∧y≢0⇒x*y≢0 {x} {_} x≢0 y≢0 xy≡0  with x*y≡0⇒x≡0∨y≡0
 
 double[x]≡0⇒x≡0 : ∀ {x} → double x ≡ zero → x ≡ zero
 double[x]≡0⇒x≡0 {zero} _ = refl
+
+x≡0⇒double[x]≡0 : ∀ {x} → x ≡ 0ᵇ → double x ≡ 0ᵇ
+x≡0⇒double[x]≡0 = cong double
 
 x≢0⇒double[x]≢0 : ∀ {x} → x ≢ zero → double x ≢ zero
 x≢0⇒double[x]≢0 x≢0 = x≢0 ∘ double[x]≡0⇒x≡0
@@ -1238,6 +1255,15 @@ x≤double[x] x =  begin
   double x  ∎
   where open ≤-Reasoning
 
+double-suc : ∀ x → double (suc x) ≡ 2ᵇ + double x
+double-suc x = begin
+  double (suc x)   ≡⟨ cong double (suc≗1+ x) ⟩
+  double (1ᵇ + x)  ≡⟨ double-distrib-+ 1ᵇ x ⟩
+  2ᵇ + double x    ∎
+  where open ≡-Reasoning
+
+
+
 ------------------------------------------------------------------------
 -- Properties of suc
 ------------------------------------------------------------------------
@@ -1263,11 +1289,20 @@ suc≢0 {zero}     ()
 suc≢0 {2[1+ _ ]} ()
 suc≢0 {1+[2 _ ]} ()
 
+x+suc[y]≡suc[x]+y : ∀ x y → x + suc y ≡ suc x + y
+x+suc[y]≡suc[x]+y x y = begin
+  x + suc y     ≡⟨ +-comm x _ ⟩
+  suc y + x     ≡⟨ suc-+ y x ⟩
+  suc (y + x)   ≡⟨ cong suc (+-comm y x) ⟩
+  suc (x + y)   ≡⟨ sym (suc-+ x y) ⟩
+  suc x + y     ∎
+  where open ≡-Reasoning
+
 0<suc : ∀ x → zero < suc x
 0<suc x =  x≢0⇒x>0 (suc≢0 {x})
 
 x<suc[x] : ∀ x → x < suc x
-x<suc[x] x =  begin-strict
+x<suc[x] x = begin-strict
   x        <⟨ x<1+x x ⟩
   1ᵇ + x   ≡⟨ sym (suc≗1+ x) ⟩
   suc x    ∎
@@ -1292,7 +1327,7 @@ suc[x]≤y⇒x<y {x} (inj₁ sx<y) = <-trans (x<suc[x] x) sx<y
 suc[x]≤y⇒x<y {x} (inj₂ refl) = x<suc[x] x
 
 x<y⇒suc[x]≤y : ∀ {x y} → x < y → suc x ≤ y
-x<y⇒suc[x]≤y {x} {y} x<y =  begin
+x<y⇒suc[x]≤y {x} {y} x<y = begin
   suc x                  ≡⟨ sym (fromℕ-toℕ (suc x)) ⟩
   fromℕ (toℕ (suc x))    ≡⟨ cong fromℕ (toℕ-suc x) ⟩
   fromℕ (ℕ.suc (toℕ x))  ≤⟨ fromℕ-mono-≤ (toℕ-mono-< x<y) ⟩
@@ -1309,13 +1344,13 @@ suc-* x y = begin
 
 *-suc : ∀ x y → x * suc y ≡ x + x * y
 *-suc x y = begin
-  x * suc y    ≡⟨ cong (x *_) (suc≗1+ y) ⟩
-  x * (1ᵇ + y) ≡⟨ *-1+ y x ⟩
-  x + x * y    ∎
+  x * suc y     ≡⟨ cong (x *_) (suc≗1+ y) ⟩
+  x * (1ᵇ + y)  ≡⟨ *-1+ y x ⟩
+  x + x * y     ∎
   where open ≡-Reasoning
 
 x≤suc[y]*x : ∀ x y → x ≤ (suc y) * x
-x≤suc[y]*x x y =  begin
+x≤suc[y]*x x y = begin
   x             ≤⟨ x≤x+y x (y * x) ⟩
   x + y * x     ≡⟨ sym (suc-* y x) ⟩
   (suc y) * x   ∎
@@ -1332,7 +1367,7 @@ suc[x]<2[1+x] x =  begin-strict
   where open ≤-Reasoning
 
 double[x]<1+[2x] : ∀ x → double x < 1+[2 x ]
-double[x]<1+[2x] x =  begin-strict
+double[x]<1+[2x] x = begin-strict
   double x         <⟨ x<suc[x] (double x) ⟩
   suc (double x)   ≡⟨ sym (1+[2_]-suc-double x) ⟩
   1+[2 x ]         ∎
@@ -1353,7 +1388,7 @@ suc-pred {2[1+ _ ]} _   =  refl
 suc-pred {1+[2 x ]} _   =  sym (1+[2_]-suc-double x)
 
 pred-mono-≤ : pred Preserves _≤_ ⟶ _≤_
-pred-mono-≤ {x} {y} x≤y =  begin
+pred-mono-≤ {x} {y} x≤y = begin
   pred x             ≡⟨ cong pred (sym (fromℕ-toℕ x)) ⟩
   pred (fromℕ m)     ≡⟨ sym (fromℕ-pred m) ⟩
   fromℕ (ℕ.pred m)   ≤⟨ fromℕ-mono-≤ (ℕₚ.pred-mono (toℕ-mono-≤ x≤y)) ⟩
@@ -1364,11 +1399,22 @@ pred-mono-≤ {x} {y} x≤y =  begin
   open ≤-Reasoning;  m = toℕ x;  n = toℕ y
 
 pred[x]<x : ∀ {x} → x ≢ zero → pred x < x
-pred[x]<x {x} x≢0 =  begin-strict
+pred[x]<x {x} x≢0 = begin-strict
   pred x       <⟨ x<suc[x] (pred x) ⟩
   suc (pred x) ≡⟨ suc-pred x≢0 ⟩
   x            ∎
   where open ≤-Reasoning
+
+pred[x]+y≡x+pred[y] : ∀ {x y} → x ≢ 0ᵇ → y ≢ 0ᵇ → (pred x) + y ≡ x + pred y
+pred[x]+y≡x+pred[y] {x} {y} x≢0 y≢0 = begin
+  px + y           ≡⟨ cong (px +_) (sym (suc-pred y≢0)) ⟩
+  px + suc py      ≡⟨ cong (px +_) (suc≗1+ py) ⟩
+  px + (1ᵇ + py)   ≡⟨ Bin+CSemigroup.x∙yz≈yx∙z px 1ᵇ py ⟩
+  (1ᵇ + px) + py   ≡⟨ cong (_+ py) (sym (suc≗1+ px)) ⟩
+  (suc px) + py    ≡⟨ cong (_+ py) (suc-pred x≢0) ⟩
+  x + py           ∎
+  where open ≡-Reasoning;  px = pred x;  py = pred y
+
 
 ------------------------------------------------------------------------
 -- Properties of size

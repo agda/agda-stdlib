@@ -553,6 +553,10 @@ suc[pred[n]]≡n {suc n} n≢0 = refl
   { isCommutativeMonoid = +-0-isCommutativeMonoid
   }
 
+∸-magma : Magma 0ℓ 0ℓ
+∸-magma = magma _∸_
+
+
 ------------------------------------------------------------------------
 -- Other properties of _+_ and _≡_
 
