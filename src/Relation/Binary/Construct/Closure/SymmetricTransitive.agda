@@ -84,13 +84,13 @@ module _ (_∼_ : Rel A ℓ) where
     minimal f inj (back⁺ r rel)  = S.trans (S.sym (inj r)) (minimal f inj rel)
 
 module Plus⇔Reasoning (_≤_ : Rel A ℓ) where
-  infix  3 forth-synax back-syntax
+  infix  3 forth-syntax back-syntax
   infixr 2 forth⁺-syntax back⁺-syntax
   
-  forth-synax : ∀ x y → x ≤ y → Plus⇔ _≤_ x y
-  forth-synax _ _ = forth
+  forth-syntax : ∀ x y → x ≤ y → Plus⇔ _≤_ x y
+  forth-syntax _ _ = forth
 
-  syntax forth-synax x y x≤y = x ⇒⟨ x≤y ⟩∎ y ∎
+  syntax forth-syntax x y x≤y = x ⇒⟨ x≤y ⟩∎ y ∎
 
   back-syntax : ∀ x y → y ≤ x → Plus⇔ _≤_ x y
   back-syntax _ _ = back
