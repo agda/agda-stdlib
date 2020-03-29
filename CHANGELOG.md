@@ -26,4 +26,5 @@ Other major changes
 
 Other minor additions
 ---------------------
-* Added map-id, [,]-cong and map-cong to `Data.Sum.Properties`
+* Made first argument of [,]-∘-distr in `Data.Sum.Properties` explicit
+* Added map-id, map₁₂-commute, [,]-cong and map-cong to `Data.Sum.Properties`
