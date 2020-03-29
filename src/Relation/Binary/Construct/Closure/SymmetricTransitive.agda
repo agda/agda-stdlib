@@ -63,7 +63,7 @@ module _ (_∼_ : Rel A ℓ) where
       ; sym   = sym
       ; trans = trans
       }
-  
+
     setoid : Setoid _ _
     setoid = record
       { Carrier       = A
@@ -86,7 +86,7 @@ module _ (_∼_ : Rel A ℓ) where
 module Plus⇔Reasoning (_≤_ : Rel A ℓ) where
   infix  3 forth-syntax back-syntax
   infixr 2 forth⁺-syntax back⁺-syntax
-  
+
   forth-syntax : ∀ x y → x ≤ y → Plus⇔ _≤_ x y
   forth-syntax _ _ = forth
 
