@@ -56,18 +56,18 @@ map-id (inj₂ _) = refl
 
 [,]-map-commute : {f : A → B}  {g : C → D}
                   {f′ : B → E} {g′ : D → E} →
-                  [ f′ , g′ ] ∘ (map f g) ≗ [ f′ ∘ f , g′ ∘ g ]
+                  [ f′ , g′ ] ∘ map f g ≗ [ f′ ∘ f , g′ ∘ g ]
 [,]-map-commute (inj₁ _) = refl
 [,]-map-commute (inj₂ _) = refl
 
 map-commute : {f : A → B}  {g : C → D}
               {f′ : B → E} {g′ : D → F} →
-              (map f′ g′) ∘ (map f g) ≗ map (f′ ∘ f) (g′ ∘ g)
+              map f′ g′ ∘ map f g ≗ map (f′ ∘ f) (g′ ∘ g)
 map-commute (inj₁ _) = refl
 map-commute (inj₂ _) = refl
 
 map₁₂-commute : {f : A → B} {g : C → D} →
-                (map₁ f) ∘ (map₂ g) ≗ (map₂ g) ∘ (map₁ f)
+                map₁ f ∘ map₂ g ≗ map₂ g ∘ map₁ f
 map₁₂-commute (inj₁ _) = refl
 map₁₂-commute (inj₂ _) = refl
 
