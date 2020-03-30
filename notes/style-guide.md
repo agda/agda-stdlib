@@ -2,8 +2,8 @@ Style guide for the standard library
 ====================================
 
 This is very much a work-in-progress and is not exhaustive. Furthermore many of
-these are aspirations, and may be violated in certain parts of the library.
-It is hoped that at some point a linter will be developed for Agda which will
+these are aspirations, and may be violated in certain parts of the library. 
+It is hoped that at some point a linter will be developed for Agda which will 
 automate most of this.
 
 ## File structure
@@ -34,14 +34,14 @@ automate most of this.
 #### Modules
 
 * As a rule of thumb there should only be one named module per file. Anonymous
-  modules are fine, but named internal modules should either be opened publicly
+  modules are fine, but named internal modules should either be opened publicly 
   immediately or split out into a separate file.
 
 * Module parameters should be put on a single line if they fit.
 
 * Otherwise they should be spread out over multiple lines, each indented by two
-  spaces. If they can be grouped logically by line then it is fine to do so,
-  otherwise, a line each is probably clearest. The `where` keyword should be placed
+  spaces. If they can be grouped logically by line then it is fine to do so, 
+  otherwise, a line each is probably clearest. The `where` keyword should be placed 
   on an  additional line of code at the end. For example:
   ```agda
   module Relation.Binary.Reasoning.Base.Single
@@ -49,7 +49,7 @@ automate most of this.
     (refl : Reflexive _∼_) (trans : Transitive _∼_)
     where
   ```
-
+  
 * There should always be a single blank line after a module declaration.
 
 #### Imports
@@ -63,9 +63,9 @@ automate most of this.
   then those imports only may be placed above the module declaration, e.g.
   ```agda
   open import Algebra using (Ring)
-
+  
   module Algebra.Properties.Ring {a l} (ring : Ring a l) where
-
+    
 	... other imports
   ```
 
@@ -86,25 +86,25 @@ automate most of this.
   ```agda
   open import Data.Nat.Properties using (+-assoc)
   ```
-
+  
 * Re-exporting terms from a module using the `public` modifier
   should *not* be done in the list of imports as it is very hard to spot.
   Instead the best approach is often to rename the import and then open it
   publicly later in the file in a more obvious fashion, e.g.
   ```agda
   -- Import list
-  ...
+  ... 
   import Data.Nat.Properties as NatProperties
   ...
-
+  
   -- Re-export ring
   open NatProperties public
     using (+-*-ring)
   ```
 
-* If multiple import modifiers are used, then they should occur in the
+* If multiple import modifiers are used, then they should occur in the 
   following order: `public`, `using` `renaming`, and if `public` is used
-  then the `using` and `renaming` modifiers should occur on a separate line.
+  then the `using` and `renaming` modifiers should occur on a separate line. 
   For example:
   ```agda
   open Monoid monoid public
@@ -270,7 +270,7 @@ line of code, indented by two spaces.
   `variable`. At the moment the policy is *not* to generalize over any other
   types to minimize the amount of information that users have to keep in
   their head concurrently.
-
+  
 ## Naming conventions
 
 * Names should be descriptive - i.e. given the name of a proof and the
@@ -298,7 +298,7 @@ word within a compound word is capitalized except for the first word.
 
 * Level variables are typically chosen to match the name of the
   relation, e.g. `a` for the level of a set `A`, `p` for a predicate
-  `P`. By convention the name `0ℓ` is preferred over `zero` for the
+  `P`. By convention the name `0ℓ` is preferred over `zero` for the 
   zeroth level.
 
 * Natural variables are named `m`, `n`, `o`, ... (default `n`)
@@ -327,13 +327,13 @@ word within a compound word is capitalized except for the first word.
 * Try to avoid the need for bracketing, but if necessary use square
   brackets (e.g. `[m∸n]⊓[n∸m]≡0`)
 
-* When naming proofs, the variables should occur in alphabetical order,
+* When naming proofs, the variables should occur in alphabetical order, 
   e.g. `m≤n+m` rather than `n≤m+n`.
 
 #### Operators and relations
 
-* Concrete operators and relations should be defined using
-  [mixfix](https://agda.readthedocs.io/en/latest/language/mixfix-operators.html)
+* Concrete operators and relations should be defined using 
+  [mixfix](https://agda.readthedocs.io/en/latest/language/mixfix-operators.html) 
   notation where applicable (e.g. `_+_`, `_<_`)
 
 * Common properties such as those in rings/orders/equivalences etc.
