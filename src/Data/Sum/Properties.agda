@@ -76,8 +76,28 @@ map₁₂-commute (inj₂ _) = refl
            [ f , g ] ≗ [ f′ , g′ ]
 [,]-cong = [_,_]
 
+[-,]-cong : {f f′ : A → B} {g : C → B} →
+           f ≗ f′ →
+           [ f , g ] ≗ [ f′ , g ]
+[-,]-cong = [_, (λ _ → refl) ]
+
+[,-]-cong : {f : A → B} {g g′ : C → B} →
+           g ≗ g′ →
+           [ f , g ] ≗ [ f , g′ ]
+[,-]-cong = [ (λ _ → refl) ,_]
+
 map-cong : {f f′ : A → B} {g g′ : C → D} →
            f ≗ f′ → g ≗ g′ →
            map f g ≗ map f′ g′
 map-cong f≗f′ g≗g′ (inj₁ x) = cong inj₁ (f≗f′ x)
 map-cong f≗f′ g≗g′ (inj₂ x) = cong inj₂ (g≗g′ x)
+
+map₁-cong : {f f′ : A → B} →
+           f ≗ f′ →
+           map₁ {B = C} f ≗ map₁ f′
+map₁-cong f≗f′ = [-,]-cong ((cong inj₁) ∘ f≗f′)
+
+map₂-cong : {g g′ : C → D} →
+           g ≗ g′ →
+           map₂ {A = A} g ≗ map₂ g′
+map₂-cong g≗g′ = [,-]-cong ((cong inj₂) ∘ g≗g′)
