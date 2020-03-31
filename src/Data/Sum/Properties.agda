@@ -11,6 +11,7 @@ module Data.Sum.Properties where
 open import Level
 open import Data.Sum.Base
 open import Function
+open import Function.Reasoning
 open import Relation.Binary using (Decidable)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (yes; no)
@@ -61,3 +62,22 @@ map-commute : {f : A → B}  {g : C → D}
               ((map f′ g′) ∘ (map f g)) ≗ map (f′ ∘ f) (g′ ∘ g)
 map-commute (inj₁ _) = refl
 map-commute (inj₂ _) = refl
+
+
+
+module SumReasoning where
+  open ≗-Reasoning public
+
+  infix 6 _∘[_,_] _∘[,] [_,_]∘map [,]∘map
+
+  _∘[_,_] : (f : C → D) (g : A → C) (h : B → C) → f ∘ [ g , h ] ≗ [ f ∘ g , f ∘ h ]
+  f ∘[ g , h ] = [,]-∘-distr {f = f} {g} {h}
+
+  _∘[,] : (f : C → D) {g : A → C} {h : B → C} → f ∘ [ g , h ] ≗ [ f ∘ g , f ∘ h ]
+  f ∘[,] = [,]-∘-distr {f = f}
+
+  [_,_]∘map : (f : C → E) (g : D → E) {h : A → C} {i : B → D} → [ f , g ] ∘ (map h i) ≗ [ f ∘ h , g ∘ i ]
+  [ f , g ]∘map = [,]-map-commute {f′ = f} {g}
+
+  [,]∘map : {f : C → E} {g : D → E} {h : A → C} {i : B → D} → [ f , g ] ∘ (map h i) ≗ [ f ∘ h , g ∘ i ]
+  [,]∘map = [,]-map-commute
