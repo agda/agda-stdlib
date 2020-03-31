@@ -46,8 +46,8 @@ toTree-right-identity : (zp : Zipper N L) → All ((_≡_ on toTree) zp) (right 
 toTree-right-identity (mkZipper ctx (leaf x)) = nothing
 toTree-right-identity (mkZipper ctx (node l m r)) = just refl
 
--- Tree-like operations indeed correspond to their counterparts
 ------------------------------------------------------------------------
+-- Tree-like operations indeed correspond to their counterparts
 
 toTree-#nodes-commute : ∀ (zp : Zipper N L) → #nodes zp ≡ BT.#nodes (toTree zp)
 toTree-#nodes-commute (mkZipper c v) = helper c v
@@ -118,8 +118,8 @@ toTree-foldr-commute {N = N} {L = L} f g (mkZipper c v) = helper c v
     helper (leftBranch m l ∷ ctx) foc = helper ctx (node l m foc)
     helper (rightBranch m r ∷ ctx) foc = helper ctx (node foc m r)
 
--- Properties of the building functions
 ------------------------------------------------------------------------
+-- Properties of the building functions
 
 -- _⟪_⟫ˡ_ properties
 

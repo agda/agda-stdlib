@@ -36,8 +36,8 @@ record Zipper (N : Set n) (L : Set l) : Set (n ⊔ l) where
 
 open Zipper public
 
--- Fundamental operations of a Zipper: Moving around
 ------------------------------------------------------------------------
+-- Fundamental operations of a Zipper: Moving around
 
 up : Zipper N L → Maybe (Zipper N L)
 up (mkZipper [] foc) = nothing
@@ -52,8 +52,8 @@ right : Zipper N L → Maybe (Zipper N L)
 right (mkZipper ctx (leaf x)) = nothing
 right (mkZipper ctx (node l m r)) = just $ mkZipper (leftBranch m l ∷ ctx) r
 
--- To and from trees
 ------------------------------------------------------------------------
+-- To and from trees
 
 plug : List (Crumb N L) → Tree N L → Tree N L
 plug [] t = t
@@ -66,8 +66,8 @@ toTree (mkZipper ctx foc) = plug ctx foc
 fromTree : Tree N L → Zipper N L
 fromTree = mkZipper []
 
--- Tree-like operations
 ------------------------------------------------------------------------
+-- Tree-like operations
 
 getTree : Crumb N L → Tree N L
 getTree (leftBranch m x) = x
@@ -93,8 +93,8 @@ foldr {A = A} {N = N} {L = L} f g (mkZipper ctx foc) = List.foldl step (BT.foldr
     step val (leftBranch m x) = f (BT.foldr f g x) m val
     step val (rightBranch m x) = f val m (BT.foldr f g x)
 
--- Attach nodes to the top most part of the zipper
 ------------------------------------------------------------------------
+-- Attach nodes to the top most part of the zipper
 
 attach : Zipper N L → List (Crumb N L) → Zipper N L
 attach (mkZipper ctx foc) xs = mkZipper (ctx ++ xs) foc
