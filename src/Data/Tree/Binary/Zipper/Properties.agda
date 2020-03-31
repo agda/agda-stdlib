@@ -52,9 +52,9 @@ toTree-right-identity (mkZipper ctx (node l m r)) = just refl
 toTree-#nodes-commute : ∀ (zp : Zipper N L) → #nodes zp ≡ BT.#nodes (toTree zp)
 toTree-#nodes-commute (mkZipper c v) = helper c v
   where
-    helper : (cs : List (Crumb N L))
-           → (t : Tree N L)
-           → #nodes (mkZipper cs t) ≡ BT.#nodes (toTree (mkZipper cs t))
+    helper : (cs : List (Crumb N L)) →
+             (t : Tree N L) →
+             #nodes (mkZipper cs t) ≡ BT.#nodes (toTree (mkZipper cs t))
     helper [] foc = +-identityʳ (BT.#nodes foc)
     helper cs@(leftBranch m l ∷ ctx) foc = let
       #ctx = sum (List.map (suc ∘ BT.#nodes ∘ getTree) ctx)
@@ -78,9 +78,9 @@ toTree-#nodes-commute (mkZipper c v) = helper c v
 toTree-#leaves-commute : ∀ (zp : Zipper N L) → #leaves zp ≡ BT.#leaves (toTree zp)
 toTree-#leaves-commute (mkZipper c v) = helper c v
   where
-    helper : (cs : List (Crumb N L))
-           → (t : Tree N L)
-           → #leaves (mkZipper cs t) ≡ BT.#leaves (toTree (mkZipper cs t))
+    helper : (cs : List (Crumb N L)) →
+             (t : Tree N L) →
+             #leaves (mkZipper cs t) ≡ BT.#leaves (toTree (mkZipper cs t))
     helper [] foc = +-identityʳ (BT.#leaves foc)
     helper cs@(leftBranch m l ∷ ctx) foc = let
       #ctx = sum (List.map (BT.#leaves ∘ getTree) ctx)
@@ -101,9 +101,9 @@ toTree-#leaves-commute (mkZipper c v) = helper c v
 toTree-map-commute : ∀ (f : N → N₁) (g : L → L₁) zp → toTree (map f g zp) ≡ BT.map f g (toTree zp)
 toTree-map-commute {N = N} {L = L} f g (mkZipper c v) = helper c v
   where
-    helper : (cs : List (Crumb N L))
-           → (t : Tree N L)
-           → toTree (map f g (mkZipper cs t)) ≡ BT.map f g (toTree (mkZipper cs t))
+    helper : (cs : List (Crumb N L)) →
+             (t : Tree N L) →
+             toTree (map f g (mkZipper cs t)) ≡ BT.map f g (toTree (mkZipper cs t))
     helper [] foc = refl
     helper (leftBranch m l ∷ ctx) foc = helper ctx (node l m foc)
     helper (rightBranch m r ∷ ctx) foc = helper ctx (node foc m r)
@@ -111,9 +111,9 @@ toTree-map-commute {N = N} {L = L} f g (mkZipper c v) = helper c v
 toTree-foldr-commute : ∀ (f : A → N → A → A) (g : L → A) zp → foldr f g zp ≡ BT.foldr f g (toTree zp)
 toTree-foldr-commute {N = N} {L = L} f g (mkZipper c v) = helper c v
   where
-    helper : (cs : List (Crumb N L))
-           → (t : Tree N L)
-           → foldr f g (mkZipper cs t) ≡ BT.foldr f g (toTree (mkZipper cs t))
+    helper : (cs : List (Crumb N L)) →
+             (t : Tree N L) →
+             foldr f g (mkZipper cs t) ≡ BT.foldr f g (toTree (mkZipper cs t))
     helper [] foc = refl
     helper (leftBranch m l ∷ ctx) foc = helper ctx (node l m foc)
     helper (rightBranch m r ∷ ctx) foc = helper ctx (node foc m r)
@@ -126,9 +126,9 @@ toTree-foldr-commute {N = N} {L = L} f g (mkZipper c v) = helper c v
 toTree-⟪⟫ˡ-commute : ∀ l m (zp : Zipper N L) → toTree (l ⟪ m ⟫ˡ zp) ≡ node l m (toTree zp)
 toTree-⟪⟫ˡ-commute {N = N} {L = L} l m (mkZipper c v) = helper c v
   where
-    helper : (cs : List (Crumb N L))
-           → (t : Tree N L)
-           → toTree (l ⟪ m ⟫ˡ mkZipper cs t) ≡ node l m (toTree $ mkZipper cs t)
+    helper : (cs : List (Crumb N L)) →
+             (t : Tree N L) →
+             toTree (l ⟪ m ⟫ˡ mkZipper cs t) ≡ node l m (toTree $ mkZipper cs t)
     helper [] foc = refl
     helper (leftBranch m l ∷ ctx) foc = helper ctx (node l m foc)
     helper (rightBranch m r ∷ ctx) foc = helper ctx (node foc m r)
@@ -138,9 +138,9 @@ toTree-⟪⟫ˡ-commute {N = N} {L = L} l m (mkZipper c v) = helper c v
 toTree-⟪⟫ʳ-commute : ∀ (zp : Zipper N L) m r → toTree (zp ⟪ m ⟫ʳ r) ≡ node (toTree zp) m r
 toTree-⟪⟫ʳ-commute {N = N} {L = L} (mkZipper c v) m r = helper c v
   where
-    helper : (cs : List (Crumb N L))
-           → (t : Tree N L)
-           → toTree (mkZipper cs t ⟪ m ⟫ʳ r) ≡ node (toTree $ mkZipper cs t) m r
+    helper : (cs : List (Crumb N L)) →
+             (t : Tree N L) →
+             toTree (mkZipper cs t ⟪ m ⟫ʳ r) ≡ node (toTree $ mkZipper cs t) m r
     helper [] foc = refl
     helper (leftBranch m l ∷ ctx) foc = helper ctx (node l m foc)
     helper (rightBranch m r ∷ ctx) foc = helper ctx (node foc m r)
