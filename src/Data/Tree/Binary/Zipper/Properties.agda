@@ -22,37 +22,38 @@ open import Level using (Level)
 
 private
   variable
-    a b c d : Level
+    a n l n₁ l₁ : Level
     A : Set a
-    B : Set b
-    C : Set c
-    D : Set d
+    N : Set n
+    L : Set l
+    N₁ : Set n₁
+    L₁ : Set l₁
 
 -- Invariant: Zipper represents a given tree
 
 -- Stability under moving
 
-toTree-up-identity : (zp : Zipper A B) → All ((_≡_ on toTree) zp) (up zp)
+toTree-up-identity : (zp : Zipper N L) → All ((_≡_ on toTree) zp) (up zp)
 toTree-up-identity (mkZipper [] foc) = nothing
 toTree-up-identity (mkZipper (leftBranch m l ∷ ctx) foc) = just refl
 toTree-up-identity (mkZipper (rightBranch m r ∷ ctx) foc) = just refl
 
-toTree-left-identity : (zp : Zipper A B) → All ((_≡_ on toTree) zp) (left zp)
+toTree-left-identity : (zp : Zipper N L) → All ((_≡_ on toTree) zp) (left zp)
 toTree-left-identity (mkZipper ctx (leaf x)) = nothing
 toTree-left-identity (mkZipper ctx (node l m r)) = just refl
 
-toTree-right-identity : (zp : Zipper A B) → All ((_≡_ on toTree) zp) (right zp)
+toTree-right-identity : (zp : Zipper N L) → All ((_≡_ on toTree) zp) (right zp)
 toTree-right-identity (mkZipper ctx (leaf x)) = nothing
 toTree-right-identity (mkZipper ctx (node l m r)) = just refl
 
 -- Tree-like operations indeed correspond to their counterparts
 ------------------------------------------------------------------------
 
-toTree-#nodes-commute : ∀ (zp : Zipper A B) → #nodes zp ≡ BT.#nodes (toTree zp)
+toTree-#nodes-commute : ∀ (zp : Zipper N L) → #nodes zp ≡ BT.#nodes (toTree zp)
 toTree-#nodes-commute (mkZipper c v) = helper c v
   where
-    helper : (cs : List (Crumb A B))
-           → (t : Tree A B)
+    helper : (cs : List (Crumb N L))
+           → (t : Tree N L)
            → #nodes (mkZipper cs t) ≡ BT.#nodes (toTree (mkZipper cs t))
     helper [] foc = +-identityʳ (BT.#nodes foc)
     helper cs@(leftBranch m l ∷ ctx) foc = let
@@ -74,11 +75,11 @@ toTree-#nodes-commute (mkZipper c v) = helper c v
       #nodes (mkZipper ctx (node foc m r)) ≡⟨ helper ctx (node foc m r) ⟩
       BT.#nodes (toTree (mkZipper cs foc)) ∎
 
-toTree-#leaves-commute : ∀ (zp : Zipper A B) → #leaves zp ≡ BT.#leaves (toTree zp)
+toTree-#leaves-commute : ∀ (zp : Zipper N L) → #leaves zp ≡ BT.#leaves (toTree zp)
 toTree-#leaves-commute (mkZipper c v) = helper c v
   where
-    helper : (cs : List (Crumb A B))
-           → (t : Tree A B)
+    helper : (cs : List (Crumb N L))
+           → (t : Tree N L)
            → #leaves (mkZipper cs t) ≡ BT.#leaves (toTree (mkZipper cs t))
     helper [] foc = +-identityʳ (BT.#leaves foc)
     helper cs@(leftBranch m l ∷ ctx) foc = let
@@ -97,21 +98,21 @@ toTree-#leaves-commute (mkZipper c v) = helper c v
       #leaves (mkZipper ctx (node foc m r)) ≡⟨ helper ctx (node foc m r) ⟩
       BT.#leaves (toTree (mkZipper cs foc)) ∎
 
-toTree-map-commute : ∀ (f : A → C) (g : B → D) zp → toTree (map f g zp) ≡ BT.map f g (toTree zp)
-toTree-map-commute {A = A} {B = B} f g (mkZipper c v) = helper c v
+toTree-map-commute : ∀ (f : N → N₁) (g : L → L₁) zp → toTree (map f g zp) ≡ BT.map f g (toTree zp)
+toTree-map-commute {N = N} {L = L} f g (mkZipper c v) = helper c v
   where
-    helper : (cs : List (Crumb A B))
-           → (t : Tree A B)
+    helper : (cs : List (Crumb N L))
+           → (t : Tree N L)
            → toTree (map f g (mkZipper cs t)) ≡ BT.map f g (toTree (mkZipper cs t))
     helper [] foc = refl
     helper (leftBranch m l ∷ ctx) foc = helper ctx (node l m foc)
     helper (rightBranch m r ∷ ctx) foc = helper ctx (node foc m r)
 
-toTree-foldr-commute : ∀ (f : C → A → C → C) (g : B → C) zp → foldr f g zp ≡ BT.foldr f g (toTree zp)
-toTree-foldr-commute {A = A} {B = B} f g (mkZipper c v) = helper c v
+toTree-foldr-commute : ∀ (f : A → N → A → A) (g : L → A) zp → foldr f g zp ≡ BT.foldr f g (toTree zp)
+toTree-foldr-commute {N = N} {L = L} f g (mkZipper c v) = helper c v
   where
-    helper : (cs : List (Crumb A B))
-           → (t : Tree A B)
+    helper : (cs : List (Crumb N L))
+           → (t : Tree N L)
            → foldr f g (mkZipper cs t) ≡ BT.foldr f g (toTree (mkZipper cs t))
     helper [] foc = refl
     helper (leftBranch m l ∷ ctx) foc = helper ctx (node l m foc)
@@ -122,11 +123,11 @@ toTree-foldr-commute {A = A} {B = B} f g (mkZipper c v) = helper c v
 
 -- _⟪_⟫ˡ_ properties
 
-toTree-⟪⟫ˡ-commute : ∀ l m (zp : Zipper A B) → toTree (l ⟪ m ⟫ˡ zp) ≡ node l m (toTree zp)
-toTree-⟪⟫ˡ-commute {A = A} {B = B} l m (mkZipper c v) = helper c v
+toTree-⟪⟫ˡ-commute : ∀ l m (zp : Zipper N L) → toTree (l ⟪ m ⟫ˡ zp) ≡ node l m (toTree zp)
+toTree-⟪⟫ˡ-commute {N = N} {L = L} l m (mkZipper c v) = helper c v
   where
-    helper : (cs : List (Crumb A B))
-           → (t : Tree A B)
+    helper : (cs : List (Crumb N L))
+           → (t : Tree N L)
            → toTree (l ⟪ m ⟫ˡ mkZipper cs t) ≡ node l m (toTree $ mkZipper cs t)
     helper [] foc = refl
     helper (leftBranch m l ∷ ctx) foc = helper ctx (node l m foc)
@@ -134,11 +135,11 @@ toTree-⟪⟫ˡ-commute {A = A} {B = B} l m (mkZipper c v) = helper c v
 
 -- _⟪_⟫ʳ_ properties
 
-toTree-⟪⟫ʳ-commute : ∀ (zp : Zipper A B) m r → toTree (zp ⟪ m ⟫ʳ r) ≡ node (toTree zp) m r
-toTree-⟪⟫ʳ-commute {A = A} {B = B} (mkZipper c v) m r = helper c v
+toTree-⟪⟫ʳ-commute : ∀ (zp : Zipper N L) m r → toTree (zp ⟪ m ⟫ʳ r) ≡ node (toTree zp) m r
+toTree-⟪⟫ʳ-commute {N = N} {L = L} (mkZipper c v) m r = helper c v
   where
-    helper : (cs : List (Crumb A B))
-           → (t : Tree A B)
+    helper : (cs : List (Crumb N L))
+           → (t : Tree N L)
            → toTree (mkZipper cs t ⟪ m ⟫ʳ r) ≡ node (toTree $ mkZipper cs t) m r
     helper [] foc = refl
     helper (leftBranch m l ∷ ctx) foc = helper ctx (node l m foc)

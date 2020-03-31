@@ -16,35 +16,37 @@ open import Function.Base
 
 private
   variable
-    a b c d : Level
+    n l n₁ l₁ a : Level
+    N : Set n
+    L : Set l
+    N₁ : Set n₁
+    L₁ : Set l₁
     A : Set a
-    B : Set b
-    C : Set c
-    D : Set d
 
-data Tree (A : Set a) (B : Set b) : Set (a ⊔ b) where
-  leaf : B → Tree A B
-  node : Tree A B → A → Tree A B → Tree A B
+-- Trees with node values of type N and leaf values of type L
+data Tree (N : Set n) (L : Set l) : Set (n ⊔ l) where
+  leaf : L → Tree N L
+  node : Tree N L → N → Tree N L → Tree N L
 
-map : (A → C) → (B → D) → Tree A B → Tree C D
+map : (N → N₁) → (L → L₁) → Tree N L → Tree N₁ L₁
 map f g (leaf x)     = leaf (g x)
 map f g (node l m r) = node (map f g l) (f m) (map f g r)
 
-map₁ : (A → C) → Tree A B → Tree C B
+map₁ : (N → N₁) → Tree N L → Tree N₁ L
 map₁ f t = map f id t
 
-map₂ : (B → C) → Tree A B → Tree A C
+map₂ : (L → L₁) → Tree N L → Tree N L₁
 map₂ f t = map id f t
 
-#nodes : Tree A B → ℕ
+#nodes : Tree N L → ℕ
 #nodes (leaf x)     = 0
 #nodes (node l m r) = #nodes l + suc (#nodes r)
 
-#leaves : Tree A B → ℕ
+#leaves : Tree N L → ℕ
 #leaves (leaf x)     = 1
 #leaves (node l m r) = #leaves l + #leaves r
 
-foldr : (C → A → C → C) → (B → C) → Tree A B → C
+foldr : (A → N → A → A) → (L → A) → Tree N L → A
 foldr f g (leaf x)     = g x
 foldr f g (node l m r) = f (foldr f g l) m (foldr f g r)
 
@@ -53,33 +55,33 @@ foldr f g (node l m r) = f (foldr f g l) m (foldr f g r)
 
 module Prefix where
 
-  toDiffList : Tree A B → DiffList A
+  toDiffList : Tree N L → DiffList N
   toDiffList = foldr (λ l m r → m ∷ l ++ r) (λ _ → [])
 
-  toList : Tree A B → List A
+  toList : Tree N L → List N
   toList = DiffList.toList ∘′ toDiffList
 
 module Infix where
 
-  toDiffList : Tree A B → DiffList A
+  toDiffList : Tree N L → DiffList N
   toDiffList = foldr (λ l m r → l ++ m ∷ r) (λ _ → [])
 
-  toList : Tree A B → List A
+  toList : Tree N L → List N
   toList = DiffList.toList ∘′ toDiffList
 
 module Suffix where
 
-  toDiffList : Tree A B → DiffList A
+  toDiffList : Tree N L → DiffList N
   toDiffList = foldr (λ l m r → l ++ r ∷ʳ m) (λ _ → [])
 
-  toList : Tree A B → List A
+  toList : Tree N L → List N
   toList = DiffList.toList ∘′ toDiffList
 
 module Leaves where
 
-  toDiffList : Tree A B → DiffList B
+  toDiffList : Tree N L → DiffList L
   toDiffList (leaf x) = [ x ]
   toDiffList (node l m r) = toDiffList l ++ toDiffList r
 
-  toList : Tree A B → List B
+  toList : Tree N L → List L
   toList = DiffList.toList ∘′ toDiffList

@@ -16,20 +16,20 @@ open import Function
 
 private
   variable
-    a b c d p q : Level
-    A : Set a
-    B : Set b
-    C : Set c
-    D : Set d
-    P : C → Set p
-    Q : D → Set q
+    n l n₁ l₁ p q : Level
+    N : Set n
+    L : Set l
+    N₁ : Set n₁
+    L₁ : Set l₁
+    P : N₁ → Set p
+    Q : L₁ → Set q
 
-map⁺ : (f : A → C) → (g : B → D) → ∀[ All (f ⊢ P) (g ⊢ Q) ⇒ Tree.map f g ⊢ All P Q ]
+map⁺ : (f : N → N₁) → (g : L → L₁) → ∀[ All (f ⊢ P) (g ⊢ Q) ⇒ Tree.map f g ⊢ All P Q ]
 map⁺ f g (leaf x)     = leaf x
 map⁺ f g (node l m r) = node (map⁺ f g l) m (map⁺ f g r)
 
-map₁⁺ : (f : A → C) → ∀[ All (f ⊢ P) Q ⇒ Tree.map₁ f ⊢ All P Q ]
+map₁⁺ : (f : N → N₁) → ∀[ All (f ⊢ P) Q ⇒ Tree.map₁ f ⊢ All P Q ]
 map₁⁺ f = map⁺ f id
 
-map₂⁺ : (g : B → D) → ∀[ All P (g ⊢ Q) ⇒ Tree.map₂ g ⊢ All P Q ]
+map₂⁺ : (g : L → L₁) → ∀[ All P (g ⊢ Q) ⇒ Tree.map₂ g ⊢ All P Q ]
 map₂⁺ g = map⁺ id g

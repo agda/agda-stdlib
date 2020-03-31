@@ -17,92 +17,93 @@ open import Function
 
 private
   variable
-    a b c d : Level
+    a n n₁ l l₁ : Level
     A : Set a
-    B : Set b
-    C : Set c
-    D : Set d
+    N : Set n
+    N₁ : Set n₁
+    L : Set l
+    L₁ : Set l₁
 
-data Crumb (A : Set a) (B : Set b) : Set (a ⊔ b) where
-  leftBranch : A → Tree A B → Crumb A B
-  rightBranch : A → Tree A B → Crumb A B
+data Crumb (N : Set n) (L : Set l) : Set (n ⊔ l) where
+  leftBranch : N → Tree N L → Crumb N L
+  rightBranch : N → Tree N L → Crumb N L
 
-record Zipper (A : Set a) (B : Set b) : Set (a ⊔ b) where
+record Zipper (N : Set n) (L : Set l) : Set (n ⊔ l) where
   constructor mkZipper
   field
-    context : List (Crumb A B)
-    focus : Tree A B
+    context : List (Crumb N L)
+    focus : Tree N L
 
 open Zipper public
 
 -- Fundamental operations of a Zipper: Moving around
 ------------------------------------------------------------------------
 
-up : Zipper A B → Maybe (Zipper A B)
+up : Zipper N L → Maybe (Zipper N L)
 up (mkZipper [] foc) = nothing
 up (mkZipper (leftBranch m l ∷ ctx) foc) = just $ mkZipper ctx (node l m foc)
 up (mkZipper (rightBranch m r ∷ ctx) foc) = just $ mkZipper ctx (node foc m r)
 
-left : Zipper A B → Maybe (Zipper A B)
+left : Zipper N L → Maybe (Zipper N L)
 left (mkZipper ctx (leaf x)) = nothing
 left (mkZipper ctx (node l m r)) = just $ mkZipper (rightBranch m r ∷ ctx) l
 
-right : Zipper A B → Maybe (Zipper A B)
+right : Zipper N L → Maybe (Zipper N L)
 right (mkZipper ctx (leaf x)) = nothing
 right (mkZipper ctx (node l m r)) = just $ mkZipper (leftBranch m l ∷ ctx) r
 
 -- To and from trees
 ------------------------------------------------------------------------
 
-plug : List (Crumb A B) → Tree A B → Tree A B
+plug : List (Crumb N L) → Tree N L → Tree N L
 plug [] t = t
 plug (leftBranch m l ∷ xs) t = plug xs (node l m t)
 plug (rightBranch m r ∷ xs) t = plug xs (node t m r)
 
-toTree : Zipper A B → Tree A B
+toTree : Zipper N L → Tree N L
 toTree (mkZipper ctx foc) = plug ctx foc
 
-fromTree : Tree A B → Zipper A B
+fromTree : Tree N L → Zipper N L
 fromTree = mkZipper []
 
 -- Tree-like operations
 ------------------------------------------------------------------------
 
-getTree : Crumb A B → Tree A B
+getTree : Crumb N L → Tree N L
 getTree (leftBranch m x) = x
 getTree (rightBranch m x) = x
 
-mapCrumb : (A → C) → (B → D) → Crumb A B → Crumb C D
+mapCrumb : (N → N₁) → (L → L₁) → Crumb N L → Crumb N₁ L₁
 mapCrumb f g (leftBranch m x) = leftBranch (f m) (BT.map f g x)
 mapCrumb f g (rightBranch m x) = rightBranch (f m) (BT.map f g x)
 
-#nodes : Zipper A B → ℕ
+#nodes : Zipper N L → ℕ
 #nodes (mkZipper ctx foc) = BT.#nodes foc + sum (List.map (suc ∘ BT.#nodes ∘ getTree) ctx)
 
-#leaves : Zipper A B → ℕ
+#leaves : Zipper N L → ℕ
 #leaves (mkZipper ctx foc) = BT.#leaves foc + sum (List.map (BT.#leaves ∘ getTree) ctx)
 
-map : (A → C) → (B → D) → Zipper A B → Zipper C D
+map : (N → N₁) → (L → L₁) → Zipper N L → Zipper N₁ L₁
 map f g (mkZipper ctx foc) = mkZipper (List.map (mapCrumb f g) ctx) (BT.map f g foc)
 
-foldr : (C → A → C → C) → (B → C) → Zipper A B → C
-foldr {C = C} {A = A} {B = B} f g (mkZipper ctx foc) = List.foldl step (BT.foldr f g foc) ctx
+foldr : (A → N → A → A) → (L → A) → Zipper N L → A
+foldr {A = A} {N = N} {L = L} f g (mkZipper ctx foc) = List.foldl step (BT.foldr f g foc) ctx
   where
-    step : C → Crumb A B → C
+    step : A → Crumb N L → A
     step val (leftBranch m x) = f (BT.foldr f g x) m val
     step val (rightBranch m x) = f val m (BT.foldr f g x)
 
 -- Attach nodes to the top most part of the zipper
 ------------------------------------------------------------------------
 
-attach : Zipper A B → List (Crumb A B) → Zipper A B
+attach : Zipper N L → List (Crumb N L) → Zipper N L
 attach (mkZipper ctx foc) xs = mkZipper (ctx ++ xs) foc
 
 infixr 5 _⟪_⟫ˡ_
 infixl 5 _⟪_⟫ʳ_
 
-_⟪_⟫ˡ_ : Tree A B → A → Zipper A B → Zipper A B
+_⟪_⟫ˡ_ : Tree N L → N → Zipper N L → Zipper N L
 l ⟪ m ⟫ˡ zp = attach zp [ leftBranch m l ]
 
-_⟪_⟫ʳ_ : Zipper A B → A → Tree A B → Zipper A B
+_⟪_⟫ʳ_ : Zipper N L → N → Tree N L → Zipper N L
 zp ⟪ m ⟫ʳ r = attach zp [ rightBranch m r ]

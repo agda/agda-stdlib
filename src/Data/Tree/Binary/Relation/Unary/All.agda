@@ -15,17 +15,15 @@ open import Relation.Unary.Properties using (⊆-refl)
 
 private
   variable
-    a b c d p q r s : Level
-    A : Set a
-    B : Set b
-    C : Set c
-    D : Set d
-    P : A → Set p
-    Q : B → Set q
-    R : A → Set r
-    S : B → Set s
+    n l p q r s : Level
+    N : Set n
+    L : Set l
+    P : N → Set p
+    Q : L → Set q
+    R : N → Set r
+    S : L → Set s
 
-data All {A : Set a} {B : Set b} (P : A → Set p) (Q : B → Set q) : Tree A B → Set (a ⊔ b ⊔ p ⊔ q) where
+data All {N : Set n} {L : Set l} (P : N → Set p) (Q : L → Set q) : Tree N L → Set (n ⊔ l ⊔ p ⊔ q) where
   leaf : ∀ {x} → Q x → All P Q (leaf x)
   node : ∀ {l m r} → All P Q l → P m → All P Q r → All P Q (node l m r)
 
