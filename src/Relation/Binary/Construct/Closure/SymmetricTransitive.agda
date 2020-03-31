@@ -14,35 +14,30 @@ open import Relation.Binary
 
 private
   variable
-    a ℓ ℓ′ : Level
-    A B    : Set a
+    a c ℓ ℓ′ : Level
+    A B      : Set a
 
 module _ {A : Set a} (_≤_ : Rel A ℓ) where
-  private
-    variable
-      x y z : A
 
   data Plus⇔ : Rel A (a ⊔ ℓ) where
-    forth  : x ≤ y → Plus⇔ x y
-    back   : y ≤ x → Plus⇔ x y
-    forth⁺ : x ≤ y → Plus⇔ y z → Plus⇔ x z
-    back⁺  : y ≤ x → Plus⇔ y z → Plus⇔ x z
+    forth  : ∀ {x y} → x ≤ y → Plus⇔ x y
+    back   : ∀ {x y} → y ≤ x → Plus⇔ x y
+    forth⁺ : ∀ {x y z} → x ≤ y → Plus⇔ y z → Plus⇔ x z
+    back⁺  : ∀ {x y z} → y ≤ x → Plus⇔ y z → Plus⇔ x z
 
-module _ (_∼_ : Rel A ℓ) where
-
-  trans : Transitive (Plus⇔ _∼_)
+  trans : Transitive Plus⇔
   trans (forth r) rel′      = forth⁺ r rel′
   trans (back r) rel′       = back⁺ r rel′
   trans (forth⁺ r rel) rel′ = forth⁺ r (trans rel rel′)
   trans (back⁺ r rel) rel′  = back⁺ r (trans rel rel′)
 
-  sym : Symmetric (Plus⇔ _∼_)
+  sym : Symmetric Plus⇔
   sym (forth r)      = back r
   sym (back r)       = forth r
   sym (forth⁺ r rel) = trans (sym rel) (back r)
   sym (back⁺ r rel)  = trans (sym rel) (forth r)
 
-  isPartialEquivalence : IsPartialEquivalence (Plus⇔ _∼_)
+  isPartialEquivalence : IsPartialEquivalence Plus⇔
   isPartialEquivalence = record
     { sym   = sym
     ; trans = trans
@@ -51,13 +46,13 @@ module _ (_∼_ : Rel A ℓ) where
   partialSetoid : PartialSetoid _ _
   partialSetoid = record
     { Carrier              = A
-    ; _≈_                  = Plus⇔ _∼_
+    ; _≈_                  = Plus⇔
     ; isPartialEquivalence = isPartialEquivalence
     }
 
-  module _ (refl : Reflexive _∼_) where
+  module _ (refl : Reflexive _≤_) where
 
-    isEquivalence : IsEquivalence (Plus⇔ _∼_)
+    isEquivalence : IsEquivalence Plus⇔
     isEquivalence = record
       { refl  = forth refl
       ; sym   = sym
@@ -67,21 +62,22 @@ module _ (_∼_ : Rel A ℓ) where
     setoid : Setoid _ _
     setoid = record
       { Carrier       = A
-      ; _≈_           = Plus⇔ _∼_
+      ; _≈_           = Plus⇔
       ; isEquivalence = isEquivalence
       }
 
-  module _ {c e} (S : Setoid c e) where
+  module _ (S : Setoid c ℓ) where
     private
       module S = Setoid S
 
-    minimal : (f : A → Setoid.Carrier S) →
-              _∼_ =[ f ]⇒ Setoid._≈_ S →
-              Plus⇔ _∼_ =[ f ]⇒ Setoid._≈_ S
+    minimal : (f : A → S.Carrier) →
+              _≤_ =[ f ]⇒ S._≈_ →
+              Plus⇔ =[ f ]⇒ S._≈_
     minimal f inj (forth r)      = inj r
     minimal f inj (back r)       = S.sym (inj r)
     minimal f inj (forth⁺ r rel) = S.trans (inj r) (minimal f inj rel)
     minimal f inj (back⁺ r rel)  = S.trans (S.sym (inj r)) (minimal f inj rel)
+
 
 module Plus⇔Reasoning (_≤_ : Rel A ℓ) where
   infix  3 forth-syntax back-syntax
@@ -107,15 +103,14 @@ module Plus⇔Reasoning (_≤_ : Rel A ℓ) where
 
   syntax back⁺-syntax x y≤x y⇔z = x ⇐⟨ y≤x ⟩ y⇔z
 
-module _ {_≤_ : Rel A ℓ} {_≼_ : Rel B ℓ′} (f : A → B) where
 
-  module _ (inj : _≤_ =[ f ]⇒ _≼_) where
+module _ {_≤_ : Rel A ℓ} {_≼_ : Rel B ℓ′} where
 
-    gmap : Plus⇔ _≤_ =[ f ]⇒ Plus⇔ _≼_
-    gmap (forth r)      = forth (inj r)
-    gmap (back r)       = back (inj r)
-    gmap (forth⁺ r rel) = forth⁺ (inj r) (gmap rel)
-    gmap (back⁺ r rel)  = back⁺ (inj r) (gmap rel)
+  gmap : (f : A → B) (inj : _≤_ =[ f ]⇒ _≼_) → Plus⇔ _≤_ =[ f ]⇒ Plus⇔ _≼_
+  gmap f inj (forth r)      = forth (inj r)
+  gmap f inj (back r)       = back (inj r)
+  gmap f inj (forth⁺ r rel) = forth⁺ (inj r) (gmap f inj rel)
+  gmap f inj (back⁺ r rel)  = back⁺ (inj r) (gmap f inj rel)
 
 map : {_≤_ : Rel A ℓ} {_≼_ : Rel A ℓ′} (inj : _≤_ ⇒ _≼_) → Plus⇔ _≤_ ⇒ Plus⇔ _≼_
 map = gmap id
