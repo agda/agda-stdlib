@@ -28,8 +28,8 @@ map⁺ : (f : N → N₁) → (g : L → L₁) → ∀[ All (f ⊢ P) (g ⊢ Q) 
 map⁺ f g (leaf x)     = leaf x
 map⁺ f g (node l m r) = node (map⁺ f g l) m (map⁺ f g r)
 
-map₁⁺ : (f : N → N₁) → ∀[ All (f ⊢ P) Q ⇒ Tree.map₁ f ⊢ All P Q ]
-map₁⁺ f = map⁺ f id
+mapₙ⁺ : (f : N → N₁) → ∀[ All (f ⊢ P) Q ⇒ Tree.mapₙ f ⊢ All P Q ]
+mapₙ⁺ f = map⁺ f id
 
-map₂⁺ : (g : L → L₁) → ∀[ All P (g ⊢ Q) ⇒ Tree.map₂ g ⊢ All P Q ]
-map₂⁺ g = map⁺ id g
+mapₗ⁺ : (g : L → L₁) → ∀[ All P (g ⊢ Q) ⇒ Tree.mapₗ g ⊢ All P Q ]
+mapₗ⁺ g = map⁺ id g

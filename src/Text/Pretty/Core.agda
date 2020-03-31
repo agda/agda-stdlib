@@ -20,7 +20,7 @@ open import Data.Nat.Properties
 open import Data.Product as Prod using (_×_; _,_; uncurry; proj₁; proj₂)
 import Data.Product.Relation.Unary.All as Allᴾ
 
-open import Data.Tree.Binary as Tree using (Tree; leaf; node; #nodes; map₁)
+open import Data.Tree.Binary as Tree using (Tree; leaf; node; #nodes; mapₙ)
 open import Data.Tree.Binary.Relation.Unary.All as Allᵀ using (leaf; node)
 open import Data.Unit using (⊤; tt)
 import Data.Tree.Binary.Relation.Unary.All.Properties as Allᵀₚ
@@ -100,7 +100,7 @@ node? nothing         y ys = just (y , ys)
 ∣node?∣ nothing         y ys = refl
 
 ≤-Content : ∀ {m n} {b : Content} → m ≤ n → All≤ m b → All≤ n b
-≤-Content {m} {n} m≤n = Allᴹ.map (Prod.map step (Allᵀ.map₁ step))
+≤-Content {m} {n} m≤n = Allᴹ.map (Prod.map step (Allᵀ.mapₙ step))
 
   where
 
@@ -156,13 +156,13 @@ private
     size-indent (just pad) str = length-++ pad str
 
     indents : Maybe String → Tree String ⊤ → Tree String ⊤
-    indents = maybe′ (map₁ ∘ _++_) id
+    indents = maybe′ (mapₙ ∘ _++_) id
 
     size-indents : ∀ ma t → #nodes (indents ma t) ≡ #nodes t
     size-indents nothing    t = refl
-    size-indents (just pad) t = Treeₚ.#nodes-map₁ (pad ++_) t
+    size-indents (just pad) t = Treeₚ.#nodes-mapₙ (pad ++_) t
 
-    unfold-indents : ∀ ma t → indents ma t ≡ map₁ (indent ma) t
+    unfold-indents : ∀ ma t → indents ma t ≡ mapₙ (indent ma) t
     unfold-indents nothing    t = sym (Treeₚ.map-id t)
     unfold-indents (just pad) t = refl
 
@@ -248,7 +248,7 @@ private
       All≤-node? (≤-Content (m≤m⊔n _ _) ∣xs∣)
                  middle
                  (subst (Allᵀ.All _ U) (sym $ unfold-indents pad tl)
-                 $ Allᵀₚ.map₁⁺ (indent pad) (Allᵀ.map₁ (indented _) ∣tl∣))
+                 $ Allᵀₚ.mapₙ⁺ (indent pad) (Allᵀ.mapₙ (indented _) ∣tl∣))
       where
 
       middle : length (lastx ++ hd) ≤ vMaxWidth

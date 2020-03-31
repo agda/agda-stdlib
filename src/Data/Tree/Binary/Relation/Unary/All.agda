@@ -31,8 +31,8 @@ map : ∀[ P ⇒ R ] → ∀[ Q ⇒ S ] → ∀[ All P Q ⇒ All R S ]
 map f g (leaf x)     = leaf (g x)
 map f g (node l m r) = node (map f g l) (f m) (map f g r)
 
-map₁ : ∀[ P ⇒ R ] → ∀[ All P Q ⇒ All R Q ]
-map₁ {Q = Q} f = map f (⊆-refl {x = Q})
+mapₙ : ∀[ P ⇒ R ] → ∀[ All P Q ⇒ All R Q ]
+mapₙ {Q = Q} f = map f (⊆-refl {x = Q})
 
-map₂ : ∀[ Q ⇒ S ] → ∀[ All P Q ⇒ All P S ]
-map₂ {P = P} f = map (⊆-refl {x = P}) f
+mapₗ : ∀[ Q ⇒ S ] → ∀[ All P Q ⇒ All P S ]
+mapₗ {P = P} f = map (⊆-refl {x = P}) f

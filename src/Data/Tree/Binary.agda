@@ -32,11 +32,11 @@ map : (N → N₁) → (L → L₁) → Tree N L → Tree N₁ L₁
 map f g (leaf x)     = leaf (g x)
 map f g (node l m r) = node (map f g l) (f m) (map f g r)
 
-map₁ : (N → N₁) → Tree N L → Tree N₁ L
-map₁ f t = map f id t
+mapₙ : (N → N₁) → Tree N L → Tree N₁ L
+mapₙ f t = map f id t
 
-map₂ : (L → L₁) → Tree N L → Tree N L₁
-map₂ f t = map id f t
+mapₗ : (L → L₁) → Tree N L → Tree N L₁
+mapₗ f t = map id f t
 
 #nodes : Tree N L → ℕ
 #nodes (leaf x)     = 0
