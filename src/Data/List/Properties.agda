@@ -26,6 +26,7 @@ open import Data.Product as Prod hiding (map; zip)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.These.Base as These using (These; this; that; these)
 open import Function
+open import Function.Equality using (_⟨$⟩_)
 open import Level using (Level)
 open import Relation.Binary as B using (DecidableEquality)
 import Relation.Binary.Reasoning.Setoid as EqR
@@ -105,6 +106,15 @@ length-map f (x ∷ xs) = cong suc (length-map f xs)
 map-compose : {g : B → C} {f : A → B} → map (g ∘ f) ≗ map g ∘ map f
 map-compose []       = refl
 map-compose (x ∷ xs) = cong (_ ∷_) (map-compose xs)
+
+map-injective : ∀ (f : A ↣ B) → Injective _≡_ _≡_ (map (Injection.f f))
+map-injective f {[]}     {[]}     refl = refl
+map-injective f {x ∷ xs} {y ∷ ys} eq with ∷-injective eq
+... | fx≡fy , fxs≡fys = cong₂ _∷_ (injective fx≡fy) (map-injective f fxs≡fys)
+  where open Injection f hiding (f)
+
+map-injection : ∀ (f : A ↣ B) → List A ↣ List B
+map-injection f = mk↣ (map-injective f)
 
 ------------------------------------------------------------------------
 -- mapMaybe
