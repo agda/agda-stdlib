@@ -40,20 +40,20 @@ open PermutationReasoning
 
 module _ {a} {A : Set a} where
 
-  ↭-[] : ∀ {xs : List A} → xs ↭ [] → xs ≡ []
-  ↭-[] refl = refl
-  ↭-[] (trans p q) with ↭-[] q
-  ... | refl with ↭-[] p
+  ↭-[]-inv : ∀ {xs : List A} → xs ↭ [] → xs ≡ []
+  ↭-[]-inv refl = refl
+  ↭-[]-inv (trans p q) with ↭-[]-inv q
+  ... | refl with ↭-[]-inv p
   ... | refl = refl
 
   ¬∷↭[] : ∀ {x} {xs : List A} → ¬ ((x ∷ xs) ↭ [])
-  ¬∷↭[] (trans s₁ s₂) with ↭-[] s₂
+  ¬∷↭[] (trans s₁ s₂) with ↭-[]-inv s₂
   ... | refl = ¬∷↭[] s₁
 
-  ↭-one : ∀ {x} {xs : List A} → xs ↭ [ x ] → xs ≡ [ x ]
-  ↭-one refl                                          = refl
-  ↭-one (prep _ ρ) rewrite ↭-[] ρ                     = refl
-  ↭-one (_↭_.trans ρ₁ ρ₂) rewrite ↭-one ρ₂ | ↭-one ρ₁ = refl
+  ↭-singleton-inv : ∀ {x} {xs : List A} → xs ↭ [ x ] → xs ≡ [ x ]
+  ↭-singleton-inv refl                                             = refl
+  ↭-singleton-inv (prep _ ρ) with refl ← ↭-[]-inv ρ                = refl
+  ↭-singleton-inv (_↭_.trans ρ₁ ρ₂) with refl ← ↭-singleton-inv ρ₂ = ↭-singleton-inv ρ₁
 
 ------------------------------------------------------------------------
 -- sym
@@ -103,14 +103,12 @@ module _ {a b} {A : Set a} {B : Set b} (f : A → B) where
 
   -- permutations preserve 'being a mapped list'
   map⁻ : ∀ {xs ys} → map f xs ↭ ys → ∃ λ ys′ → ys ≡ map f ys′
-  map⁻ {[]}     ρ rewrite ↭-[] (↭-sym ρ)  = -, refl
-  map⁻ {x ∷ []} ρ rewrite ↭-one (↭-sym ρ) = -, refl
-  map⁻ {_ ∷ _ ∷ _} refl           = -, refl
-  map⁻ {_ ∷ _ ∷ _} (prep ._ ρ)    = -, cong (_ ∷_) (proj₂ (map⁻ ρ))
-  map⁻ {_ ∷ _ ∷ _} (swap ._ ._ ρ) = -, cong (λ xs → _ ∷ _ ∷ xs) (proj₂ (map⁻ ρ))
-  map⁻ {_ ∷ _ ∷ _} (trans ρ₁ ρ₂) with map⁻ ρ₁
-  ... | _ , refl with map⁻ ρ₂
-  ... | _ , refl = -, refl
+  map⁻ {[]}     ρ                                        = -, ↭-[]-inv (↭-sym ρ)
+  map⁻ {x ∷ []} ρ                                        = -, ↭-singleton-inv (↭-sym ρ)
+  map⁻ {_ ∷ _ ∷ _} refl                                  = -, refl
+  map⁻ {_ ∷ _ ∷ _} (prep ._ ρ)                           = -, cong (_ ∷_) (proj₂ (map⁻ ρ))
+  map⁻ {_ ∷ _ ∷ _} (swap ._ ._ ρ)                        = -, cong (λ xs → _ ∷ _ ∷ xs) (proj₂ (map⁻ ρ))
+  map⁻ {_ ∷ _ ∷ _} (trans ρ₁ ρ₂) with _ , refl ← map⁻ ρ₁ = map⁻ ρ₂
 
 ------------------------------------------------------------------------
 -- length
