@@ -102,13 +102,14 @@ module _ {a b} {A : Set a} {B : Set b} (f : A → B) where
   map⁺ (trans p₁ p₂) = trans (map⁺ p₁) (map⁺ p₂)
 
   -- permutations preserve 'being a mapped list'
-  map⁻ : ∀ {xs ys} → map f xs ↭ ys → ∃ λ ys′ → ys ≡ map f ys′
-  map⁻ {[]}     ρ                                        = -, ↭-[]-inv (↭-sym ρ)
-  map⁻ {x ∷ []} ρ                                        = -, ↭-singleton-inv (↭-sym ρ)
-  map⁻ {_ ∷ _ ∷ _} refl                                  = -, refl
-  map⁻ {_ ∷ _ ∷ _} (prep ._ ρ)                           = -, cong (_ ∷_) (proj₂ (map⁻ ρ))
-  map⁻ {_ ∷ _ ∷ _} (swap ._ ._ ρ)                        = -, cong (λ xs → _ ∷ _ ∷ xs) (proj₂ (map⁻ ρ))
-  map⁻ {_ ∷ _ ∷ _} (trans ρ₁ ρ₂) with _ , refl ← map⁻ ρ₁ = map⁻ ρ₂
+  map⁻ : ∀ {xs ys} → map f xs ↭ ys → ∃ λ ys′ → ys ≡ map f ys′ × xs ↭ ys′
+  map⁻ {[]}     ρ                                             = -, ↭-[]-inv (↭-sym ρ) , ↭-refl 
+  map⁻ {x ∷ []} ρ                                             = -, ↭-singleton-inv (↭-sym ρ) , ↭-refl
+  map⁻ {_ ∷ _ ∷ _} refl                                       = -, refl , ↭-refl
+  map⁻ {_ ∷ _ ∷ _} (prep _ ρ)    with _ , refl , ρ' ← map⁻ ρ  = -, refl , prep _ ρ'
+  map⁻ {_ ∷ _ ∷ _} (swap _ _ ρ)  with _ , refl , ρ' ← map⁻ ρ  = -, refl , swap _ _ ρ'
+  map⁻ {_ ∷ _ ∷ _} (trans ρ₁ ρ₂) with _ , refl , ρ₃ ← map⁻ ρ₁
+                                 with _ , refl , ρ₄ ← map⁻ ρ₂ = -, refl , trans ρ₃ ρ₄
 
 ------------------------------------------------------------------------
 -- length
