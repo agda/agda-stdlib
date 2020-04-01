@@ -11,6 +11,8 @@ module Data.List.Relation.Binary.Permutation.Propositional.Properties where
 open import Algebra.Bundles
 open import Algebra.Definitions
 open import Algebra.Structures
+open import Data.Nat using (suc)
+open import Data.Product using (-,_; proj₂)
 open import Data.List.Base as List
 open import Data.List.Relation.Binary.Permutation.Propositional
 open import Data.List.Relation.Unary.Any using (Any; here; there)
@@ -28,8 +30,30 @@ open import Relation.Unary using (Pred)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as ≡
   using (_≡_ ; refl ; cong; cong₂; _≢_; inspect)
+open import Relation.Nullary
 
 open PermutationReasoning
+
+
+------------------------------------------------------------------------
+-- Permutations of empty and singleton lists
+
+module _ {a} {A : Set a} where
+
+  ↭-[] : ∀ {xs : List A} → xs ↭ [] → xs ≡ []
+  ↭-[] refl = refl
+  ↭-[] (trans p q) with ↭-[] q
+  ... | refl with ↭-[] p
+  ... | refl = refl
+
+  ¬∷↭[] : ∀ {x} {xs : List A} → ¬ ((x ∷ xs) ↭ [])
+  ¬∷↭[] (trans s₁ s₂) with ↭-[] s₂
+  ... | refl = ¬∷↭[] s₁
+
+  ↭-one : ∀ {x} {xs : List A} → xs ↭ [ x ] → xs ≡ [ x ]
+  ↭-one refl                                          = refl
+  ↭-one (prep _ ρ) rewrite ↭-[] ρ                     = refl
+  ↭-one (_↭_.trans ρ₁ ρ₂) rewrite ↭-one ρ₂ | ↭-one ρ₁ = refl
 
 ------------------------------------------------------------------------
 -- sym
@@ -76,6 +100,28 @@ module _ {a b} {A : Set a} {B : Set b} (f : A → B) where
   map⁺ (prep x p)    = prep _ (map⁺ p)
   map⁺ (swap x y p)  = swap _ _ (map⁺ p)
   map⁺ (trans p₁ p₂) = trans (map⁺ p₁) (map⁺ p₂)
+
+  -- permutations preserve 'being a mapped list'
+  map⁻ : ∀ {xs ys} → map f xs ↭ ys → ∃ λ ys′ → ys ≡ map f ys′
+  map⁻ {[]}     ρ rewrite ↭-[] (↭-sym ρ)  = -, refl
+  map⁻ {x ∷ []} ρ rewrite ↭-one (↭-sym ρ) = -, refl
+  map⁻ {_ ∷ _ ∷ _} refl           = -, refl
+  map⁻ {_ ∷ _ ∷ _} (prep ._ ρ)    = -, cong (_ ∷_) (proj₂ (map⁻ ρ))
+  map⁻ {_ ∷ _ ∷ _} (swap ._ ._ ρ) = -, cong (λ xs → _ ∷ _ ∷ xs) (proj₂ (map⁻ ρ))
+  map⁻ {_ ∷ _ ∷ _} (trans ρ₁ ρ₂) with map⁻ ρ₁
+  ... | _ , refl with map⁻ ρ₂
+  ... | _ , refl = -, refl
+
+------------------------------------------------------------------------
+-- length
+
+module _ {a} {A : Set a} where
+
+  ↭-length : ∀ {xs ys : List A} → xs ↭ ys → length xs ≡ length ys 
+  ↭-length refl            = refl
+  ↭-length (prep x lr)     = cong suc (↭-length lr)
+  ↭-length (swap x y lr)   = cong (λ n → suc (suc n)) (↭-length lr)
+  ↭-length (trans lr₁ lr₂) = ≡.trans (↭-length lr₁) (↭-length lr₂)
 
 ------------------------------------------------------------------------
 -- _++_
