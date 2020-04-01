@@ -100,14 +100,14 @@ module _ {a b} {A : Set a} {B : Set b} (f : A → B) where
   map⁺ (trans p₁ p₂) = trans (map⁺ p₁) (map⁺ p₂)
 
   -- permutations preserve 'being a mapped list'
-  map-inv : ∀ {xs ys} → map f xs ↭ ys → ∃ λ ys′ → ys ≡ map f ys′ × xs ↭ ys′
-  map-inv {[]}     ρ                                                = -, ↭-empty-inv (↭-sym ρ) , ↭-refl 
-  map-inv {x ∷ []} ρ                                                = -, ↭-singleton-inv (↭-sym ρ) , ↭-refl
-  map-inv {_ ∷ _ ∷ _} refl                                          = -, refl , ↭-refl
-  map-inv {_ ∷ _ ∷ _} (prep _ ρ)    with _ , refl , ρ' ← map-inv ρ  = -, refl , prep _ ρ'
-  map-inv {_ ∷ _ ∷ _} (swap _ _ ρ)  with _ , refl , ρ' ← map-inv ρ  = -, refl , swap _ _ ρ'
-  map-inv {_ ∷ _ ∷ _} (trans ρ₁ ρ₂) with _ , refl , ρ₃ ← map-inv ρ₁
-                                    with _ , refl , ρ₄ ← map-inv ρ₂ = -, refl , trans ρ₃ ρ₄
+  ↭-map-inv : ∀ {xs ys} → map f xs ↭ ys → ∃ λ ys′ → ys ≡ map f ys′ × xs ↭ ys′
+  ↭-map-inv {[]}     ρ                                                  = -, ↭-empty-inv (↭-sym ρ) , ↭-refl 
+  ↭-map-inv {x ∷ []} ρ                                                  = -, ↭-singleton-inv (↭-sym ρ) , ↭-refl
+  ↭-map-inv {_ ∷ _ ∷ _} refl                                            = -, refl , ↭-refl
+  ↭-map-inv {_ ∷ _ ∷ _} (prep _ ρ)    with _ , refl , ρ' ← ↭-map-inv ρ  = -, refl , prep _ ρ'
+  ↭-map-inv {_ ∷ _ ∷ _} (swap _ _ ρ)  with _ , refl , ρ' ← ↭-map-inv ρ  = -, refl , swap _ _ ρ'
+  ↭-map-inv {_ ∷ _ ∷ _} (trans ρ₁ ρ₂) with _ , refl , ρ₃ ← ↭-map-inv ρ₁
+                                      with _ , refl , ρ₄ ← ↭-map-inv ρ₂ = -, refl , trans ρ₃ ρ₄
 
 ------------------------------------------------------------------------
 -- length
