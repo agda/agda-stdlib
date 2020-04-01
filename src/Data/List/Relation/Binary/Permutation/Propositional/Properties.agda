@@ -40,19 +40,17 @@ open PermutationReasoning
 
 module _ {a} {A : Set a} where
 
-  ↭-[]-inv : ∀ {xs : List A} → xs ↭ [] → xs ≡ []
-  ↭-[]-inv refl = refl
-  ↭-[]-inv (trans p q) with ↭-[]-inv q
-  ... | refl with ↭-[]-inv p
-  ... | refl = refl
+  ↭-empty-inv : ∀ {xs : List A} → xs ↭ [] → xs ≡ []
+  ↭-empty-inv refl = refl
+  ↭-empty-inv (trans p q) with refl ← ↭-empty-inv q = ↭-empty-inv p
 
-  ¬∷↭[] : ∀ {x} {xs : List A} → ¬ ((x ∷ xs) ↭ [])
-  ¬∷↭[] (trans s₁ s₂) with ↭-[]-inv s₂
-  ... | refl = ¬∷↭[] s₁
+  ¬x∷xs↭[] : ∀ {x} {xs : List A} → ¬ ((x ∷ xs) ↭ [])
+  ¬x∷xs↭[] (trans s₁ s₂) with ↭-empty-inv s₂
+  ... | refl = ¬x∷xs↭[] s₁
 
   ↭-singleton-inv : ∀ {x} {xs : List A} → xs ↭ [ x ] → xs ≡ [ x ]
   ↭-singleton-inv refl                                             = refl
-  ↭-singleton-inv (prep _ ρ) with refl ← ↭-[]-inv ρ                = refl
+  ↭-singleton-inv (prep _ ρ) with refl ← ↭-empty-inv ρ             = refl
   ↭-singleton-inv (_↭_.trans ρ₁ ρ₂) with refl ← ↭-singleton-inv ρ₂ = ↭-singleton-inv ρ₁
 
 ------------------------------------------------------------------------
@@ -102,14 +100,14 @@ module _ {a b} {A : Set a} {B : Set b} (f : A → B) where
   map⁺ (trans p₁ p₂) = trans (map⁺ p₁) (map⁺ p₂)
 
   -- permutations preserve 'being a mapped list'
-  map⁻ : ∀ {xs ys} → map f xs ↭ ys → ∃ λ ys′ → ys ≡ map f ys′ × xs ↭ ys′
-  map⁻ {[]}     ρ                                             = -, ↭-[]-inv (↭-sym ρ) , ↭-refl 
-  map⁻ {x ∷ []} ρ                                             = -, ↭-singleton-inv (↭-sym ρ) , ↭-refl
-  map⁻ {_ ∷ _ ∷ _} refl                                       = -, refl , ↭-refl
-  map⁻ {_ ∷ _ ∷ _} (prep _ ρ)    with _ , refl , ρ' ← map⁻ ρ  = -, refl , prep _ ρ'
-  map⁻ {_ ∷ _ ∷ _} (swap _ _ ρ)  with _ , refl , ρ' ← map⁻ ρ  = -, refl , swap _ _ ρ'
-  map⁻ {_ ∷ _ ∷ _} (trans ρ₁ ρ₂) with _ , refl , ρ₃ ← map⁻ ρ₁
-                                 with _ , refl , ρ₄ ← map⁻ ρ₂ = -, refl , trans ρ₃ ρ₄
+  map-inv : ∀ {xs ys} → map f xs ↭ ys → ∃ λ ys′ → ys ≡ map f ys′ × xs ↭ ys′
+  map-inv {[]}     ρ                                                = -, ↭-empty-inv (↭-sym ρ) , ↭-refl 
+  map-inv {x ∷ []} ρ                                                = -, ↭-singleton-inv (↭-sym ρ) , ↭-refl
+  map-inv {_ ∷ _ ∷ _} refl                                          = -, refl , ↭-refl
+  map-inv {_ ∷ _ ∷ _} (prep _ ρ)    with _ , refl , ρ' ← map-inv ρ  = -, refl , prep _ ρ'
+  map-inv {_ ∷ _ ∷ _} (swap _ _ ρ)  with _ , refl , ρ' ← map-inv ρ  = -, refl , swap _ _ ρ'
+  map-inv {_ ∷ _ ∷ _} (trans ρ₁ ρ₂) with _ , refl , ρ₃ ← map-inv ρ₁
+                                    with _ , refl , ρ₄ ← map-inv ρ₂ = -, refl , trans ρ₃ ρ₄
 
 ------------------------------------------------------------------------
 -- length
