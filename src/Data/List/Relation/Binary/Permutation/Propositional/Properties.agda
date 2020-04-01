@@ -101,7 +101,7 @@ module _ {a b} {A : Set a} {B : Set b} (f : A → B) where
 
   -- permutations preserve 'being a mapped list'
   ↭-map-inv : ∀ {xs ys} → map f xs ↭ ys → ∃ λ ys′ → ys ≡ map f ys′ × xs ↭ ys′
-  ↭-map-inv {[]}     ρ                                                  = -, ↭-empty-inv (↭-sym ρ) , ↭-refl 
+  ↭-map-inv {[]}     ρ                                                  = -, ↭-empty-inv (↭-sym ρ) , ↭-refl
   ↭-map-inv {x ∷ []} ρ                                                  = -, ↭-singleton-inv (↭-sym ρ) , ↭-refl
   ↭-map-inv {_ ∷ _ ∷ _} refl                                            = -, refl , ↭-refl
   ↭-map-inv {_ ∷ _ ∷ _} (prep _ ρ)    with _ , refl , ρ' ← ↭-map-inv ρ  = -, refl , prep _ ρ'
@@ -114,7 +114,7 @@ module _ {a b} {A : Set a} {B : Set b} (f : A → B) where
 
 module _ {a} {A : Set a} where
 
-  ↭-length : ∀ {xs ys : List A} → xs ↭ ys → length xs ≡ length ys 
+  ↭-length : ∀ {xs ys : List A} → xs ↭ ys → length xs ≡ length ys
   ↭-length refl            = refl
   ↭-length (prep x lr)     = cong suc (↭-length lr)
   ↭-length (swap x y lr)   = cong (λ n → suc (suc n)) (↭-length lr)
