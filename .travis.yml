@@ -48,7 +48,7 @@ install:
        cd ../ &&
        git clone https://github.com/agda/agda &&
        cd agda &&
-       git checkout 08dd23df8dd894737af98463f0b3f69d616e7b48 &&
+       git checkout 5053aa9d2a901cfb4c54848e8455820f0183f1b3 &&
        cabal install --only-dependencies --dry -v > $HOME/installplan.txt ;
     fi
 
