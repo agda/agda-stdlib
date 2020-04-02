@@ -15,6 +15,8 @@ Non-backwards compatible changes
 Deprecated modules
 ------------------
 
+* `Reflection.TypeChecking.MonadSyntax` ↦ `Reflection.TypeChecking.Monad.Syntax`
+
 Deprecated names
 ----------------
 
@@ -24,6 +26,13 @@ New modules
 * Symmetric transitive closures of binary relations:
   ```
   Relation.Binary.Construct.Closure.SymmetricTransitive
+  ```
+
+* Type-checking monads
+  ```
+  Reflection.TypeChecking.Monad
+  Reflection.TypeChecking.Monad.Categorical
+  Reflection.TypeChecking.Monad.Instances
   ```
 
 Other major changes

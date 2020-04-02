@@ -55,13 +55,12 @@ open Builtin public
 ------------------------------------------------------------------------
 -- Type checking monad
 
-open import Reflection.TCMonad public
+open import Reflection.TypeChecking.Monad public
 
 -- Standard monad operators
 
-open import Reflection.TypeChecking.MonadSyntax public
+open import Reflection.TypeChecking.Monad.Syntax public
   using (_>>=_; _>>_)
-
 
 ------------------------------------------------------------------------
 -- Show

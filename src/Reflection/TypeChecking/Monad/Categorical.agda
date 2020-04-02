@@ -1,47 +1,24 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- The TC (Type Checking) monad
+-- Typeclass instances for TC
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
-module Reflection.TCMonad where
+module Reflection.TypeChecking.Monad.Categorical where
 
 open import Category.Functor
 open import Category.Applicative
 open import Category.Monad
-
 open import Data.List.Base using ([])
-
-open import Function
-
+open import Function.Base using (_∘_)
 open import Level
-
-open import Reflection.Term
-
-import Agda.Builtin.Reflection as Builtin
+open import Reflection.TypeChecking.Monad
 
 private
   variable
     ℓ : Level
-
--- Type errors
-open Builtin public using (ErrorPart; strErr; termErr; nameErr)
-
--- The monad
-open Builtin public
-  using ( TC; bindTC; unify; typeError; inferType; checkType
-        ; normalise; reduce
-        ; catchTC; quoteTC; unquoteTC
-        ; getContext; extendContext; inContext; freshName
-        ; declareDef; declarePostulate; defineFun; getType; getDefinition
-        ; blockOnMeta; commitTC; isMacro; withNormalisation
-        ; debugPrint; noConstraints; runSpeculative)
-  renaming (returnTC to return)
-
-newMeta : Type → TC Term
-newMeta = checkType unknown
 
 functor : RawFunctor {ℓ} TC
 functor = record
