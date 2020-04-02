@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Reflection.TCMonadSyntax where
+module Reflection.TypeChecking.MonadSyntax where
 
 open import Agda.Builtin.Reflection
 open import Level using (Level)

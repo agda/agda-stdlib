@@ -11,27 +11,31 @@
 
 module Category.Applicative where
 
-open import Level using (suc; _⊔_)
+open import Level using (Level; suc; _⊔_)
 open import Data.Unit
 open import Category.Applicative.Indexed
 
-RawApplicative : ∀ {f} → (Set f → Set f) → Set (suc f)
+private
+  variable
+    f : Level
+
+RawApplicative : (Set f → Set f) → Set (suc f)
 RawApplicative F = RawIApplicative {I = ⊤} λ _ _ → F
 
-module RawApplicative {f} {F : Set f → Set f}
+module RawApplicative {F : Set f → Set f}
                       (app : RawApplicative F) where
   open RawIApplicative app public
 
-RawApplicativeZero : ∀ {f} → (Set f → Set f) → Set _
+RawApplicativeZero : (Set f → Set f) → Set _
 RawApplicativeZero F = RawIApplicativeZero {I = ⊤} (λ _ _ → F)
 
-module RawApplicativeZero {f} {F : Set f → Set f}
+module RawApplicativeZero {F : Set f → Set f}
                           (app : RawApplicativeZero F) where
   open RawIApplicativeZero app public
 
-RawAlternative : ∀ {f} → (Set f → Set f) → Set _
+RawAlternative : (Set f → Set f) → Set _
 RawAlternative F = RawIAlternative {I = ⊤} (λ _ _ → F)
 
-module RawAlternative {f} {F : Set f → Set f}
-                          (app : RawAlternative F) where
+module RawAlternative {F : Set f → Set f}
+                      (app : RawAlternative F) where
   open RawIAlternative app public

@@ -17,20 +17,27 @@ open import Function
 open import Level
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
-IFun : ∀ {i} → Set i → (ℓ : Level) → Set (i ⊔ suc ℓ)
+private
+  variable
+    a b c i f : Level
+    A : Set a
+    B : Set b
+    C : Set c
+
+IFun : Set i → (ℓ : Level) → Set (i ⊔ suc ℓ)
 IFun I ℓ = I → I → Set ℓ → Set ℓ
 
 ------------------------------------------------------------------------
 -- Type, and usual combinators
 
-record RawIApplicative {i f} {I : Set i} (F : IFun I f) :
+record RawIApplicative {I : Set i} (F : IFun I f) :
                        Set (i ⊔ suc f) where
   infixl 4 _⊛_ _<⊛_ _⊛>_
   infix  4 _⊗_
 
   field
-    pure : ∀ {i A} → A → F i i A
-    _⊛_  : ∀ {i j k A B} → F i j (A → B) → F j k A → F i k B
+    pure : ∀ {i} → A → F i i A
+    _⊛_  : ∀ {i j k} → F i j (A → B) → F j k A → F i k B
 
   rawFunctor : ∀ {i j} → RawFunctor (F i j)
   rawFunctor = record
@@ -42,30 +49,30 @@ record RawIApplicative {i f} {I : Set i} (F : IFun I f) :
            RawFunctor (rawFunctor {i = i} {j = j})
            public
 
-  _<⊛_ : ∀ {i j k A B} → F i j A → F j k B → F i k A
+  _<⊛_ : ∀ {i j k} → F i j A → F j k B → F i k A
   x <⊛ y = const <$> x ⊛ y
 
-  _⊛>_ : ∀ {i j k A B} → F i j A → F j k B → F i k B
+  _⊛>_ : ∀ {i j k} → F i j A → F j k B → F i k B
   x ⊛> y = flip const <$> x ⊛ y
 
-  _⊗_ : ∀ {i j k A B} → F i j A → F j k B → F i k (A × B)
+  _⊗_ : ∀ {i j k} → F i j A → F j k B → F i k (A × B)
   x ⊗ y = (_,_) <$> x ⊛ y
 
-  zipWith : ∀ {i j k A B C} → (A → B → C) → F i j A → F j k B → F i k C
+  zipWith : ∀ {i j k} → (A → B → C) → F i j A → F j k B → F i k C
   zipWith f x y = f <$> x ⊛ y
 
-  zip : ∀ {i j k A B} → F i j A → F j k B → F i k (A × B)
+  zip : ∀ {i j k} → F i j A → F j k B → F i k (A × B)
   zip = zipWith _,_
 
 ------------------------------------------------------------------------
 -- Applicative with a zero
 
 record RawIApplicativeZero
-       {i f} {I : Set i} (F : IFun I f) :
+       {I : Set i} (F : IFun I f) :
        Set (i ⊔ suc f) where
   field
     applicative : RawIApplicative F
-    ∅           : ∀ {i j A} → F i j A
+    ∅           : ∀ {i j} → F i j A
 
   open RawIApplicative applicative public
 
@@ -73,12 +80,12 @@ record RawIApplicativeZero
 -- Alternative functors: `F i j A` is a monoid
 
 record RawIAlternative
-       {i f} {I : Set i} (F : IFun I f) :
+       {I : Set i} (F : IFun I f) :
        Set (i ⊔ suc f) where
   infixr 3 _∣_
   field
     applicativeZero : RawIApplicativeZero F
-    _∣_             : ∀ {i j A} → F i j A → F i j A → F i j A
+    _∣_             : ∀ {i j} → F i j A → F i j A → F i j A
 
   open RawIApplicativeZero applicativeZero public
 
@@ -87,18 +94,18 @@ record RawIAlternative
 -- Applicative functor morphisms, specialised to propositional
 -- equality.
 
-record Morphism {i f} {I : Set i} {F₁ F₂ : IFun I f}
+record Morphism {I : Set i} {F₁ F₂ : IFun I f}
                 (A₁ : RawIApplicative F₁)
                 (A₂ : RawIApplicative F₂) : Set (i ⊔ suc f) where
   module A₁ = RawIApplicative A₁
   module A₂ = RawIApplicative A₂
   field
-    op      : ∀ {i j X} → F₁ i j X → F₂ i j X
-    op-pure : ∀ {i X} (x : X) → op (A₁.pure {i = i} x) ≡ A₂.pure x
-    op-⊛    : ∀ {i j k X Y} (f : F₁ i j (X → Y)) (x : F₁ j k X) →
+    op      : ∀ {i j} → F₁ i j A → F₂ i j A
+    op-pure : ∀ {i} (x : A) → op (A₁.pure {i = i} x) ≡ A₂.pure x
+    op-⊛    : ∀ {i j k} (f : F₁ i j (A → B)) (x : F₁ j k A) →
               op (f A₁.⊛ x) ≡ (op f A₂.⊛ op x)
 
-  op-<$> : ∀ {i j X Y} (f : X → Y) (x : F₁ i j X) →
+  op-<$> : ∀ {i j} (f : A → B) (x : F₁ i j A) →
            op (f A₁.<$> x) ≡ (f A₂.<$> op x)
   op-<$> f x = begin
     op (A₁._⊛_ (A₁.pure f) x)       ≡⟨ op-⊛ _ _ ⟩

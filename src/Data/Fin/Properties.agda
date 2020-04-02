@@ -431,7 +431,7 @@ inject+-raise-splitAt zero    n i       = refl
 inject+-raise-splitAt (suc m) n zero    = refl
 inject+-raise-splitAt (suc m) n (suc i) = begin
   [ inject+ n , raise {n} (suc m) ] (splitAt (suc m) (suc i))  ≡⟨ [,]-map-commute (splitAt m i) ⟩
-  [ suc ∘ (inject+ n) , suc ∘ (raise {n} m) ] (splitAt m i)    ≡˘⟨ [,]-∘-distr {f = suc} (splitAt m i) ⟩
+  [ suc ∘ (inject+ n) , suc ∘ (raise {n} m) ] (splitAt m i)    ≡˘⟨ [,]-∘-distr suc (splitAt m i) ⟩
   suc ([ inject+ n , raise {n} m ] (splitAt m i))              ≡⟨ cong suc (inject+-raise-splitAt m n i) ⟩
   suc i                                                        ∎
   where open ≡-Reasoning

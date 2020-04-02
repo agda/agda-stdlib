@@ -15,7 +15,11 @@ open import Level
 open import Relation.Unary
 open import Relation.Unary.PredicateTransformer using (PT)
 
-record RawPFunctor {i j ℓ₁ ℓ₂} {I : Set i} {J : Set j}
+private
+  variable
+    i j ℓ₁ ℓ₂ : Level
+
+record RawPFunctor {I : Set i} {J : Set j}
                    (F : PT I J ℓ₁ ℓ₂) : Set (i ⊔ j ⊔ suc ℓ₁ ⊔ suc ℓ₂)
                    where
   infixl 4 _<$>_ _<$_
