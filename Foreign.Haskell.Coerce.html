@@ -32,7 +32,7 @@
 <a id="1149" class="Comment">------------------------------------------------------------------------</a>
 <a id="1222" class="Comment">-- Definition</a>
 
-<a id="1237" class="Keyword">open</a> <a id="1242" class="Keyword">import</a> <a id="1249" href="Level.html" class="Module">Level</a> <a id="1255" class="Keyword">using</a> <a id="1261" class="Symbol">(</a><a id="1262" href="Agda.Primitive.html#408" class="Postulate">Level</a><a id="1267" class="Symbol">;</a> <a id="1269" href="Agda.Primitive.html#621" class="Primitive Operator">_⊔_</a><a id="1272" class="Symbol">)</a>
+<a id="1237" class="Keyword">open</a> <a id="1242" class="Keyword">import</a> <a id="1249" href="Level.html" class="Module">Level</a> <a id="1255" class="Keyword">using</a> <a id="1261" class="Symbol">(</a><a id="1262" href="Agda.Primitive.html#423" class="Postulate">Level</a><a id="1267" class="Symbol">;</a> <a id="1269" href="Agda.Primitive.html#636" class="Primitive Operator">_⊔_</a><a id="1272" class="Symbol">)</a>
 <a id="1274" class="Keyword">open</a> <a id="1279" class="Keyword">import</a> <a id="1286" href="Agda.Builtin.Nat.html" class="Module">Agda.Builtin.Nat</a>
 <a id="1303" class="Keyword">open</a> <a id="1308" class="Keyword">import</a> <a id="1315" href="Agda.Builtin.Int.html" class="Module">Agda.Builtin.Int</a>
 
@@ -48,7 +48,7 @@
 
 <a id="1596" class="Keyword">private</a>
   <a id="1606" class="Keyword">variable</a>
-    <a id="1619" href="Foreign.Haskell.Coerce.html#1619" class="Generalizable">a</a> <a id="1621" href="Foreign.Haskell.Coerce.html#1621" class="Generalizable">b</a> <a id="1623" href="Foreign.Haskell.Coerce.html#1623" class="Generalizable">c</a> <a id="1625" href="Foreign.Haskell.Coerce.html#1625" class="Generalizable">d</a> <a id="1627" href="Foreign.Haskell.Coerce.html#1627" class="Generalizable">e</a> <a id="1629" href="Foreign.Haskell.Coerce.html#1629" class="Generalizable">f</a> <a id="1631" class="Symbol">:</a> <a id="1633" href="Agda.Primitive.html#408" class="Postulate">Level</a>
+    <a id="1619" href="Foreign.Haskell.Coerce.html#1619" class="Generalizable">a</a> <a id="1621" href="Foreign.Haskell.Coerce.html#1621" class="Generalizable">b</a> <a id="1623" href="Foreign.Haskell.Coerce.html#1623" class="Generalizable">c</a> <a id="1625" href="Foreign.Haskell.Coerce.html#1625" class="Generalizable">d</a> <a id="1627" href="Foreign.Haskell.Coerce.html#1627" class="Generalizable">e</a> <a id="1629" href="Foreign.Haskell.Coerce.html#1629" class="Generalizable">f</a> <a id="1631" class="Symbol">:</a> <a id="1633" href="Agda.Primitive.html#423" class="Postulate">Level</a>
     <a id="1643" href="Foreign.Haskell.Coerce.html#1643" class="Generalizable">A</a> <a id="1645" class="Symbol">:</a> <a id="1647" class="PrimitiveType">Set</a> <a id="1651" href="Foreign.Haskell.Coerce.html#1619" class="Generalizable">a</a>
     <a id="1657" href="Foreign.Haskell.Coerce.html#1657" class="Generalizable">B</a> <a id="1659" class="Symbol">:</a> <a id="1661" class="PrimitiveType">Set</a> <a id="1665" href="Foreign.Haskell.Coerce.html#1621" class="Generalizable">b</a>
     <a id="1671" href="Foreign.Haskell.Coerce.html#1671" class="Generalizable">C</a> <a id="1673" class="Symbol">:</a> <a id="1675" class="PrimitiveType">Set</a> <a id="1679" href="Foreign.Haskell.Coerce.html#1623" class="Generalizable">c</a>
@@ -69,7 +69,7 @@
   <a id="Coercible.TrustMe"></a><a id="2297" href="Foreign.Haskell.Coerce.html#2297" class="InductiveConstructor">TrustMe</a> <a id="2305" class="Symbol">:</a> <a id="2307" href="Foreign.Haskell.Coerce.html#2249" class="Datatype">Coercible</a> <a id="2317" href="Foreign.Haskell.Coerce.html#2260" class="Bound">A</a> <a id="2319" href="Foreign.Haskell.Coerce.html#2272" class="Bound">B</a>
 
 <a id="2322" class="Symbol">{-#</a> <a id="2326" class="Keyword">FOREIGN</a> <a id="2334" class="Pragma">GHC</a> <a id="2338" class="Pragma">data</a> <a id="2343" class="Pragma">AgdaCoercible</a> <a id="2357" class="Pragma">l1</a> <a id="2360" class="Pragma">l2</a> <a id="2363" class="Pragma">a</a> <a id="2365" class="Pragma">b</a> <a id="2367" class="Pragma">=</a> <a id="2369" class="Pragma">TrustMe</a> <a id="2377" class="Symbol">#-}</a>
-<a id="2381" class="Symbol">{-#</a> <a id="2385" class="Keyword">COMPILE</a> <a id="2393" class="Pragma">GHC</a> <a id="2397" href="Foreign.Haskell.Coerce.html#2249" class="Datatype">Coercible</a> <a id="2407" class="Pragma">=</a> <a id="2409" class="Pragma">data</a> <a id="2414" class="Pragma">AgdaCoercible</a> <a id="2428" class="Pragma">(TrustMe)</a> <a id="2438" class="Symbol">#-}</a>
+<a id="2381" class="Symbol">{-#</a> <a id="2385" class="Keyword">COMPILE</a> <a id="2393" class="Keyword">GHC</a> <a id="2397" href="Foreign.Haskell.Coerce.html#2249" class="Datatype">Coercible</a> <a id="2407" class="Pragma">=</a> <a id="2409" class="Pragma">data</a> <a id="2414" class="Pragma">AgdaCoercible</a> <a id="2428" class="Pragma">(TrustMe)</a> <a id="2438" class="Symbol">#-}</a>
 
 <a id="2443" class="Comment">-- Once we get our hands on a proof that `Coercible A B` we postulate that it</a>
 <a id="2521" class="Comment">-- is safe to convert an `A` into a `B`. This is done under the hood by using</a>
@@ -78,7 +78,7 @@
 <a id="2619" class="Keyword">postulate</a> <a id="coerce"></a><a id="2629" href="Foreign.Haskell.Coerce.html#2629" class="Postulate">coerce</a> <a id="2636" class="Symbol">:</a> <a id="2638" class="Symbol">{{</a><a id="2640" href="Foreign.Haskell.Coerce.html#2640" class="Bound">_</a> <a id="2642" class="Symbol">:</a> <a id="2644" href="Foreign.Haskell.Coerce.html#2249" class="Datatype">Coercible</a> <a id="2654" href="Foreign.Haskell.Coerce.html#1643" class="Generalizable">A</a> <a id="2656" href="Foreign.Haskell.Coerce.html#1657" class="Generalizable">B</a><a id="2657" class="Symbol">}}</a> <a id="2660" class="Symbol">→</a> <a id="2662" href="Foreign.Haskell.Coerce.html#1643" class="Generalizable">A</a> <a id="2664" class="Symbol">→</a> <a id="2666" href="Foreign.Haskell.Coerce.html#1657" class="Generalizable">B</a>
 
 <a id="2669" class="Symbol">{-#</a> <a id="2673" class="Keyword">FOREIGN</a> <a id="2681" class="Pragma">GHC</a> <a id="2685" class="Pragma">import</a> <a id="2692" class="Pragma">Unsafe.Coerce</a> <a id="2706" class="Symbol">#-}</a>
-<a id="2710" class="Symbol">{-#</a> <a id="2714" class="Keyword">COMPILE</a> <a id="2722" class="Pragma">GHC</a> <a id="2726" href="Foreign.Haskell.Coerce.html#2629" class="Postulate">coerce</a> <a id="2733" class="Pragma">=</a> <a id="2735" class="Pragma">\</a> <a id="2737" class="Pragma">_</a> <a id="2739" class="Pragma">_</a> <a id="2741" class="Pragma">_</a> <a id="2743" class="Pragma">_</a> <a id="2745" class="Pragma">_</a> <a id="2747" class="Pragma">-&gt;</a> <a id="2750" class="Pragma">unsafeCoerce</a> <a id="2763" class="Symbol">#-}</a>
+<a id="2710" class="Symbol">{-#</a> <a id="2714" class="Keyword">COMPILE</a> <a id="2722" class="Keyword">GHC</a> <a id="2726" href="Foreign.Haskell.Coerce.html#2629" class="Postulate">coerce</a> <a id="2733" class="Pragma">=</a> <a id="2735" class="Pragma">\</a> <a id="2737" class="Pragma">_</a> <a id="2739" class="Pragma">_</a> <a id="2741" class="Pragma">_</a> <a id="2743" class="Pragma">_</a> <a id="2745" class="Pragma">_</a> <a id="2747" class="Pragma">-&gt;</a> <a id="2750" class="Pragma">unsafeCoerce</a> <a id="2763" class="Symbol">#-}</a>
 
 <a id="2768" class="Comment">------------------------------------------------------------------------</a>
 <a id="2841" class="Comment">-- Unary and binary variants for covariant type constructors</a>
@@ -101,7 +101,7 @@
 
 <a id="3594" class="Keyword">instance</a>
 
-  <a id="nat-toInt"></a><a id="3606" href="Foreign.Haskell.Coerce.html#3606" class="Function">nat-toInt</a> <a id="3616" class="Symbol">:</a> <a id="3618" href="Foreign.Haskell.Coerce.html#2249" class="Datatype">Coercible</a> <a id="3628" href="Agda.Builtin.Nat.html#165" class="Datatype">Nat</a> <a id="3632" href="Agda.Builtin.Int.html#219" class="Datatype">Int</a>
+  <a id="nat-toInt"></a><a id="3606" href="Foreign.Haskell.Coerce.html#3606" class="Function">nat-toInt</a> <a id="3616" class="Symbol">:</a> <a id="3618" href="Foreign.Haskell.Coerce.html#2249" class="Datatype">Coercible</a> <a id="3628" href="Agda.Builtin.Nat.html#192" class="Datatype">Nat</a> <a id="3632" href="Agda.Builtin.Int.html#246" class="Datatype">Int</a>
   <a id="3638" href="Foreign.Haskell.Coerce.html#3606" class="Function">nat-toInt</a> <a id="3648" class="Symbol">=</a> <a id="3650" href="Foreign.Haskell.Coerce.html#2297" class="InductiveConstructor">TrustMe</a>
 
 <a id="3659" class="Comment">-- We then proceed to state that data types from the standard library</a>
@@ -137,12 +137,12 @@
 
 <a id="4449" class="Comment">-- List</a>
 
-  <a id="coerce-list"></a><a id="4460" href="Foreign.Haskell.Coerce.html#4460" class="Function">coerce-list</a> <a id="4472" class="Symbol">:</a> <a id="4474" href="Foreign.Haskell.Coerce.html#2903" class="Function">Coercible₁</a> <a id="4485" href="Foreign.Haskell.Coerce.html#1619" class="Generalizable">a</a> <a id="4487" href="Foreign.Haskell.Coerce.html#1621" class="Generalizable">b</a> <a id="4489" href="Agda.Builtin.List.html#121" class="Datatype">STD.List</a> <a id="4498" href="Agda.Builtin.List.html#121" class="Datatype">STD.List</a>
+  <a id="coerce-list"></a><a id="4460" href="Foreign.Haskell.Coerce.html#4460" class="Function">coerce-list</a> <a id="4472" class="Symbol">:</a> <a id="4474" href="Foreign.Haskell.Coerce.html#2903" class="Function">Coercible₁</a> <a id="4485" href="Foreign.Haskell.Coerce.html#1619" class="Generalizable">a</a> <a id="4487" href="Foreign.Haskell.Coerce.html#1621" class="Generalizable">b</a> <a id="4489" href="Agda.Builtin.List.html#148" class="Datatype">STD.List</a> <a id="4498" href="Agda.Builtin.List.html#148" class="Datatype">STD.List</a>
   <a id="4509" href="Foreign.Haskell.Coerce.html#4460" class="Function">coerce-list</a> <a id="4521" class="Symbol">=</a> <a id="4523" href="Foreign.Haskell.Coerce.html#2297" class="InductiveConstructor">TrustMe</a>
 
 <a id="4532" class="Comment">-- IO</a>
 
-  <a id="coerce-IO"></a><a id="4541" href="Foreign.Haskell.Coerce.html#4541" class="Function">coerce-IO</a> <a id="4551" class="Symbol">:</a> <a id="4553" href="Foreign.Haskell.Coerce.html#2903" class="Function">Coercible₁</a> <a id="4564" href="Foreign.Haskell.Coerce.html#1619" class="Generalizable">a</a> <a id="4566" href="Foreign.Haskell.Coerce.html#1621" class="Generalizable">b</a> <a id="4568" href="Agda.Builtin.IO.html#111" class="Postulate">STD.IO</a> <a id="4575" href="Agda.Builtin.IO.html#111" class="Postulate">STD.IO</a>
+  <a id="coerce-IO"></a><a id="4541" href="Foreign.Haskell.Coerce.html#4541" class="Function">coerce-IO</a> <a id="4551" class="Symbol">:</a> <a id="4553" href="Foreign.Haskell.Coerce.html#2903" class="Function">Coercible₁</a> <a id="4564" href="Foreign.Haskell.Coerce.html#1619" class="Generalizable">a</a> <a id="4566" href="Foreign.Haskell.Coerce.html#1621" class="Generalizable">b</a> <a id="4568" href="Agda.Builtin.IO.html#138" class="Postulate">STD.IO</a> <a id="4575" href="Agda.Builtin.IO.html#138" class="Postulate">STD.IO</a>
   <a id="4584" href="Foreign.Haskell.Coerce.html#4541" class="Function">coerce-IO</a> <a id="4594" class="Symbol">=</a> <a id="4596" href="Foreign.Haskell.Coerce.html#2297" class="InductiveConstructor">TrustMe</a>
 
 <a id="4605" class="Comment">-- Function</a>
