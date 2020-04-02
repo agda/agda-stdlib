@@ -11,19 +11,28 @@ module Data.Tree.Binary.Relation.Unary.All where
 open import Level
 open import Data.Tree.Binary as Tree using (Tree; leaf; node)
 open import Relation.Unary
+open import Relation.Unary.Properties using (⊆-refl)
 
 private
   variable
-    a b p q : Level
-    A : Set a
-    B : Set b
+    n l p q r s : Level
+    N : Set n
+    L : Set l
+    P : N → Set p
+    Q : L → Set q
+    R : N → Set r
+    S : L → Set s
 
-data All {A : Set a} (P : A → Set p) : Tree A → Set (a ⊔ p) where
-  leaf : All P leaf
-  node : ∀ {l m r} → All P l → P m → All P r → All P (node l m r)
+data All {N : Set n} {L : Set l} (P : N → Set p) (Q : L → Set q) : Tree N L → Set (n ⊔ l ⊔ p ⊔ q) where
+  leaf : ∀ {x} → Q x → All P Q (leaf x)
+  node : ∀ {l m r} → All P Q l → P m → All P Q r → All P Q (node l m r)
 
-module _ {P : A → Set p} {Q : A → Set q} where
+map : ∀[ P ⇒ R ] → ∀[ Q ⇒ S ] → ∀[ All P Q ⇒ All R S ]
+map f g (leaf x)     = leaf (g x)
+map f g (node l m r) = node (map f g l) (f m) (map f g r)
 
-  map : ∀[ P ⇒ Q ] → ∀[ All P ⇒ All Q ]
-  map f leaf         = leaf
-  map f (node l m r) = node (map f l) (f m) (map f r)
+mapₙ : ∀[ P ⇒ R ] → ∀[ All P Q ⇒ All R Q ]
+mapₙ {Q = Q} f = map f (⊆-refl {x = Q})
+
+mapₗ : ∀[ Q ⇒ S ] → ∀[ All P Q ⇒ All P S ]
+mapₗ {P = P} f = map (⊆-refl {x = P}) f
