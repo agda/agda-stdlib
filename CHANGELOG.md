@@ -17,6 +17,8 @@ Non-backwards compatible changes
 Deprecated modules
 ------------------
 
+* `Data.AVL` and all of its submodules have been moved to `Data.Tree.AVL`
+
 Deprecated names
 ----------------
 

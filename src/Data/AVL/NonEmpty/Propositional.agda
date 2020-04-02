@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Non-empty AVL trees, where equality for keys is propositional equality
+-- This module is DEPRECATED
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -13,15 +13,9 @@ module Data.AVL.NonEmpty.Propositional
   {k r} {Key : Set k} {_<_ : Rel Key r}
   (isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_) where
 
-open import Level
+{-# WARNING_ON_IMPORT
+"Data.AVL.NonEmpty.Propositional was deprecated in v1.4.
+Use Data.Tree.AVL.NonEmpty.Propositonal instead."
+#-}
 
-private strictTotalOrder = record { isStrictTotalOrder = isStrictTotalOrder}
-open import Data.AVL.Value (StrictTotalOrder.Eq.setoid strictTotalOrder)
-import Data.AVL.NonEmpty strictTotalOrder as AVL⁺
-
-Tree⁺ : ∀ {v} (V : Key → Set v) → Set (k ⊔ v ⊔ r)
-Tree⁺ V = AVL⁺.Tree⁺ λ where
-  .Value.family          → V
-  .Value.respects refl t → t
-
-open AVL⁺ hiding (Tree⁺) public
+open import Data.Tree.AVL.NonEmpty.Propositional isStrictTotalOrder public
