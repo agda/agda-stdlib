@@ -1,4 +1,8 @@
-
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Indexed binary trees
+------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
@@ -20,6 +24,9 @@ private
     L₁ : Set l₁
     A : Set a
 
+------------------------------------------------------------------------
+-- Type to represent the size of a tree
+
 𝕋 : Set
 𝕋 = Tree ⊤ ⊤
 
@@ -28,6 +35,9 @@ li = T.leaf tt
 
 ni : 𝕋 → 𝕋 → 𝕋
 ni i₁ i₂ = T.node i₁ tt i₂
+
+------------------------------------------------------------------------
+-- ITree definition and basic functions
 
 data ITree (N : Set n) (L : Set l) : 𝕋 → Set (n ⊔ l) where
   leaf : L → ITree N L li
@@ -53,6 +63,16 @@ foldr : ∀ {i} → (A → N → A → A) → (L → A) → ITree N L i → A
 foldr f g (leaf x) = g x
 foldr f g (node l m r) = f (foldr f g l) m (foldr f g r)
 
+------------------------------------------------------------------------
+-- Conversion to regular trees
+
+toTree : ∀ {i} → ITree N L i → Tree N L
+toTree (leaf x) = T.leaf x
+toTree (node l m r) = T.node (toTree l) m (toTree r)
+
+------------------------------------------------------------------------
+-- Indexed lookups
+
 data Index : 𝕋 → Set where
   here-l : Index li
   here-n : ∀ {i₁ i₂} → Index (ni i₁ i₂)
@@ -65,6 +85,8 @@ retrieve (node l m r) here-n = inj₁ m
 retrieve (node l m r) (go-l i) = retrieve l i
 retrieve (node l m r) (go-r i) = retrieve r i
 
-toTree : ∀ {i} → ITree N L i → Tree N L
-toTree (leaf x) = T.leaf x
-toTree (node l m r) = T.node (toTree l) m (toTree r)
+retrieve-subtree : ∀ {i} → ITree N L i → Index i → Tree N L
+retrieve-subtree (leaf x) here-l = T.leaf x
+retrieve-subtree (node l m r) here-n = toTree (node l m r)
+retrieve-subtree (node l m r) (go-l i) = retrieve-subtree l i
+retrieve-subtree (node l m r) (go-r i) = retrieve-subtree r i
