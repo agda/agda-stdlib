@@ -77,14 +77,22 @@ data Index : 𝕋 → Set where
   go-l : ∀ {i₁ i₂} → Index i₁ → Index (ni i₁ i₂)
   go-r : ∀ {i₁ i₂} → Index i₂ → Index (ni i₁ i₂)
 
+infixl 3 _-_
+
+_-_ : (t : 𝕋) → Index t → 𝕋
+li     - here-l = li
+ni l r - here-n = ni l r
+ni l r - go-l i = l - i
+ni l r - go-r i = r - i
+
 retrieve : ∀ {i} → ITree N L i → Index i → N ⊎ L
 retrieve (leaf x) here-l = inj₂ x
 retrieve (node l m r) here-n = inj₁ m
 retrieve (node l m r) (go-l i) = retrieve l i
 retrieve (node l m r) (go-r i) = retrieve r i
 
-retrieve-subtree : ∀ {i} → ITree N L i → Index i → Tree N L
-retrieve-subtree (leaf x) here-l = T.leaf x
-retrieve-subtree (node l m r) here-n = toTree (node l m r)
+retrieve-subtree : ∀ {i} → ITree N L i → (ind : Index i) → ITree N L (i - ind)
+retrieve-subtree (leaf x) here-l       = leaf x
+retrieve-subtree (node l m r) here-n   = node l m r
 retrieve-subtree (node l m r) (go-l i) = retrieve-subtree l i
 retrieve-subtree (node l m r) (go-r i) = retrieve-subtree r i
