@@ -6,6 +6,8 @@ The library has been tested using Agda version 2.6.1 release candidate 1.
 Highlights
 ----------
 
+* First instance modules
+
 * Monoid and ring tactics that are capable of solving equalities
   without having to restate the equation.
 
@@ -290,6 +292,15 @@ Other major additions
   ```agda
   Algebra.Morphism.GroupMonomorphism
   Algebra.Morphism.RingMonomorphism
+  
+  Category.Monad.Partiality.Instances
+  Codata.Stream.Instances
+  Codata.Covec.Instances
+  Data.List.Instances
+  Data.List.NonEmpty.Instances
+  Data.Maybe.Instances
+  Data.Vec.Instances
+  Function.Identity.Instances
   
   Codata.Cowriter.Bisimilarity
 
