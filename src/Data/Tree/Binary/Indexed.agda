@@ -30,11 +30,9 @@ private
 𝕋 : Set
 𝕋 = Tree ⊤ ⊤
 
-li : 𝕋
-li = T.leaf tt
+pattern li = T.leaf tt
 
-ni : 𝕋 → 𝕋 → 𝕋
-ni i₁ i₂ = T.node i₁ tt i₂
+pattern ni i₁ i₂ = T.node i₁ tt i₂
 
 ------------------------------------------------------------------------
 -- ITree definition and basic functions
