@@ -21,6 +21,11 @@ Deprecated names
 New modules
 -----------
 
+* Symmetric transitive closures of binary relations:
+  ```
+  Relation.Binary.Construct.Closure.SymmetricTransitive
+  ```
+
 Other major changes
 -------------------
 
