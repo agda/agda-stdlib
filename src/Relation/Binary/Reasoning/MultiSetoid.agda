@@ -76,6 +76,6 @@ module _ {c ℓ} {S : Setoid c ℓ} where
   _∎ _ = relTo refl
 
   syntax step-≈  x y∼z x≈y = x ≈⟨  x≈y ⟩ y∼z
-  syntax step-≈˘ x y∼z y≈x = x ≈⟨˘ y≈x ⟩ y∼z
+  syntax step-≈˘ x y∼z y≈x = x ≈˘⟨ y≈x ⟩ y∼z
   syntax step-≡  x y≡z x≡y = x ≡⟨  x≡y ⟩ y≡z
   syntax step-≡˘ x y≡z y≡x = x ≡˘⟨ y≡x ⟩ y≡z

@@ -23,9 +23,9 @@ open import Data.Unit           using (⊤)
 open import Data.String         using (String)
 open import Data.Product        using (_,_)
 open import Function
-open import Reflection.TCMonadSyntax
 open import Reflection.Argument
 open import Reflection.Term
+open import Reflection.TypeChecking.MonadSyntax
 
 open import Tactic.RingSolver.NonReflective renaming (solve to solve-fn)
 open import Tactic.RingSolver.Core.AlmostCommutativeRing
