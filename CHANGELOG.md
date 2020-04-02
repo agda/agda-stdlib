@@ -17,6 +17,9 @@ Non-backwards compatible changes
 Deprecated modules
 ------------------
 
+* The module `Induction.WellFounded.InverseImage` has been deprecated. The proofs
+  `accessible` and `wellFounded` have been moved to `Relation.Binary.Construct.On`.
+
 Deprecated names
 ----------------
 
