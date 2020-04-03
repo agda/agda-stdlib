@@ -12,8 +12,8 @@ open import Data.Nat
 open import Data.Nat.Properties using (+-magma)
 open import Relation.Binary.PropositionalEquality
 
--- Suppose we want to prove a result such as if x ≡ y' and z ≡ z'
--- then (x + y) + (x + z) ≡ (x + y') + (x + z')
+-- Suppose we want to prove a result such as if x + y ≡ y' and z' ≡ z
+-- then (x + y) + (x + z) ≡ y' + (x + z')
 
 -- A normal proof might look something like:
 
