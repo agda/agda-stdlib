@@ -1,2 +1,2 @@
 name: standard-library
-include: src
+include: src .

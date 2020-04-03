@@ -37,6 +37,8 @@ module README where
 --     commutativity, etc.), and operations on and proofs about the
 --     structures.
 
+import README.Algebra.Reasoning.Magma
+
 -- • Axiom
 --     Types and consequences of various additional axioms not
 --     necessarily included in Agda, e.g. uniqueness of identity
