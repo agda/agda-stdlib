@@ -28,8 +28,8 @@ MTree s = ITree ⊤ Carrier s
 Expr : 𝕋 → Set c
 Expr s = MTree s × IndexLeaf s
 
-infixl 4 _◂_
-infixr 4 _▸_
+infixl 6 _◂_
+infixr 5 _▸_
 
 _◂_ : Carrier → Expr s → Expr (ns ls s)
 c ◂ (t , foc) = node (leaf c) tt t , il-r foc
@@ -49,8 +49,7 @@ focus (t , i) = retrieve-leaf t i
 replace-at-focus : Expr s → Carrier → Expr s
 replace-at-focus (t , foc) g = (update-index (λ _ → g) t foc) , foc
 
-cong-expr : ∀ {s} →
-            (e : Expr s) →
+cong-expr : (e : Expr s) →
             {h : Carrier} →
             focus e ≈ h →
             eval e ≈ eval (replace-at-focus e h)
