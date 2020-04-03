@@ -46,3 +46,33 @@ private
 map-id : ∀ (t : ITree N L s) → map id id t ≡ t
 map-id (leaf x) = refl
 map-id (node l m r) = cong₂ (flip node m) (map-id l) (map-id r)
+
+------------------------------------------------------------------------
+-- Relation between retrievals and maps
+
+retrieve-leaf-map : (f : N → N₁) →
+                    (g : L → L₁) →
+                    (t : ITree N L s) →
+                    (i : IndexLeaf s) →
+                    retrieve-leaf (map f g t) i ≡ g (retrieve-leaf t i)
+retrieve-leaf-map f g (leaf x)      here-l  = refl
+retrieve-leaf-map f g (node l m r) (il-l i) = retrieve-leaf-map f g l i
+retrieve-leaf-map f g (node l m r) (il-r i) = retrieve-leaf-map f g r i
+
+retrieve-subtree-map : (f : N → N₁) →
+                       (g : L → L₁) →
+                       (t : ITree N L s) →
+                       (i : IndexTree s) →
+                       retrieve-subtree (map f g t) i ≡ map f g (retrieve-subtree t i)
+retrieve-subtree-map f g t             here-t  = refl
+retrieve-subtree-map f g (node l m r) (it-l i) = retrieve-subtree-map f g l i
+retrieve-subtree-map f g (node l m r) (it-r i) = retrieve-subtree-map f g r i
+
+retrieve-leaf-update : (f : N → N₁) →
+                       (g : L → L) →
+                       (t : ITree N L s) →
+                       (i : IndexLeaf s) →
+                       retrieve-leaf (update-index g t i) i ≡ g (retrieve-leaf t i)
+retrieve-leaf-update f g (leaf x)      here-l  = refl
+retrieve-leaf-update f g (node l m r) (il-l i) = retrieve-leaf-update f g l i
+retrieve-leaf-update f g (node l m r) (il-r i) = retrieve-leaf-update f g r i
