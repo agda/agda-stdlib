@@ -48,3 +48,12 @@ focus (t , i) = retrieve-leaf t i
 
 replace-at-focus : Expr s → Carrier → Expr s
 replace-at-focus (t , foc) g = (update-index (λ _ → g) t foc) , foc
+
+cong-expr : ∀ {s} →
+            (e : Expr s) →
+            {h : Carrier} →
+            focus e ≈ h →
+            eval e ≈ eval (replace-at-focus e h)
+cong-expr (leaf x , here-l) eq = eq
+cong-expr (node l m r , il-l i) eq = ∙-congʳ (cong-expr (l , i) eq)
+cong-expr (node l m r , il-r i) eq = ∙-congˡ (cong-expr (r , i) eq)
