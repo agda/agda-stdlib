@@ -10,21 +10,6 @@ cache:
   directories:
     - $HOME/.cabsnap
 
-matrix:
-  include:
-    - env:
-        GHC_VER=8.4.4
-        CABAL_VER=2.2
-        ALEX_VER=3.2.5
-        HAPPY_VER=1.19.12
-      addons:
-        apt:
-          packages:
-            - cabal-install-2.2
-            - ghc-8.4.4
-          sources:
-            - hvr-ghc
-
 before_install:
   - export PATH=/opt/ghc/$GHC_VER/bin:/opt/cabal/$CABAL_VER/bin:/opt/alex/$ALEX_VER/bin:/opt/happy/$HAPPY_VER/bin:~/.cabal/bin/:$PATH;
 
@@ -163,3 +148,47 @@ after_success:
 notifications:
   email: false
 
+matrix:
+  include:
+    - env:
+        GHC_VER=8.4.4
+        CABAL_VER=2.2
+        ALEX_VER=3.2.5
+        HAPPY_VER=1.19.12
+      addons:
+        apt:
+          packages:
+            - cabal-install-2.2
+            - ghc-8.4.4
+          sources:
+            - hvr-ghc
+
+    - stage: stack
+      env:
+        GHC_VER=8.4.4
+      cache:
+        directories:
+          - $HOME/.stack
+          - $TRAVIS_BUILD_DIR/.stack-work
+          - $HOME/.local/bin
+      before_install:
+        # Install ghc
+        - sudo -E apt-add-repository -y "ppa:hvr/ghc" &&
+          travis_apt_get_update &&
+          sudo -E apt-get -yq --no-install-suggests --no-install-recommends install ghc-${GHC_VER} &&
+          export PATH=/opt/ghc/$GHC_VER/bin:$PATH
+        # Install stack
+        - mkdir -p ~/.local/bin && export PATH=$HOME/.local/bin:$PATH &&
+          travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
+        # Set up arguments and flags for stack compilation
+        - export ARGS="--stack-yaml stack-${GHC_VER}.yaml --no-terminal --system-ghc"
+        - echo "*** GHC version ***"     && ghc     --version &&
+          echo "*** Stack version ***"   && stack   --version
+      install:
+        - stack ${ARGS} build
+      script:
+        - stack ${ARGS} exec -- GenerateEverything
+        - stack ${ARGS} exec -- AllNonAsciiChars
+      before_cache:
+        - find ${TRAVIS_BUILD_DIR}/.stack-work -type f -name '*.agdai' -delete
+      after_success: []
