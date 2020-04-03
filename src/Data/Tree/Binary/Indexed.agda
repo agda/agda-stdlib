@@ -13,7 +13,6 @@ open import Data.Unit
 open import Level
 open import Function.Base
 open import Data.Nat using (ℕ)
-open import Data.Sum using (_⊎_; inj₁; inj₂)
 
 private
   variable
@@ -71,34 +70,34 @@ toTree (node l m r) = T.node (toTree l) m (toTree r)
 ------------------------------------------------------------------------
 -- Indexed lookups
 
-data Index : 𝕋 → Set where
-  here-l : Index ls
-  here-n : ∀ {i₁ i₂} → Index (ns i₁ i₂)
-  go-l : ∀ {i₁ i₂} → Index i₁ → Index (ns i₁ i₂)
-  go-r : ∀ {i₁ i₂} → Index i₂ → Index (ns i₁ i₂)
+data IndexLeaf : 𝕋 → Set where
+  here-l : IndexLeaf ls
+  il-l : ∀ {s₁ s₂} → IndexLeaf s₁ → IndexLeaf (ns s₁ s₂)
+  il-r : ∀ {s₁ s₂} → IndexLeaf s₂ → IndexLeaf (ns s₁ s₂)
+
+data IndexTree : 𝕋 → Set where
+  here-t : ∀ {s} → IndexTree s
+  it-l : ∀ {s₁ s₂} → IndexTree s₁ → IndexTree (ns s₁ s₂)
+  it-r : ∀ {s₁ s₂} → IndexTree s₂ → IndexTree (ns s₁ s₂)
 
 infixl 3 _-_
 
-_-_ : (s : 𝕋) → Index s → 𝕋
-ls     - here-l = ls
-ns l r - here-n = ns l r
-ns l r - go-l i = l - i
-ns l r - go-r i = r - i
+_-_ : (s : 𝕋) → IndexTree s → 𝕋
+t      - here-t = t
+ns l r - it-l i = l - i
+ns l r - it-r i = r - i
 
-retrieve : ∀ {s} → ITree N L s → Index s → N ⊎ L
-retrieve (leaf x) here-l = inj₂ x
-retrieve (node l m r) here-n = inj₁ m
-retrieve (node l m r) (go-l i) = retrieve l i
-retrieve (node l m r) (go-r i) = retrieve r i
+retrieve-leaf : ∀ {s} → ITree N L s → IndexLeaf s → L
+retrieve-leaf (leaf x)     here-l   = x
+retrieve-leaf (node l m r) (il-l i) = retrieve-leaf l i
+retrieve-leaf (node l m r) (il-r i) = retrieve-leaf r i
 
-retrieve-subtree : ∀ {s} → ITree N L s → (i : Index s) → ITree N L (s - i)
-retrieve-subtree (leaf x) here-l       = leaf x
-retrieve-subtree (node l m r) here-n   = node l m r
-retrieve-subtree (node l m r) (go-l i) = retrieve-subtree l i
-retrieve-subtree (node l m r) (go-r i) = retrieve-subtree r i
+retrieve-subtree : ∀ {s} → ITree N L s → (i : IndexTree s) → ITree N L (s - i)
+retrieve-subtree t             here-t  = t
+retrieve-subtree (node l m r) (it-l i) = retrieve-subtree l i
+retrieve-subtree (node l m r) (it-r i) = retrieve-subtree r i
 
-map-index : ∀ {s} → (i : Index s) → (ITree N L (s - i) → ITree N L (s - i)) → ITree N L s → ITree N L s
-map-index here-l f t = f t
-map-index here-n f t = f t
-map-index (go-l i) f (node l m r) = node (map-index i f l) m r
-map-index (go-r i) f (node l m r) = node l m (map-index i f r)
+update-index : ∀ {s} → (L → L) → ITree N L s → IndexLeaf s → ITree N L s
+update-index f (leaf x)      here-l  = leaf (f x)
+update-index f (node l m r) (il-l i) = node (update-index f l i) m r
+update-index f (node l m r) (il-r i) = node l m (update-index f r i)
