@@ -20,11 +20,12 @@ open import Data.Nat as ℕ
   hiding (module ℕ)
 import Data.Nat.Properties as ℕₚ
 open import Data.Nat.Solver
+open import Data.Empty using (⊥-elim)
 open import Data.Product using (proj₁; proj₂; _,_)
 open import Data.Sum.Base as Sum using (inj₁; inj₂)
 open import Data.Sign as Sign using () renaming (_*_ to _𝕊*_)
 import Data.Sign.Properties as 𝕊ₚ
-open import Function using (_∘_; _$_)
+open import Function using (_∘_; _$_; case_of_)
 open import Level using (0ℓ)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
@@ -199,6 +200,8 @@ drop‿-<- (-<- n<m) = n<m
 ≰⇒> { -[1+_] n} {+_ n₁}      i≰j = contradiction -≤+ i≰j
 ≰⇒> { -[1+_] n} { -[1+_] n₁} i≰j = -<- (ℕₚ.≰⇒> (i≰j ∘ -≤-))
 
+≯⇒≤ : ∀ {x y} → x ≯ y → x ≤ y
+
 ------------------------------------------------------------------------
 -- Relational properties
 
@@ -240,6 +243,13 @@ drop‿-<- (-<- n<m) = n<m
 ... | tri< m<n m≢n n≯m = tri< (+<+ (s≤s m<n))              (m≢n ∘ +[1+-injective) (n≯m ∘ ℕₚ.≤-pred ∘ drop‿+<+)
 ... | tri≈ m≮n m≡n n≯m = tri≈ (m≮n ∘ ℕₚ.≤-pred ∘ drop‿+<+) (cong (+_ ∘ suc) m≡n)  (n≯m ∘ ℕₚ.≤-pred ∘ drop‿+<+)
 ... | tri> m≮n m≢n n>m = tri> (m≮n ∘ ℕₚ.≤-pred ∘ drop‿+<+) (m≢n ∘ +[1+-injective) (+<+ (s≤s n>m))
+
+
+≯⇒≤ {x} {y} x≯y = case <-cmp x y of λ where
+    (tri< x<y _    _  ) → <⇒≤ x<y
+    (tri≈ _   refl _  ) → ≤-refl
+    (tri> _   _    x>y) → ⊥-elim (x≯y x>y)
+
 
 infix 4 _<?_
 _<?_ : Decidable _<_
