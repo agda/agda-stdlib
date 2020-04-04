@@ -24,26 +24,26 @@ matrix:
       cache:
         directories:
           - $HOME/.cabsnap
-      
+
       before_install:
         - export PATH=/opt/ghc/$GHC_VER/bin:/opt/cabal/$CABAL_VER/bin:/opt/alex/$ALEX_VER/bin:/opt/happy/$HAPPY_VER/bin:~/.cabal/bin/:$PATH;
-      
+
       install:
         - cabal update
         - sed -i 's/^jobs:/-- jobs:/' $HOME/.cabal/config
-      
+
         # installing dependencies
         - cabal install alex-$ALEX_VER happy-$HAPPY_VER cpphs
-      
+
         # installing Agda
         # Even if there seems to be duplicated code for master & experimental,
         # DO NOT refactor: they regularly get out of sync (typically master
         # builds with the released version while experimental uses some dev
         # version).
-      
+
         # No matter the path, we should generate a $HOME/installplan.txt to
         # check whether the cache needs updating.
-      
+
         - if [[ $TRAVIS_BRANCH = "master" ]]; then
              cd ../ &&
              git clone https://github.com/agda/agda &&
@@ -51,7 +51,7 @@ matrix:
              git checkout 5053aa9d2a901cfb4c54848e8455820f0183f1b3 &&
              cabal install --only-dependencies --dry -v > $HOME/installplan.txt ;
           fi
-      
+
         - if [[ $TRAVIS_BRANCH = "experimental" ]]; then
              cd ../ &&
              git clone https://github.com/agda/agda &&
@@ -59,7 +59,7 @@ matrix:
              git checkout c2d5ec4b2403c68d615b81258d6131774e492797 &&
              cabal install --only-dependencies --dry -v > $HOME/installplan.txt ;
           fi
-      
+
         # checking whether .ghc is still valid
         - sed -i -e '1,/^Resolving /d' $HOME/installplan.txt; cat $HOME/installplan.txt
         - touch $HOME/.cabsnap/installplan.txt
@@ -75,46 +75,46 @@ matrix:
             rm -rf $HOME/.cabsnap;
             mkdir -p $HOME/.ghc $HOME/.cabal/lib $HOME/.cabal/share $HOME/.cabal/bin;
           fi
-      
+
         - if [[ $TRAVIS_BRANCH = "master" ]]; then
             cabal install ;
           fi
-      
+
         - if [[ $TRAVIS_BRANCH = "experimental" ]]; then
             cabal install ;
           fi
-      
+
         # snapshot package-db on cache miss
         - echo "snapshotting package-db to build-cache";
           mkdir $HOME/.cabsnap;
           cp -a $HOME/.ghc $HOME/.cabsnap/ghc;
           cp -a $HOME/.cabal/lib $HOME/.cabal/share $HOME/.cabal/bin $HOME/installplan.txt $HOME/.cabsnap/;
-      
+
         - if [[ $TRAVIS_BRANCH = "master" ]]; then
             cd ../ ;
           fi
-      
+
         - if [[ $TRAVIS_BRANCH = "experimental" ]]; then
             cd ../ ;
           fi
-      
+
         # installing fix-whitespace
         - git clone https://github.com/agda/fix-whitespace --depth=1
         - cd fix-whitespace
         - cabal install fix-whitespace.cabal
         - cd ../
-      
+
         # generating Everything.agda
         - cd agda-stdlib
         - cabal install lib.cabal
         - runghc GenerateEverything.hs
-      
+
         # setting up travis-specific scripts and files
         - cp travis/* .
-      
+
       before_script:
         - export RTS_OPTIONS="+RTS -M3.5G -H3.5G -A128M -RTS"
-      
+
       script:
         # generating index.agda
         - ./index.sh
@@ -140,7 +140,7 @@ matrix:
         - if [[ $TRAVIS_BRANCH = "experimental" ]]; then
             mv html/* experimental/ ;
           fi
-      
+
       after_success:
         # uploading to gh-pages
         - git init
@@ -159,7 +159,7 @@ matrix:
         - if [[ $TRAVIS_PULL_REQUEST = "false" && ($TRAVIS_BRANCH = "master" || $TRAVIS_BRANCH = "experimental") ]]; then
              git push -q upstream HEAD:gh-pages &>/dev/null;
           fi
-      
+
       notifications:
         email: false
 
