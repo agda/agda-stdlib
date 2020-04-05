@@ -87,55 +87,56 @@ _≯_ : Rel ℚᵘ 0ℓ
 x ≯ y = ¬ (x > y)
 
 ------------------------------------------------------------------------
--- Non-negative rationals
+-- Non-negative and negative rationals
 
-_≥0 : ℚᵘ → Set
-p ≥0 = ∃[ n ] (↥ p ≡ ℤ.+ n)
+record non-neg (p : ℚᵘ) : Set where
+  constructor _,_
+  field
+    numerator : ℕ
+    proof : ↥ p ≡ ℤ.+ numerator
 
-ℚᵘ⁺ : Set
-ℚᵘ⁺ = ∃ _≥0
+open non-neg public using (proof)
+  renaming
+  ( numerator    to ↥+_
+  )
 
-mkℚᵘ⁺ : ∀ (n : ℕ) dm → ℚᵘ⁺
-mkℚᵘ⁺ n dm = mkℚᵘ (ℤ.+ n) dm , n , cong ℤ.+_ refl
+neg : ℚᵘ → Set
+neg = ¬_ ∘ non-neg
 
-+_ : ℚᵘ⁺ → ℚᵘ
-+_ = proj₁
-
-↥⁺_ : ℚᵘ⁺ → ℕ
-↥⁺_ = proj₁ ∘ proj₂
-
-↧⁺ₙ_ : ℚᵘ⁺ → ℕ
-↧⁺ₙ_ = ↧ₙ_ ∘ +_
-
-↧⁺_ : ℚᵘ⁺ → ℤ
-↧⁺_ = ℤ.+_ ∘ ↧⁺ₙ_
+ℚᵘ+ : Set
+ℚᵘ+ = ∃ non-neg
 
 ------------------------------------------------------------------------
--- Positive rationals
+-- Positive and non-positive rationals
 
-_>0 : ℚᵘ → Set
-p >0 = ∃[ n ] (↥ p ≡ ℤ.+ (suc n))
+record pos (p : ℚᵘ) : Set where
+  constructor _,_
+  field
+    numerator : ℕ
+    proof : ↥ p ≡ ℤ.+ (suc numerator)
 
-ℚᵘ*⁺ : Set
-ℚᵘ*⁺ = ∃ _>0
+open pos public using (proof)
+  renaming
+  ( numerator    to ↥*+_
+  )
 
-mkℚᵘ*⁺ : ∀ (n : ℕ) dm → ℚᵘ*⁺
-mkℚᵘ*⁺ n dm = mkℚᵘ (ℤ.+ (suc n)) dm , n , cong ℤ.+_ refl
+non-pos : ℚᵘ → Set
+non-pos = ¬_ ∘ pos
 
-*+_ : ℚᵘ*⁺ → ℚᵘ
-*+_ = proj₁
-
-↥*⁺_ : ℚᵘ*⁺ → ℕ
-↥*⁺_ = proj₁ ∘ proj₂
-
-↧*⁺ₙ_ : ℚᵘ*⁺ → ℕ
-↧*⁺ₙ_ = ↧ₙ_ ∘ *+_
-
-↧*⁺_ : ℚᵘ*⁺ → ℤ
-↧*⁺_ = ℤ.+_ ∘ ↧*⁺ₙ_
+ℚᵘ*+ : Set
+ℚᵘ*+ = ∃ pos
 
 ------------------------------------------------------------------------
 -- Constructing rationals
+
+mkℚᵘ+ : ∀ (n : ℕ) dm → ℚᵘ
+mkℚᵘ+ n dm = mkℚᵘ (ℤ.+ n) dm
+
+mkℚᵘ*+ : ∀ (n : ℕ) dm → ℚᵘ
+mkℚᵘ*+ n dm = mkℚᵘ (ℤ.+ (suc n)) dm
+
+mkℚᵘ*- : ∀ (n : ℕ) dm → ℚᵘ
+mkℚᵘ*- n dm = mkℚᵘ -[1+ n ]  dm
 
 infix 4 _≢0
 _≢0 : ℕ → Set
