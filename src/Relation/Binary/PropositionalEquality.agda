@@ -164,9 +164,9 @@ cong-∘ : ∀ {x y : A} {f : B → C} {g : A → B} (p : x ≡ y) →
          cong (f ∘ g) p ≡ cong f (cong g p)
 cong-∘ refl = refl
 
-trans-cong : ∀ {x y z : A} {f : A → B} (p : x ≡ y) (q : y ≡ z) →
+trans-cong : ∀ {x y z : A} {f : A → B} (p : x ≡ y) {q : y ≡ z} →
              trans (cong f p) (cong f q) ≡ cong f (trans p q)
-trans-cong refl refl = refl
+trans-cong refl = refl
 
 module _ {P : Pred A p} {x y : A} where
 
