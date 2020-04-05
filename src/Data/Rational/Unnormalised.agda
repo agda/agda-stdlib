@@ -8,13 +8,16 @@
 
 module Data.Rational.Unnormalised where
 
-open import Data.Integer.Base as ℤ using (ℤ; ∣_∣; +_; +0; +[1+_]; -[1+_])
+open import Data.Integer.Base as ℤ using (ℤ; ∣_∣; +0; +[1+_]; -[1+_])
 open import Data.Nat as ℕ using (ℕ; zero; suc)
+open import Data.Product using (∃; ∃-syntax; _,_; proj₁; proj₂)
+open import Function using (_∘_)
 open import Level using (0ℓ)
 open import Relation.Nullary using (¬_)
-open import Relation.Nullary.Decidable using (False)
+open import Relation.Nullary.Decidable using (False; True)
+open import Relation.Unary using (Pred)
 open import Relation.Binary using (Rel)
-open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Relation.Binary.PropositionalEquality using (_≡_; cong; refl)
 
 ------------------------------------------------------------------------
 -- Definition
@@ -38,7 +41,7 @@ record ℚᵘ : Set where
   denominatorℕ = suc denominator-1
 
   denominator : ℤ
-  denominator = + denominatorℕ
+  denominator = ℤ.+ denominatorℕ
 
 open ℚᵘ public using ()
   renaming
@@ -82,6 +85,54 @@ x ≮ y = ¬ (x < y)
 
 _≯_ : Rel ℚᵘ 0ℓ
 x ≯ y = ¬ (x > y)
+
+------------------------------------------------------------------------
+-- Non-negative rationals
+
+_≥0 : ℚᵘ → Set
+p ≥0 = ∃[ n ] (↥ p ≡ ℤ.+ n)
+
+ℚᵘ⁺ : Set
+ℚᵘ⁺ = ∃ _≥0
+
+mkℚᵘ⁺ : ∀ (n : ℕ) dm → ℚᵘ⁺
+mkℚᵘ⁺ n dm = mkℚᵘ (ℤ.+ n) dm , n , cong ℤ.+_ refl
+
++_ : ℚᵘ⁺ → ℚᵘ
++_ = proj₁
+
+↥⁺_ : ℚᵘ⁺ → ℕ
+↥⁺_ = proj₁ ∘ proj₂
+
+↧⁺ₙ_ : ℚᵘ⁺ → ℕ
+↧⁺ₙ_ = ↧ₙ_ ∘ +_
+
+↧⁺_ : ℚᵘ⁺ → ℤ
+↧⁺_ = ℤ.+_ ∘ ↧⁺ₙ_
+
+------------------------------------------------------------------------
+-- Positive rationals
+
+_>0 : ℚᵘ → Set
+p >0 = ∃[ n ] (↥ p ≡ ℤ.+ (suc n))
+
+ℚᵘ*⁺ : Set
+ℚᵘ*⁺ = ∃ _>0
+
+mkℚᵘ*⁺ : ∀ (n : ℕ) dm → ℚᵘ*⁺
+mkℚᵘ*⁺ n dm = mkℚᵘ (ℤ.+ (suc n)) dm , n , cong ℤ.+_ refl
+
+*+_ : ℚᵘ*⁺ → ℚᵘ
+*+_ = proj₁
+
+↥*⁺_ : ℚᵘ*⁺ → ℕ
+↥*⁺_ = proj₁ ∘ proj₂
+
+↧*⁺ₙ_ : ℚᵘ*⁺ → ℕ
+↧*⁺ₙ_ = ↧ₙ_ ∘ *+_
+
+↧*⁺_ : ℚᵘ*⁺ → ℤ
+↧*⁺_ = ℤ.+_ ∘ ↧*⁺ₙ_
 
 ------------------------------------------------------------------------
 -- Constructing rationals
@@ -140,13 +191,13 @@ _÷_ : (p q : ℚᵘ) → .{n≢0 : ∣ ↥ q ∣ ≢0} → ℚᵘ
 -- Some constants
 
 0ℚᵘ : ℚᵘ
-0ℚᵘ = + 0 / 1
+0ℚᵘ = ℤ.+ 0 / 1
 
 1ℚᵘ : ℚᵘ
-1ℚᵘ = + 1 / 1
+1ℚᵘ = ℤ.+ 1 / 1
 
 ½ : ℚᵘ
-½ = + 1 / 2
+½ = ℤ.+ 1 / 2
 
 -½ : ℚᵘ
 -½ = - ½

@@ -18,8 +18,10 @@ open import Data.Integer.Base as ℤ using (ℤ; +0; +[1+_]; 0ℤ; 1ℤ)
 open import Data.Integer.Solver renaming (module +-*-Solver to ℤ-solver)
 import Data.Integer.Properties as ℤ
 import Data.Integer.Properties
+open import Data.Product using (∃; ∃-syntax; _,_; proj₁; proj₂)
 open import Data.Rational.Unnormalised
 open import Data.Product using (_,_)
+open import Data.Sign as Sign using () renaming (+ to ⊕)
 open import Data.Sum.Base using ([_,_]′; inj₁; inj₂)
 open import Function.Base using (_on_; _$_; _∘_)
 open import Level using (0ℓ)
@@ -36,6 +38,31 @@ open import Algebra.Properties.CommutativeSemigroup ℤ.*-commutativeSemigroup
 
 ↥↧≡⇒≡ : ∀ {p q} → ↥ p ≡ ↥ q → ↧ₙ p ≡ ↧ₙ q → p ≡ q
 ↥↧≡⇒≡ refl refl = refl
+
+------------------------------------------------------------------------
+-- Properties of mkℚᵘ/mkℚᵘ⁺/mkℚᵘ*⁺
+------------------------------------------------------------------------
+
+mkℚᵘ-+-≥0 : ∀ n dm → mkℚᵘ (ℤ.+ n) dm ≥0
+mkℚᵘ-+-≥0 n = proj₂ ∘ mkℚᵘ⁺ n
+
+mkℚᵘ-+-suc->0 : ∀ n dm → mkℚᵘ (ℤ.+ (suc n)) dm >0
+mkℚᵘ-+-suc->0 n = proj₂ ∘ mkℚᵘ*⁺ n
+
+↥-mkℚᵘ⁺ : ∀ p → ↥ (+ p) ≡ ℤ.+ ↥⁺ p
+↥-mkℚᵘ⁺ = proj₂ ∘ proj₂
+
+↧-mkℚᵘ⁺ : ∀ p → ↧ (+ p) ≡ ↧⁺ p
+↧-mkℚᵘ⁺ _ = refl
+
+↥-mkℚᵘ*⁺ : ∀ p → ↥ (*+ p) ≡ ℤ.+ suc (↥*⁺ p)
+↥-mkℚᵘ*⁺ = proj₂ ∘ proj₂
+
+↧-mkℚᵘ*⁺ : ∀ p → ↧ (*+ p) ≡ ↧*⁺ p
+↧-mkℚᵘ*⁺ _ = refl
+
+ℚᵘ*⁺⇒ℚᵘ⁺ : ℚᵘ*⁺ → ℚᵘ⁺
+ℚᵘ*⁺⇒ℚᵘ⁺ (p , n , e) = p , suc n , e
 
 ------------------------------------------------------------------------
 -- Properties of _≃_
@@ -749,62 +776,62 @@ private
   reorder₂ = solve 4 (λ a b c d → a :* b :* (c :* d) := a :* c :* (b :* d)) refl
     where open ℤ-solver
 
-*-cancelʳ-≤-pos : ∀ n dm {p q} → p * (mkℚᵘ +[1+ n ] dm) ≤ q * (mkℚᵘ +[1+ n ] dm) → p ≤ q
-*-cancelʳ-≤-pos n dm {p} {q} (*≤* leq)
+*-cancelʳ-≤-pos : ∀ r {p q} → p * *+ r ≤ q * *+ r → p ≤ q
+*-cancelʳ-≤-pos (r@(mkℚᵘ +[1+ n ] dm) , _) {p} {q} (*≤* leq)
   = let o = dm ℕ.+ n ℕ.* suc dm ; l₁ = ↥ p ℤ.* ↧ q ; l₂ = ↥ q ℤ.* ↧ p
   in *≤* $ ℤ.*-cancelʳ-≤-pos l₁ l₂ o $ begin
-  l₁ ℤ.* (+[1+ n ] ℤ.* ℤ.+ (suc dm))          ≡⟨ reorder₂ (↥ p) _ _ (ℤ.+ (suc dm)) ⟩
-  ↥ p ℤ.* +[1+ n ] ℤ.* (↧ q ℤ.* ℤ.+ (suc dm)) ≤⟨ leq ⟩
-  ↥ q ℤ.* +[1+ n ] ℤ.* (↧ p ℤ.* ℤ.+ (suc dm)) ≡⟨ reorder₂ (↥ q) _ _ (ℤ.+ (suc dm)) ⟩
-  l₂ ℤ.* (+[1+ n ] ℤ.* ℤ.+ (suc dm))          ∎ where open ℤ.≤-Reasoning
+  l₁ ℤ.* (+[1+ n ] ℤ.* +[1+ dm ])          ≡⟨ reorder₂ (↥ p) _ _ (ℤ.+ (suc dm)) ⟩
+  ↥ p ℤ.* +[1+ n ] ℤ.* (↧ q ℤ.* +[1+ dm ]) ≤⟨ leq ⟩
+  ↥ q ℤ.* +[1+ n ] ℤ.* (↧ p ℤ.* +[1+ dm ]) ≡⟨ reorder₂ (↥ q) _ _ (ℤ.+ (suc dm)) ⟩
+  l₂ ℤ.* (+[1+ n ] ℤ.* +[1+ dm ])          ∎ where open ℤ.≤-Reasoning
 
-*-cancelˡ-≤-pos : ∀ n dm {p q} → (mkℚᵘ +[1+ n ] dm) * p ≤ (mkℚᵘ +[1+ n ] dm) * q → p ≤ q
-*-cancelˡ-≤-pos n dm {p} {q} p<q
-  rewrite *-comm-≡ (mkℚᵘ (ℤ.+[1+ n ]) dm) p
-        | *-comm-≡ (mkℚᵘ (ℤ.+[1+ n ]) dm) q
-        = *-cancelʳ-≤-pos n dm p<q
+*-cancelˡ-≤-pos : ∀ r {p q} → *+ r * p ≤ *+ r * q → p ≤ q
+*-cancelˡ-≤-pos r@(r′ , _) {p} {q} p<q
+  rewrite *-comm-≡ r′ p
+        | *-comm-≡ r′ q
+        = *-cancelʳ-≤-pos r p<q
 
-*-monoʳ-≤-non-neg : ∀ n dm → (_* mkℚᵘ (ℤ.+ n) dm) Preserves _≤_ ⟶ _≤_
-*-monoʳ-≤-non-neg n dm {x} {y} (*≤* x<y)
-  = let r = mkℚᵘ (ℤ.+ n) dm ; l₁ = ↥ x ℤ.* ↧ y ; l₂ = ↥ y ℤ.* ↧ x in *≤* $ begin
-  ↥ x ℤ.* ℤ.+ n ℤ.* (↧ y ℤ.* +[1+ dm ]) ≡⟨ reorder₂ (↥ x) _ _ _ ⟩
-  l₁ ℤ.* (ℤ.+ n ℤ.* +[1+ dm ])          ≡⟨ cong (l₁ ℤ.*_) (ℤ.pos-distrib-* n (suc dm)) ⟩
-  l₁ ℤ.* ℤ.+ (n ℕ.* suc dm)             ≤⟨ ℤ.*-monoʳ-≤-non-neg (n ℕ.* suc dm) x<y ⟩
-  l₂ ℤ.* ℤ.+ (n ℕ.* suc dm)             ≡⟨ cong (l₂ ℤ.*_) (sym (ℤ.pos-distrib-* n (suc dm))) ⟩
-  l₂ ℤ.* (ℤ.+ n ℤ.* +[1+ dm ])          ≡⟨ reorder₂ (↥ y) _ _ _ ⟩
-  ↥ y ℤ.* ℤ.+ n ℤ.* (↧ x ℤ.* +[1+ dm ]) ∎ where open ℤ.≤-Reasoning
+*-monoʳ-≤-non-neg : ∀ r → (_* + r) Preserves _≤_ ⟶ _≤_
+*-monoʳ-≤-non-neg (r@(mkℚᵘ (ℤ.+ n) _) , _) {x} {y} (*≤* x<y)
+  = let l₁ = ↥ x ℤ.* ↧ y ; l₂ = ↥ y ℤ.* ↧ x in *≤* $ begin
+  ↥ x ℤ.* ↥ r ℤ.* (↧ y   ℤ.* ↧ r)  ≡⟨ reorder₂ (↥ x) _ _ _ ⟩
+  l₁          ℤ.* (ℤ.+ n ℤ.* ↧ r)  ≡⟨ cong (l₁ ℤ.*_) (ℤ.pos-distrib-* n _) ⟩
+  l₁          ℤ.* ℤ.+ (n ℕ.* ↧ₙ r) ≤⟨ ℤ.*-monoʳ-≤-non-neg (n ℕ.* _) x<y ⟩
+  l₂          ℤ.* ℤ.+ (n ℕ.* ↧ₙ r) ≡⟨ cong (l₂ ℤ.*_) (sym (ℤ.pos-distrib-* n _)) ⟩
+  l₂          ℤ.* (ℤ.+ n ℤ.* ↧ r)  ≡⟨ reorder₂ (↥ y) _ _ _ ⟩
+  ↥ y ℤ.* ↥ r ℤ.* (↧ x   ℤ.* ↧ r)  ∎ where open ℤ.≤-Reasoning
 
-*-monoˡ-≤-non-neg : ∀ n dm → (mkℚᵘ (ℤ.+ n) dm *_) Preserves _≤_ ⟶ _≤_
-*-monoˡ-≤-non-neg n dm {x} {y} x≤y
-  rewrite *-comm-≡ (mkℚᵘ (ℤ.+ n) dm) x
-        | *-comm-≡ (mkℚᵘ (ℤ.+ n) dm) y
-        = *-monoʳ-≤-non-neg n dm x≤y
+*-monoˡ-≤-non-neg : ∀ r → (+ r *_) Preserves _≤_ ⟶ _≤_
+*-monoˡ-≤-non-neg r {x} {y} x≤y
+  rewrite *-comm-≡ (+ r)  x
+        | *-comm-≡ (+ r) y
+        = *-monoʳ-≤-non-neg r x≤y
 
-*-monoˡ-≤-pos : ∀ n dm → (mkℚᵘ +[1+ n ] dm *_) Preserves _≤_ ⟶ _≤_
-*-monoˡ-≤-pos = *-monoˡ-≤-non-neg ∘ suc
+*-monoˡ-≤-pos : ∀ r → (*+ r *_) Preserves _≤_ ⟶ _≤_
+*-monoˡ-≤-pos = *-monoˡ-≤-non-neg ∘ ℚᵘ*⁺⇒ℚᵘ⁺
 
-*-monoʳ-≤-pos : ∀ n dm → (_* mkℚᵘ +[1+ n ] dm) Preserves _≤_ ⟶ _≤_
-*-monoʳ-≤-pos = *-monoʳ-≤-non-neg ∘ suc
+*-monoʳ-≤-pos : ∀ r → (_* *+ r) Preserves _≤_ ⟶ _≤_
+*-monoʳ-≤-pos = *-monoʳ-≤-non-neg ∘ ℚᵘ*⁺⇒ℚᵘ⁺
 
 ------------------------------------------------------------------------
 -- Properties of _*_ and _<_
 
-*-monoʳ-<-pos : ∀ n d → (_* mkℚᵘ (ℤ.+[1+ n ]) d) Preserves _<_ ⟶ _<_
-*-monoʳ-<-pos n d {x} {y} (*<* x<y)
-  = let s = mkℚᵘ (ℤ.+ suc n) d in *<* $ begin-strict
+*-monoʳ-<-pos : ∀ r → (_* *+ r) Preserves _<_ ⟶ _<_
+*-monoʳ-<-pos (s@(mkℚᵘ +[1+ n ] d) , _) {x} {y} (*<* x<y)
+  = *<* $ begin-strict
   ↥ x ℤ.*  ↥ s ℤ.* (↧ y  ℤ.* ↧ s) ≡⟨ reorder₁ (↥ x) _ _ _ ⟩
   ↥ x ℤ.*  ↧ y ℤ.*  ↥ s  ℤ.* ↧ s  <⟨ ℤ.*-monoʳ-<-pos d (ℤ.*-monoʳ-<-pos n x<y) ⟩
   ↥ y ℤ.*  ↧ x ℤ.*  ↥ s  ℤ.* ↧ s  ≡⟨ sym (reorder₁ (↥ y) _ _ _) ⟩
   ↥ y ℤ.*  ↥ s ℤ.* (↧ x  ℤ.* ↧ s) ∎ where open ℤ.≤-Reasoning
 
-*-monoˡ-<-pos : ∀ n d → (mkℚᵘ (ℤ.+[1+ n ]) d *_) Preserves _<_ ⟶ _<_
-*-monoˡ-<-pos n d {x} {y} x<y
-  rewrite *-comm-≡ (mkℚᵘ (ℤ.+[1+ n ]) d) x
-        | *-comm-≡ (mkℚᵘ (ℤ.+[1+ n ]) d) y
-        = *-monoʳ-<-pos n d x<y
+*-monoˡ-<-pos : ∀ r → (*+ r *_) Preserves _<_ ⟶ _<_
+*-monoˡ-<-pos r@(r′ , _) {x} {y} x<y
+  rewrite *-comm-≡ r′ x
+        | *-comm-≡ r′ y
+        = *-monoʳ-<-pos r x<y
 
-*-cancelˡ-<-non-neg : ∀ n dm {i j} → (mkℚᵘ (ℤ.+ n) dm) * i < (mkℚᵘ (ℤ.+ n) dm) * j → i < j
-*-cancelˡ-<-non-neg n dm {i} {j} (*<* le)
+*-cancelˡ-<-non-neg : ∀ r {i j} → + r * i < + r * j → i < j
+*-cancelˡ-<-non-neg (mkℚᵘ (ℤ.+ n) dm , _) {i} {j} (*<* le)
   = let d+ = suc dm ; s = n ℕ.* d+ ; d = ℤ.+ d+ ; r₁ = ↥ i ℤ.* ↧ j ; r₂ = ↥ j ℤ.* ↧ i
   in *<* $ ℤ.*-cancelˡ-<-non-neg s $ begin-strict
   ℤ.+ s         ℤ.* r₁          ≡⟨ cong (ℤ._* r₁) (sym (ℤ.pos-distrib-* n (suc dm))) ⟩
@@ -814,12 +841,11 @@ private
   ℤ.+ n ℤ.* d   ℤ.* r₂          ≡⟨ cong (ℤ._* r₂) ( ℤ.pos-distrib-* n (suc dm)) ⟩
   ℤ.+ s ℤ.* r₂                  ∎ where open ℤ.≤-Reasoning
 
-*-cancelʳ-<-non-neg : ∀ n d {i j} → i * (mkℚᵘ (ℤ.+ n) d) < j * (mkℚᵘ (ℤ.+ n) d) → i < j
-*-cancelʳ-<-non-neg n dm {i} {j} i*r<j*r
-  rewrite *-comm-≡ i (mkℚᵘ (ℤ.+ n) dm)
-        | *-comm-≡ j (mkℚᵘ (ℤ.+ n) dm)
-        = *-cancelˡ-<-non-neg n dm  i*r<j*r
-
+*-cancelʳ-<-non-neg : ∀ r {i j} → i * + r < j * + r → i < j
+*-cancelʳ-<-non-neg r@(r′ , _) {i} {j} i*r<j*r
+  rewrite *-comm-≡ i r′
+        | *-comm-≡ j r′
+        = *-cancelˡ-<-non-neg r i*r<j*r
 
 ------------------------------------------------------------------------
 -- Algebraic structures
