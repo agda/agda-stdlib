@@ -20,6 +20,8 @@ Deprecated modules
 * The module `Induction.WellFounded.InverseImage` has been deprecated. The proofs
   `accessible` and `wellFounded` have been moved to `Relation.Binary.Construct.On`.
 
+* `Reflection.TypeChecking.MonadSyntax` ↦ `Reflection.TypeChecking.Monad.Syntax`
+
 Deprecated names
 ----------------
 
@@ -41,6 +43,13 @@ Other major additions
 * Symmetric transitive closures of binary relations:
   ```
   Relation.Binary.Construct.Closure.SymmetricTransitive
+  ```
+
+* Type-checking monads
+  ```
+  Reflection.TypeChecking.Monad
+  Reflection.TypeChecking.Monad.Categorical
+  Reflection.TypeChecking.Monad.Instances
   ```
 
 Other major changes
