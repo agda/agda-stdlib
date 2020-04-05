@@ -14,18 +14,18 @@ module Data.Integer.Properties where
 open import Algebra.Bundles
 import Algebra.Morphism as Morphism
 import Algebra.Properties.AbelianGroup
+open import Data.Empty using (⊥-elim)
 open import Data.Integer.Base renaming (suc to sucℤ)
 open import Data.Nat as ℕ
   using (ℕ; suc; zero; _∸_; s≤s; z≤n)
   hiding (module ℕ)
 import Data.Nat.Properties as ℕₚ
 open import Data.Nat.Solver
-open import Data.Empty using (⊥-elim)
 open import Data.Product using (proj₁; proj₂; _,_)
 open import Data.Sum.Base as Sum using (inj₁; inj₂)
 open import Data.Sign as Sign using () renaming (_*_ to _𝕊*_)
 import Data.Sign.Properties as 𝕊ₚ
-open import Function using (_∘_; _$_; case_of_)
+open import Function using (_∘_; _$_)
 open import Level using (0ℓ)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
@@ -245,10 +245,10 @@ drop‿-<- (-<- n<m) = n<m
 ... | tri> m≮n m≢n n>m = tri> (m≮n ∘ ℕₚ.≤-pred ∘ drop‿+<+) (m≢n ∘ +[1+-injective) (+<+ (s≤s n>m))
 
 
-≯⇒≤ {x} {y} x≯y = case <-cmp x y of λ where
-    (tri< x<y _    _  ) → <⇒≤ x<y
-    (tri≈ _   refl _  ) → ≤-refl
-    (tri> _   _    x>y) → ⊥-elim (x≯y x>y)
+≯⇒≤ {x} {y} x≯y with <-cmp x y
+... | tri< x<y _ _  = <⇒≤ x<y
+... | tri≈ _ refl _ = ≤-refl
+... | tri> _ _ x>y  = ⊥-elim (x≯y x>y)
 
 
 infix 4 _<?_

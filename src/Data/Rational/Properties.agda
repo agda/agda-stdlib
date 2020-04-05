@@ -28,7 +28,7 @@ import Data.Nat.DivMod as ℕ
 open import Data.Product using (_×_; _,_)
 open import Data.Rational.Base
 open import Data.Rational.Unnormalised as ℚᵘ
-  using (ℚᵘ; *≡*; *≤*) renaming (↥_ to ↥ᵘ_; ↧_ to ↧ᵘ_; _≃_ to _≃ᵘ_; _≤_ to _≤ᵘ_)
+  using (ℚᵘ; *≡*; *≤*; *<*) renaming (↥_ to ↥ᵘ_; ↧_ to ↧ᵘ_; _≃_ to _≃ᵘ_; _≤_ to _≤ᵘ_; _<_ to _<ᵘ_)
 import Data.Rational.Unnormalised.Properties as ℚᵘ
 open import Data.Sum.Base
 open import Data.Unit using (tt)
@@ -67,7 +67,6 @@ mkℚ-injective : ∀ {n₁ n₂ d₁ d₂} .{c₁ : Coprime ∣ n₁ ∣ (suc d
 mkℚ-injective refl = refl , refl
 
 infix 4 _≟_
-
 _≟_ : Decidable {A = ℚ} _≡_
 mkℚ n₁ d₁ _ ≟ mkℚ n₂ d₂ _ =
   map′ (λ { (refl , refl) → refl }) mkℚ-injective (n₁ ℤ.≟ n₂ ×-dec d₁ ℕ.≟ d₂)
@@ -137,20 +136,6 @@ mkℚ+-cong _ _ refl refl = refl
   helper with ∣-antisym 1+d₁∣1+d₂ 1+d₂∣1+d₁
   ... | refl with ℤ.*-cancelʳ-≡ n₁ n₂ (+ suc d₁) (λ ()) eq
   ...   | refl = refl
-
-------------------------------------------------------------------------
--- Properties of -_
-------------------------------------------------------------------------
-
-↥-neg : ∀ p → ↥ (- p) ≡ ℤ.- (↥ p)
-↥-neg (mkℚ -[1+ _ ] _ _) = refl
-↥-neg (mkℚ +0       _ _) = refl
-↥-neg (mkℚ +[1+ _ ] _ _) = refl
-
-↧-neg : ∀ p → ↧ (- p) ≡ ↧ p
-↧-neg (mkℚ -[1+ _ ] _ _) = refl
-↧-neg (mkℚ +0       _ _) = refl
-↧-neg (mkℚ +[1+ _ ] _ _) = refl
 
 ------------------------------------------------------------------------
 -- Properties of normalize
@@ -231,7 +216,7 @@ drop-*≤* : ∀ {p q} → p ≤ q → (↥ p ℤ.* ↧ q) ℤ.≤ (↥ q ℤ.* 
 drop-*≤* (*≤* pq≤qp) = pq≤qp
 
 ------------------------------------------------------------------------
--- toℚᵘ is a isomorphism
+-- toℚᵘ is an order monomorphism
 
 toℚᵘ-mono-≤ : ∀ {p q} → p ≤ q → toℚᵘ p ≤ᵘ toℚᵘ q
 toℚᵘ-mono-≤ (*≤* p≤q) = *≤* p≤q
@@ -242,7 +227,7 @@ toℚᵘ-cancel-≤ (*≤* p≤q) = *≤* p≤q
 toℚᵘ-isOrderHomomorphism-≤ : IsOrderHomomorphism _≡_ _≃ᵘ_ _≤_ _≤ᵘ_ toℚᵘ
 toℚᵘ-isOrderHomomorphism-≤ = record
   { cong = toℚᵘ-cong
- ; mono = toℚᵘ-mono-≤
+  ; mono = toℚᵘ-mono-≤
   }
 
 toℚᵘ-isOrderMonomorphism-≤ : IsOrderMonomorphism _≡_ _≃ᵘ_ _≤_ _≤ᵘ_ toℚᵘ
@@ -252,11 +237,11 @@ toℚᵘ-isOrderMonomorphism-≤ = record
   ; cancel              = toℚᵘ-cancel-≤
   }
 
-------------------------------------------------------------------------
--- Relational properties
-
 private
   module ≤-Monomorphism = OrderMonomorphisms toℚᵘ-isOrderMonomorphism-≤
+
+------------------------------------------------------------------------
+-- Relational properties
 
 ≤-reflexive : _≡_ ⇒ _≤_
 ≤-reflexive refl = *≤* ℤ.≤-refl
@@ -268,14 +253,14 @@ private
 ≤-trans = ≤-Monomorphism.trans ℚᵘ.≤-trans
 
 ≤-antisym : Antisymmetric _≡_ _≤_
-≤-antisym (*≤* le₁) (*≤* le₂) = ≃⇒≡ (ℤ.≤-antisym le₁ le₂)
+≤-antisym = ≤-Monomorphism.antisym ℚᵘ.≤-antisym
 
 ≤-total : Total _≤_
-≤-total p q = [ inj₁ ∘ *≤* , inj₂ ∘ *≤* ]′ (ℤ.≤-total (↥ p ℤ.* ↧ q) (↥ q ℤ.* ↧ p))
+≤-total = ≤-Monomorphism.total ℚᵘ.≤-total
 
 infix 4 _≤?_
 _≤?_ : Decidable _≤_
-p ≤? q = Dec.map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* ↧ p)
+_≤?_ = ≤-Monomorphism.dec ℚᵘ._≤?_
 
 ≤-irrelevant : Irrelevant _≤_
 ≤-irrelevant (*≤* p≤q₁) (*≤* p≤q₂) = cong *≤* (ℤ.≤-irrelevant p≤q₁ p≤q₂)
@@ -284,40 +269,39 @@ p ≤? q = Dec.map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* �
 -- Structures
 
 ≤-isPreorder : IsPreorder _≡_ _≤_
-≤-isPreorder = record
-  { isEquivalence = isEquivalence
-  ; reflexive     = ≤-reflexive
-  ; trans         = ≤-trans
-  }
+≤-isPreorder = ≤-Monomorphism.isPreorder ℚᵘ.≤-isPreorder
 
 ≤-isPartialOrder : IsPartialOrder _≡_ _≤_
-≤-isPartialOrder = record
-  { isPreorder = ≤-isPreorder
-  ; antisym    = ≤-antisym
-  }
+≤-isPartialOrder = ≤-Monomorphism.isPartialOrder ℚᵘ.≤-isPartialOrder
 
 ≤-isTotalOrder : IsTotalOrder _≡_ _≤_
-≤-isTotalOrder = record
-  { isPartialOrder = ≤-isPartialOrder
-  ; total          = ≤-total
-  }
+≤-isTotalOrder = ≤-Monomorphism.isTotalOrder ℚᵘ.≤-isTotalOrder
 
 ≤-isDecTotalOrder : IsDecTotalOrder _≡_ _≤_
-≤-isDecTotalOrder = record
-  { isTotalOrder = ≤-isTotalOrder
-  ; _≟_          = _≟_
-  ; _≤?_         = _≤?_
-  }
+≤-isDecTotalOrder = ≤-Monomorphism.isDecTotalOrder ℚᵘ.≤-isDecTotalOrder
+
 
 ------------------------------------------------------------------------
 -- Bundles
 
-≤-decTotalOrder : DecTotalOrder _ _ _
+≤-preorder : Preorder 0ℓ 0ℓ 0ℓ
+≤-preorder = record
+  { isPreorder = ≤-isPreorder
+  }
+
+≤-poset : Poset 0ℓ 0ℓ 0ℓ
+≤-poset = record
+  { isPartialOrder = ≤-isPartialOrder
+  }
+
+≤-totalOrder : TotalOrder 0ℓ 0ℓ 0ℓ
+≤-totalOrder = record
+  { isTotalOrder = ≤-isTotalOrder
+  }
+
+≤-decTotalOrder : DecTotalOrder 0ℓ 0ℓ 0ℓ
 ≤-decTotalOrder = record
-  { Carrier         = ℚ
-  ; _≈_             = _≡_
-  ; _≤_             = _≤_
-  ; isDecTotalOrder = ≤-isDecTotalOrder
+  { isDecTotalOrder = ≤-isDecTotalOrder
   }
 
 ------------------------------------------------------------------------
@@ -328,10 +312,47 @@ drop-*<* : ∀ {p q} → p < q → (↥ p ℤ.* ↧ q) ℤ.< (↥ q ℤ.* ↧ p)
 drop-*<* (*<* pq<qp) = pq<qp
 
 ------------------------------------------------------------------------
--- Relational properties
+-- toℚᵘ is an isomorphism
+
+toℚᵘ-mono-< : ∀ {p q} → p < q → toℚᵘ p <ᵘ toℚᵘ q
+toℚᵘ-mono-< (*<* p<q) = *<* p<q
+
+toℚᵘ-cancel-< : ∀ {p q} → toℚᵘ p <ᵘ toℚᵘ q → p < q
+toℚᵘ-cancel-< (*<* p<q) = *<* p<q
+
+toℚᵘ-isOrderHomomorphism-< : IsOrderHomomorphism _≡_ _≃ᵘ_ _<_ _<ᵘ_ toℚᵘ
+toℚᵘ-isOrderHomomorphism-< = record
+  { cong = toℚᵘ-cong
+  ; mono = toℚᵘ-mono-<
+  }
+
+toℚᵘ-isOrderMonomorphism-< : IsOrderMonomorphism _≡_ _≃ᵘ_ _<_ _<ᵘ_ toℚᵘ
+toℚᵘ-isOrderMonomorphism-< = record
+  { isOrderHomomorphism = toℚᵘ-isOrderHomomorphism-<
+  ; injective           = toℚᵘ-injective
+  ; cancel              = toℚᵘ-cancel-<
+  }
+
+private
+  module <-Monomorphism = OrderMonomorphisms toℚᵘ-isOrderMonomorphism-<
+
+------------------------------------------------------------------------
+-- Relationship between other operators
 
 <⇒≤ : _<_ ⇒ _≤_
 <⇒≤ (*<* p<q) = *≤* (ℤ.<⇒≤ p<q)
+
+>⇒≰ : ∀ {p q} → p > q → p ≰ q
+>⇒≰ (*<* x>y) = ℤ.>⇒≰ x>y ∘ drop-*≤*
+
+≰⇒> : ∀ {p q} → p ≰ q → p > q
+≰⇒> p≰q = *<* (ℤ.≰⇒> (p≰q ∘ *≤*))
+
+≯⇒≤ : ∀ {p q} → p ≯ q → p ≤ q
+≯⇒≤ p≯q = *≤* (ℤ.≯⇒≤ (p≯q ∘ *<*))
+
+------------------------------------------------------------------------
+-- Relational properties
 
 <-irrefl : Irreflexive _≡_ _<_
 <-irrefl refl (*<* p<p) = ℤ.<-irrefl refl p<p
@@ -340,50 +361,24 @@ drop-*<* (*<* pq<qp) = pq<qp
 <-asym (*<* p<q) (*<* q<p) = ℤ.<-asym p<q q<p
 
 <-≤-trans : Trans _<_ _≤_ _<_
-<-≤-trans {p} {q} {r} (*<* p<q) (*≤* q≤r) = *<*
-  (ℤ.*-cancelʳ-<-non-neg _ (begin-strict
-  let n₁ = ↥ p; n₂ = ↥ q; n₃ = ↥ r; sd₁ = ↧ p; sd₂ = ↧ q; sd₃ = ↧ r in
-  (n₁  ℤ.* sd₃) ℤ.* sd₂  ≡⟨ ℤ.*-assoc n₁ sd₃ sd₂ ⟩
-  n₁   ℤ.* (sd₃ ℤ.* sd₂) ≡⟨ cong (n₁ ℤ.*_) (ℤ.*-comm sd₃ sd₂) ⟩
-  n₁   ℤ.* (sd₂ ℤ.* sd₃) ≡⟨ sym (ℤ.*-assoc n₁ sd₂ sd₃) ⟩
-  (n₁  ℤ.* sd₂) ℤ.* sd₃  <⟨ ℤ.*-monoʳ-<-pos (ℕ.pred (↧ₙ r)) p<q ⟩
-  (n₂  ℤ.* sd₁) ℤ.* sd₃  ≡⟨ cong (ℤ._* sd₃) (ℤ.*-comm n₂ sd₁) ⟩
-  (sd₁ ℤ.* n₂)  ℤ.* sd₃  ≡⟨ ℤ.*-assoc sd₁ n₂ sd₃ ⟩
-  sd₁  ℤ.* (n₂  ℤ.* sd₃) ≤⟨ ℤ.*-monoˡ-≤-pos (ℕ.pred (↧ₙ p)) q≤r ⟩
-  sd₁  ℤ.* (n₃  ℤ.* sd₂) ≡⟨ sym (ℤ.*-assoc sd₁ n₃ sd₂) ⟩
-  (sd₁ ℤ.* n₃)  ℤ.* sd₂  ≡⟨ cong (ℤ._* sd₂) (ℤ.*-comm sd₁ n₃) ⟩
-  (n₃  ℤ.* sd₁) ℤ.* sd₂  ∎))
-  where open ℤ.≤-Reasoning
+<-≤-trans p<q q≤r =
+  toℚᵘ-cancel-< $ ℚᵘ.<-≤-trans (toℚᵘ-mono-< p<q)
+                               (toℚᵘ-mono-≤ q≤r)
 
 ≤-<-trans : Trans _≤_ _<_ _<_
-≤-<-trans {p} {q} {r} (*≤* p≤q) (*<* q<r) = *<*
-  (ℤ.*-cancelʳ-<-non-neg _ (begin-strict
-  let n₁ = ↥ p; n₂ = ↥ q; n₃ = ↥ r; sd₁ = ↧ p; sd₂ = ↧ q; sd₃ = ↧ r in
-  (n₁  ℤ.* sd₃) ℤ.* sd₂  ≡⟨ ℤ.*-assoc n₁ sd₃ sd₂ ⟩
-  n₁   ℤ.* (sd₃ ℤ.* sd₂) ≡⟨ cong (n₁ ℤ.*_) (ℤ.*-comm sd₃ sd₂) ⟩
-  n₁   ℤ.* (sd₂ ℤ.* sd₃) ≡⟨ sym (ℤ.*-assoc n₁ sd₂ sd₃) ⟩
-  (n₁  ℤ.* sd₂) ℤ.* sd₃  ≤⟨ ℤ.*-monoʳ-≤-pos (ℕ.pred (↧ₙ r)) p≤q ⟩
-  (n₂  ℤ.* sd₁) ℤ.* sd₃  ≡⟨ cong (ℤ._* sd₃) (ℤ.*-comm n₂ sd₁) ⟩
-  (sd₁ ℤ.* n₂)  ℤ.* sd₃  ≡⟨ ℤ.*-assoc sd₁ n₂ sd₃ ⟩
-  sd₁  ℤ.* (n₂  ℤ.* sd₃) <⟨ ℤ.*-monoˡ-<-pos (ℕ.pred (↧ₙ p)) q<r ⟩
-  sd₁  ℤ.* (n₃  ℤ.* sd₂) ≡⟨ sym (ℤ.*-assoc sd₁ n₃ sd₂) ⟩
-  (sd₁ ℤ.* n₃)  ℤ.* sd₂  ≡⟨ cong (ℤ._* sd₂) (ℤ.*-comm sd₁ n₃) ⟩
-  (n₃  ℤ.* sd₁) ℤ.* sd₂  ∎))
-  where open ℤ.≤-Reasoning
+≤-<-trans p≤q q<r =
+  toℚᵘ-cancel-< $ ℚᵘ.≤-<-trans (toℚᵘ-mono-≤ p≤q)
+                               (toℚᵘ-mono-< q<r)
 
 <-trans : Transitive _<_
-<-trans p<q = ≤-<-trans (<⇒≤ p<q)
+<-trans = <-Monomorphism.trans ℚᵘ.<-trans
 
 infix 4 _<?_
-
 _<?_ : Decidable _<_
-p <? q = Dec.map′ *<* drop-*<* ((↥ p ℤ.* ↧ q) ℤ.<? (↥ q ℤ.* ↧ p))
+_<?_ = <-Monomorphism.dec ℚᵘ._<?_
 
 <-cmp : Trichotomous _≡_ _<_
-<-cmp p q with ℤ.<-cmp (↥ p ℤ.* ↧ q) (↥ q ℤ.* ↧ p)
-... | tri< < ≢ ≯ = tri< (*<* <)        (≢ ∘ ≡⇒≃) (≯ ∘ drop-*<*)
-... | tri≈ ≮ ≡ ≯ = tri≈ (≮ ∘ drop-*<*) (≃⇒≡ ≡)   (≯ ∘ drop-*<*)
-... | tri> ≮ ≢ > = tri> (≮ ∘ drop-*<*) (≢ ∘ ≡⇒≃) (*<* >)
+<-cmp = <-Monomorphism.compare ℚᵘ.<-cmp
 
 <-irrelevant : Irrelevant _<_
 <-irrelevant (*<* p<q₁) (*<* p<q₂) = cong *<* (ℤ.<-irrelevant p<q₁ p<q₂)
@@ -401,19 +396,10 @@ p <? q = Dec.map′ *<* drop-*<* ((↥ p ℤ.* ↧ q) ℤ.<? (↥ q ℤ.* ↧ p)
 -- Structures
 
 <-isStrictPartialOrder : IsStrictPartialOrder _≡_ _<_
-<-isStrictPartialOrder = record
-  { isEquivalence = isEquivalence
-  ; irrefl        = <-irrefl
-  ; trans         = <-trans
-  ; <-resp-≈      = <-resp-≡
-  }
+<-isStrictPartialOrder = <-Monomorphism.isStrictPartialOrder ℚᵘ.<-isStrictPartialOrder
 
 <-isStrictTotalOrder : IsStrictTotalOrder _≡_ _<_
-<-isStrictTotalOrder = record
-  { isEquivalence = isEquivalence
-  ; trans         = <-trans
-  ; compare       = <-cmp
-  }
+<-isStrictTotalOrder = <-Monomorphism.isStrictTotalOrder ℚᵘ.<-isStrictTotalOrder
 
 ------------------------------------------------------------------------
 -- Bundles
@@ -429,6 +415,15 @@ p <? q = Dec.map′ *<* drop-*<* ((↥ p ℤ.* ↧ q) ℤ.<? (↥ q ℤ.* ↧ p)
   }
 
 ------------------------------------------------------------------------
+-- Other properties of _<_
+
+p≮p : ∀ {p} → p ≮ p
+p≮p {p} = <-irrefl refl
+
+>-irrefl : Irreflexive _≡_ _>_
+>-irrefl = <-irrefl ∘ sym
+
+------------------------------------------------------------------------
 -- A specialised module for reasoning about the _≤_ and _<_ relations
 ------------------------------------------------------------------------
 
@@ -442,6 +437,23 @@ module ≤-Reasoning where
     ≤-<-trans
     public
     hiding (step-≈; step-≈˘)
+
+------------------------------------------------------------------------
+-- Properties of -_
+------------------------------------------------------------------------
+
+↥-neg : ∀ p → ↥ (- p) ≡ ℤ.- (↥ p)
+↥-neg (mkℚ -[1+ _ ] _ _) = refl
+↥-neg (mkℚ +0       _ _) = refl
+↥-neg (mkℚ +[1+ _ ] _ _) = refl
+
+↧-neg : ∀ p → ↧ (- p) ≡ ↧ p
+↧-neg (mkℚ -[1+ _ ] _ _) = refl
+↧-neg (mkℚ +0       _ _) = refl
+↧-neg (mkℚ +[1+ _ ] _ _) = refl
+
+denominator-1-neg : ∀ p → ℚ.denominator-1 (- p) ≡ ℚ.denominator-1 p
+denominator-1-neg = ℕ.suc-injective ∘ ℤ.+-injective ∘ ↧-neg
 
 ------------------------------------------------------------------------
 -- Properties of _/_
@@ -601,14 +613,19 @@ toℚᵘ-isGroupMonomorphism-+ = record
   ; injective           = toℚᵘ-injective
   }
 
+neg-mono-<-> : -_ Preserves _<_ ⟶ _>_
+neg-mono-<-> {x} {y} x<y = toℚᵘ-cancel-< $ begin-strict
+  toℚᵘ (- y)    ≡⟨ cong₂ ℚᵘ.mkℚᵘ (↥-neg y) (denominator-1-neg y) ⟩
+  ℚᵘ.- (toℚᵘ y) <⟨ ℚᵘ.neg-mono-<-> (toℚᵘ-mono-< x<y) ⟩
+  ℚᵘ.- (toℚᵘ x) ≡⟨ sym (cong₂ ℚᵘ.mkℚᵘ (↥-neg x) (denominator-1-neg x)) ⟩
+  toℚᵘ (- x)    ∎
+  where open ℚᵘ.≤-Reasoning
+
 ------------------------------------------------------------------------
 -- Algebraic properties
 
 private
   module +-Monomorphism = GroupMonomorphisms toℚᵘ-isGroupMonomorphism-+
-
-+-assoc : Associative _+_
-+-assoc = +-Monomorphism.assoc ℚᵘ.+-isMagma ℚᵘ.+-assoc
 
 +-comm : Commutative _+_
 +-comm = +-Monomorphism.comm ℚᵘ.+-isMagma ℚᵘ.+-comm
@@ -621,6 +638,9 @@ private
 
 +-identity : Identity 0ℚ _+_
 +-identity = +-identityˡ , +-identityʳ
+
++-assoc : Associative _+_
++-assoc = +-Monomorphism.assoc ℚᵘ.+-isMagma ℚᵘ.+-assoc
 
 +-inverseˡ : LeftInverse 0ℚ -_ _+_
 +-inverseˡ = +-Monomorphism.inverseˡ ℚᵘ.+-isMagma ℚᵘ.+-inverseˡ
