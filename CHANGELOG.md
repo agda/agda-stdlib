@@ -718,6 +718,12 @@ Other minor additions
   map-just    : ma ≡ just a → map f ma ≡ just (f a)
   ```
 
+* Added new proofs to `Data.Maybe.Relation.Binary.Pointwise`:
+  ```agda
+  nothing-inv : Pointwise R nothing x → x ≡ nothing
+  just-inv    : Pointwise R (just x) y → ∃ λ z → y ≡ just z × R x z
+  ```
+
 * Added new proofs to `Data.Nat.DivMod`:
   ```agda
   %-distribˡ-* : (m * n) % d ≡ ((m % d) * (n % d)) % d
