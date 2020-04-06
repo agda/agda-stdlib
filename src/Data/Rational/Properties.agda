@@ -359,14 +359,17 @@ private
 <⇒≤ : _<_ ⇒ _≤_
 <⇒≤ (*<* p<q) = *≤* (ℤ.<⇒≤ p<q)
 
->⇒≰ : ∀ {p q} → p > q → p ≰ q
->⇒≰ (*<* x>y) = ℤ.>⇒≰ x>y ∘ drop-*≤*
+<⇒≢ : _<_ ⇒ _≢_
+<⇒≢ (*<* x<y) refl = ℤ.<⇒≢ x<y refl
 
-≰⇒> : ∀ {p q} → p ≰ q → p > q
+<⇒≱ : _<_ ⇒ _≱_
+<⇒≱ (*<* x<y) = ℤ.<⇒≱ x<y ∘ drop-*≤*
+
+≰⇒> : _≰_ ⇒ _>_
 ≰⇒> p≰q = *<* (ℤ.≰⇒> (p≰q ∘ *≤*))
 
-≯⇒≤ : ∀ {p q} → p ≯ q → p ≤ q
-≯⇒≤ p≯q = *≤* (ℤ.≯⇒≤ (p≯q ∘ *<*))
+≮⇒≥ : _≮_ ⇒ _≥_
+≮⇒≥ p≮q = *≤* (ℤ.≮⇒≥ (p≮q ∘ *<*))
 
 ------------------------------------------------------------------------
 -- Relational properties
@@ -910,8 +913,8 @@ private
 *-cancelʳ-≤-pos r {r>0} {p} {q} p*r≤q*r = toℚᵘ-cancel-≤ $
   ℚᵘ.*-cancelʳ-≤-pos (pos-toℚᵘ r>0) $ begin
   toℚᵘ p ℚᵘ.* toℚᵘ r ≈⟨ ℚᵘ.≃-sym (toℚᵘ-homo-* p r) ⟩
-  toℚᵘ (p * r) ≤⟨ toℚᵘ-mono-≤ p*r≤q*r ⟩
-  toℚᵘ (q * r) ≈⟨ toℚᵘ-homo-* q r ⟩
+  toℚᵘ (p * r)       ≤⟨ toℚᵘ-mono-≤ p*r≤q*r ⟩
+  toℚᵘ (q * r)       ≈⟨ toℚᵘ-homo-* q r ⟩
   toℚᵘ q ℚᵘ.* toℚᵘ r ∎ where open ℚᵘ.≤-Reasoning
 
 *-cancelˡ-≤-pos : ∀ r {r>0 : r > 0ℚ} {p q} → r * p ≤ r * q → p ≤ q
@@ -953,8 +956,8 @@ private
 *-cancelʳ-<-non-neg r {r≥0} {p} {q} p*r<q*r = toℚᵘ-cancel-< $
   ℚᵘ.*-cancelʳ-<-non-neg (non-neg-toℚᵘ r≥0) $ begin-strict
   toℚᵘ p ℚᵘ.* toℚᵘ r ≈⟨ ℚᵘ.≃-sym (toℚᵘ-homo-* p r) ⟩
-  toℚᵘ (p * r) <⟨ toℚᵘ-mono-< p*r<q*r ⟩
-  toℚᵘ (q * r) ≈⟨ toℚᵘ-homo-* q r ⟩
+  toℚᵘ (p * r)       <⟨ toℚᵘ-mono-< p*r<q*r ⟩
+  toℚᵘ (q * r)       ≈⟨ toℚᵘ-homo-* q r ⟩
   toℚᵘ q ℚᵘ.* toℚᵘ r ∎ where open ℚᵘ.≤-Reasoning
 
 *-cancelˡ-<-non-neg : ∀ r {r≥0 : r ≥ 0ℚ} {p q} → p * r < q * r → p < q
