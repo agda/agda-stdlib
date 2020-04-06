@@ -14,6 +14,9 @@ open import Algebra.Reasoning.Magma.Expr M public
 open import Data.Tree.Binary.Indexed
 open import Data.Product
 
+open import Relation.Binary.PropositionalEquality.Core as P
+  using (_≡_)
+
 open Magma M
 
 private
@@ -22,7 +25,7 @@ private
 
 infix  4 _IsRelatedTo_
 infix  3 _∎
-infixr 2 step-≈ step-≈˘ step-no-focus step-no-focus˘
+infixr 2 step-≈ step-≈˘ step-≡ step-≡˘ step-no-focus step-no-focus˘
 infixr 2 _≡⟨⟩_
 infix  1 begin_
 
@@ -72,6 +75,20 @@ step-no-focus˘ : ∀ (g : Carrier) {h : Carrier} {y : Expr s₂} →
                    g IsRelatedTo y
 step-no-focus˘ g (relTo rest) h≈g = relTo (trans (sym h≈g) rest)
 
+-- Steps using propositional equality
+
+step-≡ : ∀ (g : Carrier) {h : Carrier} {y : Expr s₂} →
+           h IsRelatedTo y →
+           g ≡ h →
+           g IsRelatedTo y
+step-≡ g (relTo rest) P.refl = relTo (trans refl rest)
+
+step-≡˘ : ∀ (g : Carrier) {h : Carrier} {y : Expr s₂} →
+            h IsRelatedTo y →
+            h ≡ g →
+            g IsRelatedTo y
+step-≡˘ g (relTo rest) P.refl = relTo (trans refl rest)
+
 -- Step with a trivial equality
 
 _≡⟨⟩_ : ∀ (x : Carrier) {y : Expr s₂} →
@@ -90,3 +107,5 @@ syntax step-≈  x rest fx≈g = x ≈⌊  fx≈g ⌋ rest
 syntax step-≈˘ x rest g≈fx = x ≈˘⌊ g≈fx ⌋ rest
 syntax step-no-focus  g rest g≈h = g ≈⟨  g≈h ⟩ rest
 syntax step-no-focus˘ g rest h≈g = g ≈˘⟨ h≈g ⟩ rest
+syntax step-≡  g rest g≡h = g ≡⟨  g≡h ⟩ rest
+syntax step-≡˘ g rest h≡g = g ≡˘⟨ h≡g ⟩ rest
