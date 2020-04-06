@@ -43,3 +43,12 @@ new-proof x y y' z z' x+y≡y' z'≡z = begin
 -- _◂_ _▸_ and ⌊_⌋ are used to build Expr objects. ⌊_⌋ creates a leaf
 -- which is focused. _◂_ and _▸_ attach a leaf to the left or right
 -- side of an Expr object.
+
+-- Normal reasoning can also be used along side magma reasoning.
+
+proof : ∀ x x' y a b b' → x ≡ x' → b ≡ b' → x' + y ≡ a + b' → x + y ≡ a + b
+proof x x' y a b b' x≡x' b≡b' eq = begin
+  ⌊ x ⌋ ▸ y ≈⌊ x≡x' ⌋
+  x' ∙ y ≈⟨ eq ⟩
+  a ◂ ⌊ b' ⌋ ≈˘⌊ b≡b' ⌋
+  a ∙ b ∎

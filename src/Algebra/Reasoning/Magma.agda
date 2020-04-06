@@ -22,7 +22,7 @@ private
 
 infix  4 _IsRelatedTo_
 infix  3 _∎
-infixr 2 step-≈ step-≈˘
+infixr 2 step-≈ step-≈˘ step-no-focus step-no-focus˘
 infixr 2 _≈⟨⟩_
 infix  1 begin_
 
@@ -58,6 +58,20 @@ step-≈˘ : ∀ (x : Expr s₁) {g : Carrier} {y : Expr s₂} →
             eval x IsRelatedTo y
 step-≈˘ x (relTo rest) g≈fx = relTo (trans (cong-expr x (sym g≈fx)) rest)
 
+-- Steps not using the focus
+
+step-no-focus : ∀ (g : Carrier) {h : Carrier} {y : Expr s₂} →
+                  h IsRelatedTo y →
+                  g ≈ h →
+                  g IsRelatedTo y
+step-no-focus g (relTo rest) g≈h = relTo (trans g≈h rest)
+
+step-no-focus˘ : ∀ (g : Carrier) {h : Carrier} {y : Expr s₂} →
+                   h IsRelatedTo y →
+                   h ≈ g →
+                   g IsRelatedTo y
+step-no-focus˘ g (relTo rest) h≈g = relTo (trans (sym h≈g) rest)
+
 -- Step with a trivial equality
 
 _≈⟨⟩_ : ∀ (x : Carrier) {y : Expr s₂} →
@@ -74,3 +88,5 @@ _ ∎ = relTo refl
 
 syntax step-≈  x rest fx≈g = x ≈⌊  fx≈g ⌋ rest
 syntax step-≈˘ x rest g≈fx = x ≈˘⌊ g≈fx ⌋ rest
+syntax step-no-focus  g rest g≈h = g ≈⟨  g≈h ⟩ rest
+syntax step-no-focus˘ g rest h≈g = g ≈˘⟨ h≈g ⟩ rest
