@@ -23,7 +23,7 @@ private
 infix  4 _IsRelatedTo_
 infix  3 _∎
 infixr 2 step-≈ step-≈˘ step-no-focus step-no-focus˘
-infixr 2 _≈⟨⟩_
+infixr 2 _≡⟨⟩_
 infix  1 begin_
 
 ------------------------------------------------------------------------
@@ -74,10 +74,10 @@ step-no-focus˘ g (relTo rest) h≈g = relTo (trans (sym h≈g) rest)
 
 -- Step with a trivial equality
 
-_≈⟨⟩_ : ∀ (x : Carrier) {y : Expr s₂} →
+_≡⟨⟩_ : ∀ (x : Carrier) {y : Expr s₂} →
           x IsRelatedTo y →
           x IsRelatedTo y
-_ ≈⟨⟩ x≈y = x≈y
+_ ≡⟨⟩ x≈y = x≈y
 
 -- Termination step
 
