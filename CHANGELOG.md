@@ -705,6 +705,15 @@ Other minor additions
   filter⁺              : xs ↭ ys → filter P? xs ↭ filter P? ys
   ```
 
+* Added new properties to ` Data.List.Relation.Binary.Permutation.Propositional.Properties`:
+  ```agda
+  ↭-empty-inv     : xs ↭ [] → xs ≡ []
+  ¬x∷xs↭[]        : ¬ ((x ∷ xs) ↭ [])
+  ↭-singleton-inv : xs ↭ [ x ] → xs ≡ [ x ]
+  ↭-map-inv       : map f xs ↭ ys → ∃ λ ys′ → ys ≡ map f ys′ × xs ↭ ys′
+  ↭-length        : xs ↭ ys → length xs ≡ length ys
+  ```
+
 * Added new proofs to `Data.List.Relation.Binary.Pointwise`:
   ```agda
   Any-resp-Pointwise      : P Respects _∼_  → (Any P) Respects (Pointwise _∼_)
