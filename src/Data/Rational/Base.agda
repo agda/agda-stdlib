@@ -64,6 +64,9 @@ open ℚ public using ()
 mkℚ+ : ∀ n d → .{d≢0 : d ≢0} → .(Coprime n d) → ℚ
 mkℚ+ n (suc d) coprime = mkℚ (+ n) d coprime
 
+mkℚ*+ : ∀ n d → .{d≢0 : d ≢0} → .(Coprime (suc n) d) → ℚ
+mkℚ*+ n (suc d) coprime = mkℚ +[1+ n ] d coprime
+
 ------------------------------------------------------------------------
 -- Equality of rational numbers (coincides with _≡_)
 
