@@ -14,7 +14,6 @@ module Data.Integer.Properties where
 open import Algebra.Bundles
 import Algebra.Morphism as Morphism
 import Algebra.Properties.AbelianGroup
-open import Data.Empty using (⊥-elim)
 open import Data.Integer.Base renaming (suc to sucℤ)
 open import Data.Nat as ℕ
   using (ℕ; suc; zero; _∸_; s≤s; z≤n)
@@ -176,8 +175,8 @@ drop‿+<+ (+<+ m<n) = m<n
 drop‿-<- : ∀ {m n} → -[1+ m ] < -[1+ n ] → n ℕ.< m
 drop‿-<- (-<- n<m) = n<m
 
-+-suc>0 : ∀ {n} → +[1+ n ] > +0
-+-suc>0 = +<+ (s≤s z≤n)
++1+n>0 : ∀ {n} → +[1+ n ] > +0
++1+n>0 = +<+ (s≤s z≤n)
 
 +≥0 : ∀ {n} → + n ≥ +0
 +≥0 = +≤+ ℕ.z≤n
