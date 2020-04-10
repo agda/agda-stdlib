@@ -49,6 +49,10 @@ Other major additions
   Reflection.TypeChecking.Monad.Instances
   ```
 
+* Function application in reflected terms (`Reflection.Apply`)
+
+* Congruence helper macros in `Tactic.Cong`
+
 Other major changes
 -------------------
 
@@ -57,3 +61,4 @@ Other minor additions
 
 * Made first argument of [,]-∘-distr in `Data.Sum.Properties` explicit
 * Added map-id, map₁₂-commute, [,]-cong, [-,]-cong, [,-]-cong, map-cong, map₁-cong and map₂-cong to `Data.Sum.Properties`
+* `Reflection.Pattern`: Calculation of number of bound variables in patterns with `pattern-size` and `pattern-args-size`
