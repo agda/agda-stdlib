@@ -19,6 +19,8 @@ Deprecated modules
 
 * `Data.AVL` and all of its submodules have been moved to `Data.Tree.AVL`
 
+* `Reflection.TypeChecking.MonadSyntax` ↦ `Reflection.TypeChecking.Monad.Syntax`
+
 Deprecated names
 ----------------
 
@@ -40,6 +42,13 @@ Other major additions
 * Symmetric transitive closures of binary relations:
   ```
   Relation.Binary.Construct.Closure.SymmetricTransitive
+  ```
+
+* Type-checking monads
+  ```
+  Reflection.TypeChecking.Monad
+  Reflection.TypeChecking.Monad.Categorical
+  Reflection.TypeChecking.Monad.Instances
   ```
 
 Other major changes
