@@ -55,5 +55,6 @@ Other major changes
 Other minor additions
 ---------------------
 
+* Added trans-cong, cong₂-reflˡ and cong₂-reflʳ to `Relation.Binary.PropositionalEquality`
 * Made first argument of [,]-∘-distr in `Data.Sum.Properties` explicit
 * Added map-id, map₁₂-commute, [,]-cong, [-,]-cong, [,-]-cong, map-cong, map₁-cong and map₂-cong to `Data.Sum.Properties`
