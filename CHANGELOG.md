@@ -57,4 +57,11 @@ Other minor additions
 
 * Added trans-cong, cong₂-reflˡ and cong₂-reflʳ to `Relation.Binary.PropositionalEquality`
 * Made first argument of [,]-∘-distr in `Data.Sum.Properties` explicit
+
 * Added map-id, map₁₂-commute, [,]-cong, [-,]-cong, [,-]-cong, map-cong, map₁-cong and map₂-cong to `Data.Sum.Properties`
+
+* Added new proofs to `Data.Maybe.Relation.Binary.Pointwise`:
+  ```agda
+  nothing-inv : Pointwise R nothing x → x ≡ nothing
+  just-inv    : Pointwise R (just x) y → ∃ λ z → y ≡ just z × R x z
+  ```
