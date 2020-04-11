@@ -6,26 +6,28 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Data.Nat
+open import Data.Nat hiding (_⊔_)
 
 module Reflection.Apply (limit : ℕ) where
 
-open import Level renaming (suc to lsuc; _⊔_ to lmax)
-open import Data.List
-open import Data.Sum.Base
-open import Data.Product
-open import Function.Base
-open import Data.Nat.Base
-open import Relation.Nullary
+open import Category.Monad
 open import Data.Bool.Base
+open import Data.List
+open import Data.Maybe.Base hiding (_>>=_)
+open import Data.Product
+open import Data.Sum.Base
+open import Function.Base
+open import Level hiding (suc)
 open import Reflection hiding (map-Args ; returnTC ; _≟_ ; _>>=_) renaming (return to returnTC)
 open import Reflection.Argument
 open import Reflection.Argument.Visibility using () renaming (_≟_ to _≟ᵥ_)
 open import Reflection.Pattern hiding (_≟_)
 open import Reflection.Term
-open import Data.Maybe.Base hiding (_>>=_)
+open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Relation.Nullary using (does)
+open import Relation.Unary using (Decidable ; _⊢_)
 
-Result : Set 0ℓ → Set 0ℓ
+Result : Set → Set
 Result A = List ErrorPart ⊎ A
 
 pattern ok v = inj₂ v
@@ -33,7 +35,6 @@ pattern err e = inj₁ e
 
 module _ where
   import Data.Sum.Categorical.Left (List ErrorPart) 0ℓ as S
-  open import Category.Monad
   open RawMonad S.monad
 
   failed-app : Term → Arg Term → Result Term
@@ -42,6 +43,16 @@ module _ where
   data Fuel : Set 0ℓ where
     fuel : ℕ → Fuel
 
+  {- These functions take a term that needs to be embedded within another term
+     and corrects all de-Bruijn indices to existing variables to still refer to
+     the same variables after being embedded.
+
+     The first argument is the embedding depth to shift by.
+
+     The second is used during recursion to track the depth within the whole
+     term that is being transformed. Non-recursive calls to shift-index should
+     pass 0 for this argument.
+  -}
   shift-index : ℕ → ℕ → Term → Term
   shift-index-args : ℕ → ℕ → Args Term → Args Term
   shift-index-clauses : ℕ → ℕ → List Clause → List Clause
@@ -170,18 +181,15 @@ module _ where
 apply : Term → Arg Term → Result Term
 apply f x = app ⦃ fuel limit ⦄ x f
 
-open import Relation.Binary.PropositionalEquality
-
-open import Relation.Unary
-
 {- Retrieve any trailing arguments in a term -}
 term-args : Term → Maybe (Args Term)
-term-args (var _ args) = just args
-term-args (con _ args) = just args
-term-args (def _ args) = just args
+term-args (var _ args)     = just args
+term-args (con _ args)     = just args
+term-args (def _ args)     = just args
 term-args (pat-lam _ args) = just args
-term-args (meta _ args) = just args
-term-args other = nothing
+term-args (meta _ args)    = just args
+-- catch all
+term-args other            = nothing
 
 {- Like term-args, but contains only the visible arguments -}
 term-vis-args : Term → Maybe (List Term)
@@ -189,12 +197,12 @@ term-vis-args t = do
   args ← term-args t
   just $ Data.List.map (λ {(arg _ t) → t}) $ filter is-vis args
   where
-    open import Data.Maybe using (_>>=_)
-    args = term-args t
-    is-vis : Decidable ((λ {(arg (arg-info v _) _) → v}) ⊢ (_≡ visible))
-    is-vis (arg (arg-info v r) x) = v ≟ᵥ visible
+  open Data.Maybe.Base using (_>>=_)
+  args = term-args t
+  is-vis : Decidable ((λ {(arg (arg-info v _) _) → v}) ⊢ (_≡ visible))
+  is-vis (arg (arg-info v r) x) = v ≟ᵥ visible
 
 {- Conveniently convert a Result into a TC -}
-Result→TC : {A : Set 0ℓ} → Result A → TC A
+Result→TC : {A : Set} → Result A → TC A
 Result→TC (err e) = typeError e
 Result→TC (ok v)  = returnTC v

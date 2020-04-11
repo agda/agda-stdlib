@@ -61,4 +61,8 @@ Other minor additions
 
 * Made first argument of [,]-∘-distr in `Data.Sum.Properties` explicit
 * Added map-id, map₁₂-commute, [,]-cong, [-,]-cong, [,-]-cong, map-cong, map₁-cong and map₂-cong to `Data.Sum.Properties`
-* `Reflection.Pattern`: Calculation of number of bound variables in patterns with `pattern-size` and `pattern-args-size`
+* New functions in `Reflection.Pattern`:
+  ```agda
+  pattern-size : Pattern → ℕ
+  pattern-args-size : List (Arg Pattern) → ℕ
+  ```

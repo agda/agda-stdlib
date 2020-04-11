@@ -22,20 +22,20 @@ open ≡-Reasoning
 --import this to use ⌊_⌋
 open import Tactic.Cong.Id
 
--- import this to use ⌊⌋ , lhs , rhs and _≡⌊_⌋_
+-- import this to use ⌊⌋ , lhs , rhs and _≈⌊_⌋_
 -- Arguments supplied:
 --  * Recursion upper limit when evaluating reflected terms - typically does not
 --    need to be large, and mostly depends on the cong and trans supplied, not
 --    the equations you want to use this in.
---  * Relation that congruence operates over
+--  * _≈_, relation that congruence operates over
 --  * The congruence definition itself
---  * Transitivity definition for _≡_. Needed for _≡⌊_⌋_
-open import Tactic.Cong 1 _≡_ cong trans
+--  * Transitivity definition for _≈_. Needed for _≈⌊_⌋_
+open import Tactic.Cong 0 _≡_ cong trans renaming (_≈⌊_⌋_ to _≡⌊_⌋_)
 
 -- To use this tactic with _≡_ and cong from Cubical Agda, use
 -- something like the following:
 --
--- open import Tactic.Cong 2 _≡_ (λ f p → cong f p) _∙_
+-- open import Tactic.Cong 2 _≡_ (λ f p → cong f p) _∙_ renaming (_≈⌊_⌋_ to _≡⌊_⌋_)
 
 -- The following proofs show example uses of the macros ⌊⌋ and _≡⌊_⌋_
 -- See Tactic.Cong for more details of how to use these macros
