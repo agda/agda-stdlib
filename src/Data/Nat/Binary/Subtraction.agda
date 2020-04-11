@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Subtraction on Bin and some of its property proofs.
+-- Subtraction on Bin and some of its properties.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -10,7 +10,8 @@ module Data.Nat.Binary.Subtraction where
 
 open import Algebra using (Op₂; Magma)
 open import Algebra.Consequences.Propositional using (comm+distrˡ⇒distrʳ)
-open import Data.Empty using (⊥)
+import Algebra.Morphism.Consequences
+open import Data.Bool using (true; false)
 open import Data.Fin using (#_)
 open import Data.Nat as ℕ using (ℕ)
 open import Data.Nat.Binary.Base
@@ -24,12 +25,15 @@ open import Level using (0ℓ)
 open import Relation.Binary using (Tri; tri<; tri≈; tri>; _Preserves_⟶_;
                                                           _Preserves₂_⟶_⟶_)
 open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary using (Dec; yes; no)
+open import Relation.Nullary using (Dec; yes; no; does)
 open import Relation.Nullary.Negation using (contradiction)
 open import Algebra.Definitions {A = ℕᵇ} _≡_
 open import Algebra.Properties.CommutativeSemigroup +-commutativeSemigroup
   using (xy∙z≈y∙xz; x∙yz≈y∙xz)
 open import Algebra.Solver.CommutativeMonoid +-0-commutativeMonoid
+
+------------------------------------------------------------------------
+-- Definition
 
 infixl 6 _∸_
 
@@ -38,12 +42,13 @@ zero     ∸ _        = 0ᵇ
 x        ∸ zero     = x
 2[1+ x ] ∸ 2[1+ y ] = double (x ∸ y)
 1+[2 x ] ∸ 1+[2 y ] = double (x ∸ y)
-2[1+ x ] ∸ 1+[2 y ] with x <? y
-... | yes _ = 0ᵇ
-... | no _  = 1+[2 (x ∸ y) ]
-1+[2 x ] ∸ 2[1+ y ] with x ≤? y
-... | yes _ = 0ᵇ
-... | no _  = pred (double (x ∸ y))
+
+2[1+ x ] ∸ 1+[2 y ] with does (x <? y)
+... | true  = 0ᵇ
+... | false = 1+[2 (x ∸ y) ]
+1+[2 x ] ∸ 2[1+ y ] with does (x ≤? y)
+... | true  = 0ᵇ
+... | false = pred (double (x ∸ y))
 
 ------------------------------------------------------------------------
 -- Properties of _∸_ and _≤_/_<_
@@ -116,11 +121,7 @@ x<y⇒0<y∸x {x} {y} x<y with <-cmp (y ∸ x) 0ᵇ
 -- Properties of _∸_ and _+_ and _≤_
 
 x≥y⇒[x∸y]+y≡x : ∀ {x y} → x ≥ y → (x ∸ y) + y ≡ x
-x≥y⇒[x∸y]+y≡x {zero} {y} y≤0 = begin-equality
-  (0ᵇ ∸ y) + y     ≡⟨ cong₂ _+_ (cong (0ᵇ ∸_) y≡0) y≡0 ⟩
-  (0ᵇ ∸ 0ᵇ) + 0ᵇ   ≡⟨ +-identityʳ 0ᵇ ⟩
-  0ᵇ               ∎
-  where open ≤-Reasoning;  y≡0 = x≤0⇒x≡0 y≤0
+x≥y⇒[x∸y]+y≡x {zero}          {_}             (inj₂ refl)            = refl
 x≥y⇒[x∸y]+y≡x {2[1+ _ ]}                      (inj₁ 0<even)          = refl
 x≥y⇒[x∸y]+y≡x {x'@(2[1+ x ])} {y'@(2[1+ y ])} (inj₁ (even<even y<x)) =
   begin-equality
@@ -134,11 +135,7 @@ x≥y⇒[x∸y]+y≡x {x'@(2[1+ x ])} {y'@(2[1+ y ])} (inj₁ (even<even y<x)) =
     double (suc x)                   ≡⟨ sym (2[1+_]-double-suc x) ⟩
     2[1+ x ]                         ∎
   where open ≤-Reasoning;  x∸y = x ∸ y;  x'∸y' = x' ∸ y'
-x≥y⇒[x∸y]+y≡x {z@(2[1+ x ])} {2[1+ x ]} (inj₂ refl) = begin-equality
-  (z ∸ z) + z   ≡⟨ cong (_+ z) (x∸x≡0 z) ⟩
-  0ᵇ + z        ≡⟨ +-identityˡ z ⟩
-  z             ∎
-  where open ≤-Reasoning
+x≥y⇒[x∸y]+y≡x {z@(2[1+ x ])}  {2[1+ x ]}      (inj₂ refl)           =  cong (_+ z) (x∸x≡0 z)
 x≥y⇒[x∸y]+y≡x {x'@(2[1+ x ])} {y'@(1+[2 y ])} (inj₁ (odd<even y≤x)) =
   begin-equality
     (x' ∸ y') + y'                       ≡⟨ cong (_+ y') (even∸odd-for≥ y≤x) ⟩
@@ -221,12 +218,12 @@ x+[y∸x]≡y {x} {y} x≤y = begin-equality
 toℕ-homo-∸ : ∀ x y → toℕ (x ∸ y) ≡ (toℕ x) ℕ.∸ (toℕ y)
 toℕ-homo-∸ x y with x ≤? y
 ... | yes x≤y = begin
-  toℕ (x ∸ y)   ≡⟨ cong toℕ (x≤y⇒x∸y≡0 x≤y) ⟩
-  toℕ 0ᵇ        ≡⟨⟩
-  0             ≡⟨ sym (ℕₚ.m≤n⇒m∸n≡0 m≤n) ⟩
-  m ℕ.∸ n       ∎
+  toℕ (x ∸ y)          ≡⟨ cong toℕ (x≤y⇒x∸y≡0 x≤y) ⟩
+  toℕ 0ᵇ               ≡⟨⟩
+  0                    ≡⟨ sym (ℕₚ.m≤n⇒m∸n≡0 (toℕ-mono-≤ x≤y)) ⟩
+  (toℕ x) ℕ.∸ (toℕ y)  ∎
   where
-  open ≡-Reasoning;  m = toℕ x;  n = toℕ y;  m≤n = toℕ-mono-≤ x≤y
+  open ≡-Reasoning
 
 ... | no x≰y = begin
   toℕ (x ∸ y)                    ≡⟨ sym (ℕₚ.m+n∸n≡m (toℕ (x ∸ y)) n) ⟩
@@ -247,36 +244,35 @@ toℕ-homo-∸ x y with x ≤? y
 ∸-magma : Magma 0ℓ 0ℓ
 ∸-magma = magma _∸_
 
-import Algebra.Morphism.TwoMagmas ∸-magma ℕₚ.∸-magma
-  as Magmas∸ℕᵇ-ℕ
+module Magmas∸ℕᵇ-ℕ = Algebra.Morphism.Consequences ∸-magma ℕₚ.∸-magma
 
 fromℕ-homo-∸ : ∀ m n → fromℕ (m ℕ.∸ n) ≡ (fromℕ m) ∸ (fromℕ n)
-fromℕ-homo-∸ = Magmas∸ℕᵇ-ℕ.IsHomo⇒IsHomo-rev {toℕ} {fromℕ} (cong fromℕ)
-                                     (toℕ-fromℕ , fromℕ-toℕ) toℕ-homo-∸
+fromℕ-homo-∸ = Magmas∸ℕᵇ-ℕ.IsHomo⇒IsHomo-rev {toℕ} (cong fromℕ)
+                                    (toℕ-fromℕ , fromℕ-toℕ) toℕ-homo-∸
 
 ∸-+-assoc : ∀ x y z → (x ∸ y) ∸ z ≡ x ∸ (y + z)
 ∸-+-assoc x y z = toℕ-injective $ begin
   toℕ ((x ∸ y) ∸ z)       ≡⟨ toℕ-homo-∸ (x ∸ y) z ⟩
-  toℕ (x ∸ y) ℕ.∸ n      ≡⟨ cong (ℕ._∸ n) (toℕ-homo-∸ x y) ⟩
-  (k ℕ.∸ m) ℕ.∸ n        ≡⟨ ℕₚ.∸-+-assoc k m n ⟩
-  k ℕ.∸ (m ℕ.+ n)        ≡⟨ cong (k ℕ.∸_) (sym (toℕ-homo-+ y z)) ⟩
-  k ℕ.∸ (toℕ (y + z))    ≡⟨ sym (toℕ-homo-∸ x (y + z)) ⟩
+  toℕ (x ∸ y) ℕ.∸ n       ≡⟨ cong (ℕ._∸ n) (toℕ-homo-∸ x y) ⟩
+  (k ℕ.∸ m) ℕ.∸ n         ≡⟨ ℕₚ.∸-+-assoc k m n ⟩
+  k ℕ.∸ (m ℕ.+ n)         ≡⟨ cong (k ℕ.∸_) (sym (toℕ-homo-+ y z)) ⟩
+  k ℕ.∸ (toℕ (y + z))     ≡⟨ sym (toℕ-homo-∸ x (y + z)) ⟩
   toℕ (x ∸ (y + z))       ∎
   where open ≡-Reasoning;  k = toℕ x;  m = toℕ y;  n = toℕ z
 
 +-∸-assoc : ∀ x {y z} → z ≤ y → (x + y) ∸ z ≡ x + (y ∸ z)
 +-∸-assoc x {y} {z} z≤y = toℕ-injective $ begin
-  toℕ ((x + y) ∸ z)      ≡⟨ toℕ-homo-∸ (x + y) z ⟩
+  toℕ ((x + y) ∸ z)     ≡⟨ toℕ-homo-∸ (x + y) z ⟩
   (toℕ (x + y)) ℕ.∸ n   ≡⟨ cong (ℕ._∸ n) (toℕ-homo-+ x y) ⟩
   (k ℕ.+ m) ℕ.∸ n       ≡⟨ ℕₚ.+-∸-assoc k n≤m ⟩
   k ℕ.+ (m ℕ.∸ n)       ≡⟨ cong (k ℕ.+_) (sym (toℕ-homo-∸ y z)) ⟩
   k ℕ.+ toℕ (y ∸ z)     ≡⟨ sym (toℕ-homo-+ x (y ∸ z)) ⟩
-  toℕ (x + (y ∸ z))      ∎
+  toℕ (x + (y ∸ z))     ∎
   where
   open ≡-Reasoning;  k = toℕ x;  m = toℕ y;  n = toℕ z;  n≤m = toℕ-mono-≤ z≤y
 
-x+y∸x+z : ∀ x y z → (x + y) ∸ (x + z) ≡ y ∸ z
-x+y∸x+z x y z = begin-equality
+x+y∸x+z≡y∸z : ∀ x y z → (x + y) ∸ (x + z) ≡ y ∸ z
+x+y∸x+z≡y∸z x y z = begin-equality
   (x + y) ∸ (x + z)    ≡⟨ sym (∸-+-assoc (x + y) x z) ⟩
   ((x + y) ∸ x) ∸ z    ≡⟨ cong (_∸ z) ([x+y]∸x≡y x y) ⟩
   y ∸ z                ∎
@@ -285,7 +281,7 @@ x+y∸x+z x y z = begin-equality
 suc[x]∸suc[y] : ∀ x y → suc x ∸ suc y ≡ x ∸ y
 suc[x]∸suc[y] x y = begin-equality
   suc x ∸ suc y         ≡⟨ cong₂ _∸_ (suc≗1+ x) (suc≗1+ y) ⟩
-  (1ᵇ + x) ∸ (1ᵇ + y)   ≡⟨ x+y∸x+z 1ᵇ x y ⟩
+  (1ᵇ + x) ∸ (1ᵇ + y)   ≡⟨ x+y∸x+z≡y∸z 1ᵇ x y ⟩
   x ∸ y                 ∎
   where open ≤-Reasoning
 

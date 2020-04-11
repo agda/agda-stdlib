@@ -34,6 +34,7 @@ open import Relation.Nullary.Negation using (contradiction)
 
 open import Algebra.Definitions {A = ℕᵇ} _≡_
 open import Algebra.Structures {A = ℕᵇ} _≡_
+import Algebra.Properties.CommutativeSemigroup as CommSemigProp
 import Algebra.Properties.CommutativeSemigroup ℕₚ.+-commutativeSemigroup
   as ℕ-+-semigroupProperties
 import Relation.Binary.Construct.StrictToNonStrict _≡_ _<_
@@ -739,8 +740,7 @@ private
   { isCommutativeMonoid = +-0-isCommutativeMonoid
   }
 
-import Algebra.Properties.CommutativeSemigroup +-commutativeSemigroup
-  as Bin+CSemigroup
+module Bin+CSemigroup = CommSemigProp +-commutativeSemigroup
 
 ------------------------------------------------------------------------------
 -- Properties of _+_ and _≤_
@@ -1075,7 +1075,7 @@ private
   }
 
 *-1-monoid : Monoid 0ℓ 0ℓ
-*-1-monoid   = record
+*-1-monoid = record
   { isMonoid = *-1-isMonoid
   }
 
@@ -1085,7 +1085,7 @@ private
   }
 
 *-+-semiring : Semiring 0ℓ 0ℓ
-*-+-semiring   = record
+*-+-semiring = record
   { isSemiring = *-+-isSemiring
   }
 

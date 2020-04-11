@@ -6,7 +6,7 @@ The library has been tested using Agda version 2.6.1.
 Highlights
 ----------
 
-The library of Data.Nat.Binary  is continued.
+* The library of Data.Nat.Binary  is continued.
 	
 
 	
@@ -26,7 +26,9 @@ Deprecated names
 New modules
 -----------
 
-Algebra.Morphisms.TwoMagmas, Data.Nat.Binary.Subtraction
+* Algebra.Morphism.Consequences
+
+* Data.Nat.Binary.Subtraction
 
 	
 Other major changes
@@ -37,21 +39,19 @@ Other major changes
 Other minor additions
 ---------------------
 
-The following functions are added to Data.Nat.Properties:
+* Added new function to `Data.Nat.Properties`:
+ ```agda
+ ∸-magma : Magma _ _
+ ```
 
-∸-magma : Magma _ _  
-
-	
-The following functions are added to Data.Nat.Binary.Properties.
-	
-
-+-isSemigroup, +-semigroup,
-
-x≡0⇒double[x]≡0 : x ≡ 0ᵇ → double x ≡ 0ᵇ                                
-double-suc : double (suc x) ≡ 2ᵇ + double x                              
-pred[x]+y≡x+pred[y] : x ≢ 0ᵇ → y ≢ 0ᵇ → (pred x) + y ≡  x + pred y    
-x+suc[y]≡suc[x]+y : x + suc y ≡ suc x + y                               
-
-	
-       
-	
+* Added new functions (proofs) to `Data.Nat.Binary.Properties`:
+ ```agda
+ +-isSemigroup            : IsSemigroup _+_
+ +-semigroup              : Semigroup 0ℓ 0ℓ
+ +-isCommutativeSemigroup : IsCommutativeSemigroup _+_
+ +-commutativeSemigroup   : CommutativeSemigroup 0ℓ 0ℓ
+ x≡0⇒double[x]≡0          : x ≡ 0ᵇ → double x ≡ 0ᵇ
+ double-suc               : double (suc x) ≡ 2ᵇ + double x
+ pred[x]+y≡x+pred[y]      : x ≢ 0ᵇ → y ≢ 0ᵇ → (pred x) + y ≡  x + pred y
+ x+suc[y]≡suc[x]+y        : x + suc y ≡ suc x + y
+ ```
