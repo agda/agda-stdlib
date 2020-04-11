@@ -25,7 +25,7 @@ open import Data.Product        using (_,_)
 open import Function
 open import Reflection.Argument
 open import Reflection.Term
-open import Reflection.TypeChecking.MonadSyntax
+open import Reflection.TypeChecking.Monad.Syntax
 
 open import Tactic.RingSolver.NonReflective renaming (solve to solve-fn)
 open import Tactic.RingSolver.Core.AlmostCommutativeRing

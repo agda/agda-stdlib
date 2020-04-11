@@ -84,7 +84,7 @@ open import Data.Product as Product using (_×_; _,_)
 open import Agda.Builtin.Reflection
 open import Reflection.Argument
 open import Reflection.Term using (getName; _⋯⟅∷⟆_)
-open import Reflection.TypeChecking.MonadSyntax
+open import Reflection.TypeChecking.Monad.Syntax
 
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning
 
