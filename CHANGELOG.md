@@ -55,10 +55,26 @@ Other major changes
 Other minor additions
 ---------------------
 
-* Added trans-cong, cong₂-reflˡ and cong₂-reflʳ to `Relation.Binary.PropositionalEquality`
-* Made first argument of [,]-∘-distr in `Data.Sum.Properties` explicit
+* Added proofs to `Relation.Binary.PropositionalEquality`:
+  ```agda
+  trans-cong  : trans (cong f p) (cong f q) ≡ cong f (trans p q)
+  cong₂-reflˡ : cong₂ _∙_ refl p ≡ cong (x ∙_) p
+  cong₂-reflʳ : cong₂ _∙_ p refl ≡ cong (_∙ u) p
+  ```
 
-* Added map-id, map₁₂-commute, [,]-cong, [-,]-cong, [,-]-cong, map-cong, map₁-cong and map₂-cong to `Data.Sum.Properties`
+* Made first argument of `[,]-∘-distr` in `Data.Sum.Properties` explicit
+
+* Added new proofs to ``Data.Sum.Properties`:
+  ```agda
+  map-id        : map id id ≗ id
+  map₁₂-commute : map₁ f ∘ map₂ g ≗ map₂ g ∘ map₁ f
+  [,]-cong      : f ≗ f′ → g ≗ g′ → [ f , g ] ≗ [ f′ , g′ ]
+  [-,]-cong     : f ≗ f′ → [ f , g ] ≗ [ f′ , g ]
+  [,-]-cong     : g ≗ g′ → [ f , g ] ≗ [ f , g′ ]
+  map-cong      : f ≗ f′ → g ≗ g′ → map f g ≗ map f′ g′
+  map₁-cong     : f ≗ f′ → map₁ f ≗ map₁ f′
+  map₂-cong     : g ≗ g′ → map₂ g ≗ map₂ g′
+  ```
 
 * Added new proofs to `Data.Maybe.Relation.Binary.Pointwise`:
   ```agda
