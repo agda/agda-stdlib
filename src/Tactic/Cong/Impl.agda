@@ -1,3 +1,9 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Implementation details of Tactic.Cong - do not use directly
+------------------------------------------------------------------------
+
 {-# OPTIONS --without-K --safe #-}
 
 module Tactic.Cong.Impl where
