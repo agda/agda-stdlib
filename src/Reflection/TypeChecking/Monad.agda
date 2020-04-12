@@ -24,7 +24,7 @@ open Builtin public
   using
   ( TC; bindTC; unify; typeError; inferType; checkType
   ; normalise; reduce
-  ; catchTC; quoteTC; unquoteTC
+  ; catchTC; quoteTC; unquoteTC ; quoteωTC
   ; getContext; extendContext; inContext; freshName
   ; declareDef; declarePostulate; defineFun; getType; getDefinition
   ; blockOnMeta; commitTC; isMacro; withNormalisation

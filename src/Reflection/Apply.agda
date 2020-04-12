@@ -133,7 +133,7 @@ module _ where
                               args ← subst-args ⦃ fuel (suc n) ⦄ i x args
                               app-many ⦃ fuel n ⦄ args (shift-index i 0 x)
   subst ⦃ fuel zero ⦄
-        i x (var j [])      | equal _ = return x
+        i x (var j [])      | equal _ = return (shift-index i 0 x)
   subst ⦃ fuel zero ⦄
         _ _ (var j (_ ∷ _)) | equal _ = err (strErr "evaluation limit reached" ∷ [])
   subst i x (con c args) = do

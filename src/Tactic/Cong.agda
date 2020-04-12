@@ -11,112 +11,42 @@ open import Data.Nat renaming (_≟_ to _≟ℕ_) hiding (_⊔_)
 open import Level renaming (suc to lsuc)
 open import Level.Literals
 open import Relation.Binary.Definitions
-open import Tactic.Cong.Id
+open import Tactic.Cong.Common
 open import Data.Product
 
 module Tactic.Cong
   (recursion-limit : ℕ)
   (_≈_ : ∀ {a} {A : Set a} → A → A → Set a)
-  (cong : ∀ {a b}
+  (cong : {a b : Level}
           {A : Set a}
           {B : Set b}
           (f : A → B)
           {x y : A}
           (p : x ≈ y)
-          → f x ≈ f y)
-  (trans : ∀{a} {A : Set a} → Transitive {A = A} _≈_)
+          → (f x) ≈ (f y))
+  (Param : Setω)
+  (Fℓ : Param → Level)
+  (F : (A : Param) → Set (Fℓ A))
+  (_<_ : ∀ {A : Param} → F A → F A → Set (Fℓ A))
+  (≈-<-trans : ∀ {A : Param} → Trans {A = F A} {B = F A} {C = F A} _≈_ _<_ _<_)
   where
 
-open import Data.Bool
+open import Data.Bool hiding (_<_)
 open import Data.List
 open import Data.Maybe hiding (_>>=_)
 open import Data.Product
 open import Data.Unit
 open import Function.Base
-import Reflection
+open import Reflection hiding (map-Args ; _≟_)
 open import Reflection.Abstraction
 open import Reflection.Apply recursion-limit
 open import Reflection.Argument renaming (map to arg-map)
 open import Reflection.Name using () renaming (_≟_ to _≟ⁿ_)
 open import Reflection.Pattern hiding (_≟_)
 open import Reflection.Term hiding (_≟_)
+open import Reflection.Show
 open import Relation.Nullary
-
-private
-  {- This function turns a term containing ⌊_⌋ into a lambda term with all
-     instances of ⌊_⌋ replaced with the argument variable of the lambda.
-
-     Returns the transformed term plus a Bool indicating whether any ⌊_⌋ were
-     found. Not finding any ⌊_⌋ generally indicates that the macro has been used
-     incorrectly.
-  -}
-  extract-f : Term → Term × Bool
-  extract-f term = let (term , state) = ex 0 term false in (vLam "hole" term , state )
-    where
-    -- State Monad is used to track whether any ⌊_⌋ have been found
-    open Category.Monad.State
-    open RawMonadState (StateMonadState Bool)
-
-    ex : ℕ → Term → State Bool Term
-    ex-args : ℕ → List (Arg Term) → State Bool (List (Arg Term))
-    ex-clauses : ℕ → List Clause → State Bool (List Clause)
-
-    ex hole-i (var var-i args) with does (var-i ≥? hole-i)
-    ...                           | true  = do
-                                    args ← ex-args hole-i args
-                                    return $ var (suc var-i) args
-    ...                           | false = do
-                                    args ← ex-args hole-i args
-                                    return $ var var-i args
-    ex hole-i (def f _   )                  with does (f ≟ⁿ quote ⌊_⌋)
-    ex hole-i (def _ (_ ⟅∷⟆ _ ⟅∷⟆ _ ⟨∷⟩ args)) | true  = do
-                                                 put true -- ⌊_⌋ has been found
-                                                 args ← ex-args hole-i args
-                                                 return $ var hole-i args
-    ex hole-i (def f args)                     | _  = do
-                                                 args ← ex-args hole-i args
-                                                 return $ def f args
-    ex hole-i (con c args) = do
-      args ← ex-args hole-i args
-      return $ con c args
-    ex hole-i (lam v (abs s t)) = do
-      t ← ex (suc hole-i) t
-      return $ lam v $ abs s t
-    ex hole-i (pat-lam cs args) = do
-      cs ← ex-clauses hole-i cs
-      args ← ex-args hole-i args
-      return $ pat-lam cs args
-    ex hole-i (meta x args) = do
-      args ← ex-args hole-i args
-      return $ meta x args
-    ex hole-i (Π[ s ∶ arg v A ] t) = do
-      A ← ex hole-i A
-      t ← ex (suc hole-i) t
-      return $ Π[ s ∶ arg v A ] t
-    ex hole-i (sort s) = return $ sort s
-    ex hole-i (lit l)  = return $ lit l
-    ex hole-i unknown  = return unknown
-
-    ex-args hole-i [] = return []
-    ex-args hole-i (arg v t ∷ as) = do
-      t ← ex hole-i t
-      as ← ex-args hole-i as
-      return $ arg v t ∷ as
-
-    ex-clauses hole-i [] = return []
-    ex-clauses hole-i (clause ps t ∷ cs) = do
-      t ← ex (hole-i + pattern-args-size ps) t
-      cs ← ex-clauses hole-i cs
-      return $ clause ps t ∷ cs
-    ex-clauses hole-i (absurd-clause ps ∷ cs) = do
-      cs ← ex-clauses hole-i cs
-      return $ absurd-clause ps ∷ cs
-
-open Reflection hiding (map-Args ; _≟_)
-
-data RelSide : Set 0ℓ where
-  lhs : RelSide
-  rhs : RelSide
+open import Tactic.Cong.Impl
 
 private
   Sort→Level : Sort → TC Level
@@ -140,36 +70,39 @@ private
   ⌊⌋' : ∀ {a} {A : Set a} {x y : A} → RelSide → x ≈ y → Term → TC ⊤
   ⌊⌋' {a = a} {A = A} {x = x} {y = y} rel-side x≈y hole = do
     hole-T ← inferType hole
-    agda-sort hole-sort ← withNormalisation true $ inferType hole-T
-      where other → typeError $ strErr "Tactic.Cong: expected a sort, got" ∷ termErr other ∷ []
-    b ← Sort→Level hole-sort
-    -- TODO: Take tail arguments of hole-T, not head
+    -- TODO: Use the tail of the list
     just (fx ∷ fy ∷ _) ← return $ term-vis-args hole-T
       where _ → typeError $ strErr "Tactic.Cong: unexpected form for relation in" ∷ termErr hole-T ∷ []
-    cong ← quoteTC {A = congT a b} cong
-    Set-b ← quoteTC (Set b)
-    A→ ← quoteTC (λ (B : Set b) → (A → B))
-    A ← quoteTC A
-    B ← checkType unknown Set-b
-    A→B ← ⦇ A→ (vArg B) ⦈
     let chosen-side = case rel-side of λ { lhs → fx ; rhs → fy }
     f , true ← return $ extract-f $ chosen-side
       where _ , false → typeError $ strErr "Tactic.Cong: could not find ⌊_⌋ in" ∷ termErr chosen-side ∷ []
-    f ← checkType f A→B
+    a ← quoteTC a
+    A ← quoteTC A
     x ← quoteTC x
     y ← quoteTC y
     x≈y ← quoteTC x≈y
-    out ← ⦇ cong (hArg A) (hArg B) (vArg f) (hArg x) (hArg y) (vArg x≈y) ⦈
+    b ← checkType unknown unknown
+    B ← checkType unknown unknown
+    ⟶ ← quoteωTC {A = {a b : Level} (A : Set a) (B : Set b) → Set (a ⊔ b)} (λ A B → (A → B))
+    A→B ← ⦇ ⟶ (hArg a) (hArg b) (vArg A) (vArg B) ⦈
+    f ← checkType f A→B
+    cong ← quoteωTC {A = congT} cong
+    out ← ⦇ cong (hArg a) (hArg b) (hArg A) (hArg B) (vArg f) (hArg x) (hArg y) (vArg x≈y) ⦈
+    _≈_ ← quoteωTC {A = ∀ {a} {A : Set a} → A → A → Set a} _≈_
+    _≈B_ ← ⦇ _≈_ (hArg b) (hArg B) ⦈
+    fx≈fy-T ← ⦇ (vArg fx) ≈B (vArg fy) ⦈
+    out ← checkType out fx≈fy-T
     unify hole out
     where
-    congT : ∀ a b → Set (lsuc (a ⊔ b))
-    congT a b =
+    congT : Setω
+    congT =
+      {a b : Level}
       {A : Set a}
       {B : Set b}
       (f : A → B)
       {x y : A}
       (p : x ≈ y)
-      → f x ≈ f y
+      → (f x) ≈ (f y)
 
 infixr 2 _≈⌊_⌋_
 
@@ -178,17 +111,29 @@ macro
      the relation inspected is determined by the RelSide parameter
   -}
   ⌊⌋ : ∀ {a} {A : Set a} {x y : A} → RelSide → x ≈ y → Term → TC ⊤
-  ⌊⌋ side = ⌊⌋' side
+  ⌊⌋ = ⌊⌋'
 
   {- Convenience macro equivalent to using ⌊⌋ within _≈⟨_⟩_ -}
-  _≈⌊_⌋_ : ∀ {a} {A : Set a} → Term → {x y : A} → x ≈ y → Term → Term → TC ⊤
-  _≈⌊_⌋_ start x≈y end hole = do
-    start-T ← inferType start
-    agda-sort start-sort ← withNormalisation true $ inferType start-T
-      where other → typeError (strErr "Tactic.Cong: expected a sort, got " ∷ termErr other ∷ [])
-    b ← Sort→Level start-sort
-    trans ← quoteTC {A = {B : Set b} → Transitive {A = B} _≈_} trans
-    subhole ← checkType unknown unknown
-    out ← ⦇ trans (hArg unknown) (hArg start) (hArg unknown) (hArg unknown) (vArg subhole) (vArg end) ⦈
+  _≈⌊_⌋_ : ∀ {a} {A : Set a} {B : Param} {x y : A} {fy end : F B}
+    → F B → x ≈ y → fy < end → Term → TC ⊤
+  _≈⌊_⌋_ {a = a} {A = A} {B = B} {fy = fy} {end = end} fx x≈y fy<end hole = do
+    a ← quoteTC a
+    A ← quoteTC A
+    B ← quoteωTC B
+    fx ← quoteTC fx
+    fy ← quoteTC fy
+    end ← quoteTC end
+    fy<end ← quoteTC fy<end
+    trans ← quoteωTC {A = TransT} ≈-<-trans
+    F ← quoteωTC {A = (A : Param) → Set (Fℓ A)} F
+    _≈_ ← quoteωTC {A = ∀ {a} {A : Set a} → A → A → Set a} _≈_
+    FB ← ⦇ F (vArg B) ⦈
+    _≈B_ ← ⦇ _≈_ (hArg unknown) (hArg FB) ⦈
+    fx≈fy-T ← ⦇ (vArg fx) ≈B (vArg fy) ⦈
+    fx≈fy ← checkType unknown fx≈fy-T
+    out ← ⦇ trans (hArg B) (hArg fx) (hArg fy) (hArg end) (vArg fx≈fy) (vArg fy<end) ⦈
     unify hole out
-    ⌊⌋' lhs x≈y subhole
+    ⌊⌋' lhs x≈y fx≈fy
+    where
+    TransT : Setω
+    TransT = {B : Param} → Trans {A = F B} {B = F B} {C = F B} _≈_ _<_ _<_
