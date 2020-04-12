@@ -64,6 +64,15 @@ Other minor additions
 
 * Made first argument of `[,]-∘-distr` in `Data.Sum.Properties` explicit
 
+* Added new properties to ` Data.List.Relation.Binary.Permutation.Propositional.Properties`:
+  ```agda
+  ↭-empty-inv     : xs ↭ [] → xs ≡ []
+  ¬x∷xs↭[]        : ¬ ((x ∷ xs) ↭ [])
+  ↭-singleton-inv : xs ↭ [ x ] → xs ≡ [ x ]
+  ↭-map-inv       : map f xs ↭ ys → ∃ λ ys′ → ys ≡ map f ys′ × xs ↭ ys′
+  ↭-length        : xs ↭ ys → length xs ≡ length ys
+  ```
+
 * Added new proofs to ``Data.Sum.Properties`:
   ```agda
   map-id        : map id id ≗ id
