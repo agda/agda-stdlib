@@ -58,7 +58,40 @@ Other major changes
 Other minor additions
 ---------------------
 
-* `Data.Nat.Bin.Induction` now re-exports `Acc` and `acc`.
+* The module `Data.Nat.Bin.Induction` now re-exports `Acc` and `acc`.
 
-* Made first argument of [,]-∘-distr in `Data.Sum.Properties` explicit
-* Added map-id, map₁₂-commute, [,]-cong, [-,]-cong, [,-]-cong, map-cong, map₁-cong and map₂-cong to `Data.Sum.Properties`
+* Added proofs to `Relation.Binary.PropositionalEquality`:
+  ```agda
+  trans-cong  : trans (cong f p) (cong f q) ≡ cong f (trans p q)
+  cong₂-reflˡ : cong₂ _∙_ refl p ≡ cong (x ∙_) p
+  cong₂-reflʳ : cong₂ _∙_ p refl ≡ cong (_∙ u) p
+  ```
+
+* Made first argument of `[,]-∘-distr` in `Data.Sum.Properties` explicit
+
+* Added new properties to ` Data.List.Relation.Binary.Permutation.Propositional.Properties`:
+  ```agda
+  ↭-empty-inv     : xs ↭ [] → xs ≡ []
+  ¬x∷xs↭[]        : ¬ ((x ∷ xs) ↭ [])
+  ↭-singleton-inv : xs ↭ [ x ] → xs ≡ [ x ]
+  ↭-map-inv       : map f xs ↭ ys → ∃ λ ys′ → ys ≡ map f ys′ × xs ↭ ys′
+  ↭-length        : xs ↭ ys → length xs ≡ length ys
+  ```
+
+* Added new proofs to ``Data.Sum.Properties`:
+  ```agda
+  map-id        : map id id ≗ id
+  map₁₂-commute : map₁ f ∘ map₂ g ≗ map₂ g ∘ map₁ f
+  [,]-cong      : f ≗ f′ → g ≗ g′ → [ f , g ] ≗ [ f′ , g′ ]
+  [-,]-cong     : f ≗ f′ → [ f , g ] ≗ [ f′ , g ]
+  [,-]-cong     : g ≗ g′ → [ f , g ] ≗ [ f , g′ ]
+  map-cong      : f ≗ f′ → g ≗ g′ → map f g ≗ map f′ g′
+  map₁-cong     : f ≗ f′ → map₁ f ≗ map₁ f′
+  map₂-cong     : g ≗ g′ → map₂ g ≗ map₂ g′
+  ```
+
+* Added new proofs to `Data.Maybe.Relation.Binary.Pointwise`:
+  ```agda
+  nothing-inv : Pointwise R nothing x → x ≡ nothing
+  just-inv    : Pointwise R (just x) y → ∃ λ z → y ≡ just z × R x z
+  ```
