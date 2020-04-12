@@ -8,11 +8,11 @@
 
 import Category.Monad.State
 open import Data.Nat renaming (_≟_ to _≟ℕ_) hiding (_⊔_)
+open import Data.Product
 open import Level renaming (suc to lsuc)
 open import Level.Literals
 open import Relation.Binary.Definitions
 open import Tactic.Cong.Common
-open import Data.Product
 
 module Tactic.Cong
   (recursion-limit : ℕ)

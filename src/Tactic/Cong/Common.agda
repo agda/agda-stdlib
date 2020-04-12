@@ -8,11 +8,11 @@
 
 module Tactic.Cong.Common where
 
+open import Data.Unit
+open import Function.Base
 open import Level
 open import Reflection
-open import Data.Unit
 open import Reflection.Apply 64
-open import Function.Base
 
 ⌞_⌟ : ∀ {ℓ} {A : Set ℓ} → A → A
 ⌞ a ⌟ = a
