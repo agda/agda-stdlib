@@ -9,7 +9,7 @@
 open import Data.Product as Prod
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality using (_≡_; cong; subst)
-import Data.AVL.Value
+import Data.Tree.AVL.Value
 
 module Data.AVL.IndexedMap
   {i k v ℓ}
