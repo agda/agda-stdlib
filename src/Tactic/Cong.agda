@@ -67,12 +67,11 @@ private
         (ok t) → return t
       }
 
-  ⌊⌋' : ∀ {a} {A : Set a} {x y : A} → RelSide → x ≈ y → Term → TC ⊤
-  ⌊⌋' {a = a} {A = A} {x = x} {y = y} rel-side x≈y hole = do
-    hole-T ← inferType hole
-    -- TODO: Use the tail of the list
-    just (fx ∷ fy ∷ _) ← return $ term-vis-args hole-T
-      where _ → typeError $ strErr "Tactic.Cong: unexpected form for relation in" ∷ termErr hole-T ∷ []
+  {- Code common to both ⌊⌋ and _≈⌊_⌋_.
+     Its main job is to call extract-f and cong and constrain the types of their results.
+  -}
+  common : ∀ {a} {A : Set a} {x y : A} → RelSide → x ≈ y → Term → Term → Term → TC ⊤
+  common {a = a} {A = A} {x = x} {y = y} rel-side x≈y hole fx fy = do
     let chosen-side = case rel-side of λ { lhs → fx ; rhs → fy }
     f , true ← return $ extract-f $ chosen-side
       where _ , false → typeError $ strErr "Tactic.Cong: could not find ⌊_⌋ in" ∷ termErr chosen-side ∷ []
@@ -83,8 +82,8 @@ private
     x≈y ← quoteTC x≈y
     b ← checkType unknown unknown
     B ← checkType unknown unknown
-    ⟶ ← quoteωTC {A = {a b : Level} (A : Set a) (B : Set b) → Set (a ⊔ b)} (λ A B → (A → B))
-    A→B ← ⦇ ⟶ (hArg a) (hArg b) (vArg A) (vArg B) ⦈
+    *→* ← quoteωTC {A = {a b : Level} (A : Set a) (B : Set b) → Set (a ⊔ b)} (λ A B → (A → B))
+    A→B ← ⦇ *→* (hArg a) (hArg b) (vArg A) (vArg B) ⦈
     f ← checkType f A→B
     cong ← quoteωTC {A = congT} cong
     out ← ⦇ cong (hArg a) (hArg b) (hArg A) (hArg B) (vArg f) (hArg x) (hArg y) (vArg x≈y) ⦈
@@ -111,29 +110,31 @@ macro
      the relation inspected is determined by the RelSide parameter
   -}
   ⌊⌋ : ∀ {a} {A : Set a} {x y : A} → RelSide → x ≈ y → Term → TC ⊤
-  ⌊⌋ = ⌊⌋'
+  ⌊⌋ side x≈y hole = do
+    hole-T ← inferType hole
+    just (fy ∷ fx ∷ _) ← return $ Data.Maybe.map reverse $ term-vis-args hole-T
+      where _ → typeError $ strErr "Tactic.Cong: unexpected form for relation in" ∷ termErr hole-T ∷ []
+    common side x≈y hole fx fy
 
-  {- Convenience macro equivalent to using ⌊⌋ within _≈⟨_⟩_ -}
+  {- Equivalent to using ⌊⌋ within _≈⟨_⟩_ -}
   _≈⌊_⌋_ : ∀ {a} {A : Set a} {B : Param} {x y : A} {fy end : F B}
     → F B → x ≈ y → fy < end → Term → TC ⊤
-  _≈⌊_⌋_ {a = a} {A = A} {B = B} {fy = fy} {end = end} fx x≈y fy<end hole = do
-    a ← quoteTC a
-    A ← quoteTC A
+  _≈⌊_⌋_ {B = B} {fy = fy} {end = end} fx x≈y fy<end hole = do
     B ← quoteωTC B
     fx ← quoteTC fx
     fy ← quoteTC fy
     end ← quoteTC end
     fy<end ← quoteTC fy<end
-    trans ← quoteωTC {A = TransT} ≈-<-trans
     F ← quoteωTC {A = (A : Param) → Set (Fℓ A)} F
     _≈_ ← quoteωTC {A = ∀ {a} {A : Set a} → A → A → Set a} _≈_
     FB ← ⦇ F (vArg B) ⦈
     _≈B_ ← ⦇ _≈_ (hArg unknown) (hArg FB) ⦈
     fx≈fy-T ← ⦇ (vArg fx) ≈B (vArg fy) ⦈
     fx≈fy ← checkType unknown fx≈fy-T
+    trans ← quoteωTC {A = TransT} ≈-<-trans
     out ← ⦇ trans (hArg B) (hArg fx) (hArg fy) (hArg end) (vArg fx≈fy) (vArg fy<end) ⦈
     unify hole out
-    ⌊⌋' lhs x≈y fx≈fy
+    common lhs x≈y fx≈fy fx fy
     where
     TransT : Setω
     TransT = {B : Param} → Trans {A = F B} {B = F B} {C = F B} _≈_ _<_ _<_
