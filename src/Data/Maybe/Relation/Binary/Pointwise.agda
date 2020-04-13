@@ -9,6 +9,7 @@
 module Data.Maybe.Relation.Binary.Pointwise where
 
 open import Level
+open import Data.Product
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Function.Equivalence using (_⇔_; equivalence)
 open import Relation.Binary
@@ -35,6 +36,12 @@ module _ {a b ℓ} {A : Set a} {B : Set b} {R : REL A B ℓ} where
 
   just-equivalence : ∀ {x y} → R x y ⇔ Pointwise R (just x) (just y)
   just-equivalence = equivalence just drop-just
+
+  nothing-inv : ∀ {x} → Pointwise R nothing x → x ≡ nothing
+  nothing-inv nothing = P.refl
+
+  just-inv : ∀ {x y} → Pointwise R (just x) y → ∃ λ z → y ≡ just z × R x z
+  just-inv (just r) = -, P.refl , r
 
 ------------------------------------------------------------------------
 -- Relational properties
