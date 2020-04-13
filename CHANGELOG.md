@@ -17,6 +17,9 @@ Non-backwards compatible changes
 Deprecated modules
 ------------------
 
+* The module `Induction.WellFounded.InverseImage` has been deprecated. The proofs
+  `accessible` and `wellFounded` have been moved to `Relation.Binary.Construct.On`.
+
 * `Reflection.TypeChecking.MonadSyntax` ↦ `Reflection.TypeChecking.Monad.Syntax`
 
 Deprecated names
@@ -54,6 +57,8 @@ Other major changes
 
 Other minor additions
 ---------------------
+
+* The module `Data.Nat.Bin.Induction` now re-exports `Acc` and `acc`.
 
 * Added proofs to `Relation.Binary.PropositionalEquality`:
   ```agda
