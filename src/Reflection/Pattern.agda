@@ -104,7 +104,7 @@ pattern-size : Pattern → ℕ
 pattern-args-size : List (Arg Pattern) → ℕ
 
 pattern-size (Pattern.con _ ps) = pattern-args-size ps
-pattern-size Pattern.dot        = 1
+pattern-size Pattern.dot        = 0
 pattern-size (Pattern.var _)    = 1
 pattern-size (Pattern.lit _)    = 0
 pattern-size (Pattern.proj _)   = 0
