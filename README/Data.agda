@@ -177,7 +177,7 @@ import README.Data.Integer
 
 -- Some examples showing how the AVL tree module can be used.
 
-import README.Data.AVL
+import README.Data.Tree.AVL
 
 -- Some examples showing how List module can be used.
 
