@@ -67,6 +67,32 @@ private
         (ok t) → return t
       }
 
+  -- These functions are for calling blockOnMeta on any metavariables found
+  -- inside a term
+  -- This is useful to ensure that the term that will be searched
+  -- for ⌊_⌋ is fully solved beforehand.
+  block-on-metas : Term → TC ⊤
+  block-on-metas-args : Args Term → TC ⊤
+  block-on-metas-clauses : List Clause → TC ⊤
+
+  block-on-metas (var _ args) = block-on-metas-args args
+  block-on-metas (con _ args) = block-on-metas-args args
+  block-on-metas (def _ args) = block-on-metas-args args
+  block-on-metas (lam _ (abs _ t)) = block-on-metas t
+  block-on-metas (pat-lam cs args) = block-on-metas-clauses cs >> block-on-metas-args args
+  block-on-metas (Π[ _ ∶ arg _ A ] t) = block-on-metas A >> block-on-metas t
+  block-on-metas (sort _) = return tt
+  block-on-metas (lit _) = return tt
+  block-on-metas (meta m args) = blockOnMeta m
+  block-on-metas unknown = return tt
+
+  block-on-metas-args [] = return tt
+  block-on-metas-args (arg _ t ∷ args) = block-on-metas t >> block-on-metas-args args
+
+  block-on-metas-clauses [] = return tt
+  block-on-metas-clauses (clause _ t ∷ cs) = block-on-metas t >> block-on-metas-clauses cs 
+  block-on-metas-clauses (absurd-clause _ ∷ cs) = block-on-metas-clauses cs
+
   {- Code common to both ⌊⌋ and _≈⌊_⌋_.
      Its main job is to call extract-f and cong and constrain the types of their results.
   -}
@@ -110,11 +136,12 @@ macro
      the relation inspected is determined by the RelSide parameter
   -}
   ⌊⌋ : ∀ {a} {A : Set a} {x y : A} → RelSide → x ≈ y → Term → TC ⊤
-  ⌊⌋ side x≈y hole = do
+  ⌊⌋ rel-side x≈y hole = do
     hole-T ← inferType hole
     just (fy ∷ fx ∷ _) ← return $ Data.Maybe.map reverse $ term-vis-args hole-T
       where _ → typeError $ strErr "Tactic.Cong: unexpected form for relation in" ∷ termErr hole-T ∷ []
-    common side x≈y hole fx fy
+    block-on-metas $ case rel-side of λ {lhs → fx ; rhs → fy}
+    common rel-side x≈y hole fx fy
 
   {- Equivalent to using ⌊⌋ within _≈⟨_⟩_ -}
   _≈⌊_⌋_ : ∀ {a} {A : Set a} {B : Param} {x y : A} {fy end : F B}
@@ -122,6 +149,7 @@ macro
   _≈⌊_⌋_ {B = B} {fy = fy} {end = end} fx x≈y fy<end hole = do
     B ← quoteωTC B
     fx ← quoteTC fx
+    block-on-metas fx
     fy ← quoteTC fy
     end ← quoteTC end
     fy<end ← quoteTC fy<end
