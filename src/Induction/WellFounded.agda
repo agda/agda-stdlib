@@ -155,9 +155,17 @@ module InverseImage {_<_ : Rel B ℓ} (f : A → B) where
   wellFounded wf = λ x → accessible (wf (f x))
 
   well-founded = wellFounded
+  {-# WARNING_ON_USAGE accessible
+  "Warning: accessible was deprecated in v1.4.
+\ \Please use accessible from `Relation.Binary.Construct.On` instead."
+  #-}
+  {-# WARNING_ON_USAGE wellFounded
+  "Warning: wellFounded was deprecated in v1.4.
+\ \Please use wellFounded from `Relation.Binary.Construct.On` instead."
+  #-}
   {-# WARNING_ON_USAGE well-founded
   "Warning: well-founded was deprecated in v0.15.
-\ \Please use wellFounded instead."
+\ \Please use wellFounded from `Relation.Binary.Construct.On` instead."
   #-}
 
 module TransitiveClosure {A : Set a} (_<_ : Rel A ℓ) where
