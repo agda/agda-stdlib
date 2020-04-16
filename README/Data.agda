@@ -189,7 +189,7 @@ import README.Data.List.Fresh
 
 -- Using List's Interleaving to define a fully certified filter function.
 
-import README.Data.Interleaving
+import README.Data.List.Interleaving
 
 -- Example of an encoding of record types with manifest fields and "with".
 
