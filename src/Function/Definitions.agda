@@ -30,17 +30,17 @@ Congruent f = ∀ {x y} → x ≈₁ y → f x ≈₂ f y
 Injective : (A → B) → Set (a ⊔ ℓ₁ ⊔ ℓ₂)
 Injective f = ∀ {x y} → f x ≈₂ f y → x ≈₁ y
 
-open Core₂ _≈₂_ public
-  using (Surjective)
+Surjective : (A → B) → Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
+Surjective f = ∀ y → ∃ λ x → ∀ z → z ≈₁ x → f z ≈₂ y
 
 Bijective : (A → B) → Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
 Bijective f = Injective f × Surjective f
 
-open Core₂ _≈₂_ public
-  using (Inverseˡ)
+Inverseˡ : (A → B) → (B → A) → Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
+Inverseˡ f g = ∀ x y → y ≈₁ g x → f y ≈₂ x
 
-open Core₁ _≈₁_ public
-  using (Inverseʳ)
+Inverseʳ : (A → B) → (B → A) → Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
+Inverseʳ f g = ∀ x y → y ≈₂ f x → g y ≈₁ x
 
 Inverseᵇ : (A → B) → (B → A) → Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
 Inverseᵇ f g = Inverseˡ f g × Inverseʳ f g
