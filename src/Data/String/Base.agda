@@ -9,10 +9,11 @@
 module Data.String.Base where
 
 open import Level using (zero)
-open import Data.Bool using (true; false)
+open import Data.Bool.Base using (true; false)
+open import Data.Bool.Properties using (T?)
 open import Data.Nat.Base as ℕ using (ℕ; _∸_; ⌊_/2⌋; ⌈_/2⌉)
 import Data.Nat.Properties as ℕₚ
-open import Data.List.Base as List using (List; [_])
+open import Data.List.Base as List using (List; []; _∷_; [_])
 open import Data.List.NonEmpty as NE using (List⁺)
 open import Data.List.Extrema ℕₚ.≤-totalOrder
 open import Data.List.Relation.Binary.Pointwise using (Pointwise)
@@ -23,6 +24,7 @@ import Data.Char.Properties as Char using (_≟_)
 open import Function
 open import Relation.Binary using (Rel)
 open import Relation.Nullary using (does)
+open import Relation.Unary using (Pred; Decidable)
 
 open import Data.List.Membership.DecPropositional Char._≟_
 
@@ -89,6 +91,24 @@ intersperse sep = concat ∘′ (List.intersperse sep)
 
 unlines : List String → String
 unlines = intersperse "\n"
+
+module _ {p} {P : Pred Char p} (P? : Decidable P) where
+
+  wordsBy : String → List String
+  wordsBy = go [] ∘ toList where
+
+    cons : List Char → List String → List String
+    cons [] strs = strs
+    cons cs strs = fromList (List.reverse cs) ∷ strs
+
+    go : List Char → List Char → List String
+    go acc []       = cons acc []
+    go acc (c ∷ cs) with does (P? c)
+    ... | true  = cons acc (go [] cs)
+    ... | false = go (c ∷ acc) cs
+
+words : String → List String
+words = wordsBy (T? ∘ Char.isSpace)
 
 unwords : List String → String
 unwords = intersperse " "

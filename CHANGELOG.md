@@ -95,3 +95,9 @@ Other minor additions
   nothing-inv : Pointwise R nothing x → x ≡ nothing
   just-inv    : Pointwise R (just x) y → ∃ λ z → y ≡ just z × R x z
   ```
+
+* Added new functions to `Data.String.Base`:
+  ```agda
+  wordsBy : Decidable P → String → List String
+  words : String → List String
+  ```
