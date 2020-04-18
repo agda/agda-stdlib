@@ -13,7 +13,7 @@ open import Data.Bool.Base using (true; false)
 open import Data.Bool.Properties using (T?)
 open import Data.Nat.Base as ℕ using (ℕ; _∸_; ⌊_/2⌋; ⌈_/2⌉)
 import Data.Nat.Properties as ℕₚ
-open import Data.List.Base as List using (List; []; _∷_; [_])
+open import Data.List.Base as List using (List; [_])
 open import Data.List.NonEmpty as NE using (List⁺)
 open import Data.List.Extrema ℕₚ.≤-totalOrder
 open import Data.List.Relation.Binary.Pointwise using (Pointwise)
