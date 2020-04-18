@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- This module is DEPRECATED
+-- This module is DEPRECATED.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --with-K --safe #-}
