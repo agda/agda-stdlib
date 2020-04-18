@@ -92,20 +92,8 @@ intersperse sep = concat ∘′ (List.intersperse sep)
 unlines : List String → String
 unlines = intersperse "\n"
 
-module _ {p} {P : Pred Char p} (P? : Decidable P) where
-
-  wordsBy : String → List String
-  wordsBy = go [] ∘ toList where
-
-    cons : List Char → List String → List String
-    cons [] strs = strs
-    cons cs strs = fromList (List.reverse cs) ∷ strs
-
-    go : List Char → List Char → List String
-    go acc []       = cons acc []
-    go acc (c ∷ cs) with does (P? c)
-    ... | true  = cons acc (go [] cs)
-    ... | false = go (c ∷ acc) cs
+wordsBy : ∀ {p} {P : Pred Char p} → Decidable P → String → List String
+wordsBy P? = List.map fromList ∘ List.wordsBy P? ∘ toList
 
 words : String → List String
 words = wordsBy (T? ∘ Char.isSpace)
