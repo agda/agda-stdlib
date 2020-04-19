@@ -48,7 +48,7 @@ private
 
   variable
     ℓ : Level
-    A B : Set ℓ
+    A B C : Set ℓ
 
 ------------------------------------------------------------------------
 -- Publicly re-export properties from Core
@@ -144,6 +144,33 @@ module _ {v : A} where
     Any (Any (v ≡_)) xss          ↔⟨ concat↔ ⟩
     v ∈ concat xss                ∎
     where open Related.EquationalReasoning
+
+------------------------------------------------------------------------
+-- pairWith
+
+module _ (f : A → B → C) where
+
+  ∈-pairWith⁺ : ∀ {xs ys a b} →
+               a ∈ xs → b ∈ ys → f a b ∈ pairWith f xs ys
+  ∈-pairWith⁺ = Membershipₛ.∈-pairWith⁺
+    (P.setoid A) (P.setoid B) (P.setoid C) (P.cong₂ f)
+
+  ∈-pairWith⁻ : ∀ xs ys {v} → v ∈ pairWith f xs ys →
+                ∃₂ λ a b → a ∈ xs × b ∈ ys × v ≡ f a b
+  ∈-pairWith⁻ = Membershipₛ.∈-pairWith⁻
+    (P.setoid A) (P.setoid B) (P.setoid C) f
+
+------------------------------------------------------------------------
+-- pair
+
+∈-pair⁺ : ∀ {x : A} {y : B} {xs ys} →
+          x ∈ xs → y ∈ ys → (x , y) ∈ pair xs ys
+∈-pair⁺ = ∈-pairWith⁺ _,_
+
+∈-pair⁻ : ∀ xs ys {xy@(x , y) : A × B} →
+          xy ∈ pair xs ys → x ∈ xs × y ∈ ys
+∈-pair⁻ xs ys xy∈p[xs,ys] with ∈-pairWith⁻ _,_ xs ys xy∈p[xs,ys]
+... | (x , y , x∈xs , y∈ys , refl) = x∈xs , y∈ys
 
 ------------------------------------------------------------------------
 -- applyUpTo

@@ -51,9 +51,10 @@ private
 
 private
   variable
-    a b p q r ℓ : Level
+    a b c p q r ℓ : Level
     A : Set a
     B : Set b
+    C : Set c
 
 ------------------------------------------------------------------------
 -- Equality properties
@@ -463,6 +464,35 @@ module _ {P : A → Set p} where
 
   concat↔ : ∀ {xss} → Any (Any P) xss ↔ Any P (concat xss)
   concat↔ {xss} = inverse concat⁺ (concat⁻ xss) concat⁻∘concat⁺ (concat⁺∘concat⁻ xss)
+
+------------------------------------------------------------------------
+-- pairWith
+
+module _ {P : Pred A p} {Q : Pred B q} {R : Pred C r} (f : A → B → C) where
+
+  pairWith⁺ : (∀ {x y} → P x → Q y → R (f x y)) → ∀ {xs ys} →
+                Any P xs → Any Q ys → Any R (pairWith f xs ys)
+  pairWith⁺ pres (here  px)  qys = ++⁺ˡ (map⁺ (Any.map (pres px) qys))
+  pairWith⁺ pres (there qxs) qys = ++⁺ʳ _ (pairWith⁺ pres qxs qys)
+
+  pairWith⁻ : (∀ {x y} → R (f x y) → P x × Q y) → ∀ xs ys →
+                Any R (pairWith f xs ys) → Any P xs × Any Q ys
+  pairWith⁻ resp (x ∷ xs) ys Rxsys with ++⁻ (map (f x) ys) Rxsys
+  pairWith⁻ resp (x ∷ xs) ys Rxsys | inj₁ Rfxys with map⁻ Rfxys
+  ... | Rxys = here (proj₁ (resp (proj₂ (Any.satisfied Rxys)))) , Any.map (proj₂ ∘ resp) Rxys
+  pairWith⁻ resp (x ∷ xs) ys Rxsys | inj₂ Rc with pairWith⁻ resp xs ys Rc
+  ... | (pxs , qys) = there pxs , qys
+
+------------------------------------------------------------------------
+-- pair
+
+module _ {P : Pred A p} {Q : Pred B q} where
+
+  pair⁺ : ∀ {xs ys} → Any P xs → Any Q ys → Any (P ⟨×⟩ Q) (pair xs ys)
+  pair⁺ = pairWith⁺ _,_ _,_
+
+  pair⁻ : ∀ xs ys → Any (P ⟨×⟩ Q) (pair xs ys) → Any P xs × Any Q ys
+  pair⁻ = pairWith⁻ _,_ id
 
 ------------------------------------------------------------------------
 -- applyUpTo

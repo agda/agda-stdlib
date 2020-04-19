@@ -13,13 +13,10 @@ open import Data.Bool.Base using (Bool; T; true; false)
 open import Data.Bool.Properties using (T-∧)
 open import Data.Empty
 open import Data.Fin.Base using (Fin) renaming (zero to fzero; suc to fsuc)
-open import Data.List.Base as List using
-  ( List; []; _∷_; [_]; _∷ʳ_; fromMaybe; null; _++_; concat; map; mapMaybe
-  ; inits; tails; drop; take; applyUpTo; applyDownFrom; replicate; tabulate
-  ; filter; zipWith; all; derun; deduplicate
-  )
+open import Data.List.Base as List hiding (lookup)
 open import Data.List.Membership.Propositional
 open import Data.List.Membership.Propositional.Properties
+import Data.List.Membership.Setoid as SetoidMembership
 open import Data.List.Relation.Unary.All as All using
   ( All; []; _∷_; lookup; updateAt
   ; _[_]=_; here; there
@@ -51,7 +48,7 @@ open import Relation.Unary
 
 private
   variable
-    a b c p q r ℓ : Level
+    a b c p q r ℓ ℓ₁ ℓ₂ : Level
     A : Set a
     B : Set b
     C : Set c
@@ -414,6 +411,26 @@ module _ {P : A → Set p} where
   concat⁻ : ∀ {xss} → All P (concat xss) → All (All P) xss
   concat⁻ {[]}       []  = []
   concat⁻ {xs ∷ xss} pxs = ++⁻ˡ xs pxs ∷ concat⁻ (++⁻ʳ xs pxs)
+
+------------------------------------------------------------------------
+-- pairWith and pair
+
+module _ (S₁ : Setoid a ℓ₁) (S₂ : Setoid b ℓ₂) where
+  open SetoidMembership S₁ using () renaming (_∈_ to _∈₁_)
+  open SetoidMembership S₂ using () renaming (_∈_ to _∈₂_)
+
+  pairWith⁺ : ∀ {P : Pred C p} f xs ys →
+              (∀ {x y} → x ∈₁ xs → y ∈₂ ys → P (f x y)) →
+              All P (pairWith f xs ys)
+  pairWith⁺ f []       ys pres = []
+  pairWith⁺ f (x ∷ xs) ys pres = ++⁺
+    (map⁺ (All.tabulateₛ S₂ (pres (here (Setoid.refl S₁)))))
+    (pairWith⁺ f xs ys (pres ∘ there))
+
+  pair⁺ : ∀ {P : Pred _ p} xs ys →
+          (∀ {x y} → x ∈₁ xs → y ∈₂ ys → P (x , y)) →
+          All P (pair xs ys)
+  pair⁺ = pairWith⁺ _,_
 
 ------------------------------------------------------------------------
 -- take and drop
