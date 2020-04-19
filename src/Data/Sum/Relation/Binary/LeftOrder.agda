@@ -8,7 +8,7 @@
 
 module Data.Sum.Relation.Binary.LeftOrder where
 
-open import Data.Sum as Sum
+open import Data.Sum.Base as Sum
 open import Data.Sum.Relation.Binary.Pointwise as PW
   using (Pointwise; inj₁; inj₂)
 open import Data.Product
@@ -193,7 +193,7 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
     where open IsStrictTotalOrder
 
 ------------------------------------------------------------------------
--- "Packages" can also be combined.
+-- "Bundles" can also be combined.
 
 module _ {a b c d e f} where
 

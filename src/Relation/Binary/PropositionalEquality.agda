@@ -10,10 +10,10 @@ module Relation.Binary.PropositionalEquality where
 
 open import Algebra
 open import Algebra.Structures
-open import Algebra.FunctionProperties
+open import Algebra.Definitions
 import Axiom.Extensionality.Propositional as Ext
 open import Axiom.UniquenessOfIdentityProofs
-open import Function.Core
+open import Function.Base
 open import Function.Equality using (Π; _⟶_; ≡-setoid)
 open import Level using (Level; _⊔_)
 open import Data.Product using (∃)
@@ -55,6 +55,29 @@ cong₂ f refl refl = refl
 ------------------------------------------------------------------------
 -- Structure of equality as a binary relation
 
+isEquivalence : IsEquivalence {A = A} _≡_
+isEquivalence = record
+  { refl  = refl
+  ; sym   = sym
+  ; trans = trans
+  }
+
+isDecEquivalence : Decidable _≡_ → IsDecEquivalence {A = A} _≡_
+isDecEquivalence _≟_ = record
+  { isEquivalence = isEquivalence
+  ; _≟_           = _≟_
+  }
+
+isPreorder : IsPreorder {A = A} _≡_ _≡_
+isPreorder = record
+  { isEquivalence = isEquivalence
+  ; reflexive     = id
+  ; trans         = trans
+  }
+
+------------------------------------------------------------------------
+-- Bundles for equality as a binary relation
+
 setoid : Set a → Setoid _ _
 setoid A = record
   { Carrier       = A
@@ -63,19 +86,9 @@ setoid A = record
   }
 
 decSetoid : Decidable {A = A} _≡_ → DecSetoid _ _
-decSetoid dec = record
+decSetoid _≟_ = record
   { _≈_              = _≡_
-  ; isDecEquivalence = record
-      { isEquivalence = isEquivalence
-      ; _≟_           = dec
-      }
-  }
-
-isPreorder : IsPreorder {A = A} _≡_ _≡_
-isPreorder = record
-  { isEquivalence = isEquivalence
-  ; reflexive     = id
-  ; trans         = trans
+  ; isDecEquivalence = isDecEquivalence _≟_
   }
 
 preorder : Set a → Preorder _ _ _
@@ -151,6 +164,18 @@ cong-∘ : ∀ {x y : A} {f : B → C} {g : A → B} (p : x ≡ y) →
          cong (f ∘ g) p ≡ cong f (cong g p)
 cong-∘ refl = refl
 
+trans-cong : ∀ {x y z : A} {f : A → B} (p : x ≡ y) {q : y ≡ z} →
+             trans (cong f p) (cong f q) ≡ cong f (trans p q)
+trans-cong refl = refl
+
+cong₂-reflˡ : ∀ {_∙_ : A → B → C} {x u v} → (p : u ≡ v) →
+              cong₂ _∙_ refl p ≡ cong (x ∙_) p
+cong₂-reflˡ refl = refl
+
+cong₂-reflʳ : ∀ {_∙_ : A → B → C} {x y u} → (p : x ≡ y) →
+              cong₂ _∙_ p refl ≡ cong (_∙ u) p
+cong₂-reflʳ refl = refl
+
 module _ {P : Pred A p} {x y : A} where
 
   subst-injective : ∀ (x≡y : x ≡ y) {p q : P x} →
@@ -207,13 +232,13 @@ cong-≡id {f = f} {x} f≡id =
   f≡id (f x)                                     ∎
   where open ≡-Reasoning; fx≡x = f≡id x; f²x≡x = f≡id (f x)
 
-module _ (_≟_ : Decidable {A = A} _≡_) where
+module _ (_≟_ : Decidable {A = A} _≡_) {x y : A} where
 
-  ≡-≟-identity : ∀ {x y : A} (eq : x ≡ y) → x ≟ y ≡ yes eq
-  ≡-≟-identity {x} {y} eq = dec-yes-irr (x ≟ y) (Decidable⇒UIP.≡-irrelevant _≟_) eq
+  ≡-≟-identity : (eq : x ≡ y) → x ≟ y ≡ yes eq
+  ≡-≟-identity eq = dec-yes-irr (x ≟ y) (Decidable⇒UIP.≡-irrelevant _≟_) eq
 
-  ≢-≟-identity : ∀ {x y : A} → x ≢ y → ∃ λ ¬eq → x ≟ y ≡ no ¬eq
-  ≢-≟-identity {x} {y} ¬eq = dec-no (x ≟ y) ¬eq
+  ≢-≟-identity : x ≢ y → ∃ λ ¬eq → x ≟ y ≡ no ¬eq
+  ≢-≟-identity ¬eq = dec-no (x ≟ y) ¬eq
 
 ------------------------------------------------------------------------
 -- Any operation forms a magma over _≡_

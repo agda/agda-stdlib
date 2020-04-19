@@ -17,12 +17,13 @@ module Relation.Binary.Construct.StrictToNonStrict
   (_≈_ : Rel A ℓ₁) (_<_ : Rel A ℓ₂)
   where
 
-open import Relation.Nullary
-open import Relation.Binary.Consequences
-open import Function
 open import Data.Product
-open import Data.Sum
+open import Data.Sum.Base
 open import Data.Empty
+open import Function
+open import Relation.Binary.Consequences
+open import Relation.Nullary
+open import Relation.Nullary.Sum using (_⊎-dec_)
 
 ------------------------------------------------------------------------
 -- Conversion
@@ -93,10 +94,7 @@ total <-tri x y with <-tri x y
 ... | tri> x≮y x≉y x>y = inj₂ (inj₁ x>y)
 
 decidable : Decidable _≈_ → Decidable _<_ → Decidable _≤_
-decidable ≈-dec <-dec x y with ≈-dec x y | <-dec x y
-... | yes x≈y | _       = yes (inj₂ x≈y)
-... | no  x≉y | yes x<y = yes (inj₁ x<y)
-... | no  x≉y | no  x≮y = no [ x≮y , x≉y ]′
+decidable ≈-dec <-dec x y = <-dec x y ⊎-dec ≈-dec x y
 
 decidable' : Trichotomous _≈_ _<_ → Decidable _≤_
 decidable' compare x y with compare x y

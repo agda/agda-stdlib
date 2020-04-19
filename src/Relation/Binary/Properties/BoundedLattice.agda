@@ -13,7 +13,7 @@ module Relation.Binary.Properties.BoundedLattice
 
 open BoundedLattice L
 
-open import Algebra.FunctionProperties _≈_
+open import Algebra.Definitions _≈_
 open import Data.Product using (_,_)
 open import Relation.Binary using (Setoid)
 open import Relation.Binary.Properties.MeetSemilattice meetSemilattice

@@ -8,9 +8,9 @@
 
 module Data.Integer.DivMod where
 
-open import Data.Fin as Fin using (Fin)
+open import Data.Fin.Base as Fin using (Fin)
 import Data.Fin.Properties as FProp
-open import Data.Integer as ℤ
+open import Data.Integer.Base as ℤ
 open import Data.Integer.Properties
 open import Data.Integer.Predicate
 open import Data.Nat as ℕ using (ℕ)
@@ -52,7 +52,7 @@ n%ℕd<d : ∀ n d {d≢0} → (n modℕ d) {d≢0} ℕ.< d
 n%ℕd<d (+ n)    sd@(ℕ.suc d) = NDM.m%n<n n d
 n%ℕd<d -[1+ n ] sd@(ℕ.suc d) with ℕ.suc n NDM.divMod sd
 ... | NDM.result q Fin.zero    eq = ℕ.s≤s ℕ.z≤n
-... | NDM.result q (Fin.suc r) eq = ℕ.s≤s (NProp.n∸m≤n (Fin.toℕ r) d)
+... | NDM.result q (Fin.suc r) eq = ℕ.s≤s (NProp.m∸n≤m d (Fin.toℕ r))
 
 n%d<d : ∀ n d {d≢0} → (n mod d) {d≢0} ℕ.< ℤ.∣ d ∣
 n%d<d n (+ ℕ.suc d) = n%ℕd<d n (ℕ.suc d)

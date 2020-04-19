@@ -11,9 +11,9 @@ open import Relation.Binary using (Rel)
 module Data.List.Relation.Unary.AllPairs
        {a ℓ} {A : Set a} {R : Rel A ℓ} where
 
-open import Data.List using (List; []; _∷_)
+open import Data.List.Base using (List; []; _∷_)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
-open import Data.Product as Prod using (_,_; _×_)
+open import Data.Product as Prod using (_,_; _×_; uncurry; <_,_>)
 open import Function using (id; _∘_)
 open import Level using (_⊔_)
 open import Relation.Binary as B using (Rel; _⇒_)
@@ -22,6 +22,7 @@ open import Relation.Binary.PropositionalEquality
 open import Relation.Unary as U renaming (_∩_ to _∩ᵘ_) hiding (_⇒_)
 open import Relation.Nullary using (yes; no)
 import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Product using (_×-dec_)
 
 ------------------------------------------------------------------------
 -- Definition
@@ -36,6 +37,9 @@ head (px ∷ pxs) = px
 
 tail : ∀ {x xs} → AllPairs R (x ∷ xs) → AllPairs R xs
 tail (px ∷ pxs) = pxs
+
+uncons : ∀ {x xs} → AllPairs R (x ∷ xs) → All (R x) xs × AllPairs R xs
+uncons = < head , tail >
 
 module _ {q} {S : Rel A q} where
 
@@ -66,9 +70,8 @@ module _ {s} {S : Rel A s} where
 
 allPairs? : B.Decidable R → U.Decidable (AllPairs R)
 allPairs? R? []       = yes []
-allPairs? R? (x ∷ xs) with All.all (R? x) xs
-... | yes px = Dec.map′ (px ∷_) tail (allPairs? R? xs)
-... | no ¬px = no (¬px ∘ head)
+allPairs? R? (x ∷ xs) =
+  Dec.map′ (uncurry _∷_) uncons (All.all (R? x) xs ×-dec allPairs? R? xs)
 
 irrelevant : B.Irrelevant R → U.Irrelevant (AllPairs R)
 irrelevant irr []           []           = refl

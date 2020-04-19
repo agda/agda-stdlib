@@ -15,7 +15,7 @@ module Function.Structures
   where
 
 open import Data.Product using (∃; _×_; _,_)
-open import Function.Core
+open import Function.Base
 open import Function.Definitions
 open import Level using (_⊔_)
 
@@ -28,15 +28,23 @@ record IsCongruent (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     isEquivalence₁ : IsEquivalence _≈₁_
     isEquivalence₂ : IsEquivalence _≈₂_
 
-  setoid₁ : Setoid a ℓ₁
-  setoid₁ = record
-    { isEquivalence = isEquivalence₁
-    }
+  module Eq₁ where
 
-  setoid₂ : Setoid b ℓ₂
-  setoid₂ = record
-    { isEquivalence = isEquivalence₂
-    }
+    setoid : Setoid a ℓ₁
+    setoid = record
+      { isEquivalence = isEquivalence₁
+      }
+
+    open Setoid setoid public
+
+  module Eq₂ where
+
+    setoid : Setoid b ℓ₂
+    setoid = record
+      { isEquivalence = isEquivalence₂
+      }
+
+    open Setoid setoid public
 
 
 record IsInjection (f : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
@@ -91,6 +99,28 @@ record IsRightInverse (f : A → B) (g : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ 
   open IsCongruent isCongruent public
     renaming (cong to cong₁)
 
+record IsBiEquivalence
+  (f : A → B) (g₁ : B → A) (g₂ : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+  field
+    f-isCongruent : IsCongruent f
+    cong₂         : Congruent _≈₂_ _≈₁_ g₁
+    cong₃         : Congruent _≈₂_ _≈₁_ g₂
+
+  open IsCongruent f-isCongruent public
+    renaming (cong to cong₁)
+
+record IsBiInverse
+  (f : A → B) (g₁ : B → A) (g₂ : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+  field
+    f-isCongruent : IsCongruent f
+    cong₂         : Congruent _≈₂_ _≈₁_ g₁
+    inverseˡ      : Inverseˡ _≈₁_ _≈₂_ f g₁
+    cong₃         : Congruent _≈₂_ _≈₁_ g₂
+    inverseʳ      : Inverseʳ _≈₁_ _≈₂_ f g₂
+
+  open IsCongruent f-isCongruent public
+    renaming (cong to cong₁)
+
 
 record IsInverse (f : A → B) (g : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
   field
@@ -108,4 +138,3 @@ record IsInverse (f : A → B) (g : B → A) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ�
 
   inverse : Inverseᵇ _≈₁_ _≈₂_ f g
   inverse = inverseˡ , inverseʳ
-

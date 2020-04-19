@@ -9,14 +9,15 @@
 module Data.List.Relation.Unary.Any where
 
 open import Data.Empty
-open import Data.Fin
+open import Data.Fin.Base
 open import Data.List.Base as List using (List; []; [_]; _∷_)
 open import Data.Product as Prod using (∃; _,_)
-open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Level using (Level; _⊔_)
 open import Relation.Nullary using (¬_; yes; no)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Sum using (_⊎-dec_)
 open import Relation.Unary hiding (_∈_)
 
 private
@@ -95,9 +96,7 @@ module _ {P : Pred A p} where
 
   any : Decidable P → Decidable (Any P)
   any P? []       = no λ()
-  any P? (x ∷ xs) with P? x
-  ... | yes px = yes (here px)
-  ... | no ¬px = Dec.map′ there (tail ¬px) (any P? xs)
+  any P? (x ∷ xs) = Dec.map′ fromSum toSum (P? x ⊎-dec any P? xs)
 
   satisfiable : Satisfiable P → Satisfiable (Any P)
   satisfiable (x , Px) = [ x ] , here Px

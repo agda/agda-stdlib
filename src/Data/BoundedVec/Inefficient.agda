@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Bounded vectors (inefficient, concrete implementation)
+-- This module is DEPRECATED. Please use `Data.Vec.Bounded` instead.
 ------------------------------------------------------------------------
 
 -- Vectors of a specified maximum length.
@@ -9,6 +9,11 @@
 {-# OPTIONS --without-K --safe #-}
 
 module Data.BoundedVec.Inefficient where
+
+{-# WARNING_ON_IMPORT
+"Data.BoundedVec.Inefficient was deprecated in v1.2.
+Use Data.Vec.Bounded instead."
+#-}
 
 open import Data.Nat.Base
 open import Data.List.Base

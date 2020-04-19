@@ -20,7 +20,7 @@ private
 -- Definition
 
 data Maybe (A : Set a) : Set a where
-  just : A → Maybe A
+  just    : A → Maybe A
   nothing : Maybe A
 
 {-# FOREIGN GHC type AgdaMaybe l a = Maybe a #-}

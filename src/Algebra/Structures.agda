@@ -5,18 +5,24 @@
 -- etc.)
 ------------------------------------------------------------------------
 
+-- The contents of this module should be accessed via `Algebra`, unless
+-- you want to parameterise it via the equality relation.
+
 {-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary using (Rel; Setoid; IsEquivalence)
 
-module Algebra.Structures {a ℓ} {A : Set a} (_≈_ : Rel A ℓ) where
+module Algebra.Structures
+  {a ℓ} {A : Set a}  -- The underlying set
+  (_≈_ : Rel A ℓ)    -- The underlying equality relation
+  where
 
--- All the structures are parameterised by the equivalence relation _≈_.
 -- The file is divided into sections depending on the arities of the
 -- components of the algebraic structure.
 
-open import Algebra.FunctionProperties _≈_
-import Algebra.FunctionProperties.Consequences as Consequences
+open import Algebra.Core
+open import Algebra.Definitions _≈_
+import Algebra.Consequences.Setoid as Consequences
 open import Data.Product using (_,_; proj₁; proj₂)
 open import Level using (_⊔_)
 
@@ -57,6 +63,14 @@ record IsBand (∙ : Op₂ A) : Set (a ⊔ ℓ) where
   open IsSemigroup isSemigroup public
 
 
+record IsCommutativeSemigroup (∙ : Op₂ A) : Set (a ⊔ ℓ) where
+  field
+    isSemigroup : IsSemigroup ∙
+    comm        : Commutative ∙
+
+  open IsSemigroup isSemigroup public
+
+
 record IsSemilattice (∧ : Op₂ A) : Set (a ⊔ ℓ) where
   field
     isBand : IsBand ∧
@@ -72,6 +86,7 @@ record IsSelectiveMagma (∙ : Op₂ A) : Set (a ⊔ ℓ) where
     sel     : Selective ∙
 
   open IsMagma isMagma public
+
 
 ------------------------------------------------------------------------
 -- Structures with 1 binary operation & 1 element
@@ -93,22 +108,15 @@ record IsMonoid (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
 
 record IsCommutativeMonoid (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
   field
-    isSemigroup : IsSemigroup ∙
-    identityˡ   : LeftIdentity ε ∙
-    comm        : Commutative ∙
+    isMonoid : IsMonoid ∙ ε
+    comm     : Commutative ∙
 
-  open IsSemigroup isSemigroup public
+  open IsMonoid isMonoid public
 
-  identityʳ : RightIdentity ε ∙
-  identityʳ = Consequences.comm+idˡ⇒idʳ setoid comm identityˡ
-
-  identity : Identity ε ∙
-  identity = (identityˡ , identityʳ)
-
-  isMonoid : IsMonoid ∙ ε
-  isMonoid = record
+  isCommutativeSemigroup : IsCommutativeSemigroup ∙
+  isCommutativeSemigroup = record
     { isSemigroup = isSemigroup
-    ; identity    = identity
+    ; comm        = comm
     }
 
 
@@ -174,10 +182,12 @@ record IsAbelianGroup (∙ : Op₂ A)
 
   isCommutativeMonoid : IsCommutativeMonoid ∙ ε
   isCommutativeMonoid = record
-    { isSemigroup = isSemigroup
-    ; identityˡ   = identityˡ
-    ; comm        = comm
+    { isMonoid = isMonoid
+    ; comm     = comm
     }
+
+  open IsCommutativeMonoid isCommutativeMonoid public
+    using (isCommutativeSemigroup)
 
 
 ------------------------------------------------------------------------
@@ -281,8 +291,9 @@ record IsSemiringWithoutOne (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
   open IsCommutativeMonoid +-isCommutativeMonoid public
     using ()
     renaming
-    ( isMonoid    to +-isMonoid
-    ; comm        to +-comm
+    ( comm                   to +-comm
+    ; isMonoid               to +-isMonoid
+    ; isCommutativeSemigroup to +-isCommutativeSemigroup
     )
 
   zeroˡ : LeftZero 0# *
@@ -333,17 +344,18 @@ record IsSemiringWithoutAnnihilatingZero (+ * : Op₂ A)
 
   open IsCommutativeMonoid +-isCommutativeMonoid public
     renaming
-    ( assoc       to +-assoc
-    ; ∙-cong      to +-cong
-    ; ∙-congˡ     to +-congˡ
-    ; ∙-congʳ     to +-congʳ
-    ; identity    to +-identity
-    ; identityˡ   to +-identityˡ
-    ; identityʳ   to +-identityʳ
-    ; comm        to +-comm
-    ; isMagma     to +-isMagma
-    ; isSemigroup to +-isSemigroup
-    ; isMonoid    to +-isMonoid
+    ( assoc                  to +-assoc
+    ; ∙-cong                 to +-cong
+    ; ∙-congˡ                to +-congˡ
+    ; ∙-congʳ                to +-congʳ
+    ; identity               to +-identity
+    ; identityˡ              to +-identityˡ
+    ; identityʳ              to +-identityʳ
+    ; comm                   to +-comm
+    ; isMagma                to +-isMagma
+    ; isSemigroup            to +-isSemigroup
+    ; isMonoid               to +-isMonoid
+    ; isCommutativeSemigroup to +-isCommutativeSemigroup
     )
 
   open IsMonoid *-isMonoid public
@@ -388,51 +400,28 @@ record IsSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
 
 record IsCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
   field
-    +-isCommutativeMonoid : IsCommutativeMonoid + 0#
-    *-isCommutativeMonoid : IsCommutativeMonoid * 1#
-    distribʳ              : * DistributesOverʳ +
-    zeroˡ                 : LeftZero 0# *
-
-  private
-    module +-CM = IsCommutativeMonoid +-isCommutativeMonoid
-    open module *-CM = IsCommutativeMonoid *-isCommutativeMonoid public
-           using () renaming (comm to *-comm)
-
-  distribˡ : * DistributesOverˡ +
-  distribˡ = Consequences.comm+distrʳ⇒distrˡ
-              +-CM.setoid +-CM.∙-cong *-comm distribʳ
-
-  distrib : * DistributesOver +
-  distrib = (distribˡ , distribʳ)
-
-  zeroʳ : RightZero 0# *
-  zeroʳ = Consequences.comm+zeˡ⇒zeʳ +-CM.setoid *-comm zeroˡ
-
-  zero : Zero 0# *
-  zero = (zeroˡ , zeroʳ)
-
-  isSemiring : IsSemiring + * 0# 1#
-  isSemiring = record
-    { isSemiringWithoutAnnihilatingZero = record
-      { +-isCommutativeMonoid = +-isCommutativeMonoid
-      ; *-isMonoid            = *-CM.isMonoid
-      ; distrib               = distrib
-      }
-    ; zero                    = zero
-    }
+    isSemiring : IsSemiring + * 0# 1#
+    *-comm     : Commutative *
 
   open IsSemiring isSemiring public
-    hiding
-    ( distrib; distribʳ; distribˡ
-    ; zero; zeroˡ; zeroʳ
-    ; +-isCommutativeMonoid
-    )
 
   isCommutativeSemiringWithoutOne :
     IsCommutativeSemiringWithoutOne + * 0#
   isCommutativeSemiringWithoutOne = record
     { isSemiringWithoutOne = isSemiringWithoutOne
-    ; *-comm               = *-CM.comm
+    ; *-comm = *-comm
+    }
+
+  *-isCommutativeSemigroup : IsCommutativeSemigroup *
+  *-isCommutativeSemigroup = record
+    { isSemigroup = *-isSemigroup
+    ; comm        = *-comm
+    }
+
+  *-isCommutativeMonoid : IsCommutativeMonoid * 1#
+  *-isCommutativeMonoid = record
+    { isMonoid = *-isMonoid
+    ; comm     = *-comm
     }
 
 
@@ -445,26 +434,28 @@ record IsRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
     +-isAbelianGroup : IsAbelianGroup + 0# -_
     *-isMonoid       : IsMonoid * 1#
     distrib          : * DistributesOver +
+    zero             : Zero 0# *
 
   open IsAbelianGroup +-isAbelianGroup public
     renaming
-    ( assoc               to +-assoc
-    ; ∙-cong              to +-cong
-    ; ∙-congˡ             to +-congˡ
-    ; ∙-congʳ             to +-congʳ
-    ; identity            to +-identity
-    ; identityˡ           to +-identityˡ
-    ; identityʳ           to +-identityʳ
-    ; inverse             to -‿inverse
-    ; inverseˡ            to -‿inverseˡ
-    ; inverseʳ            to -‿inverseʳ
-    ; ⁻¹-cong             to -‿cong
-    ; comm                to +-comm
-    ; isMagma             to +-isMagma
-    ; isSemigroup         to +-isSemigroup
-    ; isMonoid            to +-isMonoid
-    ; isCommutativeMonoid to +-isCommutativeMonoid
-    ; isGroup             to +-isGroup
+    ( assoc                  to +-assoc
+    ; ∙-cong                 to +-cong
+    ; ∙-congˡ                to +-congˡ
+    ; ∙-congʳ                to +-congʳ
+    ; identity               to +-identity
+    ; identityˡ              to +-identityˡ
+    ; identityʳ              to +-identityʳ
+    ; inverse                to -‿inverse
+    ; inverseˡ               to -‿inverseˡ
+    ; inverseʳ               to -‿inverseʳ
+    ; ⁻¹-cong                to -‿cong
+    ; comm                   to +-comm
+    ; isMagma                to +-isMagma
+    ; isSemigroup            to +-isSemigroup
+    ; isMonoid               to +-isMonoid
+    ; isCommutativeMonoid    to +-isCommutativeMonoid
+    ; isCommutativeSemigroup to +-isCommutativeSemigroup
+    ; isGroup                to +-isGroup
     )
 
   open IsMonoid *-isMonoid public
@@ -482,15 +473,10 @@ record IsRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
     )
 
   zeroˡ : LeftZero 0# *
-  zeroˡ = Consequences.assoc+distribʳ+idʳ+invʳ⇒zeˡ setoid
-           +-cong *-cong +-assoc (proj₂ distrib) +-identityʳ -‿inverseʳ
+  zeroˡ = proj₁ zero
 
   zeroʳ : RightZero 0# *
-  zeroʳ = Consequences.assoc+distribˡ+idʳ+invʳ⇒zeʳ setoid
-           +-cong *-cong +-assoc (proj₁ distrib) +-identityʳ -‿inverseʳ
-
-  zero : Zero 0# *
-  zero = (zeroˡ , zeroʳ)
+  zeroʳ = proj₂ zero
 
   isSemiringWithoutAnnihilatingZero
     : IsSemiringWithoutAnnihilatingZero + * 0# 1#
@@ -521,17 +507,14 @@ record IsCommutativeRing
 
   *-isCommutativeMonoid : IsCommutativeMonoid * 1#
   *-isCommutativeMonoid =  record
-    { isSemigroup = *-isSemigroup
-    ; identityˡ   = *-identityˡ
-    ; comm        = *-comm
+    { isMonoid = *-isMonoid
+    ; comm     = *-comm
     }
 
   isCommutativeSemiring : IsCommutativeSemiring + * 0# 1#
   isCommutativeSemiring = record
-    { +-isCommutativeMonoid = +-isCommutativeMonoid
-    ; *-isCommutativeMonoid = *-isCommutativeMonoid
-    ; distribʳ              = distribʳ
-    ; zeroˡ                 = zeroˡ
+    { isSemiring = isSemiring
+    ; *-comm = *-comm
     }
 
   open IsCommutativeSemiring isCommutativeSemiring public

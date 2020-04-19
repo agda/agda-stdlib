@@ -1,22 +1,28 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Fixed-size tables of values, implemented as functions from 'Fin n'.
--- Similar to 'Data.Vec', but focusing on ease of retrieval instead of
--- ease of adding and removing elements.
+-- This module is DEPRECATED. Please use `Data.Vec.Functional` instead.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
+-- Disabled to prevent warnings from other Table modules
+{-# OPTIONS --warn=noUserWarning #-}
+
 module Data.Table where
+
+{-# WARNING_ON_IMPORT
+"Data.Table was deprecated in v1.2.
+Use Data.Vec.Functional instead."
+#-}
 
 open import Data.Table.Base public
 
-open import Data.Bool using (true; false)
+open import Data.Bool.Base using (true; false)
 open import Data.Fin using (Fin; _≟_)
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse using (Inverse; _↔_)
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary using (does)
 open import Relation.Nullary.Decidable using (⌊_⌋)
 
 --------------------------------------------------------------------------------
@@ -33,6 +39,6 @@ permute π = rearrange (Inverse.to π ⟨$⟩_)
 -- and 'z' everywhere else.
 
 select : ∀ {n} {a} {A : Set a} → A → Fin n → Table A n → Table A n
-lookup (select z i t) j with j ≟ i
-... | yes _ = lookup t i
-... | no  _ = z
+lookup (select z i t) j with does (j ≟ i)
+... | true  = lookup t i
+... | false = z

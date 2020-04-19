@@ -8,10 +8,8 @@
 
 module Function.Endomorphism.Propositional {a} (A : Set a) where
 
-open import Algebra using (Magma; Semigroup; Monoid)
-open import Algebra.FunctionProperties.Core using (Op₂)
+open import Algebra
 open import Algebra.Morphism; open Definitions
-open import Algebra.Structures using (IsMagma; IsSemigroup; IsMonoid)
 
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Data.Nat.Properties using (+-0-monoid; +-semigroup)

@@ -8,7 +8,8 @@
 
 module Relation.Binary.Lattice where
 
-open import Algebra.FunctionProperties
+open import Algebra.Core
+open import Algebra.Definitions
 open import Data.Product using (_×_; _,_)
 open import Function using (flip)
 open import Level using (suc; _⊔_)

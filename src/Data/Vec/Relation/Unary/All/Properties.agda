@@ -8,13 +8,13 @@
 
 module Data.Vec.Relation.Unary.All.Properties where
 
-open import Data.List using ([]; _∷_)
+open import Data.List.Base using ([]; _∷_)
 open import Data.List.Relation.Unary.All as List using ([]; _∷_)
 open import Data.Product as Prod using (_×_; _,_; uncurry; uncurry′)
-open import Data.Vec as Vec
+open import Data.Vec.Base as Vec
 open import Data.Vec.Relation.Unary.All as All using (All; []; _∷_)
 open import Level using (Level)
-open import Function.Core using (_∘_; id)
+open import Function.Base using (_∘_; id)
 open import Function.Inverse using (_↔_; inverse)
 open import Relation.Unary using (Pred) renaming (_⊆_ to _⋐_)
 open import Relation.Binary.PropositionalEquality

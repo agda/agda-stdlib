@@ -1,22 +1,22 @@
 module README where
 
 ------------------------------------------------------------------------
--- The Agda standard library, version 1.2-dev
+-- The Agda standard library, version 1.4-dev
 --
 -- Authors: Nils Anders Danielsson, Matthew Daggitt, Guillaume Allais
 -- with contributions from Andreas Abel, Stevan Andjelkovic,
 -- Jean-Philippe Bernardy, Peter Berry, Bradley Hardy Joachim Breitner,
--- Samuel Bronson, Daniel Brown, James Chapman, Liang-Ting Chen,
--- Dominique Devriese, Dan Doel, Érdi Gergő, Zack Grannan,
--- Helmut Grohne, Simon Foster, Liyang Hu, Jason Hu, Patrik Jansson,
--- Alan Jeffrey, Wen Kokke, Evgeny Kotelnikov, Sergei Meshveliani,
--- Eric Mertens, Darin Morrison, Guilhem Moulin, Shin-Cheng Mu,
--- Ulf Norell, Noriyuki Ohkawa, Nicolas Pouillard,
+-- Samuel Bronson, Daniel Brown, Jacques Carette, James Chapman,
+-- Liang-Ting Chen, Dominique Devriese, Dan Doel, Érdi Gergő,
+-- Zack Grannan, Helmut Grohne, Simon Foster, Liyang Hu, Jason Hu,
+-- Patrik Jansson, Alan Jeffrey, Wen Kokke, Evgeny Kotelnikov,
+-- Sergei Meshveliani, Eric Mertens, Darin Morrison, Guilhem Moulin,
+-- Shin-Cheng Mu, Ulf Norell, Noriyuki Ohkawa, Nicolas Pouillard,
 -- Andrés Sicard-Ramírez, Lex van der Stoep, Sandro Stucki, Milo Turner,
 -- Noam Zeilberger and other anonymous contributors.
 ------------------------------------------------------------------------
 
--- This version of the library has been tested using Agda 2.6.0.1.
+-- This version of the library has been tested using Agda 2.6.1.
 
 -- The library comes with a .agda-lib file, for use with the library
 -- management system.
@@ -86,6 +86,9 @@ import README.Data
 
 -- • Strict
 --     Provides access to the builtins relating to strictness.
+
+-- • Tactic
+--     Tactics for automatic proof generation
 
 ------------------------------------------------------------------------
 -- A selection of useful library modules
@@ -262,6 +265,10 @@ import IO
 -- More documentation
 ------------------------------------------------------------------------
 
+-- Examples of how decidability is handled in the library.
+
+import README.Decidability
+
 -- Some examples showing how the case expression can be used.
 
 import README.Case
@@ -288,7 +295,29 @@ import README.Inspect
 
 -- Explaining string formats and the behaviour of printf
 
-import README.Text
+import README.Text.Printf
+
+-- Showcasing the pretty printing module
+
+import README.Text.Pretty
+
+-- Explaining how to display tables of strings:
+
+import README.Text.Tabular
+
+-- Explaining how to display a tree:
+
+import README.Text.Tree
+
+-- Explaining how to use the automatic solvers
+
+import README.Tactic.MonoidSolver
+import README.Tactic.RingSolver
+
+-- Explaining how the Haskell FFI works
+
+import README.Foreign.Haskell
+
 
 ------------------------------------------------------------------------
 -- Core modules

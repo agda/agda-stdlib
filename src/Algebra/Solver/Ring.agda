@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Solver for commutative ring or semiring equalities
+-- Old solver for commutative ring or semiring equalities
 ------------------------------------------------------------------------
 
 -- Uses ideas from the Coq ring tactic. See "Proving Equalities in a
@@ -17,23 +17,24 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra
+open import Algebra.Bundles
 open import Algebra.Solver.Ring.AlmostCommutativeRing
-open import Relation.Binary.Core using (WeaklyDecidable)
+open import Relation.Binary.Definitions using (WeaklyDecidable)
 
 module Algebra.Solver.Ring
-  {r₁ r₂ r₃}
-  (Coeff : RawRing r₁)               -- Coefficient "ring".
+  {r₁ r₂ r₃ r₄}
+  (Coeff : RawRing r₁ r₄)            -- Coefficient "ring".
   (R : AlmostCommutativeRing r₂ r₃)  -- Main "ring".
   (morphism : Coeff -Raw-AlmostCommutative⟶ R)
   (_coeff≟_ : WeaklyDecidable (Induced-equivalence morphism))
   where
 
+open import Algebra.Core
 open import Algebra.Solver.Ring.Lemmas Coeff R morphism
 private module C = RawRing Coeff
 open AlmostCommutativeRing R
   renaming (zero to *-zero; zeroˡ to *-zeroˡ; zeroʳ to *-zeroʳ)
-open import Algebra.FunctionProperties _≈_
+open import Algebra.Definitions _≈_
 open import Algebra.Morphism
 open _-Raw-AlmostCommutative⟶_ morphism renaming (⟦_⟧ to ⟦_⟧′)
 open import Algebra.Operations.Semiring semiring
@@ -45,8 +46,8 @@ import Relation.Binary.PropositionalEquality as PropEq
 import Relation.Binary.Reflection as Reflection
 
 open import Data.Nat.Base using (ℕ; suc; zero)
-open import Data.Fin using (Fin; zero; suc)
-open import Data.Vec using (Vec; []; _∷_; lookup)
+open import Data.Fin.Base using (Fin; zero; suc)
+open import Data.Vec.Base using (Vec; []; _∷_; lookup)
 open import Data.Maybe.Base using (just; nothing)
 open import Function
 open import Level using (_⊔_)
@@ -141,7 +142,7 @@ mutual
 
   -- Note that the data types above do /not/ ensure uniqueness of
   -- normal forms: the zero polynomial of degree one can be
-  -- represented using both ∅ and ∅ *x+ con C.0#.
+  -- represented using both ∅ and ∅ *x+ con C.0#.
 
 mutual
 
@@ -540,7 +541,7 @@ correct (:- p) ρ = begin
   - ⟦ p ⟧ ρ              ∎
 
 ------------------------------------------------------------------------
--- "Tactics"
+-- "Tactic.
 
 open Reflection setoid var ⟦_⟧ ⟦_⟧↓ correct public
   using (prove; solve) renaming (_⊜_ to _:=_)

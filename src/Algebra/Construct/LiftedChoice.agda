@@ -6,19 +6,17 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra using (SelectiveMagma)
+open import Algebra
 
 module Algebra.Construct.LiftedChoice where
 
-open import Algebra.FunctionProperties
-open import Algebra.FunctionProperties.Consequences
-open import Algebra.Structures
+open import Algebra.Consequences.Base
 open import Relation.Binary
 open import Relation.Nullary using (¬_; yes; no)
-open import Data.Sum as Sum using (_⊎_; inj₁; inj₂; [_,_])
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_])
 open import Data.Product using (_×_; _,_)
 open import Level using (Level; _⊔_)
-open import Function.Core using (id; _on_)
+open import Function.Base using (id; _on_)
 open import Function.Injection using (Injection)
 open import Function.Equality using (Π)
 open import Relation.Binary using (Setoid; _Preserves_⟶_)

@@ -8,7 +8,8 @@
 
 module Data.List.Relation.Binary.Suffix.Heterogeneous.Properties where
 
-open import Data.List as List
+open import Data.Bool.Base using (true; false)
+open import Data.List.Base as List
   using (List; []; _∷_; _++_; length; filter; replicate; reverse; reverseAcc)
 open import Data.List.Relation.Binary.Pointwise as Pw
   using (Pointwise; []; _∷_; Pointwise-length)
@@ -16,10 +17,10 @@ open import Data.List.Relation.Binary.Suffix.Heterogeneous as Suffix
   using (Suffix; here; there; tail)
 open import Data.List.Relation.Binary.Prefix.Heterogeneous as Prefix
   using (Prefix)
-open import Data.Nat
+open import Data.Nat.Base
 open import Data.Nat.Properties
 open import Function using (_$_; flip)
-open import Relation.Nullary using (Dec; yes; no; ¬_)
+open import Relation.Nullary using (Dec; does; ¬_)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Unary as U using (Pred)
 open import Relation.Nullary.Negation using (contradiction)
@@ -174,9 +175,9 @@ module _ {a b r p q} {A : Set a} {B : Set b} {R : REL A B r}
   filter⁺ : ∀ {as bs} → Suffix R as bs →
             Suffix R (filter P? as) (filter Q? bs)
   filter⁺ (here rs) = here (Pw.filter⁺ P? Q? P⇒Q Q⇒P rs)
-  filter⁺ (there {a} suf) with Q? a
-  ... | yes q = there (filter⁺ suf)
-  ... | no ¬q = filter⁺ suf
+  filter⁺ (there {a} suf) with does (Q? a)
+  ... | true  = there (filter⁺ suf)
+  ... | false = filter⁺ suf
 
 ------------------------------------------------------------------------
 -- replicate

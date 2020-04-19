@@ -10,25 +10,26 @@
 module Function.Related.TypeIsomorphisms where
 
 open import Algebra
-import Algebra.FunctionProperties as FP
+open import Algebra.Structures.Biased using (isCommutativeSemiringˡ)
 open import Axiom.Extensionality.Propositional using (Extensionality)
-open import Algebra.Structures
+open import Data.Bool.Base using (true; false)
 open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Product as Prod hiding (swap)
 open import Data.Product.Function.NonDependent.Propositional
-open import Data.Sum as Sum
+open import Data.Sum.Base as Sum
 open import Data.Sum.Properties using (swap-involutive)
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
 open import Data.Unit using (⊤)
 open import Level using (Level; Lift; lower; 0ℓ; suc)
-open import Function.Core
+open import Function.Base
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence as Eq using (_⇔_; Equivalence)
 open import Function.Inverse as Inv using (_↔_; Inverse; inverse)
 open import Function.Related
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_; _≗_)
-open import Relation.Nullary using (Dec; ¬_; yes; no)
+open import Relation.Nullary.Reflects using (invert)
+open import Relation.Nullary using (Dec; ¬_; _because_)
 open import Relation.Nullary.Decidable using (True)
 
 ------------------------------------------------------------------------
@@ -49,26 +50,26 @@ open import Relation.Nullary.Decidable using (True)
 
 -- × has ⊤ as its identity
 
-×-identityˡ : ∀ ℓ → FP.LeftIdentity _↔_ (Lift ℓ ⊤) _×_
+×-identityˡ : ∀ ℓ → LeftIdentity _↔_ (Lift ℓ ⊤) _×_
 ×-identityˡ _ _ = inverse proj₂ -,_ (λ _ → P.refl) (λ _ → P.refl)
 
-×-identityʳ : ∀ ℓ → FP.RightIdentity _↔_ (Lift ℓ ⊤) _×_
+×-identityʳ : ∀ ℓ → RightIdentity _↔_ (Lift ℓ ⊤) _×_
 ×-identityʳ _ _ = inverse proj₁ (_, _) (λ _ → P.refl) (λ _ → P.refl)
 
-×-identity : ∀ ℓ → FP.Identity _↔_ (Lift ℓ ⊤) _×_
+×-identity : ∀ ℓ → Identity _↔_ (Lift ℓ ⊤) _×_
 ×-identity ℓ = ×-identityˡ ℓ , ×-identityʳ ℓ
 
 -- × has ⊥ has its zero
 
-×-zeroˡ : ∀ ℓ → FP.LeftZero _↔_ (Lift ℓ ⊥) _×_
+×-zeroˡ : ∀ ℓ → LeftZero _↔_ (Lift ℓ ⊥) _×_
 ×-zeroˡ ℓ A = inverse proj₁ (⊥-elim ∘′ lower)
                       (⊥-elim ∘ lower ∘ proj₁) (⊥-elim ∘ lower)
 
-×-zeroʳ : ∀ ℓ → FP.RightZero _↔_ (Lift ℓ ⊥) _×_
+×-zeroʳ : ∀ ℓ → RightZero _↔_ (Lift ℓ ⊥) _×_
 ×-zeroʳ ℓ A = inverse proj₂ (⊥-elim ∘′ lower)
                      (⊥-elim ∘ lower ∘ proj₂) (⊥-elim ∘ lower)
 
-×-zero : ∀ ℓ → FP.Zero _↔_ (Lift ℓ ⊥) _×_
+×-zero : ∀ ℓ → Zero _↔_ (Lift ℓ ⊥) _×_
 ×-zero ℓ  = ×-zeroˡ ℓ , ×-zeroʳ ℓ
 
 ------------------------------------------------------------------------
@@ -76,7 +77,7 @@ open import Relation.Nullary.Decidable using (True)
 
 -- ⊎ is associative
 
-⊎-assoc : ∀ ℓ → FP.Associative {ℓ = ℓ} _↔_ _⊎_
+⊎-assoc : ∀ ℓ → Associative {ℓ = ℓ} _↔_ _⊎_
 ⊎-assoc ℓ _ _ _ = inverse
   [ [ inj₁ , inj₂ ∘′ inj₁ ]′ , inj₂ ∘′ inj₂ ]′
   [ inj₁ ∘′ inj₁ , [ inj₁ ∘′ inj₂ , inj₂ ]′ ]′
@@ -90,15 +91,15 @@ open import Relation.Nullary.Decidable using (True)
 
 -- ⊎ has ⊥ as its identity
 
-⊎-identityˡ : ∀ ℓ → FP.LeftIdentity _↔_ (Lift ℓ ⊥) _⊎_
+⊎-identityˡ : ∀ ℓ → LeftIdentity _↔_ (Lift ℓ ⊥) _⊎_
 ⊎-identityˡ _ _ = inverse [ (λ ()) , id ]′ inj₂
                           [ (λ ()) , (λ _ → P.refl) ] (λ _ → P.refl)
 
-⊎-identityʳ : ∀ ℓ → FP.RightIdentity _↔_ (Lift ℓ ⊥) _⊎_
+⊎-identityʳ : ∀ ℓ → RightIdentity _↔_ (Lift ℓ ⊥) _⊎_
 ⊎-identityʳ _ _ = inverse [ id , (λ ()) ]′ inj₁
                           [ (λ _ → P.refl) , (λ ()) ] (λ _ → P.refl)
 
-⊎-identity : ∀ ℓ → FP.Identity _↔_ (Lift ℓ ⊥) _⊎_
+⊎-identity : ∀ ℓ → Identity _↔_ (Lift ℓ ⊥) _⊎_
 ⊎-identity ℓ = ⊎-identityˡ ℓ , ⊎-identityʳ ℓ
 
 ------------------------------------------------------------------------
@@ -106,21 +107,21 @@ open import Relation.Nullary.Decidable using (True)
 
 -- × distributes over ⊎
 
-×-distribˡ-⊎ : ∀ ℓ → FP._DistributesOverˡ_ {ℓ = ℓ} _↔_ _×_ _⊎_
+×-distribˡ-⊎ : ∀ ℓ → _DistributesOverˡ_ {ℓ = ℓ} _↔_ _×_ _⊎_
 ×-distribˡ-⊎ ℓ _ _ _ = inverse
   (uncurry λ x → [ inj₁ ∘′ (x ,_) , inj₂ ∘′ (x ,_) ]′)
   [ Prod.map₂ inj₁ , Prod.map₂ inj₂ ]′
   (uncurry λ _ → [ (λ _ → P.refl) , (λ _ → P.refl) ])
   [ (λ _ → P.refl) , (λ _ → P.refl) ]
 
-×-distribʳ-⊎ : ∀ ℓ → FP._DistributesOverʳ_ {ℓ = ℓ} _↔_ _×_ _⊎_
+×-distribʳ-⊎ : ∀ ℓ → _DistributesOverʳ_ {ℓ = ℓ} _↔_ _×_ _⊎_
 ×-distribʳ-⊎ ℓ _ _ _ = inverse
   (uncurry [ curry inj₁ , curry inj₂ ]′)
   [ Prod.map₁ inj₁ , Prod.map₁ inj₂ ]′
   (uncurry [ (λ _ _ → P.refl) , (λ _ _ → P.refl) ])
   [ (λ _ → P.refl) , (λ _ → P.refl) ]
 
-×-distrib-⊎ : ∀ ℓ → FP._DistributesOver_ {ℓ = ℓ} _↔_ _×_ _⊎_
+×-distrib-⊎ : ∀ ℓ → _DistributesOver_ {ℓ = ℓ} _↔_ _×_ _⊎_
 ×-distrib-⊎ ℓ = ×-distribˡ-⊎ ℓ , ×-distribʳ-⊎ ℓ
 
 ------------------------------------------------------------------------
@@ -163,9 +164,8 @@ open import Relation.Nullary.Decidable using (True)
 
 ×-isCommutativeMonoid : ∀ k ℓ → IsCommutativeMonoid (Related ⌊ k ⌋) _×_ (Lift ℓ ⊤)
 ×-isCommutativeMonoid k ℓ = record
-  { isSemigroup = ×-isSemigroup k ℓ
-  ; identityˡ   = ↔⇒ ∘ ×-identityˡ ℓ
-  ; comm        = λ _ _ → ↔⇒ (×-comm _ _)
+  { isMonoid = ×-isMonoid k ℓ
+  ; comm     = λ _ _ → ↔⇒ (×-comm _ _)
   }
 
 ×-commutativeMonoid : Symmetric-kind → (ℓ : Level) → CommutativeMonoid _ _
@@ -210,9 +210,8 @@ open import Relation.Nullary.Decidable using (True)
 
 ⊎-isCommutativeMonoid : ∀ k ℓ → IsCommutativeMonoid (Related ⌊ k ⌋) _⊎_ (Lift ℓ ⊥)
 ⊎-isCommutativeMonoid k ℓ = record
-  { isSemigroup = ⊎-isSemigroup k ℓ
-  ; identityˡ   = ↔⇒ ∘ ⊎-identityˡ ℓ
-  ; comm        = λ _ _ → ↔⇒ (⊎-comm _ _)
+  { isMonoid = ⊎-isMonoid k ℓ
+  ; comm     = λ _ _ → ↔⇒ (⊎-comm _ _)
   }
 
 ⊎-commutativeMonoid : Symmetric-kind → (ℓ : Level) →
@@ -223,7 +222,7 @@ open import Relation.Nullary.Decidable using (True)
 
 ×-⊎-isCommutativeSemiring : ∀ k ℓ →
   IsCommutativeSemiring (Related ⌊ k ⌋) _⊎_ _×_ (Lift ℓ ⊥) (Lift ℓ ⊤)
-×-⊎-isCommutativeSemiring k ℓ = record
+×-⊎-isCommutativeSemiring k ℓ = isCommutativeSemiringˡ record
   { +-isCommutativeMonoid = ⊎-isCommutativeMonoid k ℓ
   ; *-isCommutativeMonoid = ×-isCommutativeMonoid k ℓ
   ; distribʳ              = λ A B C → ↔⇒ (×-distribʳ-⊎ ℓ A B C)
@@ -334,8 +333,10 @@ Related-cong {A = A} {B} {C} {D} A≈B C≈D =
 
 True↔ : ∀ {p} {P : Set p}
         (dec : Dec P) → ((p₁ p₂ : P) → p₁ ≡ p₂) → True dec ↔ P
-True↔ (yes p) irr = inverse (λ _ → p) (λ _ → _) (λ _ → P.refl) (irr p)
-True↔ (no ¬p) _   = inverse (λ()) ¬p (λ()) (⊥-elim ∘ ¬p)
+True↔ ( true because  [p]) irr =
+  inverse (λ _ → invert [p]) (λ _ → _) (λ _ → P.refl) (irr _)
+True↔ (false because [¬p]) _   =
+  inverse (λ()) (invert [¬p]) (λ()) (⊥-elim ∘ invert [¬p])
 
 ------------------------------------------------------------------------
 -- Equality between pairs can be expressed as a pair of equalities

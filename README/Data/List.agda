@@ -8,10 +8,10 @@
 
 module README.Data.List where
 
-open import Algebra.Structures
+open import Algebra.Structures using (IsCommutativeMonoid)
 open import Data.Char.Base using (Char; fromℕ)
 open import Data.Char.Properties as CharProp hiding (setoid)
-open import Data.Nat
+open import Data.Nat using (ℕ; _+_; _<_; s≤s; z≤n; _*_; _∸_; _≤_)
 open import Data.Nat.Properties as NatProp
 open import Relation.Binary.PropositionalEquality
   using (_≡_; refl; sym; cong; setoid)
@@ -22,6 +22,11 @@ open import Relation.Binary.PropositionalEquality
 -- The `List` datatype is exported by the following file:
 
 open import Data.List
+  using
+  (List
+  ; []; _∷_
+  ; sum; map; take; reverse; _++_; drop
+  )
 
 module Basics where
 
@@ -223,7 +228,7 @@ module PermutationExplanation where
   -- The easiest-to-use formalisation of this relation is found in the
   -- module:
 
-  open import Data.List.Relation.Binary.Permutation.Inductive
+  open import Data.List.Relation.Binary.Permutation.Propositional
 
   -- The permutation relation is written as `_↭_` and has four
   -- constructors. The first `refl` says that a list is always
@@ -255,7 +260,7 @@ module PermutationExplanation where
   -- As might be expected, properties of the permutation relation may be
   -- found in `Data.List.Relation.Binary.Permutation.Inductive.Properties`.
 
-  open import Data.List.Relation.Binary.Permutation.Inductive.Properties
+  open import Data.List.Relation.Binary.Permutation.Propositional.Properties
 
   lem₃ : ∀ {xs ys : List ℕ} → xs ↭ ys → map fromℕ xs ↭ map fromℕ ys
   lem₃ = map⁺ fromℕ

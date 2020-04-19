@@ -27,12 +27,8 @@ module Relation.Binary.Reasoning.Setoid {s₁ s₂} (S : Setoid s₁ s₂) where
 open Setoid S
 
 ------------------------------------------------------------------------
--- Publicly re-export base contents
+-- Reasoning combinators
 
+open import Relation.Binary.Reasoning.PartialSetoid partialSetoid public
 open import Relation.Binary.Reasoning.Base.Single _≈_ refl trans public
-  renaming (_∼⟨_⟩_ to _≈⟨_⟩_)
-
-infixr 2 _≈˘⟨_⟩_
-
-_≈˘⟨_⟩_ : ∀ x {y z} → y ≈ x → y IsRelatedTo z → x IsRelatedTo z
-x ≈˘⟨ x≈y ⟩ y∼z = x ≈⟨ sym x≈y ⟩ y∼z
+  using (_∎)

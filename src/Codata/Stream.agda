@@ -14,9 +14,9 @@ open import Codata.Thunk as Thunk using (Thunk; force)
 open import Data.Nat.Base
 open import Data.List.Base using (List; []; _∷_)
 open import Data.List.NonEmpty using (List⁺; _∷_)
-open import Data.Vec using (Vec; []; _∷_)
+open import Data.Vec.Base using (Vec; []; _∷_)
 open import Data.Product as P hiding (map)
-open import Function
+open import Function.Base
 
 ------------------------------------------------------------------------
 -- Definition
@@ -32,7 +32,7 @@ module _ {ℓ} {A : Set ℓ} where
  head : ∀ {i} → Stream A i → A
  head (x ∷ xs) = x
 
- tail : Stream A ∞ → Stream A ∞
+ tail : ∀ {i} {j : Size< i} → Stream A i → Stream A j
  tail (x ∷ xs) = xs .force
 
  lookup : ℕ → Stream A ∞ → A

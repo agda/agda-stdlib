@@ -8,7 +8,7 @@
 
 module Data.Rational.Unnormalised where
 
-open import Data.Integer as ℤ using (ℤ; ∣_∣; +_; +0; +[1+_]; -[1+_])
+open import Data.Integer.Base as ℤ using (ℤ; ∣_∣; +_; +0; +[1+_]; -[1+_])
 open import Data.Nat as ℕ using (ℕ; zero; suc)
 open import Level using (0ℓ)
 open import Relation.Nullary using (¬_)

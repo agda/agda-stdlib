@@ -8,7 +8,7 @@
 
 module Data.Sum.Function.Propositional where
 
-open import Data.Sum
+open import Data.Sum.Base
 open import Data.Sum.Function.Setoid
 open import Data.Sum.Relation.Binary.Pointwise using (Pointwise-≡↔≡)
 open import Function.Equivalence as Eq using (_⇔_; module Equivalence)

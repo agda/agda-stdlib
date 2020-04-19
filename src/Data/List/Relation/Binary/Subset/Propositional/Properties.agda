@@ -13,17 +13,17 @@ module Data.List.Relation.Binary.Subset.Propositional.Properties
 
 open import Category.Monad
 open import Data.Bool.Base using (Bool; true; false; T)
-open import Data.List
+open import Data.List.Base
 open import Data.List.Relation.Unary.Any using (Any; here; there)
-open import Data.List.Relation.Unary.Any.Properties
+open import Data.List.Relation.Unary.Any.Properties hiding (filter⁺)
 open import Data.List.Categorical
 open import Data.List.Membership.Propositional
 open import Data.List.Membership.Propositional.Properties
 import Data.List.Relation.Binary.Subset.Setoid.Properties as Setoidₚ
 open import Data.List.Relation.Binary.Subset.Propositional
 import Data.Product as Prod
-import Data.Sum as Sum
-open import Function.Core using (_∘_; _∘′_; id; _$_)
+import Data.Sum.Base as Sum
+open import Function.Base using (_∘_; _∘′_; id; _$_)
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse as Inv using (_↔_; module Inverse)
 open import Function.Equivalence using (module Equivalence)
@@ -32,7 +32,7 @@ open import Relation.Unary using (Decidable)
 open import Relation.Binary using (_⇒_)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; _≗_; isEquivalence; refl; setoid; module ≡-Reasoning)
-import Relation.Binary.PreorderReasoning as PreorderReasoning
+import Relation.Binary.Reasoning.Preorder as PreorderReasoning
 
 private
   open module ListMonad {ℓ} = RawMonad (monad {ℓ = ℓ})
@@ -70,7 +70,7 @@ module _ {a} (A : Set a) where
 
 module ⊆-Reasoning {a} (A : Set a) where
   open Setoidₚ.⊆-Reasoning (setoid A) public
-    hiding (_≋⟨_⟩_; _≋˘⟨_⟩_; _≋⟨⟩_)
+    hiding (step-≋; step-≋˘; _≋⟨⟩_)
 
 ------------------------------------------------------------------------
 -- Properties relating _⊆_ to various list functions
@@ -115,9 +115,9 @@ module _ {a} {A : Set a} {xss yss : List (List A)} where
 
   concat-mono : xss ⊆ yss → concat xss ⊆ concat yss
   concat-mono xss⊆yss =
-    _⟨$⟩_ (Inverse.to $ concat-∈↔ {a = a}) ∘
+    _⟨$⟩_ (Inverse.to $ concat-∈↔ {A = A}) ∘
     Prod.map id (Prod.map id xss⊆yss) ∘
-    _⟨$⟩_ (Inverse.from $ concat-∈↔ {a = a})
+    _⟨$⟩_ (Inverse.from $ concat-∈↔ {A = A})
 
 ------------------------------------------------------------------------
 -- _>>=_
@@ -126,9 +126,9 @@ module _ {ℓ} {A B : Set ℓ} (f g : A → List B) {xs ys} where
 
   >>=-mono : xs ⊆ ys → (∀ {x} → f x ⊆ g x) → (xs >>= f) ⊆ (ys >>= g)
   >>=-mono xs⊆ys f⊆g =
-    _⟨$⟩_ (Inverse.to $ >>=-∈↔ {ℓ = ℓ}) ∘
+    _⟨$⟩_ (Inverse.to $ >>=-∈↔ {A = A}) ∘
     Prod.map id (Prod.map xs⊆ys f⊆g) ∘
-    _⟨$⟩_ (Inverse.from $ >>=-∈↔ {ℓ = ℓ})
+    _⟨$⟩_ (Inverse.from $ >>=-∈↔ {A = A})
 
 ------------------------------------------------------------------------
 -- _⊛_
@@ -148,9 +148,9 @@ module _ {ℓ} {A B : Set ℓ} {xs₁ ys₁ : List A} {xs₂ ys₂ : List B} whe
 
   _⊗-mono_ : xs₁ ⊆ ys₁ → xs₂ ⊆ ys₂ → (xs₁ ⊗ xs₂) ⊆ (ys₁ ⊗ ys₂)
   xs₁⊆ys₁ ⊗-mono xs₂⊆ys₂ =
-    _⟨$⟩_ (Inverse.to $ ⊗-∈↔ {ℓ = ℓ}) ∘
+    _⟨$⟩_ (Inverse.to $ ⊗-∈↔ {A = A}) ∘
     Prod.map xs₁⊆ys₁ xs₂⊆ys₂ ∘
-    _⟨$⟩_ (Inverse.from $ ⊗-∈↔ {ℓ = ℓ})
+    _⟨$⟩_ (Inverse.from $ ⊗-∈↔ {A = A})
 
 ------------------------------------------------------------------------
 -- any

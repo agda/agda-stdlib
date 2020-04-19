@@ -11,13 +11,13 @@
 
 module Data.List.Extrema.Nat where
 
-open import Data.Nat using (ℕ; _≤_; _<_)
+open import Data.Nat.Base using (ℕ; _≤_; _<_)
 open import Data.Nat.Properties as ℕₚ using (≤∧≢⇒<; <⇒≤; <⇒≢)
-open import Data.Sum as Sum using (_⊎_)
-open import Data.List using (List)
+open import Data.Sum.Base as Sum using (_⊎_)
+open import Data.List.Base using (List)
 import Data.List.Extrema
-open import Data.List.Any as Any using (Any)
-open import Data.List.All as All using (All)
+open import Data.List.Relation.Unary.Any as Any using (Any)
+open import Data.List.Relation.Unary.All as All using (All)
 open import Data.Product using (_×_; _,_; uncurry′)
 open import Level using (Level)
 open import Relation.Binary.PropositionalEquality using (_≢_)

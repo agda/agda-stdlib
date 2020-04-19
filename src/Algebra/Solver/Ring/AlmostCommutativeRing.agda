@@ -9,27 +9,27 @@
 
 module Algebra.Solver.Ring.AlmostCommutativeRing where
 
-open import Relation.Binary
 open import Algebra
 open import Algebra.Structures
-open import Algebra.FunctionProperties
+open import Algebra.Definitions
 import Algebra.Morphism as Morphism
+import Algebra.Morphism.Definitions as MorphismDefinitions
 open import Function
 open import Level
+open import Relation.Binary
 
-------------------------------------------------------------------------
--- Definitions
 
-record IsAlmostCommutativeRing
-         {a ℓ} {A : Set a} (_≈_ : Rel A ℓ)
-         (_+_ _*_ : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
+record IsAlmostCommutativeRing {a ℓ} {A : Set a} (_≈_ : Rel A ℓ)
+                               (_+_ _*_ : Op₂ A) (-_ : Op₁ A)
+                               (0# 1# : A) : Set (a ⊔ ℓ) where
   field
     isCommutativeSemiring : IsCommutativeSemiring _≈_ _+_ _*_ 0# 1#
-    -‿cong                : -_ Preserves _≈_ ⟶ _≈_
+    -‿cong                : Congruent₁ _≈_ -_
     -‿*-distribˡ          : ∀ x y → ((- x) * y)     ≈ (- (x * y))
     -‿+-comm              : ∀ x y → ((- x) + (- y)) ≈ (- (x + y))
 
   open IsCommutativeSemiring isCommutativeSemiring public
+
 
 record AlmostCommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 -_
@@ -44,41 +44,46 @@ record AlmostCommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
     -_                      : Op₁ Carrier
     0#                      : Carrier
     1#                      : Carrier
-    isAlmostCommutativeRing :
-      IsAlmostCommutativeRing _≈_ _+_ _*_ -_ 0# 1#
+    isAlmostCommutativeRing : IsAlmostCommutativeRing _≈_ _+_ _*_ -_ 0# 1#
 
   open IsAlmostCommutativeRing isAlmostCommutativeRing public
 
   commutativeSemiring : CommutativeSemiring _ _
-  commutativeSemiring =
-    record { isCommutativeSemiring = isCommutativeSemiring }
+  commutativeSemiring = record
+    { isCommutativeSemiring = isCommutativeSemiring
+    }
 
   open CommutativeSemiring commutativeSemiring public
-         using ( +-semigroup; +-monoid; +-commutativeMonoid
-               ; *-semigroup; *-monoid; *-commutativeMonoid
-               ; semiring
-               )
+    using
+    ( +-magma; +-semigroup
+    ; *-magma; *-semigroup; *-commutativeSemigroup
+    ; +-monoid; +-commutativeMonoid
+    ; *-monoid; *-commutativeMonoid
+    ; semiring
+    )
 
-  rawRing : RawRing _
+  rawRing : RawRing _ _
   rawRing = record
-    { _+_ = _+_
+    { _≈_ = _≈_
+    ; _+_ = _+_
     ; _*_ = _*_
     ; -_  = -_
     ; 0#  = 0#
     ; 1#  = 1#
     }
 
+
 ------------------------------------------------------------------------
 -- Homomorphisms
 
 record _-Raw-AlmostCommutative⟶_
-         {r₁ r₂ r₃}
-         (From : RawRing r₁)
-         (To : AlmostCommutativeRing r₂ r₃) : Set (r₁ ⊔ r₂ ⊔ r₃) where
+  {r₁ r₂ r₃ r₄}
+  (From : RawRing r₁ r₄)
+  (To : AlmostCommutativeRing r₂ r₃) : Set (r₁ ⊔ r₂ ⊔ r₃) where
   private
     module F = RawRing From
     module T = AlmostCommutativeRing To
-  open Morphism.Definitions F.Carrier T.Carrier T._≈_
+  open MorphismDefinitions F.Carrier T.Carrier T._≈_
   field
     ⟦_⟧    : Morphism
     +-homo : Homomorphic₂ ⟦_⟧ F._+_ T._+_
@@ -87,9 +92,9 @@ record _-Raw-AlmostCommutative⟶_
     0-homo : Homomorphic₀ ⟦_⟧ F.0#  T.0#
     1-homo : Homomorphic₀ ⟦_⟧ F.1#  T.1#
 
--raw-almostCommutative⟶
-  : ∀ {r₁ r₂} (R : AlmostCommutativeRing r₁ r₂) →
-    AlmostCommutativeRing.rawRing R -Raw-AlmostCommutative⟶ R
+-raw-almostCommutative⟶ :
+  ∀ {r₁ r₂} (R : AlmostCommutativeRing r₁ r₂) →
+  AlmostCommutativeRing.rawRing R -Raw-AlmostCommutative⟶ R
 -raw-almostCommutative⟶ R = record
   { ⟦_⟧    = id
   ; +-homo = λ _ _ → refl
@@ -100,11 +105,10 @@ record _-Raw-AlmostCommutative⟶_
   }
   where open AlmostCommutativeRing R
 
--- A homomorphism induces a notion of equivalence on the raw ring.
-
-Induced-equivalence :
-  ∀ {c₁ c₂ ℓ} {Coeff : RawRing c₁} {R : AlmostCommutativeRing c₂ ℓ} →
-  Coeff -Raw-AlmostCommutative⟶ R → Rel (RawRing.Carrier Coeff) ℓ
+Induced-equivalence : ∀ {c₁ c₂ ℓ₁ ℓ₂} {Coeff : RawRing c₁ ℓ₁}
+                      {R : AlmostCommutativeRing c₂ ℓ₂} →
+                      Coeff -Raw-AlmostCommutative⟶ R →
+                      Rel (RawRing.Carrier Coeff) ℓ₂
 Induced-equivalence {R = R} morphism a b = ⟦ a ⟧ ≈ ⟦ b ⟧
   where
   open AlmostCommutativeRing R
@@ -115,8 +119,7 @@ Induced-equivalence {R = R} morphism a b = ⟦ a ⟧ ≈ ⟦ b ⟧
 
 -- Commutative rings are almost commutative rings.
 
-fromCommutativeRing :
-  ∀ {r₁ r₂} → CommutativeRing r₁ r₂ → AlmostCommutativeRing _ _
+fromCommutativeRing : ∀ {r₁ r₂} → CommutativeRing r₁ r₂ → AlmostCommutativeRing r₁ r₂
 fromCommutativeRing CR = record
   { isAlmostCommutativeRing = record
       { isCommutativeSemiring = isCommutativeSemiring
@@ -127,14 +130,13 @@ fromCommutativeRing CR = record
   }
   where
   open CommutativeRing CR
-  import Algebra.Properties.Ring as R; open R ring
-  import Algebra.Properties.AbelianGroup as AG; open AG +-abelianGroup
+  open import Algebra.Properties.Ring ring
+  open import Algebra.Properties.AbelianGroup +-abelianGroup
 
 -- Commutative semirings can be viewed as almost commutative rings by
 -- using identity as the "almost negation".
 
-fromCommutativeSemiring :
-  ∀ {r₁ r₂} → CommutativeSemiring r₁ r₂ → AlmostCommutativeRing _ _
+fromCommutativeSemiring : ∀ {r₁ r₂} → CommutativeSemiring r₁ r₂ → AlmostCommutativeRing _ _
 fromCommutativeSemiring CS = record
   { -_                      = id
   ; isAlmostCommutativeRing = record

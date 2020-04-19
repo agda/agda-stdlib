@@ -6,20 +6,22 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra
+open import Algebra.Bundles
 
 module Algebra.Properties.BooleanAlgebra
   {b₁ b₂} (B : BooleanAlgebra b₁ b₂)
   where
 
 open BooleanAlgebra B
+
 import Algebra.Properties.DistributiveLattice as DistribLatticeProperties
+open import Algebra.Core
 open import Algebra.Structures _≈_
-open import Algebra.FunctionProperties _≈_
-open import Algebra.FunctionProperties.Consequences setoid
+open import Algebra.Definitions _≈_
+open import Algebra.Consequences.Setoid setoid
 open import Relation.Binary.Reasoning.Setoid setoid
 open import Relation.Binary
-open import Function.Core
+open import Function.Base
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence using (_⇔_; module Equivalence)
 open import Data.Product using (_,_)
@@ -130,32 +132,46 @@ open DistribLatticeProperties distributiveLattice public
 
 ∨-⊥-isCommutativeMonoid : IsCommutativeMonoid _∨_ ⊥
 ∨-⊥-isCommutativeMonoid = record
-  { isSemigroup = ∨-isSemigroup
-  ; identityˡ   = ∨-identityˡ
-  ; comm        = ∨-comm
+  { isMonoid = ∨-⊥-isMonoid
+  ; comm     = ∨-comm
   }
 
 ∧-⊤-isCommutativeMonoid : IsCommutativeMonoid _∧_ ⊤
 ∧-⊤-isCommutativeMonoid = record
-  { isSemigroup = ∧-isSemigroup
-  ; identityˡ   = ∧-identityˡ
-  ; comm        = ∧-comm
+  { isMonoid = ∧-⊤-isMonoid
+  ; comm     = ∧-comm
+  }
+
+∨-∧-isSemiring : IsSemiring _∨_ _∧_ ⊥ ⊤
+∨-∧-isSemiring = record
+  { isSemiringWithoutAnnihilatingZero = record
+    { +-isCommutativeMonoid = ∨-⊥-isCommutativeMonoid
+    ; *-isMonoid = ∧-⊤-isMonoid
+    ; distrib = ∧-∨-distrib
+    }
+  ; zero = ∧-zero
+  }
+
+∧-∨-isSemiring : IsSemiring _∧_ _∨_ ⊤ ⊥
+∧-∨-isSemiring = record
+  { isSemiringWithoutAnnihilatingZero = record
+    { +-isCommutativeMonoid = ∧-⊤-isCommutativeMonoid
+    ; *-isMonoid = ∨-⊥-isMonoid
+    ; distrib = ∨-∧-distrib
+    }
+  ; zero = ∨-zero
   }
 
 ∨-∧-isCommutativeSemiring : IsCommutativeSemiring _∨_ _∧_ ⊥ ⊤
 ∨-∧-isCommutativeSemiring = record
-  { +-isCommutativeMonoid = ∨-⊥-isCommutativeMonoid
-  ; *-isCommutativeMonoid = ∧-⊤-isCommutativeMonoid
-  ; distribʳ              = ∧-∨-distribʳ
-  ; zeroˡ                 = ∧-zeroˡ
+  { isSemiring = ∨-∧-isSemiring
+  ; *-comm = ∧-comm
   }
 
 ∧-∨-isCommutativeSemiring : IsCommutativeSemiring _∧_ _∨_ ⊤ ⊥
 ∧-∨-isCommutativeSemiring = record
-  { +-isCommutativeMonoid = ∧-⊤-isCommutativeMonoid
-  ; *-isCommutativeMonoid = ∨-⊥-isCommutativeMonoid
-  ; distribʳ = ∨-∧-distribʳ
-  ; zeroˡ    = ∨-zeroˡ
+  { isSemiring = ∧-∨-isSemiring
+  ; *-comm = ∨-comm
   }
 
 ∨-∧-commutativeSemiring : CommutativeSemiring _ _
@@ -531,6 +547,7 @@ module XorRing
     { +-isAbelianGroup = ⊕-⊥-isAbelianGroup
     ; *-isMonoid = ∧-⊤-isMonoid
     ; distrib = ∧-distrib-⊕
+    ; zero = ∧-zero
     }
 
   ⊕-∧-isCommutativeRing : IsCommutativeRing _⊕_ _∧_ id ⊥ ⊤

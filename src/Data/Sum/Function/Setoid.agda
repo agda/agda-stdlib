@@ -8,7 +8,7 @@
 
 module Data.Sum.Function.Setoid where
 
-open import Data.Sum
+open import Data.Sum.Base
 open import Data.Sum.Relation.Binary.Pointwise
 open import Relation.Binary
 open import Function.Equality as F using (_⟶_; _⟨$⟩_)

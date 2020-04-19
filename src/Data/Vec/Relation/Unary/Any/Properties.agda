@@ -8,12 +8,12 @@
 
 module Data.Vec.Relation.Unary.Any.Properties where
 
-open import Data.Nat using (suc; zero)
-open import Data.Fin using (Fin; zero; suc)
+open import Data.Nat.Base using (suc; zero)
+open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Empty using (⊥)
-open import Data.List using ([]; _∷_)
+open import Data.List.Base using ([]; _∷_)
 import Data.List.Relation.Unary.Any as List
-open import Data.Sum as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
 open import Data.Product as Prod using (∃; ∃₂; _×_; _,_; proj₁; proj₂)
 open import Data.Vec hiding (here; there)
@@ -22,7 +22,7 @@ open import Data.Vec.Membership.Propositional
   using (_∈_; mapWith∈; find; lose)
 open import Data.Vec.Relation.Binary.Pointwise.Inductive
   using (Pointwise; []; _∷_)
-open import Function.Core
+open import Function.Base
 open import Function.Inverse using (_↔_; inverse)
   renaming (_∘_ to _∘↔_; id to id↔)
 open import Level using (Level)

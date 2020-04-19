@@ -1,18 +1,23 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Tables, basic types and operations
+-- This module is DEPRECATED. Please use `Data.Vec.Functional` instead.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
 module Data.Table.Base where
 
-open import Data.Nat
-open import Data.Fin
+{-# WARNING_ON_IMPORT
+"Data.Table.Base was deprecated in v1.2.
+Use Data.Vec.Functional instead."
+#-}
+
+open import Data.Nat.Base
+open import Data.Fin.Base
 open import Data.Product using (_×_ ; _,_)
-open import Data.List as List using (List)
-open import Data.Vec as Vec using (Vec)
+open import Data.List.Base as List using (List)
+open import Data.Vec.Base as Vec using (Vec)
 open import Function using (_∘_; flip)
 open import Level using (Level)
 

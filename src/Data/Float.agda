@@ -1,27 +1,15 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Floats
+-- Floating point numbers
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
 module Data.Float where
 
-open import Data.String.Base using (String)
-
 ------------------------------------------------------------------------
--- Re-export built-ins publically
+-- Re-export base definitions and decidability of equality
 
-open import Agda.Builtin.Float public
-  using
-  ( Float
-  ; primFloatEquality
-  ; primShowFloat
-  )
-
-------------------------------------------------------------------------
--- Operations
-
-show : Float → String
-show = primShowFloat
+open import Data.Float.Base public
+open import Data.Float.Properties using (_≈?_; _<?_; _≟_; _==_) public

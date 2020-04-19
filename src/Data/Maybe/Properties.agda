@@ -8,9 +8,9 @@
 
 module Data.Maybe.Properties where
 
-open import Algebra
+open import Algebra.Bundles
 import Algebra.Structures as Structures
-import Algebra.FunctionProperties as FunctionProperties
+import Algebra.Definitions as Definitions
 open import Data.Maybe.Base
 open import Data.Maybe.Relation.Unary.All using (All; just; nothing)
 open import Data.Product using (_,_)
@@ -19,6 +19,7 @@ open import Level using (Level)
 open import Relation.Binary using (Decidable)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Decidable using (map′)
 
 private
   variable
@@ -37,9 +38,7 @@ just-injective refl = refl
 ≡-dec _≟_ nothing  nothing  = yes refl
 ≡-dec _≟_ (just x) nothing  = no λ()
 ≡-dec _≟_ nothing  (just y) = no λ()
-≡-dec _≟_ (just x) (just y) with x ≟ y
-... | yes refl = yes refl
-... | no  x≢y  = no (x≢y ∘ just-injective)
+≡-dec _≟_ (just x) (just y) = map′ (cong just) just-injective (x ≟ y)
 
 ------------------------------------------------------------------------
 -- map
@@ -70,6 +69,12 @@ map-compose : {g : B → C} {f : A → B} → map (g ∘ f) ≗ map g ∘ map f
 map-compose (just x) = refl
 map-compose nothing  = refl
 
+map-nothing : ∀ {f : A → B} {ma} → ma ≡ nothing → map f ma ≡ nothing
+map-nothing refl = refl
+
+map-just : ∀ {f : A → B} {ma a} → ma ≡ just a → map f ma ≡ just (f a)
+map-just refl = refl
+
 ------------------------------------------------------------------------
 -- maybe
 
@@ -88,7 +93,7 @@ maybe′-map = maybe-map
 
 module _ {A : Set a} where
 
-  open FunctionProperties {A = Maybe A} _≡_
+  open Definitions {A = Maybe A} _≡_
 
   <∣>-assoc : Associative _<∣>_
   <∣>-assoc (just x) y z = refl

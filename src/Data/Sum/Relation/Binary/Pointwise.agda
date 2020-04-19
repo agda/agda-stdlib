@@ -9,10 +9,10 @@
 module Data.Sum.Relation.Binary.Pointwise where
 
 open import Data.Product using (_,_)
-open import Data.Sum as Sum
+open import Data.Sum.Base as Sum
 open import Data.Sum.Properties
 open import Level using (_⊔_)
-open import Function.Core using (_∘_; id)
+open import Function.Base using (_∘_; id)
 open import Function.Inverse using (Inverse)
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
@@ -170,7 +170,7 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
     where open IsStrictPartialOrder
 
 ------------------------------------------------------------------------
--- Packages
+-- Bundles
 
 module _ {a b c d} where
 

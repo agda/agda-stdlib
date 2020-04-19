@@ -11,9 +11,9 @@ module Data.Nat.DivMod.Core where
 open import Agda.Builtin.Nat using ()
   renaming (div-helper to divₕ; mod-helper to modₕ)
 
-open import Data.Nat
+open import Data.Nat.Base
 open import Data.Nat.Properties
-open import Data.Sum using (_⊎_; inj₁; inj₂)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.Product using (_×_; _,_)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (yes; no)
@@ -128,13 +128,18 @@ private
   div-cong₃ : ∀ {c n a₁ a₂ b} → a₁ ≡ a₂ → divₕ c n a₁ b ≡ divₕ c n a₂ b
   div-cong₃ refl = refl
 
-  divₕ-restart : ∀ acc d n j → j < n → divₕ acc d n j ≡ divₕ (suc acc) d (n ∸ suc j) d
-  divₕ-restart acc d (suc n) zero    j<n       = refl
-  divₕ-restart acc d (suc n) (suc j) (s≤s j<n) = divₕ-restart acc d n j j<n
+  divₕ-restart : ∀ {acc} d n j → j < n → divₕ acc d n j ≡ divₕ (suc acc) d (n ∸ suc j) d
+  divₕ-restart d (suc n) zero    j<n       = refl
+  divₕ-restart d (suc n) (suc j) (s≤s j<n) = divₕ-restart d n j j<n
 
-  divₕ-finish : ∀ acc d n j → j ≥ n → divₕ acc d n j ≡ acc
-  divₕ-finish acc d zero    j       j≥n       = refl
-  divₕ-finish acc d (suc n) (suc j) (s≤s j≥n) = divₕ-finish acc d n j j≥n
+  divₕ-finish : ∀ {acc} d n j → j ≥ n → divₕ acc d n j ≡ acc
+  divₕ-finish d zero    j       j≥n       = refl
+  divₕ-finish d (suc n) (suc j) (s≤s j≥n) = divₕ-finish d n j j≥n
+
+  acc≤divₕ[acc] : ∀ {acc} d n j → acc ≤ divₕ acc d n j
+  acc≤divₕ[acc] {acc} d zero    j       = ≤-refl
+  acc≤divₕ[acc] {acc} d (suc n) zero    = ≤-trans (n≤1+n acc) (acc≤divₕ[acc] d n d)
+  acc≤divₕ[acc] {acc} d (suc n) (suc j) = acc≤divₕ[acc] d n j
 
   divₕ-extractAcc : ∀ acc d n j → divₕ acc d n j ≡ acc + divₕ 0 d n j
   divₕ-extractAcc acc d zero j          = sym (+-identityʳ acc)
@@ -223,7 +228,7 @@ a[divₕ]1≡a acc (suc a) = trans (a[divₕ]1≡a (suc acc) a) (sym (+-suc acc 
 a*n[divₕ]n≡a : ∀ acc a n → divₕ acc n (a * suc n) n ≡ acc + a
 a*n[divₕ]n≡a acc zero    n = sym (+-identityʳ acc)
 a*n[divₕ]n≡a acc (suc a) n = begin-equality
-  divₕ acc       n (suc a * suc n)             n ≡⟨ divₕ-restart acc n (suc a * suc n) n (m≤m+n (suc n) _) ⟩
+  divₕ acc       n (suc a * suc n)             n ≡⟨ divₕ-restart n (suc a * suc n) n (m≤m+n (suc n) _) ⟩
   divₕ (suc acc) n (suc a * suc n ∸ suc n)     n ≡⟨⟩
   divₕ (suc acc) n (suc n + a * suc n ∸ suc n) n ≡⟨ div-cong₃ (m+n∸m≡n (suc n) (a * suc n)) ⟩
   divₕ (suc acc) n (a * suc n)                 n ≡⟨ a*n[divₕ]n≡a (suc acc) a n ⟩
@@ -240,3 +245,18 @@ a*n[divₕ]n≡a acc (suc a) n = begin-equality
   acc + divₕ 0 (k + j) n (k + j) ∎
   where
   case = inj₂′ (refl , +-cancelˡ-≤ (suc k) leq , m≤n+m j k)
+
+divₕ-mono-≤ : ∀ {acc} k {m n o p} → m ≤ n → p ≤ o → divₕ acc (k + o) m o ≤ divₕ acc (k + p) n p
+divₕ-mono-≤ {acc} k {0} {n} {_} {p} z≤n p≤o = acc≤divₕ[acc] (k + p) n p
+divₕ-mono-≤ {acc} k {_} {_} {suc o} {suc p} (s≤s m≤n) (s≤s p≤o)
+  rewrite +-suc k o | +-suc k p = divₕ-mono-≤ (suc k) m≤n p≤o
+divₕ-mono-≤ {acc} k {suc m} {suc n} {o} {0}      (s≤s m≤n) z≤n with o <? suc m
+... | no  o≮1+m rewrite +-identityʳ k = begin
+  divₕ acc (k + o) (suc m) o ≡⟨ divₕ-finish (k + o) (suc m) o (≮⇒≥ o≮1+m) ⟩
+  acc                        ≤⟨ n≤1+n acc ⟩
+  suc acc                    ≤⟨ acc≤divₕ[acc] k n k ⟩
+  divₕ (suc acc) k n k       ∎
+... | yes o<1+m rewrite +-identityʳ k = begin
+  divₕ acc       (k + o) (suc m) o       ≡⟨ divₕ-restart (k + o) (suc m) o o<1+m ⟩
+  divₕ (suc acc) (k + o) (m ∸ o) (k + o) ≤⟨ divₕ-mono-≤ 0 (≤-trans (m∸n≤m m o) m≤n) (m≤m+n k o) ⟩
+  divₕ (suc acc) k       n       k       ∎

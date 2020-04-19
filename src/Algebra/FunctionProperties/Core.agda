@@ -1,25 +1,17 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Properties of functions, such as associativity and commutativity
+-- This module is DEPRECATED. Please use `Algebra` or `Algebra.Core`
+-- instead.
 ------------------------------------------------------------------------
-
--- This file contains some core definitions which are reexported by
--- Algebra.FunctionProperties. They are placed here because
--- Algebra.FunctionProperties is a parameterised module, and some of
--- the parameters are irrelevant for these definitions.
 
 {-# OPTIONS --without-K --safe #-}
 
 module Algebra.FunctionProperties.Core where
 
-open import Level
+{-# WARNING_ON_IMPORT
+"Algebra.FunctionProperties.Core was deprecated in v1.2.
+Use Algebra.Core instead."
+#-}
 
-------------------------------------------------------------------------
--- Unary and binary operations
-
-Op₁ : ∀ {ℓ} → Set ℓ → Set ℓ
-Op₁ A = A → A
-
-Op₂ : ∀ {ℓ} → Set ℓ → Set ℓ
-Op₂ A = A → A → A
+open import Algebra.Core public

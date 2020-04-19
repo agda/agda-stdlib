@@ -14,7 +14,7 @@ open import Relation.Binary
 
 module Data.List.Relation.Binary.Equality.Propositional {a} {A : Set a} where
 
-open import Data.List
+open import Data.List.Base
 import Data.List.Relation.Binary.Equality.Setoid as SetoidEquality
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 

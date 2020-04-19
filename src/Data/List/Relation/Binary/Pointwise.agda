@@ -8,25 +8,30 @@
 
 module Data.List.Relation.Binary.Pointwise where
 
-open import Function.Core
+open import Function.Base
 open import Function.Inverse using (Inverse)
+open import Data.Bool.Base using (true; false)
 open import Data.Product hiding (map)
-open import Data.List.Base as List hiding (map; head; tail)
+open import Data.List.Base as List hiding (map; head; tail; uncons)
 open import Data.List.Properties using (≡-dec; length-++)
-open import Data.Fin using (Fin) renaming (zero to fzero; suc to fsuc)
-open import Data.Nat using (ℕ; zero; suc)
+open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
+open import Data.List.Relation.Unary.AllPairs using (AllPairs; []; _∷_)
+open import Data.List.Relation.Unary.Any using (Any; here; there)
+open import Data.Fin.Base using (Fin) renaming (zero to fzero; suc to fsuc)
+open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Nat.Properties
 open import Level
 open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Nullary.Negation using (contradiction)
 import Relation.Nullary.Decidable as Dec using (map′)
+open import Relation.Nullary.Product using (_×-dec_)
 open import Relation.Unary as U using (Pred)
 open import Relation.Binary renaming (Rel to Rel₂)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
 private
   variable
-    a b c d p q ℓ ℓ₁ ℓ₂ ℓ₃ : Level
+    a b c d p q r ℓ ℓ₁ ℓ₂ ℓ₃ : Level
     A : Set a
     B : Set b
     C : Set c
@@ -54,6 +59,10 @@ module _ {_∼_ : REL A B ℓ} where
   tail : ∀ {x y xs ys} → Pointwise _∼_ (x ∷ xs) (y ∷ ys) →
          Pointwise _∼_ xs ys
   tail (x∼y ∷ xs∼ys) = xs∼ys
+
+  uncons : ∀ {x y xs ys} → Pointwise _∼_ (x ∷ xs) (y ∷ ys) →
+           x ∼ y × Pointwise _∼_ xs ys
+  uncons = < head , tail >
 
   rec : ∀ (P : ∀ {xs ys} → Pointwise _∼_ xs ys → Set c) →
         (∀ {x y xs ys} {xs∼ys : Pointwise _∼_ xs ys} →
@@ -112,15 +121,14 @@ respects₂ {_≈_ = _≈_} {_∼_} resp = respʳ , respˡ
   respˡ (x≈y ∷ xs≈ys) (x∼z ∷ xs∼zs) =
     proj₂ resp x≈y x∼z ∷ respˡ xs≈ys xs∼zs
 
-decidable : ∀ {_∼_ : REL A B ℓ} → Decidable _∼_ → Decidable (Pointwise _∼_)
-decidable dec []       []       = yes []
-decidable dec []       (y ∷ ys) = no (λ ())
-decidable dec (x ∷ xs) []       = no (λ ())
-decidable dec (x ∷ xs) (y ∷ ys) with dec x y
-... | no ¬x∼y = no (¬x∼y ∘ head)
-... | yes x∼y with decidable dec xs ys
-...   | no ¬xs∼ys = no (¬xs∼ys ∘ tail)
-...   | yes xs∼ys = yes (x∼y ∷ xs∼ys)
+module _ {_∼_ : REL A B ℓ} (dec : Decidable _∼_) where
+
+  decidable : Decidable (Pointwise _∼_)
+  decidable []       []       = yes []
+  decidable []       (y ∷ ys) = no (λ ())
+  decidable (x ∷ xs) []       = no (λ ())
+  decidable (x ∷ xs) (y ∷ ys) =
+    Dec.map′ (uncurry _∷_) uncons (dec x y ×-dec decidable xs ys)
 
 module _ {_≈_ : Rel₂ A ℓ} where
 
@@ -172,6 +180,27 @@ poset : Poset a ℓ₁ ℓ₂ → Poset _ _ _
 poset p = record
   { isPartialOrder = isPartialOrder (Poset.isPartialOrder p)
   }
+
+------------------------------------------------------------------------
+-- Relationships to other predicates
+
+module _ {_∼_ : Rel₂ A ℓ} {P : Pred A p} where
+
+  All-resp-Pointwise : P Respects _∼_ → (All P) Respects (Pointwise _∼_)
+  All-resp-Pointwise resp []         []         = []
+  All-resp-Pointwise resp (x∼y ∷ xs) (px ∷ pxs) =
+    resp x∼y px ∷ All-resp-Pointwise resp xs pxs
+
+  Any-resp-Pointwise : P Respects _∼_ → (Any P) Respects (Pointwise _∼_)
+  Any-resp-Pointwise resp (x∼y ∷ xs) (here px)   = here (resp x∼y px)
+  Any-resp-Pointwise resp (x∼y ∷ xs) (there pxs) = there (Any-resp-Pointwise resp xs pxs)
+
+module _ {_∼_ : Rel₂ A ℓ} {R : Rel₂ A r} where
+
+  AllPairs-resp-Pointwise : R Respects₂ _∼_ → (AllPairs R) Respects (Pointwise _∼_)
+  AllPairs-resp-Pointwise _                    []         []         = []
+  AllPairs-resp-Pointwise resp@(respₗ , respᵣ) (x∼y ∷ xs) (px ∷ pxs) =
+    All-resp-Pointwise respₗ xs (All.map (respᵣ x∼y) px) ∷ (AllPairs-resp-Pointwise resp xs pxs)
 
 ------------------------------------------------------------------------
 -- length
@@ -243,6 +272,12 @@ module _ {R : REL A B ℓ} where
   reverseAcc⁺ rs′ []       = rs′
   reverseAcc⁺ rs′ (r ∷ rs) = reverseAcc⁺ (r ∷ rs′) rs
 
+  ʳ++⁺ : ∀ {as bs as′ bs′} →
+           Pointwise R as bs →
+           Pointwise R as′ bs′ →
+           Pointwise R (as ʳ++ as′) (bs ʳ++ bs′)
+  ʳ++⁺ rs rs′ = reverseAcc⁺ rs′ rs
+
   reverse⁺ : ∀ {as bs} → Pointwise R as bs → Pointwise R (reverse as) (reverse bs)
   reverse⁺ = reverseAcc⁺ []
 
@@ -277,10 +312,10 @@ module _ {R : REL A B ℓ} {P : Pred A p} {Q : Pred B q}
   filter⁺ : ∀ {as bs} → Pointwise R as bs → Pointwise R (filter P? as) (filter Q? bs)
   filter⁺ []       = []
   filter⁺ {a ∷ _} {b ∷ _} (r ∷ rs) with P? a | Q? b
-  ... | yes p | yes q = r ∷ filter⁺ rs
+  ... | true  because _ | true  because _ = r ∷ filter⁺ rs
+  ... | false because _ | false because _ = filter⁺ rs
   ... | yes p | no ¬q = contradiction (P⇒Q r p) ¬q
   ... | no ¬p | yes q = contradiction (Q⇒P r q) ¬p
-  ... | no ¬p | no ¬q = filter⁺ rs
 
 ------------------------------------------------------------------------
 -- replicate

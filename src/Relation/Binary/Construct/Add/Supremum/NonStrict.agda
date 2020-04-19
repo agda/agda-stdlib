@@ -15,7 +15,7 @@ module Relation.Binary.Construct.Add.Supremum.NonStrict
   {a ℓ} {A : Set a} (_≤_ : Rel A ℓ) where
 
 open import Level using (_⊔_)
-open import Data.Sum as Sum
+open import Data.Sum.Base as Sum
 open import Relation.Nullary hiding (Irrelevant)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Binary.PropositionalEquality as P
@@ -65,7 +65,7 @@ data _≤⁺_ : Rel (A ⁺) (a ⊔ ℓ) where
 ≤⁺-reflexive-≡ ≤-reflexive {⊤⁺}    refl = ⊤⁺ ≤⊤⁺
 
 ≤⁺-antisym-≡ : Antisymmetric _≡_ _≤_ → Antisymmetric _≡_ _≤⁺_
-≤⁺-antisym-≡ antisym (⊤⁺ ≤⊤⁺) (⊥⁺ ≤⊤⁺) = refl
+≤⁺-antisym-≡ antisym (_ ≤⊤⁺) (_ ≤⊤⁺) = refl
 ≤⁺-antisym-≡ antisym [ p ] [ q ]       = P.cong [_] (antisym p q)
 
 ------------------------------------------------------------------------
@@ -80,8 +80,8 @@ module _ {e} {_≈_ : Rel A e} where
   ≤⁺-reflexive ≤-reflexive ⊤⁺≈⊤⁺ = ⊤⁺ ≤⊤⁺
 
   ≤⁺-antisym : Antisymmetric _≈_ _≤_ → Antisymmetric _≈⁺_ _≤⁺_
-  ≤⁺-antisym ≤-antisym [ p ]    [ q ]    = [ ≤-antisym p q ]
-  ≤⁺-antisym ≤-antisym (⊤⁺ ≤⊤⁺) (⊤⁺ ≤⊤⁺) = ⊤⁺≈⊤⁺
+  ≤⁺-antisym ≤-antisym [ p ]    [ q ]  = [ ≤-antisym p q ]
+  ≤⁺-antisym ≤-antisym (_ ≤⊤⁺) (_ ≤⊤⁺) = ⊤⁺≈⊤⁺
 
 ------------------------------------------------------------------------
 -- Structures + propositional equality

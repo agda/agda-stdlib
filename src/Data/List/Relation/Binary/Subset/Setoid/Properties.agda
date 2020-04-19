@@ -10,14 +10,14 @@ open import Relation.Binary hiding (Decidable)
 
 module Data.List.Relation.Binary.Subset.Setoid.Properties where
 
-open import Data.Bool using (Bool; true; false)
-open import Data.List
+open import Data.Bool.Base using (Bool; true; false)
+open import Data.List.Base
 open import Data.List.Relation.Unary.Any using (here; there)
 import Data.List.Membership.Setoid as Membership
 open import Data.List.Membership.Setoid.Properties
 import Data.List.Relation.Binary.Subset.Setoid as Sublist
 import Data.List.Relation.Binary.Equality.Setoid as Equality
-open import Relation.Nullary using (¬_; yes; no)
+open import Relation.Nullary using (¬_; does)
 open import Relation.Unary using (Pred; Decidable)
 import Relation.Binary.Reasoning.Preorder as PreorderReasoning
 
@@ -55,17 +55,27 @@ module _ {a ℓ} (S : Setoid a ℓ) where
 
   -- Reasoning over subsets
   module ⊆-Reasoning where
-    open PreorderReasoning ⊆-preorder public
-      renaming
-      ( _∼⟨_⟩_  to _⊆⟨_⟩_
-      ; _≈⟨_⟩_  to _≋⟨_⟩_
-      ; _≈˘⟨_⟩_ to _≋˘⟨_⟩_
-      ; _≈⟨⟩_   to _≋⟨⟩_
-      )
+    private
+      module Base = PreorderReasoning ⊆-preorder
 
-    infix 1 _∈⟨_⟩_
-    _∈⟨_⟩_ : ∀ x {xs ys} → x ∈ xs → xs IsRelatedTo ys → x ∈ ys
-    x ∈⟨ x∈xs ⟩ xs⊆ys = (begin xs⊆ys) x∈xs
+    open Base public
+      hiding (step-∼; step-≈; step-≈˘)
+      renaming (_≈⟨⟩_ to _≋⟨⟩_)
+
+    infix 2 step-⊆ step-≋ step-≋˘
+    infix 1 step-∈
+
+    step-∈ : ∀ x {xs ys} → xs IsRelatedTo ys → x ∈ xs → x ∈ ys
+    step-∈ x xs⊆ys x∈xs = (begin xs⊆ys) x∈xs
+
+    step-⊆  = Base.step-∼
+    step-≋  = Base.step-≈
+    step-≋˘ = Base.step-≈˘
+
+    syntax step-∈  x  xs⊆ys x∈xs  = x  ∈⟨  x∈xs  ⟩ xs⊆ys
+    syntax step-⊆  xs ys⊆zs xs⊆ys = xs ⊆⟨  xs⊆ys ⟩ ys⊆zs
+    syntax step-≋  xs ys⊆zs xs≋ys = xs ≋⟨  xs≋ys ⟩ ys⊆zs
+    syntax step-≋˘ xs ys⊆zs xs≋ys = xs ≋˘⟨ xs≋ys ⟩ ys⊆zs
 
 ------------------------------------------------------------------------
 -- filter
@@ -77,8 +87,8 @@ module _ {a p ℓ} (S : Setoid a ℓ)
   open Sublist S
 
   filter⁺ : ∀ xs → filter P? xs ⊆ xs
-  filter⁺ (x ∷ xs) y∈f[x∷xs] with P? x
-  ... | no  _ = there (filter⁺ xs y∈f[x∷xs])
-  ... | yes _ with y∈f[x∷xs]
+  filter⁺ (x ∷ xs) y∈f[x∷xs] with does (P? x)
+  ... | false = there (filter⁺ xs y∈f[x∷xs])
+  ... | true  with y∈f[x∷xs]
   ...   | here  y≈x     = here y≈x
   ...   | there y∈f[xs] = there (filter⁺ xs y∈f[xs])

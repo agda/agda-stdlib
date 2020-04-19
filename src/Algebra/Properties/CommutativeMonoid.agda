@@ -6,7 +6,10 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra
+-- Disabled to prevent warnings from deprecated Table
+{-# OPTIONS --warn=noUserWarning #-}
+
+open import Algebra.Bundles
 
 module Algebra.Properties.CommutativeMonoid
   {g₁ g₂} (M : CommutativeMonoid g₁ g₂) where
@@ -17,9 +20,10 @@ open import Relation.Binary as B using (_Preserves_⟶_)
 open import Function
 open import Function.Equality using (_⟨$⟩_)
 open import Data.Product
-open import Data.Nat using (ℕ; zero; suc)
-open import Data.Fin using (Fin; zero; suc)
-open import Data.List as List using ([]; _∷_)
+open import Data.Bool.Base using (Bool; true; false)
+open import Data.Nat.Base using (ℕ; zero; suc)
+open import Data.Fin.Base using (Fin; zero; suc)
+open import Data.List.Base as List using ([]; _∷_)
 import Data.Fin.Properties as FP
 open import Data.Fin.Permutation as Perm using (Permutation; Permutation′; _⟨$⟩ˡ_; _⟨$⟩ʳ_)
 open import Data.Fin.Permutation.Components as PermC
@@ -28,9 +32,10 @@ open import Data.Table.Relation.Binary.Equality as TE using (_≗_)
 open import Data.Unit using (tt)
 import Data.Table.Properties as TP
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary as Nullary using (¬_; does; _because_)
 open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Nullary.Decidable using (⌊_⌋)
+open import Relation.Nullary.Decidable using (⌊_⌋; dec-true; dec-false)
+open import Relation.Nullary.Reflects using (invert)
 
 open CommutativeMonoid M
   renaming
@@ -44,7 +49,7 @@ open CommutativeMonoid M
   ; assoc     to +-assoc
   ; comm      to +-comm
   )
-open import Algebra.FunctionProperties _≈_
+open import Algebra.Definitions _≈_
 open import Relation.Binary.Reasoning.Setoid setoid
 
 module _ {n} where
@@ -147,13 +152,17 @@ sumₜ-permute {suc m} {suc n} t π = begin
 -- If the function takes the same value at 'i' and 'j', then transposing 'i' and
 -- 'j' then selecting 'j' is the same as selecting 'i'.
 
-select-transpose : ∀ {n} t (i j : Fin n) → lookup t i ≈ lookup t j → ∀ k → (lookup (select 0# j t) ∘ PermC.transpose i j) k ≈ lookup (select 0# i t) k
+select-transpose :
+  ∀ {n} t (i j : Fin n) → lookup t i ≈ lookup t j →
+  ∀ k → (lookup (select 0# j t) ∘ PermC.transpose i j) k
+      ≈  lookup (select 0# i t) k
 select-transpose _ i j e k with k FP.≟ i
-... | yes p rewrite P.≡-≟-identity FP._≟_ {j} P.refl = sym e
-... | no ¬p with k FP.≟ j
-...   | no ¬q rewrite proj₂ (P.≢-≟-identity FP._≟_ ¬q) = refl
-...   | yes q rewrite proj₂ (P.≢-≟-identity FP._≟_
-                               (¬p ∘ P.trans q ∘ P.sym)) = refl
+... | true  because _ rewrite dec-true (j FP.≟ j) P.refl = sym e
+... | false because [k≢i] with k FP.≟ j
+...   | true  because [k≡j]
+  rewrite dec-false (i FP.≟ j) (invert [k≢i] ∘ P.trans (invert [k≡j]) ∘ P.sym)
+        = refl
+...   | false because [k≢j] rewrite dec-false (k FP.≟ j) (invert [k≢j]) = refl
 
 -- Summing over a pulse gives you the single value picked out by the pulse.
 

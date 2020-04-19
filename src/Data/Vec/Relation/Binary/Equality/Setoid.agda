@@ -12,7 +12,7 @@ module Data.Vec.Relation.Binary.Equality.Setoid
   {a ℓ} (S : Setoid a ℓ) where
 
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
-open import Data.Vec
+open import Data.Vec.Base
 open import Data.Vec.Relation.Binary.Pointwise.Inductive as PW
   using (Pointwise)
 open import Function

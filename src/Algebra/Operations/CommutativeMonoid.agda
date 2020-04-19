@@ -7,6 +7,9 @@
 
 {-# OPTIONS --without-K --safe #-}
 
+-- Disabled to prevent warnings from deprecated Table
+{-# OPTIONS --warn=noUserWarning #-}
+
 open import Algebra
 
 module Algebra.Operations.CommutativeMonoid
@@ -15,8 +18,8 @@ module Algebra.Operations.CommutativeMonoid
 
 open import Data.Nat.Base using (ℕ; zero; suc)
   renaming (_+_ to _ℕ+_; _*_ to _ℕ*_)
-open import Data.List as List using (List; []; _∷_; _++_)
-open import Data.Fin using (Fin; zero)
+open import Data.List.Base as List using (List; []; _∷_; _++_)
+open import Data.Fin.Base using (Fin; zero)
 open import Data.Product using (proj₁; proj₂)
 open import Data.Table.Base as Table using (Table)
 open import Function using (_∘_; _⟨_⟩_)

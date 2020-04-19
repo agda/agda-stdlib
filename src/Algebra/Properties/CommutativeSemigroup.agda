@@ -6,15 +6,22 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra using (Semigroup)
-open import Algebra.FunctionProperties using (Commutative)
+open import Algebra using (CommutativeSemigroup)
 
 module Algebra.Properties.CommutativeSemigroup
-  {a ℓ} (S : Semigroup a ℓ) (open Semigroup S) (comm : Commutative _≈_ _∙_)
+  {a ℓ} (CS : CommutativeSemigroup a ℓ)
   where
+
+open CommutativeSemigroup CS
 
 open import Relation.Binary.Reasoning.Setoid setoid
 
+------------------------------------------------------------------------------
+-- Re-export the contents of semigroup
+
+open import Algebra.Properties.Semigroup semigroup public
+
+------------------------------------------------------------------------------
 -- Permutation laws for _∙_ for three factors.
 
 ------------------------------------------------------------------------------

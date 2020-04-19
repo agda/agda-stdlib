@@ -8,23 +8,28 @@
 
 module Data.Vec.Properties where
 
-open import Algebra.FunctionProperties
+open import Algebra.Definitions
+open import Data.Bool.Base using (true; false)
 open import Data.Empty using (⊥-elim)
-open import Data.Fin as Fin using (Fin; zero; suc; toℕ; fromℕ)
+open import Data.Fin.Base as Fin using (Fin; zero; suc; toℕ; fromℕ)
 open import Data.List.Base as List using (List)
-open import Data.Nat
+open import Data.Nat.Base
 open import Data.Nat.Properties using (+-assoc; ≤-step)
 open import Data.Product as Prod
   using (_×_; _,_; proj₁; proj₂; <_,_>; uncurry)
-open import Data.Vec
-open import Function.Core
+open import Data.Sum.Base using ([_,_]′)
+open import Data.Sum.Properties using ([,]-map-commute)
+open import Data.Vec.Base
+open import Function.Base
 open import Function.Inverse using (_↔_; inverse)
 open import Level using (Level)
 open import Relation.Binary as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; _≢_; refl; _≗_)
+  using (_≡_; _≢_; refl; _≗_; cong₂)
 open import Relation.Unary using (Pred; Decidable)
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary using (Dec; does; yes; no)
+open import Relation.Nullary.Decidable using (map′)
+open import Relation.Nullary.Product using (_×-dec_)
 
 private
   variable
@@ -50,10 +55,9 @@ module _ {n} {x y : A} {xs ys : Vec A n} where
 
 ≡-dec : B.Decidable _≡_ → ∀ {n} → B.Decidable {A = Vec A n} _≡_
 ≡-dec _≟_ []       []       = yes refl
-≡-dec _≟_ (x ∷ xs) (y ∷ ys) with x ≟ y | ≡-dec _≟_ xs ys
-... | yes refl | yes refl = yes refl
-... | no  x≢y  | _        = no (x≢y   ∘ ∷-injectiveˡ)
-... | yes _    | no xs≢ys = no (xs≢ys ∘ ∷-injectiveʳ)
+≡-dec _≟_ (x ∷ xs) (y ∷ ys) =
+  map′ (uncurry (cong₂ _∷_)) ∷-injective
+       (x ≟ y ×-dec ≡-dec _≟_ xs ys)
 
 ------------------------------------------------------------------------
 -- _[_]=_
@@ -132,7 +136,7 @@ updateAt-minimal (suc i) (suc j) (x ∷ xs) i≢j (there loc) =
 -- 1a. relative identity:  f = id ↾ (lookup xs i)
 --                implies  updateAt i f = id ↾ xs
 
-updateAt-id-relative : ∀ {n} (i : Fin n) (xs : Vec A n) {f : A → A} →
+updateAt-id-relative : ∀ {n} (i : Fin n) {f : A → A} (xs : Vec A n) →
                        f (lookup xs i) ≡ lookup xs i →
                        updateAt i f xs ≡ xs
 updateAt-id-relative zero    (x ∷ xs) eq = P.cong (_∷ xs) eq
@@ -144,8 +148,8 @@ updateAt-id : ∀ {n} (i : Fin n) (xs : Vec A n) →
               updateAt i id xs ≡ xs
 updateAt-id i xs = updateAt-id-relative i xs refl
 
--- 2a. relative composition:  f ∘ g = h ↾ (lookup i xs)
---                   implies  updateAt i f ∘ updateAt i g ≗ updateAt i h
+-- 2a. relative composition:  f ∘ g = h ↾ (lookup xs i)
+--                   implies  updateAt i f ∘ updateAt i g = updateAt i h ↾ xs
 
 updateAt-compose-relative : ∀ {n} (i : Fin n) {f g h : A → A} (xs : Vec A n) →
                             f (g (lookup xs i)) ≡ h (lookup xs i) →
@@ -162,7 +166,7 @@ updateAt-compose i xs = updateAt-compose-relative i xs refl
 
 -- 3. congruence:  updateAt i  is a congruence wrt. extensional equality.
 
--- 3a.  If    f = g ↾ (lookup i xs)
+-- 3a.  If    f = g ↾ (lookup xs i)
 --      then  updateAt i f = updateAt i g ↾ xs
 
 updateAt-cong-relative : ∀ {n} (i : Fin n) {f g : A → A} (xs : Vec A n) →
@@ -316,7 +320,7 @@ module _ {m} {ys ys' : Vec A m} where
 
 lookup-++-< : ∀ {m n} (xs : Vec A m) (ys : Vec A n) →
               ∀ i (i<m : toℕ i < m) →
-              lookup (xs ++ ys) i  ≡ lookup xs (Fin.fromℕ≤ i<m)
+              lookup (xs ++ ys) i  ≡ lookup xs (Fin.fromℕ< i<m)
 lookup-++-< (x ∷ xs) ys zero    (s≤s z≤n)       = refl
 lookup-++-< (x ∷ xs) ys (suc i) (s≤s (s≤s i<m)) =
   lookup-++-< xs ys i (s≤s i<m)
@@ -337,6 +341,15 @@ lookup-++ʳ : ∀ {m n} (xs : Vec A m) (ys : Vec A n) i →
 lookup-++ʳ []       ys       zero    = refl
 lookup-++ʳ []       (y ∷ xs) (suc i) = lookup-++ʳ [] xs i
 lookup-++ʳ (x ∷ xs) ys       i       = lookup-++ʳ xs ys i
+
+lookup-splitAt : ∀ m {n} (xs : Vec A m) (ys : Vec A n) i →
+                lookup (xs ++ ys) i ≡ [ lookup xs , lookup ys ]′
+                (Fin.splitAt m i)
+lookup-splitAt zero    []       ys i       = refl
+lookup-splitAt (suc m) (x ∷ xs) ys zero    = refl
+lookup-splitAt (suc m) (x ∷ xs) ys (suc i) = P.trans
+  (lookup-splitAt m xs ys i)
+  (P.sym ([,]-map-commute (Fin.splitAt m i)))
 
 ------------------------------------------------------------------------
 -- zipWith
@@ -650,9 +663,9 @@ module _ {P : Pred A p} (P? : Decidable P) where
 
   count≤n : ∀ {n} (xs : Vec A n) → count P? xs ≤ n
   count≤n []       = z≤n
-  count≤n (x ∷ xs) with P? x
-  ... | yes _ = s≤s (count≤n xs)
-  ... | no  _ = ≤-step (count≤n xs)
+  count≤n (x ∷ xs) with does (P? x)
+  ... | true  = s≤s (count≤n xs)
+  ... | false = ≤-step (count≤n xs)
 
 ------------------------------------------------------------------------
 -- insert

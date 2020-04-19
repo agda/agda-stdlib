@@ -21,10 +21,13 @@ open import Relation.Binary.PropositionalEquality
 open import Relation.Unary
 open import Relation.Unary.PredicateTransformer using (Pt)
 
+private
+  variable
+    i ℓ : Level
+
 ------------------------------------------------------------------------
 
-record RawPMonad {i ℓ} {I : Set i} (M : Pt I (i ⊔ ℓ)) :
-                 Set (suc i ⊔ suc ℓ) where
+record RawPMonad {I : Set i} (M : Pt I (i ⊔ ℓ)) : Set (suc i ⊔ suc ℓ) where
 
   infixl 1 _?>=_ _?>_ _>?>_
   infixr 1 _=<?_ _<?<_

@@ -1,24 +1,29 @@
 AGDA_EXEC=agda
-RTS_OPTIONS=+RTS -M2.5G -H2.5G -A128M -RTS
+RTS_OPTIONS=+RTS -M3.5G -H3.5G -A128M -RTS
 AGDA=$(AGDA_EXEC) $(RTS_OPTIONS)
 
-# Before running `make test` the `fix-agda-whitespace` program should
+# Before running `make test` the `fix-whitespace` program should
 # be installed:
 #
-#   cd agda-development-version-path/src/fix-agda-whitespace
+#   git clone git@github.com:agda/fix-whitespace --depth 1
+#   cd fix-whitespace
 #   cabal install
 
 test: Everything.agda check-whitespace
 	$(AGDA) -i. -isrc README.agda
 
 check-whitespace:
-	cabal exec -- fix-agda-whitespace --check
+	cabal exec -- fix-whitespace --check
 
 setup: Everything.agda
 
 .PHONY: Everything.agda
 Everything.agda:
-	cabal clean && cabal install
+# The command `cabal build` is needed by cabal-install 3.0.0.0 and the
+# command `cabal install` is needed by cabal-install <= 2.4.*. I did
+# not found any problem running both commands with different versions
+# of cabal-install. See Issue #1001.
+	cabal clean && cabal build && cabal install
 	cabal exec -- GenerateEverything
 
 .PHONY: listings

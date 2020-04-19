@@ -9,11 +9,12 @@
 module Relation.Binary.Construct.Intersection where
 
 open import Data.Product
-open import Data.Sum using (_⊎_; inj₁; inj₂; [_,_])
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Function using (_∘_)
 open import Level using (_⊔_)
 open import Relation.Binary
 open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Product using (_×-dec_)
 
 ------------------------------------------------------------------------
 -- Definition
@@ -77,10 +78,7 @@ module _ {a ℓ₁ ℓ₂ ℓ₃} {A : Set a}
 module _ {a b ℓ₁ ℓ₂} {A : Set a} {B : Set b} {L : REL A B ℓ₁} {R : REL A B ℓ₂} where
 
   decidable : Decidable L → Decidable R → Decidable (L ∩ R)
-  decidable L? R? x y with L? x y | R? x y
-  ... | no ¬Lxy | _       = no (¬Lxy ∘ proj₁)
-  ... | yes _   | no ¬Rxy = no (¬Rxy ∘ proj₂)
-  ... | yes Lxy | yes Rxy = yes (Lxy , Rxy)
+  decidable L? R? x y = L? x y ×-dec R? x y
 
 ------------------------------------------------------------------------
 -- Structures

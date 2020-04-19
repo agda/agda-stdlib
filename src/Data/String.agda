@@ -8,8 +8,9 @@
 
 module Data.String where
 
-open import Data.Vec as Vec using (Vec)
+open import Data.Vec.Base as Vec using (Vec)
 open import Data.Char as Char using (Char)
+open import Function.Base
 
 ------------------------------------------------------------------------
 -- Re-export contents of base, and decidability of equality
@@ -22,3 +23,6 @@ open import Data.String.Properties using (_≈?_; _≟_; _<?_; _==_) public
 
 toVec : (s : String) → Vec Char (length s)
 toVec s = Vec.fromList (toList s)
+
+fromVec : ∀ {n} → Vec Char n → String
+fromVec = fromList ∘ Vec.toList

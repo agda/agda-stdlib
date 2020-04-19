@@ -8,14 +8,15 @@
 
 module Data.Vec.Relation.Unary.All where
 
-open import Data.Nat using (zero; suc)
-open import Data.Fin using (Fin; zero; suc)
-open import Data.Product as Prod using (_,_)
-open import Data.Vec as Vec using (Vec; []; _∷_)
+open import Data.Nat.Base using (zero; suc)
+open import Data.Fin.Base using (Fin; zero; suc)
+open import Data.Product as Prod using (_×_; _,_; uncurry; <_,_>)
+open import Data.Vec.Base as Vec using (Vec; []; _∷_)
 open import Function using (_∘_)
 open import Level using (Level; _⊔_)
 open import Relation.Nullary hiding (Irrelevant)
 import Relation.Nullary.Decidable as Dec
+open import Relation.Nullary.Product using (_×-dec_)
 open import Relation.Unary
 open import Relation.Binary.PropositionalEquality as P using (subst)
 
@@ -45,6 +46,9 @@ module _ {P : Pred A p} where
 
   tail : ∀ {n x} {xs : Vec A n} → All P (x ∷ xs) → All P xs
   tail (px ∷ pxs) = pxs
+
+  uncons : ∀ {n x} {xs : Vec A n} → All P (x ∷ xs) → P x × All P xs
+  uncons = < head , tail >
 
   lookup : ∀ {n} {xs : Vec A n} (i : Fin n) →
            All P xs → P (Vec.lookup xs i)
@@ -86,9 +90,7 @@ module _ {P : Pred A p} where
 
   all : ∀ {n} → Decidable P → Decidable (All P {n})
   all P? []       = yes []
-  all P? (x ∷ xs) with P? x
-  ... | yes px = Dec.map′ (px ∷_) tail (all P? xs)
-  ... | no ¬px = no (¬px ∘ head)
+  all P? (x ∷ xs) = Dec.map′ (uncurry _∷_) uncons (P? x ×-dec all P? xs)
 
   universal : Universal P → ∀ {n} → Universal (All P {n})
   universal u []       = []

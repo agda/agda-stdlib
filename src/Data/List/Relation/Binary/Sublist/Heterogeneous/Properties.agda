@@ -8,7 +8,11 @@
 
 module Data.List.Relation.Binary.Sublist.Heterogeneous.Properties where
 
+open import Level
+
+open import Data.Bool.Base using (true; false)
 open import Data.Empty
+open import Data.List.Relation.Unary.All using (Null; []; _∷_)
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.List.Base as List hiding (map; _∷ʳ_)
 import Data.List.Properties as Lₚ
@@ -18,18 +22,19 @@ open import Data.List.Relation.Binary.Pointwise as Pw using (Pointwise; []; _∷
 open import Data.List.Relation.Binary.Sublist.Heterogeneous
 
 open import Data.Maybe.Relation.Unary.All as MAll using (nothing; just)
-open import Data.Nat using (ℕ; _≤_; _≥_); open ℕ; open _≤_
+open import Data.Nat.Base using (ℕ; _≤_; _≥_); open ℕ; open _≤_
 import Data.Nat.Properties as ℕₚ
-open import Data.Product using (_×_; uncurry)
+open import Data.Product using (∃₂; _×_; _,_; proj₂; uncurry)
 
-open import Function.Core
+open import Function.Base
 open import Function.Bijection   using (_⤖_; bijection)
 open import Function.Equivalence using (_⇔_ ; equivalence)
 
-open import Relation.Nullary using (yes; no; ¬_)
+open import Relation.Nullary.Reflects using (invert)
+open import Relation.Nullary using (Dec; does; _because_; yes; no; ¬_)
 open import Relation.Nullary.Negation using (¬?)
 import Relation.Nullary.Decidable as Dec
-open import Relation.Unary as U using (Pred; _⊆_)
+open import Relation.Unary as U using (Pred)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
@@ -105,23 +110,23 @@ module _ {a b r p} {A : Set a} {B : Set b}
   takeWhile-Sublist : ∀ {as bs} → Sublist R as bs → Sublist R (takeWhile P? as) bs
   takeWhile-Sublist []        = []
   takeWhile-Sublist (y ∷ʳ rs) = y ∷ʳ takeWhile-Sublist rs
-  takeWhile-Sublist {a ∷ as} (r ∷ rs) with P? a
-  ... | yes pa = r ∷ takeWhile-Sublist rs
-  ... | no ¬pa = minimum _
+  takeWhile-Sublist {a ∷ as} (r ∷ rs) with does (P? a)
+  ... | true  = r ∷ takeWhile-Sublist rs
+  ... | false = minimum _
 
   dropWhile-Sublist : ∀ {as bs} → Sublist R as bs → Sublist R (dropWhile P? as) bs
   dropWhile-Sublist []        = []
   dropWhile-Sublist (y ∷ʳ rs) = y ∷ʳ dropWhile-Sublist rs
-  dropWhile-Sublist {a ∷ as} (r ∷ rs) with P? a
-  ... | yes pa = _ ∷ʳ dropWhile-Sublist rs
-  ... | no ¬pa = r ∷ rs
+  dropWhile-Sublist {a ∷ as} (r ∷ rs) with does (P? a)
+  ... | true  = _ ∷ʳ dropWhile-Sublist rs
+  ... | false = r ∷ rs
 
   filter-Sublist : ∀ {as bs} → Sublist R as bs → Sublist R (filter P? as) bs
   filter-Sublist []        = []
   filter-Sublist (y ∷ʳ rs) = y ∷ʳ filter-Sublist rs
-  filter-Sublist {a ∷ as} (r ∷ rs) with P? a
-  ... | yes pa = r ∷ filter-Sublist rs
-  ... | no ¬pa = _ ∷ʳ filter-Sublist rs
+  filter-Sublist {a ∷ as} (r ∷ rs) with does (P? a)
+  ... | true  = r ∷ filter-Sublist rs
+  ... | false = _ ∷ʳ filter-Sublist rs
 
 ------------------------------------------------------------------------
 -- Various functions are increasing wrt _⊆_
@@ -235,48 +240,48 @@ module _ {a b r p q} {A : Set a} {B : Set b}
     Pointwise R as bs → Sublist R (takeWhile P? as) (takeWhile Q? bs)
   ⊆-takeWhile-Sublist rp⇒q [] = []
   ⊆-takeWhile-Sublist {a ∷ as} {b ∷ bs} rp⇒q (p ∷ ps) with P? a | Q? b
-  ... | yes pa | yes qb = p ∷ ⊆-takeWhile-Sublist rp⇒q ps
-  ... | yes pa | no ¬qb = ⊥-elim $ ¬qb $ rp⇒q p pa
-  ... | no ¬pa | yes qb = minimum _
-  ... | no ¬pa | no ¬qb = []
+  ... | false because _ | _               = minimum _
+  ... | true  because _ | true  because _ = p ∷ ⊆-takeWhile-Sublist rp⇒q ps
+  ... | yes pa          | no ¬qb          = ⊥-elim $ ¬qb $ rp⇒q p pa
 
   ⊇-dropWhile-Sublist : ∀ {as bs} →
     (∀ {a b} → R a b → Q b → P a) →
     Pointwise R as bs → Sublist R (dropWhile P? as) (dropWhile Q? bs)
   ⊇-dropWhile-Sublist rq⇒p [] = []
   ⊇-dropWhile-Sublist {a ∷ as} {b ∷ bs} rq⇒p (p ∷ ps) with P? a | Q? b
-  ... | yes pa | yes qb = ⊇-dropWhile-Sublist rq⇒p ps
-  ... | yes pa | no ¬qb = b ∷ʳ dropWhile-Sublist P? (fromPointwise ps)
-  ... | no ¬pa | yes qb = ⊥-elim $ ¬pa $ rq⇒p p qb
-  ... | no ¬pa | no ¬qb = p ∷ fromPointwise ps
+  ... | true  because _ | true  because _ = ⊇-dropWhile-Sublist rq⇒p ps
+  ... | true  because _ | false because _ =
+    b ∷ʳ dropWhile-Sublist P? (fromPointwise ps)
+  ... | false because _ | false because _ = p ∷ fromPointwise ps
+  ... | no ¬pa          | yes qb          = ⊥-elim $ ¬pa $ rq⇒p p qb
 
   ⊆-filter-Sublist : ∀ {as bs} → (∀ {a b} → R a b → P a → Q b) →
                      Sublist R as bs → Sublist R (filter P? as) (filter Q? bs)
   ⊆-filter-Sublist rp⇒q [] = []
-  ⊆-filter-Sublist rp⇒q (y ∷ʳ rs) with Q? y
-  ... | yes qb = y ∷ʳ ⊆-filter-Sublist rp⇒q rs
-  ... | no ¬qb = ⊆-filter-Sublist rp⇒q rs
+  ⊆-filter-Sublist rp⇒q (y ∷ʳ rs) with does (Q? y)
+  ... | true  = y ∷ʳ ⊆-filter-Sublist rp⇒q rs
+  ... | false = ⊆-filter-Sublist rp⇒q rs
   ⊆-filter-Sublist {a ∷ as} {b ∷ bs} rp⇒q (r ∷ rs) with P? a | Q? b
-  ... | yes pa | yes qb = r ∷ ⊆-filter-Sublist rp⇒q rs
-  ... | yes pa | no ¬qb = ⊥-elim $ ¬qb $ rp⇒q r pa
-  ... | no ¬pa | yes qb = _ ∷ʳ ⊆-filter-Sublist rp⇒q rs
-  ... | no ¬pa | no ¬qb = ⊆-filter-Sublist rp⇒q rs
+  ... | true  because _ | true  because _ = r ∷ ⊆-filter-Sublist rp⇒q rs
+  ... | false because _ | true  because _ = _ ∷ʳ ⊆-filter-Sublist rp⇒q rs
+  ... | false because _ | false because _ = ⊆-filter-Sublist rp⇒q rs
+  ... | yes pa          | no ¬qb          = ⊥-elim $ ¬qb $ rp⇒q r pa
 
 module _ {a r p} {A : Set a} {R : Rel A r} {P : Pred A p} (P? : U.Decidable P) where
 
   takeWhile-filter : ∀ {as} → Pointwise R as as →
                      Sublist R (takeWhile P? as) (filter P? as)
   takeWhile-filter [] = []
-  takeWhile-filter {a ∷ as} (p ∷ ps) with P? a
-  ... | yes pa = p ∷ takeWhile-filter ps
-  ... | no ¬pa = minimum _
+  takeWhile-filter {a ∷ as} (p ∷ ps) with does (P? a)
+  ... | true  = p ∷ takeWhile-filter ps
+  ... | false = minimum _
 
   filter-dropWhile : ∀ {as} → Pointwise R as as →
                      Sublist R (filter P? as) (dropWhile (¬? ∘ P?) as)
   filter-dropWhile [] = []
-  filter-dropWhile {a ∷ as} (p ∷ ps) with P? a
-  ... | yes pa = p ∷ filter-Sublist P? (fromPointwise ps)
-  ... | no ¬pa = filter-dropWhile ps
+  filter-dropWhile {a ∷ as} (p ∷ ps) with does (P? a)
+  ... | true  = p ∷ filter-Sublist P? (fromPointwise ps)
+  ... | false = filter-dropWhile ps
 
 ------------------------------------------------------------------------
 -- reverse
@@ -288,6 +293,12 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   reverseAcc⁺ []         cds = cds
   reverseAcc⁺ (y ∷ʳ abs) cds = reverseAcc⁺ abs (y ∷ʳ cds)
   reverseAcc⁺ (r ∷ abs)  cds = reverseAcc⁺ abs (r ∷ cds)
+
+  ʳ++⁺ : ∀ {as bs cs ds} →
+         Sublist R as bs →
+         Sublist R cs ds →
+         Sublist R (as ʳ++ cs) (bs ʳ++ ds)
+  ʳ++⁺ = reverseAcc⁺
 
   reverse⁺ : ∀ {as bs} → Sublist R as bs → Sublist R (reverse as) (reverse bs)
   reverse⁺ rs = reverseAcc⁺ rs []
@@ -402,8 +413,10 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} (R? : Decidable R) wher
   sublist? []       ys       = yes (minimum ys)
   sublist? (x ∷ xs) []       = no λ ()
   sublist? (x ∷ xs) (y ∷ ys) with R? x y
-  ... | yes r = Dec.map (∷⁻¹   r) (sublist? xs ys)
-  ... | no ¬r = Dec.map (∷ʳ⁻¹ ¬r) (sublist? (x ∷ xs) ys)
+  ... | true  because  [r] =
+    Dec.map (∷⁻¹  (invert  [r])) (sublist? xs ys)
+  ... | false because [¬r] =
+    Dec.map (∷ʳ⁻¹ (invert [¬r])) (sublist? (x ∷ xs) ys)
 
 module _ {a e r} {A : Set a} {E : Rel A e} {R : Rel A r} where
 
@@ -444,3 +457,257 @@ module _ {a e r} where
   decPoset ER-poset = record
     { isDecPartialOrder = isDecPartialOrder ER.isDecPartialOrder
     } where module ER = DecPoset ER-poset
+
+------------------------------------------------------------------------
+-- Properties of disjoint sublists
+
+module Disjointness {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
+
+  private
+    infix 4 _⊆_
+    _⊆_ = Sublist R
+
+  -- Forgetting the union
+
+  DisjointUnion→Disjoint : ∀ {xs ys zs us} {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs} {τ : us ⊆ zs} →
+    DisjointUnion τ₁ τ₂ τ → Disjoint τ₁ τ₂
+  DisjointUnion→Disjoint []         = []
+  DisjointUnion→Disjoint (y   ∷ₙ u) = y   ∷ₙ DisjointUnion→Disjoint u
+  DisjointUnion→Disjoint (x≈y ∷ₗ u) = x≈y ∷ₗ DisjointUnion→Disjoint u
+  DisjointUnion→Disjoint (x≈y ∷ᵣ u) = x≈y ∷ᵣ DisjointUnion→Disjoint u
+
+  -- Reconstructing the union
+
+  Disjoint→DisjointUnion : ∀ {xs ys zs} {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs} →
+    Disjoint τ₁ τ₂ → ∃₂ λ us (τ : us ⊆ zs) → DisjointUnion τ₁ τ₂ τ
+  Disjoint→DisjointUnion []         = _ , _ , []
+  Disjoint→DisjointUnion (y   ∷ₙ u) = _ , _ , y   ∷ₙ proj₂ (proj₂ (Disjoint→DisjointUnion u))
+  Disjoint→DisjointUnion (x≈y ∷ₗ u) = _ , _ , x≈y ∷ₗ proj₂ (proj₂ (Disjoint→DisjointUnion u))
+  Disjoint→DisjointUnion (x≈y ∷ᵣ u) = _ , _ , x≈y ∷ᵣ proj₂ (proj₂ (Disjoint→DisjointUnion u))
+
+  -- Disjoint is decidable
+
+  ⊆-disjoint? : ∀ {xs ys zs} (τ₁ : xs ⊆ zs) (τ₂ : ys ⊆ zs) → Dec (Disjoint τ₁ τ₂)
+  ⊆-disjoint? [] [] = yes []
+  -- Present in both sublists: not disjoint.
+  ⊆-disjoint? (x≈z ∷ τ₁) (y≈z ∷ τ₂) = no λ()
+  -- Present in either sublist: ok.
+  ⊆-disjoint? (y ∷ʳ τ₁) (x≈y ∷ τ₂) =
+    Dec.map′ (x≈y ∷ᵣ_) (λ{ (_ ∷ᵣ d) → d }) (⊆-disjoint? τ₁ τ₂)
+  ⊆-disjoint? (x≈y ∷ τ₁) (y ∷ʳ τ₂) =
+    Dec.map′ (x≈y ∷ₗ_) (λ{ (_ ∷ₗ d) → d }) (⊆-disjoint? τ₁ τ₂)
+  -- Present in neither sublist: ok.
+  ⊆-disjoint? (y ∷ʳ τ₁) (.y ∷ʳ τ₂) =
+    Dec.map′ (y ∷ₙ_) (λ{ (_ ∷ₙ d) → d }) (⊆-disjoint? τ₁ τ₂)
+
+  -- Disjoint is proof-irrelevant
+
+  Disjoint-irrelevant : ∀{xs ys zs} → Irrelevant (Disjoint {R = R} {xs} {ys} {zs})
+  Disjoint-irrelevant [] [] = P.refl
+  Disjoint-irrelevant (y   ∷ₙ d₁) (.y   ∷ₙ d₂) = P.cong (y ∷ₙ_) (Disjoint-irrelevant d₁ d₂)
+  Disjoint-irrelevant (x≈y ∷ₗ d₁) (.x≈y ∷ₗ d₂) = P.cong (x≈y ∷ₗ_) (Disjoint-irrelevant d₁ d₂)
+  Disjoint-irrelevant (x≈y ∷ᵣ d₁) (.x≈y ∷ᵣ d₂) = P.cong (x≈y ∷ᵣ_) (Disjoint-irrelevant d₁ d₂)
+
+  -- Note: DisjointUnion is not proof-irrelevant unless the underlying relation R is.
+  -- The proof is not entirely trivial, thus, we leave it for future work:
+  --
+  -- DisjointUnion-irrelevant : Irrelevant R →
+  --                            ∀{xs ys us zs} {τ : us ⊆ zs} →
+  --                            Irrelevant (λ (τ₁ : xs ⊆ zs) (τ₂ : ys ⊆ zs) → DisjointUnion τ₁ τ₂ τ)
+
+  -- Irreflexivity
+
+  Disjoint-irrefl′ : ∀{xs ys} {τ : xs ⊆ ys} → Disjoint τ τ → Null xs
+  Disjoint-irrefl′ []       = []
+  Disjoint-irrefl′ (y ∷ₙ d) = Disjoint-irrefl′ d
+
+  Disjoint-irrefl : ∀{x xs ys} → Irreflexive {A = x ∷ xs ⊆ ys } _≡_ Disjoint
+  Disjoint-irrefl P.refl x with Disjoint-irrefl′ x
+  ... | () ∷ _
+
+  -- Symmetry
+
+  DisjointUnion-sym : ∀ {xs ys xys} {zs} {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs} {τ : xys ⊆ zs} →
+                            DisjointUnion τ₁ τ₂ τ → DisjointUnion τ₂ τ₁ τ
+  DisjointUnion-sym []         = []
+  DisjointUnion-sym (y   ∷ₙ d) = y ∷ₙ DisjointUnion-sym d
+  DisjointUnion-sym (x≈y ∷ₗ d) = x≈y ∷ᵣ DisjointUnion-sym d
+  DisjointUnion-sym (x≈y ∷ᵣ d) = x≈y ∷ₗ DisjointUnion-sym d
+
+  Disjoint-sym : ∀ {xs ys} {zs} {τ₁ : xs ⊆ zs} {τ₂ : ys ⊆ zs} →
+                 Disjoint τ₁ τ₂ → Disjoint τ₂ τ₁
+  Disjoint-sym []         = []
+  Disjoint-sym (y   ∷ₙ d) = y ∷ₙ Disjoint-sym d
+  Disjoint-sym (x≈y ∷ₗ d) = x≈y ∷ᵣ Disjoint-sym d
+  Disjoint-sym (x≈y ∷ᵣ d) = x≈y ∷ₗ Disjoint-sym d
+
+  -- Empty sublist
+
+  DisjointUnion-[]ˡ : ∀{xs ys} {ε : [] ⊆ ys} {τ : xs ⊆ ys} → DisjointUnion ε τ τ
+  DisjointUnion-[]ˡ {ε = []}     {τ = []} = []
+  DisjointUnion-[]ˡ {ε = y ∷ʳ ε} {τ = y  ∷ʳ τ} = y   ∷ₙ DisjointUnion-[]ˡ
+  DisjointUnion-[]ˡ {ε = y ∷ʳ ε} {τ = x≈y ∷ τ} = x≈y ∷ᵣ DisjointUnion-[]ˡ
+
+  DisjointUnion-[]ʳ : ∀{xs ys} {ε : [] ⊆ ys} {τ : xs ⊆ ys} → DisjointUnion τ ε τ
+  DisjointUnion-[]ʳ {ε = []}     {τ = []} = []
+  DisjointUnion-[]ʳ {ε = y ∷ʳ ε} {τ = y  ∷ʳ τ} = y   ∷ₙ DisjointUnion-[]ʳ
+  DisjointUnion-[]ʳ {ε = y ∷ʳ ε} {τ = x≈y ∷ τ} = x≈y ∷ₗ DisjointUnion-[]ʳ
+
+  -- A sublist τ : x∷xs ⊆ ys can be split into two disjoint sublists
+  -- [x] ⊆ ys (canonical choice) and (∷ˡ⁻ τ) : xs ⊆ ys.
+
+  DisjointUnion-fromAny∘toAny-∷ˡ⁻ : ∀ {x xs ys} (τ : (x ∷ xs) ⊆ ys) → DisjointUnion (fromAny (toAny τ)) (∷ˡ⁻ τ) τ
+  DisjointUnion-fromAny∘toAny-∷ˡ⁻ (y  ∷ʳ τ) = y   ∷ₙ DisjointUnion-fromAny∘toAny-∷ˡ⁻ τ
+  DisjointUnion-fromAny∘toAny-∷ˡ⁻ (xRy ∷ τ) = xRy ∷ₗ DisjointUnion-[]ˡ
+
+  -- Disjoint union of three mutually disjoint lists.
+  --
+  -- τᵢⱼ denotes the disjoint union of τᵢ and τⱼ: DisjointUnion τᵢ τⱼ τᵢⱼ
+
+  record DisjointUnion³
+    {xs ys zs ts} (τ₁  : xs  ⊆ ts) (τ₂  : ys  ⊆ ts) (τ₃  : zs  ⊆ ts)
+    {xys xzs yzs} (τ₁₂ : xys ⊆ ts) (τ₁₃ : xzs ⊆ ts) (τ₂₃ : yzs ⊆ ts) : Set (a ⊔ b ⊔ r) where
+    field
+      {union³} : List A
+      sub³  : union³ ⊆ ts
+      join₁ : DisjointUnion τ₁ τ₂₃ sub³
+      join₂ : DisjointUnion τ₂ τ₁₃ sub³
+      join₃ : DisjointUnion τ₃ τ₁₂ sub³
+
+  infixr 5 _∷ʳ-DisjointUnion³_ _∷₁-DisjointUnion³_ _∷₂-DisjointUnion³_ _∷₃-DisjointUnion³_
+
+  -- Weakening the target list ts of a disjoint union.
+
+  _∷ʳ-DisjointUnion³_ :
+    ∀ {xs ys zs ts} {τ₁ : xs ⊆ ts} {τ₂ : ys ⊆ ts} {τ₃ : zs ⊆ ts} →
+    ∀ {xys xzs yzs} {τ₁₂ : xys ⊆ ts} {τ₁₃ : xzs ⊆ ts} {τ₂₃ : yzs ⊆ ts} →
+    ∀ y →
+    DisjointUnion³ τ₁ τ₂ τ₃ τ₁₂ τ₁₃ τ₂₃ →
+    DisjointUnion³ (y ∷ʳ τ₁) (y ∷ʳ τ₂) (y ∷ʳ τ₃) (y ∷ʳ τ₁₂) (y ∷ʳ τ₁₃) (y ∷ʳ τ₂₃)
+  y ∷ʳ-DisjointUnion³ record{ sub³ = σ ; join₁ = d₁ ; join₂ = d₂ ; join₃ = d₃ } = record
+    { sub³  = y ∷ʳ σ
+    ; join₁ = y ∷ₙ d₁
+    ; join₂ = y ∷ₙ d₂
+    ; join₃ = y ∷ₙ d₃
+    }
+
+  -- Adding an element to the first list.
+
+  _∷₁-DisjointUnion³_ :
+    ∀ {xs ys zs ts} {τ₁ : xs ⊆ ts} {τ₂ : ys ⊆ ts} {τ₃ : zs ⊆ ts} →
+    ∀ {xys xzs yzs} {τ₁₂ : xys ⊆ ts} {τ₁₃ : xzs ⊆ ts} {τ₂₃ : yzs ⊆ ts} →
+    ∀ {x y} (xRy : R x y) →
+    DisjointUnion³ τ₁ τ₂ τ₃ τ₁₂ τ₁₃ τ₂₃ →
+    DisjointUnion³ (xRy ∷ τ₁) (y ∷ʳ τ₂) (y ∷ʳ τ₃) (xRy ∷ τ₁₂) (xRy ∷ τ₁₃) (y ∷ʳ τ₂₃)
+  xRy ∷₁-DisjointUnion³ record{ sub³ = σ ; join₁ = d₁ ; join₂ = d₂ ; join₃ = d₃ } = record
+    { sub³  = xRy ∷ σ
+    ; join₁ = xRy ∷ₗ d₁
+    ; join₂ = xRy ∷ᵣ d₂
+    ; join₃ = xRy ∷ᵣ d₃
+    }
+
+  -- Adding an element to the second list.
+
+  _∷₂-DisjointUnion³_ :
+    ∀ {xs ys zs ts} {τ₁ : xs ⊆ ts} {τ₂ : ys ⊆ ts} {τ₃ : zs ⊆ ts} →
+    ∀ {xys xzs yzs} {τ₁₂ : xys ⊆ ts} {τ₁₃ : xzs ⊆ ts} {τ₂₃ : yzs ⊆ ts} →
+    ∀ {x y} (xRy : R x y) →
+    DisjointUnion³ τ₁ τ₂ τ₃ τ₁₂ τ₁₃ τ₂₃ →
+    DisjointUnion³ (y ∷ʳ τ₁) (xRy ∷ τ₂) (y ∷ʳ τ₃) (xRy ∷ τ₁₂) (y ∷ʳ τ₁₃) (xRy ∷ τ₂₃)
+  xRy ∷₂-DisjointUnion³ record{ sub³ = σ ; join₁ = d₁ ; join₂ = d₂ ; join₃ = d₃ } = record
+    { sub³  = xRy ∷ σ
+    ; join₁ = xRy ∷ᵣ d₁
+    ; join₂ = xRy ∷ₗ d₂
+    ; join₃ = xRy ∷ᵣ d₃
+    }
+
+  -- Adding an element to the third list.
+
+  _∷₃-DisjointUnion³_ :
+    ∀ {xs ys zs ts} {τ₁ : xs ⊆ ts} {τ₂ : ys ⊆ ts} {τ₃ : zs ⊆ ts} →
+    ∀ {xys xzs yzs} {τ₁₂ : xys ⊆ ts} {τ₁₃ : xzs ⊆ ts} {τ₂₃ : yzs ⊆ ts} →
+    ∀ {x y} (xRy : R x y) →
+    DisjointUnion³ τ₁ τ₂ τ₃ τ₁₂ τ₁₃ τ₂₃ →
+    DisjointUnion³ (y ∷ʳ τ₁) (y ∷ʳ τ₂) (xRy ∷ τ₃) (y ∷ʳ τ₁₂) (xRy ∷ τ₁₃) (xRy ∷ τ₂₃)
+  xRy ∷₃-DisjointUnion³ record{ sub³ = σ ; join₁ = d₁ ; join₂ = d₂ ; join₃ = d₃ } = record
+    { sub³  = xRy ∷ σ
+    ; join₁ = xRy ∷ᵣ d₁
+    ; join₂ = xRy ∷ᵣ d₂
+    ; join₃ = xRy ∷ₗ d₃
+    }
+
+  -- Computing the disjoint union of three disjoint lists.
+
+  disjointUnion³ : ∀{xs ys zs ts} {τ₁ : xs ⊆ ts} {τ₂ : ys ⊆ ts} {τ₃ : zs ⊆ ts}
+    {xys xzs yzs} {τ₁₂ : xys ⊆ ts} {τ₁₃ : xzs ⊆ ts} {τ₂₃ : yzs ⊆ ts} →
+    DisjointUnion τ₁ τ₂ τ₁₂ →
+    DisjointUnion τ₁ τ₃ τ₁₃ →
+    DisjointUnion τ₂ τ₃ τ₂₃ →
+    DisjointUnion³ τ₁ τ₂ τ₃ τ₁₂ τ₁₃ τ₂₃
+  disjointUnion³ [] [] [] = record { sub³ = [] ; join₁ = [] ; join₂ = [] ; join₃ = [] }
+  disjointUnion³ (y   ∷ₙ d₁₂) (.y  ∷ₙ d₁₃) (.y   ∷ₙ d₂₃) = y ∷ʳ-DisjointUnion³ disjointUnion³ d₁₂ d₁₃ d₂₃
+  disjointUnion³ (y   ∷ₙ d₁₂) (xRy ∷ᵣ d₁₃) (.xRy ∷ᵣ d₂₃) = xRy ∷₃-DisjointUnion³ disjointUnion³ d₁₂ d₁₃ d₂₃
+  disjointUnion³ (xRy ∷ᵣ d₁₂) (y   ∷ₙ d₁₃) (.xRy ∷ₗ d₂₃) = xRy ∷₂-DisjointUnion³ disjointUnion³ d₁₂ d₁₃ d₂₃
+  disjointUnion³ (xRy ∷ₗ d₁₂) (.xRy ∷ₗ d₁₃) (y    ∷ₙ d₂₃) = xRy ∷₁-DisjointUnion³ disjointUnion³ d₁₂ d₁₃ d₂₃
+  disjointUnion³ (xRy ∷ᵣ d₁₂) (xRy′ ∷ᵣ d₁₃) ()
+
+  -- If a sublist τ is disjoint to two lists σ₁ and σ₂,
+  -- then also to their disjoint union σ.
+
+  disjoint⇒disjoint-to-union : ∀{xs ys zs yzs ts}
+    {τ : xs ⊆ ts} {σ₁ : ys ⊆ ts} {σ₂ : zs ⊆ ts} {σ : yzs ⊆ ts} →
+    Disjoint τ σ₁ → Disjoint τ σ₂ → DisjointUnion σ₁ σ₂ σ → Disjoint τ σ
+  disjoint⇒disjoint-to-union d₁ d₂ u = let
+       _ , _ , u₁ = Disjoint→DisjointUnion d₁
+       _ , _ , u₂ = Disjoint→DisjointUnion d₂
+    in DisjointUnion→Disjoint (DisjointUnion³.join₁ (disjointUnion³ u₁ u₂ u))
+
+open Disjointness public
+
+-- Monotonicity of disjointness.
+
+module DisjointnessMonotonicity
+    {a b c r s t} {A : Set a} {B : Set b} {C : Set c}
+    {R : REL A B r} {S : REL B C s} {T : REL A C t}
+    (rs⇒t : Trans R S T) where
+
+  -- We can enlarge and convert the target list of a disjoint union.
+
+  weakenDisjointUnion : ∀ {xs ys xys zs ws}
+    {τ₁ : Sublist R xs zs}
+    {τ₂ : Sublist R ys zs}
+    {τ : Sublist R xys zs} (σ : Sublist S zs ws) →
+    DisjointUnion τ₁ τ₂ τ →
+    DisjointUnion (trans rs⇒t τ₁ σ) (trans rs⇒t τ₂ σ) (trans rs⇒t τ σ)
+  weakenDisjointUnion [] [] = []
+  weakenDisjointUnion (w  ∷ʳ σ) d         = w ∷ₙ weakenDisjointUnion σ d
+  weakenDisjointUnion (_   ∷ σ) (y   ∷ₙ d) = _ ∷ₙ weakenDisjointUnion σ d
+  weakenDisjointUnion (zSw ∷ σ) (xRz ∷ₗ d) = rs⇒t xRz zSw ∷ₗ weakenDisjointUnion σ d
+  weakenDisjointUnion (zSw ∷ σ) (yRz ∷ᵣ d) = rs⇒t yRz zSw ∷ᵣ weakenDisjointUnion σ d
+
+  weakenDisjoint : ∀ {xs ys zs ws}
+    {τ₁ : Sublist R xs zs}
+    {τ₂ : Sublist R ys zs} (σ : Sublist S zs ws) →
+    Disjoint τ₁ τ₂ →
+    Disjoint (trans rs⇒t τ₁ σ) (trans rs⇒t τ₂ σ)
+  weakenDisjoint [] [] = []
+  weakenDisjoint (w  ∷ʳ σ) d         = w ∷ₙ weakenDisjoint σ d
+  weakenDisjoint (_   ∷ σ) (y   ∷ₙ d) = _ ∷ₙ weakenDisjoint σ d
+  weakenDisjoint (zSw ∷ σ) (xRz ∷ₗ d) = rs⇒t xRz zSw ∷ₗ weakenDisjoint σ d
+  weakenDisjoint (zSw ∷ σ) (yRz ∷ᵣ d) = rs⇒t yRz zSw ∷ᵣ weakenDisjoint σ d
+
+  -- Lists remain disjoint when elements are removed.
+
+  shrinkDisjoint : ∀ {us vs xs ys zs}
+                      (σ₁ : Sublist R us xs) {τ₁ : Sublist S xs zs}
+                      (σ₂ : Sublist R vs ys) {τ₂ : Sublist S ys zs} →
+                      Disjoint τ₁ τ₂ →
+                      Disjoint (trans rs⇒t σ₁ τ₁) (trans rs⇒t σ₂ τ₂)
+  shrinkDisjoint σ₁         σ₂ (y   ∷ₙ d) = y ∷ₙ shrinkDisjoint σ₁ σ₂ d
+  shrinkDisjoint (x  ∷ʳ σ₁) σ₂ (xSz ∷ₗ d) = _ ∷ₙ shrinkDisjoint σ₁ σ₂ d
+  shrinkDisjoint (uRx ∷ σ₁) σ₂ (xSz ∷ₗ d) = rs⇒t uRx xSz ∷ₗ shrinkDisjoint σ₁ σ₂ d
+  shrinkDisjoint σ₁ (y  ∷ʳ σ₂) (ySz ∷ᵣ d) = _ ∷ₙ shrinkDisjoint σ₁ σ₂ d
+  shrinkDisjoint σ₁ (vRy ∷ σ₂) (ySz ∷ᵣ d) = rs⇒t vRy ySz ∷ᵣ shrinkDisjoint σ₁ σ₂ d
+  shrinkDisjoint [] []         []         = []
+
+open DisjointnessMonotonicity public

@@ -1,188 +1,113 @@
-Version 1.2-dev
+Version 1.4-dev
 ===============
 
-The library has been tested using Agda version 2.6.0.1.
-
-Changes since 1.1:
+The library has been tested using Agda version 2.6.1.
 
 Highlights
 ----------
 
-
+* First instance modules
 
 Bug-fixes
 ---------
 
+Non-backwards compatible changes
+--------------------------------
+
+Deprecated modules
+------------------
+
+* `Data.AVL` and all of its submodules have been moved to `Data.Tree.AVL`
+
+* The module `Induction.WellFounded.InverseImage` has been deprecated. The proofs
+  `accessible` and `wellFounded` have been moved to `Relation.Binary.Construct.On`.
+
+* `Reflection.TypeChecking.MonadSyntax` ↦ `Reflection.TypeChecking.Monad.Syntax`
+
+Deprecated names
+----------------
 
 
-Other non-backwards compatible changes
---------------------------------------
-
-#### New function hierarchy
-
-The main problems with the current way various types of functions are
-handled are:
-  1. The raw functions were wrapped in the  equality-preserving
-         type `_⟶_` from `Function.Equality`. As the rest of the library
-     very rarely used such wrapped functions, it was almost impossible
-     to write code that interfaces neatly  between the `Function` hierarchy
-     and, for example, the `Algebra` hierarchy.
-  2. The symbol `_⟶_` that was used for equality preserving functions
-     was almost indistinguishable from ordinary functions `_→_` in many fonts,
-     leading to confusion when reading code.
-  3. The hierarchy didn't follow the same pattern as the other record
-     hierarchies in the standard library. Coupled with point 1., this meant
-     that anecdotally people are scared away from it.
-  4. There was no way of specifying a function has a specific property
-     (e.g. is injective) without specifying all the properties required
-     of the equality relation as well. This is in contrast to the
-     `Relation.Binary` and `Algebra` hierarchies where it is perfectly
-     possible to specify that for example an operation is commutative
-     without providing all the proofs associated with the equality relation.
-
-To address these problems a new function hierarchy similar to the ones in
-`Relation.Binary` and `Algebra` has been created. The new modules are as
-follows:
-  - `Function.Definitions` containing definitions like `Injective`,
-    `Surjective` parameterised by the function and the equality relations
-     over the domain and codomain.
-  - `Function.Structures` containing definitions like `IsInjection`,
-     `IsSurjection`, once again parameterised by the function and the equality
-     relations but also wrapping up all the equality and congruence lemmas.
-  - `Function.Packages` containing definitions like `Injection`, `Surjection`
-     which provides essentially the same top-level interface as currently exists,
-     i.e. parameterised by setoids but hiding the function.
-  - The old file `Function` has been moved to `Function.Core` and `Function`
-    now exports the whole of this hierarchy, just like `Relation.Binary`.
-
-These changes are nearly entirely backwards compatible. The only problem will occur
-is when code imports both `Function` and e.g. `Function.Injection` in which case the
-old and new definitions of `Injection` will clash. In the short term this can
-immediately be fixed by importing `Function.Core` instead of `Function`. However
-we would encourage to the new hierarchy in the medium to long term.
-
-The old modules will probably be deprecated (NOT COMPLETED AS OF YET)
-  ```agda
-  Function.Equivalence
-  Function.Equality
-  Function.Bijection
-  Function.Injection
-  Function.Surjection
-  Function.LeftInverse
-  ```
-
-#### Re-implementation of `Data.Bin`
-
-* `Data/Bin.agda` and `Data.Bin/*.agda`  of lib-1.0 are removed,
-  added new `Data.Bin.Base, Data.Bin.Properties`.
-  This total change of the Bin part is done for the following reasons.
-  1) Many necessary functions and proofs are added.
-  2) After this has been done, the author noticed (decided) that the whole
-   thing is implemented much simpler with using another representation for Bin:
-   the one with certain three constructors. This representation is taken
-   (with renaming the constructors) from the letter by Martin Escardo to the
-   e-mail list. The referred code (of 2016) resides on
-   http://www.cs.bham.ac.uk/~mhe/agda-new/BinaryNaturals.html
-
-New modules
------------
-The following new modules have been added to the library:
-
-* The following new modules have been added to the library:
-  ```
-  Algebra.Morphism.RawMagma
-  Algebra.Morphism.RawMonoid
-
-  Algebra.Properties.Semigroup
-  Algebra.Properties.CommutativeSemigroup
-
-  Data.Bin
-  Data.Bin.Base
-  Data.Bin.Properties
+Other major additions
+---------------------
 
   Data.Nat.Predicate
   Data.Integer.Predicate
   Data.Rational.Predicate
 
-  Data.Rational.Unnormalised
-  Data.Rational.Unnormalised.Properties
-
-  Function.Definitions
-  Function.Packages
-  Function.Structures
-
-  Relation.Binary.Properties.Setoid
-  ```
-
-Relocated modules
------------------
-The following modules have been moved as part of a drive to improve
-usability and consistency across the library. The old modules still exist and
-therefore all existing code should still work, however they have been deprecated
-and, although not anticipated any time soon, they may eventually
-be removed in some future release of the library. After the next release of Agda
-automated warnings will be attached to these modules to discourage their use.
-
-
-Deprecated names
-----------------
-The following deprecations have occurred as part of a drive to improve
-consistency across the library. The deprecated names still exist and
-therefore all existing code should still work, however use of the new names
-is encouraged. Although not anticipated any time soon, they may eventually
-be removed in some future release of the library. Automated warnings are
-attached to all deprecated names to discourage their use.
-
-* In `Data.Integer.Properties`:
+* Instance modules:
   ```agda
-  [1+m]*n≡n+m*n ↦ suc-*
+  Category.Monad.Partiality.Instances
+  Codata.Stream.Instances
+  Codata.Covec.Instances
+  Data.List.Instances
+  Data.List.NonEmpty.Instances
+  Data.Maybe.Instances
+  Data.Vec.Instances
+  Function.Identity.Instances
   ```
 
-* In `Data.Nat.Properties`:
-  ```agda
-  +-*-suc ↦ *-suc
+* Symmetric transitive closures of binary relations:
   ```
+  Relation.Binary.Construct.Closure.SymmetricTransitive
+  ```
+
+* Type-checking monads
+  ```
+  Reflection.TypeChecking.Monad
+  Reflection.TypeChecking.Monad.Categorical
+  Reflection.TypeChecking.Monad.Instances
+  ```
+
+Other major changes
+-------------------
 
 Other minor additions
 ---------------------
 
-* Added new constants to `Data.Integer.Base`:
+* The module `Data.Nat.Bin.Induction` now re-exports `Acc` and `acc`.
+
+* Added proofs to `Relation.Binary.PropositionalEquality`:
   ```agda
-  -1ℤ = -[1+ 0 ]
-   0ℤ = +0
-   1ℤ = +[1+ 0 ]
+  trans-cong  : trans (cong f p) (cong f q) ≡ cong f (trans p q)
+  cong₂-reflˡ : cong₂ _∙_ refl p ≡ cong (x ∙_) p
+  cong₂-reflʳ : cong₂ _∙_ p refl ≡ cong (_∙ u) p
   ```
 
-* Added new proof to `Data.Integer.Properties`:
-  ```agda
-  *-suc : m * sucℤ n ≡ m + m * n
-  ```
-
+<<<<<<< HEAD
 * Added new proof to `Data.Nat.Coprimality`:
   ```agda
   ¬0-coprimeTo-2+ : ¬ Coprime 0 (2 + n)
   ```
 
 * Added new proofs to `Data.Nat.Properties`:
-  ```agda
-  even≢odd : ∀ m n → 2 * m ≢ suc (2 * n)
-  0≢1+n    : ∀ {n} → 0 ≢ suc n
-  n<1+n    : ∀ {n} → n < suc n
+=======
+* Made first argument of `[,]-∘-distr` in `Data.Sum.Properties` explicit
 
-  +-rawMagma     : RawMagma 0ℓ 0ℓ
-  *-rawMagma     : RawMagma 0ℓ 0ℓ
-  +-0-rawMonoid  : RawMonoid 0ℓ 0ℓ
-  *-1-rawMonoid  : RawMonoid 0ℓ 0ℓ
+* Added new properties to ` Data.List.Relation.Binary.Permutation.Propositional.Properties`:
+>>>>>>> master
+  ```agda
+  ↭-empty-inv     : xs ↭ [] → xs ≡ []
+  ¬x∷xs↭[]        : ¬ ((x ∷ xs) ↭ [])
+  ↭-singleton-inv : xs ↭ [ x ] → xs ≡ [ x ]
+  ↭-map-inv       : map f xs ↭ ys → ∃ λ ys′ → ys ≡ map f ys′ × xs ↭ ys′
+  ↭-length        : xs ↭ ys → length xs ≡ length ys
   ```
 
-* Added new proofs to `Relation.Binary.PropositionalEquality`:
+* Added new proofs to ``Data.Sum.Properties`:
   ```agda
-  isMagma : (_∙_ : Op₂ A) → IsMagma _≡_ _∙_
-  magma   : (_∙_ : Op₂ A) → Magma a a
+  map-id        : map id id ≗ id
+  map₁₂-commute : map₁ f ∘ map₂ g ≗ map₂ g ∘ map₁ f
+  [,]-cong      : f ≗ f′ → g ≗ g′ → [ f , g ] ≗ [ f′ , g′ ]
+  [-,]-cong     : f ≗ f′ → [ f , g ] ≗ [ f′ , g ]
+  [,-]-cong     : g ≗ g′ → [ f , g ] ≗ [ f , g′ ]
+  map-cong      : f ≗ f′ → g ≗ g′ → map f g ≗ map f′ g′
+  map₁-cong     : f ≗ f′ → map₁ f ≗ map₁ f′
+  map₂-cong     : g ≗ g′ → map₂ g ≗ map₂ g′
   ```
 
-* Added functions to extract the universe level from a type and a term.
+* Added new proofs to `Data.Maybe.Relation.Binary.Pointwise`:
   ```agda
-  levelOfType : ∀ {a} → Set a → Level
-  levelOfTerm : ∀ {a} {A : Set a} → A → Level
+  nothing-inv : Pointwise R nothing x → x ≡ nothing
+  just-inv    : Pointwise R (just x) y → ∃ λ z → y ≡ just z × R x z
   ```

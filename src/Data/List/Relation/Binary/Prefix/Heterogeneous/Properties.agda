@@ -8,6 +8,7 @@
 
 module Data.List.Relation.Binary.Prefix.Heterogeneous.Properties where
 
+open import Data.Bool.Base using (true; false)
 open import Data.Empty
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 import Data.List.Relation.Unary.All.Properties as All
@@ -20,7 +21,7 @@ open import Data.Nat.Properties using (suc-injective)
 open import Data.Product as Prod using (_×_; _,_; proj₁; proj₂; uncurry)
 open import Function
 
-open import Relation.Nullary using (yes; no; ¬_)
+open import Relation.Nullary using (yes; no; ¬_; _because_)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Product using (_×-dec_)
 open import Relation.Unary as U using (Pred)
@@ -108,10 +109,10 @@ module _ {a b r p q} {A : Set a} {B : Set b} {R : REL A B r}
   filter⁺ : ∀ {as bs} → Prefix R as bs → Prefix R (filter P? as) (filter Q? bs)
   filter⁺ [] = []
   filter⁺ {a ∷ as} {b ∷ bs} (r ∷ rs) with P? a | Q? b
-  ... | yes pa | yes qb = r ∷ filter⁺ rs
-  ... | yes pa | no ¬qb = ⊥-elim (¬qb (P⇒Q r pa))
-  ... | no ¬pa | yes qb = ⊥-elim (¬pa (Q⇒P r qb))
-  ... | no ¬pa | no ¬qb = filter⁺ rs
+  ... |  true because _ |  true because _ = r ∷ filter⁺ rs
+  ... | yes pa          | no ¬qb          = ⊥-elim (¬qb (P⇒Q r pa))
+  ... | no ¬pa          | yes qb          = ⊥-elim (¬pa (Q⇒P r qb))
+  ... | false because _ | false because _ = filter⁺ rs
 
 ------------------------------------------------------------------------
 -- take

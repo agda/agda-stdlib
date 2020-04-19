@@ -11,7 +11,7 @@
 
 module Data.Integer.Properties where
 
-open import Algebra
+open import Algebra.Bundles
 import Algebra.Morphism as Morphism
 import Algebra.Properties.AbelianGroup
 open import Data.Integer.Base renaming (suc to sucℤ)
@@ -21,7 +21,7 @@ open import Data.Nat as ℕ
 import Data.Nat.Properties as ℕₚ
 open import Data.Nat.Solver
 open import Data.Product using (proj₁; proj₂; _,_)
-open import Data.Sum as Sum using (inj₁; inj₂)
+open import Data.Sum.Base as Sum using (inj₁; inj₂)
 open import Data.Sign as Sign using () renaming (_*_ to _𝕊*_)
 import Data.Sign.Properties as 𝕊ₚ
 open import Function using (_∘_; _$_)
@@ -32,7 +32,7 @@ open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Negation using (contradiction)
 import Relation.Nullary.Decidable as Dec
 
-open import Algebra.FunctionProperties {A = ℤ} _≡_
+open import Algebra.Definitions {A = ℤ} _≡_
 open import Algebra.FunctionProperties.Consequences.Propositional
 open import Algebra.Structures {A = ℤ} _≡_
 module ℤtoℕ = Morphism.Definitions ℤ ℕ _≡_
@@ -143,7 +143,7 @@ _≤?_ : Decidable _≤_
   }
 
 ------------------------------------------------------------------------
--- Packages
+-- Bundles
 
 ≤-preorder : Preorder 0ℓ 0ℓ 0ℓ
 ≤-preorder = record
@@ -272,7 +272,7 @@ _<?_ : Decidable _<_
   }
 
 ------------------------------------------------------------------------
--- Packages
+-- Bundles
 
 <-strictPartialOrder : StrictPartialOrder 0ℓ 0ℓ 0ℓ
 <-strictPartialOrder = record
@@ -306,7 +306,7 @@ module ≤-Reasoning where
     <-≤-trans
     ≤-<-trans
     public
-    hiding (_≈⟨_⟩_; _≈˘⟨_⟩_)
+    hiding (step-≈; step-≈˘)
 
 ------------------------------------------------------------------------
 -- Properties of -_
@@ -650,6 +650,12 @@ distribʳ-⊖-+-neg a b c = begin
   ; assoc   = +-assoc
   }
 
++-isCommutativeSemigroup : IsCommutativeSemigroup _+_
++-isCommutativeSemigroup = record
+  { isSemigroup = +-isSemigroup
+  ; comm        = +-comm
+  }
+
 +-0-isMonoid : IsMonoid _+_ +0
 +-0-isMonoid = record
   { isSemigroup = +-isSemigroup
@@ -658,9 +664,8 @@ distribʳ-⊖-+-neg a b c = begin
 
 +-0-isCommutativeMonoid : IsCommutativeMonoid _+_ +0
 +-0-isCommutativeMonoid = record
-  { isSemigroup = +-isSemigroup
-  ; identityˡ   = +-identityˡ
-  ; comm        = +-comm
+  { isMonoid = +-0-isMonoid
+  ; comm     = +-comm
   }
 
 +-0-isGroup : IsGroup _+_ +0 (-_)
@@ -677,7 +682,7 @@ distribʳ-⊖-+-neg a b c = begin
   }
 
 ------------------------------------------------------------------------
--- Packages
+-- Bundles
 
 +-magma : Magma 0ℓ 0ℓ
 +-magma = record
@@ -687,6 +692,11 @@ distribʳ-⊖-+-neg a b c = begin
 +-semigroup : Semigroup 0ℓ 0ℓ
 +-semigroup = record
   { isSemigroup = +-isSemigroup
+  }
+
++-commutativeSemigroup : CommutativeSemigroup 0ℓ 0ℓ
++-commutativeSemigroup = record
+  { isCommutativeSemigroup = +-isCommutativeSemigroup
   }
 
 +-0-monoid : Monoid 0ℓ 0ℓ
@@ -876,8 +886,8 @@ m-n≤m m n = ≤-steps-neg n ≤-refl
 m≤n⇒m-n≤0 : ∀ {m n} → m ≤ n → m - n ≤ + 0
 m≤n⇒m-n≤0 (-≤+ {n = n})         = ≤-steps-neg n -≤+
 m≤n⇒m-n≤0 (-≤- {n = n} n≤m)     = ≤-trans (⊖-monoʳ-≥-≤ n n≤m) (≤-reflexive (n⊖n≡0 n))
-m≤n⇒m-n≤0 (+≤+ {n = 0} z≤n)     = +≤+ z≤n
-m≤n⇒m-n≤0 (+≤+ {n = suc n} z≤n) = -≤+
+m≤n⇒m-n≤0 {n = + 0}     (+≤+ z≤n) = +≤+ z≤n
+m≤n⇒m-n≤0 {n = + suc n} (+≤+ z≤n) = -≤+
 m≤n⇒m-n≤0 (+≤+ (s≤s {m} m≤n))   = ≤-trans (⊖-monoʳ-≥-≤ m m≤n) (≤-reflexive (n⊖n≡0 m))
 
 m-n≤0⇒m≤n : ∀ {m n} → m - n ≤ + 0 → m ≤ n
@@ -934,6 +944,18 @@ suc-mono : sucℤ Preserves _≤_ ⟶ _≤_
 suc-mono (-≤+ {m}) = 0⊖m≤+ m
 suc-mono (-≤- n≤m) = ⊖-monoʳ-≥-≤ zero n≤m
 suc-mono (+≤+ m≤n) = +≤+ (s≤s m≤n)
+
+suc[i]≤j⇒i<j : ∀ {i j} → sucℤ i ≤ j → i < j
+suc[i]≤j⇒i<j {+ i}           {+ _}       (+≤+ i≤j) = +<+ i≤j
+suc[i]≤j⇒i<j { -[1+ 0 ]}     {+ j}       p         = -<+
+suc[i]≤j⇒i<j { -[1+ suc i ]} {+ j}       -≤+       = -<+
+suc[i]≤j⇒i<j { -[1+ suc i ]} { -[1+ j ]} (-≤- j≤i) = -<- (ℕ.s≤s j≤i)
+
+i<j⇒suc[i]≤j : ∀ {i j} → i < j → sucℤ i ≤ j
+i<j⇒suc[i]≤j {+ _}           {+ _}       (+<+ i<j) = +≤+ i<j
+i<j⇒suc[i]≤j { -[1+ 0 ]}     {+ _}       -<+       = +≤+ z≤n
+i<j⇒suc[i]≤j { -[1+ suc i ]} { -[1+ _ ]} (-<- j<i) = -≤- (ℕ.≤-pred j<i)
+i<j⇒suc[i]≤j { -[1+ suc i ]} {+ _}       -<+       = -≤+
 
 ------------------------------------------------------------------------
 -- Properties of pred
@@ -1171,6 +1193,12 @@ private
   ; assoc   = *-assoc
   }
 
+*-isCommutativeSemigroup : IsCommutativeSemigroup _*_
+*-isCommutativeSemigroup = record
+  { isSemigroup = *-isSemigroup
+  ; comm        = *-comm
+  }
+
 *-1-isMonoid : IsMonoid _*_ (+ 1)
 *-1-isMonoid = record
   { isSemigroup = *-isSemigroup
@@ -1179,17 +1207,24 @@ private
 
 *-1-isCommutativeMonoid : IsCommutativeMonoid _*_ (+ 1)
 *-1-isCommutativeMonoid = record
-  { isSemigroup = *-isSemigroup
-  ; identityˡ   = *-identityˡ
-  ; comm        = *-comm
+  { isMonoid = *-1-isMonoid
+  ; comm     = *-comm
+  }
+
++-*-isSemiring : IsSemiring _+_ _*_ +0 (+ 1)
++-*-isSemiring = record
+  { isSemiringWithoutAnnihilatingZero = record
+    { +-isCommutativeMonoid = +-0-isCommutativeMonoid
+    ; *-isMonoid = *-1-isMonoid
+    ; distrib = *-distrib-+
+    }
+  ; zero = *-zero
   }
 
 +-*-isCommutativeSemiring : IsCommutativeSemiring _+_ _*_ +0 (+ 1)
 +-*-isCommutativeSemiring = record
-  { +-isCommutativeMonoid = +-0-isCommutativeMonoid
-  ; *-isCommutativeMonoid = *-1-isCommutativeMonoid
-  ; distribʳ              = *-distribʳ-+
-  ; zeroˡ                 = *-zeroˡ
+  { isSemiring = +-*-isSemiring
+  ; *-comm = *-comm
   }
 
 +-*-isRing : IsRing _+_ _*_ -_ +0 (+ 1)
@@ -1197,6 +1232,7 @@ private
   { +-isAbelianGroup = +-isAbelianGroup
   ; *-isMonoid       = *-1-isMonoid
   ; distrib          = *-distrib-+
+  ; zero             = *-zero
   }
 
 +-*-isCommutativeRing : IsCommutativeRing _+_ _*_ -_ +0 (+ 1)
@@ -1206,7 +1242,7 @@ private
   }
 
 ------------------------------------------------------------------------
--- Packages
+-- Bundles
 
 *-magma : Magma 0ℓ 0ℓ
 *-magma = record
@@ -1218,6 +1254,11 @@ private
   { isSemigroup = *-isSemigroup
   }
 
+*-commutativeSemigroup : CommutativeSemigroup 0ℓ 0ℓ
+*-commutativeSemigroup = record
+  { isCommutativeSemigroup = *-isCommutativeSemigroup
+  }
+
 *-1-monoid : Monoid 0ℓ 0ℓ
 *-1-monoid = record
   { isMonoid = *-1-isMonoid
@@ -1226,6 +1267,11 @@ private
 *-1-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
 *-1-commutativeMonoid = record
   { isCommutativeMonoid = *-1-isCommutativeMonoid
+  }
+
++-*-semiring : Semiring 0ℓ 0ℓ
++-*-semiring = record
+  { isSemiring = +-*-isSemiring
   }
 
 +-*-ring : Ring 0ℓ 0ℓ
@@ -1364,8 +1410,8 @@ neg-distribʳ-* x y = begin
 *-monoʳ-≤-pos _ (-≤+             {n = suc _})     = -≤+
 *-monoʳ-≤-pos x (-≤-                         n≤m) =
   -≤- (ℕₚ.≤-pred (ℕₚ.*-mono-≤ (s≤s n≤m) (ℕₚ.≤-refl {x = suc x})))
-*-monoʳ-≤-pos _ (+≤+ {m = 0}     {n = 0}     m≤n) = +≤+ m≤n
-*-monoʳ-≤-pos _ (+≤+ {m = 0}     {n = suc _} m≤n) = +≤+ z≤n
+*-monoʳ-≤-pos k {+ 0} {+ 0}     (+≤+ m≤n) = +≤+ m≤n
+*-monoʳ-≤-pos k {+ 0} {+ suc _} (+≤+ m≤n) = +≤+ z≤n
 *-monoʳ-≤-pos x (+≤+ {m = suc _} {n = suc _} m≤n) =
   +≤+ ((ℕₚ.*-mono-≤ m≤n (ℕₚ.≤-refl {x = suc x})))
 
@@ -1855,6 +1901,6 @@ Please use _<_ instead."
 
 [1+m]*n≡n+m*n = suc-*
 {-# WARNING_ON_USAGE [1+m]*n≡n+m*n
-"Warning: [1+m]*n≡n+m*n was deprecated in v1.1.
+"Warning: [1+m]*n≡n+m*n was deprecated in v1.2.
 Please use suc-* instead."
 #-}
