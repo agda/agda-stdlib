@@ -17,6 +17,8 @@ Non-backwards compatible changes
 Deprecated modules
 ------------------
 
+* `Data.AVL` and all of its submodules have been moved to `Data.Tree.AVL`
+
 * The module `Induction.WellFounded.InverseImage` has been deprecated. The proofs
   `accessible` and `wellFounded` have been moved to `Relation.Binary.Construct.On`.
 
