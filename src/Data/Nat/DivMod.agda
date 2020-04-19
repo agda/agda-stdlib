@@ -23,7 +23,7 @@ open import Relation.Nullary.Decidable using (False)
 open ≤-Reasoning
 
 ------------------------------------------------------------------------
--- Definitions (with automatic non-zeroness)
+-- Definitions
 
 -- The division and modulus operations are only defined when the divisor
 -- is non-zero. The proof of non-zero-ness is provided as an irrelevant

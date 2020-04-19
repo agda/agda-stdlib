@@ -178,10 +178,6 @@ NonNegative p = ℚᵘ.NonNegative (toℚᵘ p)
 
 -- Constructors
 
--- Note: these could be proved more elegantly using the constructors
--- from ℤ but it requires importing `Data.Integer.Properties` which
--- we would like to avoid doing.
-
 ≢-nonZero : ∀ {p} → p ≢ 0ℚ → NonZero p
 ≢-nonZero {mkℚ -[1+ _ ] _       _} _   = _
 ≢-nonZero {mkℚ +[1+ _ ] _       _} _   = _
