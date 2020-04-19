@@ -8,6 +8,10 @@ Highlights
 
 * First instance modules
 
+* New standardised numeric predicates `NonZero`, `Positive`, `Negative`,
+  `NonPositive`, `NonNegative`, especially designed to work as instance
+  arguments.
+
 Bug-fixes
 ---------
 
