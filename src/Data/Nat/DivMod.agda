@@ -15,7 +15,6 @@ open import Data.Fin.Properties using (toℕ-fromℕ<)
 open import Data.Nat.Base as Nat
 open import Data.Nat.DivMod.Core
 open import Data.Nat.Divisibility.Core
-open import Data.Nat.Predicate
 open import Data.Nat.Properties
 open import Data.Nat.Tactic.RingSolver
 open import Relation.Binary.PropositionalEquality
@@ -27,12 +26,12 @@ open ≤-Reasoning
 -- Definitions (with automatic non-zeroness)
 
 -- The division and modulus operations are only defined when the divisor
--- is non-zero. The proof of this is defined as an irrelevant
--- implict argument of type `NonZero divisor ≡ False (divisor ≟ 0)`.
--- This allows this proof to be automatically inferred when the divisor
--- is of the form `suc n`, and hence minimises the number of these
--- proofs that need be passed around. You can therefore write
--- `m / suc n` without issue.
+-- is non-zero. The proof of non-zero-ness is provided as an irrelevant
+-- implicit argument which is defined in terms of `⊤` and `⊥`. This
+-- allows it to be automatically inferred when the divisor is of the
+-- form `suc n`, and hence minimises the number of these proofs that
+-- need be passed around. You can therefore write `m / suc n` without
+-- further elaboration.
 
 infixl 7 _/_ _%_
 

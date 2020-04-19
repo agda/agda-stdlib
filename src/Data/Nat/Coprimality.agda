@@ -26,7 +26,7 @@ open import Function
 open import Level using (0ℓ)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; cong; subst; module ≡-Reasoning)
-open import Relation.Nullary
+open import Relation.Nullary as Nullary hiding (recompute)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Binary
 
@@ -100,6 +100,11 @@ coprime? i j with mkGCD i j
 
 coprime-+ : ∀ {m n} → Coprime m n → Coprime (n + m) n
 coprime-+ c (d₁ , d₂) = c (∣m+n∣m⇒∣n d₁ d₂ , d₂)
+
+-- Recomputable
+
+recompute : ∀ {n d} → .(Coprime n d) → Coprime n d
+recompute {n} {d} c = Nullary.recompute (coprime? n d) c
 
 ------------------------------------------------------------------------
 -- Relationship with Bezout's lemma
