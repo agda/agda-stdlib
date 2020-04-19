@@ -84,8 +84,6 @@ a ≯ b = ¬ a > b
 --
 -- See `Data.Nat.DivMod` for an example.
 
-open Data.Unit public using (tt)
-
 NonZero : ℕ → Set
 NonZero zero    = ⊥
 NonZero (suc x) = ⊤
