@@ -73,7 +73,7 @@ Other minor additions
   NonPositive : Pred ℤ 0ℓ
   NonNegative : Pred ℤ 0ℓ
 
-  ≢-nonZero   : p ≠ 0ℤ → NonZero p
+  ≢-nonZero   : p ≢ 0ℤ → NonZero p
   >-nonZero   : p > 0ℤ → NonZero p
   <-nonZero   : p < 0ℤ → NonZero p
   positive    : p > 0ℤ → Positive p
@@ -142,7 +142,7 @@ Other minor additions
   NonPositive : Pred ℚ 0ℓ
   NonNegative : Pred ℚ 0ℓ
 
-  ≢-nonZero   : p ≠ 0ℚ → NonZero p
+  ≢-nonZero   : p ≢ 0ℚ → NonZero p
   >-nonZero   : p > 0ℚ → NonZero p
   <-nonZero   : p < 0ℚ → NonZero p
   positive    : p > 0ℚ → Positive p
