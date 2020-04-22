@@ -70,12 +70,12 @@ module _ {a p} {A : Set a} {P : Pred A p} (P? : Decidable P) where
   filter []       = [] ≡ [] ⊎ []
   filter (x ∷ xs) =
     -- otherwise we start by running filter on the tail
-    let xs' ≡ ps ⊎ ¬ps = filter xs in
+    let xs′ ≡ ps ⊎ ¬ps = filter xs in
     -- And depending on whether `P` holds of the head,
     -- we cons it to the `kept` or `thrown` list.
     case P? x of λ where -- [1]
-      (yes p) → consˡ xs' ≡ p ∷ ps ⊎      ¬ps
-      (no ¬p) → consʳ xs' ≡     ps ⊎ ¬p ∷ ¬ps
+      (yes p) → consˡ xs′ ≡ p ∷ ps ⊎      ¬ps
+      (no ¬p) → consʳ xs′ ≡     ps ⊎ ¬p ∷ ¬ps
 
 
 

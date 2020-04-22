@@ -1823,7 +1823,7 @@ Please use _<_ instead."
 ≰⇒>′ { -[1+ suc _ ]} { -[1+ 0 ]}     m≰n =  contradiction (-≤- z≤n) m≰n
 ≰⇒>′ { -[1+ m ]}     { -[1+ suc n ]} m≰n with m ℕ.≤? n
 ... | yes m≤n  = -≤- m≤n
-... | no  m≰n' = contradiction (-≤- (ℕₚ.≰⇒> m≰n')) m≰n
+... | no  m≰n′ = contradiction (-≤- (ℕₚ.≰⇒> m≰n′)) m≰n
 {-# WARNING_ON_USAGE ≰⇒>′
 "Warning: _<′_ was deprecated in v1.1.
 Please use _<_ instead."

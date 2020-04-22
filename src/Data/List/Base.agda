@@ -223,7 +223,7 @@ unfold : ∀ (P : ℕ → Set b)
 unfold P f {n = zero}  s = []
 unfold P f {n = suc n} s with f s
 ... | nothing       = []
-... | just (x , s') = x ∷ unfold P f s'
+... | just (x , s′) = x ∷ unfold P f s′
 
 ------------------------------------------------------------------------
 -- Operations for deconstructing lists
@@ -357,17 +357,17 @@ xs ∷ʳ? x = maybe′ (xs ∷ʳ_) xs x
 
 -- Backwards initialisation
 
-infixl 5 _∷ʳ'_
+infixl 5 _∷ʳ′_
 
 data InitLast {A : Set a} : List A → Set a where
   []    : InitLast []
-  _∷ʳ'_ : (xs : List A) (x : A) → InitLast (xs ∷ʳ x)
+  _∷ʳ′_ : (xs : List A) (x : A) → InitLast (xs ∷ʳ x)
 
 initLast : (xs : List A) → InitLast xs
 initLast []               = []
 initLast (x ∷ xs)         with initLast xs
-... | []       = [] ∷ʳ' x
-... | ys ∷ʳ' y = (x ∷ ys) ∷ʳ' y
+... | []       = [] ∷ʳ′ x
+... | ys ∷ʳ′ y = (x ∷ ys) ∷ʳ′ y
 
 ------------------------------------------------------------------------
 -- DEPRECATED

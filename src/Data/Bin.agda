@@ -177,7 +177,7 @@ addBitLists : Carry → List Bit → List Bit → List Bit
 addBitLists c []         bs₂        = addCarryToBitList c bs₂
 addBitLists c bs₁        []         = addCarryToBitList c bs₁
 addBitLists c (b₁ ∷ bs₁) (b₂ ∷ bs₂) with addBits c b₁ b₂
-... | (c' , b') = b' ∷ addBitLists c' bs₁ bs₂
+... | (c′ , b′) = b′ ∷ addBitLists c′ bs₁ bs₂
 
 infixl 6 _+_
 
@@ -194,8 +194,8 @@ _*_ : Bin → Bin → Bin
 -- (b + 2 * bs 1#) * n = b * n + 2 * (bs 1# * n)
 (b  ∷ bs) 1# * n with bs 1# * n
 (b  ∷ bs) 1# * n | 0#     = 0#
-(0b ∷ bs) 1# * n | bs' 1# = (0b ∷ bs') 1#
-(1b ∷ bs) 1# * n | bs' 1# = n + (0b ∷ bs') 1#
+(0b ∷ bs) 1# * n | bs′ 1# = (0b ∷ bs′) 1#
+(1b ∷ bs) 1# * n | bs′ 1# = n + (0b ∷ bs′) 1#
 (⊥b ∷ _)  1# * _ | _
 
 -- Successor.

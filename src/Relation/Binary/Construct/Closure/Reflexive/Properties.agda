@@ -49,7 +49,7 @@ module _ {_~_ : Rel A ℓ} where
   trans ~-trans refl    [ x∼y ]  = [ x∼y ]
   trans ~-trans refl    refl     = refl
 
-  antisym : ∀ {ℓ'} (_≈_ : Rel A ℓ') → Reflexive _≈_ →
+  antisym : ∀ {ℓ′} (_≈_ : Rel A ℓ′) → Reflexive _≈_ →
             Asymmetric _~_ → Antisymmetric _≈_ (Refl _~_)
   antisym _≈_ ref asym [ x∼y ] [ y∼x ] = contradiction x∼y (asym y∼x)
   antisym _≈_ ref asym [ x∼y ] refl    = ref

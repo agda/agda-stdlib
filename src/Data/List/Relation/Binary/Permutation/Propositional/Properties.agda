@@ -104,8 +104,8 @@ module _ {a b} {A : Set a} {B : Set b} (f : A → B) where
   ↭-map-inv {[]}     ρ                                                  = -, ↭-empty-inv (↭-sym ρ) , ↭-refl
   ↭-map-inv {x ∷ []} ρ                                                  = -, ↭-singleton-inv (↭-sym ρ) , ↭-refl
   ↭-map-inv {_ ∷ _ ∷ _} refl                                            = -, refl , ↭-refl
-  ↭-map-inv {_ ∷ _ ∷ _} (prep _ ρ)    with _ , refl , ρ' ← ↭-map-inv ρ  = -, refl , prep _ ρ'
-  ↭-map-inv {_ ∷ _ ∷ _} (swap _ _ ρ)  with _ , refl , ρ' ← ↭-map-inv ρ  = -, refl , swap _ _ ρ'
+  ↭-map-inv {_ ∷ _ ∷ _} (prep _ ρ)    with _ , refl , ρ′ ← ↭-map-inv ρ  = -, refl , prep _ ρ′
+  ↭-map-inv {_ ∷ _ ∷ _} (swap _ _ ρ)  with _ , refl , ρ′ ← ↭-map-inv ρ  = -, refl , swap _ _ ρ′
   ↭-map-inv {_ ∷ _ ∷ _} (trans ρ₁ ρ₂) with _ , refl , ρ₃ ← ↭-map-inv ρ₁
                                       with _ , refl , ρ₄ ← ↭-map-inv ρ₂ = -, refl , trans ρ₃ ρ₄
 

@@ -108,13 +108,13 @@ module All {_<_ : Rel A r} (wf : WellFounded _<_) ℓ where
 module FixPoint
   {_<_ : Rel A ℓ} (wf : WellFounded _<_)
   (P : Pred A ℓ) (f : WfRec _<_ P ⊆′ P)
-  (f-ext : (x : A) {IH IH' : WfRec _<_ P x} → (∀ {y} y<x → IH y y<x ≡ IH' y y<x) → f x IH ≡ f x IH')
+  (f-ext : (x : A) {IH IH′ : WfRec _<_ P x} → (∀ {y} y<x → IH y y<x ≡ IH′ y y<x) → f x IH ≡ f x IH′)
   where
 
-  some-wfRec-irrelevant : ∀ x → (q q' : Acc _<_ x) → Some.wfRec P f x q ≡ Some.wfRec P f x q'
+  some-wfRec-irrelevant : ∀ x → (q q′ : Acc _<_ x) → Some.wfRec P f x q ≡ Some.wfRec P f x q′
   some-wfRec-irrelevant = All.wfRec wf _
-                                   (λ x → (q q' : Acc _<_ x) → Some.wfRec P f x q ≡ Some.wfRec P f x q')
-                                   (λ { x IH (acc rs) (acc rs') → f-ext x (λ y<x → IH _ y<x (rs _ y<x) (rs' _ y<x)) })
+                                   (λ x → (q q′ : Acc _<_ x) → Some.wfRec P f x q ≡ Some.wfRec P f x q′)
+                                   (λ { x IH (acc rs) (acc rs′) → f-ext x (λ y<x → IH _ y<x (rs _ y<x) (rs′ _ y<x)) })
 
   open All wf ℓ
   wfRecBuilder-wfRec : ∀ {x y} y<x → wfRecBuilder P f x y y<x ≡ wfRec P f y

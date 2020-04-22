@@ -193,7 +193,7 @@ data SnocView {A : Set a} : List⁺ A → Set a where
 snocView : (xs : List⁺ A) → SnocView xs
 snocView (x ∷ xs)              with List.initLast xs
 snocView (x ∷ .[])             | []            = []       ∷ʳ′ x
-snocView (x ∷ .(xs List.∷ʳ y)) | xs List.∷ʳ' y = (x ∷ xs) ∷ʳ′ y
+snocView (x ∷ .(xs List.∷ʳ y)) | xs List.∷ʳ′ y = (x ∷ xs) ∷ʳ′ y
 
 -- The last element in the list.
 

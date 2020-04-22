@@ -297,26 +297,26 @@ map-[]≔ f xs i = map-updateAt xs i refl
 ------------------------------------------------------------------------
 -- _++_
 
-module _ {m} {ys ys' : Vec A m} where
+module _ {m} {ys ys′ : Vec A m} where
 
   -- See also Data.Vec.Properties.WithK.++-assoc.
 
-  ++-injectiveˡ : ∀ {n} (xs xs' : Vec A n) →
-                  xs ++ ys ≡ xs' ++ ys' → xs ≡ xs'
+  ++-injectiveˡ : ∀ {n} (xs xs′ : Vec A n) →
+                  xs ++ ys ≡ xs′ ++ ys′ → xs ≡ xs′
   ++-injectiveˡ []       []         _  = refl
-  ++-injectiveˡ (x ∷ xs) (x' ∷ xs') eq =
+  ++-injectiveˡ (x ∷ xs) (x′ ∷ xs′) eq =
     P.cong₂ _∷_ (∷-injectiveˡ eq) (++-injectiveˡ _ _ (∷-injectiveʳ eq))
 
-  ++-injectiveʳ : ∀ {n} (xs xs' : Vec A n) →
-                  xs ++ ys ≡ xs' ++ ys' → ys ≡ ys'
+  ++-injectiveʳ : ∀ {n} (xs xs′ : Vec A n) →
+                  xs ++ ys ≡ xs′ ++ ys′ → ys ≡ ys′
   ++-injectiveʳ []       []         eq = eq
-  ++-injectiveʳ (x ∷ xs) (x' ∷ xs') eq =
-    ++-injectiveʳ xs xs' (∷-injectiveʳ eq)
+  ++-injectiveʳ (x ∷ xs) (x′ ∷ xs′) eq =
+    ++-injectiveʳ xs xs′ (∷-injectiveʳ eq)
 
-  ++-injective  : ∀ {n} (xs xs' : Vec A n) →
-                  xs ++ ys ≡ xs' ++ ys' → xs ≡ xs' × ys ≡ ys'
-  ++-injective xs xs' eq =
-    (++-injectiveˡ xs xs' eq , ++-injectiveʳ xs xs' eq)
+  ++-injective  : ∀ {n} (xs xs′ : Vec A n) →
+                  xs ++ ys ≡ xs′ ++ ys′ → xs ≡ xs′ × ys ≡ ys′
+  ++-injective xs xs′ eq =
+    (++-injectiveˡ xs xs′ eq , ++-injectiveʳ xs xs′ eq)
 
 lookup-++-< : ∀ {m n} (xs : Vec A m) (ys : Vec A n) →
               ∀ i (i<m : toℕ i < m) →
