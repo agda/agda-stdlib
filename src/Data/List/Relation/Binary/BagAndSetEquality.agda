@@ -24,7 +24,7 @@ open import Data.List.Relation.Binary.Subset.Propositional.Properties
 open import Data.Product as Prod hiding (map)
 import Data.Product.Function.Dependent.Propositional as Σ
 open import Data.Sum.Base as Sum hiding (map)
-open import Data.Sum.Properties
+open import Data.Sum.Properties hiding (map-cong)
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
 open import Data.Unit
 open import Function.Base

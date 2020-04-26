@@ -177,7 +177,7 @@ import README.Data.Integer
 
 -- Some examples showing how the AVL tree module can be used.
 
-import README.Data.AVL
+import README.Data.Tree.AVL
 
 -- Some examples showing how List module can be used.
 
@@ -189,7 +189,7 @@ import README.Data.List.Fresh
 
 -- Using List's Interleaving to define a fully certified filter function.
 
-import README.Data.Interleaving
+import README.Data.List.Interleaving
 
 -- Example of an encoding of record types with manifest fields and "with".
 
