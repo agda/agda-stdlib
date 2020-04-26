@@ -37,7 +37,7 @@ module _ {α α= β β=} (M₁ : Magma α α=) (M₂ : Magma β β=) where
     where open EqR M₁.setoid
 
   homomorphic₂-inj  : ∀ {f g} → Injective _≈₁_ _≈₂_ f →
-                      Inverseˡ _≈₁_ _≈₂_ f g → 
+                      Inverseˡ _≈₁_ _≈₂_ f g →
                       Homomorphic₂ _ _ _≈₂_ f _∙₁_ _∙₂_  →
                       Homomorphic₂ _ _ _≈₁_ g _∙₂_ _∙₁_
   homomorphic₂-inj {f} {g} inj invˡ homo x y = inj (begin
