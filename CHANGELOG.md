@@ -69,7 +69,9 @@ Other minor additions
 
 * Added new function to `Data.Nat.Properties`:
  ```agda
- ∸-magma : Magma _ _
+ ∸-magma           : Magma _ _
+ 
+ pred[m∸n]≡m∸[1+n] : pred (m ∸ n) ≡ m ∸ suc n
  ```
 
 * Added new functions (proofs) to `Data.Nat.Binary.Properties`:

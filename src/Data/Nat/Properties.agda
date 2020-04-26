@@ -1479,6 +1479,15 @@ n∸n≡0 zero    = refl
 n∸n≡0 (suc n) = n∸n≡0 n
 
 ------------------------------------------------------------------------
+-- Properties of _∸_ and pred
+
+pred[m∸n]≡m∸[1+n] : ∀ m n → pred (m ∸ n) ≡ m ∸ suc n
+pred[m∸n]≡m∸[1+n] zero    zero    = refl
+pred[m∸n]≡m∸[1+n] (suc m) zero    = refl
+pred[m∸n]≡m∸[1+n] zero (suc n)    = refl
+pred[m∸n]≡m∸[1+n] (suc m) (suc n) = pred[m∸n]≡m∸[1+n] m n
+
+------------------------------------------------------------------------
 -- Properties of _∸_ and _≤_/_<_
 
 m∸n≤m : ∀ m n → m ∸ n ≤ m
