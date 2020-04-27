@@ -97,4 +97,35 @@ Other minor additions
   nothing-inv : Pointwise R nothing x → x ≡ nothing
   just-inv    : Pointwise R (just x) y → ∃ λ z → y ≡ just z × R x z
   ```
-* using \prime rather than apostrophe throughout code base in order to be consistent. Before this change it was not predictable whether an identifier ends with an apostrophe or a prime.
+* using \prime rather than apostrophe throughout code base in order to
+be consistent. Before this change it was not predictable whether an
+identifier ends with an apostrophe or a prime.
+
+  The following three were deprecated:
+
+  In Relation.Binary.Construct.StrictToNonStrict:
+  ```agda
+  decidable'
+  ```
+  - Use the following instead:
+  ```agda
+  decidable′
+  ```
+
+  In the module Data.List.NonEmpty, and within data SnocView
+  ```agda
+  _∷ʳ'_
+  ```
+  - Use the following instead
+  ```agda
+  _∷ʳ′_
+  ```
+
+  In Data.List.Base, and within `data InitLast`, the following was deprecated:
+  ```agda
+  _∷ʳ'_
+  ```
+  - Use the following  instead
+  ```agda
+  _∷ʳ′_
+  ```
