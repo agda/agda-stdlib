@@ -104,8 +104,7 @@ open import Agda.Builtin.Nat public
   using (_+_; _*_) renaming (_-_ to _∸_)
 
 pred : ℕ → ℕ
-pred zero    = zero
-pred (suc n) = n
+pred n = n ∸ 1
 
 infixl 7 _⊓_
 infixl 6 _+⋎_ _⊔_
