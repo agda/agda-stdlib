@@ -326,3 +326,19 @@ private
     wordsBy (ℕ._≡ᵇ 1) (1 ∷ 2 ∷ 3 ∷ 1 ∷ 1 ∷ 2 ∷ 1 ∷ []) ≡
     (2 ∷⁺ [ 3 ]) ∷ [ 2 ] ∷ []
   wordsBy-≡1 = refl
+
+------------------------------------------------------------------------
+-- DEPRECATED
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 1.4
+{-# WARNING_ON_USAGE _∷ʳ'_
+"Warning: _∷ʳ'_ (ending in an apostrophe) was deprecated in v1.4.
+Please use _∷ʳ′_ (ending in a \prime) instead."
+#-}
+
+infixl 5 _∷ʳ'_
+_∷ʳ'_ = _∷ʳ′_
+
