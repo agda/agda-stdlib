@@ -47,15 +47,12 @@ open import Relation.Nullary.Decidable as Dec using (True; fromWitness; map′)
 open import Relation.Nullary.Product using (_×-dec_)
 
 open import Algebra.Definitions {A = ℚ} _≡_
-open import Algebra.Structures {A = ℚ} _≡_
+open import Algebra.Structures  {A = ℚ} _≡_
 
 private
   infix 4 _≢0
   _≢0 : ℕ → Set
   n ≢0 = False (n ℕ.≟ 0)
-
-  recomputeCP : ∀ {n d} → .(Coprime n d) → Coprime n d
-  recomputeCP {n} {d} c = recompute (coprime? n d) c
 
 ------------------------------------------------------------------------
 -- Propositional equality
@@ -119,7 +116,7 @@ mkℚ+-cong _ _ refl refl = refl
 
   1+d₁∣1+d₂ : suc d₁ ∣ suc d₂
   1+d₁∣1+d₂ = coprime-divisor (+ suc d₁) n₁ (+ suc d₂)
-    (C.sym (recomputeCP c₁)) $
+    (C.sym (C.recompute c₁)) $
     divides ∣ n₂ ∣ $ begin
       ∣ n₁ ℤ.* + suc d₂ ∣  ≡⟨ cong ∣_∣ eq ⟩
       ∣ n₂ ℤ.* + suc d₁ ∣  ≡⟨ ℤ.abs-*-commute n₂ (+ suc d₁) ⟩
@@ -127,7 +124,7 @@ mkℚ+-cong _ _ refl refl = refl
 
   1+d₂∣1+d₁ : suc d₂ ∣ suc d₁
   1+d₂∣1+d₁ = coprime-divisor (+ suc d₂) n₂ (+ suc d₁)
-    (C.sym (recomputeCP c₂)) $
+    (C.sym (C.recompute c₂)) $
     divides ∣ n₁ ∣ (begin
       ∣ n₂ ℤ.* + suc d₁ ∣  ≡⟨ cong ∣_∣ (sym eq) ⟩
       ∣ n₁ ℤ.* + suc d₂ ∣  ≡⟨ ℤ.abs-*-commute n₁ (+ suc d₂) ⟩
@@ -166,7 +163,7 @@ normalize-coprime {n} {d-1} c = begin
   mkℚ (+ n) d-1 _            ∎
   where
   open ≡-Reasoning; d = suc d-1; g = ℕ.gcd n d
-  c′ = recomputeCP c
+  c′ = C.recompute c
   c₂ : Coprime (n ℕ./ 1) (d ℕ./ 1)
   c₂ = subst₂ Coprime (sym (ℕ.n/1≡n n)) (sym (ℕ.n/1≡n d)) c′
   g≡1 = C.coprime⇒gcd≡1 c′
