@@ -152,7 +152,7 @@ isDecTotalOrder STO = record
 -- Version 1.4
 {-# WARNING_ON_USAGE decidable'
 "Warning: decidable' (ending in an apostrophe) was deprecated in v1.4.
-Please use decidable′ (ending in a \prime) instead."
+Please use decidable′ (ending in a prime) instead."
 #-}
 decidable' = decidable′
 

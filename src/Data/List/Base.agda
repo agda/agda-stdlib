@@ -421,7 +421,7 @@ boolBreak p = boolSpan (not ∘ p)
 -- Version 1.4
 {-# WARNING_ON_USAGE _∷ʳ'_
 "Warning: _∷ʳ'_ (ending in an apostrophe) was deprecated in v1.4.
-Please use _∷ʳ′_ (ending in a \prime) instead."
+Please use _∷ʳ′_ (ending in a prime) instead."
 #-}
 
 infixl 5 _∷ʳ'_

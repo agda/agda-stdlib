@@ -26,6 +26,11 @@ Deprecated modules
 
 Deprecated names
 ----------------
+In order to be consistent in usage of \prime character and apostrophe in identifiers, the following three names were deprecated in favor of their replacement that ends with a \prime character.
+
+* `Data.List.Base.InitLast._∷ʳ'_` ↦ `Data.List.Base.InitLast._∷ʳ′_`
+* `Data.List.NonEmpty.SnocView._∷ʳ'_` ↦ `Data.List.NonEmpty.SnocView._∷ʳ′_`
+* `Relation.Binary.Construct.StrictToNonStrict.decidable'` ↦ `Relation.Binary.Construct.StrictToNonStrict.decidable′`
 
 Other major additions
 ---------------------
