@@ -8,10 +8,6 @@ Highlights
 
 * First instance modules
 
-* New standardised numeric predicates `NonZero`, `Positive`, `Negative`,
-  `NonPositive`, `NonNegative`, especially designed to work as instance
-  arguments.
-
 Bug-fixes
 ---------
 
@@ -30,12 +26,6 @@ Deprecated modules
 
 Deprecated names
 ----------------
-
-In order to be consistent in usage of \prime character and apostrophe in identifiers, the following three names were deprecated in favor of their replacement that ends with a \prime character.
-
-* `Data.List.Base.InitLast._∷ʳ'_` ↦ `Data.List.Base.InitLast._∷ʳ′_`
-* `Data.List.NonEmpty.SnocView._∷ʳ'_` ↦ `Data.List.NonEmpty.SnocView._∷ʳ′_`
-* `Relation.Binary.Construct.StrictToNonStrict.decidable'` ↦ `Relation.Binary.Construct.StrictToNonStrict.decidable′`
 
 Other major additions
 ---------------------
@@ -70,23 +60,6 @@ Other major changes
 Other minor additions
 ---------------------
 
-* Added new types and constructors to `Data.Integer.Base`:
-  ```agda
-  NonZero     : Pred ℤ 0ℓ
-  Positive    : Pred ℤ 0ℓ
-  Negative    : Pred ℤ 0ℓ
-  NonPositive : Pred ℤ 0ℓ
-  NonNegative : Pred ℤ 0ℓ
-
-  ≢-nonZero   : p ≢ 0ℤ → NonZero p
-  >-nonZero   : p > 0ℤ → NonZero p
-  <-nonZero   : p < 0ℤ → NonZero p
-  positive    : p > 0ℤ → Positive p
-  negative    : p < 0ℤ → Negative p
-  nonPositive : p ≤ 0ℤ → NonPositive p
-  nonNegative : p ≥ 0ℤ → NonNegative p
-  ```
-
 * The module `Data.Nat.Bin.Induction` now re-exports `Acc` and `acc`.
 
 * Added proofs to `Relation.Binary.PropositionalEquality`:
@@ -98,11 +71,6 @@ Other minor additions
 
 * Made first argument of `[,]-∘-distr` in `Data.Sum.Properties` explicit
 
-* Added new function to `Data.List.Base`:
-  ```agda
-  wordsBy : Decidable P → List A → List (List A)
-  ```
-
 * Added new properties to ` Data.List.Relation.Binary.Permutation.Propositional.Properties`:
   ```agda
   ↭-empty-inv     : xs ↭ [] → xs ≡ []
@@ -112,7 +80,7 @@ Other minor additions
   ↭-length        : xs ↭ ys → length xs ≡ length ys
   ```
 
-* Added new proofs to `Data.Sum.Properties`:
+* Added new proofs to ``Data.Sum.Properties`:
   ```agda
   map-id        : map id id ≗ id
   map₁₂-commute : map₁ f ∘ map₂ g ≗ map₂ g ∘ map₁ f
@@ -129,64 +97,3 @@ Other minor additions
   nothing-inv : Pointwise R nothing x → x ≡ nothing
   just-inv    : Pointwise R (just x) y → ∃ λ z → y ≡ just z × R x z
   ```
-
-* Added new functions to `Data.String.Base`:
-  ```agda
-  wordsBy : Decidable P → String → List String
-  words : String → List String
-  ```
-
-* Added new types and constructors to `Data.Nat`:
-  ```agda
-  NonZero   : ℕ → Set
-
-  ≢-nonZero : n ≢ 0 → NonZero n
-  >-nonZero : n > 0 → NonZero n
-  ```
-
-* Added new proof to `Data.Nat.Coprimality`:
-  ```agda
-  ¬0-coprimeTo-2+ : ¬ Coprime 0 (2 + n)
-  recompute       : .(Coprime n d) → Coprime n d
-  ```
-
-* Added new types and constructors to `Data.Rational.Unnormalised`:
-  ```agda
-  NonZero     : Pred ℚ 0ℓ
-  Positive    : Pred ℚ 0ℓ
-  Negative    : Pred ℚ 0ℓ
-  NonPositive : Pred ℚ 0ℓ
-  NonNegative : Pred ℚ 0ℓ
-
-  ≢-nonZero   : p ≢ 0ℚ → NonZero p
-  >-nonZero   : p > 0ℚ → NonZero p
-  <-nonZero   : p < 0ℚ → NonZero p
-  positive    : p > 0ℚ → Positive p
-  negative    : p < 0ℚ → Negative p
-  nonPositive : p ≤ 0ℚ → NonPositive p
-  nonNegative : p ≥ 0ℚ → NonNegative p
-  ```
-
-* Added new types and constructors to `Data.Rational.Unnormalised`
-  ```agda
-  _≠_         : Rel ℚᵘ 0ℓ
-
-  NonZero     : Pred ℚᵘ 0ℓ
-  Positive    : Pred ℚᵘ 0ℓ
-  Negative    : Pred ℚᵘ 0ℓ
-  NonPositive : Pred ℚᵘ 0ℓ
-  NonNegative : Pred ℚᵘ 0ℓ
-
-  ≢-nonZero   : p ≠ 0ℚᵘ → NonZero p
-  >-nonZero   : p > 0ℚᵘ → NonZero p
-  <-nonZero   : p < 0ℚᵘ → NonZero p
-  positive    : p > 0ℚᵘ → Positive p
-  negative    : p < 0ℚᵘ → Negative p
-  nonPositive : p ≤ 0ℚᵘ → NonPositive p
-  nonNegative : p ≥ 0ℚᵘ → NonNegative p
-  ```
-
-* using \prime rather than apostrophe throughout code base in order to
-be consistent. Before this change it was not predictable whether an
-identifier ends with an apostrophe or a prime.
-
