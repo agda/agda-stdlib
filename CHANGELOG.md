@@ -97,3 +97,4 @@ Other minor additions
   nothing-inv : Pointwise R nothing x → x ≡ nothing
   just-inv    : Pointwise R (just x) y → ∃ λ z → y ≡ just z × R x z
   ```
+* using \prime rather than apostrophe throughout code base in order to be consistent. Before this change it was not predictable whether an identifier ends with an apostrophe or a prime.
