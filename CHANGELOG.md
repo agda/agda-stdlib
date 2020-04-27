@@ -93,6 +93,11 @@ Other minor additions
 
 * Made first argument of `[,]-∘-distr` in `Data.Sum.Properties` explicit
 
+* Added new function to `Data.List.Base`:
+  ```agda
+  wordsBy : Decidable P → List A → List (List A)
+  ```
+
 * Added new properties to ` Data.List.Relation.Binary.Permutation.Propositional.Properties`:
   ```agda
   ↭-empty-inv     : xs ↭ [] → xs ≡ []
@@ -118,6 +123,12 @@ Other minor additions
   ```agda
   nothing-inv : Pointwise R nothing x → x ≡ nothing
   just-inv    : Pointwise R (just x) y → ∃ λ z → y ≡ just z × R x z
+  ```
+
+* Added new functions to `Data.String.Base`:
+  ```agda
+  wordsBy : Decidable P → String → List String
+  words : String → List String
   ```
 
 * Added new types and constructors to `Data.Nat`:
