@@ -102,6 +102,8 @@ decidable′ compare x y with compare x y
 ... | tri≈ _   x≈y _ = yes (inj₂ x≈y)
 ... | tri> x≮y x≉y _ = no [ x≮y , x≉y ]′
 
+decidable' : Trichotomous _≈_ _<_ → Decidable _≤_
+decidable' = decidable′
 ------------------------------------------------------------------------
 -- Converting structures
 
@@ -154,5 +156,4 @@ isDecTotalOrder STO = record
 "Warning: decidable' (ending in an apostrophe) was deprecated in v1.4.
 Please use decidable′ (ending in a prime) instead."
 #-}
-decidable' = decidable′
 
