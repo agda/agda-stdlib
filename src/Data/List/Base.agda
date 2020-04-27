@@ -363,6 +363,10 @@ data InitLast {A : Set a} : List A → Set a where
   []    : InitLast []
   _∷ʳ′_ : (xs : List A) (x : A) → InitLast (xs ∷ʳ x)
 
+infixl 5 _∷ʳ'_
+_∷ʳ'_ : (xs : List A) (x : A) → InitLast (xs ∷ʳ x)
+_∷ʳ'_ = InitLast._∷ʳ′_
+
 initLast : (xs : List A) → InitLast xs
 initLast []               = []
 initLast (x ∷ xs)         with initLast xs
@@ -424,5 +428,3 @@ boolBreak p = boolSpan (not ∘ p)
 Please use _∷ʳ′_ (ending in a prime) instead."
 #-}
 
-infixl 5 _∷ʳ'_
-_∷ʳ'_ = _∷ʳ′_
