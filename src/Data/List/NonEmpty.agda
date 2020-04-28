@@ -190,10 +190,6 @@ infixl 5 _∷ʳ′_
 data SnocView {A : Set a} : List⁺ A → Set a where
   _∷ʳ′_ : (xs : List A) (x : A) → SnocView (xs ∷ʳ x)
 
-infixl 5 _∷ʳ'_
-
-_∷ʳ'_ : (xs : List A) (x : A) → SnocView (xs ∷ʳ x)
-_∷ʳ'_ = SnocView._∷ʳ′_
 
 snocView : (xs : List⁺ A) → SnocView xs
 snocView (x ∷ xs)              with List.initLast xs
@@ -339,6 +335,11 @@ private
 -- not guaranteed.
 
 -- Version 1.4
+
+infixl 5 _∷ʳ'_
+
+_∷ʳ'_ : (xs : List A) (x : A) → SnocView (xs ∷ʳ x)
+_∷ʳ'_ = SnocView._∷ʳ′_
 {-# WARNING_ON_USAGE _∷ʳ'_
 "Warning: _∷ʳ'_ (ending in an apostrophe) was deprecated in v1.4.
 Please use _∷ʳ′_ (ending in a prime) instead."
