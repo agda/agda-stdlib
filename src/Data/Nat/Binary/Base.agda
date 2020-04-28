@@ -6,7 +6,7 @@
 
 -- This module contains an alternative formulation of ℕ that is
 -- still reasonably computationally efficient without having to use
--- built-in function that call out to Haskell.
+-- built-in functions that call out to Haskell.
 
 {-# OPTIONS --without-K --safe #-}
 
