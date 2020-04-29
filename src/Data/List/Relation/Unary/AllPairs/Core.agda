@@ -15,7 +15,7 @@
 open import Relation.Binary using (Rel)
 
 module Data.List.Relation.Unary.AllPairs.Core
-       {a ℓ} {A : Set a} (R : Rel A ℓ) where
+  {a ℓ} {A : Set a} (R : Rel A ℓ) where
 
 open import Level
 open import Data.List.Base

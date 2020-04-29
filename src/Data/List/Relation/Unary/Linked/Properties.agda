@@ -11,6 +11,7 @@ module Data.List.Relation.Unary.Linked.Properties where
 open import Data.List hiding (any)
 open import Data.List.Relation.Unary.AllPairs as AllPairs
   using (AllPairs; []; _∷_)
+import Data.List.Relation.Unary.AllPairs.Properties as AllPairs
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Linked as Linked
   using (Linked; []; [-]; _∷_)
@@ -62,11 +63,15 @@ module _ {R : Rel A ℓ} (trans : Transitive R) where
 
 module _ {R : Rel A ℓ} {f : B → A} where
 
-  map⁺ : ∀ {xs} → Linked (λ x y → R (f x) (f y)) xs →
-         Linked R (map f xs)
+  map⁺ : ∀ {xs} → Linked (λ x y → R (f x) (f y)) xs → Linked R (map f xs)
   map⁺ []           = []
   map⁺ [-]          = [-]
   map⁺ (Rxy ∷ Rxs)  = Rxy ∷ map⁺ Rxs
+
+  map⁻ : ∀ {xs} → Linked R (map f xs) → Linked (λ x y → R (f x) (f y)) xs
+  map⁻ {[]}         []           = []
+  map⁻ {x ∷ []}     [-]          = [-]
+  map⁻ {x ∷ y ∷ xs} (Rxy ∷ Rxs)  = Rxy ∷ map⁻ Rxs
 
 ------------------------------------------------------------------------
 -- applyUpTo
@@ -99,3 +104,13 @@ module _ {R : Rel A ℓ} where
   applyDownFrom⁺₂ : ∀ f n → (∀ i → R (f (suc i)) (f i)) →
                     Linked R (applyDownFrom f n)
   applyDownFrom⁺₂ f n Rf = applyDownFrom⁺₁ f n (λ _ → Rf _)
+
+------------------------------------------------------------------------
+-- applyDownFrom
+
+module _ {P : Pred A p} (P? : Decidable P)
+         {R : Rel A ℓ} (trans : Transitive R)
+         where
+
+  filter⁺ : ∀ {xs} → Linked R xs → Linked R (filter P? xs)
+  filter⁺ = AllPairs⇒Linked ∘ AllPairs.filter⁺ P? ∘ Linked⇒AllPairs trans
