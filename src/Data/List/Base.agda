@@ -222,8 +222,6 @@ downFrom = applyDownFrom id
 allFin : ∀ n → List (Fin n)
 allFin n = tabulate id
 
--- Other
-
 unfold : ∀ (P : ℕ → Set b)
          (f : ∀ {n} → P (suc n) → Maybe (A × P n)) →
          ∀ {n} → P n → List A
@@ -251,6 +249,11 @@ head (x ∷ _) = just x
 tail : List A → Maybe (List A)
 tail []       = nothing
 tail (_ ∷ xs) = just xs
+
+last : List A → Maybe A
+last []           = nothing
+last (x ∷ [])     = just x
+last (x ∷ y ∷ xs) = last (y ∷ xs)
 
 take : ℕ → List A → List A
 take zero    xs       = []

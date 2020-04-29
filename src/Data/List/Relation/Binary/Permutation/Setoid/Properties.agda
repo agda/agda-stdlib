@@ -13,6 +13,7 @@ module Data.List.Relation.Binary.Permutation.Setoid.Properties
   where
 
 open import Algebra
+open import Data.Bool.Base using (true; false)
 open import Data.Fin.Base using (Fin)
 open import Data.List.Base as List hiding (head; tail)
 open import Data.List.Relation.Binary.Pointwise as Pointwise
@@ -38,7 +39,7 @@ open import Relation.Unary using (Pred; Decidable)
 open import Relation.Binary.Properties.Setoid S using (≉-resp₂)
 open import Relation.Binary.PropositionalEquality as ≡
   using (_≡_ ; refl; sym; cong; cong₂; subst; _≢_; inspect)
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary using (yes; no; does)
 open import Relation.Nullary.Negation using (contradiction)
 
 private
@@ -425,6 +426,18 @@ module _ {p} {P : Pred A p} (P? : Decidable P) (P≈ : P Respects _≈_) where
   ... | no ¬Pz | _      = contradiction (P≈ x≈z Px) ¬Pz
   ... | _      | no ¬Pw = contradiction (P≈ (≈-sym w≈y) Py) ¬Pw
   ... | yes _  | yes _  = swap x≈z w≈y (filter⁺ xs↭ys)
+
+------------------------------------------------------------------------
+-- partition
+
+module _ {p} {P : Pred A p} (P? : Decidable P) where
+
+  partition-↭ : ∀ xs → (let ys , zs = partition P? xs) → xs ↭ ys ++ zs
+  partition-↭ []       = ↭-refl
+  partition-↭ (x ∷ xs) with does (P? x)
+  ... | true  = ↭-prep x (partition-↭ xs)
+  ... | false = ↭-trans (↭-prep x (partition-↭ xs)) (↭-sym (shift ≈-refl _ _))
+    where open PermutationReasoning
 
 ------------------------------------------------------------------------
 -- _∷ʳ_

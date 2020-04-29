@@ -14,6 +14,7 @@ open import Data.Bool.Properties using (T-∧)
 open import Data.Empty
 open import Data.Fin.Base using (Fin) renaming (zero to fzero; suc to fsuc)
 open import Data.List.Base as List hiding (lookup)
+open import Data.List.Properties using (partition-defn)
 open import Data.List.Membership.Propositional
 open import Data.List.Membership.Propositional.Properties
 import Data.List.Membership.Setoid as SetoidMembership
@@ -27,7 +28,7 @@ import Data.List.Relation.Binary.Equality.Setoid as ListEq using (_≋_; []; _�
 open import Data.List.Relation.Binary.Pointwise using (Pointwise; []; _∷_)
 open import Data.List.Relation.Binary.Subset.Propositional using (_⊆_)
 open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
-open import Data.Maybe.Relation.Unary.All as MAll using (just; nothing)
+open import Data.Maybe.Relation.Unary.All as Maybe using (just; nothing)
 open import Data.Nat.Base using (zero; suc; z≤n; s≤s; _<_)
 open import Data.Nat.Properties using (≤-refl; ≤-step)
 open import Data.Product as Prod using (_×_; _,_; uncurry; uncurry′)
@@ -44,7 +45,8 @@ open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary
 open import Relation.Nullary.Negation using (¬?; contradiction; decidable-stable)
 open import Relation.Unary
-  using (Decidable; Pred; Universal) renaming (_⊆_ to _⋐_)
+  using (Decidable; Pred; Universal; ∁) renaming (_⊆_ to _⋐_)
+open import Relation.Unary.Properties using (∁?)
 
 private
   variable
@@ -336,6 +338,20 @@ module _ {P : Pred A p} {Q : Pred A q} where
 ------------------------------------------------------------------------
 -- Introduction (⁺) and elimination (⁻) rules for list operations
 ------------------------------------------------------------------------
+-- head, last
+
+module _ {P : A → Set p} where
+
+  head⁺ : ∀ {xs} → All P xs → Maybe.All P (head xs)
+  head⁺ []       = nothing
+  head⁺ (px ∷ _) = just px
+
+  last⁺ : ∀ {xs} → All P xs → Maybe.All P (last xs)
+  last⁺ []             = nothing
+  last⁺ (px ∷ [])      = just px
+  last⁺ (px ∷ py ∷ xs) = last⁺ (py ∷ xs)
+
+------------------------------------------------------------------------
 -- map
 
 module _ {P : B → Set p} {f : A → B} where
@@ -360,7 +376,7 @@ module _ {P : A → Set p} {Q : B → Set q} {f : A → B} where
 
 module _ (P : B → Set p) {f : A → Maybe B} where
 
-  mapMaybe⁺ : ∀ {xs} → All (MAll.All P) (map f xs) → All P (mapMaybe f xs)
+  mapMaybe⁺ : ∀ {xs} → All (Maybe.All P) (map f xs) → All P (mapMaybe f xs)
   mapMaybe⁺ {[]}     [] = []
   mapMaybe⁺ {x ∷ xs} (px ∷ pxs) with f x
   ... | nothing = mapMaybe⁺ pxs
@@ -534,6 +550,16 @@ module _ {P : A → Set p} {Q : A → Set q} (P? : Decidable P) where
   filter⁻ {x ∷ xs}       all⁺        all⁻  | no  ¬Px | no  ¬¬Px = contradiction ¬Px ¬¬Px
 
 ------------------------------------------------------------------------
+-- partition
+
+module _ {P : A → Set p} (P? : Decidable P) where
+
+  partition-All : ∀ xs → (let ys , zs = partition P? xs) →
+                  All P ys × All (∁ P) zs
+  partition-All xs rewrite partition-defn P? xs =
+    all-filter P? xs , all-filter (∁? P?) xs
+
+------------------------------------------------------------------------
 -- derun and deduplicate
 
 module _ {P : A → Set p} {R : A → A → Set q} (R? : B.Decidable R) where
@@ -603,11 +629,11 @@ module _ {P : A → Set p} {x xs} where
 
 module _ {P : A → Set p} where
 
-  fromMaybe⁺ : ∀ {mx} → MAll.All P mx → All P (fromMaybe mx)
+  fromMaybe⁺ : ∀ {mx} → Maybe.All P mx → All P (fromMaybe mx)
   fromMaybe⁺ (just px) = px ∷ []
   fromMaybe⁺ nothing   = []
 
-  fromMaybe⁻ : ∀ mx → All P (fromMaybe mx) → MAll.All P mx
+  fromMaybe⁻ : ∀ mx → All P (fromMaybe mx) → Maybe.All P mx
   fromMaybe⁻ (just x) (px ∷ []) = just px
   fromMaybe⁻ nothing  p         = nothing
 

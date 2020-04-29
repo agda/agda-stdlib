@@ -9,11 +9,13 @@
 module Data.List.Relation.Unary.Sorted.TotalOrder.Properties where
 
 open import Data.List.Base
+open import Data.List.Relation.Unary.All using (All)
 open import Data.List.Relation.Unary.AllPairs using (AllPairs)
 open import Data.List.Relation.Unary.Linked as Linked
   using (Linked; []; [-]; _∷_)
 import Data.List.Relation.Unary.Linked.Properties as Linked
-open import Data.List.Relation.Unary.Sorted.TotalOrder
+open import Data.List.Relation.Unary.Sorted.TotalOrder hiding (head)
+open import Data.Maybe.Relation.Binary.Connected using (Connected)
 open import Data.Nat.Base using (ℕ; zero; suc; _<_; z≤n; s≤s)
 open import Level using (Level)
 open import Relation.Binary hiding (Decidable)
@@ -53,6 +55,16 @@ module _ (O₁ : TotalOrder a ℓ₁ ℓ₂) (O₂ : TotalOrder a ℓ₁ ℓ₂)
   map⁻ : ∀ {f xs} → (∀ {x y} → f x O₂.≤ f y → x O₁.≤ y) →
          Sorted O₂ (map f xs) → Sorted O₁ xs
   map⁻ pres fxs↗ = Linked.map pres (Linked.map⁻ fxs↗)
+
+------------------------------------------------------------------------
+-- _++_
+
+module _ (O : TotalOrder a ℓ₁ ℓ₂) where
+  open TotalOrder O
+
+  ++⁺ : ∀ {xs ys} → Sorted O xs → Connected _≤_ (last xs) (head ys) →
+        Sorted O ys → Sorted O (xs ++ ys)
+  ++⁺ = Linked.++⁺
 
 ------------------------------------------------------------------------
 -- applyUpTo

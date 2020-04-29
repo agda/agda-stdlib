@@ -126,6 +126,8 @@ Deprecated names
 New modules
 -----------
 
+* Added `Data.Maybe.Relation.Binary.Connected`, a variant of the `Pointwise` relation where `nothing` is also related to `just`.
+
 * Added various generic morphism constructions for binary relations:
   ```agda
   Relation.Binary.Morphism.Construct.Composition
@@ -173,6 +175,13 @@ New modules
 * Setoid equality over vectors:
   ```
   Data.Vec.Functional.Relation.Binary.Equality.Setoid
+  ```
+
+* Sorting algorithms over lists:
+  ```
+  Data.List.Sort
+  Data.List.Sort.Base
+  Data.List.Sort.QuickSort
   ```
 
 * Heterogeneous relation characterising a list as an infix segment of another:
@@ -316,6 +325,43 @@ Other minor additions
   ++↭ʳ++ : xs ++ ys ↭ xs ʳ++ ys
   ```
 
+* Added new function in `Data.List.Base`:
+  ```agda
+  last : List A → Maybe A
+  ```
+
+* Added new proof in `Data.List.Properties`:
+  ```agda
+  length-partition : (let (ys , zs) = partition P? xs) → length ys ≤ length xs × length zs ≤ length xs
+  ```
+
+* Added new proof in `Data.List.Relation.Binary.Permutation.Setoid.Properties`:
+  ```agda
+  partition-↭ : (let ys , zs = partition P? xs) → xs ↭ ys ++ zs
+  ```
+
+* Added new proofs in `Data.List.Relation.Unary.All.Properties`:
+  ```agda
+  head⁺ : All P xs → Maybe.All P (head xs)
+  last⁺ : All P xs → Maybe.All P (last xs)
+  ```
+
+* Added new proof in `Data.List.Relation.Unary.Linked.Properties`:
+  ```agda
+  ++⁺ : Linked R xs → Connected R (last xs) (head ys) → Linked R ys → Linked R (xs ++ ys)
+  ```
+
+* Added new proof in `Data.List.Relation.Unary.Sorted.TotalOrder.Properties`:
+  ```agda
+  ++⁺ : Sorted O xs → Connected _≤_ (last xs) (head ys) → Sorted O ys → Sorted O (xs ++ ys)
+  ```
+
+* Added new proofs in `Data.Maybe.Relation.Unary.All.Properties`:
+  ```agda
+  All⇒Connectedˡ : All (R x) y → Connected R (just x) y
+  All⇒Connectedʳ : All (λ v → R v y) x → Connected R x (just y
+  ```
+
 * Added new definition in `Data.Nat.Base`:
   ```agda
   _≤ᵇ_ : (m n : ℕ) → Bool
@@ -357,6 +403,13 @@ Other minor additions
   symmetric   : Symmetric _∼_ → Symmetric _∼⁺_
   transitive  : Transitive _∼⁺_
   wellFounded : WellFounded _∼_ → WellFounded _∼⁺_
+  ```
+
+* Added new definitions and proofs to `Relation.Binary.Properties.(Poset/TotalOrder/DecTotalOrder)`:
+  ```agda
+  _≰_       : Rel A p₃
+  ≰-respˡ-≈ : _≰_ Respectsˡ _≈_
+  ≰-respʳ-≈ : _≰_ Respectsʳ _≈_
   ```
 
 * Add new properties to `Data.Integer.Properties`:
