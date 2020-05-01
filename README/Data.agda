@@ -22,6 +22,7 @@ module README.Data where
 
 -- Basic datatypes are usually organised as follows:
 
+
 -- 1. A `Base` module which either contains the definition of the
 -- datatype or reimports it from the builtin modules, along with common
 -- functions, operations and relations over elements of the datatype.
@@ -35,6 +36,7 @@ import Data.Bool.Base
 -- Commonly these modules don't need to be imported directly as their
 -- contents is re-exported by the top level module (see below).
 
+
 -- 2. A `Properties` module which contains the basic properties of the
 -- functions, operations and relations contained in the base module.
 
@@ -43,6 +45,7 @@ import Data.Integer.Properties
 import Data.Char.Properties
 import Data.String.Properties
 import Data.Bool.Properties
+
 
 -- 3. A top-level module which re-exports the contents of the base
 -- module as well as various queries (i.e. decidability proofs) from the
@@ -54,12 +57,14 @@ import Data.Char
 import Data.String
 import Data.Bool
 
+
 -- 4. A `Solver` module (for those datatypes that have an algebraic solver)
 -- which can be used to automatically solve equalities over the basic datatype.
 
 import Data.Nat.Solver
 import Data.Integer.Solver
 import Data.Bool.Solver
+
 
 -- 5. More complex operations and relations are commonly found in their
 -- own module beneath the top-level directory. For example:
@@ -90,6 +95,7 @@ import Data.Sum.Base
 -- Commonly these modules don't need to be imported directly as their
 -- contents is re-exported by the top level module (see below).
 
+
 -- 2. As with basic datatypes, a `Properties` module which contains the
 -- basic properties of the functions, operations and contained in the
 -- base module.
@@ -97,6 +103,7 @@ import Data.Sum.Base
 import Data.List.Properties
 import Data.Maybe.Properties
 import Data.Sum.Properties
+
 
 -- 3. As with basic datatypes, a top-level module which re-exports the
 -- contents of the base module. In some cases this may also contain
@@ -106,6 +113,7 @@ import Data.Sum.Properties
 import Data.List
 import Data.Maybe
 import Data.Sum
+
 
 -- 4. A `Relation.Binary` folder where binary relations over the datatypes
 -- are stored. Because relations over container datatypes often depend on
@@ -124,6 +132,7 @@ import Data.Sum.Relation.Binary.Pointwise
 -- Another useful subfolder in the `Data.X.Relation.Binary` folders is the
 -- `Data.X.Relation.Binary.Equality` folder which contains various forms of
 -- equality over the datatype.
+
 
 -- 5. A `Relation.Unary` folder where unary relations, or predicates,
 -- over the datatypes are stored. These can be viewed as properties
@@ -145,6 +154,7 @@ import Data.List.Relation.Unary.All
 import Data.Vec.Relation.Unary.All
 import Data.Maybe.Relation.Unary.All
 
+
 -- 6. A `Categorical` module/folder that contains categorical
 -- interpretations of the datatype.
 
@@ -152,6 +162,7 @@ import Data.List.Categorical
 import Data.Maybe.Categorical
 import Data.Sum.Categorical.Left
 import Data.Sum.Categorical.Right
+
 
 -- 7. A `Function` folder that contains lifting of various types of
 -- functions (e.g. injections, surjections, bijections, inverses) to
@@ -161,6 +172,7 @@ import Data.Sum.Function.Propositional
 import Data.Sum.Function.Setoid
 import Data.Product.Function.Dependent.Propositional
 import Data.Product.Function.Dependent.Setoid
+
 
 ------------------------------------------------------------------------
 -- Full list of documentation for the Data folder
@@ -186,10 +198,6 @@ import README.Data.List
 -- Some examples showing how the Fresh list can be used.
 
 import README.Data.List.Fresh
-
--- Using List's Interleaving to define a fully certified filter function.
-
-import README.Data.List.Interleaving
 
 -- Example of an encoding of record types with manifest fields and "with".
 
