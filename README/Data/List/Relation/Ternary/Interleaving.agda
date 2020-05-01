@@ -35,7 +35,7 @@ open import Relation.Unary
 open import Data.List.Relation.Ternary.Interleaving.Propositional
 
 -- The special case we will focus on here is the propositional case: both
--- `L` and `R` are propositional equality. Rethinking our previous example,
+-- `L` and ̀R` are propositional equality. Rethinking our previous example,
 -- this gives us the proof that [z₁, ⋯, z₅] can be partitioned into
 -- [z₁, z₂, z₄] on the one hand and [z₃, z₅] in the other.
 
