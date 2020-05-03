@@ -136,13 +136,17 @@ Other minor additions
   words : String → List String
   ```
 
-* Added new types and constructors to `Data.Nat`:
+* Added new types and constructors to `Data.Nat.Base`:
   ```agda
   NonZero   : ℕ → Set
 
   ≢-nonZero : n ≢ 0 → NonZero n
   >-nonZero : n > 0 → NonZero n
   ```
+
+* The function `pred` in `Data.Nat.Base` has been redefined as `pred n = n ∸ 1`.
+  Consequently proofs about `pred` are now just special cases of proofs for `_∸_`.
+  The change is fully backwards compatible.
 
 * Added new proof to `Data.Nat.Coprimality`:
   ```agda
