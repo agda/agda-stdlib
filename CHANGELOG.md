@@ -235,3 +235,22 @@ Other minor additions
   ```
 
 * Added infix declarations to `Data.Product.∃-syntax` and `Data.Product.∄-syntax`.
+
+* Added new definitions to `Function.Bundles`:
+  ```agda
+  record Func : Set _
+  _⟶_ : Set a → Set b → Set _
+  mk⟶ : (A → B) → A ⟶ B
+  ```
+
+* Added new proofs to `Function.Construct.Composition`:
+  ```agda
+  function : Func R S → Func S T → Func R T
+  _∘-⟶_    : (A ⟶ B) → (B ⟶ C) → (A ⟶ C)
+  ```
+
+* Added new proofs to `Function.Construct.Identity`:
+  ```agda
+  function : Func S S
+  id-⟶     : A ⟶ A
+  ```
