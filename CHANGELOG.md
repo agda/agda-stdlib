@@ -69,6 +69,11 @@ Other major additions
   Data.Nat.Binary.Subtraction
   ```
 
+* Added a module for the Sigma construct:
+  ```
+  Relation.Binary.Construct.Sigma
+  ```
+
 Other minor additions
 ---------------------
 
