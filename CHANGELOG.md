@@ -65,6 +65,11 @@ Other major changes
 Other minor additions
 ---------------------
 
+* Added new proof to `Data.Fin.Induction`:
+  ```agda
+  <-wellFounded : WellFounded _<_
+  ```
+
 * Added new types and constructors to `Data.Integer.Base`:
   ```agda
   NonZero     : Pred ℤ 0ℓ
@@ -82,7 +87,7 @@ Other minor additions
   nonNegative : p ≥ 0ℤ → NonNegative p
   ```
 
-* The module `Data.Nat.Bin.Induction` now re-exports `Acc` and `acc`.
+* The module `Data.Nat.Bin.Induction` now re-exports `Acc` and `acc` from `Induction.WellFounded`.
 
 * Added proofs to `Relation.Binary.PropositionalEquality`:
   ```agda
