@@ -15,6 +15,9 @@ Highlights
 Bug-fixes
 ---------
 
+* Fixed various algebraic bundles not correctly re-exporting
+  `commutativeSemigroup` proofs.
+
 Non-backwards compatible changes
 --------------------------------
 
