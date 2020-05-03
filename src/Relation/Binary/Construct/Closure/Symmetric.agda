@@ -9,8 +9,12 @@
 module Relation.Binary.Construct.Closure.Symmetric where
 
 open import Data.Sum.Base as Sum using (_⊎_)
+<<<<<<< HEAD
 open import Function using (id)
 open import Level using (Level)
+=======
+open import Function.Base using (id)
+>>>>>>> Change imports from `Function` to `Function.Base`
 open import Relation.Binary
 
 private

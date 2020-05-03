@@ -32,7 +32,7 @@ open import Data.Nat hiding (_⊔_)
 open import Data.Nat.Induction
 open import Data.Nat.Properties
 open import Data.Product using (_,_; _×_; ∃; ∃₂; proj₁; proj₂)
-open import Function using (_∘_; _⟨_⟩_; flip)
+open import Function.Base using (_∘_; _⟨_⟩_; flip)
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse as Inv using (inverse)
 open import Level using (Level; _⊔_)

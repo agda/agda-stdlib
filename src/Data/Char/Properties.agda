@@ -14,7 +14,7 @@ open import Data.Char.Base
 import Data.Nat.Base as ℕ
 import Data.Nat.Properties as ℕₚ
 
-open import Function
+open import Function.Base
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable using (map′; isYes)
 open import Relation.Binary

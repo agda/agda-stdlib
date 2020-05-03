@@ -24,7 +24,7 @@ open import Data.Nat.Base
   renaming (suc to 1+_; _+_ to _+ℕ_; _*_ to _*ℕ_; _≤_ to _≤ℕ_)
 import Data.Nat.Properties as ℕₚ
 open import Data.Product using (proj₁; proj₂; uncurry)
-open import Function using (_∘_)
+open import Function.Base using (_∘_)
 open import Relation.Binary
 open import Relation.Binary.Consequences
 open import Relation.Binary.PropositionalEquality

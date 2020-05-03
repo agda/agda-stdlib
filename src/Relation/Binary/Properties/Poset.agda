@@ -13,7 +13,7 @@ module Relation.Binary.Properties.Poset
 
 open Poset P renaming (Carrier to A)
 
-open import Function using (flip)
+open import Function.Base using (flip)
 import Relation.Binary.Construct.NonStrictToStrict _≈_ _≤_ as ToStrict
 import Relation.Binary.Properties.Preorder preorder as PreorderProperties
 open import Relation.Nullary using (¬_)

@@ -12,7 +12,7 @@ module Data.List.Relation.Binary.Disjoint.Setoid {c ℓ} (S : Setoid c ℓ) wher
 
 open import Level using (_⊔_)
 open import Relation.Nullary using (¬_)
-open import Function using (_∘_)
+open import Function.Base using (_∘_)
 open import Data.List.Base using (List; []; [_]; _∷_)
 open import Data.List.Relation.Unary.Any using (here; there)
 open import Data.Product using (_×_; _,_)

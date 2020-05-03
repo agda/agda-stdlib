@@ -9,8 +9,13 @@
 
 module Relation.Binary.Construct.Closure.Equivalence where
 
+<<<<<<< HEAD
 open import Function using (flip; id; _∘_)
 open import Level using (Level; _⊔_)
+=======
+open import Function.Base using (flip; id; _∘_)
+open import Level using (_⊔_)
+>>>>>>> Change imports from `Function` to `Function.Base`
 open import Relation.Binary
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive as Star
   using (Star; ε; _◅◅_; reverse)
