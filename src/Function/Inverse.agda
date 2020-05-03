@@ -6,6 +6,11 @@
 
 {-# OPTIONS --without-K --safe #-}
 
+-- Note: use of the standard function hierarchy is encouraged. The
+-- module `Function` re-exports `Inverseᵇ`, `IsInverse` and
+-- `Inverse`. The alternative definitions found in this file will
+-- eventually be deprecated.
+
 module Function.Inverse where
 
 open import Level
