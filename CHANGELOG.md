@@ -72,6 +72,11 @@ Other major additions
   Data.Nat.Binary.Subtraction
   ```
 
+* Division with remainder for binary naturals:
+  ```
+  Data.Nat.Binary.DivMod
+  ```
+
 Other minor additions
 ---------------------
 
@@ -117,7 +122,7 @@ Other minor additions
  pred[x]+y≡x+pred[y]      : x ≢ 0ᵇ → y ≢ 0ᵇ → (pred x) + y ≡  x + pred y
  x+suc[y]≡suc[x]+y        : x + suc y ≡ suc x + y
  ```
- 
+
 * The module `Data.Nat.Bin.Induction` now re-exports `Acc` and `acc` from `Induction.WellFounded`.
 
 * Added proofs to `Relation.Binary.PropositionalEquality`:
