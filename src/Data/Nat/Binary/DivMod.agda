@@ -48,7 +48,6 @@ record DivMod (dividend divisor : ℕᵇ) : Set where  -- result of division wit
 -- Then  2a = 2qb + 2r,   r ≤ 2r < 2b,   r < b  < 2b.
 -- If  2r < b  then the result is (2q , 2r),
 -- otherwise                      (2q+1, 2r - b).
---
 -- In the latter case it is needed to prove  2r - b < b.
 -- This is equivalent to  2r < 2b  ~  r < b.
 ------------------------------------------------------------------------------
@@ -57,15 +56,14 @@ divMod : (a b : ℕᵇ) → b ≢ 0ᵇ → DivMod a b
 divMod a b b≢0 =  dm a (<-wellFounded a)
   where
   -- Accessibility  <-acc for _<_ on ℕᵇ  is used to prove termination.
-  -- Because or a ≠ 0,  divMod a b  is reduced to  divMod a' b,  where a' < a.
+  -- Because for a ≠ 0,  divMod a b  is reduced to  divMod a' b,  where a' < a.
   -- So that this recursion terminates.
 
   dm : (a : ℕᵇ) → Acc _<_ a → DivMod a b             -- b is fixed in this loop
   dm zero          _        =  divModᶜ 0ᵇ 0ᵇ refl (x≢0⇒x>0 b≢0)
   dm a'@(2[1+ a ]) (acc wf) =  correct (dm (suc a) (wf _ suc-a<2[1+a]))
     where
-    2b = double b;  1+a = suc a
-    -- wf :  ∀ x → x < 2[1+ a ] → DivMod x b
+    2b = double b;  1+a = suc a     -- wf :  ∀ x → x < 2[1+ a ] → DivMod x b
 
     suc-a<2[1+a] :  suc a < 2[1+ a ]
     suc-a<2[1+a] =  begin-strict
@@ -134,13 +132,7 @@ divMod a b b≢0 =  dm a (<-wellFounded a)
 
   dm a'@(1+[2 a ]) (acc wf) =  correct (dm a (wf _ a<1+[2a]))
     where
-    2a = double a
-    {- Given:  a = r + qb;   r<b.
-       1+2a = 1+2r + 2qb
-       (q', r') =  if  1+2r<b  then (2q , 1 + 2r)
-                   else             -- b≤1+2r
-                                    (1+2q , 1 + 2r - b)
-    -}
+    2a       = double a     -- Given:  a = r + qb;  r<b. Then  1+2a = 1+2r + 2qb ...
     a<1+[2a] =  x<1+[2x] a
 
     correct :  DivMod a b → DivMod a' b
