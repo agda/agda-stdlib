@@ -62,8 +62,15 @@ Other major additions
   Reflection.TypeChecking.Monad.Instances
   ```
 
-Other major changes
--------------------
+* Consequences for basic morphism properties
+  ```
+  Algebra.Morphism.Consequences
+  ```
+
+* Subtraction for binary naturals:
+  ```
+  Data.Nat.Binary.Subtraction
+  ```
 
 Other minor additions
 ---------------------
@@ -90,6 +97,27 @@ Other minor additions
   nonNegative : p ≥ 0ℤ → NonNegative p
   ```
 
+* Added new function to `Data.Nat.Properties`:
+ ```agda
+ ∸-magma           : Magma _ _
+
+ pred[m∸n]≡m∸[1+n] : pred (m ∸ n) ≡ m ∸ suc n
+ ```
+
+* The module `Data.Nat.Binary.Induction` now re-exports `Acc` and `acc`.
+
+* Added new functions (proofs) to `Data.Nat.Binary.Properties`:
+ ```agda
+ +-isSemigroup            : IsSemigroup _+_
+ +-semigroup              : Semigroup 0ℓ 0ℓ
+ +-isCommutativeSemigroup : IsCommutativeSemigroup _+_
+ +-commutativeSemigroup   : CommutativeSemigroup 0ℓ 0ℓ
+ x≡0⇒double[x]≡0          : x ≡ 0ᵇ → double x ≡ 0ᵇ
+ double-suc               : double (suc x) ≡ 2ᵇ + double x
+ pred[x]+y≡x+pred[y]      : x ≢ 0ᵇ → y ≢ 0ᵇ → (pred x) + y ≡  x + pred y
+ x+suc[y]≡suc[x]+y        : x + suc y ≡ suc x + y
+ ```
+ 
 * The module `Data.Nat.Bin.Induction` now re-exports `Acc` and `acc` from `Induction.WellFounded`.
 
 * Added proofs to `Relation.Binary.PropositionalEquality`:

@@ -530,6 +530,10 @@ open ≤-Reasoning
   { isCommutativeMonoid = +-0-isCommutativeMonoid
   }
 
+∸-magma : Magma 0ℓ 0ℓ
+∸-magma = magma _∸_
+
+
 ------------------------------------------------------------------------
 -- Other properties of _+_ and _≡_
 
@@ -1450,6 +1454,15 @@ m⊓n≤m+n m n with ⊓-sel m n
 n∸n≡0 : ∀ n → n ∸ n ≡ 0
 n∸n≡0 zero    = refl
 n∸n≡0 (suc n) = n∸n≡0 n
+
+------------------------------------------------------------------------
+-- Properties of _∸_ and pred
+
+pred[m∸n]≡m∸[1+n] : ∀ m n → pred (m ∸ n) ≡ m ∸ suc n
+pred[m∸n]≡m∸[1+n] zero    zero    = refl
+pred[m∸n]≡m∸[1+n] (suc m) zero    = refl
+pred[m∸n]≡m∸[1+n] zero (suc n)    = refl
+pred[m∸n]≡m∸[1+n] (suc m) (suc n) = pred[m∸n]≡m∸[1+n] m n
 
 ------------------------------------------------------------------------
 -- Properties of _∸_ and _≤_/_<_
