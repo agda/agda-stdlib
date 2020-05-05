@@ -17,9 +17,9 @@ open import Algebra.Morphism
 open import Algebra.Consequences.Propositional
 open import Data.Bool.Base using (Bool; false; true; T)
 open import Data.Bool.Properties using (T?)
-open import Data.Empty
+open import Data.Empty using (⊥)
 open import Data.Nat.Base
-open import Data.Product
+open import Data.Product using (_×_; _,_)
 open import Data.Sum.Base as Sum
 open import Data.Unit using (tt)
 open import Function.Base
@@ -409,29 +409,6 @@ module ≤-Reasoning where
     hiding (step-≈; step-≈˘)
 
 open ≤-Reasoning
-
-------------------------------------------------------------------------
--- Properties of pred
-------------------------------------------------------------------------
-
-pred-mono : pred Preserves _≤_ ⟶ _≤_
-pred-mono z≤n      = z≤n
-pred-mono (s≤s le) = le
-
-≤pred⇒≤ : ∀ {m n} → m ≤ pred n → m ≤ n
-≤pred⇒≤ {m} {zero}  le = le
-≤pred⇒≤ {m} {suc n} le = ≤-step le
-
-≤⇒pred≤ : ∀ {m n} → m ≤ n → pred m ≤ n
-≤⇒pred≤ {zero}  le = le
-≤⇒pred≤ {suc m} le = ≤-trans (n≤1+n m) le
-
-<⇒≤pred : ∀ {m n} → m < n → m ≤ pred n
-<⇒≤pred (s≤s le) = le
-
-suc[pred[n]]≡n : ∀ {n} → n ≢ 0 → suc (pred n) ≡ n
-suc[pred[n]]≡n {zero}  n≢0 = contradiction refl n≢0
-suc[pred[n]]≡n {suc n} n≢0 = refl
 
 ------------------------------------------------------------------------
 -- Properties of _+_
@@ -1687,6 +1664,28 @@ m⊓n+n∸m≡n (suc m) (suc n) = cong suc $ m⊓n+n∸m≡n m n
 ∸-distribʳ-⊔ (suc m) zero    o       = refl
 ∸-distribʳ-⊔ (suc m) (suc n) zero    = sym (⊔-identityʳ (n ∸ m))
 ∸-distribʳ-⊔ (suc m) (suc n) (suc o) = ∸-distribʳ-⊔ m n o
+
+------------------------------------------------------------------------
+-- Properties of pred
+------------------------------------------------------------------------
+
+pred-mono : pred Preserves _≤_ ⟶ _≤_
+pred-mono m≤n = ∸-mono m≤n (≤-refl {1})
+
+≤pred⇒≤ : ∀ {m n} → m ≤ pred n → m ≤ n
+≤pred⇒≤ {m} {zero}  le = le
+≤pred⇒≤ {m} {suc n} le = ≤-step le
+
+≤⇒pred≤ : ∀ {m n} → m ≤ n → pred m ≤ n
+≤⇒pred≤ {zero}  le = le
+≤⇒pred≤ {suc m} le = ≤-trans (n≤1+n m) le
+
+<⇒≤pred : ∀ {m n} → m < n → m ≤ pred n
+<⇒≤pred (s≤s le) = le
+
+suc[pred[n]]≡n : ∀ {n} → n ≢ 0 → suc (pred n) ≡ n
+suc[pred[n]]≡n {zero}  n≢0 = contradiction refl n≢0
+suc[pred[n]]≡n {suc n} n≢0 = refl
 
 ------------------------------------------------------------------------
 -- Properties of ∣_-_∣

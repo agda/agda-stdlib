@@ -15,6 +15,9 @@ Highlights
 Bug-fixes
 ---------
 
+* Fixed various algebraic bundles not correctly re-exporting
+  `commutativeSemigroup` proofs.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -72,6 +75,11 @@ Other major additions
 Other minor additions
 ---------------------
 
+* Added new proof to `Data.Fin.Induction`:
+  ```agda
+  <-wellFounded : WellFounded _<_
+  ```
+
 * Added new types and constructors to `Data.Integer.Base`:
   ```agda
   NonZero     : Pred ℤ 0ℓ
@@ -109,6 +117,8 @@ Other minor additions
  pred[x]+y≡x+pred[y]      : x ≢ 0ᵇ → y ≢ 0ᵇ → (pred x) + y ≡  x + pred y
  x+suc[y]≡suc[x]+y        : x + suc y ≡ suc x + y
  ```
+ 
+* The module `Data.Nat.Bin.Induction` now re-exports `Acc` and `acc` from `Induction.WellFounded`.
 
 * Added proofs to `Relation.Binary.PropositionalEquality`:
   ```agda
@@ -157,13 +167,17 @@ Other minor additions
   words : String → List String
   ```
 
-* Added new types and constructors to `Data.Nat`:
+* Added new types and constructors to `Data.Nat.Base`:
   ```agda
   NonZero   : ℕ → Set
 
   ≢-nonZero : n ≢ 0 → NonZero n
   >-nonZero : n > 0 → NonZero n
   ```
+
+* The function `pred` in `Data.Nat.Base` has been redefined as `pred n = n ∸ 1`.
+  Consequently proofs about `pred` are now just special cases of proofs for `_∸_`.
+  The change is fully backwards compatible.
 
 * Added new proof to `Data.Nat.Coprimality`:
   ```agda
