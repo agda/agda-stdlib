@@ -257,7 +257,8 @@ record Semigroup : Set (suc (a ⊔ ℓ)) where
 
 -- The "consequences" modules contains proofs for how the different
 -- types in the `Definitions` module relate to each other. For example:
--- that any total relation is reflexive or that a com
+-- that any total relation is reflexive or that commutativity allows
+-- one to translate between left and right identities.
 
 total⇒refl : ∀ {_∼_ : Rel A ℓ} → Total _∼_ → Reflexive _∼_
 
@@ -294,6 +295,6 @@ import Relation.Binary.Construct.Intersection
 -- The `Properties` folder contains additional proofs about the theory
 -- of each bundle. They are usually designed so as a bundle's
 -- `Properties` file re-exports the contents of the `Properties` files
--- above it in the hierarachy. For example
+-- above it in the hierarchy. For example
 -- `Algebra.Properties.AbelianGroup` re-exports the contents of
 -- `Algebra.Properties.Group`.
