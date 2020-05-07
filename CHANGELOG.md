@@ -62,6 +62,12 @@ Other major additions
   Reflection.TypeChecking.Monad.Instances
   ```
 
+* Predicate for lists that are sorted with respect to a total order
+  ```
+  Data.List.Relation.Unary.Sorted.TotalOrder
+  Data.List.Relation.Unary.Sorted.TotalOrder.Properties
+  ```
+
 * Consequences for basic morphism properties
   ```
   Algebra.Morphism.Consequences
@@ -71,6 +77,10 @@ Other major additions
   ```
   Data.Nat.Binary.Subtraction
   ```
+
+Other major changes
+-------------------
+
 
 Other minor additions
 ---------------------
@@ -141,6 +151,12 @@ Other minor additions
   ↭-singleton-inv : xs ↭ [ x ] → xs ≡ [ x ]
   ↭-map-inv       : map f xs ↭ ys → ∃ λ ys′ → ys ≡ map f ys′ × xs ↭ ys′
   ↭-length        : xs ↭ ys → length xs ≡ length ys
+  ```
+
+* Added new proofs to `Data.List.Relation.Unary.Linked`:
+  ```agda
+  map⁻    : Linked R (map f xs) → Linked (λ x y → R (f x) (f y)) xs
+  filter⁺ : Transitive R → Linked R xs → Linked R (filter P? xs)
   ```
 
 * Added new proofs to `Data.Sum.Properties`:
