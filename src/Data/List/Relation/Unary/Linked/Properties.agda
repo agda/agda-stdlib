@@ -122,7 +122,7 @@ module _ {P : Pred A p} (P? : Decidable P)
     with does (P? y) | ∷-filter⁺ {xs = ys} | ∷-filter⁺ (r′ ∷ rs)
   ... | false | ihf | _   = ihf (trans r r′ ∷ rs)
   ... | true  | _   | iht = r ∷ iht
-  
+
   filter⁺   : ∀ {xs} → Linked R xs → Linked R (filter P? xs)
   filter⁺ [] = []
   filter⁺ {xs = x ∷ []} [-] with does (P? x)
