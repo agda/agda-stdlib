@@ -8,6 +8,7 @@
 
 module Data.List.Relation.Unary.Linked.Properties where
 
+open import Data.Bool.Base using (true; false)
 open import Data.List hiding (any)
 open import Data.List.Relation.Unary.AllPairs as AllPairs
   using (AllPairs; []; _∷_)
@@ -20,11 +21,11 @@ open import Data.Fin.Properties using (suc-injective)
 open import Data.Nat.Base using (zero; suc; _<_; z≤n; s≤s)
 open import Data.Nat.Properties using (≤-refl; ≤-pred; ≤-step)
 open import Level using (Level)
-open import Function using (_∘_; flip)
+open import Function using (_∘_; flip; _on_)
 open import Relation.Binary using (Rel; Transitive; DecSetoid)
 open import Relation.Binary.PropositionalEquality using (_≢_)
 open import Relation.Unary using (Pred; Decidable)
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary using (yes; no; does)
 
 private
   variable
@@ -63,12 +64,12 @@ module _ {R : Rel A ℓ} (trans : Transitive R) where
 
 module _ {R : Rel A ℓ} {f : B → A} where
 
-  map⁺ : ∀ {xs} → Linked (λ x y → R (f x) (f y)) xs → Linked R (map f xs)
+  map⁺ : ∀ {xs} → Linked (R on f) xs → Linked R (map f xs)
   map⁺ []           = []
   map⁺ [-]          = [-]
   map⁺ (Rxy ∷ Rxs)  = Rxy ∷ map⁺ Rxs
 
-  map⁻ : ∀ {xs} → Linked R (map f xs) → Linked (λ x y → R (f x) (f y)) xs
+  map⁻ : ∀ {xs} → Linked R (map f xs) → Linked (R on f) xs
   map⁻ {[]}         []           = []
   map⁻ {x ∷ []}     [-]          = [-]
   map⁻ {x ∷ y ∷ xs} (Rxy ∷ Rxs)  = Rxy ∷ map⁻ Rxs
@@ -106,11 +107,27 @@ module _ {R : Rel A ℓ} where
   applyDownFrom⁺₂ f n Rf = applyDownFrom⁺₁ f n (λ _ → Rf _)
 
 ------------------------------------------------------------------------
--- applyDownFrom
+-- filter
 
 module _ {P : Pred A p} (P? : Decidable P)
          {R : Rel A ℓ} (trans : Transitive R)
          where
 
-  filter⁺ : ∀ {xs} → Linked R xs → Linked R (filter P? xs)
-  filter⁺ = AllPairs⇒Linked ∘ AllPairs.filter⁺ P? ∘ Linked⇒AllPairs trans
+  ∷-filter⁺ : ∀ {x xs} → Linked R (x ∷ xs) → Linked R (x ∷ filter P? xs)
+  ∷-filter⁺ [-] = [-]
+  ∷-filter⁺ {xs = y ∷ _} (r ∷ [-]) with does (P? y)
+  ... | false = [-]
+  ... | true  = r ∷ [-]
+  ∷-filter⁺ {x = x} {xs = y ∷ ys} (r ∷ r′ ∷ rs)
+    with does (P? y) | ∷-filter⁺ {xs = ys} | ∷-filter⁺ (r′ ∷ rs)
+  ... | false | ihf | _   = ihf (trans r r′ ∷ rs)
+  ... | true  | _   | iht = r ∷ iht
+  
+  filter⁺   : ∀ {xs} → Linked R xs → Linked R (filter P? xs)
+  filter⁺ [] = []
+  filter⁺ {xs = x ∷ []} [-] with does (P? x)
+  ... | false = []
+  ... | true  = [-]
+  filter⁺ {xs = x ∷ _} (r ∷ rs) with does (P? x)
+  ... | false = filter⁺ rs
+  ... | true  = ∷-filter⁺ (r ∷ rs)
