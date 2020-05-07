@@ -370,6 +370,22 @@ initLast (x ∷ xs)         with initLast xs
 ... | ys ∷ʳ′ y = (x ∷ ys) ∷ʳ′ y
 
 ------------------------------------------------------------------------
+-- Splitting a list
+
+wordsBy : ∀ {P : Pred A p} → Decidable P → List A → List (List A)
+wordsBy {A = A} P? = go [] where
+
+  cons : List A → List (List A) → List (List A)
+  cons [] ass = ass
+  cons as ass = reverse as ∷ ass
+
+  go : List A → List A → List (List A)
+  go acc []       = cons acc []
+  go acc (c ∷ cs) with does (P? c)
+  ... | true  = cons acc (go [] cs)
+  ... | false = go (c ∷ acc) cs
+
+------------------------------------------------------------------------
 -- DEPRECATED
 ------------------------------------------------------------------------
 -- Please use the new names as continuing support for the old names is
