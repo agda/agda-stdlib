@@ -248,27 +248,6 @@ deMorgan₂ x y = begin
   ¬ ¬ (¬ x ∧ ¬ y)    ≈⟨ ¬-involutive _ ⟩
   ¬ x ∧ ¬ y          ∎
 
--- One can replace the underlying equality with an equivalent one.
-
-replace-equality : {_≈′_ : Rel Carrier b₂} →
-                   (∀ {x y} → x ≈ y ⇔ (x ≈′ y)) →
-                   BooleanAlgebra _ _
-replace-equality {_≈′_} ≈⇔≈′ = record
-  { _≈_              = _≈′_
-  ; _∨_              = _∨_
-  ; _∧_              = _∧_
-  ; ¬_               = ¬_
-  ; ⊤                = ⊤
-  ; ⊥                = ⊥
-  ; isBooleanAlgebra =  record
-    { isDistributiveLattice = DistributiveLattice.isDistributiveLattice
-        (DistribLatticeProperties.replace-equality distributiveLattice ≈⇔≈′)
-    ; ∨-complementʳ         = λ x → to ⟨$⟩ ∨-complementʳ x
-    ; ∧-complementʳ         = λ x → to ⟨$⟩ ∧-complementʳ x
-    ; ¬-cong                = λ i≈j → to ⟨$⟩ ¬-cong (from ⟨$⟩ i≈j)
-    }
-  } where open module E {x y} = Equivalence (≈⇔≈′ {x} {y})
-
 ------------------------------------------------------------------------
 -- (⊕, ∧, id, ⊥, ⊤) is a commutative ring
 
@@ -608,4 +587,22 @@ Please use ⊥≉⊤ instead."
 {-# WARNING_ON_USAGE ¬⊤=⊥
 "Warning: ¬⊤=⊥ was deprecated in v1.1.
 Please use ⊤≉⊥ instead."
+#-}
+
+-- Version 1.4
+replace-equality : {_≈′_ : Rel Carrier b₂} →
+                   (∀ {x y} → x ≈ y ⇔ (x ≈′ y)) →
+                   BooleanAlgebra _ _
+replace-equality {_≈′_} ≈⇔≈′ = record
+  { isBooleanAlgebra =  record
+    { isDistributiveLattice = DistributiveLattice.isDistributiveLattice
+        (DistribLatticeProperties.replace-equality distributiveLattice ≈⇔≈′)
+    ; ∨-complementʳ         = λ x → to ⟨$⟩ ∨-complementʳ x
+    ; ∧-complementʳ         = λ x → to ⟨$⟩ ∧-complementʳ x
+    ; ¬-cong                = λ i≈j → to ⟨$⟩ ¬-cong (from ⟨$⟩ i≈j)
+    }
+  } where open module E {x y} = Equivalence (≈⇔≈′ {x} {y})
+{-# WARNING_ON_USAGE replace-equality
+"Warning: replace-equality was deprecated in v1.4.
+Please use isBooleanAlgebra from `Algebra.Construct.Subst.Equality` instead."
 #-}

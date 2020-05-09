@@ -75,23 +75,6 @@ open LatticeProperties lattice public
   { isDistributiveLattice = ∧-∨-isDistributiveLattice
   }
 
--- One can replace the underlying equality with an equivalent one.
-
-replace-equality : {_≈′_ : Rel Carrier dl₂} →
-                   (∀ {x y} → x ≈ y ⇔ (x ≈′ y)) →
-                   DistributiveLattice _ _
-replace-equality {_≈′_} ≈⇔≈′ = record
-  { _≈_                   = _≈′_
-  ; _∧_                   = _∧_
-  ; _∨_                   = _∨_
-  ; isDistributiveLattice = record
-    { isLattice    = Lattice.isLattice
-                       (LatticeProperties.replace-equality lattice ≈⇔≈′)
-    ; ∨-distribʳ-∧ = λ x y z → to ⟨$⟩ ∨-distribʳ-∧ x y z
-    }
-  } where open module E {x y} = Equivalence (≈⇔≈′ {x} {y})
-
-
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
 ------------------------------------------------------------------------
@@ -124,4 +107,21 @@ Please use ∧-distribʳ-∨ instead."
 {-# WARNING_ON_USAGE ∧-∨-distrib
 "Warning: ∧-∨-distrib was deprecated in v1.1.
 Please use ∧-distrib-∨ instead."
+#-}
+
+-- Version 1.4
+
+replace-equality : {_≈′_ : Rel Carrier dl₂} →
+                   (∀ {x y} → x ≈ y ⇔ (x ≈′ y)) →
+                   DistributiveLattice _ _
+replace-equality {_≈′_} ≈⇔≈′ = record
+  { isDistributiveLattice = record
+    { isLattice    = Lattice.isLattice
+                       (LatticeProperties.replace-equality lattice ≈⇔≈′)
+    ; ∨-distribʳ-∧ = λ x y z → to ⟨$⟩ ∨-distribʳ-∧ x y z
+    }
+  } where open module E {x y} = Equivalence (≈⇔≈′ {x} {y})
+{-# WARNING_ON_USAGE replace-equality
+"Warning: replace-equality was deprecated in v1.4.
+Please use isDistributiveLattice from `Algebra.Construct.Subst.Equality` instead."
 #-}

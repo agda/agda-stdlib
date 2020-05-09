@@ -34,6 +34,8 @@ Deprecated modules
 Deprecated names
 ----------------
 
+* The proofs `replace-equality` from `Algebra.Properties.(Lattice/DistributiveLattice/BooleanAlgebra)`
+  have been deprecated in favour of the proofs in the new `Algebra.Construct.Subst.Equality` module.
 
 Other major additions
 ---------------------

@@ -149,6 +149,15 @@ isDistributiveLattice S = record
   ; ∨-distribʳ-∧ = λ x y z → to (S.∨-distribʳ-∧ x y z)
   } where module S = IsDistributiveLattice S
 
+isBooleanAlgebra : ∀ {∨ ∧ ¬ ⊤ ⊥} →
+  IsBooleanAlgebra ≈₁ ∨ ∧ ¬ ⊤ ⊥ → IsBooleanAlgebra ≈₂ ∨ ∧ ¬ ⊤ ⊥
+isBooleanAlgebra S = record
+  { isDistributiveLattice = isDistributiveLattice S.isDistributiveLattice
+  ; ∨-complementʳ         = to ∘ S.∨-complementʳ
+  ; ∧-complementʳ         = to ∘ S.∧-complementʳ
+  ; ¬-cong                = cong₁ S.¬-cong
+  } where module S = IsBooleanAlgebra S
+
 isNearSemiring : ∀ {+ * 0#} →
   IsNearSemiring ≈₁ + * 0# → IsNearSemiring ≈₂ + * 0#
 isNearSemiring S = record
