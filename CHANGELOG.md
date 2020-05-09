@@ -68,6 +68,12 @@ Other major additions
   Data.List.Relation.Unary.Sorted.TotalOrder.Properties
   ```
 
+* Substituting the notion of equality for various structures
+  ```
+  Algebra.Construct.Subst.Equality
+  Relation.Binary.Construct.Subst.Equality
+  ```
+
 * Consequences for basic morphism properties
   ```
   Algebra.Morphism.Consequences
