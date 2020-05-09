@@ -14,7 +14,7 @@ open import Function.Bundles
 import Function.Definitions as Definitions
 import Function.Structures as Structures
 open import Level
-open import Relation.Binary
+open import Relation.Binary hiding (_⇔_)
 open import Relation.Binary.PropositionalEquality using (_≡_; setoid)
 
 private

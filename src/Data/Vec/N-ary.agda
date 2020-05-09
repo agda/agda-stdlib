@@ -14,7 +14,7 @@ open import Data.Vec.Base
 open import Function.Base
 open import Function.Equivalence using (_⇔_; equivalence)
 open import Level using (Level; _⊔_)
-open import Relation.Binary
+open import Relation.Binary hiding (_⇔_)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary.Decidable
 

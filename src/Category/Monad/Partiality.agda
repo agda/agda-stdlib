@@ -17,7 +17,7 @@ open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base
 open import Function.Equivalence using (_⇔_; equivalence)
 open import Level using (Level; _⊔_)
-open import Relation.Binary as B hiding (Rel)
+open import Relation.Binary as B hiding (Rel; _⇔_)
 import Relation.Binary.Properties.Setoid as SetoidProperties
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Nullary

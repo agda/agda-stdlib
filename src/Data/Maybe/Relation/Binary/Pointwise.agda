@@ -12,7 +12,7 @@ open import Level
 open import Data.Product
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Function.Equivalence using (_⇔_; equivalence)
-open import Relation.Binary
+open import Relation.Binary hiding (_⇔_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec

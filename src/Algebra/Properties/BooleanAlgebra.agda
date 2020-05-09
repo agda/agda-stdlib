@@ -6,6 +6,9 @@
 
 {-# OPTIONS --without-K --safe #-}
 
+-- Disabled to prevent warnings from deprecated names
+{-# OPTIONS --warn=noUserWarning #-}
+
 open import Algebra.Bundles
 
 module Algebra.Properties.BooleanAlgebra
@@ -590,6 +593,7 @@ Please use ⊤≉⊥ instead."
 #-}
 
 -- Version 1.4
+
 replace-equality : {_≈′_ : Rel Carrier b₂} →
                    (∀ {x y} → x ≈ y ⇔ (x ≈′ y)) →
                    BooleanAlgebra _ _

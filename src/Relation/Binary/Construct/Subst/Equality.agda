@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Substituting the equality in a
+-- Substituting equalities for binary relations
 ------------------------------------------------------------------------
 
 -- For more general transformations between binary relations

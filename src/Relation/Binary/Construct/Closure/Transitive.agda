@@ -11,7 +11,7 @@ module Relation.Binary.Construct.Closure.Transitive where
 open import Function.Base
 open import Function.Equivalence as Equiv using (_⇔_)
 open import Level
-open import Relation.Binary
+open import Relation.Binary hiding (_⇔_)
 open import Relation.Binary.PropositionalEquality using (_≡_ ; refl)
 
 ------------------------------------------------------------------------

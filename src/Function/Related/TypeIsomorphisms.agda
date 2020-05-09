@@ -26,7 +26,7 @@ open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence as Eq using (_⇔_; Equivalence)
 open import Function.Inverse as Inv using (_↔_; Inverse; inverse)
 open import Function.Related
-open import Relation.Binary
+open import Relation.Binary hiding (_⇔_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_; _≗_)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary using (Dec; ¬_; _because_)
