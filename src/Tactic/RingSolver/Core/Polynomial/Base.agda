@@ -130,6 +130,7 @@ infixl 6 _⊐_
 record Poly n where
   inductive
   constructor _⊐_
+  eta-equality  -- To allow matching on constructor
   field
     {i}  : ℕ
     flat : FlatPoly i

@@ -1,28 +1,18 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Values for AVL trees
--- Values must respect the underlying equivalence on keys
+-- This module is DEPRECATED.
 -----------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Relation.Binary using (Setoid; _Respects_)
+open import Relation.Binary using (Setoid)
 
 module Data.AVL.Value {a ℓ} (S : Setoid a ℓ) where
 
-open import Level using (suc; _⊔_)
-import Function as F
-open Setoid S renaming (Carrier to Key)
+{-# WARNING_ON_IMPORT
+"Data.AVL.Value was deprecated in v1.4.
+Use Data.Tree.AVL.Value instead."
+#-}
 
-record Value v : Set (a ⊔ ℓ ⊔ suc v) where
-  constructor MkValue
-  field
-    family   : Key → Set v
-    respects : family Respects _≈_
-
--- The function `const` is defined using copatterns to prevent eager
--- unfolding of the function in goal types.
-const : ∀ {v} → Set v → Value v
-Value.family   (const V) = F.const V
-Value.respects (const V) = F.const F.id
+open import Data.Tree.AVL.Value S public

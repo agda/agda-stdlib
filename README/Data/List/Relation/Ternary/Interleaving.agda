@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module README.Data.Interleaving where
+module README.Data.List.Relation.Ternary.Interleaving where
 
 open import Level
 open import Data.List.Base hiding (filter)
@@ -15,11 +15,14 @@ open import Function
 open import Relation.Nullary
 open import Relation.Unary
 
--- In its most general form, `Interleaving` is parametrised by two relations
--- `L` (for Left) and `R` (for Right). Given three lists, `xs`, `ys` and `zs`,
--- a proof of `Interleaving xs ys zs` is essentially a diagram explaining how
--- `zs` can be pulled apart into `xs` and `ys` in a way compatible with `L`
--- and `R`. For instance:
+------------------------------------------------------------------------
+-- Interleaving
+
+-- In its most general form, `Interleaving` is parametrised by two
+-- relations `L` (for Left) and `R` (for Right). Given three lists,
+-- `xs`, `ys` and `zs`, a proof of `Interleaving xs ys zs` is
+-- essentially a diagram explaining how `zs` can be pulled apart into
+-- `xs` and `ys` in a way compatible with `L` and `R`. For instance:
 
 -- xs               zs               ys
 --
