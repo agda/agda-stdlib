@@ -9,12 +9,12 @@
 module Data.Integer.Divisibility.Signed where
 
 open import Function
-open import Data.Integer
+open import Data.Integer.Base
 open import Data.Integer.Properties
 open import Data.Integer.Divisibility as Unsigned
   using (divides)
   renaming (_∣_ to _∣ᵤ_)
-import Data.Nat as ℕ
+import Data.Nat.Base as ℕ
 import Data.Nat.Divisibility as ℕ
 import Data.Nat.Coprimality as ℕ
 import Data.Nat.Properties as ℕ
@@ -110,9 +110,19 @@ open _∣_ using (quotient) public
 ∣-preorder : Preorder _ _ _
 ∣-preorder = record { isPreorder = ∣-isPreorder }
 
-module ∣-Reasoning = PreorderReasoning ∣-preorder
-  hiding   (_≈⟨_⟩_)
-  renaming (_∼⟨_⟩_ to _∣⟨_⟩_)
+------------------------------------------------------------------------
+-- Divisibility reasoning
+
+module ∣-Reasoning where
+  private
+    module Base = PreorderReasoning ∣-preorder
+
+  open Base public
+    hiding (step-∼; step-≈; step-≈˘)
+
+  infixr 2 step-∣
+  step-∣ = Base.step-∼
+  syntax step-∣ x y∣z x∣y = x ∣⟨ x∣y ⟩ y∣z
 
 ------------------------------------------------------------------------
 -- Other properties of _∣_

@@ -1,14 +1,20 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Automatic solvers for equations over lists
+-- This module is DEPRECATED.
 ------------------------------------------------------------------------
-
--- See README.Nat for examples of how to use similar solvers
 
 {-# OPTIONS --without-K --safe #-}
 
+-- Disabled to prevent warnings from deprecated monoid solver
+{-# OPTIONS --warn=noUserWarning #-}
+
 module Data.List.Solver where
+
+{-# WARNING_ON_IMPORT
+"Data.List.Solver was deprecated in v1.3.
+Use the new reflective Tactic.MonoidSolver instead."
+#-}
 
 import Algebra.Solver.Monoid as Solver
 open import Data.List.Properties using (++-monoid)

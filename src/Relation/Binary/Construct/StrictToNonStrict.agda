@@ -18,7 +18,7 @@ module Relation.Binary.Construct.StrictToNonStrict
   where
 
 open import Data.Product
-open import Data.Sum
+open import Data.Sum.Base
 open import Data.Empty
 open import Function
 open import Relation.Binary.Consequences

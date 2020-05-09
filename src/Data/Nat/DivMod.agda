@@ -10,12 +10,13 @@ module Data.Nat.DivMod where
 
 open import Agda.Builtin.Nat using (div-helper; mod-helper)
 
-open import Data.Fin using (Fin; toℕ; fromℕ<)
+open import Data.Fin.Base using (Fin; toℕ; fromℕ<)
 open import Data.Fin.Properties using (toℕ-fromℕ<)
-open import Data.Nat as Nat
+open import Data.Nat.Base as Nat
 open import Data.Nat.DivMod.Core
 open import Data.Nat.Divisibility.Core
 open import Data.Nat.Properties
+open import Data.Nat.Tactic.RingSolver
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary.Decidable using (False)
 
@@ -25,12 +26,12 @@ open ≤-Reasoning
 -- Definitions
 
 -- The division and modulus operations are only defined when the divisor
--- is non-zero. The proof of this is defined as an irrelevant
--- implict argument of type `False (divisor ≟ 0)`. This allows this
--- proof to be automatically inferred when the divisor is of the form
--- `suc n`, and hence minimises the number of these proofs that
+-- is non-zero. The proof of non-zero-ness is provided as an irrelevant
+-- implicit argument which is defined in terms of `⊤` and `⊥`. This
+-- allows it to be automatically inferred when the divisor is of the
+-- form `suc n`, and hence minimises the number of these proofs that
 -- need be passed around. You can therefore write `m / suc n` without
--- issue.
+-- further elaboration.
 
 infixl 7 _/_ _%_
 
@@ -114,6 +115,22 @@ m<[1+n%d]⇒m≤[n%d] {m} n (suc d-1) = k<1+a[modₕ]n⇒k≤a[modₕ]n 0 m n d-
   (m % d + (n % d + (n / d) * d)) % d ≡⟨ sym (cong (_% d) (+-assoc (m % d) (n % d) _)) ⟩
   (m % d +  n % d + (n / d) * d)  % d ≡⟨ [m+kn]%n≡m%n (m % d + n % d) (n / d) d-1 ⟩
   (m % d +  n % d)                % d ∎
+
+%-distribˡ-* : ∀ m n d {≢0} → ((m * n) % d) {≢0} ≡ (((m % d) {≢0} * (n % d) {≢0}) % d) {≢0}
+%-distribˡ-* m n d@(suc d-1) = begin-equality
+  (m * n)                                             % d ≡⟨ cong (λ h → (h * n) % d) (m≡m%n+[m/n]*n m d-1) ⟩
+  ((m′ + k * d) * n)                                  % d ≡⟨ cong (λ h → ((m′ + k * d) * h) % d) (m≡m%n+[m/n]*n n d-1) ⟩
+  ((m′ + k * d) * (n′ + j * d))                       % d ≡⟨ cong (_% d) (lemma m′ n′ k j d) ⟩
+  (m′ * n′ + (m′ * j + (n′ + j * d) * k) * d)         % d ≡⟨ [m+kn]%n≡m%n (m′ * n′) (m′ * j + (n′ + j * d) * k) d-1 ⟩
+  (m′ * n′)                                           % d ≡⟨⟩
+  ((m % d) * (n % d)) % d ∎
+  where
+  m′ = m % d
+  n′ = n % d
+  k = m / d
+  j = n / d
+  lemma : ∀ m′ n′ k j d → (m′ + k * d) * (n′ + j * d) ≡ m′ * n′ + (m′ * j + (n′ + j * d) * k) * d
+  lemma = solve-∀
 
 %-remove-+ˡ : ∀ {m} n {d} {≢0} → d ∣ m → ((m + n) % d) {≢0} ≡ (n % d) {≢0}
 %-remove-+ˡ {m} n {d@(suc d-1)} (divides p refl) = begin-equality

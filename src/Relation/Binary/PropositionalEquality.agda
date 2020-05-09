@@ -10,7 +10,7 @@ module Relation.Binary.PropositionalEquality where
 
 open import Algebra
 open import Algebra.Structures
-open import Algebra.FunctionProperties
+open import Algebra.Definitions
 import Axiom.Extensionality.Propositional as Ext
 open import Axiom.UniquenessOfIdentityProofs
 open import Function.Base
@@ -163,6 +163,18 @@ cong-id refl = refl
 cong-∘ : ∀ {x y : A} {f : B → C} {g : A → B} (p : x ≡ y) →
          cong (f ∘ g) p ≡ cong f (cong g p)
 cong-∘ refl = refl
+
+trans-cong : ∀ {x y z : A} {f : A → B} (p : x ≡ y) {q : y ≡ z} →
+             trans (cong f p) (cong f q) ≡ cong f (trans p q)
+trans-cong refl = refl
+
+cong₂-reflˡ : ∀ {_∙_ : A → B → C} {x u v} → (p : u ≡ v) →
+              cong₂ _∙_ refl p ≡ cong (x ∙_) p
+cong₂-reflˡ refl = refl
+
+cong₂-reflʳ : ∀ {_∙_ : A → B → C} {x y u} → (p : x ≡ y) →
+              cong₂ _∙_ p refl ≡ cong (_∙ u) p
+cong₂-reflʳ refl = refl
 
 module _ {P : Pred A p} {x y : A} where
 

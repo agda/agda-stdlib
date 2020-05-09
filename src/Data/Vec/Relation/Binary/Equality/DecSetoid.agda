@@ -11,7 +11,7 @@ open import Relation.Binary
 module Data.Vec.Relation.Binary.Equality.DecSetoid
   {a ℓ} (DS : DecSetoid a ℓ) where
 
-open import Data.Nat using (ℕ)
+open import Data.Nat.Base using (ℕ)
 import Data.Vec.Relation.Binary.Equality.Setoid as Equality
 import Data.Vec.Relation.Binary.Pointwise.Inductive as PW
 open import Level using (_⊔_)

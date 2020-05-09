@@ -17,20 +17,29 @@ open import Level
 open import Relation.Binary.PropositionalEquality hiding (trans)
 open import Relation.Unary
 
+private
+  variable
+    a b ℓ ℓ₁ ℓ₂ r : Level
+    A : Set a
+    B : Set b
+
+------------------------------------------------------------------------
+-- Definitions
+
 -- When using well-founded recursion you can recurse arbitrarily, as
 -- long as the arguments become smaller, and "smaller" is
 -- well-founded.
 
-WfRec : ∀ {a r} {A : Set a} → Rel A r → ∀ {ℓ} → RecStruct A ℓ _
+WfRec : Rel A r → ∀ {ℓ} → RecStruct A ℓ _
 WfRec _<_ P x = ∀ y → y < x → P y
 
 -- The accessibility predicate: x is accessible if everything which is
 -- smaller than x is also accessible (inductively).
 
-data Acc {a ℓ} {A : Set a} (_<_ : Rel A ℓ) (x : A) : Set (a ⊔ ℓ) where
+data Acc {A : Set a} (_<_ : Rel A ℓ) (x : A) : Set (a ⊔ ℓ) where
   acc : (rs : WfRec _<_ (Acc _<_) x) → Acc _<_ x
 
-acc-inverse : ∀ {a ℓ} {A : Set a} {_<_ : Rel A ℓ} {x : A} (q : Acc _<_ x) →
+acc-inverse : ∀ {_<_ : Rel A ℓ} {x : A} (q : Acc _<_ x) →
               (y : A) → y < x → Acc _<_ y
 acc-inverse (acc rs) y y<x = rs y y<x
 
@@ -38,7 +47,7 @@ acc-inverse (acc rs) y y<x = rs y y<x
 -- well-founded; if all elements are accessible, then _<_ is
 -- well-founded.
 
-WellFounded : ∀ {a ℓ} {A : Set a} → Rel A ℓ → Set _
+WellFounded : Rel A ℓ → Set _
 WellFounded _<_ = ∀ x → Acc _<_ x
 
 Well-founded = WellFounded
@@ -48,9 +57,17 @@ Please use WellFounded instead."
 #-}
 
 ------------------------------------------------------------------------
+-- Basic properties
+
+Acc-resp-≈ : {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ₂} → Symmetric _≈_ →
+             _<_ Respectsʳ _≈_ → (Acc _<_) Respects _≈_
+Acc-resp-≈ sym respʳ x≈y (acc rec) =
+  acc (λ z z<y → rec z (respʳ (sym x≈y) z<y))
+
+------------------------------------------------------------------------
 -- Well-founded induction for the subset of accessible elements:
 
-module Some {a lt} {A : Set a} {_<_ : Rel A lt} {ℓ} where
+module Some {_<_ : Rel A r} {ℓ} where
 
   wfRecBuilder : SubsetRecursorBuilder (Acc _<_) (WfRec _<_ {ℓ = ℓ})
   wfRecBuilder P f x (acc rs) = λ y y<x →
@@ -66,7 +83,7 @@ module Some {a lt} {A : Set a} {_<_ : Rel A lt} {ℓ} where
   wfRec-builder = wfRecBuilder
   {-# WARNING_ON_USAGE wfRec-builder
   "Warning: wfRec-builder was deprecated in v0.15.
-  Please use wfRecBuilder instead."
+\ \Please use wfRecBuilder instead."
   #-}
 
 
@@ -74,8 +91,7 @@ module Some {a lt} {A : Set a} {_<_ : Rel A lt} {ℓ} where
 -- Well-founded induction for all elements, assuming they are all
 -- accessible:
 
-module All {a lt} {A : Set a} {_<_ : Rel A lt}
-           (wf : WellFounded _<_) ℓ where
+module All {_<_ : Rel A r} (wf : WellFounded _<_) ℓ where
 
   wfRecBuilder : RecursorBuilder (WfRec _<_ {ℓ = ℓ})
   wfRecBuilder P f x = Some.wfRecBuilder P f x (wf x)
@@ -86,17 +102,17 @@ module All {a lt} {A : Set a} {_<_ : Rel A lt}
   wfRec-builder = wfRecBuilder
   {-# WARNING_ON_USAGE wfRec-builder
   "Warning: wfRec-builder was deprecated in v0.15.
-  Please use wfRecBuilder instead."
+\ \Please use wfRecBuilder instead."
   #-}
 
 module FixPoint
-  {a ℓ} {A : Set a} {_<_ : Rel A ℓ} (wf : WellFounded _<_)
+  {_<_ : Rel A ℓ} (wf : WellFounded _<_)
   (P : Pred A ℓ) (f : WfRec _<_ P ⊆′ P)
   (f-ext : (x : A) {IH IH' : WfRec _<_ P x} → (∀ {y} y<x → IH y y<x ≡ IH' y y<x) → f x IH ≡ f x IH')
   where
 
   some-wfRec-irrelevant : ∀ x → (q q' : Acc _<_ x) → Some.wfRec P f x q ≡ Some.wfRec P f x q'
-  some-wfRec-irrelevant = All.wfRec wf (a ⊔ ℓ)
+  some-wfRec-irrelevant = All.wfRec wf _
                                    (λ x → (q q' : Acc _<_ x) → Some.wfRec P f x q ≡ Some.wfRec P f x q')
                                    (λ { x IH (acc rs) (acc rs') → f-ext x (λ y<x → IH _ y<x (rs _ y<x) (rs' _ y<x)) })
 
@@ -115,8 +131,7 @@ module FixPoint
 -- "Constructing Recursion Operators in Intuitionistic Type Theory" by
 -- Lawrence C Paulson).
 
-module Subrelation {a ℓ₁ ℓ₂} {A : Set a}
-                   {_<₁_ : Rel A ℓ₁} {_<₂_ : Rel A ℓ₂}
+module Subrelation {_<₁_ : Rel A ℓ₁} {_<₂_ : Rel A ℓ₂}
                    (<₁⇒<₂ : ∀ {x y} → x <₁ y → x <₂ y) where
 
   accessible : Acc _<₂_ ⊆ Acc _<₁_
@@ -128,11 +143,10 @@ module Subrelation {a ℓ₁ ℓ₂} {A : Set a}
   well-founded = wellFounded
   {-# WARNING_ON_USAGE well-founded
   "Warning: well-founded was deprecated in v0.15.
-  Please use wellFounded instead."
+\ \Please use wellFounded instead."
   #-}
 
-module InverseImage {a b ℓ} {A : Set a} {B : Set b} {_<_ : Rel B ℓ}
-                    (f : A → B) where
+module InverseImage {_<_ : Rel B ℓ} (f : A → B) where
 
   accessible : ∀ {x} → Acc _<_ (f x) → Acc (_<_ on f) x
   accessible (acc rs) = acc (λ y fy<fx → accessible (rs (f y) fy<fx))
@@ -141,12 +155,20 @@ module InverseImage {a b ℓ} {A : Set a} {B : Set b} {_<_ : Rel B ℓ}
   wellFounded wf = λ x → accessible (wf (f x))
 
   well-founded = wellFounded
+  {-# WARNING_ON_USAGE accessible
+  "Warning: accessible was deprecated in v1.4.
+\ \Please use accessible from `Relation.Binary.Construct.On` instead."
+  #-}
+  {-# WARNING_ON_USAGE wellFounded
+  "Warning: wellFounded was deprecated in v1.4.
+\ \Please use wellFounded from `Relation.Binary.Construct.On` instead."
+  #-}
   {-# WARNING_ON_USAGE well-founded
   "Warning: well-founded was deprecated in v0.15.
-  Please use wellFounded instead."
+\ \Please use wellFounded from `Relation.Binary.Construct.On` instead."
   #-}
 
-module TransitiveClosure {a ℓ} {A : Set a} (_<_ : Rel A ℓ) where
+module TransitiveClosure {A : Set a} (_<_ : Rel A ℓ) where
 
   infix 4 _<⁺_
 
@@ -173,15 +195,18 @@ module TransitiveClosure {a ℓ} {A : Set a} (_<_ : Rel A ℓ) where
   downwards-closed = downwardsClosed
   {-# WARNING_ON_USAGE downwards-closed
   "Warning: downwards-closed was deprecated in v0.15.
-  Please use downwardsClosed instead."
+\ \Please use downwardsClosed instead."
   #-}
   well-founded     = wellFounded
   {-# WARNING_ON_USAGE well-founded
   "Warning: well-founded was deprecated in v0.15.
-  Please use wellFounded instead."
+\ \Please use wellFounded instead."
   #-}
 
-module Lexicographic {a b ℓ₁ ℓ₂} {A : Set a} {B : A → Set b}
+
+-- DEPRECATED in v1.3.
+-- Please use `×-Lex` from `Data.Product.Relation.Binary.Lex.Strict` instead.
+module Lexicographic {A : Set a} {B : A → Set b}
                      (RelA : Rel A ℓ₁)
                      (RelB : ∀ x → Rel (B x) ℓ₂) where
 
@@ -196,6 +221,7 @@ module Lexicographic {a b ℓ₁ ℓ₂} {A : Set a} {B : A → Set b}
                  Acc _<_ (x , y)
     accessible accA wfB = acc (accessible′ accA (wfB _) wfB)
 
+
     accessible′ :
       ∀ {x y} →
       Acc RelA x → Acc (RelB x) y → (∀ {x} → WellFounded (RelB x)) →
@@ -209,9 +235,24 @@ module Lexicographic {a b ℓ₁ ℓ₂} {A : Set a} {B : A → Set b}
   wellFounded wfA wfB p = accessible (wfA (proj₁ p)) wfB
 
   well-founded = wellFounded
+
+  {-# WARNING_ON_USAGE _<_
+  "Warning: _<_ was deprecated in v1.3.
+\ \Please use `×-Lex` from `Data.Product.Relation.Binary.Lex.Strict` instead."
+  #-}
+  {-# WARNING_ON_USAGE accessible
+  "Warning: accessible was deprecated in v1.3."
+  #-}
+  {-# WARNING_ON_USAGE accessible′
+  "Warning: accessible′ was deprecated in v1.3."
+  #-}
+  {-# WARNING_ON_USAGE wellFounded
+  "Warning: wellFounded was deprecated in v1.3.
+\ \Please use `×-wellFounded` from `Data.Product.Relation.Binary.Lex.Strict` instead."
+  #-}
   {-# WARNING_ON_USAGE well-founded
   "Warning: well-founded was deprecated in v0.15.
-  Please use wellFounded instead."
+\ \Please use wellFounded instead."
   #-}
 
 
@@ -224,5 +265,5 @@ module Lexicographic {a b ℓ₁ ℓ₂} {A : Set a} {B : A → Set b}
 
 -- Version 1.0
 
-module Inverse-image      = InverseImage
+module Inverse-image = InverseImage
 module Transitive-closure = TransitiveClosure

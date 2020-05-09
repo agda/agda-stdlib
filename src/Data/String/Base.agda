@@ -9,6 +9,8 @@
 module Data.String.Base where
 
 open import Level using (zero)
+open import Data.Bool.Base using (true; false)
+open import Data.Bool.Properties using (T?)
 open import Data.Nat.Base as ℕ using (ℕ; _∸_; ⌊_/2⌋; ⌈_/2⌉)
 import Data.Nat.Properties as ℕₚ
 open import Data.List.Base as List using (List; [_])
@@ -18,8 +20,13 @@ open import Data.List.Relation.Binary.Pointwise using (Pointwise)
 open import Data.List.Relation.Binary.Lex.Strict using (Lex-<)
 open import Data.Vec.Base as Vec using (Vec)
 open import Data.Char.Base as Char using (Char)
+import Data.Char.Properties as Char using (_≟_)
 open import Function
 open import Relation.Binary using (Rel)
+open import Relation.Nullary using (does)
+open import Relation.Unary using (Pred; Decidable)
+
+open import Data.List.Membership.DecPropositional Char._≟_
 
 ------------------------------------------------------------------------
 -- From Agda.Builtin: type and renamed primitives
@@ -77,10 +84,41 @@ replicate n = fromList ∘ List.replicate n
 concat : List String → String
 concat = List.foldr _++_ ""
 
+intersperse : String → List String → String
+intersperse sep = concat ∘′ (List.intersperse sep)
+
 -- String-specific functions
 
 unlines : List String → String
-unlines = concat ∘ List.intersperse "\n"
+unlines = intersperse "\n"
+
+wordsBy : ∀ {p} {P : Pred Char p} → Decidable P → String → List String
+wordsBy P? = List.map fromList ∘ List.wordsBy P? ∘ toList
+
+words : String → List String
+words = wordsBy (T? ∘ Char.isSpace)
+
+unwords : List String → String
+unwords = intersperse " "
+
+parens : String → String
+parens s = "(" ++ s ++ ")"
+
+-- enclose string with parens if it contains a space character
+parensIfSpace : String → String
+parensIfSpace s with does (' ' ∈? toList s)
+... | true  = parens s
+... | false = s
+
+braces : String → String
+braces s = "{" ++ s ++ "}"
+
+-- append that also introduces spaces, if necessary
+infixr 5 _<+>_
+_<+>_ : String → String → String
+"" <+> b = b
+a <+> "" = a
+a <+> b = a ++ " " ++ b
 
 ------------------------------------------------------------------------
 -- Padding

@@ -9,7 +9,7 @@
 module Data.List.Relation.Binary.Permutation.Propositional
   {a} {A : Set a} where
 
-open import Data.List using (List; []; _∷_)
+open import Data.List.Base using (List; []; _∷_)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 import Relation.Binary.Reasoning.Setoid as EqReasoning
@@ -46,14 +46,17 @@ data _↭_ : Rel (List A) a where
 ↭-sym (swap x y xs↭ys)    = swap y x (↭-sym xs↭ys)
 ↭-sym (trans xs↭ys ys↭zs) = trans (↭-sym ys↭zs) (↭-sym xs↭ys)
 
+-- A smart version of trans that avoids unnecessary `refl`s (see #1113).
 ↭-trans : Transitive _↭_
-↭-trans = trans
+↭-trans refl ρ₂ = ρ₂
+↭-trans ρ₁ refl = ρ₁
+↭-trans ρ₁ ρ₂   = trans ρ₁ ρ₂
 
 ↭-isEquivalence : IsEquivalence _↭_
 ↭-isEquivalence = record
   { refl  = refl
   ; sym   = ↭-sym
-  ; trans = trans
+  ; trans = ↭-trans
   }
 
 ↭-setoid : Setoid _ _
@@ -67,21 +70,28 @@ data _↭_ : Rel (List A) a where
 
 module PermutationReasoning where
 
-  open EqReasoning ↭-setoid
-    using (_IsRelatedTo_; relTo)
+  private
+    module Base = EqReasoning ↭-setoid
 
   open EqReasoning ↭-setoid public
-    using (begin_ ; _∎ ; _≡⟨⟩_; _≡⟨_⟩_)
-    renaming (_≈⟨_⟩_ to _↭⟨_⟩_; _≈˘⟨_⟩_ to _↭˘⟨_⟩_)
+    hiding (step-≈; step-≈˘)
 
-  infixr 2 _∷_<⟨_⟩_  _∷_∷_<<⟨_⟩_
+  infixr 2 step-↭  step-↭˘ step-swap step-prep
+
+  step-↭  = Base.step-≈
+  step-↭˘ = Base.step-≈˘
 
   -- Skip reasoning on the first element
-  _∷_<⟨_⟩_ : ∀ x xs {ys zs : List A} → xs ↭ ys →
-               (x ∷ ys) IsRelatedTo zs → (x ∷ xs) IsRelatedTo zs
-  x ∷ xs <⟨ xs↭ys ⟩ rel = relTo (trans (prep x xs↭ys) (begin rel))
+  step-prep : ∀ x xs {ys zs : List A} → (x ∷ ys) IsRelatedTo zs →
+              xs ↭ ys → (x ∷ xs) IsRelatedTo zs
+  step-prep x xs rel xs↭ys = relTo (trans (prep x xs↭ys) (begin rel))
 
   -- Skip reasoning about the first two elements
-  _∷_∷_<<⟨_⟩_ : ∀ x y xs {ys zs : List A} → xs ↭ ys →
-                  (y ∷ x ∷ ys) IsRelatedTo zs → (x ∷ y ∷ xs) IsRelatedTo zs
-  x ∷ y ∷ xs <<⟨ xs↭ys ⟩ rel = relTo (trans (swap x y xs↭ys) (begin rel))
+  step-swap : ∀ x y xs {ys zs : List A} → (y ∷ x ∷ ys) IsRelatedTo zs →
+              xs ↭ ys → (x ∷ y ∷ xs) IsRelatedTo zs
+  step-swap x y xs rel xs↭ys = relTo (trans (swap x y xs↭ys) (begin rel))
+
+  syntax step-↭  x y↭z x↭y = x ↭⟨  x↭y ⟩ y↭z
+  syntax step-↭˘ x y↭z y↭x = x ↭˘⟨  y↭x ⟩ y↭z
+  syntax step-prep x xs y↭z x↭y = x ∷ xs <⟨ x↭y ⟩ y↭z
+  syntax step-swap x y xs y↭z x↭y = x ∷ y ∷ xs <<⟨ x↭y ⟩ y↭z

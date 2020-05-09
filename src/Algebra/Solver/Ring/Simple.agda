@@ -12,9 +12,9 @@ open import Relation.Binary
 open import Relation.Binary.Consequences using (dec⟶weaklyDec)
 
 module Algebra.Solver.Ring.Simple
-         {r₁ r₂} (R : AlmostCommutativeRing r₁ r₂)
-         (_≟_ : Decidable (AlmostCommutativeRing._≈_ R))
-         where
+  {r₁ r₂} (R : AlmostCommutativeRing r₁ r₂)
+  (_≟_ : Decidable (AlmostCommutativeRing._≈_ R))
+  where
 
 open AlmostCommutativeRing R
 import Algebra.Solver.Ring as RS

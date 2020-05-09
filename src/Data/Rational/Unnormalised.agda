@@ -8,13 +8,16 @@
 
 module Data.Rational.Unnormalised where
 
-open import Data.Integer as ℤ using (ℤ; ∣_∣; +_; +0; +[1+_]; -[1+_])
+open import Data.Integer.Base as ℤ
+  using (ℤ; ∣_∣; +_; +0; +[1+_]; -[1+_]; +<+; +≤+)
 open import Data.Nat as ℕ using (ℕ; zero; suc)
 open import Level using (0ℓ)
 open import Relation.Nullary using (¬_)
 open import Relation.Nullary.Decidable using (False)
+open import Relation.Unary using (Pred)
 open import Relation.Binary using (Rel)
-open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; _≢_; refl)
 
 ------------------------------------------------------------------------
 -- Definition
@@ -50,9 +53,13 @@ open ℚᵘ public using ()
 ------------------------------------------------------------------------
 -- Equality of rational numbers (does not coincide with _≡_)
 
-infix 4 _≃_
+infix 4 _≃_ _≠_
+
 data _≃_ : Rel ℚᵘ 0ℓ where
   *≡* : ∀ {p q} → (↥ p ℤ.* ↧ q) ≡ (↥ q ℤ.* ↧ p) → p ≃ q
+
+_≠_ : Rel ℚᵘ 0ℓ
+p ≠ q = ¬ (p ≃ q)
 
 ------------------------------------------------------------------------
 -- Ordering of rationals
@@ -150,3 +157,59 @@ _÷_ : (p q : ℚᵘ) → .{n≢0 : ∣ ↥ q ∣ ≢0} → ℚᵘ
 
 -½ : ℚᵘ
 -½ = - ½
+
+------------------------------------------------------------------------
+-- Simple predicates
+
+NonZero : Pred ℚᵘ 0ℓ
+NonZero p = ℤ.NonZero (↥ p)
+
+Positive : Pred ℚᵘ 0ℓ
+Positive p = ℤ.Positive (↥ p)
+
+Negative : Pred ℚᵘ 0ℓ
+Negative p = ℤ.Negative (↥ p)
+
+NonPositive : Pred ℚᵘ 0ℓ
+NonPositive p = ℤ.NonPositive (↥ p)
+
+NonNegative : Pred ℚᵘ 0ℓ
+NonNegative p = ℤ.NonNegative (↥ p)
+
+-- Constructors
+
+-- Note: these could be proved more elegantly using the constructors
+-- from ℤ but it requires importing `Data.Integer.Properties` which
+-- we would like to avoid doing.
+
+≢-nonZero : ∀ {p} → p ≠ 0ℚᵘ → NonZero p
+≢-nonZero {mkℚᵘ -[1+ _ ] _      } _   = _
+≢-nonZero {mkℚᵘ +[1+ _ ] _      } _   = _
+≢-nonZero {mkℚᵘ +0       zero   } p≢0 = p≢0 (*≡* refl)
+≢-nonZero {mkℚᵘ +0       (suc d)} p≢0 = p≢0 (*≡* refl)
+
+>-nonZero : ∀ {p} → p > 0ℚᵘ → NonZero p
+>-nonZero {mkℚᵘ +0       _} (*<* (+<+ ()))
+>-nonZero {mkℚᵘ +[1+ n ] _} (*<* _) = _
+
+<-nonZero : ∀ {p} → p < 0ℚᵘ → NonZero p
+<-nonZero {mkℚᵘ +[1+ n ] _} (*<* _) = _
+<-nonZero {mkℚᵘ +0 _}       (*<* (+<+ ()))
+<-nonZero {mkℚᵘ -[1+ n ] _} (*<* _) = _
+
+positive : ∀ {p} → p > 0ℚᵘ → Positive p
+positive {mkℚᵘ (+ n) _} (*<* _) = _
+
+negative : ∀ {p} → p < 0ℚᵘ → Negative p
+negative {mkℚᵘ +[1+ n ]   _} (*<* (+<+ ()))
+negative {mkℚᵘ +0         _} (*<* (+<+ ()))
+negative {mkℚᵘ (-[1+_] n) _} (*<* _       ) = _
+
+nonPositive : ∀ {p} → p ≤ 0ℚᵘ → NonPositive p
+nonPositive {mkℚᵘ +[1+ n ] _} (*≤* (+≤+ ()))
+nonPositive {mkℚᵘ +0       _} (*≤* _) = _
+nonPositive {mkℚᵘ -[1+ n ] _} (*≤* _) = _
+
+nonNegative : ∀ {p} → p ≥ 0ℚᵘ → NonNegative p
+nonNegative {mkℚᵘ +0       _} (*≤* _) = _
+nonNegative {mkℚᵘ +[1+ n ] _} (*≤* _) = _

@@ -10,7 +10,7 @@ open import Relation.Binary using (DecSetoid)
 
 module Data.Vec.Membership.DecSetoid {c ℓ} (DS : DecSetoid c ℓ) where
 
-open import Data.Vec using (Vec)
+open import Data.Vec.Base using (Vec)
 open import Data.Vec.Relation.Unary.Any using (any)
 open import Relation.Nullary using (Dec)
 open DecSetoid DS renaming (Carrier to A)

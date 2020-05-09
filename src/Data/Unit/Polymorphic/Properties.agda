@@ -10,7 +10,7 @@
 module Data.Unit.Polymorphic.Properties where
 
 open import Level
-open import Data.Sum using (inj₁)
+open import Data.Sum.Base using (inj₁)
 open import Data.Unit.Polymorphic.Base using (⊤; tt)
 open import Relation.Nullary
 open import Relation.Binary

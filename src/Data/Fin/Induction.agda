@@ -8,12 +8,13 @@
 
 module Data.Fin.Induction where
 
-open import Data.Nat using (ℕ)
-open import Data.Nat.Induction using (<′-wellFounded)
-open import Data.Fin using (_≺_)
-open import Data.Fin.Properties
+open import Data.Fin.Base using (Fin; toℕ; _<_; _≺_)
+open import Data.Fin.Properties using (≺⇒<′)
+open import Data.Nat.Base using (ℕ)
+import Data.Nat.Induction as ℕ
 open import Induction
 open import Induction.WellFounded as WF
+import Relation.Binary.Construct.On as On
 
 ------------------------------------------------------------------------
 -- Re-export accessability
@@ -21,13 +22,19 @@ open import Induction.WellFounded as WF
 open WF public using (Acc; acc)
 
 ------------------------------------------------------------------------
--- Complete induction based on _≺_
+-- Complete induction for _<_
+
+<-wellFounded : ∀ {n} → WellFounded {A = Fin n} _<_
+<-wellFounded = On.wellFounded toℕ ℕ.<-wellFounded
+
+------------------------------------------------------------------------
+-- Complete induction for on _≺_
 
 ≺-Rec : ∀ {ℓ} → RecStruct ℕ ℓ ℓ
 ≺-Rec = WfRec _≺_
 
 ≺-wellFounded : WellFounded _≺_
-≺-wellFounded = Subrelation.wellFounded ≺⇒<′ <′-wellFounded
+≺-wellFounded = Subrelation.wellFounded ≺⇒<′ ℕ.<′-wellFounded
 
 module _ {ℓ} where
   open WF.All ≺-wellFounded ℓ public

@@ -4,6 +4,7 @@
 .*.swp
 *.agdai
 *.agda.el
+./_build/*
 .DS_Store
 *.lagda.el
 *.hi
@@ -11,6 +12,7 @@
 *.tix
 *.vim
 dist
+dist-newstyle
 Everything.agda
 EverythingSafe.agda
 EverythingSafeGuardedness.agda

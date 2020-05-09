@@ -11,9 +11,9 @@ module Data.Nat.DivMod.Core where
 open import Agda.Builtin.Nat using ()
   renaming (div-helper to divₕ; mod-helper to modₕ)
 
-open import Data.Nat
+open import Data.Nat.Base
 open import Data.Nat.Properties
-open import Data.Sum using (_⊎_; inj₁; inj₂)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.Product using (_×_; _,_)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (yes; no)

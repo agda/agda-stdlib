@@ -27,7 +27,8 @@ module Relation.Binary.Reasoning.Setoid {s₁ s₂} (S : Setoid s₁ s₂) where
 open Setoid S
 
 ------------------------------------------------------------------------
--- Publicly re-export partial setoid contents
+-- Reasoning combinators
 
-open import Relation.Binary.Reasoning.PartialSetoid (partialSetoid) public
-open import Relation.Binary.Reasoning.Base.Single _≈_ refl trans using (_∎) public
+open import Relation.Binary.Reasoning.PartialSetoid partialSetoid public
+open import Relation.Binary.Reasoning.Base.Single _≈_ refl trans public
+  using (_∎)

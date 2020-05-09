@@ -250,6 +250,9 @@ split []           = ([]     , [])
 split (x ∷ [])     = (x ∷ [] , [])
 split (x ∷ y ∷ xs) = Prod.map (x ∷_) (y ∷_) (split xs)
 
+uncons : ∀ {n} → Vec A (suc n) → A × Vec A n
+uncons (x ∷ xs) = x , xs
+
 ------------------------------------------------------------------------
 -- Operations for converting between lists
 

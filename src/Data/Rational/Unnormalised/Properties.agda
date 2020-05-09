@@ -9,16 +9,17 @@
 module Data.Rational.Unnormalised.Properties where
 
 open import Algebra
-open import Algebra.FunctionProperties.Consequences.Propositional
-open import Data.Nat using (suc)
+import Algebra.Consequences.Setoid as FC
+open import Algebra.Consequences.Propositional
+open import Data.Nat.Base using (suc)
 import Data.Nat.Properties as ℕ
-open import Data.Integer as ℤ using (ℤ; +0; +[1+_]; 0ℤ; 1ℤ)
+open import Data.Integer.Base as ℤ using (ℤ; +0; +[1+_]; 0ℤ; 1ℤ)
 open import Data.Integer.Solver renaming (module +-*-Solver to ℤ-solver)
 import Data.Integer.Properties as ℤ
 import Data.Integer.Properties
 open import Data.Rational.Unnormalised
 open import Data.Product using (_,_)
-open import Data.Sum using ([_,_]′; inj₁; inj₂)
+open import Data.Sum.Base using ([_,_]′; inj₁; inj₂)
 open import Function.Base using (_on_; _$_; _∘_)
 open import Level using (0ℓ)
 open import Relation.Nullary using (yes; no)
@@ -190,6 +191,26 @@ p ≤? q = Dec.map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* �
   ; ε   = 0ℚᵘ
   }
 
++-0-rawGroup : RawGroup 0ℓ 0ℓ
++-0-rawGroup = record
+  { Carrier = ℚᵘ
+  ; _≈_ = _≃_
+  ; _∙_ = _+_
+  ; ε = 0ℚᵘ
+  ; _⁻¹ = -_
+  }
+
++-*-rawRing : RawRing 0ℓ 0ℓ
++-*-rawRing = record
+  { Carrier = ℚᵘ
+  ; _≈_ = _≃_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; -_ = -_
+  ; 0# = 0ℚᵘ
+  ; 1# = 1ℚᵘ
+  }
+
 ------------------------------------------------------------------------
 -- Algebraic properties
 
@@ -275,6 +296,38 @@ p ≤? q = Dec.map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* �
 +-identity : Identity _≃_ 0ℚᵘ _+_
 +-identity = +-identityˡ , +-identityʳ
 
++-inverseˡ : LeftInverse _≃_ 0ℚᵘ -_ _+_
++-inverseˡ p = *≡* let n = ↥ p; d = ↧ p in
+  ((ℤ.- n) ℤ.* d ℤ.+ n ℤ.* d) ℤ.* 1ℤ ≡⟨ ℤ.*-identityʳ ((ℤ.- n) ℤ.* d ℤ.+ n ℤ.* d) ⟩
+  (ℤ.- n) ℤ.* d ℤ.+ n ℤ.* d          ≡˘⟨ cong (ℤ._+ (n ℤ.* d)) (ℤ.neg-distribˡ-* n d) ⟩
+  ℤ.- (n ℤ.* d) ℤ.+ n ℤ.* d          ≡⟨ ℤ.+-inverseˡ (n ℤ.* d) ⟩
+  0ℤ ∎ where open ≡-Reasoning
+
++-inverseʳ : RightInverse _≃_ 0ℚᵘ -_ _+_
++-inverseʳ p = *≡* let n = ↥ p; d = ↧ p in
+  (n ℤ.* d ℤ.+ (ℤ.- n) ℤ.* d) ℤ.* 1ℤ ≡⟨ ℤ.*-identityʳ (n ℤ.* d ℤ.+ (ℤ.- n) ℤ.* d) ⟩
+  n ℤ.* d ℤ.+ (ℤ.- n) ℤ.* d          ≡˘⟨ cong (λ n+d → n ℤ.* d ℤ.+ n+d) (ℤ.neg-distribˡ-* n d) ⟩
+  n ℤ.* d ℤ.+ ℤ.- (n ℤ.* d)          ≡⟨ ℤ.+-inverseʳ (n ℤ.* d) ⟩
+  0ℤ ∎ where open ≡-Reasoning
+
++-inverse : Inverse _≃_ 0ℚᵘ -_ _+_
++-inverse = +-inverseˡ , +-inverseʳ
+
+-‿cong : Congruent₁ _≃_ (-_)
+-‿cong {p} {q} (*≡* p≡q) = *≡* (begin
+  ↥(- p) ℤ.* ↧ q             ≡˘⟨ ℤ.*-identityˡ (ℤ.-(↥ p) ℤ.* ↧ q) ⟩
+  1ℤ ℤ.* (↥(- p) ℤ.* ↧ q)    ≡⟨ sym (ℤ.*-assoc 1ℤ (↥(- p)) (↧ q)) ⟩
+  (1ℤ ℤ.* ℤ.-(↥ p)) ℤ.* ↧ q  ≡˘⟨ cong (ℤ._* ↧ q) (ℤ.neg-distribʳ-* 1ℤ (↥ p)) ⟩
+  ℤ.-(1ℤ ℤ.* ↥ p) ℤ.* ↧ q    ≡⟨ cong (ℤ._* ↧ q) (ℤ.neg-distribˡ-* 1ℤ (↥ p)) ⟩
+  ((ℤ.- 1ℤ) ℤ.* ↥ p) ℤ.* ↧ q ≡⟨ ℤ.*-assoc (ℤ.- 1ℤ) (↥ p) (↧ q) ⟩
+  ℤ.- 1ℤ ℤ.* (↥ p ℤ.* ↧ q)   ≡⟨ cong (λ r → ℤ.- 1ℤ ℤ.* r) p≡q ⟩
+  ℤ.- 1ℤ ℤ.* (↥ q ℤ.* ↧ p)   ≡⟨ sym (ℤ.*-assoc (ℤ.- 1ℤ) (↥ q) (↧ p)) ⟩
+  (ℤ.- 1ℤ ℤ.* ↥ q) ℤ.* ↧ p   ≡˘⟨ cong (ℤ._* ↧ p) (ℤ.neg-distribˡ-* 1ℤ (↥ q)) ⟩
+  ℤ.-(1ℤ ℤ.* ↥ q) ℤ.* ↧ p    ≡⟨ cong (ℤ._* ↧ p) (ℤ.neg-distribʳ-* 1ℤ (↥ q)) ⟩
+  (1ℤ ℤ.* ↥(- q)) ℤ.* ↧ p    ≡⟨ ℤ.*-assoc 1ℤ (ℤ.-(↥ q)) (↧ p) ⟩
+  1ℤ ℤ.* (↥(- q) ℤ.* ↧ p)    ≡⟨ ℤ.*-identityˡ (↥(- q) ℤ.* ↧ p) ⟩
+  ↥(- q) ℤ.* ↧ p ∎) where open ≡-Reasoning
+
 ------------------------------------------------------------------------
 -- Algebraic structures
 
@@ -302,6 +355,19 @@ p ≤? q = Dec.map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* �
   ; comm     = +-comm
   }
 
++-0-isGroup : IsGroup _≃_ _+_ 0ℚᵘ (-_)
++-0-isGroup = record
+  { isMonoid = +-0-isMonoid
+  ; inverse  = +-inverse
+  ; ⁻¹-cong  = -‿cong
+  }
+
++-0-isAbelianGroup : IsAbelianGroup _≃_ _+_ 0ℚᵘ (-_)
++-0-isAbelianGroup = record
+  { isGroup = +-0-isGroup
+  ; comm    = +-comm
+  }
+
 ------------------------------------------------------------------------
 -- Algebraic bundles
 
@@ -323,6 +389,16 @@ p ≤? q = Dec.map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* �
 +-0-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
 +-0-commutativeMonoid = record
   { isCommutativeMonoid = +-0-isCommutativeMonoid
+  }
+
++-0-group : Group 0ℓ 0ℓ
++-0-group = record
+  { isGroup = +-0-isGroup
+  }
+
++-0-abelianGroup : AbelianGroup 0ℓ 0ℓ
++-0-abelianGroup = record
+  { isAbelianGroup = +-0-isAbelianGroup
   }
 
 ------------------------------------------------------------------------
@@ -410,6 +486,34 @@ p ≤? q = Dec.map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* �
 *-identity : Identity _≃_ 1ℚᵘ _*_
 *-identity = *-identityˡ , *-identityʳ
 
+*-zeroˡ : LeftZero _≃_ 0ℚᵘ _*_
+*-zeroˡ p = *≡* refl
+
+*-zeroʳ : RightZero _≃_ 0ℚᵘ _*_
+*-zeroʳ = FC.comm+zeˡ⇒zeʳ ≃-setoid *-comm *-zeroˡ
+
+*-zero : Zero _≃_ 0ℚᵘ _*_
+*-zero = *-zeroˡ , *-zeroʳ
+
+*-distribˡ-+ : _DistributesOverˡ_ _≃_ _*_ _+_
+*-distribˡ-+ p q r =
+  let ↥p = ↥ p; ↧p = ↧ p
+      ↥q = ↥ q; ↧q = ↧ q
+      ↥r = ↥ r; ↧r = ↧ r
+      eq : (↥p ℤ.* (↥q ℤ.* ↧r ℤ.+ ↥r ℤ.* ↧q)) ℤ.* (↧p ℤ.* ↧q ℤ.* (↧p ℤ.* ↧r)) ≡
+           (↥p ℤ.* ↥q ℤ.* (↧p ℤ.* ↧r) ℤ.+ ↥p ℤ.* ↥r ℤ.* (↧p ℤ.* ↧q)) ℤ.* (↧p ℤ.* (↧q ℤ.* ↧r))
+      eq = solve 6 (λ ↥p ↧p ↥q d e f →
+           (↥p :* (↥q :* f :+ e :* d)) :* (↧p :* d :* (↧p :* f)) :=
+           (↥p :* ↥q :* (↧p :* f) :+ ↥p :* e :* (↧p :* d)) :* (↧p :* (d :* f)))
+           refl ↥p ↧p ↥q ↧q ↥r ↧r
+  in *≡* eq where open ℤ-solver
+
+*-distribʳ-+ : _DistributesOverʳ_ _≃_ _*_ _+_
+*-distribʳ-+ = FC.comm+distrˡ⇒distrʳ ≃-setoid +-cong *-comm *-distribˡ-+
+
+*-distrib-+ : _DistributesOver_ _≃_ _*_ _+_
+*-distrib-+ = *-distribˡ-+ , *-distribʳ-+
+
 ------------------------------------------------------------------------
 -- Algebraic structures
 
@@ -437,6 +541,20 @@ p ≤? q = Dec.map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* �
   ; comm     = *-comm
   }
 
++-*-isRing : IsRing _≃_ _+_ _*_ -_ 0ℚᵘ 1ℚᵘ
++-*-isRing = record
+  { +-isAbelianGroup = +-0-isAbelianGroup
+  ; *-isMonoid       = *-1-isMonoid
+  ; distrib          = *-distrib-+
+  ; zero             = *-zero
+  }
+
++-*-isCommutativeRing : IsCommutativeRing _≃_ _+_ _*_ -_ 0ℚᵘ 1ℚᵘ
++-*-isCommutativeRing = record
+  { isRing = +-*-isRing
+  ; *-comm = *-comm
+  }
+
 ------------------------------------------------------------------------
 -- Algebraic bundles
 
@@ -459,3 +577,14 @@ p ≤? q = Dec.map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* �
 *-1-commutativeMonoid = record
   { isCommutativeMonoid = *-1-isCommutativeMonoid
   }
+
++-*-ring : Ring 0ℓ 0ℓ
++-*-ring = record
+  { isRing = +-*-isRing
+  }
+
++-*-commutativeRing : CommutativeRing 0ℓ 0ℓ
++-*-commutativeRing = record
+  { isCommutativeRing = +-*-isCommutativeRing
+  }
+

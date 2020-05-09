@@ -4,9 +4,9 @@
 -- Natural numbers represented in binary.
 ------------------------------------------------------------------------
 
--- This module aims to create an alternative formulation of ℕ that is
--- still reasonably computationally efficient without having to call out
--- to Haskell.
+-- This module contains an alternative formulation of ℕ that is
+-- still reasonably computationally efficient without having to use
+-- built-in functions.
 
 {-# OPTIONS --without-K --safe #-}
 
@@ -14,10 +14,10 @@ module Data.Nat.Binary.Base where
 
 open import Algebra.Core using (Op₂)
 open import Data.Nat.Base as ℕ using (ℕ)
-open import Data.Sum using (_⊎_)
-open import Function using (_on_)
+open import Data.Sum.Base using (_⊎_)
+open import Function.Base using (_on_)
 open import Level using (0ℓ)
-open import Relation.Binary using (Rel)
+open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality using (_≡_)
 open import Relation.Nullary using (¬_)
 

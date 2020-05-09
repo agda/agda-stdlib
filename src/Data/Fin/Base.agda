@@ -14,7 +14,7 @@ module Data.Fin.Base where
 
 open import Data.Empty using (⊥-elim)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; z≤n; s≤s)
-open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Function.Base using (id; _∘_; _on_)
 import Data.Nat.Properties as ℕₚ
 open import Level using () renaming (zero to ℓ₀)
@@ -62,13 +62,13 @@ fromℕ : (n : ℕ) → Fin (suc n)
 fromℕ zero    = zero
 fromℕ (suc n) = suc (fromℕ n)
 
--- fromℕ≤ {m} _ = "m".
+-- fromℕ< {m} _ = "m".
 
 fromℕ< : ∀ {m n} → m ℕ.< n → Fin n
 fromℕ< {zero}  {suc n} m≤n = zero
 fromℕ< {suc m} {suc n} m≤n = suc (fromℕ< (ℕₚ.≤-pred m≤n))
 
--- fromℕ≤″ m _ = "m".
+-- fromℕ<″ m _ = "m".
 
 fromℕ<″ : ∀ m {n} → m ℕ.<″ n → Fin n
 fromℕ<″ zero    (ℕ.less-than-or-equal refl) = zero

@@ -8,15 +8,18 @@
 
 module Data.Rational.Properties where
 
+open import Algebra.Consequences.Propositional
 open import Algebra.Morphism
 open import Algebra.Bundles
 import Algebra.Morphism.MonoidMonomorphism as MonoidMonomorphisms
+import Algebra.Morphism.GroupMonomorphism as GroupMonomorphisms
+import Algebra.Morphism.RingMonomorphism as RingMonomorphisms
 import Algebra.Properties.CommutativeSemigroup as CommSemigroupProperties
-open import Data.Integer as ℤ using (ℤ; ∣_∣; +_; -[1+_]; 0ℤ; _◃_)
+open import Data.Integer.Base as ℤ using (ℤ; ∣_∣; +_; -[1+_]; 0ℤ; _◃_)
 open import Data.Integer.Coprimality using (coprime-divisor)
 import Data.Integer.Properties as ℤ
 open import Data.Integer.GCD using (gcd; gcd[i,j]≡0⇒i≡0; gcd[i,j]≡0⇒j≡0)
-open import Data.Nat as ℕ using (ℕ; zero; suc)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
 import Data.Nat.Properties as ℕ
 open import Data.Nat.Coprimality as C using (Coprime; coprime?)
 open import Data.Nat.Divisibility hiding (/-cong)
@@ -27,7 +30,7 @@ open import Data.Rational.Base
 open import Data.Rational.Unnormalised as ℚᵘ
   using (ℚᵘ; *≡*; *≤*) renaming (↥_ to ↥ᵘ_; ↧_ to ↧ᵘ_; _≃_ to _≃ᵘ_; _≤_ to _≤ᵘ_)
 import Data.Rational.Unnormalised.Properties as ℚᵘ
-open import Data.Sum
+open import Data.Sum.Base
 open import Data.Unit using (tt)
 import Data.Sign as S
 open import Function using (_∘_ ; _$_; Injective)
@@ -44,16 +47,12 @@ open import Relation.Nullary.Decidable as Dec using (True; fromWitness; map′)
 open import Relation.Nullary.Product using (_×-dec_)
 
 open import Algebra.Definitions {A = ℚ} _≡_
-open import Algebra.Structures {A = ℚ} _≡_
-open import Algebra.FunctionProperties.Consequences.Propositional
+open import Algebra.Structures  {A = ℚ} _≡_
 
 private
   infix 4 _≢0
   _≢0 : ℕ → Set
   n ≢0 = False (n ℕ.≟ 0)
-
-  recomputeCP : ∀ {n d} → .(Coprime n d) → Coprime n d
-  recomputeCP {n} {d} c = recompute (coprime? n d) c
 
 ------------------------------------------------------------------------
 -- Propositional equality
@@ -117,7 +116,7 @@ mkℚ+-cong _ _ refl refl = refl
 
   1+d₁∣1+d₂ : suc d₁ ∣ suc d₂
   1+d₁∣1+d₂ = coprime-divisor (+ suc d₁) n₁ (+ suc d₂)
-    (C.sym (recomputeCP c₁)) $
+    (C.sym (C.recompute c₁)) $
     divides ∣ n₂ ∣ $ begin
       ∣ n₁ ℤ.* + suc d₂ ∣  ≡⟨ cong ∣_∣ eq ⟩
       ∣ n₂ ℤ.* + suc d₁ ∣  ≡⟨ ℤ.abs-*-commute n₂ (+ suc d₁) ⟩
@@ -125,7 +124,7 @@ mkℚ+-cong _ _ refl refl = refl
 
   1+d₂∣1+d₁ : suc d₂ ∣ suc d₁
   1+d₂∣1+d₁ = coprime-divisor (+ suc d₂) n₂ (+ suc d₁)
-    (C.sym (recomputeCP c₂)) $
+    (C.sym (C.recompute c₂)) $
     divides ∣ n₁ ∣ (begin
       ∣ n₂ ℤ.* + suc d₁ ∣  ≡⟨ cong ∣_∣ (sym eq) ⟩
       ∣ n₁ ℤ.* + suc d₂ ∣  ≡⟨ ℤ.abs-*-commute n₁ (+ suc d₂) ⟩
@@ -159,12 +158,12 @@ normalize-coprime : ∀ {n d-1} .(c : Coprime n (suc d-1)) →
 normalize-coprime {n} {d-1} c = begin
   normalize n d              ≡⟨⟩
   mkℚ+ (n ℕ./ g) (d ℕ./ g) _ ≡⟨ mkℚ+-cong n/g≢0 d/1≢0 {c₂ = c₂} (ℕ./-congʳ {n≢0 = g≢0} g≡1) (ℕ./-congʳ {n≢0 = g≢0} g≡1) ⟩
-  mkℚ+ (n ℕ./ 1) (d ℕ./ 1) _ ≡⟨ mkℚ+-cong d/1≢0 _ (ℕ.n/1≡n n) (ℕ.n/1≡n d) ⟩
+  mkℚ+ (n ℕ./ 1) (d ℕ./ 1) _ ≡⟨ mkℚ+-cong d/1≢0 _ {c₂ = c} (ℕ.n/1≡n n) (ℕ.n/1≡n d) ⟩
   mkℚ+ n d _                 ≡⟨⟩
   mkℚ (+ n) d-1 _            ∎
   where
   open ≡-Reasoning; d = suc d-1; g = ℕ.gcd n d
-  c′ = recomputeCP c
+  c′ = C.recompute c
   c₂ : Coprime (n ℕ./ 1) (d ℕ./ 1)
   c₂ = subst₂ Coprime (sym (ℕ.n/1≡n n)) (sym (ℕ.n/1≡n d)) c′
   g≡1 = C.coprime⇒gcd≡1 c′
@@ -439,7 +438,7 @@ module ≤-Reasoning where
     <-≤-trans
     ≤-<-trans
     public
-    hiding (_≈⟨_⟩_; _≈˘⟨_⟩_)
+    hiding (step-≈; step-≈˘)
 
 ------------------------------------------------------------------------
 -- Properties of _/_
@@ -515,6 +514,24 @@ private
   ; ε   = 0ℚ
   }
 
++-0-rawGroup : RawGroup 0ℓ 0ℓ
++-0-rawGroup = record
+  { _≈_ = _≡_
+  ; _∙_ = _+_
+  ; ε   = 0ℚ
+  ; _⁻¹ = -_
+  }
+
++-*-rawRing : RawRing 0ℓ 0ℓ
++-*-rawRing = record
+  { _≈_ = _≡_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; -_  = -_
+  ; 0#  = 0ℚ
+  ; 1#  = 1ℚ
+  }
+
 ------------------------------------------------------------------------
 -- Monomorphic to unnormalised _+_
 
@@ -562,10 +579,30 @@ toℚᵘ-isMonoidMonomorphism-+ = record
   }
 
 ------------------------------------------------------------------------
+-- Monomorphic to unnormalised -_
+
+toℚᵘ-homo‿- : Homomorphic₁ toℚᵘ (-_) (ℚᵘ.-_)
+toℚᵘ-homo‿- (mkℚ +0       _ _) = *≡* refl
+toℚᵘ-homo‿- (mkℚ +[1+ _ ] _ _) = *≡* refl
+toℚᵘ-homo‿- (mkℚ -[1+ _ ] _ _) = *≡* refl
+
+toℚᵘ-isGroupHomomorphism-+ : IsGroupHomomorphism +-0-rawGroup ℚᵘ.+-0-rawGroup toℚᵘ
+toℚᵘ-isGroupHomomorphism-+ = record
+  { isMonoidHomomorphism = toℚᵘ-isMonoidHomomorphism-+
+  ; ⁻¹-homo              = toℚᵘ-homo‿-
+  }
+
+toℚᵘ-isGroupMonomorphism-+ : IsGroupMonomorphism +-0-rawGroup ℚᵘ.+-0-rawGroup toℚᵘ
+toℚᵘ-isGroupMonomorphism-+ = record
+  { isGroupHomomorphism = toℚᵘ-isGroupHomomorphism-+
+  ; injective           = toℚᵘ-injective
+  }
+
+------------------------------------------------------------------------
 -- Algebraic properties
 
 private
-  module +-Monomorphism = MonoidMonomorphisms toℚᵘ-isMonoidMonomorphism-+
+  module +-Monomorphism = GroupMonomorphisms toℚᵘ-isGroupMonomorphism-+
 
 +-assoc : Associative _+_
 +-assoc = +-Monomorphism.assoc ℚᵘ.+-isMagma ℚᵘ.+-assoc
@@ -582,6 +619,18 @@ private
 +-identity : Identity 0ℚ _+_
 +-identity = +-identityˡ , +-identityʳ
 
++-inverseˡ : LeftInverse 0ℚ -_ _+_
++-inverseˡ = +-Monomorphism.inverseˡ ℚᵘ.+-isMagma ℚᵘ.+-inverseˡ
+
++-inverseʳ : RightInverse 0ℚ -_ _+_
++-inverseʳ = +-Monomorphism.inverseʳ ℚᵘ.+-isMagma ℚᵘ.+-inverseʳ
+
++-inverse : Inverse 0ℚ -_ _+_
++-inverse = +-Monomorphism.inverse ℚᵘ.+-isMagma ℚᵘ.+-inverse
+
+-‿cong :  Congruent₁ (-_)
+-‿cong = +-Monomorphism.⁻¹-cong ℚᵘ.+-isMagma ℚᵘ.-‿cong
+
 ------------------------------------------------------------------------
 -- Structures
 
@@ -596,6 +645,12 @@ private
 
 +-0-isCommutativeMonoid : IsCommutativeMonoid _+_ 0ℚ
 +-0-isCommutativeMonoid = +-Monomorphism.isCommutativeMonoid ℚᵘ.+-0-isCommutativeMonoid
+
++-0-isGroup : IsGroup _+_ 0ℚ (-_)
++-0-isGroup = +-Monomorphism.isGroup ℚᵘ.+-0-isGroup
+
++-0-isAbelianGroup : IsAbelianGroup _+_ 0ℚ (-_)
++-0-isAbelianGroup = +-Monomorphism.isAbelianGroup ℚᵘ.+-0-isAbelianGroup
 
 ------------------------------------------------------------------------
 -- Packages
@@ -620,6 +675,15 @@ private
   { isCommutativeMonoid = +-0-isCommutativeMonoid
   }
 
++-0-group : Group 0ℓ 0ℓ
++-0-group = record
+  { isGroup = +-0-isGroup
+  }
+
++-0-abelianGroup : AbelianGroup 0ℓ 0ℓ
++-0-abelianGroup = record
+  { isAbelianGroup = +-0-isAbelianGroup
+  }
 
 ------------------------------------------------------------------------
 -- Properties of _*_
@@ -694,41 +758,65 @@ toℚᵘ-isMonoidMonomorphism-* = record
   ; injective            = toℚᵘ-injective
   }
 
+toℚᵘ-isRingHomomorphism-+-* : IsRingHomomorphism +-*-rawRing ℚᵘ.+-*-rawRing toℚᵘ
+toℚᵘ-isRingHomomorphism-+-* = record
+  { +-isGroupHomomorphism  = toℚᵘ-isGroupHomomorphism-+
+  ; *-isMonoidHomomorphism = toℚᵘ-isMonoidHomomorphism-*
+  }
+
+toℚᵘ-isRingMonomorphism-+-* : IsRingMonomorphism +-*-rawRing ℚᵘ.+-*-rawRing toℚᵘ
+toℚᵘ-isRingMonomorphism-+-* = record
+  { isRingHomomorphism = toℚᵘ-isRingHomomorphism-+-*
+  ; injective          = toℚᵘ-injective
+  }
+
 ------------------------------------------------------------------------
 -- Algebraic properties
 
 private
-  module *-Monomorphism = MonoidMonomorphisms toℚᵘ-isMonoidMonomorphism-*
+  module *-Monomorphism = RingMonomorphisms toℚᵘ-isRingMonomorphism-+-*
 
 *-assoc : Associative _*_
-*-assoc = *-Monomorphism.assoc ℚᵘ.*-isMagma ℚᵘ.*-assoc
+*-assoc = *-Monomorphism.*-assoc ℚᵘ.*-isMagma ℚᵘ.*-assoc
 
 *-comm : Commutative _*_
-*-comm = *-Monomorphism.comm ℚᵘ.*-isMagma ℚᵘ.*-comm
+*-comm = *-Monomorphism.*-comm ℚᵘ.*-isMagma ℚᵘ.*-comm
 
 *-identityˡ : LeftIdentity 1ℚ _*_
-*-identityˡ = *-Monomorphism.identityˡ ℚᵘ.*-isMagma ℚᵘ.*-identityˡ
+*-identityˡ = *-Monomorphism.*-identityˡ ℚᵘ.*-isMagma ℚᵘ.*-identityˡ
 
 *-identityʳ : RightIdentity 1ℚ _*_
-*-identityʳ = *-Monomorphism.identityʳ ℚᵘ.*-isMagma ℚᵘ.*-identityʳ
+*-identityʳ = *-Monomorphism.*-identityʳ ℚᵘ.*-isMagma ℚᵘ.*-identityʳ
 
 *-identity : Identity 1ℚ _*_
 *-identity = *-identityˡ , *-identityʳ
+
+*-distribˡ-+ : _*_ DistributesOverˡ _+_
+*-distribˡ-+ = *-Monomorphism.distribˡ ℚᵘ.+-0-isGroup ℚᵘ.*-isMagma ℚᵘ.*-distribˡ-+
+
+*-distribʳ-+ : _*_ DistributesOverʳ _+_
+*-distribʳ-+ = *-Monomorphism.distribʳ ℚᵘ.+-0-isGroup ℚᵘ.*-isMagma ℚᵘ.*-distribʳ-+
+
+*-distrib-+ : _*_ DistributesOver _+_
+*-distrib-+ = *-distribˡ-+ , *-distribʳ-+
 
 ------------------------------------------------------------------------
 -- Structures
 
 *-isMagma : IsMagma _*_
-*-isMagma = *-Monomorphism.isMagma ℚᵘ.*-isMagma
+*-isMagma = *-Monomorphism.*-isMagma ℚᵘ.*-isMagma
 
 *-isSemigroup : IsSemigroup _*_
-*-isSemigroup = *-Monomorphism.isSemigroup ℚᵘ.*-isSemigroup
+*-isSemigroup = *-Monomorphism.*-isSemigroup ℚᵘ.*-isSemigroup
 
 *-1-isMonoid : IsMonoid _*_ 1ℚ
-*-1-isMonoid = *-Monomorphism.isMonoid ℚᵘ.*-1-isMonoid
+*-1-isMonoid = *-Monomorphism.*-isMonoid ℚᵘ.*-1-isMonoid
 
 *-1-isCommutativeMonoid : IsCommutativeMonoid _*_ 1ℚ
-*-1-isCommutativeMonoid = *-Monomorphism.isCommutativeMonoid ℚᵘ.*-1-isCommutativeMonoid
+*-1-isCommutativeMonoid = *-Monomorphism.*-isCommutativeMonoid ℚᵘ.*-1-isCommutativeMonoid
+
++-*-isRing : IsRing _+_ _*_ -_ 0ℚ 1ℚ
++-*-isRing = *-Monomorphism.isRing ℚᵘ.+-*-isRing
 
 ------------------------------------------------------------------------
 -- Packages
@@ -753,6 +841,10 @@ private
   { isCommutativeMonoid = *-1-isCommutativeMonoid
   }
 
++-*-ring : Ring 0ℓ 0ℓ
++-*-ring = record
+  { isRing = +-*-isRing
+  }
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

@@ -11,7 +11,7 @@
 
 module Data.Unit.Properties where
 
-open import Data.Sum
+open import Data.Sum.Base
 open import Data.Unit.Base
 open import Level using (0ℓ)
 open import Relation.Nullary

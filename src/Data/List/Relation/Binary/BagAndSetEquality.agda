@@ -12,8 +12,8 @@ open import Algebra using (Idempotent; CommutativeMonoid)
 open import Algebra.Structures.Biased using (isCommutativeMonoidˡ)
 open import Category.Monad using (RawMonad)
 open import Data.Empty
-open import Data.Fin
-open import Data.List
+open import Data.Fin.Base
+open import Data.List.Base
 open import Data.List.Categorical using (monad; module MonadProperties)
 import Data.List.Properties as LP
 open import Data.List.Relation.Unary.Any using (Any; here; there)
@@ -23,8 +23,8 @@ open import Data.List.Relation.Binary.Subset.Propositional.Properties
   using (⊆-preorder)
 open import Data.Product as Prod hiding (map)
 import Data.Product.Function.Dependent.Propositional as Σ
-open import Data.Sum as Sum hiding (map)
-open import Data.Sum.Properties
+open import Data.Sum.Base as Sum hiding (map)
+open import Data.Sum.Properties hiding (map-cong)
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
 open import Data.Unit
 open import Function.Base
@@ -86,20 +86,25 @@ module ⊆-Reasoning where
   private
     module PreOrder {a} {A : Set a} = PreorderReasoning (⊆-preorder A)
 
-    open PreOrder
-      hiding (_≈⟨_⟩_; _≈˘⟨_⟩_)
-      renaming (_∼⟨_⟩_ to _⊆⟨_⟩_)
+  open PreOrder public
+    hiding (step-≈; step-≈˘; step-∼)
 
-  infixr 2 _∼⟨_⟩_
-  infix  1 _∈⟨_⟩_
+  infixr 2 step-∼ step-⊆
+  infix  1 step-∈
 
-  _∈⟨_⟩_ : ∀ {a} {A : Set a} x {xs ys : List A} →
-           x ∈ xs → xs IsRelatedTo ys → x ∈ ys
-  x ∈⟨ x∈xs ⟩ xs⊆ys = (begin xs⊆ys) x∈xs
+  step-⊆ = PreOrder.step-∼
 
-  _∼⟨_⟩_ : ∀ {k a} {A : Set a} xs {ys zs : List A} →
-           xs ∼[ ⌊ k ⌋→ ] ys → ys IsRelatedTo zs → xs IsRelatedTo zs
-  xs ∼⟨ xs≈ys ⟩ ys≈zs = xs ⊆⟨ ⇒→ xs≈ys ⟩ ys≈zs
+  step-∈ : ∀ {a} {A : Set a} x {xs ys : List A} →
+           xs IsRelatedTo ys → x ∈ xs → x ∈ ys
+  step-∈ x xs⊆ys x∈xs = (begin xs⊆ys) x∈xs
+
+  step-∼ : ∀ {k a} {A : Set a} xs {ys zs : List A} →
+           ys IsRelatedTo zs → xs ∼[ ⌊ k ⌋→ ] ys → xs IsRelatedTo zs
+  step-∼ xs ys⊆zs xs≈ys = step-⊆ xs ys⊆zs (⇒→ xs≈ys)
+
+  syntax step-∈ x  xs⊆ys x∈xs  = x ∈⟨ x∈xs ⟩ xs⊆ys
+  syntax step-∼ xs ys⊆zs xs≈ys = xs ∼⟨ xs≈ys ⟩ ys⊆zs
+  syntax step-⊆ xs ys⊆zs xs⊆ys = xs ⊆⟨ xs⊆ys ⟩ ys⊆zs
 
 ------------------------------------------------------------------------
 -- Congruence lemmas

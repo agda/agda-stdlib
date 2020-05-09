@@ -8,7 +8,7 @@
 
 module Data.Integer.Coprimality where
 
-open import Data.Integer
+open import Data.Integer.Base
 open import Data.Integer.Divisibility
 open import Data.Integer.Properties
 import Data.Nat.Coprimality as ℕ

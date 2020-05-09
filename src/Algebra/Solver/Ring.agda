@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Solver for commutative ring or semiring equalities
+-- Old solver for commutative ring or semiring equalities
 ------------------------------------------------------------------------
 
 -- Uses ideas from the Coq ring tactic. See "Proving Equalities in a
@@ -46,8 +46,8 @@ import Relation.Binary.PropositionalEquality as PropEq
 import Relation.Binary.Reflection as Reflection
 
 open import Data.Nat.Base using (ℕ; suc; zero)
-open import Data.Fin using (Fin; zero; suc)
-open import Data.Vec using (Vec; []; _∷_; lookup)
+open import Data.Fin.Base using (Fin; zero; suc)
+open import Data.Vec.Base using (Vec; []; _∷_; lookup)
 open import Data.Maybe.Base using (just; nothing)
 open import Function
 open import Level using (_⊔_)
@@ -142,7 +142,7 @@ mutual
 
   -- Note that the data types above do /not/ ensure uniqueness of
   -- normal forms: the zero polynomial of degree one can be
-  -- represented using both ∅ and ∅ *x+ con C.0#.
+  -- represented using both ∅ and ∅ *x+ con C.0#.
 
 mutual
 
@@ -541,7 +541,7 @@ correct (:- p) ρ = begin
   - ⟦ p ⟧ ρ              ∎
 
 ------------------------------------------------------------------------
--- "Tactics"
+-- "Tactic.
 
 open Reflection setoid var ⟦_⟧ ⟦_⟧↓ correct public
   using (prove; solve) renaming (_⊜_ to _:=_)

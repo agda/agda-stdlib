@@ -21,7 +21,7 @@ open import Data.Nat as ℕ
 import Data.Nat.Properties as ℕₚ
 open import Data.Nat.Solver
 open import Data.Product using (proj₁; proj₂; _,_)
-open import Data.Sum as Sum using (inj₁; inj₂)
+open import Data.Sum.Base as Sum using (inj₁; inj₂)
 open import Data.Sign as Sign using () renaming (_*_ to _𝕊*_)
 import Data.Sign.Properties as 𝕊ₚ
 open import Function using (_∘_; _$_)
@@ -306,7 +306,7 @@ module ≤-Reasoning where
     <-≤-trans
     ≤-<-trans
     public
-    hiding (_≈⟨_⟩_; _≈˘⟨_⟩_)
+    hiding (step-≈; step-≈˘)
 
 ------------------------------------------------------------------------
 -- Properties of -_
@@ -945,17 +945,17 @@ suc-mono (-≤+ {m}) = 0⊖m≤+ m
 suc-mono (-≤- n≤m) = ⊖-monoʳ-≥-≤ zero n≤m
 suc-mono (+≤+ m≤n) = +≤+ (s≤s m≤n)
 
-m+1≤n⇒m<n : ∀ {m n} → sucℤ m ≤ n → m < n
-m+1≤n⇒m<n {+ m}           {+ _}       (+≤+ m≤n) = +<+ m≤n
-m+1≤n⇒m<n { -[1+ 0 ]}     {+ n}       p         = -<+
-m+1≤n⇒m<n { -[1+ suc m ]} {+ n}       -≤+       = -<+
-m+1≤n⇒m<n { -[1+ suc m ]} { -[1+ n ]} (-≤- n≤m) = -<- (ℕ.s≤s n≤m)
+suc[i]≤j⇒i<j : ∀ {i j} → sucℤ i ≤ j → i < j
+suc[i]≤j⇒i<j {+ i}           {+ _}       (+≤+ i≤j) = +<+ i≤j
+suc[i]≤j⇒i<j { -[1+ 0 ]}     {+ j}       p         = -<+
+suc[i]≤j⇒i<j { -[1+ suc i ]} {+ j}       -≤+       = -<+
+suc[i]≤j⇒i<j { -[1+ suc i ]} { -[1+ j ]} (-≤- j≤i) = -<- (ℕ.s≤s j≤i)
 
-m<n⇒m+1≤n : ∀ {m n} → m < n → sucℤ m ≤ n
-m<n⇒m+1≤n {+ _}           {+ _}       (+<+ m<n) = +≤+ m<n
-m<n⇒m+1≤n { -[1+ 0 ]}     {+ _}       -<+       = +≤+ z≤n
-m<n⇒m+1≤n { -[1+ suc m ]} { -[1+ _ ]} (-<- n<m) = -≤- (ℕ.≤-pred n<m)
-m<n⇒m+1≤n { -[1+ suc m ]} {+ _}       -<+       = -≤+
+i<j⇒suc[i]≤j : ∀ {i j} → i < j → sucℤ i ≤ j
+i<j⇒suc[i]≤j {+ _}           {+ _}       (+<+ i<j) = +≤+ i<j
+i<j⇒suc[i]≤j { -[1+ 0 ]}     {+ _}       -<+       = +≤+ z≤n
+i<j⇒suc[i]≤j { -[1+ suc i ]} { -[1+ _ ]} (-<- j<i) = -≤- (ℕ.≤-pred j<i)
+i<j⇒suc[i]≤j { -[1+ suc i ]} {+ _}       -<+       = -≤+
 
 ------------------------------------------------------------------------
 -- Properties of pred
@@ -1901,6 +1901,6 @@ Please use _<_ instead."
 
 [1+m]*n≡n+m*n = suc-*
 {-# WARNING_ON_USAGE [1+m]*n≡n+m*n
-"Warning: [1+m]*n≡n+m*n was deprecated in v1.1.
+"Warning: [1+m]*n≡n+m*n was deprecated in v1.2.
 Please use suc-* instead."
 #-}

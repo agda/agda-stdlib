@@ -12,9 +12,9 @@
 module Data.Nat.Coprimality where
 
 open import Data.Empty
-open import Data.Fin using (toℕ; fromℕ<)
+open import Data.Fin.Base using (toℕ; fromℕ<)
 open import Data.Fin.Properties using (toℕ-fromℕ<)
-open import Data.Nat
+open import Data.Nat.Base
 open import Data.Nat.Divisibility
 open import Data.Nat.GCD
 open import Data.Nat.GCD.Lemmas
@@ -26,7 +26,7 @@ open import Function
 open import Level using (0ℓ)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; cong; subst; module ≡-Reasoning)
-open import Relation.Nullary
+open import Relation.Nullary as Nullary hiding (recompute)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Binary
 
@@ -93,10 +93,18 @@ coprime? i j with mkGCD i j
 0-coprimeTo-m⇒m≡1 : ∀ {m} → Coprime 0 m → m ≡ 1
 0-coprimeTo-m⇒m≡1 {m} c = c (m ∣0 , ∣-refl)
 
+¬0-coprimeTo-2+ : ∀ {n} → ¬ Coprime 0 (2 + n)
+¬0-coprimeTo-2+ coprime = contradiction (0-coprimeTo-m⇒m≡1 coprime) λ()
+
 -- If m and n are coprime, then n + m and n are also coprime.
 
 coprime-+ : ∀ {m n} → Coprime m n → Coprime (n + m) n
 coprime-+ c (d₁ , d₂) = c (∣m+n∣m⇒∣n d₁ d₂ , d₂)
+
+-- Recomputable
+
+recompute : ∀ {n d} → .(Coprime n d) → Coprime n d
+recompute {n} {d} c = Nullary.recompute (coprime? n d) c
 
 ------------------------------------------------------------------------
 -- Relationship with Bezout's lemma

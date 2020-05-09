@@ -10,7 +10,7 @@ module Relation.Binary.Construct.Closure.Reflexive.Properties.WithK where
 
 open import Data.Empty.Irrelevant using (⊥-elim)
 open import Data.Product as Prod
-open import Data.Sum as Sum
+open import Data.Sum.Base as Sum
 open import Relation.Binary
 open import Relation.Binary.Construct.Closure.Reflexive
 open import Relation.Binary.Construct.Closure.Reflexive.Properties public

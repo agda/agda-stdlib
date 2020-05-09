@@ -1,7 +1,7 @@
 module README where
 
 ------------------------------------------------------------------------
--- The Agda standard library, version 1.3-dev
+-- The Agda standard library, version 1.4-dev
 --
 -- Authors: Nils Anders Danielsson, Matthew Daggitt, Guillaume Allais
 -- with contributions from Andreas Abel, Stevan Andjelkovic,
@@ -16,7 +16,7 @@ module README where
 -- Noam Zeilberger and other anonymous contributors.
 ------------------------------------------------------------------------
 
--- This version of the library has been tested using Agda 2.6.0.1.
+-- This version of the library has been tested using Agda 2.6.1.
 
 -- The library comes with a .agda-lib file, for use with the library
 -- management system.
@@ -25,7 +25,7 @@ module README where
 -- backend.
 
 ------------------------------------------------------------------------
--- Module hierarchy
+-- High-level overview of contents
 ------------------------------------------------------------------------
 
 -- The top-level module names of the library are currently allocated
@@ -86,6 +86,26 @@ import README.Data
 
 -- • Strict
 --     Provides access to the builtins relating to strictness.
+
+-- • Tactic
+--     Tactics for automatic proof generation
+
+
+------------------------------------------------------------------------
+-- Library design
+------------------------------------------------------------------------
+-- The following modules contain a discussion of some of the choices
+-- that have been made whilst designing the library.
+
+-- • How mathematical hierarchies (e.g. preorder, partial order, total
+-- order) are handled in the library.
+
+import README.Design.Hierarchies
+
+-- • How decidability is handled in the library.
+
+import README.Design.Decidability
+
 
 ------------------------------------------------------------------------
 -- A selection of useful library modules
@@ -163,108 +183,10 @@ import Codata.Thunk
 
 import IO
 
-------------------------------------------------------------------------
--- Record hierarchies
-------------------------------------------------------------------------
-
--- When an abstract hierarchy of some sort (for instance semigroup →
--- monoid → group) is included in the library the basic approach is to
--- specify the properties of every concept in terms of a record
--- containing just properties, parameterised on the underlying
--- operations, sets etc.:
---
---   record IsSemigroup {A} (≈ : Rel A) (∙ : Op₂ A) : Set where
---     open FunctionProperties ≈
---     field
---       isEquivalence : IsEquivalence ≈
---       assoc         : Associative ∙
---       ∙-cong        : ∙ Preserves₂ ≈ ⟶ ≈ ⟶ ≈
---
--- More specific concepts are then specified in terms of the simpler
--- ones:
---
---     record IsMonoid {A} (≈ : Rel A) (∙ : Op₂ A) (ε : A) : Set where
---       open FunctionProperties ≈
---       field
---         isSemigroup : IsSemigroup ≈ ∙
---         identity    : Identity ε ∙
---
---     open IsSemigroup isSemigroup public
---
--- Note here that `open IsSemigroup isSemigroup public` ensures that the
--- fields of the isSemigroup record can be accessed directly; this
--- technique enables the user of an IsMonoid record to use underlying
--- records without having to manually open an entire record hierarchy.
--- This is not always possible, though. Consider the following definition
--- of preorders:
---
---   record IsPreorder {A : Set}
---                     (_≈_ : Rel A) -- The underlying equality.
---                     (_∼_ : Rel A) -- The relation.
---                     : Set where
---     field
---       isEquivalence : IsEquivalence _≈_
---       -- Reflexivity is expressed in terms of an underlying equality:
---       reflexive     : _≈_ ⇒ _∼_
---       trans         : Transitive _∼_
---
---     module Eq = IsEquivalence isEquivalence
---
---     ...
---
--- The Eq module in IsPreorder is not opened publicly, because it
--- contains some fields which clash with fields or other definitions
--- in IsPreorder.
-
--- Records packing up properties with the corresponding operations,
--- sets, etc. are also defined:
---
---   record Semigroup : Set₁ where
---     infixl 7 _∙_
---     infix  4 _≈_
---     field
---       Carrier     : Set
---       _≈_         : Rel Carrier
---       _∙_         : Op₂ Carrier
---       isSemigroup : IsSemigroup _≈_ _∙_
---
---     open IsSemigroup isSemigroup public
---
---     setoid : Setoid
---     setoid = record { isEquivalence = isEquivalence }
---
---   record Monoid : Set₁ where
---     infixl 7 _∙_
---     infix  4 _≈_
---     field
---       Carrier  : Set
---       _≈_      : Rel Carrier
---       _∙_      : Op₂ Carrier
---       ε        : Carrier
---       isMonoid : IsMonoid _≈_ _∙_ ε
---
---     open IsMonoid isMonoid public
---
---     semigroup : Semigroup
---     semigroup = record { isSemigroup = isSemigroup }
---
---     open Semigroup semigroup public using (setoid)
---
--- Note that the Monoid record does not include a Semigroup field.
--- Instead the Monoid /module/ includes a "repackaging function"
--- semigroup which converts a Monoid to a Semigroup.
-
--- The above setup may seem a bit complicated, but we think it makes the
--- library quite easy to work with, while also providing enough
--- flexibility.
 
 ------------------------------------------------------------------------
 -- More documentation
 ------------------------------------------------------------------------
-
--- Examples of how decidability is handled in the library.
-
-import README.Decidability
 
 -- Some examples showing how the case expression can be used.
 
@@ -294,13 +216,27 @@ import README.Inspect
 
 import README.Text.Printf
 
+-- Showcasing the pretty printing module
+
+import README.Text.Pretty
+
 -- Explaining how to display tables of strings:
 
 import README.Text.Tabular
 
--- Showcasing the pretty printing module
+-- Explaining how to display a tree:
 
-import README.Text.Pretty
+import README.Text.Tree
+
+-- Explaining how to use the automatic solvers
+
+import README.Tactic.MonoidSolver
+import README.Tactic.RingSolver
+
+-- Explaining how the Haskell FFI works
+
+import README.Foreign.Haskell
+
 
 ------------------------------------------------------------------------
 -- Core modules

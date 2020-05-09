@@ -11,6 +11,8 @@ module Data.List.Relation.Binary.Permutation.Propositional.Properties where
 open import Algebra.Bundles
 open import Algebra.Definitions
 open import Algebra.Structures
+open import Data.Nat using (suc)
+open import Data.Product using (-,_; proj₂)
 open import Data.List.Base as List
 open import Data.List.Relation.Binary.Permutation.Propositional
 open import Data.List.Relation.Unary.Any using (Any; here; there)
@@ -28,8 +30,28 @@ open import Relation.Unary using (Pred)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as ≡
   using (_≡_ ; refl ; cong; cong₂; _≢_; inspect)
+open import Relation.Nullary
 
 open PermutationReasoning
+
+
+------------------------------------------------------------------------
+-- Permutations of empty and singleton lists
+
+module _ {a} {A : Set a} where
+
+  ↭-empty-inv : ∀ {xs : List A} → xs ↭ [] → xs ≡ []
+  ↭-empty-inv refl = refl
+  ↭-empty-inv (trans p q) with refl ← ↭-empty-inv q = ↭-empty-inv p
+
+  ¬x∷xs↭[] : ∀ {x} {xs : List A} → ¬ ((x ∷ xs) ↭ [])
+  ¬x∷xs↭[] (trans s₁ s₂) with ↭-empty-inv s₂
+  ... | refl = ¬x∷xs↭[] s₁
+
+  ↭-singleton-inv : ∀ {x} {xs : List A} → xs ↭ [ x ] → xs ≡ [ x ]
+  ↭-singleton-inv refl                                             = refl
+  ↭-singleton-inv (prep _ ρ) with refl ← ↭-empty-inv ρ             = refl
+  ↭-singleton-inv (_↭_.trans ρ₁ ρ₂) with refl ← ↭-singleton-inv ρ₂ = ↭-singleton-inv ρ₁
 
 ------------------------------------------------------------------------
 -- sym
@@ -77,6 +99,27 @@ module _ {a b} {A : Set a} {B : Set b} (f : A → B) where
   map⁺ (swap x y p)  = swap _ _ (map⁺ p)
   map⁺ (trans p₁ p₂) = trans (map⁺ p₁) (map⁺ p₂)
 
+  -- permutations preserve 'being a mapped list'
+  ↭-map-inv : ∀ {xs ys} → map f xs ↭ ys → ∃ λ ys′ → ys ≡ map f ys′ × xs ↭ ys′
+  ↭-map-inv {[]}     ρ                                                  = -, ↭-empty-inv (↭-sym ρ) , ↭-refl
+  ↭-map-inv {x ∷ []} ρ                                                  = -, ↭-singleton-inv (↭-sym ρ) , ↭-refl
+  ↭-map-inv {_ ∷ _ ∷ _} refl                                            = -, refl , ↭-refl
+  ↭-map-inv {_ ∷ _ ∷ _} (prep _ ρ)    with _ , refl , ρ' ← ↭-map-inv ρ  = -, refl , prep _ ρ'
+  ↭-map-inv {_ ∷ _ ∷ _} (swap _ _ ρ)  with _ , refl , ρ' ← ↭-map-inv ρ  = -, refl , swap _ _ ρ'
+  ↭-map-inv {_ ∷ _ ∷ _} (trans ρ₁ ρ₂) with _ , refl , ρ₃ ← ↭-map-inv ρ₁
+                                      with _ , refl , ρ₄ ← ↭-map-inv ρ₂ = -, refl , trans ρ₃ ρ₄
+
+------------------------------------------------------------------------
+-- length
+
+module _ {a} {A : Set a} where
+
+  ↭-length : ∀ {xs ys : List A} → xs ↭ ys → length xs ≡ length ys
+  ↭-length refl            = refl
+  ↭-length (prep x lr)     = cong suc (↭-length lr)
+  ↭-length (swap x y lr)   = cong (λ n → suc (suc n)) (↭-length lr)
+  ↭-length (trans lr₁ lr₂) = ≡.trans (↭-length lr₁) (↭-length lr₂)
+
 ------------------------------------------------------------------------
 -- _++_
 
@@ -112,7 +155,7 @@ module _ {a} {A : Set a} where
     x ∷ v ∷ xs ++ ys        <<⟨ refl ⟩
     v ∷ x ∷ xs ++ ys        ∎
 
-  drop-mid-≡ : ∀ {x} ws xs {ys} {zs} →
+  drop-mid-≡ : ∀ {x : A} ws xs {ys} {zs} →
                ws ++ [ x ] ++ ys ≡ xs ++ [ x ] ++ zs →
                ws ++ ys ↭ xs ++ zs
   drop-mid-≡ []       []       eq   with cong tail eq
@@ -290,7 +333,7 @@ module _ {a} {A : Set a} where
     ... | res rewrite ↭-sym-involutive p = res
 
   ∼bag⇒↭ : _∼[ bag ]_ ⇒ _↭_
-  ∼bag⇒↭ {[]} eq with empty-unique (Inv.sym eq)
+  ∼bag⇒↭ {[]} eq with empty-unique {A = A} (Inv.sym eq)
   ... | refl = refl
   ∼bag⇒↭ {x ∷ xs} eq with ∈-∃++ (to ⟨$⟩ (here ≡.refl))
     where open Inv.Inverse (eq {x})

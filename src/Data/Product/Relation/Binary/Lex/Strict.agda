@@ -14,49 +14,55 @@ module Data.Product.Relation.Binary.Lex.Strict where
 open import Data.Product
 open import Data.Product.Relation.Binary.Pointwise.NonDependent as Pointwise
   using (Pointwise)
-open import Data.Sum using (inj₁; inj₂; _-⊎-_; [_,_])
+open import Data.Sum.Base using (inj₁; inj₂; _-⊎-_; [_,_])
 open import Data.Empty
 open import Function
+open import Induction.WellFounded
 open import Level
 open import Relation.Nullary
 open import Relation.Nullary.Product
 open import Relation.Nullary.Sum
 open import Relation.Binary
 open import Relation.Binary.Consequences
+open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 
-module _ {a₁ a₂ ℓ₁ ℓ₂} {A₁ : Set a₁} {A₂ : Set a₂} where
+private
+  variable
+    a b ℓ₁ ℓ₂ ℓ₃ ℓ₄ : Level
+    A : Set a
+    B : Set b
 
 ------------------------------------------------------------------------
 -- A lexicographic ordering over products
 
-  ×-Lex : (_≈₁_ _<₁_ : Rel A₁ ℓ₁) → (_≤₂_ : Rel A₂ ℓ₂) → Rel (A₁ × A₂) _
-  ×-Lex _≈₁_ _<₁_ _≤₂_ =
-    (_<₁_ on proj₁) -⊎- (_≈₁_ on proj₁) -×- (_≤₂_ on proj₂)
+×-Lex : (_≈₁_ : Rel A ℓ₁) (_<₁_ : Rel A ℓ₂) (_≤₂_ : Rel B ℓ₃) →
+        Rel (A × B) _
+×-Lex _≈₁_ _<₁_ _≤₂_ =
+  (_<₁_ on proj₁) -⊎- (_≈₁_ on proj₁) -×- (_≤₂_ on proj₂)
 
 ------------------------------------------------------------------------
 -- Some properties which are preserved by ×-Lex (under certain
 -- assumptions).
 
-  ×-reflexive : ∀ _≈₁_ _∼₁_ {_≈₂_ : Rel A₂ ℓ₂} _≤₂_ →
-                _≈₂_ ⇒ _≤₂_ → (Pointwise _≈₁_ _≈₂_) ⇒ (×-Lex _≈₁_ _∼₁_ _≤₂_)
-  ×-reflexive _ _ _ refl₂ = λ x≈y →
-    inj₂ (proj₁ x≈y , refl₂ (proj₂ x≈y))
+×-reflexive : (_≈₁_ : Rel A ℓ₁) (_∼₁_ : Rel A ℓ₂)
+              {_≈₂_ : Rel B ℓ₃} (_≤₂_ : Rel B ℓ₄) →
+              _≈₂_ ⇒ _≤₂_ → (Pointwise _≈₁_ _≈₂_) ⇒ (×-Lex _≈₁_ _∼₁_ _≤₂_)
+×-reflexive _ _ _ refl₂ = λ x≈y →
+  inj₂ (proj₁ x≈y , refl₂ (proj₂ x≈y))
 
-  ×-irreflexive : ∀ {_≈₁_ _<₁_}             → Irreflexive _≈₁_ _<₁_ →
-                  ∀ {_≈₂_ _<₂_ : Rel A₂ ℓ₂} → Irreflexive _≈₂_ _<₂_ →
-                  Irreflexive (Pointwise _≈₁_ _≈₂_) (×-Lex _≈₁_ _<₁_ _<₂_)
-  ×-irreflexive ir₁ ir₂ x≈y (inj₁ x₁<y₁) = ir₁ (proj₁ x≈y) x₁<y₁
-  ×-irreflexive ir₁ ir₂ x≈y (inj₂ x≈<y)  =
-    ir₂ (proj₂ x≈y) (proj₂ x≈<y)
+module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂} {_<₂_ : Rel B ℓ₃} where
 
-  ×-transitive : ∀ {_≈₁_ _<₁_} →
-    IsEquivalence _≈₁_ → _<₁_ Respects₂ _≈₁_ → Transitive _<₁_ →
-    ∀ {_≤₂_} → Transitive _≤₂_ → Transitive (×-Lex _≈₁_ _<₁_ _≤₂_)
-  ×-transitive {_≈₁_} {_<₁_} eq₁ resp₁ trans₁ {_≤₂_} trans₂ = trans
+  private
+    _<ₗₑₓ_ = ×-Lex _≈₁_ _<₁_ _<₂_
+
+
+  ×-transitive : IsEquivalence _≈₁_ → _<₁_ Respects₂ _≈₁_ → Transitive _<₁_ →
+                 Transitive _<₂_ → Transitive _<ₗₑₓ_
+  ×-transitive eq₁ resp₁ trans₁ trans₂ = trans
     where
     module Eq₁ = IsEquivalence eq₁
 
-    trans : Transitive (×-Lex _≈₁_ _<₁_ _≤₂_)
+    trans : Transitive _<ₗₑₓ_
     trans (inj₁ x₁<y₁) (inj₁ y₁<z₁) = inj₁ (trans₁ x₁<y₁ y₁<z₁)
     trans (inj₁ x₁<y₁) (inj₂ y≈≤z)  =
       inj₁ (proj₁ resp₁ (proj₁ y≈≤z) x₁<y₁)
@@ -64,16 +70,63 @@ module _ {a₁ a₂ ℓ₁ ℓ₂} {A₁ : Set a₁} {A₂ : Set a₂} where
       inj₁ (proj₂ resp₁ (Eq₁.sym $ proj₁ x≈≤y) y₁<z₁)
     trans (inj₂ x≈≤y)  (inj₂ y≈≤z)  =
       inj₂ ( Eq₁.trans (proj₁ x≈≤y) (proj₁ y≈≤z)
-           , trans₂    (proj₂ x≈≤y) (proj₂ y≈≤z) )
+           , trans₂    (proj₂ x≈≤y) (proj₂ y≈≤z))
 
-  ×-antisymmetric : ∀ {_≈₁_ _<₁_} →
-    Symmetric _≈₁_ → Irreflexive _≈₁_ _<₁_ → Asymmetric _<₁_ →
-    ∀ {_≈₂_ _≤₂_ : Rel A₂ ℓ₂} → Antisymmetric _≈₂_ _≤₂_ →
-    Antisymmetric (Pointwise _≈₁_ _≈₂_) (×-Lex _≈₁_ _<₁_ _≤₂_)
-  ×-antisymmetric {_≈₁_} {_<₁_} sym₁ irrefl₁ asym₁
-                  {_≈₂_} {_≤₂_} antisym₂ = antisym
+  ×-asymmetric : Symmetric _≈₁_ → _<₁_ Respects₂ _≈₁_ →
+                 Asymmetric _<₁_ → Asymmetric _<₂_ →
+                 Asymmetric _<ₗₑₓ_
+  ×-asymmetric sym₁ resp₁ asym₁ asym₂ = asym
     where
-    antisym : Antisymmetric (Pointwise _≈₁_ _≈₂_) (×-Lex _≈₁_ _<₁_ _≤₂_)
+    irrefl₁ : Irreflexive _≈₁_ _<₁_
+    irrefl₁ = asym⟶irr resp₁ sym₁ asym₁
+
+    asym : Asymmetric _<ₗₑₓ_
+    asym (inj₁ x₁<y₁) (inj₁ y₁<x₁) = asym₁ x₁<y₁ y₁<x₁
+    asym (inj₁ x₁<y₁) (inj₂ y≈<x)  = irrefl₁ (sym₁ $ proj₁ y≈<x) x₁<y₁
+    asym (inj₂ x≈<y)  (inj₁ y₁<x₁) = irrefl₁ (sym₁ $ proj₁ x≈<y) y₁<x₁
+    asym (inj₂ x≈<y)  (inj₂ y≈<x)  = asym₂ (proj₂ x≈<y) (proj₂ y≈<x)
+
+  ×-total₁ : Total _<₁_ → Total _<ₗₑₓ_
+  ×-total₁ total₁ x y with total₁ (proj₁ x) (proj₁ y)
+  ... | inj₁ x₁<y₁ = inj₁ (inj₁ x₁<y₁)
+  ... | inj₂ x₁>y₁ = inj₂ (inj₁ x₁>y₁)
+
+  ×-total₂ : Symmetric _≈₁_ →
+             Trichotomous _≈₁_ _<₁_ → Total _<₂_ →
+             Total _<ₗₑₓ_
+  ×-total₂ sym tri₁ total₂ x y with tri₁ (proj₁ x) (proj₁ y)
+  ... | tri< x₁<y₁ _ _ = inj₁ (inj₁ x₁<y₁)
+  ... | tri> _ _ y₁<x₁ = inj₂ (inj₁ y₁<x₁)
+  ... | tri≈ _ x₁≈y₁ _ with total₂ (proj₂ x) (proj₂ y)
+  ...   | inj₁ x₂≤y₂ = inj₁ (inj₂ (x₁≈y₁     , x₂≤y₂))
+  ...   | inj₂ y₂≤x₂ = inj₂ (inj₂ (sym x₁≈y₁ , y₂≤x₂))
+
+  ×-decidable : Decidable _≈₁_ → Decidable _<₁_ → Decidable _<₂_ →
+                Decidable _<ₗₑₓ_
+  ×-decidable dec-≈₁ dec-<₁ dec-≤₂ x y =
+    dec-<₁ (proj₁ x) (proj₁ y)
+      ⊎-dec
+    (dec-≈₁ (proj₁ x) (proj₁ y)
+       ×-dec
+     dec-≤₂ (proj₂ x) (proj₂ y))
+
+module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂}
+         {_≈₂_ : Rel B ℓ₃} {_<₂_ : Rel B ℓ₄} where
+
+  private
+    _≋_    = Pointwise _≈₁_ _≈₂_
+    _<ₗₑₓ_ = ×-Lex _≈₁_ _<₁_ _<₂_
+
+  ×-irreflexive : Irreflexive _≈₁_ _<₁_ → Irreflexive _≈₂_ _<₂_ →
+                  Irreflexive (Pointwise _≈₁_ _≈₂_) _<ₗₑₓ_
+  ×-irreflexive ir₁ ir₂ x≈y (inj₁ x₁<y₁) = ir₁ (proj₁ x≈y) x₁<y₁
+  ×-irreflexive ir₁ ir₂ x≈y (inj₂ x≈<y)  = ir₂ (proj₂ x≈y) (proj₂ x≈<y)
+
+  ×-antisymmetric : Symmetric _≈₁_ → Irreflexive _≈₁_ _<₁_ → Asymmetric _<₁_ →
+                    Antisymmetric _≈₂_ _<₂_ → Antisymmetric _≋_ _<ₗₑₓ_
+  ×-antisymmetric sym₁ irrefl₁ asym₁ antisym₂ = antisym
+    where
+    antisym : Antisymmetric _≋_ _<ₗₑₓ_
     antisym (inj₁ x₁<y₁) (inj₁ y₁<x₁) =
       ⊥-elim $ asym₁ x₁<y₁ y₁<x₁
     antisym (inj₁ x₁<y₁) (inj₂ y≈≤x)  =
@@ -83,74 +136,28 @@ module _ {a₁ a₂ ℓ₁ ℓ₂} {A₁ : Set a₁} {A₂ : Set a₂} where
     antisym (inj₂ x≈≤y)  (inj₂ y≈≤x)  =
       proj₁ x≈≤y , antisym₂ (proj₂ x≈≤y) (proj₂ y≈≤x)
 
-  ×-asymmetric : ∀ {_≈₁_ _<₁_} →
-    Symmetric _≈₁_ → _<₁_ Respects₂ _≈₁_ → Asymmetric _<₁_ →
-    ∀ {_<₂_} → Asymmetric _<₂_ →
-    Asymmetric (×-Lex _≈₁_ _<₁_ _<₂_)
-  ×-asymmetric {_≈₁_} {_<₁_} sym₁ resp₁ asym₁ {_<₂_} asym₂ = asym
+  ×-respects₂ : IsEquivalence _≈₁_ →
+                _<₁_ Respects₂ _≈₁_ → _<₂_ Respects₂ _≈₂_ →
+                _<ₗₑₓ_ Respects₂ _≋_
+  ×-respects₂ eq₁ resp₁ resp₂ = respʳ , respˡ
     where
-    irrefl₁ : Irreflexive _≈₁_ _<₁_
-    irrefl₁ = asym⟶irr resp₁ sym₁ asym₁
+    open IsEquivalence eq₁
 
-    asym : Asymmetric (×-Lex _≈₁_ _<₁_ _<₂_)
-    asym (inj₁ x₁<y₁) (inj₁ y₁<x₁) = asym₁ x₁<y₁ y₁<x₁
-    asym (inj₁ x₁<y₁) (inj₂ y≈<x)  = irrefl₁ (sym₁ $ proj₁ y≈<x) x₁<y₁
-    asym (inj₂ x≈<y)  (inj₁ y₁<x₁) = irrefl₁ (sym₁ $ proj₁ x≈<y) y₁<x₁
-    asym (inj₂ x≈<y)  (inj₂ y≈<x)  = asym₂ (proj₂ x≈<y) (proj₂ y≈<x)
-
-  ×-respects₂ :
-    ∀ {_≈₁_ _<₁_} → IsEquivalence _≈₁_ → _<₁_ Respects₂ _≈₁_ →
-    {_≈₂_ _<₂_ : Rel A₂ ℓ₂} → _<₂_ Respects₂ _≈₂_ →
-    (×-Lex _≈₁_ _<₁_ _<₂_) Respects₂ (Pointwise _≈₁_ _≈₂_)
-  ×-respects₂ {_≈₁_} {_<₁_} eq₁ resp₁
-              {_≈₂_} {_<₂_}     resp₂ = resp¹ , resp²
-    where
-    _<_ = ×-Lex _≈₁_ _<₁_ _<₂_
-
-    open IsEquivalence eq₁ renaming (sym to sym₁; trans to trans₁)
-
-    resp¹ : ∀ {x} → (x <_) Respects (Pointwise _≈₁_ _≈₂_)
-    resp¹ y≈y' (inj₁ x₁<y₁) = inj₁ (proj₁ resp₁ (proj₁ y≈y') x₁<y₁)
-    resp¹ y≈y' (inj₂ x≈<y)  =
-      inj₂ ( trans₁ (proj₁ x≈<y) (proj₁ y≈y')
+    respʳ : _<ₗₑₓ_ Respectsʳ _≋_
+    respʳ y≈y' (inj₁ x₁<y₁) = inj₁ (proj₁ resp₁ (proj₁ y≈y') x₁<y₁)
+    respʳ y≈y' (inj₂ x≈<y)  =
+      inj₂ ( trans (proj₁ x≈<y) (proj₁ y≈y')
            , proj₁ resp₂ (proj₂ y≈y') (proj₂ x≈<y) )
 
-    resp² : ∀ {y} → (flip _<_ y) Respects (Pointwise _≈₁_ _≈₂_)
-    resp² x≈x' (inj₁ x₁<y₁) = inj₁ (proj₂ resp₁ (proj₁ x≈x') x₁<y₁)
-    resp² x≈x' (inj₂ x≈<y)  =
-      inj₂ ( trans₁ (sym₁ $ proj₁ x≈x') (proj₁ x≈<y)
+    respˡ : _<ₗₑₓ_ Respectsˡ _≋_
+    respˡ x≈x' (inj₁ x₁<y₁) = inj₁ (proj₂ resp₁ (proj₁ x≈x') x₁<y₁)
+    respˡ x≈x' (inj₂ x≈<y)  =
+      inj₂ ( trans (sym $ proj₁ x≈x') (proj₁ x≈<y)
            , proj₂ resp₂ (proj₂ x≈x') (proj₂ x≈<y) )
 
-  ×-decidable : ∀ {_≈₁_ _<₁_} → Decidable _≈₁_ → Decidable _<₁_ →
-                ∀ {_≤₂_} → Decidable _≤₂_ →
-                Decidable (×-Lex _≈₁_ _<₁_ _≤₂_)
-  ×-decidable dec-≈₁ dec-<₁ dec-≤₂ x y =
-    dec-<₁ (proj₁ x) (proj₁ y)
-      ⊎-dec
-    (dec-≈₁ (proj₁ x) (proj₁ y)
-       ×-dec
-     dec-≤₂ (proj₂ x) (proj₂ y))
-
-  ×-total₁ : ∀ {_≈₁_ _<₁_} → Total _<₁_ →
-             ∀ {_≤₂_} → Total (×-Lex _≈₁_ _<₁_ _≤₂_)
-  ×-total₁ total₁ x y with total₁ (proj₁ x) (proj₁ y)
-  ... | inj₁ x₁<y₁ = inj₁ (inj₁ x₁<y₁)
-  ... | inj₂ x₁>y₁ = inj₂ (inj₁ x₁>y₁)
-
-  ×-total₂ : ∀ {_≈₁_ _<₁_} → Symmetric _≈₁_ → Trichotomous _≈₁_ _<₁_ →
-             ∀ {_≤₂_} → Total _≤₂_ →
-             Total (×-Lex _≈₁_ _<₁_ _≤₂_)
-  ×-total₂ sym tri₁ total₂ x y with tri₁ (proj₁ x) (proj₁ y)
-  ... | tri< x₁<y₁ _ _ = inj₁ (inj₁ x₁<y₁)
-  ... | tri> _ _ y₁<x₁ = inj₂ (inj₁ y₁<x₁)
-  ... | tri≈ _ x₁≈y₁ _ with total₂ (proj₂ x) (proj₂ y)
-  ...   | inj₁ x₂≤y₂ = inj₁ (inj₂ (x₁≈y₁     , x₂≤y₂))
-  ...   | inj₂ y₂≤x₂ = inj₂ (inj₂ (sym x₁≈y₁ , y₂≤x₂))
-
-  ×-compare :
-    {_≈₁_ _<₁_ : Rel A₁ ℓ₁} → Symmetric _≈₁_ → Trichotomous _≈₁_ _<₁_ →
-    {_≈₂_ _<₂_ : Rel A₂ ℓ₂} → Trichotomous _≈₂_ _<₂_ →
-    Trichotomous (Pointwise _≈₁_ _≈₂_) (×-Lex _≈₁_ _<₁_ _<₂_)
+  ×-compare : Symmetric _≈₁_ →
+              Trichotomous _≈₁_ _<₁_ → Trichotomous _≈₂_ _<₂_ →
+              Trichotomous _≋_ _<ₗₑₓ_
   ×-compare sym₁ cmp₁ cmp₂ (x₁ , x₂) (y₁ , y₂) with cmp₁ x₁ y₁
   ... | (tri< x₁<y₁ x₁≉y₁ x₁≯y₁) =
     tri< (inj₁ x₁<y₁)
@@ -174,55 +181,81 @@ module _ {a₁ a₂ ℓ₁ ℓ₂} {A₁ : Set a₁} {A₂ : Set a₂} where
          (x₁≈y₁ , x₂≈y₂)
          [ x₁≯y₁ , x₂≯y₂ ∘ proj₂ ]
 
+module _ {_<₁_ : Rel A ℓ₁} {_<₂_ : Rel B ℓ₂} where
+
+  -- Currently only proven for propositional equality
+  -- (unsure how to satisfy the termination checker for arbitrary equalities)
+
+  private
+    _<ₗₑₓ_ = ×-Lex _≡_ _<₁_ _<₂_
+
+  ×-wellFounded : WellFounded _<₁_ →
+                  WellFounded _<₂_ →
+                  WellFounded _<ₗₑₓ_
+  ×-wellFounded wf₁ wf₂ (x , y) = acc (×-acc (wf₁ x) (wf₂ y))
+    where
+    ×-acc : ∀ {x y} →
+            Acc _<₁_ x → Acc _<₂_ y →
+            WfRec _<ₗₑₓ_ (Acc _<ₗₑₓ_) (x , y)
+    ×-acc (acc rec₁) acc₂ (u , v) (inj₁ u<x)
+      = acc (×-acc (rec₁ u u<x) (wf₂ v))
+    ×-acc acc₁ (acc rec₂) (u , v) (inj₂ (refl , v<y))
+      = acc (×-acc acc₁ (rec₂ v v<y))
+
 ------------------------------------------------------------------------
 -- Collections of properties which are preserved by ×-Lex.
 
-  ×-isPreorder : ∀ {_≈₁_ _∼₁_} → IsPreorder _≈₁_ _∼₁_ →
-                   ∀ {_≈₂_ _∼₂_} → IsPreorder _≈₂_ _∼₂_ →
-                   IsPreorder (Pointwise _≈₁_ _≈₂_) (×-Lex _≈₁_ _∼₁_ _∼₂_)
-  ×-isPreorder {_≈₁_} {_∼₁_} pre₁ {_∼₂_ = _∼₂_} pre₂ =
+module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂}
+         {_≈₂_ : Rel B ℓ₃} {_<₂_ : Rel B ℓ₄} where
+
+  private
+    _≋_    = Pointwise _≈₁_ _≈₂_
+    _<ₗₑₓ_ = ×-Lex _≈₁_ _<₁_ _<₂_
+
+  ×-isPreorder : IsPreorder _≈₁_ _<₁_ →
+                 IsPreorder _≈₂_ _<₂_ →
+                 IsPreorder _≋_ _<ₗₑₓ_
+  ×-isPreorder pre₁ pre₂ =
     record
       { isEquivalence = Pointwise.×-isEquivalence
                           (isEquivalence pre₁) (isEquivalence pre₂)
-      ; reflexive     = ×-reflexive _≈₁_ _∼₁_ _∼₂_ (reflexive pre₂)
-      ; trans         = ×-transitive
+      ; reflexive     = ×-reflexive _≈₁_ _<₁_ _<₂_ (reflexive pre₂)
+      ; trans         = ×-transitive {_<₂_ = _<₂_}
                           (isEquivalence pre₁) (∼-resp-≈ pre₁)
-                          (trans pre₁) {_≤₂_ = _∼₂_} (trans pre₂)
+                          (trans pre₁) (trans pre₂)
       }
     where open IsPreorder
 
-  ×-isStrictPartialOrder :
-    ∀ {_≈₁_ _<₁_} → IsStrictPartialOrder _≈₁_ _<₁_ →
-    ∀ {_≈₂_ _<₂_} → IsStrictPartialOrder _≈₂_ _<₂_ →
-    IsStrictPartialOrder (Pointwise _≈₁_ _≈₂_) (×-Lex _≈₁_ _<₁_ _<₂_)
-  ×-isStrictPartialOrder {_<₁_ = _<₁_} spo₁ {_<₂_ = _<₂_} spo₂ =
+  ×-isStrictPartialOrder : IsStrictPartialOrder _≈₁_ _<₁_ →
+                           IsStrictPartialOrder _≈₂_ _<₂_ →
+                           IsStrictPartialOrder _≋_ _<ₗₑₓ_
+  ×-isStrictPartialOrder spo₁ spo₂ =
     record
       { isEquivalence = Pointwise.×-isEquivalence
                           (isEquivalence spo₁) (isEquivalence spo₂)
-      ; irrefl        = ×-irreflexive {_<₁_ = _<₁_} (irrefl spo₁)
-                                      {_<₂_ = _<₂_} (irrefl spo₂)
-      ; trans         = ×-transitive
-                          {_<₁_ = _<₁_} (isEquivalence spo₁)
-                                        (<-resp-≈ spo₁) (trans spo₁)
-                          {_≤₂_ = _<₂_} (trans spo₂)
+      ; irrefl        = ×-irreflexive {_<₁_ = _<₁_} {_<₂_ = _<₂_}
+                          (irrefl spo₁) (irrefl spo₂)
+      ; trans         = ×-transitive {_<₁_ = _<₁_} {_<₂_ = _<₂_}
+                          (isEquivalence spo₁)
+                          (<-resp-≈ spo₁) (trans spo₁)
+                          (trans spo₂)
       ; <-resp-≈      = ×-respects₂ (isEquivalence spo₁)
                                       (<-resp-≈ spo₁)
                                       (<-resp-≈ spo₂)
       }
     where open IsStrictPartialOrder
 
-  ×-isStrictTotalOrder :
-    ∀ {_≈₁_ _<₁_} → IsStrictTotalOrder _≈₁_ _<₁_ →
-    ∀ {_≈₂_ _<₂_} → IsStrictTotalOrder _≈₂_ _<₂_ →
-    IsStrictTotalOrder (Pointwise _≈₁_ _≈₂_) (×-Lex _≈₁_ _<₁_ _<₂_)
-  ×-isStrictTotalOrder {_<₁_ = _<₁_} spo₁ {_<₂_ = _<₂_} spo₂ =
+  ×-isStrictTotalOrder : IsStrictTotalOrder _≈₁_ _<₁_ →
+                         IsStrictTotalOrder _≈₂_ _<₂_ →
+                         IsStrictTotalOrder _≋_ _<ₗₑₓ_
+  ×-isStrictTotalOrder spo₁ spo₂ =
     record
       { isEquivalence = Pointwise.×-isEquivalence
                           (isEquivalence spo₁) (isEquivalence spo₂)
-      ; trans         = ×-transitive
-                          {_<₁_ = _<₁_} (isEquivalence spo₁)
-                                        (<-resp-≈ spo₁) (trans spo₁)
-                          {_≤₂_ = _<₂_} (trans spo₂)
+      ; trans         = ×-transitive {_<₁_ = _<₁_} {_<₂_ = _<₂_}
+                          (isEquivalence spo₁)
+                          (<-resp-≈ spo₁) (trans spo₁)
+                          (trans spo₂)
       ; compare       = ×-compare (Eq.sym spo₁) (compare spo₁)
                                                 (compare spo₂)
       }
@@ -231,28 +264,29 @@ module _ {a₁ a₂ ℓ₁ ℓ₂} {A₁ : Set a₁} {A₂ : Set a₂} where
 ------------------------------------------------------------------------
 -- "Bundles" can also be combined.
 
-module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} where
+×-preorder : Preorder a ℓ₁ ℓ₂ →
+             Preorder b ℓ₃ ℓ₄ →
+             Preorder _ _ _
+×-preorder p₁ p₂ = record
+  { isPreorder = ×-isPreorder (isPreorder p₁) (isPreorder p₂)
+  } where open Preorder
 
-  ×-preorder : Preorder ℓ₁ ℓ₂ _ → Preorder ℓ₃ ℓ₄ _ → Preorder _ _ _
-  ×-preorder p₁ p₂ = record
-    { isPreorder = ×-isPreorder (isPreorder p₁) (isPreorder p₂)
-    } where open Preorder
+×-strictPartialOrder : StrictPartialOrder a ℓ₁ ℓ₂ →
+                       StrictPartialOrder b ℓ₃ ℓ₄ →
+                       StrictPartialOrder _ _ _
+×-strictPartialOrder s₁ s₂ = record
+  { isStrictPartialOrder = ×-isStrictPartialOrder
+      (isStrictPartialOrder s₁) (isStrictPartialOrder s₂)
+  } where open StrictPartialOrder
 
-  ×-strictPartialOrder :
-    StrictPartialOrder ℓ₁ ℓ₂ _ → StrictPartialOrder ℓ₃ ℓ₄ _ →
-    StrictPartialOrder _ _ _
-  ×-strictPartialOrder s₁ s₂ = record
-    { isStrictPartialOrder = ×-isStrictPartialOrder
-        (isStrictPartialOrder s₁) (isStrictPartialOrder s₂)
-    } where open StrictPartialOrder
+×-strictTotalOrder : StrictTotalOrder a ℓ₁ ℓ₂ →
+                     StrictTotalOrder b ℓ₃ ℓ₄ →
+                     StrictTotalOrder _ _ _
+×-strictTotalOrder s₁ s₂ = record
+  { isStrictTotalOrder = ×-isStrictTotalOrder
+      (isStrictTotalOrder s₁) (isStrictTotalOrder s₂)
+  } where open StrictTotalOrder
 
-  ×-strictTotalOrder :
-    StrictTotalOrder ℓ₁ ℓ₂ _ → StrictTotalOrder ℓ₃ ℓ₄ _ →
-    StrictTotalOrder _ _ _
-  ×-strictTotalOrder s₁ s₂ = record
-    { isStrictTotalOrder = ×-isStrictTotalOrder
-        (isStrictTotalOrder s₁) (isStrictTotalOrder s₂)
-    } where open StrictTotalOrder
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

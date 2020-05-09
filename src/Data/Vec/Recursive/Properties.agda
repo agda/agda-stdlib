@@ -12,7 +12,7 @@ open import Level using (Level)
 open import Data.Nat.Base hiding (_^_)
 open import Data.Product
 open import Data.Vec.Recursive
-open import Data.Vec using (Vec; _∷_)
+open import Data.Vec.Base using (Vec; _∷_)
 open import Function.Inverse using (_↔_; inverse)
 open import Relation.Binary.PropositionalEquality as P
 open ≡-Reasoning
