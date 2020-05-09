@@ -244,3 +244,8 @@ Other minor additions
   nonPositive : p ≤ 0ℚᵘ → NonPositive p
   nonNegative : p ≥ 0ℚᵘ → NonNegative p
   ```
+
+* Added new operator to `Relation.Binary`:
+  ```agda
+  _⇔_ : REL A B ℓ₁ → REL A B ℓ₂ → Set _
+  ```
