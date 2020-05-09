@@ -71,24 +71,24 @@ Other minor additions
 
 * Added new functions to `Data.List.Base`:
   ```agda
-  pairWith : (A → B → C) → List A → List B → List C
-  pair     : List A → List B → List (A × B)
+  cartesianProductWith : (A → B → C) → List A → List B → List C
+  cartesianProduct     : List A → List B → List (A × B)
   ```
 
 * Added new proofs to `Data.List.Membership.Propositional.Properties`:
   ```agda
-  ∈-pairWith⁺ : a ∈ xs → b ∈ ys → f a b ∈ pairWith f xs ys
-  ∈-pairWith⁻ : v ∈ pairWith f xs ys → ∃₂ λ a b → a ∈ xs × b ∈ ys × v ≡ f a b
-  ∈-pair⁺     : x ∈ xs → y ∈ ys → (x , y) ∈ pair xs ys
-  ∈-pair⁻     : ∀ xs ys {xy@(x , y) : A × B} → xy ∈ pair xs ys → x ∈ xs × y ∈ ys
+  ∈-cartesianProductWith⁺ : a ∈ xs → b ∈ ys → f a b ∈ cartesianProductWith f xs ys
+  ∈-cartesianProductWith⁻ : v ∈ cartesianProductWith f xs ys → ∃₂ λ a b → a ∈ xs × b ∈ ys × v ≡ f a b
+  ∈-cartesianProduct⁺     : x ∈ xs → y ∈ ys → (x , y) ∈ cartesianProduct xs ys
+  ∈-cartesianProduct⁻     : ∀ xs ys {xy@(x , y) : A × B} → xy ∈ cartesianProduct xs ys → x ∈ xs × y ∈ ys
   ```
 
 * Added new proofs to `Data.List.Membership.Setoid.Properties`:
   ```agda
-  ∈-pairWith⁺ : a ∈₁ xs → b ∈₂ ys → f a b ∈₃ pairWith f xs ys
-  ∈-pairWith⁻ : v ∈₃ pairWith f xs ys → ∃₂ λ a b → a ∈₁ xs × b ∈₂ ys × v ≈₃ f a b
-  ∈-pair⁺     : x ∈₁ xs → y ∈₂ ys → (x , y) ∈₁₂ pair xs ys
-  ∈-pair⁻     : (x , y) ∈₁₂ pair xs ys → x ∈₁ xs
+  ∈-cartesianProductWith⁺ : a ∈₁ xs → b ∈₂ ys → f a b ∈₃ cartesianProductWith f xs ys
+  ∈-cartesianProductWith⁻ : v ∈₃ cartesianProductWith f xs ys → ∃₂ λ a b → a ∈₁ xs × b ∈₂ ys × v ≈₃ f a b
+  ∈-cartesianProduct⁺     : x ∈₁ xs → y ∈₂ ys → (x , y) ∈₁₂ cartesianProduct xs ys
+  ∈-cartesianProduct⁻     : (x , y) ∈₁₂ cartesianProduct xs ys → x ∈₁ xs
   ```
 
 * Added new operations to `Data.List.Relation.Unary.All`:
@@ -98,28 +98,28 @@ Other minor additions
 
 * Added new proofs to `Data.List.Relation.Unary.All.Properties`:
   ```agda
-  pairWith⁺ : (∀ {x y} → x ∈₁ xs → y ∈₂ ys → P (f x y)) → All P (pairWith f xs ys)
-  pair⁺     : (∀ {x y} → x ∈₁ xs → y ∈₂ ys → P (x , y)) → All P (pair xs ys)
+  cartesianProductWith⁺ : (∀ {x y} → x ∈₁ xs → y ∈₂ ys → P (f x y)) → All P (cartesianProductWith f xs ys)
+  cartesianProduct⁺     : (∀ {x y} → x ∈₁ xs → y ∈₂ ys → P (x , y)) → All P (cartesianProduct xs ys)
   ```
 
 * Added new proofs to `Data.List.Relation.Unary.Any.Properties`:
   ```agda
-  pairWith⁺ : (∀ {x y} → P x → Q y → R (f x y)) → Any P xs → Any Q ys → Any R (pairWith f xs ys)
-  pairWith⁻ : (∀ {x y} → R (f x y) → P x × Q y) → Any R (pairWith f xs ys) → Any P xs × Any Q ys
-  pair⁺     : Any P xs → Any Q ys → Any (P ⟨×⟩ Q) (pair xs ys)
-  pair⁻     : Any (P ⟨×⟩ Q) (pair xs ys) → Any P xs × Any Q ys
+  cartesianProductWith⁺ : (∀ {x y} → P x → Q y → R (f x y)) → Any P xs → Any Q ys → Any R (cartesianProductWith f xs ys)
+  cartesianProductWith⁻ : (∀ {x y} → R (f x y) → P x × Q y) → Any R (cartesianProductWith f xs ys) → Any P xs × Any Q ys
+  cartesianProduct⁺     : Any P xs → Any Q ys → Any (P ⟨×⟩ Q) (cartesianProduct xs ys)
+  cartesianProduct⁻     : Any (P ⟨×⟩ Q) (cartesianProduct xs ys) → Any P xs × Any Q ys
   ```
 
 * Added new proofs to `Data.List.Relation.Unary.Unique.Propositional.Properties`:
   ```agda
-  pairWith⁺ : (∀ {w x y z} → f w y ≡ f x z → w ≡ x × y ≡ z) → Unique xs → Unique ys → Unique (pairWith f xs ys)
-  pair⁺     : Unique xs → Unique ys → Unique (pair xs ys)
+  cartesianProductWith⁺ : (∀ {w x y z} → f w y ≡ f x z → w ≡ x × y ≡ z) → Unique xs → Unique ys → Unique (cartesianProductWith f xs ys)
+  cartesianProduct⁺     : Unique xs → Unique ys → Unique (cartesianProduct xs ys)
   ```
 
 * Added new proofs to `Data.List.Relation.Unary.Unique.Setoid.Properties`:
   ```agda
-  pairWith⁺ : (∀ {w x y z} → f w y ≈₃ f x z → w ≈₁ x × y ≈₂ z) → Unique S xs → Unique T ys → Unique U (pairWith f xs ys)
-  pair⁺     : Unique S xs → Unique T ys → Unique (S ×ₛ T) (pair xs ys)
+  cartesianProductWith⁺ : (∀ {w x y z} → f w y ≈₃ f x z → w ≈₁ x × y ≈₂ z) → Unique S xs → Unique T ys → Unique U (cartesianProductWith f xs ys)
+  cartesianProduct⁺     : Unique S xs → Unique T ys → Unique (S ×ₛ T) (cartesianProduct xs ys)
   ```
 
 * Added new proofs to ` Data.List.Relation.Binary.Permutation.Propositional.Properties`:

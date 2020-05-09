@@ -196,7 +196,7 @@ module _ (S : Setoid c ℓ) where
   ... | xs , t , s = xs , s , t
 
 ------------------------------------------------------------------------
--- pairWith
+-- cartesianProductWith
 
 module _ (S₁ : Setoid c₁ ℓ₁) (S₂ : Setoid c₂ ℓ₂) (S₃ : Setoid c₃ ℓ₃) where
 
@@ -207,20 +207,21 @@ module _ (S₁ : Setoid c₁ ℓ₁) (S₂ : Setoid c₂ ℓ₂) (S₃ : Setoid 
   open Membership S₂ renaming (_∈_ to _∈₂_)
   open Membership S₃ renaming (_∈_ to _∈₃_)
 
-  ∈-pairWith⁺ : ∀ {f} → f Preserves₂ _≈₁_ ⟶ _≈₂_ ⟶ _≈₃_ → ∀ {xs ys a b} →
-                a ∈₁ xs → b ∈₂ ys → f a b ∈₃ pairWith f xs ys
-  ∈-pairWith⁺ pres = Any.pairWith⁺ _ pres
+  ∈-cartesianProductWith⁺ : ∀ {f} → f Preserves₂ _≈₁_ ⟶ _≈₂_ ⟶ _≈₃_ →
+                            ∀ {xs ys a b} → a ∈₁ xs → b ∈₂ ys →
+                            f a b ∈₃ cartesianProductWith f xs ys
+  ∈-cartesianProductWith⁺ pres = Any.cartesianProductWith⁺ _ pres
 
-  ∈-pairWith⁻ : ∀ f xs ys {v} → v ∈₃ pairWith f xs ys →
-                ∃₂ λ a b → a ∈₁ xs × b ∈₂ ys × v ≈₃ f a b
-  ∈-pairWith⁻ f (x ∷ xs) ys v∈c with ∈-++⁻ S₃ (map (f x) ys) v∈c
-  ∈-pairWith⁻ f (x ∷ xs) ys v∈c | inj₁ v∈map with ∈-map⁻ S₂ S₃ v∈map
+  ∈-cartesianProductWith⁻ : ∀ f xs ys {v} → v ∈₃ cartesianProductWith f xs ys →
+                            ∃₂ λ a b → a ∈₁ xs × b ∈₂ ys × v ≈₃ f a b
+  ∈-cartesianProductWith⁻ f (x ∷ xs) ys v∈c with ∈-++⁻ S₃ (map (f x) ys) v∈c
+  ∈-cartesianProductWith⁻ f (x ∷ xs) ys v∈c | inj₁ v∈map with ∈-map⁻ S₂ S₃ v∈map
   ... | (b , b∈ys , v≈fxb) = x , b , here refl₁ , b∈ys , v≈fxb
-  ∈-pairWith⁻ f (x ∷ xs) ys v∈c | inj₂ v∈com with ∈-pairWith⁻ f xs ys v∈com
+  ∈-cartesianProductWith⁻ f (x ∷ xs) ys v∈c | inj₂ v∈com with ∈-cartesianProductWith⁻ f xs ys v∈com
   ... | (a , b , a∈xs , b∈ys , v≈fab) = a , b , there a∈xs , b∈ys , v≈fab
 
 ------------------------------------------------------------------------
--- pair
+-- cartesianProduct
 
 module _ (S₁ : Setoid c₁ ℓ₁) (S₂ : Setoid c₂ ℓ₂) where
 
@@ -230,11 +231,14 @@ module _ (S₁ : Setoid c₁ ℓ₁) (S₂ : Setoid c₂ ℓ₂) where
   open Membership S₂ renaming (_∈_ to _∈₂_)
   open Membership (S₁ ×ₛ S₂) renaming (_∈_ to _∈₁₂_)
 
-  ∈-pair⁺ : ∀ {x y xs ys} → x ∈₁ xs → y ∈₂ ys → (x , y) ∈₁₂ pair xs ys
-  ∈-pair⁺ = Any.pair⁺
+  ∈-cartesianProduct⁺ : ∀ {x y xs ys} → x ∈₁ xs → y ∈₂ ys →
+                        (x , y) ∈₁₂ cartesianProduct xs ys
+  ∈-cartesianProduct⁺ = Any.cartesianProduct⁺
 
-  ∈-pair⁻ : ∀ xs ys {xy@(x , y) : A × B} → xy ∈₁₂ pair xs ys → x ∈₁ xs × y ∈₂ ys
-  ∈-pair⁻ xs ys = Any.pair⁻ xs ys
+  ∈-cartesianProduct⁻ : ∀ xs ys {xy@(x , y) : A × B} →
+                        xy ∈₁₂ cartesianProduct xs ys →
+                        x ∈₁ xs × y ∈₂ ys
+  ∈-cartesianProduct⁻ xs ys = Any.cartesianProduct⁻ xs ys
 
 ------------------------------------------------------------------------
 -- applyUpTo

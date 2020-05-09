@@ -59,22 +59,24 @@ module _ {A : Set a} {xss} where
   concat⁺ = Setoid.concat⁺ (setoid A)
 
 ------------------------------------------------------------------------
--- pairWith
+-- cartesianProductWith
 
 module _ {A : Set a} {B : Set b} {C : Set c} {xs ys} where
 
-  pairWith⁺ : ∀ f → (∀ {w x y z} → f w y ≡ f x z → w ≡ x × y ≡ z) →
-              Unique xs → Unique ys → Unique (pairWith f xs ys)
-  pairWith⁺ = Setoid.pairWith⁺ (setoid A) (setoid B) (setoid C)
+  cartesianProductWith⁺ : ∀ f → (∀ {w x y z} → f w y ≡ f x z → w ≡ x × y ≡ z) →
+                          Unique xs → Unique ys →
+                          Unique (cartesianProductWith f xs ys)
+  cartesianProductWith⁺ = Setoid.cartesianProductWith⁺ (setoid A) (setoid B) (setoid C)
 
 ------------------------------------------------------------------------
--- pair
+-- cartesianProduct
 
 module _ {A : Set a} {B : Set b} where
 
-  pair⁺ : ∀ {xs ys} → Unique xs → Unique ys → Unique (pair xs ys)
-  pair⁺ xs ys = AllPairs.map (_∘ ≡⇒≡×≡)
-    (Setoid.pair⁺ (setoid A) (setoid B) xs ys)
+  cartesianProduct⁺ : ∀ {xs ys} → Unique xs → Unique ys →
+                      Unique (cartesianProduct xs ys)
+  cartesianProduct⁺ xs ys = AllPairs.map (_∘ ≡⇒≡×≡)
+    (Setoid.cartesianProduct⁺ (setoid A) (setoid B) xs ys)
 
 ------------------------------------------------------------------------
 -- take & drop

@@ -69,12 +69,12 @@ intercalate xs []         = []
 intercalate xs (ys ∷ [])  = ys
 intercalate xs (ys ∷ yss) = ys ++ xs ++ intercalate xs yss
 
-pairWith : (A → B → C) → List A → List B → List C
-pairWith f []       _  = []
-pairWith f (x ∷ xs) ys = map (f x) ys ++ pairWith f xs ys
+cartesianProductWith : (A → B → C) → List A → List B → List C
+cartesianProductWith f []       _  = []
+cartesianProductWith f (x ∷ xs) ys = map (f x) ys ++ cartesianProductWith f xs ys
 
-pair : List A → List B → List (A × B)
-pair = pairWith _,_
+cartesianProduct : List A → List B → List (A × B)
+cartesianProduct = cartesianProductWith _,_
 
 ------------------------------------------------------------------------
 -- Aligning and zipping

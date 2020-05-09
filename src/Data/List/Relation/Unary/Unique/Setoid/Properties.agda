@@ -64,7 +64,7 @@ module _ (S : Setoid a ℓ) where
   concat⁺ xss! xss# = AllPairs.concat⁺ xss! (AllPairs.map (Disjoint⇒AllAll S) xss#)
 
 ------------------------------------------------------------------------
--- pairWith
+-- cartesianProductWith
 
 module _ (S : Setoid a ℓ₁) (T : Setoid b ℓ₂) (U : Setoid c ℓ₃) where
 
@@ -72,27 +72,29 @@ module _ (S : Setoid a ℓ₁) (T : Setoid b ℓ₂) (U : Setoid c ℓ₃) where
   open Setoid T using () renaming (_≈_ to _≈₂_)
   open Setoid U using () renaming (_≈_ to _≈₃_; sym to sym₃; trans to trans₃)
 
-  pairWith⁺ : ∀ {xs ys} f → (∀ {w x y z} → f w y ≈₃ f x z → w ≈₁ x × y ≈₂ z) →
-              Unique S xs → Unique T ys → Unique U (pairWith f xs ys)
-  pairWith⁺ {_}      {_}  f f-inj  []          ys! = [] {S = U}
-  pairWith⁺ {x ∷ xs} {ys} f f-inj (x∉xs ∷ xs!) ys! = ++⁺ U
+  cartesianProductWith⁺ : ∀ {xs ys} f → (∀ {w x y z} → f w y ≈₃ f x z → w ≈₁ x × y ≈₂ z) →
+                          Unique S xs → Unique T ys →
+                          Unique U (cartesianProductWith f xs ys)
+  cartesianProductWith⁺ {_}      {_}  f f-inj  []          ys! = [] {S = U}
+  cartesianProductWith⁺ {x ∷ xs} {ys} f f-inj (x∉xs ∷ xs!) ys! = ++⁺ U
     (map⁺ T U (proj₂ ∘ f-inj) ys!)
-    (pairWith⁺ f f-inj xs! ys!)
-    map#pairWith
+    (cartesianProductWith⁺ f f-inj xs! ys!)
+    map#cartesianProductWith
     where
-    map#pairWith : Disjoint U (map (f x) ys) (pairWith f xs ys)
-    map#pairWith (v∈map , v∈com) with
-      ∈-map⁻ T U v∈map | ∈-pairWith⁻ S T U f xs ys v∈com
+    map#cartesianProductWith : Disjoint U (map (f x) ys) (cartesianProductWith f xs ys)
+    map#cartesianProductWith (v∈map , v∈com) with
+      ∈-map⁻ T U v∈map | ∈-cartesianProductWith⁻ S T U f xs ys v∈com
     ... | (c , _ , v≈fxc) | (a , b , a∈xs , _ , v≈fab) =
       All¬⇒¬Any x∉xs (∈-resp-≈ S (proj₁ (f-inj (trans₃ (sym₃ v≈fab) v≈fxc))) a∈xs)
 
 ------------------------------------------------------------------------
--- pair
+-- cartesianProduct
 
 module _ (S : Setoid a ℓ₁) (T : Setoid b ℓ₂) {xs ys} where
 
-  pair⁺ : Unique S xs → Unique T ys → Unique (S ×ₛ T) (pair xs ys)
-  pair⁺ = pairWith⁺ S T (S ×ₛ T) _,_ id
+  cartesianProduct⁺ : Unique S xs → Unique T ys →
+                      Unique (S ×ₛ T) (cartesianProduct xs ys)
+  cartesianProduct⁺ = cartesianProductWith⁺ S T (S ×ₛ T) _,_ id
 
 ------------------------------------------------------------------------
 -- take & drop

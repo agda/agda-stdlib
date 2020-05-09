@@ -466,33 +466,37 @@ module _ {P : A → Set p} where
   concat↔ {xss} = inverse concat⁺ (concat⁻ xss) concat⁻∘concat⁺ (concat⁺∘concat⁻ xss)
 
 ------------------------------------------------------------------------
--- pairWith
+-- cartesianProductWith
 
 module _ {P : Pred A p} {Q : Pred B q} {R : Pred C r} (f : A → B → C) where
 
-  pairWith⁺ : (∀ {x y} → P x → Q y → R (f x y)) → ∀ {xs ys} →
-                Any P xs → Any Q ys → Any R (pairWith f xs ys)
-  pairWith⁺ pres (here  px)  qys = ++⁺ˡ (map⁺ (Any.map (pres px) qys))
-  pairWith⁺ pres (there qxs) qys = ++⁺ʳ _ (pairWith⁺ pres qxs qys)
+  cartesianProductWith⁺ : (∀ {x y} → P x → Q y → R (f x y)) → ∀ {xs ys} →
+                          Any P xs → Any Q ys →
+                          Any R (cartesianProductWith f xs ys)
+  cartesianProductWith⁺ pres (here  px)  qys = ++⁺ˡ (map⁺ (Any.map (pres px) qys))
+  cartesianProductWith⁺ pres (there qxs) qys = ++⁺ʳ _ (cartesianProductWith⁺ pres qxs qys)
 
-  pairWith⁻ : (∀ {x y} → R (f x y) → P x × Q y) → ∀ xs ys →
-                Any R (pairWith f xs ys) → Any P xs × Any Q ys
-  pairWith⁻ resp (x ∷ xs) ys Rxsys with ++⁻ (map (f x) ys) Rxsys
-  pairWith⁻ resp (x ∷ xs) ys Rxsys | inj₁ Rfxys with map⁻ Rfxys
+  cartesianProductWith⁻ : (∀ {x y} → R (f x y) → P x × Q y) → ∀ xs ys →
+                          Any R (cartesianProductWith f xs ys) →
+                          Any P xs × Any Q ys
+  cartesianProductWith⁻ resp (x ∷ xs) ys Rxsys with ++⁻ (map (f x) ys) Rxsys
+  cartesianProductWith⁻ resp (x ∷ xs) ys Rxsys | inj₁ Rfxys with map⁻ Rfxys
   ... | Rxys = here (proj₁ (resp (proj₂ (Any.satisfied Rxys)))) , Any.map (proj₂ ∘ resp) Rxys
-  pairWith⁻ resp (x ∷ xs) ys Rxsys | inj₂ Rc with pairWith⁻ resp xs ys Rc
+  cartesianProductWith⁻ resp (x ∷ xs) ys Rxsys | inj₂ Rc with cartesianProductWith⁻ resp xs ys Rc
   ... | (pxs , qys) = there pxs , qys
 
 ------------------------------------------------------------------------
--- pair
+-- cartesianProduct
 
 module _ {P : Pred A p} {Q : Pred B q} where
 
-  pair⁺ : ∀ {xs ys} → Any P xs → Any Q ys → Any (P ⟨×⟩ Q) (pair xs ys)
-  pair⁺ = pairWith⁺ _,_ _,_
+  cartesianProduct⁺ : ∀ {xs ys} → Any P xs → Any Q ys →
+                      Any (P ⟨×⟩ Q) (cartesianProduct xs ys)
+  cartesianProduct⁺ = cartesianProductWith⁺ _,_ _,_
 
-  pair⁻ : ∀ xs ys → Any (P ⟨×⟩ Q) (pair xs ys) → Any P xs × Any Q ys
-  pair⁻ = pairWith⁻ _,_ id
+  cartesianProduct⁻ : ∀ xs ys → Any (P ⟨×⟩ Q) (cartesianProduct xs ys) →
+                      Any P xs × Any Q ys
+  cartesianProduct⁻ = cartesianProductWith⁻ _,_ id
 
 ------------------------------------------------------------------------
 -- applyUpTo

@@ -413,24 +413,24 @@ module _ {P : A → Set p} where
   concat⁻ {xs ∷ xss} pxs = ++⁻ˡ xs pxs ∷ concat⁻ (++⁻ʳ xs pxs)
 
 ------------------------------------------------------------------------
--- pairWith and pair
+-- cartesianProductWith and cartesianProduct
 
 module _ (S₁ : Setoid a ℓ₁) (S₂ : Setoid b ℓ₂) where
   open SetoidMembership S₁ using () renaming (_∈_ to _∈₁_)
   open SetoidMembership S₂ using () renaming (_∈_ to _∈₂_)
 
-  pairWith⁺ : ∀ {P : Pred C p} f xs ys →
-              (∀ {x y} → x ∈₁ xs → y ∈₂ ys → P (f x y)) →
-              All P (pairWith f xs ys)
-  pairWith⁺ f []       ys pres = []
-  pairWith⁺ f (x ∷ xs) ys pres = ++⁺
+  cartesianProductWith⁺ : ∀ {P : Pred C p} f xs ys →
+                          (∀ {x y} → x ∈₁ xs → y ∈₂ ys → P (f x y)) →
+                          All P (cartesianProductWith f xs ys)
+  cartesianProductWith⁺ f []       ys pres = []
+  cartesianProductWith⁺ f (x ∷ xs) ys pres = ++⁺
     (map⁺ (All.tabulateₛ S₂ (pres (here (Setoid.refl S₁)))))
-    (pairWith⁺ f xs ys (pres ∘ there))
+    (cartesianProductWith⁺ f xs ys (pres ∘ there))
 
-  pair⁺ : ∀ {P : Pred _ p} xs ys →
-          (∀ {x y} → x ∈₁ xs → y ∈₂ ys → P (x , y)) →
-          All P (pair xs ys)
-  pair⁺ = pairWith⁺ _,_
+  cartesianProduct⁺ : ∀ {P : Pred _ p} xs ys →
+                      (∀ {x y} → x ∈₁ xs → y ∈₂ ys → P (x , y)) →
+                      All P (cartesianProduct xs ys)
+  cartesianProduct⁺ = cartesianProductWith⁺ _,_
 
 ------------------------------------------------------------------------
 -- take and drop
