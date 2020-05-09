@@ -17,7 +17,7 @@
 <a id="492" class="Keyword">open</a> <a id="497" class="Keyword">import</a> <a id="504" href="Data.Product.html" class="Module">Data.Product</a> <a id="517" class="Keyword">using</a> <a id="523" class="Symbol">(</a><a id="524" href="Agda.Builtin.Sigma.html#236" class="InductiveConstructor Operator">_,_</a><a id="527" class="Symbol">)</a>
 
 <a id="530" class="Keyword">open</a> <a id="535" class="Keyword">import</a> <a id="542" href="Function.html" class="Module">Function</a>
-<a id="551" class="Keyword">open</a> <a id="556" class="Keyword">import</a> <a id="563" href="Function.Equality.html" class="Module">Function.Equality</a> <a id="581" class="Keyword">using</a> <a id="587" class="Symbol">(</a><a id="588" href="Function.Equality.html#836" class="Field Operator">_⟨$⟩_</a><a id="593" class="Symbol">)</a>
+<a id="551" class="Keyword">open</a> <a id="556" class="Keyword">import</a> <a id="563" href="Function.Equality.html" class="Module">Function.Equality</a> <a id="581" class="Keyword">using</a> <a id="587" class="Symbol">(</a><a id="588" href="Function.Equality.html#1064" class="Field Operator">_⟨$⟩_</a><a id="593" class="Symbol">)</a>
 <a id="595" class="Keyword">open</a> <a id="600" class="Keyword">import</a> <a id="607" href="Relation.Binary.html" class="Module">Relation.Binary</a> <a id="623" class="Keyword">using</a> <a id="629" class="Symbol">(</a><a id="630" href="Relation.Binary.Core.html#1419" class="Function Operator">_Preserves_⟶_</a><a id="643" class="Symbol">)</a>
 <a id="645" class="Keyword">open</a> <a id="650" class="Keyword">import</a> <a id="657" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a> <a id="695" class="Symbol">as</a> <a id="698" class="Module">P</a> <a id="700" class="Keyword">using</a> <a id="706" class="Symbol">(</a><a id="707" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a><a id="710" class="Symbol">;</a> <a id="712" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a><a id="716" class="Symbol">)</a>
 
@@ -30,12 +30,12 @@
 <a id="879" class="Comment">-- Conversion back and forth with the Setoid-based notion of Endomorphism</a>
 
 <a id="fromSetoidEndo"></a><a id="954" href="Function.Endomorphism.Propositional.html#954" class="Function">fromSetoidEndo</a> <a id="969" class="Symbol">:</a> <a id="971" href="Function.Endomorphism.Setoid.html#876" class="Function">Setoid.Endo</a> <a id="983" class="Symbol">→</a> <a id="985" href="Function.Endomorphism.Propositional.html#779" class="Function">Endo</a>
-<a id="990" href="Function.Endomorphism.Propositional.html#954" class="Function">fromSetoidEndo</a> <a id="1005" class="Symbol">=</a> <a id="1007" href="Function.Equality.html#836" class="Field Operator">_⟨$⟩_</a>
+<a id="990" href="Function.Endomorphism.Propositional.html#954" class="Function">fromSetoidEndo</a> <a id="1005" class="Symbol">=</a> <a id="1007" href="Function.Equality.html#1064" class="Field Operator">_⟨$⟩_</a>
 
 <a id="toSetoidEndo"></a><a id="1014" href="Function.Endomorphism.Propositional.html#1014" class="Function">toSetoidEndo</a> <a id="1027" class="Symbol">:</a> <a id="1029" href="Function.Endomorphism.Propositional.html#779" class="Function">Endo</a> <a id="1034" class="Symbol">→</a> <a id="1036" href="Function.Endomorphism.Setoid.html#876" class="Function">Setoid.Endo</a>
 <a id="1048" href="Function.Endomorphism.Propositional.html#1014" class="Function">toSetoidEndo</a> <a id="1061" href="Function.Endomorphism.Propositional.html#1061" class="Bound">f</a> <a id="1063" class="Symbol">=</a> <a id="1065" class="Keyword">record</a>
-  <a id="1074" class="Symbol">{</a> <a id="1076" href="Function.Equality.html#836" class="Field Operator">_⟨$⟩_</a> <a id="1082" class="Symbol">=</a> <a id="1084" href="Function.Endomorphism.Propositional.html#1061" class="Bound">f</a>
-  <a id="1088" class="Symbol">;</a> <a id="1090" href="Function.Equality.html#903" class="Field">cong</a>  <a id="1096" class="Symbol">=</a> <a id="1098" href="Relation.Binary.PropositionalEquality.Core.html#1131" class="Function">P.cong</a> <a id="1105" href="Function.Endomorphism.Propositional.html#1061" class="Bound">f</a>
+  <a id="1074" class="Symbol">{</a> <a id="1076" href="Function.Equality.html#1064" class="Field Operator">_⟨$⟩_</a> <a id="1082" class="Symbol">=</a> <a id="1084" href="Function.Endomorphism.Propositional.html#1061" class="Bound">f</a>
+  <a id="1088" class="Symbol">;</a> <a id="1090" href="Function.Equality.html#1131" class="Field">cong</a>  <a id="1096" class="Symbol">=</a> <a id="1098" href="Relation.Binary.PropositionalEquality.Core.html#1131" class="Function">P.cong</a> <a id="1105" href="Function.Endomorphism.Propositional.html#1061" class="Bound">f</a>
   <a id="1109" class="Symbol">}</a>
 
 <a id="1112" class="Comment">------------------------------------------------------------------------</a>
