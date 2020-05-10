@@ -11,7 +11,7 @@ module IO where
 open import Codata.Musical.Notation
 open import Codata.Musical.Colist
 open import Codata.Musical.Costring
-open import Data.Unit
+open import Data.Unit.Polymorphic
 open import Data.String
 open import Function
 import IO.Primitive as Prim
@@ -55,7 +55,7 @@ sequence (c ∷ cs) = ♯ c                  >>= λ x  →
 -- The reason for not defining sequence′ in terms of sequence is
 -- efficiency (the unused results could cause unnecessary memory use).
 
-sequence′ : ∀ {a} {A : Set a} → Colist (IO A) → IO (Lift a ⊤)
+sequence′ : ∀ {a} {A : Set a} → Colist (IO A) → IO ⊤
 sequence′ []       = return _
 sequence′ (c ∷ cs) = ♯ c                   >>
                      ♯ (♯ sequence′ (♭ cs) >>
@@ -66,7 +66,7 @@ module _ {a b} {A : Set a} {B : Set b} where
   mapM : (A → IO B) → Colist A → IO (Colist B)
   mapM f = sequence ∘ map f
 
-  mapM′ : (A → IO B) → Colist A → IO (Lift b ⊤)
+  mapM′ : (A → IO B) → Colist A → IO ⊤
   mapM′ f = sequence′ ∘ map f
 
 ------------------------------------------------------------------------

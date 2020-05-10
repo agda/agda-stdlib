@@ -12,10 +12,9 @@ open import Function
 open import Data.Nat.Base
 open import Data.Nat.Properties using (≤⇒≤′)
 open import Data.Product
-open import Data.Unit
+open import Data.Unit.Polymorphic
 open import Induction
 open import Induction.WellFounded as WF
-open import Level using (Lift)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Unary
 
@@ -28,7 +27,7 @@ open WF public using (Acc; acc)
 -- Ordinary induction
 
 Rec : ∀ ℓ → RecStruct ℕ ℓ ℓ
-Rec ℓ P zero    = Lift ℓ ⊤
+Rec ℓ P zero    = ⊤
 Rec ℓ P (suc n) = P n
 
 recBuilder : ∀ {ℓ} → RecursorBuilder (Rec ℓ)
@@ -42,7 +41,7 @@ rec = build recBuilder
 -- Complete induction
 
 CRec : ∀ ℓ → RecStruct ℕ ℓ ℓ
-CRec ℓ P zero    = Lift ℓ ⊤
+CRec ℓ P zero    = ⊤
 CRec ℓ P (suc n) = P n × CRec ℓ P n
 
 cRecBuilder : ∀ {ℓ} → RecursorBuilder (CRec ℓ)

@@ -26,6 +26,10 @@ infix 2 _because_
 ¬_ : ∀ {ℓ} → Set ℓ → Set ℓ
 ¬ P = P → ⊥
 
+-- level polymorphic version of ¬
+¬′ : ∀ {ℓ} (b : Level) → Set ℓ → Set (ℓ ⊔ b)
+¬′ {_} b P = P → Lift b ⊥
+
 ------------------------------------------------------------------------
 -- `Reflects` idiom.
 

@@ -14,6 +14,6 @@ open import Level
 ⊥ : {ℓ : Level} → Set ℓ
 ⊥ {ℓ} = Lift ℓ ⊥.⊥
 
--- make ⊥-elim dependent too, as it does seem useful
-⊥-elim : ∀ {w ℓ} {Whatever : ⊥ {ℓ} → Set w} → (witness : ⊥ {ℓ}) → Whatever witness
-⊥-elim ()
+-- make ⊥-elim-P dependent too, as it does seem useful
+⊥-elim-P : ∀ {w ℓ} {Whatever : ⊥ {ℓ} → Set w} → (witness : ⊥ {ℓ}) → Whatever witness
+⊥-elim-P ()
