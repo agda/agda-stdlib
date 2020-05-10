@@ -15,7 +15,7 @@ open import Function.Identity.Categorical as Id using (Identity)
 open import Category.Applicative.Indexed
 open import Category.Monad.Indexed
 open import Category.Monad
-open import Data.Unit
+open import Data.Unit.Polymorphic
 
 private
   variable
@@ -102,14 +102,14 @@ ReaderTIMonadReader Mon = record
 ------------------------------------------------------------------------
 -- Ordinary reader monads
 
-RawMonadReader : (M : Set (r ⊔ a) → Set (r ⊔ a)) → Set _
-RawMonadReader M = RawIMonadReader {I = ⊤} (λ _ _ → M)
+RawMonadReader : (M : Set (r ⊔ a) → Set (r ⊔ a)) → Set (suc (r ⊔ a))
+RawMonadReader M = RawIMonadReader {I = ⊤ {r ⊔ a}} (λ _ _ → M)
 
 module RawMonadReader {M} (Mon : RawMonadReader M) where
   open RawIMonadReader Mon public
 
 ReaderT : (M : Set (r ⊔ a) → Set (r ⊔ a)) → Set _ → Set _
-ReaderT M = IReaderT {I = ⊤} (λ _ _ → M) _ _
+ReaderT M = IReaderT {I = ⊤ {r ⊔ a}} (λ _ _ → M) _ _
 
 ReaderTMonad : ∀ {M} → RawMonad M → RawMonad (ReaderT M)
 ReaderTMonad = ReaderTIMonad
