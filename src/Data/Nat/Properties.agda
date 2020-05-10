@@ -2301,13 +2301,13 @@ Please use m∸n≤m instead (note, you will need to switch the argument order).
 
 ∀[m≤n⇒m≢o]⇒o<n : ∀ n o → (∀ {m} → m ≤ n → m ≢ o) → n < o
 ∀[m≤n⇒m≢o]⇒o<n = ∀[m≤n⇒m≢o]⇒n<o
-{-# WARNING_ON_USAGE n∸m≤∣n-m∣
+{-# WARNING_ON_USAGE ∀[m≤n⇒m≢o]⇒o<n
 "Warning: ∀[m≤n⇒m≢o]⇒o<n was deprecated in v1.3.
 Please use ∀[m≤n⇒m≢o]⇒n<o instead."
 #-}
 ∀[m<n⇒m≢o]⇒o≤n : ∀ n o → (∀ {m} → m < n → m ≢ o) → n ≤ o
 ∀[m<n⇒m≢o]⇒o≤n = ∀[m<n⇒m≢o]⇒n≤o
-{-# WARNING_ON_USAGE n∸m≤∣n-m∣
+{-# WARNING_ON_USAGE ∀[m<n⇒m≢o]⇒o≤n
 "Warning: ∀[m<n⇒m≢o]⇒o≤n was deprecated in v1.3.
 Please use ∀[m<n⇒m≢o]⇒n≤o instead."
 #-}
