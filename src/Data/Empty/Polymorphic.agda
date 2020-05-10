@@ -8,9 +8,12 @@
 
 module Data.Empty.Polymorphic where
 
+import Data.Empty as ⊥
 open import Level
 
-data ⊥ {ℓ : Level} : Set ℓ where
+⊥ : {ℓ : Level} → Set ℓ
+⊥ {ℓ} = Lift ℓ ⊥.⊥
 
-⊥-elim : ∀ {w ℓ} {Whatever : Set w} → ⊥ {ℓ} → Whatever
+-- make ⊥-elim dependent too, as it does seem useful
+⊥-elim : ∀ {w ℓ} {Whatever : ⊥ {ℓ} → Set w} → (witness : ⊥ {ℓ}) → Whatever witness
 ⊥-elim ()
