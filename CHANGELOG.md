@@ -34,6 +34,8 @@ Deprecated modules
 Deprecated names
 ----------------
 
+* The proofs `replace-equality` from `Algebra.Properties.(Lattice/DistributiveLattice/BooleanAlgebra)`
+  have been deprecated in favour of the proofs in the new `Algebra.Construct.Subst.Equality` module.
 
 Other major additions
 ---------------------
@@ -66,6 +68,12 @@ Other major additions
   ```
   Data.List.Relation.Unary.Sorted.TotalOrder
   Data.List.Relation.Unary.Sorted.TotalOrder.Properties
+  ```
+
+* Substituting the notion of equality for various structures
+  ```
+  Algebra.Construct.Subst.Equality
+  Relation.Binary.Construct.Subst.Equality
   ```
 
 * Consequences for basic morphism properties
@@ -284,4 +292,9 @@ Other minor additions
   negative    : p < 0ℚᵘ → Negative p
   nonPositive : p ≤ 0ℚᵘ → NonPositive p
   nonNegative : p ≥ 0ℚᵘ → NonNegative p
+  ```
+
+* Added new operator to `Relation.Binary`:
+  ```agda
+  _⇔_ : REL A B ℓ₁ → REL A B ℓ₂ → Set _
   ```

@@ -23,7 +23,7 @@ import Function.Definitions as FunctionDefinitions
 import Function.Structures as FunctionStructures
 open import Level using (Level; _⊔_; suc)
 open import Data.Product using (proj₁; proj₂)
-open import Relation.Binary
+open import Relation.Binary hiding (_⇔_)
 open import Relation.Binary.PropositionalEquality as ≡
   using (_≡_)
 open Setoid using (isEquivalence)

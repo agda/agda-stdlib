@@ -17,7 +17,7 @@ open import Function.Base using (flip)
 open import Function.Equality as F
   using (_⟶_; _⟨$⟩_) renaming (_∘_ to _⟪∘⟫_)
 open import Level
-open import Relation.Binary
+open import Relation.Binary hiding (_⇔_)
 import Relation.Binary.PropositionalEquality as P
 
 ------------------------------------------------------------------------
