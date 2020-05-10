@@ -69,6 +69,13 @@ intercalate xs []         = []
 intercalate xs (ys ∷ [])  = ys
 intercalate xs (ys ∷ yss) = ys ++ xs ++ intercalate xs yss
 
+cartesianProductWith : (A → B → C) → List A → List B → List C
+cartesianProductWith f []       _  = []
+cartesianProductWith f (x ∷ xs) ys = map (f x) ys ++ cartesianProductWith f xs ys
+
+cartesianProduct : List A → List B → List (A × B)
+cartesianProduct = cartesianProductWith _,_
+
 ------------------------------------------------------------------------
 -- Aligning and zipping
 

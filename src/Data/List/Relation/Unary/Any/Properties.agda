@@ -51,9 +51,10 @@ private
 
 private
   variable
-    a b p q r ℓ : Level
+    a b c p q r ℓ : Level
     A : Set a
     B : Set b
+    C : Set c
 
 ------------------------------------------------------------------------
 -- Equality properties
@@ -463,6 +464,39 @@ module _ {P : A → Set p} where
 
   concat↔ : ∀ {xss} → Any (Any P) xss ↔ Any P (concat xss)
   concat↔ {xss} = inverse concat⁺ (concat⁻ xss) concat⁻∘concat⁺ (concat⁺∘concat⁻ xss)
+
+------------------------------------------------------------------------
+-- cartesianProductWith
+
+module _ {P : Pred A p} {Q : Pred B q} {R : Pred C r} (f : A → B → C) where
+
+  cartesianProductWith⁺ : (∀ {x y} → P x → Q y → R (f x y)) → ∀ {xs ys} →
+                          Any P xs → Any Q ys →
+                          Any R (cartesianProductWith f xs ys)
+  cartesianProductWith⁺ pres (here  px)  qys = ++⁺ˡ (map⁺ (Any.map (pres px) qys))
+  cartesianProductWith⁺ pres (there qxs) qys = ++⁺ʳ _ (cartesianProductWith⁺ pres qxs qys)
+
+  cartesianProductWith⁻ : (∀ {x y} → R (f x y) → P x × Q y) → ∀ xs ys →
+                          Any R (cartesianProductWith f xs ys) →
+                          Any P xs × Any Q ys
+  cartesianProductWith⁻ resp (x ∷ xs) ys Rxsys with ++⁻ (map (f x) ys) Rxsys
+  cartesianProductWith⁻ resp (x ∷ xs) ys Rxsys | inj₁ Rfxys with map⁻ Rfxys
+  ... | Rxys = here (proj₁ (resp (proj₂ (Any.satisfied Rxys)))) , Any.map (proj₂ ∘ resp) Rxys
+  cartesianProductWith⁻ resp (x ∷ xs) ys Rxsys | inj₂ Rc with cartesianProductWith⁻ resp xs ys Rc
+  ... | (pxs , qys) = there pxs , qys
+
+------------------------------------------------------------------------
+-- cartesianProduct
+
+module _ {P : Pred A p} {Q : Pred B q} where
+
+  cartesianProduct⁺ : ∀ {xs ys} → Any P xs → Any Q ys →
+                      Any (P ⟨×⟩ Q) (cartesianProduct xs ys)
+  cartesianProduct⁺ = cartesianProductWith⁺ _,_ _,_
+
+  cartesianProduct⁻ : ∀ xs ys → Any (P ⟨×⟩ Q) (cartesianProduct xs ys) →
+                      Any P xs × Any Q ys
+  cartesianProduct⁻ = cartesianProductWith⁻ _,_ id
 
 ------------------------------------------------------------------------
 -- applyUpTo
