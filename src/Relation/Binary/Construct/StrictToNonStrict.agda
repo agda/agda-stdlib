@@ -96,8 +96,8 @@ total <-tri x y with <-tri x y
 decidable : Decidable _≈_ → Decidable _<_ → Decidable _≤_
 decidable ≈-dec <-dec x y = <-dec x y ⊎-dec ≈-dec x y
 
-decidable' : Trichotomous _≈_ _<_ → Decidable _≤_
-decidable' compare x y with compare x y
+decidable′ : Trichotomous _≈_ _<_ → Decidable _≤_
+decidable′ compare x y with compare x y
 ... | tri< x<y _   _ = yes (inj₁ x<y)
 ... | tri≈ _   x≈y _ = yes (inj₂ x≈y)
 ... | tri> x≮y x≉y _ = no [ x≮y , x≉y ]′
@@ -139,6 +139,22 @@ isDecTotalOrder : IsStrictTotalOrder _≈_ _<_ → IsDecTotalOrder _≈_ _≤_
 isDecTotalOrder STO = record
   { isTotalOrder = isTotalOrder STO
   ; _≟_          = S._≟_
-  ; _≤?_         = decidable' S.compare
+  ; _≤?_         = decidable′ S.compare
   }
   where module S = IsStrictTotalOrder STO
+
+
+------------------------------------------------------------------------
+-- DEPRECATED
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 1.4
+
+decidable' : Trichotomous _≈_ _<_ → Decidable _≤_
+decidable' = decidable′
+{-# WARNING_ON_USAGE decidable'
+"Warning: decidable' (ending in an apostrophe) was deprecated in v1.4.
+Please use decidable′ (ending in a prime) instead."
+#-}
