@@ -437,7 +437,7 @@ module XorRing
       ((x ∨ y) ∧ (¬ x ∨ ¬ y)) ∨ z        ≈˘⟨ ∨-congʳ $ ∧-congˡ (deMorgan₁ _ _) ⟩
       ((x ∨ y) ∧ ¬ (x ∧ y)) ∨ z          ∎
 
-    lem₂' = begin
+    lem₂′ = begin
       (x ∨ ¬ y) ∧ (¬ x ∨ y)              ≈˘⟨ ∧-identityˡ _ ⟨ ∧-cong ⟩ ∧-identityʳ _ ⟩
       (⊤ ∧ (x ∨ ¬ y)) ∧ ((¬ x ∨ y) ∧ ⊤)  ≈˘⟨  (∨-complementˡ _ ⟨ ∧-cong ⟩ ∨-comm _ _)
                                                 ⟨ ∧-cong ⟩
@@ -450,7 +450,7 @@ module XorRing
 
     lem₂ = begin
       ((x ∨ ¬ y) ∨ ¬ z) ∧ ((¬ x ∨ y) ∨ ¬ z)  ≈˘⟨ ∨-∧-distribʳ _ _ _ ⟩
-      ((x ∨ ¬ y) ∧ (¬ x ∨ y)) ∨ ¬ z          ≈⟨ ∨-congʳ lem₂' ⟩
+      ((x ∨ ¬ y) ∧ (¬ x ∨ y)) ∨ ¬ z          ≈⟨ ∨-congʳ lem₂′ ⟩
       ¬ ((x ∨ y) ∧ ¬ (x ∧ y)) ∨ ¬ z          ≈˘⟨ deMorgan₁ _ _ ⟩
       ¬ (((x ∨ y) ∧ ¬ (x ∧ y)) ∧ z)          ∎
 
@@ -460,7 +460,7 @@ module XorRing
       (x ∨ (y ∨ z)) ∧ (x ∨ (¬ y ∨ ¬ z))  ≈˘⟨ ∨-assoc _ _ _ ⟨ ∧-cong ⟩ ∨-assoc _ _ _ ⟩
       ((x ∨ y) ∨ z) ∧ ((x ∨ ¬ y) ∨ ¬ z)  ∎
 
-    lem₄' = begin
+    lem₄′ = begin
       ¬ ((y ∨ z) ∧ ¬ (y ∧ z))    ≈⟨ deMorgan₁ _ _ ⟩
       ¬ (y ∨ z) ∨ ¬ ¬ (y ∧ z)    ≈⟨ deMorgan₂ _ _ ⟨ ∨-cong ⟩ ¬-involutive _ ⟩
       (¬ y ∧ ¬ z) ∨ (y ∧ z)      ≈⟨ lemma₂ _ _ _ _ ⟩
@@ -474,7 +474,7 @@ module XorRing
 
     lem₄ = begin
       ¬ (x ∧ ((y ∨ z) ∧ ¬ (y ∧ z)))  ≈⟨ deMorgan₁ _ _ ⟩
-      ¬ x ∨ ¬ ((y ∨ z) ∧ ¬ (y ∧ z))  ≈⟨ ∨-congˡ lem₄' ⟩
+      ¬ x ∨ ¬ ((y ∨ z) ∧ ¬ (y ∧ z))  ≈⟨ ∨-congˡ lem₄′ ⟩
       ¬ x ∨ ((y ∨ ¬ z) ∧ (¬ y ∨ z))  ≈⟨ ∨-∧-distribˡ _ _ _ ⟩
       (¬ x ∨ (y     ∨ ¬ z)) ∧
       (¬ x ∨ (¬ y ∨ z))              ≈˘⟨ ∨-assoc _ _ _ ⟨ ∧-cong ⟩ ∨-assoc _ _ _ ⟩

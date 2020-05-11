@@ -76,12 +76,12 @@ trans eq (respʳ , respˡ) <-trans = tr
 ≤-<-trans sym trans respˡ (inj₂ x≈y) y<z = respˡ (sym x≈y) y<z
 
 ≤-respʳ-≈ : Transitive _≈_ → _<_ Respectsʳ _≈_ → _≤_ Respectsʳ _≈_
-≤-respʳ-≈ trans respʳ y'≈y (inj₁ x<y') = inj₁ (respʳ y'≈y x<y')
-≤-respʳ-≈ trans respʳ y'≈y (inj₂ x≈y') = inj₂ (trans x≈y' y'≈y)
+≤-respʳ-≈ trans respʳ y′≈y (inj₁ x<y′) = inj₁ (respʳ y′≈y x<y′)
+≤-respʳ-≈ trans respʳ y′≈y (inj₂ x≈y′) = inj₂ (trans x≈y′ y′≈y)
 
 ≤-respˡ-≈ : Symmetric _≈_ → Transitive _≈_ → _<_ Respectsˡ _≈_ → _≤_ Respectsˡ _≈_
-≤-respˡ-≈ sym trans respˡ x'≈x (inj₁ x'<y) = inj₁ (respˡ x'≈x x'<y)
-≤-respˡ-≈ sym trans respˡ x'≈x (inj₂ x'≈y) = inj₂ (trans (sym x'≈x) x'≈y)
+≤-respˡ-≈ sym trans respˡ x′≈x (inj₁ x′<y) = inj₁ (respˡ x′≈x x′<y)
+≤-respˡ-≈ sym trans respˡ x′≈x (inj₂ x′≈y) = inj₂ (trans (sym x′≈x) x′≈y)
 
 ≤-resp-≈ : IsEquivalence _≈_ → _<_ Respects₂ _≈_ → _≤_ Respects₂ _≈_
 ≤-resp-≈ eq (respʳ , respˡ) = ≤-respʳ-≈ Eq.trans respʳ , ≤-respˡ-≈ Eq.sym Eq.trans respˡ

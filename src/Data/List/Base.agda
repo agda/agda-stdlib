@@ -230,7 +230,7 @@ unfold : ∀ (P : ℕ → Set b)
 unfold P f {n = zero}  s = []
 unfold P f {n = suc n} s with f s
 ... | nothing       = []
-... | just (x , s') = x ∷ unfold P f s'
+... | just (x , s′) = x ∷ unfold P f s′
 
 ------------------------------------------------------------------------
 -- Operations for deconstructing lists

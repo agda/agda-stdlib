@@ -24,8 +24,8 @@ open import Data.String using (String)
 open import Data.Vec using (Vec; _∷_; [])
 open import Relation.Binary.PropositionalEquality
 
-open Data.Tree.AVL <-strictTotalOrder renaming (Tree to Tree')
-Tree = Tree' (MkValue (Vec String) (subst (Vec String)))
+open Data.Tree.AVL <-strictTotalOrder renaming (Tree to Tree′)
+Tree = Tree′ (MkValue (Vec String) (subst (Vec String)))
 
 ------------------------------------------------------------------------
 -- Construction of trees
