@@ -326,11 +326,11 @@ nonZeroDivisor-lemma m zero r r≢zero (divides (suc q) eq) =
     m                   ∎
     where open ≤-Reasoning
 nonZeroDivisor-lemma m (suc q) r r≢zero d =
-  nonZeroDivisor-lemma m q r r≢zero (∣m+n∣m⇒∣n d' ∣-refl)
+  nonZeroDivisor-lemma m q r r≢zero (∣m+n∣m⇒∣n d′ ∣-refl)
   where
   lem = solve 3 (λ m r q → r :+ (m :+ q)  :=  m :+ (r :+ q))
                 refl (suc m) (toℕ r) (q * suc m)
-  d' = subst (1 + m ∣_) lem d
+  d′ = subst (1 + m ∣_) lem d
 {-# WARNING_ON_USAGE nonZeroDivisor-lemma
 "Warning: nonZeroDivisor-lemma was deprecated in v0.17."
 #-}

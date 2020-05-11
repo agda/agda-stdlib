@@ -48,7 +48,7 @@ record RawIMonad {I : Set i} (M : IFun I f) : Set (i ⊔ suc f) where
   rawIApplicative : RawIApplicative M
   rawIApplicative = record
     { pure = return
-    ; _⊛_  = λ f x → f >>= λ f' → x >>= λ x' → return (f' x')
+    ; _⊛_  = λ f x → f >>= λ f′ → x >>= λ x′ → return (f′ x′)
     }
 
   open RawIApplicative rawIApplicative public
