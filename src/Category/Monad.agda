@@ -12,7 +12,7 @@ module Category.Monad where
 
 open import Function
 open import Category.Monad.Indexed
-open import Data.Unit.Polymorphic
+open import Data.Unit
 open import Level
 
 private
@@ -20,16 +20,16 @@ private
     f : Level
 
 RawMonad : (Set f → Set f) → Set _
-RawMonad {f} M = RawIMonad {I = ⊤ {f}} (λ _ _ → M)
+RawMonad M = RawIMonad {I = ⊤} (λ _ _ → M)
 
 RawMonadT : (T : (Set f → Set f) → (Set f → Set f)) → Set _
-RawMonadT {f} T = RawIMonadT {I = ⊤ {f}} (λ M _ _ → T (M _ _))
+RawMonadT T = RawIMonadT {I = ⊤} (λ M _ _ → T (M _ _))
 
 RawMonadZero : (Set f → Set f) → Set _
-RawMonadZero {f} M = RawIMonadZero {I = ⊤ {f}} (λ _ _ → M)
+RawMonadZero M = RawIMonadZero {I = ⊤} (λ _ _ → M)
 
 RawMonadPlus : (Set f → Set f) → Set _
-RawMonadPlus {f} M = RawIMonadPlus {I = ⊤ {f}} (λ _ _ → M)
+RawMonadPlus M = RawIMonadPlus {I = ⊤} (λ _ _ → M)
 
 module RawMonad {M : Set f → Set f} (Mon : RawMonad M) where
   open RawIMonad Mon public

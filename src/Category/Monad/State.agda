@@ -13,7 +13,7 @@ open import Category.Monad
 open import Function.Identity.Categorical as Id using (Identity)
 open import Category.Monad.Indexed
 open import Data.Product
-open import Data.Unit.Polymorphic
+open import Data.Unit
 open import Function
 open import Level
 
@@ -86,11 +86,11 @@ record RawIMonadState {I : Set i} (S : I → Set f)
   field
     monad : RawIMonad M
     get   : ∀ {i} → M i i (S i)
-    put   : ∀ {i j} → S j → M i j (⊤ {f})
+    put   : ∀ {i j} → S j → M i j (Lift f ⊤)
 
   open RawIMonad monad public
 
-  modify : ∀ {i j} → (S i → S j) → M i j ⊤
+  modify : ∀ {i j} → (S i → S j) → M i j (Lift f ⊤)
   modify f = get >>= put ∘ f
 
 StateTIMonadState : ∀ {i f} {I : Set i} (S : I → Set f) {M} →
@@ -106,14 +106,14 @@ StateTIMonadState S Mon = record
 -- Ordinary state monads
 
 RawMonadState : Set f → (Set f → Set f) → Set (suc f)
-RawMonadState {f} S M = RawIMonadState {i = f} {f = f} {I = ⊤ {f}} (λ _ → S) (λ _ _ → M)
+RawMonadState S M = RawIMonadState {I = ⊤} (λ _ → S) (λ _ _ → M)
 
 module RawMonadState {S : Set f} {M : Set f → Set f}
                      (Mon : RawMonadState S M) where
   open RawIMonadState Mon public
 
 StateT : Set f → (Set f → Set f) → Set f → Set f
-StateT {f} S M = IStateT {I = ⊤ {f}} (λ _ → S) M _ _
+StateT {f} S M = IStateT {I = ⊤} (λ _ → S) M _ _
 
 StateTMonad : ∀ (S : Set f) {M} → RawMonad M → RawMonad (StateT S M)
 StateTMonad S = StateTIMonad (λ _ → S)
@@ -143,7 +143,7 @@ LiftMonadState : ∀ {S₁} (S₂ : Set f) {M} →
                  RawMonadState S₁ M →
                  RawMonadState S₁ (StateT S₂ M)
 LiftMonadState S₂ Mon = record
-  { monad =  StateTIMonad (λ _ → S₂) monad
+  { monad = StateTIMonad (λ _ → S₂) monad
   ; get   = λ s → get >>= λ x → return (x , s)
   ; put   = λ s′ s → put s′ >> return (_ , s)
   }
