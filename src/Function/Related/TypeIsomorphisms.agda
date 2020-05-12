@@ -14,7 +14,7 @@ open import Algebra.Structures.Biased using (isCommutativeSemiringˡ)
 open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Bool.Base using (true; false)
 open import Data.Empty using (⊥-elim)
-open import Data.Empty.Polymorphic using (⊥; ⊥-elim-P)
+open import Data.Empty.Polymorphic using (⊥) renaming (⊥-elim to ⊥ₚ-elim)
 open import Data.Product as Prod hiding (swap)
 open import Data.Product.Function.NonDependent.Propositional
 open import Data.Sum.Base as Sum
@@ -30,7 +30,7 @@ open import Function.Related
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_; _≗_)
 open import Relation.Nullary.Reflects using (invert)
-open import Relation.Nullary using (Dec; ¬_; ¬′; _because_; ofⁿ)
+open import Relation.Nullary using (Dec; ¬_; ¬ᵢ; _because_; ofⁿ)
 open import Relation.Nullary.Decidable using (True)
 
 ------------------------------------------------------------------------
@@ -63,10 +63,10 @@ open import Relation.Nullary.Decidable using (True)
 -- × has ⊥ has its zero
 
 ×-zeroˡ : ∀ ℓ → LeftZero _↔_ (⊥ {ℓ}) _×_
-×-zeroˡ ℓ A = inverse proj₁ < id , ⊥-elim-P > (λ { () }) (λ _ → P.refl)
+×-zeroˡ ℓ A = inverse proj₁ < id , ⊥ₚ-elim > (λ { () }) (λ _ → P.refl)
 
 ×-zeroʳ : ∀ ℓ → RightZero _↔_ (⊥ {ℓ}) _×_
-×-zeroʳ ℓ A = inverse proj₂ < ⊥-elim-P , id > (λ { () }) λ _ → P.refl
+×-zeroʳ ℓ A = inverse proj₂ < ⊥ₚ-elim , id > (λ { () }) λ _ → P.refl
 
 ×-zero : ∀ ℓ → Zero _↔_ ⊥ _×_
 ×-zero ℓ  = ×-zeroˡ ℓ , ×-zeroʳ ℓ
@@ -298,13 +298,13 @@ A⇔B →-cong-⇔ C⇔D = Eq.equivalence
 -- ¬_ preserves the symmetric relations
 
 ¬-cong-⇔ : ∀ {a b c} {A : Set a} {B : Set b} →
-           A ⇔ B → (¬′ c A) ⇔ (¬′ _ B)
+           A ⇔ B → (¬ᵢ c A) ⇔ (¬ᵢ _ B)
 ¬-cong-⇔ A⇔B =  A⇔B →-cong-⇔ (⊥ ∎)
   where open EquationalReasoning
 
 ¬-cong : ∀ {a b c} → Extensionality a c → Extensionality b c →
          ∀ {k} {A : Set a} {B : Set b} →
-         A ∼[ ⌊ k ⌋ ] B → (¬′ c A) ∼[ ⌊ k ⌋ ] (¬′ c B)
+         A ∼[ ⌊ k ⌋ ] B → (¬ᵢ c A) ∼[ ⌊ k ⌋ ] (¬ᵢ c B)
 ¬-cong extA extB A≈B =  →-cong extA extB A≈B (⊥ ∎)
   where open EquationalReasoning
 

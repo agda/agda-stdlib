@@ -10,7 +10,7 @@ module Data.Container.Indexed.Combinator where
 
 open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Container.Indexed
-open import Data.Empty.Polymorphic using (⊥; ⊥-elim-P)
+open import Data.Empty.Polymorphic using (⊥; ⊥-elim)
 open import Data.Unit.Polymorphic.Base using (⊤)
 open import Data.Product as Prod hiding (Σ) renaming (_×_ to _⟨×⟩_)
 open import Data.Sum renaming (_⊎_ to _⟨⊎⟩_)
@@ -35,7 +35,7 @@ id = F.const ⊤ ◃ F.const ⊤ / (λ {o} _ _ → o)
 
 const : ∀ {i o c r} {I : Set i} {O : Set o} →
         Pred O c → Container I O c r
-const X = X ◃ (λ _ → ⊥) / λ _ → ⊥-elim-P
+const X = X ◃ F.const ⊥ / F.const ⊥-elim
 
 -- Duality.
 
@@ -165,10 +165,10 @@ module Constant (ext : ∀ {ℓ} → Extensionality ℓ ℓ) where
     to = proj₁
 
     from : X ⊆ ⟦ const X ⟧ Y
-    from = < F.id , F.const ⊥-elim-P >
+    from = < F.id , F.const ⊥-elim >
 
     to∘from : _
-    to∘from xs = P.cong (proj₁ xs ,_) (ext ⊥-elim-P)
+    to∘from xs = P.cong (proj₁ xs ,_) (ext ⊥-elim)
 
 module Duality where
 

@@ -27,8 +27,9 @@ infix 2 _because_
 ¬ P = P → ⊥
 
 -- level polymorphic version of ¬
-¬′ : ∀ {ℓ} (b : Level) → Set ℓ → Set (ℓ ⊔ b)
-¬′ {_} b P = P → Lift b ⊥
+-- i.e. ¬ 'i'ndexed by a level.
+¬ᵢ : ∀ {ℓ} (b : Level) → Set ℓ → Set (ℓ ⊔ b)
+¬ᵢ b P = P → Lift b ⊥
 
 ------------------------------------------------------------------------
 -- `Reflects` idiom.
