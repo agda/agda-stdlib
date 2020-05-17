@@ -34,20 +34,22 @@ Use version v1.3 of the standard library with Agda 2.6.1.
    $HERE/agda-stdlib-1.3/standard-library.agda-lib
    ```
 
-6. [ OPTIONAL ] To use the standard library in your project `$PROJECT`,
-   put a file `$PROJECT.agda-lib` file in the project root containing:
-   ```
-   depend: standard-library
-   include: $DIRS
-   ```
-   where `$DIRS` is a list of directories where Agda
-   searches for modules, for instance `.` (just the project root).
+Now, the standard library is ready to be used either:
 
-7. [ OPTIONAL ] If you want to refer to the standard library in all your
-   projects, add the following line to `$HOME/.agda/defaults`
-   ```
-   standard-library
-   ```
+- in your project `$PROJECT`, by creating a file
+  `$PROJECT.agda-lib` in the project's root containing:
+  ```
+  depend: standard-library
+  include: $DIRS
+  ```
+  where `$DIRS` is a list of directories where Agda
+  searches for modules, for instance `.` (just the project's root).
+
+- in all your projects, by adding the following line to
+  `$HOME/.agda/defaults`
+  ```
+  standard-library
+  ```
 
 Find the full story about installing Agda libraries at
 [readthedocs](http://agda.readthedocs.io/en/latest/tools/package-system.html).
