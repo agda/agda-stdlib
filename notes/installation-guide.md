@@ -51,5 +51,4 @@ Now, the standard library is ready to be used either:
   standard-library
   ```
 
-Find the full story about installing Agda libraries at
-[readthedocs](http://agda.readthedocs.io/en/latest/tools/package-system.html).
+Find the [full story at readthedocs](http://agda.readthedocs.io/en/latest/tools/package-system.html) about installing Agda libraries.
