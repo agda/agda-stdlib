@@ -21,6 +21,12 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
+* `Data.Empty.Polymorphic` and `Data.Unit.Polymorphic` were rewritten
+  to explicitly use `Lift` rather that defining new types. This means
+  that these are now compatible with `⊥` and `⊤` from the rest of the
+  library. This allowed them to be used in the rest of library where
+  explicit `Lift` was used.
+
 Deprecated modules
 ------------------
 
@@ -235,4 +241,8 @@ Other minor additions
   negative    : p < 0ℚᵘ → Negative p
   nonPositive : p ≤ 0ℚᵘ → NonPositive p
   nonNegative : p ≥ 0ℚᵘ → NonNegative p
+  ```
+  * New module `Relation.Nullary.Indexed` with a `Level`-polymorphic negation
+  ```agda
+  ¬ : (b : Level) → Set ℓ → Set (ℓ ⊔ b)
   ```
