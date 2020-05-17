@@ -746,18 +746,18 @@ module Bin+CSemigroup = CommSemigProp +-commutativeSemigroup
 -- Properties of _+_ and _≤_
 
 +-mono-≤ : _+_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
-+-mono-≤ {x} {x'} {y} {y'} x≤x' y≤y' =  begin
++-mono-≤ {x} {x′} {y} {y′} x≤x′ y≤y′ =  begin
   x + y                 ≡⟨ sym $ cong₂ _+_ (fromℕ-toℕ x) (fromℕ-toℕ y) ⟩
   fromℕ m + fromℕ n     ≡⟨ sym (fromℕ-homo-+ m n) ⟩
-  fromℕ (m ℕ.+ n)       ≤⟨ fromℕ-mono-≤ (ℕₚ.+-mono-≤ m≤m' n≤n') ⟩
-  fromℕ (m' ℕ.+ n')     ≡⟨ fromℕ-homo-+ m' n' ⟩
-  fromℕ m' + fromℕ n'   ≡⟨ cong₂ _+_ (fromℕ-toℕ x') (fromℕ-toℕ y') ⟩
-  x' + y'               ∎
+  fromℕ (m ℕ.+ n)       ≤⟨ fromℕ-mono-≤ (ℕₚ.+-mono-≤ m≤m′ n≤n′) ⟩
+  fromℕ (m′ ℕ.+ n′)     ≡⟨ fromℕ-homo-+ m′ n′ ⟩
+  fromℕ m′ + fromℕ n′   ≡⟨ cong₂ _+_ (fromℕ-toℕ x′) (fromℕ-toℕ y′) ⟩
+  x′ + y′               ∎
   where
   open ≤-Reasoning
-  m    = toℕ x;             m'   = toℕ x'
-  n    = toℕ y;             n'   = toℕ y'
-  m≤m' = toℕ-mono-≤ x≤x';   n≤n' = toℕ-mono-≤ y≤y'
+  m    = toℕ x;             m′   = toℕ x′
+  n    = toℕ y;             n′   = toℕ y′
+  m≤m′ = toℕ-mono-≤ x≤x′;   n≤n′ = toℕ-mono-≤ y≤y′
 
 +-monoˡ-≤ : ∀ x → (_+ x) Preserves _≤_ ⟶ _≤_
 +-monoˡ-≤ x y≤z =  +-mono-≤ y≤z (≤-refl {x})
@@ -766,23 +766,23 @@ module Bin+CSemigroup = CommSemigProp +-commutativeSemigroup
 +-monoʳ-≤ x y≤z =  +-mono-≤ (≤-refl {x}) y≤z
 
 +-mono-<-≤ : _+_ Preserves₂ _<_ ⟶ _≤_ ⟶ _<_
-+-mono-<-≤ {x} {x'} {y} {y'} x<x' y≤y' =  begin-strict
++-mono-<-≤ {x} {x′} {y} {y′} x<x′ y≤y′ =  begin-strict
   x + y                  ≡⟨ sym $ cong₂ _+_ (fromℕ-toℕ x) (fromℕ-toℕ y) ⟩
   fromℕ m + fromℕ n      ≡⟨ sym (fromℕ-homo-+ m n) ⟩
-  fromℕ (m ℕ.+ n)        <⟨ fromℕ-mono-< (ℕₚ.+-mono-<-≤ m<m' n≤n') ⟩
-  fromℕ (m' ℕ.+ n')      ≡⟨ fromℕ-homo-+ m' n' ⟩
-  fromℕ m' + fromℕ n'    ≡⟨ cong₂ _+_ (fromℕ-toℕ x') (fromℕ-toℕ y') ⟩
-  x' + y'                ∎
+  fromℕ (m ℕ.+ n)        <⟨ fromℕ-mono-< (ℕₚ.+-mono-<-≤ m<m′ n≤n′) ⟩
+  fromℕ (m′ ℕ.+ n′)      ≡⟨ fromℕ-homo-+ m′ n′ ⟩
+  fromℕ m′ + fromℕ n′    ≡⟨ cong₂ _+_ (fromℕ-toℕ x′) (fromℕ-toℕ y′) ⟩
+  x′ + y′                ∎
   where
   open ≤-Reasoning
   m    = toℕ x;             n    = toℕ y
-  m'   = toℕ x';            n'   = toℕ y'
-  m<m' = toℕ-mono-< x<x';   n≤n' = toℕ-mono-≤ y≤y'
+  m′   = toℕ x′;            n′   = toℕ y′
+  m<m′ = toℕ-mono-< x<x′;   n≤n′ = toℕ-mono-≤ y≤y′
 
 +-mono-≤-< : _+_ Preserves₂ _≤_ ⟶ _<_ ⟶ _<_
-+-mono-≤-< {x} {x'} {y} {y'} x≤x' y<y' =  subst₂ _<_ (+-comm y x) (+-comm y' x') y+x<y'+x'
++-mono-≤-< {x} {x′} {y} {y′} x≤x′ y<y′ =  subst₂ _<_ (+-comm y x) (+-comm y′ x′) y+x<y′+x′
   where
-  y+x<y'+x' =  +-mono-<-≤ y<y' x≤x'
+  y+x<y′+x′ =  +-mono-<-≤ y<y′ x≤x′
 
 +-monoˡ-< : ∀ x → (_+ x) Preserves _<_ ⟶ _<_
 +-monoˡ-< x y<z =  +-mono-<-≤ y<z (≤-refl {x})
@@ -925,18 +925,18 @@ toℕ-homo-* x y =  aux x y (size x ℕ.+ size y) ℕₚ.≤-refl
     ℕ.suc (2 ℕ.* (toℕ (x + y * 1+2x)))      ≡⟨ cong (ℕ.suc ∘ (2 ℕ.*_)) (toℕ-homo-+ x (y * 1+2x)) ⟩
     ℕ.suc (2 ℕ.* (m ℕ.+ (toℕ (y * 1+2x))))  ≡⟨ cong (ℕ.suc ∘ (2 ℕ.*_) ∘ (m ℕ.+_))
                                                  (aux y 1+2x cnt |y|+1+|x|≤cnt) ⟩
-    ℕ.suc (2 ℕ.* (m ℕ.+ (n ℕ.* [1+2x]')))   ≡⟨ cong ℕ.suc $ ℕₚ.*-distribˡ-+ 2 m (n ℕ.* [1+2x]') ⟩
-    ℕ.suc (2m ℕ.+ (2 ℕ.* (n ℕ.* [1+2x]')))  ≡⟨ cong (ℕ.suc ∘ (2m ℕ.+_)) (sym (ℕₚ.*-assoc 2 n _)) ⟩
-    (ℕ.suc 2m) ℕ.+ 2n ℕ.* [1+2x]'           ≡⟨⟩
-    [1+2x]' ℕ.+ 2n ℕ.* [1+2x]'              ≡⟨ cong (ℕ._+ (2n ℕ.* [1+2x]')) $
-                                                    sym (ℕₚ.*-identityˡ [1+2x]') ⟩
-    1 ℕ.* [1+2x]' ℕ.+ 2n ℕ.* [1+2x]'        ≡⟨ sym (ℕₚ.*-distribʳ-+ [1+2x]' 1 2n) ⟩
-    (ℕ.suc 2n) ℕ.* [1+2x]'                  ≡⟨ ℕₚ.*-comm (ℕ.suc 2n) [1+2x]' ⟩
+    ℕ.suc (2 ℕ.* (m ℕ.+ (n ℕ.* [1+2x]′)))   ≡⟨ cong ℕ.suc $ ℕₚ.*-distribˡ-+ 2 m (n ℕ.* [1+2x]′) ⟩
+    ℕ.suc (2m ℕ.+ (2 ℕ.* (n ℕ.* [1+2x]′)))  ≡⟨ cong (ℕ.suc ∘ (2m ℕ.+_)) (sym (ℕₚ.*-assoc 2 n _)) ⟩
+    (ℕ.suc 2m) ℕ.+ 2n ℕ.* [1+2x]′           ≡⟨⟩
+    [1+2x]′ ℕ.+ 2n ℕ.* [1+2x]′              ≡⟨ cong (ℕ._+ (2n ℕ.* [1+2x]′)) $
+                                                    sym (ℕₚ.*-identityˡ [1+2x]′) ⟩
+    1 ℕ.* [1+2x]′ ℕ.+ 2n ℕ.* [1+2x]′        ≡⟨ sym (ℕₚ.*-distribʳ-+ [1+2x]′ 1 2n) ⟩
+    (ℕ.suc 2n) ℕ.* [1+2x]′                  ≡⟨ ℕₚ.*-comm (ℕ.suc 2n) [1+2x]′ ⟩
     toℕ 1+[2 x ] ℕ.* toℕ 1+[2 y ]           ∎
     where
     open ≡-Reasoning
     m    = toℕ x;      n       = toℕ y;     2m = 2 ℕ.* m;    2n = 2 ℕ.* n
-    1+2x = 1+[2 x ];   [1+2x]' = toℕ 1+2x
+    1+2x = 1+[2 x ];   [1+2x]′ = toℕ 1+2x
 
     eq : size x ℕ.+ (ℕ.suc (size y)) ≡ size y ℕ.+ (ℕ.suc (size x))
     eq = ℕ-+-semigroupProperties.x∙yz≈z∙yx (size x) 1 _
@@ -1106,10 +1106,10 @@ private
   where open ℕₚ.≤-Reasoning
 
 *-monoʳ-≤ : ∀ x → (x *_) Preserves _≤_ ⟶ _≤_
-*-monoʳ-≤ x y≤y' = *-mono-≤ (≤-refl {x}) y≤y'
+*-monoʳ-≤ x y≤y′ = *-mono-≤ (≤-refl {x}) y≤y′
 
 *-monoˡ-≤ : ∀ x → (_* x) Preserves _≤_ ⟶ _≤_
-*-monoˡ-≤ x y≤y' = *-mono-≤ y≤y' (≤-refl {x})
+*-monoˡ-≤ x y≤y′ = *-mono-≤ y≤y′ (≤-refl {x})
 
 *-mono-< : _*_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
 *-mono-< {x} {u} {y} {v} x<u y<v = toℕ-cancel-< (begin-strict

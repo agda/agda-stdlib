@@ -68,7 +68,7 @@ module _ n {ls} {as : Sets n ls} {R : Set r} (f : as ⇉ R) where
 
 -- Congruence at a specific location
 
-module _ m n {ls ls'} {as : Sets m ls} {bs : Sets n ls'}
+module _ m n {ls ls′} {as : Sets m ls} {bs : Sets n ls′}
          (f : as ⇉ (A → bs ⇉ B)) where
 
   private

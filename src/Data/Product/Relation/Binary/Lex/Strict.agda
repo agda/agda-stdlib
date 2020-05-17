@@ -144,16 +144,16 @@ module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂}
     open IsEquivalence eq₁
 
     respʳ : _<ₗₑₓ_ Respectsʳ _≋_
-    respʳ y≈y' (inj₁ x₁<y₁) = inj₁ (proj₁ resp₁ (proj₁ y≈y') x₁<y₁)
-    respʳ y≈y' (inj₂ x≈<y)  =
-      inj₂ ( trans (proj₁ x≈<y) (proj₁ y≈y')
-           , proj₁ resp₂ (proj₂ y≈y') (proj₂ x≈<y) )
+    respʳ y≈y′ (inj₁ x₁<y₁) = inj₁ (proj₁ resp₁ (proj₁ y≈y′) x₁<y₁)
+    respʳ y≈y′ (inj₂ x≈<y)  =
+      inj₂ ( trans (proj₁ x≈<y) (proj₁ y≈y′)
+           , proj₁ resp₂ (proj₂ y≈y′) (proj₂ x≈<y) )
 
     respˡ : _<ₗₑₓ_ Respectsˡ _≋_
-    respˡ x≈x' (inj₁ x₁<y₁) = inj₁ (proj₂ resp₁ (proj₁ x≈x') x₁<y₁)
-    respˡ x≈x' (inj₂ x≈<y)  =
-      inj₂ ( trans (sym $ proj₁ x≈x') (proj₁ x≈<y)
-           , proj₂ resp₂ (proj₂ x≈x') (proj₂ x≈<y) )
+    respˡ x≈x′ (inj₁ x₁<y₁) = inj₁ (proj₂ resp₁ (proj₁ x≈x′) x₁<y₁)
+    respˡ x≈x′ (inj₂ x≈<y)  =
+      inj₂ ( trans (sym $ proj₁ x≈x′) (proj₁ x≈<y)
+           , proj₂ resp₂ (proj₂ x≈x′) (proj₂ x≈<y) )
 
   ×-compare : Symmetric _≈₁_ →
               Trichotomous _≈₁_ _<₁_ → Trichotomous _≈₂_ _<₂_ →

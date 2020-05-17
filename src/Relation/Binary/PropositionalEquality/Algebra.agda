@@ -10,8 +10,8 @@ module Relation.Binary.PropositionalEquality.Algebra where
 
 open import Algebra
 open import Level
-open import Relation.Binary.PropositionalEquality.Bundles
 open import Relation.Binary.PropositionalEquality.Core
+open import Relation.Binary.PropositionalEquality.Properties
 
 private
   variable

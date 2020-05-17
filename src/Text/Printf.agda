@@ -48,9 +48,9 @@ private
   Printf (inj₁ err) = Error err
   Printf (inj₂ fmt) = Arrows _ ⟦ fmt ⟧ String
 
-  printf' : ∀ pr → Printf pr
-  printf' (inj₁ err) = _
-  printf' (inj₂ fmt) = curry⊤ₙ _ (concat ∘′ assemble fmt)
+  printf′ : ∀ pr → Printf pr
+  printf′ (inj₁ err) = _
+  printf′ (inj₂ fmt) = curry⊤ₙ _ (concat ∘′ assemble fmt)
 
 printf : (input : String) → Printf (lexer input)
-printf input = printf' (lexer input)
+printf input = printf′ (lexer input)

@@ -57,7 +57,7 @@ div2 : ℕ → ℕ
 div2 zero    = zero
 div2 (suc m) = case m of λ where
   zero     → zero
-  (suc m') → suc (div2 m')
+  (suc m′) → suc (div2 m′)
 
 
 -- Note that some natural uses of case are rejected by the termination

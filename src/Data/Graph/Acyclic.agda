@@ -279,11 +279,11 @@ reverse : ∀ {ℓ e} {N : Set ℓ} {E : Set e} →
           ∀ {n} → Graph N E n → Graph N E n
 reverse {N = N} {E} g =
   foldl (Graph N E)
-        (λ i g' c →
+        (λ i g′ c →
            context (label c)
                    (List.map (Prod.swap ∘ Prod.map PC.reverse id) $
                              preds g i)
-           & g')
+           & g′)
         ∅ g
 
 private

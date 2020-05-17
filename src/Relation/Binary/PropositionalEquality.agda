@@ -35,7 +35,6 @@ private
 
 open import Relation.Binary.PropositionalEquality.Core public
 open import Relation.Binary.PropositionalEquality.Properties public
-open import Relation.Binary.PropositionalEquality.Bundles public
 open import Relation.Binary.PropositionalEquality.Algebra public
 
 ------------------------------------------------------------------------
