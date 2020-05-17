@@ -78,6 +78,12 @@ Other major additions
   Data.Nat.Binary.Subtraction
   ```
 
+* Modules replacing `Function.Related.TypeIsomorphisms` using the new
+  `Inverse` definitions.
+  ```
+  Data.Sum.Algebra
+  ```
+
 Other major changes
 -------------------
 
@@ -157,6 +163,12 @@ Other minor additions
   ```agda
   map⁻    : Linked R (map f xs) → Linked (λ x y → R (f x) (f y)) xs
   filter⁺ : Transitive R → Linked R xs → Linked R (filter P? xs)
+  ```
+
+* Add new functions to `Data.Sum.Base`:
+  ```agda
+  assocʳ : (A ⊎ B) ⊎ C → A ⊎ B ⊎ C
+  assocˡ : A ⊎ B ⊎ C → (A ⊎ B) ⊎ C
   ```
 
 * Added new proofs to `Data.Sum.Properties`:
