@@ -77,6 +77,12 @@ Other major additions
   Data.Nat.Binary.DivMod
   ```
 
+* Items for an arbitrary Semiring
+  ```
+  Algebra.Properties.Semiring
+  ```
+
+
 Other minor additions
 ---------------------
 
