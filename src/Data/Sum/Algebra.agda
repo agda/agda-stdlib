@@ -23,7 +23,14 @@ open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 
 ------------------------------------------------------------------------
 
-module _ {a b : Level} {A : Set a} {B : Set b} where
+private
+  variable
+    a b : Level
+    A : Set a
+    B : Set b
+
+-- The module is needed because we need to pass `A` and `B` to `FuncDef`
+module _ {A : Set a} {B : Set b} where
   open FuncDef {A = A} {B} _≡_ _≡_
 
   -- mk↔ is a bit of a pain to use because here f and f⁻¹ need to always
@@ -33,10 +40,10 @@ module _ {a b : Level} {A : Set a} {B : Set b} where
 
 private
   -- convenient abbreviations
-  refl₁ : {a b : Level} {A : Set a} {B : Set b} {f : A → B} (x : A) → f x ≡ f x
-  refl₁ _ = refl
+  irefl : {A : Set a} {B : Set b} {f : A → B} (x : A) → f x ≡ f x
+  irefl _ = refl
 
-  ♯ : {a b : Level} {B : Lift a ⊥ → Set b} → (w : Lift a ⊥) → B w
+  ♯ : {B : Lift a ⊥ → Set b} → (w : Lift a ⊥) → B w
   ♯ ()
 
 ------------------------------------------------------------------------
@@ -45,20 +52,20 @@ private
 -- ⊎ is associative
 
 ⊎-assoc : ∀ ℓ → Associative {ℓ = ℓ} _↔_ _⊎_
-⊎-assoc ℓ _ _ _ = inverse assocʳ assocˡ [ refl₁ , [ refl₁ , refl₁ ] ] [ [ refl₁ , refl₁ ] , refl₁ ]
+⊎-assoc ℓ _ _ _ = inverse assocʳ assocˡ [ irefl , [ irefl , irefl ] ] [ [ irefl , irefl ] , irefl ]
 
 -- ⊎ is commutative.
 -- We don't use Commutative because it isn't polymorphic enough.
 
-⊎-comm : {a b : Level} (A : Set a) (B : Set b) → (A ⊎ B) ↔ (B ⊎ A)
+⊎-comm : (A : Set a) (B : Set b) → (A ⊎ B) ↔ (B ⊎ A)
 ⊎-comm _ _ = inverse swap swap swap-involutive swap-involutive
 
 -- ⊥ is both left and right identity for ⊎
 ⊎-identityˡ : ∀ ℓ → LeftIdentity _↔_ (Lift ℓ ⊥) _⊎_
-⊎-identityˡ _ _ = inverse [ ♯ , id ]′ inj₂ refl₁ [ ♯ , refl₁ ]
+⊎-identityˡ _ _ = inverse [ ♯ , id ]′ inj₂ irefl [ ♯ , irefl ]
 
 ⊎-identityʳ : ∀ ℓ → RightIdentity _↔_ (Lift ℓ ⊥) _⊎_
-⊎-identityʳ _ _ = inverse [ id , ♯ ] inj₁ refl₁ [ refl₁ , ♯ ]
+⊎-identityʳ _ _ = inverse [ id , ♯ ] inj₁ irefl [ irefl , ♯ ]
 
 ⊎-identity : ∀ ℓ → Identity _↔_ (Lift ℓ ⊥) _⊎_
 ⊎-identity ℓ = ⊎-identityˡ ℓ , ⊎-identityʳ ℓ
