@@ -35,7 +35,7 @@ open import Relation.Nullary using (Dec; does; _because_; yes; no; ¬_)
 open import Relation.Nullary.Negation using (¬?)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Unary as U using (Pred)
-open import Relation.Binary
+open import Relation.Binary hiding (_⇔_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
 ------------------------------------------------------------------------

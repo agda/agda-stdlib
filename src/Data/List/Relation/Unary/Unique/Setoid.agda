@@ -23,7 +23,6 @@ open import Relation.Nullary using (¬_)
 -- Definition
 
 private
-
   Distinct : Rel A ℓ
   Distinct x y = ¬ (x ≈ y)
 

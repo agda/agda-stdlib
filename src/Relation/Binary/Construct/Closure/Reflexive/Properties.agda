@@ -13,7 +13,7 @@ open import Data.Sum.Base as Sum
 open import Function.Equivalence using (_⇔_; equivalence)
 open import Function using (id)
 open import Level
-open import Relation.Binary
+open import Relation.Binary hiding (_⇔_)
 open import Relation.Binary.Construct.Closure.Reflexive
 open import Relation.Binary.PropositionalEquality as PropEq using (_≡_; refl)
 open import Relation.Nullary
@@ -49,7 +49,7 @@ module _ {_~_ : Rel A ℓ} where
   trans ~-trans refl    [ x∼y ]  = [ x∼y ]
   trans ~-trans refl    refl     = refl
 
-  antisym : ∀ {ℓ'} (_≈_ : Rel A ℓ') → Reflexive _≈_ →
+  antisym : ∀ {ℓ′} (_≈_ : Rel A ℓ′) → Reflexive _≈_ →
             Asymmetric _~_ → Antisymmetric _≈_ (Refl _~_)
   antisym _≈_ ref asym [ x∼y ] [ y∼x ] = contradiction x∼y (asym y∼x)
   antisym _≈_ ref asym [ x∼y ] refl    = ref
