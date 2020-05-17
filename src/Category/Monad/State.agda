@@ -113,7 +113,7 @@ module RawMonadState {S : Set f} {M : Set f → Set f}
   open RawIMonadState Mon public
 
 StateT : Set f → (Set f → Set f) → Set f → Set f
-StateT {f} S M = IStateT {I = ⊤} (λ _ → S) M _ _
+StateT S M = IStateT {I = ⊤} (λ _ → S) M _ _
 
 StateTMonad : ∀ (S : Set f) {M} → RawMonad M → RawMonad (StateT S M)
 StateTMonad S = StateTIMonad (λ _ → S)

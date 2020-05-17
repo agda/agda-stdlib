@@ -30,7 +30,8 @@ open import Function.Related
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_; _≗_)
 open import Relation.Nullary.Reflects using (invert)
-open import Relation.Nullary using (Dec; ¬_; ¬ᵢ; _because_; ofⁿ)
+open import Relation.Nullary using (Dec; ¬_; _because_; ofⁿ)
+import Relation.Nullary.Indexed as I
 open import Relation.Nullary.Decidable using (True)
 
 ------------------------------------------------------------------------
@@ -298,13 +299,13 @@ A⇔B →-cong-⇔ C⇔D = Eq.equivalence
 -- ¬_ preserves the symmetric relations
 
 ¬-cong-⇔ : ∀ {a b c} {A : Set a} {B : Set b} →
-           A ⇔ B → (¬ᵢ c A) ⇔ (¬ᵢ _ B)
+           A ⇔ B → (I.¬ c A) ⇔ (I.¬ _ B)
 ¬-cong-⇔ A⇔B =  A⇔B →-cong-⇔ (⊥ ∎)
   where open EquationalReasoning
 
 ¬-cong : ∀ {a b c} → Extensionality a c → Extensionality b c →
          ∀ {k} {A : Set a} {B : Set b} →
-         A ∼[ ⌊ k ⌋ ] B → (¬ᵢ c A) ∼[ ⌊ k ⌋ ] (¬ᵢ c B)
+         A ∼[ ⌊ k ⌋ ] B → (I.¬ c A) ∼[ ⌊ k ⌋ ] (I.¬ c B)
 ¬-cong extA extB A≈B =  →-cong extA extB A≈B (⊥ ∎)
   where open EquationalReasoning
 
@@ -334,7 +335,7 @@ True↔ : ∀ {p} {P : Set p}
         (dec : Dec P) → ((p₁ p₂ : P) → p₁ ≡ p₂) → True dec ↔ P
 True↔ ( true because  [p]) irr =
   inverse (λ _ → invert [p]) (λ _ → _) (λ _ → P.refl) (irr _)
-True↔ {a} (false because ofⁿ ¬p) _ =
+True↔ (false because ofⁿ ¬p) _ =
   inverse (λ()) (invert (ofⁿ ¬p)) (λ ()) (⊥-elim ∘ ¬p)
 
 ------------------------------------------------------------------------
