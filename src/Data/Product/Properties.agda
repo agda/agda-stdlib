@@ -9,7 +9,7 @@
 module Data.Product.Properties where
 
 open import Data.Product
-open import Function using (_∘_)
+open import Function using (_∘_; id)
 open import Relation.Binary using (Decidable)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary.Product
@@ -40,3 +40,9 @@ module _ {a b} {A : Set a} {B : Set b} where
           Decidable {A = A × B} _≡_
   ≡-dec dec₁ dec₂ (a , b) (c , d) =
     Dec.map′ (uncurry (cong₂ _,_)) ,-injective (dec₁ a c ×-dec dec₂ b d)
+
+-- The following properties are definitionally true (because of η)
+-- but for symmetry with ⊎ it is convenient to define and name them.
+
+  swap-involutive : swap {A = A} {B = B} ∘ swap ≗ id
+  swap-involutive _ = refl
