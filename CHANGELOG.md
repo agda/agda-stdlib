@@ -82,6 +82,7 @@ Other major additions
   `Inverse` definitions.
   ```
   Data.Sum.Algebra
+  Data.Product.Algebra
   ```
 
 Other major changes
@@ -163,6 +164,26 @@ Other minor additions
   ```agda
   map⁻    : Linked R (map f xs) → Linked (λ x y → R (f x) (f y)) xs
   filter⁺ : Transitive R → Linked R xs → Linked R (filter P? xs)
+  ```
+
+* Add new functions to `Data.Product`:
+  ```agda
+  assocʳ : {B : A → Set b} {C : (a : A) → B a → Set c} →
+            Σ (Σ A B) (uncurry C) → Σ A (λ a → Σ (B a) (C a))
+  assocˡ : {B : A → Set b} {C : (a : A) → B a → Set c} →
+            Σ A (λ a → Σ (B a) (C a)) → Σ (Σ A B) (uncurry C)
+  ```
+  Also in an alternate form where the C parameter is uncurried.
+  ```agda
+  assocʳ-alt : {B : A → Set b} {C : Σ A B → Set c} →
+            Σ (Σ A B) C → Σ A (λ a → Σ (B a) (curry C a))
+  assocˡ-alt : {B : A → Set b} {C : Σ A B → Set c} →
+           Σ A (λ a → Σ (B a) (curry C a)) → Σ (Σ A B) C
+  ```
+  And the non-dependent version.
+  ```agda
+  assocʳ′ : (A × B) × C → A × (B × C)
+  assocˡ′ : A × (B × C) → (A × B) × C
   ```
 
 * Add new functions to `Data.Sum.Base`:
