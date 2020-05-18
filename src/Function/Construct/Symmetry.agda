@@ -101,8 +101,6 @@ module _ {R : Setoid a ℓ₁} {S : Setoid b ℓ₂} where
 ------------------------------------------------------------------------
 -- Propositional bundles
 
-infix 8 sym-⇔ sym-↩ sym-↪ sym-↔
-
 sym-⇔ : A ⇔ B → B ⇔ A
 sym-⇔ = equivalence
 
