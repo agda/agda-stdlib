@@ -93,6 +93,16 @@ Other major additions
   Data.Nat.Binary.Subtraction
   ```
 
+* Symmetry of various functional properties
+  ```agda
+  Function.Construct.Symmetry
+  ```
+
+* `IsEquivalence` bundles for `Inverse`, `Equivalence`, `↔` and `⇔`
+  ```agda
+  Function.Construct.IsEquivalence
+  ```
+
 Other major changes
 -------------------
 
