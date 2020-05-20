@@ -105,7 +105,7 @@ StateTIMonadState S Mon = record
 ------------------------------------------------------------------------
 -- Ordinary state monads
 
-RawMonadState : Set f → (Set f → Set f) → Set _
+RawMonadState : Set f → (Set f → Set f) → Set (suc f)
 RawMonadState S M = RawIMonadState {I = ⊤} (λ _ → S) (λ _ _ → M)
 
 module RawMonadState {S : Set f} {M : Set f → Set f}

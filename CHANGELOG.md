@@ -21,6 +21,12 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
+* `Data.Empty.Polymorphic` and `Data.Unit.Polymorphic` were rewritten
+  to explicitly use `Lift` rather that defining new types. This means
+  that these are now compatible with `⊥` and `⊤` from the rest of the
+  library. This allowed them to be used in the rest of library where
+  explicit `Lift` was used.
+
 Deprecated modules
 ------------------
 
@@ -44,8 +50,8 @@ Deprecated names
   * `Relation.Binary.Construct.StrictToNonStrict.decidable'` ↦ `Relation.Binary.Construct.StrictToNonStrict.decidable′`
 
 
-Other major additions
----------------------
+New modules
+-----------
 
 * Instance modules:
   ```agda
@@ -93,6 +99,11 @@ Other major additions
   Data.Nat.Binary.Subtraction
   ```
 
+* Indexed nullary relations/sets:
+  ```
+  Relation.Nullary.Indexed
+  ```
+ 
 Other major changes
 -------------------
 
@@ -300,7 +311,6 @@ Other minor additions
   nonPositive : p ≤ 0ℚᵘ → NonPositive p
   nonNegative : p ≥ 0ℚᵘ → NonNegative p
   ```
-
 * Added new operator to `Relation.Binary`:
   ```agda
   _⇔_ : REL A B ℓ₁ → REL A B ℓ₂ → Set _
