@@ -305,3 +305,20 @@ Other minor additions
   ```agda
   _⇔_ : REL A B ℓ₁ → REL A B ℓ₂ → Set _
   ```
+
+Refactorings
+------------
+
+These changes should be invisble to current users, but can be useful
+to authors of large libraries.
+
+* `Relation.Binary.PropositionalEquality`
+  was getting large and depended on a lot of other parts of the library,
+  even though its basic functionality did
+  not. `Relation.Binary.PropositionalEquality.Core` already
+  existed. Added are
+  ```agda
+  Relation.Binary.PropositionalEquality.Properties
+  Relation.Binary.PropositionalEquality.Algebra
+  ```
+  which factor out some of the dependencies.
