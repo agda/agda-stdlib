@@ -28,10 +28,10 @@
 <a id="703" class="Symbol">_</a> <a id="705" href="Data.Unit.Properties.html#675" class="Function Operator">≟</a> <a id="707" class="Symbol">_</a> <a id="709" class="Symbol">=</a> <a id="711" href="Relation.Nullary.html#1645" class="InductiveConstructor">yes</a> <a id="715" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
 
 <a id="≡-setoid"></a><a id="721" href="Data.Unit.Properties.html#721" class="Function">≡-setoid</a> <a id="730" class="Symbol">:</a> <a id="732" href="Relation.Binary.Bundles.html#995" class="Record">Setoid</a> <a id="739" href="Level.html#512" class="Function">0ℓ</a> <a id="742" href="Level.html#512" class="Function">0ℓ</a>
-<a id="745" href="Data.Unit.Properties.html#721" class="Function">≡-setoid</a> <a id="754" class="Symbol">=</a> <a id="756" href="Relation.Binary.PropositionalEquality.html#2283" class="Function">setoid</a> <a id="763" href="Agda.Builtin.Unit.html#164" class="Record">⊤</a>
+<a id="745" href="Data.Unit.Properties.html#721" class="Function">≡-setoid</a> <a id="754" class="Symbol">=</a> <a id="756" href="Relation.Binary.PropositionalEquality.Properties.html#3972" class="Function">setoid</a> <a id="763" href="Agda.Builtin.Unit.html#164" class="Record">⊤</a>
 
 <a id="≡-decSetoid"></a><a id="766" href="Data.Unit.Properties.html#766" class="Function">≡-decSetoid</a> <a id="778" class="Symbol">:</a> <a id="780" href="Relation.Binary.Bundles.html#1377" class="Record">DecSetoid</a> <a id="790" href="Level.html#512" class="Function">0ℓ</a> <a id="793" href="Level.html#512" class="Function">0ℓ</a>
-<a id="796" href="Data.Unit.Properties.html#766" class="Function">≡-decSetoid</a> <a id="808" class="Symbol">=</a> <a id="810" href="Relation.Binary.PropositionalEquality.html#2414" class="Function">decSetoid</a> <a id="820" href="Data.Unit.Properties.html#675" class="Function Operator">_≟_</a>
+<a id="796" href="Data.Unit.Properties.html#766" class="Function">≡-decSetoid</a> <a id="808" class="Symbol">=</a> <a id="810" href="Relation.Binary.PropositionalEquality.Properties.html#4103" class="Function">decSetoid</a> <a id="820" href="Data.Unit.Properties.html#675" class="Function Operator">_≟_</a>
 
 <a id="825" class="Comment">------------------------------------------------------------------------</a>
 <a id="898" class="Comment">-- Relational properties</a>
@@ -47,9 +47,9 @@
 
 <a id="≡-isPreorder"></a><a id="1128" href="Data.Unit.Properties.html#1128" class="Function">≡-isPreorder</a> <a id="1141" class="Symbol">:</a> <a id="1143" href="Relation.Binary.Structures.html#2163" class="Record">IsPreorder</a> <a id="1154" class="Symbol">{</a><a id="1155" class="Argument">A</a> <a id="1157" class="Symbol">=</a> <a id="1159" href="Agda.Builtin.Unit.html#164" class="Record">⊤</a><a id="1160" class="Symbol">}</a> <a id="1162" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a> <a id="1166" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a>
 <a id="1170" href="Data.Unit.Properties.html#1128" class="Function">≡-isPreorder</a> <a id="1183" class="Symbol">=</a> <a id="1185" class="Keyword">record</a>
-  <a id="1194" class="Symbol">{</a> <a id="1196" href="Relation.Binary.Structures.html#2228" class="Field">isEquivalence</a> <a id="1210" class="Symbol">=</a> <a id="1212" href="Relation.Binary.PropositionalEquality.html#1738" class="Function">isEquivalence</a>
+  <a id="1194" class="Symbol">{</a> <a id="1196" href="Relation.Binary.Structures.html#2228" class="Field">isEquivalence</a> <a id="1210" class="Symbol">=</a> <a id="1212" href="Relation.Binary.PropositionalEquality.Properties.html#3427" class="Function">isEquivalence</a>
   <a id="1228" class="Symbol">;</a> <a id="1230" href="Relation.Binary.Structures.html#2331" class="Field">reflexive</a>     <a id="1244" class="Symbol">=</a> <a id="1246" class="Symbol">λ</a> <a id="1248" href="Data.Unit.Properties.html#1248" class="Bound">x</a> <a id="1250" class="Symbol">→</a> <a id="1252" href="Data.Unit.Properties.html#1248" class="Bound">x</a>
-  <a id="1256" class="Symbol">;</a> <a id="1258" href="Relation.Binary.Structures.html#2361" class="Field">trans</a>         <a id="1272" class="Symbol">=</a> <a id="1274" href="Relation.Binary.PropositionalEquality.Core.html#1025" class="Function">trans</a>
+  <a id="1256" class="Symbol">;</a> <a id="1258" href="Relation.Binary.Structures.html#2361" class="Field">trans</a>         <a id="1272" class="Symbol">=</a> <a id="1274" href="Relation.Binary.PropositionalEquality.Core.html#1015" class="Function">trans</a>
   <a id="1282" class="Symbol">}</a>
 
 <a id="≡-isPartialOrder"></a><a id="1285" href="Data.Unit.Properties.html#1285" class="Function">≡-isPartialOrder</a> <a id="1302" class="Symbol">:</a> <a id="1304" href="Relation.Binary.Structures.html#2897" class="Record">IsPartialOrder</a> <a id="1319" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a> <a id="1323" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a>
@@ -125,7 +125,7 @@ Please use _≟_  instead.&quot;</a>
 <a id="3058" class="Symbol">#-}</a>
 <a id="≤-isPreorder"></a><a id="3062" href="Data.Unit.Properties.html#3062" class="Function">≤-isPreorder</a> <a id="3075" class="Symbol">:</a> <a id="3077" href="Relation.Binary.Structures.html#2163" class="Record">IsPreorder</a> <a id="3088" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a> <a id="3092" href="Data.Unit.Base.html#1023" class="Record Operator">_≤_</a>
 <a id="3096" href="Data.Unit.Properties.html#3062" class="Function">≤-isPreorder</a> <a id="3109" class="Symbol">=</a> <a id="3111" class="Keyword">record</a>
-  <a id="3120" class="Symbol">{</a> <a id="3122" href="Relation.Binary.Structures.html#2228" class="Field">isEquivalence</a> <a id="3136" class="Symbol">=</a> <a id="3138" href="Relation.Binary.PropositionalEquality.html#1738" class="Function">isEquivalence</a>
+  <a id="3120" class="Symbol">{</a> <a id="3122" href="Relation.Binary.Structures.html#2228" class="Field">isEquivalence</a> <a id="3136" class="Symbol">=</a> <a id="3138" href="Relation.Binary.PropositionalEquality.Properties.html#3427" class="Function">isEquivalence</a>
   <a id="3154" class="Symbol">;</a> <a id="3156" href="Relation.Binary.Structures.html#2331" class="Field">reflexive</a>     <a id="3170" class="Symbol">=</a> <a id="3172" href="Data.Unit.Properties.html#2259" class="Function">≤-reflexive</a>
   <a id="3186" class="Symbol">;</a> <a id="3188" href="Relation.Binary.Structures.html#2361" class="Field">trans</a>         <a id="3202" class="Symbol">=</a> <a id="3204" href="Data.Unit.Properties.html#2422" class="Function">≤-trans</a>
   <a id="3214" class="Symbol">}</a>
