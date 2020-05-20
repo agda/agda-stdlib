@@ -25,17 +25,17 @@ module _ {a b} {A : Set a} {B : A → Set b} where
   ,-injectiveˡ : ∀ {a c} {b : B a} {d : B c} → (a , b) ≡ (c , d) → a ≡ c
   ,-injectiveˡ refl = refl
 
-  ,-injective≡ʳ : ∀ {a b} {c : B a} {d : B b} → UIP A → (a , c) ≡ (b , d) → (q : a ≡ b) → subst B q c ≡ d
-  ,-injective≡ʳ {c = c} {.c} u refl q = cong (λ x → subst B x c) (u q refl)
+  ,-injectiveʳ-≡ : ∀ {a b} {c : B a} {d : B b} → UIP A → (a , c) ≡ (b , d) → (q : a ≡ b) → subst B q c ≡ d
+  ,-injectiveʳ-≡ {c = c} u refl q = cong (λ x → subst B x c) (u q refl)
 
-  ,-injectiveUIPʳ : ∀ {a} {b c : B a} → UIP A → (Σ A B ∋ (a , b)) ≡ (a , c) → b ≡ c
-  ,-injectiveUIPʳ u p = ,-injective≡ʳ u p refl
+  ,-injectiveʳ-UIP : ∀ {a} {b c : B a} → UIP A → (Σ A B ∋ (a , b)) ≡ (a , c) → b ≡ c
+  ,-injectiveʳ-UIP u p = ,-injectiveʳ-≡ u p refl
 
   ≡-dec : DecidableEquality A → (∀ {a} → DecidableEquality (B a)) →
           DecidableEquality (Σ A B)
   ≡-dec dec₁ dec₂ (a , x) (b , y) with dec₁ a b
   ... | no [a≢b] = no ([a≢b] ∘ ,-injectiveˡ)
-  ... | yes refl = Dec.map′ (cong (a ,_)) (,-injectiveUIPʳ (Decidable⇒UIP.≡-irrelevant dec₁)) (dec₂ x y)
+  ... | yes refl = Dec.map′ (cong (a ,_)) (,-injectiveʳ-UIP (Decidable⇒UIP.≡-irrelevant dec₁)) (dec₂ x y)
 
 ------------------------------------------------------------------------
 -- Equality (non-dependent)
