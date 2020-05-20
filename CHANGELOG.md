@@ -50,8 +50,8 @@ Deprecated names
   * `Relation.Binary.Construct.StrictToNonStrict.decidable'` ↦ `Relation.Binary.Construct.StrictToNonStrict.decidable′`
 
 
-Other major additions
----------------------
+New modules
+-----------
 
 * Instance modules:
   ```agda
@@ -99,6 +99,11 @@ Other major additions
   Data.Nat.Binary.Subtraction
   ```
 
+* Indexed nullary relations/sets:
+  ```
+  Relation.Nullary.Indexed
+  ```
+ 
 Other major changes
 -------------------
 
@@ -311,7 +316,19 @@ Other minor additions
   _⇔_ : REL A B ℓ₁ → REL A B ℓ₂ → Set _
   ```
 
-  * New module `Relation.Nullary.Indexed` with a `Level`-polymorphic negation
+Refactorings
+------------
+
+These changes should be invisble to current users, but can be useful
+to authors of large libraries.
+
+* `Relation.Binary.PropositionalEquality`
+  was getting large and depended on a lot of other parts of the library,
+  even though its basic functionality did
+  not. `Relation.Binary.PropositionalEquality.Core` already
+  existed. Added are
   ```agda
-  ¬ : (b : Level) → Set ℓ → Set (ℓ ⊔ b)
- ```
+  Relation.Binary.PropositionalEquality.Properties
+  Relation.Binary.PropositionalEquality.Algebra
+  ```
+  which factor out some of the dependencies.
