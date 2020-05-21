@@ -103,7 +103,7 @@ New modules
   ```
   Relation.Nullary.Indexed
   ```
- 
+
 Other major changes
 -------------------
 
