@@ -193,7 +193,7 @@ data SnocView {A : Set a} : List⁺ A → Set a where
 snocView : (xs : List⁺ A) → SnocView xs
 snocView (x ∷ xs)              with List.initLast xs
 snocView (x ∷ .[])             | []            = []       ∷ʳ′ x
-snocView (x ∷ .(xs List.∷ʳ y)) | xs List.∷ʳ' y = (x ∷ xs) ∷ʳ′ y
+snocView (x ∷ .(xs List.∷ʳ y)) | xs List.∷ʳ′ y = (x ∷ xs) ∷ʳ′ y
 
 -- The last element in the list.
 
@@ -326,3 +326,20 @@ private
     wordsBy (ℕ._≡ᵇ 1) (1 ∷ 2 ∷ 3 ∷ 1 ∷ 1 ∷ 2 ∷ 1 ∷ []) ≡
     (2 ∷⁺ [ 3 ]) ∷ [ 2 ] ∷ []
   wordsBy-≡1 = refl
+
+  ------------------------------------------------------------------------
+  -- DEPRECATED
+  ------------------------------------------------------------------------
+  -- Please use the new names as continuing support for the old names is
+  -- not guaranteed.
+
+  -- Version 1.4
+
+  infixl 5 _∷ʳ'_
+
+  _∷ʳ'_ : (xs : List A) (x : A) → SnocView (xs ∷ʳ x)
+  _∷ʳ'_ = SnocView._∷ʳ′_
+  {-# WARNING_ON_USAGE _∷ʳ'_
+  "Warning: _∷ʳ'_ (ending in an apostrophe) was deprecated in v1.4.
+  Please use _∷ʳ′_ (ending in a prime) instead."
+  #-}

@@ -311,7 +311,7 @@ record IsSemiringWithoutOne (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
     }
 
   open IsNearSemiring isNearSemiring public
-    hiding (+-isMonoid; zeroˡ)
+    hiding (+-isMonoid; zeroˡ; *-isSemigroup)
 
 
 record IsCommutativeSemiringWithoutOne

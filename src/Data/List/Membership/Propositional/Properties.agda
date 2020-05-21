@@ -48,7 +48,7 @@ private
 
   variable
     ℓ : Level
-    A B : Set ℓ
+    A B C : Set ℓ
 
 ------------------------------------------------------------------------
 -- Publicly re-export properties from Core
@@ -144,6 +144,33 @@ module _ {v : A} where
     Any (Any (v ≡_)) xss          ↔⟨ concat↔ ⟩
     v ∈ concat xss                ∎
     where open Related.EquationalReasoning
+
+------------------------------------------------------------------------
+-- cartesianProductWith
+
+module _ (f : A → B → C) where
+
+  ∈-cartesianProductWith⁺ : ∀ {xs ys a b} → a ∈ xs → b ∈ ys →
+                            f a b ∈ cartesianProductWith f xs ys
+  ∈-cartesianProductWith⁺ = Membershipₛ.∈-cartesianProductWith⁺
+    (P.setoid A) (P.setoid B) (P.setoid C) (P.cong₂ f)
+
+  ∈-cartesianProductWith⁻ : ∀ xs ys {v} → v ∈ cartesianProductWith f xs ys →
+                            ∃₂ λ a b → a ∈ xs × b ∈ ys × v ≡ f a b
+  ∈-cartesianProductWith⁻ = Membershipₛ.∈-cartesianProductWith⁻
+    (P.setoid A) (P.setoid B) (P.setoid C) f
+
+------------------------------------------------------------------------
+-- cartesianProduct
+
+∈-cartesianProduct⁺ : ∀ {x : A} {y : B} {xs ys} → x ∈ xs → y ∈ ys →
+                      (x , y) ∈ cartesianProduct xs ys
+∈-cartesianProduct⁺ = ∈-cartesianProductWith⁺ _,_
+
+∈-cartesianProduct⁻ : ∀ xs ys {xy@(x , y) : A × B} →
+                      xy ∈ cartesianProduct xs ys → x ∈ xs × y ∈ ys
+∈-cartesianProduct⁻ xs ys xy∈p[xs,ys] with ∈-cartesianProductWith⁻ _,_ xs ys xy∈p[xs,ys]
+... | (x , y , x∈xs , y∈ys , refl) = x∈xs , y∈ys
 
 ------------------------------------------------------------------------
 -- applyUpTo

@@ -14,10 +14,10 @@ module Function.Nary.NonDependent.Base where
 -- behind the design decisions.
 ------------------------------------------------------------------------
 
-open import Level using (Level; 0ℓ; _⊔_; Lift)
+open import Level using (Level; 0ℓ; _⊔_)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Product using (_×_; _,_)
-open import Data.Unit.Base
+open import Data.Unit.Polymorphic.Base
 open import Function using (_∘′_; _$′_; const; flip)
 
 private
@@ -63,7 +63,7 @@ Levels (suc n) = Level × Levels n
 -- by the `Levels n` input.
 
 Sets : ∀ n (ls : Levels n) → Set (Level.suc (⨆ n ls))
-Sets zero    _        = Lift _ ⊤
+Sets zero    _        = ⊤
 Sets (suc n) (l , ls) = Set l × Sets n ls
 
 -- Third, a function type whose domains are given by a "vector" of `n` Sets
@@ -135,4 +135,3 @@ holeₙ (suc n) f = holeₙ n ∘′ flip f
 constₙ : ∀ n {ls r} {as : Sets n ls} {b : Set r} → b → as ⇉ b
 constₙ zero    v = v
 constₙ (suc n) v = const (constₙ n v)
-

@@ -9,7 +9,8 @@
 module Data.String.Base where
 
 open import Level using (zero)
-open import Data.Bool using (true; false)
+open import Data.Bool.Base using (true; false)
+open import Data.Bool.Properties using (T?)
 open import Data.Nat.Base as ℕ using (ℕ; _∸_; ⌊_/2⌋; ⌈_/2⌉)
 import Data.Nat.Properties as ℕₚ
 open import Data.List.Base as List using (List; [_])
@@ -23,6 +24,7 @@ import Data.Char.Properties as Char using (_≟_)
 open import Function
 open import Relation.Binary using (Rel)
 open import Relation.Nullary using (does)
+open import Relation.Unary using (Pred; Decidable)
 
 open import Data.List.Membership.DecPropositional Char._≟_
 
@@ -89,6 +91,12 @@ intersperse sep = concat ∘′ (List.intersperse sep)
 
 unlines : List String → String
 unlines = intersperse "\n"
+
+wordsBy : ∀ {p} {P : Pred Char p} → Decidable P → String → List String
+wordsBy P? = List.map fromList ∘ List.wordsBy P? ∘ toList
+
+words : String → List String
+words = wordsBy (T? ∘ Char.isSpace)
 
 unwords : List String → String
 unwords = intersperse " "

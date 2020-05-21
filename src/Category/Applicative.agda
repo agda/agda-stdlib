@@ -26,7 +26,7 @@ module RawApplicative {F : Set f → Set f}
                       (app : RawApplicative F) where
   open RawIApplicative app public
 
-RawApplicativeZero : (Set f → Set f) → Set _
+RawApplicativeZero : (Set f → Set f) → Set (suc f)
 RawApplicativeZero F = RawIApplicativeZero {I = ⊤} (λ _ _ → F)
 
 module RawApplicativeZero {F : Set f → Set f}
