@@ -14,6 +14,8 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
+* The `n` argument to `_⊜_` in `Tactic.RingSolver.NonReflective` has been made implict rather than explicit.
+
 Deprecated modules
 ------------------
 
