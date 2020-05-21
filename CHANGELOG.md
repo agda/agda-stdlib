@@ -299,6 +299,12 @@ Other minor additions
   nonNegative : p ≥ 0ℚ → NonNegative p
   ```
 
+* Added proofs to `Data.Rational.Properties`:
+ ```agda
+  +-*-isCommutativeRing : IsCommutativeRing _+_ _*_ -_ 0ℚ 1ℚ
+  +-*-commutativeRing   : CommutativeRing 0ℓ 0ℓ
+ ```
+
 * Added new types and constructors to `Data.Rational.Unnormalised`
   ```agda
   _≠_         : Rel ℚᵘ 0ℓ
