@@ -21,6 +21,8 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
+* The `n` argument to `_⊜_` in `Tactic.RingSolver.NonReflective` has been made implict rather than explicit.
+
 * `Data.Empty.Polymorphic` and `Data.Unit.Polymorphic` were rewritten
   to explicitly use `Lift` rather that defining new types. This means
   that these are now compatible with `⊥` and `⊤` from the rest of the

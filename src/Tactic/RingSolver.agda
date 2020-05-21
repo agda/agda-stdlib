@@ -154,7 +154,7 @@ private
       callSolver : Vec String numVars → Term → Term → Args Type
       callSolver nms lhs rhs =
           2 ⋯⟅∷⟆ ring ⟨∷⟩ toTerm numVars ⟨∷⟩
-          vlams nms (quote _⊜_  $ʳ (toTerm numVars ⟨∷⟩ E lhs ⟨∷⟩ E rhs ⟨∷⟩ [])) ⟨∷⟩
+          vlams nms (quote _⊜_  $ʳ (toTerm numVars ⟅∷⟆ E lhs ⟨∷⟩ E rhs ⟨∷⟩ [])) ⟨∷⟩
           hlams nms (quote refl $ʳ (1 ⋯⟅∷⟆ [])) ⟨∷⟩
           []
         where
