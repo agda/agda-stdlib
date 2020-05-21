@@ -276,7 +276,7 @@ Other minor additions
   recompute       : .(Coprime n d) → Coprime n d
   ```
 
-* Added new types and constructors to `Data.Rational.Unnormalised`:
+* Added new types and constructors to `Data.Rational`:
   ```agda
   NonZero     : Pred ℚ 0ℓ
   Positive    : Pred ℚ 0ℓ
