@@ -276,6 +276,12 @@ Other minor additions
   recompute       : .(Coprime n d) → Coprime n d
   ```
 
+* Add proof to `Algebra.Morphism.RingMonomorphism`:
+ ```agda
+ isCommutativeRing : IsCommutativeRing _≈₂_ _⊕_ _⊛_ ⊝_ 0#₂ 1#₂ →
+                     IsCommutativeRing _≈₁_ _+_ _*_ -_ 0# 1#
+ ```
+
 * Added new types and constructors to `Data.Rational`:
   ```agda
   NonZero     : Pred ℚ 0ℓ
