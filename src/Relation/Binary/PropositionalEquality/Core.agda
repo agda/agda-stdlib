@@ -67,6 +67,18 @@ resp₂ : ∀ (∼ : Rel A ℓ) → ∼ Respects₂ _≡_
 resp₂ _∼_ = respʳ _∼_ , respˡ _∼_
 
 ------------------------------------------------------------------------
+-- Some implicit variants of refl and cong; 'i' for implicit
+irefl : {f : A → B} (x : A) → f x ≡ f x
+irefl _ = refl
+
+icong : ∀ {f : A → B} {x y} → x ≡ y → f x ≡ f y
+icong = cong _
+
+-- ′ for simplified à la ∘′
+icong′ : ∀ {f : A → B} x → f x ≡ f x
+icong′ {f = f} x = cong f refl
+
+------------------------------------------------------------------------
 -- Properties of _≢_
 
 ≢-sym : Symmetric {A = A} _≢_
