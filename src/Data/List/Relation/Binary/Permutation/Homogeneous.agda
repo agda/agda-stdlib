@@ -22,7 +22,7 @@ private
 data Permutation {A : Set a} (R : Rel A r) : Rel (List A) (a ⊔ r) where
   refl  : ∀ {xs ys} → Pointwise R xs ys → Permutation R xs ys
   prep  : ∀ {xs ys x y} (eq : R x y) → Permutation R xs ys → Permutation R (x ∷ xs) (y ∷ ys)
-  swap  : ∀ {xs ys x y x' y'} (eq₁ : R x x') (eq₂ : R y y') → Permutation R xs ys → Permutation R (x ∷ y ∷ xs) (y' ∷ x' ∷ ys)
+  swap  : ∀ {xs ys x y x′ y′} (eq₁ : R x x′) (eq₂ : R y y′) → Permutation R xs ys → Permutation R (x ∷ y ∷ xs) (y′ ∷ x′ ∷ ys)
   trans : ∀ {xs ys zs} → Permutation R xs ys → Permutation R ys zs → Permutation R xs zs
 
 ------------------------------------------------------------------------
@@ -32,8 +32,8 @@ module _ {R : Rel A r}  where
 
   sym : Symmetric R → Symmetric (Permutation R)
   sym R-sym (refl xs∼ys)           = refl (Pointwise.symmetric R-sym xs∼ys)
-  sym R-sym (prep x∼x' xs↭ys)      = prep (R-sym x∼x') (sym R-sym xs↭ys)
-  sym R-sym (swap x∼x' y∼y' xs↭ys) = swap (R-sym y∼y') (R-sym x∼x') (sym R-sym xs↭ys)
+  sym R-sym (prep x∼x′ xs↭ys)      = prep (R-sym x∼x′) (sym R-sym xs↭ys)
+  sym R-sym (swap x∼x′ y∼y′ xs↭ys) = swap (R-sym y∼y′) (R-sym x∼x′) (sym R-sym xs↭ys)
   sym R-sym (trans xs↭ys ys↭zs)    = trans (sym R-sym ys↭zs) (sym R-sym xs↭ys)
 
   isEquivalence : Reflexive R → Symmetric R → IsEquivalence (Permutation R)

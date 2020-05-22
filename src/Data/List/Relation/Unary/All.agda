@@ -13,7 +13,8 @@ open import Category.Monad
 open import Data.Empty using (⊥)
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
-open import Data.List.Membership.Propositional using (_∈_)
+open import Data.List.Membership.Propositional renaming (_∈_ to _∈ₚ_)
+import Data.List.Membership.Setoid as SetoidMembership
 open import Data.Product as Prod
   using (∃; -,_; _×_; _,_; proj₁; proj₂; uncurry)
 open import Function
@@ -22,11 +23,12 @@ open import Relation.Nullary hiding (Irrelevant)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Product using (_×-dec_)
 open import Relation.Unary hiding (_∈_)
+open import Relation.Binary using (Setoid; _Respects_)
 open import Relation.Binary.PropositionalEquality as P
 
 private
   variable
-    a b p q r : Level
+    a b p q r ℓ : Level
     A : Set a
     B : Set b
 
@@ -48,12 +50,12 @@ data All {A : Set a} (P : Pred A p) : Pred (List A) (a ⊔ p) where
 infix 4 _[_]=_
 
 data _[_]=_ {A : Set a} {P : Pred A p} :
-            ∀ {x xs} → All P xs → x ∈ xs → P x → Set (a ⊔ p) where
+            ∀ {x xs} → All P xs → x ∈ₚ xs → P x → Set (a ⊔ p) where
 
   here  : ∀ {x xs} {px : P x} {pxs : All P xs} →
           px ∷ pxs [ here refl ]= px
 
-  there : ∀ {x xs y} {px : P x} {pxs : All P xs} {py : P y} {i : x ∈ xs} →
+  there : ∀ {x xs y} {px : P x} {pxs : All P xs} {py : P y} {i : x ∈ₚ xs} →
           pxs [ i ]= px →
           py ∷ pxs [ there i ]= px
 
@@ -75,10 +77,6 @@ module _ {P : Pred A p} where
 
   tail : ∀ {x xs} → All P (x ∷ xs) → All P xs
   tail = proj₂ ∘ uncons
-
-  tabulate : ∀ {xs} → (∀ {x} → x ∈ xs → P x) → All P xs
-  tabulate {xs = []}     hyp = []
-  tabulate {xs = x ∷ xs} hyp = hyp (here refl) ∷ tabulate (hyp ∘ there)
 
   reduce : (f : ∀ {x} → P x → B) → ∀ {xs} → All P xs → List B
   reduce f []         = []
@@ -119,6 +117,19 @@ module _ {P : Pred A p} {Q : Pred A q} where
   unzip : All (P ∩ Q) ⊆ All P ∩ All Q
   unzip = unzipWith id
 
+module _(S : Setoid a ℓ) {P : Pred (Setoid.Carrier S) p} where
+  open Setoid S renaming (Carrier to C; refl to refl₁)
+  open SetoidMembership S
+
+  tabulateₛ : ∀ {xs} → (∀ {x} → x ∈ xs → P x) → All P xs
+  tabulateₛ {[]}     hyp = []
+  tabulateₛ {x ∷ xs} hyp = hyp (here refl₁) ∷ tabulateₛ (hyp ∘ there)
+
+module _ {P : Pred A p} where
+
+  tabulate : ∀ {xs} → (∀ {x} → x ∈ₚ xs → P x) → All P xs
+  tabulate = tabulateₛ (P.setoid A)
+
 self : ∀ {xs : List A} → All (const A) xs
 self = tabulate (λ {x} _ → x)
 
@@ -129,15 +140,15 @@ module _ {P : Pred A p} where
 
   infixl 6 _[_]%=_ _[_]≔_
 
-  updateAt : ∀ {x xs} → x ∈ xs → (P x → P x) → All P xs → All P xs
+  updateAt : ∀ {x xs} → x ∈ₚ xs → (P x → P x) → All P xs → All P xs
   updateAt () f []
   updateAt (here refl) f (px ∷ pxs) = f px ∷ pxs
   updateAt (there i)   f (px ∷ pxs) =   px ∷ updateAt i f pxs
 
-  _[_]%=_ : ∀ {x xs} → All P xs → x ∈ xs → (P x → P x) → All P xs
+  _[_]%=_ : ∀ {x xs} → All P xs → x ∈ₚ xs → (P x → P x) → All P xs
   pxs [ i ]%= f = updateAt i f pxs
 
-  _[_]≔_ : ∀ {x xs} → All P xs → x ∈ xs → P x → All P xs
+  _[_]≔_ : ∀ {x xs} → All P xs → x ∈ₚ xs → P x → All P xs
   pxs [ i ]≔ px = pxs [ i ]%= const px
 
 ------------------------------------------------------------------------
@@ -193,7 +204,7 @@ module _ {P : Pred A p} {Q : Pred A q} {R : Pred A r} where
 
 module _ {P : Pred A p} where
 
-  lookup : ∀ {xs} → All P xs → (∀ {x} → x ∈ xs → P x)
+  lookup : ∀ {xs} → All P xs → (∀ {x} → x ∈ₚ xs → P x)
   lookup pxs = lookupWith (λ { px refl → px }) pxs
 
 ------------------------------------------------------------------------

@@ -15,6 +15,7 @@ open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Binary.Core
 open import Relation.Binary.Definitions
 open import Relation.Binary.PropositionalEquality.Core
+open import Relation.Binary.PropositionalEquality.Properties
 
 ------------------------------------------------------------------------
 -- Definition

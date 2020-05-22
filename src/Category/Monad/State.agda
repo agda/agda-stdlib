@@ -17,16 +17,21 @@ open import Data.Unit
 open import Function
 open import Level
 
+private
+  variable
+    i f : Level
+    I : Set i
+
 ------------------------------------------------------------------------
 -- Indexed state
 
-IStateT : ∀ {i f} {I : Set i} → (I → Set f) → (Set f → Set f) → IFun I f
+IStateT : (I → Set f) → (Set f → Set f) → IFun I f
 IStateT S M i j A = S i → M (A × S j)
 
 ------------------------------------------------------------------------
 -- Indexed state applicative
 
-StateTIApplicative : ∀ {i f} {I : Set i} (S : I → Set f) {M} →
+StateTIApplicative : ∀ (S : I → Set f) {M} →
                      RawMonad M → RawIApplicative (IStateT S M)
 StateTIApplicative S Mon = record
   { pure = λ a s → return (a , s)
@@ -36,14 +41,14 @@ StateTIApplicative S Mon = record
      return (f′ t′ , s′′)
   } where open RawMonad Mon
 
-StateTIApplicativeZero : ∀ {i f} {I : Set i} (S : I → Set f) {M} →
+StateTIApplicativeZero : ∀ (S : I → Set f) {M} →
                          RawMonadZero M → RawIApplicativeZero (IStateT S M)
 StateTIApplicativeZero S Mon = record
   { applicative = StateTIApplicative S monad
   ; ∅           = const ∅
   } where open RawMonadZero Mon
 
-StateTIAlternative : ∀ {i f} {I : Set i} (S : I → Set f) {M} →
+StateTIAlternative : ∀ (S : I → Set f) {M} →
                      RawMonadPlus M → RawIAlternative (IStateT S M)
 StateTIAlternative S Mon = record
   { applicativeZero = StateTIApplicativeZero S monadZero
@@ -53,21 +58,20 @@ StateTIAlternative S Mon = record
 ------------------------------------------------------------------------
 -- Indexed state monad
 
-StateTIMonad : ∀ {i f} {I : Set i} (S : I → Set f) {M} →
-               RawMonad M → RawIMonad (IStateT S M)
+StateTIMonad : ∀ (S : I → Set f) {M} → RawMonad M → RawIMonad (IStateT S M)
 StateTIMonad S Mon = record
   { return = λ x s → return (x , s)
   ; _>>=_  = λ m f s → m s >>= uncurry f
   } where open RawMonad Mon
 
-StateTIMonadZero : ∀ {i f} {I : Set i} (S : I → Set f) {M} →
+StateTIMonadZero : ∀ (S : I → Set f) {M} →
                    RawMonadZero M → RawIMonadZero (IStateT S M)
 StateTIMonadZero S Mon = record
   { monad           = StateTIMonad S (RawMonadZero.monad Mon)
   ; applicativeZero = StateTIApplicativeZero S Mon
   } where open RawMonadZero Mon
 
-StateTIMonadPlus : ∀ {i f} {I : Set i} (S : I → Set f) {M} →
+StateTIMonadPlus : ∀ (S : I → Set f) {M} →
                    RawMonadPlus M → RawIMonadPlus (IStateT S M)
 StateTIMonadPlus S Mon = record
   { monad       = StateTIMonad S monad
@@ -77,7 +81,7 @@ StateTIMonadPlus S Mon = record
 ------------------------------------------------------------------------
 -- State monad operations
 
-record RawIMonadState {i f} {I : Set i} (S : I → Set f)
+record RawIMonadState {I : Set i} (S : I → Set f)
                       (M : IFun I f) : Set (i ⊔ suc f) where
   field
     monad : RawIMonad M
@@ -101,41 +105,41 @@ StateTIMonadState S Mon = record
 ------------------------------------------------------------------------
 -- Ordinary state monads
 
-RawMonadState : ∀ {f} → Set f → (Set f → Set f) → Set _
+RawMonadState : Set f → (Set f → Set f) → Set (suc f)
 RawMonadState S M = RawIMonadState {I = ⊤} (λ _ → S) (λ _ _ → M)
 
-module RawMonadState {f} {S : Set f} {M : Set f → Set f}
+module RawMonadState {S : Set f} {M : Set f → Set f}
                      (Mon : RawMonadState S M) where
   open RawIMonadState Mon public
 
-StateT : ∀ {f} → Set f → (Set f → Set f) → Set f → Set f
+StateT : Set f → (Set f → Set f) → Set f → Set f
 StateT S M = IStateT {I = ⊤} (λ _ → S) M _ _
 
-StateTMonad : ∀ {f} (S : Set f) {M} → RawMonad M → RawMonad (StateT S M)
+StateTMonad : ∀ (S : Set f) {M} → RawMonad M → RawMonad (StateT S M)
 StateTMonad S = StateTIMonad (λ _ → S)
 
-StateTMonadZero : ∀ {f} (S : Set f) {M} →
+StateTMonadZero : ∀ (S : Set f) {M} →
                   RawMonadZero M → RawMonadZero (StateT S M)
 StateTMonadZero S = StateTIMonadZero (λ _ → S)
 
-StateTMonadPlus : ∀ {f} (S : Set f) {M} →
+StateTMonadPlus : ∀ (S : Set f) {M} →
                   RawMonadPlus M → RawMonadPlus (StateT S M)
 StateTMonadPlus S = StateTIMonadPlus (λ _ → S)
 
-StateTMonadState : ∀ {f} (S : Set f) {M} →
+StateTMonadState : ∀ (S : Set f) {M} →
                    RawMonad M → RawMonadState S (StateT S M)
 StateTMonadState S = StateTIMonadState (λ _ → S)
 
-State : ∀ {f} → Set f → Set f → Set f
+State : Set f → Set f → Set f
 State S = StateT S Identity
 
-StateMonad : ∀ {f} (S : Set f) → RawMonad (State S)
+StateMonad : (S : Set f) → RawMonad (State S)
 StateMonad S = StateTMonad S Id.monad
 
-StateMonadState : ∀ {f} (S : Set f) → RawMonadState S (State S)
+StateMonadState : (S : Set f) → RawMonadState S (State S)
 StateMonadState S = StateTMonadState S Id.monad
 
-LiftMonadState : ∀ {f S₁} (S₂ : Set f) {M} →
+LiftMonadState : ∀ {S₁} (S₂ : Set f) {M} →
                  RawMonadState S₁ M →
                  RawMonadState S₁ (StateT S₂ M)
 LiftMonadState S₂ Mon = record

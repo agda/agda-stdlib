@@ -23,9 +23,9 @@ open import Data.Unit           using (⊤)
 open import Data.String         using (String)
 open import Data.Product        using (_,_)
 open import Function
-open import Reflection.TCMonadSyntax
 open import Reflection.Argument
 open import Reflection.Term
+open import Reflection.TypeChecking.Monad.Syntax
 
 open import Tactic.RingSolver.NonReflective renaming (solve to solve-fn)
 open import Tactic.RingSolver.Core.AlmostCommutativeRing
@@ -154,7 +154,7 @@ private
       callSolver : Vec String numVars → Term → Term → Args Type
       callSolver nms lhs rhs =
           2 ⋯⟅∷⟆ ring ⟨∷⟩ toTerm numVars ⟨∷⟩
-          vlams nms (quote _⊜_  $ʳ (toTerm numVars ⟨∷⟩ E lhs ⟨∷⟩ E rhs ⟨∷⟩ [])) ⟨∷⟩
+          vlams nms (quote _⊜_  $ʳ (toTerm numVars ⟅∷⟆ E lhs ⟨∷⟩ E rhs ⟨∷⟩ [])) ⟨∷⟩
           hlams nms (quote refl $ʳ (1 ⋯⟅∷⟆ [])) ⟨∷⟩
           []
         where

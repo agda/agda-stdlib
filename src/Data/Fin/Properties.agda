@@ -24,7 +24,7 @@ open import Data.Sum.Properties using ([,]-map-commute; [,]-∘-distr)
 open import Function.Base using (_∘_; id; _$_)
 open import Function.Equivalence using (_⇔_; equivalence)
 open import Function.Injection using (_↣_)
-open import Relation.Binary as B hiding (Decidable)
+open import Relation.Binary as B hiding (Decidable; _⇔_)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; trans; cong; subst; module ≡-Reasoning)
 open import Relation.Nullary.Decidable as Dec using (map′)
@@ -483,7 +483,7 @@ inject+-raise-splitAt zero    n i       = refl
 inject+-raise-splitAt (suc m) n zero    = refl
 inject+-raise-splitAt (suc m) n (suc i) = begin
   [ inject+ n , raise {n} (suc m) ] (splitAt (suc m) (suc i))  ≡⟨ [,]-map-commute (splitAt m i) ⟩
-  [ suc ∘ (inject+ n) , suc ∘ (raise {n} m) ] (splitAt m i)    ≡˘⟨ [,]-∘-distr {f = suc} (splitAt m i) ⟩
+  [ suc ∘ (inject+ n) , suc ∘ (raise {n} m) ] (splitAt m i)    ≡˘⟨ [,]-∘-distr suc (splitAt m i) ⟩
   suc ([ inject+ n , raise {n} m ] (splitAt m i))              ≡⟨ cong suc (inject+-raise-splitAt m n i) ⟩
   suc i                                                        ∎
   where open ≡-Reasoning

@@ -24,9 +24,9 @@ open import Data.List.Relation.Binary.Subset.Propositional.Properties
 open import Data.Product as Prod hiding (map)
 import Data.Product.Function.Dependent.Propositional as Σ
 open import Data.Sum.Base as Sum hiding (map)
-open import Data.Sum.Properties
+open import Data.Sum.Properties hiding (map-cong)
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
-open import Data.Unit
+open import Data.Unit.Polymorphic.Base
 open import Function.Base
 open import Function.Equality using (_⟨$⟩_)
 import Function.Equivalence as FE
@@ -34,7 +34,6 @@ open import Function.Inverse as Inv using (_↔_; Inverse; inverse)
 open import Function.Related as Related
   using (↔⇒; ⌊_⌋; ⌊_⌋→; ⇒→; K-refl; SK-sym)
 open import Function.Related.TypeIsomorphisms
-open import Level using (Lift)
 open import Relation.Binary
 import Relation.Binary.Reasoning.Setoid as EqR
 import Relation.Binary.Reasoning.Preorder as PreorderReasoning
@@ -359,7 +358,7 @@ drop-cons {A = A} {x} {xs} {ys} x∷xs≈x∷ys =
     (∃ λ z → z ∈ xs)                   ↔⟨ Σ.cong K-refl (∈-index xs) ⟩
     (∃ λ z → ∃ λ i → z ≡ lookup xs i)  ↔⟨ ∃∃↔∃∃ _ ⟩
     (∃ λ i → ∃ λ z → z ≡ lookup xs i)  ↔⟨ Σ.cong K-refl (inverse _ (λ _ → _ , refl) (λ { (_ , refl) → refl }) (λ _ → refl)) ⟩
-    (Fin (length xs) × Lift _ ⊤)       ↔⟨ ×-identityʳ _ _ ⟩
+    (Fin (length xs) × ⊤)              ↔⟨ ×-identityʳ _ _ ⟩
     Fin (length xs)                    ∎
     where
     open Related.EquationalReasoning

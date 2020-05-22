@@ -4,6 +4,8 @@ included-dirs:
 
 included-files:
   - "**.agda"
+  - "**.md"
+  - ".travis.yml"
 
 excluded-files:
   - "README/Text/Tabular.agda"

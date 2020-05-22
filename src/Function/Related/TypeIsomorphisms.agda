@@ -13,23 +13,25 @@ open import Algebra
 open import Algebra.Structures.Biased using (isCommutativeSemiringˡ)
 open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Bool.Base using (true; false)
-open import Data.Empty using (⊥; ⊥-elim)
+open import Data.Empty using (⊥-elim)
+open import Data.Empty.Polymorphic using (⊥) renaming (⊥-elim to ⊥ₚ-elim)
 open import Data.Product as Prod hiding (swap)
 open import Data.Product.Function.NonDependent.Propositional
 open import Data.Sum.Base as Sum
 open import Data.Sum.Properties using (swap-involutive)
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
-open import Data.Unit using (⊤)
-open import Level using (Level; Lift; lower; 0ℓ; suc)
+open import Data.Unit.Polymorphic using (⊤)
+open import Level using (Level; Lift; 0ℓ; suc)
 open import Function.Base
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence as Eq using (_⇔_; Equivalence)
 open import Function.Inverse as Inv using (_↔_; Inverse; inverse)
 open import Function.Related
-open import Relation.Binary
+open import Relation.Binary hiding (_⇔_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_; _≗_)
 open import Relation.Nullary.Reflects using (invert)
-open import Relation.Nullary using (Dec; ¬_; _because_)
+open import Relation.Nullary using (Dec; ¬_; _because_; ofⁿ)
+import Relation.Nullary.Indexed as I
 open import Relation.Nullary.Decidable using (True)
 
 ------------------------------------------------------------------------
@@ -50,26 +52,24 @@ open import Relation.Nullary.Decidable using (True)
 
 -- × has ⊤ as its identity
 
-×-identityˡ : ∀ ℓ → LeftIdentity _↔_ (Lift ℓ ⊤) _×_
+×-identityˡ : ∀ ℓ → LeftIdentity _↔_ (⊤ {ℓ}) _×_
 ×-identityˡ _ _ = inverse proj₂ -,_ (λ _ → P.refl) (λ _ → P.refl)
 
-×-identityʳ : ∀ ℓ → RightIdentity _↔_ (Lift ℓ ⊤) _×_
+×-identityʳ : ∀ ℓ → RightIdentity _↔_ (⊤ {ℓ}) _×_
 ×-identityʳ _ _ = inverse proj₁ (_, _) (λ _ → P.refl) (λ _ → P.refl)
 
-×-identity : ∀ ℓ → Identity _↔_ (Lift ℓ ⊤) _×_
+×-identity : ∀ ℓ → Identity _↔_ ⊤ _×_
 ×-identity ℓ = ×-identityˡ ℓ , ×-identityʳ ℓ
 
 -- × has ⊥ has its zero
 
-×-zeroˡ : ∀ ℓ → LeftZero _↔_ (Lift ℓ ⊥) _×_
-×-zeroˡ ℓ A = inverse proj₁ (⊥-elim ∘′ lower)
-                      (⊥-elim ∘ lower ∘ proj₁) (⊥-elim ∘ lower)
+×-zeroˡ : ∀ ℓ → LeftZero _↔_ (⊥ {ℓ}) _×_
+×-zeroˡ ℓ A = inverse proj₁ < id , ⊥ₚ-elim > (λ { () }) (λ _ → P.refl)
 
-×-zeroʳ : ∀ ℓ → RightZero _↔_ (Lift ℓ ⊥) _×_
-×-zeroʳ ℓ A = inverse proj₂ (⊥-elim ∘′ lower)
-                     (⊥-elim ∘ lower ∘ proj₂) (⊥-elim ∘ lower)
+×-zeroʳ : ∀ ℓ → RightZero _↔_ (⊥ {ℓ}) _×_
+×-zeroʳ ℓ A = inverse proj₂ < ⊥ₚ-elim , id > (λ { () }) λ _ → P.refl
 
-×-zero : ∀ ℓ → Zero _↔_ (Lift ℓ ⊥) _×_
+×-zero : ∀ ℓ → Zero _↔_ ⊥ _×_
 ×-zero ℓ  = ×-zeroˡ ℓ , ×-zeroʳ ℓ
 
 ------------------------------------------------------------------------
@@ -91,15 +91,15 @@ open import Relation.Nullary.Decidable using (True)
 
 -- ⊎ has ⊥ as its identity
 
-⊎-identityˡ : ∀ ℓ → LeftIdentity _↔_ (Lift ℓ ⊥) _⊎_
+⊎-identityˡ : ∀ ℓ → LeftIdentity _↔_ (⊥ {ℓ}) _⊎_
 ⊎-identityˡ _ _ = inverse [ (λ ()) , id ]′ inj₂
                           [ (λ ()) , (λ _ → P.refl) ] (λ _ → P.refl)
 
-⊎-identityʳ : ∀ ℓ → RightIdentity _↔_ (Lift ℓ ⊥) _⊎_
+⊎-identityʳ : ∀ ℓ → RightIdentity _↔_ (⊥ {ℓ}) _⊎_
 ⊎-identityʳ _ _ = inverse [ id , (λ ()) ]′ inj₁
                           [ (λ _ → P.refl) , (λ ()) ] (λ _ → P.refl)
 
-⊎-identity : ∀ ℓ → Identity _↔_ (Lift ℓ ⊥) _⊎_
+⊎-identity : ∀ ℓ → Identity _↔_ ⊥ _⊎_
 ⊎-identity ℓ = ⊎-identityˡ ℓ , ⊎-identityʳ ℓ
 
 ------------------------------------------------------------------------
@@ -151,7 +151,7 @@ open import Relation.Nullary.Decidable using (True)
   { isSemigroup = ×-isSemigroup k ℓ
   }
 
-×-isMonoid : ∀ k ℓ → IsMonoid (Related ⌊ k ⌋) _×_ (Lift ℓ ⊤)
+×-isMonoid : ∀ k ℓ → IsMonoid (Related ⌊ k ⌋) _×_ ⊤
 ×-isMonoid k ℓ = record
   { isSemigroup = ×-isSemigroup k ℓ
   ; identity    = (↔⇒ ∘ ×-identityˡ ℓ) , (↔⇒ ∘ ×-identityʳ ℓ)
@@ -162,7 +162,7 @@ open import Relation.Nullary.Decidable using (True)
   { isMonoid = ×-isMonoid k ℓ
   }
 
-×-isCommutativeMonoid : ∀ k ℓ → IsCommutativeMonoid (Related ⌊ k ⌋) _×_ (Lift ℓ ⊤)
+×-isCommutativeMonoid : ∀ k ℓ → IsCommutativeMonoid (Related ⌊ k ⌋) _×_ ⊤
 ×-isCommutativeMonoid k ℓ = record
   { isMonoid = ×-isMonoid k ℓ
   ; comm     = λ _ _ → ↔⇒ (×-comm _ _)
@@ -197,7 +197,7 @@ open import Relation.Nullary.Decidable using (True)
   { isSemigroup = ⊎-isSemigroup k ℓ
   }
 
-⊎-isMonoid : ∀ k ℓ → IsMonoid (Related ⌊ k ⌋) _⊎_ (Lift ℓ ⊥)
+⊎-isMonoid : ∀ k ℓ → IsMonoid (Related ⌊ k ⌋) _⊎_ ⊥
 ⊎-isMonoid k ℓ = record
   { isSemigroup = ⊎-isSemigroup k ℓ
   ; identity    = (↔⇒ ∘ ⊎-identityˡ ℓ) , (↔⇒ ∘ ⊎-identityʳ ℓ)
@@ -208,7 +208,7 @@ open import Relation.Nullary.Decidable using (True)
   { isMonoid = ⊎-isMonoid k ℓ
   }
 
-⊎-isCommutativeMonoid : ∀ k ℓ → IsCommutativeMonoid (Related ⌊ k ⌋) _⊎_ (Lift ℓ ⊥)
+⊎-isCommutativeMonoid : ∀ k ℓ → IsCommutativeMonoid (Related ⌊ k ⌋) _⊎_ ⊥
 ⊎-isCommutativeMonoid k ℓ = record
   { isMonoid = ⊎-isMonoid k ℓ
   ; comm     = λ _ _ → ↔⇒ (⊎-comm _ _)
@@ -221,7 +221,7 @@ open import Relation.Nullary.Decidable using (True)
   }
 
 ×-⊎-isCommutativeSemiring : ∀ k ℓ →
-  IsCommutativeSemiring (Related ⌊ k ⌋) _⊎_ _×_ (Lift ℓ ⊥) (Lift ℓ ⊤)
+  IsCommutativeSemiring (Related ⌊ k ⌋) _⊎_ _×_ ⊥ ⊤
 ×-⊎-isCommutativeSemiring k ℓ = isCommutativeSemiringˡ record
   { +-isCommutativeMonoid = ⊎-isCommutativeMonoid k ℓ
   ; *-isCommutativeMonoid = ×-isCommutativeMonoid k ℓ
@@ -298,15 +298,15 @@ A⇔B →-cong-⇔ C⇔D = Eq.equivalence
 ------------------------------------------------------------------------
 -- ¬_ preserves the symmetric relations
 
-¬-cong-⇔ : ∀ {a b} {A : Set a} {B : Set b} →
-           A ⇔ B → (¬ A) ⇔ (¬ B)
-¬-cong-⇔ A⇔B = A⇔B →-cong-⇔ (⊥ ∎)
+¬-cong-⇔ : ∀ {a b c} {A : Set a} {B : Set b} →
+           A ⇔ B → (I.¬ c A) ⇔ (I.¬ _ B)
+¬-cong-⇔ A⇔B =  A⇔B →-cong-⇔ (⊥ ∎)
   where open EquationalReasoning
 
-¬-cong : ∀ {a b} → Extensionality a 0ℓ → Extensionality b 0ℓ →
+¬-cong : ∀ {a b c} → Extensionality a c → Extensionality b c →
          ∀ {k} {A : Set a} {B : Set b} →
-         A ∼[ ⌊ k ⌋ ] B → (¬ A) ∼[ ⌊ k ⌋ ] (¬ B)
-¬-cong extA extB A≈B = →-cong extA extB A≈B (⊥ ∎)
+         A ∼[ ⌊ k ⌋ ] B → (I.¬ c A) ∼[ ⌊ k ⌋ ] (I.¬ c B)
+¬-cong extA extB A≈B =  →-cong extA extB A≈B (⊥ ∎)
   where open EquationalReasoning
 
 ------------------------------------------------------------------------
@@ -335,8 +335,8 @@ True↔ : ∀ {p} {P : Set p}
         (dec : Dec P) → ((p₁ p₂ : P) → p₁ ≡ p₂) → True dec ↔ P
 True↔ ( true because  [p]) irr =
   inverse (λ _ → invert [p]) (λ _ → _) (λ _ → P.refl) (irr _)
-True↔ (false because [¬p]) _   =
-  inverse (λ()) (invert [¬p]) (λ()) (⊥-elim ∘ invert [¬p])
+True↔ (false because ofⁿ ¬p) _ =
+  inverse (λ()) (invert (ofⁿ ¬p)) (λ ()) (⊥-elim ∘ ¬p)
 
 ------------------------------------------------------------------------
 -- Equality between pairs can be expressed as a pair of equalities
