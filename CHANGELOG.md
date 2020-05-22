@@ -168,17 +168,13 @@ Other minor additions
 
 * Add new functions to `Data.Product`:
   ```agda
-  assocʳ : {B : A → Set b} {C : (a : A) → B a → Set c} →
-            Σ (Σ A B) (uncurry C) → Σ A (λ a → Σ (B a) (C a))
-  assocˡ : {B : A → Set b} {C : (a : A) → B a → Set c} →
-            Σ A (λ a → Σ (B a) (C a)) → Σ (Σ A B) (uncurry C)
+  assocʳ :  Σ (Σ A B) (uncurry C) → Σ A (λ a → Σ (B a) (C a))
+  assocˡ :  Σ A (λ a → Σ (B a) (C a)) → Σ (Σ A B) (uncurry C)
   ```
   Also in an alternate form where the C parameter is uncurried.
   ```agda
-  assocʳ-alt : {B : A → Set b} {C : Σ A B → Set c} →
-            Σ (Σ A B) C → Σ A (λ a → Σ (B a) (curry C a))
-  assocˡ-alt : {B : A → Set b} {C : Σ A B → Set c} →
-           Σ A (λ a → Σ (B a) (curry C a)) → Σ (Σ A B) C
+  assocʳ-alt : Σ (Σ A B) C → Σ A (λ a → Σ (B a) (curry C a))
+  assocˡ-alt : Σ A (λ a → Σ (B a) (curry C a)) → Σ (Σ A B) C
   ```
   And the non-dependent version.
   ```agda
