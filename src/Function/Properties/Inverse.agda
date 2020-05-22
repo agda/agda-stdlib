@@ -7,23 +7,20 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Function.Construct.IsEquivalence where
+module Function.Properties.Inverse where
 
-open import Data.Product using (_,_; swap)
-open import Function
-open import Level using (Level; _⊔_; suc)
-open import Relation.Binary hiding (_⇔_)
+open import Function.Bundles using (Inverse; _↔_)
+open import Level using (Level)
+open import Relation.Binary using (Setoid; IsEquivalence)
 open import Relation.Binary.PropositionalEquality using (setoid)
 
-import Function.Construct.Identity as I
-import Function.Construct.Symmetry as Sy
-import Function.Construct.Composition as C
+import Function.Construct.Identity as Identity
+import Function.Construct.Symmetry as Symmetry
+import Function.Construct.Composition as Composition
 
 private
   variable
     a b ℓ₁ ℓ₂ : Level
-    A : Set a
-    B : Set b
 
 ------------------------------------------------------------------------
 -- Setoid bundles
@@ -32,16 +29,9 @@ module _ (R : Setoid a ℓ₁) (S : Setoid b ℓ₂) where
 
   inverse : IsEquivalence (Inverse {a} {b})
   inverse = record
-    { refl = λ {x} → I.inverse x
-    ; sym = Sy.inverse
-    ; trans = C.inverse
-    }
-
-  equivalence : IsEquivalence (Equivalence {a} {b})
-  equivalence = record
-    { refl = λ {x} → I.equivalence x
-    ; sym = Sy.equivalence
-    ; trans = C.equivalence
+    { refl = λ {x} → Identity.inverse x
+    ; sym = Symmetry.inverse
+    ; trans = Composition.inverse
     }
 
 ------------------------------------------------------------------------
@@ -50,14 +40,7 @@ module _ (R : Setoid a ℓ₁) (S : Setoid b ℓ₂) where
 -- need to η-expand for everything to line up properly
 ↔ : IsEquivalence {ℓ = ℓ₁} _↔_
 ↔ = record
-  { refl = λ {x} → I.inverse (setoid x)
-  ; sym = Sy.inverse
-  ; trans = C.inverse
-  }
-
-⇔ : IsEquivalence {ℓ = ℓ₁} _⇔_
-⇔ = record
-  { refl = λ {x} → I.equivalence (setoid x)
-  ; sym = Sy.equivalence
-  ; trans = C.equivalence
+  { refl = λ {x} → Identity.inverse (setoid x)
+  ; sym = Symmetry.inverse
+  ; trans = Composition.inverse
   }

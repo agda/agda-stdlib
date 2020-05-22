@@ -43,6 +43,30 @@ module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂}
          {f : A → B} {f⁻¹ : B → A}
          where
 
+  isLeftInverse : IsRightInverse ≈₁ ≈₂ f f⁻¹ → IsLeftInverse ≈₂ ≈₁ f⁻¹ f
+  isLeftInverse inv = record
+    { isCongruent = record
+      { cong = F.cong₂
+      ; isEquivalence₁ = F.isEquivalence₂
+      ; isEquivalence₂ = F.isEquivalence₁
+      }
+    ; cong₂ = F.cong₁
+    ; inverseˡ = inverseˡ ≈₁ ≈₂ f {f⁻¹} F.inverseʳ
+    }
+    where module F = IsRightInverse inv
+
+  isRightInverse : IsLeftInverse ≈₁ ≈₂ f f⁻¹ → IsRightInverse ≈₂ ≈₁ f⁻¹ f
+  isRightInverse inv = record
+    { isCongruent = record
+      { cong = F.cong₂
+      ; isEquivalence₁ = F.isEquivalence₂
+      ; isEquivalence₂ = F.isEquivalence₁
+      }
+    ; cong₂ = F.cong₁
+    ; inverseʳ = inverseʳ ≈₁ ≈₂ f {f⁻¹} F.inverseˡ
+    }
+    where module F = IsLeftInverse inv
+
   isInverse : IsInverse ≈₁ ≈₂ f f⁻¹ → IsInverse ≈₂ ≈₁ f⁻¹ f
   isInverse f-inv = record
     { isLeftInverse = record
@@ -68,7 +92,8 @@ module _ {R : Setoid a ℓ₁} {S : Setoid b ℓ₂} where
     { f = E.g
     ; g = E.f
     ; cong₁ = E.cong₂
-    ; cong₂ = E.cong₁ }
+    ; cong₂ = E.cong₁
+    }
     where module E = Equivalence equiv
 
   rightInverse : LeftInverse R S → RightInverse S R

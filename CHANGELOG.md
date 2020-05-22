@@ -98,9 +98,10 @@ Other major additions
   Function.Construct.Symmetry
   ```
 
-* `IsEquivalence` bundles for `Inverse`, `Equivalence`, `↔` and `⇔`
+* `IsEquivalence` bundles for `Inverse`, `Equivalence`, `↔` and `⇔` in
   ```agda
-  Function.Construct.IsEquivalence
+  Function.Properties.Inverse
+  Function.Properties.Equivalence
   ```
 
 Other major changes
