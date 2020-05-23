@@ -38,30 +38,30 @@ module Instances where
   -- We can turn any monoid into the equivalent monoid where the elements
   -- and equations have been wrapped.
   -- The translation mainly consists of wrapping and unwrapping everything
-  -- via the `Wrap` constructor, `mk`.
+  -- via the `Wrap` constructor, `[_]`.
   -- Notice that the equality field is wrapping the binary relation
   -- `_≈_ : (x y : Carrier) → Set ℓ`, giving an example of how `Wrap` works
   -- for arbitrary n-ary relations.
   Wrap-monoid : Monoid c ℓ → Monoid c ℓ
   Wrap-monoid M = record
     { Carrier = MonoidEl M
-    ; _≈_ = λ (mk x) (mk y) → Wrap _≈_ x y
-    ; _∙_ = λ (mk x) (mk y) → mk (x ∙ y)
-    ; ε = mk ε
+    ; _≈_ = λ ([ x ]) ([ y ]) → Wrap _≈_ x y
+    ; _∙_ = λ ([ x ]) ([ y ]) → [ x ∙ y ]
+    ; ε = [ ε ]
     ; isMonoid = record
       { isSemigroup = record
         { isMagma = record
           { isEquivalence = record
-            { refl = mk refl
-            ; sym = λ (mk xy) → mk (sym xy)
-            ; trans = λ (mk xy) (mk yz) → mk (trans xy yz)
+            { refl = [ refl ]
+            ; sym = λ ([ xy ]) → [ sym xy ]
+            ; trans = λ ([ xy ]) ([ yz ]) → [ trans xy yz ]
             }
-          ; ∙-cong = λ (mk xx) (mk yy) → mk (∙-cong xx yy)
+          ; ∙-cong = λ ([ xx ]) ([ yy ]) → [ ∙-cong xx yy ]
           }
-        ; assoc = λ (mk x) (mk y) (mk z) → mk (assoc x y z)
+        ; assoc = λ ([ x ]) ([ y ]) ([ z ]) → [ assoc x y z ]
         }
-      ; identity = (λ (mk x) → mk (identityˡ x))
-                 , (λ (mk x) → mk (identityʳ x))
+      ; identity = (λ ([ x ]) → [ identityˡ x ])
+                 , (λ ([ x ]) → [ identityʳ x ])
       }
     }
     where open Monoid M
@@ -91,16 +91,16 @@ module Instances where
   -- definitions.
 
   test-+ : MonoidEl +-0-monoid
-  test-+ = (mk 3 ∙ ε) ∙ mk 2
+  test-+ = ([ 3 ] ∙ ε) ∙ [ 2 ]
 
   test-* : MonoidEl *-1-monoid
-  test-* = (mk 3 ∙ ε) ∙ mk 2
+  test-* = ([ 3 ] ∙ ε) ∙ [ 2 ]
 
   -- The reader is invited to normalise these two definitions
   -- (`C-c C-n`, then type in the name).
-  -- `test-+` is interpreted using (ℕ, +, 0), and thus computes to `mk 5`.
+  -- `test-+` is interpreted using (ℕ, +, 0), and thus computes to `[ 5 ]`.
   -- Meanwhile, `test-*` is interpreted using (ℕ, *, 1), and thus computes
-  -- to `mk 6`.
+  -- to `[ 6 ]`.
 
 ------------------------------------------------------------------------
 -- `Wrap` for dealing with dependent functions

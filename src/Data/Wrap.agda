@@ -21,7 +21,7 @@ private
 
 record Wrap-inner {n} {ls} {A : Sets n ls} (F : A ⇉ Set ℓ) (xs : Product n A)
                   : Set ℓ where
-  constructor mk
+  constructor [_]
   field
     get : uncurryₙ n F xs
 
