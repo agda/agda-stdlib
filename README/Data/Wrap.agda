@@ -103,67 +103,92 @@ module Instances where
   -- to `[ 6 ]`.
 
 ------------------------------------------------------------------------
--- `Wrap` for dealing with dependent functions
+-- `Wrap` for dealing with functions spoiling unification
 ------------------------------------------------------------------------
 
-module Dependent′ (monoid : Monoid c ℓ) where
-  open Monoid monoid
+module Unification where
 
-  open import Data.Fin
-  open import Data.Vec.Functional
+  open import Data.Nat.Properties
+  open import Relation.Binary.PropositionalEquality
 
-  infix 4 _≈ᵥ_
-  infixl 7 _∙ᵥ_
+  module Naïve where
 
-  _≈ᵥ_ : (u v : Vector Carrier n) → Set _
-  u ≈ᵥ v = ∀ i → u i ≈ v i
+    -- We want to work with factorisations of natural numbers in a
+    -- “proof-relevant” style. We could draw out `Factor m n o` as
+    --   m
+    --  /*\
+    -- n   o.
 
-  transᵥ : Transitive (_≈ᵥ_ {n = n})
-  transᵥ uv vw i = trans (uv i) (vw i)
+    Factor : (m n o : ℕ) → Set
+    Factor m n o = m ≡ n * o
 
-  εᵥ : Vector Carrier n
-  εᵥ i = ε
+    -- We can prove a basic lemma about `Factor`: the following tree rotation
+    -- can be done, due to associativity of `_*_`.
+    --      m             m
+    --     /*\           /*\
+    --   no   p  ---->  n   op
+    --  /*\                 /*\
+    -- n   o               o   p
 
-  _∙ᵥ_ : (u v : Vector Carrier n) → Vector Carrier n
-  (u ∙ᵥ v) i = u i ∙ v i
+    assoc-→ : ∀ {m n o p} →
+              (∃ λ no → Factor m no p × Factor no n o) →
+              (∃ λ op → Factor m n op × Factor op o p)
+    assoc-→ {m} {n} {o} {p} (._ , refl , refl) = _ , *-assoc n o p , refl
 
-  assocᵥ : (u v w : Vector Carrier n) → (u ∙ᵥ v) ∙ᵥ w ≈ᵥ u ∙ᵥ (v ∙ᵥ w)
-  assocᵥ u v w i = assoc (u i) (v i) (w i)
+    -- We must give at least some arguments to `*-assoc`, as Agda is unable to
+    -- unify `? * ? * ?` with `n * o * p`, as `_*_` is a function and not
+    -- necessarily injective (and indeed not injective when one of its
+    -- arguments is 0).
 
-  lemma : (t u v w : Vector Carrier n) →
-          ((t ∙ᵥ u) ∙ᵥ v) ∙ᵥ w ≈ᵥ t ∙ᵥ (u ∙ᵥ (v ∙ᵥ w))
-  lemma t u v w = transᵥ (assocᵥ _ _ _) (assocᵥ _ _ _)
+    -- We now want to use this lemma in a more complex proof:
+    --         m            m
+    --        /*\          /*\
+    --     nop   q        n   opq
+    --     /*\      ---->     /*\
+    --   no   p              o   pq
+    --  /*\                      /*\
+    -- n   o                    p   q
 
-module Dependent {A : Set c} (_≈_ : Rel A ℓ) where
+    test : ∀ {m n o p q} →
+           (∃₂ λ no nop → Factor m nop q × Factor nop no p × Factor no n o) →
+           (∃₂ λ pq opq → Factor m n opq × Factor opq o pq × Factor pq p q)
+    test {n = n} (no , nop , fm , fnop , fno) =
+      let _ , fm , fpq = assoc-→ {n = no} (_ , fm , fnop) in
+      let _ , fm , fopq = assoc-→ {n = n} (_ , fm , fno) in
+      _ , _ , fm , fopq , fpq
 
-  open import Data.Fin
-  open import Data.Vec.Functional
+    -- This works okay, but where we have written `{n = no}` and similar, we
+    -- are being forced to deal with details we don't really care about. Agda
+    -- should be able to fill in the vertices given part of a tree, but can't
+    -- due to similar reasons as before: `Factor ? ? ?` doesn't unify against
+    -- `Factor m no p`, because both instances of `Factor` compute and we're
+    -- left trying to unify `? * ?` against `no * p`.
 
-  _≈ᵥ_ : (u v : Vector A n) → Set _
-  u ≈ᵥ v = ∀ i → u i ≈ v i
+  module Wrapped where
 
-  symᵥ : Symmetric _≈_ → Symmetric (_≈ᵥ_ {n = n})
-  symᵥ sym uv i = sym (uv i)
+    -- We can use `Wrap` to stop the computation of `Factor`.
 
-  transᵥ : Transitive _≈_ → Transitive (_≈ᵥ_ {n = n})
-  transᵥ trans uv vw i = trans (uv i) (vw i)
+    Factor : (m n o : ℕ) → Set
+    Factor = Wrap λ m n o → m ≡ n * o
 
-  reindex : (Fin m → Fin n) → Vector A n → Vector A m
-  reindex f v i = v (f i)
+    -- Because `assoc-→` needs access to the implementation of `Factor`, the
+    -- proof is exactly as before except for using `[_]` to wrap and unwrap.
 
-  reindex-cong : ∀ (f : Fin m → Fin n) {u v} →
-                 u ≈ᵥ v → reindex f u ≈ᵥ reindex f v
-  reindex-cong f uv i = uv (f i)
+    assoc-→ : ∀ {m n o p} →
+              (∃ λ no → Factor m no p × Factor no n o) →
+              (∃ λ op → Factor m n op × Factor op o p)
+    assoc-→ {m} {n} {o} {p} (._ , [ refl ] , [ refl ]) =
+      _ , [ *-assoc n o p ] , [ refl ]
 
-  lemma : ∀ (f : Fin m → Fin n) {u v} →
-          u ≈ᵥ v → reindex f u ≈ᵥ reindex f v
-  lemma f uv = reindex-cong _ uv
+    -- The difference is that now we have our basic lemma, the complex proof
+    -- can work purely in terms of `Factor` trees. In particular,
+    -- `Factor ? ? ?` now does unify with `Factor m no p`, so we don't have to
+    -- give `no` explicitly again.
 
-  module WithMonoid (monoid : Monoid c ℓ) where
-    open Monoid monoid
-
-    εᵥ : Vector Carrier n
-    εᵥ i = ε
-
-    _∙ᵥ_ : (u v : Vector Carrier n) → Vector Carrier n
-    (u ∙ᵥ v) i = u i ∙ v i
+    test : ∀ {m n o p q} →
+           (∃₂ λ no nop → Factor m nop q × Factor nop no p × Factor no n o) →
+           (∃₂ λ pq opq → Factor m n opq × Factor opq o pq × Factor pq p q)
+    test (_ , _ , fm , fnop , fno) =
+      let _ , fm , fpq = assoc-→ (_ , fm , fnop) in
+      let _ , fm , fopq = assoc-→ (_ , fm , fno) in
+      _ , _ , fm , fopq , fpq
