@@ -12,6 +12,7 @@ open import Data.Wrap
 
 open import Algebra
 open import Data.Nat
+open import Data.Nat.Properties
 open import Data.Product
 open import Level using (Level)
 open import Relation.Binary
@@ -108,7 +109,6 @@ module Instances where
 
 module Unification where
 
-  open import Data.Nat.Properties
   open import Relation.Binary.PropositionalEquality
 
   module Naïve where
