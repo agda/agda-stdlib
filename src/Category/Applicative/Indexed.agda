@@ -94,9 +94,10 @@ record RawIAlternative
 -- Applicative functor morphisms, specialised to propositional
 -- equality.
 
-record Morphism {I : Set i} {F₁ F₂ : IFun I f}
-                (A₁ : RawIApplicative F₁)
-                (A₂ : RawIApplicative F₂) : Set (i ⊔ suc f) where
+record ApplicativeMorphism
+       {I : Set i} {F₁ F₂ : IFun I f}
+       (A₁ : RawIApplicative F₁)
+       (A₂ : RawIApplicative F₂) : Set (i ⊔ suc f) where
   module A₁ = RawIApplicative A₁
   module A₂ = RawIApplicative A₂
   field
