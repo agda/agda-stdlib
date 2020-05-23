@@ -13,7 +13,7 @@ module Category.Applicative.Indexed where
 
 open import Category.Functor using (RawFunctor)
 open import Data.Product using (_×_; _,_)
-open import Function
+open import Function hiding (Morphism)
 open import Level
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
@@ -94,10 +94,9 @@ record RawIAlternative
 -- Applicative functor morphisms, specialised to propositional
 -- equality.
 
-record ApplicativeMorphism
-       {I : Set i} {F₁ F₂ : IFun I f}
-       (A₁ : RawIApplicative F₁)
-       (A₂ : RawIApplicative F₂) : Set (i ⊔ suc f) where
+record Morphism {I : Set i} {F₁ F₂ : IFun I f}
+                (A₁ : RawIApplicative F₁)
+                (A₂ : RawIApplicative F₂) : Set (i ⊔ suc f) where
   module A₁ = RawIApplicative A₁
   module A₂ = RawIApplicative A₂
   field

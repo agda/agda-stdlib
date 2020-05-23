@@ -10,7 +10,7 @@
 
 module Category.Functor where
 
-open import Function
+open import Function hiding (Morphism)
 open import Level
 
 open import Relation.Binary.PropositionalEquality
@@ -36,10 +36,9 @@ record RawFunctor (F : Set ℓ → Set ℓ′) : Set (suc ℓ ⊔ ℓ′) where
 -- A functor morphism from F₁ to F₂ is an operation op such that
 -- op (F₁ f x) ≡ F₂ f (op x)
 
-record CategoryMorphism
-       {F₁ : Set ℓ → Set ℓ′} {F₂ : Set ℓ → Set ℓ″}
-       (fun₁ : RawFunctor F₁)
-       (fun₂ : RawFunctor F₂) : Set (suc ℓ ⊔ ℓ′ ⊔ ℓ″) where
+record Morphism {F₁ : Set ℓ → Set ℓ′} {F₂ : Set ℓ → Set ℓ″}
+                (fun₁ : RawFunctor F₁)
+                (fun₂ : RawFunctor F₂) : Set (suc ℓ ⊔ ℓ′ ⊔ ℓ″) where
   open RawFunctor
   field
     op     : F₁ X → F₂ X
