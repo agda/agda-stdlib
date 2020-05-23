@@ -27,7 +27,7 @@ import Data.Nat.GCD as ℕ
 import Data.Nat.DivMod as ℕ
 open import Data.Product using (_×_; _,_)
 open import Data.Rational.Base
-open import Data.Rational.Unnormalised as ℚᵘ
+open import Data.Rational.Unnormalised.Base as ℚᵘ
   using (ℚᵘ; *≡*; *≤*) renaming (↥_ to ↥ᵘ_; ↧_ to ↧ᵘ_; _≃_ to _≃ᵘ_; _≤_ to _≤ᵘ_)
 import Data.Rational.Unnormalised.Properties as ℚᵘ
 open import Data.Sum.Base
