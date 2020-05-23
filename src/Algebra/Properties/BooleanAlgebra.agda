@@ -6,6 +6,9 @@
 
 {-# OPTIONS --without-K --safe #-}
 
+-- Disabled to prevent warnings from deprecated names
+{-# OPTIONS --warn=noUserWarning #-}
+
 open import Algebra.Bundles
 
 module Algebra.Properties.BooleanAlgebra
@@ -248,27 +251,6 @@ deMorgan₂ x y = begin
   ¬ ¬ (¬ x ∧ ¬ y)    ≈⟨ ¬-involutive _ ⟩
   ¬ x ∧ ¬ y          ∎
 
--- One can replace the underlying equality with an equivalent one.
-
-replace-equality : {_≈′_ : Rel Carrier b₂} →
-                   (∀ {x y} → x ≈ y ⇔ (x ≈′ y)) →
-                   BooleanAlgebra _ _
-replace-equality {_≈′_} ≈⇔≈′ = record
-  { _≈_              = _≈′_
-  ; _∨_              = _∨_
-  ; _∧_              = _∧_
-  ; ¬_               = ¬_
-  ; ⊤                = ⊤
-  ; ⊥                = ⊥
-  ; isBooleanAlgebra =  record
-    { isDistributiveLattice = DistributiveLattice.isDistributiveLattice
-        (DistribLatticeProperties.replace-equality distributiveLattice ≈⇔≈′)
-    ; ∨-complementʳ         = λ x → to ⟨$⟩ ∨-complementʳ x
-    ; ∧-complementʳ         = λ x → to ⟨$⟩ ∧-complementʳ x
-    ; ¬-cong                = λ i≈j → to ⟨$⟩ ¬-cong (from ⟨$⟩ i≈j)
-    }
-  } where open module E {x y} = Equivalence (≈⇔≈′ {x} {y})
-
 ------------------------------------------------------------------------
 -- (⊕, ∧, id, ⊥, ⊤) is a commutative ring
 
@@ -455,7 +437,7 @@ module XorRing
       ((x ∨ y) ∧ (¬ x ∨ ¬ y)) ∨ z        ≈˘⟨ ∨-congʳ $ ∧-congˡ (deMorgan₁ _ _) ⟩
       ((x ∨ y) ∧ ¬ (x ∧ y)) ∨ z          ∎
 
-    lem₂' = begin
+    lem₂′ = begin
       (x ∨ ¬ y) ∧ (¬ x ∨ y)              ≈˘⟨ ∧-identityˡ _ ⟨ ∧-cong ⟩ ∧-identityʳ _ ⟩
       (⊤ ∧ (x ∨ ¬ y)) ∧ ((¬ x ∨ y) ∧ ⊤)  ≈˘⟨  (∨-complementˡ _ ⟨ ∧-cong ⟩ ∨-comm _ _)
                                                 ⟨ ∧-cong ⟩
@@ -468,7 +450,7 @@ module XorRing
 
     lem₂ = begin
       ((x ∨ ¬ y) ∨ ¬ z) ∧ ((¬ x ∨ y) ∨ ¬ z)  ≈˘⟨ ∨-∧-distribʳ _ _ _ ⟩
-      ((x ∨ ¬ y) ∧ (¬ x ∨ y)) ∨ ¬ z          ≈⟨ ∨-congʳ lem₂' ⟩
+      ((x ∨ ¬ y) ∧ (¬ x ∨ y)) ∨ ¬ z          ≈⟨ ∨-congʳ lem₂′ ⟩
       ¬ ((x ∨ y) ∧ ¬ (x ∧ y)) ∨ ¬ z          ≈˘⟨ deMorgan₁ _ _ ⟩
       ¬ (((x ∨ y) ∧ ¬ (x ∧ y)) ∧ z)          ∎
 
@@ -478,7 +460,7 @@ module XorRing
       (x ∨ (y ∨ z)) ∧ (x ∨ (¬ y ∨ ¬ z))  ≈˘⟨ ∨-assoc _ _ _ ⟨ ∧-cong ⟩ ∨-assoc _ _ _ ⟩
       ((x ∨ y) ∨ z) ∧ ((x ∨ ¬ y) ∨ ¬ z)  ∎
 
-    lem₄' = begin
+    lem₄′ = begin
       ¬ ((y ∨ z) ∧ ¬ (y ∧ z))    ≈⟨ deMorgan₁ _ _ ⟩
       ¬ (y ∨ z) ∨ ¬ ¬ (y ∧ z)    ≈⟨ deMorgan₂ _ _ ⟨ ∨-cong ⟩ ¬-involutive _ ⟩
       (¬ y ∧ ¬ z) ∨ (y ∧ z)      ≈⟨ lemma₂ _ _ _ _ ⟩
@@ -492,7 +474,7 @@ module XorRing
 
     lem₄ = begin
       ¬ (x ∧ ((y ∨ z) ∧ ¬ (y ∧ z)))  ≈⟨ deMorgan₁ _ _ ⟩
-      ¬ x ∨ ¬ ((y ∨ z) ∧ ¬ (y ∧ z))  ≈⟨ ∨-congˡ lem₄' ⟩
+      ¬ x ∨ ¬ ((y ∨ z) ∧ ¬ (y ∧ z))  ≈⟨ ∨-congˡ lem₄′ ⟩
       ¬ x ∨ ((y ∨ ¬ z) ∧ (¬ y ∨ z))  ≈⟨ ∨-∧-distribˡ _ _ _ ⟩
       (¬ x ∨ (y     ∨ ¬ z)) ∧
       (¬ x ∨ (¬ y ∨ z))              ≈˘⟨ ∨-assoc _ _ _ ⟨ ∧-cong ⟩ ∨-assoc _ _ _ ⟩
@@ -608,4 +590,23 @@ Please use ⊥≉⊤ instead."
 {-# WARNING_ON_USAGE ¬⊤=⊥
 "Warning: ¬⊤=⊥ was deprecated in v1.1.
 Please use ⊤≉⊥ instead."
+#-}
+
+-- Version 1.4
+
+replace-equality : {_≈′_ : Rel Carrier b₂} →
+                   (∀ {x y} → x ≈ y ⇔ (x ≈′ y)) →
+                   BooleanAlgebra _ _
+replace-equality {_≈′_} ≈⇔≈′ = record
+  { isBooleanAlgebra =  record
+    { isDistributiveLattice = DistributiveLattice.isDistributiveLattice
+        (DistribLatticeProperties.replace-equality distributiveLattice ≈⇔≈′)
+    ; ∨-complementʳ         = λ x → to ⟨$⟩ ∨-complementʳ x
+    ; ∧-complementʳ         = λ x → to ⟨$⟩ ∧-complementʳ x
+    ; ¬-cong                = λ i≈j → to ⟨$⟩ ¬-cong (from ⟨$⟩ i≈j)
+    }
+  } where open module E {x y} = Equivalence (≈⇔≈′ {x} {y})
+{-# WARNING_ON_USAGE replace-equality
+"Warning: replace-equality was deprecated in v1.4.
+Please use isBooleanAlgebra from `Algebra.Construct.Subst.Equality` instead."
 #-}

@@ -32,10 +32,10 @@ private
 module _ {_∼_ : Rel A ℓ} (P : Rel A p) where
 
   subst⟶respˡ : Substitutive _∼_ p → P Respectsˡ _∼_
-  subst⟶respˡ subst {y} x'∼x Px'y = subst (flip P y) x'∼x Px'y
+  subst⟶respˡ subst {y} x′∼x Px′y = subst (flip P y) x′∼x Px′y
 
   subst⟶respʳ : Substitutive _∼_ p → P Respectsʳ _∼_
-  subst⟶respʳ subst {x} y'∼y Pxy' = subst (P x) y'∼y Pxy'
+  subst⟶respʳ subst {x} y′∼y Pxy′ = subst (P x) y′∼y Pxy′
 
   subst⟶resp₂ : Substitutive _∼_ p → P Respects₂ _∼_
   subst⟶resp₂ subst = subst⟶respʳ subst , subst⟶respˡ subst

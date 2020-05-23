@@ -21,6 +21,14 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
+* The `n` argument to `_⊜_` in `Tactic.RingSolver.NonReflective` has been made implict rather than explicit.
+
+* `Data.Empty.Polymorphic` and `Data.Unit.Polymorphic` were rewritten
+  to explicitly use `Lift` rather that defining new types. This means
+  that these are now compatible with `⊥` and `⊤` from the rest of the
+  library. This allowed them to be used in the rest of library where
+  explicit `Lift` was used.
+
 Deprecated modules
 ------------------
 
@@ -34,9 +42,18 @@ Deprecated modules
 Deprecated names
 ----------------
 
+* The proofs `replace-equality` from `Algebra.Properties.(Lattice/DistributiveLattice/BooleanAlgebra)`
+  have been deprecated in favour of the proofs in the new `Algebra.Construct.Subst.Equality` module.
 
-Other major additions
----------------------
+* In order to be consistent in usage of \prime character and apostrophe in identifiers, the following three names were deprecated in favor of their replacement that ends with a \prime character.
+
+  * `Data.List.Base.InitLast._∷ʳ'_` ↦ `Data.List.Base.InitLast._∷ʳ′_`
+  * `Data.List.NonEmpty.SnocView._∷ʳ'_` ↦ `Data.List.NonEmpty.SnocView._∷ʳ′_`
+  * `Relation.Binary.Construct.StrictToNonStrict.decidable'` ↦ `Relation.Binary.Construct.StrictToNonStrict.decidable′`
+
+
+New modules
+-----------
 
 * Instance modules:
   ```agda
@@ -68,6 +85,12 @@ Other major additions
   Data.List.Relation.Unary.Sorted.TotalOrder.Properties
   ```
 
+* Substituting the notion of equality for various structures
+  ```
+  Algebra.Construct.Subst.Equality
+  Relation.Binary.Construct.Subst.Equality
+  ```
+
 * Consequences for basic morphism properties
   ```
   Algebra.Morphism.Consequences
@@ -83,6 +106,11 @@ Other major additions
   ```
   Data.Sum.Algebra
   Data.Product.Algebra
+  ```
+
+* Indexed nullary relations/sets:
+  ```
+  Relation.Nullary.Indexed
   ```
 
 Other major changes
@@ -146,21 +174,70 @@ Other minor additions
 
 * Made first argument of `[,]-∘-distr` in `Data.Sum.Properties` explicit
 
-* Added new function to `Data.List.Base`:
+* Added new functions to `Data.List.Base`:
   ```agda
-  wordsBy : Decidable P → List A → List (List A)
+  wordsBy              : Decidable P → List A → List (List A)
+  cartesianProductWith : (A → B → C) → List A → List B → List C
+  cartesianProduct     : List A → List B → List (A × B)
+  ```
+
+* Added new proofs to `Data.List.Membership.Propositional.Properties`:
+  ```agda
+  ∈-cartesianProductWith⁺ : a ∈ xs → b ∈ ys → f a b ∈ cartesianProductWith f xs ys
+  ∈-cartesianProductWith⁻ : v ∈ cartesianProductWith f xs ys → ∃₂ λ a b → a ∈ xs × b ∈ ys × v ≡ f a b
+  ∈-cartesianProduct⁺     : x ∈ xs → y ∈ ys → (x , y) ∈ cartesianProduct xs ys
+  ∈-cartesianProduct⁻     : ∀ xs ys {xy@(x , y) : A × B} → xy ∈ cartesianProduct xs ys → x ∈ xs × y ∈ ys
+  ```
+
+* Added new proofs to `Data.List.Membership.Setoid.Properties`:
+  ```agda
+  ∈-cartesianProductWith⁺ : a ∈₁ xs → b ∈₂ ys → f a b ∈₃ cartesianProductWith f xs ys
+  ∈-cartesianProductWith⁻ : v ∈₃ cartesianProductWith f xs ys → ∃₂ λ a b → a ∈₁ xs × b ∈₂ ys × v ≈₃ f a b
+  ∈-cartesianProduct⁺     : x ∈₁ xs → y ∈₂ ys → (x , y) ∈₁₂ cartesianProduct xs ys
+  ∈-cartesianProduct⁻     : (x , y) ∈₁₂ cartesianProduct xs ys → x ∈₁ xs
+  ```
+
+* Added new operations to `Data.List.Relation.Unary.All`:
+  ```agda
+  tabulateₛ : (S : Setoid a ℓ) → ∀ {xs} → (∀ {x} → x ∈ xs → P x) → All P xs
+  ```
+
+* Added new proofs to `Data.List.Relation.Unary.All.Properties`:
+  ```agda
+  cartesianProductWith⁺ : (∀ {x y} → x ∈₁ xs → y ∈₂ ys → P (f x y)) → All P (cartesianProductWith f xs ys)
+  cartesianProduct⁺     : (∀ {x y} → x ∈₁ xs → y ∈₂ ys → P (x , y)) → All P (cartesianProduct xs ys)
+  ```
+
+* Added new proofs to `Data.List.Relation.Unary.Any.Properties`:
+  ```agda
+  cartesianProductWith⁺ : (∀ {x y} → P x → Q y → R (f x y)) → Any P xs → Any Q ys → Any R (cartesianProductWith f xs ys)
+  cartesianProductWith⁻ : (∀ {x y} → R (f x y) → P x × Q y) → Any R (cartesianProductWith f xs ys) → Any P xs × Any Q ys
+  cartesianProduct⁺     : Any P xs → Any Q ys → Any (P ⟨×⟩ Q) (cartesianProduct xs ys)
+  cartesianProduct⁻     : Any (P ⟨×⟩ Q) (cartesianProduct xs ys) → Any P xs × Any Q ys
+  ```
+
+* Added new proofs to `Data.List.Relation.Unary.Unique.Propositional.Properties`:
+  ```agda
+  cartesianProductWith⁺ : (∀ {w x y z} → f w y ≡ f x z → w ≡ x × y ≡ z) → Unique xs → Unique ys → Unique (cartesianProductWith f xs ys)
+  cartesianProduct⁺     : Unique xs → Unique ys → Unique (cartesianProduct xs ys)
+  ```
+
+* Added new proofs to `Data.List.Relation.Unary.Unique.Setoid.Properties`:
+  ```agda
+  cartesianProductWith⁺ : (∀ {w x y z} → f w y ≈₃ f x z → w ≈₁ x × y ≈₂ z) → Unique S xs → Unique T ys → Unique U (cartesianProductWith f xs ys)
+  cartesianProduct⁺     : Unique S xs → Unique T ys → Unique (S ×ₛ T) (cartesianProduct xs ys)
   ```
 
 * Added new properties to ` Data.List.Relation.Binary.Permutation.Propositional.Properties`:
   ```agda
   ↭-empty-inv     : xs ↭ [] → xs ≡ []
-  ¬x∷xs↭[]        : ¬ ((x ∷ xs) ↭ [])
+  ¬x∷xs↭[]        : ¬ (x ∷ xs ↭ [])
   ↭-singleton-inv : xs ↭ [ x ] → xs ≡ [ x ]
   ↭-map-inv       : map f xs ↭ ys → ∃ λ ys′ → ys ≡ map f ys′ × xs ↭ ys′
   ↭-length        : xs ↭ ys → length xs ≡ length ys
   ```
 
-* Added new proofs to `Data.List.Relation.Unary.Linked`:
+* Added new proofs to `Data.List.Relation.Unary.Linked.Properties`:
   ```agda
   map⁻    : Linked R (map f xs) → Linked (λ x y → R (f x) (f y)) xs
   filter⁺ : Transitive R → Linked R xs → Linked R (filter P? xs)
@@ -265,3 +342,24 @@ Other minor additions
   nonPositive : p ≤ 0ℚᵘ → NonPositive p
   nonNegative : p ≥ 0ℚᵘ → NonNegative p
   ```
+* Added new operator to `Relation.Binary`:
+  ```agda
+  _⇔_ : REL A B ℓ₁ → REL A B ℓ₂ → Set _
+  ```
+
+Refactorings
+------------
+
+These changes should be invisble to current users, but can be useful
+to authors of large libraries.
+
+* `Relation.Binary.PropositionalEquality`
+  was getting large and depended on a lot of other parts of the library,
+  even though its basic functionality did
+  not. `Relation.Binary.PropositionalEquality.Core` already
+  existed. Added are
+  ```agda
+  Relation.Binary.PropositionalEquality.Properties
+  Relation.Binary.PropositionalEquality.Algebra
+  ```
+  which factor out some of the dependencies.

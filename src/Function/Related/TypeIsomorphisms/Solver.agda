@@ -12,11 +12,11 @@ module Function.Related.TypeIsomorphisms.Solver where
 
 open import Algebra using (CommutativeSemiring)
 import Algebra.Solver.Ring.NaturalCoefficients.Default
-open import Data.Empty using (⊥)
+open import Data.Empty.Polymorphic using (⊥)
 open import Data.Product using (_×_)
 open import Data.Sum.Base using (_⊎_)
-open import Data.Unit using (⊤)
-open import Level using (Level; Lift)
+open import Data.Unit.Polymorphic using (⊤)
+open import Level using (Level)
 open import Function.Inverse as Inv using (_↔_)
 open import Function.Related as Related
 open import Function.Related.TypeIsomorphisms
@@ -36,7 +36,7 @@ private
   -- A test of the solver above.
 
   test : {ℓ : Level} (A B C : Set ℓ) →
-         (Lift ℓ ⊤ × A × (B ⊎ C)) ↔ (A × B ⊎ C × (Lift ℓ ⊥ ⊎ A))
+         (⊤ × A × (B ⊎ C)) ↔ (A × B ⊎ C × (⊥ ⊎ A))
   test = solve 3 (λ A B C → con 1 :* (A :* (B :+ C)) :=
                             A :* B :+ C :* (con 0 :+ A))
                  Inv.id

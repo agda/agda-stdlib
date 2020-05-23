@@ -23,8 +23,8 @@ module _ {a} {A : Set a} where
   []=-irrelevant : ∀ {n} {xs : Vec A n} {i x} →
                     (p q : xs [ i ]= x) → p ≡ q
   []=-irrelevant here            here             = refl
-  []=-irrelevant (there xs[i]=x) (there xs[i]=x') =
-    P.cong there ([]=-irrelevant xs[i]=x xs[i]=x')
+  []=-irrelevant (there xs[i]=x) (there xs[i]=x′) =
+    P.cong there ([]=-irrelevant xs[i]=x xs[i]=x′)
 
 ------------------------------------------------------------------------
 -- _++_

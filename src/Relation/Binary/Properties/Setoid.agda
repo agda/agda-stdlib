@@ -39,10 +39,10 @@ preorder = record
 ≉-sym x≉y =  x≉y ∘ sym
 
 ≉-respˡ : _≉_ Respectsˡ _≈_
-≉-respˡ x≈x' x≉y = x≉y ∘ trans x≈x'
+≉-respˡ x≈x′ x≉y = x≉y ∘ trans x≈x′
 
 ≉-respʳ : _≉_ Respectsʳ _≈_
-≉-respʳ y≈y' x≉y x≈y' = x≉y $ trans x≈y' (sym y≈y')
+≉-respʳ y≈y′ x≉y x≈y′ = x≉y $ trans x≈y′ (sym y≈y′)
 
 ≉-resp₂ : _≉_ Respects₂ _≈_
 ≉-resp₂ = ≉-respʳ , ≉-respˡ
