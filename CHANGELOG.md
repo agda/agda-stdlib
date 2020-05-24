@@ -46,11 +46,26 @@ Deprecated names
   have been deprecated in favour of the proofs in the new `Algebra.Construct.Subst.Equality` module.
 
 * In order to be consistent in usage of \prime character and apostrophe in identifiers, the following three names were deprecated in favor of their replacement that ends with a \prime character.
-
   * `Data.List.Base.InitLast._∷ʳ'_` ↦ `Data.List.Base.InitLast._∷ʳ′_`
   * `Data.List.NonEmpty.SnocView._∷ʳ'_` ↦ `Data.List.NonEmpty.SnocView._∷ʳ′_`
   * `Relation.Binary.Construct.StrictToNonStrict.decidable'` ↦ `Relation.Binary.Construct.StrictToNonStrict.decidable′`
 
+* In `Data.Nat.Properties`:
+  ```
+  *-+-isSemiring             ↦  +-*-isSemiring
+  *-+-isCommutativeSemiring  ↦  +-*-isCommutativeSemiring
+  *-+-semiring               ↦  +-*-semiring
+  *-+-commutativeSemiring    ↦  +-*-commutativeSemiring
+  ```
+
+* In `Data.Nat.Binary.Properties`:
+  ```
+  *-+-isSemiring                         ↦  +-*-isSemiring
+  *-+-isCommutativeSemiring              ↦  +-*-isCommutativeSemiring
+  *-+-semiring                           ↦  +-*-semiring
+  *-+-commutativeSemiring                ↦  +-*-commutativeSemiring
+  *-+-isSemiringWithoutAnnihilatingZero  ↦  +-*-isSemiringWithoutAnnihilatingZero
+  ```
 
 New modules
 -----------

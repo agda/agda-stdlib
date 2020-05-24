@@ -27,7 +27,7 @@ import Tactic.RingSolver.Core.AlmostCommutativeRing as ACR
 -- containing _+_ and _*_
 
 ring : ACR.AlmostCommutativeRing 0ℓ 0ℓ
-ring = ACR.fromCommutativeSemiring *-+-commutativeSemiring
+ring = ACR.fromCommutativeSemiring +-*-commutativeSemiring
   λ { zero → just refl; _ → nothing }
 
 macro
