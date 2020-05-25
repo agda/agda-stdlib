@@ -116,12 +116,12 @@ Other minor additions
 * Added new proof to `Data.Fin.Induction`:
   ```agda
   <-wellFounded : WellFounded _<_
-	```
+        ```
 
 * Added new properties to `Data.Fin.Properties`:
   ```agda
   toℕ≤n : ∀ {n} → (i : Fin n) → toℕ i ℕ.≤ n
-	≤fromℕ : ∀ {n} → (i : Fin (ℕ.suc n)) → i ≤ fromℕ n
+        ≤fromℕ : ∀ {n} → (i : Fin (ℕ.suc n)) → i ≤ fromℕ n
   fromℕ<-irrelevant : ∀ m n {o} → m ≡ n → (m<o : m ℕ.< o) → (n<o : n ℕ.< o) → fromℕ< m<o ≡ fromℕ< n<o
   fromℕ<-injective : ∀ m n {o} → (m<o : m ℕ.< o) → (n<o : n ℕ.< o) → fromℕ< m<o ≡ fromℕ< n<o → m ≡ n
   inject₁≢suc : ∀ {n} → (i : Fin n) → inject₁ i ≢ suc i
