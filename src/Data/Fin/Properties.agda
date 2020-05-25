@@ -107,7 +107,7 @@ toℕ<n (suc i) = s≤s (toℕ<n i)
 
 toℕ≤n : ∀ {n} → (i : Fin n) → toℕ i ℕ.≤ n
 toℕ≤n = ℕₚ.<⇒≤ ∘ toℕ<n
-  
+
 toℕ≤pred[n] : ∀ {n} (i : Fin n) → toℕ i ℕ.≤ ℕ.pred n
 toℕ≤pred[n] zero                 = z≤n
 toℕ≤pred[n] (suc {n = suc n} i)  = s≤s (toℕ≤pred[n] i)
