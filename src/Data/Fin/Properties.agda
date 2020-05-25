@@ -156,7 +156,9 @@ fromℕ<-irrelevant : ∀ m n {o} → m ≡ n
                   → (m<o : m ℕ.< o)
                   → (n<o : n ℕ.< o)
                   → fromℕ< m<o ≡ fromℕ< n<o
-fromℕ<-irrelevant _ _ refl _ _ = refl
+fromℕ<-irrelevant .0 .0 r (s≤s z≤n) (s≤s z≤n) = refl
+fromℕ<-irrelevant .(suc _) .(suc _) r (s≤s (s≤s p)) (s≤s (s≤s q))
+  = cong suc (fromℕ<-irrelevant _ _ (ℕₚ.suc-injective r) (s≤s p) (s≤s q))
 
 fromℕ<-injective : ∀ m n {o}
                   → (m<o : m ℕ.< o)
