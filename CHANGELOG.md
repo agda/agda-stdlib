@@ -116,6 +116,30 @@ Other minor additions
 * Added new proof to `Data.Fin.Induction`:
   ```agda
   <-wellFounded : WellFounded _<_
+	```
+
+* Added new properties to `Data.Fin.Properties`:
+  ```agda
+  toℕ≤n : ∀ {n} → (i : Fin n) → toℕ i ℕ.≤ n
+	≤fromℕ : ∀ {n} → (i : Fin (ℕ.suc n)) → i ≤ fromℕ n
+  fromℕ<-irrelevant : ∀ m n {o} → m ≡ n → (m<o : m ℕ.< o) → (n<o : n ℕ.< o) → fromℕ< m<o ≡ fromℕ< n<o
+  fromℕ<-injective : ∀ m n {o} → (m<o : m ℕ.< o) → (n<o : n ℕ.< o) → fromℕ< m<o ≡ fromℕ< n<o → m ≡ n
+  inject₁≢suc : ∀ {n} → (i : Fin n) → inject₁ i ≢ suc i
+  inject₁ℕ< : ∀ {n} → (i : Fin n) → toℕ (inject₁ i) ℕ.< n
+  inject₁ℕ≤ : ∀ {n} → (i : Fin n) → toℕ (inject₁ i) ℕ.≤ n
+  ≤̄⇒inject₁< : ∀ {n} → {i i' : Fin n} → i' ≤ i → inject₁ i' < suc i
+  ℕ<⇒inject₁< : ∀ {n} → {i : Fin (ℕ.suc n)} → {i' : Fin n} → toℕ i' ℕ.< toℕ i → inject₁ i' < i
+  toℕ-lower₁ : ∀ {m} x → (p : m ≢ toℕ x) → toℕ (lower₁ x p) ≡ toℕ x
+  inject₁≡⇒lower₁≡ : ∀ {n} → {i : Fin n} → {i' : Fin (ℕ.suc n)} → (≢p : n ≢ (toℕ i')) → inject₁ i ≡ i' → lower₁ i' ≢p ≡ i
+  pred< : ∀ {n} → (i : Fin (ℕ.suc n)) → i ≢ zero → pred i < i
+  map-injective : ∀ {f : A → B} {mx my : Maybe A} → (∀ {x y : A} → f x ≡ f y → x ≡ y) → map f mx ≡ map f my → mx ≡ my
+  _∘₂_ : ∀ {A₁ : Set a} {A₂ : A₁ → Set d}
+           {B : (x : A₁) → A₂ x → Set b}
+           {C : {x : A₁} → {y : A₂ x} → B x y → Set c}
+       → ({x : A₁} → {y : A₂ x} → (z : B x y) → C z)
+       → (g : (x : A₁) → (y : A₂ x) → B x y)
+       → ((x : A₁) → (y : A₂ x) → C (g x y))
+  _∘₂′_ : (C → D) → (A → B → C) → (A → B → D)
   ```
 
 * Added new types and constructors to `Data.Integer.Base`:
