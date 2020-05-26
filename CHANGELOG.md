@@ -120,25 +120,17 @@ Other minor additions
 
 * Added new properties to `Data.Fin.Properties`:
   ```agda
-  toℕ≤n : ∀ {n} → (i : Fin n) → toℕ i ℕ.≤ n
-        ≤fromℕ : ∀ {n} → (i : Fin (ℕ.suc n)) → i ≤ fromℕ n
-  fromℕ<-irrelevant : ∀ m n {o} → m ≡ n → (m<o : m ℕ.< o) → (n<o : n ℕ.< o) → fromℕ< m<o ≡ fromℕ< n<o
-  fromℕ<-injective : ∀ m n {o} → (m<o : m ℕ.< o) → (n<o : n ℕ.< o) → fromℕ< m<o ≡ fromℕ< n<o → m ≡ n
-  inject₁≢suc : ∀ {n} → (i : Fin n) → inject₁ i ≢ suc i
-  inject₁ℕ< : ∀ {n} → (i : Fin n) → toℕ (inject₁ i) ℕ.< n
-  inject₁ℕ≤ : ∀ {n} → (i : Fin n) → toℕ (inject₁ i) ℕ.≤ n
-  ≤̄⇒inject₁< : ∀ {n} → {i i' : Fin n} → i' ≤ i → inject₁ i' < suc i
-  ℕ<⇒inject₁< : ∀ {n} → {i : Fin (ℕ.suc n)} → {i' : Fin n} → toℕ i' ℕ.< toℕ i → inject₁ i' < i
-  toℕ-lower₁ : ∀ {m} x → (p : m ≢ toℕ x) → toℕ (lower₁ x p) ≡ toℕ x
-  inject₁≡⇒lower₁≡ : ∀ {n} → {i : Fin n} → {i' : Fin (ℕ.suc n)} → (≢p : n ≢ (toℕ i')) → inject₁ i ≡ i' → lower₁ i' ≢p ≡ i
+  toℕ≤n : (i : Fin n) → toℕ i ℕ.≤ n
+  ≤fromℕ : (i : Fin (ℕ.suc n)) → i ≤ fromℕ n
+  fromℕ<-irrelevant : m ≡ n → (m<o : m ℕ.< o) → (n<o : n ℕ.< o) → fromℕ< m<o ≡ fromℕ< n<o
+  fromℕ<-injective : fromℕ< m<o ≡ fromℕ< n<o → m ≡ n
+  inject₁ℕ< : (i : Fin n) → toℕ (inject₁ i) ℕ.< n
+  inject₁ℕ≤ : (i : Fin n) → toℕ (inject₁ i) ℕ.≤ n
+  ≤̄⇒inject₁< : i' ≤ i → inject₁ i' < suc i
+  ℕ<⇒inject₁< : toℕ i' ℕ.< toℕ i → inject₁ i' < i
+  toℕ-lower₁ : (p : m ≢ toℕ x) → toℕ (lower₁ x p) ≡ toℕ x
+  inject₁≡⇒lower₁≡ : (≢p : n ≢ (toℕ i')) → inject₁ i ≡ i' → lower₁ i' ≢p ≡ i
   pred< : ∀ {n} → (i : Fin (ℕ.suc n)) → i ≢ zero → pred i < i
-  _∘₂_ : ∀ {A₁ : Set a} {A₂ : A₁ → Set d}
-           {B : (x : A₁) → A₂ x → Set b}
-           {C : {x : A₁} → {y : A₂ x} → B x y → Set c}
-       → ({x : A₁} → {y : A₂ x} → (z : B x y) → C z)
-       → (g : (x : A₁) → (y : A₂ x) → B x y)
-       → ((x : A₁) → (y : A₂ x) → C (g x y))
-  _∘₂′_ : (C → D) → (A → B → C) → (A → B → D)
   ```
 
 * Added new types and constructors to `Data.Integer.Base`:
@@ -323,7 +315,7 @@ Other minor additions
   nonNegative : p ≥ 0ℚ → NonNegative p
   ```
 
-* Added new types and constructors to `Data.Rational.Unnormalised`
+* Added new types and constructors to `Data.Rational.Unnormalised`:
   ```agda
   _≠_         : Rel ℚᵘ 0ℓ
 
@@ -341,6 +333,16 @@ Other minor additions
   nonPositive : p ≤ 0ℚᵘ → NonPositive p
   nonNegative : p ≥ 0ℚᵘ → NonNegative p
   ```
+
+* Added new functions to `Function.Base`:
+  ```agda
+  _∘₂_ : (f : {x : A₁} → {y : A₂ x} → (z : B x y) → C z)
+       → (g : (x : A₁) → (y : A₂ x) → B x y)
+       → ((x : A₁) → (y : A₂ x) → C (g x y))
+
+  _∘₂′_ : (C → D) → (A → B → C) → (A → B → D)
+  ```
+
 * Added new operator to `Relation.Binary`:
   ```agda
   _⇔_ : REL A B ℓ₁ → REL A B ℓ₂ → Set _
