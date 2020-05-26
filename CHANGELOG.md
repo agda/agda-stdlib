@@ -130,7 +130,7 @@ Other minor additions
   ℕ<⇒inject₁< : toℕ i' ℕ.< toℕ i → inject₁ i' < i
   toℕ-lower₁ : (p : m ≢ toℕ x) → toℕ (lower₁ x p) ≡ toℕ x
   inject₁≡⇒lower₁≡ : (≢p : n ≢ (toℕ i')) → inject₁ i ≡ i' → lower₁ i' ≢p ≡ i
-  pred< : ∀ {n} → (i : Fin (ℕ.suc n)) → i ≢ zero → pred i < i
+  pred< : pred i < i
   ```
 
 * Added new types and constructors to `Data.Integer.Base`:
@@ -152,7 +152,7 @@ Other minor additions
 
 * Add new properties to `Data.Maybe.Properties`:
   ```agda
-  map-injective : ∀ {f : A → B} → Injective _≡_ _≡_ f → Injective _≡_ _≡_ (map f)
+  map-injective : Injective _≡_ _≡_ f → Injective _≡_ _≡_ (map f)
   ```
 
 * Added new function to `Data.Nat.Properties`:
