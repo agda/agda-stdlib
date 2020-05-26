@@ -406,7 +406,7 @@ inject₁ℕ≤ = ℕₚ.<⇒≤ ∘ inject₁ℕ<
 ------------------------------------------------------------------------
 
 toℕ-lower₁ : ∀ {m} x → (p : m ≢ toℕ x) → toℕ (lower₁ x p) ≡ toℕ x
-toℕ-lower₁ {ℕ.zero} zero p     = ⊥-elim (p refl)
+toℕ-lower₁ {ℕ.zero} zero p     = contradiction refl p
 toℕ-lower₁ {ℕ.suc m} zero p    = refl
 toℕ-lower₁ {ℕ.suc m} (suc x) p = cong ℕ.suc (toℕ-lower₁ x (p ∘ cong ℕ.suc))
 
@@ -469,7 +469,7 @@ inject≤-idempotent {_} {suc n} {suc k} (suc i) m≤n n≤k _ =
 ------------------------------------------------------------------------
 
 pred< : ∀ {n} → (i : Fin (ℕ.suc n)) → i ≢ zero → pred i < i
-pred< zero p = ⊥-elim (p refl)
+pred< zero p = contradiction refl p
 pred< (suc i) p = ≤̄⇒inject₁< ℕₚ.≤-refl
 
 ------------------------------------------------------------------------
