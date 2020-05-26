@@ -414,21 +414,22 @@ module ≤-Reasoning where
 ------------------------------------------------------------------------
 -- Properties of Positive/NonPositive/Negative/NonNegative and _≤_/_<_
 
-positive⇒>0 : ∀ {q} → Positive q → q > 0ℚᵘ
-positive⇒>0 {mkℚᵘ +[1+ n ] _} _ = *<* (ℤ.+<+ (ℕ.s≤s ℕ.z≤n))
+positive⁻¹ : ∀ {q} → Positive q → q > 0ℚᵘ
+positive⁻¹ {mkℚᵘ +[1+ n ] _} _ = *<* (ℤ.+<+ (ℕ.s≤s ℕ.z≤n))
 
-nonNegative⇒≥0 : ∀ {q} → NonNegative q → q ≥ 0ℚᵘ
-nonNegative⇒≥0 {mkℚᵘ +0       _} _ = *≤* (ℤ.+≤+ ℕ.z≤n)
-nonNegative⇒≥0 {mkℚᵘ +[1+ n ] _} _ = *≤* (ℤ.+≤+ ℕ.z≤n)
+nonNegative⁻¹ : ∀ {q} → NonNegative q → q ≥ 0ℚᵘ
+nonNegative⁻¹ {mkℚᵘ +0       _} _ = *≤* (ℤ.+≤+ ℕ.z≤n)
+nonNegative⁻¹ {mkℚᵘ +[1+ n ] _} _ = *≤* (ℤ.+≤+ ℕ.z≤n)
 
-negative⇒≱0 : ∀ {q} → Negative q → q ≱ 0ℚᵘ
-negative⇒≱0 {mkℚᵘ -[1+ n ] _} _ (*≤* ())
+negative⁻¹ : ∀ {q} → Negative q → q < 0ℚᵘ
+negative⁻¹ {mkℚᵘ -[1+ n ] _} _ = *<* ℤ.-<+
 
-negative⇒<0 : ∀ {q} → Negative q → q < 0ℚᵘ
-negative⇒<0 {mkℚᵘ -[1+ n ] _} _ = *<* ℤ.-<+
+nonPositive⁻¹ : ∀ {q} → NonPositive q → q ≤ 0ℚᵘ
+nonPositive⁻¹ {mkℚᵘ +0       _} _ = *≤* (ℤ.+≤+ ℕ.z≤n)
+nonPositive⁻¹ {mkℚᵘ -[1+ n ] _} _ = *≤* ℤ.-≤+
 
 negative<positive : ∀ {p q} → Negative p → Positive q → p < q
-negative<positive p<0 q>0 = <-trans (negative⇒<0 p<0) (positive⇒>0 q>0)
+negative<positive p<0 q>0 = <-trans (negative⁻¹ p<0) (positive⁻¹ q>0)
 
 ------------------------------------------------------------------------
 -- Properties of _+_
@@ -598,7 +599,7 @@ negative<positive p<0 q>0 = <-trans (negative⇒<0 p<0) (positive⇒>0 q>0)
   r + q ∎ where open ≤-Reasoning
 
 ------------------------------------------------------------------------
--- properties of _+_ and -_
+-- Properties of _+_ and -_
 
 neg-distrib-+ : ∀ p q → - (p + q) ≡ (- p) + (- q)
 neg-distrib-+ p q = ↥↧≡⇒≡ (begin
@@ -610,7 +611,7 @@ neg-distrib-+ p q = ↥↧≡⇒≡ (begin
   where open ≡-Reasoning
 
 ------------------------------------------------------------------------
--- properties of _+_ and _≤_
+-- Properties of _+_ and _≤_
 
 private
   lemma : ∀ r p q → (↥ r ℤ.* ↧ p ℤ.+ ↥ p ℤ.* ↧ r) ℤ.* (↧ r ℤ.* ↧ q)
@@ -639,10 +640,10 @@ private
 +-mono-≤ {p} {q} {u} {v} p≤q u≤v = ≤-trans (+-monoˡ-≤ u p≤q) (+-monoʳ-≤ q u≤v)
 
 ≤-steps : ∀ {p q r} → NonNegative r → p ≤ q → p ≤ r + q
-≤-steps {p} {q} {r} r≥0 p≤q = subst (_≤ r + q) (+-identityˡ-≡ p) (+-mono-≤ (nonNegative⇒≥0 r≥0) p≤q)
+≤-steps {p} {q} {r} r≥0 p≤q = subst (_≤ r + q) (+-identityˡ-≡ p) (+-mono-≤ (nonNegative⁻¹ r≥0) p≤q)
 
 p≤p+q : ∀ {p q} → NonNegative q → p ≤ p + q
-p≤p+q {p} {q} q≥0 = subst (_≤ p + q) (+-identityʳ-≡ p) (+-monoʳ-≤ p (nonNegative⇒≥0 q≥0))
+p≤p+q {p} {q} q≥0 = subst (_≤ p + q) (+-identityʳ-≡ p) (+-monoʳ-≤ p (nonNegative⁻¹ q≥0))
 
 p≤q+p : ∀ {p} → NonNegative p → ∀ {q} → q ≤ p + q
 p≤q+p {p} p≥0 {q} rewrite +-comm-≡ p q = p≤p+q p≥0
@@ -674,7 +675,7 @@ p≤q+p {p} p≥0 {q} rewrite +-comm-≡ p q = p≤p+q p≥0
 +-mono-<-≤ {p} {q} {r} p<q q≤r = <-≤-trans (+-monoˡ-< r p<q) (+-monoʳ-≤ q q≤r)
 
 -----------------------------------------------------------------------
--- properties of _-_
+-- Properties of _-_
 
 +-minus-telescope : ∀ p q r → (p - q) + (q - r) ≃ p - r
 +-minus-telescope p q r = begin-equality
@@ -972,8 +973,8 @@ private
   rewrite *-comm-≡ r p
         | *-comm-≡ r q = *-cancelʳ-≤-pos r>0
 
-*-monoˡ-≤-non-neg : ∀ {r} → NonNegative r → (_* r) Preserves _≤_ ⟶ _≤_
-*-monoˡ-≤-non-neg r@{mkℚᵘ (ℤ.+ n) _} _ {p} {q} (*≤* x<y) = *≤* $ begin
+*-monoˡ-≤-nonNeg : ∀ {r} → NonNegative r → (_* r) Preserves _≤_ ⟶ _≤_
+*-monoˡ-≤-nonNeg r@{mkℚᵘ (ℤ.+ n) _} _ {p} {q} (*≤* x<y) = *≤* $ begin
   ↥ p ℤ.* ↥ r ℤ.* (↧ q   ℤ.* ↧ r)  ≡⟨ reorder₂ (↥ p) _ _ _ ⟩
   l₁          ℤ.* (ℤ.+ n ℤ.* ↧ r)  ≡⟨ cong (l₁ ℤ.*_) (ℤ.pos-distrib-* n _) ⟩
   l₁          ℤ.* ℤ.+ (n ℕ.* ↧ₙ r) ≤⟨ ℤ.*-monoʳ-≤-non-neg (n ℕ.* _) x<y ⟩
@@ -983,16 +984,16 @@ private
   where open ℤ.≤-Reasoning
         l₁ = ↥ p ℤ.* ↧ q ; l₂ = ↥ q ℤ.* ↧ p
 
-*-monoʳ-≤-non-neg : ∀ {r} → NonNegative r → (r *_) Preserves _≤_ ⟶ _≤_
-*-monoʳ-≤-non-neg {r} r≥0 {p} {q}
+*-monoʳ-≤-nonNeg : ∀ {r} → NonNegative r → (r *_) Preserves _≤_ ⟶ _≤_
+*-monoʳ-≤-nonNeg {r} r≥0 {p} {q}
   rewrite *-comm-≡ r p
-        | *-comm-≡ r q = *-monoˡ-≤-non-neg r≥0
+        | *-comm-≡ r q = *-monoˡ-≤-nonNeg r≥0
 
 *-monoʳ-≤-pos : ∀ {r} → Positive r → (r *_) Preserves _≤_ ⟶ _≤_
-*-monoʳ-≤-pos {r} = (*-monoʳ-≤-non-neg {r}) ∘ (positive⇒nonNegative {r})
+*-monoʳ-≤-pos {r} = (*-monoʳ-≤-nonNeg {r}) ∘ (positive⇒nonNegative {r})
 
 *-monoˡ-≤-pos : ∀ {r} → Positive r → (_* r) Preserves _≤_ ⟶ _≤_
-*-monoˡ-≤-pos {r} = *-monoˡ-≤-non-neg ∘ (positive⇒nonNegative {r})
+*-monoˡ-≤-pos {r} = *-monoˡ-≤-nonNeg ∘ (positive⇒nonNegative {r})
 
 ------------------------------------------------------------------------
 -- Properties of _*_ and _<_
@@ -1009,8 +1010,8 @@ private
   rewrite *-comm-≡ r p
         | *-comm-≡ r q = *-monoˡ-<-pos r>0
 
-*-cancelˡ-<-non-neg : ∀ {r} (r≥0 : NonNegative r) {p q} → r * p < r * q → p < q
-*-cancelˡ-<-non-neg {mkℚᵘ (ℤ.+ n) dm} _ {p} {q} (*<* x<y) = *<* $
+*-cancelˡ-<-nonNeg : ∀ {r} (r≥0 : NonNegative r) {p q} → r * p < r * q → p < q
+*-cancelˡ-<-nonNeg {mkℚᵘ (ℤ.+ n) dm} _ {p} {q} (*<* x<y) = *<* $
   ℤ.*-cancelˡ-<-non-neg s $ begin-strict
   ℤ.+ s         ℤ.* r₁          ≡⟨ cong (ℤ._* r₁) (sym (ℤ.pos-distrib-* n (suc dm))) ⟩
   ℤ.+ n ℤ.* d   ℤ.* r₁          ≡⟨ reorder₂ (ℤ.+ n) _ _ _ ⟩
@@ -1021,10 +1022,10 @@ private
   where open ℤ.≤-Reasoning
         d+ = suc dm ; s = n ℕ.* d+ ; d = ℤ.+ d+ ; r₁ = ↥ p ℤ.* ↧ q ; r₂ = ↥ q ℤ.* ↧ p
 
-*-cancelʳ-<-non-neg : ∀ {r} (r≥0 : NonNegative r) {p q} → p * r < q * r → p < q
-*-cancelʳ-<-non-neg {r} r≥0 {p} {q}
+*-cancelʳ-<-nonNeg : ∀ {r} (r≥0 : NonNegative r) {p q} → p * r < q * r → p < q
+*-cancelʳ-<-nonNeg {r} r≥0 {p} {q}
   rewrite *-comm-≡ p r
-        | *-comm-≡ q r = *-cancelˡ-<-non-neg {r} r≥0
+        | *-comm-≡ q r = *-cancelˡ-<-nonNeg {r} r≥0
 
 ------------------------------------------------------------------------
 -- Algebraic structures
