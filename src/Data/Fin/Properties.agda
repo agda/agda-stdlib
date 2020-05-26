@@ -389,17 +389,17 @@ toℕ-inject₁-≢ : ∀ {n}(i : Fin n) → n ≢ toℕ (inject₁ i)
 toℕ-inject₁-≢ (suc i) = toℕ-inject₁-≢ i ∘ ℕₚ.suc-injective
 
 inject₁ℕ< : ∀ {n} → (i : Fin n) → toℕ (inject₁ i) ℕ.< n
-inject₁ℕ< i = ℕₚ.<-transʳ (ℕₚ.≤-reflexive (toℕ-inject₁ i)) (toℕ<n i)
+inject₁ℕ< {n} i = subst (ℕ._< n) (sym (toℕ-inject₁ i)) (toℕ<n i)
 
 inject₁ℕ≤ : ∀ {n} → (i : Fin n) → toℕ (inject₁ i) ℕ.≤ n
 inject₁ℕ≤ = ℕₚ.<⇒≤ ∘ inject₁ℕ<
 
-≤̄⇒inject₁< : ∀ {n} → {i i' : Fin n} → i' ≤ i → inject₁ i' < suc i
-≤̄⇒inject₁< {i' = i'} p = s≤s (ℕₚ.≤-trans (ℕₚ.≤-reflexive (toℕ-inject₁ i')) p)
+≤̄⇒inject₁< : ∀ {n} → {i j : Fin n} → j ≤ i → inject₁ j < suc i
+≤̄⇒inject₁< {i = i} {j} p = subst (ℕ._< toℕ (suc i)) (sym (toℕ-inject₁ j)) (s≤s p)
 
-ℕ<⇒inject₁< : ∀ {n} → {i : Fin (ℕ.suc n)} → {i' : Fin n} →
-              toℕ i' ℕ.< toℕ i → inject₁ i' < i
-ℕ<⇒inject₁< {n} {suc i} {i'} (s≤s p) = ≤̄⇒inject₁< p
+ℕ<⇒inject₁< : ∀ {n} → {i : Fin (ℕ.suc n)} → {j : Fin n} →
+              toℕ j ℕ.< toℕ i → inject₁ j < i
+ℕ<⇒inject₁< {i = suc i} (s≤s p) = ≤̄⇒inject₁< p
 
 ------------------------------------------------------------------------
 -- lower₁
@@ -437,10 +437,11 @@ lower₁-irrelevant {suc n} zero     _   _ = refl
 lower₁-irrelevant {suc n} (suc i)  _   _ =
   cong suc (lower₁-irrelevant i _ _)
 
-inject₁≡⇒lower₁≡ : ∀ {n} → {i : Fin n} → {i' : Fin (ℕ.suc n)} →
-                  (≢p : n ≢ (toℕ i')) →
-                  inject₁ i ≡ i' →
-                  lower₁ i' ≢p ≡ i
+inject₁≡⇒lower₁≡ : ∀ {n} → {i : Fin n} →
+                  {j : Fin (ℕ.suc n)} →
+                  (≢p : n ≢ (toℕ j)) →
+                  inject₁ i ≡ j →
+                  lower₁ j ≢p ≡ i
 inject₁≡⇒lower₁≡ ≢p ≡p = inject₁-injective (trans (inject₁-lower₁ _ ≢p) (sym ≡p))
 
 ------------------------------------------------------------------------
