@@ -132,7 +132,6 @@ Other minor additions
   toℕ-lower₁ : ∀ {m} x → (p : m ≢ toℕ x) → toℕ (lower₁ x p) ≡ toℕ x
   inject₁≡⇒lower₁≡ : ∀ {n} → {i : Fin n} → {i' : Fin (ℕ.suc n)} → (≢p : n ≢ (toℕ i')) → inject₁ i ≡ i' → lower₁ i' ≢p ≡ i
   pred< : ∀ {n} → (i : Fin (ℕ.suc n)) → i ≢ zero → pred i < i
-  map-injective : ∀ {f : A → B} {mx my : Maybe A} → (∀ {x y : A} → f x ≡ f y → x ≡ y) → map f mx ≡ map f my → mx ≡ my
   _∘₂_ : ∀ {A₁ : Set a} {A₂ : A₁ → Set d}
            {B : (x : A₁) → A₂ x → Set b}
            {C : {x : A₁} → {y : A₂ x} → B x y → Set c}
@@ -157,6 +156,11 @@ Other minor additions
   negative    : p < 0ℤ → Negative p
   nonPositive : p ≤ 0ℤ → NonPositive p
   nonNegative : p ≥ 0ℤ → NonNegative p
+  ```
+
+* Add new properties to `Data.Maybe.Properties`:
+  ```agda
+  map-injective : ∀ {f : A → B} → Injective _≡_ _≡_ f → Injective _≡_ _≡_ (map f)
   ```
 
 * Added new function to `Data.Nat.Properties`:
