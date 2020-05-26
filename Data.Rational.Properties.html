@@ -819,45 +819,53 @@
 <a id="+-*-isRing"></a><a id="26443" href="Data.Rational.Properties.html#26443" class="Function">+-*-isRing</a> <a id="26454" class="Symbol">:</a> <a id="26456" href="Algebra.Structures.html#12145" class="Record">IsRing</a> <a id="26463" href="Data.Rational.Base.html#5811" class="Function Operator">_+_</a> <a id="26467" href="Data.Rational.Base.html#5903" class="Function Operator">_*_</a> <a id="26471" href="Data.Rational.Base.html#3018" class="Function Operator">-_</a> <a id="26474" href="Data.Rational.Base.html#4284" class="Function">0ℚ</a> <a id="26477" href="Data.Rational.Base.html#4305" class="Function">1ℚ</a>
 <a id="26480" href="Data.Rational.Properties.html#26443" class="Function">+-*-isRing</a> <a id="26491" class="Symbol">=</a> <a id="26493" href="Algebra.Morphism.RingMonomorphism.html#4468" class="Function">*-Monomorphism.isRing</a> <a id="26515" href="Data.Rational.Unnormalised.Properties.html#16439" class="Function">ℚᵘ.+-*-isRing</a>
 
-<a id="26530" class="Comment">------------------------------------------------------------------------</a>
-<a id="26603" class="Comment">-- Packages</a>
+<a id="+-*-isCommutativeRing"></a><a id="26530" href="Data.Rational.Properties.html#26530" class="Function">+-*-isCommutativeRing</a> <a id="26552" class="Symbol">:</a> <a id="26554" href="Algebra.Structures.html#14214" class="Record">IsCommutativeRing</a> <a id="26572" href="Data.Rational.Base.html#5811" class="Function Operator">_+_</a> <a id="26576" href="Data.Rational.Base.html#5903" class="Function Operator">_*_</a> <a id="26580" href="Data.Rational.Base.html#3018" class="Function Operator">-_</a> <a id="26583" href="Data.Rational.Base.html#4284" class="Function">0ℚ</a> <a id="26586" href="Data.Rational.Base.html#4305" class="Function">1ℚ</a>
+<a id="26589" href="Data.Rational.Properties.html#26530" class="Function">+-*-isCommutativeRing</a> <a id="26611" class="Symbol">=</a> <a id="26613" href="Algebra.Morphism.RingMonomorphism.html#4826" class="Function">*-Monomorphism.isCommutativeRing</a> <a id="26646" href="Data.Rational.Unnormalised.Properties.html#16650" class="Function">ℚᵘ.+-*-isCommutativeRing</a>
 
-<a id="*-magma"></a><a id="26616" href="Data.Rational.Properties.html#26616" class="Function">*-magma</a> <a id="26624" class="Symbol">:</a> <a id="26626" href="Algebra.Bundles.html#912" class="Record">Magma</a> <a id="26632" href="Level.html#512" class="Function">0ℓ</a> <a id="26635" href="Level.html#512" class="Function">0ℓ</a>
-<a id="26638" href="Data.Rational.Properties.html#26616" class="Function">*-magma</a> <a id="26646" class="Symbol">=</a> <a id="26648" class="Keyword">record</a>
-  <a id="26657" class="Symbol">{</a> <a id="26659" href="Algebra.Bundles.html#1064" class="Field">isMagma</a> <a id="26667" class="Symbol">=</a> <a id="26669" href="Data.Rational.Properties.html#26040" class="Function">*-isMagma</a>
-  <a id="26681" class="Symbol">}</a>
+<a id="26672" class="Comment">------------------------------------------------------------------------</a>
+<a id="26745" class="Comment">-- Packages</a>
 
-<a id="*-semigroup"></a><a id="26684" href="Data.Rational.Properties.html#26684" class="Function">*-semigroup</a> <a id="26696" class="Symbol">:</a> <a id="26698" href="Algebra.Bundles.html#1202" class="Record">Semigroup</a> <a id="26708" href="Level.html#512" class="Function">0ℓ</a> <a id="26711" href="Level.html#512" class="Function">0ℓ</a>
-<a id="26714" href="Data.Rational.Properties.html#26684" class="Function">*-semigroup</a> <a id="26726" class="Symbol">=</a> <a id="26728" class="Keyword">record</a>
-  <a id="26737" class="Symbol">{</a> <a id="26739" href="Algebra.Bundles.html#1370" class="Field">isSemigroup</a> <a id="26751" class="Symbol">=</a> <a id="26753" href="Data.Rational.Properties.html#26115" class="Function">*-isSemigroup</a>
-  <a id="26769" class="Symbol">}</a>
+<a id="*-magma"></a><a id="26758" href="Data.Rational.Properties.html#26758" class="Function">*-magma</a> <a id="26766" class="Symbol">:</a> <a id="26768" href="Algebra.Bundles.html#912" class="Record">Magma</a> <a id="26774" href="Level.html#512" class="Function">0ℓ</a> <a id="26777" href="Level.html#512" class="Function">0ℓ</a>
+<a id="26780" href="Data.Rational.Properties.html#26758" class="Function">*-magma</a> <a id="26788" class="Symbol">=</a> <a id="26790" class="Keyword">record</a>
+  <a id="26799" class="Symbol">{</a> <a id="26801" href="Algebra.Bundles.html#1064" class="Field">isMagma</a> <a id="26809" class="Symbol">=</a> <a id="26811" href="Data.Rational.Properties.html#26040" class="Function">*-isMagma</a>
+  <a id="26823" class="Symbol">}</a>
 
-<a id="*-1-monoid"></a><a id="26772" href="Data.Rational.Properties.html#26772" class="Function">*-1-monoid</a> <a id="26783" class="Symbol">:</a> <a id="26785" href="Algebra.Bundles.html#3673" class="Record">Monoid</a> <a id="26792" href="Level.html#512" class="Function">0ℓ</a> <a id="26795" href="Level.html#512" class="Function">0ℓ</a>
-<a id="26798" href="Data.Rational.Properties.html#26772" class="Function">*-1-monoid</a> <a id="26809" class="Symbol">=</a> <a id="26811" class="Keyword">record</a>
-  <a id="26820" class="Symbol">{</a> <a id="26822" href="Algebra.Bundles.html#3852" class="Field">isMonoid</a> <a id="26831" class="Symbol">=</a> <a id="26833" href="Data.Rational.Properties.html#26210" class="Function">*-1-isMonoid</a>
-  <a id="26848" class="Symbol">}</a>
+<a id="*-semigroup"></a><a id="26826" href="Data.Rational.Properties.html#26826" class="Function">*-semigroup</a> <a id="26838" class="Symbol">:</a> <a id="26840" href="Algebra.Bundles.html#1202" class="Record">Semigroup</a> <a id="26850" href="Level.html#512" class="Function">0ℓ</a> <a id="26853" href="Level.html#512" class="Function">0ℓ</a>
+<a id="26856" href="Data.Rational.Properties.html#26826" class="Function">*-semigroup</a> <a id="26868" class="Symbol">=</a> <a id="26870" class="Keyword">record</a>
+  <a id="26879" class="Symbol">{</a> <a id="26881" href="Algebra.Bundles.html#1370" class="Field">isSemigroup</a> <a id="26893" class="Symbol">=</a> <a id="26895" href="Data.Rational.Properties.html#26115" class="Function">*-isSemigroup</a>
+  <a id="26911" class="Symbol">}</a>
 
-<a id="*-1-commutativeMonoid"></a><a id="26851" href="Data.Rational.Properties.html#26851" class="Function">*-1-commutativeMonoid</a> <a id="26873" class="Symbol">:</a> <a id="26875" href="Algebra.Bundles.html#4144" class="Record">CommutativeMonoid</a> <a id="26893" href="Level.html#512" class="Function">0ℓ</a> <a id="26896" href="Level.html#512" class="Function">0ℓ</a>
-<a id="26899" href="Data.Rational.Properties.html#26851" class="Function">*-1-commutativeMonoid</a> <a id="26921" class="Symbol">=</a> <a id="26923" class="Keyword">record</a>
-  <a id="26932" class="Symbol">{</a> <a id="26934" href="Algebra.Bundles.html#4378" class="Field">isCommutativeMonoid</a> <a id="26954" class="Symbol">=</a> <a id="26956" href="Data.Rational.Properties.html#26299" class="Function">*-1-isCommutativeMonoid</a>
-  <a id="26982" class="Symbol">}</a>
+<a id="*-1-monoid"></a><a id="26914" href="Data.Rational.Properties.html#26914" class="Function">*-1-monoid</a> <a id="26925" class="Symbol">:</a> <a id="26927" href="Algebra.Bundles.html#3673" class="Record">Monoid</a> <a id="26934" href="Level.html#512" class="Function">0ℓ</a> <a id="26937" href="Level.html#512" class="Function">0ℓ</a>
+<a id="26940" href="Data.Rational.Properties.html#26914" class="Function">*-1-monoid</a> <a id="26951" class="Symbol">=</a> <a id="26953" class="Keyword">record</a>
+  <a id="26962" class="Symbol">{</a> <a id="26964" href="Algebra.Bundles.html#3852" class="Field">isMonoid</a> <a id="26973" class="Symbol">=</a> <a id="26975" href="Data.Rational.Properties.html#26210" class="Function">*-1-isMonoid</a>
+  <a id="26990" class="Symbol">}</a>
 
-<a id="+-*-ring"></a><a id="26985" href="Data.Rational.Properties.html#26985" class="Function">+-*-ring</a> <a id="26994" class="Symbol">:</a> <a id="26996" href="Algebra.Bundles.html#16607" class="Record">Ring</a> <a id="27001" href="Level.html#512" class="Function">0ℓ</a> <a id="27004" href="Level.html#512" class="Function">0ℓ</a>
-<a id="27007" href="Data.Rational.Properties.html#26985" class="Function">+-*-ring</a> <a id="27016" class="Symbol">=</a> <a id="27018" class="Keyword">record</a>
-  <a id="27027" class="Symbol">{</a> <a id="27029" href="Algebra.Bundles.html#16883" class="Field">isRing</a> <a id="27036" class="Symbol">=</a> <a id="27038" href="Data.Rational.Properties.html#26443" class="Function">+-*-isRing</a>
-  <a id="27051" class="Symbol">}</a>
+<a id="*-1-commutativeMonoid"></a><a id="26993" href="Data.Rational.Properties.html#26993" class="Function">*-1-commutativeMonoid</a> <a id="27015" class="Symbol">:</a> <a id="27017" href="Algebra.Bundles.html#4144" class="Record">CommutativeMonoid</a> <a id="27035" href="Level.html#512" class="Function">0ℓ</a> <a id="27038" href="Level.html#512" class="Function">0ℓ</a>
+<a id="27041" href="Data.Rational.Properties.html#26993" class="Function">*-1-commutativeMonoid</a> <a id="27063" class="Symbol">=</a> <a id="27065" class="Keyword">record</a>
+  <a id="27074" class="Symbol">{</a> <a id="27076" href="Algebra.Bundles.html#4378" class="Field">isCommutativeMonoid</a> <a id="27096" class="Symbol">=</a> <a id="27098" href="Data.Rational.Properties.html#26299" class="Function">*-1-isCommutativeMonoid</a>
+  <a id="27124" class="Symbol">}</a>
 
-<a id="27054" class="Comment">------------------------------------------------------------------------</a>
-<a id="27127" class="Comment">-- DEPRECATED NAMES</a>
-<a id="27147" class="Comment">------------------------------------------------------------------------</a>
-<a id="27220" class="Comment">-- Please use the new names as continuing support for the old names is</a>
-<a id="27291" class="Comment">-- not guaranteed.</a>
+<a id="+-*-ring"></a><a id="27127" href="Data.Rational.Properties.html#27127" class="Function">+-*-ring</a> <a id="27136" class="Symbol">:</a> <a id="27138" href="Algebra.Bundles.html#16607" class="Record">Ring</a> <a id="27143" href="Level.html#512" class="Function">0ℓ</a> <a id="27146" href="Level.html#512" class="Function">0ℓ</a>
+<a id="27149" href="Data.Rational.Properties.html#27127" class="Function">+-*-ring</a> <a id="27158" class="Symbol">=</a> <a id="27160" class="Keyword">record</a>
+  <a id="27169" class="Symbol">{</a> <a id="27171" href="Algebra.Bundles.html#16883" class="Field">isRing</a> <a id="27178" class="Symbol">=</a> <a id="27180" href="Data.Rational.Properties.html#26443" class="Function">+-*-isRing</a>
+  <a id="27193" class="Symbol">}</a>
 
-<a id="27311" class="Comment">-- Version 1.0</a>
+<a id="+-*-commutativeRing"></a><a id="27196" href="Data.Rational.Properties.html#27196" class="Function">+-*-commutativeRing</a> <a id="27216" class="Symbol">:</a> <a id="27218" href="Algebra.Bundles.html#17668" class="Record">CommutativeRing</a> <a id="27234" href="Level.html#512" class="Function">0ℓ</a> <a id="27237" href="Level.html#512" class="Function">0ℓ</a>
+<a id="27240" href="Data.Rational.Properties.html#27196" class="Function">+-*-commutativeRing</a> <a id="27260" class="Symbol">=</a> <a id="27262" class="Keyword">record</a>
+  <a id="27271" class="Symbol">{</a> <a id="27273" href="Algebra.Bundles.html#18025" class="Field">isCommutativeRing</a> <a id="27291" class="Symbol">=</a> <a id="27293" href="Data.Rational.Properties.html#26530" class="Function">+-*-isCommutativeRing</a>
+  <a id="27317" class="Symbol">}</a>
 
-<a id="≤-irrelevance"></a><a id="27327" href="Data.Rational.Properties.html#27327" class="Function">≤-irrelevance</a> <a id="27341" class="Symbol">=</a> <a id="27343" href="Data.Rational.Properties.html#9738" class="Function">≤-irrelevant</a>
-<a id="27356" class="Symbol">{-#</a> <a id="27360" class="Keyword">WARNING_ON_USAGE</a> <a id="27377" class="Pragma">≤-irrelevance</a>
-<a id="27391" class="String">&quot;Warning: ≤-irrelevance was deprecated in v1.0.
+<a id="27320" class="Comment">------------------------------------------------------------------------</a>
+<a id="27393" class="Comment">-- DEPRECATED NAMES</a>
+<a id="27413" class="Comment">------------------------------------------------------------------------</a>
+<a id="27486" class="Comment">-- Please use the new names as continuing support for the old names is</a>
+<a id="27557" class="Comment">-- not guaranteed.</a>
+
+<a id="27577" class="Comment">-- Version 1.0</a>
+
+<a id="≤-irrelevance"></a><a id="27593" href="Data.Rational.Properties.html#27593" class="Function">≤-irrelevance</a> <a id="27607" class="Symbol">=</a> <a id="27609" href="Data.Rational.Properties.html#9738" class="Function">≤-irrelevant</a>
+<a id="27622" class="Symbol">{-#</a> <a id="27626" class="Keyword">WARNING_ON_USAGE</a> <a id="27643" class="Pragma">≤-irrelevance</a>
+<a id="27657" class="String">&quot;Warning: ≤-irrelevance was deprecated in v1.0.
 Please use ≤-irrelevant instead.&quot;</a>
-<a id="27473" class="Symbol">#-}</a>
+<a id="27739" class="Symbol">#-}</a>
 </pre></body></html>
