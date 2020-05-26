@@ -132,8 +132,7 @@ fromℕ-toℕ zero    = refl
 fromℕ-toℕ (suc i) = cong suc (fromℕ-toℕ i)
 
 ≤fromℕ : ∀ {n} → (i : Fin (ℕ.suc n)) → i ≤ fromℕ n
-≤fromℕ {n} i = ℕₚ.≤-trans (ℕₚ.≤-pred (toℕ<n i))
-                           (ℕₚ.≤-reflexive (sym (toℕ-fromℕ n)))
+≤fromℕ {n} i = subst (toℕ i ℕ.≤_) (sym (toℕ-fromℕ n)) (ℕₚ.≤-pred (toℕ<n i))
 
 ------------------------------------------------------------------------
 -- fromℕ<
