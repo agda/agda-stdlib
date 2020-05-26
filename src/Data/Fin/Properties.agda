@@ -164,9 +164,8 @@ fromℕ<-injective : ∀ m n {o} →
                    (n<o : n ℕ.< o) →
                    fromℕ< m<o ≡ fromℕ< n<o →
                    m ≡ n
-fromℕ<-injective .0 .0 (s≤s z≤n) (s≤s z≤n) r
-  = refl
-fromℕ<-injective .(suc _) .(suc _) (s≤s (s≤s p)) (s≤s (s≤s q)) r
+fromℕ<-injective 0 0 (s≤s z≤n) (s≤s z≤n) r = refl
+fromℕ<-injective (suc _) (suc _) (s≤s (s≤s p)) (s≤s (s≤s q)) r
   = cong suc (fromℕ<-injective _ _ (s≤s p) (s≤s q) (suc-injective r))
 
 ------------------------------------------------------------------------
