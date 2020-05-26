@@ -388,9 +388,6 @@ toℕ-inject₁ (suc i) = cong suc (toℕ-inject₁ i)
 toℕ-inject₁-≢ : ∀ {n}(i : Fin n) → n ≢ toℕ (inject₁ i)
 toℕ-inject₁-≢ (suc i) = toℕ-inject₁-≢ i ∘ ℕₚ.suc-injective
 
-inject₁≢suc : ∀ {n} → (i : Fin n) → inject₁ i ≢ suc i
-inject₁≢suc (suc i) = inject₁≢suc i ∘ suc-injective
-
 inject₁ℕ< : ∀ {n} → (i : Fin n) → toℕ (inject₁ i) ℕ.< n
 inject₁ℕ< i = ℕₚ.<-transʳ (ℕₚ.≤-reflexive (toℕ-inject₁ i)) (toℕ<n i)
 
