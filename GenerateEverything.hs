@@ -36,7 +36,6 @@ unsafeModules = map modToFile
   , "Foreign.Haskell"
   , "Foreign.Haskell.Coerce"
   , "Foreign.Haskell.Either"
-  , "Foreign.Haskell.Maybe"
   , "Foreign.Haskell.Pair"
   , "IO"
   , "IO.Primitive"

@@ -56,7 +56,7 @@ matrix:
              cd ../ &&
              git clone https://github.com/agda/agda &&
              cd agda &&
-             git checkout c2d5ec4b2403c68d615b81258d6131774e492797 &&
+             git checkout 1eec63b1c5566b252c0a4a815ce1df99a772c475 &&
              cabal install --only-dependencies --dry -v > $HOME/installplan.txt ;
           fi
 
