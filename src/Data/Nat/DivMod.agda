@@ -26,12 +26,12 @@ open ≤-Reasoning
 -- Definitions
 
 -- The division and modulus operations are only defined when the divisor
--- is non-zero. The proof of this is defined as an irrelevant
--- implict argument of type `False (divisor ≟ 0)`. This allows this
--- proof to be automatically inferred when the divisor is of the form
--- `suc n`, and hence minimises the number of these proofs that
+-- is non-zero. The proof of non-zero-ness is provided as an irrelevant
+-- implicit argument which is defined in terms of `⊤` and `⊥`. This
+-- allows it to be automatically inferred when the divisor is of the
+-- form `suc n`, and hence minimises the number of these proofs that
 -- need be passed around. You can therefore write `m / suc n` without
--- issue.
+-- further elaboration.
 
 infixl 7 _/_ _%_
 

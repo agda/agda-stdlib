@@ -20,7 +20,7 @@ open import Relation.Nullary using (Dec; yes; no; ¬_)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Product using (_×-dec_)
 open import Relation.Nullary.Sum using (_⊎-dec_)
-open import Relation.Binary
+open import Relation.Binary hiding (_⇔_)
 open import Data.List.Relation.Binary.Pointwise
    using (Pointwise; []; _∷_; head; tail)
 

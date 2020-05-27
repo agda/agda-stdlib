@@ -13,9 +13,9 @@
 
 module Data.List.Fresh where
 
-open import Level using (Level; _⊔_; Lift)
+open import Level using (Level; _⊔_)
 open import Data.Bool.Base using (true; false)
-open import Data.Unit.Base
+open import Data.Unit.Polymorphic.Base using (⊤)
 open import Data.Product using (∃; _×_; _,_; -,_; proj₁; proj₂)
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
 open import Data.List.Relation.Unary.AllPairs using (AllPairs; []; _∷_)
@@ -57,7 +57,7 @@ module _ {a} (A : Set a) (R : Rel A r) where
   infixr 5 _∷#_
   pattern _∷#_ x xs = cons x xs _
 
-  fresh a []        = Lift _ ⊤
+  fresh a []        = ⊤
   fresh a (x ∷# xs) = R a x × fresh a xs
 
 -- Convenient notation for freshness making A and R implicit parameters

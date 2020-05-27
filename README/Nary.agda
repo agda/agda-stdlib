@@ -147,8 +147,8 @@ curry₁ = curryₙ 4
 -- to be right nested. Which means that if you have a deeply-nested product
 -- then it won't be affected by the procedure.
 
-curry₁' : (A × (B × C) × D → E) → A → (B × C) → D → E
-curry₁' = curryₙ 3
+curry₁′ : (A × (B × C) × D → E) → A → (B × C) → D → E
+curry₁′ = curryₙ 3
 
 -- When we are currying a function, we have no obligation to pass its exact
 -- arity as the parameter: we can decide to only curry part of it like so:
@@ -174,8 +174,8 @@ proj₃ = projₙ 5 (# 2)
 -- passing `projₙ` a natural number which is smaller than the size of the
 -- n-ary product, seeing (A₁ × ⋯ × Aₙ) as (A₁ × ⋯ × (Aₖ × ⋯ × Aₙ)).
 
-proj₃' : (A × B × C × D × E) → C × D × E
-proj₃' = projₙ 3 (# 2)
+proj₃′ : (A × B × C × D × E) → C × D × E
+proj₃′ = projₙ 3 (# 2)
 
 -----------------------------------------------------------------------
 -- insertₙ : ∀ n (k : Fin (suc n)) →
@@ -184,8 +184,8 @@ proj₃' = projₙ 3 (# 2)
 insert₁ : C → (A × B × D × E) → (A × B × C × D × E)
 insert₁ = insertₙ 4 (# 2)
 
-insert₁' : C → (A × B × D × E) → (A × B × C × D × E)
-insert₁' = insertₙ 3 (# 2)
+insert₁′ : C → (A × B × D × E) → (A × B × C × D × E)
+insert₁′ = insertₙ 3 (# 2)
 
 -- Note that `insertₙ` takes a `Fin (suc n)`. Indeed in an n-ary product
 -- there are (suc n) positions at which one may insert a value. We may
@@ -248,10 +248,10 @@ compose₁ f = 1 %= f ⊢ replicate
 -- Here we spell out the equivalent explicit variable-manipulation and
 -- prove the two functions equal.
 
-compose₁' : (A → B) → ℕ → A → List B
-compose₁' f n a = replicate n (f a)
+compose₁′ : (A → B) → ℕ → A → List B
+compose₁′ f n a = replicate n (f a)
 
-compose₁-eq : compose₁ {a} {A} {b} {B} ≡ compose₁'
+compose₁-eq : compose₁ {a} {A} {b} {B} ≡ compose₁′
 compose₁-eq = refl
 
 -----------------------------------------------------------------------

@@ -17,9 +17,9 @@ open import Algebra.Morphism
 open import Algebra.Consequences.Propositional
 open import Data.Bool.Base using (Bool; false; true; T)
 open import Data.Bool.Properties using (T?)
-open import Data.Empty
+open import Data.Empty using (⊥)
 open import Data.Nat.Base
-open import Data.Product
+open import Data.Product using (_×_; _,_)
 open import Data.Sum.Base as Sum
 open import Data.Unit using (tt)
 open import Function.Base
@@ -411,29 +411,6 @@ module ≤-Reasoning where
 open ≤-Reasoning
 
 ------------------------------------------------------------------------
--- Properties of pred
-------------------------------------------------------------------------
-
-pred-mono : pred Preserves _≤_ ⟶ _≤_
-pred-mono z≤n      = z≤n
-pred-mono (s≤s le) = le
-
-≤pred⇒≤ : ∀ {m n} → m ≤ pred n → m ≤ n
-≤pred⇒≤ {m} {zero}  le = le
-≤pred⇒≤ {m} {suc n} le = ≤-step le
-
-≤⇒pred≤ : ∀ {m n} → m ≤ n → pred m ≤ n
-≤⇒pred≤ {zero}  le = le
-≤⇒pred≤ {suc m} le = ≤-trans (n≤1+n m) le
-
-<⇒≤pred : ∀ {m n} → m < n → m ≤ pred n
-<⇒≤pred (s≤s le) = le
-
-suc[pred[n]]≡n : ∀ {n} → n ≢ 0 → suc (pred n) ≡ n
-suc[pred[n]]≡n {zero}  n≢0 = contradiction refl n≢0
-suc[pred[n]]≡n {suc n} n≢0 = refl
-
-------------------------------------------------------------------------
 -- Properties of _+_
 ------------------------------------------------------------------------
 
@@ -552,6 +529,10 @@ suc[pred[n]]≡n {suc n} n≢0 = refl
 +-0-commutativeMonoid = record
   { isCommutativeMonoid = +-0-isCommutativeMonoid
   }
+
+∸-magma : Magma 0ℓ 0ℓ
+∸-magma = magma _∸_
+
 
 ------------------------------------------------------------------------
 -- Other properties of _+_ and _≡_
@@ -1475,6 +1456,15 @@ n∸n≡0 zero    = refl
 n∸n≡0 (suc n) = n∸n≡0 n
 
 ------------------------------------------------------------------------
+-- Properties of _∸_ and pred
+
+pred[m∸n]≡m∸[1+n] : ∀ m n → pred (m ∸ n) ≡ m ∸ suc n
+pred[m∸n]≡m∸[1+n] zero    zero    = refl
+pred[m∸n]≡m∸[1+n] (suc m) zero    = refl
+pred[m∸n]≡m∸[1+n] zero (suc n)    = refl
+pred[m∸n]≡m∸[1+n] (suc m) (suc n) = pred[m∸n]≡m∸[1+n] m n
+
+------------------------------------------------------------------------
 -- Properties of _∸_ and _≤_/_<_
 
 m∸n≤m : ∀ m n → m ∸ n ≤ m
@@ -1674,6 +1664,28 @@ m⊓n+n∸m≡n (suc m) (suc n) = cong suc $ m⊓n+n∸m≡n m n
 ∸-distribʳ-⊔ (suc m) zero    o       = refl
 ∸-distribʳ-⊔ (suc m) (suc n) zero    = sym (⊔-identityʳ (n ∸ m))
 ∸-distribʳ-⊔ (suc m) (suc n) (suc o) = ∸-distribʳ-⊔ m n o
+
+------------------------------------------------------------------------
+-- Properties of pred
+------------------------------------------------------------------------
+
+pred-mono : pred Preserves _≤_ ⟶ _≤_
+pred-mono m≤n = ∸-mono m≤n (≤-refl {1})
+
+≤pred⇒≤ : ∀ {m n} → m ≤ pred n → m ≤ n
+≤pred⇒≤ {m} {zero}  le = le
+≤pred⇒≤ {m} {suc n} le = ≤-step le
+
+≤⇒pred≤ : ∀ {m n} → m ≤ n → pred m ≤ n
+≤⇒pred≤ {zero}  le = le
+≤⇒pred≤ {suc m} le = ≤-trans (n≤1+n m) le
+
+<⇒≤pred : ∀ {m n} → m < n → m ≤ pred n
+<⇒≤pred (s≤s le) = le
+
+suc[pred[n]]≡n : ∀ {n} → n ≢ 0 → suc (pred n) ≡ n
+suc[pred[n]]≡n {zero}  n≢0 = contradiction refl n≢0
+suc[pred[n]]≡n {suc n} n≢0 = refl
 
 ------------------------------------------------------------------------
 -- Properties of ∣_-_∣
@@ -1953,6 +1965,36 @@ m≤‴m+k {m} {k = suc k} proof
 
 ≤″⇒≤‴ : ∀{m n} → m ≤″ n → m ≤‴ n
 ≤″⇒≤‴ (less-than-or-equal {k} proof) = m≤‴m+k proof
+
+0≤‴n : ∀{n} → 0 ≤‴ n
+0≤‴n {n} = m≤‴m+k refl
+
+<ᵇ⇒<‴ : ∀ {m n} → T (m <ᵇ n) → m <‴ n
+<ᵇ⇒<‴ {m} {n} leq = ≤″⇒≤‴ (<ᵇ⇒<″ leq)
+
+<‴⇒<ᵇ : ∀ {m n} → m <‴ n → T (m <ᵇ n)
+<‴⇒<ᵇ leq = <″⇒<ᵇ (≤‴⇒≤″ leq)
+
+infix 4 _<‴?_ _≤‴?_ _≥‴?_ _>‴?_
+
+_<‴?_ : Decidable _<‴_
+m <‴? n = map′ <ᵇ⇒<‴ <‴⇒<ᵇ (T? (m <ᵇ n))
+
+_≤‴?_ : Decidable _≤‴_
+zero ≤‴? n = yes 0≤‴n
+suc m ≤‴? n = m <‴? n
+
+_≥‴?_ : Decidable _≥‴_
+_≥‴?_ = flip _≤‴?_
+
+_>‴?_ : Decidable _>‴_
+_>‴?_ = flip _<‴?_
+
+≤⇒≤‴ : _≤_ ⇒ _≤‴_
+≤⇒≤‴ = ≤″⇒≤‴ ∘ ≤⇒≤″
+
+≤‴⇒≤ : _≤‴_ ⇒ _≤_
+≤‴⇒≤ = ≤″⇒≤ ∘ ≤‴⇒≤″
 
 ------------------------------------------------------------------------
 -- Other properties
@@ -2259,13 +2301,13 @@ Please use m∸n≤m instead (note, you will need to switch the argument order).
 
 ∀[m≤n⇒m≢o]⇒o<n : ∀ n o → (∀ {m} → m ≤ n → m ≢ o) → n < o
 ∀[m≤n⇒m≢o]⇒o<n = ∀[m≤n⇒m≢o]⇒n<o
-{-# WARNING_ON_USAGE n∸m≤∣n-m∣
+{-# WARNING_ON_USAGE ∀[m≤n⇒m≢o]⇒o<n
 "Warning: ∀[m≤n⇒m≢o]⇒o<n was deprecated in v1.3.
 Please use ∀[m≤n⇒m≢o]⇒n<o instead."
 #-}
 ∀[m<n⇒m≢o]⇒o≤n : ∀ n o → (∀ {m} → m < n → m ≢ o) → n ≤ o
 ∀[m<n⇒m≢o]⇒o≤n = ∀[m<n⇒m≢o]⇒n≤o
-{-# WARNING_ON_USAGE n∸m≤∣n-m∣
+{-# WARNING_ON_USAGE ∀[m<n⇒m≢o]⇒o≤n
 "Warning: ∀[m<n⇒m≢o]⇒o≤n was deprecated in v1.3.
 Please use ∀[m<n⇒m≢o]⇒n≤o instead."
 #-}

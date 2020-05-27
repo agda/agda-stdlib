@@ -108,13 +108,13 @@ module All {_<_ : Rel A r} (wf : WellFounded _<_) ℓ where
 module FixPoint
   {_<_ : Rel A ℓ} (wf : WellFounded _<_)
   (P : Pred A ℓ) (f : WfRec _<_ P ⊆′ P)
-  (f-ext : (x : A) {IH IH' : WfRec _<_ P x} → (∀ {y} y<x → IH y y<x ≡ IH' y y<x) → f x IH ≡ f x IH')
+  (f-ext : (x : A) {IH IH′ : WfRec _<_ P x} → (∀ {y} y<x → IH y y<x ≡ IH′ y y<x) → f x IH ≡ f x IH′)
   where
 
-  some-wfRec-irrelevant : ∀ x → (q q' : Acc _<_ x) → Some.wfRec P f x q ≡ Some.wfRec P f x q'
+  some-wfRec-irrelevant : ∀ x → (q q′ : Acc _<_ x) → Some.wfRec P f x q ≡ Some.wfRec P f x q′
   some-wfRec-irrelevant = All.wfRec wf _
-                                   (λ x → (q q' : Acc _<_ x) → Some.wfRec P f x q ≡ Some.wfRec P f x q')
-                                   (λ { x IH (acc rs) (acc rs') → f-ext x (λ y<x → IH _ y<x (rs _ y<x) (rs' _ y<x)) })
+                                   (λ x → (q q′ : Acc _<_ x) → Some.wfRec P f x q ≡ Some.wfRec P f x q′)
+                                   (λ { x IH (acc rs) (acc rs′) → f-ext x (λ y<x → IH _ y<x (rs _ y<x) (rs′ _ y<x)) })
 
   open All wf ℓ
   wfRecBuilder-wfRec : ∀ {x y} y<x → wfRecBuilder P f x y y<x ≡ wfRec P f y
@@ -155,9 +155,17 @@ module InverseImage {_<_ : Rel B ℓ} (f : A → B) where
   wellFounded wf = λ x → accessible (wf (f x))
 
   well-founded = wellFounded
+  {-# WARNING_ON_USAGE accessible
+  "Warning: accessible was deprecated in v1.4.
+\ \Please use accessible from `Relation.Binary.Construct.On` instead."
+  #-}
+  {-# WARNING_ON_USAGE wellFounded
+  "Warning: wellFounded was deprecated in v1.4.
+\ \Please use wellFounded from `Relation.Binary.Construct.On` instead."
+  #-}
   {-# WARNING_ON_USAGE well-founded
   "Warning: well-founded was deprecated in v0.15.
-\ \Please use wellFounded instead."
+\ \Please use wellFounded from `Relation.Binary.Construct.On` instead."
   #-}
 
 module TransitiveClosure {A : Set a} (_<_ : Rel A ℓ) where

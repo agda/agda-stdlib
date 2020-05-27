@@ -8,11 +8,11 @@
 
 module Data.Container.Combinator where
 
-open import Level using (Level; _⊔_; Lift)
-open import Data.Empty using (⊥)
+open import Level using (Level; _⊔_)
+open import Data.Empty.Polymorphic using (⊥)
 open import Data.Product as P using (_,_; proj₁; proj₂; ∃)
 open import Data.Sum.Base as S using ([_,_]′)
-open import Data.Unit.Base using (⊤)
+open import Data.Unit.Polymorphic.Base using (⊤)
 import Function as F
 
 open import Data.Container.Core
@@ -26,14 +26,14 @@ module _ {s p : Level} where
 -- Identity.
 
   id : Container s p
-  id .Shape    = Lift s ⊤
-  id .Position = F.const (Lift p ⊤)
+  id .Shape    = ⊤
+  id .Position = F.const ⊤
 
 -- Constant.
 
   const : Set s → Container s p
   const X .Shape    = X
-  const X .Position = F.const (Lift p ⊥)
+  const X .Position = F.const ⊥
 
 -- Composition.
 

@@ -28,8 +28,8 @@ private
 ------------------------------------------------------------------------
 -- Definition
 
--- Linked R xs means that every consecutative pair of elements
--- in xs is a member of relation R.
+-- Linked R xs means that every consecutative pair of elements in xs is
+-- a member of relation R.
 
 infixr 5 _∷_
 
