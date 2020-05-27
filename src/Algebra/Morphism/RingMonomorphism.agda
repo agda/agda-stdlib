@@ -127,3 +127,10 @@ isRing isRing = record
   ; distrib          = distrib R.+-isGroup R.*-isMagma R.distrib
   ; zero             = zero R.+-isGroup R.*-isMagma R.zero
   } where module R = IsRing isRing
+
+isCommutativeRing : IsCommutativeRing _≈₂_ _⊕_ _⊛_ ⊝_ 0#₂ 1#₂ →
+                    IsCommutativeRing _≈₁_ _+_ _*_ -_ 0# 1#
+isCommutativeRing isCommRing = record
+  { isRing = isRing C.isRing
+  ; *-comm = *-comm C.*-isMagma C.*-comm
+  } where module C = IsCommutativeRing isCommRing

@@ -350,19 +350,21 @@ word within a compound word is capitalized except for the first word.
 
 #### Functions and relations over specific datatypes
 
-* When defining a new relation over a datatype
-  (e.g. `Data.List.Relation.Binary.Pointwise`)
-  it is often common to define how to introduce and eliminate that
-  relation over various simple functions (e.g. `map`) over that datatype:
-  ```agda
-  map⁺ : Pointwise (λ a b → R (f a) (g b)) as bs →
-                 Pointwise R (map f as) (map g bs)
+* When defining a new relation `P` over a datatype `X` in `Data.X.Relation` module
+  it is often common to  define how to introduce and eliminate that relation
+  with respect to various functions. Suppose you have a function `f`, then
+  - `f⁺` is a lemma of the form `Precondition -> P(f)`
+  - `f⁻` is a lemma of the form `P(f) -> Postcondition`
+  The logic behind the name is that ⁺ makes f appear in the conclusion while
+  makes it disappear from the hypothesis.
 
-  map⁻ : Pointwise R (map f as) (map g bs) →
-                 Pointwise (λ a b → R (f a) (g b)) as bs
+  For example in `Data.List.Relation.Binary.Pointwise` we have `map⁺` to show
+  how the `map` function may be introduced and `map⁻` to show how it may be
+  eliminated:
+  ```agda
+  map⁺ : Pointwise (λ a b → R (f a) (g b)) as bs → Pointwise R (map f as) (map g bs)
+  map⁻ : Pointwise R (map f as) (map g bs) → Pointwise (λ a b → R (f a) (g b)) as bs
   ```
-  Such elimination and introduction proofs are called the name of the
-  function superscripted with either a `+` or `-` accordingly.
 
 #### Keywords
 
