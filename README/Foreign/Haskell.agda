@@ -32,11 +32,11 @@ private
     a : Level
     A : Set a
 
--- Here we use the FFI version of Maybe and Pair.
+-- Here we use the FFI version of Pair.
 
 postulate
-  primUncons    : List A → FFI.Maybe (FFI.Pair A (List A))
-  primCatMaybes : List (FFI.Maybe A) → List A
+  primUncons    : List A → Maybe (FFI.Pair A (List A))
+  primCatMaybes : List (Maybe A) → List A
   primTestChar  : Char → Bool
   primIntEq     : Int → Int → Bool
 
@@ -53,14 +53,12 @@ postulate
 
 {-# COMPILE GHC primIntEq = (==) #-}
 
--- We however want to use the notion of Maybe and Pair internal to
--- the standard library. For this we use `coerce` to take use back
--- to the types we are used to.
+-- We however want to use the notion of Pair internal to the standard library.
+-- For this we use `coerce` to take use back to the types we are used to.
 
--- The typeclass mechanism uses the coercion rules for Maybe and Pair,
--- as well as the knowledge that natural numbers are represented as
--- integers.
--- We additionally benefit from the congruence rules for List, Char,
+-- The typeclass mechanism uses the coercion rules for Pair, as well as the
+-- knowledge that natural numbers are represented as integers.
+-- We additionally benefit from the congruence rules for List, Maybe, Char,
 -- Bool, and a reflexivity principle for variable A.
 
 uncons : List A → Maybe (A × List A)
