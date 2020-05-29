@@ -32,8 +32,10 @@ module Foreign.Haskell.Coerce where
 -- Definition
 
 open import Level using (Level; _⊔_)
+open import Agda.Builtin.Bool
 open import Agda.Builtin.Nat
 open import Agda.Builtin.Int
+open import Agda.Builtin.Char
 
 import IO.Primitive    as STD
 import Data.List.Base  as STD
@@ -134,6 +136,26 @@ instance
 -- We follow up with purely structural rules for builtin data types which
 -- already have known low-level representations.
 
+-- Bool
+
+  coerce-bool : Coercible Bool Bool
+  coerce-bool = TrustMe
+
+-- Nat
+
+  coerce-nat : Coercible Nat Nat
+  coerce-nat = TrustMe
+
+-- Int
+
+  coerce-int : Coercible Int Int
+  coerce-int = TrustMe
+
+-- Char
+
+  coerce-char : Coercible Char Char
+  coerce-char = TrustMe
+
 -- List
 
   coerce-list : Coercible₁ a b STD.List STD.List
@@ -149,15 +171,3 @@ instance
 
   coerce-fun : {{_ : Coercible A B}} → Coercible₁ c d (λ C → B → C) (λ D → A → D)
   coerce-fun = TrustMe
-
--- Finally we add a reflexivity proof to discharge all the dangling constraints
--- involving type variables and concrete builtin types such as `Bool`.
-
--- This rule overlaps with the purely structural ones: when attempting to prove
--- `Coercible (List A) (List A)`, should Agda use the proof obtained by `coerce-refl`
--- or the one obtained by `coerce-list coerce-refl`? Because we are using a
--- datatype with a single constructor these distinctions do not matter: both proofs
--- are definitionally equal.
-
-  coerce-refl : Coercible A A
-  coerce-refl = TrustMe
