@@ -65,7 +65,7 @@ uncons : List A → Maybe (A × List A)
 uncons = coerce primUncons
 
 catMaybes : List (Maybe A) → List A
-catMaybes = coerce primCatMaybes
+catMaybes = primCatMaybes
 
 testChar : Char → Bool
 testChar = coerce primTestChar
