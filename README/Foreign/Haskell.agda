@@ -63,10 +63,10 @@ postulate
 -- We additionally benefit from the congruence rules for List, Char,
 -- Bool, and a reflexivity principle for variable A.
 
-uncons : List A → Maybe (A × List A)
+uncons : {{Coercible A A}} → List A → Maybe (A × List A)
 uncons = coerce primUncons
 
-catMaybes : List (Maybe A) → List A
+catMaybes : {{Coercible A A}} → List (Maybe A) → List A
 catMaybes = coerce primCatMaybes
 
 testChar : Char → Bool
