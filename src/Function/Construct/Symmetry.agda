@@ -43,13 +43,17 @@ module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂}
          {f : A → B} {f⁻¹ : B → A}
          where
 
+  isCongruent : IsCongruent ≈₁ ≈₂ f → Congruent ≈₂ ≈₁ f⁻¹ → IsCongruent ≈₂ ≈₁ f⁻¹
+  isCongruent ic cg = record
+    { cong = cg
+    ; isEquivalence₁ = IC.isEquivalence₂
+    ; isEquivalence₂ = IC.isEquivalence₁
+    }
+    where module IC = IsCongruent ic
+
   isLeftInverse : IsRightInverse ≈₁ ≈₂ f f⁻¹ → IsLeftInverse ≈₂ ≈₁ f⁻¹ f
   isLeftInverse inv = record
-    { isCongruent = record
-      { cong = F.cong₂
-      ; isEquivalence₁ = F.isEquivalence₂
-      ; isEquivalence₂ = F.isEquivalence₁
-      }
+    { isCongruent = isCongruent F.isCongruent F.cong₂
     ; cong₂ = F.cong₁
     ; inverseˡ = inverseˡ ≈₁ ≈₂ f {f⁻¹} F.inverseʳ
     }
@@ -57,11 +61,7 @@ module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂}
 
   isRightInverse : IsLeftInverse ≈₁ ≈₂ f f⁻¹ → IsRightInverse ≈₂ ≈₁ f⁻¹ f
   isRightInverse inv = record
-    { isCongruent = record
-      { cong = F.cong₂
-      ; isEquivalence₁ = F.isEquivalence₂
-      ; isEquivalence₂ = F.isEquivalence₁
-      }
+    { isCongruent = isCongruent F.isCongruent F.cong₂
     ; cong₂ = F.cong₁
     ; inverseʳ = inverseʳ ≈₁ ≈₂ f {f⁻¹} F.inverseˡ
     }
@@ -69,15 +69,7 @@ module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂}
 
   isInverse : IsInverse ≈₁ ≈₂ f f⁻¹ → IsInverse ≈₂ ≈₁ f⁻¹ f
   isInverse f-inv = record
-    { isLeftInverse = record
-      { isCongruent = record
-        { cong = F.cong₂
-        ; isEquivalence₁ = F.isEquivalence₂
-        ; isEquivalence₂ = F.isEquivalence₁
-        }
-      ; cong₂ = F.cong₁
-      ; inverseˡ = F.inverseʳ
-      }
+    { isLeftInverse = isLeftInverse F.isRightInverse
     ; inverseʳ = inverseʳ ≈₁ ≈₂ f F.inverseˡ
     }
     where module F = IsInverse f-inv
