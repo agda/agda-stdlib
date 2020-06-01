@@ -1,21 +1,19 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- A universe polymorphic unit type, as a Lift of the Level 0 one.
+-- Negation indexed by a Level
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
-module Data.Unit.Polymorphic.Base where
+module Relation.Nullary.Indexed where
 
+open import Data.Empty hiding (⊥-elim)
 open import Level
-import Data.Unit.Base as ⊤
 
 ------------------------------------------------------------------------
--- A unit type defined as a synonym
+-- Negation.
 
-⊤ : {ℓ : Level} → Set ℓ
-⊤ {ℓ} = Lift ℓ ⊤.⊤
-
-tt : {ℓ : Level} → ⊤ {ℓ}
-tt = lift ⊤.tt
+-- level polymorphic version of ¬
+¬ : ∀ {ℓ} (b : Level) → Set ℓ → Set (ℓ ⊔ b)
+¬ b P = P → Lift b ⊥

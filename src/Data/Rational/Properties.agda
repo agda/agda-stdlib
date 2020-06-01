@@ -818,6 +818,9 @@ private
 +-*-isRing : IsRing _+_ _*_ -_ 0ℚ 1ℚ
 +-*-isRing = *-Monomorphism.isRing ℚᵘ.+-*-isRing
 
++-*-isCommutativeRing : IsCommutativeRing _+_ _*_ -_ 0ℚ 1ℚ
++-*-isCommutativeRing = *-Monomorphism.isCommutativeRing ℚᵘ.+-*-isCommutativeRing
+
 ------------------------------------------------------------------------
 -- Packages
 
@@ -844,6 +847,11 @@ private
 +-*-ring : Ring 0ℓ 0ℓ
 +-*-ring = record
   { isRing = +-*-isRing
+  }
+
++-*-commutativeRing : CommutativeRing 0ℓ 0ℓ
++-*-commutativeRing = record
+  { isCommutativeRing = +-*-isCommutativeRing
   }
 
 ------------------------------------------------------------------------

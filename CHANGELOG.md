@@ -21,6 +21,14 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
+* The `n` argument to `_⊜_` in `Tactic.RingSolver.NonReflective` has been made implict rather than explicit.
+
+* `Data.Empty.Polymorphic` and `Data.Unit.Polymorphic` were rewritten
+  to explicitly use `Lift` rather that defining new types. This means
+  that these are now compatible with `⊥` and `⊤` from the rest of the
+  library. This allowed them to be used in the rest of library where
+  explicit `Lift` was used.
+
 Deprecated modules
 ------------------
 
@@ -44,8 +52,8 @@ Deprecated names
   * `Relation.Binary.Construct.StrictToNonStrict.decidable'` ↦ `Relation.Binary.Construct.StrictToNonStrict.decidable′`
 
 
-Other major additions
----------------------
+New modules
+-----------
 
 * Instance modules:
   ```agda
@@ -102,6 +110,10 @@ Other major additions
   ```agda
   Function.Properties.Inverse
   Function.Properties.Equivalence
+
+* Indexed nullary relations/sets:
+  ```
+  Relation.Nullary.Indexed
   ```
 
 Other major changes
@@ -276,7 +288,13 @@ Other minor additions
   recompute       : .(Coprime n d) → Coprime n d
   ```
 
-* Added new types and constructors to `Data.Rational.Unnormalised`:
+* Add proof to `Algebra.Morphism.RingMonomorphism`:
+ ```agda
+ isCommutativeRing : IsCommutativeRing _≈₂_ _⊕_ _⊛_ ⊝_ 0#₂ 1#₂ →
+                     IsCommutativeRing _≈₁_ _+_ _*_ -_ 0# 1#
+ ```
+
+* Added new types and constructors to `Data.Rational`:
   ```agda
   NonZero     : Pred ℚ 0ℓ
   Positive    : Pred ℚ 0ℓ
@@ -292,6 +310,12 @@ Other minor additions
   nonPositive : p ≤ 0ℚ → NonPositive p
   nonNegative : p ≥ 0ℚ → NonNegative p
   ```
+
+* Added proofs to `Data.Rational.Properties`:
+ ```agda
+  +-*-isCommutativeRing : IsCommutativeRing _+_ _*_ -_ 0ℚ 1ℚ
+  +-*-commutativeRing   : CommutativeRing 0ℓ 0ℓ
+ ```
 
 * Added new types and constructors to `Data.Rational.Unnormalised`
   ```agda
@@ -311,8 +335,24 @@ Other minor additions
   nonPositive : p ≤ 0ℚᵘ → NonPositive p
   nonNegative : p ≥ 0ℚᵘ → NonNegative p
   ```
-
 * Added new operator to `Relation.Binary`:
   ```agda
   _⇔_ : REL A B ℓ₁ → REL A B ℓ₂ → Set _
   ```
+
+Refactorings
+------------
+
+These changes should be invisble to current users, but can be useful
+to authors of large libraries.
+
+* `Relation.Binary.PropositionalEquality`
+  was getting large and depended on a lot of other parts of the library,
+  even though its basic functionality did
+  not. `Relation.Binary.PropositionalEquality.Core` already
+  existed. Added are
+  ```agda
+  Relation.Binary.PropositionalEquality.Properties
+  Relation.Binary.PropositionalEquality.Algebra
+  ```
+  which factor out some of the dependencies.

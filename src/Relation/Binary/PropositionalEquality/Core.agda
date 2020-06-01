@@ -21,8 +21,7 @@ open import Relation.Nullary using (¬_)
 private
   variable
     a b ℓ : Level
-    A : Set a
-    B : Set b
+    A B C : Set a
 
 ------------------------------------------------------------------------
 -- Propositional equality
@@ -48,6 +47,16 @@ subst P refl p = p
 cong : ∀ (f : A → B) {x y} → x ≡ y → f x ≡ f y
 cong f refl = refl
 
+subst₂ : ∀ (_∼_ : REL A B ℓ) {x y u v} → x ≡ y → u ≡ v → x ∼ u → y ∼ v
+subst₂ _ refl refl p = p
+
+cong-app : ∀ {A : Set a} {B : A → Set b} {f g : (x : A) → B x} →
+           f ≡ g → (x : A) → f x ≡ g x
+cong-app refl x = refl
+
+cong₂ : ∀ (f : A → B → C) {x y u v} → x ≡ y → u ≡ v → f x u ≡ f y v
+cong₂ f refl refl = refl
+
 respˡ : ∀ (∼ : Rel A ℓ) → ∼ Respectsˡ _≡_
 respˡ _∼_ refl x∼y = x∼y
 
@@ -56,22 +65,6 @@ respʳ _∼_ refl x∼y = x∼y
 
 resp₂ : ∀ (∼ : Rel A ℓ) → ∼ Respects₂ _≡_
 resp₂ _∼_ = respʳ _∼_ , respˡ _∼_
-
-------------------------------------------------------------------------
--- Various equality rearrangement lemmas
-
-trans-reflʳ : ∀ {x y : A} (p : x ≡ y) → trans p refl ≡ p
-trans-reflʳ refl = refl
-
-trans-assoc : ∀ {x y z u : A} (p : x ≡ y) {q : y ≡ z} {r : z ≡ u} →
-  trans (trans p q) r ≡ trans p (trans q r)
-trans-assoc refl = refl
-
-trans-symˡ : ∀ {x y : A} (p : x ≡ y) → trans (sym p) p ≡ refl
-trans-symˡ refl = refl
-
-trans-symʳ : ∀ {x y : A} (p : x ≡ y) → trans p (sym p) ≡ refl
-trans-symʳ refl = refl
 
 ------------------------------------------------------------------------
 -- Properties of _≢_

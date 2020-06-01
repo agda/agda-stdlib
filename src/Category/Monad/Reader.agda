@@ -102,7 +102,7 @@ ReaderTIMonadReader Mon = record
 ------------------------------------------------------------------------
 -- Ordinary reader monads
 
-RawMonadReader : (M : Set (r ⊔ a) → Set (r ⊔ a)) → Set _
+RawMonadReader : (M : Set (r ⊔ a) → Set (r ⊔ a)) → Set (suc (r ⊔ a))
 RawMonadReader M = RawIMonadReader {I = ⊤} (λ _ _ → M)
 
 module RawMonadReader {M} (Mon : RawMonadReader M) where
