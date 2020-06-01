@@ -27,8 +27,8 @@ private
 
 module _ (R : Setoid a ℓ₁) (S : Setoid b ℓ₂) where
 
-  equivalence : IsEquivalence (Equivalence {a} {b})
-  equivalence = record
+  isEquivalence : IsEquivalence (Equivalence {a} {b})
+  isEquivalence = record
     { refl = λ {x} → Identity.equivalence x
     ; sym = Symmetry.equivalence
     ; trans = Composition.equivalence
@@ -37,8 +37,8 @@ module _ (R : Setoid a ℓ₁) (S : Setoid b ℓ₂) where
 ------------------------------------------------------------------------
 -- Propositional bundles
 
-⇔ : IsEquivalence {ℓ = ℓ₁} _⇔_
-⇔ = record
+⇔-isEquivalence : IsEquivalence {ℓ = ℓ₁} _⇔_
+⇔-isEquivalence = record
   { refl = λ {x} → Identity.equivalence (setoid x)
   ; sym = Symmetry.equivalence
   ; trans = Composition.equivalence
