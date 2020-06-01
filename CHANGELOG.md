@@ -158,6 +158,18 @@ Other minor additions
 
 * The module `Data.Nat.Bin.Induction` now re-exports `Acc` and `acc` from `Induction.WellFounded`.
 
+* Added some useful combinators to
+  `Relation.Binary.PropositionalEquality`
+  (actually, in the `.Core` submodule): Some implicit variants of refl and cong; 'i' for implicit,
+  ```agda
+  irefl : (x : A) → f x ≡ f x
+  icong : x ≡ y → f x ≡ f y
+  ```
+  and `icong′` for simplified à la`∘′`
+  ```agda
+  icong′ : ∀ x → f x ≡ f x
+  ```
+
 * Added proofs to `Relation.Binary.PropositionalEquality`:
   ```agda
   trans-cong  : trans (cong f p) (cong f q) ≡ cong f (trans p q)
