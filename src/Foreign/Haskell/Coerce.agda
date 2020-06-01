@@ -127,8 +127,6 @@ instance
 
 -- Maybe
 
--- Maybe
-
   coerce-maybe : Coercible₁ a b STD.Maybe STD.Maybe
   coerce-maybe = TrustMe
 
