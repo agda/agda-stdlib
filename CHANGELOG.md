@@ -165,9 +165,9 @@ Other minor additions
   irefl : (x : A) → f x ≡ f x
   icong : x ≡ y → f x ≡ f y
   ```
-  and `icong′` for simplified à la`∘′`
+  and `erefl` for explicit `refl` on the left
   ```agda
-  icong′ : ∀ x → f x ≡ f x
+  pattern erefl x = refl {x = x}
   ```
 
 * Added proofs to `Relation.Binary.PropositionalEquality`:
