@@ -17,6 +17,7 @@ open import Data.Fin.Base
 open import Data.Fin.Patterns
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_)
 import Data.Nat.Properties as ℕₚ
+open import Data.Nat.Properties.Base using (≤-pred)
 open import Data.Unit using (tt)
 open import Data.Product using (∃; ∃₂; ∄; _×_; _,_; map; proj₁; uncurry; <_,_>)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
@@ -399,18 +400,18 @@ lower₁-irrelevant {suc n} (suc i)  _   _ =
 toℕ-inject≤ : ∀ {m n} (i : Fin m) (le : m ℕ.≤ n) →
                 toℕ (inject≤ i le) ≡ toℕ i
 toℕ-inject≤ {_} {suc n} zero    _  = refl
-toℕ-inject≤ {_} {suc n} (suc i) le = cong suc (toℕ-inject≤ i (ℕₚ.≤-pred le))
+toℕ-inject≤ {_} {suc n} (suc i) le = cong suc (toℕ-inject≤ i (≤-pred le))
 
 inject≤-refl : ∀ {n} (i : Fin n) (n≤n : n ℕ.≤ n) → inject≤ i n≤n ≡ i
 inject≤-refl {suc n} zero    _   = refl
-inject≤-refl {suc n} (suc i) n≤n = cong suc (inject≤-refl i (ℕₚ.≤-pred n≤n))
+inject≤-refl {suc n} (suc i) n≤n = cong suc (inject≤-refl i (≤-pred n≤n))
 
 inject≤-idempotent : ∀ {m n k} (i : Fin m)
                      (m≤n : m ℕ.≤ n) (n≤k : n ℕ.≤ k) (m≤k : m ℕ.≤ k) →
                      inject≤ (inject≤ i m≤n) n≤k ≡ inject≤ i m≤k
 inject≤-idempotent {_} {suc n} {suc k} zero    _   _   _ = refl
 inject≤-idempotent {_} {suc n} {suc k} (suc i) m≤n n≤k _ =
-  cong suc (inject≤-idempotent i (ℕₚ.≤-pred m≤n) (ℕₚ.≤-pred n≤k) _)
+  cong suc (inject≤-idempotent i (≤-pred m≤n) (≤-pred n≤k) _)
 
 ------------------------------------------------------------------------
 -- splitAt
