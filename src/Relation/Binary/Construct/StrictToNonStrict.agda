@@ -29,6 +29,7 @@ open import Relation.Nullary.Sum using (_⊎-dec_)
 -- Conversion
 
 -- _<_ can be turned into _≤_ as follows:
+infix 4  _≤_
 
 _≤_ : Rel A _
 x ≤ y = (x < y) ⊎ (x ≈ y)

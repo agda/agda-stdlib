@@ -26,6 +26,9 @@ open import Relation.Nullary
 
 module _ {p q} (P : Pred A p) (Q : Pred A q) where
 
+  infix 1 _++_∷_
+  infixr 5 _∷_
+
   data First : Pred (List A) (a ⊔ p ⊔ q) where
     [_] : ∀ {x xs} → Q x            → First (x ∷ xs)
     _∷_ : ∀ {x xs} → P x → First xs → First (x ∷ xs)
