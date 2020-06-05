@@ -307,7 +307,13 @@ Other minor additions
   recompute       : .(Coprime n d) → Coprime n d
   ```
 
-* Added new types and constructors to `Data.Rational.Unnormalised`:
+* Add proof to `Algebra.Morphism.RingMonomorphism`:
+ ```agda
+ isCommutativeRing : IsCommutativeRing _≈₂_ _⊕_ _⊛_ ⊝_ 0#₂ 1#₂ →
+                     IsCommutativeRing _≈₁_ _+_ _*_ -_ 0# 1#
+ ```
+
+* Added new types and constructors to `Data.Rational`:
   ```agda
   NonZero     : Pred ℚ 0ℓ
   Positive    : Pred ℚ 0ℓ
@@ -323,6 +329,12 @@ Other minor additions
   nonPositive : p ≤ 0ℚ → NonPositive p
   nonNegative : p ≥ 0ℚ → NonNegative p
   ```
+
+* Added proofs to `Data.Rational.Properties`:
+ ```agda
+  +-*-isCommutativeRing : IsCommutativeRing _+_ _*_ -_ 0ℚ 1ℚ
+  +-*-commutativeRing   : CommutativeRing 0ℓ 0ℓ
+ ```
 
 * Added new types and constructors to `Data.Rational.Unnormalised`
   ```agda
