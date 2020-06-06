@@ -107,7 +107,7 @@ m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
 -- Properties of _≤_
 ------------------------------------------------------------------------
 
-open import Data.Nat.Properties.Base public
+open import Data.Nat.Properties.Core public
 
 ------------------------------------------------------------------------
 -- Relational properties of _≤_

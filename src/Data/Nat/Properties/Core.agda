@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Data.Nat.Properties.Base where
+module Data.Nat.Properties.Core where
 
 open import Data.Nat.Base
 
