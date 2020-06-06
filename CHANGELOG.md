@@ -106,7 +106,18 @@ New modules
   ```
   Data.Sum.Algebra
   Data.Product.Algebra
+  Data.SumProduct.Algebra
   ```
+
+* Symmetry of various functional properties
+  ```agda
+  Function.Construct.Symmetry
+  ```
+
+* `IsEquivalence` structures for `Inverse`, `Equivalence`, `↔` and `⇔` in
+  ```agda
+  Function.Properties.Inverse
+  Function.Properties.Equivalence
 
 * Indexed nullary relations/sets:
   ```

@@ -9,25 +9,28 @@
 module Data.Sum.Algebra where
 
 open import Agda.Builtin.Sigma
-open import Algebra.Definitions
+open import Algebra
 open import Data.Empty.Polymorphic using (⊥)
 open import Data.Sum.Base
 open import Data.Sum.Properties
-open import Function.Base using (id)
+open import Function.Base using (id; _∘_)
+open import Function.Properties.Inverse using (↔-isEquivalence)
 open import Level using (Level)
 
 open import Function.Bundles using (_↔_; Inverse; mk↔)
 import Function.Definitions as FuncDef
 
-open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; cong)
 
 ------------------------------------------------------------------------
 
 private
   variable
-    a b : Level
+    a b c d : Level
     A : Set a
     B : Set b
+    C : Set c
+    D : Set d
 
 -- The module is needed because we need to pass `A` and `B` to `FuncDef`
 module _ {A : Set a} {B : Set b} where
@@ -69,3 +72,60 @@ private
 
 ⊎-identity : ∀ ℓ → Identity _↔_ (⊥ {ℓ}) _⊎_
 ⊎-identity ℓ = ⊎-identityˡ ℓ , ⊎-identityʳ ℓ
+
+infix 4 _⊎-cong_
+
+_⊎-cong_ : A ↔ B → C ↔ D → (A ⊎ C) ↔ (B ⊎ D)
+i ⊎-cong j = inverse (map I.f J.f) (map I.f⁻¹ J.f⁻¹)
+  [ cong inj₁ ∘ I.inverseˡ , cong inj₂ ∘ J.inverseˡ ]
+  [ cong inj₁ ∘ I.inverseʳ , cong inj₂ ∘ J.inverseʳ ]
+  where
+  module I = Inverse i
+  module J = Inverse j
+
+------------------------------------------------------------------------
+-- ⊥, _⊎_ form a commutative monoid
+
+⊎-isMagma : ∀ ℓ → IsMagma {Level.suc ℓ} _↔_ _⊎_
+⊎-isMagma ℓ = record
+  { isEquivalence = ↔-isEquivalence
+  ; ∙-cong        = _⊎-cong_
+  }
+
+⊎-magma : (ℓ : Level) → Magma _ _
+⊎-magma ℓ = record
+  { isMagma = ⊎-isMagma ℓ
+  }
+
+⊎-isSemigroup : ∀ ℓ → IsSemigroup {Level.suc ℓ} _↔_ _⊎_
+⊎-isSemigroup ℓ = record
+  { isMagma = ⊎-isMagma ℓ
+  ; assoc   = λ _ _ _ → ⊎-assoc _ _ _ _
+  }
+
+⊎-semigroup : (ℓ : Level) → Semigroup _ _
+⊎-semigroup ℓ = record
+  { isSemigroup = ⊎-isSemigroup ℓ
+  }
+
+⊎-isMonoid : ∀ ℓ → IsMonoid _↔_ _⊎_ ⊥
+⊎-isMonoid ℓ = record
+  { isSemigroup = ⊎-isSemigroup ℓ
+  ; identity    = (⊎-identityˡ ℓ) , (⊎-identityʳ ℓ)
+  }
+
+⊎-monoid : (ℓ : Level) → Monoid _ _
+⊎-monoid ℓ = record
+  { isMonoid = ⊎-isMonoid ℓ
+  }
+
+⊎-isCommutativeMonoid : ∀ ℓ → IsCommutativeMonoid _↔_ _⊎_ ⊥
+⊎-isCommutativeMonoid ℓ = record
+  { isMonoid = ⊎-isMonoid ℓ
+  ; comm     = ⊎-comm
+  }
+
+⊎-commutativeMonoid : (ℓ : Level) → CommutativeMonoid _ _
+⊎-commutativeMonoid ℓ = record
+  { isCommutativeMonoid = ⊎-isCommutativeMonoid ℓ
+  }

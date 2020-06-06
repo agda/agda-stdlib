@@ -14,20 +14,24 @@ open import Data.Product
 open import Data.Product.Properties
 open import Data.Unit.Polymorphic using (⊤; tt)
 open import Function.Base using (id; _∘′_; _∘_)
+open import Function.Properties.Inverse using (↔-isEquivalence)
 open import Level using (Level)
 
 open import Function.Bundles using (_↔_; Inverse; mk↔)
 import Function.Definitions as FuncDef
 
-open import Relation.Binary.PropositionalEquality using (_≡_; refl; isEquivalence)
+open import Relation.Binary.PropositionalEquality
+  using (_≡_; refl; isEquivalence; cong₂)
 
 ------------------------------------------------------------------------
 
 private
   variable
-    a b c ℓ : Level
+    a b c d ℓ : Level
     A : Set a
     B : Set b
+    C : Set c
+    D : Set d
 
 -- The module is needed because we need to pass `A` and `B` to `FuncDef`
 module _ {A : Set a} {B : Set b} where
@@ -40,7 +44,7 @@ module _ {A : Set a} {B : Set b} where
 
 private
   -- convenient abbreviations
-  irefl : {A : Set a} {B : Set b} {f : A → B} (x : A) → f x ≡ f x
+  irefl : {f : A → B} (x : A) → f x ≡ f x
   irefl _ = refl
 
 ------------------------------------------------------------------------
@@ -78,6 +82,16 @@ private
 ×-zero : ∀ ℓ → Zero _↔_ (⊥) _×_
 ×-zero ℓ  = ×-zeroˡ ℓ , ×-zeroʳ ℓ
 
+-- × is a congruence
+infix 4 _×-cong_
+
+_×-cong_ : A ↔ B → C ↔ D → (A × C) ↔ (B × D)
+i ×-cong j = inverse (map I.f J.f) (map I.f⁻¹ J.f⁻¹)
+  (λ {(a , b) → cong₂ _,_ (I.inverseˡ a) (J.inverseˡ b) })
+  λ {(a , b) → cong₂ _,_ (I.inverseʳ a) (J.inverseʳ b)}
+  where module I = Inverse i
+        module J = Inverse j
+
 ------------------------------------------------------------------------
 -- Properties of Σ
 
@@ -90,3 +104,50 @@ private
 Σ-assoc-alt : {B : A → Set b} {C : Σ A B → Set c} →
           Σ (Σ A B) C ↔ Σ A (λ a → Σ (B a) (curry C a))
 Σ-assoc-alt = inverse assocʳ-alt assocˡ-alt irefl irefl
+
+------------------------------------------------------------------------
+-- ⊤, _×_ form a commutative monoid
+
+×-isMagma : ∀ ℓ → IsMagma {Level.suc ℓ} _↔_ _×_
+×-isMagma ℓ = record
+  { isEquivalence = ↔-isEquivalence
+  ; ∙-cong        = _×-cong_
+  }
+
+×-magma : (ℓ : Level) → Magma _ _
+×-magma ℓ = record
+  { isMagma = ×-isMagma ℓ
+  }
+
+×-isSemigroup : ∀ ℓ → IsSemigroup {Level.suc ℓ} _↔_ _×_
+×-isSemigroup ℓ = record
+  { isMagma = ×-isMagma ℓ
+  ; assoc   = λ _ _ _ → Σ-assoc
+  }
+
+×-semigroup : (ℓ : Level) → Semigroup _ _
+×-semigroup ℓ = record
+  { isSemigroup = ×-isSemigroup ℓ
+  }
+
+×-isMonoid : ∀ ℓ → IsMonoid _↔_ _×_ ⊤
+×-isMonoid ℓ = record
+  { isSemigroup = ×-isSemigroup ℓ
+  ; identity    = (×-identityˡ ℓ) , (×-identityʳ ℓ)
+  }
+
+×-monoid : (ℓ : Level) → Monoid _ _
+×-monoid ℓ = record
+  { isMonoid = ×-isMonoid ℓ
+  }
+
+×-isCommutativeMonoid : ∀ ℓ → IsCommutativeMonoid _↔_ _×_ ⊤
+×-isCommutativeMonoid ℓ = record
+  { isMonoid = ×-isMonoid ℓ
+  ; comm     = λ _ _ → ×-comm _ _
+  }
+
+×-commutativeMonoid : (ℓ : Level) → CommutativeMonoid _ _
+×-commutativeMonoid ℓ = record
+  { isCommutativeMonoid = ×-isCommutativeMonoid ℓ
+  }
