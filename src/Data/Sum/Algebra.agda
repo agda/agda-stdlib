@@ -10,11 +10,11 @@ module Data.Sum.Algebra where
 
 open import Agda.Builtin.Sigma
 open import Algebra.Definitions
-open import Data.Empty using (⊥)
+open import Data.Empty.Polymorphic using (⊥)
 open import Data.Sum.Base
 open import Data.Sum.Properties
 open import Function.Base using (id)
-open import Level
+open import Level using (Level)
 
 open import Function.Bundles using (_↔_; Inverse; mk↔)
 import Function.Definitions as FuncDef
@@ -43,7 +43,7 @@ private
   irefl : {A : Set a} {B : Set b} {f : A → B} (x : A) → f x ≡ f x
   irefl _ = refl
 
-  ♯ : {B : Lift a ⊥ → Set b} → (w : Lift a ⊥) → B w
+  ♯ : {B : ⊥ {a} → Set b} → (w : ⊥) → B w
   ♯ ()
 
 ------------------------------------------------------------------------
@@ -61,11 +61,11 @@ private
 ⊎-comm _ _ = inverse swap swap swap-involutive swap-involutive
 
 -- ⊥ is both left and right identity for ⊎
-⊎-identityˡ : ∀ ℓ → LeftIdentity _↔_ (Lift ℓ ⊥) _⊎_
-⊎-identityˡ _ _ = inverse [ ♯ , id ]′ inj₂ irefl [ ♯ , irefl ]
+⊎-identityˡ : ∀ ℓ → LeftIdentity _↔_ (⊥ {ℓ}) _⊎_
+⊎-identityˡ ℓ A = inverse [ ♯ , id ] inj₂ irefl [ ♯ , irefl ]
 
-⊎-identityʳ : ∀ ℓ → RightIdentity _↔_ (Lift ℓ ⊥) _⊎_
+⊎-identityʳ : ∀ ℓ → RightIdentity _↔_ (⊥ {ℓ}) _⊎_
 ⊎-identityʳ _ _ = inverse [ id , ♯ ] inj₁ irefl [ irefl , ♯ ]
 
-⊎-identity : ∀ ℓ → Identity _↔_ (Lift ℓ ⊥) _⊎_
+⊎-identity : ∀ ℓ → Identity _↔_ (⊥ {ℓ}) _⊎_
 ⊎-identity ℓ = ⊎-identityˡ ℓ , ⊎-identityʳ ℓ

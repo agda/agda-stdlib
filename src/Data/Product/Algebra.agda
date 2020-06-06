@@ -9,12 +9,12 @@
 module Data.Product.Algebra where
 
 open import Algebra
-open import Data.Empty using (⊥; ⊥-elim)
+open import Data.Empty.Polymorphic using (⊥; ⊥-elim)
 open import Data.Product
 open import Data.Product.Properties
-open import Data.Unit using (⊤; tt)
+open import Data.Unit.Polymorphic using (⊤; tt)
 open import Function.Base using (id; _∘′_; _∘_)
-open import Level
+open import Level using (Level)
 
 open import Function.Bundles using (_↔_; Inverse; mk↔)
 import Function.Definitions as FuncDef
@@ -58,24 +58,24 @@ private
 ×-comm _ _ = inverse swap swap swap-involutive swap-involutive
 
 -- ⊤ is both left and right identity for ×
-×-identityˡ : ∀ ℓ → LeftIdentity _↔_ (Lift ℓ ⊤) _×_
-×-identityˡ _ _ = inverse proj₂ (lift tt ,_) irefl irefl
+×-identityˡ : ∀ ℓ → LeftIdentity _↔_ (⊤ {ℓ}) _×_
+×-identityˡ _ _ = inverse proj₂ (tt ,_) irefl irefl
 
-×-identityʳ : ∀ ℓ → RightIdentity _↔_ (Lift ℓ ⊤) _×_
-×-identityʳ _ _ = inverse proj₁ (_, lift tt) irefl irefl
+×-identityʳ : ∀ ℓ → RightIdentity _↔_ (⊤ {ℓ}) _×_
+×-identityʳ _ _ = inverse proj₁ (_, tt) irefl irefl
 
-×-identity : ∀ ℓ → Identity _↔_ (Lift ℓ ⊤) _×_
+×-identity : ∀ ℓ → Identity _↔_ (⊤) _×_
 ×-identity ℓ = ×-identityˡ ℓ , ×-identityʳ ℓ
 
 -- × has ⊥ has its zero
 
-×-zeroˡ : ∀ ℓ → LeftZero _↔_ (Lift ℓ ⊥) _×_
-×-zeroˡ ℓ A = inverse proj₁ (⊥-elim ∘ lower) (⊥-elim ∘ lower) (⊥-elim ∘ lower ∘ proj₁)
+×-zeroˡ : ∀ ℓ → LeftZero _↔_ (⊥ {ℓ}) _×_
+×-zeroˡ ℓ A = inverse proj₁ ⊥-elim ⊥-elim λ ()
 
-×-zeroʳ : ∀ ℓ → RightZero _↔_ (Lift ℓ ⊥) _×_
-×-zeroʳ ℓ A = inverse proj₂ (⊥-elim ∘ lower) (⊥-elim ∘ lower) (⊥-elim ∘ lower ∘ proj₂)
+×-zeroʳ : ∀ ℓ → RightZero _↔_ (⊥ {ℓ}) _×_
+×-zeroʳ ℓ A = inverse proj₂ ⊥-elim ⊥-elim λ ()
 
-×-zero : ∀ ℓ → Zero _↔_ (Lift ℓ ⊥) _×_
+×-zero : ∀ ℓ → Zero _↔_ (⊥) _×_
 ×-zero ℓ  = ×-zeroˡ ℓ , ×-zeroʳ ℓ
 
 ------------------------------------------------------------------------
