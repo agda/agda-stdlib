@@ -50,6 +50,10 @@ Deprecated names
   * `Data.List.NonEmpty.SnocView._∷ʳ'_` ↦ `Data.List.NonEmpty.SnocView._∷ʳ′_`
   * `Relation.Binary.Construct.StrictToNonStrict.decidable'` ↦ `Relation.Binary.Construct.StrictToNonStrict.decidable′`
 
+* In `Algebra.Morphism.Definitions` and `Relation.Binary.Morphism.Definitions`
+  the type `Morphism A B` were recovered by publicly importing its
+  definition from `Function.Core`. See discussion in issue #1206.
+
 * In `Data.Nat.Properties`:
   ```
   *-+-isSemiring             ↦  +-*-isSemiring
