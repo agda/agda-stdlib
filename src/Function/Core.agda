@@ -10,6 +10,8 @@
 
 module Function.Core where
 
+open import Level using (_⊔_)
+
 ------------------------------------------------------------------------
 -- Types
 
@@ -18,3 +20,9 @@ Fun₁ A = A → A
 
 Fun₂ : ∀ {a} → Set a → Set a
 Fun₂ A = A → A → A
+
+------------------------------------------------------------------------
+-- Morphism
+
+Morphism : ∀ {a} → ∀ {b} → Set a → Set b → Set (a ⊔ b)
+Morphism A B = A → B

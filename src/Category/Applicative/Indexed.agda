@@ -13,7 +13,7 @@ module Category.Applicative.Indexed where
 
 open import Category.Functor using (RawFunctor)
 open import Data.Product using (_×_; _,_)
-open import Function
+open import Function hiding (Morphism)
 open import Level
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
