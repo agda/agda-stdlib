@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- The identity function
+-- Composition of functional properties
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

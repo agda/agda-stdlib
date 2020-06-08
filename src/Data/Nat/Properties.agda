@@ -756,8 +756,8 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
   ; comm     = *-comm
   }
 
-*-+-isSemiring : IsSemiring _+_ _*_ 0 1
-*-+-isSemiring = record
++-*-isSemiring : IsSemiring _+_ _*_ 0 1
++-*-isSemiring = record
   { isSemiringWithoutAnnihilatingZero = record
     { +-isCommutativeMonoid = +-0-isCommutativeMonoid
     ; *-isMonoid            = *-1-isMonoid
@@ -766,10 +766,10 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
   ; zero = *-zero
   }
 
-*-+-isCommutativeSemiring : IsCommutativeSemiring _+_ _*_ 0 1
-*-+-isCommutativeSemiring = record
-  { isSemiring = *-+-isSemiring
-  ; *-comm = *-comm
++-*-isCommutativeSemiring : IsCommutativeSemiring _+_ _*_ 0 1
++-*-isCommutativeSemiring = record
+  { isSemiring = +-*-isSemiring
+  ; *-comm     = *-comm
   }
 
 ------------------------------------------------------------------------
@@ -813,14 +813,14 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
   { isCommutativeMonoid = *-1-isCommutativeMonoid
   }
 
-*-+-semiring : Semiring 0ℓ 0ℓ
-*-+-semiring = record
-  { isSemiring = *-+-isSemiring
++-*-semiring : Semiring 0ℓ 0ℓ
++-*-semiring = record
+  { isSemiring = +-*-isSemiring
   }
 
-*-+-commutativeSemiring : CommutativeSemiring 0ℓ 0ℓ
-*-+-commutativeSemiring = record
-  { isCommutativeSemiring = *-+-isCommutativeSemiring
++-*-commutativeSemiring : CommutativeSemiring 0ℓ 0ℓ
++-*-commutativeSemiring = record
+  { isCommutativeSemiring = +-*-isCommutativeSemiring
   }
 
 ------------------------------------------------------------------------
@@ -2070,12 +2070,12 @@ strictTotalOrder                      = <-strictTotalOrder
 "Warning: strictTotalOrder was deprecated in v0.14.
 Please use <-strictTotalOrder instead."
 #-}
-isCommutativeSemiring                 = *-+-isCommutativeSemiring
+isCommutativeSemiring                 = +-*-isCommutativeSemiring
 {-# WARNING_ON_USAGE isCommutativeSemiring
 "Warning: isCommutativeSemiring was deprecated in v0.14.
 Please use *-+-isCommutativeSemiring instead."
 #-}
-commutativeSemiring                   = *-+-commutativeSemiring
+commutativeSemiring                   = +-*-commutativeSemiring
 {-# WARNING_ON_USAGE commutativeSemiring
 "Warning: commutativeSemiring was deprecated in v0.14.
 Please use *-+-commutativeSemiring instead."
@@ -2310,4 +2310,27 @@ Please use ∀[m≤n⇒m≢o]⇒n<o instead."
 {-# WARNING_ON_USAGE ∀[m<n⇒m≢o]⇒o≤n
 "Warning: ∀[m<n⇒m≢o]⇒o≤n was deprecated in v1.3.
 Please use ∀[m<n⇒m≢o]⇒n≤o instead."
+#-}
+
+-- Version 1.4
+
+*-+-isSemiring = +-*-isSemiring
+{-# WARNING_ON_USAGE *-+-isSemiring
+"Warning: *-+-isSemiring was deprecated in v1.4.
+Please use +-*-isSemiring instead."
+#-}
+*-+-isCommutativeSemiring = +-*-isCommutativeSemiring
+{-# WARNING_ON_USAGE *-+-isCommutativeSemiring
+"Warning: *-+-isCommutativeSemiring was deprecated in v1.4.
+Please use +-*-isCommutativeSemiring instead."
+#-}
+*-+-semiring = +-*-semiring
+{-# WARNING_ON_USAGE *-+-semiring
+"Warning: *-+-semiring was deprecated in v1.4.
+Please use +-*-semiring instead."
+#-}
+*-+-commutativeSemiring = +-*-commutativeSemiring
+{-# WARNING_ON_USAGE *-+-commutativeSemiring
+"Warning: *-+-commutativeSemiring was deprecated in v1.4.
+Please use +-*-commutativeSemiring instead."
 #-}

@@ -46,7 +46,6 @@ Deprecated names
   have been deprecated in favour of the proofs in the new `Algebra.Construct.Subst.Equality` module.
 
 * In order to be consistent in usage of \prime character and apostrophe in identifiers, the following three names were deprecated in favor of their replacement that ends with a \prime character.
-
   * `Data.List.Base.InitLast._∷ʳ'_` ↦ `Data.List.Base.InitLast._∷ʳ′_`
   * `Data.List.NonEmpty.SnocView._∷ʳ'_` ↦ `Data.List.NonEmpty.SnocView._∷ʳ′_`
   * `Relation.Binary.Construct.StrictToNonStrict.decidable'` ↦ `Relation.Binary.Construct.StrictToNonStrict.decidable′`
@@ -54,6 +53,23 @@ Deprecated names
 * In `Algebra.Morphism.Definitions` and `Relation.Binary.Morphism.Definitions`
   the type `Morphism A B` were recovered by publicly importing its
   definition from `Function.Core`. See discussion in issue #1206.
+
+* In `Data.Nat.Properties`:
+  ```
+  *-+-isSemiring             ↦  +-*-isSemiring
+  *-+-isCommutativeSemiring  ↦  +-*-isCommutativeSemiring
+  *-+-semiring               ↦  +-*-semiring
+  *-+-commutativeSemiring    ↦  +-*-commutativeSemiring
+  ```
+
+* In `Data.Nat.Binary.Properties`:
+  ```
+  *-+-isSemiring                         ↦  +-*-isSemiring
+  *-+-isCommutativeSemiring              ↦  +-*-isCommutativeSemiring
+  *-+-semiring                           ↦  +-*-semiring
+  *-+-commutativeSemiring                ↦  +-*-commutativeSemiring
+  *-+-isSemiringWithoutAnnihilatingZero  ↦  +-*-isSemiringWithoutAnnihilatingZero
+  ```
 
 New modules
 -----------
@@ -103,6 +119,16 @@ New modules
   ```
   Data.Nat.Binary.Subtraction
   ```
+
+* Symmetry of various functional properties
+  ```agda
+  Function.Construct.Symmetry
+  ```
+
+* `IsEquivalence` structures for `Inverse`, `Equivalence`, `↔` and `⇔` in
+  ```agda
+  Function.Properties.Inverse
+  Function.Properties.Equivalence
 
 * Indexed nullary relations/sets:
   ```
