@@ -630,8 +630,7 @@ private
                   (ℤ.*-monoˡ-≤-non-neg (↧ₙ r ℕ.* ↧ₙ r) x≤y) ⟩
   r₂ ℤ.* (↧ q ℤ.* ↧ p) ℤ.+ (↧ r ℤ.* ↧ r) ℤ.* (↥ q ℤ.* ↧ p) ≡⟨ sym $ lemma r q p ⟩
   ↥ (r + q) ℤ.* (↧ (r + p))                                ∎
-  where open ℤ.≤-Reasoning
-        r₂ = ↥ r ℤ.* ↧ r
+  where open ℤ.≤-Reasoning; r₂ = ↥ r ℤ.* ↧ r
 
 +-monoˡ-≤ : ∀ r → (_+ r) Preserves _≤_ ⟶ _≤_
 +-monoˡ-≤ r {p} {q} rewrite +-comm-≡ p r | +-comm-≡ q r = +-monoʳ-≤ r
@@ -680,23 +679,23 @@ p≤q+p {p} p≥0 {q} rewrite +-comm-≡ p q = p≤p+q p≥0
 +-minus-telescope : ∀ p q r → (p - q) + (q - r) ≃ p - r
 +-minus-telescope p q r = begin-equality
   (p - q) + (q - r)   ≈⟨ ≃-sym (+-assoc (p - q) q (- r)) ⟩
-  (p - q) + q - r     ≈⟨ +-cong (+-assoc p (- q) q) (≃-refl {(- r)}) ⟩
-  (p + (- q + q)) - r ≈⟨ +-cong (+-cong (≃-refl {p}) (+-inverseˡ q)) (≃-refl {(- r)}) ⟩
-  (p + 0ℚᵘ) - r       ≈⟨ +-cong (+-identityʳ p) (≃-refl {(- r)}) ⟩
+  (p - q) + q - r     ≈⟨ +-congˡ (- r) (+-assoc p (- q) q) ⟩
+  (p + (- q + q)) - r ≈⟨ +-congˡ (- r) (+-congʳ p (+-inverseˡ q)) ⟩
+  (p + 0ℚᵘ) - r       ≈⟨ +-congˡ (- r) (+-identityʳ p) ⟩
   p - r               ∎ where open ≤-Reasoning
 
 p≃q⇒p-q≃0 : ∀ p q → p ≃ q → p - q ≃ 0ℚᵘ
 p≃q⇒p-q≃0 p q p≃q = begin-equality
-  p - q ≈⟨ +-cong p≃q (≃-refl {x = - q}) ⟩
+  p - q ≈⟨ +-congˡ (- q) p≃q ⟩
   q - q ≈⟨ +-inverseʳ q ⟩
   0ℚᵘ   ∎ where open ≤-Reasoning
 
 p-q≃0⇒p≃q : ∀ p q → p - q ≃ 0ℚᵘ → p ≃ q
 p-q≃0⇒p≃q p q p-q≃0 = begin-equality
   p             ≡˘⟨ +-identityʳ-≡ p ⟩
-  p + 0ℚᵘ       ≈⟨ +-cong (≃-refl {p}) (≃-sym (+-inverseˡ q)) ⟩
+  p + 0ℚᵘ       ≈⟨ +-congʳ p (≃-sym (+-inverseˡ q)) ⟩
   p + (- q + q) ≡˘⟨ +-assoc-≡ p (- q) q ⟩
-  (p - q) + q   ≈⟨ +-cong p-q≃0 (≃-refl {q}) ⟩
+  (p - q) + q   ≈⟨ +-congˡ q p-q≃0 ⟩
   0ℚᵘ + q       ≡⟨ +-identityˡ-≡ q ⟩
   q             ∎ where open ≤-Reasoning
 
@@ -716,7 +715,7 @@ p≤q⇒p-q≤0 {p} {q} p≤q = begin
 p-q≤0⇒p≤q : ∀ {p q} → p - q ≤ 0ℚᵘ → p ≤ q
 p-q≤0⇒p≤q {p} {q} p-q≤0 = begin
   p             ≡˘⟨ +-identityʳ-≡ p ⟩
-  p + 0ℚᵘ       ≈⟨ +-cong (≃-refl {p}) (≃-sym (+-inverseˡ q)) ⟩
+  p + 0ℚᵘ       ≈⟨ +-congʳ p (≃-sym (+-inverseˡ q)) ⟩
   p + (- q + q) ≡˘⟨ +-assoc-≡ p (- q) q ⟩
   (p - q) + q   ≤⟨ +-monoˡ-≤ q p-q≤0 ⟩
   0ℚᵘ + q       ≡⟨ +-identityˡ-≡ q ⟩
@@ -733,7 +732,7 @@ p≤q⇒0≤q-p {p} {q} p≤q = begin
   p             ≡˘⟨ +-identityˡ-≡ p ⟩
   0ℚᵘ + p       ≤⟨ +-monoˡ-≤ p 0≤p-q ⟩
   q - p + p     ≡⟨ +-assoc-≡ q (- p) p ⟩
-  q + (- p + p) ≈⟨ +-cong (≃-refl {x = q}) (+-inverseˡ p) ⟩
+  q + (- p + p) ≈⟨ +-congʳ q (+-inverseˡ p) ⟩
   q + 0ℚᵘ       ≡⟨ +-identityʳ-≡ q ⟩
   q             ∎ where open ≤-Reasoning
 
