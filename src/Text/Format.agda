@@ -27,10 +27,10 @@ data ArgChunk : Set where
 -- Semantics
 
 Arg⟦_⟧ : (fmt : ArgChunk) → Set
-Arg⟦ ℕArg      ⟧ = ℕ     
-Arg⟦ ℤArg      ⟧ = ℤ     
-Arg⟦ FloatArg  ⟧ = Float 
-Arg⟦ CharArg   ⟧ = Char  
+Arg⟦ ℕArg      ⟧ = ℕ
+Arg⟦ ℤArg      ⟧ = ℤ
+Arg⟦ FloatArg  ⟧ = Float
+Arg⟦ CharArg   ⟧ = Char
 Arg⟦ StringArg ⟧ = String
 
 lexArg : Char → Maybe ArgChunk

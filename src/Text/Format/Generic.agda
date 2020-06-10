@@ -101,7 +101,7 @@ lexer input = loop [] [] (toList input) where
     chunk c =
       case lexArg c of λ where
         (just ch) → pure (Arg ch)
-        nothing   → 
+        nothing   →
           force′ (toRevString bef) $′ λ prefix →
           force′ (fromList cs)     $′ λ suffix →
           inj₁ (InvalidType prefix c suffix)
