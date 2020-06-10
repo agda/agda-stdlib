@@ -50,7 +50,7 @@ size = List.sum ∘′ List.map λ { (Raw _) → 0; _ → 1 }
 ⟦_⟧ : (fmt : Format) → Sets (size fmt) 0ℓs
 ⟦ []          ⟧ = _
 ⟦ Arg a  ∷ cs ⟧ = Arg⟦ a ⟧ , ⟦ cs ⟧
-⟦ Raw _  ∷ cs ⟧ =           ⟦ cs ⟧
+⟦ Raw _  ∷ cs ⟧ =            ⟦ cs ⟧
 
 ------------------------------------------------------------------------
 -- Lexer: from Strings to Formats
