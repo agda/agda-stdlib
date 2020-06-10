@@ -21,6 +21,25 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
+#### Changes to the `Relation.Unary.Closure` hierarchy
+
+* Following the study of the closure operator `◇` dual to the `□` we originally
+  provided, the set of modules has been reorganised. We have
+
+  + Added the `◇` closure operator to `.Base`
+  + Moved all of the `□`-related functions in submodules called `□`
+  + Added all of the corresponding `◇`-related functions in submodules called `◇`
+
+* We also provide functions converting back and forth between `□`-based and
+  `◇`-based statements in `.Base`:
+
+  ```agda
+  curry   : (∀ {x} → ◇ T x → P x) → (∀ {x} → T x → □ P x)
+  uncurry : (∀ {x} → T x → □ P x) → (∀ {x} → ◇ T x → P x)
+  ```
+
+#### Other
+
 * The `n` argument to `_⊜_` in `Tactic.RingSolver.NonReflective` has been made implict rather than explicit.
 
 * `Data.Empty.Polymorphic` and `Data.Unit.Polymorphic` were rewritten
