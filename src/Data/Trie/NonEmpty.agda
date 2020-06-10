@@ -27,9 +27,9 @@ open StrictTotalOrder S
   renaming (Carrier to Key)
 
 open import Data.List.Relation.Binary.Equality.Setoid Eq.setoid
-open import Data.AVL.Value hiding (Value)
-open import Data.AVL.Value ≋-setoid using (Value)
-open import Data.AVL.NonEmpty S as Tree⁺ using (Tree⁺)
+open import Data.Tree.AVL.Value hiding (Value)
+open import Data.Tree.AVL.Value ≋-setoid using (Value)
+open import Data.Tree.AVL.NonEmpty S as Tree⁺ using (Tree⁺)
 open Value
 
 ------------------------------------------------------------------------

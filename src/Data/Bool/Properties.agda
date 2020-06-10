@@ -18,7 +18,7 @@ open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence
   using (_⇔_; equivalence; module Equivalence)
 open import Level using (Level; 0ℓ)
-open import Relation.Binary
+open import Relation.Binary hiding (_⇔_)
 open import Relation.Binary.PropositionalEquality hiding ([_])
 open import Relation.Nullary using (ofʸ; ofⁿ; does; proof; yes; no)
 open import Relation.Nullary.Decidable using (True)

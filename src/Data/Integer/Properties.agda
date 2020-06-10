@@ -945,17 +945,17 @@ suc-mono (-≤+ {m}) = 0⊖m≤+ m
 suc-mono (-≤- n≤m) = ⊖-monoʳ-≥-≤ zero n≤m
 suc-mono (+≤+ m≤n) = +≤+ (s≤s m≤n)
 
-m+1≤n⇒m<n : ∀ {m n} → sucℤ m ≤ n → m < n
-m+1≤n⇒m<n {+ m}           {+ _}       (+≤+ m≤n) = +<+ m≤n
-m+1≤n⇒m<n { -[1+ 0 ]}     {+ n}       p         = -<+
-m+1≤n⇒m<n { -[1+ suc m ]} {+ n}       -≤+       = -<+
-m+1≤n⇒m<n { -[1+ suc m ]} { -[1+ n ]} (-≤- n≤m) = -<- (ℕ.s≤s n≤m)
+suc[i]≤j⇒i<j : ∀ {i j} → sucℤ i ≤ j → i < j
+suc[i]≤j⇒i<j {+ i}           {+ _}       (+≤+ i≤j) = +<+ i≤j
+suc[i]≤j⇒i<j { -[1+ 0 ]}     {+ j}       p         = -<+
+suc[i]≤j⇒i<j { -[1+ suc i ]} {+ j}       -≤+       = -<+
+suc[i]≤j⇒i<j { -[1+ suc i ]} { -[1+ j ]} (-≤- j≤i) = -<- (ℕ.s≤s j≤i)
 
-m<n⇒m+1≤n : ∀ {m n} → m < n → sucℤ m ≤ n
-m<n⇒m+1≤n {+ _}           {+ _}       (+<+ m<n) = +≤+ m<n
-m<n⇒m+1≤n { -[1+ 0 ]}     {+ _}       -<+       = +≤+ z≤n
-m<n⇒m+1≤n { -[1+ suc m ]} { -[1+ _ ]} (-<- n<m) = -≤- (ℕ.≤-pred n<m)
-m<n⇒m+1≤n { -[1+ suc m ]} {+ _}       -<+       = -≤+
+i<j⇒suc[i]≤j : ∀ {i j} → i < j → sucℤ i ≤ j
+i<j⇒suc[i]≤j {+ _}           {+ _}       (+<+ i<j) = +≤+ i<j
+i<j⇒suc[i]≤j { -[1+ 0 ]}     {+ _}       -<+       = +≤+ z≤n
+i<j⇒suc[i]≤j { -[1+ suc i ]} { -[1+ _ ]} (-<- j<i) = -≤- (ℕ.≤-pred j<i)
+i<j⇒suc[i]≤j { -[1+ suc i ]} {+ _}       -<+       = -≤+
 
 ------------------------------------------------------------------------
 -- Properties of pred
@@ -1823,7 +1823,7 @@ Please use _<_ instead."
 ≰⇒>′ { -[1+ suc _ ]} { -[1+ 0 ]}     m≰n =  contradiction (-≤- z≤n) m≰n
 ≰⇒>′ { -[1+ m ]}     { -[1+ suc n ]} m≰n with m ℕ.≤? n
 ... | yes m≤n  = -≤- m≤n
-... | no  m≰n' = contradiction (-≤- (ℕₚ.≰⇒> m≰n')) m≰n
+... | no  m≰n′ = contradiction (-≤- (ℕₚ.≰⇒> m≰n′)) m≰n
 {-# WARNING_ON_USAGE ≰⇒>′
 "Warning: _<′_ was deprecated in v1.1.
 Please use _<_ instead."
@@ -1901,6 +1901,6 @@ Please use _<_ instead."
 
 [1+m]*n≡n+m*n = suc-*
 {-# WARNING_ON_USAGE [1+m]*n≡n+m*n
-"Warning: [1+m]*n≡n+m*n was deprecated in v1.1.
+"Warning: [1+m]*n≡n+m*n was deprecated in v1.2.
 Please use suc-* instead."
 #-}

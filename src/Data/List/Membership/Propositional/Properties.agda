@@ -34,13 +34,13 @@ open import Function.Inverse as Inv using (_↔_; module Inverse)
 import Function.Related as Related
 open import Function.Related.TypeIsomorphisms
 open import Level using (Level)
-open import Relation.Binary hiding (Decidable)
+open import Relation.Binary as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; trans; cong; subst; →-to-⟶; _≗_)
 import Relation.Binary.Properties.DecTotalOrder as DTOProperties
 open import Relation.Unary using (_⟨×⟩_; Decidable)
 open import Relation.Nullary.Reflects using (invert)
-open import Relation.Nullary using (¬_; Dec; does; yes; no)
+open import Relation.Nullary using (¬_; Dec; does; yes; no; _because_)
 open import Relation.Nullary.Negation
 
 private
@@ -48,7 +48,7 @@ private
 
   variable
     ℓ : Level
-    A B : Set ℓ
+    A B C : Set ℓ
 
 ------------------------------------------------------------------------
 -- Publicly re-export properties from Core
@@ -146,6 +146,33 @@ module _ {v : A} where
     where open Related.EquationalReasoning
 
 ------------------------------------------------------------------------
+-- cartesianProductWith
+
+module _ (f : A → B → C) where
+
+  ∈-cartesianProductWith⁺ : ∀ {xs ys a b} → a ∈ xs → b ∈ ys →
+                            f a b ∈ cartesianProductWith f xs ys
+  ∈-cartesianProductWith⁺ = Membershipₛ.∈-cartesianProductWith⁺
+    (P.setoid A) (P.setoid B) (P.setoid C) (P.cong₂ f)
+
+  ∈-cartesianProductWith⁻ : ∀ xs ys {v} → v ∈ cartesianProductWith f xs ys →
+                            ∃₂ λ a b → a ∈ xs × b ∈ ys × v ≡ f a b
+  ∈-cartesianProductWith⁻ = Membershipₛ.∈-cartesianProductWith⁻
+    (P.setoid A) (P.setoid B) (P.setoid C) f
+
+------------------------------------------------------------------------
+-- cartesianProduct
+
+∈-cartesianProduct⁺ : ∀ {x : A} {y : B} {xs ys} → x ∈ xs → y ∈ ys →
+                      (x , y) ∈ cartesianProduct xs ys
+∈-cartesianProduct⁺ = ∈-cartesianProductWith⁺ _,_
+
+∈-cartesianProduct⁻ : ∀ xs ys {xy@(x , y) : A × B} →
+                      xy ∈ cartesianProduct xs ys → x ∈ xs × y ∈ ys
+∈-cartesianProduct⁻ xs ys xy∈p[xs,ys] with ∈-cartesianProductWith⁻ _,_ xs ys xy∈p[xs,ys]
+... | (x , y , x∈xs , y∈ys , refl) = x∈xs , y∈ys
+
+------------------------------------------------------------------------
 -- applyUpTo
 
 module _ (f : ℕ → A) where
@@ -178,6 +205,25 @@ module _ {p} {P : A → Set p} (P? : Decidable P) where
 
   ∈-filter⁻ : ∀ {v xs} → v ∈ filter P? xs → v ∈ xs × P v
   ∈-filter⁻ = Membershipₛ.∈-filter⁻ (P.setoid A) P? (P.subst P)
+
+------------------------------------------------------------------------
+-- derun and deduplicate
+
+module _ {r} {R : Rel A r} (R? : B.Decidable R) where
+
+  ∈-derun⁻ : ∀ xs {z} → z ∈ derun R? xs → z ∈ xs
+  ∈-derun⁻ xs z∈derun[R,xs] = Membershipₛ.∈-derun⁻ (P.setoid A) R? xs z∈derun[R,xs]
+
+  ∈-deduplicate⁻ : ∀ xs {z} → z ∈ deduplicate R? xs → z ∈ xs
+  ∈-deduplicate⁻ xs z∈dedup[R,xs] = Membershipₛ.∈-deduplicate⁻ (P.setoid A) R? xs z∈dedup[R,xs]
+
+module _ (_≈?_ : B.Decidable {A = A} _≡_) where
+
+  ∈-derun⁺ : ∀ {xs z} → z ∈ xs → z ∈ derun _≈?_ xs
+  ∈-derun⁺ z∈xs = Membershipₛ.∈-derun⁺ (P.setoid A) _≈?_ (flip trans) z∈xs
+
+  ∈-deduplicate⁺ : ∀ {xs z} → z ∈ xs → z ∈ deduplicate _≈?_ xs
+  ∈-deduplicate⁺ z∈xs = Membershipₛ.∈-deduplicate⁺ (P.setoid A) _≈?_ (λ c≡b a≡b → trans a≡b (sym c≡b)) z∈xs
 
 ------------------------------------------------------------------------
 -- _>>=_

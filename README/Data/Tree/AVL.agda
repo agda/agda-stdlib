@@ -6,14 +6,14 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module README.Data.AVL where
+module README.Data.Tree.AVL where
 
 ------------------------------------------------------------------------
 -- Setup
 
--- AVL trees are defined in Data.AVL.
+-- AVL trees are defined in Data.Tree.AVL.
 
-import Data.AVL
+import Data.Tree.AVL
 
 -- This module is parametrised by keys, which have to form a (strict)
 -- total order, and values, which are indexed by keys. Let us use
@@ -24,8 +24,8 @@ open import Data.String using (String)
 open import Data.Vec using (Vec; _∷_; [])
 open import Relation.Binary.PropositionalEquality
 
-open Data.AVL <-strictTotalOrder renaming (Tree to Tree')
-Tree = Tree' (MkValue (Vec String) (subst (Vec String)))
+open Data.Tree.AVL <-strictTotalOrder renaming (Tree to Tree′)
+Tree = Tree′ (MkValue (Vec String) (subst (Vec String)))
 
 ------------------------------------------------------------------------
 -- Construction of trees
@@ -129,8 +129,8 @@ v₉ = refl
 
 -- • Finite maps with indexed keys and values.
 
-import Data.AVL.IndexedMap
+import Data.Tree.AVL.IndexedMap
 
 -- • Finite sets.
 
-import Data.AVL.Sets
+import Data.Tree.AVL.Sets

@@ -93,9 +93,9 @@ solve : ∀ (n : ℕ) →
 solve = Ops.solve
 {-# INLINE solve #-}
 
-_⊜_ : ∀ (n : ℕ) →
+_⊜_ : ∀ {n : ℕ} →
       Expr Carrier n →
       Expr Carrier n →
       Expr Carrier n × Expr Carrier n
-_⊜_ _ = _,_
+_⊜_ = _,_
 {-# INLINE _⊜_ #-}

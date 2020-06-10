@@ -20,14 +20,6 @@ open import Agda.Builtin.Reflection public using (Visibility)
 open Visibility public
 
 ------------------------------------------------------------------------
--- Showing
-
-show : Visibility → String
-show visible   = "visible"
-show hidden    = "hidden"
-show instance′ = "instance"
-
-------------------------------------------------------------------------
 -- Decidable equality
 
 _≟_ : DecidableEquality Visibility

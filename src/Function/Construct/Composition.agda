@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- The identity function
+-- Composition of functional properties
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -10,8 +10,8 @@ module Function.Construct.Composition where
 
 open import Data.Product using (_,_)
 open import Function
-open import Level
-open import Relation.Binary
+open import Level using (Level)
+open import Relation.Binary hiding (_⇔_)
 
 private
   variable

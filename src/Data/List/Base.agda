@@ -22,8 +22,10 @@ open import Data.These.Base as These using (These; this; that; these)
 open import Function.Base using (id; _∘_ ; _∘′_; const; flip)
 open import Level using (Level)
 open import Relation.Nullary using (does)
+open import Relation.Nullary.Negation using (¬?)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Unary.Properties using (∁?)
+open import Relation.Binary as B using (Rel)
 
 private
   variable
@@ -66,6 +68,13 @@ intercalate : List A → List (List A) → List A
 intercalate xs []         = []
 intercalate xs (ys ∷ [])  = ys
 intercalate xs (ys ∷ yss) = ys ++ xs ++ intercalate xs yss
+
+cartesianProductWith : (A → B → C) → List A → List B → List C
+cartesianProductWith f []       _  = []
+cartesianProductWith f (x ∷ xs) ys = map (f x) ys ++ cartesianProductWith f xs ys
+
+cartesianProduct : List A → List B → List (A × B)
+cartesianProduct = cartesianProductWith _,_
 
 ------------------------------------------------------------------------
 -- Aligning and zipping
@@ -221,7 +230,7 @@ unfold : ∀ (P : ℕ → Set b)
 unfold P f {n = zero}  s = []
 unfold P f {n = suc n} s with f s
 ... | nothing       = []
-... | just (x , s') = x ∷ unfold P f s'
+... | just (x , s′) = x ∷ unfold P f s′
 
 ------------------------------------------------------------------------
 -- Operations for deconstructing lists
@@ -292,6 +301,17 @@ span P? (x ∷ xs) with does (P? x)
 break : ∀ {P : Pred A p} → Decidable P → List A → (List A × List A)
 break P? = span (∁? P?)
 
+derun : ∀ {R : Rel A p} → B.Decidable R → List A → List A
+derun R? [] = []
+derun R? (x ∷ []) = x ∷ []
+derun R? (x ∷ y ∷ xs) with does (R? x y) | derun R? (y ∷ xs)
+... | true  | ys = ys
+... | false | ys = x ∷ ys
+
+deduplicate : ∀ {R : Rel A p} → B.Decidable R → List A → List A
+deduplicate R? [] = []
+deduplicate R? (x ∷ xs) = x ∷ filter (¬? ∘ R? x) (deduplicate R? xs)
+
 ------------------------------------------------------------------------
 -- Actions on single elements
 
@@ -344,17 +364,35 @@ xs ∷ʳ? x = maybe′ (xs ∷ʳ_) xs x
 
 -- Backwards initialisation
 
-infixl 5 _∷ʳ'_
+infixl 5 _∷ʳ′_
 
 data InitLast {A : Set a} : List A → Set a where
   []    : InitLast []
-  _∷ʳ'_ : (xs : List A) (x : A) → InitLast (xs ∷ʳ x)
+  _∷ʳ′_ : (xs : List A) (x : A) → InitLast (xs ∷ʳ x)
+
+
 
 initLast : (xs : List A) → InitLast xs
 initLast []               = []
 initLast (x ∷ xs)         with initLast xs
-... | []       = [] ∷ʳ' x
-... | ys ∷ʳ' y = (x ∷ ys) ∷ʳ' y
+... | []       = [] ∷ʳ′ x
+... | ys ∷ʳ′ y = (x ∷ ys) ∷ʳ′ y
+
+------------------------------------------------------------------------
+-- Splitting a list
+
+wordsBy : ∀ {P : Pred A p} → Decidable P → List A → List (List A)
+wordsBy {A = A} P? = go [] where
+
+  cons : List A → List (List A) → List (List A)
+  cons [] ass = ass
+  cons as ass = reverse as ∷ ass
+
+  go : List A → List A → List (List A)
+  go acc []       = cons acc []
+  go acc (c ∷ cs) with does (P? c)
+  ... | true  = cons acc (go [] cs)
+  ... | false = go (c ∷ acc) cs
 
 ------------------------------------------------------------------------
 -- DEPRECATED
@@ -404,3 +442,13 @@ boolSpan p (x ∷ xs) with p x
 
 boolBreak : (A → Bool) → List A → (List A × List A)
 boolBreak p = boolSpan (not ∘ p)
+
+-- Version 1.4
+
+infixl 5 _∷ʳ'_
+_∷ʳ'_ : (xs : List A) (x : A) → InitLast (xs ∷ʳ x)
+_∷ʳ'_ = InitLast._∷ʳ′_
+{-# WARNING_ON_USAGE _∷ʳ'_
+"Warning: _∷ʳ'_ (ending in an apostrophe) was deprecated in v1.4.
+Please use _∷ʳ′_ (ending in a prime) instead."
+#-}

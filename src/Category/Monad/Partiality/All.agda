@@ -25,19 +25,25 @@ private
   open module M {f} = RawMonad (Partiality.monad {f = f})
     using (_>>=_)
 
+private
+  variable
+    a b p ℓ : Level
+    A : Set a
+    B : Set b
+
 ------------------------------------------------------------------------
 -- All, along with some lemmas
 
 -- All P x means that if x terminates with the value v, then P v
 -- holds.
 
-data All {a p} {A : Set a} (P : A → Set p) : A ⊥ → Set (a ⊔ p) where
+data All {A : Set a} (P : A → Set p) : A ⊥ → Set (a ⊔ p) where
   now   : ∀ {v} (p : P v)             → All P (now v)
   later : ∀ {x} (p : ∞ (All P (♭ x))) → All P (later x)
 
 -- Bind preserves All in the following way:
 
-_>>=-cong_ : ∀ {ℓ p q} {A B : Set ℓ} {P : A → Set p} {Q : B → Set q}
+_>>=-cong_ : ∀ {p q} {P : A → Set p} {Q : B → Set q}
                {x : A ⊥} {f : A → B ⊥} →
              All P x → (∀ {x} → P x → All Q (f x)) →
              All Q (x >>= f)
@@ -48,7 +54,7 @@ later p >>=-cong f = later (♯ (♭ p >>=-cong f))
 -- the underlying relation.
 
 respects :
-  ∀ {k a p ℓ} {A : Set a} {P : A → Set p} {_∼_ : A → A → Set ℓ} →
+  ∀ {k} {P : A → Set p} {_∼_ : A → A → Set ℓ} →
   P Respects _∼_ → All P Respects Rel _∼_ k
 respects resp (now    x∼y) (now   p) = now (resp x∼y p)
 respects resp (later  x∼y) (later p) = later (♯ respects resp (♭ x∼y) (♭ p))
@@ -56,7 +62,7 @@ respects resp (laterˡ x∼y) (later p) =          respects resp    x∼y  (♭ 
 respects resp (laterʳ x≈y) p         = later (♯ respects resp    x≈y     p)
 
 respects-flip :
-  ∀ {k a p ℓ} {A : Set a} {P : A → Set p} {_∼_ : A → A → Set ℓ} →
+  ∀ {k} {P : A → Set p} {_∼_ : A → A → Set ℓ} →
   P Respects flip _∼_ → All P Respects flip (Rel _∼_ k)
 respects-flip resp (now    x∼y) (now   p) = now (resp x∼y p)
 respects-flip resp (later  x∼y) (later p) = later (♯ respects-flip resp (♭ x∼y) (♭ p))
@@ -65,8 +71,7 @@ respects-flip resp (laterʳ x≈y) (later p) =          respects-flip resp    x�
 
 -- "Equational" reasoning.
 
-module Reasoning {a p ℓ}
-                 {A : Set a} {P : A → Set p}
+module Reasoning {P : A → Set p}
                  {_∼_ : A → A → Set ℓ}
                  (resp : P Respects flip _∼_) where
 
@@ -122,18 +127,18 @@ module Alternative {a p : Level} where
 
     -- A function which turns WHNFs into programs.
 
-    program : ∀ {A} {P : A → Set p} {x} → AllW P x → AllP P x
+    program : ∀ {P : A → Set p} {x} → AllW P x → AllP P x
     program (now   p) = now      p
     program (later p) = later (♯ p)
 
     -- Functions which turn programs into WHNFs.
 
-    trans-≅ : ∀ {A} {P : A → Set p} {x y : A ⊥} →
+    trans-≅ : {P : A → Set p} {x y : A ⊥} →
               x ≅ y → AllW P y → AllW P x
     trans-≅ (now P.refl) (now   p) = now p
     trans-≅ (later  x≅y) (later p) = later (_ ≅⟨ ♭ x≅y ⟩P p)
 
-    trans-≳ : ∀ {A} {P : A → Set p} {x y : A ⊥} →
+    trans-≳ : {P : A → Set p} {x y : A ⊥} →
               x ≳ y → AllW P y → AllW P x
     trans-≳ (now P.refl) (now   p) = now p
     trans-≳ (later  x≳y) (later p) = later (_ ≳⟨ ♭ x≳y ⟩P p)
@@ -141,13 +146,13 @@ module Alternative {a p : Level} where
 
     mutual
 
-      _>>=-congW_ : ∀ {A B} {P : A → Set p} {Q : B → Set p} {x f} →
+      _>>=-congW_ : ∀ {P : A → Set p} {Q : B → Set p} {x f} →
                     AllW P x → (∀ {v} → P v → AllP Q (f v)) →
                     AllW Q (x >>= f)
       now   p >>=-congW p-f = whnf (p-f p)
       later p >>=-congW p-f = later (p >>=-congP p-f)
 
-      whnf : ∀ {A} {P : A → Set p} {x} → AllP P x → AllW P x
+      whnf : ∀ {P : A → Set p} {x} → AllP P x → AllW P x
       whnf (now   p)           = now p
       whnf (later p)           = later (♭ p)
       whnf (p-x >>=-congP p-f) = whnf p-x >>=-congW p-f
@@ -157,13 +162,13 @@ module Alternative {a p : Level} where
 
   -- AllP P is sound and complete with respect to All P.
 
-  sound : ∀ {A} {P : A → Set p} {x} → AllP P x → All P x
+  sound : ∀ {P : A → Set p} {x} → AllP P x → All P x
   sound = λ p → soundW (whnf p)
     where
     soundW : ∀ {A} {P : A → Set p} {x} → AllW P x → All P x
     soundW (now   p) = now p
     soundW (later p) = later (♯ sound p)
 
-  complete : ∀ {A} {P : A → Set p} {x} → All P x → AllP P x
+  complete : ∀ {P : A → Set p} {x} → All P x → AllP P x
   complete (now   p) = now p
   complete (later p) = later (♯ complete (♭ p))

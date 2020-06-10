@@ -17,7 +17,7 @@ open import Data.Integer.Base as ℤ using (ℤ; +0; +[1+_]; 0ℤ; 1ℤ)
 open import Data.Integer.Solver renaming (module +-*-Solver to ℤ-solver)
 import Data.Integer.Properties as ℤ
 import Data.Integer.Properties
-open import Data.Rational.Unnormalised
+open import Data.Rational.Unnormalised.Base
 open import Data.Product using (_,_)
 open import Data.Sum.Base using ([_,_]′; inj₁; inj₂)
 open import Function.Base using (_on_; _$_; _∘_)

@@ -27,7 +27,7 @@ open import Data.Vec.Base
 open import Data.Vec.Properties
 open import Function.Base using (_∘_; const; id; case_of_)
 open import Function.Equivalence using (_⇔_; equivalence)
-open import Relation.Binary as B hiding (Decidable)
+open import Relation.Binary as B hiding (Decidable; _⇔_)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (Dec; yes; no)
 import Relation.Nullary.Decidable as Dec

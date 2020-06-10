@@ -15,7 +15,7 @@ open import Algebra.Bundles
 open import Algebra.Definitions as AlgebraicDefinitions using (Involutive)
 import Algebra.Structures as AlgebraicStructures
 open import Data.Bool.Base using (Bool; false; true; not; if_then_else_)
-open import Data.Fin.Base using (Fin; zero; suc; cast; toℕ)
+open import Data.Fin.Base using (Fin; zero; suc; cast; toℕ; inject₁)
 open import Data.List.Base as List
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Any using (Any; here; there)
@@ -30,9 +30,10 @@ open import Level using (Level)
 open import Relation.Binary as B using (DecidableEquality)
 import Relation.Binary.Reasoning.Setoid as EqR
 open import Relation.Binary.PropositionalEquality as P hiding ([_])
+open import Relation.Binary as B using (Rel)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary using (¬_; Dec; does; _because_; yes; no)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Negation using (contradiction; ¬?)
 open import Relation.Nullary.Decidable as Decidable using (isYes; map′; ⌊_⌋)
 open import Relation.Nullary.Product using (_×-dec_)
 open import Relation.Unary using (Pred; Decidable; ∁)
@@ -751,6 +752,38 @@ module _ {P : Pred A p} (P? : Decidable P) where
   filter-++ (x ∷ xs) ys with does (P? x)
   ... | true  = cong (x ∷_) (filter-++ xs ys)
   ... | false = filter-++ xs ys
+
+------------------------------------------------------------------------
+-- derun and deduplicate
+
+module _ {R : Rel A p} (R? : B.Decidable R) where
+
+  length-derun : ∀ xs → length (derun R? xs) ≤ length xs
+  length-derun [] = ≤-refl
+  length-derun (x ∷ []) = ≤-refl
+  length-derun (x ∷ y ∷ xs) with does (R? x y) | length-derun (y ∷ xs)
+  ... | true  | r = ≤-step r
+  ... | false | r = s≤s r
+
+  length-deduplicate : ∀ xs → length (deduplicate R? xs) ≤ length xs
+  length-deduplicate [] = z≤n
+  length-deduplicate (x ∷ xs) = ≤-begin
+    1 + length (filter (¬? ∘ R? x) r) ≤⟨ s≤s (length-filter (¬? ∘ R? x) r) ⟩
+    1 + length r                      ≤⟨ s≤s (length-deduplicate xs) ⟩
+    1 + length xs                     ≤-∎
+    where
+    open ≤-Reasoning renaming (begin_ to ≤-begin_; _∎ to _≤-∎)
+    r = deduplicate R? xs
+
+  derun-reject : ∀ {x y} xs → R x y → derun R? (x ∷ y ∷ xs) ≡ derun R? (y ∷ xs)
+  derun-reject {x} {y} xs Rxy with R? x y
+  ... | yes _    = refl
+  ... | no  ¬Rxy = contradiction Rxy ¬Rxy
+
+  derun-accept : ∀ {x y} xs → ¬ R x y → derun R? (x ∷ y ∷ xs) ≡ x ∷ derun R? (y ∷ xs)
+  derun-accept {x} {y} xs ¬Rxy with R? x y
+  ... | yes Rxy = contradiction Rxy ¬Rxy
+  ... | no  _   = refl
 
 ------------------------------------------------------------------------
 -- partition

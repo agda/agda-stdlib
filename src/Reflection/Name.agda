@@ -17,19 +17,25 @@ open import Relation.Binary
 import Relation.Binary.Construct.On as On
 open import Relation.Binary.PropositionalEquality
 
+----------------------------------------------------------------------
+-- Re-export built-ins
+
 open import Agda.Builtin.Reflection public
-  using (Name)
-  renaming ( primShowQName to show
-           ; primQNameToWord64s to toWords
-           )
+  using (Name) renaming (primQNameToWord64s to toWords)
 
 open import Agda.Builtin.Reflection.Properties public
-  renaming ( primQNameToWord64sInjective to toWords-injective )
+  renaming (primQNameToWord64sInjective to toWords-injective)
+
+----------------------------------------------------------------------
+-- More definitions
+----------------------------------------------------------------------
 
 Names : Set
 Names = List Name
 
--- Equality of names is decidable.
+----------------------------------------------------------------------
+-- Decidable equality for names
+----------------------------------------------------------------------
 
 _≈_ : Rel Name _
 _≈_ = _≡_ on toWords

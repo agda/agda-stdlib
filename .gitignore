@@ -4,6 +4,7 @@
 .*.swp
 *.agdai
 *.agda.el
+./_build/*
 .DS_Store
 *.lagda.el
 *.hi
@@ -17,3 +18,5 @@ EverythingSafe.agda
 EverythingSafeGuardedness.agda
 EverythingSafeSizedTypes.agda
 html
+Haskell
+MAlonzo

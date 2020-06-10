@@ -21,6 +21,9 @@ open import Function
 open import Relation.Nullary.Decidable
 open import Relation.Binary.PropositionalEquality
 
+------------------------------------------------------------------------
+-- Definition
+
 infixl 7 _divℕ_ _div_ _modℕ_ _mod_
 _divℕ_ : (dividend : ℤ) (divisor : ℕ) {≢0 : False (divisor ℕ.≟ 0)} → ℤ
 (+ n      divℕ d) {d≠0} = + (n NDM./ d) {d≠0}
@@ -31,14 +34,17 @@ _divℕ_ : (dividend : ℤ) (divisor : ℕ) {≢0 : False (divisor ℕ.≟ 0)} �
 _div_ : (dividend divisor : ℤ) {≢0 : False (∣ divisor ∣ ℕ.≟ 0)} → ℤ
 (n div d) {d≢0} = (sign d ◃ 1) ℤ.* (n divℕ ∣ d ∣) {d≢0}
 
-_modℕ_ : (dividend : ℤ) (divisor : ℕ) {≠0 : False (divisor ℕ.≟ 0)} → ℕ
+_modℕ_ : (dividend : ℤ) (divisor : ℕ) {≢0 : False (divisor ℕ.≟ 0)} → ℕ
 (+ n      modℕ d) {d≠0} = (n NDM.% d) {d≠0}
 (-[1+ n ] modℕ d) {d≠0} with (ℕ.suc n NDM.divMod d) {d≠0}
 ... | NDM.result q Fin.zero    eq = 0
 ... | NDM.result q (Fin.suc r) eq = d ℕ.∸ ℕ.suc (Fin.toℕ r)
 
-_mod_ : (dividend divisor : ℤ) {≠0 : False (∣ divisor ∣ ℕ.≟ 0)} → ℕ
+_mod_ : (dividend divisor : ℤ) {≢0 : False (∣ divisor ∣ ℕ.≟ 0)} → ℕ
 (n mod d) {d≢0} = (n modℕ ∣ d ∣) {d≢0}
+
+------------------------------------------------------------------------
+-- Properties
 
 n%ℕd<d : ∀ n d {d≢0} → (n modℕ d) {d≢0} ℕ.< d
 n%ℕd<d (+ n)    sd@(ℕ.suc d) = NDM.m%n<n n d

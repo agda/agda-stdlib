@@ -3,7 +3,9 @@ included-dirs:
   - README
 
 included-files:
-  - "**.agda"
+  - "*.agda"
+  - "*.md"
+  - ".travis.yml"
 
 excluded-files:
   - "README/Text/Tabular.agda"

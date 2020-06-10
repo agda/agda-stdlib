@@ -46,14 +46,17 @@ data _↭_ : Rel (List A) a where
 ↭-sym (swap x y xs↭ys)    = swap y x (↭-sym xs↭ys)
 ↭-sym (trans xs↭ys ys↭zs) = trans (↭-sym ys↭zs) (↭-sym xs↭ys)
 
+-- A smart version of trans that avoids unnecessary `refl`s (see #1113).
 ↭-trans : Transitive _↭_
-↭-trans = trans
+↭-trans refl ρ₂ = ρ₂
+↭-trans ρ₁ refl = ρ₁
+↭-trans ρ₁ ρ₂   = trans ρ₁ ρ₂
 
 ↭-isEquivalence : IsEquivalence _↭_
 ↭-isEquivalence = record
   { refl  = refl
   ; sym   = ↭-sym
-  ; trans = trans
+  ; trans = ↭-trans
   }
 
 ↭-setoid : Setoid _ _

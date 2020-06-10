@@ -12,7 +12,7 @@ import Algebra.Morphism.Definitions as MorphismDefinitions
 open import Relation.Binary
 open import Algebra
 import Algebra.Properties.Group as GroupP
-open import Function
+open import Function hiding (Morphism)
 open import Level
 import Relation.Binary.Reasoning.Setoid as EqR
 

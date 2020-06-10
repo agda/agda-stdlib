@@ -49,12 +49,14 @@ _∘_ : ∀ {A : Set a} {B : A → Set b} {C : {x : A} → B x → Set c} →
       (∀ {x} (y : B x) → C y) → (g : (x : A) → B x) →
       ((x : A) → C (g x))
 f ∘ g = λ x → f (g x)
+{-# INLINE _∘_ #-}
 
 -- Flipping order of arguments
 
 flip : ∀ {A : Set a} {B : Set b} {C : A → B → Set c} →
        ((x : A) (y : B) → C x y) → ((y : B) (x : A) → C x y)
 flip f = λ y x → f x y
+{-# INLINE flip #-}
 
 -- Application - note that _$_ is right associative, as in Haskell.
 -- If you want a left associative infix application operator, use
@@ -63,6 +65,7 @@ flip f = λ y x → f x y
 _$_ : ∀ {A : Set a} {B : A → Set b} →
       ((x : A) → B x) → ((x : A) → B x)
 f $ x = f x
+{-# INLINE _$_ #-}
 
 -- Strict (call-by-value) application
 
@@ -75,6 +78,7 @@ _$!_ = flip force
 _|>_ : ∀ {A : Set a} {B : A → Set b} →
        (a : A) → (∀ a → B a) → B a
 _|>_ = flip _$_
+{-# INLINE _|>_ #-}
 
 -- The S combinator - written infix as in Conor McBride's paper
 -- "Outrageous but Meaningful Coincidences: Dependent type-safe syntax
@@ -85,14 +89,17 @@ _ˢ_ : ∀ {A : Set a} {B : A → Set b} {C : (x : A) → B x → Set c} →
       (g : (x : A) → B x) →
       ((x : A) → C x (g x))
 f ˢ g = λ x → f x (g x)
+{-# INLINE _ˢ_ #-}
 
 -- Converting between implicit and explicit function spaces.
 
 _$- : ∀ {A : Set a} {B : A → Set b} → ((x : A) → B x) → ({x : A} → B x)
 f $- = f _
+{-# INLINE _$- #-}
 
 λ- : ∀ {A : Set a} {B : A → Set b} → ({x : A} → B x) → ((x : A) → B x)
 λ- f = λ x → f
+{-# INLINE λ- #-}
 
 -- Case expressions (to be used with pattern-matching lambdas, see
 -- README.Case).
@@ -100,6 +107,7 @@ f $- = f _
 case_return_of_ : ∀ {A : Set a} (x : A) (B : A → Set b) →
                   ((x : A) → B x) → B x
 case x return B of f = f x
+{-# INLINE case_return_of_ #-}
 
 ------------------------------------------------------------------------
 -- Non-dependent versions of dependent operations
@@ -140,6 +148,7 @@ _|>′_ = _|>_
 
 case_of_ : A → (A → B) → B
 case x of f = case x return _ of f
+{-# INLINE case_of_ #-}
 
 ------------------------------------------------------------------------
 -- Operations that are only defined for non-dependent functions
@@ -175,3 +184,8 @@ A ∋ x = x
 
 typeOf : {A : Set a} → A → Set a
 typeOf {A = A} _ = A
+
+-- Construct an element of the given type by instance search.
+
+it : {A : Set a} → {{A}} → A
+it {{x}} = x

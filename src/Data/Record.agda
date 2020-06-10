@@ -13,7 +13,7 @@ open import Data.Bool.Base using (true; false; if_then_else_)
 open import Data.Empty
 open import Data.List.Base
 open import Data.Product hiding (proj₁; proj₂)
-open import Data.Unit
+open import Data.Unit.Polymorphic
 open import Function
 open import Level
 open import Relation.Binary
@@ -71,7 +71,7 @@ mutual
     field fun : Record-fun Sig
 
   Record-fun : ∀ {s} → Signature s → Set s
-  Record-fun ∅             = Lift _ ⊤
+  Record-fun ∅             = ⊤
   Record-fun (Sig , ℓ ∶ A) =          Σ (Record Sig) A
   Record-fun (Sig , ℓ ≔ a) = Manifest-Σ (Record Sig) a
 

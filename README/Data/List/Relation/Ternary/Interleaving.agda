@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module README.Data.Interleaving where
+module README.Data.List.Relation.Ternary.Interleaving where
 
 open import Level
 open import Data.List.Base hiding (filter)
@@ -15,11 +15,14 @@ open import Function
 open import Relation.Nullary
 open import Relation.Unary
 
--- In its most general form, `Interleaving` is parametrised by two relations
--- `L` (for Left) and `R` (for Right). Given three lists, `xs`, `ys` and `zs`,
--- a proof of `Interleaving xs ys zs` is essentially a diagram explaining how
--- `zs` can be pulled apart into `xs` and `ys` in a way compatible with `L`
--- and `R`. For instance:
+------------------------------------------------------------------------
+-- Interleaving
+
+-- In its most general form, `Interleaving` is parametrised by two
+-- relations `L` (for Left) and `R` (for Right). Given three lists,
+-- `xs`, `ys` and `zs`, a proof of `Interleaving xs ys zs` is
+-- essentially a diagram explaining how `zs` can be pulled apart into
+-- `xs` and `ys` in a way compatible with `L` and `R`. For instance:
 
 -- xs               zs               ys
 --
@@ -70,12 +73,12 @@ module _ {a p} {A : Set a} {P : Pred A p} (P? : Decidable P) where
   filter []       = [] ≡ [] ⊎ []
   filter (x ∷ xs) =
     -- otherwise we start by running filter on the tail
-    let xs' ≡ ps ⊎ ¬ps = filter xs in
+    let xs′ ≡ ps ⊎ ¬ps = filter xs in
     -- And depending on whether `P` holds of the head,
     -- we cons it to the `kept` or `thrown` list.
     case P? x of λ where -- [1]
-      (yes p) → consˡ xs' ≡ p ∷ ps ⊎      ¬ps
-      (no ¬p) → consʳ xs' ≡     ps ⊎ ¬p ∷ ¬ps
+      (yes p) → consˡ xs′ ≡ p ∷ ps ⊎      ¬ps
+      (no ¬p) → consʳ xs′ ≡     ps ⊎ ¬p ∷ ¬ps
 
 
 
