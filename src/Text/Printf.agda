@@ -28,10 +28,7 @@ import Data.Nat.Show  as ℕₛ
 open import Text.Format as Format hiding (Error)
 open import Text.Printf.Generic
 
-printfSpec : PrintfSpec String
-printfSpec .PrintfSpec.ArgChunk  = ArgChunk
-printfSpec .PrintfSpec.lexArg    = lexArg
-printfSpec .PrintfSpec.⟦_⟧Arg    = Arg⟦_⟧
+printfSpec : PrintfSpec formatSpec String
 printfSpec .PrintfSpec.renderArg ℕArg      = ℕₛ.show
 printfSpec .PrintfSpec.renderArg ℤArg      = ℤₛ.show
 printfSpec .PrintfSpec.renderArg FloatArg  = Fₛ.show
@@ -39,7 +36,9 @@ printfSpec .PrintfSpec.renderArg CharArg   = fromChar
 printfSpec .PrintfSpec.renderArg StringArg = id
 printfSpec .PrintfSpec.renderStr           = id
 
-open Printf printfSpec public renaming (printf to gprintf)
+module Printf = Type formatSpec
+open Printf public hiding (map)
+open Render printfSpec public renaming (printf to gprintf)
 
 printf : (fmt : String) → Printf (lexer fmt) String
-printf = gprintf concat
+printf fmt = Printf.map (lexer fmt) concat (gprintf fmt)

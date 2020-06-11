@@ -9,6 +9,7 @@
 module Text.Format where
 
 open import Data.Maybe.Base
+open import Text.Format.Generic
 
 -- Formatted types
 open import Data.Char.Base
@@ -26,12 +27,12 @@ data ArgChunk : Set where
 ------------------------------------------------------------------------
 -- Semantics
 
-Arg⟦_⟧ : (fmt : ArgChunk) → Set
-Arg⟦ ℕArg      ⟧ = ℕ
-Arg⟦ ℤArg      ⟧ = ℤ
-Arg⟦ FloatArg  ⟧ = Float
-Arg⟦ CharArg   ⟧ = Char
-Arg⟦ StringArg ⟧ = String
+ArgType : (fmt : ArgChunk) → Set
+ArgType ℕArg      = ℕ
+ArgType ℤArg      = ℤ
+ArgType FloatArg  = Float
+ArgType CharArg   = Char
+ArgType StringArg = String
 
 lexArg : Char → Maybe ArgChunk
 lexArg 'd' = just ℤArg
@@ -42,7 +43,12 @@ lexArg 'c' = just CharArg
 lexArg 's' = just StringArg
 lexArg _   = nothing
 
-open import Text.Format.Generic ArgChunk lexArg Arg⟦_⟧ public
+formatSpec : FormatSpec
+formatSpec .FormatSpec.ArgChunk = ArgChunk
+formatSpec .FormatSpec.ArgType  = ArgType
+formatSpec .FormatSpec.lexArg   = lexArg
+
+open Format formatSpec public
 
 pattern `ℕ      = Arg ℕArg
 pattern `ℤ      = Arg ℤArg
