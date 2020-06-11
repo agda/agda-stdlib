@@ -16,6 +16,7 @@ import Data.Float as Float
 open import Data.List hiding (_++_; intersperse)
 import Data.Nat as ℕ
 import Data.Nat.Show as ℕ
+open import Data.Product using (_×_; _,_)
 open import Data.String as String
 import Data.Word as Word
 open import Relation.Nullary using (yes; no)
@@ -65,26 +66,6 @@ showLiteral (string x) = String.show x
 showLiteral (name x)   = showName x
 showLiteral (meta x)   = showMeta x
 
-mutual
-
-  showPatterns : List (Arg Pattern) → String
-  showPatterns []       = ""
-  showPatterns (a ∷ ps) = showArg a <+> showPatterns ps
-    where
-    showArg : Arg Pattern → String
-    showArg (arg (arg-info visible r) p)   = showRel r ++ showPattern p
-    showArg (arg (arg-info hidden r) p)    = braces (showRel r ++ showPattern p)
-    showArg (arg (arg-info instance′ r) p) = braces (braces (showRel r ++ showPattern p))
-
-  showPattern : Pattern → String
-  showPattern (con c []) = showName c
-  showPattern (con c ps) = parens (showName c <+> showPatterns ps)
-  showPattern dot        = "._"
-  showPattern (var s)    = s
-  showPattern (lit l)    = showLiteral l
-  showPattern (proj f)   = showName f
-  showPattern absurd     = "()"
-
 private
   -- add appropriate parens depending on the given visibility
   visibilityParen : Visibility → String → String
@@ -118,13 +99,35 @@ mutual
   showSort (lit n) = "Set" ++ ℕ.show n -- no space to disambiguate from set t
   showSort unknown = "unknown"
 
+  showPatterns : List (Arg Pattern) → String
+  showPatterns []       = ""
+  showPatterns (a ∷ ps) = showArg a <+> showPatterns ps
+    where
+    showArg : Arg Pattern → String
+    showArg (arg (arg-info visible r) p)   = showRel r ++ showPattern p
+    showArg (arg (arg-info hidden r) p)    = braces (showRel r ++ showPattern p)
+    showArg (arg (arg-info instance′ r) p) = braces (braces (showRel r ++ showPattern p))
+
+  showPattern : Pattern → String
+  showPattern (con c []) = showName c
+  showPattern (con c ps) = parens (showName c <+> showPatterns ps)
+  showPattern (dot t)    = "." ++ parens (showTerm t)
+  showPattern (var x)    = "pat-var" <+> ℕ.show x
+  showPattern (lit l)    = showLiteral l
+  showPattern (proj f)   = showName f
+  showPattern absurd     = "()"
+
   showClause : Clause → String
-  showClause (clause ps t)      = showPatterns ps <+> "→" <+> showTerm t
-  showClause (absurd-clause ps) = showPatterns ps
+  showClause (clause tel ps t)      = "[" <+> showTel tel <+> "]" <+> showPatterns ps <+> "→" <+> showTerm t
+  showClause (absurd-clause tel ps) = "[" <+> showTel tel <+> "]" <+> showPatterns ps
 
   showClauses : List Clause → String
   showClauses []       = ""
   showClauses (c ∷ cs) = showClause c <+> ";" <+> showClauses cs
+
+  showTel : List (String × Arg Type) → String
+  showTel [] = ""
+  showTel ((x , arg i t) ∷ tel) = visibilityParen (visibility i) (x <+> ":" <+> showTerm t) ++ showTel tel
 
 showDefinition : Definition → String
 showDefinition (function cs)       = "function" <+> braces (showClauses cs)

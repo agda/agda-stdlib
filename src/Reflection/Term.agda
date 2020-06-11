@@ -12,7 +12,9 @@ open import Data.List.Base hiding (_++_)
 import Data.List.Properties as Lₚ
 open import Data.Nat as ℕ using (ℕ; zero; suc)
 open import Data.Product
+import Data.Product.Properties as Product
 open import Data.Maybe.Base using (Maybe; just; nothing)
+open import Data.String as String using (String)
 open import Reflection.Abstraction
 open import Reflection.Argument
 open import Reflection.Argument.Information using (visibility)
@@ -20,7 +22,6 @@ import Reflection.Argument.Visibility as Visibility; open Visibility.Visibility
 import Reflection.Literal as Literal
 import Reflection.Meta as Meta
 open import Reflection.Name as Name using (Name)
-import Reflection.Pattern as Pattern
 open import Relation.Nullary
 open import Relation.Nullary.Product using (_×-dec_)
 open import Relation.Nullary.Decidable as Dec
@@ -31,16 +32,20 @@ open import Relation.Binary.PropositionalEquality
 -- Re-exporting the builtin type and constructors
 
 open import Agda.Builtin.Reflection as Builtin public
-  using (Sort; Type; Term; Clause)
+  using (Sort; Type; Term; Clause; Pattern)
 open Sort public
 open Term public renaming (agda-sort to sort)
 open Clause public
+open Pattern public
 
 ------------------------------------------------------------------------
 -- Handy synonyms
 
 Clauses : Set
 Clauses = List Clause
+
+Telescope : Set
+Telescope = List (String × Arg Type)
 
 -- Pattern synonyms for more compact presentation
 
@@ -81,31 +86,42 @@ suc i ⋯⟅∷⟆ xs = unknown ⟅∷⟆ (i ⋯⟅∷⟆ xs)
 ------------------------------------------------------------------------
 -- Decidable equality
 
-clause-injective₁ : ∀ {ps ps′ b b′} → clause ps b ≡ clause ps′ b′ → ps ≡ ps′
+clause-injective₁ : ∀ {tel tel′ ps ps′ b b′} → clause tel ps b ≡ clause tel′ ps′ b′ → tel ≡ tel′
 clause-injective₁ refl = refl
 
-clause-injective₂ : ∀ {ps ps′ b b′} → clause ps b ≡ clause ps′ b′ → b ≡ b′
+clause-injective₂ : ∀ {tel tel′ ps ps′ b b′} → clause tel ps b ≡ clause tel′ ps′ b′ → ps ≡ ps′
 clause-injective₂ refl = refl
 
-clause-injective : ∀ {ps ps′ b b′} → clause ps b ≡ clause ps′ b′ → ps ≡ ps′ × b ≡ b′
-clause-injective = < clause-injective₁ , clause-injective₂ >
+clause-injective₃ : ∀ {tel tel′ ps ps′ b b′} → clause tel ps b ≡ clause tel′ ps′ b′ → b ≡ b′
+clause-injective₃ refl = refl
 
-absurd-clause-injective : ∀ {ps ps′} → absurd-clause ps ≡ absurd-clause ps′ → ps ≡ ps′
-absurd-clause-injective refl = refl
+clause-injective : ∀ {tel tel′ ps ps′ b b′} → clause tel ps b ≡ clause tel′ ps′ b′ → tel ≡ tel′ × ps ≡ ps′ × b ≡ b′
+clause-injective = < clause-injective₁ , < clause-injective₂ , clause-injective₃ > >
+
+absurd-clause-injective₁ : ∀ {tel tel′ ps ps′} → absurd-clause tel ps ≡ absurd-clause tel′ ps′ → tel ≡ tel′
+absurd-clause-injective₁ refl = refl
+
+absurd-clause-injective₂ : ∀ {tel tel′ ps ps′} → absurd-clause tel ps ≡ absurd-clause tel′ ps′ → ps ≡ ps′
+absurd-clause-injective₂ refl = refl
+
+absurd-clause-injective : ∀ {tel tel′ ps ps′} → absurd-clause tel ps ≡ absurd-clause tel′ ps′ → tel ≡ tel′ × ps ≡ ps′
+absurd-clause-injective = < absurd-clause-injective₁ , absurd-clause-injective₂ >
 
 infix 4 _≟-AbsTerm_ _≟-AbsType_ _≟-ArgTerm_ _≟-ArgType_ _≟-Args_
         _≟-Clause_ _≟-Clauses_ _≟_
-        _≟-Sort_
+        _≟-Sort_ _≟-Pattern_ _≟-Patterns_
 
-_≟-AbsTerm_ : DecidableEquality (Abs Term)
-_≟-AbsType_ : DecidableEquality (Abs Type)
-_≟-ArgTerm_ : DecidableEquality (Arg Term)
-_≟-ArgType_ : DecidableEquality (Arg Type)
-_≟-Args_    : DecidableEquality (Args Term)
-_≟-Clause_  : DecidableEquality Clause
-_≟-Clauses_ : DecidableEquality Clauses
-_≟_         : DecidableEquality Term
-_≟-Sort_    : DecidableEquality Sort
+_≟-AbsTerm_  : DecidableEquality (Abs Term)
+_≟-AbsType_  : DecidableEquality (Abs Type)
+_≟-ArgTerm_  : DecidableEquality (Arg Term)
+_≟-ArgType_  : DecidableEquality (Arg Type)
+_≟-Args_     : DecidableEquality (Args Term)
+_≟-Clause_   : DecidableEquality Clause
+_≟-Clauses_  : DecidableEquality Clauses
+_≟_          : DecidableEquality Term
+_≟-Sort_     : DecidableEquality Sort
+_≟-Patterns_ : Decidable (_≡_ {A = Args Pattern})
+_≟-Pattern_  : Decidable (_≡_ {A = Pattern})
 
 -- Decidable equality 'transformers'
 -- We need to inline these because the terms are not sized so termination
@@ -127,27 +143,38 @@ arg i a ≟-ArgType arg i′ a′ = unArg-dec (a ≟ a′)
 []       ≟-Clauses (_ ∷ _)  = no λ()
 (_ ∷ _)  ≟-Clauses []       = no λ()
 
+_≟-Telescope_ : DecidableEquality Telescope
+[] ≟-Telescope [] = yes refl
+((x , t) ∷ tel) ≟-Telescope ((x′ , t′) ∷ tel′) = Lₚ.∷-dec
+  (map′ (uncurry (cong₂ _,_)) Product.,-injective ((x String.≟ x′) ×-dec (t ≟-ArgTerm t′)))
+  (tel ≟-Telescope tel′)
+[] ≟-Telescope (_ ∷ _) = no λ ()
+(_ ∷ _) ≟-Telescope [] = no λ ()
 
-clause ps b ≟-Clause clause ps′ b′ =
-  Dec.map′ (uncurry (cong₂ clause)) clause-injective (ps Pattern.≟s ps′ ×-dec b ≟ b′)
-absurd-clause ps ≟-Clause absurd-clause ps′ =
-  Dec.map′ (cong absurd-clause) absurd-clause-injective (ps Pattern.≟s ps′)
-clause _ _      ≟-Clause absurd-clause _ = no λ()
-absurd-clause _ ≟-Clause clause _ _      = no λ()
+clause tel ps b ≟-Clause clause tel′ ps′ b′ =
+  Dec.map′ (λ (tel≡tel′ , ps≡ps′ , b≡b′) → cong₂ (uncurry clause) (cong₂ _,_ tel≡tel′ ps≡ps′) b≡b′)
+           clause-injective
+           (tel ≟-Telescope tel′ ×-dec ps ≟-Patterns ps′ ×-dec b ≟ b′)
+absurd-clause tel ps ≟-Clause absurd-clause tel′ ps′ =
+  Dec.map′ (uncurry (cong₂ absurd-clause))
+           absurd-clause-injective
+           (tel ≟-Telescope tel′ ×-dec ps ≟-Patterns ps′)
+clause _ _ _      ≟-Clause absurd-clause _ _ = no λ()
+absurd-clause _ _ ≟-Clause clause _ _ _      = no λ()
 
-var-injective₁ : ∀ {x x′ args args′} → var x args ≡ var x′ args′ → x ≡ x′
+var-injective₁ : ∀ {x x′ args args′} → Term.var x args ≡ var x′ args′ → x ≡ x′
 var-injective₁ refl = refl
 
-var-injective₂ : ∀ {x x′ args args′} → var x args ≡ var x′ args′ → args ≡ args′
+var-injective₂ : ∀ {x x′ args args′} → Term.var x args ≡ var x′ args′ → args ≡ args′
 var-injective₂ refl = refl
 
 var-injective :  ∀ {x x′ args args′} → var x args ≡ var x′ args′ → x ≡ x′ × args ≡ args′
 var-injective = < var-injective₁ , var-injective₂ >
 
-con-injective₁ : ∀ {c c′ args args′} → con c args ≡ con c′ args′ → c ≡ c′
+con-injective₁ : ∀ {c c′ args args′} → Term.con c args ≡ con c′ args′ → c ≡ c′
 con-injective₁ refl = refl
 
-con-injective₂ : ∀ {c c′ args args′} → con c args ≡ con c′ args′ → args ≡ args′
+con-injective₂ : ∀ {c c′ args args′} → Term.con c args ≡ con c′ args′ → args ≡ args′
 con-injective₂ refl = refl
 
 con-injective : ∀ {c c′ args args′} → con c args ≡ con c′ args′ → c ≡ c′ × args ≡ args′
@@ -329,3 +356,69 @@ lit _   ≟-Sort set _   = no λ()
 lit _   ≟-Sort unknown = no λ()
 unknown ≟-Sort set _   = no λ()
 unknown ≟-Sort lit _   = no λ()
+
+
+pat-con-injective₁ : ∀ {c c′ args args′} → Pattern.con c args ≡ con c′ args′ → c ≡ c′
+pat-con-injective₁ refl = refl
+
+pat-con-injective₂ : ∀ {c c′ args args′} → Pattern.con c args ≡ con c′ args′ → args ≡ args′
+pat-con-injective₂ refl = refl
+
+pat-con-injective : ∀ {c c′ args args′} → Pattern.con c args ≡ con c′ args′ → c ≡ c′ × args ≡ args′
+pat-con-injective = < pat-con-injective₁ , pat-con-injective₂ >
+
+pat-var-injective : ∀ {x y} → var x ≡ var y → x ≡ y
+pat-var-injective refl = refl
+
+pat-lit-injective : ∀ {x y} → Pattern.lit x ≡ lit y → x ≡ y
+pat-lit-injective refl = refl
+
+proj-injective : ∀ {x y} → proj x ≡ proj y → x ≡ y
+proj-injective refl = refl
+
+dot-injective : ∀ {x y} → dot x ≡ dot y → x ≡ y
+dot-injective refl = refl
+
+con c ps ≟-Pattern con c′ ps′ = Dec.map′ (uncurry (cong₂ con)) pat-con-injective (c Name.≟ c′ ×-dec ps ≟-Patterns ps′)
+var x    ≟-Pattern var x′     = Dec.map′ (cong var) pat-var-injective (x ℕ.≟ x′)
+lit l    ≟-Pattern lit l′     = Dec.map′ (cong lit) pat-lit-injective (l Literal.≟ l′)
+proj a   ≟-Pattern proj a′    = Dec.map′ (cong proj) proj-injective (a Name.≟ a′)
+dot t    ≟-Pattern dot t′     = Dec.map′ (cong dot) dot-injective (t ≟ t′)
+
+con x x₁ ≟-Pattern dot x₂ = no (λ ())
+con x x₁ ≟-Pattern var x₂ = no (λ ())
+con x x₁ ≟-Pattern lit x₂ = no (λ ())
+con x x₁ ≟-Pattern proj x₂ = no (λ ())
+con x x₁ ≟-Pattern absurd = no (λ ())
+dot x ≟-Pattern con x₁ x₂ = no (λ ())
+dot x ≟-Pattern var x₁ = no (λ ())
+dot x ≟-Pattern lit x₁ = no (λ ())
+dot x ≟-Pattern proj x₁ = no (λ ())
+dot x ≟-Pattern absurd = no (λ ())
+var s ≟-Pattern con x x₁ = no (λ ())
+var s ≟-Pattern dot x = no (λ ())
+var s ≟-Pattern lit x = no (λ ())
+var s ≟-Pattern proj x = no (λ ())
+var s ≟-Pattern absurd = no (λ ())
+lit x ≟-Pattern con x₁ x₂ = no (λ ())
+lit x ≟-Pattern dot x₁ = no (λ ())
+lit x ≟-Pattern var _ = no (λ ())
+lit x ≟-Pattern proj x₁ = no (λ ())
+lit x ≟-Pattern absurd = no (λ ())
+proj x ≟-Pattern con x₁ x₂ = no (λ ())
+proj x ≟-Pattern dot x₁ = no (λ ())
+proj x ≟-Pattern var _ = no (λ ())
+proj x ≟-Pattern lit x₁ = no (λ ())
+proj x ≟-Pattern absurd = no (λ ())
+absurd ≟-Pattern con x x₁ = no (λ ())
+absurd ≟-Pattern dot x₁ = no (λ ())
+absurd ≟-Pattern var _ = no (λ ())
+absurd ≟-Pattern lit x = no (λ ())
+absurd ≟-Pattern proj x = no (λ ())
+absurd ≟-Pattern absurd = yes refl
+
+[]             ≟-Patterns []             = yes refl
+(arg i p ∷ xs) ≟-Patterns (arg j q ∷ ys) = Lₚ.∷-dec (unArg-dec (p ≟-Pattern q)) (xs ≟-Patterns ys)
+
+[]      ≟-Patterns (_ ∷ _) = no λ()
+(_ ∷ _) ≟-Patterns []      = no λ()
