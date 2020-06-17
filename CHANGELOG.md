@@ -154,6 +154,12 @@ New modules
   Relation.Nullary.Indexed
   ```
 
+* Generic printf
+  ```
+  Text.Format.Generic
+  Text.Printf.Generic
+  ```
+
 Other major changes
 -------------------
 
