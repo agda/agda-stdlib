@@ -29,10 +29,8 @@ private
 ------------------------------------------------------------------------
 -- Definition
 
-data Maybe (A : Set a) : Set a where
-  nothing : Maybe A
-  just    : (x : A) → Maybe A
-
+open import Agda.Builtin.Maybe public
+  using (Maybe; just; nothing)
 
 ------------------------------------------------------------------------
 -- Some operations

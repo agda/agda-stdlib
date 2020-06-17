@@ -21,13 +21,18 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
-* The `n` argument to `_⊜_` in `Tactic.RingSolver.NonReflective` has been made implict rather than explicit.
+* The `n` argument to `_⊜_` in `Tactic.RingSolver.NonReflective` has
+  been made implict rather than explicit.
 
 * `Data.Empty.Polymorphic` and `Data.Unit.Polymorphic` were rewritten
   to explicitly use `Lift` rather that defining new types. This means
   that these are now compatible with `⊥` and `⊤` from the rest of the
   library. This allowed them to be used in the rest of library where
   explicit `Lift` was used.
+
+* `Data.Maybe.Base` now re-exports the definition of `Maybe` given by
+  `Agda.Builtin.Maybe`. The `Foreign.Haskell` modules and definitions
+  corresponding to `Maybe` have been removed.
 
 * The representation of reflected syntax in `Reflection.Term` and
   `Reflection.Pattern` has been updated to match the new
