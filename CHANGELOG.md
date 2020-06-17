@@ -29,6 +29,21 @@ Non-backwards compatible changes
   library. This allowed them to be used in the rest of library where
   explicit `Lift` was used.
 
+* The representation of reflected syntax in `Reflection.Term` and
+  `Reflection.Pattern` has been updated to match the new
+  representation used in Agda 2.6.2. Specifically, the following changes were made:
+
+  * The type of the `var` constructor of the `Pattern` datatype has
+    been changed from `(x : String) → Pattern` to `(x : Int) →
+    Pattern`.
+  * The type of the `dot` constructor of the `Pattern` datatype has
+    been changed from `Pattern` to `(t : Term) → Pattern`
+  * The types of the `clause` and `absurd-clause` constructors of the
+    `Clause` datatype now take an extra argument `(tel : Telescope)`,
+    where `Telescope = List (String × Arg Type)`.
+
+  See the release notes of Agda 2.6.2 for more information.
+
 Deprecated modules
 ------------------
 
