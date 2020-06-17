@@ -9,7 +9,7 @@
 module Relation.Binary.Construct.Composition where
 
 open import Data.Product
-open import Function
+open import Function.Base
 open import Level
 open import Relation.Binary
 
@@ -23,7 +23,7 @@ private
 ------------------------------------------------------------------------
 -- Definition
 
-_;_ : ∀ {a b c ℓ₁ ℓ₂} {A : Set a} {B : Set b} {C : Set c} →
+_;_ : {A : Set a} {B : Set b} {C : Set c} →
       REL A B ℓ₁ → REL B C ℓ₂ → REL A C (b ⊔ ℓ₁ ⊔ ℓ₂)
 L ; R = λ i j → ∃ λ k → L i k × R k j
 
