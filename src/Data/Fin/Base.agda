@@ -137,7 +137,7 @@ splitAt (suc m) (suc i) = Sum.map suc id (splitAt m i)
 quotRem : ∀ {n} k → Fin (n ℕ.* k) → Fin k × Fin n
 quotRem {suc n} k i with splitAt k i
 ... | inj₁ j = j , zero
-... | inj₂ j = Product.map id suc (quotRem {n} k j)
+... | inj₂ j = Product.map₂ suc (quotRem {n} k j)
 
 ------------------------------------------------------------------------
 -- Operations
