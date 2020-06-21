@@ -131,13 +131,13 @@ splitAt zero    i       = inj₂ i
 splitAt (suc m) zero    = inj₁ zero
 splitAt (suc m) (suc i) = Sum.map suc id (splitAt m i)
 
--- group n k "i" = "i / k" , "i % k"
+-- quotRem k "i" = "i % k" , "i / k"
 -- This is dual to group from Data.Vec.
 
-group : ∀ n k → Fin (n ℕ.* k) → Fin k × Fin n
-group (suc n) k i with splitAt k i
+quotRem : ∀ {n} k → Fin (n ℕ.* k) → Fin k × Fin n
+quotRem {suc n} k i with splitAt k i
 ... | inj₁ j = j , zero
-... | inj₂ j = Product.map id suc (group n k j)
+... | inj₂ j = Product.map id suc (quotRem {n} k j)
 
 ------------------------------------------------------------------------
 -- Operations

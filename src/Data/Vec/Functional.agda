@@ -106,7 +106,7 @@ _++_ : ∀ {m n} → Vector A m → Vector A n → Vector A (m ℕ.+ n)
 _++_ {m = m} xs ys i = [ xs , ys ] (splitAt m i)
 
 concat : ∀ {m n} → Vector (Vector A m) n → Vector A (n ℕ.* m)
-concat {m = m} {n = n} xss = uncurry (flip xss) ∘ group n m
+concat {m = m} xss i = uncurry (flip xss) (quotRem m i)
 
 foldr : (A → B → B) → B → ∀ {n} → Vector A n → B
 foldr f z {n = zero}  xs = z

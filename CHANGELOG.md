@@ -386,7 +386,7 @@ Other minor additions
 
 * Added new functions to `Data.Fin.Base`:
   ```agda
-  group : ∀ n k → Fin (n ℕ.* k) → Fin k × Fin n
+  quotRem : ∀ {n} k → Fin (n ℕ.* k) → Fin k × Fin n
   opposite : ∀ {n} → Fin n → Fin n
   ```
 
