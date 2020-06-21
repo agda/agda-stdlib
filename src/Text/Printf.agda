@@ -26,31 +26,19 @@ import Data.Float     as Fₛ
 import Data.Nat.Show  as ℕₛ
 
 open import Text.Format as Format hiding (Error)
+open import Text.Printf.Generic
 
-assemble : ∀ fmt → Product⊤ _ ⟦ fmt ⟧ → List String
-assemble []              vs       = []
-assemble (`ℕ      ∷ fmt) (n , vs) = ℕₛ.show n  ∷ assemble fmt vs
-assemble (`ℤ      ∷ fmt) (z , vs) = ℤₛ.show z  ∷ assemble fmt vs
-assemble (`Float  ∷ fmt) (f , vs) = Fₛ.show f  ∷ assemble fmt vs
-assemble (`Char   ∷ fmt) (c , vs) = fromChar c ∷ assemble fmt vs
-assemble (`String ∷ fmt) (s , vs) = s          ∷ assemble fmt vs
-assemble (Raw str ∷ fmt) vs       = str ∷ assemble fmt vs
+printfSpec : PrintfSpec formatSpec String
+printfSpec .PrintfSpec.renderArg ℕArg      = ℕₛ.show
+printfSpec .PrintfSpec.renderArg ℤArg      = ℤₛ.show
+printfSpec .PrintfSpec.renderArg FloatArg  = Fₛ.show
+printfSpec .PrintfSpec.renderArg CharArg   = fromChar
+printfSpec .PrintfSpec.renderArg StringArg = id
+printfSpec .PrintfSpec.renderStr           = id
 
-record Error (e : Format.Error) : Set where
+module Printf = Type formatSpec
+open Printf public hiding (map)
+open Render printfSpec public renaming (printf to gprintf)
 
-private
-
-  Size : Format.Error ⊎ Format → ℕ
-  Size (inj₁ err) = 0
-  Size (inj₂ fmt) = size fmt
-
-  Printf : ∀ pr → Set (⨆ (Size pr) 0ℓs)
-  Printf (inj₁ err) = Error err
-  Printf (inj₂ fmt) = Arrows _ ⟦ fmt ⟧ String
-
-  printf′ : ∀ pr → Printf pr
-  printf′ (inj₁ err) = _
-  printf′ (inj₂ fmt) = curry⊤ₙ _ (concat ∘′ assemble fmt)
-
-printf : (input : String) → Printf (lexer input)
-printf input = printf′ (lexer input)
+printf : (fmt : String) → Printf (lexer fmt) String
+printf fmt = Printf.map (lexer fmt) concat (gprintf fmt)

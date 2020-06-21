@@ -791,6 +791,15 @@ private
 *-identity : Identity 1ℚ _*_
 *-identity = *-identityˡ , *-identityʳ
 
+*-zeroˡ : LeftZero 0ℚ _*_
+*-zeroˡ = *-Monomorphism.zeroˡ ℚᵘ.+-0-isGroup ℚᵘ.*-isMagma ℚᵘ.*-zeroˡ
+
+*-zeroʳ : RightZero 0ℚ _*_
+*-zeroʳ = *-Monomorphism.zeroʳ ℚᵘ.+-0-isGroup ℚᵘ.*-isMagma ℚᵘ.*-zeroʳ
+
+*-zero : Zero 0ℚ _*_
+*-zero = *-zeroˡ , *-zeroʳ
+
 *-distribˡ-+ : _*_ DistributesOverˡ _+_
 *-distribˡ-+ = *-Monomorphism.distribˡ ℚᵘ.+-0-isGroup ℚᵘ.*-isMagma ℚᵘ.*-distribˡ-+
 

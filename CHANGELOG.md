@@ -160,6 +160,12 @@ New modules
   Data.Vec.Functional.Properties
   ```
 
+* Generic printf
+  ```
+  Text.Format.Generic
+  Text.Printf.Generic
+  ```
+
 Other major changes
 -------------------
 
@@ -355,10 +361,14 @@ Other minor additions
   nonNegative : p ≥ 0ℚ → NonNegative p
   ```
 
-* Added proofs to `Data.Rational.Properties`:
+* Exposed some proofs in `Data.Rational.Properties`:
  ```agda
-  +-*-isCommutativeRing : IsCommutativeRing _+_ _*_ -_ 0ℚ 1ℚ
-  +-*-commutativeRing   : CommutativeRing 0ℓ 0ℓ
+ +-*-isCommutativeRing : IsCommutativeRing _+_ _*_ -_ 0ℚ 1ℚ
+ +-*-commutativeRing   : CommutativeRing 0ℓ 0ℓ
+
+ *-zeroˡ : LeftZero 0ℚ _*_
+ *-zeroʳ : RightZero 0ℚ _*_
+ *-zero  : Zero 0ℚ _*_
  ```
 
 * Added new types and constructors to `Data.Rational.Unnormalised`
