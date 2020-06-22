@@ -110,6 +110,11 @@ New modules
   Relation.Binary.Construct.Closure.SymmetricTransitive
   ```
 
+* Composition of binary relations:
+  ```
+  Relation.Binary.Construct.Composition
+  ```
+
 * Type-checking monads
   ```
   Reflection.TypeChecking.Monad
