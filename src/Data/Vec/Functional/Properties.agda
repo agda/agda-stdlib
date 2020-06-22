@@ -40,18 +40,18 @@ private
 
 module _ {n} {xs ys : Vector A (suc n)} where
 
-  ∷-cong : head xs ≡ head ys × tail xs ≗ tail ys → xs ≗ ys
-  ∷-cong (eq , _) zero    = eq
-  ∷-cong (_ , eq) (suc i) = eq i
+  ∷-cong : head xs ≡ head ys → tail xs ≗ tail ys → xs ≗ ys
+  ∷-cong eq _ zero    = eq
+  ∷-cong _ eq (suc i) = eq i
 
   ∷-injective : xs ≗ ys → head xs ≡ head ys × tail xs ≗ tail ys
   ∷-injective eq = eq zero , eq ∘ suc
 
-≗-dec : B.Decidable {A = A} _≡_ →
+≗-dec : B.DecidableEquality A →
         ∀ {n} → B.Decidable {A = Vector A n} _≗_
 ≗-dec _≟_ {zero}  xs ys = yes λ ()
 ≗-dec _≟_ {suc n} xs ys =
-  map′ ∷-cong ∷-injective
+  map′ (Product.uncurry ∷-cong) ∷-injective
        (head xs ≟ head ys ×-dec ≗-dec _≟_ (tail xs) (tail ys))
 
 ------------------------------------------------------------------------
