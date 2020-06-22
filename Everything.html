@@ -1692,384 +1692,387 @@
 <a id="47059" class="Comment">-- Some code related to transitive closures that relies on the K rule</a>
 <a id="47129" class="Keyword">import</a> <a id="47136" href="Relation.Binary.Construct.Closure.Transitive.WithK.html" class="Module">Relation.Binary.Construct.Closure.Transitive.WithK</a>
 
-<a id="47188" class="Comment">-- The binary relation defined by a constant</a>
-<a id="47233" class="Keyword">import</a> <a id="47240" href="Relation.Binary.Construct.Constant.html" class="Module">Relation.Binary.Construct.Constant</a>
+<a id="47188" class="Comment">-- Composition of two binary relations</a>
+<a id="47227" class="Keyword">import</a> <a id="47234" href="Relation.Binary.Construct.Composition.html" class="Module">Relation.Binary.Construct.Composition</a>
 
-<a id="47276" class="Comment">-- Many properties which hold for `∼` also hold for `flip ∼`. Unlike</a>
-<a id="47345" class="Comment">-- the module `Relation.Binary.Construct.Flip` this module does not</a>
-<a id="47413" class="Comment">-- flip the underlying equality.</a>
-<a id="47446" class="Keyword">import</a> <a id="47453" href="Relation.Binary.Construct.Converse.html" class="Module">Relation.Binary.Construct.Converse</a>
+<a id="47273" class="Comment">-- The binary relation defined by a constant</a>
+<a id="47318" class="Keyword">import</a> <a id="47325" href="Relation.Binary.Construct.Constant.html" class="Module">Relation.Binary.Construct.Constant</a>
 
-<a id="47489" class="Comment">-- Many properties which hold for `∼` also hold for `flip ∼`. Unlike</a>
-<a id="47558" class="Comment">-- the module `Relation.Binary.Construct.Converse` this module flips</a>
-<a id="47627" class="Comment">-- both the relation and the underlying equality.</a>
-<a id="47677" class="Keyword">import</a> <a id="47684" href="Relation.Binary.Construct.Flip.html" class="Module">Relation.Binary.Construct.Flip</a>
+<a id="47361" class="Comment">-- Many properties which hold for `∼` also hold for `flip ∼`. Unlike</a>
+<a id="47430" class="Comment">-- the module `Relation.Binary.Construct.Flip` this module does not</a>
+<a id="47498" class="Comment">-- flip the underlying equality.</a>
+<a id="47531" class="Keyword">import</a> <a id="47538" href="Relation.Binary.Construct.Converse.html" class="Module">Relation.Binary.Construct.Converse</a>
 
-<a id="47716" class="Comment">-- Every respectful unary relation induces a preorder. No claim is</a>
-<a id="47783" class="Comment">-- made that this preorder is unique.</a>
-<a id="47821" class="Keyword">import</a> <a id="47828" href="Relation.Binary.Construct.FromPred.html" class="Module">Relation.Binary.Construct.FromPred</a>
+<a id="47574" class="Comment">-- Many properties which hold for `∼` also hold for `flip ∼`. Unlike</a>
+<a id="47643" class="Comment">-- the module `Relation.Binary.Construct.Converse` this module flips</a>
+<a id="47712" class="Comment">-- both the relation and the underlying equality.</a>
+<a id="47762" class="Keyword">import</a> <a id="47769" href="Relation.Binary.Construct.Flip.html" class="Module">Relation.Binary.Construct.Flip</a>
 
-<a id="47864" class="Comment">-- Every respectful binary relation induces a preorder. No claim is</a>
-<a id="47932" class="Comment">-- made that this preorder is unique.</a>
-<a id="47970" class="Keyword">import</a> <a id="47977" href="Relation.Binary.Construct.FromRel.html" class="Module">Relation.Binary.Construct.FromRel</a>
+<a id="47801" class="Comment">-- Every respectful unary relation induces a preorder. No claim is</a>
+<a id="47868" class="Comment">-- made that this preorder is unique.</a>
+<a id="47906" class="Keyword">import</a> <a id="47913" href="Relation.Binary.Construct.FromPred.html" class="Module">Relation.Binary.Construct.FromPred</a>
 
-<a id="48012" class="Comment">-- Intersection of two binary relations</a>
-<a id="48052" class="Keyword">import</a> <a id="48059" href="Relation.Binary.Construct.Intersection.html" class="Module">Relation.Binary.Construct.Intersection</a>
+<a id="47949" class="Comment">-- Every respectful binary relation induces a preorder. No claim is</a>
+<a id="48017" class="Comment">-- made that this preorder is unique.</a>
+<a id="48055" class="Keyword">import</a> <a id="48062" href="Relation.Binary.Construct.FromRel.html" class="Module">Relation.Binary.Construct.FromRel</a>
 
-<a id="48099" class="Comment">-- Conversion of binary operators to binary relations via the left</a>
-<a id="48166" class="Comment">-- natural order.</a>
-<a id="48184" class="Keyword">import</a> <a id="48191" href="Relation.Binary.Construct.NaturalOrder.Left.html" class="Module">Relation.Binary.Construct.NaturalOrder.Left</a>
+<a id="48097" class="Comment">-- Intersection of two binary relations</a>
+<a id="48137" class="Keyword">import</a> <a id="48144" href="Relation.Binary.Construct.Intersection.html" class="Module">Relation.Binary.Construct.Intersection</a>
 
-<a id="48236" class="Comment">-- Conversion of binary operators to binary relations via the right</a>
-<a id="48304" class="Comment">-- natural order.</a>
-<a id="48322" class="Keyword">import</a> <a id="48329" href="Relation.Binary.Construct.NaturalOrder.Right.html" class="Module">Relation.Binary.Construct.NaturalOrder.Right</a>
+<a id="48184" class="Comment">-- Conversion of binary operators to binary relations via the left</a>
+<a id="48251" class="Comment">-- natural order.</a>
+<a id="48269" class="Keyword">import</a> <a id="48276" href="Relation.Binary.Construct.NaturalOrder.Left.html" class="Module">Relation.Binary.Construct.NaturalOrder.Left</a>
 
-<a id="48375" class="Comment">-- The empty binary relation</a>
-<a id="48404" class="Keyword">import</a> <a id="48411" href="Relation.Binary.Construct.Never.html" class="Module">Relation.Binary.Construct.Never</a>
+<a id="48321" class="Comment">-- Conversion of binary operators to binary relations via the right</a>
+<a id="48389" class="Comment">-- natural order.</a>
+<a id="48407" class="Keyword">import</a> <a id="48414" href="Relation.Binary.Construct.NaturalOrder.Right.html" class="Module">Relation.Binary.Construct.NaturalOrder.Right</a>
 
-<a id="48444" class="Comment">-- Conversion of _≤_ to _&lt;_</a>
-<a id="48472" class="Keyword">import</a> <a id="48479" href="Relation.Binary.Construct.NonStrictToStrict.html" class="Module">Relation.Binary.Construct.NonStrictToStrict</a>
+<a id="48460" class="Comment">-- The empty binary relation</a>
+<a id="48489" class="Keyword">import</a> <a id="48496" href="Relation.Binary.Construct.Never.html" class="Module">Relation.Binary.Construct.Never</a>
 
-<a id="48524" class="Comment">-- Many properties which hold for `_∼_` also hold for `_∼_ on f`</a>
-<a id="48589" class="Keyword">import</a> <a id="48596" href="Relation.Binary.Construct.On.html" class="Module">Relation.Binary.Construct.On</a>
+<a id="48529" class="Comment">-- Conversion of _≤_ to _&lt;_</a>
+<a id="48557" class="Keyword">import</a> <a id="48564" href="Relation.Binary.Construct.NonStrictToStrict.html" class="Module">Relation.Binary.Construct.NonStrictToStrict</a>
 
-<a id="48626" class="Comment">-- Conversion of &lt; to ≤, along with a number of properties</a>
-<a id="48685" class="Keyword">import</a> <a id="48692" href="Relation.Binary.Construct.StrictToNonStrict.html" class="Module">Relation.Binary.Construct.StrictToNonStrict</a>
+<a id="48609" class="Comment">-- Many properties which hold for `_∼_` also hold for `_∼_ on f`</a>
+<a id="48674" class="Keyword">import</a> <a id="48681" href="Relation.Binary.Construct.On.html" class="Module">Relation.Binary.Construct.On</a>
 
-<a id="48737" class="Comment">-- Substituting equalities for binary relations</a>
-<a id="48785" class="Keyword">import</a> <a id="48792" href="Relation.Binary.Construct.Subst.Equality.html" class="Module">Relation.Binary.Construct.Subst.Equality</a>
+<a id="48711" class="Comment">-- Conversion of &lt; to ≤, along with a number of properties</a>
+<a id="48770" class="Keyword">import</a> <a id="48777" href="Relation.Binary.Construct.StrictToNonStrict.html" class="Module">Relation.Binary.Construct.StrictToNonStrict</a>
 
-<a id="48834" class="Comment">-- Union of two binary relations</a>
-<a id="48867" class="Keyword">import</a> <a id="48874" href="Relation.Binary.Construct.Union.html" class="Module">Relation.Binary.Construct.Union</a>
+<a id="48822" class="Comment">-- Substituting equalities for binary relations</a>
+<a id="48870" class="Keyword">import</a> <a id="48877" href="Relation.Binary.Construct.Subst.Equality.html" class="Module">Relation.Binary.Construct.Subst.Equality</a>
 
-<a id="48907" class="Comment">-- Properties of binary relations</a>
-<a id="48941" class="Keyword">import</a> <a id="48948" href="Relation.Binary.Definitions.html" class="Module">Relation.Binary.Definitions</a>
+<a id="48919" class="Comment">-- Union of two binary relations</a>
+<a id="48952" class="Keyword">import</a> <a id="48959" href="Relation.Binary.Construct.Union.html" class="Module">Relation.Binary.Construct.Union</a>
 
-<a id="48977" class="Comment">-- Heterogeneous equality</a>
-<a id="49003" class="Keyword">import</a> <a id="49010" href="Relation.Binary.HeterogeneousEquality.html" class="Module">Relation.Binary.HeterogeneousEquality</a>
+<a id="48992" class="Comment">-- Properties of binary relations</a>
+<a id="49026" class="Keyword">import</a> <a id="49033" href="Relation.Binary.Definitions.html" class="Module">Relation.Binary.Definitions</a>
 
-<a id="49049" class="Comment">-- Quotients for Heterogeneous equality</a>
-<a id="49089" class="Keyword">import</a> <a id="49096" href="Relation.Binary.HeterogeneousEquality.Quotients.html" class="Module">Relation.Binary.HeterogeneousEquality.Quotients</a>
+<a id="49062" class="Comment">-- Heterogeneous equality</a>
+<a id="49088" class="Keyword">import</a> <a id="49095" href="Relation.Binary.HeterogeneousEquality.html" class="Module">Relation.Binary.HeterogeneousEquality</a>
 
-<a id="49145" class="Comment">-- Example of a Quotient: ℤ as (ℕ × ℕ / ∼)</a>
-<a id="49188" class="Keyword">import</a> <a id="49195" href="Relation.Binary.HeterogeneousEquality.Quotients.Examples.html" class="Module">Relation.Binary.HeterogeneousEquality.Quotients.Examples</a>
+<a id="49134" class="Comment">-- Quotients for Heterogeneous equality</a>
+<a id="49174" class="Keyword">import</a> <a id="49181" href="Relation.Binary.HeterogeneousEquality.Quotients.html" class="Module">Relation.Binary.HeterogeneousEquality.Quotients</a>
 
-<a id="49253" class="Comment">-- Heterogeneously-indexed binary relations</a>
-<a id="49297" class="Keyword">import</a> <a id="49304" href="Relation.Binary.Indexed.Heterogeneous.html" class="Module">Relation.Binary.Indexed.Heterogeneous</a>
+<a id="49230" class="Comment">-- Example of a Quotient: ℤ as (ℕ × ℕ / ∼)</a>
+<a id="49273" class="Keyword">import</a> <a id="49280" href="Relation.Binary.HeterogeneousEquality.Quotients.Examples.html" class="Module">Relation.Binary.HeterogeneousEquality.Quotients.Examples</a>
 
-<a id="49343" class="Comment">-- Indexed binary relations</a>
-<a id="49371" class="Keyword">import</a> <a id="49378" href="Relation.Binary.Indexed.Heterogeneous.Bundles.html" class="Module">Relation.Binary.Indexed.Heterogeneous.Bundles</a>
+<a id="49338" class="Comment">-- Heterogeneously-indexed binary relations</a>
+<a id="49382" class="Keyword">import</a> <a id="49389" href="Relation.Binary.Indexed.Heterogeneous.html" class="Module">Relation.Binary.Indexed.Heterogeneous</a>
 
-<a id="49425" class="Comment">-- Instantiates indexed binary structures at an index to the equivalent</a>
-<a id="49497" class="Comment">-- non-indexed structures.</a>
-<a id="49524" class="Keyword">import</a> <a id="49531" href="Relation.Binary.Indexed.Heterogeneous.Construct.At.html" class="Module">Relation.Binary.Indexed.Heterogeneous.Construct.At</a>
+<a id="49428" class="Comment">-- Indexed binary relations</a>
+<a id="49456" class="Keyword">import</a> <a id="49463" href="Relation.Binary.Indexed.Heterogeneous.Bundles.html" class="Module">Relation.Binary.Indexed.Heterogeneous.Bundles</a>
 
-<a id="49583" class="Comment">-- Creates trivially indexed records from their non-indexed counterpart.</a>
-<a id="49656" class="Keyword">import</a> <a id="49663" href="Relation.Binary.Indexed.Heterogeneous.Construct.Trivial.html" class="Module">Relation.Binary.Indexed.Heterogeneous.Construct.Trivial</a>
+<a id="49510" class="Comment">-- Instantiates indexed binary structures at an index to the equivalent</a>
+<a id="49582" class="Comment">-- non-indexed structures.</a>
+<a id="49609" class="Keyword">import</a> <a id="49616" href="Relation.Binary.Indexed.Heterogeneous.Construct.At.html" class="Module">Relation.Binary.Indexed.Heterogeneous.Construct.At</a>
 
-<a id="49720" class="Comment">-- Indexed binary relations</a>
-<a id="49748" class="Keyword">import</a> <a id="49755" href="Relation.Binary.Indexed.Heterogeneous.Definitions.html" class="Module">Relation.Binary.Indexed.Heterogeneous.Definitions</a>
+<a id="49668" class="Comment">-- Creates trivially indexed records from their non-indexed counterpart.</a>
+<a id="49741" class="Keyword">import</a> <a id="49748" href="Relation.Binary.Indexed.Heterogeneous.Construct.Trivial.html" class="Module">Relation.Binary.Indexed.Heterogeneous.Construct.Trivial</a>
 
-<a id="49806" class="Comment">-- Indexed binary relations</a>
-<a id="49834" class="Keyword">import</a> <a id="49841" href="Relation.Binary.Indexed.Heterogeneous.Structures.html" class="Module">Relation.Binary.Indexed.Heterogeneous.Structures</a>
+<a id="49805" class="Comment">-- Indexed binary relations</a>
+<a id="49833" class="Keyword">import</a> <a id="49840" href="Relation.Binary.Indexed.Heterogeneous.Definitions.html" class="Module">Relation.Binary.Indexed.Heterogeneous.Definitions</a>
 
-<a id="49891" class="Comment">-- Homogeneously-indexed binary relations</a>
-<a id="49933" class="Keyword">import</a> <a id="49940" href="Relation.Binary.Indexed.Homogeneous.html" class="Module">Relation.Binary.Indexed.Homogeneous</a>
+<a id="49891" class="Comment">-- Indexed binary relations</a>
+<a id="49919" class="Keyword">import</a> <a id="49926" href="Relation.Binary.Indexed.Heterogeneous.Structures.html" class="Module">Relation.Binary.Indexed.Heterogeneous.Structures</a>
 
-<a id="49977" class="Comment">-- Homogeneously-indexed binary relations</a>
-<a id="50019" class="Keyword">import</a> <a id="50026" href="Relation.Binary.Indexed.Homogeneous.Bundles.html" class="Module">Relation.Binary.Indexed.Homogeneous.Bundles</a>
+<a id="49976" class="Comment">-- Homogeneously-indexed binary relations</a>
+<a id="50018" class="Keyword">import</a> <a id="50025" href="Relation.Binary.Indexed.Homogeneous.html" class="Module">Relation.Binary.Indexed.Homogeneous</a>
 
-<a id="50071" class="Comment">-- Homogeneously-indexed binary relations</a>
-<a id="50113" class="Keyword">import</a> <a id="50120" href="Relation.Binary.Indexed.Homogeneous.Definitions.html" class="Module">Relation.Binary.Indexed.Homogeneous.Definitions</a>
+<a id="50062" class="Comment">-- Homogeneously-indexed binary relations</a>
+<a id="50104" class="Keyword">import</a> <a id="50111" href="Relation.Binary.Indexed.Homogeneous.Bundles.html" class="Module">Relation.Binary.Indexed.Homogeneous.Bundles</a>
 
-<a id="50169" class="Comment">-- Homogeneously-indexed binary relations</a>
-<a id="50211" class="Keyword">import</a> <a id="50218" href="Relation.Binary.Indexed.Homogeneous.Structures.html" class="Module">Relation.Binary.Indexed.Homogeneous.Structures</a>
+<a id="50156" class="Comment">-- Homogeneously-indexed binary relations</a>
+<a id="50198" class="Keyword">import</a> <a id="50205" href="Relation.Binary.Indexed.Homogeneous.Definitions.html" class="Module">Relation.Binary.Indexed.Homogeneous.Definitions</a>
 
-<a id="50266" class="Comment">-- Order-theoretic lattices</a>
-<a id="50294" class="Keyword">import</a> <a id="50301" href="Relation.Binary.Lattice.html" class="Module">Relation.Binary.Lattice</a>
+<a id="50254" class="Comment">-- Homogeneously-indexed binary relations</a>
+<a id="50296" class="Keyword">import</a> <a id="50303" href="Relation.Binary.Indexed.Homogeneous.Structures.html" class="Module">Relation.Binary.Indexed.Homogeneous.Structures</a>
 
-<a id="50326" class="Comment">-- Order morphisms</a>
-<a id="50345" class="Keyword">import</a> <a id="50352" href="Relation.Binary.Morphism.html" class="Module">Relation.Binary.Morphism</a>
+<a id="50351" class="Comment">-- Order-theoretic lattices</a>
+<a id="50379" class="Keyword">import</a> <a id="50386" href="Relation.Binary.Lattice.html" class="Module">Relation.Binary.Lattice</a>
 
-<a id="50378" class="Comment">-- Basic definitions for morphisms between algebraic structures</a>
-<a id="50442" class="Keyword">import</a> <a id="50449" href="Relation.Binary.Morphism.Definitions.html" class="Module">Relation.Binary.Morphism.Definitions</a>
+<a id="50411" class="Comment">-- Order morphisms</a>
+<a id="50430" class="Keyword">import</a> <a id="50437" href="Relation.Binary.Morphism.html" class="Module">Relation.Binary.Morphism</a>
 
-<a id="50487" class="Comment">-- Consequences of a monomorphism between orders</a>
-<a id="50536" class="Keyword">import</a> <a id="50543" href="Relation.Binary.Morphism.OrderMonomorphism.html" class="Module">Relation.Binary.Morphism.OrderMonomorphism</a>
+<a id="50463" class="Comment">-- Basic definitions for morphisms between algebraic structures</a>
+<a id="50527" class="Keyword">import</a> <a id="50534" href="Relation.Binary.Morphism.Definitions.html" class="Module">Relation.Binary.Morphism.Definitions</a>
 
-<a id="50587" class="Comment">-- Consequences of a monomorphism between binary relations</a>
-<a id="50646" class="Keyword">import</a> <a id="50653" href="Relation.Binary.Morphism.RelMonomorphism.html" class="Module">Relation.Binary.Morphism.RelMonomorphism</a>
+<a id="50572" class="Comment">-- Consequences of a monomorphism between orders</a>
+<a id="50621" class="Keyword">import</a> <a id="50628" href="Relation.Binary.Morphism.OrderMonomorphism.html" class="Module">Relation.Binary.Morphism.OrderMonomorphism</a>
 
-<a id="50695" class="Comment">-- Order morphisms</a>
-<a id="50714" class="Keyword">import</a> <a id="50721" href="Relation.Binary.Morphism.Structures.html" class="Module">Relation.Binary.Morphism.Structures</a>
+<a id="50672" class="Comment">-- Consequences of a monomorphism between binary relations</a>
+<a id="50731" class="Keyword">import</a> <a id="50738" href="Relation.Binary.Morphism.RelMonomorphism.html" class="Module">Relation.Binary.Morphism.RelMonomorphism</a>
 
-<a id="50758" class="Comment">-- Order morphisms</a>
-<a id="50777" class="Keyword">import</a> <a id="50784" href="Relation.Binary.OrderMorphism.html" class="Module">Relation.Binary.OrderMorphism</a>
+<a id="50780" class="Comment">-- Order morphisms</a>
+<a id="50799" class="Keyword">import</a> <a id="50806" href="Relation.Binary.Morphism.Structures.html" class="Module">Relation.Binary.Morphism.Structures</a>
 
-<a id="50815" class="Comment">-- Properties satisfied by bounded join semilattices</a>
-<a id="50868" class="Keyword">import</a> <a id="50875" href="Relation.Binary.Properties.BoundedJoinSemilattice.html" class="Module">Relation.Binary.Properties.BoundedJoinSemilattice</a>
+<a id="50843" class="Comment">-- Order morphisms</a>
+<a id="50862" class="Keyword">import</a> <a id="50869" href="Relation.Binary.OrderMorphism.html" class="Module">Relation.Binary.OrderMorphism</a>
 
-<a id="50926" class="Comment">-- Properties satisfied by bounded lattice</a>
-<a id="50969" class="Keyword">import</a> <a id="50976" href="Relation.Binary.Properties.BoundedLattice.html" class="Module">Relation.Binary.Properties.BoundedLattice</a>
+<a id="50900" class="Comment">-- Properties satisfied by bounded join semilattices</a>
+<a id="50953" class="Keyword">import</a> <a id="50960" href="Relation.Binary.Properties.BoundedJoinSemilattice.html" class="Module">Relation.Binary.Properties.BoundedJoinSemilattice</a>
 
-<a id="51019" class="Comment">-- Properties satisfied by bounded meet semilattices</a>
-<a id="51072" class="Keyword">import</a> <a id="51079" href="Relation.Binary.Properties.BoundedMeetSemilattice.html" class="Module">Relation.Binary.Properties.BoundedMeetSemilattice</a>
+<a id="51011" class="Comment">-- Properties satisfied by bounded lattice</a>
+<a id="51054" class="Keyword">import</a> <a id="51061" href="Relation.Binary.Properties.BoundedLattice.html" class="Module">Relation.Binary.Properties.BoundedLattice</a>
 
-<a id="51130" class="Comment">-- Properties satisfied by decidable total orders</a>
-<a id="51180" class="Keyword">import</a> <a id="51187" href="Relation.Binary.Properties.DecTotalOrder.html" class="Module">Relation.Binary.Properties.DecTotalOrder</a>
+<a id="51104" class="Comment">-- Properties satisfied by bounded meet semilattices</a>
+<a id="51157" class="Keyword">import</a> <a id="51164" href="Relation.Binary.Properties.BoundedMeetSemilattice.html" class="Module">Relation.Binary.Properties.BoundedMeetSemilattice</a>
 
-<a id="51229" class="Comment">-- Properties for distributive lattice</a>
-<a id="51268" class="Keyword">import</a> <a id="51275" href="Relation.Binary.Properties.DistributiveLattice.html" class="Module">Relation.Binary.Properties.DistributiveLattice</a>
+<a id="51215" class="Comment">-- Properties satisfied by decidable total orders</a>
+<a id="51265" class="Keyword">import</a> <a id="51272" href="Relation.Binary.Properties.DecTotalOrder.html" class="Module">Relation.Binary.Properties.DecTotalOrder</a>
 
-<a id="51323" class="Comment">-- Properties satisfied by Heyting Algebra</a>
-<a id="51366" class="Keyword">import</a> <a id="51373" href="Relation.Binary.Properties.HeytingAlgebra.html" class="Module">Relation.Binary.Properties.HeytingAlgebra</a>
+<a id="51314" class="Comment">-- Properties for distributive lattice</a>
+<a id="51353" class="Keyword">import</a> <a id="51360" href="Relation.Binary.Properties.DistributiveLattice.html" class="Module">Relation.Binary.Properties.DistributiveLattice</a>
 
-<a id="51416" class="Comment">-- Properties satisfied by join semilattices</a>
-<a id="51461" class="Keyword">import</a> <a id="51468" href="Relation.Binary.Properties.JoinSemilattice.html" class="Module">Relation.Binary.Properties.JoinSemilattice</a>
+<a id="51408" class="Comment">-- Properties satisfied by Heyting Algebra</a>
+<a id="51451" class="Keyword">import</a> <a id="51458" href="Relation.Binary.Properties.HeytingAlgebra.html" class="Module">Relation.Binary.Properties.HeytingAlgebra</a>
 
-<a id="51512" class="Comment">-- Properties satisfied by lattices</a>
-<a id="51548" class="Keyword">import</a> <a id="51555" href="Relation.Binary.Properties.Lattice.html" class="Module">Relation.Binary.Properties.Lattice</a>
+<a id="51501" class="Comment">-- Properties satisfied by join semilattices</a>
+<a id="51546" class="Keyword">import</a> <a id="51553" href="Relation.Binary.Properties.JoinSemilattice.html" class="Module">Relation.Binary.Properties.JoinSemilattice</a>
 
-<a id="51591" class="Comment">-- Properties satisfied by meet semilattices</a>
-<a id="51636" class="Keyword">import</a> <a id="51643" href="Relation.Binary.Properties.MeetSemilattice.html" class="Module">Relation.Binary.Properties.MeetSemilattice</a>
+<a id="51597" class="Comment">-- Properties satisfied by lattices</a>
+<a id="51633" class="Keyword">import</a> <a id="51640" href="Relation.Binary.Properties.Lattice.html" class="Module">Relation.Binary.Properties.Lattice</a>
 
-<a id="51687" class="Comment">-- Properties satisfied by posets</a>
-<a id="51721" class="Keyword">import</a> <a id="51728" href="Relation.Binary.Properties.Poset.html" class="Module">Relation.Binary.Properties.Poset</a>
+<a id="51676" class="Comment">-- Properties satisfied by meet semilattices</a>
+<a id="51721" class="Keyword">import</a> <a id="51728" href="Relation.Binary.Properties.MeetSemilattice.html" class="Module">Relation.Binary.Properties.MeetSemilattice</a>
 
-<a id="51762" class="Comment">-- Properties satisfied by preorders</a>
-<a id="51799" class="Keyword">import</a> <a id="51806" href="Relation.Binary.Properties.Preorder.html" class="Module">Relation.Binary.Properties.Preorder</a>
+<a id="51772" class="Comment">-- Properties satisfied by posets</a>
+<a id="51806" class="Keyword">import</a> <a id="51813" href="Relation.Binary.Properties.Poset.html" class="Module">Relation.Binary.Properties.Poset</a>
 
-<a id="51843" class="Comment">-- Additional properties for setoids</a>
-<a id="51880" class="Keyword">import</a> <a id="51887" href="Relation.Binary.Properties.Setoid.html" class="Module">Relation.Binary.Properties.Setoid</a>
+<a id="51847" class="Comment">-- Properties satisfied by preorders</a>
+<a id="51884" class="Keyword">import</a> <a id="51891" href="Relation.Binary.Properties.Preorder.html" class="Module">Relation.Binary.Properties.Preorder</a>
 
-<a id="51922" class="Comment">-- Properties satisfied by strict partial orders</a>
-<a id="51971" class="Keyword">import</a> <a id="51978" href="Relation.Binary.Properties.StrictPartialOrder.html" class="Module">Relation.Binary.Properties.StrictPartialOrder</a>
+<a id="51928" class="Comment">-- Additional properties for setoids</a>
+<a id="51965" class="Keyword">import</a> <a id="51972" href="Relation.Binary.Properties.Setoid.html" class="Module">Relation.Binary.Properties.Setoid</a>
 
-<a id="52025" class="Comment">-- Properties satisfied by strict partial orders</a>
-<a id="52074" class="Keyword">import</a> <a id="52081" href="Relation.Binary.Properties.StrictTotalOrder.html" class="Module">Relation.Binary.Properties.StrictTotalOrder</a>
+<a id="52007" class="Comment">-- Properties satisfied by strict partial orders</a>
+<a id="52056" class="Keyword">import</a> <a id="52063" href="Relation.Binary.Properties.StrictPartialOrder.html" class="Module">Relation.Binary.Properties.StrictPartialOrder</a>
 
-<a id="52126" class="Comment">-- Properties satisfied by total orders</a>
-<a id="52166" class="Keyword">import</a> <a id="52173" href="Relation.Binary.Properties.TotalOrder.html" class="Module">Relation.Binary.Properties.TotalOrder</a>
+<a id="52110" class="Comment">-- Properties satisfied by strict partial orders</a>
+<a id="52159" class="Keyword">import</a> <a id="52166" href="Relation.Binary.Properties.StrictTotalOrder.html" class="Module">Relation.Binary.Properties.StrictTotalOrder</a>
 
-<a id="52212" class="Comment">-- Propositional (intensional) equality</a>
-<a id="52252" class="Keyword">import</a> <a id="52259" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a>
+<a id="52211" class="Comment">-- Properties satisfied by total orders</a>
+<a id="52251" class="Keyword">import</a> <a id="52258" href="Relation.Binary.Properties.TotalOrder.html" class="Module">Relation.Binary.Properties.TotalOrder</a>
 
-<a id="52298" class="Comment">-- Propositional (intensional) equality - Algebraic structures</a>
-<a id="52361" class="Keyword">import</a> <a id="52368" href="Relation.Binary.PropositionalEquality.Algebra.html" class="Module">Relation.Binary.PropositionalEquality.Algebra</a>
+<a id="52297" class="Comment">-- Propositional (intensional) equality</a>
+<a id="52337" class="Keyword">import</a> <a id="52344" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a>
 
-<a id="52415" class="Comment">-- Propositional equality</a>
-<a id="52441" class="Keyword">import</a> <a id="52448" href="Relation.Binary.PropositionalEquality.Properties.html" class="Module">Relation.Binary.PropositionalEquality.Properties</a>
+<a id="52383" class="Comment">-- Propositional (intensional) equality - Algebraic structures</a>
+<a id="52446" class="Keyword">import</a> <a id="52453" href="Relation.Binary.PropositionalEquality.Algebra.html" class="Module">Relation.Binary.PropositionalEquality.Algebra</a>
 
-<a id="52498" class="Comment">-- An equality postulate which evaluates</a>
-<a id="52539" class="Keyword">import</a> <a id="52546" href="Relation.Binary.PropositionalEquality.TrustMe.html" class="Module">Relation.Binary.PropositionalEquality.TrustMe</a>
+<a id="52500" class="Comment">-- Propositional equality</a>
+<a id="52526" class="Keyword">import</a> <a id="52533" href="Relation.Binary.PropositionalEquality.Properties.html" class="Module">Relation.Binary.PropositionalEquality.Properties</a>
 
-<a id="52593" class="Comment">-- Some code related to propositional equality that relies on the K</a>
-<a id="52661" class="Comment">-- rule</a>
-<a id="52669" class="Keyword">import</a> <a id="52676" href="Relation.Binary.PropositionalEquality.WithK.html" class="Module">Relation.Binary.PropositionalEquality.WithK</a>
+<a id="52583" class="Comment">-- An equality postulate which evaluates</a>
+<a id="52624" class="Keyword">import</a> <a id="52631" href="Relation.Binary.PropositionalEquality.TrustMe.html" class="Module">Relation.Binary.PropositionalEquality.TrustMe</a>
 
-<a id="52721" class="Comment">-- The basic code for equational reasoning with two relations:</a>
-<a id="52784" class="Comment">-- equality and some other ordering.</a>
-<a id="52821" class="Keyword">import</a> <a id="52828" href="Relation.Binary.Reasoning.Base.Double.html" class="Module">Relation.Binary.Reasoning.Base.Double</a>
+<a id="52678" class="Comment">-- Some code related to propositional equality that relies on the K</a>
+<a id="52746" class="Comment">-- rule</a>
+<a id="52754" class="Keyword">import</a> <a id="52761" href="Relation.Binary.PropositionalEquality.WithK.html" class="Module">Relation.Binary.PropositionalEquality.WithK</a>
 
-<a id="52867" class="Comment">-- The basic code for equational reasoning with a partial relation</a>
-<a id="52934" class="Keyword">import</a> <a id="52941" href="Relation.Binary.Reasoning.Base.Partial.html" class="Module">Relation.Binary.Reasoning.Base.Partial</a>
+<a id="52806" class="Comment">-- The basic code for equational reasoning with two relations:</a>
+<a id="52869" class="Comment">-- equality and some other ordering.</a>
+<a id="52906" class="Keyword">import</a> <a id="52913" href="Relation.Binary.Reasoning.Base.Double.html" class="Module">Relation.Binary.Reasoning.Base.Double</a>
 
-<a id="52981" class="Comment">-- The basic code for equational reasoning with a single relation</a>
-<a id="53047" class="Keyword">import</a> <a id="53054" href="Relation.Binary.Reasoning.Base.Single.html" class="Module">Relation.Binary.Reasoning.Base.Single</a>
+<a id="52952" class="Comment">-- The basic code for equational reasoning with a partial relation</a>
+<a id="53019" class="Keyword">import</a> <a id="53026" href="Relation.Binary.Reasoning.Base.Partial.html" class="Module">Relation.Binary.Reasoning.Base.Partial</a>
 
-<a id="53093" class="Comment">-- The basic code for equational reasoning with three relations:</a>
-<a id="53158" class="Comment">-- equality, strict ordering and non-strict ordering.</a>
-<a id="53212" class="Keyword">import</a> <a id="53219" href="Relation.Binary.Reasoning.Base.Triple.html" class="Module">Relation.Binary.Reasoning.Base.Triple</a>
+<a id="53066" class="Comment">-- The basic code for equational reasoning with a single relation</a>
+<a id="53132" class="Keyword">import</a> <a id="53139" href="Relation.Binary.Reasoning.Base.Single.html" class="Module">Relation.Binary.Reasoning.Base.Single</a>
 
-<a id="53258" class="Comment">-- Convenient syntax for &quot;equational reasoning&quot; in multiple Setoids.</a>
-<a id="53327" class="Keyword">import</a> <a id="53334" href="Relation.Binary.Reasoning.MultiSetoid.html" class="Module">Relation.Binary.Reasoning.MultiSetoid</a>
+<a id="53178" class="Comment">-- The basic code for equational reasoning with three relations:</a>
+<a id="53243" class="Comment">-- equality, strict ordering and non-strict ordering.</a>
+<a id="53297" class="Keyword">import</a> <a id="53304" href="Relation.Binary.Reasoning.Base.Triple.html" class="Module">Relation.Binary.Reasoning.Base.Triple</a>
 
-<a id="53373" class="Comment">-- Convenient syntax for &quot;equational reasoning&quot; using a partial order</a>
-<a id="53443" class="Keyword">import</a> <a id="53450" href="Relation.Binary.Reasoning.PartialOrder.html" class="Module">Relation.Binary.Reasoning.PartialOrder</a>
+<a id="53343" class="Comment">-- Convenient syntax for &quot;equational reasoning&quot; in multiple Setoids.</a>
+<a id="53412" class="Keyword">import</a> <a id="53419" href="Relation.Binary.Reasoning.MultiSetoid.html" class="Module">Relation.Binary.Reasoning.MultiSetoid</a>
 
-<a id="53490" class="Comment">-- Convenient syntax for reasoning with a partial setoid</a>
-<a id="53547" class="Keyword">import</a> <a id="53554" href="Relation.Binary.Reasoning.PartialSetoid.html" class="Module">Relation.Binary.Reasoning.PartialSetoid</a>
+<a id="53458" class="Comment">-- Convenient syntax for &quot;equational reasoning&quot; using a partial order</a>
+<a id="53528" class="Keyword">import</a> <a id="53535" href="Relation.Binary.Reasoning.PartialOrder.html" class="Module">Relation.Binary.Reasoning.PartialOrder</a>
 
-<a id="53595" class="Comment">-- Convenient syntax for &quot;equational reasoning&quot; using a preorder</a>
-<a id="53660" class="Keyword">import</a> <a id="53667" href="Relation.Binary.Reasoning.Preorder.html" class="Module">Relation.Binary.Reasoning.Preorder</a>
+<a id="53575" class="Comment">-- Convenient syntax for reasoning with a partial setoid</a>
+<a id="53632" class="Keyword">import</a> <a id="53639" href="Relation.Binary.Reasoning.PartialSetoid.html" class="Module">Relation.Binary.Reasoning.PartialSetoid</a>
 
-<a id="53703" class="Comment">-- Convenient syntax for reasoning with a setoid</a>
-<a id="53752" class="Keyword">import</a> <a id="53759" href="Relation.Binary.Reasoning.Setoid.html" class="Module">Relation.Binary.Reasoning.Setoid</a>
+<a id="53680" class="Comment">-- Convenient syntax for &quot;equational reasoning&quot; using a preorder</a>
+<a id="53745" class="Keyword">import</a> <a id="53752" href="Relation.Binary.Reasoning.Preorder.html" class="Module">Relation.Binary.Reasoning.Preorder</a>
 
-<a id="53793" class="Comment">-- Convenient syntax for &quot;equational reasoning&quot; using a strict partial</a>
-<a id="53864" class="Comment">-- order.</a>
-<a id="53874" class="Keyword">import</a> <a id="53881" href="Relation.Binary.Reasoning.StrictPartialOrder.html" class="Module">Relation.Binary.Reasoning.StrictPartialOrder</a>
+<a id="53788" class="Comment">-- Convenient syntax for reasoning with a setoid</a>
+<a id="53837" class="Keyword">import</a> <a id="53844" href="Relation.Binary.Reasoning.Setoid.html" class="Module">Relation.Binary.Reasoning.Setoid</a>
 
-<a id="53927" class="Comment">-- Helpers intended to ease the development of &quot;tactics&quot; which use</a>
-<a id="53994" class="Comment">-- proof by reflection</a>
-<a id="54017" class="Keyword">import</a> <a id="54024" href="Relation.Binary.Reflection.html" class="Module">Relation.Binary.Reflection</a>
+<a id="53878" class="Comment">-- Convenient syntax for &quot;equational reasoning&quot; using a strict partial</a>
+<a id="53949" class="Comment">-- order.</a>
+<a id="53959" class="Keyword">import</a> <a id="53966" href="Relation.Binary.Reasoning.StrictPartialOrder.html" class="Module">Relation.Binary.Reasoning.StrictPartialOrder</a>
 
-<a id="54052" class="Comment">-- Concepts from rewriting theory</a>
-<a id="54086" class="Comment">-- Definitions are based on &quot;Term Rewriting Systems&quot; by J.W. Klop</a>
-<a id="54152" class="Keyword">import</a> <a id="54159" href="Relation.Binary.Rewriting.html" class="Module">Relation.Binary.Rewriting</a>
+<a id="54012" class="Comment">-- Helpers intended to ease the development of &quot;tactics&quot; which use</a>
+<a id="54079" class="Comment">-- proof by reflection</a>
+<a id="54102" class="Keyword">import</a> <a id="54109" href="Relation.Binary.Reflection.html" class="Module">Relation.Binary.Reflection</a>
 
-<a id="54186" class="Comment">-- Structures for homogeneous binary relations</a>
-<a id="54233" class="Keyword">import</a> <a id="54240" href="Relation.Binary.Structures.html" class="Module">Relation.Binary.Structures</a>
+<a id="54137" class="Comment">-- Concepts from rewriting theory</a>
+<a id="54171" class="Comment">-- Definitions are based on &quot;Term Rewriting Systems&quot; by J.W. Klop</a>
+<a id="54237" class="Keyword">import</a> <a id="54244" href="Relation.Binary.Rewriting.html" class="Module">Relation.Binary.Rewriting</a>
 
-<a id="54268" class="Comment">-- Heterogeneous N-ary Relations</a>
-<a id="54301" class="Keyword">import</a> <a id="54308" href="Relation.Nary.html" class="Module">Relation.Nary</a>
+<a id="54271" class="Comment">-- Structures for homogeneous binary relations</a>
+<a id="54318" class="Keyword">import</a> <a id="54325" href="Relation.Binary.Structures.html" class="Module">Relation.Binary.Structures</a>
 
-<a id="54323" class="Comment">-- Operations on nullary relations (like negation and decidability)</a>
-<a id="54391" class="Keyword">import</a> <a id="54398" href="Relation.Nullary.html" class="Module">Relation.Nullary</a>
+<a id="54353" class="Comment">-- Heterogeneous N-ary Relations</a>
+<a id="54386" class="Keyword">import</a> <a id="54393" href="Relation.Nary.html" class="Module">Relation.Nary</a>
 
-<a id="54416" class="Comment">-- Notation for freely adding extrema to any set</a>
-<a id="54465" class="Keyword">import</a> <a id="54472" href="Relation.Nullary.Construct.Add.Extrema.html" class="Module">Relation.Nullary.Construct.Add.Extrema</a>
+<a id="54408" class="Comment">-- Operations on nullary relations (like negation and decidability)</a>
+<a id="54476" class="Keyword">import</a> <a id="54483" href="Relation.Nullary.html" class="Module">Relation.Nullary</a>
 
-<a id="54512" class="Comment">-- Notation for freely adding an infimum to any set</a>
-<a id="54564" class="Keyword">import</a> <a id="54571" href="Relation.Nullary.Construct.Add.Infimum.html" class="Module">Relation.Nullary.Construct.Add.Infimum</a>
+<a id="54501" class="Comment">-- Notation for freely adding extrema to any set</a>
+<a id="54550" class="Keyword">import</a> <a id="54557" href="Relation.Nullary.Construct.Add.Extrema.html" class="Module">Relation.Nullary.Construct.Add.Extrema</a>
 
-<a id="54611" class="Comment">-- Notation for adding an additional point to any set</a>
-<a id="54665" class="Keyword">import</a> <a id="54672" href="Relation.Nullary.Construct.Add.Point.html" class="Module">Relation.Nullary.Construct.Add.Point</a>
+<a id="54597" class="Comment">-- Notation for freely adding an infimum to any set</a>
+<a id="54649" class="Keyword">import</a> <a id="54656" href="Relation.Nullary.Construct.Add.Infimum.html" class="Module">Relation.Nullary.Construct.Add.Infimum</a>
 
-<a id="54710" class="Comment">-- Notation for freely adding a supremum to any set</a>
-<a id="54762" class="Keyword">import</a> <a id="54769" href="Relation.Nullary.Construct.Add.Supremum.html" class="Module">Relation.Nullary.Construct.Add.Supremum</a>
+<a id="54696" class="Comment">-- Notation for adding an additional point to any set</a>
+<a id="54750" class="Keyword">import</a> <a id="54757" href="Relation.Nullary.Construct.Add.Point.html" class="Module">Relation.Nullary.Construct.Add.Point</a>
 
-<a id="54810" class="Comment">-- Operations on and properties of decidable relations</a>
-<a id="54865" class="Keyword">import</a> <a id="54872" href="Relation.Nullary.Decidable.html" class="Module">Relation.Nullary.Decidable</a>
+<a id="54795" class="Comment">-- Notation for freely adding a supremum to any set</a>
+<a id="54847" class="Keyword">import</a> <a id="54854" href="Relation.Nullary.Construct.Add.Supremum.html" class="Module">Relation.Nullary.Construct.Add.Supremum</a>
 
-<a id="54900" class="Comment">-- Implications of nullary relations</a>
-<a id="54937" class="Keyword">import</a> <a id="54944" href="Relation.Nullary.Implication.html" class="Module">Relation.Nullary.Implication</a>
+<a id="54895" class="Comment">-- Operations on and properties of decidable relations</a>
+<a id="54950" class="Keyword">import</a> <a id="54957" href="Relation.Nullary.Decidable.html" class="Module">Relation.Nullary.Decidable</a>
 
-<a id="54974" class="Comment">-- Negation indexed by a Level</a>
-<a id="55005" class="Keyword">import</a> <a id="55012" href="Relation.Nullary.Indexed.html" class="Module">Relation.Nullary.Indexed</a>
+<a id="54985" class="Comment">-- Implications of nullary relations</a>
+<a id="55022" class="Keyword">import</a> <a id="55029" href="Relation.Nullary.Implication.html" class="Module">Relation.Nullary.Implication</a>
 
-<a id="55038" class="Comment">-- Properties related to negation</a>
-<a id="55072" class="Keyword">import</a> <a id="55079" href="Relation.Nullary.Negation.html" class="Module">Relation.Nullary.Negation</a>
+<a id="55059" class="Comment">-- Negation indexed by a Level</a>
+<a id="55090" class="Keyword">import</a> <a id="55097" href="Relation.Nullary.Indexed.html" class="Module">Relation.Nullary.Indexed</a>
 
-<a id="55106" class="Comment">-- Products of nullary relations</a>
-<a id="55139" class="Keyword">import</a> <a id="55146" href="Relation.Nullary.Product.html" class="Module">Relation.Nullary.Product</a>
+<a id="55123" class="Comment">-- Properties related to negation</a>
+<a id="55157" class="Keyword">import</a> <a id="55164" href="Relation.Nullary.Negation.html" class="Module">Relation.Nullary.Negation</a>
 
-<a id="55172" class="Comment">-- Properties of the `Reflects` construct</a>
-<a id="55214" class="Keyword">import</a> <a id="55221" href="Relation.Nullary.Reflects.html" class="Module">Relation.Nullary.Reflects</a>
+<a id="55191" class="Comment">-- Products of nullary relations</a>
+<a id="55224" class="Keyword">import</a> <a id="55231" href="Relation.Nullary.Product.html" class="Module">Relation.Nullary.Product</a>
 
-<a id="55248" class="Comment">-- Sums of nullary relations</a>
-<a id="55277" class="Keyword">import</a> <a id="55284" href="Relation.Nullary.Sum.html" class="Module">Relation.Nullary.Sum</a>
+<a id="55257" class="Comment">-- Properties of the `Reflects` construct</a>
+<a id="55299" class="Keyword">import</a> <a id="55306" href="Relation.Nullary.Reflects.html" class="Module">Relation.Nullary.Reflects</a>
 
-<a id="55306" class="Comment">-- A universe of proposition functors, along with some properties</a>
-<a id="55372" class="Keyword">import</a> <a id="55379" href="Relation.Nullary.Universe.html" class="Module">Relation.Nullary.Universe</a>
+<a id="55333" class="Comment">-- Sums of nullary relations</a>
+<a id="55362" class="Keyword">import</a> <a id="55369" href="Relation.Nullary.Sum.html" class="Module">Relation.Nullary.Sum</a>
 
-<a id="55406" class="Comment">-- Unary relations</a>
-<a id="55425" class="Keyword">import</a> <a id="55432" href="Relation.Unary.html" class="Module">Relation.Unary</a>
+<a id="55391" class="Comment">-- A universe of proposition functors, along with some properties</a>
+<a id="55457" class="Keyword">import</a> <a id="55464" href="Relation.Nullary.Universe.html" class="Module">Relation.Nullary.Universe</a>
 
-<a id="55448" class="Comment">-- Closures of a unary relation with respect to a binary one.</a>
-<a id="55510" class="Keyword">import</a> <a id="55517" href="Relation.Unary.Closure.Base.html" class="Module">Relation.Unary.Closure.Base</a>
+<a id="55491" class="Comment">-- Unary relations</a>
+<a id="55510" class="Keyword">import</a> <a id="55517" href="Relation.Unary.html" class="Module">Relation.Unary</a>
 
-<a id="55546" class="Comment">-- Closure of a unary relation with respect to a preorder</a>
-<a id="55604" class="Keyword">import</a> <a id="55611" href="Relation.Unary.Closure.Preorder.html" class="Module">Relation.Unary.Closure.Preorder</a>
+<a id="55533" class="Comment">-- Closures of a unary relation with respect to a binary one.</a>
+<a id="55595" class="Keyword">import</a> <a id="55602" href="Relation.Unary.Closure.Base.html" class="Module">Relation.Unary.Closure.Base</a>
 
-<a id="55644" class="Comment">-- Closures of a unary relation with respect to a strict partial order</a>
-<a id="55715" class="Keyword">import</a> <a id="55722" href="Relation.Unary.Closure.StrictPartialOrder.html" class="Module">Relation.Unary.Closure.StrictPartialOrder</a>
+<a id="55631" class="Comment">-- Closure of a unary relation with respect to a preorder</a>
+<a id="55689" class="Keyword">import</a> <a id="55696" href="Relation.Unary.Closure.Preorder.html" class="Module">Relation.Unary.Closure.Preorder</a>
 
-<a id="55765" class="Comment">-- Some properties imply others</a>
-<a id="55797" class="Keyword">import</a> <a id="55804" href="Relation.Unary.Consequences.html" class="Module">Relation.Unary.Consequences</a>
+<a id="55729" class="Comment">-- Closures of a unary relation with respect to a strict partial order</a>
+<a id="55800" class="Keyword">import</a> <a id="55807" href="Relation.Unary.Closure.StrictPartialOrder.html" class="Module">Relation.Unary.Closure.StrictPartialOrder</a>
 
-<a id="55833" class="Comment">-- Indexed unary relations</a>
-<a id="55860" class="Keyword">import</a> <a id="55867" href="Relation.Unary.Indexed.html" class="Module">Relation.Unary.Indexed</a>
+<a id="55850" class="Comment">-- Some properties imply others</a>
+<a id="55882" class="Keyword">import</a> <a id="55889" href="Relation.Unary.Consequences.html" class="Module">Relation.Unary.Consequences</a>
 
-<a id="55891" class="Comment">-- Predicate transformers</a>
-<a id="55917" class="Keyword">import</a> <a id="55924" href="Relation.Unary.PredicateTransformer.html" class="Module">Relation.Unary.PredicateTransformer</a>
+<a id="55918" class="Comment">-- Indexed unary relations</a>
+<a id="55945" class="Keyword">import</a> <a id="55952" href="Relation.Unary.Indexed.html" class="Module">Relation.Unary.Indexed</a>
 
-<a id="55961" class="Comment">-- Properties of constructions over unary relations</a>
-<a id="56013" class="Keyword">import</a> <a id="56020" href="Relation.Unary.Properties.html" class="Module">Relation.Unary.Properties</a>
+<a id="55976" class="Comment">-- Predicate transformers</a>
+<a id="56002" class="Keyword">import</a> <a id="56009" href="Relation.Unary.PredicateTransformer.html" class="Module">Relation.Unary.PredicateTransformer</a>
 
-<a id="56047" class="Comment">-- Sizes for Agda&#39;s sized types</a>
-<a id="56079" class="Keyword">import</a> <a id="56086" href="Size.html" class="Module">Size</a>
+<a id="56046" class="Comment">-- Properties of constructions over unary relations</a>
+<a id="56098" class="Keyword">import</a> <a id="56105" href="Relation.Unary.Properties.html" class="Module">Relation.Unary.Properties</a>
 
-<a id="56092" class="Comment">-- Strictness combinators</a>
-<a id="56118" class="Keyword">import</a> <a id="56125" href="Strict.html" class="Module">Strict</a>
+<a id="56132" class="Comment">-- Sizes for Agda&#39;s sized types</a>
+<a id="56164" class="Keyword">import</a> <a id="56171" href="Size.html" class="Module">Size</a>
 
-<a id="56133" class="Comment">-- Reflection-based solver for monoid equalities</a>
-<a id="56182" class="Keyword">import</a> <a id="56189" href="Tactic.MonoidSolver.html" class="Module">Tactic.MonoidSolver</a>
+<a id="56177" class="Comment">-- Strictness combinators</a>
+<a id="56203" class="Keyword">import</a> <a id="56210" href="Strict.html" class="Module">Strict</a>
 
-<a id="56210" class="Comment">-- A solver that uses reflection to automatically obtain and solve</a>
-<a id="56277" class="Comment">-- equations over rings.</a>
-<a id="56302" class="Keyword">import</a> <a id="56309" href="Tactic.RingSolver.html" class="Module">Tactic.RingSolver</a>
+<a id="56218" class="Comment">-- Reflection-based solver for monoid equalities</a>
+<a id="56267" class="Keyword">import</a> <a id="56274" href="Tactic.MonoidSolver.html" class="Module">Tactic.MonoidSolver</a>
 
-<a id="56328" class="Comment">-- Almost commutative rings</a>
-<a id="56356" class="Keyword">import</a> <a id="56363" href="Tactic.RingSolver.Core.AlmostCommutativeRing.html" class="Module">Tactic.RingSolver.Core.AlmostCommutativeRing</a>
+<a id="56295" class="Comment">-- A solver that uses reflection to automatically obtain and solve</a>
+<a id="56362" class="Comment">-- equations over rings.</a>
+<a id="56387" class="Keyword">import</a> <a id="56394" href="Tactic.RingSolver.html" class="Module">Tactic.RingSolver</a>
 
-<a id="56409" class="Comment">-- A type for expressions over a raw ring.</a>
-<a id="56452" class="Keyword">import</a> <a id="56459" href="Tactic.RingSolver.Core.Expression.html" class="Module">Tactic.RingSolver.Core.Expression</a>
+<a id="56413" class="Comment">-- Almost commutative rings</a>
+<a id="56441" class="Keyword">import</a> <a id="56448" href="Tactic.RingSolver.Core.AlmostCommutativeRing.html" class="Module">Tactic.RingSolver.Core.AlmostCommutativeRing</a>
 
-<a id="56494" class="Comment">-- Simple implementation of sets of ℕ.</a>
-<a id="56533" class="Keyword">import</a> <a id="56540" href="Tactic.RingSolver.Core.NatSet.html" class="Module">Tactic.RingSolver.Core.NatSet</a>
+<a id="56494" class="Comment">-- A type for expressions over a raw ring.</a>
+<a id="56537" class="Keyword">import</a> <a id="56544" href="Tactic.RingSolver.Core.Expression.html" class="Module">Tactic.RingSolver.Core.Expression</a>
 
-<a id="56571" class="Comment">-- Sparse polynomials in a commutative ring, encoded in Horner normal</a>
-<a id="56641" class="Comment">-- form.</a>
-<a id="56650" class="Keyword">import</a> <a id="56657" href="Tactic.RingSolver.Core.Polynomial.Base.html" class="Module">Tactic.RingSolver.Core.Polynomial.Base</a>
+<a id="56579" class="Comment">-- Simple implementation of sets of ℕ.</a>
+<a id="56618" class="Keyword">import</a> <a id="56625" href="Tactic.RingSolver.Core.NatSet.html" class="Module">Tactic.RingSolver.Core.NatSet</a>
 
-<a id="56697" class="Comment">-- Some specialised instances of the ring solver</a>
-<a id="56746" class="Keyword">import</a> <a id="56753" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism</a>
+<a id="56656" class="Comment">-- Sparse polynomials in a commutative ring, encoded in Horner normal</a>
+<a id="56726" class="Comment">-- form.</a>
+<a id="56735" class="Keyword">import</a> <a id="56742" href="Tactic.RingSolver.Core.Polynomial.Base.html" class="Module">Tactic.RingSolver.Core.Polynomial.Base</a>
 
-<a id="56801" class="Comment">-- Homomorphism proofs for addition over polynomials</a>
-<a id="56854" class="Keyword">import</a> <a id="56861" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Addition.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Addition</a>
+<a id="56782" class="Comment">-- Some specialised instances of the ring solver</a>
+<a id="56831" class="Keyword">import</a> <a id="56838" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism</a>
 
-<a id="56918" class="Comment">-- Homomorphism proofs for constants over polynomials</a>
-<a id="56972" class="Keyword">import</a> <a id="56979" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Constants.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Constants</a>
+<a id="56886" class="Comment">-- Homomorphism proofs for addition over polynomials</a>
+<a id="56939" class="Keyword">import</a> <a id="56946" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Addition.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Addition</a>
 
-<a id="57037" class="Comment">-- Homomorphism proofs for exponentiation over polynomials</a>
-<a id="57096" class="Keyword">import</a> <a id="57103" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Exponentiation.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Exponentiation</a>
+<a id="57003" class="Comment">-- Homomorphism proofs for constants over polynomials</a>
+<a id="57057" class="Keyword">import</a> <a id="57064" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Constants.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Constants</a>
 
-<a id="57166" class="Comment">-- Lemmas for use in proving the polynomial homomorphism.</a>
-<a id="57224" class="Keyword">import</a> <a id="57231" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Lemmas.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Lemmas</a>
+<a id="57122" class="Comment">-- Homomorphism proofs for exponentiation over polynomials</a>
+<a id="57181" class="Keyword">import</a> <a id="57188" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Exponentiation.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Exponentiation</a>
 
-<a id="57286" class="Comment">-- Homomorphism proofs for multiplication over polynomials</a>
-<a id="57345" class="Keyword">import</a> <a id="57352" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Multiplication.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Multiplication</a>
+<a id="57251" class="Comment">-- Lemmas for use in proving the polynomial homomorphism.</a>
+<a id="57309" class="Keyword">import</a> <a id="57316" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Lemmas.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Lemmas</a>
 
-<a id="57415" class="Comment">-- Homomorphism proofs for negation over polynomials</a>
-<a id="57468" class="Keyword">import</a> <a id="57475" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Negation.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Negation</a>
+<a id="57371" class="Comment">-- Homomorphism proofs for multiplication over polynomials</a>
+<a id="57430" class="Keyword">import</a> <a id="57437" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Multiplication.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Multiplication</a>
 
-<a id="57532" class="Comment">-- Homomorphism proofs for variables and constants over polynomials</a>
-<a id="57600" class="Keyword">import</a> <a id="57607" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Variables.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Variables</a>
+<a id="57500" class="Comment">-- Homomorphism proofs for negation over polynomials</a>
+<a id="57553" class="Keyword">import</a> <a id="57560" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Negation.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Negation</a>
 
-<a id="57665" class="Comment">-- Bundles of parameters for passing to the Ring Solver</a>
-<a id="57721" class="Keyword">import</a> <a id="57728" href="Tactic.RingSolver.Core.Polynomial.Parameters.html" class="Module">Tactic.RingSolver.Core.Polynomial.Parameters</a>
+<a id="57617" class="Comment">-- Homomorphism proofs for variables and constants over polynomials</a>
+<a id="57685" class="Keyword">import</a> <a id="57692" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Variables.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Variables</a>
 
-<a id="57774" class="Comment">-- Polynomial reasoning</a>
-<a id="57798" class="Keyword">import</a> <a id="57805" href="Tactic.RingSolver.Core.Polynomial.Reasoning.html" class="Module">Tactic.RingSolver.Core.Polynomial.Reasoning</a>
+<a id="57750" class="Comment">-- Bundles of parameters for passing to the Ring Solver</a>
+<a id="57806" class="Keyword">import</a> <a id="57813" href="Tactic.RingSolver.Core.Polynomial.Parameters.html" class="Module">Tactic.RingSolver.Core.Polynomial.Parameters</a>
 
-<a id="57850" class="Comment">-- &quot;Evaluating&quot; a polynomial, using Horner&#39;s method.</a>
-<a id="57903" class="Keyword">import</a> <a id="57910" href="Tactic.RingSolver.Core.Polynomial.Semantics.html" class="Module">Tactic.RingSolver.Core.Polynomial.Semantics</a>
+<a id="57859" class="Comment">-- Polynomial reasoning</a>
+<a id="57883" class="Keyword">import</a> <a id="57890" href="Tactic.RingSolver.Core.Polynomial.Reasoning.html" class="Module">Tactic.RingSolver.Core.Polynomial.Reasoning</a>
 
-<a id="57955" class="Comment">-- Helper reflection functions</a>
-<a id="57986" class="Keyword">import</a> <a id="57993" href="Tactic.RingSolver.Core.ReflectionHelp.html" class="Module">Tactic.RingSolver.Core.ReflectionHelp</a>
+<a id="57935" class="Comment">-- &quot;Evaluating&quot; a polynomial, using Horner&#39;s method.</a>
+<a id="57988" class="Keyword">import</a> <a id="57995" href="Tactic.RingSolver.Core.Polynomial.Semantics.html" class="Module">Tactic.RingSolver.Core.Polynomial.Semantics</a>
 
-<a id="58032" class="Comment">-- An implementation of the ring solver that requires you to manually</a>
-<a id="58102" class="Comment">-- pass the equation you wish to solve.</a>
-<a id="58142" class="Keyword">import</a> <a id="58149" href="Tactic.RingSolver.NonReflective.html" class="Module">Tactic.RingSolver.NonReflective</a>
+<a id="58040" class="Comment">-- Helper reflection functions</a>
+<a id="58071" class="Keyword">import</a> <a id="58078" href="Tactic.RingSolver.Core.ReflectionHelp.html" class="Module">Tactic.RingSolver.Core.ReflectionHelp</a>
 
-<a id="58182" class="Comment">-- Format strings for Printf and Scanf</a>
-<a id="58221" class="Keyword">import</a> <a id="58228" href="Text.Format.html" class="Module">Text.Format</a>
+<a id="58117" class="Comment">-- An implementation of the ring solver that requires you to manually</a>
+<a id="58187" class="Comment">-- pass the equation you wish to solve.</a>
+<a id="58227" class="Keyword">import</a> <a id="58234" href="Tactic.RingSolver.NonReflective.html" class="Module">Tactic.RingSolver.NonReflective</a>
 
-<a id="58241" class="Comment">-- Format strings for Printf and Scanf</a>
-<a id="58280" class="Keyword">import</a> <a id="58287" href="Text.Format.Generic.html" class="Module">Text.Format.Generic</a>
+<a id="58267" class="Comment">-- Format strings for Printf and Scanf</a>
+<a id="58306" class="Keyword">import</a> <a id="58313" href="Text.Format.html" class="Module">Text.Format</a>
 
-<a id="58308" class="Comment">-- Pretty Printing</a>
-<a id="58327" class="Comment">-- This module is based on Jean-Philippe Bernardy&#39;s functional pearl</a>
-<a id="58396" class="Comment">-- &quot;A Pretty But Not Greedy Printer&quot;</a>
-<a id="58433" class="Keyword">import</a> <a id="58440" href="Text.Pretty.html" class="Module">Text.Pretty</a>
+<a id="58326" class="Comment">-- Format strings for Printf and Scanf</a>
+<a id="58365" class="Keyword">import</a> <a id="58372" href="Text.Format.Generic.html" class="Module">Text.Format.Generic</a>
 
-<a id="58453" class="Comment">-- Printf</a>
-<a id="58463" class="Keyword">import</a> <a id="58470" href="Text.Printf.html" class="Module">Text.Printf</a>
+<a id="58393" class="Comment">-- Pretty Printing</a>
+<a id="58412" class="Comment">-- This module is based on Jean-Philippe Bernardy&#39;s functional pearl</a>
+<a id="58481" class="Comment">-- &quot;A Pretty But Not Greedy Printer&quot;</a>
+<a id="58518" class="Keyword">import</a> <a id="58525" href="Text.Pretty.html" class="Module">Text.Pretty</a>
 
-<a id="58483" class="Comment">-- Generic printf function.</a>
-<a id="58511" class="Keyword">import</a> <a id="58518" href="Text.Printf.Generic.html" class="Module">Text.Printf.Generic</a>
+<a id="58538" class="Comment">-- Printf</a>
+<a id="58548" class="Keyword">import</a> <a id="58555" href="Text.Printf.html" class="Module">Text.Printf</a>
 
-<a id="58539" class="Comment">-- Fancy display functions for List-based tables</a>
-<a id="58588" class="Keyword">import</a> <a id="58595" href="Text.Tabular.Base.html" class="Module">Text.Tabular.Base</a>
+<a id="58568" class="Comment">-- Generic printf function.</a>
+<a id="58596" class="Keyword">import</a> <a id="58603" href="Text.Printf.Generic.html" class="Module">Text.Printf.Generic</a>
 
-<a id="58614" class="Comment">-- Fancy display functions for List-based tables</a>
-<a id="58663" class="Keyword">import</a> <a id="58670" href="Text.Tabular.List.html" class="Module">Text.Tabular.List</a>
+<a id="58624" class="Comment">-- Fancy display functions for List-based tables</a>
+<a id="58673" class="Keyword">import</a> <a id="58680" href="Text.Tabular.Base.html" class="Module">Text.Tabular.Base</a>
 
-<a id="58689" class="Comment">-- Fancy display functions for Vec-based tables</a>
-<a id="58737" class="Keyword">import</a> <a id="58744" href="Text.Tabular.Vec.html" class="Module">Text.Tabular.Vec</a>
+<a id="58699" class="Comment">-- Fancy display functions for List-based tables</a>
+<a id="58748" class="Keyword">import</a> <a id="58755" href="Text.Tabular.List.html" class="Module">Text.Tabular.List</a>
 
-<a id="58762" class="Comment">-- 1 dimensional pretty printing of rose trees</a>
-<a id="58809" class="Keyword">import</a> <a id="58816" href="Text.Tree.Linear.html" class="Module">Text.Tree.Linear</a>
+<a id="58774" class="Comment">-- Fancy display functions for Vec-based tables</a>
+<a id="58822" class="Keyword">import</a> <a id="58829" href="Text.Tabular.Vec.html" class="Module">Text.Tabular.Vec</a>
+
+<a id="58847" class="Comment">-- 1 dimensional pretty printing of rose trees</a>
+<a id="58894" class="Keyword">import</a> <a id="58901" href="Text.Tree.Linear.html" class="Module">Text.Tree.Linear</a>
 
 </pre></body></html>
