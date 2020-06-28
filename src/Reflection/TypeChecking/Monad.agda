@@ -10,6 +10,7 @@ module Reflection.TypeChecking.Monad where
 
 open import Reflection.Term
 import Agda.Builtin.Reflection as Builtin
+import Reflection.TypeChecking.Format as Format
 
 ------------------------------------------------------------------------
 -- Type errors
@@ -30,6 +31,9 @@ open Builtin public
   ; blockOnMeta; commitTC; isMacro; withNormalisation
   ; debugPrint; noConstraints; runSpeculative)
   renaming (returnTC to return)
+
+open Format public
+  using (typeErrorFmt; debugPrintFmt)
 
 ------------------------------------------------------------------------
 -- Utility functions

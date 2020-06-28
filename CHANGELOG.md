@@ -120,6 +120,7 @@ New modules
   Reflection.TypeChecking.Monad
   Reflection.TypeChecking.Monad.Categorical
   Reflection.TypeChecking.Monad.Instances
+  Reflection.TypeChecking.Format
   ```
 
 * Predicate for lists that are sorted with respect to a total order
