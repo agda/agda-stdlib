@@ -37,7 +37,7 @@ const x = λ _ → x
 -- These are functions whose output has a type that depends on the
 -- value of the input to the function.
 
-infixr 9 _∘_
+infixr 9 _∘_ _∘₂_
 infixl 8 _ˢ_
 infixl 0 _|>_
 infix  0 case_return_of_
@@ -50,6 +50,14 @@ _∘_ : ∀ {A : Set a} {B : A → Set b} {C : {x : A} → B x → Set c} →
       ((x : A) → C (g x))
 f ∘ g = λ x → f (g x)
 {-# INLINE _∘_ #-}
+
+_∘₂_ : ∀ {A₁ : Set a} {A₂ : A₁ → Set d}
+         {B : (x : A₁) → A₂ x → Set b}
+         {C : {x : A₁} → {y : A₂ x} → B x y → Set c} →
+       ({x : A₁} → {y : A₂ x} → (z : B x y) → C z) →
+       (g : (x : A₁) → (y : A₂ x) → B x y) →
+       ((x : A₁) → (y : A₂ x) → C (g x y))
+f ∘₂ g = λ x y → f (g x y)
 
 -- Flipping order of arguments
 
@@ -118,7 +126,7 @@ case x return B of f = f x
 -- operations are therefore provided below that sometimes have better
 -- inference properties.
 
-infixr 9 _∘′_
+infixr 9 _∘′_ _∘₂′_
 infixl 0 _|>′_
 infix  0 case_of_
 infixr -1 _$′_ _$!′_
@@ -127,6 +135,9 @@ infixr -1 _$′_ _$!′_
 
 _∘′_ : (B → C) → (A → B) → (A → C)
 f ∘′ g = _∘_ f g
+
+_∘₂′_ : (C → D) → (A → B → C) → (A → B → D)
+f ∘₂′ g = _∘₂_ f g
 
 -- Application
 

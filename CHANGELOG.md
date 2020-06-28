@@ -182,6 +182,21 @@ Other minor additions
 * Added new proof to `Data.Fin.Induction`:
   ```agda
   <-wellFounded : WellFounded _<_
+        ```
+
+* Added new properties to `Data.Fin.Properties`:
+  ```agda
+  toℕ≤n : (i : Fin n) → toℕ i ℕ.≤ n
+  ≤fromℕ : (i : Fin (ℕ.suc n)) → i ≤ fromℕ n
+  fromℕ<-irrelevant : m ≡ n → (m<o : m ℕ.< o) → (n<o : n ℕ.< o) → fromℕ< m<o ≡ fromℕ< n<o
+  fromℕ<-injective : fromℕ< m<o ≡ fromℕ< n<o → m ≡ n
+  inject₁ℕ< : (i : Fin n) → toℕ (inject₁ i) ℕ.< n
+  inject₁ℕ≤ : (i : Fin n) → toℕ (inject₁ i) ℕ.≤ n
+  ≤̄⇒inject₁< : i' ≤ i → inject₁ i' < suc i
+  ℕ<⇒inject₁< : toℕ i' ℕ.< toℕ i → inject₁ i' < i
+  toℕ-lower₁ : (p : m ≢ toℕ x) → toℕ (lower₁ x p) ≡ toℕ x
+  inject₁≡⇒lower₁≡ : (≢p : n ≢ (toℕ i')) → inject₁ i ≡ i' → lower₁ i' ≢p ≡ i
+  pred< : pred i < i
   ```
 
 * Added new types and constructors to `Data.Integer.Base`:
@@ -199,6 +214,11 @@ Other minor additions
   negative    : p < 0ℤ → Negative p
   nonPositive : p ≤ 0ℤ → NonPositive p
   nonNegative : p ≥ 0ℤ → NonNegative p
+  ```
+
+* Add new properties to `Data.Maybe.Properties`:
+  ```agda
+  map-injective : Injective _≡_ _≡_ f → Injective _≡_ _≡_ (map f)
   ```
 
 * Added new function to `Data.Nat.Properties`:
@@ -377,7 +397,7 @@ Other minor additions
  *-zero  : Zero 0ℚ _*_
  ```
 
-* Added new types and constructors to `Data.Rational.Unnormalised`
+* Added new types and constructors to `Data.Rational.Unnormalised`:
   ```agda
   _≠_         : Rel ℚᵘ 0ℓ
 
@@ -395,6 +415,16 @@ Other minor additions
   nonPositive : p ≤ 0ℚᵘ → NonPositive p
   nonNegative : p ≥ 0ℚᵘ → NonNegative p
   ```
+
+* Added new functions to `Function.Base`:
+  ```agda
+  _∘₂_ : (f : {x : A₁} → {y : A₂ x} → (z : B x y) → C z)
+       → (g : (x : A₁) → (y : A₂ x) → B x y)
+       → ((x : A₁) → (y : A₂ x) → C (g x y))
+
+  _∘₂′_ : (C → D) → (A → B → C) → (A → B → D)
+  ```
+
 * Added new operator to `Relation.Binary`:
   ```agda
   _⇔_ : REL A B ℓ₁ → REL A B ℓ₂ → Set _
