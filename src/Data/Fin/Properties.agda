@@ -19,7 +19,7 @@ open import Data.Nat.Base as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_)
 import Data.Nat.Properties as ℕₚ
 open import Data.Unit using (tt)
 open import Data.Product using (∃; ∃₂; ∄; _×_; _,_; map; proj₁; uncurry; <_,_>)
-open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_])
 open import Data.Sum.Properties using ([,]-map-commute; [,]-∘-distr)
 open import Function.Base using (_∘_; id; _$_)
 open import Function.Equivalence using (_⇔_; equivalence)
@@ -436,6 +436,17 @@ inject+-raise-splitAt (suc m) n (suc i) = begin
   suc i                                                        ∎
   where open ≡-Reasoning
 
+-- splitAt "m" "i" ≡ inj₁ "i" if i < m
+
+splitAt-< : ∀ m {n} i → (i<m : toℕ i ℕ.< m) → splitAt m {n} i ≡ inj₁ (fromℕ< i<m)
+splitAt-< (suc m) zero    _         = refl
+splitAt-< (suc m) (suc i) (s≤s i<m) = cong (Sum.map suc id) (splitAt-< m i i<m)
+
+-- splitAt "m" "i" ≡ inj₂ "i - m" if i ≥ m
+
+splitAt-≥ : ∀ m {n} i → (i≥m : toℕ i ℕ.≥ m) → splitAt m {n} i ≡ inj₂ (reduce≥ i i≥m)
+splitAt-≥ zero    i       _         = refl
+splitAt-≥ (suc m) (suc i) (s≤s i≥m) = cong (Sum.map suc id) (splitAt-≥ m i i≥m)
 
 ------------------------------------------------------------------------
 -- lift

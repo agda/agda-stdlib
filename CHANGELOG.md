@@ -153,10 +153,16 @@ New modules
   ```agda
   Function.Properties.Inverse
   Function.Properties.Equivalence
+  ```
 
 * Indexed nullary relations/sets:
   ```
   Relation.Nullary.Indexed
+  ```
+
+* Properties for functional vectors:
+  ```
+  Data.Vec.Functional.Properties
   ```
 
 * Generic printf
@@ -391,6 +397,36 @@ Other minor additions
 * Added new operator to `Relation.Binary`:
   ```agda
   _⇔_ : REL A B ℓ₁ → REL A B ℓ₂ → Set _
+  ```
+
+* Added new functions to `Data.Fin.Base`:
+  ```agda
+  quotRem : ∀ {n} k → Fin (n ℕ.* k) → Fin k × Fin n
+  opposite : ∀ {n} → Fin n → Fin n
+  ```
+
+* Added new proofs to `Data.Fin.Properties`:
+  ```agda
+  splitAt-< : ∀ m {n} i → (i<m : toℕ i ℕ.< m) → splitAt m {n} i ≡ inj₁ (fromℕ< i<m)
+  splitAt-≥ : ∀ m {n} i → (i≥m : toℕ i ℕ.≥ m) → splitAt m {n} i ≡ inj₂ (reduce≥ i i≥m)
+  ```
+
+* Added new functions to `Data.Vec.Functional`:
+  ```agda
+  length : ∀ {n} → Vector A n → ℕ
+  insert : ∀ {n} → Vector A n → Fin (suc n) → A → Vector A (suc n)
+  updateAt : ∀ {n} → Fin n → (A → A) → Vector A n → Vector A n
+  _++_ : ∀ {m n} → Vector A m → Vector A n → Vector A (m ℕ.+ n)
+  concat : ∀ {m n} → Vector (Vector A m) n → Vector A (n ℕ.* m)
+  _>>=_ : ∀ {m n} → Vector A m → (A → Vector B n) → Vector B (m ℕ.* n)
+  unzipWith : ∀ {n} → (A → B × C) → Vector A n → Vector B n × Vector C n
+  unzip : ∀ {n} → Vector (A × B) n → Vector A n × Vector B n
+  take : ∀ m {n} → Vector A (m ℕ.+ n) → Vector A m
+  drop : ∀ m {n} → Vector A (m ℕ.+ n) → Vector A n
+  reverse : ∀ {n} → Vector A n → Vector A n
+  init : ∀ {n} → Vector A (suc n) → Vector A n
+  last : ∀ {n} → Vector A (suc n) → A
+  transpose : ∀ {m n} → Vector (Vector A n) m → Vector (Vector A m) n
   ```
 
 Refactorings

@@ -15,6 +15,7 @@ module Data.Fin.Base where
 open import Data.Empty using (⊥-elim)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; z≤n; s≤s)
 open import Data.Nat.Properties.Core using (≤-pred)
+open import Data.Product as Product using (_×_; _,_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Function.Base using (id; _∘_; _on_)
 open import Level using () renaming (zero to ℓ₀)
@@ -130,6 +131,14 @@ splitAt zero    i       = inj₂ i
 splitAt (suc m) zero    = inj₁ zero
 splitAt (suc m) (suc i) = Sum.map suc id (splitAt m i)
 
+-- quotRem k "i" = "i % k" , "i / k"
+-- This is dual to group from Data.Vec.
+
+quotRem : ∀ {n} k → Fin (n ℕ.* k) → Fin k × Fin n
+quotRem {suc n} k i with splitAt k i
+... | inj₁ j = j , zero
+... | inj₂ j = Product.map₂ suc (quotRem {n} k j)
+
 ------------------------------------------------------------------------
 -- Operations
 
@@ -194,6 +203,12 @@ suc n ℕ-ℕ suc i  = n ℕ-ℕ i
 pred : ∀ {n} → Fin n → Fin n
 pred zero    = zero
 pred (suc i) = inject₁ i
+
+-- opposite "i" = "n - i" (i.e. the additive inverse).
+
+opposite : ∀ {n} → Fin n → Fin n
+opposite {suc n} zero    = fromℕ n
+opposite {suc n} (suc i) = inject₁ (opposite i)
 
 -- The function f(i,j) = if j>i then j-1 else j
 -- This is a variant of the thick function from Conor
