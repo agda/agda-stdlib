@@ -260,6 +260,11 @@ Other minor additions
   cartesianProduct     : List A → List B → List (A × B)
   ```
 
+* Added new proofs to `Data.List.Properties`:
+  ```agda
+  reverse-injective : reverse xs ≡ reverse ys → xs ≡ ys
+  ```
+
 * Added new proofs to `Data.List.Membership.Propositional.Properties`:
   ```agda
   ∈-cartesianProductWith⁺ : a ∈ xs → b ∈ ys → f a b ∈ cartesianProductWith f xs ys
@@ -293,6 +298,10 @@ Other minor additions
   cartesianProductWith⁻ : (∀ {x y} → R (f x y) → P x × Q y) → Any R (cartesianProductWith f xs ys) → Any P xs × Any Q ys
   cartesianProduct⁺     : Any P xs → Any Q ys → Any (P ⟨×⟩ Q) (cartesianProduct xs ys)
   cartesianProduct⁻     : Any (P ⟨×⟩ Q) (cartesianProduct xs ys) → Any P xs × Any Q ys
+  reverseAcc⁺ : ∀ acc xs → Any P acc ⊎ Any P xs → Any P (reverseAcc acc xs)
+  reverseAcc⁻ : ∀ acc xs → Any P (reverseAcc acc xs) -> Any P acc ⊎ Any P xs
+  reverse⁺ : Any P xs → Any P (reverse xs)
+  reverse⁻ : Any P (reverse xs) → Any P xs
   ```
 
 * Added new proofs to `Data.List.Relation.Unary.Unique.Propositional.Properties`:

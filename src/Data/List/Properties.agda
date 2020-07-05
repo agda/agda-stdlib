@@ -907,6 +907,11 @@ reverse-involutive xs = begin
   xs ++ []              ≡⟨ ++-identityʳ xs ⟩
   xs                    ∎
 
+-- reverse is injective.
+
+reverse-injective : ∀ {xs ys : List A} → reverse xs ≡ reverse ys → xs ≡ ys
+reverse-injective = subst₂ _≡_ (reverse-involutive _) (reverse-involutive _) ∘ cong reverse
+
 -- reverse preserves length.
 
 length-reverse : ∀ (xs : List A) → length (reverse xs) ≡ length xs
