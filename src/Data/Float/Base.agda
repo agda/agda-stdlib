@@ -29,11 +29,11 @@ open import Agda.Builtin.Float public
   ; primFloatToWord64 to toWord
   ; primNatToFloat    to fromℕ
   -- Operations
-  ; primFloatPlus   to _+_
-  ; primFloatMinus  to _-_
-  ; primFloatTimes  to _*_
+  ; primFloatPlus   to infixl 6 _+_
+  ; primFloatMinus  to infixl 6 _-_
+  ; primFloatTimes  to infixl 7 _*_
+  ; primFloatDiv    to infixl 7 _÷_
   ; primFloatNegate to -_
-  ; primFloatDiv    to _÷_
   ; primFloatSqrt   to sqrt
   ; primRound       to round
   ; primFloor       to ⌊_⌋
