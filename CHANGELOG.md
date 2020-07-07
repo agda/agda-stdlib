@@ -442,6 +442,13 @@ Other minor additions
   splitAt-≥ : ∀ m {n} i → (i≥m : toℕ i ℕ.≥ m) → splitAt m {n} i ≡ inj₂ (reduce≥ i i≥m)
   ```
 
+* Added new proofs to `Data.Vec.Properties`:
+  ```agda
+  unfold-take : ∀ n {m} x (xs : Vec A (n + m)) → take (suc n) (x ∷ xs) ≡ x ∷ take n xs
+  lookup-inject≤-take : ∀ m {n} (m≤m+n : m ≤ m + n) (i : Fin m) (xs : Vec A (m + n)) →
+                        lookup xs (Fin.inject≤ i m≤m+n) ≡ lookup (take m xs) i
+  ```
+
 * Added new functions to `Data.Vec.Functional`:
   ```agda
   length : ∀ {n} → Vector A n → ℕ
