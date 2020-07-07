@@ -10,7 +10,7 @@ module Data.Vec.Base where
 
 open import Data.Bool.Base
 open import Data.Nat.Base
-open import Data.Fin.Base using (Fin; zero; suc)
+open import Data.Fin.Base as Fin using (Fin; zero; suc)
 open import Data.List.Base as List using (List)
 open import Data.Product as Prod using (∃; ∃₂; _×_; _,_)
 open import Data.These.Base as These using (These; this; that; these)
@@ -236,6 +236,10 @@ take m .(ys ++ zs) | (ys , zs , refl) = ys
 drop : ∀ m {n} → Vec A (m + n) → Vec A n
 drop m xs          with splitAt m xs
 drop m .(ys ++ zs) | (ys , zs , refl) = zs
+
+drop′ : ∀ {n} (i : Fin (suc n)) → Vec A n → Vec A (n Fin.ℕ-ℕ i)
+drop′ zero xs = xs
+drop′ (suc i) (x ∷ xs) = drop′ i xs
 
 group : ∀ n k (xs : Vec A (n * k)) →
         ∃ λ (xss : Vec (Vec A k) n) → xs ≡ concat xss
