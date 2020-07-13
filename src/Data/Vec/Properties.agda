@@ -70,6 +70,13 @@ module _ {n} {x y : A} {xs ys : Vec A n} where
 -- See also Data.Vec.Properties.WithK.[]=-irrelevant.
 
 ------------------------------------------------------------------------
+-- take
+
+unfold-take : ∀ n {m} x (xs : Vec A (n + m)) → take (suc n) (x ∷ xs) ≡ x ∷ take n xs
+unfold-take n x xs with splitAt n xs
+unfold-take n x .(xs ++ ys) | xs , ys , refl = refl
+
+------------------------------------------------------------------------
 -- lookup
 
 []=⇒lookup : ∀ {n} {x : A} {xs} {i : Fin n} →
@@ -101,6 +108,15 @@ lookup⇒[]= (suc i) (_ ∷ xs) p    = there (lookup⇒[]= i xs p)
   []=⇒lookup∘lookup⇒[]= (x ∷ xs) zero    refl = refl
   []=⇒lookup∘lookup⇒[]= (x ∷ xs) (suc i) p    =
     []=⇒lookup∘lookup⇒[]= xs i p
+
+lookup-inject≤-take : ∀ m {n} (m≤m+n : m ≤ m + n) (i : Fin m) (xs : Vec A (m + n)) →
+                      lookup xs (Fin.inject≤ i m≤m+n) ≡ lookup (take m xs) i
+lookup-inject≤-take (suc m) m≤m+n zero (x ∷ xs)
+  rewrite unfold-take m x xs = refl
+lookup-inject≤-take (suc (suc m)) m≤m+n (suc zero) (x ∷ x' ∷ xs)
+  rewrite unfold-take (suc m) x (x' ∷ xs) | unfold-take m x' xs = refl
+lookup-inject≤-take (suc (suc m)) (s≤s (s≤s m≤m+n)) (suc (suc i)) (x ∷ x' ∷ xs)
+  rewrite unfold-take (suc m) x (x' ∷ xs) | unfold-take m x' xs = lookup-inject≤-take m m≤m+n i xs
 
 ------------------------------------------------------------------------
 -- updateAt (_[_]%=_)
