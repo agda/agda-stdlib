@@ -172,6 +172,20 @@ New modules
   Text.Printf.Generic
   ```
 
+* A predicate for vectors in which every pair of elements is related.
+  ```
+  Data.Vec.Relation.Unary.AllPairs
+  Data.Vec.Relation.Unary.AllPairs.Properties
+  ```
+
+* A predicate for vectors in which every element is unique.
+  ```
+  Data.Vec.Relation.Unary.Unique.Propositional
+  Data.Vec.Relation.Unary.Unique.Propositional.Properties
+  Data.Vec.Relation.Unary.Unique.Setoid
+  Data.Vec.Relation.Unary.Unique.Setoid.Properties
+  ```
+
 Other major changes
 -------------------
 
