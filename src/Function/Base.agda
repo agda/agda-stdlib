@@ -164,7 +164,7 @@ case x of f = case x return _ of f
 ------------------------------------------------------------------------
 -- Operations that are only defined for non-dependent functions
 
-infixr 0 _-[_]-_
+infixr 0 _-[_]-_ _-⟦_⟧-_
 infixl 1 _on_
 infixl 1 _⟨_⟩_
 infixl 0 _∋_
@@ -174,15 +174,20 @@ infixl 0 _∋_
 _⟨_⟩_ : A → (A → B → C) → B → C
 x ⟨ f ⟩ y = f x y
 
--- Composition of a binary function with a unary function
-
-_on_ : (B → B → C) → (A → B) → (A → A → C)
-_*_ on f = λ x y → f x * f y
-
 -- Composition of three binary functions
 
 _-[_]-_ : (A → B → C) → (C → D → E) → (A → B → D) → (A → B → E)
 f -[ _*_ ]- g = λ x y → f x y * g x y
+
+-- Composition of a binary function with two unary functions
+
+_-⟦_⟧-_ : (A → C) → (C → D → E) → (B → D) → (A → B → E)
+f -⟦ _*_ ⟧- g = (λ x _ → f x) -[ _*_ ]- λ _ y → g y
+
+-- Composition of a binary function with a unary function
+
+_on_ : (B → B → C) → (A → B) → (A → A → C)
+_*_ on f = f -⟦ _*_ ⟧- f
 
 -- In Agda you cannot annotate every subexpression with a type
 -- signature. This function can be used instead.
