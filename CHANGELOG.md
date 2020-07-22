@@ -172,6 +172,20 @@ New modules
   Text.Printf.Generic
   ```
 
+* A predicate for vectors in which every pair of elements is related.
+  ```
+  Data.Vec.Relation.Unary.AllPairs
+  Data.Vec.Relation.Unary.AllPairs.Properties
+  ```
+
+* A predicate for vectors in which every element is unique.
+  ```
+  Data.Vec.Relation.Unary.Unique.Propositional
+  Data.Vec.Relation.Unary.Unique.Propositional.Properties
+  Data.Vec.Relation.Unary.Unique.Setoid
+  Data.Vec.Relation.Unary.Unique.Setoid.Properties
+  ```
+
 Other major changes
 -------------------
 
@@ -455,6 +469,7 @@ Other minor additions
 * Added new proofs to `Data.Vec.Properties`:
   ```agda
   unfold-take : ∀ n {m} x (xs : Vec A (n + m)) → take (suc n) (x ∷ xs) ≡ x ∷ take n xs
+  unfold-drop : ∀ n {m} x (xs : Vec A (n + m)) → drop (suc n) (x ∷ xs) ≡ drop n xs
   lookup-inject≤-take : ∀ m {n} (m≤m+n : m ≤ m + n) (i : Fin m) (xs : Vec A (m + n)) →
                         lookup xs (Fin.inject≤ i m≤m+n) ≡ lookup (take m xs) i
   ```
@@ -475,6 +490,15 @@ Other minor additions
   init : ∀ {n} → Vector A (suc n) → Vector A n
   last : ∀ {n} → Vector A (suc n) → A
   transpose : ∀ {m n} → Vector (Vector A n) m → Vector (Vector A m) n
+  ```
+
+* Added new proofs to `Data.Vec.Relation.Unary.All.Properties`:
+  ```agda
+  All-swap : ∀ {xs ys} → All (λ x → All (x ~_) ys) xs → All (λ y → All (_~ y) xs) ys
+  tabulate⁺ : ∀ {f : Fin n → A} → (∀ i → P (f i)) → All P (tabulate f)
+  tabulate⁻ : ∀ {f : Fin n → A} → All P (tabulate f) → (∀ i → P (f i))
+  drop⁺ : ∀ {n} m {xs} → All P {m + n} xs → All P {n} (drop m xs)
+  take⁺ : ∀ {n} m {xs} → All P {m + n} xs → All P {m} (take m xs)
   ```
 
 Refactorings

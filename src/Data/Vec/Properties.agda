@@ -77,6 +77,13 @@ unfold-take n x xs with splitAt n xs
 unfold-take n x .(xs ++ ys) | xs , ys , refl = refl
 
 ------------------------------------------------------------------------
+-- drop
+
+unfold-drop : ∀ n {m} x (xs : Vec A (n + m)) → drop (suc n) (x ∷ xs) ≡ drop n xs
+unfold-drop n x xs with splitAt n xs
+unfold-drop n x .(xs ++ ys) | xs , ys , refl = refl
+
+------------------------------------------------------------------------
 -- lookup
 
 []=⇒lookup : ∀ {n} {x : A} {xs} {i : Fin n} →
