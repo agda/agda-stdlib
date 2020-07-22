@@ -11,7 +11,7 @@ open import Relation.Binary using (DecSetoid)
 module Data.Vec.Membership.DecSetoid {c ℓ} (DS : DecSetoid c ℓ) where
 
 open import Data.Vec.Base using (Vec)
-open import Data.Vec.Relation.Unary.Any using (any)
+open import Data.Vec.Relation.Unary.Any using (any?)
 open import Relation.Nullary using (Dec)
 open DecSetoid DS renaming (Carrier to A)
 
@@ -26,4 +26,4 @@ open import Data.Vec.Membership.Setoid setoid public
 infix 4 _∈?_
 
 _∈?_ : ∀ x {n} (xs : Vec A n) → Dec (x ∈ xs)
-x ∈? xs = any (x ≟_) xs
+x ∈? xs = any? (x ≟_) xs

@@ -94,9 +94,15 @@ module _ {P : Pred A p} {x xs} where
 
 module _ {P : Pred A p} where
 
-  any : Decidable P → Decidable (Any P)
-  any P? []       = no λ()
-  any P? (x ∷ xs) = Dec.map′ fromSum toSum (P? x ⊎-dec any P? xs)
+  any? : Decidable P → Decidable (Any P)
+  any? P? []       = no λ()
+  any? P? (x ∷ xs) = Dec.map′ fromSum toSum (P? x ⊎-dec any? P? xs)
 
   satisfiable : Satisfiable P → Satisfiable (Any P)
   satisfiable (x , Px) = [ x ] , here Px
+
+any = any?
+{-# WARNING_ON_USAGE any
+"Warning: any was deprecated in v1.4.
+Please use any? instead."
+#-}

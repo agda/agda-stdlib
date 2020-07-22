@@ -71,10 +71,16 @@ satisfied (there pxs) = satisfied pxs
 
 module _ {p} {P : A → Set p} where
 
-  any : Decidable P → ∀ {n} → Decidable (Any P {n})
-  any P? []       = no λ()
-  any P? (x ∷ xs) = Dec.map′ fromSum toSum (P? x ⊎-dec any P? xs)
+  any? : Decidable P → ∀ {n} → Decidable (Any P {n})
+  any? P? []       = no λ()
+  any? P? (x ∷ xs) = Dec.map′ fromSum toSum (P? x ⊎-dec any? P? xs)
 
   satisfiable : Satisfiable P → ∀ {n} → Satisfiable (Any P {suc n})
   satisfiable (x , p) {zero}  = x ∷ [] , here p
   satisfiable (x , p) {suc n} = Prod.map (x ∷_) there (satisfiable (x , p))
+
+any = any?
+{-# WARNING_ON_USAGE any
+"Warning: any was deprecated in v1.4.
+Please use any? instead."
+#-}
