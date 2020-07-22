@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
-  -- Properties of digits and digit expansions
+-- Properties of digits and digit expansions
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
