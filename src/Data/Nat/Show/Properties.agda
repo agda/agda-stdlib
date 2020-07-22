@@ -23,4 +23,4 @@ module _ (base : ℕ) {base≥2 : True (2 ≤? base)} {base≤16 : True (base �
   charsInBase-injective : ∀ n m → charsInBase base {base≥2} {base≤16} n ≡ charsInBase base {base≥2} {base≤16} m → n ≡ m
   charsInBase-injective n m = toDigits-injective base {base≥2} _ _
                             ∘ Listₚ.reverse-injective
-                            ∘ Listₚ.map-injective _ _ (showDigit-injective _ _ _)
+                            ∘ Listₚ.map-injective (showDigit-injective _ _ _)

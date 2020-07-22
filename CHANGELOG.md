@@ -277,6 +277,7 @@ Other minor additions
 * Added new proofs to `Data.List.Properties`:
   ```agda
   reverse-injective : reverse xs ≡ reverse ys → xs ≡ ys
+  map-injective : ∀ {f : A → B} → Injective _≡_ _≡_ f → Injective _≡_ _≡_ (map f)
   ```
 
 * Added new proofs to `Data.List.Membership.Propositional.Properties`:

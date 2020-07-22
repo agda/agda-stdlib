@@ -106,12 +106,11 @@ map-compose : {g : B → C} {f : A → B} → map (g ∘ f) ≗ map g ∘ map f
 map-compose []       = refl
 map-compose (x ∷ xs) = cong (_ ∷_) (map-compose xs)
 
-map-injective : ∀ {f : A → B} (xs ys : List A) → (∀ {x y} → f x ≡ f y → x ≡ y) →
-                map f xs ≡ map f ys → xs ≡ ys
-map-injective [] [] finj eq = refl
-map-injective (x ∷ xs) (y ∷ ys) finj eq =
+map-injective : ∀ {f : A → B} → Injective _≡_ _≡_ f → Injective _≡_ _≡_ (map f)
+map-injective finj {[]} {[]} eq = refl
+map-injective finj {x ∷ xs} {y ∷ ys} eq =
   let fx≡fy , fxs≡fys = ∷-injective eq in
-  cong₂ _∷_ (finj fx≡fy) (map-injective xs ys finj fxs≡fys)
+  cong₂ _∷_ (finj fx≡fy) (map-injective finj fxs≡fys)
 
 ------------------------------------------------------------------------
 -- mapMaybe
