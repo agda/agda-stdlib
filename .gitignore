@@ -1,22 +1,22 @@
 # Keep this file in alphabetic order please!
-
-*~
-.*.swp
-*.agdai
+# Sort with the command `sort -uf`
 *.agda.el
-./_build/*
-.DS_Store
-*.lagda.el
+*.agdai
 *.hi
+*.lagda.el
 *.o
 *.tix
 *.vim
+*~
+.*.swp
+./_build/*
+.DS_Store
 dist
 dist-newstyle
 Everything.agda
 EverythingSafe.agda
 EverythingSafeGuardedness.agda
 EverythingSafeSizedTypes.agda
-html
 Haskell
+html
 MAlonzo
