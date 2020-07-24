@@ -17,6 +17,7 @@ Everything.agda
 EverythingSafe.agda
 EverythingSafeGuardedness.agda
 EverythingSafeSizedTypes.agda
+GenerateEverything
 Haskell
 html
 MAlonzo
