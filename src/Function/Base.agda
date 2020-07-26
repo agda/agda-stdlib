@@ -164,30 +164,16 @@ case x of f = case x return _ of f
 ------------------------------------------------------------------------
 -- Operations that are only defined for non-dependent functions
 
-infixr 0 _-[_]-_ _-⟦_⟧-_
-infixl 1 _on_
-infixl 1 _⟨_⟩_
+infixr 0 _-⟪_⟫-_ _-⟨_⟫-_
+infixl 0 _-⟪_⟩-_
+infixr 1 _-⟨_⟩-_
+infixl 1 _on_ _on₂_ _⟨_⟩_
 infixl 0 _∋_
 
 -- Binary application
 
 _⟨_⟩_ : A → (A → B → C) → B → C
 x ⟨ f ⟩ y = f x y
-
--- Composition of three binary functions
-
-_-[_]-_ : (A → B → C) → (C → D → E) → (A → B → D) → (A → B → E)
-f -[ _*_ ]- g = λ x y → f x y * g x y
-
--- Composition of a binary function with two unary functions
-
-_-⟦_⟧-_ : (A → C) → (C → D → E) → (B → D) → (A → B → E)
-f -⟦ _*_ ⟧- g = (λ x _ → f x) -[ _*_ ]- λ _ y → g y
-
--- Composition of a binary function with a unary function
-
-_on_ : (B → B → C) → (A → B) → (A → A → C)
-_*_ on f = f -⟦ _*_ ⟧- f
 
 -- In Agda you cannot annotate every subexpression with a type
 -- signature. This function can be used instead.
@@ -205,3 +191,37 @@ typeOf {A = A} _ = A
 
 it : {A : Set a} → {{A}} → A
 it {{x}} = x
+
+
+-- Composition of a binary function with:
+
+-- ● _-⟪_⟫-_ : Two binary functions
+-- ● _-⟪_⟩-_ : A binary function and a unary function
+-- ● _-⟨_⟫-_ : A unary function and a binary function
+-- ● _-⟨_⟩-_ : Two unary functions
+-- ● _on₂_ : A single binary function
+-- ● _on_ : A single unary function
+
+_-⟪_⟫-_ : (A → B → C) → (C → D → E) → (A → B → D) → (A → B → E)
+f -⟪ _*_ ⟫- g = λ x y → f x y * g x y
+
+_-⟪_⟩-_ : (A → B → C) → (C → D → E) → (B → D) → (A → B → E)
+f -⟪ _*_ ⟩- g = f -⟪ _*_ ⟫- λ _ y → g y
+
+_-⟨_⟫-_ : (A → C) → (C → D → E) → (A → B → D) → (A → B → E)
+f -⟨ _*_ ⟫- g = (λ x _ → f x) -⟪ _*_ ⟫- g
+
+_-⟨_⟩-_ : (A → C) → (C → D → E) → (B → D) → (A → B → E)
+f -⟨ _*_ ⟩- g = (λ x _ → f x) -⟪ _*_ ⟫- λ _ y → g y
+
+_on₂_ : (C → C → D) → (A → B → C) → (A → B → D)
+_*_ on₂ f = f -⟪ _*_ ⟫- f
+
+_on_ : (B → B → C) → (A → B) → (A → A → C)
+_*_ on f = f -⟨ _*_ ⟩- f
+
+_-[_]-_ = _-⟪_⟫-_
+{-# WARNING_ON_USAGE _-[_]-_
+"Warning: Function._-[_]-_ was deprecated in v1.4.
+Please use _-⟪_⟫-_ instead."
+#-}
