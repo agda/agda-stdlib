@@ -71,7 +71,7 @@ module _ {s} {S : Rel A s} where
 allPairs? : ∀ {n} → B.Decidable R → U.Decidable (AllPairs R {n})
 allPairs? R? []       = yes []
 allPairs? R? (x ∷ xs) =
-  Dec.map′ (uncurry _∷_) uncons (All.all (R? x) xs ×-dec allPairs? R? xs)
+  Dec.map′ (uncurry _∷_) uncons (All.all? (R? x) xs ×-dec allPairs? R? xs)
 
 irrelevant : ∀ {n} → B.Irrelevant R → U.Irrelevant (AllPairs R {n})
 irrelevant irr []           []           = refl
