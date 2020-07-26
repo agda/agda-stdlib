@@ -464,7 +464,7 @@ Other minor additions
   ```agda
   splitAt-< : ∀ m {n} i → (i<m : toℕ i ℕ.< m) → splitAt m {n} i ≡ inj₁ (fromℕ< i<m)
   splitAt-≥ : ∀ m {n} i → (i≥m : toℕ i ℕ.≥ m) → splitAt m {n} i ≡ inj₂ (reduce≥ i i≥m)
-  inject≤-injective : (n≤m : n ℕ.≤ m) x y → inject≤ x n≤m ≡ inject≤ y n≤m → x ≡ y
+  inject≤-injective : ∀ (n≤m n≤m′ : n ℕ.≤ m) x y → inject≤ x n≤m ≡ inject≤ y n≤m′ → x ≡ y
   ```
 
 * Added new proofs to `Data.Vec.Properties`:
