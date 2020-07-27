@@ -31,6 +31,9 @@ id x = x
 const : A → B → A
 const x = λ _ → x
 
+constᵣ : A → B → B
+constᵣ _ = id
+
 ------------------------------------------------------------------------
 -- Operations on dependent functions
 
@@ -166,8 +169,8 @@ case x of f = case x return _ of f
 
 infixr 0 _-⟪_⟫-_ _-⟨_⟫-_
 infixl 0 _-⟪_⟩-_
-infixr 1 _-⟨_⟩-_
-infixl 1 _on_ _on₂_ _⟨_⟩_
+infixr 1 _-⟨_⟩-_ ∣_⟫-_ ∣_⟩-_
+infixl 1 _on_ _on₂_ _⟨_⟩_ _-⟪_∣ _-⟨_∣
 infixl 0 _∋_
 
 -- Binary application
@@ -196,23 +199,39 @@ it {{x}} = x
 -- Composition of a binary function with:
 
 -- ● _-⟪_⟫-_ : Two binary functions
+-- ● _-⟪_∣ : A single binary function on the left
+-- ● ∣_⟫-_ : A single binary function on the right
+-- ● _-⟨_∣ : A single unary function on the left
+-- ● ∣_⟩-_ : A single unary function on the right
 -- ● _-⟪_⟩-_ : A binary function and a unary function
 -- ● _-⟨_⟫-_ : A unary function and a binary function
 -- ● _-⟨_⟩-_ : Two unary functions
--- ● _on₂_ : A single binary function
--- ● _on_ : A single unary function
+-- ● _on₂_ : A single binary function on both sides
+-- ● _on_ : A single unary function on both sides
 
 _-⟪_⟫-_ : (A → B → C) → (C → D → E) → (A → B → D) → (A → B → E)
 f -⟪ _*_ ⟫- g = λ x y → f x y * g x y
 
+_-⟪_∣ : (A → B → C) → (C → B → D) → (A → B → D)
+f -⟪ _*_ ∣ = f -⟪ _*_ ⟫- constᵣ
+
+∣_⟫-_ : (A → C → D) → (A → B → C) → (A → B → D)
+∣ _*_ ⟫- g = const -⟪ _*_ ⟫- g
+
+_-⟨_∣ : (A → C) → (C → B → D) → (A → B → D)
+f -⟨ _*_ ∣ = (λ x _ → f x) -⟪ _*_ ∣
+
+∣_⟩-_ : (A → C → D) → (B → C) → (A → B → D)
+∣ _*_ ⟩- g = ∣ _*_ ⟫- λ _ y → g y
+
 _-⟪_⟩-_ : (A → B → C) → (C → D → E) → (B → D) → (A → B → E)
-f -⟪ _*_ ⟩- g = f -⟪ _*_ ⟫- λ _ y → g y
+f -⟪ _*_ ⟩- g = f -⟪ _*_ ⟫- ∣ constᵣ ⟩- g
 
 _-⟨_⟫-_ : (A → C) → (C → D → E) → (A → B → D) → (A → B → E)
-f -⟨ _*_ ⟫- g = (λ x _ → f x) -⟪ _*_ ⟫- g
+f -⟨ _*_ ⟫- g = f -⟨ const ∣ -⟪ _*_ ⟫- g
 
 _-⟨_⟩-_ : (A → C) → (C → D → E) → (B → D) → (A → B → E)
-f -⟨ _*_ ⟩- g = (λ x _ → f x) -⟪ _*_ ⟫- λ _ y → g y
+f -⟨ _*_ ⟩- g = f -⟨ const ∣ -⟪ _*_ ⟫- ∣ constᵣ ⟩- g
 
 _on₂_ : (C → C → D) → (A → B → C) → (A → B → D)
 _*_ on₂ f = f -⟪ _*_ ⟫- f
