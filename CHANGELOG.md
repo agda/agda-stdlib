@@ -501,6 +501,11 @@ Other minor additions
   take⁺ : ∀ {n} m {xs} → All P {m + n} xs → All P {m} (take m xs)
   ```
 
+* Added new proofs to `Data.Vec.Membership.Propositional.Properties`:
+  ```agda
+  index-∈-lookup : (i : Fin n) (xs : Vec A n) → Any.index (∈-lookup i xs) ≡ i
+  ```
+
 Refactorings
 ------------
 
