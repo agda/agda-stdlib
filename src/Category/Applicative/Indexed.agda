@@ -53,7 +53,7 @@ record RawIApplicative {I : Set i} (F : IFun I f) :
   x <⊛ y = const <$> x ⊛ y
 
   _⊛>_ : ∀ {i j k} → F i j A → F j k B → F i k B
-  x ⊛> y = flip const <$> x ⊛ y
+  x ⊛> y = constᵣ <$> x ⊛ y
 
   _⊗_ : ∀ {i j k} → F i j A → F j k B → F i k (A × B)
   x ⊗ y = (_,_) <$> x ⊛ y

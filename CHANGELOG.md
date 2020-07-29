@@ -89,6 +89,10 @@ Deprecated names
   *-+-commutativeSemiring                ↦  +-*-commutativeSemiring
   *-+-isSemiringWithoutAnnihilatingZero  ↦  +-*-isSemiringWithoutAnnihilatingZero
   ```
+* In ̀Function.Basè:
+  ```
+  *_-[_]-_  ↦  _-⟪_⟫-_
+  ```
 
 New modules
 -----------
@@ -366,7 +370,7 @@ Other minor additions
 * Added new functions to `Data.String.Base`:
   ```agda
   wordsBy : Decidable P → String → List String
-  words : String → List String
+  words   : String → List String
   ```
 
 * Added new types and constructors to `Data.Nat.Base`:
@@ -492,17 +496,30 @@ Other minor additions
   transpose : ∀ {m n} → Vector (Vector A n) m → Vector (Vector A m) n
   ```
 
-* Added the composition of a binary function with two unary functions in `Function.Base`. The composition of a binary function with a unary function is now expressed using this definition:
+* Added a new simple function in `Function.Base`:
   ```agda
-  _-⟦_⟧-_ : (A → C) → (C → D → E) → (B → D) → (A → B → E)
+  constᵣ : A → B → B
+  ```
+
+* Added new compositions with a binary function in `Function.Base`:
+  ```agda
+  _-⟪_∣   : (A → B → C) → (C → B → D) → (A → B → D)
+  ∣_⟫-_   : (A → C → D) → (A → B → C) → (A → B → D)
+  _-⟨_∣   : (A → C) → (C → B → D) → (A → B → D)
+  ∣_⟩-_   : (A → C → D) → (B → C) → (A → B → D)
+  _-⟪_⟩-_ : (A → B → C) → (C → D → E) → (B → D) → (A → B → E)
+  _-⟨_⟫-_ : (A → C) → (C → D → E) → (A → B → D) → (A → B → E)
+  _-⟨_⟩-_ : (A → C) → (C → D → E) → (B → D) → (A → B → E)
+  _on₂_   : (C → C → D) → (A → B → C) → (A → B → D)
+  ```
 
 * Added new proofs to `Data.Vec.Relation.Unary.All.Properties`:
   ```agda
-  All-swap : ∀ {xs ys} → All (λ x → All (x ~_) ys) xs → All (λ y → All (_~ y) xs) ys
+  All-swap  : ∀ {xs ys} → All (λ x → All (x ~_) ys) xs → All (λ y → All (_~ y) xs) ys
   tabulate⁺ : ∀ {f : Fin n → A} → (∀ i → P (f i)) → All P (tabulate f)
   tabulate⁻ : ∀ {f : Fin n → A} → All P (tabulate f) → (∀ i → P (f i))
-  drop⁺ : ∀ {n} m {xs} → All P {m + n} xs → All P {n} (drop m xs)
-  take⁺ : ∀ {n} m {xs} → All P {m + n} xs → All P {m} (take m xs)
+  drop⁺     : ∀ {n} m {xs} → All P {m + n} xs → All P {n} (drop m xs)
+  take⁺     : ∀ {n} m {xs} → All P {m + n} xs → All P {m} (take m xs)
   ```
 
 Refactorings
