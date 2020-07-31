@@ -218,12 +218,12 @@ f -⟪ _*_ ∣ = f -⟪ _*_ ⟫- constᵣ
 -- A single unary function on the left
 
 _-⟨_∣ : (A → C) → (C → B → D) → (A → B → D)
-f -⟨ _*_ ∣ = (λ x _ → f x) -⟪ _*_ ∣
+f -⟨ _*_ ∣ = f ∘₂ const -⟪ _*_ ∣
 
 -- A single unary function on the right
 
 ∣_⟩-_ : (A → C → D) → (B → C) → (A → B → D)
-∣ _*_ ⟩- g = ∣ _*_ ⟫- λ _ y → g y
+∣ _*_ ⟩- g = ∣ _*_ ⟫- g ∘₂ constᵣ
 
 -- A binary function and a unary function
 
