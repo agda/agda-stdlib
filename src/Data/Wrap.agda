@@ -19,13 +19,13 @@ private
   variable
     ℓ : Level
 
-record Wrap-inner {n} {ls} {A : Sets n ls} (F : A ⇉ Set ℓ) (xs : Product n A)
+record Wrap′ {n} {ls} {A : Sets n ls} (F : A ⇉ Set ℓ) (xs : Product n A)
                   : Set ℓ where
   constructor [_]
   field
     get : uncurryₙ n F xs
 
-open Wrap-inner public
+open Wrap′ public
 
 Wrap : ∀ {n ls} {A : Sets n ls} → A ⇉ Set ℓ → A ⇉ Set ℓ
-Wrap {n = n} F = curryₙ n (Wrap-inner F)
+Wrap {n = n} F = curryₙ n (Wrap′ F)
