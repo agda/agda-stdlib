@@ -212,9 +212,9 @@ module _ {P : Pred A p} where
 
 module _ {P : Pred A p} where
 
-  all : Decidable P → Decidable (All P)
-  all p []       = yes []
-  all p (x ∷ xs) = Dec.map′ (uncurry _∷_) uncons (p x ×-dec all p xs)
+  all? : Decidable P → Decidable (All P)
+  all? p []       = yes []
+  all? p (x ∷ xs) = Dec.map′ (uncurry _∷_) uncons (p x ×-dec all? p xs)
 
   universal : Universal P → Universal (All P)
   universal u []       = []
@@ -227,3 +227,9 @@ module _ {P : Pred A p} where
 
   satisfiable : Satisfiable (All P)
   satisfiable = [] , []
+
+all = all?
+{-# WARNING_ON_USAGE all
+"Warning: all was deprecated in v1.4.
+Please use all? instead."
+#-}

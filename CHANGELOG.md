@@ -90,6 +90,11 @@ Deprecated names
   *-+-isSemiringWithoutAnnihilatingZero  ↦  +-*-isSemiringWithoutAnnihilatingZero
   ```
 
+* `Data.List.Relation.Unary.Any.any` to `Data.List.Relation.Unary.Any.any?`
+* `Data.List.Relation.Unary.All.all` to `Data.List.Relation.Unary.All.all?`
+* `Data.Vec.Relation.Unary.Any.any` to `Data.Vec.Relation.Unary.Any.any?`
+* `Data.Vec.Relation.Unary.All.all` to `Data.Vec.Relation.Unary.All.all?`
+
 New modules
 -----------
 
