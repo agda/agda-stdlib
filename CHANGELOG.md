@@ -497,6 +497,11 @@ Other minor additions
   transpose : ∀ {m n} → Vector (Vector A n) m → Vector (Vector A m) n
   ```
 
+* Added new functions to `Data.Vec.Relation.Unary.All`:
+  ```agda
+  reduce : (f : ∀ {x} → P x → B) → All P xs → Vec B n
+  ```
+
 * Added new proofs to `Data.Vec.Relation.Unary.All.Properties`:
   ```agda
   All-swap : ∀ {xs ys} → All (λ x → All (x ~_) ys) xs → All (λ y → All (_~ y) xs) ys

@@ -47,6 +47,10 @@ module _ {P : Pred A p} where
   tail : ∀ {n x} {xs : Vec A n} → All P (x ∷ xs) → All P xs
   tail (px ∷ pxs) = pxs
 
+  reduce : (f : ∀ {x} → P x → B) → ∀ {n} {xs : Vec A n} → All P xs → Vec B n
+  reduce f []         = []
+  reduce f (px ∷ pxs) = f px ∷ reduce f pxs
+
   uncons : ∀ {n x} {xs : Vec A n} → All P (x ∷ xs) → P x × All P xs
   uncons = < head , tail >
 
