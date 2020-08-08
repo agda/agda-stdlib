@@ -94,6 +94,11 @@ Deprecated names
   *_-[_]-_  ↦  _-⟪_⟫-_
   ```
 
+* `Data.List.Relation.Unary.Any.any` to `Data.List.Relation.Unary.Any.any?`
+* `Data.List.Relation.Unary.All.all` to `Data.List.Relation.Unary.All.all?`
+* `Data.Vec.Relation.Unary.Any.any` to `Data.Vec.Relation.Unary.Any.any?`
+* `Data.Vec.Relation.Unary.All.all` to `Data.Vec.Relation.Unary.All.all?`
+
 New modules
 -----------
 
@@ -512,6 +517,11 @@ Other minor additions
   _-⟨_⟩-_ : (A → C) → (C → D → E) → (B → D) → (A → B → E)
   _on₂_   : (C → C → D) → (A → B → C) → (A → B → D)
   ```
+  
+* Added new functions to `Data.Vec.Relation.Unary.All`:
+  ```agda
+  reduce : (f : ∀ {x} → P x → B) → All P xs → Vec B n
+  ```
 
 * Added new proofs to `Data.Vec.Relation.Unary.All.Properties`:
   ```agda
@@ -520,6 +530,11 @@ Other minor additions
   tabulate⁻ : ∀ {f : Fin n → A} → All P (tabulate f) → (∀ i → P (f i))
   drop⁺     : ∀ {n} m {xs} → All P {m + n} xs → All P {n} (drop m xs)
   take⁺     : ∀ {n} m {xs} → All P {m + n} xs → All P {m} (take m xs)
+  ```
+
+* Added new proofs to `Data.Vec.Membership.Propositional.Properties`:
+  ```agda
+  index-∈-lookup : (i : Fin n) (xs : Vec A n) → Any.index (∈-lookup i xs) ≡ i
   ```
 
 Refactorings

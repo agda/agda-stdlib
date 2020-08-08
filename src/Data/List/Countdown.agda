@@ -149,7 +149,7 @@ emptyFromList counted complete = empty record
 -- Finds out if an element has been counted yet.
 
 lookup : ∀ {counted n} → counted ⊕ n → ∀ x → Dec (x ∈ counted)
-lookup {counted} _ x = Any.any (_≟_ x) counted
+lookup {counted} _ x = Any.any? (_≟_ x) counted
 
 -- When no element remains to be counted all elements have been
 -- counted.
