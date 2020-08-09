@@ -53,10 +53,11 @@ map-id : ∀ (t : Tree N L) → map id id t ≡ t
 map-id (leaf x)     = refl
 map-id (node l v r) = cong₂ (flip node v) (map-id l) (map-id r)
 
-map-compose : ∀ {f₁ : N₁ → N₂} {f₂ : N → N₁} {g₁ : L₁ → L₂} {g₂ : L → L₁} (t : Tree N L) → map (f₁ ∘ f₂) (g₁ ∘ g₂) t ≡ map f₁ g₁ (map f₂ g₂ t)
+map-compose : ∀ {f₁ : N₁ → N₂} {f₂ : N → N₁} {g₁ : L₁ → L₂} {g₂ : L → L₁} →
+              map (f₁ ∘ f₂) (g₁ ∘ g₂) ≗ map f₁ g₁ ∘ map f₂ g₂
 map-compose (leaf x) = refl
 map-compose (node l v r) = cong₂ (λ l r → node l _ r) (map-compose l) (map-compose r)
 
-map-cong : ∀ {f₁ f₂ : N → N₁} {g₁ g₂ : L → L₁} → (∀ n → f₁ n ≡ f₂ n) → (∀ l → g₁ l ≡ g₂ l) → (t : Tree N L) → map f₁ g₁ t ≡ map f₂ g₂ t
+map-cong : ∀ {f₁ f₂ : N → N₁} {g₁ g₂ : L → L₁} → f₁ ≗ f₂ → g₁ ≗ g₂ → map f₁ g₁ ≗ map f₂ g₂
 map-cong p q (leaf x) = cong leaf (q x)
 map-cong p q (node l v r) = congₙ 3 node (map-cong p q l) (p v) (map-cong p q r)
