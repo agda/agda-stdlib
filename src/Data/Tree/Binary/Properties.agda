@@ -8,6 +8,7 @@
 
 module Data.Tree.Binary.Properties where
 
+open import Function using (_∘_)
 open import Level using (Level)
 open import Data.Nat.Base using (suc; _+_)
 open import Data.Tree.Binary
@@ -16,12 +17,14 @@ open import Relation.Binary.PropositionalEquality
 
 private
   variable
-    a n n₁ l l₁ : Level
+    a n n₁ n₂ l l₁ l₂ : Level
     A : Set a
     N : Set n
     N₁ : Set n₁
+    N₂ : Set n₂
     L : Set l
     L₁ : Set l₁
+    L₂ : Set l₂
 
 #nodes-map : ∀ (f : N → N₁) (g : L → L₁) t → #nodes (map f g t) ≡ #nodes t
 #nodes-map f g (leaf x)     = refl
@@ -48,3 +51,7 @@ private
 map-id : ∀ (t : Tree N L) → map id id t ≡ t
 map-id (leaf x)     = refl
 map-id (node l v r) = cong₂ (flip node v) (map-id l) (map-id r)
+
+map-compose : ∀ {f₁ : N₁ → N₂} {f₂ : N → N₁} {g₁ : L₁ → L₂} {g₂ : L → L₁} (t : Tree N L) → map (f₁ ∘ f₂) (g₁ ∘ g₂) t ≡ map f₁ g₁ (map f₂ g₂ t)
+map-compose (leaf x) = refl
+map-compose (node l v r) = cong₂ (λ l r → node l _ r) (map-compose l) (map-compose r)
