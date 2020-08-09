@@ -517,7 +517,7 @@ Other minor additions
   _-⟨_⟩-_ : (A → C) → (C → D → E) → (B → D) → (A → B → E)
   _on₂_   : (C → C → D) → (A → B → C) → (A → B → D)
   ```
-  
+
 * Added new functions to `Data.Vec.Relation.Unary.All`:
   ```agda
   reduce : (f : ∀ {x} → P x → B) → All P xs → Vec B n
