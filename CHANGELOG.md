@@ -90,6 +90,11 @@ Deprecated names
   *-+-isSemiringWithoutAnnihilatingZero  ↦  +-*-isSemiringWithoutAnnihilatingZero
   ```
 
+* `Data.List.Relation.Unary.Any.any` to `Data.List.Relation.Unary.Any.any?`
+* `Data.List.Relation.Unary.All.all` to `Data.List.Relation.Unary.All.all?`
+* `Data.Vec.Relation.Unary.Any.any` to `Data.Vec.Relation.Unary.Any.any?`
+* `Data.Vec.Relation.Unary.All.all` to `Data.Vec.Relation.Unary.All.all?`
+
 New modules
 -----------
 
@@ -492,6 +497,11 @@ Other minor additions
   transpose : ∀ {m n} → Vector (Vector A n) m → Vector (Vector A m) n
   ```
 
+* Added new functions to `Data.Vec.Relation.Unary.All`:
+  ```agda
+  reduce : (f : ∀ {x} → P x → B) → All P xs → Vec B n
+  ```
+
 * Added new proofs to `Data.Vec.Relation.Unary.All.Properties`:
   ```agda
   All-swap : ∀ {xs ys} → All (λ x → All (x ~_) ys) xs → All (λ y → All (_~ y) xs) ys
@@ -501,6 +511,10 @@ Other minor additions
   take⁺ : ∀ {n} m {xs} → All P {m + n} xs → All P {m} (take m xs)
   ```
 
+* Added new proofs to `Data.Vec.Membership.Propositional.Properties`:
+  ```agda
+  index-∈-lookup : (i : Fin n) (xs : Vec A n) → Any.index (∈-lookup i xs) ≡ i
+  ```
 * Added new proofs to `Codata.Delay.Properties`:
   ```agda
   ⇓-unique : ∀ {a} → {A : Set a} →
@@ -529,8 +543,7 @@ Other minor additions
       (bind⇓ : bind d f ⇓) →
       (d⇓ : d ⇓) → (f⇓ : f (extract d⇓) ⇓) →
       (toℕ (length-⇓ bind⇓)) ≡ ((toℕ (length-⇓ d⇓)) ℕ.+ (toℕ (length-⇓ f⇓)))
-  ```
-
+      
 Refactorings
 ------------
 
