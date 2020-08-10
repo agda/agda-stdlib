@@ -464,10 +464,10 @@ inject≤-idempotent {_} {suc n} {suc k} zero    _   _   _ = refl
 inject≤-idempotent {_} {suc n} {suc k} (suc i) m≤n n≤k _ =
   cong suc (inject≤-idempotent i (ℕₚ.≤-pred m≤n) (ℕₚ.≤-pred n≤k) _)
 
-inject≤-injective : ∀ {n m} (n≤m : n ℕ.≤ m) x y → inject≤ x n≤m ≡ inject≤ y n≤m → x ≡ y
-inject≤-injective (s≤s p) zero zero eq = refl
-inject≤-injective (s≤s p) (suc x) (suc y) eq =
-  cong suc (inject≤-injective p x y (suc-injective eq))
+inject≤-injective : ∀ {n m} (n≤m n≤m′ : n ℕ.≤ m) x y → inject≤ x n≤m ≡ inject≤ y n≤m′ → x ≡ y
+inject≤-injective (s≤s p) (s≤s q) zero zero eq = refl
+inject≤-injective (s≤s p) (s≤s q) (suc x) (suc y) eq =
+  cong suc (inject≤-injective p q x y (suc-injective eq))
 
 ------------------------------------------------------------------------
 -- pred

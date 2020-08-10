@@ -18,6 +18,9 @@ Bug-fixes
 * Fixed various algebraic bundles not correctly re-exporting
   `commutativeSemigroup` proofs.
 
+* Fix in `Induction.WellFounded.FixPoint`, where the well-founded relation `_<_` and
+  the predicate `P` were required to live at the same universe level.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -286,6 +289,7 @@ Other minor additions
 * Added new proofs to `Data.List.Properties`:
   ```agda
   reverse-injective : reverse xs ≡ reverse ys → xs ≡ ys
+  map-injective : Injective _≡_ _≡_ f → Injective _≡_ _≡_ (map f)
   ```
 
 * Added new proofs to `Data.List.Membership.Propositional.Properties`:
@@ -472,7 +476,7 @@ Other minor additions
   ```agda
   splitAt-<         : ∀ m {n} i → (i<m : toℕ i ℕ.< m) → splitAt m {n} i ≡ inj₁ (fromℕ< i<m)
   splitAt-≥         : ∀ m {n} i → (i≥m : toℕ i ℕ.≥ m) → splitAt m {n} i ≡ inj₂ (reduce≥ i i≥m)
-  inject≤-injective : (n≤m : n ℕ.≤ m) x y → inject≤ x n≤m ≡ inject≤ y n≤m → x ≡ y
+  inject≤-injective : ∀ (n≤m n≤m′ : n ℕ.≤ m) x y → inject≤ x n≤m ≡ inject≤ y n≤m′ → x ≡ y
   ```
 
 * Added new proofs to `Data.Vec.Properties`:
