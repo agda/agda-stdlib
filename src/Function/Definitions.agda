@@ -26,10 +26,10 @@ open import Level using (_⊔_)
 -- Definitions
 
 Congruent : (A → B) → Set (a ⊔ ℓ₁ ⊔ ℓ₂)
-Congruent f = _≈₁_ ⇒ (_≈₂_ on f)
+Congruent f = ∀ {x y} → x ≈₁ y →  f x ≈₂ f y
 
 Injective : (A → B) → Set (a ⊔ ℓ₁ ⊔ ℓ₂)
-Injective f = (_≈₂_ on f) ⇒ _≈₁_
+Injective f = ∀ {x y} → f x ≈₂ f y → x ≈₁ y
 
 open Core₂ _≈₂_ public
   using (Surjective)
