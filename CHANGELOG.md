@@ -194,6 +194,10 @@ New modules
   Data.Vec.Relation.Unary.Unique.Setoid.Properties
   ```
 
+* Function application in reflected terms (`Reflection.Apply`)
+
+* Congruence helper macros in `Tactic.Cong`
+
 Other major changes
 -------------------
 
@@ -370,6 +374,11 @@ Other minor additions
   ```agda
   nothing-inv : Pointwise R nothing x → x ≡ nothing
   just-inv    : Pointwise R (just x) y → ∃ λ z → y ≡ just z × R x z
+
+* New functions in `Reflection.Pattern`:
+  ```agda
+  pattern-size : Pattern → ℕ
+  pattern-args-size : List (Arg Pattern) → ℕ
   ```
 
 * Added new functions to `Data.String.Base`:
