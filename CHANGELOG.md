@@ -18,6 +18,9 @@ Bug-fixes
 * Fixed various algebraic bundles not correctly re-exporting
   `commutativeSemigroup` proofs.
 
+* Fix in `Induction.WellFounded.FixPoint`, where the well-founded relation `_<_` and
+  the predicate `P` were required to live at the same universe level.
+
 Non-backwards compatible changes
 --------------------------------
 
