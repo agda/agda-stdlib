@@ -156,6 +156,8 @@ remove {m} {n} i π = permutation to from
     punchOut {i = πʳ i} {punchIn (πʳ i) j}                         _  ≡⟨ punchOut-punchIn (πʳ i) ⟩
     j                                                                 ∎
 
+-- lift: takes a permutation m → n and creates a permutation (suc m) → (suc n)
+-- by mapping 0 to 0 and applying the input permutation to everything else
 liftₚ : ∀ {m n} → Permutation m n → Permutation (suc m) (suc n)
 liftₚ {m} {n} π = permutation to from
   record
@@ -202,9 +204,9 @@ module _ {m n} (π : Permutation (suc m) (suc n)) where
   lift-remove : zero ≡ πʳ zero → ∀ i → liftₚ (remove zero π) ⟨$⟩ʳ i ≡ πʳ i
   lift-remove p zero = p
   lift-remove p (suc i) = begin
-    liftₚ (remove zero π) ⟨$⟩ʳ suc i ≡⟨⟩
+    liftₚ (remove zero π) ⟨$⟩ʳ suc i                ≡⟨⟩
     suc (punchOut {i = πʳ zero} {j = πʳ (suc i)} _) ≡⟨ punchOut-zero (πʳ (suc i)) (sym p) ⟩
-    πʳ (suc i) ∎
+    πʳ (suc i)                                      ∎
       where
         punchOut-zero : ∀ {n} {i} (j : Fin (suc n)) {neq} → i ≡ zero → suc (punchOut {n} {i} {j} neq) ≡ j
         punchOut-zero zero {neq} p = ⊥-elim (neq p)
@@ -264,18 +266,18 @@ eval-lift : ∀ {n} → (xs : TranspositionList n) → ∀ i → evalₜ (lift�
 eval-lift L.[] = sym ∘ lift-id
 eval-lift ((i , j) L.∷ xs) k = begin
   transpose (suc i) (suc j) ∘ₚ evalₜ (liftₜ xs) ⟨$⟩ʳ k ≡⟨ cong (evalₜ (liftₜ xs) ⟨$⟩ʳ_) (lift-transpose i j k) ⟩
-  liftₚ (transpose i j) ∘ₚ evalₜ (liftₜ xs) ⟨$⟩ʳ k ≡⟨ eval-lift xs (liftₚ (transpose i j) ⟨$⟩ʳ k) ⟩
+  liftₚ (transpose i j) ∘ₚ evalₜ (liftₜ xs) ⟨$⟩ʳ k     ≡⟨ eval-lift xs (liftₚ (transpose i j) ⟨$⟩ʳ k) ⟩
   liftₚ (evalₜ xs) ⟨$⟩ʳ (liftₚ (transpose i j) ⟨$⟩ʳ k) ≡⟨ lift-comp (transpose i j) (evalₜ xs) k ⟩
-  liftₚ (transpose i j ∘ₚ evalₜ xs) ⟨$⟩ʳ k ∎
+  liftₚ (transpose i j ∘ₚ evalₜ xs) ⟨$⟩ʳ k             ∎
 
 eval-decompose : ∀ {n} → (π : Permutation′ n) → ∀ i → evalₜ (decompose π) ⟨$⟩ʳ i ≡ π ⟨$⟩ʳ i
 eval-decompose {zero} π ()
 eval-decompose {suc n} π i = begin
   tπ0 ∘ₚ evalₜ (liftₜ (decompose (remove zero (t0π ∘ₚ π)))) ⟨$⟩ʳ i ≡⟨ eval-lift (decompose (remove zero (t0π ∘ₚ π))) (tπ0 ⟨$⟩ʳ i) ⟩
   tπ0 ∘ₚ liftₚ (evalₜ (decompose (remove zero (t0π ∘ₚ π)))) ⟨$⟩ʳ i ≡⟨ lift-cong _ _ (eval-decompose _) (tπ0 ⟨$⟩ʳ i) ⟩
-  tπ0 ∘ₚ liftₚ (remove zero (t0π ∘ₚ π)) ⟨$⟩ʳ i ≡⟨ lift-remove (t0π ∘ₚ π) (sym (inverseʳ π)) (tπ0 ⟨$⟩ʳ i) ⟩
-  tπ0 ∘ₚ t0π ∘ₚ π ⟨$⟩ʳ i ≡⟨ cong (π ⟨$⟩ʳ_) (PC.transpose-inverse zero (π ⟨$⟩ˡ zero)) ⟩
-  π ⟨$⟩ʳ i ∎
+  tπ0 ∘ₚ liftₚ (remove zero (t0π ∘ₚ π)) ⟨$⟩ʳ i                     ≡⟨ lift-remove (t0π ∘ₚ π) (sym (inverseʳ π)) (tπ0 ⟨$⟩ʳ i) ⟩
+  tπ0 ∘ₚ t0π ∘ₚ π ⟨$⟩ʳ i                                           ≡⟨ cong (π ⟨$⟩ʳ_) (PC.transpose-inverse zero (π ⟨$⟩ˡ zero)) ⟩
+  π ⟨$⟩ʳ i                                                         ∎
     where
       tπ0 = transpose (π ⟨$⟩ˡ zero) zero
       t0π = transpose zero (π ⟨$⟩ˡ zero)
