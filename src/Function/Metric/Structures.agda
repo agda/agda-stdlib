@@ -15,7 +15,7 @@ module Function.Metric.Structures
   {a i ℓ₁ ℓ₂ ℓ₃} {A : Set a} {I : Set i}
   (_≈ₐ_ : Rel A ℓ₁) (_≈ᵢ_ : Rel I ℓ₂) (_≤_ : Rel I ℓ₃) (0# : I) where
 
-open import Algebra.FunctionProperties using (Op₂)
+open import Algebra.Core using (Op₂)
 open import Function.Metric.Core
 open import Function.Metric.Definitions
 open import Level using (_⊔_)
@@ -23,15 +23,18 @@ open import Level using (_⊔_)
 ------------------------------------------------------------------------
 -- Proto-metrics
 
+-- We do not insist that the ordering relation is total as otherwise
+-- we would exclude the real numbers.
+
 record IsProtoMetric (d : DistanceFunction A I)
                    : Set (a ⊔ i ⊔ ℓ₁ ⊔ ℓ₂ ⊔ ℓ₃) where
   field
-    isTotalOrder     : IsTotalOrder _≈ᵢ_ _≤_
+    isPartialOrder   : IsPartialOrder _≈ᵢ_ _≤_
     ≈-isEquivalence  : IsEquivalence _≈ₐ_
     cong             : Congruent _≈ₐ_ _≈ᵢ_ d
     nonNegative      : NonNegative _≤_ d 0#
 
-  open IsTotalOrder isTotalOrder public
+  open IsPartialOrder isPartialOrder public
     renaming (module Eq to EqI)
 
   module EqC = IsEquivalence ≈-isEquivalence

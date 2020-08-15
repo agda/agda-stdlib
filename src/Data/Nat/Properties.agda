@@ -1813,7 +1813,7 @@ m≤∣m-n∣+n m n = subst (m ≤_) (+-comm n _) (m≤n+∣m-n∣ m n)
 
 ∣-∣-isProtoMetric : IsProtoMetric _≡_ ∣_-_∣
 ∣-∣-isProtoMetric = record
-  { isTotalOrder    = ≤-isTotalOrder
+  { isPartialOrder  = ≤-isPartialOrder
   ; ≈-isEquivalence = isEquivalence
   ; cong            = cong₂ ∣_-_∣
   ; nonNegative     = z≤n
@@ -1846,17 +1846,17 @@ m≤∣m-n∣+n m n = subst (m ≤_) (+-comm n _) (m≤n+∣m-n∣ m n)
 ------------------------------------------------------------------------
 -- Metric bundles
 
-∣-∣-quasiSemiMetric : QuasiSemiMetric 0ℓ 0ℓ 0ℓ 0ℓ 0ℓ
+∣-∣-quasiSemiMetric : QuasiSemiMetric 0ℓ 0ℓ
 ∣-∣-quasiSemiMetric = record
   { isQuasiSemiMetric = ∣-∣-isQuasiSemiMetric
   }
 
-∣-∣-semiMetric : SemiMetric 0ℓ 0ℓ 0ℓ 0ℓ 0ℓ
+∣-∣-semiMetric : SemiMetric 0ℓ 0ℓ
 ∣-∣-semiMetric = record
   { isSemiMetric = ∣-∣-isSemiMetric
   }
 
-∣-∣-preMetric : PreMetric 0ℓ 0ℓ 0ℓ 0ℓ 0ℓ
+∣-∣-preMetric : PreMetric 0ℓ 0ℓ
 ∣-∣-preMetric = record
   { isPreMetric = ∣-∣-isPreMetric
   }
