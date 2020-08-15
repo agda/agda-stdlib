@@ -158,23 +158,14 @@ Other minor additions
 
 * The module `Data.Nat.Bin.Induction` now re-exports `Acc` and `acc` from `Induction.WellFounded`.
 
-* Added some useful combinators to
-  `Relation.Binary.PropositionalEquality`
-  (actually, in the `.Core` submodule): Some implicit variants of refl and cong; 'i' for implicit,
-  ```agda
-  irefl : (x : A) → f x ≡ f x
-  icong : x ≡ y → f x ≡ f y
-  ```
-  and `erefl` for explicit `refl` on the left
+* Added combinators to `Relation.Binary.PropositionalEquality.Core`
+  :
   ```agda
   pattern erefl x = refl {x = x}
-  ```
-
-* Added proofs to `Relation.Binary.PropositionalEquality`:
-  ```agda
-  trans-cong  : trans (cong f p) (cong f q) ≡ cong f (trans p q)
-  cong₂-reflˡ : cong₂ _∙_ refl p ≡ cong (x ∙_) p
-  cong₂-reflʳ : cong₂ _∙_ p refl ≡ cong (_∙ u) p
+  
+  cong′  : {f : A → B} x → f x ≡ f x
+  icong  : {f : A → B} {x y} → x ≡ y → f x ≡ f y
+  icong′ : {f : A → B} x → f x ≡ f x
   ```
 
 * Made first argument of `[,]-∘-distr` in `Data.Sum.Properties` explicit
@@ -346,3 +337,10 @@ to authors of large libraries.
   Relation.Binary.PropositionalEquality.Algebra
   ```
   which factor out some of the dependencies.
+
+* Added proofs to `Relation.Binary.PropositionalEquality`:
+  ```agda
+  trans-cong  : trans (cong f p) (cong f q) ≡ cong f (trans p q)
+  cong₂-reflˡ : cong₂ _∙_ refl p ≡ cong (x ∙_) p
+  cong₂-reflʳ : cong₂ _∙_ p refl ≡ cong (_∙ u) p
+  ```

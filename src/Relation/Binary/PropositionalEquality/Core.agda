@@ -33,6 +33,33 @@ _≢_ : {A : Set a} → Rel A a
 x ≢ y = ¬ x ≡ y
 
 ------------------------------------------------------------------------
+-- A variant of `refl` where the argument is explicit
+
+pattern erefl x = refl {x = x}
+
+------------------------------------------------------------------------
+-- Congruence lemmas
+
+cong : ∀ (f : A → B) {x y} → x ≡ y → f x ≡ f y
+cong f refl = refl
+
+cong′ : ∀ {f : A → B} x → f x ≡ f x
+cong′ _ = refl
+
+icong : ∀ {f : A → B} {x y} → x ≡ y → f x ≡ f y
+icong = cong _
+
+icong′ : ∀ {f : A → B} x → f x ≡ f x
+icong′ _ = refl
+
+cong₂ : ∀ (f : A → B → C) {x y u v} → x ≡ y → u ≡ v → f x u ≡ f y v
+cong₂ f refl refl = refl
+
+cong-app : ∀ {A : Set a} {B : A → Set b} {f g : (x : A) → B x} →
+           f ≡ g → (x : A) → f x ≡ g x
+cong-app refl x = refl
+
+------------------------------------------------------------------------
 -- Properties of _≡_
 
 sym : Symmetric {A = A} _≡_
@@ -44,18 +71,8 @@ trans refl eq = eq
 subst : Substitutive {A = A} _≡_ ℓ
 subst P refl p = p
 
-cong : ∀ (f : A → B) {x y} → x ≡ y → f x ≡ f y
-cong f refl = refl
-
 subst₂ : ∀ (_∼_ : REL A B ℓ) {x y u v} → x ≡ y → u ≡ v → x ∼ u → y ∼ v
 subst₂ _ refl refl p = p
-
-cong-app : ∀ {A : Set a} {B : A → Set b} {f g : (x : A) → B x} →
-           f ≡ g → (x : A) → f x ≡ g x
-cong-app refl x = refl
-
-cong₂ : ∀ (f : A → B → C) {x y u v} → x ≡ y → u ≡ v → f x u ≡ f y v
-cong₂ f refl refl = refl
 
 respˡ : ∀ (∼ : Rel A ℓ) → ∼ Respectsˡ _≡_
 respˡ _∼_ refl x∼y = x∼y
@@ -65,17 +82,6 @@ respʳ _∼_ refl x∼y = x∼y
 
 resp₂ : ∀ (∼ : Rel A ℓ) → ∼ Respects₂ _≡_
 resp₂ _∼_ = respʳ _∼_ , respˡ _∼_
-
-------------------------------------------------------------------------
--- Some variants of refl and cong; 'i' for implicit
--- 'e' for explicit
-pattern erefl x = refl {x = x}
-
-irefl : ∀ {f : A → B} x → f x ≡ f x
-irefl _ = refl
-
-icong : ∀ {f : A → B} {x y} → x ≡ y → f x ≡ f y
-icong = cong _
 
 ------------------------------------------------------------------------
 -- Properties of _≢_
