@@ -64,8 +64,7 @@ module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
 
 module _ {a} {A B : Set a} where
 
-  bind̅₁ : (d : Delay A ∞) {f : A → Delay B ∞} →
-           bind d f ⇓ → d ⇓
+  bind̅₁ : (d : Delay A ∞) {f : A → Delay B ∞} → bind d f ⇓ → d ⇓
   bind̅₁ (now s) _ = now s
   bind̅₁ (later s) (later x) =
     later (bind̅₁ (force s) x)
@@ -81,7 +80,7 @@ module _ {a} {A B : Set a} where
   -- second element
   extract-bind-⇓ : {d : Delay A Size.∞} → {f : A → Delay B Size.∞} →
                    (d⇓ : d ⇓) → (f⇓ : f (extract d⇓) ⇓) →
-                 extract (bind-⇓ d⇓ {f} f⇓) ≡ extract f⇓
+                   extract (bind-⇓ d⇓ {f} f⇓) ≡ extract f⇓
   extract-bind-⇓ (now a) f⇓ = Eq.refl
   extract-bind-⇓ (later t) f⇓ = extract-bind-⇓ t f⇓
 
