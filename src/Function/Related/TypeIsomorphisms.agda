@@ -296,18 +296,16 @@ A⇔B →-cong-⇔ C⇔D = Eq.equivalence
   A→C⇔B→D = ↔⇒ A↔B →-cong-⇔ ↔⇒ C↔D
 
 ------------------------------------------------------------------------
--- ¬_ preserves the symmetric relations
+-- ¬_ (at Level 0) preserves the symmetric relations
 
-¬-cong-⇔ : ∀ {a b c} {A : Set a} {B : Set b} →
-           A ⇔ B → (I.¬ c A) ⇔ (I.¬ _ B)
-¬-cong-⇔ A⇔B =  A⇔B →-cong-⇔ (⊥ ∎)
-  where open EquationalReasoning
+¬-cong-⇔ : ∀ {a b} {A : Set a} {B : Set b} →
+           A ⇔ B → (¬ A) ⇔ (¬ B)
+¬-cong-⇔ A⇔B =  A⇔B →-cong-⇔ Eq.id
 
-¬-cong : ∀ {a b c} → Extensionality a c → Extensionality b c →
+¬-cong : ∀ {a b} → Extensionality a 0ℓ → Extensionality b 0ℓ →
          ∀ {k} {A : Set a} {B : Set b} →
-         A ∼[ ⌊ k ⌋ ] B → (I.¬ c A) ∼[ ⌊ k ⌋ ] (I.¬ c B)
-¬-cong extA extB A≈B =  →-cong extA extB A≈B (⊥ ∎)
-  where open EquationalReasoning
+         A ∼[ ⌊ k ⌋ ] B → (¬ A) ∼[ ⌊ k ⌋ ] (¬ B)
+¬-cong extA extB A≈B = →-cong extA extB A≈B (K-reflexive P.refl)
 
 ------------------------------------------------------------------------
 -- _⇔_ preserves _⇔_

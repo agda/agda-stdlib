@@ -3,8 +3,8 @@ included-dirs:
   - README
 
 included-files:
-  - "**.agda"
-  - "**.md"
+  - "*.agda"
+  - "*.md"
   - ".travis.yml"
 
 excluded-files:

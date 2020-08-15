@@ -1042,22 +1042,22 @@ private
 *-1-isCommutativeMonoid : IsCommutativeMonoid _*_ 1ᵇ
 *-1-isCommutativeMonoid = *-Monomorphism.isCommutativeMonoid ℕₚ.*-1-isCommutativeMonoid
 
-*-+-isSemiringWithoutAnnihilatingZero : IsSemiringWithoutAnnihilatingZero _+_ _*_ zero 1ᵇ
-*-+-isSemiringWithoutAnnihilatingZero = record
++-*-isSemiringWithoutAnnihilatingZero : IsSemiringWithoutAnnihilatingZero _+_ _*_ zero 1ᵇ
++-*-isSemiringWithoutAnnihilatingZero = record
   { +-isCommutativeMonoid = +-0-isCommutativeMonoid
   ; *-isMonoid            = *-1-isMonoid
   ; distrib               = *-distrib-+
   }
 
-*-+-isSemiring : IsSemiring _+_ _*_ zero 1ᵇ
-*-+-isSemiring = record
-  { isSemiringWithoutAnnihilatingZero = *-+-isSemiringWithoutAnnihilatingZero
++-*-isSemiring : IsSemiring _+_ _*_ zero 1ᵇ
++-*-isSemiring = record
+  { isSemiringWithoutAnnihilatingZero = +-*-isSemiringWithoutAnnihilatingZero
   ; zero                              = *-zero
   }
 
-*-+-isCommutativeSemiring : IsCommutativeSemiring _+_ _*_ zero 1ᵇ
-*-+-isCommutativeSemiring = record
-  { isSemiring = *-+-isSemiring
++-*-isCommutativeSemiring : IsCommutativeSemiring _+_ _*_ zero 1ᵇ
++-*-isCommutativeSemiring = record
+  { isSemiring = +-*-isSemiring
   ; *-comm     = *-comm
   }
 
@@ -1084,14 +1084,14 @@ private
   { isCommutativeMonoid = *-1-isCommutativeMonoid
   }
 
-*-+-semiring : Semiring 0ℓ 0ℓ
-*-+-semiring = record
-  { isSemiring = *-+-isSemiring
++-*-semiring : Semiring 0ℓ 0ℓ
++-*-semiring = record
+  { isSemiring = +-*-isSemiring
   }
 
-*-+-commutativeSemiring : CommutativeSemiring 0ℓ 0ℓ
-*-+-commutativeSemiring = record
-  { isCommutativeSemiring = *-+-isCommutativeSemiring
++-*-commutativeSemiring : CommutativeSemiring 0ℓ 0ℓ
++-*-commutativeSemiring = record
+  { isCommutativeSemiring = +-*-isCommutativeSemiring
   }
 
 ------------------------------------------------------------------------
@@ -1422,3 +1422,39 @@ pred[x]+y≡x+pred[y] {x} {y} x≢0 y≢0 = begin
 
 |x|≡0⇒x≡0 : ∀ {x} → size x ≡ 0 → x ≡ 0ᵇ
 |x|≡0⇒x≡0 {zero} refl =  refl
+
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 1.4
+
+*-+-isSemiringWithoutAnnihilatingZero = +-*-isSemiringWithoutAnnihilatingZero
+{-# WARNING_ON_USAGE *-+-isSemiringWithoutAnnihilatingZero
+"Warning: *-+-isSemiringWithoutAnnihilatingZero was deprecated in v1.4.
+Please use +-*-isSemiringWithoutAnnihilatingZero instead."
+#-}
+*-+-isSemiring = +-*-isSemiring
+{-# WARNING_ON_USAGE *-+-isSemiring
+"Warning: *-+-isSemiring was deprecated in v1.4.
+Please use +-*-isSemiring instead."
+#-}
+*-+-isCommutativeSemiring = +-*-isCommutativeSemiring
+{-# WARNING_ON_USAGE *-+-isCommutativeSemiring
+"Warning: *-+-isCommutativeSemiring was deprecated in v1.4.
+Please use +-*-isCommutativeSemiring instead."
+#-}
+*-+-semiring = +-*-semiring
+{-# WARNING_ON_USAGE *-+-semiring
+"Warning: *-+-semiring was deprecated in v1.4.
+Please use +-*-semiring instead."
+#-}
+*-+-commutativeSemiring = +-*-commutativeSemiring
+{-# WARNING_ON_USAGE *-+-commutativeSemiring
+"Warning: *-+-commutativeSemiring was deprecated in v1.4.
+Please use +-*-commutativeSemiring instead."
+#-}
