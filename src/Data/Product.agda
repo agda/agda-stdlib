@@ -153,7 +153,7 @@ swap : A × B → B × A
 swap (x , y) = (y , x)
 
 _-×-_ : (A → B → Set p) → (A → B → Set q) → (A → B → Set _)
-f -×- g = f -[ _×_ ]- g
+f -×- g = f -⟪ _×_ ⟫- g
 
 _-,-_ : (A → B → C) → (A → B → D) → (A → B → C × D)
-f -,- g = f -[ _,_ ]- g
+f -,- g = f -⟪ _,_ ⟫- g
