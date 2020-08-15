@@ -102,7 +102,7 @@ module _ {k : Kind} {P : Pred A p} {Q : Pred A q} where
     where open Related.EquationalReasoning
 
 ------------------------------------------------------------------------
--- map
+-- Any.map
 
 map-id : ∀ {P : A → Set p} (f : P ⋐ P) {xs} →
          (∀ {x} (p : P x) → f p ≡ p) →
@@ -118,7 +118,7 @@ map-∘ f g (here  p) = refl
 map-∘ f g (there p) = P.cong there $ map-∘ f g p
 
 ------------------------------------------------------------------------
--- lookup
+-- Any.lookup
 
 lookup-result : ∀ {P : Pred A p} {xs} → (p : Any P xs) → P (Any.lookup p)
 lookup-result (here px) = px
