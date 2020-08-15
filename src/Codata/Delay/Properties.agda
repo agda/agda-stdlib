@@ -51,7 +51,10 @@ module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
  ... | Sum.inj₂ b  = now Eq.refl
 
 
-⇓-unique : ∀ {a} → {A : Set a} →
+------------------------------------------------------------------------
+-- ⇓
+
+⇓-unique : ∀ {a} {A : Set a} →
            {d : Delay A ∞} →
            (d⇓₁ : d ⇓) → (d⇓₂ : d ⇓) →
            d⇓₁ ≡ d⇓₂
@@ -59,54 +62,47 @@ module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
 ⇓-unique {d = later d'} (later l) (later r) =
   Eq.cong later (⇓-unique {d = force d'} l r)
 
+module _ {a} {A B : Set a} where
 
-bind⇓-injₗ : ∀ {a} {A B : Set a} →
-             {d : Delay A ∞} {f : A → Delay B ∞} →
-             bind d f ⇓ → d ⇓
-bind⇓-injₗ {d = now s} foo = now s
-bind⇓-injₗ {d = later s} (later foo) =
-  later (bind⇓-injₗ foo)
+  bind̅₁ : (d : Delay A ∞) {f : A → Delay B ∞} →
+           bind d f ⇓ → d ⇓
+  bind̅₁ (now s) _ = now s
+  bind̅₁ (later s) (later x) =
+    later (bind̅₁ (force s) x)
 
+  bind̅₂ : (d : Delay A ∞) {f : A → Delay B ∞} →
+           (bind⇓ : bind d f ⇓) →
+           f (extract (bind̅₁ d bind⇓)) ⇓
+  bind̅₂ (now s) foo = foo
+  bind̅₂ (later s) {f} (later foo) =
+    bind̅₂ (force s) foo
 
-bind⇓-injᵣ : ∀ {a} {A B : Set a}
-             {d : Delay A ∞} {f : A → Delay B ∞} →
-             (bind⇓ : bind d f ⇓) →
-             f (extract (bind⇓-injₗ {d = d} {f = f} bind⇓)) ⇓
-bind⇓-injᵣ {d = now s} foo = foo
-bind⇓-injᵣ {d = later s} {f} (later foo) =
-  bind⇓-injᵣ {d = force s} {f = f} foo
+  -- The extracted value of a bind is equivalent to the extracted value of its
+  -- second element
+  extract-bind-⇓ : {d : Delay A Size.∞} → {f : A → Delay B Size.∞} →
+                   (d⇓ : d ⇓) → (f⇓ : f (extract d⇓) ⇓) →
+                 extract (bind-⇓ d⇓ {f} f⇓) ≡ extract f⇓
+  extract-bind-⇓ (now a) f⇓ = Eq.refl
+  extract-bind-⇓ (later t) f⇓ = extract-bind-⇓ t f⇓
 
-
--- The extracted value of a bind is equivalent to the extracted value of its
--- second element
-extract-bind-⇓ : ∀ {a} → {A B : Set a}
-               {x : Delay A Size.∞} → {f : A → Delay B Size.∞} →
-               (x⇓ : x ⇓) → (f⇓ : ((f (extract x⇓)) ⇓)) →
-               extract (bind-⇓ x⇓ {f} f⇓) ≡ extract f⇓
-extract-bind-⇓ (now a) f⇓ = Eq.refl
-extract-bind-⇓ (later t) f⇓ = extract-bind-⇓ t f⇓
-
--- If the right element of a bind returns a certain value so does the entire
--- bind
-extract[bind⇓-injᵣ[bind⇓]]≡extract[bind⇓] :
-  ∀ {a} {A B : Set a} →
-  {d : Delay A ∞} {f : A → Delay B ∞} →
-  (bind⇓ : bind d f ⇓) →
-  extract (bind⇓-injᵣ {d = d} bind⇓) ≡ extract bind⇓
-extract[bind⇓-injᵣ[bind⇓]]≡extract[bind⇓] {d = now s} bind⇓ = Eq.refl
-extract[bind⇓-injᵣ[bind⇓]]≡extract[bind⇓] {d = later s} {f} (later bind⇓) =
-  extract[bind⇓-injᵣ[bind⇓]]≡extract[bind⇓] {d = force s} {f = f} bind⇓
-
-
--- Proof that the length of a bind-⇓ is equal to the sum of the length of its
--- components
-bind⇓-length-add :
-    ∀ {a} {A B : Set a} →
-    {d : Delay A ∞} {f : A → Delay B ∞} →
+  -- If the right element of a bind returns a certain value so does the entire
+  -- bind
+  extract[bind̅₂[bind⇓]]≡extract[bind⇓] :
+    (d : Delay A ∞) {f : A → Delay B ∞} →
     (bind⇓ : bind d f ⇓) →
-    (d⇓ : d ⇓) → (f⇓ : f (extract d⇓) ⇓) →
-    (toℕ (length-⇓ bind⇓)) ≡ ((toℕ (length-⇓ d⇓)) ℕ.+ (toℕ (length-⇓ f⇓)))
-bind⇓-length-add {f = f} bind⇓ d⇓@(now s') f⇓ =
-  Eq.cong (toℕ ∘ length-⇓) (⇓-unique bind⇓ f⇓)
-bind⇓-length-add {d = d@(later dt)} {f = f} bind⇓@(later bind'⇓) d⇓@(later r) f⇓ =
-  Eq.cong ℕ.suc (bind⇓-length-add bind'⇓ r f⇓)
+    extract (bind̅₂ d bind⇓) ≡ extract bind⇓
+  extract[bind̅₂[bind⇓]]≡extract[bind⇓] (now s) bind⇓ = Eq.refl
+  extract[bind̅₂[bind⇓]]≡extract[bind⇓] (later s) (later bind⇓) =
+    extract[bind̅₂[bind⇓]]≡extract[bind⇓] (force s) bind⇓
+
+  -- Proof that the length of a bind-⇓ is equal to the sum of the length of its
+  -- components.
+  bind⇓-length-add :
+      {d : Delay A ∞} {f : A → Delay B ∞} →
+      (bind⇓ : bind d f ⇓) →
+      (d⇓ : d ⇓) → (f⇓ : f (extract d⇓) ⇓) →
+      toℕ (length-⇓ bind⇓) ≡ toℕ (length-⇓ d⇓) ℕ.+ toℕ (length-⇓ f⇓)
+  bind⇓-length-add {f = f} bind⇓ d⇓@(now s') f⇓ =
+    Eq.cong (toℕ ∘ length-⇓) (⇓-unique bind⇓ f⇓)
+  bind⇓-length-add {d = d@(later dt)} {f = f} bind⇓@(later bind'⇓) d⇓@(later r) f⇓ =
+    Eq.cong ℕ.suc (bind⇓-length-add bind'⇓ r f⇓)
