@@ -40,7 +40,7 @@ leftMost : These A A → A
 leftMost = fold id id const
 
 rightMost : These A A → A
-rightMost = fold id id (flip const)
+rightMost = fold id id constᵣ
 
 mergeThese : (A → A → A) → These A A → A
 mergeThese = fold id id

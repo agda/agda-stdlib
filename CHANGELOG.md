@@ -94,6 +94,10 @@ Deprecated names
   *-+-commutativeSemiring                ↦  +-*-commutativeSemiring
   *-+-isSemiringWithoutAnnihilatingZero  ↦  +-*-isSemiringWithoutAnnihilatingZero
   ```
+* In ̀Function.Basè:
+  ```
+  *_-[_]-_  ↦  _-⟪_⟫-_
+  ```
 
 * `Data.List.Relation.Unary.Any.any` to `Data.List.Relation.Unary.Any.any?`
 * `Data.List.Relation.Unary.All.all` to `Data.List.Relation.Unary.All.all?`
@@ -243,17 +247,17 @@ Other minor additions
 
 * Added new properties to `Data.Fin.Properties`:
   ```agda
-  toℕ≤n : (i : Fin n) → toℕ i ℕ.≤ n
-  ≤fromℕ : (i : Fin (ℕ.suc n)) → i ≤ fromℕ n
+  toℕ≤n             : (i : Fin n) → toℕ i ℕ.≤ n
+  ≤fromℕ            : (i : Fin (ℕ.suc n)) → i ≤ fromℕ n
   fromℕ<-irrelevant : m ≡ n → (m<o : m ℕ.< o) → (n<o : n ℕ.< o) → fromℕ< m<o ≡ fromℕ< n<o
-  fromℕ<-injective : fromℕ< m<o ≡ fromℕ< n<o → m ≡ n
-  inject₁ℕ< : (i : Fin n) → toℕ (inject₁ i) ℕ.< n
-  inject₁ℕ≤ : (i : Fin n) → toℕ (inject₁ i) ℕ.≤ n
-  ≤̄⇒inject₁< : i' ≤ i → inject₁ i' < suc i
-  ℕ<⇒inject₁< : toℕ i' ℕ.< toℕ i → inject₁ i' < i
-  toℕ-lower₁ : (p : m ≢ toℕ x) → toℕ (lower₁ x p) ≡ toℕ x
+  fromℕ<-injective  : fromℕ< m<o ≡ fromℕ< n<o → m ≡ n
+  inject₁ℕ<         : (i : Fin n) → toℕ (inject₁ i) ℕ.< n
+  inject₁ℕ≤         : (i : Fin n) → toℕ (inject₁ i) ℕ.≤ n
+  ≤̄⇒inject₁<       : i' ≤ i → inject₁ i' < suc i
+  ℕ<⇒inject₁<      : toℕ i' ℕ.< toℕ i → inject₁ i' < i
+  toℕ-lower₁        : (p : m ≢ toℕ x) → toℕ (lower₁ x p) ≡ toℕ x
   inject₁≡⇒lower₁≡ : (≢p : n ≢ (toℕ i')) → inject₁ i ≡ i' → lower₁ i' ≢p ≡ i
-  pred< : pred i < i
+  pred<              : pred i < i
   ```
 
 * Added new types and constructors to `Data.Integer.Base`:
@@ -356,10 +360,10 @@ Other minor additions
   cartesianProductWith⁻ : (∀ {x y} → R (f x y) → P x × Q y) → Any R (cartesianProductWith f xs ys) → Any P xs × Any Q ys
   cartesianProduct⁺     : Any P xs → Any Q ys → Any (P ⟨×⟩ Q) (cartesianProduct xs ys)
   cartesianProduct⁻     : Any (P ⟨×⟩ Q) (cartesianProduct xs ys) → Any P xs × Any Q ys
-  reverseAcc⁺ : ∀ acc xs → Any P acc ⊎ Any P xs → Any P (reverseAcc acc xs)
-  reverseAcc⁻ : ∀ acc xs → Any P (reverseAcc acc xs) -> Any P acc ⊎ Any P xs
-  reverse⁺ : Any P xs → Any P (reverse xs)
-  reverse⁻ : Any P (reverse xs) → Any P xs
+  reverseAcc⁺           : ∀ acc xs → Any P acc ⊎ Any P xs → Any P (reverseAcc acc xs)
+  reverseAcc⁻           : ∀ acc xs → Any P (reverseAcc acc xs) -> Any P acc ⊎ Any P xs
+  reverse⁺              : Any P xs → Any P (reverse xs)
+  reverse⁻              : Any P (reverse xs) → Any P xs
   ```
 
 * Added new proofs to `Data.List.Relation.Unary.Unique.Propositional.Properties`:
@@ -410,7 +414,7 @@ Other minor additions
 * Added new functions to `Data.String.Base`:
   ```agda
   wordsBy : Decidable P → String → List String
-  words : String → List String
+  words   : String → List String
   ```
 
 * Added new types and constructors to `Data.Nat.Base`:
@@ -485,9 +489,9 @@ Other minor additions
 
 * Added new functions to `Function.Base`:
   ```agda
-  _∘₂_ : (f : {x : A₁} → {y : A₂ x} → (z : B x y) → C z)
-       → (g : (x : A₁) → (y : A₂ x) → B x y)
-       → ((x : A₁) → (y : A₂ x) → C (g x y))
+  _∘₂_  : (f : {x : A₁} → {y : A₂ x} → (z : B x y) → C z)
+        → (g : (x : A₁) → (y : A₂ x) → B x y)
+        → ((x : A₁) → (y : A₂ x) → C (g x y))
 
   _∘₂′_ : (C → D) → (A → B → C) → (A → B → D)
   ```
@@ -499,41 +503,58 @@ Other minor additions
 
 * Added new functions to `Data.Fin.Base`:
   ```agda
-  quotRem : ∀ {n} k → Fin (n ℕ.* k) → Fin k × Fin n
+  quotRem  : ∀ {n} k → Fin (n ℕ.* k) → Fin k × Fin n
   opposite : ∀ {n} → Fin n → Fin n
   ```
 
 * Added new proofs to `Data.Fin.Properties`:
   ```agda
-  splitAt-< : ∀ m {n} i → (i<m : toℕ i ℕ.< m) → splitAt m {n} i ≡ inj₁ (fromℕ< i<m)
-  splitAt-≥ : ∀ m {n} i → (i≥m : toℕ i ℕ.≥ m) → splitAt m {n} i ≡ inj₂ (reduce≥ i i≥m)
+  splitAt-<         : ∀ m {n} i → (i<m : toℕ i ℕ.< m) → splitAt m {n} i ≡ inj₁ (fromℕ< i<m)
+  splitAt-≥         : ∀ m {n} i → (i≥m : toℕ i ℕ.≥ m) → splitAt m {n} i ≡ inj₂ (reduce≥ i i≥m)
   inject≤-injective : ∀ (n≤m n≤m′ : n ℕ.≤ m) x y → inject≤ x n≤m ≡ inject≤ y n≤m′ → x ≡ y
   ```
 
 * Added new proofs to `Data.Vec.Properties`:
   ```agda
-  unfold-take : ∀ n {m} x (xs : Vec A (n + m)) → take (suc n) (x ∷ xs) ≡ x ∷ take n xs
-  unfold-drop : ∀ n {m} x (xs : Vec A (n + m)) → drop (suc n) (x ∷ xs) ≡ drop n xs
+  unfold-take         : ∀ n {m} x (xs : Vec A (n + m)) → take (suc n) (x ∷ xs) ≡ x ∷ take n xs
+  unfold-drop         : ∀ n {m} x (xs : Vec A (n + m)) → drop (suc n) (x ∷ xs) ≡ drop n xs
   lookup-inject≤-take : ∀ m {n} (m≤m+n : m ≤ m + n) (i : Fin m) (xs : Vec A (m + n)) →
                         lookup xs (Fin.inject≤ i m≤m+n) ≡ lookup (take m xs) i
   ```
 
 * Added new functions to `Data.Vec.Functional`:
   ```agda
-  length : ∀ {n} → Vector A n → ℕ
-  insert : ∀ {n} → Vector A n → Fin (suc n) → A → Vector A (suc n)
-  updateAt : ∀ {n} → Fin n → (A → A) → Vector A n → Vector A n
-  _++_ : ∀ {m n} → Vector A m → Vector A n → Vector A (m ℕ.+ n)
-  concat : ∀ {m n} → Vector (Vector A m) n → Vector A (n ℕ.* m)
-  _>>=_ : ∀ {m n} → Vector A m → (A → Vector B n) → Vector B (m ℕ.* n)
+  length    : ∀ {n} → Vector A n → ℕ
+  insert    : ∀ {n} → Vector A n → Fin (suc n) → A → Vector A (suc n)
+  updateAt  : ∀ {n} → Fin n → (A → A) → Vector A n → Vector A n
+  _++_      : ∀ {m n} → Vector A m → Vector A n → Vector A (m ℕ.+ n)
+  concat    : ∀ {m n} → Vector (Vector A m) n → Vector A (n ℕ.* m)
+  _>>=_     : ∀ {m n} → Vector A m → (A → Vector B n) → Vector B (m ℕ.* n)
   unzipWith : ∀ {n} → (A → B × C) → Vector A n → Vector B n × Vector C n
-  unzip : ∀ {n} → Vector (A × B) n → Vector A n × Vector B n
-  take : ∀ m {n} → Vector A (m ℕ.+ n) → Vector A m
-  drop : ∀ m {n} → Vector A (m ℕ.+ n) → Vector A n
-  reverse : ∀ {n} → Vector A n → Vector A n
-  init : ∀ {n} → Vector A (suc n) → Vector A n
-  last : ∀ {n} → Vector A (suc n) → A
+  unzip     : ∀ {n} → Vector (A × B) n → Vector A n × Vector B n
+  take      : ∀ m {n} → Vector A (m ℕ.+ n) → Vector A m
+  drop      : ∀ m {n} → Vector A (m ℕ.+ n) → Vector A n
+  reverse   : ∀ {n} → Vector A n → Vector A n
+  init      : ∀ {n} → Vector A (suc n) → Vector A n
+  last      : ∀ {n} → Vector A (suc n) → A
   transpose : ∀ {m n} → Vector (Vector A n) m → Vector (Vector A m) n
+  ```
+
+* Added a new simple function in `Function.Base`:
+  ```agda
+  constᵣ : A → B → B
+  ```
+
+* Added new compositions with a binary function in `Function.Base`:
+  ```agda
+  _-⟪_∣   : (A → B → C) → (C → B → D) → (A → B → D)
+  ∣_⟫-_   : (A → C → D) → (A → B → C) → (A → B → D)
+  _-⟨_∣   : (A → C) → (C → B → D) → (A → B → D)
+  ∣_⟩-_   : (A → C → D) → (B → C) → (A → B → D)
+  _-⟪_⟩-_ : (A → B → C) → (C → D → E) → (B → D) → (A → B → E)
+  _-⟨_⟫-_ : (A → C) → (C → D → E) → (A → B → D) → (A → B → E)
+  _-⟨_⟩-_ : (A → C) → (C → D → E) → (B → D) → (A → B → E)
+  _on₂_   : (C → C → D) → (A → B → C) → (A → B → D)
   ```
 
 * Added new functions to `Data.Vec.Relation.Unary.All`:
@@ -543,11 +564,11 @@ Other minor additions
 
 * Added new proofs to `Data.Vec.Relation.Unary.All.Properties`:
   ```agda
-  All-swap : ∀ {xs ys} → All (λ x → All (x ~_) ys) xs → All (λ y → All (_~ y) xs) ys
+  All-swap  : ∀ {xs ys} → All (λ x → All (x ~_) ys) xs → All (λ y → All (_~ y) xs) ys
   tabulate⁺ : ∀ {f : Fin n → A} → (∀ i → P (f i)) → All P (tabulate f)
   tabulate⁻ : ∀ {f : Fin n → A} → All P (tabulate f) → (∀ i → P (f i))
-  drop⁺ : ∀ {n} m {xs} → All P {m + n} xs → All P {n} (drop m xs)
-  take⁺ : ∀ {n} m {xs} → All P {m + n} xs → All P {m} (take m xs)
+  drop⁺     : ∀ {n} m {xs} → All P {m + n} xs → All P {n} (drop m xs)
+  take⁺     : ∀ {n} m {xs} → All P {m + n} xs → All P {m} (take m xs)
   ```
 
 * Added new proofs to `Data.Vec.Membership.Propositional.Properties`:
