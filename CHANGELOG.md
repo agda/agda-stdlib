@@ -103,6 +103,25 @@ Deprecated names
 New modules
 -----------
 
+* Added a hierarchy for metric spaces:
+  ```
+  Function.Metric
+  Function.Metric.Core
+  Function.Metric.Definitions
+  Function.Metric.Structures
+  Function.Metric.Bundles
+  ```
+  The distance functions above are defined over an arbitrary type for the image.
+  Specialisations to the natural numbers are provided in the following modules:
+  ```
+  Function.Metric.Nat
+  Function.Metric.Nat.Core
+  Function.Metric.Nat.Definitions
+  Function.Metric.Nat.Structures
+  Function.Metric.Nat.Bundles
+  ```
+  and other specialisations can be created in a similar fashion.
+
 * Instance modules:
   ```agda
   Category.Monad.Partiality.Instances
