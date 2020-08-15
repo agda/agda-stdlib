@@ -520,6 +520,12 @@ Other minor additions
   index-∈-lookup : (i : Fin n) (xs : Vec A n) → Any.index (∈-lookup i xs) ≡ i
   ```
 
+* Added new proofs to `Data.Tree.Binary.Properties`:
+  ```agda
+  map-compose : map (f₁ ∘ f₂) (g₁ ∘ g₂) ≗ map f₁ g₁ ∘ map f₂ g₂
+  map-cong : f₁ ≗ f₂ → g₁ ≗ g₂ → map f₁ g₁ ≗ map f₂ g₂
+  ```
+
 Refactorings
 ------------
 
