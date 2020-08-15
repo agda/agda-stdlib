@@ -517,33 +517,21 @@ Other minor additions
   ```
 * Added new proofs to `Codata.Delay.Properties`:
   ```agda
-  ⇓-unique : ∀ {a} → {A : Set a} →
-             {d : Delay A ∞} →
-             (d⇓₁ : d ⇓) → (d⇓₂ : d ⇓) →
-             d⇓₁ ≡ d⇓₂
-  bind⇓-injₗ : ∀ {a} {A B : Set a} →
-               {d : Delay A ∞} {f : A → Delay B ∞} →
-               bind d f ⇓ → d ⇓
-  bind⇓-injᵣ : ∀ {a} {A B : Set a}
-               {d : Delay A ∞} {f : A → Delay B ∞} →
-               (bind⇓ : bind d f ⇓) →
-               f (extract (bind⇓-injₗ {d = d} {f = f} bind⇓)) ⇓
-  extract-bind-⇓ : ∀ {a} → {A B : Set a}
-                 {x : Delay A Size.∞} → {f : A → Delay B Size.∞} →
-                 (x⇓ : x ⇓) → (f⇓ : ((f (extract x⇓)) ⇓)) →
-                 extract (bind-⇓ x⇓ {f} f⇓) ≡ extract f⇓
-  extract[bind⇓-injᵣ[bind⇓]]≡extract[bind⇓] :
-    ∀ {a} {A B : Set a} →
-    {d : Delay A ∞} {f : A → Delay B ∞} →
+  ⇓-unique : (d⇓₁ : d ⇓) → (d⇓₂ : d ⇓) → d⇓₁ ≡ d⇓₂
+  bind̅₁ : (d : Delay A ∞)→ bind d f ⇓ → d ⇓
+  bind̅₂ : (d : Delay A ∞) → (bind⇓ : bind d f ⇓) →
+          f (extract (bind̅₁ bind⇓)) ⇓
+  extract-bind-⇓ : (d⇓ : d ⇓) → (f⇓ : f (extract d⇓) ⇓) →
+                   extract (bind-⇓ d⇓ f⇓) ≡ extract f⇓
+  extract[bind̅₂[bind⇓]]≡extract[bind⇓] :
+    (d : Delay A ∞) →
     (bind⇓ : bind d f ⇓) →
-    extract (bind⇓-injᵣ {d = d} bind⇓) ≡ extract bind⇓
+    extract (bind̅₂ d bind⇓) ≡ extract bind⇓
   bind⇓-length-add :
-      ∀ {a} {A B : Set a} →
-      {d : Delay A ∞} {f : A → Delay B ∞} →
       (bind⇓ : bind d f ⇓) →
       (d⇓ : d ⇓) → (f⇓ : f (extract d⇓) ⇓) →
-      (toℕ (length-⇓ bind⇓)) ≡ ((toℕ (length-⇓ d⇓)) ℕ.+ (toℕ (length-⇓ f⇓)))
-      
+      toℕ (length-⇓ bind⇓) ≡ toℕ (length-⇓ d⇓) ℕ.+ toℕ (length-⇓ f⇓)
+  ```
 Refactorings
 ------------
 
