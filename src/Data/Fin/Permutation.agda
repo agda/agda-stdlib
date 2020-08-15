@@ -13,9 +13,8 @@ open import Data.Empty using (⊥-elim)
 open import Data.Fin.Base
 open import Data.Fin.Properties
 import Data.Fin.Permutation.Components as PC
-import Data.List as L
 open import Data.Nat.Base using (ℕ; suc; zero)
-open import Data.Product using (_×_; _,_; proj₂)
+open import Data.Product using (proj₂)
 open import Function.Inverse as Inverse using (_↔_; Inverse; _InverseOf_)
 open import Function.Equality using (_⟨$⟩_)
 open import Function using (_∘_)
@@ -76,8 +75,7 @@ id = Inverse.id
 -- Transpose two indices
 
 transpose : ∀ {n} → Fin n → Fin n → Permutation′ n
-transpose i j = permutation (PC.transpose i j) (PC.transpose j i)
-  record
+transpose i j = permutation (PC.transpose i j) (PC.transpose j i) record
   { left-inverse-of  = λ _ → PC.transpose-inverse _ _
   ; right-inverse-of = λ _ → PC.transpose-inverse _ _
   }
@@ -85,8 +83,7 @@ transpose i j = permutation (PC.transpose i j) (PC.transpose j i)
 -- Reverse the order of indices
 
 reverse : ∀ {n} → Permutation′ n
-reverse = permutation PC.reverse PC.reverse
-  record
+reverse = permutation PC.reverse PC.reverse record
   { left-inverse-of  = PC.reverse-involutive
   ; right-inverse-of = PC.reverse-involutive
   }
@@ -113,8 +110,7 @@ flip = Inverse.sym
 
 remove : ∀ {m n} → Fin (suc m) →
          Permutation (suc m) (suc n) → Permutation m n
-remove {m} {n} i π = permutation to from
-  record
+remove {m} {n} i π = permutation to from record
   { left-inverse-of  = left-inverse-of
   ; right-inverse-of = right-inverse-of
   }
@@ -158,28 +154,27 @@ remove {m} {n} i π = permutation to from
 
 -- lift: takes a permutation m → n and creates a permutation (suc m) → (suc n)
 -- by mapping 0 to 0 and applying the input permutation to everything else
-liftₚ : ∀ {m n} → Permutation m n → Permutation (suc m) (suc n)
-liftₚ {m} {n} π = permutation to from
-  record
+lift₀ : ∀ {m n} → Permutation m n → Permutation (suc m) (suc n)
+lift₀ {m} {n} π = permutation to from record
   { left-inverse-of = left-inverse-of
   ; right-inverse-of = right-inverse-of
   }
   where
-    to : Fin (suc m) → Fin (suc n)
-    to zero = zero
-    to (suc i) = suc (π ⟨$⟩ʳ i)
+  to : Fin (suc m) → Fin (suc n)
+  to zero = zero
+  to (suc i) = suc (π ⟨$⟩ʳ i)
 
-    from : Fin (suc n) → Fin (suc m)
-    from zero = zero
-    from (suc i) = suc (π ⟨$⟩ˡ i)
+  from : Fin (suc n) → Fin (suc m)
+  from zero = zero
+  from (suc i) = suc (π ⟨$⟩ˡ i)
 
-    left-inverse-of : ∀ j → from (to j) ≡ j
-    left-inverse-of zero = refl
-    left-inverse-of (suc j) = cong suc (inverseˡ π)
+  left-inverse-of : ∀ j → from (to j) ≡ j
+  left-inverse-of zero = refl
+  left-inverse-of (suc j) = cong suc (inverseˡ π)
 
-    right-inverse-of : ∀ j → to (from j) ≡ j
-    right-inverse-of zero = refl
-    right-inverse-of (suc j) = cong suc (inverseʳ π)
+  right-inverse-of : ∀ j → to (from j) ≡ j
+  right-inverse-of zero = refl
+  right-inverse-of (suc j) = cong suc (inverseʳ π)
 
 ------------------------------------------------------------------------
 -- Other properties
@@ -201,16 +196,16 @@ module _ {m n} (π : Permutation (suc m) (suc n)) where
     punchIn (πʳ (πˡ i)) (remove (πˡ i) π ⟨$⟩ʳ j)  ≡⟨ cong₂ punchIn (inverseʳ π) refl ⟩
     punchIn i (remove (πˡ i) π ⟨$⟩ʳ j)            ∎
 
-  lift-remove : zero ≡ πʳ zero → ∀ i → liftₚ (remove zero π) ⟨$⟩ʳ i ≡ πʳ i
+  lift-remove : zero ≡ πʳ zero → ∀ i → lift₀ (remove zero π) ⟨$⟩ʳ i ≡ πʳ i
   lift-remove p zero = p
   lift-remove p (suc i) = begin
-    liftₚ (remove zero π) ⟨$⟩ʳ suc i                ≡⟨⟩
+    lift₀ (remove zero π) ⟨$⟩ʳ suc i                ≡⟨⟩
     suc (punchOut {i = πʳ zero} {j = πʳ (suc i)} _) ≡⟨ punchOut-zero (πʳ (suc i)) (sym p) ⟩
     πʳ (suc i)                                      ∎
       where
-        punchOut-zero : ∀ {n} {i} (j : Fin (suc n)) {neq} → i ≡ zero → suc (punchOut {n} {i} {j} neq) ≡ j
-        punchOut-zero zero {neq} p = ⊥-elim (neq p)
-        punchOut-zero (suc j) refl = refl
+      punchOut-zero : ∀ {n} {i} (j : Fin (suc n)) {neq} → i ≡ zero → suc (punchOut {n} {i} {j} neq) ≡ j
+      punchOut-zero zero {neq} p = ⊥-elim (neq p)
+      punchOut-zero (suc j) refl = refl
 
 ↔⇒≡ : ∀ {m n} → Permutation m n → m ≡ n
 ↔⇒≡ {zero}  {zero}  π = refl
@@ -224,60 +219,23 @@ fromPermutation π = P.subst (Permutation _) (sym (↔⇒≡ π)) π
 refute : ∀ {m n} → m ≢ n → ¬ Permutation m n
 refute m≢n π = contradiction (↔⇒≡ π) m≢n
 
-lift-id : ∀ {n} (i : Fin (suc n)) → liftₚ id ⟨$⟩ʳ i ≡ i
+lift-id : ∀ {n} (i : Fin (suc n)) → lift₀ id ⟨$⟩ʳ i ≡ i
 lift-id zero = refl
 lift-id (suc i) = refl
 
-lift-comp : ∀ {m n o} → (π : Permutation m n) → (ρ : Permutation n o)
-          → ∀ i → liftₚ π ∘ₚ liftₚ ρ ⟨$⟩ʳ i ≡ liftₚ (π ∘ₚ ρ) ⟨$⟩ʳ i
+lift-comp : ∀ {m n o} → (π : Permutation m n) → (ρ : Permutation n o) →
+            ∀ i → lift₀ π ∘ₚ lift₀ ρ ⟨$⟩ʳ i ≡ lift₀ (π ∘ₚ ρ) ⟨$⟩ʳ i
 lift-comp π ρ zero = refl
 lift-comp π ρ (suc i) = refl
 
-lift-cong : ∀ {m n} → (π ρ : Permutation m n) → (∀ i → π ⟨$⟩ʳ i ≡ ρ ⟨$⟩ʳ i) → ∀ i → liftₚ π ⟨$⟩ʳ i ≡ liftₚ ρ ⟨$⟩ʳ i
+lift-cong : ∀ {m n} → (π ρ : Permutation m n) → (∀ i → π ⟨$⟩ʳ i ≡ ρ ⟨$⟩ʳ i) → ∀ i → lift₀ π ⟨$⟩ʳ i ≡ lift₀ ρ ⟨$⟩ʳ i
 lift-cong π ρ f zero = refl
 lift-cong π ρ f (suc i) = cong suc (f i)
 
-lift-transpose : ∀ {n} (i j : Fin n) k → transpose (suc i) (suc j) ⟨$⟩ʳ k ≡ liftₚ (transpose i j) ⟨$⟩ʳ k
+lift-transpose : ∀ {n} (i j : Fin n) k → transpose (suc i) (suc j) ⟨$⟩ʳ k ≡ lift₀ (transpose i j) ⟨$⟩ʳ k
 lift-transpose i j zero = refl
 lift-transpose i j (suc k) with does (k ≟ i)
 ... | true = refl
 ... | false with does (k ≟ j)
 ...   | false = refl
 ...   | true = refl
-
-------------------------------------------------------------------------
--- Decomposition into transpositions
-
-TranspositionList : ℕ → Set
-TranspositionList n = L.List (Fin n × Fin n)
-
-evalₜ : ∀ {n} → TranspositionList n → Permutation′ n
-evalₜ L.[] = id
-evalₜ ((i , j) L.∷ xs) = (transpose i j) ∘ₚ (evalₜ xs)
-
-liftₜ : ∀ {n} → TranspositionList n → TranspositionList (suc n)
-liftₜ xs = L.map (λ (i , j) → (suc i , suc j)) xs
-
-decompose : ∀ {n} → Permutation′ n → TranspositionList n
-decompose {zero} π = L.[]
-decompose {suc n} π = (π ⟨$⟩ˡ zero , zero) L.∷ liftₜ (decompose (remove zero ((transpose zero (π ⟨$⟩ˡ zero)) ∘ₚ π)))
-
-eval-lift : ∀ {n} → (xs : TranspositionList n) → ∀ i → evalₜ (liftₜ xs) ⟨$⟩ʳ i ≡ liftₚ (evalₜ xs) ⟨$⟩ʳ i
-eval-lift L.[] = sym ∘ lift-id
-eval-lift ((i , j) L.∷ xs) k = begin
-  transpose (suc i) (suc j) ∘ₚ evalₜ (liftₜ xs) ⟨$⟩ʳ k ≡⟨ cong (evalₜ (liftₜ xs) ⟨$⟩ʳ_) (lift-transpose i j k) ⟩
-  liftₚ (transpose i j) ∘ₚ evalₜ (liftₜ xs) ⟨$⟩ʳ k     ≡⟨ eval-lift xs (liftₚ (transpose i j) ⟨$⟩ʳ k) ⟩
-  liftₚ (evalₜ xs) ⟨$⟩ʳ (liftₚ (transpose i j) ⟨$⟩ʳ k) ≡⟨ lift-comp (transpose i j) (evalₜ xs) k ⟩
-  liftₚ (transpose i j ∘ₚ evalₜ xs) ⟨$⟩ʳ k             ∎
-
-eval-decompose : ∀ {n} → (π : Permutation′ n) → ∀ i → evalₜ (decompose π) ⟨$⟩ʳ i ≡ π ⟨$⟩ʳ i
-eval-decompose {zero} π ()
-eval-decompose {suc n} π i = begin
-  tπ0 ∘ₚ evalₜ (liftₜ (decompose (remove zero (t0π ∘ₚ π)))) ⟨$⟩ʳ i ≡⟨ eval-lift (decompose (remove zero (t0π ∘ₚ π))) (tπ0 ⟨$⟩ʳ i) ⟩
-  tπ0 ∘ₚ liftₚ (evalₜ (decompose (remove zero (t0π ∘ₚ π)))) ⟨$⟩ʳ i ≡⟨ lift-cong _ _ (eval-decompose _) (tπ0 ⟨$⟩ʳ i) ⟩
-  tπ0 ∘ₚ liftₚ (remove zero (t0π ∘ₚ π)) ⟨$⟩ʳ i                     ≡⟨ lift-remove (t0π ∘ₚ π) (sym (inverseʳ π)) (tπ0 ⟨$⟩ʳ i) ⟩
-  tπ0 ∘ₚ t0π ∘ₚ π ⟨$⟩ʳ i                                           ≡⟨ cong (π ⟨$⟩ʳ_) (PC.transpose-inverse zero (π ⟨$⟩ˡ zero)) ⟩
-  π ⟨$⟩ʳ i                                                         ∎
-    where
-      tπ0 = transpose (π ⟨$⟩ˡ zero) zero
-      t0π = transpose zero (π ⟨$⟩ˡ zero)
