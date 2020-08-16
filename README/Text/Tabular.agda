@@ -100,9 +100,10 @@ _ = refl
 _ : unlines (Tabularᵛ.display whitespace
             (Right ∷ Left ∷ [])
             foobar)
-  ≡ "foo bar
-\   \  1 2
-\   \  4 3  "
+  ≡ unlines ( "foo bar"
+            ∷ "  1 2  "
+            ∷ "  4 3  "
+            ∷ [])
 _ = refl
 
 ------------------------------------------------------------------------
@@ -129,11 +130,12 @@ _ = refl
 _ : unlines (Tabularᵛ.display (noBorder unicode)
             (Right ∷ Left ∷ [])
             foobar)
-  ≡ "foo│bar
-\   \───┼───
-\   \  1│2
-\   \───┼───
-\   \  4│3  "
+  ≡ unlines ( "foo│bar"
+            ∷ "───┼───"
+            ∷ "  1│2  "
+            ∷ "───┼───"
+            ∷ "  4│3  "
+            ∷ [])
 _ = refl
 
 -- addSpace : add whitespace space inside cells
