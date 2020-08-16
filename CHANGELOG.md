@@ -27,6 +27,15 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
+#### Changes to reflection
+
+* Following changes to `Agda.Builtin.Reflection`, in which the `dot` pattern carries
+  the dotted term, the `Reflection.Pattern` module was merged back into `Reflection.Term`.
+  The functions `_≟-Pattern` and `_≟-ArgPatterns` are no longer deprecated.
+
+* Following changes to `Agda.Builtin.Reflection`, in which telescopes were added to
+  clauses, `_≟-Telescope` and `_≟-Telescopes` were added.
+
 #### Changes to the `Relation.Unary.Closure` hierarchy
 
 * Following the study of the closure operator `◇` dual to the `□` we originally
@@ -81,19 +90,19 @@ Deprecated names
 
 * In `Data.Nat.Properties`:
   ```
-  *-+-isSemiring             ↦  +-*-isSemiring
-  *-+-isCommutativeSemiring  ↦  +-*-isCommutativeSemiring
-  *-+-semiring               ↦  +-*-semiring
-  *-+-commutativeSemiring    ↦  +-*-commutativeSemiring
+  *-|-isSemiring             ↦  +-*-isSemiring
+  *-|-isCommutativeSemiring  ↦  +-*-isCommutativeSemiring
+  *-|-semiring               ↦  +-*-semiring
+  *-|-commutativeSemiring    ↦  +-*-commutativeSemiring
   ```
 
 * In `Data.Nat.Binary.Properties`:
   ```
-  *-+-isSemiring                         ↦  +-*-isSemiring
-  *-+-isCommutativeSemiring              ↦  +-*-isCommutativeSemiring
-  *-+-semiring                           ↦  +-*-semiring
-  *-+-commutativeSemiring                ↦  +-*-commutativeSemiring
-  *-+-isSemiringWithoutAnnihilatingZero  ↦  +-*-isSemiringWithoutAnnihilatingZero
+  *-|-isSemiring                         ↦  +-*-isSemiring
+  *-|-isCommutativeSemiring              ↦  +-*-isCommutativeSemiring
+  *-|-semiring                           ↦  +-*-semiring
+  *-|-commutativeSemiring                ↦  +-*-commutativeSemiring
+  *-|-isSemiringWithoutAnnihilatingZero  ↦  +-*-isSemiringWithoutAnnihilatingZero
   ```
 * In ̀Function.Basè:
   ```

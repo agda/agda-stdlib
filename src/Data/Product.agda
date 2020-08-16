@@ -147,6 +147,12 @@ curry′ = curry
 uncurry′ : (A → B → C) → (A × B → C)
 uncurry′ = uncurry
 
+curry₂′ : (A × B × C → D) → (A → B → C → D)
+curry₂′ f x y z = f (x , y , z)
+
+uncurry₂′ : (A → B → C → D) → (A × B × C → D)
+uncurry₂′ f (x , y , z) = f x y z
+
 -- Operations that can only be defined for non-dependent products
 
 swap : A × B → B × A

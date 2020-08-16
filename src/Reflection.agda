@@ -25,8 +25,6 @@ open import Reflection.Name as Name public
   using (Name; Names)
 open import Reflection.Literal as Literal public
   using (Literal)
-open import Reflection.Pattern as Pattern public
-  using (Pattern)
 open import Reflection.Term as Term public
   using (Term; Type; Clause; Clauses; Sort)
 
@@ -92,7 +90,6 @@ Please use Reflection.Argument.Information's ArgInfo instead."
 #-}
 
 infix 4 _≟-Lit_ _≟-Name_ _≟-Meta_ _≟-Visibility_ _≟-Relevance_ _≟-Arg-info_
-        _≟-Pattern_ _≟-ArgPatterns_
 
 _≟-Lit_ = Literal._≟_
 {-# WARNING_ON_USAGE _≟-Lit_
@@ -128,18 +125,6 @@ _≟-Arg-info_ = Information._≟_
 {-# WARNING_ON_USAGE _≟-Arg-info_
 "Warning: _≟-Arg-info_ was deprecated in v1.3.
 Please use Reflection.Argument.Information's _≟_ instead."
-#-}
-
-_≟-Pattern_ = Pattern._≟_
-{-# WARNING_ON_USAGE _≟-Pattern_
-"Warning: _≟-Pattern_ was deprecated in v1.3.
-Please use Reflection.Pattern's _≟_ instead."
-#-}
-
-_≟-ArgPatterns_ = Pattern._≟s_
-{-# WARNING_ON_USAGE _≟-ArgPatterns_
-"Warning: _≟-ArgPatterns_ was deprecated in v1.3.
-Please use Reflection.Pattern's _≟s_ instead."
 #-}
 
 map-Abs = Abstraction.map

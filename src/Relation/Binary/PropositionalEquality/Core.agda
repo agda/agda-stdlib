@@ -21,7 +21,7 @@ open import Relation.Nullary using (¬_)
 private
   variable
     a b ℓ : Level
-    A B C : Set a
+    A B C D : Set a
 
 ------------------------------------------------------------------------
 -- Propositional equality
@@ -54,8 +54,11 @@ cong-app : ∀ {A : Set a} {B : A → Set b} {f g : (x : A) → B x} →
            f ≡ g → (x : A) → f x ≡ g x
 cong-app refl x = refl
 
-cong₂ : ∀ (f : A → B → C) {x y u v} → x ≡ y → u ≡ v → f x u ≡ f y v
+cong₂ : ∀ (f : A → B → C) {x y u v} → x ≡ u → y ≡ v → f x y ≡ f u v
 cong₂ f refl refl = refl
+
+cong₃ : ∀ (f : A → B → C → D) {x y z u v w} → x ≡ u → y ≡ v → z ≡ w → f x y z ≡ f u v w
+cong₃ f refl refl refl = refl
 
 respˡ : ∀ (∼ : Rel A ℓ) → ∼ Respectsˡ _≡_
 respˡ _∼_ refl x∼y = x∼y

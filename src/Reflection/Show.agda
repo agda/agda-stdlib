@@ -28,7 +28,6 @@ open import Reflection.Argument.Visibility
 open import Reflection.Argument.Information
 open import Reflection.Definition
 open import Reflection.Literal
-open import Reflection.Pattern
 open import Reflection.Term
 
 ------------------------------------------------------------------------
@@ -65,6 +64,12 @@ showLiteral (string x) = String.show x
 showLiteral (name x)   = showName x
 showLiteral (meta x)   = showMeta x
 
+-- add appropriate parens depending on the given visibility
+visibilityParen : Visibility → String → String
+visibilityParen visible   s = parensIfSpace s
+visibilityParen hidden    s = braces s
+visibilityParen instance′ s = braces (braces s)
+
 mutual
 
   showPatterns : List (Arg Pattern) → String
@@ -79,20 +84,11 @@ mutual
   showPattern : Pattern → String
   showPattern (con c []) = showName c
   showPattern (con c ps) = parens (showName c <+> showPatterns ps)
-  showPattern dot        = "._"
-  showPattern (var s)    = s
+  showPattern (dot t)    = "." ++ parens (showTerm t)
+  showPattern (var s)    = ℕ.show s
   showPattern (lit l)    = showLiteral l
   showPattern (proj f)   = showName f
   showPattern absurd     = "()"
-
-private
-  -- add appropriate parens depending on the given visibility
-  visibilityParen : Visibility → String → String
-  visibilityParen visible   s = parensIfSpace s
-  visibilityParen hidden    s = braces s
-  visibilityParen instance′ s = braces (braces s)
-
-mutual
 
   showTerms : List (Arg Term) → String
   showTerms []             = ""
@@ -118,9 +114,11 @@ mutual
   showSort (lit n) = "Set" ++ ℕ.show n -- no space to disambiguate from set t
   showSort unknown = "unknown"
 
+  -- TODO: Should we show telescope in `clause` and `absurd-clause`?
+
   showClause : Clause → String
-  showClause (clause ps t)      = showPatterns ps <+> "→" <+> showTerm t
-  showClause (absurd-clause ps) = showPatterns ps
+  showClause (clause tel ps t)      = showPatterns ps <+> "→" <+> showTerm t
+  showClause (absurd-clause tel ps) = showPatterns ps
 
   showClauses : List Clause → String
   showClauses []       = ""
