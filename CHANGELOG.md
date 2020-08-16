@@ -90,19 +90,19 @@ Deprecated names
 
 * In `Data.Nat.Properties`:
   ```
-  *-|-isSemiring             ↦  +-*-isSemiring
-  *-|-isCommutativeSemiring  ↦  +-*-isCommutativeSemiring
-  *-|-semiring               ↦  +-*-semiring
-  *-|-commutativeSemiring    ↦  +-*-commutativeSemiring
+  *-+-isSemiring             ↦  +-*-isSemiring
+  *-+-isCommutativeSemiring  ↦  +-*-isCommutativeSemiring
+  *-+-semiring               ↦  +-*-semiring
+  *-+-commutativeSemiring    ↦  +-*-commutativeSemiring
   ```
 
 * In `Data.Nat.Binary.Properties`:
   ```
-  *-|-isSemiring                         ↦  +-*-isSemiring
-  *-|-isCommutativeSemiring              ↦  +-*-isCommutativeSemiring
-  *-|-semiring                           ↦  +-*-semiring
-  *-|-commutativeSemiring                ↦  +-*-commutativeSemiring
-  *-|-isSemiringWithoutAnnihilatingZero  ↦  +-*-isSemiringWithoutAnnihilatingZero
+  *-+-isSemiring                         ↦  +-*-isSemiring
+  *-+-isCommutativeSemiring              ↦  +-*-isCommutativeSemiring
+  *-+-semiring                           ↦  +-*-semiring
+  *-+-commutativeSemiring                ↦  +-*-commutativeSemiring
+  *-+-isSemiringWithoutAnnihilatingZero  ↦  +-*-isSemiringWithoutAnnihilatingZero
   ```
 * In ̀Function.Basè:
   ```
