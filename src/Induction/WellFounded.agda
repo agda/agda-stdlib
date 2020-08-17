@@ -106,7 +106,7 @@ module All {_<_ : Rel A r} (wf : WellFounded _<_) ℓ where
   #-}
 
 module FixPoint
-  {_<_ : Rel A ℓ} (wf : WellFounded _<_)
+  {_<_ : Rel A r} (wf : WellFounded _<_)
   (P : Pred A ℓ) (f : WfRec _<_ P ⊆′ P)
   (f-ext : (x : A) {IH IH′ : WfRec _<_ P x} → (∀ {y} y<x → IH y y<x ≡ IH′ y y<x) → f x IH ≡ f x IH′)
   where

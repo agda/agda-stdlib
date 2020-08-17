@@ -13,7 +13,7 @@ module Category.Applicative.Indexed where
 
 open import Category.Functor using (RawFunctor)
 open import Data.Product using (_×_; _,_)
-open import Function
+open import Function hiding (Morphism)
 open import Level
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
@@ -53,7 +53,7 @@ record RawIApplicative {I : Set i} (F : IFun I f) :
   x <⊛ y = const <$> x ⊛ y
 
   _⊛>_ : ∀ {i j k} → F i j A → F j k B → F i k B
-  x ⊛> y = flip const <$> x ⊛ y
+  x ⊛> y = constᵣ <$> x ⊛ y
 
   _⊗_ : ∀ {i j k} → F i j A → F j k B → F i k (A × B)
   x ⊗ y = (_,_) <$> x ⊛ y
