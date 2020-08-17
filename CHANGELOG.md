@@ -565,3 +565,12 @@ Other minor additions
   cong₂-reflˡ : cong₂ _∙_ refl p ≡ cong (x ∙_) p
   cong₂-reflʳ : cong₂ _∙_ p refl ≡ cong (_∙ u) p
   ```
+
+* Added new combinators to `Relation.Binary.PropositionalEquality.Core`:
+  ```agda
+  pattern erefl x = refl {x = x}
+
+  cong′  : {f : A → B} x → f x ≡ f x
+  icong  : {f : A → B} {x y} → x ≡ y → f x ≡ f y
+  icong′ : {f : A → B} x → f x ≡ f x
+  ```
