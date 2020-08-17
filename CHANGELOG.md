@@ -162,7 +162,7 @@ Other minor additions
   :
   ```agda
   pattern erefl x = refl {x = x}
-  
+
   cong′  : {f : A → B} x → f x ≡ f x
   icong  : {f : A → B} {x y} → x ≡ y → f x ≡ f y
   icong′ : {f : A → B} x → f x ≡ f x
