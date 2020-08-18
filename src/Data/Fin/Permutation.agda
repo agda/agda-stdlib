@@ -11,6 +11,7 @@ module Data.Fin.Permutation where
 open import Data.Bool using (true; false)
 open import Data.Empty using (⊥-elim)
 open import Data.Fin.Base
+open import Data.Fin.Patterns
 open import Data.Fin.Properties
 import Data.Fin.Permutation.Components as PC
 open import Data.Nat.Base using (ℕ; suc; zero)
@@ -161,19 +162,19 @@ lift₀ {m} {n} π = permutation to from record
   }
   where
   to : Fin (suc m) → Fin (suc n)
-  to zero = zero
+  to 0F = 0F
   to (suc i) = suc (π ⟨$⟩ʳ i)
 
   from : Fin (suc n) → Fin (suc m)
-  from zero = zero
+  from 0F = 0F
   from (suc i) = suc (π ⟨$⟩ˡ i)
 
   left-inverse-of : ∀ j → from (to j) ≡ j
-  left-inverse-of zero = refl
+  left-inverse-of 0F = refl
   left-inverse-of (suc j) = cong suc (inverseˡ π)
 
   right-inverse-of : ∀ j → to (from j) ≡ j
-  right-inverse-of zero = refl
+  right-inverse-of 0F = refl
   right-inverse-of (suc j) = cong suc (inverseʳ π)
 
 ------------------------------------------------------------------------
@@ -196,22 +197,22 @@ module _ {m n} (π : Permutation (suc m) (suc n)) where
     punchIn (πʳ (πˡ i)) (remove (πˡ i) π ⟨$⟩ʳ j)  ≡⟨ cong₂ punchIn (inverseʳ π) refl ⟩
     punchIn i (remove (πˡ i) π ⟨$⟩ʳ j)            ∎
 
-  lift-remove : zero ≡ πʳ zero → ∀ i → lift₀ (remove zero π) ⟨$⟩ʳ i ≡ πʳ i
-  lift-remove p zero = p
-  lift-remove p (suc i) = begin
-    lift₀ (remove zero π) ⟨$⟩ʳ suc i                ≡⟨⟩
-    suc (punchOut {i = πʳ zero} {j = πʳ (suc i)} _) ≡⟨ punchOut-zero (πʳ (suc i)) (sym p) ⟩
+  lift₀-remove : 0F ≡ πʳ 0F → ∀ i → lift₀ (remove 0F π) ⟨$⟩ʳ i ≡ πʳ i
+  lift₀-remove p 0F = p
+  lift₀-remove p (suc i) = begin
+    lift₀ (remove 0F π) ⟨$⟩ʳ suc i                ≡⟨⟩
+    suc (punchOut {i = πʳ 0F} {j = πʳ (suc i)} _) ≡⟨ punchOut-zero (πʳ (suc i)) (sym p) ⟩
     πʳ (suc i)                                      ∎
       where
-      punchOut-zero : ∀ {n} {i} (j : Fin (suc n)) {neq} → i ≡ zero → suc (punchOut {n} {i} {j} neq) ≡ j
-      punchOut-zero zero {neq} p = ⊥-elim (neq p)
+      punchOut-zero : ∀ {n} {i} (j : Fin (suc n)) {neq} → i ≡ 0F → suc (punchOut {n} {i} {j} neq) ≡ j
+      punchOut-zero 0F {neq} p = ⊥-elim (neq p)
       punchOut-zero (suc j) refl = refl
 
 ↔⇒≡ : ∀ {m n} → Permutation m n → m ≡ n
 ↔⇒≡ {zero}  {zero}  π = refl
-↔⇒≡ {zero}  {suc n} π = contradiction (π ⟨$⟩ˡ zero) ¬Fin0
-↔⇒≡ {suc m} {zero}  π = contradiction (π ⟨$⟩ʳ zero) ¬Fin0
-↔⇒≡ {suc m} {suc n} π = cong suc (↔⇒≡ (remove zero π))
+↔⇒≡ {zero}  {suc n} π = contradiction (π ⟨$⟩ˡ 0F) ¬Fin0
+↔⇒≡ {suc m} {zero}  π = contradiction (π ⟨$⟩ʳ 0F) ¬Fin0
+↔⇒≡ {suc m} {suc n} π = cong suc (↔⇒≡ (remove 0F π))
 
 fromPermutation : ∀ {m n} → Permutation m n → Permutation′ m
 fromPermutation π = P.subst (Permutation _) (sym (↔⇒≡ π)) π
@@ -219,22 +220,23 @@ fromPermutation π = P.subst (Permutation _) (sym (↔⇒≡ π)) π
 refute : ∀ {m n} → m ≢ n → ¬ Permutation m n
 refute m≢n π = contradiction (↔⇒≡ π) m≢n
 
-lift-id : ∀ {n} (i : Fin (suc n)) → lift₀ id ⟨$⟩ʳ i ≡ i
-lift-id zero = refl
-lift-id (suc i) = refl
+lift₀-id : ∀ {n} (i : Fin (suc n)) → lift₀ id ⟨$⟩ʳ i ≡ i
+lift₀-id 0F = refl
+lift₀-id (suc i) = refl
 
-lift-comp : ∀ {m n o} → (π : Permutation m n) → (ρ : Permutation n o) →
-            ∀ i → lift₀ π ∘ₚ lift₀ ρ ⟨$⟩ʳ i ≡ lift₀ (π ∘ₚ ρ) ⟨$⟩ʳ i
-lift-comp π ρ zero = refl
-lift-comp π ρ (suc i) = refl
+lift₀-comp : ∀ {m n o} (π : Permutation m n) (ρ : Permutation n o) i →
+               lift₀ π ∘ₚ lift₀ ρ ⟨$⟩ʳ i ≡ lift₀ (π ∘ₚ ρ) ⟨$⟩ʳ i
+lift₀-comp π ρ 0F = refl
+lift₀-comp π ρ (suc i) = refl
 
-lift-cong : ∀ {m n} → (π ρ : Permutation m n) → (∀ i → π ⟨$⟩ʳ i ≡ ρ ⟨$⟩ʳ i) → ∀ i → lift₀ π ⟨$⟩ʳ i ≡ lift₀ ρ ⟨$⟩ʳ i
-lift-cong π ρ f zero = refl
-lift-cong π ρ f (suc i) = cong suc (f i)
+lift₀-cong : ∀ {m n} (π ρ : Permutation m n) → (∀ i → π ⟨$⟩ʳ i ≡ ρ ⟨$⟩ʳ i) →
+               ∀ i → lift₀ π ⟨$⟩ʳ i ≡ lift₀ ρ ⟨$⟩ʳ i
+lift₀-cong π ρ f 0F = refl
+lift₀-cong π ρ f (suc i) = cong suc (f i)
 
-lift-transpose : ∀ {n} (i j : Fin n) k → transpose (suc i) (suc j) ⟨$⟩ʳ k ≡ lift₀ (transpose i j) ⟨$⟩ʳ k
-lift-transpose i j zero = refl
-lift-transpose i j (suc k) with does (k ≟ i)
+lift₀-transpose : ∀ {n} (i j : Fin n) k → transpose (suc i) (suc j) ⟨$⟩ʳ k ≡ lift₀ (transpose i j) ⟨$⟩ʳ k
+lift₀-transpose i j 0F = refl
+lift₀-transpose i j (suc k) with does (k ≟ i)
 ... | true = refl
 ... | false with does (k ≟ j)
 ...   | false = refl
