@@ -115,7 +115,8 @@ NonZero : Pred ℤ 0ℓ
 NonZero i = ℕ.NonZero ∣ i ∣
 
 Positive : Pred ℤ 0ℓ
-Positive (+ n)    = ⊤
+Positive +[1+ n ] = ⊤
+Positive +0       = ⊥
 Positive -[1+ n ] = ⊥
 
 Negative : Pred ℤ 0ℓ
@@ -128,8 +129,7 @@ NonPositive +0       = ⊤
 NonPositive -[1+ n ] = ⊤
 
 NonNegative : Pred ℤ 0ℓ
-NonNegative +[1+ n ] = ⊤
-NonNegative +0       = ⊤
+NonNegative (+ n)    = ⊤
 NonNegative -[1+ n ] = ⊥
 
 -- Constructors

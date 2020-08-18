@@ -45,7 +45,7 @@ record RawPApplicative {I : Set i} (F : Pt I ℓ) :
   x <⊛ y = const <$> x ⊛ y
 
   _⊛>_ : ∀ {P Q} → const (∀ {i} → F P i) ⊆ F Q ⇒ F Q
-  x ⊛> y = flip const <$> x ⊛ y
+  x ⊛> y = constᵣ <$> x ⊛ y
 
   _⊗_ : ∀ {P Q} → F P ⊆ F Q ⇒ F (P ∩ Q)
   x ⊗ y = (_,_) <$> x ⊛ y

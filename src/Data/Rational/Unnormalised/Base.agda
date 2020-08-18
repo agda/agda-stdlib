@@ -198,7 +198,9 @@ NonNegative p = ℤ.NonNegative (↥ p)
 <-nonZero {mkℚᵘ -[1+ n ] _} (*<* _) = _
 
 positive : ∀ {p} → p > 0ℚᵘ → Positive p
-positive {mkℚᵘ (+ n) _} (*<* _) = _
+positive {mkℚᵘ +[1+ n ]   _} (*<* _) = _
+positive {mkℚᵘ +0         _} (*<* (+<+ ()))
+positive {mkℚᵘ (-[1+_] n) _} (*<* ())
 
 negative : ∀ {p} → p < 0ℚᵘ → Negative p
 negative {mkℚᵘ +[1+ n ]   _} (*<* (+<+ ()))

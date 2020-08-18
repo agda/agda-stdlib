@@ -8,7 +8,6 @@
 
 module Data.Rational.Unnormalised where
 
-------------------------------------------------------------------------
 -- Re-export basic definition, operations and queries
 
 open import Data.Rational.Unnormalised.Base public

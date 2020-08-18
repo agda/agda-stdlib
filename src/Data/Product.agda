@@ -140,13 +140,13 @@ assocˡ (a , (b , c)) = ((a , b) , c)
 
 -- Alternate form of associativity for dependent products
 -- where the C parameter is uncurried.
-assocʳ-alt : {B : A → Set b} {C : Σ A B → Set c} →
-          Σ (Σ A B) C → Σ A (λ a → Σ (B a) (curry C a))
-assocʳ-alt ((a , b) , c) = (a , (b , c))
+assocʳ-curried : {B : A → Set b} {C : Σ A B → Set c} →
+                 Σ (Σ A B) C → Σ A (λ a → Σ (B a) (curry C a))
+assocʳ-curried ((a , b) , c) = (a , (b , c))
 
-assocˡ-alt : {B : A → Set b} {C : Σ A B → Set c} →
+assocˡ-curried : {B : A → Set b} {C : Σ A B → Set c} →
           Σ A (λ a → Σ (B a) (curry C a)) → Σ (Σ A B) C
-assocˡ-alt (a , (b , c)) = ((a , b) , c)
+assocˡ-curried (a , (b , c)) = ((a , b) , c)
 
 ------------------------------------------------------------------------
 -- Operations for non-dependent products
@@ -172,10 +172,10 @@ swap : A × B → B × A
 swap (x , y) = (y , x)
 
 _-×-_ : (A → B → Set p) → (A → B → Set q) → (A → B → Set _)
-f -×- g = f -[ _×_ ]- g
+f -×- g = f -⟪ _×_ ⟫- g
 
 _-,-_ : (A → B → C) → (A → B → D) → (A → B → C × D)
-f -,- g = f -[ _,_ ]- g
+f -,- g = f -⟪ _,_ ⟫- g
 
 -- Rewriting non-dependent products
 assocʳ′ : (A × B) × C → A × (B × C)
