@@ -8,20 +8,20 @@
 
 module Data.Sum.Algebra where
 
-open import Agda.Builtin.Sigma
+open import Agda.Builtin.Sigma using (_,_)
 open import Algebra
 open import Data.Empty.Polymorphic using (⊥)
 open import Data.Sum.Base
 open import Data.Sum.Properties
+open import Data.Unit.Polymorphic using (⊤; tt)
 open import Function.Base using (id; _∘_)
 open import Function.Properties.Inverse using (↔-isEquivalence)
-open import Level using (Level)
+open import Level using (Level; suc)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; refl; cong; cong′)
 
 open import Function.Bundles using (_↔_; Inverse; mk↔)
 import Function.Definitions as FuncDef
-
-open import Relation.Binary.PropositionalEquality.Core
-  using (_≡_; refl; cong; cong′)
 
 ------------------------------------------------------------------------
 -- Setup
@@ -49,36 +49,36 @@ private
 ------------------------------------------------------------------------
 -- Algebraic properties
 
--- ⊎ is associative
-⊎-assoc : ∀ ℓ → Associative {ℓ = ℓ} _↔_ _⊎_
-⊎-assoc ℓ _ _ _ = inverse assocʳ assocˡ
-  [ cong′ , [ cong′ , cong′ ] ] [ [ cong′ , cong′ ] , cong′ ]
-
--- ⊎ is commutative.
--- We don't use Commutative because it isn't polymorphic enough.
-⊎-comm : (A : Set a) (B : Set b) → (A ⊎ B) ↔ (B ⊎ A)
-⊎-comm _ _ = inverse swap swap swap-involutive swap-involutive
-
--- ⊥ is both left and right identity for ⊎
-⊎-identityˡ : ∀ ℓ → LeftIdentity _↔_ (⊥ {ℓ}) _⊎_
-⊎-identityˡ ℓ A = inverse [ ♯ , id ] inj₂ cong′ [ ♯ , cong′ ]
-
-⊎-identityʳ : ∀ ℓ → RightIdentity _↔_ (⊥ {ℓ}) _⊎_
-⊎-identityʳ _ _ = inverse [ id , ♯ ] inj₁ cong′ [ cong′ , ♯ ]
-
-⊎-identity : ∀ ℓ → Identity _↔_ (⊥ {ℓ}) _⊎_
-⊎-identity ℓ = ⊎-identityˡ ℓ , ⊎-identityʳ ℓ
-
 ⊎-cong : A ↔ B → C ↔ D → (A ⊎ C) ↔ (B ⊎ D)
 ⊎-cong i j = inverse (map I.f J.f) (map I.f⁻¹ J.f⁻¹)
   [ cong inj₁ ∘ I.inverseˡ , cong inj₂ ∘ J.inverseˡ ]
   [ cong inj₁ ∘ I.inverseʳ , cong inj₂ ∘ J.inverseʳ ]
   where module I = Inverse i; module J = Inverse j
 
-------------------------------------------------------------------------
--- Algebraic structures
+-- ⊎ is commutative.
+-- We don't use Commutative because it isn't polymorphic enough.
+⊎-comm : (A : Set a) (B : Set b) → (A ⊎ B) ↔ (B ⊎ A)
+⊎-comm _ _ = inverse swap swap swap-involutive swap-involutive
 
 module _ (ℓ : Level) where
+
+  -- ⊎ is associative
+  ⊎-assoc : Associative {ℓ = ℓ} _↔_ _⊎_
+  ⊎-assoc _ _ _ = inverse assocʳ assocˡ
+    [ cong′ , [ cong′ , cong′ ] ] [ [ cong′ , cong′ ] , cong′ ]
+
+  -- ⊥ is an identity for ⊎
+  ⊎-identityˡ : LeftIdentity {ℓ = ℓ} _↔_ ⊥ _⊎_
+  ⊎-identityˡ A = inverse [ ♯ , id ] inj₂ cong′ [ ♯ , cong′ ]
+
+  ⊎-identityʳ : RightIdentity {ℓ = ℓ} _↔_ ⊥ _⊎_
+  ⊎-identityʳ _ = inverse [ id , ♯ ] inj₁ cong′ [ cong′ , ♯ ]
+
+  ⊎-identity : Identity _↔_ ⊥ _⊎_
+  ⊎-identity = ⊎-identityˡ , ⊎-identityʳ
+  
+------------------------------------------------------------------------
+-- Algebraic structures
 
   ⊎-isMagma : IsMagma {ℓ = ℓ} _↔_ _⊎_
   ⊎-isMagma = record
@@ -89,13 +89,13 @@ module _ (ℓ : Level) where
   ⊎-isSemigroup : IsSemigroup _↔_ _⊎_
   ⊎-isSemigroup = record
     { isMagma = ⊎-isMagma
-    ; assoc   = λ _ _ _ → ⊎-assoc _ _ _ _
+    ; assoc   = ⊎-assoc
     }
 
   ⊎-isMonoid : IsMonoid _↔_ _⊎_ ⊥
   ⊎-isMonoid = record
     { isSemigroup = ⊎-isSemigroup
-    ; identity    = ⊎-identityˡ ℓ , ⊎-identityʳ ℓ
+    ; identity    = ⊎-identityˡ , ⊎-identityʳ
     }
 
   ⊎-isCommutativeMonoid : IsCommutativeMonoid _↔_ _⊎_ ⊥
@@ -107,22 +107,22 @@ module _ (ℓ : Level) where
 ------------------------------------------------------------------------
 -- Algebraic bundles
 
-  ⊎-magma : Magma _ _
+  ⊎-magma : Magma (suc ℓ) ℓ
   ⊎-magma = record
     { isMagma = ⊎-isMagma
     }
 
-  ⊎-semigroup : Semigroup _ _
+  ⊎-semigroup : Semigroup (suc ℓ) ℓ
   ⊎-semigroup = record
     { isSemigroup = ⊎-isSemigroup
     }
 
-  ⊎-monoid : Monoid _ _
+  ⊎-monoid : Monoid (suc ℓ) ℓ
   ⊎-monoid = record
     { isMonoid = ⊎-isMonoid
     }
 
-  ⊎-commutativeMonoid : CommutativeMonoid _ _
+  ⊎-commutativeMonoid : CommutativeMonoid (suc ℓ) ℓ
   ⊎-commutativeMonoid = record
     { isCommutativeMonoid = ⊎-isCommutativeMonoid
     }

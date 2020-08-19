@@ -161,7 +161,6 @@ New modules
   ```
   Data.Sum.Algebra
   Data.Product.Algebra
-  Data.SumProduct.Algebra
   ```
 
 * Symmetry for various functional properties
