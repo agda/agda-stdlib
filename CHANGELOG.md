@@ -285,6 +285,8 @@ Other minor additions
   wordsBy              : Decidable P → List A → List (List A)
   cartesianProductWith : (A → B → C) → List A → List B → List C
   cartesianProduct     : List A → List B → List (A × B)
+  foldMap              : (M : Monoid) → (A → Monoid.Carrier M) → List A → Monoid.Carrier M
+  fold                 : (M : Monoid) → List (Monoid.Carrier M) → Monoid.Carrier M
   ```
 
 * Added new proofs to `Data.List.Properties`:

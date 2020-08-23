@@ -11,6 +11,7 @@
 
 module Data.List.Base where
 
+open import Algebra.Bundles using (Monoid)
 open import Data.Bool.Base as Bool
   using (Bool; false; true; not; _∧_; _∨_; if_then_else_)
 open import Data.Fin.Base using (Fin; zero; suc)
@@ -393,6 +394,19 @@ wordsBy {A = A} P? = go [] where
   go acc (c ∷ cs) with does (P? c)
   ... | true  = cons acc (go [] cs)
   ... | false = go (c ∷ acc) cs
+
+------------------------------------------------------------------------
+-- Monoidal folding
+
+module _ {c ℓ} (M : Monoid c ℓ) where
+  open Monoid M
+
+  foldMap : ∀ {a} {A : Set a} → (A → Carrier) → List A → Carrier
+  foldMap f [] = ε
+  foldMap f (x ∷ xs) = f x ∙ foldMap f xs
+
+  fold : List Carrier → Carrier
+  fold = foldMap id
 
 ------------------------------------------------------------------------
 -- DEPRECATED
