@@ -13,6 +13,7 @@ module Data.List.Properties where
 
 open import Algebra.Bundles
 open import Algebra.Definitions as AlgebraicDefinitions using (Involutive)
+open import Algebra.Morphism using (IsMonoidMorphism)
 import Algebra.Structures as AlgebraicStructures
 open import Data.Bool.Base using (Bool; false; true; not; if_then_else_)
 open import Data.Fin.Base using (Fin; zero; suc; cast; toℕ; inject₁)
@@ -960,7 +961,27 @@ module _ {x y : A} where
   ∷ʳ-injectiveʳ : ∀ (xs ys : List A) → xs ∷ʳ x ≡ ys ∷ʳ y → x ≡ y
   ∷ʳ-injectiveʳ xs ys eq = proj₂ (∷ʳ-injective xs ys eq)
 
+------------------------------------------------------------------------
+-- foldMap
 
+module _ {c ℓ} (M : Monoid c ℓ) (f : A → Monoid.Carrier M) where
+
+  open Monoid M using (_∙_; _≈_; identityˡ; ∙-cong)
+
+  ++-foldMap : ∀ xs ys → foldMap M f (xs ++ ys) ≈ foldMap M f xs ∙ foldMap M f ys
+  ++-foldMap [] ys = Monoid.sym M (identityˡ _)
+  ++-foldMap (x ∷ xs) ys = Monoid.trans M
+    (∙-cong (Monoid.refl M) (++-foldMap xs ys))
+    (Monoid.sym M (Monoid.assoc M _ _ _))
+
+  foldMap-morphism : IsMonoidMorphism (++-monoid A) M (foldMap M f)
+  foldMap-morphism = record
+    { sm-homo = record
+      { ⟦⟧-cong = λ p → Monoid.reflexive M (cong (foldMap M f) p)
+      ; ∙-homo = ++-foldMap
+      }
+    ; ε-homo = Monoid.refl M
+    }
 
 ------------------------------------------------------------------------
 -- DEPRECATED
