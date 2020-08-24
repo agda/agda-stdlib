@@ -108,6 +108,13 @@ Deprecated names
 New modules
 -----------
 
+* The direct products and zeros over algebraic structures and bundles:
+  ```
+  Algebra.Construct.Zero
+  Algebra.Construct.DirectProduct
+  Algebra.Module.Construct.DirectProduct.agda
+  ```
+
 * Substituting the notion of equality for various structures
   ```
   Algebra.Construct.Subst.Equality
