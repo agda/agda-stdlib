@@ -112,7 +112,7 @@ New modules
   ```
   Algebra.Construct.Zero
   Algebra.Construct.DirectProduct
-  Algebra.Module.Construct.DirectProduct.agda 
+  Algebra.Module.Construct.DirectProduct.agda
   ```
 
 * Substituting the notion of equality for various structures
