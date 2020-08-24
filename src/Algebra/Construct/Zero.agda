@@ -15,12 +15,24 @@
 
 module Algebra.Construct.Zero where
 
-open import Algebra
+open import Algebra.Bundles
 open import Data.Unit
 open import Level using (Level; 0ℓ)
 
+------------------------------------------------------------------------
+-- Raw bundles
+
 rawMagma : RawMagma 0ℓ 0ℓ
 rawMagma = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
+
+rawMonoid : RawMonoid 0ℓ 0ℓ
+rawMonoid = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
+
+rawGroup : RawGroup 0ℓ 0ℓ
+rawGroup = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
+
+------------------------------------------------------------------------
+-- Bundles
 
 magma : Magma 0ℓ 0ℓ
 magma = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
@@ -37,9 +49,6 @@ commutativeSemigroup = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
 semilattice : Semilattice 0ℓ 0ℓ
 semilattice = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
 
-rawMonoid : RawMonoid 0ℓ 0ℓ
-rawMonoid = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
-
 monoid : Monoid 0ℓ 0ℓ
 monoid = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
 
@@ -48,9 +57,6 @@ commutativeMonoid = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
 
 idempotentCommutativeMonoid : IdempotentCommutativeMonoid 0ℓ 0ℓ
 idempotentCommutativeMonoid = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
-
-rawGroup : RawGroup 0ℓ 0ℓ
-rawGroup = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
 
 group : Group 0ℓ 0ℓ
 group = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }

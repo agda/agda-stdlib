@@ -9,10 +9,10 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Algebra.Module.Construct.DirectSum where
+module Algebra.Module.Construct.DirectProduct where
 
 open import Algebra.Bundles
-open import Algebra.Construct.DirectSum
+open import Algebra.Construct.DirectProduct
 open import Algebra.Module.Bundles
 open import Data.Product
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
@@ -22,9 +22,13 @@ private
   variable
     r s ℓr ℓs m m′ ℓm ℓm′ : Level
 
+------------------------------------------------------------------------
+-- Bundles
+
 leftSemimodule : {R : Semiring r ℓr} →
-  LeftSemimodule R m ℓm → LeftSemimodule R m′ ℓm′ →
-  LeftSemimodule R (m ⊔ m′) (ℓm ⊔ ℓm′)
+                 LeftSemimodule R m ℓm →
+                 LeftSemimodule R m′ ℓm′ →
+                 LeftSemimodule R (m ⊔ m′) (ℓm ⊔ ℓm′)
 leftSemimodule M N = record
   { _*ₗ_ = λ r → map (r M.*ₗ_) (r N.*ₗ_)
   ; isLeftSemimodule = record
@@ -42,14 +46,12 @@ leftSemimodule M N = record
         x (m , n) (m′ , n′) → M.*ₗ-distribˡ x m m′ , N.*ₗ-distribˡ x n n′
       }
     }
-  }
-  where
-  module M = LeftSemimodule M
-  module N = LeftSemimodule N
+  } where module M = LeftSemimodule M; module N = LeftSemimodule N
 
 rightSemimodule : {R : Semiring r ℓr} →
-  RightSemimodule R m ℓm → RightSemimodule R m′ ℓm′ →
-  RightSemimodule R (m ⊔ m′) (ℓm ⊔ ℓm′)
+                  RightSemimodule R m ℓm →
+                  RightSemimodule R m′ ℓm′ →
+                  RightSemimodule R (m ⊔ m′) (ℓm ⊔ ℓm′)
 rightSemimodule M N = record
   { _*ᵣ_ = λ mn r → map (M._*ᵣ r) (N._*ᵣ r) mn
   ; isRightSemimodule = record
@@ -68,14 +70,12 @@ rightSemimodule M N = record
         x (m , n) (m′ , n′) → M.*ᵣ-distribʳ x m m′ , N.*ᵣ-distribʳ x n n′
       }
     }
-  }
-  where
-  module M = RightSemimodule M
-  module N = RightSemimodule N
+  } where module M = RightSemimodule M; module N = RightSemimodule N
 
 bisemimodule : {R : Semiring r ℓr} {S : Semiring s ℓs} →
-  Bisemimodule R S m ℓm → Bisemimodule R S m′ ℓm′ →
-  Bisemimodule R S (m ⊔ m′) (ℓm ⊔ ℓm′)
+               Bisemimodule R S m ℓm →
+               Bisemimodule R S m′ ℓm′ →
+               Bisemimodule R S (m ⊔ m′) (ℓm ⊔ ℓm′)
 bisemimodule M N = record
   { isBisemimodule = record
     { +ᴹ-isCommutativeMonoid = CommutativeMonoid.isCommutativeMonoid
@@ -87,25 +87,23 @@ bisemimodule M N = record
     ; *ₗ-*ᵣ-assoc = λ where
       x (m , n) y → M.*ₗ-*ᵣ-assoc x m y , N.*ₗ-*ᵣ-assoc x n y
     }
-  }
-  where
-  module M = Bisemimodule M
-  module N = Bisemimodule N
+  } where module M = Bisemimodule M; module N = Bisemimodule N
 
 semimodule : {R : CommutativeSemiring r ℓr} →
-  Semimodule R m ℓm → Semimodule R m′ ℓm′ → Semimodule R (m ⊔ m′) (ℓm ⊔ ℓm′)
+             Semimodule R m ℓm →
+             Semimodule R m′ ℓm′ →
+             Semimodule R (m ⊔ m′) (ℓm ⊔ ℓm′)
 semimodule M N = record
   { isSemimodule = record
     { isBisemimodule = Bisemimodule.isBisemimodule
       (bisemimodule M.bisemimodule N.bisemimodule)
     }
-  }
-  where
-  module M = Semimodule M
-  module N = Semimodule N
+  } where module M = Semimodule M; module N = Semimodule N
 
 leftModule : {R : Ring r ℓr} →
-  LeftModule R m ℓm → LeftModule R m′ ℓm′ → LeftModule R (m ⊔ m′) (ℓm ⊔ ℓm′)
+             LeftModule R m ℓm →
+             LeftModule R m′ ℓm′ →
+             LeftModule R (m ⊔ m′) (ℓm ⊔ ℓm′)
 leftModule M N = record
   { -ᴹ_ = map M.-ᴹ_ N.-ᴹ_
   ; isLeftModule = record
@@ -116,13 +114,12 @@ leftModule M N = record
       .proj₁ (m , n) → M.-ᴹ‿inverseˡ m , N.-ᴹ‿inverseˡ n
       .proj₂ (m , n) → M.-ᴹ‿inverseʳ m , N.-ᴹ‿inverseʳ n
     }
-  }
-  where
-  module M = LeftModule M
-  module N = LeftModule N
+  } where module M = LeftModule M; module N = LeftModule N
 
 rightModule : {R : Ring r ℓr} →
-  RightModule R m ℓm → RightModule R m′ ℓm′ → RightModule R (m ⊔ m′) (ℓm ⊔ ℓm′)
+              RightModule R m ℓm →
+              RightModule R m′ ℓm′ →
+              RightModule R (m ⊔ m′) (ℓm ⊔ ℓm′)
 rightModule M N = record
   { -ᴹ_ = map M.-ᴹ_ N.-ᴹ_
   ; isRightModule = record
@@ -133,13 +130,12 @@ rightModule M N = record
       .proj₁ (m , n) → M.-ᴹ‿inverseˡ m , N.-ᴹ‿inverseˡ n
       .proj₂ (m , n) → M.-ᴹ‿inverseʳ m , N.-ᴹ‿inverseʳ n
     }
-  }
-  where
-  module M = RightModule M
-  module N = RightModule N
+  } where module M = RightModule M; module N = RightModule N
 
 bimodule : {R : Ring r ℓr} {S : Ring s ℓs} →
-  Bimodule R S m ℓm → Bimodule R S m′ ℓm′ → Bimodule R S (m ⊔ m′) (ℓm ⊔ ℓm′)
+           Bimodule R S m ℓm →
+           Bimodule R S m′ ℓm′ →
+           Bimodule R S (m ⊔ m′) (ℓm ⊔ ℓm′)
 bimodule M N = record
   { -ᴹ_ = map M.-ᴹ_ N.-ᴹ_
   ; isBimodule = record
@@ -150,18 +146,14 @@ bimodule M N = record
       .proj₁ (m , n) → M.-ᴹ‿inverseˡ m , N.-ᴹ‿inverseˡ n
       .proj₂ (m , n) → M.-ᴹ‿inverseʳ m , N.-ᴹ‿inverseʳ n
     }
-  }
-  where
-  module M = Bimodule M
-  module N = Bimodule N
+  } where module M = Bimodule M; module N = Bimodule N
 
 ⟨module⟩ : {R : CommutativeRing r ℓr} →
-  Module R m ℓm → Module R m′ ℓm′ → Module R (m ⊔ m′) (ℓm ⊔ ℓm′)
+           Module R m ℓm →
+           Module R m′ ℓm′ →
+           Module R (m ⊔ m′) (ℓm ⊔ ℓm′)
 ⟨module⟩ M N = record
   { isModule = record
     { isBimodule = Bimodule.isBimodule (bimodule M.bimodule N.bimodule)
     }
-  }
-  where
-  module M = Module M
-  module N = Module N
+  } where module M = Module M; module N = Module N

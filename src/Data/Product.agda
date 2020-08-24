@@ -161,7 +161,7 @@ dmap′ f g = dmap f g
 
 _<*>_ : ∀ {x y} {X : A → Set x} {Y : B → Set y} →
         ((a : A) → X a) × ((b : B) → Y b) →
-        (ab : A × B) → X (proj₁ ab) × Y (proj₂ ab)
+        ((a , b) : A × B) → X a × Y b
 _<*>_ = uncurry dmap′
 
 -- Operations that can only be defined for non-dependent products
