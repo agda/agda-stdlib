@@ -1,0 +1,10 @@
+resolver: ghc-8.10.1
+compiler: ghc-8.10.1
+compiler-check: match-exact
+
+extra-deps:
+- filemanip-0.3.6.3@sha256:7b5f8aa0626724fbd77721f4d01241b1e7f390dd6a4086bddba77c0cea25fcd7,1223
+- unix-compat-0.5.2@sha256:5508ebcfaf1a862886cd217178e283d613d47803785d8ab4a3bd2bb9b542a3fb,2041
+
+packages:
+- '.'
