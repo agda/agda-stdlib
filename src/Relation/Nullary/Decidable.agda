@@ -9,12 +9,17 @@
 module Relation.Nullary.Decidable where
 
 open import Level using (Level)
+open import Data.Bool.Base using (true; false)
+open import Data.Empty using (⊥-elim)
 open import Function.Base
 open import Function.Equality    using (_⟨$⟩_; module Π)
+open import Function using (_↔_; mk↔′)
 open import Function.Equivalence using (_⇔_; equivalence; module Equivalence)
 open import Function.Injection   using (Injection; module Injection)
 open import Relation.Binary      using (Setoid; module Setoid; Decidable)
 open import Relation.Nullary
+open import Relation.Nullary.Reflects using (invert)
+open import Relation.Binary.PropositionalEquality using (cong′)
 
 private
   variable
@@ -49,3 +54,10 @@ module _ {a₁ a₂ b₁ b₂} {A : Setoid a₁ a₂} {B : Setoid b₁ b₂}
   via-injection : Decidable _≈B_ → Decidable _≈A_
   via-injection dec x y =
     map′ injective (Π.cong to) (dec (to ⟨$⟩ x) (to ⟨$⟩ y))
+
+------------------------------------------------------------------------
+-- A lemma relating True and Dec
+
+True-↔ : (dec : Dec P) → Irrelevant P → True dec ↔ P
+True-↔ (true  because  [p]) irr = mk↔′ (λ _ → invert [p]) _ (irr (invert [p])) cong′
+True-↔ (false because ofⁿ ¬p) _ = mk↔′ (λ ()) (invert (ofⁿ ¬p)) (⊥-elim ∘ ¬p) λ ()

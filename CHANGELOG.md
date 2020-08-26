@@ -163,6 +163,11 @@ New modules
   Data.Product.Algebra
   ```
 
+* Basic properties of the function type `A → B`:
+  ```agda
+  Function.Properties
+  ```
+
 * Symmetry for various functional properties
   ```agda
   Function.Construct.Symmetry
@@ -198,6 +203,7 @@ New modules
 * Indexed nullary relations/sets:
   ```
   Relation.Nullary.Indexed
+  Relation.Nullary.Indexed.Negation
   ```
 
 * Symmetric transitive closures of binary relations:
@@ -436,6 +442,13 @@ Other minor additions
   assocˡ′        : A × (B × C) → (A × B) × C
   ```
 
+* Added new proofs to `Data.Product.Properties`:
+  ```agda
+  Σ-≡,≡↔≡ : {p₁@(a₁ , b₁) p₂@(a₂ , b₂) : Σ A B} → (∃ λ (p : a₁ ≡ a₂) → subst B p b₁ ≡ b₂) ↔ (p₁ ≡ p₂)
+  ×-≡,≡↔≡ : {p₁@(a₁ , b₁) p₂@(a₂ , b₂) : A × B} → (a₁ ≡ a₂ × b₁ ≡ b₂) ↔ p₁ ≡ p₂
+  ∃∃↔∃∃   : (R : A → B → Set ℓ) → (∃₂ λ x y → R x y) ↔ (∃₂ λ y x → R x y)
+  ```
+
 * Add new functions to `Data.Sum.Base`:
   ```agda
   assocʳ : (A ⊎ B) ⊎ C → A ⊎ B ⊎ C
@@ -577,6 +590,11 @@ Other minor additions
   _on₂_   : (C → C → D) → (A → B → C) → (A → B → D)
   ```
 
+* Added new function in `Function.Bundles`:
+  ```agda
+  mk↔′ : ∀ (f : A → B) (f⁻¹ : B → A) → Inverseˡ f f⁻¹ → Inverseʳ f f⁻¹ → A ↔ B
+  ```
+
 * Added new operator to `Relation.Binary`:
   ```agda
   _⇔_ : REL A B ℓ₁ → REL A B ℓ₂ → Set _
@@ -596,4 +614,9 @@ Other minor additions
   cong′  : {f : A → B} x → f x ≡ f x
   icong  : {f : A → B} {x y} → x ≡ y → f x ≡ f y
   icong′ : {f : A → B} x → f x ≡ f x
+  ```
+
+* Added new proof to `Relation.Nullary.Decidable`:
+  ```agda
+  True-↔ : (dec : Dec P) → Irrelevant P → True dec ↔ P
   ```
