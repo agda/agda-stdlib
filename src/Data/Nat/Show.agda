@@ -38,12 +38,18 @@ show = String.fromList ∘ toDecimalChars
 -- Warning: when compiled the time complexity of `showInBase b n` is
 -- O(n) instead of the expected O(log(n)).
 
+charsInBase : (base : ℕ)
+              {base≥2 : True (2 ≤? base)}
+              {base≤16 : True (base ≤? 16)} →
+              ℕ → List Char
+charsInBase base {base≥2} {base≤16} = map (showDigit {base≤16 = base≤16})
+                                    ∘ reverse
+                                    ∘ proj₁
+                                    ∘ toDigits base {base≥2 = base≥2}
+
 showInBase : (base : ℕ)
              {base≥2 : True (2 ≤? base)}
              {base≤16 : True (base ≤? 16)} →
              ℕ → String
-showInBase base {base≥2} {base≤16} n =
-  String.fromList $
-  map (showDigit {base≤16 = base≤16}) $
-  reverse $
-  proj₁ $ toDigits base {base≥2 = base≥2} n
+showInBase base {base≥2} {base≤16} = String.fromList
+                                   ∘ charsInBase base {base≥2} {base≤16}

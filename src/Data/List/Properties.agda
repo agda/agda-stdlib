@@ -106,6 +106,12 @@ map-compose : {g : B → C} {f : A → B} → map (g ∘ f) ≗ map g ∘ map f
 map-compose []       = refl
 map-compose (x ∷ xs) = cong (_ ∷_) (map-compose xs)
 
+map-injective : ∀ {f : A → B} → Injective _≡_ _≡_ f → Injective _≡_ _≡_ (map f)
+map-injective finj {[]} {[]} eq = refl
+map-injective finj {x ∷ xs} {y ∷ ys} eq =
+  let fx≡fy , fxs≡fys = ∷-injective eq in
+  cong₂ _∷_ (finj fx≡fy) (map-injective finj fxs≡fys)
+
 ------------------------------------------------------------------------
 -- mapMaybe
 
@@ -906,6 +912,11 @@ reverse-involutive xs = begin
   [] ʳ++  xs ++ []      ≡⟨⟩
   xs ++ []              ≡⟨ ++-identityʳ xs ⟩
   xs                    ∎
+
+-- reverse is injective.
+
+reverse-injective : ∀ {xs ys : List A} → reverse xs ≡ reverse ys → xs ≡ ys
+reverse-injective = subst₂ _≡_ (reverse-involutive _) (reverse-involutive _) ∘ cong reverse
 
 -- reverse preserves length.
 

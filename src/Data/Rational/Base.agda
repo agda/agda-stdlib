@@ -18,7 +18,7 @@ open import Data.Nat.Coprimality as C
   using (Coprime; Bézout-coprime; coprime-/gcd; coprime?; ¬0-coprimeTo-2+)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc) hiding (module ℕ)
 import Data.Nat.DivMod as ℕ
-open import Data.Rational.Unnormalised as ℚᵘ using (ℚᵘ; mkℚᵘ; _≢0)
+open import Data.Rational.Unnormalised.Base as ℚᵘ using (ℚᵘ; mkℚᵘ; _≢0)
 open import Data.Product
 open import Data.Sum.Base using (inj₂)
 open import Level using (0ℓ)

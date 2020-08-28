@@ -355,8 +355,8 @@ word within a compound word is capitalized except for the first word.
   with respect to various functions. Suppose you have a function `f`, then
   - `f⁺` is a lemma of the form `Precondition -> P(f)`
   - `f⁻` is a lemma of the form `P(f) -> Postcondition`
-  The logic behind the name is that ⁺ makes f appear in the conclusion while
-  makes it disappear from the hypothesis.
+  The logic behind the name is that `⁺` makes f appear in the conclusion while
+  `⁻` makes it disappear from the hypothesis.
 
   For example in `Data.List.Relation.Binary.Pointwise` we have `map⁺` to show
   how the `map` function may be introduced and `map⁻` to show how it may be
