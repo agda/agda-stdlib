@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Nat.Binary.Induction</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Induction over _&lt;_ for ℕᵇ.</a>
+<a id="136" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="210" class="Symbol">{-#</a> <a id="214" class="Keyword">OPTIONS</a> <a id="222" class="Pragma">--without-K</a> <a id="234" class="Pragma">--safe</a> <a id="241" class="Symbol">#-}</a>
+
+<a id="246" class="Keyword">module</a> <a id="253" href="Data.Nat.Binary.Induction.html" class="Module">Data.Nat.Binary.Induction</a> <a id="279" class="Keyword">where</a>
+
+<a id="286" class="Keyword">open</a> <a id="291" class="Keyword">import</a> <a id="298" href="Data.Nat.Binary.Base.html" class="Module">Data.Nat.Binary.Base</a>
+<a id="319" class="Keyword">open</a> <a id="324" class="Keyword">import</a> <a id="331" href="Data.Nat.Binary.Properties.html" class="Module">Data.Nat.Binary.Properties</a>
+<a id="358" class="Keyword">open</a> <a id="363" class="Keyword">import</a> <a id="370" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a> <a id="384" class="Symbol">as</a> <a id="387" class="Module">ℕ</a> <a id="389" class="Keyword">using</a> <a id="395" class="Symbol">(</a><a id="396" href="Agda.Builtin.Nat.html#192" class="Datatype">ℕ</a><a id="397" class="Symbol">)</a>
+<a id="399" class="Keyword">import</a> <a id="406" href="Data.Nat.Induction.html" class="Module">Data.Nat.Induction</a> <a id="425" class="Symbol">as</a> <a id="428" class="Module">ℕ</a>
+<a id="430" class="Keyword">open</a> <a id="435" class="Keyword">import</a> <a id="442" href="Induction.WellFounded.html" class="Module">Induction.WellFounded</a>
+
+<a id="465" class="Comment">------------------------------------------------------------------------</a>
+<a id="538" class="Comment">-- _&lt;_ is wellFounded</a>
+
+<a id="&lt;-wellFounded"></a><a id="561" href="Data.Nat.Binary.Induction.html#561" class="Function">&lt;-wellFounded</a> <a id="575" class="Symbol">:</a> <a id="577" href="Induction.WellFounded.html#1387" class="Function">WellFounded</a> <a id="589" href="Data.Nat.Binary.Base.html#1146" class="Datatype Operator">_&lt;_</a>
+<a id="593" href="Data.Nat.Binary.Induction.html#561" class="Function">&lt;-wellFounded</a> <a id="607" href="Data.Nat.Binary.Induction.html#607" class="Bound">x</a> <a id="609" class="Symbol">=</a> <a id="611" href="Induction.WellFounded.html#4515" class="Function">Subrelation.accessible</a> <a id="634" href="Data.Nat.Binary.Properties.html#18127" class="Function">&lt;⇒&lt;ℕ</a> <a id="639" href="Data.Nat.Binary.Induction.html#660" class="Function">toℕ[x]-acc</a>
+  <a id="652" class="Keyword">where</a>
+  <a id="660" href="Data.Nat.Binary.Induction.html#660" class="Function">toℕ[x]-acc</a> <a id="671" class="Symbol">=</a> <a id="673" href="Induction.WellFounded.html#4930" class="Function">InverseImage.accessible</a> <a id="697" href="Data.Nat.Binary.Base.html#2913" class="Function">toℕ</a> <a id="701" class="Symbol">(</a><a id="702" href="Data.Nat.Induction.html#2262" class="Function">ℕ.&lt;-wellFounded</a> <a id="718" class="Symbol">(</a><a id="719" href="Data.Nat.Binary.Base.html#2913" class="Function">toℕ</a> <a id="723" href="Data.Nat.Binary.Induction.html#607" class="Bound">x</a><a id="724" class="Symbol">))</a>
+</pre></body></html>
