@@ -262,6 +262,14 @@ Other minor additions
   splitAt-<         : splitAt m {n} i ≡ inj₁ (fromℕ< i<m)
   splitAt-≥         : splitAt m {n} i ≡ inj₂ (reduce≥ i i≥m)
   inject≤-injective : inject≤ x n≤m ≡ inject≤ y n≤m′ → x ≡ y
+
+  k+nℕ-ℕk≡n            : toℕ k + (n ℕ-ℕ k) ≡ n
+  k≡fromℕ[n]⇒toℕ[k]≡n  : k ≡ fromℕ n → toℕ k ≡ n
+  toℕ[k]≡n⇒k≡fromℕ[n]  : toℕ k ≡ n → k ≡ fromℕ n
+  punchIn≡inject₁      : punchIn (fromℕ n) k ≡ inject₁ k
+  punchOut≡lower₁      : punchOut {i = fromℕ n} {j = i} n≢i′ ≡ lower₁ i n≢i
+  punchOut-irrelevant  : (p₁ p₂ : i ≢ j) → punchOut p₁ ≡ punchOut p₂
+
   ```
 
 * Added new functions to `Data.Fin.Base`:

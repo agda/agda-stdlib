@@ -134,6 +134,14 @@ fromℕ-toℕ (suc i) = cong suc (fromℕ-toℕ i)
 ≤fromℕ : ∀ {n} → (i : Fin (ℕ.suc n)) → i ≤ fromℕ n
 ≤fromℕ {n} i = subst (toℕ i ℕ.≤_) (sym (toℕ-fromℕ n)) (ℕₚ.≤-pred (toℕ<n i))
 
+k≡fromℕ[n]⇒toℕ[k]≡n : ∀ n k → .(k ≡ fromℕ n) → toℕ k ≡ n
+k≡fromℕ[n]⇒toℕ[k]≡n  zero    0F     k≡fromℕ[n] = refl
+k≡fromℕ[n]⇒toℕ[k]≡n (suc n) (suc k) k≡fromℕ[n] = cong suc (k≡fromℕ[n]⇒toℕ[k]≡n n k (suc-injective k≡fromℕ[n]))
+
+toℕ[k]≡n⇒k≡fromℕ[n] : ∀ n k → .(toℕ k ≡ n) → k ≡ fromℕ n
+toℕ[k]≡n⇒k≡fromℕ[n] zero 0F toℕ[k]≡n = refl
+toℕ[k]≡n⇒k≡fromℕ[n] (suc n) (suc k) toℕ[k]≡n = cong suc (toℕ[k]≡n⇒k≡fromℕ[n] n k (ℕₚ.suc-injective toℕ[k]≡n))
+
 ------------------------------------------------------------------------
 -- fromℕ<
 ------------------------------------------------------------------------
@@ -567,6 +575,10 @@ nℕ-ℕi≤n (suc n) (suc i)  = begin
   suc n    ∎
   where open ℕₚ.≤-Reasoning
 
+k+nℕ-ℕk≡n : ∀ n k → toℕ k ℕ.+ (n ℕ-ℕ k) ≡ n
+k+nℕ-ℕk≡n n 0F = ℕₚ.+-identityˡ n
+k+nℕ-ℕk≡n (suc n) (suc k) = cong suc (k+nℕ-ℕk≡n n k)
+
 ------------------------------------------------------------------------
 -- punchIn
 ------------------------------------------------------------------------
@@ -580,6 +592,10 @@ punchIn-injective (suc i) (suc j) (suc k) ↑j+1≡↑k+1 =
 
 punchInᵢ≢i : ∀ {m} i (j : Fin m) → punchIn i j ≢ i
 punchInᵢ≢i (suc i) (suc j) = punchInᵢ≢i i j ∘ suc-injective
+
+punchIn≡inject₁ : ∀ {n} (k : Fin n) → punchIn (fromℕ n) k ≡ inject₁ k
+punchIn≡inject₁ {suc n}  0F     = refl
+punchIn≡inject₁ {suc n} (suc k) = cong suc (punchIn≡inject₁ k)
 
 ------------------------------------------------------------------------
 -- punchOut
@@ -628,6 +644,17 @@ punchOut-punchIn (suc i) {suc j} = cong suc (begin
   punchOut (punchInᵢ≢i i j ∘ sym)                             ≡⟨ punchOut-punchIn i ⟩
   j                                                           ∎)
   where open ≡-Reasoning
+
+punchOut-irrelevant : ∀ {n} {i j : Fin (suc n)} → (p₁ p₂ : i ≢ j) → punchOut p₁ ≡ punchOut p₂
+punchOut-irrelevant {_}     {0F}    {0F}    p₁ p₂ = contradiction refl p₁
+punchOut-irrelevant {_}     {0F}    {suc j} p₁ p₂ = refl
+punchOut-irrelevant {suc n} {suc i} {0F}    p₁ p₂ = refl
+punchOut-irrelevant {suc n} {suc i} {suc j} p₁ p₂ = cong suc (punchOut-irrelevant (p₁ ∘ cong suc) (p₂ ∘ cong suc))
+
+punchOut≡lower₁ : ∀ {n} {i : Fin (suc n)} → (n≢i : n ≢ toℕ i) → (n≢i′ : fromℕ n ≢ i) → punchOut {i = fromℕ n} {j = i} n≢i′ ≡ lower₁ i n≢i
+punchOut≡lower₁ {zero}  {0F}    n≢i _    = contradiction refl n≢i
+punchOut≡lower₁ {suc n} {0F}    n≢i _    = refl
+punchOut≡lower₁ {suc n} {suc i} n≢i n≢i′ = cong suc (punchOut≡lower₁ _ _)
 
 ------------------------------------------------------------------------
 -- Quantification
