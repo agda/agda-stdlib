@@ -313,6 +313,8 @@ record IsSemiringWithoutOne (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
   open IsNearSemiring isNearSemiring public
     hiding (+-isMonoid; zeroˡ; *-isSemigroup)
 
+  distribˡ : * DistributesOverˡ +
+  distribˡ = proj₁ distrib
 
 record IsCommutativeSemiringWithoutOne
          (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where

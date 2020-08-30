@@ -240,6 +240,11 @@ Other minor additions
                       IsCommutativeRing _≈₁_ _+_ _*_ -_ 0# 1#
   ```
 
+* Added declarations to `Algebra.Structures.IsSemiringWithoutOne`:
+  ```agda
+  distribˡ : * DistributesOverˡ +
+  ```
+
 * Added new proof to `Data.Fin.Induction`:
   ```agda
   <-wellFounded : WellFounded _<_
