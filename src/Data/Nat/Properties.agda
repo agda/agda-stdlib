@@ -839,6 +839,11 @@ m*n≡0⇒m≡0∨n≡0 : ∀ m {n} → m * n ≡ 0 → m ≡ 0 ⊎ n ≡ 0
 m*n≡0⇒m≡0∨n≡0 zero    {n}     eq = inj₁ refl
 m*n≡0⇒m≡0∨n≡0 (suc m) {zero}  eq = inj₂ refl
 
+m≢0∧n≢0⇒m*n≢0 : ∀ {m n} → m ≢ 0 → n ≢ 0 → m * n ≢ 0
+m≢0∧n≢0⇒m*n≢0 {zero}  {n}     m≢0 n≢0 = contradiction refl m≢0
+m≢0∧n≢0⇒m*n≢0 {suc m} {zero}  m≢0 n≢0 = contradiction refl n≢0
+m≢0∧n≢0⇒m*n≢0 {suc m} {suc n} m≢0 n≢0 = 1+n≢0
+
 m*n≡1⇒m≡1 : ∀ m n → m * n ≡ 1 → m ≡ 1
 m*n≡1⇒m≡1 (suc zero)    n             _  = refl
 m*n≡1⇒m≡1 (suc (suc m)) (suc zero)    ()

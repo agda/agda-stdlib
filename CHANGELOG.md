@@ -379,6 +379,11 @@ Other minor additions
 
 * `Data.Nat.Binary.Induction` now re-exports `Acc` and `acc` from `Induction.WellFounded`.
 
+* Added new properties to `Data.Nat.Properties`:
+  ```agda
+  m≢0∧n≢0⇒m*n≢0 : m ≢ 0 → n ≢ 0 → m * n ≢ 0
+  ```
+
 * Added new properties to `Data.Nat.Binary.Properties`:
   ```agda
   +-isSemigroup            : IsSemigroup _+_
