@@ -133,6 +133,11 @@ New modules
   Function.Identity.Instances
   ```
 
+* Algerbaic properties:
+  ```agda
+  Algebra.Properties.SemiringWithoutOne
+  ```
+
 * Predicate for lists that are sorted with respect to a total order
   ```
   Data.List.Relation.Unary.Sorted.TotalOrder
