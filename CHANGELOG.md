@@ -135,6 +135,7 @@ New modules
 
 * Algerbaic properties:
   ```agda
+  Algebra.Properties.CommutativeSemiring
   Algebra.Properties.SemiringWithoutOne
   ```
 
