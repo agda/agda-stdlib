@@ -497,6 +497,13 @@ Other minor additions
   words   : String → List String
   ```
 
+* Added definitions to `Data.Table.Base`:
+  ```agda
+  last : ∀ {n} → Table A (suc n) → A
+  init : ∀ {n} → Table A (suc n) → Table A n
+  ```
+
+
 * Added new proofs to `Data.Tree.Binary.Properties`:
   ```agda
   map-compose : map (f₁ ∘ f₂) (g₁ ∘ g₂) ≗ map f₁ g₁ ∘ map f₂ g₂
