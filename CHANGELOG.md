@@ -240,6 +240,11 @@ Other minor additions
                       IsCommutativeRing _≈₁_ _+_ _*_ -_ 0# 1#
   ```
 
+* Added proofs to `Algebra.Properties.CommutativeMonoid`:
+  ```agda
+  sumₜ-init : sumₜ t ≈ sumₜ (init t) + lookup t (fromℕ n)
+  ```
+
 * Added declarations to `Algebra.Structures.IsSemiringWithoutOne`:
   ```agda
   distribˡ : * DistributesOverˡ +

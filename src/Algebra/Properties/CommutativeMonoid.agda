@@ -19,10 +19,10 @@ open import Algebra.Solver.CommutativeMonoid M
 open import Relation.Binary as B using (_Preserves_⟶_)
 open import Function
 open import Function.Equality using (_⟨$⟩_)
-open import Data.Product
+open import Data.Product hiding (_×_)
 open import Data.Bool.Base using (Bool; true; false)
 open import Data.Nat.Base using (ℕ; zero; suc)
-open import Data.Fin.Base using (Fin; zero; suc)
+open import Data.Fin.Base using (Fin; zero; suc; fromℕ)
 open import Data.List.Base as List using ([]; _∷_)
 import Data.Fin.Properties as FP
 open import Data.Fin.Permutation as Perm using (Permutation; Permutation′; _⟨$⟩ˡ_; _⟨$⟩ʳ_)
@@ -72,6 +72,20 @@ sumₜ-remove {suc n} {suc i}  t′ =
   tᵢ = lookup t i
   ∑t = sumₜ t
   ∑t′ = sumₜ (remove i t)
+
+-- When summing over a function from a finite set, we can pull out last element
+
+sumₜ-init : ∀ {n} (t : Table Carrier (suc n)) → sumₜ t ≈ sumₜ (init t) + lookup t (fromℕ n)
+sumₜ-init {zero} t = +-comm (lookup t zero) 0#
+sumₜ-init {suc n} t = begin
+  t₀ + ∑t             ≈⟨ +-congˡ (sumₜ-init (tail t)) ⟩
+  t₀ + (∑t′ + tₗ)     ≈˘⟨ +-assoc _ _ _ ⟩
+  (t₀ + ∑t′) + tₗ     ∎
+  where
+    t₀ = head t
+    tₗ = last t
+    ∑t = sumₜ (tail t)
+    ∑t′ = sumₜ (tail (init t))
 
 -- '_≈_' is a congruence over 'sumTable n'.
 
