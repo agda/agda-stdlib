@@ -144,6 +144,12 @@ New modules
   Data.Nat.Binary.Subtraction
   ```
 
+* Combinatorics operations
+  ```
+  Data.Fin.Combinatorics
+  Data.Nat.Combinatorics
+  ```
+
 * A predicate for vectors in which every pair of elements is related.
   ```
   Data.Vec.Relation.Unary.AllPairs
