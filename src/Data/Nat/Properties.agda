@@ -24,6 +24,7 @@ open import Data.Sum.Base as Sum
 open import Data.Unit using (tt)
 open import Function.Base
 open import Function.Injection using (_↣_)
+open import Function.Metric.Nat
 open import Level using (0ℓ)
 open import Relation.Binary
 open import Relation.Binary.Consequences using (flip-Connex)
@@ -107,8 +108,7 @@ m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
 -- Properties of _≤_
 ------------------------------------------------------------------------
 
-≤-pred : ∀ {m n} → suc m ≤ suc n → m ≤ n
-≤-pred (s≤s m≤n) = m≤n
+open import Data.Nat.Properties.Core public
 
 ------------------------------------------------------------------------
 -- Relational properties of _≤_
@@ -756,8 +756,8 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
   ; comm     = *-comm
   }
 
-*-+-isSemiring : IsSemiring _+_ _*_ 0 1
-*-+-isSemiring = record
++-*-isSemiring : IsSemiring _+_ _*_ 0 1
++-*-isSemiring = record
   { isSemiringWithoutAnnihilatingZero = record
     { +-isCommutativeMonoid = +-0-isCommutativeMonoid
     ; *-isMonoid            = *-1-isMonoid
@@ -766,10 +766,10 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
   ; zero = *-zero
   }
 
-*-+-isCommutativeSemiring : IsCommutativeSemiring _+_ _*_ 0 1
-*-+-isCommutativeSemiring = record
-  { isSemiring = *-+-isSemiring
-  ; *-comm = *-comm
++-*-isCommutativeSemiring : IsCommutativeSemiring _+_ _*_ 0 1
++-*-isCommutativeSemiring = record
+  { isSemiring = +-*-isSemiring
+  ; *-comm     = *-comm
   }
 
 ------------------------------------------------------------------------
@@ -813,14 +813,14 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
   { isCommutativeMonoid = *-1-isCommutativeMonoid
   }
 
-*-+-semiring : Semiring 0ℓ 0ℓ
-*-+-semiring = record
-  { isSemiring = *-+-isSemiring
++-*-semiring : Semiring 0ℓ 0ℓ
++-*-semiring = record
+  { isSemiring = +-*-isSemiring
   }
 
-*-+-commutativeSemiring : CommutativeSemiring 0ℓ 0ℓ
-*-+-commutativeSemiring = record
-  { isCommutativeSemiring = *-+-isCommutativeSemiring
++-*-commutativeSemiring : CommutativeSemiring 0ℓ 0ℓ
++-*-commutativeSemiring = record
+  { isCommutativeSemiring = +-*-isCommutativeSemiring
   }
 
 ------------------------------------------------------------------------
@@ -1691,6 +1691,9 @@ suc[pred[n]]≡n {suc n} n≢0 = refl
 -- Properties of ∣_-_∣
 ------------------------------------------------------------------------
 
+------------------------------------------------------------------------
+-- Basic
+
 m≡n⇒∣m-n∣≡0 : ∀ {m n} → m ≡ n → ∣ m - n ∣ ≡ 0
 m≡n⇒∣m-n∣≡0 {zero}  refl = refl
 m≡n⇒∣m-n∣≡0 {suc m} refl = m≡n⇒∣m-n∣≡0 {m} refl
@@ -1765,12 +1768,12 @@ private
 
 *-distribˡ-∣-∣ : _*_ DistributesOverˡ ∣_-_∣
 *-distribˡ-∣-∣ a m n with ≤-total m n
+... | inj₂ n≤m = *-distribˡ-∣-∣-aux a n m n≤m
 ... | inj₁ m≤n = begin-equality
   a * ∣ m - n ∣     ≡⟨ cong (a *_) (∣-∣-comm m n) ⟩
   a * ∣ n - m ∣     ≡⟨ *-distribˡ-∣-∣-aux a m n m≤n ⟩
   ∣ a * n - a * m ∣ ≡⟨ ∣-∣-comm (a * n) (a * m) ⟩
   ∣ a * m - a * n ∣ ∎
-... | inj₂ n≤m = *-distribˡ-∣-∣-aux a n m n≤m
 
 *-distribʳ-∣-∣ : _*_ DistributesOverʳ ∣_-_∣
 *-distribʳ-∣-∣ = comm+distrˡ⇒distrʳ *-comm *-distribˡ-∣-∣
@@ -1788,6 +1791,80 @@ m≤n+∣m-n∣ m n = subst (m ≤_) (cong (n +_) (∣-∣-comm n m)) (m≤n+∣
 
 m≤∣m-n∣+n : ∀ m n → m ≤ ∣ m - n ∣ + n
 m≤∣m-n∣+n m n = subst (m ≤_) (+-comm n _) (m≤n+∣m-n∣ m n)
+
+∣-∣-triangle : TriangleInequality ∣_-_∣
+∣-∣-triangle zero    y       z       = m≤n+∣n-m∣ z y
+∣-∣-triangle x       zero    z       = begin
+  ∣ x - z ∣     ≤⟨ ∣m-n∣≤m⊔n x z ⟩
+  x ⊔ z         ≤⟨ m⊔n≤m+n x z ⟩
+  x + z         ≡⟨ cong₂ _+_ (sym (∣-∣-identityʳ x)) refl ⟩
+  ∣ x - 0 ∣ + z ∎
+  where open ≤-Reasoning
+∣-∣-triangle x       y       zero    = begin
+  ∣ x - 0 ∣             ≡⟨ ∣-∣-identityʳ x ⟩
+  x                     ≤⟨ m≤∣m-n∣+n x y ⟩
+  ∣ x - y ∣ + y         ≡⟨ cong₂ _+_ refl (sym (∣-∣-identityʳ y)) ⟩
+  ∣ x - y ∣ + ∣ y - 0 ∣ ∎
+  where open ≤-Reasoning
+∣-∣-triangle (suc x) (suc y) (suc z) = ∣-∣-triangle x y z
+
+------------------------------------------------------------------------
+-- Metric structures
+
+∣-∣-isProtoMetric : IsProtoMetric _≡_ ∣_-_∣
+∣-∣-isProtoMetric = record
+  { isPartialOrder  = ≤-isPartialOrder
+  ; ≈-isEquivalence = isEquivalence
+  ; cong            = cong₂ ∣_-_∣
+  ; nonNegative     = z≤n
+  }
+
+∣-∣-isPreMetric : IsPreMetric _≡_ ∣_-_∣
+∣-∣-isPreMetric = record
+  { isProtoMetric = ∣-∣-isProtoMetric
+  ; ≈⇒0           = m≡n⇒∣m-n∣≡0
+  }
+
+∣-∣-isQuasiSemiMetric : IsQuasiSemiMetric _≡_ ∣_-_∣
+∣-∣-isQuasiSemiMetric = record
+  { isPreMetric = ∣-∣-isPreMetric
+  ; 0⇒≈         = ∣m-n∣≡0⇒m≡n
+  }
+
+∣-∣-isSemiMetric : IsSemiMetric _≡_ ∣_-_∣
+∣-∣-isSemiMetric = record
+  { isQuasiSemiMetric = ∣-∣-isQuasiSemiMetric
+  ; sym               = ∣-∣-comm
+  }
+
+∣-∣-isMetric : IsMetric _≡_ ∣_-_∣
+∣-∣-isMetric = record
+  { isSemiMetric = ∣-∣-isSemiMetric
+  ; triangle     = ∣-∣-triangle
+  }
+
+------------------------------------------------------------------------
+-- Metric bundles
+
+∣-∣-quasiSemiMetric : QuasiSemiMetric 0ℓ 0ℓ
+∣-∣-quasiSemiMetric = record
+  { isQuasiSemiMetric = ∣-∣-isQuasiSemiMetric
+  }
+
+∣-∣-semiMetric : SemiMetric 0ℓ 0ℓ
+∣-∣-semiMetric = record
+  { isSemiMetric = ∣-∣-isSemiMetric
+  }
+
+∣-∣-preMetric : PreMetric 0ℓ 0ℓ
+∣-∣-preMetric = record
+  { isPreMetric = ∣-∣-isPreMetric
+  }
+
+∣-∣-metric : Metric 0ℓ 0ℓ
+∣-∣-metric = record
+  { isMetric = ∣-∣-isMetric
+  }
 
 ------------------------------------------------------------------------
 -- Properties of ⌊_/2⌋ and ⌈_/2⌉
@@ -2070,12 +2147,12 @@ strictTotalOrder                      = <-strictTotalOrder
 "Warning: strictTotalOrder was deprecated in v0.14.
 Please use <-strictTotalOrder instead."
 #-}
-isCommutativeSemiring                 = *-+-isCommutativeSemiring
+isCommutativeSemiring                 = +-*-isCommutativeSemiring
 {-# WARNING_ON_USAGE isCommutativeSemiring
 "Warning: isCommutativeSemiring was deprecated in v0.14.
 Please use *-+-isCommutativeSemiring instead."
 #-}
-commutativeSemiring                   = *-+-commutativeSemiring
+commutativeSemiring                   = +-*-commutativeSemiring
 {-# WARNING_ON_USAGE commutativeSemiring
 "Warning: commutativeSemiring was deprecated in v0.14.
 Please use *-+-commutativeSemiring instead."
@@ -2310,4 +2387,27 @@ Please use ∀[m≤n⇒m≢o]⇒n<o instead."
 {-# WARNING_ON_USAGE ∀[m<n⇒m≢o]⇒o≤n
 "Warning: ∀[m<n⇒m≢o]⇒o≤n was deprecated in v1.3.
 Please use ∀[m<n⇒m≢o]⇒n≤o instead."
+#-}
+
+-- Version 1.4
+
+*-+-isSemiring = +-*-isSemiring
+{-# WARNING_ON_USAGE *-+-isSemiring
+"Warning: *-+-isSemiring was deprecated in v1.4.
+Please use +-*-isSemiring instead."
+#-}
+*-+-isCommutativeSemiring = +-*-isCommutativeSemiring
+{-# WARNING_ON_USAGE *-+-isCommutativeSemiring
+"Warning: *-+-isCommutativeSemiring was deprecated in v1.4.
+Please use +-*-isCommutativeSemiring instead."
+#-}
+*-+-semiring = +-*-semiring
+{-# WARNING_ON_USAGE *-+-semiring
+"Warning: *-+-semiring was deprecated in v1.4.
+Please use +-*-semiring instead."
+#-}
+*-+-commutativeSemiring = +-*-commutativeSemiring
+{-# WARNING_ON_USAGE *-+-commutativeSemiring
+"Warning: *-+-commutativeSemiring was deprecated in v1.4.
+Please use +-*-commutativeSemiring instead."
 #-}

@@ -14,6 +14,7 @@ open import Data.Bool.Properties
 open import Data.Empty using (⊥)
 open import Data.Fin.Base using (Fin) renaming (zero to fzero; suc to fsuc)
 open import Data.List.Base as List
+open import Data.List.Properties using (ʳ++-defn)
 open import Data.List.Categorical using (monad)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Membership.Propositional
@@ -101,7 +102,7 @@ module _ {k : Kind} {P : Pred A p} {Q : Pred A q} where
     where open Related.EquationalReasoning
 
 ------------------------------------------------------------------------
--- map
+-- Any.map
 
 map-id : ∀ {P : A → Set p} (f : P ⋐ P) {xs} →
          (∀ {x} (p : P x) → f p ≡ p) →
@@ -117,7 +118,7 @@ map-∘ f g (here  p) = refl
 map-∘ f g (there p) = P.cong there $ map-∘ f g p
 
 ------------------------------------------------------------------------
--- lookup
+-- Any.lookup
 
 lookup-result : ∀ {P : Pred A p} {xs} → (p : Any P xs) → P (Any.lookup p)
 lookup-result (here px) = px
@@ -623,6 +624,31 @@ module _ {P : B → Set p} where
     to∘from (y ∷ xs) f (here  p) = refl
     to∘from (y ∷ xs) f (there p) =
       P.cong there $ to∘from xs (f ∘ there) p
+
+------------------------------------------------------------------------
+-- reverse
+
+module _ {P : A → Set p} where
+  reverseAcc⁺ : ∀ acc xs → Any P acc ⊎ Any P xs → Any P (reverseAcc acc xs)
+  reverseAcc⁺ acc [] (inj₁ ps) = ps
+  reverseAcc⁺ acc (x ∷ xs) (inj₁ ps) = reverseAcc⁺ (x ∷ acc) xs (inj₁ (there ps))
+  reverseAcc⁺ acc (x ∷ xs) (inj₂ (here px)) = reverseAcc⁺ (x ∷ acc) xs (inj₁ (here px))
+  reverseAcc⁺ acc (x ∷ xs) (inj₂ (there y)) = reverseAcc⁺ (x ∷ acc) xs (inj₂ y)
+
+  reverseAcc⁻ : ∀ acc xs → Any P (reverseAcc acc xs) -> Any P acc ⊎ Any P xs
+  reverseAcc⁻ acc [] ps = inj₁ ps
+  reverseAcc⁻ acc (x ∷ xs) ps rewrite ʳ++-defn xs {x ∷ acc} with ++⁻ (reverseAcc [] xs) {x ∷ acc} ps
+  reverseAcc⁻ acc (x ∷ xs) ps | inj₁ ps' with reverseAcc⁻ [] xs ps'
+  reverseAcc⁻ acc (x ∷ xs) ps | inj₁ ps' | inj₂ ps'' = inj₂ (there ps'')
+  reverseAcc⁻ acc (x ∷ xs) ps | inj₂ (here p') = inj₂ (here p')
+  reverseAcc⁻ acc (x ∷ xs) ps | inj₂ (there ps') = inj₁ ps'
+
+  reverse⁺ : ∀ {xs} → Any P xs → Any P (reverse xs)
+  reverse⁺ ps = reverseAcc⁺ [] _ (inj₂ ps)
+
+  reverse⁻ : ∀ {xs} → Any P (reverse xs) → Any P xs
+  reverse⁻ ps with reverseAcc⁻ [] _ ps
+  reverse⁻ ps | inj₂ ps' = ps'
 
 ------------------------------------------------------------------------
 -- return

@@ -27,7 +27,7 @@ import Data.Nat.GCD as ℕ
 import Data.Nat.DivMod as ℕ
 open import Data.Product using (_×_; _,_)
 open import Data.Rational.Base
-open import Data.Rational.Unnormalised as ℚᵘ
+open import Data.Rational.Unnormalised.Base as ℚᵘ
   using (ℚᵘ; *≡*; *≤*) renaming (↥_ to ↥ᵘ_; ↧_ to ↧ᵘ_; _≃_ to _≃ᵘ_; _≤_ to _≤ᵘ_)
 import Data.Rational.Unnormalised.Properties as ℚᵘ
 open import Data.Sum.Base
@@ -790,6 +790,15 @@ private
 
 *-identity : Identity 1ℚ _*_
 *-identity = *-identityˡ , *-identityʳ
+
+*-zeroˡ : LeftZero 0ℚ _*_
+*-zeroˡ = *-Monomorphism.zeroˡ ℚᵘ.+-0-isGroup ℚᵘ.*-isMagma ℚᵘ.*-zeroˡ
+
+*-zeroʳ : RightZero 0ℚ _*_
+*-zeroʳ = *-Monomorphism.zeroʳ ℚᵘ.+-0-isGroup ℚᵘ.*-isMagma ℚᵘ.*-zeroʳ
+
+*-zero : Zero 0ℚ _*_
+*-zero = *-zeroˡ , *-zeroʳ
 
 *-distribˡ-+ : _*_ DistributesOverˡ _+_
 *-distribˡ-+ = *-Monomorphism.distribˡ ℚᵘ.+-0-isGroup ℚᵘ.*-isMagma ℚᵘ.*-distribˡ-+

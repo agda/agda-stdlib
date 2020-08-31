@@ -9,7 +9,7 @@
 module Data.Sum.Base where
 
 open import Data.Bool.Base using (true; false)
-open import Function.Base using (_∘_; _-[_]-_ ; id)
+open import Function.Base using (_∘_; _-⟪_⟫-_ ; id)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary using (Dec; yes; no; _because_; ¬_)
 open import Level using (Level; _⊔_)
@@ -64,7 +64,7 @@ map₂ = map id
 
 infixr 1 _-⊎-_
 _-⊎-_ : (A → B → Set c) → (A → B → Set d) → (A → B → Set (c ⊔ d))
-f -⊎- g = f -[ _⊎_ ]- g
+f -⊎- g = f -⟪ _⊎_ ⟫- g
 
 -- Conversion back and forth with Dec
 

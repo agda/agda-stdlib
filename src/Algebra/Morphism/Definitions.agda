@@ -15,7 +15,7 @@ module Algebra.Morphism.Definitions
   where
 
 open import Algebra.Core
-open import Function.Core
+  using (Op₁; Op₂)
 
 ------------------------------------------------------------------------
 -- Basic definitions
@@ -28,8 +28,6 @@ Homomorphic₁ ⟦_⟧ ∙_ ∘_ = ∀ x → ⟦ ∙ x ⟧ ≈ (∘ ⟦ x ⟧)
 
 Homomorphic₂ : (A → B) → Op₂ A → Op₂ B → Set _
 Homomorphic₂ ⟦_⟧ _∙_ _∘_ = ∀ x y → ⟦ x ∙ y ⟧ ≈ (⟦ x ⟧ ∘ ⟦ y ⟧)
-
-
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

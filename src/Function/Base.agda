@@ -31,13 +31,16 @@ id x = x
 const : A → B → A
 const x = λ _ → x
 
+constᵣ : A → B → B
+constᵣ _ = id
+
 ------------------------------------------------------------------------
 -- Operations on dependent functions
 
 -- These are functions whose output has a type that depends on the
 -- value of the input to the function.
 
-infixr 9 _∘_
+infixr 9 _∘_ _∘₂_
 infixl 8 _ˢ_
 infixl 0 _|>_
 infix  0 case_return_of_
@@ -50,6 +53,14 @@ _∘_ : ∀ {A : Set a} {B : A → Set b} {C : {x : A} → B x → Set c} →
       ((x : A) → C (g x))
 f ∘ g = λ x → f (g x)
 {-# INLINE _∘_ #-}
+
+_∘₂_ : ∀ {A₁ : Set a} {A₂ : A₁ → Set d}
+         {B : (x : A₁) → A₂ x → Set b}
+         {C : {x : A₁} → {y : A₂ x} → B x y → Set c} →
+       ({x : A₁} → {y : A₂ x} → (z : B x y) → C z) →
+       (g : (x : A₁) → (y : A₂ x) → B x y) →
+       ((x : A₁) → (y : A₂ x) → C (g x y))
+f ∘₂ g = λ x y → f (g x y)
 
 -- Flipping order of arguments
 
@@ -118,7 +129,7 @@ case x return B of f = f x
 -- operations are therefore provided below that sometimes have better
 -- inference properties.
 
-infixr 9 _∘′_
+infixr 9 _∘′_ _∘₂′_
 infixl 0 _|>′_
 infix  0 case_of_
 infixr -1 _$′_ _$!′_
@@ -127,6 +138,9 @@ infixr -1 _$′_ _$!′_
 
 _∘′_ : (B → C) → (A → B) → (A → C)
 f ∘′ g = _∘_ f g
+
+_∘₂′_ : (C → D) → (A → B → C) → (A → B → D)
+f ∘₂′ g = _∘₂_ f g
 
 -- Application
 
@@ -153,8 +167,6 @@ case x of f = case x return _ of f
 ------------------------------------------------------------------------
 -- Operations that are only defined for non-dependent functions
 
-infixr 0 _-[_]-_
-infixl 1 _on_
 infixl 1 _⟨_⟩_
 infixl 0 _∋_
 
@@ -162,16 +174,6 @@ infixl 0 _∋_
 
 _⟨_⟩_ : A → (A → B → C) → B → C
 x ⟨ f ⟩ y = f x y
-
--- Composition of a binary function with a unary function
-
-_on_ : (B → B → C) → (A → B) → (A → A → C)
-_*_ on f = λ x y → f x * f y
-
--- Composition of three binary functions
-
-_-[_]-_ : (A → B → C) → (C → D → E) → (A → B → D) → (A → B → E)
-f -[ _*_ ]- g = λ x y → f x y * g x y
 
 -- In Agda you cannot annotate every subexpression with a type
 -- signature. This function can be used instead.
@@ -189,3 +191,67 @@ typeOf {A = A} _ = A
 
 it : {A : Set a} → {{A}} → A
 it {{x}} = x
+
+------------------------------------------------------------------------
+-- Composition of a binary function with other functions
+
+infixr 0 _-⟪_⟫-_ _-⟨_⟫-_
+infixl 0 _-⟪_⟩-_
+infixr 1 _-⟨_⟩-_ ∣_⟫-_ ∣_⟩-_
+infixl 1 _on_ _on₂_ _-⟪_∣ _-⟨_∣
+
+-- Two binary functions
+
+_-⟪_⟫-_ : (A → B → C) → (C → D → E) → (A → B → D) → (A → B → E)
+f -⟪ _*_ ⟫- g = λ x y → f x y * g x y
+
+-- A single binary function on the left
+
+_-⟪_∣ : (A → B → C) → (C → B → D) → (A → B → D)
+f -⟪ _*_ ∣ = f -⟪ _*_ ⟫- constᵣ
+
+-- A single binary function on the right
+
+∣_⟫-_ : (A → C → D) → (A → B → C) → (A → B → D)
+∣ _*_ ⟫- g = const -⟪ _*_ ⟫- g
+
+-- A single unary function on the left
+
+_-⟨_∣ : (A → C) → (C → B → D) → (A → B → D)
+f -⟨ _*_ ∣ = f ∘₂ const -⟪ _*_ ∣
+
+-- A single unary function on the right
+
+∣_⟩-_ : (A → C → D) → (B → C) → (A → B → D)
+∣ _*_ ⟩- g = ∣ _*_ ⟫- g ∘₂ constᵣ
+
+-- A binary function and a unary function
+
+_-⟪_⟩-_ : (A → B → C) → (C → D → E) → (B → D) → (A → B → E)
+f -⟪ _*_ ⟩- g = f -⟪ _*_ ⟫- ∣ constᵣ ⟩- g
+
+-- A unary function and a binary function
+
+_-⟨_⟫-_ : (A → C) → (C → D → E) → (A → B → D) → (A → B → E)
+f -⟨ _*_ ⟫- g = f -⟨ const ∣ -⟪ _*_ ⟫- g
+
+-- Two unary functions
+
+_-⟨_⟩-_ : (A → C) → (C → D → E) → (B → D) → (A → B → E)
+f -⟨ _*_ ⟩- g = f -⟨ const ∣ -⟪ _*_ ⟫- ∣ constᵣ ⟩- g
+
+-- A single binary function on both sides
+
+_on₂_ : (C → C → D) → (A → B → C) → (A → B → D)
+_*_ on₂ f = f -⟪ _*_ ⟫- f
+
+-- A single unary function on both sides
+
+_on_ : (B → B → C) → (A → B) → (A → A → C)
+_*_ on f = f -⟨ _*_ ⟩- f
+
+_-[_]-_ = _-⟪_⟫-_
+{-# WARNING_ON_USAGE _-[_]-_
+"Warning: Function._-[_]-_ was deprecated in v1.4.
+Please use _-⟪_⟫-_ instead."
+#-}
