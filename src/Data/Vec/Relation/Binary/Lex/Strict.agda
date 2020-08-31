@@ -177,9 +177,9 @@ module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
               ∀ {n} → Antisymmetric (_≋_ {n} {n}) _≤_
   ≤-antisym = Core.antisym
 
-  ≤-respects₂ : IsPartialEquivalence _≈_ → _≺_ Respects₂ _≈_ →
-                ∀ {n} → _Respects₂_ (_≤_ {n} {n}) _≋_
-  ≤-respects₂ = Core.respects₂
+  ≤-resp₂ : IsPartialEquivalence _≈_ → _≺_ Respects₂ _≈_ →
+            ∀ {n} → _Respects₂_ (_≤_ {n} {n}) _≋_
+  ≤-resp₂ = Core.respects₂
 
   ≤-trans : IsPartialEquivalence _≈_ → _≺_ Respects₂ _≈_ → Transitive _≺_ →
             ∀ {m n o} → Trans (_≤_ {m} {n}) (_≤_ {n} {o}) _≤_
@@ -209,9 +209,9 @@ module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
     ...   | inj₁ xs<ys = inj₁ (next x≈y xs<ys)
     ...   | inj₂ xs>ys = inj₂ (next (≈-sym x≈y) xs>ys)
 
-  ≤-decidable : Decidable _≈_ → Decidable _≺_ →
-                ∀ {m n} → Decidable (_≤_ {m} {n})
-  ≤-decidable = Core.decidable (yes tt)
+  ≤-dec : Decidable _≈_ → Decidable _≺_ →
+          ∀ {m n} → Decidable (_≤_ {m} {n})
+  ≤-dec = Core.decidable (yes tt)
 
   ≤-irrelevant : Irrelevant _≈_ → Irrelevant _≺_ → Irreflexive _≈_ _≺_ →
                  ∀ {m n} → Irrelevant (_≤_ {m} {n})
@@ -240,7 +240,7 @@ module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
   ≤-isDecPartialOrder ≺-isDecStrictPartialOrder = record
     { isPartialOrder = ≤-isPartialOrder isStrictPartialOrder
     ; _≟_            = Pointwise.decidable _≟_
-    ; _≤?_           = ≤-decidable _≟_ _<?_
+    ; _≤?_           = ≤-dec _≟_ _<?_
     } where open IsDecStrictPartialOrder ≺-isDecStrictPartialOrder
 
   ≤-isTotalOrder : IsStrictTotalOrder _≈_ _≺_ →
@@ -255,7 +255,7 @@ module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
   ≤-isDecTotalOrder ≺-isStrictTotalOrder = record
     { isTotalOrder = ≤-isTotalOrder ≺-isStrictTotalOrder
     ; _≟_          = Pointwise.decidable _≟_
-    ; _≤?_         = ≤-decidable _≟_ _<?_
+    ; _≤?_         = ≤-dec _≟_ _<?_
     } where open IsStrictTotalOrder ≺-isStrictTotalOrder
 
 ----------------------------------------------------------------------

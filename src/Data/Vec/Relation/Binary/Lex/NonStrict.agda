@@ -94,8 +94,8 @@ module _ {_≈_ : Rel A ℓ₁} {_≼_ : Rel A ℓ₂} where
   <-cmp ≈-sym _≟_ ≼-antisym ≼-total = Strict.<-cmp ≈-sym
     (Conv.<-trichotomous _ _ ≈-sym _≟_ ≼-antisym ≼-total)
 
-  <? : Decidable _≈_ → Decidable _≼_ → ∀ {m n} → Decidable (_<_ {m} {n})
-  <? _≟_ _≼?_ = Core.decidable (no id) _≟_
+  <-dec : Decidable _≈_ → Decidable _≼_ → ∀ {m n} → Decidable (_<_ {m} {n})
+  <-dec _≟_ _≼?_ = Core.decidable (no id) _≟_
     (Conv.<-decidable _ _ _≟_ _≼?_)
 
 ------------------------------------------------------------------------
@@ -180,9 +180,9 @@ module _ {_≈_ : Rel A ℓ₁} {_≼_ : Rel A ℓ₂} where
   ≤-total ≈-sym _≟_ ≼-antisym ≼-total = Strict.≤-total ≈-sym
     (Conv.<-trichotomous _ _ ≈-sym _≟_ ≼-antisym ≼-total)
 
-  ≤? : Decidable _≈_ → Decidable _≼_ →
-       ∀ {m n} → Decidable (_≤_ {m} {n})
-  ≤? _≟_ _≼?_ = Core.decidable (yes tt) _≟_
+  ≤-dec : Decidable _≈_ → Decidable _≼_ →
+          ∀ {m n} → Decidable (_≤_ {m} {n})
+  ≤-dec _≟_ _≼?_ = Core.decidable (yes tt) _≟_
     (Conv.<-decidable _ _ _≟_ _≼?_)
 
   ≤-resp₂ : IsEquivalence _≈_ → _≼_ Respects₂ _≈_ →
