@@ -41,6 +41,8 @@ import Relation.Binary.Construct.StrictToNonStrict _≡_ _<_
   as StrictToNonStrict
 open +-*-Solver
 
+infix 4  _<?_ _≟_ _≤?_
+
 ------------------------------------------------------------------------
 -- Properties of _≡_
 ------------------------------------------------------------------------

@@ -93,6 +93,7 @@ solve : ∀ (n : ℕ) →
 solve = Ops.solve
 {-# INLINE solve #-}
 
+infixl 6 _⊜_
 _⊜_ : ∀ {n : ℕ} →
       Expr Carrier n →
       Expr Carrier n →

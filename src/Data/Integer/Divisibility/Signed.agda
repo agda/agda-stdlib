@@ -127,6 +127,8 @@ module ∣-Reasoning where
 ------------------------------------------------------------------------
 -- Other properties of _∣_
 
+infix 4 _∣?_
+
 _∣?_ : Decidable _∣_
 k ∣? m = DEC.map′ ∣ᵤ⇒∣ ∣⇒∣ᵤ (∣ k ∣ ℕ.∣? ∣ m ∣)
 

@@ -17,6 +17,8 @@ open import Relation.Nullary
 
 open Setoid S renaming (Carrier to A)
 
+infix 4 _∈_ _∉_
+
 private
   variable
     r : Level
