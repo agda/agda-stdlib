@@ -454,6 +454,13 @@ Other minor additions
   assocˡ         : Σ A (λ a → Σ (B a) (C a)) → Σ (Σ A B) (uncurry C)
   assocʳ′        : (A × B) × C → A × (B × C)
   assocˡ′        : A × (B × C) → (A × B) × C
+  
+  dmap : (f : (a : A) → B a) → (∀ {a} (p : P a) → Q p (f a)) →
+         (ap : Σ A P) → Σ (B (proj₁ ap)) (Q (proj₂ ap))
+  dmap : ((a : A) → X a) → ((b : B) → Y b) →
+         (ab : A × B) → X (proj₁ ab) × Y (proj₂ ab)
+  _<*>_ : ((a : A) → X a) × ((b : B) → Y b) →
+          ((a , b) : A × B) → X a × Y b
   ```
 
 * Added new proofs to `Data.Product.Properties`:
