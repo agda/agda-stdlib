@@ -608,3 +608,43 @@ Other minor additions
   ```agda
   <-isDecStrictPartialOrder : IsDecPartialOrder _≈_ _≤_ → IsDecStrictPartialOrder _≈_ _<_
   ```
+
+* The following operators have had fixities assigneed:
+  ```
+  infix   4 _[_]            (Data.Graph.Acyclic)
+
+  infix   4 _∣?_            (Data.Integer.Divisibility.Signed)
+
+  infix   4 _∈_ _∉_         (Data.List.Fresh.Membership.Setoid)
+  infixr  5 _∷_             (Data.List.Fresh.Relation.Unary.All)
+  infixr  5 _∷_ _++_        (Data.List.Relation.Binary.Prefix.Heterogeneous)
+  infix   4 _⊆?_            (Data.List.Relation.Binary.Sublist.DecSetoid)
+  infix   4  _⊆I_ _⊆R_ _⊆T_ (Data.List.Relation.Binary.Sublist.Heterogeneous.Solver)
+  infixr  8 _⇒_             (Data.List.Relation.Binary.Sublist.Propositional.Example.UniqueBoundVariables)
+  infix   1 _⊢_~_▷_         (Data.List.Relation.Binary.Sublist.Propositional.Example.UniqueBoundVariables)
+  infix   4 _++-mono_       (Data.List.Relation.Binary.Subset.Propositional.Properties)
+  infix   4  _⊛-mono_       (Data.List.Relation.Binary.Subset.Propositional.Properties)
+  infix   4 _⊗-mono_        (Data.List.Relation.Binary.Subset.Propositional.Properties)
+  infixr  5 _++_            (Data.List.Relation.Binary.Suffix.Heterogeneous)
+  infixr  5 _∷ˡ_ _∷ʳ_       (Data.List.Relation.Ternary.Interleaving)
+  infix   1  _++_∷_         (Data.List.Relation.Unary.First)
+  infixr  5 _∷_             (Data.List.Relation.Unary.First)
+
+  infix   4 _≥_             (Data.Nat.Binary.Base)
+  infix   4  _<?_ _≟_ _≤?_  (Data.Nat.Binary.Properties)
+  infixr  1 _∪-Fin_         (Data.Nat.InfinitelyOften)
+
+  infixr -1 _<$>_           (Function.Nary.NonDependent.Base)
+  infix   1 _%=_⊢_          (Function.Nary.NonDependent.Base)
+  infix   1 _∷=_⊢_          (Function.Nary.NonDependent.Base)
+
+  infixr  2 _⊗_             (Induction.Lexicographic)
+
+  infix  10 _⋆              (Relation.Binary.Construct.Closure.ReflexiveTransitive)
+  infix   4  _≤_            (Relation.Binary.Construct.StrictToNonStrict)
+
+  infixr  6 _$ʳ_            (Tactic.RingSolver)
+  infix  -1 _$ᵉ_            (Tactic.RingSolver)
+  infix   4 _⇓≟_            (Tactic.RingSolver)
+  infixl  6 _⊜_             (Tactic.RingSolver.NonReflective)
+  ```
