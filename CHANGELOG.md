@@ -433,6 +433,16 @@ Other minor additions
   recompute       : .(Coprime n d) → Coprime n d
   ```
 
+* Added new functions to `Data.Product`:
+  ```agda
+  dmap : (f : (a : A) → B a) → (∀ {a} (p : P a) → Q p (f a)) →
+         (ap : Σ A P) → Σ (B (proj₁ ap)) (Q (proj₂ ap))
+  dmap : ((a : A) → X a) → ((b : B) → Y b) →
+         (ab : A × B) → X (proj₁ ab) × Y (proj₂ ab)
+  _<*>_ : ((a : A) → X a) × ((b : B) → Y b) →
+          ((a , b) : A × B) → X a × Y b
+  ```
+
 * Made first argument of `[,]-∘-distr` in `Data.Sum.Properties` explicit
 
 * Added new proofs to `Data.Sum.Properties`:
