@@ -158,6 +158,13 @@ New modules
   Data.Vec.Relation.Unary.Unique.Setoid.Properties
   ```
 
+* Lexicographic relations over vectors:
+  ```
+  Data.Vec.Relation.Binary.Lex.Core
+  Data.Vec.Relation.Binary.Lex.NonStrict
+  Data.Vec.Relation.Binary.Lex.Strict
+  ```
+
 * Properties for functional vectors:
   ```
   Data.Vec.Functional.Properties
@@ -498,6 +505,11 @@ Other minor additions
   map-cong    : f₁ ≗ f₂ → g₁ ≗ g₂ → map f₁ g₁ ≗ map f₂ g₂
   ```
 
+* Added new proofs to `Data.Unit.Properties`:
+  ```agda
+  ⊤-irrelevant : Irrelevant ⊤
+  ```
+
 * Added new proofs to `Data.Vec.Properties`:
   ```agda
   unfold-take         : take (suc n) (x ∷ xs) ≡ x ∷ take n xs
@@ -580,4 +592,9 @@ Other minor additions
   cong′  : {f : A → B} x → f x ≡ f x
   icong  : {f : A → B} {x y} → x ≡ y → f x ≡ f y
   icong′ : {f : A → B} x → f x ≡ f x
+  ```
+
+* Added new proofs to `Relation.Binary.Construct.NonStrictToStrict`:
+  ```agda
+  <-isDecStrictPartialOrder : IsDecPartialOrder _≈_ _≤_ → IsDecStrictPartialOrder _≈_ _<_
   ```
