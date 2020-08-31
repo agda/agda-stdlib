@@ -108,6 +108,13 @@ Deprecated names
 New modules
 -----------
 
+* The direct products and zeros over algebraic structures and bundles:
+  ```
+  Algebra.Construct.Zero
+  Algebra.Construct.DirectProduct
+  Algebra.Module.Construct.DirectProduct.agda
+  ```
+
 * Substituting the notion of equality for various structures
   ```
   Algebra.Construct.Subst.Equality
@@ -149,6 +156,13 @@ New modules
   Data.Vec.Relation.Unary.Unique.Propositional.Properties
   Data.Vec.Relation.Unary.Unique.Setoid
   Data.Vec.Relation.Unary.Unique.Setoid.Properties
+  ```
+
+* Lexicographic relations over vectors:
+  ```
+  Data.Vec.Relation.Binary.Lex.Core
+  Data.Vec.Relation.Binary.Lex.NonStrict
+  Data.Vec.Relation.Binary.Lex.Strict
   ```
 
 * Properties for functional vectors:
@@ -527,6 +541,11 @@ Other minor additions
   map-cong    : f₁ ≗ f₂ → g₁ ≗ g₂ → map f₁ g₁ ≗ map f₂ g₂
   ```
 
+* Added new proofs to `Data.Unit.Properties`:
+  ```agda
+  ⊤-irrelevant : Irrelevant ⊤
+  ```
+
 * Added new proofs to `Data.Vec.Properties`:
   ```agda
   unfold-take         : take (suc n) (x ∷ xs) ≡ x ∷ take n xs
@@ -619,4 +638,9 @@ Other minor additions
 * Added new proof to `Relation.Nullary.Decidable`:
   ```agda
   True-↔ : (dec : Dec P) → Irrelevant P → True dec ↔ P
+  ```
+
+* Added new proofs to `Relation.Binary.Construct.NonStrictToStrict`:
+  ```agda
+  <-isDecStrictPartialOrder : IsDecPartialOrder _≈_ _≤_ → IsDecStrictPartialOrder _≈_ _<_
   ```
