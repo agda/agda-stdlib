@@ -136,6 +136,25 @@ uncurry : ∀ {A : Set a} {B : A → Set b} {C : Σ A B → Set c} →
           ((p : Σ A B) → C p)
 uncurry f (x , y) = f x y
 
+-- Rewriting dependent products
+assocʳ : {B : A → Set b} {C : (a : A) → B a → Set c} →
+          Σ (Σ A B) (uncurry C) → Σ A (λ a → Σ (B a) (C a))
+assocʳ ((a , b) , c) = (a , (b , c))
+
+assocˡ : {B : A → Set b} {C : (a : A) → B a → Set c} →
+          Σ A (λ a → Σ (B a) (C a)) → Σ (Σ A B) (uncurry C)
+assocˡ (a , (b , c)) = ((a , b) , c)
+
+-- Alternate form of associativity for dependent products
+-- where the C parameter is uncurried.
+assocʳ-curried : {B : A → Set b} {C : Σ A B → Set c} →
+                 Σ (Σ A B) C → Σ A (λ a → Σ (B a) (curry C a))
+assocʳ-curried ((a , b) , c) = (a , (b , c))
+
+assocˡ-curried : {B : A → Set b} {C : Σ A B → Set c} →
+          Σ A (λ a → Σ (B a) (curry C a)) → Σ (Σ A B) C
+assocˡ-curried (a , (b , c)) = ((a , b) , c)
+
 ------------------------------------------------------------------------
 -- Operations for non-dependent products
 
@@ -174,3 +193,10 @@ f -×- g = f -⟪ _×_ ⟫- g
 
 _-,-_ : (A → B → C) → (A → B → D) → (A → B → C × D)
 f -,- g = f -⟪ _,_ ⟫- g
+
+-- Rewriting non-dependent products
+assocʳ′ : (A × B) × C → A × (B × C)
+assocʳ′ ((a , b) , c) = (a , (b , c))
+
+assocˡ′ : A × (B × C) → (A × B) × C
+assocˡ′ (a , (b , c)) = ((a , b) , c)

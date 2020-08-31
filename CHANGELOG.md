@@ -170,6 +170,18 @@ New modules
   Data.Vec.Functional.Properties
   ```
 
+* Modules replacing `Function.Related.TypeIsomorphisms` using the new
+  `Inverse` definitions.
+  ```
+  Data.Sum.Algebra
+  Data.Product.Algebra
+  ```
+
+* Basic properties of the function type `A → B`:
+  ```agda
+  Function.Properties
+  ```
+
 * Symmetry for various functional properties
   ```agda
   Function.Construct.Symmetry
@@ -205,6 +217,7 @@ New modules
 * Indexed nullary relations/sets:
   ```
   Relation.Nullary.Indexed
+  Relation.Nullary.Indexed.Negation
   ```
 
 * Symmetric transitive closures of binary relations:
@@ -433,14 +446,34 @@ Other minor additions
   recompute       : .(Coprime n d) → Coprime n d
   ```
 
-* Added new functions to `Data.Product`:
+* Add new functions to `Data.Product`:
   ```agda
+  assocʳ-curried : Σ (Σ A B) C → Σ A (λ a → Σ (B a) (curry C a))
+  assocˡ-curried : Σ A (λ a → Σ (B a) (curry C a)) → Σ (Σ A B) C
+  assocʳ         : Σ (Σ A B) (uncurry C) → Σ A (λ a → Σ (B a) (C a))
+  assocˡ         : Σ A (λ a → Σ (B a) (C a)) → Σ (Σ A B) (uncurry C)
+  assocʳ′        : (A × B) × C → A × (B × C)
+  assocˡ′        : A × (B × C) → (A × B) × C
+
   dmap : (f : (a : A) → B a) → (∀ {a} (p : P a) → Q p (f a)) →
          (ap : Σ A P) → Σ (B (proj₁ ap)) (Q (proj₂ ap))
   dmap : ((a : A) → X a) → ((b : B) → Y b) →
          (ab : A × B) → X (proj₁ ab) × Y (proj₂ ab)
   _<*>_ : ((a : A) → X a) × ((b : B) → Y b) →
           ((a , b) : A × B) → X a × Y b
+  ```
+
+* Added new proofs to `Data.Product.Properties`:
+  ```agda
+  Σ-≡,≡↔≡ : {p₁@(a₁ , b₁) p₂@(a₂ , b₂) : Σ A B} → (∃ λ (p : a₁ ≡ a₂) → subst B p b₁ ≡ b₂) ↔ (p₁ ≡ p₂)
+  ×-≡,≡↔≡ : {p₁@(a₁ , b₁) p₂@(a₂ , b₂) : A × B} → (a₁ ≡ a₂ × b₁ ≡ b₂) ↔ p₁ ≡ p₂
+  ∃∃↔∃∃   : (R : A → B → Set ℓ) → (∃₂ λ x y → R x y) ↔ (∃₂ λ y x → R x y)
+  ```
+
+* Add new functions to `Data.Sum.Base`:
+  ```agda
+  assocʳ : (A ⊎ B) ⊎ C → A ⊎ B ⊎ C
+  assocˡ : A ⊎ B ⊎ C → (A ⊎ B) ⊎ C
   ```
 
 * Made first argument of `[,]-∘-distr` in `Data.Sum.Properties` explicit
@@ -583,6 +616,11 @@ Other minor additions
   _on₂_   : (C → C → D) → (A → B → C) → (A → B → D)
   ```
 
+* Added new function in `Function.Bundles`:
+  ```agda
+  mk↔′ : ∀ (f : A → B) (f⁻¹ : B → A) → Inverseˡ f f⁻¹ → Inverseʳ f f⁻¹ → A ↔ B
+  ```
+
 * Added new operator to `Relation.Binary`:
   ```agda
   _⇔_ : REL A B ℓ₁ → REL A B ℓ₂ → Set _
@@ -602,6 +640,11 @@ Other minor additions
   cong′  : {f : A → B} x → f x ≡ f x
   icong  : {f : A → B} {x y} → x ≡ y → f x ≡ f y
   icong′ : {f : A → B} x → f x ≡ f x
+  ```
+
+* Added new proof to `Relation.Nullary.Decidable`:
+  ```agda
+  True-↔ : (dec : Dec P) → Irrelevant P → True dec ↔ P
   ```
 
 * Added new proofs to `Relation.Binary.Construct.NonStrictToStrict`:
