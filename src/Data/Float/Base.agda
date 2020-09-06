@@ -25,7 +25,6 @@ open import Agda.Builtin.Float public
   ; primFloatLess              to infix 4 _<ᵇ_
   ; primFloatIsInfinite        to isInfinite
   ; primFloatIsNaN             to isNaN
-  ; primFloatIsDenormalized    to isDenormalized
   ; primFloatIsNegativeZero    to isNegativeZero
   ; primFloatIsSafeInteger     to isSafeInteger
   -- Conversions
@@ -45,10 +44,10 @@ open import Agda.Builtin.Float public
   ; primFloatMinus             to infixl 6 _-_
   ; primFloatTimes             to infixl 7 _*_
   ; primFloatDiv               to infixl 7 _÷_
-  ; primFloatPow               to infix  8 _**_
-  ; primFloatNegate            to infix  9 -_
+  ; primFloatPow               to infixl 8 _**_
+  ; primFloatNegate            to infixr 9 -_
   ; primFloatSqrt              to sqrt
-  ; primFloatExp               to e^_
+  ; primFloatExp               to infixr 9 e^_
   ; primFloatLog               to log
   ; primFloatSin               to sin
   ; primFloatCos               to cos
