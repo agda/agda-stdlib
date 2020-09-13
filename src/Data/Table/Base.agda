@@ -50,6 +50,12 @@ uncons t = head t , tail t
 remove : ∀ {n} → Fin (suc n) → Table A (suc n) → Table A n
 remove i t = tabulate (lookup t ∘ punchIn i)
 
+last : ∀ {n} → Table A (suc n) → A
+last {n = n} t = lookup t (fromℕ n)
+
+init : ∀ {n} → Table A (suc n) → Table A n
+init t = tabulate (lookup t ∘ inject₁)
+
 ------------------------------------------------------------------------
 -- Operations for transforming tables
 

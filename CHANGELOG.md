@@ -133,6 +133,12 @@ New modules
   Function.Identity.Instances
   ```
 
+* Algerbaic properties:
+  ```agda
+  Algebra.Properties.CommutativeSemiring
+  Algebra.Properties.SemiringWithoutOne
+  ```
+
 * Predicate for lists that are sorted with respect to a total order
   ```
   Data.List.Relation.Unary.Sorted.TotalOrder
@@ -142,6 +148,12 @@ New modules
 * Subtraction for binary naturals:
   ```
   Data.Nat.Binary.Subtraction
+  ```
+
+* Combinatorics operations
+  ```
+  Data.Fin.Combinatorics
+  Data.Nat.Combinatorics
   ```
 
 * A predicate for vectors in which every pair of elements is related.
@@ -260,6 +272,16 @@ Other minor additions
                       IsCommutativeRing _≈₁_ _+_ _*_ -_ 0# 1#
   ```
 
+* Added proofs to `Algebra.Properties.CommutativeMonoid`:
+  ```agda
+  sumₜ-init : sumₜ t ≈ sumₜ (init t) + lookup t (fromℕ n)
+  ```
+
+* Added declarations to `Algebra.Structures.IsSemiringWithoutOne`:
+  ```agda
+  distribˡ : * DistributesOverˡ +
+  ```
+
 * Added new proof to `Data.Fin.Induction`:
   ```agda
   <-wellFounded : WellFounded _<_
@@ -282,6 +304,14 @@ Other minor additions
   splitAt-<         : splitAt m {n} i ≡ inj₁ (fromℕ< i<m)
   splitAt-≥         : splitAt m {n} i ≡ inj₂ (reduce≥ i i≥m)
   inject≤-injective : inject≤ x n≤m ≡ inject≤ y n≤m′ → x ≡ y
+
+  k+nℕ-ℕk≡n            : toℕ k + (n ℕ-ℕ k) ≡ n
+  k≡fromℕ[n]⇒toℕ[k]≡n  : k ≡ fromℕ n → toℕ k ≡ n
+  toℕ[k]≡n⇒k≡fromℕ[n]  : toℕ k ≡ n → k ≡ fromℕ n
+  punchIn≡inject₁      : punchIn (fromℕ n) k ≡ inject₁ k
+  punchOut≡lower₁      : punchOut {i = fromℕ n} {j = i} n≢i′ ≡ lower₁ i n≢i
+  punchOut-irrelevant  : (p₁ p₂ : i ≢ j) → punchOut p₁ ≡ punchOut p₂
+
   ```
 
 * Added new functions to `Data.Fin.Base`:
@@ -398,6 +428,11 @@ Other minor additions
   ```
 
 * `Data.Nat.Binary.Induction` now re-exports `Acc` and `acc` from `Induction.WellFounded`.
+
+* Added new properties to `Data.Nat.Properties`:
+  ```agda
+  m≢0∧n≢0⇒m*n≢0 : m ≢ 0 → n ≢ 0 → m * n ≢ 0
+  ```
 
 * Added new properties to `Data.Nat.Binary.Properties`:
   ```agda
@@ -541,6 +576,13 @@ Other minor additions
   wordsBy : Decidable P → String → List String
   words   : String → List String
   ```
+
+* Added definitions to `Data.Table.Base`:
+  ```agda
+  last : ∀ {n} → Table A (suc n) → A
+  init : ∀ {n} → Table A (suc n) → Table A n
+  ```
+
 
 * Added new proofs to `Data.Tree.Binary.Properties`:
   ```agda
