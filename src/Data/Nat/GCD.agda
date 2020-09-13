@@ -33,7 +33,7 @@ import Relation.Nullary.Decidable as Dec
 -- Calculated via Euclid's algorithm. In order to show progress,
 -- avoiding the initial step where the first argument may increase, it
 -- is necessary to first define a version `gcd′` which assumes that the
--- first argument is strictly smaller than the second. The full `gcd`
+-- second argument is strictly smaller than the first. The full `gcd`
 -- function then compares the two arguments and applies `gcd′`
 -- accordingly.
 
