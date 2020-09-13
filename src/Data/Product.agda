@@ -116,8 +116,8 @@ map₂ f = map id f
 
 -- A version of map where the output can depend on the input
 dmap : ∀ {B : A → Set b} {P : A → Set p} {Q : ∀ {a} → P a → B a → Set q} →
-       (f : (a : A) → B a) → (∀ {a} (p : P a) → Q p (f a)) →
-       (ap : Σ A P) → Σ (B (proj₁ ap)) (Q (proj₂ ap))
+       (f : (a : A) → B a) → (∀ {a} (b : P a) → Q b (f a)) →
+       ((a , b) : Σ A P) → Σ (B a) (Q b)
 dmap f g (x , y) = f x , g y
 
 zip : ∀ {P : A → Set p} {Q : B → Set q} {R : C → Set r} →
@@ -175,7 +175,7 @@ uncurry′ = uncurry
 
 dmap′ : ∀ {x y} {X : A → Set x} {Y : B → Set y} →
         ((a : A) → X a) → ((b : B) → Y b) →
-        (ab : A × B) → X (proj₁ ab) × Y (proj₂ ab)
+        ((a , b) : A × B) → X a × Y b
 dmap′ f g = dmap f g
 
 _<*>_ : ∀ {x y} {X : A → Set x} {Y : B → Set y} →

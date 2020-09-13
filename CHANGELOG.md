@@ -21,7 +21,7 @@ Bug-fixes
 * Fixed various algebraic bundles not correctly re-exporting
   `commutativeSemigroup` proofs.
 
-* Fix in `Induction.WellFounded.FixPoint`, where the well-founded relation `_<_` and
+* Fixed bug in `Induction.WellFounded.FixPoint`, where the well-founded relation `_<_` and
   the predicate `P` were required to live at the same universe level.
 
 Non-backwards compatible changes
@@ -29,16 +29,15 @@ Non-backwards compatible changes
 
 #### Changes to the `Relation.Unary.Closure` hierarchy
 
-* Following the study of the closure operator `◇` dual to the `□` we originally
-  provided, the set of modules has been reorganised. We have
+* Following the study of the closure operator `◇` dual to the `□` operator
+  originally provided, the `Relation.Unary.Closure` modules have been reorganised.
+  We have
 
   + Added the `◇` closure operator to `.Base`
-  + Moved all of the `□`-related functions in submodules called `□`
-  + Added all of the corresponding `◇`-related functions in submodules called `◇`
+  + Moved all of the `□`-related functions into submodules called `□` (e.g. `reindex` → `□.reindex`)
+  + Added all of the corresponding `◇`-related functions into submodules called `◇` (e.g. `◇-reindex`)
 
-* We also provide functions converting back and forth between `□`-based and
-  `◇`-based statements in `.Base`:
-
+* Added functions converting back and forth between `□`-based and `◇`-based statements in `.Base`:
   ```agda
   curry   : (∀ {x} → ◇ T x → P x) → (∀ {x} → T x → □ P x)
   uncurry : (∀ {x} → T x → □ P x) → (∀ {x} → ◇ T x → P x)
@@ -48,21 +47,23 @@ Non-backwards compatible changes
 
 * The `n` argument to `_⊜_` in `Tactic.RingSolver.NonReflective` has been made implict rather than explicit.
 
-* `Data.Empty.Polymorphic` and `Data.Unit.Polymorphic` were rewritten
-  to explicitly use `Lift` rather that defining new types. This means
-  that these are now compatible with `⊥` and `⊤` from the rest of the
-  library. This allowed them to be used in the rest of library where
-  explicit `Lift` was used.
+* Made the first argument of `[,]-∘-distr` in `Data.Sum.Properties` explicit rather than implicit.
+
+* `Data.Empty.Polymorphic` and `Data.Unit.Polymorphic` have been redefined using
+  `Lift` and the original non-polymorphic versions, rather than being defined as new types. This means
+  that these are now compatible with `⊥` and `⊤` from the rest of the library,
+  allowing them to be used where previously `Lift` was used explicitly.
 
 Deprecated modules
 ------------------
 
-* `Data.AVL` and all of its submodules have been moved to `Data.Tree.AVL`
-
 * The module `Induction.WellFounded.InverseImage` has been deprecated. The proofs
   `accessible` and `wellFounded` have been moved to `Relation.Binary.Construct.On`.
 
-* `Reflection.TypeChecking.MonadSyntax` ↦ `Reflection.TypeChecking.Monad.Syntax`
+* The module `Data.AVL` and all of its submodules have been renamed to `Data.Tree.AVL`.
+
+* The module `Reflection.TypeChecking.MonadSyntax` has been renamed to
+  `Reflection.TypeChecking.Monad.Syntax`.
 
 Deprecated names
 ----------------
@@ -70,9 +71,10 @@ Deprecated names
 * The proofs `replace-equality` from `Algebra.Properties.(Lattice/DistributiveLattice/BooleanAlgebra)`
   have been deprecated in favour of the proofs in the new `Algebra.Construct.Subst.Equality` module.
 
-* In order to be consistent in usage of \prime character and apostrophe in identifiers, the following three names were deprecated in favor of their replacement that ends with a \prime character.
-  * `Data.List.Base.InitLast._∷ʳ'_` ↦ `Data.List.Base.InitLast._∷ʳ′_`
-  * `Data.List.NonEmpty.SnocView._∷ʳ'_` ↦ `Data.List.NonEmpty.SnocView._∷ʳ′_`
+* In order to be consistent in usage of \prime character and apostrophe in identifiers,
+  the following three names were deprecated in favor of their replacement that ends with a `\prime` character.
+  * `Data.List.Base.InitLast._∷ʳ'_`                          ↦ `Data.List.Base.InitLast._∷ʳ′_`
+  * `Data.List.NonEmpty.SnocView._∷ʳ'_`                      ↦ `Data.List.NonEmpty.SnocView._∷ʳ′_`
   * `Relation.Binary.Construct.StrictToNonStrict.decidable'` ↦ `Relation.Binary.Construct.StrictToNonStrict.decidable′`
 
 * In `Algebra.Morphism.Definitions` and `Relation.Binary.Morphism.Definitions`
@@ -95,15 +97,19 @@ Deprecated names
   *-+-commutativeSemiring                ↦  +-*-commutativeSemiring
   *-+-isSemiringWithoutAnnihilatingZero  ↦  +-*-isSemiringWithoutAnnihilatingZero
   ```
-* In ̀Function.Basè:
+
+* In `Function.Base`:
   ```
   *_-[_]-_  ↦  _-⟪_⟫-_
   ```
 
-* `Data.List.Relation.Unary.Any.any` to `Data.List.Relation.Unary.Any.any?`
-* `Data.List.Relation.Unary.All.all` to `Data.List.Relation.Unary.All.all?`
-* `Data.Vec.Relation.Unary.Any.any` to `Data.Vec.Relation.Unary.Any.any?`
-* `Data.Vec.Relation.Unary.All.all` to `Data.Vec.Relation.Unary.All.all?`
+* In `Data.List.Relation.Unary.Any`: `any ↦ any?`
+
+* In `Data.List.Relation.Unary.All`: `all ↦ all?`
+
+* In `Data.Vec.Relation.Unary.Any` `any ↦ any?`
+
+* In `Data.Vec.Relation.Unary.All` `all ↦ all?`
 
 New modules
 -----------
@@ -115,7 +121,7 @@ New modules
   Algebra.Module.Construct.DirectProduct.agda
   ```
 
-* Substituting the notion of equality for various structures
+* Substituting the notion of equality for various structures:
   ```
   Algebra.Construct.Subst.Equality
   Relation.Binary.Construct.Subst.Equality
@@ -133,7 +139,7 @@ New modules
   Function.Identity.Instances
   ```
 
-* Predicate for lists that are sorted with respect to a total order
+* Predicate for lists that are sorted with respect to a total order:
   ```
   Data.List.Relation.Unary.Sorted.TotalOrder
   Data.List.Relation.Unary.Sorted.TotalOrder.Properties
@@ -144,13 +150,13 @@ New modules
   Data.Nat.Binary.Subtraction
   ```
 
-* A predicate for vectors in which every pair of elements is related.
+* A predicate for vectors in which every pair of elements is related:
   ```
   Data.Vec.Relation.Unary.AllPairs
   Data.Vec.Relation.Unary.AllPairs.Properties
   ```
 
-* A predicate for vectors in which every element is unique.
+* A predicate for vectors in which every element is unique:
   ```
   Data.Vec.Relation.Unary.Unique.Propositional
   Data.Vec.Relation.Unary.Unique.Propositional.Properties
@@ -171,7 +177,7 @@ New modules
   ```
 
 * Modules replacing `Function.Related.TypeIsomorphisms` using the new
-  `Inverse` definitions.
+  `Inverse` definitions:
   ```
   Data.Sum.Algebra
   Data.Product.Algebra
@@ -182,12 +188,12 @@ New modules
   Function.Properties
   ```
 
-* Symmetry for various functional properties
+* Symmetry for various functional properties:
   ```agda
   Function.Construct.Symmetry
   ```
 
-* Added a hierarchy for metric spaces:
+* A hierarchy for metric spaces:
   ```
   Function.Metric
   Function.Metric.Core
@@ -206,7 +212,7 @@ New modules
   ```
   and other specialisations can be created in a similar fashion.
 
-* Type-checking monads
+* The type-checking monads:
   ```
   Reflection.TypeChecking.Monad
   Reflection.TypeChecking.Monad.Categorical
@@ -230,7 +236,7 @@ New modules
   Relation.Binary.Construct.Composition
   ```
 
-* Generic printf
+* Generic `printf` method:
   ```
   Text.Format.Generic
   Text.Printf.Generic
@@ -239,25 +245,24 @@ New modules
 Other major changes
 -------------------
 
-* The module `Relation.Binary.PropositionalEquality` has been growing in size and
-  now depends on a lot of other parts of the library, even though its basic
-  functionality does not. To fix this some of its parts have been factored out.
-  `Relation.Binary.PropositionalEquality.Core` already existed. Added are:
+* The module `Relation.Binary.PropositionalEquality` has recently grown in size and
+  now depends on a lot of other parts of the library, e.g. the `Algebra` hierarchy,
+  even though its basic functionality does not. To allow users the options of avoiding
+  specific dependencies, some parts of `Relation.Binary.PropositionalEquality` have
+  been refactored out into:
   ```agda
   Relation.Binary.PropositionalEquality.Properties
   Relation.Binary.PropositionalEquality.Algebra
   ```
   These new modules are re-exported by `Relation.Binary.PropositionalEquality`
-  and so these changes should be invisble to current users, but can be useful
-  to authors of large libraries.
+  and so these changes should be invisble to current users.
 
 Other minor additions
 ---------------------
 
 * Add proof to `Algebra.Morphism.RingMonomorphism`:
   ```agda
-  isCommutativeRing : IsCommutativeRing _≈₂_ _⊕_ _⊛_ ⊝_ 0#₂ 1#₂ →
-                      IsCommutativeRing _≈₁_ _+_ _*_ -_ 0# 1#
+  isCommutativeRing : IsCommutativeRing _≈₂_ _⊕_ _⊛_ ⊝_ 0#₂ 1#₂ → IsCommutativeRing _≈₁_ _+_ _*_ -_ 0# 1#
   ```
 
 * Added new proof to `Data.Fin.Induction`:
@@ -269,7 +274,7 @@ Other minor additions
   ```agda
   toℕ≤n             : (i : Fin n) → toℕ i ≤ n
   ≤fromℕ            : (i : Fin (suc n)) → i ≤ fromℕ n
-  fromℕ<-irrelevant : m ≡ n → fromℕ< m<o ≡ fromℕ< n<o
+  fromℕ<-cong       : m ≡ n → fromℕ< m<o ≡ fromℕ< n<o
   fromℕ<-injective  : fromℕ< m<o ≡ fromℕ< n<o → m ≡ n
   inject₁ℕ<         : (i : Fin n) → toℕ (inject₁ i) < n
   inject₁ℕ≤         : (i : Fin n) → toℕ (inject₁ i) ≤ n
@@ -455,12 +460,9 @@ Other minor additions
   assocʳ′        : (A × B) × C → A × (B × C)
   assocˡ′        : A × (B × C) → (A × B) × C
 
-  dmap : (f : (a : A) → B a) → (∀ {a} (p : P a) → Q p (f a)) →
-         (ap : Σ A P) → Σ (B (proj₁ ap)) (Q (proj₂ ap))
-  dmap : ((a : A) → X a) → ((b : B) → Y b) →
-         (ab : A × B) → X (proj₁ ab) × Y (proj₂ ab)
-  _<*>_ : ((a : A) → X a) × ((b : B) → Y b) →
-          ((a , b) : A × B) → X a × Y b
+  dmap           : (f : (a : A) → B a) → (∀ {a} (b : P a) → Q b (f a)) → ((a , b) : Σ A P) → Σ (B a) (Q b)
+  dmap′          : ((a : A) → X a) → ((b : B) → Y b) → ((a , b) : A × B) → X a × Y b
+  _<*>_          : ((a : A) → X a) × ((b : B) → Y b) → ((a , b) : A × B) → X a × Y b
   ```
 
 * Added new proofs to `Data.Product.Properties`:
@@ -475,8 +477,6 @@ Other minor additions
   assocʳ : (A ⊎ B) ⊎ C → A ⊎ B ⊎ C
   assocˡ : A ⊎ B ⊎ C → (A ⊎ B) ⊎ C
   ```
-
-* Made first argument of `[,]-∘-distr` in `Data.Sum.Properties` explicit
 
 * Added new proofs to `Data.Sum.Properties`:
   ```agda
@@ -616,12 +616,12 @@ Other minor additions
   _on₂_   : (C → C → D) → (A → B → C) → (A → B → D)
   ```
 
-* Added new function in `Function.Bundles`:
+* Added new proofs to `Function.Bundles`:
   ```agda
   mk↔′ : ∀ (f : A → B) (f⁻¹ : B → A) → Inverseˡ f f⁻¹ → Inverseʳ f f⁻¹ → A ↔ B
   ```
 
-* Added new operator to `Relation.Binary`:
+* Added new operators to `Relation.Binary`:
   ```agda
   _⇔_ : REL A B ℓ₁ → REL A B ℓ₂ → Set _
   ```
@@ -642,7 +642,7 @@ Other minor additions
   icong′ : {f : A → B} x → f x ≡ f x
   ```
 
-* Added new proof to `Relation.Nullary.Decidable`:
+* Added new proofs to `Relation.Nullary.Decidable`:
   ```agda
   True-↔ : (dec : Dec P) → Irrelevant P → True dec ↔ P
   ```
@@ -652,7 +652,7 @@ Other minor additions
   <-isDecStrictPartialOrder : IsDecPartialOrder _≈_ _≤_ → IsDecStrictPartialOrder _≈_ _<_
   ```
 
-* The following operators have had fixities assigneed:
+* The following operators have had fixities assigned:
   ```
   infix   4 _[_]            (Data.Graph.Acyclic)
 

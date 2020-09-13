@@ -151,13 +151,13 @@ fromℕ-def : ∀ n → fromℕ n ≡ fromℕ< ℕₚ.≤-refl
 fromℕ-def zero    = refl
 fromℕ-def (suc n) = cong suc (fromℕ-def n)
 
-fromℕ<-irrelevant : ∀ m n {o} → m ≡ n →
-                    (m<o : m ℕ.< o) →
-                    (n<o : n ℕ.< o) →
-                    fromℕ< m<o ≡ fromℕ< n<o
-fromℕ<-irrelevant 0 0 r (s≤s z≤n) (s≤s z≤n) = refl
-fromℕ<-irrelevant (suc _) (suc _) r (s≤s (s≤s p)) (s≤s (s≤s q))
-  = cong suc (fromℕ<-irrelevant _ _ (ℕₚ.suc-injective r) (s≤s p) (s≤s q))
+fromℕ<-cong : ∀ m n {o} → m ≡ n →
+              (m<o : m ℕ.< o) →
+              (n<o : n ℕ.< o) →
+              fromℕ< m<o ≡ fromℕ< n<o
+fromℕ<-cong 0       0       r (s≤s z≤n)     (s≤s z≤n)     = refl
+fromℕ<-cong (suc _) (suc _) r (s≤s (s≤s p)) (s≤s (s≤s q))
+  = cong suc (fromℕ<-cong _ _ (ℕₚ.suc-injective r) (s≤s p) (s≤s q))
 
 fromℕ<-injective : ∀ m n {o} →
                    (m<o : m ℕ.< o) →
