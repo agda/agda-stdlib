@@ -71,7 +71,7 @@ module _ (ℓ : Level) where
 
   ⊎-identity : Identity _↔_ ⊥ _⊎_
   ⊎-identity = ⊎-identityˡ , ⊎-identityʳ
-  
+
 ------------------------------------------------------------------------
 -- Algebraic structures
 
