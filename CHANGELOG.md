@@ -43,6 +43,14 @@ Non-backwards compatible changes
   curry   : (∀ {x} → ◇ T x → P x) → (∀ {x} → T x → □ P x)
   uncurry : (∀ {x} → T x → □ P x) → (∀ {x} → ◇ T x → P x)
   ```
+ 
+#### Changes to floating-point arithmetic
+
+* The functions in `Data.Float.Base` were updated following changes upstream,
+  in `Agda.Builtin.Float`, see <https://github.com/agda/agda/pull/4885>.
+
+* The bitwise ordering on floating-point numbers, `Data.Float.Properties._<_`
+  was deprecated without replacement, as it was deeply unintuitive, e.g., `forall x. x < -x`.
 
 #### Other
 
