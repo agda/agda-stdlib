@@ -15,6 +15,9 @@ Highlights
 
 * A general hierarachy of metric functions/spaces, including a specialisation to ℕ.
 
+* New module for making system calls during type checking, `Reflection.External`,
+  which re-exports `Agda.Builtin.Reflection.External`.
+
 Bug-fixes
 ---------
 
@@ -102,19 +105,19 @@ Deprecated names
 
 * In `Data.Nat.Properties`:
   ```
-  *-+-isSemiring             ↦  +-*-isSemiring
-  *-+-isCommutativeSemiring  ↦  +-*-isCommutativeSemiring
-  *-+-semiring               ↦  +-*-semiring
-  *-+-commutativeSemiring    ↦  +-*-commutativeSemiring
+  *-|-isSemiring             ↦  +-*-isSemiring
+  *-|-isCommutativeSemiring  ↦  +-*-isCommutativeSemiring
+  *-|-semiring               ↦  +-*-semiring
+  *-|-commutativeSemiring    ↦  +-*-commutativeSemiring
   ```
 
 * In `Data.Nat.Binary.Properties`:
   ```
-  *-+-isSemiring                         ↦  +-*-isSemiring
-  *-+-isCommutativeSemiring              ↦  +-*-isCommutativeSemiring
-  *-+-semiring                           ↦  +-*-semiring
-  *-+-commutativeSemiring                ↦  +-*-commutativeSemiring
-  *-+-isSemiringWithoutAnnihilatingZero  ↦  +-*-isSemiringWithoutAnnihilatingZero
+  *-|-isSemiring                         ↦  +-*-isSemiring
+  *-|-isCommutativeSemiring              ↦  +-*-isCommutativeSemiring
+  *-|-semiring                           ↦  +-*-semiring
+  *-|-commutativeSemiring                ↦  +-*-commutativeSemiring
+  *-|-isSemiringWithoutAnnihilatingZero  ↦  +-*-isSemiringWithoutAnnihilatingZero
   ```
 * In ̀Function.Basè:
   ```
