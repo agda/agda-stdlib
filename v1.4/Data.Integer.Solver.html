@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Integer.Solver</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Automatic solvers for equations over integers</a>
+<a id="155" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="229" class="Comment">-- See README.Integer for examples of how to use this solver</a>
+
+<a id="291" class="Symbol">{-#</a> <a id="295" class="Keyword">OPTIONS</a> <a id="303" class="Pragma">--without-K</a> <a id="315" class="Pragma">--safe</a> <a id="322" class="Symbol">#-}</a>
+
+<a id="327" class="Keyword">module</a> <a id="334" href="Data.Integer.Solver.html" class="Module">Data.Integer.Solver</a> <a id="354" class="Keyword">where</a>
+
+<a id="361" class="Keyword">import</a> <a id="368" href="Algebra.Solver.Ring.Simple.html" class="Module">Algebra.Solver.Ring.Simple</a> <a id="395" class="Symbol">as</a> <a id="398" class="Module">Solver</a>
+<a id="405" class="Keyword">import</a> <a id="412" href="Algebra.Solver.Ring.AlmostCommutativeRing.html" class="Module">Algebra.Solver.Ring.AlmostCommutativeRing</a> <a id="454" class="Symbol">as</a> <a id="457" class="Module">ACR</a>
+<a id="461" class="Keyword">open</a> <a id="466" class="Keyword">import</a> <a id="473" href="Data.Integer.Properties.html" class="Module">Data.Integer.Properties</a> <a id="497" class="Keyword">using</a> <a id="503" class="Symbol">(</a><a id="504" href="Data.Integer.Properties.html#1832" class="Function Operator">_≟_</a><a id="507" class="Symbol">;</a> <a id="509" href="Data.Integer.Properties.html#41661" class="Function">+-*-commutativeRing</a><a id="528" class="Symbol">)</a>
+
+<a id="531" class="Comment">------------------------------------------------------------------------</a>
+<a id="604" class="Comment">-- A module for automatically solving propositional equivalences</a>
+<a id="669" class="Comment">-- containing _+_ and _*_</a>
+
+<a id="696" class="Keyword">module</a> <a id="+-*-Solver"></a><a id="703" href="Data.Integer.Solver.html#703" class="Module">+-*-Solver</a> <a id="714" class="Symbol">=</a>
+  <a id="718" href="Algebra.Solver.Ring.Simple.html" class="Module">Solver</a> <a id="725" class="Symbol">(</a><a id="726" href="Algebra.Solver.Ring.AlmostCommutativeRing.html#3666" class="Function">ACR.fromCommutativeRing</a> <a id="750" href="Data.Integer.Properties.html#41661" class="Function">+-*-commutativeRing</a><a id="769" class="Symbol">)</a> <a id="771" href="Data.Integer.Properties.html#1832" class="Function Operator">_≟_</a>
+</pre></body></html>
