@@ -24,8 +24,7 @@ main = do
                     "src"
   nonAsciiChars <-
     filter (not . isAscii) . concat <$> mapM readUTF8File agdaFiles
-  let table = reverse $
-              L.sortBy (compare `on` snd) $
+  let table = L.sortBy (flip compare `on` snd) $
               map (\cs -> (head cs, length cs)) $
               L.group $ L.sort $ nonAsciiChars
 
