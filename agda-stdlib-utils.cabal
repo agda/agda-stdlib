@@ -1,4 +1,4 @@
-name:            lib
+name:            agda-stdlib-utils
 version:         1.5-dev
 cabal-version:   >= 1.10
 build-type:      Simple
