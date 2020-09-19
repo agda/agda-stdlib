@@ -558,6 +558,11 @@ Other minor additions
   *-distrib-⊓           : _*_ DistributesOver _⊓_
   ```
 
+* Add new functions to `Data.Rational.Unnormalised`:
+  ```agda
+  _⊔_ : (p q : ℚᵘ) → ℚᵘ
+  _⊓_ : (p q : ℚᵘ) → ℚᵘ
+
 * Added new operation in `Data.Sum`:
   ```agda
   reduce : A ⊎ A → A
