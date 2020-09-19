@@ -166,6 +166,12 @@ Deprecated names
   show ↦ Data.Rational.Show.show
   ```
 
+* In `Data.Rational.Properties`:
+  ```agda
+  neg-mono-<-> ↦ neg-mono-<
+  neg-mono-≤-≥ ↦ neg-mono-≤
+  ```
+
 New modules
 -----------
 
@@ -566,6 +572,151 @@ Other minor additions
 * Added new operation in `Data.Sum`:
   ```agda
   reduce : A ⊎ A → A
+  ```
+
+* Add new proofs to `Data.Rational.Unnormalised.Properties`:
+  ```agda
+  /-cong                   : p₁ ≡ p₂ → q₁ ≡ q₂ → (p₁ / q₁) {q₁≢0} ≡ (p₂ / q₂) {q₂≢0}
+  ↥[p/q]≡p                 : ↥ (p / q) {q≢0} ≡ p
+  ↧[p/q]≡q                 : ↧ (p / q) {q≢0} ≡ ℤ.+ q
+
+  neg-cancel-<             : - p < - q → q < p
+  neg-cancel-≤-≥           : - p ≤ - q → q ≤ p
+
+  cong-mono-≤              : f Preserves _≤_ ⟶ _≤_ → f Preserves _≃_ ⟶ _≃_
+  cong-antimono-≤          : f Preserves _≤_ ⟶ _≥_ → f Preserves _≃_ ⟶ _≃_
+
+  *-congˡ                  : Congruent₁ _≃_ (p *_)
+  *-congʳ                  : Congruent₁ _≃_ (_* p)
+
+  *-homoˡ-id               : ((ℤ.+ p ℤ.* q) / (p ℕ.* r)) {pr≢0} ≃ (q / r) {r≢0}
+  *-homoʳ-id               : ((q ℤ.* ℤ.+ p) / (r ℕ.* p)) {rp≢0} ≃ (q / r) {r≢0}
+
+  *-cancelʳ-≤-neg          : Negative r → p * r ≤ q * r → q ≤ p
+  *-cancelˡ-≤-neg          : Negative r → r * p ≤ r * q → q ≤ p
+  *-monoˡ-≤-nonPos         : NonPositive r → (_* r) Preserves _≤_ ⟶ _≥_
+  *-monoʳ-≤-nonPos         : NonPositive r → (r *_) Preserves _≤_ ⟶ _≥_
+  *-monoˡ-≤-neg            : Negative r → (_* r) Preserves _≤_ ⟶ _≥_
+  *-monoʳ-≤-neg            : Negative r → (r *_) Preserves _≤_ ⟶ _≥_
+
+  *-cancelˡ-<-pos          : Positive r → r * p < r * q → p < q
+  *-cancelʳ-<-pos          : Positive r → p * r < q * r → p < q
+  *-monoˡ-<-neg            : Negative r → (_* r) Preserves _<_ ⟶ _>_
+  *-monoʳ-<-neg            : Negative r → (r *_) Preserves _<_ ⟶ _>_
+  *-cancelˡ-<-nonPos       : NonPositive r → r * p < r * q → q < p
+  *-cancelʳ-<-nonPos       : NonPositive r → p * r < q * r → q < p
+  *-cancelˡ-<-neg          : Negative r → r * p < r * q → q < p
+  *-cancelʳ-<-neg          : Negative r → p * r < q * r → q < p
+
+  positive⇒1/positive      : Positive q → Positive (1/ q)
+  negative⇒1/negative      : Negative q → Negative (1/ q)
+  1/q≢0                    : ℤ.∣ ↥ (1/ q) ∣ ≢0
+  1/-involutive-≡          : 1/ (1/ q) ≡ q
+  1/-involutive            : 1/ (1/ q) ≃ q
+  p>1⇒1/p<1                : p > 1ℚᵘ → (1/ p) < 1ℚᵘ
+
+  ⊓-comm                   : Commutative _≃_ _⊓_
+  ⊓-assoc                  : Associative _≃_ _⊓_
+  ⊓-idem                   : Idempotent _≃_ _⊓_
+  ⊓-sel                    : Selective _≃_ _⊓_
+  ⊓-congˡ                  : Congruent₁ _≃_ (p ⊓_)
+  ⊓-congʳ                  : Congruent₁ _≃_ (_⊓ p)
+  ⊓-cong                   : Congruent₂ _≃_ _⊓_
+
+  p≤q⇒p⊓q≃p                : p ≤ q → p ⊓ q ≃ p
+  p⊓q≃p⇒p≤q                : p ⊓ q ≃ p → p ≤ q
+  q≤p⇒p⊓q≃q                : q ≤ p → p ⊓ q ≃ q
+  p⊓q≃q⇒q≤p                : p ⊓ q ≃ q → q ≤ p
+
+  p⊓q≤p                    : p ⊓ q ≤ p
+  p⊓q≤q                    : p ⊓ q ≤ q
+
+  mono-≤-distrib-⊓         : f Preserves _≤_ ⟶ _≤_ → f (p ⊓ q) ≃ f p ⊓ f q
+  *-distribˡ-⊓-nonNeg      : NonNegative p → p * (q ⊓ r) ≃ (p * q) ⊓ (p * r)
+  *-distribʳ-⊓-nonNeg      : NonNegative p → (q ⊓ r) * p ≃ (q * p) ⊓ (r * p)
+
+  ⊓-isMagma                : IsMagma _≃_ _⊓_
+  ⊓-isSemigroup            : IsSemigroup _≃_ _⊓_
+  ⊓-isBand                 : IsBand _≃_ _⊓_
+  ⊓-isCommutativeSemigroup : IsCommutativeSemigroup _≃_ _⊓_
+  ⊓-isSemilattice          : IsSemilattice _≃_ _⊓_
+  ⊓-isSelectiveMagma       : IsSelectiveMagma _≃_ _⊓_
+
+  ⊓-magma                  : Magma _ _
+  ⊓-semigroup              : Semigroup _ _
+  ⊓-band                   : Band _ _
+  ⊓-commutativeSemigroup   : CommutativeSemigroup _ _
+  ⊓-semilattice            : Semilattice _ _
+  ⊓-selectiveMagma         : SelectiveMagma _ _
+
+  ⊓-rawMagma               : RawMagma _ _
+
+  neg-distrib-⊔-⊓          : - (p ⊔ q) ≃ - p ⊓ - q
+  neg-distrib-⊓-⊔          : - (p ⊓ q) ≃ - p ⊔ - q
+
+  ⊔-comm                   : Commutative _≃_ _⊔_
+  ⊔-assoc                  : Associative _≃_ _⊔_
+  ⊔-idem                   : Idempotent _≃_ _⊔_
+  ⊔-sel                    : Selective _≃_ _⊔_
+  ⊔-congˡ                  : Congruent₁ _≃_ (p ⊔_)
+  ⊔-congʳ                  : Congruent₁ _≃_ (_⊔ p)
+  ⊔-cong                   : Congruent₂ _≃_ _⊔_
+
+  p≤q⇒p⊔q≃q                : p ≤ q → p ⊔ q ≃ q
+  p⊔q≃q⇒p≤q                : p ⊔ q ≃ q → p ≤ q
+  q≤p⇒p⊔q≃p                : q ≤ p → p ⊔ q ≃ p
+  p⊔q≃p⇒q≤p                : p ⊔ q ≃ p → q ≤ p
+
+  p⊔q≥p                    : p ⊔ q ≥ p
+  p⊔q≥q                    : p ⊔ q ≥ q
+
+  mono-≤-distrib-⊔         : f Preserves _≤_ ⟶ _≤_ → f (p ⊔ q) ≃ f p ⊔ f q
+  *-distribˡ-⊔-nonNeg      : NonNegative p → p * (q ⊔ r) ≃ (p * q) ⊔ (p * r)
+  *-distribʳ-⊔-nonNeg      : NonNegative p → (q ⊔ r) * p ≃ (q * p) ⊔ (r * p)
+
+  antimono-≤-distrib-⊓     : f Preserves _≤_ ⟶ _≥_ → f (p ⊓ q) ≃ f p ⊔ f q
+  antimono-≤-distrib-⊔     : f Preserves _≤_ ⟶ _≥_ → f (p ⊔ q) ≃ f p ⊓ f q
+  *-distribˡ-⊔-nonPos-⊓    : NonPositive p → p * (q ⊔ r) ≃ (p * q) ⊓ (p * r)
+  *-distribʳ-⊔-nonPos-⊓    : NonPositive p → (q ⊔ r) * p ≃ (q * p) ⊓ (r * p)
+  *-distribˡ-⊓-nonPos-⊔    : NonPositive p → p * (q ⊓ r) ≃ (p * q) ⊔ (p * r)
+  *-distribʳ-⊓-nonPos-⊔    : NonPositive p → (q ⊓ r) * p ≃ (q * p) ⊔ (r * p)
+
+  ⊓-absorbs-⊔              : _Absorbs_ _≃_ _⊓_ _⊔_
+  ⊔-absorbs-⊓              : _Absorbs_ _≃_ _⊔_ _⊓_
+  ⊔-⊓-absorptive           : Absorptive _≃_ _⊔_ _⊓_
+  ⊓-⊔-absorptive           : Absorptive _≃_ _⊓_ _⊔_
+
+  ⊔-isMagma                : IsMagma _≃_ _⊔_
+  ⊔-isSemigroup            : IsSemigroup _≃_ _⊔_
+  ⊔-isBand                 : IsBand _≃_ _⊔_
+  ⊔-isCommutativeSemigroup : IsCommutativeSemigroup _≃_ _⊔_
+  ⊔-isSemilattice          : IsSemilattice _≃_ _⊔_
+  ⊔-isSelectiveMagma       : IsSelectiveMagma _≃_ _⊔_
+
+  ⊔-magma                  : Magma _ _
+  ⊔-semigroup              : Semigroup _ _
+  ⊔-band                   : Band _ _
+  ⊔-commutativeSemigroup   : CommutativeSemigroup _ _
+  ⊔-semilattice            : Semilattice _ _
+  ⊔-selectiveMagma         : SelectiveMagma _ _
+
+  ⊔-⊓-isLattice            : IsLattice _≃_ _⊔_ _⊓_
+  ⊓-⊔-isLattice            : IsLattice _≃_ _⊓_ _⊔_
+
+  ⊔-⊓-lattice              : Lattice _ _
+  ⊓-⊔-lattice              : Lattice _ _
+
+  ∣_∣-cong                 : p ≃ q → ∣ p ∣ ≃ ∣ q ∣
+  ∣p∣≃0⇒p≃0                : ∣ p ∣ ≃ 0ℚᵘ → p ≃ 0ℚᵘ
+  ∣-p∣≡∣p∣                 : ∣ - p ∣ ≡ ∣ p ∣
+  0≤p⇒∣p∣≡p                : 0ℚᵘ ≤ p → ∣ p ∣ ≡ p
+  0≤p⇒∣p∣≃p                : 0ℚᵘ ≤ p → ∣ p ∣ ≃ p
+  ∣p∣≡p⇒0≤p                : ∣ p ∣ ≡ p → 0ℚᵘ ≤ p
+  ∣p∣≡p⊎∣p∣≡-p             : (∣ p ∣ ≡ p) ⊎ (∣ p ∣ ≡ - p)
+  ∣p+q∣≤∣p∣+∣q∣            : ∣ p + q ∣ ≤ ∣ p ∣ + ∣ q ∣
+  ∣p-q∣≤∣p∣+∣q∣            : ∣ p - q ∣ ≤ ∣ p ∣ + ∣ q ∣
+  ∣p*q∣≡∣p∣*∣q∣            : ∣ p * q ∣ ≡ ∣ p ∣ * ∣ q ∣
+  ∣p*q∣≃∣p∣*∣q∣            : ∣ p * q ∣ ≃ ∣ p ∣ * ∣ q ∣
   ```
 
 * Added new proofs in `Data.Sign.Properties`:

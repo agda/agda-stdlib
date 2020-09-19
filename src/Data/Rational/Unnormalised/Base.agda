@@ -9,7 +9,7 @@
 module Data.Rational.Unnormalised.Base where
 
 open import Data.Integer.Base as ℤ
-  using (ℤ; ∣_∣; +_; +0; +[1+_]; -[1+_]; +<+; +≤+)
+  using (ℤ; +_; +0; +[1+_]; -[1+_]; +<+; +≤+) renaming (∣_∣ to ∣_∣ᶻ)
 open import Data.Nat as ℕ using (ℕ; zero; suc)
 open import Level using (0ℓ)
 open import Relation.Nullary using (¬_)
@@ -134,13 +134,13 @@ p - q = p + (- q)
 
 -- reciprocal: requires a proof that the numerator is not zero
 
-1/_ : (p : ℚᵘ) → .{n≢0 : ∣ ↥ p ∣ ≢0} → ℚᵘ
+1/_ : (p : ℚᵘ) → .{n≢0 : ∣ ↥ p ∣ᶻ ≢0} → ℚᵘ
 1/ mkℚᵘ +[1+ n ] d = mkℚᵘ +[1+ d ] n
 1/ mkℚᵘ -[1+ n ] d = mkℚᵘ -[1+ d ] n
 
 -- division: requires a proof that the denominator is not zero
 
-_÷_ : (p q : ℚᵘ) → .{n≢0 : ∣ ↥ q ∣ ≢0} → ℚᵘ
+_÷_ : (p q : ℚᵘ) → .{n≢0 : ∣ ↥ q ∣ᶻ ≢0} → ℚᵘ
 (p ÷ q) {n≢0} = p * (1/_ q {n≢0})
 
 -- max
@@ -150,6 +150,9 @@ p ⊔ q = ((↥ p ℤ.* ↧ q) ℤ.⊔ (↥ q ℤ.* ↧ p)) / (↧ₙ p ℕ.* �
 -- min
 _⊓_ : (p q : ℚᵘ) → ℚᵘ
 p ⊓ q = ((↥ p ℤ.* ↧ q) ℤ.⊓ (↥ q ℤ.* ↧ p)) / (↧ₙ p ℕ.* ↧ₙ q)
+
+∣_∣ : ℚᵘ → ℚᵘ
+∣ mkℚᵘ p q ∣ = mkℚᵘ (+ ∣ p ∣ᶻ) q
 
 ------------------------------------------------------------------------------
 -- Some constants
