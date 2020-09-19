@@ -22,7 +22,7 @@ module Function.Bundles where
 import Function.Definitions as FunctionDefinitions
 import Function.Structures as FunctionStructures
 open import Level using (Level; _⊔_; suc)
-open import Data.Product using (proj₁; proj₂)
+open import Data.Product using (_,_; proj₁; proj₂)
 open import Relation.Binary hiding (_⇔_)
 open import Relation.Binary.PropositionalEquality as ≡
   using (_≡_)
@@ -356,8 +356,8 @@ module _ {A : Set a} {B : Set b} where
     ; inverseʳ = invʳ
     }
 
-  mk↩↪ : ∀ {f : A → B} {g₁ : B → A} {g₂ : B → A}
-    → Inverseˡ f g₁ → Inverseʳ f g₂ → A ↩↪ B
+  mk↩↪ : ∀ {f : A → B} {g₁ : B → A} {g₂ : B → A} →
+         Inverseˡ f g₁ → Inverseʳ f g₂ → A ↩↪ B
   mk↩↪ {f} {g₁} {g₂} invˡ invʳ = record
     { f        = f
     ; g₁       = g₁
@@ -377,3 +377,7 @@ module _ {A : Set a} {B : Set b} where
     ; cong₂   = ≡.cong f⁻¹
     ; inverse = inv
     }
+
+  -- Sometimes the implicit arguments above cannot be inferred
+  mk↔′ : ∀ (f : A → B) (f⁻¹ : B → A) → Inverseˡ f f⁻¹ → Inverseʳ f f⁻¹ → A ↔ B
+  mk↔′ f f⁻¹ invˡ invʳ = mk↔ {f = f} {f⁻¹ = f⁻¹} (invˡ , invʳ)

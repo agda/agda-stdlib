@@ -101,6 +101,7 @@ module _ {a b} {A : Set a} {B : Set b} (f : A → B) {xs ys} where
 -- _++_
 
 module _ {a} {A : Set a} {xs₁ xs₂ ys₁ ys₂ : List A} where
+  infix 4 _++-mono_
 
   _++-mono_ : xs₁ ⊆ ys₁ → xs₂ ⊆ ys₂ → xs₁ ++ xs₂ ⊆ ys₁ ++ ys₂
   _++-mono_ xs₁⊆ys₁ xs₂⊆ys₂ =
@@ -134,6 +135,7 @@ module _ {ℓ} {A B : Set ℓ} (f g : A → List B) {xs ys} where
 -- _⊛_
 
 module _ {ℓ} {A B : Set ℓ} {fs gs : List (A → B)} {xs ys : List A} where
+  infix 4  _⊛-mono_
 
   _⊛-mono_ : fs ⊆ gs → xs ⊆ ys → (fs ⊛ xs) ⊆ (gs ⊛ ys)
   _⊛-mono_ fs⊆gs xs⊆ys =
@@ -145,6 +147,7 @@ module _ {ℓ} {A B : Set ℓ} {fs gs : List (A → B)} {xs ys : List A} where
 -- _⊗_
 
 module _ {ℓ} {A B : Set ℓ} {xs₁ ys₁ : List A} {xs₂ ys₂ : List B} where
+  infix 4 _⊗-mono_
 
   _⊗-mono_ : xs₁ ⊆ ys₁ → xs₂ ⊆ ys₂ → (xs₁ ⊗ xs₂) ⊆ (ys₁ ⊗ ys₂)
   xs₁⊆ys₁ ⊗-mono xs₂⊆ys₂ =

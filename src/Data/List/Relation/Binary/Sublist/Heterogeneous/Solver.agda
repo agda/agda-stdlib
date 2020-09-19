@@ -37,6 +37,8 @@ open import Relation.Nullary
 
 open P.≡-Reasoning
 
+infix 4  _⊆I_ _⊆R_ _⊆T_
+
 ------------------------------------------------------------------------
 -- Reified list expressions
 

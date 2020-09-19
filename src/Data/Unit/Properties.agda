@@ -15,8 +15,14 @@ open import Data.Sum.Base
 open import Data.Unit.Base
 open import Level using (0ℓ)
 open import Relation.Nullary
-open import Relation.Binary
+open import Relation.Binary hiding (Irrelevant)
 open import Relation.Binary.PropositionalEquality
+
+------------------------------------------------------------------------
+-- Irrelevancy
+
+⊤-irrelevant : Irrelevant ⊤
+⊤-irrelevant _ _ = refl
 
 ------------------------------------------------------------------------
 -- Equality
