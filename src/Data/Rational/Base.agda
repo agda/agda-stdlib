@@ -9,7 +9,7 @@
 module Data.Rational.Base where
 
 open import Function.Base using (id)
-open import Data.Integer.Base as ℤ using (ℤ; ∣_∣; +_; +0; -[1+_])
+open import Data.Integer.Base as ℤ using (ℤ; +_; +0; -[1+_]) renaming (∣_∣ to ∣_∣ᶻ)
 import Data.Integer.GCD as ℤ
 import Data.Integer.DivMod as ℤ
 open import Data.Nat.GCD
@@ -20,6 +20,7 @@ open import Data.Nat.Base as ℕ using (ℕ; zero; suc) hiding (module ℕ)
 import Data.Nat.DivMod as ℕ
 open import Data.Rational.Unnormalised.Base as ℚᵘ using (ℚᵘ; mkℚᵘ; _≢0)
 open import Data.Product
+open import Data.Sign using (Sign)
 open import Data.Sum.Base using (inj₂)
 open import Level using (0ℓ)
 open import Relation.Nullary using (¬_; recompute)
@@ -49,7 +50,7 @@ record ℚ : Set where
   field
     numerator     : ℤ
     denominator-1 : ℕ
-    .isCoprime    : Coprime ∣ numerator ∣ (suc denominator-1)
+    .isCoprime    : Coprime ∣ numerator ∣ᶻ (suc denominator-1)
 
   denominatorℕ : ℕ
   denominatorℕ = suc denominator-1
@@ -206,8 +207,8 @@ nonNegative {p} (*≤* p≤q) = ℚᵘ.nonNegative {toℚᵘ p} (ℚᵘ.*≤* p�
 -- Operations on rationals
 
 infix  8 -_ 1/_
-infixl 7 _*_ _÷_
-infixl 6 _-_ _+_
+infixl 7 _*_ _÷_ _⊓_
+infixl 6 _-_ _+_ _⊔_
 
 -- addition
 
@@ -226,11 +227,25 @@ p - q = p + (- q)
 
 -- reciprocal: requires a proof that the numerator is not zero
 
-1/_ : (p : ℚ) → .{n≢0 : ∣ ↥ p ∣ ≢0} → ℚ
+1/_ : (p : ℚ) → .{n≢0 : ∣ ↥ p ∣ᶻ ≢0} → ℚ
 1/ mkℚ +[1+ n ] d prf = mkℚ +[1+ d ] n (C.sym prf)
 1/ mkℚ -[1+ n ] d prf = mkℚ -[1+ d ] n (C.sym prf)
 
 -- division: requires a proof that the denominator is not zero
 
-_÷_ : (p q : ℚ) → .{n≢0 : ∣ ↥ q ∣ ≢0} → ℚ
+_÷_ : (p q : ℚ) → .{n≢0 : ∣ ↥ q ∣ᶻ ≢0} → ℚ
 (p ÷ q) {n≢0} = p * (1/ q) {n≢0}
+
+-- max
+
+_⊔_ : (p q : ℚ) → ℚ
+p ⊔ q = ((↥ p ℤ.* ↧ q) ℤ.⊔ (↥ q ℤ.* ↧ p)) / (↧ₙ p ℕ.* ↧ₙ q)
+
+-- min
+
+_⊓_ : (p q : ℚ) → ℚ
+p ⊓ q = ((↥ p ℤ.* ↧ q) ℤ.⊓ (↥ q ℤ.* ↧ p)) / (↧ₙ p ℕ.* ↧ₙ q)
+
+-- absolute value
+∣_∣ : ℚ → ℚ
+∣ mkℚ p q-1 isCoprime ∣ = mkℚ (+ ∣ p ∣ᶻ) q-1 isCoprime
