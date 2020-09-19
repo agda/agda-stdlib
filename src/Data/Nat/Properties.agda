@@ -286,6 +286,11 @@ n≤0⇒n≡0 z≤n = refl
 ≤∧≢⇒< {_} {suc n} (s≤s m≤n) 1+m≢1+n =
   s≤s (≤∧≢⇒< m≤n (1+m≢1+n ∘ cong suc))
 
+≤∧≮⇒≡ : ∀ {m n} → m ≤ n → m ≮ n → m ≡ n
+≤∧≮⇒≡ {0}     {0}      z≤n      m≮n = refl
+≤∧≮⇒≡ {0}     {suc n}  z≤n      m≮n = contradiction (s≤s z≤n) m≮n
+≤∧≮⇒≡ {suc m} {suc n} (s≤s m≤n) m≮n = cong suc (≤∧≮⇒≡ m≤n (m≮n ∘ s≤s))
+
 ≤-<-connex : Connex _≤_ _<_
 ≤-<-connex m n with m ≤? n
 ... | yes m≤n = inj₁ m≤n
@@ -1186,6 +1191,30 @@ m⊔n≤m+n m n with ⊔-sel m n
 ... | inj₂ m⊔n≡n rewrite m⊔n≡n = m≤n+m n m
 
 ------------------------------------------------------------------------
+-- Other properties of _⊔_ and _*_
+
+*-distribˡ-⊔ : _*_ DistributesOverˡ _⊔_
+*-distribˡ-⊔ m zero o = sym (cong (_⊔ m * o) (*-zeroʳ m))
+*-distribˡ-⊔ m (suc n) zero = begin-equality
+  m * (suc n ⊔ zero)                                    ≡⟨⟩
+  m * suc n                                             ≡˘⟨ ⊔-identityʳ (m * suc n) ⟩
+  m * suc n ⊔ zero                                      ≡˘⟨ cong (m * suc n ⊔_) (*-zeroʳ m) ⟩
+  m * suc n ⊔ m * zero                                  ∎
+*-distribˡ-⊔ m (suc n) (suc o) = begin-equality
+  m * (suc n ⊔ suc o)                                   ≡⟨⟩
+  m * suc (n ⊔ o)                                       ≡⟨ *-suc m (n ⊔ o) ⟩
+  m + m * (n ⊔ o)                                       ≡⟨ cong (m +_) (*-distribˡ-⊔ m n o) ⟩
+  m + (m * n ⊔ m * o)                                   ≡⟨ +-distribˡ-⊔ m (m * n) (m * o) ⟩
+  (m + m * n) ⊔ (m + m * o)                             ≡˘⟨ cong₂ _⊔_ (*-suc m n) (*-suc m o) ⟩
+  (m * suc n) ⊔ (m * suc o)                             ∎
+
+*-distribʳ-⊔ : _*_ DistributesOverʳ _⊔_
+*-distribʳ-⊔ = comm+distrˡ⇒distrʳ *-comm *-distribˡ-⊔
+
+*-distrib-⊔ : _*_ DistributesOver _⊔_
+*-distrib-⊔ = *-distribˡ-⊔ , *-distribʳ-⊔
+
+------------------------------------------------------------------------
 -- Properties of _⊓_
 ------------------------------------------------------------------------
 
@@ -1460,6 +1489,36 @@ m⊓n≤m+n : ∀ m n → m ⊓ n ≤ m + n
 m⊓n≤m+n m n with ⊓-sel m n
 ... | inj₁ m⊓n≡m rewrite m⊓n≡m = m≤m+n m n
 ... | inj₂ m⊓n≡n rewrite m⊓n≡n = m≤n+m n m
+
+------------------------------------------------------------------------
+-- Other properties of _⊓_ and _*_
+
+*-distribˡ-⊓ : _*_ DistributesOverˡ _⊓_
+*-distribˡ-⊓ m 0 o = begin-equality
+  m * (0 ⊓ o)                                           ≡⟨⟩
+  m * 0                                                 ≡⟨ *-zeroʳ m ⟩
+  0                                                     ≡⟨⟩
+  0 ⊓ (m * o)                                           ≡˘⟨ cong (_⊓ (m * o)) (*-zeroʳ m) ⟩
+  (m * 0) ⊓ (m * o)                                     ∎
+*-distribˡ-⊓ m (suc n) 0 = begin-equality
+  m * (suc n ⊓ 0)                                       ≡⟨⟩
+  m * 0                                                 ≡⟨ *-zeroʳ m ⟩
+  0                                                     ≡˘⟨ ⊓-zeroʳ (m * suc n) ⟩
+  (m * suc n) ⊓ 0                                       ≡˘⟨ cong (m * suc n ⊓_) (*-zeroʳ m) ⟩
+  (m * suc n) ⊓ (m * 0)                                 ∎
+*-distribˡ-⊓ m (suc n) (suc o) = begin-equality
+  m * (suc n ⊓ suc o)                                   ≡⟨⟩
+  m * suc (n ⊓ o)                                       ≡⟨ *-suc m (n ⊓ o) ⟩
+  m + m * (n ⊓ o)                                       ≡⟨ cong (m +_) (*-distribˡ-⊓ m n o) ⟩
+  m + (m * n) ⊓ (m * o)                                 ≡⟨ +-distribˡ-⊓ m (m * n) (m * o) ⟩
+  (m + m * n) ⊓ (m + m * o)                             ≡˘⟨ cong₂ _⊓_ (*-suc m n) (*-suc m o) ⟩
+  (m * suc n) ⊓ (m * suc o)                             ∎
+
+*-distribʳ-⊓ : _*_ DistributesOverʳ _⊓_
+*-distribʳ-⊓ = comm+distrˡ⇒distrʳ *-comm *-distribˡ-⊓
+
+*-distrib-⊓ : _*_ DistributesOver _⊓_
+*-distrib-⊓ = *-distribˡ-⊓ , *-distribʳ-⊓
 
 ------------------------------------------------------------------------
 -- Properties of _∸_
