@@ -200,6 +200,11 @@ New modules
   System.Environment.Primitive
   ```
 
+* New morphisms
+  ```
+  Algebra.Morphism.LatticeMonomorphism
+  ```
+
 Other major changes
 -------------------
 
