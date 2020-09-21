@@ -11,7 +11,7 @@ Bug-fixes
 
 Non-backwards compatible changes
 --------------------------------
- 
+
 #### Changes to floating-point arithmetic
 
 * The functions in `Data.Float.Base` were updated following changes upstream,
