@@ -26,6 +26,10 @@ procedure should be followed:
     cd agda
     make fast-forward-std-lib
 
+* Build the latest version of Agda
+
+    make quicker-install-bin
+
 * Run the tests involving the library:
 
     make test

@@ -22,6 +22,8 @@ open import Level using (_⊔_)
 open DecSetoid S
 open DecSetoidEquality S
 
+infix 4 _⊆?_
+
 ------------------------------------------------------------------------
 -- Re-export core definitions
 
