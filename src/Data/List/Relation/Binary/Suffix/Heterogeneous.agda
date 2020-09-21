@@ -16,6 +16,8 @@ open import Data.List.Relation.Binary.Pointwise as Pointwise
 
 module _ {a b r} {A : Set a} {B : Set b} (R : REL A B r) where
 
+  infixr 5 _++_
+
   data Suffix : REL (List A) (List B) (a ⊔ b ⊔ r) where
     here  : ∀ {as bs} → Pointwise R as bs → Suffix as bs
     there : ∀ {b as bs} → Suffix as bs → Suffix as (b ∷ bs)

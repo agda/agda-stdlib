@@ -115,14 +115,16 @@ kleisliStar : ∀ {i j t u}
               (f : I → J) → T =[ f ]⇒ Star U → Star T =[ f ]⇒ Star U
 kleisliStar f g = concat ∘′ gmap f g
 
+infix 10 _⋆
+
 _⋆ : ∀ {i t u} {I : Set i} {T : Rel I t} {U : Rel I u} →
      T ⇒ Star U → Star T ⇒ Star U
 _⋆ = kleisliStar id
 
 infixl 1 _>>=_
 
-_>>=_ : ∀ {i t u} {I : Set i} {T : Rel I t} {U : Rel I u} {i j} →
-        Star T i j → T ⇒ Star U → Star U i j
+_>>=_ : ∀ {i t u} {I : Set i} {T : Rel I t} {U : Rel I u} {j k} →
+        Star T j k → T ⇒ Star U → Star U j k
 m >>= f = (f ⋆) m
 
 -- Note that the monad-like structure above is not an indexed monad

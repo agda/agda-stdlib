@@ -116,8 +116,8 @@ map₂ f = map id f
 
 -- A version of map where the output can depend on the input
 dmap : ∀ {B : A → Set b} {P : A → Set p} {Q : ∀ {a} → P a → B a → Set q} →
-       (f : (a : A) → B a) → (∀ {a} (p : P a) → Q p (f a)) →
-       (ap : Σ A P) → Σ (B (proj₁ ap)) (Q (proj₂ ap))
+       (f : (a : A) → B a) → (∀ {a} (b : P a) → Q b (f a)) →
+       ((a , b) : Σ A P) → Σ (B a) (Q b)
 dmap f g (x , y) = f x , g y
 
 zip : ∀ {P : A → Set p} {Q : B → Set q} {R : C → Set r} →
@@ -135,6 +135,25 @@ uncurry : ∀ {A : Set a} {B : A → Set b} {C : Σ A B → Set c} →
           ((x : A) → (y : B x) → C (x , y)) →
           ((p : Σ A B) → C p)
 uncurry f (x , y) = f x y
+
+-- Rewriting dependent products
+assocʳ : {B : A → Set b} {C : (a : A) → B a → Set c} →
+          Σ (Σ A B) (uncurry C) → Σ A (λ a → Σ (B a) (C a))
+assocʳ ((a , b) , c) = (a , (b , c))
+
+assocˡ : {B : A → Set b} {C : (a : A) → B a → Set c} →
+          Σ A (λ a → Σ (B a) (C a)) → Σ (Σ A B) (uncurry C)
+assocˡ (a , (b , c)) = ((a , b) , c)
+
+-- Alternate form of associativity for dependent products
+-- where the C parameter is uncurried.
+assocʳ-curried : {B : A → Set b} {C : Σ A B → Set c} →
+                 Σ (Σ A B) C → Σ A (λ a → Σ (B a) (curry C a))
+assocʳ-curried ((a , b) , c) = (a , (b , c))
+
+assocˡ-curried : {B : A → Set b} {C : Σ A B → Set c} →
+          Σ A (λ a → Σ (B a) (curry C a)) → Σ (Σ A B) C
+assocˡ-curried (a , (b , c)) = ((a , b) , c)
 
 ------------------------------------------------------------------------
 -- Operations for non-dependent products
@@ -156,7 +175,7 @@ uncurry′ = uncurry
 
 dmap′ : ∀ {x y} {X : A → Set x} {Y : B → Set y} →
         ((a : A) → X a) → ((b : B) → Y b) →
-        (ab : A × B) → X (proj₁ ab) × Y (proj₂ ab)
+        ((a , b) : A × B) → X a × Y b
 dmap′ f g = dmap f g
 
 _<*>_ : ∀ {x y} {X : A → Set x} {Y : B → Set y} →
@@ -174,3 +193,10 @@ f -×- g = f -⟪ _×_ ⟫- g
 
 _-,-_ : (A → B → C) → (A → B → D) → (A → B → C × D)
 f -,- g = f -⟪ _,_ ⟫- g
+
+-- Rewriting non-dependent products
+assocʳ′ : (A × B) × C → A × (B × C)
+assocʳ′ ((a , b) , c) = (a , (b , c))
+
+assocˡ′ : A × (B × C) → (A × B) × C
+assocˡ′ (a , (b , c)) = ((a , b) , c)
