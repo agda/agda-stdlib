@@ -52,6 +52,10 @@ Deprecated names
 New modules
 -----------
 
+* Added `Reflection.Traversal` for generic de Bruijn-aware traversals of reflected terms.
+* Added `Reflection.DeBruijn` with weakening, strengthening and free variable operations
+  on reflected terms.
+
 Other major changes
 -------------------
 
