@@ -15,6 +15,14 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
+#### Changes to floating-point arithmetic
+
+* The functions in `Data.Float.Base` were updated following changes upstream,
+  in `Agda.Builtin.Float`, see <https://github.com/agda/agda/pull/4885>.
+
+* The bitwise binary relations on floating-point numbers (`_<_`, `_≈ᵇ_`, `_==_`)
+  have been removed without replacement, as they were deeply unintuitive, e.g., `∀ x → x < -x`.
+
 #### Reflection
 
 * The representation of reflected syntax in `Reflection.Term` and
