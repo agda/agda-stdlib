@@ -178,6 +178,90 @@ module GroupMorphisms (G₁ : RawGroup a ℓ₁) (G₂ : RawGroup b ℓ₂) wher
       using (isRelIsomorphism)
 
 ------------------------------------------------------------------------
+-- Morphisms over near-semiring-like structures
+------------------------------------------------------------------------
+
+module NearSemiringMorphisms (R₁ : RawNearSemiring a ℓ₁) (R₂ : RawNearSemiring b ℓ₂) where
+
+  open RawNearSemiring R₁ renaming
+    ( Carrier to A; _≈_ to _≈₁_
+    ; +-rawMonoid to +-rawMonoid₁
+    ; *-rawMagma to *-rawMagma₁)
+
+  open RawNearSemiring R₂ renaming
+    ( Carrier to B; _≈_ to _≈₂_
+    ; +-rawMonoid to +-rawMonoid₂
+    ; *-rawMagma to *-rawMagma₂)
+
+  private
+    module + = MonoidMorphisms +-rawMonoid₁ +-rawMonoid₂
+    module * = MagmaMorphisms *-rawMagma₁ *-rawMagma₂
+
+  open MorphismDefinitions A B _≈₂_
+  open FunctionDefinitions _≈₁_ _≈₂_
+
+  record IsNearSemiringHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      +-isMonoidHomomorphism : +.IsMonoidHomomorphism  ⟦_⟧
+      *-isMagmaHomomorphism  : *.IsMagmaHomomorphism ⟦_⟧
+
+    open +.IsMonoidHomomorphism +-isMonoidHomomorphism renaming
+      (homo to +-homo; ε-homo to 0#-homo) public
+
+    open *.IsMagmaHomomorphism *-isMagmaHomomorphism renaming
+      (homo to *-homo) public
+
+  record IsNearSemiringMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      isNearSemiringHomomorphism : IsNearSemiringHomomorphism ⟦_⟧
+      injective          : Injective ⟦_⟧
+
+    open IsNearSemiringHomomorphism isNearSemiringHomomorphism public
+
+    +-isMonoidMonomorphism : +.IsMonoidMonomorphism ⟦_⟧
+    +-isMonoidMonomorphism = record
+      { isMonoidHomomorphism = +-isMonoidHomomorphism
+      ; injective           = injective
+      }
+
+    *-isMagmaMonomorphism : *.IsMagmaMonomorphism ⟦_⟧
+    *-isMagmaMonomorphism = record
+      { isMagmaHomomorphism = *-isMagmaHomomorphism
+      ; injective            = injective
+      }
+
+    -- TODO: Why isRelMonomorphism specifically here?
+    open *.IsMagmaMonomorphism *-isMagmaMonomorphism public
+      using (isRelMonomorphism)
+
+  record IsNearSemiringIsomorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      isNearSemiringMonomorphism : IsNearSemiringMonomorphism ⟦_⟧
+      surjective         : Surjective ⟦_⟧
+
+    open IsNearSemiringMonomorphism isNearSemiringMonomorphism public
+
+    +-isMonoidIsomorphism : +.IsMonoidIsomorphism ⟦_⟧
+    +-isMonoidIsomorphism = record
+      { isMonoidMonomorphism = +-isMonoidMonomorphism
+      ; surjective          = surjective
+      }
+
+    *-isMagmaIsomorphism : *.IsMagmaIsomorphism ⟦_⟧
+    *-isMagmaIsomorphism = record
+      { isMagmaMonomorphism = *-isMagmaMonomorphism
+      ; surjective           = surjective
+      }
+
+    -- TODO: Why isRelIsomorphism specifically here?
+    open *.IsMagmaIsomorphism *-isMagmaIsomorphism public
+      using (isRelIsomorphism)
+
+
+-- TODO: SemiringMorphisms
+
+
+------------------------------------------------------------------------
 -- Morphisms over ring-like structures
 ------------------------------------------------------------------------
 
@@ -260,4 +344,6 @@ module RingMorphisms (R₁ : RawRing a ℓ₁) (R₂ : RawRing b ℓ₂) where
 open MagmaMorphisms public
 open MonoidMorphisms public
 open GroupMorphisms public
+open NearSemiringMorphisms public
+-- TODO: open SemiringMorphisms public
 open RingMorphisms public
