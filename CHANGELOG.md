@@ -31,9 +31,10 @@ Other major changes
 Other minor additions
 ---------------------
 
-* Added new record to `Algebra.Bundles`:
+* Added new records to `Algebra.Bundles`:
   ```agda
   RawNearSemiring c ℓ : Set (suc (c ⊔ ℓ))
+  RawLattice c ℓ : Set (suc (c ⊔ ℓ))
   ```
 
 * Added new records to `Algebra.Morphism.Structures`:
@@ -44,4 +45,7 @@ Other minor additions
   IsSemiringHomomorphism  (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
   IsSemiringMonomorphism  (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
   IsSemiringIsomorphism   (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
+  IsLatticeHomomorphism  (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
+  IsLatticeMonomorphism  (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
+  IsLatticeIsomorphism   (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
   ```

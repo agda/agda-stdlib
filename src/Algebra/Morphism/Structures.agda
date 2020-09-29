@@ -414,6 +414,84 @@ module RingMorphisms (R₁ : RawRing a ℓ₁) (R₂ : RawRing b ℓ₂) where
     open *.IsMonoidIsomorphism *-isMonoidIsomorphism public
       using (isRelIsomorphism)
 
+
+------------------------------------------------------------------------
+-- Morphisms over lattice-like structures
+------------------------------------------------------------------------
+
+module LatticeMorphisms (L₁ : RawLattice a ℓ₁) (L₂ : RawLattice b ℓ₂) where
+
+  open RawLattice L₁ renaming
+    ( Carrier to A; _≈_ to _≈₁_
+    ; ∧-rawMagma to ∧-rawMagma₁
+    ; ∨-rawMagma to ∨-rawMagma₁)
+
+  open RawLattice L₂ renaming
+    ( Carrier to B; _≈_ to _≈₂_
+    ; ∧-rawMagma to ∧-rawMagma₂
+    ; ∨-rawMagma to ∨-rawMagma₂)
+
+  module ∨ = MagmaMorphisms ∨-rawMagma₁ ∨-rawMagma₂
+  module ∧ = MagmaMorphisms ∧-rawMagma₁ ∧-rawMagma₂
+
+  open MorphismDefinitions A B _≈₂_
+  open FunctionDefinitions _≈₁_ _≈₂_
+
+  record IsLatticeHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      ∨-isMagmaHomomorphism : ∨.IsMagmaHomomorphism  ⟦_⟧
+      ∧-isMagmaHomomorphism : ∧.IsMagmaHomomorphism ⟦_⟧
+
+    open ∨.IsMagmaHomomorphism ∨-isMagmaHomomorphism renaming
+      (homo to ∨-homo) public
+
+    open ∧.IsMagmaHomomorphism ∧-isMagmaHomomorphism renaming
+      (homo to ∧-homo) public
+
+  record IsLatticeMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      isLatticeHomomorphism : IsLatticeHomomorphism ⟦_⟧
+      injective             : Injective ⟦_⟧
+
+    open IsLatticeHomomorphism isLatticeHomomorphism public
+
+    ∨-isMagmaMonomorphism : ∨.IsMagmaMonomorphism ⟦_⟧
+    ∨-isMagmaMonomorphism = record
+      { isMagmaHomomorphism = ∨-isMagmaHomomorphism
+      ; injective           = injective
+      }
+
+    ∧-isMagmaMonomorphism : ∧.IsMagmaMonomorphism ⟦_⟧
+    ∧-isMagmaMonomorphism = record
+      { isMagmaHomomorphism = ∧-isMagmaHomomorphism
+      ; injective           = injective
+      }
+
+    open ∧.IsMagmaMonomorphism ∧-isMagmaMonomorphism public
+      using (isRelMonomorphism)
+
+  record IsLatticeIsomorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      isLatticeMonomorphism : IsLatticeMonomorphism ⟦_⟧
+      surjective            : Surjective ⟦_⟧
+
+    open IsLatticeMonomorphism isLatticeMonomorphism public
+
+    ∨-isMagmaIsomorphism : ∨.IsMagmaIsomorphism ⟦_⟧
+    ∨-isMagmaIsomorphism = record
+      { isMagmaMonomorphism = ∨-isMagmaMonomorphism
+      ; surjective          = surjective
+      }
+
+    ∧-isMagmaIsomorphism : ∧.IsMagmaIsomorphism ⟦_⟧
+    ∧-isMagmaIsomorphism = record
+      { isMagmaMonomorphism = ∧-isMagmaMonomorphism
+      ; surjective          = surjective
+      }
+
+    open ∧.IsMagmaIsomorphism ∧-isMagmaIsomorphism public
+      using (isRelIsomorphism)
+
 ------------------------------------------------------------------------
 -- Re-export contents of modules publicly
 
@@ -423,3 +501,4 @@ open GroupMorphisms public
 open NearSemiringMorphisms public
 open SemiringMorphisms public
 open RingMorphisms public
+open LatticeMorphisms public

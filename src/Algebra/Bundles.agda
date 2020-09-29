@@ -301,6 +301,22 @@ record AbelianGroup c ℓ : Set (suc (c ⊔ ℓ)) where
 -- Bundles with 2 binary operations
 ------------------------------------------------------------------------
 
+record RawLattice c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixr 7 _∧_
+  infixr 6 _∨_
+  infix  4 _≈_
+  field
+    Carrier    : Set c
+    _≈_        : Rel Carrier ℓ
+    _∧_        : Op₂ Carrier
+    _∨_        : Op₂ Carrier
+
+  ∨-rawMagma : RawMagma c ℓ
+  ∨-rawMagma = record { _≈_ = _≈_; _∙_ = _∨_ }
+
+  ∧-rawMagma : RawMagma c ℓ
+  ∧-rawMagma = record { _≈_ = _≈_; _∙_ = _∧_ }
+
 record Lattice c ℓ : Set (suc (c ⊔ ℓ)) where
   infixr 7 _∧_
   infixr 6 _∨_
@@ -313,6 +329,15 @@ record Lattice c ℓ : Set (suc (c ⊔ ℓ)) where
     isLattice : IsLattice _≈_ _∨_ _∧_
 
   open IsLattice isLattice public
+
+  rawLattice : RawLattice c ℓ
+  rawLattice = record
+    { _≈_  = _≈_
+    ; _∧_  = _∧_
+    ; _∨_  = _∨_
+    }
+
+  open RawLattice rawLattice using (∨-rawMagma; ∧-rawMagma)
 
   setoid : Setoid _ _
   setoid = record { isEquivalence = isEquivalence }
@@ -334,7 +359,7 @@ record DistributiveLattice c ℓ : Set (suc (c ⊔ ℓ)) where
   lattice : Lattice _ _
   lattice = record { isLattice = isLattice }
 
-  open Lattice lattice public using (setoid)
+  open Lattice lattice public using (rawLattice; setoid)
 
 
 ------------------------------------------------------------------------
