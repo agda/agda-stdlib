@@ -553,8 +553,7 @@ record SemiringWithoutAnnihilatingZero c ℓ : Set (suc (c ⊔ ℓ)) where
   *-monoid = record { isMonoid = *-isMonoid }
 
   open Monoid *-monoid public
-    using ()
-    renaming
+    using () renaming
     ( rawMagma  to *-rawMagma
     ; magma     to *-magma
     ; semigroup to *-semigroup
