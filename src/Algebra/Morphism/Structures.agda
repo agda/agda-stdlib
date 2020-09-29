@@ -204,7 +204,7 @@ module NearSemiringMorphisms (R₁ : RawNearSemiring a ℓ₁) (R₂ : RawNearSe
 
   record IsNearSemiringHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
     field
-      +-isMonoidHomomorphism : +.IsMonoidHomomorphism  ⟦_⟧
+      +-isMonoidHomomorphism : +.IsMonoidHomomorphism ⟦_⟧
       *-isMagmaHomomorphism  : *.IsMagmaHomomorphism ⟦_⟧
 
     open +.IsMonoidHomomorphism +-isMonoidHomomorphism renaming
@@ -283,7 +283,7 @@ module SemiringMorphisms (R₁ : RawSemiring a ℓ₁) (R₂ : RawSemiring b ℓ
 
   record IsSemiringHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
     field
-      +-isMonoidHomomorphism : +.IsMonoidHomomorphism  ⟦_⟧
+      +-isMonoidHomomorphism : +.IsMonoidHomomorphism ⟦_⟧
       *-isMonoidHomomorphism : *.IsMonoidHomomorphism ⟦_⟧
 
     open +.IsMonoidHomomorphism +-isMonoidHomomorphism renaming
@@ -439,7 +439,7 @@ module LatticeMorphisms (L₁ : RawLattice a ℓ₁) (L₂ : RawLattice b ℓ₂
 
   record IsLatticeHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
     field
-      ∨-isMagmaHomomorphism : ∨.IsMagmaHomomorphism  ⟦_⟧
+      ∨-isMagmaHomomorphism : ∨.IsMagmaHomomorphism ⟦_⟧
       ∧-isMagmaHomomorphism : ∧.IsMagmaHomomorphism ⟦_⟧
 
     open ∨.IsMagmaHomomorphism ∨-isMagmaHomomorphism renaming

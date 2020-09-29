@@ -306,10 +306,10 @@ record RawLattice c ℓ : Set (suc (c ⊔ ℓ)) where
   infixr 6 _∨_
   infix  4 _≈_
   field
-    Carrier    : Set c
-    _≈_        : Rel Carrier ℓ
-    _∧_        : Op₂ Carrier
-    _∨_        : Op₂ Carrier
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    _∧_     : Op₂ Carrier
+    _∨_     : Op₂ Carrier
 
   ∨-rawMagma : RawMagma c ℓ
   ∨-rawMagma = record { _≈_ = _≈_; _∙_ = _∨_ }
@@ -371,11 +371,11 @@ record RawNearSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 6 _+_
   infix  4 _≈_
   field
-    Carrier    : Set c
-    _≈_        : Rel Carrier ℓ
-    _+_        : Op₂ Carrier
-    _*_        : Op₂ Carrier
-    0#         : Carrier
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    _+_     : Op₂ Carrier
+    _*_     : Op₂ Carrier
+    0#      : Carrier
 
   +-rawMonoid : RawMonoid c ℓ
   +-rawMonoid = record
@@ -505,19 +505,19 @@ record RawSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 6 _+_
   infix  4 _≈_
   field
-    Carrier    : Set c
-    _≈_        : Rel Carrier ℓ
-    _+_        : Op₂ Carrier
-    _*_        : Op₂ Carrier
-    0#         : Carrier
-    1#         : Carrier
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    _+_     : Op₂ Carrier
+    _*_     : Op₂ Carrier
+    0#      : Carrier
+    1#      : Carrier
 
   rawNearSemiring : RawNearSemiring c ℓ
   rawNearSemiring = record
-    { _≈_  = _≈_
-    ; _+_  = _+_
-    ; _*_  = _*_
-    ; 0#   = 0#
+    { _≈_ = _≈_
+    ; _+_ = _+_
+    ; _*_ = _*_
+    ; 0#  = 0#
     }
 
   open RawNearSemiring rawNearSemiring public
@@ -553,8 +553,8 @@ record SemiringWithoutAnnihilatingZero c ℓ : Set (suc (c ⊔ ℓ)) where
     { _≈_ = _≈_
     ; _+_ = _+_
     ; _*_ = _*_
-    ; 0# = 0#
-    ; 1# = 1#
+    ; 0#  = 0#
+    ; 1#  = 1#
     }
 
   open RawSemiring rawSemiring public
@@ -700,9 +700,9 @@ record RawRing c ℓ : Set (suc (c ⊔ ℓ)) where
 
   *-rawMonoid : RawMonoid c ℓ
   *-rawMonoid = record
-    { _≈_     = _≈_
-    ; _∙_     = _*_
-    ; ε       = 1#
+    { _≈_ = _≈_
+    ; _∙_ = _*_
+    ; ε   = 1#
     }
 
 record Ring c ℓ : Set (suc (c ⊔ ℓ)) where
