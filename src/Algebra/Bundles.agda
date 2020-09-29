@@ -359,6 +359,9 @@ record RawNearSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
     ;  ε  = 0#
     }
 
+  open RawMonoid +-rawMonoid public
+    using () renaming (rawMagma to +-rawMagma)
+
   *-rawMagma : RawMagma c ℓ
   *-rawMagma = record
     { _≈_ = _≈_
@@ -493,7 +496,7 @@ record RawSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
     }
 
   open RawNearSemiring rawNearSemiring public
-    using (+-rawMonoid; *-rawMagma)
+    using (+-rawMonoid; +-rawMagma; *-rawMagma)
 
   *-rawMonoid : RawMonoid c ℓ
   *-rawMonoid = record
