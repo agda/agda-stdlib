@@ -230,7 +230,6 @@ module NearSemiringMorphisms (R₁ : RawNearSemiring a ℓ₁) (R₂ : RawNearSe
       ; injective            = injective
       }
 
-    -- TODO: Why isRelMonomorphism specifically here?
     open *.IsMagmaMonomorphism *-isMagmaMonomorphism public
       using (isRelMonomorphism)
 
@@ -253,7 +252,6 @@ module NearSemiringMorphisms (R₁ : RawNearSemiring a ℓ₁) (R₂ : RawNearSe
       ; surjective           = surjective
       }
 
-    -- TODO: Why isRelIsomorphism specifically here?
     open *.IsMagmaIsomorphism *-isMagmaIsomorphism public
       using (isRelIsomorphism)
 
