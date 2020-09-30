@@ -14,8 +14,9 @@
 
 module Data.Integer.Base where
 
+open import Data.Bool.Base using (true; false)
 open import Data.Empty using (⊥)
-open import Data.Unit using (⊤)
+open import Data.Unit.Base using (⊤)
 open import Data.Nat.Base as ℕ
   using (ℕ; z≤n; s≤s) renaming (_+_ to _ℕ+_; _*_ to _ℕ*_)
 open import Data.Sign as Sign using (Sign) renaming (_*_ to _S*_)
@@ -190,9 +191,9 @@ signAbs +[1+ n ] = Sign.+ ◂ ℕ.suc n
 -- Subtraction of natural numbers.
 
 _⊖_ : ℕ → ℕ → ℤ
-m       ⊖ ℕ.zero  = + m
-ℕ.zero  ⊖ ℕ.suc n = -[1+ n ]
-ℕ.suc m ⊖ ℕ.suc n = m ⊖ n
+m ⊖ n with m ℕ.<ᵇ n
+... | true  = - + (n ℕ.∸ m)
+... | false = + (m ℕ.∸ n)
 
 -- Addition.
 
