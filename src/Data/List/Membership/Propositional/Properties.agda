@@ -20,7 +20,7 @@ import Data.List.Membership.Setoid.Properties as Membershipₛ
 open import Data.List.Relation.Binary.Equality.Propositional
   using (_≋_; ≡⇒≋; ≋⇒≡)
 open import Data.List.Categorical using (monad)
-open import Data.Nat.Base using (ℕ; zero; suc; pred; s≤s; _≤_; _<_)
+open import Data.Nat.Base using (ℕ; zero; suc; pred; s≤s; _≤_; _<_; _≤ᵇ_)
 open import Data.Nat.Properties
 open import Data.Product hiding (map)
 open import Data.Product.Function.NonDependent.Propositional using (_×-cong_)
@@ -331,16 +331,16 @@ finite inj (x ∷ xs) fᵢ∈x∷xs = excluded-middle helper
     lemma i≤j i≰1+j refl = i≰1+j (≤-step i≤j)
 
     f′ⱼ∈xs : ∀ j → f′ j ∈ xs
-    f′ⱼ∈xs j with i ≤? j
-    ... | yes i≤j = ∈-if-not-i (<⇒≢ (s≤s i≤j))
-    ... | no  i≰j = ∈-if-not-i (<⇒≢ (≰⇒> i≰j) ∘ sym)
+    f′ⱼ∈xs j with i ≤ᵇ j | ≤ᵇ⇒≤ i j | ≤⇒≤ᵇ {i} {j}
+    ... | true  | p | q = ∈-if-not-i (<⇒≢ (s≤s (p _)))
+    ... | false | p | q = ∈-if-not-i (<⇒≢ (≰⇒> q) ∘ sym)
 
     f′-injective′ : Injective {B = P.setoid _} (→-to-⟶ f′)
-    f′-injective′ {j} {k} eq with i ≤? j | i ≤? k
-    ... | yes _   | yes _   = P.cong pred (f-inj eq)
-    ... | yes i≤j | no  i≰k = contradiction (f-inj eq) (lemma i≤j i≰k)
-    ... | no  i≰j | yes i≤k = contradiction (f-inj eq) (lemma i≤k i≰j ∘ sym)
-    ... | no  _   | no  _   = f-inj eq
+    f′-injective′ {j} {k} eq with i ≤ᵇ j | ≤ᵇ⇒≤ i j | ≤⇒≤ᵇ {i} {j} | i ≤ᵇ k | ≤ᵇ⇒≤ i k | ≤⇒≤ᵇ {i} {k}
+    ... | true  | p | q | true  | r | s = P.cong pred (f-inj eq)
+    ... | true  | p | q | false | r | s = contradiction (f-inj eq) (lemma (p _) s)
+    ... | false | p | q | true  | r | s = contradiction (f-inj eq) (lemma (r _) q ∘ sym)
+    ... | false | p | q | false | r | s = f-inj eq
 
     f′-inj = record
       { to        = →-to-⟶ f′
