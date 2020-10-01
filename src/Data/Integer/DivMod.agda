@@ -8,8 +8,7 @@
 
 module Data.Integer.DivMod where
 
-open import Data.Bool using (true; false)
-open import Data.Empty using (⊥-elim)
+open import Data.Bool.Base using (true; false)
 open import Data.Fin.Base as Fin using (Fin)
 import Data.Fin.Properties as FProp
 open import Data.Integer.Base as ℤ
@@ -99,10 +98,11 @@ a≡a%ℕn+[a/ℕn]*n -[1+ n ] sd@(ℕ.suc d) with (ℕ.suc n) NDM.divMod (ℕ.s
 
     open ≡-Reasoning
 
-    fin-inv : ∀ d (k : Fin d) → + (ℕ.suc d) - + ℕ.suc (Fin.toℕ k) ≡ + (d ℕ.∸ Fin.toℕ k)
-    fin-inv d k with ℕ.suc d ℕ.<ᵇ ℕ.suc (Fin.toℕ k) | NProp.<ᵇ⇒< (ℕ.suc d) (ℕ.suc (Fin.toℕ k))
-    ... | false | p = refl
-    ... | true  | p = ⊥-elim (NProp.≤⇒≯ (ℕ.s≤s (FProp.toℕ≤n k)) (p _) )
+    fin-inv : ∀ d (k : Fin d) → +[1+ d ] - +[1+ Fin.toℕ k ] ≡ + (d ℕ.∸ Fin.toℕ k)
+    fin-inv d k = begin
+      +[1+ d ] - +[1+ Fin.toℕ k ] ≡⟨ m-n≡m⊖n (ℕ.suc d) (ℕ.suc (Fin.toℕ k)) ⟩
+      ℕ.suc d ⊖ ℕ.suc (Fin.toℕ k) ≡⟨ ⊖-≥ (ℕ.s≤s (FProp.toℕ≤n k)) ⟩
+      + (d ℕ.∸ Fin.toℕ k)         ∎ where open ≡-Reasoning
 
 [n/ℕd]*d≤n : ∀ n d {d≢0} → (n divℕ d) {d≢0} ℤ.* ℤ.+ d ℤ.≤ n
 [n/ℕd]*d≤n n (ℕ.suc d) = let q = n divℕ ℕ.suc d; r = n modℕ ℕ.suc d in begin
