@@ -30,3 +30,5 @@ Other major changes
 
 Other minor additions
 ---------------------
+
+* Added `Reflection.TypeChecking.Format.errorPartFmt`.
