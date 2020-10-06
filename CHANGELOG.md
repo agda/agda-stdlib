@@ -28,36 +28,58 @@ Deprecated names
 New modules
 -----------
 
+* Added `Reflection.Traversal` for generic de Bruijn-aware traversals of reflected terms.
+* Added `Reflection.DeBruijn` with weakening, strengthening and free variable operations
+  on reflected terms.
+
 Other major changes
 -------------------
 
 Other minor additions
 ---------------------
 
-* Added new proofs in `Data.Integer.Properties`:
+* Added new records to `Algebra.Bundles`:
+  ```agda
+  RawNearSemiring c ℓ : Set (suc (c ⊔ ℓ))
+  RawLattice c ℓ : Set (suc (c ⊔ ℓ))
+  ```
 
-```agda
-[1+m]⊖[1+n]≡m⊖n : suc m ⊖ suc n ≡ m ⊖ n
-⊖-≤             : m ≤ n → m ⊖ n ≡ - + (n ∸ m)
--m+n≡n⊖m        : - (+ m) + + n ≡ n ⊖ m
-m-n≡m⊖n         : + m + (- + n) ≡ m ⊖ n
-```
+* Added new records to `Algebra.Morphism.Structures`:
+  ```agda
+  IsNearSemiringHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
+  IsNearSemiringMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
+  IsNearSemiringIsomorphism  (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
+  IsSemiringHomomorphism  (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
+  IsSemiringMonomorphism  (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
+  IsSemiringIsomorphism   (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
+  IsLatticeHomomorphism  (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
+  IsLatticeMonomorphism  (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
+  IsLatticeIsomorphism   (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
+  ```
+
+* Added new proofs in `Data.Integer.Properties`:
+  ```agda
+  [1+m]⊖[1+n]≡m⊖n : suc m ⊖ suc n ≡ m ⊖ n
+  ⊖-≤             : m ≤ n → m ⊖ n ≡ - + (n ∸ m)
+  -m+n≡n⊖m        : - (+ m) + + n ≡ n ⊖ m
+  m-n≡m⊖n         : + m + (- + n) ≡ m ⊖ n
+  ```
 
 * Added new definition in `Data.Nat.Base`:
-```agda
-_≤ᵇ_ : (m n : ℕ) → Bool
-```
+  ```agda
+  _≤ᵇ_ : (m n : ℕ) → Bool
+  ```
 
 * Added new proofs in `Data.Nat.Properties`:
-```agda
-≤ᵇ⇒≤ : T (m ≤ᵇ n) → m ≤ n
-≤⇒≤ᵇ : m ≤ n → T (m ≤ᵇ n)
+  ```agda
+  ≤ᵇ⇒≤ : T (m ≤ᵇ n) → m ≤ n
+  ≤⇒≤ᵇ : m ≤ n → T (m ≤ᵇ n)
 
-<ᵇ-reflects-< : Reflects (m < n) (m <ᵇ n)
-≤ᵇ-reflects-≤ : Reflects (m ≤ n) (m ≤ᵇ n)
-```
+  <ᵇ-reflects-< : Reflects (m < n) (m <ᵇ n)
+  ≤ᵇ-reflects-≤ : Reflects (m ≤ n) (m ≤ᵇ n)
+  ```
 
 * Added new proof in `Relation.Nullary.Reflects`:
-```agda
-fromEquivalence : (T b → P) → (P → T b) → Reflects P b
-```
+  ```agda
+  fromEquivalence : (T b → P) → (P → T b) → Reflects P b
+  ```
