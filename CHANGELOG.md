@@ -25,6 +25,10 @@ Deprecated names
 New modules
 -----------
 
+* Added `Reflection.Traversal` for generic de Bruijn-aware traversals of reflected terms.
+* Added `Reflection.DeBruijn` with weakening, strengthening and free variable operations
+  on reflected terms.
+
 Other major changes
 -------------------
 
@@ -32,3 +36,22 @@ Other minor additions
 ---------------------
 
 * Added `Reflection.TypeChecking.Format.errorPartFmt`.
+
+* Added new records to `Algebra.Bundles`:
+  ```agda
+  RawNearSemiring c ℓ : Set (suc (c ⊔ ℓ))
+  RawLattice c ℓ : Set (suc (c ⊔ ℓ))
+  ```
+
+* Added new records to `Algebra.Morphism.Structures`:
+  ```agda
+  IsNearSemiringHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
+  IsNearSemiringMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
+  IsNearSemiringIsomorphism  (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
+  IsSemiringHomomorphism  (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
+  IsSemiringMonomorphism  (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
+  IsSemiringIsomorphism   (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
+  IsLatticeHomomorphism  (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
+  IsLatticeMonomorphism  (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
+  IsLatticeIsomorphism   (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
+  ```
