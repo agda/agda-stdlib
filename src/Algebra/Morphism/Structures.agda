@@ -122,6 +122,7 @@ module MonoidMorphisms (M₁ : RawMonoid a ℓ₁) (M₂ : RawMonoid b ℓ₂) w
     open IsMagmaIsomorphism isMagmaIsomorphism public
       using (isRelIsomorphism)
 
+
 ------------------------------------------------------------------------
 -- Morphisms over group-like structures
 ------------------------------------------------------------------------
@@ -176,6 +177,165 @@ module GroupMorphisms (G₁ : RawGroup a ℓ₁) (G₂ : RawGroup b ℓ₂) wher
 
     open IsMonoidIsomorphism isMonoidIsomorphism public
       using (isRelIsomorphism)
+
+
+------------------------------------------------------------------------
+-- Morphisms over near-semiring-like structures
+------------------------------------------------------------------------
+
+module NearSemiringMorphisms (R₁ : RawNearSemiring a ℓ₁) (R₂ : RawNearSemiring b ℓ₂) where
+
+  open RawNearSemiring R₁ renaming
+    ( Carrier to A; _≈_ to _≈₁_
+    ; +-rawMonoid to +-rawMonoid₁
+    ; *-rawMagma to *-rawMagma₁)
+
+  open RawNearSemiring R₂ renaming
+    ( Carrier to B; _≈_ to _≈₂_
+    ; +-rawMonoid to +-rawMonoid₂
+    ; *-rawMagma to *-rawMagma₂)
+
+  private
+    module + = MonoidMorphisms +-rawMonoid₁ +-rawMonoid₂
+    module * = MagmaMorphisms *-rawMagma₁ *-rawMagma₂
+
+  open MorphismDefinitions A B _≈₂_
+  open FunctionDefinitions _≈₁_ _≈₂_
+
+  record IsNearSemiringHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      +-isMonoidHomomorphism : +.IsMonoidHomomorphism ⟦_⟧
+      *-isMagmaHomomorphism  : *.IsMagmaHomomorphism ⟦_⟧
+
+    open +.IsMonoidHomomorphism +-isMonoidHomomorphism renaming
+      (homo to +-homo; ε-homo to 0#-homo) public
+
+    open *.IsMagmaHomomorphism *-isMagmaHomomorphism renaming
+      (homo to *-homo) public
+
+  record IsNearSemiringMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      isNearSemiringHomomorphism : IsNearSemiringHomomorphism ⟦_⟧
+      injective          : Injective ⟦_⟧
+
+    open IsNearSemiringHomomorphism isNearSemiringHomomorphism public
+
+    +-isMonoidMonomorphism : +.IsMonoidMonomorphism ⟦_⟧
+    +-isMonoidMonomorphism = record
+      { isMonoidHomomorphism = +-isMonoidHomomorphism
+      ; injective            = injective
+      }
+
+    *-isMagmaMonomorphism : *.IsMagmaMonomorphism ⟦_⟧
+    *-isMagmaMonomorphism = record
+      { isMagmaHomomorphism = *-isMagmaHomomorphism
+      ; injective           = injective
+      }
+
+    open *.IsMagmaMonomorphism *-isMagmaMonomorphism public
+      using (isRelMonomorphism)
+
+  record IsNearSemiringIsomorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      isNearSemiringMonomorphism : IsNearSemiringMonomorphism ⟦_⟧
+      surjective         : Surjective ⟦_⟧
+
+    open IsNearSemiringMonomorphism isNearSemiringMonomorphism public
+
+    +-isMonoidIsomorphism : +.IsMonoidIsomorphism ⟦_⟧
+    +-isMonoidIsomorphism = record
+      { isMonoidMonomorphism = +-isMonoidMonomorphism
+      ; surjective           = surjective
+      }
+
+    *-isMagmaIsomorphism : *.IsMagmaIsomorphism ⟦_⟧
+    *-isMagmaIsomorphism = record
+      { isMagmaMonomorphism = *-isMagmaMonomorphism
+      ; surjective          = surjective
+      }
+
+    open *.IsMagmaIsomorphism *-isMagmaIsomorphism public
+      using (isRelIsomorphism)
+
+
+------------------------------------------------------------------------
+-- Morphisms over semiring-like structures
+------------------------------------------------------------------------
+
+module SemiringMorphisms (R₁ : RawSemiring a ℓ₁) (R₂ : RawSemiring b ℓ₂) where
+
+  open RawSemiring R₁ renaming
+    ( Carrier to A; _≈_ to _≈₁_
+    ; +-rawMonoid to +-rawMonoid₁
+    ; *-rawMonoid to *-rawMonoid₁)
+
+  open RawSemiring R₂ renaming
+    ( Carrier to B; _≈_ to _≈₂_
+    ; +-rawMonoid to +-rawMonoid₂
+    ; *-rawMonoid to *-rawMonoid₂)
+
+  private
+    module + = MonoidMorphisms +-rawMonoid₁ +-rawMonoid₂
+    module * = MonoidMorphisms *-rawMonoid₁ *-rawMonoid₂
+
+  open MorphismDefinitions A B _≈₂_
+  open FunctionDefinitions _≈₁_ _≈₂_
+
+  record IsSemiringHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      +-isMonoidHomomorphism : +.IsMonoidHomomorphism ⟦_⟧
+      *-isMonoidHomomorphism : *.IsMonoidHomomorphism ⟦_⟧
+
+    open +.IsMonoidHomomorphism +-isMonoidHomomorphism renaming
+      (homo to +-homo; ε-homo to 0#-homo) public
+
+    open *.IsMonoidHomomorphism *-isMonoidHomomorphism renaming
+      (homo to *-homo; ε-homo to 1#-homo) public
+
+  record IsSemiringMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      isSemiringHomomorphism : IsSemiringHomomorphism ⟦_⟧
+      injective              : Injective ⟦_⟧
+
+    open IsSemiringHomomorphism isSemiringHomomorphism public
+
+    +-isMonoidMonomorphism : +.IsMonoidMonomorphism ⟦_⟧
+    +-isMonoidMonomorphism = record
+      { isMonoidHomomorphism = +-isMonoidHomomorphism
+      ; injective            = injective
+      }
+
+    *-isMonoidMonomorphism : *.IsMonoidMonomorphism ⟦_⟧
+    *-isMonoidMonomorphism = record
+      { isMonoidHomomorphism = *-isMonoidHomomorphism
+      ; injective            = injective
+      }
+
+    open *.IsMonoidMonomorphism *-isMonoidMonomorphism public
+      using (isRelMonomorphism)
+
+  record IsSemiringIsomorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      isSemiringMonomorphism : IsSemiringMonomorphism ⟦_⟧
+      surjective         : Surjective ⟦_⟧
+
+    open IsSemiringMonomorphism isSemiringMonomorphism public
+
+    +-isMonoidIsomorphism : +.IsMonoidIsomorphism ⟦_⟧
+    +-isMonoidIsomorphism = record
+      { isMonoidMonomorphism = +-isMonoidMonomorphism
+      ; surjective           = surjective
+      }
+
+    *-isMonoidIsomorphism : *.IsMonoidIsomorphism ⟦_⟧
+    *-isMonoidIsomorphism = record
+      { isMonoidMonomorphism = *-isMonoidMonomorphism
+      ; surjective           = surjective
+      }
+
+    open *.IsMonoidIsomorphism *-isMonoidIsomorphism public
+      using (isRelIsomorphism)
+
 
 ------------------------------------------------------------------------
 -- Morphisms over ring-like structures
@@ -254,10 +414,91 @@ module RingMorphisms (R₁ : RawRing a ℓ₁) (R₂ : RawRing b ℓ₂) where
     open *.IsMonoidIsomorphism *-isMonoidIsomorphism public
       using (isRelIsomorphism)
 
+
+------------------------------------------------------------------------
+-- Morphisms over lattice-like structures
+------------------------------------------------------------------------
+
+module LatticeMorphisms (L₁ : RawLattice a ℓ₁) (L₂ : RawLattice b ℓ₂) where
+
+  open RawLattice L₁ renaming
+    ( Carrier to A; _≈_ to _≈₁_
+    ; ∧-rawMagma to ∧-rawMagma₁
+    ; ∨-rawMagma to ∨-rawMagma₁)
+
+  open RawLattice L₂ renaming
+    ( Carrier to B; _≈_ to _≈₂_
+    ; ∧-rawMagma to ∧-rawMagma₂
+    ; ∨-rawMagma to ∨-rawMagma₂)
+
+  module ∨ = MagmaMorphisms ∨-rawMagma₁ ∨-rawMagma₂
+  module ∧ = MagmaMorphisms ∧-rawMagma₁ ∧-rawMagma₂
+
+  open MorphismDefinitions A B _≈₂_
+  open FunctionDefinitions _≈₁_ _≈₂_
+
+  record IsLatticeHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      ∨-isMagmaHomomorphism : ∨.IsMagmaHomomorphism ⟦_⟧
+      ∧-isMagmaHomomorphism : ∧.IsMagmaHomomorphism ⟦_⟧
+
+    open ∨.IsMagmaHomomorphism ∨-isMagmaHomomorphism renaming
+      (homo to ∨-homo) public
+
+    open ∧.IsMagmaHomomorphism ∧-isMagmaHomomorphism renaming
+      (homo to ∧-homo) public
+
+  record IsLatticeMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      isLatticeHomomorphism : IsLatticeHomomorphism ⟦_⟧
+      injective             : Injective ⟦_⟧
+
+    open IsLatticeHomomorphism isLatticeHomomorphism public
+
+    ∨-isMagmaMonomorphism : ∨.IsMagmaMonomorphism ⟦_⟧
+    ∨-isMagmaMonomorphism = record
+      { isMagmaHomomorphism = ∨-isMagmaHomomorphism
+      ; injective           = injective
+      }
+
+    ∧-isMagmaMonomorphism : ∧.IsMagmaMonomorphism ⟦_⟧
+    ∧-isMagmaMonomorphism = record
+      { isMagmaHomomorphism = ∧-isMagmaHomomorphism
+      ; injective           = injective
+      }
+
+    open ∧.IsMagmaMonomorphism ∧-isMagmaMonomorphism public
+      using (isRelMonomorphism)
+
+  record IsLatticeIsomorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      isLatticeMonomorphism : IsLatticeMonomorphism ⟦_⟧
+      surjective            : Surjective ⟦_⟧
+
+    open IsLatticeMonomorphism isLatticeMonomorphism public
+
+    ∨-isMagmaIsomorphism : ∨.IsMagmaIsomorphism ⟦_⟧
+    ∨-isMagmaIsomorphism = record
+      { isMagmaMonomorphism = ∨-isMagmaMonomorphism
+      ; surjective          = surjective
+      }
+
+    ∧-isMagmaIsomorphism : ∧.IsMagmaIsomorphism ⟦_⟧
+    ∧-isMagmaIsomorphism = record
+      { isMagmaMonomorphism = ∧-isMagmaMonomorphism
+      ; surjective          = surjective
+      }
+
+    open ∧.IsMagmaIsomorphism ∧-isMagmaIsomorphism public
+      using (isRelIsomorphism)
+
 ------------------------------------------------------------------------
 -- Re-export contents of modules publicly
 
 open MagmaMorphisms public
 open MonoidMorphisms public
 open GroupMorphisms public
+open NearSemiringMorphisms public
+open SemiringMorphisms public
 open RingMorphisms public
+open LatticeMorphisms public
