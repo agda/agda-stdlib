@@ -39,6 +39,10 @@ invert (ofⁿ ¬p) = ¬p
 ------------------------------------------------------------------------
 -- Other lemmas
 
+fromEquivalence : ∀ {b} → (T b → P) → (P → T b) → Reflects P b
+fromEquivalence {b = true}  sound complete = ofʸ (sound _)
+fromEquivalence {b = false} sound complete = ofⁿ complete
+
 -- `Reflects` is deterministic.
 det : ∀ {b b′} → Reflects P b → Reflects P b′ → b ≡ b′
 det (ofʸ  p) (ofʸ  p′) = refl

@@ -189,7 +189,8 @@ signAbs +[1+ n ] = Sign.+ ◂ ℕ.suc n
 - +[1+ n ] = -[1+ n ]
 
 -- Subtraction of natural numbers.
-
+-- We define it using _<ᵇ_ and _∸_ rather than inductively so that it
+-- is backed by builtin operations. This makes it much faster.
 _⊖_ : ℕ → ℕ → ℤ
 m ⊖ n with m ℕ.<ᵇ n
 ... | true  = - + (n ℕ.∸ m)

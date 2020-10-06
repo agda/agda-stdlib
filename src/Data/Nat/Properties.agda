@@ -32,6 +32,7 @@ open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Nullary.Decidable using (True; via-injection; map′)
 open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Reflects using (fromEquivalence)
 
 open import Algebra.Definitions {A = ℕ} _≡_
   hiding (LeftCancellative; RightCancellative; Cancellative)
@@ -105,9 +106,7 @@ m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
 <⇒<ᵇ (s≤s (s≤s m<n)) = <⇒<ᵇ (s≤s m<n)
 
 <ᵇ-reflects-< : ∀ m n → Reflects (m < n) (m <ᵇ n)
-<ᵇ-reflects-< m n with m <ᵇ n | <ᵇ⇒< m n | <⇒<ᵇ {m} {n}
-... | true  | p | q = ofʸ (p tt)
-... | false | p | q = ofⁿ q
+<ᵇ-reflects-< m n = fromEquivalence (<ᵇ⇒< m n) <⇒<ᵇ
 
 ------------------------------------------------------------------------
 -- Properties of _≤ᵇ_
@@ -122,9 +121,7 @@ m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
 ≤⇒≤ᵇ m≤n@(s≤s _) = <⇒<ᵇ m≤n
 
 ≤ᵇ-reflects-≤ : ∀ m n → Reflects (m ≤ n) (m ≤ᵇ n)
-≤ᵇ-reflects-≤ m n with m ≤ᵇ n | ≤ᵇ⇒≤ m n | ≤⇒≤ᵇ {m} {n}
-... | true  | p | q = ofʸ (p tt)
-... | false | p | q = ofⁿ q
+≤ᵇ-reflects-≤ m n = fromEquivalence (≤ᵇ⇒≤ m n) ≤⇒≤ᵇ
 
 ------------------------------------------------------------------------
 -- Properties of _≤_

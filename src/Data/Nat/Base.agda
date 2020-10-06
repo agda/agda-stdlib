@@ -40,6 +40,7 @@ open import Agda.Builtin.Nat public
 open import Agda.Builtin.Nat public
   using () renaming (_<_ to _<ᵇ_)
 
+infix 4 _≤ᵇ_
 _≤ᵇ_ : (m n : ℕ) → Bool
 zero  ≤ᵇ n = true
 suc m ≤ᵇ n = m <ᵇ n
