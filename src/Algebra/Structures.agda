@@ -425,13 +425,13 @@ record IsCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
     }
 
 
-record IsCommutativeCancellativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ)
-  where
-  field isCommutativeSemiring : IsCommutativeSemiring + * 0# 1#
+record IsCancellativeCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
+  field
+    isCommutativeSemiring : IsCommutativeSemiring + * 0# 1#
+    cancelNZˡ             : AlmostLeftCancellative 0# *
 
   open IsCommutativeSemiring isCommutativeSemiring public
 
-  field cancelNZˡ : LeftNZCancellative 0# *
 
 
 ------------------------------------------------------------------------

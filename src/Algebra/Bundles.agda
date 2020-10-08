@@ -670,7 +670,7 @@ record CommutativeSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
     }
 
 
-record CommutativeCancellativeSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
+record CancellativeCommutativeSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _*_
   infixl 6 _+_
   infix  4 _≈_
@@ -681,13 +681,10 @@ record CommutativeCancellativeSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
     _*_                               : Op₂ Carrier
     0#                                : Carrier
     1#                                : Carrier
-    isCommutativeCancellativeSemiring : IsCommutativeCancellativeSemiring
-                                          _≈_ _+_ _*_ 0# 1#
+    isCancellativeCommutativeSemiring : IsCancellativeCommutativeSemiring _≈_ _+_ _*_ 0# 1#
 
-  open IsCommutativeCancellativeSemiring isCommutativeCancellativeSemiring public
+  open IsCancellativeCommutativeSemiring isCancellativeCommutativeSemiring public
   
-CCancellativeSemiring = CommutativeCancellativeSemiring  -- a shorthand
-
 
 ------------------------------------------------------------------------
 -- Bundles with 2 binary operations, 1 unary operation & 2 elements
