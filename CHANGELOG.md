@@ -29,6 +29,10 @@ New modules
 * Added `Reflection.DeBruijn` with weakening, strengthening and free variable operations
   on reflected terms.
 
+* Added `Algebra.Properties.Magma` for items and properties of Magma.
+
+* Added `Algebra.Properties.Monoid` for items and properties of Monoid.
+
 Other major changes
 -------------------
 
