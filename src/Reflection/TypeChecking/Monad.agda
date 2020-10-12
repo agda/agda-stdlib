@@ -33,7 +33,7 @@ open Builtin public
   renaming (returnTC to return)
 
 open Format public
-  using (typeErrorFmt; debugPrintFmt)
+  using (typeErrorFmt; debugPrintFmt; errorPartFmt)
 
 ------------------------------------------------------------------------
 -- Utility functions

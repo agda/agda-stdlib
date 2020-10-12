@@ -35,6 +35,8 @@ Other major changes
 Other minor additions
 ---------------------
 
+* Added `Reflection.TypeChecking.Format.errorPartFmt`.
+
 * Added new records to `Algebra.Bundles`:
   ```agda
   RawNearSemiring c ℓ : Set (suc (c ⊔ ℓ))
