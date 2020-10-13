@@ -428,7 +428,7 @@ record IsCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
 record IsCancellativeCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
   field
     isCommutativeSemiring : IsCommutativeSemiring + * 0# 1#
-    *-cancelˡ-nonZero      : AlmostLeftCancellative 0# *
+    *-cancelNonzeroˡ      : AlmostLeftCancellative 0# *
 
   open IsCommutativeSemiring isCommutativeSemiring public
 

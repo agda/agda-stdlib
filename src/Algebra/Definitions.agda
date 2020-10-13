@@ -69,12 +69,6 @@ RightInverse e _⁻¹ _∙_ = ∀ x → (x ∙ (x ⁻¹)) ≈ e
 Inverse : A → Op₁ A → Op₂ A → Set _
 Inverse e ⁻¹ ∙ = (LeftInverse e ⁻¹) ∙ × (RightInverse e ⁻¹ ∙)
 
-LeftQuotient : Op₂ A → Rel A _
-LeftQuotient _∙_ a b =  ∃ (\q → a ≈ (q ∙ b))
-
-RightQuotient : Op₂ A → Rel A _
-RightQuotient _∙_ a b =  ∃ (\q → a ≈ (b ∙ q)) 
-   
 LeftConical : A → Op₂ A → Set _
 LeftConical e _∙_ = ∀ x y → (x ∙ y) ≈ e → x ≈ e
 
