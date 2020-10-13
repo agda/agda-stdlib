@@ -687,7 +687,7 @@ record CancellativeCommutativeSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
 
   commutativeSemiring : CommutativeSemiring c ℓ
   commutativeSemiring = record
-    { isCommutativeSemiring = isCommutativeSemiring
+    { isCommutativeSemiring = isCommutativeSemiring 
     }
 
 

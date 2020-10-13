@@ -19,10 +19,10 @@ open Magma M
 
 ------------------------------------------------------------------------
 -- The divisibility relation:
--- x ∣ y  denotes  x divides y  as  y ≈ q ∙ x  for some q.
+-- x ∣ y  denotes  x divides y  as  y ≈ q ∙ x  for some q. 
 
-_∣_ : Rel Carrier (a ⊔ ℓ)
-x ∣ y =  LeftQuotient _≈_ _∙_ y x
+_∣_ : Rel Carrier (a ⊔ ℓ)                              
+x ∣ y =  LeftQuotient _≈_ _∙_ y x  
 
-_∤_ : Rel Carrier (a ⊔ ℓ)
-_∤_ x = ¬_ ∘ _∣_ x
+_∤_ : Rel Carrier (a ⊔ ℓ)                              
+_∤_ x = ¬_ ∘ _∣_ x 
