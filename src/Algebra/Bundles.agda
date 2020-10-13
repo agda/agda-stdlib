@@ -684,7 +684,7 @@ record CancellativeCommutativeSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
     isCancellativeCommutativeSemiring : IsCancellativeCommutativeSemiring _≈_ _+_ _*_ 0# 1#
 
   open IsCancellativeCommutativeSemiring isCancellativeCommutativeSemiring public
-  
+
 
 ------------------------------------------------------------------------
 -- Bundles with 2 binary operations, 1 unary operation & 2 elements
