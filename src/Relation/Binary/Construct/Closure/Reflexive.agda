@@ -23,40 +23,57 @@ private
 ------------------------------------------------------------------------
 -- Definition
 
-data Refl {A : Set a} (_∼_ : Rel A ℓ) : Rel A (a ⊔ ℓ) where
-  refl : Reflexive (Refl _∼_)
-  [_]  : ∀ {x y} (x∼y : x ∼ y) → Refl _∼_ x y
+data ReflClosure {A : Set a} (_∼_ : Rel A ℓ) : Rel A (a ⊔ ℓ) where
+  refl : Reflexive (ReflClosure _∼_)
+  [_]  : ∀ {x y} (x∼y : x ∼ y) → ReflClosure _∼_ x y
 
 ------------------------------------------------------------------------
 -- Operations
 
-map : ∀ {_R₁_ : Rel A ℓ₁} {_R₂_ : Rel B ℓ₂} {f : A → B} →
-      _R₁_ =[ f ]⇒ _R₂_ → Refl _R₁_ =[ f ]⇒ Refl _R₂_
-map R₁⇒R₂ [ xRy ] = [ R₁⇒R₂ xRy ]
-map R₁⇒R₂ refl    = refl
+map : ∀ {R : Rel A ℓ₁} {S : Rel B ℓ₂} {f : A → B} →
+      R =[ f ]⇒ S → ReflClosure R =[ f ]⇒ ReflClosure S
+map R⇒S [ xRy ] = [ R⇒S xRy ]
+map R⇒S refl    = refl
 
 ------------------------------------------------------------------------
 -- Properties
 
 -- The reflexive closure has no effect on reflexive relations.
-drop-refl : {_R_ : Rel A ℓ} → Reflexive _R_ → Refl _R_ ⇒ _R_
-drop-refl rfl [ x∼y ] = x∼y
+drop-refl : {R : Rel A ℓ} → Reflexive R → ReflClosure R ⇒ R
+drop-refl rfl [ xRy ] = xRy
 drop-refl rfl refl    = rfl
 
-[]-injective : {_∼_ : Rel A ℓ} → ∀ {x y p q} →
-               (Refl _∼_ x y ∋ [ p ]) ≡ [ q ] → p ≡ q
+[]-injective : {R : Rel A ℓ} → ∀ {x y p q} →
+               (ReflClosure R x y ∋ [ p ]) ≡ [ q ] → p ≡ q
 []-injective refl = refl
 
 ------------------------------------------------------------------------
--- Example: Maybe
+-- Example usage
 
-module Maybe where
+private
+  module Maybe where
+    Maybe : Set a → Set a
+    Maybe A = ReflClosure (Const A) tt tt
 
-  Maybe : ∀ {ℓ} → Set ℓ → Set ℓ
-  Maybe A = Refl (Const A) tt tt
+    nothing : Maybe A
+    nothing = refl
 
-  nothing : ∀ {a} {A : Set a} → Maybe A
-  nothing = refl
+    just : A → Maybe A
+    just = [_]
 
-  just : ∀ {a} {A : Set a} → A → Maybe A
-  just = [_]
+
+
+------------------------------------------------------------------------
+-- Deprecations
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- v1.5
+
+Refl = ReflClosure
+{-# WARNING_ON_USAGE Refl
+"Warning: Refl was deprecated in v1.5.
+Please use ReflClosure instead."
+#-}
+
