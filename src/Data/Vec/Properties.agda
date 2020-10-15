@@ -80,7 +80,7 @@ unfold-take n x .(xs ++ ys) | xs , ys , refl = refl
 take-distr-zipWith : ∀ {m n} → (f : A → B → C) →
                      (u : Vec A (m + n)) → (v : Vec B (m + n)) →
                      take m (zipWith f u v) ≡ zipWith f (take m u) (take m v)
-take-distr-zipWith {m = zero} f u v = refl
+take-distr-zipWith {m = zero}  f  u        v = refl
 take-distr-zipWith {m = suc m} f (u ∷ us) (v ∷ vs) = begin
     take (suc m) (zipWith f (u ∷ us) (v ∷ vs))
   ≡⟨⟩
@@ -91,7 +91,7 @@ take-distr-zipWith {m = suc m} f (u ∷ us) (v ∷ vs) = begin
     f u v ∷ (zipWith f (take m us) (take m vs))
   ≡⟨⟩
     zipWith f (u ∷ (take m us)) (v ∷ (take m vs))
-  ≡⟨ P.cong₂ (zipWith f) (P.sym (unfold-take m u us)) (P.sym (unfold-take m v vs)) ⟩
+  ≡˘⟨ P.cong₂ (zipWith f) (unfold-take m u us) (unfold-take m v vs) ⟩
     zipWith f (take (suc m) (u ∷ us)) (take (suc m) (v ∷ vs))
   ∎
 
@@ -104,7 +104,7 @@ take-distr-map f (suc m) (v ∷ vs) =
     take (suc m) (f v ∷ map f vs) ≡⟨ unfold-take m (f v) (map f vs) ⟩
     f v ∷ (take m (map f vs))     ≡⟨ P.cong (f v ∷_) (take-distr-map f m vs) ⟩
     f v ∷ (map f (take m vs))     ≡⟨⟩
-    map f (v ∷ take m vs)         ≡⟨ P.cong (map f) (P.sym (unfold-take m v vs)) ⟩
+    map f (v ∷ take m vs)         ≡˘⟨ P.cong (map f) (unfold-take m v vs) ⟩
     map f (take (suc m) (v ∷ vs)) ∎
 
 ------------------------------------------------------------------------
@@ -126,7 +126,7 @@ drop-distr-zipWith {m = suc m} f (u ∷ us) (v ∷ vs) = begin
     drop m (zipWith f us vs)
   ≡⟨ drop-distr-zipWith f us vs ⟩
     zipWith f (drop m us) (drop m vs)
-  ≡⟨ P.cong₂ (zipWith f) (P.sym (unfold-drop m u us)) (P.sym (unfold-drop m v vs)) ⟩
+  ≡˘⟨ P.cong₂ (zipWith f) (unfold-drop m u us) (unfold-drop m v vs) ⟩
     zipWith f (drop (suc m) (u ∷ us)) (drop (suc m) (v ∷ vs))
   ∎
 
@@ -152,7 +152,7 @@ take-drop-id (suc m) (v ∷ vs) = begin
   ≡⟨⟩
     v ∷ (take m vs ++ drop m vs)
   ≡⟨ P.cong (v ∷_) (take-drop-id m vs) ⟩
-    (v ∷ vs)
+    v ∷ vs
   ∎
 
 ------------------------------------------------------------------------
@@ -696,7 +696,7 @@ map-replicate f x zero = refl
 map-replicate f x (suc n) = P.cong (f x ∷_) (map-replicate f x n)
 
 zipWith-replicate : ∀ {n : ℕ} (_⊕_ : A → B → C) (x : A) (y : B) →
-                  zipWith {n = n} _⊕_ (replicate x) (replicate y) ≡ replicate (x ⊕ y)
+                    zipWith {n = n} _⊕_ (replicate x) (replicate y) ≡ replicate (x ⊕ y)
 zipWith-replicate {n = zero} _⊕_ x y = refl
 zipWith-replicate {n = suc n} _⊕_ x y = P.cong (x ⊕ y ∷_) (zipWith-replicate _⊕_ x y)
 
