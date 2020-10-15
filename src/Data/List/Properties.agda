@@ -502,6 +502,10 @@ concat-concat ([] ∷ xsss) = concat-concat xsss
 concat-concat (([] ∷ xss) ∷ xsss) = concat-concat (xss ∷ xsss)
 concat-concat (((x ∷ xs) ∷ xss) ∷ xsss) = cong (x ∷_) (concat-concat ((xs ∷ xss) ∷ xsss))
 
+concat-[-] : concat {a} {A} ∘ map [_] ≗ id
+concat-[-] [] = refl
+concat-[-] (x ∷ xs) = cong (x ∷_) (concat-[-] xs)
+
 ------------------------------------------------------------------------
 -- sum
 

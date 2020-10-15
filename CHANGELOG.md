@@ -58,7 +58,9 @@ Other minor additions
 
 * Added new properties to `Data.List.Properties`:
   ```agda
+<<<<<<< HEAD
   concat-concat : concat ∘ map concat ≗ concat ∘ concat
+  concat-[-] : concat ∘ map [_] ≗ id
   ```
 
 * Add version to library name
