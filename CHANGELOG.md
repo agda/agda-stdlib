@@ -61,6 +61,10 @@ New modules
   ```
   which re-exports and augments the contents of `Agda.Builtin.Reflection.External`.
 
+* Added `Reflection.Traversal` for generic de Bruijn-aware traversals of reflected terms.
+* Added `Reflection.DeBruijn` with weakening, strengthening and free variable operations
+  on reflected terms.
+
 Other major changes
 -------------------
 
