@@ -35,6 +35,8 @@ Other major changes
 Other minor additions
 ---------------------
 
+* Added `Reflection.TypeChecking.Format.errorPartFmt`.
+
 * Added new records to `Algebra.Bundles`:
   ```agda
   RawNearSemiring c ℓ : Set (suc (c ⊔ ℓ))
@@ -67,3 +69,4 @@ Other minor additions
   IsCancellativeCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ)
   ```
 
+* Add version to library name

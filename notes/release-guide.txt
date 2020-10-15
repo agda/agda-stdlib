@@ -9,6 +9,8 @@ procedure should be followed:
 
 * Update `lib.cabal` version to `X.Y`.
 
+* Update the version in standard-library.agda-lib to `X.Y`
+
 * Update `notes/installation-guide.txt`
 
 * Update `CHANGELOG.md`.
