@@ -58,7 +58,7 @@ Other minor additions
 
 * Added new properties to `Data.List.Properties`:
   ```agda
-<<<<<<< HEAD
+  concat-++ : concat xss ++ concat yss ≡ concat (xss ++ yss)
   concat-concat : concat ∘ map concat ≗ concat ∘ concat
   concat-[-] : concat ∘ map [_] ≗ id
   ```
