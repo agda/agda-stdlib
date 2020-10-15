@@ -9,6 +9,9 @@ Highlights
 Bug-fixes
 ---------
 
+* Fixed List.Relation.Unary.All.Properties.map-id, which was abstracted over 
+  unused module parameters.
+
 Non-backwards compatible changes
 --------------------------------
 
