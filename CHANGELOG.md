@@ -56,4 +56,9 @@ Other minor additions
   IsLatticeIsomorphism   (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
   ```
 
+* Added new properties to `Data.List.Properties`:
+  ```agda
+  concat-concat : concat ∘ map concat ≗ concat ∘ concat
+  ```
+
 * Add version to library name

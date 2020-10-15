@@ -496,6 +496,12 @@ concat-map {f = f} xss = begin
   foldr (λ ys → map f ys ++_) [] xss         ≡⟨ sym (foldr-fusion (map f) [] (map-++-commute f) xss) ⟩
   map f (concat xss)                         ∎
 
+concat-concat : concat {a} {A} ∘ map concat ≗ concat ∘ concat
+concat-concat [] = refl
+concat-concat ([] ∷ xsss) = concat-concat xsss
+concat-concat (([] ∷ xss) ∷ xsss) = concat-concat (xss ∷ xsss)
+concat-concat (((x ∷ xs) ∷ xss) ∷ xsss) = cong (x ∷_) (concat-concat ((xs ∷ xss) ∷ xsss))
+
 ------------------------------------------------------------------------
 -- sum
 
