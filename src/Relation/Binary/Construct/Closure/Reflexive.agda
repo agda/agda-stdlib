@@ -15,31 +15,37 @@ open import Relation.Binary
 open import Relation.Binary.Construct.Constant using (Const)
 open import Relation.Binary.PropositionalEquality using (_≡_ ; refl)
 
+private
+  variable
+    a ℓ ℓ₁ ℓ₂ : Level
+    A B : Set a
+
 ------------------------------------------------------------------------
--- Reflexive closure
+-- Definition
 
-data Refl {a ℓ} {A : Set a} (_∼_ : Rel A ℓ) : Rel A (a ⊔ ℓ) where
-  [_]  : ∀ {x y} (x∼y : x ∼ y) → Refl _∼_ x y
+data Refl {A : Set a} (_∼_ : Rel A ℓ) : Rel A (a ⊔ ℓ) where
   refl : Reflexive (Refl _∼_)
+  [_]  : ∀ {x y} (x∼y : x ∼ y) → Refl _∼_ x y
 
-[]-injective : ∀ {a ℓ} {A : Set a} {_∼_ : Rel A ℓ} {x y p q} →
-               (Refl _∼_ x y ∋ [ p ]) ≡ [ q ] → p ≡ q
-[]-injective refl = refl
+------------------------------------------------------------------------
+-- Operations
 
--- Map.
+map : ∀ {_R₁_ : Rel A ℓ₁} {_R₂_ : Rel B ℓ₂} {f : A → B} →
+      _R₁_ =[ f ]⇒ _R₂_ → Refl _R₁_ =[ f ]⇒ Refl _R₂_
+map R₁⇒R₂ [ xRy ] = [ R₁⇒R₂ xRy ]
+map R₁⇒R₂ refl    = refl
 
-map : ∀ {a a′ ℓ ℓ′} {A : Set a} {A′ : Set a′}
-        {_R_ : Rel A ℓ} {_R′_ : Rel A′ ℓ′} {f : A → A′} →
-      _R_ =[ f ]⇒ _R′_ → Refl _R_ =[ f ]⇒ Refl _R′_
-map R⇒R′ [ xRy ] = [ R⇒R′ xRy ]
-map R⇒R′ refl    = refl
+------------------------------------------------------------------------
+-- Properties
 
 -- The reflexive closure has no effect on reflexive relations.
-
-drop-refl : ∀ {a ℓ} {A : Set a} {_R_ : Rel A ℓ} →
-            Reflexive _R_ → Refl _R_ ⇒ _R_
+drop-refl : {_R_ : Rel A ℓ} → Reflexive _R_ → Refl _R_ ⇒ _R_
 drop-refl rfl [ x∼y ] = x∼y
 drop-refl rfl refl    = rfl
+
+[]-injective : {_∼_ : Rel A ℓ} → ∀ {x y p q} →
+               (Refl _∼_ x y ∋ [ p ]) ≡ [ q ] → p ≡ q
+[]-injective refl = refl
 
 ------------------------------------------------------------------------
 -- Example: Maybe

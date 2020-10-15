@@ -14,6 +14,11 @@ open import Level
 open import Relation.Binary hiding (_⇔_)
 open import Relation.Binary.PropositionalEquality using (_≡_ ; refl)
 
+private
+  variable
+    a ℓ ℓ₁ ℓ₂ : Level
+    A B : Set a
+
 ------------------------------------------------------------------------
 -- Transitive closure
 
@@ -21,12 +26,12 @@ infix 4 Plus
 
 syntax Plus R x y = x [ R ]⁺ y
 
-data Plus {a ℓ} {A : Set a} (_∼_ : Rel A ℓ) : Rel A (a ⊔ ℓ) where
+data Plus {A : Set a} (_∼_ : Rel A ℓ) : Rel A (a ⊔ ℓ) where
   [_]     : ∀ {x y} (x∼y : x ∼ y) → x [ _∼_ ]⁺ y
   _∼⁺⟨_⟩_ : ∀ x {y z} (x∼⁺y : x [ _∼_ ]⁺ y) (y∼⁺z : y [ _∼_ ]⁺ z) →
             x [ _∼_ ]⁺ z
 
-module _ {a ℓ} {A : Set a} {_∼_ : Rel A ℓ} where
+module _ {_∼_ : Rel A ℓ} where
 
  []-injective : ∀ {x y p q} → (x [ _∼_ ]⁺ y ∋ [ p ]) ≡ [ q ] → p ≡ q
  []-injective refl = refl
@@ -41,8 +46,7 @@ module _ {a ℓ} {A : Set a} {_∼_ : Rel A ℓ} where
 --     y  ∼⁺⟨ lemma₂ ⟩∎
 --     z  ∎
 
-finally : ∀ {a ℓ} {A : Set a} {_∼_ : Rel A ℓ} x y →
-          x [ _∼_ ]⁺ y → x [ _∼_ ]⁺ y
+finally : ∀ {_∼_ : Rel A ℓ} x y → x [ _∼_ ]⁺ y → x [ _∼_ ]⁺ y
 finally _ _ = id
 
 syntax finally x y x∼⁺y = x ∼⁺⟨ x∼⁺y ⟩∎ y ∎
@@ -52,12 +56,11 @@ infix  3 finally
 
 -- Map.
 
-map : ∀ {a a′ ℓ ℓ′} {A : Set a} {A′ : Set a′}
-        {_R_ : Rel A ℓ} {_R′_ : Rel A′ ℓ′} {f : A → A′} →
-      _R_ =[ f ]⇒ _R′_ → Plus _R_ =[ f ]⇒ Plus _R′_
-map R⇒R′ [ xRy ]             = [ R⇒R′ xRy ]
-map R⇒R′ (x ∼⁺⟨ xR⁺z ⟩ zR⁺y) =
-  _ ∼⁺⟨ map R⇒R′ xR⁺z ⟩ map R⇒R′ zR⁺y
+map : {_R₁_ : Rel A ℓ} {_R₂_ : Rel B ℓ₂} {f : A → B} →
+      _R₁_ =[ f ]⇒ _R₂_ → Plus _R₁_ =[ f ]⇒ Plus _R₂_
+map R₁⇒R₂ [ xRy ]             = [ R₁⇒R₂ xRy ]
+map R₁⇒R₂ (x ∼⁺⟨ xR⁺z ⟩ zR⁺y) =
+  _ ∼⁺⟨ map R₁⇒R₂ xR⁺z ⟩ map R₁⇒R₂ zR⁺y
 
 ------------------------------------------------------------------------
 -- Alternative definition of transitive closure
@@ -69,13 +72,13 @@ infix  4 Plus′
 
 syntax Plus′ R x y = x ⟨ R ⟩⁺ y
 
-data Plus′ {a ℓ} {A : Set a} (_∼_ : Rel A ℓ) : Rel A (a ⊔ ℓ) where
+data Plus′ {A : Set a} (_∼_ : Rel A ℓ) : Rel A (a ⊔ ℓ) where
   [_] : ∀ {x y} (x∼y : x ∼ y) → x ⟨ _∼_ ⟩⁺ y
   _∷_ : ∀ {x y z} (x∼y : x ∼ y) (y∼⁺z : y ⟨ _∼_ ⟩⁺ z) → x ⟨ _∼_ ⟩⁺ z
 
 -- Transitivity.
 
-_++_ : ∀ {a ℓ} {A : Set a} {_∼_ : Rel A ℓ} {x y z} →
+_++_ : ∀ {_∼_ : Rel A ℓ} {x y z} →
        x ⟨ _∼_ ⟩⁺ y → y ⟨ _∼_ ⟩⁺ z → x ⟨ _∼_ ⟩⁺ z
 [ x∼y ]      ++ y∼⁺z = x∼y ∷ y∼⁺z
 (x∼y ∷ y∼⁺z) ++ z∼⁺u = x∼y ∷ (y∼⁺z ++ z∼⁺u)
