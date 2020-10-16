@@ -501,7 +501,7 @@ concat-++ [] yss = refl
 concat-++ ([] ∷ xss) yss = concat-++ xss yss
 concat-++ ((x ∷ xs) ∷ xss) yss = cong (x ∷_) (concat-++ (xs ∷ xss) yss)
 
-concat-concat : concat {a} {A} ∘ map concat ≗ concat ∘ concat
+concat-concat : concat {A = A} ∘ map concat ≗ concat ∘ concat
 concat-concat [] = refl
 concat-concat (xss ∷ xsss) = begin
   concat (map concat (xss ∷ xsss))   ≡⟨ cong (concat xss ++_) (concat-concat xsss) ⟩
