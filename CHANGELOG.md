@@ -60,17 +60,10 @@ Other minor additions
 
 * Add new properties to `Data.Vec.Properties`:
   ```agda
-  take-distr-zipWith : ∀ {m n} → (f : A → B → C) →
-                       (u : Vec A (m + n)) → (v : Vec B (m + n)) →
-                       take m (zipWith f u v) ≡ zipWith f (take m u) (take m v)
-  take-distr-map : ∀ {n} → (f : A → B) → (m : ℕ) → (v : Vec A (m + n)) →
-                   take m (map f v) ≡ map f (take m v)
-  drop-distr-zipWith : ∀ {m n} → (f : A → B → C) →
-                       (u : Vec A (m + n)) → (v : Vec B (m + n)) →
-                       drop m (zipWith f u v) ≡ zipWith f (drop m u) (drop m v)
-  drop-distr-map : ∀ {n} → (f : A → B) → (m : ℕ) → (v : Vec A (m + n)) →
-                   drop m (map f v) ≡ map f (drop m v)
-  take-drop-id : ∀ {n} → (m : ℕ) → (v : Vec A (m + n)) → take m v ++ drop m v ≡ v
-  zipWith-replicate : ∀ {n : ℕ} (_⊕_ : A → B → C) (x : A) (y : B) →
-                      zipWith {n = n} _⊕_ (replicate x) (replicate y) ≡ replicate (x ⊕ y)
+  take-distr-zipWith : take m (zipWith f u v) ≡ zipWith f (take m u) (take m v)
+  take-distr-map : take m (map f v) ≡ map f (take m v)
+  drop-distr-zipWith : drop m (zipWith f u v) ≡ zipWith f (drop m u) (drop m v)
+  drop-distr-map : drop m (map f v) ≡ map f (drop m v)
+  take-drop-id : take m v ++ drop m v ≡ v
+  zipWith-replicate : zipWith {n = n} _⊕_ (replicate x) (replicate y) ≡ replicate (x ⊕ y)
   ```
