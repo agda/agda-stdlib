@@ -701,13 +701,13 @@ zipWith-replicate {n = zero} _⊕_ x y = refl
 zipWith-replicate {n = suc n} _⊕_ x y = P.cong (x ⊕ y ∷_) (zipWith-replicate _⊕_ x y)
 
 zipWith-replicate₁ : ∀ {n} (_⊕_ : A → B → C) (x : A) (ys : Vec B n) →
-                   zipWith _⊕_ (replicate x) ys ≡ map (x ⊕_) ys
+                     zipWith _⊕_ (replicate x) ys ≡ map (x ⊕_) ys
 zipWith-replicate₁ _⊕_ x []       = refl
 zipWith-replicate₁ _⊕_ x (y ∷ ys) =
   P.cong (x ⊕ y ∷_) (zipWith-replicate₁ _⊕_ x ys)
 
 zipWith-replicate₂ : ∀ {n} (_⊕_ : A → B → C) (xs : Vec A n) (y : B) →
-                   zipWith _⊕_ xs (replicate y) ≡ map (_⊕ y) xs
+                     zipWith _⊕_ xs (replicate y) ≡ map (_⊕ y) xs
 zipWith-replicate₂ _⊕_ []       y = refl
 zipWith-replicate₂ _⊕_ (x ∷ xs) y =
   P.cong (x ⊕ y ∷_) (zipWith-replicate₂ _⊕_ xs y)
