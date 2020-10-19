@@ -59,9 +59,9 @@ Other minor additions
 
 * Added new definitions to `Algebra.Definitions`:
   ```agda
-  AlmostLeftCancellative : A → Op₂ A → Set _
-  AlmostRightCancellative : A → Op₂ A → Set _
-  AlmostCancellative : A → Op₂ A → Set _
+  AlmostLeftCancellative  e _•_ = ∀ {x} y z → ¬ x ≈ e → (x • y) ≈ (x • z) → y ≈ z
+  AlmostRightCancellative e _•_ = ∀ {x} y z → ¬ x ≈ e → (y • x) ≈ (z • x) → y ≈ z
+  AlmostCancellative      e _•_ = AlmostLeftCancellative e _•_ × AlmostRightCancellative e _•_
   ```
 
 * Added new record to `Algebra.Structures`:

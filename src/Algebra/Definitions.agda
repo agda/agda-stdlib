@@ -120,13 +120,13 @@ Cancellative : Op₂ A → Set _
 Cancellative _•_ = (LeftCancellative _•_) × (RightCancellative _•_)
 
 AlmostLeftCancellative : A → Op₂ A → Set _
-AlmostLeftCancellative e _•_ = ∀ {x y z} → ¬ x ≈ e → (x • y) ≈ (x • z) → y ≈ z
+AlmostLeftCancellative e _•_ = ∀ {x} y z → ¬ x ≈ e → (x • y) ≈ (x • z) → y ≈ z
 
 AlmostRightCancellative : A → Op₂ A → Set _
 AlmostRightCancellative e _•_ = ∀ {x} y z → ¬ x ≈ e → (y • x) ≈ (z • x) → y ≈ z
 
 AlmostCancellative : A → Op₂ A → Set _
-AlmostCancellative e _•_ = (AlmostLeftCancellative e _•_) × (AlmostRightCancellative e _•_)
+AlmostCancellative e _•_ = AlmostLeftCancellative e _•_ × AlmostRightCancellative e _•_
 
 Interchangable : Op₂ A → Op₂ A → Set _
 Interchangable _∘_ _∙_ = ∀ w x y z → ((w ∙ x) ∘ (y ∙ z)) ≈ ((w ∘ y) ∙ (x ∘ z))
