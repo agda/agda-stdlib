@@ -31,6 +31,11 @@ New modules
 * Added `Reflection.Traversal` for generic de Bruijn-aware traversals of reflected terms.
 * Added `Reflection.DeBruijn` with weakening, strengthening and free variable operations
   on reflected terms.
+* Added `Algebra.Properties.Magma` for generic items and theory for Magma.
+* Added `Algebra.Properties.Monoid` for generic items and theory for Monoid.
+* Added `Algebra.Properties.Semiring` for generic items and theory for Semiring.
+* Added `Algebra.Properties.CancellativeCommutativeSemiring`
+  for generic items and theory for CancellativeCommutativeSemiring.
 
 Other major changes
 -------------------
@@ -66,6 +71,9 @@ Other minor additions
   AlmostRightCancellative e _•_ = ∀ {x} y z → ¬ x ≈ e → (y • x) ≈ (z • x) → y ≈ z
   AlmostCancellative      e _•_ = AlmostLeftCancellative e _•_ × AlmostRightCancellative e _•_
   ```
+
+* Added export of `+-*-commitativeSemiring` to the record of
+  of `Algebra.Bundles.CancellativeCommutativeSemiring`.
 
 * Added new record to `Algebra.Structures`:
   ```agda
