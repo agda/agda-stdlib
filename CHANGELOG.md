@@ -44,6 +44,7 @@ Other minor additions
   ```agda
   RawNearSemiring c ℓ : Set (suc (c ⊔ ℓ))
   RawLattice c ℓ : Set (suc (c ⊔ ℓ))
+  CancellativeCommutativeSemiring c ℓ : Set (suc (c ⊔ ℓ))
   ```
 
 * Added new records to `Algebra.Morphism.Structures`:
@@ -57,6 +58,18 @@ Other minor additions
   IsLatticeHomomorphism  (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
   IsLatticeMonomorphism  (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
   IsLatticeIsomorphism   (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
+  ```
+
+* Added new definitions to `Algebra.Definitions`:
+  ```agda
+  AlmostLeftCancellative  e _•_ = ∀ {x} y z → ¬ x ≈ e → (x • y) ≈ (x • z) → y ≈ z
+  AlmostRightCancellative e _•_ = ∀ {x} y z → ¬ x ≈ e → (y • x) ≈ (z • x) → y ≈ z
+  AlmostCancellative      e _•_ = AlmostLeftCancellative e _•_ × AlmostRightCancellative e _•_
+  ```
+
+* Added new record to `Algebra.Structures`:
+  ```agda
+  IsCancellativeCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ)
   ```
 
 * Add version to library name
