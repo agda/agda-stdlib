@@ -11,6 +11,9 @@ Bug-fixes
 
 * The example module `Maybe` in `Relation.Binary.Construct.Closure.Reflexive` was accidentally exposed publicly. It has been made private.
 
+* Fixed the type of the proof `map-id` in `List.Relation.Unary.All.Properties`, which was incorrectly abstracted over
+  unused module parameters.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -55,6 +58,7 @@ Other minor additions
   ```agda
   RawNearSemiring c ℓ : Set (suc (c ⊔ ℓ))
   RawLattice c ℓ : Set (suc (c ⊔ ℓ))
+  CancellativeCommutativeSemiring c ℓ : Set (suc (c ⊔ ℓ))
   ```
 
 * Added new records to `Algebra.Morphism.Structures`:
@@ -76,6 +80,17 @@ Other minor additions
   symmetric   : Symmetric _∼_ → Symmetric _∼⁺_
   transitive  : Transitive _∼⁺_
   wellFounded : WellFounded _∼_ → WellFounded _∼⁺_
+
+* Added new definitions to `Algebra.Definitions`:
+  ```agda
+  AlmostLeftCancellative  e _•_ = ∀ {x} y z → ¬ x ≈ e → (x • y) ≈ (x • z) → y ≈ z
+  AlmostRightCancellative e _•_ = ∀ {x} y z → ¬ x ≈ e → (y • x) ≈ (z • x) → y ≈ z
+  AlmostCancellative      e _•_ = AlmostLeftCancellative e _•_ × AlmostRightCancellative e _•_
+  ```
+
+* Added new record to `Algebra.Structures`:
+  ```agda
+  IsCancellativeCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ)
   ```
 
 * Add version to library name
