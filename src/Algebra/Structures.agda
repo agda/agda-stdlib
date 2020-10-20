@@ -425,6 +425,15 @@ record IsCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
     }
 
 
+record IsCancellativeCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
+  field
+    isCommutativeSemiring : IsCommutativeSemiring + * 0# 1#
+    *-cancelˡ-nonZero     : AlmostLeftCancellative 0# *
+
+  open IsCommutativeSemiring isCommutativeSemiring public
+
+
+
 ------------------------------------------------------------------------
 -- Structures with 2 binary operations, 1 unary operation & 2 elements
 ------------------------------------------------------------------------

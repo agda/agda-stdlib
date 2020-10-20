@@ -9,6 +9,9 @@ Highlights
 Bug-fixes
 ---------
 
+* Fixed List.Relation.Unary.All.Properties.map-id, which was abstracted over
+  unused module parameters.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -37,10 +40,18 @@ Other minor additions
 
 * Added `Reflection.TypeChecking.Format.errorPartFmt`.
 
+* Added new properties to `Data.List.Properties`:
+  ```agda
+  concat-++ : concat xss ++ concat yss ≡ concat (xss ++ yss)
+  concat-concat : concat ∘ map concat ≗ concat ∘ concat
+  concat-[-] : concat ∘ map [_] ≗ id
+  ```
+
 * Added new records to `Algebra.Bundles`:
   ```agda
   RawNearSemiring c ℓ : Set (suc (c ⊔ ℓ))
   RawLattice c ℓ : Set (suc (c ⊔ ℓ))
+  CancellativeCommutativeSemiring c ℓ : Set (suc (c ⊔ ℓ))
   ```
 
 * Added new records to `Algebra.Morphism.Structures`:
@@ -56,11 +67,16 @@ Other minor additions
   IsLatticeIsomorphism   (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
   ```
 
-* Added new properties to `Data.List.Properties`:
+* Added new definitions to `Algebra.Definitions`:
   ```agda
-  concat-++ : concat xss ++ concat yss ≡ concat (xss ++ yss)
-  concat-concat : concat ∘ map concat ≗ concat ∘ concat
-  concat-[-] : concat ∘ map [_] ≗ id
+  AlmostLeftCancellative  e _•_ = ∀ {x} y z → ¬ x ≈ e → (x • y) ≈ (x • z) → y ≈ z
+  AlmostRightCancellative e _•_ = ∀ {x} y z → ¬ x ≈ e → (y • x) ≈ (z • x) → y ≈ z
+  AlmostCancellative      e _•_ = AlmostLeftCancellative e _•_ × AlmostRightCancellative e _•_
+  ```
+
+* Added new record to `Algebra.Structures`:
+  ```agda
+  IsCancellativeCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ)
   ```
 
 * Add version to library name
