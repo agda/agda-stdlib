@@ -13,53 +13,54 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Algebra.Construct.Zero where
+open import Level using (Level)
+
+module Algebra.Construct.Zero {ℓ : Level} where
 
 open import Algebra.Bundles
-open import Data.Unit
-open import Level using (Level; 0ℓ)
+open import Data.Unit.Polymorphic
 
 ------------------------------------------------------------------------
 -- Raw bundles
 
-rawMagma : RawMagma 0ℓ 0ℓ
+rawMagma : RawMagma ℓ ℓ
 rawMagma = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
 
-rawMonoid : RawMonoid 0ℓ 0ℓ
+rawMonoid : RawMonoid ℓ ℓ
 rawMonoid = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
 
-rawGroup : RawGroup 0ℓ 0ℓ
+rawGroup : RawGroup ℓ ℓ
 rawGroup = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
 
 ------------------------------------------------------------------------
 -- Bundles
 
-magma : Magma 0ℓ 0ℓ
+magma : Magma ℓ ℓ
 magma = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
 
-semigroup : Semigroup 0ℓ 0ℓ
+semigroup : Semigroup ℓ ℓ
 semigroup = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
 
-band : Band 0ℓ 0ℓ
+band : Band ℓ ℓ
 band = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
 
-commutativeSemigroup : CommutativeSemigroup 0ℓ 0ℓ
+commutativeSemigroup : CommutativeSemigroup ℓ ℓ
 commutativeSemigroup = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
 
-semilattice : Semilattice 0ℓ 0ℓ
+semilattice : Semilattice ℓ ℓ
 semilattice = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
 
-monoid : Monoid 0ℓ 0ℓ
+monoid : Monoid ℓ ℓ
 monoid = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
 
-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
+commutativeMonoid : CommutativeMonoid ℓ ℓ
 commutativeMonoid = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
 
-idempotentCommutativeMonoid : IdempotentCommutativeMonoid 0ℓ 0ℓ
+idempotentCommutativeMonoid : IdempotentCommutativeMonoid ℓ ℓ
 idempotentCommutativeMonoid = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
 
-group : Group 0ℓ 0ℓ
+group : Group ℓ ℓ
 group = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
 
-abelianGroup : AbelianGroup 0ℓ 0ℓ
+abelianGroup : AbelianGroup ℓ ℓ
 abelianGroup = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
