@@ -56,7 +56,7 @@ matrix:
              cd ../ &&
              git clone https://github.com/agda/agda &&
              cd agda &&
-             git checkout 0f4538c8dcd175b92acd577ca0bdca232f5cd17f &&
+             git checkout 102d9c8c3a2cf1fa461ad8f26b78eed4730873ab &&
              cabal install --only-dependencies --dry -v > $HOME/installplan.txt ;
           fi
 
@@ -111,6 +111,9 @@ matrix:
 
         # setting up travis-specific scripts and files
         - cp travis/* .
+
+        # create a suitable Agda `executables` file for examples in README using `Reflection.External`
+        - echo -e "/usr/bin/expr\n" ~/.agda/executables
 
       before_script:
         - export AGDA_OPTIONS="-Werror"

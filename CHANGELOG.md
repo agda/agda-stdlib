@@ -6,6 +6,9 @@ The library has been tested using Agda 2.6.2
 Highlights
 ----------
 
+* New module for making system calls during type checking, `Reflection.External`,
+  which re-exports `Agda.Builtin.Reflection.External`.
+
 Bug-fixes
 ---------
 
@@ -51,6 +54,12 @@ Deprecated names
 
 New modules
 -----------
+
+* New module for making system calls during type checking:
+  ```agda
+  Reflection.External
+  ```
+  which re-exports and augments the contents of `Agda.Builtin.Reflection.External`.
 
 * Added `Reflection.Traversal` for generic de Bruijn-aware traversals of reflected terms.
 * Added `Reflection.DeBruijn` with weakening, strengthening and free variable operations
