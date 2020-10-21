@@ -25,6 +25,8 @@ data Univ : Set where
   ⟨abs⟩    : Univ → Univ
   ⟨named⟩  : Univ → Univ
 
+pattern ⟨tel⟩ = ⟨list⟩ (⟨named⟩ (⟨arg⟩ ⟨term⟩))
+
 ⟦_⟧ : Univ → Set
 ⟦ ⟨term⟩    ⟧ = Term
 ⟦ ⟨pat⟩     ⟧ = Pattern
