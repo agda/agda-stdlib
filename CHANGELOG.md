@@ -64,6 +64,7 @@ New modules
 * Added `Reflection.Traversal` for generic de Bruijn-aware traversals of reflected terms.
 * Added `Reflection.DeBruijn` with weakening, strengthening and free variable operations
   on reflected terms.
+* Added `Reflection.Universe` defining a universe for the reflected syntax types.
 
 Other major changes
 -------------------
