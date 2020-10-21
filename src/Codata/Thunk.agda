@@ -8,11 +8,26 @@
 
 module Codata.Thunk where
 
+open import Level
 open import Size
-open import Relation.Unary
+
+private
+  variable
+    ℓ ℓ₁ ℓ₂ : Level
 
 ------------------------------------------------------------------------
 -- Basic types.
+
+SizedType : (ℓ : Level) → Set (suc ℓ)
+SizedType ℓ = Size → Set ℓ
+
+∀ˢ[_] : SizedType ℓ → Set ℓ
+∀ˢ[ F ] = ∀{i} → F i
+
+infixr 8 _⇒ˢ_
+
+_⇒ˢ_ : SizedType ℓ₁ → SizedType ℓ₂ → SizedType (ℓ₁ ⊔ ℓ₂)
+F ⇒ˢ G = λ i → F i → G i
 
 record Thunk {ℓ} (F : Size → Set ℓ) (i : Size) : Set ℓ where
   coinductive
@@ -42,26 +57,26 @@ syntax Thunk-syntax (λ j → e) i = Thunk[ j < i ] e
 -- Thunk is a functor
 module _ {p q} {P : Size → Set p} {Q : Size → Set q} where
 
-  map : ∀[ P ⇒ Q ] → ∀[ Thunk P ⇒ Thunk Q ]
+  map : ∀ˢ[ P ⇒ˢ Q ] → ∀ˢ[ Thunk P ⇒ˢ Thunk Q ]
   map f p .force = f (p .force)
 
 -- Thunk is a comonad
 module _ {p} {P : Size → Set p} where
 
-  extract : ∀[ Thunk P ] → P ∞
+  extract : ∀ˢ[ Thunk P ] → P ∞
   extract p = p .force
 
-  duplicate : ∀[ Thunk P ⇒ Thunk (Thunk P) ]
+  duplicate : ∀ˢ[ Thunk P ⇒ˢ Thunk (Thunk P) ]
   duplicate p .force .force = p .force
 
 module _ {p q} {P : Size → Set p} {Q : Size → Set q} where
 
   infixl 1 _<*>_
-  _<*>_ : ∀[ Thunk (P ⇒ Q) ⇒ Thunk P ⇒ Thunk Q ]
+  _<*>_ : ∀ˢ[ Thunk (P ⇒ˢ Q) ⇒ˢ Thunk P ⇒ˢ Thunk Q ]
   (f <*> p) .force = f .force (p .force)
 
 -- We can take cofixpoints of functions only making Thunk'd recursive calls
 module _ {p} (P : Size → Set p) where
 
-  cofix : ∀[ Thunk P ⇒ P ] → ∀[ P ]
+  cofix : ∀ˢ[ Thunk P ⇒ˢ P ] → ∀ˢ[ P ]
   cofix f = f λ where .force → cofix f

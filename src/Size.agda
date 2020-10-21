@@ -9,9 +9,10 @@
 module Size where
 
 open import Agda.Builtin.Size public
-  renaming ( SizeU to SizeUniv ) --  sort SizeUniv
-  using    ( Size                --  Size   : SizeUniv
-           ; Size<_              --  Size<_ : Size → SizeUniv
-           ; ↑_                  --  ↑_     : Size → Size
-           ; _⊔ˢ_                --  _⊔ˢ_   : Size → Size → Size
-           ; ∞ )                 --  ∞      : Size
+  using ( SizeUniv            --  sort SizeUniv
+        ; Size                --  Size   : SizeUniv
+        ; Size<_              --  Size<_ : Size → SizeUniv
+        ; ↑_                  --  ↑_     : Size → Size
+        ; _⊔ˢ_                --  _⊔ˢ_   : Size → Size → Size
+        ; ∞                   --  ∞      : Size
+        )
