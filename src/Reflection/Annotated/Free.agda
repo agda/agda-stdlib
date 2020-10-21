@@ -4,7 +4,7 @@
 -- Computing free variable annotations on reflected syntax.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --safe --with-K #-}
 
 module Reflection.Annotated.Free where
 

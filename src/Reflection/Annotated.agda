@@ -8,7 +8,7 @@
 --       over a universe of types is not supported by --without-K.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --safe #-}
+{-# OPTIONS --safe --with-K #-}
 
 module Reflection.Annotated where
 
