@@ -125,7 +125,7 @@ infix 4 _≤?_
 _≤?_ : Decidable _≤_
 _ ≤? _ = yes _
 {-# WARNING_ON_USAGE _≤?_
-"Warning: _≤_ was deprecated in v1.2.
+"Warning: _≤?_ was deprecated in v1.2.
 Please use _≟_  instead."
 #-}
 ≤-isPreorder : IsPreorder _≡_ _≤_

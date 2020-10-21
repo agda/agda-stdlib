@@ -9,7 +9,7 @@
 module Reflection.DeBruijn where
 
 open import Data.Bool using (Bool; true; false; _∨_; if_then_else_)
-open import Data.Nat as Nat using (ℕ; zero; suc; _+_; _<ᵇ_; _≡ᵇ_)
+open import Data.Nat as Nat using (ℕ; zero; suc; _+_; _∸_; _<ᵇ_; _≡ᵇ_)
 open import Data.List using (List; []; _∷_; _++_)
 open import Data.Maybe using (Maybe; nothing; just)
 import Data.Maybe.Categorical as Maybe
@@ -82,23 +82,29 @@ module _ where
   open Traverse Maybe.applicative
 
   private
-    strVar : Cxt → ℕ → Maybe ℕ
-    strVar (k , Γ) i with Nat.compare i k
-    ... | Nat.less _ _    = just i
-    ... | Nat.equal _     = nothing
-    ... | Nat.greater _ _ = just (Nat.pred i)
+    strVar : ℕ → Cxt → ℕ → Maybe ℕ
+    strVar by (from , Γ) i with i <ᵇ from | i <ᵇ from + by
+    ... | true | _    = just i
+    ... | _    | true = nothing
+    ... | _    | _    = just (i ∸ by)
 
-    actions : Actions
-    actions = record defaultActions { onVar = strVar }
+    actions : ℕ → Actions
+    actions by = record defaultActions { onVar = strVar by }
 
-  strengthenFrom′ : (Actions → Cxt → A → Maybe A) → (from : ℕ) → A → Maybe A
-  strengthenFrom′ trav from = trav actions (from , []) -- not using the context part
+  strengthenFromBy′ : (Actions → Cxt → A → Maybe A) → (from by : ℕ) → A → Maybe A
+  strengthenFromBy′ trav from by = trav (actions by) (from , []) -- not using the context part
+
+  strengthenFromBy : (from by : ℕ) → Term → Maybe Term
+  strengthenFromBy = strengthenFromBy′ traverseTerm
+
+  strengthenBy : (by : ℕ) → Term → Maybe Term
+  strengthenBy = strengthenFromBy 0
 
   strengthenFrom : (from : ℕ) → Term → Maybe Term
-  strengthenFrom = strengthenFrom′ traverseTerm
+  strengthenFrom from = strengthenFromBy from 1
 
   strengthen : Term → Maybe Term
-  strengthen = strengthenFrom 0
+  strengthen = strengthenFromBy 0 1
 
 
 ------------------------------------------------------------------------

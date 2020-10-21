@@ -9,6 +9,11 @@ Highlights
 Bug-fixes
 ---------
 
+* Fixed List.Relation.Unary.All.Properties.map-id, which was abstracted over
+  unused module parameters.
+
+* Added version to library name
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -38,10 +43,19 @@ Other major changes
 Other minor additions
 ---------------------
 
+* Added `Reflection.TypeChecking.Format.errorPartFmt`.
+
 * Added new records to `Algebra.Bundles`:
   ```agda
   RawNearSemiring c ℓ : Set (suc (c ⊔ ℓ))
   RawLattice c ℓ : Set (suc (c ⊔ ℓ))
+  CancellativeCommutativeSemiring c ℓ : Set (suc (c ⊔ ℓ))
+  ```
+* Added new definitions to `Algebra.Definitions`:
+  ```agda
+  AlmostLeftCancellative  e _•_ = ∀ {x} y z → ¬ x ≈ e → (x • y) ≈ (x • z) → y ≈ z
+  AlmostRightCancellative e _•_ = ∀ {x} y z → ¬ x ≈ e → (y • x) ≈ (z • x) → y ≈ z
+  AlmostCancellative      e _•_ = AlmostLeftCancellative e _•_ × AlmostRightCancellative e _•_
   ```
 
 * Added new records to `Algebra.Morphism.Structures`:
@@ -55,6 +69,11 @@ Other minor additions
   IsLatticeHomomorphism  (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
   IsLatticeMonomorphism  (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
   IsLatticeIsomorphism   (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
+  ```
+
+* Added new record to `Algebra.Structures`:
+  ```agda
+  IsCancellativeCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ)
   ```
 
 * Added new proofs in `Data.Integer.Properties`:
