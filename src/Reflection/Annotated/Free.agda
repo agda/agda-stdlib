@@ -8,12 +8,12 @@
 
 module Reflection.Annotated.Free where
 
-open import Data.Bool                    using (if_then_else_)
-open import Data.Nat                     using (ℕ; _∸_; compare; _<ᵇ_; less; equal; greater)
-open import Data.List                    using (List; []; _∷_; [_]; concatMap; length)
+open import Data.Bool.Base               using (if_then_else_)
+open import Data.Nat.Base                using (ℕ; _∸_; compare; _<ᵇ_; less; equal; greater)
+open import Data.List.Base               using (List; []; _∷_; [_]; concatMap; length)
 open import Data.List.Relation.Unary.All using (_∷_)
 open import Data.Product                 using (_×_; _,_; proj₁; proj₂)
-open import Data.String                  using (String)
+open import Data.String.Base             using (String)
 
 open import Reflection
 open import Reflection.Universe
