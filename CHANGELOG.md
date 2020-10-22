@@ -40,6 +40,13 @@ Other minor additions
 
 * Added `Reflection.TypeChecking.Format.errorPartFmt`.
 
+* Added new properties to `Data.List.Properties`:
+  ```agda
+  concat-++ : concat xss ++ concat yss ≡ concat (xss ++ yss)
+  concat-concat : concat ∘ map concat ≗ concat ∘ concat
+  concat-[-] : concat ∘ map [_] ≗ id
+  ```
+
 * Added new records to `Algebra.Bundles`:
   ```agda
   RawNearSemiring c ℓ : Set (suc (c ⊔ ℓ))
