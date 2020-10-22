@@ -15,7 +15,7 @@
 
 open import Level using (Level)
 
-module Algebra.Construct.Zero {ℓ : Level} where
+module Algebra.Construct.Zero {c ℓ : Level} where
 
 open import Algebra.Bundles
 open import Data.Unit.Polymorphic
@@ -23,44 +23,44 @@ open import Data.Unit.Polymorphic
 ------------------------------------------------------------------------
 -- Raw bundles
 
-rawMagma : RawMagma ℓ ℓ
+rawMagma : RawMagma c ℓ
 rawMagma = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
 
-rawMonoid : RawMonoid ℓ ℓ
+rawMonoid : RawMonoid c ℓ
 rawMonoid = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
 
-rawGroup : RawGroup ℓ ℓ
+rawGroup : RawGroup c ℓ
 rawGroup = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
 
 ------------------------------------------------------------------------
 -- Bundles
 
-magma : Magma ℓ ℓ
+magma : Magma c ℓ
 magma = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
 
-semigroup : Semigroup ℓ ℓ
+semigroup : Semigroup c ℓ
 semigroup = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
 
-band : Band ℓ ℓ
+band : Band c ℓ
 band = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
 
-commutativeSemigroup : CommutativeSemigroup ℓ ℓ
+commutativeSemigroup : CommutativeSemigroup c ℓ
 commutativeSemigroup = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
 
-semilattice : Semilattice ℓ ℓ
+semilattice : Semilattice c ℓ
 semilattice = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
 
-monoid : Monoid ℓ ℓ
+monoid : Monoid c ℓ
 monoid = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
 
-commutativeMonoid : CommutativeMonoid ℓ ℓ
+commutativeMonoid : CommutativeMonoid c ℓ
 commutativeMonoid = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
 
-idempotentCommutativeMonoid : IdempotentCommutativeMonoid ℓ ℓ
+idempotentCommutativeMonoid : IdempotentCommutativeMonoid c ℓ
 idempotentCommutativeMonoid = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
 
-group : Group ℓ ℓ
+group : Group c ℓ
 group = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
 
-abelianGroup : AbelianGroup ℓ ℓ
+abelianGroup : AbelianGroup c ℓ
 abelianGroup = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }

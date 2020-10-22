@@ -18,8 +18,7 @@ Non-backwards compatible changes
 * The internal build utilities package `lib.cabal` has been renamed
   `agda-stdlib-utils.cabal` to avoid potential conflict or confusion.
   Please note that the package is not intended for external use.
-* The module `Algebra.Construct.Zero` is now level-polymorphic and takes one implicit level parameter.
-* The module `Algebra.Module.Construct.Zero` is now level-polymorphic and takes two implicit level parameters.
+* The module `Algebra.Construct.Zero` and `Algebra.Module.Construct.Zero` are now level-polymorphic, each taking two implicit level parameters.
 
 Deprecated modules
 ------------------
