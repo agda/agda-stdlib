@@ -201,7 +201,7 @@ private
   ix∙⁺jz : IPointwise (Plus _R_) ix jz
   ix∙⁺jz = [ iRj ] ∷ xR⁺z ∷ []
 
-  ¬ix⁺∙jz : ¬ Plus′ (IPointwise _R_) ix jz
+  ¬ix⁺∙jz : ¬ TransClosure (IPointwise _R_) ix jz
   ¬ix⁺∙jz [ iRj ∷ () ∷ [] ]
   ¬ix⁺∙jz ((iRj ∷ xRy ∷ []) ∷ [ () ∷ yRz ∷ [] ])
   ¬ix⁺∙jz ((iRj ∷ xRy ∷ []) ∷ (() ∷ yRz ∷ []) ∷ _)

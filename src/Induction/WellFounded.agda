@@ -39,10 +39,6 @@ WfRec _<_ P x = ∀ y → y < x → P y
 data Acc {A : Set a} (_<_ : Rel A ℓ) (x : A) : Set (a ⊔ ℓ) where
   acc : (rs : WfRec _<_ (Acc _<_) x) → Acc _<_ x
 
-acc-inverse : ∀ {_<_ : Rel A ℓ} {x : A} (q : Acc _<_ x) →
-              (y : A) → y < x → Acc _<_ y
-acc-inverse (acc rs) y y<x = rs y y<x
-
 -- The accessibility predicate encodes what it means to be
 -- well-founded; if all elements are accessible, then _<_ is
 -- well-founded.
@@ -58,6 +54,10 @@ Please use WellFounded instead."
 
 ------------------------------------------------------------------------
 -- Basic properties
+
+acc-inverse : ∀ {_<_ : Rel A ℓ} {x : A} (q : Acc _<_ x) →
+              (y : A) → y < x → Acc _<_ y
+acc-inverse (acc rs) y y<x = rs y y<x
 
 Acc-resp-≈ : {_≈_ : Rel A ℓ₁} {_<_ : Rel A ℓ₂} → Symmetric _≈_ →
              _<_ Respectsʳ _≈_ → (Acc _<_) Respects _≈_
@@ -146,6 +146,9 @@ module Subrelation {_<₁_ : Rel A ℓ₁} {_<₂_ : Rel A ℓ₂}
 \ \Please use wellFounded instead."
   #-}
 
+
+-- DEPRECATED in v1.4.
+-- Please use proofs in `Relation.Binary.Construct.On` instead.
 module InverseImage {_<_ : Rel B ℓ} (f : A → B) where
 
   accessible : ∀ {x} → Acc _<_ (f x) → Acc (_<_ on f) x
@@ -168,6 +171,9 @@ module InverseImage {_<_ : Rel B ℓ} (f : A → B) where
 \ \Please use wellFounded from `Relation.Binary.Construct.On` instead."
   #-}
 
+
+-- DEPRECATED in v1.5.
+-- Please use `TransClosure` from `Relation.Binary.Construct.Closure.Transitive` instead.
 module TransitiveClosure {A : Set a} (_<_ : Rel A ℓ) where
 
   infix 4 _<⁺_
@@ -192,15 +198,17 @@ module TransitiveClosure {A : Set a} (_<_ : Rel A ℓ) where
   wellFounded : WellFounded _<_ → WellFounded _<⁺_
   wellFounded wf = λ x → accessible (wf x)
 
+  {-# WARNING_ON_USAGE _<⁺_
+  "Warning: _<⁺_ was deprecated in v1.5.
+\ \Please use TransClosure from Relation.Binary.Construct.Closure.Transitive instead."
+  #-}
   downwards-closed = downwardsClosed
   {-# WARNING_ON_USAGE downwards-closed
-  "Warning: downwards-closed was deprecated in v0.15.
-\ \Please use downwardsClosed instead."
+  "Warning: downwards-closed was deprecated in v0.15."
   #-}
   well-founded     = wellFounded
   {-# WARNING_ON_USAGE well-founded
-  "Warning: well-founded was deprecated in v0.15.
-\ \Please use wellFounded instead."
+  "Warning: well-founded was deprecated in v0.15."
   #-}
 
 

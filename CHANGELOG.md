@@ -9,7 +9,9 @@ Highlights
 Bug-fixes
 ---------
 
-* Fixed List.Relation.Unary.All.Properties.map-id, which was abstracted over
+* The example module `Maybe` in `Relation.Binary.Construct.Closure.Reflexive` was accidentally exposed publicly. It has been made private.
+
+* Fixed the type of the proof `map-id` in `List.Relation.Unary.All.Properties`, which was incorrectly abstracted over
   unused module parameters.
 
 * Added version to library name
@@ -27,8 +29,20 @@ Non-backwards compatible changes
 Deprecated modules
 ------------------
 
+* The module `TransitiveClosure` in `Induction.WellFounded` has been deprecated. You should instead use the standard definition of transitive closure and the accompanying proof of well-foundness defined in `Relation.Binary.Construct.Closure.Transitive`.
+
 Deprecated names
 ----------------
+
+* In `Relation.Binary.Construct.Closure.Reflexive`:
+  ```agda
+  Refl ↦ ReflClosure
+  ```
+
+* In `Relation.Binary.Construct.Closure.Transitive`:
+  ```agda
+  Plus′ ↦ TransClosure
+  ```
 
 New modules
 -----------
@@ -44,6 +58,13 @@ Other minor additions
 ---------------------
 
 * Added `Reflection.TypeChecking.Format.errorPartFmt`.
+
+* Added new properties to `Data.List.Properties`:
+  ```agda
+  concat-++ : concat xss ++ concat yss ≡ concat (xss ++ yss)
+  concat-concat : concat ∘ map concat ≗ concat ∘ concat
+  concat-[-] : concat ∘ map [_] ≗ id
+  ```
 
 * Added new records to `Algebra.Bundles`:
   ```agda
@@ -71,7 +92,7 @@ Other minor additions
   IsLatticeIsomorphism   (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
   ```
 
-* Added new record to `Algebra.Structures`:
+* Added new definitions to `Algebra.Structures`:
   ```agda
   IsCancellativeCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ)
   ```
@@ -102,3 +123,22 @@ Other minor additions
   ```agda
   fromEquivalence : (T b → P) → (P → T b) → Reflects P b
   ```
+
+* Add new properties to `Data.Vec.Properties`:
+  ```agda
+  take-distr-zipWith : take m (zipWith f u v) ≡ zipWith f (take m u) (take m v)
+  take-distr-map : take m (map f v) ≡ map f (take m v)
+  drop-distr-zipWith : drop m (zipWith f u v) ≡ zipWith f (drop m u) (drop m v)
+  drop-distr-map : drop m (map f v) ≡ map f (drop m v)
+  take-drop-id : take m v ++ drop m v ≡ v
+  zipWith-replicate : zipWith {n = n} _⊕_ (replicate x) (replicate y) ≡ replicate (x ⊕ y)
+  ```
+
+* Added new proofs to `Relation.Binary.Construct.Closure.Transitive`:
+  ```agda
+  reflexive   : Reflexive _∼_ → Reflexive _∼⁺_
+  symmetric   : Symmetric _∼_ → Symmetric _∼⁺_
+  transitive  : Transitive _∼⁺_
+  wellFounded : WellFounded _∼_ → WellFounded _∼⁺_
+
+
