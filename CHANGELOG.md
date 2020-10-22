@@ -9,7 +9,9 @@ Highlights
 Bug-fixes
 ---------
 
-* Fixed List.Relation.Unary.All.Properties.map-id, which was abstracted over
+* The example module `Maybe` in `Relation.Binary.Construct.Closure.Reflexive` was accidentally exposed publicly. It has been made private.
+
+* Fixed the type of the proof `map-id` in `List.Relation.Unary.All.Properties`, which was incorrectly abstracted over
   unused module parameters.
 
 Non-backwards compatible changes
@@ -22,8 +24,20 @@ Non-backwards compatible changes
 Deprecated modules
 ------------------
 
+* The module `TransitiveClosure` in `Induction.WellFounded` has been deprecated. You should instead use the standard definition of transitive closure and the accompanying proof of well-foundness defined in `Relation.Binary.Construct.Closure.Transitive`.
+
 Deprecated names
 ----------------
+
+* In `Relation.Binary.Construct.Closure.Reflexive`:
+  ```agda
+  Refl ↦ ReflClosure
+  ```
+
+* In `Relation.Binary.Construct.Closure.Transitive`:
+  ```agda
+  Plus′ ↦ TransClosure
+  ```
 
 New modules
 -----------
@@ -66,6 +80,13 @@ Other minor additions
   IsLatticeMonomorphism  (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
   IsLatticeIsomorphism   (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
   ```
+
+* Added new proofs to `Relation.Binary.Construct.Closure.Transitive`:
+  ```agda
+  reflexive   : Reflexive _∼_ → Reflexive _∼⁺_
+  symmetric   : Symmetric _∼_ → Symmetric _∼⁺_
+  transitive  : Transitive _∼⁺_
+  wellFounded : WellFounded _∼_ → WellFounded _∼⁺_
 
 * Added new definitions to `Algebra.Definitions`:
   ```agda
