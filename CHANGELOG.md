@@ -140,5 +140,4 @@ Other minor additions
   symmetric   : Symmetric _∼_ → Symmetric _∼⁺_
   transitive  : Transitive _∼⁺_
   wellFounded : WellFounded _∼_ → WellFounded _∼⁺_
-
-
+  ```
