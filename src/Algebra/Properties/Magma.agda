@@ -7,7 +7,7 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Algebra using (Magma)
-open import Algebra.Definitions using (Commutative; LeftQuotient)
+open import Algebra.Definitions using (Commutative)
 open import Data.Product using (_×_; _,_; ∃)
 open import Function using (_∘_)
 open import Level using (_⊔_)
