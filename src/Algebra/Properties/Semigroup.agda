@@ -22,11 +22,12 @@ x∙yz≈xy∙z : ∀ x y z → x ∙ (y ∙ z) ≈ (x ∙ y) ∙ z
 x∙yz≈xy∙z x y z = sym (assoc x y z)
 
 ∣-trans : Transitive _∣_
-∣-trans {x} {y} {z} (q , y≈qx) (q' , z≈q'y) = (q' ∙ q , z≈q'qx)
- where
- z≈q'qx = begin
-   z              ≈⟨ z≈q'y ⟩
-   q' ∙ y         ≈⟨ ∙-congˡ y≈qx ⟩
-   q' ∙ (q ∙ x)   ≈⟨ sym (assoc q' q x) ⟩
-   (q' ∙ q) ∙ x   ∎
-
+∣-trans {x} {y} {z} (p , y≈px) (q , z≈qy) =
+  (q ∙ p ,
+   (begin
+      z             ≈⟨ z≈qy ⟩
+      q ∙ y         ≈⟨ ∙-congˡ y≈px ⟩
+      q ∙ (p ∙ x)   ≈⟨ sym (assoc q p x) ⟩
+      (q ∙ p) ∙ x   ∎
+   )
+  )

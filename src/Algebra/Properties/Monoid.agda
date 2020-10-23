@@ -17,8 +17,9 @@ open Monoid M
 open Algebra.Properties.Semigroup semigroup public
 
 ------------------------------------------------------------------------------
--- Several divisibility properties
+-- Properties of divisibility
 ------------------------------------------------------------------------------
+
 ε∣ : ∀ x → ε ∣ x
 ε∣ x = (x , sym (identityʳ x))
 
