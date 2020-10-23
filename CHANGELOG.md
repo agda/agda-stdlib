@@ -9,10 +9,14 @@ Highlights
 Bug-fixes
 ---------
 
-* The example module `Maybe` in `Relation.Binary.Construct.Closure.Reflexive` was accidentally exposed publicly. It has been made private.
+* The example module `Maybe` in `Relation.Binary.Construct.Closure.Reflexive` was
+  accidentally exposed publicly. It has been made private.
 
-* Fixed the type of the proof `map-id` in `List.Relation.Unary.All.Properties`, which was incorrectly abstracted over
-  unused module parameters.
+* Fixed the type of the proof `map-id` in `List.Relation.Unary.All.Properties`,
+  which was incorrectly abstracted over unused module parameters.
+
+* Fixed bug where `IsRelIsomorphism` in `Relation.Binary.Morphism.Structures` did not
+  publicly re-export the contents of `IsRelMonomorphism`.
 
 Non-backwards compatible changes
 --------------------------------
@@ -24,10 +28,30 @@ Non-backwards compatible changes
 Deprecated modules
 ------------------
 
-* The module `TransitiveClosure` in `Induction.WellFounded` has been deprecated. You should instead use the standard definition of transitive closure and the accompanying proof of well-foundness defined in `Relation.Binary.Construct.Closure.Transitive`.
+* The module `TransitiveClosure` in `Induction.WellFounded` has been deprecated.
+  You should instead use the standard definition of transitive closure and the
+  accompanying proof of well-foundness defined in `Relation.Binary.Construct.Closure.Transitive`.
+
+* The module `Relation.Binary.OrderMorphism` has been deprecated, as the new
+  `(Homo/Mono/Iso)morphism` infrastructure in `Algebra.Morphism.Structures` is now
+  complete. The new definitions are parameterised by raw bundles instead of bundles
+  meaning they are much more flexible to work with.
 
 Deprecated names
 ----------------
+
+* The immediate contents of `Algebra.Morphism` have been deprecated, as the new
+  `(Homo/Mono/Iso)morphism` infrastructure in `Algebra.Morphism.Structures` is now
+  complete. The new definitions are parameterised by raw bundles instead of bundles
+  meaning they are much more flexible to work with. The replacements are as following:
+  ```agda
+  IsSemigroupMorphism                   ↦ IsSemigroupHomomorphism
+  IsMonoidMorphism                      ↦ IsMonoidHomomorphism
+  IsCommutativeMonoidMorphism           ↦ IsMonoidHomomorphism
+  IsIdempotentCommutativeMonoidMorphism ↦ IsMonoidHomomorphism
+  IsGroupMorphism                       ↦ IsGroupHomomorphism
+  IsAbelianGroupMorphism                ↦ IsGroupHomomorphism
+  ```
 
 * In `Relation.Binary.Construct.Closure.Reflexive`:
   ```agda
@@ -41,6 +65,13 @@ Deprecated names
 
 New modules
 -----------
+
+* Added various generic morphism constructions for binary relations:
+  ```agda
+  Relation.Binary.Morphism.Construct.Composition
+  Relation.Binary.Morphism.Construct.Constant
+  Relation.Binary.Morphism.Construct.Identity
+  ```
 
 * Added `Reflection.Traversal` for generic de Bruijn-aware traversals of reflected terms.
 * Added `Reflection.DeBruijn` with weakening, strengthening and free variable operations
