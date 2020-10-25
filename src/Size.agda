@@ -16,3 +16,26 @@ open import Agda.Builtin.Size public
         ; _⊔ˢ_                --  _⊔ˢ_   : Size → Size → Size
         ; ∞                   --  ∞      : Size
         )
+
+open import Level
+
+private
+  variable
+    ℓ ℓ₁ ℓ₂ : Level
+
+-- Concept of sized type
+
+SizedType : (ℓ : Level) → Set (suc ℓ)
+SizedType ℓ = Size → Set ℓ
+
+-- Type constructors involving SizedType
+
+module SizedType where
+
+  infixr 8 _⇒_
+
+  _⇒_ : SizedType ℓ₁ → SizedType ℓ₂ → SizedType (ℓ₁ ⊔ ℓ₂)
+  F ⇒ G = λ i → F i → G i
+
+  ∀[_] : SizedType ℓ → Set ℓ
+  ∀[ F ] = ∀{i} → F i
