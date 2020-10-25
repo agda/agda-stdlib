@@ -8,7 +8,6 @@
 
 module Codata.Thunk where
 
-open import Level
 open import Size; open SizedType
 
 ------------------------------------------------------------------------
