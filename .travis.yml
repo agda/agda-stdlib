@@ -112,6 +112,9 @@ matrix:
         # setting up travis-specific scripts and files
         - cp travis/* .
 
+        # create a suitable Agda `executables` file for examples in README using `Reflection.External`
+        - echo -e "/usr/bin/expr\n" ~/.agda/executables
+
       before_script:
         - export AGDA_OPTIONS="-Werror"
         - export RTS_OPTIONS="+RTS -M3.5G -H3.5G -A128M -RTS"
