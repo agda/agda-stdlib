@@ -8,7 +8,7 @@
 
 module Codata.Thunk where
 
-open import Size; open SizedType
+open import Size
 
 ------------------------------------------------------------------------
 -- Basic types.
@@ -41,26 +41,26 @@ syntax Thunk-syntax (λ j → e) i = Thunk[ j < i ] e
 -- Thunk is a functor
 module _ {p q} {P : Size → Set p} {Q : Size → Set q} where
 
-  map : ∀[ P ⇒ Q ] → ∀[ Thunk P ⇒ Thunk Q ]
+  map : (∀{i} → P i → Q i) → ∀{i} → Thunk P i → Thunk Q i
   map f p .force = f (p .force)
 
 -- Thunk is a comonad
 module _ {p} {P : Size → Set p} where
 
-  extract : ∀[ Thunk P ] → P ∞
+  extract : (∀{i} → Thunk P i) → P ∞
   extract p = p .force
 
-  duplicate : ∀[ Thunk P ⇒ Thunk (Thunk P) ]
+  duplicate : ∀{i} → Thunk P i → Thunk (Thunk P) i
   duplicate p .force .force = p .force
 
 module _ {p q} {P : Size → Set p} {Q : Size → Set q} where
 
   infixl 1 _<*>_
-  _<*>_ : ∀[ Thunk (P ⇒ Q) ⇒ Thunk P ⇒ Thunk Q ]
+  _<*>_ : ∀{i} → Thunk (λ i → P i → Q i) i → Thunk P i → Thunk Q i
   (f <*> p) .force = f .force (p .force)
 
 -- We can take cofixpoints of functions only making Thunk'd recursive calls
 module _ {p} (P : Size → Set p) where
 
-  cofix : ∀[ Thunk P ⇒ P ] → ∀[ P ]
+  cofix : (∀{i} → Thunk P i → P i) → ∀{i} → P i
   cofix f = f λ where .force → cofix f
