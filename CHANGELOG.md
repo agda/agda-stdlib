@@ -112,3 +112,8 @@ Other minor additions
   take-drop-id : take m v ++ drop m v ≡ v
   zipWith-replicate : zipWith {n = n} _⊕_ (replicate x) (replicate y) ≡ replicate (x ⊕ y)
   ```
+
+* Add new properties to `Data.Integer.Properties`:
+  ```agda
+  +-*-commutativeSemiring : CommutativeSemiring 0ℓ 0ℓ
+  ```
