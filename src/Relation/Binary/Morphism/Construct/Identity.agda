@@ -4,14 +4,15 @@
 -- The identity morphism for binary relations
 ------------------------------------------------------------------------
 
-open import Relation.Binary
-
-module Relation.Binary.Morphism.Construct.Identity
-  {a ℓ} {A : Set a} (≈ : Rel A ℓ) where
+{-# OPTIONS --without-K --safe #-}
 
 open import Data.Product using (_,_)
 open import Function.Base using (id)
+open import Relation.Binary
 open import Relation.Binary.Morphism.Structures
+
+module Relation.Binary.Morphism.Construct.Identity
+  {a ℓ} {A : Set a} (≈ : Rel A ℓ) where
 
 ------------------------------------------------------------------------
 -- Relations

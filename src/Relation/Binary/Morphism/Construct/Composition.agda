@@ -4,18 +4,19 @@
 -- The composition of morphisms between binary relations
 ------------------------------------------------------------------------
 
-open import Relation.Binary
-
-module Relation.Binary.Morphism.Construct.Composition
-  {a b c ℓ₁ ℓ₂ ℓ₃} {A : Set a} {B : Set b} {C : Set c}
-  {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} {≈₃ : Rel C ℓ₃}
-  {f : A → B} {g : B → C} where
+{-# OPTIONS --without-K --safe #-}
 
 open import Data.Product using (_,_)
 open import Function.Base using (id; _∘_)
 open import Function.Definitions using (Congruent)
 open import Function.Construct.Composition using (surjective)
+open import Relation.Binary
 open import Relation.Binary.Morphism.Structures
+
+module Relation.Binary.Morphism.Construct.Composition
+  {a b c ℓ₁ ℓ₂ ℓ₃} {A : Set a} {B : Set b} {C : Set c}
+  {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} {≈₃ : Rel C ℓ₃}
+  {f : A → B} {g : B → C} where
 
 ------------------------------------------------------------------------
 -- Relations

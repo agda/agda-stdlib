@@ -4,18 +4,19 @@
 -- Constant morphisms between binary relations
 ------------------------------------------------------------------------
 
-open import Relation.Binary
-
-module Relation.Binary.Morphism.Construct.Constant
-  {a b ℓ₁ ℓ₂} {A : Set a} {B : Set b}
-  (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂) (≈-refl : Reflexive ≈₂)
-  where
+{-# OPTIONS --without-K --safe #-}
 
 open import Data.Product using (_,_)
 open import Function.Base using (const; _∘_)
 open import Function.Definitions using (Congruent)
 open import Function.Construct.Composition using (surjective)
+open import Relation.Binary
 open import Relation.Binary.Morphism.Structures
+
+module Relation.Binary.Morphism.Construct.Constant
+  {a b ℓ₁ ℓ₂} {A : Set a} {B : Set b}
+  (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂) (≈-refl : Reflexive ≈₂)
+  where
 
 ------------------------------------------------------------------------
 -- Relations
