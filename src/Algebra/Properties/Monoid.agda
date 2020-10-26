@@ -21,10 +21,10 @@ open Algebra.Properties.Semigroup semigroup public
 ------------------------------------------------------------------------------
 
 ε∣ : ∀ x → ε ∣ x
-ε∣ x = (x , sym (identityʳ x))
+ε∣ x = x , sym (identityʳ x)
 
 ∣-refl : Reflexive _∣_
-∣-refl {x} = (ε , sym (identityˡ x))
+∣-refl {x} = ε , sym (identityˡ x)
 
 ∣-reflexive≈ : ∀ {x y} → x ≈ y → x ∣ y
-∣-reflexive≈ {x} {y} x≈y = (ε , sym (trans (identityˡ x) x≈y))
+∣-reflexive≈ x≈y = ε , sym (trans (identityˡ _) x≈y)

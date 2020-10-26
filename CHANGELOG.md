@@ -67,6 +67,7 @@ Other minor additions
   AlmostLeftCancellative  e _•_ = ∀ {x} y z → ¬ x ≈ e → (x • y) ≈ (x • z) → y ≈ z
   AlmostRightCancellative e _•_ = ∀ {x} y z → ¬ x ≈ e → (y • x) ≈ (z • x) → y ≈ z
   AlmostCancellative      e _•_ = AlmostLeftCancellative e _•_ × AlmostRightCancellative e _•_
+  module Divisibility (_•_ : Op₂ A)
   ```
 
 * Added new record to `Algebra.Structures`:

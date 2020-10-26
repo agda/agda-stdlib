@@ -9,6 +9,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
+open import Level using (_⊔_)
 open import Relation.Binary.Core
 open import Relation.Nullary using (¬_)
 
@@ -130,3 +131,27 @@ AlmostCancellative e _•_ = AlmostLeftCancellative e _•_ × AlmostRightCancel
 
 Interchangable : Op₂ A → Op₂ A → Set _
 Interchangable _∘_ _∙_ = ∀ w x y z → ((w ∙ x) ∘ (y ∙ z)) ≈ ((w ∘ y) ∙ (x ∘ z))
+
+module Divisibility (_∙_ : Op₂ A)
+  where
+  infix 5 _∣_ _∤_ _∣∣_ _¬∣∣_
+
+  _∣_ : Rel A (a ⊔ ℓ)           -- x ∣ y  denotes  x divides y
+  x ∣ y = ∃ (λ q → y ≈ (q ∙ x))
+
+  _∤_ : Rel A (a ⊔ ℓ)
+  x ∤ y = ¬ x ∣ y
+
+  _∣∣_ : Rel A (a ⊔ ℓ)
+  x ∣∣ y = x ∣ y × y ∣ x
+
+  -- _∣∣_ is mutual divisibility.
+  -- The elements related by _∣∣_ are called associated (when in a cancellative
+  -- monoid).
+  -- For a cancellative monoid, it follows from  x ∣∣ y  that x and y differ
+  -- only in a certain invertible factor.
+  -- It will be proved further that  gcd a b  is unique, in the sense that
+  -- g g' : GCD a b → g ∣∣ g'.
+
+  _¬∣∣_ : Rel A (a ⊔ ℓ)
+  x ¬∣∣ y =  ¬ x ∣∣ y
