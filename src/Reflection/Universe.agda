@@ -8,8 +8,8 @@
 
 module Reflection.Universe where
 
-open import Data.List              using (List)
-open import Data.String            using (String)
+open import Data.List.Base         using (List)
+open import Data.String.Base       using (String)
 open import Data.Product           using (_×_)
 open import Reflection.Argument    using (Arg)
 open import Reflection.Abstraction using (Abs)
