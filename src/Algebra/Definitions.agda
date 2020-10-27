@@ -9,7 +9,6 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Level using (_⊔_)
 open import Relation.Binary.Core
 open import Relation.Nullary using (¬_)
 
