@@ -31,8 +31,15 @@ New modules
 * Added `Reflection.Traversal` for generic de Bruijn-aware traversals of reflected terms.
 * Added `Reflection.DeBruijn` with weakening, strengthening and free variable operations
   on reflected terms.
-* Added `Algebra.Properties.Magma` for generic items and theory for Magma.
-* Added `Algebra.Properties.Monoid` for generic items and theory for Monoid.
+  
+* Generic divisibility over algebraic structures
+  ```
+  Algebra.Divisibility
+  Algebra.Properties.Magma.Divisibility
+  Algebra.Properties.Semigroup.Divisibility
+  Algebra.Properties.Monoid.Divisibility
+  Algebra.Properties.CommutativeSemigroup.Divisibility
+  ```
 
 Other major changes
 -------------------
@@ -67,7 +74,6 @@ Other minor additions
   AlmostLeftCancellative  e _•_ = ∀ {x} y z → ¬ x ≈ e → (x • y) ≈ (x • z) → y ≈ z
   AlmostRightCancellative e _•_ = ∀ {x} y z → ¬ x ≈ e → (y • x) ≈ (z • x) → y ≈ z
   AlmostCancellative      e _•_ = AlmostLeftCancellative e _•_ × AlmostRightCancellative e _•_
-  module Divisibility (_•_ : Op₂ A)
   ```
 
 * Added new record to `Algebra.Structures`:
