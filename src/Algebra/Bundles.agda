@@ -685,16 +685,21 @@ record CancellativeCommutativeSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open IsCancellativeCommutativeSemiring isCancellativeCommutativeSemiring public
 
-  +-*-commutativeSemiring : CommutativeSemiring c ℓ
-  +-*-commutativeSemiring = record
-    { Carrier = Carrier
-    ; _≈_     = _≈_
-    ; _+_     = _+_
-    ; _*_     = _*_
-    ; 0#      = 0#
-    ; 1#      = 1#
-    ; isCommutativeSemiring = isCommutativeSemiring
+  commutativeSemiring : CommutativeSemiring c ℓ
+  commutativeSemiring = record
+    { isCommutativeSemiring = isCommutativeSemiring
     }
+
+  open CommutativeSemiring commutativeSemiring public
+    using
+    ( +-rawMagma; +-magma; +-semigroup; +-commutativeSemigroup
+    ; *-rawMagma; *-magma; *-semigroup; *-commutativeSemigroup
+    ; +-rawMonoid; +-monoid; +-commutativeMonoid
+    ; *-rawMonoid; *-monoid; *-commutativeMonoid
+    ; nearSemiring; semiringWithoutOne
+    ; semiringWithoutAnnihilatingZero
+    ; rawSemiring
+    )
 
 ------------------------------------------------------------------------
 -- Bundles with 2 binary operations, 1 unary operation & 2 elements
