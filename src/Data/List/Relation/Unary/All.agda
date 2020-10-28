@@ -212,7 +212,7 @@ module _(S : Setoid a ℓ) {P : Pred (Setoid.Carrier S) p} where
   open SetoidMembership S
 
   lookupₛ : ∀ {xs} → P Respects _≈_ → All P xs → (∀ {x} → x ∈ xs → P x)
-  lookupₛ resp xs = lookupWith (λ { Py x≈y → resp (sym₁ x≈y) Py}) xs
+  lookupₛ resp pxs = lookupWith (λ py x=y → resp (sym₁ x=y) py) pxs
 
 ------------------------------------------------------------------------
 -- Properties of predicates preserved by All
