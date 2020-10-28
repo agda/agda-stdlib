@@ -42,7 +42,6 @@ private
   variable
     ℓ             : Level
     u             : Univ
-    t             : ⟦ u ⟧
     Ann Ann₁ Ann₂ : Annotation ℓ
 
 -- ⟪_⟫ packs up an element of an annotated type with a top-level annotation.
@@ -50,7 +49,7 @@ infixr 30 ⟨_⟩_
 data ⟪_⟫ {u} (Tyₐ : Typeₐ ℓ u) : Typeₐ ℓ u where
   ⟨_⟩_ : ∀ {t} → Ann t → Tyₐ Ann t → ⟪ Tyₐ ⟫ Ann t
 
-ann : {Tyₐ : Typeₐ ℓ u} → ⟪ Tyₐ ⟫ Ann t → Ann t
+ann : {Tyₐ : Typeₐ ℓ u} {t : ⟦ u ⟧} → ⟪ Tyₐ ⟫ Ann t → Ann t
 ann (⟨ α ⟩ _) = α
 
 
@@ -70,19 +69,19 @@ Listₐ Tyₐ Ann = All (Tyₐ Ann)
 -- one.
 
 data Absₐ′ (Tyₐ : Typeₐ ℓ u) : Typeₐ ℓ (⟨abs⟩ u) where
-  abs : ∀ x → Tyₐ Ann t → Absₐ′ Tyₐ Ann (abs x t)
+  abs : ∀ {t} x → Tyₐ Ann t → Absₐ′ Tyₐ Ann (abs x t)
 
 Absₐ : Typeₐ ℓ u → Typeₐ ℓ (⟨abs⟩ u)
 Absₐ Tyₐ = ⟪ Absₐ′ Tyₐ ⟫
 
 data Argₐ′ (Tyₐ : Typeₐ ℓ u) : Typeₐ ℓ (⟨arg⟩ u) where
-  arg : ∀ i → Tyₐ Ann t → Argₐ′ Tyₐ Ann (arg i t)
+  arg : ∀ {t} i → Tyₐ Ann t → Argₐ′ Tyₐ Ann (arg i t)
 
 Argₐ : Typeₐ ℓ u → Typeₐ ℓ (⟨arg⟩ u)
 Argₐ Tyₐ = ⟪ Argₐ′ Tyₐ ⟫
 
 data Namedₐ′ (Tyₐ : Typeₐ ℓ u) : Typeₐ ℓ (⟨named⟩ u) where
-  _,_ : ∀ x → Tyₐ Ann t → Namedₐ′ Tyₐ Ann (x , t)
+  _,_ : ∀ {t} x → Tyₐ Ann t → Namedₐ′ Tyₐ Ann (x , t)
 
 Namedₐ : Typeₐ ℓ u → Typeₐ ℓ (⟨named⟩ u)
 Namedₐ Tyₐ = ⟪ Namedₐ′ Tyₐ ⟫
