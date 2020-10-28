@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Divisibility over a magma
+-- Divisibility over magmas
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

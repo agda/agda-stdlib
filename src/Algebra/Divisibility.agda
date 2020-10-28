@@ -30,7 +30,7 @@ open import Algebra.Definitions _≈_
 infix 5 _∣_ _∤_ _∣∣_ _¬∣∣_
 
 _∣_ : Rel A (a ⊔ ℓ)
-x ∣ y = ∃ λ q → (q ∙ x) ≈ y 
+x ∣ y = ∃ λ q → (q ∙ x) ≈ y
 
 _∤_ : Rel A (a ⊔ ℓ)
 x ∤ y = ¬ x ∣ y

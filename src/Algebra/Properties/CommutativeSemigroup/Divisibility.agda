@@ -1,38 +1,26 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Some theory for commutative semigroup
+-- Properties of divisibility over commutative semigroups
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
 open import Algebra using (CommutativeSemigroup)
-open import Data.Product using (_×_; _,_; map)
 
 module Algebra.Properties.CommutativeSemigroup.Divisibility
-  {a ℓ} (CS : CommutativeSemigroup a ℓ)
+  {a ℓ} (CM : CommutativeSemigroup a ℓ)
   where
 
-open CommutativeSemigroup CS
-
-open import Relation.Binary.Reasoning.Setoid setoid
+open CommutativeSemigroup CM
 
 ------------------------------------------------------------------------------
--- Re-export the contents of semigroup
+-- Re-export the contents of divisibility over semigroups
 
 open import Algebra.Properties.Semigroup.Divisibility semigroup public
 
 ------------------------------------------------------------------------------
--- Further properties
+-- Re-export the contents of divisibility over commutative magmas
 
-x∣xy : ∀ x y → x ∣ x ∙ y
-x∣xy x y = y , comm y x
-
-xy≈z⇒x∣z : ∀ x y {z} → x ∙ y ≈ z → x ∣ z
-xy≈z⇒x∣z x y xy≈z = ∣-respʳ xy≈z (x∣xy x y)
-
-∣-factors : ∀ x y → (x ∣ x ∙ y) × (y ∣ x ∙ y)
-∣-factors x y = x∣xy x y , x∣yx y x
-
-∣-factors-≈ : ∀ x y {z} → x ∙ y ≈ z → x ∣ z × y ∣ z
-∣-factors-≈ x y xy≈z = xy≈z⇒x∣z x y xy≈z , xy≈z⇒y∣z x y xy≈z
+open import Algebra.Properties.CommutativeMagma.Divisibility commutativeMagma public
+  using (x∣xy; xy≈z⇒x∣z; ∣-factors; ∣-factors-≈)

@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Some theory for Monoid
+-- Properties of divisibility over monoids
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
