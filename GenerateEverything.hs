@@ -62,6 +62,8 @@ withKModules = map modToFile
   , "Data.Star.Pointer"
   , "Data.Star.Vec"
   , "Data.String.Unsafe"
+  , "Reflection.Annotated"
+  , "Reflection.Annotated.Free"
   , "Relation.Binary.HeterogeneousEquality"
   , "Relation.Binary.HeterogeneousEquality.Core"
   , "Relation.Binary.HeterogeneousEquality.Quotients.Examples"

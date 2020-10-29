@@ -65,6 +65,10 @@ New modules
 * Added `Reflection.DeBruijn` with weakening, strengthening and free variable operations
   on reflected terms.
 * Added `Reflection.Universe` defining a universe for the reflected syntax types.
+* Added `Reflection.Annotated` defining annotated reflected syntax and
+  functions to compute annotations and traverse terms based on annotations.
+* Added `Reflection.Annotated.Free` implementing free variable annotations for
+  reflected terms.
 
 Other major changes
 -------------------
