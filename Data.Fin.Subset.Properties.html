@@ -221,9 +221,9 @@
     <a id="7274" class="Symbol">;</a> <a id="7276" href="Relation.Binary.Structures.html#2361" class="Field">trans</a>         <a id="7290" class="Symbol">=</a> <a id="7292" href="Data.Fin.Subset.Properties.html#6127" class="Function">⊆-trans</a>
     <a id="7304" class="Symbol">}</a>
 
-  <a id="7309" href="Data.Fin.Subset.Properties.html#7309" class="Function">⊆-preorder</a> <a id="7320" class="Symbol">:</a> <a id="7322" href="Relation.Binary.Bundles.html#1906" class="Record">Preorder</a> <a id="7331" class="Symbol">_</a> <a id="7333" class="Symbol">_</a> <a id="7335" class="Symbol">_</a>
+  <a id="7309" href="Data.Fin.Subset.Properties.html#7309" class="Function">⊆-preorder</a> <a id="7320" class="Symbol">:</a> <a id="7322" href="Relation.Binary.Bundles.html#1920" class="Record">Preorder</a> <a id="7331" class="Symbol">_</a> <a id="7333" class="Symbol">_</a> <a id="7335" class="Symbol">_</a>
   <a id="7339" href="Data.Fin.Subset.Properties.html#7309" class="Function">⊆-preorder</a> <a id="7350" class="Symbol">=</a> <a id="7352" class="Keyword">record</a>
-    <a id="7363" class="Symbol">{</a> <a id="7365" href="Relation.Binary.Bundles.html#2119" class="Field">isPreorder</a> <a id="7376" class="Symbol">=</a> <a id="7378" href="Data.Fin.Subset.Properties.html#7136" class="Function">⊆-isPreorder</a>
+    <a id="7363" class="Symbol">{</a> <a id="7365" href="Relation.Binary.Bundles.html#2133" class="Field">isPreorder</a> <a id="7376" class="Symbol">=</a> <a id="7378" href="Data.Fin.Subset.Properties.html#7136" class="Function">⊆-isPreorder</a>
     <a id="7395" class="Symbol">}</a>
 
   <a id="7400" href="Data.Fin.Subset.Properties.html#7400" class="Function">⊆-isPartialOrder</a> <a id="7417" class="Symbol">:</a> <a id="7419" href="Relation.Binary.Structures.html#2897" class="Record">IsPartialOrder</a> <a id="7434" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a> <a id="7438" class="Symbol">(</a><a id="7439" href="Data.Fin.Subset.html#1712" class="Function Operator">_⊆_</a> <a id="7443" class="Symbol">{</a><a id="7444" href="Data.Fin.Subset.Properties.html#7120" class="Bound">n</a><a id="7445" class="Symbol">})</a>
@@ -232,9 +232,9 @@
     <a id="7512" class="Symbol">;</a> <a id="7514" href="Relation.Binary.Structures.html#2998" class="Field">antisym</a>    <a id="7525" class="Symbol">=</a> <a id="7527" href="Data.Fin.Subset.Properties.html#6203" class="Function">⊆-antisym</a>
     <a id="7541" class="Symbol">}</a>
 
-  <a id="7546" href="Data.Fin.Subset.Properties.html#7546" class="Function">⊆-poset</a> <a id="7554" class="Symbol">:</a> <a id="7556" href="Relation.Binary.Bundles.html#2525" class="Record">Poset</a> <a id="7562" class="Symbol">_</a> <a id="7564" class="Symbol">_</a> <a id="7566" class="Symbol">_</a>
+  <a id="7546" href="Data.Fin.Subset.Properties.html#7546" class="Function">⊆-poset</a> <a id="7554" class="Symbol">:</a> <a id="7556" href="Relation.Binary.Bundles.html#2539" class="Record">Poset</a> <a id="7562" class="Symbol">_</a> <a id="7564" class="Symbol">_</a> <a id="7566" class="Symbol">_</a>
   <a id="7570" href="Data.Fin.Subset.Properties.html#7546" class="Function">⊆-poset</a> <a id="7578" class="Symbol">=</a> <a id="7580" class="Keyword">record</a>
-    <a id="7591" class="Symbol">{</a> <a id="7593" href="Relation.Binary.Bundles.html#2700" class="Field">isPartialOrder</a> <a id="7608" class="Symbol">=</a> <a id="7610" href="Data.Fin.Subset.Properties.html#7400" class="Function">⊆-isPartialOrder</a>
+    <a id="7591" class="Symbol">{</a> <a id="7593" href="Relation.Binary.Bundles.html#2714" class="Field">isPartialOrder</a> <a id="7608" class="Symbol">=</a> <a id="7610" href="Data.Fin.Subset.Properties.html#7400" class="Function">⊆-isPartialOrder</a>
     <a id="7631" class="Symbol">}</a>
 
 <a id="p⊆q⇒∣p∣≤∣q∣"></a><a id="7634" href="Data.Fin.Subset.Properties.html#7634" class="Function">p⊆q⇒∣p∣≤∣q∣</a> <a id="7646" class="Symbol">:</a> <a id="7648" class="Symbol">∀</a> <a id="7650" class="Symbol">{</a><a id="7651" href="Data.Fin.Subset.Properties.html#7651" class="Bound">n</a><a id="7652" class="Symbol">}</a> <a id="7654" class="Symbol">{</a><a id="7655" href="Data.Fin.Subset.Properties.html#7655" class="Bound">p</a> <a id="7657" href="Data.Fin.Subset.Properties.html#7657" class="Bound">q</a> <a id="7659" class="Symbol">:</a> <a id="7661" href="Data.Fin.Subset.html#1054" class="Function">Subset</a> <a id="7668" href="Data.Fin.Subset.Properties.html#7651" class="Bound">n</a><a id="7669" class="Symbol">}</a> <a id="7671" class="Symbol">→</a> <a id="7673" href="Data.Fin.Subset.Properties.html#7655" class="Bound">p</a> <a id="7675" href="Data.Fin.Subset.html#1712" class="Function Operator">⊆</a> <a id="7677" href="Data.Fin.Subset.Properties.html#7657" class="Bound">q</a> <a id="7679" class="Symbol">→</a> <a id="7681" href="Data.Fin.Subset.html#2449" class="Function Operator">∣</a> <a id="7683" href="Data.Fin.Subset.Properties.html#7655" class="Bound">p</a> <a id="7685" href="Data.Fin.Subset.html#2449" class="Function Operator">∣</a> <a id="7687" href="Data.Nat.Base.html#1396" class="Datatype Operator">≤</a> <a id="7689" href="Data.Fin.Subset.html#2449" class="Function Operator">∣</a> <a id="7691" href="Data.Fin.Subset.Properties.html#7657" class="Bound">q</a> <a id="7693" href="Data.Fin.Subset.html#2449" class="Function Operator">∣</a>
@@ -288,9 +288,9 @@
     <a id="9468" class="Symbol">;</a> <a id="9470" href="Relation.Binary.Structures.html#3857" class="Field">&lt;-resp-≈</a> <a id="9479" class="Symbol">=</a> <a id="9481" class="Symbol">(λ</a> <a id="9484" class="Symbol">{</a><a id="9485" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a> <a id="9490" class="Symbol">→</a> <a id="9492" href="Function.Base.html#615" class="Function">id</a><a id="9494" class="Symbol">})</a> <a id="9497" href="Agda.Builtin.Sigma.html#236" class="InductiveConstructor Operator">,</a> <a id="9499" class="Symbol">(λ</a> <a id="9502" class="Symbol">{</a><a id="9503" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a> <a id="9508" class="Symbol">→</a> <a id="9510" href="Function.Base.html#615" class="Function">id</a><a id="9512" class="Symbol">})</a>
     <a id="9519" class="Symbol">}</a>
 
-  <a id="9524" href="Data.Fin.Subset.Properties.html#9524" class="Function">⊂-strictPartialOrder</a> <a id="9545" class="Symbol">:</a> <a id="9547" href="Relation.Binary.Bundles.html#3605" class="Record">StrictPartialOrder</a> <a id="9566" class="Symbol">_</a> <a id="9568" class="Symbol">_</a> <a id="9570" class="Symbol">_</a>
+  <a id="9524" href="Data.Fin.Subset.Properties.html#9524" class="Function">⊂-strictPartialOrder</a> <a id="9545" class="Symbol">:</a> <a id="9547" href="Relation.Binary.Bundles.html#3619" class="Record">StrictPartialOrder</a> <a id="9566" class="Symbol">_</a> <a id="9568" class="Symbol">_</a> <a id="9570" class="Symbol">_</a>
   <a id="9574" href="Data.Fin.Subset.Properties.html#9524" class="Function">⊂-strictPartialOrder</a> <a id="9595" class="Symbol">=</a> <a id="9597" class="Keyword">record</a>
-    <a id="9608" class="Symbol">{</a> <a id="9610" href="Relation.Binary.Bundles.html#3811" class="Field">isStrictPartialOrder</a> <a id="9631" class="Symbol">=</a> <a id="9633" href="Data.Fin.Subset.Properties.html#9289" class="Function">⊂-isStrictPartialOrder</a>
+    <a id="9608" class="Symbol">{</a> <a id="9610" href="Relation.Binary.Bundles.html#3825" class="Field">isStrictPartialOrder</a> <a id="9631" class="Symbol">=</a> <a id="9633" href="Data.Fin.Subset.Properties.html#9289" class="Function">⊂-isStrictPartialOrder</a>
     <a id="9660" class="Symbol">}</a>
 
   <a id="9665" href="Data.Fin.Subset.Properties.html#9665" class="Function">⊂-isDecStrictPartialOrder</a> <a id="9691" class="Symbol">:</a> <a id="9693" href="Relation.Binary.Structures.html#4294" class="Record">IsDecStrictPartialOrder</a> <a id="9717" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a> <a id="9721" class="Symbol">(</a><a id="9722" href="Data.Fin.Subset.html#1842" class="Function Operator">_⊂_</a> <a id="9726" class="Symbol">{</a><a id="9727" href="Data.Fin.Subset.Properties.html#9273" class="Bound">n</a><a id="9728" class="Symbol">})</a>
@@ -300,9 +300,9 @@
     <a id="9846" class="Symbol">;</a> <a id="9848" href="Relation.Binary.Structures.html#4484" class="Field Operator">_&lt;?_</a> <a id="9853" class="Symbol">=</a> <a id="9855" href="Data.Fin.Subset.Properties.html#8945" class="Function Operator">_⊂?_</a>
     <a id="9864" class="Symbol">}</a>
 
-  <a id="9869" href="Data.Fin.Subset.Properties.html#9869" class="Function">⊂-decStrictPartialOrder</a> <a id="9893" class="Symbol">:</a> <a id="9895" href="Relation.Binary.Bundles.html#4093" class="Record">DecStrictPartialOrder</a> <a id="9917" class="Symbol">_</a> <a id="9919" class="Symbol">_</a> <a id="9921" class="Symbol">_</a>
+  <a id="9869" href="Data.Fin.Subset.Properties.html#9869" class="Function">⊂-decStrictPartialOrder</a> <a id="9893" class="Symbol">:</a> <a id="9895" href="Relation.Binary.Bundles.html#4107" class="Record">DecStrictPartialOrder</a> <a id="9917" class="Symbol">_</a> <a id="9919" class="Symbol">_</a> <a id="9921" class="Symbol">_</a>
   <a id="9925" href="Data.Fin.Subset.Properties.html#9869" class="Function">⊂-decStrictPartialOrder</a> <a id="9949" class="Symbol">=</a> <a id="9951" class="Keyword">record</a>
-    <a id="9962" class="Symbol">{</a> <a id="9964" href="Relation.Binary.Bundles.html#4311" class="Field">isDecStrictPartialOrder</a> <a id="9988" class="Symbol">=</a> <a id="9990" href="Data.Fin.Subset.Properties.html#9665" class="Function">⊂-isDecStrictPartialOrder</a>
+    <a id="9962" class="Symbol">{</a> <a id="9964" href="Relation.Binary.Bundles.html#4325" class="Field">isDecStrictPartialOrder</a> <a id="9988" class="Symbol">=</a> <a id="9990" href="Data.Fin.Subset.Properties.html#9665" class="Function">⊂-isDecStrictPartialOrder</a>
     <a id="10020" class="Symbol">}</a>
 
 <a id="p⊂q⇒∣p∣&lt;∣q∣"></a><a id="10023" href="Data.Fin.Subset.Properties.html#10023" class="Function">p⊂q⇒∣p∣&lt;∣q∣</a> <a id="10035" class="Symbol">:</a> <a id="10037" class="Symbol">∀</a> <a id="10039" class="Symbol">{</a><a id="10040" href="Data.Fin.Subset.Properties.html#10040" class="Bound">n</a><a id="10041" class="Symbol">}</a> <a id="10043" class="Symbol">→</a> <a id="10045" class="Symbol">{</a><a id="10046" href="Data.Fin.Subset.Properties.html#10046" class="Bound">p</a> <a id="10048" href="Data.Fin.Subset.Properties.html#10048" class="Bound">q</a> <a id="10050" class="Symbol">:</a> <a id="10052" href="Data.Fin.Subset.html#1054" class="Function">Subset</a> <a id="10059" href="Data.Fin.Subset.Properties.html#10040" class="Bound">n</a><a id="10060" class="Symbol">}</a> <a id="10062" class="Symbol">→</a> <a id="10064" href="Data.Fin.Subset.Properties.html#10046" class="Bound">p</a> <a id="10066" href="Data.Fin.Subset.html#1842" class="Function Operator">⊂</a> <a id="10068" href="Data.Fin.Subset.Properties.html#10048" class="Bound">q</a> <a id="10070" class="Symbol">→</a> <a id="10072" href="Data.Fin.Subset.html#2449" class="Function Operator">∣</a> <a id="10074" href="Data.Fin.Subset.Properties.html#10046" class="Bound">p</a> <a id="10076" href="Data.Fin.Subset.html#2449" class="Function Operator">∣</a> <a id="10078" href="Data.Nat.Base.html#1506" class="Function Operator">&lt;</a> <a id="10080" href="Data.Fin.Subset.html#2449" class="Function Operator">∣</a> <a id="10082" href="Data.Fin.Subset.Properties.html#10048" class="Bound">q</a> <a id="10084" href="Data.Fin.Subset.html#2449" class="Function Operator">∣</a>
@@ -409,9 +409,9 @@
     <a id="13221" class="Symbol">;</a> <a id="13223" href="Algebra.Structures.html#1569" class="Field">assoc</a>   <a id="13231" class="Symbol">=</a> <a id="13233" href="Data.Fin.Subset.Properties.html#12045" class="Function">∩-assoc</a>
     <a id="13245" class="Symbol">}</a>
 
-  <a id="13250" href="Data.Fin.Subset.Properties.html#13250" class="Function">∩-semigroup</a> <a id="13262" class="Symbol">:</a> <a id="13264" href="Algebra.Bundles.html#1202" class="Record">Semigroup</a> <a id="13274" class="Symbol">_</a> <a id="13276" class="Symbol">_</a>
+  <a id="13250" href="Data.Fin.Subset.Properties.html#13250" class="Function">∩-semigroup</a> <a id="13262" class="Symbol">:</a> <a id="13264" href="Algebra.Bundles.html#1247" class="Record">Semigroup</a> <a id="13274" class="Symbol">_</a> <a id="13276" class="Symbol">_</a>
   <a id="13280" href="Data.Fin.Subset.Properties.html#13250" class="Function">∩-semigroup</a> <a id="13292" class="Symbol">=</a> <a id="13294" class="Keyword">record</a>
-    <a id="13305" class="Symbol">{</a> <a id="13307" href="Algebra.Bundles.html#1370" class="Field">isSemigroup</a> <a id="13319" class="Symbol">=</a> <a id="13321" href="Data.Fin.Subset.Properties.html#13134" class="Function">∩-isSemigroup</a>
+    <a id="13305" class="Symbol">{</a> <a id="13307" href="Algebra.Bundles.html#1415" class="Field">isSemigroup</a> <a id="13319" class="Symbol">=</a> <a id="13321" href="Data.Fin.Subset.Properties.html#13134" class="Function">∩-isSemigroup</a>
     <a id="13339" class="Symbol">}</a>
 
   <a id="13344" href="Data.Fin.Subset.Properties.html#13344" class="Function">∩-isBand</a> <a id="13353" class="Symbol">:</a> <a id="13355" href="Algebra.Structures.html#1633" class="Record">IsBand</a> <a id="13362" href="Data.Fin.Subset.html#2175" class="Function Operator">_∩_</a>
@@ -420,9 +420,9 @@
     <a id="13424" class="Symbol">;</a> <a id="13426" href="Algebra.Structures.html#1716" class="Field">idem</a>        <a id="13438" class="Symbol">=</a> <a id="13440" href="Data.Fin.Subset.Properties.html#12167" class="Function">∩-idem</a>
     <a id="13451" class="Symbol">}</a>
 
-  <a id="13456" href="Data.Fin.Subset.Properties.html#13456" class="Function">∩-band</a> <a id="13463" class="Symbol">:</a> <a id="13465" href="Algebra.Bundles.html#1556" class="Record">Band</a> <a id="13470" class="Symbol">_</a> <a id="13472" class="Symbol">_</a>
+  <a id="13456" href="Data.Fin.Subset.Properties.html#13456" class="Function">∩-band</a> <a id="13463" class="Symbol">:</a> <a id="13465" href="Algebra.Bundles.html#1610" class="Record">Band</a> <a id="13470" class="Symbol">_</a> <a id="13472" class="Symbol">_</a>
   <a id="13476" href="Data.Fin.Subset.Properties.html#13456" class="Function">∩-band</a> <a id="13483" class="Symbol">=</a> <a id="13485" class="Keyword">record</a>
-    <a id="13496" class="Symbol">{</a> <a id="13498" href="Algebra.Bundles.html#1707" class="Field">isBand</a> <a id="13505" class="Symbol">=</a> <a id="13507" href="Data.Fin.Subset.Properties.html#13344" class="Function">∩-isBand</a>
+    <a id="13496" class="Symbol">{</a> <a id="13498" href="Algebra.Bundles.html#1761" class="Field">isBand</a> <a id="13505" class="Symbol">=</a> <a id="13507" href="Data.Fin.Subset.Properties.html#13344" class="Function">∩-isBand</a>
     <a id="13520" class="Symbol">}</a>
 
   <a id="13525" href="Data.Fin.Subset.Properties.html#13525" class="Function">∩-isSemilattice</a> <a id="13541" class="Symbol">:</a> <a id="13543" href="Algebra.Structures.html#1966" class="Record">IsSemilattice</a> <a id="13557" href="Data.Fin.Subset.html#2175" class="Function Operator">_∩_</a>
@@ -431,9 +431,9 @@
     <a id="13616" class="Symbol">;</a> <a id="13618" href="Algebra.Structures.html#2046" class="Field">comm</a>   <a id="13625" class="Symbol">=</a> <a id="13627" href="Data.Fin.Subset.Properties.html#12108" class="Function">∩-comm</a>
     <a id="13638" class="Symbol">}</a>
 
-  <a id="13643" href="Data.Fin.Subset.Properties.html#13643" class="Function">∩-semilattice</a> <a id="13657" class="Symbol">:</a> <a id="13659" href="Algebra.Bundles.html#2390" class="Record">Semilattice</a> <a id="13671" class="Symbol">_</a> <a id="13673" class="Symbol">_</a>
+  <a id="13643" href="Data.Fin.Subset.Properties.html#13643" class="Function">∩-semilattice</a> <a id="13657" class="Symbol">:</a> <a id="13659" href="Algebra.Bundles.html#2462" class="Record">Semilattice</a> <a id="13671" class="Symbol">_</a> <a id="13673" class="Symbol">_</a>
   <a id="13677" href="Data.Fin.Subset.Properties.html#13643" class="Function">∩-semilattice</a> <a id="13691" class="Symbol">=</a> <a id="13693" class="Keyword">record</a>
-    <a id="13704" class="Symbol">{</a> <a id="13706" href="Algebra.Bundles.html#2566" class="Field">isSemilattice</a> <a id="13720" class="Symbol">=</a> <a id="13722" href="Data.Fin.Subset.Properties.html#13525" class="Function">∩-isSemilattice</a>
+    <a id="13704" class="Symbol">{</a> <a id="13706" href="Algebra.Bundles.html#2638" class="Field">isSemilattice</a> <a id="13720" class="Symbol">=</a> <a id="13722" href="Data.Fin.Subset.Properties.html#13525" class="Function">∩-isSemilattice</a>
     <a id="13742" class="Symbol">}</a>
 
   <a id="13747" href="Data.Fin.Subset.Properties.html#13747" class="Function">∩-isMonoid</a> <a id="13758" class="Symbol">:</a> <a id="13760" href="Algebra.Structures.html#2523" class="Record">IsMonoid</a> <a id="13769" href="Data.Fin.Subset.html#2175" class="Function Operator">_∩_</a> <a id="13773" href="Data.Fin.Subset.html#1266" class="Function">⊤</a>
@@ -442,9 +442,9 @@
     <a id="13835" class="Symbol">;</a> <a id="13837" href="Algebra.Structures.html#2616" class="Field">identity</a>    <a id="13849" class="Symbol">=</a> <a id="13851" href="Data.Fin.Subset.Properties.html#12390" class="Function">∩-identity</a>
     <a id="13866" class="Symbol">}</a>
 
-  <a id="13871" href="Data.Fin.Subset.Properties.html#13871" class="Function">∩-monoid</a> <a id="13880" class="Symbol">:</a> <a id="13882" href="Algebra.Bundles.html#3673" class="Record">Monoid</a> <a id="13889" class="Symbol">_</a> <a id="13891" class="Symbol">_</a>
+  <a id="13871" href="Data.Fin.Subset.Properties.html#13871" class="Function">∩-monoid</a> <a id="13880" class="Symbol">:</a> <a id="13882" href="Algebra.Bundles.html#3763" class="Record">Monoid</a> <a id="13889" class="Symbol">_</a> <a id="13891" class="Symbol">_</a>
   <a id="13895" href="Data.Fin.Subset.Properties.html#13871" class="Function">∩-monoid</a> <a id="13904" class="Symbol">=</a> <a id="13906" class="Keyword">record</a>
-    <a id="13917" class="Symbol">{</a> <a id="13919" href="Algebra.Bundles.html#3852" class="Field">isMonoid</a> <a id="13928" class="Symbol">=</a> <a id="13930" href="Data.Fin.Subset.Properties.html#13747" class="Function">∩-isMonoid</a>
+    <a id="13917" class="Symbol">{</a> <a id="13919" href="Algebra.Bundles.html#3942" class="Field">isMonoid</a> <a id="13928" class="Symbol">=</a> <a id="13930" href="Data.Fin.Subset.Properties.html#13747" class="Function">∩-isMonoid</a>
     <a id="13945" class="Symbol">}</a>
 
   <a id="13950" href="Data.Fin.Subset.Properties.html#13950" class="Function">∩-isCommutativeMonoid</a> <a id="13972" class="Symbol">:</a> <a id="13974" href="Algebra.Structures.html#2814" class="Record">IsCommutativeMonoid</a> <a id="13994" href="Data.Fin.Subset.html#2175" class="Function Operator">_∩_</a> <a id="13998" href="Data.Fin.Subset.html#1266" class="Function">⊤</a>
@@ -453,9 +453,9 @@
     <a id="14065" class="Symbol">;</a> <a id="14067" href="Algebra.Structures.html#2914" class="Field">comm</a>     <a id="14076" class="Symbol">=</a> <a id="14078" href="Data.Fin.Subset.Properties.html#12108" class="Function">∩-comm</a>
     <a id="14089" class="Symbol">}</a>
 
-  <a id="14094" href="Data.Fin.Subset.Properties.html#14094" class="Function">∩-commutativeMonoid</a> <a id="14114" class="Symbol">:</a> <a id="14116" href="Algebra.Bundles.html#4144" class="Record">CommutativeMonoid</a> <a id="14134" class="Symbol">_</a> <a id="14136" class="Symbol">_</a>
+  <a id="14094" href="Data.Fin.Subset.Properties.html#14094" class="Function">∩-commutativeMonoid</a> <a id="14114" class="Symbol">:</a> <a id="14116" href="Algebra.Bundles.html#4243" class="Record">CommutativeMonoid</a> <a id="14134" class="Symbol">_</a> <a id="14136" class="Symbol">_</a>
   <a id="14140" href="Data.Fin.Subset.Properties.html#14094" class="Function">∩-commutativeMonoid</a> <a id="14160" class="Symbol">=</a> <a id="14162" class="Keyword">record</a>
-    <a id="14173" class="Symbol">{</a> <a id="14175" href="Algebra.Bundles.html#4378" class="Field">isCommutativeMonoid</a> <a id="14195" class="Symbol">=</a> <a id="14197" href="Data.Fin.Subset.Properties.html#13950" class="Function">∩-isCommutativeMonoid</a>
+    <a id="14173" class="Symbol">{</a> <a id="14175" href="Algebra.Bundles.html#4477" class="Field">isCommutativeMonoid</a> <a id="14195" class="Symbol">=</a> <a id="14197" href="Data.Fin.Subset.Properties.html#13950" class="Function">∩-isCommutativeMonoid</a>
     <a id="14223" class="Symbol">}</a>
 
   <a id="14228" href="Data.Fin.Subset.Properties.html#14228" class="Function">∩-isIdempotentCommutativeMonoid</a> <a id="14260" class="Symbol">:</a> <a id="14262" href="Algebra.Structures.html#3131" class="Record">IsIdempotentCommutativeMonoid</a> <a id="14292" href="Data.Fin.Subset.html#2175" class="Function Operator">_∩_</a> <a id="14296" href="Data.Fin.Subset.html#1266" class="Function">⊤</a>
@@ -464,9 +464,9 @@
     <a id="14395" class="Symbol">;</a> <a id="14397" href="Algebra.Structures.html#3300" class="Field">idem</a>                <a id="14417" class="Symbol">=</a> <a id="14419" href="Data.Fin.Subset.Properties.html#12167" class="Function">∩-idem</a>
     <a id="14430" class="Symbol">}</a>
 
-  <a id="14435" href="Data.Fin.Subset.Properties.html#14435" class="Function">∩-idempotentCommutativeMonoid</a> <a id="14465" class="Symbol">:</a> <a id="14467" href="Algebra.Bundles.html#4769" class="Record">IdempotentCommutativeMonoid</a> <a id="14495" class="Symbol">_</a> <a id="14497" class="Symbol">_</a>
+  <a id="14435" href="Data.Fin.Subset.Properties.html#14435" class="Function">∩-idempotentCommutativeMonoid</a> <a id="14465" class="Symbol">:</a> <a id="14467" href="Algebra.Bundles.html#4877" class="Record">IdempotentCommutativeMonoid</a> <a id="14495" class="Symbol">_</a> <a id="14497" class="Symbol">_</a>
   <a id="14501" href="Data.Fin.Subset.Properties.html#14435" class="Function">∩-idempotentCommutativeMonoid</a> <a id="14531" class="Symbol">=</a> <a id="14533" class="Keyword">record</a>
-    <a id="14544" class="Symbol">{</a> <a id="14546" href="Algebra.Bundles.html#5053" class="Field">isIdempotentCommutativeMonoid</a> <a id="14576" class="Symbol">=</a> <a id="14578" href="Data.Fin.Subset.Properties.html#14228" class="Function">∩-isIdempotentCommutativeMonoid</a>
+    <a id="14544" class="Symbol">{</a> <a id="14546" href="Algebra.Bundles.html#5161" class="Field">isIdempotentCommutativeMonoid</a> <a id="14576" class="Symbol">=</a> <a id="14578" href="Data.Fin.Subset.Properties.html#14228" class="Function">∩-isIdempotentCommutativeMonoid</a>
     <a id="14614" class="Symbol">}</a>
 
 <a id="p∩q⊆p"></a><a id="14617" href="Data.Fin.Subset.Properties.html#14617" class="Function">p∩q⊆p</a> <a id="14623" class="Symbol">:</a> <a id="14625" class="Symbol">∀</a> <a id="14627" class="Symbol">{</a><a id="14628" href="Data.Fin.Subset.Properties.html#14628" class="Bound">n</a><a id="14629" class="Symbol">}</a> <a id="14631" class="Symbol">(</a><a id="14632" href="Data.Fin.Subset.Properties.html#14632" class="Bound">p</a> <a id="14634" href="Data.Fin.Subset.Properties.html#14634" class="Bound">q</a> <a id="14636" class="Symbol">:</a> <a id="14638" href="Data.Fin.Subset.html#1054" class="Function">Subset</a> <a id="14645" href="Data.Fin.Subset.Properties.html#14628" class="Bound">n</a><a id="14646" class="Symbol">)</a> <a id="14648" class="Symbol">→</a> <a id="14650" href="Data.Fin.Subset.Properties.html#14632" class="Bound">p</a> <a id="14652" href="Data.Fin.Subset.html#2175" class="Function Operator">∩</a> <a id="14654" href="Data.Fin.Subset.Properties.html#14634" class="Bound">q</a> <a id="14656" href="Data.Fin.Subset.html#1712" class="Function Operator">⊆</a> <a id="14658" href="Data.Fin.Subset.Properties.html#14632" class="Bound">p</a>
@@ -589,9 +589,9 @@
     <a id="17746" class="Symbol">;</a> <a id="17748" href="Algebra.Structures.html#1569" class="Field">assoc</a>   <a id="17756" class="Symbol">=</a> <a id="17758" href="Data.Fin.Subset.Properties.html#15910" class="Function">∪-assoc</a>
     <a id="17770" class="Symbol">}</a>
 
-  <a id="17775" href="Data.Fin.Subset.Properties.html#17775" class="Function">∪-semigroup</a> <a id="17787" class="Symbol">:</a> <a id="17789" href="Algebra.Bundles.html#1202" class="Record">Semigroup</a> <a id="17799" class="Symbol">_</a> <a id="17801" class="Symbol">_</a>
+  <a id="17775" href="Data.Fin.Subset.Properties.html#17775" class="Function">∪-semigroup</a> <a id="17787" class="Symbol">:</a> <a id="17789" href="Algebra.Bundles.html#1247" class="Record">Semigroup</a> <a id="17799" class="Symbol">_</a> <a id="17801" class="Symbol">_</a>
   <a id="17805" href="Data.Fin.Subset.Properties.html#17775" class="Function">∪-semigroup</a> <a id="17817" class="Symbol">=</a> <a id="17819" class="Keyword">record</a>
-    <a id="17830" class="Symbol">{</a> <a id="17832" href="Algebra.Bundles.html#1370" class="Field">isSemigroup</a> <a id="17844" class="Symbol">=</a> <a id="17846" href="Data.Fin.Subset.Properties.html#17659" class="Function">∪-isSemigroup</a>
+    <a id="17830" class="Symbol">{</a> <a id="17832" href="Algebra.Bundles.html#1415" class="Field">isSemigroup</a> <a id="17844" class="Symbol">=</a> <a id="17846" href="Data.Fin.Subset.Properties.html#17659" class="Function">∪-isSemigroup</a>
     <a id="17864" class="Symbol">}</a>
 
   <a id="17869" href="Data.Fin.Subset.Properties.html#17869" class="Function">∪-isBand</a> <a id="17878" class="Symbol">:</a> <a id="17880" href="Algebra.Structures.html#1633" class="Record">IsBand</a> <a id="17887" href="Data.Fin.Subset.html#2238" class="Function Operator">_∪_</a>
@@ -600,9 +600,9 @@
     <a id="17949" class="Symbol">;</a> <a id="17951" href="Algebra.Structures.html#1716" class="Field">idem</a>        <a id="17963" class="Symbol">=</a> <a id="17965" href="Data.Fin.Subset.Properties.html#16032" class="Function">∪-idem</a>
     <a id="17976" class="Symbol">}</a>
 
-  <a id="17981" href="Data.Fin.Subset.Properties.html#17981" class="Function">∪-band</a> <a id="17988" class="Symbol">:</a> <a id="17990" href="Algebra.Bundles.html#1556" class="Record">Band</a> <a id="17995" class="Symbol">_</a> <a id="17997" class="Symbol">_</a>
+  <a id="17981" href="Data.Fin.Subset.Properties.html#17981" class="Function">∪-band</a> <a id="17988" class="Symbol">:</a> <a id="17990" href="Algebra.Bundles.html#1610" class="Record">Band</a> <a id="17995" class="Symbol">_</a> <a id="17997" class="Symbol">_</a>
   <a id="18001" href="Data.Fin.Subset.Properties.html#17981" class="Function">∪-band</a> <a id="18008" class="Symbol">=</a> <a id="18010" class="Keyword">record</a>
-    <a id="18021" class="Symbol">{</a> <a id="18023" href="Algebra.Bundles.html#1707" class="Field">isBand</a> <a id="18030" class="Symbol">=</a> <a id="18032" href="Data.Fin.Subset.Properties.html#17869" class="Function">∪-isBand</a>
+    <a id="18021" class="Symbol">{</a> <a id="18023" href="Algebra.Bundles.html#1761" class="Field">isBand</a> <a id="18030" class="Symbol">=</a> <a id="18032" href="Data.Fin.Subset.Properties.html#17869" class="Function">∪-isBand</a>
     <a id="18045" class="Symbol">}</a>
 
   <a id="18050" href="Data.Fin.Subset.Properties.html#18050" class="Function">∪-isSemilattice</a> <a id="18066" class="Symbol">:</a> <a id="18068" href="Algebra.Structures.html#1966" class="Record">IsSemilattice</a> <a id="18082" href="Data.Fin.Subset.html#2238" class="Function Operator">_∪_</a>
@@ -611,9 +611,9 @@
     <a id="18141" class="Symbol">;</a> <a id="18143" href="Algebra.Structures.html#2046" class="Field">comm</a>   <a id="18150" class="Symbol">=</a> <a id="18152" href="Data.Fin.Subset.Properties.html#15973" class="Function">∪-comm</a>
     <a id="18163" class="Symbol">}</a>
 
-  <a id="18168" href="Data.Fin.Subset.Properties.html#18168" class="Function">∪-semilattice</a> <a id="18182" class="Symbol">:</a> <a id="18184" href="Algebra.Bundles.html#2390" class="Record">Semilattice</a> <a id="18196" class="Symbol">_</a> <a id="18198" class="Symbol">_</a>
+  <a id="18168" href="Data.Fin.Subset.Properties.html#18168" class="Function">∪-semilattice</a> <a id="18182" class="Symbol">:</a> <a id="18184" href="Algebra.Bundles.html#2462" class="Record">Semilattice</a> <a id="18196" class="Symbol">_</a> <a id="18198" class="Symbol">_</a>
   <a id="18202" href="Data.Fin.Subset.Properties.html#18168" class="Function">∪-semilattice</a> <a id="18216" class="Symbol">=</a> <a id="18218" class="Keyword">record</a>
-    <a id="18229" class="Symbol">{</a> <a id="18231" href="Algebra.Bundles.html#2566" class="Field">isSemilattice</a> <a id="18245" class="Symbol">=</a> <a id="18247" href="Data.Fin.Subset.Properties.html#18050" class="Function">∪-isSemilattice</a>
+    <a id="18229" class="Symbol">{</a> <a id="18231" href="Algebra.Bundles.html#2638" class="Field">isSemilattice</a> <a id="18245" class="Symbol">=</a> <a id="18247" href="Data.Fin.Subset.Properties.html#18050" class="Function">∪-isSemilattice</a>
     <a id="18267" class="Symbol">}</a>
 
   <a id="18272" href="Data.Fin.Subset.Properties.html#18272" class="Function">∪-isMonoid</a> <a id="18283" class="Symbol">:</a> <a id="18285" href="Algebra.Structures.html#2523" class="Record">IsMonoid</a> <a id="18294" href="Data.Fin.Subset.html#2238" class="Function Operator">_∪_</a> <a id="18298" href="Data.Fin.Subset.html#1203" class="Function">⊥</a>
@@ -622,9 +622,9 @@
     <a id="18360" class="Symbol">;</a> <a id="18362" href="Algebra.Structures.html#2616" class="Field">identity</a>    <a id="18374" class="Symbol">=</a> <a id="18376" href="Data.Fin.Subset.Properties.html#16255" class="Function">∪-identity</a>
     <a id="18391" class="Symbol">}</a>
 
-  <a id="18396" href="Data.Fin.Subset.Properties.html#18396" class="Function">∪-monoid</a> <a id="18405" class="Symbol">:</a> <a id="18407" href="Algebra.Bundles.html#3673" class="Record">Monoid</a> <a id="18414" class="Symbol">_</a> <a id="18416" class="Symbol">_</a>
+  <a id="18396" href="Data.Fin.Subset.Properties.html#18396" class="Function">∪-monoid</a> <a id="18405" class="Symbol">:</a> <a id="18407" href="Algebra.Bundles.html#3763" class="Record">Monoid</a> <a id="18414" class="Symbol">_</a> <a id="18416" class="Symbol">_</a>
   <a id="18420" href="Data.Fin.Subset.Properties.html#18396" class="Function">∪-monoid</a> <a id="18429" class="Symbol">=</a> <a id="18431" class="Keyword">record</a>
-    <a id="18442" class="Symbol">{</a> <a id="18444" href="Algebra.Bundles.html#3852" class="Field">isMonoid</a> <a id="18453" class="Symbol">=</a> <a id="18455" href="Data.Fin.Subset.Properties.html#18272" class="Function">∪-isMonoid</a>
+    <a id="18442" class="Symbol">{</a> <a id="18444" href="Algebra.Bundles.html#3942" class="Field">isMonoid</a> <a id="18453" class="Symbol">=</a> <a id="18455" href="Data.Fin.Subset.Properties.html#18272" class="Function">∪-isMonoid</a>
     <a id="18470" class="Symbol">}</a>
 
   <a id="18475" href="Data.Fin.Subset.Properties.html#18475" class="Function">∪-isCommutativeMonoid</a> <a id="18497" class="Symbol">:</a> <a id="18499" href="Algebra.Structures.html#2814" class="Record">IsCommutativeMonoid</a> <a id="18519" href="Data.Fin.Subset.html#2238" class="Function Operator">_∪_</a> <a id="18523" href="Data.Fin.Subset.html#1203" class="Function">⊥</a>
@@ -633,9 +633,9 @@
     <a id="18590" class="Symbol">;</a> <a id="18592" href="Algebra.Structures.html#2914" class="Field">comm</a>     <a id="18601" class="Symbol">=</a> <a id="18603" href="Data.Fin.Subset.Properties.html#15973" class="Function">∪-comm</a>
     <a id="18614" class="Symbol">}</a>
 
-  <a id="18619" href="Data.Fin.Subset.Properties.html#18619" class="Function">∪-commutativeMonoid</a> <a id="18639" class="Symbol">:</a> <a id="18641" href="Algebra.Bundles.html#4144" class="Record">CommutativeMonoid</a> <a id="18659" class="Symbol">_</a> <a id="18661" class="Symbol">_</a>
+  <a id="18619" href="Data.Fin.Subset.Properties.html#18619" class="Function">∪-commutativeMonoid</a> <a id="18639" class="Symbol">:</a> <a id="18641" href="Algebra.Bundles.html#4243" class="Record">CommutativeMonoid</a> <a id="18659" class="Symbol">_</a> <a id="18661" class="Symbol">_</a>
   <a id="18665" href="Data.Fin.Subset.Properties.html#18619" class="Function">∪-commutativeMonoid</a> <a id="18685" class="Symbol">=</a> <a id="18687" class="Keyword">record</a>
-    <a id="18698" class="Symbol">{</a> <a id="18700" href="Algebra.Bundles.html#4378" class="Field">isCommutativeMonoid</a> <a id="18720" class="Symbol">=</a> <a id="18722" href="Data.Fin.Subset.Properties.html#18475" class="Function">∪-isCommutativeMonoid</a>
+    <a id="18698" class="Symbol">{</a> <a id="18700" href="Algebra.Bundles.html#4477" class="Field">isCommutativeMonoid</a> <a id="18720" class="Symbol">=</a> <a id="18722" href="Data.Fin.Subset.Properties.html#18475" class="Function">∪-isCommutativeMonoid</a>
     <a id="18748" class="Symbol">}</a>
 
   <a id="18753" href="Data.Fin.Subset.Properties.html#18753" class="Function">∪-isIdempotentCommutativeMonoid</a> <a id="18785" class="Symbol">:</a> <a id="18787" href="Algebra.Structures.html#3131" class="Record">IsIdempotentCommutativeMonoid</a> <a id="18817" href="Data.Fin.Subset.html#2238" class="Function Operator">_∪_</a> <a id="18821" href="Data.Fin.Subset.html#1203" class="Function">⊥</a>
@@ -644,9 +644,9 @@
     <a id="18920" class="Symbol">;</a> <a id="18922" href="Algebra.Structures.html#3300" class="Field">idem</a>                <a id="18942" class="Symbol">=</a> <a id="18944" href="Data.Fin.Subset.Properties.html#16032" class="Function">∪-idem</a>
     <a id="18955" class="Symbol">}</a>
 
-  <a id="18960" href="Data.Fin.Subset.Properties.html#18960" class="Function">∪-idempotentCommutativeMonoid</a> <a id="18990" class="Symbol">:</a> <a id="18992" href="Algebra.Bundles.html#4769" class="Record">IdempotentCommutativeMonoid</a> <a id="19020" class="Symbol">_</a> <a id="19022" class="Symbol">_</a>
+  <a id="18960" href="Data.Fin.Subset.Properties.html#18960" class="Function">∪-idempotentCommutativeMonoid</a> <a id="18990" class="Symbol">:</a> <a id="18992" href="Algebra.Bundles.html#4877" class="Record">IdempotentCommutativeMonoid</a> <a id="19020" class="Symbol">_</a> <a id="19022" class="Symbol">_</a>
   <a id="19026" href="Data.Fin.Subset.Properties.html#18960" class="Function">∪-idempotentCommutativeMonoid</a> <a id="19056" class="Symbol">=</a> <a id="19058" class="Keyword">record</a>
-    <a id="19069" class="Symbol">{</a> <a id="19071" href="Algebra.Bundles.html#5053" class="Field">isIdempotentCommutativeMonoid</a> <a id="19101" class="Symbol">=</a> <a id="19103" href="Data.Fin.Subset.Properties.html#18753" class="Function">∪-isIdempotentCommutativeMonoid</a>
+    <a id="19069" class="Symbol">{</a> <a id="19071" href="Algebra.Bundles.html#5161" class="Field">isIdempotentCommutativeMonoid</a> <a id="19101" class="Symbol">=</a> <a id="19103" href="Data.Fin.Subset.Properties.html#18753" class="Function">∪-isIdempotentCommutativeMonoid</a>
     <a id="19139" class="Symbol">}</a>
 
   <a id="19144" href="Data.Fin.Subset.Properties.html#19144" class="Function">∪-∩-isLattice</a> <a id="19158" class="Symbol">:</a> <a id="19160" href="Algebra.Structures.html#5731" class="Record">IsLattice</a> <a id="19170" href="Data.Fin.Subset.html#2238" class="Function Operator">_∪_</a> <a id="19174" href="Data.Fin.Subset.html#2175" class="Function Operator">_∩_</a>
@@ -661,9 +661,9 @@
     <a id="19425" class="Symbol">;</a> <a id="19427" href="Algebra.Structures.html#6027" class="Field">absorptive</a>    <a id="19441" class="Symbol">=</a> <a id="19443" href="Data.Fin.Subset.Properties.html#17262" class="Function">∪-abs-∩</a> <a id="19451" href="Agda.Builtin.Sigma.html#236" class="InductiveConstructor Operator">,</a> <a id="19453" href="Data.Fin.Subset.Properties.html#17327" class="Function">∩-abs-∪</a>
     <a id="19465" class="Symbol">}</a>
 
-  <a id="19470" href="Data.Fin.Subset.Properties.html#19470" class="Function">∪-∩-lattice</a> <a id="19482" class="Symbol">:</a> <a id="19484" href="Algebra.Bundles.html#8160" class="Record">Lattice</a> <a id="19492" class="Symbol">_</a> <a id="19494" class="Symbol">_</a>
+  <a id="19470" href="Data.Fin.Subset.Properties.html#19470" class="Function">∪-∩-lattice</a> <a id="19482" class="Symbol">:</a> <a id="19484" href="Algebra.Bundles.html#8287" class="Record">Lattice</a> <a id="19492" class="Symbol">_</a> <a id="19494" class="Symbol">_</a>
   <a id="19498" href="Data.Fin.Subset.Properties.html#19470" class="Function">∪-∩-lattice</a> <a id="19510" class="Symbol">=</a> <a id="19512" class="Keyword">record</a>
-    <a id="19523" class="Symbol">{</a> <a id="19525" href="Algebra.Bundles.html#8363" class="Field">isLattice</a> <a id="19535" class="Symbol">=</a> <a id="19537" href="Data.Fin.Subset.Properties.html#19144" class="Function">∪-∩-isLattice</a>
+    <a id="19523" class="Symbol">{</a> <a id="19525" href="Algebra.Bundles.html#8490" class="Field">isLattice</a> <a id="19535" class="Symbol">=</a> <a id="19537" href="Data.Fin.Subset.Properties.html#19144" class="Function">∪-∩-isLattice</a>
     <a id="19555" class="Symbol">}</a>
 
   <a id="19560" href="Data.Fin.Subset.Properties.html#19560" class="Function">∪-∩-isDistributiveLattice</a> <a id="19586" class="Symbol">:</a> <a id="19588" href="Algebra.Structures.html#6480" class="Record">IsDistributiveLattice</a> <a id="19610" href="Data.Fin.Subset.html#2238" class="Function Operator">_∪_</a> <a id="19614" href="Data.Fin.Subset.html#2175" class="Function Operator">_∩_</a>
@@ -672,9 +672,9 @@
     <a id="19694" class="Symbol">;</a> <a id="19696" href="Algebra.Structures.html#6581" class="Field">∨-distribʳ-∧</a> <a id="19709" class="Symbol">=</a> <a id="19711" href="Data.Fin.Subset.Properties.html#16822" class="Function">∪-distribʳ-∩</a>
     <a id="19728" class="Symbol">}</a>
 
-  <a id="19733" href="Data.Fin.Subset.Properties.html#19733" class="Function">∪-∩-distributiveLattice</a> <a id="19757" class="Symbol">:</a> <a id="19759" href="Algebra.Bundles.html#8687" class="Record">DistributiveLattice</a> <a id="19779" class="Symbol">_</a> <a id="19781" class="Symbol">_</a>
+  <a id="19733" href="Data.Fin.Subset.Properties.html#19733" class="Function">∪-∩-distributiveLattice</a> <a id="19757" class="Symbol">:</a> <a id="19759" href="Algebra.Bundles.html#8863" class="Record">DistributiveLattice</a> <a id="19779" class="Symbol">_</a> <a id="19781" class="Symbol">_</a>
   <a id="19785" href="Data.Fin.Subset.Properties.html#19733" class="Function">∪-∩-distributiveLattice</a> <a id="19809" class="Symbol">=</a> <a id="19811" class="Keyword">record</a>
-    <a id="19822" class="Symbol">{</a> <a id="19824" href="Algebra.Bundles.html#8950" class="Field">isDistributiveLattice</a> <a id="19846" class="Symbol">=</a> <a id="19848" href="Data.Fin.Subset.Properties.html#19560" class="Function">∪-∩-isDistributiveLattice</a>
+    <a id="19822" class="Symbol">{</a> <a id="19824" href="Algebra.Bundles.html#9126" class="Field">isDistributiveLattice</a> <a id="19846" class="Symbol">=</a> <a id="19848" href="Data.Fin.Subset.Properties.html#19560" class="Function">∪-∩-isDistributiveLattice</a>
     <a id="19878" class="Symbol">}</a>
 
   <a id="19883" href="Data.Fin.Subset.Properties.html#19883" class="Function">∪-∩-isBooleanAlgebra</a> <a id="19904" class="Symbol">:</a> <a id="19906" href="Algebra.Structures.html#15076" class="Record">IsBooleanAlgebra</a> <a id="19923" href="Data.Fin.Subset.html#2238" class="Function Operator">_∪_</a> <a id="19927" href="Data.Fin.Subset.html#2175" class="Function Operator">_∩_</a> <a id="19931" href="Data.Fin.Subset.html#2115" class="Function">∁</a> <a id="19933" href="Data.Fin.Subset.html#1266" class="Function">⊤</a> <a id="19935" href="Data.Fin.Subset.html#1203" class="Function">⊥</a>
@@ -685,27 +685,27 @@
     <a id="20111" class="Symbol">;</a> <a id="20113" href="Algebra.Structures.html#15318" class="Field">¬-cong</a>                <a id="20135" class="Symbol">=</a> <a id="20137" href="Relation.Binary.PropositionalEquality.Core.html#1130" class="Function">cong</a> <a id="20142" href="Data.Fin.Subset.html#2115" class="Function">∁</a>
     <a id="20148" class="Symbol">}</a>
 
-  <a id="20153" href="Data.Fin.Subset.Properties.html#20153" class="Function">∪-∩-booleanAlgebra</a> <a id="20172" class="Symbol">:</a> <a id="20174" href="Algebra.Bundles.html#21045" class="Record">BooleanAlgebra</a> <a id="20189" class="Symbol">_</a> <a id="20191" class="Symbol">_</a>
+  <a id="20153" href="Data.Fin.Subset.Properties.html#20153" class="Function">∪-∩-booleanAlgebra</a> <a id="20172" class="Symbol">:</a> <a id="20174" href="Algebra.Bundles.html#21267" class="Record">BooleanAlgebra</a> <a id="20189" class="Symbol">_</a> <a id="20191" class="Symbol">_</a>
   <a id="20195" href="Data.Fin.Subset.Properties.html#20153" class="Function">∪-∩-booleanAlgebra</a> <a id="20214" class="Symbol">=</a> <a id="20216" class="Keyword">record</a>
-    <a id="20227" class="Symbol">{</a> <a id="20229" href="Algebra.Bundles.html#21394" class="Field">isBooleanAlgebra</a> <a id="20246" class="Symbol">=</a> <a id="20248" href="Data.Fin.Subset.Properties.html#19883" class="Function">∪-∩-isBooleanAlgebra</a>
+    <a id="20227" class="Symbol">{</a> <a id="20229" href="Algebra.Bundles.html#21616" class="Field">isBooleanAlgebra</a> <a id="20246" class="Symbol">=</a> <a id="20248" href="Data.Fin.Subset.Properties.html#19883" class="Function">∪-∩-isBooleanAlgebra</a>
     <a id="20273" class="Symbol">}</a>
 
   <a id="20278" href="Data.Fin.Subset.Properties.html#20278" class="Function">∩-∪-isLattice</a> <a id="20292" class="Symbol">:</a> <a id="20294" href="Algebra.Structures.html#5731" class="Record">IsLattice</a> <a id="20304" href="Data.Fin.Subset.html#2175" class="Function Operator">_∩_</a> <a id="20308" href="Data.Fin.Subset.html#2238" class="Function Operator">_∪_</a>
   <a id="20314" href="Data.Fin.Subset.Properties.html#20278" class="Function">∩-∪-isLattice</a> <a id="20328" class="Symbol">=</a> <a id="20330" href="Algebra.Properties.Lattice.html#3021" class="Function">L.∧-∨-isLattice</a> <a id="20346" href="Data.Fin.Subset.Properties.html#19470" class="Function">∪-∩-lattice</a>
 
-  <a id="20361" href="Data.Fin.Subset.Properties.html#20361" class="Function">∩-∪-lattice</a> <a id="20373" class="Symbol">:</a> <a id="20375" href="Algebra.Bundles.html#8160" class="Record">Lattice</a> <a id="20383" class="Symbol">_</a> <a id="20385" class="Symbol">_</a>
+  <a id="20361" href="Data.Fin.Subset.Properties.html#20361" class="Function">∩-∪-lattice</a> <a id="20373" class="Symbol">:</a> <a id="20375" href="Algebra.Bundles.html#8287" class="Record">Lattice</a> <a id="20383" class="Symbol">_</a> <a id="20385" class="Symbol">_</a>
   <a id="20389" href="Data.Fin.Subset.Properties.html#20361" class="Function">∩-∪-lattice</a> <a id="20401" class="Symbol">=</a> <a id="20403" href="Algebra.Properties.Lattice.html#3317" class="Function">L.∧-∨-lattice</a> <a id="20417" href="Data.Fin.Subset.Properties.html#19470" class="Function">∪-∩-lattice</a>
 
   <a id="20432" href="Data.Fin.Subset.Properties.html#20432" class="Function">∩-∪-isDistributiveLattice</a> <a id="20458" class="Symbol">:</a> <a id="20460" href="Algebra.Structures.html#6480" class="Record">IsDistributiveLattice</a> <a id="20482" href="Data.Fin.Subset.html#2175" class="Function Operator">_∩_</a> <a id="20486" href="Data.Fin.Subset.html#2238" class="Function Operator">_∪_</a>
   <a id="20492" href="Data.Fin.Subset.Properties.html#20432" class="Function">∩-∪-isDistributiveLattice</a> <a id="20518" class="Symbol">=</a> <a id="20520" href="Algebra.Properties.DistributiveLattice.html#2279" class="Function">DL.∧-∨-isDistributiveLattice</a> <a id="20549" href="Data.Fin.Subset.Properties.html#19733" class="Function">∪-∩-distributiveLattice</a>
 
-  <a id="20576" href="Data.Fin.Subset.Properties.html#20576" class="Function">∩-∪-distributiveLattice</a> <a id="20600" class="Symbol">:</a> <a id="20602" href="Algebra.Bundles.html#8687" class="Record">DistributiveLattice</a> <a id="20622" class="Symbol">_</a> <a id="20624" class="Symbol">_</a>
+  <a id="20576" href="Data.Fin.Subset.Properties.html#20576" class="Function">∩-∪-distributiveLattice</a> <a id="20600" class="Symbol">:</a> <a id="20602" href="Algebra.Bundles.html#8863" class="Record">DistributiveLattice</a> <a id="20622" class="Symbol">_</a> <a id="20624" class="Symbol">_</a>
   <a id="20628" href="Data.Fin.Subset.Properties.html#20576" class="Function">∩-∪-distributiveLattice</a> <a id="20652" class="Symbol">=</a> <a id="20654" href="Algebra.Properties.DistributiveLattice.html#2446" class="Function">DL.∧-∨-distributiveLattice</a> <a id="20681" href="Data.Fin.Subset.Properties.html#19733" class="Function">∪-∩-distributiveLattice</a>
 
   <a id="20708" href="Data.Fin.Subset.Properties.html#20708" class="Function">∩-∪-isBooleanAlgebra</a> <a id="20729" class="Symbol">:</a> <a id="20731" href="Algebra.Structures.html#15076" class="Record">IsBooleanAlgebra</a> <a id="20748" href="Data.Fin.Subset.html#2175" class="Function Operator">_∩_</a> <a id="20752" href="Data.Fin.Subset.html#2238" class="Function Operator">_∪_</a> <a id="20756" href="Data.Fin.Subset.html#2115" class="Function">∁</a> <a id="20758" href="Data.Fin.Subset.html#1203" class="Function">⊥</a> <a id="20760" href="Data.Fin.Subset.html#1266" class="Function">⊤</a>
   <a id="20764" href="Data.Fin.Subset.Properties.html#20708" class="Function">∩-∪-isBooleanAlgebra</a> <a id="20785" class="Symbol">=</a> <a id="20787" href="Algebra.Properties.BooleanAlgebra.html#1717" class="Function">BA.∧-∨-isBooleanAlgebra</a> <a id="20811" href="Data.Fin.Subset.Properties.html#20153" class="Function">∪-∩-booleanAlgebra</a>
 
-  <a id="20833" href="Data.Fin.Subset.Properties.html#20833" class="Function">∩-∪-booleanAlgebra</a> <a id="20852" class="Symbol">:</a> <a id="20854" href="Algebra.Bundles.html#21045" class="Record">BooleanAlgebra</a> <a id="20869" class="Symbol">_</a> <a id="20871" class="Symbol">_</a>
+  <a id="20833" href="Data.Fin.Subset.Properties.html#20833" class="Function">∩-∪-booleanAlgebra</a> <a id="20852" class="Symbol">:</a> <a id="20854" href="Algebra.Bundles.html#21267" class="Record">BooleanAlgebra</a> <a id="20869" class="Symbol">_</a> <a id="20871" class="Symbol">_</a>
   <a id="20875" href="Data.Fin.Subset.Properties.html#20833" class="Function">∩-∪-booleanAlgebra</a> <a id="20894" class="Symbol">=</a> <a id="20896" href="Algebra.Properties.BooleanAlgebra.html#1980" class="Function">BA.∧-∨-booleanAlgebra</a> <a id="20918" href="Data.Fin.Subset.Properties.html#20153" class="Function">∪-∩-booleanAlgebra</a>
 
 <a id="p⊆p∪q"></a><a id="20938" href="Data.Fin.Subset.Properties.html#20938" class="Function">p⊆p∪q</a> <a id="20944" class="Symbol">:</a> <a id="20946" class="Symbol">∀</a> <a id="20948" class="Symbol">{</a><a id="20949" href="Data.Fin.Subset.Properties.html#20949" class="Bound">n</a> <a id="20951" href="Data.Fin.Subset.Properties.html#20951" class="Bound">p</a><a id="20952" class="Symbol">}</a> <a id="20954" class="Symbol">(</a><a id="20955" href="Data.Fin.Subset.Properties.html#20955" class="Bound">q</a> <a id="20957" class="Symbol">:</a> <a id="20959" href="Data.Fin.Subset.html#1054" class="Function">Subset</a> <a id="20966" href="Data.Fin.Subset.Properties.html#20949" class="Bound">n</a><a id="20967" class="Symbol">)</a> <a id="20969" class="Symbol">→</a> <a id="20971" href="Data.Fin.Subset.Properties.html#20951" class="Bound">p</a> <a id="20973" href="Data.Fin.Subset.html#1712" class="Function Operator">⊆</a> <a id="20975" href="Data.Fin.Subset.Properties.html#20951" class="Bound">p</a> <a id="20977" href="Data.Fin.Subset.html#2238" class="Function Operator">∪</a> <a id="20979" href="Data.Fin.Subset.Properties.html#20955" class="Bound">q</a>
