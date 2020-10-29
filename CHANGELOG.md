@@ -14,6 +14,9 @@ Bug-fixes
 * Fixed the type of the proof `map-id` in `List.Relation.Unary.All.Properties`, which was incorrectly abstracted over
   unused module parameters.
 
+* The binary relation `_≉_` exposed by records in `Relation.Binary.Bundles` now has
+  the correct infix precedence.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -52,6 +55,8 @@ Other major changes
 
 Other minor additions
 ---------------------
+
+* All bundles in `Algebra.Bundles` now re-export the binary relation `_≉_` from the underlying `Setoid`.
 
 * Added `Reflection.TypeChecking.Format.errorPartFmt`.
 
