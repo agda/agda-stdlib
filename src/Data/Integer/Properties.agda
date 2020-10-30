@@ -1292,6 +1292,11 @@ private
   { isSemiring = +-*-isSemiring
   }
 
++-*-commutativeSemiring : CommutativeSemiring 0ℓ 0ℓ
++-*-commutativeSemiring = record
+  { isCommutativeSemiring = +-*-isCommutativeSemiring
+  }
+
 +-*-ring : Ring 0ℓ 0ℓ
 +-*-ring = record
   { isRing = +-*-isRing
