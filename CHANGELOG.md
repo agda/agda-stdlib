@@ -122,3 +122,5 @@ Other minor additions
   ```agda
   +-*-commutativeSemiring : CommutativeSemiring 0ℓ 0ℓ
   ```
+
+* Added infix declarations to `Data.Product.∃-syntax` and `Data.Product.∄-syntax`.
