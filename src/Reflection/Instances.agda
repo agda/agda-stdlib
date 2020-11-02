@@ -32,19 +32,19 @@ private
     A : Set a
 
 instance
-  ≡-isDecEquivalence-Lit = isDecEquivalence Literal._≟_
-  ≡-isDecEquivalence-Name = isDecEquivalence Name._≟_
-  ≡-isDecEquivalence-Meta = isDecEquivalence Meta._≟_
-  ≡-isDecEquivalence-Visibility = isDecEquivalence Visibility._≟_
-  ≡-isDecEquivalence-Relevance = isDecEquivalence Relevance._≟_
-  ≡-isDecEquivalence-Arg-info = isDecEquivalence Information._≟_
-  ≡-isDecEquivalence-Pattern = isDecEquivalence Pattern._≟_
-  ≡-isDecEquivalence-Clause = isDecEquivalence Term._≟-Clause_
-  ≡-isDecEquivalence-Term = isDecEquivalence Term._≟_
-  ≡-isDecEquivalence-Sort = isDecEquivalence Term._≟-Sort_
+  lit≡-isDecEquivalence = isDecEquivalence Literal._≟_
+  name≡-isDecEquivalence = isDecEquivalence Name._≟_
+  meta≡-isDecEquivalence = isDecEquivalence Meta._≟_
+  visibility≡-isDecEquivalence = isDecEquivalence Visibility._≟_
+  relevance≡-isDecEquivalence = isDecEquivalence Relevance._≟_
+  argInfo≡-isDecEquivalence = isDecEquivalence Information._≟_
+  pattern≡-isDecEquivalence = isDecEquivalence Pattern._≟_
+  clause≡-isDecEquivalence = isDecEquivalence Term._≟-Clause_
+  term≡-isDecEquivalence = isDecEquivalence Term._≟_
+  sort≡-isDecEquivalence = isDecEquivalence Term._≟-Sort_
 
-  ≡-isDecEquivalence-Abs : {{IsDecEquivalence {A = A} _≡_}} → IsDecEquivalence {A = Abstraction.Abs A} _≡_
-  ≡-isDecEquivalence-Abs = isDecEquivalence (Abstraction.≡-dec _≟_)
+  abs≡-isDecEquivalence : {{IsDecEquivalence {A = A} _≡_}} → IsDecEquivalence {A = Abstraction.Abs A} _≡_
+  abs≡-isDecEquivalence = isDecEquivalence (Abstraction.≡-dec _≟_)
 
-  ≡-isDecEquivalence-Arg : {{IsDecEquivalence {A = A} _≡_}} → IsDecEquivalence {A = Argument.Arg A} _≡_
-  ≡-isDecEquivalence-Arg = isDecEquivalence (Argument.≡-dec _≟_)
+  arg≡-isDecEquivalence : {{IsDecEquivalence {A = A} _≡_}} → IsDecEquivalence {A = Argument.Arg A} _≡_
+  arg≡-isDecEquivalence = isDecEquivalence (Argument.≡-dec _≟_)

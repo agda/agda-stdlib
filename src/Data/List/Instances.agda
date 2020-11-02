@@ -33,5 +33,5 @@ instance
   listMonadPlus = monadPlus
   listMonadT = λ {ℓ} {M} {{inst}} → monadT {ℓ} {M} inst
 
-  ≡-isDecEquivalence-List : {{IsDecEquivalence {A = A} _≡_}} → IsDecEquivalence {A = List A} _≡_
-  ≡-isDecEquivalence-List = isDecEquivalence (≡-dec _≟_)
+  list≡-isDecEquivalence : {{IsDecEquivalence {A = A} _≡_}} → IsDecEquivalence {A = List A} _≡_
+  list≡-isDecEquivalence = isDecEquivalence (≡-dec _≟_)

@@ -12,4 +12,4 @@ open import Data.Fin.Base
 open import Data.Fin.Properties
 
 instance
-  ≡-isDecEquivalence-Fin = ≡-isDecEquivalence
+  fin≡-isDecEquivalence = ≡-isDecEquivalence

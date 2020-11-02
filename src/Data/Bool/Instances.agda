@@ -13,4 +13,4 @@ open import Relation.Binary.PropositionalEquality.Properties
   using (isDecEquivalence)
 
 instance
-  ≡-isDecEquivalence-Bool = isDecEquivalence _≟_
+  bool≡-isDecEquivalence = isDecEquivalence _≟_

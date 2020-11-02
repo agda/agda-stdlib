@@ -28,5 +28,5 @@ instance
   vecFunctor = functor
   vecApplicative = applicative
 
-  ≡-isDecEquivalence-Vec : {{IsDecEquivalence {A = A} _≡_}} → ∀ {n} → IsDecEquivalence {A = Vec A n} _≡_
-  ≡-isDecEquivalence-Vec = isDecEquivalence (≡-dec _≟_)
+  vec≡-isDecEquivalence : {{IsDecEquivalence {A = A} _≡_}} → ∀ {n} → IsDecEquivalence {A = Vec A n} _≡_
+  vec≡-isDecEquivalence = isDecEquivalence (≡-dec _≟_)
