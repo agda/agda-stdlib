@@ -14,3 +14,4 @@ open import Relation.Binary.PropositionalEquality.Properties
 
 instance
   ℚ-≡-isDecEquivalence = isDecEquivalence _≟_
+  ℚ-≤-isDecTotalOrder = ≤-isDecTotalOrder

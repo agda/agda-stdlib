@@ -13,3 +13,4 @@ open import Data.Fin.Properties
 
 instance
   Fin-≡-isDecEquivalence = ≡-isDecEquivalence
+  Fin-≤-isDecTotalOrder = ≤-isDecTotalOrder

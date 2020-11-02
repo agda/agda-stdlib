@@ -8,6 +8,7 @@
 
 module Relation.Binary.TypeClasses where
 
-open import Relation.Binary.Structures using (IsDecEquivalence) public
+open import Relation.Binary.Structures using (IsDecEquivalence; IsDecTotalOrder) public
 
 open IsDecEquivalence {{...}} using (_≟_) public
+open IsDecTotalOrder {{...}} using (_≤?_) public
