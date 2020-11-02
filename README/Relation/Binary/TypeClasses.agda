@@ -12,17 +12,17 @@ open import Relation.Nullary
 open import Relation.Binary.PropositionalEquality
 open import Relation.Binary.TypeClasses
 
-open import Data.Bool hiding (_≟_)
+open import Data.Bool.Base
 open import Data.Bool.Instances
-open import Data.List
+open import Data.List.Base
 open import Data.List.Instances
-open import Data.Nat hiding (_≟_)
+open import Data.Nat.Base
 open import Data.Nat.Instances
 open import Data.Product
 open import Data.Product.Instances
-open import Data.Unit hiding (_≟_)
+open import Data.Unit.Base
 open import Data.Unit.Instances
-open import Data.Vec
+open import Data.Vec.Base
 open import Data.Vec.Instances
 
 test-Dec≡-Bool : Dec (true ≡ true)
