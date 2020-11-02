@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Relation.Binary.TypeClasses.Examples where
+module README.Relation.Binary.TypeClasses where
 
 open import Relation.Nullary
 open import Relation.Binary.PropositionalEquality
