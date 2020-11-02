@@ -8,7 +8,10 @@
 
 module Data.Product.Instances where
 
+open import Data.Product
+  using (Σ)
 open import Data.Product.Properties
+open import Level
 open import Relation.Binary.PropositionalEquality.Properties
   using (isDecEquivalence)
 open import Relation.Binary.PropositionalEquality.Core
@@ -17,5 +20,11 @@ open import Relation.Binary.Structures
   using (IsDecEquivalence)
 open import Relation.Binary.TypeClasses
 
+private
+  variable
+    a b : Level
+    A : Set a
+
 instance
-  ≡-isDecEquivalence-Σ = λ {a} {b} {A} {B} {{≡-isDecEquivalence-A}} {{≡-isDecEquivalence-B : ∀ {a} → IsDecEquivalence (_≡_ {A = B a})}} → isDecEquivalence (≡-dec {a} {A = A} {b} {B = B} (_≟_ {{≡-isDecEquivalence-A}}) (_≟_ {{≡-isDecEquivalence-B}}))
+  ≡-isDecEquivalence-Σ : ∀ {B : A → Set b} {{_ : IsDecEquivalence {A = A} _≡_}} {{_ : ∀ {a} → IsDecEquivalence {A = B a} _≡_}} → IsDecEquivalence {A = Σ A B} _≡_
+  ≡-isDecEquivalence-Σ = isDecEquivalence (≡-dec _≟_ _≟_)

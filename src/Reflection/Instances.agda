@@ -8,6 +8,8 @@
 
 module Reflection.Instances where
 
+open import Level
+
 import Reflection.Literal as Literal
 import Reflection.Name as Name
 import Reflection.Meta as Meta
@@ -19,9 +21,15 @@ import Reflection.Argument.Information as Information
 import Reflection.Pattern as Pattern
 import Reflection.Term as Term
 
+open import Relation.Binary.PropositionalEquality.Core
 open import Relation.Binary.PropositionalEquality.Properties
   using (isDecEquivalence)
 open import Relation.Binary.TypeClasses
+
+private
+  variable
+    a : Level
+    A : Set a
 
 instance
   ≡-isDecEquivalence-Lit = isDecEquivalence Literal._≟_
@@ -31,8 +39,12 @@ instance
   ≡-isDecEquivalence-Relevance = isDecEquivalence Relevance._≟_
   ≡-isDecEquivalence-Arg-info = isDecEquivalence Information._≟_
   ≡-isDecEquivalence-Pattern = isDecEquivalence Pattern._≟_
-  ≡-isDecEquivalence-Abs = λ {ℓ} {A} {{≡-isDecEquivalence-A}} → isDecEquivalence (Abstraction.≡-dec {ℓ} {A} (_≟_ {{≡-isDecEquivalence-A}}))
-  ≡-isDecEquivalence-Arg = λ {ℓ} {A} {{≡-isDecEquivalence-A}} → isDecEquivalence (Argument.≡-dec {ℓ} {A} (_≟_ {{≡-isDecEquivalence-A}}))
   ≡-isDecEquivalence-Clause = isDecEquivalence Term._≟-Clause_
   ≡-isDecEquivalence-Term = isDecEquivalence Term._≟_
   ≡-isDecEquivalence-Sort = isDecEquivalence Term._≟-Sort_
+
+  ≡-isDecEquivalence-Abs : {{IsDecEquivalence {A = A} _≡_}} → IsDecEquivalence {A = Abstraction.Abs A} _≡_
+  ≡-isDecEquivalence-Abs = isDecEquivalence (Abstraction.≡-dec _≟_)
+
+  ≡-isDecEquivalence-Arg : {{IsDecEquivalence {A = A} _≡_}} → IsDecEquivalence {A = Argument.Arg A} _≡_
+  ≡-isDecEquivalence-Arg = isDecEquivalence (Argument.≡-dec _≟_)

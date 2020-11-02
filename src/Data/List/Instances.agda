@@ -8,12 +8,20 @@
 
 module Data.List.Instances where
 
+open import Data.List.Base
 open import Data.List.Categorical
 open import Data.List.Properties
   using (≡-dec)
+open import Level
+open import Relation.Binary.PropositionalEquality.Core
 open import Relation.Binary.PropositionalEquality.Properties
   using (isDecEquivalence)
 open import Relation.Binary.TypeClasses
+
+private
+  variable
+    a : Level
+    A : Set a
 
 instance
   listFunctor = functor
@@ -25,4 +33,5 @@ instance
   listMonadPlus = monadPlus
   listMonadT = λ {ℓ} {M} {{inst}} → monadT {ℓ} {M} inst
 
-  ≡-isDecEquivalence-List = λ {a} {A} {{≡-isDecEquivalence-A}} → isDecEquivalence (≡-dec {a} {A} (_≟_ {{≡-isDecEquivalence-A}}))
+  ≡-isDecEquivalence-List : {{IsDecEquivalence {A = A} _≡_}} → IsDecEquivalence {A = List A} _≡_
+  ≡-isDecEquivalence-List = isDecEquivalence (≡-dec _≟_)
