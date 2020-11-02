@@ -23,5 +23,5 @@ private
     B : Set b
 
 instance
-  ⊎≡-isDecEquivalence : {{IsDecEquivalence {A = A} _≡_}} → {{IsDecEquivalence {A = B} _≡_}} → IsDecEquivalence {A = A ⊎ B} _≡_
-  ⊎≡-isDecEquivalence = isDecEquivalence (≡-dec _≟_ _≟_)
+  ⊎-≡-isDecEquivalence : {{IsDecEquivalence {A = A} _≡_}} → {{IsDecEquivalence {A = B} _≡_}} → IsDecEquivalence {A = A ⊎ B} _≡_
+  ⊎-≡-isDecEquivalence = isDecEquivalence (≡-dec _≟_ _≟_)

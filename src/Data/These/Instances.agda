@@ -23,5 +23,5 @@ private
     B : Set b
 
 instance
-  These≡-isDecEquivalence : {{IsDecEquivalence {A = A} _≡_}} → {{IsDecEquivalence {A = B} _≡_}} → IsDecEquivalence {A = These A B} _≡_
-  These≡-isDecEquivalence = isDecEquivalence (≡-dec _≟_ _≟_)
+  These-≡-isDecEquivalence : {{IsDecEquivalence {A = A} _≡_}} → {{IsDecEquivalence {A = B} _≡_}} → IsDecEquivalence {A = These A B} _≡_
+  These-≡-isDecEquivalence = isDecEquivalence (≡-dec _≟_ _≟_)
