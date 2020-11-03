@@ -179,12 +179,12 @@ Other minor additions
   <-cmp-≈ : Trichotomous _≈_ _<_
   <-cmp   : Trichotomous _≡_ _<_
 
-  _≤?_					: Decidable _≤_
-  ≤-reflexive-≈			: _≈_ ⇒ _≤_
-  ≤-trans				: Transitive _≤_
-  ≤-antisym				: Antisymmetric _≈_ _≤_
-  ≤-isPreorder-≈		: IsPreorder _≈_ _≤_
-  ≤-isPartialOrder-≈	: IsPartialOrder _≈_ _≤_
+  _≤?_                  : Decidable _≤_
+  ≤-reflexive-≈         : _≈_ ⇒ _≤_
+  ≤-trans               : Transitive _≤_
+  ≤-antisym             : Antisymmetric _≈_ _≤_
+  ≤-isPreorder-≈        : IsPreorder _≈_ _≤_
+  ≤-isPartialOrder-≈    : IsPartialOrder _≈_ _≤_
   ≤-isDecPartialOrder-≈ : IsDecPartialOrder _≈_ _≤_
 
   ≤-preorder-≈ : Preorder _ _ _
