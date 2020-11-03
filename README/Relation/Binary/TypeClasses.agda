@@ -12,15 +12,16 @@ open import Relation.Nullary
 open import Relation.Binary.PropositionalEquality
 open import Relation.Binary.TypeClasses
 
-open import Data.Bool.Base
+open import Data.Bool.Base renaming (_≤_ to _≤Bool)
 open import Data.Bool.Instances
 open import Data.List.Base
 open import Data.List.Instances
-open import Data.Nat.Base
+open import Data.List.Relation.Binary.Lex.NonStrict using (Lex-≤)
+open import Data.Nat.Base renaming (_≤_ to _≤ℕ_)
 open import Data.Nat.Instances
 open import Data.Product
 open import Data.Product.Instances
-open import Data.Unit.Base
+open import Data.Unit.Base renaming (_≤_ to _≤⊤_)
 open import Data.Unit.Instances
 open import Data.Vec.Base
 open import Data.Vec.Instances
@@ -45,3 +46,9 @@ test-Dec≡-Vec = _ ≟ _
 
 test-Dec≡-Σ : Dec (_≡_ {A = Σ ℕ (Vec Bool)} (0 , []) (1 , true ∷ []))
 test-Dec≡-Σ = _ ≟ _
+
+test-Dec≤-Nat : Dec (0 ≤ℕ 1)
+test-Dec≤-Nat = 0 ≤? 1
+
+test-Dec≤-List : Dec (Lex-≤ _≡_ _≤ℕ_ (0 ∷ 1 ∷ []) (1 ∷ []))
+test-Dec≤-List = _ ≤? _
