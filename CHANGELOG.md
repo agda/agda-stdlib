@@ -164,3 +164,26 @@ Other minor additions
   ```agda
   +-*-commutativeSemiring : CommutativeSemiring 0ℓ 0ℓ
   ```
+
+* Added new definition to `Data.Char.Base`:
+  ```agda
+  _≤_ : Rel Char zero
+  ```
+
+* Added proofs to `Data.Char.Base`:
+  ```agda
+  ≉⇒≢ : ¬ (x ≈ y) → x ≢ y
+
+  <-trans : Transitive _<_
+  <-asym  : Asymmetric _<_
+  <-cmp-≈ : Trichotomous _≈_ _<_
+  <-cmp   : Trichotomous _≡_ _<_
+
+  _≤?_					: Decidable _≤_
+  ≤-reflexive-≈			: _≈_ ⇒ _≤_
+  ≤-trans				: Transitive _≤_
+  ≤-antisym				: Antisymmetric _≈_ _≤_
+  ≤-isPreorder-≈		: IsPreorder _≈_ _≤_
+  ≤-isPartialOrder-≈	: IsPartialOrder _≈_ _≤_
+  ≤-isDecPartialOrder-≈ : IsDecPartialOrder _≈_ _≤_
+  ```

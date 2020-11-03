@@ -15,11 +15,13 @@ import Data.Nat.Base as ℕ
 import Data.Nat.Properties as ℕₚ
 
 open import Function
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary using (¬_; yes; no)
 open import Relation.Nullary.Decidable using (map′; isYes)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality.Core
 import Relation.Binary.Construct.On as On
+import Relation.Binary.Construct.Closure.Reflexive as Refl
+import Relation.Binary.Construct.Closure.Reflexive.Properties as Reflₚ
 import Relation.Binary.PropositionalEquality as PropEq
 
 ------------------------------------------------------------------------
@@ -34,6 +36,9 @@ open import Agda.Builtin.Char.Properties
 
 ≈⇒≡ : _≈_ ⇒ _≡_
 ≈⇒≡ = toℕ-injective _ _
+
+≉⇒≢ : ∀ {x y} → ¬ (x ≈ y) → x ≢ y
+≉⇒≢ p refl = p refl
 
 ≈-reflexive : _≡_ ⇒ _≈_
 ≈-reflexive = cong toℕ
@@ -108,10 +113,10 @@ private
   -- writing) if _==_ is replaced by primCharEquality.
 
   data P : (Char → Bool) → Set where
-    p : (c : Char) → P (c ==_)
+    MkP : (c : Char) → P (c ==_)
 
   unit-test : P ('x' ==_)
-  unit-test = p _
+  unit-test = MkP _
 
 ------------------------------------------------------------------------
 -- Properties of _<_
@@ -119,6 +124,12 @@ private
 infix 4 _<?_
 _<?_ : Decidable _<_
 _<?_ = On.decidable toℕ ℕ._<_ ℕₚ._<?_
+
+<-trans : Transitive _<_
+<-trans {c} {d} {e} = On.transitive toℕ ℕ._<_ ℕₚ.<-trans {c} {d} {e}
+
+<-asym : Asymmetric _<_
+<-asym {c} {d} = On.asymmetric toℕ ℕ._<_ ℕₚ.<-asym {c} {d}
 
 <-isStrictPartialOrder-≈ : IsStrictPartialOrder _≈_ _<_
 <-isStrictPartialOrder-≈ = On.isStrictPartialOrder toℕ ℕₚ.<-isStrictPartialOrder
@@ -131,6 +142,51 @@ _<?_ = On.decidable toℕ ℕ._<_ ℕₚ._<?_
 
 <-strictTotalOrder-≈ : StrictTotalOrder _ _ _
 <-strictTotalOrder-≈ = On.strictTotalOrder ℕₚ.<-strictTotalOrder toℕ
+
+<-cmp-≈ : Trichotomous _≈_ _<_
+<-cmp-≈ c d = ℕₚ.<-cmp (toℕ c) (toℕ d)
+
+<-cmp : Trichotomous _≡_ _<_
+<-cmp c d with ℕₚ.<-cmp (toℕ c) (toℕ d)
+... | tri< lt ¬eq ¬gt = tri< lt (≉⇒≢ ¬eq) ¬gt
+... | tri≈ ¬lt eq ¬gt = tri≈ ¬lt (≈⇒≡ eq) ¬gt
+... | tri> ¬lt ¬eq gt = tri> ¬lt (≉⇒≢ ¬eq) gt
+
+------------------------------------------------------------------------
+-- Properties of _≤_
+
+infix 4 _≤?_
+_≤?_ : Decidable _≤_
+_≤?_ = Reflₚ.decidable <-cmp
+
+≤-reflexive-≈ : _≈_ ⇒ _≤_
+≤-reflexive-≈ = Refl.reflexive ∘′ ≈⇒≡
+
+≤-trans : Transitive _≤_
+≤-trans = Reflₚ.trans (λ {c} {d} {e} → <-trans {c} {d} {e})
+
+≤-antisym : Antisymmetric _≈_ _≤_
+≤-antisym = Reflₚ.antisym _≈_ (λ {c} → ≈-refl {c}) (λ {c} {d} → <-asym {c} {d})
+
+≤-isPreorder-≈ : IsPreorder _≈_ _≤_
+≤-isPreorder-≈ = record
+  { isEquivalence = ≈-isEquivalence
+  ; reflexive     = ≤-reflexive-≈
+  ; trans         = ≤-trans
+  }
+
+≤-isPartialOrder-≈ : IsPartialOrder _≈_ _≤_
+≤-isPartialOrder-≈ = record
+  { isPreorder = ≤-isPreorder-≈
+  ; antisym    = ≤-antisym
+  }
+
+≤-isDecPartialOrder-≈ : IsDecPartialOrder _≈_ _≤_
+≤-isDecPartialOrder-≈ = record
+  { isPartialOrder = ≤-isPartialOrder-≈
+  ; _≟_            = _≈?_
+  ; _≤?_           = _≤?_
+  }
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

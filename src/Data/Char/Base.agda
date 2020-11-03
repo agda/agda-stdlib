@@ -13,6 +13,7 @@ import Data.Nat.Base as ℕ
 open import Function
 open import Relation.Binary using (Rel)
 open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.Construct.Closure.Reflexive
 
 ------------------------------------------------------------------------
 -- Re-export the type, and renamed primitives
@@ -46,6 +47,10 @@ _≈_ = _≡_ on toℕ
 infix 4 _<_
 _<_ : Rel Char zero
 _<_ = ℕ._<_ on toℕ
+
+infix 4 _≤_
+_≤_ : Rel Char zero
+_≤_ = ReflClosure _<_
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
