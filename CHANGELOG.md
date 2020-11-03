@@ -81,6 +81,15 @@ New modules
 * Added `Reflection.DeBruijn` with weakening, strengthening and free variable operations
   on reflected terms.
 
+* Generic divisibility over algebraic structures
+  ```
+  Algebra.Divisibility
+  Algebra.Properties.Magma.Divisibility
+  Algebra.Properties.Semigroup.Divisibility
+  Algebra.Properties.Monoid.Divisibility
+  Algebra.Properties.CommutativeSemigroup.Divisibility
+  ```
+
 Other major changes
 -------------------
 
@@ -100,6 +109,7 @@ Other minor additions
 
 * Added new records to `Algebra.Bundles`:
   ```agda
+  CommutativeMagma c ℓ : Set (suc (c ⊔ ℓ))
   RawNearSemiring c ℓ : Set (suc (c ⊔ ℓ))
   RawLattice c ℓ : Set (suc (c ⊔ ℓ))
   CancellativeCommutativeSemiring c ℓ : Set (suc (c ⊔ ℓ))
@@ -134,6 +144,7 @@ Other minor additions
 
 * Added new record to `Algebra.Structures`:
   ```agda
+  IsCommutativeMagma (• : Op₂ A) : Set (a ⊔ ℓ)
   IsCancellativeCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ)
   ```
 
