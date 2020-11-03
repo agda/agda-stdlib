@@ -186,4 +186,9 @@ Other minor additions
   ≤-isPreorder-≈		: IsPreorder _≈_ _≤_
   ≤-isPartialOrder-≈	: IsPartialOrder _≈_ _≤_
   ≤-isDecPartialOrder-≈ : IsDecPartialOrder _≈_ _≤_
+
+  ≤-preorder-≈ : Preorder _ _ _
+  ≤-poset-≈    : Poset _ _ _
+  ≤-decPoset-≈ : DecPoset _ _ _
+
   ```

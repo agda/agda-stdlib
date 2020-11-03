@@ -188,6 +188,15 @@ _≤?_ = Reflₚ.decidable <-cmp
   ; _≤?_           = _≤?_
   }
 
+≤-preorder-≈ : Preorder _ _ _
+≤-preorder-≈ = record { isPreorder = ≤-isPreorder-≈ }
+
+≤-poset-≈ : Poset _ _ _
+≤-poset-≈ = record { isPartialOrder = ≤-isPartialOrder-≈ }
+
+≤-decPoset-≈ : DecPoset _ _ _
+≤-decPoset-≈ = record { isDecPartialOrder = ≤-isDecPartialOrder-≈ }
+
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
 ------------------------------------------------------------------------
