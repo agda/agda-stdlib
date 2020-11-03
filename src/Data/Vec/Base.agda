@@ -149,7 +149,7 @@ _⋎_ : ∀ {m n} → Vec A m → Vec A n → Vec A (m +⋎ n)
 infixl 4 _⊛_
 
 _⊛_ : ∀ {n} → Vec (A → B) n → Vec A n → Vec B n
-[]       ⊛ _        = []
+[]       ⊛ []       = []
 (f ∷ fs) ⊛ (x ∷ xs) = f x ∷ (fs ⊛ xs)
 
 -- Multiplication
