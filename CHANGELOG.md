@@ -84,10 +84,13 @@ New modules
 * Generic divisibility over algebraic structures
   ```
   Algebra.Divisibility
+  Algebra.GCD
   Algebra.Properties.Magma.Divisibility
   Algebra.Properties.Semigroup.Divisibility
   Algebra.Properties.Monoid.Divisibility
   Algebra.Properties.CommutativeSemigroup.Divisibility
+  Algebra.Properties.Semiring
+  Algebra.Properties.CancellativeCommutativeSemiring
   ```
 
 Other major changes

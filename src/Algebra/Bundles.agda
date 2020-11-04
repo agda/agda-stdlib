@@ -748,6 +748,8 @@ record CancellativeCommutativeSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
     ; nearSemiring; semiringWithoutOne
     ; semiringWithoutAnnihilatingZero
     ; rawSemiring
+    ; semiring
+    ; _≉_
     )
 
 ------------------------------------------------------------------------
