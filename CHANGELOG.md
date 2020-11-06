@@ -49,9 +49,30 @@ New modules
 * Added `Reflection.Traversal` for generic de Bruijn-aware traversals of reflected terms.
 * Added `Reflection.DeBruijn` with weakening, strengthening and free variable operations
   on reflected terms.
+* Added `Relation.Binary.TypeClasses` for type classes to be used with instance search.
+* Added various modules containing `instance` declarations:
+  `Data.Bool.Instances`, `Data.Char.Instances`, `Data.Fin.Instances`,
+  `Data.Float.Instances`, `Data.Integer.Instances`,
+  `Data.List.Instances`, `Data.Nat.Instances`,
+  `Data.Nat.Binary.Instances`, `Data.Product.Instances`,
+  `Data.Rational.Instances`, `Data.Sign.Instances`,
+  `Data.String.Instances`, `Data.Sum.Instances`,
+  `Data.These.Instances`, `Data.Unit.Instances`,
+  `Data.Unit.Polymorphic.Instances`, `Data.Vec.Instances`,
+  `Data.Word.Instances`, and `Reflection.Instances`.
 
 Other major changes
 -------------------
+
+* The new module `Relation.Binary.TypeClasses` re-exports `_≟_` from
+  `IsDecEquivalence` and `_≤?_` from `IsDecTotalOrder` where the
+  principal argument has been made into an instance argument. This
+  enables automatic resolution if the corresponding module
+  `Data.*.Instances` (or `Reflection.Instances`) is imported as well.
+  For example, if `Relation.Binary.TypeClasses`, `Data.Nat.Instances`,
+  and `Data.Bool.Instances` have been imported, then `true ≟ true` has
+  type `Dec (true ≡ true)`, while `0 ≟ 1` has type `Dec (0 ≡ 1)`. More
+  examples can be found in `README.Relation.Binary.TypeClasses`.
 
 Other minor additions
 ---------------------
