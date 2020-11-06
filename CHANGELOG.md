@@ -190,5 +190,6 @@ Other minor additions
   ≤-preorder-≈ : Preorder _ _ _
   ≤-poset-≈    : Poset _ _ _
   ≤-decPoset-≈ : DecPoset _ _ _
-
   ```
+
+* Added infix declarations to `Data.Product.∃-syntax` and `Data.Product.∄-syntax`.
