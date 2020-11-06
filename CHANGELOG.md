@@ -9,10 +9,17 @@ Highlights
 Bug-fixes
 ---------
 
-* The example module `Maybe` in `Relation.Binary.Construct.Closure.Reflexive` was accidentally exposed publicly. It has been made private.
+* The example module `Maybe` in `Relation.Binary.Construct.Closure.Reflexive` was
+  accidentally exposed publicly. It has been made private.
 
-* Fixed the type of the proof `map-id` in `List.Relation.Unary.All.Properties`, which was incorrectly abstracted over
-  unused module parameters.
+* Fixed the type of the proof `map-id` in `List.Relation.Unary.All.Properties`,
+  which was incorrectly abstracted over unused module parameters.
+
+* Fixed bug where `IsRelIsomorphism` in `Relation.Binary.Morphism.Structures` did not
+  publicly re-export the contents of `IsRelMonomorphism`.
+
+* The binary relation `_≉_` exposed by records in `Relation.Binary.Bundles` now has
+  the correct infix precedence.
 
 * Added version to library name
 
@@ -22,6 +29,7 @@ Non-backwards compatible changes
 * The internal build utilities package `lib.cabal` has been renamed
   `agda-stdlib-utils.cabal` to avoid potential conflict or confusion.
   Please note that the package is not intended for external use.
+* The module `Algebra.Construct.Zero` and `Algebra.Module.Construct.Zero` are now level-polymorphic, each taking two implicit level parameters.
 
 * The definition of `Data.Integer.Base`'s `_⊖_` was changed to use
   builtin operations, making it much faster.
@@ -29,10 +37,30 @@ Non-backwards compatible changes
 Deprecated modules
 ------------------
 
-* The module `TransitiveClosure` in `Induction.WellFounded` has been deprecated. You should instead use the standard definition of transitive closure and the accompanying proof of well-foundness defined in `Relation.Binary.Construct.Closure.Transitive`.
+* The module `TransitiveClosure` in `Induction.WellFounded` has been deprecated.
+  You should instead use the standard definition of transitive closure and the
+  accompanying proof of well-foundness defined in `Relation.Binary.Construct.Closure.Transitive`.
+
+* The module `Relation.Binary.OrderMorphism` has been deprecated, as the new
+  `(Homo/Mono/Iso)morphism` infrastructure in `Algebra.Morphism.Structures` is now
+  complete. The new definitions are parameterised by raw bundles instead of bundles
+  meaning they are much more flexible to work with.
 
 Deprecated names
 ----------------
+
+* The immediate contents of `Algebra.Morphism` have been deprecated, as the new
+  `(Homo/Mono/Iso)morphism` infrastructure in `Algebra.Morphism.Structures` is now
+  complete. The new definitions are parameterised by raw bundles instead of bundles
+  meaning they are much more flexible to work with. The replacements are as following:
+  ```agda
+  IsSemigroupMorphism                   ↦ IsSemigroupHomomorphism
+  IsMonoidMorphism                      ↦ IsMonoidHomomorphism
+  IsCommutativeMonoidMorphism           ↦ IsMonoidHomomorphism
+  IsIdempotentCommutativeMonoidMorphism ↦ IsMonoidHomomorphism
+  IsGroupMorphism                       ↦ IsGroupHomomorphism
+  IsAbelianGroupMorphism                ↦ IsGroupHomomorphism
+  ```
 
 * In `Relation.Binary.Construct.Closure.Reflexive`:
   ```agda
@@ -47,15 +75,33 @@ Deprecated names
 New modules
 -----------
 
+* Added various generic morphism constructions for binary relations:
+  ```agda
+  Relation.Binary.Morphism.Construct.Composition
+  Relation.Binary.Morphism.Construct.Constant
+  Relation.Binary.Morphism.Construct.Identity
+  ```
+
 * Added `Reflection.Traversal` for generic de Bruijn-aware traversals of reflected terms.
 * Added `Reflection.DeBruijn` with weakening, strengthening and free variable operations
   on reflected terms.
+
+* Generic divisibility over algebraic structures
+  ```
+  Algebra.Divisibility
+  Algebra.Properties.Magma.Divisibility
+  Algebra.Properties.Semigroup.Divisibility
+  Algebra.Properties.Monoid.Divisibility
+  Algebra.Properties.CommutativeSemigroup.Divisibility
+  ```
 
 Other major changes
 -------------------
 
 Other minor additions
 ---------------------
+
+* All bundles in `Algebra.Bundles` now re-export the binary relation `_≉_` from the underlying `Setoid`.
 
 * Added `Reflection.TypeChecking.Format.errorPartFmt`.
 
@@ -68,6 +114,7 @@ Other minor additions
 
 * Added new records to `Algebra.Bundles`:
   ```agda
+  CommutativeMagma c ℓ : Set (suc (c ⊔ ℓ))
   RawNearSemiring c ℓ : Set (suc (c ⊔ ℓ))
   RawLattice c ℓ : Set (suc (c ⊔ ℓ))
   CancellativeCommutativeSemiring c ℓ : Set (suc (c ⊔ ℓ))
@@ -94,6 +141,7 @@ Other minor additions
 
 * Added new definitions to `Algebra.Structures`:
   ```agda
+  IsCommutativeMagma (• : Op₂ A) : Set (a ⊔ ℓ)
   IsCancellativeCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ)
   ```
 
@@ -141,3 +189,10 @@ Other minor additions
   transitive  : Transitive _∼⁺_
   wellFounded : WellFounded _∼_ → WellFounded _∼⁺_
   ```
+
+* Add new properties to `Data.Integer.Properties`:
+  ```agda
+  +-*-commutativeSemiring : CommutativeSemiring 0ℓ 0ℓ
+  ```
+
+* Added infix declarations to `Data.Product.∃-syntax` and `Data.Product.∄-syntax`.

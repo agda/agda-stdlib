@@ -44,73 +44,8 @@ record Magma c ℓ : Set (suc (c ⊔ ℓ)) where
   rawMagma : RawMagma _ _
   rawMagma = record { _≈_ = _≈_; _∙_ = _∙_ }
 
-
-record Semigroup c ℓ : Set (suc (c ⊔ ℓ)) where
-  infixl 7 _∙_
-  infix  4 _≈_
-  field
-    Carrier     : Set c
-    _≈_         : Rel Carrier ℓ
-    _∙_         : Op₂ Carrier
-    isSemigroup : IsSemigroup _≈_ _∙_
-
-  open IsSemigroup isSemigroup public
-
-  magma : Magma c ℓ
-  magma = record { isMagma = isMagma }
-
-  open Magma magma public using (rawMagma)
-
-
-record Band c ℓ : Set (suc (c ⊔ ℓ)) where
-  infixl 7 _∙_
-  infix  4 _≈_
-  field
-    Carrier : Set c
-    _≈_     : Rel Carrier ℓ
-    _∙_     : Op₂ Carrier
-    isBand  : IsBand _≈_ _∙_
-
-  open IsBand isBand public
-
-  semigroup : Semigroup c ℓ
-  semigroup = record { isSemigroup = isSemigroup }
-
-  open Semigroup semigroup public using (magma; rawMagma)
-
-
-record CommutativeSemigroup c ℓ : Set (suc (c ⊔ ℓ)) where
-  infixl 7 _∙_
-  infix  4 _≈_
-  field
-    Carrier                 : Set c
-    _≈_                     : Rel Carrier ℓ
-    _∙_                     : Op₂ Carrier
-    isCommutativeSemigroup  : IsCommutativeSemigroup _≈_ _∙_
-
-  open IsCommutativeSemigroup isCommutativeSemigroup public
-
-  semigroup : Semigroup c ℓ
-  semigroup = record { isSemigroup = isSemigroup }
-
-  open Semigroup semigroup public using (magma; rawMagma)
-
-
-record Semilattice c ℓ : Set (suc (c ⊔ ℓ)) where
-  infixr 7 _∧_
-  infix  4 _≈_
-  field
-    Carrier       : Set c
-    _≈_           : Rel Carrier ℓ
-    _∧_           : Op₂ Carrier
-    isSemilattice : IsSemilattice _≈_ _∧_
-
-  open IsSemilattice isSemilattice public
-
-  band : Band c ℓ
-  band = record { isBand = isBand }
-
-  open Band band public using (rawMagma; magma; semigroup)
+  open Setoid setoid public
+    using (_≉_)
 
 
 record SelectiveMagma c ℓ : Set (suc (c ⊔ ℓ)) where
@@ -128,6 +63,99 @@ record SelectiveMagma c ℓ : Set (suc (c ⊔ ℓ)) where
   magma = record { isMagma = isMagma }
 
   open Magma magma public using (rawMagma)
+
+
+record CommutativeMagma c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _∙_
+  infix  4 _≈_
+  field
+    Carrier            : Set c
+    _≈_                : Rel Carrier ℓ
+    _∙_                : Op₂ Carrier
+    isCommutativeMagma : IsCommutativeMagma _≈_ _∙_
+
+  open IsCommutativeMagma isCommutativeMagma public
+
+  magma : Magma c ℓ
+  magma = record { isMagma = isMagma }
+
+  open Magma magma public using (rawMagma)
+
+
+record Semigroup c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _∙_
+  infix  4 _≈_
+  field
+    Carrier     : Set c
+    _≈_         : Rel Carrier ℓ
+    _∙_         : Op₂ Carrier
+    isSemigroup : IsSemigroup _≈_ _∙_
+
+  open IsSemigroup isSemigroup public
+
+  magma : Magma c ℓ
+  magma = record { isMagma = isMagma }
+
+  open Magma magma public
+    using (_≉_; rawMagma)
+
+
+record Band c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _∙_
+  infix  4 _≈_
+  field
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    _∙_     : Op₂ Carrier
+    isBand  : IsBand _≈_ _∙_
+
+  open IsBand isBand public
+
+  semigroup : Semigroup c ℓ
+  semigroup = record { isSemigroup = isSemigroup }
+
+  open Semigroup semigroup public
+    using (_≉_; magma; rawMagma)
+
+
+record CommutativeSemigroup c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _∙_
+  infix  4 _≈_
+  field
+    Carrier                 : Set c
+    _≈_                     : Rel Carrier ℓ
+    _∙_                     : Op₂ Carrier
+    isCommutativeSemigroup  : IsCommutativeSemigroup _≈_ _∙_
+
+  open IsCommutativeSemigroup isCommutativeSemigroup public
+
+  semigroup : Semigroup c ℓ
+  semigroup = record { isSemigroup = isSemigroup }
+
+  open Semigroup semigroup public
+    using (_≉_; magma; rawMagma)
+
+  commutativeMagma : CommutativeMagma c ℓ
+  commutativeMagma = record { isCommutativeMagma = isCommutativeMagma }
+
+
+record Semilattice c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixr 7 _∧_
+  infix  4 _≈_
+  field
+    Carrier       : Set c
+    _≈_           : Rel Carrier ℓ
+    _∧_           : Op₂ Carrier
+    isSemilattice : IsSemilattice _≈_ _∧_
+
+  open IsSemilattice isSemilattice public
+
+  band : Band c ℓ
+  band = record { isBand = isBand }
+
+  open Band band public
+    using (_≉_; rawMagma; magma; semigroup)
+
 
 ------------------------------------------------------------------------
 -- Bundles with 1 binary operation & 1 element
@@ -166,7 +194,8 @@ record Monoid c ℓ : Set (suc (c ⊔ ℓ)) where
   semigroup : Semigroup _ _
   semigroup = record { isSemigroup = isSemigroup }
 
-  open Semigroup semigroup public using (rawMagma; magma)
+  open Semigroup semigroup public
+    using (_≉_; rawMagma; magma)
 
   rawMonoid : RawMonoid _ _
   rawMonoid = record { _≈_ = _≈_; _∙_ = _∙_; ε = ε}
@@ -187,10 +216,14 @@ record CommutativeMonoid c ℓ : Set (suc (c ⊔ ℓ)) where
   monoid : Monoid _ _
   monoid = record { isMonoid = isMonoid }
 
-  open Monoid monoid public using (rawMagma; magma; semigroup; rawMonoid)
+  open Monoid monoid public
+    using (_≉_; rawMagma; magma; semigroup; rawMonoid)
 
   commutativeSemigroup : CommutativeSemigroup _ _
   commutativeSemigroup = record { isCommutativeSemigroup = isCommutativeSemigroup }
+
+  open CommutativeSemigroup commutativeSemigroup public
+    using (commutativeMagma)
 
 
 record IdempotentCommutativeMonoid c ℓ : Set (suc (c ⊔ ℓ)) where
@@ -209,7 +242,10 @@ record IdempotentCommutativeMonoid c ℓ : Set (suc (c ⊔ ℓ)) where
   commutativeMonoid = record { isCommutativeMonoid = isCommutativeMonoid }
 
   open CommutativeMonoid commutativeMonoid public
-    using (rawMagma; magma; semigroup; rawMonoid; monoid)
+    using
+    ( _≉_; rawMagma; magma; commutativeMagma; semigroup; commutativeSemigroup
+    ; rawMonoid; monoid
+    )
 
 
 -- Idempotent commutative monoids are also known as bounded lattices.
@@ -268,7 +304,8 @@ record Group c ℓ : Set (suc (c ⊔ ℓ)) where
   monoid : Monoid _ _
   monoid = record { isMonoid = isMonoid }
 
-  open Monoid monoid public using (rawMagma; magma; semigroup; rawMonoid)
+  open Monoid monoid public
+    using (_≉_; rawMagma; magma; semigroup; rawMonoid)
 
 record AbelianGroup c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 _⁻¹
@@ -288,13 +325,13 @@ record AbelianGroup c ℓ : Set (suc (c ⊔ ℓ)) where
   group = record { isGroup = isGroup }
 
   open Group group public
-    using (rawMagma; magma; semigroup; monoid; rawMonoid; rawGroup)
+    using (_≉_; rawMagma; magma; semigroup; monoid; rawMonoid; rawGroup)
 
   commutativeMonoid : CommutativeMonoid _ _
   commutativeMonoid = record { isCommutativeMonoid = isCommutativeMonoid }
 
   open CommutativeMonoid commutativeMonoid public
-    using (commutativeSemigroup)
+    using (commutativeMagma; commutativeSemigroup)
 
 
 ------------------------------------------------------------------------
@@ -317,6 +354,7 @@ record RawLattice c ℓ : Set (suc (c ⊔ ℓ)) where
   ∧-rawMagma : RawMagma c ℓ
   ∧-rawMagma = record { _≈_ = _≈_; _∙_ = _∧_ }
 
+
 record Lattice c ℓ : Set (suc (c ⊔ ℓ)) where
   infixr 7 _∧_
   infixr 6 _∨_
@@ -337,10 +375,14 @@ record Lattice c ℓ : Set (suc (c ⊔ ℓ)) where
     ; _∨_  = _∨_
     }
 
-  open RawLattice rawLattice using (∨-rawMagma; ∧-rawMagma)
+  open RawLattice rawLattice
+    using (∨-rawMagma; ∧-rawMagma)
 
   setoid : Setoid _ _
   setoid = record { isEquivalence = isEquivalence }
+
+  open Setoid setoid public
+    using (_≉_)
 
 
 record DistributiveLattice c ℓ : Set (suc (c ⊔ ℓ)) where
@@ -359,7 +401,8 @@ record DistributiveLattice c ℓ : Set (suc (c ⊔ ℓ)) where
   lattice : Lattice _ _
   lattice = record { isLattice = isLattice }
 
-  open Lattice lattice public using (rawLattice; setoid)
+  open Lattice lattice public
+    using (_≉_; rawLattice; setoid)
 
 
 ------------------------------------------------------------------------
@@ -393,6 +436,7 @@ record RawNearSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
     ; _∙_ = _*_
     }
 
+
 record NearSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _*_
   infixl 6 _+_
@@ -419,7 +463,7 @@ record NearSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
   +-monoid = record { isMonoid = +-isMonoid }
 
   open Monoid +-monoid public
-    using () renaming
+    using (_≉_) renaming
     ( rawMagma  to +-rawMagma
     ; magma     to +-magma
     ; semigroup to +-semigroup
@@ -455,7 +499,7 @@ record SemiringWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open NearSemiring nearSemiring public
     using
-    ( +-rawMagma; +-magma; +-semigroup
+    ( _≉_; +-rawMagma; +-magma; +-semigroup
     ; +-rawMonoid; +-monoid
     ; *-rawMagma; *-magma; *-semigroup
     ; rawNearSemiring
@@ -465,7 +509,10 @@ record SemiringWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
   +-commutativeMonoid = record { isCommutativeMonoid = +-isCommutativeMonoid }
 
   open CommutativeMonoid +-commutativeMonoid public
-    using () renaming (commutativeSemigroup to +-commutativeSemigroup)
+    using () renaming
+    ( commutativeMagma     to +-commutativeMagma
+    ; commutativeSemigroup to +-commutativeSemigroup
+    )
 
 
 record CommutativeSemiringWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
@@ -490,7 +537,7 @@ record CommutativeSemiringWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open SemiringWithoutOne semiringWithoutOne public
     using
-    ( +-rawMagma; +-magma; +-semigroup; +-commutativeSemigroup
+    ( _≉_; +-rawMagma; +-magma; +-semigroup; +-commutativeSemigroup
     ; *-rawMagma; *-magma; *-semigroup
     ; +-rawMonoid; +-monoid; +-commutativeMonoid
     ; nearSemiring; rawNearSemiring
@@ -565,9 +612,10 @@ record SemiringWithoutAnnihilatingZero c ℓ : Set (suc (c ⊔ ℓ)) where
     record { isCommutativeMonoid = +-isCommutativeMonoid }
 
   open CommutativeMonoid +-commutativeMonoid public
-    using () renaming
+    using (_≉_) renaming
     ( rawMagma             to +-rawMagma
     ; magma                to +-magma
+    ; commutativeMagma     to +-commutativeMagma
     ; semigroup            to +-semigroup
     ; commutativeSemigroup to +-commutativeSemigroup
     ; rawMonoid            to +-rawMonoid
@@ -610,7 +658,7 @@ record Semiring c ℓ : Set (suc (c ⊔ ℓ)) where
   open SemiringWithoutAnnihilatingZero
          semiringWithoutAnnihilatingZero public
     using
-    ( +-rawMagma;  +-magma;  +-semigroup; +-commutativeSemigroup
+    ( _≉_; +-rawMagma;  +-magma;  +-commutativeMagma; +-semigroup; +-commutativeSemigroup
     ; *-rawMagma;  *-magma;  *-semigroup
     ; +-rawMonoid; +-monoid; +-commutativeMonoid
     ; *-rawMonoid; *-monoid
@@ -645,7 +693,7 @@ record CommutativeSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open Semiring semiring public
     using
-    ( +-rawMagma; +-magma; +-semigroup; +-commutativeSemigroup
+    ( _≉_; +-rawMagma; +-magma; +-commutativeMagma; +-semigroup; +-commutativeSemigroup
     ; *-rawMagma; *-magma; *-semigroup
     ; +-rawMonoid; +-monoid; +-commutativeMonoid
     ; *-rawMonoid; *-monoid
@@ -654,15 +702,16 @@ record CommutativeSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
     ; rawSemiring
     )
 
-  *-commutativeSemigroup : CommutativeSemigroup _ _
-  *-commutativeSemigroup = record
-    { isCommutativeSemigroup = *-isCommutativeSemigroup
-    }
-
   *-commutativeMonoid : CommutativeMonoid _ _
   *-commutativeMonoid = record
     { isCommutativeMonoid = *-isCommutativeMonoid
     }
+
+  open CommutativeMonoid *-commutativeMonoid public
+    using () renaming
+    ( commutativeMagma     to *-commutativeMagma
+    ; commutativeSemigroup to *-commutativeSemigroup
+    )
 
   commutativeSemiringWithoutOne : CommutativeSemiringWithoutOne _ _
   commutativeSemiringWithoutOne = record
@@ -685,6 +734,21 @@ record CancellativeCommutativeSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open IsCancellativeCommutativeSemiring isCancellativeCommutativeSemiring public
 
+  commutativeSemiring : CommutativeSemiring c ℓ
+  commutativeSemiring = record
+    { isCommutativeSemiring = isCommutativeSemiring
+    }
+
+  open CommutativeSemiring commutativeSemiring public
+    using
+    ( +-rawMagma; +-magma; +-commutativeMagma; +-semigroup; +-commutativeSemigroup
+    ; *-rawMagma; *-magma; *-commutativeMagma; *-semigroup; *-commutativeSemigroup
+    ; +-rawMonoid; +-monoid; +-commutativeMonoid
+    ; *-rawMonoid; *-monoid; *-commutativeMonoid
+    ; nearSemiring; semiringWithoutOne
+    ; semiringWithoutAnnihilatingZero
+    ; rawSemiring
+    )
 
 ------------------------------------------------------------------------
 -- Bundles with 2 binary operations, 1 unary operation & 2 elements
@@ -746,7 +810,7 @@ record Ring c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open Semiring semiring public
     using
-    ( +-rawMagma; +-magma; +-semigroup; +-commutativeSemigroup
+    ( _≉_; +-rawMagma; +-magma; +-commutativeMagma; +-semigroup; +-commutativeSemigroup
     ; *-rawMagma; *-magma; *-semigroup
     ; +-rawMonoid; +-monoid ; +-commutativeMonoid
     ; *-rawMonoid; *-monoid
@@ -788,15 +852,16 @@ record CommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
   ring : Ring _ _
   ring = record { isRing = isRing }
 
+  open Ring ring public using (_≉_; rawRing; +-group; +-abelianGroup)
+
   commutativeSemiring : CommutativeSemiring _ _
   commutativeSemiring =
     record { isCommutativeSemiring = isCommutativeSemiring }
 
-  open Ring ring public using (rawRing; +-group; +-abelianGroup)
   open CommutativeSemiring commutativeSemiring public
     using
-    ( +-rawMagma; +-magma; +-semigroup; +-commutativeSemigroup
-    ; *-rawMagma; *-magma; *-semigroup; *-commutativeSemigroup
+    ( +-rawMagma; +-magma; +-commutativeMagma; +-semigroup; +-commutativeSemigroup
+    ; *-rawMagma; *-magma; *-commutativeMagma; *-semigroup; *-commutativeSemigroup
     ; +-rawMonoid; +-monoid; +-commutativeMonoid
     ; *-rawMonoid; *-monoid; *-commutativeMonoid
     ; nearSemiring; semiringWithoutOne
@@ -826,7 +891,7 @@ record BooleanAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
   distributiveLattice = record { isDistributiveLattice = isDistributiveLattice }
 
   open DistributiveLattice distributiveLattice public
-    using (setoid; lattice)
+    using (_≉_; setoid; lattice)
 
 
 ------------------------------------------------------------------------
