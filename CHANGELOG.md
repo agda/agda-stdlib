@@ -90,8 +90,11 @@ New modules
   Algebra.Properties.CommutativeSemigroup.Divisibility
   ```
 
-* Added `Data.List.Relation.Binary.Infix.Heterogeneous` for a characterisation of
-  one list being an infix segment of another.
+* Heterogeneous relation characterising a list as an infix segment of another:
+  ```
+  Data.List.Relation.Binary.Infix.Heterogeneous
+  Data.List.Relation.Binary.Infix.Heterogeneous.Properties
+  ```
 
 Other major changes
 -------------------
