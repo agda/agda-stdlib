@@ -90,6 +90,9 @@ New modules
   Algebra.Properties.CommutativeSemigroup.Divisibility
   ```
 
+* Added `Data.List.Relation.Binary.Infix.Heterogeneous` for a characterisation of
+  one list being an infix segment of another.
+
 Other major changes
 -------------------
 
