@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Algebra.Properties.Monoid.Divisibility</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Properties of divisibility over monoids</a>
+<a id="149" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="223" class="Symbol">{-#</a> <a id="227" class="Keyword">OPTIONS</a> <a id="235" class="Pragma">--without-K</a> <a id="247" class="Pragma">--safe</a> <a id="254" class="Symbol">#-}</a>
+
+<a id="259" class="Keyword">open</a> <a id="264" class="Keyword">import</a> <a id="271" href="Algebra.html" class="Module">Algebra</a> <a id="279" class="Keyword">using</a> <a id="285" class="Symbol">(</a><a id="286" href="Algebra.Bundles.html#4280" class="Record">Monoid</a><a id="292" class="Symbol">)</a>
+<a id="294" class="Keyword">import</a> <a id="301" href="Algebra.Properties.Semigroup.html" class="Module">Algebra.Properties.Semigroup</a>
+<a id="330" class="Keyword">open</a> <a id="335" class="Keyword">import</a> <a id="342" href="Level.html" class="Module">Level</a> <a id="348" class="Keyword">using</a> <a id="354" class="Symbol">(</a><a id="355" href="Agda.Primitive.html#810" class="Primitive Operator">_⊔_</a><a id="358" class="Symbol">)</a>
+<a id="360" class="Keyword">open</a> <a id="365" class="Keyword">import</a> <a id="372" href="Data.Product.html" class="Module">Data.Product</a> <a id="385" class="Keyword">using</a> <a id="391" class="Symbol">(</a><a id="392" href="Agda.Builtin.Sigma.html#236" class="InductiveConstructor Operator">_,_</a><a id="395" class="Symbol">)</a>
+<a id="397" class="Keyword">open</a> <a id="402" class="Keyword">import</a> <a id="409" href="Relation.Binary.html" class="Module">Relation.Binary</a>
+
+<a id="426" class="Keyword">module</a> <a id="433" href="Algebra.Properties.Monoid.Divisibility.html" class="Module">Algebra.Properties.Monoid.Divisibility</a> <a id="472" class="Symbol">{</a><a id="473" href="Algebra.Properties.Monoid.Divisibility.html#473" class="Bound">a</a> <a id="475" href="Algebra.Properties.Monoid.Divisibility.html#475" class="Bound">ℓ</a><a id="476" class="Symbol">}</a> <a id="478" class="Symbol">(</a><a id="479" href="Algebra.Properties.Monoid.Divisibility.html#479" class="Bound">M</a> <a id="481" class="Symbol">:</a> <a id="483" href="Algebra.Bundles.html#4280" class="Record">Monoid</a> <a id="490" href="Algebra.Properties.Monoid.Divisibility.html#473" class="Bound">a</a> <a id="492" href="Algebra.Properties.Monoid.Divisibility.html#475" class="Bound">ℓ</a><a id="493" class="Symbol">)</a> <a id="495" class="Keyword">where</a>
+
+<a id="502" class="Keyword">open</a> <a id="507" href="Algebra.Bundles.html#4280" class="Module">Monoid</a> <a id="514" href="Algebra.Properties.Monoid.Divisibility.html#479" class="Bound">M</a>
+<a id="516" class="Keyword">import</a> <a id="523" href="Algebra.Divisibility.html" class="Module">Algebra.Divisibility</a> <a id="544" href="Algebra.Bundles.html#4380" class="Field Operator">_≈_</a> <a id="548" href="Algebra.Bundles.html#4409" class="Field Operator">_∙_</a> <a id="552" class="Symbol">as</a> <a id="Div"></a><a id="555" href="Algebra.Properties.Monoid.Divisibility.html#555" class="Module">Div</a>
+
+<a id="560" class="Comment">------------------------------------------------------------------------</a>
+<a id="633" class="Comment">-- Re-export magma divisibility</a>
+
+<a id="666" class="Keyword">open</a> <a id="671" class="Keyword">import</a> <a id="678" href="Algebra.Properties.Semigroup.Divisibility.html" class="Module">Algebra.Properties.Semigroup.Divisibility</a> <a id="720" href="Algebra.Bundles.html#4525" class="Function">semigroup</a> <a id="730" class="Keyword">public</a>
+
+<a id="738" class="Comment">------------------------------------------------------------------------</a>
+<a id="811" class="Comment">-- Additional properties</a>
+
+<a id="ε∣_"></a><a id="837" href="Algebra.Properties.Monoid.Divisibility.html#837" class="Function Operator">ε∣_</a> <a id="841" class="Symbol">:</a> <a id="843" class="Symbol">∀</a> <a id="845" href="Algebra.Properties.Monoid.Divisibility.html#845" class="Bound">x</a> <a id="847" class="Symbol">→</a> <a id="849" href="Algebra.Bundles.html#4436" class="Field">ε</a> <a id="851" href="Algebra.Divisibility.html#862" class="Function Operator">∣</a> <a id="853" href="Algebra.Properties.Monoid.Divisibility.html#845" class="Bound">x</a>
+<a id="855" href="Algebra.Properties.Monoid.Divisibility.html#837" class="Function Operator">ε∣_</a> <a id="859" class="Symbol">=</a> <a id="861" href="Algebra.Divisibility.html#2097" class="Function">Div.∣-min</a> <a id="871" href="Algebra.Structures.html#3024" class="Function">identityʳ</a>
+
+<a id="∣-refl"></a><a id="882" href="Algebra.Properties.Monoid.Divisibility.html#882" class="Function">∣-refl</a> <a id="889" class="Symbol">:</a> <a id="891" href="Relation.Binary.Definitions.html#1339" class="Function">Reflexive</a> <a id="901" href="Algebra.Divisibility.html#862" class="Function Operator">_∣_</a>
+<a id="905" href="Algebra.Properties.Monoid.Divisibility.html#882" class="Function">∣-refl</a> <a id="912" class="Symbol">=</a> <a id="914" href="Algebra.Divisibility.html#1293" class="Function">Div.∣-refl</a> <a id="925" href="Algebra.Structures.html#2963" class="Function">identityˡ</a>
+
+<a id="∣-reflexive"></a><a id="936" href="Algebra.Properties.Monoid.Divisibility.html#936" class="Function">∣-reflexive</a> <a id="948" class="Symbol">:</a> <a id="950" href="Algebra.Bundles.html#4380" class="Field Operator">_≈_</a> <a id="954" href="Relation.Binary.Core.html#1254" class="Function Operator">⇒</a> <a id="956" href="Algebra.Divisibility.html#862" class="Function Operator">_∣_</a>
+<a id="960" href="Algebra.Properties.Monoid.Divisibility.html#936" class="Function">∣-reflexive</a> <a id="972" class="Symbol">=</a> <a id="974" href="Algebra.Divisibility.html#1377" class="Function">Div.∣-reflexive</a> <a id="990" href="Relation.Binary.Structures.html#1620" class="Function">trans</a> <a id="996" href="Algebra.Structures.html#2963" class="Function">identityˡ</a>
+
+<a id="∣-isPreorder"></a><a id="1007" href="Algebra.Properties.Monoid.Divisibility.html#1007" class="Function">∣-isPreorder</a> <a id="1020" class="Symbol">:</a> <a id="1022" href="Relation.Binary.Structures.html#2163" class="Record">IsPreorder</a> <a id="1033" href="Algebra.Bundles.html#4380" class="Field Operator">_≈_</a> <a id="1037" href="Algebra.Divisibility.html#862" class="Function Operator">_∣_</a>
+<a id="1041" href="Algebra.Properties.Monoid.Divisibility.html#1007" class="Function">∣-isPreorder</a> <a id="1054" class="Symbol">=</a> <a id="1056" class="Keyword">record</a>
+  <a id="1065" class="Symbol">{</a> <a id="1067" href="Relation.Binary.Structures.html#2228" class="Field">isEquivalence</a> <a id="1081" class="Symbol">=</a> <a id="1083" href="Algebra.Structures.html#1172" class="Function">isEquivalence</a>
+  <a id="1099" class="Symbol">;</a> <a id="1101" href="Relation.Binary.Structures.html#2331" class="Field">reflexive</a>     <a id="1115" class="Symbol">=</a> <a id="1117" href="Algebra.Properties.Monoid.Divisibility.html#936" class="Function">∣-reflexive</a>
+  <a id="1131" class="Symbol">;</a> <a id="1133" href="Relation.Binary.Structures.html#2361" class="Field">trans</a>         <a id="1147" class="Symbol">=</a> <a id="1149" href="Algebra.Properties.Semigroup.Divisibility.html#772" class="Function">∣-trans</a>
+  <a id="1159" class="Symbol">}</a>
+
+<a id="∣-preorder"></a><a id="1162" href="Algebra.Properties.Monoid.Divisibility.html#1162" class="Function">∣-preorder</a> <a id="1173" class="Symbol">:</a> <a id="1175" href="Relation.Binary.Bundles.html#1920" class="Record">Preorder</a> <a id="1184" href="Algebra.Properties.Monoid.Divisibility.html#473" class="Bound">a</a> <a id="1186" href="Algebra.Properties.Monoid.Divisibility.html#475" class="Bound">ℓ</a> <a id="1188" class="Symbol">(</a><a id="1189" href="Algebra.Properties.Monoid.Divisibility.html#473" class="Bound">a</a> <a id="1191" href="Agda.Primitive.html#810" class="Primitive Operator">⊔</a> <a id="1193" href="Algebra.Properties.Monoid.Divisibility.html#475" class="Bound">ℓ</a><a id="1194" class="Symbol">)</a>
+<a id="1196" href="Algebra.Properties.Monoid.Divisibility.html#1162" class="Function">∣-preorder</a> <a id="1207" class="Symbol">=</a> <a id="1209" class="Keyword">record</a>
+  <a id="1218" class="Symbol">{</a> <a id="1220" href="Relation.Binary.Bundles.html#2133" class="Field">isPreorder</a> <a id="1231" class="Symbol">=</a> <a id="1233" href="Algebra.Properties.Monoid.Divisibility.html#1007" class="Function">∣-isPreorder</a>
+  <a id="1248" class="Symbol">}</a>
+</pre></body></html>
