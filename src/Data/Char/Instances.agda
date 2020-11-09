@@ -9,8 +9,6 @@
 module Data.Char.Instances where
 
 open import Data.Char.Properties
-open import Relation.Binary.PropositionalEquality.Properties
-  using (isDecEquivalence)
 
 instance
-  Char-≡-isDecEquivalence = isDecEquivalence _≟_
+  Char-≡-isDecEquivalence = isDecEquivalence
