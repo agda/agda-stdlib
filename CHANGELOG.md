@@ -70,8 +70,15 @@ New modules
 * Added `Reflection.Annotated.Free` implementing free variable annotations for
   reflected terms.
 
+* Added `Relation.Unary.Sized` for unary relations over sized types now that `Size` lives in it's own universe since Agda 2.6.2.
+
 Other major changes
 -------------------
 
 Other minor additions
 ---------------------
+
+* Added new type in `Size`:
+  ```agda
+  SizedSet ℓ = Size → Set ℓ
+  ```
