@@ -29,10 +29,27 @@ Non-backwards compatible changes
 * The internal build utilities package `lib.cabal` has been renamed
   `agda-stdlib-utils.cabal` to avoid potential conflict or confusion.
   Please note that the package is not intended for external use.
-* The module `Algebra.Construct.Zero` and `Algebra.Module.Construct.Zero` are now level-polymorphic, each taking two implicit level parameters.
 
-* The definition of `Data.Integer.Base`'s `_⊖_` was changed to use
-  builtin operations, making it much faster.
+* The module `Algebra.Construct.Zero` and `Algebra.Module.Construct.Zero`
+  are now level-polymorphic, each taking two implicit level parameters.
+
+* Previously the definition of `_⊖_` in `Data.Integer.Base` was defined
+  inductively as:
+  ```agda
+  _⊖_ : ℕ → ℕ → ℤ
+  m       ⊖ ℕ.zero  = + m
+  ℕ.zero  ⊖ ℕ.suc n = -[1+ n ]
+  ℕ.suc m ⊖ ℕ.suc n = m ⊖ n
+  ```
+  which meant that the unary arguments had to be evaluated. To make it
+  much faster it's definition has been changed to use operations on `ℕ`
+  that are backed by builtin operations:
+  ```agda
+  _⊖_ : ℕ → ℕ → ℤ
+  m ⊖ n with m ℕ.<ᵇ n
+  ... | true  = - + (n ℕ.∸ m)
+  ... | false = + (m ℕ.∸ n)
+  ```
 
 Deprecated modules
 ------------------
@@ -119,6 +136,7 @@ Other minor additions
   RawLattice c ℓ : Set (suc (c ⊔ ℓ))
   CancellativeCommutativeSemiring c ℓ : Set (suc (c ⊔ ℓ))
   ```
+
 * Added new definitions to `Algebra.Definitions`:
   ```agda
   AlmostLeftCancellative  e _•_ = ∀ {x} y z → ¬ x ≈ e → (x • y) ≈ (x • z) → y ≈ z
