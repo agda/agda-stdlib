@@ -96,6 +96,14 @@ New modules
   Data.List.Relation.Binary.Infix.Heterogeneous.Properties
   ```
 
+  and added `Properties` file for the homogeneous variants of (pre/in/suf)fix:
+
+  ```
+  Data.List.Relation.Binary.Prefix.Homogeneous.Properties
+  Data.List.Relation.Binary.Infix.Homogeneous.Properties
+  Data.List.Relation.Binary.Suffix.Homogeneous.Properties
+  ```
+
 Other major changes
 -------------------
 
