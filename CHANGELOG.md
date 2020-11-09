@@ -66,8 +66,15 @@ New modules
   on reflected terms.
 * Added `Reflection.Universe` defining a universe for the reflected syntax types.
 
+* Added `Relation.Unary.Sized` for unary relations over sized types now that `Size` lives in it's own universe since Agda 2.6.2.
+
 Other major changes
 -------------------
 
 Other minor additions
 ---------------------
+
+* Added new type in `Size`:
+  ```agda
+  SizedSet ℓ = Size → Set ℓ
+  ```
