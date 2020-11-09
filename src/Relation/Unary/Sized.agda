@@ -20,8 +20,8 @@ private
     ℓ ℓ₁ ℓ₂ : Level
 
 infixr 8 _⇒_
-_⇒_ : SizedType ℓ₁ → SizedType ℓ₂ → SizedType (ℓ₁ ⊔ ℓ₂)
+_⇒_ : SizedSet ℓ₁ → SizedSet ℓ₂ → SizedSet (ℓ₁ ⊔ ℓ₂)
 F ⇒ G = λ i → F i → G i
 
-∀[_] : SizedType ℓ → Set ℓ
+∀[_] : SizedSet ℓ → Set ℓ
 ∀[ F ] = ∀{i} → F i

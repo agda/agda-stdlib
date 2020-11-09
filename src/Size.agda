@@ -25,5 +25,5 @@ open import Agda.Builtin.Size public using
 ------------------------------------------------------------------------
 -- Concept of sized type
 
-SizedType : (ℓ : Level) → Set (suc ℓ)
-SizedType ℓ = Size → Set ℓ
+SizedSet : (ℓ : Level) → Set (suc ℓ)
+SizedSet ℓ = Size → Set ℓ
