@@ -40,9 +40,12 @@ open import Agda.Builtin.Char public using ( Char )
 open import Agda.Builtin.String public using ()
   renaming ( primShowChar to show )
 
-infix 4 _≈_
+infix 4 _≈_ _≉_
 _≈_ : Rel Char zero
 _≈_ = _≡_ on toℕ
+
+_≉_ : Rel Char zero
+_≉_ = _≢_ on toℕ
 
 infix 4 _<_
 _<_ : Rel Char zero

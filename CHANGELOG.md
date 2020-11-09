@@ -27,7 +27,16 @@ Non-backwards compatible changes
 * The internal build utilities package `lib.cabal` has been renamed
   `agda-stdlib-utils.cabal` to avoid potential conflict or confusion.
   Please note that the package is not intended for external use.
-* The module `Algebra.Construct.Zero` and `Algebra.Module.Construct.Zero` are now level-polymorphic, each taking two implicit level parameters.
+
+* The module `Algebra.Construct.Zero` and `Algebra.Module.Construct.Zero`
+  are now level-polymorphic, each taking two implicit level parameters.
+
+* The orders on strings are now using propositional equality as the notion
+  of equivalence on characters rather than the equivalent but less inference-friendly
+  variant defined by conversion of characters to natural numbers.
+  This is in line with our effort to deprecate this badly-behaved equivalence
+  relation on characters.
+
 
 Deprecated modules
 ------------------
@@ -66,6 +75,10 @@ Deprecated names
   ```agda
   Plus′ ↦ TransClosure
   ```
+
+* In `Data.Char.Properties`, deprecated all of the `_≈_`-related content: this
+  relation is equivalent to propositional equality but has worse inference. So
+  we are moving towards not using it anymore.
 
 New modules
 -----------

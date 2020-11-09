@@ -23,6 +23,7 @@ open import Data.Char.Base as Char using (Char)
 import Data.Char.Properties as Char using (_≟_)
 open import Function
 open import Relation.Binary using (Rel)
+open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 open import Relation.Nullary using (does)
 open import Relation.Unary using (Pred; Decidable)
 
@@ -50,13 +51,13 @@ open String public using ( String )
 
 infix 4 _≈_
 _≈_ : Rel String zero
-_≈_ = Pointwise Char._≈_ on toList
+_≈_ = Pointwise _≡_ on toList
 
 -- Lexicographic ordering on Strings
 
 infix 4 _<_
 _<_ : Rel String zero
-_<_ = Lex-< Char._≈_ Char._<_ on toList
+_<_ = Lex-< _≡_ Char._<_ on toList
 
 ------------------------------------------------------------------------
 -- Operations

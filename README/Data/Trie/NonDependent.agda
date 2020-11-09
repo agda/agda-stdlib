@@ -65,7 +65,7 @@ open import Relation.Nary
 open import Relation.Binary using (Rel)
 open import Relation.Nullary.Negation using (¬?)
 
-open import Data.Trie Char.<-strictTotalOrder-≈
+open import Data.Trie Char.<-strictTotalOrder
 open import Data.Tree.AVL.Value
 
 ------------------------------------------------------------------------
