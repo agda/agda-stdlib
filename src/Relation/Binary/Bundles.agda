@@ -28,6 +28,7 @@ record PartialSetoid a ℓ : Set (suc (a ⊔ ℓ)) where
 
   open IsPartialEquivalence isPartialEquivalence public
 
+  infix 4 _≉_
   _≉_ : Rel Carrier _
   x ≉ y = ¬ (x ≈ y)
 

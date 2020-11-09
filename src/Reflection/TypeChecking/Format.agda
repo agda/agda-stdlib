@@ -79,3 +79,7 @@ typeErrorFmt fmt = mapPrintf (lexer fmt) (typeError ∘ concat) (printf fmt)
 
 debugPrintFmt : String → ℕ → (fmt : String) → Printf (lexer fmt) (TC ⊤)
 debugPrintFmt tag lvl fmt = mapPrintf (lexer fmt) (debugPrint tag lvl ∘ concat) (printf fmt)
+
+-- Combine with "%e" format for nested format calls.
+errorPartFmt : (fmt : String) → Printf (lexer fmt) (List ErrorPart)
+errorPartFmt fmt = mapPrintf (lexer fmt) concat (printf fmt)

@@ -106,7 +106,7 @@ matrix:
 
         # generating Everything.agda
         - cd agda-stdlib
-        - cabal install lib.cabal
+        - cabal install agda-stdlib-utils.cabal
         - runghc GenerateEverything.hs
 
         # setting up travis-specific scripts and files
