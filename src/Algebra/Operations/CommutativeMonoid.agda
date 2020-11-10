@@ -51,4 +51,4 @@ syntax sumₜ-syntax n (λ i → x) = ∑[ i < n ] x
 ------------------------------------------------------------------------
 -- Operations
 
-open import Algebra.Properties.Monoid.Multiplication public
+open import Algebra.Properties.Monoid.Multiplication monoid public
