@@ -246,29 +246,29 @@ Other minor additions
 
 * Added new definition to `Data.Char.Base`:
   ```agda
+  _≉_ : Rel Char zero
   _≤_ : Rel Char zero
   ```
 
-* Added proofs to `Data.Char.Base`:
+* Added proofs to `Data.Char.Properties`:
   ```agda
-  ≉⇒≢ : ¬ (x ≈ y) → x ≢ y
+  ≉⇒≢ : _≉_ → x ≢ y
 
   <-trans : Transitive _<_
   <-asym  : Asymmetric _<_
-  <-cmp-≈ : Trichotomous _≈_ _<_
   <-cmp   : Trichotomous _≡_ _<_
 
-  _≤?_                  : Decidable _≤_
-  ≤-reflexive-≈         : _≈_ ⇒ _≤_
-  ≤-trans               : Transitive _≤_
-  ≤-antisym             : Antisymmetric _≈_ _≤_
-  ≤-isPreorder-≈        : IsPreorder _≈_ _≤_
-  ≤-isPartialOrder-≈    : IsPartialOrder _≈_ _≤_
-  ≤-isDecPartialOrder-≈ : IsDecPartialOrder _≈_ _≤_
+  _≤?_                : Decidable _≤_
+  ≤-reflexive         : _≡_ ⇒ _≤_
+  ≤-trans             : Transitive _≤_
+  ≤-antisym           : Antisymmetric _≡_ _≤_
+  ≤-isPreorder        : IsPreorder _≡_ _≤_
+  ≤-isPartialOrder    : IsPartialOrder _≡_ _≤_
+  ≤-isDecPartialOrder : IsDecPartialOrder _≡_ _≤_
 
-  ≤-preorder-≈ : Preorder _ _ _
-  ≤-poset-≈    : Poset _ _ _
-  ≤-decPoset-≈ : DecPoset _ _ _
+  ≤-preorder : Preorder _ _ _
+  ≤-poset    : Poset _ _ _
+  ≤-decPoset : DecPoset _ _ _
   ```
 
 * Added infix declarations to `Data.Product.∃-syntax` and `Data.Product.∄-syntax`.
