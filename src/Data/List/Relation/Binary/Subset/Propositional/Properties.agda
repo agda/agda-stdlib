@@ -15,8 +15,9 @@ open import Category.Monad
 open import Data.Bool.Base using (Bool; true; false; T)
 open import Data.List.Base
 open import Data.List.Relation.Unary.Any using (Any; here; there)
-open import Data.List.Relation.Unary.Any.Properties hiding (filter⁺)
+import Data.List.Relation.Unary.Any.Properties as Any hiding (filter⁺)
 open import Data.List.Categorical
+open import Data.List.Relation.Unary.Any using (Any)
 open import Data.List.Membership.Propositional
 open import Data.List.Membership.Propositional.Properties
 import Data.List.Relation.Binary.Subset.Setoid.Properties as Setoidₚ
@@ -27,9 +28,10 @@ open import Function.Base using (_∘_; _∘′_; id; _$_)
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse as Inv using (_↔_; module Inverse)
 open import Function.Equivalence using (module Equivalence)
+open import Level using (Level)
 open import Relation.Nullary using (¬_; yes; no)
-open import Relation.Unary using (Decidable)
-open import Relation.Binary using (_⇒_)
+open import Relation.Unary using (Decidable; Pred)
+open import Relation.Binary using (_⇒_; _Respects_)
 open import Relation.Binary.PropositionalEquality
   using (_≡_; _≗_; isEquivalence; refl; setoid; module ≡-Reasoning)
 import Relation.Binary.Reasoning.Preorder as PreorderReasoning
@@ -37,21 +39,26 @@ import Relation.Binary.Reasoning.Preorder as PreorderReasoning
 private
   open module ListMonad {ℓ} = RawMonad (monad {ℓ = ℓ})
 
+  variable
+    a b p : Level
+    A : Set a
+    B : Set b
+    ws xs ys zs : List A
+
 ------------------------------------------------------------------------
 -- Relational properties
+------------------------------------------------------------------------
 
-module _ {a} {A : Set a} where
+⊆-reflexive : _≡_ {A = List A} ⇒ _⊆_
+⊆-reflexive refl = id
 
-  ⊆-reflexive : _≡_ ⇒ (_⊆_ {A = A})
-  ⊆-reflexive refl = id
+⊆-refl : Reflexive {A = List A} _⊆_
+⊆-refl x∈xs = x∈xs
 
-  ⊆-refl : Reflexive {A = List A} _⊆_
-  ⊆-refl x∈xs = x∈xs
+⊆-trans : Transitive {A = List A} _⊆_
+⊆-trans xs⊆ys ys⊆zs x∈xs = ys⊆zs (xs⊆ys x∈xs)
 
-  ⊆-trans : Transitive {A = List A} (_⊆_ {A = A})
-  ⊆-trans xs⊆ys ys⊆zs x∈xs = ys⊆zs (xs⊆ys x∈xs)
-
-module _ {a} (A : Set a) where
+module _ (A : Set a) where
 
   ⊆-isPreorder : IsPreorder {A = List A} _≡_ _⊆_
   ⊆-isPreorder = record
@@ -67,8 +74,9 @@ module _ {a} (A : Set a) where
 
 ------------------------------------------------------------------------
 -- Reasoning over subsets
+------------------------------------------------------------------------
 
-module ⊆-Reasoning {a} (A : Set a) where
+module ⊆-Reasoning (A : Set a) where
   open Setoidₚ.⊆-Reasoning (setoid A) public
     hiding (step-≋; step-≋˘; _≋⟨⟩_)
 
@@ -77,120 +85,110 @@ module ⊆-Reasoning {a} (A : Set a) where
 ------------------------------------------------------------------------
 -- Any
 
-module _ {a p} {A : Set a} {P : A → Set p} {xs ys : List A} where
-
-  mono : xs ⊆ ys → Any P xs → Any P ys
-  mono xs⊆ys =
-    _⟨$⟩_ (Inverse.to Any↔) ∘′
-    Prod.map id (Prod.map xs⊆ys id) ∘
-    _⟨$⟩_ (Inverse.from Any↔)
-
+Any-resp-⊆ : ∀ {P : Pred A p} → (Any P) Respects _⊆_
+Any-resp-⊆ xs⊆ys =
+  _⟨$⟩_ (Inverse.to Any↔) ∘′
+  Prod.map₂ (Prod.map₁ xs⊆ys) ∘
+  _⟨$⟩_ (Inverse.from Any↔)
 
 ------------------------------------------------------------------------
 -- map
 
-module _ {a b} {A : Set a} {B : Set b} (f : A → B) {xs ys} where
-
-  map-mono : xs ⊆ ys → map f xs ⊆ map f ys
-  map-mono xs⊆ys =
-    _⟨$⟩_ (Inverse.to (map-∈↔ f)) ∘
-    Prod.map id (Prod.map xs⊆ys id) ∘
-    _⟨$⟩_ (Inverse.from (map-∈↔ f))
+map⁺ : ∀ (f : A → B) → xs ⊆ ys → map f xs ⊆ map f ys
+map⁺ f xs⊆ys =
+  _⟨$⟩_ (Inverse.to (map-∈↔ f)) ∘
+  Prod.map₂ (Prod.map₁ xs⊆ys) ∘
+  _⟨$⟩_ (Inverse.from (map-∈↔ f))
 
 ------------------------------------------------------------------------
 -- _++_
 
-module _ {a} {A : Set a} {xs₁ xs₂ ys₁ ys₂ : List A} where
-  infix 4 _++-mono_
-
-  _++-mono_ : xs₁ ⊆ ys₁ → xs₂ ⊆ ys₂ → xs₁ ++ xs₂ ⊆ ys₁ ++ ys₂
-  _++-mono_ xs₁⊆ys₁ xs₂⊆ys₂ =
-    _⟨$⟩_ (Inverse.to ++↔) ∘
-    Sum.map xs₁⊆ys₁ xs₂⊆ys₂ ∘
-    _⟨$⟩_ (Inverse.from ++↔)
+++⁺ : ws ⊆ xs → ys ⊆ zs → ws ++ ys ⊆ xs ++ zs
+++⁺ ws⊆xs ys⊆zs =
+  _⟨$⟩_ (Inverse.to Any.++↔) ∘
+  Sum.map ws⊆xs ys⊆zs ∘
+  _⟨$⟩_ (Inverse.from Any.++↔)
 
 ------------------------------------------------------------------------
 -- concat
 
-module _ {a} {A : Set a} {xss yss : List (List A)} where
+module _ {xss yss : List (List A)} where
 
-  concat-mono : xss ⊆ yss → concat xss ⊆ concat yss
-  concat-mono xss⊆yss =
-    _⟨$⟩_ (Inverse.to $ concat-∈↔ {A = A}) ∘
-    Prod.map id (Prod.map id xss⊆yss) ∘
-    _⟨$⟩_ (Inverse.from $ concat-∈↔ {A = A})
+  concat⁺ : xss ⊆ yss → concat xss ⊆ concat yss
+  concat⁺ xss⊆yss =
+    _⟨$⟩_ (Inverse.to concat-∈↔) ∘
+    Prod.map₂ (Prod.map₂ xss⊆yss) ∘
+    _⟨$⟩_ (Inverse.from concat-∈↔)
 
 ------------------------------------------------------------------------
 -- _>>=_
 
-module _ {ℓ} {A B : Set ℓ} (f g : A → List B) {xs ys} where
+module _ {A B : Set a} (f g : A → List B) where
 
-  >>=-mono : xs ⊆ ys → (∀ {x} → f x ⊆ g x) → (xs >>= f) ⊆ (ys >>= g)
-  >>=-mono xs⊆ys f⊆g =
-    _⟨$⟩_ (Inverse.to $ >>=-∈↔ {A = A}) ∘
-    Prod.map id (Prod.map xs⊆ys f⊆g) ∘
-    _⟨$⟩_ (Inverse.from $ >>=-∈↔ {A = A})
+  >>=⁺ : xs ⊆ ys → (∀ {x} → f x ⊆ g x) → (xs >>= f) ⊆ (ys >>= g)
+  >>=⁺ xs⊆ys f⊆g =
+    _⟨$⟩_ (Inverse.to >>=-∈↔) ∘
+    Prod.map₂ (Prod.map xs⊆ys f⊆g) ∘
+    _⟨$⟩_ (Inverse.from >>=-∈↔)
 
 ------------------------------------------------------------------------
 -- _⊛_
 
-module _ {ℓ} {A B : Set ℓ} {fs gs : List (A → B)} {xs ys : List A} where
-  infix 4  _⊛-mono_
+module _ {A B : Set a} {fs gs : List (A → B)} where
 
-  _⊛-mono_ : fs ⊆ gs → xs ⊆ ys → (fs ⊛ xs) ⊆ (gs ⊛ ys)
-  _⊛-mono_ fs⊆gs xs⊆ys =
+  ⊛⁺ : fs ⊆ gs → xs ⊆ ys → (fs ⊛ xs) ⊆ (gs ⊛ ys)
+  ⊛⁺ fs⊆gs xs⊆ys =
     _⟨$⟩_ (Inverse.to $ ⊛-∈↔ gs) ∘
-    Prod.map id (Prod.map id (Prod.map fs⊆gs (Prod.map xs⊆ys id))) ∘
+    Prod.map₂ (Prod.map₂ (Prod.map fs⊆gs (Prod.map₁ xs⊆ys))) ∘
     _⟨$⟩_ (Inverse.from $ ⊛-∈↔ fs)
 
 ------------------------------------------------------------------------
 -- _⊗_
 
-module _ {ℓ} {A B : Set ℓ} {xs₁ ys₁ : List A} {xs₂ ys₂ : List B} where
-  infix 4 _⊗-mono_
+module _ {A B : Set a} {ws xs : List A} {ys zs : List B} where
 
-  _⊗-mono_ : xs₁ ⊆ ys₁ → xs₂ ⊆ ys₂ → (xs₁ ⊗ xs₂) ⊆ (ys₁ ⊗ ys₂)
-  xs₁⊆ys₁ ⊗-mono xs₂⊆ys₂ =
-    _⟨$⟩_ (Inverse.to $ ⊗-∈↔ {A = A}) ∘
-    Prod.map xs₁⊆ys₁ xs₂⊆ys₂ ∘
-    _⟨$⟩_ (Inverse.from $ ⊗-∈↔ {A = A})
+  ⊗⁺ : ws ⊆ xs → ys ⊆ zs → (ws ⊗ ys) ⊆ (xs ⊗ zs)
+  ⊗⁺ ws⊆xs ys⊆zs =
+    _⟨$⟩_ (Inverse.to ⊗-∈↔) ∘
+    Prod.map ws⊆xs ys⊆zs ∘
+    _⟨$⟩_ (Inverse.from ⊗-∈↔)
 
 ------------------------------------------------------------------------
 -- any
 
-module _ {a} {A : Set a} (p : A → Bool) {xs ys} where
+module _ (p : A → Bool) {xs ys} where
 
-  any-mono : xs ⊆ ys → T (any p xs) → T (any p ys)
-  any-mono xs⊆ys =
-    _⟨$⟩_ (Equivalence.to any⇔) ∘
-    mono xs⊆ys ∘
-    _⟨$⟩_ (Equivalence.from any⇔)
+  any⁺ : xs ⊆ ys → T (any p xs) → T (any p ys)
+  any⁺ xs⊆ys =
+    _⟨$⟩_ (Equivalence.to Any.any⇔) ∘
+    Any-resp-⊆ xs⊆ys ∘
+    _⟨$⟩_ (Equivalence.from Any.any⇔)
 
 ------------------------------------------------------------------------
 -- map-with-∈
 
-module _ {a b} {A : Set a} {B : Set b}
-         {xs : List A} {f : ∀ {x} → x ∈ xs → B}
-         {ys : List A} {g : ∀ {x} → x ∈ ys → B} where
+module _ {xs : List A} {f : ∀ {x} → x ∈ xs → B}
+         {ys : List A} {g : ∀ {x} → x ∈ ys → B}
+         where
 
-  map-with-∈-mono : (xs⊆ys : xs ⊆ ys) → (∀ {x} → f {x} ≗ g ∘ xs⊆ys) →
-                    map-with-∈ xs f ⊆ map-with-∈ ys g
-  map-with-∈-mono xs⊆ys f≈g {x} =
-    _⟨$⟩_ (Inverse.to map-with-∈↔) ∘
-    Prod.map id (Prod.map xs⊆ys (λ {x∈xs} x≡fx∈xs → begin
+  map-with-∈⁺ : (xs⊆ys : xs ⊆ ys) → (∀ {x} → f {x} ≗ g ∘ xs⊆ys) →
+                map-with-∈ xs f ⊆ map-with-∈ ys g
+  map-with-∈⁺ xs⊆ys f≈g {x} =
+    _⟨$⟩_ (Inverse.to Any.map-with-∈↔) ∘
+    Prod.map₂ (Prod.map xs⊆ys (λ {x∈xs} x≡fx∈xs → begin
       x               ≡⟨ x≡fx∈xs ⟩
       f x∈xs          ≡⟨ f≈g x∈xs ⟩
       g (xs⊆ys x∈xs)  ∎)) ∘
-    _⟨$⟩_ (Inverse.from map-with-∈↔)
+    _⟨$⟩_ (Inverse.from Any.map-with-∈↔)
     where open ≡-Reasoning
 
 ------------------------------------------------------------------------
 -- filter
 
-module _ {a p} {A : Set a} {P : A → Set p} (P? : Decidable P) where
+module _ {P : Pred A p} (P? : Decidable P) where
 
-  filter⁺ : ∀ xs → filter P? xs ⊆ xs
-  filter⁺ = Setoidₚ.filter⁺ (setoid A) P?
+  filter-⊆ : ∀ xs → filter P? xs ⊆ xs
+  filter-⊆ = Setoidₚ.filter⁺ (setoid A) P?
 
 ------------------------------------------------------------------------
 -- DEPRECATED
@@ -198,7 +196,7 @@ module _ {a p} {A : Set a} {P : A → Set p} (P? : Decidable P) where
 
 -- Version 0.16
 
-boolFilter-⊆ : ∀ {a} {A : Set a} (p : A → Bool) →
+boolFilter-⊆ : ∀ (p : A → Bool) →
                (xs : List A) → boolFilter p xs ⊆ xs
 boolFilter-⊆ p (x ∷ xs) with p x | boolFilter-⊆ p xs
 ... | false | hyp = there ∘ hyp
@@ -207,6 +205,62 @@ boolFilter-⊆ p (x ∷ xs) with p x | boolFilter-⊆ p xs
     ; (there ∈boolFilter) → there (hyp ∈boolFilter)
     }
 {-# WARNING_ON_USAGE boolFilter-⊆
-"Warning: boolFilter was deprecated in v0.15.
+"Warning: boolFilter was deprecated in v0.16.
 Please use filter instead."
+#-}
+
+-- Version 1.5
+
+mono = Any-resp-⊆
+{-# WARNING_ON_USAGE mono
+"Warning: mono was deprecated in v1.5.
+Please use Any-resp-⊆ instead."
+#-}
+map-mono = map⁺
+{-# WARNING_ON_USAGE map-mono
+"Warning: map-mono was deprecated in v1.5.
+Please use map⁺ instead."
+#-}
+infix 4 _++-mono_
+_++-mono_ = ++⁺
+{-# WARNING_ON_USAGE _++-mono_
+"Warning: _++-mono_ was deprecated in v1.5.
+Please use ++⁺ instead."
+#-}
+concat-mono = concat⁺
+{-# WARNING_ON_USAGE concat-mono
+"Warning: concat-mono was deprecated in v1.5.
+Please use concat⁺ instead."
+#-}
+>>=-mono = >>=⁺
+{-# WARNING_ON_USAGE >>=-mono
+"Warning: >>=-mono was deprecated in v1.5.
+Please use >>=⁺ instead."
+#-}
+infix 4  _⊛-mono_
+_⊛-mono_ = ⊛⁺
+{-# WARNING_ON_USAGE _⊛-mono_
+"Warning: _⊛-mono_ was deprecated in v1.5.
+Please use ⊛⁺ instead."
+#-}
+infix 4  _⊗-mono_
+_⊗-mono_ = ⊗⁺
+{-# WARNING_ON_USAGE _⊗-mono_
+"Warning: _⊗-mono_ was deprecated in v1.5.
+Please use ⊗⁺ instead."
+#-}
+any-mono = any⁺
+{-# WARNING_ON_USAGE any-mono
+"Warning: any-mono was deprecated in v1.5.
+Please use any⁺ instead."
+#-}
+map-with-∈-mono = map-with-∈⁺
+{-# WARNING_ON_USAGE map-with-∈-mono
+"Warning: map-with-∈-mono was deprecated in v1.5.
+Please use map-with-∈⁺ instead."
+#-}
+filter⁺ = filter-⊆
+{-# WARNING_ON_USAGE filter⁺
+"Warning: filter⁺ was deprecated in v1.5.
+Please use filter-⊆ instead."
 #-}

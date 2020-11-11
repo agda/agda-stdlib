@@ -89,6 +89,19 @@ Deprecated names
   Plus′ ↦ TransClosure
   ```
 
+* In `Data.List.Relation.Binary.Subset.Propositional.Properties`:
+  ```agda
+  mono            ↦ Any-resp-⊆
+  map-mono        ↦ map⁺
+  concat-mono     ↦ concat⁺
+  >>=-mono        ↦ >>=⁺
+  _⊛-mono_        ↦ ⊛⁺
+  _⊗-mono_        ↦ ⊗⁺
+  any-mono        ↦ any⁺
+  map-with-∈-mono ↦ map-with-∈⁺
+  filter⁺         ↦ filter-⊆
+  ```
+
 New modules
 -----------
 
