@@ -25,8 +25,6 @@ open import Data.List.Relation.Unary.AllPairs using (AllPairs; []; _∷_)
 import Data.List.Relation.Unary.Unique.Setoid as Unique
 import Data.List.Membership.Setoid as Membership
 open import Data.List.Membership.Setoid.Properties using (∈-∃++; ∈-insert)
-open import Data.List.Relation.Binary.BagAndSetEquality
-  using (bag; _∼[_]_; empty-unique; drop-cons; commutativeMonoid)
 import Data.List.Properties as Lₚ
 open import Data.Nat hiding (_⊔_)
 open import Data.Nat.Induction
@@ -437,3 +435,10 @@ module _ {p} {P : Pred A p} (P? : Decidable P) (P≈ : P Respects _≈_) where
   x ∷ xs ++ []  ≡⟨ Lₚ.++-identityʳ _ ⟩
   x ∷ xs        ∎)
   where open PermutationReasoning
+
+------------------------------------------------------------------------
+-- ʳ++
+
+++↭ʳ++ : ∀ (xs ys : List A) → xs ++ ys ↭ xs ʳ++ ys
+++↭ʳ++ []       ys = ↭-refl
+++↭ʳ++ (x ∷ xs) ys = ↭-trans (↭-sym (shift ≈-refl xs ys)) (++↭ʳ++ xs (x ∷ ys))

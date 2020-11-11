@@ -33,23 +33,27 @@ Non-backwards compatible changes
 * The module `Algebra.Construct.Zero` and `Algebra.Module.Construct.Zero`
   are now level-polymorphic, each taking two implicit level parameters.
 
-* Previously the definition of `_⊖_` in `Data.Integer.Base` was defined
-  inductively as:
+* Previously `_⊖_` in `Data.Integer.Base` was defined inductively as:
   ```agda
   _⊖_ : ℕ → ℕ → ℤ
   m       ⊖ ℕ.zero  = + m
   ℕ.zero  ⊖ ℕ.suc n = -[1+ n ]
   ℕ.suc m ⊖ ℕ.suc n = m ⊖ n
   ```
-  which meant that the unary arguments had to be evaluated. To make it
-  much faster it's definition has been changed to use operations on `ℕ`
-  that are backed by builtin operations:
+  which meant that it had to recursively evaluate its the unary arguments.
+  The definition has been changed as follows to use operations on `ℕ` that are backed
+  by builtin operations, greatly improving its performance:
   ```agda
   _⊖_ : ℕ → ℕ → ℤ
   m ⊖ n with m ℕ.<ᵇ n
   ... | true  = - + (n ℕ.∸ m)
   ... | false = + (m ℕ.∸ n)
   ```
+
+* The proofs `↭⇒∼bag` and `∼bag⇒↭` have been moved from
+  `Data.List.Relation.Binary.Permutation.Setoid.Properties`
+  to `Data.List.Relation.Binary.BagAndSetEquality` as their current location
+  were causing cyclic import dependencies.
 
 Deprecated modules
 ------------------
@@ -208,6 +212,60 @@ Other minor additions
   ⊖-≤             : m ≤ n → m ⊖ n ≡ - + (n ∸ m)
   -m+n≡n⊖m        : - (+ m) + + n ≡ n ⊖ m
   m-n≡m⊖n         : + m + (- + n) ≡ m ⊖ n
+  ```
+
+* Added new relations in `Data.List.Relation.Binary.Subset.(Propositional/Setoid)`:
+  ```agda
+  xs ⊇ ys = ys ⊆ xs
+  xs ⊉ ys = ¬ xs ⊇ ys
+  ```
+
+* Added new proofs in `Data.List.Relation.Binary.Subset.Propositional.Properties`:
+  ```agda
+  ⊆-respʳ-≋      : _⊆_ Respectsʳ _≋_
+  ⊆-respˡ-≋      : _⊆_ Respectsˡ _≋_
+
+  ↭⇒⊆            : _↭_ ⇒ _⊆_
+  ⊆-respʳ-↭      : _⊆_ Respectsʳ _↭_
+  ⊆-respˡ-↭      : _⊆_ Respectsˡ _↭_
+  ⊆-↭-isPreorder : IsPreorder _↭_ _⊆_
+  ⊆-↭-preorder   : Preorder _ _ _
+
+  Any-resp-⊆     : P Respects _≈_ → (Any P) Respects _⊆_
+  All-resp-⊇     : P Respects _≈_ → (All P) Respects _⊇_
+
+  xs⊆xs++ys      : xs ⊆ xs ++ ys
+  xs⊆ys++xs      : xs ⊆ ys ++ xs
+  ++⁺ʳ           : xs ⊆ ys → zs ++ xs ⊆ zs ++ ys
+  ++⁺ˡ           : xs ⊆ ys → xs ++ zs ⊆ ys ++ zs
+  ++⁺            : ws ⊆ xs → ys ⊆ zs → ws ++ ys ⊆ xs ++ zs
+  ```
+
+* Added new proofs in `Data.List.Relation.Binary.Subset.Propositional.Properties`:
+  ```agda
+  ↭⇒⊆            : _↭_ ⇒ _⊆_
+  ⊆-respʳ-↭      : _⊆_ Respectsʳ _↭_
+  ⊆-respˡ-↭      : _⊆_ Respectsˡ _↭_
+  ⊆-↭-isPreorder : IsPreorder _↭_ _⊆_
+  ⊆-↭-preorder   : Preorder _ _ _
+
+  Any-resp-⊆     : (Any P) Respects _⊆_
+  All-resp-⊇     : (All P) Respects _⊇_
+
+  xs⊆xs++ys      : xs ⊆ xs ++ ys
+  xs⊆ys++xs      : xs ⊆ ys ++ xs
+  ++⁺ʳ           : xs ⊆ ys → zs ++ xs ⊆ zs ++ ys
+  ++⁺ˡ           : xs ⊆ ys → xs ++ zs ⊆ ys ++ zs
+  ```
+
+* Added new proof in `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
+  ```agda
+  ++↭ʳ++ : xs ++ ys ↭ xs ʳ++ ys
+  ```
+
+* Added new proof in `Data.List.Relation.Binary.Permutation.Setoi.Properties`:
+  ```agda
+  ++↭ʳ++ : xs ++ ys ↭ xs ʳ++ ys
   ```
 
 * Added new definition in `Data.Nat.Base`:

@@ -15,6 +15,7 @@ open import Category.Monad
 open import Data.Bool.Base using (Bool; true; false; T)
 open import Data.List.Base
 open import Data.List.Relation.Unary.Any using (Any; here; there)
+open import Data.List.Relation.Unary.All using (All)
 import Data.List.Relation.Unary.Any.Properties as Any hiding (filter⁺)
 open import Data.List.Categorical
 open import Data.List.Relation.Unary.Any using (Any)
@@ -22,6 +23,8 @@ open import Data.List.Membership.Propositional
 open import Data.List.Membership.Propositional.Properties
 import Data.List.Relation.Binary.Subset.Setoid.Properties as Setoidₚ
 open import Data.List.Relation.Binary.Subset.Propositional
+open import Data.List.Relation.Binary.Permutation.Propositional
+import Data.List.Relation.Binary.Permutation.Propositional.Properties as Permutation
 import Data.Product as Prod
 import Data.Sum.Base as Sum
 open import Function.Base using (_∘_; _∘′_; id; _$_)
@@ -33,7 +36,7 @@ open import Relation.Nullary using (¬_; yes; no)
 open import Relation.Unary using (Decidable; Pred)
 open import Relation.Binary using (_⇒_; _Respects_)
 open import Relation.Binary.PropositionalEquality
-  using (_≡_; _≗_; isEquivalence; refl; setoid; module ≡-Reasoning)
+  using (_≡_; _≗_; isEquivalence; subst; refl; setoid; module ≡-Reasoning)
 import Relation.Binary.Reasoning.Preorder as PreorderReasoning
 
 private
@@ -46,7 +49,7 @@ private
     ws xs ys zs : List A
 
 ------------------------------------------------------------------------
--- Relational properties
+-- Relational properties with _≋_ (pointwise equality)
 ------------------------------------------------------------------------
 
 ⊆-reflexive : _≡_ {A = List A} ⇒ _⊆_
@@ -73,6 +76,34 @@ module _ (A : Set a) where
     }
 
 ------------------------------------------------------------------------
+-- Relational properties with _↭_ (permutation)
+------------------------------------------------------------------------
+-- See issue #1354 for why these proofs can't be taken from `Setoidₚ`
+
+↭⇒⊆ : _↭_ {A = A} ⇒ _⊆_
+↭⇒⊆ xs↭ys = Permutation.∈-resp-↭ xs↭ys
+
+⊆-respʳ-↭ : _⊆_ {A = A} Respectsʳ _↭_
+⊆-respʳ-↭ xs↭ys = Permutation.∈-resp-↭ xs↭ys ∘_
+
+⊆-respˡ-↭ : _⊆_ {A = A} Respectsˡ _↭_
+⊆-respˡ-↭ xs↭ys = _∘ Permutation.∈-resp-↭ (↭-sym xs↭ys)
+
+module _ (A : Set a) where
+
+  ⊆-↭-isPreorder : IsPreorder {A = List A} _↭_ _⊆_
+  ⊆-↭-isPreorder = record
+    { isEquivalence = ↭-isEquivalence
+    ; reflexive     = ↭⇒⊆
+    ; trans         = ⊆-trans
+    }
+
+  ⊆-↭-preorder : Preorder _ _ _
+  ⊆-↭-preorder = record
+    { isPreorder = ⊆-↭-isPreorder
+    }
+
+------------------------------------------------------------------------
 -- Reasoning over subsets
 ------------------------------------------------------------------------
 
@@ -81,16 +112,17 @@ module ⊆-Reasoning (A : Set a) where
     hiding (step-≋; step-≋˘; _≋⟨⟩_)
 
 ------------------------------------------------------------------------
--- Properties relating _⊆_ to various list functions
+-- Properties of _⊆_ and various list predicates
 ------------------------------------------------------------------------
--- Any
 
 Any-resp-⊆ : ∀ {P : Pred A p} → (Any P) Respects _⊆_
-Any-resp-⊆ xs⊆ys =
-  _⟨$⟩_ (Inverse.to Any↔) ∘′
-  Prod.map₂ (Prod.map₁ xs⊆ys) ∘
-  _⟨$⟩_ (Inverse.from Any↔)
+Any-resp-⊆ = Setoidₚ.Any-resp-⊆ (setoid _) (subst _)
 
+All-resp-⊇ : ∀ {P : Pred A p} → (All P) Respects _⊇_
+All-resp-⊇ = Setoidₚ.All-resp-⊇ (setoid _) (subst _)
+
+------------------------------------------------------------------------
+-- Properties relating _⊆_ to various list functions
 ------------------------------------------------------------------------
 -- map
 
@@ -103,11 +135,20 @@ map⁺ f xs⊆ys =
 ------------------------------------------------------------------------
 -- _++_
 
+xs⊆xs++ys : ∀ (xs ys : List A) → xs ⊆ xs ++ ys
+xs⊆xs++ys = Setoidₚ.xs⊆xs++ys (setoid _)
+
+xs⊆ys++xs : ∀ (xs ys : List A) → xs ⊆ ys ++ xs
+xs⊆ys++xs = Setoidₚ.xs⊆ys++xs (setoid _)
+
+++⁺ʳ : ∀ zs → xs ⊆ ys → zs ++ xs ⊆ zs ++ ys
+++⁺ʳ = Setoidₚ.++⁺ʳ (setoid _)
+
+++⁺ˡ : ∀ zs → xs ⊆ ys → xs ++ zs ⊆ ys ++ zs
+++⁺ˡ = Setoidₚ.++⁺ˡ (setoid _)
+
 ++⁺ : ws ⊆ xs → ys ⊆ zs → ws ++ ys ⊆ xs ++ zs
-++⁺ ws⊆xs ys⊆zs =
-  _⟨$⟩_ (Inverse.to Any.++↔) ∘
-  Sum.map ws⊆xs ys⊆zs ∘
-  _⟨$⟩_ (Inverse.from Any.++↔)
+++⁺ = Setoidₚ.++⁺ (setoid _)
 
 ------------------------------------------------------------------------
 -- concat
