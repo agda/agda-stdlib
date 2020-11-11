@@ -62,7 +62,7 @@ module _ {a ℓ} (S : Setoid a ℓ) where
       hiding (step-∼; step-≈; step-≈˘)
       renaming (_≈⟨⟩_ to _≋⟨⟩_)
 
-    infix 2 step-⊆ step-≋ step-≋˘
+    infixr 2 step-⊆ step-≋ step-≋˘
     infix 1 step-∈
 
     step-∈ : ∀ x {xs ys} → xs IsRelatedTo ys → x ∈ xs → x ∈ ys
