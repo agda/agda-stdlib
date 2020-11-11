@@ -102,6 +102,11 @@ Deprecated names
   filter⁺         ↦ filter-⊆
   ```
 
+* In `Data.List.Relation.Binary.Subset.Setoid.Properties`:
+    ```agda
+  filter⁺         ↦ filter-⊆
+  ```
+
 New modules
 -----------
 

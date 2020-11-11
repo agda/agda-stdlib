@@ -25,6 +25,7 @@ open Setoid using (Carrier)
 
 ------------------------------------------------------------------------
 -- Relational properties
+------------------------------------------------------------------------
 
 module _ {a ℓ} (S : Setoid a ℓ) where
 
@@ -78,6 +79,8 @@ module _ {a ℓ} (S : Setoid a ℓ) where
     syntax step-≋˘ xs ys⊆zs xs≋ys = xs ≋˘⟨ xs≋ys ⟩ ys⊆zs
 
 ------------------------------------------------------------------------
+-- Properties of list functions
+------------------------------------------------------------------------
 -- filter
 
 module _ {a p ℓ} (S : Setoid a ℓ)
@@ -86,9 +89,23 @@ module _ {a p ℓ} (S : Setoid a ℓ)
   open Setoid S renaming (Carrier to A)
   open Sublist S
 
-  filter⁺ : ∀ xs → filter P? xs ⊆ xs
-  filter⁺ (x ∷ xs) y∈f[x∷xs] with does (P? x)
-  ... | false = there (filter⁺ xs y∈f[x∷xs])
+  filter-⊆ : ∀ xs → filter P? xs ⊆ xs
+  filter-⊆ (x ∷ xs) y∈f[x∷xs] with does (P? x)
+  ... | false = there (filter-⊆ xs y∈f[x∷xs])
   ... | true  with y∈f[x∷xs]
   ...   | here  y≈x     = here y≈x
-  ...   | there y∈f[xs] = there (filter⁺ xs y∈f[xs])
+  ...   | there y∈f[xs] = there (filter-⊆ xs y∈f[xs])
+
+
+
+------------------------------------------------------------------------
+-- DEPRECATED
+------------------------------------------------------------------------
+
+-- Version 1.5
+
+filter⁺ = filter-⊆
+{-# WARNING_ON_USAGE filter⁺
+"Warning: filter⁺ was deprecated in v1.5.
+Please use filter-⊆ instead."
+#-}

@@ -56,7 +56,7 @@ private
 ⊆-refl x∈xs = x∈xs
 
 ⊆-trans : Transitive {A = List A} _⊆_
-⊆-trans xs⊆ys ys⊆zs x∈xs = ys⊆zs (xs⊆ys x∈xs)
+⊆-trans xs⊆ys ys⊆zs = ys⊆zs ∘ xs⊆ys
 
 module _ (A : Set a) where
 
@@ -188,7 +188,9 @@ module _ {xs : List A} {f : ∀ {x} → x ∈ xs → B}
 module _ {P : Pred A p} (P? : Decidable P) where
 
   filter-⊆ : ∀ xs → filter P? xs ⊆ xs
-  filter-⊆ = Setoidₚ.filter⁺ (setoid A) P?
+  filter-⊆ = Setoidₚ.filter-⊆ (setoid A) P?
+
+
 
 ------------------------------------------------------------------------
 -- DEPRECATED
