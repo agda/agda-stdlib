@@ -8,8 +8,9 @@
 
 open import Algebra using (CancellativeCommutativeSemiring)
 import Algebra.GCD
+import Algebra.Primality
 import Algebra.Properties.Semigroup.Divisibility as SemigroupDiv
-import Algebra.Properties.Semiring as SemiringProp
+import Algebra.Properties.Semiring.Divisibility as SemiringDiv
 open import Data.Product using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum using (_⊎_; inj₁; inj₂)
 open import Function using (case_of_; flip)
@@ -19,28 +20,26 @@ open import Relation.Unary using (Pred)
 
 module Algebra.Properties.CancellativeCommutativeSemiring
   {α ℓ} (R : CancellativeCommutativeSemiring α ℓ)
-  (open CancellativeCommutativeSemiring R)
-  (0≉1 : 0# ≉ 1#)
+  (open CancellativeCommutativeSemiring R renaming (Carrier to A))
   where
 
 open SemigroupDiv *-semigroup using (_∣_; _∤_; ∣-trans)
-open SemiringProp semiring using (∣nonzero⇒≉0)
-open Algebra.GCD _≈_ 0# 1# _*_ using (IsIrreducible; IsPrime; Coprime; GCD)
+open SemiringDiv semiring using (∣nonzero⇒≉0)
+open Algebra.Primality _≈_ _*_ 0# 1# using (IsIrreducible; Coprime)
+open Algebra.GCD _≈_ _*_ using (GCD)
 
-private A = Carrier
-
-0∤1 : 0# ∤ 1#
-0∤1 (q , q*0≈1) = 0≉1 (trans (sym (zeroʳ q)) q*0≈1)
+0∤1 : 0# ≉ 1# → 0# ∤ 1#
+0∤1 0≉1 (q , q*0≈1) = 0≉1 (trans (sym (zeroʳ q)) q*0≈1)
 
 ------------------------------------------------------------------------------
 -- Properties of Irreducibilty, Coprime.
 
-irreducible≉0 : ∀ {p} → IsIrreducible p → p ≉ 0#
-irreducible≉0 (_ , chooseInvertible) p≈0 =
+irreducible≉0 : 0# ≉ 1# → (∀ {p} → IsIrreducible p → p ≉ 0#)
+irreducible≉0 0≉1 (_ , chooseInvertible) p≈0 =
   let p≈0*0 = trans p≈0 (sym (zeroˡ 0#)) in
   case chooseInvertible p≈0*0 of λ
-  { (inj₁ 0∣1) → 0∤1 0∣1
-  ; (inj₂ 0∣1) → 0∤1 0∣1
+  { (inj₁ 0∣1) → 0∤1 0≉1 0∣1
+  ; (inj₂ 0∣1) → 0∤1 0≉1 0∣1
   }
 
 coprimeWithInvertible : ∀ {x} y → x ∣ 1# → Coprime x y

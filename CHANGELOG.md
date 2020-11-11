@@ -85,11 +85,12 @@ New modules
   ```
   Algebra.Divisibility
   Algebra.GCD
+  Algebra.Primality
   Algebra.Properties.Magma.Divisibility
   Algebra.Properties.Semigroup.Divisibility
   Algebra.Properties.Monoid.Divisibility
   Algebra.Properties.CommutativeSemigroup.Divisibility
-  Algebra.Properties.Semiring
+  Algebra.Properties.Semiring.Divisibility
   Algebra.Properties.CancellativeCommutativeSemiring
   ```
 
