@@ -206,6 +206,12 @@ Other minor additions
   ≤ᵇ-reflects-≤ : Reflects (m ≤ n) (m ≤ᵇ n)
   ```
 
+* Added new proofs in `Data.Sign.Properties`:
+  ```agda
+  s*opposite[s]≡- : ∀ s → s * opposite s ≡ -
+  opposite[s]*s≡- : ∀ s → opposite s * s ≡ -
+  ```
+
 * Added new proof in `Relation.Nullary.Reflects`:
   ```agda
   fromEquivalence : (T b → P) → (P → T b) → Reflects P b
