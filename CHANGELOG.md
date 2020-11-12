@@ -21,6 +21,10 @@ Bug-fixes
 * The binary relation `_≉_` exposed by records in `Relation.Binary.Bundles` now has
   the correct infix precedence.
 
+* Fixed the fixity of the reasoning combinators in
+  `Data.List.Relation.Binary.Subset.(Propositional/Setoid).Properties`so that they
+  compose properly.
+
 * Added version to library name
 
 Non-backwards compatible changes
@@ -40,7 +44,7 @@ Non-backwards compatible changes
   ℕ.zero  ⊖ ℕ.suc n = -[1+ n ]
   ℕ.suc m ⊖ ℕ.suc n = m ⊖ n
   ```
-  which meant that it had to recursively evaluate its the unary arguments.
+  which meant that it had to recursively evaluate its unary arguments.
   The definition has been changed as follows to use operations on `ℕ` that are backed
   by builtin operations, greatly improving its performance:
   ```agda

@@ -157,7 +157,7 @@ drop-mid-≡ []       (x ∷ xs) refl = shift _ xs _
 drop-mid-≡ (w ∷ ws) []       refl = ↭-sym (shift _ ws _)
 drop-mid-≡ (w ∷ ws) (x ∷ xs) eq with Lₚ.∷-injective eq
 ... | refl , eq′ = prep w (drop-mid-≡ ws xs eq′)
-  
+
 drop-mid : ∀ {x : A} ws xs {ys zs} →
            ws ++ [ x ] ++ ys ↭ xs ++ [ x ] ++ zs →
            ws ++ ys ↭ xs ++ zs
@@ -264,7 +264,7 @@ module _ {a} {A : Set a} where
   ++-monoid = record
     { isMonoid = ++-isMonoid {A = A}
     }
-  
+
   ++-commutativeMonoid : CommutativeMonoid _ _
   ++-commutativeMonoid = record
     { isCommutativeMonoid = ++-isCommutativeMonoid {A = A}
