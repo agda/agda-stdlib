@@ -10,20 +10,19 @@ open import Algebra using (Semiring)
 import Algebra.Properties.Monoid.Divisibility as MonoidDiv
 open import Data.Product using (_,_)
 
-module Algebra.Properties.Semiring.Divisibility {r₁ r₂} (R : Semiring r₁ r₂) where
+module Algebra.Properties.Semiring.Divisibility {α ℓ} (R : Semiring α ℓ) where
 
 open Semiring R
-open import Algebra.Divisibility _≈_ _*_ using (∣-max)
-open MonoidDiv *-monoid public
+
+-- Re-exporting contents of divisibility over monoids
+--
+open MonoidDiv *-monoid public renaming (ε∣_ to 1∣_)
 
 ------------------------------------------------------------------------------
 -- Divisibility properties specific to Semiring.
 
-1∣ : ∀ x → 1# ∣ x
-1∣ = ε∣_
-
-∣0 : ∀ x → x ∣ 0#
-∣0 x = ∣-max zeroˡ x
+_∣0 : ∀ x → x ∣ 0#
+x ∣0 = 0# , zeroˡ x
 
 0∣x⇒x≈0 : ∀ {x} → 0# ∣ x → x ≈ 0#
 0∣x⇒x≈0 (q , q*0≈x) = trans (sym q*0≈x) (zeroʳ q)

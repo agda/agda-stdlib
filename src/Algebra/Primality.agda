@@ -35,14 +35,15 @@ private
   _≉_ : Rel A _
   x ≉ y = ¬ (x ≈ y)
 
-IsIrreducible : Pred A (a ⊔ ℓ)
-IsIrreducible p = p ∤ 1#  ×  (∀ {x y} → (p ≈ (x * y)) → x ∣ 1# ⊎ y ∣ 1#)
+Irreducible : Pred A (a ⊔ ℓ)
+Irreducible p = p ∤ 1#  ×  (∀ {x y} → (p ≈ (x * y)) → x ∣ 1# ⊎ y ∣ 1#)
 
-IsPrime : Pred A (a ⊔ ℓ)
-IsPrime p = p ≉ 0#  ×  p ∤ 1#  ×  ∀ {x y} → p ∣ (x * y) → p ∣ x ⊎ p ∣ y
+Prime : Pred A (a ⊔ ℓ)
+Prime p = p ≉ 0#  ×  p ∤ 1#  ×  ∀ {x y} → p ∣ (x * y) → p ∣ x ⊎ p ∣ y
 
--- In a GCDDomain,  IsIrreducible is equivalent to IsPrime.
--- But in the general situation IsPrime is stronger.
+-- * It is easy to prove        Prime ==>  Irreducible.
+-- * In a GCDSemiring it holds  Prime <==> Irreducible
+--   (for example, in ℕ, ℤ).
 
 Coprime : Rel A (a ⊔ ℓ)
 Coprime a b = ∀ {x} → x ∣ a → x ∣ b → x ∣ 1#

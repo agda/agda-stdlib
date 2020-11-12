@@ -14,9 +14,8 @@ module Algebra.Properties.Magma.Divisibility {a ℓ} (M : Magma a ℓ) where
 
 open Magma M
 
-------------------------------------------------------------------------------
 -- Re-export divisibility relations publicly
-
+--
 open import Algebra.Divisibility _≈_ _∙_ as Div public
   using (_∣_; _∤_; _∣∣_; _¬∣∣_)
 

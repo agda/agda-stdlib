@@ -14,9 +14,8 @@ module Algebra.Properties.Semigroup.Divisibility {a ℓ} (S : Semigroup a ℓ) w
 open Semigroup S
 import Algebra.Divisibility _≈_ _∙_ as Div
 
-------------------------------------------------------------------------
 -- Re-export magma divisibility
-
+--
 open import Algebra.Properties.Magma.Divisibility magma public
 
 ------------------------------------------------------------------------

@@ -67,9 +67,3 @@ x ¬∣∣ y =  ¬ x ∣∣ y
 
 ∣-resp : Symmetric _≈_ → Transitive _≈_ → LeftCongruent _∙_ → _∣_ Respects₂ _≈_
 ∣-resp sym trans cong = ∣-respʳ trans , ∣-respˡ sym trans cong
-
-∣-min : ∀ {ε} → RightIdentity ε _∙_ → Minimum _∣_ ε
-∣-min {ε} idʳ x = x , idʳ x
-
-∣-max : ∀ {ε} → LeftZero ε _∙_ → Maximum _∣_ ε
-∣-max {ε} zeˡ x = ε , zeˡ x
