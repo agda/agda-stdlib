@@ -102,7 +102,9 @@ New modules
 * Added `Reflection.Traversal` for generic de Bruijn-aware traversals of reflected terms.
 * Added `Reflection.DeBruijn` with weakening, strengthening and free variable operations
   on reflected terms.
+
 * Added `Relation.Binary.TypeClasses` for type classes to be used with instance search.
+
 * Added various modules containing `instance` declarations:
   `Data.Bool.Instances`, `Data.Char.Instances`, `Data.Fin.Instances`,
   `Data.Float.Instances`, `Data.Integer.Instances`,
@@ -123,7 +125,23 @@ New modules
   Algebra.Properties.CommutativeSemigroup.Divisibility
   ```
 
-* Added bindings for Haskell's `System.Environment`
+* Heterogeneous relation characterising a list as an infix segment of another:
+  ```
+  Data.List.Relation.Binary.Infix.Heterogeneous
+  Data.List.Relation.Binary.Infix.Heterogeneous.Properties
+  ```
+  and added `Properties` file for the homogeneous variants of (pre/in/suf)fix:
+  ```
+  Data.List.Relation.Binary.Prefix.Homogeneous.Properties
+  Data.List.Relation.Binary.Infix.Homogeneous.Properties
+  Data.List.Relation.Binary.Suffix.Homogeneous.Properties
+  ```
+
+* Added bindings for Haskell's `System.Environment`:
+  ```
+  System.Environment
+  System.Environment.Primitive
+  ```
 
 Other major changes
 -------------------
