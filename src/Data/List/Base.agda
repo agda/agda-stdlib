@@ -370,13 +370,16 @@ data InitLast {A : Set a} : List A → Set a where
   []    : InitLast []
   _∷ʳ′_ : (xs : List A) (x : A) → InitLast (xs ∷ʳ x)
 
-
-
 initLast : (xs : List A) → InitLast xs
 initLast []               = []
 initLast (x ∷ xs)         with initLast xs
 ... | []       = [] ∷ʳ′ x
 ... | ys ∷ʳ′ y = (x ∷ ys) ∷ʳ′ y
+
+unsnoc : List A → Maybe (List A × A)
+unsnoc as with initLast as
+... | []       = nothing
+... | xs ∷ʳ′ x = just (xs , x)
 
 ------------------------------------------------------------------------
 -- Splitting a list
