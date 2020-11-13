@@ -41,6 +41,8 @@ unsafeModules = map modToFile
   , "IO"
   , "IO.Primitive"
   , "Relation.Binary.PropositionalEquality.TrustMe"
+  , "System.Environment"
+  , "System.Environment.Primitive"
   , "Text.Pretty.Core"
   , "Text.Pretty"
   ]

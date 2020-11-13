@@ -123,6 +123,8 @@ New modules
   Algebra.Properties.CommutativeSemigroup.Divisibility
   ```
 
+* Added bindings for Haskell's `System.Environment`
+
 Other major changes
 -------------------
 
