@@ -19,19 +19,19 @@ open import Relation.Binary using (Rel; Symmetric; Setoid)
 open import Relation.Unary using (Pred)
 
 module Algebra.Properties.CancellativeCommutativeSemiring
-  {α ℓ} (R : CancellativeCommutativeSemiring α ℓ)
+  {a ℓ} (R : CancellativeCommutativeSemiring a ℓ)
   where
 
 open CancellativeCommutativeSemiring R renaming (Carrier to A)
 
-open SemigroupDiv *-semigroup using (_∣_; _∤_; ∣-trans)
---
--- Reexporting Divisibility over Semigroup, Semiring
---
-open SemiringDiv semiring using (∣nonzero⇒≉0)
-
-open Algebra.Primality _≈_ _*_ 0# 1# using (Irreducible; Coprime)
+open Algebra.Primality _≈_ _*_ 0# 1# using (Irreducible; irredᶜ; Coprime)
 open Algebra.GCD _≈_ _*_ using (GCD)
+
+open SemigroupDiv *-semigroup public
+--
+-- Reexporting divisibility over Semigroup, Semiring
+--
+open SemiringDiv semiring public using (x∣y∧y≉0⇒x≉0)
 
 0∤1 : 0# ≉ 1# → 0# ∤ 1#
 0∤1 0≉1 (q , q*0≈1) = 0≉1 (trans (sym (zeroʳ q)) q*0≈1)
@@ -39,10 +39,10 @@ open Algebra.GCD _≈_ _*_ using (GCD)
 ------------------------------------------------------------------------------
 -- Properties of Irreducibilty, Coprime.
 
-irreducible≉0 : 0# ≉ 1# → ∀ {x} → Irreducible x → x ≉ 0#
-irreducible≉0 0≉1 (_ , chooseInvertible) x≈0 =
-  let x≈0*0 = trans x≈0 (sym (zeroˡ 0#)) in
-  case chooseInvertible x≈0*0 of λ
+irreducible≉0 : 0# ≉ 1# → ∀ {p} → Irreducible p → p ≉ 0#
+irreducible≉0 0≉1 (irredᶜ _ chooseInvertible) p≈0 =
+  let p≈0*0 = trans p≈0 (sym (zeroˡ 0#)) in
+  case chooseInvertible p≈0*0 of λ
   { (inj₁ 0∣1) → 0∤1 0≉1 0∣1
   ; (inj₂ 0∣1) → 0∤1 0≉1 0∣1
   }
@@ -53,20 +53,20 @@ coprimeWithInvertible {x} y x∣1 z∣x _ = ∣-trans z∣x x∣1
 ------------------------------------------------------------------------------
 -- Properties of GCD
 
-module _ (a b : A) (struc : GCD a b)
+module _ (x y : A) (struc : GCD x y)
   where
   open GCD struc
 
-  nz⊎nz⇒≉0 : a ≉ 0# ⊎ b ≉ 0# → value ≉ 0#
-  nz⊎nz⇒≉0 (inj₁ a≉0) = ∣nonzero⇒≉0 divides₁ a≉0
-  nz⊎nz⇒≉0 (inj₂ b≉0) = ∣nonzero⇒≉0 divides₂ b≉0
+  nz⊎nz⇒≉0 : x ≉ 0# ⊎ y ≉ 0# → value ≉ 0#
+  nz⊎nz⇒≉0 (inj₁ x≉0) = x∣y∧y≉0⇒x≉0 divides₁ x≉0
+  nz⊎nz⇒≉0 (inj₂ y≉0) = x∣y∧y≉0⇒x≉0 divides₂ y≉0
 
-  quot₁∣a : quot₁ ∣ a
-  quot₁∣a = (value , value*quot₁≈a)
+  quot₁∣x : quot₁ ∣ x
+  quot₁∣x = (value , value*quot₁≈x)
     where
-    value*quot₁≈a = trans (*-comm value quot₁) quot₁*value≈arg1
+    value*quot₁≈x = trans (*-comm value quot₁) quot₁*value≈x
 
-  quot₂∣b : quot₂ ∣ b
-  quot₂∣b = (value , value*quot₂≈b)
+  quot₂∣y : quot₂ ∣ y
+  quot₂∣y = (value , value*quot₂≈y)
     where
-    value*quot₂≈b = trans (*-comm value quot₂) quot₂*value≈arg2
+    value*quot₂≈y = trans (*-comm value quot₂) quot₂*value≈y

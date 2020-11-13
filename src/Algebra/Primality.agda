@@ -35,18 +35,24 @@ private
   _≉_ : Rel A _
   x ≉ y = ¬ (x ≈ y)
 
-Irreducible : Pred A (a ⊔ ℓ)
-Irreducible p = p ∤ 1#  ×  (∀ {x y} → (p ≈ (x * y)) → x ∣ 1# ⊎ y ∣ 1#)
+record Irreducible (p : A) : Set (a ⊔ ℓ) where
+  constructor irredᶜ
+  field
+    ∤1                     : p ∤ 1#
+    chooseInvertibleFactor : ∀ {x y} → p ≈ (x * y) → x ∣ 1# ⊎ y ∣ 1#
 
-Prime : Pred A (a ⊔ ℓ)
-Prime p = p ≉ 0#  ×  p ∤ 1#  ×  ∀ {x y} → p ∣ (x * y) → p ∣ x ⊎ p ∣ y
+record Prime (p : A) : Set (a ⊔ ℓ) where
+  constructor primeᶜ
+  field
+    nonZero : p ≉ 0#
+    split∣   : ∀ {x y} → p ∣ (x * y) → p ∣ x ⊎ p ∣ y
 
--- * It is easy to prove        Prime ==>  Irreducible.
--- * In a GCDSemiring it holds  Prime <==> Irreducible
+-- * It will be proved  Prime ==> Irreducible.
+-- * In many special cases it holds  Prime <==> Irreducible
 --   (for example, in ℕ, ℤ).
 
 Coprime : Rel A (a ⊔ ℓ)
-Coprime a b = ∀ {x} → x ∣ a → x ∣ b → x ∣ 1#
+Coprime x y = ∀ {z} → z ∣ x → z ∣ y → z ∣ 1#
 
 ------------------------------------------------------------------------------
 -- Properties

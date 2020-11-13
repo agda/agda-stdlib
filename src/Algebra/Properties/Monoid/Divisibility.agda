@@ -17,7 +17,7 @@ module Algebra.Properties.Monoid.Divisibility {a ℓ} (M : Monoid a ℓ) where
 open Monoid M
 import Algebra.Divisibility _≈_ _∙_ as Div
 
--- Re-export magma divisibility
+-- Re-export semigroup divisibility
 --
 open import Algebra.Properties.Semigroup.Divisibility semigroup public
 

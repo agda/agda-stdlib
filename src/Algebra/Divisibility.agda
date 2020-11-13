@@ -27,23 +27,29 @@ open import Algebra.Definitions _≈_
 
 -- Divisibility
 
-infix 5 _∣_ _∤_ _∣∣_ _¬∣∣_
+infix 5 _∣ˡ_ _∤ˡ_ _∣ʳ_ _∤ʳ_ _∣_ _∤_ _∣∣_ _¬∣∣_
 
-_∣_ : Rel A (a ⊔ ℓ)
-x ∣ y = ∃ λ q → (q ∙ x) ≈ y
+_∣ˡ_ _∤ˡ_ _∣ʳ_ _∤ʳ_ _∣_ _∤_ _∣∣_ _¬∣∣_ : Rel A (a ⊔ ℓ)
 
-_∤_ : Rel A (a ⊔ ℓ)
+x ∣ˡ y = ∃ λ q → (x ∙ q) ≈ y    -- x divides y from left
+x ∣ʳ y = ∃ λ q → (q ∙ x) ≈ y    -- x divides y from right
+
+-- In the commutative case,  _∣ˡ_ <==> _∣ʳ_.
+-- But generally, they are not equivalent.
+
+_∣_ = _∣ʳ_     -- In particular, use _∣_ when it holds _∣ˡ_ <==> _∣ʳ_.
+
+x ∤ˡ y = ¬ x ∣ˡ y
+x ∤ʳ y = ¬ x ∣ʳ y
 x ∤ y = ¬ x ∣ y
+
 
 -- Mutual divisibility.
 
 -- When in a cancellative monoid, elements related by _∣∣_ are called
 -- associated and if x ∣∣ y then x and y differ by an invertible factor.
 
-_∣∣_ : Rel A (a ⊔ ℓ)
 x ∣∣ y = x ∣ y × y ∣ x
-
-_¬∣∣_ : Rel A (a ⊔ ℓ)
 x ¬∣∣ y =  ¬ x ∣∣ y
 
 ------------------------------------------------------------------------

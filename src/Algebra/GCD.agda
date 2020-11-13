@@ -22,22 +22,22 @@ open import Algebra.Divisibility _≈_ _*_
 ------------------------------------------------------------------------------
 -- Definitions
 
-record GCD (arg1 arg2 : A) :  Set (a ⊔ ℓ) where      -- a result of gcd
+record GCD (x y : A) :  Set (a ⊔ ℓ) where      -- a result of gcd
   constructor gcdᶜ
   -- Greatest common divisor.
 
   field
     value    : A                  -- the proper gcd value
-    divides₁ : value ∣ arg1
-    divides₂ : value ∣ arg2
-    greatest : ∀ {x} → (x ∣ arg1) → (x ∣ arg2) → (x ∣ value)
+    divides₁ : value ∣ x
+    divides₂ : value ∣ y
+    greatest : ∀ {z} → z ∣ x → z ∣ y → z ∣ value
 
   quot₁ quot₂ : A
   quot₁ = proj₁ divides₁
   quot₂ = proj₁ divides₂
 
-  quot₁*value≈arg1 : (quot₁ * value) ≈ arg1
-  quot₁*value≈arg1 = proj₂ divides₁
+  quot₁*value≈x : (quot₁ * value) ≈ x
+  quot₁*value≈x = proj₂ divides₁
 
-  quot₂*value≈arg2 : (quot₂ * value) ≈ arg2
-  quot₂*value≈arg2 = proj₂ divides₂
+  quot₂*value≈y : (quot₂ * value) ≈ y
+  quot₂*value≈y = proj₂ divides₂
