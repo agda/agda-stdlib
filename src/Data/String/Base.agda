@@ -38,7 +38,8 @@ import Agda.Builtin.String as String
 
 open String public using ( String )
   renaming
-  ( primStringToList   to toList
+  ( primStringUncons   to uncons
+  ; primStringToList   to toList
   ; primStringFromList to fromList
   ; primShowString     to show
   )
