@@ -11,11 +11,9 @@ module Data.String.Base where
 open import Level using (zero)
 open import Data.Bool.Base using (true; false)
 open import Data.Bool.Properties using (T?)
-open import Data.Nat.Base as ℕ using (ℕ; _∸_; ⌊_/2⌋; ⌈_/2⌉)
-import Data.Nat.Properties as ℕₚ
+open import Data.Nat.Base as ℕ using (ℕ; _∸_; ⌊_/2⌋; ⌈_/2⌉; _⊔_)
 open import Data.List.Base as List using (List; [_])
 open import Data.List.NonEmpty as NE using (List⁺)
-open import Data.List.Extrema ℕₚ.≤-totalOrder
 open import Data.List.Relation.Binary.Pointwise using (Pointwise)
 open import Data.List.Relation.Binary.Lex.Strict using (Lex-<)
 open import Data.Vec.Base as Vec using (Vec)
@@ -175,7 +173,7 @@ rectangle : ∀ {n} → Vec (ℕ → String → String) n →
 rectangle pads cells = Vec.zipWith (λ p c → p width c) pads cells where
 
   sizes = List.map length (Vec.toList cells)
-  width = max 0 sizes
+  width = List.foldr _⊔_ 0 sizes
 
 -- Special cases for left, center, and right alignment
 
