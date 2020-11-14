@@ -81,7 +81,7 @@ eqNat = coerce primIntEq
 
 open import IO
 open import Codata.Musical.Notation
-open import Data.String.Base
+open import Data.String.Base using (toList; fromList; unlines; _++_)
 open import Relation.Nullary.Negation
 
 -- example program using uncons, catMaybes, and testChar
