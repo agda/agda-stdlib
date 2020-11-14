@@ -344,7 +344,7 @@ infixr 5 _ʳ++_
 _ʳ++_ : List A → List A → List A
 _ʳ++_ = flip reverseAcc
 
--- Snoc.
+-- Snoc: Cons, but from the right.
 
 infixl 6 _∷ʳ_
 
@@ -376,6 +376,7 @@ initLast (x ∷ xs)         with initLast xs
 ... | []       = [] ∷ʳ′ x
 ... | ys ∷ʳ′ y = (x ∷ ys) ∷ʳ′ y
 
+-- uncons, but from the right
 unsnoc : List A → Maybe (List A × A)
 unsnoc as with initLast as
 ... | []       = nothing
