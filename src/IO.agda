@@ -69,6 +69,9 @@ module _ {a b} {A : Set a} {B : Set b} where
   mapM′ : (A → IO B) → Colist A → IO ⊤
   mapM′ f = sequence′ ∘ map f
 
+ignore : ∀ {a} {A : Set a} → IO A → IO ⊤
+ignore io = ♯ io >> ♯ return _
+
 ------------------------------------------------------------------------
 -- Simple lazy IO
 
@@ -94,33 +97,25 @@ readFiniteFile : String → IO String
 readFiniteFile f = lift (Prim.readFiniteFile f)
 
 writeFile∞ : String → Costring → IO ⊤
-writeFile∞ f s =
-  ♯ lift (Prim.writeFile f s) >>
-  ♯ return _
+writeFile∞ f s = ignore (lift (Prim.writeFile f s))
 
 writeFile : String → String → IO ⊤
 writeFile f s = writeFile∞ f (toCostring s)
 
 appendFile∞ : String → Costring → IO ⊤
-appendFile∞ f s =
-  ♯ lift (Prim.appendFile f s) >>
-  ♯ return _
+appendFile∞ f s = ignore (lift (Prim.appendFile f s))
 
 appendFile : String → String → IO ⊤
 appendFile f s = appendFile∞ f (toCostring s)
 
 putStr∞ : Costring → IO ⊤
-putStr∞ s =
-  ♯ lift (Prim.putStr s) >>
-  ♯ return _
+putStr∞ s = ignore (lift (Prim.putStr s))
 
 putStr : String → IO ⊤
 putStr s = putStr∞ (toCostring s)
 
 putStrLn∞ : Costring → IO ⊤
-putStrLn∞ s =
-  ♯ lift (Prim.putStrLn s) >>
-  ♯ return _
+putStrLn∞ s = ignore (lift (Prim.putStrLn s))
 
 putStrLn : String → IO ⊤
 putStrLn s = putStrLn∞ (toCostring s)

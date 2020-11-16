@@ -8,6 +8,7 @@
 
 module Data.List.Relation.Binary.Prefix.Heterogeneous.Properties where
 
+open import Level
 open import Data.Bool.Base using (true; false)
 open import Data.Empty
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
@@ -28,19 +29,25 @@ open import Relation.Unary as U using (Pred)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_; _≢_)
 
+private
+  variable
+    a b r s : Level
+    A : Set a
+    B : Set b
+    R : REL A B r
+    S : REL A B s
+
 ------------------------------------------------------------------------
 -- First as a decidable partial order (once made homogeneous)
 
-module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
+fromPointwise : Pointwise R ⇒ Prefix R
+fromPointwise []       = []
+fromPointwise (r ∷ rs) = r ∷ fromPointwise rs
 
-  fromPointwise : Pointwise R ⇒ Prefix R
-  fromPointwise []       = []
-  fromPointwise (r ∷ rs) = r ∷ fromPointwise rs
-
-  toPointwise : ∀ {as bs} → length as ≡ length bs →
-                Prefix R as bs → Pointwise R as bs
-  toPointwise {bs = []} eq [] = []
-  toPointwise eq (r ∷ rs) = r ∷ toPointwise (suc-injective eq) rs
+toPointwise : ∀ {as bs} → length as ≡ length bs →
+              Prefix R as bs → Pointwise R as bs
+toPointwise {bs = []} eq [] = []
+toPointwise eq (r ∷ rs) = r ∷ toPointwise (suc-injective eq) rs
 
 module _ {a b c r s t} {A : Set a} {B : Set b} {C : Set c}
          {R : REL A B r} {S : REL B C s} {T : REL A C t} where
@@ -59,26 +66,22 @@ module _ {a b r s e} {A : Set a} {B : Set b}
 ------------------------------------------------------------------------
 -- length
 
-module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
-
-  length-mono : ∀ {as bs} → Prefix R as bs → length as ≤ length bs
-  length-mono []       = z≤n
-  length-mono (r ∷ rs) = s≤s (length-mono rs)
+length-mono : ∀ {as bs} → Prefix R as bs → length as ≤ length bs
+length-mono []       = z≤n
+length-mono (r ∷ rs) = s≤s (length-mono rs)
 
 ------------------------------------------------------------------------
 -- _++_
 
-module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
+++⁺ : ∀ {as bs cs ds} → Pointwise R as bs →
+      Prefix R cs ds → Prefix R (as ++ cs) (bs ++ ds)
+++⁺ []       cs⊆ds = cs⊆ds
+++⁺ (r ∷ rs) cs⊆ds = r ∷ (++⁺ rs cs⊆ds)
 
-  ++⁺ : ∀ {as bs cs ds} → Pointwise R as bs →
-        Prefix R cs ds → Prefix R (as ++ cs) (bs ++ ds)
-  ++⁺ []       cs⊆ds = cs⊆ds
-  ++⁺ (r ∷ rs) cs⊆ds = r ∷ (++⁺ rs cs⊆ds)
-
-  ++⁻ : ∀ {as bs cs ds} → length as ≡ length bs →
-        Prefix R (as ++ cs) (bs ++ ds) → Prefix R cs ds
-  ++⁻ {[]}    {[]}    eq rs       = rs
-  ++⁻ {_ ∷ _} {_ ∷ _} eq (_ ∷ rs) = ++⁻ (suc-injective eq) rs
+++⁻ : ∀ {as bs cs ds} → length as ≡ length bs →
+      Prefix R (as ++ cs) (bs ++ ds) → Prefix R cs ds
+++⁻ {as = []}    {[]}    eq rs       = rs
+++⁻ {as = _ ∷ _} {_ ∷ _} eq (_ ∷ rs) = ++⁻ (suc-injective eq) rs
 
 ------------------------------------------------------------------------
 -- map
@@ -101,8 +104,7 @@ module _ {a b c d r} {A : Set a} {B : Set b} {C : Set c} {D : Set d}
 ------------------------------------------------------------------------
 -- filter
 
-module _ {a b r p q} {A : Set a} {B : Set b} {R : REL A B r}
-         {P : Pred A p} {Q : Pred B q} (P? : U.Decidable P) (Q? : U.Decidable Q)
+module _ {p q} {P : Pred A p} {Q : Pred B q} (P? : U.Decidable P) (Q? : U.Decidable Q)
          (P⇒Q : ∀ {a b} → R a b → P a → Q b) (Q⇒P : ∀ {a b} → R a b → Q b → P a)
          where
 
@@ -117,48 +119,46 @@ module _ {a b r p q} {A : Set a} {B : Set b} {R : REL A B r}
 ------------------------------------------------------------------------
 -- take
 
-module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
+take⁺ : ∀ {as bs} n → Prefix R as bs →
+        Prefix R (take n as) (take n bs)
+take⁺ zero    rs       = []
+take⁺ (suc n) []       = []
+take⁺ (suc n) (r ∷ rs) = r ∷ take⁺ n rs
 
-  take⁺ : ∀ {as bs} n → Prefix R as bs →
-          Prefix R (take n as) (take n bs)
-  take⁺ zero    rs       = []
-  take⁺ (suc n) []       = []
-  take⁺ (suc n) (r ∷ rs) = r ∷ take⁺ n rs
-
-  take⁻ : ∀ {as bs} n →
-          Prefix R (take n as) (take n bs) →
-          Prefix R (drop n as) (drop n bs) →
-          Prefix R as bs
-  take⁻                   zero    hds       tls = tls
-  take⁻ {[]}              (suc n) hds       tls = []
-  take⁻ {a ∷ as} {b ∷ bs} (suc n) (r ∷ hds) tls = r ∷ take⁻ n hds tls
+take⁻ : ∀ {as bs} n →
+        Prefix R (take n as) (take n bs) →
+        Prefix R (drop n as) (drop n bs) →
+        Prefix R as bs
+take⁻                        zero    hds       tls = tls
+take⁻ {as = []}              (suc n) hds       tls = []
+take⁻ {as = a ∷ as} {b ∷ bs} (suc n) (r ∷ hds) tls = r ∷ take⁻ n hds tls
 
 ------------------------------------------------------------------------
 -- drop
 
-  drop⁺ : ∀ {as bs} n → Prefix R as bs → Prefix R (drop n as) (drop n bs)
-  drop⁺ zero    rs       = rs
-  drop⁺ (suc n) []       = []
-  drop⁺ (suc n) (r ∷ rs) = drop⁺ n rs
+drop⁺ : ∀ {as bs} n → Prefix R as bs → Prefix R (drop n as) (drop n bs)
+drop⁺ zero    rs       = rs
+drop⁺ (suc n) []       = []
+drop⁺ (suc n) (r ∷ rs) = drop⁺ n rs
 
-  drop⁻ : ∀ {as bs} n → Pointwise R (take n as) (take n bs) →
-          Prefix R (drop n as) (drop n bs) → Prefix R as bs
-  drop⁻                 zero    hds       tls = tls
-  drop⁻ {[]}            (suc n) hds       tls = []
-  drop⁻ {_ ∷ _} {_ ∷ _} (suc n) (r ∷ hds) tls = r ∷ (drop⁻ n hds tls)
+drop⁻ : ∀ {as bs} n → Pointwise R (take n as) (take n bs) →
+        Prefix R (drop n as) (drop n bs) → Prefix R as bs
+drop⁻                      zero    hds       tls = tls
+drop⁻ {as = []}            (suc n) hds       tls = []
+drop⁻ {as = _ ∷ _} {_ ∷ _} (suc n) (r ∷ hds) tls = r ∷ (drop⁻ n hds tls)
 
 ------------------------------------------------------------------------
 -- replicate
 
-  replicate⁺ : ∀ {m n a b} → m ≤ n → R a b →
-               Prefix R (replicate m a) (replicate n b)
-  replicate⁺ z≤n       r = []
-  replicate⁺ (s≤s m≤n) r = r ∷ replicate⁺ m≤n r
+replicate⁺ : ∀ {m n a b} → m ≤ n → R a b →
+             Prefix R (replicate m a) (replicate n b)
+replicate⁺ z≤n       r = []
+replicate⁺ (s≤s m≤n) r = r ∷ replicate⁺ m≤n r
 
-  replicate⁻ : ∀ {m n a b} → m ≢ 0 →
-               Prefix R (replicate m a) (replicate n b) → R a b
-  replicate⁻ {zero}  {n}     m≢0 r  = ⊥-elim (m≢0 P.refl)
-  replicate⁻ {suc m} {suc n} m≢0 rs = Prefix.head rs
+replicate⁻ : ∀ {m n a b} → m ≢ 0 →
+             Prefix R (replicate m a) (replicate n b) → R a b
+replicate⁻ {m = zero}  {n}     m≢0 r  = ⊥-elim (m≢0 P.refl)
+replicate⁻ {m = suc m} {suc n} m≢0 rs = Prefix.head rs
 
 ------------------------------------------------------------------------
 -- inits
