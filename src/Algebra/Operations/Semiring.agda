@@ -7,6 +7,10 @@
 
 {-# OPTIONS --without-K --safe #-}
 
+-- Disabled to prevent warnings from deprecated
+-- Algebra.Operations.CommutativeMonoid
+{-# OPTIONS --warn=noUserWarning #-}
+
 open import Algebra
 
 module Algebra.Operations.Semiring {s₁ s₂} (S : Semiring s₁ s₂) where

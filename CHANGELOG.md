@@ -63,6 +63,14 @@ Deprecated modules
   complete. The new definitions are parameterised by raw bundles instead of bundles
   meaning they are much more flexible to work with.
 
+* The module `Algebra.Operations.CommutativeMonoid` has been deprecated. The definition
+  of multiplication and the associated properties have been moved to
+  `Algebra.Properties.CommutativeMonoid.Multiplication`. The definition of summation
+  which was defined over the deprecated `Data.Table` has been redefined in terms of
+  `Data.Vec.Functional` and been moved to `Algbra.Properties.CommutativeMonoid.Summation`.
+  The properties of summation in `Algebra.Properties.CommutativeMonoid` have likewise
+  been deprecated and moved to `Algebra.Properties.CommutativeMonoid.Summation`.
+
 Deprecated names
 ----------------
 
@@ -102,7 +110,9 @@ New modules
 * Added `Reflection.Traversal` for generic de Bruijn-aware traversals of reflected terms.
 * Added `Reflection.DeBruijn` with weakening, strengthening and free variable operations
   on reflected terms.
+
 * Added `Relation.Binary.TypeClasses` for type classes to be used with instance search.
+
 * Added various modules containing `instance` declarations:
   `Data.Bool.Instances`, `Data.Char.Instances`, `Data.Fin.Instances`,
   `Data.Float.Instances`, `Data.Integer.Instances`,
@@ -121,6 +131,40 @@ New modules
   Algebra.Properties.Semigroup.Divisibility
   Algebra.Properties.Monoid.Divisibility
   Algebra.Properties.CommutativeSemigroup.Divisibility
+  ```
+
+* Generic summations over algebraic structures
+  ```
+  Algebra.Properties.Monoid.Summation
+  Algebra.Properties.CommutativeMonoid.Summation
+  ```
+
+* Generic multiplication over algebraic structures
+  ```
+  Algebra.Properties.Monoid.Multiplication
+  ```
+
+* Setoid equality over vectors:
+  ```
+  Data.Vec.Functional.Relation.Binary.Equality.Setoid
+  ```
+
+* Heterogeneous relation characterising a list as an infix segment of another:
+  ```
+  Data.List.Relation.Binary.Infix.Heterogeneous
+  Data.List.Relation.Binary.Infix.Heterogeneous.Properties
+  ```
+  and added `Properties` file for the homogeneous variants of (pre/in/suf)fix:
+  ```
+  Data.List.Relation.Binary.Prefix.Homogeneous.Properties
+  Data.List.Relation.Binary.Infix.Homogeneous.Properties
+  Data.List.Relation.Binary.Suffix.Homogeneous.Properties
+  ```
+
+* Added bindings for Haskell's `System.Environment`:
+  ```
+  System.Environment
+  System.Environment.Primitive
   ```
 
 Other major changes
@@ -204,6 +248,12 @@ Other minor additions
 
   <ᵇ-reflects-< : Reflects (m < n) (m <ᵇ n)
   ≤ᵇ-reflects-≤ : Reflects (m ≤ n) (m ≤ᵇ n)
+  ```
+
+* Added new proofs in `Data.Sign.Properties`:
+  ```agda
+  s*opposite[s]≡- : ∀ s → s * opposite s ≡ -
+  opposite[s]*s≡- : ∀ s → opposite s * s ≡ -
   ```
 
 * Added new proof in `Relation.Nullary.Reflects`:
