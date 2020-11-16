@@ -63,6 +63,14 @@ Deprecated modules
   complete. The new definitions are parameterised by raw bundles instead of bundles
   meaning they are much more flexible to work with.
 
+* The module `Algebra.Operations.CommutativeMonoid` has been deprecated. The definition
+  of multiplication and the associated properties have been moved to
+  `Algebra.Properties.CommutativeMonoid.Multiplication`. The definition of summation
+  which was defined over the deprecated `Data.Table` has been redefined in terms of
+  `Data.Vec.Functional` and been moved to `Algbra.Properties.CommutativeMonoid.Summation`.
+  The properties of summation in `Algebra.Properties.CommutativeMonoid` have likewise
+  been deprecated and moved to `Algebra.Properties.CommutativeMonoid.Summation`.
+
 Deprecated names
 ----------------
 
@@ -123,6 +131,22 @@ New modules
   Algebra.Properties.Semigroup.Divisibility
   Algebra.Properties.Monoid.Divisibility
   Algebra.Properties.CommutativeSemigroup.Divisibility
+  ```
+
+* Generic summations over algebraic structures
+  ```
+  Algebra.Properties.Monoid.Summation
+  Algebra.Properties.CommutativeMonoid.Summation
+  ```
+
+* Generic multiplication over algebraic structures
+  ```
+  Algebra.Properties.Monoid.Multiplication
+  ```
+
+* Setoid equality over vectors:
+  ```
+  Data.Vec.Functional.Relation.Binary.Equality.Setoid
   ```
 
 * Heterogeneous relation characterising a list as an infix segment of another:
