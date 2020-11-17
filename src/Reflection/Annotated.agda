@@ -139,7 +139,7 @@ mutual
     var    : ∀ x → Patternₐ′ Ann (var x)
     lit    : ∀ l → Patternₐ′ Ann (lit l)
     proj   : ∀ f → Patternₐ′ Ann (proj f)
-    absurd : Patternₐ′ Ann absurd
+    absurd : ∀ x → Patternₐ′ Ann (absurd x)
 
 
 -- Mapping a code in the universe to its corresponding primed and
@@ -194,7 +194,7 @@ module _ (annFun : AnnotationFun Ann) where
     annotate′ {⟨pat⟩}     (var x)                = var x
     annotate′ {⟨pat⟩}     (lit l)                = lit l
     annotate′ {⟨pat⟩}     (proj f)               = proj f
-    annotate′ {⟨pat⟩}     absurd                 = absurd
+    annotate′ {⟨pat⟩}     (absurd x)             = absurd x
     annotate′ {⟨sort⟩}    (set t)                = set (annotate t)
     annotate′ {⟨sort⟩}    (lit n)                = lit n
     annotate′ {⟨sort⟩}    unknown                = unknown
@@ -231,7 +231,7 @@ mutual
   map′ ⟨pat⟩       f (var x)              = var x
   map′ ⟨pat⟩       f (lit l)              = lit l
   map′ ⟨pat⟩       f (proj g)             = proj g
-  map′ ⟨pat⟩       f absurd               = absurd
+  map′ ⟨pat⟩       f (absurd x)           = absurd x
   map′ ⟨sort⟩      f (set t)              = set (map f t)
   map′ ⟨sort⟩      f (lit n)              = lit n
   map′ ⟨sort⟩      f unknown              = unknown
@@ -268,7 +268,7 @@ module _ {W : Set ℓ} (ε : W) (_∪_ : W → W → W) where
   defaultAnn ⟨pat⟩       (var x)              = ε
   defaultAnn ⟨pat⟩       (lit l)              = ε
   defaultAnn ⟨pat⟩       (proj f)             = ε
-  defaultAnn ⟨pat⟩       absurd               = ε
+  defaultAnn ⟨pat⟩       (absurd x)           = ε
   defaultAnn ⟨sort⟩      (set t)              = ann t
   defaultAnn ⟨sort⟩      (lit n)              = ε
   defaultAnn ⟨sort⟩      unknown              = ε
@@ -318,7 +318,7 @@ module Traverse {M : Set → Set} (appl : RawApplicative M) where
       traverse′ {⟨pat⟩}     (var x)              = pure (var x)
       traverse′ {⟨pat⟩}     (lit l)              = pure (lit l)
       traverse′ {⟨pat⟩}     (proj f)             = pure (proj f)
-      traverse′ {⟨pat⟩}     absurd               = pure absurd
+      traverse′ {⟨pat⟩}     (absurd x)           = pure (absurd x)
       traverse′ {⟨sort⟩}    (set t)              = set <$> traverse t
       traverse′ {⟨sort⟩}    (lit n)              = pure (lit n)
       traverse′ {⟨sort⟩}    unknown              = pure unknown

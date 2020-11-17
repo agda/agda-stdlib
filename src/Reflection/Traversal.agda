@@ -120,7 +120,7 @@ module _ (actions : Actions) where
   traversePattern Γ (Pattern.var x)    = Pattern.var <$> onVar Γ x
   traversePattern Γ p@(Pattern.lit _)  = pure p
   traversePattern Γ p@(Pattern.proj _) = pure p
-  traversePattern Γ p@Pattern.absurd   = pure p
+  traversePattern Γ (Pattern.absurd x) = Pattern.absurd <$> onVar Γ x
 
   traversePats Γ [] = pure []
   traversePats Γ (arg i p ∷ ps) = _∷_ ∘ arg i <$> traversePattern Γ p ⊛ traversePats Γ ps

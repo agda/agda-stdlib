@@ -54,6 +54,7 @@ private
 freeVars : AnnotationFun (λ _ → FVs)
 freeVars ⟨term⟩    (var x (⟨ fv ⟩ _))                                      = insert x fv
 freeVars ⟨pat⟩     (var x)                                                 = x ∷ []
+freeVars ⟨pat⟩     (absurd x)                                              = x ∷ []
          -- Note: variables are bound in the clause telescope, so we treat pattern variables as free
 freeVars ⟨clause⟩  (clause {tel = Γ} (⟨ fvΓ ⟩ _) (⟨ fvps ⟩ _) (⟨ fvt ⟩ _)) = fvΓ ∪ close (length Γ) (fvps ∪ fvt)
 freeVars ⟨clause⟩  (absurd-clause {tel = Γ} (⟨ fvΓ ⟩ _) (⟨ fvps ⟩ _))      = fvΓ ∪ close (length Γ) fvps
