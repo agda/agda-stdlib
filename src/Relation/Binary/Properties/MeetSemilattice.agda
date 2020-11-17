@@ -15,7 +15,7 @@ open MeetSemilattice M
 
 open import Algebra.Definitions _≈_
 open import Data.Product
-open import Function using (flip)
+open import Function.Base using (flip)
 open import Relation.Binary
 open import Relation.Binary.Properties.Poset poset
 import Relation.Binary.Properties.JoinSemilattice as J

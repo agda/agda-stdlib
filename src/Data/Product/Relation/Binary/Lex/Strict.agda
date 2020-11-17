@@ -16,7 +16,7 @@ open import Data.Product.Relation.Binary.Pointwise.NonDependent as Pointwise
   using (Pointwise)
 open import Data.Sum.Base using (inj₁; inj₂; _-⊎-_; [_,_])
 open import Data.Empty
-open import Function
+open import Function.Base
 open import Induction.WellFounded
 open import Level
 open import Relation.Nullary

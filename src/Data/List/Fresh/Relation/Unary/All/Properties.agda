@@ -12,7 +12,7 @@ open import Level using (Level; _⊔_; Lift)
 open import Data.Empty
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Product using (_,_)
-open import Function using (_∘′_)
+open import Function.Base using (_∘′_)
 open import Relation.Nullary
 open import Relation.Unary  as U
 open import Relation.Binary as B using (Rel)

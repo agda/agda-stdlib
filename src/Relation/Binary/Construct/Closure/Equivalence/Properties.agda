@@ -9,7 +9,7 @@
 module Relation.Binary.Construct.Closure.Equivalence.Properties where
 
 open import Data.Sum.Base using (inj₁)
-open import Function using (_∘′_)
+open import Function.Base using (_∘′_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Construct.Closure.Equivalence
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive as RTrans

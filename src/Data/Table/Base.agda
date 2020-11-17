@@ -18,7 +18,7 @@ open import Data.Fin.Base
 open import Data.Product using (_×_ ; _,_)
 open import Data.List.Base as List using (List)
 open import Data.Vec.Base as Vec using (Vec)
-open import Function using (_∘_; flip)
+open import Function.Base using (_∘_; flip)
 open import Level using (Level)
 
 private

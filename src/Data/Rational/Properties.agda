@@ -33,7 +33,8 @@ import Data.Rational.Unnormalised.Properties as ℚᵘ
 open import Data.Sum.Base
 open import Data.Unit using (tt)
 import Data.Sign as S
-open import Function using (_∘_ ; _$_; Injective)
+open import Function.Base using (_∘_ ; _$_)
+open import Function.Definitions using (Injective)
 open import Level using (0ℓ)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality

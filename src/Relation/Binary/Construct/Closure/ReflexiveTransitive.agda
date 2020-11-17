@@ -9,7 +9,7 @@
 module Relation.Binary.Construct.Closure.ReflexiveTransitive where
 
 open import Relation.Binary
-open import Function
+open import Function.Base
 open import Level using (_⊔_)
 
 infixr 5 _◅_

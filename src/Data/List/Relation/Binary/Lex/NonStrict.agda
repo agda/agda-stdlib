@@ -12,7 +12,7 @@
 module Data.List.Relation.Binary.Lex.NonStrict where
 
 open import Data.Empty using (⊥)
-open import Function
+open import Function.Base
 open import Data.Unit.Base using (⊤; tt)
 open import Data.Product
 open import Data.List.Base

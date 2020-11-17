@@ -20,7 +20,7 @@ module Relation.Binary.Reasoning.Base.Triple {a ℓ₁ ℓ₂ ℓ₃} {A : Set a
   where
 
 open import Data.Product using (proj₁; proj₂)
-open import Function using (case_of_; id)
+open import Function.Base using (case_of_; id)
 open import Level using (Level; _⊔_; Lift; lift)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; refl; sym)

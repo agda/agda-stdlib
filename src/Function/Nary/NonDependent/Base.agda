@@ -18,7 +18,7 @@ open import Level using (Level; 0ℓ; _⊔_)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Product using (_×_; _,_)
 open import Data.Unit.Polymorphic.Base
-open import Function using (_∘′_; _$′_; const; flip)
+open import Function.Base using (_∘′_; _$′_; const; flip)
 
 private
   variable

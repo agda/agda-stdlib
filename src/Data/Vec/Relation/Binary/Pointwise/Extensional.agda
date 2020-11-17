@@ -15,7 +15,7 @@ open import Data.Vec.Relation.Binary.Pointwise.Inductive as Inductive
   using ([]; _∷_)
   renaming (Pointwise to IPointwise)
 open import Level using (_⊔_)
-open import Function using (_∘_)
+open import Function.Base using (_∘_)
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence as Equiv
   using (_⇔_; ⇔-setoid; equivalence; module Equivalence)

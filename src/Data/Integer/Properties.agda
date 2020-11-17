@@ -26,7 +26,7 @@ open import Data.Product using (proj₁; proj₂; _,_)
 open import Data.Sum.Base as Sum using (inj₁; inj₂)
 open import Data.Sign as Sign using () renaming (_*_ to _𝕊*_)
 import Data.Sign.Properties as 𝕊ₚ
-open import Function using (_∘_; _$_)
+open import Function.Base using (_∘_; _$_)
 open import Level using (0ℓ)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality

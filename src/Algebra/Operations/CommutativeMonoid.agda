@@ -13,7 +13,7 @@ open import Algebra
 open import Data.List.Base as List using (List; []; _∷_; _++_)
 open import Data.Fin.Base using (Fin; zero)
 open import Data.Table.Base as Table using (Table)
-open import Function using (_∘_)
+open import Function.Base using (_∘_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
 module Algebra.Operations.CommutativeMonoid
