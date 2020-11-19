@@ -10,7 +10,7 @@ open import Relation.Binary
 
 module Data.List.Membership.Setoid {c ℓ} (S : Setoid c ℓ) where
 
-open import Function using (_∘_; id; flip)
+open import Function.Base using (_∘_; id; flip)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base as List using (List; []; _∷_; length; lookup)
 open import Data.List.Relation.Unary.Any

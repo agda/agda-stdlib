@@ -18,7 +18,7 @@ import Data.Nat.Properties as ℕₚ
 open import Data.Nat.Solver
 open import Data.Product using (_,_; proj₁; proj₂; ∃)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
-open import Function using (_∘_; _$_; id)
+open import Function.Base using (_∘_; _$_; id)
 open import Function.Definitions using (Injective)
 open import Function.Definitions.Core2 using (Surjective)
 open import Level using (0ℓ)

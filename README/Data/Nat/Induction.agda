@@ -10,7 +10,7 @@ module README.Data.Nat.Induction where
 open import Data.Nat
 open import Data.Nat.Induction
 open import Data.Product using (_,_)
-open import Function using (_∘_)
+open import Function.Base using (_∘_)
 open import Induction.WellFounded
 open import Relation.Binary.PropositionalEquality
 

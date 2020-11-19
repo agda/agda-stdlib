@@ -34,6 +34,7 @@ private
 
 ------------------------------------------------------------------------
 -- Setoid bundles
+------------------------------------------------------------------------
 
 module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
 
@@ -42,11 +43,15 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
   open FunctionDefinitions _≈₁_ _≈₂_
   open FunctionStructures  _≈₁_ _≈₂_
 
-  record Injection : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+------------------------------------------------------------------------
+-- Bundles with one element
+
+  -- Called `Func` rather than `Function` in order to avoid clashing
+  -- with the top-level module.
+  record Func : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
-      f           : A → B
-      cong        : f Preserves _≈₁_ ⟶ _≈₂_
-      injective   : Injective f
+      f    : A → B
+      cong : f Preserves _≈₁_ ⟶ _≈₂_
 
     isCongruent : IsCongruent f
     isCongruent = record
@@ -55,13 +60,31 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       ; isEquivalence₂ = isEquivalence To
       }
 
-    open IsCongruent isCongruent public using (module Eq₁; module Eq₂)
+    open IsCongruent isCongruent public
+      using (module Eq₁; module Eq₂)
+
+
+  record Injection : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      f           : A → B
+      cong        : f Preserves _≈₁_ ⟶ _≈₂_
+      injective   : Injective f
+
+    function : Func
+    function = record
+      { f    = f
+      ; cong = cong
+      }
+
+    open Func function public
+      hiding (f; cong)
 
     isInjection : IsInjection f
     isInjection = record
       { isCongruent = isCongruent
       ; injective   = injective
       }
+
 
   record Surjection : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
@@ -120,6 +143,9 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
 
     open IsBijection isBijection public using (module Eq₁; module Eq₂)
 
+
+------------------------------------------------------------------------
+-- Bundles with two elements
 
   record Equivalence : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
@@ -189,6 +215,49 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       }
 
 
+  record Inverse : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      f         : A → B
+      f⁻¹       : B → A
+      cong₁     : f Preserves _≈₁_ ⟶ _≈₂_
+      cong₂     : f⁻¹ Preserves _≈₂_ ⟶ _≈₁_
+      inverse   : Inverseᵇ f f⁻¹
+
+    inverseˡ : Inverseˡ f f⁻¹
+    inverseˡ = proj₁ inverse
+
+    inverseʳ : Inverseʳ f f⁻¹
+    inverseʳ = proj₂ inverse
+
+    leftInverse : LeftInverse
+    leftInverse = record
+      { cong₁    = cong₁
+      ; cong₂    = cong₂
+      ; inverseˡ = inverseˡ
+      }
+
+    rightInverse : RightInverse
+    rightInverse = record
+      { cong₁    = cong₁
+      ; cong₂    = cong₂
+      ; inverseʳ = inverseʳ
+      }
+
+    open LeftInverse leftInverse   public using (isLeftInverse)
+    open RightInverse rightInverse public using (isRightInverse)
+
+    isInverse : IsInverse f f⁻¹
+    isInverse = record
+      { isLeftInverse = isLeftInverse
+      ; inverseʳ      = inverseʳ
+      }
+
+    open IsInverse isInverse public using (module Eq₁; module Eq₂)
+
+
+------------------------------------------------------------------------
+-- Bundles with three elements
+
   record BiEquivalence : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       f     : A → B
@@ -234,49 +303,13 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       }
 
 
-  record Inverse : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
-    field
-      f         : A → B
-      f⁻¹       : B → A
-      cong₁     : f Preserves _≈₁_ ⟶ _≈₂_
-      cong₂     : f⁻¹ Preserves _≈₂_ ⟶ _≈₁_
-      inverse   : Inverseᵇ f f⁻¹
-
-    inverseˡ : Inverseˡ f f⁻¹
-    inverseˡ = proj₁ inverse
-
-    inverseʳ : Inverseʳ f f⁻¹
-    inverseʳ = proj₂ inverse
-
-    leftInverse : LeftInverse
-    leftInverse = record
-      { cong₁    = cong₁
-      ; cong₂    = cong₂
-      ; inverseˡ = inverseˡ
-      }
-
-    rightInverse : RightInverse
-    rightInverse = record
-      { cong₁    = cong₁
-      ; cong₂    = cong₂
-      ; inverseʳ = inverseʳ
-      }
-
-    open LeftInverse leftInverse   public using (isLeftInverse)
-    open RightInverse rightInverse public using (isRightInverse)
-
-    isInverse : IsInverse f f⁻¹
-    isInverse = record
-      { isLeftInverse = isLeftInverse
-      ; inverseʳ      = inverseʳ
-      }
-
-    open IsInverse isInverse public using (module Eq₁; module Eq₂)
-
 ------------------------------------------------------------------------
 -- Bundles specialised for propositional equality
+------------------------------------------------------------------------
 
-infix 3 _↣_ _↠_ _⤖_ _⇔_ _↩_ _↪_ _↩↪_ _↔_
+infix 3 _⟶_ _↣_ _↠_ _⤖_ _⇔_ _↩_ _↪_ _↩↪_ _↔_
+_⟶_ : Set a → Set b → Set _
+A ⟶ B = Func (≡.setoid A) (≡.setoid B)
 
 _↣_ : Set a → Set b → Set _
 A ↣ B = Injection (≡.setoid A) (≡.setoid B)
@@ -308,6 +341,12 @@ A ↔ B = Inverse (≡.setoid A) (≡.setoid B)
 module _ {A : Set a} {B : Set b} where
 
   open FunctionDefinitions {A = A} {B} _≡_ _≡_
+
+  mk⟶ : (A → B) → A ⟶ B
+  mk⟶ f = record
+    { f         = f
+    ; cong      = ≡.cong f
+    }
 
   mk↣ : ∀ {f : A → B} → Injective f → A ↣ B
   mk↣ {f} inj = record

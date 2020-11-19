@@ -9,7 +9,7 @@
 module Relation.Binary.Construct.Closure.SymmetricTransitive where
 
 open import Level
-open import Function
+open import Function.Base
 open import Relation.Binary
 
 private

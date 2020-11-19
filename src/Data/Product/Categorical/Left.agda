@@ -22,7 +22,7 @@ open import Data.Product
 import Data.Product.Categorical.Left.Base as Base
 open import Category.Applicative using (RawApplicative)
 open import Category.Monad using (RawMonad; RawMonadT)
-open import Function using (id; flip; _∘_; _∘′_)
+open import Function.Base using (id; flip; _∘_; _∘′_)
 import Function.Identity.Categorical as Id
 
 open RawMonoid A

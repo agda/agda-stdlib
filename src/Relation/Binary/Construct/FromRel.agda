@@ -16,7 +16,7 @@ module Relation.Binary.Construct.FromRel
   where
 
 open import Data.Product
-open import Function
+open import Function.Base
 open import Level using (_⊔_)
 
 open module Eq = Setoid S using (_≈_) renaming (Carrier to B)

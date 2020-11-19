@@ -21,7 +21,7 @@ open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
 open import Data.Product using (Σ; ∃; _×_; _,_; proj₁; proj₂; uncurry)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Data.Vec.Base as V using (Vec)
-open import Function
+open import Function.Base
 open import Level using (Level)
 
 infixr 5 _∷_ _++_
