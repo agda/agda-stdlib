@@ -115,7 +115,7 @@ mutual
   showPattern (var x)    = "pat-var" <+> ℕ.show x
   showPattern (lit l)    = showLiteral l
   showPattern (proj f)   = showName f
-  showPattern absurd     = "()"
+  showPattern (absurd _) = "()"
 
   showClause : Clause → String
   showClause (clause tel ps t)      = "[" <+> showTel tel <+> "]" <+> showPatterns ps <+> "→" <+> showTerm t

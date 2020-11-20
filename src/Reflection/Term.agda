@@ -379,43 +379,46 @@ proj-injective refl = refl
 dot-injective : ∀ {x y} → dot x ≡ dot y → x ≡ y
 dot-injective refl = refl
 
+absurd-injective : ∀ {x y} → absurd x ≡ absurd y → x ≡ y
+absurd-injective refl = refl
+
 con c ps ≟-Pattern con c′ ps′ = Dec.map′ (uncurry (cong₂ con)) pat-con-injective (c Name.≟ c′ ×-dec ps ≟-Patterns ps′)
 var x    ≟-Pattern var x′     = Dec.map′ (cong var) pat-var-injective (x ℕ.≟ x′)
 lit l    ≟-Pattern lit l′     = Dec.map′ (cong lit) pat-lit-injective (l Literal.≟ l′)
 proj a   ≟-Pattern proj a′    = Dec.map′ (cong proj) proj-injective (a Name.≟ a′)
 dot t    ≟-Pattern dot t′     = Dec.map′ (cong dot) dot-injective (t ≟ t′)
+absurd x ≟-Pattern absurd x′  = Dec.map′ (cong absurd) absurd-injective (x ℕ.≟ x′)
 
 con x x₁ ≟-Pattern dot x₂ = no (λ ())
 con x x₁ ≟-Pattern var x₂ = no (λ ())
 con x x₁ ≟-Pattern lit x₂ = no (λ ())
 con x x₁ ≟-Pattern proj x₂ = no (λ ())
-con x x₁ ≟-Pattern absurd = no (λ ())
+con x x₁ ≟-Pattern absurd x₂ = no (λ ())
 dot x ≟-Pattern con x₁ x₂ = no (λ ())
 dot x ≟-Pattern var x₁ = no (λ ())
 dot x ≟-Pattern lit x₁ = no (λ ())
 dot x ≟-Pattern proj x₁ = no (λ ())
-dot x ≟-Pattern absurd = no (λ ())
+dot x ≟-Pattern absurd x₁ = no (λ ())
 var s ≟-Pattern con x x₁ = no (λ ())
 var s ≟-Pattern dot x = no (λ ())
 var s ≟-Pattern lit x = no (λ ())
 var s ≟-Pattern proj x = no (λ ())
-var s ≟-Pattern absurd = no (λ ())
+var s ≟-Pattern absurd x = no (λ ())
 lit x ≟-Pattern con x₁ x₂ = no (λ ())
 lit x ≟-Pattern dot x₁ = no (λ ())
 lit x ≟-Pattern var _ = no (λ ())
 lit x ≟-Pattern proj x₁ = no (λ ())
-lit x ≟-Pattern absurd = no (λ ())
+lit x ≟-Pattern absurd x₁ = no (λ ())
 proj x ≟-Pattern con x₁ x₂ = no (λ ())
 proj x ≟-Pattern dot x₁ = no (λ ())
 proj x ≟-Pattern var _ = no (λ ())
 proj x ≟-Pattern lit x₁ = no (λ ())
-proj x ≟-Pattern absurd = no (λ ())
-absurd ≟-Pattern con x x₁ = no (λ ())
-absurd ≟-Pattern dot x₁ = no (λ ())
-absurd ≟-Pattern var _ = no (λ ())
-absurd ≟-Pattern lit x = no (λ ())
-absurd ≟-Pattern proj x = no (λ ())
-absurd ≟-Pattern absurd = yes refl
+proj x ≟-Pattern absurd x₁ = no (λ ())
+absurd x ≟-Pattern con x₁ x₂ = no (λ ())
+absurd x ≟-Pattern dot x₁ = no (λ ())
+absurd x ≟-Pattern var _ = no (λ ())
+absurd x ≟-Pattern lit x₁ = no (λ ())
+absurd x ≟-Pattern proj x₁ = no (λ ())
 
 []             ≟-Patterns []             = yes refl
 (arg i p ∷ xs) ≟-Patterns (arg j q ∷ ys) = Lₚ.∷-dec (unArg-dec (p ≟-Pattern q)) (xs ≟-Patterns ys)
