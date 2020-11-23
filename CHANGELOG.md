@@ -366,6 +366,11 @@ Other minor additions
 
 * Added infix declarations to `Data.Product.∃-syntax` and `Data.Product.∄-syntax`.
 
+* Added new function to `Data.List.Base`:
+  ```agda
+  unsnoc : List A → Maybe (List A × A)
+  ```
+
 * Added new definitions to `Function.Bundles`:
   ```agda
   record Func : Set _
