@@ -59,6 +59,13 @@ Non-backwards compatible changes
   to `Data.List.Relation.Binary.BagAndSetEquality` as their current location
   were causing cyclic import dependencies.
 
+* Clean up of `IO` to make it more friendly:
+  + Renamed `_>>=_` and `_>>_` to `_‵bind‵_` and `_‵seq‵_` respectively to free up the names
+    for `do`-notation friendly combinators.
+  + Introduced `Colist` and `List` modules for the various `sequence` and `mapM` functions.
+    This breaks code that relied on the `Colist`-specific function being exported as part of `IO`.
+
+
 Deprecated modules
 ------------------
 
@@ -388,4 +395,9 @@ Other minor additions
   ```agda
   function : Func S S
   id-⟶     : A ⟶ A
+  ```
+
+* Added new function to `Data.String.Base`:
+  ```agda
+  lines : String → List String
   ```

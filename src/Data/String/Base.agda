@@ -89,9 +89,6 @@ intersperse sep = concat ∘′ (List.intersperse sep)
 
 -- String-specific functions
 
-unlines : List String → String
-unlines = intersperse "\n"
-
 wordsBy : ∀ {p} {P : Pred Char p} → Decidable P → String → List String
 wordsBy P? = List.map fromList ∘ List.wordsBy P? ∘ toList
 
@@ -100,6 +97,12 @@ words = wordsBy (T? ∘ Char.isSpace)
 
 unwords : List String → String
 unwords = intersperse " "
+
+lines : String → List String
+lines = wordsBy ('\n' Char.≟_)
+
+unlines : List String → String
+unlines = intersperse "\n"
 
 parens : String → String
 parens s = "(" ++ s ++ ")"
