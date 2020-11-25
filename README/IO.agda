@@ -57,4 +57,4 @@ open import Data.Unit.Polymorphic.Base
 -- you reach the end!
 isFinite : ∀ {a} {A : Set a} → Colist A → IO Bool
 isFinite []       = return true
-isFinite (x ∷ xs) = ♯ return tt ‵seq‵ ♯ isFinite (♭ xs)
+isFinite (x ∷ xs) = seq (♯ return tt) (♯ isFinite (♭ xs))

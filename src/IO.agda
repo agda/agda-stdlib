@@ -30,13 +30,11 @@ private
 -- introduced to avoid this problem. Possible non-termination is
 -- isolated to the run function below.
 
-infixl 1 _‵bind‵_ _‵seq‵_
-
 data IO (A : Set a) : Set (suc a) where
-  lift     : (m : Prim.IO A) → IO A
-  return   : (x : A) → IO A
-  _‵bind‵_ : {B : Set a} (m : ∞ (IO B)) (f : (x : B) → ∞ (IO A)) → IO A
-  _‵seq‵_  : {B : Set a} (m₁ : ∞ (IO B)) (m₂ : ∞ (IO A)) → IO A
+  lift   : (m : Prim.IO A) → IO A
+  return : (x : A) → IO A
+  bind   : {B : Set a} (m : ∞ (IO B)) (f : (x : B) → ∞ (IO A)) → IO A
+  seq    : {B : Set a} (m₁ : ∞ (IO B)) (m₂ : ∞ (IO A)) → IO A
 
 pure : {A : Set a} → A → IO A
 pure = return
@@ -46,21 +44,21 @@ module _ {A B : Set a} where
   infixl 1 _<*>_ _>>=_ _>>_
 
   _<*>_ : IO (A → B) → IO A → IO B
-  mf <*> mx = ♯ mf ‵bind‵ λ f → ♯ (♯ mx ‵bind‵ λ x → ♯ pure (f x))
+  mf <*> mx = bind (♯ mf) λ f → ♯ (bind (♯ mx) λ x → ♯ pure (f x))
 
   _>>=_ : IO A → (A → IO B) → IO B
-  m >>= f = ♯ m ‵bind‵ λ x → ♯ f x
+  m >>= f = bind (♯ m) λ x → ♯ f x
 
   _>>_ : IO A → IO B → IO B
-  m₁ >> m₂ = ♯ m₁ ‵seq‵ ♯ m₂
+  m₁ >> m₂ = seq (♯ m₁) (♯ m₂)
 
 {-# NON_TERMINATING #-}
 
 run : {A : Set a} → IO A → Prim.IO A
-run (lift m)   = m
-run (return x) = Prim.return x
-run (m  ‵bind‵ f) = Prim._>>=_ (run (♭ m )) λ x → run (♭ (f x))
-run (m₁ ‵seq‵ m₂) = Prim._>>=_ (run (♭ m₁)) λ _ → run (♭ m₂)
+run (lift m)    = m
+run (return x)  = Prim.return x
+run (bind m f)  = Prim._>>=_ (run (♭ m )) λ x → run (♭ (f x))
+run (seq m₁ m₂) = Prim._>>=_ (run (♭ m₁)) λ _ → run (♭ m₂)
 
 ------------------------------------------------------------------------
 -- Utilities
@@ -73,16 +71,16 @@ module Colist where
 
     sequence : Colist (IO A) → IO (Colist A)
     sequence []       = return []
-    sequence (c ∷ cs) = ♯ c                  ‵bind‵ λ x  →
-                        ♯ (♯ sequence (♭ cs) ‵bind‵ λ xs →
-                        ♯ return (x ∷ ♯ xs))
+    sequence (c ∷ cs) = bind (♯ c)               λ x  → ♯
+                        bind (♯ sequence (♭ cs)) λ xs → ♯
+                        return (x ∷ ♯ xs)
 
     -- The reason for not defining sequence′ in terms of sequence is
     -- efficiency (the unused results could cause unnecessary memory use).
 
     sequence′ : Colist (IO A) → IO ⊤
     sequence′ []       = return _
-    sequence′ (c ∷ cs) = ♯ c ‵seq‵ ♯ sequence′ (♭ cs)
+    sequence′ (c ∷ cs) = seq (♯ c) (♯ sequence′ (♭ cs))
 
   module _ {A : Set a} {B : Set b} where
 

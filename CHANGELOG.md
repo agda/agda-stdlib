@@ -60,7 +60,7 @@ Non-backwards compatible changes
   were causing cyclic import dependencies.
 
 * Clean up of `IO` to make it more friendly:
-  + Renamed `_>>=_` and `_>>_` to `_‵bind‵_` and `_‵seq‵_` respectively to free up the names
+  + Renamed `_>>=_` and `_>>_` to `bind` and `seq` respectively to free up the names
     for `do`-notation friendly combinators.
   + Introduced `Colist` and `List` modules for the various `sequence` and `mapM` functions.
     This breaks code that relied on the `Colist`-specific function being exported as part of `IO`.
