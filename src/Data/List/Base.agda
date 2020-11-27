@@ -29,7 +29,7 @@ open import Relation.Binary as B using (Rel)
 
 private
   variable
-    a b c p : Level
+    a b c p ℓ : Level
     A : Set a
     B : Set b
     C : Set c
@@ -116,6 +116,13 @@ unzip = unzipWith id
 
 partitionSums : List (A ⊎ B) → List A × List B
 partitionSums = partitionSumsWith id
+
+merge : {R : Rel A ℓ} → B.Decidable R → List A → List A → List A
+merge R? []       ys       = ys
+merge R? xs       []       = xs
+merge R? (x ∷ xs) (y ∷ ys) = if does (R? x y)
+  then x ∷ merge R? xs (y ∷ ys)
+  else y ∷ merge R? (x ∷ xs) ys
 
 ------------------------------------------------------------------------
 -- Operations for reducing lists
@@ -251,9 +258,9 @@ tail []       = nothing
 tail (_ ∷ xs) = just xs
 
 last : List A → Maybe A
-last []           = nothing
-last (x ∷ [])     = just x
-last (x ∷ y ∷ xs) = last (y ∷ xs)
+last []       = nothing
+last (x ∷ []) = just x
+last (x ∷ xs) = last xs
 
 take : ℕ → List A → List A
 take zero    xs       = []

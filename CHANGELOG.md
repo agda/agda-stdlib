@@ -6,6 +6,8 @@ The library has been tested using Agda 2.6.1 and 2.6.1.1.
 Highlights
 ----------
 
+* First verified implementation of a sorting algorithm (available from `Data.List.Sort`).
+
 Bug-fixes
 ---------
 
@@ -181,7 +183,7 @@ New modules
   ```
   Data.List.Sort
   Data.List.Sort.Base
-  Data.List.Sort.QuickSort
+  Data.List.Sort.MergeSort
   ```
 
 * Heterogeneous relation characterising a list as an infix segment of another:
@@ -327,7 +329,8 @@ Other minor additions
 
 * Added new function in `Data.List.Base`:
   ```agda
-  last : List A → Maybe A
+  last  : List A → Maybe A
+  merge : Decidable R → List A → List A → List A
   ```
 
 * Added new proof in `Data.List.Properties`:
@@ -337,7 +340,9 @@ Other minor additions
 
 * Added new proof in `Data.List.Relation.Binary.Permutation.Setoid.Properties`:
   ```agda
-  partition-↭ : (let ys , zs = partition P? xs) → xs ↭ ys ++ zs
+  ↭-shift     : xs ++ [ v ] ++ ys ↭ v ∷ xs ++ ys
+  ↭-merge     : merge R? xs ys ↭ xs ++ ys
+  ↭-partition : (let ys , zs = partition P? xs) → xs ↭ ys ++ zs
   ```
 
 * Added new proofs in `Data.List.Relation.Unary.All.Properties`:
@@ -346,6 +351,15 @@ Other minor additions
   last⁺ : All P xs → Maybe.All P (last xs)
   ```
 
+* Added new operations in `Data.List.Relation.Unary.Linked`:
+  ```agda
+  head′ : Linked R (x ∷ xs) → Connected R (just x) (head xs)
+  _∷′_  : Connected R (just x) (head xs) → Linked R xs → Linked R (x ∷ xs)
+  ```
+
+* Generalised the type of operation `tail` in `Data.List.Relation.Unary.Linked`
+  from `Linked R (x ∷ y ∷ xs) → Linked R (y ∷ xs)` to `Linked R (x ∷ xs) → Linked R xs`.
+
 * Added new proof in `Data.List.Relation.Unary.Linked.Properties`:
   ```agda
   ++⁺ : Linked R xs → Connected R (last xs) (head ys) → Linked R ys → Linked R (xs ++ ys)
@@ -353,7 +367,8 @@ Other minor additions
 
 * Added new proof in `Data.List.Relation.Unary.Sorted.TotalOrder.Properties`:
   ```agda
-  ++⁺ : Sorted O xs → Connected _≤_ (last xs) (head ys) → Sorted O ys → Sorted O (xs ++ ys)
+  ++⁺    : Sorted O xs → Connected _≤_ (last xs) (head ys) → Sorted O ys → Sorted O (xs ++ ys)
+  merge⁺ : Sorted O xs → Sorted O ys → Sorted O (merge _≤?_ xs ys)
   ```
 
 * Added new proofs in `Data.Maybe.Relation.Unary.All.Properties`:

@@ -7,6 +7,8 @@
 -- See `Data.List.Relation.Unary.Sorted` for the property of a list
 -- being sorted.
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Data.List.Base using (List)
 open import Relation.Binary using (DecTotalOrder)
 
@@ -15,8 +17,6 @@ module Data.List.Sort
   where
 
 open DecTotalOrder O renaming (Carrier to A)
-open import Data.List.Relation.Binary.Permutation.Setoid Eq.setoid
-open import Data.List.Relation.Unary.Sorted.TotalOrder totalOrder
 
 ------------------------------------------------------------------------
 -- Re-export core definitions
@@ -27,22 +27,15 @@ open import Data.List.Sort.Base totalOrder public
 ------------------------------------------------------------------------
 -- An instance of a sorting algorithm
 
+open import Data.List.Sort.MergeSort O using (mergeSort)
+
 abstract
+  sortingAlgorithm : SortingAlgorithm
+  sortingAlgorithm = mergeSort
 
-  import Data.List.Sort.QuickSort O as Quicksort
-
-  sort : List A → List A
-  sort = Quicksort.sort
-
-  sort-↭ : ∀ xs → sort xs ↭ xs
-  sort-↭ = Quicksort.sort-↭
-
-  sort-↗ : ∀ xs → Sorted (sort xs)
-  sort-↗ = Quicksort.sort-↗
-
-sortingAlgorithm : SortingAlgorithm
-sortingAlgorithm = record
-  { sort   = sort
-  ; sort-↭ = sort-↭
-  ; sort-↗ = sort-↗
-  }
+open SortingAlgorithm sortingAlgorithm public
+  using
+  ( sort   -- : List A → List A
+  ; sort-↭ -- : ∀ xs → sort xs ↭ xs
+  ; sort-↗ -- : ∀ xs → Sorted (sort xs)
+  )
