@@ -7,6 +7,7 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Data.List.Base using (List)
+open import Data.List.Relation.Binary.Permutation.Propositional
 open import Level using (_⊔_)
 open import Relation.Binary using (TotalOrder)
 
@@ -15,7 +16,6 @@ module Data.List.Sort.Base
   where
 
 open TotalOrder totalOrder renaming (Carrier to A)
-open import Data.List.Relation.Binary.Permutation.Setoid Eq.setoid
 open import Data.List.Relation.Unary.Sorted.TotalOrder totalOrder
 
 ------------------------------------------------------------------------

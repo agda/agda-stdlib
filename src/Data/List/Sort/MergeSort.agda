@@ -17,6 +17,8 @@ open import Data.List.Relation.Unary.Linked using ([]; [-])
 import Data.List.Relation.Unary.Sorted.TotalOrder.Properties as Sorted
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 import Data.List.Relation.Unary.All.Properties as All
+open import Data.List.Relation.Binary.Permutation.Propositional
+import Data.List.Relation.Binary.Permutation.Propositional.Properties as Perm
 open import Data.Maybe.Base using (just)
 open import Relation.Nullary using (does)
 open import Data.Nat using (_<_; _>_; z≤n; s≤s)
@@ -34,8 +36,6 @@ open DecTotalOrder O renaming (Carrier to A)
 
 open import Data.List.Sort.Base totalOrder
 open import Data.List.Relation.Unary.Sorted.TotalOrder totalOrder hiding (head)
-open import Data.List.Relation.Binary.Permutation.Setoid Eq.setoid
-import Data.List.Relation.Binary.Permutation.Setoid.Properties Eq.setoid as Perm
 open import Relation.Binary.Properties.DecTotalOrder O using (_≰_; ≰⇒≥; ≰-respˡ-≈)
 
 open PermutationReasoning
