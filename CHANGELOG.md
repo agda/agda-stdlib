@@ -288,3 +288,8 @@ Other minor additions
   ```
 
 * Added infix declarations to `Data.Product.∃-syntax` and `Data.Product.∄-syntax`.
+
+* Added new property to `Data.String.Unsafe`:
+  ```agda
+  length-uncons : length s ≡ maybe′ (suc ∘′ length ∘′ proj₂) zero (uncons s)
+  ```
