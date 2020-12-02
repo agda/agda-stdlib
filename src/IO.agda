@@ -9,13 +9,16 @@
 module IO where
 
 open import Codata.Musical.Notation
-open import Codata.Musical.Colist
 open import Codata.Musical.Costring
 open import Data.Unit.Polymorphic
 open import Data.String
 open import Function
 import IO.Primitive as Prim
 open import Level
+
+private
+  variable
+    a b : Level
 
 ------------------------------------------------------------------------
 -- The IO monad
@@ -27,50 +30,96 @@ open import Level
 -- introduced to avoid this problem. Possible non-termination is
 -- isolated to the run function below.
 
-infixl 1 _>>=_ _>>_
-
-data IO {a} (A : Set a) : Set (suc a) where
+data IO (A : Set a) : Set (suc a) where
   lift   : (m : Prim.IO A) → IO A
   return : (x : A) → IO A
-  _>>=_  : {B : Set a} (m : ∞ (IO B)) (f : (x : B) → ∞ (IO A)) → IO A
-  _>>_   : {B : Set a} (m₁ : ∞ (IO B)) (m₂ : ∞ (IO A)) → IO A
+  bind   : {B : Set a} (m : ∞ (IO B)) (f : (x : B) → ∞ (IO A)) → IO A
+  seq    : {B : Set a} (m₁ : ∞ (IO B)) (m₂ : ∞ (IO A)) → IO A
+
+pure : {A : Set a} → A → IO A
+pure = return
+
+module _ {A B : Set a} where
+
+  infixl 1 _<$>_ _<*>_ _>>=_ _>>_
+
+  _<*>_ : IO (A → B) → IO A → IO B
+  mf <*> mx = bind (♯ mf) λ f → ♯ (bind (♯ mx) λ x → ♯ pure (f x))
+
+  _<$>_ : (A → B) → IO A → IO B
+  f <$> m = pure f <*> m
+
+  _>>=_ : IO A → (A → IO B) → IO B
+  m >>= f = bind (♯ m) λ x → ♯ f x
+
+  _>>_ : IO A → IO B → IO B
+  m₁ >> m₂ = seq (♯ m₁) (♯ m₂)
 
 {-# NON_TERMINATING #-}
 
-run : ∀ {a} {A : Set a} → IO A → Prim.IO A
-run (lift m)   = m
-run (return x) = Prim.return x
-run (m  >>= f) = Prim._>>=_ (run (♭ m )) λ x → run (♭ (f x))
-run (m₁ >> m₂) = Prim._>>=_ (run (♭ m₁)) λ _ → run (♭ m₂)
+run : {A : Set a} → IO A → Prim.IO A
+run (lift m)    = m
+run (return x)  = Prim.return x
+run (bind m f)  = Prim._>>=_ (run (♭ m )) λ x → run (♭ (f x))
+run (seq m₁ m₂) = Prim._>>=_ (run (♭ m₁)) λ _ → run (♭ m₂)
 
 ------------------------------------------------------------------------
 -- Utilities
 
-sequence : ∀ {a} {A : Set a} → Colist (IO A) → IO (Colist A)
-sequence []       = return []
-sequence (c ∷ cs) = ♯ c                  >>= λ x  →
-                    ♯ (♯ sequence (♭ cs) >>= λ xs →
-                    ♯ return (x ∷ ♯ xs))
+module Colist where
 
--- The reason for not defining sequence′ in terms of sequence is
--- efficiency (the unused results could cause unnecessary memory use).
+  open import Codata.Musical.Colist
 
-sequence′ : ∀ {a} {A : Set a} → Colist (IO A) → IO ⊤
-sequence′ []       = return _
-sequence′ (c ∷ cs) = ♯ c                   >>
-                     ♯ (♯ sequence′ (♭ cs) >>
-                     ♯ return _)
+  module _  {A : Set a} where
 
-module _ {a b} {A : Set a} {B : Set b} where
+    sequence : Colist (IO A) → IO (Colist A)
+    sequence []       = return []
+    sequence (c ∷ cs) = bind (♯ c)               λ x  → ♯
+                        bind (♯ sequence (♭ cs)) λ xs → ♯
+                        return (x ∷ ♯ xs)
 
-  mapM : (A → IO B) → Colist A → IO (Colist B)
-  mapM f = sequence ∘ map f
+    -- The reason for not defining sequence′ in terms of sequence is
+    -- efficiency (the unused results could cause unnecessary memory use).
 
-  mapM′ : (A → IO B) → Colist A → IO ⊤
-  mapM′ f = sequence′ ∘ map f
+    sequence′ : Colist (IO A) → IO ⊤
+    sequence′ []       = return _
+    sequence′ (c ∷ cs) = seq (♯ c) (♯ sequence′ (♭ cs))
+
+  module _ {A : Set a} {B : Set b} where
+
+    mapM : (A → IO B) → Colist A → IO (Colist B)
+    mapM f = sequence ∘ map f
+
+    mapM′ : (A → IO B) → Colist A → IO ⊤
+    mapM′ f = sequence′ ∘ map f
+
+module List where
+
+  open import Data.List.Base
+
+  module _  {A : Set a} where
+
+    sequence : List (IO A) → IO (List A)
+    sequence []       = ⦇ [] ⦈
+    sequence (c ∷ cs) = ⦇ c ∷ sequence cs ⦈
+
+    -- The reason for not defining sequence′ in terms of sequence is
+    -- efficiency (the unused results could cause unnecessary memory use).
+
+    sequence′ : List (IO A) → IO ⊤
+    sequence′ []       = return _
+    sequence′ (c ∷ cs) = c >> sequence′ cs
+
+  module _ {A : Set a} {B : Set b} where
+
+    mapM : (A → IO B) → List A → IO (List B)
+    mapM f = sequence ∘ map f
+
+    mapM′ : (A → IO B) → List A → IO ⊤
+    mapM′ f = sequence′ ∘ map f
 
 ignore : ∀ {a} {A : Set a} → IO A → IO ⊤
-ignore io = ♯ io >> ♯ return _
+ignore io = io >> return _
 
 ------------------------------------------------------------------------
 -- Simple lazy IO
