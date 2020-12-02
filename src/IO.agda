@@ -41,10 +41,13 @@ pure = return
 
 module _ {A B : Set a} where
 
-  infixl 1 _<*>_ _>>=_ _>>_
+  infixl 1 _<$>_ _<*>_ _>>=_ _>>_
 
   _<*>_ : IO (A → B) → IO A → IO B
   mf <*> mx = bind (♯ mf) λ f → ♯ (bind (♯ mx) λ x → ♯ pure (f x))
+
+  _<$>_ : (A → B) → IO A → IO B
+  f <$> m = pure f <*> m
 
   _>>=_ : IO A → (A → IO B) → IO B
   m >>= f = bind (♯ m) λ x → ♯ f x
