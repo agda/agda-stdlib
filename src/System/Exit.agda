@@ -11,7 +11,9 @@ module System.Exit where
 open import Level using (Level)
 open import Data.Nat.Base using (ℕ)
 open import Data.String.Base using (String)
-open import IO
+open import Function.Base using (_$_)
+open import IO using (IO; lift; run)
+open import IO.Primitive using (_>>=_)
 
 ------------------------------------------------------------------------
 -- Re-exporting the ExitCode data structure
@@ -40,8 +42,7 @@ exitFailure = exitWith (ExitFailure 1)
 exitSuccess : IO A
 exitSuccess = exitWith ExitSuccess
 
--- due to limitations with IO we may only use a Set here
-die : {A : Set} → String → IO A
-die str = do
-  putStrLn str
-  exitFailure
+die : String → IO A
+die str = lift $ do
+  _ ← run (IO.putStrLn str)
+  run exitFailure
