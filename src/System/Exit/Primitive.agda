@@ -16,14 +16,14 @@ data ExitCode : Set where
   ExitFailure : ℕ → ExitCode
 
 {-# FOREIGN GHC data AgdaExitCode = AgdaExitSuccess | AgdaExitFailure Integer #-}
-{-# COMPILE GHC ExitCode = type AgdaExitCode (AgdaExitSuccess | AgdaExitFailure) #-}
+{-# COMPILE GHC ExitCode = data AgdaExitCode (AgdaExitSuccess | AgdaExitFailure) #-}
 
 {-# FOREIGN GHC import qualified System.Exit as SE #-}
 
 {-# FOREIGN GHC
-toExitCode :: AgdaExitCode -> ExitCode
-toExitCode AgdaExitSuccess = ExitSuccess
-toExitCode (AgdaExitFailure n) = ExitFailure (fromIntegral n)
+toExitCode :: AgdaExitCode -> SE.ExitCode
+toExitCode AgdaExitSuccess = SE.ExitSuccess
+toExitCode (AgdaExitFailure n) = SE.ExitFailure (fromIntegral n)
 #-}
 
 postulate
