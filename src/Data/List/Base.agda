@@ -385,6 +385,17 @@ unsnoc as with initLast as
 ------------------------------------------------------------------------
 -- Splitting a list
 
+-- linesBy preserves the empty lines
+linesBy : ∀ {P : Pred A p} → Decidable P → List A → List (List A)
+linesBy {A = A} P? = go nothing where
+
+  go : Maybe (List A) → List A → List (List A)
+  go acc []       = maybe′ ([_] ∘′ reverse) [] acc
+  go acc (c ∷ cs) with does (P? c)
+  ... | true  = reverse (Maybe.fromMaybe [] acc) ∷ go nothing cs
+  ... | false = go (just (c ∷ Maybe.fromMaybe [] acc)) cs
+
+-- wordsBy drops the empty words (i.e. consumes continuous whitespace)
 wordsBy : ∀ {P : Pred A p} → Decidable P → List A → List (List A)
 wordsBy {A = A} P? = go [] where
 
