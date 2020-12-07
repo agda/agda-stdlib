@@ -251,6 +251,9 @@ module _ {v} {V : Value v} where
   toList : ∀ {l u h} → Tree V l u h → List (K& V)
   toList t = toDiffList t List.[]
 
+  size : ∀ {l u h} → Tree V l u h → ℕ
+  size = List.length ∘′ toList
+
 module _ {v w} {V : Value v} {W : Value w} where
 
   private

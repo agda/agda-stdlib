@@ -401,3 +401,8 @@ Other minor additions
   ```agda
   lines : String → List String
   ```
+
+* Added new functions to various `Data.Tree.AVL.*` modules:
+  ```agda
+  size : Tree → ℕ
+  ```

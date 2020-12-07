@@ -23,7 +23,7 @@ open import Data.Bool.Base using (Bool)
 import Data.DifferenceList as DiffList
 open import Data.List.Base as List using (List)
 open import Data.Maybe.Base using (Maybe; nothing; just; is-just)
-open import Data.Nat.Base using (suc)
+open import Data.Nat.Base using (ℕ; suc)
 open import Data.Product hiding (map)
 open import Function as F
 open import Level using (_⊔_)
@@ -107,6 +107,9 @@ module _ {v} {V : Value v} where
 
   toList : Tree V → List (K& V)
   toList (tree t) = DiffList.toList (Indexed.toDiffList t)
+
+  size : Tree V → ℕ
+  size (tree t) = Indexed.size t
 
   -- Naive implementations of union.
 

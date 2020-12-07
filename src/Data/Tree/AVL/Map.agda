@@ -17,6 +17,7 @@ module Data.Tree.AVL.Map
 open import Data.Bool.Base using (Bool)
 open import Data.List.Base using (List)
 open import Data.Maybe.Base using (Maybe)
+open import Data.Nat.Base using (ℕ)
 open import Data.Product using (_×_)
 open import Level using (_⊔_)
 
@@ -75,6 +76,9 @@ module _ {v} {V : Set v} where
 
   toList : Map V → List (Key × V)
   toList = AVL.toList
+
+  size : Map V → ℕ
+  size = AVL.size
 
 module _ {v w} {V : Set v} {W : Set w} where
 

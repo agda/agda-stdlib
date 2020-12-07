@@ -19,11 +19,12 @@ module Data.Tree.AVL.IndexedMap
   where
 
 import Data.Tree.AVL
-open import Data.Bool.Base
+open import Data.Bool.Base using (Bool)
 open import Data.List.Base as List using (List)
-open import Data.Maybe.Base as Maybe
-open import Function
-open import Level
+open import Data.Maybe.Base as Maybe using (Maybe)
+open import Data.Nat.Base using (ℕ)
+open import Function.Base
+open import Level using (_⊔_)
 
 -- Key/value pairs.
 
@@ -81,3 +82,6 @@ fromList = AVL.fromList ∘ List.map fromKV
 
 toList : Map → List KV
 toList = List.map toKV ∘ AVL.toList
+
+size : Map → ℕ
+size = AVL.size

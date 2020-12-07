@@ -12,13 +12,14 @@ module Data.Tree.AVL.Sets
   {a ℓ₁ ℓ₂} (strictTotalOrder : StrictTotalOrder a ℓ₁ ℓ₂)
   where
 
-open import Data.Bool.Base
+open import Data.Bool.Base using (Bool)
 open import Data.List.Base as List using (List)
 open import Data.Maybe.Base as Maybe
+open import Data.Nat.Base using (ℕ)
 open import Data.Product as Prod using (_×_; _,_; proj₁)
-open import Data.Unit
-open import Function
-open import Level
+open import Data.Unit.Base
+open import Function.Base
+open import Level using (_⊔_)
 
 import Data.Tree.AVL strictTotalOrder as AVL
 open StrictTotalOrder strictTotalOrder renaming (Carrier to A)
@@ -60,3 +61,6 @@ fromList = AVL.fromList ∘ List.map (_, _)
 
 toList : ⟨Set⟩ → List A
 toList = List.map proj₁ ∘ AVL.toList
+
+size : ⟨Set⟩ → ℕ
+size = AVL.size
