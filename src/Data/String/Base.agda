@@ -96,10 +96,9 @@ wordsBy P? = List.map fromList ∘ List.wordsBy P? ∘ toList
 words : String → List String
 words = wordsBy (T? ∘ Char.isSpace)
 
--- words ignores whitespace
-private
-  _ : words "abc  b  " ≡ "abc" ∷ "b" ∷ []
-  _ = refl
+-- `words` ignores contiguous whitespace
+_ : words " abc  b   " ≡ "abc" ∷ "b" ∷ []
+_ = refl
 
 unwords : List String → String
 unwords = intersperse " "
@@ -110,10 +109,9 @@ linesBy P? = List.map fromList ∘ List.linesBy P? ∘ toList
 lines : String → List String
 lines = linesBy ('\n' Char.≟_)
 
--- lines preserves it
-private
-  _ : lines "abc\n\nb\n\n" ≡ "abc" ∷ "" ∷ "b" ∷ "" ∷ []
-  _ = refl
+-- `lines` preserves empty lines
+_ : lines "\nabc\n\nb\n\n\n" ≡ "" ∷ "abc" ∷ "" ∷ "b" ∷ "" ∷ "" ∷ []
+_ = refl
 
 unlines : List String → String
 unlines = intersperse "\n"

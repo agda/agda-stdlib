@@ -397,7 +397,13 @@ Other minor additions
   id-⟶     : A ⟶ A
   ```
 
-* Added new function to `Data.String.Base`:
+* Added new function to `Data.List.Base`:
   ```agda
-  lines : String → List String
+  linesBy : Decidable P → List A → List (List A)
+  ```
+
+* Added new functions to `Data.String.Base`:
+  ```agda
+  linesBy : Decidable P → String → List String
+  lines   : String → List String
   ```
