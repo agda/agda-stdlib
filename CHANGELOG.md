@@ -298,5 +298,5 @@ Other minor additions
 
 * Added new property to `Data.String.Unsafe`:
   ```agda
-  length-uncons : length s ≡ maybe′ (suc ∘′ length) zero (tail s)
+  length-tail : length s ≡ maybe′ (suc ∘′ length) zero (tail s)
   ```

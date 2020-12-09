@@ -20,10 +20,10 @@ open import Relation.Binary.PropositionalEquality; open ≡-Reasoning
 open import Relation.Binary.PropositionalEquality.TrustMe using (trustMe)
 
 ------------------------------------------------------------------------
--- Properties of uncons
+-- Properties of tail
 
-length-uncons : ∀ s → length s ≡ maybe′ (suc ∘′ length) zero (tail s)
-length-uncons s = trustMe
+length-tail : ∀ s → length s ≡ maybe′ (suc ∘′ length) zero (tail s)
+length-tail s = trustMe
 
 ------------------------------------------------------------------------
 -- Properties of conversion functions
