@@ -9,10 +9,15 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra.Core
+open import Algebra.Structures
+open import Algebra.Definitions
 open import Algebra.Bundles
 open import Algebra.Morphism.Structures
-open import Relation.Binary.Core
+import Relation.Binary.Morphism.RelMonomorphism as RelMonomorphisms
+import Algebra.Morphism.MagmaMonomorphism as MagmaMonomorphisms
+import Algebra.Properties.Lattice as LatticeProperties
+open import Data.Product using (_,_)
+import Relation.Binary.Reasoning.Setoid as SetoidReasoning
 
 module Algebra.Morphism.LatticeMonomorphism
   {a b ℓ₁ ℓ₂} {L₁ : RawLattice a ℓ₁} {L₂ : RawLattice b ℓ₂} {⟦_⟧}
@@ -20,52 +25,46 @@ module Algebra.Morphism.LatticeMonomorphism
   where
 
 open IsLatticeMonomorphism isLatticeMonomorphism
-open RawLattice L₁ renaming (Carrier to A; _≈_ to _≈₁_; _∨_ to _∨_; _∧_ to _∧_)
-open RawLattice L₂ renaming (Carrier to B; _≈_ to _≈₂_; _∨_ to _⊔_; _∧_ to _⊓_)
-
-open import Algebra.Structures
-open import Algebra.Definitions
-open import Algebra.Properties.Lattice
-open import Data.Product
-open import Data.Sum.Base using (inj₁; inj₂)
-import Relation.Binary.Reasoning.Setoid as SetoidReasoning
-import Relation.Binary.Morphism.RelMonomorphism (∨.IsMagmaMonomorphism.isRelMonomorphism L₁ L₂ ∨-isMagmaMonomorphism) as RelMorphism
+open RawLattice L₁ renaming (_≈_ to _≈₁_; _∨_ to _∨_; _∧_ to _∧_)
+open RawLattice L₂ renaming (_≈_ to _≈₂_; _∨_ to _⊔_; _∧_ to _⊓_)
 
 ------------------------------------------------------------------------
 -- Re-export all properties of magma monomorphisms
 
-open import Algebra.Morphism.MagmaMonomorphism ∨-isMagmaMonomorphism using () renaming
-  ( cong to ∨-cong
-  ; assoc to ∨-assoc
-  ; comm to ∨-comm
-  ; idem to ∨-idem
-  ; sel to ∨-sel
+open MagmaMonomorphisms ∨-isMagmaMonomorphism public
+  using () renaming
+  ( cong    to ∨-cong
+  ; assoc   to ∨-assoc
+  ; comm    to ∨-comm
+  ; idem    to ∨-idem
+  ; sel     to ∨-sel
   ; cancelˡ to ∨-cancelˡ
   ; cancelʳ to ∨-cancelʳ
-  ; cancel to ∨-cancel
+  ; cancel  to ∨-cancel
   )
 
-open import Algebra.Morphism.MagmaMonomorphism ∧-isMagmaMonomorphism using () renaming
-  ( cong to ∧-cong
-  ; assoc to ∧-assoc
-  ; comm to ∧-comm
-  ; idem to ∧-idem
-  ; sel to ∧-sel
+open MagmaMonomorphisms ∧-isMagmaMonomorphism public
+  using () renaming
+  ( cong    to ∧-cong
+  ; assoc   to ∧-assoc
+  ; comm    to ∧-comm
+  ; idem    to ∧-idem
+  ; sel     to ∧-sel
   ; cancelˡ to ∧-cancelˡ
   ; cancelʳ to ∧-cancelʳ
-  ; cancel to ∧-cancel
+  ; cancel  to ∧-cancel
   )
 
 ------------------------------------------------------------------------
--- Properties
+-- Lattice-specific properties
 
 module _ (⊔-⊓-isLattice : IsLattice _≈₂_ _⊔_ _⊓_) where
 
   open IsLattice ⊔-⊓-isLattice using (isEquivalence) renaming
-    ( ∨-congˡ to ⊔-congˡ
-    ; ∨-congʳ to ⊔-congʳ
-    ; ∧-cong to ⊓-cong
-    ; ∧-congˡ to ⊓-congˡ
+    ( ∨-congˡ     to ⊔-congˡ
+    ; ∨-congʳ     to ⊔-congʳ
+    ; ∧-cong      to ⊓-cong
+    ; ∧-congˡ     to ⊓-congˡ
     ; ∨-absorbs-∧ to ⊔-absorbs-⊓
     ; ∧-absorbs-∨ to ⊓-absorbs-⊔
     )
@@ -99,21 +98,22 @@ module _ (⊔-⊓-isLattice : IsLattice _≈₂_ _⊔_ _⊓_) where
 
 isLattice : IsLattice _≈₂_ _⊔_ _⊓_ → IsLattice _≈₁_ _∨_ _∧_
 isLattice isLattice = record
-  { isEquivalence = RelMorphism.isEquivalence (IsLattice.isEquivalence isLattice)
-  ; ∨-comm = ∨-comm (∨-isMagma lattice) (IsLattice.∨-comm isLattice)
-  ; ∨-assoc = ∨-assoc (∨-isMagma lattice) (IsLattice.∨-assoc isLattice)
-  ; ∨-cong = ∨-cong (∨-isMagma lattice)
-  ; ∧-comm = ∧-comm (∧-isMagma lattice) (IsLattice.∧-comm isLattice)
-  ; ∧-assoc = ∧-assoc (∧-isMagma lattice) (IsLattice.∧-assoc isLattice)
-  ; ∧-cong = ∧-cong (∧-isMagma lattice)
-  ; absorptive = absorptive isLattice
+  { isEquivalence = RelMonomorphisms.isEquivalence isRelMonomorphism L.isEquivalence
+  ; ∨-comm        = ∨-comm  LP.∨-isMagma L.∨-comm
+  ; ∨-assoc       = ∨-assoc LP.∨-isMagma L.∨-assoc
+  ; ∨-cong        = ∨-cong  LP.∨-isMagma
+  ; ∧-comm        = ∧-comm  LP.∧-isMagma L.∧-comm
+  ; ∧-assoc       = ∧-assoc LP.∧-isMagma L.∧-assoc
+  ; ∧-cong        = ∧-cong  LP.∧-isMagma
+  ; absorptive    = absorptive isLattice
   } where
-    lattice : Lattice _ _
-    lattice = record { isLattice = isLattice }
+    module L  = IsLattice isLattice
+    module LP = LatticeProperties (record { isLattice = isLattice })
 
-isDistributiveLattice : IsDistributiveLattice _≈₂_ _⊔_ _⊓_ → IsDistributiveLattice _≈₁_ _∨_ _∧_
-isDistributiveLattice isDistributiveLattice = record
-  { isLattice = isLattice (IsDistributiveLattice.isLattice isDistributiveLattice)
-  ; ∨-distribʳ-∧ = distribʳ (IsDistributiveLattice.isLattice isDistributiveLattice) (IsDistributiveLattice.∨-distribʳ-∧ isDistributiveLattice)
-  }
+isDistributiveLattice : IsDistributiveLattice _≈₂_ _⊔_ _⊓_ →
+                        IsDistributiveLattice _≈₁_ _∨_ _∧_
+isDistributiveLattice isDL = record
+  { isLattice    = isLattice L.isLattice
+  ; ∨-distribʳ-∧ = distribʳ  L.isLattice L.∨-distribʳ-∧
+  } where module L = IsDistributiveLattice isDL
 
