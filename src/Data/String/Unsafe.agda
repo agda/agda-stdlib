@@ -22,7 +22,7 @@ open import Relation.Binary.PropositionalEquality.TrustMe using (trustMe)
 ------------------------------------------------------------------------
 -- Properties of uncons
 
-length-uncons : ∀ s → length s ≡ maybe′ (suc ∘′ length ∘′ proj₂) zero (uncons s)
+length-uncons : ∀ s → length s ≡ maybe′ (suc ∘′ length) zero (tail s)
 length-uncons s = trustMe
 
 ------------------------------------------------------------------------

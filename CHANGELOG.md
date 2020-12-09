@@ -289,7 +289,14 @@ Other minor additions
 
 * Added infix declarations to `Data.Product.∃-syntax` and `Data.Product.∄-syntax`.
 
+* Added new functions to `Data.String.Base`:
+  ```
+  uncons : String → Maybe (Char × String)
+  head   : String → Maybe Char
+  tail   : String → Maybe String
+  ```
+
 * Added new property to `Data.String.Unsafe`:
   ```agda
-  length-uncons : length s ≡ maybe′ (suc ∘′ length ∘′ proj₂) zero (uncons s)
+  length-uncons : length s ≡ maybe′ (suc ∘′ length) zero (tail s)
   ```
