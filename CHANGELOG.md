@@ -402,7 +402,42 @@ Other minor additions
   lines : String → List String
   ```
 
-* Added new functions to various `Data.Tree.AVL.*` modules:
+* Added new functions to `Data.Tree.AVL` modules:
   ```agda
-  size : Tree → ℕ
+  foldr : (∀ {k} → Val k → A → A) → A → Tree V → A
+  size  : Tree V → ℕ
+
+  intersectionWith  : (∀ {k} → Val k → Wal k → Xal k) → Tree V → Tree W → Tree X
+  intersection      : Tree V → Tree V → Tree V
+  intersectionsWith : (∀ {k} → Val k → Val k → Val k) → List (Tree V) → Tree V
+  intersections     : List (Tree V) → Tree V
+  ```
+
+* Added new functions to `Data.Tree.AVL.Indexed` modules:
+  ```agda
+  foldr : (∀ {k} → Val k → A → A) → A → Tree V l u h → A
+  size  : Tree V → ℕ
+  ```
+
+* Added new functions `Data.Tree.AVL.Map` modules:
+  ```agda
+  foldr : (Key → V → A → A) → A → Map V → A
+  size  : Map V → ℕ
+
+  intersectionWith  : (V → W → X) → Map V → Map W → Map X
+  intersection      : Map V → Map V → Map V
+  intersectionsWith : (V → V → V) → List (Map V) → Map V
+  intersections     : List (Map V) → Map V
+  ```
+
+* Added new functions `Data.Tree.AVL.Sets` modules:
+  ```agda
+  foldr : (A → B → B) → B → ⟨Set⟩ → B
+  size  : ⟨Set⟩ → ℕ
+
+  union  : ⟨Set⟩ → ⟨Set⟩ → ⟨Set⟩
+  unions : List ⟨Set⟩ → ⟨Set⟩
+
+  intersection  : ⟨Set⟩ → ⟨Set⟩ → ⟨Set⟩
+  intersections : List ⟨Set⟩ → ⟨Set⟩
   ```

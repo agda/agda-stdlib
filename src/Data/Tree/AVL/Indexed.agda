@@ -11,7 +11,7 @@ open import Relation.Binary using (StrictTotalOrder)
 module Data.Tree.AVL.Indexed
   {a ℓ₁ ℓ₂} (strictTotalOrder : StrictTotalOrder a ℓ₁ ℓ₂) where
 
-open import Level using (_⊔_)
+open import Level using (Level; _⊔_)
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Data.Product using (Σ; ∃; _×_; _,_; proj₁)
 open import Data.Maybe.Base using (Maybe; just; nothing)
@@ -21,6 +21,11 @@ open import Function as F hiding (const)
 open import Relation.Unary
 open import Relation.Binary using (_Respects_; Tri; tri<; tri≈; tri>)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)
+
+private
+  variable
+    l : Level
+    A : Set l
 
 open StrictTotalOrder strictTotalOrder renaming (Carrier to Key)
 
@@ -243,6 +248,10 @@ module _ {v} {V : Value v} where
 
   -- Converts the tree to an ordered list. Linear in the size of the
   -- tree.
+
+  foldr : ∀ {l u h} → (∀ {k} → Val k → A → A) → A → Tree V l u h → A
+  foldr cons nil (leaf l<u)             = nil
+  foldr cons nil (node (_ , v) l r bal) = foldr cons (cons v (foldr cons nil r)) l
 
   toDiffList : ∀ {l u h} → Tree V l u h → DiffList (K& V)
   toDiffList (leaf _)       = []
