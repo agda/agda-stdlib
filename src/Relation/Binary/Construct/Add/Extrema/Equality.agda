@@ -14,7 +14,7 @@ open import Relation.Binary
 module Relation.Binary.Construct.Add.Extrema.Equality
   {a ℓ} {A : Set a} (_≈_ : Rel A ℓ) where
 
-open import Function using (_∘′_)
+open import Function.Base using (_∘′_)
 import Relation.Binary.Construct.Add.Infimum.Equality as AddInfimum
 import Relation.Binary.Construct.Add.Supremum.Equality as AddSupremum
 open import Relation.Nullary.Construct.Add.Extrema

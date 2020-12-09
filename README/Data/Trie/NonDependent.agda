@@ -60,7 +60,7 @@ open import Data.Product     as Prod
 open import Data.String      as String using (String)
 open import Data.These       as These
 
-open import Function using (case_of_; _$_; _∘′_; id; _on_)
+open import Function.Base using (case_of_; _$_; _∘′_; id; _on_)
 open import Relation.Nary
 open import Relation.Binary using (Rel)
 open import Relation.Nullary.Negation using (¬?)

@@ -17,7 +17,7 @@ import Algebra as Alg
 import Algebra.Structures as Alg
 open import Algebra.Definitions _≈_
 open import Data.Product using (_,_)
-open import Function using (flip)
+open import Function.Base using (flip)
 open import Relation.Binary
 open import Relation.Binary.Properties.Poset poset
 import Relation.Binary.Properties.JoinSemilattice joinSemilattice as J

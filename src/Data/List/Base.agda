@@ -344,7 +344,7 @@ infixr 5 _ʳ++_
 _ʳ++_ : List A → List A → List A
 _ʳ++_ = flip reverseAcc
 
--- Snoc.
+-- Snoc: Cons, but from the right.
 
 infixl 6 _∷ʳ_
 
@@ -370,13 +370,17 @@ data InitLast {A : Set a} : List A → Set a where
   []    : InitLast []
   _∷ʳ′_ : (xs : List A) (x : A) → InitLast (xs ∷ʳ x)
 
-
-
 initLast : (xs : List A) → InitLast xs
 initLast []               = []
 initLast (x ∷ xs)         with initLast xs
 ... | []       = [] ∷ʳ′ x
 ... | ys ∷ʳ′ y = (x ∷ ys) ∷ʳ′ y
+
+-- uncons, but from the right
+unsnoc : List A → Maybe (List A × A)
+unsnoc as with initLast as
+... | []       = nothing
+... | xs ∷ʳ′ x = just (xs , x)
 
 ------------------------------------------------------------------------
 -- Splitting a list

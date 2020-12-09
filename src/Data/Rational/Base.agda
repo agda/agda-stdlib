@@ -8,7 +8,7 @@
 
 module Data.Rational.Base where
 
-open import Function using (id)
+open import Function.Base using (id)
 open import Data.Integer.Base as ℤ using (ℤ; ∣_∣; +_; +0; -[1+_])
 import Data.Integer.GCD as ℤ
 import Data.Integer.DivMod as ℤ

@@ -21,6 +21,10 @@ Bug-fixes
 * The binary relation `_≉_` exposed by records in `Relation.Binary.Bundles` now has
   the correct infix precedence.
 
+* Fixed the fixity of the reasoning combinators in
+  `Data.List.Relation.Binary.Subset.(Propositional/Setoid).Properties`so that they
+  compose properly.
+
 * Added version to library name
 
 Non-backwards compatible changes
@@ -39,23 +43,34 @@ Non-backwards compatible changes
   This is in line with our effort to deprecate this badly-behaved equivalence
   relation on characters.
 
-* Previously the definition of `_⊖_` in `Data.Integer.Base` was defined
-  inductively as:
+* Previously `_⊖_` in `Data.Integer.Base` was defined inductively as:
   ```agda
   _⊖_ : ℕ → ℕ → ℤ
   m       ⊖ ℕ.zero  = + m
   ℕ.zero  ⊖ ℕ.suc n = -[1+ n ]
   ℕ.suc m ⊖ ℕ.suc n = m ⊖ n
   ```
-  which meant that the unary arguments had to be evaluated. To make it
-  much faster it's definition has been changed to use operations on `ℕ`
-  that are backed by builtin operations:
+  which meant that it had to recursively evaluate its unary arguments.
+  The definition has been changed as follows to use operations on `ℕ` that are backed
+  by builtin operations, greatly improving its performance:
   ```agda
   _⊖_ : ℕ → ℕ → ℤ
   m ⊖ n with m ℕ.<ᵇ n
   ... | true  = - + (n ℕ.∸ m)
   ... | false = + (m ℕ.∸ n)
   ```
+
+* The proofs `↭⇒∼bag` and `∼bag⇒↭` have been moved from
+  `Data.List.Relation.Binary.Permutation.Setoid.Properties`
+  to `Data.List.Relation.Binary.BagAndSetEquality` as their current location
+  were causing cyclic import dependencies.
+
+* Clean up of `IO` to make it more friendly:
+  + Renamed `_>>=_` and `_>>_` to `bind` and `seq` respectively to free up the names
+    for `do`-notation friendly combinators.
+  + Introduced `Colist` and `List` modules for the various `sequence` and `mapM` functions.
+    This breaks code that relied on the `Colist`-specific function being exported as part of `IO`.
+
 
 Deprecated modules
 ------------------
@@ -68,6 +83,14 @@ Deprecated modules
   `(Homo/Mono/Iso)morphism` infrastructure in `Algebra.Morphism.Structures` is now
   complete. The new definitions are parameterised by raw bundles instead of bundles
   meaning they are much more flexible to work with.
+
+* The module `Algebra.Operations.CommutativeMonoid` has been deprecated. The definition
+  of multiplication and the associated properties have been moved to
+  `Algebra.Properties.CommutativeMonoid.Multiplication`. The definition of summation
+  which was defined over the deprecated `Data.Table` has been redefined in terms of
+  `Data.Vec.Functional` and been moved to `Algbra.Properties.CommutativeMonoid.Summation`.
+  The properties of summation in `Algebra.Properties.CommutativeMonoid` have likewise
+  been deprecated and moved to `Algebra.Properties.CommutativeMonoid.Summation`.
 
 Deprecated names
 ----------------
@@ -99,6 +122,24 @@ Deprecated names
   relation is equivalent to propositional equality but has worse inference. So
   we are moving towards not using it anymore.
 
+* In `Data.List.Relation.Binary.Subset.Propositional.Properties`:
+  ```agda
+  mono            ↦ Any-resp-⊆
+  map-mono        ↦ map⁺
+  concat-mono     ↦ concat⁺
+  >>=-mono        ↦ >>=⁺
+  _⊛-mono_        ↦ ⊛⁺
+  _⊗-mono_        ↦ ⊗⁺
+  any-mono        ↦ any⁺
+  map-with-∈-mono ↦ map-with-∈⁺
+  filter⁺         ↦ filter-⊆
+  ```
+
+* In `Data.List.Relation.Binary.Subset.Setoid.Properties`:
+    ```agda
+  filter⁺         ↦ filter-⊆
+  ```
+
 New modules
 -----------
 
@@ -112,7 +153,9 @@ New modules
 * Added `Reflection.Traversal` for generic de Bruijn-aware traversals of reflected terms.
 * Added `Reflection.DeBruijn` with weakening, strengthening and free variable operations
   on reflected terms.
+
 * Added `Relation.Binary.TypeClasses` for type classes to be used with instance search.
+
 * Added various modules containing `instance` declarations:
   `Data.Bool.Instances`, `Data.Char.Instances`, `Data.Fin.Instances`,
   `Data.Float.Instances`, `Data.Integer.Instances`,
@@ -131,6 +174,40 @@ New modules
   Algebra.Properties.Semigroup.Divisibility
   Algebra.Properties.Monoid.Divisibility
   Algebra.Properties.CommutativeSemigroup.Divisibility
+  ```
+
+* Generic summations over algebraic structures
+  ```
+  Algebra.Properties.Monoid.Summation
+  Algebra.Properties.CommutativeMonoid.Summation
+  ```
+
+* Generic multiplication over algebraic structures
+  ```
+  Algebra.Properties.Monoid.Multiplication
+  ```
+
+* Setoid equality over vectors:
+  ```
+  Data.Vec.Functional.Relation.Binary.Equality.Setoid
+  ```
+
+* Heterogeneous relation characterising a list as an infix segment of another:
+  ```
+  Data.List.Relation.Binary.Infix.Heterogeneous
+  Data.List.Relation.Binary.Infix.Heterogeneous.Properties
+  ```
+  and added `Properties` file for the homogeneous variants of (pre/in/suf)fix:
+  ```
+  Data.List.Relation.Binary.Prefix.Homogeneous.Properties
+  Data.List.Relation.Binary.Infix.Homogeneous.Properties
+  Data.List.Relation.Binary.Suffix.Homogeneous.Properties
+  ```
+
+* Added bindings for Haskell's `System.Environment`:
+  ```
+  System.Environment
+  System.Environment.Primitive
   ```
 
 Other major changes
@@ -202,6 +279,60 @@ Other minor additions
   m-n≡m⊖n         : + m + (- + n) ≡ m ⊖ n
   ```
 
+* Added new relations in `Data.List.Relation.Binary.Subset.(Propositional/Setoid)`:
+  ```agda
+  xs ⊇ ys = ys ⊆ xs
+  xs ⊉ ys = ¬ xs ⊇ ys
+  ```
+
+* Added new proofs in `Data.List.Relation.Binary.Subset.Propositional.Properties`:
+  ```agda
+  ⊆-respʳ-≋      : _⊆_ Respectsʳ _≋_
+  ⊆-respˡ-≋      : _⊆_ Respectsˡ _≋_
+
+  ↭⇒⊆            : _↭_ ⇒ _⊆_
+  ⊆-respʳ-↭      : _⊆_ Respectsʳ _↭_
+  ⊆-respˡ-↭      : _⊆_ Respectsˡ _↭_
+  ⊆-↭-isPreorder : IsPreorder _↭_ _⊆_
+  ⊆-↭-preorder   : Preorder _ _ _
+
+  Any-resp-⊆     : P Respects _≈_ → (Any P) Respects _⊆_
+  All-resp-⊇     : P Respects _≈_ → (All P) Respects _⊇_
+
+  xs⊆xs++ys      : xs ⊆ xs ++ ys
+  xs⊆ys++xs      : xs ⊆ ys ++ xs
+  ++⁺ʳ           : xs ⊆ ys → zs ++ xs ⊆ zs ++ ys
+  ++⁺ˡ           : xs ⊆ ys → xs ++ zs ⊆ ys ++ zs
+  ++⁺            : ws ⊆ xs → ys ⊆ zs → ws ++ ys ⊆ xs ++ zs
+  ```
+
+* Added new proofs in `Data.List.Relation.Binary.Subset.Propositional.Properties`:
+  ```agda
+  ↭⇒⊆            : _↭_ ⇒ _⊆_
+  ⊆-respʳ-↭      : _⊆_ Respectsʳ _↭_
+  ⊆-respˡ-↭      : _⊆_ Respectsˡ _↭_
+  ⊆-↭-isPreorder : IsPreorder _↭_ _⊆_
+  ⊆-↭-preorder   : Preorder _ _ _
+
+  Any-resp-⊆     : (Any P) Respects _⊆_
+  All-resp-⊇     : (All P) Respects _⊇_
+
+  xs⊆xs++ys      : xs ⊆ xs ++ ys
+  xs⊆ys++xs      : xs ⊆ ys ++ xs
+  ++⁺ʳ           : xs ⊆ ys → zs ++ xs ⊆ zs ++ ys
+  ++⁺ˡ           : xs ⊆ ys → xs ++ zs ⊆ ys ++ zs
+  ```
+
+* Added new proof in `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
+  ```agda
+  ++↭ʳ++ : xs ++ ys ↭ xs ʳ++ ys
+  ```
+
+* Added new proof in `Data.List.Relation.Binary.Permutation.Setoi.Properties`:
+  ```agda
+  ++↭ʳ++ : xs ++ ys ↭ xs ʳ++ ys
+  ```
+
 * Added new definition in `Data.Nat.Base`:
   ```agda
   _≤ᵇ_ : (m n : ℕ) → Bool
@@ -214,6 +345,12 @@ Other minor additions
 
   <ᵇ-reflects-< : Reflects (m < n) (m <ᵇ n)
   ≤ᵇ-reflects-≤ : Reflects (m ≤ n) (m ≤ᵇ n)
+  ```
+
+* Added new proofs in `Data.Sign.Properties`:
+  ```agda
+  s*opposite[s]≡- : ∀ s → s * opposite s ≡ -
+  opposite[s]*s≡- : ∀ s → opposite s * s ≡ -
   ```
 
 * Added new proof in `Relation.Nullary.Reflects`:
@@ -272,3 +409,32 @@ Other minor additions
   ```
 
 * Added infix declarations to `Data.Product.∃-syntax` and `Data.Product.∄-syntax`.
+
+* Added new function to `Data.List.Base`:
+  ```agda
+  unsnoc : List A → Maybe (List A × A)
+  ```
+
+* Added new definitions to `Function.Bundles`:
+  ```agda
+  record Func : Set _
+  _⟶_ : Set a → Set b → Set _
+  mk⟶ : (A → B) → A ⟶ B
+  ```
+
+* Added new proofs to `Function.Construct.Composition`:
+  ```agda
+  function : Func R S → Func S T → Func R T
+  _∘-⟶_    : (A ⟶ B) → (B ⟶ C) → (A ⟶ C)
+  ```
+
+* Added new proofs to `Function.Construct.Identity`:
+  ```agda
+  function : Func S S
+  id-⟶     : A ⟶ A
+  ```
+
+* Added new function to `Data.String.Base`:
+  ```agda
+  lines : String → List String
+  ```

@@ -19,7 +19,7 @@ open import Data.Vec.Membership.Propositional
 open import Data.List.Membership.Propositional
   using () renaming (_∈_ to _∈ₗ_)
 open import Level using (Level)
-open import Function using (_∘_; id)
+open import Function.Base using (_∘_; id)
 open import Relation.Unary using (Pred)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong)
 

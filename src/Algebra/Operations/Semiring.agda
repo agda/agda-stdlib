@@ -7,6 +7,10 @@
 
 {-# OPTIONS --without-K --safe #-}
 
+-- Disabled to prevent warnings from deprecated
+-- Algebra.Operations.CommutativeMonoid
+{-# OPTIONS --warn=noUserWarning #-}
+
 open import Algebra
 
 module Algebra.Operations.Semiring {s₁ s₂} (S : Semiring s₁ s₂) where
@@ -15,7 +19,7 @@ import Algebra.Operations.CommutativeMonoid as MonoidOperations
 open import Data.Nat.Base
   using (zero; suc; ℕ) renaming (_+_ to _ℕ+_; _*_ to _ℕ*_)
 open import Data.Product using (module Σ)
-open import Function using (_$_)
+open import Function.Base using (_$_)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 

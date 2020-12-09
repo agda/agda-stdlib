@@ -14,7 +14,7 @@ open import Data.Empty
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Product using (_,_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
-open import Function using (_∘′_)
+open import Function.Base using (_∘′_)
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary
 open import Relation.Unary  as U using (Pred)

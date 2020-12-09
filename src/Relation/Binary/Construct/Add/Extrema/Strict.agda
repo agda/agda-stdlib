@@ -15,7 +15,7 @@ module Relation.Binary.Construct.Add.Extrema.Strict
   {a ℓ} {A : Set a} (_<_ : Rel A ℓ) where
 
 open import Level
-open import Function
+open import Function.Base
 open import Relation.Nullary hiding (Irrelevant)
 
 import Relation.Nullary.Construct.Add.Infimum as I

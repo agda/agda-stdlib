@@ -106,7 +106,7 @@ q₅′ = refl
 -- Partitioning a tree into the smallest element plus the rest, or the
 -- largest element plus the rest.
 
-open import Function using (id)
+open import Function.Base using (id)
 
 v₆ : headTail t₀ ≡ nothing
 v₆ = refl
