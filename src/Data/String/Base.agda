@@ -13,7 +13,7 @@ open import Data.Bool.Base using (true; false)
 open import Data.Bool.Properties using (T?)
 open import Data.Nat.Base as ℕ using (ℕ; _∸_; ⌊_/2⌋; ⌈_/2⌉)
 import Data.Nat.Properties as ℕₚ
-open import Data.List.Base as List using (List; [_])
+open import Data.List.Base as List using (List; _∷_; []; [_])
 open import Data.List.NonEmpty as NE using (List⁺)
 open import Data.List.Extrema ℕₚ.≤-totalOrder
 open import Data.List.Relation.Binary.Pointwise using (Pointwise)
@@ -23,6 +23,7 @@ open import Data.Char.Base as Char using (Char)
 import Data.Char.Properties as Char using (_≟_)
 open import Function
 open import Relation.Binary using (Rel)
+open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 open import Relation.Nullary using (does)
 open import Relation.Unary using (Pred; Decidable)
 
@@ -95,11 +96,22 @@ wordsBy P? = List.map fromList ∘ List.wordsBy P? ∘ toList
 words : String → List String
 words = wordsBy (T? ∘ Char.isSpace)
 
+-- `words` ignores contiguous whitespace
+_ : words " abc  b   " ≡ "abc" ∷ "b" ∷ []
+_ = refl
+
 unwords : List String → String
 unwords = intersperse " "
 
+linesBy : ∀ {p} {P : Pred Char p} → Decidable P → String → List String
+linesBy P? = List.map fromList ∘ List.linesBy P? ∘ toList
+
 lines : String → List String
-lines = wordsBy ('\n' Char.≟_)
+lines = linesBy ('\n' Char.≟_)
+
+-- `lines` preserves empty lines
+_ : lines "\nabc\n\nb\n\n\n" ≡ "" ∷ "abc" ∷ "" ∷ "b" ∷ "" ∷ "" ∷ []
+_ = refl
 
 unlines : List String → String
 unlines = intersperse "\n"
