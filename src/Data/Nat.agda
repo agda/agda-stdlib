@@ -15,7 +15,7 @@ open import Data.Bool.Base using (Bool; _∧_)
 open import Data.Char.Base as Char using (Char)
 open import Data.List.Base as List using (List)
 open import Data.List.Categorical using (module TraversableA)
-open import Data.Maybe.Base as Maybe using (Maybe; _<∣>_; when)
+open import Data.Maybe.Base as Maybe using (Maybe; nothing; _<∣>_; when)
 import Data.Maybe.Categorical as Maybe
 open import Data.String.Base as String using (String)
 open import Function.Base
@@ -42,6 +42,7 @@ open import Data.Nat.Properties public
 -- Reading a number
 
 readMaybe : ∀ base {base≤16 : True (base ≤? 16)} → String → Maybe ℕ
+readMaybe _ "" = nothing
 readMaybe base = Maybe.map convert
               ∘′ TraversableA.mapA Maybe.applicative readDigit
               ∘′ String.toList
