@@ -407,3 +407,13 @@ Other minor additions
   linesBy : Decidable P → String → List String
   lines   : String → List String
   ```
+
+* Added new functions to `Data.Maybe.Base`:
+  ```agda
+  when : Bool → A → Maybe A
+  ```
+
+* Added new functions to `Data.Nat`:
+  ```agda
+  readMaybe : (base : ℕ) → {base≤16 : True (base ≤? 16)} → String → Maybe ℕ
+  ```
