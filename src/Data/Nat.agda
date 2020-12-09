@@ -63,7 +63,7 @@ readMaybe base = Maybe.map convert
       charc = Char.toℕ c
 
       dec = when ((char0 ≤ᵇ charc) ∧ (charc ≤ᵇ char9)) (charc ∸ char0)
-      hex = when ((chara ≤ᵇ charc) ∧ (charc ≤ᵇ charf)) (charc ∸ chara)
+      hex = when ((chara ≤ᵇ charc) ∧ (charc ≤ᵇ charf)) (10 + charc ∸ chara)
       digit = dec <∣> hex
 
 
