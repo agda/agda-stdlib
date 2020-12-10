@@ -413,7 +413,7 @@ Other minor additions
   when : Bool → A → Maybe A
   ```
 
-* Added new functions to `Data.Nat`:
+* Added new functions to `Data.Nat.Show`:
   ```agda
   readMaybe : (base : ℕ) → {base≤16 : True (base ≤? 16)} → String → Maybe ℕ
   ```
