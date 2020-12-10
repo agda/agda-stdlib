@@ -402,7 +402,7 @@ Other minor additions
   lines : String → List String
   ```
 
-* Added new functions to `Data.Tree.AVL` modules:
+* Added new functions to `Data.Tree.AVL`:
   ```agda
   foldr : (∀ {k} → Val k → A → A) → A → Tree V → A
   size  : Tree V → ℕ
@@ -413,13 +413,19 @@ Other minor additions
   intersections     : List (Tree V) → Tree V
   ```
 
-* Added new functions to `Data.Tree.AVL.Indexed` modules:
+* Added new functions to `Data.Tree.AVL.Indexed`:
   ```agda
   foldr : (∀ {k} → Val k → A → A) → A → Tree V l u h → A
   size  : Tree V → ℕ
   ```
 
-* Added new functions `Data.Tree.AVL.Map` modules:
+* Added new functions to `Data.Tree.AVL.IndexedMap` module:
+  ```agda
+  foldr : (∀ {k} → Value k → A → A) → A → Map → A
+  size : Map → ℕ
+  ```
+
+* Added new functions to `Data.Tree.AVL.Map`:
   ```agda
   foldr : (Key → V → A → A) → A → Map V → A
   size  : Map V → ℕ
@@ -430,7 +436,7 @@ Other minor additions
   intersections     : List (Map V) → Map V
   ```
 
-* Added new functions `Data.Tree.AVL.Sets` modules:
+* Added new functions to `Data.Tree.AVL.Sets`:
   ```agda
   foldr : (A → B → B) → B → ⟨Set⟩ → B
   size  : ⟨Set⟩ → ℕ

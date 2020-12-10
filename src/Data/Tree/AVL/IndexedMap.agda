@@ -24,7 +24,12 @@ open import Data.List.Base as List using (List)
 open import Data.Maybe.Base as Maybe using (Maybe)
 open import Data.Nat.Base using (ℕ)
 open import Function.Base
-open import Level using (_⊔_)
+open import Level using (Level; _⊔_)
+
+private
+  variable
+    a : Level
+    A : Set a
 
 -- Key/value pairs.
 
@@ -76,6 +81,9 @@ headTail m = Maybe.map (Prod.map toKV id) (AVL.headTail m)
 
 initLast : Map → Maybe (Map × KV)
 initLast m = Maybe.map (Prod.map id toKV) (AVL.initLast m)
+
+foldr : (∀ {k} → Value k → A → A) → A → Map → A
+foldr cons = AVL.foldr cons
 
 fromList : List KV → Map
 fromList = AVL.fromList ∘ List.map fromKV
