@@ -200,6 +200,8 @@ New modules
   System.Environment.Primitive
   ```
 
+* Added module `Data.Integer.Show`.
+
 Other major changes
 -------------------
 
