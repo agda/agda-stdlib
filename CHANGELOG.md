@@ -186,6 +186,17 @@ New modules
   Data.Vec.Relation.Unary.Unique.Setoid.Properties
   ```
 
+* Added a module `Data.Fin.Permutation.Transposition.List` which
+  contains a type `TranspositionList n = List (Fin n × Fin n)` for
+  representing a list of transpositions (a permutation which switches
+  two elements). Also added a function `decompose` that decomposes an
+  arbitrary permutation into a list of transpositions and provided a
+  proof that this list of transpositions evaluates to the originial
+  permutation. Note that currently transpositions of the form (i,i)
+  are allowed as in some literature they are not (in particular the
+  proof that any two transposition decompositions of a permutation
+  have lengths that differ by an even number).
+
 Other major changes
 -------------------
 
@@ -257,6 +268,16 @@ Other minor additions
  ```
 
 * The module `Data.Nat.Bin.Induction` now re-exports `Acc` and `acc` from `Induction.WellFounded`.
+
+* Added function and proofs to `Data.Fin.Permutation`:
+  ```
+  lift₀           : Permutation m n → Permutation (suc m) (suc n)
+  lift₀-remove    : 0F ≡ π ⟨$⟩ʳ 0F → ∀ i → lift₀ (remove 0F π) ⟨$⟩ʳ i ≡ π ⟨$⟩ʳ i
+  lift₀-id        : lift₀ id ⟨$⟩ʳ i ≡ i
+  lift₀-comp      : lift₀ π ∘ₚ lift₀ ρ ⟨$⟩ʳ i ≡ lift₀ (π ∘ₚ ρ) ⟨$⟩ʳ i
+  lift₀-cong      : (∀ i → π ⟨$⟩ʳ i ≡ ρ ⟨$⟩ʳ i) → ∀ i → lift₀ π ⟨$⟩ʳ i ≡ lift₀ ρ ⟨$⟩ʳ i
+  lift₀-transpose : transpose (suc i) (suc j) ⟨$⟩ʳ k ≡ lift₀ (transpose i j) ⟨$⟩ʳ k
+  ```
 
 * Added proofs to `Relation.Binary.PropositionalEquality`:
   ```agda
