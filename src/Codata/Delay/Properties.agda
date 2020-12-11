@@ -86,22 +86,22 @@ module _ {a} {A B : Set a} where
 
   -- If the right element of a bind returns a certain value so does the entire
   -- bind
-  extract[bind̅₂[bind⇓]]≡extract[bind⇓] :
+  extract-bind̅₂-bind⇓ :
     (d : Delay A ∞) {f : A → Delay B ∞} →
     (bind⇓ : bind d f ⇓) →
     extract (bind̅₂ d bind⇓) ≡ extract bind⇓
-  extract[bind̅₂[bind⇓]]≡extract[bind⇓] (now s) bind⇓ = Eq.refl
-  extract[bind̅₂[bind⇓]]≡extract[bind⇓] (later s) (later bind⇓) =
-    extract[bind̅₂[bind⇓]]≡extract[bind⇓] (force s) bind⇓
+  extract-bind̅₂-bind⇓ (now s) bind⇓ = Eq.refl
+  extract-bind̅₂-bind⇓ (later s) (later bind⇓) =
+    extract-bind̅₂-bind⇓ (force s) bind⇓
 
   -- Proof that the length of a bind-⇓ is equal to the sum of the length of its
   -- components.
-  bind⇓-length-add :
+  bind⇓-length :
       {d : Delay A ∞} {f : A → Delay B ∞} →
       (bind⇓ : bind d f ⇓) →
       (d⇓ : d ⇓) → (f⇓ : f (extract d⇓) ⇓) →
       toℕ (length-⇓ bind⇓) ≡ toℕ (length-⇓ d⇓) ℕ.+ toℕ (length-⇓ f⇓)
-  bind⇓-length-add {f = f} bind⇓ d⇓@(now s') f⇓ =
+  bind⇓-length {f = f} bind⇓ d⇓@(now s') f⇓ =
     Eq.cong (toℕ ∘ length-⇓) (⇓-unique bind⇓ f⇓)
-  bind⇓-length-add {d = d@(later dt)} {f = f} bind⇓@(later bind'⇓) d⇓@(later r) f⇓ =
-    Eq.cong ℕ.suc (bind⇓-length-add bind'⇓ r f⇓)
+  bind⇓-length {d = d@(later dt)} {f = f} bind⇓@(later bind'⇓) d⇓@(later r) f⇓ =
+    Eq.cong ℕ.suc (bind⇓-length bind'⇓ r f⇓)
