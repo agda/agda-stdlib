@@ -436,16 +436,13 @@ Other minor additions
 
 * Added new proofs to `Codata.Delay.Properties`:
   ```agda
-  ⇓-unique                             : (d⇓₁ : d ⇓) → (d⇓₂ : d ⇓) → d⇓₁ ≡ d⇓₂
-  bind̅₁                                : bind d f ⇓ → d ⇓
-  bind̅₂                                : (bind⇓ : bind d f ⇓) → f (extract (bind̅₁ bind⇓)) ⇓
-  extract-bind-⇓                       : (d⇓ : d ⇓) → (f⇓ : f (extract d⇓) ⇓) → extract (bind-⇓ d⇓ f⇓) ≡ extract f⇓
-  extract[bind̅₂[bind⇓]]≡extract[bind⇓] : (bind⇓ : bind d f ⇓) → extract (bind̅₂ d bind⇓) ≡ extract bind⇓
-  bind⇓-length-add                     : (bind⇓ : bind d f ⇓) → (d⇓ : d ⇓) → (f⇓ : f (extract d⇓) ⇓) → toℕ (length-⇓ bind⇓) ≡ toℕ (length-⇓ d⇓) ℕ.+ toℕ (length-⇓ f⇓)
+  ⇓-unique            : (d⇓₁ : d ⇓) (d⇓₂ : d ⇓) → d⇓₁ ≡ d⇓₂
+  bind̅₁               : bind d f ⇓ → d ⇓
+  bind̅₂               : (bind⇓ : bind d f ⇓) → f (extract (bind̅₁ bind⇓)) ⇓
+  extract-bind-⇓      : (d⇓ : d ⇓) (f⇓ : f (extract d⇓) ⇓) → extract (bind-⇓ d⇓ f⇓) ≡ extract f⇓
+  extract-bind̅₂-bind⇓ : (bind⇓ : bind d f ⇓) → extract (bind̅₂ d bind⇓) ≡ extract bind⇓
+  bind⇓-length        : (bind⇓ : bind d f ⇓) (d⇓ : d ⇓) (f⇓ : f (extract d⇓) ⇓) → toℕ (length-⇓ bind⇓) ≡ toℕ (length-⇓ d⇓) ℕ.+ toℕ (length-⇓ f⇓)
   ```
-
-Refactorings
-------------
 
 * Added new function to `Data.List.Base`:
   ```agda
