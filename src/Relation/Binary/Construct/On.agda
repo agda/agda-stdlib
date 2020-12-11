@@ -9,7 +9,7 @@
 module Relation.Binary.Construct.On where
 
 open import Data.Product
-open import Function using (_on_; _∘_)
+open import Function.Base using (_on_; _∘_)
 open import Induction.WellFounded using (WellFounded; Acc; acc)
 open import Level using (Level)
 open import Relation.Binary

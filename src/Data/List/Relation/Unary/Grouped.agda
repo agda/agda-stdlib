@@ -9,7 +9,7 @@
 module Data.List.Relation.Unary.Grouped where
 
 open import Data.List using (List; []; _∷_; map)
-open import Data.List.Relation.Unary.All as All using (All; []; _∷_; all)
+open import Data.List.Relation.Unary.All as All using (All; []; _∷_; all?)
 open import Data.Sum using (_⊎_; inj₁; inj₂)
 open import Data.Product using (_×_; _,_)
 open import Relation.Binary as B using (REL; Rel)
@@ -32,7 +32,7 @@ module _ {a ℓ} {A : Set a} {_≈_ : Rel A ℓ} where
   grouped? : B.Decidable _≈_ → U.Decidable (Grouped _≈_)
   grouped? _≟_ [] = yes []
   grouped? _≟_ (x ∷ []) = yes ([] ∷≉ [])
-  grouped? _≟_ (x ∷ y ∷ xs) = map′ from to ((x ≟ y ⊎-dec all (λ z → ¬? (x ≟ z)) (y ∷ xs)) ×-dec (grouped? _≟_ (y ∷ xs))) where
+  grouped? _≟_ (x ∷ y ∷ xs) = map′ from to ((x ≟ y ⊎-dec all? (λ z → ¬? (x ≟ z)) (y ∷ xs)) ×-dec (grouped? _≟_ (y ∷ xs))) where
     from : ((x ≈ y) ⊎ All (λ z → ¬ (x ≈ z)) (y ∷ xs)) × Grouped _≈_ (y ∷ xs) → Grouped _≈_ (x ∷ y ∷ xs)
     from (inj₁ x≈y          , grouped[y∷xs]) = x≈y          ∷≈ grouped[y∷xs]
     from (inj₂ all[x≉,y∷xs] , grouped[y∷xs]) = all[x≉,y∷xs] ∷≉ grouped[y∷xs]

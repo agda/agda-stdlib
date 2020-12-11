@@ -13,7 +13,7 @@ module README.Data.Record where
 
 open import Data.Product
 open import Data.String
-open import Function using (flip)
+open import Function.Base using (flip)
 open import Level
 open import Relation.Binary
 

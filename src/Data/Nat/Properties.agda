@@ -24,6 +24,7 @@ open import Data.Sum.Base as Sum
 open import Data.Unit using (tt)
 open import Function.Base
 open import Function.Injection using (_↣_)
+open import Function.Metric.Nat
 open import Level using (0ℓ)
 open import Relation.Binary
 open import Relation.Binary.Consequences using (flip-Connex)
@@ -31,6 +32,7 @@ open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Nullary.Decidable using (True; via-injection; map′)
 open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Reflects using (fromEquivalence)
 
 open import Algebra.Definitions {A = ℕ} _≡_
   hiding (LeftCancellative; RightCancellative; Cancellative)
@@ -103,6 +105,24 @@ m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
 <⇒<ᵇ (s≤s z≤n)       = tt
 <⇒<ᵇ (s≤s (s≤s m<n)) = <⇒<ᵇ (s≤s m<n)
 
+<ᵇ-reflects-< : ∀ m n → Reflects (m < n) (m <ᵇ n)
+<ᵇ-reflects-< m n = fromEquivalence (<ᵇ⇒< m n) <⇒<ᵇ
+
+------------------------------------------------------------------------
+-- Properties of _≤ᵇ_
+------------------------------------------------------------------------
+
+≤ᵇ⇒≤ : ∀ m n → T (m ≤ᵇ n) → m ≤ n
+≤ᵇ⇒≤ zero    n m≤n = z≤n
+≤ᵇ⇒≤ (suc m) n m≤n = <ᵇ⇒< m n m≤n
+
+≤⇒≤ᵇ : ∀ {m n} → m ≤ n → T (m ≤ᵇ n)
+≤⇒≤ᵇ z≤n         = tt
+≤⇒≤ᵇ m≤n@(s≤s _) = <⇒<ᵇ m≤n
+
+≤ᵇ-reflects-≤ : ∀ m n → Reflects (m ≤ n) (m ≤ᵇ n)
+≤ᵇ-reflects-≤ m n = fromEquivalence (≤ᵇ⇒≤ m n) ≤⇒≤ᵇ
+
 ------------------------------------------------------------------------
 -- Properties of _≤_
 ------------------------------------------------------------------------
@@ -147,8 +167,7 @@ open import Data.Nat.Properties.Core public
 infix 4 _≤?_ _≥?_
 
 _≤?_ : Decidable _≤_
-zero  ≤? _ = yes z≤n
-suc m ≤? n = map′ (<ᵇ⇒< m n) <⇒<ᵇ (T? (m <ᵇ n))
+m ≤? n = map′ (≤ᵇ⇒≤ m n) ≤⇒≤ᵇ (T? (m ≤ᵇ n))
 
 _≥?_ : Decidable _≥_
 _≥?_ = flip _≤?_
@@ -1690,6 +1709,9 @@ suc[pred[n]]≡n {suc n} n≢0 = refl
 -- Properties of ∣_-_∣
 ------------------------------------------------------------------------
 
+------------------------------------------------------------------------
+-- Basic
+
 m≡n⇒∣m-n∣≡0 : ∀ {m n} → m ≡ n → ∣ m - n ∣ ≡ 0
 m≡n⇒∣m-n∣≡0 {zero}  refl = refl
 m≡n⇒∣m-n∣≡0 {suc m} refl = m≡n⇒∣m-n∣≡0 {m} refl
@@ -1764,12 +1786,12 @@ private
 
 *-distribˡ-∣-∣ : _*_ DistributesOverˡ ∣_-_∣
 *-distribˡ-∣-∣ a m n with ≤-total m n
+... | inj₂ n≤m = *-distribˡ-∣-∣-aux a n m n≤m
 ... | inj₁ m≤n = begin-equality
   a * ∣ m - n ∣     ≡⟨ cong (a *_) (∣-∣-comm m n) ⟩
   a * ∣ n - m ∣     ≡⟨ *-distribˡ-∣-∣-aux a m n m≤n ⟩
   ∣ a * n - a * m ∣ ≡⟨ ∣-∣-comm (a * n) (a * m) ⟩
   ∣ a * m - a * n ∣ ∎
-... | inj₂ n≤m = *-distribˡ-∣-∣-aux a n m n≤m
 
 *-distribʳ-∣-∣ : _*_ DistributesOverʳ ∣_-_∣
 *-distribʳ-∣-∣ = comm+distrˡ⇒distrʳ *-comm *-distribˡ-∣-∣
@@ -1787,6 +1809,80 @@ m≤n+∣m-n∣ m n = subst (m ≤_) (cong (n +_) (∣-∣-comm n m)) (m≤n+∣
 
 m≤∣m-n∣+n : ∀ m n → m ≤ ∣ m - n ∣ + n
 m≤∣m-n∣+n m n = subst (m ≤_) (+-comm n _) (m≤n+∣m-n∣ m n)
+
+∣-∣-triangle : TriangleInequality ∣_-_∣
+∣-∣-triangle zero    y       z       = m≤n+∣n-m∣ z y
+∣-∣-triangle x       zero    z       = begin
+  ∣ x - z ∣     ≤⟨ ∣m-n∣≤m⊔n x z ⟩
+  x ⊔ z         ≤⟨ m⊔n≤m+n x z ⟩
+  x + z         ≡⟨ cong₂ _+_ (sym (∣-∣-identityʳ x)) refl ⟩
+  ∣ x - 0 ∣ + z ∎
+  where open ≤-Reasoning
+∣-∣-triangle x       y       zero    = begin
+  ∣ x - 0 ∣             ≡⟨ ∣-∣-identityʳ x ⟩
+  x                     ≤⟨ m≤∣m-n∣+n x y ⟩
+  ∣ x - y ∣ + y         ≡⟨ cong₂ _+_ refl (sym (∣-∣-identityʳ y)) ⟩
+  ∣ x - y ∣ + ∣ y - 0 ∣ ∎
+  where open ≤-Reasoning
+∣-∣-triangle (suc x) (suc y) (suc z) = ∣-∣-triangle x y z
+
+------------------------------------------------------------------------
+-- Metric structures
+
+∣-∣-isProtoMetric : IsProtoMetric _≡_ ∣_-_∣
+∣-∣-isProtoMetric = record
+  { isPartialOrder  = ≤-isPartialOrder
+  ; ≈-isEquivalence = isEquivalence
+  ; cong            = cong₂ ∣_-_∣
+  ; nonNegative     = z≤n
+  }
+
+∣-∣-isPreMetric : IsPreMetric _≡_ ∣_-_∣
+∣-∣-isPreMetric = record
+  { isProtoMetric = ∣-∣-isProtoMetric
+  ; ≈⇒0           = m≡n⇒∣m-n∣≡0
+  }
+
+∣-∣-isQuasiSemiMetric : IsQuasiSemiMetric _≡_ ∣_-_∣
+∣-∣-isQuasiSemiMetric = record
+  { isPreMetric = ∣-∣-isPreMetric
+  ; 0⇒≈         = ∣m-n∣≡0⇒m≡n
+  }
+
+∣-∣-isSemiMetric : IsSemiMetric _≡_ ∣_-_∣
+∣-∣-isSemiMetric = record
+  { isQuasiSemiMetric = ∣-∣-isQuasiSemiMetric
+  ; sym               = ∣-∣-comm
+  }
+
+∣-∣-isMetric : IsMetric _≡_ ∣_-_∣
+∣-∣-isMetric = record
+  { isSemiMetric = ∣-∣-isSemiMetric
+  ; triangle     = ∣-∣-triangle
+  }
+
+------------------------------------------------------------------------
+-- Metric bundles
+
+∣-∣-quasiSemiMetric : QuasiSemiMetric 0ℓ 0ℓ
+∣-∣-quasiSemiMetric = record
+  { isQuasiSemiMetric = ∣-∣-isQuasiSemiMetric
+  }
+
+∣-∣-semiMetric : SemiMetric 0ℓ 0ℓ
+∣-∣-semiMetric = record
+  { isSemiMetric = ∣-∣-isSemiMetric
+  }
+
+∣-∣-preMetric : PreMetric 0ℓ 0ℓ
+∣-∣-preMetric = record
+  { isPreMetric = ∣-∣-isPreMetric
+  }
+
+∣-∣-metric : Metric 0ℓ 0ℓ
+∣-∣-metric = record
+  { isMetric = ∣-∣-isMetric
+  }
 
 ------------------------------------------------------------------------
 -- Properties of ⌊_/2⌋ and ⌈_/2⌉

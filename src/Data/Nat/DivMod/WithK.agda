@@ -14,7 +14,7 @@ open import Data.Nat.Properties using (≤⇒≤″)
 open import Data.Nat.WithK
 open import Data.Fin.Base using (Fin; toℕ; fromℕ<″)
 open import Data.Fin.Properties using (toℕ-fromℕ<″)
-open import Function using (_$_)
+open import Function.Base using (_$_)
 open import Relation.Nullary.Decidable using (False)
 open import Relation.Binary.PropositionalEquality
   using (refl; sym; cong; module ≡-Reasoning)

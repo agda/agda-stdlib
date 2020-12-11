@@ -48,7 +48,7 @@ matrix:
              cd ../ &&
              git clone https://github.com/agda/agda &&
              cd agda &&
-             git checkout tags/v2.6.1 &&
+             git checkout tags/v2.6.1.1 &&
              cabal install --only-dependencies --dry -v > $HOME/installplan.txt ;
           fi
 
@@ -106,7 +106,7 @@ matrix:
 
         # generating Everything.agda
         - cd agda-stdlib
-        - cabal install lib.cabal
+        - cabal install agda-stdlib-utils.cabal
         - runghc GenerateEverything.hs
 
         # setting up travis-specific scripts and files
@@ -151,10 +151,10 @@ matrix:
         - git remote add upstream https://$GH_TOKEN@github.com/agda/agda-stdlib.git &>/dev/null
         - git fetch upstream && git reset upstream/gh-pages
         - if [[ $TRAVIS_BRANCH = "master" ]]; then
-            git checkout HEAD -- v0.16/ v0.17/ v1.0/ v1.1/ v1.2/ experimental/ ;
+            git checkout HEAD -- v0.16/ v0.17/ v1.0/ v1.1/ v1.2/ v1.3/ v1.4/ experimental/ ;
           fi
         - if [[ $TRAVIS_BRANCH = "experimental" ]]; then
-            git checkout HEAD -- *.html v0.16/ v0.17/ v1.0/ v1.1/ v1.2/ ;
+            git checkout HEAD -- *.html v0.16/ v0.17/ v1.0/ v1.1/ v1.2/ v1.3/ v1.4/ ;
           fi
         - git add -f \*.html
         - git commit -m "Automatic HTML update via Travis"

@@ -106,6 +106,12 @@ map-compose : {g : B → C} {f : A → B} → map (g ∘ f) ≗ map g ∘ map f
 map-compose []       = refl
 map-compose (x ∷ xs) = cong (_ ∷_) (map-compose xs)
 
+map-injective : ∀ {f : A → B} → Injective _≡_ _≡_ f → Injective _≡_ _≡_ (map f)
+map-injective finj {[]} {[]} eq = refl
+map-injective finj {x ∷ xs} {y ∷ ys} eq =
+  let fx≡fy , fxs≡fys = ∷-injective eq in
+  cong₂ _∷_ (finj fx≡fy) (map-injective finj fxs≡fys)
+
 ------------------------------------------------------------------------
 -- mapMaybe
 
@@ -489,6 +495,22 @@ concat-map {f = f} xss = begin
   concat (foldr (λ xs → map f xs ∷_) [] xss) ≡⟨ foldr-fusion concat [] (λ _ _ → refl) xss ⟩
   foldr (λ ys → map f ys ++_) [] xss         ≡⟨ sym (foldr-fusion (map f) [] (map-++-commute f) xss) ⟩
   map f (concat xss)                         ∎
+
+concat-++ : (xss yss : List (List A)) → concat xss ++ concat yss ≡ concat (xss ++ yss)
+concat-++ [] yss = refl
+concat-++ ([] ∷ xss) yss = concat-++ xss yss
+concat-++ ((x ∷ xs) ∷ xss) yss = cong (x ∷_) (concat-++ (xs ∷ xss) yss)
+
+concat-concat : concat {A = A} ∘ map concat ≗ concat ∘ concat
+concat-concat [] = refl
+concat-concat (xss ∷ xsss) = begin
+  concat (map concat (xss ∷ xsss))   ≡⟨ cong (concat xss ++_) (concat-concat xsss) ⟩
+  concat xss ++ concat (concat xsss) ≡⟨ concat-++ xss (concat xsss) ⟩
+  concat (concat (xss ∷ xsss))       ∎
+
+concat-[-] : concat {A = A} ∘ map [_] ≗ id
+concat-[-] [] = refl
+concat-[-] (x ∷ xs) = cong (x ∷_) (concat-[-] xs)
 
 ------------------------------------------------------------------------
 -- sum

@@ -22,7 +22,7 @@ open import Data.List.Membership.Propositional.Properties
 open import Data.List.Relation.Binary.Subset.Propositional using (_⊆_)
 open import Data.List.Properties
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
-open import Function using (id; flip; _on_)
+open import Function.Base using (id; flip; _on_)
 open import Level using (Level)
 open import Relation.Unary using (Pred)
 import Relation.Binary.Construct.NonStrictToStrict as NonStrictToStrict

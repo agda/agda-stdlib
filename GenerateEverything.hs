@@ -41,9 +41,11 @@ unsafeModules = map modToFile
   , "IO"
   , "IO.Primitive"
   , "Relation.Binary.PropositionalEquality.TrustMe"
+  , "System.Environment"
+  , "System.Environment.Primitive"
   , "Text.Pretty.Core"
   , "Text.Pretty"
-  ] where
+  ]
 
 isUnsafeModule :: FilePath -> Bool
 isUnsafeModule fp =
@@ -158,13 +160,13 @@ classify fp hd ls
 
     -- based on detected comment in header
     deprecated  = let detect = List.isSubsequenceOf "This module is DEPRECATED."
-                  in not $ null $ filter detect hd
+                  in any detect hd
 
     -- GA 2019-02-24: note that we do not reprocess the whole module for every
     -- option check: the shared @options@ definition ensures we only inspect a
     -- handful of lines (at most one, ideally)
     option str = let detect = List.isSubsequenceOf ["{-#", "OPTIONS", str, "#-}"]
-                  in not $ null $ filter detect options
+                  in any detect options
     options    = words <$> filter (List.isInfixOf "OPTIONS") ls
 
     -- formatting error messages
@@ -275,7 +277,7 @@ usage = unlines
 -- | Formats the extracted module information.
 
 format :: [LibraryFile] -> String
-format = unlines . concat . map fmt
+format = unlines . concatMap fmt
   where
   fmt lf = "" : header lf ++ ["import " ++ fileToMod (filepath lf)]
 

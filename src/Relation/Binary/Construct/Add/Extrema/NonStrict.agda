@@ -14,7 +14,7 @@ open import Relation.Binary
 module Relation.Binary.Construct.Add.Extrema.NonStrict
   {a ℓ} {A : Set a} (_≤_ : Rel A ℓ) where
 
-open import Function
+open import Function.Base
 open import Relation.Nullary.Construct.Add.Extrema
 import Relation.Nullary.Construct.Add.Infimum as I
 open import Relation.Binary.PropositionalEquality using (_≡_)

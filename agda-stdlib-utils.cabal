@@ -1,5 +1,5 @@
-name:            lib
-version:         1.4-dev
+name:            agda-stdlib-utils
+version:         1.5-dev
 cabal-version:   >= 1.10
 build-type:      Simple
 description:     Helper programs.
@@ -26,3 +26,4 @@ executable AllNonAsciiChars
   default-language: Haskell2010
   build-depends:      base >= 4.9.0.0 && < 4.15
                     , filemanip >= 0.3.6.2 && < 0.4
+                    , text >= 1.2.3.0 && < 1.3

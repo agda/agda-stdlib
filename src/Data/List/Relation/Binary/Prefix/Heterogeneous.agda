@@ -17,6 +17,8 @@ open import Relation.Binary using (REL; _⇒_)
 
 module _ {a b r} {A : Set a} {B : Set b} (R : REL A B r) where
 
+  infixr 5 _∷_ _++_
+
   data Prefix : REL (List A) (List B) (a ⊔ b ⊔ r) where
     []  : ∀ {bs} → Prefix [] bs
     _∷_ : ∀ {a b as bs} → R a b → Prefix as bs → Prefix (a ∷ as) (b ∷ bs)

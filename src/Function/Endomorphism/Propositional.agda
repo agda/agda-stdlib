@@ -6,6 +6,9 @@
 
 {-# OPTIONS --without-K --safe #-}
 
+-- Disabled to prevent warnings from deprecated names
+{-# OPTIONS --warn=noUserWarning #-}
+
 module Function.Endomorphism.Propositional {a} (A : Set a) where
 
 open import Algebra

@@ -151,13 +151,13 @@ fromℕ-def : ∀ n → fromℕ n ≡ fromℕ< ℕₚ.≤-refl
 fromℕ-def zero    = refl
 fromℕ-def (suc n) = cong suc (fromℕ-def n)
 
-fromℕ<-irrelevant : ∀ m n {o} → m ≡ n →
-                    (m<o : m ℕ.< o) →
-                    (n<o : n ℕ.< o) →
-                    fromℕ< m<o ≡ fromℕ< n<o
-fromℕ<-irrelevant 0 0 r (s≤s z≤n) (s≤s z≤n) = refl
-fromℕ<-irrelevant (suc _) (suc _) r (s≤s (s≤s p)) (s≤s (s≤s q))
-  = cong suc (fromℕ<-irrelevant _ _ (ℕₚ.suc-injective r) (s≤s p) (s≤s q))
+fromℕ<-cong : ∀ m n {o} → m ≡ n →
+              (m<o : m ℕ.< o) →
+              (n<o : n ℕ.< o) →
+              fromℕ< m<o ≡ fromℕ< n<o
+fromℕ<-cong 0       0       r (s≤s z≤n)     (s≤s z≤n)     = refl
+fromℕ<-cong (suc _) (suc _) r (s≤s (s≤s p)) (s≤s (s≤s q))
+  = cong suc (fromℕ<-cong _ _ (ℕₚ.suc-injective r) (s≤s p) (s≤s q))
 
 fromℕ<-injective : ∀ m n {o} →
                    (m<o : m ℕ.< o) →
@@ -464,10 +464,10 @@ inject≤-idempotent {_} {suc n} {suc k} zero    _   _   _ = refl
 inject≤-idempotent {_} {suc n} {suc k} (suc i) m≤n n≤k _ =
   cong suc (inject≤-idempotent i (ℕₚ.≤-pred m≤n) (ℕₚ.≤-pred n≤k) _)
 
-inject≤-injective : ∀ {n m} (n≤m : n ℕ.≤ m) x y → inject≤ x n≤m ≡ inject≤ y n≤m → x ≡ y
-inject≤-injective (s≤s p) zero zero eq = refl
-inject≤-injective (s≤s p) (suc x) (suc y) eq =
-  cong suc (inject≤-injective p x y (suc-injective eq))
+inject≤-injective : ∀ {n m} (n≤m n≤m′ : n ℕ.≤ m) x y → inject≤ x n≤m ≡ inject≤ y n≤m′ → x ≡ y
+inject≤-injective (s≤s p) (s≤s q) zero zero eq = refl
+inject≤-injective (s≤s p) (s≤s q) (suc x) (suc y) eq =
+  cong suc (inject≤-injective p q x y (suc-injective eq))
 
 ------------------------------------------------------------------------
 -- pred

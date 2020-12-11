@@ -173,16 +173,18 @@ module _ {P : A → Set p} where
 ------------------------------------------------------------------------
 -- map
 
+module _ {P : Pred A p} where
+
+  map-id : ∀ {xs} (pxs : All P xs) → All.map id pxs ≡ pxs
+  map-id []         = refl
+  map-id (px ∷ pxs) = cong (px ∷_)  (map-id pxs)
+
 module _ {P : Pred A p} {Q : Pred A q} {f : P ⋐ Q} where
 
   map-cong : ∀ {xs} {g : P ⋐ Q} (pxs : All P xs) →
              (∀ {x} → f {x} ≗ g) → All.map f pxs ≡ All.map g pxs
   map-cong []         _   = refl
   map-cong (px ∷ pxs) feq = cong₂ _∷_ (feq px) (map-cong pxs feq)
-
-  map-id : ∀ {xs} (pxs : All P xs) → All.map id pxs ≡ pxs
-  map-id []         = refl
-  map-id (px ∷ pxs) = cong (px ∷_)  (map-id pxs)
 
   map-compose : ∀ {r} {R : Pred A r} {xs} {g : Q ⋐ R} (pxs : All P xs) →
                 All.map g (All.map f pxs) ≡ All.map (g ∘ f) pxs
