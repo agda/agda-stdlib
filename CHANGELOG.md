@@ -135,6 +135,11 @@ Deprecated names
   show ↦ Data.Integer.Show.show
   ```
 
+* In `Data.Rational`:
+    ```agda
+  show ↦ Data.Rational.Show.show
+  ```
+
 New modules
 -----------
 
@@ -205,7 +210,7 @@ New modules
   System.Environment.Primitive
   ```
 
-* Added module `Data.Integer.Show`.
+* Added modules `Data.Integer.Show` and `Data.Rational.Show`.
 
 Other major changes
 -------------------

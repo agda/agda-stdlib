@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Showing natural numbers
+-- Showing integers
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
