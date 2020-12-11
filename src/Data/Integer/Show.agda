@@ -16,7 +16,7 @@ open import Data.String.Base using (String; _++_)
 ------------------------------------------------------------------------
 -- Show
 
--- Decimal notation: conversion back and forth with characters
+-- Decimal notation
 -- Time complexity is O(log₁₀(n))
 
 show : ℤ → String

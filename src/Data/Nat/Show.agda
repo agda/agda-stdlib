@@ -52,7 +52,7 @@ readMaybe base = Maybe.map convert
 ------------------------------------------------------------------------
 -- Show
 
--- Decimal notation: conversion back and forth with characters
+-- Decimal notation
 -- Time complexity is O(log₁₀(n))
 
 toDigitChar : ℕ → Char

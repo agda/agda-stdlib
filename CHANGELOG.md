@@ -130,6 +130,11 @@ Deprecated names
   filter⁺         ↦ filter-⊆
   ```
 
+* In `Data.Integer`:
+    ```agda
+  show ↦ Data.Integer.Show.show
+  ```
+
 New modules
 -----------
 
