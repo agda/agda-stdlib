@@ -11,7 +11,9 @@ module Data.String.Base where
 open import Level using (zero)
 open import Data.Bool.Base using (true; false)
 open import Data.Bool.Properties using (T?)
+open import Data.Maybe.Base as Maybe using (Maybe)
 open import Data.Nat.Base as ℕ using (ℕ; _∸_; ⌊_/2⌋; ⌈_/2⌉; _⊔_)
+open import Data.Product using (proj₁; proj₂)
 open import Data.List.Base as List using (List; [_])
 open import Data.List.NonEmpty as NE using (List⁺)
 open import Data.List.Relation.Binary.Pointwise using (Pointwise)
@@ -59,6 +61,14 @@ _<_ = Lex-< Char._≈_ Char._<_ on toList
 
 ------------------------------------------------------------------------
 -- Operations
+
+-- List-like operations
+
+head : String → Maybe Char
+head = Maybe.map proj₁ ∘′ uncons
+
+tail : String → Maybe String
+tail = Maybe.map proj₂ ∘′ uncons
 
 -- Additional conversion functions
 
