@@ -13,7 +13,7 @@ module Relation.Binary.Construct.NonStrictToStrict
 
 open import Data.Product using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum.Base using (inj₁; inj₂)
-open import Function using (_∘_; flip)
+open import Function.Base using (_∘_; flip)
 open import Relation.Nullary using (¬_; yes; no)
 open import Relation.Nullary.Negation using (contradiction; ¬?)
 open import Relation.Nullary.Product using (_×-dec_)
@@ -120,6 +120,14 @@ x < y = x ≤ y × x ≉ y
   ; trans         = <-trans po
   ; <-resp-≈      = <-resp-≈ isEquivalence ≤-resp-≈
   } where open IsPartialOrder po
+
+<-isDecStrictPartialOrder : IsDecPartialOrder _≈_ _≤_ →
+                            IsDecStrictPartialOrder _≈_ _<_
+<-isDecStrictPartialOrder dpo = record
+  { isStrictPartialOrder = <-isStrictPartialOrder isPartialOrder
+  ; _≟_ = _≟_
+  ; _<?_ = <-decidable _≟_ _≤?_
+  } where open IsDecPartialOrder dpo
 
 <-isStrictTotalOrder₁ : Decidable _≈_ → IsTotalOrder _≈_ _≤_ →
                         IsStrictTotalOrder _≈_ _<_

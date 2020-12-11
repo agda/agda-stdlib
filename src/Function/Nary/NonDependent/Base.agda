@@ -18,7 +18,7 @@ open import Level using (Level; 0ℓ; _⊔_)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Product using (_×_; _,_)
 open import Data.Unit.Polymorphic.Base
-open import Function using (_∘′_; _$′_; const; flip)
+open import Function.Base using (_∘′_; _$′_; const; flip)
 
 private
   variable
@@ -85,10 +85,12 @@ _⇉_ = Arrows _
 
 -- Level-respecting map
 
+infixr -1 _<$>_
+
 _<$>_ : (∀ {l} → Set l → Set l) →
         ∀ {n ls} → Sets n ls → Sets n ls
 _<$>_ f {zero}   as        = _
-_<$>_ f {suc n}  (a , as)  = f a , f <$> as
+_<$>_ f {suc n}  (a , as)  = f a , (f <$> as)
 
 -- Level-modifying generalised map
 
@@ -112,10 +114,14 @@ mapₙ (suc n) f g = mapₙ n f ∘′ g
 
 -- compose function at the n-th position
 
+infix 1 _%=_⊢_
+
 _%=_⊢_ : ∀ n {ls} {as : Sets n ls} → (A → B) → as ⇉ (B → C) → as ⇉ (A → C)
 n %= f ⊢ g = mapₙ n (_∘′ f) g
 
 -- partially apply function at the n-th position
+
+infix 1 _∷=_⊢_
 
 _∷=_⊢_ : ∀ n {ls} {as : Sets n ls} → A → as ⇉ (A → B) → as ⇉ B
 n ∷= x ⊢ g = mapₙ n (_$′ x) g

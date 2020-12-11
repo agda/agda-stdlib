@@ -16,7 +16,7 @@ open import Algebra.Core
 open import Algebra.Bundles
 open import Data.Sum.Base using (inj₁; inj₂; [_,_])
 open import Data.Product using (_,_)
-open import Function using (id)
+open import Function.Base using (id)
 
 open TotalOrder totalOrder renaming (Carrier to A)
 open import Algebra.Definitions _≈_

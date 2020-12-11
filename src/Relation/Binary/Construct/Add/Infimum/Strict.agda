@@ -16,7 +16,7 @@ module Relation.Binary.Construct.Add.Infimum.Strict
 
 open import Level using (_⊔_)
 open import Data.Product
-open import Function
+open import Function.Base
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; refl)
 import Relation.Binary.Construct.Add.Infimum.Equality as Equality

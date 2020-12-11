@@ -10,7 +10,7 @@ module Data.Nat.GeneralisedArithmetic where
 
 open import Data.Nat.Base
 open import Data.Nat.Properties
-open import Function using (_∘′_; _∘_; id)
+open import Function.Base using (_∘′_; _∘_; id)
 open import Relation.Binary.PropositionalEquality
 open ≡-Reasoning
 

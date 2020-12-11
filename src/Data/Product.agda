@@ -75,10 +75,14 @@ _,′_ = _,_
 
 -- Syntax
 
+infix 2 ∃-syntax
+
 ∃-syntax : ∀ {A : Set a} → (A → Set b) → Set (a ⊔ b)
 ∃-syntax = ∃
 
 syntax ∃-syntax (λ x → B) = ∃[ x ] B
+
+infix 2 ∄-syntax
 
 ∄-syntax : ∀ {A : Set a} → (A → Set b) → Set (a ⊔ b)
 ∄-syntax = ∄
@@ -90,6 +94,7 @@ syntax ∄-syntax (λ x → B) = ∄[ x ] B
 
 infix  4 -,_
 infixr 2 _-×-_ _-,-_
+infixl 2 _<*>_
 
 -- Sometimes the first component can be inferred.
 
@@ -113,6 +118,12 @@ map₂ : ∀ {A : Set a} {B : A → Set b} {C : A → Set c} →
        (∀ {x} → B x → C x) → Σ A B → Σ A C
 map₂ f = map id f
 
+-- A version of map where the output can depend on the input
+dmap : ∀ {B : A → Set b} {P : A → Set p} {Q : ∀ {a} → P a → B a → Set q} →
+       (f : (a : A) → B a) → (∀ {a} (b : P a) → Q b (f a)) →
+       ((a , b) : Σ A P) → Σ (B a) (Q b)
+dmap f g (x , y) = f x , g y
+
 zip : ∀ {P : A → Set p} {Q : B → Set q} {R : C → Set r} →
       (_∙_ : A → B → C) →
       (∀ {x y} → P x → Q y → R (x ∙ y)) →
@@ -128,6 +139,25 @@ uncurry : ∀ {A : Set a} {B : A → Set b} {C : Σ A B → Set c} →
           ((x : A) → (y : B x) → C (x , y)) →
           ((p : Σ A B) → C p)
 uncurry f (x , y) = f x y
+
+-- Rewriting dependent products
+assocʳ : {B : A → Set b} {C : (a : A) → B a → Set c} →
+          Σ (Σ A B) (uncurry C) → Σ A (λ a → Σ (B a) (C a))
+assocʳ ((a , b) , c) = (a , (b , c))
+
+assocˡ : {B : A → Set b} {C : (a : A) → B a → Set c} →
+          Σ A (λ a → Σ (B a) (C a)) → Σ (Σ A B) (uncurry C)
+assocˡ (a , (b , c)) = ((a , b) , c)
+
+-- Alternate form of associativity for dependent products
+-- where the C parameter is uncurried.
+assocʳ-curried : {B : A → Set b} {C : Σ A B → Set c} →
+                 Σ (Σ A B) C → Σ A (λ a → Σ (B a) (curry C a))
+assocʳ-curried ((a , b) , c) = (a , (b , c))
+
+assocˡ-curried : {B : A → Set b} {C : Σ A B → Set c} →
+          Σ A (λ a → Σ (B a) (curry C a)) → Σ (Σ A B) C
+assocˡ-curried (a , (b , c)) = ((a , b) , c)
 
 ------------------------------------------------------------------------
 -- Operations for non-dependent products
@@ -147,6 +177,16 @@ curry′ = curry
 uncurry′ : (A → B → C) → (A × B → C)
 uncurry′ = uncurry
 
+dmap′ : ∀ {x y} {X : A → Set x} {Y : B → Set y} →
+        ((a : A) → X a) → ((b : B) → Y b) →
+        ((a , b) : A × B) → X a × Y b
+dmap′ f g = dmap f g
+
+_<*>_ : ∀ {x y} {X : A → Set x} {Y : B → Set y} →
+        ((a : A) → X a) × ((b : B) → Y b) →
+        ((a , b) : A × B) → X a × Y b
+_<*>_ = uncurry dmap′
+
 -- Operations that can only be defined for non-dependent products
 
 swap : A × B → B × A
@@ -157,3 +197,10 @@ f -×- g = f -⟪ _×_ ⟫- g
 
 _-,-_ : (A → B → C) → (A → B → D) → (A → B → C × D)
 f -,- g = f -⟪ _,_ ⟫- g
+
+-- Rewriting non-dependent products
+assocʳ′ : (A × B) × C → A × (B × C)
+assocʳ′ ((a , b) , c) = (a , (b , c))
+
+assocˡ′ : A × (B × C) → (A × B) × C
+assocˡ′ (a , (b , c)) = ((a , b) , c)

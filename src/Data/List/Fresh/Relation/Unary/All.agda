@@ -26,6 +26,8 @@ private
 
 module _ {A : Set a} {R : Rel A r} (P : Pred A p) where
 
+  infixr 5 _∷_
+
   data All : List# A R → Set (p ⊔ a ⊔ r) where
     []  : All []
     _∷_ : ∀ {x xs pr} → P x → All xs → All (cons x xs pr)

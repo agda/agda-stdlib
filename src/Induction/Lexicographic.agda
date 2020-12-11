@@ -24,6 +24,8 @@ open import Level
   -- ...or x is "smaller" and y is arbitrary.
   RecA (λ x′ → ∀ y′ → P (x′ , y′)) x
 
+infixr 2 _⊗_
+
 _⊗_ : ∀ {a b ℓ₁ ℓ₂ ℓ₃} {A : Set a} {B : Set b} →
       RecStruct A (ℓ₁ ⊔ b) ℓ₂ → RecStruct B ℓ₁ ℓ₃ →
       RecStruct (A × B) _ _

@@ -15,7 +15,7 @@ open import Data.Nat.Base using (ℕ; zero; suc; _+_)
 open import Data.Vec.Base
 open import Data.Vec.Relation.Binary.Pointwise.Inductive as PW
   using (Pointwise)
-open import Function
+open import Function.Base
 open import Level using (_⊔_)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)

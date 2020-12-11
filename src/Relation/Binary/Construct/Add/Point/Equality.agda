@@ -15,7 +15,7 @@ module Relation.Binary.Construct.Add.Point.Equality
   {a ℓ} {A : Set a} (_≈_ : Rel A ℓ) where
 
 open import Level using (_⊔_)
-open import Function
+open import Function.Base
 import Relation.Binary.PropositionalEquality as P
 open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Nullary.Construct.Add.Point

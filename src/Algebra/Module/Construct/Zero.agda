@@ -10,61 +10,62 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Algebra.Module.Construct.Zero where
+open import Level
+
+module Algebra.Module.Construct.Zero {c ℓ : Level} where
 
 open import Algebra.Bundles
 open import Algebra.Module.Bundles
-open import Data.Unit
-open import Level
+open import Data.Unit.Polymorphic
 
 private
   variable
     r s ℓr ℓs : Level
 
-leftSemimodule : {R : Semiring r ℓr} → LeftSemimodule R 0ℓ 0ℓ
+leftSemimodule : {R : Semiring r ℓr} → LeftSemimodule R c ℓ
 leftSemimodule = record
   { Carrierᴹ = ⊤
   ; _≈ᴹ_ = λ _ _ → ⊤
   }
 
-rightSemimodule : {S : Semiring s ℓs} → RightSemimodule S 0ℓ 0ℓ
+rightSemimodule : {S : Semiring s ℓs} → RightSemimodule S c ℓ
 rightSemimodule = record
   { Carrierᴹ = ⊤
   ; _≈ᴹ_ = λ _ _ → ⊤
   }
 
 bisemimodule :
-  {R : Semiring r ℓr} {S : Semiring s ℓs} → Bisemimodule R S 0ℓ 0ℓ
+  {R : Semiring r ℓr} {S : Semiring s ℓs} → Bisemimodule R S c ℓ
 bisemimodule = record
   { Carrierᴹ = ⊤
   ; _≈ᴹ_ = λ _ _ → ⊤
   }
 
-semimodule : {R : CommutativeSemiring r ℓr} → Semimodule R 0ℓ 0ℓ
+semimodule : {R : CommutativeSemiring r ℓr} → Semimodule R c ℓ
 semimodule = record
   { Carrierᴹ = ⊤
   ; _≈ᴹ_ = λ _ _ → ⊤
   }
 
-leftModule : {R : Ring r ℓr} → LeftModule R 0ℓ 0ℓ
+leftModule : {R : Ring r ℓr} → LeftModule R c ℓ
 leftModule = record
   { Carrierᴹ = ⊤
   ; _≈ᴹ_ = λ _ _ → ⊤
   }
 
-rightModule : {S : Ring s ℓs} → RightModule S 0ℓ 0ℓ
+rightModule : {S : Ring s ℓs} → RightModule S c ℓ
 rightModule = record
   { Carrierᴹ = ⊤
   ; _≈ᴹ_ = λ _ _ → ⊤
   }
 
-bimodule : {R : Ring r ℓr} {S : Ring s ℓs} → Bimodule R S 0ℓ 0ℓ
+bimodule : {R : Ring r ℓr} {S : Ring s ℓs} → Bimodule R S c ℓ
 bimodule = record
   { Carrierᴹ = ⊤
   ; _≈ᴹ_ = λ _ _ → ⊤
   }
 
-⟨module⟩ : {R : CommutativeRing r ℓr} → Module R 0ℓ 0ℓ
+⟨module⟩ : {R : CommutativeRing r ℓr} → Module R c ℓ
 ⟨module⟩ = record
   { Carrierᴹ = ⊤
   ; _≈ᴹ_ = λ _ _ → ⊤
