@@ -12,6 +12,7 @@ open import Codata.Musical.Notation
 open import Codata.Musical.Costring
 open import Data.Unit.Polymorphic
 open import Data.String
+import Data.Unit as Unit0
 open import Function
 import IO.Primitive as Prim
 open import Level
@@ -145,28 +146,32 @@ readFile f = lift (Prim.readFile f)
 readFiniteFile : String → IO String
 readFiniteFile f = lift (Prim.readFiniteFile f)
 
-writeFile∞ : String → Costring → IO ⊤
-writeFile∞ f s = ignore (lift (Prim.writeFile f s))
+private
+  lift′ : Prim.IO Unit0.⊤ → IO {a} ⊤
+  lift′ io = lift (io Prim.>>= λ _ → Prim.return _)
 
-writeFile : String → String → IO ⊤
+writeFile∞ : String → Costring → IO {a} ⊤
+writeFile∞ f s = lift′ (Prim.writeFile f s)
+
+writeFile : String → String → IO {a} ⊤
 writeFile f s = writeFile∞ f (toCostring s)
 
-appendFile∞ : String → Costring → IO ⊤
-appendFile∞ f s = ignore (lift (Prim.appendFile f s))
+appendFile∞ : String → Costring → IO {a} ⊤
+appendFile∞ f s = lift′ (Prim.appendFile f s)
 
-appendFile : String → String → IO ⊤
+appendFile : String → String → IO {a} ⊤
 appendFile f s = appendFile∞ f (toCostring s)
 
-putStr∞ : Costring → IO ⊤
-putStr∞ s = ignore (lift (Prim.putStr s))
+putStr∞ : Costring → IO {a} ⊤
+putStr∞ s = lift′ (Prim.putStr s)
 
-putStr : String → IO ⊤
+putStr : String → IO {a} ⊤
 putStr s = putStr∞ (toCostring s)
 
-putStrLn∞ : Costring → IO ⊤
-putStrLn∞ s = ignore (lift (Prim.putStrLn s))
+putStrLn∞ : Costring → IO {a} ⊤
+putStrLn∞ s = lift′ (Prim.putStrLn s)
 
-putStrLn : String → IO ⊤
+putStrLn : String → IO {a} ⊤
 putStrLn s = putStrLn∞ (toCostring s)
 
 -- Note that the commands writeFile, appendFile, putStr and putStrLn

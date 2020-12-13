@@ -51,13 +51,13 @@ open String public using ( String )
 
 infix 4 _≈_
 _≈_ : Rel String zero
-_≈_ = Pointwise Char._≈_ on toList
+_≈_ = Pointwise _≡_ on toList
 
 -- Lexicographic ordering on Strings
 
 infix 4 _<_
 _<_ : Rel String zero
-_<_ = Lex-< Char._≈_ Char._<_ on toList
+_<_ = Lex-< _≡_ Char._<_ on toList
 
 ------------------------------------------------------------------------
 -- Operations
