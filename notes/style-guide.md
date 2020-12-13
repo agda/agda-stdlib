@@ -311,10 +311,21 @@ line of code, indented by two spaces.
 * If there are lots of implicit arguments that are common to a collection
   of proofs they should be extracted by using an anonymous module.
 
-* Implicit of type `Level` and `Set` can be generalized using the keyword
-  `variable`. At the moment the policy is *not* to generalize over any other
-  types to minimize the amount of information that users have to keep in
-  their head concurrently.
+#### Variables
+
+* `Level` and `Set`s can always be generalized using the keyword `variable`.
+
+* A file may only declare variables of other types if those types are used
+  in the definition of the main type that the file concerns itself with.
+  At the moment the policy is *not* to generalize over any other types to
+  minimize the amount of information that users have to keep in their head
+  concurrently.
+
+* Example: the main type in `Data.List.Properties` is `List A` where `A : Set a`.
+  Therefore it may declare variables over `Level`, `Set a`, `A`, `List A`. It may
+  not declare variables over predicates (e.g. `P : Pred A l`) as predicates are
+  not used in the definition of `List`, even though they are used in may list
+  functions such as `filter`.
 
 ## Naming conventions
 
