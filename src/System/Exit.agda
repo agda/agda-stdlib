@@ -12,8 +12,7 @@ open import Level using (Level)
 open import Data.Nat.Base using (ℕ)
 open import Data.String.Base using (String)
 open import Function.Base using (_$_)
-open import IO using (IO; lift; run)
-open import IO.Primitive using (_>>=_)
+open import IO using (IO; lift; _>>_; putStrLn)
 
 ------------------------------------------------------------------------
 -- Re-exporting the ExitCode data structure
@@ -43,6 +42,6 @@ exitSuccess : IO A
 exitSuccess = exitWith ExitSuccess
 
 die : String → IO A
-die str = lift $ do
-  _ ← run (IO.putStrLn str)
-  run exitFailure
+die str = do
+  putStrLn str
+  exitFailure
