@@ -27,6 +27,9 @@ Bug-fixes
 
 * Added version to library name
 
+* In `IO`, `⊤`-returning functions (such as `putStrLn`) have been made level polymorphic.
+  This may force you to add more type or level annotations to your programs.
+
 Non-backwards compatible changes
 --------------------------------
 

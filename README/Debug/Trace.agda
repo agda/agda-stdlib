@@ -56,12 +56,13 @@ div m n    = just (go m m) where
 -- We add two calls to trace to see when div is evaluated and when the returned
 -- number is forced (by a call to show).
 
+open import Level using (0ℓ)
 open import IO
 
 main =
   let r = trace "Call to div" (div 4 2)
       j = λ n → trace "Forcing the result wrapped in just." (putStrLn (show n)) in
-  run (maybe′ j (return _) r)
+  run {a = 0ℓ} (maybe′ j (return _) r)
 
 -- We get the following trace where we can see that checking that the
 -- maybe-solution is just-headed does not force the natural number. Once forced,
