@@ -27,6 +27,9 @@ Bug-fixes
 
 * Added version to library name
 
+* In `IO`, `⊤`-returning functions (such as `putStrLn`) have been made level polymorphic.
+  This may force you to add more type or level annotations to your programs.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -36,6 +39,12 @@ Non-backwards compatible changes
 
 * The module `Algebra.Construct.Zero` and `Algebra.Module.Construct.Zero`
   are now level-polymorphic, each taking two implicit level parameters.
+
+* The orders on strings are now using propositional equality as the notion
+  of equivalence on characters rather than the equivalent but less inference-friendly
+  variant defined by conversion of characters to natural numbers.
+  This is in line with our effort to deprecate this badly-behaved equivalence
+  relation on characters.
 
 * Previously `_⊖_` in `Data.Integer.Base` was defined inductively as:
   ```agda
@@ -111,6 +120,10 @@ Deprecated names
   ```agda
   Plus′ ↦ TransClosure
   ```
+
+* In `Data.Char.Properties`, deprecated all of the `_≈_`-related content: this
+  relation is equivalent to propositional equality but has worse inference. So
+  we are moving towards not using it anymore.
 
 * In `Data.List.Relation.Binary.Subset.Propositional.Properties`:
   ```agda
@@ -204,6 +217,11 @@ New modules
   ```
   System.Exit
   System.Exit.Primitive
+  ```
+
+* New morphisms
+  ```
+  Algebra.Morphism.LatticeMonomorphism
   ```
 
 Other major changes
@@ -377,6 +395,33 @@ Other minor additions
   +-*-commutativeSemiring : CommutativeSemiring 0ℓ 0ℓ
   ```
 
+* Added new definition to `Data.Char.Base`:
+  ```agda
+  _≉_ : Rel Char zero
+  _≤_ : Rel Char zero
+  ```
+
+* Added proofs to `Data.Char.Properties`:
+  ```agda
+  ≉⇒≢ : _≉_ → x ≢ y
+
+  <-trans : Transitive _<_
+  <-asym  : Asymmetric _<_
+  <-cmp   : Trichotomous _≡_ _<_
+
+  _≤?_                : Decidable _≤_
+  ≤-reflexive         : _≡_ ⇒ _≤_
+  ≤-trans             : Transitive _≤_
+  ≤-antisym           : Antisymmetric _≡_ _≤_
+  ≤-isPreorder        : IsPreorder _≡_ _≤_
+  ≤-isPartialOrder    : IsPartialOrder _≡_ _≤_
+  ≤-isDecPartialOrder : IsDecPartialOrder _≡_ _≤_
+
+  ≤-preorder : Preorder _ _ _
+  ≤-poset    : Poset _ _ _
+  ≤-decPoset : DecPoset _ _ _
+  ```
+
 * Added infix declarations to `Data.Product.∃-syntax` and `Data.Product.∄-syntax`.
 
 * Added new function to `Data.List.Base`:
@@ -403,7 +448,23 @@ Other minor additions
   id-⟶     : A ⟶ A
   ```
 
-* Added new function to `Data.String.Base`:
+* Added new proofs to `Codata.Delay.Properties`:
   ```agda
-  lines : String → List String
+  ⇓-unique            : (d⇓₁ : d ⇓) (d⇓₂ : d ⇓) → d⇓₁ ≡ d⇓₂
+  bind̅₁               : bind d f ⇓ → d ⇓
+  bind̅₂               : (bind⇓ : bind d f ⇓) → f (extract (bind̅₁ bind⇓)) ⇓
+  extract-bind-⇓      : (d⇓ : d ⇓) (f⇓ : f (extract d⇓) ⇓) → extract (bind-⇓ d⇓ f⇓) ≡ extract f⇓
+  extract-bind̅₂-bind⇓ : (bind⇓ : bind d f ⇓) → extract (bind̅₂ d bind⇓) ≡ extract bind⇓
+  bind⇓-length        : (bind⇓ : bind d f ⇓) (d⇓ : d ⇓) (f⇓ : f (extract d⇓) ⇓) → toℕ (length-⇓ bind⇓) ≡ toℕ (length-⇓ d⇓) ℕ.+ toℕ (length-⇓ f⇓)
+  ```
+
+* Added new function to `Data.List.Base`:
+  ```agda
+  linesBy : Decidable P → List A → List (List A)
+  ```
+
+* Added new functions to `Data.String.Base`:
+  ```agda
+  linesBy : Decidable P → String → List String
+  lines   : String → List String
   ```

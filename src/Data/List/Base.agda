@@ -385,6 +385,23 @@ unsnoc as with initLast as
 ------------------------------------------------------------------------
 -- Splitting a list
 
+-- The predicate `P` represents the notion of newline character for the type `A`
+-- It is used to split the input list into a list of lines. Some lines may be
+-- empty if the input contains at least two consecutive newline characters.
+
+linesBy : ∀ {P : Pred A p} → Decidable P → List A → List (List A)
+linesBy {A = A} P? = go nothing where
+
+  go : Maybe (List A) → List A → List (List A)
+  go acc []       = maybe′ ([_] ∘′ reverse) [] acc
+  go acc (c ∷ cs) with does (P? c)
+  ... | true  = reverse (Maybe.fromMaybe [] acc) ∷ go nothing cs
+  ... | false = go (just (c ∷ Maybe.fromMaybe [] acc)) cs
+
+-- The predicate `P` represents the notion of space character for the type `A`.
+-- It is used to split the input list into a list of words. All the words are
+-- non empty and the output does not contain any space characters.
+
 wordsBy : ∀ {P : Pred A p} → Decidable P → List A → List (List A)
 wordsBy {A = A} P? = go [] where
 
