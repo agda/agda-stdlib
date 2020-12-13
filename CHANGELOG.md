@@ -27,6 +27,9 @@ Bug-fixes
 
 * Added version to library name
 
+* In `IO`, `⊤`-returning functions (such as `putStrLn`) have been made level polymorphic.
+  This may force you to add more type or level annotations to your programs.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -220,6 +223,12 @@ New modules
   are allowed as in some literature they are not (in particular the
   proof that any two transposition decompositions of a permutation
   have lengths that differ by an even number).
+  ```
+
+* New morphisms
+  ```
+  Algebra.Morphism.LatticeMonomorphism
+  ```
 
 Other major changes
 -------------------
@@ -453,6 +462,16 @@ Other minor additions
   ```agda
   function : Func S S
   id-⟶     : A ⟶ A
+  ```
+
+* Added new proofs to `Codata.Delay.Properties`:
+  ```agda
+  ⇓-unique            : (d⇓₁ : d ⇓) (d⇓₂ : d ⇓) → d⇓₁ ≡ d⇓₂
+  bind̅₁               : bind d f ⇓ → d ⇓
+  bind̅₂               : (bind⇓ : bind d f ⇓) → f (extract (bind̅₁ bind⇓)) ⇓
+  extract-bind-⇓      : (d⇓ : d ⇓) (f⇓ : f (extract d⇓) ⇓) → extract (bind-⇓ d⇓ f⇓) ≡ extract f⇓
+  extract-bind̅₂-bind⇓ : (bind⇓ : bind d f ⇓) → extract (bind̅₂ d bind⇓) ≡ extract bind⇓
+  bind⇓-length        : (bind⇓ : bind d f ⇓) (d⇓ : d ⇓) (f⇓ : f (extract d⇓) ⇓) → toℕ (length-⇓ bind⇓) ≡ toℕ (length-⇓ d⇓) ℕ.+ toℕ (length-⇓ f⇓)
   ```
 
 * Added new function to `Data.List.Base`:
