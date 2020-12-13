@@ -265,14 +265,15 @@ Other minor additions
   CancellativeCommutativeSemiring c ℓ : Set (suc (c ⊔ ℓ))
   ```
 
-* Added new function and proofs to `Data.Fin.Permutation`:
+* Added new relations, functions and proofs to `Data.Fin.Permutation`:
   ```
+  _≈_             : Rel (Permutation m n) 0ℓ
   lift₀           : Permutation m n → Permutation (suc m) (suc n)
-  lift₀-remove    : 0F ≡ π ⟨$⟩ʳ 0F → ∀ i → lift₀ (remove 0F π) ⟨$⟩ʳ i ≡ π ⟨$⟩ʳ i
+  lift₀-remove    : π ⟨$⟩ʳ 0F ≡ 0F → ∀ i → lift₀ (remove 0F π) ≈ π
   lift₀-id        : lift₀ id ⟨$⟩ʳ i ≡ i
-  lift₀-comp      : lift₀ π ∘ₚ lift₀ ρ ⟨$⟩ʳ i ≡ lift₀ (π ∘ₚ ρ) ⟨$⟩ʳ i
-  lift₀-cong      : (∀ i → π ⟨$⟩ʳ i ≡ ρ ⟨$⟩ʳ i) → ∀ i → lift₀ π ⟨$⟩ʳ i ≡ lift₀ ρ ⟨$⟩ʳ i
-  lift₀-transpose : transpose (suc i) (suc j) ⟨$⟩ʳ k ≡ lift₀ (transpose i j) ⟨$⟩ʳ k
+  lift₀-comp      : lift₀ π ∘ₚ lift₀ ρ ≈ lift₀ (π ∘ₚ ρ)
+  lift₀-cong      : π ≈ ρ → lift₀ π ≈ lift₀ ρ
+  lift₀-transpose : transpose (suc i) (suc j)≈ lift₀ (transpose i j)
   ```
 
 * Added new definitions to `Algebra.Definitions`:
