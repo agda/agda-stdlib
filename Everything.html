@@ -2186,93 +2186,99 @@
 <a id="62029" class="Comment">-- Primitive System.Environment: simple bindings to Haskell functions</a>
 <a id="62099" class="Keyword">import</a> <a id="62106" href="System.Environment.Primitive.html" class="Module">System.Environment.Primitive</a>
 
-<a id="62136" class="Comment">-- Reflection-based solver for monoid equalities</a>
-<a id="62185" class="Keyword">import</a> <a id="62192" href="Tactic.MonoidSolver.html" class="Module">Tactic.MonoidSolver</a>
+<a id="62136" class="Comment">-- Exiting the program.</a>
+<a id="62160" class="Keyword">import</a> <a id="62167" href="System.Exit.html" class="Module">System.Exit</a>
 
-<a id="62213" class="Comment">-- A solver that uses reflection to automatically obtain and solve</a>
-<a id="62280" class="Comment">-- equations over rings.</a>
-<a id="62305" class="Keyword">import</a> <a id="62312" href="Tactic.RingSolver.html" class="Module">Tactic.RingSolver</a>
+<a id="62180" class="Comment">-- Primitive System.Exit simple bindings to Haskell functions</a>
+<a id="62242" class="Keyword">import</a> <a id="62249" href="System.Exit.Primitive.html" class="Module">System.Exit.Primitive</a>
 
-<a id="62331" class="Comment">-- Almost commutative rings</a>
-<a id="62359" class="Keyword">import</a> <a id="62366" href="Tactic.RingSolver.Core.AlmostCommutativeRing.html" class="Module">Tactic.RingSolver.Core.AlmostCommutativeRing</a>
+<a id="62272" class="Comment">-- Reflection-based solver for monoid equalities</a>
+<a id="62321" class="Keyword">import</a> <a id="62328" href="Tactic.MonoidSolver.html" class="Module">Tactic.MonoidSolver</a>
 
-<a id="62412" class="Comment">-- A type for expressions over a raw ring.</a>
-<a id="62455" class="Keyword">import</a> <a id="62462" href="Tactic.RingSolver.Core.Expression.html" class="Module">Tactic.RingSolver.Core.Expression</a>
+<a id="62349" class="Comment">-- A solver that uses reflection to automatically obtain and solve</a>
+<a id="62416" class="Comment">-- equations over rings.</a>
+<a id="62441" class="Keyword">import</a> <a id="62448" href="Tactic.RingSolver.html" class="Module">Tactic.RingSolver</a>
 
-<a id="62497" class="Comment">-- Simple implementation of sets of ℕ.</a>
-<a id="62536" class="Keyword">import</a> <a id="62543" href="Tactic.RingSolver.Core.NatSet.html" class="Module">Tactic.RingSolver.Core.NatSet</a>
+<a id="62467" class="Comment">-- Almost commutative rings</a>
+<a id="62495" class="Keyword">import</a> <a id="62502" href="Tactic.RingSolver.Core.AlmostCommutativeRing.html" class="Module">Tactic.RingSolver.Core.AlmostCommutativeRing</a>
 
-<a id="62574" class="Comment">-- Sparse polynomials in a commutative ring, encoded in Horner normal</a>
-<a id="62644" class="Comment">-- form.</a>
-<a id="62653" class="Keyword">import</a> <a id="62660" href="Tactic.RingSolver.Core.Polynomial.Base.html" class="Module">Tactic.RingSolver.Core.Polynomial.Base</a>
+<a id="62548" class="Comment">-- A type for expressions over a raw ring.</a>
+<a id="62591" class="Keyword">import</a> <a id="62598" href="Tactic.RingSolver.Core.Expression.html" class="Module">Tactic.RingSolver.Core.Expression</a>
 
-<a id="62700" class="Comment">-- Some specialised instances of the ring solver</a>
-<a id="62749" class="Keyword">import</a> <a id="62756" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism</a>
+<a id="62633" class="Comment">-- Simple implementation of sets of ℕ.</a>
+<a id="62672" class="Keyword">import</a> <a id="62679" href="Tactic.RingSolver.Core.NatSet.html" class="Module">Tactic.RingSolver.Core.NatSet</a>
 
-<a id="62804" class="Comment">-- Homomorphism proofs for addition over polynomials</a>
-<a id="62857" class="Keyword">import</a> <a id="62864" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Addition.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Addition</a>
+<a id="62710" class="Comment">-- Sparse polynomials in a commutative ring, encoded in Horner normal</a>
+<a id="62780" class="Comment">-- form.</a>
+<a id="62789" class="Keyword">import</a> <a id="62796" href="Tactic.RingSolver.Core.Polynomial.Base.html" class="Module">Tactic.RingSolver.Core.Polynomial.Base</a>
 
-<a id="62921" class="Comment">-- Homomorphism proofs for constants over polynomials</a>
-<a id="62975" class="Keyword">import</a> <a id="62982" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Constants.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Constants</a>
+<a id="62836" class="Comment">-- Some specialised instances of the ring solver</a>
+<a id="62885" class="Keyword">import</a> <a id="62892" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism</a>
 
-<a id="63040" class="Comment">-- Homomorphism proofs for exponentiation over polynomials</a>
-<a id="63099" class="Keyword">import</a> <a id="63106" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Exponentiation.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Exponentiation</a>
+<a id="62940" class="Comment">-- Homomorphism proofs for addition over polynomials</a>
+<a id="62993" class="Keyword">import</a> <a id="63000" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Addition.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Addition</a>
 
-<a id="63169" class="Comment">-- Lemmas for use in proving the polynomial homomorphism.</a>
-<a id="63227" class="Keyword">import</a> <a id="63234" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Lemmas.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Lemmas</a>
+<a id="63057" class="Comment">-- Homomorphism proofs for constants over polynomials</a>
+<a id="63111" class="Keyword">import</a> <a id="63118" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Constants.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Constants</a>
 
-<a id="63289" class="Comment">-- Homomorphism proofs for multiplication over polynomials</a>
-<a id="63348" class="Keyword">import</a> <a id="63355" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Multiplication.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Multiplication</a>
+<a id="63176" class="Comment">-- Homomorphism proofs for exponentiation over polynomials</a>
+<a id="63235" class="Keyword">import</a> <a id="63242" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Exponentiation.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Exponentiation</a>
 
-<a id="63418" class="Comment">-- Homomorphism proofs for negation over polynomials</a>
-<a id="63471" class="Keyword">import</a> <a id="63478" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Negation.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Negation</a>
+<a id="63305" class="Comment">-- Lemmas for use in proving the polynomial homomorphism.</a>
+<a id="63363" class="Keyword">import</a> <a id="63370" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Lemmas.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Lemmas</a>
 
-<a id="63535" class="Comment">-- Homomorphism proofs for variables and constants over polynomials</a>
-<a id="63603" class="Keyword">import</a> <a id="63610" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Variables.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Variables</a>
+<a id="63425" class="Comment">-- Homomorphism proofs for multiplication over polynomials</a>
+<a id="63484" class="Keyword">import</a> <a id="63491" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Multiplication.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Multiplication</a>
 
-<a id="63668" class="Comment">-- Bundles of parameters for passing to the Ring Solver</a>
-<a id="63724" class="Keyword">import</a> <a id="63731" href="Tactic.RingSolver.Core.Polynomial.Parameters.html" class="Module">Tactic.RingSolver.Core.Polynomial.Parameters</a>
+<a id="63554" class="Comment">-- Homomorphism proofs for negation over polynomials</a>
+<a id="63607" class="Keyword">import</a> <a id="63614" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Negation.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Negation</a>
 
-<a id="63777" class="Comment">-- Polynomial reasoning</a>
-<a id="63801" class="Keyword">import</a> <a id="63808" href="Tactic.RingSolver.Core.Polynomial.Reasoning.html" class="Module">Tactic.RingSolver.Core.Polynomial.Reasoning</a>
+<a id="63671" class="Comment">-- Homomorphism proofs for variables and constants over polynomials</a>
+<a id="63739" class="Keyword">import</a> <a id="63746" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Variables.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Variables</a>
 
-<a id="63853" class="Comment">-- &quot;Evaluating&quot; a polynomial, using Horner&#39;s method.</a>
-<a id="63906" class="Keyword">import</a> <a id="63913" href="Tactic.RingSolver.Core.Polynomial.Semantics.html" class="Module">Tactic.RingSolver.Core.Polynomial.Semantics</a>
+<a id="63804" class="Comment">-- Bundles of parameters for passing to the Ring Solver</a>
+<a id="63860" class="Keyword">import</a> <a id="63867" href="Tactic.RingSolver.Core.Polynomial.Parameters.html" class="Module">Tactic.RingSolver.Core.Polynomial.Parameters</a>
 
-<a id="63958" class="Comment">-- Helper reflection functions</a>
-<a id="63989" class="Keyword">import</a> <a id="63996" href="Tactic.RingSolver.Core.ReflectionHelp.html" class="Module">Tactic.RingSolver.Core.ReflectionHelp</a>
+<a id="63913" class="Comment">-- Polynomial reasoning</a>
+<a id="63937" class="Keyword">import</a> <a id="63944" href="Tactic.RingSolver.Core.Polynomial.Reasoning.html" class="Module">Tactic.RingSolver.Core.Polynomial.Reasoning</a>
 
-<a id="64035" class="Comment">-- An implementation of the ring solver that requires you to manually</a>
-<a id="64105" class="Comment">-- pass the equation you wish to solve.</a>
-<a id="64145" class="Keyword">import</a> <a id="64152" href="Tactic.RingSolver.NonReflective.html" class="Module">Tactic.RingSolver.NonReflective</a>
+<a id="63989" class="Comment">-- &quot;Evaluating&quot; a polynomial, using Horner&#39;s method.</a>
+<a id="64042" class="Keyword">import</a> <a id="64049" href="Tactic.RingSolver.Core.Polynomial.Semantics.html" class="Module">Tactic.RingSolver.Core.Polynomial.Semantics</a>
 
-<a id="64185" class="Comment">-- Format strings for Printf and Scanf</a>
-<a id="64224" class="Keyword">import</a> <a id="64231" href="Text.Format.html" class="Module">Text.Format</a>
+<a id="64094" class="Comment">-- Helper reflection functions</a>
+<a id="64125" class="Keyword">import</a> <a id="64132" href="Tactic.RingSolver.Core.ReflectionHelp.html" class="Module">Tactic.RingSolver.Core.ReflectionHelp</a>
 
-<a id="64244" class="Comment">-- Format strings for Printf and Scanf</a>
-<a id="64283" class="Keyword">import</a> <a id="64290" href="Text.Format.Generic.html" class="Module">Text.Format.Generic</a>
+<a id="64171" class="Comment">-- An implementation of the ring solver that requires you to manually</a>
+<a id="64241" class="Comment">-- pass the equation you wish to solve.</a>
+<a id="64281" class="Keyword">import</a> <a id="64288" href="Tactic.RingSolver.NonReflective.html" class="Module">Tactic.RingSolver.NonReflective</a>
 
-<a id="64311" class="Comment">-- Pretty Printing</a>
-<a id="64330" class="Comment">-- This module is based on Jean-Philippe Bernardy&#39;s functional pearl</a>
-<a id="64399" class="Comment">-- &quot;A Pretty But Not Greedy Printer&quot;</a>
-<a id="64436" class="Keyword">import</a> <a id="64443" href="Text.Pretty.html" class="Module">Text.Pretty</a>
+<a id="64321" class="Comment">-- Format strings for Printf and Scanf</a>
+<a id="64360" class="Keyword">import</a> <a id="64367" href="Text.Format.html" class="Module">Text.Format</a>
 
-<a id="64456" class="Comment">-- Printf</a>
-<a id="64466" class="Keyword">import</a> <a id="64473" href="Text.Printf.html" class="Module">Text.Printf</a>
+<a id="64380" class="Comment">-- Format strings for Printf and Scanf</a>
+<a id="64419" class="Keyword">import</a> <a id="64426" href="Text.Format.Generic.html" class="Module">Text.Format.Generic</a>
 
-<a id="64486" class="Comment">-- Generic printf function.</a>
-<a id="64514" class="Keyword">import</a> <a id="64521" href="Text.Printf.Generic.html" class="Module">Text.Printf.Generic</a>
+<a id="64447" class="Comment">-- Pretty Printing</a>
+<a id="64466" class="Comment">-- This module is based on Jean-Philippe Bernardy&#39;s functional pearl</a>
+<a id="64535" class="Comment">-- &quot;A Pretty But Not Greedy Printer&quot;</a>
+<a id="64572" class="Keyword">import</a> <a id="64579" href="Text.Pretty.html" class="Module">Text.Pretty</a>
 
-<a id="64542" class="Comment">-- Fancy display functions for List-based tables</a>
-<a id="64591" class="Keyword">import</a> <a id="64598" href="Text.Tabular.Base.html" class="Module">Text.Tabular.Base</a>
+<a id="64592" class="Comment">-- Printf</a>
+<a id="64602" class="Keyword">import</a> <a id="64609" href="Text.Printf.html" class="Module">Text.Printf</a>
 
-<a id="64617" class="Comment">-- Fancy display functions for List-based tables</a>
-<a id="64666" class="Keyword">import</a> <a id="64673" href="Text.Tabular.List.html" class="Module">Text.Tabular.List</a>
+<a id="64622" class="Comment">-- Generic printf function.</a>
+<a id="64650" class="Keyword">import</a> <a id="64657" href="Text.Printf.Generic.html" class="Module">Text.Printf.Generic</a>
 
-<a id="64692" class="Comment">-- Fancy display functions for Vec-based tables</a>
-<a id="64740" class="Keyword">import</a> <a id="64747" href="Text.Tabular.Vec.html" class="Module">Text.Tabular.Vec</a>
+<a id="64678" class="Comment">-- Fancy display functions for List-based tables</a>
+<a id="64727" class="Keyword">import</a> <a id="64734" href="Text.Tabular.Base.html" class="Module">Text.Tabular.Base</a>
 
-<a id="64765" class="Comment">-- 1 dimensional pretty printing of rose trees</a>
-<a id="64812" class="Keyword">import</a> <a id="64819" href="Text.Tree.Linear.html" class="Module">Text.Tree.Linear</a>
+<a id="64753" class="Comment">-- Fancy display functions for List-based tables</a>
+<a id="64802" class="Keyword">import</a> <a id="64809" href="Text.Tabular.List.html" class="Module">Text.Tabular.List</a>
+
+<a id="64828" class="Comment">-- Fancy display functions for Vec-based tables</a>
+<a id="64876" class="Keyword">import</a> <a id="64883" href="Text.Tabular.Vec.html" class="Module">Text.Tabular.Vec</a>
+
+<a id="64901" class="Comment">-- 1 dimensional pretty printing of rose trees</a>
+<a id="64948" class="Keyword">import</a> <a id="64955" href="Text.Tree.Linear.html" class="Module">Text.Tree.Linear</a>
 
 </pre></body></html>
