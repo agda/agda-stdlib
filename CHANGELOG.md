@@ -213,6 +213,12 @@ New modules
   System.Environment.Primitive
   ```
 
+* Added bindings for Haskell's `System.Exit`:
+  ```
+  System.Exit
+  System.Exit.Primitive
+  ```
+
 * New morphisms
   ```
   Algebra.Morphism.LatticeMonomorphism
