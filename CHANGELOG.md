@@ -485,3 +485,49 @@ Other minor additions
   linesBy : Decidable P → String → List String
   lines   : String → List String
   ```
+
+* Added new functions to `Data.Tree.AVL`:
+  ```agda
+  foldr : (∀ {k} → Val k → A → A) → A → Tree V → A
+  size  : Tree V → ℕ
+
+  intersectionWith  : (∀ {k} → Val k → Wal k → Xal k) → Tree V → Tree W → Tree X
+  intersection      : Tree V → Tree V → Tree V
+  intersectionsWith : (∀ {k} → Val k → Val k → Val k) → List (Tree V) → Tree V
+  intersections     : List (Tree V) → Tree V
+  ```
+
+* Added new functions to `Data.Tree.AVL.Indexed`:
+  ```agda
+  foldr : (∀ {k} → Val k → A → A) → A → Tree V l u h → A
+  size  : Tree V → ℕ
+  ```
+
+* Added new functions to `Data.Tree.AVL.IndexedMap` module:
+  ```agda
+  foldr : (∀ {k} → Value k → A → A) → A → Map → A
+  size : Map → ℕ
+  ```
+
+* Added new functions to `Data.Tree.AVL.Map`:
+  ```agda
+  foldr : (Key → V → A → A) → A → Map V → A
+  size  : Map V → ℕ
+
+  intersectionWith  : (V → W → X) → Map V → Map W → Map X
+  intersection      : Map V → Map V → Map V
+  intersectionsWith : (V → V → V) → List (Map V) → Map V
+  intersections     : List (Map V) → Map V
+  ```
+
+* Added new functions to `Data.Tree.AVL.Sets`:
+  ```agda
+  foldr : (A → B → B) → B → ⟨Set⟩ → B
+  size  : ⟨Set⟩ → ℕ
+
+  union  : ⟨Set⟩ → ⟨Set⟩ → ⟨Set⟩
+  unions : List ⟨Set⟩ → ⟨Set⟩
+
+  intersection  : ⟨Set⟩ → ⟨Set⟩ → ⟨Set⟩
+  intersections : List ⟨Set⟩ → ⟨Set⟩
+  ```
