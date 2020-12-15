@@ -354,11 +354,19 @@ Other minor additions
 
 * Added new proofs in `Data.Nat.Properties`:
   ```agda
+  ≤∧≮⇒≡ : m ≤ n → m ≮ n → m ≡ n
   ≤ᵇ⇒≤ : T (m ≤ᵇ n) → m ≤ n
   ≤⇒≤ᵇ : m ≤ n → T (m ≤ᵇ n)
 
   <ᵇ-reflects-< : Reflects (m < n) (m <ᵇ n)
   ≤ᵇ-reflects-≤ : Reflects (m ≤ n) (m ≤ᵇ n)
+
+  *-distribˡ-⊔          : _*_ DistributesOverˡ _⊔_
+  *-distribʳ-⊔          : _*_ DistributesOverʳ _⊔_
+  *-distrib-⊔           : _*_ DistributesOver _⊔_
+  *-distribˡ-⊓          : _*_ DistributesOverˡ _⊓_
+  *-distribʳ-⊓          : _*_ DistributesOverʳ _⊓_
+  *-distrib-⊓           : _*_ DistributesOver _⊓_
   ```
 
 * Added new proofs in `Data.Sign.Properties`:
