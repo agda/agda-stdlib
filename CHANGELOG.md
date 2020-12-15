@@ -95,6 +95,9 @@ Deprecated modules
   The properties of summation in `Algebra.Properties.CommutativeMonoid` have likewise
   been deprecated and moved to `Algebra.Properties.CommutativeMonoid.Summation`.
 
+* The module `Algebra.Operations.Semiring` has been deprecated. The contents has
+  been moved to `Algebra.Properties.Semiring.(Multiplication/Exponentiation)`.
+
 Deprecated names
 ----------------
 
@@ -179,7 +182,7 @@ New modules
   Algebra.Properties.CommutativeSemigroup.Divisibility
   ```
 
-* Generic summations over algebraic structures
+* Generic summation over algebraic structures
   ```
   Algebra.Properties.Monoid.Summation
   Algebra.Properties.CommutativeMonoid.Summation
@@ -188,6 +191,12 @@ New modules
 * Generic multiplication over algebraic structures
   ```
   Algebra.Properties.Monoid.Multiplication
+  Algebra.Properties.Semiring.Multiplication
+  ```
+
+* Generic exponentiation over algebraic structures
+  ```
+  Algebra.Properties.Semiring.Exponentiation
   ```
 
 * Setoid equality over vectors:
