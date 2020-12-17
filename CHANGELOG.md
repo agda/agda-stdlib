@@ -95,6 +95,9 @@ Deprecated modules
   The properties of summation in `Algebra.Properties.CommutativeMonoid` have likewise
   been deprecated and moved to `Algebra.Properties.CommutativeMonoid.Summation`.
 
+* The module `Algebra.Operations.Semiring` has been deprecated. The contents has
+  been moved to `Algebra.Properties.Semiring.(Multiplication/Exponentiation)`.
+
 Deprecated names
 ----------------
 
@@ -189,7 +192,7 @@ New modules
   Algebra.Properties.CommutativeSemigroup.Divisibility
   ```
 
-* Generic summations over algebraic structures
+* Generic summation over algebraic structures
   ```
   Algebra.Properties.Monoid.Summation
   Algebra.Properties.CommutativeMonoid.Summation
@@ -198,6 +201,12 @@ New modules
 * Generic multiplication over algebraic structures
   ```
   Algebra.Properties.Monoid.Multiplication
+  Algebra.Properties.Semiring.Multiplication
+  ```
+
+* Generic exponentiation over algebraic structures
+  ```
+  Algebra.Properties.Semiring.Exponentiation
   ```
 
 * Setoid equality over vectors:
@@ -228,6 +237,12 @@ New modules
   Data.Fin.Show
   Data.Integer.Show
   Data.Rational.Show
+  ```
+
+* Added bindings for Haskell's `System.Exit`:
+  ```
+  System.Exit
+  System.Exit.Primitive
   ```
 
 * New morphisms
@@ -365,11 +380,19 @@ Other minor additions
 
 * Added new proofs in `Data.Nat.Properties`:
   ```agda
+  ≤∧≮⇒≡ : m ≤ n → m ≮ n → m ≡ n
   ≤ᵇ⇒≤ : T (m ≤ᵇ n) → m ≤ n
   ≤⇒≤ᵇ : m ≤ n → T (m ≤ᵇ n)
 
   <ᵇ-reflects-< : Reflects (m < n) (m <ᵇ n)
   ≤ᵇ-reflects-≤ : Reflects (m ≤ n) (m ≤ᵇ n)
+
+  *-distribˡ-⊔          : _*_ DistributesOverˡ _⊔_
+  *-distribʳ-⊔          : _*_ DistributesOverʳ _⊔_
+  *-distrib-⊔           : _*_ DistributesOver _⊔_
+  *-distribˡ-⊓          : _*_ DistributesOverˡ _⊓_
+  *-distribʳ-⊓          : _*_ DistributesOverʳ _⊓_
+  *-distrib-⊓           : _*_ DistributesOver _⊓_
   ```
 
 * Added new proofs in `Data.Sign.Properties`:
@@ -459,6 +482,16 @@ Other minor additions
   id-⟶     : A ⟶ A
   ```
 
+* Added new proofs to `Codata.Delay.Properties`:
+  ```agda
+  ⇓-unique            : (d⇓₁ : d ⇓) (d⇓₂ : d ⇓) → d⇓₁ ≡ d⇓₂
+  bind̅₁               : bind d f ⇓ → d ⇓
+  bind̅₂               : (bind⇓ : bind d f ⇓) → f (extract (bind̅₁ bind⇓)) ⇓
+  extract-bind-⇓      : (d⇓ : d ⇓) (f⇓ : f (extract d⇓) ⇓) → extract (bind-⇓ d⇓ f⇓) ≡ extract f⇓
+  extract-bind̅₂-bind⇓ : (bind⇓ : bind d f ⇓) → extract (bind̅₂ d bind⇓) ≡ extract bind⇓
+  bind⇓-length        : (bind⇓ : bind d f ⇓) (d⇓ : d ⇓) (f⇓ : f (extract d⇓) ⇓) → toℕ (length-⇓ bind⇓) ≡ toℕ (length-⇓ d⇓) ℕ.+ toℕ (length-⇓ f⇓)
+  ```
+
 * Added new function to `Data.List.Base`:
   ```agda
   linesBy : Decidable P → List A → List (List A)
@@ -470,12 +503,58 @@ Other minor additions
   lines   : String → List String
   ```
 
-* Added new functions to `Data.Maybe.Base`:
+* Added new function to `Data.Maybe.Base`:
   ```agda
   when : Bool → A → Maybe A
   ```
 
-* Added new functions to `Data.Nat.Show`:
+* Added new function to `Data.Nat.Show`:
   ```agda
   readMaybe : (base : ℕ) → {base≤16 : True (base ≤? 16)} → String → Maybe ℕ
+  ```
+
+* Added new functions to `Data.Tree.AVL`:
+  ```agda
+  foldr : (∀ {k} → Val k → A → A) → A → Tree V → A
+  size  : Tree V → ℕ
+
+  intersectionWith  : (∀ {k} → Val k → Wal k → Xal k) → Tree V → Tree W → Tree X
+  intersection      : Tree V → Tree V → Tree V
+  intersectionsWith : (∀ {k} → Val k → Val k → Val k) → List (Tree V) → Tree V
+  intersections     : List (Tree V) → Tree V
+  ```
+
+* Added new functions to `Data.Tree.AVL.Indexed`:
+  ```agda
+  foldr : (∀ {k} → Val k → A → A) → A → Tree V l u h → A
+  size  : Tree V → ℕ
+  ```
+
+* Added new functions to `Data.Tree.AVL.IndexedMap` module:
+  ```agda
+  foldr : (∀ {k} → Value k → A → A) → A → Map → A
+  size : Map → ℕ
+  ```
+
+* Added new functions to `Data.Tree.AVL.Map`:
+  ```agda
+  foldr : (Key → V → A → A) → A → Map V → A
+  size  : Map V → ℕ
+
+  intersectionWith  : (V → W → X) → Map V → Map W → Map X
+  intersection      : Map V → Map V → Map V
+  intersectionsWith : (V → V → V) → List (Map V) → Map V
+  intersections     : List (Map V) → Map V
+  ```
+
+* Added new functions to `Data.Tree.AVL.Sets`:
+  ```agda
+  foldr : (A → B → B) → B → ⟨Set⟩ → B
+  size  : ⟨Set⟩ → ℕ
+
+  union  : ⟨Set⟩ → ⟨Set⟩ → ⟨Set⟩
+  unions : List ⟨Set⟩ → ⟨Set⟩
+
+  intersection  : ⟨Set⟩ → ⟨Set⟩ → ⟨Set⟩
+  intersections : List ⟨Set⟩ → ⟨Set⟩
   ```
