@@ -223,7 +223,12 @@ New modules
   System.Environment.Primitive
   ```
 
-* Added modules `Data.Integer.Show` and `Data.Rational.Show`.
+* Added the following `Show` modules:
+  ```agda
+  Data.Fin.Show
+  Data.Integer.Show
+  Data.Rational.Show
+  ```
 
 * New morphisms
   ```
