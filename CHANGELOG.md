@@ -146,6 +146,16 @@ Deprecated names
   filter⁺         ↦ filter-⊆
   ```
 
+* In `Data.Integer`:
+    ```agda
+  show ↦ Data.Integer.Show.show
+  ```
+
+* In `Data.Rational`:
+    ```agda
+  show ↦ Data.Rational.Show.show
+  ```
+
 New modules
 -----------
 
@@ -220,6 +230,13 @@ New modules
   ```
   System.Environment
   System.Environment.Primitive
+  ```
+
+* Added the following `Show` modules:
+  ```agda
+  Data.Fin.Show
+  Data.Integer.Show
+  Data.Rational.Show
   ```
 
 * Added bindings for Haskell's `System.Exit`:
@@ -484,6 +501,16 @@ Other minor additions
   ```agda
   linesBy : Decidable P → String → List String
   lines   : String → List String
+  ```
+
+* Added new function to `Data.Maybe.Base`:
+  ```agda
+  when : Bool → A → Maybe A
+  ```
+
+* Added new function to `Data.Nat.Show`:
+  ```agda
+  readMaybe : (base : ℕ) → {base≤16 : True (base ≤? 16)} → String → Maybe ℕ
   ```
 
 * Added new functions to `Data.Tree.AVL`:
