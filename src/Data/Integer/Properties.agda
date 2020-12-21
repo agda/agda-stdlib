@@ -457,12 +457,6 @@ neg-cancel-< { -[1+ m ]} { -[1+ n ]} (+<+ (s≤s m<n)) = -<- m<n
   ∣ m ∣ ℕ.+ ∣   n ∣        ∎
   where open ℕₚ.≤-Reasoning
 
-∣s◃m∣≡m : ∀ s m → ∣ s ◃ m ∣ ≡ m
-∣s◃m∣≡m Sign.- zero = refl
-∣s◃m∣≡m Sign.- (suc m) = refl
-∣s◃m∣≡m Sign.+ zero = refl
-∣s◃m∣≡m Sign.+ (suc m) = refl
-
 ------------------------------------------------------------------------
 -- Properties of sign and _◃_
 
@@ -1691,8 +1685,8 @@ neg-distribʳ-* x y = begin
 *-monoˡ-≤-pos : ∀ n → (+ suc n *_) Preserves _≤_ ⟶ _≤_
 *-monoˡ-≤-pos n = *-monoˡ-≤-nonNeg (suc n)
 
-*-cancelˡ-≤-neg-≥ : ∀ m {n o} → -[1+ m ] * n ≤ -[1+ m ] * o → n ≥ o
-*-cancelˡ-≤-neg-≥ m {n} {o} -[1+m]*n≤-[1+m]*o = neg-cancel-≤ (*-cancelˡ-≤-pos m (- n) (- o) +[1+m]*-n≤+[1+m]*-o)
+*-cancelˡ-≤-neg : ∀ m {n o} → -[1+ m ] * n ≤ -[1+ m ] * o → n ≥ o
+*-cancelˡ-≤-neg m {n} {o} -[1+m]*n≤-[1+m]*o = neg-cancel-≤ (*-cancelˡ-≤-pos m (- n) (- o) +[1+m]*-n≤+[1+m]*-o)
   where
     open ≤-Reasoning
     +[1+m]*-n≤+[1+m]*-o : +[1+ m ] * - n ≤ +[1+ m ] * - o
@@ -1704,8 +1698,8 @@ neg-distribʳ-* x y = begin
       -(+[1+ m ] * o)                ≡⟨ neg-distribʳ-* +[1+ m ] o ⟩
       +[1+ m ] * - o                 ∎
 
-*-cancelʳ-≤-neg-≥ : ∀ {n o} m → n * -[1+ m ] ≤ o * -[1+ m ] → n ≥ o
-*-cancelʳ-≤-neg-≥ {n} {o} m n*-[1+m]≤n*-[1+o] = neg-cancel-≤ (*-cancelʳ-≤-pos (- n) (- o) m -n*+[1+m]≤-o*+[1+m])
+*-cancelʳ-≤-neg : ∀ {n o} m → n * -[1+ m ] ≤ o * -[1+ m ] → n ≥ o
+*-cancelʳ-≤-neg {n} {o} m n*-[1+m]≤n*-[1+o] = neg-cancel-≤ (*-cancelʳ-≤-pos (- n) (- o) m -n*+[1+m]≤-o*+[1+m])
   where
     open ≤-Reasoning
     -n*+[1+m]≤-o*+[1+m] : - n * +[1+ m ] ≤ - o * +[1+ m ]
@@ -1768,25 +1762,23 @@ neg-distribʳ-* x y = begin
 *-cancelʳ-<-nonNeg {i} {j} n rewrite *-comm i (+ n) | *-comm j (+ n)
   = *-cancelˡ-<-nonNeg n
 
-*-monoˡ-<-neg-> : ∀ n → (-[1+ n ] *_) Preserves _<_ ⟶ _>_
-*-monoˡ-<-neg-> n {m} {o} m<o = begin-strict
+*-monoˡ-<-neg : ∀ n → (-[1+ n ] *_) Preserves _<_ ⟶ _>_
+*-monoˡ-<-neg n {m} {o} m<o = begin-strict
   -[1+ n ] * o                       ≡˘⟨ neg-distribˡ-* +[1+ n ] o ⟩
   -(+ suc n * o)                     ≡⟨ neg-distribʳ-* +[1+ n ] o ⟩
   (+ suc n * - o)                    <⟨ *-monoˡ-<-pos n (neg-mono-< m<o) ⟩
-  (+ suc n * - m)                    ≡˘⟨ neg-distribʳ-* +[1+ n ] m ⟩
-  -(+ suc n * m)                     ≡⟨ neg-distribˡ-* +[1+ n ] m ⟩
+  + suc n * - m                      ≡˘⟨ neg-distribʳ-* +[1+ n ] m ⟩
+  - (+ suc n * m)                      ≡⟨ neg-distribˡ-* +[1+ n ] m ⟩
   -[1+ n ] * m                       ∎
-  where
-    open ≤-Reasoning
+  where open ≤-Reasoning
 
-*-monoʳ-<-neg-> : ∀ n → (_* -[1+ n ]) Preserves _<_ ⟶ _>_
-*-monoʳ-<-neg-> n {m} {o} m<o = begin-strict
+*-monoʳ-<-neg : ∀ n → (_* -[1+ n ]) Preserves _<_ ⟶ _>_
+*-monoʳ-<-neg n {m} {o} m<o = begin-strict
   o * -[1+ n ]                       ≡˘⟨ *-comm -[1+ n ] o ⟩
-  -[1+ n ] * o                       <⟨ *-monoˡ-<-neg-> n m<o ⟩
+  -[1+ n ] * o                       <⟨ *-monoˡ-<-neg n m<o ⟩
   -[1+ n ] * m                       ≡⟨ *-comm -[1+ n ] m ⟩
   m * -[1+ n ]                       ∎
-  where
-    open ≤-Reasoning
+  where open ≤-Reasoning
 
 *-cancelˡ-<-neg : ∀ n {i j} → -[1+ n ] * i < -[1+ n ] * j → i > j
 *-cancelˡ-<-neg n {i} {j} -[1+n]i<-[1+n]j = neg-cancel-< (*-cancelˡ-<-nonNeg (suc n) [1+n][-i]<[1+n][-j])
@@ -1811,8 +1803,7 @@ neg-distribʳ-* x y = begin
   i * -[1+ n ]                       <⟨ i[-[1+n]]<j[-[1+n]] ⟩
   j * -[1+ n ]                       ≡˘⟨ *-comm -[1+ n ] j ⟩
   -[1+ n ] * j                       ∎)
-  where
-    open ≤-Reasoning
+  where open ≤-Reasoning
 
 *-cancelʳ-<-nonPos : ∀ n {i j} → NonPositive n → i * n < j * n → i > j
 *-cancelʳ-<-nonPos +0 {i} {j} n≤0 in<jn = contradiction (begin-strict
@@ -1820,8 +1811,7 @@ neg-distribʳ-* x y = begin
   i * + zero                         <⟨ in<jn ⟩
   j * + zero                         ≡⟨ *-zeroʳ j ⟩
   + zero                             ∎) n≮n
-  where
-    open ≤-Reasoning
+  where open ≤-Reasoning
 *-cancelʳ-<-nonPos -[1+ n ] {i} {j} n≤0 in<jn = *-cancelʳ-<-neg n in<jn
 
 
@@ -1834,8 +1824,7 @@ neg-distribʳ-* x y = begin
   ∣ +[1+ m ] * + zero ∣             ≡⟨ cong ∣_∣ (*-zeroʳ +[1+ m ]) ⟩
   ∣ + zero ∣                        ≡˘⟨ ℕₚ.*-zeroʳ m ⟩
   ∣ +[1+ m ] ∣ ℕ.* ∣ + zero ∣       ∎
-  where
-    open ≡-Reasoning
+  where open ≡-Reasoning
 ∣m*n∣≡∣m∣*∣n∣ +[1+ m ] -[1+ n ] = refl
 ∣m*n∣≡∣m∣*∣n∣ (+ zero) +[1+ n ] = refl
 ∣m*n∣≡∣m∣*∣n∣ (+ zero) (+ zero) = refl
@@ -1845,8 +1834,7 @@ neg-distribʳ-* x y = begin
   ∣ -[1+ m ] * + zero ∣             ≡⟨ cong ∣_∣ (*-zeroʳ -[1+ m ]) ⟩
   ∣ + zero ∣                        ≡˘⟨ ℕₚ.*-zeroʳ m ⟩
   ∣ -[1+ m ] ∣ ℕ.* ∣ + zero ∣       ∎
-  where
-    open ≡-Reasoning
+  where open ≡-Reasoning
 ∣m*n∣≡∣m∣*∣n∣ -[1+ m ] -[1+ n ] = refl
 
 ------------------------------------------------------------------------
@@ -1942,7 +1930,7 @@ mono-<-distrib-⊓ f f-mono-< m n with <-cmp m n
 -- Structures
 
 ⊓-isMagma : IsMagma _⊓_
-⊓-isMagma = Magma.isMagma (magma _⊓_)
+⊓-isMagma = isMagma _⊓_
 
 ⊓-isSemigroup : IsSemigroup _⊓_
 ⊓-isSemigroup = record
@@ -2611,3 +2599,28 @@ neg-mono-≤-≥ = neg-mono-≤
 "Warning: neg-mono-≤-≥ was deprecated in v1.5.
 Please use neg-mono-≤ instead."
 #-}
+
+*-monoʳ-≤-non-neg = *-monoʳ-≤-nonNeg
+{-# WARNING_ON_USAGE *-monoʳ-≤-non-neg
+"Warning: *-monoʳ-≤-non-neg was deprecated in v1.5.
+Please use *-monoʳ-≤-nonNeg instead."
+#-}
+
+*-monoˡ-≤-non-neg = *-monoˡ-≤-nonNeg
+{-# WARNING_ON_USAGE *-monoˡ-≤-non-neg
+"Warning: *-monoˡ-≤-non-neg deprecated in v1.5.
+Please use *-monoˡ-≤-nonNeg instead."
+#-}
+
+*-cancelˡ-<-non-neg = *-cancelˡ-<-nonNeg
+{-# WARNING_ON_USAGE *-cancelˡ-<-non-neg
+"Warning: *-cancelˡ-<-non-neg was deprecated in v1.5.
+Please use *-cancelˡ-<-nonNeg instead."
+#-}
+
+*-cancelʳ-<-non-neg = *-cancelʳ-<-nonNeg
+{-# WARNING_ON_USAGE *-cancelʳ-<-non-neg
+"Warning: *-cancelʳ-<-non-neg was deprecated in v1.5.
+Please use *-cancelʳ-<-nonNeg instead."
+#-}
+
