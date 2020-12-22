@@ -347,16 +347,16 @@ module _ {P : A → Set p} where
   ++⁺ˡ (here p)  = here p
   ++⁺ˡ (there p) = there (++⁺ˡ p)
 
-  ++⁺ʳ : ∀ xs → Any P ys → Any P (xs ++ ys)
+  ++⁺ʳ : ∀ xs {ys} → Any P ys → Any P (xs ++ ys)
   ++⁺ʳ []       p = p
   ++⁺ʳ (x ∷ xs) p = there (++⁺ʳ xs p)
 
-  ++⁻ : ∀ xs → Any P (xs ++ ys) → Any P xs ⊎ Any P ys
+  ++⁻ : ∀ xs {ys} → Any P (xs ++ ys) → Any P xs ⊎ Any P ys
   ++⁻ []       p         = inj₂ p
   ++⁻ (x ∷ xs) (here p)  = inj₁ (here p)
   ++⁻ (x ∷ xs) (there p) = Sum.map there id (++⁻ xs p)
 
-  ++⁺∘++⁻ : ∀ xs (p : Any P (xs ++ ys)) → [ ++⁺ˡ , ++⁺ʳ xs ]′ (++⁻ xs p) ≡ p
+  ++⁺∘++⁻ : ∀ xs {ys} (p : Any P (xs ++ ys)) → [ ++⁺ˡ , ++⁺ʳ xs ]′ (++⁻ xs p) ≡ p
   ++⁺∘++⁻ []       p         = refl
   ++⁺∘++⁻ (x ∷ xs) (here  p) = refl
   ++⁺∘++⁻ (x ∷ xs) (there p) with ++⁻ xs p | ++⁺∘++⁻ xs p
@@ -396,7 +396,7 @@ module _ {P : A → Set p} where
   ++↔++ xs ys = inverse (++-comm xs ys) (++-comm ys xs)
                         (++-comm∘++-comm xs) (++-comm∘++-comm ys)
 
-  ++-insert : ∀ xs → P x → Any P (xs ++ [ x ] ++ ys)
+  ++-insert : ∀ xs {ys} → P x → Any P (xs ++ [ x ] ++ ys)
   ++-insert xs Px = ++⁺ʳ xs (++⁺ˡ (singleton⁺ Px))
 
 ------------------------------------------------------------------------

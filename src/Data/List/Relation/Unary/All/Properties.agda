@@ -358,15 +358,15 @@ mapMaybe⁺ {xs = x ∷ xs} {f = f} (px ∷ pxs) with f x
 ++⁺ []         pys = pys
 ++⁺ (px ∷ pxs) pys = px ∷ ++⁺ pxs pys
 
-++⁻ˡ : ∀ xs → All P (xs ++ ys) → All P xs
+++⁻ˡ : ∀ xs {ys} → All P (xs ++ ys) → All P xs
 ++⁻ˡ []       p          = []
 ++⁻ˡ (x ∷ xs) (px ∷ pxs) = px ∷ (++⁻ˡ _ pxs)
 
-++⁻ʳ : ∀ xs → All P (xs ++ ys) → All P ys
+++⁻ʳ : ∀ xs {ys} → All P (xs ++ ys) → All P ys
 ++⁻ʳ []       p          = p
 ++⁻ʳ (x ∷ xs) (px ∷ pxs) = ++⁻ʳ xs pxs
 
-++⁻ : ∀ xs → All P (xs ++ ys) → All P xs × All P ys
+++⁻ : ∀ xs {ys} → All P (xs ++ ys) → All P xs × All P ys
 ++⁻ []       p          = [] , p
 ++⁻ (x ∷ xs) (px ∷ pxs) = Prod.map (px ∷_) id (++⁻ _ pxs)
 
