@@ -8,13 +8,13 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Algebra
-import Algebra.Operations.Semiring as SemiringOps
+import Algebra.Properties.Semiring.Multiplication as SemiringMultiplication
 open import Data.Maybe.Base using (Maybe; just; nothing; map)
 
 module Algebra.Solver.Ring.NaturalCoefficients
   {r₁ r₂} (R : CommutativeSemiring r₁ r₂)
   (open CommutativeSemiring R)
-  (open SemiringOps semiring)
+  (open SemiringMultiplication semiring)
   (dec : ∀ m n → Maybe (m × 1# ≈ n × 1#)) where
 
 import Algebra.Solver.Ring

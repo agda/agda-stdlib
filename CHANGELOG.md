@@ -95,6 +95,9 @@ Deprecated modules
   The properties of summation in `Algebra.Properties.CommutativeMonoid` have likewise
   been deprecated and moved to `Algebra.Properties.CommutativeMonoid.Summation`.
 
+* The module `Algebra.Operations.Semiring` has been deprecated. The contents has
+  been moved to `Algebra.Properties.Semiring.(Multiplication/Exponentiation)`.
+
 Deprecated names
 ----------------
 
@@ -143,6 +146,16 @@ Deprecated names
   filter⁺         ↦ filter-⊆
   ```
 
+* In `Data.Integer`:
+    ```agda
+  show ↦ Data.Integer.Show.show
+  ```
+
+* In `Data.Rational`:
+    ```agda
+  show ↦ Data.Rational.Show.show
+  ```
+
 New modules
 -----------
 
@@ -179,7 +192,7 @@ New modules
   Algebra.Properties.CommutativeSemigroup.Divisibility
   ```
 
-* Generic summations over algebraic structures
+* Generic summation over algebraic structures
   ```
   Algebra.Properties.Monoid.Summation
   Algebra.Properties.CommutativeMonoid.Summation
@@ -188,6 +201,12 @@ New modules
 * Generic multiplication over algebraic structures
   ```
   Algebra.Properties.Monoid.Multiplication
+  Algebra.Properties.Semiring.Multiplication
+  ```
+
+* Generic exponentiation over algebraic structures
+  ```
+  Algebra.Properties.Semiring.Exponentiation
   ```
 
 * Setoid equality over vectors:
@@ -223,6 +242,19 @@ New modules
   are allowed as in some literature they are not (in particular the
   proof that any two transposition decompositions of a permutation
   have lengths that differ by an even number).
+  ```
+
+* Added the following `Show` modules:
+  ```agda
+  Data.Fin.Show
+  Data.Integer.Show
+  Data.Rational.Show
+  ```
+
+* Added bindings for Haskell's `System.Exit`:
+  ```
+  System.Exit
+  System.Exit.Primitive
   ```
 
 * New morphisms
@@ -371,11 +403,19 @@ Other minor additions
 
 * Added new proofs in `Data.Nat.Properties`:
   ```agda
+  ≤∧≮⇒≡ : m ≤ n → m ≮ n → m ≡ n
   ≤ᵇ⇒≤ : T (m ≤ᵇ n) → m ≤ n
   ≤⇒≤ᵇ : m ≤ n → T (m ≤ᵇ n)
 
   <ᵇ-reflects-< : Reflects (m < n) (m <ᵇ n)
   ≤ᵇ-reflects-≤ : Reflects (m ≤ n) (m ≤ᵇ n)
+
+  *-distribˡ-⊔          : _*_ DistributesOverˡ _⊔_
+  *-distribʳ-⊔          : _*_ DistributesOverʳ _⊔_
+  *-distrib-⊔           : _*_ DistributesOver _⊔_
+  *-distribˡ-⊓          : _*_ DistributesOverˡ _⊓_
+  *-distribʳ-⊓          : _*_ DistributesOverʳ _⊓_
+  *-distrib-⊓           : _*_ DistributesOver _⊓_
   ```
 
 * Added new proofs in `Data.Sign.Properties`:
@@ -484,4 +524,60 @@ Other minor additions
   ```agda
   linesBy : Decidable P → String → List String
   lines   : String → List String
+  ```
+
+* Added new function to `Data.Maybe.Base`:
+  ```agda
+  when : Bool → A → Maybe A
+  ```
+
+* Added new function to `Data.Nat.Show`:
+  ```agda
+  readMaybe : (base : ℕ) → {base≤16 : True (base ≤? 16)} → String → Maybe ℕ
+  ```
+
+* Added new functions to `Data.Tree.AVL`:
+  ```agda
+  foldr : (∀ {k} → Val k → A → A) → A → Tree V → A
+  size  : Tree V → ℕ
+
+  intersectionWith  : (∀ {k} → Val k → Wal k → Xal k) → Tree V → Tree W → Tree X
+  intersection      : Tree V → Tree V → Tree V
+  intersectionsWith : (∀ {k} → Val k → Val k → Val k) → List (Tree V) → Tree V
+  intersections     : List (Tree V) → Tree V
+  ```
+
+* Added new functions to `Data.Tree.AVL.Indexed`:
+  ```agda
+  foldr : (∀ {k} → Val k → A → A) → A → Tree V l u h → A
+  size  : Tree V → ℕ
+  ```
+
+* Added new functions to `Data.Tree.AVL.IndexedMap` module:
+  ```agda
+  foldr : (∀ {k} → Value k → A → A) → A → Map → A
+  size : Map → ℕ
+  ```
+
+* Added new functions to `Data.Tree.AVL.Map`:
+  ```agda
+  foldr : (Key → V → A → A) → A → Map V → A
+  size  : Map V → ℕ
+
+  intersectionWith  : (V → W → X) → Map V → Map W → Map X
+  intersection      : Map V → Map V → Map V
+  intersectionsWith : (V → V → V) → List (Map V) → Map V
+  intersections     : List (Map V) → Map V
+  ```
+
+* Added new functions to `Data.Tree.AVL.Sets`:
+  ```agda
+  foldr : (A → B → B) → B → ⟨Set⟩ → B
+  size  : ⟨Set⟩ → ℕ
+
+  union  : ⟨Set⟩ → ⟨Set⟩ → ⟨Set⟩
+  unions : List ⟨Set⟩ → ⟨Set⟩
+
+  intersection  : ⟨Set⟩ → ⟨Set⟩ → ⟨Set⟩
+  intersections : List ⟨Set⟩ → ⟨Set⟩
   ```

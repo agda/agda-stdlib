@@ -18,7 +18,7 @@ open Monoid M
   renaming
   ( _∙_       to _+_
   ; ∙-cong    to +-cong
-  ; ∙-congˡ   to ∙-congˡ
+  ; ∙-congˡ   to +-congˡ
   ; identityˡ to +-identityˡ
   ; identityʳ to +-identityʳ
   ; assoc     to +-assoc
@@ -69,7 +69,7 @@ suc n ×′ x = x + n ×′ x
          ∀ n → .{{_ : NonZero n}} → n × c ≈ c
 ×-idem {c} idem (suc zero)    = +-identityʳ c
 ×-idem {c} idem (suc (suc n)) = begin
-  c + (suc n × c) ≈⟨ ∙-congˡ (×-idem idem (suc n) ) ⟩
+  c + (suc n × c) ≈⟨ +-congˡ (×-idem idem (suc n) ) ⟩
   c + c           ≈⟨ idem ⟩
   c               ∎
 
@@ -86,7 +86,7 @@ suc n ×′ x = x + n ×′ x
 ×≈×′ : ∀ n x → n × x ≈ n ×′ x
 ×≈×′ 0       x = refl
 ×≈×′ (suc n) x = begin
-  x + n × x   ≈⟨ +-cong refl (×≈×′ n x) ⟩
+  x + n × x   ≈⟨ +-congˡ (×≈×′ n x) ⟩
   x + n ×′ x  ≈⟨ sym (1+×′ n x) ⟩
   suc n ×′ x  ∎
 
