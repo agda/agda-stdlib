@@ -37,7 +37,7 @@ open import Relation.Nullary.Negation using (contradiction)
 import Relation.Nullary.Decidable as Dec
 
 open import Algebra.Definitions {A = ℤ} _≡_
-open import Algebra.FunctionProperties.Consequences.Propositional
+open import Algebra.Consequences.Propositional
 open import Algebra.Structures {A = ℤ} _≡_
 module ℤtoℕ = Morphism.Definitions ℤ ℕ _≡_
 module ℕtoℤ = Morphism.Definitions ℕ ℤ _≡_
@@ -2054,24 +2054,24 @@ mono-<-distrib-⊔ f f-mono-< m n with <-cmp m n
 ------------------------------------------------------------------------
 -- Other properties of _⊓_ and _⊔_
 
-mono-≤-distrib-⊔-⊓ : ∀ f → f Preserves _≤_ ⟶ _≥_ → ∀ m n → f (m ⊔ n) ≡ f m ⊓ f n
-mono-≤-distrib-⊔-⊓ f f-mono-≤ m n with ≤-total m n
+antimono-≤-distrib-⊔ : ∀ f → f Preserves _≤_ ⟶ _≥_ → ∀ m n → f (m ⊔ n) ≡ f m ⊓ f n
+antimono-≤-distrib-⊔ f f-mono-≤ m n with ≤-total m n
 ... | inj₁ m≤n = trans (cong f (m≤n⇒m⊔n≡n m≤n)) (sym (m≥n⇒m⊓n≡n (f-mono-≤ m≤n)))
 ... | inj₂ m≥n = trans (cong f (m≥n⇒m⊔n≡m m≥n)) (sym (m≤n⇒m⊓n≡m (f-mono-≤ m≥n)))
 
-mono-<-distrib-⊔-⊓ : ∀ f  → f Preserves _<_ ⟶ _>_ → ∀ m n → f (m ⊔ n) ≡ f m ⊓ f n
-mono-<-distrib-⊔-⊓ f f-mono-< m n with <-cmp m n
+antimono-<-distrib-⊔ : ∀ f  → f Preserves _<_ ⟶ _>_ → ∀ m n → f (m ⊔ n) ≡ f m ⊓ f n
+antimono-<-distrib-⊔ f f-mono-< m n with <-cmp m n
 ... | tri< m<n _    _   = trans (cong f (m≤n⇒m⊔n≡n (<⇒≤ m<n))) (sym (m≥n⇒m⊓n≡n (<⇒≤ (f-mono-< m<n))))
 ... | tri≈ _   refl _   = trans (cong f (m≤n⇒m⊔n≡n ≤-refl)) (sym (m≥n⇒m⊓n≡n ≤-refl))
 ... | tri> _   _    m>n = trans (cong f (m≥n⇒m⊔n≡m (<⇒≤ m>n))) (sym (m≤n⇒m⊓n≡m (<⇒≤ (f-mono-< m>n))))
 
-mono-≤-distrib-⊓-⊔ : ∀ f → f Preserves _≤_ ⟶ _≥_ → ∀ m n → f (m ⊓ n) ≡ f m ⊔ f n
-mono-≤-distrib-⊓-⊔ f f-mono-≤ m n with ≤-total m n
+antimono-≤-distrib-⊓ : ∀ f → f Preserves _≤_ ⟶ _≥_ → ∀ m n → f (m ⊓ n) ≡ f m ⊔ f n
+antimono-≤-distrib-⊓ f f-mono-≤ m n with ≤-total m n
 ... | inj₁ m≤n = trans (cong f (m≤n⇒m⊓n≡m m≤n)) (sym (m≥n⇒m⊔n≡m (f-mono-≤ m≤n)))
 ... | inj₂ m≥n = trans (cong f (m≥n⇒m⊓n≡n m≥n)) (sym (m≤n⇒m⊔n≡n (f-mono-≤ m≥n)))
 
-mono-<-distrib-⊓-⊔ : ∀ f → f Preserves _<_ ⟶ _>_ → ∀ m n → f (m ⊓ n) ≡ f m ⊔ f n
-mono-<-distrib-⊓-⊔ f f-mono-< m n with <-cmp m n
+antimono-<-distrib-⊓ : ∀ f → f Preserves _<_ ⟶ _>_ → ∀ m n → f (m ⊓ n) ≡ f m ⊔ f n
+antimono-<-distrib-⊓ f f-mono-< m n with <-cmp m n
 ... | tri< m<n _    _   = trans (cong f (m≤n⇒m⊓n≡m (<⇒≤ m<n))) (sym (m≥n⇒m⊔n≡m (<⇒≤ (f-mono-< m<n))))
 ... | tri≈ _   refl _   = trans (cong f (m≤n⇒m⊓n≡m ≤-refl)) (sym (m≥n⇒m⊔n≡m ≤-refl))
 ... | tri> _   _    m>n = trans (cong f (m≥n⇒m⊓n≡n (<⇒≤ m>n))) (sym (m≤n⇒m⊔n≡n (<⇒≤ (f-mono-< m>n))))
@@ -2092,8 +2092,8 @@ mono-<-distrib-⊓-⊔ f f-mono-< m n with <-cmp m n
 ⊔-absorbs-⊓ : _⊔_ Absorbs _⊓_
 ⊔-absorbs-⊓ m n = begin
   m ⊔ (m ⊓ n)               ≡˘⟨ neg-involutive (m ⊔ (m ⊓ n)) ⟩
-  - - (m ⊔ (m ⊓ n))         ≡⟨ cong -_ (mono-<-distrib-⊔-⊓ -_ neg-mono-< m (m ⊓ n)) ⟩
-  - (- m ⊓ - (m ⊓ n))       ≡⟨ cong (λ h → - (- m ⊓ h)) (mono-<-distrib-⊓-⊔ -_ neg-mono-< m n) ⟩
+  - - (m ⊔ (m ⊓ n))         ≡⟨ cong -_ (antimono-<-distrib-⊔ -_ neg-mono-< m (m ⊓ n)) ⟩
+  - (- m ⊓ - (m ⊓ n))       ≡⟨ cong (λ h → - (- m ⊓ h)) (antimono-<-distrib-⊓ -_ neg-mono-< m n) ⟩
   - (- m ⊓ (- m ⊔ - n))     ≡⟨ cong -_ (⊓-absorbs-⊔ (- m) (- n)) ⟩
   - - m                     ≡⟨ neg-involutive m ⟩
   m                         ∎
@@ -2109,10 +2109,10 @@ mono-<-distrib-⊓-⊔ f f-mono-< m n with <-cmp m n
 -- Other properties of _⊓_, _⊔_ and -_
 
 neg-distrib-⊔-⊓ : ∀ m n → - (m ⊔ n) ≡ - m ⊓ - n
-neg-distrib-⊔-⊓ = mono-<-distrib-⊔-⊓ -_ neg-mono-<
+neg-distrib-⊔-⊓ = antimono-<-distrib-⊔ -_ neg-mono-<
 
 neg-distrib-⊓-⊔ : ∀ m n → - (m ⊓ n) ≡ - m ⊔ - n
-neg-distrib-⊓-⊔ = mono-<-distrib-⊓-⊔ -_ neg-mono-<
+neg-distrib-⊓-⊔ = antimono-<-distrib-⊓ -_ neg-mono-<
 
 ------------------------------------------------------------------------
 -- Other properties of _⊓_ and _*_
@@ -2134,24 +2134,24 @@ neg-distrib-⊓-⊔ = mono-<-distrib-⊓-⊔ -_ neg-mono-<
 
 *-distribˡ-⊓-nonPos : ∀ m → NonPositive m → ∀ n o → m * (n ⊓ o) ≡ (m * n) ⊔ (m * o)
 *-distribˡ-⊓-nonPos +0       m≤0 = λ _ _ → refl
-*-distribˡ-⊓-nonPos -[1+ m ] m≤0 = mono-≤-distrib-⊓-⊔ (-[1+ m ] *_) (*-monoˡ-≤-neg m)
+*-distribˡ-⊓-nonPos -[1+ m ] m≤0 = antimono-≤-distrib-⊓ (-[1+ m ] *_) (*-monoˡ-≤-neg m)
 
 *-distribʳ-⊓-nonPos : ∀ m → NonPositive m → ∀ n o → (n ⊓ o) * m ≡ (n * m) ⊔ (o * m)
 *-distribʳ-⊓-nonPos m m≤0 n o = begin-equality
   (n ⊓ o) * m        ≡˘⟨ *-comm m (n ⊓ o) ⟩
-  m * (n ⊓ o)        ≡⟨ *-distribˡ-⊓-nonPos-⊔ m m≤0 n o ⟩
+  m * (n ⊓ o)        ≡⟨ *-distribˡ-⊓-nonPos m m≤0 n o ⟩
   (m * n) ⊔ (m * o)  ≡⟨ cong₂ _⊔_ (*-comm m n) (*-comm m o) ⟩
   (n * m) ⊔ (o * m)  ∎
   where open ≤-Reasoning
 
 *-distribˡ-⊔-nonPos : ∀ m → NonPositive m → ∀ n o → m * (n ⊔ o) ≡ (m * n) ⊓ (m * o)
 *-distribˡ-⊔-nonPos +0       m≤0 = λ _ _ → refl
-*-distribˡ-⊔-nonPos -[1+ m ] m≤0 = mono-≤-distrib-⊔-⊓ (-[1+ m ] *_) (*-monoˡ-≤-neg m)
+*-distribˡ-⊔-nonPos -[1+ m ] m≤0 = antimono-≤-distrib-⊔ (-[1+ m ] *_) (*-monoˡ-≤-neg m)
 
 *-distribʳ-⊔-nonPos : ∀ m → NonPositive m → ∀ n o → (n ⊔ o) * m ≡ (n * m) ⊓ (o * m)
 *-distribʳ-⊔-nonPos m m≤0 n o = begin-equality
   (n ⊔ o) * m        ≡˘⟨ *-comm m (n ⊔ o) ⟩
-  m * (n ⊔ o)        ≡⟨  *-distribˡ-⊔-nonPos-⊓ m m≤0 n o ⟩
+  m * (n ⊔ o)        ≡⟨  *-distribˡ-⊔-nonPos m m≤0 n o ⟩
   (m * n) ⊓ (m * o)  ≡⟨  cong₂ _⊓_ (*-comm m n) (*-comm m o) ⟩
   (n * m) ⊓ (o * m)  ∎
   where open ≤-Reasoning

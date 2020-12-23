@@ -363,15 +363,15 @@ Other minor additions
   ∣m*n∣≡∣m∣*∣n∣            : ∣ m * n ∣ ≡ ∣ m ∣ ℕ.* ∣ n ∣
   +-*-commutativeSemiring  : CommutativeSemiring 0ℓ 0ℓ
 
-  mono-≤-distrib-⊓         : f Preserves _≤_ ⟶ _≤_ → ∀ m n → f (m ⊓ n) ≡ f m ⊓ f n
-  mono-<-distrib-⊓         : f Preserves _<_ ⟶ _<_ → ∀ m n → f (m ⊓ n) ≡ f m ⊓ f n
-  mono-≤-distrib-⊔         : f Preserves _≤_ ⟶ _≤_ → ∀ m n → f (m ⊔ n) ≡ f m ⊔ f n
-  mono-<-distrib-⊔         : f Preserves _<_ ⟶ _<_ → ∀ m n → f (m ⊔ n) ≡ f m ⊔ f n
+  mono-≤-distrib-⊓         : f Preserves _≤_ ⟶ _≤_ → f (m ⊓ n) ≡ f m ⊓ f n
+  mono-<-distrib-⊓         : f Preserves _<_ ⟶ _<_ → f (m ⊓ n) ≡ f m ⊓ f n
+  mono-≤-distrib-⊔         : f Preserves _≤_ ⟶ _≤_ → f (m ⊔ n) ≡ f m ⊔ f n
+  mono-<-distrib-⊔         : f Preserves _<_ ⟶ _<_ → f (m ⊔ n) ≡ f m ⊔ f n
 
-  mono-≤-distrib-⊔         : f Preserves _≤_ ⟶ _≥_ → ∀ m n → f (m ⊔ n) ≡ f m ⊓ f n
-  mono-<-distrib-⊔         : f Preserves _<_ ⟶ _>_ → ∀ m n → f (m ⊔ n) ≡ f m ⊓ f n
-  mono-≤-distrib-⊓         : f Preserves _≤_ ⟶ _≥_ → ∀ m n → f (m ⊓ n) ≡ f m ⊔ f n
-  mono-<-distrib-⊓         : f Preserves _<_ ⟶ _>_ → ∀ m n → f (m ⊓ n) ≡ f m ⊔ f n
+  antimono-≤-distrib-⊔         : f Preserves _≤_ ⟶ _≥_ → f (m ⊔ n) ≡ f m ⊓ f n
+  antimono-<-distrib-⊔         : f Preserves _<_ ⟶ _>_ → f (m ⊔ n) ≡ f m ⊓ f n
+  antimono-≤-distrib-⊓         : f Preserves _≤_ ⟶ _≥_ → f (m ⊓ n) ≡ f m ⊔ f n
+  antimono-<-distrib-⊓         : f Preserves _<_ ⟶ _>_ → f (m ⊓ n) ≡ f m ⊔ f n
 
   *-distribˡ-⊓-nonNeg      : + m * (n ⊓ o) ≡ (+ m * n) ⊓ (+ m * o)
   *-distribʳ-⊓-nonNeg      : (n ⊓ o) * + m ≡ (n * + m) ⊓ (o * + m)
