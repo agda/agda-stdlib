@@ -9,4 +9,4 @@ included-files:
 
 excluded-files:
   - "README/Text/Tabular.agda"
-
+  - CHANGELOG.md
