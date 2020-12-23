@@ -327,7 +327,7 @@ line of code, indented by two spaces.
   predicates are not used in the definition of `List`, even though they are used
   in may list functions such as `filter`.
 
-* Example 2: the main type in `Data.List.Relation.Unary.All` is `Any P xs` where
+* Example 2: the main type in `Data.List.Relation.Unary.All` is `All P xs` where
   `A : Set a`, `P : Pred A p`, `xs : List A`. It therefore may declare variables
   over `Level`, `Set a`, `A`, `List A`, `Pred A p`. It may not declare, for example,
   variables of type `Rel` or `Vec`.
