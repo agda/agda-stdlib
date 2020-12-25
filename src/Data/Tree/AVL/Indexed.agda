@@ -17,7 +17,7 @@ open import Data.Product using (Σ; ∃; _×_; _,_; proj₁)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.List.Base as List using (List)
 open import Data.DifferenceList using (DiffList; []; _∷_; _++_)
-open import Function as F hiding (const)
+open import Function.Base as F hiding (const)
 open import Relation.Unary
 open import Relation.Binary using (_Respects_; Tri; tri<; tri≈; tri>)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)

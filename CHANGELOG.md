@@ -250,6 +250,11 @@ New modules
   Algebra.Morphism.LatticeMonomorphism
   ```
 
+* Added new module
+  ```
+  Data.Tree.AVL.Indexed.Relation.Unary.Any
+  ```
+
 Other major changes
 -------------------
 
