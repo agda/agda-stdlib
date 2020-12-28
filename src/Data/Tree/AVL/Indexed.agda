@@ -97,23 +97,25 @@ module _ {v} {V : Value v} where
   -- Various constant-time functions which construct trees out of
   -- smaller pieces, sometimes using rotation.
 
+  pattern node⁺ k₁ t₁ k₂ t₂ t₃ bal = node k₁ t₁ (node k₂ t₂ t₃ bal) ∼+
+
   joinˡ⁺ : ∀ {l u hˡ hʳ h} →
            (k : K& V) →
            (∃ λ i → Tree V l [ proj₁ k ] (i ⊕ hˡ)) →
            Tree V [ proj₁ k ] u hʳ →
            (bal : hˡ ∼ hʳ ⊔ h) →
            ∃ λ i → Tree V l u (i ⊕ (1 + h))
-  joinˡ⁺ k₆ (1# , node k₂ t₁
-                    (node k₄ t₃ t₅ bal)
-                                ∼+) t₇ ∼-  = (0# , node k₄
-                                                        (node k₂ t₁ t₃ (max∼ bal))
-                                                        (node k₆ t₅ t₇ (∼max bal))
-                                                        ∼0)
-  joinˡ⁺ k₄ (1# , node k₂ t₁ t₃ ∼-) t₅ ∼-  = (0# , node k₂ t₁ (node k₄ t₃ t₅ ∼0) ∼0)
-  joinˡ⁺ k₄ (1# , node k₂ t₁ t₃ ∼0) t₅ ∼-  = (1# , node k₂ t₁ (node k₄ t₃ t₅ ∼-) ∼+)
-  joinˡ⁺ k₂ (1# , t₁)               t₃ ∼0  = (1# , node k₂ t₁ t₃ ∼-)
-  joinˡ⁺ k₂ (1# , t₁)               t₃ ∼+  = (0# , node k₂ t₁ t₃ ∼0)
-  joinˡ⁺ k₂ (0# , t₁)               t₃ bal = (0# , node k₂ t₁ t₃ bal)
+  joinˡ⁺ k₂ (0# , t₁)                t₃ bal = (0# , node k₂ t₁ t₃ bal)
+  joinˡ⁺ k₂ (1# , t₁)                t₃ ∼0  = (1# , node k₂ t₁ t₃ ∼-)
+  joinˡ⁺ k₂ (1# , t₁)                t₃ ∼+  = (0# , node k₂ t₁ t₃ ∼0)
+  joinˡ⁺ k₄ (1# , node  k₂ t₁ t₃ ∼-) t₅ ∼-  = (0# , node k₂ t₁ (node k₄ t₃ t₅ ∼0) ∼0)
+  joinˡ⁺ k₄ (1# , node  k₂ t₁ t₃ ∼0) t₅ ∼-  = (1# , node k₂ t₁ (node k₄ t₃ t₅ ∼-) ∼+)
+  joinˡ⁺ k₆ (1# , node⁺ k₂ t₁ k₄ t₃ t₅ bal) t₇ ∼-
+    = (0# , node k₄ (node k₂ t₁ t₃ (max∼ bal))
+                    (node k₆ t₅ t₇ (∼max bal))
+                    ∼0)
+
+  pattern node⁻ k₁ k₂ t₁ t₂ bal t₃ = node k₁ (node k₂ t₁ t₂ bal) t₃ ∼-
 
   joinʳ⁺ : ∀ {l u hˡ hʳ h} →
            (k : K& V) →
@@ -121,17 +123,15 @@ module _ {v} {V : Value v} where
            (∃ λ i → Tree V [ proj₁ k ] u (i ⊕ hʳ)) →
            (bal : hˡ ∼ hʳ ⊔ h) →
            ∃ λ i → Tree V l u (i ⊕ (1 + h))
-  joinʳ⁺ k₂ t₁ (1# , node k₆
-                       (node k₄ t₃ t₅ bal)
-                                t₇ ∼-) ∼+  = (0# , node k₄
-                                                        (node k₂ t₁ t₃ (max∼ bal))
-                                                        (node k₆ t₅ t₇ (∼max bal))
-                                                        ∼0)
-  joinʳ⁺ k₂ t₁ (1# , node k₄ t₃ t₅ ∼+) ∼+  = (0# , node k₄ (node k₂ t₁ t₃ ∼0) t₅ ∼0)
-  joinʳ⁺ k₂ t₁ (1# , node k₄ t₃ t₅ ∼0) ∼+  = (1# , node k₄ (node k₂ t₁ t₃ ∼+) t₅ ∼-)
+  joinʳ⁺ k₂ t₁ (0# , t₃)               bal = (0# , node k₂ t₁ t₃ bal)
   joinʳ⁺ k₂ t₁ (1# , t₃)               ∼0  = (1# , node k₂ t₁ t₃ ∼+)
   joinʳ⁺ k₂ t₁ (1# , t₃)               ∼-  = (0# , node k₂ t₁ t₃ ∼0)
-  joinʳ⁺ k₂ t₁ (0# , t₃)               bal = (0# , node k₂ t₁ t₃ bal)
+  joinʳ⁺ k₂ t₁ (1# , node k₄ t₃ t₅ ∼+) ∼+  = (0# , node k₄ (node k₂ t₁ t₃ ∼0) t₅ ∼0)
+  joinʳ⁺ k₂ t₁ (1# , node k₄ t₃ t₅ ∼0) ∼+  = (1# , node k₄ (node k₂ t₁ t₃ ∼+) t₅ ∼-)
+  joinʳ⁺ k₂ t₁ (1# , node⁻ k₆ k₄ t₃ t₅ bal t₇) ∼+
+    = (0# , node k₄ (node k₂ t₁ t₃ (max∼ bal))
+                    (node k₆ t₅ t₇ (∼max bal))
+                    ∼0)
 
   joinˡ⁻ : ∀ {l u} hˡ {hʳ h} →
            (k : K& V) →

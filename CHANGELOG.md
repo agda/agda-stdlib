@@ -250,9 +250,10 @@ New modules
   Algebra.Morphism.LatticeMonomorphism
   ```
 
-* Added new module
+* Added new modules in `Data.Tree.AVL`:
   ```
   Data.Tree.AVL.Indexed.Relation.Unary.Any
+  Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties
   ```
 
 Other major changes
@@ -529,10 +530,13 @@ Other minor additions
   intersections     : List (Tree V) → Tree V
   ```
 
-* Added new functions to `Data.Tree.AVL.Indexed`:
+* Added new functions and pattern synonyms to `Data.Tree.AVL.Indexed`:
   ```agda
   foldr : (∀ {k} → Val k → A → A) → A → Tree V l u h → A
   size  : Tree V → ℕ
+
+  pattern node⁺ k₁ t₁ k₂ t₂ t₃ bal = node k₁ t₁ (node k₂ t₂ t₃ bal) ∼+
+  pattern node⁻ k₁ k₂ t₁ t₂ bal t₃ = node k₁ (node k₂ t₁ t₂ bal) t₃ ∼-
   ```
 
 * Added new functions to `Data.Tree.AVL.IndexedMap` module:

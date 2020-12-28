@@ -45,21 +45,21 @@ private
 data Any {V : Value v} (P : ∀ k → Value.family V k → Set p) {l u}
      : ∀ {n} → Tree V l u n → Set (p ⊔ a ⊔ v ⊔ ℓ₂) where
   here  : ∀ {hˡ hʳ h} {kv@(k , v) : K& V} → P k v →
-          (lk : Tree V l [ k ] hˡ)
-          (ku : Tree V [ k ] u hʳ)
-          (bal : hˡ ∼ hʳ ⊔ h) →
+          {lk : Tree V l [ k ] hˡ}
+          {ku : Tree V [ k ] u hʳ}
+          {bal : hˡ ∼ hʳ ⊔ h} →
           Any P (node kv lk ku bal)
-  left  : ∀ {hˡ hʳ h} (kv : K& V)
+  left  : ∀ {hˡ hʳ h} {kv : K& V}
           {lk : Tree V l [ proj₁ kv ] hˡ} →
           Any P lk →
-          (ku : Tree V [ proj₁ kv ] u hʳ)
-          (bal : hˡ ∼ hʳ ⊔ h) →
+          {ku : Tree V [ proj₁ kv ] u hʳ}
+          {bal : hˡ ∼ hʳ ⊔ h} →
           Any P (node kv lk ku bal)
-  right : ∀ {hˡ hʳ h} (kv : K& V)
-          (lk : Tree V l [ proj₁ kv ] hˡ)
+  right : ∀ {hˡ hʳ h} {kv : K& V}
+          {lk : Tree V l [ proj₁ kv ] hˡ}
           {ku : Tree V [ proj₁ kv ] u hʳ} →
           Any P ku →
-          (bal : hˡ ∼ hʳ ⊔ h) →
+          {bal : hˡ ∼ hʳ ⊔ h} →
           Any P (node kv lk ku bal)
 
 ------------------------------------------------------------------------
@@ -71,25 +71,25 @@ module _ {V : Value v}
   where
 
   map : ∀ {t : Tree V l u n} → (∀ {k} → P k ⊆ Q k) → Any P t → Any Q t
-  map f (here  p lk ku bal) = here (f p) lk ku bal
-  map f (left  k p  ku bal) = left k (map f p) ku bal
-  map f (right k lk p  bal) = right k lk (map f p) bal
+  map f (here  p) = here (f p)
+  map f (left  p) = left (map f p)
+  map f (right p) = right (map f p)
 
 module _ {V : Value v}
   {P : ∀ k → Value.family V k → Set p}
   where
 
   lookup : ∀ {t : Tree V l u n} → Any P t → Key
-  lookup (here {kv = kv} _ _ _ _) = proj₁ kv
-  lookup (left           _ p _ _) = lookup p
-  lookup (right          _ _ p _) = lookup p
+  lookup (here {kv = kv} _) = proj₁ kv
+  lookup (left  p)          = lookup p
+  lookup (right p)          = lookup p
 
 -- If any element satisfies P, then P is satisfied.
 
   satisfied : ∀ {t : Tree V l u n} → Any P t → ∃₂ P
-  satisfied (here  p _ _ _) = -, -, p
-  satisfied (left  _ p _ _) = satisfied p
-  satisfied (right _ _ p _) = satisfied p
+  satisfied (here  p) = -, -, p
+  satisfied (left  p) = satisfied p
+  satisfied (right p) = satisfied p
 
   module _ {hˡ hʳ h} {kv@(k , v) : K& V}
     {lk : Tree V l [ k ] hˡ} {ku : Tree V [ k ] u hʳ} {bal : hˡ ∼ hʳ ⊔ h}
@@ -97,15 +97,15 @@ module _ {V : Value v}
 
     toSum : Any P (node kv lk ku bal) →
             P k v ⊎ Any P lk ⊎ Any P ku
-    toSum (here p _ _ _)  = inj₁ p
-    toSum (left _ p _ _)  = inj₂ (inj₁ p)
-    toSum (right _ _ p _) = inj₂ (inj₂ p)
+    toSum (here p)  = inj₁ p
+    toSum (left p)  = inj₂ (inj₁ p)
+    toSum (right p) = inj₂ (inj₂ p)
 
     fromSum : P k v ⊎ Any P lk ⊎ Any P ku →
               Any P (node kv lk ku bal)
-    fromSum (inj₁ p)        = here p lk ku bal
-    fromSum (inj₂ (inj₁ p)) = left kv p ku bal
-    fromSum (inj₂ (inj₂ p)) = right kv lk p bal
+    fromSum (inj₁ p)        = here p
+    fromSum (inj₂ (inj₁ p)) = left p
+    fromSum (inj₂ (inj₂ p)) = right p
 
 ------------------------------------------------------------------------
 -- Properties of predicates preserved by Any
@@ -119,4 +119,5 @@ module _ {V : Value v}
   satisfiable : (∀ {k} → Satisfiable (P k)) →
                 ∀ {k l u} → l <⁺ [ k ] → [ k ] <⁺ u →
                 Satisfiable {A = Tree V l u 1} (Any P)
-  satisfiable sat lb ub = _ , here (proj₂ sat) (leaf lb) (leaf ub) ∼0
+  satisfiable sat {k} lb ub = node (k , proj₁ sat) (leaf lb) (leaf ub) ∼0
+                            , here (proj₂ sat)
