@@ -61,7 +61,7 @@ data All {V : Value v} (P : Pred (K& V) p) {l u}
 ------------------------------------------------------------------------
 -- Operations on All
 
-map : ∀ {t : Tree V l u n} → P ⊆ Q → All P t → All Q t
+map : P ⊆ Q → All P t → All Q t
 map f leaf         = leaf
 map f (node p l r) = node (f p) (map f l) (map f r)
 
