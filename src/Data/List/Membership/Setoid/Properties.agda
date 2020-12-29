@@ -256,6 +256,16 @@ module _ (S : Setoid c ℓ) where
   ∈-applyUpTo⁻ = Any.applyUpTo⁻
 
 ------------------------------------------------------------------------
+-- applyDownFrom
+
+  ∈-applyDownFrom⁺ : ∀ f {i n} → i < n → f i ∈ applyDownFrom f n
+  ∈-applyDownFrom⁺ f = Any.applyDownFrom⁺ f refl
+
+  ∈-applyDownFrom⁻ : ∀ {v} f {n} → v ∈ applyDownFrom f n →
+                     ∃ λ i → i < n × v ≈ f i
+  ∈-applyDownFrom⁻ = Any.applyDownFrom⁻
+
+------------------------------------------------------------------------
 -- tabulate
 
 module _ (S : Setoid c ℓ) where

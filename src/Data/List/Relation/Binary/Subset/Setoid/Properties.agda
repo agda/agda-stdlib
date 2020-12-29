@@ -11,27 +11,29 @@ open import Relation.Binary hiding (Decidable)
 module Data.List.Relation.Binary.Subset.Setoid.Properties where
 
 open import Data.Bool.Base using (Bool; true; false)
-open import Data.List.Base
+open import Data.List.Base hiding (_∷ʳ_)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Relation.Unary.All as All using (All)
 import Data.List.Membership.Setoid as Membership
 open import Data.List.Membership.Setoid.Properties
-import Data.List.Relation.Binary.Subset.Setoid as Sublist
+import Data.List.Relation.Binary.Subset.Setoid as Subset
+import Data.List.Relation.Binary.Sublist.Setoid as Sublist
 import Data.List.Relation.Binary.Equality.Setoid as Equality
 import Data.List.Relation.Binary.Permutation.Setoid as Permutation
 import Data.List.Relation.Binary.Permutation.Setoid.Properties as Permutationₚ
 open import Data.Product using (_,_)
 open import Function.Base using (_∘_; _∘₂_)
 open import Level using (Level)
-open import Relation.Nullary using (¬_; does)
-open import Relation.Unary using (Pred; Decidable)
+open import Relation.Nullary using (¬_; does; yes; no)
+open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Unary using (Pred; Decidable) renaming (_⊆_ to _⋐_)
 import Relation.Binary.Reasoning.Preorder as PreorderReasoning
 
 open Setoid using (Carrier)
 
 private
   variable
-    a p ℓ : Level
+    a p q ℓ : Level
 
 ------------------------------------------------------------------------
 -- Relational properties with _≋_ (pointwise equality)
@@ -39,7 +41,7 @@ private
 
 module _ (S : Setoid a ℓ) where
 
-  open Sublist S
+  open Subset S
   open Equality S
   open Membership S
 
@@ -76,12 +78,12 @@ module _ (S : Setoid a ℓ) where
 
 module _ (S : Setoid a ℓ) where
 
-  open Sublist S
+  open Subset S
   open Permutation S
   open Membership S
 
-  ↭⇒⊆ : _↭_ ⇒ _⊆_
-  ↭⇒⊆ xs↭ys = Permutationₚ.∈-resp-↭ S xs↭ys
+  ⊆-reflexive-↭  : _↭_ ⇒ _⊆_
+  ⊆-reflexive-↭ xs↭ys = Permutationₚ.∈-resp-↭ S xs↭ys
 
   ⊆-respʳ-↭ : _⊆_ Respectsʳ _↭_
   ⊆-respʳ-↭ xs↭ys = Permutationₚ.∈-resp-↭ S xs↭ys ∘_
@@ -92,7 +94,7 @@ module _ (S : Setoid a ℓ) where
   ⊆-↭-isPreorder : IsPreorder _↭_ _⊆_
   ⊆-↭-isPreorder = record
     { isEquivalence = ↭-isEquivalence
-    ; reflexive     = ↭⇒⊆
+    ; reflexive     = ⊆-reflexive-↭
     ; trans         = ⊆-trans S
     }
 
@@ -108,7 +110,7 @@ module _ (S : Setoid a ℓ) where
 module ⊆-Reasoning (S : Setoid a ℓ) where
 
   open Setoid S renaming (Carrier to A)
-  open Sublist S
+  open Subset S
   open Membership S
 
   private
@@ -134,13 +136,28 @@ module ⊆-Reasoning (S : Setoid a ℓ) where
   syntax step-≋˘ xs ys⊆zs xs≋ys = xs ≋˘⟨ xs≋ys ⟩ ys⊆zs
 
 ------------------------------------------------------------------------
+-- Relationship with other binary relations
+------------------------------------------------------------------------
+
+module _ (S : Setoid a ℓ) where
+
+  open Setoid S
+  open Subset S
+  open Sublist S renaming (_⊆_ to _⊑_)
+
+  Sublist⇒Subset : ∀ {xs ys} → xs ⊑ ys → xs ⊆ ys
+  Sublist⇒Subset (x≈y ∷  xs⊑ys) (here v≈x)   = here (trans v≈x x≈y)
+  Sublist⇒Subset (x≈y ∷  xs⊑ys) (there v∈xs) = there (Sublist⇒Subset xs⊑ys v∈xs)
+  Sublist⇒Subset (y   ∷ʳ xs⊑ys) v∈xs         = there (Sublist⇒Subset xs⊑ys v∈xs)
+
+------------------------------------------------------------------------
 -- Relationship with predicates
 ------------------------------------------------------------------------
 
 module _ (S : Setoid a ℓ) where
 
   open Setoid S renaming (Carrier to A)
-  open Sublist S
+  open Subset S
   open Membership S
 
   Any-resp-⊆ : ∀ {P : Pred A p} → P Respects _≈_ → (Any P) Respects _⊆_
@@ -157,7 +174,7 @@ module _ (S : Setoid a ℓ) where
 
 module _ (S : Setoid a ℓ) where
 
-  open Sublist S
+  open Subset S
   open Membership S
 
   xs⊆xs++ys : ∀ xs ys → xs ⊆ xs ++ ys
@@ -182,17 +199,28 @@ module _ (S : Setoid a ℓ) where
 ------------------------------------------------------------------------
 -- filter
 
-module _ (S : Setoid a ℓ) {P : Pred (Carrier S) p} (P? : Decidable P) where
+module _ (S : Setoid a ℓ) where
 
-  open Sublist S
+  open Setoid S renaming (Carrier to A)
+  open Subset S
 
-  filter-⊆ : ∀ xs → filter P? xs ⊆ xs
-  filter-⊆ (x ∷ xs) y∈f[x∷xs] with does (P? x)
-  ... | false = there (filter-⊆ xs y∈f[x∷xs])
+  filter-⊆ : ∀ {P : Pred A p} (P? : Decidable P) →
+             ∀ xs → filter P? xs ⊆ xs
+  filter-⊆ P? (x ∷ xs) y∈f[x∷xs] with does (P? x)
+  ... | false = there (filter-⊆ P? xs y∈f[x∷xs])
   ... | true  with y∈f[x∷xs]
   ...   | here  y≈x     = here y≈x
-  ...   | there y∈f[xs] = there (filter-⊆ xs y∈f[xs])
+  ...   | there y∈f[xs] = there (filter-⊆ P? xs y∈f[xs])
 
+  -- Should be known as `filter⁺` (no prime) but `filter-⊆` used
+  -- to be called this so for backwards compatability reasons, the
+  -- correct name will have to wait until the deprecated name is
+  -- removed.
+  filter⁺′ : ∀ {P : Pred A p} (P? : Decidable P) → P Respects _≈_ →
+             ∀ {Q : Pred A q} (Q? : Decidable Q) → Q Respects _≈_ →
+             P ⋐ Q → ∀ {xs ys} → xs ⊆ ys → filter P? xs ⊆ filter Q? ys
+  filter⁺′ P? P-resp Q? Q-resp P⋐Q xs⊆ys v∈fxs with ∈-filter⁻ S P? P-resp v∈fxs
+  ... | v∈xs , Pv = ∈-filter⁺ S Q? Q-resp (xs⊆ys v∈xs) (P⋐Q Pv)
 
 
 ------------------------------------------------------------------------

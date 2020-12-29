@@ -236,6 +236,14 @@ New modules
   Data.List.Relation.Binary.Suffix.Homogeneous.Properties
   ```
 
+* Properties of lists with decidably unique elements:
+  ```
+  Data.List.Relation.Unary.Unique.DecSetoid
+  Data.List.Relation.Unary.Unique.DecSetoid.Properties
+  Data.List.Relation.Unary.Unique.DecPropositional
+  Data.List.Relation.Unary.Unique.DecPropositional.Properties
+  ```
+
 * Added bindings for Haskell's `System.Environment`:
   ```
   System.Environment
@@ -429,12 +437,12 @@ Other minor additions
   xs ⊉ ys = ¬ xs ⊇ ys
   ```
 
-* Added new proofs in `Data.List.Relation.Binary.Subset.Propositional.Properties`:
+* Added new proofs in `Data.List.Relation.Binary.Subset.Setoid.Properties`:
   ```agda
   ⊆-respʳ-≋      : _⊆_ Respectsʳ _≋_
   ⊆-respˡ-≋      : _⊆_ Respectsˡ _≋_
 
-  ↭⇒⊆            : _↭_ ⇒ _⊆_
+  ⊆-reflexive-↭  : _↭_ ⇒ _⊆_
   ⊆-respʳ-↭      : _⊆_ Respectsʳ _↭_
   ⊆-respˡ-↭      : _⊆_ Respectsˡ _↭_
   ⊆-↭-isPreorder : IsPreorder _↭_ _⊆_
@@ -448,11 +456,13 @@ Other minor additions
   ++⁺ʳ           : xs ⊆ ys → zs ++ xs ⊆ zs ++ ys
   ++⁺ˡ           : xs ⊆ ys → xs ++ zs ⊆ ys ++ zs
   ++⁺            : ws ⊆ xs → ys ⊆ zs → ws ++ ys ⊆ xs ++ zs
+
+  filter⁺′       : P ⋐ Q → xs ⊆ ys → filter P? xs ⊆ filter Q? ys
   ```
 
 * Added new proofs in `Data.List.Relation.Binary.Subset.Propositional.Properties`:
   ```agda
-  ↭⇒⊆            : _↭_ ⇒ _⊆_
+  ⊆-reflexive-↭  : _↭_ ⇒ _⊆_
   ⊆-respʳ-↭      : _⊆_ Respectsʳ _↭_
   ⊆-respˡ-↭      : _⊆_ Respectsˡ _↭_
   ⊆-↭-isPreorder : IsPreorder _↭_ _⊆_
@@ -460,11 +470,22 @@ Other minor additions
 
   Any-resp-⊆     : (Any P) Respects _⊆_
   All-resp-⊇     : (All P) Respects _⊇_
+  Sublist⇒Subset : xs ⊑ ys → xs ⊆ ys
 
   xs⊆xs++ys      : xs ⊆ xs ++ ys
   xs⊆ys++xs      : xs ⊆ ys ++ xs
   ++⁺ʳ           : xs ⊆ ys → zs ++ xs ⊆ zs ++ ys
   ++⁺ˡ           : xs ⊆ ys → xs ++ zs ⊆ ys ++ zs
+
+  filter⁺′       : P ⋐ Q → xs ⊆ ys → filter P? xs ⊆ filter Q? ys
+  ```
+
+* Added new relations to `Data.List.Relation.Binary.Sublist.(Setoid/Propositional)`:
+  ```agda
+  xs ⊂ ys = xs ⊆ ys × ¬ (xs ≋ ys)
+  xs ⊃ ys = ys ⊂ xs
+  xs ⊄ ys = ¬ (xs ⊂ ys)
+  xs ⊅ ys = ¬ (xs ⊃ ys)
   ```
 
 * Added new proof in `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
@@ -475,6 +496,40 @@ Other minor additions
 * Added new proof in `Data.List.Relation.Binary.Permutation.Setoi.Properties`:
   ```agda
   ++↭ʳ++ : xs ++ ys ↭ xs ʳ++ ys
+  ```
+
+* Added new proofs in `Data.List.Extrema`:
+  ```agda
+  min-mono-⊆ : ⊥₁ ≤ ⊥₂ → xs ⊇ ys → min ⊥₁ xs ≤ min ⊥₂ ys
+  max-mono-⊆ : ⊥₁ ≤ ⊥₂ → xs ⊆ ys → max ⊥₁ xs ≤ max ⊥₂ ys
+  ```
+
+* Added new operator in `Data.List.Membership.DecSetoid`:
+  ```agda
+  _∉?_ : Decidable _∉_
+  ```
+
+* Added new proofs in `Data.List.Relation.Unary.Any.Properties`:
+  ```agda
+  lookup-index   : (p : Any P xs) → P (lookup xs (index p))
+  applyDownFrom⁺ : P (f i) → i < n → Any P (applyDownFrom f n)
+  applyDownFrom⁻ : Any P (applyDownFrom f n) → ∃ λ i → i < n × P (f i)
+  ```
+
+* Added new proofs in `Data.List.Membership.Setoid.Properties`:
+  ```agda
+  ∈-applyDownFrom⁺ : i < n → f i ∈ applyDownFrom f n
+  ∈-applyDownFrom⁻ : v ∈ applyDownFrom f n → ∃ λ i → i < n × v ≈ f i
+  ```
+
+* Added new proofs in `Data.List.Membership.Propositional.Properties`:
+  ```agda
+  ∈-applyDownFrom⁺ : i < n → f i ∈ applyDownFrom f n
+  ∈-applyDownFrom⁻ : v ∈ applyDownFrom f n → ∃ λ i → i < n × v ≡ f i
+  ∈-upTo⁺          : i < n → i ∈ upTo n
+  ∈-upTo⁻          : i ∈ upTo n → i < n
+  ∈-downFrom⁺      : i < n → i ∈ downFrom n
+  ∈-downFrom⁻      : i ∈ downFrom n → i < n
   ```
 
 * Added new definition in `Data.Nat.Base`:
@@ -656,4 +711,9 @@ Other minor additions
 
   intersection  : ⟨Set⟩ → ⟨Set⟩ → ⟨Set⟩
   intersections : List ⟨Set⟩ → ⟨Set⟩
+  ```
+
+* Added new proof to `Relation.Binary.PropositionalEquality`:
+  ```agda
+  resp : (P : Pred A ℓ) → P Respects _≡_
   ```
