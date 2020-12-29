@@ -11,7 +11,7 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Core
-open import Data.Product using (∃; _×_; _,_)
+open import Data.Product using (∃; _×_; _,_; proj₁; proj₂)
 open import Level using (_⊔_)
 open import Relation.Binary
 open import Relation.Nullary using (¬_)
@@ -23,34 +23,65 @@ module Algebra.Divisibility
 open import Algebra.Definitions _≈_
 
 ------------------------------------------------------------------------
--- Definitions
-
 -- Divisibility
 
-infix 5 _∣ˡ_ _∤ˡ_ _∣ʳ_ _∤ʳ_ _∣_ _∤_ _∣∣_ _¬∣∣_
+infix 5 _∣ˡ_ _∤ˡ_ _∣ʳ_ _∤ʳ_ _∣_ _∤_
 
-_∣ˡ_ _∤ˡ_ _∣ʳ_ _∤ʳ_ _∣_ _∤_ _∣∣_ _¬∣∣_ : Rel A (a ⊔ ℓ)
-
+_∣ˡ_ : Rel A (a ⊔ ℓ)
 x ∣ˡ y = ∃ λ q → (x ∙ q) ≈ y    -- x divides y from left
+
+_∤ˡ_ : Rel A (a ⊔ ℓ)
+x ∤ˡ y = ¬ x ∣ˡ y
+
+_∣ʳ_ : Rel A (a ⊔ ℓ)
 x ∣ʳ y = ∃ λ q → (q ∙ x) ≈ y    -- x divides y from right
 
--- In the commutative case,  _∣ˡ_ <==> _∣ʳ_.
+_∤ʳ_ : Rel A (a ⊔ ℓ)
+x ∤ʳ y = ¬ x ∣ʳ y
+
+-- In the commutative case,  _∣ˡ_ and _∣ʳ_ are equivalent.
 -- But generally, they are not equivalent.
 
-_∣_ = _∣ʳ_     -- In particular, use _∣_ when it holds _∣ˡ_ <==> _∣ʳ_.
+_∣_ : Rel A (a ⊔ ℓ)
+_∣_ = _∣ʳ_
 
-x ∤ˡ y = ¬ x ∣ˡ y
-x ∤ʳ y = ¬ x ∣ʳ y
+_∤_ : Rel A (a ⊔ ℓ)
 x ∤ y = ¬ x ∣ y
 
-
+------------------------------------------------------------------------
 -- Mutual divisibility.
 
 -- When in a cancellative monoid, elements related by _∣∣_ are called
 -- associated and if x ∣∣ y then x and y differ by an invertible factor.
 
+infix 5 _∣∣_ _¬∣∣_
+
+_∣∣_ : Rel A (a ⊔ ℓ)
 x ∣∣ y = x ∣ y × y ∣ x
+
+_¬∣∣_ : Rel A (a ⊔ ℓ)
 x ¬∣∣ y =  ¬ x ∣∣ y
+
+------------------------------------------------------------------------------
+-- Greatest common divisor (GCD)
+
+record GCD (x y : A) :  Set (a ⊔ ℓ) where
+  constructor gcdᶜ
+  field
+    value    : A
+    divides₁ : value ∣ x
+    divides₂ : value ∣ y
+    greatest : ∀ {z} → z ∣ x → z ∣ y → z ∣ value
+
+  quot₁ quot₂ : A
+  quot₁ = proj₁ divides₁
+  quot₂ = proj₁ divides₂
+
+  quot₁*value≈x : (quot₁ ∙ value) ≈ x
+  quot₁*value≈x = proj₂ divides₁
+
+  quot₂*value≈y : (quot₂ ∙ value) ≈ y
+  quot₂*value≈y = proj₂ divides₂
 
 ------------------------------------------------------------------------
 -- Properties
