@@ -24,6 +24,7 @@ open import Relation.Unary
 
 open StrictTotalOrder strictTotalOrder renaming (Carrier to Key)
 open import Data.Tree.AVL.Map strictTotalOrder as Map using (Map)
+open import Data.Tree.AVL.Indexed strictTotalOrder using (toPair)
 import Data.Tree.AVL.Relation.Unary.Any strictTotalOrder as Mapₚ
 
 private
@@ -42,7 +43,7 @@ private
 -- See `Relation.Unary` for an explanation of predicates.
 
 Any : {V : Set v} → Pred (Key × V) p → Pred (Map V) (a ⊔ ℓ₂ ⊔ v ⊔ p)
-Any P = Mapₚ.Any (Prod.curry P)
+Any P = Mapₚ.Any (P ∘′ toPair)
 
 ------------------------------------------------------------------------
 -- Operations on Any
@@ -56,13 +57,13 @@ lookup = Mapₚ.lookup
 -- If any element satisfies P, then P is satisfied.
 
 satisfied : Any P m → ∃ P
-satisfied p = let (k , (v , pkv)) = Mapₚ.satisfied p in ((k , v) , pkv)
+satisfied = Prod.map toPair id ∘′ Mapₚ.satisfied
 
 ------------------------------------------------------------------------
 -- Properties of predicates preserved by Any
 
 any? : Decidable P → Decidable (Any P)
-any? P? = Mapₚ.any? (λ {k} v → P? (k , v))
+any? P? = Mapₚ.any? (P? ∘ toPair)
 
 satisfiable : Satisfiable P → Satisfiable (Any P)
 satisfiable ((k , v) , p) = Mapₚ.satisfiable k (v , p)

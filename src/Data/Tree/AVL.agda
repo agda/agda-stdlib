@@ -36,12 +36,12 @@ private
 
 open StrictTotalOrder strictTotalOrder renaming (Carrier to Key)
 import Data.Tree.AVL.Indexed strictTotalOrder as Indexed
-open Indexed using (K&_ ; ⊥⁺ ; ⊤⁺; ⊥⁺<⊤⁺; ⊥⁺<[_]<⊤⁺; ⊥⁺<[_]; [_]<⊤⁺)
+open Indexed using (K&_; _,_; ⊥⁺; ⊤⁺; ⊥⁺<⊤⁺; ⊥⁺<[_]<⊤⁺; ⊥⁺<[_]; [_]<⊤⁺)
 
 ------------------------------------------------------------------------
 -- Re-export some core definitions publically
 
-open Indexed using (Value; MkValue; const) public
+open Indexed using (toPair; fromPair; Value; MkValue; const) public
 
 ------------------------------------------------------------------------
 -- Types and functions with hidden indices
@@ -108,7 +108,7 @@ module _ {v} {V : Value v} where
   -- The input does not need to be ordered.
 
   fromList : List (K& V) → Tree V
-  fromList = List.foldr (uncurry insert) empty
+  fromList = List.foldr (λ (k , v) → insert k v) empty
 
   -- Returns an ordered list.
 

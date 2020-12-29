@@ -24,7 +24,7 @@ open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 
 private
   variable
-    l : Level
+    l v : Level
     A : Set l
 
 open StrictTotalOrder strictTotalOrder renaming (Carrier to Key)
@@ -39,8 +39,17 @@ open import Data.Tree.AVL.Height public
 ------------------------------------------------------------------------
 -- Definitions of the tree
 
-K&_ : ∀ {v} (V : Value v) → Set (a ⊔ v)
-K& V = Σ Key (Value.family V)
+record K&_ (V : Value v) : Set (a ⊔ v) where
+  constructor _,_
+  field key   : Key
+        value : Value.family V key
+
+  toPair : Σ Key (Value.family V)
+  toPair = key , value
+open K&_ public
+
+fromPair : {V : Value v} → Σ Key (Value.family V) → K& V
+fromPair (k , v) = k , v
 
 -- The trees have three parameters/indices: a lower bound on the
 -- keys, an upper bound, and a height.
@@ -50,9 +59,9 @@ K& V = Σ Key (Value.family V)
 data Tree {v} (V : Value v) (l u : Key⁺) : ℕ → Set (a ⊔ v ⊔ ℓ₂) where
   leaf : (l<u : l <⁺ u) → Tree V l u 0
   node : ∀ {hˡ hʳ h}
-         (k : K& V)
-         (lk : Tree V l [ proj₁ k ] hˡ)
-         (ku : Tree V [ proj₁ k ] u hʳ)
+         (kv : K& V)
+         (lk : Tree V l [ kv .key ] hˡ)
+         (ku : Tree V [ kv .key ] u hʳ)
          (bal : hˡ ∼ hʳ ⊔ h) →
          Tree V l u (suc h)
 
@@ -67,8 +76,8 @@ module _ {v} {V : Value v} where
 
   node-injective-key :
     ∀ {hˡ₁ hˡ₂ hʳ₁ hʳ₂ h l u k₁ k₂}
-      {lk₁ : Tree V l [ proj₁ k₁ ] hˡ₁} {lk₂ : Tree V l [ proj₁ k₂ ] hˡ₂}
-      {ku₁ : Tree V [ proj₁ k₁ ] u hʳ₁} {ku₂ : Tree V [ proj₁ k₂ ] u hʳ₂}
+      {lk₁ : Tree V l [ k₁ .key ] hˡ₁} {lk₂ : Tree V l [ k₂ .key ] hˡ₂}
+      {ku₁ : Tree V [ k₁ .key ] u hʳ₁} {ku₂ : Tree V [ k₂ .key ] u hʳ₂}
       {bal₁ : hˡ₁ ∼ hʳ₁ ⊔ h} {bal₂ : hˡ₂ ∼ hʳ₂ ⊔ h} →
     node k₁ lk₁ ku₁ bal₁ ≡ node k₂ lk₂ ku₂ bal₂ → k₁ ≡ k₂
   node-injective-key refl = refl
@@ -101,8 +110,8 @@ module _ {v} {V : Value v} where
 
   joinˡ⁺ : ∀ {l u hˡ hʳ h} →
            (k : K& V) →
-           (∃ λ i → Tree V l [ proj₁ k ] (i ⊕ hˡ)) →
-           Tree V [ proj₁ k ] u hʳ →
+           (∃ λ i → Tree V l [ k .key ] (i ⊕ hˡ)) →
+           Tree V [ k .key ] u hʳ →
            (bal : hˡ ∼ hʳ ⊔ h) →
            ∃ λ i → Tree V l u (i ⊕ (1 + h))
   joinˡ⁺ k₂ (0# , t₁)                t₃ bal = (0# , node k₂ t₁ t₃ bal)
@@ -119,8 +128,8 @@ module _ {v} {V : Value v} where
 
   joinʳ⁺ : ∀ {l u hˡ hʳ h} →
            (k : K& V) →
-           Tree V l [ proj₁ k ] hˡ →
-           (∃ λ i → Tree V [ proj₁ k ] u (i ⊕ hʳ)) →
+           Tree V l [ k .key ] hˡ →
+           (∃ λ i → Tree V [ k .key ] u (i ⊕ hʳ)) →
            (bal : hˡ ∼ hʳ ⊔ h) →
            ∃ λ i → Tree V l u (i ⊕ (1 + h))
   joinʳ⁺ k₂ t₁ (0# , t₃)               bal = (0# , node k₂ t₁ t₃ bal)
@@ -135,8 +144,8 @@ module _ {v} {V : Value v} where
 
   joinˡ⁻ : ∀ {l u} hˡ {hʳ h} →
            (k : K& V) →
-           (∃ λ i → Tree V l [ proj₁ k ] pred[ i ⊕ hˡ ]) →
-           Tree V [ proj₁ k ] u hʳ →
+           (∃ λ i → Tree V l [ k .key ] pred[ i ⊕ hˡ ]) →
+           Tree V [ k .key ] u hʳ →
            (bal : hˡ ∼ hʳ ⊔ h) →
            ∃ λ i → Tree V l u (i ⊕ h)
   joinˡ⁻ zero    k₂ (0# , t₁) t₃ bal = (1# , node k₂ t₁ t₃ bal)
@@ -148,8 +157,8 @@ module _ {v} {V : Value v} where
 
   joinʳ⁻ : ∀ {l u hˡ} hʳ {h} →
            (k : K& V) →
-           Tree V l [ proj₁ k ] hˡ →
-           (∃ λ i → Tree V [ proj₁ k ] u pred[ i ⊕ hʳ ]) →
+           Tree V l [ k .key ] hˡ →
+           (∃ λ i → Tree V [ k .key ] u pred[ i ⊕ hʳ ]) →
            (bal : hˡ ∼ hʳ ⊔ h) →
            ∃ λ i → Tree V l u (i ⊕ h)
   joinʳ⁻ zero    k₂ t₁ (0# , t₃) bal = (1# , node k₂ t₁ t₃ bal)
@@ -163,8 +172,8 @@ module _ {v} {V : Value v} where
   -- Logarithmic in the size of the tree.
 
   headTail : ∀ {l u h} → Tree V l u (1 + h) →
-             ∃ λ (k : K& V) → l <⁺ [ proj₁ k ] ×
-                            ∃ λ i → Tree V [ proj₁ k ] u (i ⊕ h)
+             ∃ λ (k : K& V) → l <⁺ [ k .key ] ×
+                            ∃ λ i → Tree V [ k .key ] u (i ⊕ h)
   headTail (node k₁ (leaf l<k₁) t₂ ∼+) = (k₁ , l<k₁ , 0# , t₂)
   headTail (node k₁ (leaf l<k₁) t₂ ∼0) = (k₁ , l<k₁ , 0# , t₂)
   headTail (node {hˡ = suc _} k₃ t₁₂ t₄ bal) with headTail t₁₂
@@ -174,8 +183,8 @@ module _ {v} {V : Value v} where
   -- Logarithmic in the size of the tree.
 
   initLast : ∀ {l u h} → Tree V l u (1 + h) →
-             ∃ λ (k : K& V) → [ proj₁ k ] <⁺ u ×
-                            ∃ λ i → Tree V l [ proj₁ k ] (i ⊕ h)
+             ∃ λ (k : K& V) → [ k .key ] <⁺ u ×
+                            ∃ λ i → Tree V l [ k .key ] (i ⊕ h)
   initLast (node k₂ t₁ (leaf k₂<u) ∼-) = (k₂ , k₂<u , (0# , t₁))
   initLast (node k₂ t₁ (leaf k₂<u) ∼0) = (k₂ , k₂<u , (0# , t₁))
   initLast (node {hʳ = suc _} k₂ t₁ t₃₄ bal) with initLast t₃₄

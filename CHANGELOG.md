@@ -74,6 +74,8 @@ Non-backwards compatible changes
   + Introduced `Colist` and `List` modules for the various `sequence` and `mapM` functions.
     This breaks code that relied on the `Colist`-specific function being exported as part of `IO`.
 
+* In `Data.Tree.AVL.Indexed` the type alias `K&_` defined in terms of `Σ` has been changed
+  into a standalone record to help with parameter inference.
 
 Deprecated modules
 ------------------

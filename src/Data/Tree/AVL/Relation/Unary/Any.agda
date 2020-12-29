@@ -13,7 +13,7 @@ module Data.Tree.AVL.Relation.Unary.Any
   where
 
 open import Data.Nat.Base using (ℕ)
-open import Data.Product as Prod using (_,_; ∃₂; -,_; proj₁; proj₂)
+open import Data.Product as Prod using (_,_; ∃; -,_; proj₁; proj₂)
 open import Function.Base
 open import Level using (Level; _⊔_)
 
@@ -23,7 +23,7 @@ open import Relation.Nullary.Sum using (_⊎-dec_)
 open import Relation.Unary
 
 open StrictTotalOrder strictTotalOrder renaming (Carrier to Key)
-import Data.Tree.AVL.Indexed strictTotalOrder as Indexed
+open import Data.Tree.AVL.Indexed strictTotalOrder as Indexed using (K&_; _,_)
 open import Data.Tree.AVL strictTotalOrder as AVL using (Tree; tree; Value)
 import Data.Tree.AVL.Indexed.Relation.Unary.Any strictTotalOrder as AVLₚ
 
@@ -32,6 +32,9 @@ private
   variable
     v p q : Level
     V : Value v
+    t : Tree V
+    P : Pred (K& V) p
+    Q : Pred (K& V) q
 
 ------------------------------------------------------------------------
 -- Definition
@@ -40,39 +43,30 @@ private
 -- There may be others.
 -- See `Relation.Unary` for an explanation of predicates.
 
-data Any {V : Value v} (P : ∀ k → Value.family V k → Set p) :
+data Any {V : Value v} (P : K& V → Set p) :
          Tree V → Set (p ⊔ a ⊔ v ⊔ ℓ₂) where
   tree : ∀ {h t} → AVLₚ.Any P t → Any P (tree {h = h} t)
 
 ------------------------------------------------------------------------
 -- Operations on Any
 
-module _ {V : Value v}
-  {P : ∀ k → Value.family V k → Set p}
-  {Q : ∀ k → Value.family V k → Set q}
-  where
+map : P ⊆ Q → Any P t → Any Q t
+map f (tree p) = tree (AVLₚ.map f p)
 
-  map : ∀ {t : Tree V} → (∀ {k} → P k ⊆ Q k) → Any P t → Any Q t
-  map f (tree p) = tree (AVLₚ.map f p)
-
-module _ {V : Value v}
-  {P : ∀ k → Value.family V k → Set p}
-  where
-
-  lookup : ∀ {t : Tree V} → Any P t → Key
-  lookup (tree p) = AVLₚ.lookup p
+lookup : Any P t → Key
+lookup (tree p) = AVLₚ.lookup p
 
 -- If any element satisfies P, then P is satisfied.
 
-  satisfied : ∀ {t : Tree V} → Any P t → ∃₂ P
-  satisfied (tree p) = AVLₚ.satisfied p
+satisfied : Any P t → ∃ P
+satisfied (tree p) = AVLₚ.satisfied p
 
 ------------------------------------------------------------------------
 -- Properties of predicates preserved by Any
 
-  any? : (∀ {k} → Decidable (P k)) → Decidable (Any {V = V} P)
-  any? P? (tree p) = map′ tree (λ where (tree p) → p) (AVLₚ.any? P? p)
+any? : Decidable P → Decidable (Any {V = V} P)
+any? P? (tree p) = map′ tree (λ where (tree p) → p) (AVLₚ.any? P? p)
 
-  satisfiable : (k : Key) → Satisfiable (P k) → Satisfiable (Any {V = V} P)
-  satisfiable k sat = Prod.map tree tree
-                    $ AVLₚ.satisfiable Indexed.⊥⁺<[ k ] Indexed.[ k ]<⊤⁺ sat
+satisfiable : (k : Key) → Satisfiable (P ∘ (k ,_)) → Satisfiable (Any {V = V} P)
+satisfiable k sat = Prod.map tree tree
+                  $ AVLₚ.satisfiable Indexed.⊥⁺<[ k ] Indexed.[ k ]<⊤⁺ sat
