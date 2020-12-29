@@ -68,51 +68,51 @@ data Any {V : Value v} (P : K& V → Set p) {l u}
 ------------------------------------------------------------------------
 -- Operations on Any
 
-map : {t : Tree V l u n} → P ⊆ Q → Any P t → Any Q t
+map : P ⊆ Q → Any P t → Any Q t
 map f (here  p) = here (f p)
 map f (left  p) = left (map f p)
 map f (right p) = right (map f p)
 
-module _ {V : Value v} {P : Pred (K& V) p} where
-
-  lookup : {t : Tree V l u n} → Any P t → Key
-  lookup (here {kv = kv} _) = kv .key
-  lookup (left  p)          = lookup p
-  lookup (right p)          = lookup p
+lookup : {t : Tree V l u n} → Any P t → Key
+lookup (here {kv = kv} _) = kv .key
+lookup (left  p)          = lookup p
+lookup (right p)          = lookup p
 
 -- If any element satisfies P, then P is satisfied.
 
-  satisfied : {t : Tree V l u n} → Any P t → ∃ P
-  satisfied (here  p) = -, p
-  satisfied (left  p) = satisfied p
-  satisfied (right p) = satisfied p
+satisfied : Any P t → ∃ P
+satisfied (here  p) = -, p
+satisfied (left  p) = satisfied p
+satisfied (right p) = satisfied p
 
-  module _ {hˡ hʳ h} {kv : K& V}
-    {lk : Tree V l [ kv .key ] hˡ} {ku : Tree V [ kv .key ] u hʳ} {bal : hˡ ∼ hʳ ⊔ h}
-    where
+module _ {hˡ hʳ h} {kv : K& V}
+  {lk : Tree V l [ kv .key ] hˡ}
+  {ku : Tree V [ kv .key ] u hʳ}
+  {bal : hˡ ∼ hʳ ⊔ h}
+  where
 
-    toSum : Any P (node kv lk ku bal) →
-            P kv ⊎ Any P lk ⊎ Any P ku
-    toSum (here p)  = inj₁ p
-    toSum (left p)  = inj₂ (inj₁ p)
-    toSum (right p) = inj₂ (inj₂ p)
+  toSum : Any P (node kv lk ku bal) →
+          P kv ⊎ Any P lk ⊎ Any P ku
+  toSum (here p)  = inj₁ p
+  toSum (left p)  = inj₂ (inj₁ p)
+  toSum (right p) = inj₂ (inj₂ p)
 
-    fromSum : P kv ⊎ Any P lk ⊎ Any P ku →
-              Any P (node kv lk ku bal)
-    fromSum (inj₁ p)        = here p
-    fromSum (inj₂ (inj₁ p)) = left p
-    fromSum (inj₂ (inj₂ p)) = right p
+  fromSum : P kv ⊎ Any P lk ⊎ Any P ku →
+            Any P (node kv lk ku bal)
+  fromSum (inj₁ p)        = here p
+  fromSum (inj₂ (inj₁ p)) = left p
+  fromSum (inj₂ (inj₂ p)) = right p
 
 ------------------------------------------------------------------------
 -- Properties of predicates preserved by Any
 
-  any? : Decidable P → (t : Tree V l u n) → Dec (Any P t)
-  any? P? (leaf _)          = no λ ()
-  any? P? (node kv l r bal) = map′ fromSum toSum
-    (P? kv ⊎-dec any? P? l ⊎-dec any? P? r)
+any? : Decidable P → (t : Tree V l u n) → Dec (Any P t)
+any? P? (leaf _)          = no λ ()
+any? P? (node kv l r bal) = map′ fromSum toSum
+  (P? kv ⊎-dec any? P? l ⊎-dec any? P? r)
 
-  satisfiable : ∀ {k l u} → l <⁺ [ k ] → [ k ] <⁺ u →
-                Satisfiable (P ∘ (k ,_)) →
-                Satisfiable {A = Tree V l u 1} (Any P)
-  satisfiable {k} lb ub sat = node (k , proj₁ sat) (leaf lb) (leaf ub) ∼0
-                            , here (proj₂ sat)
+satisfiable : ∀ {k l u} → l <⁺ [ k ] → [ k ] <⁺ u →
+              Satisfiable (P ∘ (k ,_)) →
+              Satisfiable {A = Tree V l u 1} (Any P)
+satisfiable {k = k} lb ub sat = node (k , proj₁ sat) (leaf lb) (leaf ub) ∼0
+                              , here (proj₂ sat)
