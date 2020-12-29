@@ -116,8 +116,8 @@ module _ {V : Value v}
   any? P? (node kv l r bal) = map′ fromSum toSum
     (P? (proj₂ kv) ⊎-dec any? P? l ⊎-dec any? P? r)
 
-  satisfiable : (∀ {k} → Satisfiable (P k)) →
-                ∀ {k l u} → l <⁺ [ k ] → [ k ] <⁺ u →
+  satisfiable : ∀ {k l u} → l <⁺ [ k ] → [ k ] <⁺ u →
+                Satisfiable (P k) →
                 Satisfiable {A = Tree V l u 1} (Any P)
-  satisfiable sat {k} lb ub = node (k , proj₁ sat) (leaf lb) (leaf ub) ∼0
+  satisfiable {k} lb ub sat = node (k , proj₁ sat) (leaf lb) (leaf ub) ∼0
                             , here (proj₂ sat)

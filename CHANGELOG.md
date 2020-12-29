@@ -252,6 +252,10 @@ New modules
 
 * Added new modules in `Data.Tree.AVL`:
   ```
+  Data.Tree.AVL.Indexed.Relation.Unary.All
+
+  Data.Tree.AVL.Relation.Unary.Any
+
   Data.Tree.AVL.Indexed.Relation.Unary.Any
   Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties
   ```
