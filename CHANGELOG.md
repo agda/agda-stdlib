@@ -151,6 +151,16 @@ Deprecated names
   show ↦ Data.Integer.Show.show
   ```
 
+* In `Data.Integer.Properties`:
+  ```agda
+  neg-mono-<->        ↦ neg-mono-<
+  neg-mono-≤-≥        ↦ neg-mono-≤
+  *-monoʳ-≤-non-neg   ↦ *-monoʳ-≤-nonNeg
+  *-monoˡ-≤-non-neg   ↦ *-monoˡ-≤-nonNeg
+  *-cancelˡ-<-non-neg ↦ *-cancelˡ-<-nonNeg
+  *-cancelʳ-<-non-neg ↦ *-cancelʳ-<-nonNeg
+  ```
+
 * In `Data.Rational`:
     ```agda
   show ↦ Data.Rational.Show.show
@@ -317,6 +327,100 @@ Other minor additions
   ⊖-≤             : m ≤ n → m ⊖ n ≡ - + (n ∸ m)
   -m+n≡n⊖m        : - (+ m) + + n ≡ n ⊖ m
   m-n≡m⊖n         : + m + (- + n) ≡ m ⊖ n
+
+  ≤∧≢⇒<                    : x ≤ y → x ≢ y → x < y
+  ≤∧≮⇒≡                    : x ≤ y → x ≮ y → x ≡ y
+
+  positive⁻¹               : Positive n → n > 0ℤ
+  nonNegative⁻¹            : NonNegative n → n ≥ 0ℤ
+  negative⁻¹               : Negative n → n < 0ℤ
+  nonPositive⁻¹            : NonPositive q → q ≤ 0ℤ
+  negative<positive        : Negative m → Positive n → m < n
+
+  neg-mono-<               : -_ Preserves _<_ ⟶ _>_
+  neg-mono-≤               : -_ Preserves _≤_ ⟶ _≥_
+  neg-cancel-<             : - m < - n → m > n
+  neg-cancel-≤             : - m ≤ - n → m ≥ n
+
+  +∣n∣≡n⊎+∣n∣≡-n           : + ∣ n ∣ ≡ n ⊎ + ∣ n ∣ ≡ - n
+  ∣m⊝n∣≤m⊔n                : ∣ m ⊖ n ∣ ℕ.≤ m ℕ.⊔ n
+  ∣m+n∣≤∣m∣+∣n∣            : ∣ m + n ∣ ℕ.≤ ∣ m ∣ ℕ.+ ∣ n ∣
+  ∣m-n∣≤∣m∣+∣n∣            : ∣ m - n ∣ ℕ.≤ ∣ m ∣ ℕ.+ ∣ n ∣
+
+  *-cancelˡ-≤-neg          : -[1+ m ] * n ≤ -[1+ m ] * o → n ≥ o
+  *-cancelʳ-≤-neg          : n * -[1+ m ] ≤ o * -[1+ m ] → n ≥ o
+  *-monoˡ-≤-nonPos         : NonPositive m → (m *_) Preserves _≤_ ⟶ _≥_
+  *-monoʳ-≤-nonPos         : ∀ m → NonPositive m → (_* m) Preserves _≤_ ⟶ _≥_
+  *-monoˡ-≤-neg            : (-[1+ m ] *_) Preserves _≤_ ⟶ _≥_
+  *-monoʳ-≤-neg            : (_* -[1+ m ]) Preserves _≤_ ⟶ _≥_
+  *-monoˡ-<-neg            : (-[1+ n ] *_) Preserves _<_ ⟶ _>_
+  *-monoʳ-<-neg            : (_* -[1+ n ]) Preserves _<_ ⟶ _>_
+  *-cancelˡ-<-neg          : -[1+ n ] * i < -[1+ n ] * j → i > j
+  *-cancelˡ-<-nonPos       : NonPositive n → n * i < n * j → i > j
+  *-cancelʳ-<-neg          : i * -[1+ n ] < j * -[1+ n ] → i > j
+  *-cancelʳ-<-nonPos      : NonPositive n → i * n < j * n → i > j
+
+  ∣m*n∣≡∣m∣*∣n∣            : ∣ m * n ∣ ≡ ∣ m ∣ ℕ.* ∣ n ∣
+  +-*-commutativeSemiring  : CommutativeSemiring 0ℓ 0ℓ
+
+  mono-≤-distrib-⊓         : f Preserves _≤_ ⟶ _≤_ → f (m ⊓ n) ≡ f m ⊓ f n
+  mono-<-distrib-⊓         : f Preserves _<_ ⟶ _<_ → f (m ⊓ n) ≡ f m ⊓ f n
+  mono-≤-distrib-⊔         : f Preserves _≤_ ⟶ _≤_ → f (m ⊔ n) ≡ f m ⊔ f n
+  mono-<-distrib-⊔         : f Preserves _<_ ⟶ _<_ → f (m ⊔ n) ≡ f m ⊔ f n
+
+  antimono-≤-distrib-⊔         : f Preserves _≤_ ⟶ _≥_ → f (m ⊔ n) ≡ f m ⊓ f n
+  antimono-<-distrib-⊔         : f Preserves _<_ ⟶ _>_ → f (m ⊔ n) ≡ f m ⊓ f n
+  antimono-≤-distrib-⊓         : f Preserves _≤_ ⟶ _≥_ → f (m ⊓ n) ≡ f m ⊔ f n
+  antimono-<-distrib-⊓         : f Preserves _<_ ⟶ _>_ → f (m ⊓ n) ≡ f m ⊔ f n
+
+  *-distribˡ-⊓-nonNeg      : + m * (n ⊓ o) ≡ (+ m * n) ⊓ (+ m * o)
+  *-distribʳ-⊓-nonNeg      : (n ⊓ o) * + m ≡ (n * + m) ⊓ (o * + m)
+  *-distribˡ-⊔-nonNeg      : + m * (n ⊔ o) ≡ (+ m * n) ⊔ (+ m * o)
+  *-distribʳ-⊔-nonNeg      : (n ⊔ o) * + m ≡ (n * + m) ⊔ (o * + m)
+
+  *-distribˡ-⊓-nonPos      : NonPositive m → m * (n ⊓ o) ≡ (m * n) ⊔ (m * o)
+  *-distribʳ-⊓-nonPos      : NonPositive m → (n ⊓ o) * m ≡ (n * m) ⊔ (o * m)
+  *-distribˡ-⊔-nonPos      : NonPositive m → m * (n ⊔ o) ≡ (m * n) ⊓ (m * o)
+  *-distribʳ-⊔-nonPos      : NonPositive m → (n ⊔ o) * m ≡ (n * m) ⊓ (o * m)
+
+  ⊓-absorbs-⊔              : _⊓_ Absorbs _⊔_
+  ⊔-absorbs-⊓              : _⊔_ Absorbs _⊓_
+  ⊔-⊓-absorptive           : Absorptive _⊔_ _⊓_
+  ⊓-⊔-absorptive           : Absorptive _⊓_ _⊔_
+
+  ⊓-isMagma                : IsMagma _⊓_
+  ⊓-isSemigroup            : IsSemigroup _⊓_
+  ⊓-isBand                 : IsBand _⊓_
+  ⊓-isCommutativeSemigroup : IsCommutativeSemigroup _⊓_
+  ⊓-isSemilattice          : IsSemilattice _⊓_
+  ⊓-isSelectiveMagma       : IsSelectiveMagma _⊓_
+
+  ⊔-isMagma                : IsMagma _⊔_
+  ⊔-isSemigroup            : IsSemigroup _⊔_
+  ⊔-isBand                 : IsBand _⊔_
+  ⊔-isCommutativeSemigroup : IsCommutativeSemigroup _⊔_
+  ⊔-isSemilattice          : IsSemilattice _⊔_
+  ⊔-isSelectiveMagma       : IsSelectiveMagma _⊔_
+
+  ⊔-⊓-isLattice            : IsLattice _⊔_ _⊓_
+  ⊓-⊔-isLattice            : IsLattice _⊓_ _⊔_
+
+  ⊓-magma                  : Magma _ _
+  ⊓-semigroup              : Semigroup _ _
+  ⊓-band                   : Band _ _
+  ⊓-commutativeSemigroup   : CommutativeSemigroup _ _
+  ⊓-semilattice            : Semilattice _ _
+  ⊓-selectiveMagma         : SelectiveMagma _ _
+
+  ⊔-magma                  : Magma _ _
+  ⊔-semigroup              : Semigroup _ _
+  ⊔-band                   : Band _ _
+  ⊔-commutativeSemigroup   : CommutativeSemigroup _ _
+  ⊔-semilattice            : Semilattice _ _
+  ⊔-selectiveMagma         : SelectiveMagma _ _
+
+  ⊔-⊓-lattice              : Lattice _ _
+  ⊓-⊔-lattice              : Lattice _ _
   ```
 
 * Added new relations in `Data.List.Relation.Binary.Subset.(Propositional/Setoid)`:
@@ -422,11 +526,6 @@ Other minor additions
   symmetric   : Symmetric _∼_ → Symmetric _∼⁺_
   transitive  : Transitive _∼⁺_
   wellFounded : WellFounded _∼_ → WellFounded _∼⁺_
-  ```
-
-* Add new properties to `Data.Integer.Properties`:
-  ```agda
-  +-*-commutativeSemiring : CommutativeSemiring 0ℓ 0ℓ
   ```
 
 * Added new definition to `Data.Char.Base`:
