@@ -77,6 +77,10 @@ Non-backwards compatible changes
 * In `Data.Tree.AVL.Indexed` the type alias `K&_` defined in terms of `Σ` has been changed
   into a standalone record to help with parameter inference.
 
+* In `Data.Tree.AVL.Sets`, defined `⟨Set⟩` directly in terms of `Map`. The previous definition
+  was essentially the same except that it was inlined. This should hopefully be backwards compatible
+  however it's hard to test.
+
 Deprecated modules
 ------------------
 

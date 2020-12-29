@@ -30,7 +30,7 @@ open import Relation.Unary
 open StrictTotalOrder strictTotalOrder renaming (Carrier to Key)
 open import Data.Tree.AVL.Value Eq.setoid
 import Data.Tree.AVL.Indexed strictTotalOrder as Indexed
-open Indexed using (K&_ ; ⊥⁺ ; ⊤⁺; ⊥⁺<⊤⁺; ⊥⁺<[_]<⊤⁺; ⊥⁺<[_]; [_]<⊤⁺; node; toList)
+open Indexed using (⊥⁺; ⊤⁺; ⊥⁺<⊤⁺; ⊥⁺<[_]<⊤⁺; ⊥⁺<[_]; [_]<⊤⁺; node; toList)
 
 ------------------------------------------------------------------------
 -- Types and functions with hidden indices
@@ -82,7 +82,7 @@ module _ {v} {V : Value v} where
   -- The input does not need to be ordered.
 
   fromList⁺ : List⁺ (K& V) → Tree⁺ V
-  fromList⁺ = List⁺.foldr (uncurry insert) (uncurry singleton)
+  fromList⁺ = List⁺.foldr (uncurry insert ∘′ toPair) (uncurry singleton ∘′ toPair)
 
   -- The output is ordered
 

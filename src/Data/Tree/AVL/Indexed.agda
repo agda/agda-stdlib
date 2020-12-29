@@ -39,18 +39,6 @@ open import Data.Tree.AVL.Height public
 ------------------------------------------------------------------------
 -- Definitions of the tree
 
-record K&_ (V : Value v) : Set (a ⊔ v) where
-  constructor _,_
-  field key   : Key
-        value : Value.family V key
-
-  toPair : Σ Key (Value.family V)
-  toPair = key , value
-open K&_ public
-
-fromPair : {V : Value v} → Σ Key (Value.family V) → K& V
-fromPair (k , v) = k , v
-
 -- The trees have three parameters/indices: a lower bound on the
 -- keys, an upper bound, and a height.
 --
