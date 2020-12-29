@@ -41,7 +41,7 @@ open Indexed using (K&_; toPair; ⊥⁺; ⊤⁺; ⊥⁺<⊤⁺; ⊥⁺<[_]<⊤�
 ------------------------------------------------------------------------
 -- Re-export some core definitions publically
 
-open Indexed using (toPair; fromPair; Value; MkValue; const) public
+open Indexed using (_,_; toPair; fromPair; Value; MkValue; const) public
 
 ------------------------------------------------------------------------
 -- Types and functions with hidden indices
@@ -92,12 +92,12 @@ module _ {v} {V : Value v} where
   _∈?_ : Key → Tree V → Bool
   k ∈? t = is-just (lookup k t)
 
-  headTail : Tree V → Maybe ((K& V) × Tree V)
+  headTail : Tree V → Maybe (K& V × Tree V)
   headTail (tree (Indexed.leaf _)) = nothing
   headTail (tree {h = suc _} t)    with Indexed.headTail t
   ... | (k , _ , _ , t′) = just (k , tree (Indexed.castˡ ⊥⁺<[ _ ] t′))
 
-  initLast : Tree V → Maybe (Tree V × (K& V))
+  initLast : Tree V → Maybe (Tree V × K& V)
   initLast (tree (Indexed.leaf _)) = nothing
   initLast (tree {h = suc _} t)    with Indexed.initLast t
   ... | (k , _ , _ , t′) = just (tree (Indexed.castʳ t′ [ _ ]<⊤⁺) , k)
