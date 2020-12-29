@@ -11,6 +11,7 @@ module Reflection.Abstraction where
 open import Data.List.Base as List using (List)
 open import Data.Product using (_×_; _,_; uncurry; <_,_>)
 import Data.String as String
+open import Level
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Product using (_×-dec_)
@@ -19,7 +20,8 @@ open import Relation.Binary.PropositionalEquality
 
 private
   variable
-    A B : Set
+    a b : Level
+    A B : Set a
 
 ------------------------------------------------------------------------
 -- Re-exporting the builtins publically

@@ -19,7 +19,7 @@ open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Product using (_×-dec_)
 open import Relation.Nullary.Sum using (_⊎-dec_)
 open import Relation.Nullary.Negation using (¬?)
-open import Function using (_$_; _∘_)
+open import Function.Base using (_$_; _∘_)
 
 private
   variable

@@ -33,7 +33,8 @@ import Data.Rational.Unnormalised.Properties as ℚᵘ
 open import Data.Sum.Base
 open import Data.Unit using (tt)
 import Data.Sign as S
-open import Function using (_∘_ ; _$_; Injective)
+open import Function.Base using (_∘_ ; _$_)
+open import Function.Definitions using (Injective)
 open import Level using (0ℓ)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
@@ -338,7 +339,7 @@ drop-*<* (*<* pq<qp) = pq<qp
 
 <-≤-trans : Trans _<_ _≤_ _<_
 <-≤-trans {p} {q} {r} (*<* p<q) (*≤* q≤r) = *<*
-  (ℤ.*-cancelʳ-<-non-neg _ (begin-strict
+  (ℤ.*-cancelʳ-<-nonNeg _ (begin-strict
   let n₁ = ↥ p; n₂ = ↥ q; n₃ = ↥ r; sd₁ = ↧ p; sd₂ = ↧ q; sd₃ = ↧ r in
   (n₁  ℤ.* sd₃) ℤ.* sd₂  ≡⟨ ℤ.*-assoc n₁ sd₃ sd₂ ⟩
   n₁   ℤ.* (sd₃ ℤ.* sd₂) ≡⟨ cong (n₁ ℤ.*_) (ℤ.*-comm sd₃ sd₂) ⟩
@@ -354,7 +355,7 @@ drop-*<* (*<* pq<qp) = pq<qp
 
 ≤-<-trans : Trans _≤_ _<_ _<_
 ≤-<-trans {p} {q} {r} (*≤* p≤q) (*<* q<r) = *<*
-  (ℤ.*-cancelʳ-<-non-neg _ (begin-strict
+  (ℤ.*-cancelʳ-<-nonNeg _ (begin-strict
   let n₁ = ↥ p; n₂ = ↥ q; n₃ = ↥ r; sd₁ = ↧ p; sd₂ = ↧ q; sd₃ = ↧ r in
   (n₁  ℤ.* sd₃) ℤ.* sd₂  ≡⟨ ℤ.*-assoc n₁ sd₃ sd₂ ⟩
   n₁   ℤ.* (sd₃ ℤ.* sd₂) ≡⟨ cong (n₁ ℤ.*_) (ℤ.*-comm sd₃ sd₂) ⟩

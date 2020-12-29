@@ -9,7 +9,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Function
+open import Function.Base
 open import Relation.Binary
 open import Relation.Binary.Morphism
 

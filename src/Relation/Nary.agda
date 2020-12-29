@@ -22,7 +22,7 @@ open import Data.Nat.Base using (zero; suc)
 open import Data.Product as Prod using (_×_; _,_)
 open import Data.Product.Nary.NonDependent
 open import Data.Sum.Base using (_⊎_)
-open import Function using (_$_; _∘′_)
+open import Function.Base using (_$_; _∘′_)
 open import Function.Nary.NonDependent
 open import Relation.Nullary using (¬_; Dec; yes; no; _because_)
 import Relation.Nullary.Decidable as Dec

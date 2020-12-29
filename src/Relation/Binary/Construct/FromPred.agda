@@ -15,7 +15,7 @@ module Relation.Binary.Construct.FromPred
   {p} (P : Pred (Setoid.Carrier S) p) -- The predicate
   where
 
-open import Function
+open import Function.Base
 open import Data.Product
 
 open module Eq = Setoid S using (_≈_) renaming (Carrier to A)

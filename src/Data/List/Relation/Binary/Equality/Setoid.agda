@@ -14,7 +14,7 @@ open import Data.Fin.Base
 open import Data.List.Base
 open import Data.List.Relation.Binary.Pointwise as PW using (Pointwise)
 open import Data.List.Relation.Unary.Unique.Setoid S using (Unique)
-open import Function using (_∘_)
+open import Function.Base using (_∘_)
 open import Level
 open import Relation.Binary renaming (Rel to Rel₂)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)

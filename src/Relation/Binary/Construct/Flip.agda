@@ -12,7 +12,7 @@ open import Relation.Binary
 
 module Relation.Binary.Construct.Flip where
 
-open import Function
+open import Function.Base using (flip; _∘_)
 open import Data.Product
 
 ------------------------------------------------------------------------

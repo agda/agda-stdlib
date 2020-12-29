@@ -10,7 +10,7 @@ module Data.Product.Relation.Binary.Pointwise.Dependent where
 
 open import Data.Product as Prod
 open import Level
-open import Function
+open import Function.Base
 open import Relation.Binary as B
   using (_⇒_; Setoid; IsEquivalence)
 open import Relation.Binary.Indexed.Heterogeneous as I

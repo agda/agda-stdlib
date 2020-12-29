@@ -17,7 +17,7 @@ open import Data.Nat.Properties
 open import Data.Product using (∃; _×_; _,_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; fromInj₂)
 
-open import Function using (id; _∘′_; _$_)
+open import Function.Base using (id; _∘′_; _$_)
 open import Relation.Nullary
 open import Relation.Unary as U using (Pred)
 import Relation.Binary as B
