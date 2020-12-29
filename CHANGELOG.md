@@ -258,6 +258,8 @@ New modules
 
   Data.Tree.AVL.Indexed.Relation.Unary.Any
   Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties
+
+  Data.Tree.AVL.Map.Relation.Unary.Any
   ```
 
 Other major changes
