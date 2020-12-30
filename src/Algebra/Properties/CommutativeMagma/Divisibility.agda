@@ -18,7 +18,7 @@ open CommutativeMagma CM
 open import Relation.Binary.Reasoning.Setoid setoid
 
 ------------------------------------------------------------------------------
--- Re-export the contents of semigroup
+-- Re-export the contents of magmas
 
 open import Algebra.Properties.Magma.Divisibility magma public
 

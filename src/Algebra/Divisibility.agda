@@ -65,23 +65,12 @@ x ¬∣∣ y =  ¬ x ∣∣ y
 ------------------------------------------------------------------------------
 -- Greatest common divisor (GCD)
 
-record GCD (x y : A) :  Set (a ⊔ ℓ) where
+record IsGCD (x y gcd : A) : Set (a ⊔ ℓ) where
   constructor gcdᶜ
   field
-    value    : A
-    divides₁ : value ∣ x
-    divides₂ : value ∣ y
-    greatest : ∀ {z} → z ∣ x → z ∣ y → z ∣ value
-
-  quot₁ quot₂ : A
-  quot₁ = proj₁ divides₁
-  quot₂ = proj₁ divides₂
-
-  quot₁*value≈x : (quot₁ ∙ value) ≈ x
-  quot₁*value≈x = proj₂ divides₁
-
-  quot₂*value≈y : (quot₂ ∙ value) ≈ y
-  quot₂*value≈y = proj₂ divides₂
+    divides₁ : gcd ∣ x
+    divides₂ : gcd ∣ y
+    greatest : ∀ {z} → z ∣ x → z ∣ y → z ∣ gcd
 
 ------------------------------------------------------------------------
 -- Properties
