@@ -27,7 +27,7 @@ open import Relation.Nullary.Product using (_×-dec_)
 open import Relation.Unary using (Pred; Decidable; Universal; Irrelevant; _⊆_; _∪_)
 
 open StrictTotalOrder strictTotalOrder renaming (Carrier to Key)
-open import Data.Tree.AVL.Indexed strictTotalOrder as AVL
+open import Data.Tree.AVL.Indexed strictTotalOrder
   using (Tree; Value; Key⁺; [_]; _<⁺_; K&_; key; _∼_⊔_; ∼0; leaf; node)
 open import Data.Tree.AVL.Indexed.Relation.Unary.Any strictTotalOrder
   using (Any; here; left; right)
@@ -45,8 +45,8 @@ private
 ------------------------------------------------------------------------
 -- Definition
 
--- Given a predicate P, Any P t is a path to one element in t that satisfies P.
--- There may be others.
+-- Given a predicate P, All P t is a proof that all of the elements in t
+-- satisfy P.
 -- See `Relation.Unary` for an explanation of predicates.
 
 data All {V : Value v} (P : Pred (K& V) p) {l u}
@@ -74,8 +74,10 @@ decide p⊎q (node kv l r bal) with p⊎q kv | decide p⊎q l | decide p⊎q r
 ... | inj₁ pv | inj₁ pl | inj₁ pr = inj₁ (node pv pl pr)
 
 unnode : ∀ {hˡ hʳ h} {kv : K& V}
-  {lk : Tree V l [ kv .key ] hˡ} {ku : Tree V [ kv .key ] u hʳ} {bal : hˡ ∼ hʳ ⊔ h} →
-  All P (node kv lk ku bal) → P kv × All P lk × All P ku
+         {lk : Tree V l [ kv .key ] hˡ}
+         {ku : Tree V [ kv .key ] u hʳ}
+         {bal : hˡ ∼ hʳ ⊔ h} →
+         All P (node kv lk ku bal) → P kv × All P lk × All P ku
 unnode (node p l r) = p , l , r
 
 all? : Decidable P → ∀ (t : Tree V l u n) → Dec (All P t)

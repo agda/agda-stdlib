@@ -30,15 +30,18 @@ record Value v : Set (a ⊔ ℓ ⊔ suc v) where
 
 record K&_ {v} (V : Value v) : Set (a ⊔ v) where
   constructor _,_
-  field key   : Key
-        value : Value.family V key
-
-  toPair : Σ Key (Value.family V)
-  toPair = key , value
+  field
+    key   : Key
+    value : Value.family V key
 open K&_ public
 
-fromPair : ∀ {v} {V : Value v} → Σ Key (Value.family V) → K& V
-fromPair (k , v) = k , v
+module _ {v} {V : Value v} where
+
+  toPair : K& V → Σ Key (Value.family V)
+  toPair (k , v) = k , v
+
+  fromPair : Σ Key (Value.family V) → K& V
+  fromPair (k , v) = k , v
 
 -----------------------------------------------------------------------
 -- The constant family of values

@@ -15,7 +15,7 @@ module Data.Tree.AVL.Indexed.Relation.Unary.Any
 open import Data.Nat.Base using (ℕ)
 open import Data.Product using (_,_; ∃; -,_; proj₁; proj₂)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_]′)
-open import Function.Base
+open import Function.Base using (_∘′_; _∘_)
 open import Level using (Level; _⊔_)
 
 open import Relation.Nullary using (Dec; no)
@@ -24,7 +24,7 @@ open import Relation.Nullary.Sum using (_⊎-dec_)
 open import Relation.Unary
 
 open StrictTotalOrder strictTotalOrder renaming (Carrier to Key)
-open import Data.Tree.AVL.Indexed strictTotalOrder as AVL
+open import Data.Tree.AVL.Indexed strictTotalOrder
   using (Tree; Value; Key⁺; [_]; _<⁺_; K&_; _,_; key; _∼_⊔_; ∼0; leaf; node)
 
 
@@ -41,11 +41,11 @@ private
 ------------------------------------------------------------------------
 -- Definition
 
--- Given a predicate P, Any P t is a path to one element in t that satisfies P.
--- There may be others.
+-- Given a predicate P, Any P t describes a path in t to an element that
+-- satisfies P. There may be others.
 -- See `Relation.Unary` for an explanation of predicates.
 
-data Any {V : Value v} (P : K& V → Set p) {l u}
+data Any {V : Value v} (P : Pred (K& V) p) {l u}
      : ∀ {n} → Tree V l u n → Set (p ⊔ a ⊔ v ⊔ ℓ₂) where
   here  : ∀ {hˡ hʳ h} {kv : K& V} → P kv →
           {lk : Tree V l [ kv .key ] hˡ}
@@ -73,10 +73,13 @@ map f (here  p) = here (f p)
 map f (left  p) = left (map f p)
 map f (right p) = right (map f p)
 
-lookup : {t : Tree V l u n} → Any P t → Key
-lookup (here {kv = kv} _) = kv .key
+lookup : Any {V = V} P t → K& V
+lookup (here {kv = kv} _) = kv
 lookup (left  p)          = lookup p
 lookup (right p)          = lookup p
+
+lookupKey : Any P t → Key
+lookupKey = key ∘′ lookup
 
 -- If any element satisfies P, then P is satisfied.
 
@@ -91,14 +94,12 @@ module _ {hˡ hʳ h} {kv : K& V}
   {bal : hˡ ∼ hʳ ⊔ h}
   where
 
-  toSum : Any P (node kv lk ku bal) →
-          P kv ⊎ Any P lk ⊎ Any P ku
+  toSum : Any P (node kv lk ku bal) → P kv ⊎ Any P lk ⊎ Any P ku
   toSum (here p)  = inj₁ p
   toSum (left p)  = inj₂ (inj₁ p)
   toSum (right p) = inj₂ (inj₂ p)
 
-  fromSum : P kv ⊎ Any P lk ⊎ Any P ku →
-            Any P (node kv lk ku bal)
+  fromSum : P kv ⊎ Any P lk ⊎ Any P ku → Any P (node kv lk ku bal)
   fromSum (inj₁ p)        = here p
   fromSum (inj₂ (inj₁ p)) = left p
   fromSum (inj₂ (inj₂ p)) = right p

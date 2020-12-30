@@ -12,7 +12,6 @@ module Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties
   {a ℓ₁ ℓ₂} (strictTotalOrder : StrictTotalOrder a ℓ₁ ℓ₂)
   where
 
-open import Data.Empty using (⊥-elim)
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; maybe′)
 open import Data.Maybe.Relation.Unary.All as Maybe using (nothing; just)
 open import Data.Nat.Base using (ℕ)
@@ -22,6 +21,7 @@ open import Level using (Level)
 
 open import Relation.Binary using (_Respects_; tri<; tri≈; tri>)
 open import Relation.Unary using (Pred)
+open import Relation.Nullary.Negation using (contradiction)
 
 open import Data.Tree.AVL.Indexed strictTotalOrder as AVL
 open import Data.Tree.AVL.Indexed.Relation.Unary.Any strictTotalOrder as Any
@@ -160,21 +160,36 @@ module _ {V : Value v} where
     eq nothing   → Pv
     eq (just v′) → P≈ v eq Pv
 
-  insert⁺ : ∀ {l u h} (k : Key) (f : Maybe (Val k) → Val k) (t : Tree V l u h) (seg : l < k < u) →
-     (p : Any P t) → k ≉ Any.lookup p → Any P (proj₂ (insertWith k f t seg))
-  insert⁺ k f (node (k′ , v′) l r bal) (l<k , k<u) p k≉ with compare k k′
-  insert⁺ k f (node kv@(k′ , v′) l r bal) (l<k , k<u) (here p)  k≉ | tri< k<k′ _ _
-    = joinˡ⁺-here⁺ kv (insertWith k f l (l<k , [ k<k′ ]ᴿ)) r bal p
-  insert⁺ k f (node kv@(k′ , v′) l r bal) (l<k , k<u) (left p)  k≉ | tri< k<k′ _ _
-    = joinˡ⁺-left⁺ kv (insertWith k f l (l<k , [ k<k′ ]ᴿ)) r bal (insert⁺ k f l _ p k≉)
-  insert⁺ k f (node kv@(k′ , v′) l r bal) (l<k , k<u) (right p) k≉ | tri< k<k′ _ _
-    = joinˡ⁺-right⁺ kv (insertWith k f l (l<k , [ k<k′ ]ᴿ)) r bal p
-  insert⁺ k f (node kv@(k′ , v′) l r bal) (l<k , k<u) (here p)  k≉ | tri> _ _ k′<k
-    = joinʳ⁺-here⁺ kv l (insertWith k f r ([ k′<k ]ᴿ , k<u)) bal p
-  insert⁺ k f (node kv@(k′ , v′) l r bal) (l<k , k<u) (left p)  k≉ | tri> _ _ k′<k
-    = joinʳ⁺-left⁺ kv l (insertWith k f r ([ k′<k ]ᴿ , k<u)) bal p
-  insert⁺ k f (node kv@(k′ , v′) l r bal) (l<k , k<u) (right p) k≉ | tri> _ _ k′<k
-    = joinʳ⁺-right⁺ kv l (insertWith k f r ([ k′<k ]ᴿ , k<u)) bal (insert⁺ k f r _ p k≉)
-  insert⁺ k f (node (k′ , v′) l r bal) (l<k , k<u) (here p)  k≉ | tri≈ _ k≈k′ _ = ⊥-elim (k≉ k≈k′)
-  insert⁺ k f (node (k′ , v′) l r bal) (l<k , k<u) (left p)  k≉ | tri≈ _ k≈k′ _ = left p
-  insert⁺ k f (node (k′ , v′) l r bal) (l<k , k<u) (right p) k≉ | tri≈ _ k≈k′ _ = right p
+  module _ (k : Key) (f : Maybe (Val k) → Val k) where
+
+    insertWith⁺ : (t : Tree V l u n) (seg : l < k < u) →
+                  (p : Any P t) → k ≉ Any.lookupKey p →
+                  Any P (proj₂ (insertWith k f t seg))
+    insertWith⁺ (node kv@(k′ , v′) l r bal) (l<k , k<u) (here p) k≉
+      with compare k k′
+    ... | tri< k<k′ _ _ = let l′ = insertWith k f l (l<k , [ k<k′ ]ᴿ)
+                          in joinˡ⁺-here⁺ kv l′ r bal p
+    ... | tri≈ _ k≈k′ _ = contradiction k≈k′ k≉
+    ... | tri> _ _ k′<k = let r′ = insertWith k f r ([ k′<k ]ᴿ , k<u)
+                          in joinʳ⁺-here⁺ kv l r′ bal p
+    insertWith⁺ (node kv@(k′ , v′) l r bal) (l<k , k<u) (left p) k≉
+      with compare k k′
+    ... | tri< k<k′ _ _ = let l′ = insertWith k f l (l<k , [ k<k′ ]ᴿ)
+                              ih = insertWith⁺ l (l<k , [ k<k′ ]ᴿ) p k≉
+                          in joinˡ⁺-left⁺ kv l′ r bal ih
+    ... | tri≈ _ k≈k′ _ = left p
+    ... | tri> _ _ k′<k = let r′ = insertWith k f r ([ k′<k ]ᴿ , k<u)
+                          in joinʳ⁺-left⁺ kv l r′ bal p
+    insertWith⁺ (node kv@(k′ , v′) l r bal) (l<k , k<u) (right p) k≉
+      with compare k k′
+    ... | tri< k<k′ _ _ = let l′ = insertWith k f l (l<k , [ k<k′ ]ᴿ)
+                          in joinˡ⁺-right⁺ kv l′ r bal p
+    ... | tri≈ _ k≈k′ _ = right p
+    ... | tri> _ _ k′<k = let r′ = insertWith k f r ([ k′<k ]ᴿ , k<u)
+                              ih = insertWith⁺ r ([ k′<k ]ᴿ , k<u) p k≉
+                          in joinʳ⁺-right⁺ kv l r′ bal ih
+
+  insert⁺ : (k : Key) (v : Val k) (t : Tree V l u n) (seg : l < k < u) →
+            (p : Any P t) → k ≉ Any.lookupKey p →
+            Any P (proj₂ (insert k v t seg))
+  insert⁺ k v = insertWith⁺ k (F.const v)

@@ -75,11 +75,10 @@ Non-backwards compatible changes
     This breaks code that relied on the `Colist`-specific function being exported as part of `IO`.
 
 * In `Data.Tree.AVL.Indexed` the type alias `K&_` defined in terms of `Σ` has been changed
-  into a standalone record to help with parameter inference.
-
-* In `Data.Tree.AVL.Sets`, defined `⟨Set⟩` directly in terms of `Map`. The previous definition
-  was essentially the same except that it was inlined. This should hopefully be backwards compatible
-  however it's hard to test.
+  into a standalone record to help with parameter inference. The record constructor remains
+  the same so you will only observe the change if you are using functions explicitly expecting
+  a pair (e.g. `(un)curry`). In this case you can use `Data.Tree.AVL.Value`'s `(to/from)Pair`
+  to convert back and forth.
 
 Deprecated modules
 ------------------

@@ -36,12 +36,12 @@ private
 
 open StrictTotalOrder strictTotalOrder renaming (Carrier to Key)
 import Data.Tree.AVL.Indexed strictTotalOrder as Indexed
-open Indexed using (K&_; toPair; ⊥⁺; ⊤⁺; ⊥⁺<⊤⁺; ⊥⁺<[_]<⊤⁺; ⊥⁺<[_]; [_]<⊤⁺)
+open Indexed using (⊥⁺; ⊤⁺; ⊥⁺<⊤⁺; ⊥⁺<[_]<⊤⁺; ⊥⁺<[_]; [_]<⊤⁺)
 
 ------------------------------------------------------------------------
 -- Re-export some core definitions publically
 
-open Indexed using (_,_; toPair; fromPair; Value; MkValue; const) public
+open Indexed using (K&_;_,_; toPair; fromPair; Value; MkValue; const) public
 
 ------------------------------------------------------------------------
 -- Types and functions with hidden indices
