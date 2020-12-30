@@ -1,32 +1,35 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Exponentiation defined over a semiring as repeated multiplication
+-- Exponentiation over a semiring optimised for type-checking.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
 open import Algebra
-open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
-open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Data.Nat.Base as ℕ using (zero; suc)
 import Data.Nat.Properties as ℕ
+open import Relation.Binary
+open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
-module Algebra.Properties.Semiring.Exponentiation
+module Algebra.Properties.Semiring.Exponentiation.TCOptimised
   {a ℓ} (S : Semiring a ℓ) where
 
 open Semiring S renaming (zero to *-zero)
 open import Relation.Binary.Reasoning.Setoid setoid
-import Algebra.Properties.Monoid.Multiplication *-monoid as Mult
+
+import Algebra.Properties.Monoid.Multiplication.TCOptimised *-monoid as Mult
+open import Algebra.Properties.Semiring.Exponentiation S as U
+  using () renaming (_^_ to _^ᵤ_)
 
 ------------------------------------------------------------------------
--- Definition
+-- Re-export definition from the monoid
 
 open import Algebra.Definitions.RawSemiring rawSemiring public
-  using (_^_)
+  using () renaming (_^′_ to _^_)
 
 ------------------------------------------------------------------------
--- Properties
+-- Properties of _×_
 
 ^-congˡ : ∀ n → (_^ n) Preserves _≈_ ⟶ _≈_
 ^-congˡ = Mult.×-congʳ

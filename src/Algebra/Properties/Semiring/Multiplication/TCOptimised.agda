@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Optimised multiplication by a natural number over a semiring
+-- Multiplication over a semiring optimised for type-checking.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

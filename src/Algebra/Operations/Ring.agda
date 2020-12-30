@@ -35,6 +35,11 @@ module Algebra.Operations.Ring
   {ℓ₁ ℓ₂} (ring : RawRing ℓ₁ ℓ₂)
   where
 
+{-# WARNING_ON_IMPORT
+"Algebra.Operations.Ring was deprecated in v1.5.
+Use Algebra.Properties.Semiring.ExponentiationOpt instead."
+#-}
+
 open import Data.Nat.Base as ℕ using (ℕ; suc; zero)
 
 open RawRing ring

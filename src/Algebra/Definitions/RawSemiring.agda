@@ -8,6 +8,7 @@
 
 open import Algebra.Bundles using (RawSemiring)
 open import Data.Sum.Base using (_⊎_)
+open import Data.Nat using (ℕ)
 open import Level using (_⊔_)
 open import Relation.Binary.Core using (Rel)
 
@@ -20,15 +21,15 @@ open RawSemiring M renaming (Carrier to A)
 
 open import Algebra.Definitions.RawMonoid +-rawMonoid public
   using
-  ( _×_
-  ; _×′_
-  ; sum
+  ( _×_   -- : ℕ → A → A
+  ; _×′_  -- : ℕ → A → A
+  ; sum   -- : Vector A n → A
   )
 
 ------------------------------------------------------------------------
 -- Definitions over _*_
 
-open import Algebra.Definitions.RawMonoid *-rawMonoid public
+open import Algebra.Definitions.RawMonoid *-rawMonoid as Mult public
   using
   ( _∣_
   ; _∤_
@@ -37,8 +38,24 @@ open import Algebra.Definitions.RawMonoid *-rawMonoid public
   ( sum to product
   )
 
+-- Unlike `sum` to `product`, can't simply rename multiplication to
+-- exponentation as the argument order is reversed.
+
+-- Standard exponentiation
+
+infixr 8 _^_
+_^_ : A → ℕ → A
+x ^ n  = n Mult.× x
+
+-- Exponentiation optimsed for type-checking
+
+infixr 8 _^′_
+_^′_ : A → ℕ → A
+x ^′ n  = n Mult.×′ x
+{-# INLINE _^′_ #-}
+
 ------------------------------------------------------------------------
--- Coprimality
+-- Primality
 
 Coprime : Rel A (a ⊔ ℓ)
 Coprime x y = ∀ {z} → z ∣ x → z ∣ y → z ∣ 1#

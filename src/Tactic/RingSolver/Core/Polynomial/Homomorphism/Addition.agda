@@ -29,7 +29,7 @@ open import Tactic.RingSolver.Core.Polynomial.Homomorphism.Lemmas homo
 open import Tactic.RingSolver.Core.Polynomial.Base from
 open import Tactic.RingSolver.Core.Polynomial.Reasoning to
 open import Tactic.RingSolver.Core.Polynomial.Semantics homo
-open import Algebra.Operations.Ring rawRing
+open import Algebra.Properties.Semiring.Exponentiation.TCOptimised semiring
 
 mutual
   ⊞-hom : ∀ {n} (xs ys : Poly n) →

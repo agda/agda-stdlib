@@ -18,6 +18,7 @@ open Monoid M
   renaming
   ( _∙_       to _+_
   ; ∙-cong    to +-cong
+  ; ∙-congʳ   to +-congʳ
   ; ∙-congˡ   to +-congˡ
   ; identityˡ to +-identityˡ
   ; identityʳ to +-identityʳ
@@ -43,16 +44,16 @@ open import Algebra.Definitions.RawMonoid rawMonoid public
 ×-congʳ (suc n) x≈x′ = +-cong x≈x′ (×-congʳ n x≈x′)
 
 ×-cong : _×_ Preserves₂ _≡_ ⟶ _≈_ ⟶ _≈_
-×-cong {u} P.refl x≈x′ = ×-congʳ u x≈x′
+×-cong {n} P.refl x≈x′ = ×-congʳ n x≈x′
 
 -- _×_ is homomorphic with respect to _ℕ+_/_+_.
 
-×-homo-+ : ∀ c m n → (m ℕ.+ n) × c ≈ m × c + n × c
-×-homo-+ c 0       n = sym (+-identityˡ (n × c))
-×-homo-+ c (suc m) n = begin
-  c + (m ℕ.+ n) × c    ≈⟨ +-cong refl (×-homo-+ c m n) ⟩
-  c + (m × c + n × c)  ≈⟨ sym (+-assoc c (m × c) (n × c)) ⟩
-  c + m × c + n × c    ∎
+×-homo-+ : ∀ x m n → (m ℕ.+ n) × x ≈ m × x + n × x
+×-homo-+ x 0       n = sym (+-identityˡ (n × x))
+×-homo-+ x (suc m) n = begin
+  x + (m ℕ.+ n) × x    ≈⟨ +-cong refl (×-homo-+ x m n) ⟩
+  x + (m × x + n × x)  ≈⟨ sym (+-assoc x (m × x) (n × x)) ⟩
+  x + m × x + n × x    ∎
 
 ×-idem : ∀ {c} → _+_ IdempotentOn c →
          ∀ n → .{{_ : NonZero n}} → n × c ≈ c
@@ -61,3 +62,10 @@ open import Algebra.Definitions.RawMonoid rawMonoid public
   c + (suc n × c) ≈⟨ +-congˡ (×-idem idem (suc n) ) ⟩
   c + c           ≈⟨ idem ⟩
   c               ∎
+
+×-assocˡ : ∀ x m n → m × (n × x) ≈ (m ℕ.* n) × x
+×-assocˡ x zero    n = refl
+×-assocˡ x (suc m) n = begin
+  n × x + m × n × x     ≈⟨ +-congˡ (×-assocˡ x m n) ⟩
+  n × x + (m ℕ.* n) × x ≈˘⟨ ×-homo-+ x n (m ℕ.* n) ⟩
+  (suc m ℕ.* n) × x     ∎
