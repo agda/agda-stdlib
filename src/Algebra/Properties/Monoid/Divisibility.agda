@@ -18,7 +18,7 @@ open Monoid M
 import Algebra.Divisibility _≈_ _∙_ as Div
 
 ------------------------------------------------------------------------
--- Re-export magma divisibility
+-- Re-export semigroup divisibility
 
 open import Algebra.Properties.Semigroup.Divisibility semigroup public
 
@@ -26,7 +26,7 @@ open import Algebra.Properties.Semigroup.Divisibility semigroup public
 -- Additional properties
 
 ε∣_ : ∀ x → ε ∣ x
-ε∣_ = Div.∣-min identityʳ
+ε∣ x = x , identityʳ x
 
 ∣-refl : Reflexive _∣_
 ∣-refl = Div.∣-refl identityˡ

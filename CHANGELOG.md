@@ -196,10 +196,14 @@ New modules
 * Generic divisibility over algebraic structures
   ```
   Algebra.Divisibility
+  Algebra.GCD
+  Algebra.Primality
   Algebra.Properties.Magma.Divisibility
   Algebra.Properties.Semigroup.Divisibility
   Algebra.Properties.Monoid.Divisibility
   Algebra.Properties.CommutativeSemigroup.Divisibility
+  Algebra.Properties.Semiring.Divisibility
+  Algebra.Properties.Semiring.GCD
   ```
 
 * Generic summation over algebraic structures
@@ -552,6 +556,11 @@ Other minor additions
   *-distribˡ-⊓          : _*_ DistributesOverˡ _⊓_
   *-distribʳ-⊓          : _*_ DistributesOverʳ _⊓_
   *-distrib-⊓           : _*_ DistributesOver _⊓_
+  ```
+
+* Added new operation in `Data.Sum`:
+  ```agda
+  reduce : A ⊎ A → A
   ```
 
 * Added new proofs in `Data.Sign.Properties`:
