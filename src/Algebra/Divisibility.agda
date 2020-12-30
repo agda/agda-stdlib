@@ -11,7 +11,7 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Core
-open import Data.Product using (∃; _×_; _,_; proj₁; proj₂)
+open import Data.Product using (∃; _×_; _,_)
 open import Level using (_⊔_)
 open import Relation.Binary
 open import Relation.Nullary using (¬_)
@@ -27,20 +27,24 @@ open import Algebra.Definitions _≈_
 
 infix 5 _∣ˡ_ _∤ˡ_ _∣ʳ_ _∤ʳ_ _∣_ _∤_
 
+-- Divisibility from the left
+
 _∣ˡ_ : Rel A (a ⊔ ℓ)
-x ∣ˡ y = ∃ λ q → (x ∙ q) ≈ y    -- x divides y from left
+x ∣ˡ y = ∃ λ q → (x ∙ q) ≈ y
 
 _∤ˡ_ : Rel A (a ⊔ ℓ)
 x ∤ˡ y = ¬ x ∣ˡ y
 
+-- Divisibility from the right
+
 _∣ʳ_ : Rel A (a ⊔ ℓ)
-x ∣ʳ y = ∃ λ q → (q ∙ x) ≈ y    -- x divides y from right
+x ∣ʳ y = ∃ λ q → (q ∙ x) ≈ y
 
 _∤ʳ_ : Rel A (a ⊔ ℓ)
 x ∤ʳ y = ¬ x ∣ʳ y
 
--- In the commutative case,  _∣ˡ_ and _∣ʳ_ are equivalent.
--- But generally, they are not equivalent.
+-- _∣ˡ_ and _∣ʳ_ are only equivalent in the commutative case. In this
+-- case we take the right definition to be the primary one.
 
 _∣_ : Rel A (a ⊔ ℓ)
 _∣_ = _∣ʳ_
@@ -49,18 +53,18 @@ _∤_ : Rel A (a ⊔ ℓ)
 x ∤ y = ¬ x ∣ y
 
 ------------------------------------------------------------------------
--- Mutual divisibility.
+-- Mutual divisibility
 
 -- When in a cancellative monoid, elements related by _∣∣_ are called
 -- associated and if x ∣∣ y then x and y differ by an invertible factor.
 
-infix 5 _∣∣_ _¬∣∣_
+infix 5 _∣∣_ _∤∤_
 
 _∣∣_ : Rel A (a ⊔ ℓ)
 x ∣∣ y = x ∣ y × y ∣ x
 
-_¬∣∣_ : Rel A (a ⊔ ℓ)
-x ¬∣∣ y =  ¬ x ∣∣ y
+_∤∤_ : Rel A (a ⊔ ℓ)
+x ∤∤ y =  ¬ x ∣∣ y
 
 ------------------------------------------------------------------------------
 -- Greatest common divisor (GCD)
