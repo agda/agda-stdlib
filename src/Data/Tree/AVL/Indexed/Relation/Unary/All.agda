@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- AVL trees where at least one element satisfies a given property
+-- AVL trees whose elements satisfy a given property
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

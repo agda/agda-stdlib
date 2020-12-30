@@ -34,8 +34,8 @@ private
 ------------------------------------------------------------------------
 -- Definition
 
--- Given a predicate P, Any P t is a path to one element in t that satisfies P.
--- There may be others.
+-- Given a predicate P, Any P t describes a path in t to an element that
+-- satisfies P. There may be others.
 -- See `Relation.Unary` for an explanation of predicates.
 
 Any : {V : Set v} → Pred (Key × V) p → Pred (Map V) (a ⊔ ℓ₂ ⊔ v ⊔ p)
