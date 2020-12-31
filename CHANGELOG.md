@@ -284,10 +284,11 @@ New modules
 * New modules formalising regular expressions:
   ```
   Text.Regex.Base
-  Text.Regex.SmartConstructors
+  Text.Regex.Derivative.Brzozowski
   Text.Regex.Properties.Core
   Text.Regex.Properties
-  Text.Regex.Derivative.Brzozowski
+  Text.Regex.Search
+  Text.Regex.SmartConstructors
   ```
 
 Other major changes
