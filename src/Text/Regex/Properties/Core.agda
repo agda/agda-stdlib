@@ -72,7 +72,4 @@ is-ε (e ⋆)   = no (λ ())
 ∈e∙ε-inv (prod eq p ε) rewrite ++[]⁻¹ eq = p
 
 []∈e∙f-inv : ∀ {e f} → [] ∈ (e ∙ f) → [] ∈ e × [] ∈ f
-[]∈e∙f-inv (prod eq p q)
-  rewrite Appending-conicalˡ eq
-        | Appending-conicalʳ eq
-        = p , q
+[]∈e∙f-inv (prod eq p q) rewrite conicalˡ eq | conicalʳ eq = p , q
