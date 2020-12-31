@@ -279,6 +279,7 @@ New modules
   Data.List.Relation.Ternary.Appending.Propositional
   Data.List.Relation.Ternary.Appending.Propositional.Properties
   Data.List.Relation.Ternary.Appending.Setoid
+  Data.List.Relation.Ternary.Appending.Setoid.Properties
   ```
 
 * New modules formalising regular expressions:

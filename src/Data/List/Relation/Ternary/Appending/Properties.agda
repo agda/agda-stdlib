@@ -8,11 +8,12 @@
 
 module Data.List.Relation.Ternary.Appending.Properties where
 
-open import Data.List.Base using (List)
+open import Data.List.Base using (List; [])
 open import Data.List.Relation.Ternary.Appending
 open import Data.List.Relation.Binary.Pointwise as Pw using (Pointwise; []; _∷_)
 open import Level using (Level)
 open import Relation.Binary using (REL; Rel; Trans)
+open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 
 private
   variable
@@ -33,3 +34,9 @@ module _  {e} {E : Rel C e} {L′ : REL A C l} {R′ : REL B C r}
   transitive : Appending L R as bs cs → Pointwise E cs ds → Appending L′ R′ as bs ds
   transitive ([]++ rs) es       = []++ Pw.transitive RER′ rs es
   transitive (l ∷ lrs) (e ∷ es) = LEL′ l e ∷ transitive lrs es
+
+conicalˡ : Appending L R as bs [] → as ≡ []
+conicalˡ ([]++ rs) = refl
+
+conicalʳ : Appending L R as bs [] → bs ≡ []
+conicalʳ ([]++ []) = refl

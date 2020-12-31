@@ -13,28 +13,25 @@ import Data.List.Properties as Listₚ
 import Data.List.Relation.Binary.Pointwise as Pw
 open import Data.List.Relation.Binary.Equality.Propositional using (_≋_)
 open import Data.List.Relation.Ternary.Appending.Propositional {A = A}
-import Data.List.Relation.Ternary.Appending.Properties as Appendingₚ
-open import Relation.Binary.PropositionalEquality as Eq
-  using (_≡_; refl; module ≡-Reasoning)
+open import Function.Base using (_∘′_)
+open import Relation.Binary.PropositionalEquality as Eq using (_≡_; setoid)
+
+import Data.List.Relation.Ternary.Appending.Setoid.Properties (setoid A) as Appendingₚ
 
 private
   variable
-    as bs cs ds : List A
+    as bs cs : List A
+
+------------------------------------------------------------------------
+-- Re-export existing properties
+
+open Appendingₚ hiding ([]++⁻¹; ++[]⁻¹) public
+
+------------------------------------------------------------------------
+-- Prove propositional-specific ones
 
 []++⁻¹ : Appending [] bs cs → bs ≡ cs
-[]++⁻¹ ([]++ rs) = Pw.Pointwise-≡⇒≡ rs
+[]++⁻¹ = Pw.Pointwise-≡⇒≡ ∘′ Appendingₚ.[]++⁻¹
 
 ++[]⁻¹ : Appending as [] cs → as ≡ cs
-++[]⁻¹ {as} {cs} ls = begin
-  as            ≡˘⟨ Listₚ.++-identityʳ as ⟩
-  as List.++ [] ≡⟨ break ls ⟩
-  cs            ∎ where open ≡-Reasoning
-
-trans : Appending as bs cs → cs ≋ ds → Appending as bs ds
-trans = Appendingₚ.transitive Eq.trans Eq.trans
-
-Appending-conicalˡ : Appending as bs [] → as ≡ []
-Appending-conicalˡ ([]++ rs) = refl
-
-Appending-conicalʳ : Appending as bs [] → bs ≡ []
-Appending-conicalʳ ([]++ rs) = Pw.Pointwise-≡⇒≡ rs
+++[]⁻¹ = Pw.Pointwise-≡⇒≡ ∘′ Appendingₚ.++[]⁻¹
