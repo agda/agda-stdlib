@@ -2,6 +2,9 @@
 -- The Agda standard library
 --
 -- Regular expressions: basic types and semantics
+-- The content of this module (and others in this directory) is based on
+-- Alexandre Agular and Bassel Mannaa's 2009 technical report titled
+-- Regular Expressions in Agda
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
