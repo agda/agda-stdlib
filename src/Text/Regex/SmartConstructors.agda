@@ -22,6 +22,7 @@ open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Binary.PropositionalEquality using (refl)
 
 open import Text.Regex.Base P as R hiding (_∣_; _∙_; _⋆)
+open import Text.Regex.Properties.Core P
 
 ------------------------------------------------------------------------
 -- Sum

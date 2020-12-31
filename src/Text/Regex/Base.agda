@@ -9,27 +9,24 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Relation.Binary using (Preorder; Setoid)
+open import Relation.Binary using (Preorder)
 
 module Text.Regex.Base {a e r} (P : Preorder a e r) where
 
 open import Level using (_⊔_)
 
 open import Data.Bool.Base using (Bool)
-open import Data.List.Base as L using (List; []; _∷_; _++_)
--- open import Data.List.Properties
-open import Data.List.Relation.Unary.Any using (Any; here; there)
-open import Data.List.Relation.Unary.All using (All; []; _∷_)
-open import Data.Product using (_×_; _,_)
+open import Data.List.Base as L using (List; []; _∷_)
+open import Data.List.Relation.Unary.Any using (Any)
+open import Data.List.Relation.Unary.All using (All)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 
-open import Relation.Nullary using (¬_; Dec; yes; no)
+open import Relation.Nullary using (¬_)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred)
 open import Relation.Binary.PropositionalEquality
 
 open Preorder P using (_≈_) renaming (Carrier to A; _∼_ to _≤_)
-
 open import Data.List.Relation.Ternary.Appending.Propositional {A = A}
 
 ------------------------------------------------------------------------
@@ -80,25 +77,6 @@ e + = e ∙ e ⋆
 _⁇ : Exp → Exp
 ∅ ⁇ = ε
 e ⁇ = ε ∣ e
-
--- View: is⊘, isε
-
-is-∅ : ∀ (e : Exp) → Dec (e ≡ ∅)
-is-∅ ε          = no (λ ())
-is-∅ [ [] ]     = yes refl
-is-∅ [ r ∷ rs ] = no (λ ())
-is-∅ [^ rs ]    = no (λ ())
-is-∅ (e ∣ f)    = no (λ ())
-is-∅ (e ∙ f)    = no (λ ())
-is-∅ (e ⋆)      = no (λ ())
-
-is-ε : ∀ (e : Exp) → Dec (e ≡ ε)
-is-ε ε       = yes refl
-is-ε [ rs ]  = no (λ ())
-is-ε [^ rs ] = no (λ ())
-is-ε (e ∣ f) = no (λ ())
-is-ε (e ∙ f) = no (λ ())
-is-ε (e ⋆)   = no (λ ())
 
 ------------------------------------------------------------------------
 -- Semantics: matching words

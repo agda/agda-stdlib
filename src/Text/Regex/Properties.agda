@@ -29,30 +29,9 @@ open import Data.List.Relation.Ternary.Appending.Propositional {A = A}
 open import Data.List.Relation.Ternary.Appending.Propositional.Properties {A = A}
 
 ------------------------------------------------------------------------
--- Inversion lemmas
+-- Publicly re-export core properties
 
-∉∅ : ∀ {xs} → xs ∉ ∅
-∉∅ [ () ]
-
-∈ε⋆-inv : ∀ {w} → w ∈ (ε ⋆) → w ∈ ε
-∈ε⋆-inv (star (sum (inj₁ ε))) = ε
-∈ε⋆-inv (star (sum (inj₂ (prod eq ε p)))) rewrite []++⁻¹ eq = ∈ε⋆-inv p
-
-∈∅⋆-inv : ∀ {w} → w ∈ (∅ ⋆) → w ∈ ε
-∈∅⋆-inv (star (sum (inj₁ ε))) = ε
-∈∅⋆-inv (star (sum (inj₂ (prod eq p q)))) = contradiction p ∉∅
-
-∈ε∙e-inv : ∀ {w e} → w ∈ (ε ∙ e) → w ∈ e
-∈ε∙e-inv (prod eq ε p) rewrite []++⁻¹ eq = p
-
-∈e∙ε-inv : ∀ {w e} → w ∈ (e ∙ ε) → w ∈ e
-∈e∙ε-inv (prod eq p ε) rewrite ++[]⁻¹ eq = p
-
-[]∈e∙f-inv : ∀ {e f} → [] ∈ (e ∙ f) → [] ∈ e × [] ∈ f
-[]∈e∙f-inv (prod eq p q)
-  rewrite Appending-conicalˡ eq
-        | Appending-conicalʳ eq
-        = p , q
+open import Text.Regex.Properties.Core preorder public
 
 ------------------------------------------------------------------------
 -- Decidability results

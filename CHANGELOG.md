@@ -285,6 +285,7 @@ New modules
   ```
   Text.Regex.Base
   Text.Regex.SmartConstructors
+  Text.Regex.Properties.Core
   Text.Regex.Properties
   ```
 
