@@ -289,6 +289,7 @@ record RawGroup c ℓ : Set (suc (c ⊔ ℓ)) where
     }
 
   open RawMonoid rawMonoid public
+    using (_≉_; rawMagma)
 
 
 record Group c ℓ : Set (suc (c ⊔ ℓ)) where
@@ -362,6 +363,7 @@ record RawLattice c ℓ : Set (suc (c ⊔ ℓ)) where
   ∧-rawMagma = record { _≈_ = _≈_; _∙_ = _∧_ }
 
   open RawMagma ∨-rawMagma public
+    using (_≉_)
 
 
 record Lattice c ℓ : Set (suc (c ⊔ ℓ)) where
