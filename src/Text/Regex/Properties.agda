@@ -1,3 +1,9 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Properties of regular expressions and their semantics
+------------------------------------------------------------------------
+
 {-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary using (DecPoset)
