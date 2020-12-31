@@ -277,7 +277,15 @@ New modules
   Data.List.Relation.Ternary.Appending
   Data.List.Relation.Ternary.Appending.Properties
   Data.List.Relation.Ternary.Appending.Propositional
+  Data.List.Relation.Ternary.Appending.Propositional.Properties
   Data.List.Relation.Ternary.Appending.Setoid
+  ```
+
+* New modules formalising regular expressions:
+  ```
+  Text.Regex.Base
+  Text.Regex.SmartConstructors
+  Text.Regex.Properties
   ```
 
 Other major changes

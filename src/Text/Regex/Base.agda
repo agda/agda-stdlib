@@ -16,11 +16,11 @@ module Text.Regex.Base {a e r} (P : Preorder a e r) where
 open import Level using (_⊔_)
 
 open import Data.Bool.Base using (Bool)
-open import Data.Empty
 open import Data.List.Base as L using (List; []; _∷_; _++_)
-open import Data.List.Properties
+-- open import Data.List.Properties
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
+open import Data.Product using (_×_; _,_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 
 open import Relation.Nullary using (¬_; Dec; yes; no)
@@ -31,7 +31,6 @@ open import Relation.Binary.PropositionalEquality
 open Preorder P using (_≈_) renaming (Carrier to A; _∼_ to _≤_)
 
 open import Data.List.Relation.Ternary.Appending.Propositional {A = A}
-open import Data.List.Relation.Ternary.Appending.Propositional.Properties {A = A}
 
 ------------------------------------------------------------------------
 -- Regular expressions on the alphabet A
@@ -123,23 +122,3 @@ data _∈_ : List A → Exp → Set (a ⊔ r ⊔ e) where
 
 _∉_ : List A → Exp → Set (a ⊔ r ⊔ e)
 w ∉ e = ¬ (w ∈ e)
-
-------------------------------------------------------------------------
--- Small inversion lemmas
-
-∉∅ : ∀ {xs} → xs ∉ ∅
-∉∅ [ () ]
-
-∈ε⋆-inv : ∀ {w} → w ∈ (ε ⋆) → w ∈ ε
-∈ε⋆-inv (star (sum (inj₁ ε))) = ε
-∈ε⋆-inv (star (sum (inj₂ (prod eq ε p)))) rewrite []++⁻¹ eq = ∈ε⋆-inv p
-
-∈∅⋆-inv : ∀ {w} → w ∈ (∅ ⋆) → w ∈ ε
-∈∅⋆-inv (star (sum (inj₁ ε))) = ε
-∈∅⋆-inv (star (sum (inj₂ (prod eq p q)))) = contradiction p ∉∅
-
-∈ε∙e-inv : ∀ {w e} → w ∈ (ε ∙ e) → w ∈ e
-∈ε∙e-inv (prod eq ε p) rewrite []++⁻¹ eq = p
-
-∈e∙ε-inv : ∀ {w e} → w ∈ (e ∙ ε) → w ∈ e
-∈e∙ε-inv (prod eq p ε) rewrite ++[]⁻¹ eq = p
