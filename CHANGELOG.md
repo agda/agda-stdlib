@@ -287,6 +287,7 @@ New modules
   Text.Regex.SmartConstructors
   Text.Regex.Properties.Core
   Text.Regex.Properties
+  Text.Regex.Derivative.Brzozowski
   ```
 
 Other major changes
