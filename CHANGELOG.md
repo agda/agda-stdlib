@@ -272,6 +272,13 @@ New modules
   Algebra.Morphism.LatticeMonomorphism
   ```
 
+* New ternary relation on lists:
+  ```
+  Data.List.Relation.Ternary.Appending
+  Data.List.Relation.Ternary.Appending.Propositional
+  Data.List.Relation.Ternary.Appending.Setoid
+  ```
+
 Other major changes
 -------------------
 
