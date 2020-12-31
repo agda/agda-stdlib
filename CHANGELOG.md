@@ -275,6 +275,7 @@ New modules
 * New ternary relation on lists:
   ```
   Data.List.Relation.Ternary.Appending
+  Data.List.Relation.Ternary.Appending.Properties
   Data.List.Relation.Ternary.Appending.Propositional
   Data.List.Relation.Ternary.Appending.Setoid
   ```
