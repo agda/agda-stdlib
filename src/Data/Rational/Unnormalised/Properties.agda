@@ -14,7 +14,6 @@ open import Algebra.Consequences.Propositional
 open import Data.Nat.Base as ℕ using (suc; pred)
 import Data.Nat.Properties as ℕ
 open import Data.Nat.Solver renaming (module +-*-Solver to ℕ-solver)
-open import Data.Sign using (Sign) renaming (_*_ to 𝕊*)
 open import Data.Unit using (tt)
 open import Data.Integer.Base as ℤ using (ℤ; +0; +[1+_]; -[1+_]; 0ℤ; 1ℤ; -1ℤ)
 open import Data.Integer.Solver renaming (module +-*-Solver to ℤ-solver)
@@ -145,21 +144,21 @@ neg-involutive p rewrite neg-involutive-≡ p = ≃-refl
 
 neg-mono-< : -_ Preserves  _<_ ⟶ _>_
 neg-mono-< {p} {q} (*<* p<q) = *<* $ begin-strict
-  ℤ.-  ↥ q ℤ.* ↧ p    ≡˘⟨ ℤ.neg-distribˡ-* (↥ q) (↧ p) ⟩
-  ℤ.- (↥ q ℤ.* ↧ p)   <⟨ ℤ.neg-mono-< p<q ⟩
-  ℤ.- (↥ p ℤ.* ↧ q)   ≡⟨ ℤ.neg-distribˡ-* (↥ p) (↧ q) ⟩
-  ↥ (- p) ℤ.* ↧ (- q) ∎ where open ℤ.≤-Reasoning
+  ℤ.-  ↥ q ℤ.* ↧ p     ≡˘⟨ ℤ.neg-distribˡ-* (↥ q) (↧ p) ⟩
+  ℤ.- (↥ q ℤ.* ↧ p)    <⟨ ℤ.neg-mono-< p<q ⟩
+  ℤ.- (↥ p ℤ.* ↧ q)    ≡⟨ ℤ.neg-distribˡ-* (↥ p) (↧ q) ⟩
+  ↥ (- p) ℤ.* ↧ (- q)  ∎
+  where open ℤ.≤-Reasoning
 
 neg-cancel-< : ∀ {p q} → - p < - q → q < p
 neg-cancel-< {p} {q} (*<* -↥p↧q<-↥q↧p) = *<* $ begin-strict
-  ↥ q ℤ.* ↧ p                    ≡˘⟨ ℤ.neg-involutive (↥ q ℤ.* ↧ p) ⟩
-  ℤ.- ℤ.- (↥ q ℤ.* ↧ p)          ≡⟨ cong ℤ.-_ (ℤ.neg-distribˡ-* (↥ q) (↧ p)) ⟩
-  ℤ.- ((ℤ.- ↥ q) ℤ.* ↧ p)        <⟨ ℤ.neg-mono-< -↥p↧q<-↥q↧p ⟩
-  ℤ.- ((ℤ.- ↥ p) ℤ.* ↧ q)        ≡˘⟨ cong ℤ.-_ (ℤ.neg-distribˡ-* (↥ p) (↧ q)) ⟩
-  ℤ.- ℤ.- (↥ p ℤ.* ↧ q)          ≡⟨ ℤ.neg-involutive (↥ p ℤ.* ↧ q) ⟩
-  ↥ p ℤ.* ↧ q                    ∎
-  where
-    open ℤ.≤-Reasoning
+  ↥ q ℤ.* ↧ p              ≡˘⟨ ℤ.neg-involutive (↥ q ℤ.* ↧ p) ⟩
+  ℤ.- ℤ.- (↥ q ℤ.* ↧ p)    ≡⟨ cong ℤ.-_ (ℤ.neg-distribˡ-* (↥ q) (↧ p)) ⟩
+  ℤ.- ((ℤ.- ↥ q) ℤ.* ↧ p)  <⟨ ℤ.neg-mono-< -↥p↧q<-↥q↧p ⟩
+  ℤ.- ((ℤ.- ↥ p) ℤ.* ↧ q)  ≡˘⟨ cong ℤ.-_ (ℤ.neg-distribˡ-* (↥ p) (↧ q)) ⟩
+  ℤ.- ℤ.- (↥ p ℤ.* ↧ q)    ≡⟨ ℤ.neg-involutive (↥ p ℤ.* ↧ q) ⟩
+  ↥ p ℤ.* ↧ q              ∎
+  where open ℤ.≤-Reasoning
 
 ------------------------------------------------------------------------
 -- Properties of _≤_
@@ -1107,20 +1106,20 @@ private
 
 *-monoˡ-≤-nonPos : ∀ {r} → NonPositive r → (_* r) Preserves _≤_ ⟶ _≥_
 *-monoˡ-≤-nonPos {r} r≤0 {p} {q} p≤q = begin
-  (q * r)                                   ≈˘⟨ neg-involutive (q * r) ⟩
-  - - (q * r)                               ≈⟨ -‿cong (neg-distribʳ-* q r) ⟩
-  - (q * - r)                               ≤⟨ neg-mono-≤ (*-monoˡ-≤-nonNeg (nonNegative { - r} (neg-mono-≤ (nonPositive⁻¹ r≤0))) p≤q) ⟩
-  - (p * - r)                               ≈˘⟨ -‿cong (neg-distribʳ-* p r) ⟩
-  - - (p * r)                               ≈⟨ neg-involutive (p * r) ⟩
-  p * r                                     ∎
+  q * r        ≈˘⟨ neg-involutive (q * r) ⟩
+  - - (q * r)  ≈⟨ -‿cong (neg-distribʳ-* q r) ⟩
+  - (q * - r)  ≤⟨ neg-mono-≤ (*-monoˡ-≤-nonNeg (nonNegative { - r} (neg-mono-≤ (nonPositive⁻¹ r≤0))) p≤q) ⟩
+  - (p * - r)  ≈˘⟨ -‿cong (neg-distribʳ-* p r) ⟩
+  - - (p * r)  ≈⟨ neg-involutive (p * r) ⟩
+  p * r        ∎
   where open ≤-Reasoning
 
 *-monoʳ-≤-nonPos : ∀ {r} → NonPositive r → (r *_) Preserves _≤_ ⟶ _≥_
 *-monoʳ-≤-nonPos {r} r≤0 {p} {q} p≤q = begin
-  (r * q)                                   ≈˘⟨ *-comm q r ⟩
-  (q * r)                                   ≤⟨ *-monoˡ-≤-nonPos r≤0 p≤q ⟩
-  (p * r)                                   ≈⟨ *-comm p r ⟩
-  (r * p)                                   ∎
+  r * q  ≈˘⟨ *-comm q r ⟩
+  q * r  ≤⟨ *-monoˡ-≤-nonPos r≤0 p≤q ⟩
+  p * r  ≈⟨ *-comm p r ⟩
+  r * p  ∎
   where open ≤-Reasoning
 
 *-monoˡ-≤-neg : ∀ {r} → Negative r → (_* r) Preserves _≤_ ⟶ _≥_
@@ -1128,10 +1127,10 @@ private
 
 *-monoʳ-≤-neg : ∀ {r} → Negative r → (r *_) Preserves _≤_ ⟶ _≥_
 *-monoʳ-≤-neg {r} r<0 {p} {q} p≤q = begin
-  (r * q)                                   ≈˘⟨ *-comm q r ⟩
-  (q * r)                                   ≤⟨ *-monoˡ-≤-neg r<0 p≤q ⟩
-  (p * r)                                   ≈⟨ *-comm p r ⟩
-  (r * p)                                   ∎
+  r * q  ≈˘⟨ *-comm q r ⟩
+  q * r  ≤⟨ *-monoˡ-≤-neg r<0 p≤q ⟩
+  p * r  ≈⟨ *-comm p r ⟩
+  r * p  ∎
   where open ≤-Reasoning
 
 ------------------------------------------------------------------------
@@ -1166,13 +1165,13 @@ private
   rewrite *-comm-≡ p r
         | *-comm-≡ q r = *-cancelˡ-<-nonNeg {r} r≥0
 
-*-cancelˡ-<-pos : ∀ {r} (r>0 : Positive r) {p q} → r * p < r * q → p < q
-*-cancelˡ-<-pos {r} r>0 {p} {q} rp<rq = *-cancelˡ-<-nonNeg {r} (positive⇒nonNegative {r} r>0) {p} {q} rp<rq
+*-cancelˡ-<-pos : ∀ {r} → Positive r → ∀ {p q} → r * p < r * q → p < q
+*-cancelˡ-<-pos {r} r>0 rp<rq = *-cancelˡ-<-nonNeg {r} (positive⇒nonNegative {r} r>0) rp<rq
 
-*-cancelʳ-<-pos : ∀ {r} (r>0 : Positive r) {p q} → p * r < q * r → p < q
-*-cancelʳ-<-pos {r} r>0 {p} {q} pr<qr = *-cancelʳ-<-nonNeg {r} (positive⇒nonNegative {r} r>0) {p} {q} pr<qr
+*-cancelʳ-<-pos : ∀ {r} → Positive r → ∀ {p q} → p * r < q * r → p < q
+*-cancelʳ-<-pos {r} r>0 pr<qr = *-cancelʳ-<-nonNeg (positive⇒nonNegative {r} r>0) pr<qr
 
-*-monoˡ-<-neg : ∀ {r} (r<0 : Negative r) → (_* r) Preserves _<_ ⟶ _>_
+*-monoˡ-<-neg : ∀ {r} → Negative r → (_* r) Preserves _<_ ⟶ _>_
 *-monoˡ-<-neg {r} r<0 {p} {q} p<q = begin-strict
   q * r                        ≈˘⟨ neg-involutive (q * r) ⟩
   - - (q * r)                  ≈⟨ -‿cong (neg-distribʳ-* q r) ⟩
@@ -1182,7 +1181,7 @@ private
   p * r                        ∎
   where open ≤-Reasoning
 
-*-monoʳ-<-neg : ∀ {r} (r<0 : Negative r) → (r *_) Preserves _<_ ⟶ _>_
+*-monoʳ-<-neg : ∀ {r} → Negative r → (r *_) Preserves _<_ ⟶ _>_
 *-monoʳ-<-neg {r} r<0 {p} {q} p<q = begin-strict
   r * q                        ≈⟨ *-comm r q ⟩
   q * r                        <⟨ *-monoˡ-<-neg r<0 p<q ⟩
@@ -1190,7 +1189,7 @@ private
   r * p                        ∎
   where open ≤-Reasoning
 
-*-cancelˡ-<-nonPos : ∀ {r} (r≤0 : NonPositive r) {p q} → r * p < r * q → q < p
+*-cancelˡ-<-nonPos : ∀ {r} → NonPositive r → ∀ {p q} → r * p < r * q → q < p
 *-cancelˡ-<-nonPos {r} r≤0 {p} {q} rp<rq = *-cancelˡ-<-nonNeg { - r} -r≥0 $ begin-strict
   - r * q                      ≈˘⟨ neg-distribˡ-* r q ⟩
   - (r * q)                    <⟨ neg-mono-< rp<rq ⟩
@@ -1201,7 +1200,7 @@ private
     -r≥0 : NonNegative (- r)
     -r≥0 = nonNegative (neg-mono-≤ {r} (nonPositive⁻¹ r≤0))
 
-*-cancelʳ-<-nonPos : ∀ {r} (r≤0 : NonPositive r) {p q} → p * r < q * r → q < p
+*-cancelʳ-<-nonPos : ∀ {r} → NonPositive r → ∀ {p q} → p * r < q * r → q < p
 *-cancelʳ-<-nonPos {r} r≤0 {p} {q} pr<qr = *-cancelˡ-<-nonPos {r} r≤0 $ begin-strict
   r * p                        ≈⟨ *-comm r p ⟩
   p * r                        <⟨ pr<qr ⟩
@@ -1209,10 +1208,10 @@ private
   r * q                        ∎
   where open ≤-Reasoning
 
-*-cancelˡ-<-neg : ∀ {r} (r<0 : Negative r) {p q} → r * p < r * q → q < p
+*-cancelˡ-<-neg : ∀ {r} → Negative r → ∀ {p q} → r * p < r * q → q < p
 *-cancelˡ-<-neg {r} = *-cancelˡ-<-nonPos {r} ∘ negative⇒nonPositive {r}
 
-*-cancelʳ-<-neg : ∀ {r} (r<0 : Negative r) {p q} → p * r < q * r → q < p
+*-cancelʳ-<-neg : ∀ {r} → Negative r → ∀ {p q} → p * r < q * r → q < p
 *-cancelʳ-<-neg {r} = *-cancelʳ-<-nonPos {r} ∘ negative⇒nonPositive {r}
 
 ------------------------------------------------------------------------
@@ -1337,136 +1336,10 @@ p>1⇒1/p<1 {p} p>1 = lemma′ p (p>1⇒p≢0 p>1) p>1 where
 ------------------------------------------------------------------------
 
 ------------------------------------------------------------------------
--- Algebraic properties
+-- Properties used by proofs
 
 ⊓-comm : Commutative _≃_ _⊓_
 ⊓-comm p q = ≃-reflexive (/-cong (ℤ.⊓-comm (↥ p ℤ.* ↧ q) (↥ q ℤ.* ↧ p)) (ℕ.*-comm (↧ₙ p) (↧ₙ q)) tt tt)
-
-⊓-assoc : Associative _≃_ _⊓_
-⊓-assoc p q r = begin-equality
-  (p ⊓ q) ⊓ r                                                            ≡⟨⟩
-  (↥p↧q ℤ.⊓ ↥q↧p / ↧p↧q) ⊓ r                                             ≡⟨⟩
-  (↥ (↥p↧q ℤ.⊓ ↥q↧p / ↧p↧q) ℤ.* (↧ r)) ℤ.⊓ (↥ r ℤ.* ℤ.+ ↧p↧q) / [↧p↧q]↧r ≡˘⟨ cong (λ h → (h ℤ.* (↧ r)) ℤ.⊓ (↥ r ℤ.* ℤ.+ ↧p↧q) / [↧p↧q]↧r) (↥[p/q]≡p (↥p↧q ℤ.⊓ ↥q↧p) ↧p↧q) ⟩
-  ((↥p↧q ℤ.⊓ ↥q↧p) ℤ.* (↧ r)) ℤ.⊓ (↥ r ℤ.* ℤ.+ ↧p↧q) / [↧p↧q]↧r          ≡⟨ cong (λ h → h ℤ.⊓ (↥ r ℤ.* ℤ.+ ↧p↧q) / [↧p↧q]↧r) (ℤ.*-distribʳ-⊓-nonNeg (↧ₙ r) ↥p↧q ↥q↧p) ⟩
-  ([↥p↧q]↧r ℤ.⊓ [↥q↧p]↧r) ℤ.⊓ ↥r[↧p↧q] / [↧p↧q]↧r                        ≡⟨ /-cong refl (ℕ.*-assoc (↧ₙ p) (↧ₙ q) (↧ₙ r)) tt tt ⟩
-
-  ([↥p↧q]↧r ℤ.⊓ [↥q↧p]↧r) ℤ.⊓ ↥r[↧p↧q] / ↧p[↧q↧r]                        ≡⟨ cong (λ h → (h ℤ.⊓ [↥q↧p]↧r) ℤ.⊓ ↥r[↧p↧q] / ↧p[↧q↧r]) (ℤ.*-assoc (↥ p) (↧ q) (↧ r)) ⟩
-  (↥p[↧q↧r] ℤ.⊓ [↥q↧p]↧r) ℤ.⊓ ↥r[↧p↧q] / ↧p[↧q↧r]                        ≡⟨ cong (λ h → (↥p[↧q↧r] ℤ.⊓ h) ℤ.⊓ ↥r[↧p↧q] / ↧p[↧q↧r]) [↥q↧p]↧r≡[↥q↧r]↧p ⟩
-  (↥p[↧q↧r] ℤ.⊓ [↥q↧r]↧p) ℤ.⊓ ↥r[↧p↧q] / ↧p[↧q↧r]                        ≡⟨ cong (λ h → (↥p[↧q↧r] ℤ.⊓ [↥q↧r]↧p) ℤ.⊓ h / ↧p[↧q↧r]) ↥r[↧p↧q]≡[↥r↧q]↧p ⟩
-  (↥p[↧q↧r] ℤ.⊓ [↥q↧r]↧p) ℤ.⊓ [↥r↧q]↧p / ↧p[↧q↧r]                        ≡⟨ cong (_/ ↧p[↧q↧r]) (ℤ.⊓-assoc ↥p[↧q↧r] [↥q↧r]↧p [↥r↧q]↧p) ⟩
-
-  ↥p[↧q↧r] ℤ.⊓ ([↥q↧r]↧p ℤ.⊓ [↥r↧q]↧p) / ↧p[↧q↧r]                        ≡˘⟨ cong (λ h → ↥p[↧q↧r] ℤ.⊓ h / ↧p[↧q↧r]) (ℤ.*-distribʳ-⊓-nonNeg (↧ₙ p) ↥q↧r ↥r↧q) ⟩
-  (↥ p ℤ.* ℤ.+ ↧q↧r) ℤ.⊓ ((↥q↧r ℤ.⊓ ↥r↧q) ℤ.* ↧ p) / ↧p[↧q↧r]            ≡⟨ cong (λ h → (↥ p ℤ.* ℤ.+ ↧q↧r) ℤ.⊓ (h ℤ.* ↧ p) / ↧p[↧q↧r]) (↥[p/q]≡p (↥q↧r ℤ.⊓ ↥r↧q) ↧q↧r) ⟩
-  (↥ p ℤ.* ℤ.+ ↧q↧r) ℤ.⊓ (↥ (↥q↧r ℤ.⊓ ↥r↧q / ↧q↧r) ℤ.* ↧ p) / ↧p[↧q↧r]   ≡⟨⟩
-  p ⊓ (↥q↧r ℤ.⊓ ↥r↧q / ↧q↧r)                                             ≡⟨⟩
-  p ⊓ (q ⊓ r)                                                            ∎
-  where
-    open ℤ-solver
-    open ≤-Reasoning
-    ↥p↧q = ↥ p ℤ.* ↧ q
-    ↥q↧p = ↥ q ℤ.* ↧ p
-    ↥q↧r = ↥ q ℤ.* ↧ r
-    ↥r↧q = ↥ r ℤ.* ↧ q
-
-    [↥p↧q]↧r = ↥p↧q ℤ.* ↧ r
-    [↧p↧q]↥r = (↧ p ℤ.* ↧ q) ℤ.* ↥ r
-    [↥q↧p]↧r = ↥q↧p ℤ.* ↧ r
-    [↥q↧r]↧p = ↥q↧r ℤ.* ↧ p
-    [↥r↧q]↧p = ↥r↧q ℤ.* ↧ p
-    ↥p[↧q↧r] = ↥ p ℤ.* (↧ q ℤ.* ↧ r)
-    ↧p[↥q↧r] = ↧ p ℤ.* ↥q↧r
-    ↥r[↧p↧q] = ↥ r ℤ.* (↧ p ℤ.* ↧ q)
-
-    ↧p↧q = ↧ₙ p ℕ.* ↧ₙ q
-    ↧q↧r = ↧ₙ q ℕ.* ↧ₙ r
-    [↧p↧q]↧r = ↧p↧q ℕ.* ↧ₙ r
-    ↧p[↧q↧r] = ↧ₙ p ℕ.* ↧q↧r
-
-    [↥q↧p]↧r≡[↥q↧r]↧p : [↥q↧p]↧r ≡ [↥q↧r]↧p
-    [↥q↧p]↧r≡[↥q↧r]↧p = solve 3 (λ a b c → ((b :* a) :* c) := ((b :* c) :* a)) refl (↧ p) (↥ q) (↧ r)
-
-    ↥r[↧p↧q]≡[↥r↧q]↧p : ↥r[↧p↧q] ≡ [↥r↧q]↧p
-    ↥r[↧p↧q]≡[↥r↧q]↧p = solve 3 (λ a b c → (c :* (a :* b)) := ((c :* b) :* a)) refl (↧ p) (↧ q) (↥ r)
-
-⊓-idem : Idempotent _≃_ _⊓_
-⊓-idem p = begin-equality
-  p ⊓ p                                                                  ≡⟨⟩
-  (↥ p ℤ.* ↧ p) ℤ.⊓ (↥ p ℤ.* ↧ p) / (↧ₙ p ℕ.* ↧ₙ p)                      ≡⟨ cong (_/ ((↧ₙ p) ℕ.* (↧ₙ p))) (ℤ.⊓-idem (↥ p ℤ.* ↧ p)) ⟩
-  (↥ p ℤ.* ↧ p) / (↧ₙ p ℕ.* ↧ₙ p)                                        ≡⟨⟩
-  (↥ p ℤ.* ℤ.+ ↧ₙ p) / (↧ₙ p ℕ.* ↧ₙ p)                                   ≈⟨ *-homoʳ-id (↧ₙ p) _ _ ⟩
-  ↥ p / ↧ₙ p                                                             ≡⟨⟩
-  p                                                                      ∎
-  where open ≤-Reasoning
-
-⊓-sel : Selective _≃_ _⊓_
-⊓-sel p q with ℤ.⊓-sel (↥ p ℤ.* ↧ q) (↥ q ℤ.* ↧ p)
-... | inj₁ ↥p↧q⊓↥q↧p≡↥p↧q = inj₁ (begin-equality
-  p ⊓ q                                                                  ≡⟨⟩
-  ((↥ p ℤ.* ↧ q) ℤ.⊓ (↥ q ℤ.* ↧ p)) / (↧ₙ p ℕ.* ↧ₙ q)                    ≡⟨ cong (_/ (↧ₙ p ℕ.* ↧ₙ q)) ↥p↧q⊓↥q↧p≡↥p↧q ⟩
-  (↥ p ℤ.* ↧ q) / (↧ₙ p ℕ.* ↧ₙ q)                                        ≡⟨⟩
-  (↥ p ℤ.* ℤ.+ ↧ₙ q) / (↧ₙ p ℕ.* ↧ₙ q)                                   ≈⟨ *-homoʳ-id (↧ₙ q) _ _ ⟩
-  ↥ p / ↧ₙ p                                                             ≡⟨⟩
-  p                                                                      ∎)
-  where open ≤-Reasoning
-... | inj₂ ↥p↧q⊓↥q↧p≡↥q↧p = inj₂ (begin-equality
-  p ⊓ q                                                                  ≡⟨⟩
-  ((↥ p ℤ.* ↧ q) ℤ.⊓ (↥ q ℤ.* ↧ p)) / (↧ₙ p ℕ.* ↧ₙ q)                    ≡⟨ cong (_/ (↧ₙ p ℕ.* ↧ₙ q)) ↥p↧q⊓↥q↧p≡↥q↧p ⟩
-  (↥ q ℤ.* ↧ p) / (↧ₙ p ℕ.* ↧ₙ q)                                        ≡⟨ cong (_/ (↧ₙ p ℕ.* ↧ₙ q)) (ℤ.*-comm (↥ q) (↧ p)) ⟩
-  (ℤ.+ ↧ₙ p ℤ.* ↥ q) / (↧ₙ p ℕ.* ↧ₙ q)                                   ≈⟨ *-homoˡ-id (↧ₙ p) _ _ ⟩
-  ↥ q / ↧ₙ q                                                             ≡⟨⟩
-  q                                                                      ∎)
-  where open ≤-Reasoning
-
-⊓-congˡ : ∀ p → Congruent₁ _≃_ (p ⊓_)
-⊓-congˡ p {q₁} {q₂} (*≡* ↥q₁↧q₂≡↥q₂↧q₁) = *≡* (begin-equality
-  (↥ (p ⊓ q₁)) ℤ.* (↧ (p ⊓ q₂))                                          ≡⟨⟩
-  (↥ (↥p↧q₁ ℤ.⊓ ↥q₁↧p / ↧p↧q₁)) ℤ.* (↧ p ℤ.* ↧ q₂)                       ≡⟨ cong (ℤ._* (↧ p ℤ.* ↧ q₂)) (↥[p/q]≡p (↥p↧q₁ ℤ.⊓ ↥q₁↧p) ↧p↧q₁) ⟩
-  (↥p↧q₁ ℤ.⊓ ↥q₁↧p) ℤ.* (↧ p ℤ.* ↧ q₂)                                   ≡⟨ cong ((↥p↧q₁ ℤ.⊓ ↥q₁↧p) ℤ.*_) (ℤ.*-comm (↧ p) (↧ q₂)) ⟩
-  (↥p↧q₁ ℤ.⊓ ↥q₁↧p) ℤ.* (↧ q₂ ℤ.* ↧ p)                                   ≡˘⟨ ℤ.*-assoc (↥p↧q₁ ℤ.⊓ ↥q₁↧p) (↧ q₂) (↧ p) ⟩
-  ((↥p↧q₁ ℤ.⊓ ↥q₁↧p) ℤ.* ↧ q₂) ℤ.* ↧ p                                   ≡⟨ cong (ℤ._* ↧ p) (ℤ.*-distribʳ-⊓-nonNeg (↧ₙ q₂) ↥p↧q₁ ↥q₁↧p) ⟩
-  ([↥p↧q₁]↧q₂ ℤ.⊓ [↥q₁↧p]↧q₂) ℤ.* ↧ p                                    ≡⟨ cong₂ (λ h₁ h₂ → (h₁ ℤ.⊓ h₂) ℤ.* ↧ p) (ℤ.*-assoc (↥ p) (↧ q₁) (↧ q₂)) (lemma₁ (↧ p) (↥ q₁) (↧ q₂)) ⟩
-  (↥p[↧q₁↧q₂] ℤ.⊓ [↥q₁↧q₂]↧p) ℤ.* ↧ p                                    ≡⟨ cong (λ h → (↥p[↧q₁↧q₂] ℤ.⊓ (h ℤ.* ↧ p)) ℤ.* ↧ p) ↥q₁↧q₂≡↥q₂↧q₁ ⟩
-  (↥p[↧q₁↧q₂] ℤ.⊓ [↥q₂↧q₁]↧p) ℤ.* ↧ p                                    ≡˘⟨ cong₂ (λ h₁ h₂ → (h₁ ℤ.⊓ h₂) ℤ.* ↧ p) (lemma₂ (↥ p) (↧ q₁) (↧ q₂)) (lemma₁ (↧ p) (↥ q₂) (↧ q₁)) ⟩
-  ([↥p↧q₂]↧q₁ ℤ.⊓ [↥q₂↧p]↧q₁) ℤ.* ↧ p                                    ≡˘⟨ cong (ℤ._* ↧ p) (ℤ.*-distribʳ-⊓-nonNeg (↧ₙ q₁) ↥p↧q₂ ↥q₂↧p) ⟩
-  ((↥p↧q₂ ℤ.⊓ ↥q₂↧p) ℤ.* ↧ q₁) ℤ.* ↧ p                                   ≡⟨ ℤ.*-assoc (↥p↧q₂ ℤ.⊓ ↥q₂↧p) (↧ q₁) (↧ p) ⟩
-  (↥p↧q₂ ℤ.⊓ ↥q₂↧p) ℤ.* (↧ q₁ ℤ.* ↧ p)                                   ≡˘⟨ cong ((↥p↧q₂ ℤ.⊓ ↥q₂↧p) ℤ.*_) (ℤ.*-comm (↧ p) (↧ q₁)) ⟩
-  (↥p↧q₂ ℤ.⊓ ↥q₂↧p) ℤ.* (↧ p ℤ.* ↧ q₁)                                   ≡˘⟨ cong (ℤ._* (↧ p ℤ.* ↧ q₁)) (↥[p/q]≡p (↥p↧q₂ ℤ.⊓ ↥q₂↧p) ↧p↧q₂) ⟩
-  (↥ (↥p↧q₂ ℤ.⊓ ↥q₂↧p / ↧p↧q₂)) ℤ.* (↧ p ℤ.* ↧ q₁)                       ≡⟨⟩
-  (↥ (p ⊓ q₂)) ℤ.* (↧ (p ⊓ q₁))                                          ∎)
-  where
-    open ℤ-solver
-    open ℤ.≤-Reasoning
-    ↥p↧q₁ = ↥ p ℤ.* ↧ q₁
-    ↥p↧q₂ = ↥ p ℤ.* ↧ q₂
-    ↥q₁↧p = ↥ q₁ ℤ.* ↧ p
-    ↥q₂↧p = ↥ q₂ ℤ.* ↧ p
-    [↥p↧q₂]↧q₁ = ↥p↧q₂ ℤ.* ↧ q₁
-    [↥q₂↧p]↧q₁ = ↥q₂↧p ℤ.* ↧ q₁
-    [↥p↧q₁]↧q₂ = ↥p↧q₁ ℤ.* ↧ q₂
-    [↥q₁↧p]↧q₂ = ↥q₁↧p ℤ.* ↧ q₂
-    ↥p[↧q₁↧q₂] = ↥ p ℤ.* (↧ q₁ ℤ.* ↧ q₂)
-    [↥q₁↧q₂]↧p = (↥ q₁ ℤ.* ↧ q₂) ℤ.* ↧ p
-    [↥q₂↧q₁]↧p = (↥ q₂ ℤ.* ↧ q₁) ℤ.* ↧ p
-    ↧p↧q₁ = ↧ₙ p ℕ.* ↧ₙ q₁
-    ↧p↧q₂ = ↧ₙ p ℕ.* ↧ₙ q₂
-    lemma₁ : ∀ a b c → (b ℤ.* a) ℤ.* c ≡ (b ℤ.* c) ℤ.* a
-    lemma₁ = solve 3 (λ a b c → ((b :* a) :* c) := ((b :* c) :* a)) refl
-    lemma₂ : ∀ a b c → (a ℤ.* c) ℤ.* b ≡ a ℤ.* (b ℤ.* c)
-    lemma₂ = solve 3 (λ a b c → ((a :* c) :* b) := (a :* (b :* c))) refl
-
-⊓-congʳ : ∀ p → Congruent₁ _≃_ (_⊓ p)
-⊓-congʳ p {q₁} {q₂} q₁≃q₂ = begin-equality
-  q₁ ⊓ p                                                                 ≈˘⟨ ⊓-comm p q₁ ⟩
-  p ⊓ q₁                                                                 ≈⟨ ⊓-congˡ p q₁≃q₂ ⟩
-  p ⊓ q₂                                                                 ≈⟨ ⊓-comm p q₂ ⟩
-  q₂ ⊓ p                                                                 ∎
-  where open ≤-Reasoning
-
-⊓-cong : Congruent₂ _≃_ _⊓_
-⊓-cong {p₁} {p₂} {q₁} {q₂} p₁≃p₂ q₁≃q₂ = ≃-trans (⊓-congˡ p₁ q₁≃q₂) (⊓-congʳ q₂ p₁≃p₂)
-
-------------------------------------------------------------------------
--- Other properties
 
 p≤q⇒p⊓q≃p : ∀ {p q} → p ≤ q → p ⊓ q ≃ p
 p≤q⇒p⊓q≃p {p} {q} (*≤* p≤q) = begin-equality
@@ -1478,27 +1351,6 @@ p≤q⇒p⊓q≃p {p} {q} (*≤* p≤q) = begin-equality
   p                                                                      ∎
   where open ≤-Reasoning
 
-p⊓q≃p⇒p≤q : ∀ {p q} → p ⊓ q ≃ p → p ≤ q
-p⊓q≃p⇒p≤q {p} {q} (*≡* ↥[[↥p↧q]⊓[↥q↧p]/↧p↧q]↧p≡↥p[↧p↧q]) with ℤ.⊓-sel (↥ p ℤ.* ↧ q) (↥ q ℤ.* ↧ p)
-... | inj₁ [↥p↧q]⊓[↥q↧p]≡↥p↧q = *≤* (ℤ.m⊓n≡m⇒m≤n [↥p↧q]⊓[↥q↧p]≡↥p↧q)
-... | inj₂ [↥p↧q]⊓[↥q↧p]≡↥q↧p with ↥ p ℤ.* ↧ q ℤ.≟ ↥ q ℤ.* ↧ p
-...   | yes ↥p↧q≡↥q↧p = *≤* (ℤ.≤-reflexive ↥p↧q≡↥q↧p)
-...   | no  ↥p↧q≢↥q↧p = contradiction (ℤ.*-cancelʳ-≡ ↥p↧q ↥q↧p (↧ p) (ℕ.1+n≢0 ∘ ℤ.+-injective) [↥p↧q]↧p≡[↥q↧p]↧p) ↥p↧q≢↥q↧p
-  where
-    open ℤ-solver
-    open ℤ.≤-Reasoning
-    ↥p↧q = ↥ p ℤ.* ↧ q
-    ↥q↧p = ↥ q ℤ.* ↧ p
-    r : ↥ (↥p↧q ℤ.⊓ ↥q↧p / (↧ₙ p ℕ.* ↧ₙ q)) ℤ.* ↧ p ≡ ↥ p ℤ.* (↧ p ℤ.* ↧ q)
-    r = ↥[[↥p↧q]⊓[↥q↧p]/↧p↧q]↧p≡↥p[↧p↧q]
-    [↥p↧q]↧p≡[↥q↧p]↧p : ↥p↧q ℤ.* ↧ p ≡ ↥q↧p ℤ.* ↧ p
-    [↥p↧q]↧p≡[↥q↧p]↧p = begin-equality
-      ↥p↧q ℤ.* ↧ p                                         ≡⟨ solve 3 (λ a b c → ((a :* c) :* b) := (a :* (b :* c))) refl (↥ p) (↧ p) (↧ q) ⟩
-      ↥ p ℤ.* (↧ p ℤ.* ↧ q)                                ≡˘⟨ ↥[[↥p↧q]⊓[↥q↧p]/↧p↧q]↧p≡↥p[↧p↧q] ⟩
-      ↥ ((↥p↧q ℤ.⊓ ↥q↧p) / (↧ₙ p ℕ.* ↧ₙ q)) ℤ.* ↧ p        ≡⟨ cong (ℤ._* (↧ p)) (↥[p/q]≡p (↥p↧q ℤ.⊓ ↥q↧p) (↧ₙ p ℕ.* ↧ₙ q)) ⟩
-      (↥p↧q ℤ.⊓ ↥q↧p) ℤ.* ↧ p                              ≡⟨ cong (ℤ._* (↧ p)) [↥p↧q]⊓[↥q↧p]≡↥q↧p ⟩
-      ↥q↧p ℤ.* ↧ p                                         ∎
-
 q≤p⇒p⊓q≃q : ∀ {p q} → q ≤ p → p ⊓ q ≃ q
 q≤p⇒p⊓q≃q {p} {q} q≤p = begin-equality
   p ⊓ q                                                                  ≈⟨ ⊓-comm p q ⟩
@@ -1506,46 +1358,139 @@ q≤p⇒p⊓q≃q {p} {q} q≤p = begin-equality
   q                                                                      ∎
   where open ≤-Reasoning
 
-p⊓q≃q⇒q≤p : ∀ {p q} → p ⊓ q ≃ q → q ≤ p
-p⊓q≃q⇒q≤p {p} {q} p⊓q≃q = p⊓q≃p⇒p≤q (begin-equality
-  q ⊓ p                                                                 ≈⟨ ⊓-comm q p ⟩
-  p ⊓ q                                                                 ≈⟨ p⊓q≃q ⟩
-  q                                                                     ∎)
+⊓-congˡ : ∀ p → Congruent₁ _≃_ (p ⊓_)
+⊓-congˡ p {q₁} {q₂} q₁≃q₂ with ≤-total p q₁
+... | inj₁ p≤q₁ = begin-equality
+  p ⊓ q₁  ≈⟨ p≤q⇒p⊓q≃p p≤q₁ ⟩
+  p       ≈˘⟨ p≤q⇒p⊓q≃p (≤-trans p≤q₁ (≤-reflexive q₁≃q₂)) ⟩
+  p ⊓ q₂  ∎
+  where open ≤-Reasoning
+... | inj₂ q₁≤p = begin-equality
+  p ⊓ q₁  ≈⟨ q≤p⇒p⊓q≃q q₁≤p ⟩
+  q₁      ≈⟨ q₁≃q₂ ⟩
+  q₂      ≈˘⟨ q≤p⇒p⊓q≃q (≤-trans (≤-reflexive (≃-sym q₁≃q₂)) q₁≤p) ⟩
+  p ⊓ q₂  ∎
+  where open ≤-Reasoning
+
+⊓-congʳ : ∀ p → Congruent₁ _≃_ (_⊓ p)
+⊓-congʳ p {q₁} {q₂} q₁≃q₂ = begin-equality
+  q₁ ⊓ p  ≈˘⟨ ⊓-comm p q₁ ⟩
+  p ⊓ q₁  ≈⟨ ⊓-congˡ p q₁≃q₂ ⟩
+  p ⊓ q₂  ≈⟨ ⊓-comm p q₂ ⟩
+  q₂ ⊓ p  ∎
   where open ≤-Reasoning
 
 p⊓q≤p : ∀ p q → p ⊓ q ≤ p
 p⊓q≤p p q = *≤* (begin
-  ↥ (p ⊓ q) ℤ.* ↧ p                                                     ≡⟨⟩
-  ↥ (↥p↧q ℤ.⊓ ↥q↧p / (↧ₙ p ℕ.* ↧ₙ q)) ℤ.* ↧ p                           ≡⟨ cong (ℤ._* (↧ p)) (↥[p/q]≡p (↥p↧q ℤ.⊓ ↥q↧p) (↧ₙ p ℕ.* ↧ₙ q)) ⟩
-  (↥p↧q ℤ.⊓ ↥q↧p) ℤ.* ↧ p                                               ≤⟨ ℤ.*-monoʳ-≤-pos (ℚᵘ.denominator-1 p) (ℤ.m⊓n≤m ↥p↧q ↥q↧p) ⟩
-  ↥p↧q ℤ.* ↧ p                                                          ≡⟨ solve 3 (λ a b c → ((a :* c) :* b) := (a :* (b :* c))) refl (↥ p) (↧ p) (↧ q) ⟩
-  ↥ p ℤ.* (↧ p ℤ.* ↧ q)                                                 ≡⟨⟩
-  ↥ p ℤ.* (↧ (p ⊓ q))                                                   ∎)
+  ↥ (p ⊓ q) ℤ.* ↧ p                            ≡⟨⟩
+  ↥ (↥p↧q ℤ.⊓ ↥q↧p / (↧ₙ p ℕ.* ↧ₙ q)) ℤ.* ↧ p  ≡⟨ cong (ℤ._* (↧ p)) (↥[p/q]≡p (↥p↧q ℤ.⊓ ↥q↧p) (↧ₙ p ℕ.* ↧ₙ q)) ⟩
+  (↥p↧q ℤ.⊓ ↥q↧p) ℤ.* ↧ p                      ≤⟨ ℤ.*-monoʳ-≤-pos (ℚᵘ.denominator-1 p) (ℤ.m⊓n≤m ↥p↧q ↥q↧p) ⟩
+  ↥p↧q ℤ.* ↧ p                                 ≡⟨ solve 3 (λ a b c → ((a :* c) :* b) := (a :* (b :* c))) refl (↥ p) (↧ p) (↧ q) ⟩
+  ↥ p ℤ.* (↧ p ℤ.* ↧ q)                        ≡⟨⟩
+  ↥ p ℤ.* (↧ (p ⊓ q))                          ∎)
   where
     open ℤ-solver
     open ℤ.≤-Reasoning
     ↥p↧q = ↥ p ℤ.* ↧ q
     ↥q↧p = ↥ q ℤ.* ↧ p
 
+------------------------------------------------------------------------
+-- Algebraic properties
+
+⊓-assoc : Associative _≃_ _⊓_
+⊓-assoc p q r with ≤-total p q | ≤-total q r
+⊓-assoc p q r | inj₁ p≤q | inj₁ q≤r = begin-equality
+  (p ⊓ q) ⊓ r  ≈⟨ ⊓-congʳ r (p≤q⇒p⊓q≃p p≤q) ⟩
+  p ⊓ r        ≈⟨ p≤q⇒p⊓q≃p (≤-trans p≤q q≤r) ⟩
+  p            ≈˘⟨ p≤q⇒p⊓q≃p p≤q ⟩
+  p ⊓ q        ≈˘⟨ ⊓-congˡ p (p≤q⇒p⊓q≃p q≤r) ⟩
+  p ⊓ (q ⊓ r)  ∎
+  where open ≤-Reasoning
+⊓-assoc p q r | inj₁ p≤q | inj₂ r≤q = begin-equality
+  (p ⊓ q) ⊓ r  ≈⟨ ⊓-congʳ r (p≤q⇒p⊓q≃p p≤q) ⟩
+  p ⊓ r        ≈˘⟨ ⊓-congˡ p (q≤p⇒p⊓q≃q r≤q) ⟩
+  p ⊓ (q ⊓ r)  ∎
+  where open ≤-Reasoning
+⊓-assoc p q r | inj₂ q≤p | _ = begin-equality
+  (p ⊓ q) ⊓ r  ≈⟨ ⊓-congʳ r (q≤p⇒p⊓q≃q q≤p) ⟩
+  q ⊓ r        ≈˘⟨ q≤p⇒p⊓q≃q (≤-trans (p⊓q≤p q r) q≤p) ⟩
+  p ⊓ (q ⊓ r)  ∎
+  where open ≤-Reasoning
+
+⊓-idem : Idempotent _≃_ _⊓_
+⊓-idem p = begin-equality
+  p ⊓ p                                              ≡⟨⟩
+  (↥ p ℤ.* ↧ p) ℤ.⊓ (↥ p ℤ.* ↧ p) / (↧ₙ p ℕ.* ↧ₙ p)  ≡⟨ cong (_/ ((↧ₙ p) ℕ.* (↧ₙ p))) (ℤ.⊓-idem (↥ p ℤ.* ↧ p)) ⟩
+  (↥ p ℤ.* ↧ p) / (↧ₙ p ℕ.* ↧ₙ p)                    ≡⟨⟩
+  (↥ p ℤ.* ℤ.+ ↧ₙ p) / (↧ₙ p ℕ.* ↧ₙ p)               ≈⟨ *-homoʳ-id (↧ₙ p) _ _ ⟩
+  ↥ p / ↧ₙ p                                         ≡⟨⟩
+  p                                                  ∎
+  where open ≤-Reasoning
+
+⊓-sel : Selective _≃_ _⊓_
+⊓-sel p q with ℤ.⊓-sel (↥ p ℤ.* ↧ q) (↥ q ℤ.* ↧ p)
+... | inj₁ ↥p↧q⊓↥q↧p≡↥p↧q = inj₁ (begin-equality
+  p ⊓ q                                                ≡⟨⟩
+  ((↥ p ℤ.* ↧ q) ℤ.⊓ (↥ q ℤ.* ↧ p)) / (↧ₙ p ℕ.* ↧ₙ q)  ≡⟨ cong (_/ (↧ₙ p ℕ.* ↧ₙ q)) ↥p↧q⊓↥q↧p≡↥p↧q ⟩
+  (↥ p ℤ.* ↧ q) / (↧ₙ p ℕ.* ↧ₙ q)                      ≡⟨⟩
+  (↥ p ℤ.* ℤ.+ ↧ₙ q) / (↧ₙ p ℕ.* ↧ₙ q)                 ≈⟨ *-homoʳ-id (↧ₙ q) _ _ ⟩
+  ↥ p / ↧ₙ p                                           ≡⟨⟩
+  p                                                    ∎)
+  where open ≤-Reasoning
+... | inj₂ ↥p↧q⊓↥q↧p≡↥q↧p = inj₂ (begin-equality
+  p ⊓ q                                                ≡⟨⟩
+  ((↥ p ℤ.* ↧ q) ℤ.⊓ (↥ q ℤ.* ↧ p)) / (↧ₙ p ℕ.* ↧ₙ q)  ≡⟨ cong (_/ (↧ₙ p ℕ.* ↧ₙ q)) ↥p↧q⊓↥q↧p≡↥q↧p ⟩
+  (↥ q ℤ.* ↧ p) / (↧ₙ p ℕ.* ↧ₙ q)                      ≡⟨ cong (_/ (↧ₙ p ℕ.* ↧ₙ q)) (ℤ.*-comm (↥ q) (↧ p)) ⟩
+  (ℤ.+ ↧ₙ p ℤ.* ↥ q) / (↧ₙ p ℕ.* ↧ₙ q)                 ≈⟨ *-homoˡ-id (↧ₙ p) _ _ ⟩
+  ↥ q / ↧ₙ q                                           ≡⟨⟩
+  q                                                    ∎)
+  where open ≤-Reasoning
+
+⊓-cong : Congruent₂ _≃_ _⊓_
+⊓-cong {p₁} {p₂} {q₁} {q₂} p₁≃p₂ q₁≃q₂ = ≃-trans (⊓-congˡ p₁ q₁≃q₂) (⊓-congʳ q₂ p₁≃p₂)
+
+------------------------------------------------------------------------
+-- Other properties
+
+p⊓q≃p⇒p≤q : ∀ {p q} → p ⊓ q ≃ p → p ≤ q
+p⊓q≃p⇒p≤q {p} {q} p⊓q≃p with p ≤? q
+... | yes p≤q = p≤q
+... | no  p≰q = contradiction p≤q p≰q
+  where
+    q≤p   = <⇒≤ (≰⇒> p≰q)
+    p⊓q≃q = q≤p⇒p⊓q≃q q≤p
+    p≃q   = ≃-trans (≃-sym p⊓q≃p) p⊓q≃q
+    p≤q   = ≤-reflexive p≃q
+
+p⊓q≃q⇒q≤p : ∀ {p q} → p ⊓ q ≃ q → q ≤ p
+p⊓q≃q⇒q≤p {p} {q} p⊓q≃q = p⊓q≃p⇒p≤q (begin-equality
+  q ⊓ p  ≈⟨ ⊓-comm q p ⟩
+  p ⊓ q  ≈⟨ p⊓q≃q ⟩
+  q      ∎)
+  where open ≤-Reasoning
+
 p⊓q≤q : ∀ p q → p ⊓ q ≤ q
 p⊓q≤q p q = begin
-  p ⊓ q                                                                 ≈⟨ ⊓-comm p q ⟩
-  q ⊓ p                                                                 ≤⟨ p⊓q≤p q p ⟩
-  q                                                                     ∎
+  p ⊓ q  ≈⟨ ⊓-comm p q ⟩
+  q ⊓ p  ≤⟨ p⊓q≤p q p ⟩
+  q      ∎
   where open ≤-Reasoning
 
 mono-≤-distrib-⊓ : ∀ f → f Preserves _≤_ ⟶ _≤_ → ∀ p q → f (p ⊓ q) ≃ f p ⊓ f q
 mono-≤-distrib-⊓ f f-mono-≤ p q with ≤-total p q
 ... | inj₁ p≤q = begin-equality
-  f (p ⊓ q)                                                             ≈⟨ cong-mono-≤ f f-mono-≤ (p≤q⇒p⊓q≃p p≤q) ⟩
-  f p                                                                   ≈˘⟨ p≤q⇒p⊓q≃p (f-mono-≤ p≤q) ⟩
-  f p ⊓ f q                                                             ∎
+  f (p ⊓ q)  ≈⟨ cong-mono-≤ f f-mono-≤ (p≤q⇒p⊓q≃p p≤q) ⟩
+  f p        ≈˘⟨ p≤q⇒p⊓q≃p (f-mono-≤ p≤q) ⟩
+  f p ⊓ f q  ∎
   where open ≤-Reasoning
 ... | inj₂ q≤p = begin-equality
-  f (p ⊓ q)                                                             ≈⟨ cong-mono-≤ f f-mono-≤ (q≤p⇒p⊓q≃q q≤p) ⟩
-  f q                                                                   ≈˘⟨ q≤p⇒p⊓q≃q (f-mono-≤ q≤p) ⟩
-  f p ⊓ f q                                                             ∎
+  f (p ⊓ q)  ≈⟨ cong-mono-≤ f f-mono-≤ (q≤p⇒p⊓q≃q q≤p) ⟩
+  f q        ≈˘⟨ q≤p⇒p⊓q≃q (f-mono-≤ q≤p) ⟩
+  f p ⊓ f q  ∎
   where open ≤-Reasoning
+
+------------------------------------------------------------------------
+-- Remaining roperties of _⊓_
 
 ------------------------------------------------------------------------
 -- Properties of _⊓_ and _*_
@@ -1643,20 +1588,20 @@ mono-≤-distrib-⊓ f f-mono-≤ p q with ≤-total p q
 
 neg-distrib-⊔-⊓ : ∀ p q → - (p ⊔ q) ≃ - p ⊓ - q
 neg-distrib-⊔-⊓ p q = begin-equality
-  - (p ⊔ q)                                                             ≡⟨⟩
-  - ((↥ p ℤ.* ↧ q ℤ.⊔ ↥ q ℤ.* ↧ p) / (↧ₙ p ℕ.* ↧ₙ q))                   ≡⟨⟩
-  (ℤ.- (↥ p ℤ.* ↧ q ℤ.⊔ ↥ q ℤ.* ↧ p) / (↧ₙ p ℕ.* ↧ₙ q))                 ≡⟨ cong (_/ (↧ₙ p ℕ.* ↧ₙ q)) (ℤ.neg-distrib-⊔-⊓ (↥ p ℤ.* ↧ q) (↥ q ℤ.* ↧ p)) ⟩
-  ((ℤ.- (↥ p ℤ.* ↧ q)) ℤ.⊓ (ℤ.- (↥ q ℤ.* ↧ p))) / (↧ₙ p ℕ.* ↧ₙ q)       ≡⟨ cong₂ (λ h₁ h₂ → h₁ ℤ.⊓ h₂ / (↧ₙ p ℕ.* ↧ₙ q)) (ℤ.neg-distribˡ-* (↥ p) (↧ q)) (ℤ.neg-distribˡ-* (↥ q) (↧ p)) ⟩
-  ((ℤ.- ↥ p) ℤ.* ↧ q) ℤ.⊓ ((ℤ.- ↥ q) ℤ.* ↧ p) / (↧ₙ p ℕ.* ↧ₙ q)         ≡⟨⟩
-  - p ⊓ - q                                                             ∎
+  - (p ⊔ q)                                                        ≡⟨⟩
+  - ((↥ p ℤ.* ↧ q ℤ.⊔ ↥ q ℤ.* ↧ p) / (↧ₙ p ℕ.* ↧ₙ q))              ≡⟨⟩
+  (ℤ.- (↥ p ℤ.* ↧ q ℤ.⊔ ↥ q ℤ.* ↧ p) / (↧ₙ p ℕ.* ↧ₙ q))            ≡⟨ cong (_/ (↧ₙ p ℕ.* ↧ₙ q)) (ℤ.neg-distrib-⊔-⊓ (↥ p ℤ.* ↧ q) (↥ q ℤ.* ↧ p)) ⟩
+  ((ℤ.- (↥ p ℤ.* ↧ q)) ℤ.⊓ (ℤ.- (↥ q ℤ.* ↧ p))) / (↧ₙ p ℕ.* ↧ₙ q)  ≡⟨ cong₂ (λ h₁ h₂ → h₁ ℤ.⊓ h₂ / (↧ₙ p ℕ.* ↧ₙ q)) (ℤ.neg-distribˡ-* (↥ p) (↧ q)) (ℤ.neg-distribˡ-* (↥ q) (↧ p)) ⟩
+  ((ℤ.- ↥ p) ℤ.* ↧ q) ℤ.⊓ ((ℤ.- ↥ q) ℤ.* ↧ p) / (↧ₙ p ℕ.* ↧ₙ q)    ≡⟨⟩
+  - p ⊓ - q                                                        ∎
   where open ≤-Reasoning
 
 neg-distrib-⊓-⊔ : ∀ p q → - (p ⊓ q) ≃ - p ⊔ - q
 neg-distrib-⊓-⊔ p q = begin-equality
-  - (p ⊓ q)                                                              ≈˘⟨ -‿cong (⊓-cong (neg-involutive p) (neg-involutive q)) ⟩
-  - (- - p ⊓ - - q)                                                      ≈˘⟨ -‿cong (neg-distrib-⊔-⊓ (- p) (- q)) ⟩
-  - - (- p ⊔ - q)                                                        ≈⟨ neg-involutive (- p ⊔ - q) ⟩
-  - p ⊔ - q                                                              ∎
+  - (p ⊓ q)          ≈˘⟨ -‿cong (⊓-cong (neg-involutive p) (neg-involutive q)) ⟩
+  - (- - p ⊓ - - q)  ≈˘⟨ -‿cong (neg-distrib-⊔-⊓ (- p) (- q)) ⟩
+  - - (- p ⊔ - q)    ≈⟨ neg-involutive (- p ⊔ - q) ⟩
+  - p ⊔ - q          ∎
   where open ≤-Reasoning
 
 ------------------------------------------------------------------------
@@ -1664,68 +1609,68 @@ neg-distrib-⊓-⊔ p q = begin-equality
 
 ⊔-comm : Commutative _≃_ _⊔_
 ⊔-comm p q = begin-equality
-  p ⊔ q                                                                 ≈˘⟨ neg-involutive (p ⊔ q) ⟩
-  - - (p ⊔ q)                                                           ≈⟨ -‿cong (neg-distrib-⊔-⊓ p q) ⟩
-  - (- p ⊓ - q)                                                         ≈⟨ -‿cong (⊓-comm (- p) (- q)) ⟩
-  - (- q ⊓ - p)                                                         ≈˘⟨ -‿cong (neg-distrib-⊔-⊓ q p) ⟩
-  - - (q ⊔ p)                                                           ≈⟨ neg-involutive (q ⊔ p) ⟩
-  q ⊔ p                                                                 ∎
+  p ⊔ q          ≈˘⟨ neg-involutive (p ⊔ q) ⟩
+  - - (p ⊔ q)    ≈⟨ -‿cong (neg-distrib-⊔-⊓ p q) ⟩
+  - (- p ⊓ - q)  ≈⟨ -‿cong (⊓-comm (- p) (- q)) ⟩
+  - (- q ⊓ - p)  ≈˘⟨ -‿cong (neg-distrib-⊔-⊓ q p) ⟩
+  - - (q ⊔ p)    ≈⟨ neg-involutive (q ⊔ p) ⟩
+  q ⊔ p          ∎
   where open ≤-Reasoning
 
 ⊔-assoc : Associative _≃_ _⊔_
 ⊔-assoc p q r = begin-equality
-  (p ⊔ q) ⊔ r                                                           ≈˘⟨ neg-involutive ((p ⊔ q) ⊔ r) ⟩
-  - - ((p ⊔ q) ⊔ r)                                                     ≈⟨ -‿cong (neg-distrib-⊔-⊓ (p ⊔ q) r) ⟩
-  - (- (p ⊔ q) ⊓ - r)                                                   ≈⟨ -‿cong (⊓-congʳ (- r) (neg-distrib-⊔-⊓ p q)) ⟩
-  - ((- p ⊓ - q) ⊓ - r)                                                 ≈⟨ -‿cong (⊓-assoc (- p) (- q) (- r)) ⟩
-  - (- p ⊓ (- q ⊓ - r))                                                 ≈˘⟨ -‿cong (⊓-congˡ (- p) (neg-distrib-⊔-⊓ q r)) ⟩
-  - (- p ⊓ - (q ⊔ r))                                                   ≈˘⟨ -‿cong (neg-distrib-⊔-⊓ p (q ⊔ r)) ⟩
-  - - (p ⊔ (q ⊔ r))                                                     ≈⟨ neg-involutive (p ⊔ (q ⊔ r)) ⟩
-  p ⊔ (q ⊔ r)                                                           ∎
+  (p ⊔ q) ⊔ r            ≈˘⟨ neg-involutive ((p ⊔ q) ⊔ r) ⟩
+  - - ((p ⊔ q) ⊔ r)      ≈⟨ -‿cong (neg-distrib-⊔-⊓ (p ⊔ q) r) ⟩
+  - (- (p ⊔ q) ⊓ - r)    ≈⟨ -‿cong (⊓-congʳ (- r) (neg-distrib-⊔-⊓ p q)) ⟩
+  - ((- p ⊓ - q) ⊓ - r)  ≈⟨ -‿cong (⊓-assoc (- p) (- q) (- r)) ⟩
+  - (- p ⊓ (- q ⊓ - r))  ≈˘⟨ -‿cong (⊓-congˡ (- p) (neg-distrib-⊔-⊓ q r)) ⟩
+  - (- p ⊓ - (q ⊔ r))    ≈˘⟨ -‿cong (neg-distrib-⊔-⊓ p (q ⊔ r)) ⟩
+  - - (p ⊔ (q ⊔ r))      ≈⟨ neg-involutive (p ⊔ (q ⊔ r)) ⟩
+  p ⊔ (q ⊔ r)            ∎
   where open ≤-Reasoning
 
 ⊔-idem : Idempotent _≃_ _⊔_
 ⊔-idem p = begin-equality
-  p ⊔ p                                                                 ≈˘⟨ neg-involutive (p ⊔ p) ⟩
-  - - (p ⊔ p)                                                           ≈⟨ -‿cong (neg-distrib-⊔-⊓ p p) ⟩
-  - (- p ⊓ - p)                                                         ≈⟨ -‿cong (⊓-idem (- p)) ⟩
-  - - p                                                                 ≈⟨ neg-involutive p ⟩
-  p                                                                     ∎
+  p ⊔ p          ≈˘⟨ neg-involutive (p ⊔ p) ⟩
+  - - (p ⊔ p)    ≈⟨ -‿cong (neg-distrib-⊔-⊓ p p) ⟩
+  - (- p ⊓ - p)  ≈⟨ -‿cong (⊓-idem (- p)) ⟩
+  - - p          ≈⟨ neg-involutive p ⟩
+  p              ∎
   where open ≤-Reasoning
 
 ⊔-sel : Selective _≃_ _⊔_
 ⊔-sel p q with ⊓-sel (- p) (- q)
 ... | inj₁ -p⊓-q≃-p = inj₁ (begin-equality
-  p ⊔ q                                                                 ≈˘⟨ neg-involutive (p ⊔ q) ⟩
-  - - (p ⊔ q)                                                           ≈⟨ -‿cong (neg-distrib-⊔-⊓ p q) ⟩
-  - (- p ⊓ - q)                                                         ≈⟨ -‿cong -p⊓-q≃-p ⟩
-  - - p                                                                 ≈⟨ neg-involutive p ⟩
-  p                                                                     ∎)
+  p ⊔ q          ≈˘⟨ neg-involutive (p ⊔ q) ⟩
+  - - (p ⊔ q)    ≈⟨ -‿cong (neg-distrib-⊔-⊓ p q) ⟩
+  - (- p ⊓ - q)  ≈⟨ -‿cong -p⊓-q≃-p ⟩
+  - - p          ≈⟨ neg-involutive p ⟩
+  p              ∎)
   where open ≤-Reasoning
 ... | inj₂ -p⊓-q≃-q = inj₂ (begin-equality
-  p ⊔ q                                                                 ≈˘⟨ neg-involutive (p ⊔ q) ⟩
-  - - (p ⊔ q)                                                           ≈⟨ -‿cong (neg-distrib-⊔-⊓ p q) ⟩
-  - (- p ⊓ - q)                                                         ≈⟨ -‿cong -p⊓-q≃-q ⟩
-  - - q                                                                 ≈⟨ neg-involutive q ⟩
-  q                                                                     ∎)
+  p ⊔ q          ≈˘⟨ neg-involutive (p ⊔ q) ⟩
+  - - (p ⊔ q)    ≈⟨ -‿cong (neg-distrib-⊔-⊓ p q) ⟩
+  - (- p ⊓ - q)  ≈⟨ -‿cong -p⊓-q≃-q ⟩
+  - - q          ≈⟨ neg-involutive q ⟩
+  q              ∎)
   where open ≤-Reasoning
 
 ⊔-congˡ : ∀ p → Congruent₁ _≃_ (p ⊔_)
 ⊔-congˡ p {q₁} {q₂} q₁≃q₂ = begin-equality
-  p ⊔ q₁                                                                ≈˘⟨ neg-involutive (p ⊔ q₁) ⟩
-  - - (p ⊔ q₁)                                                          ≈⟨ -‿cong (neg-distrib-⊔-⊓ p q₁) ⟩
-  - (- p ⊓ - q₁)                                                        ≈⟨ -‿cong (⊓-congˡ (- p) (-‿cong q₁≃q₂)) ⟩
-  - (- p ⊓ - q₂)                                                        ≈˘⟨ -‿cong (neg-distrib-⊔-⊓ p q₂) ⟩
-  - - (p ⊔ q₂)                                                          ≈⟨ neg-involutive (p ⊔ q₂) ⟩
-  p ⊔ q₂                                                                ∎
+  p ⊔ q₁          ≈˘⟨ neg-involutive (p ⊔ q₁) ⟩
+  - - (p ⊔ q₁)    ≈⟨ -‿cong (neg-distrib-⊔-⊓ p q₁) ⟩
+  - (- p ⊓ - q₁)  ≈⟨ -‿cong (⊓-congˡ (- p) (-‿cong q₁≃q₂)) ⟩
+  - (- p ⊓ - q₂)  ≈˘⟨ -‿cong (neg-distrib-⊔-⊓ p q₂) ⟩
+  - - (p ⊔ q₂)    ≈⟨ neg-involutive (p ⊔ q₂) ⟩
+  p ⊔ q₂          ∎
   where open ≤-Reasoning
 
 ⊔-congʳ : ∀ p → Congruent₁ _≃_ (_⊔ p)
 ⊔-congʳ p {q₁} {q₂} q₁≃q₂ = begin-equality
-  q₁ ⊔ p                                                                 ≈˘⟨ ⊔-comm p q₁ ⟩
-  p ⊔ q₁                                                                 ≈⟨ ⊔-congˡ p q₁≃q₂ ⟩
-  p ⊔ q₂                                                                 ≈⟨ ⊔-comm p q₂ ⟩
-  q₂ ⊔ p                                                                 ∎
+  q₁ ⊔ p  ≈˘⟨ ⊔-comm p q₁ ⟩
+  p ⊔ q₁  ≈⟨ ⊔-congˡ p q₁≃q₂ ⟩
+  p ⊔ q₂  ≈⟨ ⊔-comm p q₂ ⟩
+  q₂ ⊔ p  ∎
   where open ≤-Reasoning
 
 ⊔-cong : Congruent₂ _≃_ _⊔_
@@ -1736,61 +1681,61 @@ neg-distrib-⊓-⊔ p q = begin-equality
 
 p≤q⇒p⊔q≃q : ∀ {p q} → p ≤ q → p ⊔ q ≃ q
 p≤q⇒p⊔q≃q {p} {q} p≤q = begin-equality
-  p ⊔ q                                                                   ≈˘⟨ neg-involutive (p ⊔ q) ⟩
-  - - (p ⊔ q)                                                             ≈⟨ -‿cong (neg-distrib-⊔-⊓ p q) ⟩
-  - (- p ⊓ - q)                                                           ≈⟨ -‿cong (q≤p⇒p⊓q≃q (neg-mono-≤ p≤q)) ⟩
-  - - q                                                                   ≈⟨ neg-involutive q ⟩
-  q                                                                       ∎
+  p ⊔ q          ≈˘⟨ neg-involutive (p ⊔ q) ⟩
+  - - (p ⊔ q)    ≈⟨ -‿cong (neg-distrib-⊔-⊓ p q) ⟩
+  - (- p ⊓ - q)  ≈⟨ -‿cong (q≤p⇒p⊓q≃q (neg-mono-≤ p≤q)) ⟩
+  - - q          ≈⟨ neg-involutive q ⟩
+  q              ∎
   where open ≤-Reasoning
 
 p⊔q≃q⇒p≤q : ∀ {p q} → p ⊔ q ≃ q → p ≤ q
 p⊔q≃q⇒p≤q {p} {q} p⊔q≃q = neg-cancel-≤ (p⊓q≃q⇒q≤p (begin-equality
-  - p ⊓ - q                                                               ≈˘⟨ neg-distrib-⊔-⊓ p q ⟩
-  - (p ⊔ q)                                                               ≈⟨ -‿cong p⊔q≃q ⟩
-  - q                                                                     ∎))
+  - p ⊓ - q  ≈˘⟨ neg-distrib-⊔-⊓ p q ⟩
+  - (p ⊔ q)  ≈⟨ -‿cong p⊔q≃q ⟩
+  - q        ∎))
   where open ≤-Reasoning
 
 q≤p⇒p⊔q≃p : ∀ {p q} → q ≤ p → p ⊔ q ≃ p
 q≤p⇒p⊔q≃p {p} {q} q≤p = begin-equality
-  p ⊔ q                                                                   ≈˘⟨ neg-involutive (p ⊔ q) ⟩
-  - - (p ⊔ q)                                                             ≈⟨ -‿cong (neg-distrib-⊔-⊓ p q) ⟩
-  - (- p ⊓ - q)                                                           ≈⟨ -‿cong (p≤q⇒p⊓q≃p (neg-mono-≤ q≤p)) ⟩
-  - - p                                                                   ≈⟨ neg-involutive p ⟩
-  p                                                                       ∎
+  p ⊔ q          ≈˘⟨ neg-involutive (p ⊔ q) ⟩
+  - - (p ⊔ q)    ≈⟨ -‿cong (neg-distrib-⊔-⊓ p q) ⟩
+  - (- p ⊓ - q)  ≈⟨ -‿cong (p≤q⇒p⊓q≃p (neg-mono-≤ q≤p)) ⟩
+  - - p          ≈⟨ neg-involutive p ⟩
+  p              ∎
   where open ≤-Reasoning
 
 p⊔q≃p⇒q≤p : ∀ {p q} → p ⊔ q ≃ p → q ≤ p
 p⊔q≃p⇒q≤p {p} {q} p⊔q≃p = neg-cancel-≤ (p⊓q≃p⇒p≤q (begin-equality
-  - p ⊓ - q                                                               ≈˘⟨ neg-distrib-⊔-⊓ p q ⟩
-  - (p ⊔ q)                                                               ≈⟨ -‿cong p⊔q≃p ⟩
-  - p                                                                     ∎))
+  - p ⊓ - q  ≈˘⟨ neg-distrib-⊔-⊓ p q ⟩
+  - (p ⊔ q)  ≈⟨ -‿cong p⊔q≃p ⟩
+  - p        ∎))
   where open ≤-Reasoning
 
 p⊔q≥p : ∀ p q → p ⊔ q ≥ p
 p⊔q≥p p q = neg-cancel-≤ (begin
-  - (p ⊔ q)                                                               ≈⟨ neg-distrib-⊔-⊓ p q ⟩
-  - p ⊓ - q                                                               ≤⟨ p⊓q≤p (- p) (- q) ⟩
-  - p                                                                     ∎)
+  - (p ⊔ q)  ≈⟨ neg-distrib-⊔-⊓ p q ⟩
+  - p ⊓ - q  ≤⟨ p⊓q≤p (- p) (- q) ⟩
+  - p        ∎)
   where open ≤-Reasoning
 
 p⊔q≥q : ∀ p q → p ⊔ q ≥ q
 p⊔q≥q p q = begin
-  q                                                                       ≤⟨ p⊔q≥p q p ⟩
-  q ⊔ p                                                                   ≈⟨ ⊔-comm q p ⟩
-  p ⊔ q                                                                   ∎
+  q      ≤⟨ p⊔q≥p q p ⟩
+  q ⊔ p  ≈⟨ ⊔-comm q p ⟩
+  p ⊔ q  ∎
   where open ≤-Reasoning
 
 mono-≤-distrib-⊔ : ∀ f → f Preserves _≤_ ⟶ _≤_ → ∀ p q → f (p ⊔ q) ≃ f p ⊔ f q
 mono-≤-distrib-⊔ f f-mono-≤ p q with ≤-total p q
 ... | inj₁ p≤q = begin-equality
-  f (p ⊔ q)                                                             ≈⟨ cong-mono-≤ f f-mono-≤ (p≤q⇒p⊔q≃q p≤q) ⟩
-  f q                                                                   ≈˘⟨ p≤q⇒p⊔q≃q (f-mono-≤ p≤q) ⟩
-  f p ⊔ f q                                                             ∎
+  f (p ⊔ q)  ≈⟨ cong-mono-≤ f f-mono-≤ (p≤q⇒p⊔q≃q p≤q) ⟩
+  f q        ≈˘⟨ p≤q⇒p⊔q≃q (f-mono-≤ p≤q) ⟩
+  f p ⊔ f q  ∎
   where open ≤-Reasoning
 ... | inj₂ q≤p = begin-equality
-  f (p ⊔ q)                                                             ≈⟨ cong-mono-≤ f f-mono-≤ (q≤p⇒p⊔q≃p q≤p) ⟩
-  f p                                                                   ≈˘⟨ q≤p⇒p⊔q≃p (f-mono-≤ q≤p) ⟩
-  f p ⊔ f q                                                             ∎
+  f (p ⊔ q)  ≈⟨ cong-mono-≤ f f-mono-≤ (q≤p⇒p⊔q≃p q≤p) ⟩
+  f p        ≈˘⟨ q≤p⇒p⊔q≃p (f-mono-≤ q≤p) ⟩
+  f p ⊔ f q  ∎
   where open ≤-Reasoning
 
 ------------------------------------------------------------------------
@@ -1808,50 +1753,50 @@ mono-≤-distrib-⊔ f f-mono-≤ p q with ≤-total p q
 antimono-≤-distrib-⊓ : ∀ f → f Preserves _≤_ ⟶ _≥_ → ∀ p q → f (p ⊓ q) ≃ f p ⊔ f q
 antimono-≤-distrib-⊓ f f-mono-≤-≥ p q with ≤-total p q
 ... | inj₁ p≤q = begin-equality
-  f (p ⊓ q)                        ≈⟨ cong-antimono-≤ f f-mono-≤-≥ (p≤q⇒p⊓q≃p p≤q) ⟩
-  f p                              ≈˘⟨ q≤p⇒p⊔q≃p (f-mono-≤-≥ p≤q) ⟩
-  f p ⊔ f q                        ∎
+  f (p ⊓ q)  ≈⟨ cong-antimono-≤ f f-mono-≤-≥ (p≤q⇒p⊓q≃p p≤q) ⟩
+  f p        ≈˘⟨ q≤p⇒p⊔q≃p (f-mono-≤-≥ p≤q) ⟩
+  f p ⊔ f q  ∎
   where open ≤-Reasoning
 ... | inj₂ q≤p = begin-equality
-  f (p ⊓ q)                        ≈⟨ cong-antimono-≤ f f-mono-≤-≥ (q≤p⇒p⊓q≃q q≤p) ⟩
-  f q                              ≈˘⟨ p≤q⇒p⊔q≃q (f-mono-≤-≥ q≤p) ⟩
-  f p ⊔ f q                        ∎
+  f (p ⊓ q)  ≈⟨ cong-antimono-≤ f f-mono-≤-≥ (q≤p⇒p⊓q≃q q≤p) ⟩
+  f q        ≈˘⟨ p≤q⇒p⊔q≃q (f-mono-≤-≥ q≤p) ⟩
+  f p ⊔ f q  ∎
   where open ≤-Reasoning
 
 antimono-≤-distrib-⊔ : ∀ f → f Preserves _≤_ ⟶ _≥_ → ∀ p q → f (p ⊔ q) ≃ f p ⊓ f q
 antimono-≤-distrib-⊔ f f-mono-≤-≥ p q with ≤-total p q
 ... | inj₁ p≤q = begin-equality
-  f (p ⊔ q)                        ≈⟨ cong-antimono-≤ f f-mono-≤-≥ (p≤q⇒p⊔q≃q p≤q) ⟩
-  f q                              ≈˘⟨ q≤p⇒p⊓q≃q (f-mono-≤-≥ p≤q) ⟩
-  f p ⊓ f q                        ∎
+  f (p ⊔ q)  ≈⟨ cong-antimono-≤ f f-mono-≤-≥ (p≤q⇒p⊔q≃q p≤q) ⟩
+  f q        ≈˘⟨ q≤p⇒p⊓q≃q (f-mono-≤-≥ p≤q) ⟩
+  f p ⊓ f q  ∎
   where open ≤-Reasoning
 ... | inj₂ q≤p = begin-equality
-  f (p ⊔ q)                        ≈⟨ cong-antimono-≤ f f-mono-≤-≥ (q≤p⇒p⊔q≃p q≤p) ⟩
-  f p                              ≈˘⟨ p≤q⇒p⊓q≃p (f-mono-≤-≥ q≤p) ⟩
-  f p ⊓ f q                        ∎
+  f (p ⊔ q)  ≈⟨ cong-antimono-≤ f f-mono-≤-≥ (q≤p⇒p⊔q≃p q≤p) ⟩
+  f p        ≈˘⟨ p≤q⇒p⊓q≃p (f-mono-≤-≥ q≤p) ⟩
+  f p ⊓ f q  ∎
   where open ≤-Reasoning
 
 ⊓-absorbs-⊔ : _Absorbs_ _≃_ _⊓_ _⊔_
 ⊓-absorbs-⊔ p q with ≤-total p q
 ... | inj₁ p≤q = begin-equality
-  p ⊓ (p ⊔ q)               ≈⟨ ⊓-congˡ p (p≤q⇒p⊔q≃q p≤q) ⟩
-  p ⊓ q                     ≈⟨ p≤q⇒p⊓q≃p p≤q ⟩
-  p                         ∎
+  p ⊓ (p ⊔ q)  ≈⟨ ⊓-congˡ p (p≤q⇒p⊔q≃q p≤q) ⟩
+  p ⊓ q        ≈⟨ p≤q⇒p⊓q≃p p≤q ⟩
+  p            ∎
   where open ≤-Reasoning
 ... | inj₂ q≤p = begin-equality
-  p ⊓ (p ⊔ q)               ≈⟨ ⊓-congˡ p (q≤p⇒p⊔q≃p q≤p) ⟩
-  p ⊓ p                     ≈⟨ ⊓-idem p ⟩
-  p                         ∎
+  p ⊓ (p ⊔ q)  ≈⟨ ⊓-congˡ p (q≤p⇒p⊔q≃p q≤p) ⟩
+  p ⊓ p        ≈⟨ ⊓-idem p ⟩
+  p            ∎
   where open ≤-Reasoning
 
 ⊔-absorbs-⊓ : _Absorbs_ _≃_ _⊔_ _⊓_
 ⊔-absorbs-⊓ p q = begin-equality
-  p ⊔ (p ⊓ q)               ≈˘⟨ neg-involutive (p ⊔ (p ⊓ q)) ⟩
-  - - (p ⊔ (p ⊓ q))         ≈⟨ -‿cong (neg-distrib-⊔-⊓ p (p ⊓ q)) ⟩
-  - (- p ⊓ - (p ⊓ q))       ≈⟨ -‿cong (⊓-congˡ (- p) (neg-distrib-⊓-⊔ p q)) ⟩
-  - (- p ⊓ (- p ⊔ - q))     ≈⟨ -‿cong (⊓-absorbs-⊔ (- p) (- q)) ⟩
-  - - p                     ≈⟨ neg-involutive p ⟩
-  p                         ∎
+  p ⊔ (p ⊓ q)            ≈˘⟨ neg-involutive (p ⊔ (p ⊓ q)) ⟩
+  - - (p ⊔ (p ⊓ q))      ≈⟨ -‿cong (neg-distrib-⊔-⊓ p (p ⊓ q)) ⟩
+  - (- p ⊓ - (p ⊓ q))    ≈⟨ -‿cong (⊓-congˡ (- p) (neg-distrib-⊓-⊔ p q)) ⟩
+  - (- p ⊓ (- p ⊔ - q))  ≈⟨ -‿cong (⊓-absorbs-⊔ (- p) (- q)) ⟩
+  - - p                  ≈⟨ neg-involutive p ⟩
+  p                      ∎
   where open ≤-Reasoning
 
 ⊔-⊓-absorptive : Absorptive _≃_ _⊔_ _⊓_
@@ -2004,14 +1949,14 @@ antimono-≤-distrib-⊔ f f-mono-≤-≥ p q with ≤-total p q
 ∣_∣-cong {mkℚᵘ -[1+ pn ] pd-1} {mkℚᵘ +[1+ qn ] qd-1} (*≡* ())
 ∣_∣-cong {mkℚᵘ -[1+ pn ] pd-1} {mkℚᵘ (ℤ.+ 0)   qd-1} (*≡* ())
 ∣_∣-cong {mkℚᵘ -[1+ pn ] pd-1} {mkℚᵘ -[1+ qn ] qd-1} (*≡* ↥p↧q≡↥q↧p) = *≡* (begin
-  (↥ ∣ mkℚᵘ -[1+ pn ] pd-1 ∣) ℤ.* (↧ ∣ mkℚᵘ -[1+ qn ] qd-1 ∣)              ≡⟨⟩
-  +[1+ pn ] ℤ.* ℤ.+ suc qd-1                                               ≡⟨ ℤ.neg-involutive _ ⟩
-  ℤ.- ℤ.- (+[1+ pn ] ℤ.* ℤ.+ suc qd-1)                                     ≡⟨ cong ℤ.-_ (ℤ.neg-distribˡ-* +[1+ pn ] (ℤ.+ suc qd-1)) ⟩
-  ℤ.- (-[1+ pn ] ℤ.* ℤ.+ suc qd-1)                                         ≡⟨ cong ℤ.-_ ↥p↧q≡↥q↧p ⟩
-  ℤ.- (-[1+ qn ] ℤ.* ℤ.+ suc pd-1)                                         ≡⟨ cong ℤ.-_ (ℤ.neg-distribˡ-* +[1+ qn ] (ℤ.+ suc pd-1)) ⟩
-  ℤ.- ℤ.- (+[1+ qn ] ℤ.* ℤ.+ suc pd-1)                                     ≡˘⟨ ℤ.neg-involutive _ ⟩
-  +[1+ qn ] ℤ.* ℤ.+ suc pd-1                                               ≡⟨⟩
-  (↥ ∣ mkℚᵘ -[1+ qn ] qd-1 ∣) ℤ.* (↧ ∣ mkℚᵘ -[1+ pn ] pd-1 ∣)              ∎)
+  (↥ ∣ mkℚᵘ -[1+ pn ] pd-1 ∣) ℤ.* (↧ ∣ mkℚᵘ -[1+ qn ] qd-1 ∣)  ≡⟨⟩
+  +[1+ pn ] ℤ.* ℤ.+ suc qd-1                                   ≡⟨ ℤ.neg-involutive _ ⟩
+  ℤ.- ℤ.- (+[1+ pn ] ℤ.* ℤ.+ suc qd-1)                         ≡⟨ cong ℤ.-_ (ℤ.neg-distribˡ-* +[1+ pn ] (ℤ.+ suc qd-1)) ⟩
+  ℤ.- (-[1+ pn ] ℤ.* ℤ.+ suc qd-1)                             ≡⟨ cong ℤ.-_ ↥p↧q≡↥q↧p ⟩
+  ℤ.- (-[1+ qn ] ℤ.* ℤ.+ suc pd-1)                             ≡⟨ cong ℤ.-_ (ℤ.neg-distribˡ-* +[1+ qn ] (ℤ.+ suc pd-1)) ⟩
+  ℤ.- ℤ.- (+[1+ qn ] ℤ.* ℤ.+ suc pd-1)                         ≡˘⟨ ℤ.neg-involutive _ ⟩
+  +[1+ qn ] ℤ.* ℤ.+ suc pd-1                                   ≡⟨⟩
+  (↥ ∣ mkℚᵘ -[1+ qn ] qd-1 ∣) ℤ.* (↧ ∣ mkℚᵘ -[1+ pn ] pd-1 ∣)  ∎)
   where open ≡-Reasoning
 
 ∣p∣≃0⇒p≃0 : ∀ {p} → ∣ p ∣ ≃ 0ℚᵘ → p ≃ 0ℚᵘ
@@ -2078,20 +2023,20 @@ antimono-≤-distrib-⊔ f f-mono-≤-≥ p q with ≤-total p q
 
 ∣p-q∣≤∣p∣+∣q∣ : ∀ p q → ∣ p - q ∣ ≤ ∣ p ∣ + ∣ q ∣
 ∣p-q∣≤∣p∣+∣q∣ p q = begin
-  ∣ p   -     q ∣ ≤⟨ ∣p+q∣≤∣p∣+∣q∣ p (- q) ⟩
-  ∣ p ∣ + ∣ - q ∣ ≡⟨ cong (∣ p ∣ +_) (∣-p∣≡∣p∣ q) ⟩
-  ∣ p ∣ + ∣   q ∣ ∎
+  ∣ p   -     q ∣  ≤⟨ ∣p+q∣≤∣p∣+∣q∣ p (- q) ⟩
+  ∣ p ∣ + ∣ - q ∣  ≡⟨ cong (∣ p ∣ +_) (∣-p∣≡∣p∣ q) ⟩
+  ∣ p ∣ + ∣   q ∣  ∎
   where open ≤-Reasoning
 
 ∣p*q∣≡∣p∣*∣q∣ : ∀ p q → ∣ p * q ∣ ≡ ∣ p ∣ * ∣ q ∣
 ∣p*q∣≡∣p∣*∣q∣ p q = begin
-  ∣ p * q ∣                                       ≡⟨⟩
-  ∣ (↥ p ⊛ ↥ q) / (↧ₙ p ⍟ ↧ₙ q) ∣                 ≡⟨⟩
-  ℤ.+ ℤ.∣ ↥ p ⊛ ↥ q ∣ / (↧ₙ p ⍟ ↧ₙ q)             ≡⟨ cong (λ h → ℤ.+ h / ((↧ₙ p) ⍟ (↧ₙ q))) (ℤ.∣m*n∣≡∣m∣*∣n∣ (↥ p) (↥ q)) ⟩
-  ℤ.+ (ℤ.∣ ↥ p ∣ ⍟ ℤ.∣ ↥ q ∣) / (↧ₙ p ⍟ ↧ₙ q)     ≡˘⟨ cong (_/ (↧ₙ p ⍟ ↧ₙ q)) (ℤ.pos-distrib-* ℤ.∣ ↥ p ∣ ℤ.∣ ↥ q ∣) ⟩
-  (ℤ.+ ℤ.∣ ↥ p ∣ ⊛ ℤ.+ ℤ.∣ ↥ q ∣) / (↧ₙ p ⍟ ↧ₙ q) ≡⟨⟩
-  (ℤ.+ ℤ.∣ ↥ p ∣ / ↧ₙ p) * (ℤ.+ ℤ.∣ ↥ q ∣ / ↧ₙ q) ≡⟨⟩
-  ∣ p ∣ * ∣ q ∣                                   ∎
+  ∣ p * q ∣                                        ≡⟨⟩
+  ∣ (↥ p ⊛ ↥ q) / (↧ₙ p ⍟ ↧ₙ q) ∣                  ≡⟨⟩
+  ℤ.+ ℤ.∣ ↥ p ⊛ ↥ q ∣ / (↧ₙ p ⍟ ↧ₙ q)              ≡⟨ cong (λ h → ℤ.+ h / ((↧ₙ p) ⍟ (↧ₙ q))) (ℤ.∣m*n∣≡∣m∣*∣n∣ (↥ p) (↥ q)) ⟩
+  ℤ.+ (ℤ.∣ ↥ p ∣ ⍟ ℤ.∣ ↥ q ∣) / (↧ₙ p ⍟ ↧ₙ q)      ≡˘⟨ cong (_/ (↧ₙ p ⍟ ↧ₙ q)) (ℤ.pos-distrib-* ℤ.∣ ↥ p ∣ ℤ.∣ ↥ q ∣) ⟩
+  (ℤ.+ ℤ.∣ ↥ p ∣ ⊛ ℤ.+ ℤ.∣ ↥ q ∣) / (↧ₙ p ⍟ ↧ₙ q)  ≡⟨⟩
+  (ℤ.+ ℤ.∣ ↥ p ∣ / ↧ₙ p) * (ℤ.+ ℤ.∣ ↥ q ∣ / ↧ₙ q)  ≡⟨⟩
+  ∣ p ∣ * ∣ q ∣                                    ∎
   where
     open ≡-Reasoning
     infixl 7 _⊛_ _⍟_
