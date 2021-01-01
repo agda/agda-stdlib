@@ -568,6 +568,8 @@ Other minor additions
   ```agda
   _⊔_ : (p q : ℚᵘ) → ℚᵘ
   _⊓_ : (p q : ℚᵘ) → ℚᵘ
+  ∣_∣ : ℚᵘ → ℚᵘ
+  ```
 
 * Added new operation in `Data.Sum`:
   ```agda
