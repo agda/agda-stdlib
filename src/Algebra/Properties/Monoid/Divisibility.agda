@@ -34,6 +34,9 @@ open import Algebra.Properties.Semigroup.Divisibility semigroup public
 ∣-reflexive : _≈_ ⇒ _∣_
 ∣-reflexive = Div.∣-reflexive trans identityˡ
 
+∣∣-reflexive : _≈_ ⇒ _∣∣_
+∣∣-reflexive x≈y = ∣-reflexive x≈y , ∣-reflexive (sym x≈y)
+
 ∣-isPreorder : IsPreorder _≈_ _∣_
 ∣-isPreorder = record
   { isEquivalence = isEquivalence

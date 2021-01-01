@@ -752,6 +752,33 @@ record CancellativeCommutativeSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
     ; _≉_
     )
 
+record GCDSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _*_
+  infixl 6 _+_
+  infix  4 _≈_
+  field
+    Carrier       : Set c
+    _≈_           : Rel Carrier ℓ
+    _+_           : Op₂ Carrier
+    _*_           : Op₂ Carrier
+    0#            : Carrier
+    1#            : Carrier
+    isGCDSemiring : IsGCDSemiring _≈_ _+_ _*_ 0# 1#
+
+  open IsGCDSemiring isGCDSemiring public
+
+  cancellativeCommutativeSemiring : CancellativeCommutativeSemiring c ℓ
+  cancellativeCommutativeSemiring = record
+    { Carrier                           = Carrier
+    ; _≈_                               = _≈_
+    ; _+_                               = _+_
+    ; _*_                               = _*_
+    ; 0#                                = 0#
+    ; 1#                                = 1#
+    ; isCancellativeCommutativeSemiring = isCancellativeCommutativeSemiring
+    }
+
+
 ------------------------------------------------------------------------
 -- Bundles with 2 binary operations, 1 unary operation & 2 elements
 ------------------------------------------------------------------------

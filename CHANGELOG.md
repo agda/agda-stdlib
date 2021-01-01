@@ -204,6 +204,8 @@ New modules
   Algebra.Properties.CommutativeSemigroup.Divisibility
   Algebra.Properties.Semiring.Divisibility
   Algebra.Properties.Semiring.GCD
+  Algebra.Properties.CancellativeCommutativeSemiring
+  Algebra.Properties.CancellativeCommutativeSemiring.GCD
   ```
 
 * Generic summation over algebraic structures
@@ -305,6 +307,7 @@ Other minor additions
   RawNearSemiring c ℓ : Set (suc (c ⊔ ℓ))
   RawLattice c ℓ : Set (suc (c ⊔ ℓ))
   CancellativeCommutativeSemiring c ℓ : Set (suc (c ⊔ ℓ))
+  GCDSemiring c ℓ : Set (suc (c ⊔ ℓ))
   ```
 
 * Added new definitions to `Algebra.Definitions`:

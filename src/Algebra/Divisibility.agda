@@ -1,4 +1,4 @@
-------------------------------------------------------------------------
+-----------------------------------------------------------------------
 -- The Agda standard library
 --
 -- Definition of divisibility
@@ -11,7 +11,7 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Core
-open import Data.Product using (∃; _×_; _,_)
+open import Data.Product using (_×_; _,_; proj₁; proj₂; ∃)
 open import Level using (_⊔_)
 open import Relation.Binary
 open import Relation.Nullary using (¬_)
@@ -70,11 +70,24 @@ x ∤∤ y =  ¬ x ∣∣ y
 -- Greatest common divisor (GCD)
 
 record IsGCD (x y gcd : A) : Set (a ⊔ ℓ) where
-  constructor gcdᶜ
+  constructor isGCDᶜ
   field
     divides₁ : gcd ∣ x
     divides₂ : gcd ∣ y
     greatest : ∀ {z} → z ∣ x → z ∣ y → z ∣ gcd
+
+  quot₁ : A               -- a complementory quotient  x/gcd
+  quot₁ = proj₁ divides₁
+
+  quot₂ : A               -- y/gcd
+  quot₂ = proj₁ divides₂
+
+  quot₁∙gcd≈x : (quot₁ ∙ gcd) ≈ x
+  quot₁∙gcd≈x = proj₂ divides₁
+
+  quot₂∙gcd≈y : (quot₂ ∙ gcd) ≈ y
+  quot₂∙gcd≈y = proj₂ divides₂
+
 
 ------------------------------------------------------------------------
 -- Properties
