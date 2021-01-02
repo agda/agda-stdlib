@@ -193,34 +193,31 @@ New modules
   `Data.Unit.Polymorphic.Instances`, `Data.Vec.Instances`,
   `Data.Word.Instances`, and `Reflection.Instances`.
 
-* Generic divisibility over algebraic structures
+* Generic definitions over algebraic structures (divisibility, multiplication etc.):
   ```
-  Algebra.Divisibility
-  Algebra.GCD
-  Algebra.Primality
+  Algebra.Definitions.RawMagma
+  Algebra.Definitions.RawMonoid
+  Algebra.Definitions.RawSemiring
+  ```
+
+* Properties of generic definitions over algebraic structures (divisibility, multiplication etc.):
+  ```
   Algebra.Properties.Magma.Divisibility
+  
   Algebra.Properties.Semigroup.Divisibility
-  Algebra.Properties.Monoid.Divisibility
+  
   Algebra.Properties.CommutativeSemigroup.Divisibility
-  Algebra.Properties.Semiring.Divisibility
-  Algebra.Properties.Semiring.GCD
-  ```
-
-* Generic summation over algebraic structures
-  ```
+  
   Algebra.Properties.Monoid.Summation
-  Algebra.Properties.CommutativeMonoid.Summation
-  ```
-
-* Generic multiplication over algebraic structures
-  ```
   Algebra.Properties.Monoid.Multiplication
+  Algebra.Properties.Monoid.Divisibility
+  
+  Algebra.Properties.CommutativeMonoid.Summation
+  
   Algebra.Properties.Semiring.Multiplication
-  ```
-
-* Generic exponentiation over algebraic structures
-  ```
   Algebra.Properties.Semiring.Exponentiation
+  Algebra.Properties.Semiring.GCD
+  Algebra.Properties.Semiring.Divisibility
   ```
 
 * Setoid equality over vectors:
