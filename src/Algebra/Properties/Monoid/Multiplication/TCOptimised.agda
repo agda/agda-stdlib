@@ -43,7 +43,8 @@ open import Algebra.Definitions.RawMonoid rawMonoid public
 1+× 0       x = sym (+-identityʳ x)
 1+× (suc n) x = refl
 
--- _×ᵤ_ and _×_ are extensionally equal (up to the setoid equivalence).
+-- The unoptimised (_×ᵤ_) and optimised (_×_) versions of multiplication
+-- are extensionally equal (up to the setoid equivalence).
 
 ×ᵤ≈× : ∀ n x → n ×ᵤ x ≈ n × x
 ×ᵤ≈× 0       x = refl
