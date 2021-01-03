@@ -272,6 +272,12 @@ New modules
   Algebra.Morphism.LatticeMonomorphism
   ```
 
+* Solvers for rationals
+  ```
+  Data.Rational.Solver
+  Data.Rational.Unnormalised.Solver
+  ```
+
 Other major changes
 -------------------
 
