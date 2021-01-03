@@ -1968,6 +1968,9 @@ antimono-≤-distrib-⊔ f f-mono-≤-≥ p q with ≤-total p q
 ∣-p∣≡∣p∣ (mkℚᵘ (ℤ.+ 0)  d) = refl
 ∣-p∣≡∣p∣ (mkℚᵘ -[1+ n ] d) = refl
 
+∣-p∣≃∣p∣ : ∀ p → ∣ - p ∣ ≃ ∣ p ∣
+∣-p∣≃∣p∣ = ≃-reflexive ∘ ∣-p∣≡∣p∣
+
 0≤p⇒∣p∣≡p : ∀ {p} → 0ℚᵘ ≤ p → ∣ p ∣ ≡ p
 0≤p⇒∣p∣≡p {mkℚᵘ (ℤ.+ n)    d-1} 0≤p = refl
 0≤p⇒∣p∣≡p {mkℚᵘ (-[1+ n ]) d-1} 0≤p with nonNegative 0≤p
