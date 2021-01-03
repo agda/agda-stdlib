@@ -30,6 +30,9 @@ Bug-fixes
 * In `IO`, `⊤`-returning functions (such as `putStrLn`) have been made level polymorphic.
   This may force you to add more type or level annotations to your programs.
 
+* In `Relation.Binary.Reasoning.StrictPartialOrder` filled a missing argument to the
+  re-exported `Relation.Binary.Reasoning.Base.Triple`.
+
 Non-backwards compatible changes
 --------------------------------
 

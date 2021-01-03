@@ -57,4 +57,5 @@ open import Relation.Binary.Reasoning.Base.Triple
   <-resp-≈
   NonStrict.<⇒≤
   (NonStrict.<-≤-trans trans <-respʳ-≈)
+  (NonStrict.≤-<-trans Eq.sym trans <-respˡ-≈)
   public
