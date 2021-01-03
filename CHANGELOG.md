@@ -726,3 +726,14 @@ Other minor additions
   ```agda
   resp : (P : Pred A ℓ) → P Respects _≡_
   ```
+  
+* Added new function to `Data.Fin` (the inverse of `splitAt`:
+  ```agda
+  join-⊎ : ∀ m n → Fin m ⊎ Fin n → Fin (m ℕ.+ n)
+  ```
+
+* Added new properties to `Data.Fin.Properties`:
+  ```agda
+  splitAt-join-⊎ : ∀ m n i → splitAt m (join-⊎ m n i) ≡ i
+  +↔⊎ : Fin (m ℕ.+ n) ↔ (Fin m ⊎ Fin n)
+  ```
