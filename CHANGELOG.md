@@ -74,6 +74,8 @@ Non-backwards compatible changes
   only a breaking change if you were supplying the module arguments upon import, in which
   case you will have to change to supplying them upon application of the proofs.
 
+* In `Relation.Binary.Reasoning.Base.Triple`, added a new parameter `<-irrefl : Irreflexive _≈_ _<_`
+
 Deprecated modules
 ------------------
 
@@ -1084,4 +1086,21 @@ Other minor additions
 * Added new proofs to `Relation.Nullary.Negation`:
   ```agda
   contradiction₂ : P ⊎ Q → ¬ P → ¬ Q → Whatever
+  ```
+
+* In `Relation.Binary.Reasoning.Base.Triple` new function:
+  ```agda
+  begin-irrefl : Irreflexive _≈_ _<_ → (r : x IsRelatedTo x) → {s : True (IsStrict? r)} → A
+  ```
+  Specialised versions are available in:
+  ```
+  Data.Nat.Properties
+  Data.Nat.Binary.Properties
+  Data.Integer.Properties
+  Data.Rational.Unnormalised.Properties
+  Data.Rational.Properties
+  Data.Vec.Relation.Binary.Lex.Strict
+  Data.Vec.Relation.Binary.Lex.NonStrict
+  Relation.Binary.Reasoning.StrictPartialOrder
+  Relation.Binary.Reasoning.PartialOrder
   ```

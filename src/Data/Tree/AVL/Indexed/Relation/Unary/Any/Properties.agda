@@ -30,7 +30,6 @@ open StrictTotalOrder sto renaming (Carrier to Key); open Eq using (_≉_; sym; 
 
 import Relation.Binary.Reasoning.StrictPartialOrder as <-Reasoning
 
-
 private
   variable
     v p q : Level
@@ -188,33 +187,33 @@ module _ {V : Value v} where
                                      joinʳ⁺-right⁺ kv lk ku′ bal (Any-insertWith-just ku seg′ pr rp)
 
     -- impossible cases
-    ... | here eq  | tri< k<k′ _ _ = flip contradiction (irrefl⁺ [ k ]) $ begin-strict
+    ... | here eq  | tri< k<k′ _ _ = begin-irrefl
       [ k  ] <⟨ [ k<k′ ]ᴿ ⟩
       [ k′ ] ≈⟨ [ sym eq ]ᴱ ⟩
       [ k  ] ∎
-    ... | here eq  | tri> _ _ k>k′ = flip contradiction (irrefl⁺ [ k ]) $ begin-strict
+    ... | here eq  | tri> _ _ k>k′ = begin-irrefl
       [ k  ] ≈⟨ [ eq ]ᴱ ⟩
       [ k′ ] <⟨ [ k>k′ ]ᴿ ⟩
       [ k  ] ∎
-    ... | left lp  | tri≈ _ k≈k′ _ = flip contradiction (irrefl⁺ [ k ]) $ begin-strict
+    ... | left lp  | tri≈ _ k≈k′ _ = begin-irrefl
       let k″ = Any.lookup lp .key; k≈k″ = lookup-result lp; (_ , k″<k′) = lookup-bounded lp in
       [ k  ] ≈⟨ [ k≈k″ ]ᴱ ⟩
       [ k″ ] <⟨ k″<k′ ⟩
       [ k′ ] ≈⟨ [ sym k≈k′ ]ᴱ ⟩
       [ k  ] ∎
-    ... | left lp  | tri> _ _ k>k′ = flip contradiction (irrefl⁺ [ k ]) $ begin-strict
+    ... | left lp  | tri> _ _ k>k′ = begin-irrefl
       let k″ = Any.lookup lp .key; k≈k″ = lookup-result lp; (_ , k″<k′) = lookup-bounded lp in
       [ k  ] ≈⟨ [ k≈k″ ]ᴱ ⟩
       [ k″ ] <⟨ k″<k′ ⟩
       [ k′ ] <⟨ [ k>k′ ]ᴿ ⟩
       [ k  ] ∎
-    ... | right rp | tri< k<k′ _ _ = flip contradiction (irrefl⁺ [ k ]) $ begin-strict
+    ... | right rp | tri< k<k′ _ _ = begin-irrefl
       let k″ = Any.lookup rp .key; k≈k″ = lookup-result rp; (k′<k″ , _) = lookup-bounded rp in
       [ k  ] <⟨ [ k<k′ ]ᴿ ⟩
       [ k′ ] <⟨ k′<k″ ⟩
       [ k″ ] ≈⟨ [ sym k≈k″ ]ᴱ ⟩
       [ k  ] ∎
-    ... | right rp | tri≈ _ k≈k′ _ = flip contradiction (irrefl⁺ [ k ]) $ begin-strict
+    ... | right rp | tri≈ _ k≈k′ _ = begin-irrefl
       let k″ = Any.lookup rp .key; k≈k″ = lookup-result rp; (k′<k″ , _) = lookup-bounded rp in
       [ k  ] ≈⟨ [ k≈k′ ]ᴱ ⟩
       [ k′ ] <⟨ k′<k″ ⟩

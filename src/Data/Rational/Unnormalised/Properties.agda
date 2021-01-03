@@ -514,7 +514,12 @@ module ≤-Reasoning where
     <⇒≤
     <-≤-trans
     ≤-<-trans
+    as Reasoning
     public
+    hiding (begin-irrefl)
+
+  infix 1 begin-irrefl_
+  begin-irrefl_ = Reasoning.begin-irrefl <-irrefl
 
 ------------------------------------------------------------------------
 -- Properties of ↥_/↧_

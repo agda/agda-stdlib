@@ -449,8 +449,12 @@ module ≤-Reasoning where
     <⇒≤
     <-transˡ
     <-transʳ
+    as Reasoning
     public
-    hiding (step-≈; step-≈˘)
+    hiding (begin-irrefl; step-≈; step-≈˘)
+
+  infix 1 begin-irrefl_
+  begin-irrefl_ = Reasoning.begin-irrefl <-irrefl
 
 open ≤-Reasoning
 

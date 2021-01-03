@@ -24,8 +24,9 @@ open import Function.Base using (case_of_; id)
 open import Level using (Level; _⊔_; Lift; lift)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; refl; sym)
-open import Relation.Nullary using (Dec; yes; no)
+open import Relation.Nullary using (Dec; yes; no; ¬_)
 open import Relation.Nullary.Decidable using (True; toWitness)
+open import Relation.Nullary.Negation using (contradiction)
 
 open IsPreorder isPreorder
   renaming
@@ -92,6 +93,18 @@ begin-strict_ r {s} = extractStrict (toWitness s)
 
 begin-equality_ : ∀ {x y} (r : x IsRelatedTo y) → {s : True (IsEquality? r)} → x ≈ y
 begin-equality_ r {s} = extractEquality (toWitness s)
+
+
+begin-irrefl : Irreflexive _≈_ _<_ →
+                ∀ {x} (r : x IsRelatedTo x) {s : True (IsStrict? r)} →
+                ∀ {a} {A : Set a} → A
+begin-irrefl <-irrefl {x} r {s} =  contradiction x<x x≮x where
+
+  x<x : x < x
+  x<x = extractStrict (toWitness s)
+
+  x≮x : ¬ (x < x)
+  x≮x = <-irrefl Eq.refl
 
 -- Step with the strict relation
 

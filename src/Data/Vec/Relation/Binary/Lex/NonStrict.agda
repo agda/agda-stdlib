@@ -261,4 +261,9 @@ module ≤-Reasoning  {_≈_ : Rel A ℓ₁} {_≼_ : Rel A ℓ₂}
     <⇒≤
     (<-transˡ ≼-po)
     (<-transʳ ≼-po)
+    as Reasoning
     public
+    hiding (begin-irrefl)
+
+  infix 1 begin-irrefl_
+  begin-irrefl_ = Reasoning.begin-irrefl <-irrefl

@@ -255,7 +255,6 @@ Any-×⁻ pq with Prod.map₂ (Prod.map₂ find) (find pq)
 
     (p , q) ∎
 
-
   to∘from : ∀ pq → Any-×⁺ {xs = xs} (Any-×⁻ pq) ≡ pq
   to∘from pq
     with find pq

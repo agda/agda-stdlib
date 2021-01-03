@@ -689,8 +689,12 @@ module ≤-Reasoning where
     <⇒≤
     <-≤-trans
     ≤-<-trans
+    as Reasoning
     public
-    hiding (step-≈; step-≈˘)
+    hiding (begin-irrefl; step-≈; step-≈˘)
+
+  infix 1 begin-irrefl_
+  begin-irrefl_ = Reasoning.begin-irrefl <-irrefl
 
 ------------------------------------------------------------------------
 -- Properties of Positive/NonPositive/Negative/NonNegative and _≤_/_<_

@@ -292,6 +292,7 @@ module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
 
 module ≤-Reasoning {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂}
                    (≈-isEquivalence : IsEquivalence _≈_)
+                   (≺-irrefl : Irreflexive _≈_ _≺_)
                    (≺-trans : Transitive _≺_)
                    (≺-resp-≈ : _≺_ Respects₂ _≈_)
                    (n : ℕ)
@@ -307,4 +308,9 @@ module ≤-Reasoning {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂}
     (<⇒≤ {m = n})
     (<-transˡ ≈-isPartialEquivalence ≺-resp-≈ ≺-trans)
     (<-transʳ ≈-isPartialEquivalence ≺-resp-≈ ≺-trans)
+    as Reasoning
     public
+    hiding (begin-irrefl)
+
+  infix 1 begin-irrefl_
+  begin-irrefl_ = Reasoning.begin-irrefl (<-irrefl ≺-irrefl)
