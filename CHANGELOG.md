@@ -83,6 +83,8 @@ Non-backwards compatible changes
   a pair (e.g. `(un)curry`). In this case you can use `Data.Tree.AVL.Value`'s `(to/from)Pair`
   to convert back and forth.
 
+* In `Relation.Binary.Reasoning.Base.Triple`, added a new parameter `<-irrefl : Irreflexive _≈_ _<_`
+
 Deprecated modules
 ------------------
 
@@ -580,4 +582,9 @@ Other minor additions
 
   intersection  : ⟨Set⟩ → ⟨Set⟩ → ⟨Set⟩
   intersections : List ⟨Set⟩ → ⟨Set⟩
+  ```
+
+* In `Relation.Binary.Reasoning.Base.Triple` new function:
+  ```agda
+  begin-irrefl_ : ∀ {x} (r : x IsRelatedTo x) → {s : True (IsStrict? r)} → ∀ {a} {A : Set a} → A
   ```

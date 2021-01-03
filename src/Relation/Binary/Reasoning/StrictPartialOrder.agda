@@ -53,6 +53,7 @@ import Relation.Binary.Construct.StrictToNonStrict _≈_ _<_ as NonStrict
 
 open import Relation.Binary.Reasoning.Base.Triple
   (NonStrict.isPreorder₂ isStrictPartialOrder)
+  irrefl
   trans
   <-resp-≈
   NonStrict.<⇒≤

@@ -525,6 +525,7 @@ x ≤? y with <-cmp x y
 
 module ≤-Reasoning = InequalityReasoning
   ≤-isPreorder
+  <-irrefl
   <-trans
   (resp₂ _<_) <⇒≤
   <-≤-trans ≤-<-trans

@@ -292,6 +292,7 @@ module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
 
 module ≤-Reasoning {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂}
                    (≈-isEquivalence : IsEquivalence _≈_)
+                   (≺-irrefl : Irreflexive _≈_ _≺_)
                    (≺-trans : Transitive _≺_)
                    (≺-resp-≈ : _≺_ Respects₂ _≈_)
                    (n : ℕ)
@@ -302,6 +303,7 @@ module ≤-Reasoning {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂}
 
   open import Relation.Binary.Reasoning.Base.Triple
     (≤-isPreorder ≈-isEquivalence ≺-trans ≺-resp-≈)
+    (<-irrefl ≺-irrefl)
     (<-trans ≈-isPartialEquivalence ≺-resp-≈ ≺-trans)
     (<-respects₂ ≈-isPartialEquivalence ≺-resp-≈)
     (<⇒≤ {m = n})
