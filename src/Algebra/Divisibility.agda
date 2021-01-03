@@ -23,28 +23,58 @@ module Algebra.Divisibility
 open import Algebra.Definitions _≈_
 
 ------------------------------------------------------------------------
--- Definitions
-
 -- Divisibility
 
-infix 5 _∣_ _∤_ _∣∣_ _¬∣∣_
+infix 5 _∣ˡ_ _∤ˡ_ _∣ʳ_ _∤ʳ_ _∣_ _∤_
+
+-- Divisibility from the left
+
+_∣ˡ_ : Rel A (a ⊔ ℓ)
+x ∣ˡ y = ∃ λ q → (x ∙ q) ≈ y
+
+_∤ˡ_ : Rel A (a ⊔ ℓ)
+x ∤ˡ y = ¬ x ∣ˡ y
+
+-- Divisibility from the right
+
+_∣ʳ_ : Rel A (a ⊔ ℓ)
+x ∣ʳ y = ∃ λ q → (q ∙ x) ≈ y
+
+_∤ʳ_ : Rel A (a ⊔ ℓ)
+x ∤ʳ y = ¬ x ∣ʳ y
+
+-- _∣ˡ_ and _∣ʳ_ are only equivalent in the commutative case. In this
+-- case we take the right definition to be the primary one.
 
 _∣_ : Rel A (a ⊔ ℓ)
-x ∣ y = ∃ λ q → (q ∙ x) ≈ y
+_∣_ = _∣ʳ_
 
 _∤_ : Rel A (a ⊔ ℓ)
 x ∤ y = ¬ x ∣ y
 
--- Mutual divisibility.
+------------------------------------------------------------------------
+-- Mutual divisibility
 
 -- When in a cancellative monoid, elements related by _∣∣_ are called
 -- associated and if x ∣∣ y then x and y differ by an invertible factor.
 
+infix 5 _∣∣_ _∤∤_
+
 _∣∣_ : Rel A (a ⊔ ℓ)
 x ∣∣ y = x ∣ y × y ∣ x
 
-_¬∣∣_ : Rel A (a ⊔ ℓ)
-x ¬∣∣ y =  ¬ x ∣∣ y
+_∤∤_ : Rel A (a ⊔ ℓ)
+x ∤∤ y =  ¬ x ∣∣ y
+
+------------------------------------------------------------------------------
+-- Greatest common divisor (GCD)
+
+record IsGCD (x y gcd : A) : Set (a ⊔ ℓ) where
+  constructor gcdᶜ
+  field
+    divides₁ : gcd ∣ x
+    divides₂ : gcd ∣ y
+    greatest : ∀ {z} → z ∣ x → z ∣ y → z ∣ gcd
 
 ------------------------------------------------------------------------
 -- Properties
@@ -67,9 +97,3 @@ x ¬∣∣ y =  ¬ x ∣∣ y
 
 ∣-resp : Symmetric _≈_ → Transitive _≈_ → LeftCongruent _∙_ → _∣_ Respects₂ _≈_
 ∣-resp sym trans cong = ∣-respʳ trans , ∣-respˡ sym trans cong
-
-∣-min : ∀ {ε} → RightIdentity ε _∙_ → Minimum _∣_ ε
-∣-min {ε} idʳ x = x , idʳ x
-
-∣-max : ∀ {ε} → LeftZero ε _∙_ → Maximum _∣_ ε
-∣-max {ε} zeˡ x = ε , zeˡ x

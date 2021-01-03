@@ -200,7 +200,7 @@ applyUpTo f zero    = []
 applyUpTo f (suc n) = f zero ∷ applyUpTo (f ∘ suc) n
 
 applyDownFrom : (ℕ → A) → ℕ → List A
-applyDownFrom f zero = []
+applyDownFrom f zero    = []
 applyDownFrom f (suc n) = f n ∷ applyDownFrom f n
 
 tabulate : ∀ {n} (f : Fin n → A) → List A

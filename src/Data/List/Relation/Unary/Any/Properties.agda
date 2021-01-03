@@ -10,7 +10,7 @@ module Data.List.Relation.Unary.Any.Properties where
 
 open import Category.Monad
 open import Data.Bool.Base using (Bool; false; true; T)
-open import Data.Bool.Properties
+open import Data.Bool.Properties using (T-∨; T-≡)
 open import Data.Empty using (⊥)
 open import Data.Fin.Base using (Fin) renaming (zero to fzero; suc to fsuc)
 open import Data.List.Base as List
@@ -22,7 +22,8 @@ open import Data.List.Membership.Propositional.Properties.Core
   using (Any↔; find∘map; map∘find; lose∘find)
 open import Data.List.Relation.Binary.Pointwise
   using (Pointwise; []; _∷_)
-open import Data.Nat.Base using (zero; suc; _<_; z≤n; s≤s)
+open import Data.Nat using (zero; suc; _<_; z≤n; s≤s)
+open import Data.Nat.Properties using (_≟_; ≤∧≢⇒<; ≤-refl; ≤-step)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.Any as MAny using (just)
 open import Data.Product as Prod
@@ -44,7 +45,7 @@ open import Relation.Binary.PropositionalEquality as P
   using (_≡_; refl; inspect)
 open import Relation.Unary as U
   using (Pred; _⟨×⟩_; _⟨→⟩_) renaming (_⊆_ to _⋐_)
-open import Relation.Nullary using (¬_; _because_; does; ofʸ; ofⁿ)
+open import Relation.Nullary using (¬_; _because_; does; ofʸ; ofⁿ; yes; no)
 open import Relation.Nullary.Negation using (contradiction; ¬?; decidable-stable)
 
 private
@@ -112,6 +113,10 @@ map-∘ f g (there p) = P.cong there $ map-∘ f g p
 lookup-result : ∀ (p : Any P xs) → P (Any.lookup p)
 lookup-result (here px) = px
 lookup-result (there p) = lookup-result p
+
+lookup-index : ∀ (p : Any P xs) → P (lookup xs (Any.index p))
+lookup-index (here px)   = px
+lookup-index (there pxs) = lookup-index pxs
 
 ------------------------------------------------------------------------
 -- Swapping
@@ -487,6 +492,22 @@ applyUpTo⁻ : ∀ f {n} → Any P (applyUpTo f n) →
 applyUpTo⁻ f {suc n} (here p)  = zero , s≤s z≤n , p
 applyUpTo⁻ f {suc n} (there p) with applyUpTo⁻ (f ∘ suc) p
 ... | i , i<n , q = suc i , s≤s i<n , q
+
+------------------------------------------------------------------------
+-- applyDownFrom
+
+module _ {P : A → Set p} where
+
+  applyDownFrom⁺ : ∀ f {i n} → P (f i) → i < n → Any P (applyDownFrom f n)
+  applyDownFrom⁺ f {i} {suc n} p (s≤s i≤n) with i ≟ n
+  ... | yes P.refl = here p
+  ... | no  i≢n    = there (applyDownFrom⁺ f p (≤∧≢⇒< i≤n i≢n))
+
+  applyDownFrom⁻ : ∀ f {n} → Any P (applyDownFrom f n) →
+                   ∃ λ i → i < n × P (f i)
+  applyDownFrom⁻ f {suc n} (here p)  = n , ≤-refl , p
+  applyDownFrom⁻ f {suc n} (there p) with applyDownFrom⁻ f p
+  ... | i , i<n , pf = i , ≤-step i<n , pf
 
 ------------------------------------------------------------------------
 -- tabulate

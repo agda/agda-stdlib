@@ -161,6 +161,16 @@ Deprecated names
   show ↦ Data.Integer.Show.show
   ```
 
+* In `Data.Integer.Properties`:
+  ```agda
+  neg-mono-<->        ↦ neg-mono-<
+  neg-mono-≤-≥        ↦ neg-mono-≤
+  *-monoʳ-≤-non-neg   ↦ *-monoʳ-≤-nonNeg
+  *-monoˡ-≤-non-neg   ↦ *-monoˡ-≤-nonNeg
+  *-cancelˡ-<-non-neg ↦ *-cancelˡ-<-nonNeg
+  *-cancelʳ-<-non-neg ↦ *-cancelʳ-<-nonNeg
+  ```
+
 * In `Data.Rational`:
     ```agda
   show ↦ Data.Rational.Show.show
@@ -196,10 +206,14 @@ New modules
 * Generic divisibility over algebraic structures
   ```
   Algebra.Divisibility
+  Algebra.GCD
+  Algebra.Primality
   Algebra.Properties.Magma.Divisibility
   Algebra.Properties.Semigroup.Divisibility
   Algebra.Properties.Monoid.Divisibility
   Algebra.Properties.CommutativeSemigroup.Divisibility
+  Algebra.Properties.Semiring.Divisibility
+  Algebra.Properties.Semiring.GCD
   ```
 
 * Generic summation over algebraic structures
@@ -234,6 +248,14 @@ New modules
   Data.List.Relation.Binary.Prefix.Homogeneous.Properties
   Data.List.Relation.Binary.Infix.Homogeneous.Properties
   Data.List.Relation.Binary.Suffix.Homogeneous.Properties
+  ```
+
+* Properties of lists with decidably unique elements:
+  ```
+  Data.List.Relation.Unary.Unique.DecSetoid
+  Data.List.Relation.Unary.Unique.DecSetoid.Properties
+  Data.List.Relation.Unary.Unique.DecPropositional
+  Data.List.Relation.Unary.Unique.DecPropositional.Properties
   ```
 
 * Added bindings for Haskell's `System.Environment`:
@@ -339,6 +361,100 @@ Other minor additions
   ⊖-≤             : m ≤ n → m ⊖ n ≡ - + (n ∸ m)
   -m+n≡n⊖m        : - (+ m) + + n ≡ n ⊖ m
   m-n≡m⊖n         : + m + (- + n) ≡ m ⊖ n
+
+  ≤∧≢⇒<                    : x ≤ y → x ≢ y → x < y
+  ≤∧≮⇒≡                    : x ≤ y → x ≮ y → x ≡ y
+
+  positive⁻¹               : Positive n → n > 0ℤ
+  nonNegative⁻¹            : NonNegative n → n ≥ 0ℤ
+  negative⁻¹               : Negative n → n < 0ℤ
+  nonPositive⁻¹            : NonPositive q → q ≤ 0ℤ
+  negative<positive        : Negative m → Positive n → m < n
+
+  neg-mono-<               : -_ Preserves _<_ ⟶ _>_
+  neg-mono-≤               : -_ Preserves _≤_ ⟶ _≥_
+  neg-cancel-<             : - m < - n → m > n
+  neg-cancel-≤             : - m ≤ - n → m ≥ n
+
+  +∣n∣≡n⊎+∣n∣≡-n           : + ∣ n ∣ ≡ n ⊎ + ∣ n ∣ ≡ - n
+  ∣m⊝n∣≤m⊔n                : ∣ m ⊖ n ∣ ℕ.≤ m ℕ.⊔ n
+  ∣m+n∣≤∣m∣+∣n∣            : ∣ m + n ∣ ℕ.≤ ∣ m ∣ ℕ.+ ∣ n ∣
+  ∣m-n∣≤∣m∣+∣n∣            : ∣ m - n ∣ ℕ.≤ ∣ m ∣ ℕ.+ ∣ n ∣
+
+  *-cancelˡ-≤-neg          : -[1+ m ] * n ≤ -[1+ m ] * o → n ≥ o
+  *-cancelʳ-≤-neg          : n * -[1+ m ] ≤ o * -[1+ m ] → n ≥ o
+  *-monoˡ-≤-nonPos         : NonPositive m → (m *_) Preserves _≤_ ⟶ _≥_
+  *-monoʳ-≤-nonPos         : ∀ m → NonPositive m → (_* m) Preserves _≤_ ⟶ _≥_
+  *-monoˡ-≤-neg            : (-[1+ m ] *_) Preserves _≤_ ⟶ _≥_
+  *-monoʳ-≤-neg            : (_* -[1+ m ]) Preserves _≤_ ⟶ _≥_
+  *-monoˡ-<-neg            : (-[1+ n ] *_) Preserves _<_ ⟶ _>_
+  *-monoʳ-<-neg            : (_* -[1+ n ]) Preserves _<_ ⟶ _>_
+  *-cancelˡ-<-neg          : -[1+ n ] * i < -[1+ n ] * j → i > j
+  *-cancelˡ-<-nonPos       : NonPositive n → n * i < n * j → i > j
+  *-cancelʳ-<-neg          : i * -[1+ n ] < j * -[1+ n ] → i > j
+  *-cancelʳ-<-nonPos      : NonPositive n → i * n < j * n → i > j
+
+  ∣m*n∣≡∣m∣*∣n∣            : ∣ m * n ∣ ≡ ∣ m ∣ ℕ.* ∣ n ∣
+  +-*-commutativeSemiring  : CommutativeSemiring 0ℓ 0ℓ
+
+  mono-≤-distrib-⊓         : f Preserves _≤_ ⟶ _≤_ → f (m ⊓ n) ≡ f m ⊓ f n
+  mono-<-distrib-⊓         : f Preserves _<_ ⟶ _<_ → f (m ⊓ n) ≡ f m ⊓ f n
+  mono-≤-distrib-⊔         : f Preserves _≤_ ⟶ _≤_ → f (m ⊔ n) ≡ f m ⊔ f n
+  mono-<-distrib-⊔         : f Preserves _<_ ⟶ _<_ → f (m ⊔ n) ≡ f m ⊔ f n
+
+  antimono-≤-distrib-⊔         : f Preserves _≤_ ⟶ _≥_ → f (m ⊔ n) ≡ f m ⊓ f n
+  antimono-<-distrib-⊔         : f Preserves _<_ ⟶ _>_ → f (m ⊔ n) ≡ f m ⊓ f n
+  antimono-≤-distrib-⊓         : f Preserves _≤_ ⟶ _≥_ → f (m ⊓ n) ≡ f m ⊔ f n
+  antimono-<-distrib-⊓         : f Preserves _<_ ⟶ _>_ → f (m ⊓ n) ≡ f m ⊔ f n
+
+  *-distribˡ-⊓-nonNeg      : + m * (n ⊓ o) ≡ (+ m * n) ⊓ (+ m * o)
+  *-distribʳ-⊓-nonNeg      : (n ⊓ o) * + m ≡ (n * + m) ⊓ (o * + m)
+  *-distribˡ-⊔-nonNeg      : + m * (n ⊔ o) ≡ (+ m * n) ⊔ (+ m * o)
+  *-distribʳ-⊔-nonNeg      : (n ⊔ o) * + m ≡ (n * + m) ⊔ (o * + m)
+
+  *-distribˡ-⊓-nonPos      : NonPositive m → m * (n ⊓ o) ≡ (m * n) ⊔ (m * o)
+  *-distribʳ-⊓-nonPos      : NonPositive m → (n ⊓ o) * m ≡ (n * m) ⊔ (o * m)
+  *-distribˡ-⊔-nonPos      : NonPositive m → m * (n ⊔ o) ≡ (m * n) ⊓ (m * o)
+  *-distribʳ-⊔-nonPos      : NonPositive m → (n ⊔ o) * m ≡ (n * m) ⊓ (o * m)
+
+  ⊓-absorbs-⊔              : _⊓_ Absorbs _⊔_
+  ⊔-absorbs-⊓              : _⊔_ Absorbs _⊓_
+  ⊔-⊓-absorptive           : Absorptive _⊔_ _⊓_
+  ⊓-⊔-absorptive           : Absorptive _⊓_ _⊔_
+
+  ⊓-isMagma                : IsMagma _⊓_
+  ⊓-isSemigroup            : IsSemigroup _⊓_
+  ⊓-isBand                 : IsBand _⊓_
+  ⊓-isCommutativeSemigroup : IsCommutativeSemigroup _⊓_
+  ⊓-isSemilattice          : IsSemilattice _⊓_
+  ⊓-isSelectiveMagma       : IsSelectiveMagma _⊓_
+
+  ⊔-isMagma                : IsMagma _⊔_
+  ⊔-isSemigroup            : IsSemigroup _⊔_
+  ⊔-isBand                 : IsBand _⊔_
+  ⊔-isCommutativeSemigroup : IsCommutativeSemigroup _⊔_
+  ⊔-isSemilattice          : IsSemilattice _⊔_
+  ⊔-isSelectiveMagma       : IsSelectiveMagma _⊔_
+
+  ⊔-⊓-isLattice            : IsLattice _⊔_ _⊓_
+  ⊓-⊔-isLattice            : IsLattice _⊓_ _⊔_
+
+  ⊓-magma                  : Magma _ _
+  ⊓-semigroup              : Semigroup _ _
+  ⊓-band                   : Band _ _
+  ⊓-commutativeSemigroup   : CommutativeSemigroup _ _
+  ⊓-semilattice            : Semilattice _ _
+  ⊓-selectiveMagma         : SelectiveMagma _ _
+
+  ⊔-magma                  : Magma _ _
+  ⊔-semigroup              : Semigroup _ _
+  ⊔-band                   : Band _ _
+  ⊔-commutativeSemigroup   : CommutativeSemigroup _ _
+  ⊔-semilattice            : Semilattice _ _
+  ⊔-selectiveMagma         : SelectiveMagma _ _
+
+  ⊔-⊓-lattice              : Lattice _ _
+  ⊓-⊔-lattice              : Lattice _ _
   ```
 
 * Added new relations in `Data.List.Relation.Binary.Subset.(Propositional/Setoid)`:
@@ -347,12 +463,12 @@ Other minor additions
   xs ⊉ ys = ¬ xs ⊇ ys
   ```
 
-* Added new proofs in `Data.List.Relation.Binary.Subset.Propositional.Properties`:
+* Added new proofs in `Data.List.Relation.Binary.Subset.Setoid.Properties`:
   ```agda
   ⊆-respʳ-≋      : _⊆_ Respectsʳ _≋_
   ⊆-respˡ-≋      : _⊆_ Respectsˡ _≋_
 
-  ↭⇒⊆            : _↭_ ⇒ _⊆_
+  ⊆-reflexive-↭  : _↭_ ⇒ _⊆_
   ⊆-respʳ-↭      : _⊆_ Respectsʳ _↭_
   ⊆-respˡ-↭      : _⊆_ Respectsˡ _↭_
   ⊆-↭-isPreorder : IsPreorder _↭_ _⊆_
@@ -366,11 +482,13 @@ Other minor additions
   ++⁺ʳ           : xs ⊆ ys → zs ++ xs ⊆ zs ++ ys
   ++⁺ˡ           : xs ⊆ ys → xs ++ zs ⊆ ys ++ zs
   ++⁺            : ws ⊆ xs → ys ⊆ zs → ws ++ ys ⊆ xs ++ zs
+
+  filter⁺′       : P ⋐ Q → xs ⊆ ys → filter P? xs ⊆ filter Q? ys
   ```
 
 * Added new proofs in `Data.List.Relation.Binary.Subset.Propositional.Properties`:
   ```agda
-  ↭⇒⊆            : _↭_ ⇒ _⊆_
+  ⊆-reflexive-↭  : _↭_ ⇒ _⊆_
   ⊆-respʳ-↭      : _⊆_ Respectsʳ _↭_
   ⊆-respˡ-↭      : _⊆_ Respectsˡ _↭_
   ⊆-↭-isPreorder : IsPreorder _↭_ _⊆_
@@ -378,11 +496,22 @@ Other minor additions
 
   Any-resp-⊆     : (Any P) Respects _⊆_
   All-resp-⊇     : (All P) Respects _⊇_
+  Sublist⇒Subset : xs ⊑ ys → xs ⊆ ys
 
   xs⊆xs++ys      : xs ⊆ xs ++ ys
   xs⊆ys++xs      : xs ⊆ ys ++ xs
   ++⁺ʳ           : xs ⊆ ys → zs ++ xs ⊆ zs ++ ys
   ++⁺ˡ           : xs ⊆ ys → xs ++ zs ⊆ ys ++ zs
+
+  filter⁺′       : P ⋐ Q → xs ⊆ ys → filter P? xs ⊆ filter Q? ys
+  ```
+
+* Added new relations to `Data.List.Relation.Binary.Sublist.(Setoid/Propositional)`:
+  ```agda
+  xs ⊂ ys = xs ⊆ ys × ¬ (xs ≋ ys)
+  xs ⊃ ys = ys ⊂ xs
+  xs ⊄ ys = ¬ (xs ⊂ ys)
+  xs ⊅ ys = ¬ (xs ⊃ ys)
   ```
 
 * Added new proof in `Data.List.Relation.Binary.Permutation.Propositional.Properties`:
@@ -393,6 +522,40 @@ Other minor additions
 * Added new proof in `Data.List.Relation.Binary.Permutation.Setoi.Properties`:
   ```agda
   ++↭ʳ++ : xs ++ ys ↭ xs ʳ++ ys
+  ```
+
+* Added new proofs in `Data.List.Extrema`:
+  ```agda
+  min-mono-⊆ : ⊥₁ ≤ ⊥₂ → xs ⊇ ys → min ⊥₁ xs ≤ min ⊥₂ ys
+  max-mono-⊆ : ⊥₁ ≤ ⊥₂ → xs ⊆ ys → max ⊥₁ xs ≤ max ⊥₂ ys
+  ```
+
+* Added new operator in `Data.List.Membership.DecSetoid`:
+  ```agda
+  _∉?_ : Decidable _∉_
+  ```
+
+* Added new proofs in `Data.List.Relation.Unary.Any.Properties`:
+  ```agda
+  lookup-index   : (p : Any P xs) → P (lookup xs (index p))
+  applyDownFrom⁺ : P (f i) → i < n → Any P (applyDownFrom f n)
+  applyDownFrom⁻ : Any P (applyDownFrom f n) → ∃ λ i → i < n × P (f i)
+  ```
+
+* Added new proofs in `Data.List.Membership.Setoid.Properties`:
+  ```agda
+  ∈-applyDownFrom⁺ : i < n → f i ∈ applyDownFrom f n
+  ∈-applyDownFrom⁻ : v ∈ applyDownFrom f n → ∃ λ i → i < n × v ≈ f i
+  ```
+
+* Added new proofs in `Data.List.Membership.Propositional.Properties`:
+  ```agda
+  ∈-applyDownFrom⁺ : i < n → f i ∈ applyDownFrom f n
+  ∈-applyDownFrom⁻ : v ∈ applyDownFrom f n → ∃ λ i → i < n × v ≡ f i
+  ∈-upTo⁺          : i < n → i ∈ upTo n
+  ∈-upTo⁻          : i ∈ upTo n → i < n
+  ∈-downFrom⁺      : i < n → i ∈ downFrom n
+  ∈-downFrom⁻      : i ∈ downFrom n → i < n
   ```
 
 * Added new definition in `Data.Nat.Base`:
@@ -415,6 +578,11 @@ Other minor additions
   *-distribˡ-⊓          : _*_ DistributesOverˡ _⊓_
   *-distribʳ-⊓          : _*_ DistributesOverʳ _⊓_
   *-distrib-⊓           : _*_ DistributesOver _⊓_
+  ```
+
+* Added new operation in `Data.Sum`:
+  ```agda
+  reduce : A ⊎ A → A
   ```
 
 * Added new proofs in `Data.Sign.Properties`:
@@ -444,11 +612,6 @@ Other minor additions
   symmetric   : Symmetric _∼_ → Symmetric _∼⁺_
   transitive  : Transitive _∼⁺_
   wellFounded : WellFounded _∼_ → WellFounded _∼⁺_
-  ```
-
-* Add new properties to `Data.Integer.Properties`:
-  ```agda
-  +-*-commutativeSemiring : CommutativeSemiring 0ℓ 0ℓ
   ```
 
 * Added new definition to `Data.Char.Base`:
@@ -599,4 +762,9 @@ Other minor additions
 
   strictPartialOrder : StrictPartialOrder _ _ _
   strictTotalOrder   : StrictTotalOrder _ _ _
+  ```
+
+* Added new proof to `Relation.Binary.PropositionalEquality`:
+  ```agda
+  resp : (P : Pred A ℓ) → P Respects _≡_
   ```
