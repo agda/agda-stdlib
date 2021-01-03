@@ -553,6 +553,8 @@ Other minor additions
 
   pattern node⁺ k₁ t₁ k₂ t₂ t₃ bal = node k₁ t₁ (node k₂ t₂ t₃ bal) ∼+
   pattern node⁻ k₁ k₂ t₁ t₂ bal t₃ = node k₁ (node k₂ t₁ t₂ bal) t₃ ∼-
+
+  ordered : Tree V l u n → l <⁺ u
   ```
 
 * Added new functions to `Data.Tree.AVL.IndexedMap` module:

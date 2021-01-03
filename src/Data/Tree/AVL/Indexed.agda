@@ -55,6 +55,10 @@ data Tree {v} (V : Value v) (l u : Key⁺) : ℕ → Set (a ⊔ v ⊔ ℓ₂) wh
 
 module _ {v} {V : Value v} where
 
+  ordered : ∀ {l u n} → Tree V l u n → l <⁺ u
+  ordered (leaf l<u)          = l<u
+  ordered (node kv lk ku bal) = trans⁺ _ (ordered lk) (ordered ku)
+
   private
     Val = Value.family V
     V≈  = Value.respects V
