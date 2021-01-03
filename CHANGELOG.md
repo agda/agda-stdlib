@@ -588,3 +588,13 @@ Other minor additions
   ```agda
   begin-irrefl_ : ∀ {x} (r : x IsRelatedTo x) → {s : True (IsStrict? r)} → ∀ {a} {A : Set a} → A
   ```
+
+* Re-exported and defined new functions in `Data.Tree.AVL.Key`:
+  ```agda
+  _≈⁺_ : Rel Key _
+  [_]ᴱ : x ≈ y → [ x ] ≈⁺ [ y ]
+  sym⁺ : l ≈⁺ u → u ≈⁺ l
+
+  strictPartialOrder : StrictPartialOrder _ _ _
+  strictTotalOrder   : StrictTotalOrder _ _ _
+  ```
