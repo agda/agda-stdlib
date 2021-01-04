@@ -35,8 +35,8 @@ open import Algebra.Definitions _≈_
 ------------------------------------------------------------------------
 -- Definition
 
-sum : ∀ {n} → Vector Carrier n → Carrier
-sum = Vector.foldr _+_ 0#
+open import Algebra.Definitions.RawMonoid rawMonoid public
+  using (sum)
 
 ------------------------------------------------------------------------
 -- An alternative mathematical-style syntax for sumₜ
