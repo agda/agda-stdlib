@@ -711,6 +711,7 @@ Other minor additions
   ∣_∣-cong                 : p ≃ q → ∣ p ∣ ≃ ∣ q ∣
   ∣p∣≃0⇒p≃0                : ∣ p ∣ ≃ 0ℚᵘ → p ≃ 0ℚᵘ
   ∣-p∣≡∣p∣                 : ∣ - p ∣ ≡ ∣ p ∣
+  ∣-p∣≃∣p∣                 : ∣ - p ∣ ≃ ∣ p ∣
   0≤p⇒∣p∣≡p                : 0ℚᵘ ≤ p → ∣ p ∣ ≡ p
   0≤p⇒∣p∣≃p                : 0ℚᵘ ≤ p → ∣ p ∣ ≃ p
   ∣p∣≡p⇒0≤p                : ∣ p ∣ ≡ p → 0ℚᵘ ≤ p

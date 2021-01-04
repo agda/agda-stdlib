@@ -140,7 +140,8 @@ neg-involutive p rewrite neg-involutive-≡ p = ≃-refl
   ℤ.-(1ℤ ℤ.* ↥ q) ℤ.* ↧ p   ≡⟨ cong (ℤ._* ↧ p) (ℤ.neg-distribʳ-* 1ℤ (↥ q)) ⟩
   (1ℤ ℤ.* ↥(- q)) ℤ.* ↧ p   ≡⟨ ℤ.*-assoc 1ℤ (ℤ.-(↥ q)) (↧ p) ⟩
   1ℤ ℤ.* (↥(- q) ℤ.* ↧ p)   ≡⟨ ℤ.*-identityˡ (↥(- q) ℤ.* ↧ p) ⟩
-  ↥(- q) ℤ.* ↧ p            ∎ where open ≡-Reasoning
+  ↥(- q) ℤ.* ↧ p            ∎
+  where open ≡-Reasoning
 
 neg-mono-< : -_ Preserves  _<_ ⟶ _>_
 neg-mono-< {p} {q} (*<* p<q) = *<* $ begin-strict
@@ -759,7 +760,7 @@ neg-cancel-≤ {p} {q} (*≤* -↥p↧q≤-↥q↧p) = *≤* $ begin
   ℤ.- ((ℤ.- ↥ q) ℤ.* ↧ p) ≤⟨ ℤ.neg-mono-≤ -↥p↧q≤-↥q↧p ⟩
   ℤ.- ((ℤ.- ↥ p) ℤ.* ↧ q) ≡˘⟨ cong ℤ.-_ (ℤ.neg-distribˡ-* (↥ p) (↧ q)) ⟩
   ℤ.- ℤ.- (↥ p ℤ.* ↧ q)   ≡⟨ ℤ.neg-involutive (↥ p ℤ.* ↧ q) ⟩
-  ↥ p ℤ.* ↧ q ∎
+  ↥ p ℤ.* ↧ q             ∎
   where
     open ℤ.≤-Reasoning
 
@@ -1973,8 +1974,7 @@ antimono-≤-distrib-⊔ f f-mono-≤-≥ p q with ≤-total p q
 
 0≤p⇒∣p∣≡p : ∀ {p} → 0ℚᵘ ≤ p → ∣ p ∣ ≡ p
 0≤p⇒∣p∣≡p {mkℚᵘ (ℤ.+ n)    d-1} 0≤p = refl
-0≤p⇒∣p∣≡p {mkℚᵘ (-[1+ n ]) d-1} 0≤p with nonNegative 0≤p
-... | ()
+0≤p⇒∣p∣≡p {mkℚᵘ (-[1+ n ]) d-1} 0≤p = contradiction 0≤p (<⇒≱ (*<* ℤ.-<+))
 
 0≤p⇒∣p∣≃p : ∀ {p} → 0ℚᵘ ≤ p → ∣ p ∣ ≃ p
 0≤p⇒∣p∣≃p {p} = ≃-reflexive ∘ 0≤p⇒∣p∣≡p {p}
