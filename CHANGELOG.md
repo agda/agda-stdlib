@@ -723,3 +723,8 @@ Other minor additions
   ```agda
   resp : (P : Pred A ℓ) → P Respects _≡_
   ```
+
+* Added new proof to `Data.Fin.Properties`:
+  ```agda
+  Fin0↔⊥ : Fin 0 ↔ ⊥
+  ```
