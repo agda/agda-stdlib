@@ -24,19 +24,19 @@ module Algebra.Properties.Semiring.Primality
 open Semiring R renaming (Carrier to A)
 open SemiringDiv R
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Re-export primality definitions
 
 open Algebra.Primality _≈_ _*_ 0# 1# public
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of Irreducible
 
 Irreducible⇒≉0 : 0# ≉ 1# → ∀ {p} → Irreducible p → p ≉ 0#
 Irreducible⇒≉0 0≉1 (mkIrred _ chooseInvertible) p≈0 =
   0∤1 0≉1 (reduce (chooseInvertible (trans p≈0 (sym (zeroˡ 0#)))))
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of Coprime
 
 Coprime-sym : Symmetric Coprime

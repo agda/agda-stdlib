@@ -25,7 +25,7 @@ open import Relation.Unary using (Pred)
 ------------------------------------------------------------------------
 -- Re-exports
 
--- Export base lemmas that don't require the setoidd
+-- Export base lemmas that don't require the setoid
 
 open import Algebra.Consequences.Base public
 
@@ -47,6 +47,24 @@ module _ {_•_ : Op₂ A} (comm : Commutative _•_) where
     x • y ≈⟨ eq ⟩
     x • z ≈⟨ comm x z ⟩
     z • x ∎)
+
+  comm+cancelˡ-nonZero⇒cancelʳ-nonZero :
+    (0# : A) → AlmostLeftCancellative 0# _•_ → AlmostRightCancellative 0# _•_
+  comm+cancelˡ-nonZero⇒cancelʳ-nonZero 0# cancelˡ-nonZero {x} y z x≉0 yx≈zx =
+    cancelˡ-nonZero y z x≉0 (begin
+      x • y   ≈⟨ comm x y ⟩
+      y • x   ≈⟨ yx≈zx ⟩
+      z • x   ≈⟨ comm z x ⟩
+      x • z   ∎)
+
+  comm+cancelʳ-nonZero⇒cancelˡ-nonZero :
+    (0# : A) → AlmostRightCancellative 0# _•_ → AlmostLeftCancellative 0# _•_
+  comm+cancelʳ-nonZero⇒cancelˡ-nonZero 0# cancelʳ-nonZero {x} y z x≉0 xy≈xz =
+    cancelʳ-nonZero y z x≉0 (begin
+      y • x   ≈⟨ comm y x ⟩
+      x • y   ≈⟨ xy≈xz ⟩
+      x • z   ≈⟨ comm x z ⟩
+      z • x   ∎)
 
 ------------------------------------------------------------------------
 -- Monoid-like structures

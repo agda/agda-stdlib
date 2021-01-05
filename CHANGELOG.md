@@ -334,6 +334,7 @@ Other minor additions
   ```agda
   IsCommutativeMagma (• : Op₂ A) : Set (a ⊔ ℓ)
   IsCancellativeCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ)
+  IsGCDSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ)
   ```
 
 * Added new proofs in `Data.Integer.Properties`:
@@ -728,4 +729,12 @@ Other minor additions
 * Added new proof to `Relation.Binary.PropositionalEquality`:
   ```agda
   resp : (P : Pred A ℓ) → P Respects _≡_
+	```
+
+* Added new proofs to `Algebra.Consequences.Setoid`:
+  ```agda
+  comm+cancelˡ-nonZero⇒cancelʳ-nonZero :
+    (0# : A) → AlmostLeftCancellative 0# _•_ → AlmostRightCancellative 0# _•_
+  comm+cancelʳ-nonZero⇒cancelˡ-nonZero :
+    (0# : A) → AlmostRightCancellative 0# _•_ → AlmostLeftCancellative 0# _•_
   ```

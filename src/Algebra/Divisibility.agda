@@ -2,7 +2,7 @@
 -- The Agda standard library
 --
 -- Definition of divisibility
-------------------------------------------------------------------------
+-----------------------------------------------------------------------
 
 -- You're unlikely to want to use this module directly. Instead you
 -- probably want to be importing the appropriate module from
@@ -11,7 +11,7 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Core
-open import Data.Product using (_×_; _,_; proj₁; proj₂; ∃)
+open import Data.Product using (_×_; _,_; proj₁; proj₂; ∃; swap)
 open import Level using (_⊔_)
 open import Relation.Binary
 open import Relation.Nullary using (¬_)
@@ -22,7 +22,7 @@ module Algebra.Divisibility
 
 open import Algebra.Definitions _≈_
 
-------------------------------------------------------------------------
+-----------------------------------------------------------------------
 -- Divisibility
 
 infix 5 _∣ˡ_ _∤ˡ_ _∣ʳ_ _∤ʳ_ _∣_ _∤_
@@ -53,12 +53,13 @@ _∤_ : Rel A (a ⊔ ℓ)
 x ∤ y = ¬ x ∣ y
 
 ------------------------------------------------------------------------
--- Mutual divisibility
-
--- When in a cancellative monoid, elements related by _∣∣_ are called
--- associated and if x ∣∣ y then x and y differ by an invertible factor.
-
-infix 5 _∣∣_ _∤∤_
+-- Mutual divisibility _∣∣_.
+-- In a  monoid,  this is an equivalence relation extending _≈_.
+-- When in a  cancellative monoid,  elements related by _∣∣_ are called
+-- associated,  and there x ∣∣ y is equivalent to that x and y differ by
+-- some invertible factor.
+-- Example: for ℕ  this is equivalent to  x ≡ y,
+--          for ℤ  this is equivalent to  (x ≡ y  or  x ≡ -y).
 
 _∣∣_ : Rel A (a ⊔ ℓ)
 x ∣∣ y = x ∣ y × y ∣ x
@@ -90,7 +91,7 @@ record IsGCD (x y gcd : A) : Set (a ⊔ ℓ) where
 
 
 ------------------------------------------------------------------------
--- Properties
+-- Properties of _∣_ and _∣∣_
 
 ∣-refl : ∀ {ε} → LeftIdentity ε _∙_ → Reflexive _∣_
 ∣-refl {ε} idˡ {x} = ε , idˡ x
@@ -110,3 +111,28 @@ record IsGCD (x y gcd : A) : Set (a ⊔ ℓ) where
 
 ∣-resp : Symmetric _≈_ → Transitive _≈_ → LeftCongruent _∙_ → _∣_ Respects₂ _≈_
 ∣-resp sym trans cong = ∣-respʳ trans , ∣-respˡ sym trans cong
+
+∣∣-refl : ∀ {ε} → LeftIdentity ε _∙_ → Reflexive _∣∣_
+∣∣-refl idˡ = ∣-refl idˡ , ∣-refl idˡ
+
+∣∣-reflexive : Symmetric _≈_ → Transitive _≈_ → ∀ {ε} → LeftIdentity ε _∙_ →
+  _≈_ ⇒ _∣∣_
+∣∣-reflexive sym trans idˡ x≈y = ∣-reflexive trans idˡ x≈y , ∣-reflexive trans idˡ (sym x≈y)
+
+∣∣-sym : Symmetric _∣∣_
+∣∣-sym = swap
+
+∣∣-trans : Transitive _≈_ → LeftCongruent _∙_ → Associative _∙_ → Transitive _∣∣_
+∣∣-trans trans congˡ assoc {x} {y} {z} (x∣y , y∣x) (y∣z , z∣y) =
+  ∣-trans trans congˡ assoc x∣y y∣z , ∣-trans trans congˡ assoc z∣y y∣x
+
+∣∣-respʳ : Symmetric _≈_ → Transitive _≈_ → LeftCongruent _∙_ → _∣∣_ Respectsʳ _≈_
+∣∣-respʳ sym trans congˡ y≈z (x∣y , y∣x) =
+  ∣-respʳ trans y≈z x∣y , ∣-respˡ sym trans congˡ y≈z y∣x
+
+∣∣-respˡ : Symmetric _≈_ → Transitive _≈_ → LeftCongruent _∙_ → _∣∣_ Respectsˡ _≈_
+∣∣-respˡ sym trans congˡ x≈z (x∣y , y∣x) =
+  ∣-respˡ sym trans congˡ x≈z x∣y , ∣-respʳ trans x≈z y∣x
+
+∣∣-resp : Symmetric _≈_ → Transitive _≈_ → LeftCongruent _∙_ → _∣∣_ Respects₂ _≈_
+∣∣-resp sym trans cong = ∣∣-respʳ sym trans cong , ∣∣-respˡ sym trans cong

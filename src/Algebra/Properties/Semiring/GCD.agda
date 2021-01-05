@@ -14,8 +14,6 @@ module Algebra.Properties.Semiring.GCD {a ℓ} (R : Semiring a ℓ) where
 
 open Semiring R
 open Primality _≈_ _*_ 0# 1# using (Coprime)
--- open import Algebra.Properties.Monoid.Divisibility *-monoid using (∣-refl)
-
 open import Algebra.Properties.Semiring.Divisibility R
 
 ------------------------------------------------------------------------
@@ -27,11 +25,11 @@ open import Algebra.Divisibility _≈_ _*_ public
 ------------------------------------------------------------------------
 -- Properties of GCD
 
-isGCD-0-x-x : ∀ x → IsGCD 0# x x
-isGCD-0-x-x x =  isGCDᶜ (_∣0 x) ∣-refl (λ _ y∣x → y∣x)
+isGCD[0,x,x] : ∀ x → IsGCD 0# x x
+isGCD[0,x,x] x =  isGCDᶜ (_∣0 x) ∣-refl (λ _ y∣x → y∣x)
 
-isGCD-x-0-x : ∀ x → IsGCD x 0# x
-isGCD-x-0-x x =  isGCDᶜ ∣-refl (_∣0 x) (λ y∣x _ → y∣x)
+isGCD[x,0,x] : ∀ x → IsGCD x 0# x
+isGCD[x,0,x] x =  isGCDᶜ ∣-refl (_∣0 x) (λ y∣x _ → y∣x)
 
 x≉0⊎y≉0⇒gcd≉0 : ∀ {x y d} → IsGCD x y d → x ≉ 0# ⊎ y ≉ 0# → d ≉ 0#
 x≉0⊎y≉0⇒gcd≉0 (isGCDᶜ d∣x _ _) (inj₁ x≉0) = x∣y∧y≉0⇒x≉0 d∣x x≉0
@@ -44,8 +42,6 @@ x≈0∧y≈0⇒gcd≈0 (isGCDᶜ _ _ greatest) x≈0 y≈0 =  0∣x⇒x≈0 0�
   0∣y = ∣-respʳ (sym y≈0) (0# ∣0)
   0∣d = greatest {0#} 0∣x 0∣y
 
-coprime⇒gcd∣1 : ∀ {x y d} → IsGCD x y d → Coprime x y →  d ∣ 1#
-                                   -- (gcd x y) is invertible for (coprime x y)
-coprime⇒gcd∣1 isGCD coprime-x-y =  coprime-x-y divides₁ divides₂
-  where
-  open IsGCD isGCD
+coprime⇒gcd∣1 : ∀ {x y d} → Coprime x y → IsGCD x y d →  d ∣ 1#
+                                   -- (gcd x y) is invertible for (Coprime x y)
+coprime⇒gcd∣1 coprime[x,y] (isGCDᶜ divides₁ divides₂ _) = coprime[x,y] divides₁ divides₂
