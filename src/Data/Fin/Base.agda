@@ -132,8 +132,8 @@ splitAt (suc m) zero    = inj₁ zero
 splitAt (suc m) (suc i) = Sum.map suc id (splitAt m i)
 
 -- inverse of above function
-join-⊎ : ∀ m n → Fin m ⊎ Fin n → Fin (m ℕ.+ n)
-join-⊎ m n = [ inject+ n , raise {n} m ]′
+join : ∀ m n → Fin m ⊎ Fin n → Fin (m ℕ.+ n)
+join m n = [ inject+ n , raise {n} m ]′
 
 -- quotRem k "i" = "i % k" , "i / k"
 -- This is dual to group from Data.Vec.

@@ -166,6 +166,11 @@ Deprecated names
   show ↦ Data.Rational.Show.show
   ```
 
+* In `Data.Fin.Properties`:
+  ```agda
+  inject+-raise-splitAt ↦ join-splitAt
+  ```
+
 New modules
 -----------
 
@@ -729,11 +734,11 @@ Other minor additions
   
 * Added new function to `Data.Fin` (the inverse of `splitAt`:
   ```agda
-  join-⊎ : ∀ m n → Fin m ⊎ Fin n → Fin (m ℕ.+ n)
+  join : ∀ m n → Fin m ⊎ Fin n → Fin (m ℕ.+ n)
   ```
 
 * Added new properties to `Data.Fin.Properties`:
   ```agda
-  splitAt-join-⊎ : ∀ m n i → splitAt m (join-⊎ m n i) ≡ i
+  splitAt-join : ∀ m n i → splitAt m (join m n i) ≡ i
   +↔⊎ : Fin (m ℕ.+ n) ↔ (Fin m ⊎ Fin n)
   ```
