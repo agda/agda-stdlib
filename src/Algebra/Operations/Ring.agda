@@ -37,7 +37,7 @@ module Algebra.Operations.Ring
 
 {-# WARNING_ON_IMPORT
 "Algebra.Operations.Ring was deprecated in v1.5.
-Use Algebra.Properties.Semiring.ExponentiationOpt instead."
+Use Algebra.Properties.Semiring.Exponentiation(.TCOptimised) instead."
 #-}
 
 open import Data.Nat.Base as ℕ using (ℕ; suc; zero)

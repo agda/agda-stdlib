@@ -38,8 +38,7 @@ open import Algebra.Properties.Semiring.Exponentiation.TCOptimised semiring
 ------------------------------------------------------------------------
 -- Power lemmas
 --
--- We prove some things about our odd exponentiation operator (described
--- in Algebra.Operations.Ring.Compact) here.
+-- We prove some things about our odd exponentiation operator
 
 -- First, that the optimised operator is the same as normal
 -- exponentiation.
