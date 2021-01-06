@@ -1,33 +1,10 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Some defined operations over Rings
+-- This module is DEPRECATED.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
-
--- This module gives the definition of _^_ which is used throughout
--- the library. It's a little different from the normal definition:
---
---   x ^ zero  = 1#
---   x ^ suc i = x * x ^ i
---
--- This is for two reasons. First, we want to avoid unnecessarily
--- multiplying by 1# if possible:
---
---     Standard definition: x ^ 2 = x * x * 1#
---     Our definition:      x ^ 2 = x * x
---
--- This speeds up typechecking and makes for much more readable
--- proofs.
---
--- Secondly, we want to associate to the left:
---
---     Standard definition: x ^ 3 = x * (x * (x * 1#))
---     Our definition:      x ^ 2 = (x * x) * x
---
--- As counterintuitive as it may seem, this also speeds up
--- typechecking.
 
 open import Algebra
 
