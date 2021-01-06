@@ -21,7 +21,7 @@ open import Data.List.Kleene using (_+; _*; ∹_; _&_; [])
 
 open Homomorphism homo hiding (_^_)
 open import Tactic.RingSolver.Core.Polynomial.Base from
-open import Algebra.Properties.Semiring.Exponentiation.TCOptimised semiring
+open import Algebra.Properties.Semiring.Exp.TCOptimised semiring
 
 drop : ∀ {i n} → i ≤′ n → Vec Carrier n → Vec Carrier i
 drop ≤′-refl         xs       = xs

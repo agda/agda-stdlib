@@ -12,12 +12,12 @@ open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 import Data.Nat.Properties as ℕ
 
-module Algebra.Properties.Semiring.Exponentiation
+module Algebra.Properties.Semiring.Exp
   {a ℓ} (S : Semiring a ℓ) where
 
 open Semiring S renaming (zero to *-zero)
 open import Relation.Binary.Reasoning.Setoid setoid
-import Algebra.Properties.Monoid.Multiplication *-monoid as Mult
+import Algebra.Properties.Monoid.Mult *-monoid as Mult
 
 ------------------------------------------------------------------------
 -- Definition

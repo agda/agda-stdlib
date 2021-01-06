@@ -11,7 +11,7 @@ open import Data.Nat.Base as ℕ using (ℕ; zero; suc; NonZero)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
-module Algebra.Properties.Monoid.Multiplication {a ℓ} (M : Monoid a ℓ) where
+module Algebra.Properties.Monoid.Mult {a ℓ} (M : Monoid a ℓ) where
 
 -- View of the monoid operator as addition
 open Monoid M

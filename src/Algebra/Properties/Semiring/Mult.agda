@@ -9,7 +9,7 @@
 open import Algebra
 open import Data.Nat.Base as ℕ using (zero; suc)
 
-module Algebra.Properties.Semiring.Multiplication
+module Algebra.Properties.Semiring.Mult
   {a ℓ} (S : Semiring a ℓ) where
 
 open Semiring S renaming (zero to *-zero)
@@ -18,7 +18,7 @@ open import Relation.Binary.Reasoning.Setoid setoid
 ------------------------------------------------------------------------
 -- Re-export definition from the monoid
 
-open import Algebra.Properties.Monoid.Multiplication +-monoid public
+open import Algebra.Properties.Monoid.Mult +-monoid public
 
 ------------------------------------------------------------------------
 -- Properties of _×_

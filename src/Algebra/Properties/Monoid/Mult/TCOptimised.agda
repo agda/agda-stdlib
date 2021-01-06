@@ -12,7 +12,7 @@ open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
 open import Relation.Binary.Core using (_Preserves_⟶_; _Preserves₂_⟶_⟶_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
-module Algebra.Properties.Monoid.Multiplication.TCOptimised
+module Algebra.Properties.Monoid.Mult.TCOptimised
   {a ℓ} (M : Monoid a ℓ) where
 
 open Monoid M renaming
@@ -26,7 +26,7 @@ open Monoid M renaming
   ; ε         to 0#
   )
 
-open import Algebra.Properties.Monoid.Multiplication M as U
+open import Algebra.Properties.Monoid.Mult M as U
   using () renaming (_×_ to _×ᵤ_)
 
 open import Relation.Binary.Reasoning.Setoid setoid

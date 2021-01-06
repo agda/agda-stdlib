@@ -93,7 +93,7 @@ Deprecated modules
   
   These problems have been fixed with a redesign: definitions of the operations can be found in 
   `Algebra.Definitions.(RawMagma/RawMonoid/RawSemiring)` and their properties can be found in 
-  `Algebra.Properties.(Magma/Semigroup/Monoid/CommutativeMonoid/Semiring).(Multiplication/Summation/Exponentiation)`. 
+  `Algebra.Properties.(Magma/Semigroup/Monoid/CommutativeMonoid/Semiring).(Sum/Mult/Exp)`. 
   The latter also export the definition, and so most users will only need to import the latter.
 
 Deprecated names
@@ -206,27 +206,25 @@ New modules
 * Properties of generic definitions over algebraic structures (divisibility, multiplication etc.):
   ```
   Algebra.Properties.Magma.Divisibility
-  
   Algebra.Properties.Semigroup.Divisibility
-  
   Algebra.Properties.CommutativeSemigroup.Divisibility
   
-  Algebra.Properties.Monoid.Summation
-  Algebra.Properties.Monoid.Multiplication
+  Algebra.Properties.Monoid.Sum
+  Algebra.Properties.Monoid.Mult
   Algebra.Properties.Monoid.Divisibility
   
-  Algebra.Properties.CommutativeMonoid.Summation
-  Algebra.Properties.CommutativeMonoid.Multiplication
+  Algebra.Properties.CommutativeMonoid.Sum
+  Algebra.Properties.CommutativeMonoid.Mult
   
   Algebra.Properties.Semiring.Divisibility
-  Algebra.Properties.Semiring.Exponentiation
-  Algebra.Properties.Semiring.Exponentiation.TCOptimised
+  Algebra.Properties.Semiring.Exp
+  Algebra.Properties.Semiring.Exp.TCOptimised
   Algebra.Properties.Semiring.GCD
-  Algebra.Properties.Semiring.Multiplication
-  Algebra.Properties.Semiring.Multiplication.TCOptimised
+  Algebra.Properties.Semiring.Mult
+  Algebra.Properties.Semiring.Mult.TCOptimised
   
-  Algebra.Properties.CommutativeSemiring.Exponentiation
-  Algebra.Properties.CommutativeSemiring.Exponentiation.TCOptimised
+  Algebra.Properties.CommutativeSemiring.Exp
+  Algebra.Properties.CommutativeSemiring.Exp.TCOptimised
   ```
 
 * Heterogeneous relation characterising a list as an infix segment of another:

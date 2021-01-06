@@ -29,7 +29,7 @@ open import Data.Vec.N-ary
 
 open import Tactic.RingSolver.Core.Polynomial.Parameters
 open import Tactic.RingSolver.Core.Expression public
-open import Algebra.Properties.Semiring.Exponentiation.TCOptimised semiring
+open import Algebra.Properties.Semiring.Exp.TCOptimised semiring
 
 module Ops where
   zero-homo : ∀ x → T (is-just (0≟ x)) → 0# ≈ x

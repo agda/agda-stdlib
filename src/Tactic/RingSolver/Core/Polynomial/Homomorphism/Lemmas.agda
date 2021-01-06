@@ -33,7 +33,7 @@ open import Tactic.RingSolver.Core.Polynomial.Reasoning to
 open import Tactic.RingSolver.Core.Polynomial.Base from
 open import Tactic.RingSolver.Core.Polynomial.Semantics homo
 
-open import Algebra.Properties.Semiring.Exponentiation.TCOptimised semiring
+open import Algebra.Properties.Semiring.Exp.TCOptimised semiring
 
 ------------------------------------------------------------------------
 -- Power lemmas

@@ -12,14 +12,14 @@ import Data.Nat.Properties as ℕ
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
-module Algebra.Properties.Semiring.Exponentiation.TCOptimised
+module Algebra.Properties.Semiring.Exp.TCOptimised
   {a ℓ} (S : Semiring a ℓ) where
 
 open Semiring S renaming (zero to *-zero)
 open import Relation.Binary.Reasoning.Setoid setoid
 
-import Algebra.Properties.Monoid.Multiplication.TCOptimised *-monoid as Mult
-open import Algebra.Properties.Semiring.Exponentiation S as U
+import Algebra.Properties.Monoid.Mult.TCOptimised *-monoid as Mult
+open import Algebra.Properties.Semiring.Exp S as U
   using () renaming (_^_ to _^ᵤ_)
 
 ------------------------------------------------------------------------

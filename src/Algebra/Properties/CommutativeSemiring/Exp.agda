@@ -8,16 +8,16 @@
 
 open import Algebra
 
-module Algebra.Properties.CommutativeSemiring.Exponentiation
+module Algebra.Properties.CommutativeSemiring.Exp
   {a ℓ} (S : CommutativeSemiring a ℓ) where
 
 open CommutativeSemiring S
-import Algebra.Properties.CommutativeMonoid.Multiplication *-commutativeMonoid as Mult
+import Algebra.Properties.CommutativeMonoid.Mult *-commutativeMonoid as Mult
 
 ------------------------------------------------------------------------
 -- Definition
 
-open import Algebra.Properties.Semiring.Exponentiation semiring public
+open import Algebra.Properties.Semiring.Exp semiring public
 
 ------------------------------------------------------------------------
 -- Properties

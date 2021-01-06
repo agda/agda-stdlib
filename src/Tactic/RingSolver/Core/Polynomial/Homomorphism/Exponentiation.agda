@@ -30,7 +30,7 @@ open import Tactic.RingSolver.Core.Polynomial.Reasoning to
 open import Tactic.RingSolver.Core.Polynomial.Homomorphism.Multiplication homo
 open import Tactic.RingSolver.Core.Polynomial.Semantics homo
 
-import Algebra.Properties.CommutativeSemiring.Exponentiation.TCOptimised commutativeSemiring as RawPow
+import Algebra.Properties.CommutativeSemiring.Exp.TCOptimised commutativeSemiring as RawPow
 import Algebra.Definitions.RawSemiring (RawCoeff.rawSemiring from) as CoPow
 
 pow-eval-hom : ∀ x i → ⟦ x CoPow.^′ suc i ⟧ᵣ ≈ ⟦ x ⟧ᵣ RawPow.^ suc i

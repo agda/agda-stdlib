@@ -12,18 +12,18 @@ import Data.Nat.Properties as ℕ
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality.Core using (_≡_)
 
-module Algebra.Properties.CommutativeSemiring.Exponentiation.TCOptimised
+module Algebra.Properties.CommutativeSemiring.Exp.TCOptimised
   {a ℓ} (S : CommutativeSemiring a ℓ) where
 
 open CommutativeSemiring S
 open import Relation.Binary.Reasoning.Setoid setoid
 
-import Algebra.Properties.CommutativeMonoid.Multiplication.TCOptimised *-commutativeMonoid as Mult
+import Algebra.Properties.CommutativeMonoid.Mult.TCOptimised *-commutativeMonoid as Mult
 
 ------------------------------------------------------------------------
 -- Re-export definition and properties for semirings
 
-open import Algebra.Properties.Semiring.Exponentiation.TCOptimised semiring public
+open import Algebra.Properties.Semiring.Exp.TCOptimised semiring public
 
 ------------------------------------------------------------------------
 -- Properties
