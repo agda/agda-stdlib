@@ -30,6 +30,9 @@ Bug-fixes
 * In `IO`, `⊤`-returning functions (such as `putStrLn`) have been made level polymorphic.
   This may force you to add more type or level annotations to your programs.
 
+* Generalised the types of `Data.Vec.Relation.Unary.AllPairs`'s `head`, `tail`, `uncons`
+  so that the vector talked about does not need to be cons-headed.
+
 Non-backwards compatible changes
 --------------------------------
 
