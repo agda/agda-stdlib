@@ -24,7 +24,7 @@ module Algebra.Operations.CommutativeMonoid
 
 {-# WARNING_ON_IMPORT
 "Algebra.Operations.CommutativeMonoid was deprecated in v1.5.
-Use Algebra.Properties.CommutativeMonoid.(Summation/Multiplication/Multiplication.TCOptimised) instead."
+Use Algebra.Properties.CommutativeMonoid.(Sum/Mult/Exp)(.TCOptimised) instead."
 #-}
 
 open CommutativeMonoid CM

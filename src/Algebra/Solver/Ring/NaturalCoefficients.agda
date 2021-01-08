@@ -8,7 +8,7 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Algebra
-import Algebra.Properties.Semiring.Multiplication as SemiringMultiplication
+import Algebra.Properties.Semiring.Mult as SemiringMultiplication
 open import Data.Maybe.Base using (Maybe; just; nothing; map)
 open import Algebra.Solver.Ring.AlmostCommutativeRing
 open import Data.Nat.Base as ℕ
@@ -22,7 +22,7 @@ module Algebra.Solver.Ring.NaturalCoefficients
   (open SemiringMultiplication semiring using () renaming (_×_ to _×ᵤ_))
   (dec : ∀ m n → Maybe (m ×ᵤ 1# ≈ n ×ᵤ 1#)) where
 
-open import Algebra.Properties.Semiring.Multiplication.TCOptimised semiring
+open import Algebra.Properties.Semiring.Mult.TCOptimised semiring
 
 open import Relation.Binary.Reasoning.Setoid setoid
 

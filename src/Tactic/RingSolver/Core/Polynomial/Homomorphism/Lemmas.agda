@@ -14,15 +14,14 @@ module Tactic.RingSolver.Core.Polynomial.Homomorphism.Lemmas
   where
 
 open import Data.Bool                                  using (Bool;true;false)
-open import Data.Nat.Base as ℕ                              using (ℕ; suc; zero; compare; _≤′_; ≤′-step; ≤′-refl)
+open import Data.Nat.Base as ℕ                         using (ℕ; suc; zero; compare; _≤′_; ≤′-step; ≤′-refl)
 open import Data.Nat.Properties as ℕₚ                  using (≤′-trans)
-open import Data.Vec.Base as Vec                            using (Vec; _∷_)
+open import Data.Vec.Base as Vec                       using (Vec; _∷_)
 open import Data.Fin                                   using (Fin; zero; suc)
 open import Data.List                                  using (_∷_; [])
 open import Data.Unit using (tt)
 open import Data.List.Kleene
 open import Data.Product                               using (_,_; proj₁; proj₂; map₁; _×_)
-open import Data.Empty                                 using (⊥-elim)
 open import Data.Maybe                                 using (nothing; just)
 open import Function
 open import Level                                      using (lift)
@@ -34,49 +33,30 @@ open import Tactic.RingSolver.Core.Polynomial.Reasoning to
 open import Tactic.RingSolver.Core.Polynomial.Base from
 open import Tactic.RingSolver.Core.Polynomial.Semantics homo
 
-open import Algebra.Operations.Ring rawRing
+open import Algebra.Properties.Semiring.Exp.TCOptimised semiring
 
 ------------------------------------------------------------------------
 -- Power lemmas
 --
--- We prove some things about our odd exponentiation operator (described
--- in Algebra.Operations.Ring.Compact) here.
+-- We prove some things about our odd exponentiation operator
 
 -- First, that the optimised operator is the same as normal
 -- exponentiation.
 pow-opt : ∀ x ρ i → x *⟨ ρ ⟩^ i ≈ ρ ^ i * x
-pow-opt x ρ ℕ.zero = sym (*-identityˡ x)
+pow-opt x ρ zero = sym (*-identityˡ x)
 pow-opt x ρ (suc i) = refl
 
--- Some normal identities on exponentiation.
---  xⁿxᵐ = xⁿ⁺ᵐ
-pow-add′ : ∀ x i j → (x ^ i +1) * (x ^ j +1) ≈ x ^ (j ℕ.+ suc i) +1
-pow-add′ x i ℕ.zero = refl
-pow-add′ x i (suc j) =
-  begin
-    x ^ i +1 * (x ^ j +1 * x)
-  ≈⟨ sym (*-assoc _ _ _) ⟩
-    x ^ i +1 * x ^ j +1 * x
-  ≈⟨ ≪* pow-add′ x i j ⟩
-    x ^ (j ℕ.+ suc i) +1 * x
-  ∎
-
-pow-add : ∀ x y i j → y ^ j +1 * x *⟨ y ⟩^ i  ≈ x *⟨ y ⟩^ (i ℕ.+ suc j)
-pow-add x y ℕ.zero j = refl
+pow-add : ∀ x y i j → y ^ (suc j) * x *⟨ y ⟩^ i  ≈ x *⟨ y ⟩^ (i ℕ.+ suc j)
+pow-add x y zero    j = refl
 pow-add x y (suc i) j = go x y i j
   where
-  go : ∀ x y i j → y ^ j +1 * ((y ^ i +1) * x) ≈ y ^ (i ℕ.+ suc j) +1 * x
-  go x y ℕ.zero j =  sym (*-assoc _ _ _)
-  go x y (suc i) j =
-    begin
-      y ^ j +1 * (y ^ i +1 * y * x)
-    ≈⟨ *≫ *-assoc _ y x ⟩
-      y ^ j +1 * (y ^ i +1 * (y * x))
-    ≈⟨ go (y * x) y i j ⟩
-      y ^ (i ℕ.+ suc j) +1 * (y * x)
-    ≈⟨ sym (*-assoc _ y x) ⟩
-      y ^ suc (i ℕ.+ suc j) +1 * x
-    ∎
+  go : ∀ x y i j → (y ^ suc j) * ((y ^ suc i) * x) ≈ y ^ suc (i ℕ.+ suc j) * x
+  go x y zero    j = sym (*-assoc _ _ _)
+  go x y (suc i) j = begin
+    (y ^ suc j) * (y ^ (suc i) * y * x)    ≈⟨ *≫ *-assoc _ y x ⟩
+    (y ^ suc j) * (y ^ (suc i) * (y * x))  ≈⟨ go (y * x) y i j ⟩
+    y ^ suc (i ℕ.+ suc j) * (y * x)        ≈⟨ sym (*-assoc _ y x) ⟩
+    y ^ suc (suc i ℕ.+ suc j) * x          ∎
 
 -- Here we show a homomorphism on exponentiation, i.e. that using the
 -- exponentiation function on polynomials and then evaluating is the same
@@ -85,10 +65,10 @@ pow-hom : ∀ {n} i
         → (xs : Coeff n +)
         → ∀ ρ ρs
         → ⅀⟦ xs ⟧ (ρ , ρs) *⟨ ρ ⟩^ i ≈ ⅀⟦ xs ⍓+ i ⟧ (ρ , ρs)
-pow-hom ℕ.zero (x Δ j & xs) ρ ρs rewrite ℕₚ.+-identityʳ j = refl
+pow-hom zero (x Δ j & xs) ρ ρs rewrite ℕₚ.+-identityʳ j = refl
 pow-hom (suc i) (x ≠0 Δ j & xs) ρ ρs =
   begin
-    ρ ^ i +1 * (((x , xs) ⟦∷⟧ (ρ , ρs)) *⟨ ρ ⟩^ j)
+    ρ ^ (suc i) * (((x , xs) ⟦∷⟧ (ρ , ρs)) *⟨ ρ ⟩^ j)
   ≈⟨ pow-add _ ρ j i ⟩
     (((x , xs) ⟦∷⟧ (ρ , ρs)) *⟨ ρ ⟩^ (j ℕ.+ suc i))
   ∎
@@ -96,50 +76,8 @@ pow-hom (suc i) (x ≠0 Δ j & xs) ρ ρs =
 -- Proving a congruence (we don't get this for free because we're using
 -- setoids).
 pow-mul-cong : ∀ {x y} → x ≈ y → ∀ ρ i → x *⟨ ρ ⟩^ i ≈ y *⟨ ρ ⟩^ i
-pow-mul-cong x≈y ρ ℕ.zero = x≈y
-pow-mul-cong x≈y ρ (suc i₁) = *≫ x≈y
-
--- The identity:
---  (xy)ⁿ = xⁿyⁿ
-pow-distrib-+1 : ∀ x y i → (x * y) ^ i +1 ≈ x ^ i +1 * y ^ i +1
-pow-distrib-+1 x y ℕ.zero = refl
-pow-distrib-+1 x y (suc i) =
-  begin
-    (x * y) ^ i +1 * (x * y)
-  ≈⟨ ≪* pow-distrib-+1 x y i ⟩
-    (x ^ i +1 * y ^ i +1) * (x * y)
-  ≈⟨ *-assoc _ _ _ ⟨ trans ⟩ (*≫ (sym (*-assoc _ _ _) ⟨ trans ⟩ (≪* *-comm _ _))) ⟩
-    x ^ i +1 * (x * y ^ i +1 * y)
-  ≈⟨ (*≫ *-assoc _ _ _) ⟨ trans ⟩ sym (*-assoc _ _ _) ⟩
-    (x ^ i +1 * x) * (y ^ i +1 * y)
-  ∎
-
-pow-distrib : ∀ x y i → (x * y) ^ i ≈ x ^ i * y ^ i
-pow-distrib x y ℕ.zero = sym (*-identityˡ _)
-pow-distrib x y (suc i) = pow-distrib-+1 x y i
-
--- This proves the identity:
---   (xⁿ)ᵐ = xⁿᵐ
--- The reason it looks different is because we're using the special exponentiation
--- operator.
-pow-mult-+1 : ∀ x i j → (x ^ i +1) ^ j +1 ≈ x ^ (i ℕ.+ j ℕ.* suc i) +1
-pow-mult-+1 x i ℕ.zero rewrite ℕₚ.+-identityʳ i = refl
-pow-mult-+1 x i (suc j) =
-  begin
-    (x ^ i +1) ^ j +1 * (x ^ i +1)
-  ≈⟨ ≪* pow-mult-+1 x i j ⟩
-    (x ^ (i ℕ.+ j ℕ.* suc i) +1) * (x ^ i +1)
-  ≈⟨ pow-add′ x _ i ⟩
-    x ^ (i ℕ.+ suc (i ℕ.+ j ℕ.* suc i)) +1
-  ∎
-
-pow-cong-+1 : ∀ {x y} i → x ≈ y → x ^ i +1 ≈ y ^ i +1
-pow-cong-+1 ℕ.zero x≈y = x≈y
-pow-cong-+1 (suc i) x≈y = pow-cong-+1 i x≈y ⟨ *-cong ⟩ x≈y
-
-pow-cong : ∀ {x y} i → x ≈ y → x ^ i ≈ y ^ i
-pow-cong ℕ.zero x≈y = refl
-pow-cong (suc i) x≈y = pow-cong-+1 i x≈y
+pow-mul-cong x≈y ρ zero    = x≈y
+pow-mul-cong x≈y ρ (suc i) = *≫ x≈y
 
 -- Demonstrating that the proof of zeroness is correct.
 zero-hom : ∀ {n} (p : Poly n) → Zero p → (ρs : Vec Carrier n) → 0# ≈ ⟦ p ⟧ ρs
@@ -147,12 +85,12 @@ zero-hom (Κ x  ⊐ i≤n) p≡0 ρs = Zero-C⟶Zero-R x p≡0
 
 --   x¹⁺ⁿ = xxⁿ
 pow-suc : ∀ x i → x ^ suc i ≈ x * x ^ i
-pow-suc x ℕ.zero  = sym (*-identityʳ _)
+pow-suc x zero  = sym (*-identityʳ _)
 pow-suc x (suc i) = *-comm _ _
 
 --   x¹⁺ⁿ = xⁿx
 pow-sucʳ : ∀ x i → x ^ suc i ≈ x ^ i * x
-pow-sucʳ x ℕ.zero  = sym (*-identityˡ _)
+pow-sucʳ x zero  = sym (*-identityˡ _)
 pow-sucʳ x (suc i) = refl
 
 -- In the proper evaluation function, we avoid ever inserting an unnecessary 0#
@@ -194,7 +132,7 @@ pow′-hom (suc i) [] ρ ρs = zeroʳ _
     ρ * ⅀⟦ xs ⟧ (ρ , ρs) + ⟦ x ⟧ ρs
   ∎
 
-∷↓-hom-s : ∀ {n} (x : Poly n) → ∀ i xs ρ ρs → ⅀?⟦ x Δ suc i ∷↓ xs ⟧ (ρ , ρs) ≈ (ρ ^ i +1) * (x , xs) ⟦∷⟧ (ρ , ρs)
+∷↓-hom-s : ∀ {n} (x : Poly n) → ∀ i xs ρ ρs → ⅀?⟦ x Δ suc i ∷↓ xs ⟧ (ρ , ρs) ≈ (ρ ^ suc i) * (x , xs) ⟦∷⟧ (ρ , ρs)
 ∷↓-hom-s x i xs ρ ρs with zero? x
 ∷↓-hom-s x i xs ρ ρs | no ¬p = refl
 ∷↓-hom-s x i [] ρ ρs | yes p = sym ((*≫ sym (zero-hom x p ρs)) ⟨ trans ⟩ zeroʳ _)
@@ -202,18 +140,18 @@ pow′-hom (suc i) [] ρ ρs = zeroʳ _
   begin
     ⅀⟦ xs ⍓+ (suc (suc i)) ⟧ (ρ , ρs)
   ≈⟨ sym (pow-hom (suc (suc i)) xs ρ ρs) ⟩
-    (ρ ^ suc i +1) * ⅀⟦ xs ⟧ (ρ , ρs)
+    (ρ ^ suc (suc i)) * ⅀⟦ xs ⟧ (ρ , ρs)
   ≈⟨ *-assoc _ _ _ ⟩
-    (ρ ^ i +1) * (ρ * ⅀⟦ xs ⟧ (ρ , ρs))
+    (ρ ^ suc i) * (ρ * ⅀⟦ xs ⟧ (ρ , ρs))
   ≈⟨ *≫ (sym (+-identityʳ _) ⟨ trans ⟩ (+≫ zero-hom x p ρs)) ⟩
-    ρ ^ i +1 * (ρ * ⅀⟦ xs ⟧ (ρ , ρs) + ⟦ x ⟧ ρs)
+    (ρ ^ suc i) * (ρ * ⅀⟦ xs ⟧ (ρ , ρs) + ⟦ x ⟧ ρs)
   ∎
 
 ∷↓-hom : ∀ {n}
        → (x : Poly n)
        → ∀ i xs ρ ρs
        → ⅀?⟦ x Δ i ∷↓ xs ⟧ (ρ , ρs) ≈ ρ ^ i * ((x , xs) ⟦∷⟧ (ρ , ρs))
-∷↓-hom x ℕ.zero  xs ρ ρs = ∷↓-hom-0 x xs ρ ρs ⟨ trans ⟩ sym (*-identityˡ _)
+∷↓-hom x zero  xs ρ ρs = ∷↓-hom-0 x xs ρ ρs ⟨ trans ⟩ sym (*-identityˡ _)
 ∷↓-hom x (suc i) xs ρ ρs = ∷↓-hom-s x i xs ρ ρs
 
 ⟦∷⟧-hom : ∀ {n}
@@ -306,15 +244,15 @@ poly-foldR ρ ρs f e cng dist step base (x ≠0 Δ suc i & []) =
   begin
     ⅀?⟦ y Δ suc i ∷↓ ys ⟧ (ρ , ρs)
   ≈⟨ ∷↓-hom-s y i ys ρ ρs ⟩
-    (ρ ^ i +1) * ((y , ys) ⟦∷⟧ (ρ , ρs))
+    (ρ ^ suc i) * ((y , ys) ⟦∷⟧ (ρ , ρs))
   ≈˘⟨ *≫ ⟦∷⟧?-hom y ys ρ ρs ⟩
-    (ρ ^ i +1) * ((y , ys) ⟦∷⟧? (ρ , ρs))
+    (ρ ^ suc i) * ((y , ys) ⟦∷⟧? (ρ , ρs))
   ≈⟨ *≫ step x [] (sym base) ⟩
-    (ρ ^ i +1) * e ((x , []) ⟦∷⟧? (ρ , ρs))
+    (ρ ^ suc i) * e ((x , []) ⟦∷⟧? (ρ , ρs))
   ≈⟨ *≫ cng (⟦∷⟧?-hom x [] ρ ρs) ⟩
-    (ρ ^ i +1) * e ((x , []) ⟦∷⟧ (ρ , ρs))
+    (ρ ^ suc i) * e ((x , []) ⟦∷⟧ (ρ , ρs))
   ≈⟨ dist _ _   ⟩
-    e (ρ ^ i +1 * ((x , []) ⟦∷⟧ (ρ , ρs)))
+    e ((ρ ^ suc i) * ((x , []) ⟦∷⟧ (ρ , ρs)))
   ∎
 poly-foldR ρ ρs f e cng dist step base (x ≠0 Δ suc i & ∹ xs) =
   let ys = para f xs
@@ -325,15 +263,15 @@ poly-foldR ρ ρs f e cng dist step base (x ≠0 Δ suc i & ∹ xs) =
   begin
     ⅀?⟦ y Δ suc i ∷↓ zs ⟧ (ρ , ρs)
   ≈⟨ ∷↓-hom-s y i zs ρ ρs ⟩
-    (ρ ^ i +1) * ((y , zs) ⟦∷⟧ (ρ , ρs))
+    (ρ ^ suc i) * ((y , zs) ⟦∷⟧ (ρ , ρs))
   ≈˘⟨ *≫ ⟦∷⟧?-hom y zs ρ ρs ⟩
-    (ρ ^ i +1) * ((y , zs) ⟦∷⟧? (ρ , ρs))
+    (ρ ^ suc i) * ((y , zs) ⟦∷⟧? (ρ , ρs))
   ≈⟨ *≫ step x (∹ xs) (poly-foldR ρ ρs f e cng dist step base xs) ⟩
-    (ρ ^ i +1) * e ((x , (∹ xs )) ⟦∷⟧? (ρ , ρs))
+    (ρ ^ suc i) * e ((x , (∹ xs )) ⟦∷⟧? (ρ , ρs))
   ≈⟨ *≫ cng (⟦∷⟧?-hom x (∹ xs ) ρ ρs) ⟩
-    (ρ ^ i +1) * e ((x , (∹ xs )) ⟦∷⟧ (ρ , ρs))
+    (ρ ^ suc i) * e ((x , (∹ xs )) ⟦∷⟧ (ρ , ρs))
   ≈⟨ dist _ _   ⟩
-    e (ρ ^ i +1 * ((x , (∹ xs )) ⟦∷⟧ (ρ , ρs)))
+    e (ρ ^ suc i * ((x , (∹ xs )) ⟦∷⟧ (ρ , ρs)))
   ∎
 poly-foldR ρ ρs f e cng dist step base (x ≠0 Δ ℕ.zero & []) =
   let y,zs = f (x , [])

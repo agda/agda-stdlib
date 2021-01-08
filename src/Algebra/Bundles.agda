@@ -783,19 +783,28 @@ record RawRing c ℓ : Set (suc (c ⊔ ℓ)) where
     0#      : Carrier
     1#      : Carrier
 
+  rawSemiring : RawSemiring c ℓ
+  rawSemiring = record
+    { _≈_ = _≈_
+    ; _+_ = _+_
+    ; _*_ = _*_
+    ; 0#  = 0#
+    ; 1#  = 1#
+    }
+
+  open RawSemiring rawSemiring public
+    using
+    ( _≉_
+    ; +-rawMagma; +-rawMonoid
+    ; *-rawMagma; *-rawMonoid
+    )
+
   +-rawGroup : RawGroup c ℓ
   +-rawGroup = record
     { _≈_ = _≈_
     ; _∙_ = _+_
     ; ε   = 0#
     ; _⁻¹ = -_
-    }
-
-  *-rawMonoid : RawMonoid c ℓ
-  *-rawMonoid = record
-    { _≈_ = _≈_
-    ; _∙_ = _*_
-    ; ε   = 1#
     }
 
 record Ring c ℓ : Set (suc (c ⊔ ℓ)) where
