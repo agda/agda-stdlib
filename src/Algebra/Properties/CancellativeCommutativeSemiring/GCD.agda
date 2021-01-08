@@ -19,12 +19,9 @@ module Algebra.Properties.CancellativeCommutativeSemiring.GCD
   (open CancellativeCommutativeSemiring R)
   where
 
-open import Algebra.Divisibility _≈_ _*_ using (_∣_; _∣∣_)
-open import Algebra.Primality _≈_ _*_ 0# 1# using (Coprime)
-open import Algebra.Properties.Semiring.Divisibility semiring using (_∣0; 0∣x⇒x≈0)
+open import Algebra.Properties.Semiring.Primality semiring using (Coprime)
+open import Algebra.Properties.Semiring.Divisibility semiring
 open EqReasoning setoid
-open import Algebra.Properties.Monoid.Divisibility *-monoid using
-  (∣-refl; ∣-trans; ∣-respˡ; ∣-respʳ; ∣∣-reflexive)
 import Algebra.Properties.CommutativeSemigroup *-commutativeSemigroup as Of*CSemig
 open import Algebra.Properties.CommutativeSemigroup.Divisibility
   *-commutativeSemigroup using (x∣xy)

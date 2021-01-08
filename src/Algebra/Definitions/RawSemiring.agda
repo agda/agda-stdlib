@@ -9,6 +9,7 @@
 open import Algebra.Bundles using (RawSemiring)
 open import Data.Sum.Base using (_⊎_)
 open import Data.Nat using (ℕ)
+open import Data.Product using (proj₁; proj₂)
 open import Level using (_⊔_)
 open import Relation.Binary.Core using (Rel)
 
@@ -76,9 +77,20 @@ record Prime (p : A) : Set (a ⊔ ℓ) where
 -- Greatest common divisor
 
 record IsGCD (x y gcd : A) : Set (a ⊔ ℓ) where
-  constructor gcdᶜ
+  constructor isGCDᶜ
   field
     divides₁ : gcd ∣ x
     divides₂ : gcd ∣ y
     greatest : ∀ {z} → z ∣ x → z ∣ y → z ∣ gcd
 
+  quot₁ : A               -- a complementory quotient  x/gcd
+  quot₁ = proj₁ divides₁
+
+  quot₂ : A               -- y/gcd
+  quot₂ = proj₁ divides₂
+
+  quot₁∙gcd≈x : (quot₁ * gcd) ≈ x
+  quot₁∙gcd≈x = proj₂ divides₁
+
+  quot₂∙gcd≈y : (quot₂ * gcd) ≈ y
+  quot₂∙gcd≈y = proj₂ divides₂
