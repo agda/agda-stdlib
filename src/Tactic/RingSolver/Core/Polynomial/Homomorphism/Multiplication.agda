@@ -13,7 +13,7 @@ module Tactic.RingSolver.Core.Polynomial.Homomorphism.Multiplication
   (homo : Homomorphism r₁ r₂ r₃ r₄)
   where
 
-open import Data.Nat.Base as ℕ          using (ℕ; suc; zero; _<′_; _≤′_; ≤′-step; ≤′-refl)
+open import Data.Nat.Base as ℕ     using (ℕ; suc; zero; _<′_; _≤′_; ≤′-step; ≤′-refl)
 open import Data.Nat.Properties    using (≤′-trans)
 open import Data.Nat.Induction
 open import Data.Product           using (_×_; _,_; proj₁; proj₂; map₁)
@@ -30,7 +30,8 @@ open import Tactic.RingSolver.Core.Polynomial.Homomorphism.Addition homo
 open import Tactic.RingSolver.Core.Polynomial.Base from
 open import Tactic.RingSolver.Core.Polynomial.Reasoning to
 open import Tactic.RingSolver.Core.Polynomial.Semantics homo
-open import Algebra.Operations.Ring rawRing
+open import Algebra.Definitions.RawSemiring rawSemiring
+  using () renaming (_^′_ to _^_)
 
 reassoc : ∀ {y} x z → x * (y * z) ≈ y * (x * z)
 reassoc {y} x z = sym (*-assoc x y z) ⟨ trans ⟩ ((≪* *-comm x y) ⟨ trans ⟩ *-assoc y x z)

@@ -29,10 +29,11 @@ data Expr {a} (A : Set a) (n : ℕ) : Set a where
 
 module Eval
   {ℓ₁ ℓ₂} (rawRing : RawRing ℓ₁ ℓ₂)
-  (let open RawRing rawRing)
+  (open RawRing rawRing)
   {a} {A : Set a} (⟦_⟧ᵣ : A → Carrier) where
 
-  open import Algebra.Operations.Ring rawRing
+  open import Algebra.Definitions.RawSemiring rawSemiring
+    using (_^′_)
 
   ⟦_⟧ : ∀ {n} → Expr A n → Vec Carrier n → Carrier
   ⟦ Κ x   ⟧ ρ = ⟦ x ⟧ᵣ
@@ -40,4 +41,4 @@ module Eval
   ⟦ x ⊕ y ⟧ ρ = ⟦ x ⟧ ρ + ⟦ y ⟧ ρ
   ⟦ x ⊗ y ⟧ ρ = ⟦ x ⟧ ρ * ⟦ y ⟧ ρ
   ⟦   ⊝ x ⟧ ρ = - ⟦ x ⟧ ρ
-  ⟦ x ⊛ i ⟧ ρ = ⟦ x ⟧ ρ ^ i
+  ⟦ x ⊛ i ⟧ ρ = ⟦ x ⟧ ρ ^′ i

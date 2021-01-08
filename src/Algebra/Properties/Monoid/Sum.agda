@@ -15,7 +15,7 @@ open import Function.Base using (_∘_)
 open import Relation.Binary as B using (_Preserves_⟶_)
 open import Relation.Binary.PropositionalEquality as P using (_≗_; _≡_)
 
-module Algebra.Properties.Monoid.Summation {a ℓ} (M : Monoid a ℓ) where
+module Algebra.Properties.Monoid.Sum {a ℓ} (M : Monoid a ℓ) where
 
 open Monoid M
   renaming
@@ -29,14 +29,14 @@ open Monoid M
   )
 
 open import Data.Vec.Functional.Relation.Binary.Equality.Setoid setoid
-open import Algebra.Properties.Monoid.Multiplication M
+open import Algebra.Properties.Monoid.Mult M
 open import Algebra.Definitions _≈_
 
 ------------------------------------------------------------------------
 -- Definition
 
-sum : ∀ {n} → Vector Carrier n → Carrier
-sum = Vector.foldr _+_ 0#
+open import Algebra.Definitions.RawMonoid rawMonoid public
+  using (sum)
 
 ------------------------------------------------------------------------
 -- An alternative mathematical-style syntax for sumₜ

@@ -19,7 +19,7 @@ open import Algebra.Properties.Semiring.Divisibility R
 ------------------------------------------------------------------------
 -- Re-exporting definition of GCD
 
-open import Algebra.Divisibility _≈_ _*_ public
+open import Algebra.Definitions.RawSemiring rawSemiring public
   using (IsGCD; gcdᶜ)
 
 ------------------------------------------------------------------------
