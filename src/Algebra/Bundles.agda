@@ -15,6 +15,7 @@ open import Algebra.Core
 open import Algebra.Structures
 open import Relation.Binary
 open import Function.Base
+import Relation.Nullary as N
 open import Level
 
 ------------------------------------------------------------------------
@@ -28,6 +29,10 @@ record RawMagma c ℓ : Set (suc (c ⊔ ℓ)) where
     Carrier : Set c
     _≈_     : Rel Carrier ℓ
     _∙_     : Op₂ Carrier
+
+  infix 4 _≉_
+  _≉_ : Rel Carrier _
+  x ≉ y = N.¬ (x ≈ y)
 
 
 record Magma c ℓ : Set (suc (c ⊔ ℓ)) where
@@ -44,7 +49,7 @@ record Magma c ℓ : Set (suc (c ⊔ ℓ)) where
   rawMagma : RawMagma _ _
   rawMagma = record { _≈_ = _≈_; _∙_ = _∙_ }
 
-  open Setoid setoid public
+  open RawMagma rawMagma public
     using (_≉_)
 
 
@@ -178,6 +183,9 @@ record RawMonoid c ℓ : Set (suc (c ⊔ ℓ)) where
     ; _∙_ = _∙_
     }
 
+  open RawMagma rawMagma public
+    using (_≉_)
+
 
 record Monoid c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _∙_
@@ -281,7 +289,7 @@ record RawGroup c ℓ : Set (suc (c ⊔ ℓ)) where
     }
 
   open RawMonoid rawMonoid public
-    using (rawMagma)
+    using (_≉_; rawMagma)
 
 
 record Group c ℓ : Set (suc (c ⊔ ℓ)) where
@@ -353,6 +361,9 @@ record RawLattice c ℓ : Set (suc (c ⊔ ℓ)) where
 
   ∧-rawMagma : RawMagma c ℓ
   ∧-rawMagma = record { _≈_ = _≈_; _∙_ = _∧_ }
+
+  open RawMagma ∨-rawMagma public
+    using (_≉_)
 
 
 record Lattice c ℓ : Set (suc (c ⊔ ℓ)) where
@@ -428,7 +439,7 @@ record RawNearSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
     }
 
   open RawMonoid +-rawMonoid public
-    using () renaming (rawMagma to +-rawMagma)
+    using (_≉_) renaming (rawMagma to +-rawMagma)
 
   *-rawMagma : RawMagma c ℓ
   *-rawMagma = record
@@ -568,7 +579,7 @@ record RawSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
     }
 
   open RawNearSemiring rawNearSemiring public
-    using (+-rawMonoid; +-rawMagma; *-rawMagma)
+    using (_≉_; +-rawMonoid; +-rawMagma; *-rawMagma)
 
   *-rawMonoid : RawMonoid c ℓ
   *-rawMonoid = record
@@ -752,32 +763,6 @@ record CancellativeCommutativeSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
     ; _≉_
     )
 
-record GCDSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
-  infixl 7 _*_
-  infixl 6 _+_
-  infix  4 _≈_
-  field
-    Carrier       : Set c
-    _≈_           : Rel Carrier ℓ
-    _+_           : Op₂ Carrier
-    _*_           : Op₂ Carrier
-    0#            : Carrier
-    1#            : Carrier
-    isGCDSemiring : IsGCDSemiring _≈_ _+_ _*_ 0# 1#
-
-  open IsGCDSemiring isGCDSemiring public
-
-  cancellativeCommutativeSemiring : CancellativeCommutativeSemiring c ℓ
-  cancellativeCommutativeSemiring = record
-    { Carrier                           = Carrier
-    ; _≈_                               = _≈_
-    ; _+_                               = _+_
-    ; _*_                               = _*_
-    ; 0#                                = 0#
-    ; 1#                                = 1#
-    ; isCancellativeCommutativeSemiring = isCancellativeCommutativeSemiring
-    }
-
 
 ------------------------------------------------------------------------
 -- Bundles with 2 binary operations, 1 unary operation & 2 elements
@@ -799,19 +784,28 @@ record RawRing c ℓ : Set (suc (c ⊔ ℓ)) where
     0#      : Carrier
     1#      : Carrier
 
+  rawSemiring : RawSemiring c ℓ
+  rawSemiring = record
+    { _≈_ = _≈_
+    ; _+_ = _+_
+    ; _*_ = _*_
+    ; 0#  = 0#
+    ; 1#  = 1#
+    }
+
+  open RawSemiring rawSemiring public
+    using
+    ( _≉_
+    ; +-rawMagma; +-rawMonoid
+    ; *-rawMagma; *-rawMonoid
+    )
+
   +-rawGroup : RawGroup c ℓ
   +-rawGroup = record
     { _≈_ = _≈_
     ; _∙_ = _+_
     ; ε   = 0#
     ; _⁻¹ = -_
-    }
-
-  *-rawMonoid : RawMonoid c ℓ
-  *-rawMonoid = record
-    { _≈_ = _≈_
-    ; _∙_ = _*_
-    ; ε   = 1#
     }
 
 record Ring c ℓ : Set (suc (c ⊔ ℓ)) where

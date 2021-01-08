@@ -22,7 +22,6 @@ module Algebra.Structures
 
 open import Algebra.Core
 open import Algebra.Definitions _≈_
-open import Algebra.Divisibility _≈_ using (IsGCD)
 import Algebra.Consequences.Setoid as Consequences
 open import Data.Product using (_,_; proj₁; proj₂; ∃)
 open import Level using (_⊔_)
@@ -460,16 +459,6 @@ record IsCancellativeCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a �
     *-cancelˡ-nonZero     : AlmostLeftCancellative 0# *
 
   open IsCommutativeSemiring isCommutativeSemiring public
-
-record IsGCDSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
-  field
-    isCancellativeCommutativeSemiring : IsCancellativeCommutativeSemiring + * 0# 1#
-    toIsGCD                           : (x y : A) → ∃ (λ d → IsGCD * x y d)
-
-  gcd : Op₂ A
-  gcd x y = proj₁ (toIsGCD x y)
-
-  open IsCancellativeCommutativeSemiring isCancellativeCommutativeSemiring public
 
 ------------------------------------------------------------------------
 -- Structures with 2 binary operations, 1 unary operation & 2 elements

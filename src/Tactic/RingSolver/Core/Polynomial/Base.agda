@@ -62,7 +62,8 @@ open import Data.Unit              using (⊤; tt)
 open import Function.Base
 open import Relation.Nullary       using (¬_; Dec; yes; no)
 
-open import Algebra.Operations.Ring rawRing
+open import Algebra.Definitions.RawSemiring rawSemiring
+  using (_^′_)
 
 ------------------------------------------------------------------------
 -- Injection indices.
@@ -408,7 +409,7 @@ _⊠_ = ⊠-step′ (<′-wellFounded _)
 ⊡-mult (suc n) xs = ⊡-mult n xs ⊠ xs
 
 _⊡_+1 : ∀ {n} → Poly n → ℕ → Poly n
-(Κ x  ⊐ i≤n)           ⊡ i +1  = Κ (x ^ i +1) ⊐ i≤n
+(Κ x  ⊐ i≤n)           ⊡ i +1  = Κ (x ^′ suc i) ⊐ i≤n
 (⅀ (x Δ j & []) ⊐ i≤n) ⊡ i +1  = x .poly ⊡ i +1 Δ (j ℕ.+ i ℕ.* j) ∷↓ [] ⊐↓ i≤n
 xs@(⅀ (_ & ∹ _) ⊐ i≤n) ⊡ i +1  = ⊡-mult i xs
 

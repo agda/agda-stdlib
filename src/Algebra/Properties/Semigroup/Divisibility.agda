@@ -10,10 +10,10 @@ open import Algebra using (Semigroup)
 open import Data.Product using (_,_)
 open import Relation.Binary.Definitions using (Transitive)
 
-module Algebra.Properties.Semigroup.Divisibility {a ℓ} (S : Semigroup a ℓ) where
+module Algebra.Properties.Semigroup.Divisibility
+  {a ℓ} (S : Semigroup a ℓ) where
 
 open Semigroup S
-import Algebra.Divisibility _≈_ _∙_ as Div
 
 ------------------------------------------------------------------------
 -- Re-export magma divisibility
@@ -24,7 +24,8 @@ open import Algebra.Properties.Magma.Divisibility magma public
 -- Properties of _∣_
 
 ∣-trans : Transitive _∣_
-∣-trans = Div.∣-trans trans ∙-congˡ assoc
+∣-trans (p , px≈y) (q , qy≈z) =
+  q ∙ p , trans (assoc q p _) (trans (∙-congˡ px≈y) qy≈z)
 
 ------------------------------------------------------------------------
 -- Properties of _∣∣_
