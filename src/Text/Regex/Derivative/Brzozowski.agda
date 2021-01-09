@@ -91,17 +91,17 @@ eat-complete′ x (e R.∙ f) eq p with []∈? e
 eat-complete′ x (e R.∙ f) (refl ∷ eq) (prod ([]++ _) p q) | no []∉e
   = contradiction p []∉e
 eat-complete′ x (e R.∙ f) (refl ∷ eq) (prod (refl ∷ app) p q) | no []∉e
-  = ∙-complete (eat x e) f (prod (trans app eq) (eat-complete x e p) q)
+  = ∙-complete (eat x e) f (prod (respʳ-≋ app eq) (eat-complete x e p) q)
 eat-complete′ x (e R.∙ f) eq (prod ([]++ eq′) p q) | yes []∈e
   = ∣-complete (eat x e ∙ f) (eat x f) $ sum $ inj₂
   $ eat-complete′ x f (≋-trans eq′ eq) q
 eat-complete′ x (e R.∙ f) (refl ∷ eq) (prod (refl ∷ app) p q) | yes []∈e
   = ∣-complete (eat x e ∙ f) (eat x f) $ sum $ inj₁
-  $ ∙-complete (eat x e) f (prod (trans app eq) (eat-complete x e p) q)
+  $ ∙-complete (eat x e) f (prod (respʳ-≋ app eq) (eat-complete x e p) q)
 eat-complete′ x (e R.⋆) eq (star (sum (inj₂ (prod ([]++ app) p q))))
   = eat-complete′ x (e R.⋆) (≋-trans app eq) q
 eat-complete′ x (e R.⋆) (refl ∷ eq) (star (sum (inj₂ (prod (refl ∷ app) p q))))
-  = ∙-complete (eat x e) (e ⋆) $ prod (trans app eq) (eat-complete x e p)
+  = ∙-complete (eat x e) (e ⋆) $ prod (respʳ-≋ app eq) (eat-complete x e p)
   $ ⋆-complete e q
 
 ------------------------------------------------------------------------

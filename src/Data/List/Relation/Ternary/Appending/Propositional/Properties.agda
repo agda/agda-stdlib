@@ -16,7 +16,8 @@ open import Data.List.Relation.Ternary.Appending.Propositional {A = A}
 open import Function.Base using (_∘′_)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_; setoid)
 
-import Data.List.Relation.Ternary.Appending.Setoid.Properties (setoid A) as Appendingₚ
+import Data.List.Relation.Ternary.Appending.Setoid.Properties (setoid A)
+  as Appendingₚ
 
 private
   variable
@@ -25,7 +26,8 @@ private
 ------------------------------------------------------------------------
 -- Re-export existing properties
 
-open Appendingₚ hiding ([]++⁻¹; ++[]⁻¹) public
+open Appendingₚ public
+  hiding ([]++⁻¹; ++[]⁻¹)
 
 ------------------------------------------------------------------------
 -- Prove propositional-specific ones

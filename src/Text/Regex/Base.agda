@@ -55,9 +55,10 @@ data Exp : Set a where
 -- * should it span until the very end?
 
 record Regex : Set a where
-  field fromStart  : Bool
-        tillEnd    : Bool
-        expression : Exp
+  field
+    fromStart  : Bool
+    tillEnd    : Bool
+    expression : Exp
 
 updateExp : (Exp → Exp) → Regex → Regex
 updateExp f r = record r { expression = f (Regex.expression r) }

@@ -14,7 +14,7 @@ open import Level using (_⊔_)
 open import Data.Bool.Base using (if_then_else_; true; false)
 open import Data.List.Base using (List; []; _∷_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
-open import Function
+open import Function.Base using (id; _∘′_; _∘_)
 
 open import Data.List.Relation.Binary.Prefix.Heterogeneous
   using (Prefix; []; _∷_) hiding (module Prefix)
@@ -66,11 +66,11 @@ toInfix e with Regex.fromStart e | Regex.tillEnd e
 record Match {s} (R : Rel (List A) s) (xs : List A) (exp : Exp)
        : Set (a ⊔ e ⊔ r ⊔ s) where
   constructor MkMatch
-  field list    : List A
-        match   : list ∈ exp
-        related : R list xs
+  field
+    list    : List A
+    match   : list ∈ exp
+    related : R list xs
 open Match public
-
 
 map : ∀ {r s} {R : Rel (List A) r} {S : Rel (List A) s} {xs ys e} →
       (∀ {a} → R a xs → S a ys) → Match R xs e → Match S ys e
@@ -90,7 +90,7 @@ module Prefix where
   _∷ᴹ_ : ∀ {xs e} x → Match (Prefix _≡_) xs (eat x e) → Match (Prefix _≡_) (x ∷ xs) e
   x ∷ᴹ (MkMatch ys ys∈e\x ys≤xs) = MkMatch (x ∷ ys) (eat-sound x _ ys∈e\x) (refl ∷ ys≤xs)
 
-  _∷⁻¹ᴹ_ : ∀ {xs x e} → ¬ ([] ∈ e) →
+  _∷⁻¹ᴹ_ : ∀ {xs x e} → [] ∉ e →
            Match (Prefix _≡_) (x ∷ xs) e → Match (Prefix _≡_) xs (eat x e)
   []∉e ∷⁻¹ᴹ (MkMatch .[]       []∈e [])             = contradiction []∈e []∉e
   []∉e ∷⁻¹ᴹ (MkMatch (._ ∷ ys) ys∈e (refl ∷ ys≤xs)) = MkMatch ys (eat-complete _ _ ys∈e) ys≤xs
@@ -98,10 +98,10 @@ module Prefix where
   shortest : Decidable (Match (Prefix _≡_))
   shortest xs e with []∈? e
   ... | yes []∈e = yes ([]ᴹ []∈e)
-  shortest []       e | no ¬[]∈e = no (¬[]∈e ∘′ []⁻¹ᴹ)
-  shortest (x ∷ xs) e | no ¬[]∈e with shortest xs (eat x e)
+  shortest []       e | no []∉e = no ([]∉e ∘′ []⁻¹ᴹ)
+  shortest (x ∷ xs) e | no []∉e with shortest xs (eat x e)
   ... | yes p = yes (x ∷ᴹ p)
-  ... | no ¬p = no (¬p ∘ (¬[]∈e ∷⁻¹ᴹ_))
+  ... | no ¬p = no (¬p ∘ ([]∉e ∷⁻¹ᴹ_))
 
   longest : Decidable (Match (Prefix _≡_))
   longest []       e = map′ []ᴹ []⁻¹ᴹ ([]∈? e)
@@ -109,7 +109,7 @@ module Prefix where
   ... | yes p = yes (x ∷ᴹ p)
   ... | no ¬p with []∈? e
   ... | yes []∈e = yes ([]ᴹ []∈e)
-  ... | no ¬[]∈e = no (¬p ∘ (¬[]∈e ∷⁻¹ᴹ_))
+  ... | no []∉e  = no (¬p ∘ ([]∉e ∷⁻¹ᴹ_))
 
 module Infix where
 
@@ -125,33 +125,33 @@ module Infix where
   ... | sum (inj₂ xys∈e) = inj₂ (MkMatch (x ∷ ys) xys∈e (refl ∷ p))
 
   step⁻¹ : ∀ {e acc} x {xs} →
-           ¬ ([] ∈ e) → ¬ ([] ∈ acc) →
+           [] ∉ e → [] ∉ acc →
            Match (Infix _≡_) (x ∷ xs) e ⊎ Match (Prefix _≡_) (x ∷ xs) acc →
            Match (Infix _≡_) xs e ⊎ Match (Prefix _≡_) xs (eat x (e ∣ acc))
   -- can't possibly be the empty match
-  step⁻¹ x ¬[]∈e ¬[]∈acc (inj₁ (MkMatch .[] ys∈e (here []))) = contradiction ys∈e ¬[]∈e
-  step⁻¹ x ¬[]∈e ¬[]∈acc (inj₂ (MkMatch .[] ys∈e []))        = contradiction ys∈e ¬[]∈acc
+  step⁻¹ x []∉e []∉acc (inj₁ (MkMatch .[] ys∈e (here []))) = contradiction ys∈e []∉e
+  step⁻¹ x []∉e []∉acc (inj₂ (MkMatch .[] ys∈e []))        = contradiction ys∈e []∉acc
   -- if it starts 'there', it's an infix solution
-  step⁻¹ x ¬[]∈e ¬[]∈acc (inj₁ (MkMatch ys ys∈e (there p))) = inj₁ (MkMatch ys ys∈e p)
+  step⁻¹ x []∉e []∉acc (inj₁ (MkMatch ys ys∈e (there p))) = inj₁ (MkMatch ys ys∈e p)
   -- if it starts 'here' we're in prefix territory
-  step⁻¹ {e} {acc} x ¬[]∈e ¬[]∈acc (inj₁ (MkMatch (.x ∷ ys) ys∈e (here (refl ∷ p))))
+  step⁻¹ {e} {acc} x []∉e []∉acc (inj₁ (MkMatch (.x ∷ ys) ys∈e (here (refl ∷ p))))
     = inj₂ (MkMatch ys (eat-complete x (e ∣ acc) (sum (inj₁ ys∈e))) p)
-  step⁻¹ {e} {acc} x ¬[]∈e ¬[]∈acc (inj₂ (MkMatch (.x ∷ ys) ys∈e (refl ∷ p)))
+  step⁻¹ {e} {acc} x []∉e []∉acc (inj₂ (MkMatch (.x ∷ ys) ys∈e (refl ∷ p)))
     = inj₂ (MkMatch ys (eat-complete x (e ∣ acc) (sum (inj₂ ys∈e))) p)
 
   -- search non-deterministically: at each step, the `acc` regex is changed
   -- to accomodate the fact the match may be starting just now
-  searchND : ∀ xs e acc → ¬ ([] ∈ e) → Dec (Match (Infix _≡_) xs e ⊎ Match (Prefix _≡_) xs acc)
-  searchND xs e acc ¬[]∈e with []∈? acc
+  searchND : ∀ xs e acc → [] ∉ e → Dec (Match (Infix _≡_) xs e ⊎ Match (Prefix _≡_) xs acc)
+  searchND xs e acc []∉e with []∈? acc
   ... | yes []∈acc = yes (inj₂ (MkMatch [] []∈acc []))
-  searchND [] e acc ¬[]∈e | no ¬[]∈acc = no ([ ¬[]∈e , ¬[]∈acc ]′ ∘′ []⁻¹ᴹ)
-  searchND (x ∷ xs) e acc ¬[]∈e | no ¬[]∈acc
-    = map′ (step x) (step⁻¹ x ¬[]∈e ¬[]∈acc) (searchND xs e (eat x (e ∣ acc)) ¬[]∈e)
+  searchND [] e acc []∉e | no []∉acc = no ([ []∉e , []∉acc ]′ ∘′ []⁻¹ᴹ)
+  searchND (x ∷ xs) e acc []∉e | no []∉acc
+    = map′ (step x) (step⁻¹ x []∉e []∉acc) (searchND xs e (eat x (e ∣ acc)) []∉e)
 
   search : Decidable (Match (Infix _≡_))
   search xs e with []∈? e
   ... | yes []∈e = yes (MkMatch [] []∈e (here []))
-  ... | no ¬[]∈e with searchND xs e ∅ ¬[]∈e
+  ... | no []∉e with searchND xs e ∅ []∉e
   ... | no ¬p        = no (¬p ∘′ inj₁)
   ... | yes (inj₁ p) = yes p
   ... | yes (inj₂ p) = contradiction (match p) ∉∅
@@ -197,13 +197,13 @@ module Suffix where
   searchND []       e acc with []∈? e | []∈? acc
   ... | yes []∈e | _          = yes (inj₁ (MkMatch [] []∈e (here [])))
   ... | _        | yes []∈acc = yes (inj₂ (MkMatch [] []∈acc []))
-  ... | no ¬[]∈e | no ¬[]∈acc = no ([ ¬[]∈e , ¬[]∈acc ]′ ∘′ []⁻¹ᴹ)
+  ... | no []∉e  | no []∉acc  = no ([ []∉e , []∉acc ]′ ∘′ []⁻¹ᴹ)
   searchND (x ∷ xs) e acc
     = map′ (step x) (step⁻¹ x) (searchND xs e (eat x (e ∣ acc)))
 
   search : Decidable (Match (Suffix _≡_))
   search xs e with searchND xs e ∅
-  ... | no ¬p = no (¬p ∘′ inj₁)
+  ... | no ¬p        = no (¬p ∘′ inj₁)
   ... | yes (inj₁ p) = yes p
   ... | yes (inj₂ p) = contradiction (match p) ∉∅
 

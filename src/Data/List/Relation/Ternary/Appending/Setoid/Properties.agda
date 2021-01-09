@@ -22,12 +22,13 @@ module S = Setoid S; open S renaming (Carrier to A) using (_≈_)
 
 private
   variable
-    as bs cs ds : List A
+    as bs cs : List A
 
 ------------------------------------------------------------------------
 -- Re-exporting existing properties
 
-open Appendingₚ hiding (transitive) public
+open Appendingₚ public
+  hiding (respʳ-≋; respˡ-≋)
 
 ------------------------------------------------------------------------
 -- Proving setoid-specific ones
@@ -41,5 +42,10 @@ open Appendingₚ hiding (transitive) public
   rewrite Listₚ.++-identityʳ cs₁
   = pw
 
-trans : Appending as bs cs → Pointwise _≈_ cs ds → Appending as bs ds
-trans = Appendingₚ.transitive S.trans S.trans
+respʳ-≋ : ∀ {cs′} → Appending as bs cs → Pointwise _≈_ cs cs′ →
+          Appending as bs cs′
+respʳ-≋ = Appendingₚ.respʳ-≋ S.trans S.trans
+
+respˡ-≋ : ∀ {as′ bs′} → Pointwise _≈_ as′ as → Pointwise _≈_ bs′ bs →
+          Appending as bs cs → Appending as′ bs′ cs
+respˡ-≋ = Appendingₚ.respˡ-≋ S.trans S.trans

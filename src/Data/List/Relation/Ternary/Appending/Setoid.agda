@@ -8,7 +8,9 @@
 
 open import Relation.Binary using (Setoid)
 
-module Data.List.Relation.Ternary.Appending.Setoid {c ℓ} (S : Setoid c ℓ) where
+module Data.List.Relation.Ternary.Appending.Setoid
+  {c ℓ} (S : Setoid c ℓ)
+  where
 
 open import Level using (_⊔_)
 open import Data.List.Base as List using (List)
@@ -24,4 +26,5 @@ Appending = General.Appending _≈_ _≈_
 ------------------------------------------------------------------------
 -- Re-export the basic combinators
 
-open General hiding (Appending) public
+open General public
+  hiding (Appending)
