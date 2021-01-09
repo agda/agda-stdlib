@@ -2,9 +2,6 @@
 -- The Agda standard library
 --
 -- Regular expressions: basic types and semantics
--- The content of this module (and others in this directory) is based on
--- Alexandre Agular and Bassel Mannaa's 2009 technical report titled
--- Regular Expressions in Agda
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -64,20 +61,12 @@ updateExp : (Exp → Exp) → Regex → Regex
 updateExp f r = record r { expression = f (Regex.expression r) }
 
 ------------------------------------------------------------------------
--- Derived notions: nothing, anything, at least one and maybe one
+-- Derived notions: nothing, anything, and singleton
 
 pattern ∅ = [ List.[] ]
 pattern · = [^ List.[] ]
 
 pattern singleton a = [ Range.[ a ] ∷ [] ]
-
-infixl 7 _+ _⁇
-_+ : Exp → Exp
-e + = e ∙ e ⋆
-
-_⁇ : Exp → Exp
-∅ ⁇ = ε
-e ⁇ = ε ∣ e
 
 ------------------------------------------------------------------------
 -- Semantics: matching words

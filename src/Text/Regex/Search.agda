@@ -65,7 +65,7 @@ toInfix e with Regex.fromStart e | Regex.tillEnd e
 -- and a proof it is the right sort of sublist.
 record Match {s} (R : Rel (List A) s) (xs : List A) (exp : Exp)
        : Set (a ⊔ e ⊔ r ⊔ s) where
-  constructor MkMatch
+  constructor mkMatch
   field
     list    : List A
     match   : list ∈ exp
@@ -74,7 +74,7 @@ open Match public
 
 map : ∀ {r s} {R : Rel (List A) r} {S : Rel (List A) s} {xs ys e} →
       (∀ {a} → R a xs → S a ys) → Match R xs e → Match S ys e
-map f (MkMatch ys ys∈e pys) = MkMatch ys ys∈e (f pys)
+map f (mkMatch ys ys∈e pys) = mkMatch ys ys∈e (f pys)
 
 ------------------------------------------------------------------------
 -- Search algorithms
@@ -82,18 +82,18 @@ map f (MkMatch ys ys∈e pys) = MkMatch ys ys∈e (f pys)
 module Prefix where
 
   []ᴹ : ∀ {xs e} → [] ∈ e → Match (Prefix _≡_) xs e
-  []ᴹ p = MkMatch [] p []
+  []ᴹ p = mkMatch [] p []
 
   []⁻¹ᴹ : ∀ {e} → Match (Prefix _≡_) [] e → [] ∈ e
-  []⁻¹ᴹ (MkMatch .[] p []) = p
+  []⁻¹ᴹ (mkMatch .[] p []) = p
 
   _∷ᴹ_ : ∀ {xs e} x → Match (Prefix _≡_) xs (eat x e) → Match (Prefix _≡_) (x ∷ xs) e
-  x ∷ᴹ (MkMatch ys ys∈e\x ys≤xs) = MkMatch (x ∷ ys) (eat-sound x _ ys∈e\x) (refl ∷ ys≤xs)
+  x ∷ᴹ (mkMatch ys ys∈e\x ys≤xs) = mkMatch (x ∷ ys) (eat-sound x _ ys∈e\x) (refl ∷ ys≤xs)
 
   _∷⁻¹ᴹ_ : ∀ {xs x e} → [] ∉ e →
            Match (Prefix _≡_) (x ∷ xs) e → Match (Prefix _≡_) xs (eat x e)
-  []∉e ∷⁻¹ᴹ (MkMatch .[]       []∈e [])             = contradiction []∈e []∉e
-  []∉e ∷⁻¹ᴹ (MkMatch (._ ∷ ys) ys∈e (refl ∷ ys≤xs)) = MkMatch ys (eat-complete _ _ ys∈e) ys≤xs
+  []∉e ∷⁻¹ᴹ (mkMatch .[]       []∈e [])             = contradiction []∈e []∉e
+  []∉e ∷⁻¹ᴹ (mkMatch (._ ∷ ys) ys∈e (refl ∷ ys≤xs)) = mkMatch ys (eat-complete _ _ ys∈e) ys≤xs
 
   shortest : Decidable (Match (Prefix _≡_))
   shortest xs e with []∈? e
@@ -114,43 +114,43 @@ module Prefix where
 module Infix where
 
   []⁻¹ᴹ : ∀ {e acc} → Match (Infix _≡_) [] e ⊎ Match (Prefix _≡_) [] acc → [] ∈ e ⊎ [] ∈ acc
-  []⁻¹ᴹ (inj₁ (MkMatch .[] []∈e (here []))) = inj₁ []∈e
-  []⁻¹ᴹ (inj₂ (MkMatch .[] []∈acc []))      = inj₂ []∈acc
+  []⁻¹ᴹ (inj₁ (mkMatch .[] []∈e (here []))) = inj₁ []∈e
+  []⁻¹ᴹ (inj₂ (mkMatch .[] []∈acc []))      = inj₂ []∈acc
 
   step : ∀ {e acc} x {xs} → Match (Infix _≡_) xs e ⊎ Match (Prefix _≡_) xs (eat x (e ∣ acc)) →
                             Match (Infix _≡_) (x ∷ xs) e ⊎ Match (Prefix _≡_) (x ∷ xs) acc
-  step x (inj₁ (MkMatch ys ys∈e p)) = inj₁ (MkMatch ys ys∈e (there p))
-  step {e} {acc} x (inj₂ (MkMatch ys ys∈e p)) with eat-sound x (e ∣ acc) ys∈e
-  ... | sum (inj₁ xys∈e) = inj₁ (MkMatch (x ∷ ys) xys∈e (here (refl ∷ p)))
-  ... | sum (inj₂ xys∈e) = inj₂ (MkMatch (x ∷ ys) xys∈e (refl ∷ p))
+  step x (inj₁ (mkMatch ys ys∈e p)) = inj₁ (mkMatch ys ys∈e (there p))
+  step {e} {acc} x (inj₂ (mkMatch ys ys∈e p)) with eat-sound x (e ∣ acc) ys∈e
+  ... | sum (inj₁ xys∈e) = inj₁ (mkMatch (x ∷ ys) xys∈e (here (refl ∷ p)))
+  ... | sum (inj₂ xys∈e) = inj₂ (mkMatch (x ∷ ys) xys∈e (refl ∷ p))
 
   step⁻¹ : ∀ {e acc} x {xs} →
            [] ∉ e → [] ∉ acc →
            Match (Infix _≡_) (x ∷ xs) e ⊎ Match (Prefix _≡_) (x ∷ xs) acc →
            Match (Infix _≡_) xs e ⊎ Match (Prefix _≡_) xs (eat x (e ∣ acc))
   -- can't possibly be the empty match
-  step⁻¹ x []∉e []∉acc (inj₁ (MkMatch .[] ys∈e (here []))) = contradiction ys∈e []∉e
-  step⁻¹ x []∉e []∉acc (inj₂ (MkMatch .[] ys∈e []))        = contradiction ys∈e []∉acc
+  step⁻¹ x []∉e []∉acc (inj₁ (mkMatch .[] ys∈e (here []))) = contradiction ys∈e []∉e
+  step⁻¹ x []∉e []∉acc (inj₂ (mkMatch .[] ys∈e []))        = contradiction ys∈e []∉acc
   -- if it starts 'there', it's an infix solution
-  step⁻¹ x []∉e []∉acc (inj₁ (MkMatch ys ys∈e (there p))) = inj₁ (MkMatch ys ys∈e p)
+  step⁻¹ x []∉e []∉acc (inj₁ (mkMatch ys ys∈e (there p))) = inj₁ (mkMatch ys ys∈e p)
   -- if it starts 'here' we're in prefix territory
-  step⁻¹ {e} {acc} x []∉e []∉acc (inj₁ (MkMatch (.x ∷ ys) ys∈e (here (refl ∷ p))))
-    = inj₂ (MkMatch ys (eat-complete x (e ∣ acc) (sum (inj₁ ys∈e))) p)
-  step⁻¹ {e} {acc} x []∉e []∉acc (inj₂ (MkMatch (.x ∷ ys) ys∈e (refl ∷ p)))
-    = inj₂ (MkMatch ys (eat-complete x (e ∣ acc) (sum (inj₂ ys∈e))) p)
+  step⁻¹ {e} {acc} x []∉e []∉acc (inj₁ (mkMatch (.x ∷ ys) ys∈e (here (refl ∷ p))))
+    = inj₂ (mkMatch ys (eat-complete x (e ∣ acc) (sum (inj₁ ys∈e))) p)
+  step⁻¹ {e} {acc} x []∉e []∉acc (inj₂ (mkMatch (.x ∷ ys) ys∈e (refl ∷ p)))
+    = inj₂ (mkMatch ys (eat-complete x (e ∣ acc) (sum (inj₂ ys∈e))) p)
 
   -- search non-deterministically: at each step, the `acc` regex is changed
   -- to accomodate the fact the match may be starting just now
   searchND : ∀ xs e acc → [] ∉ e → Dec (Match (Infix _≡_) xs e ⊎ Match (Prefix _≡_) xs acc)
   searchND xs e acc []∉e with []∈? acc
-  ... | yes []∈acc = yes (inj₂ (MkMatch [] []∈acc []))
+  ... | yes []∈acc = yes (inj₂ (mkMatch [] []∈acc []))
   searchND [] e acc []∉e | no []∉acc = no ([ []∉e , []∉acc ]′ ∘′ []⁻¹ᴹ)
   searchND (x ∷ xs) e acc []∉e | no []∉acc
     = map′ (step x) (step⁻¹ x []∉e []∉acc) (searchND xs e (eat x (e ∣ acc)) []∉e)
 
   search : Decidable (Match (Infix _≡_))
   search xs e with []∈? e
-  ... | yes []∈e = yes (MkMatch [] []∈e (here []))
+  ... | yes []∈e = yes (mkMatch [] []∈e (here []))
   ... | no []∉e with searchND xs e ∅ []∉e
   ... | no ¬p        = no (¬p ∘′ inj₁)
   ... | yes (inj₁ p) = yes p
@@ -159,11 +159,11 @@ module Infix where
 module Whole where
 
   whole : ∀ xs e → xs ∈ e → Match (Pointwise _≡_) xs e
-  whole xs e p = MkMatch xs p (Pointwise.refl refl)
+  whole xs e p = mkMatch xs p (Pointwise.refl refl)
 
   whole⁻¹ : ∀ xs e → Match (Pointwise _≡_) xs e → xs ∈ e
-  whole⁻¹ xs e (MkMatch ys ys∈e p) with Pointwise.Pointwise-≡⇒≡ p
-  whole⁻¹ xs e (MkMatch .xs xs∈e p) | refl = xs∈e
+  whole⁻¹ xs e (mkMatch ys ys∈e p) with Pointwise.Pointwise-≡⇒≡ p
+  whole⁻¹ xs e (mkMatch .xs xs∈e p) | refl = xs∈e
 
   search : Decidable (Match (Pointwise _≡_))
   search xs e = map′ (whole xs e) (whole⁻¹ xs e) (xs ∈? e)
@@ -171,32 +171,32 @@ module Whole where
 module Suffix where
 
   []⁻¹ᴹ : ∀ {e acc} → Match (Suffix _≡_) [] e ⊎ Match (Pointwise _≡_) [] acc → [] ∈ e ⊎ [] ∈ acc
-  []⁻¹ᴹ (inj₁ (MkMatch .[] ys∈e (here []))) = inj₁ ys∈e
-  []⁻¹ᴹ (inj₂ (MkMatch .[] ys∈acc []))      = inj₂ ys∈acc
+  []⁻¹ᴹ (inj₁ (mkMatch .[] ys∈e (here []))) = inj₁ ys∈e
+  []⁻¹ᴹ (inj₂ (mkMatch .[] ys∈acc []))      = inj₂ ys∈acc
 
   step : ∀ {e acc} x {xs} →
          Match (Suffix _≡_) xs e ⊎ Match (Pointwise _≡_) xs (eat x (e ∣ acc)) →
          Match (Suffix _≡_) (x ∷ xs) e ⊎ Match (Pointwise _≡_) (x ∷ xs) acc
-  step x (inj₁ (MkMatch ys ys∈e p)) = inj₁ (MkMatch ys ys∈e (there p))
-  step {e} {acc} x (inj₂ (MkMatch ys ys∈e p)) with eat-sound x (e ∣ acc) ys∈e
-  ... | sum (inj₁ xys∈e)   = inj₁ (MkMatch (x ∷ ys) xys∈e (here (refl ∷ p)))
-  ... | sum (inj₂ xys∈acc) = inj₂ (MkMatch (x ∷ ys) xys∈acc (refl ∷ p))
+  step x (inj₁ (mkMatch ys ys∈e p)) = inj₁ (mkMatch ys ys∈e (there p))
+  step {e} {acc} x (inj₂ (mkMatch ys ys∈e p)) with eat-sound x (e ∣ acc) ys∈e
+  ... | sum (inj₁ xys∈e)   = inj₁ (mkMatch (x ∷ ys) xys∈e (here (refl ∷ p)))
+  ... | sum (inj₂ xys∈acc) = inj₂ (mkMatch (x ∷ ys) xys∈acc (refl ∷ p))
 
   step⁻¹ : ∀ {e acc} x {xs} →
            Match (Suffix _≡_) (x ∷ xs) e ⊎ Match (Pointwise _≡_) (x ∷ xs) acc →
            Match (Suffix _≡_) xs e ⊎ Match (Pointwise _≡_) xs (eat x (e ∣ acc))
   -- match starts later
-  step⁻¹ x (inj₁ (MkMatch ys ys∈e (there p))) = inj₁ (MkMatch ys ys∈e p)
+  step⁻¹ x (inj₁ (mkMatch ys ys∈e (there p))) = inj₁ (mkMatch ys ys∈e p)
   -- match starts here!
-  step⁻¹ {e} {acc} x (inj₁ (MkMatch (.x ∷ ys) ys∈e (here (refl ∷ p))))
-    = inj₂ (MkMatch ys (eat-complete x (e ∣ acc) (sum (inj₁ ys∈e))) p)
-  step⁻¹ {e} {acc} x (inj₂ (MkMatch (.x ∷ ys) ys∈e (refl ∷ p)))
-    = inj₂ (MkMatch ys (eat-complete x (e ∣ acc) (sum (inj₂ ys∈e))) p)
+  step⁻¹ {e} {acc} x (inj₁ (mkMatch (.x ∷ ys) ys∈e (here (refl ∷ p))))
+    = inj₂ (mkMatch ys (eat-complete x (e ∣ acc) (sum (inj₁ ys∈e))) p)
+  step⁻¹ {e} {acc} x (inj₂ (mkMatch (.x ∷ ys) ys∈e (refl ∷ p)))
+    = inj₂ (mkMatch ys (eat-complete x (e ∣ acc) (sum (inj₂ ys∈e))) p)
 
   searchND : ∀ xs e acc → Dec (Match (Suffix _≡_) xs e ⊎ Match (Pointwise _≡_) xs acc)
   searchND []       e acc with []∈? e | []∈? acc
-  ... | yes []∈e | _          = yes (inj₁ (MkMatch [] []∈e (here [])))
-  ... | _        | yes []∈acc = yes (inj₂ (MkMatch [] []∈acc []))
+  ... | yes []∈e | _          = yes (inj₁ (mkMatch [] []∈e (here [])))
+  ... | _        | yes []∈acc = yes (inj₂ (mkMatch [] []∈acc []))
   ... | no []∉e  | no []∉acc  = no ([ []∉e , []∉acc ]′ ∘′ []⁻¹ᴹ)
   searchND (x ∷ xs) e acc
     = map′ (step x) (step⁻¹ x) (searchND xs e (eat x (e ∣ acc)))

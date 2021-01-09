@@ -98,3 +98,14 @@ e ⋆ with is-∅ e | is-ε e
 ... | yes refl | no _     = ∈∅⋆-inv pr
 ... | no _     | yes refl = ∈ε⋆-inv pr
 ... | no _     | no _     = pr
+
+------------------------------------------------------------------------
+-- Derived notions: at least one and maybe one
+
+infixl 7 _+ _⁇
+_+ : Exp → Exp
+e + = e ∙ e ⋆
+
+_⁇ : Exp → Exp
+∅ ⁇ = ε
+e ⁇ = ε ∣ e

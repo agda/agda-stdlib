@@ -284,12 +284,15 @@ New modules
 
 * New modules formalising regular expressions:
   ```
+  Text.Regex
   Text.Regex.Base
   Text.Regex.Derivative.Brzozowski
   Text.Regex.Properties.Core
   Text.Regex.Properties
   Text.Regex.Search
   Text.Regex.SmartConstructors
+  Text.Regex.String
+  Text.Regex.String.Unsafe
   ```
 
 Other major changes
@@ -684,6 +687,14 @@ Other minor additions
   ```agda
   linesBy : Decidable P → String → List String
   lines   : String → List String
+
+  _≤_ : Rel String zero
+  ```
+
+* Added new proofs to `Data.String.Properties`:
+  ```agda
+  ≤-isDecPartialOrder-≈ : IsDecPartialOrder _≈_ _≤_
+  ≤-decPoset-≈          : DecPoset _ _ _
   ```
 
 * Added new function to `Data.Maybe.Base`:
@@ -745,4 +756,10 @@ Other minor additions
 * Added new proof to `Relation.Binary.PropositionalEquality`:
   ```agda
   resp : (P : Pred A ℓ) → P Respects _≡_
+  ```
+
+* Added new proof to `Data.List.Relation.Binary.Lex.Strict`:
+  ```agda
+  ≤-isDecPartialOrder : IsStrictTotalOrder _≈_ _≺_ → IsDecPartialOrder _≋_ _≤_
+  ≤-decPoset          : StrictTotalOrder a ℓ₁ ℓ₂ → DecPoset _ _ _
   ```
