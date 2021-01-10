@@ -770,3 +770,8 @@ Other minor additions
   ```agda
   _++ᵖ_ : Prefix R as bs → ∀ suf → Prefix R as (bs ++ suf)
   ```
+
+* Added new function to `Data.List.Relation.Binary.Suffix.Heterogeneous`:
+  ```agda
+  _++ˢ_ : ∀ pre → Suffix R as bs → Suffix R as (pre ++ bs)
+  ```
