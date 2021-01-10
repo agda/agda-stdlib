@@ -18,9 +18,10 @@ module Text.Regex {a e r} (decPoset : DecPoset a e r) where
 private
   preorder = DecPoset.preorder decPoset
 
-import Text.Regex.Base              preorder as Regex
-import Text.Regex.SmartConstructors preorder as Smart
-import Text.Regex.Search            decPoset as Search
+import Text.Regex.Base                  preorder as Regex
+import Text.Regex.SmartConstructors     preorder as Smart
+import Text.Regex.Derivative.Brzozowski decPoset as Eat
+import Text.Regex.Search                decPoset as Search
 
 ------------------------------------------------------------------------
 -- Re-exporting basic definition and semantics
@@ -39,6 +40,12 @@ open Regex public
 
 open Smart public
   using (_∣_; _∙_; _⋆; _+; _⁇)
+
+------------------------------------------------------------------------
+-- Re-exporting semantics decidability
+
+open Eat public
+  using (_∈?_; _∉?_)
 
 ------------------------------------------------------------------------
 -- Re-exporting search algorithms

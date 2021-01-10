@@ -16,7 +16,7 @@ open import Data.Sum.Base as Sum using (inj₁; inj₂)
 
 open import Function.Base using (_$_; _∘′_; case_of_)
 open import Relation.Nullary using (Dec; yes; no)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Negation using (contradiction; ¬?)
 open import Relation.Nullary.Decidable using (map′)
 open import Relation.Binary using (Decidable)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong)
@@ -110,3 +110,6 @@ eat-complete′ x (e R.⋆) (refl ∷ eq) (star (sum (inj₂ (prod (refl ∷ app
 _∈?_ : Decidable _∈_
 []       ∈? e = []∈? e
 (x ∷ xs) ∈? e = map′ (eat-sound x e) (eat-complete x e) (xs ∈? eat x e)
+
+_∉?_ : Decidable _∉_
+xs ∉? e = ¬? (xs ∈? e)

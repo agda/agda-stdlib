@@ -293,6 +293,8 @@ New modules
   Text.Regex.SmartConstructors
   Text.Regex.String
   Text.Regex.String.Unsafe
+
+  README.Text.Regex
   ```
 
 Other major changes
@@ -762,4 +764,9 @@ Other minor additions
   ```agda
   ≤-isDecPartialOrder : IsStrictTotalOrder _≈_ _≺_ → IsDecPartialOrder _≋_ _≤_
   ≤-decPoset          : StrictTotalOrder a ℓ₁ ℓ₂ → DecPoset _ _ _
+  ```
+
+* Added new function to `Data.List.Relation.Binary.Prefix.Heterogeneous`:
+  ```agda
+  _++ᵖ_ : Prefix R as bs → ∀ suf → Prefix R as (bs ++ suf)
   ```

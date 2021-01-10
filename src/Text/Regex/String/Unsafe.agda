@@ -10,7 +10,7 @@ module Text.Regex.String.Unsafe where
 
 open import Data.String.Base using (String; toList; fromList)
 import Data.String.Unsafe as Stringₚ
-open import Function.Base using (_on_)
+open import Function.Base using (_on_; id)
 open import Level using (0ℓ)
 open import Relation.Binary using (Rel; Decidable)
 open import Relation.Binary.PropositionalEquality using (_≡_; sym; subst)
@@ -20,7 +20,7 @@ open import Relation.Nullary.Decidable using (map′)
 -- Re-exporting safe definitions
 
 open import Text.Regex.String as Regex public
-  hiding (_∈_; _∉_; Span; Match; search)
+  hiding (_∈_; _∉_; _∈?_; _∉?_; Span; Match; search)
 
 ------------------------------------------------------------------------
 -- Specialised definitions
@@ -30,6 +30,12 @@ str ∈ e = toList str Regex.∈ e
 
 _∉_ : String → Exp → Set
 str ∉ e = toList str Regex.∉ e
+
+_∈?_ : Decidable _∈_
+str ∈? e = toList str Regex.∈? e
+
+_∉?_ : Decidable _∉_
+str ∉? e = toList str Regex.∉? e
 
 Span : Regex → Rel String 0ℓ
 Span e = Regex.Span e _≡_ on toList
