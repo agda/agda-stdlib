@@ -814,6 +814,23 @@ private
 *-distrib-+ : _*_ DistributesOver _+_
 *-distrib-+ = *-distribˡ-+ , *-distribʳ-+
 
+*-inverseˡ : ∀ p {p≢0 : ∣ ↥ p ∣ ≢0} → 1/_ p {p≢0} * p ≡ 1ℚ
+*-inverseˡ p {p≢0} = toℚᵘ-injective (begin-equality
+  toℚᵘ (1/ p * p)
+    ≈⟨ toℚᵘ-homo-* (1/ p) p ⟩
+  toℚᵘ (1/ p) ℚᵘ.* toℚᵘ p
+    ≈⟨ ℚᵘ.*-cong (toℚᵘ-homo-1/ p {p≢0}) ℚᵘ.≃-refl ⟩
+  ℚᵘ.1/ (toℚᵘ p) ℚᵘ.* toℚᵘ p
+    ≈⟨ ℚᵘ.*-inverseˡ (toℚᵘ p) {p≢0} ⟩
+  ℚᵘ.1ℚᵘ
+    ∎
+  )
+  where
+    open ℚᵘ.≤-Reasoning
+
+*-inverseʳ : ∀ p {p≢0 : ∣ ↥ p ∣ ≢0} → p * 1/_ p {p≢0} ≡ 1ℚ
+*-inverseʳ p {p≢0} = trans (*-comm p (1/ p)) (*-inverseˡ p {p≢0})
+
 ------------------------------------------------------------------------
 -- Structures
 
