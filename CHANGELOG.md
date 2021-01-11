@@ -261,6 +261,18 @@ New modules
   System.Environment.Primitive
   ```
 
+* Added a module `Data.Fin.Permutation.Transposition.List` which
+  contains a type `TranspositionList n = List (Fin n × Fin n)` for
+  representing a list of transpositions (a permutation which switches
+  two elements). Also added a function `decompose` that decomposes an
+  arbitrary permutation into a list of transpositions and provided a
+  proof that this list of transpositions evaluates to the originial
+  permutation. Note that currently transpositions of the form (i,i)
+  are allowed as in some literature they are not (in particular the
+  proof that any two transposition decompositions of a permutation
+  have lengths that differ by an even number).
+  ```
+
 * Added the following `Show` modules:
   ```agda
   Data.Fin.Show
@@ -312,6 +324,17 @@ Other minor additions
   RawNearSemiring c ℓ : Set (suc (c ⊔ ℓ))
   RawLattice c ℓ : Set (suc (c ⊔ ℓ))
   CancellativeCommutativeSemiring c ℓ : Set (suc (c ⊔ ℓ))
+  ```
+
+* Added new relations, functions and proofs to `Data.Fin.Permutation`:
+  ```
+  _≈_             : Rel (Permutation m n) 0ℓ
+  lift₀           : Permutation m n → Permutation (suc m) (suc n)
+  lift₀-remove    : π ⟨$⟩ʳ 0F ≡ 0F → ∀ i → lift₀ (remove 0F π) ≈ π
+  lift₀-id        : lift₀ id ⟨$⟩ʳ i ≡ i
+  lift₀-comp      : lift₀ π ∘ₚ lift₀ ρ ≈ lift₀ (π ∘ₚ ρ)
+  lift₀-cong      : π ≈ ρ → lift₀ π ≈ lift₀ ρ
+  lift₀-transpose : transpose (suc i) (suc j)≈ lift₀ (transpose i j)
   ```
 
 * Added new definitions to `Algebra.Definitions`:
