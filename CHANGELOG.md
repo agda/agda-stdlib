@@ -313,6 +313,12 @@ New modules
   Data.Tree.AVL.Map.Relation.Unary.Any
   ```
 
+* Solvers for rationals
+  ```
+  Data.Rational.Solver
+  Data.Rational.Unnormalised.Solver
+  ```
+
 * New ternary relation on lists:
   ```
   Data.List.Relation.Ternary.Appending
