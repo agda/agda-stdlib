@@ -741,6 +741,10 @@ toℚᵘ-homo-* p q with *-nf p q ℤ.≟ 0ℤ
   (↥ p ℤ.* ↥ q) ℤ.* ↧ (p * q)  ℤ.* *-nf p q    ∎))
   where open ≡-Reasoning; open CommSemigroupProperties ℤ.*-commutativeSemigroup
 
+toℚᵘ-homo-1/ : ∀ p {p≢0 : ∣ ↥ p ∣ ≢0} → toℚᵘ (1/_ p {p≢0}) ℚᵘ.≃ ℚᵘ.1/_ (toℚᵘ p) {p≢0}
+toℚᵘ-homo-1/ (mkℚ +[1+ _ ] _ _) = ℚᵘ.≃-refl
+toℚᵘ-homo-1/ (mkℚ -[1+ _ ] _ _) = ℚᵘ.≃-refl
+
 toℚᵘ-isMagmaHomomorphism-* : IsMagmaHomomorphism *-rawMagma ℚᵘ.*-rawMagma toℚᵘ
 toℚᵘ-isMagmaHomomorphism-* = record
   { isRelHomomorphism = toℚᵘ-isRelHomomorphism

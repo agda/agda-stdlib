@@ -699,6 +699,11 @@ Other minor additions
   readMaybe : (base : ℕ) → {base≤16 : True (base ≤? 16)} → String → Maybe ℕ
   ```
 
+* Added new proofs in `Data.Rational.Properties`:
+  ```agda
+  toℚᵘ-homo-1/ : ∀ p → toℚᵘ (1/ p) ℚᵘ.≃ ℚᵘ.1/ (toℚᵘ p)
+  ```
+
 * Added new functions and relation to `Data.String.Base`:
   ```agda
   linesBy : Decidable P → String → List String
