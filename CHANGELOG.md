@@ -291,6 +291,31 @@ New modules
   Algebra.Morphism.LatticeMonomorphism
   ```
 
+* New ternary relation on lists:
+  ```
+  Data.List.Relation.Ternary.Appending
+  Data.List.Relation.Ternary.Appending.Properties
+  Data.List.Relation.Ternary.Appending.Propositional
+  Data.List.Relation.Ternary.Appending.Propositional.Properties
+  Data.List.Relation.Ternary.Appending.Setoid
+  Data.List.Relation.Ternary.Appending.Setoid.Properties
+  ```
+
+* New modules formalising regular expressions:
+  ```
+  Text.Regex
+  Text.Regex.Base
+  Text.Regex.Derivative.Brzozowski
+  Text.Regex.Properties.Core
+  Text.Regex.Properties
+  Text.Regex.Search
+  Text.Regex.SmartConstructors
+  Text.Regex.String
+  Text.Regex.String.Unsafe
+
+  README.Text.Regex
+  ```
+
 Other major changes
 -------------------
 
@@ -694,6 +719,14 @@ Other minor additions
   ```agda
   linesBy : Decidable P → String → List String
   lines   : String → List String
+
+  _≤_ : Rel String zero
+  ```
+
+* Added new proofs to `Data.String.Properties`:
+  ```agda
+  ≤-isDecPartialOrder-≈ : IsDecPartialOrder _≈_ _≤_
+  ≤-decPoset-≈          : DecPoset _ _ _
   ```
 
 * Added new function to `Data.Maybe.Base`:
@@ -755,6 +788,22 @@ Other minor additions
 * Added new proof to `Relation.Binary.PropositionalEquality`:
   ```agda
   resp : (P : Pred A ℓ) → P Respects _≡_
+  ```
+
+* Added new proof to `Data.List.Relation.Binary.Lex.Strict`:
+  ```agda
+  ≤-isDecPartialOrder : IsStrictTotalOrder _≈_ _≺_ → IsDecPartialOrder _≋_ _≤_
+  ≤-decPoset          : StrictTotalOrder a ℓ₁ ℓ₂ → DecPoset _ _ _
+  ```
+
+* Added new function to `Data.List.Relation.Binary.Prefix.Heterogeneous`:
+  ```agda
+  _++ᵖ_ : Prefix R as bs → ∀ suf → Prefix R as (bs ++ suf)
+  ```
+
+* Added new function to `Data.List.Relation.Binary.Suffix.Heterogeneous`:
+  ```agda
+  _++ˢ_ : ∀ pre → Suffix R as bs → Suffix R as (pre ++ bs)
   ```
 
 * Added new function to `Data.Fin` (the inverse of `splitAt`:

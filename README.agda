@@ -91,6 +91,9 @@ import README.Data
 -- • Tactic
 --     Tactics for automatic proof generation
 
+-- ∙ Text
+--     Format-based printing, Pretty-printing, and regular expressions
+
 
 ------------------------------------------------------------------------
 -- Library design
@@ -184,6 +187,29 @@ import Codata.Thunk
 
 import IO
 
+-- ∙ Text
+
+-- Explaining string formats and the behaviour of printf
+
+import README.Text.Printf
+
+-- Showcasing the pretty printing module
+
+import README.Text.Pretty
+
+-- Demonstrating the regular expression matching
+
+import README.Text.Regex
+
+-- Explaining how to display tables of strings:
+
+import README.Text.Tabular
+
+-- Explaining how to display a tree:
+
+import README.Text.Tree
+
+
 
 ------------------------------------------------------------------------
 -- More documentation
@@ -212,22 +238,6 @@ import README.Nary
 -- auxiliary definitions, and implementation details.
 
 import README.Inspect
-
--- Explaining string formats and the behaviour of printf
-
-import README.Text.Printf
-
--- Showcasing the pretty printing module
-
-import README.Text.Pretty
-
--- Explaining how to display tables of strings:
-
-import README.Text.Tabular
-
--- Explaining how to display a tree:
-
-import README.Text.Tree
 
 -- Explaining how to use the automatic solvers
 

@@ -73,6 +73,7 @@ withKModules = map modToFile
   , "Relation.Binary.PropositionalEquality.TrustMe"
   , "Text.Pretty.Core"
   , "Text.Pretty"
+  , "Text.Regex.String.Unsafe"
   ]
 
 isWithKModule :: FilePath -> Bool
