@@ -16,7 +16,7 @@ open import Algebra
 module Algebra.Solver.Ring.NaturalCoefficients.Default
   {r₁ r₂} (R : CommutativeSemiring r₁ r₂) where
 
-import Algebra.Properties.Semiring.Multiplication as SemiringMultiplication
+import Algebra.Properties.Semiring.Mult as SemiringMultiplication
 open import Data.Maybe.Base using (Maybe; map)
 open import Data.Nat using (_≟_)
 open import Relation.Binary.Consequences using (dec⟶weaklyDec)
