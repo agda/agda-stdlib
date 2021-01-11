@@ -30,6 +30,7 @@ open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; maybe′)
 open import Data.Maybe.Relation.Unary.All as Allᴹ using (nothing; just)
 
 open import Data.String.Base as String
+  using (String; length; replicate; _++_; unlines)
 open import Data.String.Unsafe as Stringₚ
 open import Function.Base
 open import Relation.Nullary using (Dec)

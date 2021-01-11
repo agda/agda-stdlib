@@ -8,21 +8,21 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Algebra
-import Algebra.Properties.Semiring.Multiplication as SemiringMultiplication
+import Algebra.Properties.Semiring.Mult as SemiringMultiplication
 open import Data.Maybe.Base using (Maybe; just; nothing; map)
+open import Algebra.Solver.Ring.AlmostCommutativeRing
+open import Data.Nat.Base as ℕ
+open import Data.Product using (module Σ)
+open import Function.Base using (id)
+open import Relation.Binary.PropositionalEquality using (_≡_)
 
 module Algebra.Solver.Ring.NaturalCoefficients
   {r₁ r₂} (R : CommutativeSemiring r₁ r₂)
   (open CommutativeSemiring R)
-  (open SemiringMultiplication semiring)
-  (dec : ∀ m n → Maybe (m × 1# ≈ n × 1#)) where
+  (open SemiringMultiplication semiring using () renaming (_×_ to _×ᵤ_))
+  (dec : ∀ m n → Maybe (m ×ᵤ 1# ≈ n ×ᵤ 1#)) where
 
-import Algebra.Solver.Ring
-open import Algebra.Solver.Ring.AlmostCommutativeRing
-open import Data.Nat.Base as ℕ
-open import Data.Product using (module Σ)
-open import Function
-open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Algebra.Properties.Semiring.Mult.TCOptimised semiring
 
 open import Relation.Binary.Reasoning.Setoid setoid
 
@@ -43,15 +43,15 @@ private
 
   -- There is a homomorphism from ℕ to R.
   --
-  -- Note that _×′_ is used rather than _×_. If _×_ were used, then
-  -- Function.Related.TypeIsomorphisms.test would fail to type-check.
+  -- Note that the optimised _×_ is used rather than unoptimised _×ᵤ_.
+  -- If _×ᵤ_ were used, then Function.Related.TypeIsomorphisms.test would fail
+  -- to type-check.
 
-  homomorphism :
-    ℕ-ring -Raw-AlmostCommutative⟶ fromCommutativeSemiring R
+  homomorphism : ℕ-ring -Raw-AlmostCommutative⟶ fromCommutativeSemiring R
   homomorphism = record
-    { ⟦_⟧    = λ n → n ×′ 1#
-    ; +-homo = ×′-homo-+ 1#
-    ; *-homo = ×′1-homo-*
+    { ⟦_⟧    = λ n → n × 1#
+    ; +-homo = ×-homo-+ 1#
+    ; *-homo = ×1-homo-*
     ; -‿homo = λ _ → refl
     ; 0-homo = refl
     ; 1-homo = refl
@@ -59,16 +59,16 @@ private
 
   -- Equality of certain expressions can be decided.
 
-  dec′ : ∀ m n → Maybe (m ×′ 1# ≈ n ×′ 1#)
+  dec′ : ∀ m n → Maybe (m × 1# ≈ n × 1#)
   dec′ m n = map to (dec m n)
     where
-    to : m × 1# ≈ n × 1# → m ×′ 1# ≈ n ×′ 1#
+    to : m ×ᵤ 1# ≈ n ×ᵤ 1# → m × 1# ≈ n × 1#
     to m≈n = begin
-      m ×′ 1#  ≈⟨ sym $ ×≈×′ m 1# ⟩
-      m ×  1#  ≈⟨ m≈n ⟩
-      n ×  1#  ≈⟨ ×≈×′ n 1# ⟩
-      n ×′ 1#  ∎
+      m ×  1#  ≈˘⟨ ×ᵤ≈× m 1# ⟩
+      m ×ᵤ 1#  ≈⟨  m≈n ⟩
+      n ×ᵤ 1#  ≈⟨  ×ᵤ≈× n 1# ⟩
+      n ×  1#  ∎
 
 -- The instantiation.
 
-open Algebra.Solver.Ring _ _ homomorphism dec′ public
+open import Algebra.Solver.Ring _ _ homomorphism dec′ public

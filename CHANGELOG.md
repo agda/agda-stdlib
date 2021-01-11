@@ -30,6 +30,9 @@ Bug-fixes
 * In `IO`, `⊤`-returning functions (such as `putStrLn`) have been made level polymorphic.
   This may force you to add more type or level annotations to your programs.
 
+* Generalised the types of `Data.Vec.Relation.Unary.AllPairs`'s `head`, `tail`, `uncons`
+  so that the vector talked about does not need to be cons-headed.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -87,16 +90,14 @@ Deprecated modules
   complete. The new definitions are parameterised by raw bundles instead of bundles
   meaning they are much more flexible to work with.
 
-* The module `Algebra.Operations.CommutativeMonoid` has been deprecated. The definition
-  of multiplication and the associated properties have been moved to
-  `Algebra.Properties.CommutativeMonoid.Multiplication`. The definition of summation
-  which was defined over the deprecated `Data.Table` has been redefined in terms of
-  `Data.Vec.Functional` and been moved to `Algbra.Properties.CommutativeMonoid.Summation`.
-  The properties of summation in `Algebra.Properties.CommutativeMonoid` have likewise
-  been deprecated and moved to `Algebra.Properties.CommutativeMonoid.Summation`.
-
-* The module `Algebra.Operations.Semiring` has been deprecated. The contents has
-  been moved to `Algebra.Properties.Semiring.(Multiplication/Exponentiation)`.
+* All modules in the folder `Algebra.Operations` have been deprecated, as their design
+	a) was inconsistent, some are parameterised over the raw bundle and some over the normal bundle
+    b) prevented definitions from being neatly inherited by super-bundles.
+  
+  These problems have been fixed with a redesign: definitions of the operations can be found in 
+  `Algebra.Definitions.(RawMagma/RawMonoid/RawSemiring)` and their properties can be found in 
+  `Algebra.Properties.(Magma/Semigroup/Monoid/CommutativeMonoid/Semiring).(Sum/Mult/Exp)`. 
+  The latter also export the definition, and so most users will only need to import the latter.
 
 Deprecated names
 ----------------
@@ -166,6 +167,11 @@ Deprecated names
   show ↦ Data.Rational.Show.show
   ```
 
+* In `Data.Fin.Properties`:
+  ```agda
+  inject+-raise-splitAt ↦ join-splitAt
+  ```
+
 New modules
 -----------
 
@@ -193,39 +199,40 @@ New modules
   `Data.Unit.Polymorphic.Instances`, `Data.Vec.Instances`,
   `Data.Word.Instances`, and `Reflection.Instances`.
 
-* Generic divisibility over algebraic structures
+* Generic definitions over algebraic structures (divisibility, multiplication etc.):
   ```
-  Algebra.Divisibility
-  Algebra.GCD
-  Algebra.Primality
-  Algebra.Properties.Magma.Divisibility
-  Algebra.Properties.Semigroup.Divisibility
-  Algebra.Properties.Monoid.Divisibility
-  Algebra.Properties.CommutativeSemigroup.Divisibility
-  Algebra.Properties.Semiring.Divisibility
-  Algebra.Properties.Semiring.GCD
-  ```
-
-* Generic summation over algebraic structures
-  ```
-  Algebra.Properties.Monoid.Summation
-  Algebra.Properties.CommutativeMonoid.Summation
-  ```
-
-* Generic multiplication over algebraic structures
-  ```
-  Algebra.Properties.Monoid.Multiplication
-  Algebra.Properties.Semiring.Multiplication
-  ```
-
-* Generic exponentiation over algebraic structures
-  ```
-  Algebra.Properties.Semiring.Exponentiation
+  Algebra.Definitions.RawMagma
+  Algebra.Definitions.RawMonoid
+  Algebra.Definitions.RawSemiring
   ```
 
 * Setoid equality over vectors:
   ```
   Data.Vec.Functional.Relation.Binary.Equality.Setoid
+  ```
+
+* Properties of generic definitions over algebraic structures (divisibility, multiplication etc.):
+  ```
+  Algebra.Properties.Magma.Divisibility
+  Algebra.Properties.Semigroup.Divisibility
+  Algebra.Properties.CommutativeSemigroup.Divisibility
+  
+  Algebra.Properties.Monoid.Sum
+  Algebra.Properties.Monoid.Mult
+  Algebra.Properties.Monoid.Divisibility
+  
+  Algebra.Properties.CommutativeMonoid.Sum
+  Algebra.Properties.CommutativeMonoid.Mult
+  
+  Algebra.Properties.Semiring.Divisibility
+  Algebra.Properties.Semiring.Exp
+  Algebra.Properties.Semiring.Exp.TCOptimised
+  Algebra.Properties.Semiring.GCD
+  Algebra.Properties.Semiring.Mult
+  Algebra.Properties.Semiring.Mult.TCOptimised
+  
+  Algebra.Properties.CommutativeSemiring.Exp
+  Algebra.Properties.CommutativeSemiring.Exp.TCOptimised
   ```
 
 * Heterogeneous relation characterising a list as an infix segment of another:
@@ -254,6 +261,18 @@ New modules
   System.Environment.Primitive
   ```
 
+* Added a module `Data.Fin.Permutation.Transposition.List` which
+  contains a type `TranspositionList n = List (Fin n × Fin n)` for
+  representing a list of transpositions (a permutation which switches
+  two elements). Also added a function `decompose` that decomposes an
+  arbitrary permutation into a list of transpositions and provided a
+  proof that this list of transpositions evaluates to the originial
+  permutation. Note that currently transpositions of the form (i,i)
+  are allowed as in some literature they are not (in particular the
+  proof that any two transposition decompositions of a permutation
+  have lengths that differ by an even number).
+  ```
+
 * Added the following `Show` modules:
   ```agda
   Data.Fin.Show
@@ -276,6 +295,31 @@ New modules
   ```
   Data.Rational.Solver
   Data.Rational.Unnormalised.Solver
+  ```
+
+* New ternary relation on lists:
+  ```
+  Data.List.Relation.Ternary.Appending
+  Data.List.Relation.Ternary.Appending.Properties
+  Data.List.Relation.Ternary.Appending.Propositional
+  Data.List.Relation.Ternary.Appending.Propositional.Properties
+  Data.List.Relation.Ternary.Appending.Setoid
+  Data.List.Relation.Ternary.Appending.Setoid.Properties
+  ```
+
+* New modules formalising regular expressions:
+  ```
+  Text.Regex
+  Text.Regex.Base
+  Text.Regex.Derivative.Brzozowski
+  Text.Regex.Properties.Core
+  Text.Regex.Properties
+  Text.Regex.Search
+  Text.Regex.SmartConstructors
+  Text.Regex.String
+  Text.Regex.String.Unsafe
+
+  README.Text.Regex
   ```
 
 Other major changes
@@ -311,6 +355,17 @@ Other minor additions
   RawNearSemiring c ℓ : Set (suc (c ⊔ ℓ))
   RawLattice c ℓ : Set (suc (c ⊔ ℓ))
   CancellativeCommutativeSemiring c ℓ : Set (suc (c ⊔ ℓ))
+  ```
+
+* Added new relations, functions and proofs to `Data.Fin.Permutation`:
+  ```
+  _≈_             : Rel (Permutation m n) 0ℓ
+  lift₀           : Permutation m n → Permutation (suc m) (suc n)
+  lift₀-remove    : π ⟨$⟩ʳ 0F ≡ 0F → ∀ i → lift₀ (remove 0F π) ≈ π
+  lift₀-id        : lift₀ id ⟨$⟩ʳ i ≡ i
+  lift₀-comp      : lift₀ π ∘ₚ lift₀ ρ ≈ lift₀ (π ∘ₚ ρ)
+  lift₀-cong      : π ≈ ρ → lift₀ π ≈ lift₀ ρ
+  lift₀-transpose : transpose (suc i) (suc j)≈ lift₀ (transpose i j)
   ```
 
 * Added new definitions to `Algebra.Definitions`:
@@ -670,6 +725,14 @@ Other minor additions
   ```agda
   linesBy : Decidable P → String → List String
   lines   : String → List String
+
+  _≤_ : Rel String zero
+  ```
+
+* Added new proofs to `Data.String.Properties`:
+  ```agda
+  ≤-isDecPartialOrder-≈ : IsDecPartialOrder _≈_ _≤_
+  ≤-decPoset-≈          : DecPoset _ _ _
   ```
 
 * Added new function to `Data.Maybe.Base`:
@@ -731,4 +794,32 @@ Other minor additions
 * Added new proof to `Relation.Binary.PropositionalEquality`:
   ```agda
   resp : (P : Pred A ℓ) → P Respects _≡_
+  ```
+
+* Added new proof to `Data.List.Relation.Binary.Lex.Strict`:
+  ```agda
+  ≤-isDecPartialOrder : IsStrictTotalOrder _≈_ _≺_ → IsDecPartialOrder _≋_ _≤_
+  ≤-decPoset          : StrictTotalOrder a ℓ₁ ℓ₂ → DecPoset _ _ _
+  ```
+
+* Added new function to `Data.List.Relation.Binary.Prefix.Heterogeneous`:
+  ```agda
+  _++ᵖ_ : Prefix R as bs → ∀ suf → Prefix R as (bs ++ suf)
+  ```
+
+* Added new function to `Data.List.Relation.Binary.Suffix.Heterogeneous`:
+  ```agda
+  _++ˢ_ : ∀ pre → Suffix R as bs → Suffix R as (pre ++ bs)
+  ```
+
+* Added new function to `Data.Fin` (the inverse of `splitAt`:
+  ```agda
+  join : ∀ m n → Fin m ⊎ Fin n → Fin (m ℕ.+ n)
+  ```
+
+* Added new properties to `Data.Fin.Properties`:
+  ```agda
+  splitAt-join : ∀ m n i → splitAt m (join m n i) ≡ i
+  +↔⊎ : Fin (m ℕ.+ n) ↔ (Fin m ⊎ Fin n)
+  Fin0↔⊥ : Fin 0 ↔ ⊥
   ```

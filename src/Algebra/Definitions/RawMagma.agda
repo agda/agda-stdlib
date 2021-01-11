@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Definition of divisibility
+-- Basic auxiliary definitions for magma-like structures
 ------------------------------------------------------------------------
 
 -- You're unlikely to want to use this module directly. Instead you
@@ -10,16 +10,17 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra.Core
+open import Algebra.Bundles using (RawMagma)
 open import Data.Product using (∃; _×_; _,_)
 open import Level using (_⊔_)
 open import Relation.Binary
 open import Relation.Nullary using (¬_)
 
-module Algebra.Divisibility
-  {a ℓ} {A : Set a} (_≈_ : Rel A ℓ) (_∙_ : Op₂ A)
+module Algebra.Definitions.RawMagma
+  {a ℓ} (M : RawMagma a ℓ)
   where
 
+open RawMagma M renaming (Carrier to A)
 open import Algebra.Definitions _≈_
 
 ------------------------------------------------------------------------
@@ -65,35 +66,3 @@ x ∣∣ y = x ∣ y × y ∣ x
 
 _∤∤_ : Rel A (a ⊔ ℓ)
 x ∤∤ y =  ¬ x ∣∣ y
-
-------------------------------------------------------------------------------
--- Greatest common divisor (GCD)
-
-record IsGCD (x y gcd : A) : Set (a ⊔ ℓ) where
-  constructor gcdᶜ
-  field
-    divides₁ : gcd ∣ x
-    divides₂ : gcd ∣ y
-    greatest : ∀ {z} → z ∣ x → z ∣ y → z ∣ gcd
-
-------------------------------------------------------------------------
--- Properties
-
-∣-refl : ∀ {ε} → LeftIdentity ε _∙_ → Reflexive _∣_
-∣-refl {ε} idˡ {x} = ε , idˡ x
-
-∣-reflexive : Transitive _≈_ → ∀ {ε} → LeftIdentity ε _∙_ → _≈_ ⇒ _∣_
-∣-reflexive trans {ε} idˡ x≈y = ε , trans (idˡ _) x≈y
-
-∣-trans : Transitive _≈_ → LeftCongruent _∙_ → Associative _∙_ → Transitive _∣_
-∣-trans trans congˡ assoc {x} {y} {z} (p , px≈y) (q , qy≈z) =
-  q ∙ p , trans (assoc q p x) (trans (congˡ px≈y) qy≈z)
-
-∣-respʳ : Transitive _≈_ → _∣_ Respectsʳ _≈_
-∣-respʳ trans y≈z (q , qx≈y) = q , trans qx≈y y≈z
-
-∣-respˡ : Symmetric _≈_ → Transitive _≈_ → LeftCongruent _∙_ → _∣_ Respectsˡ _≈_
-∣-respˡ sym trans congˡ x≈z (q , qx≈y) = q , trans (congˡ (sym x≈z)) qx≈y
-
-∣-resp : Symmetric _≈_ → Transitive _≈_ → LeftCongruent _∙_ → _∣_ Respects₂ _≈_
-∣-resp sym trans cong = ∣-respʳ trans , ∣-respˡ sym trans cong

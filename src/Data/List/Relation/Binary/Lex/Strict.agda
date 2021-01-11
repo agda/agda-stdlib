@@ -196,6 +196,14 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
       }
       where open IsStrictPartialOrder spo
 
+    ≤-isDecPartialOrder : IsStrictTotalOrder _≈_ _≺_ →
+                          IsDecPartialOrder _≋_ _≤_
+    ≤-isDecPartialOrder sto = record
+      { isPartialOrder = ≤-isPartialOrder isStrictPartialOrder
+      ; _≟_            = Pointwise.decidable _≟_
+      ; _≤?_           = ≤-decidable _≟_ _<?_
+      } where open IsStrictTotalOrder sto
+
     ≤-isTotalOrder : IsStrictTotalOrder _≈_ _≺_ → IsTotalOrder _≋_ _≤_
     ≤-isTotalOrder sto = record
       { isPartialOrder = ≤-isPartialOrder isStrictPartialOrder
@@ -221,6 +229,13 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
 ≤-partialOrder spo = record
   { isPartialOrder = ≤-isPartialOrder isStrictPartialOrder
   } where open StrictPartialOrder spo
+
+≤-decPoset : ∀ {a ℓ₁ ℓ₂} → StrictTotalOrder a ℓ₁ ℓ₂ →
+             DecPoset _ _ _
+≤-decPoset sto = record
+  { isDecPartialOrder = ≤-isDecPartialOrder isStrictTotalOrder
+  } where open StrictTotalOrder sto
+
 
 ≤-decTotalOrder : ∀ {a ℓ₁ ℓ₂} → StrictTotalOrder a ℓ₁ ℓ₂ →
                   DecTotalOrder _ _ _
