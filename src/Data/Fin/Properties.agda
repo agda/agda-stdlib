@@ -12,7 +12,7 @@ module Data.Fin.Properties where
 open import Category.Applicative using (RawApplicative)
 open import Category.Functor using (RawFunctor)
 open import Data.Bool.Base using (Bool; true; false; not; _∧_; _∨_)
-open import Data.Empty using (⊥-elim)
+open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Fin.Base
 open import Data.Fin.Patterns
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_)
@@ -22,6 +22,7 @@ open import Data.Product using (∃; ∃₂; ∄; _×_; _,_; map; proj₁; uncur
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_])
 open import Data.Sum.Properties using ([,]-map-commute; [,]-∘-distr)
 open import Function.Base using (_∘_; id; _$_)
+open import Function.Bundles using (_↔_; mk↔′)
 open import Function.Equivalence using (_⇔_; equivalence)
 open import Function.Injection using (_↣_)
 open import Relation.Binary as B hiding (Decidable; _⇔_)
@@ -44,6 +45,12 @@ open import Relation.Unary.Properties using (U?)
 
 ¬Fin0 : ¬ Fin 0
 ¬Fin0 ()
+
+------------------------------------------------------------------------
+-- Bundles
+
+Fin0↔⊥ : Fin 0 ↔ ⊥
+Fin0↔⊥ = mk↔′ ¬Fin0 (λ ()) (λ ()) (λ ())
 
 ------------------------------------------------------------------------
 -- Properties of _≡_
