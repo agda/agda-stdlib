@@ -291,6 +291,12 @@ New modules
   Algebra.Morphism.LatticeMonomorphism
   ```
 
+* Solvers for rationals
+  ```
+  Data.Rational.Solver
+  Data.Rational.Unnormalised.Solver
+  ```
+
 * New ternary relation on lists:
   ```
   Data.List.Relation.Ternary.Appending
