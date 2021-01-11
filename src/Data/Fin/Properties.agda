@@ -19,7 +19,7 @@ open import Data.Nat.Base as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_)
 import Data.Nat.Properties as ℕₚ
 open import Data.Unit using (tt)
 open import Data.Product using (∃; ∃₂; ∄; _×_; _,_; map; proj₁; uncurry; <_,_>)
-open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_])
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]; [_,_]′)
 open import Data.Sum.Properties using ([,]-map-commute; [,]-∘-distr)
 open import Function.Base using (_∘_; id; _$_)
 open import Function.Bundles using (_↔_; mk↔′)
@@ -488,7 +488,7 @@ pred< (suc i) p = ≤̄⇒inject₁< ℕₚ.≤-refl
 -- splitAt
 ------------------------------------------------------------------------
 
--- Fin (m + n) ≃ Fin m ⊎ Fin n
+-- Fin (m + n) ↔ Fin m ⊎ Fin n
 
 splitAt-inject+ : ∀ m n i → splitAt m (inject+ n i) ≡ inj₁ i
 splitAt-inject+ (suc m) n zero = refl
@@ -498,14 +498,18 @@ splitAt-raise : ∀ m n i → splitAt m (raise {n} m i) ≡ inj₂ i
 splitAt-raise zero    n i = refl
 splitAt-raise (suc m) n i rewrite splitAt-raise m n i = refl
 
-inject+-raise-splitAt : ∀ m n i → [ inject+ n , raise {n} m ] (splitAt m i) ≡ i
-inject+-raise-splitAt zero    n i       = refl
-inject+-raise-splitAt (suc m) n zero    = refl
-inject+-raise-splitAt (suc m) n (suc i) = begin
-  [ inject+ n , raise {n} (suc m) ] (splitAt (suc m) (suc i))  ≡⟨ [,]-map-commute (splitAt m i) ⟩
-  [ suc ∘ (inject+ n) , suc ∘ (raise {n} m) ] (splitAt m i)    ≡˘⟨ [,]-∘-distr suc (splitAt m i) ⟩
-  suc ([ inject+ n , raise {n} m ] (splitAt m i))              ≡⟨ cong suc (inject+-raise-splitAt m n i) ⟩
-  suc i                                                        ∎
+splitAt-join : ∀ m n i → splitAt m (join m n i) ≡ i
+splitAt-join m n (inj₁ x) = splitAt-inject+ m n x
+splitAt-join m n (inj₂ y) = splitAt-raise m n y
+
+join-splitAt : ∀ m n i → join m n (splitAt m i) ≡ i
+join-splitAt zero    n i       = refl
+join-splitAt (suc m) n zero    = refl
+join-splitAt (suc m) n (suc i) = begin
+  [ inject+ n , raise {n} (suc m) ]′ (splitAt (suc m) (suc i))  ≡⟨ [,]-map-commute (splitAt m i) ⟩
+  [ suc ∘ (inject+ n) , suc ∘ (raise {n} m) ]′ (splitAt m i)    ≡˘⟨ [,]-∘-distr suc (splitAt m i) ⟩
+  suc ([ inject+ n , raise {n} m ]′ (splitAt m i))              ≡⟨ cong suc (join-splitAt m n i) ⟩
+  suc i                                                         ∎
   where open ≡-Reasoning
 
 -- splitAt "m" "i" ≡ inj₁ "i" if i < m
@@ -519,6 +523,12 @@ splitAt-< (suc m) (suc i) (s≤s i<m) = cong (Sum.map suc id) (splitAt-< m i i<m
 splitAt-≥ : ∀ m {n} i → (i≥m : toℕ i ℕ.≥ m) → splitAt m {n} i ≡ inj₂ (reduce≥ i i≥m)
 splitAt-≥ zero    i       _         = refl
 splitAt-≥ (suc m) (suc i) (s≤s i≥m) = cong (Sum.map suc id) (splitAt-≥ m i i≥m)
+
+------------------------------------------------------------------------
+-- Bundles
+
++↔⊎ : ∀ {m n} → Fin (m ℕ.+ n) ↔ (Fin m ⊎ Fin n)
++↔⊎ {m} {n} = mk↔′ (splitAt m {n}) (join m n) (splitAt-join m n) (join-splitAt m n)
 
 ------------------------------------------------------------------------
 -- lift
@@ -895,4 +905,12 @@ decSetoid = ≡-decSetoid
 {-# WARNING_ON_USAGE decSetoid
 "Warning: decSetoid was deprecated in v1.2.
 Please use ≡-decSetoid instead."
+#-}
+
+-- Version 1.5
+
+inject+-raise-splitAt = join-splitAt
+{-# WARNING_ON_USAGE inject+-raise-splitAt
+"Warning: decSetoid was deprecated in v1.5.
+Please use join-splitAt instead."
 #-}
