@@ -846,6 +846,12 @@ p≤q⇒0≤q-p {p} {q} p≤q = begin
   (↥ y ℤ.* ↥ v) ℤ.* (↧ x ℤ.* ↧ u) ∎)
   where open ≡-Reasoning; open ℤ-solver
 
+*-congʳ : ∀ p {q r} → q ≃ r  → p * q ≃ p * r
+*-congʳ p q≃r = *-cong (≃-refl {p}) q≃r
+
+*-congˡ : ∀ p {q r} → q ≃ r → q * p ≃ r * p
+*-congˡ p q≃r = *-cong q≃r (≃-refl {p})
+
 -- Associativity
 
 *-assoc-↥ : Associative (_≡_ on ↥_) _*_

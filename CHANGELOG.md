@@ -699,6 +699,15 @@ Other minor additions
   readMaybe : (base : ℕ) → {base≤16 : True (base ≤? 16)} → String → Maybe ℕ
   ```
 
+* Added new proofs in `Data.Rational.Unnormalised.Properties`:
+  ```agda
+  *-congʳ : ∀ p → q ≃ r  → p * q ≃ p * r
+  *-congʳ p q≃r = *-cong (≃-refl {p}) q≃r
+
+  *-congˡ : ∀ p → q ≃ r → q * p ≃ r * p
+  *-congˡ p q≃r = *-cong q≃r (≃-refl {p})
+  ```
+
 * Added new proofs in `Data.Rational.Properties`:
   ```agda
   toℚᵘ-homo-1/ : ∀ p → toℚᵘ (1/ p) ℚᵘ.≃ ℚᵘ.1/ (toℚᵘ p)
