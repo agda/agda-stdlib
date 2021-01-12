@@ -72,13 +72,3 @@ record Prime (p : A) : Set (a ⊔ ℓ) where
     p≉0     : p ≉ 0#
     split-∣ : ∀ {x y} → p ∣ x * y → p ∣ x ⊎ p ∣ y
 
-------------------------------------------------------------------------
--- Greatest common divisor
-
-record IsGCD (x y gcd : A) : Set (a ⊔ ℓ) where
-  constructor gcdᶜ
-  field
-    divides₁ : gcd ∣ x
-    divides₂ : gcd ∣ y
-    greatest : ∀ {z} → z ∣ x → z ∣ y → z ∣ gcd
-
