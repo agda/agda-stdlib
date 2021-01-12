@@ -199,7 +199,6 @@ New modules
   Algebra.Properties.Semiring.Divisibility
   Algebra.Properties.Semiring.Exp
   Algebra.Properties.Semiring.Exp.TCOptimised
-  Algebra.Properties.Semiring.GCD
   Algebra.Properties.Semiring.Mult
   Algebra.Properties.Semiring.Mult.TCOptimised
   
