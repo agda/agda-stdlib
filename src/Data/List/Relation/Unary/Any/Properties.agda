@@ -449,6 +449,19 @@ module _ {P : A → Set p} where
   concat↔ {xss} = inverse concat⁺ (concat⁻ xss) concat⁻∘concat⁺ (concat⁺∘concat⁻ xss)
 
 ------------------------------------------------------------------------
+-- concatMap
+
+module _ {f : A → List B} where
+
+  concatMap⁺ : Any (Any P ∘ f) xs → Any P (List.concatMap f xs)
+  concatMap⁺ = concat⁺ ∘ map⁺
+
+  concatMap⁻ : ∀ xs → Any P (List.concatMap f xs) → Any (Any P ∘ f) xs
+  concatMap⁻ xs = map⁻  ∘ concat⁻ (map f xs)
+
+
+
+------------------------------------------------------------------------
 -- cartesianProductWith
 
 module _ (f : A → B → C) where
