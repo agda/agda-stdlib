@@ -18,9 +18,9 @@ open import Data.Fin.Patterns
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_)
 import Data.Nat.Properties as ℕₚ
 open import Data.Unit using (tt)
-open import Data.Product using (∃; ∃₂; ∄; _×_; _,_; map; proj₁; uncurry; <_,_>)
+open import Data.Product as Σ using (∃; ∃₂; ∄; _×_; _,_; map; proj₁; proj₂; uncurry; <_,_>)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]; [_,_]′)
-open import Data.Sum.Properties using ([,]-map-commute; [,]-∘-distr)
+open import Data.Sum.Properties using ([,]-map-commute; [,]-∘-distr; inj₁-injective; inj₂-injective)
 open import Function.Base using (_∘_; id; _$_)
 open import Function.Bundles using (_↔_; mk↔′)
 open import Function.Equivalence using (_⇔_; equivalence)
@@ -66,6 +66,12 @@ zero  ≟ zero  = yes refl
 zero  ≟ suc y = no λ()
 suc x ≟ zero  = no λ()
 suc x ≟ suc y = map′ (cong suc) suc-injective (x ≟ y)
+
+0≢1+n : ∀ {n} {i : Fin n} → 0F ≢ suc i
+0≢1+n ()
+
+1+n≢0 : ∀ {n} {i : Fin n} → suc i ≢ 0F
+1+n≢0 ()
 
 ------------------------------------------------------------------------
 -- Structures
@@ -512,11 +518,31 @@ join-splitAt (suc m) n (suc i) = begin
   suc i                                                         ∎
   where open ≡-Reasoning
 
+splitAt[1+m,1+i]≢inj₁[0] : ∀ m {n} i → splitAt (suc m) {n} (suc i) ≢ inj₁ 0F
+splitAt[1+m,1+i]≢inj₁[0] m i with splitAt m i
+... | inj₁ x = 1+n≢0 ∘ inj₁-injective
+... | inj₂ y = λ ()
+
 -- splitAt "m" "i" ≡ inj₁ "i" if i < m
 
 splitAt-< : ∀ m {n} i → (i<m : toℕ i ℕ.< m) → splitAt m {n} i ≡ inj₁ (fromℕ< i<m)
 splitAt-< (suc m) zero    _         = refl
 splitAt-< (suc m) (suc i) (s≤s i<m) = cong (Sum.map suc id) (splitAt-< m i i<m)
+
+splitAt-<-toℕ : ∀ m {n} i {j} → inj₁ j ≡ splitAt m {n} i → toℕ j ≡ toℕ i
+splitAt-<-toℕ (suc m) 0F {.0F} refl = refl
+splitAt-<-toℕ (suc m) (suc i) {0F} 0≡splitAt[1+m,1+i] = contradiction (sym 0≡splitAt[1+m,1+i]) (splitAt[1+m,1+i]≢inj₁[0] m i)
+splitAt-<-toℕ (suc m) (suc i) {suc j} 1+j≡splitAt[1+m,1+i] = cong suc (trans (cong toℕ (sym j′≡j)) j′≡i) where
+  ∃[j′]j′≡splitAt[m,i]∧1+j′≡splitAt[1+m,1+i] : ∃ λ j′ → inj₁ j′ ≡ splitAt m i × inj₁ (suc j′) ≡ splitAt (suc m) (suc i)
+  ∃[j′]j′≡splitAt[m,i]∧1+j′≡splitAt[1+m,1+i] with splitAt m i
+  ... | inj₁ j′ = j′ , refl , refl
+  j′≡splitAt[m,i] = proj₁ (proj₂ ∃[j′]j′≡splitAt[m,i]∧1+j′≡splitAt[1+m,1+i])
+  1+j′≡splitAt[1+m,1+i] = proj₂ (proj₂ ∃[j′]j′≡splitAt[m,i]∧1+j′≡splitAt[1+m,1+i])
+  j′≡j = suc-injective (inj₁-injective (trans 1+j′≡splitAt[1+m,1+i] (sym 1+j≡splitAt[1+m,1+i])))
+  j′≡i = splitAt-<-toℕ m i j′≡splitAt[m,i]
+
+toℕ-join₁ : ∀ k n i → toℕ (join k n (inj₁ i)) ≡ toℕ i
+toℕ-join₁ k n i = sym (toℕ-inject+ n i)
 
 -- splitAt "m" "i" ≡ inj₂ "i - m" if i ≥ m
 
@@ -524,11 +550,146 @@ splitAt-≥ : ∀ m {n} i → (i≥m : toℕ i ℕ.≥ m) → splitAt m {n} i �
 splitAt-≥ zero    i       _         = refl
 splitAt-≥ (suc m) (suc i) (s≤s i≥m) = cong (Sum.map suc id) (splitAt-≥ m i i≥m)
 
+splitAt-≥-toℕ : ∀ m {n} i {j} → inj₂ j ≡ splitAt m {n} i → m ℕ.+ toℕ j ≡ toℕ i
+splitAt-≥-toℕ zero i {.i} refl = refl
+splitAt-≥-toℕ (suc m) {n} (suc i) {j} j≡splitAt[1+m,1+i] = cong suc (splitAt-≥-toℕ m i j≡splitAt[m,i]) where
+  ∃[j′]j′≡splitAt[m,i]∧j′≡splitAt[1+m,1+i] : ∃ λ j′ → inj₂ j′ ≡ splitAt m i × inj₂ j′ ≡ splitAt (suc m) (suc i)
+  ∃[j′]j′≡splitAt[m,i]∧j′≡splitAt[1+m,1+i] with splitAt m i
+  ... | inj₂ j′ = j′ , refl , refl
+  j′ = proj₁ ∃[j′]j′≡splitAt[m,i]∧j′≡splitAt[1+m,1+i]
+  j′≡splitAt[m,i] = proj₁ (proj₂ ∃[j′]j′≡splitAt[m,i]∧j′≡splitAt[1+m,1+i])
+  j′≡splitAt[1+m,1+i] = proj₂ (proj₂ ∃[j′]j′≡splitAt[m,i]∧j′≡splitAt[1+m,1+i])
+  j≡j′ = inj₂-injective (trans j≡splitAt[1+m,1+i] (sym j′≡splitAt[1+m,1+i]))
+  j≡splitAt[m,i] = trans (cong inj₂ j≡j′) j′≡splitAt[m,i]
+
+toℕ-join₂ : ∀ k n i → toℕ (join k n (inj₂ i)) ≡ k ℕ.+ toℕ i
+toℕ-join₂ k n i = toℕ-raise k i
+
 ------------------------------------------------------------------------
 -- Bundles
 
 +↔⊎ : ∀ {m n} → Fin (m ℕ.+ n) ↔ (Fin m ⊎ Fin n)
 +↔⊎ {m} {n} = mk↔′ (splitAt m {n}) (join m n) (splitAt-join m n) (join-splitAt m n)
+
+------------------------------------------------------------------------
+-- quotRem
+------------------------------------------------------------------------
+
+quotRem-quotRem⁻¹ : ∀ {n k} (i : Fin k) (j : Fin n) → quotRem k (quotRem⁻¹ i j) ≡ (i , j)
+quotRem-quotRem⁻¹ {suc n} {suc k} i 0F
+  rewrite splitAt-join (suc k) (n ℕ.* suc k) (inj₁ i) = refl
+quotRem-quotRem⁻¹ {suc n} {suc k} i (suc j)
+  rewrite splitAt-join (suc k) (n ℕ.* suc k) (inj₂ (quotRem⁻¹ i j))
+  rewrite quotRem-quotRem⁻¹ i j = refl
+
+private
+  -- quotRem k i ≡ j₁ , j₂ -> i = k * j₂ + j₁
+  quotRem-lemma₁ : ∀ {n} k i → (let j = quotRem {n} k i) → toℕ i ≡ k ℕ.* toℕ (proj₂ j) ℕ.+ toℕ (proj₁ j)
+  quotRem-lemma₁ {suc n} k i with splitAt k i | P.inspect (splitAt k) i
+  ... | inj₁ j | P.[ splitAt[k,i]≡j ] = begin
+    toℕ i              ≡˘⟨ splitAt-<-toℕ k i (sym splitAt[k,i]≡j) ⟩
+    toℕ j              ≡⟨⟩
+    0 ℕ.+ toℕ j        ≡˘⟨ cong (ℕ._+ toℕ j) (ℕₚ.*-zeroʳ k) ⟩
+    k ℕ.* 0 ℕ.+ toℕ j  ∎
+    where open ≡-Reasoning
+  ... | inj₂ j | P.[ splitAt[k,i]≡j ] with quotRem {n} k j | P.inspect (quotRem {n} k) j
+  ... | l₁ , l₂ | P.[ refl ] = begin
+    toℕ i                            ≡˘⟨ splitAt-≥-toℕ k i (sym splitAt[k,i]≡j) ⟩
+    k ℕ.+ toℕ j                      ≡⟨ cong (k ℕ.+_) (quotRem-lemma₁ k j) ⟩
+    k ℕ.+ (k ℕ.* toℕ l₂ ℕ.+ toℕ l₁)  ≡˘⟨ ℕₚ.+-assoc k (k ℕ.* toℕ l₂) (toℕ l₁) ⟩
+    (k ℕ.+ k ℕ.* toℕ l₂) ℕ.+ toℕ l₁  ≡˘⟨ cong (ℕ._+ toℕ l₁) (ℕₚ.*-suc k (toℕ l₂)) ⟩
+    k ℕ.* suc (toℕ l₂) ℕ.+ toℕ l₁    ∎
+    where open ≡-Reasoning
+
+quotRem-injective : ∀ {n} k i j → quotRem {n} k i ≡ quotRem {n} k j → i ≡ j
+quotRem-injective {suc n} k i j quotRem[k,i]≡quotRem[k,j] = toℕ-injective $ begin
+  toℕ i                    ≡⟨ quotRem-lemma₁ k i ⟩
+  k ℕ.* toℕ i₂ ℕ.+ toℕ i₁  ≡⟨ P.cong₂ (λ h₁ h₂ → k ℕ.* toℕ h₂ ℕ.+ toℕ h₁) i₁≡j₁ i₂≡j₂ ⟩
+  k ℕ.* toℕ j₂ ℕ.+ toℕ j₁  ≡˘⟨ quotRem-lemma₁ k j ⟩
+  toℕ j                    ∎
+  where
+    open ≡-Reasoning
+    open import Function.Base using (_$_)
+    open Σ.Σ (quotRem {suc n} k i) renaming (proj₁ to i₁; proj₂ to i₂)
+    open Σ.Σ (quotRem {suc n} k j) renaming (proj₁ to j₁; proj₂ to j₂)
+    i₁≡j₁ : i₁ ≡ j₁
+    i₁≡j₁ rewrite quotRem[k,i]≡quotRem[k,j] = refl
+    i₂≡j₂ : i₂ ≡ j₂
+    i₂≡j₂ rewrite quotRem[k,i]≡quotRem[k,j] = refl
+
+
+private
+  quotRem⁻¹-lemma₁ : ∀ {n} k i j → toℕ (quotRem⁻¹ {n} {k} i j) ≡ k ℕ.* toℕ j ℕ.+ toℕ i
+  quotRem⁻¹-lemma₁ {suc n} (suc k) i 0F = begin
+    toℕ (quotRem⁻¹ {suc n} {suc k} i 0F)       ≡⟨⟩
+    toℕ (join (suc k) (n ℕ.* suc k) (inj₁ i))  ≡⟨ toℕ-join₁ (suc k) (n ℕ.* suc k) i ⟩
+    toℕ i                                      ≡˘⟨ cong (ℕ._+ toℕ i) (ℕₚ.*-zeroʳ k) ⟩
+    suc k ℕ.* 0 ℕ.+ toℕ i                      ∎
+    where open ≡-Reasoning
+  quotRem⁻¹-lemma₁ {suc n} (suc k) i (suc j) = begin
+    toℕ (quotRem⁻¹ {suc n} {suc k} i (suc j))                ≡⟨⟩
+    toℕ (join (suc k) (n ℕ.* suc k) (inj₂ (quotRem⁻¹ i j)))  ≡⟨ toℕ-join₂ (suc k) (n ℕ.* suc k) (quotRem⁻¹ i j) ⟩
+    suc k ℕ.+ toℕ (quotRem⁻¹ i j)                            ≡⟨ cong (suc k ℕ.+_) (quotRem⁻¹-lemma₁ (suc k) i j) ⟩
+    suc k ℕ.+ (suc k ℕ.* toℕ j ℕ.+ toℕ i)                    ≡˘⟨ ℕₚ.+-assoc (suc k) (suc k ℕ.* toℕ j) (toℕ i) ⟩
+    (suc k ℕ.+ suc k ℕ.* toℕ j) ℕ.+ toℕ i                    ≡˘⟨ cong (ℕ._+ toℕ i) (ℕₚ.*-suc (suc k) (toℕ j)) ⟩
+    suc k ℕ.* toℕ (suc j) ℕ.+ toℕ i                          ∎
+    where open ≡-Reasoning
+
+  kj+i-injective : ∀ {n k} (i₁ : Fin k) (j₁ : Fin n) i₂ j₂ → k ℕ.* toℕ j₁ ℕ.+ toℕ i₁ ≡ k ℕ.* toℕ j₂ ℕ.+ toℕ i₂ → (i₁ , j₁) ≡ (i₂ , j₂)
+  kj+i-injective {n} {k} i₁ j₁ i₂ j₂ kj+i₁≡kj+i₂ with <-cmp j₁ j₂
+  kj+i-injective {n} {k} i₁ j₁ i₂ j₂ kj+i₁≡kj+i₂ | tri< j₁<j₂ _ _ = contradiction kj+i₁≡kj+i₂ $ ℕₚ.<⇒≢ $ begin-strict
+    k ℕ.* toℕ j₁ ℕ.+ toℕ i₁  <⟨ ℕₚ.+-monoʳ-< (k ℕ.* toℕ j₁) (toℕ<n i₁) ⟩
+    k ℕ.* toℕ j₁ ℕ.+ k       ≡⟨ ℕₚ.+-comm _ k ⟩
+    k ℕ.+ k ℕ.* toℕ j₁       ≡˘⟨ ℕₚ.*-suc k (toℕ j₁) ⟩
+    k ℕ.* suc (toℕ j₁)       ≤⟨ ℕₚ.*-monoʳ-≤ k j₁<j₂ ⟩
+    k ℕ.* toℕ j₂             ≡˘⟨ ℕₚ.+-identityʳ _ ⟩
+    k ℕ.* toℕ j₂ ℕ.+ 0       ≤⟨ ℕₚ.+-monoʳ-≤ (k ℕ.* toℕ j₂) ℕ.z≤n ⟩
+    k ℕ.* toℕ j₂ ℕ.+ toℕ i₂  ∎
+    where
+      open ℕₚ.≤-Reasoning
+      open import Function.Base using (_$_)
+  kj+i-injective {n} {k} i₁ j  i₂ j  kj+i₁≡kj+i₂ | tri≈ _ refl _ = cong (_, j) (toℕ-injective (ℕₚ.+-cancelˡ-≡ (k ℕ.* toℕ j) kj+i₁≡kj+i₂))
+  kj+i-injective {n} {k} i₁ j₁ i₂ j₂ kj+i₁≡kj+i₂ | tri> _ _ j₁>j₂ = contradiction (sym kj+i₁≡kj+i₂) $ ℕₚ.<⇒≢ $ begin-strict
+    k ℕ.* toℕ j₂ ℕ.+ toℕ i₂  <⟨ ℕₚ.+-monoʳ-< (k ℕ.* toℕ j₂) (toℕ<n i₂) ⟩
+    k ℕ.* toℕ j₂ ℕ.+ k       ≡⟨ ℕₚ.+-comm _ k ⟩
+    k ℕ.+ k ℕ.* toℕ j₂       ≡˘⟨ ℕₚ.*-suc k (toℕ j₂) ⟩
+    k ℕ.* suc (toℕ j₂)       ≤⟨ ℕₚ.*-monoʳ-≤ k j₁>j₂ ⟩
+    k ℕ.* toℕ j₁             ≡˘⟨ ℕₚ.+-identityʳ _ ⟩
+    k ℕ.* toℕ j₁ ℕ.+ 0       ≤⟨ ℕₚ.+-monoʳ-≤ (k ℕ.* toℕ j₁) ℕ.z≤n ⟩
+    k ℕ.* toℕ j₁ ℕ.+ toℕ i₁  ∎
+    where
+      open ℕₚ.≤-Reasoning
+      open import Function.Base using (_$_)
+
+quotRem⁻¹-injective : ∀ {n k} i₁ j₁ i₂ j₂ → quotRem⁻¹ {n} {k} i₁ j₁ ≡ quotRem⁻¹ {n} {k} i₂ j₂ → (i₁ , j₁) ≡ (i₂ , j₂)
+quotRem⁻¹-injective {suc n} {k} i₁ j₁ i₂ j₂ quotRem[k,i]≡quotRem[k,j] = kj+i-injective i₁ j₁ i₂ j₂ $ begin
+      k ℕ.* toℕ j₁ ℕ.+ toℕ i₁  ≡˘⟨ quotRem⁻¹-lemma₁ k i₁ j₁ ⟩
+      toℕ (quotRem⁻¹ i₁ j₁)    ≡⟨ cong toℕ quotRem[k,i]≡quotRem[k,j] ⟩
+      toℕ (quotRem⁻¹ i₂ j₂)    ≡⟨ quotRem⁻¹-lemma₁ k i₂ j₂ ⟩
+      k ℕ.* toℕ j₂ ℕ.+ toℕ i₂  ∎
+  where
+    open ≡-Reasoning
+    open import Function.Base using (_$_)
+
+quotRem⁻¹-quotRem : ∀ {n} k (i : Fin (n ℕ.* k)) → (let j = quotRem {n} k i) → quotRem⁻¹ (proj₁ j) (proj₂ j) ≡ i
+quotRem⁻¹-quotRem {suc n} k i = toℕ-injective (begin
+  toℕ (quotRem⁻¹ j₁ j₂)    ≡⟨ quotRem⁻¹-lemma₁ k j₁ j₂ ⟩
+  k ℕ.* toℕ j₂ ℕ.+ toℕ j₁  ≡˘⟨ quotRem-lemma₁ k i ⟩
+  toℕ i                    ∎)
+  where
+    open ≡-Reasoning
+    open Σ.Σ (quotRem {suc n} k i) renaming (proj₁ to j₁; proj₂ to j₂)
+
+------------------------------------------------------------------------
+-- Bundles
+
+*↔× : ∀ {m} n → Fin (m ℕ.* n) ↔ (Fin n × Fin m)
+*↔× {m} n = mk↔′ (quotRem n) (uncurry quotRem⁻¹) aux₁ (λ x → aux₂ {m} n x)
+  where
+    aux₁ : ∀ {n k} (i : Fin k × Fin n) → quotRem k (uncurry quotRem⁻¹ i) ≡ i
+    aux₁ {n} {k} (i₁ , i₂) = quotRem-quotRem⁻¹ i₁ i₂
+    aux₂ : ∀ {n} k (i : Fin (n ℕ.* k)) → uncurry (quotRem⁻¹ {n} {k}) (quotRem k i) ≡ i
+    aux₂ {n} k i = quotRem⁻¹-quotRem {n} k i
 
 ------------------------------------------------------------------------
 -- lift
@@ -583,6 +744,10 @@ nℕ-ℕi≤n (suc n) (suc i)  = begin
   n        ≤⟨ ℕₚ.n≤1+n n ⟩
   suc n    ∎
   where open ℕₚ.≤-Reasoning
+
+nℕ-ℕi≡n∸toℕi : ∀ n i → n ℕ-ℕ i ≡ n ∸ toℕ i
+nℕ-ℕi≡n∸toℕi n 0F = refl
+nℕ-ℕi≡n∸toℕi (suc n) (suc i) rewrite nℕ-ℕi≡n∸toℕi n i = refl
 
 ------------------------------------------------------------------------
 -- punchIn
