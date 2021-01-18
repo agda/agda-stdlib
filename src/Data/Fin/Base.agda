@@ -143,6 +143,11 @@ quotRem {suc n} k i with splitAt k i
 ... | inj₁ j = j , zero
 ... | inj₂ j = Product.map₂ suc (quotRem {n} k j)
 
+-- quotRem⁻¹ k i j = j * k + i
+quotRem⁻¹ : ∀ {n k} → Fin k → Fin n → Fin (n ℕ.* k)
+quotRem⁻¹ {suc n} {suc k} i zero = join (suc k) (n ℕ.* suc k) (inj₁ i)
+quotRem⁻¹ {suc n} {suc k} i (suc j) = join (suc k) (n ℕ.* suc k) (inj₂ (quotRem⁻¹ i j))
+
 ------------------------------------------------------------------------
 -- Operations
 
