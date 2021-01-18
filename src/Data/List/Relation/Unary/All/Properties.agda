@@ -393,6 +393,15 @@ concat⁻ {xss = []}       []  = []
 concat⁻ {xss = xs ∷ xss} pxs = ++⁻ˡ xs pxs ∷ concat⁻ (++⁻ʳ xs pxs)
 
 ------------------------------------------------------------------------
+-- concatMap
+
+concatMap⁺ : ∀ {f : A → List B} {xs} → All (All P ∘ f) xs → All P (concatMap f xs)
+concatMap⁺ pxs = concat⁺ (map⁺ pxs)
+
+concatMap⁻ : ∀ {f : A → List B} {xs} → All P (concatMap f xs) → All (All P ∘ f) xs
+concatMap⁻ pxs = map⁻ (concat⁻ pxs)
+
+------------------------------------------------------------------------
 -- cartesianProductWith and cartesianProduct
 
 module _ (S₁ : Setoid a ℓ₁) (S₂ : Setoid b ℓ₂) where
