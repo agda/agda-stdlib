@@ -173,6 +173,21 @@ Deprecated names
   Plus′ ↦ TransClosure
   ```
 
+* In `Data.Nat.Properties`:
+  ```agda
+  m≤n⇒n⊔m≡n   ↦  m≥n⇒m⊔n≡m
+  m≤n⇒n⊓m≡m   ↦  m≥n⇒m⊓n≡n
+  n⊔m≡m⇒n≤m   ↦  m⊔n≡n⇒m≤n
+  n⊔m≡n⇒m≤n   ↦  m⊔n≡m⇒n≤m
+  n≤m⊔n       ↦  m≤n⊔m
+  ⊔-least     ↦  ⊔-lub
+  ⊓-greatest  ↦  ⊓-glb
+  ⊔-pres-≤m   ↦  ⊔-lub
+  ⊓-pres-m≤   ↦  ⊓-glb
+  ⊔-abs-⊓     ↦  ⊔-absorbs-⊓
+  ⊓-abs-⊔     ↦  ⊓-absorbs-⊔
+  ```
+
 New modules
 -----------
 
@@ -823,4 +838,24 @@ Other minor additions
 * Added new proof to `Relation.Nullary.Reflects`:
   ```agda
   fromEquivalence : (T b → P) → (P → T b) → Reflects P b
+  ```
+
+* Added new properties to `Data.Nat.Properties`:
+  ```agda
+  ⊔-⊓-absorptive : Absorptive _⊓_ _
+
+  ⊔-⊓-isLattice             : IsLattice _⊔_ _⊓_
+  ⊔-⊓-isDistributiveLattice : IsDistributiveLattice _⊔_ _⊓_
+
+  ⊓-commutativeSemigroup    : CommutativeSemigroup 0ℓ 0ℓ
+  ⊔-commutativeSemigroup    : CommutativeSemigroup 0ℓ 0ℓ
+  ⊔-0-monoid                : Monoid 0ℓ 0ℓ
+  ⊔-⊓-lattice               : Lattice 0ℓ 0ℓ
+  ⊔-⊓-distributiveLattice   : DistributiveLattice 0ℓ 0ℓ
+  ```
+
+* Added new proofs to `Relation.Binary.Properties.Poset`:
+  ```
+  mono⇒cong     : f Preserves _≤_ ⟶ _≤_ → f Preserves _≈_ ⟶ _≈_
+  antimono⇒cong : f Preserves _≤_ ⟶ _≥_ → f Preserves _≈_ ⟶ _≈_
   ```
