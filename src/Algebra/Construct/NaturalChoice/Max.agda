@@ -13,6 +13,7 @@ module Algebra.Construct.NaturalChoice.Max
 
 open import Algebra.Core
 open import Algebra.Definitions
+open import Algebra.Construct.NaturalChoice.Base
 open import Relation.Binary.Construct.Converse using ()
   renaming (totalOrder to flip)
 
@@ -34,4 +35,10 @@ open Min public using ()
   ; x≤y⇒y⊓x≈x to x≤y⇒x⊔y≈y
   )
 
-open import Algebra.Construct.NaturalChoice.MaxSpec totalOrder x≤y⇒x⊔y≈y x≤y⇒y⊔x≈y public
+maxOperator : MaxOperator totalOrder
+maxOperator = record
+  { x≤y⇒x⊔y≈y = x≤y⇒x⊔y≈y
+  ; x≥y⇒x⊔y≈x = x≤y⇒y⊔x≈y
+  }
+
+open import Algebra.Construct.NaturalChoice.MaxOp totalOrder maxOperator public

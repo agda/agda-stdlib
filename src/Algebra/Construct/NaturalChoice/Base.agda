@@ -1,7 +1,8 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- The max operator derived from an arbitrary total order
+-- Basic definition of an operator that computes the min/max value
+-- with respect to a total ordering.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

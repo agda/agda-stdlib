@@ -44,10 +44,10 @@ x≤y⇒y⊓x≈x {x} {y} x≤y with total y x
 ... | inj₁ y≤x = antisym y≤x x≤y
 ... | inj₂ _   = Eq.refl
 
-⊓-minOperator : MinOperator O
-⊓-minOperator = record
+minOperator : MinOperator O
+minOperator = record
   { x≤y⇒x⊓y≈x = x≤y⇒x⊓y≈x
   ; x≥y⇒x⊓y≈y = x≤y⇒y⊓x≈x
   }
 
-open MinOp O ⊓-minOperator public
+open MinOp O minOperator public
