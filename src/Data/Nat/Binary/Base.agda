@@ -13,12 +13,17 @@
 module Data.Nat.Binary.Base where
 
 open import Algebra.Core using (Op₂)
+import Data.Fin.Base as Fin
 open import Data.Nat.Base as ℕ using (ℕ)
+open import Data.Nat.DivMod using (_divMod_; result)
+open import Data.Nat.Properties
+open import Data.Nat.Induction using (<-rec)
+open import Data.Product using (_,_)
 open import Data.Sum.Base using (_⊎_)
-open import Function.Base using (_on_)
+open import Function.Base using (case_of_; _on_; _$_)
 open import Level using (0ℓ)
 open import Relation.Binary.Core using (Rel)
-open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Relation.Binary.PropositionalEquality as ≡ using (_≡_)
 open import Relation.Nullary using (¬_)
 
 ------------------------------------------------------------------------
@@ -112,10 +117,29 @@ toℕ zero     =  0
 toℕ 2[1+ x ] =  2 ℕ.* (ℕ.suc (toℕ x))
 toℕ 1+[2 x ] =  ℕ.suc (2 ℕ.* (toℕ x))
 
--- Costs O(n), could be improved using `_/_` and `_%_`
 fromℕ : ℕ → ℕᵇ
-fromℕ 0         = zero
-fromℕ (ℕ.suc n) = suc (fromℕ n)
+fromℕ = <-rec (λ _ → ℕᵇ) λ
+  { ℕ.zero _ → zero
+  ; (ℕ.suc n) p → case n divMod 2 of λ
+    { (result q Fin.zero prop) →
+      -- n is even so suc n is odd
+      1+[2 p q $ ℕ.s≤s $ begin
+        q       ≡˘⟨ *-identityʳ q ⟩
+        q ℕ.* 1 ≤⟨ *-monoʳ-≤ q (ℕ.s≤s ℕ.z≤n) ⟩
+        q ℕ.* 2 ≡˘⟨ prop ⟩
+        n       ∎
+      ]
+    ; (result q (Fin.suc Fin.zero) prop) →
+      -- n is odd so suc n is even
+      2[1+ p q $ ℕ.s≤s $ begin
+        q       ≡˘⟨ *-identityʳ q ⟩
+        q ℕ.* 1 ≤⟨ *-monoʳ-≤ q (ℕ.s≤s ℕ.z≤n) ⟩
+        q ℕ.* 2 <⟨ ≤-reflexive (≡.sym prop) ⟩
+        n       ∎
+      ]
+    }
+  }
+  where open ≤-Reasoning
 
 -- An alternative ordering lifted from ℕ
 
