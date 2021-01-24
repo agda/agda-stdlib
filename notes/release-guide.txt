@@ -7,7 +7,7 @@ procedure should be followed:
 
 * Update `README.md`
 
-* Update `lib.cabal` version to `X.Y`.
+* Update `agda-stdlib-utils.cabal` version to `X.Y`.
 
 * Update the version in standard-library.agda-lib to `X.Y`
 
