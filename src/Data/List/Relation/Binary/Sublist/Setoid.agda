@@ -23,7 +23,7 @@ import Data.List.Relation.Binary.Sublist.Heterogeneous.Core
   as HeterogeneousCore
 import Data.List.Relation.Binary.Sublist.Heterogeneous.Properties
   as HeterogeneousProperties
-open import Data.Product using (∃; ∃₂; _,_; proj₂)
+open import Data.Product using (∃; ∃₂; _×_; _,_; proj₂)
 
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
@@ -35,7 +35,7 @@ open SetoidEquality S
 ------------------------------------------------------------------------
 -- Definition
 
-infix 4 _⊆_ _⊇_ _⊈_ _⊉_
+infix 4 _⊆_ _⊇_ _⊂_ _⊃_ _⊈_ _⊉_ _⊄_ _⊅_
 
 _⊆_ : Rel (List A) (c ⊔ ℓ)
 _⊆_ = Heterogeneous.Sublist _≈_
@@ -43,22 +43,42 @@ _⊆_ = Heterogeneous.Sublist _≈_
 _⊇_ : Rel (List A) (c ⊔ ℓ)
 xs ⊇ ys = ys ⊆ xs
 
+_⊂_ : Rel (List A) (c ⊔ ℓ)
+xs ⊂ ys = xs ⊆ ys × ¬ (xs ≋ ys)
+
+_⊃_ : Rel (List A) (c ⊔ ℓ)
+xs ⊃ ys = ys ⊂ xs
+
 _⊈_ : Rel (List A) (c ⊔ ℓ)
 xs ⊈ ys = ¬ (xs ⊆ ys)
 
 _⊉_ : Rel (List A) (c ⊔ ℓ)
 xs ⊉ ys = ¬ (xs ⊇ ys)
 
+_⊄_ : Rel (List A) (c ⊔ ℓ)
+xs ⊄ ys = ¬ (xs ⊂ ys)
+
+_⊅_ : Rel (List A) (c ⊔ ℓ)
+xs ⊅ ys = ¬ (xs ⊃ ys)
+
 ------------------------------------------------------------------------
 -- Re-export definitions and operations from heterogeneous sublists
 
-open HeterogeneousCore _≈_ using ([]; _∷_; _∷ʳ_) public
-open Heterogeneous {R = _≈_} hiding (Sublist; []; _∷_; _∷ʳ_) public
-  renaming
-  (toAny to to∈; fromAny to from∈)
+open HeterogeneousCore _≈_ public
+  using ([]; _∷_; _∷ʳ_)
 
-open Disjoint      public using ([])
-open DisjointUnion public using ([])
+open Heterogeneous {R = _≈_} public
+  hiding (Sublist; []; _∷_; _∷ʳ_)
+  renaming
+  ( toAny   to to∈
+  ; fromAny to from∈
+  )
+
+open Disjoint public
+  using ([])
+
+open DisjointUnion public
+  using ([])
 
 ------------------------------------------------------------------------
 -- Relational properties holding for Setoid case

@@ -13,7 +13,7 @@ module Relation.Binary.Construct.NonStrictToStrict
 
 open import Data.Product using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum.Base using (inj₁; inj₂)
-open import Function using (_∘_; flip)
+open import Function.Base using (_∘_; flip)
 open import Relation.Nullary using (¬_; yes; no)
 open import Relation.Nullary.Negation using (contradiction; ¬?)
 open import Relation.Nullary.Product using (_×-dec_)

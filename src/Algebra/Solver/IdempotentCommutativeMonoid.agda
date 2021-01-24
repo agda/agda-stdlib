@@ -18,7 +18,7 @@ open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _+_)
 open import Data.Product using (_×_; uncurry)
 open import Data.Vec.Base using (Vec; []; _∷_; lookup; replicate)
 
-open import Function using (_∘_)
+open import Function.Base using (_∘_)
 
 import Relation.Binary.Reasoning.Setoid  as EqReasoning
 import Relation.Binary.Reflection            as Reflection

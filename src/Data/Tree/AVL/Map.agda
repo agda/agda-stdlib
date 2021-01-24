@@ -17,8 +17,17 @@ module Data.Tree.AVL.Map
 open import Data.Bool.Base using (Bool)
 open import Data.List.Base using (List)
 open import Data.Maybe.Base using (Maybe)
+open import Data.Nat.Base using (ℕ)
 open import Data.Product using (_×_)
-open import Level using (_⊔_)
+open import Level using (Level; _⊔_)
+
+private
+  variable
+    l v w x : Level
+    A : Set l
+    V : Set v
+    W : Set w
+    X : Set x
 
 import Data.Tree.AVL strictTotalOrder as AVL
 open StrictTotalOrder strictTotalOrder renaming (Carrier to Key)
@@ -26,69 +35,82 @@ open StrictTotalOrder strictTotalOrder renaming (Carrier to Key)
 ------------------------------------------------------------------------
 -- The map type
 
-Map : ∀ {v} → (V : Set v) → Set (a ⊔ v ⊔ ℓ₂)
-Map v = AVL.Tree (AVL.const v)
+Map : (V : Set v) → Set (a ⊔ v ⊔ ℓ₂)
+Map V = AVL.Tree (AVL.const V)
 
 ------------------------------------------------------------------------
 -- Repackaged functions
 
-module _ {v} {V : Set v} where
+empty : Map V
+empty = AVL.empty
 
-  empty : Map V
-  empty = AVL.empty
+singleton : Key → V → Map V
+singleton = AVL.singleton
 
-  singleton : Key → V → Map V
-  singleton = AVL.singleton
+insert : Key → V → Map V → Map V
+insert = AVL.insert
 
-  insert : Key → V → Map V → Map V
-  insert = AVL.insert
+insertWith : Key → (Maybe V → V) → Map V → Map V
+insertWith = AVL.insertWith
 
-  insertWith : Key → (Maybe V → V) → Map V → Map V
-  insertWith = AVL.insertWith
+delete : Key → Map V → Map V
+delete = AVL.delete
 
-  delete : Key → Map V → Map V
-  delete = AVL.delete
+lookup : Key → Map V → Maybe V
+lookup = AVL.lookup
 
-  lookup : Key → Map V → Maybe V
-  lookup = AVL.lookup
+map : (V → W) → Map V → Map W
+map f = AVL.map f
 
-module _ {v w} {V : Set v} {W : Set w} where
+infix 4 _∈?_
+_∈?_ : Key → Map V → Bool
+_∈?_ = AVL._∈?_
 
-  map : (V → W) → Map V → Map W
-  map f = AVL.map f
+headTail : Map V → Maybe ((Key × V) × Map V)
+headTail = AVL.headTail
 
-module _ {v} {V : Set v} where
+initLast : Map V → Maybe (Map V × (Key × V))
+initLast = AVL.initLast
 
-  infix 4 _∈?_
+foldr : (Key → V → A → A) → A → Map V → A
+foldr cons = AVL.foldr (λ {k} → cons k)
 
-  _∈?_ : Key → Map V → Bool
-  _∈?_ = AVL._∈?_
+fromList : List (Key × V) → Map V
+fromList = AVL.fromList
 
-  headTail : Map V → Maybe ((Key × V) × Map V)
-  headTail = AVL.headTail
+toList : Map V → List (Key × V)
+toList = AVL.toList
 
-  initLast : Map V → Maybe (Map V × (Key × V))
-  initLast = AVL.initLast
+size : Map V → ℕ
+size = AVL.size
 
-  fromList : List (Key × V) → Map V
-  fromList = AVL.fromList
+------------------------------------------------------------------------
+-- Naïve implementations of union
 
-  toList : Map V → List (Key × V)
-  toList = AVL.toList
+unionWith : (V → Maybe W → W) →
+            Map V → Map W → Map W
+unionWith f = AVL.unionWith f
 
-module _ {v w} {V : Set v} {W : Set w} where
+union : Map V → Map V → Map V
+union = AVL.union
 
-  unionWith : (V → Maybe W → W) →
-              Map V → Map W → Map W
-  unionWith f = AVL.unionWith f
+unionsWith : (V → Maybe V → V) → List (Map V) → Map V
+unionsWith f = AVL.unionsWith f
 
-module _ {v} {V : Set v} where
+unions : List (Map V) → Map V
+unions = AVL.unions
 
-  union : Map V → Map V → Map V
-  union = AVL.union
+------------------------------------------------------------------------
+-- Naïve implementations of intersection
 
-  unionsWith : (V → Maybe V → V) → List (Map V) → Map V
-  unionsWith f = AVL.unionsWith f
+intersectionWith : (V → W → X) → Map V → Map W → Map X
+intersectionWith f = AVL.intersectionWith f
 
-  unions : List (Map V) → Map V
-  unions = AVL.unions
+intersection : Map V → Map V → Map V
+intersection = AVL.intersection
+
+intersectionsWith : (V → V → V) → List (Map V) → Map V
+intersectionsWith f = AVL.intersectionsWith f
+
+intersections : List (Map V) → Map V
+intersections = AVL.intersections

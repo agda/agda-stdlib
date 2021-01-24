@@ -11,7 +11,8 @@ open import Relation.Binary using (Rel)
 module Data.Vec.Relation.Unary.AllPairs
        {a ℓ} {A : Set a} {R : Rel A ℓ} where
 
-open import Data.Vec.Base using (Vec; []; _∷_)
+open import Data.Nat.Base using (suc)
+open import Data.Vec.Base as Vec using (Vec; []; _∷_)
 open import Data.Vec.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.Product as Prod using (_,_; _×_; uncurry; <_,_>)
 open import Function using (id; _∘_)
@@ -32,13 +33,14 @@ open import Data.Vec.Relation.Unary.AllPairs.Core public
 ------------------------------------------------------------------------
 -- Operations
 
-head : ∀ {x n} {xs : Vec A n} → AllPairs R (x ∷ xs) → All (R x) xs
+head : ∀ {n} {xs : Vec A (suc n)} → AllPairs R xs → All (R (Vec.head xs)) (Vec.tail xs)
 head (px ∷ pxs) = px
 
-tail : ∀ {x n} {xs : Vec A n} → AllPairs R (x ∷ xs) → AllPairs R xs
+tail : ∀ {n} {xs : Vec A (suc n)} → AllPairs R xs → AllPairs R (Vec.tail xs)
 tail (px ∷ pxs) = pxs
 
-uncons : ∀ {x n} {xs : Vec A n} → AllPairs R (x ∷ xs) → All (R x) xs × AllPairs R xs
+uncons : ∀ {n} {xs : Vec A (suc n)} → AllPairs R xs →
+         All (R (Vec.head xs)) (Vec.tail xs) × AllPairs R (Vec.tail xs)
 uncons = < head , tail >
 
 module _ {s} {S : Rel A s} where

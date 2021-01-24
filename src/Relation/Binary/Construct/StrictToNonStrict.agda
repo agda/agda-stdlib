@@ -20,7 +20,7 @@ module Relation.Binary.Construct.StrictToNonStrict
 open import Data.Product
 open import Data.Sum.Base
 open import Data.Empty
-open import Function
+open import Function.Base
 open import Relation.Binary.Consequences
 open import Relation.Nullary
 open import Relation.Nullary.Sum using (_⊎-dec_)

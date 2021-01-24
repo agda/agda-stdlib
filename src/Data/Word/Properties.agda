@@ -12,7 +12,7 @@ import Data.Nat.Base as ℕ
 open import Data.Bool.Base using (Bool)
 open import Data.Word.Base
 import Data.Nat.Properties as ℕₚ
-open import Function
+open import Function.Base
 open import Relation.Nullary.Decidable using (map′; ⌊_⌋)
 open import Relation.Binary
   using ( _⇒_; Reflexive; Symmetric; Transitive; Substitutive

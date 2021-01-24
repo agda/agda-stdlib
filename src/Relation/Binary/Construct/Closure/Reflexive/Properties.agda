@@ -11,7 +11,7 @@ module Relation.Binary.Construct.Closure.Reflexive.Properties where
 open import Data.Product as Prod
 open import Data.Sum.Base as Sum
 open import Function.Equivalence using (_⇔_; equivalence)
-open import Function using (id)
+open import Function.Base using (id)
 open import Level
 open import Relation.Binary hiding (_⇔_)
 open import Relation.Binary.Construct.Closure.Reflexive

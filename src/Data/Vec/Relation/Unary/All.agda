@@ -12,7 +12,7 @@ open import Data.Nat.Base using (zero; suc)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Product as Prod using (_×_; _,_; uncurry; <_,_>)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
-open import Function using (_∘_)
+open import Function.Base using (_∘_)
 open import Level using (Level; _⊔_)
 open import Relation.Nullary hiding (Irrelevant)
 import Relation.Nullary.Decidable as Dec

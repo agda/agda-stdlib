@@ -104,6 +104,11 @@ _<∣>_ : Maybe A → Maybe A → Maybe A
 just x  <∣> my = just x
 nothing <∣> my = my
 
+-- Just when the boolean is true
+
+when : Bool → A → Maybe A
+when b c = map (const c) (boolToMaybe b)
+
 ------------------------------------------------------------------------
 -- Aligning and zipping
 

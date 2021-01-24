@@ -16,7 +16,7 @@ open HeytingAlgebra L
 open import Algebra.Core
 open import Algebra.Definitions _≈_
 open import Data.Product using (_,_)
-open import Function using (_$_; flip; _∘_)
+open import Function.Base using (_$_; flip; _∘_)
 open import Level using (_⊔_)
 open import Relation.Binary
 import Relation.Binary.Reasoning.PartialOrder as POR

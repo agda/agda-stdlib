@@ -10,7 +10,7 @@ module Relation.Binary.Construct.Intersection where
 
 open import Data.Product
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
-open import Function using (_∘_)
+open import Function.Base using (_∘_)
 open import Level using (_⊔_)
 open import Relation.Binary
 open import Relation.Nullary using (yes; no)

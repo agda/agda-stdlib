@@ -23,7 +23,7 @@ open import Data.Nat.Properties using (≤-trans; n≤1+n)
 open import Data.Product as Prod using (∃; _×_; _,_ ; ∃₂; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent using (_×ₛ_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
-open import Function using (_$_; flip; _∘_; id)
+open import Function.Base using (_$_; flip; _∘_; id)
 open import Level using (Level)
 open import Relation.Binary as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
@@ -254,6 +254,16 @@ module _ (S : Setoid c ℓ) where
   ∈-applyUpTo⁻ : ∀ {v} f {n} → v ∈ applyUpTo f n →
                  ∃ λ i → i < n × v ≈ f i
   ∈-applyUpTo⁻ = Any.applyUpTo⁻
+
+------------------------------------------------------------------------
+-- applyDownFrom
+
+  ∈-applyDownFrom⁺ : ∀ f {i n} → i < n → f i ∈ applyDownFrom f n
+  ∈-applyDownFrom⁺ f = Any.applyDownFrom⁺ f refl
+
+  ∈-applyDownFrom⁻ : ∀ {v} f {n} → v ∈ applyDownFrom f n →
+                     ∃ λ i → i < n × v ≈ f i
+  ∈-applyDownFrom⁻ = Any.applyDownFrom⁻
 
 ------------------------------------------------------------------------
 -- tabulate

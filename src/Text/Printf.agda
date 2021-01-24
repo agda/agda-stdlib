@@ -20,10 +20,10 @@ open import Function.Nary.NonDependent
 open import Function
 open import Strict
 
-import Data.Char.Base as Cₛ
-import Data.Integer   as ℤₛ
-import Data.Float     as Fₛ
-import Data.Nat.Show  as ℕₛ
+import Data.Char.Base    as Cₛ
+import Data.Integer.Show as ℤₛ
+import Data.Float        as Fₛ
+import Data.Nat.Show     as ℕₛ
 
 open import Text.Format as Format hiding (Error)
 open import Text.Printf.Generic

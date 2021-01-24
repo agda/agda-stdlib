@@ -7,6 +7,7 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary using (Decidable; DecSetoid)
+open import Relation.Nullary.Negation using (¬?)
 
 module Data.List.Membership.DecSetoid {a ℓ} (DS : DecSetoid a ℓ) where
 
@@ -21,7 +22,10 @@ open import Data.List.Membership.Setoid (DecSetoid.setoid DS) public
 ------------------------------------------------------------------------
 -- Other operations
 
-infix 4 _∈?_
+infix 4 _∈?_ _∉?_
 
 _∈?_ : Decidable _∈_
 x ∈? xs = any? (x ≟_) xs
+
+_∉?_ : Decidable _∉_
+x ∉? xs = ¬? (x ∈? xs)

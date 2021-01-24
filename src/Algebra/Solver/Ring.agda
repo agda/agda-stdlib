@@ -37,7 +37,7 @@ open AlmostCommutativeRing R
 open import Algebra.Definitions _≈_
 open import Algebra.Morphism
 open _-Raw-AlmostCommutative⟶_ morphism renaming (⟦_⟧ to ⟦_⟧′)
-open import Algebra.Operations.Semiring semiring
+open import Algebra.Properties.Semiring.Exp semiring
 
 open import Relation.Binary
 open import Relation.Nullary using (yes; no)

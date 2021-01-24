@@ -13,9 +13,9 @@ module Tactic.RingSolver.Core.Polynomial.Homomorphism.Variables
   (homo : Homomorphism r₁ r₂ r₃ r₄)
   where
 
-open import Data.Product        using (_,_)
-open import Data.Vec.Base as Vec     using (Vec)
-open import Data.Fin            using (Fin)
+open import Data.Product         using (_,_)
+open import Data.Vec.Base as Vec using (Vec)
+open import Data.Fin             using (Fin)
 open import Data.List.Kleene
 
 open Homomorphism homo
@@ -24,8 +24,6 @@ open import Tactic.RingSolver.Core.Polynomial.Homomorphism.Lemmas homo
 open import Tactic.RingSolver.Core.Polynomial.Base (Homomorphism.from homo)
 open import Tactic.RingSolver.Core.Polynomial.Reasoning (Homomorphism.to homo)
 open import Tactic.RingSolver.Core.Polynomial.Semantics homo
-
-open import Algebra.Operations.Ring rawRing
 
 ι-hom : ∀ {n} (i : Fin n) (Ρ : Vec Carrier n) → ⟦ ι i ⟧ Ρ ≈ Vec.lookup Ρ i
 ι-hom i Ρ′ = let (ρ , Ρ) = drop-1 (space≤′n i) Ρ′ in begin
