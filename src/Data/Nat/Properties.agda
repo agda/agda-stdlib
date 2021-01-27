@@ -255,6 +255,9 @@ n≤0⇒n≡0 z≤n = refl
 <⇒≢ : _<_ ⇒ _≢_
 <⇒≢ m<n refl = 1+n≰n m<n
 
+>⇒≢ : _>_ ⇒ _≢_
+>⇒≢ = ≢-sym ∘ <⇒≢
+
 ≤⇒≯ : _≤_ ⇒ _≯_
 ≤⇒≯ (s≤s m≤n) (s≤s n≤m) = ≤⇒≯ m≤n n≤m
 
@@ -387,9 +390,15 @@ n≮n n = <-irrefl (refl {x = n})
 n<1+n : ∀ n → n < suc n
 n<1+n n = ≤-refl
 
+n<1⇒n≡0 : ∀ {n} → n < 1 → n ≡ 0
+n<1⇒n≡0 (s≤s n≤0) = n≤0⇒n≡0 n≤0
+
 n≢0⇒n>0 : ∀ {n} → n ≢ 0 → n > 0
 n≢0⇒n>0 {zero}  0≢0 =  contradiction refl 0≢0
 n≢0⇒n>0 {suc n} _   =  0<1+n
+
+m<n⇒0<n : ∀ {m n} → m < n → 0 < n
+m<n⇒0<n = ≤-trans 0<1+n
 
 m<n⇒n≢0 : ∀ {m n} → m < n → n ≢ 0
 m<n⇒n≢0 (s≤s m≤n) ()
@@ -910,6 +919,12 @@ m≤m*n m {n} 0<n = begin
   m     ≡⟨ sym (*-identityʳ m) ⟩
   m * 1 ≤⟨ *-monoʳ-≤ m 0<n ⟩
   m * n ∎
+
+m≤n*m : ∀ m {n} → 0 < n → m ≤ n * m
+m≤n*m m {n} 0<n = begin
+  m     ≤⟨ m≤m*n m 0<n ⟩
+  m * n ≡⟨ *-comm m n ⟩
+  n * m ∎
 
 m<m*n :  ∀ {m n} → 0 < m → 1 < n → m < m * n
 m<m*n {m@(suc m-1)} {n@(suc (suc n-2))} (s≤s _) (s≤s (s≤s _)) = begin-strict
@@ -1746,6 +1761,10 @@ m⊓n+n∸m≡n (suc m) (suc n) = cong suc $ m⊓n+n∸m≡n m n
 
 pred-mono : pred Preserves _≤_ ⟶ _≤_
 pred-mono m≤n = ∸-mono m≤n (≤-refl {1})
+
+pred[n]≤n : ∀ {n} → pred n ≤ n
+pred[n]≤n {zero}  = z≤n
+pred[n]≤n {suc n} = n≤1+n n
 
 ≤pred⇒≤ : ∀ {m n} → m ≤ pred n → m ≤ n
 ≤pred⇒≤ {m} {zero}  le = le

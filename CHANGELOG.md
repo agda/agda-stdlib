@@ -23,3 +23,15 @@ New modules
 
 Other minor additions
 ---------------------
+
+* Added new proofs to `Data.Nat.Properties`:
+  ```agda
+  >⇒≢ : _>_ ⇒ _≢_
+
+  pred[n]≤n : pred n ≤ n
+
+  n<1⇒n≡0 : n < 1 → n ≡ 0
+  m<n⇒0<n : m < n → 0 < n
+
+  m≤n*m : 0 < n → m ≤ n * m
+  ```
