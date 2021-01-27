@@ -252,6 +252,11 @@ tail : List A → Maybe (List A)
 tail []       = nothing
 tail (_ ∷ xs) = just xs
 
+last : List A → Maybe A
+last []       = nothing
+last (x ∷ []) = just x
+last (_ ∷ xs) = last xs
+
 take : ℕ → List A → List A
 take zero    xs       = []
 take (suc n) []       = []
