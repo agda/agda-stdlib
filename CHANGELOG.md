@@ -35,3 +35,8 @@ Other minor additions
 
   m≤n*m : 0 < n → m ≤ n * m
   ```
+
+* Added new proof to `Data.List.Relation.Unary.All.Properties`:
+  ```agda
+  all-upTo : All (_< n) (upTo n)
+  ```
