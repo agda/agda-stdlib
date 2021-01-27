@@ -41,7 +41,9 @@ Other minor additions
   unsnoc⁻ : All (All P ⟨×⟩ P) (unsnoc xs) → All P xs
 
   dropWhile⁺ : (Q? : Decidable Q) → All P xs → All P (dropWhile Q? xs)
+  dropWhile⁻ : (P? : Decidable P) → dropWhile P? xs ≡ [] → All P xs
   takeWhile⁺ : (Q? : Decidable Q) → All P xs → All P (takeWhile Q? xs)
+  takeWhile⁻ : (P? : Decidable P) → takeWhile P? xs ≡ xs → All P xs
 
   all-head-dropWhile : (P? : Decidable P) → ∀ xs → All (∁ P) (head (dropWhile P? xs))
   all-takeWhile      : (P? : Decidable P) → ∀ xs → All P (takeWhile P? xs)

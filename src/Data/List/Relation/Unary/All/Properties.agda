@@ -14,6 +14,7 @@ open import Data.Bool.Properties using (T-∧)
 open import Data.Empty
 open import Data.Fin.Base using (Fin) renaming (zero to fzero; suc to fsuc)
 open import Data.List.Base as List hiding (lookup)
+import Data.List.Properties as Listₚ
 open import Data.List.Membership.Propositional
 open import Data.List.Membership.Propositional.Properties
 import Data.List.Membership.Setoid as SetoidMembership
@@ -481,6 +482,12 @@ dropWhile⁺ {xs = x ∷ xs} Q? (px ∷ pxs) with does (Q? x)
 ... | true  = dropWhile⁺ Q? pxs
 ... | false = px ∷ pxs
 
+dropWhile⁻ : (P? : Decidable P) → dropWhile P? xs ≡ [] → All P xs
+dropWhile⁻ {xs = []}     P? eq = []
+dropWhile⁻ {xs = x ∷ xs} P? eq with P? x
+... | yes px = px ∷ (dropWhile⁻ P? eq)
+... | no ¬px = case eq of λ ()
+
 all-head-dropWhile : (P? : Decidable P) →
                      ∀ xs → Maybe.All (∁ P) (head (dropWhile P? xs))
 all-head-dropWhile P? []       = nothing
@@ -498,6 +505,12 @@ takeWhile⁺               Q? []         = []
 takeWhile⁺ {xs = x ∷ xs} Q? (px ∷ pxs) with does (Q? x)
 ... | true  = px ∷ takeWhile⁺ Q? pxs
 ... | false = []
+
+takeWhile⁻ : (P? : Decidable P) → takeWhile P? xs ≡ xs → All P xs
+takeWhile⁻ {xs = []}     P? eq = []
+takeWhile⁻ {xs = x ∷ xs} P? eq with P? x
+... | yes px = px ∷ takeWhile⁻ P? (Listₚ.∷-injectiveʳ eq)
+... | no ¬px = case eq of λ ()
 
 all-takeWhile : (P? : Decidable P) → ∀ xs → All P (takeWhile P? xs)
 all-takeWhile P? []       = []
