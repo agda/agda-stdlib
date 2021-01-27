@@ -26,8 +26,8 @@ Other minor additions
 
 * Added new proofs in `Data.Rational.Unnormalised.Properties`:
   ```agda
-  *-congʳ : ∀ p → q ≃ r  → p * q ≃ p * r
-  *-congˡ : ∀ p → q ≃ r → q * p ≃ r * p
+  *-congˡ : LeftCongruent _≃_ _*_
+  *-congʳ : RightCongruent _≃_ _*_
   ```
 
 * Added new proofs in `Data.Rational.Properties`:

@@ -817,7 +817,7 @@ private
 *-inverseˡ : ∀ p {p≢0 : ∣ ↥ p ∣ ≢0} → (1/ p) {p≢0} * p ≡ 1ℚ
 *-inverseˡ p {p≢0} = toℚᵘ-injective (begin-equality
   toℚᵘ (1/ p * p)             ≈⟨ toℚᵘ-homo-* (1/ p) p ⟩
-  toℚᵘ (1/ p) ℚᵘ.* toℚᵘ p     ≈⟨ ℚᵘ.*-congˡ _ (toℚᵘ-homo-1/ p {p≢0}) ⟩
+  toℚᵘ (1/ p) ℚᵘ.* toℚᵘ p     ≈⟨ ℚᵘ.*-congʳ (toℚᵘ-homo-1/ p {p≢0}) ⟩
   ℚᵘ.1/ (toℚᵘ p) ℚᵘ.* toℚᵘ p  ≈⟨ ℚᵘ.*-inverseˡ (toℚᵘ p) {p≢0} ⟩
   ℚᵘ.1ℚᵘ                      ∎
   )
