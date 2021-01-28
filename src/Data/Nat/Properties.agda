@@ -986,7 +986,7 @@ m^n≡1⇒n≡0∨m≡1 m (suc n) eq = inj₂ (m*n≡1⇒m≡1 m (m ^ n) eq)
 ------------------------------------------------------------------------
 -- Properties of _⊓_ and _⊔_
 ------------------------------------------------------------------------
--- The operators fulfil
+-- Basic specification in terms of _≤_
 
 m≤n⇒m⊔n≡n : ∀ {m n} → m ≤ n → m ⊔ n ≡ n
 m≤n⇒m⊔n≡n {zero}  _         = refl
@@ -996,12 +996,6 @@ m≥n⇒m⊔n≡m : ∀ {m n} → m ≥ n → m ⊔ n ≡ m
 m≥n⇒m⊔n≡m {zero}  {zero}  z≤n       = refl
 m≥n⇒m⊔n≡m {suc m} {zero}  z≤n       = refl
 m≥n⇒m⊔n≡m {suc m} {suc n} (s≤s m≥n) = cong suc (m≥n⇒m⊔n≡m m≥n)
-
-⊔-operator : MaxOperator ≤-totalOrder
-⊔-operator = record
-  { x≤y⇒x⊔y≈y = m≤n⇒m⊔n≡n
-  ; x≥y⇒x⊔y≈x = m≥n⇒m⊔n≡m
-  }
 
 m≤n⇒m⊓n≡m : ∀ {m n} → m ≤ n → m ⊓ n ≡ m
 m≤n⇒m⊓n≡m {zero}  z≤n       = refl
@@ -1018,25 +1012,25 @@ m≥n⇒m⊓n≡n {suc m} {suc n} (s≤s m≤n) = cong suc (m≥n⇒m⊓n≡n m�
   ; x≥y⇒x⊓y≈y = m≥n⇒m⊓n≡n
   }
 
+⊔-operator : MaxOperator ≤-totalOrder
+⊔-operator = record
+  { x≤y⇒x⊔y≈y = m≤n⇒m⊔n≡n
+  ; x≥y⇒x⊔y≈x = m≥n⇒m⊔n≡m
+  }
+
 ------------------------------------------------------------------------
--- Derived properties of _⊓_ and _⊔_
+-- Automatically derived properties of _⊓_ and _⊔_
 
 private
   module ⊓-⊔-properties = MinMaxOp ≤-totalOrder ⊓-operator ⊔-operator
 
 open ⊓-⊔-properties public
   using
-  ( ⊓-cong                    -- : Congruent _⊓_
-  ; ⊓-congʳ                   -- : RightCongruent _⊓_
-  ; ⊓-congˡ                   -- : LeftCongruent _⊓_
-  ; ⊓-idem                    -- : Idempotent _⊓_
+  ( ⊓-idem                    -- : Idempotent _⊓_
   ; ⊓-sel                     -- : Selective _⊓_
   ; ⊓-assoc                   -- : Associative _⊓_
   ; ⊓-comm                    -- : Commutative _⊔_
 
-  ; ⊔-cong                    -- : Congruent _⊔_
-  ; ⊔-congʳ                   -- : RightCongruent _⊔_
-  ; ⊔-congˡ                   -- : LeftCongruent _⊔_
   ; ⊔-idem                    -- : Idempotent _⊔_
   ; ⊔-sel                     -- : Selective _⊔_
   ; ⊔-assoc                   -- : Associative _⊔_
@@ -1059,7 +1053,6 @@ open ⊓-⊔-properties public
   ; ⊓-isBand                  -- : IsBand _⊓_
   ; ⊓-isSemilattice           -- : IsSemilattice _⊓_
   ; ⊓-isSelectiveMagma        -- : IsSelectiveMagma _⊓_
-  ; ⊓-isMonoid                -- : IsMonoid _⊓_
 
   ; ⊔-isMagma                 -- : IsMagma _⊔_
   ; ⊔-isSemigroup             -- : IsSemigroup _⊔_
@@ -1067,7 +1060,6 @@ open ⊓-⊔-properties public
   ; ⊔-isBand                  -- : IsBand _⊔_
   ; ⊔-isSemilattice           -- : IsSemilattice _⊔_
   ; ⊔-isSelectiveMagma        -- : IsSelectiveMagma _⊔_
-  ; ⊔-isMonoid                -- : IsMonoid _⊔_
 
   ; ⊔-⊓-isLattice             -- : IsLattice _⊔_ _⊓_
   ; ⊓-⊔-isLattice             -- : IsLattice _⊓_ _⊔_
@@ -1095,7 +1087,7 @@ open ⊓-⊔-properties public
 
   ; ⊓-glb                     -- : ∀ {m n o} → m ≥ o → n ≥ o → m ⊓ n ≥ o
   ; ⊓-triangulate             -- : ∀ m n o → m ⊓ n ⊓ o ≡ (m ⊓ n) ⊓ (n ⊓ o)
-  ; ⊓-mono-≤                  -- : ⊓-mono-≤ : _⊓_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
+  ; ⊓-mono-≤                  -- : _⊓_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
   ; ⊓-monoˡ-≤                 -- : ∀ n → (_⊓ n) Preserves _≤_ ⟶ _≤_
   ; ⊓-monoʳ-≤                 -- : ∀ n → (n ⊓_) Preserves _≤_ ⟶ _≤_
 
@@ -1105,11 +1097,10 @@ open ⊓-⊔-properties public
   ; ⊔-monoˡ-≤                 -- : ∀ n → (_⊔ n) Preserves _≤_ ⟶ _≤_
   ; ⊔-monoʳ-≤                 -- : ∀ n → (n ⊔_) Preserves _≤_ ⟶ _≤_
 
-  -- New
   ; mono-≤-distrib-⊔          -- : ∀ {f} → f Preserves _≤_ ⟶ _≤_ → ∀ x y → f (x ⊔ y) ≈ f x ⊔ f y
   ; mono-≤-distrib-⊓          -- : ∀ {f} → f Preserves _≤_ ⟶ _≤_ → ∀ x y → f (x ⊓ y) ≈ f x ⊓ f y
-  ; antimono-≤-distrib-⊓      -- : ∀ f → f Preserves _≤_ ⟶ _≥_ → ∀ x y → f (x ⊓ y) ≈ f x ⊔ f y
-  ; antimono-≤-distrib-⊔      -- : ∀ f → f Preserves _≤_ ⟶ _≥_ → ∀ x y → f (x ⊔ y) ≈ f x ⊓ f y
+  ; antimono-≤-distrib-⊓      -- : ∀ {f} → f Preserves _≤_ ⟶ _≥_ → ∀ x y → f (x ⊓ y) ≈ f x ⊔ f y
+  ; antimono-≤-distrib-⊔      -- : ∀ {f} → f Preserves _≤_ ⟶ _≥_ → ∀ x y → f (x ⊔ y) ≈ f x ⊓ f y
   )
   renaming
   ( x⊓y≈y⇒y≤x to m⊓n≡n⇒n≤m    -- : ∀ {m n} → m ⊓ n ≡ n → n ≤ m
