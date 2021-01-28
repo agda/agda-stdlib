@@ -19,7 +19,7 @@ open import Data.Bool.Properties
 open import Data.Fin.Base using (Fin; suc; zero)
 open import Data.Fin.Subset
 open import Data.Fin.Properties using (any?; decFinSubset)
-open import Data.Nat.Base
+open import Data.Nat.Base hiding (∣_-_∣)
 import Data.Nat.Properties as ℕₚ
 open import Data.Product as Product using (∃; ∄; _×_; _,_; proj₁)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
@@ -77,8 +77,14 @@ s⊆s : p ⊆ q → s ∷ p ⊆ s ∷ q
 s⊆s p⊆q here = here
 s⊆s p⊆q (there ∈p) = there (p⊆q ∈p)
 
+s⊂s : p ⊂ q → s ∷ p ⊂ s ∷ q
+s⊂s (p⊆q , v , v∈p , v∉q) = s⊆s p⊆q , suc v , there v∈p , v∉q ∘ drop-there
+
 out⊂ : p ⊂ q → outside ∷ p ⊂ s ∷ q
 out⊂ (p⊆q , x , x∈q , x∉p) = out⊆ p⊆q , suc x , there x∈q , x∉p ∘ drop-there
+
+in⊂in : p ⊂ q → inside ∷ p ⊂ inside ∷ q
+in⊂in = s⊂s
 
 out⊂in : p ⊆ q → outside ∷ p ⊂ inside ∷ q
 out⊂in p⊆q = out⊆ p⊆q , zero , here , λ ()
@@ -88,9 +94,6 @@ out⊂in-⇔ = equivalence out⊂in (drop-∷-⊆ ∘ proj₁)
 
 out⊂out-⇔ : p ⊂ q ⇔ outside ∷ p ⊂ outside ∷ q
 out⊂out-⇔ = equivalence out⊂ drop-∷-⊂
-
-in⊂in : p ⊂ q → inside ∷ p ⊂ inside ∷ q
-in⊂in (p⊆q , x , x∈q , x∉p) = in⊆in p⊆q , suc x , there x∈q , x∉p ∘ drop-there
 
 in⊂in-⇔ : p ⊂ q ⇔ inside ∷ p ⊂ inside ∷ q
 in⊂in-⇔ = equivalence in⊂in drop-∷-⊂
@@ -124,6 +127,10 @@ nonempty? p = any? (_∈? p)
 
 ∣p∣≤n : ∀ (p : Subset n) → ∣ p ∣ ≤ n
 ∣p∣≤n = count≤n (_≟ inside)
+
+∣p∣≤∣x∷p∣ : ∀ x (p : Subset n)  → ∣ p ∣ ≤ ∣ x ∷ p ∣
+∣p∣≤∣x∷p∣ outside p = ℕₚ.≤-refl
+∣p∣≤∣x∷p∣ inside  p = ℕₚ.n≤1+n ∣ p ∣
 
 ------------------------------------------------------------------------
 -- ⊥
@@ -739,6 +746,63 @@ x∈p∪q⁺ (inj₂ x∈q) = q⊆p∪q _ _ x∈q
 
 ∣p∣⊔∣q∣≤∣p∪q∣ : ∀ (p q : Subset n) → ∣ p ∣ ⊔ ∣ q ∣ ≤ ∣ p ∪ q ∣
 ∣p∣⊔∣q∣≤∣p∪q∣ p q = ℕₚ.⊔-pres-≤m (∣p∣≤∣p∪q∣ p q) (∣q∣≤∣p∪q∣ p q)
+
+------------------------------------------------------------------------
+-- Properties of _─_
+
+p─q⊆p : ∀ (p q : Subset n) → p ─ q ⊆ p
+p─q⊆p (inside  ∷ p) (outside ∷ q) here        = here
+p─q⊆p (inside  ∷ p) (outside ∷ q) (there x∈p) = there (p─q⊆p p q x∈p)
+p─q⊆p (outside ∷ p) (outside ∷ q) (there x∈p) = there (p─q⊆p p q x∈p)
+p─q⊆p (_       ∷ p) (inside  ∷ q) (there x∈p) = there (p─q⊆p p q x∈p)
+
+p∩q≢∅⇒p─q⊂p : ∀ (p q : Subset n) → Nonempty (p ∩ q) → p ─ q ⊂ p
+p∩q≢∅⇒p─q⊂p (inside  ∷ p) (inside ∷ q)  (zero  , here)        = out⊂in (p─q⊆p p q)
+p∩q≢∅⇒p─q⊂p (x       ∷ p) (inside ∷ q)  (suc i , there i∈p∩q) = out⊂ (p∩q≢∅⇒p─q⊂p p q (i , i∈p∩q))
+p∩q≢∅⇒p─q⊂p (outside ∷ p) (outside ∷ q) (suc i , there i∈p∩q) = out⊂ (p∩q≢∅⇒p─q⊂p p q (i , i∈p∩q))
+p∩q≢∅⇒p─q⊂p (inside  ∷ p) (outside ∷ q) (suc i , there i∈p∩q) = s⊂s  (p∩q≢∅⇒p─q⊂p p q (i , i∈p∩q))
+
+p─q─r≡p─q∪r : ∀ (p q r : Subset n) → (p ─ q) ─ r ≡ p ─ (q ∪ r)
+p─q─r≡p─q∪r []      []            []            = refl
+p─q─r≡p─q∪r (x ∷ p) (outside ∷ q) (outside ∷ r) = cong (x ∷_) (p─q─r≡p─q∪r p q r)
+p─q─r≡p─q∪r (x ∷ p) (inside  ∷ q) (outside ∷ r) = cong (outside ∷_) (p─q─r≡p─q∪r p q r)
+p─q─r≡p─q∪r (x ∷ p) (outside ∷ q) (inside  ∷ r) = cong (outside ∷_) (p─q─r≡p─q∪r p q r)
+p─q─r≡p─q∪r (x ∷ p) (inside  ∷ q) (inside  ∷ r) = cong (outside ∷_) (p─q─r≡p─q∪r p q r)
+
+p─q─r≡p─r─q : ∀ (p q r : Subset n) → (p ─ q) ─ r ≡ (p ─ r) ─ q
+p─q─r≡p─r─q p q r = begin
+  (p ─ q) ─ r  ≡⟨  p─q─r≡p─q∪r p q r ⟩
+  p ─ (q ∪ r)  ≡⟨  cong (p ─_) (∪-comm q r) ⟩
+  p ─ (r ∪ q)  ≡˘⟨ p─q─r≡p─q∪r p r q ⟩
+  (p ─ r) ─ q  ∎
+  where open ≡-Reasoning
+
+x∈p∧x∉q⇒x∈p─q : x ∈ p → x ∉ q → x ∈ p ─ q
+x∈p∧x∉q⇒x∈p─q {q = outside ∷ q} here        i∉q = here
+x∈p∧x∉q⇒x∈p─q {q = inside  ∷ q} here        i∉q = contradiction here i∉q
+x∈p∧x∉q⇒x∈p─q {q = outside ∷ q} (there i∈p) i∉q = there (x∈p∧x∉q⇒x∈p─q i∈p (i∉q ∘ there))
+x∈p∧x∉q⇒x∈p─q {q = inside  ∷ q} (there i∈p) i∉q = there (x∈p∧x∉q⇒x∈p─q i∈p (i∉q ∘ there))
+
+∣p─q∣≤∣p∣ : ∀ (p q : Subset n) → ∣ p ─ q ∣ ≤ ∣ p ∣
+∣p─q∣≤∣p∣ p q = p⊆q⇒∣p∣≤∣q∣ (p─q⊆p p q)
+
+p∩q≢∅⇒∣p─q∣<∣p∣ : ∀ (p q : Subset n) → Nonempty (p ∩ q) → ∣ p ─ q ∣ < ∣ p ∣
+p∩q≢∅⇒∣p─q∣<∣p∣ p q ne = p⊂q⇒∣p∣<∣q∣ (p∩q≢∅⇒p─q⊂p p q ne)
+
+------------------------------------------------------------------------
+-- Properties of _-_
+
+x∈p∧x≢y⇒x∈p-y : x ∈ p → x ≢ y → x ∈ p - y
+x∈p∧x≢y⇒x∈p-y x∈p x≢y = x∈p∧x∉q⇒x∈p─q x∈p (x≢y⇒x∉⁅y⁆ x≢y)
+
+p─x─y≡p─y─x : ∀ (p : Subset n) x y → (p - x) - y ≡ (p - y) - x
+p─x─y≡p─y─x p x y = p─q─r≡p─r─q p ⁅ x ⁆ ⁅ y ⁆
+
+x∈p⇒p-x⊂p : x ∈ p → p - x ⊂ p
+x∈p⇒p-x⊂p {n} {x} {p} x∈p = p∩q≢∅⇒p─q⊂p p ⁅ x ⁆ (x , x∈p∩q⁺ (x∈p , x∈⁅x⁆ x))
+
+x∈p⇒∣p-x∣<∣p| : x ∈ p → ∣ p - x ∣ < ∣ p ∣
+x∈p⇒∣p-x∣<∣p| x∈p = p⊂q⇒∣p∣<∣q∣ (x∈p⇒p-x⊂p x∈p)
 
 ------------------------------------------------------------------------
 -- Lift

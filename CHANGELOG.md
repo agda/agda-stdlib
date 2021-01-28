@@ -24,6 +24,31 @@ New modules
 Other minor additions
 ---------------------
 
+* Added new operations to `Data.Fin.Subset`:
+  ```
+  _─_ : Op₂ (Subset n)
+  _-_ : Subset n → Fin n → Subset n
+  ```
+
+* Added new proofs to `Data.Fin.Subset.Properties`:
+  ```
+  s⊂s             : p ⊂ q → s ∷ p ⊂ s ∷ q
+  ∣p∣≤∣x∷p∣       : ∣ p ∣ ≤ ∣ x ∷ p ∣
+  
+  p─q⊆p           : p ─ q ⊆ p
+  ∣p─q∣≤∣p∣       : ∣ p ─ q ∣ ≤ ∣ p ∣
+  p∩q≢∅⇒p─q⊂p     : Nonempty (p ∩ q) → p ─ q ⊂ p
+  p∩q≢∅⇒∣p─q∣<∣p∣ : Nonempty (p ∩ q) → ∣ p ─ q ∣ < ∣ p ∣
+  p─q─r≡p─q∪r     : (p ─ q) ─ r ≡ p ─ (q ∪ r)
+  p─q─r≡p─r─q     : (p ─ q) ─ r ≡ (p ─ r) ─ q
+  x∈p∧x∉q⇒x∈p─q   : x ∈ p → x ∉ q → x ∈ p ─ q
+  
+  p─x─y≡p─y─x     : (p - x) - y ≡ (p - y) - x
+  x∈p⇒p-x⊂p       : x ∈ p → p - x ⊂ p
+  x∈p⇒∣p-x∣<∣p|   : x ∈ p → ∣ p - x ∣ < ∣ p ∣
+  x∈p∧x≢y⇒x∈p-y   : x ∈ p → x ≢ y → x ∈ p - y
+  ```
+
 * Added new proofs in `Data.Rational.Unnormalised.Properties`:
   ```agda
   *-congˡ : LeftCongruent _≃_ _*_

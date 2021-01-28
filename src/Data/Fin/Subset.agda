@@ -27,12 +27,16 @@ private
 ------------------------------------------------------------------------
 -- Definitions
 
+-- Partitions a finite set into two parts, the inside and the outside.
+-- Note that it would be great to shorten these to `in` and `out` but
+-- `in` is a keyword (e.g. let ... in ...)
+
 -- Sides.
 
 open import Data.Bool.Base public
   using () renaming (Bool to Side; true to inside; false to outside)
 
--- Partitions a finite set into two parts, the inside and the outside.
+-- Subset
 
 Subset : ℕ → Set
 Subset = Vec Side
@@ -80,7 +84,7 @@ p ⊄ q = ¬ (p ⊂ q)
 -- Set operations
 
 infixr 7 _∩_
-infixr 6 _∪_
+infixr 6 _∪_ _─_
 
 -- Complement
 ∁ : Op₁ (Subset n)
@@ -94,6 +98,14 @@ p ∩ q = zipWith _∧_ p q
 _∪_ : Op₂ (Subset n)
 p ∪ q = zipWith _∨_ p q
 
+-- Difference
+_─_ : Op₂ (Subset n)
+p ─ q = zipWith diff p q
+  where
+  diff : Side → Side → Side
+  diff x inside  = outside
+  diff x outside = x
+
 -- N-ary union
 ⋃ : List (Subset n) → Subset n
 ⋃ = foldr _∪_ ⊥
@@ -101,6 +113,10 @@ p ∪ q = zipWith _∨_ p q
 -- N-ary intersection
 ⋂ : List (Subset n) → Subset n
 ⋂ = foldr _∩_ ⊤
+
+-- Element removal
+_-_ : Subset n → Fin n → Subset n
+p - x = p ─ ⁅ x ⁆
 
 -- Size
 ∣_∣ : Subset n → ℕ
