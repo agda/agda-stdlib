@@ -94,30 +94,42 @@
 <a id="≤⇒≯"></a><a id="2140" href="Relation.Binary.Properties.Poset.html#2140" class="Function">≤⇒≯</a> <a id="2144" class="Symbol">:</a> <a id="2146" class="Symbol">∀</a> <a id="2148" class="Symbol">{</a><a id="2149" href="Relation.Binary.Properties.Poset.html#2149" class="Bound">x</a> <a id="2151" href="Relation.Binary.Properties.Poset.html#2151" class="Bound">y</a><a id="2152" class="Symbol">}</a> <a id="2154" class="Symbol">→</a> <a id="2156" href="Relation.Binary.Properties.Poset.html#2149" class="Bound">x</a> <a id="2158" href="Relation.Binary.Bundles.html#2678" class="Field Operator">≤</a> <a id="2160" href="Relation.Binary.Properties.Poset.html#2151" class="Bound">y</a> <a id="2162" class="Symbol">→</a> <a id="2164" href="Relation.Nullary.html#653" class="Function Operator">¬</a> <a id="2166" class="Symbol">(</a><a id="2167" href="Relation.Binary.Properties.Poset.html#2151" class="Bound">y</a> <a id="2169" href="Relation.Binary.Properties.Poset.html#1494" class="Function Operator">&lt;</a> <a id="2171" href="Relation.Binary.Properties.Poset.html#2149" class="Bound">x</a><a id="2172" class="Symbol">)</a>
 <a id="2174" href="Relation.Binary.Properties.Poset.html#2140" class="Function">≤⇒≯</a> <a id="2178" class="Symbol">=</a> <a id="2180" href="Relation.Binary.Construct.NonStrictToStrict.html#1244" class="Function">ToStrict.≤⇒≯</a> <a id="2193" href="Relation.Binary.Structures.html#2998" class="Function">antisym</a>
 
+<a id="2202" class="Comment">------------------------------------------------------------------------</a>
+<a id="2275" class="Comment">-- Other properties</a>
 
-<a id="2203" class="Comment">------------------------------------------------------------------------</a>
-<a id="2276" class="Comment">-- DEPRECATED NAMES</a>
-<a id="2296" class="Comment">------------------------------------------------------------------------</a>
-<a id="2369" class="Comment">-- Please use the new names as continuing support for the old names is</a>
-<a id="2440" class="Comment">-- not guaranteed.</a>
+<a id="mono⇒cong"></a><a id="2296" href="Relation.Binary.Properties.Poset.html#2296" class="Function">mono⇒cong</a> <a id="2306" class="Symbol">:</a> <a id="2308" class="Symbol">∀</a> <a id="2310" class="Symbol">{</a><a id="2311" href="Relation.Binary.Properties.Poset.html#2311" class="Bound">f</a><a id="2312" class="Symbol">}</a> <a id="2314" class="Symbol">→</a> <a id="2316" href="Relation.Binary.Properties.Poset.html#2311" class="Bound">f</a> <a id="2318" href="Relation.Binary.Core.html#1563" class="Function Operator">Preserves</a> <a id="2328" href="Relation.Binary.Bundles.html#2678" class="Field Operator">_≤_</a> <a id="2332" href="Relation.Binary.Core.html#1563" class="Function Operator">⟶</a> <a id="2334" href="Relation.Binary.Bundles.html#2678" class="Field Operator">_≤_</a> <a id="2338" class="Symbol">→</a> <a id="2340" href="Relation.Binary.Properties.Poset.html#2311" class="Bound">f</a> <a id="2342" href="Relation.Binary.Core.html#1563" class="Function Operator">Preserves</a> <a id="2352" href="Relation.Binary.Bundles.html#2642" class="Field Operator">_≈_</a> <a id="2356" href="Relation.Binary.Core.html#1563" class="Function Operator">⟶</a> <a id="2358" href="Relation.Binary.Bundles.html#2642" class="Field Operator">_≈_</a>
+<a id="2362" href="Relation.Binary.Properties.Poset.html#2296" class="Function">mono⇒cong</a> <a id="2372" href="Relation.Binary.Properties.Poset.html#2372" class="Bound">f-mono</a> <a id="2379" href="Relation.Binary.Properties.Poset.html#2379" class="Bound">p≈q</a> <a id="2383" class="Symbol">=</a> <a id="2385" href="Relation.Binary.Structures.html#2998" class="Function">antisym</a>
+  <a id="2395" class="Symbol">(</a><a id="2396" href="Relation.Binary.Properties.Poset.html#2372" class="Bound">f-mono</a> <a id="2403" class="Symbol">(</a><a id="2404" href="Relation.Binary.Structures.html#2331" class="Function">reflexive</a> <a id="2414" href="Relation.Binary.Properties.Poset.html#2379" class="Bound">p≈q</a><a id="2417" class="Symbol">))</a>
+  <a id="2422" class="Symbol">(</a><a id="2423" href="Relation.Binary.Properties.Poset.html#2372" class="Bound">f-mono</a> <a id="2430" class="Symbol">(</a><a id="2431" href="Relation.Binary.Structures.html#2331" class="Function">reflexive</a> <a id="2441" class="Symbol">(</a><a id="2442" href="Relation.Binary.Structures.html#1594" class="Function">Eq.sym</a> <a id="2449" href="Relation.Binary.Properties.Poset.html#2379" class="Bound">p≈q</a><a id="2452" class="Symbol">)))</a>
 
-<a id="2460" class="Comment">-- Version 1.2</a>
+<a id="antimono⇒cong"></a><a id="2457" href="Relation.Binary.Properties.Poset.html#2457" class="Function">antimono⇒cong</a> <a id="2471" class="Symbol">:</a> <a id="2473" class="Symbol">∀</a> <a id="2475" class="Symbol">{</a><a id="2476" href="Relation.Binary.Properties.Poset.html#2476" class="Bound">f</a><a id="2477" class="Symbol">}</a> <a id="2479" class="Symbol">→</a> <a id="2481" href="Relation.Binary.Properties.Poset.html#2476" class="Bound">f</a> <a id="2483" href="Relation.Binary.Core.html#1563" class="Function Operator">Preserves</a> <a id="2493" href="Relation.Binary.Bundles.html#2678" class="Field Operator">_≤_</a> <a id="2497" href="Relation.Binary.Core.html#1563" class="Function Operator">⟶</a> <a id="2499" href="Relation.Binary.Properties.Poset.html#794" class="Function Operator">_≥_</a> <a id="2503" class="Symbol">→</a> <a id="2505" href="Relation.Binary.Properties.Poset.html#2476" class="Bound">f</a> <a id="2507" href="Relation.Binary.Core.html#1563" class="Function Operator">Preserves</a> <a id="2517" href="Relation.Binary.Bundles.html#2642" class="Field Operator">_≈_</a> <a id="2521" href="Relation.Binary.Core.html#1563" class="Function Operator">⟶</a> <a id="2523" href="Relation.Binary.Bundles.html#2642" class="Field Operator">_≈_</a>
+<a id="2527" href="Relation.Binary.Properties.Poset.html#2457" class="Function">antimono⇒cong</a> <a id="2541" href="Relation.Binary.Properties.Poset.html#2541" class="Bound">f-mono</a> <a id="2548" href="Relation.Binary.Properties.Poset.html#2548" class="Bound">p≈q</a> <a id="2552" class="Symbol">=</a> <a id="2554" href="Relation.Binary.Structures.html#2998" class="Function">antisym</a>
+  <a id="2564" class="Symbol">(</a><a id="2565" href="Relation.Binary.Properties.Poset.html#2541" class="Bound">f-mono</a> <a id="2572" class="Symbol">(</a><a id="2573" href="Relation.Binary.Structures.html#2331" class="Function">reflexive</a> <a id="2583" class="Symbol">(</a><a id="2584" href="Relation.Binary.Structures.html#1594" class="Function">Eq.sym</a> <a id="2591" href="Relation.Binary.Properties.Poset.html#2548" class="Bound">p≈q</a><a id="2594" class="Symbol">)))</a>
+  <a id="2600" class="Symbol">(</a><a id="2601" href="Relation.Binary.Properties.Poset.html#2541" class="Bound">f-mono</a> <a id="2608" class="Symbol">(</a><a id="2609" href="Relation.Binary.Structures.html#2331" class="Function">reflexive</a> <a id="2619" href="Relation.Binary.Properties.Poset.html#2548" class="Bound">p≈q</a><a id="2622" class="Symbol">))</a>
 
-<a id="invIsPartialOrder"></a><a id="2476" href="Relation.Binary.Properties.Poset.html#2476" class="Function">invIsPartialOrder</a> <a id="2494" class="Symbol">=</a> <a id="2496" href="Relation.Binary.Properties.Poset.html#948" class="Function">≥-isPartialOrder</a>
-<a id="2513" class="Symbol">{-#</a> <a id="2517" class="Keyword">WARNING_ON_USAGE</a> <a id="2534" class="Pragma">invIsPartialOrder</a>
-<a id="2552" class="String">&quot;Warning: invIsPartialOrder was deprecated in v1.2.
+<a id="2626" class="Comment">------------------------------------------------------------------------</a>
+<a id="2699" class="Comment">-- DEPRECATED NAMES</a>
+<a id="2719" class="Comment">------------------------------------------------------------------------</a>
+<a id="2792" class="Comment">-- Please use the new names as continuing support for the old names is</a>
+<a id="2863" class="Comment">-- not guaranteed.</a>
+
+<a id="2883" class="Comment">-- Version 1.2</a>
+
+<a id="invIsPartialOrder"></a><a id="2899" href="Relation.Binary.Properties.Poset.html#2899" class="Function">invIsPartialOrder</a> <a id="2917" class="Symbol">=</a> <a id="2919" href="Relation.Binary.Properties.Poset.html#948" class="Function">≥-isPartialOrder</a>
+<a id="2936" class="Symbol">{-#</a> <a id="2940" class="Keyword">WARNING_ON_USAGE</a> <a id="2957" class="Pragma">invIsPartialOrder</a>
+<a id="2975" class="String">&quot;Warning: invIsPartialOrder was deprecated in v1.2.
 Please use ≥-isPartialOrder instead.&quot;</a>
-<a id="2642" class="Symbol">#-}</a>
+<a id="3065" class="Symbol">#-}</a>
 
-<a id="invPoset"></a><a id="2647" href="Relation.Binary.Properties.Poset.html#2647" class="Function">invPoset</a> <a id="2656" class="Symbol">=</a> <a id="2658" href="Relation.Binary.Properties.Poset.html#1105" class="Function">≥-poset</a>
-<a id="2666" class="Symbol">{-#</a> <a id="2670" class="Keyword">WARNING_ON_USAGE</a> <a id="2687" class="Pragma">invPoset</a>
-<a id="2696" class="String">&quot;Warning: invPoset was deprecated in v1.2.
+<a id="invPoset"></a><a id="3070" href="Relation.Binary.Properties.Poset.html#3070" class="Function">invPoset</a> <a id="3079" class="Symbol">=</a> <a id="3081" href="Relation.Binary.Properties.Poset.html#1105" class="Function">≥-poset</a>
+<a id="3089" class="Symbol">{-#</a> <a id="3093" class="Keyword">WARNING_ON_USAGE</a> <a id="3110" class="Pragma">invPoset</a>
+<a id="3119" class="String">&quot;Warning: invPoset was deprecated in v1.2.
 Please use ≥-poset instead.&quot;</a>
-<a id="2768" class="Symbol">#-}</a>
+<a id="3191" class="Symbol">#-}</a>
 
-<a id="strictPartialOrder"></a><a id="2773" href="Relation.Binary.Properties.Poset.html#2773" class="Function">strictPartialOrder</a> <a id="2792" class="Symbol">=</a> <a id="2794" href="Relation.Binary.Properties.Poset.html#1655" class="Function">&lt;-strictPartialOrder</a>
-<a id="2815" class="Symbol">{-#</a> <a id="2819" class="Keyword">WARNING_ON_USAGE</a> <a id="2836" class="Pragma">strictPartialOrder</a>
-<a id="2855" class="String">&quot;Warning: strictPartialOrder was deprecated in v1.2.
+<a id="strictPartialOrder"></a><a id="3196" href="Relation.Binary.Properties.Poset.html#3196" class="Function">strictPartialOrder</a> <a id="3215" class="Symbol">=</a> <a id="3217" href="Relation.Binary.Properties.Poset.html#1655" class="Function">&lt;-strictPartialOrder</a>
+<a id="3238" class="Symbol">{-#</a> <a id="3242" class="Keyword">WARNING_ON_USAGE</a> <a id="3259" class="Pragma">strictPartialOrder</a>
+<a id="3278" class="String">&quot;Warning: strictPartialOrder was deprecated in v1.2.
 Please use &lt;-strictPartialOrder instead.&quot;</a>
-<a id="2950" class="Symbol">#-}</a>
+<a id="3373" class="Symbol">#-}</a>
 </pre></body></html>
