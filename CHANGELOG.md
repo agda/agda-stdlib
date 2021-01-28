@@ -57,6 +57,10 @@ Non-backwards compatible changes
   `rectangle`, `rectangleˡ`, `rectangleʳ`, `rectangleᶜ`) have been moved to
   `Data.String`.
 
+* The new modules `Relation.Binary.Morphism.(Constant/Identity/Composition)` that
+  were added in the last release no longer have module-level arguments. This is in order
+  to allow proofs about newly added morphism bundles to be added to these files.
+
 Deprecated modules
 ------------------
 
@@ -201,6 +205,11 @@ New modules
   ```
   Data.Tree.Rose.Show
   Data.Tree.Binary.Show
+  ```
+
+* Bundles for binary relation morphisms
+  ```
+  Relation.Binary.Morphism.Bundles
   ```
 
 Other minor additions
@@ -948,6 +957,33 @@ Other minor additions
   ```agda
   totalPreorder   : TotalPreorder a ℓ₁ ℓ₂ → TotalPreorder a ℓ₁ ℓ₂
   isTotalPreorder : IsTotalPreorder ≈ ∼  → IsTotalPreorder ≈ (flip ∼)
+  ```
+
+
+* Added new proofs to `Relation.Binary.Morphism.Construct.Constant`:
+  ```agda
+  setoidHomomorphism : (S : Setoid a ℓ₁) (T : Setoid b ℓ₂) → ∀ x → SetoidHomomorphism S T
+  preorderHomomorphism : (P : Preorder a ℓ₁ ℓ₂) (Q : Preorder b ℓ₃ ℓ₄) → ∀ x → PreorderHomomorphism P Q
+  ```
+
+* Added new proofs to `Relation.Binary.Morphism.Construct.Composition`:
+  ```agda
+  setoidHomomorphism : SetoidHomomorphism S T → SetoidHomomorphism T U → SetoidHomomorphism S U
+  setoidMonomorphism : SetoidMonomorphism S T → SetoidMonomorphism T U → SetoidMonomorphism S U
+  setoidIsomorphism  : SetoidIsomorphism S T → SetoidIsomorphism T U → SetoidIsomorphism S U
+  
+  preorderHomomorphism : PreorderHomomorphism P Q → PreorderHomomorphism Q R → PreorderHomomorphism P R
+  posetHomomorphism    : PosetHomomorphism P Q → PosetHomomorphism Q R → PosetHomomorphism P R
+  ```
+
+* Added new proofs to `Relation.Binary.Morphism.Construct.Identity`:
+  ```agda
+  setoidHomomorphism : (S : Setoid a ℓ₁) → SetoidHomomorphism S S
+  setoidMonomorphism : (S : Setoid a ℓ₁) → SetoidMonomorphism S S
+  setoidIsomorphism  : (S : Setoid a ℓ₁) → SetoidIsomorphism S S
+  
+  preorderHomomorphism : (P : Preorder a ℓ₁ ℓ₂) → PreorderHomomorphism P P
+  posetHomomorphism    : (P : Poset a ℓ₁ ℓ₂) → PosetHomomorphism P P
   ```
 
 * Added new proofs to `Relation.Nullary.Negation`:
