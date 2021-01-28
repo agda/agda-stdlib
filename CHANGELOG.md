@@ -31,21 +31,21 @@ Other minor additions
 
 * Added new proofs in `Data.List.Relation.Unary.All.Properties`:
   ```agda
-  head⁺ : All P xs → All P (head xs)
-  tail⁺ : All P xs → All (All P) (tail xs)
-  last⁺ : All P xs → All P (last xs)
+  head⁺ : All P xs → Maybe.All P (head xs)
+  tail⁺ : All P xs → Maybe.All (All P) (tail xs)
+  last⁺ : All P xs → Maybe.All P (last xs)
 
-  uncons⁺ : All P xs → All (P ⟨×⟩ All P) (uncons xs)
-  uncons⁻ : All (P ⟨×⟩ All P) (uncons xs) → All P xs
-  unsnoc⁺ : All P xs → All (All P ⟨×⟩ P) (unsnoc xs)
-  unsnoc⁻ : All (All P ⟨×⟩ P) (unsnoc xs) → All P xs
+  uncons⁺ : All P xs → Maybe.All (P ⟨×⟩ All P) (uncons xs)
+  uncons⁻ : Maybe.All (P ⟨×⟩ All P) (uncons xs) → All P xs
+  unsnoc⁺ : All P xs → Maybe.All (All P ⟨×⟩ P) (unsnoc xs)
+  unsnoc⁻ : Maybe.All (All P ⟨×⟩ P) (unsnoc xs) → All P xs
 
   dropWhile⁺ : (Q? : Decidable Q) → All P xs → All P (dropWhile Q? xs)
   dropWhile⁻ : (P? : Decidable P) → dropWhile P? xs ≡ [] → All P xs
   takeWhile⁺ : (Q? : Decidable Q) → All P xs → All P (takeWhile Q? xs)
   takeWhile⁻ : (P? : Decidable P) → takeWhile P? xs ≡ xs → All P xs
 
-  all-head-dropWhile : (P? : Decidable P) → ∀ xs → All (∁ P) (head (dropWhile P? xs))
+  all-head-dropWhile : (P? : Decidable P) → ∀ xs → Maybe.All (∁ P) (head (dropWhile P? xs))
   all-takeWhile      : (P? : Decidable P) → ∀ xs → All P (takeWhile P? xs)
   ```
 
