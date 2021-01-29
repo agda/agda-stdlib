@@ -33,7 +33,7 @@ Coprime-sym coprime = flip coprime
 ∣1⇒Coprime : ∀ {x} y → x ∣ 1# → Coprime x y
 ∣1⇒Coprime {x} y x∣1 z∣x _ = ∣-trans z∣x x∣1
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties of Irreducible
 
 Irreducible⇒≉0 : 0# ≉ 1# → ∀ {p} → Irreducible p → p ≉ 0#

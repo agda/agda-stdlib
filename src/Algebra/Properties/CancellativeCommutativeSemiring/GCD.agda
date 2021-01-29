@@ -34,48 +34,34 @@ open import Algebra.Properties.Semiring.GCD semiring public
 ---------------------------------------------------------------------------
 -- Properties of GCD
 
-x≉0⊎y≉0⇒Coprime[x/gcd,y/gcd] :
-  ∀ {x y d} → (x ≉ 0#) ⊎ (y ≉ 0#) → (isGCD : IsGCD x y d) →
-  let open IsGCD isGCD
-  in  Coprime quot₁ quot₂     -- x/gcd(x,y) is coprime with y/gcd(x,y)
-                              -- if any of x, y is nonzero
+x∣y∧z∣x/y⇒x*z∣y : ∀ {x y z} → ((x/y , _) : x ∣ y) → z ∣ x/y → x * z ∣ y 
+x∣y∧z∣x/y⇒x*z∣y {x} {y} {z} (x/y , x/y*x≈y) (p , p*z≈x/y) = p , (begin
+  p * (x * z)  ≈⟨ Of*CSemig.x∙yz≈xz∙y p x z ⟩
+  (p * z) * x  ≈⟨ *-congʳ p*z≈x/y ⟩
+  x/y * x      ≈⟨ x/y*x≈y ⟩
+  y            ∎)
 
-x≉0⊎y≉0⇒Coprime[x/gcd,y/gcd] {x} {y} {d} nz⊎nz isGCD {c}
-                             (q₁ , q₁c≈quot₁) (q₂ , q₂c≈quot₂) = c∣1
-  where
-  open IsGCD isGCD using (greatest; quot₁; quot₂; quot₁∙gcd≈x; quot₂∙gcd≈y)
-  d≉0     = x≉0⊎y≉0⇒gcd≉0 isGCD nz⊎nz
-  q₁*dc≈x = begin
-    q₁ * (d * c)    ≈⟨ Of*CSemig.x∙yz≈xz∙y q₁ d c ⟩
-    (q₁ * c) * d    ≈⟨ *-congʳ q₁c≈quot₁ ⟩
-    quot₁ * d       ≈⟨ quot₁∙gcd≈x ⟩
-    x               ∎
+x*y∣x⇒y∣1 : ∀ {x y} → x ≉ 0# → x * y ∣ x → y ∣ 1#
+x*y∣x⇒y∣1 {x} {y} x≉0 (q , q*xy≈x) = q , *-cancelˡ-nonZero (q * y) 1# x≉0 (begin
+  x * (q * y) ≈⟨  Of*CSemig.x∙yz≈y∙xz x q y ⟩
+  q * (x * y) ≈⟨  q*xy≈x ⟩
+  x           ≈˘⟨ *-identityʳ x ⟩
+  x * 1#      ∎)
 
-  q₂*dc≈y = begin
-    q₂ * (d * c)    ≈⟨ Of*CSemig.x∙yz≈xz∙y q₂ d c ⟩
-    (q₂ * c) * d    ≈⟨ *-congʳ q₂c≈quot₂ ⟩
-    quot₂ * d       ≈⟨ quot₂∙gcd≈y ⟩
-    y               ∎
-
-  dc∣x = q₁ , q₁*dc≈x
-  dc∣y = q₂ , q₂*dc≈y
-  c∣1  = let
-           (q , q*dc≈d) = greatest dc∣x dc∣y
-           d*qc≈d*1     = begin
-             d * (q * c)   ≈⟨ Of*CSemig.x∙yz≈y∙xz d q c ⟩
-             q * (d * c)   ≈⟨ q*dc≈d ⟩
-             d             ≈⟨ sym (*-identityʳ d) ⟩
-             d * 1#        ∎
-
-           qc≈1 = *-cancelˡ-nonZero {d} (q * c) 1# d≉0 d*qc≈d*1
-        in
-        q , qc≈1
+x≉0⊎y≉0⇒Coprime[x/gcd,y/gcd]2 : ∀ {x y d} → x ≉ 0# ⊎ y ≉ 0# →
+                                ((isGCDᶜ (q₁ , _) (q₂ , _) _) : IsGCD x y d) →
+                                Coprime q₁ q₂
+x≉0⊎y≉0⇒Coprime[x/gcd,y/gcd]2 x≉0∨y≉0 gcd@(isGCDᶜ d∣x d∣y greatest) x/d∣z y/d∣z =
+  x*y∣x⇒y∣1 (x≉0∨y≉0⇒gcd≉0 gcd x≉0∨y≉0) (greatest
+    (x∣y∧z∣x/y⇒x*z∣y d∣x x/d∣z)
+    (x∣y∧z∣x/y⇒x*z∣y d∣y y/d∣z))
 
 ------------------------------------------------------------------------------
+-- gcd-s for two division-equivalent pairs
+-- are division-equivalent
+
 GCD-unique : ∀ {x x' y y' d d'} → x ∣∣ x' → y ∣∣ y' →
              IsGCD x y d → IsGCD x' y' d' → d ∣∣ d'
-                                    -- gcd-s for two division-equivalent pairs
-                                    -- are division-equivalent
 GCD-unique (x∣x' , x'∣x) (y∣y' , y'∣y)
            (isGCDᶜ d∣x d∣y greatest) (isGCDᶜ d'∣x' d'∣y' greatest') = d∣d' , d'∣d
   where
@@ -88,7 +74,9 @@ GCD-unique (x∣x' , x'∣x) (y∣y' , y'∣y)
 
 gcd-distr : Decidable _≈_ → ∀ {a b c d d'} → IsGCD a b d →
             IsGCD (c * a) (c * b) d' → d' ∣∣ (c * d)
-gcd-distr _≟_ {a} {b} {c} {d} {d'} isGCD[a,b,d] isGCD[ca,cb,d'] =  aux (c ≟ 0#)
+gcd-distr _≟_ {a} {b} {c} {d} {d'}
+  isGCD[a,b,d]@(isGCDᶜ (a' ,  a'd≈a) (b' , b'd≈b) _)
+  isGCD[ca,cb,d']@(isGCDᶜ d'∣ca d'∣cb _)  =  aux (c ≟ 0#)
   where
   aux : Dec (c ≈ 0#) → d' ∣∣ (c * d)
   aux (yes c≈0) = d'∣cd , cd∣d'   -- A trivial case. The goal is reduced to 0 ∣∣ 0.
@@ -108,11 +96,6 @@ gcd-distr _≟_ {a} {b} {c} {d} {d'} isGCD[a,b,d] isGCD[ca,cb,d'] =  aux (c ≟ 
   aux (no c≉0) = d'∣cd , cd∣d'        -- general case
     where
     -- First derive  cd ∣ d'  from that  cd  divides both  ca and cb.
-
-    open IsGCD isGCD[a,b,d] using ()
-      renaming (quot₁ to a'; quot₂ to b'; quot₁∙gcd≈x to a'd≈a; quot₂∙gcd≈y to b'd≈b)
-
-    open IsGCD isGCD[ca,cb,d'] using () renaming (divides₁ to d'∣ca; divides₂ to d'∣cb)
     ca = c * a;  cb = c * b;  cd = c * d
 
     cd∣ca = a' , a'*cd≈ca

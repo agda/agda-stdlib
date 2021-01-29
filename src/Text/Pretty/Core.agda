@@ -30,6 +30,7 @@ open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; maybe′)
 open import Data.Maybe.Relation.Unary.All as Allᴹ using (nothing; just)
 
 open import Data.String.Base as String
+  using (String; length; replicate; _++_; unlines)
 open import Data.String.Unsafe as Stringₚ
 open import Function.Base
 open import Relation.Nullary using (Dec)
@@ -233,7 +234,7 @@ private
     isMaxWidth₁ : y.lastWidth ≤ widthy → lastWidth ≤ vMaxWidth
     isMaxWidth₁ p = begin
       lastWidth            ≤⟨ +-monoʳ-≤ x.lastWidth p ⟩
-      x.lastWidth + widthy ≤⟨ n≤m⊔n _ _ ⟩
+      x.lastWidth + widthy ≤⟨ m≤n⊔m _ _ ⟩
       vMaxWidth            ∎ where open ≤-Reasoning
 
     isMaxWidth₂ : length lastx ≡ x.lastWidth →
@@ -256,7 +257,7 @@ private
         length (lastx ++ hd)     ≡⟨ length-++ lastx hd ⟩
         length lastx + length hd ≡⟨ cong (_+ _) ∣x∣≡ ⟩
         x.lastWidth + length hd  ≤⟨ +-monoʳ-≤ x.lastWidth ∣hd∣ ⟩
-        x.lastWidth + widthy     ≤⟨ n≤m⊔n _ _ ⟩
+        x.lastWidth + widthy     ≤⟨ m≤n⊔m _ _ ⟩
         vMaxWidth                ∎ where open ≤-Reasoning
 
       indented : ∀ s → length s ≤ widthy →
@@ -265,7 +266,7 @@ private
         length (indent pad s)          ≡⟨ size-indent pad s ⟩
         maybe′ length 0 pad + length s ≡⟨ cong (_+ _) size-pad ⟩
         x.lastWidth + length s         ≤⟨ +-monoʳ-≤ x.lastWidth ∣s∣ ⟩
-        x.lastWidth + widthy           ≤⟨ n≤m⊔n (widthx) _ ⟩
+        x.lastWidth + widthy           ≤⟨ m≤n⊔m (widthx) _ ⟩
         vMaxWidth                      ∎ where open ≤-Reasoning
 
     maxWidth : [ n ∈ ℕ ∣ lastWidth ≤ n × All≤ n vBlock ]

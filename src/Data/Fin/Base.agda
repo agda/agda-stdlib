@@ -16,7 +16,7 @@ open import Data.Empty using (⊥-elim)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; z≤n; s≤s)
 open import Data.Nat.Properties.Core using (≤-pred)
 open import Data.Product as Product using (_×_; _,_)
-open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (id; _∘_; _on_)
 open import Level using () renaming (zero to ℓ₀)
 open import Relation.Nullary using (yes; no)
@@ -130,6 +130,10 @@ splitAt : ∀ m {n} → Fin (m ℕ.+ n) → Fin m ⊎ Fin n
 splitAt zero    i       = inj₂ i
 splitAt (suc m) zero    = inj₁ zero
 splitAt (suc m) (suc i) = Sum.map suc id (splitAt m i)
+
+-- inverse of above function
+join : ∀ m n → Fin m ⊎ Fin n → Fin (m ℕ.+ n)
+join m n = [ inject+ n , raise {n} m ]′
 
 -- quotRem k "i" = "i % k" , "i / k"
 -- This is dual to group from Data.Vec.
