@@ -1,4 +1,4 @@
------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- The Agda standard library
 --
 -- Basic auxiliary definitions for magma-like structures
@@ -25,7 +25,7 @@ module Algebra.Definitions.RawMagma
 open RawMagma M renaming (Carrier to A)
 open import Algebra.Definitions _≈_
 
------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Divisibility
 
 infix 5 _∣ˡ_ _∤ˡ_ _∣ʳ_ _∤ʳ_ _∣_ _∤_
@@ -68,13 +68,13 @@ _∣∣_ : Rel A (a ⊔ ℓ)
 x ∣∣ y = x ∣ y × y ∣ x
 
 _∤∤_ : Rel A (a ⊔ ℓ)
-x ∤∤ y =  ¬ x ∣∣ y
+x ∤∤ y = ¬ x ∣∣ y
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Greatest common divisor (GCD)
 
 record IsGCD (x y gcd : A) : Set (a ⊔ ℓ) where
-  constructor isGCDᶜ
+  constructor mkIsGCD
   field
     divides₁ : gcd ∣ x
     divides₂ : gcd ∣ y

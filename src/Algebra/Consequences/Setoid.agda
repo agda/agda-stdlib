@@ -34,7 +34,7 @@ open import Algebra.Consequences.Base public
 
 module _ {_•_ : Op₂ A} (comm : Commutative _•_) where
 
-  comm+cancelˡ⇒cancelʳ : LeftCancellative _•_ →  RightCancellative _•_
+  comm+cancelˡ⇒cancelʳ : LeftCancellative _•_ → RightCancellative _•_
   comm+cancelˡ⇒cancelʳ cancelˡ {x} y z eq = cancelˡ x (begin
     x • y ≈⟨ comm x y ⟩
     y • x ≈⟨ eq ⟩
