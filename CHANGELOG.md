@@ -677,6 +677,12 @@ Other minor additions
   _≤ᵇ_ : (m n : ℕ) → Bool
   ```
 
+* Added new proofs to `Data.Nat.DivMod`:
+  ```agda
+  m<n⇒m/n≡0 : ∀ {m n n≢0} → m < n → (m / n) {n≢0} ≡ 0
+  /-cancelˡ : ∀ m n o {o≢0} {mo≢0} → ((m * n) / (m * o)) {mo≢0} ≡ (n / o) {o≢0}
+  ```
+
 * Added new proofs to `Data.Nat.Properties`:
   ```agda
   ≤∧≮⇒≡         : m ≤ n → m ≮ n → m ≡ n
