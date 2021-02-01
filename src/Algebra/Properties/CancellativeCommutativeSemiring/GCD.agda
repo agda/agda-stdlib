@@ -44,18 +44,6 @@ x≉0⊎y≉0⇒Coprime[x/gcd,y/gcd] x≉0∨y≉0 gcd@(mkIsGCD d∣x d∣y grea
     (x∣y∧z∣x/y⇒xz∣y d∣y y/d∣z))
 
 ------------------------------------------------------------------------------
--- gcd-s for two division-equivalent pairs
--- are division-equivalent
-
-GCD-unique : ∀ {x x' y y' d d'} → x ∣∣ x' → y ∣∣ y' →
-             IsGCD x y d → IsGCD x' y' d' → d ∣∣ d'
-GCD-unique (x∣x' , x'∣x) (y∣y' , y'∣y)
-           (mkIsGCD d∣x d∣y greatest) (mkIsGCD d'∣x' d'∣y' greatest') = d∣d' , d'∣d
-  where
-  d∣x' = ∣-trans d∣x x∣x';    d∣y' = ∣-trans d∣y y∣y';    d∣d' = greatest' d∣x' d∣y'
-  d'∣x = ∣-trans d'∣x' x'∣x;  d'∣y = ∣-trans d'∣y' y'∣y;  d'∣d = greatest d'∣x d'∣y
-
-------------------------------------------------------------------------------
 -- gcd-distr  is an important lemma of the gcd distributivity:
 -- gcd (c*a) (c*b)  is division-equivalent to  c * (gcd a b).
 

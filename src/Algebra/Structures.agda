@@ -23,7 +23,7 @@ module Algebra.Structures
 open import Algebra.Core
 open import Algebra.Definitions _≈_
 import Algebra.Consequences.Setoid as Consequences
-open import Data.Product using (_,_; proj₁; proj₂; ∃)
+open import Data.Product using (_,_; proj₁; proj₂)
 open import Level using (_⊔_)
 
 ------------------------------------------------------------------------
@@ -459,6 +459,8 @@ record IsCancellativeCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a �
     *-cancelˡ-nonZero     : AlmostLeftCancellative 0# *
 
   open IsCommutativeSemiring isCommutativeSemiring public
+
+
 
 ------------------------------------------------------------------------
 -- Structures with 2 binary operations, 1 unary operation & 2 elements

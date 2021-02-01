@@ -52,7 +52,7 @@ Deprecated names
 New modules
 -----------
 
-* Specifications and properties for greater common divisor
+* Specifications and properties for greatest common divisor
   ```
   Algebra.Properties.Semiring.GCD
   Algebra.Properties.CancellativeCommutativeSemiring
@@ -155,13 +155,13 @@ Other minor additions
 
 * Added new proofs in `Algebra.Properties.CommutativeSemigroup.Divisibility`:
   ```agda
-  x∣y∧z∣x/y⇒xz∣y : ∀ {x y z} → ((x/y , _) : x ∣ y) → z ∣ x/y → x ∙ z ∣ y
-  x∣y⇒zx∣zy      : ∀ {x y} z → x ∣ y → z ∙ x ∣ z ∙ y
+  x∣y∧z∣x/y⇒xz∣y : ((x/y , _) : x ∣ y) → z ∣ x/y → x ∙ z ∣ y
+  x∣y⇒zx∣zy      : x ∣ y → z ∙ x ∣ z ∙ y
   ```
 
 * Added new proofs in `Algebra.Properties.CancellativeCommutativeSemiring`:
   ```agda
-  x*y≈0⇒x≈0⊎y≈0 : Decidable _≈_ → ∀ {x y} → x * y ≈ 0# → x ≈ 0# ⊎ y ≈ 0#
-  x≉0∧y≉0⇒xy≉0  : Decidable _≈_ → ∀ {x y} → x ≉ 0# → y ≉ 0# → x * y ≉ 0#
-  xy∣x⇒y∣1      : ∀ {x y} → x ≉ 0# → x * y ∣ x → y ∣ 1#
+  xy≈0⇒x≈0∨y≈0 : Decidable _≈_ →  x * y ≈ 0# → x ≈ 0# ⊎ y ≈ 0#
+  x≉0∧y≉0⇒xy≉0 : Decidable _≈_ →  x ≉ 0# → y ≉ 0# → x * y ≉ 0#
+  xy∣x⇒y∣1     : x ≉ 0# → x * y ∣ x → y ∣ 1#
   ```

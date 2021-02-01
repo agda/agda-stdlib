@@ -7,6 +7,7 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Algebra using (Semiring)
+open import Data.Product using (_,_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 
 module Algebra.Properties.Semiring.GCD {a ℓ} (R : Semiring a ℓ) where
@@ -41,3 +42,15 @@ x≉0∨y≉0⇒gcd≉0 (mkIsGCD _ d∣y _) (inj₂ y≉0) = x∣y∧y≉0⇒x�
 
 coprime⇒gcd∣1 : ∀ {x y d} → Coprime x y → IsGCD x y d →  d ∣ 1#
 coprime⇒gcd∣1 coprime (mkIsGCD div₁ div₂ _) = coprime div₁ div₂
+
+------------------------------------------------------------------------------
+-- gcd-s for two division-equivalent pairs
+-- are division-equivalent
+
+GCD-unique : ∀ {x x' y y' d d'} → x ∣∣ x' → y ∣∣ y' →
+             IsGCD x y d → IsGCD x' y' d' → d ∣∣ d'
+GCD-unique (x∣x' , x'∣x) (y∣y' , y'∣y)
+           (mkIsGCD d∣x d∣y greatest) (mkIsGCD d'∣x' d'∣y' greatest') = d∣d' , d'∣d
+  where
+  d∣x' = ∣-trans d∣x x∣x';    d∣y' = ∣-trans d∣y y∣y';    d∣d' = greatest' d∣x' d∣y'
+  d'∣x = ∣-trans d'∣x' x'∣x;  d'∣y = ∣-trans d'∣y' y'∣y;  d'∣d = greatest d'∣x d'∣y

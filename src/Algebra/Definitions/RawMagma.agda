@@ -11,7 +11,7 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Core
-open import Data.Product using (_×_; _,_; proj₁; proj₂; ∃; swap)
+open import Data.Product using (_×_; _,_; ∃; swap)
 open import Algebra.Bundles using (RawMagma)
 open import Data.Product using (∃; _×_; _,_)
 open import Level using (_⊔_)
@@ -79,15 +79,3 @@ record IsGCD (x y gcd : A) : Set (a ⊔ ℓ) where
     divides₁ : gcd ∣ x
     divides₂ : gcd ∣ y
     greatest : ∀ {z} → z ∣ x → z ∣ y → z ∣ gcd
-
-  quot₁ : A               -- a complementory quotient  x/gcd
-  quot₁ = proj₁ divides₁
-
-  quot₂ : A               -- y/gcd
-  quot₂ = proj₁ divides₂
-
-  quot₁∙gcd≈x : (quot₁ ∙ gcd) ≈ x
-  quot₁∙gcd≈x = proj₂ divides₁
-
-  quot₂∙gcd≈y : (quot₂ ∙ gcd) ≈ y
-  quot₂∙gcd≈y = proj₂ divides₂
