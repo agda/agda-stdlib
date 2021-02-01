@@ -34,7 +34,7 @@ procedure should be followed:
 
 * Run the tests involving the library:
 
-    make test
+    make test-using-std-lib
 
 * Commit the changes and push
 
