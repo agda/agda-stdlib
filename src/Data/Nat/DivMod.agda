@@ -228,31 +228,29 @@ m≥n⇒m/n>0 {m@(suc m-1)} {n@(suc n-1)} m≥n = begin
   n / d + (m * n) / d ≡⟨ cong (n / d +_) (*-/-assoc m d∣n) ⟩
   n / d + m * (n / d) ∎
 
-/-step : ∀ {m n n≢0} → m ≥ n → (m / n) {n≢0} ≡ 1 + ((m ∸ n) / n) {n≢0}
-/-step {zero} {zero} {()} _
-/-step {zero} {suc n} {_} ()
-/-step {suc m} {suc n} {n≢0} m≥n = begin-equality
-  suc m / suc n                          ≡⟨ refl ⟩
-  div-helper zero n (suc m) n            ≡⟨ divₕ-restart n (suc m) n m≥n ⟩
-  div-helper 1 n (suc m ∸ suc n) n       ≡⟨ divₕ-extractAcc 1 n (suc m ∸ suc n) n ⟩
-  1 + (div-helper 0 n (suc m ∸ suc n) n) ≡⟨ refl ⟩
-  1 + ((suc m ∸ suc n) / suc n)          ∎
+m/n≡1+[m∸n]/n : ∀ {m n n≢0} → m ≥ n → (m / n) {n≢0} ≡ 1 + ((m ∸ n) / n) {n≢0}
+m/n≡1+[m∸n]/n {m@(suc m-1)} {n@(suc n-1)} {n≢0} m≥n = begin-equality
+  m / n                              ≡⟨⟩
+  div-helper zero n-1 m n-1          ≡⟨ divₕ-restart n-1 m n-1 m≥n ⟩
+  div-helper 1 n-1 (m ∸ n) n-1       ≡⟨ divₕ-extractAcc 1 n-1 (m ∸ n) n-1 ⟩
+  1 + (div-helper 0 n-1 (m ∸ n) n-1) ≡⟨⟩
+  1 + (m ∸ n) / n                    ∎
 
 /-cancelˡ : ∀ m n o {o≢0} {mo≢0} → ((m * n) / (m * o)) {mo≢0} ≡ (n / o) {o≢0}
-/-cancelˡ m n o {o≢0} {mo≢0} = /-cancelˡ-Acc m (<-wellFounded n) o
+/-cancelˡ m@(suc m-1) n o {o≢0} = /-cancelˡ-Acc (<-wellFounded n)
   where
-  /-cancelˡ-Acc : ∀ m {n} → (Acc _<_ n) → ∀ o {o≢0} {mo≢0} → ((m * n) / (m * o)) {mo≢0} ≡ (n / o) {o≢0}
-  /-cancelˡ-Acc (suc m) {n} (acc rec) o {o≢0} {mo≢0} with n <? o
-  ... | yes n<o = trans (m<n⇒m/n≡0 (*-monoʳ-< m n<o)) (sym (m<n⇒m/n≡0 n<o))
+  /-cancelˡ-Acc : ∀ {n} → Acc _<_ n → (m * n) / (m * o) ≡ n / o
+  /-cancelˡ-Acc {n} (acc rec) with n <? o
+  ... | yes n<o = trans (m<n⇒m/n≡0 (*-monoʳ-< m-1 n<o)) (sym (m<n⇒m/n≡0 n<o))
   ... | no ¬n<o = begin-equality
-    ((suc m * n) / (suc m * o)) {mo≢0}                 ≡⟨ /-step (*-monoʳ-≤ (suc m) (≮⇒≥ ¬n<o)) ⟩
-    1 + ((suc m * n ∸ suc m * o) / (suc m * o)) {mo≢0} ≡⟨ cong suc (/-congˡ {o = suc m * o} (sym (*-distribˡ-∸ (suc m) n o))) ⟩
-    1 + ((suc m * (n ∸ o)) / (suc m * o)) {mo≢0}       ≡⟨ cong suc (/-cancelˡ-Acc (suc m) (rec ((n ∸ o)) n∸o<n) o) ⟩
-    1 + ((n ∸ o) / o) {o≢0}                            ≡⟨ sym (cong₂ _+_ (n/n≡1 o) refl) ⟩
-    (o / o) {o≢0} + ((n ∸ o) / o) {o≢0}                ≡⟨ sym (+-distrib-/-∣ˡ (n ∸ o) (divides 1 ((sym (*-identityˡ o))))) ⟩
-    ((o + (n ∸ o)) / o) {o≢0}                          ≡⟨ /-congˡ {o = o} (m+[n∸m]≡n (≮⇒≥ ¬n<o)) ⟩
-    (n / o) {o≢0}                                      ∎
-      where n∸o<n = ∸-monoʳ-< {n} {o} {0} (n≢0⇒n>0 (toWitnessFalse o≢0)) (≮⇒≥ ¬n<o)
+    (m * n) / (m * o)             ≡⟨ m/n≡1+[m∸n]/n (*-monoʳ-≤ m (≮⇒≥ ¬n<o)) ⟩
+    1 + (m * n ∸ m * o) / (m * o) ≡⟨ cong suc (/-congˡ {o = m * o} (sym (*-distribˡ-∸ m n o))) ⟩
+    1 + (m * (n ∸ o)) / (m * o)   ≡⟨ cong suc (/-cancelˡ-Acc (rec (n ∸ o) n∸o<n)) ⟩
+    1 + (n ∸ o) / o               ≡˘⟨ cong₂ _+_ (n/n≡1 o) refl ⟩
+    o / o + (n ∸ o) / o           ≡˘⟨ +-distrib-/-∣ˡ (n ∸ o) (divides 1 ((sym (*-identityˡ o)))) ⟩
+    (o + (n ∸ o)) / o             ≡⟨ /-congˡ {o = o} (m+[n∸m]≡n (≮⇒≥ ¬n<o)) ⟩
+    n / o                         ∎
+    where n∸o<n = ∸-monoʳ-< (n≢0⇒n>0 (toWitnessFalse o≢0)) (≮⇒≥ ¬n<o)
 
 ------------------------------------------------------------------------
 --  A specification of integer division.
