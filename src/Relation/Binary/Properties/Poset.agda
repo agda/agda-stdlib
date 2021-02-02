@@ -93,6 +93,18 @@ open StrictPartialOrder <-strictPartialOrder public
 ≤⇒≯ : ∀ {x y} → x ≤ y → ¬ (y < x)
 ≤⇒≯ = ToStrict.≤⇒≯ antisym
 
+------------------------------------------------------------------------
+-- Other properties
+
+mono⇒cong : ∀ {f} → f Preserves _≤_ ⟶ _≤_ → f Preserves _≈_ ⟶ _≈_
+mono⇒cong f-mono p≈q = antisym
+  (f-mono (reflexive p≈q))
+  (f-mono (reflexive (Eq.sym p≈q)))
+
+antimono⇒cong : ∀ {f} → f Preserves _≤_ ⟶ _≥_ → f Preserves _≈_ ⟶ _≈_
+antimono⇒cong f-mono p≈q = antisym
+  (f-mono (reflexive (Eq.sym p≈q)))
+  (f-mono (reflexive p≈q))
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

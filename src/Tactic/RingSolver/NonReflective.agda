@@ -29,6 +29,7 @@ open import Data.Vec.N-ary
 
 open import Tactic.RingSolver.Core.Polynomial.Parameters
 open import Tactic.RingSolver.Core.Expression public
+open import Algebra.Properties.Semiring.Exp.TCOptimised semiring
 
 module Ops where
   zero-homo : ∀ x → T (is-just (0≟ x)) → 0# ≈ x
@@ -82,7 +83,7 @@ module Ops where
     go (x ⊕ y) ρ = ⊞-hom (norm x) (norm y) ρ ⟨ trans ⟩ (go x ρ ⟨ +-cong ⟩ go y ρ)
     go (x ⊗ y) ρ = ⊠-hom (norm x) (norm y) ρ ⟨ trans ⟩ (go x ρ ⟨ *-cong ⟩ go y ρ)
     go (⊝ x)   ρ = ⊟-hom (norm x) ρ   ⟨ trans ⟩ -‿cong (go x ρ)
-    go (x ⊛ i) ρ = ⊡-hom (norm x) i ρ ⟨ trans ⟩ pow-cong i (go x ρ)
+    go (x ⊛ i) ρ = ⊡-hom (norm x) i ρ ⟨ trans ⟩ ^-congˡ i (go x ρ)
 
   open import Relation.Binary.Reflection setoid Ι ⟦_⟧ ⟦_⇓⟧ correct public
 

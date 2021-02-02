@@ -17,7 +17,7 @@ module Algebra.Operations.Semiring {s₁ s₂} (S : Semiring s₁ s₂) where
 
 {-# WARNING_ON_IMPORT
 "Algebra.Operations.Semiring was deprecated in v1.5.
-Use Algebra.Properties.Semiring.(Multiplication/Exponentiation) instead."
+Use Algebra.Properties.Semiring.(Mult/Exp) instead."
 #-}
 
 open Semiring S

@@ -31,6 +31,10 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   tail (here (_ ∷ rs)) = there (here rs)
   tail (there x) = there (tail x)
 
+  _++ˢ_ : ∀ pre {as bs} → Suffix R as bs → Suffix R as (pre List.++ bs)
+  []       ++ˢ rs = rs
+  (x ∷ xs) ++ˢ rs = there (xs ++ˢ rs)
+
 module _ {a b r s} {A : Set a} {B : Set b} {R : REL A B r} {S : REL A B s} where
 
   map : R ⇒ S → Suffix R ⇒ Suffix S

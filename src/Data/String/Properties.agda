@@ -123,6 +123,18 @@ x <? y = StrictLex.<-decidable Charₚ._≟_ Charₚ._<?_ (toList x) (toList y)
     (StrictLex.<-strictTotalOrder Charₚ.<-strictTotalOrder)
     toList
 
+≤-isDecPartialOrder-≈ : IsDecPartialOrder _≈_ _≤_
+≤-isDecPartialOrder-≈ =
+  On.isDecPartialOrder
+    toList
+    (StrictLex.≤-isDecPartialOrder Charₚ.<-isStrictTotalOrder)
+
+≤-decPoset-≈ : DecPoset _ _ _
+≤-decPoset-≈ =
+  On.decPoset
+    (StrictLex.≤-decPoset Charₚ.<-strictTotalOrder)
+    toList
+
 ------------------------------------------------------------------------
 -- Alternative Boolean equality test.
 --
