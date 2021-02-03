@@ -116,7 +116,7 @@ reverse (v , p) = Vec.reverse v , p
 -- Align and Zip.
 
 alignWith : (These A B → C) → ∀ {n} → Vec≤ A n → Vec≤ B n → Vec≤ C n
-alignWith f (as , p) (bs , q) = Vec.alignWith f as bs , ℕₚ.⊔-least p q
+alignWith f (as , p) (bs , q) = Vec.alignWith f as bs , ℕₚ.⊔-lub p q
 
 zipWith : (A → B → C) → ∀ {n} → Vec≤ A n → Vec≤ B n → Vec≤ C n
 zipWith f (as , p) (bs , q) = Vec.restrictWith f as bs , ℕₚ.m≤n⇒m⊓o≤n _ p
