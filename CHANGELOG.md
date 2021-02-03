@@ -61,6 +61,31 @@ New modules
 Other minor additions
 ---------------------
 
+* Added new function in `Data.List.Base`:
+  ```agda
+  last : List A → Maybe A
+  ```
+
+* Added new proofs in `Data.List.Relation.Unary.All.Properties`:
+  ```agda
+  head⁺ : All P xs → Maybe.All P (head xs)
+  tail⁺ : All P xs → Maybe.All (All P) (tail xs)
+  last⁺ : All P xs → Maybe.All P (last xs)
+
+  uncons⁺ : All P xs → Maybe.All (P ⟨×⟩ All P) (uncons xs)
+  uncons⁻ : Maybe.All (P ⟨×⟩ All P) (uncons xs) → All P xs
+  unsnoc⁺ : All P xs → Maybe.All (All P ⟨×⟩ P) (unsnoc xs)
+  unsnoc⁻ : Maybe.All (All P ⟨×⟩ P) (unsnoc xs) → All P xs
+
+  dropWhile⁺ : (Q? : Decidable Q) → All P xs → All P (dropWhile Q? xs)
+  dropWhile⁻ : (P? : Decidable P) → dropWhile P? xs ≡ [] → All P xs
+  takeWhile⁺ : (Q? : Decidable Q) → All P xs → All P (takeWhile Q? xs)
+  takeWhile⁻ : (P? : Decidable P) → takeWhile P? xs ≡ xs → All P xs
+
+  all-head-dropWhile : (P? : Decidable P) → ∀ xs → Maybe.All (∁ P) (head (dropWhile P? xs))
+  all-takeWhile      : (P? : Decidable P) → ∀ xs → All P (takeWhile P? xs)
+  ```
+
 * Added new proofs to `Data.Nat.DivMod`:
   ```agda
   m<n⇒m/n≡0     : m < n → (m / n) {n≢0} ≡ 0
@@ -165,7 +190,7 @@ Other minor additions
   ```
 
 * Added new proofs to `Relation.Binary.Properties.Poset`:
-  ```
+  ```agda
   mono⇒cong     : f Preserves _≤_ ⟶ _≤_ → f Preserves _≈_ ⟶ _≈_
   antimono⇒cong : f Preserves _≤_ ⟶ _≥_ → f Preserves _≈_ ⟶ _≈_
   ```
