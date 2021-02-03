@@ -61,7 +61,7 @@ module _ {A B : Set a} where
 
 -- A value of type `IO A` is a description of a computation that may
 -- eventually produce an `A`. The `run` function converts this description
--- of a computation into calls to primitve functions that will actually
+-- of a computation into calls to primitive functions that will actually
 -- perform it.
 
 {-# NON_TERMINATING #-}

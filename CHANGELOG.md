@@ -213,7 +213,8 @@ Other minor additions
   all-upTo : All (_< n) (upTo n)
   ```
 
-* Added new primitive to `IO`:
+* Added new definitions to `IO`:
   ```agda
   getLine : IO String
+  Main : Set
   ```
