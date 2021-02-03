@@ -534,6 +534,12 @@ applyUpTo⁻ f (suc n) (_  ∷ pxs) (s≤s (s≤s i<n)) =
   applyUpTo⁻ (f ∘ suc) n pxs (s≤s i<n)
 
 ------------------------------------------------------------------------
+-- upTo
+
+all-upTo : ∀ n → All (_< n) (upTo n)
+all-upTo n = applyUpTo⁺₁ id n id
+
+------------------------------------------------------------------------
 -- applyDownFrom
 
 applyDownFrom⁺₁ : ∀ f n → (∀ {i} → i < n → P (f i)) → All P (applyDownFrom f n)
