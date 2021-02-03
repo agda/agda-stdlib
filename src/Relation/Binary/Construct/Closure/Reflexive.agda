@@ -43,6 +43,9 @@ drop-refl : {R : Rel A ℓ} → Reflexive R → ReflClosure R ⇒ R
 drop-refl rfl [ xRy ] = xRy
 drop-refl rfl refl    = rfl
 
+reflexive : {R : Rel A ℓ} → _≡_ ⇒ ReflClosure R
+reflexive refl = refl
+
 []-injective : {R : Rel A ℓ} → ∀ {x y p q} →
                (ReflClosure R x y ∋ [ p ]) ≡ [ q ] → p ≡ q
 []-injective refl = refl
@@ -76,4 +79,3 @@ Refl = ReflClosure
 "Warning: Refl was deprecated in v1.5.
 Please use ReflClosure instead."
 #-}
-

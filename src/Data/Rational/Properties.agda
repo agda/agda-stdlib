@@ -339,7 +339,7 @@ drop-*<* (*<* pq<qp) = pq<qp
 
 <-≤-trans : Trans _<_ _≤_ _<_
 <-≤-trans {p} {q} {r} (*<* p<q) (*≤* q≤r) = *<*
-  (ℤ.*-cancelʳ-<-non-neg _ (begin-strict
+  (ℤ.*-cancelʳ-<-nonNeg _ (begin-strict
   let n₁ = ↥ p; n₂ = ↥ q; n₃ = ↥ r; sd₁ = ↧ p; sd₂ = ↧ q; sd₃ = ↧ r in
   (n₁  ℤ.* sd₃) ℤ.* sd₂  ≡⟨ ℤ.*-assoc n₁ sd₃ sd₂ ⟩
   n₁   ℤ.* (sd₃ ℤ.* sd₂) ≡⟨ cong (n₁ ℤ.*_) (ℤ.*-comm sd₃ sd₂) ⟩
@@ -355,7 +355,7 @@ drop-*<* (*<* pq<qp) = pq<qp
 
 ≤-<-trans : Trans _≤_ _<_ _<_
 ≤-<-trans {p} {q} {r} (*≤* p≤q) (*<* q<r) = *<*
-  (ℤ.*-cancelʳ-<-non-neg _ (begin-strict
+  (ℤ.*-cancelʳ-<-nonNeg _ (begin-strict
   let n₁ = ↥ p; n₂ = ↥ q; n₃ = ↥ r; sd₁ = ↧ p; sd₂ = ↧ q; sd₃ = ↧ r in
   (n₁  ℤ.* sd₃) ℤ.* sd₂  ≡⟨ ℤ.*-assoc n₁ sd₃ sd₂ ⟩
   n₁   ℤ.* (sd₃ ℤ.* sd₂) ≡⟨ cong (n₁ ℤ.*_) (ℤ.*-comm sd₃ sd₂) ⟩
@@ -741,6 +741,10 @@ toℚᵘ-homo-* p q with *-nf p q ℤ.≟ 0ℤ
   (↥ p ℤ.* ↥ q) ℤ.* ↧ (p * q)  ℤ.* *-nf p q    ∎))
   where open ≡-Reasoning; open CommSemigroupProperties ℤ.*-commutativeSemigroup
 
+toℚᵘ-homo-1/ : ∀ p {p≢0 : ∣ ↥ p ∣ ≢0} → toℚᵘ (1/_ p {p≢0}) ℚᵘ.≃ ℚᵘ.1/_ (toℚᵘ p) {p≢0}
+toℚᵘ-homo-1/ (mkℚ +[1+ _ ] _ _) = ℚᵘ.≃-refl
+toℚᵘ-homo-1/ (mkℚ -[1+ _ ] _ _) = ℚᵘ.≃-refl
+
 toℚᵘ-isMagmaHomomorphism-* : IsMagmaHomomorphism *-rawMagma ℚᵘ.*-rawMagma toℚᵘ
 toℚᵘ-isMagmaHomomorphism-* = record
   { isRelHomomorphism = toℚᵘ-isRelHomomorphism
@@ -809,6 +813,18 @@ private
 
 *-distrib-+ : _*_ DistributesOver _+_
 *-distrib-+ = *-distribˡ-+ , *-distribʳ-+
+
+*-inverseˡ : ∀ p {p≢0 : ∣ ↥ p ∣ ≢0} → (1/ p) {p≢0} * p ≡ 1ℚ
+*-inverseˡ p {p≢0} = toℚᵘ-injective (begin-equality
+  toℚᵘ (1/ p * p)             ≈⟨ toℚᵘ-homo-* (1/ p) p ⟩
+  toℚᵘ (1/ p) ℚᵘ.* toℚᵘ p     ≈⟨ ℚᵘ.*-congʳ (toℚᵘ-homo-1/ p {p≢0}) ⟩
+  ℚᵘ.1/ (toℚᵘ p) ℚᵘ.* toℚᵘ p  ≈⟨ ℚᵘ.*-inverseˡ (toℚᵘ p) {p≢0} ⟩
+  ℚᵘ.1ℚᵘ                      ∎
+  )
+  where open ℚᵘ.≤-Reasoning
+
+*-inverseʳ : ∀ p {p≢0 : ∣ ↥ p ∣ ≢0} → p * (1/ p) {p≢0} ≡ 1ℚ
+*-inverseʳ p {p≢0} = trans (*-comm p (1/ p)) (*-inverseˡ p {p≢0})
 
 ------------------------------------------------------------------------
 -- Structures

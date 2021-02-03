@@ -7,18 +7,16 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Algebra using (Monoid)
-import Algebra.Properties.Semigroup
-open import Level using (_⊔_)
 open import Data.Product using (_,_)
 open import Relation.Binary
 
-module Algebra.Properties.Monoid.Divisibility {a ℓ} (M : Monoid a ℓ) where
+module Algebra.Properties.Monoid.Divisibility
+  {a ℓ} (M : Monoid a ℓ) where
 
 open Monoid M
-import Algebra.Divisibility _≈_ _∙_ as Div
 
 ------------------------------------------------------------------------
--- Re-export magma divisibility
+-- Re-export semigroup divisibility
 
 open import Algebra.Properties.Semigroup.Divisibility semigroup public
 
@@ -26,13 +24,13 @@ open import Algebra.Properties.Semigroup.Divisibility semigroup public
 -- Additional properties
 
 ε∣_ : ∀ x → ε ∣ x
-ε∣_ = Div.∣-min identityʳ
+ε∣ x = x , identityʳ x
 
 ∣-refl : Reflexive _∣_
-∣-refl = Div.∣-refl identityˡ
+∣-refl {x} = ε , identityˡ x
 
 ∣-reflexive : _≈_ ⇒ _∣_
-∣-reflexive = Div.∣-reflexive trans identityˡ
+∣-reflexive x≈y = ε , trans (identityˡ _) x≈y
 
 ∣-isPreorder : IsPreorder _≈_ _∣_
 ∣-isPreorder = record
@@ -41,7 +39,7 @@ open import Algebra.Properties.Semigroup.Divisibility semigroup public
   ; trans         = ∣-trans
   }
 
-∣-preorder : Preorder a ℓ (a ⊔ ℓ)
+∣-preorder : Preorder a ℓ _
 ∣-preorder = record
   { isPreorder = ∣-isPreorder
   }

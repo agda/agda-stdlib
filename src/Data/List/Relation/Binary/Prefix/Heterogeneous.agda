@@ -45,6 +45,10 @@ module _ {a b r s} {A : Set a} {B : Set b} {R : REL A B r} {S : REL A B s} where
 
 module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
 
+  _++ᵖ_ : ∀ {as bs} → Prefix R as bs → ∀ suf → Prefix R as (bs List.++ suf)
+  []       ++ᵖ suf = []
+  (r ∷ rs) ++ᵖ suf = r ∷ (rs ++ᵖ suf)
+
   toView : ∀ {as bs} → Prefix R as bs → PrefixView R as bs
   toView []       = [] ++ _
   toView (r ∷ rs) with toView rs

@@ -12,13 +12,19 @@ module Data.Tree.AVL.Sets
   {a ℓ₁ ℓ₂} (strictTotalOrder : StrictTotalOrder a ℓ₁ ℓ₂)
   where
 
-open import Data.Bool.Base
+open import Data.Bool.Base using (Bool)
 open import Data.List.Base as List using (List)
 open import Data.Maybe.Base as Maybe
+open import Data.Nat.Base using (ℕ)
 open import Data.Product as Prod using (_×_; _,_; proj₁)
-open import Data.Unit
-open import Function
-open import Level
+open import Data.Unit.Base
+open import Function.Base
+open import Level using (Level; _⊔_)
+
+private
+  variable
+    b : Level
+    B : Set b
 
 import Data.Tree.AVL strictTotalOrder as AVL
 open StrictTotalOrder strictTotalOrder renaming (Carrier to A)
@@ -60,3 +66,24 @@ fromList = AVL.fromList ∘ List.map (_, _)
 
 toList : ⟨Set⟩ → List A
 toList = List.map proj₁ ∘ AVL.toList
+
+foldr : (A → B → B) → B → ⟨Set⟩ → B
+foldr cons nil = AVL.foldr (λ {k} _ → cons k) nil
+
+size : ⟨Set⟩ → ℕ
+size = AVL.size
+
+------------------------------------------------------------------------
+-- Naïve implementations of union and intersection
+
+union : ⟨Set⟩ → ⟨Set⟩ → ⟨Set⟩
+union = AVL.union
+
+unions : List ⟨Set⟩ → ⟨Set⟩
+unions = AVL.unions
+
+intersection : ⟨Set⟩ → ⟨Set⟩ → ⟨Set⟩
+intersection = AVL.intersection
+
+intersections : List ⟨Set⟩ → ⟨Set⟩
+intersections = AVL.intersections

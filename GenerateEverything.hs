@@ -43,6 +43,8 @@ unsafeModules = map modToFile
   , "Relation.Binary.PropositionalEquality.TrustMe"
   , "System.Environment"
   , "System.Environment.Primitive"
+  , "System.Exit"
+  , "System.Exit.Primitive"
   , "Text.Pretty.Core"
   , "Text.Pretty"
   ]
@@ -71,6 +73,7 @@ withKModules = map modToFile
   , "Relation.Binary.PropositionalEquality.TrustMe"
   , "Text.Pretty.Core"
   , "Text.Pretty"
+  , "Text.Regex.String.Unsafe"
   ]
 
 isWithKModule :: FilePath -> Bool

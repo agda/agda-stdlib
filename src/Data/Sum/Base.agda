@@ -49,6 +49,9 @@ fromInj₁ = [ id ,_]′
 fromInj₂ : (A → B) → A ⊎ B → B
 fromInj₂ = [_, id ]′
 
+reduce : A ⊎ A → A
+reduce = [ id , id ]′
+
 swap : A ⊎ B → B ⊎ A
 swap (inj₁ x) = inj₂ x
 swap (inj₂ x) = inj₁ x

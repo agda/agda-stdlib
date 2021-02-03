@@ -186,6 +186,38 @@ module _ (f : ℕ → A) where
   ∈-applyUpTo⁻ = Membershipₛ.∈-applyUpTo⁻ (P.setoid _) f
 
 ------------------------------------------------------------------------
+-- upTo
+
+∈-upTo⁺ : ∀ {n i} → i < n → i ∈ upTo n
+∈-upTo⁺ = ∈-applyUpTo⁺ id
+
+∈-upTo⁻ : ∀ {n i} → i ∈ upTo n → i < n
+∈-upTo⁻ p with ∈-applyUpTo⁻ id p
+... | _ , i<n , refl = i<n
+
+------------------------------------------------------------------------
+-- applyDownFrom
+
+module _ (f : ℕ → A) where
+
+  ∈-applyDownFrom⁺ : ∀ {i n} → i < n → f i ∈ applyDownFrom f n
+  ∈-applyDownFrom⁺ = Membershipₛ.∈-applyDownFrom⁺ (P.setoid _) f
+
+  ∈-applyDownFrom⁻ : ∀ {v n} → v ∈ applyDownFrom f n →
+                     ∃ λ i → i < n × v ≡ f i
+  ∈-applyDownFrom⁻ = Membershipₛ.∈-applyDownFrom⁻ (P.setoid _) f
+
+------------------------------------------------------------------------
+-- downFrom
+
+∈-downFrom⁺ : ∀ {n i} → i < n → i ∈ downFrom n
+∈-downFrom⁺ i<n = ∈-applyDownFrom⁺ id i<n
+
+∈-downFrom⁻ : ∀ {n i} → i ∈ downFrom n → i < n
+∈-downFrom⁻ p with ∈-applyDownFrom⁻ id p
+... | _ , i<n , refl = i<n
+
+------------------------------------------------------------------------
 -- tabulate
 
 module _ {n} {f : Fin n → A} where

@@ -34,28 +34,26 @@ open import Agda.Builtin.String.Properties public
 ≈⇒≡ : _≈_ ⇒ _≡_
 ≈⇒≡ = toList-injective _ _
     ∘ Pointwise.Pointwise-≡⇒≡
-    ∘ Pointwise.map Charₚ.≈⇒≡
 
 ≈-reflexive : _≡_ ⇒ _≈_
-≈-reflexive = Pointwise.map Charₚ.≈-reflexive
-            ∘ Pointwise.≡⇒Pointwise-≡
+≈-reflexive = Pointwise.≡⇒Pointwise-≡
             ∘ cong toList
 
 ≈-refl : Reflexive _≈_
 ≈-refl {x} = ≈-reflexive {x} {x} refl
 
 ≈-sym : Symmetric _≈_
-≈-sym = Pointwise.symmetric (λ {i j} → Charₚ.≈-sym {i} {j})
+≈-sym = Pointwise.symmetric sym
 
 ≈-trans : Transitive _≈_
-≈-trans = Pointwise.transitive (λ {i j k} → Charₚ.≈-trans {i} {j} {k})
+≈-trans = Pointwise.transitive trans
 
 ≈-subst : ∀ {ℓ} → Substitutive _≈_ ℓ
 ≈-subst P x≈y p = subst P (≈⇒≡ x≈y) p
 
 infix 4 _≈?_
 _≈?_ : Decidable _≈_
-x ≈? y = Pointwise.decidable Charₚ._≈?_ (toList x) (toList y)
+x ≈? y = Pointwise.decidable Charₚ._≟_ (toList x) (toList y)
 
 ≈-isEquivalence : IsEquivalence _≈_
 ≈-isEquivalence = record
@@ -99,30 +97,42 @@ x ≟ y = map′ ≈⇒≡ ≈-reflexive $ x ≈? y
 
 infix 4 _<?_
 _<?_ : Decidable _<_
-x <? y = StrictLex.<-decidable Charₚ._≈?_ Charₚ._<?_ (toList x) (toList y)
+x <? y = StrictLex.<-decidable Charₚ._≟_ Charₚ._<?_ (toList x) (toList y)
 
 <-isStrictPartialOrder-≈ : IsStrictPartialOrder _≈_ _<_
 <-isStrictPartialOrder-≈ =
   On.isStrictPartialOrder
     toList
-    (StrictLex.<-isStrictPartialOrder Charₚ.<-isStrictPartialOrder-≈)
+    (StrictLex.<-isStrictPartialOrder Charₚ.<-isStrictPartialOrder)
 
 <-isStrictTotalOrder-≈ : IsStrictTotalOrder _≈_ _<_
 <-isStrictTotalOrder-≈ =
   On.isStrictTotalOrder
     toList
-    (StrictLex.<-isStrictTotalOrder Charₚ.<-isStrictTotalOrder-≈)
+    (StrictLex.<-isStrictTotalOrder Charₚ.<-isStrictTotalOrder)
 
 <-strictPartialOrder-≈ : StrictPartialOrder _ _ _
 <-strictPartialOrder-≈ =
   On.strictPartialOrder
-    (StrictLex.<-strictPartialOrder Charₚ.<-strictPartialOrder-≈)
+    (StrictLex.<-strictPartialOrder Charₚ.<-strictPartialOrder)
     toList
 
 <-strictTotalOrder-≈ : StrictTotalOrder _ _ _
 <-strictTotalOrder-≈ =
   On.strictTotalOrder
-    (StrictLex.<-strictTotalOrder Charₚ.<-strictTotalOrder-≈)
+    (StrictLex.<-strictTotalOrder Charₚ.<-strictTotalOrder)
+    toList
+
+≤-isDecPartialOrder-≈ : IsDecPartialOrder _≈_ _≤_
+≤-isDecPartialOrder-≈ =
+  On.isDecPartialOrder
+    toList
+    (StrictLex.≤-isDecPartialOrder Charₚ.<-isStrictTotalOrder)
+
+≤-decPoset-≈ : DecPoset _ _ _
+≤-decPoset-≈ =
+  On.decPoset
+    (StrictLex.≤-decPoset Charₚ.<-strictTotalOrder)
     toList
 
 ------------------------------------------------------------------------

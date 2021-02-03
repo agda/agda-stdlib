@@ -33,17 +33,17 @@ open import Function.Inverse as Inv using (_↔_; module Inverse)
 open import Function.Equivalence using (module Equivalence)
 open import Level using (Level)
 open import Relation.Nullary using (¬_; yes; no)
-open import Relation.Unary using (Decidable; Pred)
+open import Relation.Unary using (Decidable; Pred) renaming (_⊆_ to _⋐_)
 open import Relation.Binary using (_⇒_; _Respects_)
 open import Relation.Binary.PropositionalEquality
-  using (_≡_; _≗_; isEquivalence; subst; refl; setoid; module ≡-Reasoning)
+  using (_≡_; _≗_; isEquivalence; subst; resp; refl; setoid; module ≡-Reasoning)
 import Relation.Binary.Reasoning.Preorder as PreorderReasoning
 
 private
   open module ListMonad {ℓ} = RawMonad (monad {ℓ = ℓ})
 
   variable
-    a b p : Level
+    a b p q : Level
     A : Set a
     B : Set b
     ws xs ys zs : List A
@@ -80,8 +80,8 @@ module _ (A : Set a) where
 ------------------------------------------------------------------------
 -- See issue #1354 for why these proofs can't be taken from `Setoidₚ`
 
-↭⇒⊆ : _↭_ {A = A} ⇒ _⊆_
-↭⇒⊆ xs↭ys = Permutation.∈-resp-↭ xs↭ys
+⊆-reflexive-↭ : _↭_ {A = A} ⇒ _⊆_
+⊆-reflexive-↭ xs↭ys = Permutation.∈-resp-↭ xs↭ys
 
 ⊆-respʳ-↭ : _⊆_ {A = A} Respectsʳ _↭_
 ⊆-respʳ-↭ xs↭ys = Permutation.∈-resp-↭ xs↭ys ∘_
@@ -94,7 +94,7 @@ module _ (A : Set a) where
   ⊆-↭-isPreorder : IsPreorder {A = List A} _↭_ _⊆_
   ⊆-↭-isPreorder = record
     { isEquivalence = ↭-isEquivalence
-    ; reflexive     = ↭⇒⊆
+    ; reflexive     = ⊆-reflexive-↭
     ; trans         = ⊆-trans
     }
 
@@ -231,6 +231,10 @@ module _ {P : Pred A p} (P? : Decidable P) where
   filter-⊆ : ∀ xs → filter P? xs ⊆ xs
   filter-⊆ = Setoidₚ.filter-⊆ (setoid A) P?
 
+  module _ {Q : Pred A q} (Q? : Decidable Q) where
+
+    filter⁺′ : P ⋐ Q → ∀ {xs ys} → xs ⊆ ys → filter P? xs ⊆ filter Q? ys
+    filter⁺′ = Setoidₚ.filter⁺′ (setoid A) P? (resp P) Q? (resp Q)
 
 
 ------------------------------------------------------------------------

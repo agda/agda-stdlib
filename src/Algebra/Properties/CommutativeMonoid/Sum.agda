@@ -18,7 +18,7 @@ open import Function.Equality using (_⟨$⟩_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Nullary.Negation using (contradiction)
 
-module Algebra.Properties.CommutativeMonoid.Summation
+module Algebra.Properties.CommutativeMonoid.Sum
   {a ℓ} (M : CommutativeMonoid a ℓ) where
 
 open CommutativeMonoid M
@@ -40,7 +40,7 @@ open import Relation.Binary.Reasoning.Setoid setoid
 ------------------------------------------------------------------------
 -- Re-export summation over monoids
 
-open import Algebra.Properties.Monoid.Summation monoid public
+open import Algebra.Properties.Monoid.Sum monoid public
 
 ------------------------------------------------------------------------
 -- Properties
