@@ -84,7 +84,8 @@ p ⊄ q = ¬ (p ⊂ q)
 -- Set operations
 
 infixr 7 _∩_
-infixr 6 _∪_ _─_
+infixr 6 _∪_
+infixl 5 _─_ _-_
 
 -- Complement
 ∁ : Op₁ (Subset n)

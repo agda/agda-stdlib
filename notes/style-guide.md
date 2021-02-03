@@ -8,6 +8,11 @@ automate most of this.
 
 ## File structure
 
+* The standard library uses a standard line length of 72 characters. Please
+  try to stay within this limit. Having said that this is the most violated
+  rule in the style-guide and it is recognised that it is not always possible
+  to achieve whilst using meaningful names.
+
 #### Indentation
 
 * The contents of a top-level module should have zero indentation.
@@ -290,15 +295,32 @@ line of code, indented by two spaces.
   function arguments and therefore should not be prepended to function
   arguments.
 
+#### Comments
+
+* Comments should be placed above a term rather than on the same line, e.g.
+  ```agda
+  -- Multiplication of two elements
+  _*_ : A → A → A
+  _*_ = ...
+  ```
+  rather than:
+  ```agda
+  _*_ : A → A → A -- Multiplication of two elements
+  _*_ = ...
+  ```
+
+* Files can be seperated into different logical parts using comments of
+  the following style where the header is 72 characters wide:
+  ```agda
+  ------------------------------------------------------------------------
+  -- TITLE
+  ```
+
 #### Other
 
 * The `with` syntax is preferred over the use of `case` from the `Function`
   module.
 
-* The standard library uses a standard line length of 72 characters. Please
-  try to stay within this limit. Having said that this is the most violated
-  rule in the style-guide and it is recognised that it is not always possible
-  to achieve whilst maintaining meaningful names.
 
 ## Types
 

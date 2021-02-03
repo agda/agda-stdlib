@@ -72,15 +72,18 @@ Other minor additions
   s⊂s             : p ⊂ q → s ∷ p ⊂ s ∷ q
   ∣p∣≤∣x∷p∣       : ∣ p ∣ ≤ ∣ x ∷ p ∣
   
+  p─⊥≡p           : p ─ ⊥ ≡ p
+  p─⊤≡⊥           : p ─ ⊤ ≡ ⊥
+  p─q─r≡p─q∪r     : p ─ q ─ r ≡ p ─ (q ∪ r)
+  p─q─r≡p─r─q     : p ─ q ─ r ≡ p ─ r ─ q
+  p─q─q≡p─q       : p ─ q ─ q ≡ p ─ q
   p─q⊆p           : p ─ q ⊆ p
   ∣p─q∣≤∣p∣       : ∣ p ─ q ∣ ≤ ∣ p ∣
   p∩q≢∅⇒p─q⊂p     : Nonempty (p ∩ q) → p ─ q ⊂ p
   p∩q≢∅⇒∣p─q∣<∣p∣ : Nonempty (p ∩ q) → ∣ p ─ q ∣ < ∣ p ∣
-  p─q─r≡p─q∪r     : (p ─ q) ─ r ≡ p ─ (q ∪ r)
-  p─q─r≡p─r─q     : (p ─ q) ─ r ≡ (p ─ r) ─ q
   x∈p∧x∉q⇒x∈p─q   : x ∈ p → x ∉ q → x ∈ p ─ q
   
-  p─x─y≡p─y─x     : (p - x) - y ≡ (p - y) - x
+  p─x─y≡p─y─x     : p - x - y ≡ p - y - x
   x∈p⇒p-x⊂p       : x ∈ p → p - x ⊂ p
   x∈p⇒∣p-x∣<∣p|   : x ∈ p → ∣ p - x ∣ < ∣ p ∣
   x∈p∧x≢y⇒x∈p-y   : x ∈ p → x ≢ y → x ∈ p - y

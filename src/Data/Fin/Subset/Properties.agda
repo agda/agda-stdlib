@@ -750,26 +750,29 @@ x∈p∪q⁺ (inj₂ x∈q) = q⊆p∪q _ _ x∈q
 ------------------------------------------------------------------------
 -- Properties of _─_
 
-p─q⊆p : ∀ (p q : Subset n) → p ─ q ⊆ p
-p─q⊆p (inside  ∷ p) (outside ∷ q) here        = here
-p─q⊆p (inside  ∷ p) (outside ∷ q) (there x∈p) = there (p─q⊆p p q x∈p)
-p─q⊆p (outside ∷ p) (outside ∷ q) (there x∈p) = there (p─q⊆p p q x∈p)
-p─q⊆p (_       ∷ p) (inside  ∷ q) (there x∈p) = there (p─q⊆p p q x∈p)
+p─⊥≡p : ∀ (p : Subset n) → p ─ ⊥ ≡ p
+p─⊥≡p []      = refl
+p─⊥≡p (x ∷ p) = cong (x ∷_) (p─⊥≡p p)
 
-p∩q≢∅⇒p─q⊂p : ∀ (p q : Subset n) → Nonempty (p ∩ q) → p ─ q ⊂ p
-p∩q≢∅⇒p─q⊂p (inside  ∷ p) (inside ∷ q)  (zero  , here)        = out⊂in (p─q⊆p p q)
-p∩q≢∅⇒p─q⊂p (x       ∷ p) (inside ∷ q)  (suc i , there i∈p∩q) = out⊂ (p∩q≢∅⇒p─q⊂p p q (i , i∈p∩q))
-p∩q≢∅⇒p─q⊂p (outside ∷ p) (outside ∷ q) (suc i , there i∈p∩q) = out⊂ (p∩q≢∅⇒p─q⊂p p q (i , i∈p∩q))
-p∩q≢∅⇒p─q⊂p (inside  ∷ p) (outside ∷ q) (suc i , there i∈p∩q) = s⊂s  (p∩q≢∅⇒p─q⊂p p q (i , i∈p∩q))
+p─⊤≡⊥ : ∀ (p : Subset n) → p ─ ⊤ ≡ ⊥
+p─⊤≡⊥ []      = refl
+p─⊤≡⊥ (x ∷ p) = cong (outside ∷_) (p─⊤≡⊥ p)
 
-p─q─r≡p─q∪r : ∀ (p q r : Subset n) → (p ─ q) ─ r ≡ p ─ (q ∪ r)
+p─q─r≡p─q∪r : ∀ (p q r : Subset n) → p ─ q ─ r ≡ p ─ (q ∪ r)
 p─q─r≡p─q∪r []      []            []            = refl
 p─q─r≡p─q∪r (x ∷ p) (outside ∷ q) (outside ∷ r) = cong (x ∷_) (p─q─r≡p─q∪r p q r)
 p─q─r≡p─q∪r (x ∷ p) (inside  ∷ q) (outside ∷ r) = cong (outside ∷_) (p─q─r≡p─q∪r p q r)
 p─q─r≡p─q∪r (x ∷ p) (outside ∷ q) (inside  ∷ r) = cong (outside ∷_) (p─q─r≡p─q∪r p q r)
 p─q─r≡p─q∪r (x ∷ p) (inside  ∷ q) (inside  ∷ r) = cong (outside ∷_) (p─q─r≡p─q∪r p q r)
 
-p─q─r≡p─r─q : ∀ (p q r : Subset n) → (p ─ q) ─ r ≡ (p ─ r) ─ q
+p─q─q≡p─q : ∀ (p q : Subset n) → p ─ q ─ q ≡ p ─ q
+p─q─q≡p─q p q = begin
+  p ─ q ─ q  ≡⟨ p─q─r≡p─q∪r p q q ⟩
+  p ─ q ∪ q  ≡⟨ cong (p ─_) (∪-idem q) ⟩
+  p ─ q      ∎
+  where open ≡-Reasoning
+
+p─q─r≡p─r─q : ∀ (p q r : Subset n) → p ─ q ─ r ≡ p ─ r ─ q
 p─q─r≡p─r─q p q r = begin
   (p ─ q) ─ r  ≡⟨  p─q─r≡p─q∪r p q r ⟩
   p ─ (q ∪ r)  ≡⟨  cong (p ─_) (∪-comm q r) ⟩
@@ -783,6 +786,18 @@ x∈p∧x∉q⇒x∈p─q {q = inside  ∷ q} here        i∉q = contradiction 
 x∈p∧x∉q⇒x∈p─q {q = outside ∷ q} (there i∈p) i∉q = there (x∈p∧x∉q⇒x∈p─q i∈p (i∉q ∘ there))
 x∈p∧x∉q⇒x∈p─q {q = inside  ∷ q} (there i∈p) i∉q = there (x∈p∧x∉q⇒x∈p─q i∈p (i∉q ∘ there))
 
+p─q⊆p : ∀ (p q : Subset n) → p ─ q ⊆ p
+p─q⊆p (inside  ∷ p) (outside ∷ q) here        = here
+p─q⊆p (inside  ∷ p) (outside ∷ q) (there x∈p) = there (p─q⊆p p q x∈p)
+p─q⊆p (outside ∷ p) (outside ∷ q) (there x∈p) = there (p─q⊆p p q x∈p)
+p─q⊆p (_       ∷ p) (inside  ∷ q) (there x∈p) = there (p─q⊆p p q x∈p)
+
+p∩q≢∅⇒p─q⊂p : ∀ (p q : Subset n) → Nonempty (p ∩ q) → p ─ q ⊂ p
+p∩q≢∅⇒p─q⊂p (inside  ∷ p) (inside ∷ q)  (zero  , here)        = out⊂in (p─q⊆p p q)
+p∩q≢∅⇒p─q⊂p (x       ∷ p) (inside ∷ q)  (suc i , there i∈p∩q) = out⊂ (p∩q≢∅⇒p─q⊂p p q (i , i∈p∩q))
+p∩q≢∅⇒p─q⊂p (outside ∷ p) (outside ∷ q) (suc i , there i∈p∩q) = out⊂ (p∩q≢∅⇒p─q⊂p p q (i , i∈p∩q))
+p∩q≢∅⇒p─q⊂p (inside  ∷ p) (outside ∷ q) (suc i , there i∈p∩q) = s⊂s  (p∩q≢∅⇒p─q⊂p p q (i , i∈p∩q))
+
 ∣p─q∣≤∣p∣ : ∀ (p q : Subset n) → ∣ p ─ q ∣ ≤ ∣ p ∣
 ∣p─q∣≤∣p∣ p q = p⊆q⇒∣p∣≤∣q∣ (p─q⊆p p q)
 
@@ -795,7 +810,7 @@ p∩q≢∅⇒∣p─q∣<∣p∣ p q ne = p⊂q⇒∣p∣<∣q∣ (p∩q≢∅�
 x∈p∧x≢y⇒x∈p-y : x ∈ p → x ≢ y → x ∈ p - y
 x∈p∧x≢y⇒x∈p-y x∈p x≢y = x∈p∧x∉q⇒x∈p─q x∈p (x≢y⇒x∉⁅y⁆ x≢y)
 
-p─x─y≡p─y─x : ∀ (p : Subset n) x y → (p - x) - y ≡ (p - y) - x
+p─x─y≡p─y─x : ∀ (p : Subset n) x y → p - x - y ≡ p - y - x
 p─x─y≡p─y─x p x y = p─q─r≡p─r─q p ⁅ x ⁆ ⁅ y ⁆
 
 x∈p⇒p-x⊂p : x ∈ p → p - x ⊂ p
