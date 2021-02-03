@@ -50,7 +50,7 @@ sayHello name = putStrLn ("Hello " ++ name ++ "!")
 
 -- Functions can be sequenced using monadic combinators or `do` notations.
 -- The two following definitions are equivalent. They start by asking the
--- user what their name, listen for an answer and respond by saying hello
+-- user what their name is, listen for an answer and respond by saying hello
 -- using the `sayHello` auxiliary function we just defined.
 
 helloName : Main
