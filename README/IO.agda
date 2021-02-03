@@ -13,9 +13,7 @@ open import Data.Nat.Base
 open import Data.Nat.Show using (show)
 open import Data.String.Base using (String; _++_; lines)
 open import Data.Unit.Polymorphic
-open import Function.Base using (_$_)
 open import IO
-open import System.Environment
 
 ------------------------------------------------------------------------
 -- Basic programs
