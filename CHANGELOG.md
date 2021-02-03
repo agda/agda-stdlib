@@ -91,6 +91,15 @@ Other minor additions
 
 * Added new proofs to `Data.Nat.Properties`:
   ```agda
+  >⇒≢ : _>_ ⇒ _≢_
+
+  pred[n]≤n : pred n ≤ n
+
+  n<1⇒n≡0 : n < 1 → n ≡ 0
+  m<n⇒0<n : m < n → 0 < n
+
+  m≤n*m : 0 < n → m ≤ n * m
+
   ⊔-⊓-absorptive            : Absorptive _⊓_ _
 
   ⊔-⊓-isLattice             : IsLattice _⊔_ _⊓_
@@ -165,4 +174,9 @@ Other minor additions
   toℚᵘ-homo-1/ : ∀ p → toℚᵘ (1/ p) ℚᵘ.≃ ℚᵘ.1/ (toℚᵘ p)
   *-inverseˡ : ∀ p → 1/ p * p ≡ 1ℚ
   *-inverseʳ : ∀ p → p * 1/ p ≡ 1ℚ
+  ```
+
+* Added new proof to `Data.List.Relation.Unary.All.Properties`:
+  ```agda
+  all-upTo : All (_< n) (upTo n)
   ```
