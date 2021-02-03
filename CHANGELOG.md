@@ -61,6 +61,13 @@ New modules
 Other minor additions
 ---------------------
 
+* Added new proofs to `Data.Nat.DivMod`:
+  ```agda
+  m<n⇒m/n≡0     : m < n → (m / n) {n≢0} ≡ 0
+  m/n≡1+[m∸n]/n : m ≥ n → (m / n) {n≢0} ≡ 1 + ((m ∸ n) / n) {n≢0}
+  /-cancelˡ     : ((m * n) / (m * o)) {mo≢0} ≡ (n / o) {o≢0}
+  ```
+
 * Added new operations to `Data.Fin.Subset`:
   ```
   _─_ : Op₂ (Subset n)
