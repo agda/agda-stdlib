@@ -55,9 +55,9 @@ New modules
 * Specifications for min and max operators
   ```
   Algebra.Construct.NaturalChoice.MinOp
-  Algebra.Construct.NaturalChoice.MaxOp 
+  Algebra.Construct.NaturalChoice.MaxOp
   ```
- 
+
 Other minor additions
 ---------------------
 
@@ -103,7 +103,7 @@ Other minor additions
   ```
   s⊂s             : p ⊂ q → s ∷ p ⊂ s ∷ q
   ∣p∣≤∣x∷p∣       : ∣ p ∣ ≤ ∣ x ∷ p ∣
-  
+
   p─⊥≡p           : p ─ ⊥ ≡ p
   p─⊤≡⊥           : p ─ ⊤ ≡ ⊥
   p─q─r≡p─q∪r     : p ─ q ─ r ≡ p ─ (q ∪ r)
@@ -114,7 +114,7 @@ Other minor additions
   p∩q≢∅⇒p─q⊂p     : Nonempty (p ∩ q) → p ─ q ⊂ p
   p∩q≢∅⇒∣p─q∣<∣p∣ : Nonempty (p ∩ q) → ∣ p ─ q ∣ < ∣ p ∣
   x∈p∧x∉q⇒x∈p─q   : x ∈ p → x ∉ q → x ∈ p ─ q
-  
+
   p─x─y≡p─y─x     : p - x - y ≡ p - y - x
   x∈p⇒p-x⊂p       : x ∈ p → p - x ⊂ p
   x∈p⇒∣p-x∣<∣p|   : x ∈ p → ∣ p - x ∣ < ∣ p ∣
@@ -142,7 +142,7 @@ Other minor additions
   ⊔-0-monoid                : Monoid 0ℓ 0ℓ
   ⊔-⊓-lattice               : Lattice 0ℓ 0ℓ
   ⊔-⊓-distributiveLattice   : DistributiveLattice 0ℓ 0ℓ
-  
+
   mono-≤-distrib-⊔          : f Preserves _≤_ ⟶ _≤_ → f (x ⊔ y) ≈ f x ⊔ f y
   mono-≤-distrib-⊓          : f Preserves _≤_ ⟶ _≤_ → f (x ⊓ y) ≈ f x ⊓ f y
   antimono-≤-distrib-⊓      : f Preserves _≤_ ⟶ _≥_ → f (x ⊓ y) ≈ f x ⊔ f y
@@ -175,7 +175,7 @@ Other minor additions
   ⊔-mono-≤                  : _⊔_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
   ⊔-monoˡ-≤                 : (_⊔ n) Preserves _≤_ ⟶ _≤_
   ⊔-monoʳ-≤                 : (n ⊔_) Preserves _≤_ ⟶ _≤_
-  
+
   i≤j⇒i⊓k≤j                 : i ≤ j → i ⊓ k ≤ j
   i≤j⇒k⊓i≤j                 : i ≤ j → k ⊓ i ≤ j
   i≤j⊓k⇒i≤j                 : i ≤ j ⊓ k → i ≤ j
@@ -211,4 +211,9 @@ Other minor additions
 * Added new proof to `Data.List.Relation.Unary.All.Properties`:
   ```agda
   all-upTo : All (_< n) (upTo n)
+  ```
+
+* Added new primitive to `IO`:
+  ```agda
+  getLine : IO String
   ```

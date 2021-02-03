@@ -56,13 +56,26 @@ module _ {A B : Set a} where
   _>>_ : IO A → IO B → IO B
   m₁ >> m₂ = seq (♯ m₁) (♯ m₂)
 
-{-# NON_TERMINATING #-}
+------------------------------------------------------------------------
+-- Running programs
 
+-- A value of type `IO A` is a description of a computation that may
+-- eventually produce an `A`. The `run` function converts this description
+-- of a computation into calls to primitve functions that will actually
+-- perform it.
+
+{-# NON_TERMINATING #-}
 run : {A : Set a} → IO A → Prim.IO A
 run (lift m)    = m
 run (return x)  = Prim.return x
-run (bind m f)  = Prim._>>=_ (run (♭ m )) λ x → run (♭ (f x))
-run (seq m₁ m₂) = Prim._>>=_ (run (♭ m₁)) λ _ → run (♭ m₂)
+run (bind m f)  = run (♭ m ) Prim.>>= λ x → run (♭ (f x))
+run (seq m₁ m₂) = run (♭ m₁) Prim.>>= λ _ → run (♭ m₂)
+
+-- The entrypoint of an Agda program will be assigned type `Main` and
+-- implemented using `run` on some `IO ⊤` program.
+
+Main : Set
+Main = Prim.IO {0ℓ} ⊤
 
 ------------------------------------------------------------------------
 -- Utilities
@@ -133,6 +146,9 @@ ignore io = io >> return _
 -- later?), then the functions use the character encoding specified by
 -- the locale. For older versions of the library (going back to at
 -- least version 3) the functions use ISO-8859-1.
+
+getLine : IO String
+getLine = lift Prim.getLine
 
 getContents : IO Costring
 getContents = lift Prim.getContents

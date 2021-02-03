@@ -47,6 +47,7 @@ postulate
 {-# FOREIGN GHC import qualified Control.Exception #-}
 
 postulate
+  getLine     : IO String
   getContents : IO Costring
   readFile    : String → IO Costring
   writeFile   : String → Costring → IO Unit
@@ -78,6 +79,7 @@ postulate
     MAlonzo.Code.Codata.Musical.Colist.Cons x (MAlonzo.RTE.Sharp (toColist xs))
 #-}
 
+{-# COMPILE GHC getLine        = fmap Data.Text.pack . getLine                      #-}
 {-# COMPILE GHC getContents    = fmap toColist getContents                          #-}
 {-# COMPILE GHC readFile       = fmap toColist . readFile . Data.Text.unpack        #-}
 {-# COMPILE GHC writeFile      = \x -> writeFile (Data.Text.unpack x) . fromColist  #-}
