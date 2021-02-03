@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Function.Identity.Instances</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Typeclass instances for Identity</a>
+<a id="142" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="216" class="Symbol">{-#</a> <a id="220" class="Keyword">OPTIONS</a> <a id="228" class="Pragma">--without-K</a> <a id="240" class="Pragma">--safe</a> <a id="247" class="Symbol">#-}</a>
+
+<a id="252" class="Keyword">module</a> <a id="259" href="Function.Identity.Instances.html" class="Module">Function.Identity.Instances</a> <a id="287" class="Keyword">where</a>
+
+<a id="294" class="Keyword">open</a> <a id="299" class="Keyword">import</a> <a id="306" href="Function.Identity.Categorical.html" class="Module">Function.Identity.Categorical</a>
+
+<a id="337" class="Keyword">instance</a>
+  <a id="identityFunctor"></a><a id="348" href="Function.Identity.Instances.html#348" class="Function">identityFunctor</a> <a id="364" class="Symbol">=</a> <a id="366" href="Function.Identity.Categorical.html#492" class="Function">functor</a>
+  <a id="identityApplicative"></a><a id="376" href="Function.Identity.Instances.html#376" class="Function">identityApplicative</a> <a id="396" class="Symbol">=</a> <a id="398" href="Function.Identity.Categorical.html#559" class="Function">applicative</a>
+  <a id="identityMonad"></a><a id="412" href="Function.Identity.Instances.html#412" class="Function">identityMonad</a> <a id="426" class="Symbol">=</a> <a id="428" href="Function.Identity.Categorical.html#651" class="Function">monad</a>
+  <a id="identityComonad"></a><a id="436" href="Function.Identity.Instances.html#436" class="Function">identityComonad</a> <a id="452" class="Symbol">=</a> <a id="454" href="Function.Identity.Categorical.html#732" class="Function">comonad</a>
+</pre></body></html>
