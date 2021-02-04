@@ -4,7 +4,7 @@
 -- Documentation for pointwise equality over `List`s
 ------------------------------------------------------------------------
 
-{-# OPTIONS --warning noMissingDefinitions #-}
+{-# OPTIONS --allow-unsolved-metas #-}
 
 module README.Data.List.Relation.Binary.Equality where
 
@@ -37,6 +37,7 @@ lem₁ = refl
 -- equality of two lists of the type `List (ℕ → ℕ)`:
 
 lem₂ : (λ x → 2 * x + 2) ∷ [] ≡ (λ x → 2 * (x + 1)) ∷ []
+lem₂ = {!!}
 
 -- In such a case it is impossible to prove the two lists equal with
 -- refl as the two functions are not propositionally equal. In the
@@ -56,6 +57,7 @@ open import Relation.Binary.PropositionalEquality using (_≗_)
 open import Data.List.Relation.Binary.Pointwise using (Pointwise)
 
 lem₃ : Pointwise _≗_ ((λ x → x + 1) ∷ []) ((λ x → x + 2 ∸ 1) ∷ [])
+lem₃ = {!!}
 
 -- the library provides some nicer wrappers and infix notation in the
 -- folder "Data.List.Relation.Binary.Equality".
