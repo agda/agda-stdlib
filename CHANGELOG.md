@@ -151,6 +151,8 @@ Other minor additions
 
 * Added new proofs to `Data.Integer.Properties`:
   ```agda
+  m*n≡0⇒m≡0∨n≡0 : m * n ≡ 0ℤ → m ≡ 0ℤ ⊎ n ≡ 0ℤ
+
   ⊓-distribˡ-⊔              : _⊓_ DistributesOverˡ _⊔_
   ⊓-distribʳ-⊔              : _⊓_ DistributesOverʳ _⊔_
   ⊓-distrib-⊔               : _⊓_ DistributesOver  _⊔_
