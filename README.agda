@@ -73,6 +73,8 @@ import README.Data
 -- • IO
 --     Input/output-related functions.
 
+import README.IO
+
 -- • Level
 --     Universe levels.
 
