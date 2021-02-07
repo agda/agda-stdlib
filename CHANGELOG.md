@@ -58,6 +58,13 @@ New modules
   Algebra.Construct.NaturalChoice.MaxOp
   ```
 
+* Linear congruential pseudo random generators for ℕ.
+  /!\ NB: LCGs must not be used for cryptographic applications
+  /!\ NB: the example parameters provided are not claimed to be good
+  ```
+  Data.Nat.PseudoRandom.LCG
+  ```
+
 Other minor additions
 ---------------------
 
