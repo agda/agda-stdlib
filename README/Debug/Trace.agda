@@ -4,7 +4,7 @@
 -- An example showing how the Debug.Trace module can be used
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --rewriting #-}
 
 module README.Debug.Trace where
 

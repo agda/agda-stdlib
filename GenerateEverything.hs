@@ -235,6 +235,7 @@ main = do
 
   writeFileUTF8 (allOutputFile ++ ".agda") $
     unlines [ header
+            , "{-# OPTIONS --rewriting #-}\n"
             , mkModule allOutputFile
             , format libraryfiles
             ]
