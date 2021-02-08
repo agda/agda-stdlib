@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Sign.Base</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Signs</a>
+<a id="115" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="189" class="Symbol">{-#</a> <a id="193" class="Keyword">OPTIONS</a> <a id="201" class="Pragma">--without-K</a> <a id="213" class="Pragma">--safe</a> <a id="220" class="Symbol">#-}</a>
+
+<a id="225" class="Keyword">module</a> <a id="232" href="Data.Sign.Base.html" class="Module">Data.Sign.Base</a> <a id="247" class="Keyword">where</a>
+
+<a id="254" class="Keyword">open</a> <a id="259" class="Keyword">import</a> <a id="266" href="Relation.Binary.html" class="Module">Relation.Binary</a> <a id="282" class="Keyword">using</a> <a id="288" class="Symbol">(</a><a id="289" href="Relation.Binary.Definitions.html#4575" class="Function">Decidable</a><a id="298" class="Symbol">)</a>
+<a id="300" class="Keyword">open</a> <a id="305" class="Keyword">import</a> <a id="312" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a> <a id="350" class="Keyword">using</a> <a id="356" class="Symbol">(</a><a id="357" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a><a id="360" class="Symbol">;</a> <a id="362" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a><a id="366" class="Symbol">)</a>
+<a id="368" class="Keyword">open</a> <a id="373" class="Keyword">import</a> <a id="380" href="Relation.Nullary.html" class="Module">Relation.Nullary</a> <a id="397" class="Keyword">using</a> <a id="403" class="Symbol">(</a><a id="404" href="Relation.Nullary.html#1645" class="InductiveConstructor">yes</a><a id="407" class="Symbol">;</a> <a id="409" href="Relation.Nullary.html#1682" class="InductiveConstructor">no</a><a id="411" class="Symbol">)</a>
+
+<a id="414" class="Comment">------------------------------------------------------------------------</a>
+<a id="487" class="Comment">-- Definition</a>
+
+<a id="502" class="Keyword">data</a> <a id="Sign"></a><a id="507" href="Data.Sign.Base.html#507" class="Datatype">Sign</a> <a id="512" class="Symbol">:</a> <a id="514" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="518" class="Keyword">where</a>
+  <a id="Sign.-"></a><a id="526" href="Data.Sign.Base.html#526" class="InductiveConstructor">-</a> <a id="528" class="Symbol">:</a> <a id="530" href="Data.Sign.Base.html#507" class="Datatype">Sign</a>
+  <a id="Sign.+"></a><a id="537" href="Data.Sign.Base.html#537" class="InductiveConstructor">+</a> <a id="539" class="Symbol">:</a> <a id="541" href="Data.Sign.Base.html#507" class="Datatype">Sign</a>
+
+<a id="547" class="Comment">------------------------------------------------------------------------</a>
+<a id="620" class="Comment">-- Operations</a>
+
+<a id="635" class="Comment">-- The opposite sign.</a>
+
+<a id="opposite"></a><a id="658" href="Data.Sign.Base.html#658" class="Function">opposite</a> <a id="667" class="Symbol">:</a> <a id="669" href="Data.Sign.Base.html#507" class="Datatype">Sign</a> <a id="674" class="Symbol">→</a> <a id="676" href="Data.Sign.Base.html#507" class="Datatype">Sign</a>
+<a id="681" href="Data.Sign.Base.html#658" class="Function">opposite</a> <a id="690" href="Data.Sign.Base.html#526" class="InductiveConstructor">-</a> <a id="692" class="Symbol">=</a> <a id="694" href="Data.Sign.Base.html#537" class="InductiveConstructor">+</a>
+<a id="696" href="Data.Sign.Base.html#658" class="Function">opposite</a> <a id="705" href="Data.Sign.Base.html#537" class="InductiveConstructor">+</a> <a id="707" class="Symbol">=</a> <a id="709" href="Data.Sign.Base.html#526" class="InductiveConstructor">-</a>
+
+<a id="712" class="Comment">-- &quot;Multiplication&quot;.</a>
+
+<a id="734" class="Keyword">infixl</a> <a id="741" class="Number">7</a> <a id="743" href="Data.Sign.Base.html#748" class="Function Operator">_*_</a>
+
+<a id="_*_"></a><a id="748" href="Data.Sign.Base.html#748" class="Function Operator">_*_</a> <a id="752" class="Symbol">:</a> <a id="754" href="Data.Sign.Base.html#507" class="Datatype">Sign</a> <a id="759" class="Symbol">→</a> <a id="761" href="Data.Sign.Base.html#507" class="Datatype">Sign</a> <a id="766" class="Symbol">→</a> <a id="768" href="Data.Sign.Base.html#507" class="Datatype">Sign</a>
+<a id="773" href="Data.Sign.Base.html#537" class="InductiveConstructor">+</a> <a id="775" href="Data.Sign.Base.html#748" class="Function Operator">*</a> <a id="777" href="Data.Sign.Base.html#777" class="Bound">s₂</a> <a id="780" class="Symbol">=</a> <a id="782" href="Data.Sign.Base.html#777" class="Bound">s₂</a>
+<a id="785" href="Data.Sign.Base.html#526" class="InductiveConstructor">-</a> <a id="787" href="Data.Sign.Base.html#748" class="Function Operator">*</a> <a id="789" href="Data.Sign.Base.html#789" class="Bound">s₂</a> <a id="792" class="Symbol">=</a> <a id="794" href="Data.Sign.Base.html#658" class="Function">opposite</a> <a id="803" href="Data.Sign.Base.html#789" class="Bound">s₂</a>
+</pre></body></html>

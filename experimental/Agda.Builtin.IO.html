@@ -1,0 +1,13 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Agda.Builtin.IO</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Symbol">{-#</a> <a id="5" class="Keyword">OPTIONS</a> <a id="13" class="Pragma">--without-K</a> <a id="25" class="Pragma">--safe</a> <a id="32" class="Pragma">--no-sized-types</a> <a id="49" class="Pragma">--no-guardedness</a>
+            <a id="78" class="Pragma">--no-subtyping</a> <a id="93" class="Symbol">#-}</a>
+
+<a id="98" class="Keyword">module</a> <a id="105" href="Agda.Builtin.IO.html" class="Module">Agda.Builtin.IO</a> <a id="121" class="Keyword">where</a>
+
+<a id="128" class="Keyword">postulate</a> <a id="IO"></a><a id="138" href="Agda.Builtin.IO.html#138" class="Postulate">IO</a> <a id="141" class="Symbol">:</a> <a id="143" class="Symbol">∀</a> <a id="145" class="Symbol">{</a><a id="146" href="Agda.Builtin.IO.html#146" class="Bound">a</a><a id="147" class="Symbol">}</a> <a id="149" class="Symbol">→</a> <a id="151" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="155" href="Agda.Builtin.IO.html#146" class="Bound">a</a> <a id="157" class="Symbol">→</a> <a id="159" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="163" href="Agda.Builtin.IO.html#146" class="Bound">a</a>
+<a id="165" class="Symbol">{-#</a> <a id="169" class="Keyword">POLARITY</a> <a id="178" class="Pragma">IO</a> <a id="181" class="Pragma">++</a> <a id="184" class="Pragma">++</a> <a id="187" class="Symbol">#-}</a>
+<a id="191" class="Symbol">{-#</a> <a id="195" class="Keyword">BUILTIN</a> <a id="203" class="Keyword">IO</a> <a id="206" href="Agda.Builtin.IO.html#138" class="Postulate">IO</a> <a id="209" class="Symbol">#-}</a>
+
+<a id="214" class="Symbol">{-#</a> <a id="218" class="Keyword">FOREIGN</a> <a id="226" class="Pragma">GHC</a> <a id="230" class="Pragma">type</a> <a id="235" class="Pragma">AgdaIO</a> <a id="242" class="Pragma">a</a> <a id="244" class="Pragma">b</a> <a id="246" class="Pragma">=</a> <a id="248" class="Pragma">IO</a> <a id="251" class="Pragma">b</a> <a id="253" class="Symbol">#-}</a>
+<a id="257" class="Symbol">{-#</a> <a id="261" class="Keyword">COMPILE</a> <a id="269" class="Keyword">GHC</a> <a id="273" href="Agda.Builtin.IO.html#138" class="Postulate">IO</a> <a id="276" class="Pragma">=</a> <a id="278" class="Pragma">type</a> <a id="283" class="Pragma">AgdaIO</a> <a id="290" class="Symbol">#-}</a>
+</pre></body></html>
