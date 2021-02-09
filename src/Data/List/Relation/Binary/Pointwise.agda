@@ -8,6 +8,7 @@
 
 module Data.List.Relation.Binary.Pointwise where
 
+open import Algebra.Core using (Op₂)
 open import Function.Base
 open import Function.Inverse using (Inverse)
 open import Data.Bool.Base using (true; false)
@@ -17,7 +18,7 @@ open import Data.List.Properties using (≡-dec; length-++)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.List.Relation.Unary.AllPairs using (AllPairs; []; _∷_)
 open import Data.List.Relation.Unary.Any using (Any; here; there)
-open import Data.Fin.Base using (Fin) renaming (zero to fzero; suc to fsuc)
+open import Data.Fin.Base using (Fin; toℕ; cast) renaming (zero to fzero; suc to fsuc)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Nat.Properties
 open import Level
@@ -31,7 +32,7 @@ open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
 private
   variable
-    a b c d p q r ℓ ℓ₁ ℓ₂ ℓ₃ : Level
+    a b c d p q ℓ ℓ₁ ℓ₂ : Level
     A B C D : Set d
     x y z : A
     ws xs ys zs : List A
@@ -282,6 +283,16 @@ map⁻ {xs = []}    {[]}    f g [] = []
 map⁻ {xs = _ ∷ _} {_ ∷ _} f g (r ∷ rs) = r ∷ map⁻ f g rs
 
 ------------------------------------------------------------------------
+-- foldr
+
+foldr⁺ : ∀ {_•_ : Op₂ A} {_◦_ : Op₂ B} →
+         (∀ {w x y z} → R w x → R y z → R (w • y) (x ◦ z)) →
+         ∀ {e f} → R e f → Pointwise R xs ys →
+         R (foldr _•_ e xs) (foldr _◦_ f ys)
+foldr⁺ _    e~f []            = e~f
+foldr⁺ pres e~f (x~y ∷ xs~ys) = pres x~y (foldr⁺ pres e~f xs~ys)
+
+------------------------------------------------------------------------
 -- filter
 
 module _ {P : Pred A p} {Q : Pred B q}
@@ -307,6 +318,22 @@ replicate⁺ r 0       = []
 replicate⁺ r (suc n) = r ∷ replicate⁺ r n
 
 ------------------------------------------------------------------------
+-- lookup
+
+lookup⁻ : length xs ≡ length ys →
+          (∀ {i j} → toℕ i ≡ toℕ j → R (lookup xs i) (lookup ys j)) →
+          Pointwise R xs ys
+lookup⁻ {xs = []}    {ys = []}    _             _  = []
+lookup⁻ {xs = _ ∷ _} {ys = _ ∷ _} |xs|≡|ys| eq = eq {fzero} P.refl ∷
+  lookup⁻ (suc-injective |xs|≡|ys|) (eq ∘ P.cong ℕ.suc)
+
+lookup⁺ : ∀ (Rxys : Pointwise R xs ys) →
+          ∀ i → (let j = cast (Pointwise-length Rxys) i) →
+          R (lookup xs i) (lookup ys j)
+lookup⁺ (Rxy ∷ _)    fzero    = Rxy
+lookup⁺ (_   ∷ Rxys) (fsuc i) = lookup⁺ Rxys i
+
+------------------------------------------------------------------------
 -- Properties of propositional pointwise
 ------------------------------------------------------------------------
 
@@ -327,7 +354,6 @@ Pointwise-≡↔≡ = record
     ; right-inverse-of = λ _ → P.refl
     }
   }
-
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

@@ -189,6 +189,18 @@ Other minor additions
   i⊓j≤i⊔j                   : i ⊓ j ≤ i ⊔ j
   ```
 
+* Added new proofs to `Data.List.Relation.Binary.Pointwise`:
+  ```agda
+  foldr⁺  : (R w x → R y z → R (w • y) (x ◦ z)) → 
+            R e f → Pointwise R xs ys → R (foldr _•_ e xs) (foldr _◦_ f ys)
+  lookup⁻ : length xs ≡ length ys →
+            (toℕ i ≡ toℕ j → R (lookup xs i) (lookup ys j)) →
+            Pointwise R xs ys
+  lookup⁺ : (Rxys : Pointwise R xs ys) →
+            ∀ i → (let j = cast (Pointwise-length Rxys) i) →
+            R (lookup xs i) (lookup ys j)
+  ```
+
 * Added new proofs to `Relation.Binary.Properties.Poset`:
   ```agda
   mono⇒cong     : f Preserves _≤_ ⟶ _≤_ → f Preserves _≈_ ⟶ _≈_
