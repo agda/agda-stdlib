@@ -225,6 +225,22 @@ Other minor additions
   all-upTo : All (_< n) (upTo n)
   ```
 
+* Added new proof to `Data.List.Relation.Binary.Equality.Setoid`:
+  ```agda
+  foldr⁺ : (w ≈ x → y ≈ z → (w • y) ≈ (x ◦ z)) →
+           e ≈ f → xs ≋ ys → foldr _•_ e xs ≈ foldr _◦_ f ys
+  ```
+
+* Added new proof to `Data.List.Relation.Binary.Subset.Setoid.Properties`:
+  ```agda
+  applyUpTo⁺ : m ≤ n → applyUpTo f m ⊆ applyUpTo f n
+  ```
+
+* Added new proof to `Data.List.Relation.Binary.Subset.Propositional.Properties`:
+  ```agda
+  applyUpTo⁺ : m ≤ n → applyUpTo f m ⊆ applyUpTo f n
+  ```
+
 * Added new definitions to `IO`:
   ```agda
   getLine : IO String
