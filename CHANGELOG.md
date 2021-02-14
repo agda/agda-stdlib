@@ -61,14 +61,90 @@ New modules
 * Specifications for min and max operators
   ```
   Algebra.Construct.NaturalChoice.MinOp
-  Algebra.Construct.NaturalChoice.MaxOp 
+  Algebra.Construct.NaturalChoice.MaxOp
   ```
- 
+
+* Linear congruential pseudo random generators for ℕ.
+  /!\ NB: LCGs must not be used for cryptographic applications
+  /!\ NB: the example parameters provided are not claimed to be good
+  ```
+  Data.Nat.PseudoRandom.LCG
+  ```
+
 Other minor additions
 ---------------------
 
+* Added new function in `Data.List.Base`:
+  ```agda
+  last : List A → Maybe A
+  ```
+
+* Added new proofs in `Data.List.Relation.Unary.All.Properties`:
+  ```agda
+  head⁺ : All P xs → Maybe.All P (head xs)
+  tail⁺ : All P xs → Maybe.All (All P) (tail xs)
+  last⁺ : All P xs → Maybe.All P (last xs)
+
+  uncons⁺ : All P xs → Maybe.All (P ⟨×⟩ All P) (uncons xs)
+  uncons⁻ : Maybe.All (P ⟨×⟩ All P) (uncons xs) → All P xs
+  unsnoc⁺ : All P xs → Maybe.All (All P ⟨×⟩ P) (unsnoc xs)
+  unsnoc⁻ : Maybe.All (All P ⟨×⟩ P) (unsnoc xs) → All P xs
+
+  dropWhile⁺ : (Q? : Decidable Q) → All P xs → All P (dropWhile Q? xs)
+  dropWhile⁻ : (P? : Decidable P) → dropWhile P? xs ≡ [] → All P xs
+  takeWhile⁺ : (Q? : Decidable Q) → All P xs → All P (takeWhile Q? xs)
+  takeWhile⁻ : (P? : Decidable P) → takeWhile P? xs ≡ xs → All P xs
+
+  all-head-dropWhile : (P? : Decidable P) → ∀ xs → Maybe.All (∁ P) (head (dropWhile P? xs))
+  all-takeWhile      : (P? : Decidable P) → ∀ xs → All P (takeWhile P? xs)
+  ```
+
+* Added new proofs to `Data.Nat.DivMod`:
+  ```agda
+  m<n⇒m/n≡0     : m < n → (m / n) {n≢0} ≡ 0
+  m/n≡1+[m∸n]/n : m ≥ n → (m / n) {n≢0} ≡ 1 + ((m ∸ n) / n) {n≢0}
+  /-cancelˡ     : ((m * n) / (m * o)) {mo≢0} ≡ (n / o) {o≢0}
+  ```
+
+* Added new operations to `Data.Fin.Subset`:
+  ```
+  _─_ : Op₂ (Subset n)
+  _-_ : Subset n → Fin n → Subset n
+  ```
+
+* Added new proofs to `Data.Fin.Subset.Properties`:
+  ```
+  s⊂s             : p ⊂ q → s ∷ p ⊂ s ∷ q
+  ∣p∣≤∣x∷p∣       : ∣ p ∣ ≤ ∣ x ∷ p ∣
+
+  p─⊥≡p           : p ─ ⊥ ≡ p
+  p─⊤≡⊥           : p ─ ⊤ ≡ ⊥
+  p─q─r≡p─q∪r     : p ─ q ─ r ≡ p ─ (q ∪ r)
+  p─q─r≡p─r─q     : p ─ q ─ r ≡ p ─ r ─ q
+  p─q─q≡p─q       : p ─ q ─ q ≡ p ─ q
+  p─q⊆p           : p ─ q ⊆ p
+  ∣p─q∣≤∣p∣       : ∣ p ─ q ∣ ≤ ∣ p ∣
+  p∩q≢∅⇒p─q⊂p     : Nonempty (p ∩ q) → p ─ q ⊂ p
+  p∩q≢∅⇒∣p─q∣<∣p∣ : Nonempty (p ∩ q) → ∣ p ─ q ∣ < ∣ p ∣
+  x∈p∧x∉q⇒x∈p─q   : x ∈ p → x ∉ q → x ∈ p ─ q
+
+  p─x─y≡p─y─x     : p - x - y ≡ p - y - x
+  x∈p⇒p-x⊂p       : x ∈ p → p - x ⊂ p
+  x∈p⇒∣p-x∣<∣p|   : x ∈ p → ∣ p - x ∣ < ∣ p ∣
+  x∈p∧x≢y⇒x∈p-y   : x ∈ p → x ≢ y → x ∈ p - y
+  ```
+
 * Added new proofs to `Data.Nat.Properties`:
   ```agda
+  >⇒≢ : _>_ ⇒ _≢_
+
+  pred[n]≤n : pred n ≤ n
+
+  n<1⇒n≡0 : n < 1 → n ≡ 0
+  m<n⇒0<n : m < n → 0 < n
+
+  m≤n*m : 0 < n → m ≤ n * m
+
   ⊔-⊓-absorptive            : Absorptive _⊓_ _
 
   ⊔-⊓-isLattice             : IsLattice _⊔_ _⊓_
@@ -79,7 +155,7 @@ Other minor additions
   ⊔-0-monoid                : Monoid 0ℓ 0ℓ
   ⊔-⊓-lattice               : Lattice 0ℓ 0ℓ
   ⊔-⊓-distributiveLattice   : DistributiveLattice 0ℓ 0ℓ
-  
+
   mono-≤-distrib-⊔          : f Preserves _≤_ ⟶ _≤_ → f (x ⊔ y) ≈ f x ⊔ f y
   mono-≤-distrib-⊓          : f Preserves _≤_ ⟶ _≤_ → f (x ⊓ y) ≈ f x ⊓ f y
   antimono-≤-distrib-⊓      : f Preserves _≤_ ⟶ _≥_ → f (x ⊓ y) ≈ f x ⊔ f y
@@ -88,6 +164,8 @@ Other minor additions
 
 * Added new proofs to `Data.Integer.Properties`:
   ```agda
+  m*n≡0⇒m≡0∨n≡0 : m * n ≡ 0ℤ → m ≡ 0ℤ ⊎ n ≡ 0ℤ
+
   ⊓-distribˡ-⊔              : _⊓_ DistributesOverˡ _⊔_
   ⊓-distribʳ-⊔              : _⊓_ DistributesOverʳ _⊔_
   ⊓-distrib-⊔               : _⊓_ DistributesOver  _⊔_
@@ -112,7 +190,7 @@ Other minor additions
   ⊔-mono-≤                  : _⊔_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
   ⊔-monoˡ-≤                 : (_⊔ n) Preserves _≤_ ⟶ _≤_
   ⊔-monoʳ-≤                 : (n ⊔_) Preserves _≤_ ⟶ _≤_
-  
+
   i≤j⇒i⊓k≤j                 : i ≤ j → i ⊓ k ≤ j
   i≤j⇒k⊓i≤j                 : i ≤ j → k ⊓ i ≤ j
   i≤j⊓k⇒i≤j                 : i ≤ j ⊓ k → i ≤ j
@@ -296,4 +374,15 @@ Other minor additions
   toℚᵘ-homo-1/ : ∀ p → toℚᵘ (1/ p) ℚᵘ.≃ ℚᵘ.1/ (toℚᵘ p)
   *-inverseˡ : ∀ p → 1/ p * p ≡ 1ℚ
   *-inverseʳ : ∀ p → p * 1/ p ≡ 1ℚ
+  ```
+
+* Added new proof to `Data.List.Relation.Unary.All.Properties`:
+  ```agda
+  all-upTo : All (_< n) (upTo n)
+  ```
+
+* Added new definitions to `IO`:
+  ```agda
+  getLine : IO String
+  Main : Set
   ```
