@@ -143,6 +143,11 @@ quotRem {suc n} k i with splitAt k i
 ... | inj₁ j = j , zero
 ... | inj₂ j = Product.map₂ suc (quotRem {n} k j)
 
+-- inverse of above function
+combine : ∀ {n k} → Fin k → Fin n → Fin (n ℕ.* k)
+combine x zero = inject+ _ x
+combine x (suc y) = raise _ (combine x y)
+
 ------------------------------------------------------------------------
 -- Operations
 

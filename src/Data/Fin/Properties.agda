@@ -18,7 +18,7 @@ open import Data.Fin.Patterns
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_)
 import Data.Nat.Properties as ℕₚ
 open import Data.Unit using (tt)
-open import Data.Product using (∃; ∃₂; ∄; _×_; _,_; map; proj₁; uncurry; <_,_>)
+open import Data.Product using (∃; ∃₂; ∄; _×_; _,_; map; proj₁; proj₂; uncurry; <_,_>)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]; [_,_]′)
 open import Data.Sum.Properties using ([,]-map-commute; [,]-∘-distr)
 open import Function.Base using (_∘_; id; _$_)
@@ -529,6 +529,35 @@ splitAt-≥ (suc m) (suc i) (s≤s i≥m) = cong (Sum.map suc id) (splitAt-≥ m
 
 +↔⊎ : ∀ {m n} → Fin (m ℕ.+ n) ↔ (Fin m ⊎ Fin n)
 +↔⊎ {m} {n} = mk↔′ (splitAt m {n}) (join m n) (splitAt-join m n) (join-splitAt m n)
+
+------------------------------------------------------------------------
+-- quotRem
+------------------------------------------------------------------------
+
+-- Fin (m * n) ↔ Fin m × Fin n
+
+quotRem-combine : ∀ {n k} x (y : Fin n) → quotRem k (combine x y) ≡ (x , y)
+quotRem-combine {suc n} {k} y 0F rewrite splitAt-inject+ k (n ℕ.* k) y = refl
+quotRem-combine {suc n} {k} x (suc y) rewrite splitAt-raise k (n ℕ.* k) (combine x y) = cong (Data.Product.map₂ suc) (quotRem-combine x y)
+
+combine-quotRem : ∀ {n} k (i : Fin (n ℕ.* k)) → uncurry combine (quotRem {n} k i) ≡ i
+combine-quotRem {suc n} k i with splitAt k i | P.inspect (splitAt k) i
+... | inj₁ j | P.[ eq ] = begin
+  join k (n ℕ.* k) (inj₁ j)      ≡˘⟨ cong (join k (n ℕ.* k)) eq ⟩
+  join k (n ℕ.* k) (splitAt k i) ≡⟨ join-splitAt k (n ℕ.* k) i ⟩
+  i                              ∎
+  where open ≡-Reasoning
+... | inj₂ j | P.[ eq ] = begin
+  raise {n ℕ.* k} k (uncurry combine (quotRem {n} k j)) ≡⟨ cong (raise k) (combine-quotRem {n} k j) ⟩
+  join k (n ℕ.* k) (inj₂ j)                             ≡˘⟨ cong (join k (n ℕ.* k)) eq ⟩
+  join k (n ℕ.* k) (splitAt k i)                        ≡⟨ join-splitAt k (n ℕ.* k) i ⟩
+  i                                                     ∎
+  where open ≡-Reasoning
+
+------------------------------------------------------------------------
+-- Bundles
+*↔× : ∀ {m n} → Fin (m ℕ.* n) ↔ (Fin n × Fin m)
+*↔× {m} {n} = mk↔′ (quotRem {m} n) (uncurry combine) (uncurry quotRem-combine) (combine-quotRem {m} n)
 
 ------------------------------------------------------------------------
 -- lift
