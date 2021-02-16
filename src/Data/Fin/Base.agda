@@ -145,8 +145,8 @@ quotRem {suc n} k i with splitAt k i
 
 -- inverse of above function
 combine : ∀ {n k} → Fin k → Fin n → Fin (n ℕ.* k)
-combine x zero = inject+ _ x
-combine x (suc y) = raise _ (combine x y)
+combine {suc n} {k} x zero = inject+ (n ℕ.* k) x
+combine {suc n} {k} x (suc y) = raise k (combine x y)
 
 ------------------------------------------------------------------------
 -- Operations
