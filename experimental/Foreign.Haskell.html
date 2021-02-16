@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Foreign.Haskell</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Type(s) used (only) when calling out to Haskell via the FFI</a>
+<a id="169" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="243" class="Symbol">{-#</a> <a id="247" class="Keyword">OPTIONS</a> <a id="255" class="Pragma">--without-K</a> <a id="267" class="Symbol">#-}</a>
+
+<a id="272" class="Keyword">module</a> <a id="279" href="Foreign.Haskell.html" class="Module">Foreign.Haskell</a> <a id="295" class="Keyword">where</a>
+
+<a id="302" class="Keyword">open</a> <a id="307" class="Keyword">import</a> <a id="314" href="Level.html" class="Module">Level</a>
+
+<a id="321" class="Comment">------------------------------------------------------------------------</a>
+<a id="394" class="Comment">-- Pairs</a>
+
+<a id="404" class="Keyword">open</a> <a id="409" class="Keyword">import</a> <a id="416" href="Foreign.Haskell.Pair.html" class="Module">Foreign.Haskell.Pair</a> <a id="437" class="Keyword">public</a>
+  <a id="446" class="Keyword">renaming</a>
+  <a id="457" class="Symbol">(</a> <a id="459" href="Foreign.Haskell.Pair.html#863" class="Function">toForeign</a>   <a id="471" class="Symbol">to</a> <a id="474" class="Function">toForeignPair</a>
+  <a id="490" class="Symbol">;</a> <a id="492" href="Foreign.Haskell.Pair.html#921" class="Function">fromForeign</a> <a id="504" class="Symbol">to</a> <a id="507" class="Function">fromForeignPair</a>
+  <a id="525" class="Symbol">)</a>
+
+<a id="528" class="Comment">------------------------------------------------------------------------</a>
+<a id="601" class="Comment">-- Sums</a>
+
+<a id="610" class="Keyword">open</a> <a id="615" class="Keyword">import</a> <a id="622" href="Foreign.Haskell.Either.html" class="Module">Foreign.Haskell.Either</a> <a id="645" class="Keyword">public</a>
+  <a id="654" class="Keyword">renaming</a>
+  <a id="665" class="Symbol">(</a> <a id="667" href="Foreign.Haskell.Either.html#876" class="Function">toForeign</a>   <a id="679" class="Symbol">to</a> <a id="682" class="Function">toForeignEither</a>
+  <a id="700" class="Symbol">;</a> <a id="702" href="Foreign.Haskell.Either.html#965" class="Function">fromForeign</a> <a id="714" class="Symbol">to</a> <a id="717" class="Function">fromForeignEither</a>
+  <a id="737" class="Symbol">)</a>
+
+<a id="740" class="Comment">------------------------------------------------------------------------</a>
+<a id="813" class="Comment">-- DEPRECATED NAMES</a>
+<a id="833" class="Comment">------------------------------------------------------------------------</a>
+<a id="906" class="Comment">-- Please use the new names as continuing support for the old names is</a>
+<a id="977" class="Comment">-- not guaranteed.</a>
+
+<a id="997" class="Keyword">open</a> <a id="1002" class="Keyword">import</a> <a id="1009" href="Data.Unit.html" class="Module">Data.Unit</a> <a id="1019" class="Keyword">using</a> <a id="1025" class="Symbol">(</a><a id="1026" href="Agda.Builtin.Unit.html#164" class="Record">⊤</a><a id="1027" class="Symbol">;</a> <a id="1029" href="Agda.Builtin.Unit.html#201" class="InductiveConstructor">tt</a><a id="1031" class="Symbol">)</a>
+
+<a id="1034" class="Comment">-- Version 1.1</a>
+
+<a id="Unit"></a><a id="1050" href="Foreign.Haskell.html#1050" class="Function">Unit</a> <a id="1055" class="Symbol">=</a> <a id="1057" href="Agda.Builtin.Unit.html#164" class="Record">⊤</a>
+<a id="1059" class="Symbol">{-#</a> <a id="1063" class="Keyword">WARNING_ON_USAGE</a> <a id="1080" class="Pragma">Unit</a>
+<a id="1085" class="String">&quot;Warning: Unit was deprecated in v1.1.
+Please use ⊤ from Data.Unit instead.&quot;</a>
+<a id="1162" class="Symbol">#-}</a>
+<a id="unit"></a><a id="1166" href="Foreign.Haskell.html#1166" class="Function">unit</a> <a id="1171" class="Symbol">=</a> <a id="1173" href="Agda.Builtin.Unit.html#201" class="InductiveConstructor">tt</a>
+<a id="1176" class="Symbol">{-#</a> <a id="1180" class="Keyword">WARNING_ON_USAGE</a> <a id="1197" class="Pragma">unit</a>
+<a id="1202" class="String">&quot;Warning: unit was deprecated in v1.1.
+Please use tt from Data.Unit instead.&quot;</a>
+<a id="1280" class="Symbol">#-}</a>
+</pre></body></html>

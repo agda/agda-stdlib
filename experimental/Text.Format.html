@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Text.Format</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Format strings for Printf and Scanf</a>
+<a id="145" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="219" class="Symbol">{-#</a> <a id="223" class="Keyword">OPTIONS</a> <a id="231" class="Pragma">--without-K</a> <a id="243" class="Pragma">--safe</a> <a id="250" class="Symbol">#-}</a>
+
+<a id="255" class="Keyword">module</a> <a id="262" href="Text.Format.html" class="Module">Text.Format</a> <a id="274" class="Keyword">where</a>
+
+<a id="281" class="Keyword">open</a> <a id="286" class="Keyword">import</a> <a id="293" href="Data.Maybe.Base.html" class="Module">Data.Maybe.Base</a>
+<a id="309" class="Keyword">open</a> <a id="314" class="Keyword">import</a> <a id="321" href="Text.Format.Generic.html" class="Module">Text.Format.Generic</a>
+
+<a id="342" class="Comment">-- Formatted types</a>
+<a id="361" class="Keyword">open</a> <a id="366" class="Keyword">import</a> <a id="373" href="Data.Char.Base.html" class="Module">Data.Char.Base</a>
+<a id="388" class="Keyword">open</a> <a id="393" class="Keyword">import</a> <a id="400" href="Data.Integer.Base.html" class="Module">Data.Integer.Base</a>
+<a id="418" class="Keyword">open</a> <a id="423" class="Keyword">import</a> <a id="430" href="Data.Float.html" class="Module">Data.Float</a>
+<a id="441" class="Keyword">open</a> <a id="446" class="Keyword">import</a> <a id="453" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a>
+<a id="467" class="Keyword">open</a> <a id="472" class="Keyword">import</a> <a id="479" href="Data.String.Base.html" class="Module">Data.String.Base</a>
+
+<a id="497" class="Comment">------------------------------------------------------------------------</a>
+<a id="570" class="Comment">-- Basic types</a>
+
+<a id="586" class="Keyword">data</a> <a id="ArgChunk"></a><a id="591" href="Text.Format.html#591" class="Datatype">ArgChunk</a> <a id="600" class="Symbol">:</a> <a id="602" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="606" class="Keyword">where</a>
+  <a id="ArgChunk.ℕArg"></a><a id="614" href="Text.Format.html#614" class="InductiveConstructor">ℕArg</a> <a id="ArgChunk.ℤArg"></a><a id="619" href="Text.Format.html#619" class="InductiveConstructor">ℤArg</a> <a id="ArgChunk.FloatArg"></a><a id="624" href="Text.Format.html#624" class="InductiveConstructor">FloatArg</a> <a id="ArgChunk.CharArg"></a><a id="633" href="Text.Format.html#633" class="InductiveConstructor">CharArg</a> <a id="ArgChunk.StringArg"></a><a id="641" href="Text.Format.html#641" class="InductiveConstructor">StringArg</a> <a id="651" class="Symbol">:</a> <a id="653" href="Text.Format.html#591" class="Datatype">ArgChunk</a>
+
+<a id="663" class="Comment">------------------------------------------------------------------------</a>
+<a id="736" class="Comment">-- Semantics</a>
+
+<a id="ArgType"></a><a id="750" href="Text.Format.html#750" class="Function">ArgType</a> <a id="758" class="Symbol">:</a> <a id="760" class="Symbol">(</a><a id="761" href="Text.Format.html#761" class="Bound">fmt</a> <a id="765" class="Symbol">:</a> <a id="767" href="Text.Format.html#591" class="Datatype">ArgChunk</a><a id="775" class="Symbol">)</a> <a id="777" class="Symbol">→</a> <a id="779" href="Agda.Primitive.html#326" class="Primitive">Set</a>
+<a id="783" href="Text.Format.html#750" class="Function">ArgType</a> <a id="791" href="Text.Format.html#614" class="InductiveConstructor">ℕArg</a>      <a id="801" class="Symbol">=</a> <a id="803" href="Agda.Builtin.Nat.html#192" class="Datatype">ℕ</a>
+<a id="805" href="Text.Format.html#750" class="Function">ArgType</a> <a id="813" href="Text.Format.html#619" class="InductiveConstructor">ℤArg</a>      <a id="823" class="Symbol">=</a> <a id="825" href="Agda.Builtin.Int.html#246" class="Datatype">ℤ</a>
+<a id="827" href="Text.Format.html#750" class="Function">ArgType</a> <a id="835" href="Text.Format.html#624" class="InductiveConstructor">FloatArg</a>  <a id="845" class="Symbol">=</a> <a id="847" href="Agda.Builtin.Float.html#354" class="Postulate">Float</a>
+<a id="853" href="Text.Format.html#750" class="Function">ArgType</a> <a id="861" href="Text.Format.html#633" class="InductiveConstructor">CharArg</a>   <a id="871" class="Symbol">=</a> <a id="873" href="Agda.Builtin.Char.html#227" class="Postulate">Char</a>
+<a id="878" href="Text.Format.html#750" class="Function">ArgType</a> <a id="886" href="Text.Format.html#641" class="InductiveConstructor">StringArg</a> <a id="896" class="Symbol">=</a> <a id="898" href="Agda.Builtin.String.html#336" class="Postulate">String</a>
+
+<a id="lexArg"></a><a id="906" href="Text.Format.html#906" class="Function">lexArg</a> <a id="913" class="Symbol">:</a> <a id="915" href="Agda.Builtin.Char.html#227" class="Postulate">Char</a> <a id="920" class="Symbol">→</a> <a id="922" href="Agda.Builtin.Maybe.html#136" class="Datatype">Maybe</a> <a id="928" href="Text.Format.html#591" class="Datatype">ArgChunk</a>
+<a id="937" href="Text.Format.html#906" class="Function">lexArg</a> <a id="944" class="String">&#39;d&#39;</a> <a id="948" class="Symbol">=</a> <a id="950" href="Agda.Builtin.Maybe.html#174" class="InductiveConstructor">just</a> <a id="955" href="Text.Format.html#619" class="InductiveConstructor">ℤArg</a>
+<a id="960" href="Text.Format.html#906" class="Function">lexArg</a> <a id="967" class="String">&#39;i&#39;</a> <a id="971" class="Symbol">=</a> <a id="973" href="Agda.Builtin.Maybe.html#174" class="InductiveConstructor">just</a> <a id="978" href="Text.Format.html#619" class="InductiveConstructor">ℤArg</a>
+<a id="983" href="Text.Format.html#906" class="Function">lexArg</a> <a id="990" class="String">&#39;u&#39;</a> <a id="994" class="Symbol">=</a> <a id="996" href="Agda.Builtin.Maybe.html#174" class="InductiveConstructor">just</a> <a id="1001" href="Text.Format.html#614" class="InductiveConstructor">ℕArg</a>
+<a id="1006" href="Text.Format.html#906" class="Function">lexArg</a> <a id="1013" class="String">&#39;f&#39;</a> <a id="1017" class="Symbol">=</a> <a id="1019" href="Agda.Builtin.Maybe.html#174" class="InductiveConstructor">just</a> <a id="1024" href="Text.Format.html#624" class="InductiveConstructor">FloatArg</a>
+<a id="1033" href="Text.Format.html#906" class="Function">lexArg</a> <a id="1040" class="String">&#39;c&#39;</a> <a id="1044" class="Symbol">=</a> <a id="1046" href="Agda.Builtin.Maybe.html#174" class="InductiveConstructor">just</a> <a id="1051" href="Text.Format.html#633" class="InductiveConstructor">CharArg</a>
+<a id="1059" href="Text.Format.html#906" class="Function">lexArg</a> <a id="1066" class="String">&#39;s&#39;</a> <a id="1070" class="Symbol">=</a> <a id="1072" href="Agda.Builtin.Maybe.html#174" class="InductiveConstructor">just</a> <a id="1077" href="Text.Format.html#641" class="InductiveConstructor">StringArg</a>
+<a id="1087" href="Text.Format.html#906" class="Function">lexArg</a> <a id="1094" class="Symbol">_</a>   <a id="1098" class="Symbol">=</a> <a id="1100" href="Agda.Builtin.Maybe.html#195" class="InductiveConstructor">nothing</a>
+
+<a id="formatSpec"></a><a id="1109" href="Text.Format.html#1109" class="Function">formatSpec</a> <a id="1120" class="Symbol">:</a> <a id="1122" href="Text.Format.Generic.html#930" class="Record">FormatSpec</a>
+<a id="1133" href="Text.Format.html#1109" class="Function">formatSpec</a> <a id="1144" class="Symbol">.</a><a id="1145" href="Text.Format.Generic.html#966" class="Field">FormatSpec.ArgChunk</a> <a id="1165" class="Symbol">=</a> <a id="1167" href="Text.Format.html#591" class="Datatype">ArgChunk</a>
+<a id="1176" href="Text.Format.html#1109" class="Function">formatSpec</a> <a id="1187" class="Symbol">.</a><a id="1188" href="Text.Format.Generic.html#985" class="Field">FormatSpec.ArgType</a>  <a id="1208" class="Symbol">=</a> <a id="1210" href="Text.Format.html#750" class="Function">ArgType</a>
+<a id="1218" href="Text.Format.html#1109" class="Function">formatSpec</a> <a id="1229" class="Symbol">.</a><a id="1230" href="Text.Format.Generic.html#1015" class="Field">FormatSpec.lexArg</a>   <a id="1250" class="Symbol">=</a> <a id="1252" href="Text.Format.html#906" class="Function">lexArg</a>
+
+<a id="1260" class="Keyword">open</a> <a id="1265" href="Text.Format.Generic.html#1490" class="Module">Format</a> <a id="1272" href="Text.Format.html#1109" class="Function">formatSpec</a> <a id="1283" class="Keyword">public</a>
+
+<a id="1291" class="Keyword">pattern</a> <a id="`ℕ"></a><a id="1299" href="Text.Format.html#1299" class="InductiveConstructor">`ℕ</a>      <a id="1307" class="Symbol">=</a> <a id="1309" href="Text.Format.Generic.html#1670" class="InductiveConstructor">Arg</a> <a id="1313" href="Text.Format.html#614" class="InductiveConstructor">ℕArg</a>
+<a id="1318" class="Keyword">pattern</a> <a id="`ℤ"></a><a id="1326" href="Text.Format.html#1326" class="InductiveConstructor">`ℤ</a>      <a id="1334" class="Symbol">=</a> <a id="1336" href="Text.Format.Generic.html#1670" class="InductiveConstructor">Arg</a> <a id="1340" href="Text.Format.html#619" class="InductiveConstructor">ℤArg</a>
+<a id="1345" class="Keyword">pattern</a> <a id="`Float"></a><a id="1353" href="Text.Format.html#1353" class="InductiveConstructor">`Float</a>  <a id="1361" class="Symbol">=</a> <a id="1363" href="Text.Format.Generic.html#1670" class="InductiveConstructor">Arg</a> <a id="1367" href="Text.Format.html#624" class="InductiveConstructor">FloatArg</a>
+<a id="1376" class="Keyword">pattern</a> <a id="`Char"></a><a id="1384" href="Text.Format.html#1384" class="InductiveConstructor">`Char</a>   <a id="1392" class="Symbol">=</a> <a id="1394" href="Text.Format.Generic.html#1670" class="InductiveConstructor">Arg</a> <a id="1398" href="Text.Format.html#633" class="InductiveConstructor">CharArg</a>
+<a id="1406" class="Keyword">pattern</a> <a id="`String"></a><a id="1414" href="Text.Format.html#1414" class="InductiveConstructor">`String</a> <a id="1422" class="Symbol">=</a> <a id="1424" href="Text.Format.Generic.html#1670" class="InductiveConstructor">Arg</a> <a id="1428" href="Text.Format.html#641" class="InductiveConstructor">StringArg</a>
+</pre></body></html>
