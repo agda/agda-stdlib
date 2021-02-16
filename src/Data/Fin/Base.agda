@@ -143,10 +143,14 @@ quotRem {suc n} k i with splitAt k i
 ... | inj₁ j = j , zero
 ... | inj₂ j = Product.map₂ suc (quotRem {n} k j)
 
--- inverse of above function
-combine : ∀ {n k} → Fin k → Fin n → Fin (n ℕ.* k)
-combine {suc n} {k} x zero = inject+ (n ℕ.* k) x
-combine {suc n} {k} x (suc y) = raise k (combine x y)
+-- a variant of quotRem the type of whose result matches the order of multiplication
+remQuot : ∀ {n} k → Fin (n ℕ.* k) → Fin n × Fin k
+remQuot k = Product.swap ∘ quotRem k
+
+-- inverse of remQuot
+combine : ∀ {n k} → Fin n → Fin k → Fin (n ℕ.* k)
+combine {suc n} {k} zero y = inject+ (n ℕ.* k) y
+combine {suc n} {k} (suc x) y = raise k (combine x y)
 
 ------------------------------------------------------------------------
 -- Operations
