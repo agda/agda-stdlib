@@ -1619,9 +1619,9 @@ m≤n⇒∣n-m∣≡n∸m {_} {_}     (s≤s m≤n) = m≤n⇒∣n-m∣≡n∸m 
 ∣m-m+n∣≡n zero    n = refl
 ∣m-m+n∣≡n (suc m) n = ∣m-m+n∣≡n m n
 
-∣m+n-m+o∣≡∣n-o| : ∀ m n o → ∣ m + n - m + o ∣ ≡ ∣ n - o ∣
-∣m+n-m+o∣≡∣n-o| zero    n o = refl
-∣m+n-m+o∣≡∣n-o| (suc m) n o = ∣m+n-m+o∣≡∣n-o| m n o
+∣m+n-m+o∣≡∣n-o∣ : ∀ m n o → ∣ m + n - m + o ∣ ≡ ∣ n - o ∣
+∣m+n-m+o∣≡∣n-o∣ zero    n o = refl
+∣m+n-m+o∣≡∣n-o∣ (suc m) n o = ∣m+n-m+o∣≡∣n-o∣ m n o
 
 m∸n≤∣m-n∣ : ∀ m n → m ∸ n ≤ ∣ m - n ∣
 m∸n≤∣m-n∣ m n with ≤-total m n
@@ -2218,10 +2218,15 @@ Please use ∣m-n∣≡m∸n⇒n≤m instead."
 "Warning: ∣n-n+m∣≡m was deprecated in v1.1.
 Please use ∣m-m+n∣≡n instead."
 #-}
-∣n+m-n+o∣≡∣m-o| = ∣m+n-m+o∣≡∣n-o|
+∣n+m-n+o∣≡∣m-o| = ∣m+n-m+o∣≡∣n-o∣
 {-# WARNING_ON_USAGE ∣n+m-n+o∣≡∣m-o|
 "Warning: ∣n+m-n+o∣≡∣m-o| was deprecated in v1.1.
-Please use ∣m+n-m+o∣≡∣n-o| instead."
+Please use ∣m+n-m+o∣≡∣n-o∣ instead."
+#-}
+∣m+n-m+o∣≡∣n-o| = ∣m+n-m+o∣≡∣n-o∣
+{-# WARNING_ON_USAGE ∣m+n-m+o∣≡∣n-o|
+"Warning: ∣m+n-m+o∣≡∣n-o| was deprecated in v1.6.
+Please use ∣m+n-m+o∣≡∣n-o∣ instead."
 #-}
 n∸m≤∣n-m∣ = m∸n≤∣m-n∣
 {-# WARNING_ON_USAGE n∸m≤∣n-m∣
