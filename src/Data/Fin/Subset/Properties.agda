@@ -816,8 +816,8 @@ p─x─y≡p─y─x p x y = p─q─r≡p─r─q p ⁅ x ⁆ ⁅ y ⁆
 x∈p⇒p-x⊂p : x ∈ p → p - x ⊂ p
 x∈p⇒p-x⊂p {n} {x} {p} x∈p = p∩q≢∅⇒p─q⊂p p ⁅ x ⁆ (x , x∈p∩q⁺ (x∈p , x∈⁅x⁆ x))
 
-x∈p⇒∣p-x∣<∣p| : x ∈ p → ∣ p - x ∣ < ∣ p ∣
-x∈p⇒∣p-x∣<∣p| x∈p = p⊂q⇒∣p∣<∣q∣ (x∈p⇒p-x⊂p x∈p)
+x∈p⇒∣p-x∣<∣p∣ : x ∈ p → ∣ p - x ∣ < ∣ p ∣
+x∈p⇒∣p-x∣<∣p∣ x∈p = p⊂q⇒∣p∣<∣q∣ (x∈p⇒p-x⊂p x∈p)
 
 ------------------------------------------------------------------------
 -- Lift

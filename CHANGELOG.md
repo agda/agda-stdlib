@@ -125,7 +125,7 @@ Other minor additions
 
   p─x─y≡p─y─x     : p - x - y ≡ p - y - x
   x∈p⇒p-x⊂p       : x ∈ p → p - x ⊂ p
-  x∈p⇒∣p-x∣<∣p|   : x ∈ p → ∣ p - x ∣ < ∣ p ∣
+  x∈p⇒∣p-x∣<∣p∣   : x ∈ p → ∣ p - x ∣ < ∣ p ∣
   x∈p∧x≢y⇒x∈p-y   : x ∈ p → x ≢ y → x ∈ p - y
   ```
 
