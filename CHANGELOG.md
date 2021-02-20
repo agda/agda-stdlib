@@ -31,6 +31,7 @@ Deprecated names
   ⊓-pres-m≤   ↦  ⊓-glb
   ⊔-abs-⊓     ↦  ⊔-absorbs-⊓
   ⊓-abs-⊔     ↦  ⊓-absorbs-⊔
+  ∣m+n-m+o∣≡∣n-o| ↦ ∣m+n-m+o∣≡∣n-o∣ -- note final character is a \| rather than a |
   ```
 
 * In `Data.Integer.Properties`:

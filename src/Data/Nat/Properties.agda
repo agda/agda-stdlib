@@ -2226,7 +2226,7 @@ Please use ∣m+n-m+o∣≡∣n-o∣ instead."
 ∣m+n-m+o∣≡∣n-o| = ∣m+n-m+o∣≡∣n-o∣
 {-# WARNING_ON_USAGE ∣m+n-m+o∣≡∣n-o|
 "Warning: ∣m+n-m+o∣≡∣n-o| was deprecated in v1.6.
-Please use ∣m+n-m+o∣≡∣n-o∣ instead."
+Please use ∣m+n-m+o∣≡∣n-o∣ instead. Note the final is a \\| rather than a |"
 #-}
 n∸m≤∣n-m∣ = m∸n≤∣m-n∣
 {-# WARNING_ON_USAGE n∸m≤∣n-m∣
