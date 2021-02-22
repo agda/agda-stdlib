@@ -101,7 +101,7 @@ module _ {_≈₁_ : Rel A ℓ₁} {_≤₁_ : Rel A ℓ₂}
     irrefl₁ = Conv.<-irrefl _≈₁_ _≤₁_
 
     asym₁ : Asymmetric (Conv._<_ _≈₁_ _≤₁_)
-    asym₁ = trans∧irr⟶asym {_≈_ = _≈₁_}
+    asym₁ = trans∧irr⇒asym {_≈_ = _≈₁_}
                            ≈-refl₁ (Conv.<-trans _ _ po₁) irrefl₁
 
   ×-respects₂ : IsEquivalence _≈₁_ →

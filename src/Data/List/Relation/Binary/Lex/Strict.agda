@@ -57,7 +57,7 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
     <-asymmetric sym resp as = asym
       where
       irrefl : Irreflexive _≈_ _≺_
-      irrefl = asym⟶irr resp sym as
+      irrefl = asym⇒irr resp sym as
 
       asym : Asymmetric _<_
       asym (base bot)       _                = bot
