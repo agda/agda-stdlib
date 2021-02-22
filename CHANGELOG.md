@@ -57,7 +57,7 @@ Deprecated names
   subst⟶resp₂      ↦ subst⇒resp₂
   P-resp⟶¬P-resp   ↦ resp⇒¬-resp
   total⟶refl       ↦ total⇒refl
-  total+dec⟶dec    ↦ total+dec⇒dec
+  total+dec⟶dec    ↦ total∧dec⇒dec
   trans∧irr⟶asym   ↦ trans∧irr⇒asym 
   irr∧antisym⟶asym ↦ irr∧antisym⇒asym 
   asym⟶antisym     ↦ asym⇒antisym

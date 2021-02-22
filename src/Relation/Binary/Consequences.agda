@@ -56,9 +56,9 @@ module _ {_≈_ : Rel A ℓ₁} {_≤_ : Rel A ℓ₂} where
   ... | inj₁ x∼y = x∼y
   ... | inj₂ y∼x = respʳ x≈y (respˡ (sym x≈y) y∼x)
 
-  total+dec⇒dec : _≈_ ⇒ _≤_ → Antisymmetric _≈_ _≤_ →
+  total∧dec⇒dec : _≈_ ⇒ _≤_ → Antisymmetric _≈_ _≤_ →
                   Total _≤_ → Decidable _≈_ → Decidable _≤_
-  total+dec⇒dec refl antisym total _≟_ x y with total x y
+  total∧dec⇒dec refl antisym total _≟_ x y with total x y
   ... | inj₁ x≤y = yes x≤y
   ... | inj₂ y≤x = map′ refl (flip antisym y≤x) (x ≟ y)
 
@@ -200,10 +200,10 @@ total⟶refl = total⇒refl
 "Warning: total⟶refl was deprecated in v1.6.
 Please use total⇒refl instead."
 #-}
-total+dec⟶dec = total+dec⇒dec
+total+dec⟶dec = total∧dec⇒dec
 {-# WARNING_ON_USAGE total+dec⟶dec
 "Warning: total+dec⟶dec was deprecated in v1.6.
-Please use total+dec⇒dec instead."
+Please use total∧dec⇒dec instead."
 #-}
 trans∧irr⟶asym = trans∧irr⇒asym
 {-# WARNING_ON_USAGE trans∧irr⟶asym
