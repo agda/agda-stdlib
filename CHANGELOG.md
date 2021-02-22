@@ -101,6 +101,19 @@ Other minor additions
   /-cancelˡ     : ((m * n) / (m * o)) {mo≢0} ≡ (n / o) {o≢0}
   ```
 
+* Added new operations to `Data.Fin.Base`:
+  ```agda
+  remQuot : remQuot : ∀ k → Fin (n * k) → Fin n × Fin k
+  combine : Fin n → Fin k → Fin (n * k)
+  ```
+
+* Added new proofs to `Data.Fin.Properties`:
+  ```agda
+  remQuot-combine : ∀ x y → remQuot k (combine x y) ≡ (x , y)
+  combine-remQuot : ∀ k i → uncurry combine (remQuot k i) ≡ i
+  *↔× : Fin (m * n) ↔ (Fin m × Fin n)
+  ```
+
 * Added new operations to `Data.Fin.Subset`:
   ```
   _─_ : Op₂ (Subset n)

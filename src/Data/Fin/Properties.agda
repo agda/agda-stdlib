@@ -531,6 +531,35 @@ splitAt-≥ (suc m) (suc i) (s≤s i≥m) = cong (Sum.map suc id) (splitAt-≥ m
 +↔⊎ {m} {n} = mk↔′ (splitAt m {n}) (join m n) (splitAt-join m n) (join-splitAt m n)
 
 ------------------------------------------------------------------------
+-- remQuot
+------------------------------------------------------------------------
+
+-- Fin (m * n) ↔ Fin m × Fin n
+
+remQuot-combine : ∀ {n k} (x : Fin n) y → remQuot k (combine x y) ≡ (x , y)
+remQuot-combine {suc n} {k} 0F y rewrite splitAt-inject+ k (n ℕ.* k) y = refl
+remQuot-combine {suc n} {k} (suc x) y rewrite splitAt-raise k (n ℕ.* k) (combine x y) = cong (Data.Product.map₁ suc) (remQuot-combine x y)
+
+combine-remQuot : ∀ {n} k (i : Fin (n ℕ.* k)) → uncurry combine (remQuot {n} k i) ≡ i
+combine-remQuot {suc n} k i with splitAt k i | P.inspect (splitAt k) i
+... | inj₁ j | P.[ eq ] = begin
+  join k (n ℕ.* k) (inj₁ j)      ≡˘⟨ cong (join k (n ℕ.* k)) eq ⟩
+  join k (n ℕ.* k) (splitAt k i) ≡⟨ join-splitAt k (n ℕ.* k) i ⟩
+  i                              ∎
+  where open ≡-Reasoning
+... | inj₂ j | P.[ eq ] = begin
+  raise {n ℕ.* k} k (uncurry combine (remQuot {n} k j)) ≡⟨ cong (raise k) (combine-remQuot {n} k j) ⟩
+  join k (n ℕ.* k) (inj₂ j)                             ≡˘⟨ cong (join k (n ℕ.* k)) eq ⟩
+  join k (n ℕ.* k) (splitAt k i)                        ≡⟨ join-splitAt k (n ℕ.* k) i ⟩
+  i                                                     ∎
+  where open ≡-Reasoning
+
+------------------------------------------------------------------------
+-- Bundles
+*↔× : ∀ {m n} → Fin (m ℕ.* n) ↔ (Fin m × Fin n)
+*↔× {m} {n} = mk↔′ (remQuot {m} n) (uncurry combine) (uncurry remQuot-combine) (combine-remQuot {m} n)
+
+------------------------------------------------------------------------
 -- lift
 ------------------------------------------------------------------------
 
