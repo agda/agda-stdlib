@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Function.Definitions.Core1</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Definitions for types of functions that only require an equality</a>
+<a id="174" class="Comment">-- relation over the domain.</a>
+<a id="203" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="277" class="Comment">-- The contents of this file should usually be accessed from `Function`.</a>
+
+<a id="351" class="Symbol">{-#</a> <a id="355" class="Keyword">OPTIONS</a> <a id="363" class="Pragma">--without-K</a> <a id="375" class="Pragma">--safe</a> <a id="382" class="Symbol">#-}</a>
+
+<a id="387" class="Keyword">open</a> <a id="392" class="Keyword">import</a> <a id="399" href="Relation.Binary.html" class="Module">Relation.Binary</a>
+
+<a id="416" class="Keyword">module</a> <a id="423" href="Function.Definitions.Core1.html" class="Module">Function.Definitions.Core1</a>
+  <a id="452" class="Symbol">{</a><a id="453" href="Function.Definitions.Core1.html#453" class="Bound">a</a> <a id="455" href="Function.Definitions.Core1.html#455" class="Bound">ℓ₁</a><a id="457" class="Symbol">}</a> <a id="459" class="Symbol">{</a><a id="460" href="Function.Definitions.Core1.html#460" class="Bound">A</a> <a id="462" class="Symbol">:</a> <a id="464" class="PrimitiveType">Set</a> <a id="468" href="Function.Definitions.Core1.html#453" class="Bound">a</a><a id="469" class="Symbol">}</a> <a id="471" class="Symbol">(</a><a id="472" href="Function.Definitions.Core1.html#472" class="Bound Operator">_≈₁_</a> <a id="477" class="Symbol">:</a> <a id="479" href="Relation.Binary.Core.html#882" class="Function">Rel</a> <a id="483" href="Function.Definitions.Core1.html#460" class="Bound">A</a> <a id="485" href="Function.Definitions.Core1.html#455" class="Bound">ℓ₁</a><a id="487" class="Symbol">)</a>
+  <a id="491" class="Keyword">where</a>
+
+<a id="498" class="Keyword">open</a> <a id="503" class="Keyword">import</a> <a id="510" href="Level.html" class="Module">Level</a> <a id="516" class="Keyword">using</a> <a id="522" class="Symbol">(</a><a id="523" href="Agda.Primitive.html#636" class="Primitive Operator">_⊔_</a><a id="526" class="Symbol">)</a>
+
+<a id="529" class="Comment">------------------------------------------------------------------------</a>
+<a id="602" class="Comment">-- Definitions</a>
+
+<a id="618" class="Comment">-- (Note the name `RightInverse` is used for the bundle)</a>
+<a id="Inverseʳ"></a><a id="675" href="Function.Definitions.Core1.html#675" class="Function">Inverseʳ</a> <a id="684" class="Symbol">:</a> <a id="686" class="Symbol">∀</a> <a id="688" class="Symbol">{</a><a id="689" href="Function.Definitions.Core1.html#689" class="Bound">b</a><a id="690" class="Symbol">}</a> <a id="692" class="Symbol">{</a><a id="693" href="Function.Definitions.Core1.html#693" class="Bound">B</a> <a id="695" class="Symbol">:</a> <a id="697" class="PrimitiveType">Set</a> <a id="701" href="Function.Definitions.Core1.html#689" class="Bound">b</a><a id="702" class="Symbol">}</a> <a id="704" class="Symbol">→</a> <a id="706" class="Symbol">(</a><a id="707" href="Function.Definitions.Core1.html#460" class="Bound">A</a> <a id="709" class="Symbol">→</a> <a id="711" href="Function.Definitions.Core1.html#693" class="Bound">B</a><a id="712" class="Symbol">)</a> <a id="714" class="Symbol">→</a> <a id="716" class="Symbol">(</a><a id="717" href="Function.Definitions.Core1.html#693" class="Bound">B</a> <a id="719" class="Symbol">→</a> <a id="721" href="Function.Definitions.Core1.html#460" class="Bound">A</a><a id="722" class="Symbol">)</a> <a id="724" class="Symbol">→</a> <a id="726" class="PrimitiveType">Set</a> <a id="730" class="Symbol">(</a><a id="731" href="Function.Definitions.Core1.html#453" class="Bound">a</a> <a id="733" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="735" href="Function.Definitions.Core1.html#455" class="Bound">ℓ₁</a><a id="737" class="Symbol">)</a>
+<a id="739" href="Function.Definitions.Core1.html#675" class="Function">Inverseʳ</a> <a id="748" href="Function.Definitions.Core1.html#748" class="Bound">f</a> <a id="750" href="Function.Definitions.Core1.html#750" class="Bound">g</a> <a id="752" class="Symbol">=</a> <a id="754" class="Symbol">∀</a> <a id="756" href="Function.Definitions.Core1.html#756" class="Bound">x</a> <a id="758" class="Symbol">→</a> <a id="760" href="Function.Definitions.Core1.html#750" class="Bound">g</a> <a id="762" class="Symbol">(</a><a id="763" href="Function.Definitions.Core1.html#748" class="Bound">f</a> <a id="765" href="Function.Definitions.Core1.html#756" class="Bound">x</a><a id="766" class="Symbol">)</a> <a id="768" href="Function.Definitions.Core1.html#472" class="Bound Operator">≈₁</a> <a id="771" href="Function.Definitions.Core1.html#756" class="Bound">x</a>
+</pre></body></html>

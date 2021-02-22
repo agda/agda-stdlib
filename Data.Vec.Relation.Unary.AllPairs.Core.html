@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Vec.Relation.Unary.AllPairs.Core</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Vectors where every pair of elements are related (symmetrically)</a>
+<a id="174" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="248" class="Comment">-- Core modules are not meant to be used directly outside of the</a>
+<a id="313" class="Comment">-- standard library.</a>
+
+<a id="335" class="Comment">-- This module should be removable if and when Agda issue</a>
+<a id="393" class="Comment">-- https://github.com/agda/agda/issues/3210 is fixed</a>
+
+<a id="447" class="Symbol">{-#</a> <a id="451" class="Keyword">OPTIONS</a> <a id="459" class="Pragma">--without-K</a> <a id="471" class="Pragma">--safe</a> <a id="478" class="Symbol">#-}</a>
+
+<a id="483" class="Keyword">open</a> <a id="488" class="Keyword">import</a> <a id="495" href="Relation.Binary.html" class="Module">Relation.Binary</a> <a id="511" class="Keyword">using</a> <a id="517" class="Symbol">(</a><a id="518" href="Relation.Binary.Core.html#882" class="Function">Rel</a><a id="521" class="Symbol">)</a>
+
+<a id="524" class="Keyword">module</a> <a id="531" href="Data.Vec.Relation.Unary.AllPairs.Core.html" class="Module">Data.Vec.Relation.Unary.AllPairs.Core</a>
+  <a id="571" class="Symbol">{</a><a id="572" href="Data.Vec.Relation.Unary.AllPairs.Core.html#572" class="Bound">a</a> <a id="574" href="Data.Vec.Relation.Unary.AllPairs.Core.html#574" class="Bound">ℓ</a><a id="575" class="Symbol">}</a> <a id="577" class="Symbol">{</a><a id="578" href="Data.Vec.Relation.Unary.AllPairs.Core.html#578" class="Bound">A</a> <a id="580" class="Symbol">:</a> <a id="582" class="PrimitiveType">Set</a> <a id="586" href="Data.Vec.Relation.Unary.AllPairs.Core.html#572" class="Bound">a</a><a id="587" class="Symbol">}</a> <a id="589" class="Symbol">(</a><a id="590" href="Data.Vec.Relation.Unary.AllPairs.Core.html#590" class="Bound">R</a> <a id="592" class="Symbol">:</a> <a id="594" href="Relation.Binary.Core.html#882" class="Function">Rel</a> <a id="598" href="Data.Vec.Relation.Unary.AllPairs.Core.html#578" class="Bound">A</a> <a id="600" href="Data.Vec.Relation.Unary.AllPairs.Core.html#574" class="Bound">ℓ</a><a id="601" class="Symbol">)</a> <a id="603" class="Keyword">where</a>
+
+<a id="610" class="Keyword">open</a> <a id="615" class="Keyword">import</a> <a id="622" href="Level.html" class="Module">Level</a>
+<a id="628" class="Keyword">open</a> <a id="633" class="Keyword">import</a> <a id="640" href="Data.Vec.Base.html" class="Module">Data.Vec.Base</a>
+<a id="654" class="Keyword">open</a> <a id="659" class="Keyword">import</a> <a id="666" href="Data.Vec.Relation.Unary.All.html" class="Module">Data.Vec.Relation.Unary.All</a>
+
+<a id="695" class="Comment">------------------------------------------------------------------------</a>
+<a id="768" class="Comment">-- Definition</a>
+
+<a id="783" class="Comment">-- AllPairs R xs means that every pair of elements (x , y) in xs is a</a>
+<a id="853" class="Comment">-- member of relation R (as long as x comes before y in the vector).</a>
+
+<a id="923" class="Keyword">infixr</a> <a id="930" class="Number">5</a> <a id="932" href="Data.Vec.Relation.Unary.AllPairs.Core.html#1011" class="InductiveConstructor Operator">_∷_</a>
+
+<a id="937" class="Keyword">data</a> <a id="AllPairs"></a><a id="942" href="Data.Vec.Relation.Unary.AllPairs.Core.html#942" class="Datatype">AllPairs</a> <a id="951" class="Symbol">:</a> <a id="953" class="Symbol">∀</a> <a id="955" class="Symbol">{</a><a id="956" href="Data.Vec.Relation.Unary.AllPairs.Core.html#956" class="Bound">n</a><a id="957" class="Symbol">}</a> <a id="959" class="Symbol">→</a> <a id="961" href="Data.Vec.Base.html#959" class="Datatype">Vec</a> <a id="965" href="Data.Vec.Relation.Unary.AllPairs.Core.html#578" class="Bound">A</a> <a id="967" href="Data.Vec.Relation.Unary.AllPairs.Core.html#956" class="Bound">n</a> <a id="969" class="Symbol">→</a> <a id="971" class="PrimitiveType">Set</a> <a id="975" class="Symbol">(</a><a id="976" href="Data.Vec.Relation.Unary.AllPairs.Core.html#572" class="Bound">a</a> <a id="978" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="980" href="Data.Vec.Relation.Unary.AllPairs.Core.html#574" class="Bound">ℓ</a><a id="981" class="Symbol">)</a> <a id="983" class="Keyword">where</a>
+  <a id="AllPairs.[]"></a><a id="991" href="Data.Vec.Relation.Unary.AllPairs.Core.html#991" class="InductiveConstructor">[]</a>  <a id="995" class="Symbol">:</a> <a id="997" href="Data.Vec.Relation.Unary.AllPairs.Core.html#942" class="Datatype">AllPairs</a> <a id="1006" href="Data.Vec.Base.html#995" class="InductiveConstructor">[]</a>
+  <a id="AllPairs._∷_"></a><a id="1011" href="Data.Vec.Relation.Unary.AllPairs.Core.html#1011" class="InductiveConstructor Operator">_∷_</a> <a id="1015" class="Symbol">:</a> <a id="1017" class="Symbol">∀</a> <a id="1019" class="Symbol">{</a><a id="1020" href="Data.Vec.Relation.Unary.AllPairs.Core.html#1020" class="Bound">n</a> <a id="1022" href="Data.Vec.Relation.Unary.AllPairs.Core.html#1022" class="Bound">x</a><a id="1023" class="Symbol">}</a> <a id="1025" class="Symbol">{</a><a id="1026" href="Data.Vec.Relation.Unary.AllPairs.Core.html#1026" class="Bound">xs</a> <a id="1029" class="Symbol">:</a> <a id="1031" href="Data.Vec.Base.html#959" class="Datatype">Vec</a> <a id="1035" href="Data.Vec.Relation.Unary.AllPairs.Core.html#578" class="Bound">A</a> <a id="1037" href="Data.Vec.Relation.Unary.AllPairs.Core.html#1020" class="Bound">n</a><a id="1038" class="Symbol">}</a> <a id="1040" class="Symbol">→</a> <a id="1042" href="Data.Vec.Relation.Unary.All.html#1073" class="Datatype">All</a> <a id="1046" class="Symbol">(</a><a id="1047" href="Data.Vec.Relation.Unary.AllPairs.Core.html#590" class="Bound">R</a> <a id="1049" href="Data.Vec.Relation.Unary.AllPairs.Core.html#1022" class="Bound">x</a><a id="1050" class="Symbol">)</a> <a id="1052" href="Data.Vec.Relation.Unary.AllPairs.Core.html#1026" class="Bound">xs</a> <a id="1055" class="Symbol">→</a> <a id="1057" href="Data.Vec.Relation.Unary.AllPairs.Core.html#942" class="Datatype">AllPairs</a> <a id="1066" href="Data.Vec.Relation.Unary.AllPairs.Core.html#1026" class="Bound">xs</a> <a id="1069" class="Symbol">→</a> <a id="1071" href="Data.Vec.Relation.Unary.AllPairs.Core.html#942" class="Datatype">AllPairs</a> <a id="1080" class="Symbol">(</a><a id="1081" href="Data.Vec.Relation.Unary.AllPairs.Core.html#1022" class="Bound">x</a> <a id="1083" href="Data.Vec.Base.html#1014" class="InductiveConstructor Operator">∷</a> <a id="1085" href="Data.Vec.Relation.Unary.AllPairs.Core.html#1026" class="Bound">xs</a><a id="1087" class="Symbol">)</a>
+</pre></body></html>
