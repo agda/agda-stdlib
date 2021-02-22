@@ -31,6 +31,7 @@ Deprecated names
   ⊓-pres-m≤   ↦  ⊓-glb
   ⊔-abs-⊓     ↦  ⊔-absorbs-⊓
   ⊓-abs-⊔     ↦  ⊓-absorbs-⊔
+  ∣m+n-m+o∣≡∣n-o| ↦ ∣m+n-m+o∣≡∣n-o∣ -- note final character is a \| rather than a |
   ```
 
 * In `Data.Integer.Properties`:
@@ -106,6 +107,19 @@ Other minor additions
   /-cancelˡ     : ((m * n) / (m * o)) {mo≢0} ≡ (n / o) {o≢0}
   ```
 
+* Added new operations to `Data.Fin.Base`:
+  ```agda
+  remQuot : remQuot : ∀ k → Fin (n * k) → Fin n × Fin k
+  combine : Fin n → Fin k → Fin (n * k)
+  ```
+
+* Added new proofs to `Data.Fin.Properties`:
+  ```agda
+  remQuot-combine : ∀ x y → remQuot k (combine x y) ≡ (x , y)
+  combine-remQuot : ∀ k i → uncurry combine (remQuot k i) ≡ i
+  *↔× : Fin (m * n) ↔ (Fin m × Fin n)
+  ```
+
 * Added new operations to `Data.Fin.Subset`:
   ```
   _─_ : Op₂ (Subset n)
@@ -130,7 +144,7 @@ Other minor additions
 
   p─x─y≡p─y─x     : p - x - y ≡ p - y - x
   x∈p⇒p-x⊂p       : x ∈ p → p - x ⊂ p
-  x∈p⇒∣p-x∣<∣p|   : x ∈ p → ∣ p - x ∣ < ∣ p ∣
+  x∈p⇒∣p-x∣<∣p∣   : x ∈ p → ∣ p - x ∣ < ∣ p ∣
   x∈p∧x≢y⇒x∈p-y   : x ∈ p → x ≢ y → x ∈ p - y
   ```
 
@@ -357,6 +371,18 @@ Other minor additions
   ∣p*q∣≃∣p∣*∣q∣            : ∣ p * q ∣ ≃ ∣ p ∣ * ∣ q ∣
   ```
 
+* Added new proofs to `Data.List.Relation.Binary.Pointwise`:
+  ```agda
+  foldr⁺  : (R w x → R y z → R (w • y) (x ◦ z)) → 
+            R e f → Pointwise R xs ys → R (foldr _•_ e xs) (foldr _◦_ f ys)
+  lookup⁻ : length xs ≡ length ys →
+            (toℕ i ≡ toℕ j → R (lookup xs i) (lookup ys j)) →
+            Pointwise R xs ys
+  lookup⁺ : (Rxys : Pointwise R xs ys) →
+            ∀ i → (let j = cast (Pointwise-length Rxys) i) →
+            R (lookup xs i) (lookup ys j)
+  ```
+
 * Added new proofs to `Relation.Binary.Properties.Poset`:
   ```agda
   mono⇒cong     : f Preserves _≤_ ⟶ _≤_ → f Preserves _≈_ ⟶ _≈_
@@ -379,6 +405,22 @@ Other minor additions
 * Added new proof to `Data.List.Relation.Unary.All.Properties`:
   ```agda
   all-upTo : All (_< n) (upTo n)
+  ```
+
+* Added new proof to `Data.List.Relation.Binary.Equality.Setoid`:
+  ```agda
+  foldr⁺ : (w ≈ x → y ≈ z → (w • y) ≈ (x ◦ z)) →
+           e ≈ f → xs ≋ ys → foldr _•_ e xs ≈ foldr _◦_ f ys
+  ```
+
+* Added new proof to `Data.List.Relation.Binary.Subset.Setoid.Properties`:
+  ```agda
+  applyUpTo⁺ : m ≤ n → applyUpTo f m ⊆ applyUpTo f n
+  ```
+
+* Added new proof to `Data.List.Relation.Binary.Subset.Propositional.Properties`:
+  ```agda
+  applyUpTo⁺ : m ≤ n → applyUpTo f m ⊆ applyUpTo f n
   ```
 
 * Added new definitions to `IO`:
