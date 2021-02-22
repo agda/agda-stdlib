@@ -31,6 +31,7 @@ Deprecated names
   ⊓-pres-m≤   ↦  ⊓-glb
   ⊔-abs-⊓     ↦  ⊔-absorbs-⊓
   ⊓-abs-⊔     ↦  ⊓-absorbs-⊔
+  ∣m+n-m+o∣≡∣n-o| ↦ ∣m+n-m+o∣≡∣n-o∣ -- note final character is a \| rather than a |
   ```
 
 * In `Data.Integer.Properties`:
@@ -124,7 +125,7 @@ Other minor additions
 
   p─x─y≡p─y─x     : p - x - y ≡ p - y - x
   x∈p⇒p-x⊂p       : x ∈ p → p - x ⊂ p
-  x∈p⇒∣p-x∣<∣p|   : x ∈ p → ∣ p - x ∣ < ∣ p ∣
+  x∈p⇒∣p-x∣<∣p∣   : x ∈ p → ∣ p - x ∣ < ∣ p ∣
   x∈p∧x≢y⇒x∈p-y   : x ∈ p → x ≢ y → x ∈ p - y
   ```
 
