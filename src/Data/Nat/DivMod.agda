@@ -15,10 +15,12 @@ open import Data.Fin.Properties using (toℕ-fromℕ<)
 open import Data.Nat.Base as Nat
 open import Data.Nat.DivMod.Core
 open import Data.Nat.Divisibility.Core
+open import Data.Nat.Induction
 open import Data.Nat.Properties
 open import Data.Nat.Tactic.RingSolver
 open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary.Decidable using (False)
+open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Decidable using (False; toWitnessFalse)
 
 open ≤-Reasoning
 
@@ -191,6 +193,9 @@ m/n<m m n@(suc n-1) m≥1 n≥2 = *-cancelʳ-< {n} (m / n) m (begin-strict
 /-monoʳ-≤ : ∀ m {n o} {n≢0 o≢0} → n ≥ o → (m / n) {n≢0} ≤ (m / o) {o≢0}
 /-monoʳ-≤ _ {n≢0 = n≢0} {o≢0} n≥o = /-mono-≤ {o≢0 = n≢0} {o≢0} ≤-refl n≥o
 
+m<n⇒m/n≡0 : ∀ {m n n≢0} → m < n → (m / n) {n≢0} ≡ 0
+m<n⇒m/n≡0 {m} {suc n} {n≢0} (s≤s m≤n) = divₕ-finish n m n m≤n
+
 m≥n⇒m/n>0 : ∀ {m n n≢0} → m ≥ n → (m / n) {n≢0} > 0
 m≥n⇒m/n>0 {m@(suc m-1)} {n@(suc n-1)} m≥n = begin
   1     ≡⟨ sym (n/n≡1 m) ⟩
@@ -222,6 +227,30 @@ m≥n⇒m/n>0 {m@(suc m-1)} {n@(suc n-1)} m≥n = begin
   (n + m * n) / d     ≡⟨ +-distrib-/-∣ˡ _ d∣n ⟩
   n / d + (m * n) / d ≡⟨ cong (n / d +_) (*-/-assoc m d∣n) ⟩
   n / d + m * (n / d) ∎
+
+m/n≡1+[m∸n]/n : ∀ {m n n≢0} → m ≥ n → (m / n) {n≢0} ≡ 1 + ((m ∸ n) / n) {n≢0}
+m/n≡1+[m∸n]/n {m@(suc m-1)} {n@(suc n-1)} {n≢0} m≥n = begin-equality
+  m / n                              ≡⟨⟩
+  div-helper zero n-1 m n-1          ≡⟨ divₕ-restart n-1 m n-1 m≥n ⟩
+  div-helper 1 n-1 (m ∸ n) n-1       ≡⟨ divₕ-extractAcc 1 n-1 (m ∸ n) n-1 ⟩
+  1 + (div-helper 0 n-1 (m ∸ n) n-1) ≡⟨⟩
+  1 + (m ∸ n) / n                    ∎
+
+/-cancelˡ : ∀ m n o {o≢0} {mo≢0} → ((m * n) / (m * o)) {mo≢0} ≡ (n / o) {o≢0}
+/-cancelˡ m@(suc m-1) n o {o≢0} = /-cancelˡ-Acc (<-wellFounded n)
+  where
+  /-cancelˡ-Acc : ∀ {n} → Acc _<_ n → (m * n) / (m * o) ≡ n / o
+  /-cancelˡ-Acc {n} (acc rec) with n <? o
+  ... | yes n<o = trans (m<n⇒m/n≡0 (*-monoʳ-< m-1 n<o)) (sym (m<n⇒m/n≡0 n<o))
+  ... | no ¬n<o = begin-equality
+    (m * n) / (m * o)             ≡⟨ m/n≡1+[m∸n]/n (*-monoʳ-≤ m (≮⇒≥ ¬n<o)) ⟩
+    1 + (m * n ∸ m * o) / (m * o) ≡⟨ cong suc (/-congˡ {o = m * o} (sym (*-distribˡ-∸ m n o))) ⟩
+    1 + (m * (n ∸ o)) / (m * o)   ≡⟨ cong suc (/-cancelˡ-Acc (rec (n ∸ o) n∸o<n)) ⟩
+    1 + (n ∸ o) / o               ≡˘⟨ cong₂ _+_ (n/n≡1 o) refl ⟩
+    o / o + (n ∸ o) / o           ≡˘⟨ +-distrib-/-∣ˡ (n ∸ o) (divides 1 ((sym (*-identityˡ o)))) ⟩
+    (o + (n ∸ o)) / o             ≡⟨ /-congˡ {o = o} (m+[n∸m]≡n (≮⇒≥ ¬n<o)) ⟩
+    n / o                         ∎
+    where n∸o<n = ∸-monoʳ-< (n≢0⇒n>0 (toWitnessFalse o≢0)) (≮⇒≥ ¬n<o)
 
 ------------------------------------------------------------------------
 --  A specification of integer division.

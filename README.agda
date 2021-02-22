@@ -3,7 +3,7 @@
 module README where
 
 ------------------------------------------------------------------------
--- The Agda standard library, version 1.5-dev
+-- The Agda standard library, version 1.6-dev
 --
 -- Authors: Nils Anders Danielsson, Matthew Daggitt, Guillaume Allais
 -- with contributions from Andreas Abel, Stevan Andjelkovic,
@@ -74,6 +74,8 @@ import README.Data
 
 -- • IO
 --     Input/output-related functions.
+
+import README.IO
 
 -- • Level
 --     Universe levels.

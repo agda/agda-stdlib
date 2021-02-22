@@ -1,4 +1,6 @@
-[![Build Status](https://travis-ci.org/agda/agda-stdlib.svg?branch=master)](https://travis-ci.org/agda/agda-stdlib)
+![Travis (.org) branch](https://img.shields.io/travis/agda/agda-stdlib/master?label=master)
+![Travis (.org) branch](https://img.shields.io/travis/agda/agda-stdlib/experimental?label=experimental)
+
 
 The Agda standard library
 =========================
