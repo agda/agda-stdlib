@@ -12,7 +12,7 @@ open import Category.Functor
 open import Category.Applicative
 open import Category.Monad
 open import Data.Bool.Base using (false; true)
-open import Data.List
+open import Data.List.Base
 open import Data.List.Properties
 open import Function
 open import Relation.Binary.PropositionalEquality as P

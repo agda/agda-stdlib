@@ -11,12 +11,18 @@
 
 module Data.Unit.Properties where
 
-open import Data.Sum
+open import Data.Sum.Base
 open import Data.Unit.Base
 open import Level using (0ℓ)
 open import Relation.Nullary
-open import Relation.Binary
+open import Relation.Binary hiding (Irrelevant)
 open import Relation.Binary.PropositionalEquality
+
+------------------------------------------------------------------------
+-- Irrelevancy
+
+⊤-irrelevant : Irrelevant ⊤
+⊤-irrelevant _ _ = refl
 
 ------------------------------------------------------------------------
 -- Equality
@@ -119,7 +125,7 @@ infix 4 _≤?_
 _≤?_ : Decidable _≤_
 _ ≤? _ = yes _
 {-# WARNING_ON_USAGE _≤?_
-"Warning: _≤_ was deprecated in v1.2.
+"Warning: _≤?_ was deprecated in v1.2.
 Please use _≟_  instead."
 #-}
 ≤-isPreorder : IsPreorder _≡_ _≤_

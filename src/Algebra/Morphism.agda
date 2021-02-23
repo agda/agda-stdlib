@@ -9,11 +9,11 @@
 module Algebra.Morphism where
 
 import Algebra.Morphism.Definitions as MorphismDefinitions
-open import Relation.Binary
 open import Algebra
 import Algebra.Properties.Group as GroupP
-open import Function
+open import Function hiding (Morphism)
 open import Level
+open import Relation.Binary
 import Relation.Binary.Reasoning.Setoid as EqR
 
 private
@@ -23,15 +23,22 @@ private
     B : Set b
 
 ------------------------------------------------------------------------
---
+-- Re-export
 
 module Definitions {a b ℓ₁} (A : Set a) (B : Set b) (_≈_ : Rel B ℓ₁) where
   open MorphismDefinitions A B _≈_ public
 
 open import Algebra.Morphism.Structures public
 
+
 ------------------------------------------------------------------------
--- Bundle homomorphisms
+-- DEPRECATED
+------------------------------------------------------------------------
+-- Please use the new definitions re-exported from
+-- `Algebra.Morphism.Structures` as continuing support for the below is
+-- no guaranteed.
+
+-- Version 1.5
 
 module _ {c₁ ℓ₁ c₂ ℓ₂}
          (From : Semigroup c₁ ℓ₁)
@@ -175,3 +182,28 @@ module _ {c₁ ℓ₁ c₂ ℓ₂}
 
   IsRingMorphism-syntax = IsRingMorphism
   syntax IsRingMorphism-syntax From To F = F Is From -Ring⟶ To
+
+{-# WARNING_ON_USAGE IsSemigroupMorphism
+"Warning: IsSemigroupMorphism was deprecated in v1.5.
+Please use IsSemigroupHomomorphism instead."
+#-}
+{-# WARNING_ON_USAGE IsMonoidMorphism
+"Warning: IsMonoidMorphism was deprecated in v1.5.
+Please use IsMonoidHomomorphism instead."
+#-}
+{-# WARNING_ON_USAGE IsCommutativeMonoidMorphism
+"Warning: IsCommutativeMonoidMorphism was deprecated in v1.5.
+Please use IsMonoidHomomorphism instead."
+#-}
+{-# WARNING_ON_USAGE IsIdempotentCommutativeMonoidMorphism
+"Warning: IsIdempotentCommutativeMonoidMorphism was deprecated in v1.5.
+Please use IsMonoidHomomorphism instead."
+#-}
+{-# WARNING_ON_USAGE IsGroupMorphism
+"Warning: IsGroupMorphism was deprecated in v1.5.
+Please use IsGroupHomomorphism instead."
+#-}
+{-# WARNING_ON_USAGE IsAbelianGroupMorphism
+"Warning: IsAbelianGroupMorphism was deprecated in v1.5.
+Please use IsGroupHomomorphism instead."
+#-}

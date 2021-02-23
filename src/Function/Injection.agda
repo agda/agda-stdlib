@@ -6,6 +6,11 @@
 
 {-# OPTIONS --without-K --safe #-}
 
+-- Note: use of the standard function hierarchy is encouraged. The
+-- module `Function` re-exports `Injective`, `IsInjection` and
+-- `Injection`. The alternative definitions found in this file will
+-- eventually be deprecated.
+
 module Function.Injection where
 
 open import Function as Fun using () renaming (_∘_ to _⟨∘⟩_)

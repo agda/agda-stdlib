@@ -10,6 +10,7 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Relation.Binary.Core
+open import Relation.Nullary using (¬_)
 
 module Algebra.Definitions
   {a ℓ} {A : Set a}   -- The underlying set
@@ -18,7 +19,7 @@ module Algebra.Definitions
 
 open import Algebra.Core
 open import Data.Product
-open import Data.Sum
+open import Data.Sum.Base
 
 ------------------------------------------------------------------------
 -- Properties of operations
@@ -117,6 +118,15 @@ RightCancellative _•_ = ∀ {x} y z → (y • x) ≈ (z • x) → y ≈ z
 
 Cancellative : Op₂ A → Set _
 Cancellative _•_ = (LeftCancellative _•_) × (RightCancellative _•_)
+
+AlmostLeftCancellative : A → Op₂ A → Set _
+AlmostLeftCancellative e _•_ = ∀ {x} y z → ¬ x ≈ e → (x • y) ≈ (x • z) → y ≈ z
+
+AlmostRightCancellative : A → Op₂ A → Set _
+AlmostRightCancellative e _•_ = ∀ {x} y z → ¬ x ≈ e → (y • x) ≈ (z • x) → y ≈ z
+
+AlmostCancellative : A → Op₂ A → Set _
+AlmostCancellative e _•_ = AlmostLeftCancellative e _•_ × AlmostRightCancellative e _•_
 
 Interchangable : Op₂ A → Op₂ A → Set _
 Interchangable _∘_ _∙_ = ∀ w x y z → ((w ∙ x) ∘ (y ∙ z)) ≈ ((w ∘ y) ∙ (x ∘ z))

@@ -12,15 +12,15 @@ open import Algebra
 
 module Algebra.Solver.CommutativeMonoid {m₁ m₂} (M : CommutativeMonoid m₁ m₂) where
 
-open import Data.Fin using (Fin; zero; suc)
-open import Data.Maybe as Maybe
+open import Data.Fin.Base using (Fin; zero; suc)
+open import Data.Maybe.Base as Maybe
   using (Maybe; decToMaybe; From-just; from-just)
 open import Data.Nat as ℕ using (ℕ; zero; suc; _+_)
 open import Data.Nat.GeneralisedArithmetic using (fold)
 open import Data.Product using (_×_; uncurry)
-open import Data.Vec using (Vec; []; _∷_; lookup; replicate)
+open import Data.Vec.Base using (Vec; []; _∷_; lookup; replicate)
 
-open import Function using (_∘_)
+open import Function.Base using (_∘_)
 
 import Relation.Binary.Reasoning.Setoid as EqReasoning
 import Relation.Binary.Reflection as Reflection
@@ -161,7 +161,7 @@ normalise-correct (e₁ ⊕ e₂) ρ =  begin
   ∎
 
 ------------------------------------------------------------------------
--- "Tactics"
+-- "Tactic.
 
 open module R = Reflection
                   setoid var ⟦_⟧ (⟦_⟧⇓ ∘ normalise) normalise-correct

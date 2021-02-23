@@ -10,14 +10,16 @@ module Data.Nat.DivMod where
 
 open import Agda.Builtin.Nat using (div-helper; mod-helper)
 
-open import Data.Fin using (Fin; toℕ; fromℕ<)
+open import Data.Fin.Base using (Fin; toℕ; fromℕ<)
 open import Data.Fin.Properties using (toℕ-fromℕ<)
-open import Data.Nat as Nat
+open import Data.Nat.Base as Nat
 open import Data.Nat.DivMod.Core
 open import Data.Nat.Divisibility.Core
+open import Data.Nat.Induction
 open import Data.Nat.Properties
 open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary.Decidable using (False)
+open import Relation.Nullary using (yes; no)
+open import Relation.Nullary.Decidable using (False; toWitnessFalse)
 
 open ≤-Reasoning
 
@@ -25,12 +27,12 @@ open ≤-Reasoning
 -- Definitions
 
 -- The division and modulus operations are only defined when the divisor
--- is non-zero. The proof of this is defined as an irrelevant
--- implict argument of type `False (divisor ≟ 0)`. This allows this
--- proof to be automatically inferred when the divisor is of the form
--- `suc n`, and hence minimises the number of these proofs that
+-- is non-zero. The proof of non-zero-ness is provided as an irrelevant
+-- implicit argument which is defined in terms of `⊤` and `⊥`. This
+-- allows it to be automatically inferred when the divisor is of the
+-- form `suc n`, and hence minimises the number of these proofs that
 -- need be passed around. You can therefore write `m / suc n` without
--- issue.
+-- further elaboration.
 
 infixl 7 _/_ _%_
 
@@ -115,6 +117,28 @@ m<[1+n%d]⇒m≤[n%d] {m} n (suc d-1) = k<1+a[modₕ]n⇒k≤a[modₕ]n 0 m n d-
   (m % d +  n % d + (n / d) * d)  % d ≡⟨ [m+kn]%n≡m%n (m % d + n % d) (n / d) d-1 ⟩
   (m % d +  n % d)                % d ∎
 
+%-distribˡ-* : ∀ m n d {≢0} → ((m * n) % d) {≢0} ≡ (((m % d) {≢0} * (n % d) {≢0}) % d) {≢0}
+%-distribˡ-* m n d@(suc d-1) = begin-equality
+  (m * n)                                             % d ≡⟨ cong (λ h → (h * n) % d) (m≡m%n+[m/n]*n m d-1) ⟩
+  ((m′ + k * d) * n)                                  % d ≡⟨ cong (λ h → ((m′ + k * d) * h) % d) (m≡m%n+[m/n]*n n d-1) ⟩
+  ((m′ + k * d) * (n′ + j * d))                       % d ≡⟨ cong (_% d) lemma ⟩
+  (m′ * n′ + (m′ * j + (n′ + j * d) * k) * d)         % d ≡⟨ [m+kn]%n≡m%n (m′ * n′) (m′ * j + (n′ + j * d) * k) d-1 ⟩
+  (m′ * n′)                                           % d ≡⟨⟩
+  ((m % d) * (n % d)) % d ∎
+  where
+  m′ = m % d
+  n′ = n % d
+  k = m / d
+  j = n / d
+  lemma : (m′ + k * d) * (n′ + j * d) ≡ m′ * n′ + (m′ * j + (n′ + j * d) * k) * d
+  lemma = begin-equality
+    (m′ + k * d) * (n′ + j * d)                       ≡⟨ *-distribʳ-+ (n′ + j * d) m′ (k * d) ⟩
+    m′ * (n′ + j * d) + (k * d) * (n′ + j * d)        ≡⟨ cong₂ _+_ (*-distribˡ-+ m′ n′ (j * d)) (*-comm (k * d) (n′ + j * d)) ⟩
+    (m′ * n′ + m′ * (j * d)) + (n′ + j * d) * (k * d) ≡⟨ +-assoc (m′ * n′) (m′ * (j * d)) ((n′ + j * d) * (k * d)) ⟩
+    m′ * n′ + (m′ * (j * d) + (n′ + j * d) * (k * d)) ≡˘⟨ cong (m′ * n′ +_) (cong₂ _+_ (*-assoc m′ j d) (*-assoc (n′ + j * d) k d)) ⟩
+    m′ * n′ + ((m′ * j) * d + ((n′ + j * d) * k) * d) ≡˘⟨ cong (m′ * n′ +_) (*-distribʳ-+ d (m′ * j) ((n′ + j * d) * k)) ⟩
+    m′ * n′ + (m′ * j + (n′ + j * d) * k) * d         ∎
+
 %-remove-+ˡ : ∀ {m} n {d} {≢0} → d ∣ m → ((m + n) % d) {≢0} ≡ (n % d) {≢0}
 %-remove-+ˡ {m} n {d@(suc d-1)} (divides p refl) = begin-equality
   (p * d + n) % d ≡⟨ cong (_% d) (+-comm (p * d) n) ⟩
@@ -174,6 +198,9 @@ m/n<m m n@(suc n-1) m≥1 n≥2 = *-cancelʳ-< {n} (m / n) m (begin-strict
 /-monoʳ-≤ : ∀ m {n o} {n≢0 o≢0} → n ≥ o → (m / n) {n≢0} ≤ (m / o) {o≢0}
 /-monoʳ-≤ _ {n≢0 = n≢0} {o≢0} n≥o = /-mono-≤ {o≢0 = n≢0} {o≢0} ≤-refl n≥o
 
+m<n⇒m/n≡0 : ∀ {m n n≢0} → m < n → (m / n) {n≢0} ≡ 0
+m<n⇒m/n≡0 {m} {suc n} {n≢0} (s≤s m≤n) = divₕ-finish n m n m≤n
+
 m≥n⇒m/n>0 : ∀ {m n n≢0} → m ≥ n → (m / n) {n≢0} > 0
 m≥n⇒m/n>0 {m@(suc m-1)} {n@(suc n-1)} m≥n = begin
   1     ≡⟨ sym (n/n≡1 m) ⟩
@@ -205,6 +232,30 @@ m≥n⇒m/n>0 {m@(suc m-1)} {n@(suc n-1)} m≥n = begin
   (n + m * n) / d     ≡⟨ +-distrib-/-∣ˡ _ d∣n ⟩
   n / d + (m * n) / d ≡⟨ cong (n / d +_) (*-/-assoc m d∣n) ⟩
   n / d + m * (n / d) ∎
+
+m/n≡1+[m∸n]/n : ∀ {m n n≢0} → m ≥ n → (m / n) {n≢0} ≡ 1 + ((m ∸ n) / n) {n≢0}
+m/n≡1+[m∸n]/n {m@(suc m-1)} {n@(suc n-1)} {n≢0} m≥n = begin-equality
+  m / n                              ≡⟨⟩
+  div-helper zero n-1 m n-1          ≡⟨ divₕ-restart n-1 m n-1 m≥n ⟩
+  div-helper 1 n-1 (m ∸ n) n-1       ≡⟨ divₕ-extractAcc 1 n-1 (m ∸ n) n-1 ⟩
+  1 + (div-helper 0 n-1 (m ∸ n) n-1) ≡⟨⟩
+  1 + (m ∸ n) / n                    ∎
+
+/-cancelˡ : ∀ m n o {o≢0} {mo≢0} → ((m * n) / (m * o)) {mo≢0} ≡ (n / o) {o≢0}
+/-cancelˡ m@(suc m-1) n o {o≢0} = /-cancelˡ-Acc (<-wellFounded n)
+  where
+  /-cancelˡ-Acc : ∀ {n} → Acc _<_ n → (m * n) / (m * o) ≡ n / o
+  /-cancelˡ-Acc {n} (acc rec) with n <? o
+  ... | yes n<o = trans (m<n⇒m/n≡0 (*-monoʳ-< m-1 n<o)) (sym (m<n⇒m/n≡0 n<o))
+  ... | no ¬n<o = begin-equality
+    (m * n) / (m * o)             ≡⟨ m/n≡1+[m∸n]/n (*-monoʳ-≤ m (≮⇒≥ ¬n<o)) ⟩
+    1 + (m * n ∸ m * o) / (m * o) ≡⟨ cong suc (/-congˡ {o = m * o} (sym (*-distribˡ-∸ m n o))) ⟩
+    1 + (m * (n ∸ o)) / (m * o)   ≡⟨ cong suc (/-cancelˡ-Acc (rec (n ∸ o) n∸o<n)) ⟩
+    1 + (n ∸ o) / o               ≡˘⟨ cong₂ _+_ (n/n≡1 o) refl ⟩
+    o / o + (n ∸ o) / o           ≡˘⟨ +-distrib-/-∣ˡ (n ∸ o) (divides 1 ((sym (*-identityˡ o)))) ⟩
+    (o + (n ∸ o)) / o             ≡⟨ /-congˡ {o = o} (m+[n∸m]≡n (≮⇒≥ ¬n<o)) ⟩
+    n / o                         ∎
+    where n∸o<n = ∸-monoʳ-< (n≢0⇒n>0 (toWitnessFalse o≢0)) (≮⇒≥ ¬n<o)
 
 ------------------------------------------------------------------------
 --  A specification of integer division.

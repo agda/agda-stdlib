@@ -10,31 +10,37 @@ module Data.List.Membership.Setoid.Properties where
 
 open import Algebra using (Op₂; Selective)
 open import Data.Bool.Base using (true; false)
-open import Data.Fin using (Fin; zero; suc)
-open import Data.List
+open import Data.Fin.Base using (Fin; zero; suc)
+open import Data.List.Base
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Relation.Unary.All as All using (All)
 import Data.List.Relation.Unary.Any.Properties as Any
 import Data.List.Membership.Setoid as Membership
 import Data.List.Relation.Binary.Equality.Setoid as Equality
 import Data.List.Relation.Unary.Unique.Setoid as Unique
-open import Data.Nat using (suc; z≤n; s≤s; _≤_; _<_)
+open import Data.Nat.Base using (suc; z≤n; s≤s; _≤_; _<_)
 open import Data.Nat.Properties using (≤-trans; n≤1+n)
-open import Data.Product as Prod using (∃; _×_; _,_ ; ∃₂)
-open import Data.Sum using (_⊎_; inj₁; inj₂)
-open import Function using (_$_; flip; _∘_; id)
+open import Data.Product as Prod using (∃; _×_; _,_ ; ∃₂; proj₁; proj₂)
+open import Data.Product.Relation.Binary.Pointwise.NonDependent using (_×ₛ_)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
+open import Function.Base using (_$_; flip; _∘_; id)
+open import Level using (Level)
 open import Relation.Binary as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Unary as U using (Decidable; Pred)
+open import Relation.Nullary using (¬_; does; _because_; yes; no)
 open import Relation.Nullary.Reflects using (invert)
-open import Relation.Nullary using (¬_; does; _because_)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Negation using (¬?; contradiction)
 open Setoid using (Carrier)
+
+private
+  variable
+    c c₁ c₂ c₃ p ℓ ℓ₁ ℓ₂ ℓ₃ : Level
 
 ------------------------------------------------------------------------
 -- Equality properties
 
-module _ {c ℓ} (S : Setoid c ℓ) where
+module _ (S : Setoid c ℓ) where
 
   open Setoid S
   open Equality S
@@ -57,7 +63,7 @@ module _ {c ℓ} (S : Setoid c ℓ) where
 ------------------------------------------------------------------------
 -- Irrelevance
 
-module _ {c ℓ} (S : Setoid c ℓ) where
+module _ (S : Setoid c ℓ) where
 
   open Setoid S
   open Unique S
@@ -80,7 +86,7 @@ module _ {c ℓ} (S : Setoid c ℓ) where
 ------------------------------------------------------------------------
 -- mapWith∈
 
-module _ {c₁ c₂ ℓ₁ ℓ₂} (S₁ : Setoid c₁ ℓ₁) (S₂ : Setoid c₂ ℓ₂) where
+module _ (S₁ : Setoid c₁ ℓ₁) (S₂ : Setoid c₂ ℓ₂) where
 
   open Setoid S₁ renaming (Carrier to A₁; _≈_ to _≈₁_; refl to refl₁)
   open Setoid S₂ renaming (Carrier to A₂; _≈_ to _≈₂_; refl to refl₂)
@@ -105,7 +111,7 @@ module _ {c₁ c₂ ℓ₁ ℓ₂} (S₁ : Setoid c₁ ℓ₁) (S₂ : Setoid c�
   mapWith∈≗map f (x ∷ xs) = refl₂ ∷ mapWith∈≗map f xs
 
 
-module _ {c ℓ} (S : Setoid c ℓ) where
+module _ (S : Setoid c ℓ) where
 
   open Setoid S
   open Membership S
@@ -118,7 +124,7 @@ module _ {c ℓ} (S : Setoid c ℓ) where
 ------------------------------------------------------------------------
 -- map
 
-module _ {c₁ c₂ ℓ₁ ℓ₂} (S₁ : Setoid c₁ ℓ₁) (S₂ : Setoid c₂ ℓ₂) where
+module _ (S₁ : Setoid c₁ ℓ₁) (S₂ : Setoid c₂ ℓ₂) where
 
   open Setoid S₁ renaming (Carrier to A₁; _≈_ to _≈₁_; refl to refl₁)
   open Setoid S₂ renaming (Carrier to A₂; _≈_ to _≈₂_)
@@ -142,7 +148,7 @@ module _ {c₁ c₂ ℓ₁ ℓ₂} (S₁ : Setoid c₁ ℓ₁) (S₂ : Setoid c�
 ------------------------------------------------------------------------
 -- _++_
 
-module _ {c ℓ} (S : Setoid c ℓ) where
+module _ (S : Setoid c ℓ) where
 
   open Membership S using (_∈_)
   open Setoid S
@@ -169,7 +175,7 @@ module _ {c ℓ} (S : Setoid c ℓ) where
 ------------------------------------------------------------------------
 -- concat
 
-module _ {c ℓ} (S : Setoid c ℓ) where
+module _ (S : Setoid c ℓ) where
 
   open Setoid S using (_≈_)
   open Membership S using (_∈_)
@@ -190,9 +196,54 @@ module _ {c ℓ} (S : Setoid c ℓ) where
   ... | xs , t , s = xs , s , t
 
 ------------------------------------------------------------------------
+-- cartesianProductWith
+
+module _ (S₁ : Setoid c₁ ℓ₁) (S₂ : Setoid c₂ ℓ₂) (S₃ : Setoid c₃ ℓ₃) where
+
+  open Setoid S₁ renaming (_≈_ to _≈₁_; refl to refl₁)
+  open Setoid S₂ renaming (_≈_ to _≈₂_)
+  open Setoid S₃ renaming (_≈_ to _≈₃_)
+  open Membership S₁ renaming (_∈_ to _∈₁_)
+  open Membership S₂ renaming (_∈_ to _∈₂_)
+  open Membership S₃ renaming (_∈_ to _∈₃_)
+
+  ∈-cartesianProductWith⁺ : ∀ {f} → f Preserves₂ _≈₁_ ⟶ _≈₂_ ⟶ _≈₃_ →
+                            ∀ {xs ys a b} → a ∈₁ xs → b ∈₂ ys →
+                            f a b ∈₃ cartesianProductWith f xs ys
+  ∈-cartesianProductWith⁺ pres = Any.cartesianProductWith⁺ _ pres
+
+  ∈-cartesianProductWith⁻ : ∀ f xs ys {v} → v ∈₃ cartesianProductWith f xs ys →
+                            ∃₂ λ a b → a ∈₁ xs × b ∈₂ ys × v ≈₃ f a b
+  ∈-cartesianProductWith⁻ f (x ∷ xs) ys v∈c with ∈-++⁻ S₃ (map (f x) ys) v∈c
+  ∈-cartesianProductWith⁻ f (x ∷ xs) ys v∈c | inj₁ v∈map with ∈-map⁻ S₂ S₃ v∈map
+  ... | (b , b∈ys , v≈fxb) = x , b , here refl₁ , b∈ys , v≈fxb
+  ∈-cartesianProductWith⁻ f (x ∷ xs) ys v∈c | inj₂ v∈com with ∈-cartesianProductWith⁻ f xs ys v∈com
+  ... | (a , b , a∈xs , b∈ys , v≈fab) = a , b , there a∈xs , b∈ys , v≈fab
+
+------------------------------------------------------------------------
+-- cartesianProduct
+
+module _ (S₁ : Setoid c₁ ℓ₁) (S₂ : Setoid c₂ ℓ₂) where
+
+  open Setoid S₁ renaming (Carrier to A)
+  open Setoid S₂ renaming (Carrier to B)
+  open Membership S₁ renaming (_∈_ to _∈₁_)
+  open Membership S₂ renaming (_∈_ to _∈₂_)
+  open Membership (S₁ ×ₛ S₂) renaming (_∈_ to _∈₁₂_)
+
+  ∈-cartesianProduct⁺ : ∀ {x y xs ys} → x ∈₁ xs → y ∈₂ ys →
+                        (x , y) ∈₁₂ cartesianProduct xs ys
+  ∈-cartesianProduct⁺ = Any.cartesianProduct⁺
+
+  ∈-cartesianProduct⁻ : ∀ xs ys {xy@(x , y) : A × B} →
+                        xy ∈₁₂ cartesianProduct xs ys →
+                        x ∈₁ xs × y ∈₂ ys
+  ∈-cartesianProduct⁻ xs ys = Any.cartesianProduct⁻ xs ys
+
+------------------------------------------------------------------------
 -- applyUpTo
 
-module _ {c ℓ} (S : Setoid c ℓ) where
+module _ (S : Setoid c ℓ) where
 
   open Setoid S using (_≈_; refl)
   open Membership S using (_∈_)
@@ -205,9 +256,19 @@ module _ {c ℓ} (S : Setoid c ℓ) where
   ∈-applyUpTo⁻ = Any.applyUpTo⁻
 
 ------------------------------------------------------------------------
+-- applyDownFrom
+
+  ∈-applyDownFrom⁺ : ∀ f {i n} → i < n → f i ∈ applyDownFrom f n
+  ∈-applyDownFrom⁺ f = Any.applyDownFrom⁺ f refl
+
+  ∈-applyDownFrom⁻ : ∀ {v} f {n} → v ∈ applyDownFrom f n →
+                     ∃ λ i → i < n × v ≈ f i
+  ∈-applyDownFrom⁻ = Any.applyDownFrom⁻
+
+------------------------------------------------------------------------
 -- tabulate
 
-module _ {c ℓ} (S : Setoid c ℓ) where
+module _ (S : Setoid c ℓ) where
 
   open Setoid S using (_≈_; refl) renaming (Carrier to A)
   open Membership S using (_∈_)
@@ -222,7 +283,7 @@ module _ {c ℓ} (S : Setoid c ℓ) where
 ------------------------------------------------------------------------
 -- filter
 
-module _ {c ℓ p} (S : Setoid c ℓ) {P : Pred (Carrier S) p}
+module _ (S : Setoid c ℓ) {P : Pred (Carrier S) p}
          (P? : Decidable P) (resp : P Respects (Setoid._≈_ S)) where
 
   open Setoid S using (_≈_; sym)
@@ -244,9 +305,30 @@ module _ {c ℓ p} (S : Setoid c ℓ) {P : Pred (Carrier S) p}
   ...   | there v∈fxs = Prod.map there id (∈-filter⁻ v∈fxs)
 
 ------------------------------------------------------------------------
+-- derun and deduplicate
+
+module _ (S : Setoid c ℓ) {R : Rel (Carrier S) ℓ₂} (R? : B.Decidable R) where
+
+  open Setoid S using (_≈_)
+  open Membership S using (_∈_)
+
+  ∈-derun⁺ : _≈_ Respectsʳ R → ∀ {xs z} → z ∈ xs → z ∈ derun R? xs
+  ∈-derun⁺ ≈-resp-R z∈xs = Any.derun⁺ R? ≈-resp-R z∈xs
+
+  ∈-deduplicate⁺ : _≈_ Respectsʳ (flip R) → ∀ {xs z} →
+                   z ∈ xs → z ∈ deduplicate R? xs
+  ∈-deduplicate⁺ ≈-resp-R z∈xs = Any.deduplicate⁺ R? ≈-resp-R z∈xs
+
+  ∈-derun⁻ : ∀ xs {z} → z ∈ derun R? xs → z ∈ xs
+  ∈-derun⁻ xs z∈derun[R,xs] = Any.derun⁻ R? z∈derun[R,xs]
+
+  ∈-deduplicate⁻ : ∀ xs {z} → z ∈ deduplicate R? xs → z ∈ xs
+  ∈-deduplicate⁻ xs z∈dedup[R,xs] = Any.deduplicate⁻ R? z∈dedup[R,xs]
+
+------------------------------------------------------------------------
 -- length
 
-module _ {c ℓ} (S : Setoid c ℓ) where
+module _ (S : Setoid c ℓ) where
 
   open Membership S using (_∈_)
 
@@ -257,7 +339,7 @@ module _ {c ℓ} (S : Setoid c ℓ) where
 ------------------------------------------------------------------------
 -- lookup
 
-module _ {c ℓ} (S : Setoid c ℓ) where
+module _ (S : Setoid c ℓ) where
 
   open Setoid S using (refl)
   open Membership S using (_∈_)
@@ -269,7 +351,7 @@ module _ {c ℓ} (S : Setoid c ℓ) where
 ------------------------------------------------------------------------
 -- foldr
 
-module _ {c ℓ} (S : Setoid c ℓ) {_•_ : Op₂ (Carrier S)} where
+module _ (S : Setoid c ℓ) {_•_ : Op₂ (Carrier S)} where
 
   open Setoid S using (_≈_; refl; sym; trans)
   open Membership S using (_∈_)
@@ -283,11 +365,10 @@ module _ {c ℓ} (S : Setoid c ℓ) {_•_ : Op₂ (Carrier S)} where
   ...   | inj₁ f≈i  = inj₁ (trans x•f≈f f≈i)
   ...   | inj₂ f∈xs = inj₂ (∈-resp-≈ S (sym x•f≈f) (there f∈xs))
 
-
 ------------------------------------------------------------------------
 -- _∷=_
 
-module _ {c ℓ} (S : Setoid c ℓ) where
+module _ (S : Setoid c ℓ) where
 
   open Setoid S
   open Membership S

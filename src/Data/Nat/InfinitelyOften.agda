@@ -11,7 +11,7 @@ module Data.Nat.InfinitelyOften where
 open import Category.Monad using (RawMonad)
 open import Level using (0ℓ)
 open import Data.Empty using (⊥-elim)
-open import Data.Nat
+open import Data.Nat.Base
 open import Data.Nat.Properties
 open import Data.Product as Prod hiding (map)
 open import Data.Sum hiding (map)
@@ -21,6 +21,8 @@ open import Relation.Nullary using (¬_)
 open import Relation.Nullary.Negation using (¬¬-Monad; call/cc)
 open import Relation.Unary using (Pred; _∪_; _⊆_)
 open RawMonad (¬¬-Monad {p = 0ℓ})
+
+infixr 1 _∪-Fin_
 
 -- Only true finitely often.
 

@@ -10,8 +10,8 @@ module Data.Container.Indexed.Combinator where
 
 open import Axiom.Extensionality.Propositional using (Extensionality)
 open import Data.Container.Indexed
-open import Data.Empty using (⊥; ⊥-elim)
-open import Data.Unit.Base using (⊤)
+open import Data.Empty.Polymorphic using (⊥; ⊥-elim)
+open import Data.Unit.Polymorphic.Base using (⊤)
 open import Data.Product as Prod hiding (Σ) renaming (_×_ to _⟨×⟩_)
 open import Data.Sum renaming (_⊎_ to _⟨⊎⟩_)
 open import Function as F hiding (id; const) renaming (_∘_ to _⟨∘⟩_)
@@ -29,13 +29,13 @@ open import Relation.Binary.PropositionalEquality as P
 -- Identity.
 
 id : ∀ {o c r} {O : Set o} → Container O O c r
-id = F.const (Lift _ ⊤) ◃ (λ _ → Lift _ ⊤) / (λ {o} _ _ → o)
+id = F.const ⊤ ◃ F.const ⊤ / (λ {o} _ _ → o)
 
 -- Constant.
 
 const : ∀ {i o c r} {I : Set i} {O : Set o} →
         Pred O c → Container I O c r
-const X = X ◃ (λ _ → Lift _ ⊥) / λ _ → ⊥-elim ⟨∘⟩ lower
+const X = X ◃ F.const ⊥ / F.const ⊥-elim
 
 -- Duality.
 
@@ -165,10 +165,10 @@ module Constant (ext : ∀ {ℓ} → Extensionality ℓ ℓ) where
     to = proj₁
 
     from : X ⊆ ⟦ const X ⟧ Y
-    from = < F.id , F.const (⊥-elim ⟨∘⟩ lower) >
+    from = < F.id , F.const ⊥-elim >
 
     to∘from : _
-    to∘from xs = P.cong (proj₁ xs ,_) (ext (⊥-elim ⟨∘⟩ lower))
+    to∘from xs = P.cong (proj₁ xs ,_) (ext ⊥-elim)
 
 module Duality where
 

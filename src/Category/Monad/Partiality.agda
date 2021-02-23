@@ -13,31 +13,38 @@ open import Category.Monad
 open import Data.Bool.Base using (Bool; false; true)
 open import Data.Nat using (ℕ; zero; suc; _+_)
 open import Data.Product as Prod hiding (map)
-open import Data.Sum using (_⊎_; inj₁; inj₂)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base
 open import Function.Equivalence using (_⇔_; equivalence)
-open import Level using (_⊔_)
-open import Relation.Binary as B hiding (Rel)
+open import Level using (Level; _⊔_)
+open import Relation.Binary as B hiding (Rel; _⇔_)
 import Relation.Binary.Properties.Setoid as SetoidProperties
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Nullary
 open import Relation.Nullary.Decidable hiding (map)
 open import Relation.Nullary.Negation
 
+private
+  variable
+    a b c f s ℓ : Level
+    A : Set a
+    B : Set b
+    C : Set c
+
 ------------------------------------------------------------------------
 -- The partiality monad
 
-data _⊥ {a} (A : Set a) : Set a where
+data _⊥ (A : Set a) : Set a where
   now   : (x : A) → A ⊥
   later : (x : ∞ (A ⊥)) → A ⊥
 
-monad : ∀ {f} → RawMonad {f = f} _⊥
+monad : RawMonad {f = f} _⊥
 monad = record
   { return = now
   ; _>>=_  = _>>=_
   }
   where
-  _>>=_ : ∀ {A B} → A ⊥ → (A → B ⊥) → B ⊥
+  _>>=_ : A ⊥ → (A → B ⊥) → B ⊥
   now x   >>= f = f x
   later x >>= f = later (♯ (♭ x >>= f))
 
@@ -45,19 +52,19 @@ private module M {f} = RawMonad (monad {f})
 
 -- Non-termination.
 
-never : ∀ {a} {A : Set a} → A ⊥
+never : A ⊥
 never = later (♯ never)
 
 -- run x for n steps peels off at most n "later" constructors from x.
 
-run_for_steps : ∀ {a} {A : Set a} → A ⊥ → ℕ → A ⊥
+run_for_steps : A ⊥ → ℕ → A ⊥
 run now   x for n     steps = now x
 run later x for zero  steps = later x
 run later x for suc n steps = run ♭ x for n steps
 
 -- Is the computation done?
 
-isNow : ∀ {a} {A : Set a} → A ⊥ → Bool
+isNow : A ⊥ → Bool
 isNow (now x)   = true
 isNow (later x) = false
 
@@ -100,7 +107,7 @@ Equality k = False (k ≟-Kind other geq)
 ------------------------------------------------------------------------
 -- Equality/ordering
 
-module Equality {a ℓ} {A : Set a} -- The "return type".
+module Equality {A : Set a} -- The "return type".
                 (_∼_ : A → A → Set ℓ) where
 
   -- The three relations.
@@ -155,7 +162,7 @@ module Equality {a ℓ} {A : Set a} -- The "return type".
 ------------------------------------------------------------------------
 -- Lemmas relating the three relations
 
-module _ {a ℓ} {A : Set a} {_∼_ : A → A → Set ℓ} where
+module _ {A : Set a} {_∼_ : A → A → Set ℓ} where
 
   open Equality _∼_ using (Rel; _≅_; _≳_; _≲_; _≈_; _⇓[_]_; _⇑[_])
   open Equality.Rel
@@ -437,11 +444,11 @@ module _ {a ℓ} {A : Set a} {_∼_ : A → A → Set ℓ} where
 
   -- Never is a left and right "zero" of bind.
 
-  left-zero : {B : Set a} (f : B → A ⊥) → let open M in
+  left-zero : (f : B → A ⊥) → let open M in
               (never >>= f) ≅ never
   left-zero f = later (♯ left-zero f)
 
-  right-zero : ∀ {B} (x : B ⊥) → let open M in
+  right-zero : (x : B ⊥) → let open M in
                (x >>= λ _ → never) ≅ never
   right-zero (later x) = later (♯ right-zero (♭ x))
   right-zero (now   x) = never≅never
@@ -452,7 +459,7 @@ module _ {a ℓ} {A : Set a} {_∼_ : A → A → Set ℓ} where
   -- underlying relation).
 
   left-identity : Reflexive _∼_ →
-                  ∀ {B} (x : B) (f : B → A ⊥) → let open M in
+                  (x : B) (f : B → A ⊥) → let open M in
                   (now x >>= f) ≅ f x
   left-identity refl-∼ x f = Equivalence.refl refl-∼
 
@@ -465,14 +472,14 @@ module _ {a ℓ} {A : Set a} {_∼_ : A → A → Set ℓ} where
   -- Bind is associative (for a reflexive underlying relation).
 
   associative : Reflexive _∼_ →
-                ∀ {B C} (x : C ⊥) (f : C → B ⊥) (g : B → A ⊥) →
+                (x : C ⊥) (f : C → B ⊥) (g : B → A ⊥) →
                 let open M in
                 (x >>= f >>= g) ≅ (x >>= λ y → f y >>= g)
   associative refl-∼ (now x)   f g = Equivalence.refl refl-∼
   associative refl-∼ (later x) f g =
     later (♯ associative refl-∼ (♭ x) f g)
 
-module _ {s ℓ} {A B : Set s}
+module _ {A B : Set s}
          {_∼A_ : A → A → Set ℓ}
          {_∼B_ : B → B → Set ℓ} where
 
@@ -538,7 +545,7 @@ module _ {s ℓ} {A B : Set s}
                                           now z ∎)
                                     , ≳⇒ fz⇑)
 
-module _ {ℓ} {A B : Set ℓ} {_∼_ : B → B → Set ℓ} where
+module _ {A B : Set ℓ} {_∼_ : B → B → Set ℓ} where
 
   open Equality
 
@@ -564,23 +571,23 @@ module Workaround {a} where
   infixl 1 _>>=_
 
   data _⊥P : Set a → Set (Level.suc a) where
-    now   : ∀ {A} (x : A) → A ⊥P
-    later : ∀ {A} (x : ∞ (A ⊥P)) → A ⊥P
-    _>>=_ : ∀ {A B} (x : A ⊥P) (f : A → B ⊥P) → B ⊥P
+    now   : (x : A) → A ⊥P
+    later : (x : ∞ (A ⊥P)) → A ⊥P
+    _>>=_ : (x : A ⊥P) (f : A → B ⊥P) → B ⊥P
 
   private
 
     data _⊥W : Set a → Set (Level.suc a) where
-      now   : ∀ {A} (x : A) → A ⊥W
-      later : ∀ {A} (x : A ⊥P) → A ⊥W
+      now   : (x : A) → A ⊥W
+      later : (x : A ⊥P) → A ⊥W
 
     mutual
 
-      _>>=W_ : ∀ {A B} → A ⊥W → (A → B ⊥P) → B ⊥W
+      _>>=W_ : A ⊥W → (A → B ⊥P) → B ⊥W
       now   x >>=W f = whnf (f x)
       later x >>=W f = later (x >>= f)
 
-      whnf : ∀ {A} → A ⊥P → A ⊥W
+      whnf : A ⊥P → A ⊥W
       whnf (now   x) = now x
       whnf (later x) = later (♭ x)
       whnf (x >>= f) = whnf x >>=W f
@@ -589,11 +596,11 @@ module Workaround {a} where
 
     private
 
-      ⟦_⟧W : ∀ {A} → A ⊥W → A ⊥
+      ⟦_⟧W : A ⊥W → A ⊥
       ⟦ now   x ⟧W = now x
       ⟦ later x ⟧W = later (♯ ⟦ x ⟧P)
 
-    ⟦_⟧P : ∀ {A} → A ⊥P → A ⊥
+    ⟦_⟧P : A ⊥P → A ⊥
     ⟦ x ⟧P = ⟦ whnf x ⟧W
 
   -- The definitions above make sense. ⟦_⟧P is homomorphic with
@@ -605,23 +612,22 @@ module Workaround {a} where
       open module Eq {A : Set a} = Equality  {A = A} _≡_
       open module R  {A : Set a} = Reasoning (P.isEquivalence {A = A})
 
-    now-hom : ∀ {A} (x : A) → ⟦ now x ⟧P ≅ now x
+    now-hom : (x : A) → ⟦ now x ⟧P ≅ now x
     now-hom x = now x ∎
 
-    later-hom : ∀ {A} (x : ∞ (A ⊥P)) →
-                ⟦ later x ⟧P ≅ later (♯ ⟦ ♭ x ⟧P)
+    later-hom : (x : ∞ (A ⊥P)) → ⟦ later x ⟧P ≅ later (♯ ⟦ ♭ x ⟧P)
     later-hom x = later (♯ (⟦ ♭ x ⟧P ∎))
 
     mutual
 
       private
 
-        >>=-homW : ∀ {A B} (x : B ⊥W) (f : B → A ⊥P) →
+        >>=-homW : (x : B ⊥W) (f : B → A ⊥P) →
                    ⟦ x >>=W f ⟧W ≅ M._>>=_ ⟦ x ⟧W (λ y → ⟦ f y ⟧P)
         >>=-homW (now   x) f = ⟦ f x ⟧P ∎
         >>=-homW (later x) f = later (♯ >>=-hom x f)
 
-      >>=-hom : ∀ {A B} (x : B ⊥P) (f : B → A ⊥P) →
+      >>=-hom : (x : B ⊥P) (f : B → A ⊥P) →
                 ⟦ x >>= f ⟧P ≅ M._>>=_ ⟦ x ⟧P (λ y → ⟦ f y ⟧P)
       >>=-hom x f = >>=-homW (whnf x) f
 
@@ -877,7 +883,7 @@ module AlternativeEquality {a ℓ} where
 -- Bind is "idempotent".
 
 idempotent :
-  ∀ {ℓ} {A : Set ℓ} (B : Setoid ℓ ℓ) →
+  (B : Setoid ℓ ℓ) →
   let open M; open Setoid B using (_≈_; Carrier); open Equality _≈_ in
   (x : A ⊥) (f : A → A → Carrier ⊥) →
   (x >>= λ y′ → x >>= λ y″ → f y′ y″) ≳ (x >>= λ y′ → f y′ y′)

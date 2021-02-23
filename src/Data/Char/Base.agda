@@ -13,6 +13,7 @@ import Data.Nat.Base as ℕ
 open import Function
 open import Relation.Binary using (Rel)
 open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.Construct.Closure.Reflexive
 
 ------------------------------------------------------------------------
 -- Re-export the type, and renamed primitives
@@ -39,13 +40,20 @@ open import Agda.Builtin.Char public using ( Char )
 open import Agda.Builtin.String public using ()
   renaming ( primShowChar to show )
 
-infix 4 _≈_
+infix 4 _≈_ _≉_
 _≈_ : Rel Char zero
 _≈_ = _≡_ on toℕ
+
+_≉_ : Rel Char zero
+_≉_ = _≢_ on toℕ
 
 infix 4 _<_
 _<_ : Rel Char zero
 _<_ = ℕ._<_ on toℕ
+
+infix 4 _≤_
+_≤_ : Rel Char zero
+_≤_ = ReflClosure _<_
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

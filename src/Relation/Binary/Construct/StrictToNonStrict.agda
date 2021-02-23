@@ -18,9 +18,9 @@ module Relation.Binary.Construct.StrictToNonStrict
   where
 
 open import Data.Product
-open import Data.Sum
+open import Data.Sum.Base
 open import Data.Empty
-open import Function
+open import Function.Base
 open import Relation.Binary.Consequences
 open import Relation.Nullary
 open import Relation.Nullary.Sum using (_⊎-dec_)
@@ -29,6 +29,7 @@ open import Relation.Nullary.Sum using (_⊎-dec_)
 -- Conversion
 
 -- _<_ can be turned into _≤_ as follows:
+infix 4  _≤_
 
 _≤_ : Rel A _
 x ≤ y = (x < y) ⊎ (x ≈ y)
@@ -76,12 +77,12 @@ trans eq (respʳ , respˡ) <-trans = tr
 ≤-<-trans sym trans respˡ (inj₂ x≈y) y<z = respˡ (sym x≈y) y<z
 
 ≤-respʳ-≈ : Transitive _≈_ → _<_ Respectsʳ _≈_ → _≤_ Respectsʳ _≈_
-≤-respʳ-≈ trans respʳ y'≈y (inj₁ x<y') = inj₁ (respʳ y'≈y x<y')
-≤-respʳ-≈ trans respʳ y'≈y (inj₂ x≈y') = inj₂ (trans x≈y' y'≈y)
+≤-respʳ-≈ trans respʳ y′≈y (inj₁ x<y′) = inj₁ (respʳ y′≈y x<y′)
+≤-respʳ-≈ trans respʳ y′≈y (inj₂ x≈y′) = inj₂ (trans x≈y′ y′≈y)
 
 ≤-respˡ-≈ : Symmetric _≈_ → Transitive _≈_ → _<_ Respectsˡ _≈_ → _≤_ Respectsˡ _≈_
-≤-respˡ-≈ sym trans respˡ x'≈x (inj₁ x'<y) = inj₁ (respˡ x'≈x x'<y)
-≤-respˡ-≈ sym trans respˡ x'≈x (inj₂ x'≈y) = inj₂ (trans (sym x'≈x) x'≈y)
+≤-respˡ-≈ sym trans respˡ x′≈x (inj₁ x′<y) = inj₁ (respˡ x′≈x x′<y)
+≤-respˡ-≈ sym trans respˡ x′≈x (inj₂ x′≈y) = inj₂ (trans (sym x′≈x) x′≈y)
 
 ≤-resp-≈ : IsEquivalence _≈_ → _<_ Respects₂ _≈_ → _≤_ Respects₂ _≈_
 ≤-resp-≈ eq (respʳ , respˡ) = ≤-respʳ-≈ Eq.trans respʳ , ≤-respˡ-≈ Eq.sym Eq.trans respˡ
@@ -96,8 +97,8 @@ total <-tri x y with <-tri x y
 decidable : Decidable _≈_ → Decidable _<_ → Decidable _≤_
 decidable ≈-dec <-dec x y = <-dec x y ⊎-dec ≈-dec x y
 
-decidable' : Trichotomous _≈_ _<_ → Decidable _≤_
-decidable' compare x y with compare x y
+decidable′ : Trichotomous _≈_ _<_ → Decidable _≤_
+decidable′ compare x y with compare x y
 ... | tri< x<y _   _ = yes (inj₁ x<y)
 ... | tri≈ _   x≈y _ = yes (inj₂ x≈y)
 ... | tri> x≮y x≉y _ = no [ x≮y , x≉y ]′
@@ -139,6 +140,22 @@ isDecTotalOrder : IsStrictTotalOrder _≈_ _<_ → IsDecTotalOrder _≈_ _≤_
 isDecTotalOrder STO = record
   { isTotalOrder = isTotalOrder STO
   ; _≟_          = S._≟_
-  ; _≤?_         = decidable' S.compare
+  ; _≤?_         = decidable′ S.compare
   }
   where module S = IsStrictTotalOrder STO
+
+
+------------------------------------------------------------------------
+-- DEPRECATED
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 1.4
+
+decidable' : Trichotomous _≈_ _<_ → Decidable _≤_
+decidable' = decidable′
+{-# WARNING_ON_USAGE decidable'
+"Warning: decidable' (ending in an apostrophe) was deprecated in v1.4.
+Please use decidable′ (ending in a prime) instead."
+#-}

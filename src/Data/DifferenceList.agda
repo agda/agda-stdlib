@@ -72,10 +72,10 @@ map f xs = λ k → List.map f (toList xs) ⟨ List._++_ ⟩ k
 -- concat is linear in the length of the outer list.
 
 concat : DiffList (DiffList A) → DiffList A
-concat xs = concat' (toList xs)
+concat xs = concat′ (toList xs)
   where
-  concat' : List (DiffList A) → DiffList A
-  concat' = List.foldr _++_ []
+  concat′ : List (DiffList A) → DiffList A
+  concat′ = List.foldr _++_ []
 
 take : ℕ → DiffList A → DiffList A
 take n = lift (List.take n)

@@ -13,7 +13,7 @@ module Relation.Binary.Properties.Setoid {a ℓ} (S : Setoid a ℓ) where
 open Setoid S
 
 open import Data.Product using (_,_)
-open import Function using (_∘_; _$_)
+open import Function.Base using (_∘_; _$_)
 open import Relation.Nullary using (¬_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
@@ -39,10 +39,10 @@ preorder = record
 ≉-sym x≉y =  x≉y ∘ sym
 
 ≉-respˡ : _≉_ Respectsˡ _≈_
-≉-respˡ x≈x' x≉y = x≉y ∘ trans x≈x'
+≉-respˡ x≈x′ x≉y = x≉y ∘ trans x≈x′
 
 ≉-respʳ : _≉_ Respectsʳ _≈_
-≉-respʳ y≈y' x≉y x≈y' = x≉y $ trans x≈y' (sym y≈y')
+≉-respʳ y≈y′ x≉y x≈y′ = x≉y $ trans x≈y′ (sym y≈y′)
 
 ≉-resp₂ : _≉_ Respects₂ _≈_
 ≉-resp₂ = ≉-respʳ , ≉-respˡ

@@ -12,21 +12,23 @@ open import Algebra using (Idempotent; CommutativeMonoid)
 open import Algebra.Structures.Biased using (isCommutativeMonoidˡ)
 open import Category.Monad using (RawMonad)
 open import Data.Empty
-open import Data.Fin
-open import Data.List
+open import Data.Fin.Base
+open import Data.List.Base
 open import Data.List.Categorical using (monad; module MonadProperties)
 import Data.List.Properties as LP
 open import Data.List.Relation.Unary.Any using (Any; here; there)
-open import Data.List.Relation.Unary.Any.Properties
+open import Data.List.Relation.Unary.Any.Properties hiding (++-comm)
 open import Data.List.Membership.Propositional using (_∈_)
 open import Data.List.Relation.Binary.Subset.Propositional.Properties
   using (⊆-preorder)
+open import Data.List.Relation.Binary.Permutation.Propositional
+open import Data.List.Relation.Binary.Permutation.Propositional.Properties
 open import Data.Product as Prod hiding (map)
 import Data.Product.Function.Dependent.Propositional as Σ
-open import Data.Sum as Sum hiding (map)
-open import Data.Sum.Properties
+open import Data.Sum.Base as Sum hiding (map)
+open import Data.Sum.Properties hiding (map-cong)
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
-open import Data.Unit
+open import Data.Unit.Polymorphic.Base
 open import Function.Base
 open import Function.Equality using (_⟨$⟩_)
 import Function.Equivalence as FE
@@ -34,7 +36,6 @@ open import Function.Inverse as Inv using (_↔_; Inverse; inverse)
 open import Function.Related as Related
   using (↔⇒; ⌊_⌋; ⌊_⌋→; ⇒→; K-refl; SK-sym)
 open import Function.Related.TypeIsomorphisms
-open import Level using (Lift)
 open import Relation.Binary
 import Relation.Binary.Reasoning.Setoid as EqR
 import Relation.Binary.Reasoning.Preorder as PreorderReasoning
@@ -86,20 +87,25 @@ module ⊆-Reasoning where
   private
     module PreOrder {a} {A : Set a} = PreorderReasoning (⊆-preorder A)
 
-    open PreOrder
-      hiding (_≈⟨_⟩_; _≈˘⟨_⟩_)
-      renaming (_∼⟨_⟩_ to _⊆⟨_⟩_)
+  open PreOrder public
+    hiding (step-≈; step-≈˘; step-∼)
 
-  infixr 2 _∼⟨_⟩_
-  infix  1 _∈⟨_⟩_
+  infixr 2 step-∼ step-⊆
+  infix  1 step-∈
 
-  _∈⟨_⟩_ : ∀ {a} {A : Set a} x {xs ys : List A} →
-           x ∈ xs → xs IsRelatedTo ys → x ∈ ys
-  x ∈⟨ x∈xs ⟩ xs⊆ys = (begin xs⊆ys) x∈xs
+  step-⊆ = PreOrder.step-∼
 
-  _∼⟨_⟩_ : ∀ {k a} {A : Set a} xs {ys zs : List A} →
-           xs ∼[ ⌊ k ⌋→ ] ys → ys IsRelatedTo zs → xs IsRelatedTo zs
-  xs ∼⟨ xs≈ys ⟩ ys≈zs = xs ⊆⟨ ⇒→ xs≈ys ⟩ ys≈zs
+  step-∈ : ∀ {a} {A : Set a} x {xs ys : List A} →
+           xs IsRelatedTo ys → x ∈ xs → x ∈ ys
+  step-∈ x xs⊆ys x∈xs = (begin xs⊆ys) x∈xs
+
+  step-∼ : ∀ {k a} {A : Set a} xs {ys zs : List A} →
+           ys IsRelatedTo zs → xs ∼[ ⌊ k ⌋→ ] ys → xs IsRelatedTo zs
+  step-∼ xs ys⊆zs xs≈ys = step-⊆ xs ys⊆zs (⇒→ xs≈ys)
+
+  syntax step-∈ x  xs⊆ys x∈xs  = x ∈⟨ x∈xs ⟩ xs⊆ys
+  syntax step-∼ xs ys⊆zs xs≈ys = xs ∼⟨ xs≈ys ⟩ ys⊆zs
+  syntax step-⊆ xs ys⊆zs xs⊆ys = xs ⊆⟨ xs⊆ys ⟩ ys⊆zs
 
 ------------------------------------------------------------------------
 -- Congruence lemmas
@@ -354,7 +360,7 @@ drop-cons {A = A} {x} {xs} {ys} x∷xs≈x∷ys =
     (∃ λ z → z ∈ xs)                   ↔⟨ Σ.cong K-refl (∈-index xs) ⟩
     (∃ λ z → ∃ λ i → z ≡ lookup xs i)  ↔⟨ ∃∃↔∃∃ _ ⟩
     (∃ λ i → ∃ λ z → z ≡ lookup xs i)  ↔⟨ Σ.cong K-refl (inverse _ (λ _ → _ , refl) (λ { (_ , refl) → refl }) (λ _ → refl)) ⟩
-    (Fin (length xs) × Lift _ ⊤)       ↔⟨ ×-identityʳ _ _ ⟩
+    (Fin (length xs) × ⊤)              ↔⟨ ×-identityʳ _ _ ⟩
     Fin (length xs)                    ∎
     where
     open Related.EquationalReasoning
@@ -554,3 +560,48 @@ drop-cons {A = A} {x} {xs} {ys} x∷xs≈x∷ys =
     open Inverse
     open P.≡-Reasoning
   ... | ()
+
+
+
+------------------------------------------------------------------------
+-- Relationships to other relations
+
+module _ {a} {A : Set a} where
+
+  ↭⇒∼bag : _↭_ ⇒ _∼[ bag ]_
+  ↭⇒∼bag xs↭ys {v} = inverse (to xs↭ys) (from xs↭ys) (from∘to xs↭ys) (to∘from xs↭ys)
+    where
+    to : ∀ {xs ys} → xs ↭ ys → v ∈ xs → v ∈ ys
+    to xs↭ys = Any-resp-↭ {A = A} xs↭ys
+
+    from : ∀ {xs ys} → xs ↭ ys → v ∈ ys → v ∈ xs
+    from xs↭ys = Any-resp-↭ (↭-sym xs↭ys)
+
+    from∘to : ∀ {xs ys} (p : xs ↭ ys) (q : v ∈ xs) → from p (to p q) ≡ q
+    from∘to refl          v∈xs                 = refl
+    from∘to (prep _ _)    (here refl)          = refl
+    from∘to (prep _ p)    (there v∈xs)         = P.cong there (from∘to p v∈xs)
+    from∘to (swap x y p)  (here refl)          = refl
+    from∘to (swap x y p)  (there (here refl))  = refl
+    from∘to (swap x y p)  (there (there v∈xs)) = P.cong (there ∘ there) (from∘to p v∈xs)
+    from∘to (trans p₁ p₂) v∈xs
+      rewrite from∘to p₂ (Any-resp-↭ p₁ v∈xs)
+            | from∘to p₁ v∈xs                  = refl
+
+    to∘from : ∀ {xs ys} (p : xs ↭ ys) (q : v ∈ ys) → to p (from p q) ≡ q
+    to∘from p with from∘to (↭-sym p)
+    ... | res rewrite ↭-sym-involutive p = res
+
+  ∼bag⇒↭ : _∼[ bag ]_ ⇒ _↭_
+  ∼bag⇒↭ {[]} eq with empty-unique {A = A} (Inv.sym eq)
+  ... | refl = refl
+  ∼bag⇒↭ {x ∷ xs} eq with ∈-∃++ (to ⟨$⟩ (here P.refl))
+    where open Inv.Inverse (eq {x})
+  ... | zs₁ , zs₂ , p rewrite p = begin
+    x ∷ xs           <⟨ ∼bag⇒↭ (drop-cons (Inv._∘_ (comm zs₁ (x ∷ zs₂)) eq)) ⟩
+    x ∷ (zs₂ ++ zs₁) <⟨ ++-comm zs₂ zs₁ ⟩
+    x ∷ (zs₁ ++ zs₂) ↭˘⟨ shift x zs₁ zs₂ ⟩
+    zs₁ ++ x ∷ zs₂   ∎
+    where
+    open CommutativeMonoid (commutativeMonoid bag A)
+    open PermutationReasoning

@@ -13,8 +13,6 @@ module Relation.Binary.Morphism.Definitions
   {b} (B : Set b)     -- The codomain of the morphism
   where
 
-open import Algebra.Core
-open import Function.Base
 open import Level using (Level)
 
 private
@@ -22,10 +20,13 @@ private
     ℓ₁ ℓ₂ : Level
 
 ------------------------------------------------------------------------
+-- Morphism definition in Function.Core
+
+open import Function.Core public
+  using (Morphism)
+
+------------------------------------------------------------------------
 -- Basic definitions
 
-Morphism : Set _
-Morphism = A → B
-
-Homomorphic₂ : Rel A ℓ₁ → Rel B ℓ₂ → Morphism → Set _
+Homomorphic₂ : Rel A ℓ₁ → Rel B ℓ₂ → (A → B) → Set _
 Homomorphic₂ _∼₁_ _∼₂_ ⟦_⟧ = ∀ {x y} → x ∼₁ y → ⟦ x ⟧ ∼₂ ⟦ y ⟧

@@ -14,9 +14,10 @@ module Data.Fin.Base where
 
 open import Data.Empty using (⊥-elim)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; z≤n; s≤s)
-open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
+open import Data.Nat.Properties.Core using (≤-pred)
+open import Data.Product as Product using (_×_; _,_)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (id; _∘_; _on_)
-import Data.Nat.Properties as ℕₚ
 open import Level using () renaming (zero to ℓ₀)
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable.Core using (True; toWitness)
@@ -62,13 +63,13 @@ fromℕ : (n : ℕ) → Fin (suc n)
 fromℕ zero    = zero
 fromℕ (suc n) = suc (fromℕ n)
 
--- fromℕ≤ {m} _ = "m".
+-- fromℕ< {m} _ = "m".
 
 fromℕ< : ∀ {m n} → m ℕ.< n → Fin n
 fromℕ< {zero}  {suc n} m≤n = zero
-fromℕ< {suc m} {suc n} m≤n = suc (fromℕ< (ℕₚ.≤-pred m≤n))
+fromℕ< {suc m} {suc n} m≤n = suc (fromℕ< (≤-pred m≤n))
 
--- fromℕ≤″ m _ = "m".
+-- fromℕ<″ m _ = "m".
 
 fromℕ<″ : ∀ m {n} → m ℕ.<″ n → Fin n
 fromℕ<″ zero    (ℕ.less-than-or-equal refl) = zero
@@ -107,7 +108,7 @@ inject₁ (suc i) = suc (inject₁ i)
 
 inject≤ : ∀ {m n} → Fin m → m ℕ.≤ n → Fin n
 inject≤ {_} {suc n} zero    le = zero
-inject≤ {_} {suc n} (suc i) le = suc (inject≤ i (ℕₚ.≤-pred le))
+inject≤ {_} {suc n} (suc i) le = suc (inject≤ i (≤-pred le))
 
 -- lower₁ "i" _ = "i".
 
@@ -129,6 +130,27 @@ splitAt : ∀ m {n} → Fin (m ℕ.+ n) → Fin m ⊎ Fin n
 splitAt zero    i       = inj₂ i
 splitAt (suc m) zero    = inj₁ zero
 splitAt (suc m) (suc i) = Sum.map suc id (splitAt m i)
+
+-- inverse of above function
+join : ∀ m n → Fin m ⊎ Fin n → Fin (m ℕ.+ n)
+join m n = [ inject+ n , raise {n} m ]′
+
+-- quotRem k "i" = "i % k" , "i / k"
+-- This is dual to group from Data.Vec.
+
+quotRem : ∀ {n} k → Fin (n ℕ.* k) → Fin k × Fin n
+quotRem {suc n} k i with splitAt k i
+... | inj₁ j = j , zero
+... | inj₂ j = Product.map₂ suc (quotRem {n} k j)
+
+-- a variant of quotRem the type of whose result matches the order of multiplication
+remQuot : ∀ {n} k → Fin (n ℕ.* k) → Fin n × Fin k
+remQuot k = Product.swap ∘ quotRem k
+
+-- inverse of remQuot
+combine : ∀ {n k} → Fin n → Fin k → Fin (n ℕ.* k)
+combine {suc n} {k} zero y = inject+ (n ℕ.* k) y
+combine {suc n} {k} (suc x) y = raise k (combine x y)
 
 ------------------------------------------------------------------------
 -- Operations
@@ -194,6 +216,12 @@ suc n ℕ-ℕ suc i  = n ℕ-ℕ i
 pred : ∀ {n} → Fin n → Fin n
 pred zero    = zero
 pred (suc i) = inject₁ i
+
+-- opposite "i" = "n - i" (i.e. the additive inverse).
+
+opposite : ∀ {n} → Fin n → Fin n
+opposite {suc n} zero    = fromℕ n
+opposite {suc n} (suc i) = inject₁ (opposite i)
 
 -- The function f(i,j) = if j>i then j-1 else j
 -- This is a variant of the thick function from Conor

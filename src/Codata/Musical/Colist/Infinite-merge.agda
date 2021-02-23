@@ -10,11 +10,11 @@ module Codata.Musical.Colist.Infinite-merge where
 
 open import Codata.Musical.Notation
 open import Codata.Musical.Colist as Colist hiding (_⋎_)
-open import Data.Nat
+open import Data.Nat.Base
 open import Data.Nat.Induction using (<′-wellFounded)
 open import Data.Nat.Properties
 open import Data.Product as Prod
-open import Data.Sum
+open import Data.Sum.Base
 open import Data.Sum.Properties
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
 open import Function.Base
@@ -24,6 +24,7 @@ import Function.Related as Related
 open import Function.Related.TypeIsomorphisms
 import Induction.WellFounded as WF
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
+import Relation.Binary.Construct.On as On
 
 ------------------------------------------------------------------------
 -- Some code that is used to work around Agda's syntactic guardedness
@@ -177,7 +178,7 @@ module _ {a p} {A : Set a} {P : A → Set p} where
 
     to : ∀ xss p → Pred (xss , p)
     to = λ xss p →
-      WF.All.wfRec (WF.InverseImage.wellFounded size <′-wellFounded) _
+      WF.All.wfRec (On.wellFounded size <′-wellFounded) _
                    Pred step (xss , p)
       where
       size : Input → ℕ

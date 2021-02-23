@@ -11,8 +11,8 @@ module Data.List.Membership.Propositional.Properties where
 open import Algebra using (Op₂; Selective)
 open import Category.Monad using (RawMonad)
 open import Data.Bool.Base using (Bool; false; true; T)
-open import Data.Fin using (Fin)
-open import Data.List as List
+open import Data.Fin.Base using (Fin)
+open import Data.List.Base as List
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Relation.Unary.Any.Properties
 open import Data.List.Membership.Propositional
@@ -20,12 +20,12 @@ import Data.List.Membership.Setoid.Properties as Membershipₛ
 open import Data.List.Relation.Binary.Equality.Propositional
   using (_≋_; ≡⇒≋; ≋⇒≡)
 open import Data.List.Categorical using (monad)
-open import Data.Nat using (ℕ; zero; suc; pred; s≤s; _≤_; _<_; _≤?_)
+open import Data.Nat.Base using (ℕ; zero; suc; pred; s≤s; _≤_; _<_; _≤ᵇ_)
 open import Data.Nat.Properties
 open import Data.Product hiding (map)
 open import Data.Product.Function.NonDependent.Propositional using (_×-cong_)
 import Data.Product.Function.Dependent.Propositional as Σ
-open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Function.Base
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence using (module Equivalence)
@@ -34,13 +34,14 @@ open import Function.Inverse as Inv using (_↔_; module Inverse)
 import Function.Related as Related
 open import Function.Related.TypeIsomorphisms
 open import Level using (Level)
-open import Relation.Binary hiding (Decidable)
+open import Relation.Binary as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; trans; cong; subst; →-to-⟶; _≗_)
 import Relation.Binary.Properties.DecTotalOrder as DTOProperties
 open import Relation.Unary using (_⟨×⟩_; Decidable)
+import Relation.Nullary.Reflects as Reflects
 open import Relation.Nullary.Reflects using (invert)
-open import Relation.Nullary using (¬_; Dec; does; yes; no)
+open import Relation.Nullary using (¬_; Dec; does; yes; no; _because_)
 open import Relation.Nullary.Negation
 
 private
@@ -48,7 +49,7 @@ private
 
   variable
     ℓ : Level
-    A B : Set ℓ
+    A B C : Set ℓ
 
 ------------------------------------------------------------------------
 -- Publicly re-export properties from Core
@@ -146,6 +147,33 @@ module _ {v : A} where
     where open Related.EquationalReasoning
 
 ------------------------------------------------------------------------
+-- cartesianProductWith
+
+module _ (f : A → B → C) where
+
+  ∈-cartesianProductWith⁺ : ∀ {xs ys a b} → a ∈ xs → b ∈ ys →
+                            f a b ∈ cartesianProductWith f xs ys
+  ∈-cartesianProductWith⁺ = Membershipₛ.∈-cartesianProductWith⁺
+    (P.setoid A) (P.setoid B) (P.setoid C) (P.cong₂ f)
+
+  ∈-cartesianProductWith⁻ : ∀ xs ys {v} → v ∈ cartesianProductWith f xs ys →
+                            ∃₂ λ a b → a ∈ xs × b ∈ ys × v ≡ f a b
+  ∈-cartesianProductWith⁻ = Membershipₛ.∈-cartesianProductWith⁻
+    (P.setoid A) (P.setoid B) (P.setoid C) f
+
+------------------------------------------------------------------------
+-- cartesianProduct
+
+∈-cartesianProduct⁺ : ∀ {x : A} {y : B} {xs ys} → x ∈ xs → y ∈ ys →
+                      (x , y) ∈ cartesianProduct xs ys
+∈-cartesianProduct⁺ = ∈-cartesianProductWith⁺ _,_
+
+∈-cartesianProduct⁻ : ∀ xs ys {xy@(x , y) : A × B} →
+                      xy ∈ cartesianProduct xs ys → x ∈ xs × y ∈ ys
+∈-cartesianProduct⁻ xs ys xy∈p[xs,ys] with ∈-cartesianProductWith⁻ _,_ xs ys xy∈p[xs,ys]
+... | (x , y , x∈xs , y∈ys , refl) = x∈xs , y∈ys
+
+------------------------------------------------------------------------
 -- applyUpTo
 
 module _ (f : ℕ → A) where
@@ -156,6 +184,38 @@ module _ (f : ℕ → A) where
   ∈-applyUpTo⁻ : ∀ {v n} → v ∈ applyUpTo f n →
                  ∃ λ i → i < n × v ≡ f i
   ∈-applyUpTo⁻ = Membershipₛ.∈-applyUpTo⁻ (P.setoid _) f
+
+------------------------------------------------------------------------
+-- upTo
+
+∈-upTo⁺ : ∀ {n i} → i < n → i ∈ upTo n
+∈-upTo⁺ = ∈-applyUpTo⁺ id
+
+∈-upTo⁻ : ∀ {n i} → i ∈ upTo n → i < n
+∈-upTo⁻ p with ∈-applyUpTo⁻ id p
+... | _ , i<n , refl = i<n
+
+------------------------------------------------------------------------
+-- applyDownFrom
+
+module _ (f : ℕ → A) where
+
+  ∈-applyDownFrom⁺ : ∀ {i n} → i < n → f i ∈ applyDownFrom f n
+  ∈-applyDownFrom⁺ = Membershipₛ.∈-applyDownFrom⁺ (P.setoid _) f
+
+  ∈-applyDownFrom⁻ : ∀ {v n} → v ∈ applyDownFrom f n →
+                     ∃ λ i → i < n × v ≡ f i
+  ∈-applyDownFrom⁻ = Membershipₛ.∈-applyDownFrom⁻ (P.setoid _) f
+
+------------------------------------------------------------------------
+-- downFrom
+
+∈-downFrom⁺ : ∀ {n i} → i < n → i ∈ downFrom n
+∈-downFrom⁺ i<n = ∈-applyDownFrom⁺ id i<n
+
+∈-downFrom⁻ : ∀ {n i} → i ∈ downFrom n → i < n
+∈-downFrom⁻ p with ∈-applyDownFrom⁻ id p
+... | _ , i<n , refl = i<n
 
 ------------------------------------------------------------------------
 -- tabulate
@@ -178,6 +238,25 @@ module _ {p} {P : A → Set p} (P? : Decidable P) where
 
   ∈-filter⁻ : ∀ {v xs} → v ∈ filter P? xs → v ∈ xs × P v
   ∈-filter⁻ = Membershipₛ.∈-filter⁻ (P.setoid A) P? (P.subst P)
+
+------------------------------------------------------------------------
+-- derun and deduplicate
+
+module _ {r} {R : Rel A r} (R? : B.Decidable R) where
+
+  ∈-derun⁻ : ∀ xs {z} → z ∈ derun R? xs → z ∈ xs
+  ∈-derun⁻ xs z∈derun[R,xs] = Membershipₛ.∈-derun⁻ (P.setoid A) R? xs z∈derun[R,xs]
+
+  ∈-deduplicate⁻ : ∀ xs {z} → z ∈ deduplicate R? xs → z ∈ xs
+  ∈-deduplicate⁻ xs z∈dedup[R,xs] = Membershipₛ.∈-deduplicate⁻ (P.setoid A) R? xs z∈dedup[R,xs]
+
+module _ (_≈?_ : B.Decidable {A = A} _≡_) where
+
+  ∈-derun⁺ : ∀ {xs z} → z ∈ xs → z ∈ derun _≈?_ xs
+  ∈-derun⁺ z∈xs = Membershipₛ.∈-derun⁺ (P.setoid A) _≈?_ (flip trans) z∈xs
+
+  ∈-deduplicate⁺ : ∀ {xs z} → z ∈ xs → z ∈ deduplicate _≈?_ xs
+  ∈-deduplicate⁺ z∈xs = Membershipₛ.∈-deduplicate⁺ (P.setoid A) _≈?_ (λ c≡b a≡b → trans a≡b (sym c≡b)) z∈xs
 
 ------------------------------------------------------------------------
 -- _>>=_
@@ -285,16 +364,17 @@ finite inj (x ∷ xs) fᵢ∈x∷xs = excluded-middle helper
     lemma i≤j i≰1+j refl = i≰1+j (≤-step i≤j)
 
     f′ⱼ∈xs : ∀ j → f′ j ∈ xs
-    f′ⱼ∈xs j with i ≤? j
-    ... | yes i≤j = ∈-if-not-i (<⇒≢ (s≤s i≤j))
-    ... | no  i≰j = ∈-if-not-i (<⇒≢ (≰⇒> i≰j) ∘ sym)
+    f′ⱼ∈xs j with i ≤ᵇ j | Reflects.invert (≤ᵇ-reflects-≤ i j)
+    ... | true  | p = ∈-if-not-i (<⇒≢ (s≤s p))
+    ... | false | p = ∈-if-not-i (<⇒≢ (≰⇒> p) ∘ sym)
 
     f′-injective′ : Injective {B = P.setoid _} (→-to-⟶ f′)
-    f′-injective′ {j} {k} eq with i ≤? j | i ≤? k
-    ... | yes _   | yes _   = P.cong pred (f-inj eq)
-    ... | yes i≤j | no  i≰k = contradiction (f-inj eq) (lemma i≤j i≰k)
-    ... | no  i≰j | yes i≤k = contradiction (f-inj eq) (lemma i≤k i≰j ∘ sym)
-    ... | no  _   | no  _   = f-inj eq
+    f′-injective′ {j} {k} eq with i ≤ᵇ j | Reflects.invert (≤ᵇ-reflects-≤ i j)
+                                | i ≤ᵇ k | Reflects.invert (≤ᵇ-reflects-≤ i k)
+    ... | true  | p | true  | q = P.cong pred (f-inj eq)
+    ... | true  | p | false | q = contradiction (f-inj eq) (lemma p q)
+    ... | false | p | true  | q = contradiction (f-inj eq) (lemma q p ∘ sym)
+    ... | false | p | false | q = f-inj eq
 
     f′-inj = record
       { to        = →-to-⟶ f′

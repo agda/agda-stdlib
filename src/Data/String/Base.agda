@@ -9,17 +9,25 @@
 module Data.String.Base where
 
 open import Level using (zero)
+open import Data.Bool.Base using (true; false)
+open import Data.Bool.Properties using (T?)
 open import Data.Nat.Base as ℕ using (ℕ; _∸_; ⌊_/2⌋; ⌈_/2⌉)
 import Data.Nat.Properties as ℕₚ
-open import Data.List.Base as List using (List; [_])
+open import Data.List.Base as List using (List; _∷_; []; [_])
 open import Data.List.NonEmpty as NE using (List⁺)
 open import Data.List.Extrema ℕₚ.≤-totalOrder
 open import Data.List.Relation.Binary.Pointwise using (Pointwise)
-open import Data.List.Relation.Binary.Lex.Strict using (Lex-<)
+open import Data.List.Relation.Binary.Lex.Strict using (Lex-<; Lex-≤)
 open import Data.Vec.Base as Vec using (Vec)
 open import Data.Char.Base as Char using (Char)
+import Data.Char.Properties as Char using (_≟_)
 open import Function
 open import Relation.Binary using (Rel)
+open import Relation.Binary.PropositionalEquality using (_≡_; refl)
+open import Relation.Nullary using (does)
+open import Relation.Unary using (Pred; Decidable)
+
+open import Data.List.Membership.DecPropositional Char._≟_
 
 ------------------------------------------------------------------------
 -- From Agda.Builtin: type and renamed primitives
@@ -43,13 +51,17 @@ open String public using ( String )
 
 infix 4 _≈_
 _≈_ : Rel String zero
-_≈_ = Pointwise Char._≈_ on toList
+_≈_ = Pointwise _≡_ on toList
 
 -- Lexicographic ordering on Strings
 
 infix 4 _<_
 _<_ : Rel String zero
-_<_ = Lex-< Char._≈_ Char._<_ on toList
+_<_ = Lex-< _≡_ Char._<_ on toList
+
+infix 4 _≤_
+_≤_ : Rel String zero
+_≤_ = Lex-≤ _≡_ Char._<_ on toList
 
 ------------------------------------------------------------------------
 -- Operations
@@ -77,10 +89,55 @@ replicate n = fromList ∘ List.replicate n
 concat : List String → String
 concat = List.foldr _++_ ""
 
+intersperse : String → List String → String
+intersperse sep = concat ∘′ (List.intersperse sep)
+
 -- String-specific functions
 
+wordsBy : ∀ {p} {P : Pred Char p} → Decidable P → String → List String
+wordsBy P? = List.map fromList ∘ List.wordsBy P? ∘ toList
+
+words : String → List String
+words = wordsBy (T? ∘ Char.isSpace)
+
+-- `words` ignores contiguous whitespace
+_ : words " abc  b   " ≡ "abc" ∷ "b" ∷ []
+_ = refl
+
+unwords : List String → String
+unwords = intersperse " "
+
+linesBy : ∀ {p} {P : Pred Char p} → Decidable P → String → List String
+linesBy P? = List.map fromList ∘ List.linesBy P? ∘ toList
+
+lines : String → List String
+lines = linesBy ('\n' Char.≟_)
+
+-- `lines` preserves empty lines
+_ : lines "\nabc\n\nb\n\n\n" ≡ "" ∷ "abc" ∷ "" ∷ "b" ∷ "" ∷ "" ∷ []
+_ = refl
+
 unlines : List String → String
-unlines = concat ∘ List.intersperse "\n"
+unlines = intersperse "\n"
+
+parens : String → String
+parens s = "(" ++ s ++ ")"
+
+-- enclose string with parens if it contains a space character
+parensIfSpace : String → String
+parensIfSpace s with does (' ' ∈? toList s)
+... | true  = parens s
+... | false = s
+
+braces : String → String
+braces s = "{" ++ s ++ "}"
+
+-- append that also introduces spaces, if necessary
+infixr 5 _<+>_
+_<+>_ : String → String → String
+"" <+> b = b
+a <+> "" = a
+a <+> b = a ++ " " ++ b
 
 ------------------------------------------------------------------------
 -- Padding

@@ -8,19 +8,15 @@
 
 module Relation.Binary.PropositionalEquality where
 
-open import Algebra
-open import Algebra.Structures
-open import Algebra.FunctionProperties
 import Axiom.Extensionality.Propositional as Ext
 open import Axiom.UniquenessOfIdentityProofs
-open import Function.Base
+open import Function.Base using (id; _∘_)
 open import Function.Equality using (Π; _⟶_; ≡-setoid)
 open import Level using (Level; _⊔_)
 open import Data.Product using (∃)
 
 open import Relation.Nullary using (yes ; no)
 open import Relation.Nullary.Decidable.Core
-open import Relation.Unary using (Pred)
 open import Relation.Binary
 open import Relation.Binary.Indexed.Heterogeneous
   using (IndexedSetoid)
@@ -35,69 +31,11 @@ private
     C : Set c
 
 ------------------------------------------------------------------------
--- Re-export contents of core module
+-- Re-export contents modules that make up the parts
 
 open import Relation.Binary.PropositionalEquality.Core public
-
-------------------------------------------------------------------------
--- Some properties
-
-subst₂ : ∀ (_∼_ : REL A B ℓ) {x y u v} → x ≡ y → u ≡ v → x ∼ u → y ∼ v
-subst₂ _ refl refl p = p
-
-cong-app : ∀ {A : Set a} {B : A → Set b} {f g : (x : A) → B x} →
-           f ≡ g → (x : A) → f x ≡ g x
-cong-app refl x = refl
-
-cong₂ : ∀ (f : A → B → C) {x y u v} → x ≡ y → u ≡ v → f x u ≡ f y v
-cong₂ f refl refl = refl
-
-------------------------------------------------------------------------
--- Structure of equality as a binary relation
-
-isEquivalence : IsEquivalence {A = A} _≡_
-isEquivalence = record
-  { refl  = refl
-  ; sym   = sym
-  ; trans = trans
-  }
-
-isDecEquivalence : Decidable _≡_ → IsDecEquivalence {A = A} _≡_
-isDecEquivalence _≟_ = record
-  { isEquivalence = isEquivalence
-  ; _≟_           = _≟_
-  }
-
-isPreorder : IsPreorder {A = A} _≡_ _≡_
-isPreorder = record
-  { isEquivalence = isEquivalence
-  ; reflexive     = id
-  ; trans         = trans
-  }
-
-------------------------------------------------------------------------
--- Bundles for equality as a binary relation
-
-setoid : Set a → Setoid _ _
-setoid A = record
-  { Carrier       = A
-  ; _≈_           = _≡_
-  ; isEquivalence = isEquivalence
-  }
-
-decSetoid : Decidable {A = A} _≡_ → DecSetoid _ _
-decSetoid _≟_ = record
-  { _≈_              = _≡_
-  ; isDecEquivalence = isDecEquivalence _≟_
-  }
-
-preorder : Set a → Preorder _ _ _
-preorder A = record
-  { Carrier    = A
-  ; _≈_        = _≡_
-  ; _∼_        = _≡_
-  ; isPreorder = isPreorder
-  }
+open import Relation.Binary.PropositionalEquality.Properties public
+open import Relation.Binary.PropositionalEquality.Algebra public
 
 ------------------------------------------------------------------------
 -- Pointwise equality
@@ -147,52 +85,7 @@ isPropositional : Set a → Set a
 isPropositional A = (a b : A) → a ≡ b
 
 ------------------------------------------------------------------------
--- Various equality rearrangement lemmas
-
-trans-injectiveˡ : ∀ {x y z : A} {p₁ p₂ : x ≡ y} (q : y ≡ z) →
-                   trans p₁ q ≡ trans p₂ q → p₁ ≡ p₂
-trans-injectiveˡ refl = subst₂ _≡_ (trans-reflʳ _) (trans-reflʳ _)
-
-trans-injectiveʳ : ∀ {x y z : A} (p : x ≡ y) {q₁ q₂ : y ≡ z} →
-                   trans p q₁ ≡ trans p q₂ → q₁ ≡ q₂
-trans-injectiveʳ refl eq = eq
-
-cong-id : ∀ {x y : A} (p : x ≡ y) → cong id p ≡ p
-cong-id refl = refl
-
-cong-∘ : ∀ {x y : A} {f : B → C} {g : A → B} (p : x ≡ y) →
-         cong (f ∘ g) p ≡ cong f (cong g p)
-cong-∘ refl = refl
-
-module _ {P : Pred A p} {x y : A} where
-
-  subst-injective : ∀ (x≡y : x ≡ y) {p q : P x} →
-                    subst P x≡y p ≡ subst P x≡y q → p ≡ q
-  subst-injective refl p≡q = p≡q
-
-  subst-subst : ∀ {z} (x≡y : x ≡ y) {y≡z : y ≡ z} {p : P x} →
-                subst P y≡z (subst P x≡y p) ≡ subst P (trans x≡y y≡z) p
-  subst-subst refl = refl
-
-  subst-subst-sym : (x≡y : x ≡ y) {p : P y} →
-                    subst P x≡y (subst P (sym x≡y) p) ≡ p
-  subst-subst-sym refl = refl
-
-  subst-sym-subst : (x≡y : x ≡ y) {p : P x} →
-                    subst P (sym x≡y) (subst P x≡y p) ≡ p
-  subst-sym-subst refl = refl
-
-subst-∘ : ∀ {x y : A} {P : Pred B p} {f : A → B}
-          (x≡y : x ≡ y) {p : P (f x)} →
-          subst (P ∘ f) x≡y p ≡ subst P (cong f x≡y) p
-subst-∘ refl = refl
-
-subst-application : ∀ {a₁ a₂ b₁ b₂} {A₁ : Set a₁} {A₂ : Set a₂}
-                    (B₁ : A₁ → Set b₁) {B₂ : A₂ → Set b₂}
-                    {f : A₂ → A₁} {x₁ x₂ : A₂} {y : B₁ (f x₁)}
-                    (g : ∀ x → B₁ (f x) → B₂ x) (eq : x₁ ≡ x₂) →
-                    subst B₂ eq (g x₁ y) ≡ g x₂ (subst B₁ (cong f eq) y)
-subst-application _ _ refl = refl
+-- More complex rearrangement lemmas
 
 -- A lemma that is very similar to Lemma 2.4.3 from the HoTT book.
 
@@ -227,20 +120,6 @@ module _ (_≟_ : Decidable {A = A} _≡_) {x y : A} where
 
   ≢-≟-identity : x ≢ y → ∃ λ ¬eq → x ≟ y ≡ no ¬eq
   ≢-≟-identity ¬eq = dec-no (x ≟ y) ¬eq
-
-------------------------------------------------------------------------
--- Any operation forms a magma over _≡_
-
-isMagma : (_∙_ : Op₂ A) → IsMagma _≡_ _∙_
-isMagma _∙_ = record
-  { isEquivalence = isEquivalence
-  ; ∙-cong        = cong₂ _∙_
-  }
-
-magma : (_∙_ : Op₂ A) → Magma _ _
-magma _∙_ = record
-  { isMagma = isMagma _∙_
-  }
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

@@ -16,14 +16,15 @@
 
 module Data.Vec.Recursive where
 
-open import Level using (Level; Lift; lift)
+open import Level using (Level; lift)
 open import Data.Nat.Base as Nat using (ℕ; zero; suc)
-open import Data.Empty
+open import Data.Empty.Polymorphic
 open import Data.Fin.Base as Fin using (Fin; zero; suc)
 open import Data.Product as Prod using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum.Base as Sum using (_⊎_)
-open import Data.Unit.Base
-open import Data.Vec as Vec using (Vec; _∷_)
+open import Data.Unit.Base using (tt)
+open import Data.Unit.Polymorphic.Base using (⊤)
+open import Data.Vec.Base as Vec using (Vec; _∷_)
 open import Function
 open import Relation.Unary
 open import Agda.Builtin.Equality using (_≡_)
@@ -42,7 +43,7 @@ pattern 2+_ n = suc (suc n)
 
 infix 8 _^_
 _^_ : Set a → ℕ → Set a
-A ^ 0    = Lift _ ⊤
+A ^ 0    = ⊤
 A ^ 1    = A
 A ^ 2+ n = A × A ^ suc n
 
@@ -50,7 +51,7 @@ pattern [] = lift tt
 
 infix 3 _∈[_]_
 _∈[_]_ : {A : Set a} → A → ∀ n → A ^ n → Set a
-a ∈[ 0    ] as      = Lift _ ⊥
+a ∈[ 0    ] as      = ⊥
 a ∈[ 1    ] a′      = a ≡ a′
 a ∈[ 2+ n ] a′ , as = a ≡ a′ ⊎ a ∈[ suc n ] as
 

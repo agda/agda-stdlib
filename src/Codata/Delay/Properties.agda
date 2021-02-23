@@ -9,7 +9,8 @@
 module Codata.Delay.Properties where
 
 open import Size
-import Data.Sum as Sum
+import Data.Sum.Base as Sum
+import Data.Nat as ℕ
 open import Codata.Thunk using (Thunk; force)
 open import Codata.Conat
 open import Codata.Conat.Bisimilarity as Coℕ using (zero ; suc)
@@ -48,3 +49,59 @@ module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
  map-unfold-fusion f n s with n s
  ... | Sum.inj₁ s′ = later λ where .force → map-unfold-fusion f n s′
  ... | Sum.inj₂ b  = now Eq.refl
+
+
+------------------------------------------------------------------------
+-- ⇓
+
+⇓-unique : ∀ {a} {A : Set a} →
+           {d : Delay A ∞} →
+           (d⇓₁ : d ⇓) → (d⇓₂ : d ⇓) →
+           d⇓₁ ≡ d⇓₂
+⇓-unique {d = now s} (now s) (now s) = Eq.refl
+⇓-unique {d = later d'} (later l) (later r) =
+  Eq.cong later (⇓-unique {d = force d'} l r)
+
+module _ {a} {A B : Set a} where
+
+  bind̅₁ : (d : Delay A ∞) {f : A → Delay B ∞} → bind d f ⇓ → d ⇓
+  bind̅₁ (now s) _ = now s
+  bind̅₁ (later s) (later x) =
+    later (bind̅₁ (force s) x)
+
+  bind̅₂ : (d : Delay A ∞) {f : A → Delay B ∞} →
+           (bind⇓ : bind d f ⇓) →
+           f (extract (bind̅₁ d bind⇓)) ⇓
+  bind̅₂ (now s) foo = foo
+  bind̅₂ (later s) {f} (later foo) =
+    bind̅₂ (force s) foo
+
+  -- The extracted value of a bind is equivalent to the extracted value of its
+  -- second element
+  extract-bind-⇓ : {d : Delay A Size.∞} → {f : A → Delay B Size.∞} →
+                   (d⇓ : d ⇓) → (f⇓ : f (extract d⇓) ⇓) →
+                   extract (bind-⇓ d⇓ {f} f⇓) ≡ extract f⇓
+  extract-bind-⇓ (now a) f⇓ = Eq.refl
+  extract-bind-⇓ (later t) f⇓ = extract-bind-⇓ t f⇓
+
+  -- If the right element of a bind returns a certain value so does the entire
+  -- bind
+  extract-bind̅₂-bind⇓ :
+    (d : Delay A ∞) {f : A → Delay B ∞} →
+    (bind⇓ : bind d f ⇓) →
+    extract (bind̅₂ d bind⇓) ≡ extract bind⇓
+  extract-bind̅₂-bind⇓ (now s) bind⇓ = Eq.refl
+  extract-bind̅₂-bind⇓ (later s) (later bind⇓) =
+    extract-bind̅₂-bind⇓ (force s) bind⇓
+
+  -- Proof that the length of a bind-⇓ is equal to the sum of the length of its
+  -- components.
+  bind⇓-length :
+      {d : Delay A ∞} {f : A → Delay B ∞} →
+      (bind⇓ : bind d f ⇓) →
+      (d⇓ : d ⇓) → (f⇓ : f (extract d⇓) ⇓) →
+      toℕ (length-⇓ bind⇓) ≡ toℕ (length-⇓ d⇓) ℕ.+ toℕ (length-⇓ f⇓)
+  bind⇓-length {f = f} bind⇓ d⇓@(now s') f⇓ =
+    Eq.cong (toℕ ∘ length-⇓) (⇓-unique bind⇓ f⇓)
+  bind⇓-length {d = d@(later dt)} {f = f} bind⇓@(later bind'⇓) d⇓@(later r) f⇓ =
+    Eq.cong ℕ.suc (bind⇓-length bind'⇓ r f⇓)

@@ -13,7 +13,7 @@ module Relation.Binary.Properties.Poset
 
 open Poset P renaming (Carrier to A)
 
-open import Function using (flip)
+open import Function.Base using (flip)
 import Relation.Binary.Construct.NonStrictToStrict _≈_ _≤_ as ToStrict
 import Relation.Binary.Properties.Preorder preorder as PreorderProperties
 open import Relation.Nullary using (¬_)
@@ -93,6 +93,18 @@ open StrictPartialOrder <-strictPartialOrder public
 ≤⇒≯ : ∀ {x y} → x ≤ y → ¬ (y < x)
 ≤⇒≯ = ToStrict.≤⇒≯ antisym
 
+------------------------------------------------------------------------
+-- Other properties
+
+mono⇒cong : ∀ {f} → f Preserves _≤_ ⟶ _≤_ → f Preserves _≈_ ⟶ _≈_
+mono⇒cong f-mono p≈q = antisym
+  (f-mono (reflexive p≈q))
+  (f-mono (reflexive (Eq.sym p≈q)))
+
+antimono⇒cong : ∀ {f} → f Preserves _≤_ ⟶ _≥_ → f Preserves _≈_ ⟶ _≈_
+antimono⇒cong f-mono p≈q = antisym
+  (f-mono (reflexive (Eq.sym p≈q)))
+  (f-mono (reflexive p≈q))
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

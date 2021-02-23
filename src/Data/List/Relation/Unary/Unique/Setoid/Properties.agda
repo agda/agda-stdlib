@@ -8,28 +8,37 @@
 
 module Data.List.Relation.Unary.Unique.Setoid.Properties where
 
-open import Data.Fin using (Fin)
-open import Data.List
+open import Data.Fin.Base using (Fin)
+open import Data.List.Base
+open import Data.List.Membership.Setoid.Properties
 open import Data.List.Relation.Binary.Disjoint.Setoid
 open import Data.List.Relation.Binary.Disjoint.Setoid.Properties
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
+open import Data.List.Relation.Unary.All.Properties using (All¬⇒¬Any)
 open import Data.List.Relation.Unary.AllPairs as AllPairs using (AllPairs)
 open import Data.List.Relation.Unary.Unique.Setoid
+open import Data.Product using (_×_; _,_; proj₁; proj₂)
+open import Data.Product.Relation.Binary.Pointwise.NonDependent using (_×ₛ_)
 import Data.List.Relation.Unary.AllPairs.Properties as AllPairs
-open import Data.Nat
-open import Function using (_∘_)
+open import Data.Nat.Base
+open import Function.Base using (_∘_; id)
+open import Level using (Level)
 open import Relation.Binary using (Rel; Setoid)
 open import Relation.Binary.PropositionalEquality using (_≡_)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Nullary using (¬_)
 open import Relation.Nullary.Negation using (contraposition)
 
+private
+  variable
+    a b c p ℓ ℓ₁ ℓ₂ ℓ₃ : Level
+
 ------------------------------------------------------------------------
 -- Introduction (⁺) and elimination (⁻) rules for list operations
 ------------------------------------------------------------------------
 -- map
 
-module _ {a b ℓ₁ ℓ₂} (S : Setoid a ℓ₁) (R : Setoid b ℓ₂) where
+module _ (S : Setoid a ℓ₁) (R : Setoid b ℓ₂) where
 
   open Setoid S renaming (Carrier to A; _≈_ to _≈₁_)
   open Setoid R renaming (Carrier to B; _≈_ to _≈₂_)
@@ -41,7 +50,7 @@ module _ {a b ℓ₁ ℓ₂} (S : Setoid a ℓ₁) (R : Setoid b ℓ₂) where
 ------------------------------------------------------------------------
 -- ++
 
-module _ {a ℓ} (S : Setoid a ℓ) where
+module _ (S : Setoid a ℓ) where
 
   ++⁺ : ∀ {xs ys} → Unique S xs → Unique S ys → Disjoint S xs ys → Unique S (xs ++ ys)
   ++⁺ xs! ys! xs#ys = AllPairs.++⁺ xs! ys! (Disjoint⇒AllAll S xs#ys)
@@ -49,15 +58,48 @@ module _ {a ℓ} (S : Setoid a ℓ) where
 ------------------------------------------------------------------------
 -- concat
 
-module _ {a ℓ} (S : Setoid a ℓ) where
+module _ (S : Setoid a ℓ) where
 
   concat⁺ : ∀ {xss} → All (Unique S) xss → AllPairs (Disjoint S) xss → Unique S (concat xss)
   concat⁺ xss! xss# = AllPairs.concat⁺ xss! (AllPairs.map (Disjoint⇒AllAll S) xss#)
 
 ------------------------------------------------------------------------
+-- cartesianProductWith
+
+module _ (S : Setoid a ℓ₁) (T : Setoid b ℓ₂) (U : Setoid c ℓ₃) where
+
+  open Setoid S using () renaming (_≈_ to _≈₁_)
+  open Setoid T using () renaming (_≈_ to _≈₂_)
+  open Setoid U using () renaming (_≈_ to _≈₃_; sym to sym₃; trans to trans₃)
+
+  cartesianProductWith⁺ : ∀ {xs ys} f → (∀ {w x y z} → f w y ≈₃ f x z → w ≈₁ x × y ≈₂ z) →
+                          Unique S xs → Unique T ys →
+                          Unique U (cartesianProductWith f xs ys)
+  cartesianProductWith⁺ {_}      {_}  f f-inj  []          ys! = [] {S = U}
+  cartesianProductWith⁺ {x ∷ xs} {ys} f f-inj (x∉xs ∷ xs!) ys! = ++⁺ U
+    (map⁺ T U (proj₂ ∘ f-inj) ys!)
+    (cartesianProductWith⁺ f f-inj xs! ys!)
+    map#cartesianProductWith
+    where
+    map#cartesianProductWith : Disjoint U (map (f x) ys) (cartesianProductWith f xs ys)
+    map#cartesianProductWith (v∈map , v∈com) with
+      ∈-map⁻ T U v∈map | ∈-cartesianProductWith⁻ S T U f xs ys v∈com
+    ... | (c , _ , v≈fxc) | (a , b , a∈xs , _ , v≈fab) =
+      All¬⇒¬Any x∉xs (∈-resp-≈ S (proj₁ (f-inj (trans₃ (sym₃ v≈fab) v≈fxc))) a∈xs)
+
+------------------------------------------------------------------------
+-- cartesianProduct
+
+module _ (S : Setoid a ℓ₁) (T : Setoid b ℓ₂) {xs ys} where
+
+  cartesianProduct⁺ : Unique S xs → Unique T ys →
+                      Unique (S ×ₛ T) (cartesianProduct xs ys)
+  cartesianProduct⁺ = cartesianProductWith⁺ S T (S ×ₛ T) _,_ id
+
+------------------------------------------------------------------------
 -- take & drop
 
-module _ {a ℓ} (S : Setoid a ℓ) where
+module _ (S : Setoid a ℓ) where
 
   drop⁺ : ∀ {xs} n → Unique S xs → Unique S (drop n xs)
   drop⁺ = AllPairs.drop⁺
@@ -68,9 +110,9 @@ module _ {a ℓ} (S : Setoid a ℓ) where
 ------------------------------------------------------------------------
 -- applyUpTo
 
-module _ {a ℓ} (S : Setoid a ℓ) where
+module _ (S : Setoid a ℓ) where
 
-  open Setoid S using (_≈_; _≉_) renaming (Carrier to A)
+  open Setoid S
 
   applyUpTo⁺₁ : ∀ f n → (∀ {i j} → i < j → j < n → f i ≉ f j) →
                 Unique S (applyUpTo f n)
@@ -83,9 +125,9 @@ module _ {a ℓ} (S : Setoid a ℓ) where
 ------------------------------------------------------------------------
 -- applyDownFrom
 
-module _ {a ℓ} (S : Setoid a ℓ) where
+module _ (S : Setoid a ℓ) where
 
-  open Setoid S using (_≈_; _≉_) renaming (Carrier to A)
+  open Setoid S
 
   applyDownFrom⁺₁ : ∀ f n → (∀ {i j} → j < i → i < n → f i ≉ f j) →
                     Unique S (applyDownFrom f n)
@@ -98,7 +140,7 @@ module _ {a ℓ} (S : Setoid a ℓ) where
 ------------------------------------------------------------------------
 -- tabulate
 
-module _ {a ℓ} (S : Setoid a ℓ) where
+module _ (S : Setoid a ℓ) where
 
   open Setoid S renaming (Carrier to A)
 
@@ -109,7 +151,7 @@ module _ {a ℓ} (S : Setoid a ℓ) where
 ------------------------------------------------------------------------
 -- filter
 
-module _ {a ℓ} (S : Setoid a ℓ) {p} {P : Pred _ p} (P? : Decidable P) where
+module _ (S : Setoid a ℓ) {P : Pred _ p} (P? : Decidable P) where
 
   open Setoid S renaming (Carrier to A)
 

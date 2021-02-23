@@ -149,7 +149,7 @@ _⋎_ : ∀ {m n} → Vec A m → Vec A n → Vec A (m +⋎ n)
 infixl 4 _⊛_
 
 _⊛_ : ∀ {n} → Vec (A → B) n → Vec A n → Vec B n
-[]       ⊛ _        = []
+[]       ⊛ []       = []
 (f ∷ fs) ⊛ (x ∷ xs) = f x ∷ (fs ⊛ xs)
 
 -- Multiplication
@@ -249,6 +249,9 @@ split : ∀ {n} → Vec A n → Vec A ⌈ n /2⌉ × Vec A ⌊ n /2⌋
 split []           = ([]     , [])
 split (x ∷ [])     = (x ∷ [] , [])
 split (x ∷ y ∷ xs) = Prod.map (x ∷_) (y ∷_) (split xs)
+
+uncons : ∀ {n} → Vec A (suc n) → A × Vec A n
+uncons (x ∷ xs) = x , xs
 
 ------------------------------------------------------------------------
 -- Operations for converting between lists

@@ -16,13 +16,13 @@ open import Function.Base using (_∘_)
 open import Level
 open import Relation.Binary.Core
 open import Relation.Binary.Definitions
+-- open import Relation.Unary using (Pred)
 open import Relation.Nullary using (¬_)
 
 private
   variable
     a b ℓ : Level
-    A : Set a
-    B : Set b
+    A B C : Set a
 
 ------------------------------------------------------------------------
 -- Propositional equality
@@ -32,6 +32,33 @@ open import Agda.Builtin.Equality public
 infix 4 _≢_
 _≢_ : {A : Set a} → Rel A a
 x ≢ y = ¬ x ≡ y
+
+------------------------------------------------------------------------
+-- A variant of `refl` where the argument is explicit
+
+pattern erefl x = refl {x = x}
+
+------------------------------------------------------------------------
+-- Congruence lemmas
+
+cong : ∀ (f : A → B) {x y} → x ≡ y → f x ≡ f y
+cong f refl = refl
+
+cong′ : ∀ {f : A → B} x → f x ≡ f x
+cong′ _ = refl
+
+icong : ∀ {f : A → B} {x y} → x ≡ y → f x ≡ f y
+icong = cong _
+
+icong′ : ∀ {f : A → B} x → f x ≡ f x
+icong′ _ = refl
+
+cong₂ : ∀ (f : A → B → C) {x y u v} → x ≡ y → u ≡ v → f x u ≡ f y v
+cong₂ f refl refl = refl
+
+cong-app : ∀ {A : Set a} {B : A → Set b} {f g : (x : A) → B x} →
+           f ≡ g → (x : A) → f x ≡ g x
+cong-app refl x = refl
 
 ------------------------------------------------------------------------
 -- Properties of _≡_
@@ -45,8 +72,11 @@ trans refl eq = eq
 subst : Substitutive {A = A} _≡_ ℓ
 subst P refl p = p
 
-cong : ∀ (f : A → B) {x y} → x ≡ y → f x ≡ f y
-cong f refl = refl
+subst₂ : ∀ (_∼_ : REL A B ℓ) {x y u v} → x ≡ y → u ≡ v → x ∼ u → y ∼ v
+subst₂ _ refl refl p = p
+
+resp : ∀ (P : A → Set ℓ) → P Respects _≡_
+resp P refl p = p
 
 respˡ : ∀ (∼ : Rel A ℓ) → ∼ Respectsˡ _≡_
 respˡ _∼_ refl x∼y = x∼y
@@ -56,22 +86,6 @@ respʳ _∼_ refl x∼y = x∼y
 
 resp₂ : ∀ (∼ : Rel A ℓ) → ∼ Respects₂ _≡_
 resp₂ _∼_ = respʳ _∼_ , respˡ _∼_
-
-------------------------------------------------------------------------
--- Various equality rearrangement lemmas
-
-trans-reflʳ : ∀ {x y : A} (p : x ≡ y) → trans p refl ≡ p
-trans-reflʳ refl = refl
-
-trans-assoc : ∀ {x y z u : A} (p : x ≡ y) {q : y ≡ z} {r : z ≡ u} →
-  trans (trans p q) r ≡ trans p (trans q r)
-trans-assoc refl = refl
-
-trans-symˡ : ∀ {x y : A} (p : x ≡ y) → trans (sym p) p ≡ refl
-trans-symˡ refl = refl
-
-trans-symʳ : ∀ {x y : A} (p : x ≡ y) → trans p (sym p) ≡ refl
-trans-symʳ refl = refl
 
 ------------------------------------------------------------------------
 -- Properties of _≢_
@@ -90,7 +104,7 @@ trans-symʳ refl = refl
 module ≡-Reasoning {A : Set a} where
 
   infix  3 _∎
-  infixr 2 _≡⟨⟩_ _≡⟨_⟩_ _≡˘⟨_⟩_
+  infixr 2 _≡⟨⟩_ step-≡ step-≡˘
   infix  1 begin_
 
   begin_ : ∀{x y : A} → x ≡ y → x ≡ y
@@ -99,11 +113,14 @@ module ≡-Reasoning {A : Set a} where
   _≡⟨⟩_ : ∀ (x {y} : A) → x ≡ y → x ≡ y
   _ ≡⟨⟩ x≡y = x≡y
 
-  _≡⟨_⟩_ : ∀ (x {y z} : A) → x ≡ y → y ≡ z → x ≡ z
-  _ ≡⟨ x≡y ⟩ y≡z = trans x≡y y≡z
+  step-≡ : ∀ (x {y z} : A) → y ≡ z → x ≡ y → x ≡ z
+  step-≡ _ y≡z x≡y = trans x≡y y≡z
 
-  _≡˘⟨_⟩_ : ∀ (x {y z} : A) → y ≡ x → y ≡ z → x ≡ z
-  _ ≡˘⟨ y≡x ⟩ y≡z = trans (sym y≡x) y≡z
+  step-≡˘ : ∀ (x {y z} : A) → y ≡ z → y ≡ x → x ≡ z
+  step-≡˘ _ y≡z y≡x = trans (sym y≡x) y≡z
 
   _∎ : ∀ (x : A) → x ≡ x
   _∎ _ = refl
+
+  syntax step-≡  x y≡z x≡y = x ≡⟨  x≡y ⟩ y≡z
+  syntax step-≡˘ x y≡z y≡x = x ≡˘⟨ y≡x ⟩ y≡z

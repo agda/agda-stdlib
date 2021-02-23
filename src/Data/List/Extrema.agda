@@ -11,19 +11,18 @@ open import Relation.Binary using (TotalOrder; Setoid)
 module Data.List.Extrema
   {b ℓ₁ ℓ₂} (totalOrder : TotalOrder b ℓ₁ ℓ₂) where
 
-open import Algebra.FunctionProperties
 import Algebra.Construct.NaturalChoice.Min as Min
 import Algebra.Construct.NaturalChoice.Max as Max
-open import Data.List using (List; foldr)
+open import Data.List.Base using (List; foldr)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Relation.Unary.All using (All; []; _∷_; lookup; map; tabulate)
 open import Data.List.Membership.Propositional using (_∈_; lose)
 open import Data.List.Membership.Propositional.Properties
   using (foldr-selective)
-open import Data.List.Relation.Binary.Subset.Propositional using (_⊆_)
+open import Data.List.Relation.Binary.Subset.Propositional using (_⊆_; _⊇_)
 open import Data.List.Properties
-open import Data.Sum using (_⊎_; inj₁; inj₂)
-open import Function using (id; flip; _on_)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
+open import Function.Base using (id; flip; _on_; _∘_)
 open import Level using (Level)
 open import Relation.Unary using (Pred)
 import Relation.Binary.Construct.NonStrictToStrict as NonStrictToStrict
@@ -206,6 +205,10 @@ min[xs]<min[ys]⁺ : ∀ ⊤₁ {⊤₂} xs {ys} → (⊤₁ < ⊤₂) ⊎ Any (
                    min ⊤₁ xs < min ⊤₂ ys
 min[xs]<min[ys]⁺ = argmin[xs]<argmin[ys]⁺
 
+min-mono-⊆ : ∀ {⊥₁ ⊥₂ xs ys} → ⊥₁ ≤ ⊥₂ → xs ⊇ ys → min ⊥₁ xs ≤ min ⊥₂ ys
+min-mono-⊆ ⊥₁≤⊥₂ ys⊆xs = min[xs]≤min[ys]⁺ _ _ (inj₁ ⊥₁≤⊥₂)
+  (tabulate (inj₂ ∘ Any.map (λ {≡-refl → refl}) ∘ ys⊆xs))
+
 ------------------------------------------------------------------------------
 -- Properties of max
 
@@ -239,3 +242,7 @@ max[xs]<max[ys]⁺ : ∀ {⊥₁} ⊥₂ {xs} ys → ⊥₁ < ⊥₂ ⊎ Any (�
                    All (λ x → x < ⊥₂ ⊎ Any (x <_) ys) xs →
                    max ⊥₁ xs < max ⊥₂ ys
 max[xs]<max[ys]⁺ = argmax[xs]<argmax[ys]⁺
+
+max-mono-⊆ : ∀ {⊥₁ ⊥₂ xs ys} → ⊥₁ ≤ ⊥₂ → xs ⊆ ys → max ⊥₁ xs ≤ max ⊥₂ ys
+max-mono-⊆ ⊥₁≤⊥₂ xs⊆ys = max[xs]≤max[ys]⁺ _ _ (inj₁ ⊥₁≤⊥₂)
+  (tabulate (inj₂ ∘ Any.map (λ {≡-refl → refl}) ∘ xs⊆ys))

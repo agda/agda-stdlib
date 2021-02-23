@@ -9,7 +9,7 @@
 module Data.List.Relation.Binary.Sublist.Propositional.Disjoint
   {a} {A : Set a} where
 
-open import Data.List using (List)
+open import Data.List.Base using (List)
 open import Data.List.Relation.Binary.Sublist.Propositional
 open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong)
 

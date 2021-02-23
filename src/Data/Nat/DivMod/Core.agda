@@ -11,9 +11,9 @@ module Data.Nat.DivMod.Core where
 open import Agda.Builtin.Nat using ()
   renaming (div-helper to divₕ; mod-helper to modₕ)
 
-open import Data.Nat
+open import Data.Nat.Base
 open import Data.Nat.Properties
-open import Data.Sum using (_⊎_; inj₁; inj₂)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.Product using (_×_; _,_)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (yes; no)
@@ -128,27 +128,10 @@ private
   div-cong₃ : ∀ {c n a₁ a₂ b} → a₁ ≡ a₂ → divₕ c n a₁ b ≡ divₕ c n a₂ b
   div-cong₃ refl = refl
 
-  divₕ-restart : ∀ {acc} d n j → j < n → divₕ acc d n j ≡ divₕ (suc acc) d (n ∸ suc j) d
-  divₕ-restart d (suc n) zero    j<n       = refl
-  divₕ-restart d (suc n) (suc j) (s≤s j<n) = divₕ-restart d n j j<n
-
-  divₕ-finish : ∀ {acc} d n j → j ≥ n → divₕ acc d n j ≡ acc
-  divₕ-finish d zero    j       j≥n       = refl
-  divₕ-finish d (suc n) (suc j) (s≤s j≥n) = divₕ-finish d n j j≥n
-
   acc≤divₕ[acc] : ∀ {acc} d n j → acc ≤ divₕ acc d n j
   acc≤divₕ[acc] {acc} d zero    j       = ≤-refl
   acc≤divₕ[acc] {acc} d (suc n) zero    = ≤-trans (n≤1+n acc) (acc≤divₕ[acc] d n d)
   acc≤divₕ[acc] {acc} d (suc n) (suc j) = acc≤divₕ[acc] d n j
-
-  divₕ-extractAcc : ∀ acc d n j → divₕ acc d n j ≡ acc + divₕ 0 d n j
-  divₕ-extractAcc acc d zero j          = sym (+-identityʳ acc)
-  divₕ-extractAcc acc d (suc n) (suc j) = divₕ-extractAcc acc d n j
-  divₕ-extractAcc acc d (suc n) zero = begin-equality
-    divₕ (suc acc)    d n d  ≡⟨ divₕ-extractAcc (suc acc) d n d ⟩
-    suc acc +  divₕ 0 d n d  ≡⟨ sym (+-suc acc _) ⟩
-    acc + suc (divₕ 0 d n d) ≡⟨ cong (acc +_) (sym (divₕ-extractAcc 1 d n d)) ⟩
-    acc +      divₕ 1 d n d  ∎
 
   pattern inj₂′ x = inj₂ (inj₁ x)
   pattern inj₃  x = inj₂ (inj₂ x)
@@ -216,6 +199,23 @@ div-mod-lemma accᵐ accᵈ (suc d) (suc n) rewrite +-suc accᵐ n = begin-equal
   modₕ _ _ d n + divₕ accᵈ _ d n * m  ∎
   where
   m = 2 + accᵐ + n
+
+divₕ-restart : ∀ {acc} d n j → j < n → divₕ acc d n j ≡ divₕ (suc acc) d (n ∸ suc j) d
+divₕ-restart d (suc n) zero    j<n       = refl
+divₕ-restart d (suc n) (suc j) (s≤s j<n) = divₕ-restart d n j j<n
+
+divₕ-extractAcc : ∀ acc d n j → divₕ acc d n j ≡ acc + divₕ 0 d n j
+divₕ-extractAcc acc d zero j          = sym (+-identityʳ acc)
+divₕ-extractAcc acc d (suc n) (suc j) = divₕ-extractAcc acc d n j
+divₕ-extractAcc acc d (suc n) zero = begin-equality
+  divₕ (suc acc)    d n d  ≡⟨ divₕ-extractAcc (suc acc) d n d ⟩
+  suc acc +  divₕ 0 d n d  ≡⟨ sym (+-suc acc _) ⟩
+  acc + suc (divₕ 0 d n d) ≡⟨ cong (acc +_) (sym (divₕ-extractAcc 1 d n d)) ⟩
+  acc +      divₕ 1 d n d  ∎
+
+divₕ-finish : ∀ {acc} d n j → j ≥ n → divₕ acc d n j ≡ acc
+divₕ-finish d zero    j       j≥n       = refl
+divₕ-finish d (suc n) (suc j) (s≤s j≥n) = divₕ-finish d n j j≥n
 
 n[divₕ]n≡1 : ∀ n m → divₕ 0 n (suc m) m ≡ 1
 n[divₕ]n≡1 n zero    = refl

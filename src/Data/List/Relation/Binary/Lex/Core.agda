@@ -12,15 +12,15 @@ open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Unit.Base using (⊤; tt)
 open import Data.Product using (_×_; _,_; proj₁; proj₂; uncurry)
 open import Data.List.Base using (List; []; _∷_)
-open import Data.Sum using (_⊎_; inj₁; inj₂; [_,_])
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Function.Equivalence using (_⇔_; equivalence)
-open import Function using (_∘_; flip; id)
+open import Function.Base using (_∘_; flip; id)
 open import Level using (_⊔_)
 open import Relation.Nullary using (Dec; yes; no; ¬_)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Product using (_×-dec_)
 open import Relation.Nullary.Sum using (_⊎-dec_)
-open import Relation.Binary
+open import Relation.Binary hiding (_⇔_)
 open import Data.List.Relation.Binary.Pointwise
    using (Pointwise; []; _∷_; head; tail)
 

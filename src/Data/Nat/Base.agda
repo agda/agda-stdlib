@@ -11,23 +11,42 @@
 
 module Data.Nat.Base where
 
+open import Data.Bool.Base using (Bool; true; false)
+open import Data.Empty using (⊥)
+open import Data.Unit.Base using (⊤; tt)
 open import Level using (0ℓ)
-open import Relation.Binary
-open import Relation.Binary.Core
-open import Agda.Builtin.Equality
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; _≢_; refl)
 open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Unary using (Pred)
 
 ------------------------------------------------------------------------
--- The types
+-- Types
 
 open import Agda.Builtin.Nat public
   using (zero; suc) renaming (Nat to ℕ)
 
 ------------------------------------------------------------------------
--- Standard ordering relations
+-- Boolean equality relation
 
 open import Agda.Builtin.Nat public
-  using () renaming (_==_ to _≡ᵇ_; _<_ to _<ᵇ_)
+  using () renaming (_==_ to _≡ᵇ_)
+
+------------------------------------------------------------------------
+-- Boolean ordering relation
+
+open import Agda.Builtin.Nat public
+  using () renaming (_<_ to _<ᵇ_)
+
+infix 4 _≤ᵇ_
+_≤ᵇ_ : (m n : ℕ) → Bool
+zero  ≤ᵇ n = true
+suc m ≤ᵇ n = m <ᵇ n
+
+------------------------------------------------------------------------
+-- Standard ordering relations
 
 infix 4 _≤_ _<_ _≥_ _>_ _≰_ _≮_ _≱_ _≯_
 
@@ -57,14 +76,41 @@ _≯_ : Rel ℕ 0ℓ
 a ≯ b = ¬ a > b
 
 ------------------------------------------------------------------------
+-- Simple predicates
+
+-- Defining `NonZero` in terms of `⊤` and `⊥` allows Agda to
+-- automatically infer nonZero-ness for any natural of the form
+-- `suc n`. Consequently in many circumstances this eliminates the need
+-- to explicitly pass a proof when the NonZero argument is either an
+-- implicit or an instance argument.
+--
+-- It could alternatively be defined using a datatype with an instance
+-- constructor but then it would not be inferrable when passed as an
+-- implicit argument.
+--
+-- See `Data.Nat.DivMod` for an example.
+
+NonZero : ℕ → Set
+NonZero zero    = ⊥
+NonZero (suc x) = ⊤
+
+-- Constructors
+
+≢-nonZero : ∀ {n} → n ≢ 0 → NonZero n
+≢-nonZero {zero}  0≢0 = 0≢0 refl
+≢-nonZero {suc n} n≢0 = tt
+
+>-nonZero : ∀ {n} → n > 0 → NonZero n
+>-nonZero (s≤s 0<n) = tt
+
+------------------------------------------------------------------------
 -- Arithmetic
 
 open import Agda.Builtin.Nat public
   using (_+_; _*_) renaming (_-_ to _∸_)
 
 pred : ℕ → ℕ
-pred zero    = zero
-pred (suc n) = n
+pred n = n ∸ 1
 
 infixl 7 _⊓_
 infixl 6 _+⋎_ _⊔_
@@ -115,8 +161,10 @@ x ^ suc n = x * x ^ n
 ∣ suc x - suc y ∣ = ∣ x - y ∣
 
 ------------------------------------------------------------------------
--- The following, alternative definition of _≤_ is more suitable for
--- well-founded induction (see Induction.Nat).
+-- Alternative definition of _≤_
+
+-- The following definition of _≤_ is more suitable for well-founded
+-- induction (see Data.Nat.Induction)
 
 infix 4 _≤′_ _<′_ _≥′_ _>′_
 
@@ -134,7 +182,7 @@ _>′_ : Rel ℕ 0ℓ
 m >′ n = n <′ m
 
 ------------------------------------------------------------------------
--- Another alternative definition of _≤_.
+-- Another alternative definition of _≤_
 
 record _≤″_ (m n : ℕ) : Set where
   constructor less-than-or-equal
@@ -154,6 +202,8 @@ _>″_ : Rel ℕ 0ℓ
 m >″ n = n <″ m
 
 ------------------------------------------------------------------------
+-- Another alternative definition of _≤_
+
 -- Useful for induction when you have an upper bound.
 
 data _≤‴_ : ℕ → ℕ → Set where

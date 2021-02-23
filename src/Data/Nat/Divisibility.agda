@@ -9,7 +9,7 @@
 module Data.Nat.Divisibility where
 
 open import Algebra
-open import Data.Nat
+open import Data.Nat.Base
 open import Data.Nat.DivMod
 open import Data.Nat.Properties
 open import Data.Product
@@ -20,7 +20,7 @@ open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable as Dec using (False)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Binary
-import Relation.Binary.Reasoning.PartialOrder as POR
+import Relation.Binary.Reasoning.Preorder as PreorderReasoning
 open import Relation.Binary.PropositionalEquality as PropEq
   using (_≡_; _≢_; refl; sym; trans; cong; cong₂; subst)
 
@@ -113,9 +113,16 @@ suc n ∣? m      = Dec.map (m%n≡0⇔n∣m m n) (m % suc n ≟ 0)
 ------------------------------------------------------------------------
 -- A reasoning module for the _∣_ relation
 
-module ∣-Reasoning = POR ∣-poset
-  hiding   (_≈⟨_⟩_; _≈˘⟨_⟩_; _<⟨_⟩_)
-  renaming (_≤⟨_⟩_ to _∣⟨_⟩_)
+module ∣-Reasoning where
+  private
+    module Base = PreorderReasoning ∣-preorder
+
+  open Base public
+    hiding (step-≈; step-≈˘; step-∼)
+
+  infixr 2 step-∣
+  step-∣ = Base.step-∼
+  syntax step-∣ x y∣z x∣y = x ∣⟨ x∣y ⟩ y∣z
 
 ------------------------------------------------------------------------
 -- Simple properties of _∣_
@@ -298,7 +305,7 @@ Please use n∣m*n instead."
 
 -- Version 0.17
 
-open import Data.Fin using (Fin; zero; suc; toℕ)
+open import Data.Fin.Base using (Fin; zero; suc; toℕ)
 import Data.Fin.Properties as FP
 open import Data.Nat.Solver
 open +-*-Solver
@@ -319,11 +326,11 @@ nonZeroDivisor-lemma m zero r r≢zero (divides (suc q) eq) =
     m                   ∎
     where open ≤-Reasoning
 nonZeroDivisor-lemma m (suc q) r r≢zero d =
-  nonZeroDivisor-lemma m q r r≢zero (∣m+n∣m⇒∣n d' ∣-refl)
+  nonZeroDivisor-lemma m q r r≢zero (∣m+n∣m⇒∣n d′ ∣-refl)
   where
   lem = solve 3 (λ m r q → r :+ (m :+ q)  :=  m :+ (r :+ q))
                 refl (suc m) (toℕ r) (q * suc m)
-  d' = subst (1 + m ∣_) lem d
+  d′ = subst (1 + m ∣_) lem d
 {-# WARNING_ON_USAGE nonZeroDivisor-lemma
 "Warning: nonZeroDivisor-lemma was deprecated in v0.17."
 #-}

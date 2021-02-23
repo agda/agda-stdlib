@@ -18,7 +18,7 @@ module Relation.Binary.Reasoning.Base.Double {a ℓ₁ ℓ₂} {A : Set a}
 
 open import Data.Product using (proj₁; proj₂)
 open import Level using (Level; _⊔_; Lift; lift)
-open import Function using (case_of_; id)
+open import Function.Base using (case_of_; id)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; refl; sym)
 open import Relation.Nullary using (Dec; yes; no)
@@ -34,14 +34,6 @@ infix 4 _IsRelatedTo_
 data _IsRelatedTo_ (x y : A) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
   nonstrict : (x∼y : x ∼ y) → x IsRelatedTo y
   equals    : (x≈y : x ≈ y) → x IsRelatedTo y
-
-levelOf : ∀ {x y} → x IsRelatedTo y → Level
-levelOf (nonstrict x∼y) = ℓ₂
-levelOf (equals    x≈y) = ℓ₁
-
-relOf : ∀ {x y} (r : x IsRelatedTo y) → Rel A (levelOf r)
-relOf (nonstrict x∼y) = _∼_
-relOf (equals    x≈y) = _≈_
 
 ------------------------------------------------------------------------
 -- A record that is used to ensure that the final relation proved by the
@@ -60,9 +52,14 @@ extractEquality (isEquality x≈y) = x≈y
 ------------------------------------------------------------------------
 -- Reasoning combinators
 
+-- See `Relation.Binary.Reasoning.Base.Partial` for the design decisions
+-- behind these combinators.
+
 infix  1 begin_ begin-equality_
-infixr 2 _∼⟨_⟩_ _≈⟨_⟩_ _≈˘⟨_⟩_ _≡⟨_⟩_ _≡˘⟨_⟩_ _≡⟨⟩_
+infixr 2 step-∼ step-≈ step-≈˘ step-≡ step-≡˘ _≡⟨⟩_
 infix  3 _∎
+
+-- Beginnings of various types of proofs
 
 begin_ : ∀ {x y} (r : x IsRelatedTo y) → x ∼ y
 begin (nonstrict x∼y) = x∼y
@@ -71,26 +68,48 @@ begin (equals    x≈y) = reflexive x≈y
 begin-equality_ : ∀ {x y} (r : x IsRelatedTo y) → {s : True (IsEquality? r)} → x ≈ y
 begin-equality_ r {s} = extractEquality (toWitness s)
 
-_∼⟨_⟩_ : ∀ (x : A) {y z} → x ∼ y → y IsRelatedTo z → x IsRelatedTo z
-x ∼⟨ x∼y ⟩ nonstrict y∼z = nonstrict (trans x∼y y∼z)
-x ∼⟨ x∼y ⟩ equals    y≈z = nonstrict (proj₁ ∼-resp-≈ y≈z x∼y)
+-- Step with the main relation
 
-_≈⟨_⟩_ : ∀ (x : A) {y z} → x ≈ y → y IsRelatedTo z → x IsRelatedTo z
-x ≈⟨ x≈y ⟩ nonstrict y∼z = nonstrict (proj₂ ∼-resp-≈ (Eq.sym x≈y) y∼z)
-x ≈⟨ x≈y ⟩ equals    y≈z = equals    (Eq.trans x≈y y≈z)
+step-∼ : ∀ (x : A) {y z} → y IsRelatedTo z → x ∼ y → x IsRelatedTo z
+step-∼ x (nonstrict y∼z) x∼y = nonstrict (trans x∼y y∼z)
+step-∼ x (equals    y≈z) x∼y = nonstrict (∼-respʳ-≈ y≈z x∼y)
 
-_≈˘⟨_⟩_ : ∀ x {y z} → y ≈ x → y IsRelatedTo z → x IsRelatedTo z
-x ≈˘⟨ x≈y ⟩ y∼z = x ≈⟨ Eq.sym x≈y ⟩ y∼z
+-- Step with the setoid equality
 
-_≡⟨_⟩_ : ∀ (x : A) {y z} → x ≡ y → y IsRelatedTo z → x IsRelatedTo z
-x ≡⟨ x≡y ⟩ nonstrict y∼z = nonstrict (case x≡y of λ where refl → y∼z)
-x ≡⟨ x≡y ⟩ equals    y≈z = equals    (case x≡y of λ where refl → y≈z)
+step-≈ : ∀ (x : A) {y z} → y IsRelatedTo z → x ≈ y → x IsRelatedTo z
+step-≈ x (nonstrict y∼z) x≈y = nonstrict (∼-respˡ-≈ (Eq.sym x≈y) y∼z)
+step-≈ x (equals    y≈z) x≈y = equals    (Eq.trans x≈y y≈z)
 
-_≡˘⟨_⟩_ : ∀ x {y z} → y ≡ x → y IsRelatedTo z → x IsRelatedTo z
-x ≡˘⟨ x≡y ⟩ y∼z = x ≡⟨ sym x≡y ⟩ y∼z
+-- Flipped step with the setoid equality
+
+step-≈˘ : ∀ x {y z} → y IsRelatedTo z → y ≈ x → x IsRelatedTo z
+step-≈˘ x y∼z x≈y = step-≈ x y∼z (Eq.sym x≈y)
+
+-- Step with non-trivial propositional equality
+
+step-≡ : ∀ (x : A) {y z} → y IsRelatedTo z → x ≡ y → x IsRelatedTo z
+step-≡ x (nonstrict y∼z) x≡y = nonstrict (case x≡y of λ where refl → y∼z)
+step-≡ x (equals    y≈z) x≡y = equals    (case x≡y of λ where refl → y≈z)
+
+-- Flipped step with non-trivial propositional equality
+
+step-≡˘ : ∀ x {y z} → y IsRelatedTo z → y ≡ x → x IsRelatedTo z
+step-≡˘ x y∼z x≡y = step-≡ x y∼z (sym x≡y)
+
+-- Step with trivial propositional equality
 
 _≡⟨⟩_ : ∀ (x : A) {y} → x IsRelatedTo y → x IsRelatedTo y
 x ≡⟨⟩ x≲y = x≲y
 
+-- Termination step
+
 _∎ : ∀ x → x IsRelatedTo x
 x ∎ = equals Eq.refl
+
+-- Syntax declarations
+
+syntax step-∼  x y∼z x∼y = x ∼⟨  x∼y ⟩ y∼z
+syntax step-≈  x y∼z x≈y = x ≈⟨  x≈y ⟩ y∼z
+syntax step-≈˘ x y∼z y≈x = x ≈˘⟨ y≈x ⟩ y∼z
+syntax step-≡  x y∼z x≡y = x ≡⟨  x≡y ⟩ y∼z
+syntax step-≡˘ x y∼z y≡x = x ≡˘⟨ y≡x ⟩ y∼z

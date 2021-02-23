@@ -13,7 +13,7 @@ open import Level
 open import Data.List.Base as List using (List; []; _∷_; _++_)
 open import Data.List.Relation.Binary.Pointwise using (Pointwise; []; _∷_)
 open import Data.Product as Prod using (∃; ∃₂; _×_; uncurry; _,_; -,_; proj₂)
-open import Data.Sum using (_⊎_; inj₁; inj₂)
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
@@ -23,6 +23,8 @@ open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
 module _ {a b c l r} {A : Set a} {B : Set b} {C : Set c}
          (L : REL A C l) (R : REL B C r) where
+
+  infixr 5 _∷ˡ_ _∷ʳ_
 
   data Interleaving : List A → List B → List C → Set (a ⊔ b ⊔ c ⊔ l ⊔ r) where
     []   : Interleaving [] [] []

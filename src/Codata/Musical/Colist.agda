@@ -6,14 +6,15 @@
 
 {-# OPTIONS --without-K --sized-types --guardedness #-}
 
+-- Disabled to prevent warnings from BoundedVec
+{-# OPTIONS --warn=noUserWarning #-}
+
 module Codata.Musical.Colist where
 
 open import Category.Monad
 open import Codata.Musical.Notation
 open import Codata.Musical.Conat using (Coℕ; zero; suc)
 open import Data.Bool.Base using (Bool; true; false)
-open import Data.BoundedVec.Inefficient as BVec
-  using (BoundedVec; []; _∷_)
 open import Data.Empty using (⊥)
 open import Data.Maybe using (Maybe; nothing; just; Is-just)
 open import Data.Maybe.Relation.Unary.Any using (just)
@@ -22,7 +23,8 @@ open import Data.Nat.Properties using (s≤′s)
 open import Data.List.Base using (List; []; _∷_)
 open import Data.List.NonEmpty using (List⁺; _∷_)
 open import Data.Product as Prod using (∃; _×_; _,_)
-open import Data.Sum as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
+open import Data.Vec.Bounded as Vec≤ using (Vec≤)
 open import Function.Base
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse as Inv using (_↔_; _↔̇_; Inverse; inverse)
@@ -111,10 +113,10 @@ fromList : ∀ {a} {A : Set a} → List A → Colist A
 fromList []       = []
 fromList (x ∷ xs) = x ∷ ♯ fromList xs
 
-take : ∀ {a} {A : Set a} (n : ℕ) → Colist A → BoundedVec A n
-take zero    xs       = []
-take (suc n) []       = []
-take (suc n) (x ∷ xs) = x ∷ take n (♭ xs)
+take : ∀ {a} {A : Set a} (n : ℕ) → Colist A → Vec≤ A n
+take zero    xs       = Vec≤.[]
+take (suc n) []       = Vec≤.[]
+take (suc n) (x ∷ xs) = x Vec≤.∷ take n (♭ xs)
 
 replicate : ∀ {a} {A : Set a} → Coℕ → A → Colist A
 replicate zero    x = []
@@ -457,10 +459,15 @@ Any-∈ {P = P} = record
   antisym []       [] = []
   antisym (x ∷ p₁) p₂ = x ∷ ♯ antisym (♭ p₁) (tail p₂)
 
-module ⊑-Reasoning where
-  private
-    open module R {a} {A : Set a} = POR (⊑-Poset A)
-      public renaming (_≤⟨_⟩_ to _⊑⟨_⟩_)
+module ⊑-Reasoning {a} {A : Set a} where
+  private module Base = POR (⊑-Poset A)
+
+  open Base public
+    hiding (step-<; begin-strict_; step-≤)
+
+  infixr 2 step-⊑
+  step-⊑ = Base.step-≤
+  syntax step-⊑ x ys⊑zs xs⊑ys = x ⊑⟨ xs⊑ys ⟩ ys⊑zs
 
 -- The subset relation forms a preorder.
 
@@ -469,21 +476,26 @@ module ⊑-Reasoning where
                  (λ xs≈ys → ⊑⇒⊆ (⊑P.reflexive xs≈ys))
   where module ⊑P = Poset (⊑-Poset A)
 
-module ⊆-Reasoning where
-  private
-    open module R {a} {A : Set a} = PreR (⊆-Preorder A)
-      public renaming (_∼⟨_⟩_ to _⊆⟨_⟩_)
+module ⊆-Reasoning {a} {A : Set a} where
+  private module Base = PreR (⊆-Preorder A)
 
-  infix 1 _∈⟨_⟩_
+  open Base public
+    hiding (step-∼)
 
-  _∈⟨_⟩_ : ∀ {a} {A : Set a} (x : A) {xs ys} →
-           x ∈ xs → xs IsRelatedTo ys → x ∈ ys
-  x ∈⟨ x∈xs ⟩ xs⊆ys = (begin xs⊆ys) x∈xs
+  infixr 2 step-⊆
+  infix  1 step-∈
+
+  step-⊆ = Base.step-∼
+
+  step-∈ : ∀ (x : A) {xs ys} → xs IsRelatedTo ys → x ∈ xs → x ∈ ys
+  step-∈ x xs⊆ys x∈xs = (begin xs⊆ys) x∈xs
+
+  syntax step-⊆ xs ys⊆zs xs⊆ys = xs ⊆⟨ xs⊆ys ⟩ ys⊆zs
+  syntax step-∈ x  xs⊆ys x∈xs  = x  ∈⟨ x∈xs  ⟩ xs⊆ys
 
 -- take returns a prefix.
-
 take-⊑ : ∀ {a} {A : Set a} n (xs : Colist A) →
-         let toColist = fromList {a} ∘ BVec.toList in
+         let toColist = fromList {a} ∘ Vec≤.toList in
          toColist (take n xs) ⊑ xs
 take-⊑ zero    xs       = []
 take-⊑ (suc n) []       = []
@@ -555,3 +567,36 @@ module _ {a} {A : Set a} where
   toMusical : C.Colist A Size.∞ → Colist A
   toMusical C.[]       = []
   toMusical (x C.∷ xs) = x ∷ ♯ toMusical (xs .force)
+
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 1.3
+
+open import Data.BoundedVec.Inefficient as BVec
+  using (BoundedVec; []; _∷_)
+
+take′ : ∀ {a} {A : Set a} (n : ℕ) → Colist A → BoundedVec A n
+take′ zero    xs       = []
+take′ (suc n) []       = []
+take′ (suc n) (x ∷ xs) = x ∷ take′ n (♭ xs)
+{-# WARNING_ON_USAGE take′
+"Warning: take′ (and Data.BoundedVec) was deprecated in v1.3.
+Please use take (and Data.Vec.Bounded) instead."
+#-}
+
+take′-⊑ : ∀ {a} {A : Set a} n (xs : Colist A) →
+         let toColist = fromList {a} ∘ BVec.toList in
+         toColist (take′ n xs) ⊑ xs
+take′-⊑ zero    xs       = []
+take′-⊑ (suc n) []       = []
+take′-⊑ (suc n) (x ∷ xs) = x ∷ ♯ take′-⊑ n (♭ xs)
+{-# WARNING_ON_USAGE take′-⊑
+"Warning: take′-⊑ (and Data.BoundedVec) was deprecated in v1.3.
+Please use take-⊑ (and Data.Vec.Bounded) instead."
+#-}

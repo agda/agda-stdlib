@@ -9,9 +9,9 @@
 
 module Data.Vec.Properties.WithK where
 
-open import Data.Nat
+open import Data.Nat.Base
 open import Data.Nat.Properties using (+-assoc)
-open import Data.Vec
+open import Data.Vec.Base
 open import Relation.Binary.PropositionalEquality as P using (_≡_; refl)
 open import Relation.Binary.HeterogeneousEquality as H using (_≅_; refl)
 
@@ -23,8 +23,8 @@ module _ {a} {A : Set a} where
   []=-irrelevant : ∀ {n} {xs : Vec A n} {i x} →
                     (p q : xs [ i ]= x) → p ≡ q
   []=-irrelevant here            here             = refl
-  []=-irrelevant (there xs[i]=x) (there xs[i]=x') =
-    P.cong there ([]=-irrelevant xs[i]=x xs[i]=x')
+  []=-irrelevant (there xs[i]=x) (there xs[i]=x′) =
+    P.cong there ([]=-irrelevant xs[i]=x xs[i]=x′)
 
 ------------------------------------------------------------------------
 -- _++_

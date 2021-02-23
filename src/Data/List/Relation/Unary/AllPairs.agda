@@ -11,10 +11,10 @@ open import Relation.Binary using (Rel)
 module Data.List.Relation.Unary.AllPairs
        {a ℓ} {A : Set a} {R : Rel A ℓ} where
 
-open import Data.List using (List; []; _∷_)
+open import Data.List.Base using (List; []; _∷_)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.Product as Prod using (_,_; _×_; uncurry; <_,_>)
-open import Function using (id; _∘_)
+open import Function.Base using (id; _∘_)
 open import Level using (_⊔_)
 open import Relation.Binary as B using (Rel; _⇒_)
 open import Relation.Binary.Construct.Intersection renaming (_∩_ to _∩ᵇ_)
@@ -71,7 +71,7 @@ module _ {s} {S : Rel A s} where
 allPairs? : B.Decidable R → U.Decidable (AllPairs R)
 allPairs? R? []       = yes []
 allPairs? R? (x ∷ xs) =
-  Dec.map′ (uncurry _∷_) uncons (All.all (R? x) xs ×-dec allPairs? R? xs)
+  Dec.map′ (uncurry _∷_) uncons (All.all? (R? x) xs ×-dec allPairs? R? xs)
 
 irrelevant : B.Irrelevant R → U.Irrelevant (AllPairs R)
 irrelevant irr []           []           = refl

@@ -13,22 +13,30 @@ open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 import Data.List.Relation.Unary.All.Properties as All
 open import Data.List.Relation.Unary.AllPairs as AllPairs using (AllPairs; []; _∷_)
 open import Data.Bool.Base using (true; false)
-open import Data.Fin using (Fin)
+open import Data.Fin.Base using (Fin)
 open import Data.Fin.Properties using (suc-injective)
-open import Data.Nat using (zero; suc; _<_; z≤n; s≤s)
+open import Data.Nat.Base using (zero; suc; _<_; z≤n; s≤s)
 open import Data.Nat.Properties using (≤-refl; ≤-step)
-open import Function using (_∘_; flip)
+open import Function.Base using (_∘_; flip)
+open import Level using (Level)
 open import Relation.Binary using (Rel; DecSetoid)
 open import Relation.Binary.PropositionalEquality using (_≢_)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Nullary using (does)
+
+private
+  variable
+    a b c p ℓ : Level
+    A : Set a
+    B : Set b
+    C : Set c
 
 ------------------------------------------------------------------------
 -- Introduction (⁺) and elimination (⁻) rules for list operations
 ------------------------------------------------------------------------
 -- map
 
-module _ {a b ℓ} {A : Set a} {B : Set b} {R : Rel A ℓ} {f : B → A} where
+module _ {R : Rel A ℓ} {f : B → A} where
 
   map⁺ : ∀ {xs} → AllPairs (λ x y → R (f x) (f y)) xs →
          AllPairs R (map f xs)
@@ -38,7 +46,7 @@ module _ {a b ℓ} {A : Set a} {B : Set b} {R : Rel A ℓ} {f : B → A} where
 ------------------------------------------------------------------------
 -- ++
 
-module _ {a ℓ} {A : Set a} {R : Rel A ℓ} where
+module _ {R : Rel A ℓ} where
 
   ++⁺ : ∀ {xs ys} → AllPairs R xs → AllPairs R ys →
         All (λ x → All (R x) ys) xs → AllPairs R (xs ++ ys)
@@ -48,7 +56,7 @@ module _ {a ℓ} {A : Set a} {R : Rel A ℓ} where
 ------------------------------------------------------------------------
 -- concat
 
-module _ {a ℓ} {A : Set a} {R : Rel A ℓ} where
+module _ {R : Rel A ℓ} where
 
   concat⁺ : ∀ {xss} → All (AllPairs R) xss →
             AllPairs (λ xs ys → All (λ x → All (R x) ys) xs) xss →
@@ -60,7 +68,7 @@ module _ {a ℓ} {A : Set a} {R : Rel A ℓ} where
 ------------------------------------------------------------------------
 -- take and drop
 
-module _ {a ℓ} {A : Set a} {R : Rel A ℓ} where
+module _ {R : Rel A ℓ} where
 
   take⁺ : ∀ {xs} n → AllPairs R xs → AllPairs R (take n xs)
   take⁺ zero    pxs        = []
@@ -75,7 +83,7 @@ module _ {a ℓ} {A : Set a} {R : Rel A ℓ} where
 ------------------------------------------------------------------------
 -- applyUpTo
 
-module _ {a ℓ} {A : Set a} {R : Rel A ℓ} where
+module _ {R : Rel A ℓ} where
 
   applyUpTo⁺₁ : ∀ f n → (∀ {i j} → i < j → j < n → R (f i) (f j)) → AllPairs R (applyUpTo f n)
   applyUpTo⁺₁ f zero    Rf = []
@@ -89,7 +97,7 @@ module _ {a ℓ} {A : Set a} {R : Rel A ℓ} where
 ------------------------------------------------------------------------
 -- applyDownFrom
 
-module _ {a ℓ} {A : Set a} {R : Rel A ℓ} where
+module _ {R : Rel A ℓ} where
 
   applyDownFrom⁺₁ : ∀ f n → (∀ {i j} → j < i → i < n → R (f i) (f j)) →
                     AllPairs R (applyDownFrom f n)
@@ -104,7 +112,7 @@ module _ {a ℓ} {A : Set a} {R : Rel A ℓ} where
 ------------------------------------------------------------------------
 -- tabulate
 
-module _ {a ℓ} {A : Set a} {R : Rel A ℓ} where
+module _ {R : Rel A ℓ} where
 
   tabulate⁺ : ∀ {n} {f : Fin n → A} → (∀ {i j} → i ≢ j → R (f i) (f j)) →
               AllPairs R (tabulate f)
@@ -116,8 +124,7 @@ module _ {a ℓ} {A : Set a} {R : Rel A ℓ} where
 ------------------------------------------------------------------------
 -- filter
 
-module _ {a ℓ p} {A : Set a} {R : Rel A ℓ}
-         {P : Pred A p} (P? : Decidable P) where
+module _ {R : Rel A ℓ} {P : Pred A p} (P? : Decidable P) where
 
   filter⁺ : ∀ {xs} → AllPairs R xs → AllPairs R (filter P? xs)
   filter⁺ {_}      []           = []

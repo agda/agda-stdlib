@@ -12,7 +12,7 @@ module Text.Pretty.Core where
 
 import Level
 
-open import Data.Bool using (Bool)
+open import Data.Bool.Base using (Bool)
 open import Data.Erased    as Erased using (Erased) hiding (module Erased)
 open import Data.List.Base as List   using (List; []; _∷_)
 open import Data.Nat.Base            using (ℕ; zero; suc; _+_; _⊔_; _≤_; z≤n)
@@ -20,8 +20,9 @@ open import Data.Nat.Properties
 open import Data.Product as Prod using (_×_; _,_; uncurry; proj₁; proj₂)
 import Data.Product.Relation.Unary.All as Allᴾ
 
-open import Data.Tree.Binary as Tree using (Tree; leaf; node)
+open import Data.Tree.Binary as Tree using (Tree; leaf; node; #nodes; mapₙ)
 open import Data.Tree.Binary.Relation.Unary.All as Allᵀ using (leaf; node)
+open import Data.Unit using (⊤; tt)
 import Data.Tree.Binary.Relation.Unary.All.Properties as Allᵀₚ
 import Data.Tree.Binary.Properties as Treeₚ
 
@@ -29,10 +30,11 @@ open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; maybe′)
 open import Data.Maybe.Relation.Unary.All as Allᴹ using (nothing; just)
 
 open import Data.String.Base as String
+  using (String; length; replicate; _++_; unlines)
 open import Data.String.Unsafe as Stringₚ
 open import Function.Base
 open import Relation.Nullary using (Dec)
-open import Relation.Unary using (IUniversal; _⇒_)
+open import Relation.Unary using (IUniversal; _⇒_; U)
 open import Relation.Binary.PropositionalEquality
 
 open import Data.Refinement hiding (map)
@@ -47,13 +49,13 @@ import Data.Refinement.Relation.Unary.All as Allᴿ
 -- render the block by traversing the tree left to right in a depth-first manner.
 
 Content : Set
-Content = Maybe (String × Tree String)
+Content = Maybe (String × Tree String ⊤)
 
 size : Content → ℕ
-size = maybe′ (suc ∘ Tree.size ∘ proj₂) 0
+size = maybe′ (suc ∘ #nodes ∘ proj₂) 0
 
 All : ∀ {p} (P : String → Set p) → (Content → Set p)
-All P = Allᴹ.All (Allᴾ.All P (Allᵀ.All P))
+All P = Allᴹ.All (Allᴾ.All P (Allᵀ.All P U))
 
 All≤ : ℕ → Content → Set
 All≤ n = All (λ s → length s ≤ n)
@@ -89,17 +91,17 @@ empty = text ""
 ------------------------------------------------------------------------
 -- Helper functions
 
-node? : Content → String → Tree String → Content
+node? : Content → String → Tree String ⊤ → Content
 node? (just (x , xs)) y ys = just (x , node xs y ys)
 node? nothing         y ys = just (y , ys)
 
 ∣node?∣ : ∀ b y ys → size (node? b y ys)
-                   ≡ size b + suc (Tree.size ys)
+                   ≡ size b + suc (#nodes ys)
 ∣node?∣ (just (x , xs)) y ys = refl
 ∣node?∣ nothing         y ys = refl
 
 ≤-Content : ∀ {m n} {b : Content} → m ≤ n → All≤ m b → All≤ n b
-≤-Content {m} {n} m≤n = Allᴹ.map (Prod.map step (Allᵀ.map step))
+≤-Content {m} {n} m≤n = Allᴹ.map (Prod.map step (Allᵀ.mapₙ step))
 
   where
 
@@ -107,7 +109,7 @@ node? nothing         y ys = just (y , ys)
   step = flip ≤-trans m≤n
 
 All≤-node? : ∀ {l m r n} →
-             All≤ n l → length m ≤ n → Allᵀ.All (λ s → length s ≤ n) r →
+             All≤ n l → length m ≤ n → Allᵀ.All (λ s → length s ≤ n) U r →
              All≤ n (node? l m r)
 All≤-node? nothing           py pys = just (py , pys)
 All≤-node? (just (px , pxs)) py pys = just (px , node pxs py pys)
@@ -154,14 +156,14 @@ private
     size-indent nothing    str = refl
     size-indent (just pad) str = length-++ pad str
 
-    indents : Maybe String → Tree String → Tree String
-    indents = maybe′ (Tree.map ∘ _++_) id
+    indents : Maybe String → Tree String ⊤ → Tree String ⊤
+    indents = maybe′ (mapₙ ∘ _++_) id
 
-    size-indents : ∀ ma t → Tree.size (indents ma t) ≡ Tree.size t
+    size-indents : ∀ ma t → #nodes (indents ma t) ≡ #nodes t
     size-indents nothing    t = refl
-    size-indents (just pad) t = Treeₚ.size-map (pad ++_) t
+    size-indents (just pad) t = Treeₚ.#nodes-mapₙ (pad ++_) t
 
-    unfold-indents : ∀ ma t → indents ma t ≡ Tree.map (indent ma) t
+    unfold-indents : ∀ ma t → indents ma t ≡ mapₙ (indent ma) t
     unfold-indents nothing    t = sym (Treeₚ.map-id t)
     unfold-indents (just pad) t = refl
 
@@ -191,10 +193,10 @@ private
       x.height + 0        ≡⟨ cong (_ +_) ∣y∣ ⟩
       x.height + y.height ∎ where open ≡-Reasoning
     ... | just (hd , tl) = begin
-      ∣node∣                          ≡⟨ ∣node?∣ blockx middle rest ⟩
-      ∣blockx∣ + suc (Tree.size rest) ≡⟨ cong ((size blockx +_) ∘′ suc) ∣rest∣ ⟩
-      ∣blockx∣ + suc (Tree.size tl)   ≡⟨ cong₂ _+_ ∣x∣ ∣y∣ ⟩
-      x.height + y.height             ∎ where
+      ∣node∣                            ≡⟨ ∣node?∣ blockx middle rest ⟩
+      ∣blockx∣ + suc (#nodes rest) ≡⟨ cong ((size blockx +_) ∘′ suc) ∣rest∣ ⟩
+      ∣blockx∣ + suc (#nodes tl)   ≡⟨ cong₂ _+_ ∣x∣ ∣y∣ ⟩
+      x.height + y.height               ∎ where
 
       open ≡-Reasoning
       ∣blockx∣ = size blockx
@@ -232,7 +234,7 @@ private
     isMaxWidth₁ : y.lastWidth ≤ widthy → lastWidth ≤ vMaxWidth
     isMaxWidth₁ p = begin
       lastWidth            ≤⟨ +-monoʳ-≤ x.lastWidth p ⟩
-      x.lastWidth + widthy ≤⟨ n≤m⊔n _ _ ⟩
+      x.lastWidth + widthy ≤⟨ m≤n⊔m _ _ ⟩
       vMaxWidth            ∎ where open ≤-Reasoning
 
     isMaxWidth₂ : length lastx ≡ x.lastWidth →
@@ -246,8 +248,8 @@ private
         | just (hd , tl) =
       All≤-node? (≤-Content (m≤m⊔n _ _) ∣xs∣)
                  middle
-                 (subst (Allᵀ.All _) (sym $ unfold-indents pad tl)
-                 $ Allᵀₚ.map⁺ (indent pad) (Allᵀ.map (indented _) ∣tl∣))
+                 (subst (Allᵀ.All _ U) (sym $ unfold-indents pad tl)
+                 $ Allᵀₚ.mapₙ⁺ (indent pad) (Allᵀ.mapₙ (indented _) ∣tl∣))
       where
 
       middle : length (lastx ++ hd) ≤ vMaxWidth
@@ -255,7 +257,7 @@ private
         length (lastx ++ hd)     ≡⟨ length-++ lastx hd ⟩
         length lastx + length hd ≡⟨ cong (_+ _) ∣x∣≡ ⟩
         x.lastWidth + length hd  ≤⟨ +-monoʳ-≤ x.lastWidth ∣hd∣ ⟩
-        x.lastWidth + widthy     ≤⟨ n≤m⊔n _ _ ⟩
+        x.lastWidth + widthy     ≤⟨ m≤n⊔m _ _ ⟩
         vMaxWidth                ∎ where open ≤-Reasoning
 
       indented : ∀ s → length s ≤ widthy →
@@ -264,7 +266,7 @@ private
         length (indent pad s)          ≡⟨ size-indent pad s ⟩
         maybe′ length 0 pad + length s ≡⟨ cong (_+ _) size-pad ⟩
         x.lastWidth + length s         ≤⟨ +-monoʳ-≤ x.lastWidth ∣s∣ ⟩
-        x.lastWidth + widthy           ≤⟨ n≤m⊔n (widthx) _ ⟩
+        x.lastWidth + widthy           ≤⟨ m≤n⊔m (widthx) _ ⟩
         vMaxWidth                      ∎ where open ≤-Reasoning
 
     maxWidth : [ n ∈ ℕ ∣ lastWidth ≤ n × All≤ n vBlock ]
@@ -301,11 +303,11 @@ private
     last : [ s ∈ String ∣ length s ≡ lastWidth ]
     last = "" , ⦇ refl ⦈ where open Erased
 
-    vContent = node? blockx lastx leaf
+    vContent = node? blockx lastx (leaf tt)
 
-    isBlock : size blockx ≡ heightx → size vContent ≡  height
+    isBlock : size blockx ≡ heightx → size vContent ≡ height
     isBlock ∣x∣ = begin
-      size vContent   ≡⟨ ∣node?∣ blockx lastx leaf ⟩
+      size vContent   ≡⟨ ∣node?∣ blockx lastx (leaf tt) ⟩
       size blockx + 1 ≡⟨ cong (_+ 1) ∣x∣ ⟩
       heightx + 1     ≡⟨ +-comm heightx 1 ⟩
       height          ∎ where open ≡-Reasoning
@@ -319,7 +321,7 @@ private
     maxWidth .proof = map (z≤n ,_)
       ⦇ All≤-node? ⦇ proj₂ (Block.maxWidth x .proof) ⦈
                    ⦇ middle (Block.last x .proof) ⦇ proj₁ (Block.maxWidth x .proof) ⦈ ⦈
-                   (pure leaf)
+                   (pure (leaf tt))
       ⦈ where
 
       open Erased
@@ -340,7 +342,7 @@ flush x = record { flush x }
 render : Block → String
 render x = unlines
   $ maybe′ (uncurry (λ hd tl → hd ∷ Tree.Infix.toList tl)) []
-  $ node? (Block.block x .value) (Block.last x .value) leaf
+  $ node? (Block.block x .value) (Block.last x .value) (leaf tt)
 
 valid : (width : ℕ) (b : Block) → Dec (Block.maxWidth b .value ≤ width)
 valid width b = Block.maxWidth b .value ≤? width

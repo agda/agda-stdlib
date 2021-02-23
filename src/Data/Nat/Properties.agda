@@ -14,16 +14,19 @@ module Data.Nat.Properties where
 open import Axiom.UniquenessOfIdentityProofs
 open import Algebra.Bundles
 open import Algebra.Morphism
-open import Algebra.FunctionProperties.Consequences.Propositional
+open import Algebra.Consequences.Propositional
+open import Algebra.Construct.NaturalChoice.Base
+import Algebra.Construct.NaturalChoice.MinMaxOp as MinMaxOp
 open import Data.Bool.Base using (Bool; false; true; T)
 open import Data.Bool.Properties using (T?)
-open import Data.Empty
+open import Data.Empty using (⊥)
 open import Data.Nat.Base
-open import Data.Product
-open import Data.Sum as Sum
+open import Data.Product using (_×_; _,_)
+open import Data.Sum.Base as Sum
 open import Data.Unit using (tt)
 open import Function.Base
 open import Function.Injection using (_↣_)
+open import Function.Metric.Nat
 open import Level using (0ℓ)
 open import Relation.Binary
 open import Relation.Binary.Consequences using (flip-Connex)
@@ -31,6 +34,7 @@ open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Nullary.Decidable using (True; via-injection; map′)
 open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Reflects using (fromEquivalence)
 
 open import Algebra.Definitions {A = ℕ} _≡_
   hiding (LeftCancellative; RightCancellative; Cancellative)
@@ -103,12 +107,29 @@ m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
 <⇒<ᵇ (s≤s z≤n)       = tt
 <⇒<ᵇ (s≤s (s≤s m<n)) = <⇒<ᵇ (s≤s m<n)
 
+<ᵇ-reflects-< : ∀ m n → Reflects (m < n) (m <ᵇ n)
+<ᵇ-reflects-< m n = fromEquivalence (<ᵇ⇒< m n) <⇒<ᵇ
+
+------------------------------------------------------------------------
+-- Properties of _≤ᵇ_
+------------------------------------------------------------------------
+
+≤ᵇ⇒≤ : ∀ m n → T (m ≤ᵇ n) → m ≤ n
+≤ᵇ⇒≤ zero    n m≤n = z≤n
+≤ᵇ⇒≤ (suc m) n m≤n = <ᵇ⇒< m n m≤n
+
+≤⇒≤ᵇ : ∀ {m n} → m ≤ n → T (m ≤ᵇ n)
+≤⇒≤ᵇ z≤n         = tt
+≤⇒≤ᵇ m≤n@(s≤s _) = <⇒<ᵇ m≤n
+
+≤ᵇ-reflects-≤ : ∀ m n → Reflects (m ≤ n) (m ≤ᵇ n)
+≤ᵇ-reflects-≤ m n = fromEquivalence (≤ᵇ⇒≤ m n) ≤⇒≤ᵇ
+
 ------------------------------------------------------------------------
 -- Properties of _≤_
 ------------------------------------------------------------------------
 
-≤-pred : ∀ {m n} → suc m ≤ suc n → m ≤ n
-≤-pred (s≤s m≤n) = m≤n
+open import Data.Nat.Properties.Core public
 
 ------------------------------------------------------------------------
 -- Relational properties of _≤_
@@ -148,8 +169,7 @@ m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
 infix 4 _≤?_ _≥?_
 
 _≤?_ : Decidable _≤_
-zero  ≤? _ = yes z≤n
-suc m ≤? n = map′ (<ᵇ⇒< m n) <⇒<ᵇ (T? (m <ᵇ n))
+m ≤? n = map′ (≤ᵇ⇒≤ m n) ≤⇒≤ᵇ (T? (m ≤ᵇ n))
 
 _≥?_ : Decidable _≥_
 _≥?_ = flip _≤?_
@@ -237,6 +257,9 @@ n≤0⇒n≡0 z≤n = refl
 <⇒≢ : _<_ ⇒ _≢_
 <⇒≢ m<n refl = 1+n≰n m<n
 
+>⇒≢ : _>_ ⇒ _≢_
+>⇒≢ = ≢-sym ∘ <⇒≢
+
 ≤⇒≯ : _≤_ ⇒ _≯_
 ≤⇒≯ (s≤s m≤n) (s≤s n≤m) = ≤⇒≯ m≤n n≤m
 
@@ -267,6 +290,9 @@ n≤0⇒n≡0 z≤n = refl
 ≤∧≢⇒< {_} {suc n} z≤n       m≢n     = s≤s z≤n
 ≤∧≢⇒< {_} {suc n} (s≤s m≤n) 1+m≢1+n =
   s≤s (≤∧≢⇒< m≤n (1+m≢1+n ∘ cong suc))
+
+≤∧≮⇒≡ : ∀ {m n} → m ≤ n → m ≮ n → m ≡ n
+≤∧≮⇒≡ m≤n m≮n = ≤-antisym m≤n (≮⇒≥ m≮n)
 
 ≤-<-connex : Connex _≤_ _<_
 ≤-<-connex m n with m ≤? n
@@ -366,9 +392,15 @@ n≮n n = <-irrefl (refl {x = n})
 n<1+n : ∀ n → n < suc n
 n<1+n n = ≤-refl
 
+n<1⇒n≡0 : ∀ {n} → n < 1 → n ≡ 0
+n<1⇒n≡0 (s≤s n≤0) = n≤0⇒n≡0 n≤0
+
 n≢0⇒n>0 : ∀ {n} → n ≢ 0 → n > 0
 n≢0⇒n>0 {zero}  0≢0 =  contradiction refl 0≢0
 n≢0⇒n>0 {suc n} _   =  0<1+n
+
+m<n⇒0<n : ∀ {m n} → m < n → 0 < n
+m<n⇒0<n = ≤-trans 0<1+n
 
 m<n⇒n≢0 : ∀ {m n} → m < n → n ≢ 0
 m<n⇒n≢0 (s≤s m≤n) ()
@@ -377,18 +409,18 @@ m<n⇒m≤1+n : ∀ {m n} → m < n → m ≤ suc n
 m<n⇒m≤1+n (s≤s z≤n)       = z≤n
 m<n⇒m≤1+n (s≤s (s≤s m<n)) = s≤s (m<n⇒m≤1+n (s≤s m<n))
 
-∀[m≤n⇒m≢o]⇒o<n : ∀ n o → (∀ {m} → m ≤ n → m ≢ o) → n < o
-∀[m≤n⇒m≢o]⇒o<n _       zero    m≤n⇒n≢0 = contradiction refl (m≤n⇒n≢0 z≤n)
-∀[m≤n⇒m≢o]⇒o<n zero    (suc o) _       = 0<1+n
-∀[m≤n⇒m≢o]⇒o<n (suc n) (suc o) m≤n⇒n≢o = s≤s (∀[m≤n⇒m≢o]⇒o<n n o rec)
+∀[m≤n⇒m≢o]⇒n<o : ∀ n o → (∀ {m} → m ≤ n → m ≢ o) → n < o
+∀[m≤n⇒m≢o]⇒n<o _       zero    m≤n⇒n≢0 = contradiction refl (m≤n⇒n≢0 z≤n)
+∀[m≤n⇒m≢o]⇒n<o zero    (suc o) _       = 0<1+n
+∀[m≤n⇒m≢o]⇒n<o (suc n) (suc o) m≤n⇒n≢o = s≤s (∀[m≤n⇒m≢o]⇒n<o n o rec)
   where
   rec : ∀ {m} → m ≤ n → m ≢ o
   rec m≤n refl = m≤n⇒n≢o (s≤s m≤n) refl
 
-∀[m<n⇒m≢o]⇒o≤n : ∀ n o → (∀ {m} → m < n → m ≢ o) → n ≤ o
-∀[m<n⇒m≢o]⇒o≤n zero    n       _       = z≤n
-∀[m<n⇒m≢o]⇒o≤n (suc n) zero    m<n⇒m≢0 = contradiction refl (m<n⇒m≢0 0<1+n)
-∀[m<n⇒m≢o]⇒o≤n (suc n) (suc o) m<n⇒m≢o = s≤s (∀[m<n⇒m≢o]⇒o≤n n o rec)
+∀[m<n⇒m≢o]⇒n≤o : ∀ n o → (∀ {m} → m < n → m ≢ o) → n ≤ o
+∀[m<n⇒m≢o]⇒n≤o zero    n       _       = z≤n
+∀[m<n⇒m≢o]⇒n≤o (suc n) zero    m<n⇒m≢0 = contradiction refl (m<n⇒m≢0 0<1+n)
+∀[m<n⇒m≢o]⇒n≤o (suc n) (suc o) m<n⇒m≢o = s≤s (∀[m<n⇒m≢o]⇒n≤o n o rec)
   where
   rec : ∀ {m} → m < n → m ≢ o
   rec x<m refl = m<n⇒m≢o (s≤s x<m) refl
@@ -406,32 +438,9 @@ module ≤-Reasoning where
     <-transˡ
     <-transʳ
     public
-    hiding (_≈⟨_⟩_)
+    hiding (step-≈; step-≈˘)
 
 open ≤-Reasoning
-
-------------------------------------------------------------------------
--- Properties of pred
-------------------------------------------------------------------------
-
-pred-mono : pred Preserves _≤_ ⟶ _≤_
-pred-mono z≤n      = z≤n
-pred-mono (s≤s le) = le
-
-≤pred⇒≤ : ∀ {m n} → m ≤ pred n → m ≤ n
-≤pred⇒≤ {m} {zero}  le = le
-≤pred⇒≤ {m} {suc n} le = ≤-step le
-
-≤⇒pred≤ : ∀ {m n} → m ≤ n → pred m ≤ n
-≤⇒pred≤ {zero}  le = le
-≤⇒pred≤ {suc m} le = ≤-trans (n≤1+n m) le
-
-<⇒≤pred : ∀ {m n} → m < n → m ≤ pred n
-<⇒≤pred (s≤s le) = le
-
-suc[pred[n]]≡n : ∀ {n} → n ≢ 0 → suc (pred n) ≡ n
-suc[pred[n]]≡n {zero}  n≢0 = contradiction refl n≢0
-suc[pred[n]]≡n {suc n} n≢0 = refl
 
 ------------------------------------------------------------------------
 -- Properties of _+_
@@ -553,6 +562,10 @@ suc[pred[n]]≡n {suc n} n≢0 = refl
   { isCommutativeMonoid = +-0-isCommutativeMonoid
   }
 
+∸-magma : Magma 0ℓ 0ℓ
+∸-magma = magma _∸_
+
+
 ------------------------------------------------------------------------
 -- Other properties of _+_ and _≡_
 
@@ -661,6 +674,9 @@ m<m+n : ∀ m {n} → n > 0 → m < m + n
 m<m+n zero    n>0 = n>0
 m<m+n (suc m) n>0 = s≤s (m<m+n m n>0)
 
+m<n+m : ∀ m {n} → n > 0 → m < n + m
+m<n+m m {n} n>0 rewrite +-comm n m = m<m+n m n>0
+
 m+n≮n : ∀ m n → m + n ≮ n
 m+n≮n zero    n                   = n≮n n
 m+n≮n (suc m) (suc n) (s≤s m+n<n) = m+n≮n m (suc n) (≤-step m+n<n)
@@ -754,6 +770,12 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
   ; assoc   = *-assoc
   }
 
+*-isCommutativeSemigroup : IsCommutativeSemigroup _*_
+*-isCommutativeSemigroup = record
+  { isSemigroup = *-isSemigroup
+  ; comm        = *-comm
+  }
+
 *-1-isMonoid : IsMonoid _*_ 1
 *-1-isMonoid = record
   { isSemigroup = *-isSemigroup
@@ -766,8 +788,8 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
   ; comm     = *-comm
   }
 
-*-+-isSemiring : IsSemiring _+_ _*_ 0 1
-*-+-isSemiring = record
++-*-isSemiring : IsSemiring _+_ _*_ 0 1
++-*-isSemiring = record
   { isSemiringWithoutAnnihilatingZero = record
     { +-isCommutativeMonoid = +-0-isCommutativeMonoid
     ; *-isMonoid            = *-1-isMonoid
@@ -776,10 +798,10 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
   ; zero = *-zero
   }
 
-*-+-isCommutativeSemiring : IsCommutativeSemiring _+_ _*_ 0 1
-*-+-isCommutativeSemiring = record
-  { isSemiring = *-+-isSemiring
-  ; *-comm = *-comm
++-*-isCommutativeSemiring : IsCommutativeSemiring _+_ _*_ 0 1
++-*-isCommutativeSemiring = record
+  { isSemiring = +-*-isSemiring
+  ; *-comm     = *-comm
   }
 
 ------------------------------------------------------------------------
@@ -808,6 +830,11 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
   { isSemigroup = *-isSemigroup
   }
 
+*-commutativeSemigroup : CommutativeSemigroup 0ℓ 0ℓ
+*-commutativeSemigroup = record
+  { isCommutativeSemigroup = *-isCommutativeSemigroup
+  }
+
 *-1-monoid : Monoid 0ℓ 0ℓ
 *-1-monoid = record
   { isMonoid = *-1-isMonoid
@@ -818,14 +845,14 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
   { isCommutativeMonoid = *-1-isCommutativeMonoid
   }
 
-*-+-semiring : Semiring 0ℓ 0ℓ
-*-+-semiring = record
-  { isSemiring = *-+-isSemiring
++-*-semiring : Semiring 0ℓ 0ℓ
++-*-semiring = record
+  { isSemiring = +-*-isSemiring
   }
 
-*-+-commutativeSemiring : CommutativeSemiring 0ℓ 0ℓ
-*-+-commutativeSemiring = record
-  { isCommutativeSemiring = *-+-isCommutativeSemiring
++-*-commutativeSemiring : CommutativeSemiring 0ℓ 0ℓ
++-*-commutativeSemiring = record
+  { isCommutativeSemiring = +-*-isCommutativeSemiring
   }
 
 ------------------------------------------------------------------------
@@ -894,6 +921,12 @@ m≤m*n m {n} 0<n = begin
   m     ≡⟨ sym (*-identityʳ m) ⟩
   m * 1 ≤⟨ *-monoʳ-≤ m 0<n ⟩
   m * n ∎
+
+m≤n*m : ∀ m {n} → 0 < n → m ≤ n * m
+m≤n*m m {n} 0<n = begin
+  m     ≤⟨ m≤m*n m 0<n ⟩
+  m * n ≡⟨ *-comm m n ⟩
+  n * m ∎
 
 m<m*n :  ∀ {m n} → 0 < m → 1 < n → m < m * n
 m<m*n {m@(suc m-1)} {n@(suc (suc n-2))} (s≤s _) (s≤s (s≤s _)) = begin-strict
@@ -966,17 +999,148 @@ m^n≡1⇒n≡0∨m≡1 m zero    _  = inj₁ refl
 m^n≡1⇒n≡0∨m≡1 m (suc n) eq = inj₂ (m*n≡1⇒m≡1 m (m ^ n) eq)
 
 ------------------------------------------------------------------------
--- Properties of _⊔_
+-- Properties of _⊓_ and _⊔_
 ------------------------------------------------------------------------
+-- Basic specification in terms of _≤_
+
+m≤n⇒m⊔n≡n : ∀ {m n} → m ≤ n → m ⊔ n ≡ n
+m≤n⇒m⊔n≡n {zero}  _         = refl
+m≤n⇒m⊔n≡n {suc m} (s≤s m≤n) = cong suc (m≤n⇒m⊔n≡n m≤n)
+
+m≥n⇒m⊔n≡m : ∀ {m n} → m ≥ n → m ⊔ n ≡ m
+m≥n⇒m⊔n≡m {zero}  {zero}  z≤n       = refl
+m≥n⇒m⊔n≡m {suc m} {zero}  z≤n       = refl
+m≥n⇒m⊔n≡m {suc m} {suc n} (s≤s m≥n) = cong suc (m≥n⇒m⊔n≡m m≥n)
+
+m≤n⇒m⊓n≡m : ∀ {m n} → m ≤ n → m ⊓ n ≡ m
+m≤n⇒m⊓n≡m {zero}  z≤n       = refl
+m≤n⇒m⊓n≡m {suc m} (s≤s m≤n) = cong suc (m≤n⇒m⊓n≡m m≤n)
+
+m≥n⇒m⊓n≡n : ∀ {m n} → m ≥ n → m ⊓ n ≡ n
+m≥n⇒m⊓n≡n {zero}  {zero}  z≤n       = refl
+m≥n⇒m⊓n≡n {suc m} {zero}  z≤n       = refl
+m≥n⇒m⊓n≡n {suc m} {suc n} (s≤s m≤n) = cong suc (m≥n⇒m⊓n≡n m≤n)
+
+⊓-operator : MinOperator ≤-totalOrder
+⊓-operator = record
+  { x≤y⇒x⊓y≈x = m≤n⇒m⊓n≡m
+  ; x≥y⇒x⊓y≈y = m≥n⇒m⊓n≡n
+  }
+
+⊔-operator : MaxOperator ≤-totalOrder
+⊔-operator = record
+  { x≤y⇒x⊔y≈y = m≤n⇒m⊔n≡n
+  ; x≥y⇒x⊔y≈x = m≥n⇒m⊔n≡m
+  }
+
+------------------------------------------------------------------------
+-- Automatically derived properties of _⊓_ and _⊔_
+
+private
+  module ⊓-⊔-properties = MinMaxOp ≤-totalOrder ⊓-operator ⊔-operator
+
+open ⊓-⊔-properties public
+  using
+  ( ⊓-idem                    -- : Idempotent _⊓_
+  ; ⊓-sel                     -- : Selective _⊓_
+  ; ⊓-assoc                   -- : Associative _⊓_
+  ; ⊓-comm                    -- : Commutative _⊔_
+
+  ; ⊔-idem                    -- : Idempotent _⊔_
+  ; ⊔-sel                     -- : Selective _⊔_
+  ; ⊔-assoc                   -- : Associative _⊔_
+  ; ⊔-comm                    -- : Commutative _⊔_
+
+  ; ⊓-distribˡ-⊔              -- : _⊓_ DistributesOverˡ _⊔_
+  ; ⊓-distribʳ-⊔              -- : _⊓_ DistributesOverʳ _⊔_
+  ; ⊓-distrib-⊔               -- : _⊓_ DistributesOver  _⊔_
+  ; ⊔-distribˡ-⊓              -- : _⊔_ DistributesOverˡ _⊓_
+  ; ⊔-distribʳ-⊓              -- : _⊔_ DistributesOverʳ _⊓_
+  ; ⊔-distrib-⊓               -- : _⊔_ DistributesOver  _⊓_
+  ; ⊓-absorbs-⊔               -- : _⊓_ Absorbs _⊔_
+  ; ⊔-absorbs-⊓               -- : _⊔_ Absorbs _⊓_
+  ; ⊔-⊓-absorptive            -- : Absorptive _⊔_ _⊓_
+  ; ⊓-⊔-absorptive            -- : Absorptive _⊓_ _⊔_
+
+  ; ⊓-isMagma                 -- : IsMagma _⊓_
+  ; ⊓-isSemigroup             -- : IsSemigroup _⊓_
+  ; ⊓-isCommutativeSemigroup  -- : IsCommutativeSemigroup _⊓_
+  ; ⊓-isBand                  -- : IsBand _⊓_
+  ; ⊓-isSemilattice           -- : IsSemilattice _⊓_
+  ; ⊓-isSelectiveMagma        -- : IsSelectiveMagma _⊓_
+
+  ; ⊔-isMagma                 -- : IsMagma _⊔_
+  ; ⊔-isSemigroup             -- : IsSemigroup _⊔_
+  ; ⊔-isCommutativeSemigroup  -- : IsCommutativeSemigroup _⊔_
+  ; ⊔-isBand                  -- : IsBand _⊔_
+  ; ⊔-isSemilattice           -- : IsSemilattice _⊔_
+  ; ⊔-isSelectiveMagma        -- : IsSelectiveMagma _⊔_
+
+  ; ⊔-⊓-isLattice             -- : IsLattice _⊔_ _⊓_
+  ; ⊓-⊔-isLattice             -- : IsLattice _⊓_ _⊔_
+  ; ⊔-⊓-isDistributiveLattice -- : IsDistributiveLattice _⊔_ _⊓_
+  ; ⊓-⊔-isDistributiveLattice -- : IsDistributiveLattice _⊓_ _⊔_
+
+  ; ⊓-magma                   -- : Magma _ _
+  ; ⊓-semigroup               -- : Semigroup _ _
+  ; ⊓-band                    -- : Band _ _
+  ; ⊓-commutativeSemigroup    -- : CommutativeSemigroup _ _
+  ; ⊓-semilattice             -- : Semilattice _ _
+  ; ⊓-selectiveMagma          -- : SelectiveMagma _ _
+
+  ; ⊔-magma                   -- : Magma _ _
+  ; ⊔-semigroup               -- : Semigroup _ _
+  ; ⊔-band                    -- : Band _ _
+  ; ⊔-commutativeSemigroup    -- : CommutativeSemigroup _ _
+  ; ⊔-semilattice             -- : Semilattice _ _
+  ; ⊔-selectiveMagma          -- : SelectiveMagma _ _
+
+  ; ⊔-⊓-lattice               -- : Lattice _ _
+  ; ⊓-⊔-lattice               -- : Lattice _ _
+  ; ⊔-⊓-distributiveLattice   -- : DistributiveLattice _ _
+  ; ⊓-⊔-distributiveLattice   -- : DistributiveLattice _ _
+
+  ; ⊓-glb                     -- : ∀ {m n o} → m ≥ o → n ≥ o → m ⊓ n ≥ o
+  ; ⊓-triangulate             -- : ∀ m n o → m ⊓ n ⊓ o ≡ (m ⊓ n) ⊓ (n ⊓ o)
+  ; ⊓-mono-≤                  -- : _⊓_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
+  ; ⊓-monoˡ-≤                 -- : ∀ n → (_⊓ n) Preserves _≤_ ⟶ _≤_
+  ; ⊓-monoʳ-≤                 -- : ∀ n → (n ⊓_) Preserves _≤_ ⟶ _≤_
+
+  ; ⊔-lub                     -- : ∀ {m n o} → m ≤ o → n ≤ o → m ⊔ n ≤ o
+  ; ⊔-triangulate             -- : ∀ m n o → m ⊔ n ⊔ o ≡ (m ⊔ n) ⊔ (n ⊔ o)
+  ; ⊔-mono-≤                  -- : _⊔_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
+  ; ⊔-monoˡ-≤                 -- : ∀ n → (_⊔ n) Preserves _≤_ ⟶ _≤_
+  ; ⊔-monoʳ-≤                 -- : ∀ n → (n ⊔_) Preserves _≤_ ⟶ _≤_
+
+  ; mono-≤-distrib-⊔          -- : ∀ {f} → f Preserves _≤_ ⟶ _≤_ → ∀ x y → f (x ⊔ y) ≈ f x ⊔ f y
+  ; mono-≤-distrib-⊓          -- : ∀ {f} → f Preserves _≤_ ⟶ _≤_ → ∀ x y → f (x ⊓ y) ≈ f x ⊓ f y
+  ; antimono-≤-distrib-⊓      -- : ∀ {f} → f Preserves _≤_ ⟶ _≥_ → ∀ x y → f (x ⊓ y) ≈ f x ⊔ f y
+  ; antimono-≤-distrib-⊔      -- : ∀ {f} → f Preserves _≤_ ⟶ _≥_ → ∀ x y → f (x ⊔ y) ≈ f x ⊓ f y
+  )
+  renaming
+  ( x⊓y≈y⇒y≤x to m⊓n≡n⇒n≤m    -- : ∀ {m n} → m ⊓ n ≡ n → n ≤ m
+  ; x⊓y≈x⇒x≤y to m⊓n≡m⇒m≤n    -- : ∀ {m n} → m ⊓ n ≡ m → m ≤ n
+  ; x⊓y≤x     to m⊓n≤m        -- : ∀ m n → m ⊓ n ≤ m
+  ; x⊓y≤y     to m⊓n≤n        -- : ∀ m n → m ⊓ n ≤ n
+  ; x≤y⇒x⊓z≤y to m≤n⇒m⊓o≤n    -- : ∀ {m n} o → m ≤ n → m ⊓ o ≤ n
+  ; x≤y⇒z⊓x≤y to m≤n⇒o⊓m≤n    -- : ∀ {m n} o → m ≤ n → o ⊓ m ≤ n
+  ; x≤y⊓z⇒x≤y to m≤n⊓o⇒m≤n    -- : ∀ {m} n o → m ≤ n ⊓ o → m ≤ n
+  ; x≤y⊓z⇒x≤z to m≤n⊓o⇒m≤o    -- : ∀ {m} n o → m ≤ n ⊓ o → m ≤ o
+
+  ; x⊔y≈y⇒x≤y to m⊔n≡n⇒m≤n    -- : ∀ {m n} → m ⊔ n ≡ n → m ≤ n
+  ; x⊔y≈x⇒y≤x to m⊔n≡m⇒n≤m    -- : ∀ {m n} → m ⊔ n ≡ m → n ≤ m
+  ; x≤x⊔y     to m≤m⊔n        -- : ∀ m n → m ≤ m ⊔ n
+  ; x≤y⊔x     to m≤n⊔m        -- : ∀ m n → m ≤ n ⊔ m
+  ; x≤y⇒x≤y⊔z to m≤n⇒m≤n⊔o    -- : ∀ {m n} o → m ≤ n → m ≤ n ⊔ o
+  ; x≤y⇒x≤z⊔y to m≤n⇒m≤o⊔n    -- : ∀ {m n} o → m ≤ n → m ≤ o ⊔ n
+  ; x⊔y≤z⇒x≤z to m⊔n≤o⇒m≤o    -- : ∀ m n {o} → m ⊔ n ≤ o → m ≤ o
+  ; x⊔y≤z⇒y≤z to m⊔n≤o⇒n≤o    -- : ∀ m n {o} → m ⊔ n ≤ o → n ≤ o
+
+  ; x⊓y≤x⊔y   to m⊓n≤m⊔n      -- : ∀ m n → m ⊓ n ≤ m ⊔ n
+  )
 
 ------------------------------------------------------------------------
 -- Algebraic properties
-
-⊔-assoc : Associative _⊔_
-⊔-assoc zero    _       _       = refl
-⊔-assoc (suc m) zero    o       = refl
-⊔-assoc (suc m) (suc n) zero    = refl
-⊔-assoc (suc m) (suc n) (suc o) = cong suc $ ⊔-assoc m n o
 
 ⊔-identityˡ : LeftIdentity 0 _⊔_
 ⊔-identityˡ _ = refl
@@ -988,86 +1152,27 @@ m^n≡1⇒n≡0∨m≡1 m (suc n) eq = inj₂ (m*n≡1⇒m≡1 m (m ^ n) eq)
 ⊔-identity : Identity 0 _⊔_
 ⊔-identity = ⊔-identityˡ , ⊔-identityʳ
 
-⊔-comm : Commutative _⊔_
-⊔-comm zero    n       = sym $ ⊔-identityʳ n
-⊔-comm (suc m) zero    = refl
-⊔-comm (suc m) (suc n) = cong suc (⊔-comm m n)
-
-⊔-sel : Selective _⊔_
-⊔-sel zero    _    = inj₂ refl
-⊔-sel (suc m) zero = inj₁ refl
-⊔-sel (suc m) (suc n) with ⊔-sel m n
-... | inj₁ m⊔n≡m = inj₁ (cong suc m⊔n≡m)
-... | inj₂ m⊔n≡n = inj₂ (cong suc m⊔n≡n)
-
-⊔-idem : Idempotent _⊔_
-⊔-idem = sel⇒idem ⊔-sel
-
-⊔-least : ∀ {m n o} → m ≤ o → n ≤ o → m ⊔ n ≤ o
-⊔-least {m} {n} m≤o n≤o with ⊔-sel m n
-... | inj₁ m⊔n≡m rewrite m⊔n≡m = m≤o
-... | inj₂ m⊔n≡n rewrite m⊔n≡n = n≤o
-
 ------------------------------------------------------------------------
 -- Structures
-
-⊔-isMagma : IsMagma _⊔_
-⊔-isMagma = record
-  { isEquivalence = isEquivalence
-  ; ∙-cong        = cong₂ _⊔_
-  }
-
-⊔-isSemigroup : IsSemigroup _⊔_
-⊔-isSemigroup = record
-  { isMagma = ⊔-isMagma
-  ; assoc   = ⊔-assoc
-  }
-
-⊔-isBand : IsBand _⊔_
-⊔-isBand = record
-  { isSemigroup = ⊔-isSemigroup
-  ; idem        = ⊔-idem
-  }
-
-⊔-isSemilattice : IsSemilattice _⊔_
-⊔-isSemilattice = record
-  { isBand = ⊔-isBand
-  ; comm   = ⊔-comm
-  }
 
 ⊔-0-isMonoid : IsMonoid _⊔_ 0
 ⊔-0-isMonoid = record
   { isSemigroup = ⊔-isSemigroup
-  ; identity = ⊔-identity
+  ; identity    = ⊔-identity
   }
 
 ⊔-0-isCommutativeMonoid : IsCommutativeMonoid _⊔_ 0
 ⊔-0-isCommutativeMonoid = record
   { isMonoid = ⊔-0-isMonoid
-  ; comm = ⊔-comm
+  ; comm     = ⊔-comm
   }
 
 ------------------------------------------------------------------------
 -- Bundles
 
-⊔-magma : Magma 0ℓ 0ℓ
-⊔-magma = record
-  { isMagma = ⊔-isMagma
-  }
-
-⊔-semigroup : Semigroup 0ℓ 0ℓ
-⊔-semigroup = record
-  { isSemigroup = ⊔-isSemigroup
-  }
-
-⊔-band : Band 0ℓ 0ℓ
-⊔-band = record
-  { isBand = ⊔-isBand
-  }
-
-⊔-semilattice : Semilattice 0ℓ 0ℓ
-⊔-semilattice = record
-  { isSemilattice = ⊔-isSemilattice
+⊔-0-monoid : Monoid 0ℓ 0ℓ
+⊔-0-monoid = record
+  { isMonoid = ⊔-0-isMonoid
   }
 
 ⊔-0-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
@@ -1076,51 +1181,7 @@ m^n≡1⇒n≡0∨m≡1 m (suc n) eq = inj₂ (m*n≡1⇒m≡1 m (m ^ n) eq)
   }
 
 ------------------------------------------------------------------------
--- Other properties of _⊔_ and _≡_
-
-⊔-triangulate : ∀ m n o → m ⊔ n ⊔ o ≡ (m ⊔ n) ⊔ (n ⊔ o)
-⊔-triangulate m n o = begin-equality
-  m ⊔ n ⊔ o           ≡⟨ cong (λ v → m ⊔ v ⊔ o) (sym (⊔-idem n)) ⟩
-  m ⊔ (n ⊔ n) ⊔ o     ≡⟨ ⊔-assoc m _ _ ⟩
-  m ⊔ ((n ⊔ n) ⊔ o)   ≡⟨ cong (m ⊔_) (⊔-assoc n _ _) ⟩
-  m ⊔ (n ⊔ (n ⊔ o))   ≡⟨ sym (⊔-assoc m _ _) ⟩
-  (m ⊔ n) ⊔ (n ⊔ o)   ∎
-
-------------------------------------------------------------------------
 -- Other properties of _⊔_ and _≤_/_<_
-
-m≤m⊔n : ∀ m n → m ≤ m ⊔ n
-m≤m⊔n zero    _       = z≤n
-m≤m⊔n (suc m) zero    = ≤-refl
-m≤m⊔n (suc m) (suc n) = s≤s $ m≤m⊔n m n
-
-n≤m⊔n : ∀ m n → n ≤ m ⊔ n
-n≤m⊔n m n = subst (n ≤_) (⊔-comm n m) (m≤m⊔n n m)
-
-m≤n⇒n⊔m≡n : ∀ {m n} → m ≤ n → n ⊔ m ≡ n
-m≤n⇒n⊔m≡n z≤n       = ⊔-identityʳ _
-m≤n⇒n⊔m≡n (s≤s m≤n) = cong suc (m≤n⇒n⊔m≡n m≤n)
-
-m≤n⇒m⊔n≡n : ∀ {m n} → m ≤ n → m ⊔ n ≡ n
-m≤n⇒m⊔n≡n {m} m≤n = trans (⊔-comm m _) (m≤n⇒n⊔m≡n m≤n)
-
-n⊔m≡m⇒n≤m : ∀ {m n} → n ⊔ m ≡ m → n ≤ m
-n⊔m≡m⇒n≤m n⊔m≡m = subst (_ ≤_) n⊔m≡m (m≤m⊔n _ _)
-
-n⊔m≡n⇒m≤n : ∀ {m n} → n ⊔ m ≡ n → m ≤ n
-n⊔m≡n⇒m≤n n⊔m≡n = subst (_ ≤_) n⊔m≡n (n≤m⊔n _ _)
-
-m≤n⇒m≤n⊔o : ∀ {m n} o → m ≤ n → m ≤ n ⊔ o
-m≤n⇒m≤n⊔o o m≤n = ≤-trans m≤n (m≤m⊔n _ o)
-
-m≤n⇒m≤o⊔n : ∀ {m n} o → m ≤ n → m ≤ o ⊔ n
-m≤n⇒m≤o⊔n n m≤n = ≤-trans m≤n (n≤m⊔n n _)
-
-m⊔n≤o⇒m≤o : ∀ m n {o} → m ⊔ n ≤ o → m ≤ o
-m⊔n≤o⇒m≤o m n m⊔n≤o = ≤-trans (m≤m⊔n m n) m⊔n≤o
-
-m⊔n≤o⇒n≤o : ∀ m n {o} → m ⊔ n ≤ o → n ≤ o
-m⊔n≤o⇒n≤o m n m⊔n≤o = ≤-trans (n≤m⊔n m n) m⊔n≤o
 
 m<n⇒m<n⊔o : ∀ {m n} o → m < n → m < n ⊔ o
 m<n⇒m<n⊔o = m≤n⇒m≤n⊔o
@@ -1132,24 +1193,10 @@ m⊔n<o⇒m<o : ∀ m n {o} → m ⊔ n < o → m < o
 m⊔n<o⇒m<o m n m⊔n<o = <-transʳ (m≤m⊔n m n) m⊔n<o
 
 m⊔n<o⇒n<o : ∀ m n {o} → m ⊔ n < o → n < o
-m⊔n<o⇒n<o m n m⊔n<o = <-transʳ (n≤m⊔n m n) m⊔n<o
-
-⊔-mono-≤ : _⊔_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
-⊔-mono-≤ {m} {n} {u} {v} m≤n u≤v with ⊔-sel m u
-... | inj₁ m⊔u≡m rewrite m⊔u≡m = ≤-trans m≤n (m≤m⊔n n v)
-... | inj₂ m⊔u≡u rewrite m⊔u≡u = ≤-trans u≤v (n≤m⊔n n v)
-
-⊔-monoˡ-≤ : ∀ n → (_⊔ n) Preserves _≤_ ⟶ _≤_
-⊔-monoˡ-≤ n m≤o = ⊔-mono-≤ m≤o (≤-refl {n})
-
-⊔-monoʳ-≤ : ∀ n → (n ⊔_) Preserves _≤_ ⟶ _≤_
-⊔-monoʳ-≤ n m≤o = ⊔-mono-≤ (≤-refl {n}) m≤o
+m⊔n<o⇒n<o m n m⊔n<o = <-transʳ (m≤n⊔m m n) m⊔n<o
 
 ⊔-mono-< : _⊔_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
 ⊔-mono-< = ⊔-mono-≤
-
-⊔-pres-≤m : ∀ {m n o} → n ≤ m → o ≤ m → n ⊔ o ≤ m
-⊔-pres-≤m {m} n≤m o≤m = subst (_ ≤_) (⊔-idem m) (⊔-mono-≤ n≤m o≤m)
 
 ⊔-pres-<m : ∀ {m n o} → n < m → o < m → n ⊔ o < m
 ⊔-pres-<m {m} n<m o<m = subst (_ <_) (⊔-idem m) (⊔-mono-< n<m o<m)
@@ -1173,17 +1220,35 @@ m⊔n≤m+n m n with ⊔-sel m n
 ... | inj₂ m⊔n≡n rewrite m⊔n≡n = m≤n+m n m
 
 ------------------------------------------------------------------------
+-- Other properties of _⊔_ and _*_
+
+*-distribˡ-⊔ : _*_ DistributesOverˡ _⊔_
+*-distribˡ-⊔ m zero o = sym (cong (_⊔ m * o) (*-zeroʳ m))
+*-distribˡ-⊔ m (suc n) zero = begin-equality
+  m * (suc n ⊔ zero)         ≡⟨⟩
+  m * suc n                  ≡˘⟨ ⊔-identityʳ (m * suc n) ⟩
+  m * suc n ⊔ zero           ≡˘⟨ cong (m * suc n ⊔_) (*-zeroʳ m) ⟩
+  m * suc n ⊔ m * zero       ∎
+*-distribˡ-⊔ m (suc n) (suc o) = begin-equality
+  m * (suc n ⊔ suc o)        ≡⟨⟩
+  m * suc (n ⊔ o)            ≡⟨ *-suc m (n ⊔ o) ⟩
+  m + m * (n ⊔ o)            ≡⟨ cong (m +_) (*-distribˡ-⊔ m n o) ⟩
+  m + (m * n ⊔ m * o)        ≡⟨ +-distribˡ-⊔ m (m * n) (m * o) ⟩
+  (m + m * n) ⊔ (m + m * o)  ≡˘⟨ cong₂ _⊔_ (*-suc m n) (*-suc m o) ⟩
+  (m * suc n) ⊔ (m * suc o)  ∎
+
+*-distribʳ-⊔ : _*_ DistributesOverʳ _⊔_
+*-distribʳ-⊔ = comm+distrˡ⇒distrʳ *-comm *-distribˡ-⊔
+
+*-distrib-⊔ : _*_ DistributesOver _⊔_
+*-distrib-⊔ = *-distribˡ-⊔ , *-distribʳ-⊔
+
+------------------------------------------------------------------------
 -- Properties of _⊓_
 ------------------------------------------------------------------------
 
 ------------------------------------------------------------------------
 -- Algebraic properties
-
-⊓-assoc : Associative _⊓_
-⊓-assoc zero    _       _       = refl
-⊓-assoc (suc m) zero    o       = refl
-⊓-assoc (suc m) (suc n) zero    = refl
-⊓-assoc (suc m) (suc n) (suc o) = cong suc $ ⊓-assoc m n o
 
 ⊓-zeroˡ : LeftZero 0 _⊓_
 ⊓-zeroˡ _ = refl
@@ -1195,84 +1260,8 @@ m⊔n≤m+n m n with ⊔-sel m n
 ⊓-zero : Zero 0 _⊓_
 ⊓-zero = ⊓-zeroˡ , ⊓-zeroʳ
 
-⊓-comm : Commutative _⊓_
-⊓-comm zero    n       = sym $ ⊓-zeroʳ n
-⊓-comm (suc m) zero    = refl
-⊓-comm (suc m) (suc n) = cong suc (⊓-comm m n)
-
-⊓-sel : Selective _⊓_
-⊓-sel zero    _    = inj₁ refl
-⊓-sel (suc m) zero = inj₂ refl
-⊓-sel (suc m) (suc n) with ⊓-sel m n
-... | inj₁ m⊓n≡m = inj₁ (cong suc m⊓n≡m)
-... | inj₂ m⊓n≡n = inj₂ (cong suc m⊓n≡n)
-
-⊓-idem : Idempotent _⊓_
-⊓-idem = sel⇒idem ⊓-sel
-
-⊓-greatest : ∀ {m n o} → m ≥ o → n ≥ o → m ⊓ n ≥ o
-⊓-greatest {m} {n} m≥o n≥o with ⊓-sel m n
-... | inj₁ m⊓n≡m rewrite m⊓n≡m = m≥o
-... | inj₂ m⊓n≡n rewrite m⊓n≡n = n≥o
-
-⊓-distribʳ-⊔ : _⊓_ DistributesOverʳ _⊔_
-⊓-distribʳ-⊔ (suc m) (suc n) (suc o) = cong suc $ ⊓-distribʳ-⊔ m n o
-⊓-distribʳ-⊔ (suc m) (suc n) zero    = cong suc $ refl
-⊓-distribʳ-⊔ (suc m) zero    o       = refl
-⊓-distribʳ-⊔ zero    n       o       = begin-equality
-  (n ⊔ o) ⊓ 0    ≡⟨ ⊓-comm (n ⊔ o) 0 ⟩
-  0 ⊓ (n ⊔ o)    ≡⟨⟩
-  0 ⊓ n ⊔ 0 ⊓ o  ≡⟨ ⊓-comm 0 n ⟨ cong₂ _⊔_ ⟩ ⊓-comm 0 o ⟩
-  n ⊓ 0 ⊔ o ⊓ 0  ∎
-
-⊓-distribˡ-⊔ : _⊓_ DistributesOverˡ _⊔_
-⊓-distribˡ-⊔ = comm+distrʳ⇒distrˡ ⊓-comm ⊓-distribʳ-⊔
-
-⊓-distrib-⊔ : _⊓_ DistributesOver _⊔_
-⊓-distrib-⊔ = ⊓-distribˡ-⊔ , ⊓-distribʳ-⊔
-
-⊔-abs-⊓ : _⊔_ Absorbs _⊓_
-⊔-abs-⊓ zero    n       = refl
-⊔-abs-⊓ (suc m) zero    = refl
-⊔-abs-⊓ (suc m) (suc n) = cong suc $ ⊔-abs-⊓ m n
-
-⊓-abs-⊔ : _⊓_ Absorbs _⊔_
-⊓-abs-⊔ zero    n       = refl
-⊓-abs-⊔ (suc m) (suc n) = cong suc $ ⊓-abs-⊔ m n
-⊓-abs-⊔ (suc m) zero    = cong suc $ begin-equality
-  m ⊓ m       ≡⟨ cong (m ⊓_) $ sym $ ⊔-identityʳ m ⟩
-  m ⊓ (m ⊔ 0) ≡⟨ ⊓-abs-⊔ m zero ⟩
-  m           ∎
-
-⊓-⊔-absorptive : Absorptive _⊓_ _⊔_
-⊓-⊔-absorptive = ⊓-abs-⊔ , ⊔-abs-⊓
-
 ------------------------------------------------------------------------
 -- Structures
-
-⊓-isMagma : IsMagma _⊓_
-⊓-isMagma = record
-  { isEquivalence = isEquivalence
-  ; ∙-cong        = cong₂ _⊓_
-  }
-
-⊓-isSemigroup : IsSemigroup _⊓_
-⊓-isSemigroup = record
-  { isMagma = ⊓-isMagma
-  ; assoc   = ⊓-assoc
-  }
-
-⊓-isBand : IsBand _⊓_
-⊓-isBand = record
-  { isSemigroup = ⊓-isSemigroup
-  ; idem        = ⊓-idem
-  }
-
-⊓-isSemilattice : IsSemilattice _⊓_
-⊓-isSemilattice = record
-  { isBand = ⊓-isBand
-  ; comm   = ⊓-comm
-  }
 
 ⊔-⊓-isSemiringWithoutOne : IsSemiringWithoutOne _⊔_ _⊓_ 0
 ⊔-⊓-isSemiringWithoutOne = record
@@ -1289,46 +1278,8 @@ m⊔n≤m+n m n with ⊔-sel m n
   ; *-comm               = ⊓-comm
   }
 
-⊓-⊔-isLattice : IsLattice _⊓_ _⊔_
-⊓-⊔-isLattice = record
-  { isEquivalence = isEquivalence
-  ; ∨-comm        = ⊓-comm
-  ; ∨-assoc       = ⊓-assoc
-  ; ∨-cong        = cong₂ _⊓_
-  ; ∧-comm        = ⊔-comm
-  ; ∧-assoc       = ⊔-assoc
-  ; ∧-cong        = cong₂ _⊔_
-  ; absorptive    = ⊓-⊔-absorptive
-  }
-
-⊓-⊔-isDistributiveLattice : IsDistributiveLattice _⊓_ _⊔_
-⊓-⊔-isDistributiveLattice = record
-  { isLattice    = ⊓-⊔-isLattice
-  ; ∨-distribʳ-∧ = ⊓-distribʳ-⊔
-  }
-
 ------------------------------------------------------------------------
 -- Bundles
-
-⊓-magma : Magma 0ℓ 0ℓ
-⊓-magma = record
-  { isMagma = ⊓-isMagma
-  }
-
-⊓-semigroup : Semigroup 0ℓ 0ℓ
-⊓-semigroup = record
-  { isSemigroup = ⊔-isSemigroup
-  }
-
-⊓-band : Band 0ℓ 0ℓ
-⊓-band = record
-  { isBand = ⊓-isBand
-  }
-
-⊓-semilattice : Semilattice 0ℓ 0ℓ
-⊓-semilattice = record
-  { isSemilattice = ⊓-isSemilattice
-  }
 
 ⊔-⊓-commutativeSemiringWithoutOne : CommutativeSemiringWithoutOne 0ℓ 0ℓ
 ⊔-⊓-commutativeSemiringWithoutOne = record
@@ -1336,62 +1287,8 @@ m⊔n≤m+n m n with ⊔-sel m n
       ⊔-⊓-isCommutativeSemiringWithoutOne
   }
 
-⊓-⊔-lattice : Lattice 0ℓ 0ℓ
-⊓-⊔-lattice = record
-  { isLattice = ⊓-⊔-isLattice
-  }
-
-⊓-⊔-distributiveLattice : DistributiveLattice 0ℓ 0ℓ
-⊓-⊔-distributiveLattice = record
-  { isDistributiveLattice = ⊓-⊔-isDistributiveLattice
-  }
-
-------------------------------------------------------------------------
--- Other properties of _⊓_ and _≡_
-
-⊓-triangulate : ∀ m n o → m ⊓ n ⊓ o ≡ (m ⊓ n) ⊓ (n ⊓ o)
-⊓-triangulate m n o = begin-equality
-  m ⊓ n ⊓ o           ≡⟨ sym (cong (λ v → m ⊓ v ⊓ o) (⊓-idem n)) ⟩
-  m ⊓ (n ⊓ n) ⊓ o     ≡⟨ ⊓-assoc m _ _ ⟩
-  m ⊓ ((n ⊓ n) ⊓ o)   ≡⟨ cong (m ⊓_) (⊓-assoc n _ _) ⟩
-  m ⊓ (n ⊓ (n ⊓ o))   ≡⟨ sym (⊓-assoc m _ _) ⟩
-  (m ⊓ n) ⊓ (n ⊓ o)   ∎
-
 ------------------------------------------------------------------------
 -- Other properties of _⊓_ and _≤_/_<_
-
-m⊓n≤m : ∀ m n → m ⊓ n ≤ m
-m⊓n≤m zero    _       = z≤n
-m⊓n≤m (suc m) zero    = z≤n
-m⊓n≤m (suc m) (suc n) = s≤s $ m⊓n≤m m n
-
-m⊓n≤n : ∀ m n → m ⊓ n ≤ n
-m⊓n≤n m n = subst (_≤ n) (⊓-comm n m) (m⊓n≤m n m)
-
-m≤n⇒m⊓n≡m : ∀ {m n} → m ≤ n → m ⊓ n ≡ m
-m≤n⇒m⊓n≡m z≤n       = refl
-m≤n⇒m⊓n≡m (s≤s m≤n) = cong suc (m≤n⇒m⊓n≡m m≤n)
-
-m≤n⇒n⊓m≡m : ∀ {m n} → m ≤ n → n ⊓ m ≡ m
-m≤n⇒n⊓m≡m {m} m≤n = trans (⊓-comm _ m) (m≤n⇒m⊓n≡m m≤n)
-
-m⊓n≡m⇒m≤n : ∀ {m n} → m ⊓ n ≡ m → m ≤ n
-m⊓n≡m⇒m≤n m⊓n≡m = subst (_≤ _) m⊓n≡m (m⊓n≤n _ _)
-
-m⊓n≡n⇒n≤m : ∀ {m n} → m ⊓ n ≡ n → n ≤ m
-m⊓n≡n⇒n≤m m⊓n≡n = subst (_≤ _) m⊓n≡n (m⊓n≤m _ _)
-
-m≤n⇒m⊓o≤n : ∀ {m n} o → m ≤ n → m ⊓ o ≤ n
-m≤n⇒m⊓o≤n o m≤n = ≤-trans (m⊓n≤m _ o) m≤n
-
-m≤n⇒o⊓m≤n : ∀ {m n} o → m ≤ n → o ⊓ m ≤ n
-m≤n⇒o⊓m≤n n m≤n = ≤-trans (m⊓n≤n n _) m≤n
-
-m≤n⊓o⇒m≤n : ∀ {m} n o → m ≤ n ⊓ o → m ≤ n
-m≤n⊓o⇒m≤n n o m≤n⊓o = ≤-trans m≤n⊓o (m⊓n≤m n o)
-
-m≤n⊓o⇒m≤o : ∀ {m} n o → m ≤ n ⊓ o → m ≤ o
-m≤n⊓o⇒m≤o n o m≤n⊓o = ≤-trans m≤n⊓o (m⊓n≤n n o)
 
 m<n⇒m⊓o<n : ∀ {m n} o → m < n → m ⊓ o < n
 m<n⇒m⊓o<n o m<n = <-transʳ (m⊓n≤m _ o) m<n
@@ -1405,27 +1302,8 @@ m<n⊓o⇒m<n = m≤n⊓o⇒m≤n
 m<n⊓o⇒m<o : ∀ {m} n o → m < n ⊓ o → m < o
 m<n⊓o⇒m<o = m≤n⊓o⇒m≤o
 
-⊓-mono-≤ : _⊓_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
-⊓-mono-≤ {m} {n} {u} {v} m≤n u≤v with ⊓-sel n v
-... | inj₁ n⊓v≡n rewrite n⊓v≡n = ≤-trans (m⊓n≤m m u) m≤n
-... | inj₂ n⊓v≡v rewrite n⊓v≡v = ≤-trans (m⊓n≤n m u) u≤v
-
-⊓-monoˡ-≤ : ∀ n → (_⊓ n) Preserves _≤_ ⟶ _≤_
-⊓-monoˡ-≤ n m≤o = ⊓-mono-≤ m≤o (≤-refl {n})
-
-⊓-monoʳ-≤ : ∀ n → (n ⊓_) Preserves _≤_ ⟶ _≤_
-⊓-monoʳ-≤ n m≤o = ⊓-mono-≤ (≤-refl {n}) m≤o
-
 ⊓-mono-< : _⊓_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
 ⊓-mono-< = ⊓-mono-≤
-
-m⊓n≤m⊔n : ∀ m n → m ⊓ n ≤ m ⊔ n
-m⊓n≤m⊔n zero    n       = z≤n
-m⊓n≤m⊔n (suc m) zero    = z≤n
-m⊓n≤m⊔n (suc m) (suc n) = s≤s (m⊓n≤m⊔n m n)
-
-⊓-pres-m≤ : ∀ {m n o} → m ≤ n → m ≤ o → m ≤ n ⊓ o
-⊓-pres-m≤ {m} m≤n m≤o = subst (_≤ _) (⊓-idem m) (⊓-mono-≤ m≤n m≤o)
 
 ⊓-pres-m< : ∀ {m n o} → m < n → m < o → m < n ⊓ o
 ⊓-pres-m< {m} m<n m<o = subst (_< _) (⊓-idem m) (⊓-mono-< m<n m<o)
@@ -1449,6 +1327,36 @@ m⊓n≤m+n m n with ⊓-sel m n
 ... | inj₂ m⊓n≡n rewrite m⊓n≡n = m≤n+m n m
 
 ------------------------------------------------------------------------
+-- Other properties of _⊓_ and _*_
+
+*-distribˡ-⊓ : _*_ DistributesOverˡ _⊓_
+*-distribˡ-⊓ m 0 o = begin-equality
+  m * (0 ⊓ o)               ≡⟨⟩
+  m * 0                     ≡⟨ *-zeroʳ m ⟩
+  0                         ≡⟨⟩
+  0 ⊓ (m * o)               ≡˘⟨ cong (_⊓ (m * o)) (*-zeroʳ m) ⟩
+  (m * 0) ⊓ (m * o)         ∎
+*-distribˡ-⊓ m (suc n) 0 = begin-equality
+  m * (suc n ⊓ 0)           ≡⟨⟩
+  m * 0                     ≡⟨ *-zeroʳ m ⟩
+  0                         ≡˘⟨ ⊓-zeroʳ (m * suc n) ⟩
+  (m * suc n) ⊓ 0           ≡˘⟨ cong (m * suc n ⊓_) (*-zeroʳ m) ⟩
+  (m * suc n) ⊓ (m * 0)     ∎
+*-distribˡ-⊓ m (suc n) (suc o) = begin-equality
+  m * (suc n ⊓ suc o)       ≡⟨⟩
+  m * suc (n ⊓ o)           ≡⟨ *-suc m (n ⊓ o) ⟩
+  m + m * (n ⊓ o)           ≡⟨ cong (m +_) (*-distribˡ-⊓ m n o) ⟩
+  m + (m * n) ⊓ (m * o)     ≡⟨ +-distribˡ-⊓ m (m * n) (m * o) ⟩
+  (m + m * n) ⊓ (m + m * o) ≡˘⟨ cong₂ _⊓_ (*-suc m n) (*-suc m o) ⟩
+  (m * suc n) ⊓ (m * suc o) ∎
+
+*-distribʳ-⊓ : _*_ DistributesOverʳ _⊓_
+*-distribʳ-⊓ = comm+distrˡ⇒distrʳ *-comm *-distribˡ-⊓
+
+*-distrib-⊓ : _*_ DistributesOver _⊓_
+*-distrib-⊓ = *-distribˡ-⊓ , *-distribʳ-⊓
+
+------------------------------------------------------------------------
 -- Properties of _∸_
 ------------------------------------------------------------------------
 
@@ -1459,6 +1367,15 @@ m⊓n≤m+n m n with ⊓-sel m n
 n∸n≡0 : ∀ n → n ∸ n ≡ 0
 n∸n≡0 zero    = refl
 n∸n≡0 (suc n) = n∸n≡0 n
+
+------------------------------------------------------------------------
+-- Properties of _∸_ and pred
+
+pred[m∸n]≡m∸[1+n] : ∀ m n → pred (m ∸ n) ≡ m ∸ suc n
+pred[m∸n]≡m∸[1+n] zero    zero    = refl
+pred[m∸n]≡m∸[1+n] (suc m) zero    = refl
+pred[m∸n]≡m∸[1+n] zero (suc n)    = refl
+pred[m∸n]≡m∸[1+n] (suc m) (suc n) = pred[m∸n]≡m∸[1+n] m n
 
 ------------------------------------------------------------------------
 -- Properties of _∸_ and _≤_/_<_
@@ -1505,6 +1422,10 @@ m≮m∸n (suc m) (suc n) = m≮m∸n m n ∘ ≤-trans (n≤1+n (suc m))
 ∸-cancelˡ-≡ {o = suc o} z≤n       (s≤s _)   eq = contradiction eq (1+m≢m∸n o)
 ∸-cancelˡ-≡ {n = suc n} (s≤s _)   z≤n       eq = contradiction (sym eq) (1+m≢m∸n n)
 ∸-cancelˡ-≡ {_}         (s≤s n≤m) (s≤s o≤m) eq = cong suc (∸-cancelˡ-≡ n≤m o≤m eq)
+
+∸-cancelʳ-≡ :  ∀ {m n o} → o ≤ m → o ≤ n → m ∸ o ≡ n ∸ o → m ≡ n
+∸-cancelʳ-≡  z≤n       z≤n      eq = eq
+∸-cancelʳ-≡ (s≤s o≤m) (s≤s o≤n) eq = cong suc (∸-cancelʳ-≡ o≤m o≤n eq)
 
 m∸n≡0⇒m≤n : ∀ {m n} → m ∸ n ≡ 0 → m ≤ n
 m∸n≡0⇒m≤n {zero}  {_}    _   = z≤n
@@ -1629,37 +1550,49 @@ m⊓n+n∸m≡n (suc m) (suc n) = cong suc $ m⊓n+n∸m≡n m n
 [m∸n]⊓[n∸m]≡0 (suc m) (suc n) = [m∸n]⊓[n∸m]≡0 m n
 
 ∸-distribˡ-⊓-⊔ : ∀ m n o → m ∸ (n ⊓ o) ≡ (m ∸ n) ⊔ (m ∸ o)
-∸-distribˡ-⊓-⊔ m       zero    zero    = sym (⊔-idem m)
-∸-distribˡ-⊓-⊔ zero    zero    (suc o) = refl
-∸-distribˡ-⊓-⊔ zero    (suc n) zero    = refl
-∸-distribˡ-⊓-⊔ zero    (suc n) (suc o) = refl
-∸-distribˡ-⊓-⊔ (suc m) (suc n) zero    = sym (m≤n⇒m⊔n≡n (≤-step (m∸n≤m m n)))
-∸-distribˡ-⊓-⊔ (suc m) zero    (suc o) = sym (m≤n⇒n⊔m≡n (≤-step (m∸n≤m m o)))
-∸-distribˡ-⊓-⊔ (suc m) (suc n) (suc o) = ∸-distribˡ-⊓-⊔ m n o
+∸-distribˡ-⊓-⊔ m n o = antimono-≤-distrib-⊓ (∸-monoʳ-≤ m) n o
 
 ∸-distribʳ-⊓ : _∸_ DistributesOverʳ _⊓_
-∸-distribʳ-⊓ zero    n       o       = refl
-∸-distribʳ-⊓ (suc m) zero    o       = refl
-∸-distribʳ-⊓ (suc m) (suc n) zero    = sym (⊓-zeroʳ (n ∸ m))
-∸-distribʳ-⊓ (suc m) (suc n) (suc o) = ∸-distribʳ-⊓ m n o
+∸-distribʳ-⊓ m n o = mono-≤-distrib-⊓ (∸-monoˡ-≤ m) n o
 
 ∸-distribˡ-⊔-⊓ : ∀ m n o → m ∸ (n ⊔ o) ≡ (m ∸ n) ⊓ (m ∸ o)
-∸-distribˡ-⊔-⊓ m       zero    zero    = sym (⊓-idem m)
-∸-distribˡ-⊔-⊓ zero    zero    o       = 0∸n≡0 o
-∸-distribˡ-⊔-⊓ zero    (suc n) o       = 0∸n≡0 (suc n ⊔ o)
-∸-distribˡ-⊔-⊓ (suc m) (suc n) zero    = sym (m≤n⇒m⊓n≡m (≤-step (m∸n≤m m n)))
-∸-distribˡ-⊔-⊓ (suc m) zero    (suc o) = sym (m≤n⇒n⊓m≡m (≤-step (m∸n≤m m o)))
-∸-distribˡ-⊔-⊓ (suc m) (suc n) (suc o) = ∸-distribˡ-⊔-⊓ m n o
+∸-distribˡ-⊔-⊓ m n o = antimono-≤-distrib-⊔ (∸-monoʳ-≤ m) n o
 
 ∸-distribʳ-⊔ : _∸_ DistributesOverʳ _⊔_
-∸-distribʳ-⊔ zero    n       o       = refl
-∸-distribʳ-⊔ (suc m) zero    o       = refl
-∸-distribʳ-⊔ (suc m) (suc n) zero    = sym (⊔-identityʳ (n ∸ m))
-∸-distribʳ-⊔ (suc m) (suc n) (suc o) = ∸-distribʳ-⊔ m n o
+∸-distribʳ-⊔ m n o = mono-≤-distrib-⊔ (∸-monoˡ-≤ m) n o
+
+------------------------------------------------------------------------
+-- Properties of pred
+------------------------------------------------------------------------
+
+pred-mono : pred Preserves _≤_ ⟶ _≤_
+pred-mono m≤n = ∸-mono m≤n (≤-refl {1})
+
+pred[n]≤n : ∀ {n} → pred n ≤ n
+pred[n]≤n {zero}  = z≤n
+pred[n]≤n {suc n} = n≤1+n n
+
+≤pred⇒≤ : ∀ {m n} → m ≤ pred n → m ≤ n
+≤pred⇒≤ {m} {zero}  le = le
+≤pred⇒≤ {m} {suc n} le = ≤-step le
+
+≤⇒pred≤ : ∀ {m n} → m ≤ n → pred m ≤ n
+≤⇒pred≤ {zero}  le = le
+≤⇒pred≤ {suc m} le = ≤-trans (n≤1+n m) le
+
+<⇒≤pred : ∀ {m n} → m < n → m ≤ pred n
+<⇒≤pred (s≤s le) = le
+
+suc[pred[n]]≡n : ∀ {n} → n ≢ 0 → suc (pred n) ≡ n
+suc[pred[n]]≡n {zero}  n≢0 = contradiction refl n≢0
+suc[pred[n]]≡n {suc n} n≢0 = refl
 
 ------------------------------------------------------------------------
 -- Properties of ∣_-_∣
 ------------------------------------------------------------------------
+
+------------------------------------------------------------------------
+-- Basic
 
 m≡n⇒∣m-n∣≡0 : ∀ {m n} → m ≡ n → ∣ m - n ∣ ≡ 0
 m≡n⇒∣m-n∣≡0 {zero}  refl = refl
@@ -1686,9 +1619,9 @@ m≤n⇒∣n-m∣≡n∸m {_} {_}     (s≤s m≤n) = m≤n⇒∣n-m∣≡n∸m 
 ∣m-m+n∣≡n zero    n = refl
 ∣m-m+n∣≡n (suc m) n = ∣m-m+n∣≡n m n
 
-∣m+n-m+o∣≡∣n-o| : ∀ m n o → ∣ m + n - m + o ∣ ≡ ∣ n - o ∣
-∣m+n-m+o∣≡∣n-o| zero    n o = refl
-∣m+n-m+o∣≡∣n-o| (suc m) n o = ∣m+n-m+o∣≡∣n-o| m n o
+∣m+n-m+o∣≡∣n-o∣ : ∀ m n o → ∣ m + n - m + o ∣ ≡ ∣ n - o ∣
+∣m+n-m+o∣≡∣n-o∣ zero    n o = refl
+∣m+n-m+o∣≡∣n-o∣ (suc m) n o = ∣m+n-m+o∣≡∣n-o∣ m n o
 
 m∸n≤∣m-n∣ : ∀ m n → m ∸ n ≤ ∣ m - n ∣
 m∸n≤∣m-n∣ m n with ≤-total m n
@@ -1735,12 +1668,12 @@ private
 
 *-distribˡ-∣-∣ : _*_ DistributesOverˡ ∣_-_∣
 *-distribˡ-∣-∣ a m n with ≤-total m n
+... | inj₂ n≤m = *-distribˡ-∣-∣-aux a n m n≤m
 ... | inj₁ m≤n = begin-equality
   a * ∣ m - n ∣     ≡⟨ cong (a *_) (∣-∣-comm m n) ⟩
   a * ∣ n - m ∣     ≡⟨ *-distribˡ-∣-∣-aux a m n m≤n ⟩
   ∣ a * n - a * m ∣ ≡⟨ ∣-∣-comm (a * n) (a * m) ⟩
   ∣ a * m - a * n ∣ ∎
-... | inj₂ n≤m = *-distribˡ-∣-∣-aux a n m n≤m
 
 *-distribʳ-∣-∣ : _*_ DistributesOverʳ ∣_-_∣
 *-distribʳ-∣-∣ = comm+distrˡ⇒distrʳ *-comm *-distribˡ-∣-∣
@@ -1758,6 +1691,80 @@ m≤n+∣m-n∣ m n = subst (m ≤_) (cong (n +_) (∣-∣-comm n m)) (m≤n+∣
 
 m≤∣m-n∣+n : ∀ m n → m ≤ ∣ m - n ∣ + n
 m≤∣m-n∣+n m n = subst (m ≤_) (+-comm n _) (m≤n+∣m-n∣ m n)
+
+∣-∣-triangle : TriangleInequality ∣_-_∣
+∣-∣-triangle zero    y       z       = m≤n+∣n-m∣ z y
+∣-∣-triangle x       zero    z       = begin
+  ∣ x - z ∣     ≤⟨ ∣m-n∣≤m⊔n x z ⟩
+  x ⊔ z         ≤⟨ m⊔n≤m+n x z ⟩
+  x + z         ≡⟨ cong₂ _+_ (sym (∣-∣-identityʳ x)) refl ⟩
+  ∣ x - 0 ∣ + z ∎
+  where open ≤-Reasoning
+∣-∣-triangle x       y       zero    = begin
+  ∣ x - 0 ∣             ≡⟨ ∣-∣-identityʳ x ⟩
+  x                     ≤⟨ m≤∣m-n∣+n x y ⟩
+  ∣ x - y ∣ + y         ≡⟨ cong₂ _+_ refl (sym (∣-∣-identityʳ y)) ⟩
+  ∣ x - y ∣ + ∣ y - 0 ∣ ∎
+  where open ≤-Reasoning
+∣-∣-triangle (suc x) (suc y) (suc z) = ∣-∣-triangle x y z
+
+------------------------------------------------------------------------
+-- Metric structures
+
+∣-∣-isProtoMetric : IsProtoMetric _≡_ ∣_-_∣
+∣-∣-isProtoMetric = record
+  { isPartialOrder  = ≤-isPartialOrder
+  ; ≈-isEquivalence = isEquivalence
+  ; cong            = cong₂ ∣_-_∣
+  ; nonNegative     = z≤n
+  }
+
+∣-∣-isPreMetric : IsPreMetric _≡_ ∣_-_∣
+∣-∣-isPreMetric = record
+  { isProtoMetric = ∣-∣-isProtoMetric
+  ; ≈⇒0           = m≡n⇒∣m-n∣≡0
+  }
+
+∣-∣-isQuasiSemiMetric : IsQuasiSemiMetric _≡_ ∣_-_∣
+∣-∣-isQuasiSemiMetric = record
+  { isPreMetric = ∣-∣-isPreMetric
+  ; 0⇒≈         = ∣m-n∣≡0⇒m≡n
+  }
+
+∣-∣-isSemiMetric : IsSemiMetric _≡_ ∣_-_∣
+∣-∣-isSemiMetric = record
+  { isQuasiSemiMetric = ∣-∣-isQuasiSemiMetric
+  ; sym               = ∣-∣-comm
+  }
+
+∣-∣-isMetric : IsMetric _≡_ ∣_-_∣
+∣-∣-isMetric = record
+  { isSemiMetric = ∣-∣-isSemiMetric
+  ; triangle     = ∣-∣-triangle
+  }
+
+------------------------------------------------------------------------
+-- Metric bundles
+
+∣-∣-quasiSemiMetric : QuasiSemiMetric 0ℓ 0ℓ
+∣-∣-quasiSemiMetric = record
+  { isQuasiSemiMetric = ∣-∣-isQuasiSemiMetric
+  }
+
+∣-∣-semiMetric : SemiMetric 0ℓ 0ℓ
+∣-∣-semiMetric = record
+  { isSemiMetric = ∣-∣-isSemiMetric
+  }
+
+∣-∣-preMetric : PreMetric 0ℓ 0ℓ
+∣-∣-preMetric = record
+  { isPreMetric = ∣-∣-isPreMetric
+  }
+
+∣-∣-metric : Metric 0ℓ 0ℓ
+∣-∣-metric = record
+  { isMetric = ∣-∣-isMetric
+  }
 
 ------------------------------------------------------------------------
 -- Properties of ⌊_/2⌋ and ⌈_/2⌉
@@ -1783,6 +1790,22 @@ m≤∣m-n∣+n m n = subst (m ≤_) (+-comm n _) (m≤n+∣m-n∣ m n)
   suc ⌊ n /2⌋ + ⌊ suc n /2⌋   ≡⟨⟩
   suc (⌊ n /2⌋ + ⌊ suc n /2⌋) ≡⟨ cong suc (⌊n/2⌋+⌈n/2⌉≡n n) ⟩
   suc n                       ∎
+
+⌊n/2⌋≤n : ∀ n → ⌊ n /2⌋ ≤ n
+⌊n/2⌋≤n zero          = z≤n
+⌊n/2⌋≤n (suc zero)    = z≤n
+⌊n/2⌋≤n (suc (suc n)) = s≤s (≤-step (⌊n/2⌋≤n n))
+
+⌊n/2⌋<n : ∀ n → ⌊ suc n /2⌋ < suc n
+⌊n/2⌋<n zero    = s≤s z≤n
+⌊n/2⌋<n (suc n) = s≤s (s≤s (⌊n/2⌋≤n n))
+
+⌈n/2⌉≤n : ∀ n → ⌈ n /2⌉ ≤ n
+⌈n/2⌉≤n zero = z≤n
+⌈n/2⌉≤n (suc n) = s≤s (⌊n/2⌋≤n n)
+
+⌈n/2⌉<n : ∀ n → ⌈ suc (suc n) /2⌉ < suc (suc n)
+⌈n/2⌉<n n = s≤s (⌊n/2⌋<n n)
 
 ------------------------------------------------------------------------
 -- Properties of _≤′_ and _<′_
@@ -1920,6 +1943,36 @@ m≤‴m+k {m} {k = suc k} proof
 ≤″⇒≤‴ : ∀{m n} → m ≤″ n → m ≤‴ n
 ≤″⇒≤‴ (less-than-or-equal {k} proof) = m≤‴m+k proof
 
+0≤‴n : ∀{n} → 0 ≤‴ n
+0≤‴n {n} = m≤‴m+k refl
+
+<ᵇ⇒<‴ : ∀ {m n} → T (m <ᵇ n) → m <‴ n
+<ᵇ⇒<‴ {m} {n} leq = ≤″⇒≤‴ (<ᵇ⇒<″ leq)
+
+<‴⇒<ᵇ : ∀ {m n} → m <‴ n → T (m <ᵇ n)
+<‴⇒<ᵇ leq = <″⇒<ᵇ (≤‴⇒≤″ leq)
+
+infix 4 _<‴?_ _≤‴?_ _≥‴?_ _>‴?_
+
+_<‴?_ : Decidable _<‴_
+m <‴? n = map′ <ᵇ⇒<‴ <‴⇒<ᵇ (T? (m <ᵇ n))
+
+_≤‴?_ : Decidable _≤‴_
+zero ≤‴? n = yes 0≤‴n
+suc m ≤‴? n = m <‴? n
+
+_≥‴?_ : Decidable _≥‴_
+_≥‴?_ = flip _≤‴?_
+
+_>‴?_ : Decidable _>‴_
+_>‴?_ = flip _<‴?_
+
+≤⇒≤‴ : _≤_ ⇒ _≤‴_
+≤⇒≤‴ = ≤″⇒≤‴ ∘ ≤⇒≤″
+
+≤‴⇒≤ : _≤‴_ ⇒ _≤_
+≤‴⇒≤ = ≤″⇒≤ ∘ ≤‴⇒≤″
+
 ------------------------------------------------------------------------
 -- Other properties
 ------------------------------------------------------------------------
@@ -1994,12 +2047,12 @@ strictTotalOrder                      = <-strictTotalOrder
 "Warning: strictTotalOrder was deprecated in v0.14.
 Please use <-strictTotalOrder instead."
 #-}
-isCommutativeSemiring                 = *-+-isCommutativeSemiring
+isCommutativeSemiring                 = +-*-isCommutativeSemiring
 {-# WARNING_ON_USAGE isCommutativeSemiring
 "Warning: isCommutativeSemiring was deprecated in v0.14.
 Please use *-+-isCommutativeSemiring instead."
 #-}
-commutativeSemiring                   = *-+-commutativeSemiring
+commutativeSemiring                   = +-*-commutativeSemiring
 {-# WARNING_ON_USAGE commutativeSemiring
 "Warning: commutativeSemiring was deprecated in v0.14.
 Please use *-+-commutativeSemiring instead."
@@ -2165,10 +2218,15 @@ Please use ∣m-n∣≡m∸n⇒n≤m instead."
 "Warning: ∣n-n+m∣≡m was deprecated in v1.1.
 Please use ∣m-m+n∣≡n instead."
 #-}
-∣n+m-n+o∣≡∣m-o| = ∣m+n-m+o∣≡∣n-o|
+∣n+m-n+o∣≡∣m-o| = ∣m+n-m+o∣≡∣n-o∣
 {-# WARNING_ON_USAGE ∣n+m-n+o∣≡∣m-o|
 "Warning: ∣n+m-n+o∣≡∣m-o| was deprecated in v1.1.
-Please use ∣m+n-m+o∣≡∣n-o| instead."
+Please use ∣m+n-m+o∣≡∣n-o∣ instead."
+#-}
+∣m+n-m+o∣≡∣n-o| = ∣m+n-m+o∣≡∣n-o∣
+{-# WARNING_ON_USAGE ∣m+n-m+o∣≡∣n-o|
+"Warning: ∣m+n-m+o∣≡∣n-o| was deprecated in v1.6.
+Please use ∣m+n-m+o∣≡∣n-o∣ instead. Note the final is a \\| rather than a |"
 #-}
 n∸m≤∣n-m∣ = m∸n≤∣m-n∣
 {-# WARNING_ON_USAGE n∸m≤∣n-m∣
@@ -2219,4 +2277,89 @@ n∸m≤n m n = m∸n≤m n m
 {-# WARNING_ON_USAGE n∸m≤n
 "Warning: n∸m≤n was deprecated in v1.2.
 Please use m∸n≤m instead (note, you will need to switch the argument order)."
+#-}
+
+-- Version 1.3
+
+∀[m≤n⇒m≢o]⇒o<n : ∀ n o → (∀ {m} → m ≤ n → m ≢ o) → n < o
+∀[m≤n⇒m≢o]⇒o<n = ∀[m≤n⇒m≢o]⇒n<o
+{-# WARNING_ON_USAGE ∀[m≤n⇒m≢o]⇒o<n
+"Warning: ∀[m≤n⇒m≢o]⇒o<n was deprecated in v1.3.
+Please use ∀[m≤n⇒m≢o]⇒n<o instead."
+#-}
+∀[m<n⇒m≢o]⇒o≤n : ∀ n o → (∀ {m} → m < n → m ≢ o) → n ≤ o
+∀[m<n⇒m≢o]⇒o≤n = ∀[m<n⇒m≢o]⇒n≤o
+{-# WARNING_ON_USAGE ∀[m<n⇒m≢o]⇒o≤n
+"Warning: ∀[m<n⇒m≢o]⇒o≤n was deprecated in v1.3.
+Please use ∀[m<n⇒m≢o]⇒n≤o instead."
+#-}
+
+-- Version 1.4
+
+*-+-isSemiring = +-*-isSemiring
+{-# WARNING_ON_USAGE *-+-isSemiring
+"Warning: *-+-isSemiring was deprecated in v1.4.
+Please use +-*-isSemiring instead."
+#-}
+*-+-isCommutativeSemiring = +-*-isCommutativeSemiring
+{-# WARNING_ON_USAGE *-+-isCommutativeSemiring
+"Warning: *-+-isCommutativeSemiring was deprecated in v1.4.
+Please use +-*-isCommutativeSemiring instead."
+#-}
+*-+-semiring = +-*-semiring
+{-# WARNING_ON_USAGE *-+-semiring
+"Warning: *-+-semiring was deprecated in v1.4.
+Please use +-*-semiring instead."
+#-}
+*-+-commutativeSemiring = +-*-commutativeSemiring
+{-# WARNING_ON_USAGE *-+-commutativeSemiring
+"Warning: *-+-commutativeSemiring was deprecated in v1.4.
+Please use +-*-commutativeSemiring instead."
+#-}
+
+-- Version 1.6
+
+m≤n⇒n⊔m≡n = m≥n⇒m⊔n≡m
+{-# WARNING_ON_USAGE m≤n⇒n⊔m≡n
+"Warning: m≤n⇒n⊔m≡n was deprecated in v1.6. Please use m≥n⇒m⊔n≡m instead."
+#-}
+m≤n⇒n⊓m≡m = m≥n⇒m⊓n≡n
+{-# WARNING_ON_USAGE m≤n⇒n⊓m≡m
+"Warning: m≤n⇒n⊓m≡m was deprecated in v1.6. Please use m≥n⇒m⊓n≡n instead."
+#-}
+n⊔m≡m⇒n≤m = m⊔n≡n⇒m≤n
+{-# WARNING_ON_USAGE n⊔m≡m⇒n≤m
+"Warning: n⊔m≡m⇒n≤m was deprecated in v1.6. Please use m⊔n≡n⇒m≤n instead."
+#-}
+n⊔m≡n⇒m≤n = m⊔n≡m⇒n≤m
+{-# WARNING_ON_USAGE n⊔m≡n⇒m≤n
+"Warning: n⊔m≡n⇒m≤n was deprecated in v1.6. Please use m⊔n≡m⇒n≤m instead."
+#-}
+n≤m⊔n = m≤n⊔m
+{-# WARNING_ON_USAGE n≤m⊔n
+"Warning: n≤m⊔n was deprecated in v1.6. Please use m≤n⊔m instead."
+#-}
+⊔-least = ⊔-lub
+{-# WARNING_ON_USAGE ⊔-least
+"Warning: ⊔-least was deprecated in v1.6. Please use ⊔-lub instead."
+#-}
+⊓-greatest = ⊓-glb
+{-# WARNING_ON_USAGE ⊓-greatest
+"Warning: ⊓-greatest was deprecated in v1.6. Please use ⊓-glb instead."
+#-}
+⊔-pres-≤m = ⊔-lub
+{-# WARNING_ON_USAGE ⊔-pres-≤m
+"Warning: ⊔-pres-≤m was deprecated in v1.6. Please use ⊔-lub instead."
+#-}
+⊓-pres-m≤ = ⊓-glb
+{-# WARNING_ON_USAGE ⊓-pres-m≤
+"Warning: ⊓-pres-m≤ was deprecated in v1.6. Please use ⊓-glb instead."
+#-}
+⊔-abs-⊓ = ⊔-absorbs-⊓
+{-# WARNING_ON_USAGE ⊔-abs-⊓
+"Warning: ⊔-abs-⊓ was deprecated in v1.6. Please use ⊔-absorbs-⊓ instead."
+#-}
+⊓-abs-⊔ = ⊓-absorbs-⊔
+{-# WARNING_ON_USAGE ⊓-abs-⊔
+"Warning: ⊓-abs-⊔ was deprecated in v1.6. Please use ⊓-absorbs-⊔ instead."
 #-}

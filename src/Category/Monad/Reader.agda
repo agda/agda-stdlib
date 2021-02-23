@@ -17,13 +17,18 @@ open import Category.Monad.Indexed
 open import Category.Monad
 open import Data.Unit
 
+private
+  variable
+    ℓ : Level
+    A B I : Set ℓ
+
 ------------------------------------------------------------------------
 -- Indexed reader
 
-IReaderT : ∀ {ℓ} {I : Set ℓ} → IFun I (r ⊔ a) → IFun I (r ⊔ a)
+IReaderT : IFun I (r ⊔ a) → IFun I (r ⊔ a)
 IReaderT M i j A = R → M i j A
 
-module _ {ℓ} {I : Set ℓ} {M : IFun I (r ⊔ a)} where
+module _ {M : IFun I (r ⊔ a)} where
 
   ------------------------------------------------------------------------
   -- Indexed reader applicative
@@ -71,22 +76,22 @@ module _ {ℓ} {I : Set ℓ} {M : IFun I (r ⊔ a)} where
 ------------------------------------------------------------------------
 -- Reader monad operations
 
-record RawIMonadReader {ℓ} {I : Set ℓ} (M : IFun I (r ⊔ a))
+record RawIMonadReader {I : Set ℓ} (M : IFun I (r ⊔ a))
                        : Set (ℓ ⊔ suc (r ⊔ a)) where
   field
     monad  : RawIMonad M
-    reader : ∀ {i A} → (R → A) → M i i A
-    local  : ∀ {i j A} → (R → R) → M i j A → M i j A
+    reader : ∀ {i} → (R → A) → M i i A
+    local  : ∀ {i j} → (R → R) → M i j A → M i j A
 
   open RawIMonad monad public
 
   ask : ∀ {i} → M i i (Lift (r ⊔ a) R)
   ask = reader lift
 
-  asks : ∀ {i A} → (R → A) → M i i A
+  asks : ∀ {i} → (R → A) → M i i A
   asks = reader
 
-ReaderTIMonadReader : ∀ {ℓ} {I : Set ℓ} {M : IFun I (r ⊔ a)} →
+ReaderTIMonadReader : {I : Set ℓ} {M : IFun I (r ⊔ a)} →
                       RawIMonad M → RawIMonadReader (IReaderT M)
 ReaderTIMonadReader Mon = record
   { monad = ReaderTIMonad Mon
@@ -97,7 +102,7 @@ ReaderTIMonadReader Mon = record
 ------------------------------------------------------------------------
 -- Ordinary reader monads
 
-RawMonadReader : (M : Set (r ⊔ a) → Set (r ⊔ a)) → Set _
+RawMonadReader : (M : Set (r ⊔ a) → Set (r ⊔ a)) → Set (suc (r ⊔ a))
 RawMonadReader M = RawIMonadReader {I = ⊤} (λ _ _ → M)
 
 module RawMonadReader {M} (Mon : RawMonadReader M) where

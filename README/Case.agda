@@ -15,7 +15,7 @@ open import Data.Nat   hiding (pred)
 open import Data.List
 open import Data.Sum
 open import Data.Product
-open import Function
+open import Function.Base using (case_of_; case_return_of_)
 open import Relation.Nullary
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
@@ -57,7 +57,7 @@ div2 : ℕ → ℕ
 div2 zero    = zero
 div2 (suc m) = case m of λ where
   zero     → zero
-  (suc m') → suc (div2 m')
+  (suc m′) → suc (div2 m′)
 
 
 -- Note that some natural uses of case are rejected by the termination

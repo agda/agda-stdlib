@@ -9,7 +9,7 @@
 module Data.List.Relation.Binary.Suffix.Heterogeneous.Properties where
 
 open import Data.Bool.Base using (true; false)
-open import Data.List as List
+open import Data.List.Base as List
   using (List; []; _∷_; _++_; length; filter; replicate; reverse; reverseAcc)
 open import Data.List.Relation.Binary.Pointwise as Pw
   using (Pointwise; []; _∷_; Pointwise-length)
@@ -17,9 +17,9 @@ open import Data.List.Relation.Binary.Suffix.Heterogeneous as Suffix
   using (Suffix; here; there; tail)
 open import Data.List.Relation.Binary.Prefix.Heterogeneous as Prefix
   using (Prefix)
-open import Data.Nat
+open import Data.Nat.Base
 open import Data.Nat.Properties
-open import Function using (_$_; flip)
+open import Function.Base using (_$_; flip)
 open import Relation.Nullary using (Dec; does; ¬_)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Unary as U using (Pred)

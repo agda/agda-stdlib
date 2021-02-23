@@ -8,20 +8,20 @@
 
 module Data.Vec.Membership.Propositional.Properties where
 
-open import Data.Fin using (Fin; zero; suc)
+open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Product as Prod using (_,_; ∃; _×_; -,_)
 open import Data.Vec hiding (here; there)
 open import Data.Vec.Relation.Unary.Any using (here; there)
-open import Data.List using ([]; _∷_)
+open import Data.List.Base using ([]; _∷_)
 open import Data.List.Relation.Unary.Any using (here; there)
-open import Data.Vec.Relation.Unary.Any using (Any; here; there)
+open import Data.Vec.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.Vec.Membership.Propositional
 open import Data.List.Membership.Propositional
   using () renaming (_∈_ to _∈ₗ_)
 open import Level using (Level)
-open import Function using (_∘_; id)
+open import Function.Base using (_∘_; id)
 open import Relation.Unary using (Pred)
-open import Relation.Binary.PropositionalEquality using (refl)
+open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong)
 
 private
   variable
@@ -35,6 +35,10 @@ private
 ∈-lookup : ∀ {n} i (xs : Vec A n) → lookup xs i ∈ xs
 ∈-lookup zero    (x ∷ xs) = here refl
 ∈-lookup (suc i) (x ∷ xs) = there (∈-lookup i xs)
+
+index-∈-lookup : ∀ {n} (i : Fin n) (xs : Vec A n) → Any.index (∈-lookup i xs) ≡ i
+index-∈-lookup zero (x ∷ xs) = refl
+index-∈-lookup (suc i) (x ∷ xs) = cong suc (index-∈-lookup i xs)
 
 ------------------------------------------------------------------------
 -- map

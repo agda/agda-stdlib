@@ -24,7 +24,7 @@ open import Data.Product as Prod using (∃; _×_; _,_)
 open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; decToMaybe)
 open import Data.Empty
 open import Data.Unit.Base using (⊤; tt)
-open import Data.Vec as Vec using (Vec; []; _∷_)
+open import Data.Vec.Base as Vec using (Vec; []; _∷_)
 open import Data.List.Base as List using (List; []; _∷_)
 open import Function
 open import Relation.Nullary
@@ -170,6 +170,8 @@ module _ {ℓ e} {N : Set ℓ} {E : Set e} where
 -- Finds the context and remaining graph corresponding to a given node
 -- index.
 
+  infix 4 _[_]
+
   _[_] : ∀ {n} → Graph N E n → (i : Fin n) → Graph N E (suc (n - suc i))
   (c & g) [ zero ]  = c & g
   (c & g) [ suc i ] = g [ i ]
@@ -279,11 +281,11 @@ reverse : ∀ {ℓ e} {N : Set ℓ} {E : Set e} →
           ∀ {n} → Graph N E n → Graph N E n
 reverse {N = N} {E} g =
   foldl (Graph N E)
-        (λ i g' c →
+        (λ i g′ c →
            context (label c)
                    (List.map (Prod.swap ∘ Prod.map PC.reverse id) $
                              preds g i)
-           & g')
+           & g′)
         ∅ g
 
 private

@@ -11,12 +11,12 @@ module Data.List.Relation.Unary.First {a} {A : Set a} where
 
 open import Level using (_⊔_)
 open import Data.Empty
-open import Data.Fin as Fin using (Fin; zero; suc)
+open import Data.Fin.Base as Fin using (Fin; zero; suc)
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.Product as Prod using (∃; -,_; _,_)
-open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Function
 open import Relation.Unary
 open import Relation.Nullary
@@ -25,6 +25,9 @@ open import Relation.Nullary
 -- Basic type.
 
 module _ {p q} (P : Pred A p) (Q : Pred A q) where
+
+  infix 1 _++_∷_
+  infixr 5 _∷_
 
   data First : Pred (List A) (a ⊔ p ⊔ q) where
     [_] : ∀ {x xs} → Q x            → First (x ∷ xs)

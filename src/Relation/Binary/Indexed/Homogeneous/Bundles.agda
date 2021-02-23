@@ -12,7 +12,7 @@
 module Relation.Binary.Indexed.Homogeneous.Bundles where
 
 open import Data.Product using (_,_)
-open import Function using (_⟨_⟩_)
+open import Function.Base using (_⟨_⟩_)
 open import Level using (Level; _⊔_; suc)
 open import Relation.Binary as B using (_⇒_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)

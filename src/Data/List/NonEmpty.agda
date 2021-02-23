@@ -12,14 +12,14 @@ open import Level using (Level)
 open import Category.Monad
 open import Data.Bool.Base using (Bool; false; true; not; T)
 open import Data.Bool.Properties
-open import Data.List as List using (List; []; _∷_)
+open import Data.List.Base as List using (List; []; _∷_)
 open import Data.Maybe.Base using (Maybe ; nothing; just)
-open import Data.Nat as Nat
+open import Data.Nat.Base as ℕ
 open import Data.Product as Prod using (∃; _×_; proj₁; proj₂; _,_; -,_)
-open import Data.These as These using (These; this; that; these)
-open import Data.Sum as Sum using (_⊎_; inj₁; inj₂)
+open import Data.These.Base as These using (These; this; that; these)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Data.Unit
-open import Data.Vec as Vec using (Vec; []; _∷_)
+open import Data.Vec.Base as Vec using (Vec; []; _∷_)
 open import Function.Base
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence
@@ -193,7 +193,7 @@ data SnocView {A : Set a} : List⁺ A → Set a where
 snocView : (xs : List⁺ A) → SnocView xs
 snocView (x ∷ xs)              with List.initLast xs
 snocView (x ∷ .[])             | []            = []       ∷ʳ′ x
-snocView (x ∷ .(xs List.∷ʳ y)) | xs List.∷ʳ' y = (x ∷ xs) ∷ʳ′ y
+snocView (x ∷ .(xs List.∷ʳ y)) | xs List.∷ʳ′ y = (x ∷ xs) ∷ʳ′ y
 
 -- The last element in the list.
 
@@ -309,7 +309,7 @@ private
   split-false = refl
 
   split-≡1 :
-    split (λ n → isYes (n Nat.≟ 1)) (1 ∷ 2 ∷ 3 ∷ 1 ∷ 1 ∷ 2 ∷ 1 ∷ []) ≡
+    split (ℕ._≡ᵇ 1) (1 ∷ 2 ∷ 3 ∷ 1 ∷ 1 ∷ 2 ∷ 1 ∷ []) ≡
     inj₁ [ 1 , tt ] ∷ inj₂ ((2 , tt) ∷⁺ [ 3 , tt ]) ∷
     inj₁ ((1 , tt) ∷⁺ [ 1 , tt ]) ∷ inj₂ [ 2 , tt ] ∷ inj₁ [ 1 , tt ] ∷
     []
@@ -323,6 +323,23 @@ private
   wordsBy-false = refl
 
   wordsBy-≡1 :
-    wordsBy (λ n → isYes (n Nat.≟ 1)) (1 ∷ 2 ∷ 3 ∷ 1 ∷ 1 ∷ 2 ∷ 1 ∷ []) ≡
+    wordsBy (ℕ._≡ᵇ 1) (1 ∷ 2 ∷ 3 ∷ 1 ∷ 1 ∷ 2 ∷ 1 ∷ []) ≡
     (2 ∷⁺ [ 3 ]) ∷ [ 2 ] ∷ []
   wordsBy-≡1 = refl
+
+  ------------------------------------------------------------------------
+  -- DEPRECATED
+  ------------------------------------------------------------------------
+  -- Please use the new names as continuing support for the old names is
+  -- not guaranteed.
+
+  -- Version 1.4
+
+  infixl 5 _∷ʳ'_
+
+  _∷ʳ'_ : (xs : List A) (x : A) → SnocView (xs ∷ʳ x)
+  _∷ʳ'_ = SnocView._∷ʳ′_
+  {-# WARNING_ON_USAGE _∷ʳ'_
+  "Warning: _∷ʳ'_ (ending in an apostrophe) was deprecated in v1.4.
+  Please use _∷ʳ′_ (ending in a prime) instead."
+  #-}

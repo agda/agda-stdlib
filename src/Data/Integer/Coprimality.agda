@@ -8,12 +8,12 @@
 
 module Data.Integer.Coprimality where
 
-open import Data.Integer
+open import Data.Integer.Base
 open import Data.Integer.Divisibility
 open import Data.Integer.Properties
 import Data.Nat.Coprimality as ℕ
 import Data.Nat.Divisibility as ℕ
-open import Function using (_on_)
+open import Function.Base using (_on_)
 open import Level using (0ℓ)
 open import Relation.Binary using (Rel; Decidable; Symmetric)
 open import Relation.Binary.PropositionalEquality using (subst)

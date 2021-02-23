@@ -8,9 +8,10 @@
 
 module Data.Integer.DivMod where
 
-open import Data.Fin as Fin using (Fin)
+open import Data.Bool.Base using (true; false)
+open import Data.Fin.Base as Fin using (Fin)
 import Data.Fin.Properties as FProp
-open import Data.Integer as ℤ
+open import Data.Integer.Base as ℤ
 open import Data.Integer.Properties
 open import Data.Nat as ℕ using (ℕ)
 import Data.Nat.Properties as NProp
@@ -20,6 +21,9 @@ import Data.Sign.Properties as SProp
 open import Function
 open import Relation.Nullary.Decidable
 open import Relation.Binary.PropositionalEquality
+
+------------------------------------------------------------------------
+-- Definition
 
 infixl 7 _divℕ_ _div_ _modℕ_ _mod_
 _divℕ_ : (dividend : ℤ) (divisor : ℕ) {≢0 : False (divisor ℕ.≟ 0)} → ℤ
@@ -31,14 +35,17 @@ _divℕ_ : (dividend : ℤ) (divisor : ℕ) {≢0 : False (divisor ℕ.≟ 0)} �
 _div_ : (dividend divisor : ℤ) {≢0 : False (∣ divisor ∣ ℕ.≟ 0)} → ℤ
 (n div d) {d≢0} = (sign d ◃ 1) ℤ.* (n divℕ ∣ d ∣) {d≢0}
 
-_modℕ_ : (dividend : ℤ) (divisor : ℕ) {≠0 : False (divisor ℕ.≟ 0)} → ℕ
+_modℕ_ : (dividend : ℤ) (divisor : ℕ) {≢0 : False (divisor ℕ.≟ 0)} → ℕ
 (+ n      modℕ d) {d≠0} = (n NDM.% d) {d≠0}
 (-[1+ n ] modℕ d) {d≠0} with (ℕ.suc n NDM.divMod d) {d≠0}
 ... | NDM.result q Fin.zero    eq = 0
 ... | NDM.result q (Fin.suc r) eq = d ℕ.∸ ℕ.suc (Fin.toℕ r)
 
-_mod_ : (dividend divisor : ℤ) {≠0 : False (∣ divisor ∣ ℕ.≟ 0)} → ℕ
+_mod_ : (dividend divisor : ℤ) {≢0 : False (∣ divisor ∣ ℕ.≟ 0)} → ℕ
 (n mod d) {d≢0} = (n modℕ ∣ d ∣) {d≢0}
+
+------------------------------------------------------------------------
+-- Properties
 
 n%ℕd<d : ∀ n d {d≢0} → (n modℕ d) {d≢0} ℕ.< d
 n%ℕd<d (+ n)    sd@(ℕ.suc d) = NDM.m%n<n n d
@@ -91,9 +98,11 @@ a≡a%ℕn+[a/ℕn]*n -[1+ n ] sd@(ℕ.suc d) with (ℕ.suc n) NDM.divMod (ℕ.s
 
     open ≡-Reasoning
 
-    fin-inv : ∀ d (k : Fin d) → + (ℕ.suc d) - + ℕ.suc (Fin.toℕ k) ≡ + (d ℕ.∸ Fin.toℕ k)
-    fin-inv (ℕ.suc n) Fin.zero    = refl
-    fin-inv (ℕ.suc n) (Fin.suc k) = ⊖-≥ {n} {Fin.toℕ k} (NProp.<⇒≤ (FProp.toℕ<n k))
+    fin-inv : ∀ d (k : Fin d) → +[1+ d ] - +[1+ Fin.toℕ k ] ≡ + (d ℕ.∸ Fin.toℕ k)
+    fin-inv d k = begin
+      +[1+ d ] - +[1+ Fin.toℕ k ] ≡⟨ m-n≡m⊖n (ℕ.suc d) (ℕ.suc (Fin.toℕ k)) ⟩
+      ℕ.suc d ⊖ ℕ.suc (Fin.toℕ k) ≡⟨ ⊖-≥ (ℕ.s≤s (FProp.toℕ≤n k)) ⟩
+      + (d ℕ.∸ Fin.toℕ k)         ∎ where open ≡-Reasoning
 
 [n/ℕd]*d≤n : ∀ n d {d≢0} → (n divℕ d) {d≢0} ℤ.* ℤ.+ d ℤ.≤ n
 [n/ℕd]*d≤n n (ℕ.suc d) = let q = n divℕ ℕ.suc d; r = n modℕ ℕ.suc d in begin

@@ -14,9 +14,9 @@ open import Level
 open import Size
 open import Category.Monad
 open import Data.Product as Prod using (∃; uncurry; -,_)
-open import Data.List as List using (List; []; _∷_; _++_)
+open import Data.List.Base as List using (List; []; _∷_; _++_)
 open import Data.List.NonEmpty as List⁺ using (List⁺; [_]; concatMap)
-open import Data.Maybe as Maybe using (Maybe; nothing; just; maybe′) hiding (module Maybe)
+open import Data.Maybe.Base as Maybe using (Maybe; nothing; just; maybe′) hiding (module Maybe)
 open import Data.These as These using (These; this; that; these)
 open import Function as F
 import Function.Identity.Categorical as Identity
@@ -27,9 +27,9 @@ open StrictTotalOrder S
   renaming (Carrier to Key)
 
 open import Data.List.Relation.Binary.Equality.Setoid Eq.setoid
-open import Data.AVL.Value hiding (Value)
-open import Data.AVL.Value ≋-setoid using (Value)
-open import Data.AVL.NonEmpty S as Tree⁺ using (Tree⁺)
+open import Data.Tree.AVL.Value hiding (Value)
+open import Data.Tree.AVL.Value ≋-setoid using (Value)
+open import Data.Tree.AVL.NonEmpty S as Tree⁺ using (Tree⁺)
 open Value
 
 ------------------------------------------------------------------------

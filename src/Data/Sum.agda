@@ -9,7 +9,7 @@
 module Data.Sum where
 
 open import Function.Base
-open import Data.Unit.Base using (⊤; tt)
+open import Data.Unit.Polymorphic.Base using (⊤; tt)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Level
 open import Agda.Builtin.Equality
@@ -34,14 +34,14 @@ module _ {a b} {A : Set a} {B : Set b} where
 
   From-inj₁ : A ⊎ B → Set a
   From-inj₁ (inj₁ _) = A
-  From-inj₁ (inj₂ _) = Lift a ⊤
+  From-inj₁ (inj₂ _) = ⊤
 
   from-inj₁ : (x : A ⊎ B) → From-inj₁ x
   from-inj₁ (inj₁ x) = x
   from-inj₁ (inj₂ _) = _
 
   From-inj₂ : A ⊎ B → Set b
-  From-inj₂ (inj₁ _) = Lift b ⊤
+  From-inj₂ (inj₁ _) = ⊤
   From-inj₂ (inj₂ _) = B
 
   from-inj₂ : (x : A ⊎ B) → From-inj₂ x

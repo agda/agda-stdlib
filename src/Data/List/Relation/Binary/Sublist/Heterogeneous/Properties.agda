@@ -22,7 +22,7 @@ open import Data.List.Relation.Binary.Pointwise as Pw using (Pointwise; []; _∷
 open import Data.List.Relation.Binary.Sublist.Heterogeneous
 
 open import Data.Maybe.Relation.Unary.All as MAll using (nothing; just)
-open import Data.Nat using (ℕ; _≤_; _≥_); open ℕ; open _≤_
+open import Data.Nat.Base using (ℕ; _≤_; _≥_); open ℕ; open _≤_
 import Data.Nat.Properties as ℕₚ
 open import Data.Product using (∃₂; _×_; _,_; proj₂; uncurry)
 
@@ -35,7 +35,7 @@ open import Relation.Nullary using (Dec; does; _because_; yes; no; ¬_)
 open import Relation.Nullary.Negation using (¬?)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Unary as U using (Pred)
-open import Relation.Binary
+open import Relation.Binary hiding (_⇔_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
 ------------------------------------------------------------------------

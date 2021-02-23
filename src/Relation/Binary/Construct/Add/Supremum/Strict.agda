@@ -16,7 +16,7 @@ module Relation.Binary.Construct.Add.Supremum.Strict
 
 open import Level using (_⊔_)
 open import Data.Product
-open import Function
+open import Function.Base
 open import Relation.Nullary hiding (Irrelevant)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Binary.PropositionalEquality as P

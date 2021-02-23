@@ -11,4 +11,9 @@ open import Relation.Binary.PropositionalEquality using (_≡_)
 
 module Record {ℓ} (Label : Set ℓ) (_≟_ : Decidable {A = Label} _≡_) where
 
+{-# WARNING_ON_IMPORT
+"Record was deprecated in v1.1.
+Use Data.Record instead."
+#-}
+
 open import Data.Record Label _≟_ public

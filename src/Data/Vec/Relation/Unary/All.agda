@@ -8,11 +8,11 @@
 
 module Data.Vec.Relation.Unary.All where
 
-open import Data.Nat using (zero; suc)
-open import Data.Fin using (Fin; zero; suc)
+open import Data.Nat.Base using (zero; suc)
+open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Product as Prod using (_×_; _,_; uncurry; <_,_>)
-open import Data.Vec as Vec using (Vec; []; _∷_)
-open import Function using (_∘_)
+open import Data.Vec.Base as Vec using (Vec; []; _∷_)
+open import Function.Base using (_∘_)
 open import Level using (Level; _⊔_)
 open import Relation.Nullary hiding (Irrelevant)
 import Relation.Nullary.Decidable as Dec
@@ -46,6 +46,10 @@ module _ {P : Pred A p} where
 
   tail : ∀ {n x} {xs : Vec A n} → All P (x ∷ xs) → All P xs
   tail (px ∷ pxs) = pxs
+
+  reduce : (f : ∀ {x} → P x → B) → ∀ {n} {xs : Vec A n} → All P xs → Vec B n
+  reduce f []         = []
+  reduce f (px ∷ pxs) = f px ∷ reduce f pxs
 
   uncons : ∀ {n x} {xs : Vec A n} → All P (x ∷ xs) → P x × All P xs
   uncons = < head , tail >
@@ -88,9 +92,9 @@ module _ {P : Pred A p} {Q : Pred B q} {R : Pred C r} where
 
 module _ {P : Pred A p} where
 
-  all : ∀ {n} → Decidable P → Decidable (All P {n})
-  all P? []       = yes []
-  all P? (x ∷ xs) = Dec.map′ (uncurry _∷_) uncons (P? x ×-dec all P? xs)
+  all? : ∀ {n} → Decidable P → Decidable (All P {n})
+  all? P? []       = yes []
+  all? P? (x ∷ xs) = Dec.map′ (uncurry _∷_) uncons (P? x ×-dec all? P? xs)
 
   universal : Universal P → ∀ {n} → Universal (All P {n})
   universal u []       = []
@@ -104,3 +108,9 @@ module _ {P : Pred A p} where
   satisfiable : Satisfiable P → ∀ {n} → Satisfiable (All P {n})
   satisfiable (x , p) {zero}  = [] , []
   satisfiable (x , p) {suc n} = Prod.map (x ∷_) (p ∷_) (satisfiable (x , p))
+
+all = all?
+{-# WARNING_ON_USAGE all
+"Warning: all was deprecated in v1.4.
+Please use all? instead."
+#-}

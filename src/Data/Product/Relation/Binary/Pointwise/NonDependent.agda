@@ -10,7 +10,7 @@ module Data.Product.Relation.Binary.Pointwise.NonDependent where
 
 open import Data.Product as Prod
 open import Data.Product.Properties using (≡-dec)
-open import Data.Sum
+open import Data.Sum.Base
 open import Data.Unit.Base using (⊤)
 open import Function.Base
 open import Function.Equality as F using (_⟶_; _⟨$⟩_)
@@ -94,12 +94,12 @@ module _ {a₁ a₂ ℓ₁ ℓ₂} {A₁ : Set a₁} {A₂ : Set a₂} where
     _≈_ = Pointwise _≈₁_ _≈₂_
 
     resp¹ : ∀ {x} → (x ∼_) Respects _≈_
-    resp¹ y≈y' x∼y = proj₁ resp₁ (proj₁ y≈y') (proj₁ x∼y) ,
-                     proj₁ resp₂ (proj₂ y≈y') (proj₂ x∼y)
+    resp¹ y≈y′ x∼y = proj₁ resp₁ (proj₁ y≈y′) (proj₁ x∼y) ,
+                     proj₁ resp₂ (proj₂ y≈y′) (proj₂ x∼y)
 
     resp² : ∀ {y} → (_∼ y) Respects _≈_
-    resp² x≈x' x∼y = proj₂ resp₁ (proj₁ x≈x') (proj₁ x∼y) ,
-                     proj₂ resp₂ (proj₂ x≈x') (proj₂ x∼y)
+    resp² x≈x′ x∼y = proj₂ resp₁ (proj₁ x≈x′) (proj₁ x∼y) ,
+                     proj₂ resp₂ (proj₂ x≈x′) (proj₂ x∼y)
 
   ×-total : ∀ {_∼₁_ _∼₂_} → Symmetric _∼₁_ →
     Total _∼₁_ → Total _∼₂_ →

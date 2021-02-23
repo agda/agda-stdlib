@@ -14,14 +14,19 @@
 
 module Data.Integer.Base where
 
+open import Data.Bool.Base using (true; false)
+open import Data.Empty using (⊥)
+open import Data.Unit.Base using (⊤)
 open import Data.Nat.Base as ℕ
-  using (ℕ) renaming (_+_ to _ℕ+_; _*_ to _ℕ*_)
+  using (ℕ; z≤n; s≤s) renaming (_+_ to _ℕ+_; _*_ to _ℕ*_)
 open import Data.Sign as Sign using (Sign) renaming (_*_ to _S*_)
 open import Function
 open import Level using (0ℓ)
-open import Relation.Nullary using (¬_)
 open import Relation.Binary using (Rel)
-open import Relation.Binary.PropositionalEquality using (_≡_)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; _≢_; refl)
+open import Relation.Nullary using (¬_)
+open import Relation.Unary using (Pred)
 
 infix  8 -_
 infixl 7 _*_ _⊓_
@@ -29,7 +34,7 @@ infixl 6 _+_ _-_ _⊖_ _⊔_
 infix  4 _≤_ _≥_ _<_ _>_ _≰_ _≱_ _≮_ _≯_
 
 ------------------------------------------------------------------------
--- The types
+-- Types
 
 open import Agda.Builtin.Int public
   using ()
@@ -39,11 +44,37 @@ open import Agda.Builtin.Int public
   ; negsuc to -[1+_]  -- "-[1+ n ]" stands for "- (1 + n)"
   )
 
-------------------------------------------------------------------------
 -- Some additional patterns that provide symmetry around 0
 
 pattern +0       = + 0
 pattern +[1+_] n = + (ℕ.suc n)
+
+------------------------------------------------------------------------
+-- Constants
+
+0ℤ : ℤ
+0ℤ = +0
+
+-1ℤ : ℤ
+-1ℤ = -[1+ 0 ]
+
+1ℤ : ℤ
+1ℤ = +[1+ 0 ]
+
+------------------------------------------------------------------------
+-- Conversion
+
+-- Absolute value.
+
+∣_∣ : ℤ → ℕ
+∣ + n      ∣ = n
+∣ -[1+ n ] ∣ = ℕ.suc n
+
+-- Gives the sign. For zero the sign is arbitrarily chosen to be +.
+
+sign : ℤ → Sign
+sign (+ _)    = Sign.+
+sign -[1+ _ ] = Sign.-
 
 ------------------------------------------------------------------------
 -- Ordering
@@ -77,19 +108,57 @@ _≯_ : Rel ℤ 0ℓ
 x ≯ y = ¬ (x > y)
 
 ------------------------------------------------------------------------
--- Conversions
+-- Simple predicates
 
--- Absolute value.
+-- See `Data.Nat.Base` for a discussion on the design of these.
 
-∣_∣ : ℤ → ℕ
-∣ + n      ∣ = n
-∣ -[1+ n ] ∣ = ℕ.suc n
+NonZero : Pred ℤ 0ℓ
+NonZero i = ℕ.NonZero ∣ i ∣
 
--- Gives the sign. For zero the sign is arbitrarily chosen to be +.
+Positive : Pred ℤ 0ℓ
+Positive +[1+ n ] = ⊤
+Positive +0       = ⊥
+Positive -[1+ n ] = ⊥
 
-sign : ℤ → Sign
-sign (+ _)    = Sign.+
-sign -[1+ _ ] = Sign.-
+Negative : Pred ℤ 0ℓ
+Negative (+ n)    = ⊥
+Negative -[1+ n ] = ⊤
+
+NonPositive : Pred ℤ 0ℓ
+NonPositive +[1+ n ] = ⊥
+NonPositive +0       = ⊤
+NonPositive -[1+ n ] = ⊤
+
+NonNegative : Pred ℤ 0ℓ
+NonNegative (+ n)    = ⊤
+NonNegative -[1+ n ] = ⊥
+
+-- Constructors
+
+≢-nonZero : ∀ {i} → i ≢ 0ℤ → NonZero i
+≢-nonZero { +[1+ n ]} _   = _
+≢-nonZero { +0}       0≢0 = 0≢0 refl
+≢-nonZero { -[1+ n ]} _   = _
+
+>-nonZero : ∀ {i} → i > 0ℤ → NonZero i
+>-nonZero (+<+ (s≤s m<n)) = _
+
+<-nonZero : ∀ {i} → i < 0ℤ → NonZero i
+<-nonZero -<+ = _
+
+positive : ∀ {i} → i > 0ℤ → Positive i
+positive (+<+ (s≤s m<n)) = _
+
+negative : ∀ {i} → i < 0ℤ → Negative i
+negative -<+ = _
+
+nonPositive : ∀ {i} → i ≤ 0ℤ → NonPositive i
+nonPositive -≤+       = _
+nonPositive (+≤+ z≤n) = _
+
+nonNegative : ∀ {i} → i ≥ 0ℤ → NonNegative i
+nonNegative {+0}       _ = _
+nonNegative {+[1+ n ]} _ = _
 
 ------------------------------------------------------------------------
 -- A view of integers as sign + absolute value
@@ -120,11 +189,12 @@ signAbs +[1+ n ] = Sign.+ ◂ ℕ.suc n
 - +[1+ n ] = -[1+ n ]
 
 -- Subtraction of natural numbers.
-
+-- We define it using _<ᵇ_ and _∸_ rather than inductively so that it
+-- is backed by builtin operations. This makes it much faster.
 _⊖_ : ℕ → ℕ → ℤ
-m       ⊖ ℕ.zero  = + m
-ℕ.zero  ⊖ ℕ.suc n = -[1+ n ]
-ℕ.suc m ⊖ ℕ.suc n = m ⊖ n
+m ⊖ n with m ℕ.<ᵇ n
+... | true  = - + (n ℕ.∸ m)
+... | false = + (m ℕ.∸ n)
 
 -- Addition.
 
@@ -142,12 +212,12 @@ i - j = i + (- j)
 -- Successor.
 
 suc : ℤ → ℤ
-suc i = (+ 1) + i
+suc i = 1ℤ + i
 
 -- Predecessor.
 
 pred : ℤ → ℤ
-pred i = (- + 1) + i
+pred i = -1ℤ + i
 
 -- Multiplication.
 
@@ -169,18 +239,6 @@ _⊓_ : ℤ → ℤ → ℤ
 -[1+ m ] ⊓ +    n   = -[1+ m ]
 +    m   ⊓ -[1+ n ] = -[1+ n ]
 +    m   ⊓ +    n   = + (ℕ._⊓_ m n)
-
-------------------------------------------------------------------------
--- Constants
-
-0ℤ : ℤ
-0ℤ = +0
-
--1ℤ : ℤ
--1ℤ = -[1+ 0 ]
-
-1ℤ : ℤ
-1ℤ = +[1+ 0 ]
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

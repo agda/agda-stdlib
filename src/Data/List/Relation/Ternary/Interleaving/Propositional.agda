@@ -6,16 +6,11 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Relation.Binary using (Setoid)
-
 module Data.List.Relation.Ternary.Interleaving.Propositional {a} {A : Set a} where
 
-open import Level using (_⊔_)
 open import Data.List.Base as List using (List; []; _∷_; _++_)
-open import Data.List.Relation.Binary.Pointwise as Pw using ()
-open import Data.List.Relation.Ternary.Interleaving.Properties
-open import Data.List.Relation.Binary.Permutation.Inductive as Perm using (_↭_)
-open import Data.List.Relation.Binary.Permutation.Inductive.Properties using (shift)
+open import Data.List.Relation.Binary.Permutation.Propositional as Perm using (_↭_)
+open import Data.List.Relation.Binary.Permutation.Propositional.Properties using (shift)
 import Data.List.Relation.Ternary.Interleaving.Setoid as General
 open import Relation.Binary.PropositionalEquality using (setoid; refl)
 open Perm.PermutationReasoning

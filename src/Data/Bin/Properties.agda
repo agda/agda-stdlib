@@ -8,18 +8,23 @@
 
 module Data.Bin.Properties where
 
+{-# WARNING_ON_IMPORT
+"Data.Bin.Properties was deprecated in v1.2.
+Use Data.Nat.Binary.Properties instead."
+#-}
+
 open import Data.Bin
 open import Data.Digit using (Bit; Expansion)
-import Data.Fin as Fin
+import Data.Fin.Base as Fin
 import Data.Fin.Properties as 𝔽ₚ
 open import Data.List.Base using (List; []; _∷_)
 open import Data.List.Properties using (∷-injective)
-open import Data.Nat
+open import Data.Nat.Base
   using (ℕ; zero; z≤n; s≤s)
   renaming (suc to 1+_; _+_ to _+ℕ_; _*_ to _*ℕ_; _≤_ to _≤ℕ_)
 import Data.Nat.Properties as ℕₚ
 open import Data.Product using (proj₁; proj₂; uncurry)
-open import Function using (_∘_)
+open import Function.Base using (_∘_)
 open import Relation.Binary
 open import Relation.Binary.Consequences
 open import Relation.Binary.PropositionalEquality
