@@ -26,10 +26,9 @@ open import Function.Base using (id; flip; _on_; _∘_)
 open import Level using (Level)
 open import Relation.Unary using (Pred)
 import Relation.Binary.Construct.NonStrictToStrict as NonStrictToStrict
-open import Relation.Binary.PropositionalEquality
+open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; sym; subst) renaming (refl to ≡-refl)
 import Relation.Binary.Construct.On as On
-
 
 ------------------------------------------------------------------------------
 -- Setup

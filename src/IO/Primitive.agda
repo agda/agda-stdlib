@@ -11,7 +11,7 @@ module IO.Primitive where
 open import Codata.Musical.Costring
 open import Data.Char.Base
 open import Data.String.Base
-open import Data.Unit using () renaming (⊤ to Unit)
+open import Data.Unit.Base using () renaming (⊤ to Unit)
 
 ------------------------------------------------------------------------
 -- The IO monad
@@ -68,15 +68,15 @@ postulate
                                                  (\_ -> System.IO.hFileSize h)
     Data.Text.IO.hGetContents h
 
-  fromColist :: MAlonzo.Code.Codata.Musical.Colist.AgdaColist a -> [a]
-  fromColist MAlonzo.Code.Codata.Musical.Colist.Nil         = []
-  fromColist (MAlonzo.Code.Codata.Musical.Colist.Cons x xs) =
+  fromColist :: MAlonzo.Code.Codata.Musical.Colist.Base.AgdaColist a -> [a]
+  fromColist MAlonzo.Code.Codata.Musical.Colist.Base.Nil         = []
+  fromColist (MAlonzo.Code.Codata.Musical.Colist.Base.Cons x xs) =
     x : fromColist (MAlonzo.RTE.flat xs)
 
-  toColist :: [a] -> MAlonzo.Code.Codata.Musical.Colist.AgdaColist a
-  toColist []       = MAlonzo.Code.Codata.Musical.Colist.Nil
+  toColist :: [a] -> MAlonzo.Code.Codata.Musical.Colist.Base.AgdaColist a
+  toColist []       = MAlonzo.Code.Codata.Musical.Colist.Base.Nil
   toColist (x : xs) =
-    MAlonzo.Code.Codata.Musical.Colist.Cons x (MAlonzo.RTE.Sharp (toColist xs))
+    MAlonzo.Code.Codata.Musical.Colist.Base.Cons x (MAlonzo.RTE.Sharp (toColist xs))
 #-}
 
 {-# COMPILE GHC getLine        = fmap Data.Text.pack getLine                        #-}

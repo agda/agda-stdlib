@@ -10,10 +10,10 @@ module IO where
 
 open import Codata.Musical.Notation
 open import Codata.Musical.Costring
-open import Data.Unit.Polymorphic
-open import Data.String
-import Data.Unit as Unit0
-open import Function
+open import Data.Unit.Polymorphic.Base
+open import Data.String.Base
+import Data.Unit.Base as Unit0
+open import Function.Base using (_∘_)
 import IO.Primitive as Prim
 open import Level
 
@@ -82,7 +82,7 @@ Main = Prim.IO {0ℓ} ⊤
 
 module Colist where
 
-  open import Codata.Musical.Colist
+  open import Codata.Musical.Colist.Base
 
   module _  {A : Set a} where
 

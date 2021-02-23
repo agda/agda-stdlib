@@ -38,25 +38,23 @@ open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary
 open import Relation.Nullary.Negation
 
+------------------------------------------------------------------------
+-- Re-export type and basic definitions
+
+open import Codata.Musical.Colist.Base public
+
+------------------------------------------------------------------------
+-- More operations
+
+take : ∀ {a} {A : Set a} (n : ℕ) → Colist A → Vec≤ A n
+take zero    xs       = Vec≤.[]
+take (suc n) []       = Vec≤.[]
+take (suc n) (x ∷ xs) = x Vec≤.∷ take n (♭ xs)
+
+
 module ¬¬Monad {p} where
   open RawMonad (¬¬-Monad {p}) public
 open ¬¬Monad  -- we don't want the RawMonad content to be opened publicly
-
-------------------------------------------------------------------------
--- The type
-
-infixr 5 _∷_
-
-data Colist {a} (A : Set a) : Set a where
-  []  : Colist A
-  _∷_ : (x : A) (xs : ∞ (Colist A)) → Colist A
-
-{-# FOREIGN GHC
-  data AgdaColist a    = Nil | Cons a (MAlonzo.RTE.Inf (AgdaColist a))
-  type AgdaColist' l a = AgdaColist a
-  #-}
-{-# COMPILE GHC Colist = data AgdaColist' (Nil | Cons) #-}
-{-# COMPILE UHC Colist = data __LIST__ (__NIL__ | __CONS__) #-}
 
 module Colist-injective {a} {A : Set a} where
 
@@ -96,42 +94,6 @@ module All-injective {a p} {A : Set a} {P : A → Set p} where
 
 ------------------------------------------------------------------------
 -- Some operations
-
-null : ∀ {a} {A : Set a} → Colist A → Bool
-null []      = true
-null (_ ∷ _) = false
-
-length : ∀ {a} {A : Set a} → Colist A → Coℕ
-length []       = zero
-length (x ∷ xs) = suc (♯ length (♭ xs))
-
-map : ∀ {a b} {A : Set a} {B : Set b} → (A → B) → Colist A → Colist B
-map f []       = []
-map f (x ∷ xs) = f x ∷ ♯ map f (♭ xs)
-
-fromList : ∀ {a} {A : Set a} → List A → Colist A
-fromList []       = []
-fromList (x ∷ xs) = x ∷ ♯ fromList xs
-
-take : ∀ {a} {A : Set a} (n : ℕ) → Colist A → Vec≤ A n
-take zero    xs       = Vec≤.[]
-take (suc n) []       = Vec≤.[]
-take (suc n) (x ∷ xs) = x Vec≤.∷ take n (♭ xs)
-
-replicate : ∀ {a} {A : Set a} → Coℕ → A → Colist A
-replicate zero    x = []
-replicate (suc n) x = x ∷ ♯ replicate (♭ n) x
-
-lookup : ∀ {a} {A : Set a} → ℕ → Colist A → Maybe A
-lookup n       []       = nothing
-lookup zero    (x ∷ xs) = just x
-lookup (suc n) (x ∷ xs) = lookup n (♭ xs)
-
-infixr 5 _++_
-
-_++_ : ∀ {a} {A : Set a} → Colist A → Colist A → Colist A
-[]       ++ ys = ys
-(x ∷ xs) ++ ys = x ∷ ♯ (♭ xs ++ ys)
 
 -- Interleaves the two colists (until the shorter one, if any, has
 -- been exhausted).

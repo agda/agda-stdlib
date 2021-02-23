@@ -17,8 +17,7 @@ open import Algebra.Morphism
 open import Algebra.Consequences.Propositional
 open import Algebra.Construct.NaturalChoice.Base
 import Algebra.Construct.NaturalChoice.MinMaxOp as MinMaxOp
-open import Data.Bool.Base using (Bool; false; true; T)
-open import Data.Bool.Properties using (T?)
+open import Data.Bool.Base using (Bool; false; true; T; T?)
 open import Data.Empty using (⊥)
 open import Data.Nat.Base
 open import Data.Product using (_×_; _,_)

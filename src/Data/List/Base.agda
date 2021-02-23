@@ -22,10 +22,11 @@ open import Data.These.Base as These using (These; this; that; these)
 open import Function.Base using (id; _∘_ ; _∘′_; const; flip)
 open import Level using (Level)
 open import Relation.Nullary using (does)
-open import Relation.Nullary.Negation using (¬?)
+open import Relation.Nullary.Negation.Core using (¬?)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Unary.Properties using (∁?)
-open import Relation.Binary as B using (Rel)
+open import Relation.Binary.Core using (Rel)
+import Relation.Binary.Definitions as B
 
 private
   variable

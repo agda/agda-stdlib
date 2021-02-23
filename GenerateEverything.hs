@@ -26,6 +26,7 @@ unsafeModules :: [FilePath]
 unsafeModules = map modToFile
   [ "Codata.Musical.Cofin"
   , "Codata.Musical.Colist"
+  , "Codata.Musical.Colist.Base"
   , "Codata.Musical.Colist.Infinite-merge"
   , "Codata.Musical.Conat"
   , "Codata.Musical.Costring"
