@@ -8,6 +8,7 @@
 
 module Data.Rational.Unnormalised.Base where
 
+open import Data.Bool.Base using (Bool; if_then_else_)
 open import Data.Integer.Base as ℤ
   using (ℤ; +_; +0; +[1+_]; -[1+_]; +<+; +≤+)
 open import Data.Nat as ℕ using (ℕ; zero; suc)
@@ -91,6 +92,14 @@ _≯_ : Rel ℚᵘ 0ℓ
 x ≯ y = ¬ (x > y)
 
 ------------------------------------------------------------------------
+-- Boolean ordering
+
+infix 4 _≤ᵇ_
+
+_≤ᵇ_ : ℚᵘ → ℚᵘ → Bool
+p ≤ᵇ q = (↥ p ℤ.* ↧ q) ℤ.≤ᵇ (↥ q ℤ.* ↧ p)
+
+------------------------------------------------------------------------
 -- Constructing rationals
 
 infix 4 _≢0
@@ -145,12 +154,13 @@ _÷_ : (p q : ℚᵘ) → .{n≢0 : ℤ.∣ ↥ q ∣ ≢0} → ℚᵘ
 
 -- max
 _⊔_ : (p q : ℚᵘ) → ℚᵘ
-p ⊔ q = ((↥ p ℤ.* ↧ q) ℤ.⊔ (↥ q ℤ.* ↧ p)) / (↧ₙ p ℕ.* ↧ₙ q)
+p ⊔ q = if p ≤ᵇ q then q else p
 
 -- min
 _⊓_ : (p q : ℚᵘ) → ℚᵘ
-p ⊓ q = ((↥ p ℤ.* ↧ q) ℤ.⊓ (↥ q ℤ.* ↧ p)) / (↧ₙ p ℕ.* ↧ₙ q)
+p ⊓ q = if p ≤ᵇ q then p else q
 
+-- absolute value
 ∣_∣ : ℚᵘ → ℚᵘ
 ∣ mkℚᵘ p q ∣ = mkℚᵘ (+ ℤ.∣ p ∣) q
 
