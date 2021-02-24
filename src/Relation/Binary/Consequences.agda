@@ -62,6 +62,20 @@ module _ {_≈_ : Rel A ℓ₁} {_≤_ : Rel A ℓ₂} where
   ... | inj₁ x≤y = yes x≤y
   ... | inj₂ y≤x = map′ refl (flip antisym y≤x) (x ≟ y)
 
+mono⇒cong : (_≈_ : Rel A ℓ₁) {_≤_ : Rel A ℓ₂} →
+            Symmetric _≈_ → _≈_ ⇒ _≤_ → Antisymmetric _≈_ _≤_ →
+            ∀ {f} → f Preserves _≤_ ⟶ _≤_ → f Preserves _≈_ ⟶ _≈_
+mono⇒cong _ sym reflexive antisym mono x≈y = antisym
+  (mono (reflexive x≈y))
+  (mono (reflexive (sym x≈y)))
+
+antimono⇒cong : (_≈_ : Rel A ℓ₁) {_≤_ : Rel A ℓ₂} →
+                Symmetric _≈_ → _≈_ ⇒ _≤_ → Antisymmetric _≈_ _≤_ →
+                ∀ {f} → f Preserves _≤_ ⟶ (flip _≤_) → f Preserves _≈_ ⟶ _≈_
+antimono⇒cong _ sym reflexive antisym antimono p≈q = antisym
+  (antimono (reflexive (sym p≈q)))
+  (antimono (reflexive p≈q))
+
 ------------------------------------------------------------------------
 -- Proofs for strict orders
 

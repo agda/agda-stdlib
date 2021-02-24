@@ -11,30 +11,36 @@ open import Algebra.Bundles
 open import Algebra.Construct.NaturalChoice.Base
 open import Data.Sum.Base as Sum using (inj₁; inj₂; [_,_])
 open import Data.Product using (_,_)
-open import Function.Base using (id; _∘_)
+open import Function.Base using (id; _∘_; flip)
 open import Relation.Binary
+open import Relation.Binary.Consequences
 
 module Algebra.Construct.NaturalChoice.MinMaxOp
-  {a ℓ₁ ℓ₂} (O : TotalOrder a ℓ₁ ℓ₂)
+  {a ℓ₁ ℓ₂} {O : TotalPreorder a ℓ₁ ℓ₂}
   (minOp : MinOperator O)
   (maxOp : MaxOperator O)
   where
 
-open TotalOrder O renaming (Carrier to A)
+open TotalPreorder O renaming
+  ( Carrier   to A
+  ; _≲_       to _≤_
+  ; ≲-resp-≈  to ≤-resp-≈
+  ; ≲-respʳ-≈ to ≤-respʳ-≈
+  ; ≲-respˡ-≈ to ≤-respˡ-≈
+  )
 open MinOperator minOp
 open MaxOperator maxOp
 
 open import Algebra.Definitions _≈_
 open import Algebra.Structures _≈_
 open import Algebra.Consequences.Setoid Eq.setoid
-open import Relation.Binary.Reasoning.PartialOrder poset
-open import Relation.Binary.Properties.Poset poset
+open import Relation.Binary.Reasoning.Preorder preorder
 
 ------------------------------------------------------------------------
 -- Re-export properties of individual operators
 
-open import Algebra.Construct.NaturalChoice.MinOp O minOp public
-open import Algebra.Construct.NaturalChoice.MaxOp O maxOp public
+open import Algebra.Construct.NaturalChoice.MinOp minOp public
+open import Algebra.Construct.NaturalChoice.MaxOp maxOp public
 
 ------------------------------------------------------------------------
 -- Joint algebraic structures
@@ -160,32 +166,34 @@ open import Algebra.Construct.NaturalChoice.MaxOp O maxOp public
 ------------------------------------------------------------------------
 -- Other joint properties
 
-antimono-≤-distrib-⊓ : ∀ {f} → f Preserves _≤_ ⟶ _≥_ →
+private _≥_ = flip _≤_
+
+antimono-≤-distrib-⊓ : ∀ {f} → f Preserves _≈_ ⟶ _≈_ → f Preserves _≤_ ⟶ _≥_ →
                        ∀ x y → f (x ⊓ y) ≈ f x ⊔ f y
-antimono-≤-distrib-⊓ {f} antimono x y with total x y
+antimono-≤-distrib-⊓ {f} cong antimono x y with total x y
 ... | inj₁ x≤y = begin-equality
-  f (x ⊓ y)  ≈⟨ antimono⇒cong antimono (x≤y⇒x⊓y≈x x≤y) ⟩
+  f (x ⊓ y)  ≈⟨ cong (x≤y⇒x⊓y≈x x≤y) ⟩
   f x        ≈˘⟨ x≥y⇒x⊔y≈x (antimono x≤y) ⟩
   f x ⊔ f y  ∎
 ... | inj₂ y≤x = begin-equality
-  f (x ⊓ y)  ≈⟨ antimono⇒cong antimono (x≥y⇒x⊓y≈y y≤x) ⟩
+  f (x ⊓ y)  ≈⟨ cong (x≥y⇒x⊓y≈y y≤x) ⟩
   f y        ≈˘⟨ x≤y⇒x⊔y≈y (antimono y≤x) ⟩
   f x ⊔ f y  ∎
 
-antimono-≤-distrib-⊔ : ∀ {f} → f Preserves _≤_ ⟶ _≥_ →
+antimono-≤-distrib-⊔ : ∀ {f} → f Preserves _≈_ ⟶ _≈_ → f Preserves _≤_ ⟶ _≥_ →
                        ∀ x y → f (x ⊔ y) ≈ f x ⊓ f y
-antimono-≤-distrib-⊔ {f} antimono x y with total x y
+antimono-≤-distrib-⊔ {f} cong antimono x y with total x y
 ... | inj₁ x≤y = begin-equality
-  f (x ⊔ y)  ≈⟨ antimono⇒cong antimono (x≤y⇒x⊔y≈y x≤y) ⟩
+  f (x ⊔ y)  ≈⟨ cong (x≤y⇒x⊔y≈y x≤y) ⟩
   f y        ≈˘⟨ x≥y⇒x⊓y≈y (antimono x≤y) ⟩
   f x ⊓ f y  ∎
 ... | inj₂ y≤x = begin-equality
-  f (x ⊔ y)  ≈⟨ antimono⇒cong antimono (x≥y⇒x⊔y≈x y≤x) ⟩
+  f (x ⊔ y)  ≈⟨ cong (x≥y⇒x⊔y≈x y≤x) ⟩
   f x        ≈˘⟨ x≤y⇒x⊓y≈x (antimono y≤x) ⟩
   f x ⊓ f y  ∎
 
 x⊓y≤x⊔y : ∀ x y → x ⊓ y ≤ x ⊔ y
 x⊓y≤x⊔y x y = begin
-  x ⊓ y ≤⟨ x⊓y≤x x y ⟩
-  x     ≤⟨ x≤x⊔y x y ⟩
+  x ⊓ y ∼⟨ x⊓y≤x x y ⟩
+  x     ∼⟨ x≤x⊔y x y ⟩
   x ⊔ y ∎

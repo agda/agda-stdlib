@@ -94,6 +94,20 @@ record IsPreorder (_∼_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
   ∼-resp-≈ : _∼_ Respects₂ _≈_
   ∼-resp-≈ = ∼-respʳ-≈ , ∼-respˡ-≈
 
+
+record IsTotalPreorder (_≲_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
+  field
+    isPreorder : IsPreorder _≲_
+    total      : Total _≲_
+
+  open IsPreorder isPreorder public
+    renaming
+    ( ∼-respˡ-≈ to ≲-respˡ-≈
+    ; ∼-respʳ-≈ to ≲-respʳ-≈
+    ; ∼-resp-≈  to ≲-resp-≈
+    )
+
+
 ------------------------------------------------------------------------
 -- Partial orders
 ------------------------------------------------------------------------
@@ -190,6 +204,12 @@ record IsTotalOrder (_≤_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
     total          : Total _≤_
 
   open IsPartialOrder isPartialOrder public
+
+  isTotalPreorder : IsTotalPreorder _≤_
+  isTotalPreorder = record
+    { isPreorder = isPreorder
+    ; total      = total
+    }
 
 
 record IsDecTotalOrder (_≤_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where

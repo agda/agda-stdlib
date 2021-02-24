@@ -90,6 +90,25 @@ record Preorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
 
     open Setoid setoid public
 
+
+record TotalPreorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
+  infix 4 _≈_ _≲_
+  field
+    Carrier         : Set c
+    _≈_             : Rel Carrier ℓ₁  -- The underlying equality.
+    _≲_             : Rel Carrier ℓ₂  -- The relation.
+    isTotalPreorder : IsTotalPreorder _≈_ _≲_
+
+  open IsTotalPreorder isTotalPreorder public
+    hiding (module Eq)
+
+  preorder : Preorder c ℓ₁ ℓ₂
+  preorder = record { isPreorder = isPreorder }
+
+  open Preorder preorder public
+    using (module Eq)
+
+
 ------------------------------------------------------------------------
 -- Partial orders
 ------------------------------------------------------------------------
@@ -212,6 +231,11 @@ record TotalOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
 
   open Poset poset public
     using (module Eq; preorder)
+
+  totalPreorder : TotalPreorder c ℓ₁ ℓ₂
+  totalPreorder = record
+    { isTotalPreorder = isTotalPreorder
+    }
 
 
 record DecTotalOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where

@@ -6,7 +6,10 @@
 
 {-# OPTIONS --without-K --safe #-}
 
+open import Function.Base using (flip)
 open import Relation.Binary
+import Relation.Binary.Consequences as Consequences
+open import Relation.Nullary using (¬_)
 
 module Relation.Binary.Properties.Poset
    {p₁ p₂ p₃} (P : Poset p₁ p₂ p₃) where
@@ -16,7 +19,6 @@ open Poset P renaming (Carrier to A)
 open import Function.Base using (flip)
 import Relation.Binary.Construct.NonStrictToStrict _≈_ _≤_ as ToStrict
 import Relation.Binary.Properties.Preorder preorder as PreorderProperties
-open import Relation.Nullary using (¬_)
 
 private
   _≉_ : Rel A p₂
@@ -97,14 +99,10 @@ open StrictPartialOrder <-strictPartialOrder public
 -- Other properties
 
 mono⇒cong : ∀ {f} → f Preserves _≤_ ⟶ _≤_ → f Preserves _≈_ ⟶ _≈_
-mono⇒cong f-mono p≈q = antisym
-  (f-mono (reflexive p≈q))
-  (f-mono (reflexive (Eq.sym p≈q)))
+mono⇒cong = Consequences.mono⇒cong _ Eq.sym reflexive antisym
 
 antimono⇒cong : ∀ {f} → f Preserves _≤_ ⟶ _≥_ → f Preserves _≈_ ⟶ _≈_
-antimono⇒cong f-mono p≈q = antisym
-  (f-mono (reflexive (Eq.sym p≈q)))
-  (f-mono (reflexive p≈q))
+antimono⇒cong = Consequences.antimono⇒cong _ Eq.sym reflexive antisym
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

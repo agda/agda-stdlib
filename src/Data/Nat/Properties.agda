@@ -184,6 +184,12 @@ _≥?_ = flip _≤?_
   ; trans         = ≤-trans
   }
 
+≤-isTotalPreorder : IsTotalPreorder _≡_ _≤_
+≤-isTotalPreorder = record
+  { isPreorder = ≤-isPreorder
+  ; total      = ≤-total
+  }
+
 ≤-isPartialOrder : IsPartialOrder _≡_ _≤_
 ≤-isPartialOrder = record
   { isPreorder = ≤-isPreorder
@@ -209,6 +215,11 @@ _≥?_ = flip _≤?_
 ≤-preorder : Preorder 0ℓ 0ℓ 0ℓ
 ≤-preorder = record
   { isPreorder = ≤-isPreorder
+  }
+
+≤-totalPreorder : TotalPreorder 0ℓ 0ℓ 0ℓ
+≤-totalPreorder = record
+  { isTotalPreorder = ≤-isTotalPreorder
   }
 
 ≤-poset : Poset 0ℓ 0ℓ 0ℓ
@@ -1021,30 +1032,30 @@ m≥n⇒m⊓n≡n {zero}  {zero}  z≤n       = refl
 m≥n⇒m⊓n≡n {suc m} {zero}  z≤n       = refl
 m≥n⇒m⊓n≡n {suc m} {suc n} (s≤s m≤n) = cong suc (m≥n⇒m⊓n≡n m≤n)
 
-⊓-operator : MinOperator ≤-totalOrder
+⊓-operator : MinOperator ≤-totalPreorder
 ⊓-operator = record
   { x≤y⇒x⊓y≈x = m≤n⇒m⊓n≡m
   ; x≥y⇒x⊓y≈y = m≥n⇒m⊓n≡n
   }
 
-⊔-operator : MaxOperator ≤-totalOrder
+⊔-operator : MaxOperator ≤-totalPreorder
 ⊔-operator = record
   { x≤y⇒x⊔y≈y = m≤n⇒m⊔n≡n
   ; x≥y⇒x⊔y≈x = m≥n⇒m⊔n≡m
   }
 
 ------------------------------------------------------------------------
--- Automatically derived properties of _⊓_ and _⊔_
+-- Derived properties of _⊓_ and _⊔_
 
 private
-  module ⊓-⊔-properties = MinMaxOp ≤-totalOrder ⊓-operator ⊔-operator
+  module ⊓-⊔-properties = MinMaxOp ⊓-operator ⊔-operator
 
 open ⊓-⊔-properties public
   using
   ( ⊓-idem                    -- : Idempotent _⊓_
   ; ⊓-sel                     -- : Selective _⊓_
   ; ⊓-assoc                   -- : Associative _⊓_
-  ; ⊓-comm                    -- : Commutative _⊔_
+  ; ⊓-comm                    -- : Commutative _⊓_
 
   ; ⊔-idem                    -- : Idempotent _⊔_
   ; ⊔-sel                     -- : Selective _⊔_
@@ -1111,11 +1122,6 @@ open ⊓-⊔-properties public
   ; ⊔-mono-≤                  -- : _⊔_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
   ; ⊔-monoˡ-≤                 -- : ∀ n → (_⊔ n) Preserves _≤_ ⟶ _≤_
   ; ⊔-monoʳ-≤                 -- : ∀ n → (n ⊔_) Preserves _≤_ ⟶ _≤_
-
-  ; mono-≤-distrib-⊔          -- : ∀ {f} → f Preserves _≤_ ⟶ _≤_ → ∀ x y → f (x ⊔ y) ≈ f x ⊔ f y
-  ; mono-≤-distrib-⊓          -- : ∀ {f} → f Preserves _≤_ ⟶ _≤_ → ∀ x y → f (x ⊓ y) ≈ f x ⊓ f y
-  ; antimono-≤-distrib-⊓      -- : ∀ {f} → f Preserves _≤_ ⟶ _≥_ → ∀ x y → f (x ⊓ y) ≈ f x ⊔ f y
-  ; antimono-≤-distrib-⊔      -- : ∀ {f} → f Preserves _≤_ ⟶ _≥_ → ∀ x y → f (x ⊔ y) ≈ f x ⊓ f y
   )
   renaming
   ( x⊓y≈y⇒y≤x to m⊓n≡n⇒n≤m    -- : ∀ {m n} → m ⊓ n ≡ n → n ≤ m
@@ -1182,6 +1188,22 @@ open ⊓-⊔-properties public
 
 ------------------------------------------------------------------------
 -- Other properties of _⊔_ and _≤_/_<_
+
+mono-≤-distrib-⊔ : ∀ {f} → f Preserves _≤_ ⟶ _≤_ →
+                   ∀ m n → f (m ⊔ n) ≡ f m ⊔ f n
+mono-≤-distrib-⊔ = ⊓-⊔-properties.mono-≤-distrib-⊔ (cong _)
+
+mono-≤-distrib-⊓ : ∀ {f} → f Preserves _≤_ ⟶ _≤_ →
+                   ∀ m n → f (m ⊓ n) ≡ f m ⊓ f n
+mono-≤-distrib-⊓ = ⊓-⊔-properties.mono-≤-distrib-⊓ (cong _)
+
+antimono-≤-distrib-⊓ : ∀ {f} → f Preserves _≤_ ⟶ _≥_ →
+                       ∀ m n → f (m ⊓ n) ≡ f m ⊔ f n
+antimono-≤-distrib-⊓ = ⊓-⊔-properties.antimono-≤-distrib-⊓ (cong _)
+
+antimono-≤-distrib-⊔ : ∀ {f} → f Preserves _≤_ ⟶ _≥_ →
+                       ∀ m n → f (m ⊔ n) ≡ f m ⊓ f n
+antimono-≤-distrib-⊔ = ⊓-⊔-properties.antimono-≤-distrib-⊔ (cong _)
 
 m<n⇒m<n⊔o : ∀ {m n} o → m < n → m < n ⊔ o
 m<n⇒m<n⊔o = m≤n⇒m≤n⊔o
