@@ -269,8 +269,31 @@ Other minor additions
   toℚᵘ-homo-1/ : toℚᵘ (1/ p) ℚᵘ.≃ ℚᵘ.1/ (toℚᵘ p)
   *-inverseˡ   : 1/ p * p ≡ 1ℚ
   *-inverseʳ   : p * 1/ p ≡ 1ℚ
+  
+  positive⇒nonNegative : ∀ {q} → Positive q → NonNegative q
+  negative⇒nonPositive : ∀ {q} → Negative q → NonPositive q
+  toℚᵘ-mono-< : ∀ {p q} → p < q → toℚᵘ p <ᵘ toℚᵘ q
+  toℚᵘ-cancel-< : ∀ {p q} → toℚᵘ p <ᵘ toℚᵘ q → p < q
+  toℚᵘ-isOrderHomomorphism-< : IsOrderHomomorphism _≡_ _≃ᵘ_ _<_ _<ᵘ_ toℚᵘ
+  toℚᵘ-isOrderMonomorphism-< : IsOrderMonomorphism _≡_ _≃ᵘ_ _<_ _<ᵘ_ toℚᵘ
+  neg-distrib-+ : ∀ p q → - (p + q) ≡ (- p) + (- q)
+  +-mono-≤ : _+_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
+  +-monoˡ-≤ : ∀ r → (_+ r) Preserves _≤_ ⟶ _≤_
+  +-monoʳ-≤ : ∀ r → (_+_ r) Preserves _≤_ ⟶ _≤_
+  +-mono-<-≤ : _+_ Preserves₂ _<_ ⟶ _≤_ ⟶ _<_
+  +-mono-< : _+_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
+  +-monoˡ-< : ∀ r → (_+ r) Preserves _<_ ⟶ _<_
+  +-monoʳ-< : ∀ r → (_+_ r) Preserves _<_ ⟶ _<_
+  neg-distribˡ-* : ∀ p q → - (p * q) ≡ - p * q
+  neg-distribʳ-* : ∀ p q → - (p * q) ≡ p * - q
+  *-monoˡ-≤-nonNeg : ∀ {r} → NonNegative r → (_* r) Preserves _≤_ ⟶ _≤_
+  *-monoʳ-≤-nonNeg : ∀ {r} → NonNegative r → (r *_) Preserves _≤_ ⟶ _≤_
+  *-monoˡ-≤-pos : ∀ {r} → Positive r → (_* r) Preserves _≤_ ⟶ _≤_
+  *-monoʳ-≤-pos : ∀ {r} → Positive r → (r *_) Preserves _≤_ ⟶ _≤_
+  *-monoˡ-<-pos : ∀ {r} → Positive r → (_* r) Preserves _<_ ⟶ _<_
+  *-monoʳ-<-pos : ∀ {r} → Positive r → (r *_) Preserves _<_ ⟶ _<_
   ```
-
+  
 * Add new relations and functions to `Data.Rational.Unnormalised`:
   ```agda
   _≤ᵇ_ : ℤ → ℤ → Bool
