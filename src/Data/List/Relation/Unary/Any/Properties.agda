@@ -254,7 +254,6 @@ Any-×⁻ pq with Prod.map₂ (Prod.map₂ find) (find pq)
      ≡⟨ P.cong₂ _,_ (lose∘find p) (lose∘find q) ⟩
 
     (p , q) ∎
-    where
 
 
   to∘from : ∀ pq → Any-×⁺ {xs = xs} (Any-×⁻ pq) ≡ pq
