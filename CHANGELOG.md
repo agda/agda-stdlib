@@ -240,6 +240,11 @@ Other minor additions
   _≤ᵇ_ : (m n : ℕ) → Bool
   ```
 
+* Added new proof to `Data.Nat.Induction`:
+  ```agda
+  <-wellFounded-fast : WellFounded _<_
+  ```
+
 * Added new relation to `Data.Integer.Base`:
   ```agda
   _≤ᵇ_ : ℤ → ℤ → Bool

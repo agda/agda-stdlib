@@ -60,7 +60,7 @@ mergeAll (xs ∷ ys ∷ xss) (acc rec) = mergeAll
   (mergePairs (xs ∷ ys ∷ xss)) (rec _ (length-mergePairs xs ys xss))
 
 sort : List A → List A
-sort xs = mergeAll (map [_] xs) (<-wellFounded _)
+sort xs = mergeAll (map [_] xs) (<-wellFounded-fast _)
 
 ------------------------------------------------------------------------
 -- Permutation property
