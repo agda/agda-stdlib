@@ -75,6 +75,17 @@ New modules
   Data.Nat.PseudoRandom.LCG
   ```
 
+* Broke up `Codata.Musical.Colist` into a multitude of modules:
+  ```
+  Codata.Musical.Colist.Base
+  Codata.Musical.Colist.Properties
+  Codata.Musical.Colist.Bisimilarity
+  Codata.Musical.Colist.Relation.Unary.All
+  Codata.Musical.Colist.Relation.Unary.All.Properties
+  Codata.Musical.Colist.Relation.Unary.Any
+  Codata.Musical.Colist.Relation.Unary.Any.Properties
+  ```
+
 Other minor additions
 ---------------------
 

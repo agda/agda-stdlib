@@ -20,6 +20,12 @@ data Coℕ : Set where
   suc  : (n : ∞ Coℕ) → Coℕ
 
 ------------------------------------------------------------------------
+-- Constant
+
+∞ℕ : Coℕ
+∞ℕ = suc (♯ ∞ℕ)
+
+------------------------------------------------------------------------
 -- Some operations
 
 pred : Coℕ → Coℕ
@@ -29,9 +35,6 @@ pred (suc n) = ♭ n
 fromℕ : ℕ → Coℕ
 fromℕ zero    = zero
 fromℕ (suc n) = suc (♯ fromℕ n)
-
-∞ℕ : Coℕ
-∞ℕ = suc (♯ ∞ℕ)
 
 infixl 6 _+_
 
