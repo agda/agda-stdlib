@@ -6,8 +6,9 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Relation.Binary
 open import Function.Base using (flip; _∘_)
+open import Relation.Binary
+import Relation.Binary.Consequences as Consequences
 open import Relation.Nullary using (¬_)
 
 module Relation.Binary.Properties.Poset
@@ -108,14 +109,10 @@ open StrictPartialOrder <-strictPartialOrder public
 -- Other properties
 
 mono⇒cong : ∀ {f} → f Preserves _≤_ ⟶ _≤_ → f Preserves _≈_ ⟶ _≈_
-mono⇒cong f-mono p≈q = antisym
-  (f-mono (reflexive p≈q))
-  (f-mono (reflexive (Eq.sym p≈q)))
+mono⇒cong = Consequences.mono⇒cong _ Eq.sym reflexive antisym
 
 antimono⇒cong : ∀ {f} → f Preserves _≤_ ⟶ _≥_ → f Preserves _≈_ ⟶ _≈_
-antimono⇒cong f-mono p≈q = antisym
-  (f-mono (reflexive (Eq.sym p≈q)))
-  (f-mono (reflexive p≈q))
+antimono⇒cong = Consequences.antimono⇒cong _ Eq.sym reflexive antisym
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

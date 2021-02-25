@@ -102,6 +102,12 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} {≈ : Rel A ℓ₁} {∼ : Rel A ℓ₂}
     }
     where module O = IsPreorder O
 
+  isTotalPreorder : IsTotalPreorder ≈ ∼ → IsTotalPreorder ≈ (flip ∼)
+  isTotalPreorder O = record
+    { isPreorder = isPreorder O.isPreorder
+    ; total      = total _ O.total
+    } where module O = IsTotalPreorder O
+
   isPartialOrder : IsPartialOrder ≈ ∼ → IsPartialOrder ≈ (flip ∼)
   isPartialOrder O = record
     { isPreorder = isPreorder O.isPreorder
@@ -164,6 +170,11 @@ module _ {a ℓ₁ ℓ₂} where
     { isPreorder = isPreorder O.isPreorder
     }
     where module O = Preorder O
+
+  totalPreorder : TotalPreorder a ℓ₁ ℓ₂ → TotalPreorder a ℓ₁ ℓ₂
+  totalPreorder O = record
+    { isTotalPreorder = isTotalPreorder O.isTotalPreorder
+    } where module O = TotalPreorder O
 
   poset : Poset a ℓ₁ ℓ₂ → Poset a ℓ₁ ℓ₂
   poset O = record
