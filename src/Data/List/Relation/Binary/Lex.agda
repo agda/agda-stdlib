@@ -30,7 +30,6 @@ open import Data.List.Relation.Binary.Pointwise.Core
 open import Data.List.Relation.Binary.Lex.Core public
 
 ------------------------------------------------------------------------
-
 -- Properties
 
 module _ {a ℓ₁ ℓ₂} {A : Set a} {P : Set}

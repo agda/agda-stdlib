@@ -89,6 +89,11 @@ New modules
 Other minor additions
 ---------------------
 
+* Added new function in `Data.Char.Base`:
+  ```agda
+  _≈ᵇ_ : (c d : Char) → Bool
+  ```
+
 * Added new function in `Data.List.Base`:
   ```agda
   last : List A → Maybe A
