@@ -12,6 +12,16 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
+* `Data.List.Relation.Binary.Lex.Core` has been thinned to minimise its
+  dependencies. The more complex properties (`transitive`, `respects₂`,
+  `[]<[]-⇔`, `∷<∷-⇔`, and `decidable`) have been moved to
+  `Data.List.Relation.Binary.Lex`.
+
+* `Data.String.Base` has been thinned to minimise its dependencies. The more
+  complex functions (`parensIfSpace`, `wordsBy`, `words`, `linesBy`, `lines`,
+  `rectangle`, `rectangleˡ`, `rectangleʳ`, `rectangleᶜ`) have been moved to
+  `Data.String`.
+
 Deprecated modules
 ------------------
 
@@ -200,7 +210,7 @@ Other minor additions
 
 * Added new proofs to `Data.List.Relation.Binary.Pointwise`:
   ```agda
-  foldr⁺  : (R w x → R y z → R (w • y) (x ◦ z)) → 
+  foldr⁺  : (R w x → R y z → R (w • y) (x ◦ z)) →
             R e f → Pointwise R xs ys → R (foldr _•_ e xs) (foldr _◦_ f ys)
   lookup⁻ : length xs ≡ length ys →
             (toℕ i ≡ toℕ j → R (lookup xs i) (lookup ys j)) →
