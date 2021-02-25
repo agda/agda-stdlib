@@ -6,6 +6,8 @@ The library has been tested using Agda 2.6.1 and 2.6.1.1.
 Highlights
 ----------
 
+* First verified implementation of a sorting algorithm (available from `Data.List.Sort`).
+
 Bug-fixes
 ---------
 
@@ -59,10 +61,26 @@ Deprecated names
 New modules
 -----------
 
+* Added `Data.Maybe.Relation.Binary.Connected`, a variant of the `Pointwise` relation where `nothing` is also related to `just`.
+
+* Added various generic morphism constructions for binary relations:
+  ```agda
+  Relation.Binary.Morphism.Construct.Composition
+  Relation.Binary.Morphism.Construct.Constant
+  Relation.Binary.Morphism.Construct.Identity
+  ```
+
 * Specifications for min and max operators
   ```
   Algebra.Construct.NaturalChoice.MinOp
   Algebra.Construct.NaturalChoice.MaxOp
+  ```
+
+* Sorting algorithms over lists:
+  ```
+  Data.List.Sort
+  Data.List.Sort.Base
+  Data.List.Sort.MergeSort
   ```
 
 * Linear congruential pseudo random generators for ℕ.
@@ -78,6 +96,39 @@ Other minor additions
 * Added new function in `Data.List.Base`:
   ```agda
   last : List A → Maybe A
+  merge : Decidable R → List A → List A → List A
+  ```
+
+* Added new proof in `Data.List.Properties`:
+  ```agda
+  length-partition : (let (ys , zs) = partition P? xs) → length ys ≤ length xs × length zs ≤ length xs
+  ```
+
+* Added new proof in `Data.List.Relation.Binary.Permutation.Setoid.Properties`:
+  ```agda
+  ↭-shift     : xs ++ [ v ] ++ ys ↭ v ∷ xs ++ ys
+  ↭-merge     : merge R? xs ys ↭ xs ++ ys
+  ↭-partition : (let ys , zs = partition P? xs) → xs ↭ ys ++ zs
+  ```
+
+* Added new operations in `Data.List.Relation.Unary.Linked`:
+  ```agda
+  head′ : Linked R (x ∷ xs) → Connected R (just x) (head xs)
+  _∷′_  : Connected R (just x) (head xs) → Linked R xs → Linked R (x ∷ xs)
+  ```
+
+* Generalised the type of operation `tail` in `Data.List.Relation.Unary.Linked`
+  from `Linked R (x ∷ y ∷ xs) → Linked R (y ∷ xs)` to `Linked R (x ∷ xs) → Linked R xs`.
+
+* Added new proof in `Data.List.Relation.Unary.Linked.Properties`:
+  ```agda
+  ++⁺ : Linked R xs → Connected R (last xs) (head ys) → Linked R ys → Linked R (xs ++ ys)
+  ```
+
+* Added new proof in `Data.List.Relation.Unary.Sorted.TotalOrder.Properties`:
+  ```agda
+  ++⁺    : Sorted O xs → Connected _≤_ (last xs) (head ys) → Sorted O ys → Sorted O (xs ++ ys)
+  merge⁺ : Sorted O xs → Sorted O ys → Sorted O (merge _≤?_ xs ys)
   ```
 
 * Added new proofs in `Data.List.Relation.Unary.All.Properties`:
@@ -98,6 +149,12 @@ Other minor additions
 
   all-head-dropWhile : (P? : Decidable P) → ∀ xs → Maybe.All (∁ P) (head (dropWhile P? xs))
   all-takeWhile      : (P? : Decidable P) → ∀ xs → All P (takeWhile P? xs)
+  ```
+
+* Added new proofs in `Data.Maybe.Relation.Unary.All.Properties`:
+  ```agda
+  All⇒Connectedˡ : All (R x) y → Connected R (just x) y
+  All⇒Connectedʳ : All (λ v → R v y) x → Connected R x (just y
   ```
 
 * Added new proofs to `Data.Nat.DivMod`:
@@ -165,7 +222,7 @@ Other minor additions
   ⊔-⊓-absorptive            : Absorptive _⊓_ _
   ⊔-⊓-isLattice             : IsLattice _⊔_ _⊓_
   ⊔-⊓-isDistributiveLattice : IsDistributiveLattice _⊔_ _⊓_
-
+  
   ⊓-commutativeSemigroup    : CommutativeSemigroup 0ℓ 0ℓ
   ⊔-commutativeSemigroup    : CommutativeSemigroup 0ℓ 0ℓ
   ⊔-0-monoid                : Monoid 0ℓ 0ℓ
@@ -176,6 +233,16 @@ Other minor additions
   mono-≤-distrib-⊓          : f Preserves _≤_ ⟶ _≤_ → f (x ⊓ y) ≈ f x ⊓ f y
   antimono-≤-distrib-⊓      : f Preserves _≤_ ⟶ _≥_ → f (x ⊓ y) ≈ f x ⊔ f y
   antimono-≤-distrib-⊔      : f Preserves _≤_ ⟶ _≥_ → f (x ⊔ y) ≈ f x ⊓ f y
+  ```
+
+* Added new definition in `Data.Nat.Base`:
+  ```agda
+  _≤ᵇ_ : (m n : ℕ) → Bool
+  ```
+
+* Added new proof to `Data.Nat.Induction`:
+  ```agda
+  <-wellFounded-fast : WellFounded _<_
   ```
 
 * Added new relation to `Data.Integer.Base`:
@@ -227,8 +294,16 @@ Other minor additions
   i≤j⇒i≤k⊔j                 : i ≤ j → i ≤ k ⊔ j
   i⊔j≤k⇒i≤k                 : i ⊔ j ≤ k → i ≤ k
   i⊔j≤k⇒j≤k                 : i ⊔ j ≤ k → j ≤ k
-
   i⊓j≤i⊔j                   : i ⊓ j ≤ i ⊔ j
+  
+  +-*-commutativeSemiring : CommutativeSemiring 0ℓ 0ℓ
+  ```
+
+* Added new definitions and proofs to `Relation.Binary.Properties.(Poset/TotalOrder/DecTotalOrder)`:
+  ```agda
+  _≰_       : Rel A p₃
+  ≰-respˡ-≈ : _≰_ Respectsˡ _≈_
+  ≰-respʳ-≈ : _≰_ Respectsʳ _≈_
   ```
 
 * Added new proofs to `Data.List.Relation.Binary.Pointwise`:

@@ -11,6 +11,7 @@ module Data.List.Relation.Binary.Permutation.Propositional.Properties where
 open import Algebra.Bundles
 open import Algebra.Definitions
 open import Algebra.Structures
+open import Data.Bool.Base using (Bool; true; false)
 open import Data.Nat using (suc)
 open import Data.Product using (-,_; proj₂)
 open import Data.List.Base as List
@@ -300,3 +301,22 @@ drop-∷ = drop-mid [] []
 ++↭ʳ++ : ∀ (xs ys : List A) → xs ++ ys ↭ xs ʳ++ ys
 ++↭ʳ++ []       ys = ↭-refl
 ++↭ʳ++ (x ∷ xs) ys = ↭-trans (↭-sym (shift x xs ys)) (++↭ʳ++ xs (x ∷ ys))
+
+------------------------------------------------------------------------
+-- merge
+
+module _ {ℓ} {R : Rel A ℓ} (R? : Decidable R) where
+
+  merge-↭ : ∀ xs ys → merge R? xs ys ↭ xs ++ ys
+  merge-↭ []       []       = ↭-refl
+  merge-↭ []       (y ∷ ys) = ↭-refl
+  merge-↭ (x ∷ xs) []       = ↭-sym (++-identityʳ (x ∷ xs))
+  merge-↭ (x ∷ xs) (y ∷ ys)
+    with does (R? x y) | merge-↭ xs (y ∷ ys) | merge-↭ (x ∷ xs) ys
+  ... | true  | rec | _   = prep x rec
+  ... | false | _   | rec = begin
+    y ∷ merge R? (x ∷ xs) ys <⟨ rec ⟩
+    y ∷ x ∷ xs ++ ys         ↭˘⟨ shift y (x ∷ xs) ys ⟩
+    (x ∷ xs) ++ y ∷ ys       ≡˘⟨ Lₚ.++-assoc [ x ] xs (y ∷ ys) ⟩
+    x ∷ xs ++ y ∷ ys         ∎
+    where open PermutationReasoning
