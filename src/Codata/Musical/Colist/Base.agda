@@ -78,14 +78,14 @@ _++_ : Colist A → Colist A → Colist A
 
 infixr 5 _⋎_
 
-_⋎_ : ∀ {a} {A : Set a} → Colist A → Colist A → Colist A
+_⋎_ : Colist A → Colist A → Colist A
 []       ⋎ ys = ys
 (x ∷ xs) ⋎ ys = x ∷ ♯ (ys ⋎ ♭ xs)
 
-concat : ∀ {a} {A : Set a} → Colist (List⁺ A) → Colist A
+concat : Colist (List⁺ A) → Colist A
 concat []                     = []
 concat ((x ∷ [])       ∷ xss) = x ∷ ♯ concat (♭ xss)
 concat ((x ∷ (y ∷ xs)) ∷ xss) = x ∷ ♯ concat ((y ∷ xs) ∷ xss)
 
-[_] : ∀ {a} {A : Set a} → A → Colist A
+[_] : A → Colist A
 [ x ] = x ∷ ♯ []
