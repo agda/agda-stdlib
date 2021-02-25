@@ -11,7 +11,6 @@ module Data.Bool.Base where
 open import Data.Unit.Base using (⊤)
 open import Data.Empty
 open import Level using (Level)
-open import Relation.Nullary using (Dec; does; proof; ofʸ; ofⁿ)
 
 private
   variable
@@ -72,8 +71,3 @@ if false then t else f = f
 T : Bool → Set
 T true  = ⊤
 T false = ⊥
-
-T? : ∀ b → Dec (T b)
-does  (T? b) = b
-proof (T? true ) = ofʸ _
-proof (T? false) = ofⁿ λ()

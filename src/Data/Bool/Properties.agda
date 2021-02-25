@@ -655,6 +655,11 @@ T-∨ {false} {false} = equivalence inj₁ [ id , id ]
 T-irrelevant : U.Irrelevant T
 T-irrelevant {true}  _  _  = refl
 
+T? : U.Decidable T
+does  (T? b) = b
+proof (T? true ) = ofʸ _
+proof (T? false) = ofⁿ λ()
+
 T?-diag : ∀ b → T b → True (T? b)
 T?-diag true  _ = _
 
