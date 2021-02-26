@@ -40,6 +40,22 @@ private
     A : Set a
     B : Set b
 
+
+------------------------------------------------------------------------
+-- Conversion to setoid permutations
+
+-- The need for this will be removed in v2.0, see issue #1354
+
+module _ {a ℓ} (S : Setoid a ℓ) where
+
+  import Data.List.Relation.Binary.Permutation.Setoid S as SP
+
+  ↭⇒↭ₛ : ∀ {xs ys} → xs ↭ ys → xs SP.↭ ys
+  ↭⇒↭ₛ refl                = SP.↭-refl
+  ↭⇒↭ₛ (prep x xs↭ys)      = SP.↭-prep x (↭⇒↭ₛ xs↭ys)
+  ↭⇒↭ₛ (swap x y xs↭ys)    = SP.↭-swap x y (↭⇒↭ₛ xs↭ys)
+  ↭⇒↭ₛ (trans xs↭ys ys↭zs) = SP.↭-trans (↭⇒↭ₛ xs↭ys) (↭⇒↭ₛ ys↭zs)
+
 ------------------------------------------------------------------------
 -- Permutations of empty and singleton lists
 

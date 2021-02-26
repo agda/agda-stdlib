@@ -13,11 +13,17 @@ module Data.List.Relation.Unary.Sorted.TotalOrder
 
 open TotalOrder totalOrder renaming (Carrier to A)
 
-open import Data.List.Base using (List; []; _∷_)
-open import Data.List.Relation.Unary.Linked as Linked using (Linked)
+open import Data.List.Base as List using (List)
+open import Data.List.Relation.Unary.Linked as LinkedBase using (Linked)
+open import Data.Maybe.Base using (just)
+open import Data.Maybe.Relation.Binary.Connected
 open import Level using (_⊔_)
-open import Relation.Unary as U using (Pred; _⊆_)
-open import Relation.Binary as B
+open import Relation.Unary using (Pred)
+
+private
+  variable
+    x : A
+    xs : List A
 
 -----------------------------------------------------------------------
 -- Definition
@@ -28,23 +34,26 @@ Sorted xs = Linked _≤_ xs
 ------------------------------------------------------------------------
 -- Operations
 
-module _ {x y xs} where
+open LinkedBase public
+  using
+  ( head   -- Sorted (x ∷ y ∷ xs) → x ≤ y
+  ; head′  -- Sorted (x ∷ xs) → Connected _≤_ (just x) (List.head xs)
+  ; tail   -- Sorted (x ∷ xs) → Sorted xs
+  ; _∷′_   -- Connected R (just x) (List.head xs) → Sorted xs → Sorted (x ∷ xs)
+  )
 
-  head : Sorted (x ∷ y ∷ xs) → x ≤ y
-  head = Linked.head
-
-  tail : Sorted (x ∷ y ∷ xs) → Sorted (y ∷ xs)
-  tail = Linked.tail
+lookup : Sorted xs → Connected _≤_ (just x) (List.head xs) →
+         ∀ i → x ≤ List.lookup xs i
+lookup = LinkedBase.lookup trans
 
 ------------------------------------------------------------------------
 -- Properties of predicates preserved by Sorted
 
-sorted? : B.Decidable _≤_ → U.Decidable Sorted
-sorted? = Linked.linked?
-
-irrelevant : B.Irrelevant _≤_ → U.Irrelevant Sorted
-irrelevant = Linked.irrelevant
-
-satisfiable : U.Satisfiable Sorted
-satisfiable = Linked.satisfiable
-
+open LinkedBase public
+  using
+  ( irrelevant          -- : B.Irrelevant _≤_ → U.Irrelevant Sorted
+  ; satisfiable         -- : U.Satisfiable Sorted
+  )
+  renaming
+  ( linked? to sorted?  -- : B.Decidable _≤_ → U.Decidable Sorted
+  )

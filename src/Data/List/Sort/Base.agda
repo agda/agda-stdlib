@@ -25,7 +25,7 @@ record SortingAlgorithm : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
   field
     sort   : List A → List A
 
-    -- The output of `sort` is a permutation of the input
+    -- The output of `sort` is a propositional permutation of the input
     sort-↭ : ∀ xs → sort xs ↭ xs
 
     -- The output of `sort` is sorted.

@@ -19,7 +19,7 @@ open import Data.Product as Product using (_×_; _,_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (id; _∘_; _on_)
 open import Level using () renaming (zero to ℓ₀)
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary using (¬_; yes; no)
 open import Relation.Nullary.Decidable.Core using (True; toWitness)
 open import Relation.Binary.Core
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≢_; refl; cong)
@@ -116,6 +116,12 @@ lower₁ : ∀ {n} → (i : Fin (suc n)) → (n ≢ toℕ i) → Fin n
 lower₁ {zero} zero ne = ⊥-elim (ne refl)
 lower₁ {suc n} zero _ = zero
 lower₁ {suc n} (suc i) ne = suc (lower₁ i λ x → ne (cong suc x))
+
+-- lower "i" _ = "i"
+
+lower : ∀ {m n} (i : Fin m) → .(toℕ i ℕ.< n) → Fin n
+lower {suc _} {suc n} zero    leq = zero
+lower {suc _} {suc n} (suc i) leq = suc (lower i (≤-pred leq))
 
 -- A strengthening injection into the minimal Fin fibre.
 strengthen : ∀ {n} (i : Fin n) → Fin′ (suc i)
@@ -243,13 +249,19 @@ punchIn (suc i) (suc j) = suc (punchIn i j)
 ------------------------------------------------------------------------
 -- Order relations
 
-infix 4 _≤_ _<_
+infix 4 _≤_ _<_ _≰_ _≮_
 
 _≤_ : ∀ {n} → Rel (Fin n) ℓ₀
 _≤_ = ℕ._≤_ on toℕ
 
 _<_ : ∀ {n} → Rel (Fin n) ℓ₀
 _<_ = ℕ._<_ on toℕ
+
+_≰_ : ∀ {n} → Rel (Fin n) ℓ₀
+i ≰ j = ¬ (i ≤ j)
+
+_≮_ : ∀ {n} → Rel (Fin n) ℓ₀
+i ≮ j = ¬ (i < j)
 
 data _≺_ : ℕ → ℕ → Set where
   _≻toℕ_ : ∀ n (i : Fin n) → toℕ i ≺ n

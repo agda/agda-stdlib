@@ -79,8 +79,6 @@ Unique-resp-≋ = AllPairs-resp-≋ ≉-resp₂
 ------------------------------------------------------------------------
 -- List operations
 ------------------------------------------------------------------------
-
-------------------------------------------------------------------------
 -- length
 
 ≋-length : ∀ {xs ys} → xs ≋ ys → length xs ≡ length ys
@@ -154,3 +152,9 @@ module _ {P : Pred A p} (P? : U.Decidable P) (resp : P Respects _≈_)
 
 reverse⁺ : ∀ {xs ys} → xs ≋ ys → reverse xs ≋ reverse ys
 reverse⁺ = PW.reverse⁺
+
+------------------------------------------------------------------------
+-- lookup
+
+open PW public
+  using ( lookup⁻; lookup⁺ )

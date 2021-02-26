@@ -22,9 +22,9 @@ open import Data.Product using (∃; ∃₂; ∄; _×_; _,_; map; proj₁; uncur
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]; [_,_]′)
 open import Data.Sum.Properties using ([,]-map-commute; [,]-∘-distr)
 open import Function.Base using (_∘_; id; _$_)
-open import Function.Bundles using (_↔_; mk↔′)
+open import Function.Bundles using (Injection; _↣_; _↔_; mk↔′)
 open import Function.Equivalence using (_⇔_; equivalence)
-open import Function.Injection using (_↣_)
+import Function.Injection as Old
 open import Relation.Binary as B hiding (Decidable; _⇔_)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; trans; cong; subst; module ≡-Reasoning)
@@ -200,6 +200,11 @@ toℕ-cast : ∀ {m n} .(eq : m ≡ n) (k : Fin m) → toℕ (cast eq k) ≡ to�
 toℕ-cast {n = suc n} eq zero    = refl
 toℕ-cast {n = suc n} eq (suc k) = cong suc (toℕ-cast (cong ℕ.pred eq) k)
 
+cast-injective : ∀ {m n} (m≡n : m ≡ n) {i j : Fin m} → cast m≡n i ≡ cast m≡n j → i ≡ j
+cast-injective {suc m} {suc n} m≡n {zero}  {zero}  eq = refl
+cast-injective {suc m} {suc n} m≡n {suc i} {suc j} eq =
+  cong suc (cast-injective (ℕₚ.suc-injective m≡n) (suc-injective eq))
+
 ------------------------------------------------------------------------
 -- Properties of _≤_
 ------------------------------------------------------------------------
@@ -362,6 +367,9 @@ m <? n = suc (toℕ m) ℕₚ.≤? toℕ n
 ≤∧≢⇒< {i = suc i} {suc j} (s≤s i≤j) 1+i≢1+j =
   s≤s (≤∧≢⇒< i≤j (1+i≢1+j ∘ (cong suc)))
 
+i≢0⇒i>0 : ∀ {n} {i : Fin (suc n)} → i ≢ zero → zero < i
+i≢0⇒i>0 i≢0 = ℕₚ.n≢0⇒n>0 (i≢0 ∘ toℕ-injective)
+
 ------------------------------------------------------------------------
 -- inject
 ------------------------------------------------------------------------
@@ -452,6 +460,17 @@ inject₁≡⇒lower₁≡ : ∀ {n} → {i : Fin n} →
 inject₁≡⇒lower₁≡ ≢p ≡p = inject₁-injective (trans (inject₁-lower₁ _ ≢p) (sym ≡p))
 
 ------------------------------------------------------------------------
+-- lower
+------------------------------------------------------------------------
+
+lower-injective : ∀ {m n} (i j : Fin m)
+                  (i<n : toℕ i ℕ.< n) (j<n : toℕ j ℕ.< n)  →
+                  lower i i<n ≡ lower j j<n → i ≡ j
+lower-injective {suc _} {suc n} zero    zero    i<n       j<n       eq = refl
+lower-injective {suc _} {suc n} (suc i) (suc j) (s≤s i<n) (s≤s j<n) eq =
+  cong suc (lower-injective i j i<n j<n (suc-injective eq))
+
+------------------------------------------------------------------------
 -- inject≤
 ------------------------------------------------------------------------
 
@@ -483,6 +502,14 @@ inject≤-injective (s≤s p) (s≤s q) (suc x) (suc y) eq =
 pred< : ∀ {n} → (i : Fin (ℕ.suc n)) → i ≢ zero → pred i < i
 pred< zero p = contradiction refl p
 pred< (suc i) p = ≤̄⇒inject₁< ℕₚ.≤-refl
+
+pred≤ : ∀ {n} (i : Fin n) → pred i ≤ i
+pred≤ zero    = z≤n
+pred≤ (suc i) = ℕₚ.≤-step (ℕₚ.≤-reflexive (toℕ-inject₁ i))
+
+suc-pred : ∀ {n} {i : Fin (suc n)} → i ≢ zero → toℕ (suc (pred i)) ≡ toℕ i
+suc-pred {i = zero}  i≢0 = contradiction refl i≢0
+suc-pred {i = suc i} i≢0 = cong suc (toℕ-inject₁ i)
 
 ------------------------------------------------------------------------
 -- splitAt
@@ -763,6 +790,11 @@ pigeonhole (s≤s (s≤s m≤n)) f with any? (λ k → f zero ≟ f (suc k))
   suc i , suc j , i≢j ∘ suc-injective ,
   punchOut-injective (f₀≢fₖ ∘ (i ,_)) _ fᵢ≡fⱼ
 
+pigeonhole′ : ∀ {m n} → m ℕ.< n → ¬ (Fin n ↣ Fin m)
+pigeonhole′ m<n inj with pigeonhole m<n _
+... | i , j , i≢j , fᵢ≡fⱼ = i≢j (injective fᵢ≡fⱼ)
+  where open Injection inj
+
 ------------------------------------------------------------------------
 -- Categorical
 ------------------------------------------------------------------------
@@ -790,7 +822,7 @@ module _ {f} {F : Set f → Set f} (RF : RawFunctor F) where
 
 module _ {a} {A : Set a} where
 
-  eq? : ∀ {n} → A ↣ Fin n → B.Decidable {A = A} _≡_
+  eq? : ∀ {n} → A Old.↣ Fin n → B.Decidable {A = A} _≡_
   eq? inj = Dec.via-injection inj _≟_
 
 

@@ -14,7 +14,9 @@ module Data.List.Relation.Binary.Permutation.Setoid.Properties
 
 open import Algebra
 open import Data.Bool.Base using (true; false)
-open import Data.Fin.Base using (Fin)
+open import Data.Fin.Base using (Fin; zero; suc)
+open import Data.Fin.Properties as Fin using (cast-injective)
+open import Data.Fin.Patterns
 open import Data.List.Base as List hiding (head; tail)
 open import Data.List.Relation.Binary.Pointwise as Pointwise
   using (Pointwise; head; tail)
@@ -31,7 +33,8 @@ open import Data.Nat hiding (_⊔_)
 open import Data.Nat.Induction
 open import Data.Nat.Properties
 open import Data.Product using (_,_; _×_; ∃; ∃₂; proj₁; proj₂)
-open import Function.Base using (_∘_; _⟨_⟩_; flip)
+open import Function.Base using (_∘_; _⟨_⟩_; flip; const)
+open import Function.Definitions using (Injective)
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse as Inv using (inverse)
 open import Level using (Level; _⊔_)
@@ -39,8 +42,8 @@ open import Relation.Unary using (Pred; Decidable)
 open import Relation.Binary.Properties.Setoid S using (≉-resp₂)
 open import Relation.Binary.PropositionalEquality as ≡
   using (_≡_ ; refl; sym; cong; cong₂; subst; _≢_; inspect)
-open import Relation.Nullary using (yes; no; does)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary using (¬_; yes; no; does)
+open import Relation.Nullary.Negation using (contradiction; contraposition)
 
 private
   variable
@@ -136,14 +139,57 @@ steps-respʳ (_ ∷ _ ∷ ys≋xs) (swap _ _ ys↭zs)    = cong suc (steps-resp�
 steps-respʳ ys≋xs           (trans ys↭ws ws↭zs) = cong (steps ys↭ws +_) (steps-respʳ ys≋xs ws↭zs)
 
 ------------------------------------------------------------------------
+-- Properties of indices
+------------------------------------------------------------------------
+
+private
+  pattern 1+ i = suc i
+  pattern 2+ i = suc (suc i)
+
+indices-lookup : ∀ {xs ys} (xs↭ys : xs ↭ ys) → ∀ i → lookup xs i ≈ lookup ys (indices xs↭ys i)
+indices-lookup (refl xs≋ys)        i             = Pointwise.lookup⁺ xs≋ys i
+indices-lookup (prep eq xs↭ys)     zero          = eq
+indices-lookup (prep _  xs↭ys)     (suc i)       = indices-lookup xs↭ys i
+indices-lookup (swap eq _ xs↭ys)   zero          = eq
+indices-lookup (swap _ eq xs↭ys)   (suc zero)    = eq
+indices-lookup (swap _ _  xs↭ys)   (suc (suc i)) = indices-lookup xs↭ys i
+indices-lookup (trans xs↭ys ys↭zs) i             = ≈-trans (indices-lookup xs↭ys i) (indices-lookup ys↭zs _)
+
+indices-injective : ∀ {xs ys} (xs↭ys : xs ↭ ys) → Injective _≡_ _≡_ (indices xs↭ys)
+indices-injective (refl ≋)                    = cast-injective (Pointwise.Pointwise-length ≋)
+indices-injective (prep _ _)    {0F}   {0F}   = const ≡.refl
+indices-injective (prep _ ↭₁)   {1+ i} {1+ j} = ≡.cong suc ∘ indices-injective ↭₁ ∘ Fin.suc-injective
+indices-injective (swap _ _ _)  {0F}   {0F}   = const ≡.refl
+indices-injective (swap _ _ _)  {0F}   {1F}   ()
+indices-injective (swap _ _ _)  {0F}   {2+ j} ()
+indices-injective (swap _ _ _)  {1F}   {0F}   ()
+indices-injective (swap _ _ _)  {1F}   {1F}   = const ≡.refl
+indices-injective (swap _ _ _)  {1F}   {2+ j} ()
+indices-injective (swap _ _ ↭₁) {2+ i} {2+ j} =
+  ≡.cong (Fin.suc ∘ suc) ∘ indices-injective ↭₁ ∘ Fin.suc-injective ∘ Fin.suc-injective
+indices-injective (trans ↭₁ ↭₂) {i}           = indices-injective ↭₁ ∘ indices-injective ↭₂
+
+------------------------------------------------------------------------
 -- Properties of list functions
 ------------------------------------------------------------------------
+-- length
+
+xs↭ys⇒|xs|≡|ys| : ∀ {xs ys} → xs ↭ ys → length xs ≡ length ys
+xs↭ys⇒|xs|≡|ys| (refl eq)            = Pointwise.Pointwise-length eq
+xs↭ys⇒|xs|≡|ys| (prep eq xs↭ys)      = ≡.cong suc (xs↭ys⇒|xs|≡|ys| xs↭ys)
+xs↭ys⇒|xs|≡|ys| (swap eq₁ eq₂ xs↭ys) = ≡.cong (λ x → suc (suc x)) (xs↭ys⇒|xs|≡|ys| xs↭ys)
+xs↭ys⇒|xs|≡|ys| (trans xs↭ys xs↭ys₁) = ≡.trans (xs↭ys⇒|xs|≡|ys| xs↭ys) (xs↭ys⇒|xs|≡|ys| xs↭ys₁)
+
+¬[]↭x∷xs : ∀ {x xs} → ¬ ([] ↭ x ∷ xs)
+¬[]↭x∷xs = contraposition xs↭ys⇒|xs|≡|ys| λ()
+
+¬x∷xs↭[] : ∀ {x xs} → ¬ (x ∷ xs ↭ [])
+¬x∷xs↭[] = contraposition xs↭ys⇒|xs|≡|ys| λ()
 
 ------------------------------------------------------------------------
 -- map
 
 module _ (T : Setoid b ℓ) where
-
   open Setoid T using () renaming (_≈_ to _≈′_)
   open Permutation T using () renaming (_↭_ to _↭′_)
 
@@ -429,6 +475,14 @@ module _ {p} {P : Pred A p} (P? : Decidable P) (P≈ : P Respects _≈_) where
   ... | no ¬Pz | _      = contradiction (P≈ x≈z Px) ¬Pz
   ... | _      | no ¬Pw = contradiction (P≈ (≈-sym w≈y) Py) ¬Pw
   ... | yes _  | yes _  = swap x≈z w≈y (filter⁺ xs↭ys)
+
+------------------------------------------------------------------------
+-- tabulate
+
+tabulate⁺ : ∀ {n} {f g : Fin n → A} →
+            (∀ {i} → f i ≈ g i) → tabulate f ↭ tabulate g
+tabulate⁺ {zero}  f=g = refl []
+tabulate⁺ {suc k} f=g = prep f=g (tabulate⁺ {k} f=g)
 
 ------------------------------------------------------------------------
 -- partition

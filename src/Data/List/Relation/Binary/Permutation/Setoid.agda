@@ -11,11 +11,13 @@ open import Relation.Binary
 module Data.List.Relation.Binary.Permutation.Setoid
   {a ℓ} (S : Setoid a ℓ) where
 
-open import Data.List.Base using (List; _∷_)
+open import Data.Fin.Base using (Fin; zero; suc; cast)
+open import Data.List.Base using (List; _∷_; length)
 import Data.List.Relation.Binary.Permutation.Homogeneous as Homogeneous
 import Data.List.Relation.Binary.Pointwise as Pointwise
 open import Data.List.Relation.Binary.Equality.Setoid S
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
+open import Function.Base using (_∘_)
 open import Level using (_⊔_)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning
@@ -55,6 +57,15 @@ steps (refl _)            = 1
 steps (prep _ xs↭ys)      = suc (steps xs↭ys)
 steps (swap _ _ xs↭ys)    = suc (steps xs↭ys)
 steps (trans xs↭ys ys↭zs) = steps xs↭ys + steps ys↭zs
+
+indices : ∀ {xs ys} → xs ↭ ys → Fin (length xs) → Fin (length ys)
+indices (refl ≋)      i             = cast (Pointwise.Pointwise-length ≋) i
+indices (prep _ _)    zero          = zero
+indices (prep _ ↭₁)   (suc i)       = suc (indices ↭₁ i)
+indices (swap _ _ _)  zero          = suc zero
+indices (swap _ _ _)  (suc zero)    = zero
+indices (swap _ _ ↭₁) (suc (suc i)) = suc (suc (indices ↭₁ i))
+indices (trans ↭₁ ↭₂)               = indices ↭₂ ∘ indices ↭₁
 
 ------------------------------------------------------------------------
 -- _↭_ is an equivalence
