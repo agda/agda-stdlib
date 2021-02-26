@@ -24,12 +24,33 @@ record IsAlmostCommutativeRing {a ℓ} {A : Set a} (_≈_ : Rel A ℓ)
                                (0# 1# : A) : Set (a ⊔ ℓ) where
   field
     isCommutativeSemiring : IsCommutativeSemiring _≈_ _+_ _*_ 0# 1#
-    -‿cong                : Congruent₁ _≈_ -_
-    -‿*-distribˡ          : ∀ x y → ((- x) * y)     ≈ (- (x * y))
-    -‿+-comm              : ∀ x y → ((- x) + (- y)) ≈ (- (x + y))
+    neg-cong              : Congruent₁ _≈_ -_
+    neg-distribˡ-*        : ∀ x y → (- (x * y)) ≈ ((- x) * y)
+    neg-distrib-+         : ∀ x y → (- (x + y)) ≈ ((- x) + (- y))
 
   open IsCommutativeSemiring isCommutativeSemiring public
 
+  -‿cong = neg-cong
+  {-# WARNING_ON_USAGE -‿cong
+  "Warning: -‿cong was deprecated in v1.6.
+  Please use neg-cong instead."
+  #-}
+  -‿*-distribˡ : ∀ x y → ((- x) * y) ≈ (- (x * y))
+  -‿*-distribˡ x y = sym (neg-distribˡ-* x y)
+    where open import Relation.Binary.Reasoning.Setoid setoid
+  {-# WARNING_ON_USAGE -‿*-distribˡ
+  "Warning: -‿*-distribˡ was deprecated in v1.6.
+  Please use neg-distribˡ-* instead.
+  NOTE: the equality is flipped so you will need sym (neg-distribˡ-* ...)."
+  #-}
+  -‿+-comm : ∀ x y → ((- x) + (- y)) ≈ (- (x + y))
+  -‿+-comm x y = sym (neg-distrib-+ x y)
+    where open import Relation.Binary.Reasoning.Setoid setoid
+  {-# WARNING_ON_USAGE -‿+-comm
+  "Warning: -‿+-comm was deprecated in v1.6.
+  Please use neg-distrib-+ instead.
+  NOTE: the equality is flipped so you will need sym (neg-distrib-+ ...)."
+  #-}
 
 record AlmostCommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 -_
@@ -85,23 +106,29 @@ record _-Raw-AlmostCommutative⟶_
     module T = AlmostCommutativeRing To
   open MorphismDefinitions F.Carrier T.Carrier T._≈_
   field
-    ⟦_⟧    : Morphism
-    +-homo : Homomorphic₂ ⟦_⟧ F._+_ T._+_
-    *-homo : Homomorphic₂ ⟦_⟧ F._*_ T._*_
-    -‿homo : Homomorphic₁ ⟦_⟧ F.-_  T.-_
-    0-homo : Homomorphic₀ ⟦_⟧ F.0#  T.0#
-    1-homo : Homomorphic₀ ⟦_⟧ F.1#  T.1#
+    ⟦_⟧      : Morphism
+    +-homo   : Homomorphic₂ ⟦_⟧ F._+_ T._+_
+    *-homo   : Homomorphic₂ ⟦_⟧ F._*_ T._*_
+    neg-homo : Homomorphic₁ ⟦_⟧ F.-_  T.-_
+    0-homo   : Homomorphic₀ ⟦_⟧ F.0#  T.0#
+    1-homo   : Homomorphic₀ ⟦_⟧ F.1#  T.1#
+
+  -‿homo = neg-homo
+  {-# WARNING_ON_USAGE -‿homo
+  "Warning: -‿homo was deprecated in v1.6.
+  Please use neg-homo instead."
+  #-}
 
 -raw-almostCommutative⟶ :
   ∀ {r₁ r₂} (R : AlmostCommutativeRing r₁ r₂) →
   AlmostCommutativeRing.rawRing R -Raw-AlmostCommutative⟶ R
 -raw-almostCommutative⟶ R = record
-  { ⟦_⟧    = id
-  ; +-homo = λ _ _ → refl
-  ; *-homo = λ _ _ → refl
-  ; -‿homo = λ _ → refl
-  ; 0-homo = refl
-  ; 1-homo = refl
+  { ⟦_⟧      = id
+  ; +-homo   = λ _ _ → refl
+  ; *-homo   = λ _ _ → refl
+  ; neg-homo = λ _ → refl
+  ; 0-homo   = refl
+  ; 1-homo   = refl
   }
   where open AlmostCommutativeRing R
 
@@ -123,9 +150,9 @@ fromCommutativeRing : ∀ {r₁ r₂} → CommutativeRing r₁ r₂ → AlmostCo
 fromCommutativeRing CR = record
   { isAlmostCommutativeRing = record
       { isCommutativeSemiring = isCommutativeSemiring
-      ; -‿cong                = -‿cong
-      ; -‿*-distribˡ          = -‿*-distribˡ
-      ; -‿+-comm              = ⁻¹-∙-comm
+      ; neg-cong              = neg-cong
+      ; neg-distribˡ-*        = neg-distribˡ-*
+      ; neg-distrib-+         = ⁻¹-distrib-∙
       }
   }
   where
@@ -141,9 +168,9 @@ fromCommutativeSemiring CS = record
   { -_                      = id
   ; isAlmostCommutativeRing = record
       { isCommutativeSemiring = isCommutativeSemiring
-      ; -‿cong                = id
-      ; -‿*-distribˡ          = λ _ _ → refl
-      ; -‿+-comm              = λ _ _ → refl
+      ; neg-cong              = id
+      ; neg-distribˡ-*        = λ _ _ → refl
+      ; neg-distrib-+         = λ _ _ → refl
       }
   }
   where open CommutativeSemiring CS

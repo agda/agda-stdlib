@@ -109,6 +109,6 @@ lemma₆ a x = begin
 
 lemma₇ : ∀ x → - 1# * x ≈ - x
 lemma₇ x = begin
-  - 1# * x      ≈⟨ -‿*-distribˡ _ _ ⟩
-  - (1# * x)    ≈⟨ -‿cong (*-identityˡ _) ⟩
+  - 1# * x      ≈⟨ sym $ neg-distribˡ-* _ _ ⟩
+  - (1# * x)    ≈⟨ neg-cong (*-identityˡ _) ⟩
   - x           ∎

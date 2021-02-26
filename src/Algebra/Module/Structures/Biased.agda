@@ -107,8 +107,8 @@ module _ (commutativeRing : CommutativeRing r ℓr) where
         { isBisemimodule = IsSemimoduleFromLeft.isBisemimodule
           {commutativeSemiring = commutativeSemiring}
           (record { isLeftSemimodule = isLeftSemimodule })
-        ; -ᴹ‿cong = -ᴹ‿cong
-        ; -ᴹ‿inverse = -ᴹ‿inverse
+        ; negᴹ-cong = negᴹ-cong
+        ; +ᴹ-inverse = +ᴹ-inverse
         }
       }
 
@@ -128,7 +128,7 @@ module _ (commutativeRing : CommutativeRing r ℓr) where
         { isBisemimodule = IsSemimoduleFromRight.isBisemimodule
           {commutativeSemiring = commutativeSemiring}
           (record { isRightSemimodule = isRightSemimodule })
-        ; -ᴹ‿cong = -ᴹ‿cong
-        ; -ᴹ‿inverse = -ᴹ‿inverse
+        ; negᴹ-cong = negᴹ-cong
+        ; +ᴹ-inverse = +ᴹ-inverse
         }
       }

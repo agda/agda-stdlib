@@ -25,43 +25,44 @@ open AbelianGroupProperties +-abelianGroup public
   ; ∙-cancelˡ        to +-cancelˡ
   ; ∙-cancelʳ        to +-cancelʳ
   ; ∙-cancel         to +-cancel
-  ; ⁻¹-involutive    to -‿involutive
-  ; ⁻¹-injective     to -‿injective
-  ; ⁻¹-anti-homo-∙   to -‿anti-homo-+
+  ; ⁻¹-involutive    to neg-involutive
+  ; ⁻¹-injective     to neg-injective
+  ; ⁻¹-anti-homo-∙   to neg-anti-homo-+
   ; identityˡ-unique to +-identityˡ-unique
   ; identityʳ-unique to +-identityʳ-unique
   ; identity-unique  to +-identity-unique
   ; inverseˡ-unique  to +-inverseˡ-unique
   ; inverseʳ-unique  to +-inverseʳ-unique
-  ; ⁻¹-∙-comm        to -‿+-comm
+  ; ⁻¹-distrib-∙     to neg-distrib-+
   -- DEPRECATED
   ; left-identity-unique  to +-left-identity-unique
   ; right-identity-unique to +-right-identity-unique
   ; left-inverse-unique   to +-left-inverse-unique
   ; right-inverse-unique  to +-right-inverse-unique
+  ; ⁻¹-∙-comm             to -‿+-comm
   )
 
 ------------------------------------------------------------------------
 -- Properties of -_
 
--‿distribˡ-* : ∀ x y → - (x * y) ≈ - x * y
--‿distribˡ-* x y = sym $ begin
+neg-distribˡ-* : ∀ x y → - (x * y) ≈ - x * y
+neg-distribˡ-* x y = sym $ begin
   - x * y                        ≈⟨ sym $ +-identityʳ _ ⟩
-  - x * y + 0#                   ≈⟨ +-congˡ $ sym (-‿inverseʳ _) ⟩
+  - x * y + 0#                   ≈⟨ +-congˡ $ sym (+-inverseʳ _) ⟩
   - x * y + (x * y + - (x * y))  ≈⟨ sym $ +-assoc _ _ _  ⟩
   - x * y + x * y + - (x * y)    ≈⟨ +-congʳ $ sym (distribʳ _ _ _) ⟩
-  (- x + x) * y + - (x * y)      ≈⟨ +-congʳ $ *-congʳ $ -‿inverseˡ _ ⟩
+  (- x + x) * y + - (x * y)      ≈⟨ +-congʳ $ *-congʳ $ +-inverseˡ _ ⟩
   0# * y + - (x * y)             ≈⟨ +-congʳ $ zeroˡ _ ⟩
   0# + - (x * y)                 ≈⟨ +-identityˡ _ ⟩
   - (x * y)                      ∎
 
--‿distribʳ-* : ∀ x y → - (x * y) ≈ x * - y
--‿distribʳ-* x y = sym $ begin
+neg-distribʳ-* : ∀ x y → - (x * y) ≈ x * - y
+neg-distribʳ-* x y = sym $ begin
   x * - y                        ≈⟨ sym $ +-identityˡ _ ⟩
-  0# + x * - y                   ≈⟨ +-congʳ $ sym (-‿inverseˡ _) ⟩
+  0# + x * - y                   ≈⟨ +-congʳ $ sym (+-inverseˡ _) ⟩
   - (x * y) + x * y + x * - y    ≈⟨ +-assoc _ _ _  ⟩
   - (x * y) + (x * y + x * - y)  ≈⟨ +-congˡ $ sym (distribˡ _ _ _)  ⟩
-  - (x * y) + x * (y + - y)      ≈⟨ +-congˡ $ *-congˡ $ -‿inverseʳ _ ⟩
+  - (x * y) + x * (y + - y)      ≈⟨ +-congˡ $ *-congˡ $ +-inverseʳ _ ⟩
   - (x * y) + x * 0#             ≈⟨ +-congˡ $ zeroʳ _ ⟩
   - (x * y) + 0#                 ≈⟨ +-identityʳ _ ⟩
   - (x * y)                      ∎
@@ -76,16 +77,44 @@ open AbelianGroupProperties +-abelianGroup public
 -- Version 1.1
 
 -‿*-distribˡ : ∀ x y → - x * y ≈ - (x * y)
--‿*-distribˡ x y = sym (-‿distribˡ-* x y)
+-‿*-distribˡ x y = sym (neg-distribˡ-* x y)
 {-# WARNING_ON_USAGE -‿*-distribˡ
 "Warning: -‿*-distribˡ was deprecated in v1.1.
-Please use -‿distribˡ-* instead.
-NOTE: the equality is flipped so you will need sym (-‿distribˡ-* ...)."
+Please use neg-distribˡ-* instead.
+NOTE: the equality is flipped so you will need sym (neg-distribˡ-* ...)."
 #-}
 -‿*-distribʳ : ∀ x y → x * - y ≈ - (x * y)
--‿*-distribʳ x y = sym (-‿distribʳ-* x y)
+-‿*-distribʳ x y = sym (neg-distribʳ-* x y)
 {-# WARNING_ON_USAGE -‿*-distribʳ
 "Warning: -‿*-distribʳ was deprecated in v1.1.
-Please use -‿distribʳ-* instead.
-NOTE: the equality is flipped so you will need sym (-‿distribʳ-* ...)."
+Please use neg-distribʳ-* instead.
+NOTE: the equality is flipped so you will need sym (neg-distribʳ-* ...)."
+#-}
+
+-- Version 1.6
+
+-‿involutive = neg-involutive
+{-# WARNING_ON_USAGE -‿involutive
+"Warning: -‿involutive was deprecated in v1.6.
+Please use neg-involutive instead."
+#-}
+-‿injective = neg-injective
+{-# WARNING_ON_USAGE -‿injective
+"Warning: -‿injective was deprecated in v1.6.
+Please use neg-injective instead."
+#-}
+-‿anti-homo-+ = neg-anti-homo-+
+{-# WARNING_ON_USAGE -‿anti-homo-+
+"Warning: -‿anti-homo-+ was deprecated in v1.6.
+Please use neg-anti-homo-+ instead."
+#-}
+-‿distribˡ-* = neg-distribˡ-*
+{-# WARNING_ON_USAGE -‿distribˡ-*
+"Warning: -‿distribˡ-* was deprecated in v1.6.
+Please use neg-distribˡ-* instead."
+#-}
+-‿distribʳ-* = neg-distribʳ-*
+{-# WARNING_ON_USAGE -‿distribʳ-*
+"Warning: -‿distribʳ-* was deprecated in v1.6.
+Please use neg-distribʳ-* instead."
 #-}

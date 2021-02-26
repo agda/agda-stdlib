@@ -27,7 +27,7 @@ open import Tactic.RingSolver.Core.Polynomial.Base from
 open import Tactic.RingSolver.Core.Polynomial.Semantics homo
 
 ⊟-step-hom : ∀ {n} (a : Acc _<′_ n) → (xs : Poly n) → ∀ ρ → ⟦ ⊟-step a xs ⟧ ρ ≈ - (⟦ xs ⟧ ρ)
-⊟-step-hom (acc _ ) (Κ x  ⊐ i≤n) ρ = -‿homo x
+⊟-step-hom (acc _ ) (Κ x  ⊐ i≤n) ρ = neg-homo x
 ⊟-step-hom (acc wf) (⅀ xs ⊐ i≤n) ρ′ =
   let (ρ , ρs) = drop-1 i≤n ρ′
       neg-zero =
@@ -35,9 +35,9 @@ open import Tactic.RingSolver.Core.Polynomial.Semantics homo
           0#
         ≈⟨ sym (zeroʳ _) ⟩
           - 0# * 0#
-        ≈⟨ -‿*-distribˡ 0# 0# ⟩
+        ≈⟨ sym (neg-distribˡ-* 0# 0#) ⟩
           - (0# * 0#)
-        ≈⟨ -‿cong (zeroˡ 0#) ⟩
+        ≈⟨ neg-cong (zeroˡ 0#) ⟩
           - 0#
         ∎
   in
@@ -45,7 +45,7 @@ open import Tactic.RingSolver.Core.Polynomial.Semantics homo
     ⟦ poly-map (⊟-step (wf _ i≤n)) xs ⊐↓ i≤n ⟧ ρ′
   ≈⟨ ⊐↓-hom (poly-map (⊟-step (wf _ i≤n)) xs) i≤n ρ′ ⟩
     ⅀?⟦ poly-map (⊟-step  (wf _ i≤n)) xs ⟧ (ρ , ρs)
-  ≈⟨ poly-mapR ρ ρs (⊟-step (wf _ i≤n)) -_ (-‿cong) (λ x y → *-comm x (- y) ⟨ trans ⟩ -‿*-distribˡ y x ⟨ trans ⟩ -‿cong (*-comm _ _)) (λ x y → sym (-‿+-comm x y)) (flip (⊟-step-hom (wf _ i≤n)) ρs) (sym neg-zero ) xs ⟩
+  ≈⟨ poly-mapR ρ ρs (⊟-step (wf _ i≤n)) -_ (neg-cong) (λ x y → *-comm x (- y) ⟨ trans ⟩ sym (neg-distribˡ-* y x) ⟨ trans ⟩ neg-cong (*-comm _ _)) (λ x y → neg-distrib-+ x y) (flip (⊟-step-hom (wf _ i≤n)) ρs) (sym neg-zero ) xs ⟩
     - ⅀⟦ xs ⟧ (ρ , ρs)
   ∎
 

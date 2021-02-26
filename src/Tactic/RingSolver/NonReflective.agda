@@ -46,9 +46,9 @@ module Ops where
     ; to = record
       { isAlmostCommutativeRing = record
           { isCommutativeSemiring = isCommutativeSemiring
-          ; -‿cong       = -‿cong
-          ; -‿*-distribˡ = -‿*-distribˡ
-          ; -‿+-comm     = -‿+-comm
+          ; neg-cong       = neg-cong
+          ; neg-distribˡ-* = neg-distribˡ-*
+          ; neg-distrib-+  = neg-distrib-+
           }
       }
     ; morphism      = -raw-almostCommutative⟶ ring
@@ -82,7 +82,7 @@ module Ops where
     go (Ι x)   ρ = ι-hom x ρ
     go (x ⊕ y) ρ = ⊞-hom (norm x) (norm y) ρ ⟨ trans ⟩ (go x ρ ⟨ +-cong ⟩ go y ρ)
     go (x ⊗ y) ρ = ⊠-hom (norm x) (norm y) ρ ⟨ trans ⟩ (go x ρ ⟨ *-cong ⟩ go y ρ)
-    go (⊝ x)   ρ = ⊟-hom (norm x) ρ   ⟨ trans ⟩ -‿cong (go x ρ)
+    go (⊝ x)   ρ = ⊟-hom (norm x) ρ   ⟨ trans ⟩ neg-cong (go x ρ)
     go (x ⊛ i) ρ = ⊡-hom (norm x) i ρ ⟨ trans ⟩ ^-congˡ i (go x ρ)
 
   open import Relation.Binary.Reflection setoid Ι ⟦_⟧ ⟦_⇓⟧ correct public

@@ -184,8 +184,19 @@ module _ (ring : Ring r ℓr)
     open Defs ≈ᴹ
     field
       isLeftSemimodule : IsLeftSemimodule semiring ≈ᴹ +ᴹ 0ᴹ *ₗ
-      -ᴹ‿cong : Congruent₁ -ᴹ
-      -ᴹ‿inverse : Inverse 0ᴹ -ᴹ +ᴹ
+      negᴹ-cong : Congruent₁ -ᴹ
+      +ᴹ-inverse : Inverse 0ᴹ -ᴹ +ᴹ
+
+    -ᴹ‿cong = negᴹ-cong
+    {-# WARNING_ON_USAGE -ᴹ‿cong
+    "Warning: -ᴹ‿cong was deprecated in v1.6.
+    Please use negᴹ-cong instead."
+    #-}
+    -ᴹ‿inverse = +ᴹ-inverse
+    {-# WARNING_ON_USAGE -ᴹ‿inverse
+    "Warning: -ᴹ‿inverse was deprecated in v1.6.
+    Please use +ᴹ-inverse instead."
+    #-}
 
     open IsLeftSemimodule isLeftSemimodule public
 
@@ -193,8 +204,8 @@ module _ (ring : Ring r ℓr)
     +ᴹ-isAbelianGroup = record
       { isGroup = record
         { isMonoid = +ᴹ-isMonoid
-        ; inverse = -ᴹ‿inverse
-        ; ⁻¹-cong = -ᴹ‿cong
+        ; inverse = +ᴹ-inverse
+        ; ⁻¹-cong = negᴹ-cong
         }
       ; comm = +ᴹ-comm
       }
@@ -202,18 +213,50 @@ module _ (ring : Ring r ℓr)
     open IsAbelianGroup +ᴹ-isAbelianGroup public
       using () renaming
       ( isGroup    to +ᴹ-isGroup
-      ; inverseˡ   to -ᴹ‿inverseˡ
-      ; inverseʳ   to -ᴹ‿inverseʳ
-      ; uniqueˡ-⁻¹ to uniqueˡ‿-ᴹ
-      ; uniqueʳ-⁻¹ to uniqueʳ‿-ᴹ
+      ; inverseˡ   to +ᴹ-inverseˡ
+      ; inverseʳ   to +ᴹ-inverseʳ
+      ; uniqueˡ-⁻¹ to uniqueˡ-negᴹ
+      ; uniqueʳ-⁻¹ to uniqueʳ-negᴹ
       )
+
+    -ᴹ‿inverseˡ = +ᴹ-inverseˡ
+    {-# WARNING_ON_USAGE -ᴹ‿inverseˡ
+    "Warning: -ᴹ‿inverseˡ was deprecated in v1.6.
+    Please use +ᴹ-inverseˡ instead."
+    #-}
+    -ᴹ‿inverseʳ = +ᴹ-inverseʳ
+    {-# WARNING_ON_USAGE -ᴹ‿inverseʳ
+    "Warning: -ᴹ‿inverseʳ was deprecated in v1.6.
+    Please use +ᴹ-inverseʳ instead."
+    #-}
+    uniqueˡ‿-ᴹ = uniqueˡ-negᴹ
+    {-# WARNING_ON_USAGE uniqueˡ‿-ᴹ
+    "Warning: uniqueˡ‿-ᴹ was deprecated in v1.6.
+    Please use uniqueˡ-negᴹ instead."
+    #-}
+    uniqueʳ‿-ᴹ = uniqueʳ-negᴹ
+    {-# WARNING_ON_USAGE uniqueʳ‿-ᴹ
+    "Warning: uniqueʳ‿-ᴹ was deprecated in v1.6.
+    Please use uniqueʳ-negᴹ instead."
+    #-}
 
   record IsRightModule (*ᵣ : Opᵣ R M) : Set (r ⊔ m ⊔ ℓr ⊔ ℓm) where
     open Defs ≈ᴹ
     field
       isRightSemimodule : IsRightSemimodule semiring ≈ᴹ +ᴹ 0ᴹ *ᵣ
-      -ᴹ‿cong : Congruent₁ -ᴹ
-      -ᴹ‿inverse : Inverse 0ᴹ -ᴹ +ᴹ
+      negᴹ-cong : Congruent₁ -ᴹ
+      +ᴹ-inverse : Inverse 0ᴹ -ᴹ +ᴹ
+
+    -ᴹ‿cong = negᴹ-cong
+    {-# WARNING_ON_USAGE -ᴹ‿cong
+    "Warning: -ᴹ‿cong was deprecated in v1.6.
+    Please use negᴹ-cong instead."
+    #-}
+    -ᴹ‿inverse = +ᴹ-inverse
+    {-# WARNING_ON_USAGE -ᴹ‿inverse
+    "Warning: -ᴹ‿inverse was deprecated in v1.6.
+    Please use +ᴹ-inverse instead."
+    #-}
 
     open IsRightSemimodule isRightSemimodule public
 
@@ -221,8 +264,8 @@ module _ (ring : Ring r ℓr)
     +ᴹ-isAbelianGroup = record
       { isGroup = record
         { isMonoid = +ᴹ-isMonoid
-        ; inverse = -ᴹ‿inverse
-        ; ⁻¹-cong = -ᴹ‿cong
+        ; inverse = +ᴹ-inverse
+        ; ⁻¹-cong = negᴹ-cong
         }
       ; comm = +ᴹ-comm
       }
@@ -230,11 +273,32 @@ module _ (ring : Ring r ℓr)
     open IsAbelianGroup +ᴹ-isAbelianGroup public
       using () renaming
       ( isGroup    to +ᴹ-isGroup
-      ; inverseˡ   to -ᴹ‿inverseˡ
-      ; inverseʳ   to -ᴹ‿inverseʳ
-      ; uniqueˡ-⁻¹ to uniqueˡ‿-ᴹ
-      ; uniqueʳ-⁻¹ to uniqueʳ‿-ᴹ
+      ; inverseˡ   to +ᴹ-inverseˡ
+      ; inverseʳ   to +ᴹ-inverseʳ
+      ; uniqueˡ-⁻¹ to uniqueˡ-negᴹ
+      ; uniqueʳ-⁻¹ to uniqueʳ-negᴹ
       )
+
+    -ᴹ‿inverseˡ = +ᴹ-inverseˡ
+    {-# WARNING_ON_USAGE -ᴹ‿inverseˡ
+    "Warning: -ᴹ‿inverseˡ was deprecated in v1.6.
+    Please use +ᴹ-inverseˡ instead."
+    #-}
+    -ᴹ‿inverseʳ = +ᴹ-inverseʳ
+    {-# WARNING_ON_USAGE -ᴹ‿inverseʳ
+    "Warning: -ᴹ‿inverseʳ was deprecated in v1.6.
+    Please use +ᴹ-inverseʳ instead."
+    #-}
+    uniqueˡ‿-ᴹ = uniqueˡ-negᴹ
+    {-# WARNING_ON_USAGE uniqueˡ‿-ᴹ
+    "Warning: uniqueˡ‿-ᴹ was deprecated in v1.6.
+    Please use uniqueˡ-negᴹ instead."
+    #-}
+    uniqueʳ‿-ᴹ = uniqueʳ-negᴹ
+    {-# WARNING_ON_USAGE uniqueʳ‿-ᴹ
+    "Warning: uniqueʳ‿-ᴹ was deprecated in v1.6.
+    Please use uniqueʳ-negᴹ instead."
+    #-}
 
 module _ (R-ring : Ring r ℓr) (S-ring : Ring s ℓs)
          (≈ᴹ : Rel {m} M ℓm) (+ᴹ : Op₂ M) (0ᴹ : M) (-ᴹ : Op₁ M)
@@ -248,27 +312,41 @@ module _ (R-ring : Ring r ℓr) (S-ring : Ring s ℓs)
     open Defs ≈ᴹ
     field
       isBisemimodule : IsBisemimodule R-semiring S-semiring ≈ᴹ +ᴹ 0ᴹ *ₗ *ᵣ
-      -ᴹ‿cong : Congruent₁ -ᴹ
-      -ᴹ‿inverse : Inverse 0ᴹ -ᴹ +ᴹ
+      negᴹ-cong : Congruent₁ -ᴹ
+      +ᴹ-inverse : Inverse 0ᴹ -ᴹ +ᴹ
+
+    -ᴹ‿cong = negᴹ-cong
+    {-# WARNING_ON_USAGE -ᴹ‿cong
+    "Warning: -ᴹ‿cong was deprecated in v1.6.
+    Please use negᴹ-cong instead."
+    #-}
+
+    -ᴹ‿inverse = +ᴹ-inverse
+    {-# WARNING_ON_USAGE -ᴹ‿inverse
+    "Warning: -ᴹ‿inverse was deprecated in v1.6.
+    Please use +ᴹ-inverse instead."
+    #-}
 
     open IsBisemimodule isBisemimodule public
 
     isLeftModule : IsLeftModule R-ring ≈ᴹ +ᴹ 0ᴹ -ᴹ *ₗ
     isLeftModule = record
       { isLeftSemimodule = isLeftSemimodule
-      ; -ᴹ‿cong = -ᴹ‿cong
-      ; -ᴹ‿inverse = -ᴹ‿inverse
+      ; negᴹ-cong = negᴹ-cong
+      ; +ᴹ-inverse = +ᴹ-inverse
       }
 
     open IsLeftModule isLeftModule public
-      using ( +ᴹ-isAbelianGroup; +ᴹ-isGroup; -ᴹ‿inverseˡ; -ᴹ‿inverseʳ
-            ; uniqueˡ‿-ᴹ; uniqueʳ‿-ᴹ)
+      using ( +ᴹ-isAbelianGroup; +ᴹ-isGroup; +ᴹ-inverseˡ; +ᴹ-inverseʳ
+            ; uniqueˡ-negᴹ; uniqueʳ-negᴹ
+            -- DEPRECATED
+            ;-ᴹ‿inverseˡ; -ᴹ‿inverseʳ; uniqueˡ‿-ᴹ; uniqueʳ‿-ᴹ)
 
     isRightModule : IsRightModule S-ring ≈ᴹ +ᴹ 0ᴹ -ᴹ *ᵣ
     isRightModule = record
       { isRightSemimodule = isRightSemimodule
-      ; -ᴹ‿cong = -ᴹ‿cong
-      ; -ᴹ‿inverse = -ᴹ‿inverse
+      ; negᴹ-cong = negᴹ-cong
+      ; +ᴹ-inverse = +ᴹ-inverse
       }
 
 module _ (commutativeRing : CommutativeRing r ℓr)

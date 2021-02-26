@@ -12,12 +12,130 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
+#### Consistent field names in some records
+
+* In order to match the conventions found elsewhere in the library, some records has
+  had their fields renamed. To maximise backwards compatability, the records still
+  exports the former names, but they are deprecated.
+
+  * In `Algebra.Module.Structures`:
+
+    - In `IsLeftModule` ,  `IsRightModule` ,  `IsBimodule`:
+      ```agda
+      -ᴹ‿cong     ↦  negᴹ-cong
+      -ᴹ‿inverse  ↦  +ᴹ-inverse
+      ```
+
+  * In `Algebra.Solver.Ring.AlmostCommutativeRing` ,  `Tactic.RingSolver.Core.AlmostCommutativeRing`:
+
+    - In `IsAlmostCommutativeRing`:
+      ```agda
+      -‿cong        ↦  neg-cong
+      -‿*-distribˡ  ↦  neg-distribˡ-*
+      -‿+-comm      ↦  neg-distrib-+
+      ```
+
+    - In `_-Raw-AlmostCommutative⟶_`:
+      ```agda
+      -‿homo  ↦  neg-homo
+      ```
+
+#### Consistent implicit arguments of functions in `Data.Rational.Unnormaliseds.Properties`
+
+* The arguments of some functions in `Data.Rational.Unnormaliseds.Properties` are
+  no longer implicit now. This makes them consistent with functions in
+  `Data.Integer.Properties` which already used explicit arguments. Moreover, these
+  parameters often can not be inferred by Agda.
+
+  The functions was:
+
+  ```agda
+  positive⇒nonNegative : ∀ {q} → Positive q → NonNegative q
+  negative⇒nonPositive : ∀ {q} → Negative q → NonPositive q
+  *-cancelˡ-≤-neg       : ∀ {r} → Negative r → ∀ {p q} → r * p ≤ r * q → q ≤ p
+  *-monoˡ-≤-nonNeg      : ∀ {r} → NonNegative r → (_* r) Preserves _≤_ ⟶ _≤_
+  *-monoʳ-≤-nonNeg      : ∀ {r} → NonNegative r → (r *_) Preserves _≤_ ⟶ _≤_
+  *-monoˡ-≤-pos         : ∀ {r} → Positive r → (_* r) Preserves _≤_ ⟶ _≤_
+  *-monoʳ-≤-pos         : ∀ {r} → Positive r → (r *_) Preserves _≤_ ⟶ _≤_
+  *-monoˡ-≤-nonPos      : ∀ {r} → NonPositive r → (_* r) Preserves _≤_ ⟶ _≥_
+  *-monoʳ-≤-nonPos      : ∀ {r} → NonPositive r → (r *_) Preserves _≤_ ⟶ _≥_
+  *-monoˡ-≤-neg         : ∀ {r} → Negative r → (_* r) Preserves _≤_ ⟶ _≥_
+  *-monoʳ-≤-neg         : ∀ {r} → Negative r → (r *_) Preserves _≤_ ⟶ _≥_
+  *-monoˡ-<-pos         : ∀ {r} (r>0 : Positive r) → (_* r) Preserves _<_ ⟶ _<_
+  *-monoʳ-<-pos         : ∀ {r} (r>0 : Positive r) → (r *_) Preserves _<_ ⟶ _<_
+  *-cancelˡ-<-nonNeg    : ∀ {r} (r≥0 : NonNegative r) {p q} → r * p < r * q → p < q
+  *-cancelʳ-<-nonNeg    : ∀ {r} (r≥0 : NonNegative r) {p q} → p * r < q * r → p < q
+  *-cancelˡ-<-pos       : ∀ {r} → Positive r → ∀ {p q} → r * p < r * q → p < q
+  *-cancelʳ-<-pos       : ∀ {r} → Positive r → ∀ {p q} → p * r < q * r → p < q
+  *-monoˡ-<-neg         : ∀ {r} → Negative r → (_* r) Preserves _<_ ⟶ _>_
+  *-monoʳ-<-neg         : ∀ {r} → Negative r → (r *_) Preserves _<_ ⟶ _>_
+  *-cancelˡ-<-nonPos    : ∀ {r} → NonPositive r → ∀ {p q} → r * p < r * q → q < p
+  *-cancelʳ-<-nonPos    : ∀ {r} → NonPositive r → ∀ {p q} → p * r < q * r → q < p
+  *-cancelˡ-<-neg       : ∀ {r} → Negative r → ∀ {p q} → r * p < r * q → q < p
+  *-cancelʳ-<-neg       : ∀ {r} → Negative r → ∀ {p q} → p * r < q * r → q < p
+  ```
+
+  and is now:
+
+  ```agda
+  positive⇒nonNegative : ∀ q → Positive q → NonNegative q
+  negative⇒nonPositive : ∀ q → Negative q → NonPositive q
+  *-cancelˡ-≤-neg       : ∀ r → Negative r → ∀ {p q} → r * p ≤ r * q → q ≤ p
+  *-monoˡ-≤-nonNeg      : ∀ r → NonNegative r → (_* r) Preserves _≤_ ⟶ _≤_
+  *-monoʳ-≤-nonNeg      : ∀ r → NonNegative r → (r *_) Preserves _≤_ ⟶ _≤_
+  *-monoˡ-≤-pos         : ∀ r → Positive r → (_* r) Preserves _≤_ ⟶ _≤_
+  *-monoʳ-≤-pos         : ∀ r → Positive r → (r *_) Preserves _≤_ ⟶ _≤_
+  *-monoˡ-≤-nonPos      : ∀ r → NonPositive r → (_* r) Preserves _≤_ ⟶ _≥_
+  *-monoʳ-≤-nonPos      : ∀ r → NonPositive r → (r *_) Preserves _≤_ ⟶ _≥_
+  *-monoˡ-≤-neg         : ∀ r → Negative r → (_* r) Preserves _≤_ ⟶ _≥_
+  *-monoʳ-≤-neg         : ∀ r → Negative r → (r *_) Preserves _≤_ ⟶ _≥_
+  *-monoˡ-<-pos         : ∀ r (r>0 : Positive r) → (_* r) Preserves _<_ ⟶ _<_
+  *-monoʳ-<-pos         : ∀ r (r>0 : Positive r) → (r *_) Preserves _<_ ⟶ _<_
+  *-cancelˡ-<-nonNeg    : ∀ r (r≥0 : NonNegative r) {p q} → r * p < r * q → p < q
+  *-cancelʳ-<-nonNeg    : ∀ r (r≥0 : NonNegative r) {p q} → p * r < q * r → p < q
+  *-cancelˡ-<-pos       : ∀ r → Positive r → ∀ {p q} → r * p < r * q → p < q
+  *-cancelʳ-<-pos       : ∀ r → Positive r → ∀ {p q} → p * r < q * r → p < q
+  *-monoˡ-<-neg         : ∀ r → Negative r → (_* r) Preserves _<_ ⟶ _>_
+  *-monoʳ-<-neg         : ∀ r → Negative r → (r *_) Preserves _<_ ⟶ _>_
+  *-cancelˡ-<-nonPos    : ∀ r → NonPositive r → ∀ {p q} → r * p < r * q → q < p
+  *-cancelʳ-<-nonPos    : ∀ r → NonPositive r → ∀ {p q} → p * r < q * r → q < p
+  *-cancelˡ-<-neg       : ∀ r → Negative r → ∀ {p q} → r * p < r * q → q < p
+  *-cancelʳ-<-neg       : ∀ r → Negative r → ∀ {p q} → p * r < q * r → q < p
+  ```
+
 Deprecated modules
 ------------------
 
 Deprecated names
 ----------------
 
+* In `Algebra.Properties.AbelianGroup `:
+  ```agda
+  ⁻¹-∙-comm  ↦  ⁻¹-distrib-∙
+  ```
+
+* In `Algebra.Properties.Ring`:
+  ```agda
+  -‿involutive   ↦  neg-involutive
+  -‿injective    ↦  neg-injective
+  -‿anti-homo-+  ↦  neg-anti-homo-+
+  -‿+-comm       ↦  neg-distrib-+
+  ```
+
+* In `Algebra.Solver.Ring`:
+  ```agda
+  -H‿-homo  ↦  negH-homo
+  -N‿-homo  ↦  negN-homo
+  ```
+
+* In `Algebra.Structures`:
+  ```agda
+  -‿inverse   ↦  +-inverse
+  -‿inverseˡ  ↦  +-inverseˡ
+  -‿inverseʳ  ↦  +-inverseʳ
+-‿cong      ↦  neg-cong
+  ```
+  
 * In `Data.Nat.Properties`:
   ```agda
   m≤n⇒n⊔m≡n   ↦  m≥n⇒m⊔n≡m
@@ -52,8 +170,15 @@ Deprecated names
 
 * In `Data.Rational.Properties`:
   ```agda
-  neg-mono-<-> ↦ neg-mono-<
-  neg-mono-≤-≥ ↦ neg-mono-≤
+  neg-mono-<->  ↦  neg-mono-<
+  neg-mono-≤-≥  ↦  neg-mono-≤
+  toℚᵘ-homo‿-   ↦  toℚᵘ-homo-neg
+  -‿cong        ↦  neg-cong
+  ```
+
+* In `Data.Rational.Unnormalised.Properties`:
+  ```agda
+  -‿cong  ↦  neg-cong
   ```
 
 New modules
@@ -74,6 +199,12 @@ New modules
 
 Other minor additions
 ---------------------
+
+* Added new proofs in `Algebra.Morphism.RingMonomorphism`:
+  ```agda
+  neg-distribˡ-* : ((⊝ (x ⊛ y)) ≈₂ ((⊝ x) ⊛ y)) → ((- (x * y)) ≈₁ ((- x) * y))
+  neg-distribʳ-* : ((⊝ (x ⊛ y)) ≈₂ (x ⊛ (⊝ y))) → ((- (x * y)) ≈₁ (x * (- y)))
+  ```
 
 * Added new function in `Data.List.Base`:
   ```agda
@@ -270,28 +401,28 @@ Other minor additions
   *-inverseˡ   : 1/ p * p ≡ 1ℚ
   *-inverseʳ   : p * 1/ p ≡ 1ℚ
   
-  positive⇒nonNegative : ∀ {q} → Positive q → NonNegative q
-  negative⇒nonPositive : ∀ {q} → Negative q → NonPositive q
-  toℚᵘ-mono-< : ∀ {p q} → p < q → toℚᵘ p <ᵘ toℚᵘ q
-  toℚᵘ-cancel-< : ∀ {p q} → toℚᵘ p <ᵘ toℚᵘ q → p < q
+  positive⇒nonNegative       : Positive q → NonNegative q
+  negative⇒nonPositive       :  Negative q → NonPositive q
+  toℚᵘ-mono-<                : p < q → toℚᵘ p <ᵘ toℚᵘ q
+  toℚᵘ-cancel-<              : → toℚᵘ p <ᵘ toℚᵘ q → p < q
   toℚᵘ-isOrderHomomorphism-< : IsOrderHomomorphism _≡_ _≃ᵘ_ _<_ _<ᵘ_ toℚᵘ
   toℚᵘ-isOrderMonomorphism-< : IsOrderMonomorphism _≡_ _≃ᵘ_ _<_ _<ᵘ_ toℚᵘ
-  neg-distrib-+ : ∀ p q → - (p + q) ≡ (- p) + (- q)
-  +-mono-≤ : _+_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
-  +-monoˡ-≤ : ∀ r → (_+ r) Preserves _≤_ ⟶ _≤_
-  +-monoʳ-≤ : ∀ r → (_+_ r) Preserves _≤_ ⟶ _≤_
-  +-mono-<-≤ : _+_ Preserves₂ _<_ ⟶ _≤_ ⟶ _<_
-  +-mono-< : _+_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
-  +-monoˡ-< : ∀ r → (_+ r) Preserves _<_ ⟶ _<_
-  +-monoʳ-< : ∀ r → (_+_ r) Preserves _<_ ⟶ _<_
-  neg-distribˡ-* : ∀ p q → - (p * q) ≡ - p * q
-  neg-distribʳ-* : ∀ p q → - (p * q) ≡ p * - q
-  *-monoˡ-≤-nonNeg : ∀ {r} → NonNegative r → (_* r) Preserves _≤_ ⟶ _≤_
-  *-monoʳ-≤-nonNeg : ∀ {r} → NonNegative r → (r *_) Preserves _≤_ ⟶ _≤_
-  *-monoˡ-≤-pos : ∀ {r} → Positive r → (_* r) Preserves _≤_ ⟶ _≤_
-  *-monoʳ-≤-pos : ∀ {r} → Positive r → (r *_) Preserves _≤_ ⟶ _≤_
-  *-monoˡ-<-pos : ∀ {r} → Positive r → (_* r) Preserves _<_ ⟶ _<_
-  *-monoʳ-<-pos : ∀ {r} → Positive r → (r *_) Preserves _<_ ⟶ _<_
+  neg-distrib-+              : - (p + q) ≡ (- p) + (- q)
+  +-mono-≤                   : _+_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
+  +-monoˡ-≤                  : (_+ r) Preserves _≤_ ⟶ _≤_
+  +-monoʳ-≤                  : (_+_ r) Preserves _≤_ ⟶ _≤_
+  +-mono-<-≤                 : _+_ Preserves₂ _<_ ⟶ _≤_ ⟶ _<_
+  +-mono-<                   : _+_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
+  +-monoˡ-<                  : (_+ r) Preserves _<_ ⟶ _<_
+  +-monoʳ-<                  : (_+_ r) Preserves _<_ ⟶ _<_
+  neg-distribˡ-*             : - (p * q) ≡ - p * q
+  neg-distribʳ-*             : - (p * q) ≡ p * - q
+  *-monoˡ-≤-nonNeg           : NonNegative r → (_* r) Preserves _≤_ ⟶ _≤_
+  *-monoʳ-≤-nonNeg           : NonNegative r → (r *_) Preserves _≤_ ⟶ _≤_
+  *-monoˡ-≤-pos              : Positive r → (_* r) Preserves _≤_ ⟶ _≤_
+  *-monoʳ-≤-pos              : Positive r → (r *_) Preserves _≤_ ⟶ _≤_
+  *-monoˡ-<-pos              : Positive r → (_* r) Preserves _<_ ⟶ _<_
+  *-monoʳ-<-pos              : Positive r → (r *_) Preserves _<_ ⟶ _<_
   ```
   
 * Add new relations and functions to `Data.Rational.Unnormalised`:

@@ -49,12 +49,12 @@ private
 
   homomorphism : ℕ-ring -Raw-AlmostCommutative⟶ fromCommutativeSemiring R
   homomorphism = record
-    { ⟦_⟧    = λ n → n × 1#
-    ; +-homo = ×-homo-+ 1#
-    ; *-homo = ×1-homo-*
-    ; -‿homo = λ _ → refl
-    ; 0-homo = refl
-    ; 1-homo = refl
+    { ⟦_⟧      = λ n → n × 1#
+    ; +-homo   = ×-homo-+ 1#
+    ; *-homo   = ×1-homo-*
+    ; neg-homo = λ _ → refl
+    ; 0-homo   = refl
+    ; 1-homo   = refl
     }
 
   -- Equality of certain expressions can be decided.

@@ -85,8 +85,8 @@ leftModule {R = ring} = record
   { -ᴹ_ = -_
   ; isLeftModule = record
     { isLeftSemimodule = LeftSemimodule.isLeftSemimodule leftSemimodule
-    ; -ᴹ‿cong = -‿cong
-    ; -ᴹ‿inverse = -‿inverse
+    ; negᴹ-cong = neg-cong
+    ; +ᴹ-inverse = +-inverse
     }
   } where open Ring ring
 
@@ -95,8 +95,8 @@ rightModule {R = ring} = record
   { -ᴹ_ = -_
   ; isRightModule = record
     { isRightSemimodule = RightSemimodule.isRightSemimodule rightSemimodule
-    ; -ᴹ‿cong = -‿cong
-    ; -ᴹ‿inverse = -‿inverse
+    ; negᴹ-cong = neg-cong
+    ; +ᴹ-inverse = +-inverse
     }
   } where open Ring ring
 
@@ -104,8 +104,8 @@ bimodule : {R : Ring c ℓ} → Bimodule R R c ℓ
 bimodule {R = ring} = record
   { isBimodule = record
     { isBisemimodule = Bisemimodule.isBisemimodule bisemimodule
-    ; -ᴹ‿cong = -‿cong
-    ; -ᴹ‿inverse = -‿inverse
+    ; negᴹ-cong = neg-cong
+    ; +ᴹ-inverse = +-inverse
     }
   } where open Ring ring
 

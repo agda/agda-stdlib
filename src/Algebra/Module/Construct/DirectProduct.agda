@@ -109,10 +109,10 @@ leftModule M N = record
   ; isLeftModule = record
     { isLeftSemimodule = LeftSemimodule.isLeftSemimodule
       (leftSemimodule M.leftSemimodule N.leftSemimodule)
-    ; -ᴹ‿cong = λ where (mm , nn) → M.-ᴹ‿cong mm , N.-ᴹ‿cong nn
-    ; -ᴹ‿inverse = λ where
-      .proj₁ (m , n) → M.-ᴹ‿inverseˡ m , N.-ᴹ‿inverseˡ n
-      .proj₂ (m , n) → M.-ᴹ‿inverseʳ m , N.-ᴹ‿inverseʳ n
+    ; negᴹ-cong = λ where (mm , nn) → M.negᴹ-cong mm , N.negᴹ-cong nn
+    ; +ᴹ-inverse = λ where
+      .proj₁ (m , n) → M.+ᴹ-inverseˡ m , N.+ᴹ-inverseˡ n
+      .proj₂ (m , n) → M.+ᴹ-inverseʳ m , N.+ᴹ-inverseʳ n
     }
   } where module M = LeftModule M; module N = LeftModule N
 
@@ -125,10 +125,10 @@ rightModule M N = record
   ; isRightModule = record
     { isRightSemimodule = RightSemimodule.isRightSemimodule
       (rightSemimodule M.rightSemimodule N.rightSemimodule)
-    ; -ᴹ‿cong = λ where (mm , nn) → M.-ᴹ‿cong mm , N.-ᴹ‿cong nn
-    ; -ᴹ‿inverse = λ where
-      .proj₁ (m , n) → M.-ᴹ‿inverseˡ m , N.-ᴹ‿inverseˡ n
-      .proj₂ (m , n) → M.-ᴹ‿inverseʳ m , N.-ᴹ‿inverseʳ n
+    ; negᴹ-cong = λ where (mm , nn) → M.negᴹ-cong mm , N.negᴹ-cong nn
+    ; +ᴹ-inverse = λ where
+      .proj₁ (m , n) → M.+ᴹ-inverseˡ m , N.+ᴹ-inverseˡ n
+      .proj₂ (m , n) → M.+ᴹ-inverseʳ m , N.+ᴹ-inverseʳ n
     }
   } where module M = RightModule M; module N = RightModule N
 
@@ -141,10 +141,10 @@ bimodule M N = record
   ; isBimodule = record
     { isBisemimodule = Bisemimodule.isBisemimodule
       (bisemimodule M.bisemimodule N.bisemimodule)
-    ; -ᴹ‿cong = λ where (mm , nn) → M.-ᴹ‿cong mm , N.-ᴹ‿cong nn
-    ; -ᴹ‿inverse = λ where
-      .proj₁ (m , n) → M.-ᴹ‿inverseˡ m , N.-ᴹ‿inverseˡ n
-      .proj₂ (m , n) → M.-ᴹ‿inverseʳ m , N.-ᴹ‿inverseʳ n
+    ; negᴹ-cong = λ where (mm , nn) → M.negᴹ-cong mm , N.negᴹ-cong nn
+    ; +ᴹ-inverse = λ where
+      .proj₁ (m , n) → M.+ᴹ-inverseˡ m , N.+ᴹ-inverseˡ n
+      .proj₂ (m , n) → M.+ᴹ-inverseʳ m , N.+ᴹ-inverseʳ n
     }
   } where module M = Bimodule M; module N = Bimodule N
 

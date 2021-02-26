@@ -482,10 +482,10 @@ record IsRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
     ; identity               to +-identity
     ; identityˡ              to +-identityˡ
     ; identityʳ              to +-identityʳ
-    ; inverse                to -‿inverse
-    ; inverseˡ               to -‿inverseˡ
-    ; inverseʳ               to -‿inverseʳ
-    ; ⁻¹-cong                to -‿cong
+    ; inverse                to +-inverse
+    ; inverseˡ               to +-inverseˡ
+    ; inverseʳ               to +-inverseʳ
+    ; ⁻¹-cong                to neg-cong
     ; comm                   to +-comm
     ; isMagma                to +-isMagma
     ; isSemigroup            to +-isSemigroup
@@ -495,6 +495,27 @@ record IsRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
     ; isCommutativeSemigroup to +-isCommutativeSemigroup
     ; isGroup                to +-isGroup
     )
+
+  -‿inverse = +-inverse
+  {-# WARNING_ON_USAGE -‿inverse
+  "Warning: -‿inverse was deprecated in v1.6.
+  Please use +-inverse instead."
+  #-}
+  -‿inverseˡ = +-inverseˡ
+  {-# WARNING_ON_USAGE -‿inverseˡ
+  "Warning: -‿inverseˡ was deprecated in v1.6.
+  Please use +-inverseˡ instead."
+  #-}
+  -‿inverseʳ = +-inverseʳ
+  {-# WARNING_ON_USAGE -‿inverseʳ
+  "Warning: -‿inverseʳ was deprecated in v1.6.
+  Please use +-inverseʳ instead."
+  #-}
+  -‿cong = neg-cong
+  {-# WARNING_ON_USAGE -‿cong
+  "Warning: -‿cong was deprecated in v1.6.
+  Please use neg-cong instead."
+  #-}
 
   open IsMonoid *-isMonoid public
     using ()

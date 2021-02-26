@@ -485,18 +485,18 @@ mutual
 
 mutual
 
-  -H‿-homo : ∀ {n} (p : HNF (suc n)) →
+  negH-homo : ∀ {n} (p : HNF (suc n)) →
              ∀ ρ → ⟦ -H p ⟧H ρ ≈ - ⟦ p ⟧H ρ
-  -H‿-homo p (x ∷ ρ) = begin
+  negH-homo p (x ∷ ρ) = begin
     ⟦ (-N 1N) *NH p ⟧H (x ∷ ρ)     ≈⟨ *NH-homo (-N 1N) p x ρ ⟩
-    ⟦ -N 1N ⟧N ρ * ⟦ p ⟧H (x ∷ ρ)  ≈⟨ trans (-N‿-homo 1N ρ) (-‿cong (1N-homo ρ)) ⟨ *-cong ⟩ refl ⟩
+    ⟦ -N 1N ⟧N ρ * ⟦ p ⟧H (x ∷ ρ)  ≈⟨ trans (negN-homo 1N ρ) (neg-cong (1N-homo ρ)) ⟨ *-cong ⟩ refl ⟩
     - 1# * ⟦ p ⟧H (x ∷ ρ)          ≈⟨ lemma₇ _ ⟩
     - ⟦ p ⟧H (x ∷ ρ)               ∎
 
-  -N‿-homo : ∀ {n} (p : Normal n) →
+  negN-homo : ∀ {n} (p : Normal n) →
              ∀ ρ → ⟦ -N p ⟧N ρ ≈ - ⟦ p ⟧N ρ
-  -N‿-homo (con c)  _ = -‿homo _
-  -N‿-homo (poly p) ρ = -H‿-homo p ρ
+  negN-homo (con c)  _ = neg-homo _
+  negN-homo (poly p) ρ = negH-homo p ρ
 
 ------------------------------------------------------------------------
 -- Correctness
@@ -536,8 +536,8 @@ correct (p :^ k) ρ = begin
   ⟦ p ⟧↓ ρ ^ k             ≈⟨ correct p ρ ⟨ ^-cong ⟩ PropEq.refl {x = k} ⟩
   ⟦ p ⟧ ρ ^ k              ∎
 correct (:- p) ρ = begin
-  ⟦ -N normalise p ⟧N ρ  ≈⟨ -N‿-homo (normalise p) ρ ⟩
-  - ⟦ p ⟧↓ ρ             ≈⟨ -‿cong (correct p ρ) ⟩
+  ⟦ -N normalise p ⟧N ρ  ≈⟨ negN-homo (normalise p) ρ ⟩
+  - ⟦ p ⟧↓ ρ             ≈⟨ neg-cong (correct p ρ) ⟩
   - ⟦ p ⟧ ρ              ∎
 
 ------------------------------------------------------------------------
@@ -549,3 +549,23 @@ open Reflection setoid var ⟦_⟧ ⟦_⟧↓ correct public
 -- For examples of how solve and _:=_ can be used to
 -- semi-automatically prove ring equalities, see, for instance,
 -- Data.Digit or Data.Nat.DivMod.
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 1.6
+
+-H‿-homo = negH-homo
+{-# WARNING_ON_USAGE -H‿-homo
+"Warning: -H‿-homo was deprecated in v1.6.
+Please use negH-homo instead."
+#-}
+-N‿-homo = negN-homo
+{-# WARNING_ON_USAGE -N‿-homo
+"Warning: -N‿-homo was deprecated in v1.6.
+Please use negN-homo instead."
+#-}

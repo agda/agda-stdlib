@@ -60,13 +60,13 @@ open import Algebra.Properties.CommutativeSemigroup ℤ.*-commutativeSemigroup
 -- Properties of Positive/Negative/NonPositive/NonNegative predicates
 ------------------------------------------------------------------------
 
-positive⇒nonNegative : ∀ {q} → Positive q → NonNegative q
-positive⇒nonNegative {mkℚᵘ +0       _} _ = _
-positive⇒nonNegative {mkℚᵘ +[1+ n ] _} _ = _
+positive⇒nonNegative : ∀ q → Positive q → NonNegative q
+positive⇒nonNegative (mkℚᵘ +0       _) _ = _
+positive⇒nonNegative (mkℚᵘ +[1+ n ] _) _ = _
 
-negative⇒nonPositive : ∀ {q} → Negative q → NonPositive q
-negative⇒nonPositive {mkℚᵘ +0       _} _ = _
-negative⇒nonPositive {mkℚᵘ -[1+ n ] _} _ = _
+negative⇒nonPositive : ∀ q → Negative q → NonPositive q
+negative⇒nonPositive (mkℚᵘ +0       _) _ = _
+negative⇒nonPositive (mkℚᵘ -[1+ n ] _) _ = _
 
 ------------------------------------------------------------------------
 -- Properties of _≃_
@@ -131,8 +131,8 @@ neg-involutive-≡ (mkℚᵘ n d) = cong (λ n → mkℚᵘ n d) (ℤ.neg-involu
 neg-involutive : Involutive _≃_ (-_)
 neg-involutive p rewrite neg-involutive-≡ p = ≃-refl
 
--‿cong : Congruent₁ _≃_ (-_)
--‿cong {p} {q} (*≡* p≡q) = *≡* $ begin
+neg-cong : Congruent₁ _≃_ (-_)
+neg-cong {p} {q} (*≡* p≡q) = *≡* $ begin
   ↥(- p) ℤ.* ↧ q            ≡˘⟨ ℤ.*-identityˡ (ℤ.-(↥ p) ℤ.* ↧ q) ⟩
   1ℤ ℤ.* (↥(- p) ℤ.* ↧ q)   ≡˘⟨ ℤ.*-assoc 1ℤ (↥(- p)) (↧ q) ⟩
   (1ℤ ℤ.* ℤ.-(↥ p)) ℤ.* ↧ q ≡˘⟨ cong (ℤ._* ↧ q) (ℤ.neg-distribʳ-* 1ℤ (↥ p)) ⟩
@@ -444,7 +444,7 @@ p <? q = Dec.map′ *<* drop-*<* (↥ p ℤ.* ↧ q ℤ.<? ↥ q ℤ.* ↧ p)
 <-respˡ-≃ q≃r q<p
   = subst (_< _) (neg-involutive-≡ _)
   $ subst (_ <_) (neg-involutive-≡ _)
-  $ neg-mono-< (<-respʳ-≃ (-‿cong q≃r) (neg-mono-< q<p))
+  $ neg-mono-< (<-respʳ-≃ (neg-cong q≃r) (neg-mono-< q<p))
 
 <-resp-≃ : _<_ Respects₂ _≃_
 <-resp-≃ = <-respʳ-≃ , <-respˡ-≃
@@ -885,7 +885,7 @@ p≤q⇒0≤q-p {p} {q} p≤q = begin
 +-0-isGroup = record
   { isMonoid = +-0-isMonoid
   ; inverse  = +-inverse
-  ; ⁻¹-cong  = -‿cong
+  ; ⁻¹-cong  = neg-cong
   }
 
 +-0-isAbelianGroup : IsAbelianGroup _≃_ _+_ 0ℚᵘ (-_)
@@ -1124,25 +1124,25 @@ private
 *-cancelʳ-≤-neg : ∀ {r} → Negative r → ∀ {p q} → p * r ≤ q * r → q ≤ p
 *-cancelʳ-≤-neg {r} r<0 {p} {q} pr≤qr = neg-cancel-≤ (*-cancelʳ-≤-pos (positive { - r} (neg-mono-< {r} {0ℚᵘ} (negative⁻¹ r<0))) (begin
   - p * - r                                ≈˘⟨ neg-distribˡ-* p (- r) ⟩
-  - (p * - r)                              ≈˘⟨ -‿cong (neg-distribʳ-* p r) ⟩
+  - (p * - r)                              ≈˘⟨ neg-cong (neg-distribʳ-* p r) ⟩
   - - (p * r)                              ≈⟨ neg-involutive (p * r) ⟩
   p * r                                    ≤⟨ pr≤qr ⟩
   q * r                                    ≈˘⟨ neg-involutive (q * r) ⟩
-  - - (q * r)                              ≈⟨ -‿cong (neg-distribʳ-* q r) ⟩
+  - - (q * r)                              ≈⟨ neg-cong (neg-distribʳ-* q r) ⟩
   - (q * - r)                              ≈⟨ neg-distribˡ-* q (- r) ⟩
   - q * - r                                ∎))
   where open ≤-Reasoning
 
-*-cancelˡ-≤-neg : ∀ {r} → Negative r → ∀ {p q} → r * p ≤ r * q → q ≤ p
-*-cancelˡ-≤-neg {r} r<0 {p} {q} pr≤qr = *-cancelʳ-≤-neg r<0 $ begin
+*-cancelˡ-≤-neg : ∀ r → Negative r → ∀ {p q} → r * p ≤ r * q → q ≤ p
+*-cancelˡ-≤-neg r r<0 {p} {q} pr≤qr = *-cancelʳ-≤-neg r<0 $ begin
   p * r                                    ≈⟨ *-comm p r ⟩
   r * p                                    ≤⟨ pr≤qr ⟩
   r * q                                    ≈⟨ *-comm r q ⟩
   q * r                                    ∎
   where open ≤-Reasoning
 
-*-monoˡ-≤-nonNeg : ∀ {r} → NonNegative r → (_* r) Preserves _≤_ ⟶ _≤_
-*-monoˡ-≤-nonNeg r@{mkℚᵘ (ℤ.+ n) _} _ {p} {q} (*≤* x<y) = *≤* $ begin
+*-monoˡ-≤-nonNeg : ∀ r → NonNegative r → (_* r) Preserves _≤_ ⟶ _≤_
+*-monoˡ-≤-nonNeg r@(mkℚᵘ (ℤ.+ n) _) _ {p} {q} (*≤* x<y) = *≤* $ begin
   ↥ p ℤ.* ↥ r ℤ.* (↧ q   ℤ.* ↧ r)  ≡⟨ reorder₂ (↥ p) _ _ _ ⟩
   l₁          ℤ.* (ℤ.+ n ℤ.* ↧ r)  ≡⟨ cong (l₁ ℤ.*_) (ℤ.pos-distrib-* n _) ⟩
   l₁          ℤ.* ℤ.+ (n ℕ.* ↧ₙ r) ≤⟨ ℤ.*-monoʳ-≤-nonNeg (n ℕ.* _) x<y ⟩
@@ -1152,42 +1152,42 @@ private
   where open ℤ.≤-Reasoning
         l₁ = ↥ p ℤ.* ↧ q ; l₂ = ↥ q ℤ.* ↧ p
 
-*-monoʳ-≤-nonNeg : ∀ {r} → NonNegative r → (r *_) Preserves _≤_ ⟶ _≤_
-*-monoʳ-≤-nonNeg {r} r≥0 {p} {q}
+*-monoʳ-≤-nonNeg : ∀ r → NonNegative r → (r *_) Preserves _≤_ ⟶ _≤_
+*-monoʳ-≤-nonNeg r r≥0 {p} {q}
   rewrite *-comm-≡ r p
-        | *-comm-≡ r q = *-monoˡ-≤-nonNeg r≥0
+        | *-comm-≡ r q = *-monoˡ-≤-nonNeg r r≥0
 
-*-monoʳ-≤-pos : ∀ {r} → Positive r → (r *_) Preserves _≤_ ⟶ _≤_
-*-monoʳ-≤-pos {r} = (*-monoʳ-≤-nonNeg {r}) ∘ (positive⇒nonNegative {r})
+*-monoʳ-≤-pos : ∀ r → Positive r → (r *_) Preserves _≤_ ⟶ _≤_
+*-monoʳ-≤-pos r = (*-monoʳ-≤-nonNeg r) ∘ (positive⇒nonNegative r)
 
-*-monoˡ-≤-pos : ∀ {r} → Positive r → (_* r) Preserves _≤_ ⟶ _≤_
-*-monoˡ-≤-pos {r} = *-monoˡ-≤-nonNeg ∘ (positive⇒nonNegative {r})
+*-monoˡ-≤-pos : ∀ r → Positive r → (_* r) Preserves _≤_ ⟶ _≤_
+*-monoˡ-≤-pos r = (*-monoˡ-≤-nonNeg r) ∘ (positive⇒nonNegative r)
 
-*-monoˡ-≤-nonPos : ∀ {r} → NonPositive r → (_* r) Preserves _≤_ ⟶ _≥_
-*-monoˡ-≤-nonPos {r} r≤0 {p} {q} p≤q = begin
+*-monoˡ-≤-nonPos : ∀ r → NonPositive r → (_* r) Preserves _≤_ ⟶ _≥_
+*-monoˡ-≤-nonPos r r≤0 {p} {q} p≤q = begin
   q * r        ≈˘⟨ neg-involutive (q * r) ⟩
-  - - (q * r)  ≈⟨ -‿cong (neg-distribʳ-* q r) ⟩
-  - (q * - r)  ≤⟨ neg-mono-≤ (*-monoˡ-≤-nonNeg (nonNegative { - r} (neg-mono-≤ (nonPositive⁻¹ r≤0))) p≤q) ⟩
-  - (p * - r)  ≈˘⟨ -‿cong (neg-distribʳ-* p r) ⟩
+  - - (q * r)  ≈⟨ neg-cong (neg-distribʳ-* q r) ⟩
+  - (q * - r)  ≤⟨ neg-mono-≤ (*-monoˡ-≤-nonNeg (- r) (nonNegative (neg-mono-≤ {r} (nonPositive⁻¹ r≤0))) p≤q) ⟩
+  - (p * - r)  ≈˘⟨ neg-cong (neg-distribʳ-* p r) ⟩
   - - (p * r)  ≈⟨ neg-involutive (p * r) ⟩
   p * r        ∎
   where open ≤-Reasoning
 
-*-monoʳ-≤-nonPos : ∀ {r} → NonPositive r → (r *_) Preserves _≤_ ⟶ _≥_
-*-monoʳ-≤-nonPos {r} r≤0 {p} {q} p≤q = begin
+*-monoʳ-≤-nonPos : ∀ r → NonPositive r → (r *_) Preserves _≤_ ⟶ _≥_
+*-monoʳ-≤-nonPos r r≤0 {p} {q} p≤q = begin
   r * q  ≈˘⟨ *-comm q r ⟩
-  q * r  ≤⟨ *-monoˡ-≤-nonPos r≤0 p≤q ⟩
+  q * r  ≤⟨ *-monoˡ-≤-nonPos r r≤0 p≤q ⟩
   p * r  ≈⟨ *-comm p r ⟩
   r * p  ∎
   where open ≤-Reasoning
 
-*-monoˡ-≤-neg : ∀ {r} → Negative r → (_* r) Preserves _≤_ ⟶ _≥_
-*-monoˡ-≤-neg {r} = *-monoˡ-≤-nonPos ∘ negative⇒nonPositive {r}
+*-monoˡ-≤-neg : ∀ r → Negative r → (_* r) Preserves _≤_ ⟶ _≥_
+*-monoˡ-≤-neg r = (*-monoˡ-≤-nonPos r) ∘ (negative⇒nonPositive r)
 
-*-monoʳ-≤-neg : ∀ {r} → Negative r → (r *_) Preserves _≤_ ⟶ _≥_
-*-monoʳ-≤-neg {r} r<0 {p} {q} p≤q = begin
+*-monoʳ-≤-neg : ∀ r → Negative r → (r *_) Preserves _≤_ ⟶ _≥_
+*-monoʳ-≤-neg r r<0 {p} {q} p≤q = begin
   r * q  ≈˘⟨ *-comm q r ⟩
-  q * r  ≤⟨ *-monoˡ-≤-neg r<0 p≤q ⟩
+  q * r  ≤⟨ *-monoˡ-≤-neg r r<0 p≤q ⟩
   p * r  ≈⟨ *-comm p r ⟩
   r * p  ∎
   where open ≤-Reasoning
@@ -1195,20 +1195,20 @@ private
 ------------------------------------------------------------------------
 -- Properties of _*_ and _<_
 
-*-monoˡ-<-pos : ∀ {r} (r>0 : Positive r) → (_* r) Preserves _<_ ⟶ _<_
-*-monoˡ-<-pos s@{mkℚᵘ +[1+ n ] d} _ {p} {q} (*<* x<y) = *<* $ begin-strict
+*-monoˡ-<-pos : ∀ r (r>0 : Positive r) → (_* r) Preserves _<_ ⟶ _<_
+*-monoˡ-<-pos s@(mkℚᵘ +[1+ n ] d) _ {p} {q} (*<* x<y) = *<* $ begin-strict
   ↥ p ℤ.*  ↥ s ℤ.* (↧ q  ℤ.* ↧ s) ≡⟨ reorder₁ (↥ p) _ _ _ ⟩
   ↥ p ℤ.*  ↧ q ℤ.*  ↥ s  ℤ.* ↧ s  <⟨ ℤ.*-monoʳ-<-pos d (ℤ.*-monoʳ-<-pos n x<y) ⟩
   ↥ q ℤ.*  ↧ p ℤ.*  ↥ s  ℤ.* ↧ s  ≡˘⟨ reorder₁ (↥ q) _ _ _ ⟩
   ↥ q ℤ.*  ↥ s ℤ.* (↧ p  ℤ.* ↧ s) ∎ where open ℤ.≤-Reasoning
 
-*-monoʳ-<-pos : ∀ {r} (r>0 : Positive r) → (r *_) Preserves _<_ ⟶ _<_
-*-monoʳ-<-pos {r} r>0 {p} {q}
+*-monoʳ-<-pos : ∀ r (r>0 : Positive r) → (r *_) Preserves _<_ ⟶ _<_
+*-monoʳ-<-pos r r>0 {p} {q}
   rewrite *-comm-≡ r p
-        | *-comm-≡ r q = *-monoˡ-<-pos r>0
+        | *-comm-≡ r q = *-monoˡ-<-pos r r>0
 
-*-cancelˡ-<-nonNeg : ∀ {r} (r≥0 : NonNegative r) {p q} → r * p < r * q → p < q
-*-cancelˡ-<-nonNeg {mkℚᵘ (ℤ.+ n) dm} _ {p} {q} (*<* x<y) = *<* $
+*-cancelˡ-<-nonNeg : ∀ r (r≥0 : NonNegative r) {p q} → r * p < r * q → p < q
+*-cancelˡ-<-nonNeg (mkℚᵘ (ℤ.+ n) dm) _ {p} {q} (*<* x<y) = *<* $
   ℤ.*-cancelˡ-<-nonNeg s $ begin-strict
   ℤ.+ s         ℤ.* r₁          ≡⟨ cong (ℤ._* r₁) (sym (ℤ.pos-distrib-* n (suc dm))) ⟩
   ℤ.+ n ℤ.* d   ℤ.* r₁          ≡⟨ reorder₂ (ℤ.+ n) _ _ _ ⟩
@@ -1219,37 +1219,37 @@ private
   where open ℤ.≤-Reasoning
         d+ = suc dm ; s = n ℕ.* d+ ; d = ℤ.+ d+ ; r₁ = ↥ p ℤ.* ↧ q ; r₂ = ↥ q ℤ.* ↧ p
 
-*-cancelʳ-<-nonNeg : ∀ {r} (r≥0 : NonNegative r) {p q} → p * r < q * r → p < q
-*-cancelʳ-<-nonNeg {r} r≥0 {p} {q}
+*-cancelʳ-<-nonNeg : ∀ r (r≥0 : NonNegative r) {p q} → p * r < q * r → p < q
+*-cancelʳ-<-nonNeg r r≥0 {p} {q}
   rewrite *-comm-≡ p r
-        | *-comm-≡ q r = *-cancelˡ-<-nonNeg {r} r≥0
+        | *-comm-≡ q r = *-cancelˡ-<-nonNeg r r≥0
 
-*-cancelˡ-<-pos : ∀ {r} → Positive r → ∀ {p q} → r * p < r * q → p < q
-*-cancelˡ-<-pos {r} r>0 rp<rq = *-cancelˡ-<-nonNeg {r} (positive⇒nonNegative {r} r>0) rp<rq
+*-cancelˡ-<-pos : ∀ r → Positive r → ∀ {p q} → r * p < r * q → p < q
+*-cancelˡ-<-pos r r>0 rp<rq = *-cancelˡ-<-nonNeg r (positive⇒nonNegative r r>0) rp<rq
 
-*-cancelʳ-<-pos : ∀ {r} → Positive r → ∀ {p q} → p * r < q * r → p < q
-*-cancelʳ-<-pos {r} r>0 pr<qr = *-cancelʳ-<-nonNeg (positive⇒nonNegative {r} r>0) pr<qr
+*-cancelʳ-<-pos : ∀ r → Positive r → ∀ {p q} → p * r < q * r → p < q
+*-cancelʳ-<-pos r r>0 pr<qr = *-cancelʳ-<-nonNeg r (positive⇒nonNegative r r>0) pr<qr
 
-*-monoˡ-<-neg : ∀ {r} → Negative r → (_* r) Preserves _<_ ⟶ _>_
-*-monoˡ-<-neg {r} r<0 {p} {q} p<q = begin-strict
+*-monoˡ-<-neg : ∀ r → Negative r → (_* r) Preserves _<_ ⟶ _>_
+*-monoˡ-<-neg r r<0 {p} {q} p<q = begin-strict
   q * r                        ≈˘⟨ neg-involutive (q * r) ⟩
-  - - (q * r)                  ≈⟨ -‿cong (neg-distribʳ-* q r) ⟩
-  - (q * - r)                  <⟨ neg-mono-< (*-monoˡ-<-pos (positive (neg-mono-< {r} (negative⁻¹ r<0))) p<q) ⟩
-  - (p * - r)                  ≈˘⟨ -‿cong (neg-distribʳ-* p r) ⟩
+  - - (q * r)                  ≈⟨ neg-cong (neg-distribʳ-* q r) ⟩
+  - (q * - r)                  <⟨ neg-mono-< (*-monoˡ-<-pos (- r) (positive (neg-mono-< {r} (negative⁻¹ r<0))) p<q) ⟩
+  - (p * - r)                  ≈˘⟨ neg-cong (neg-distribʳ-* p r) ⟩
   - - (p * r)                  ≈⟨ neg-involutive (p * r) ⟩
   p * r                        ∎
   where open ≤-Reasoning
 
-*-monoʳ-<-neg : ∀ {r} → Negative r → (r *_) Preserves _<_ ⟶ _>_
-*-monoʳ-<-neg {r} r<0 {p} {q} p<q = begin-strict
+*-monoʳ-<-neg : ∀ r → Negative r → (r *_) Preserves _<_ ⟶ _>_
+*-monoʳ-<-neg r r<0 {p} {q} p<q = begin-strict
   r * q                        ≈⟨ *-comm r q ⟩
-  q * r                        <⟨ *-monoˡ-<-neg r<0 p<q ⟩
+  q * r                        <⟨ *-monoˡ-<-neg r r<0 p<q ⟩
   p * r                        ≈˘⟨ *-comm r p ⟩
   r * p                        ∎
   where open ≤-Reasoning
 
-*-cancelˡ-<-nonPos : ∀ {r} → NonPositive r → ∀ {p q} → r * p < r * q → q < p
-*-cancelˡ-<-nonPos {r} r≤0 {p} {q} rp<rq = *-cancelˡ-<-nonNeg { - r} -r≥0 $ begin-strict
+*-cancelˡ-<-nonPos : ∀ r → NonPositive r → ∀ {p q} → r * p < r * q → q < p
+*-cancelˡ-<-nonPos r r≤0 {p} {q} rp<rq = *-cancelˡ-<-nonNeg (- r) -r≥0 $ begin-strict
   - r * q                      ≈˘⟨ neg-distribˡ-* r q ⟩
   - (r * q)                    <⟨ neg-mono-< rp<rq ⟩
   - (r * p)                    ≈⟨ neg-distribˡ-* r p ⟩
@@ -1259,19 +1259,19 @@ private
   -r≥0 : NonNegative (- r)
   -r≥0 = nonNegative (neg-mono-≤ {r} (nonPositive⁻¹ r≤0))
 
-*-cancelʳ-<-nonPos : ∀ {r} → NonPositive r → ∀ {p q} → p * r < q * r → q < p
-*-cancelʳ-<-nonPos {r} r≤0 {p} {q} pr<qr = *-cancelˡ-<-nonPos {r} r≤0 $ begin-strict
+*-cancelʳ-<-nonPos : ∀ r → NonPositive r → ∀ {p q} → p * r < q * r → q < p
+*-cancelʳ-<-nonPos r r≤0 {p} {q} pr<qr = *-cancelˡ-<-nonPos r r≤0 $ begin-strict
   r * p                        ≈⟨ *-comm r p ⟩
   p * r                        <⟨ pr<qr ⟩
   q * r                        ≈˘⟨ *-comm r q ⟩
   r * q                        ∎
   where open ≤-Reasoning
 
-*-cancelˡ-<-neg : ∀ {r} → Negative r → ∀ {p q} → r * p < r * q → q < p
-*-cancelˡ-<-neg {r} = *-cancelˡ-<-nonPos {r} ∘ negative⇒nonPositive {r}
+*-cancelˡ-<-neg : ∀ r → Negative r → ∀ {p q} → r * p < r * q → q < p
+*-cancelˡ-<-neg r = *-cancelˡ-<-nonPos r ∘ negative⇒nonPositive r
 
-*-cancelʳ-<-neg : ∀ {r} → Negative r → ∀ {p q} → p * r < q * r → q < p
-*-cancelʳ-<-neg {r} = *-cancelʳ-<-nonPos {r} ∘ negative⇒nonPositive {r}
+*-cancelʳ-<-neg : ∀ r → Negative r → ∀ {p q} → p * r < q * r → q < p
+*-cancelʳ-<-neg r = *-cancelʳ-<-nonPos r ∘ negative⇒nonPositive r
 
 ------------------------------------------------------------------------
 -- Algebraic structures
@@ -1586,31 +1586,31 @@ neg-distrib-⊓-⊔ = antimono-≤-distrib-⊓ neg-mono-≤
 -- Properties of _⊓_ and _*_
 
 *-distribˡ-⊓-nonNeg : ∀ p → NonNegative p → ∀ q r → p * (q ⊓ r) ≃ (p * q) ⊓ (p * r)
-*-distribˡ-⊓-nonNeg p p≥0 = mono-≤-distrib-⊓ (*-monoʳ-≤-nonNeg {p} p≥0)
+*-distribˡ-⊓-nonNeg p p≥0 = mono-≤-distrib-⊓ (*-monoʳ-≤-nonNeg p p≥0)
 
 *-distribʳ-⊓-nonNeg : ∀ p → NonNegative p → ∀ q r → (q ⊓ r) * p ≃ (q * p) ⊓ (r * p)
-*-distribʳ-⊓-nonNeg p p≥0 = mono-≤-distrib-⊓ (*-monoˡ-≤-nonNeg {p} p≥0)
+*-distribʳ-⊓-nonNeg p p≥0 = mono-≤-distrib-⊓ (*-monoˡ-≤-nonNeg p p≥0)
 
 *-distribˡ-⊔-nonNeg : ∀ p → NonNegative p → ∀ q r → p * (q ⊔ r) ≃ (p * q) ⊔ (p * r)
-*-distribˡ-⊔-nonNeg p p≥0 = mono-≤-distrib-⊔ (*-monoʳ-≤-nonNeg {p} p≥0)
+*-distribˡ-⊔-nonNeg p p≥0 = mono-≤-distrib-⊔ (*-monoʳ-≤-nonNeg p p≥0)
 
 *-distribʳ-⊔-nonNeg : ∀ p → NonNegative p → ∀ q r → (q ⊔ r) * p ≃ (q * p) ⊔ (r * p)
-*-distribʳ-⊔-nonNeg p p≥0 = mono-≤-distrib-⊔ (*-monoˡ-≤-nonNeg {p} p≥0)
+*-distribʳ-⊔-nonNeg p p≥0 = mono-≤-distrib-⊔ (*-monoˡ-≤-nonNeg p p≥0)
 
 ------------------------------------------------------------------------
 -- Properties of _⊓_, _⊔_ and _*_
 
 *-distribˡ-⊔-nonPos : ∀ p → NonPositive p → ∀ q r → p * (q ⊔ r) ≃ (p * q) ⊓ (p * r)
-*-distribˡ-⊔-nonPos p p≤0 = antimono-≤-distrib-⊔ (*-monoʳ-≤-nonPos {p} p≤0)
+*-distribˡ-⊔-nonPos p p≤0 = antimono-≤-distrib-⊔ (*-monoʳ-≤-nonPos p p≤0)
 
 *-distribʳ-⊔-nonPos : ∀ p → NonPositive p → ∀ q r → (q ⊔ r) * p ≃ (q * p) ⊓ (r * p)
-*-distribʳ-⊔-nonPos p p≤0 = antimono-≤-distrib-⊔ (*-monoˡ-≤-nonPos {p} p≤0)
+*-distribʳ-⊔-nonPos p p≤0 = antimono-≤-distrib-⊔ (*-monoˡ-≤-nonPos p p≤0)
 
 *-distribˡ-⊓-nonPos : ∀ p → NonPositive p → ∀ q r → p * (q ⊓ r) ≃ (p * q) ⊔ (p * r)
-*-distribˡ-⊓-nonPos p p≤0 = antimono-≤-distrib-⊓ (*-monoʳ-≤-nonPos {p} p≤0)
+*-distribˡ-⊓-nonPos p p≤0 = antimono-≤-distrib-⊓ (*-monoʳ-≤-nonPos p p≤0)
 
 *-distribʳ-⊓-nonPos : ∀ p → NonPositive p → ∀ q r → (q ⊓ r) * p ≃ (q * p) ⊔ (r * p)
-*-distribʳ-⊓-nonPos p p≤0 = antimono-≤-distrib-⊓ (*-monoˡ-≤-nonPos {p} p≤0)
+*-distribʳ-⊓-nonPos p p≤0 = antimono-≤-distrib-⊓ (*-monoˡ-≤-nonPos p p≤0)
 
 ------------------------------------------------------------------------
 -- Properties of ∣_∣
@@ -1732,4 +1732,12 @@ neg-mono-<-> = neg-mono-<
 {-# WARNING_ON_USAGE neg-mono-<->
 "Warning: neg-mono-<-> was deprecated in v1.5.
 Please use neg-mono-< instead."
+#-}
+
+-- Version 1.6
+
+-‿cong = neg-cong
+{-# WARNING_ON_USAGE -‿cong
+"Warning: -‿cong was deprecated in v1.6.
+Please use neg-cong instead."
 #-}
