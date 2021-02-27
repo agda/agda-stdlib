@@ -29,7 +29,8 @@ import Data.List.Relation.Binary.Lex as Core
 ----------------------------------------------------------------------
 -- Re-exporting core definitions
 
-open import Data.List.Relation.Binary.Lex.Strict.Core public
+open Core public
+  using (Lex-<; Lex-≤; base; halt; this; next; ¬≤-this; ¬≤-next)
 
 ----------------------------------------------------------------------
 -- Strict lexicographic ordering.

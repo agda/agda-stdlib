@@ -28,7 +28,7 @@ import Data.List.Relation.Binary.Lex as Core
 ------------------------------------------------------------------------
 -- Publically re-export definitions from Core
 
-open import Data.List.Relation.Binary.Lex.Core public
+open Core public
   using (base; halt; this; next; ¬≤-this; ¬≤-next)
 
 ------------------------------------------------------------------------

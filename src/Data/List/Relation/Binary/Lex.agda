@@ -39,6 +39,31 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} {P : Set}
     _≋_ = Pointwise _≈_
     _<_ = Lex P _≈_ _≺_
 
+  ¬≤-this : ∀ {x y xs ys} → ¬ (x ≈ y) → ¬ (x ≺ y) →
+            ¬ (x ∷ xs) < (y ∷ ys)
+  ¬≤-this x≉y x≮y (this x≺y)       = x≮y x≺y
+  ¬≤-this x≉y x≮y (next x≈y xs<ys) = x≉y x≈y
+
+  ¬≤-next : ∀ {x y xs ys} → ¬ x ≺ y → ¬ xs < ys →
+            ¬ (x ∷ xs) < (y ∷ ys)
+  ¬≤-next x≮y xs≮ys (this x≺y)     = x≮y x≺y
+  ¬≤-next x≮y xs≮ys (next _ xs<ys) = xs≮ys xs<ys
+
+  antisymmetric : Symmetric _≈_ → Irreflexive _≈_ _≺_ →
+                  Asymmetric _≺_ → Antisymmetric _≋_ _<_
+  antisymmetric sym ir asym = as
+    where
+    as : Antisymmetric _≋_ _<_
+    as (base _)         (base _)         = []
+    as (this x≺y)       (this y≺x)       = ⊥-elim (asym x≺y y≺x)
+    as (this x≺y)       (next y≈x ys<xs) = ⊥-elim (ir (sym y≈x) x≺y)
+    as (next x≈y xs<ys) (this y≺x)       = ⊥-elim (ir (sym x≈y) y≺x)
+    as (next x≈y xs<ys) (next y≈x ys<xs) = x≈y ∷ as xs<ys ys<xs
+
+  toSum : ∀ {x y xs ys} → (x ∷ xs) < (y ∷ ys) → (x ≺ y ⊎ (x ≈ y × xs < ys))
+  toSum (this x≺y) = inj₁ x≺y
+  toSum (next x≈y xs<ys) = inj₂ (x≈y , xs<ys)
+
   transitive : IsEquivalence _≈_ → _≺_ Respects₂ _≈_ → Transitive _≺_ →
                Transitive _<_
   transitive eq resp tr = trans
