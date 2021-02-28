@@ -75,6 +75,17 @@ New modules
 Other minor additions
 ---------------------
 
+* Added new proofs in `Algebra.Morphism.GroupMonomorphism`:
+  ```agda
+  ⁻¹-distrib-∙ : ((x ◦ y) ⁻¹₂ ≈₂ (x ⁻¹₂) ◦ (y ⁻¹₂)) → ((x ∙ y) ⁻¹₁ ≈₁ (x ⁻¹₁) ∙ (y ⁻¹₁))
+  ```
+
+* Added new proofs in `Algebra.Morphism.RingMonomorphism`:
+  ```agda
+  neg-distribˡ-* : ((⊝ (x ⊛ y)) ≈₂ ((⊝ x) ⊛ y)) → ((- (x * y)) ≈₁ ((- x) * y))
+  neg-distribʳ-* : ((⊝ (x ⊛ y)) ≈₂ (x ⊛ (⊝ y))) → ((- (x * y)) ≈₁ (x * (- y)))
+  ```
+
 * Added new function in `Data.List.Base`:
   ```agda
   last : List A → Maybe A
@@ -270,28 +281,28 @@ Other minor additions
   *-inverseˡ   : 1/ p * p ≡ 1ℚ
   *-inverseʳ   : p * 1/ p ≡ 1ℚ
   
-  positive⇒nonNegative : ∀ {q} → Positive q → NonNegative q
-  negative⇒nonPositive : ∀ {q} → Negative q → NonPositive q
-  toℚᵘ-mono-< : ∀ {p q} → p < q → toℚᵘ p <ᵘ toℚᵘ q
-  toℚᵘ-cancel-< : ∀ {p q} → toℚᵘ p <ᵘ toℚᵘ q → p < q
+  positive⇒nonNegative       : Positive q → NonNegative q
+  negative⇒nonPositive       : Negative q → NonPositive q
+  toℚᵘ-mono-<                : p < q → toℚᵘ p <ᵘ toℚᵘ q
+  toℚᵘ-cancel-<              : toℚᵘ p <ᵘ toℚᵘ q → p < q
   toℚᵘ-isOrderHomomorphism-< : IsOrderHomomorphism _≡_ _≃ᵘ_ _<_ _<ᵘ_ toℚᵘ
   toℚᵘ-isOrderMonomorphism-< : IsOrderMonomorphism _≡_ _≃ᵘ_ _<_ _<ᵘ_ toℚᵘ
-  neg-distrib-+ : ∀ p q → - (p + q) ≡ (- p) + (- q)
-  +-mono-≤ : _+_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
-  +-monoˡ-≤ : ∀ r → (_+ r) Preserves _≤_ ⟶ _≤_
-  +-monoʳ-≤ : ∀ r → (_+_ r) Preserves _≤_ ⟶ _≤_
-  +-mono-<-≤ : _+_ Preserves₂ _<_ ⟶ _≤_ ⟶ _<_
-  +-mono-< : _+_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
-  +-monoˡ-< : ∀ r → (_+ r) Preserves _<_ ⟶ _<_
-  +-monoʳ-< : ∀ r → (_+_ r) Preserves _<_ ⟶ _<_
-  neg-distribˡ-* : ∀ p q → - (p * q) ≡ - p * q
-  neg-distribʳ-* : ∀ p q → - (p * q) ≡ p * - q
-  *-monoˡ-≤-nonNeg : ∀ {r} → NonNegative r → (_* r) Preserves _≤_ ⟶ _≤_
-  *-monoʳ-≤-nonNeg : ∀ {r} → NonNegative r → (r *_) Preserves _≤_ ⟶ _≤_
-  *-monoˡ-≤-pos : ∀ {r} → Positive r → (_* r) Preserves _≤_ ⟶ _≤_
-  *-monoʳ-≤-pos : ∀ {r} → Positive r → (r *_) Preserves _≤_ ⟶ _≤_
-  *-monoˡ-<-pos : ∀ {r} → Positive r → (_* r) Preserves _<_ ⟶ _<_
-  *-monoʳ-<-pos : ∀ {r} → Positive r → (r *_) Preserves _<_ ⟶ _<_
+  neg-distrib-+              : - (p + q) ≡ (- p) + (- q)
+  +-mono-≤                   : _+_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
+  +-monoˡ-≤                  : (_+ r) Preserves _≤_ ⟶ _≤_
+  +-monoʳ-≤                  : (_+_ r) Preserves _≤_ ⟶ _≤_
+  +-mono-<-≤                 : _+_ Preserves₂ _<_ ⟶ _≤_ ⟶ _<_
+  +-mono-<                   : _+_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
+  +-monoˡ-<                  : (_+ r) Preserves _<_ ⟶ _<_
+  +-monoʳ-<                  : (_+_ r) Preserves _<_ ⟶ _<_
+  neg-distribˡ-*             : - (p * q) ≡ - p * q
+  neg-distribʳ-*             : - (p * q) ≡ p * - q
+  *-monoˡ-≤-nonNeg           : NonNegative r → (_* r) Preserves _≤_ ⟶ _≤_
+  *-monoʳ-≤-nonNeg           : NonNegative r → (r *_) Preserves _≤_ ⟶ _≤_
+  *-monoˡ-≤-pos              : Positive r → (_* r) Preserves _≤_ ⟶ _≤_
+  *-monoʳ-≤-pos              : Positive r → (r *_) Preserves _≤_ ⟶ _≤_
+  *-monoˡ-<-pos              : Positive r → (_* r) Preserves _<_ ⟶ _<_
+  *-monoʳ-<-pos              : Positive r → (r *_) Preserves _<_ ⟶ _<_
   ```
   
 * Add new relations and functions to `Data.Rational.Unnormalised`:
