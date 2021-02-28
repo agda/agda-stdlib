@@ -33,7 +33,7 @@ import Data.Rational.Unnormalised.Properties as ℚᵘ
 open import Data.Sum.Base
 open import Data.Unit using (tt)
 import Data.Sign as S
-open import Function.Base using (_∘_ ; _$_)
+open import Function.Base using (_∘_; _∘₂_; _$_)
 open import Function.Definitions using (Injective)
 open import Level using (0ℓ)
 open import Relation.Binary
@@ -665,7 +665,7 @@ private
 -‿cong = +-Monomorphism.⁻¹-cong ℚᵘ.+-isMagma ℚᵘ.-‿cong
 
 neg-distrib-+ : ∀ p q → - (p + q) ≡ (- p) + (- q)
-neg-distrib-+ = +-Monomorphism.⁻¹-distrib-∙ ℚᵘ.+-0-isAbelianGroup ℚᵘ.neg-distrib-+
+neg-distrib-+ = +-Monomorphism.⁻¹-distrib-∙ ℚᵘ.+-0-isAbelianGroup (ℚᵘ.≃-reflexive ∘₂ ℚᵘ.neg-distrib-+)
 
 ------------------------------------------------------------------------
 -- Structures
