@@ -16,14 +16,14 @@ module Data.Bin where
 Use Data.Nat.Binary instead."
 #-}
 
-open import Data.Nat.Base as Nat
+open import Data.Nat as Nat
   using (ℕ; zero; z≤n; s≤s) renaming (suc to 1+_)
 open import Data.Digit  using (fromDigits; toDigits; Bit)
 open import Data.Fin.Base as Fin using (Fin; zero)
   renaming (suc to 1+_)
 open import Data.Fin.Properties as FP using (_+′_)
 open import Data.List.Base as List hiding (downFrom)
-open import Function
+open import Function.Base
 open import Data.Product using (uncurry; _,_; _×_)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality

@@ -316,7 +316,7 @@ toℕ-isMonomorphism-< = record
 ... | tri> _ _    x>y =  tri> (>⇒≮ gt) (>⇒≢ gt) gt  where gt = odd<odd x>y
 
 _<?_ : Decidable _<_
-_<?_ = tri⟶dec< <-cmp
+_<?_ = tri⇒dec< <-cmp
 
 ------------------------------------------------------------------------------
 -- Structures for _<_

@@ -52,6 +52,29 @@ Deprecated names
   n≤m⊔n      ↦  i≤j⊔i
   ```
 
+* In `Relation.Binary.Consequences`:
+  ```agda
+  subst⟶respˡ      ↦ subst⇒respˡ
+  subst⟶respʳ      ↦ subst⇒respʳ
+  subst⟶resp₂      ↦ subst⇒resp₂
+  P-resp⟶¬P-resp   ↦ resp⇒¬-resp
+  total⟶refl       ↦ total⇒refl
+  total+dec⟶dec    ↦ total∧dec⇒dec
+  trans∧irr⟶asym   ↦ trans∧irr⇒asym 
+  irr∧antisym⟶asym ↦ irr∧antisym⇒asym 
+  asym⟶antisym     ↦ asym⇒antisym
+  asym⟶irr         ↦ asym⇒irr
+  tri⟶asym         ↦ tri⇒asym
+  tri⟶irr          ↦ tri⇒irr
+  tri⟶dec≈         ↦ tri⇒dec≈
+  tri⟶dec<         ↦ tri⇒dec<
+  trans∧tri⟶respʳ≈ ↦ trans∧tri⇒respʳ
+  trans∧tri⟶respˡ≈ ↦ trans∧tri⇒respˡ
+  trans∧tri⟶resp≈  ↦ trans∧tri⇒resp
+  dec⟶weaklyDec    ↦ dec⇒weaklyDec
+  dec⟶recomputable ↦ dec⇒recomputable
+  ```
+
 * In `Data.Rational.Properties`:
   ```agda
   neg-mono-<-> ↦ neg-mono-<
