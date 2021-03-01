@@ -205,6 +205,15 @@ drop-*≤* (*≤* pq≤qp) = pq≤qp
   (↥ p ℤ.* ↧ q)
   (↥ q ℤ.* ↧ p))
 
+≤-respˡ-≃ : _≤_ Respectsˡ _≃_
+≤-respˡ-≃ x≈y = ≤-trans (≤-reflexive (≃-sym x≈y))
+
+≤-respʳ-≃ : _≤_ Respectsʳ _≃_
+≤-respʳ-≃ x≈y z≤x = ≤-trans z≤x (≤-reflexive x≈y)
+
+≤-resp₂-≃ : _≤_ Respects₂ _≃_
+≤-resp₂-≃ = ≤-respʳ-≃ , ≤-respˡ-≃
+
 infix 4 _≤?_
 _≤?_ : Decidable _≤_
 p ≤? q = Dec.map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* ↧ p)
@@ -519,7 +528,7 @@ module ≤-Reasoning where
                                   (ℤ.≤-reflexive $ ℤ.*-identityʳ n)
 
 ------------------------------------------------------------------------
--- Properties of Positive/NonPositive/Negative/NonNegative and _≤_/_<_
+-- Properties of sign predicates
 
 positive⁻¹ : ∀ {q} → Positive q → q > 0ℚᵘ
 positive⁻¹ {mkℚᵘ +[1+ n ] _} _ = *<* (ℤ.+<+ (ℕ.s≤s ℕ.z≤n))
@@ -537,6 +546,9 @@ nonPositive⁻¹ {mkℚᵘ -[1+ n ] _} _ = *≤* ℤ.-≤+
 
 negative<positive : ∀ {p q} → Negative p → Positive q → p < q
 negative<positive p<0 q>0 = <-trans (negative⁻¹ p<0) (positive⁻¹ q>0)
+
+nonNeg∧nonPos⇒0 : ∀ {p} → NonNegative p → NonPositive p → p ≃ 0ℚᵘ
+nonNeg∧nonPos⇒0 {mkℚᵘ +0 denominator-1} _ _ = *≡* refl
 
 ------------------------------------------------------------------------
 -- Properties of _+_
@@ -1358,9 +1370,9 @@ private
   neg⇒≢0 : ∀ p → Negative p → ℤ.∣ ↥ p ∣ ≢0
   neg⇒≢0 p p<0 = Dec.fromWitnessFalse (contraposition ℤ.∣n∣≡0⇒n≡0 (ℤ.<⇒≢ (ℤ.negative⁻¹ p<0)))
 
-  1/q≢0 : ∀ q {q≢0} → ℤ.∣ (↥ ((1/ q) {q≢0})) ∣ ≢0
-  1/q≢0 (mkℚᵘ (+[1+ n ]) d-1) = tt
-  1/q≢0 (mkℚᵘ (-[1+ n ]) d-1) = tt
+  1/p≢0 : ∀ p {p≢0} → ℤ.∣ (↥ ((1/ p) {p≢0})) ∣ ≢0
+  1/p≢0 (mkℚᵘ (+[1+ n ]) d-1) = tt
+  1/p≢0 (mkℚᵘ (-[1+ n ]) d-1) = tt
 
   p>1⇒p≢0 : ∀ {p} → p > 1ℚᵘ → ℤ.∣ ↥ p ∣ ≢0
   p>1⇒p≢0 {p} (*<* 1↧p<↥p1) = Dec.fromWitnessFalse (contraposition ℤ.∣n∣≡0⇒n≡0 (≢-sym (ℤ.<⇒≢ (begin-strict
@@ -1371,18 +1383,18 @@ private
     ↥ p          ∎))))
     where open ℤ.≤-Reasoning
 
-positive⇒1/positive : ∀ q (q>0 : Positive q) → Positive ((1/ q) {pos⇒≢0 q q>0})
-positive⇒1/positive (mkℚᵘ +[1+ n ] d-1) _ = tt
-
-negative⇒1/negative : ∀ q (q<0 : Negative q) → Negative ((1/ q) {neg⇒≢0 q q<0})
-negative⇒1/negative (mkℚᵘ -[1+ n ] d-1) _ = tt
-
-1/-involutive-≡ : ∀ q {q≢0} → (1/ (1/ q) {q≢0}) {1/q≢0 q {q≢0}} ≡ q
+1/-involutive-≡ : ∀ p {p≢0} → (1/ (1/ p) {p≢0}) {1/p≢0 p {p≢0}} ≡ p
 1/-involutive-≡ (mkℚᵘ +[1+ n ] d-1) = refl
 1/-involutive-≡ (mkℚᵘ -[1+ n ] d-1) = refl
 
-1/-involutive : ∀ q {q≢0} → (1/ (1/ q) {q≢0}) {1/q≢0 q {q≢0}} ≃ q
-1/-involutive q {q≢0} = ≃-reflexive (1/-involutive-≡ q {q≢0})
+1/-involutive : ∀ p {p≢0} → (1/ (1/ p) {p≢0}) {1/p≢0 p {p≢0}} ≃ p
+1/-involutive p {p≢0} = ≃-reflexive (1/-involutive-≡ p {p≢0})
+
+pos⇒1/pos : ∀ p (p>0 : Positive p) → Positive ((1/ p) {pos⇒≢0 p p>0})
+pos⇒1/pos (mkℚᵘ +[1+ n ] d-1) _ = tt
+
+neg⇒1/neg : ∀ p (p<0 : Negative p) → Negative ((1/ p) {neg⇒≢0 p p<0})
+neg⇒1/neg (mkℚᵘ -[1+ n ] d-1) _ = tt
 
 p>1⇒1/p<1 : ∀ {p} → (p>1 : p > 1ℚᵘ) → (1/ p) {p>1⇒p≢0 p>1} < 1ℚᵘ
 p>1⇒1/p<1 {p} p>1 = lemma′ p (p>1⇒p≢0 p>1) p>1 where
@@ -1509,15 +1521,15 @@ open ⊓-⊔-properties public
   ; ⊓-triangulate             -- : ∀ p q r → p ⊓ q ⊓ r ≃ (p ⊓ q) ⊓ (q ⊓ r)
   ; ⊔-triangulate             -- : ∀ p q r → p ⊔ q ⊔ r ≃ (p ⊔ q) ⊔ (q ⊔ r)
 
-  ; ⊓-glb                     -- : ∀ {m n o} → m ≥ o → n ≥ o → m ⊓ n ≥ o
+  ; ⊓-glb                     -- : ∀ {p q r} → p ≥ r → q ≥ r → p ⊓ q ≥ r
   ; ⊓-mono-≤                  -- : _⊓_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
-  ; ⊓-monoˡ-≤                 -- : ∀ n → (_⊓ n) Preserves _≤_ ⟶ _≤_
-  ; ⊓-monoʳ-≤                 -- : ∀ n → (n ⊓_) Preserves _≤_ ⟶ _≤_
+  ; ⊓-monoˡ-≤                 -- : ∀ p → (_⊓ p) Preserves _≤_ ⟶ _≤_
+  ; ⊓-monoʳ-≤                 -- : ∀ p → (p ⊓_) Preserves _≤_ ⟶ _≤_
 
-  ; ⊔-lub                     -- : ∀ {m n o} → m ≤ o → n ≤ o → m ⊔ n ≤ o
+  ; ⊔-lub                     -- : ∀ {p q r} → p ≤ r → q ≤ r → p ⊔ q ≤ r
   ; ⊔-mono-≤                  -- : _⊔_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
-  ; ⊔-monoˡ-≤                 -- : ∀ n → (_⊔ n) Preserves _≤_ ⟶ _≤_
-  ; ⊔-monoʳ-≤                 -- : ∀ n → (n ⊔_) Preserves _≤_ ⟶ _≤_
+  ; ⊔-monoˡ-≤                 -- : ∀ p → (_⊔ p) Preserves _≤_ ⟶ _≤_
+  ; ⊔-monoʳ-≤                 -- : ∀ p → (p ⊔_) Preserves _≤_ ⟶ _≤_
   )
   renaming
   ( x⊓y≈y⇒y≤x  to p⊓q≃q⇒q≤p      -- : ∀ {p q} → p ⊓ q ≃ q → q ≤ p
@@ -1616,11 +1628,11 @@ neg-distrib-⊓-⊔ = antimono-≤-distrib-⊓ neg-mono-≤
 -- Properties of ∣_∣
 ------------------------------------------------------------------------
 
-∣_∣-cong : ∀ {p q} → p ≃ q → ∣ p ∣ ≃ ∣ q ∣
-∣_∣-cong {mkℚᵘ +[1+ pn ] pd-1} {mkℚᵘ +[1+ qn ] qd-1} (*≡* ↥p↧q≡↥q↧p) = *≡* ↥p↧q≡↥q↧p
-∣_∣-cong {mkℚᵘ +0        pd-1} {mkℚᵘ +0        qd-1} (*≡* ↥p↧q≡↥q↧p) = *≡* ↥p↧q≡↥q↧p
-∣_∣-cong {mkℚᵘ -[1+ pn ] pd-1} {mkℚᵘ +0        qd-1} (*≡* ())
-∣_∣-cong {mkℚᵘ -[1+ pn ] pd-1} {mkℚᵘ -[1+ qn ] qd-1} (*≡* ↥p↧q≡↥q↧p) = *≡* (begin
+∣-∣-cong : ∀ {p q} → p ≃ q → ∣ p ∣ ≃ ∣ q ∣
+∣-∣-cong {mkℚᵘ +[1+ pn ] pd-1} {mkℚᵘ +[1+ qn ] qd-1} (*≡* ↥p↧q≡↥q↧p) = *≡* ↥p↧q≡↥q↧p
+∣-∣-cong {mkℚᵘ +0        pd-1} {mkℚᵘ +0        qd-1} (*≡* ↥p↧q≡↥q↧p) = *≡* ↥p↧q≡↥q↧p
+∣-∣-cong {mkℚᵘ -[1+ pn ] pd-1} {mkℚᵘ +0        qd-1} (*≡* ())
+∣-∣-cong {mkℚᵘ -[1+ pn ] pd-1} {mkℚᵘ -[1+ qn ] qd-1} (*≡* ↥p↧q≡↥q↧p) = *≡* (begin
   (↥ ∣ mkℚᵘ -[1+ pn ] pd-1 ∣) ℤ.* (↧ ∣ mkℚᵘ -[1+ qn ] qd-1 ∣)  ≡⟨⟩
   +[1+ pn ] ℤ.* ℤ.+ suc qd-1                                   ≡⟨ ℤ.neg-involutive _ ⟩
   ℤ.- ℤ.- (+[1+ pn ] ℤ.* ℤ.+ suc qd-1)                         ≡⟨ cong ℤ.-_ (ℤ.neg-distribˡ-* +[1+ pn ] (ℤ.+ suc qd-1)) ⟩

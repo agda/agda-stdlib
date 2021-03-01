@@ -8,8 +8,9 @@
 
 module Data.Rational.Base where
 
+open import Data.Bool.Base using (Bool; true; false; if_then_else_)
 open import Function.Base using (id)
-open import Data.Integer.Base as ℤ using (ℤ; +_; +0; -[1+_]) renaming (∣_∣ to ∣_∣ᶻ)
+open import Data.Integer.Base as ℤ using (ℤ; +_; +0; -[1+_])
 import Data.Integer.GCD as ℤ
 import Data.Integer.DivMod as ℤ
 open import Data.Nat.GCD
@@ -50,7 +51,7 @@ record ℚ : Set where
   field
     numerator     : ℤ
     denominator-1 : ℕ
-    .isCoprime    : Coprime ∣ numerator ∣ᶻ (suc denominator-1)
+    .isCoprime    : Coprime ℤ.∣ numerator ∣ (suc denominator-1)
 
   denominatorℕ : ℕ
   denominatorℕ = suc denominator-1
@@ -104,6 +105,14 @@ x ≮ y = ¬ (x < y)
 
 _≯_ : Rel ℚ 0ℓ
 x ≯ y = ¬ (x > y)
+
+------------------------------------------------------------------------
+-- Boolean ordering
+
+infix 4 _≤ᵇ_
+
+_≤ᵇ_ : ℚ → ℚ → Bool
+p ≤ᵇ q = (↥ p ℤ.* ↧ q) ℤ.≤ᵇ (↥ q ℤ.* ↧ p)
 
 ------------------------------------------------------------------------
 -- Negation
@@ -211,41 +220,34 @@ infixl 7 _*_ _÷_ _⊓_
 infixl 6 _-_ _+_ _⊔_
 
 -- addition
-
 _+_ : ℚ → ℚ → ℚ
 p + q = (↥ p ℤ.* ↧ q ℤ.+ ↥ q ℤ.* ↧ p) / (↧ₙ p ℕ.* ↧ₙ q)
 
 -- multiplication
-
 _*_ : ℚ → ℚ → ℚ
 p * q = (↥ p ℤ.* ↥ q) / (↧ₙ p ℕ.* ↧ₙ q)
 
 -- subtraction
-
 _-_ : ℚ → ℚ → ℚ
 p - q = p + (- q)
 
 -- reciprocal: requires a proof that the numerator is not zero
-
-1/_ : (p : ℚ) → .{n≢0 : ∣ ↥ p ∣ᶻ ≢0} → ℚ
+1/_ : (p : ℚ) → .{n≢0 : ℤ.∣ ↥ p ∣ ≢0} → ℚ
 1/ mkℚ +[1+ n ] d prf = mkℚ +[1+ d ] n (C.sym prf)
 1/ mkℚ -[1+ n ] d prf = mkℚ -[1+ d ] n (C.sym prf)
 
 -- division: requires a proof that the denominator is not zero
-
-_÷_ : (p q : ℚ) → .{n≢0 : ∣ ↥ q ∣ᶻ ≢0} → ℚ
+_÷_ : (p q : ℚ) → .{n≢0 : ℤ.∣ ↥ q ∣ ≢0} → ℚ
 (p ÷ q) {n≢0} = p * (1/ q) {n≢0}
 
 -- max
-
 _⊔_ : (p q : ℚ) → ℚ
-p ⊔ q = ((↥ p ℤ.* ↧ q) ℤ.⊔ (↥ q ℤ.* ↧ p)) / (↧ₙ p ℕ.* ↧ₙ q)
+p ⊔ q = if p ≤ᵇ q then q else p
 
 -- min
-
 _⊓_ : (p q : ℚ) → ℚ
-p ⊓ q = ((↥ p ℤ.* ↧ q) ℤ.⊓ (↥ q ℤ.* ↧ p)) / (↧ₙ p ℕ.* ↧ₙ q)
+p ⊓ q = if p ≤ᵇ q then p else q
 
 -- absolute value
 ∣_∣ : ℚ → ℚ
-∣ mkℚ p q-1 isCoprime ∣ = mkℚ (+ ∣ p ∣ᶻ) q-1 isCoprime
+∣ mkℚ n d c ∣ = mkℚ (+ ℤ.∣ n ∣) d c
