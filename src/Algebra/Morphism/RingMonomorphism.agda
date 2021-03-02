@@ -38,6 +38,7 @@ open import Algebra.Morphism.GroupMonomorphism
   ; comm to +-comm
   ; cong to +-cong
   ; idem to +-idem
+  ; ⁻¹-cong to neg-cong
   ; identity to +-identity; identityˡ to +-identityˡ; identityʳ to +-identityʳ
   ; cancel to +-cancel; cancelˡ to +-cancelˡ; cancelʳ to +-cancelʳ
   ; zero to +-zero; zeroˡ to +-zeroˡ; zeroʳ to +-zeroʳ
@@ -73,10 +74,10 @@ open import Algebra.Morphism.MonoidMonomorphism
 ------------------------------------------------------------------------
 -- Properties
 
-module _ (+-isGroup : IsGroup  _≈₂_ _⊕_ 0#₂ ⊝_)
+module _ (+-isGroup : IsGroup _≈₂_ _⊕_ 0#₂ ⊝_)
          (*-isMagma : IsMagma _≈₂_ _⊛_) where
 
-  open IsGroup +-isGroup hiding (setoid; refl)
+  open IsGroup +-isGroup hiding (setoid; refl; sym)
   open IsMagma *-isMagma renaming (∙-cong to ◦-cong)
   open SetoidReasoning setoid
 
@@ -119,6 +120,24 @@ module _ (+-isGroup : IsGroup  _≈₂_ _⊕_ 0#₂ ⊝_)
 
   zero : Zero _≈₂_ 0#₂ _⊛_ → Zero _≈₁_ 0# _*_
   zero zero = zeroˡ (proj₁ zero) , zeroʳ (proj₂ zero)
+
+  neg-distribˡ-* : (∀ x y → (⊝ (x ⊛ y)) ≈₂ ((⊝ x) ⊛ y)) → (∀ x y → (- (x * y)) ≈₁ ((- x) * y))
+  neg-distribˡ-* neg-distribˡ-* x y = injective (begin
+    ⟦ - (x * y) ⟧     ≈⟨ ⁻¹-homo (x * y) ⟩
+    ⊝ ⟦ x * y ⟧       ≈⟨ ⁻¹-cong (*-homo x y) ⟩
+    ⊝ (⟦ x ⟧ ⊛ ⟦ y ⟧) ≈⟨ neg-distribˡ-* ⟦ x ⟧ ⟦ y ⟧ ⟩
+    ⊝ ⟦ x ⟧ ⊛ ⟦ y ⟧   ≈⟨ ◦-cong (sym (⁻¹-homo x)) refl ⟩
+    ⟦ - x ⟧ ⊛ ⟦ y ⟧   ≈⟨ sym (*-homo (- x) y) ⟩
+    ⟦ - x * y ⟧       ∎)
+
+  neg-distribʳ-* : (∀ x y → (⊝ (x ⊛ y)) ≈₂ (x ⊛ (⊝ y))) → (∀ x y → (- (x * y)) ≈₁ (x * (- y)))
+  neg-distribʳ-* neg-distribʳ-* x y = injective (begin
+    ⟦ - (x * y) ⟧     ≈⟨ ⁻¹-homo (x * y) ⟩
+    ⊝ ⟦ x * y ⟧       ≈⟨ ⁻¹-cong (*-homo x y) ⟩
+    ⊝ (⟦ x ⟧ ⊛ ⟦ y ⟧) ≈⟨ neg-distribʳ-* ⟦ x ⟧ ⟦ y ⟧ ⟩
+    ⟦ x ⟧ ⊛ ⊝ ⟦ y ⟧   ≈⟨ ◦-cong refl (sym (⁻¹-homo y)) ⟩
+    ⟦ x ⟧ ⊛ ⟦ - y ⟧   ≈⟨ sym (*-homo x (- y)) ⟩
+    ⟦ x * - y ⟧       ∎)
 
 isRing : IsRing _≈₂_ _⊕_ _⊛_ ⊝_ 0#₂ 1#₂ → IsRing _≈₁_ _+_ _*_ -_ 0# 1#
 isRing isRing = record

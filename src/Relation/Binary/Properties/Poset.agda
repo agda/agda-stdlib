@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Function.Base using (flip)
+open import Function.Base using (flip; _∘_)
 open import Relation.Binary
 import Relation.Binary.Consequences as Consequences
 open import Relation.Nullary using (¬_)
@@ -16,13 +16,9 @@ module Relation.Binary.Properties.Poset
 
 open Poset P renaming (Carrier to A)
 
-open import Function.Base using (flip)
 import Relation.Binary.Construct.NonStrictToStrict _≈_ _≤_ as ToStrict
 import Relation.Binary.Properties.Preorder preorder as PreorderProperties
-
-private
-  _≉_ : Rel A p₂
-  x ≉ y = ¬ (x ≈ y)
+open Eq using (_≉_)
 
 ------------------------------------------------------------------------
 -- The _≥_ relation is also a poset.
@@ -58,6 +54,20 @@ open Poset ≥-poset public
   ; trans     to ≥-trans
   ; antisym   to ≥-antisym
   )
+
+------------------------------------------------------------------------
+-- Negated order
+
+infix 4 _≰_
+
+_≰_ : Rel A p₃
+x ≰ y = ¬ (x ≤ y)
+
+≰-respˡ-≈ : _≰_ Respectsˡ _≈_
+≰-respˡ-≈ x≈y = _∘ ≤-respˡ-≈ (Eq.sym x≈y)
+
+≰-respʳ-≈ : _≰_ Respectsʳ _≈_
+≰-respʳ-≈ x≈y = _∘ ≤-respʳ-≈ (Eq.sym x≈y)
 
 ------------------------------------------------------------------------
 -- Partial orders can be turned into strict partial orders

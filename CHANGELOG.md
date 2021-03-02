@@ -6,6 +6,8 @@ The library has been tested using Agda 2.6.1 and 2.6.1.1.
 Highlights
 ----------
 
+* First verified implementation of a sorting algorithm (available from `Data.List.Sort`).
+
 Bug-fixes
 ---------
 
@@ -50,6 +52,29 @@ Deprecated names
   n≤m⊔n      ↦  i≤j⊔i
   ```
 
+* In `Relation.Binary.Consequences`:
+  ```agda
+  subst⟶respˡ      ↦ subst⇒respˡ
+  subst⟶respʳ      ↦ subst⇒respʳ
+  subst⟶resp₂      ↦ subst⇒resp₂
+  P-resp⟶¬P-resp   ↦ resp⇒¬-resp
+  total⟶refl       ↦ total⇒refl
+  total+dec⟶dec    ↦ total∧dec⇒dec
+  trans∧irr⟶asym   ↦ trans∧irr⇒asym 
+  irr∧antisym⟶asym ↦ irr∧antisym⇒asym 
+  asym⟶antisym     ↦ asym⇒antisym
+  asym⟶irr         ↦ asym⇒irr
+  tri⟶asym         ↦ tri⇒asym
+  tri⟶irr          ↦ tri⇒irr
+  tri⟶dec≈         ↦ tri⇒dec≈
+  tri⟶dec<         ↦ tri⇒dec<
+  trans∧tri⟶respʳ≈ ↦ trans∧tri⇒respʳ
+  trans∧tri⟶respˡ≈ ↦ trans∧tri⇒respˡ
+  trans∧tri⟶resp≈  ↦ trans∧tri⇒resp
+  dec⟶weaklyDec    ↦ dec⇒weaklyDec
+  dec⟶recomputable ↦ dec⇒recomputable
+  ```
+
 * In `Data.Rational.Properties`:
   ```agda
   neg-mono-<-> ↦ neg-mono-<
@@ -59,10 +84,26 @@ Deprecated names
 New modules
 -----------
 
+* Added `Data.Maybe.Relation.Binary.Connected`, a variant of the `Pointwise` relation where `nothing` is also related to `just`.
+
+* Added various generic morphism constructions for binary relations:
+  ```agda
+  Relation.Binary.Morphism.Construct.Composition
+  Relation.Binary.Morphism.Construct.Constant
+  Relation.Binary.Morphism.Construct.Identity
+  ```
+
 * Specifications for min and max operators
   ```
   Algebra.Construct.NaturalChoice.MinOp
   Algebra.Construct.NaturalChoice.MaxOp
+  ```
+
+* Sorting algorithms over lists:
+  ```
+  Data.List.Sort
+  Data.List.Sort.Base
+  Data.List.Sort.MergeSort
   ```
 
 * Linear congruential pseudo random generators for ℕ.
@@ -75,9 +116,53 @@ New modules
 Other minor additions
 ---------------------
 
+* Added new proofs in `Algebra.Morphism.GroupMonomorphism`:
+  ```agda
+  ⁻¹-distrib-∙ : ((x ◦ y) ⁻¹₂ ≈₂ (x ⁻¹₂) ◦ (y ⁻¹₂)) → ((x ∙ y) ⁻¹₁ ≈₁ (x ⁻¹₁) ∙ (y ⁻¹₁))
+  ```
+
+* Added new proofs in `Algebra.Morphism.RingMonomorphism`:
+  ```agda
+  neg-distribˡ-* : ((⊝ (x ⊛ y)) ≈₂ ((⊝ x) ⊛ y)) → ((- (x * y)) ≈₁ ((- x) * y))
+  neg-distribʳ-* : ((⊝ (x ⊛ y)) ≈₂ (x ⊛ (⊝ y))) → ((- (x * y)) ≈₁ (x * (- y)))
+  ```
+
 * Added new function in `Data.List.Base`:
   ```agda
   last : List A → Maybe A
+  merge : Decidable R → List A → List A → List A
+  ```
+
+* Added new proof in `Data.List.Properties`:
+  ```agda
+  length-partition : (let (ys , zs) = partition P? xs) → length ys ≤ length xs × length zs ≤ length xs
+  ```
+
+* Added new proof in `Data.List.Relation.Binary.Permutation.Setoid.Properties`:
+  ```agda
+  ↭-shift     : xs ++ [ v ] ++ ys ↭ v ∷ xs ++ ys
+  ↭-merge     : merge R? xs ys ↭ xs ++ ys
+  ↭-partition : (let ys , zs = partition P? xs) → xs ↭ ys ++ zs
+  ```
+
+* Added new operations in `Data.List.Relation.Unary.Linked`:
+  ```agda
+  head′ : Linked R (x ∷ xs) → Connected R (just x) (head xs)
+  _∷′_  : Connected R (just x) (head xs) → Linked R xs → Linked R (x ∷ xs)
+  ```
+
+* Generalised the type of operation `tail` in `Data.List.Relation.Unary.Linked`
+  from `Linked R (x ∷ y ∷ xs) → Linked R (y ∷ xs)` to `Linked R (x ∷ xs) → Linked R xs`.
+
+* Added new proof in `Data.List.Relation.Unary.Linked.Properties`:
+  ```agda
+  ++⁺ : Linked R xs → Connected R (last xs) (head ys) → Linked R ys → Linked R (xs ++ ys)
+  ```
+
+* Added new proof in `Data.List.Relation.Unary.Sorted.TotalOrder.Properties`:
+  ```agda
+  ++⁺    : Sorted O xs → Connected _≤_ (last xs) (head ys) → Sorted O ys → Sorted O (xs ++ ys)
+  merge⁺ : Sorted O xs → Sorted O ys → Sorted O (merge _≤?_ xs ys)
   ```
 
 * Added new proofs in `Data.List.Relation.Unary.All.Properties`:
@@ -98,6 +183,12 @@ Other minor additions
 
   all-head-dropWhile : (P? : Decidable P) → ∀ xs → Maybe.All (∁ P) (head (dropWhile P? xs))
   all-takeWhile      : (P? : Decidable P) → ∀ xs → All P (takeWhile P? xs)
+  ```
+
+* Added new proofs in `Data.Maybe.Relation.Unary.All.Properties`:
+  ```agda
+  All⇒Connectedˡ : All (R x) y → Connected R (just x) y
+  All⇒Connectedʳ : All (λ v → R v y) x → Connected R x (just y
   ```
 
 * Added new proofs to `Data.Nat.DivMod`:
@@ -177,7 +268,7 @@ Other minor additions
   ⊔-⊓-absorptive            : Absorptive _⊓_ _
   ⊔-⊓-isLattice             : IsLattice _⊔_ _⊓_
   ⊔-⊓-isDistributiveLattice : IsDistributiveLattice _⊔_ _⊓_
-
+  
   ⊓-commutativeSemigroup    : CommutativeSemigroup 0ℓ 0ℓ
   ⊔-commutativeSemigroup    : CommutativeSemigroup 0ℓ 0ℓ
   ⊔-0-monoid                : Monoid 0ℓ 0ℓ
@@ -190,6 +281,16 @@ Other minor additions
   antimono-≤-distrib-⊔      : f Preserves _≤_ ⟶ _≥_ → f (x ⊔ y) ≈ f x ⊓ f y
   
   [m*n]*[o*p]≡[m*o]*[n*p]   : (m * n) * (o * p) ≡ (m * o) * (n * p)
+  ```
+
+* Added new definition in `Data.Nat.Base`:
+  ```agda
+  _≤ᵇ_ : (m n : ℕ) → Bool
+  ```
+
+* Added new proof to `Data.Nat.Induction`:
+  ```agda
+  <-wellFounded-fast : WellFounded _<_
   ```
 
 * Added new relation to `Data.Integer.Base`:
@@ -241,8 +342,16 @@ Other minor additions
   i≤j⇒i≤k⊔j                 : i ≤ j → i ≤ k ⊔ j
   i⊔j≤k⇒i≤k                 : i ⊔ j ≤ k → i ≤ k
   i⊔j≤k⇒j≤k                 : i ⊔ j ≤ k → j ≤ k
-
   i⊓j≤i⊔j                   : i ⊓ j ≤ i ⊔ j
+  
+  +-*-commutativeSemiring : CommutativeSemiring 0ℓ 0ℓ
+  ```
+
+* Added new definitions and proofs to `Relation.Binary.Properties.(Poset/TotalOrder/DecTotalOrder)`:
+  ```agda
+  _≰_       : Rel A p₃
+  ≰-respˡ-≈ : _≰_ Respectsˡ _≈_
+  ≰-respʳ-≈ : _≰_ Respectsʳ _≈_
   ```
 
 * Added new proofs to `Data.List.Relation.Binary.Pointwise`:
@@ -288,196 +397,214 @@ Other minor additions
 
 * Add new proofs to `Data.Rational.Properties`:
   ```agda
-  mkℚ-cong                  : n₁ ≡ n₂ → d₁ ≡ d₂ → mkℚ n₁ d₁ c₁ ≡ mkℚ n₂ d₂ c₂
-  mkℚ+-injective            : mkℚ+ n₁ d₁ c₁ ≡ mkℚ+ n₂ d₂ c₂ → n₁ ≡ n₂ × d₁ ≡ d₂
-  mkℚ+-nonNeg               : NonNegative (mkℚ+ n d c)
-  mkℚ+-pos                  : NonZero n → Positive (mkℚ+ n d c)
+  mkℚ-cong                   : n₁ ≡ n₂ → d₁ ≡ d₂ → mkℚ n₁ d₁ c₁ ≡ mkℚ n₂ d₂ c₂
+  mkℚ+-injective             : mkℚ+ n₁ d₁ c₁ ≡ mkℚ+ n₂ d₂ c₂ → n₁ ≡ n₂ × d₁ ≡ d₂
+  mkℚ+-nonNeg                : NonNegative (mkℚ+ n d c)
+  mkℚ+-pos                   : NonZero n → Positive (mkℚ+ n d c)
 		   
-  nonNeg≢neg                : NonNegative p → Negative q → p ≢ q
-  pos⇒nonNeg                : Positive p → NonNegative p
-  neg⇒nonPos                : Negative p → NonPositive p
-  nonNeg∧nonZero⇒pos        : NonNegative p → NonZero p → Positive p
+  nonNeg≢neg                 : NonNegative p → Negative q → p ≢ q
+  pos⇒nonNeg                 : Positive p → NonNegative p
+  neg⇒nonPos                 : Negative p → NonPositive p
+  nonNeg∧nonZero⇒pos         : NonNegative p → NonZero p → Positive p
 
-  neg-injective             : - p ≡ - q → p ≡ q
-  neg-antimono-<            : -_ Preserves _<_ ⟶ _>_
-  neg-antimono-≤            : -_ Preserves _≤_ ⟶ _≥_
-  neg-pos                   : Positive p → Negative (- p)
+  neg-injective              : - p ≡ - q → p ≡ q
+  neg-antimono-<             : -_ Preserves _<_ ⟶ _>_
+  neg-antimono-≤             : -_ Preserves _≤_ ⟶ _≥_
+  neg-pos                    : Positive p → Negative (- p)
 
-  normalize-cong            : m₁ ≡ m₂ → n₁ ≡ n₂ → normalize m₁ n₁ ≡ normalize m₂ n₂
-  normalize-nonNeg          : NonNegative (normalize m n)
-  normalize-pos             : NonZero m → Positive (normalize m n)
-  normalize-injective-≃     : normalize m c ≡ normalize n d → m ℕ.* d ≡ n ℕ.* c
+  normalize-cong             : m₁ ≡ m₂ → n₁ ≡ n₂ → normalize m₁ n₁ ≡ normalize m₂ n₂
+  normalize-nonNeg           : NonNegative (normalize m n)
+  normalize-pos              : NonZero m → Positive (normalize m n)
+  normalize-injective-≃      : normalize m c ≡ normalize n d → m ℕ.* d ≡ n ℕ.* c
 
-  /-injective-≃             : ↥ᵘ p / ↧ₙᵘ p ≡ ↥ᵘ q / ↧ₙᵘ q → p ≃ᵘ q
+  /-injective-≃              : ↥ᵘ p / ↧ₙᵘ p ≡ ↥ᵘ q / ↧ₙᵘ q → p ≃ᵘ q
 						
-  fromℚᵘ-injective          : Injective _≃ᵘ_ _≡_ fromℚᵘ
-  toℚᵘ-fromℚᵘ               : toℚᵘ (fromℚᵘ p) ≃ᵘ p
-  fromℚᵘ-cong               : fromℚᵘ Preserves _≃ᵘ_ ⟶ _≡_
+  fromℚᵘ-injective           : Injective _≃ᵘ_ _≡_ fromℚᵘ
+  toℚᵘ-fromℚᵘ                : toℚᵘ (fromℚᵘ p) ≃ᵘ p
+  fromℚᵘ-cong                : fromℚᵘ Preserves _≃ᵘ_ ⟶ _≡_
 
-  ≤-isTotalPreorder         : IsTotalPreorder _≡_ _≤_
-  ≤-totalPreorder           : TotalPreorder 0ℓ 0ℓ 0ℓ
+  ≤-isTotalPreorder          : IsTotalPreorder _≡_ _≤_
+  ≤-totalPreorder            : TotalPreorder 0ℓ 0ℓ 0ℓ
 
-  ≤ᵇ⇒≤                      : T (p ≤ᵇ q) → p ≤ q
-  ≤⇒≤ᵇ                      : p ≤ q → T (p ≤ᵇ q)
-
-  *-inverseʳ                : p * (1/ p) ≡ 1ℚ
-  *-inverseˡ                : (1/ p) * p ≡ 1ℚ
-
-  *-monoʳ-≤-pos             : Positive r    → (_* r) Preserves _≤_ ⟶ _≤_
-  *-monoˡ-≤-pos             : Positive r    → (r *_) Preserves _≤_ ⟶ _≤_
-  *-monoʳ-≤-neg             : Negative r    → (_* r) Preserves _≤_ ⟶ _≥_
-  *-monoˡ-≤-neg             : Negative r    → (r *_) Preserves _≤_ ⟶ _≥_
-  *-monoʳ-≤-nonNeg          : NonNegative r → (_* r) Preserves _≤_ ⟶ _≤_
-  *-monoˡ-≤-nonNeg          : NonNegative r → (r *_) Preserves _≤_ ⟶ _≤_
-  *-monoʳ-≤-nonPos          : NonPositive r → (_* r) Preserves _≤_ ⟶ _≥_
-  *-monoˡ-≤-nonPos          : NonPositive r → (r *_) Preserves _≤_ ⟶ _≥_
-  *-monoˡ-<-pos             : Positive r → (_* r) Preserves _<_ ⟶ _<_
-  *-monoʳ-<-pos             : Positive r → (r *_) Preserves _<_ ⟶ _<_
-  *-monoˡ-<-neg             : Negative r → (_* r) Preserves _<_ ⟶ _>_
-  *-monoʳ-<-neg             : Negative r → (r *_) Preserves _<_ ⟶ _>_
-
-  *-cancelʳ-≤-pos           : Positive r    → p * r ≤ q * r → p ≤ q
-  *-cancelˡ-≤-pos           : Positive r    → r * p ≤ r * q → p ≤ q
-  *-cancelʳ-≤-neg           : Negative r    → p * r ≤ q * r → p ≥ q
-  *-cancelˡ-≤-neg           : Negative r    → r * p ≤ r * q → p ≥ q
-  *-cancelˡ-<-pos           : Positive r    → r * p < r * q → p < q
-  *-cancelʳ-<-pos           : Positive r    → p * r < q * r → p < q
-  *-cancelˡ-<-neg           : Negative r    → r * p < r * q → p > q
-  *-cancelʳ-<-neg           : Negative r    → p * r < q * r → p > q
-  *-cancelˡ-<-nonPos        : NonPositive r → r * p < r * q → p > q
-  *-cancelʳ-<-nonPos        : NonPositive r → p * r < q * r → p > q
-  *-cancelˡ-<-nonNeg        : NonNegative r → r * p < r * q → p < q
-  *-cancelʳ-<-nonNeg        : NonNegative r → p * r < q * r → p < q
-
-  p≤q⇒p⊔q≡q                 : p ≤ q → p ⊔ q ≡ q
-  p≥q⇒p⊔q≡p                 : p ≥ q → p ⊔ q ≡ p
-  p≤q⇒p⊓q≡p                 : p ≤ q → p ⊓ q ≡ p
-  p≥q⇒p⊓q≡q                 : p ≥ q → p ⊓ q ≡ q
-
-  ⊓-idem                    : Idempotent _⊓_
-  ⊓-sel                     : Selective _⊓_
-  ⊓-assoc                   : Associative _⊓_
-  ⊓-comm                    : Commutative _⊓_
-
-  ⊔-idem                    : Idempotent _⊔_
-  ⊔-sel                     : Selective _⊔_
-  ⊔-assoc                   : Associative _⊔_
-  ⊔-comm                    : Commutative _⊔_
-
-  ⊓-distribˡ-⊔              : _⊓_ DistributesOverˡ _⊔_
-  ⊓-distribʳ-⊔              : _⊓_ DistributesOverʳ _⊔_
-  ⊓-distrib-⊔               : _⊓_ DistributesOver  _⊔_
-  ⊔-distribˡ-⊓              : _⊔_ DistributesOverˡ _⊓_
-  ⊔-distribʳ-⊓              : _⊔_ DistributesOverʳ _⊓_
-  ⊔-distrib-⊓               : _⊔_ DistributesOver  _⊓_
-  ⊓-absorbs-⊔               : _⊓_ Absorbs _⊔_
-  ⊔-absorbs-⊓               : _⊔_ Absorbs _⊓_
-  ⊔-⊓-absorptive            : Absorptive _⊔_ _⊓_
-  ⊓-⊔-absorptive            : Absorptive _⊓_ _⊔_
-
-  ⊓-isMagma                 : IsMagma _⊓_
-  ⊓-isSemigroup             : IsSemigroup _⊓_
-  ⊓-isCommutativeSemigroup  : IsCommutativeSemigroup _⊓_
-  ⊓-isBand                  : IsBand _⊓_
-  ⊓-isSemilattice           : IsSemilattice _⊓_
-  ⊓-isSelectiveMagma        : IsSelectiveMagma _⊓_
-
-  ⊔-isMagma                 : IsMagma _⊔_
-  ⊔-isSemigroup             : IsSemigroup _⊔_
-  ⊔-isCommutativeSemigroup  : IsCommutativeSemigroup _⊔_
-  ⊔-isBand                  : IsBand _⊔_
-  ⊔-isSemilattice           : IsSemilattice _⊔_
-  ⊔-isSelectiveMagma        : IsSelectiveMagma _⊔_
-
-  ⊔-⊓-isLattice             : IsLattice _⊔_ _⊓_
-  ⊓-⊔-isLattice             : IsLattice _⊓_ _⊔_
-  ⊔-⊓-isDistributiveLattice : IsDistributiveLattice _⊔_ _⊓_
-  ⊓-⊔-isDistributiveLattice : IsDistributiveLattice _⊓_ _⊔_
-
-  ⊓-magma                   : Magma _ _
-  ⊓-semigroup               : Semigroup _ _
-  ⊓-band                    : Band _ _
-  ⊓-commutativeSemigroup    : CommutativeSemigroup _ _
-  ⊓-semilattice             : Semilattice _ _
-  ⊓-selectiveMagma          : SelectiveMagma _ _
-
-  ⊔-magma                   : Magma _ _
-  ⊔-semigroup               : Semigroup _ _
-  ⊔-band                    : Band _ _
-  ⊔-commutativeSemigroup    : CommutativeSemigroup _ _
-  ⊔-semilattice             : Semilattice _ _
-  ⊔-selectiveMagma          : SelectiveMagma _ _
-
-  ⊔-⊓-lattice               : Lattice _ _
-  ⊓-⊔-lattice               : Lattice _ _
-  ⊔-⊓-distributiveLattice   : DistributiveLattice _ _
-  ⊓-⊔-distributiveLattice   : DistributiveLattice _ _
-
-  ⊓-glb                     : p ≥ r → q ≥ r → p ⊓ q ≥ r
-  ⊓-triangulate             : p ⊓ q ⊓ r ≡ (p ⊓ q) ⊓ (q ⊓ r)
-  ⊓-mono-≤                  : _⊓_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
-  ⊓-monoˡ-≤                 : (_⊓ p) Preserves _≤_ ⟶ _≤_
-  ⊓-monoʳ-≤                 : (p ⊓_) Preserves _≤_ ⟶ _≤_
-
-  ⊔-lub                     : p ≤ r → q ≤ r → p ⊔ q ≤ r
-  ⊔-triangulate             : p ⊔ q ⊔ r ≡ (p ⊔ q) ⊔ (q ⊔ r)
-  ⊔-mono-≤                  : _⊔_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
-  ⊔-monoˡ-≤                 : (_⊔ p) Preserves _≤_ ⟶ _≤_
-  ⊔-monoʳ-≤                 : (p ⊔_) Preserves _≤_ ⟶ _≤_
-
-  p⊓q≡q⇒q≤p                 : p ⊓ q ≡ q → q ≤ p
-  p⊓q≡p⇒p≤q                 : p ⊓ q ≡ p → p ≤ q
-  p⊓q≤p                     : p ⊓ q ≤ p
-  p⊓q≤q                     : p ⊓ q ≤ q
-  p≤q⇒p⊓r≤q                 : p ≤ q → p ⊓ r ≤ q
-  p≤q⇒r⊓p≤q                 : p ≤ q → r ⊓ p ≤ q
-  p≤q⊓r⇒p≤q                 : p ≤ q ⊓ r → p ≤ q
-  p≤q⊓r⇒p≤r                 : p ≤ q ⊓ r → p ≤ r
-
-  p⊔q≡q⇒p≤q                 : p ⊔ q ≡ q → p ≤ q
-  p⊔q≡p⇒q≤p                 : p ⊔ q ≡ p → q ≤ p
-  p≤p⊔q                     : p ≤ p ⊔ q
-  p≤q⊔p                     : p ≤ q ⊔ p
-  p≤q⇒p≤q⊔r                 : p ≤ q → p ≤ q ⊔ r
-  p≤q⇒p≤r⊔q                 : p ≤ q → p ≤ r ⊔ q
-  p⊔q≤r⇒p≤r                 : p ⊔ q ≤ r → p ≤ r
-  p⊔q≤r⇒q≤r                 : p ⊔ q ≤ r → q ≤ r
-  p⊓q≤p⊔q                   : p ⊓ q ≤ p ⊔ q
-
-  mono-≤-distrib-⊔          : f Preserves _≤_ ⟶ _≤_ → f (p ⊔ q) ≡ f p ⊔ f q
-  mono-≤-distrib-⊓          : f Preserves _≤_ ⟶ _≤_ → f (p ⊓ q) ≡ f p ⊓ f q
-  mono-<-distrib-⊓          : f Preserves _<_ ⟶ _<_ → f (p ⊓ q) ≡ f p ⊓ f q
-  mono-<-distrib-⊔          : f Preserves _<_ ⟶ _<_ → f (p ⊔ q) ≡ f p ⊔ f q
-  antimono-≤-distrib-⊓      : f Preserves _≤_ ⟶ _≥_ → f (p ⊓ q) ≡ f p ⊔ f q
-  antimono-≤-distrib-⊔      : f Preserves _≤_ ⟶ _≥_ → f (p ⊔ q) ≡ f p ⊓ f q
-
-  *-distribˡ-⊓-nonNeg       : NonNegative p → p * (q ⊓ r) ≡ (p * q) ⊓ (p * r)
-  *-distribʳ-⊓-nonNeg       : NonNegative p → (q ⊓ r) * p ≡ (q * p) ⊓ (r * p)
-  *-distribˡ-⊔-nonNeg       : NonNegative p → p * (q ⊔ r) ≡ (p * q) ⊔ (p * r)
-  *-distribʳ-⊔-nonNeg       : NonNegative p → (q ⊔ r) * p ≡ (q * p) ⊔ (r * p)
-  *-distribˡ-⊔-nonPos       : NonPositive p → p * (q ⊔ r) ≡ (p * q) ⊓ (p * r)
-  *-distribʳ-⊔-nonPos       : NonPositive p → (q ⊔ r) * p ≡ (q * p) ⊓ (r * p)
-  *-distribˡ-⊓-nonPos       : NonPositive p → p * (q ⊓ r) ≡ (p * q) ⊔ (p * r)
-  *-distribʳ-⊓-nonPos       : NonPositive p → (q ⊓ r) * p ≡ (q * p) ⊔ (r * p)
-
-  1/-involutive             : 1/ (1/ p) ≡ p
-  pos⇒1/pos                 : Positive p → Positive (1/ p)
-  neg⇒1/neg                 : Negative p → Negative (1/ p)
-  1/pos⇒pos                 : Positive (1/ p) → Positive p
-  1/neg⇒neg                 : Negative (1/ p) → Negative p
+  toℚᵘ-mono-<                : p < q → toℚᵘ p <ᵘ toℚᵘ q
+  toℚᵘ-cancel-<              : toℚᵘ p <ᵘ toℚᵘ q → p < q
+  toℚᵘ-isOrderHomomorphism-< : IsOrderHomomorphism _≡_ _≃ᵘ_ _<_ _<ᵘ_ toℚᵘ
+  toℚᵘ-isOrderMonomorphism-< : IsOrderMonomorphism _≡_ _≃ᵘ_ _<_ _<ᵘ_ toℚᵘ
   
-  toℚᵘ-homo-∣_∣             : Homomorphic₁ toℚᵘ ∣_∣ ℚᵘ.∣_∣
-  ∣-∣-nonNeg                : NonNegative ∣ p ∣
-  0≤∣p∣                     : 0ℚ ≤ ∣ p ∣
-  0≤p⇒∣p∣≡p                 : 0ℚ ≤ p → ∣ p ∣ ≡ p
-  ∣-p∣≡∣p∣                  : ∣ - p ∣ ≡ ∣ p ∣
-  ∣p∣≡p⇒p≡0                 : ∣ p ∣ ≡ 0ℚ → p ≡ 0ℚ
-  ∣p∣≡p⊎∣p∣≡-p              : ∣ p ∣ ≡ p ⊎ ∣ p ∣ ≡ - p
-  ∣p+q∣≤∣p∣+∣q∣             : ∣ p + q ∣ ≤ ∣ p ∣ + ∣ q ∣
-  ∣p-q∣≤∣p∣+∣q∣             : ∣ p - q ∣ ≤ ∣ p ∣ + ∣ q ∣
-  ∣p*q∣≡∣p∣*∣q∣             : ∣ p * q ∣ ≡ ∣ p ∣ * ∣ q ∣
-  ```
+  ≤ᵇ⇒≤                       : T (p ≤ᵇ q) → p ≤ q
+  ≤⇒≤ᵇ                       : p ≤ q → T (p ≤ᵇ q)
+  
+  +-mono-≤                   : _+_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
+  +-monoˡ-≤                  : (_+ r) Preserves _≤_ ⟶ _≤_
+  +-monoʳ-≤                  : (_+_ r) Preserves _≤_ ⟶ _≤_
+  +-mono-<-≤                 : _+_ Preserves₂ _<_ ⟶ _≤_ ⟶ _<_
+  +-mono-<                   : _+_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
+  +-monoˡ-<                  : (_+ r) Preserves _<_ ⟶ _<_
+  +-monoʳ-<                  : (_+_ r) Preserves _<_ ⟶ _<_
+  
+  neg-distrib-+              : - (p + q) ≡ (- p) + (- q)
 
+  *-inverseʳ                 : p * (1/ p) ≡ 1ℚ
+  *-inverseˡ                 : (1/ p) * p ≡ 1ℚ
+
+  *-monoʳ-≤-pos              : Positive r    → (_* r) Preserves _≤_ ⟶ _≤_
+  *-monoˡ-≤-pos              : Positive r    → (r *_) Preserves _≤_ ⟶ _≤_
+  *-monoʳ-≤-neg              : Negative r    → (_* r) Preserves _≤_ ⟶ _≥_
+  *-monoˡ-≤-neg              : Negative r    → (r *_) Preserves _≤_ ⟶ _≥_
+  *-monoʳ-≤-nonNeg           : NonNegative r → (_* r) Preserves _≤_ ⟶ _≤_
+  *-monoˡ-≤-nonNeg           : NonNegative r → (r *_) Preserves _≤_ ⟶ _≤_
+  *-monoʳ-≤-nonPos           : NonPositive r → (_* r) Preserves _≤_ ⟶ _≥_
+  *-monoˡ-≤-nonPos           : NonPositive r → (r *_) Preserves _≤_ ⟶ _≥_
+  *-monoˡ-<-pos              : Positive r → (_* r) Preserves _<_ ⟶ _<_
+  *-monoʳ-<-pos              : Positive r → (r *_) Preserves _<_ ⟶ _<_
+  *-monoˡ-<-neg              : Negative r → (_* r) Preserves _<_ ⟶ _>_
+  *-monoʳ-<-neg              : Negative r → (r *_) Preserves _<_ ⟶ _>_
+
+  *-cancelʳ-≤-pos            : Positive r    → p * r ≤ q * r → p ≤ q
+  *-cancelˡ-≤-pos            : Positive r    → r * p ≤ r * q → p ≤ q
+  *-cancelʳ-≤-neg            : Negative r    → p * r ≤ q * r → p ≥ q
+  *-cancelˡ-≤-neg            : Negative r    → r * p ≤ r * q → p ≥ q
+  *-cancelˡ-<-pos            : Positive r    → r * p < r * q → p < q
+  *-cancelʳ-<-pos            : Positive r    → p * r < q * r → p < q
+  *-cancelˡ-<-neg            : Negative r    → r * p < r * q → p > q
+  *-cancelʳ-<-neg            : Negative r    → p * r < q * r → p > q
+  *-cancelˡ-<-nonPos         : NonPositive r → r * p < r * q → p > q
+  *-cancelʳ-<-nonPos         : NonPositive r → p * r < q * r → p > q
+  *-cancelˡ-<-nonNeg         : NonNegative r → r * p < r * q → p < q
+  *-cancelʳ-<-nonNeg         : NonNegative r → p * r < q * r → p < q
+  
+  neg-distribˡ-*             : - (p * q) ≡ - p * q
+  neg-distribʳ-*             : - (p * q) ≡ p * - q
+
+  p≤q⇒p⊔q≡q                  : p ≤ q → p ⊔ q ≡ q
+  p≥q⇒p⊔q≡p                  : p ≥ q → p ⊔ q ≡ p
+  p≤q⇒p⊓q≡p                  : p ≤ q → p ⊓ q ≡ p
+  p≥q⇒p⊓q≡q                  : p ≥ q → p ⊓ q ≡ q
+
+  ⊓-idem                     : Idempotent _⊓_
+  ⊓-sel                      : Selective _⊓_
+  ⊓-assoc                    : Associative _⊓_
+  ⊓-comm                     : Commutative _⊓_
+
+  ⊔-idem                     : Idempotent _⊔_
+  ⊔-sel                      : Selective _⊔_
+  ⊔-assoc                    : Associative _⊔_
+  ⊔-comm                     : Commutative _⊔_
+
+  ⊓-distribˡ-⊔               : _⊓_ DistributesOverˡ _⊔_
+  ⊓-distribʳ-⊔               : _⊓_ DistributesOverʳ _⊔_
+  ⊓-distrib-⊔                : _⊓_ DistributesOver  _⊔_
+  ⊔-distribˡ-⊓               : _⊔_ DistributesOverˡ _⊓_
+  ⊔-distribʳ-⊓               : _⊔_ DistributesOverʳ _⊓_
+  ⊔-distrib-⊓                : _⊔_ DistributesOver  _⊓_
+  ⊓-absorbs-⊔                : _⊓_ Absorbs _⊔_
+  ⊔-absorbs-⊓                : _⊔_ Absorbs _⊓_
+  ⊔-⊓-absorptive             : Absorptive _⊔_ _⊓_
+  ⊓-⊔-absorptive             : Absorptive _⊓_ _⊔_
+
+  ⊓-isMagma                  : IsMagma _⊓_
+  ⊓-isSemigroup              : IsSemigroup _⊓_
+  ⊓-isCommutativeSemigroup   : IsCommutativeSemigroup _⊓_
+  ⊓-isBand                   : IsBand _⊓_
+  ⊓-isSemilattice            : IsSemilattice _⊓_
+  ⊓-isSelectiveMagma         : IsSelectiveMagma _⊓_
+
+  ⊔-isMagma                  : IsMagma _⊔_
+  ⊔-isSemigroup              : IsSemigroup _⊔_
+  ⊔-isCommutativeSemigroup   : IsCommutativeSemigroup _⊔_
+  ⊔-isBand                   : IsBand _⊔_
+  ⊔-isSemilattice            : IsSemilattice _⊔_
+  ⊔-isSelectiveMagma         : IsSelectiveMagma _⊔_
+
+  ⊔-⊓-isLattice              : IsLattice _⊔_ _⊓_
+  ⊓-⊔-isLattice              : IsLattice _⊓_ _⊔_
+  ⊔-⊓-isDistributiveLattice  : IsDistributiveLattice _⊔_ _⊓_
+  ⊓-⊔-isDistributiveLattice  : IsDistributiveLattice _⊓_ _⊔_
+
+  ⊓-magma                    : Magma _ _
+  ⊓-semigroup                : Semigroup _ _
+  ⊓-band                     : Band _ _
+  ⊓-commutativeSemigroup     : CommutativeSemigroup _ _
+  ⊓-semilattice              : Semilattice _ _
+  ⊓-selectiveMagma           : SelectiveMagma _ _
+
+  ⊔-magma                    : Magma _ _
+  ⊔-semigroup                : Semigroup _ _
+  ⊔-band                     : Band _ _
+  ⊔-commutativeSemigroup     : CommutativeSemigroup _ _
+  ⊔-semilattice              : Semilattice _ _
+  ⊔-selectiveMagma           : SelectiveMagma _ _
+
+  ⊔-⊓-lattice                : Lattice _ _
+  ⊓-⊔-lattice                : Lattice _ _
+  ⊔-⊓-distributiveLattice    : DistributiveLattice _ _
+  ⊓-⊔-distributiveLattice    : DistributiveLattice _ _
+
+  ⊓-glb                      : p ≥ r → q ≥ r → p ⊓ q ≥ r
+  ⊓-triangulate              : p ⊓ q ⊓ r ≡ (p ⊓ q) ⊓ (q ⊓ r)
+  ⊓-mono-≤                   : _⊓_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
+  ⊓-monoˡ-≤                  : (_⊓ p) Preserves _≤_ ⟶ _≤_
+  ⊓-monoʳ-≤                  : (p ⊓_) Preserves _≤_ ⟶ _≤_
+
+  ⊔-lub                      : p ≤ r → q ≤ r → p ⊔ q ≤ r
+  ⊔-triangulate              : p ⊔ q ⊔ r ≡ (p ⊔ q) ⊔ (q ⊔ r)
+  ⊔-mono-≤                   : _⊔_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
+  ⊔-monoˡ-≤                  : (_⊔ p) Preserves _≤_ ⟶ _≤_
+  ⊔-monoʳ-≤                  : (p ⊔_) Preserves _≤_ ⟶ _≤_
+
+  p⊓q≡q⇒q≤p                  : p ⊓ q ≡ q → q ≤ p
+  p⊓q≡p⇒p≤q                  : p ⊓ q ≡ p → p ≤ q
+  p⊓q≤p                      : p ⊓ q ≤ p
+  p⊓q≤q                      : p ⊓ q ≤ q
+  p≤q⇒p⊓r≤q                  : p ≤ q → p ⊓ r ≤ q
+  p≤q⇒r⊓p≤q                  : p ≤ q → r ⊓ p ≤ q
+  p≤q⊓r⇒p≤q                  : p ≤ q ⊓ r → p ≤ q
+  p≤q⊓r⇒p≤r                  : p ≤ q ⊓ r → p ≤ r
+
+  p⊔q≡q⇒p≤q                  : p ⊔ q ≡ q → p ≤ q
+  p⊔q≡p⇒q≤p                  : p ⊔ q ≡ p → q ≤ p
+  p≤p⊔q                      : p ≤ p ⊔ q
+  p≤q⊔p                      : p ≤ q ⊔ p
+  p≤q⇒p≤q⊔r                  : p ≤ q → p ≤ q ⊔ r
+  p≤q⇒p≤r⊔q                  : p ≤ q → p ≤ r ⊔ q
+  p⊔q≤r⇒p≤r                  : p ⊔ q ≤ r → p ≤ r
+  p⊔q≤r⇒q≤r                  : p ⊔ q ≤ r → q ≤ r
+  p⊓q≤p⊔q                    : p ⊓ q ≤ p ⊔ q
+
+  mono-≤-distrib-⊔           : f Preserves _≤_ ⟶ _≤_ → f (p ⊔ q) ≡ f p ⊔ f q
+  mono-≤-distrib-⊓           : f Preserves _≤_ ⟶ _≤_ → f (p ⊓ q) ≡ f p ⊓ f q
+  mono-<-distrib-⊓           : f Preserves _<_ ⟶ _<_ → f (p ⊓ q) ≡ f p ⊓ f q
+  mono-<-distrib-⊔           : f Preserves _<_ ⟶ _<_ → f (p ⊔ q) ≡ f p ⊔ f q
+  antimono-≤-distrib-⊓       : f Preserves _≤_ ⟶ _≥_ → f (p ⊓ q) ≡ f p ⊔ f q
+  antimono-≤-distrib-⊔       : f Preserves _≤_ ⟶ _≥_ → f (p ⊔ q) ≡ f p ⊓ f q
+
+  *-distribˡ-⊓-nonNeg        : NonNegative p → p * (q ⊓ r) ≡ (p * q) ⊓ (p * r)
+  *-distribʳ-⊓-nonNeg        : NonNegative p → (q ⊓ r) * p ≡ (q * p) ⊓ (r * p)
+  *-distribˡ-⊔-nonNeg        : NonNegative p → p * (q ⊔ r) ≡ (p * q) ⊔ (p * r)
+  *-distribʳ-⊔-nonNeg        : NonNegative p → (q ⊔ r) * p ≡ (q * p) ⊔ (r * p)
+  *-distribˡ-⊔-nonPos        : NonPositive p → p * (q ⊔ r) ≡ (p * q) ⊓ (p * r)
+  *-distribʳ-⊔-nonPos        : NonPositive p → (q ⊔ r) * p ≡ (q * p) ⊓ (r * p)
+  *-distribˡ-⊓-nonPos        : NonPositive p → p * (q ⊓ r) ≡ (p * q) ⊔ (p * r)
+  *-distribʳ-⊓-nonPos        : NonPositive p → (q ⊓ r) * p ≡ (q * p) ⊔ (r * p)
+
+  1/-involutive              : 1/ (1/ p) ≡ p
+  pos⇒1/pos                  : Positive p → Positive (1/ p)
+  neg⇒1/neg                  : Negative p → Negative (1/ p)
+  1/pos⇒pos                  : Positive (1/ p) → Positive p
+  1/neg⇒neg                  : Negative (1/ p) → Negative p
+  
+  toℚᵘ-homo-∣_∣              : Homomorphic₁ toℚᵘ ∣_∣ ℚᵘ.∣_∣
+  ∣-∣-nonNeg                 : NonNegative ∣ p ∣
+  0≤∣p∣                      : 0ℚ ≤ ∣ p ∣
+  0≤p⇒∣p∣≡p                  : 0ℚ ≤ p → ∣ p ∣ ≡ p
+  ∣-p∣≡∣p∣                   : ∣ - p ∣ ≡ ∣ p ∣
+  ∣p∣≡p⇒p≡0                  : ∣ p ∣ ≡ 0ℚ → p ≡ 0ℚ
+  ∣p∣≡p⊎∣p∣≡-p               : ∣ p ∣ ≡ p ⊎ ∣ p ∣ ≡ - p
+  ∣p+q∣≤∣p∣+∣q∣              : ∣ p + q ∣ ≤ ∣ p ∣ + ∣ q ∣
+  ∣p-q∣≤∣p∣+∣q∣              : ∣ p - q ∣ ≤ ∣ p ∣ + ∣ q ∣
+  ∣p*q∣≡∣p∣*∣q∣              : ∣ p * q ∣ ≡ ∣ p ∣ * ∣ q ∣
+  ```
+  
 * Add new relations and functions to `Data.Rational.Unnormalised`:
   ```agda
   _≤ᵇ_ : ℤ → ℤ → Bool

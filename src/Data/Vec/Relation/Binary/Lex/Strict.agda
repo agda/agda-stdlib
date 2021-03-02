@@ -74,8 +74,8 @@ module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
 
     <-asym : ∀ {n} → Asymmetric (_<_ {n} {n})
     <-asym (this x≺y m≡n) (this y≺x n≡m) = ≺-asym x≺y y≺x
-    <-asym (this x≺y m≡n) (next y≈x ys<xs) = asym⟶irr ≺-resp-≈ ≈-sym ≺-asym (≈-sym y≈x) x≺y
-    <-asym (next x≈y xs<ys) (this y≺x n≡m) = asym⟶irr ≺-resp-≈ ≈-sym ≺-asym (≈-sym x≈y) y≺x
+    <-asym (this x≺y m≡n) (next y≈x ys<xs) = asym⇒irr ≺-resp-≈ ≈-sym ≺-asym (≈-sym y≈x) x≺y
+    <-asym (next x≈y xs<ys) (this y≺x n≡m) = asym⇒irr ≺-resp-≈ ≈-sym ≺-asym (≈-sym x≈y) y≺x
     <-asym (next x≈y xs<ys) (next y≈x ys<xs) = <-asym xs<ys ys<xs
 
   <-antisym : Symmetric _≈_ → Irreflexive _≈_ _≺_ → Asymmetric _≺_ →

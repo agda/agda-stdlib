@@ -13,6 +13,7 @@ module Relation.Binary.Properties.TotalOrder
 
 open TotalOrder T
 
+open import Data.Product using (proj₁)
 open import Data.Sum.Base using (inj₁; inj₂)
 import Relation.Binary.Construct.Converse as Converse
 import Relation.Binary.Construct.NonStrictToStrict _≈_ _≤_ as ToStrict
@@ -29,7 +30,7 @@ decTotalOrder ≟ = record
   { isDecTotalOrder = record
     { isTotalOrder = isTotalOrder
     ; _≟_          = ≟
-    ; _≤?_         = total+dec⟶dec reflexive antisym total ≟
+    ; _≤?_         = total∧dec⇒dec reflexive antisym total ≟
     }
   }
 
@@ -84,5 +85,18 @@ open PosetProperties public
   ; ≤⇒≯
   )
 
-≰⇒> : ∀ {x y} → ¬ (x ≤ y) → y < x
+------------------------------------------------------------------------
+-- _≰_ - the negated order
+
+open PosetProperties public
+  using
+  ( _≰_
+  ; ≰-respʳ-≈
+  ; ≰-respˡ-≈
+  )
+
+≰⇒> : ∀ {x y} → x ≰ y → y < x
 ≰⇒> = ToStrict.≰⇒> Eq.sym reflexive total
+
+≰⇒≥ : ∀ {x y} → x ≰ y → y ≤ x
+≰⇒≥ x≰y = proj₁ (≰⇒> x≰y)

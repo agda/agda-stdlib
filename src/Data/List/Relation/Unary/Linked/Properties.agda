@@ -9,7 +9,7 @@
 module Data.List.Relation.Unary.Linked.Properties where
 
 open import Data.Bool.Base using (true; false)
-open import Data.List hiding (any)
+open import Data.List.Base hiding (any)
 open import Data.List.Relation.Unary.AllPairs as AllPairs
   using (AllPairs; []; _∷_)
 import Data.List.Relation.Unary.AllPairs.Properties as AllPairs
@@ -20,6 +20,8 @@ open import Data.Fin.Base using (Fin)
 open import Data.Fin.Properties using (suc-injective)
 open import Data.Nat.Base using (zero; suc; _<_; z≤n; s≤s)
 open import Data.Nat.Properties using (≤-refl; ≤-pred; ≤-step)
+open import Data.Maybe.Relation.Binary.Connected
+  using (Connected; just; nothing; just-nothing; nothing-just)
 open import Level using (Level)
 open import Function.Base using (_∘_; flip; _on_)
 open import Relation.Binary using (Rel; Transitive; DecSetoid)
@@ -73,6 +75,22 @@ module _ {R : Rel A ℓ} {f : B → A} where
   map⁻ {[]}         []           = []
   map⁻ {x ∷ []}     [-]          = [-]
   map⁻ {x ∷ y ∷ xs} (Rxy ∷ Rxs)  = Rxy ∷ map⁻ Rxs
+
+------------------------------------------------------------------------
+-- _++_
+
+module _ {R : Rel A ℓ} where
+
+  ++⁺ : ∀ {xs ys} →
+        Linked R xs →
+        Connected R (last xs) (head ys) →
+        Linked R ys →
+        Linked R (xs ++ ys)
+  ++⁺ []          _          Rys         = Rys
+  ++⁺ [-]         _          []          = [-]
+  ++⁺ [-]         (just Rxy) [-]         = Rxy ∷ [-]
+  ++⁺ [-]         (just Rxy) (Ryz ∷ Rys) = Rxy ∷ Ryz ∷ Rys
+  ++⁺ (Rxy ∷ Rxs) Rxsys      Rys         = Rxy ∷ ++⁺ Rxs Rxsys Rys
 
 ------------------------------------------------------------------------
 -- applyUpTo
