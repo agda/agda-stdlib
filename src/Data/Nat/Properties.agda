@@ -1191,19 +1191,19 @@ open ⊓-⊔-properties public
 
 mono-≤-distrib-⊔ : ∀ {f} → f Preserves _≤_ ⟶ _≤_ →
                    ∀ m n → f (m ⊔ n) ≡ f m ⊔ f n
-mono-≤-distrib-⊔ = ⊓-⊔-properties.mono-≤-distrib-⊔ (cong _)
+mono-≤-distrib-⊔ {f} = ⊓-⊔-properties.mono-≤-distrib-⊔ (cong f)
 
 mono-≤-distrib-⊓ : ∀ {f} → f Preserves _≤_ ⟶ _≤_ →
                    ∀ m n → f (m ⊓ n) ≡ f m ⊓ f n
-mono-≤-distrib-⊓ = ⊓-⊔-properties.mono-≤-distrib-⊓ (cong _)
+mono-≤-distrib-⊓ {f} = ⊓-⊔-properties.mono-≤-distrib-⊓ (cong f)
 
 antimono-≤-distrib-⊓ : ∀ {f} → f Preserves _≤_ ⟶ _≥_ →
                        ∀ m n → f (m ⊓ n) ≡ f m ⊔ f n
-antimono-≤-distrib-⊓ = ⊓-⊔-properties.antimono-≤-distrib-⊓ (cong _)
+antimono-≤-distrib-⊓ {f} = ⊓-⊔-properties.antimono-≤-distrib-⊓ (cong f)
 
 antimono-≤-distrib-⊔ : ∀ {f} → f Preserves _≤_ ⟶ _≥_ →
                        ∀ m n → f (m ⊔ n) ≡ f m ⊓ f n
-antimono-≤-distrib-⊔ = ⊓-⊔-properties.antimono-≤-distrib-⊔ (cong _)
+antimono-≤-distrib-⊔ {f} = ⊓-⊔-properties.antimono-≤-distrib-⊔ (cong f)
 
 m<n⇒m<n⊔o : ∀ {m n} o → m < n → m < n ⊔ o
 m<n⇒m<n⊔o = m≤n⇒m≤n⊔o
