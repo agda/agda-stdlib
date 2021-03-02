@@ -66,15 +66,8 @@ private
   _≢0 : ℕ → Set
   n ≢0 = False (n ℕ.≟ 0)
 
-------------------------------------------------------------------------
--- Properties of Positive/Negative/NonPositive/NonNegative predicates
-------------------------------------------------------------------------
-
-positive⇒nonNegative : ∀ q → Positive q → NonNegative q
-positive⇒nonNegative q = ℚᵘ.positive⇒nonNegative {toℚᵘ q}
-
-negative⇒nonPositive : ∀ q → Negative q → NonPositive q
-negative⇒nonPositive q = ℚᵘ.negative⇒nonPositive {toℚᵘ q}
+  variable
+    p q r : ℚ
 
 ------------------------------------------------------------------------
 -- Propositional equality
@@ -210,7 +203,7 @@ nonNeg∧nonZero⇒pos (mkℚ +[1+ _ ] _ _) _ _ = _
 ↧-neg (mkℚ +0       _ _) = refl
 ↧-neg (mkℚ +[1+ _ ] _ _) = refl
 
-neg-injective : ∀ {p q} → - p ≡ - q → p ≡ q
+neg-injective : - p ≡ - q → p ≡ q
 neg-injective {mkℚ +[1+ m ] _ _} {mkℚ +[1+ n ] _ _} refl = refl
 neg-injective {mkℚ +0       _ _} {mkℚ +0       _ _} refl = refl
 neg-injective {mkℚ -[1+ m ] _ _} {mkℚ -[1+ n ] _ _} refl = refl
@@ -219,7 +212,7 @@ neg-injective {mkℚ +0       _ _} {mkℚ -[1+ n ] _ _} ()
 neg-injective {mkℚ -[1+ m ] _ _} {mkℚ +[1+ n ] _ _} ()
 neg-injective {mkℚ -[1+ m ] _ _} {mkℚ +0       _ _} ()
 
-neg-pos : ∀ {p} → Positive p → Negative (- p)
+neg-pos : Positive p → Negative (- p)
 neg-pos {mkℚ +[1+ _ ] _ _} _ = _
 
 ------------------------------------------------------------------------
@@ -441,16 +434,16 @@ toℚᵘ-isRelMonomorphism = record
 -- Properties of _≤_
 ------------------------------------------------------------------------
 
-drop-*≤* : ∀ {p q} → p ≤ q → (↥ p ℤ.* ↧ q) ℤ.≤ (↥ q ℤ.* ↧ p)
+drop-*≤* : p ≤ q → (↥ p ℤ.* ↧ q) ℤ.≤ (↥ q ℤ.* ↧ p)
 drop-*≤* (*≤* pq≤qp) = pq≤qp
 
 ------------------------------------------------------------------------
 -- toℚᵘ is a isomorphism
 
-toℚᵘ-mono-≤ : ∀ {p q} → p ≤ q → toℚᵘ p ≤ᵘ toℚᵘ q
+toℚᵘ-mono-≤ : p ≤ q → toℚᵘ p ≤ᵘ toℚᵘ q
 toℚᵘ-mono-≤ (*≤* p≤q) = *≤* p≤q
 
-toℚᵘ-cancel-≤ : ∀ {p q} → toℚᵘ p ≤ᵘ toℚᵘ q → p ≤ q
+toℚᵘ-cancel-≤ : toℚᵘ p ≤ᵘ toℚᵘ q → p ≤ q
 toℚᵘ-cancel-≤ (*≤* p≤q) = *≤* p≤q
 
 toℚᵘ-isOrderHomomorphism-≤ : IsOrderHomomorphism _≡_ _≃ᵘ_ _≤_ _≤ᵘ_ toℚᵘ
@@ -549,16 +542,16 @@ p ≤? q = Dec.map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* �
 -- Properties of _<_
 ------------------------------------------------------------------------
 
-drop-*<* : ∀ {p q} → p < q → (↥ p ℤ.* ↧ q) ℤ.< (↥ q ℤ.* ↧ p)
+drop-*<* : p < q → (↥ p ℤ.* ↧ q) ℤ.< (↥ q ℤ.* ↧ p)
 drop-*<* (*<* pq<qp) = pq<qp
 
 ------------------------------------------------------------------------
 -- toℚᵘ is a isomorphism
 
-toℚᵘ-mono-< : ∀ {p q} → p < q → toℚᵘ p <ᵘ toℚᵘ q
+toℚᵘ-mono-< : p < q → toℚᵘ p <ᵘ toℚᵘ q
 toℚᵘ-mono-< (*<* p<q) = *<* p<q
 
-toℚᵘ-cancel-< : ∀ {p q} → toℚᵘ p <ᵘ toℚᵘ q → p < q
+toℚᵘ-cancel-< : toℚᵘ p <ᵘ toℚᵘ q → p < q
 toℚᵘ-cancel-< (*<* p<q) = *<* p<q
 
 toℚᵘ-isOrderHomomorphism-< : IsOrderHomomorphism _≡_ _≃ᵘ_ _<_ _<ᵘ_ toℚᵘ
@@ -702,19 +695,19 @@ module ≤-Reasoning where
 ------------------------------------------------------------------------
 -- Properties of Positive/NonPositive/Negative/NonNegative and _≤_/_<_
 
-positive⁻¹ : ∀ {q} → Positive q → q > 0ℚ
-positive⁻¹ {q} q>0 = toℚᵘ-cancel-< (ℚᵘ.positive⁻¹ q>0)
+positive⁻¹ : Positive p → p > 0ℚ
+positive⁻¹ p>0 = toℚᵘ-cancel-< (ℚᵘ.positive⁻¹ p>0)
 
-nonNegative⁻¹ : ∀ {q} → NonNegative q → q ≥ 0ℚ
-nonNegative⁻¹ {q} q≥0 = toℚᵘ-cancel-≤ (ℚᵘ.nonNegative⁻¹ q≥0)
+nonNegative⁻¹ : NonNegative p → p ≥ 0ℚ
+nonNegative⁻¹ p≥0 = toℚᵘ-cancel-≤ (ℚᵘ.nonNegative⁻¹ p≥0)
 
-negative⁻¹ : ∀ {q} → Negative q → q < 0ℚ
-negative⁻¹ {q} q<0 = toℚᵘ-cancel-< (ℚᵘ.negative⁻¹ q<0)
+negative⁻¹ : Negative p → p < 0ℚ
+negative⁻¹ p<0 = toℚᵘ-cancel-< (ℚᵘ.negative⁻¹ p<0)
 
-nonPositive⁻¹ : ∀ {q} → NonPositive q → q ≤ 0ℚ
-nonPositive⁻¹ {q} q≤0 = toℚᵘ-cancel-≤ (ℚᵘ.nonPositive⁻¹ q≤0)
+nonPositive⁻¹ : NonPositive p → p ≤ 0ℚ
+nonPositive⁻¹ p≤0 = toℚᵘ-cancel-≤ (ℚᵘ.nonPositive⁻¹ p≤0)
 
-negative<positive : ∀ {p q} → Negative p → Positive q → p < q
+negative<positive : Negative p → Positive q → p < q
 negative<positive p<0 q>0 = toℚᵘ-cancel-< (ℚᵘ.negative<positive p<0 q>0)
 
 ------------------------------------------------------------------------
@@ -742,10 +735,10 @@ neg-antimono-≤ {mkℚ +[1+ _ ] _ _} {mkℚ +[1+ _ ] _ _} (*≤* (ℤ.+≤+ (�
 -- Properties of _≤ᵇ_
 ------------------------------------------------------------------------
 
-≤ᵇ⇒≤ : ∀ {p q} → T (p ≤ᵇ q) → p ≤ q
+≤ᵇ⇒≤ : T (p ≤ᵇ q) → p ≤ q
 ≤ᵇ⇒≤ = *≤* ∘′ ℤ.≤ᵇ⇒≤
 
-≤⇒≤ᵇ : ∀ {p q} → p ≤ q → T (p ≤ᵇ q)
+≤⇒≤ᵇ : p ≤ q → T (p ≤ᵇ q)
 ≤⇒≤ᵇ = ℤ.≤⇒≤ᵇ ∘′ drop-*≤*
 
 ------------------------------------------------------------------------
@@ -987,7 +980,7 @@ neg-distrib-+ = +-Monomorphism.⁻¹-distrib-∙ ℚᵘ.+-0-isAbelianGroup (ℚ�
   where open ℚᵘ.≤-Reasoning
 
 +-mono-≤-< : _+_ Preserves₂ _≤_ ⟶ _<_ ⟶ _<_
-+-mono-≤-< {p} {q} {r} {s} p≤q r<s rewrite (+-comm p r) | (+-comm q s) = +-mono-<-≤ r<s p≤q
++-mono-≤-< {p} {q} {r} {s} p≤q r<s rewrite +-comm p r | +-comm q s = +-mono-<-≤ r<s p≤q
 
 +-mono-< : _+_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
 +-mono-< {p} {q} {r} {s} p<q r<s = <-trans (+-mono-<-≤ p<q (≤-refl {r})) (+-mono-≤-< (≤-refl {q}) r<s)
@@ -1242,7 +1235,7 @@ neg-distribʳ-* = +-*-Monomorphism.neg-distribʳ-* ℚᵘ.+-0-isGroup ℚᵘ.*-i
 *-monoʳ-≤-nonPos : ∀ r → NonPositive r → (_* r) Preserves _≤_ ⟶ _≥_
 *-monoʳ-≤-nonPos r r≤0 {p} {q} p≤q = toℚᵘ-cancel-≤ (begin
   toℚᵘ (q * r)        ≈⟨ toℚᵘ-homo-* q r ⟩
-  toℚᵘ q ℚᵘ.* toℚᵘ r  ≤⟨ ℚᵘ.*-monoˡ-≤-nonPos {toℚᵘ r} r≤0 (toℚᵘ-mono-≤ p≤q) ⟩
+  toℚᵘ q ℚᵘ.* toℚᵘ r  ≤⟨ ℚᵘ.*-monoˡ-≤-nonPos (toℚᵘ r) r≤0 (toℚᵘ-mono-≤ p≤q) ⟩
   toℚᵘ p ℚᵘ.* toℚᵘ r  ≈˘⟨ toℚᵘ-homo-* p r ⟩
   toℚᵘ (p * r)        ∎)
   where open ℚᵘ.≤-Reasoning
@@ -1250,7 +1243,7 @@ neg-distribʳ-* = +-*-Monomorphism.neg-distribʳ-* ℚᵘ.+-0-isGroup ℚᵘ.*-i
 *-monoˡ-≤-nonPos : ∀ r → NonPositive r → (r *_) Preserves _≤_ ⟶ _≥_
 *-monoˡ-≤-nonPos r r≤0 {p} {q} p≤q = toℚᵘ-cancel-≤ (begin
   toℚᵘ (r * q)        ≈⟨ toℚᵘ-homo-* r q ⟩
-  toℚᵘ r ℚᵘ.* toℚᵘ q  ≤⟨ ℚᵘ.*-monoʳ-≤-nonPos {toℚᵘ r} r≤0 (toℚᵘ-mono-≤ p≤q) ⟩
+  toℚᵘ r ℚᵘ.* toℚᵘ q  ≤⟨ ℚᵘ.*-monoʳ-≤-nonPos (toℚᵘ r) r≤0 (toℚᵘ-mono-≤ p≤q) ⟩
   toℚᵘ r ℚᵘ.* toℚᵘ p  ≈˘⟨ toℚᵘ-homo-* r p ⟩
   toℚᵘ (r * p)        ∎)
   where open ℚᵘ.≤-Reasoning
@@ -1262,7 +1255,7 @@ neg-distribʳ-* = +-*-Monomorphism.neg-distribʳ-* ℚᵘ.+-0-isGroup ℚᵘ.*-i
 *-monoˡ-≤-neg r = *-monoˡ-≤-nonPos r ∘ ℚᵘ.negative⇒nonPositive {toℚᵘ r}
 
 *-cancelʳ-≤-neg : ∀ r → Negative r → ∀ {p q} → p * r ≤ q * r → p ≥ q
-*-cancelʳ-≤-neg r r≤0 {p} {q} pr≤qr = toℚᵘ-cancel-≤ (ℚᵘ.*-cancelʳ-≤-neg r≤0 (begin
+*-cancelʳ-≤-neg r r≤0 {p} {q} pr≤qr = toℚᵘ-cancel-≤ (ℚᵘ.*-cancelʳ-≤-neg _ r≤0 (begin
   toℚᵘ p ℚᵘ.* toℚᵘ r  ≈˘⟨ toℚᵘ-homo-* p r ⟩
   toℚᵘ (p * r)        ≤⟨  toℚᵘ-mono-≤ pr≤qr ⟩
   toℚᵘ (q * r)        ≈⟨  toℚᵘ-homo-* q r ⟩
@@ -1270,7 +1263,7 @@ neg-distribʳ-* = +-*-Monomorphism.neg-distribʳ-* ℚᵘ.+-0-isGroup ℚᵘ.*-i
   where open ℚᵘ.≤-Reasoning
 
 *-cancelˡ-≤-neg : ∀ r → Negative r → ∀ {p q} → r * p ≤ r * q → p ≥ q
-*-cancelˡ-≤-neg r r≤0 {p} {q} rp≤rq = toℚᵘ-cancel-≤ (ℚᵘ.*-cancelˡ-≤-neg {toℚᵘ r} r≤0 (begin
+*-cancelˡ-≤-neg r r≤0 {p} {q} rp≤rq = toℚᵘ-cancel-≤ (ℚᵘ.*-cancelˡ-≤-neg (toℚᵘ r) r≤0 (begin
   toℚᵘ r ℚᵘ.* toℚᵘ p  ≈˘⟨ toℚᵘ-homo-* r p ⟩
   toℚᵘ (r * p)        ≤⟨  toℚᵘ-mono-≤ rp≤rq ⟩
   toℚᵘ (r * q)        ≈⟨  toℚᵘ-homo-* r q ⟩
@@ -1321,7 +1314,7 @@ neg-distribʳ-* = +-*-Monomorphism.neg-distribʳ-* ℚᵘ.+-0-isGroup ℚᵘ.*-i
 *-monoˡ-<-neg : ∀ r → Negative r → (_* r) Preserves _<_ ⟶ _>_
 *-monoˡ-<-neg r r<0 {p} {q} p<q = toℚᵘ-cancel-< (begin-strict
   toℚᵘ (q * r)        ≈⟨ toℚᵘ-homo-* q r ⟩
-  toℚᵘ q ℚᵘ.* toℚᵘ r  <⟨ ℚᵘ.*-monoˡ-<-neg {toℚᵘ r} r<0 (toℚᵘ-mono-< p<q) ⟩
+  toℚᵘ q ℚᵘ.* toℚᵘ r  <⟨ ℚᵘ.*-monoˡ-<-neg (toℚᵘ r) r<0 (toℚᵘ-mono-< p<q) ⟩
   toℚᵘ p ℚᵘ.* toℚᵘ r  ≈˘⟨ toℚᵘ-homo-* p r ⟩
   toℚᵘ (p * r)        ∎)
   where open ℚᵘ.≤-Reasoning
@@ -1329,13 +1322,13 @@ neg-distribʳ-* = +-*-Monomorphism.neg-distribʳ-* ℚᵘ.+-0-isGroup ℚᵘ.*-i
 *-monoʳ-<-neg : ∀ r → Negative r → (r *_) Preserves _<_ ⟶ _>_
 *-monoʳ-<-neg r r<0 {p} {q} p<q = toℚᵘ-cancel-< (begin-strict
   toℚᵘ (r * q)        ≈⟨ toℚᵘ-homo-* r q ⟩
-  toℚᵘ r ℚᵘ.* toℚᵘ q  <⟨ ℚᵘ.*-monoʳ-<-neg {toℚᵘ r} r<0 (toℚᵘ-mono-< p<q) ⟩
+  toℚᵘ r ℚᵘ.* toℚᵘ q  <⟨ ℚᵘ.*-monoʳ-<-neg (toℚᵘ r) r<0 (toℚᵘ-mono-< p<q) ⟩
   toℚᵘ r ℚᵘ.* toℚᵘ p  ≈˘⟨ toℚᵘ-homo-* r p ⟩
   toℚᵘ (r * p)        ∎)
   where open ℚᵘ.≤-Reasoning
 
 *-cancelˡ-<-nonPos : ∀ r → NonPositive r → ∀ {p q} → r * p < r * q → p > q
-*-cancelˡ-<-nonPos r r≤0 {p} {q} rp<rq = toℚᵘ-cancel-< (ℚᵘ.*-cancelˡ-<-nonPos {toℚᵘ r} r≤0 (begin-strict
+*-cancelˡ-<-nonPos r r≤0 {p} {q} rp<rq = toℚᵘ-cancel-< (ℚᵘ.*-cancelˡ-<-nonPos (toℚᵘ r) r≤0 (begin-strict
   toℚᵘ r ℚᵘ.* toℚᵘ p  ≈˘⟨ toℚᵘ-homo-* r p ⟩
   toℚᵘ (r * p)        <⟨  toℚᵘ-mono-< rp<rq ⟩
   toℚᵘ (r * q)        ≈⟨  toℚᵘ-homo-* r q ⟩
@@ -1343,7 +1336,7 @@ neg-distribʳ-* = +-*-Monomorphism.neg-distribʳ-* ℚᵘ.+-0-isGroup ℚᵘ.*-i
   where open ℚᵘ.≤-Reasoning
 
 *-cancelʳ-<-nonPos : ∀ r → NonPositive r → ∀ {p q} → p * r < q * r → p > q
-*-cancelʳ-<-nonPos r r≤0 {p} {q} pr<qr = toℚᵘ-cancel-< (ℚᵘ.*-cancelʳ-<-nonPos {toℚᵘ r} r≤0 (begin-strict
+*-cancelʳ-<-nonPos r r≤0 {p} {q} pr<qr = toℚᵘ-cancel-< (ℚᵘ.*-cancelʳ-<-nonPos (toℚᵘ r) r≤0 (begin-strict
   toℚᵘ p ℚᵘ.* toℚᵘ r  ≈˘⟨ toℚᵘ-homo-* p r ⟩
   toℚᵘ (p * r)        <⟨  toℚᵘ-mono-< pr<qr ⟩
   toℚᵘ (q * r)        ≈⟨  toℚᵘ-homo-* q r ⟩
@@ -1360,22 +1353,22 @@ neg-distribʳ-* = +-*-Monomorphism.neg-distribʳ-* ℚᵘ.+-0-isGroup ℚᵘ.*-i
 -- Properties of _⊓_
 ------------------------------------------------------------------------
 
-p≤q⇒p⊔q≡q : ∀ {p q} → p ≤ q → p ⊔ q ≡ q
+p≤q⇒p⊔q≡q : p ≤ q → p ⊔ q ≡ q
 p≤q⇒p⊔q≡q {p} {q} p≤q with p ≤ᵇ q | inspect (p ≤ᵇ_) q
 ... | true  | _       = refl
 ... | false | [ p≰q ] = contradiction (≤⇒≤ᵇ p≤q) (subst (¬_ ∘ T) (sym p≰q) λ())
 
-p≥q⇒p⊔q≡p : ∀ {p q} → p ≥ q → p ⊔ q ≡ p
+p≥q⇒p⊔q≡p : p ≥ q → p ⊔ q ≡ p
 p≥q⇒p⊔q≡p {p} {q} p≥q with p ≤ᵇ q | inspect (p ≤ᵇ_) q
 ... | true  | [ p≤q ] = ≤-antisym p≥q (≤ᵇ⇒≤ (subst T (sym p≤q) _))
 ... | false | [ p≤q ] = refl
 
-p≤q⇒p⊓q≡p : ∀ {p q} → p ≤ q → p ⊓ q ≡ p
+p≤q⇒p⊓q≡p : p ≤ q → p ⊓ q ≡ p
 p≤q⇒p⊓q≡p {p} {q} p≤q with p ≤ᵇ q | inspect (p ≤ᵇ_) q
 ... | true  | _       = refl
 ... | false | [ p≰q ] = contradiction (≤⇒≤ᵇ p≤q) (subst (¬_ ∘ T) (sym p≰q) λ())
 
-p≥q⇒p⊓q≡q : ∀ {p q} → p ≥ q → p ⊓ q ≡ q
+p≥q⇒p⊓q≡q : p ≥ q → p ⊓ q ≡ q
 p≥q⇒p⊓q≡q {p} {q} p≥q with p ≤ᵇ q | inspect (p ≤ᵇ_) q
 ... | true  | [ p≤q ] = ≤-antisym (≤ᵇ⇒≤ (subst T (sym p≤q) _)) p≥q
 ... | false | [ p≤q ] = refl
@@ -1637,7 +1630,7 @@ toℚᵘ-homo-∣-∣ (mkℚ -[1+ _ ] _ _) = *≡* refl
   ↥ ∣ p ∣ ℤ.* 1ℤ        ∎)
   where open ℤ.≤-Reasoning
 
-0≤p⇒∣p∣≡p : ∀ {p} → 0ℚ ≤ p → ∣ p ∣ ≡ p
+0≤p⇒∣p∣≡p : 0ℚ ≤ p → ∣ p ∣ ≡ p
 0≤p⇒∣p∣≡p {p} 0≤p = toℚᵘ-injective (ℚᵘ.0≤p⇒∣p∣≃p (toℚᵘ-mono-≤ 0≤p))
 
 ∣-p∣≡∣p∣ : ∀ p → ∣ - p ∣ ≡ ∣ p ∣
@@ -1680,42 +1673,6 @@ toℚᵘ-homo-∣-∣ (mkℚ -[1+ _ ] _ _) = *≡* refl
 ∣-∣-nonNeg (mkℚ +[1+ _ ] _ _) = _
 ∣-∣-nonNeg (mkℚ +0       _ _) = _
 ∣-∣-nonNeg (mkℚ -[1+ _ ] _ _) = _
-
-
-
-------------------------------------------------------------------------
--- Properties of _*_ and _≤_
-
-*-monoˡ-≤-nonNeg : ∀ r → NonNegative r → (_* r) Preserves _≤_ ⟶ _≤_
-*-monoˡ-≤-nonNeg r r≥0 {p} {q} p≤q = toℚᵘ-cancel-≤ (begin
-  toℚᵘ(p * r)          ≈⟨ toℚᵘ-homo-* p r ⟩
-  toℚᵘ(p) ℚᵘ.* toℚᵘ(r) ≤⟨ ℚᵘ.*-monoˡ-≤-nonNeg {toℚᵘ r} r≥0 (toℚᵘ-mono-≤ p≤q) ⟩
-  toℚᵘ(q) ℚᵘ.* toℚᵘ(r) ≈⟨ ℚᵘ.≃-sym (toℚᵘ-homo-* q r) ⟩
-  toℚᵘ(q * r)          ∎)
-  where open ℚᵘ.≤-Reasoning
-
-*-monoʳ-≤-nonNeg : ∀ r → NonNegative r → (r *_) Preserves _≤_ ⟶ _≤_
-*-monoʳ-≤-nonNeg r r≥0 {p} {q} rewrite *-comm r p | *-comm r q = *-monoˡ-≤-nonNeg r r≥0
-
-*-monoˡ-≤-pos : ∀ r → Positive r → (_* r) Preserves _≤_ ⟶ _≤_
-*-monoˡ-≤-pos r = (*-monoˡ-≤-nonNeg r) ∘ (positive⇒nonNegative r)
-
-*-monoʳ-≤-pos : ∀ r → Positive r → (r *_) Preserves _≤_ ⟶ _≤_
-*-monoʳ-≤-pos r = (*-monoʳ-≤-nonNeg r) ∘ (positive⇒nonNegative r)
-
-------------------------------------------------------------------------
--- Properties of _*_ and _<_
-
-*-monoˡ-<-pos : ∀ r → Positive r → (_* r) Preserves _<_ ⟶ _<_
-*-monoˡ-<-pos r r>0 {p} {q} p<q = toℚᵘ-cancel-< (begin-strict
-  toℚᵘ(p * r)          ≈⟨ toℚᵘ-homo-* p r ⟩
-  toℚᵘ(p) ℚᵘ.* toℚᵘ(r) <⟨ ℚᵘ.*-monoˡ-<-pos {toℚᵘ r} r>0 (toℚᵘ-mono-< p<q) ⟩
-  toℚᵘ(q) ℚᵘ.* toℚᵘ(r) ≈⟨ ℚᵘ.≃-sym (toℚᵘ-homo-* q r) ⟩
-  toℚᵘ(q * r)          ∎)
-  where open ℚᵘ.≤-Reasoning
-
-*-monoʳ-<-pos : ∀ r → Positive r → (r *_) Preserves _<_ ⟶ _<_
-*-monoʳ-<-pos r r>0 {p} {q} rewrite *-comm r p | *-comm r q = *-monoˡ-<-pos r r>0
 
 
 ------------------------------------------------------------------------
