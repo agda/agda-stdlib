@@ -17,6 +17,7 @@ open import Algebra.Morphism
 open import Algebra.Consequences.Propositional
 open import Algebra.Construct.NaturalChoice.Base
 import Algebra.Construct.NaturalChoice.MinMaxOp as MinMaxOp
+import Algebra.Properties.CommutativeSemigroup as CommSemigroupProperties
 open import Data.Bool.Base using (Bool; false; true; T)
 open import Data.Bool.Properties using (T?)
 open import Data.Empty using (⊥)
@@ -890,6 +891,14 @@ m*n≡1⇒m≡1 (suc (suc m)) zero          eq =
 
 m*n≡1⇒n≡1 : ∀ m n → m * n ≡ 1 → n ≡ 1
 m*n≡1⇒n≡1 m n eq = m*n≡1⇒m≡1 n m (trans (*-comm n m) eq)
+
+[m*n]*[o*p]≡[m*o]*[n*p] : ∀ m n o p → (m * n) * (o * p) ≡ (m * o) * (n * p)
+[m*n]*[o*p]≡[m*o]*[n*p] m n o p = begin-equality
+  (m * n) * (o * p) ≡⟨  *-assoc m n (o * p) ⟩
+  m * (n * (o * p)) ≡⟨  cong (m *_) (x∙yz≈y∙xz n o p) ⟩
+  m * (o * (n * p)) ≡˘⟨ *-assoc m o (n * p) ⟩
+  (m * o) * (n * p) ∎
+  where open CommSemigroupProperties *-commutativeSemigroup
 
 ------------------------------------------------------------------------
 -- Other properties of _*_ and _≤_/_<_

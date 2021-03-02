@@ -145,6 +145,9 @@ gcd[m,n]≤n m n = ∣⇒≤ (gcd[m,n]∣n m (suc n))
 n/gcd[m,n]≢0 : ∀ m n {n≢0 : Dec.False (n ≟ 0)} {gcd≢0} → (n / gcd m n) {gcd≢0} ≢ 0
 n/gcd[m,n]≢0 m n@(suc n-1) {n≢0} {gcd≢0} = m<n⇒n≢0 (m≥n⇒m/n>0 {n} {gcd m n} {gcd≢0} (gcd[m,n]≤n m n-1))
 
+m/gcd[m,n]≢0 : ∀ m n {m≢0 : Dec.False (m ≟ 0)} {gcd≢0} → (m / gcd m n) {gcd≢0} ≢ 0
+m/gcd[m,n]≢0 m@(suc _) n rewrite gcd-comm m n = n/gcd[m,n]≢0 n m
+
 ------------------------------------------------------------------------
 -- A formal specification of GCD
 
