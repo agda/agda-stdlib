@@ -65,7 +65,7 @@ New modules
   ```
   Data.Nat.PseudoRandom.LCG
   ```
- 
+
 Other minor additions
 ---------------------
 

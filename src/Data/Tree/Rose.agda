@@ -12,7 +12,6 @@ open import Level using (Level)
 open import Size
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
-open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Data.List.Extrema.Nat
 import Data.Tree.Binary as Bin
 open import Function.Base using (_∘_)
