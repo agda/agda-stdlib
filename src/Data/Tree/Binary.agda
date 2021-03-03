@@ -4,17 +4,14 @@
 -- Binary Trees
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe --sized-types #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Tree.Binary where
 
 open import Level using (Level; _⊔_)
-open import Size
-open import Data.List.Base as List using (List; fromMaybe)
-open import Data.Maybe.Base using (Maybe; nothing; just)
+open import Data.List.Base as List using (List)
 open import Data.DifferenceList as DiffList using (DiffList; []; _∷_; _∷ʳ_; _++_; [_])
 open import Data.Nat.Base using (ℕ; zero; suc; _+_)
-open import Data.Tree.Rose as Rose using (Rose; node)
 open import Function.Base
 
 private
@@ -24,8 +21,7 @@ private
     L : Set l
     N₁ : Set n₁
     L₁ : Set l₁
-    A B : Set a
-    i : Size
+    A : Set a
 
 -- Trees with node values of type N and leaf values of type L
 data Tree (N : Set n) (L : Set l) : Set (n ⊔ l) where
@@ -55,28 +51,20 @@ foldr f g (leaf x)     = g x
 foldr f g (node l m r) = f (foldr f g l) m (foldr f g r)
 
 ------------------------------------------------------------------------
--- Conversion to Rose trees
-
-toRose : Tree A → Rose (Maybe A) ∞
-toRose leaf         = node nothing List.[]
-toRose (node l a r) = node (just a) (toRose l ∷ toRose r ∷ [])
-  where open List.List
-
-------------------------------------------------------------------------
 -- Extraction to lists, depth first and left to right.
 
 module Prefix where
 
-  toDiffList : Tree A → DiffList A
-  toDiffList = foldr (λ l m r → m ∷ l ++ r) []
+  toDiffList : Tree N L → DiffList N
+  toDiffList = foldr (λ l m r → m ∷ l ++ r) (λ _ → [])
 
   toList : Tree N L → List N
   toList = DiffList.toList ∘′ toDiffList
 
 module Infix where
 
-  toDiffList : Tree A → DiffList A
-  toDiffList = foldr (λ l m r → l ++ m ∷ r) []
+  toDiffList : Tree N L → DiffList N
+  toDiffList = foldr (λ l m r → l ++ m ∷ r) (λ _ → [])
 
   toList : Tree N L → List N
   toList = DiffList.toList ∘′ toDiffList
@@ -84,7 +72,7 @@ module Infix where
 module Suffix where
 
   toDiffList : Tree N L → DiffList N
-  toDiffList = foldr (λ l m r → l ++ r ∷ʳ m) []
+  toDiffList = foldr (λ l m r → l ++ r ∷ʳ m) (λ _ → [])
 
   toList : Tree N L → List N
   toList = DiffList.toList ∘′ toDiffList
@@ -92,7 +80,7 @@ module Suffix where
 module Leaves where
 
   toDiffList : Tree N L → DiffList L
-  toDiffList (leaf x) = [ x ]
+  toDiffList (leaf x)     = [ x ]
   toDiffList (node l m r) = toDiffList l ++ toDiffList r
 
   toList : Tree N L → List L

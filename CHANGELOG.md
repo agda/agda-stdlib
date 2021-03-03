@@ -65,11 +65,6 @@ New modules
   ```
   Data.Nat.PseudoRandom.LCG
   ```
-
- * Printing of trees:
-   ```agda
-   Text.Tree.Linear.Binary
-   ```
  
 Other minor additions
 ---------------------
@@ -269,8 +264,18 @@ Other minor additions
   applyUpTo⁺ : m ≤ n → applyUpTo f m ⊆ applyUpTo f n
   ```
 
+* Added new function to `Data.Tree.Rose`:
+  ```agda
+  fromBinary : (A → C) → (B → C) → Tree.Binary A B → Rose C ∞ 
+  ```
+
 * Added new definitions to `IO`:
   ```agda
   getLine : IO String
   Main : Set
   ```
+
+ * Added new function to `Text.Tree.Linear`:
+   ```agda
+   displayBinary : Binary.Tree (List String) String → List String
+   ```

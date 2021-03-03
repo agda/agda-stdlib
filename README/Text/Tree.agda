@@ -8,29 +8,23 @@
 
 module README.Text.Tree where
 
-open import Level
 open import Data.List.Base
-open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Data.String.Base using (String; unlines)
-open import Data.Tree.Binary using (Tree; leaf; node)
-open import Data.Tree.Rose using (Rose; node)
 open import Function.Base
 open import Agda.Builtin.Equality
 
-private
-  variable
-    a : Level
-    A : Set a
-
 ------------------------------------------------------------------------
--- Pretty-printing rose trees
+-- Pretty-printing trees
+------------------------------------------------------------------------
 
--- We import the module defining the pretty printer for rose trees
+-- We import the module defining the pretty printer for trees
 
 import Text.Tree.Linear as Linear
 
 ------------------------------------------------------------------------
--- Example
+-- Rose tree example
+
+open import Data.Tree.Rose using (Rose; node)
 
 _ : unlines (Linear.display
   $ node [ "one" ]
@@ -58,61 +52,32 @@ _ : unlines (Linear.display
 \   \    └ eleven"
 _ = refl
 
-
 ------------------------------------------------------------------------
--- Pretty-printing other trees
+-- Binary tree example
 
--- To print any other tree, we can simply embed them into rose trees.
--- We need to be careful about respecting the structure of the tree
--- rather than trying to minimize the size of the representation.
+open import Data.Tree.Binary using (Tree; leaf; node)
 
--- For instance, the following example is wrong because leaf are not
--- mapped to anything so will not get printed.
-
-module BUGGY where
-
-  toRose : Tree A → Maybe (Rose A _)
-  toRose leaf         = nothing
-  toRose (node l a r) = just (node a (lt ++ rt)) where
-    lt = fromMaybe (toRose l)
-    rt = fromMaybe (toRose r)
-
--- Instead we should use the function defined in Data.Tree.Binary:
-
-module CORRECT where
-
-  toRose : Tree A → Rose (Maybe A) _
-  toRose leaf         = node nothing []
-  toRose (node l a r) = node (just a) (toRose l ∷ toRose r ∷ [])
-
--- This is exactly what we do in the following module:
-
-import Text.Tree.Linear.Binary as Linearᴮ
-
-------------------------------------------------------------------------
--- Example
-
-_ : unlines (Linearᴮ.display
-  $ node (node leaf
+_ : unlines (Linear.displayBinary
+  $ node (node (leaf "plum")
                ("apricot" ∷ "prune" ∷ [])
-               (node leaf
+               (node (leaf "orange")
                      ("peach" ∷ [])
-                     (node leaf
+                     (node (leaf "kiwi")
                            ("apple" ∷ "pear" ∷ [])
-                           leaf)))
+                           (leaf "pineapple"))))
          ("cherry" ∷ "lemon" ∷ "banana" ∷ [])
-         leaf)
+         (leaf "yuzu"))
   ≡ "cherry
 \   \lemon
 \   \banana
 \   \ ├ apricot
 \   \ │ prune
-\   \ │  ├ ∙
+\   \ │  ├ plum
 \   \ │  └ peach
-\   \ │     ├ ∙
+\   \ │     ├ orange
 \   \ │     └ apple
 \   \ │       pear
-\   \ │        ├ ∙
-\   \ │        └ ∙
-\   \ └ ∙"
+\   \ │        ├ kiwi
+\   \ │        └ pineapple
+\   \ └ yuzu"
 _ = refl

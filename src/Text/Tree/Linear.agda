@@ -16,8 +16,9 @@ open import Data.List.Base as List using (List; []; [_]; _∷_; _∷ʳ_)
 open import Data.Nat.Base using (ℕ; _∸_)
 open import Data.Product using (_×_; _,_)
 open import Data.String.Base
-open import Data.Tree.Rose using (Rose; node)
-open import Function.Base using (flip)
+open import Data.Tree.Rose using (Rose; node; fromBinary)
+import Data.Tree.Binary as Binary
+open import Function.Base using (flip; _∘′_; id)
 
 private
   variable
@@ -26,8 +27,8 @@ private
     i : Size
 
 display : Rose (List String) i → List String
-display t = DList.toList (go (([] , t) ∷ [])) where
-
+display t = DList.toList (go (([] , t) ∷ []))
+  where
   padding : Bool → List Bool → String → String
   padding dir? []       str = str
   padding dir? (b ∷ bs) str =
@@ -49,3 +50,6 @@ display t = DList.toList (go (([] , t) ∷ [])) where
     DList.fromList (List.zipWith (flip padding bs′) (nodePrefixes a) a)
     DList.++ go (List.zip (List.map (_∷ bs) (childrenPrefixes ts₁)) ts₁)
     DList.++ go ts
+
+displayBinary : Binary.Tree (List String) String → List String
+displayBinary = display ∘′ fromBinary id [_]

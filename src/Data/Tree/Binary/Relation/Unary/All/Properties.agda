@@ -4,7 +4,7 @@
 -- Properties of the pointwise lifting of a predicate to a binary tree
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe --sized-types #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Tree.Binary.Relation.Unary.All.Properties where
 
