@@ -29,16 +29,19 @@ infixl 6 _⊔_
 _⊔_ : Op₂ A
 _⊔_ = Min._⊓_
 
+------------------------------------------------------------------------
+-- Properties
+
 open Min public using ()
   renaming
   ( x≤y⇒x⊓y≈x to x≤y⇒y⊔x≈y
   ; x≤y⇒y⊓x≈x to x≤y⇒x⊔y≈y
   )
 
-maxOperator : MaxOperator totalOrder
+maxOperator : MaxOperator totalPreorder
 maxOperator = record
   { x≤y⇒x⊔y≈y = x≤y⇒x⊔y≈y
   ; x≥y⇒x⊔y≈x = x≤y⇒y⊔x≈y
   }
 
-open import Algebra.Construct.NaturalChoice.MaxOp totalOrder maxOperator public
+open import Algebra.Construct.NaturalChoice.MaxOp maxOperator public
