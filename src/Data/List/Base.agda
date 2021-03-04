@@ -30,7 +30,7 @@ import Relation.Binary.Definitions as B
 
 private
   variable
-    a b c p : Level
+    a b c p ℓ : Level
     A : Set a
     B : Set b
     C : Set c
@@ -117,6 +117,13 @@ unzip = unzipWith id
 
 partitionSums : List (A ⊎ B) → List A × List B
 partitionSums = partitionSumsWith id
+
+merge : {R : Rel A ℓ} → B.Decidable R → List A → List A → List A
+merge R? []       ys       = ys
+merge R? xs       []       = xs
+merge R? (x ∷ xs) (y ∷ ys) = if does (R? x y)
+  then x ∷ merge R? xs (y ∷ ys)
+  else y ∷ merge R? (x ∷ xs) ys
 
 ------------------------------------------------------------------------
 -- Operations for reducing lists
@@ -222,8 +229,6 @@ downFrom = applyDownFrom id
 
 allFin : ∀ n → List (Fin n)
 allFin n = tabulate id
-
--- Other
 
 unfold : ∀ (P : ℕ → Set b)
          (f : ∀ {n} → P (suc n) → Maybe (A × P n)) →

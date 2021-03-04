@@ -14,7 +14,7 @@ open import Data.Bool.Properties using (T-∧)
 open import Data.Empty
 open import Data.Fin.Base using (Fin) renaming (zero to fzero; suc to fsuc)
 open import Data.List.Base as List hiding (lookup)
-import Data.List.Properties as Listₚ
+open import Data.List.Properties as Listₚ using (partition-defn)
 open import Data.List.Membership.Propositional
 open import Data.List.Membership.Propositional.Properties
 import Data.List.Membership.Setoid as SetoidMembership
@@ -46,6 +46,7 @@ open import Relation.Nullary
 open import Relation.Nullary.Negation using (¬?; contradiction; decidable-stable)
 open import Relation.Unary
   using (Decidable; Pred; Universal; ∁; _∩_; _⟨×⟩_) renaming (_⊆_ to _⋐_)
+open import Relation.Unary.Properties using (∁?)
 
 private
   variable
@@ -597,6 +598,16 @@ module _ (P? : Decidable P) where
   filter⁻ {xs = x ∷ xs} (qx ∷ all⁺)       all⁻  | yes  Px | no  ¬¬Px = qx ∷ filter⁻ all⁺ all⁻
   filter⁻ {xs = x ∷ xs}       all⁺  (qx ∷ all⁻) | no    _ | yes  ¬Px = qx ∷ filter⁻ all⁺ all⁻
   filter⁻ {xs = x ∷ xs}       all⁺        all⁻  | no  ¬Px | no  ¬¬Px = contradiction ¬Px ¬¬Px
+
+------------------------------------------------------------------------
+-- partition
+
+module _ {P : A → Set p} (P? : Decidable P) where
+
+  partition-All : ∀ xs → (let ys , zs = partition P? xs) →
+                  All P ys × All (∁ P) zs
+  partition-All xs rewrite partition-defn P? xs =
+    all-filter P? xs , all-filter (∁? P?) xs
 
 ------------------------------------------------------------------------
 -- derun and deduplicate
