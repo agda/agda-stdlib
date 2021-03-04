@@ -6,6 +6,10 @@ The library has been tested using Agda 2.6.1 and 2.6.1.1.
 Highlights
 ----------
 
+* Drastically reorganised the module hierarchy in the dependency graph of
+  the `IO` module so that we may compile a program as simple as hello world
+  without pulling upwards of 130 modules.
+
 Bug-fixes
 ---------
 
@@ -90,6 +94,13 @@ New modules
   Codata.Musical.Colist.Relation.Unary.All.Properties
   Codata.Musical.Colist.Relation.Unary.Any
   Codata.Musical.Colist.Relation.Unary.Any.Properties
+  ```
+
+* Broke up `IO` into a many smaller modules:
+  ```
+  IO.Base
+  IO.Finite
+  IO.Infinite
   ```
 
 Other minor additions
