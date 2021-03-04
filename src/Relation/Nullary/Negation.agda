@@ -34,6 +34,10 @@ private
 contradiction : P → ¬ P → Whatever
 contradiction p ¬p = ⊥-elim (¬p p)
 
+contradiction₂ : P ⊎ Q → ¬ P → ¬ Q → Whatever
+contradiction₂ (inj₁ p) ¬p ¬q = contradiction p ¬p
+contradiction₂ (inj₂ q) ¬p ¬q = contradiction q ¬q
+
 contraposition : (P → Q) → ¬ Q → ¬ P
 contraposition f ¬q p = contradiction (f p) ¬q
 
