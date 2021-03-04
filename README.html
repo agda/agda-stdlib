@@ -192,92 +192,88 @@
 
 <a id="5692" class="Comment">-- ∙ Text</a>
 
-<a id="5703" class="Comment">-- Explaining string formats and the behaviour of printf</a>
+<a id="5703" class="Comment">-- Dependently typed formatted printing</a>
+<a id="5743" class="Keyword">import</a> <a id="5750" href="Text.Printf.html" class="Module">Text.Printf</a>
 
-<a id="5761" class="Keyword">import</a> <a id="5768" href="README.Text.Printf.html" class="Module">README.Text.Printf</a>
+<a id="5763" class="Comment">------------------------------------------------------------------------</a>
+<a id="5836" class="Comment">-- More documentation</a>
+<a id="5858" class="Comment">------------------------------------------------------------------------</a>
 
-<a id="5788" class="Comment">-- Showcasing the pretty printing module</a>
+<a id="5932" class="Comment">-- Some examples showing how the case expression can be used.</a>
 
-<a id="5830" class="Keyword">import</a> <a id="5837" href="README.Text.Pretty.html" class="Module">README.Text.Pretty</a>
+<a id="5995" class="Keyword">import</a> <a id="6002" href="README.Case.html" class="Module">README.Case</a>
 
-<a id="5857" class="Comment">-- Demonstrating the regular expression matching</a>
+<a id="6015" class="Comment">-- Some examples showing how combinators can be used to emulate</a>
+<a id="6079" class="Comment">-- &quot;functional reasoning&quot;</a>
 
-<a id="5907" class="Keyword">import</a> <a id="5914" href="README.Text.Regex.html" class="Module">README.Text.Regex</a>
+<a id="6106" class="Keyword">import</a> <a id="6113" href="README.Function.Reasoning.html" class="Module">README.Function.Reasoning</a>
 
-<a id="5933" class="Comment">-- Explaining how to display tables of strings:</a>
+<a id="6140" class="Comment">-- An example showing how to use the debug tracing mechanism to inspect</a>
+<a id="6212" class="Comment">-- the behaviour of compiled Agda programs.</a>
 
-<a id="5982" class="Keyword">import</a> <a id="5989" href="README.Text.Tabular.html" class="Module">README.Text.Tabular</a>
+<a id="6257" class="Keyword">import</a> <a id="6264" href="README.Debug.Trace.html" class="Module">README.Debug.Trace</a>
 
-<a id="6010" class="Comment">-- Explaining how to display a tree:</a>
+<a id="6284" class="Comment">-- An exploration of the generic programs acting on n-ary functions and</a>
+<a id="6356" class="Comment">-- n-ary heterogeneous products</a>
 
-<a id="6048" class="Keyword">import</a> <a id="6055" href="README.Text.Tree.html" class="Module">README.Text.Tree</a>
+<a id="6389" class="Keyword">import</a> <a id="6396" href="README.Nary.html" class="Module">README.Nary</a>
 
+<a id="6409" class="Comment">-- Explaining the inspect idiom: use case, equivalent handwritten</a>
+<a id="6475" class="Comment">-- auxiliary definitions, and implementation details.</a>
 
+<a id="6530" class="Keyword">import</a> <a id="6537" href="README.Inspect.html" class="Module">README.Inspect</a>
 
-<a id="6075" class="Comment">------------------------------------------------------------------------</a>
-<a id="6148" class="Comment">-- More documentation</a>
-<a id="6170" class="Comment">------------------------------------------------------------------------</a>
+<a id="6553" class="Comment">-- Explaining how to use the automatic solvers</a>
 
-<a id="6244" class="Comment">-- Some examples showing how the case expression can be used.</a>
+<a id="6601" class="Keyword">import</a> <a id="6608" href="README.Tactic.MonoidSolver.html" class="Module">README.Tactic.MonoidSolver</a>
+<a id="6635" class="Keyword">import</a> <a id="6642" href="README.Tactic.RingSolver.html" class="Module">README.Tactic.RingSolver</a>
 
-<a id="6307" class="Keyword">import</a> <a id="6314" href="README.Case.html" class="Module">README.Case</a>
+<a id="6668" class="Comment">-- Explaining how the Haskell FFI works</a>
 
-<a id="6327" class="Comment">-- Some examples showing how combinators can be used to emulate</a>
-<a id="6391" class="Comment">-- &quot;functional reasoning&quot;</a>
+<a id="6709" class="Keyword">import</a> <a id="6716" href="README.Foreign.Haskell.html" class="Module">README.Foreign.Haskell</a>
 
-<a id="6418" class="Keyword">import</a> <a id="6425" href="README.Function.Reasoning.html" class="Module">README.Function.Reasoning</a>
+<a id="6740" class="Comment">-- Explaining string formats and the behaviour of printf</a>
 
-<a id="6452" class="Comment">-- An example showing how to use the debug tracing mechanism to inspect</a>
-<a id="6524" class="Comment">-- the behaviour of compiled Agda programs.</a>
+<a id="6798" class="Keyword">import</a> <a id="6805" href="README.Text.Printf.html" class="Module">README.Text.Printf</a>
 
-<a id="6569" class="Keyword">import</a> <a id="6576" href="README.Debug.Trace.html" class="Module">README.Debug.Trace</a>
+<a id="6825" class="Comment">-- Showcasing the pretty printing module</a>
 
-<a id="6596" class="Comment">-- An exploration of the generic programs acting on n-ary functions and</a>
-<a id="6668" class="Comment">-- n-ary heterogeneous products</a>
+<a id="6867" class="Keyword">import</a> <a id="6874" href="README.Text.Pretty.html" class="Module">README.Text.Pretty</a>
 
-<a id="6701" class="Keyword">import</a> <a id="6708" href="README.Nary.html" class="Module">README.Nary</a>
+<a id="6894" class="Comment">-- Demonstrating the regular expression matching</a>
 
-<a id="6721" class="Comment">-- Explaining the inspect idiom: use case, equivalent handwritten</a>
-<a id="6787" class="Comment">-- auxiliary definitions, and implementation details.</a>
+<a id="6944" class="Keyword">import</a> <a id="6951" href="README.Text.Regex.html" class="Module">README.Text.Regex</a>
 
-<a id="6842" class="Keyword">import</a> <a id="6849" href="README.Inspect.html" class="Module">README.Inspect</a>
+<a id="6970" class="Comment">-- Explaining how to display tables of strings:</a>
 
-<a id="6865" class="Comment">-- Explaining how to use the automatic solvers</a>
+<a id="7019" class="Keyword">import</a> <a id="7026" href="README.Text.Tabular.html" class="Module">README.Text.Tabular</a>
 
-<a id="6913" class="Keyword">import</a> <a id="6920" href="README.Tactic.MonoidSolver.html" class="Module">README.Tactic.MonoidSolver</a>
-<a id="6947" class="Keyword">import</a> <a id="6954" href="README.Tactic.RingSolver.html" class="Module">README.Tactic.RingSolver</a>
+<a id="7047" class="Comment">------------------------------------------------------------------------</a>
+<a id="7120" class="Comment">-- Core modules</a>
+<a id="7136" class="Comment">------------------------------------------------------------------------</a>
 
-<a id="6980" class="Comment">-- Explaining how the Haskell FFI works</a>
+<a id="7210" class="Comment">-- Some modules have names ending in &quot;.Core&quot;. These modules are</a>
+<a id="7274" class="Comment">-- internal, and have (mostly) been created to avoid mutual recursion</a>
+<a id="7344" class="Comment">-- between modules. They should not be imported directly; their</a>
+<a id="7408" class="Comment">-- contents are reexported by other modules.</a>
 
-<a id="7021" class="Keyword">import</a> <a id="7028" href="README.Foreign.Haskell.html" class="Module">README.Foreign.Haskell</a>
+<a id="7454" class="Comment">------------------------------------------------------------------------</a>
+<a id="7527" class="Comment">-- All library modules</a>
+<a id="7550" class="Comment">------------------------------------------------------------------------</a>
 
+<a id="7624" class="Comment">-- For short descriptions of every library module, see Everything;</a>
+<a id="7691" class="Comment">-- to exclude unsafe modules, see EverythingSafe:</a>
 
-<a id="7053" class="Comment">------------------------------------------------------------------------</a>
-<a id="7126" class="Comment">-- Core modules</a>
-<a id="7142" class="Comment">------------------------------------------------------------------------</a>
+<a id="7742" class="Keyword">import</a> <a id="7749" href="Everything.html" class="Module">Everything</a>
+<a id="7760" class="Keyword">import</a> <a id="7767" href="EverythingSafe.html" class="Module">EverythingSafe</a>
 
-<a id="7216" class="Comment">-- Some modules have names ending in &quot;.Core&quot;. These modules are</a>
-<a id="7280" class="Comment">-- internal, and have (mostly) been created to avoid mutual recursion</a>
-<a id="7350" class="Comment">-- between modules. They should not be imported directly; their</a>
-<a id="7414" class="Comment">-- contents are reexported by other modules.</a>
+<a id="7783" class="Comment">-- Note that the Everything* modules are generated automatically. If</a>
+<a id="7852" class="Comment">-- you have downloaded the library from its Git repository and want</a>
+<a id="7920" class="Comment">-- to type check README then you can (try to) construct Everything by</a>
+<a id="7990" class="Comment">-- running &quot;cabal install &amp;&amp; GenerateEverything&quot;.</a>
 
-<a id="7460" class="Comment">------------------------------------------------------------------------</a>
-<a id="7533" class="Comment">-- All library modules</a>
-<a id="7556" class="Comment">------------------------------------------------------------------------</a>
-
-<a id="7630" class="Comment">-- For short descriptions of every library module, see Everything;</a>
-<a id="7697" class="Comment">-- to exclude unsafe modules, see EverythingSafe:</a>
-
-<a id="7748" class="Keyword">import</a> <a id="7755" href="Everything.html" class="Module">Everything</a>
-<a id="7766" class="Keyword">import</a> <a id="7773" href="EverythingSafe.html" class="Module">EverythingSafe</a>
-
-<a id="7789" class="Comment">-- Note that the Everything* modules are generated automatically. If</a>
-<a id="7858" class="Comment">-- you have downloaded the library from its Git repository and want</a>
-<a id="7926" class="Comment">-- to type check README then you can (try to) construct Everything by</a>
-<a id="7996" class="Comment">-- running &quot;cabal install &amp;&amp; GenerateEverything&quot;.</a>
-
-<a id="8047" class="Comment">-- Note that all library sources are located under src or ffi. The</a>
-<a id="8114" class="Comment">-- modules README, README.* and Everything are not really part of the</a>
-<a id="8184" class="Comment">-- library, so these modules are located in the top-level directory</a>
-<a id="8252" class="Comment">-- instead.</a>
+<a id="8041" class="Comment">-- Note that all library sources are located under src or ffi. The</a>
+<a id="8108" class="Comment">-- modules README, README.* and Everything are not really part of the</a>
+<a id="8178" class="Comment">-- library, so these modules are located in the top-level directory</a>
+<a id="8246" class="Comment">-- instead.</a>
 </pre></body></html>
