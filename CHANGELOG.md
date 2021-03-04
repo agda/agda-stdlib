@@ -17,6 +17,9 @@ Non-backwards compatible changes
 Deprecated modules
 ------------------
 
+* The module `Text.Tree.Linear` has been deprecated, and its contents
+has been moved to `Data.Tree.Rose.Show`.
+
 Deprecated names
 ----------------
 
@@ -111,6 +114,12 @@ New modules
   /!\ NB: the example parameters provided are not claimed to be good
   ```
   Data.Nat.PseudoRandom.LCG
+  ```
+
+* Functionality for showing trees:
+  ```
+  Data.Tree.Rose.Show
+  Data.Tree.Binary.Show
   ```
 
 Other minor additions
@@ -805,6 +814,11 @@ Other minor additions
   ∣p-q∣≤∣p∣+∣q∣             : ∣ p - q ∣ ≤ ∣ p ∣ + ∣ q ∣
   ∣p*q∣≡∣p∣*∣q∣             : ∣ p * q ∣ ≡ ∣ p ∣ * ∣ q ∣
   ∣p*q∣≃∣p∣*∣q∣             : ∣ p * q ∣ ≃ ∣ p ∣ * ∣ q ∣
+  ```
+
+* Added new function to `Data.Tree.Rose`:
+  ```agda
+  fromBinary : (A → C) → (B → C) → Tree.Binary A B → Rose C ∞ 
   ```
 
 * Added new definitions to `IO`:
