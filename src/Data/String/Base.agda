@@ -13,7 +13,7 @@ open import Data.Bool.Base using (true; false)
 open import Data.Char.Base as Char using (Char)
 open import Data.List.Base as List using (List; [_]; _∷_; [])
 open import Data.List.NonEmpty.Base as NE using (List⁺)
-open import Data.List.Relation.Binary.Pointwise.Core using (Pointwise)
+open import Data.List.Relation.Binary.Pointwise.Base using (Pointwise)
 open import Data.List.Relation.Binary.Lex.Core using (Lex-<; Lex-≤)
 open import Data.Nat.Base using (ℕ; _∸_; ⌊_/2⌋; ⌈_/2⌉)
 

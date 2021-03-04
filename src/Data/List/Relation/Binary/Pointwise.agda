@@ -42,23 +42,8 @@ private
 -- Re-exporting the definition and basic operations
 ------------------------------------------------------------------------
 
-open import Data.List.Relation.Binary.Pointwise.Core public
-
-------------------------------------------------------------------------
--- Relational properties
-------------------------------------------------------------------------
-
-decidable : Decidable R → Decidable (Pointwise R)
-decidable _  []       []       = yes []
-decidable _  []       (y ∷ ys) = no λ()
-decidable _  (x ∷ xs) []       = no λ()
-decidable R? (x ∷ xs) (y ∷ ys) = Dec.map′ (uncurry _∷_) uncons
-  (R? x y ×-dec decidable R? xs ys)
-
-irrelevant : Irrelevant R → Irrelevant (Pointwise R)
-irrelevant irr []       []         = P.refl
-irrelevant irr (r ∷ rs) (r₁ ∷ rs₁) =
-  P.cong₂ _∷_ (irr r r₁) (irrelevant irr rs rs₁)
+open import Data.List.Relation.Binary.Pointwise.Base public
+open import Data.List.Relation.Binary.Pointwise.Properties public
 
 ------------------------------------------------------------------------
 -- Structures

@@ -75,6 +75,12 @@ New modules
   Data.Nat.PseudoRandom.LCG
   ```
 
+* Broke up `Data.List.Relation.Binary.Pointwise` and introduced:
+  ```
+  Data.List.Relation.Binary.Pointwise.Base
+  Data.List.Relation.Binary.Pointwise.Properties
+  ```
+
 * Broke up `Codata.Musical.Colist` into a multitude of modules:
   ```
   Codata.Musical.Colist.Base

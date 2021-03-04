@@ -21,7 +21,7 @@ import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Product using (_×-dec_)
 open import Relation.Nullary.Sum using (_⊎-dec_)
 open import Relation.Binary hiding (_⇔_)
-open import Data.List.Relation.Binary.Pointwise.Core
+open import Data.List.Relation.Binary.Pointwise.Base
    using (Pointwise; []; _∷_; head; tail)
 
 ------------------------------------------------------------------------

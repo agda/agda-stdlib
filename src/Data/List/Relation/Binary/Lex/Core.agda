@@ -16,7 +16,7 @@ open import Function.Base using (_∘_; flip; id)
 open import Level using (Level; _⊔_)
 open import Relation.Nullary using (¬_)
 open import Relation.Binary.Core using (Rel)
-open import Data.List.Relation.Binary.Pointwise.Core
+open import Data.List.Relation.Binary.Pointwise.Base
    using (Pointwise; []; _∷_; head; tail)
 
 private
