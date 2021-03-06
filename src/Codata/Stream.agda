@@ -13,11 +13,12 @@ open import Codata.Thunk as Thunk using (Thunk; force)
 
 open import Data.Nat.Base
 open import Data.List.Base using (List; []; _∷_)
-open import Data.List.NonEmpty using (List⁺; _∷_)
+open import Data.List.NonEmpty as List⁺ using (List⁺; _∷_; _∷⁺_)
 open import Data.Vec.Base using (Vec; []; _∷_)
 open import Data.Product as P hiding (map)
 open import Function.Base
 open import Level using (Level)
+open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 
 private
   variable
@@ -123,3 +124,48 @@ chunksOf n = chunksOfAcc n id module ChunksOf where
 -- alternate between emitting values from one and the other.
 interleave : Stream A i → Thunk (Stream A) i → Stream A i
 interleave (x ∷ xs) ys = x ∷ λ where .force → interleave (ys .force) xs
+
+-- This interleaving strategy can be generalised to an arbitrary non-empty
+-- list of streams
+interleave⁺ : List⁺ (Stream A i) → Stream A i
+interleave⁺ xss =
+  List⁺.map head xss
+  ⁺++ λ where .force → interleave⁺ (List⁺.map tail xss)
+
+-- To generalise this further to a stream of streams however we have to
+-- adopt a different strategy: if we were to start with *all* the heads
+-- then we would never reach any of the second elements in the streams.
+
+-- Here we use Cantor's zig zag function to explore the plane defined by
+-- the function `(i,j) ↦ lookup j (lookup i xss)‵ mapping coordinates to
+-- values in a way that guarantees that any point is reached in a finite
+-- amount of time. The definition is taken from the paper:
+-- Applications of Applicative Proof Search by Liam O'Connor
+
+cantor : Stream (Stream A ∞) ∞ → Stream A ∞
+cantor (l ∷ ls) = zig (l ∷ []) (ls .force) module Cantor where
+
+  zig : List⁺ (Stream A ∞)           → Stream (Stream A ∞) ∞ → Stream A i
+  zag : List⁺ A → List⁺ (Stream A ∞) → Stream (Stream A ∞) ∞ → Stream A i
+
+  zig xss = zag (List⁺.map head xss) (List⁺.map tail xss)
+
+  zag (x ∷ []) zs (l ∷ ls) = x ∷ λ where .force → zig (l ∷⁺ zs) (ls .force)
+  zag (x ∷ (y ∷ xs)) zs ls = x ∷ λ where .force → zag (y ∷ xs) zs ls
+
+-- We can use the Cantor zig zag function to define a form of `bind' that
+-- reach any point of the plane is a finite amount of time.
+plane : {B : A → Set b} → Stream A ∞ → ((a : A) → Stream (B a) ∞) →
+        Stream (Σ A B) ∞
+plane as bs = cantor (map (λ a → map (a ,_) (bs a)) as)
+
+-- Here is an example of the kind of path we are following:
+_ : take 21 (plane nats (λ _ → nats))
+  ≡ (0 , 0)
+  ∷ (1 , 0) ∷ (0 , 1)
+  ∷ (2 , 0) ∷ (1 , 1) ∷ (0 , 2)
+  ∷ (3 , 0) ∷ (2 , 1) ∷ (1 , 2) ∷ (0 , 3)
+  ∷ (4 , 0) ∷ (3 , 1) ∷ (2 , 2) ∷ (1 , 3) ∷ (0 , 4)
+  ∷ (5 , 0) ∷ (4 , 1) ∷ (3 , 2) ∷ (2 , 3) ∷ (1 , 4) ∷ (0 , 5)
+  ∷ []
+_ = refl

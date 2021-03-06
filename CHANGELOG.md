@@ -200,7 +200,7 @@ Other minor additions
 
 * Added new proofs to `Data.List.Relation.Binary.Pointwise`:
   ```agda
-  foldr⁺  : (R w x → R y z → R (w • y) (x ◦ z)) → 
+  foldr⁺  : (R w x → R y z → R (w • y) (x ◦ z)) →
             R e f → Pointwise R xs ys → R (foldr _•_ e xs) (foldr _◦_ f ys)
   lookup⁻ : length xs ≡ length ys →
             (toℕ i ≡ toℕ j → R (lookup xs i) (lookup ys j)) →
@@ -254,4 +254,11 @@ Other minor additions
   ```agda
   getLine : IO String
   Main : Set
+  ```
+
+* Added new functions to `Codata.Stream`:
+  ```agda
+  interleave⁺ : List⁺ (Stream A i) → Stream A i
+  cantor      : Stream (Stream A ∞) ∞ → Stream A ∞
+  plane       : Stream A ∞ → ((a : A) → Stream (B a) ∞) → Stream (Σ A B) ∞
   ```
