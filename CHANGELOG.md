@@ -829,6 +829,8 @@ Other minor additions
 
 * Added new functions to `Codata.Stream`:
   ```agda
+  nats : Stream ℕ ∞
+
   interleave⁺ : List⁺ (Stream A i) → Stream A i
   cantor      : Stream (Stream A ∞) ∞ → Stream A ∞
   plane       : Stream A ∞ → ((a : A) → Stream (B a) ∞) → Stream (Σ A B) ∞

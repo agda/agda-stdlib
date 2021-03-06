@@ -154,12 +154,12 @@ cantor (l ∷ ls) = zig (l ∷ []) (ls .force) module Cantor where
   zag (x ∷ (y ∷ xs)) zs ls = x ∷ λ where .force → zag (y ∷ xs) zs ls
 
 -- We can use the Cantor zig zag function to define a form of `bind' that
--- reach any point of the plane is a finite amount of time.
+-- reaches any point of the plane in a finite amount of time.
 plane : {B : A → Set b} → Stream A ∞ → ((a : A) → Stream (B a) ∞) →
         Stream (Σ A B) ∞
 plane as bs = cantor (map (λ a → map (a ,_) (bs a)) as)
 
--- Here is an example of the kind of path we are following:
+-- Here is the beginning of the path we are following:
 _ : take 21 (plane nats (λ _ → nats))
   ≡ (0 , 0)
   ∷ (1 , 0) ∷ (0 , 1)
