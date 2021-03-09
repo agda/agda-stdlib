@@ -62,7 +62,7 @@ nats = iterate suc zero
 head : Stream A i → A
 head (x ∷ xs) = x
 
-tail : ∀ {i} {j : Size< i} → Stream A i → Stream A j
+tail : {j : Size< i} → Stream A i → Stream A j
 tail (x ∷ xs) = xs .force
 
 lookup : ℕ → Stream A ∞ → A
@@ -112,7 +112,7 @@ drop n xs = proj₂ (splitAt n xs)
 chunksOf : (n : ℕ) → Stream A ∞ → Stream (Vec A n) ∞
 chunksOf n = chunksOfAcc n id module ChunksOf where
 
-  chunksOfAcc : ∀ {i} k (acc : Vec A k → Vec A n) →
+  chunksOfAcc : ∀ k (acc : Vec A k → Vec A n) →
                 Stream A ∞ → Stream (Vec A n) i
   chunksOfAcc zero    acc xs       = acc [] ∷ λ where .force → chunksOfAcc n id xs
   chunksOfAcc (suc k) acc (x ∷ xs) = chunksOfAcc k (acc ∘ (x ∷_)) (xs .force)
