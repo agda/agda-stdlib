@@ -154,6 +154,11 @@ New modules
   IO.Infinite
   ```
 
+* Instantiate a homogeneously indexed bundle at a particular index
+  ```
+  Relation.Binary.Indexed.Homogeneous.Construct.At
+  ```
+
 * Functionality for showing trees:
   ```
   Data.Tree.Rose.Show
