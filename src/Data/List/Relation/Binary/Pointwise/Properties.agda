@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Properties of oointwise lifting of relations to lists
+-- Properties of pointwise lifting of relations to lists
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
