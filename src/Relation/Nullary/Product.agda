@@ -10,7 +10,7 @@ module Relation.Nullary.Product where
 
 open import Data.Bool.Base
 open import Data.Product
-open import Function
+open import Function.Base using (_∘_)
 open import Level
 open import Relation.Nullary.Reflects
 open import Relation.Nullary

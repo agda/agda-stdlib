@@ -6,6 +6,10 @@ The library has been tested using Agda 2.6.1 and 2.6.1.1.
 Highlights
 ----------
 
+* Drastically reorganised the module hierarchy in the dependency graph of
+  the `IO` module so that we may compile a program as simple as hello world
+  without pulling upwards of 130 modules.
+
 * First verified implementation of a sorting algorithm (available from `Data.List.Sort`).
 
 Bug-fixes
@@ -13,6 +17,16 @@ Bug-fixes
 
 Non-backwards compatible changes
 --------------------------------
+
+* `Data.List.Relation.Binary.Lex.Core` has been thinned to minimise its
+  dependencies. The more complex properties (`transitive`, `respects₂`,
+  `[]<[]-⇔`, `∷<∷-⇔`, and `decidable`) have been moved to
+  `Data.List.Relation.Binary.Lex`.
+
+* `Data.String.Base` has been thinned to minimise its dependencies. The more
+  complex functions (`parensIfSpace`, `wordsBy`, `words`, `linesBy`, `lines`,
+  `rectangle`, `rectangleˡ`, `rectangleʳ`, `rectangleᶜ`) have been moved to
+  `Data.String`.
 
 Deprecated modules
 ------------------
@@ -116,6 +130,30 @@ New modules
   Data.Nat.PseudoRandom.LCG
   ```
 
+* Broke up `Data.List.Relation.Binary.Pointwise` and introduced:
+  ```
+  Data.List.Relation.Binary.Pointwise.Base
+  Data.List.Relation.Binary.Pointwise.Properties
+  ```
+
+* Broke up `Codata.Musical.Colist` into a multitude of modules:
+  ```
+  Codata.Musical.Colist.Base
+  Codata.Musical.Colist.Properties
+  Codata.Musical.Colist.Bisimilarity
+  Codata.Musical.Colist.Relation.Unary.All
+  Codata.Musical.Colist.Relation.Unary.All.Properties
+  Codata.Musical.Colist.Relation.Unary.Any
+  Codata.Musical.Colist.Relation.Unary.Any.Properties
+  ```
+
+* Broke up `IO` into a many smaller modules:
+  ```
+  IO.Base
+  IO.Finite
+  IO.Infinite
+  ```
+
 * Instantiate a homogeneously indexed bundle at a particular index
   ```
   Relation.Binary.Indexed.Homogeneous.Construct.At
@@ -129,6 +167,11 @@ New modules
 
 Other minor additions
 ---------------------
+
+* Added new function in `Data.Char.Base`:
+  ```agda
+  _≈ᵇ_ : (c d : Char) → Bool
+  ```
 
 * Added new proofs in `Algebra.Morphism.GroupMonomorphism`:
   ```agda
@@ -370,7 +413,7 @@ Other minor additions
 
 * Added new proofs to `Data.List.Relation.Binary.Pointwise`:
   ```agda
-  foldr⁺  : (R w x → R y z → R (w • y) (x ◦ z)) → 
+  foldr⁺  : (R w x → R y z → R (w • y) (x ◦ z)) →
             R e f → Pointwise R xs ys → R (foldr _•_ e xs) (foldr _◦_ f ys)
   lookup⁻ : length xs ≡ length ys →
             (toℕ i ≡ toℕ j → R (lookup xs i) (lookup ys j)) →

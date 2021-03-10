@@ -10,7 +10,7 @@ module Text.Tabular.Vec where
 
 open import Data.List.Base using (List)
 open import Data.Product as Prod using (uncurry)
-open import Data.String.Base using (String; rectangle; fromAlignment)
+open import Data.String using (String; rectangle; fromAlignment)
 open import Data.Vec.Base
 open import Function.Base
 
