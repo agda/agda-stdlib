@@ -18,18 +18,18 @@ open import Relation.Nullary.Negation using (contradiction; contradiction₂)
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning
 
 module Algebra.Construct.LexProduct
-  {ℓ₁ ℓ₂ ℓ₃ ℓ₄} (M₁ : Magma ℓ₁ ℓ₂) (M₂ : Magma ℓ₃ ℓ₄)
-  (_≟₁_ : Decidable (Magma._≈_ M₁))
+  {ℓ₁ ℓ₂ ℓ₃ ℓ₄} (M : Magma ℓ₁ ℓ₂) (N : Magma ℓ₃ ℓ₄)
+  (_≟₁_ : Decidable (Magma._≈_ M))
   where
 
-open Magma M₁ using (_∙_ ; ∙-cong)
+open Magma M using (_∙_ ; ∙-cong)
   renaming
   ( Carrier  to A
   ; _≈_      to _≈₁_
   ; _≉_      to _≉₁_
   )
 
-open Magma M₂ using ()
+open Magma N using ()
   renaming
   ( Carrier to B
   ; _∙_     to _◦_
@@ -37,7 +37,7 @@ open Magma M₂ using ()
   ; refl    to ≈₂-refl
   )
 
-import Algebra.Construct.LexProduct.Inner M₁ M₂ _≟₁_ as InnerLex
+import Algebra.Construct.LexProduct.Inner M N _≟₁_ as InnerLex
 
 private
   infix 4 _≋_
