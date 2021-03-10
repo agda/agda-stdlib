@@ -116,6 +116,11 @@ New modules
   Data.Nat.PseudoRandom.LCG
   ```
 
+* Instantiate a homogeneously indexed bundle at a particular index
+  ```
+  Relation.Binary.Indexed.Homogeneous.Construct.At
+  ```
+
 * Functionality for showing trees:
   ```
   Data.Tree.Rose.Show
