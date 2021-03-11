@@ -11,8 +11,8 @@
 module Relation.Nullary where
 
 open import Agda.Builtin.Equality
+open import Agda.Builtin.Bool
 
-open import Data.Bool.Base
 open import Data.Empty hiding (⊥-elim)
 open import Data.Empty.Irrelevant
 open import Level

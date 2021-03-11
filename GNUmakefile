@@ -23,8 +23,7 @@ Everything.agda:
 # command `cabal install` is needed by cabal-install <= 2.4.*. I did
 # not found any problem running both commands with different versions
 # of cabal-install. See Issue #1001.
-	cabal clean && cabal build && cabal install
-	cabal exec -- GenerateEverything
+	cabal run GenerateEverything
 
 .PHONY: listings
 listings: Everything.agda
