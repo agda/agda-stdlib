@@ -11,6 +11,7 @@ module Relation.Nullary.Negation.Core where
 open import Data.Bool.Base using (not)
 open import Data.Empty
 open import Data.Product
+open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base using (flip; _$_; _∘_; const)
 open import Level
 open import Relation.Nullary
@@ -29,6 +30,10 @@ private
 
 contradiction : P → ¬ P → Whatever
 contradiction p ¬p = ⊥-elim (¬p p)
+
+contradiction₂ : P ⊎ Q → ¬ P → ¬ Q → Whatever
+contradiction₂ (inj₁ p) ¬p ¬q = contradiction p ¬p
+contradiction₂ (inj₂ q) ¬p ¬q = contradiction q ¬q
 
 contraposition : (P → Q) → ¬ Q → ¬ P
 contraposition f ¬q p = contradiction (f p) ¬q

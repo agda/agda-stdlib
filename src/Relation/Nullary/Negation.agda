@@ -33,6 +33,9 @@ private
 
 open import Relation.Nullary.Negation.Core public
 
+------------------------------------------------------------------------
+-- Other properties
+
 -- Decidable predicates are stable.
 
 decidable-stable : Dec P → Stable P

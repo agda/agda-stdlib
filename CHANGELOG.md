@@ -114,6 +114,14 @@ New modules
   ```
   Algebra.Construct.NaturalChoice.MinOp
   Algebra.Construct.NaturalChoice.MaxOp
+  Algebra.Construct.NaturalChoice.MinMaxOp
+  ```
+
+* Lexicographic product over algebraic structures
+  ```
+  Algebra.Construct.LexProduct
+  Algebra.Construct.LexProduct.Base
+  Algebra.Construct.LexProduct.Inner
   ```
 
 * Sorting algorithms over lists:
@@ -910,4 +918,9 @@ Other minor additions
   ```agda
   totalPreorder   : TotalPreorder a ℓ₁ ℓ₂ → TotalPreorder a ℓ₁ ℓ₂
   isTotalPreorder : IsTotalPreorder ≈ ∼  → IsTotalPreorder ≈ (flip ∼)
+  ```
+
+* Added new proofs to `Relation.Nullary.Negation`:
+  ```agda
+  contradiction₂ : P ⊎ Q → ¬ P → ¬ Q → Whatever
   ```
