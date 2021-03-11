@@ -77,8 +77,8 @@ Deprecated names
   P-resp⟶¬P-resp   ↦ resp⇒¬-resp
   total⟶refl       ↦ total⇒refl
   total+dec⟶dec    ↦ total∧dec⇒dec
-  trans∧irr⟶asym   ↦ trans∧irr⇒asym 
-  irr∧antisym⟶asym ↦ irr∧antisym⇒asym 
+  trans∧irr⟶asym   ↦ trans∧irr⇒asym
+  irr∧antisym⟶asym ↦ irr∧antisym⇒asym
   asym⟶antisym     ↦ asym⇒antisym
   asym⟶irr         ↦ asym⇒irr
   tri⟶asym         ↦ tri⇒asym
@@ -261,7 +261,7 @@ Other minor additions
   ```agda
   *-pres-∣ : o ∣ m → p ∣ n → o * p ∣ m * n
   ```
-  
+
 * Added new proofs to `Data.Nat.GCD`:
   ```agda
   m/gcd[m,n]≢0 : {m≢0 : Dec.False (m ≟ 0)} → m / gcd m n ≢ 0
@@ -318,14 +318,14 @@ Other minor additions
   m<n⇒0<n : m < n → 0 < n
 
   m≤n*m : 0 < n → m ≤ n * m
-  
+
   ≤-isTotalPreorder         : IsTotalPreorder _≡_ _≤_
   ≤-totalPreorder           : TotalPreorder 0ℓ 0ℓ 0ℓ
 
   ⊔-⊓-absorptive            : Absorptive _⊓_ _
   ⊔-⊓-isLattice             : IsLattice _⊔_ _⊓_
   ⊔-⊓-isDistributiveLattice : IsDistributiveLattice _⊔_ _⊓_
-  
+
   ⊓-commutativeSemigroup    : CommutativeSemigroup 0ℓ 0ℓ
   ⊔-commutativeSemigroup    : CommutativeSemigroup 0ℓ 0ℓ
   ⊔-0-monoid                : Monoid 0ℓ 0ℓ
@@ -336,7 +336,7 @@ Other minor additions
   mono-≤-distrib-⊓          : f Preserves _≤_ ⟶ _≤_ → f (x ⊓ y) ≈ f x ⊓ f y
   antimono-≤-distrib-⊓      : f Preserves _≤_ ⟶ _≥_ → f (x ⊓ y) ≈ f x ⊔ f y
   antimono-≤-distrib-⊔      : f Preserves _≤_ ⟶ _≥_ → f (x ⊔ y) ≈ f x ⊓ f y
-  
+
   [m*n]*[o*p]≡[m*o]*[n*p]   : (m * n) * (o * p) ≡ (m * o) * (n * p)
   ```
 
@@ -359,7 +359,7 @@ Other minor additions
   ```agda
   ≤-isTotalPreorder         : IsTotalPreorder _≡_ _≤_
   ≤-totalPreorder           : TotalPreorder 0ℓ 0ℓ 0ℓ
-  
+
   ≤ᵇ⇒≤                      : T (i ≤ᵇ j) → i ≤ j
   ≤⇒≤ᵇ                      : i ≤ j → T (i ≤ᵇ j)
 
@@ -400,7 +400,7 @@ Other minor additions
   i⊔j≤k⇒i≤k                 : i ⊔ j ≤ k → i ≤ k
   i⊔j≤k⇒j≤k                 : i ⊔ j ≤ k → j ≤ k
   i⊓j≤i⊔j                   : i ⊓ j ≤ i ⊔ j
-  
+
   +-*-commutativeSemiring : CommutativeSemiring 0ℓ 0ℓ
   ```
 
@@ -458,7 +458,7 @@ Other minor additions
   mkℚ+-injective             : mkℚ+ n₁ d₁ c₁ ≡ mkℚ+ n₂ d₂ c₂ → n₁ ≡ n₂ × d₁ ≡ d₂
   mkℚ+-nonNeg                : NonNegative (mkℚ+ n d c)
   mkℚ+-pos                   : NonZero n → Positive (mkℚ+ n d c)
-		   
+
   nonNeg≢neg                 : NonNegative p → Negative q → p ≢ q
   pos⇒nonNeg                 : Positive p → NonNegative p
   neg⇒nonPos                 : Negative p → NonPositive p
@@ -475,7 +475,7 @@ Other minor additions
   normalize-injective-≃      : normalize m c ≡ normalize n d → m ℕ.* d ≡ n ℕ.* c
 
   /-injective-≃              : ↥ᵘ p / ↧ₙᵘ p ≡ ↥ᵘ q / ↧ₙᵘ q → p ≃ᵘ q
-						
+
   fromℚᵘ-injective           : Injective _≃ᵘ_ _≡_ fromℚᵘ
   toℚᵘ-fromℚᵘ                : toℚᵘ (fromℚᵘ p) ≃ᵘ p
   fromℚᵘ-cong                : fromℚᵘ Preserves _≃ᵘ_ ⟶ _≡_
@@ -487,10 +487,10 @@ Other minor additions
   toℚᵘ-cancel-<              : toℚᵘ p <ᵘ toℚᵘ q → p < q
   toℚᵘ-isOrderHomomorphism-< : IsOrderHomomorphism _≡_ _≃ᵘ_ _<_ _<ᵘ_ toℚᵘ
   toℚᵘ-isOrderMonomorphism-< : IsOrderMonomorphism _≡_ _≃ᵘ_ _<_ _<ᵘ_ toℚᵘ
-  
+
   ≤ᵇ⇒≤                       : T (p ≤ᵇ q) → p ≤ q
   ≤⇒≤ᵇ                       : p ≤ q → T (p ≤ᵇ q)
-  
+
   +-mono-≤                   : _+_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
   +-monoˡ-≤                  : (_+ r) Preserves _≤_ ⟶ _≤_
   +-monoʳ-≤                  : (_+_ r) Preserves _≤_ ⟶ _≤_
@@ -498,7 +498,7 @@ Other minor additions
   +-mono-<                   : _+_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
   +-monoˡ-<                  : (_+ r) Preserves _<_ ⟶ _<_
   +-monoʳ-<                  : (_+_ r) Preserves _<_ ⟶ _<_
-  
+
   neg-distrib-+              : - (p + q) ≡ (- p) + (- q)
 
   *-inverseʳ                 : p * (1/ p) ≡ 1ℚ
@@ -529,7 +529,7 @@ Other minor additions
   *-cancelʳ-<-nonPos         : NonPositive r → p * r < q * r → p > q
   *-cancelˡ-<-nonNeg         : NonNegative r → r * p < r * q → p < q
   *-cancelʳ-<-nonNeg         : NonNegative r → p * r < q * r → p < q
-  
+
   neg-distribˡ-*             : - (p * q) ≡ - p * q
   neg-distribʳ-*             : - (p * q) ≡ p * - q
 
@@ -649,7 +649,7 @@ Other minor additions
   neg⇒1/neg                  : Negative p → Negative (1/ p)
   1/pos⇒pos                  : Positive (1/ p) → Positive p
   1/neg⇒neg                  : Negative (1/ p) → Negative p
-  
+
   toℚᵘ-homo-∣_∣              : Homomorphic₁ toℚᵘ ∣_∣ ℚᵘ.∣_∣
   ∣-∣-nonNeg                 : NonNegative ∣ p ∣
   0≤∣p∣                      : 0ℚ ≤ ∣ p ∣
@@ -661,7 +661,7 @@ Other minor additions
   ∣p-q∣≤∣p∣+∣q∣              : ∣ p - q ∣ ≤ ∣ p ∣ + ∣ q ∣
   ∣p*q∣≡∣p∣*∣q∣              : ∣ p * q ∣ ≡ ∣ p ∣ * ∣ q ∣
   ```
-  
+
 * Add new relations and functions to `Data.Rational.Unnormalised`:
   ```agda
   _≤ᵇ_ : ℤ → ℤ → Bool
@@ -748,8 +748,8 @@ Other minor additions
   ⊔-distribˡ-⊓              : _DistributesOverˡ_ _≃_ _⊔_ _⊓_
   ⊔-distribʳ-⊓              : _DistributesOverʳ_ _≃_ _⊔_ _⊓_
   ⊔-distrib-⊓               : _DistributesOver_  _≃_ _⊔_ _⊓_
-  ⊓-absorbs-⊔               : _Absorbs_ _≃_ _⊓_ _⊔_ 
-  ⊔-absorbs-⊓               : _Absorbs_ _≃_ _⊔_ _⊓_ 
+  ⊓-absorbs-⊔               : _Absorbs_ _≃_ _⊓_ _⊔_
+  ⊔-absorbs-⊓               : _Absorbs_ _≃_ _⊔_ _⊓_
   ⊔-⊓-absorptive            : Absorptive _≃_ _⊔_ _⊓_
   ⊓-⊔-absorptive            : Absorptive _≃_ _⊓_ _⊔_
 
@@ -807,7 +807,7 @@ Other minor additions
   ⊔-mono-≤                  : _⊔_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
   ⊔-monoˡ-≤                 : (_⊔ p) Preserves _≤_ ⟶ _≤_
   ⊔-monoʳ-≤                 : (p ⊔_) Preserves _≤_ ⟶ _≤_
- 
+
   p⊓q≃q⇒q≤p                 : p ⊓ q ≃ q → q ≤ p
   p⊓q≃p⇒p≤q                 : p ⊓ q ≃ p → p ≤ q
   p⊔q≃q⇒p≤q                 : p ⊔ q ≃ q → p ≤ q
@@ -826,7 +826,7 @@ Other minor additions
   p≤q⇒p≤r⊔q                 : p ≤ q → p ≤ r ⊔ q
   p⊔q≤r⇒p≤r                 : p ⊔ q ≤ r → p ≤ r
   p⊔q≤r⇒q≤r                 : p ⊔ q ≤ r → q ≤ r
-  
+
   p≤q⇒p⊔q≃q                 : p ≤ q → p ⊔ q ≃ q
   p≥q⇒p⊔q≃p                 : p ≥ q → p ⊔ q ≃ p
   p≤q⇒p⊓q≃p                 : p ≤ q → p ⊓ q ≃ p
@@ -866,7 +866,7 @@ Other minor additions
 
 * Added new function to `Data.Tree.Rose`:
   ```agda
-  fromBinary : (A → C) → (B → C) → Tree.Binary A B → Rose C ∞ 
+  fromBinary : (A → C) → (B → C) → Tree.Binary A B → Rose C ∞
   ```
 
 * Added new definitions to `IO`:
@@ -875,7 +875,16 @@ Other minor additions
   Main : Set
   ```
 
-* Added new definitions to `Relation.Binary.Bundles`:
+* Added new functions to `Codata.Stream`:
+  ```agda
+  nats : Stream ℕ ∞
+
+  interleave⁺ : List⁺ (Stream A i) → Stream A i
+  cantor      : Stream (Stream A ∞) ∞ → Stream A ∞
+  plane       : Stream A ∞ → ((a : A) → Stream (B a) ∞) → Stream (Σ A B) ∞
+  ```
+
+  * Added new definitions to `Relation.Binary.Bundles`:
   ```agda
   record TotalPreorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂))
   ```
