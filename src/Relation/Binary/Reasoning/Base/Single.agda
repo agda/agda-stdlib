@@ -22,9 +22,6 @@ open import Relation.Binary.PropositionalEquality.Core as P
   using (_≡_)
 
 infix  4 _IsRelatedTo_
-infixr 2 step-∼ step-≡ step-≡˘
-infixr 2 _≡⟨⟩_
-infix  1 begin_
 
 ------------------------------------------------------------------------
 -- Definition of "related to"
@@ -48,6 +45,11 @@ data _IsRelatedTo_ (x y : A) : Set ℓ where
 -- approximately a factor of 5. Secondly it allows the combinators to be
 -- used with macros that use reflection, e.g. `Tactic.RingSolver`, where
 -- they need to be able to extract `y` using reflection.
+
+infix  1 begin_
+infixr 2 step-∼ step-≡ step-≡˘
+infixr 2 _≡⟨⟩_
+infix  3 _∎
 
 -- Beginning of a proof
 
@@ -74,15 +76,13 @@ step-≡˘ _ x∼z P.refl = x∼z
 _≡⟨⟩_ : ∀ x {y} → x IsRelatedTo y → x IsRelatedTo y
 _ ≡⟨⟩ x∼y = x∼y
 
+-- Termination
+
+_∎ : ∀ x → x IsRelatedTo x
+x ∎ = relTo refl
+
 -- Syntax declarations
 
 syntax step-∼  x y∼z x∼y = x ∼⟨  x∼y ⟩ y∼z
 syntax step-≡  x y≡z x≡y = x ≡⟨  x≡y ⟩ y≡z
 syntax step-≡˘ x y≡z y≡x = x ≡˘⟨ y≡x ⟩ y≡z
-
--- Redefine the terminating combinator now that we have reflexivity
-
-infix  3 _∎
-
-_∎ : ∀ x → x IsRelatedTo x
-x ∎ = relTo refl
