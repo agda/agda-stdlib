@@ -111,6 +111,6 @@ _ ∎⟨ x∼x ⟩ = multiStep x∼x
 {-# WARNING_ON_USAGE _∎⟨_⟩
 "Warning: _∎⟨_⟩ was deprecated in v1.6.
 Please use _∎ instead if used in a chain, otherwise simply provide
-the reflexive relation directly."
+the proof of reflexivity directly without using these combinators."
 #-}
 
