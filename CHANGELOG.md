@@ -15,6 +15,26 @@ Highlights
 Bug-fixes
 ---------
 
+* Despite being designed for use with non-reflexive relations, the combinators 
+  in `Relation.Binary.Reasoning.Base.Partial` required users to provide a proof
+  of reflexivity of the relation over the last element in the chain:
+  ```agda
+  begin 
+    x  ⟨ x∼y ⟩
+    y  ∎⟨ y∼y ⟩
+  ```
+  These have now been redefined so that this proof is no longer needed:
+  ```agda
+  begin 
+    x  ⟨ x∼y ⟩
+    y  ∎
+  ```
+  For direct users of `Relation.Binary.Reasoning.PartialSetoid` API this is a 
+  backwards compatible change as the `_∎⟨_⟩` combinator has simply been deprecated. For
+  users who were building their own reasoning combinators on top of 
+  `Relation.Binary.Reasoning.Base.Partial`, they will need to adjust their additional
+  combinators to use the new `singleStep`/`multiStep` constructors of `_IsRelatedTo_`.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -101,7 +121,8 @@ Deprecated names
 New modules
 -----------
 
-* Added `Data.Maybe.Relation.Binary.Connected`, a variant of the `Pointwise` relation where `nothing` is also related to `just`.
+* Added `Data.Maybe.Relation.Binary.Connected`, a variant of the `Pointwise` 
+  relation where `nothing` is also related to `just`.
 
 * Added various generic morphism constructions for binary relations:
   ```agda
