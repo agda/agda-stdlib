@@ -55,4 +55,4 @@ putStr : String → IO {a} ⊤
 putStr s = lift′ (Prim.putStr s)
 
 putStrLn : String → IO {a} ⊤
-putStrLn s = lift′ (Prim.putStr s)
+putStrLn s = lift′ (Prim.putStrLn s)
