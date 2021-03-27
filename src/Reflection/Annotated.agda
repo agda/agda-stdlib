@@ -131,6 +131,9 @@ mutual
   data Sortₐ′ {ℓ} : Typeₐ ℓ ⟨sort⟩ where
     set     : ∀ {t} → Termₐ Ann t → Sortₐ′ Ann (set t)
     lit     : ∀ n → Sortₐ′ Ann (lit n)
+    prop    : ∀ {t} → Termₐ Ann t → Sortₐ′ Ann (prop t)
+    propLit : ∀ n → Sortₐ′ Ann (propLit n)
+    inf     : ∀ n → Sortₐ′ Ann (inf n)
     unknown : Sortₐ′ Ann unknown
 
   data Patternₐ′ {ℓ} : Typeₐ ℓ ⟨pat⟩ where
@@ -197,6 +200,9 @@ module _ (annFun : AnnotationFun Ann) where
     annotate′ {⟨pat⟩}     (absurd x)             = absurd x
     annotate′ {⟨sort⟩}    (set t)                = set (annotate t)
     annotate′ {⟨sort⟩}    (lit n)                = lit n
+    annotate′ {⟨sort⟩}    (prop t)               = prop (annotate t)
+    annotate′ {⟨sort⟩}    (propLit n)            = propLit n
+    annotate′ {⟨sort⟩}    (inf n)                = inf n
     annotate′ {⟨sort⟩}    unknown                = unknown
     annotate′ {⟨clause⟩}  (clause tel ps t)      = clause (annotate tel) (annotate ps) (annotate t)
     annotate′ {⟨clause⟩}  (absurd-clause tel ps) = absurd-clause (annotate tel) (annotate ps)
@@ -234,6 +240,9 @@ mutual
   map′ ⟨pat⟩       f (absurd x)           = absurd x
   map′ ⟨sort⟩      f (set t)              = set (map f t)
   map′ ⟨sort⟩      f (lit n)              = lit n
+  map′ ⟨sort⟩      f (prop t)             = prop (map f t)
+  map′ ⟨sort⟩      f (propLit n)          = propLit n
+  map′ ⟨sort⟩      f (inf n)              = inf n
   map′ ⟨sort⟩      f unknown              = unknown
   map′ ⟨clause⟩    f (clause Γ ps args)   = clause (map f Γ) (map f ps) (map f args)
   map′ ⟨clause⟩    f (absurd-clause Γ ps) = absurd-clause (map f Γ) (map f ps)
@@ -271,6 +280,9 @@ module _ {W : Set ℓ} (ε : W) (_∪_ : W → W → W) where
   defaultAnn ⟨pat⟩       (absurd x)           = ε
   defaultAnn ⟨sort⟩      (set t)              = ann t
   defaultAnn ⟨sort⟩      (lit n)              = ε
+  defaultAnn ⟨sort⟩      (prop t)             = ann t
+  defaultAnn ⟨sort⟩      (propLit n)          = ε
+  defaultAnn ⟨sort⟩      (inf n)              = ε
   defaultAnn ⟨sort⟩      unknown              = ε
   defaultAnn ⟨clause⟩    (clause Γ ps t)      = ann Γ ∪ (ann ps ∪ ann t)
   defaultAnn ⟨clause⟩    (absurd-clause Γ ps) = ann Γ ∪ ann ps
@@ -321,6 +333,9 @@ module Traverse {M : Set → Set} (appl : RawApplicative M) where
       traverse′ {⟨pat⟩}     (absurd x)           = pure (absurd x)
       traverse′ {⟨sort⟩}    (set t)              = set <$> traverse t
       traverse′ {⟨sort⟩}    (lit n)              = pure (lit n)
+      traverse′ {⟨sort⟩}    (prop t)             = prop <$> traverse t
+      traverse′ {⟨sort⟩}    (propLit n)          = pure (propLit n)
+      traverse′ {⟨sort⟩}    (inf n)              = pure (inf n)
       traverse′ {⟨sort⟩}    unknown              = pure unknown
       traverse′ {⟨clause⟩}  (clause Γ ps t)      = clause <$> traverse Γ <*> traverse ps <*> traverse t
       traverse′ {⟨clause⟩}  (absurd-clause Γ ps) = absurd-clause <$> traverse Γ <*> traverse ps

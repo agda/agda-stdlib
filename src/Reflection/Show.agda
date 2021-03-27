@@ -97,6 +97,9 @@ mutual
   showSort : Sort → String
   showSort (set t) = "Set" <+> parensIfSpace (showTerm t)
   showSort (lit n) = "Set" ++ ℕ.show n -- no space to disambiguate from set t
+  showSort (prop t) = "Prop" <+> parensIfSpace (showTerm t)
+  showSort (propLit n) = "Prop" ++ ℕ.show n -- no space to disambiguate from prop t
+  showSort (inf n) = "Setω" ++ ℕ.show n
   showSort unknown = "unknown"
 
   showPatterns : List (Arg Pattern) → String
