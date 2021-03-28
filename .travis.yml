@@ -136,7 +136,7 @@ matrix:
         - agda $AGDA_OPTIONS $RTS_OPTIONS -i . -i src/ -c README/Foreign/Haskell.agda && ./Haskell
         # building the docs
         - agda $AGDA_OPTIONS $RTS_OPTIONS -i . -i src/ --html safe.agda
-        - agda $AGDA_OPTIONS $RTS_OPTIONS -i . -i src/ --html --rewriting index.agda
+        - agda $AGDA_OPTIONS $RTS_OPTIONS -i . -i src/ --html index.agda
 
         # moving everything to the appropriate directory
         - if [[ $TRAVIS_BRANCH = "master" ]]; then
