@@ -5,7 +5,6 @@
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe --guardedness #-}
-{-# OPTIONS --postfix-projections #-}
 
 module Data.Container.Indexed.Combinator where
 
@@ -14,7 +13,6 @@ open import Data.Container.Indexed
 open import Data.Empty.Polymorphic using (⊥; ⊥-elim)
 open import Data.Unit.Polymorphic.Base using (⊤)
 open import Data.Product as Prod hiding (Σ) renaming (_×_ to _⟨×⟩_)
-open import Data.Product.Relation.Binary.Pointwise.Dependent as Pointwise using (Pointwise; _,_)
 open import Data.Sum renaming (_⊎_ to _⟨⊎⟩_)
 open import Data.Sum.Relation.Unary.All as All using (All₂)
 open import Function as F hiding (id; const) renaming (_∘_ to _⟨∘⟩_)
@@ -88,8 +86,8 @@ C₁ ∘ C₂ = C ◃ R / n
   n : ∀ {k} (c : ⟦ C₁ ⟧ (Command C₂) k) → R c → _
   n (_ , f) (r₁ , r₂) = next C₂ (f r₁) r₂
 
--- Product. (Note that, up to isomorphism, this is a special case of
--- indexed product.)
+-- Product. (Note that, up to isomorphism, and ignoring universe level
+-- issues, this is a special case of indexed product.)
 
 infixr 2 _×_
 
@@ -111,8 +109,8 @@ _×_ : {I : Set i} {O : Set o} →
   ; next     = λ { c (x , r) → next (C x) (c x) r }
   }
 
--- Sum. (Note that, up to isomorphism, this is a special case of
--- indexed sum.)
+-- Sum. (Note that, up to isomorphism, and ignoring universe level
+-- issues, this is a special case of indexed sum.)
 
 infixr 1  _⊎_ _⊎′_
 
@@ -261,33 +259,6 @@ module Sum (ext : ∀ {ℓ₁ ℓ₂} → Extensionality ℓ₁ ℓ₂) where
     to∘from : to ⟨∘⟩ from ≗ F.id
     to∘from =  [ (λ _ → refl) , (λ _ → refl) ]
 
-{-
-module Sum (ext : ∀ {ℓ} → Extensionality ℓ ℓ) {I : Set i} {O : Set o} where
-
-  correct : (C₁ : Container I O c₁ r₁) (C₂ : Container I O c₂ r₂) {X : Pred I ℓ} →
-            ⟦ C₁ ⊎ C₂ ⟧ X ↔̇ (⟦ C₁ ⟧ X ∪ ⟦ C₂ ⟧ X)
-  correct C₁ C₂ {X} = {! inverse to from from∘to ?!} -- to∘from
-    where
-    to : ⟦ C₁ ⊎ C₂ ⟧ X ⊆ ⟦ C₁ ⟧ X ∪ ⟦ C₂ ⟧ X
-    to (inj₁ c₁ , k) = inj₁ (c₁ , λ r → k (All.inj₁ r))
-    to (inj₂ c₂ , k) = inj₂ (c₂ , λ r → k (All.inj₂ r))
-
-    from : ⟦ C₁ ⟧ X ∪ ⟦ C₂ ⟧ X ⊆ ⟦ C₁ ⊎ C₂ ⟧ X
-    from = [ Prod.map inj₁ (λ{ f (All.inj₁ r) → f r}) , Prod.map inj₂ (λ{ f (All.inj₂ r) → f r}) ]
-
-    from∘to : {o : O} (x : ⟦ C₁ ⊎ C₂ ⟧ X o) →
-      Pointwise (λ c → (r : (C₁ ⊎ C₂) .Response c) → X ((C₁ ⊎ C₂) .next c r))
-        P._≡_
-        (λ {y} {z} f g → f {!!} P.≡ {!!})
-        (from (to x))
-        x
-    from∘to (inj₁ _ , _) = refl , {!!} -- inj₁ _ , {!λ{ (inj₁ r) → ?}!} -- refl
-    from∘to (inj₂ _ , _) = refl , {!!} -- refl
-
-    to∘from : to ⟨∘⟩ from ≗ F.id
-    to∘from = {!!} -- [ (λ _ → refl) , (λ _ → refl) ]
--}
-
 module Sum′ where
 
   correct : {I : Set i} {O : Set o}
@@ -328,10 +299,3 @@ module ConstantExponentiation where
             (C : Container I O c r) {Y : Pred I ℓ} →
             ⟦ const[ X ]⟶ C ⟧ Y ↔̇ (⋂ X (F.const (⟦ C ⟧ Y)))
   correct C {Y} = IndexedProduct.correct (F.const C) {Y}
-
-
--- -}
--- -}
--- -}
--- -}
--- -}
