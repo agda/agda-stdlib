@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Relation.Binary.PropositionalEquality.Algebra</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Propositional (intensional) equality - Algebraic structures</a>
+<a id="169" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="243" class="Symbol">{-#</a> <a id="247" class="Keyword">OPTIONS</a> <a id="255" class="Pragma">--without-K</a> <a id="267" class="Pragma">--safe</a> <a id="274" class="Symbol">#-}</a>
+
+<a id="279" class="Keyword">module</a> <a id="286" href="Relation.Binary.PropositionalEquality.Algebra.html" class="Module">Relation.Binary.PropositionalEquality.Algebra</a> <a id="332" class="Keyword">where</a>
+
+<a id="339" class="Keyword">open</a> <a id="344" class="Keyword">import</a> <a id="351" href="Algebra.html" class="Module">Algebra</a>
+<a id="359" class="Keyword">open</a> <a id="364" class="Keyword">import</a> <a id="371" href="Level.html" class="Module">Level</a>
+<a id="377" class="Keyword">open</a> <a id="382" class="Keyword">import</a> <a id="389" href="Relation.Binary.PropositionalEquality.Core.html" class="Module">Relation.Binary.PropositionalEquality.Core</a>
+<a id="432" class="Keyword">open</a> <a id="437" class="Keyword">import</a> <a id="444" href="Relation.Binary.PropositionalEquality.Properties.html" class="Module">Relation.Binary.PropositionalEquality.Properties</a>
+
+<a id="494" class="Keyword">private</a>
+  <a id="504" class="Keyword">variable</a>
+    <a id="517" href="Relation.Binary.PropositionalEquality.Algebra.html#517" class="Generalizable">a</a> <a id="519" class="Symbol">:</a> <a id="521" href="Agda.Primitive.html#423" class="Postulate">Level</a>
+    <a id="531" href="Relation.Binary.PropositionalEquality.Algebra.html#531" class="Generalizable">A</a> <a id="533" class="Symbol">:</a> <a id="535" class="PrimitiveType">Set</a> <a id="539" href="Relation.Binary.PropositionalEquality.Algebra.html#517" class="Generalizable">a</a>
+
+<a id="542" class="Comment">------------------------------------------------------------------------</a>
+<a id="615" class="Comment">-- Any operation forms a magma over _≡_</a>
+
+<a id="isMagma"></a><a id="656" href="Relation.Binary.PropositionalEquality.Algebra.html#656" class="Function">isMagma</a> <a id="664" class="Symbol">:</a> <a id="666" class="Symbol">(</a><a id="667" href="Relation.Binary.PropositionalEquality.Algebra.html#667" class="Bound Operator">_∙_</a> <a id="671" class="Symbol">:</a> <a id="673" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="677" href="Relation.Binary.PropositionalEquality.Algebra.html#531" class="Generalizable">A</a><a id="678" class="Symbol">)</a> <a id="680" class="Symbol">→</a> <a id="682" href="Algebra.Structures.html#1120" class="Record">IsMagma</a> <a id="690" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a> <a id="694" href="Relation.Binary.PropositionalEquality.Algebra.html#667" class="Bound Operator">_∙_</a>
+<a id="698" href="Relation.Binary.PropositionalEquality.Algebra.html#656" class="Function">isMagma</a> <a id="706" href="Relation.Binary.PropositionalEquality.Algebra.html#706" class="Bound Operator">_∙_</a> <a id="710" class="Symbol">=</a> <a id="712" class="Keyword">record</a>
+  <a id="721" class="Symbol">{</a> <a id="723" href="Algebra.Structures.html#1172" class="Field">isEquivalence</a> <a id="737" class="Symbol">=</a> <a id="739" href="Relation.Binary.PropositionalEquality.Properties.html#3427" class="Function">isEquivalence</a>
+  <a id="755" class="Symbol">;</a> <a id="757" href="Algebra.Structures.html#1210" class="Field">∙-cong</a>        <a id="771" class="Symbol">=</a> <a id="773" href="Relation.Binary.PropositionalEquality.Core.html#1367" class="Function">cong₂</a> <a id="779" href="Relation.Binary.PropositionalEquality.Algebra.html#706" class="Bound Operator">_∙_</a>
+  <a id="785" class="Symbol">}</a>
+
+<a id="magma"></a><a id="788" href="Relation.Binary.PropositionalEquality.Algebra.html#788" class="Function">magma</a> <a id="794" class="Symbol">:</a> <a id="796" class="Symbol">(</a><a id="797" href="Relation.Binary.PropositionalEquality.Algebra.html#797" class="Bound Operator">_∙_</a> <a id="801" class="Symbol">:</a> <a id="803" href="Algebra.Core.html#518" class="Function">Op₂</a> <a id="807" href="Relation.Binary.PropositionalEquality.Algebra.html#531" class="Generalizable">A</a><a id="808" class="Symbol">)</a> <a id="810" class="Symbol">→</a> <a id="812" href="Algebra.Bundles.html#912" class="Record">Magma</a> <a id="818" class="Symbol">_</a> <a id="820" class="Symbol">_</a>
+<a id="822" href="Relation.Binary.PropositionalEquality.Algebra.html#788" class="Function">magma</a> <a id="828" href="Relation.Binary.PropositionalEquality.Algebra.html#828" class="Bound Operator">_∙_</a> <a id="832" class="Symbol">=</a> <a id="834" class="Keyword">record</a>
+  <a id="843" class="Symbol">{</a> <a id="845" href="Algebra.Bundles.html#1064" class="Field">isMagma</a> <a id="853" class="Symbol">=</a> <a id="855" href="Relation.Binary.PropositionalEquality.Algebra.html#656" class="Function">isMagma</a> <a id="863" href="Relation.Binary.PropositionalEquality.Algebra.html#828" class="Bound Operator">_∙_</a>
+  <a id="869" class="Symbol">}</a>
+</pre></body></html>

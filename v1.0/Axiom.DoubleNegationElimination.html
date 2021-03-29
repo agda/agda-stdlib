@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Axiom.DoubleNegationElimination</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Results concerning double negation elimination.</a>
+<a id="157" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="231" class="Symbol">{-#</a> <a id="235" class="Keyword">OPTIONS</a> <a id="243" class="Pragma">--without-K</a> <a id="255" class="Pragma">--safe</a> <a id="262" class="Symbol">#-}</a>
+
+<a id="267" class="Keyword">module</a> <a id="274" href="Axiom.DoubleNegationElimination.html" class="Module">Axiom.DoubleNegationElimination</a> <a id="306" class="Keyword">where</a>
+
+<a id="313" class="Keyword">open</a> <a id="318" class="Keyword">import</a> <a id="325" href="Axiom.ExcludedMiddle.html" class="Module">Axiom.ExcludedMiddle</a>
+<a id="346" class="Keyword">open</a> <a id="351" class="Keyword">import</a> <a id="358" href="Level.html" class="Module">Level</a>
+<a id="364" class="Keyword">open</a> <a id="369" class="Keyword">import</a> <a id="376" href="Relation.Nullary.html" class="Module">Relation.Nullary</a>
+<a id="393" class="Keyword">open</a> <a id="398" class="Keyword">import</a> <a id="405" href="Relation.Nullary.Negation.html" class="Module">Relation.Nullary.Negation</a>
+
+<a id="432" class="Comment">------------------------------------------------------------------------</a>
+<a id="505" class="Comment">-- Definition</a>
+
+<a id="520" class="Comment">-- The classical statement of double negation elimination says that</a>
+<a id="588" class="Comment">-- if a property is not not true then it is true.</a>
+
+<a id="DoubleNegationElimination"></a><a id="639" href="Axiom.DoubleNegationElimination.html#639" class="Function">DoubleNegationElimination</a> <a id="665" class="Symbol">:</a> <a id="667" class="Symbol">(</a><a id="668" href="Axiom.DoubleNegationElimination.html#668" class="Bound">ℓ</a> <a id="670" class="Symbol">:</a> <a id="672" href="Agda.Primitive.html#408" class="Postulate">Level</a><a id="677" class="Symbol">)</a> <a id="679" class="Symbol">→</a> <a id="681" class="PrimitiveType">Set</a> <a id="685" class="Symbol">(</a><a id="686" href="Agda.Primitive.html#627" class="Primitive">suc</a> <a id="690" href="Axiom.DoubleNegationElimination.html#668" class="Bound">ℓ</a><a id="691" class="Symbol">)</a>
+<a id="693" href="Axiom.DoubleNegationElimination.html#639" class="Function">DoubleNegationElimination</a> <a id="719" href="Axiom.DoubleNegationElimination.html#719" class="Bound">ℓ</a> <a id="721" class="Symbol">=</a> <a id="723" class="Symbol">{</a><a id="724" href="Axiom.DoubleNegationElimination.html#724" class="Bound">P</a> <a id="726" class="Symbol">:</a> <a id="728" class="PrimitiveType">Set</a> <a id="732" href="Axiom.DoubleNegationElimination.html#719" class="Bound">ℓ</a><a id="733" class="Symbol">}</a> <a id="735" class="Symbol">→</a> <a id="737" href="Relation.Nullary.html#500" class="Function Operator">¬</a> <a id="739" href="Relation.Nullary.html#500" class="Function Operator">¬</a> <a id="741" href="Axiom.DoubleNegationElimination.html#724" class="Bound">P</a> <a id="743" class="Symbol">→</a> <a id="745" href="Axiom.DoubleNegationElimination.html#724" class="Bound">P</a>
+
+<a id="748" class="Comment">------------------------------------------------------------------------</a>
+<a id="821" class="Comment">-- Properties</a>
+
+<a id="836" class="Comment">-- Double negation elimination is equivalent to excluded middle</a>
+
+<a id="em⇒dne"></a><a id="901" href="Axiom.DoubleNegationElimination.html#901" class="Function">em⇒dne</a> <a id="908" class="Symbol">:</a> <a id="910" class="Symbol">∀</a> <a id="912" class="Symbol">{</a><a id="913" href="Axiom.DoubleNegationElimination.html#913" class="Bound">ℓ</a><a id="914" class="Symbol">}</a> <a id="916" class="Symbol">→</a> <a id="918" href="Axiom.ExcludedMiddle.html#572" class="Function">ExcludedMiddle</a> <a id="933" href="Axiom.DoubleNegationElimination.html#913" class="Bound">ℓ</a> <a id="935" class="Symbol">→</a> <a id="937" href="Axiom.DoubleNegationElimination.html#639" class="Function">DoubleNegationElimination</a> <a id="963" href="Axiom.DoubleNegationElimination.html#913" class="Bound">ℓ</a>
+<a id="965" href="Axiom.DoubleNegationElimination.html#901" class="Function">em⇒dne</a> <a id="972" href="Axiom.DoubleNegationElimination.html#972" class="Bound">em</a> <a id="975" class="Symbol">=</a> <a id="977" href="Relation.Nullary.Negation.html#2409" class="Function">decidable-stable</a> <a id="994" href="Axiom.DoubleNegationElimination.html#972" class="Bound">em</a>
+
+<a id="dne⇒em"></a><a id="998" href="Axiom.DoubleNegationElimination.html#998" class="Function">dne⇒em</a> <a id="1005" class="Symbol">:</a> <a id="1007" class="Symbol">∀</a> <a id="1009" class="Symbol">{</a><a id="1010" href="Axiom.DoubleNegationElimination.html#1010" class="Bound">ℓ</a><a id="1011" class="Symbol">}</a> <a id="1013" class="Symbol">→</a> <a id="1015" href="Axiom.DoubleNegationElimination.html#639" class="Function">DoubleNegationElimination</a> <a id="1041" href="Axiom.DoubleNegationElimination.html#1010" class="Bound">ℓ</a> <a id="1043" class="Symbol">→</a> <a id="1045" href="Axiom.ExcludedMiddle.html#572" class="Function">ExcludedMiddle</a> <a id="1060" href="Axiom.DoubleNegationElimination.html#1010" class="Bound">ℓ</a>
+<a id="1062" href="Axiom.DoubleNegationElimination.html#998" class="Function">dne⇒em</a> <a id="1069" href="Axiom.DoubleNegationElimination.html#1069" class="Bound">dne</a> <a id="1073" class="Symbol">=</a> <a id="1075" href="Axiom.DoubleNegationElimination.html#1069" class="Bound">dne</a> <a id="1079" href="Relation.Nullary.Negation.html#3203" class="Function">excluded-middle</a>
+</pre></body></html>

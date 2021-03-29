@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Star.List</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Lists defined in terms of the reflexive-transitive closure, Star</a>
+<a id="174" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="248" class="Keyword">module</a> <a id="255" href="Data.Star.List.html" class="Module">Data.Star.List</a> <a id="270" class="Keyword">where</a>
+
+<a id="277" class="Keyword">open</a> <a id="282" class="Keyword">import</a> <a id="289" href="Data.Star.Nat.html" class="Module">Data.Star.Nat</a>
+<a id="303" class="Keyword">open</a> <a id="308" class="Keyword">import</a> <a id="315" href="Data.Unit.html" class="Module">Data.Unit</a>
+<a id="325" class="Keyword">open</a> <a id="330" class="Keyword">import</a> <a id="337" href="Relation.Binary.Simple.html" class="Module">Relation.Binary.Simple</a>
+<a id="360" class="Keyword">open</a> <a id="365" class="Keyword">import</a> <a id="372" href="Relation.Binary.Closure.ReflexiveTransitive.html" class="Module">Relation.Binary.Closure.ReflexiveTransitive</a>
+
+<a id="417" class="Comment">-- Lists.</a>
+
+<a id="List"></a><a id="428" href="Data.Star.List.html#428" class="Function">List</a> <a id="433" class="Symbol">:</a> <a id="435" class="Symbol">∀</a> <a id="437" class="Symbol">{</a><a id="438" href="Data.Star.List.html#438" class="Bound">a</a><a id="439" class="Symbol">}</a> <a id="441" class="Symbol">→</a> <a id="443" class="PrimitiveType">Set</a> <a id="447" href="Data.Star.List.html#438" class="Bound">a</a> <a id="449" class="Symbol">→</a> <a id="451" class="PrimitiveType">Set</a> <a id="455" href="Data.Star.List.html#438" class="Bound">a</a>
+<a id="457" href="Data.Star.List.html#428" class="Function">List</a> <a id="462" href="Data.Star.List.html#462" class="Bound">A</a> <a id="464" class="Symbol">=</a> <a id="466" href="Relation.Binary.Closure.ReflexiveTransitive.html#439" class="Datatype">Star</a> <a id="471" class="Symbol">(</a><a id="472" href="Relation.Binary.Simple.html#365" class="Function">Const</a> <a id="478" href="Data.Star.List.html#462" class="Bound">A</a><a id="479" class="Symbol">)</a> <a id="481" href="Agda.Builtin.Unit.html#106" class="InductiveConstructor">tt</a> <a id="484" href="Agda.Builtin.Unit.html#106" class="InductiveConstructor">tt</a>
+
+<a id="488" class="Comment">-- Nil and cons.</a>
+
+<a id="[]"></a><a id="506" href="Data.Star.List.html#506" class="Function">[]</a> <a id="509" class="Symbol">:</a> <a id="511" class="Symbol">∀</a> <a id="513" class="Symbol">{</a><a id="514" href="Data.Star.List.html#514" class="Bound">a</a><a id="515" class="Symbol">}</a> <a id="517" class="Symbol">{</a><a id="518" href="Data.Star.List.html#518" class="Bound">A</a> <a id="520" class="Symbol">:</a> <a id="522" class="PrimitiveType">Set</a> <a id="526" href="Data.Star.List.html#514" class="Bound">a</a><a id="527" class="Symbol">}</a> <a id="529" class="Symbol">→</a> <a id="531" href="Data.Star.List.html#428" class="Function">List</a> <a id="536" href="Data.Star.List.html#518" class="Bound">A</a>
+<a id="538" href="Data.Star.List.html#506" class="Function">[]</a> <a id="541" class="Symbol">=</a> <a id="543" href="Relation.Binary.Closure.ReflexiveTransitive.html#500" class="InductiveConstructor">ε</a>
+
+<a id="546" class="Keyword">infixr</a> <a id="553" class="Number">5</a> <a id="555" href="Data.Star.List.html#560" class="Function Operator">_∷_</a>
+
+<a id="_∷_"></a><a id="560" href="Data.Star.List.html#560" class="Function Operator">_∷_</a> <a id="564" class="Symbol">:</a> <a id="566" class="Symbol">∀</a> <a id="568" class="Symbol">{</a><a id="569" href="Data.Star.List.html#569" class="Bound">a</a><a id="570" class="Symbol">}</a> <a id="572" class="Symbol">{</a><a id="573" href="Data.Star.List.html#573" class="Bound">A</a> <a id="575" class="Symbol">:</a> <a id="577" class="PrimitiveType">Set</a> <a id="581" href="Data.Star.List.html#569" class="Bound">a</a><a id="582" class="Symbol">}</a> <a id="584" class="Symbol">→</a> <a id="586" href="Data.Star.List.html#573" class="Bound">A</a> <a id="588" class="Symbol">→</a> <a id="590" href="Data.Star.List.html#428" class="Function">List</a> <a id="595" href="Data.Star.List.html#573" class="Bound">A</a> <a id="597" class="Symbol">→</a> <a id="599" href="Data.Star.List.html#428" class="Function">List</a> <a id="604" href="Data.Star.List.html#573" class="Bound">A</a>
+<a id="606" href="Data.Star.List.html#560" class="Function Operator">_∷_</a> <a id="610" class="Symbol">=</a> <a id="612" href="Relation.Binary.Closure.ReflexiveTransitive.html#527" class="InductiveConstructor Operator">_◅_</a>
+
+<a id="617" class="Comment">-- The sum of the elements in a list containing natural numbers.</a>
+
+<a id="sum"></a><a id="683" href="Data.Star.List.html#683" class="Function">sum</a> <a id="687" class="Symbol">:</a> <a id="689" href="Data.Star.List.html#428" class="Function">List</a> <a id="694" href="Data.Star.Nat.html#464" class="Function">ℕ</a> <a id="696" class="Symbol">→</a> <a id="698" href="Data.Star.Nat.html#464" class="Function">ℕ</a>
+<a id="700" href="Data.Star.List.html#683" class="Function">sum</a> <a id="704" class="Symbol">=</a> <a id="706" href="Relation.Binary.Closure.ReflexiveTransitive.html#2074" class="Function">fold</a> <a id="711" class="Symbol">(</a><a id="712" href="Relation.Binary.Closure.ReflexiveTransitive.html#439" class="Datatype">Star</a> <a id="717" href="Relation.Binary.Simple.html#483" class="Function">Always</a><a id="723" class="Symbol">)</a> <a id="725" href="Data.Star.Nat.html#742" class="Function Operator">_+_</a> <a id="729" href="Data.Star.Nat.html#519" class="Function">zero</a>
+</pre></body></html>

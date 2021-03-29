@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Relation.Binary.Properties.StrictTotalOrder</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Properties satisfied by strict partial orders</a>
+<a id="155" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="229" class="Symbol">{-#</a> <a id="233" class="Keyword">OPTIONS</a> <a id="241" class="Pragma">--without-K</a> <a id="253" class="Pragma">--safe</a> <a id="260" class="Symbol">#-}</a>
+
+<a id="265" class="Keyword">open</a> <a id="270" class="Keyword">import</a> <a id="277" href="Relation.Binary.html" class="Module">Relation.Binary</a>
+
+<a id="294" class="Keyword">module</a> <a id="301" href="Relation.Binary.Properties.StrictTotalOrder.html" class="Module">Relation.Binary.Properties.StrictTotalOrder</a>
+       <a id="352" class="Symbol">{</a><a id="353" href="Relation.Binary.Properties.StrictTotalOrder.html#353" class="Bound">s₁</a> <a id="356" href="Relation.Binary.Properties.StrictTotalOrder.html#356" class="Bound">s₂</a> <a id="359" href="Relation.Binary.Properties.StrictTotalOrder.html#359" class="Bound">s₃</a><a id="361" class="Symbol">}</a> <a id="363" class="Symbol">(</a><a id="364" href="Relation.Binary.Properties.StrictTotalOrder.html#364" class="Bound">STO</a> <a id="368" class="Symbol">:</a> <a id="370" href="Relation.Binary.html#11493" class="Record">StrictTotalOrder</a> <a id="387" href="Relation.Binary.Properties.StrictTotalOrder.html#353" class="Bound">s₁</a> <a id="390" href="Relation.Binary.Properties.StrictTotalOrder.html#356" class="Bound">s₂</a> <a id="393" href="Relation.Binary.Properties.StrictTotalOrder.html#359" class="Bound">s₃</a><a id="395" class="Symbol">)</a>
+       <a id="404" class="Keyword">where</a>
+
+<a id="411" class="Keyword">open</a> <a id="416" href="Relation.Binary.html#11493" class="Module">Relation.Binary.StrictTotalOrder</a> <a id="449" href="Relation.Binary.Properties.StrictTotalOrder.html#364" class="Bound">STO</a>
+<a id="453" class="Keyword">open</a> <a id="458" class="Keyword">import</a> <a id="465" href="Relation.Binary.Construct.StrictToNonStrict.html" class="Module">Relation.Binary.Construct.StrictToNonStrict</a> <a id="509" href="Relation.Binary.html#11611" class="Field Operator">_≈_</a> <a id="513" href="Relation.Binary.html#11651" class="Field Operator">_&lt;_</a>
+<a id="517" class="Keyword">import</a> <a id="524" href="Relation.Binary.Properties.StrictPartialOrder.html" class="Module">Relation.Binary.Properties.StrictPartialOrder</a> <a id="570" class="Symbol">as</a> <a id="573" class="Module">SPO</a>
+<a id="577" class="Keyword">open</a> <a id="582" class="Keyword">import</a> <a id="589" href="Relation.Binary.Consequences.html" class="Module">Relation.Binary.Consequences</a>
+
+<a id="619" class="Comment">------------------------------------------------------------------------</a>
+<a id="692" class="Comment">-- Strict total orders can be converted to decidable total orders</a>
+
+<a id="decTotalOrder"></a><a id="759" href="Relation.Binary.Properties.StrictTotalOrder.html#759" class="Function">decTotalOrder</a> <a id="773" class="Symbol">:</a> <a id="775" href="Relation.Binary.html#9333" class="Record">DecTotalOrder</a> <a id="789" class="Symbol">_</a> <a id="791" class="Symbol">_</a> <a id="793" class="Symbol">_</a>
+<a id="795" href="Relation.Binary.Properties.StrictTotalOrder.html#759" class="Function">decTotalOrder</a> <a id="809" class="Symbol">=</a> <a id="811" class="Keyword">record</a>
+  <a id="820" class="Symbol">{</a> <a id="822" href="Relation.Binary.html#9519" class="Field">isDecTotalOrder</a> <a id="838" class="Symbol">=</a> <a id="840" href="Relation.Binary.Construct.StrictToNonStrict.html#4643" class="Function">isDecTotalOrder</a> <a id="856" href="Relation.Binary.html#11691" class="Field">isStrictTotalOrder</a>
+  <a id="877" class="Symbol">}</a>
+
+<a id="880" class="Keyword">open</a> <a id="885" href="Relation.Binary.html#9333" class="Module">DecTotalOrder</a> <a id="899" href="Relation.Binary.Properties.StrictTotalOrder.html#759" class="Function">decTotalOrder</a> <a id="913" class="Keyword">public</a>
+</pre></body></html>

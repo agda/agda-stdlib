@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Relation.Nullary.Implication</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Implications of nullary relations</a>
+<a id="143" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="217" class="Symbol">{-#</a> <a id="221" class="Keyword">OPTIONS</a> <a id="229" class="Pragma">--without-K</a> <a id="241" class="Pragma">--safe</a> <a id="248" class="Symbol">#-}</a>
+
+<a id="253" class="Keyword">module</a> <a id="260" href="Relation.Nullary.Implication.html" class="Module">Relation.Nullary.Implication</a> <a id="289" class="Keyword">where</a>
+
+<a id="296" class="Keyword">open</a> <a id="301" class="Keyword">import</a> <a id="308" href="Data.Empty.html" class="Module">Data.Empty</a>
+<a id="319" class="Keyword">open</a> <a id="324" class="Keyword">import</a> <a id="331" href="Relation.Nullary.html" class="Module">Relation.Nullary</a>
+<a id="348" class="Keyword">open</a> <a id="353" class="Keyword">import</a> <a id="360" href="Level.html" class="Module">Level</a>
+
+<a id="367" class="Keyword">private</a>
+  <a id="377" class="Keyword">variable</a>
+    <a id="390" href="Relation.Nullary.Implication.html#390" class="Generalizable">p</a> <a id="392" href="Relation.Nullary.Implication.html#392" class="Generalizable">q</a> <a id="394" class="Symbol">:</a> <a id="396" href="Agda.Primitive.html#408" class="Postulate">Level</a>
+    <a id="406" href="Relation.Nullary.Implication.html#406" class="Generalizable">P</a> <a id="408" class="Symbol">:</a> <a id="410" class="PrimitiveType">Set</a> <a id="414" href="Relation.Nullary.Implication.html#390" class="Generalizable">p</a>
+    <a id="420" href="Relation.Nullary.Implication.html#420" class="Generalizable">Q</a> <a id="422" class="Symbol">:</a> <a id="424" class="PrimitiveType">Set</a> <a id="428" href="Relation.Nullary.Implication.html#392" class="Generalizable">q</a>
+
+<a id="431" class="Comment">------------------------------------------------------------------------</a>
+<a id="504" class="Comment">-- Some properties which are preserved by _→_.</a>
+
+<a id="552" class="Keyword">infixr</a> <a id="559" class="Number">2</a> <a id="561" href="Relation.Nullary.Implication.html#570" class="Function Operator">_→-dec_</a>
+
+<a id="_→-dec_"></a><a id="570" href="Relation.Nullary.Implication.html#570" class="Function Operator">_→-dec_</a> <a id="578" class="Symbol">:</a> <a id="580" href="Relation.Nullary.html#605" class="Datatype">Dec</a> <a id="584" href="Relation.Nullary.Implication.html#406" class="Generalizable">P</a> <a id="586" class="Symbol">→</a> <a id="588" href="Relation.Nullary.html#605" class="Datatype">Dec</a> <a id="592" href="Relation.Nullary.Implication.html#420" class="Generalizable">Q</a> <a id="594" class="Symbol">→</a> <a id="596" href="Relation.Nullary.html#605" class="Datatype">Dec</a> <a id="600" class="Symbol">(</a><a id="601" href="Relation.Nullary.Implication.html#406" class="Generalizable">P</a> <a id="603" class="Symbol">→</a> <a id="605" href="Relation.Nullary.Implication.html#420" class="Generalizable">Q</a><a id="606" class="Symbol">)</a>
+<a id="608" href="Relation.Nullary.html#641" class="InductiveConstructor">yes</a> <a id="612" href="Relation.Nullary.Implication.html#612" class="Bound">p</a> <a id="614" href="Relation.Nullary.Implication.html#570" class="Function Operator">→-dec</a> <a id="620" href="Relation.Nullary.html#668" class="InductiveConstructor">no</a> <a id="623" href="Relation.Nullary.Implication.html#623" class="Bound">¬q</a> <a id="626" class="Symbol">=</a> <a id="628" href="Relation.Nullary.html#668" class="InductiveConstructor">no</a>  <a id="632" class="Symbol">(λ</a> <a id="635" href="Relation.Nullary.Implication.html#635" class="Bound">f</a> <a id="637" class="Symbol">→</a> <a id="639" href="Relation.Nullary.Implication.html#623" class="Bound">¬q</a> <a id="642" class="Symbol">(</a><a id="643" href="Relation.Nullary.Implication.html#635" class="Bound">f</a> <a id="645" href="Relation.Nullary.Implication.html#612" class="Bound">p</a><a id="646" class="Symbol">))</a>
+<a id="649" href="Relation.Nullary.html#641" class="InductiveConstructor">yes</a> <a id="653" href="Relation.Nullary.Implication.html#653" class="Bound">p</a> <a id="655" href="Relation.Nullary.Implication.html#570" class="Function Operator">→-dec</a> <a id="661" href="Relation.Nullary.html#641" class="InductiveConstructor">yes</a> <a id="665" href="Relation.Nullary.Implication.html#665" class="Bound">q</a> <a id="667" class="Symbol">=</a> <a id="669" href="Relation.Nullary.html#641" class="InductiveConstructor">yes</a> <a id="673" class="Symbol">(λ</a> <a id="676" href="Relation.Nullary.Implication.html#676" class="Bound">_</a> <a id="678" class="Symbol">→</a> <a id="680" href="Relation.Nullary.Implication.html#665" class="Bound">q</a><a id="681" class="Symbol">)</a>
+<a id="683" href="Relation.Nullary.html#668" class="InductiveConstructor">no</a> <a id="686" href="Relation.Nullary.Implication.html#686" class="Bound">¬p</a> <a id="689" href="Relation.Nullary.Implication.html#570" class="Function Operator">→-dec</a> <a id="695" class="Symbol">_</a>     <a id="701" class="Symbol">=</a> <a id="703" href="Relation.Nullary.html#641" class="InductiveConstructor">yes</a> <a id="707" class="Symbol">(λ</a> <a id="710" href="Relation.Nullary.Implication.html#710" class="Bound">p</a> <a id="712" class="Symbol">→</a> <a id="714" href="Data.Empty.html#294" class="Function">⊥-elim</a> <a id="721" class="Symbol">(</a><a id="722" href="Relation.Nullary.Implication.html#686" class="Bound">¬p</a> <a id="725" href="Relation.Nullary.Implication.html#710" class="Bound">p</a><a id="726" class="Symbol">))</a>
+</pre></body></html>

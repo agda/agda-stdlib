@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>README.Nat</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Some examples showing where the natural numbers and some related</a>
+<a id="174" class="Comment">-- operations and properties are defined, and how they can be used</a>
+<a id="241" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="315" class="Keyword">module</a> <a id="322" href="README.Nat.html" class="Module">README.Nat</a> <a id="333" class="Keyword">where</a>
+
+<a id="340" class="Comment">-- The natural numbers and various arithmetic operations are defined</a>
+<a id="409" class="Comment">-- in Data.Nat.</a>
+
+<a id="426" class="Keyword">open</a> <a id="431" class="Keyword">import</a> <a id="438" href="Data.Nat.html" class="Module">Data.Nat</a>
+
+<a id="ex₁"></a><a id="448" href="README.Nat.html#448" class="Function">ex₁</a> <a id="452" class="Symbol">:</a> <a id="454" href="Agda.Builtin.Nat.html#97" class="Datatype">ℕ</a>
+<a id="456" href="README.Nat.html#448" class="Function">ex₁</a> <a id="460" class="Symbol">=</a> <a id="462" class="Number">1</a> <a id="464" href="Agda.Builtin.Nat.html#230" class="Primitive Operator">+</a> <a id="466" class="Number">3</a>
+
+<a id="469" class="Comment">-- Propositional equality and some related properties can be found</a>
+<a id="536" class="Comment">-- in Relation.Binary.PropositionalEquality.</a>
+
+<a id="582" class="Keyword">open</a> <a id="587" class="Keyword">import</a> <a id="594" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a>
+
+<a id="ex₂"></a><a id="633" href="README.Nat.html#633" class="Function">ex₂</a> <a id="637" class="Symbol">:</a> <a id="639" class="Number">3</a> <a id="641" href="Agda.Builtin.Nat.html#230" class="Primitive Operator">+</a> <a id="643" class="Number">5</a> <a id="645" href="Agda.Builtin.Equality.html#83" class="Datatype Operator">≡</a> <a id="647" class="Number">2</a> <a id="649" href="Agda.Builtin.Nat.html#433" class="Primitive Operator">*</a> <a id="651" class="Number">4</a>
+<a id="653" href="README.Nat.html#633" class="Function">ex₂</a> <a id="657" class="Symbol">=</a> <a id="659" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor">refl</a>
+
+<a id="665" class="Comment">-- Data.Nat.Properties contains a number of properties about natural</a>
+<a id="734" class="Comment">-- numbers.</a>
+
+<a id="747" class="Keyword">import</a> <a id="754" href="Data.Nat.Properties.html" class="Module">Data.Nat.Properties</a> <a id="774" class="Symbol">as</a> <a id="777" class="Module">Nat</a>
+
+<a id="ex₃"></a><a id="782" href="README.Nat.html#782" class="Function">ex₃</a> <a id="786" class="Symbol">:</a> <a id="788" class="Symbol">∀</a> <a id="790" href="README.Nat.html#790" class="Bound">m</a> <a id="792" href="README.Nat.html#792" class="Bound">n</a> <a id="794" class="Symbol">→</a> <a id="796" href="README.Nat.html#790" class="Bound">m</a> <a id="798" href="Agda.Builtin.Nat.html#433" class="Primitive Operator">*</a> <a id="800" href="README.Nat.html#792" class="Bound">n</a> <a id="802" href="Agda.Builtin.Equality.html#83" class="Datatype Operator">≡</a> <a id="804" href="README.Nat.html#792" class="Bound">n</a> <a id="806" href="Agda.Builtin.Nat.html#433" class="Primitive Operator">*</a> <a id="808" href="README.Nat.html#790" class="Bound">m</a>
+<a id="810" href="README.Nat.html#782" class="Function">ex₃</a> <a id="814" href="README.Nat.html#814" class="Bound">m</a> <a id="816" href="README.Nat.html#816" class="Bound">n</a> <a id="818" class="Symbol">=</a> <a id="820" href="Data.Nat.Properties.html#14807" class="Function">Nat.*-comm</a> <a id="831" href="README.Nat.html#814" class="Bound">m</a> <a id="833" href="README.Nat.html#816" class="Bound">n</a>
+
+<a id="836" class="Comment">-- The module ≡-Reasoning in Relation.Binary.PropositionalEquality</a>
+<a id="903" class="Comment">-- provides some combinators for equational reasoning.</a>
+
+<a id="959" class="Keyword">open</a> <a id="964" href="Relation.Binary.PropositionalEquality.html#3975" class="Module">≡-Reasoning</a>
+
+<a id="ex₄"></a><a id="977" href="README.Nat.html#977" class="Function">ex₄</a> <a id="981" class="Symbol">:</a> <a id="983" class="Symbol">∀</a> <a id="985" href="README.Nat.html#985" class="Bound">m</a> <a id="987" href="README.Nat.html#987" class="Bound">n</a> <a id="989" class="Symbol">→</a> <a id="991" href="README.Nat.html#985" class="Bound">m</a> <a id="993" href="Agda.Builtin.Nat.html#433" class="Primitive Operator">*</a> <a id="995" class="Symbol">(</a><a id="996" href="README.Nat.html#987" class="Bound">n</a> <a id="998" href="Agda.Builtin.Nat.html#230" class="Primitive Operator">+</a> <a id="1000" class="Number">0</a><a id="1001" class="Symbol">)</a> <a id="1003" href="Agda.Builtin.Equality.html#83" class="Datatype Operator">≡</a> <a id="1005" href="README.Nat.html#987" class="Bound">n</a> <a id="1007" href="Agda.Builtin.Nat.html#433" class="Primitive Operator">*</a> <a id="1009" href="README.Nat.html#985" class="Bound">m</a>
+<a id="1011" href="README.Nat.html#977" class="Function">ex₄</a> <a id="1015" href="README.Nat.html#1015" class="Bound">m</a> <a id="1017" href="README.Nat.html#1017" class="Bound">n</a> <a id="1019" class="Symbol">=</a> <a id="1021" href="Relation.Binary.PropositionalEquality.html#4076" class="Function Operator">begin</a>
+  <a id="1029" href="README.Nat.html#1015" class="Bound">m</a> <a id="1031" href="Agda.Builtin.Nat.html#433" class="Primitive Operator">*</a> <a id="1033" class="Symbol">(</a><a id="1034" href="README.Nat.html#1017" class="Bound">n</a> <a id="1036" href="Agda.Builtin.Nat.html#230" class="Primitive Operator">+</a> <a id="1038" class="Number">0</a><a id="1039" class="Symbol">)</a>  <a id="1042" href="Relation.Binary.PropositionalEquality.html#4193" class="Function Operator">≡⟨</a> <a id="1045" href="Relation.Binary.PropositionalEquality.html#1170" class="Function">cong</a> <a id="1050" class="Symbol">(</a><a id="1051" href="Agda.Builtin.Nat.html#433" class="Primitive Operator">_*_</a> <a id="1055" href="README.Nat.html#1015" class="Bound">m</a><a id="1056" class="Symbol">)</a> <a id="1058" class="Symbol">(</a><a id="1059" href="Data.Nat.Properties.html#9531" class="Function">Nat.+-identityʳ</a> <a id="1075" href="README.Nat.html#1017" class="Bound">n</a><a id="1076" class="Symbol">)</a> <a id="1078" href="Relation.Binary.PropositionalEquality.html#4193" class="Function Operator">⟩</a>
+  <a id="1082" href="README.Nat.html#1015" class="Bound">m</a> <a id="1084" href="Agda.Builtin.Nat.html#433" class="Primitive Operator">*</a> <a id="1086" href="README.Nat.html#1017" class="Bound">n</a>        <a id="1095" href="Relation.Binary.PropositionalEquality.html#4193" class="Function Operator">≡⟨</a> <a id="1098" href="Data.Nat.Properties.html#14807" class="Function">Nat.*-comm</a> <a id="1109" href="README.Nat.html#1015" class="Bound">m</a> <a id="1111" href="README.Nat.html#1017" class="Bound">n</a> <a id="1113" href="Relation.Binary.PropositionalEquality.html#4193" class="Function Operator">⟩</a>
+  <a id="1117" href="README.Nat.html#1017" class="Bound">n</a> <a id="1119" href="Agda.Builtin.Nat.html#433" class="Primitive Operator">*</a> <a id="1121" href="README.Nat.html#1015" class="Bound">m</a>        <a id="1130" href="Relation.Binary.PropositionalEquality.html#4374" class="Function Operator">∎</a>
+
+<a id="1133" class="Comment">-- The module SemiringSolver in Data.Nat.Solver contains a solver</a>
+<a id="1199" class="Comment">-- for natural number equalities involving variables, constants, _+_</a>
+<a id="1268" class="Comment">-- and _*_.</a>
+
+<a id="1281" class="Keyword">open</a> <a id="1286" class="Keyword">import</a> <a id="1293" href="Data.Nat.Solver.html" class="Module">Data.Nat.Solver</a> <a id="1309" class="Keyword">using</a> <a id="1315" class="Symbol">(</a><a id="1316" class="Keyword">module</a> <a id="1323" href="Data.Nat.Solver.html#655" class="Module">+-*-Solver</a><a id="1333" class="Symbol">)</a>
+<a id="1335" class="Keyword">open</a> <a id="1340" href="Data.Nat.Solver.html#655" class="Module">+-*-Solver</a>
+
+<a id="ex₅"></a><a id="1352" href="README.Nat.html#1352" class="Function">ex₅</a> <a id="1356" class="Symbol">:</a> <a id="1358" class="Symbol">∀</a> <a id="1360" href="README.Nat.html#1360" class="Bound">m</a> <a id="1362" href="README.Nat.html#1362" class="Bound">n</a> <a id="1364" class="Symbol">→</a> <a id="1366" href="README.Nat.html#1360" class="Bound">m</a> <a id="1368" href="Agda.Builtin.Nat.html#433" class="Primitive Operator">*</a> <a id="1370" class="Symbol">(</a><a id="1371" href="README.Nat.html#1362" class="Bound">n</a> <a id="1373" href="Agda.Builtin.Nat.html#230" class="Primitive Operator">+</a> <a id="1375" class="Number">0</a><a id="1376" class="Symbol">)</a> <a id="1378" href="Agda.Builtin.Equality.html#83" class="Datatype Operator">≡</a> <a id="1380" href="README.Nat.html#1362" class="Bound">n</a> <a id="1382" href="Agda.Builtin.Nat.html#433" class="Primitive Operator">*</a> <a id="1384" href="README.Nat.html#1360" class="Bound">m</a>
+<a id="1386" href="README.Nat.html#1352" class="Function">ex₅</a> <a id="1390" class="Symbol">=</a> <a id="1392" href="Relation.Binary.Reflection.html#2382" class="Function">solve</a> <a id="1398" class="Number">2</a> <a id="1400" class="Symbol">(λ</a> <a id="1403" href="README.Nat.html#1403" class="Bound">m</a> <a id="1405" href="README.Nat.html#1405" class="Bound">n</a> <a id="1407" class="Symbol">→</a> <a id="1409" href="README.Nat.html#1403" class="Bound">m</a> <a id="1411" href="Algebra.Solver.Ring.html#2365" class="Function Operator">:*</a> <a id="1414" class="Symbol">(</a><a id="1415" href="README.Nat.html#1405" class="Bound">n</a> <a id="1417" href="Algebra.Solver.Ring.html#2292" class="Function Operator">:+</a> <a id="1420" href="Algebra.Solver.Ring.html#2098" class="InductiveConstructor">con</a> <a id="1424" class="Number">0</a><a id="1425" class="Symbol">)</a>  <a id="1428" href="Relation.Binary.Reflection.html#3491" class="Function Operator">:=</a>  <a id="1432" href="README.Nat.html#1405" class="Bound">n</a> <a id="1434" href="Algebra.Solver.Ring.html#2365" class="Function Operator">:*</a> <a id="1437" href="README.Nat.html#1403" class="Bound">m</a><a id="1438" class="Symbol">)</a> <a id="1440" href="Agda.Builtin.Equality.html#140" class="InductiveConstructor">refl</a>
+</pre></body></html>

@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Foreign.Haskell.Maybe</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Which Maybe type which calls out to Haskell via the FFI</a>
+<a id="165" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="239" class="Symbol">{-#</a> <a id="243" class="Keyword">OPTIONS</a> <a id="251" class="Pragma">--without-K</a> <a id="263" class="Symbol">#-}</a>
+
+<a id="268" class="Keyword">module</a> <a id="275" href="Foreign.Haskell.Maybe.html" class="Module">Foreign.Haskell.Maybe</a> <a id="297" class="Keyword">where</a>
+
+<a id="304" class="Keyword">open</a> <a id="309" class="Keyword">import</a> <a id="316" href="Level.html" class="Module">Level</a>
+<a id="322" class="Keyword">open</a> <a id="327" class="Keyword">import</a> <a id="334" href="Data.Maybe.Base.html" class="Module">Data.Maybe.Base</a> <a id="350" class="Symbol">as</a> <a id="353" class="Module">Data</a> <a id="358" class="Keyword">using</a> <a id="364" class="Symbol">(</a><a id="365" href="Data.Maybe.Base.html#829" class="InductiveConstructor">just</a><a id="369" class="Symbol">;</a> <a id="371" href="Data.Maybe.Base.html#859" class="InductiveConstructor">nothing</a><a id="378" class="Symbol">)</a>
+
+<a id="381" class="Keyword">private</a>
+  <a id="391" class="Keyword">variable</a>
+    <a id="404" href="Foreign.Haskell.Maybe.html#404" class="Generalizable">a</a> <a id="406" class="Symbol">:</a> <a id="408" href="Agda.Primitive.html#408" class="Postulate">Level</a>
+    <a id="418" href="Foreign.Haskell.Maybe.html#418" class="Generalizable">A</a> <a id="420" class="Symbol">:</a> <a id="422" class="PrimitiveType">Set</a> <a id="426" href="Foreign.Haskell.Maybe.html#404" class="Generalizable">a</a>
+
+<a id="429" class="Comment">------------------------------------------------------------------------</a>
+<a id="502" class="Comment">-- Definition</a>
+
+<a id="517" class="Keyword">data</a> <a id="Maybe"></a><a id="522" href="Foreign.Haskell.Maybe.html#522" class="Datatype">Maybe</a> <a id="528" class="Symbol">(</a><a id="529" href="Foreign.Haskell.Maybe.html#529" class="Bound">A</a> <a id="531" class="Symbol">:</a> <a id="533" class="PrimitiveType">Set</a> <a id="537" href="Foreign.Haskell.Maybe.html#404" class="Generalizable">a</a><a id="538" class="Symbol">)</a> <a id="540" class="Symbol">:</a> <a id="542" class="PrimitiveType">Set</a> <a id="546" href="Foreign.Haskell.Maybe.html#537" class="Bound">a</a> <a id="548" class="Keyword">where</a>
+  <a id="Maybe.just"></a><a id="556" href="Foreign.Haskell.Maybe.html#556" class="InductiveConstructor">just</a> <a id="561" class="Symbol">:</a> <a id="563" href="Foreign.Haskell.Maybe.html#529" class="Bound">A</a> <a id="565" class="Symbol">→</a> <a id="567" href="Foreign.Haskell.Maybe.html#522" class="Datatype">Maybe</a> <a id="573" href="Foreign.Haskell.Maybe.html#529" class="Bound">A</a>
+  <a id="Maybe.nothing"></a><a id="577" href="Foreign.Haskell.Maybe.html#577" class="InductiveConstructor">nothing</a> <a id="585" class="Symbol">:</a> <a id="587" href="Foreign.Haskell.Maybe.html#522" class="Datatype">Maybe</a> <a id="593" href="Foreign.Haskell.Maybe.html#529" class="Bound">A</a>
+
+<a id="596" class="Symbol">{-#</a> <a id="600" class="Keyword">FOREIGN</a> <a id="608" class="Pragma">GHC</a> <a id="612" class="Pragma">type</a> <a id="617" class="Pragma">AgdaMaybe</a> <a id="627" class="Pragma">l</a> <a id="629" class="Pragma">a</a> <a id="631" class="Pragma">=</a> <a id="633" class="Pragma">Maybe</a> <a id="639" class="Pragma">a</a> <a id="641" class="Symbol">#-}</a>
+<a id="645" class="Symbol">{-#</a> <a id="649" class="Keyword">COMPILE</a> <a id="657" class="Pragma">GHC</a> <a id="661" href="Foreign.Haskell.Maybe.html#522" class="Datatype">Maybe</a> <a id="667" class="Pragma">=</a> <a id="669" class="Pragma">data</a> <a id="674" class="Pragma">AgdaMaybe</a> <a id="684" class="Pragma">(Just</a> <a id="690" class="Pragma">|</a> <a id="692" class="Pragma">Nothing)</a> <a id="701" class="Symbol">#-}</a>
+
+<a id="706" class="Comment">------------------------------------------------------------------------</a>
+<a id="779" class="Comment">-- Conversion</a>
+
+<a id="toForeign"></a><a id="794" href="Foreign.Haskell.Maybe.html#794" class="Function">toForeign</a> <a id="804" class="Symbol">:</a> <a id="806" href="Data.Maybe.Base.html#795" class="Datatype">Data.Maybe</a> <a id="817" href="Foreign.Haskell.Maybe.html#418" class="Generalizable">A</a> <a id="819" class="Symbol">→</a> <a id="821" href="Foreign.Haskell.Maybe.html#522" class="Datatype">Maybe</a> <a id="827" href="Foreign.Haskell.Maybe.html#418" class="Generalizable">A</a>
+<a id="829" href="Foreign.Haskell.Maybe.html#794" class="Function">toForeign</a> <a id="839" class="Symbol">(</a><a id="840" href="Data.Maybe.Base.html#829" class="InductiveConstructor">just</a> <a id="845" href="Foreign.Haskell.Maybe.html#845" class="Bound">x</a><a id="846" class="Symbol">)</a> <a id="848" class="Symbol">=</a> <a id="850" href="Foreign.Haskell.Maybe.html#556" class="InductiveConstructor">just</a> <a id="855" href="Foreign.Haskell.Maybe.html#845" class="Bound">x</a>
+<a id="857" href="Foreign.Haskell.Maybe.html#794" class="Function">toForeign</a> <a id="867" href="Data.Maybe.Base.html#859" class="InductiveConstructor">nothing</a> <a id="875" class="Symbol">=</a> <a id="877" href="Foreign.Haskell.Maybe.html#577" class="InductiveConstructor">nothing</a>
+
+<a id="fromForeign"></a><a id="886" href="Foreign.Haskell.Maybe.html#886" class="Function">fromForeign</a> <a id="898" class="Symbol">:</a> <a id="900" href="Foreign.Haskell.Maybe.html#522" class="Datatype">Maybe</a> <a id="906" href="Foreign.Haskell.Maybe.html#418" class="Generalizable">A</a> <a id="908" class="Symbol">→</a> <a id="910" href="Data.Maybe.Base.html#795" class="Datatype">Data.Maybe</a> <a id="921" href="Foreign.Haskell.Maybe.html#418" class="Generalizable">A</a>
+<a id="923" href="Foreign.Haskell.Maybe.html#886" class="Function">fromForeign</a> <a id="935" class="Symbol">(</a><a id="936" href="Foreign.Haskell.Maybe.html#556" class="InductiveConstructor">just</a> <a id="941" href="Foreign.Haskell.Maybe.html#941" class="Bound">x</a><a id="942" class="Symbol">)</a> <a id="944" class="Symbol">=</a> <a id="946" href="Data.Maybe.Base.html#829" class="InductiveConstructor">just</a> <a id="951" href="Foreign.Haskell.Maybe.html#941" class="Bound">x</a>
+<a id="953" href="Foreign.Haskell.Maybe.html#886" class="Function">fromForeign</a> <a id="965" href="Foreign.Haskell.Maybe.html#577" class="InductiveConstructor">nothing</a> <a id="973" class="Symbol">=</a> <a id="975" href="Data.Maybe.Base.html#859" class="InductiveConstructor">nothing</a>
+</pre></body></html>

@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Agda.Builtin.Sigma</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Symbol">{-#</a> <a id="5" class="Keyword">OPTIONS</a> <a id="13" class="Pragma">--without-K</a> <a id="25" class="Pragma">--safe</a> <a id="32" class="Pragma">--no-sized-types</a> <a id="49" class="Pragma">--no-guardedness</a> <a id="66" class="Symbol">#-}</a>
+
+<a id="71" class="Keyword">module</a> <a id="78" href="Agda.Builtin.Sigma.html" class="Module">Agda.Builtin.Sigma</a> <a id="97" class="Keyword">where</a>
+
+<a id="104" class="Keyword">open</a> <a id="109" class="Keyword">import</a> <a id="116" href="Agda.Primitive.html" class="Module">Agda.Primitive</a>
+
+<a id="132" class="Keyword">record</a> <a id="Σ"></a><a id="139" href="Agda.Builtin.Sigma.html#139" class="Record">Σ</a> <a id="141" class="Symbol">{</a><a id="142" href="Agda.Builtin.Sigma.html#142" class="Bound">a</a> <a id="144" href="Agda.Builtin.Sigma.html#144" class="Bound">b</a><a id="145" class="Symbol">}</a> <a id="147" class="Symbol">(</a><a id="148" href="Agda.Builtin.Sigma.html#148" class="Bound">A</a> <a id="150" class="Symbol">:</a> <a id="152" class="PrimitiveType">Set</a> <a id="156" href="Agda.Builtin.Sigma.html#142" class="Bound">a</a><a id="157" class="Symbol">)</a> <a id="159" class="Symbol">(</a><a id="160" href="Agda.Builtin.Sigma.html#160" class="Bound">B</a> <a id="162" class="Symbol">:</a> <a id="164" href="Agda.Builtin.Sigma.html#148" class="Bound">A</a> <a id="166" class="Symbol">→</a> <a id="168" class="PrimitiveType">Set</a> <a id="172" href="Agda.Builtin.Sigma.html#144" class="Bound">b</a><a id="173" class="Symbol">)</a> <a id="175" class="Symbol">:</a> <a id="177" class="PrimitiveType">Set</a> <a id="181" class="Symbol">(</a><a id="182" href="Agda.Builtin.Sigma.html#142" class="Bound">a</a> <a id="184" href="Agda.Primitive.html#621" class="Primitive Operator">⊔</a> <a id="186" href="Agda.Builtin.Sigma.html#144" class="Bound">b</a><a id="187" class="Symbol">)</a> <a id="189" class="Keyword">where</a>
+  <a id="197" class="Keyword">constructor</a> <a id="Σ._,_"></a><a id="209" href="Agda.Builtin.Sigma.html#209" class="InductiveConstructor Operator">_,_</a>
+  <a id="215" class="Keyword">field</a>
+    <a id="Σ.fst"></a><a id="225" href="Agda.Builtin.Sigma.html#225" class="Field">fst</a> <a id="229" class="Symbol">:</a> <a id="231" href="Agda.Builtin.Sigma.html#148" class="Bound">A</a>
+    <a id="Σ.snd"></a><a id="237" href="Agda.Builtin.Sigma.html#237" class="Field">snd</a> <a id="241" class="Symbol">:</a> <a id="243" href="Agda.Builtin.Sigma.html#160" class="Bound">B</a> <a id="245" href="Agda.Builtin.Sigma.html#225" class="Field">fst</a>
+
+<a id="250" class="Keyword">open</a> <a id="255" href="Agda.Builtin.Sigma.html#139" class="Module">Σ</a> <a id="257" class="Keyword">public</a>
+
+<a id="265" class="Keyword">infixr</a> <a id="272" class="Number">4</a> <a id="274" href="Agda.Builtin.Sigma.html#209" class="InductiveConstructor Operator">_,_</a>
+
+<a id="279" class="Symbol">{-#</a> <a id="283" class="Keyword">BUILTIN</a> <a id="291" class="Pragma">SIGMA</a> <a id="297" href="Agda.Builtin.Sigma.html#139" class="Record">Σ</a> <a id="299" class="Symbol">#-}</a>
+</pre></body></html>

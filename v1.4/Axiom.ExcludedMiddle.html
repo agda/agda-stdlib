@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Axiom.ExcludedMiddle</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Results concerning the excluded middle axiom.</a>
+<a id="155" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="229" class="Symbol">{-#</a> <a id="233" class="Keyword">OPTIONS</a> <a id="241" class="Pragma">--without-K</a> <a id="253" class="Pragma">--safe</a> <a id="260" class="Symbol">#-}</a>
+
+<a id="265" class="Keyword">module</a> <a id="272" href="Axiom.ExcludedMiddle.html" class="Module">Axiom.ExcludedMiddle</a> <a id="293" class="Keyword">where</a>
+
+<a id="300" class="Keyword">open</a> <a id="305" class="Keyword">import</a> <a id="312" href="Level.html" class="Module">Level</a>
+<a id="318" class="Keyword">open</a> <a id="323" class="Keyword">import</a> <a id="330" href="Relation.Nullary.html" class="Module">Relation.Nullary</a>
+
+<a id="348" class="Comment">------------------------------------------------------------------------</a>
+<a id="421" class="Comment">-- Definition</a>
+
+<a id="436" class="Comment">-- The classical statement of excluded middle says that every</a>
+<a id="498" class="Comment">-- statement/set is decidable (i.e. it either holds or it doesn&#39;t hold).</a>
+
+<a id="ExcludedMiddle"></a><a id="572" href="Axiom.ExcludedMiddle.html#572" class="Function">ExcludedMiddle</a> <a id="587" class="Symbol">:</a> <a id="589" class="Symbol">(</a><a id="590" href="Axiom.ExcludedMiddle.html#590" class="Bound">ℓ</a> <a id="592" class="Symbol">:</a> <a id="594" href="Agda.Primitive.html#423" class="Postulate">Level</a><a id="599" class="Symbol">)</a> <a id="601" class="Symbol">→</a> <a id="603" class="PrimitiveType">Set</a> <a id="607" class="Symbol">(</a><a id="608" href="Agda.Primitive.html#606" class="Primitive">suc</a> <a id="612" href="Axiom.ExcludedMiddle.html#590" class="Bound">ℓ</a><a id="613" class="Symbol">)</a>
+<a id="615" href="Axiom.ExcludedMiddle.html#572" class="Function">ExcludedMiddle</a> <a id="630" href="Axiom.ExcludedMiddle.html#630" class="Bound">ℓ</a> <a id="632" class="Symbol">=</a> <a id="634" class="Symbol">{</a><a id="635" href="Axiom.ExcludedMiddle.html#635" class="Bound">P</a> <a id="637" class="Symbol">:</a> <a id="639" class="PrimitiveType">Set</a> <a id="643" href="Axiom.ExcludedMiddle.html#630" class="Bound">ℓ</a><a id="644" class="Symbol">}</a> <a id="646" class="Symbol">→</a> <a id="648" href="Relation.Nullary.html#1508" class="Record">Dec</a> <a id="652" href="Axiom.ExcludedMiddle.html#635" class="Bound">P</a>
+</pre></body></html>

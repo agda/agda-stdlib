@@ -1,0 +1,167 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Char.Properties</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Properties of operations on characters</a>
+<a id="148" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="222" class="Symbol">{-#</a> <a id="226" class="Keyword">OPTIONS</a> <a id="234" class="Pragma">--without-K</a> <a id="246" class="Pragma">--safe</a> <a id="253" class="Symbol">#-}</a>
+
+<a id="258" class="Keyword">module</a> <a id="265" href="Data.Char.Properties.html" class="Module">Data.Char.Properties</a> <a id="286" class="Keyword">where</a>
+
+<a id="293" class="Keyword">open</a> <a id="298" class="Keyword">import</a> <a id="305" href="Data.Bool.Base.html" class="Module">Data.Bool.Base</a> <a id="320" class="Keyword">using</a> <a id="326" class="Symbol">(</a><a id="327" href="Agda.Builtin.Bool.html#163" class="Datatype">Bool</a><a id="331" class="Symbol">)</a>
+<a id="333" class="Keyword">open</a> <a id="338" class="Keyword">import</a> <a id="345" href="Data.Char.Base.html" class="Module">Data.Char.Base</a>
+
+<a id="361" class="Keyword">import</a> <a id="368" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a> <a id="382" class="Symbol">as</a> <a id="385" class="Module">ℕ</a>
+<a id="387" class="Keyword">import</a> <a id="394" href="Data.Nat.Properties.html" class="Module">Data.Nat.Properties</a> <a id="414" class="Symbol">as</a> <a id="417" class="Module">ℕₚ</a>
+
+<a id="421" class="Keyword">open</a> <a id="426" class="Keyword">import</a> <a id="433" href="Function.html" class="Module">Function</a>
+<a id="442" class="Keyword">open</a> <a id="447" class="Keyword">import</a> <a id="454" href="Relation.Nullary.html" class="Module">Relation.Nullary</a> <a id="471" class="Keyword">using</a> <a id="477" class="Symbol">(</a><a id="478" href="Relation.Nullary.html#1645" class="InductiveConstructor">yes</a><a id="481" class="Symbol">;</a> <a id="483" href="Relation.Nullary.html#1682" class="InductiveConstructor">no</a><a id="485" class="Symbol">)</a>
+<a id="487" class="Keyword">open</a> <a id="492" class="Keyword">import</a> <a id="499" href="Relation.Nullary.Decidable.html" class="Module">Relation.Nullary.Decidable</a> <a id="526" class="Keyword">using</a> <a id="532" class="Symbol">(</a><a id="533" href="Relation.Nullary.Decidable.Core.html#3636" class="Function">map′</a><a id="537" class="Symbol">;</a> <a id="539" href="Relation.Nullary.Decidable.Core.html#1027" class="Function">isYes</a><a id="544" class="Symbol">)</a>
+<a id="546" class="Keyword">open</a> <a id="551" class="Keyword">import</a> <a id="558" href="Relation.Binary.html" class="Module">Relation.Binary</a>
+<a id="574" class="Keyword">open</a> <a id="579" class="Keyword">import</a> <a id="586" href="Relation.Binary.PropositionalEquality.Core.html" class="Module">Relation.Binary.PropositionalEquality.Core</a>
+<a id="629" class="Keyword">import</a> <a id="636" href="Relation.Binary.Construct.On.html" class="Module">Relation.Binary.Construct.On</a> <a id="665" class="Symbol">as</a> <a id="668" class="Module">On</a>
+<a id="671" class="Keyword">import</a> <a id="678" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a> <a id="716" class="Symbol">as</a> <a id="719" class="Module">PropEq</a>
+
+<a id="727" class="Comment">------------------------------------------------------------------------</a>
+<a id="800" class="Comment">-- Primitive properties</a>
+
+<a id="825" class="Keyword">open</a> <a id="830" class="Keyword">import</a> <a id="837" href="Agda.Builtin.Char.Properties.html" class="Module">Agda.Builtin.Char.Properties</a>
+  <a id="868" class="Keyword">renaming</a> <a id="877" class="Symbol">(</a> <a id="879" href="Agda.Builtin.Char.Properties.html#219" class="Primitive">primCharToNatInjective</a> <a id="902" class="Symbol">to</a> <a id="Properties.primCharToNatInjective"></a><a id="905" href="Data.Char.Properties.html#905" class="Primitive">toℕ-injective</a><a id="918" class="Symbol">)</a>
+  <a id="922" class="Keyword">public</a>
+
+<a id="930" class="Comment">------------------------------------------------------------------------</a>
+<a id="1003" class="Comment">-- Properties of _≈_</a>
+
+<a id="≈⇒≡"></a><a id="1025" href="Data.Char.Properties.html#1025" class="Function">≈⇒≡</a> <a id="1029" class="Symbol">:</a> <a id="1031" href="Data.Char.Base.html#1132" class="Function Operator">_≈_</a> <a id="1035" href="Relation.Binary.Core.html#1171" class="Function Operator">⇒</a> <a id="1037" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a>
+<a id="1041" href="Data.Char.Properties.html#1025" class="Function">≈⇒≡</a> <a id="1045" class="Symbol">=</a> <a id="1047" href="Data.Char.Properties.html#905" class="Primitive">toℕ-injective</a> <a id="1061" class="Symbol">_</a> <a id="1063" class="Symbol">_</a>
+
+<a id="≈-reflexive"></a><a id="1066" href="Data.Char.Properties.html#1066" class="Function">≈-reflexive</a> <a id="1078" class="Symbol">:</a> <a id="1080" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a> <a id="1084" href="Relation.Binary.Core.html#1171" class="Function Operator">⇒</a> <a id="1086" href="Data.Char.Base.html#1132" class="Function Operator">_≈_</a>
+<a id="1090" href="Data.Char.Properties.html#1066" class="Function">≈-reflexive</a> <a id="1102" class="Symbol">=</a> <a id="1104" href="Relation.Binary.PropositionalEquality.Core.html#1131" class="Function">cong</a> <a id="1109" href="Data.Char.Base.html#999" class="Primitive">toℕ</a>
+
+<a id="≈-refl"></a><a id="1114" href="Data.Char.Properties.html#1114" class="Function">≈-refl</a> <a id="1121" class="Symbol">:</a> <a id="1123" href="Relation.Binary.Definitions.html#1339" class="Function">Reflexive</a> <a id="1133" href="Data.Char.Base.html#1132" class="Function Operator">_≈_</a>
+<a id="1137" href="Data.Char.Properties.html#1114" class="Function">≈-refl</a> <a id="1144" class="Symbol">=</a> <a id="1146" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
+
+<a id="≈-sym"></a><a id="1152" href="Data.Char.Properties.html#1152" class="Function">≈-sym</a> <a id="1158" class="Symbol">:</a> <a id="1160" href="Relation.Binary.Definitions.html#1498" class="Function">Symmetric</a> <a id="1170" href="Data.Char.Base.html#1132" class="Function Operator">_≈_</a>
+<a id="1174" href="Data.Char.Properties.html#1152" class="Function">≈-sym</a> <a id="1180" class="Symbol">=</a> <a id="1182" href="Relation.Binary.PropositionalEquality.Core.html#980" class="Function">sym</a>
+
+<a id="≈-trans"></a><a id="1187" href="Data.Char.Properties.html#1187" class="Function">≈-trans</a> <a id="1195" class="Symbol">:</a> <a id="1197" href="Relation.Binary.Definitions.html#1866" class="Function">Transitive</a> <a id="1208" href="Data.Char.Base.html#1132" class="Function Operator">_≈_</a>
+<a id="1212" href="Data.Char.Properties.html#1187" class="Function">≈-trans</a> <a id="1220" class="Symbol">=</a> <a id="1222" href="Relation.Binary.PropositionalEquality.Core.html#1025" class="Function">trans</a>
+
+<a id="≈-subst"></a><a id="1229" href="Data.Char.Properties.html#1229" class="Function">≈-subst</a> <a id="1237" class="Symbol">:</a> <a id="1239" class="Symbol">∀</a> <a id="1241" class="Symbol">{</a><a id="1242" href="Data.Char.Properties.html#1242" class="Bound">ℓ</a><a id="1243" class="Symbol">}</a> <a id="1245" class="Symbol">→</a> <a id="1247" href="Relation.Binary.Definitions.html#4369" class="Function">Substitutive</a> <a id="1260" href="Data.Char.Base.html#1132" class="Function Operator">_≈_</a> <a id="1264" href="Data.Char.Properties.html#1242" class="Bound">ℓ</a>
+<a id="1266" href="Data.Char.Properties.html#1229" class="Function">≈-subst</a> <a id="1274" href="Data.Char.Properties.html#1274" class="Bound">P</a> <a id="1276" href="Data.Char.Properties.html#1276" class="Bound">x≈y</a> <a id="1280" href="Data.Char.Properties.html#1280" class="Bound">p</a> <a id="1282" class="Symbol">=</a> <a id="1284" href="Relation.Binary.PropositionalEquality.Core.html#1076" class="Function">subst</a> <a id="1290" href="Data.Char.Properties.html#1274" class="Bound">P</a> <a id="1292" class="Symbol">(</a><a id="1293" href="Data.Char.Properties.html#1025" class="Function">≈⇒≡</a> <a id="1297" href="Data.Char.Properties.html#1276" class="Bound">x≈y</a><a id="1300" class="Symbol">)</a> <a id="1302" href="Data.Char.Properties.html#1280" class="Bound">p</a>
+
+<a id="1305" class="Keyword">infix</a> <a id="1311" class="Number">4</a> <a id="1313" href="Data.Char.Properties.html#1318" class="Function Operator">_≈?_</a>
+<a id="_≈?_"></a><a id="1318" href="Data.Char.Properties.html#1318" class="Function Operator">_≈?_</a> <a id="1323" class="Symbol">:</a> <a id="1325" href="Relation.Binary.Definitions.html#4575" class="Function">Decidable</a> <a id="1335" href="Data.Char.Base.html#1132" class="Function Operator">_≈_</a>
+<a id="1339" href="Data.Char.Properties.html#1339" class="Bound">x</a> <a id="1341" href="Data.Char.Properties.html#1318" class="Function Operator">≈?</a> <a id="1344" href="Data.Char.Properties.html#1344" class="Bound">y</a> <a id="1346" class="Symbol">=</a> <a id="1348" href="Data.Char.Base.html#999" class="Primitive">toℕ</a> <a id="1352" href="Data.Char.Properties.html#1339" class="Bound">x</a> <a id="1354" href="Data.Nat.Properties.html#2225" class="Function Operator">ℕₚ.≟</a> <a id="1359" href="Data.Char.Base.html#999" class="Primitive">toℕ</a> <a id="1363" href="Data.Char.Properties.html#1344" class="Bound">y</a>
+
+<a id="≈-isEquivalence"></a><a id="1366" href="Data.Char.Properties.html#1366" class="Function">≈-isEquivalence</a> <a id="1382" class="Symbol">:</a> <a id="1384" href="Relation.Binary.Structures.html#1522" class="Record">IsEquivalence</a> <a id="1398" href="Data.Char.Base.html#1132" class="Function Operator">_≈_</a>
+<a id="1402" href="Data.Char.Properties.html#1366" class="Function">≈-isEquivalence</a> <a id="1418" class="Symbol">=</a> <a id="1420" class="Keyword">record</a>
+  <a id="1429" class="Symbol">{</a> <a id="1431" href="Relation.Binary.Structures.html#1568" class="Field">refl</a>  <a id="1437" class="Symbol">=</a> <a id="1439" class="Symbol">λ</a> <a id="1441" class="Symbol">{</a><a id="1442" href="Data.Char.Properties.html#1442" class="Bound">i</a><a id="1443" class="Symbol">}</a> <a id="1445" class="Symbol">→</a> <a id="1447" href="Data.Char.Properties.html#1114" class="Function">≈-refl</a> <a id="1454" class="Symbol">{</a><a id="1455" href="Data.Char.Properties.html#1442" class="Bound">i</a><a id="1456" class="Symbol">}</a>
+  <a id="1460" class="Symbol">;</a> <a id="1462" href="Relation.Binary.Structures.html#1594" class="Field">sym</a>   <a id="1468" class="Symbol">=</a> <a id="1470" class="Symbol">λ</a> <a id="1472" class="Symbol">{</a><a id="1473" href="Data.Char.Properties.html#1473" class="Bound">i</a> <a id="1475" href="Data.Char.Properties.html#1475" class="Bound">j</a><a id="1476" class="Symbol">}</a> <a id="1478" class="Symbol">→</a> <a id="1480" href="Data.Char.Properties.html#1152" class="Function">≈-sym</a> <a id="1486" class="Symbol">{</a><a id="1487" href="Data.Char.Properties.html#1473" class="Bound">i</a><a id="1488" class="Symbol">}</a> <a id="1490" class="Symbol">{</a><a id="1491" href="Data.Char.Properties.html#1475" class="Bound">j</a><a id="1492" class="Symbol">}</a>
+  <a id="1496" class="Symbol">;</a> <a id="1498" href="Relation.Binary.Structures.html#1620" class="Field">trans</a> <a id="1504" class="Symbol">=</a> <a id="1506" class="Symbol">λ</a> <a id="1508" class="Symbol">{</a><a id="1509" href="Data.Char.Properties.html#1509" class="Bound">i</a> <a id="1511" href="Data.Char.Properties.html#1511" class="Bound">j</a> <a id="1513" href="Data.Char.Properties.html#1513" class="Bound">k</a><a id="1514" class="Symbol">}</a> <a id="1516" class="Symbol">→</a> <a id="1518" href="Data.Char.Properties.html#1187" class="Function">≈-trans</a> <a id="1526" class="Symbol">{</a><a id="1527" href="Data.Char.Properties.html#1509" class="Bound">i</a><a id="1528" class="Symbol">}</a> <a id="1530" class="Symbol">{</a><a id="1531" href="Data.Char.Properties.html#1511" class="Bound">j</a><a id="1532" class="Symbol">}</a> <a id="1534" class="Symbol">{</a><a id="1535" href="Data.Char.Properties.html#1513" class="Bound">k</a><a id="1536" class="Symbol">}</a>
+  <a id="1540" class="Symbol">}</a>
+
+<a id="≈-setoid"></a><a id="1543" href="Data.Char.Properties.html#1543" class="Function">≈-setoid</a> <a id="1552" class="Symbol">:</a> <a id="1554" href="Relation.Binary.Bundles.html#995" class="Record">Setoid</a> <a id="1561" class="Symbol">_</a> <a id="1563" class="Symbol">_</a>
+<a id="1565" href="Data.Char.Properties.html#1543" class="Function">≈-setoid</a> <a id="1574" class="Symbol">=</a> <a id="1576" class="Keyword">record</a>
+  <a id="1585" class="Symbol">{</a> <a id="1587" href="Relation.Binary.Bundles.html#1118" class="Field">isEquivalence</a> <a id="1601" class="Symbol">=</a> <a id="1603" href="Data.Char.Properties.html#1366" class="Function">≈-isEquivalence</a>
+  <a id="1621" class="Symbol">}</a>
+
+<a id="≈-isDecEquivalence"></a><a id="1624" href="Data.Char.Properties.html#1624" class="Function">≈-isDecEquivalence</a> <a id="1643" class="Symbol">:</a> <a id="1645" href="Relation.Binary.Structures.html#1824" class="Record">IsDecEquivalence</a> <a id="1662" href="Data.Char.Base.html#1132" class="Function Operator">_≈_</a>
+<a id="1666" href="Data.Char.Properties.html#1624" class="Function">≈-isDecEquivalence</a> <a id="1685" class="Symbol">=</a> <a id="1687" class="Keyword">record</a>
+  <a id="1696" class="Symbol">{</a> <a id="1698" href="Relation.Binary.Structures.html#1887" class="Field">isEquivalence</a> <a id="1712" class="Symbol">=</a> <a id="1714" href="Data.Char.Properties.html#1366" class="Function">≈-isEquivalence</a>
+  <a id="1732" class="Symbol">;</a> <a id="1734" href="Relation.Binary.Structures.html#1921" class="Field Operator">_≟_</a>           <a id="1748" class="Symbol">=</a> <a id="1750" href="Data.Char.Properties.html#1318" class="Function Operator">_≈?_</a>
+  <a id="1757" class="Symbol">}</a>
+
+<a id="≈-decSetoid"></a><a id="1760" href="Data.Char.Properties.html#1760" class="Function">≈-decSetoid</a> <a id="1772" class="Symbol">:</a> <a id="1774" href="Relation.Binary.Bundles.html#1377" class="Record">DecSetoid</a> <a id="1784" class="Symbol">_</a> <a id="1786" class="Symbol">_</a>
+<a id="1788" href="Data.Char.Properties.html#1760" class="Function">≈-decSetoid</a> <a id="1800" class="Symbol">=</a> <a id="1802" class="Keyword">record</a>
+  <a id="1811" class="Symbol">{</a> <a id="1813" href="Relation.Binary.Bundles.html#1509" class="Field">isDecEquivalence</a> <a id="1830" class="Symbol">=</a> <a id="1832" href="Data.Char.Properties.html#1624" class="Function">≈-isDecEquivalence</a>
+  <a id="1853" class="Symbol">}</a>
+
+<a id="1856" class="Comment">------------------------------------------------------------------------</a>
+<a id="1929" class="Comment">-- Properties of _≡_</a>
+
+<a id="1951" class="Keyword">infix</a> <a id="1957" class="Number">4</a> <a id="1959" href="Data.Char.Properties.html#1963" class="Function Operator">_≟_</a>
+<a id="_≟_"></a><a id="1963" href="Data.Char.Properties.html#1963" class="Function Operator">_≟_</a> <a id="1967" class="Symbol">:</a> <a id="1969" href="Relation.Binary.Definitions.html#4575" class="Function">Decidable</a> <a id="1979" class="Symbol">{</a><a id="1980" class="Argument">A</a> <a id="1982" class="Symbol">=</a> <a id="1984" href="Agda.Builtin.Char.html#227" class="Postulate">Char</a><a id="1988" class="Symbol">}</a> <a id="1990" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a>
+<a id="1994" href="Data.Char.Properties.html#1994" class="Bound">x</a> <a id="1996" href="Data.Char.Properties.html#1963" class="Function Operator">≟</a> <a id="1998" href="Data.Char.Properties.html#1998" class="Bound">y</a> <a id="2000" class="Symbol">=</a> <a id="2002" href="Relation.Nullary.Decidable.Core.html#3636" class="Function">map′</a> <a id="2007" href="Data.Char.Properties.html#1025" class="Function">≈⇒≡</a> <a id="2011" href="Data.Char.Properties.html#1066" class="Function">≈-reflexive</a> <a id="2023" class="Symbol">(</a><a id="2024" href="Data.Char.Properties.html#1994" class="Bound">x</a> <a id="2026" href="Data.Char.Properties.html#1318" class="Function Operator">≈?</a> <a id="2029" href="Data.Char.Properties.html#1998" class="Bound">y</a><a id="2030" class="Symbol">)</a>
+
+<a id="≡-setoid"></a><a id="2033" href="Data.Char.Properties.html#2033" class="Function">≡-setoid</a> <a id="2042" class="Symbol">:</a> <a id="2044" href="Relation.Binary.Bundles.html#995" class="Record">Setoid</a> <a id="2051" class="Symbol">_</a> <a id="2053" class="Symbol">_</a>
+<a id="2055" href="Data.Char.Properties.html#2033" class="Function">≡-setoid</a> <a id="2064" class="Symbol">=</a> <a id="2066" href="Relation.Binary.PropositionalEquality.html#2283" class="Function">PropEq.setoid</a> <a id="2080" href="Agda.Builtin.Char.html#227" class="Postulate">Char</a>
+
+<a id="≡-decSetoid"></a><a id="2086" href="Data.Char.Properties.html#2086" class="Function">≡-decSetoid</a> <a id="2098" class="Symbol">:</a> <a id="2100" href="Relation.Binary.Bundles.html#1377" class="Record">DecSetoid</a> <a id="2110" class="Symbol">_</a> <a id="2112" class="Symbol">_</a>
+<a id="2114" href="Data.Char.Properties.html#2086" class="Function">≡-decSetoid</a> <a id="2126" class="Symbol">=</a> <a id="2128" href="Relation.Binary.PropositionalEquality.html#2414" class="Function">PropEq.decSetoid</a> <a id="2145" href="Data.Char.Properties.html#1963" class="Function Operator">_≟_</a>
+
+<a id="2150" class="Comment">------------------------------------------------------------------------</a>
+<a id="2223" class="Comment">-- Boolean equality test.</a>
+<a id="2249" class="Comment">--</a>
+<a id="2252" class="Comment">-- Why is the definition _==_ = primCharEquality not used? One reason</a>
+<a id="2322" class="Comment">-- is that the present definition can sometimes improve type</a>
+<a id="2383" class="Comment">-- inference, at least with the version of Agda that is current at the</a>
+<a id="2454" class="Comment">-- time of writing: see unit-test below.</a>
+
+<a id="2496" class="Keyword">infix</a> <a id="2502" class="Number">4</a> <a id="2504" href="Data.Char.Properties.html#2509" class="Function Operator">_==_</a>
+<a id="_==_"></a><a id="2509" href="Data.Char.Properties.html#2509" class="Function Operator">_==_</a> <a id="2514" class="Symbol">:</a> <a id="2516" href="Agda.Builtin.Char.html#227" class="Postulate">Char</a> <a id="2521" class="Symbol">→</a> <a id="2523" href="Agda.Builtin.Char.html#227" class="Postulate">Char</a> <a id="2528" class="Symbol">→</a> <a id="2530" href="Agda.Builtin.Bool.html#163" class="Datatype">Bool</a>
+<a id="2535" href="Data.Char.Properties.html#2535" class="Bound">c₁</a> <a id="2538" href="Data.Char.Properties.html#2509" class="Function Operator">==</a> <a id="2541" href="Data.Char.Properties.html#2541" class="Bound">c₂</a> <a id="2544" class="Symbol">=</a> <a id="2546" href="Relation.Nullary.Decidable.Core.html#1027" class="Function">isYes</a> <a id="2552" class="Symbol">(</a><a id="2553" href="Data.Char.Properties.html#2535" class="Bound">c₁</a> <a id="2556" href="Data.Char.Properties.html#1963" class="Function Operator">≟</a> <a id="2558" href="Data.Char.Properties.html#2541" class="Bound">c₂</a><a id="2560" class="Symbol">)</a>
+
+<a id="2563" class="Keyword">private</a>
+
+  <a id="2574" class="Comment">-- The following unit test does not type-check (at the time of</a>
+  <a id="2639" class="Comment">-- writing) if _==_ is replaced by primCharEquality.</a>
+
+  <a id="2695" class="Keyword">data</a> <a id="P"></a><a id="2700" href="Data.Char.Properties.html#2700" class="Datatype">P</a> <a id="2702" class="Symbol">:</a> <a id="2704" class="Symbol">(</a><a id="2705" href="Agda.Builtin.Char.html#227" class="Postulate">Char</a> <a id="2710" class="Symbol">→</a> <a id="2712" href="Agda.Builtin.Bool.html#163" class="Datatype">Bool</a><a id="2716" class="Symbol">)</a> <a id="2718" class="Symbol">→</a> <a id="2720" class="PrimitiveType">Set</a> <a id="2724" class="Keyword">where</a>
+    <a id="P.p"></a><a id="2734" href="Data.Char.Properties.html#2734" class="InductiveConstructor">p</a> <a id="2736" class="Symbol">:</a> <a id="2738" class="Symbol">(</a><a id="2739" href="Data.Char.Properties.html#2739" class="Bound">c</a> <a id="2741" class="Symbol">:</a> <a id="2743" href="Agda.Builtin.Char.html#227" class="Postulate">Char</a><a id="2747" class="Symbol">)</a> <a id="2749" class="Symbol">→</a> <a id="2751" href="Data.Char.Properties.html#2700" class="Datatype">P</a> <a id="2753" class="Symbol">(</a><a id="2754" href="Data.Char.Properties.html#2739" class="Bound">c</a> <a id="2756" href="Data.Char.Properties.html#2509" class="Function Operator">==_</a><a id="2759" class="Symbol">)</a>
+
+  <a id="unit-test"></a><a id="2764" href="Data.Char.Properties.html#2764" class="Function">unit-test</a> <a id="2774" class="Symbol">:</a> <a id="2776" href="Data.Char.Properties.html#2700" class="Datatype">P</a> <a id="2778" class="Symbol">(</a><a id="2779" class="String">&#39;x&#39;</a> <a id="2783" href="Data.Char.Properties.html#2509" class="Function Operator">==_</a><a id="2786" class="Symbol">)</a>
+  <a id="2790" href="Data.Char.Properties.html#2764" class="Function">unit-test</a> <a id="2800" class="Symbol">=</a> <a id="2802" href="Data.Char.Properties.html#2734" class="InductiveConstructor">p</a> <a id="2804" class="Symbol">_</a>
+
+<a id="2807" class="Comment">------------------------------------------------------------------------</a>
+<a id="2880" class="Comment">-- Properties of _&lt;_</a>
+
+<a id="2902" class="Keyword">infix</a> <a id="2908" class="Number">4</a> <a id="2910" href="Data.Char.Properties.html#2915" class="Function Operator">_&lt;?_</a>
+<a id="_&lt;?_"></a><a id="2915" href="Data.Char.Properties.html#2915" class="Function Operator">_&lt;?_</a> <a id="2920" class="Symbol">:</a> <a id="2922" href="Relation.Binary.Definitions.html#4575" class="Function">Decidable</a> <a id="2932" href="Data.Char.Base.html#1182" class="Function Operator">_&lt;_</a>
+<a id="2936" href="Data.Char.Properties.html#2915" class="Function Operator">_&lt;?_</a> <a id="2941" class="Symbol">=</a> <a id="2943" href="Relation.Binary.Construct.On.html#1639" class="Function">On.decidable</a> <a id="2956" href="Data.Char.Base.html#999" class="Primitive">toℕ</a> <a id="2960" href="Data.Nat.Base.html#1047" class="Function Operator">ℕ._&lt;_</a> <a id="2966" href="Data.Nat.Properties.html#8905" class="Function Operator">ℕₚ._&lt;?_</a>
+
+<a id="&lt;-isStrictPartialOrder-≈"></a><a id="2975" href="Data.Char.Properties.html#2975" class="Function">&lt;-isStrictPartialOrder-≈</a> <a id="3000" class="Symbol">:</a> <a id="3002" href="Relation.Binary.Structures.html#3673" class="Record">IsStrictPartialOrder</a> <a id="3023" href="Data.Char.Base.html#1132" class="Function Operator">_≈_</a> <a id="3027" href="Data.Char.Base.html#1182" class="Function Operator">_&lt;_</a>
+<a id="3031" href="Data.Char.Properties.html#2975" class="Function">&lt;-isStrictPartialOrder-≈</a> <a id="3056" class="Symbol">=</a> <a id="3058" href="Relation.Binary.Construct.On.html#3697" class="Function">On.isStrictPartialOrder</a> <a id="3082" href="Data.Char.Base.html#999" class="Primitive">toℕ</a> <a id="3086" href="Data.Nat.Properties.html#9201" class="Function">ℕₚ.&lt;-isStrictPartialOrder</a>
+
+<a id="&lt;-isStrictTotalOrder-≈"></a><a id="3113" href="Data.Char.Properties.html#3113" class="Function">&lt;-isStrictTotalOrder-≈</a> <a id="3136" class="Symbol">:</a> <a id="3138" href="Relation.Binary.Structures.html#6133" class="Record">IsStrictTotalOrder</a> <a id="3157" href="Data.Char.Base.html#1132" class="Function Operator">_≈_</a> <a id="3161" href="Data.Char.Base.html#1182" class="Function Operator">_&lt;_</a>
+<a id="3165" href="Data.Char.Properties.html#3113" class="Function">&lt;-isStrictTotalOrder-≈</a> <a id="3188" class="Symbol">=</a> <a id="3190" href="Relation.Binary.Construct.On.html#4888" class="Function">On.isStrictTotalOrder</a> <a id="3212" href="Data.Char.Base.html#999" class="Primitive">toℕ</a> <a id="3216" href="Data.Nat.Properties.html#9413" class="Function">ℕₚ.&lt;-isStrictTotalOrder</a>
+
+<a id="&lt;-strictPartialOrder-≈"></a><a id="3241" href="Data.Char.Properties.html#3241" class="Function">&lt;-strictPartialOrder-≈</a> <a id="3264" class="Symbol">:</a> <a id="3266" href="Relation.Binary.Bundles.html#3605" class="Record">StrictPartialOrder</a> <a id="3285" class="Symbol">_</a> <a id="3287" class="Symbol">_</a> <a id="3289" class="Symbol">_</a>
+<a id="3291" href="Data.Char.Properties.html#3241" class="Function">&lt;-strictPartialOrder-≈</a> <a id="3314" class="Symbol">=</a> <a id="3316" href="Relation.Binary.Construct.On.html#6320" class="Function">On.strictPartialOrder</a> <a id="3338" href="Data.Nat.Properties.html#9586" class="Function">ℕₚ.&lt;-strictPartialOrder</a> <a id="3362" href="Data.Char.Base.html#999" class="Primitive">toℕ</a>
+
+<a id="&lt;-strictTotalOrder-≈"></a><a id="3367" href="Data.Char.Properties.html#3367" class="Function">&lt;-strictTotalOrder-≈</a> <a id="3388" class="Symbol">:</a> <a id="3390" href="Relation.Binary.Bundles.html#6313" class="Record">StrictTotalOrder</a> <a id="3407" class="Symbol">_</a> <a id="3409" class="Symbol">_</a> <a id="3411" class="Symbol">_</a>
+<a id="3413" href="Data.Char.Properties.html#3367" class="Function">&lt;-strictTotalOrder-≈</a> <a id="3434" class="Symbol">=</a> <a id="3436" href="Relation.Binary.Construct.On.html#7061" class="Function">On.strictTotalOrder</a> <a id="3456" href="Data.Nat.Properties.html#9722" class="Function">ℕₚ.&lt;-strictTotalOrder</a> <a id="3478" href="Data.Char.Base.html#999" class="Primitive">toℕ</a>
+
+<a id="3483" class="Comment">------------------------------------------------------------------------</a>
+<a id="3556" class="Comment">-- DEPRECATED NAMES</a>
+<a id="3576" class="Comment">------------------------------------------------------------------------</a>
+<a id="3649" class="Comment">-- Please use the new names as continuing support for the old names is</a>
+<a id="3720" class="Comment">-- not guaranteed.</a>
+
+<a id="3740" class="Comment">-- Version 1.1</a>
+
+<a id="toNat-injective"></a><a id="3756" href="Data.Char.Properties.html#3756" class="Function">toNat-injective</a> <a id="3772" class="Symbol">=</a> <a id="3774" href="Data.Char.Properties.html#905" class="Primitive">toℕ-injective</a>
+<a id="3788" class="Symbol">{-#</a> <a id="3792" class="Keyword">WARNING_ON_USAGE</a> <a id="3809" class="Pragma">toℕ-injective</a>
+<a id="3823" class="String">&quot;Warning: toNat-injective was deprecated in v1.1.
+Please use toℕ-injective instead.&quot;</a>
+<a id="3908" class="Symbol">#-}</a>
+
+<a id="setoid"></a><a id="3913" href="Data.Char.Properties.html#3913" class="Function">setoid</a> <a id="3920" class="Symbol">=</a> <a id="3922" href="Data.Char.Properties.html#2033" class="Function">≡-setoid</a>
+<a id="3931" class="Symbol">{-#</a> <a id="3935" class="Keyword">WARNING_ON_USAGE</a> <a id="3952" class="Pragma">setoid</a>
+<a id="3959" class="String">&quot;Warning: setoid was deprecated in v1.1.
+Please use ≡-setoid instead.&quot;</a>
+<a id="4030" class="Symbol">#-}</a>
+
+<a id="decSetoid"></a><a id="4035" href="Data.Char.Properties.html#4035" class="Function">decSetoid</a> <a id="4045" class="Symbol">=</a> <a id="4047" href="Data.Char.Properties.html#2086" class="Function">≡-decSetoid</a>
+<a id="4059" class="Symbol">{-#</a> <a id="4063" class="Keyword">WARNING_ON_USAGE</a> <a id="4080" class="Pragma">decSetoid</a>
+<a id="4090" class="String">&quot;Warning: decSetoid was deprecated in v1.1.
+Please use ≡-decSetoid instead.&quot;</a>
+<a id="4167" class="Symbol">#-}</a>
+
+<a id="strictTotalOrder"></a><a id="4172" href="Data.Char.Properties.html#4172" class="Function">strictTotalOrder</a> <a id="4189" class="Symbol">=</a> <a id="4191" href="Data.Char.Properties.html#3367" class="Function">&lt;-strictTotalOrder-≈</a>
+<a id="4212" class="Symbol">{-#</a> <a id="4216" class="Keyword">WARNING_ON_USAGE</a> <a id="4233" class="Pragma">strictTotalOrder</a>
+<a id="4250" class="String">&quot;Warning: strictTotalOrder was deprecated in v1.1.
+Please use &lt;-strictTotalOrder-≈ instead.&quot;</a>
+<a id="4343" class="Symbol">#-}</a>
+</pre></body></html>

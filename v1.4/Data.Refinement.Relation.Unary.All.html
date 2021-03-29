@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Refinement.Relation.Unary.All</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Predicate lifting for refinement types</a>
+<a id="148" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="222" class="Symbol">{-#</a> <a id="226" class="Keyword">OPTIONS</a> <a id="234" class="Pragma">--without-K</a> <a id="246" class="Pragma">--safe</a> <a id="253" class="Symbol">#-}</a>
+
+<a id="258" class="Keyword">module</a> <a id="265" href="Data.Refinement.Relation.Unary.All.html" class="Module">Data.Refinement.Relation.Unary.All</a> <a id="300" class="Keyword">where</a>
+
+<a id="307" class="Keyword">open</a> <a id="312" class="Keyword">import</a> <a id="319" href="Level.html" class="Module">Level</a>
+<a id="325" class="Keyword">open</a> <a id="330" class="Keyword">import</a> <a id="337" href="Data.Refinement.html" class="Module">Data.Refinement</a>
+<a id="353" class="Keyword">open</a> <a id="358" class="Keyword">import</a> <a id="365" href="Function.Base.html" class="Module">Function.Base</a>
+<a id="379" class="Keyword">open</a> <a id="384" class="Keyword">import</a> <a id="391" href="Relation.Unary.html" class="Module">Relation.Unary</a>
+
+<a id="407" class="Keyword">private</a>
+  <a id="417" class="Keyword">variable</a>
+    <a id="430" href="Data.Refinement.Relation.Unary.All.html#430" class="Generalizable">a</a> <a id="432" href="Data.Refinement.Relation.Unary.All.html#432" class="Generalizable">b</a> <a id="434" href="Data.Refinement.Relation.Unary.All.html#434" class="Generalizable">p</a> <a id="436" href="Data.Refinement.Relation.Unary.All.html#436" class="Generalizable">q</a> <a id="438" class="Symbol">:</a> <a id="440" href="Agda.Primitive.html#423" class="Postulate">Level</a>
+    <a id="450" href="Data.Refinement.Relation.Unary.All.html#450" class="Generalizable">A</a> <a id="452" class="Symbol">:</a> <a id="454" class="PrimitiveType">Set</a> <a id="458" href="Data.Refinement.Relation.Unary.All.html#430" class="Generalizable">a</a>
+    <a id="464" href="Data.Refinement.Relation.Unary.All.html#464" class="Generalizable">B</a> <a id="466" class="Symbol">:</a> <a id="468" class="PrimitiveType">Set</a> <a id="472" href="Data.Refinement.Relation.Unary.All.html#432" class="Generalizable">b</a>
+
+<a id="475" class="Keyword">module</a> <a id="482" href="Data.Refinement.Relation.Unary.All.html#482" class="Module">_</a> <a id="484" class="Symbol">{</a><a id="485" href="Data.Refinement.Relation.Unary.All.html#485" class="Bound">P</a> <a id="487" class="Symbol">:</a> <a id="489" href="Data.Refinement.Relation.Unary.All.html#450" class="Generalizable">A</a> <a id="491" class="Symbol">→</a> <a id="493" class="PrimitiveType">Set</a> <a id="497" href="Data.Refinement.Relation.Unary.All.html#434" class="Generalizable">p</a><a id="498" class="Symbol">}</a> <a id="500" class="Keyword">where</a>
+
+  <a id="509" href="Data.Refinement.Relation.Unary.All.html#509" class="Function">All</a> <a id="513" class="Symbol">:</a> <a id="515" class="Symbol">(</a><a id="516" href="Data.Refinement.Relation.Unary.All.html#489" class="Bound">A</a> <a id="518" class="Symbol">→</a> <a id="520" class="PrimitiveType">Set</a> <a id="524" href="Data.Refinement.Relation.Unary.All.html#436" class="Generalizable">q</a><a id="525" class="Symbol">)</a> <a id="527" class="Symbol">→</a> <a id="529" href="Data.Refinement.html#501" class="Record">Refinement</a> <a id="540" href="Data.Refinement.Relation.Unary.All.html#489" class="Bound">A</a> <a id="542" href="Data.Refinement.Relation.Unary.All.html#485" class="Bound">P</a> <a id="544" class="Symbol">→</a> <a id="546" class="PrimitiveType">Set</a> <a id="550" href="Data.Refinement.Relation.Unary.All.html#436" class="Generalizable">q</a>
+  <a id="554" href="Data.Refinement.Relation.Unary.All.html#509" class="Function">All</a> <a id="558" href="Data.Refinement.Relation.Unary.All.html#558" class="Bound">P</a> <a id="560" class="Symbol">(</a><a id="561" href="Data.Refinement.Relation.Unary.All.html#561" class="Bound">a</a> <a id="563" href="Data.Refinement.html#580" class="InductiveConstructor Operator">,</a> <a id="565" class="Symbol">_)</a> <a id="568" class="Symbol">=</a> <a id="570" href="Data.Refinement.Relation.Unary.All.html#558" class="Bound">P</a> <a id="572" href="Data.Refinement.Relation.Unary.All.html#561" class="Bound">a</a>
+</pre></body></html>
