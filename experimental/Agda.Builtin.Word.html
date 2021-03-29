@@ -1,0 +1,15 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Agda.Builtin.Word</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Symbol">{-#</a> <a id="5" class="Keyword">OPTIONS</a> <a id="13" class="Pragma">--without-K</a> <a id="25" class="Pragma">--safe</a> <a id="32" class="Pragma">--no-universe-polymorphism</a>
+            <a id="71" class="Pragma">--no-sized-types</a> <a id="88" class="Pragma">--no-guardedness</a> <a id="105" class="Pragma">--no-subtyping</a> <a id="120" class="Symbol">#-}</a>
+
+<a id="125" class="Keyword">module</a> <a id="132" href="Agda.Builtin.Word.html" class="Module">Agda.Builtin.Word</a> <a id="150" class="Keyword">where</a>
+
+<a id="157" class="Keyword">open</a> <a id="162" class="Keyword">import</a> <a id="169" href="Agda.Builtin.Nat.html" class="Module">Agda.Builtin.Nat</a>
+
+<a id="187" class="Keyword">postulate</a> <a id="Word64"></a><a id="197" href="Agda.Builtin.Word.html#197" class="Postulate">Word64</a> <a id="204" class="Symbol">:</a> <a id="206" href="Agda.Primitive.html#326" class="Primitive">Set</a>
+<a id="210" class="Symbol">{-#</a> <a id="214" class="Keyword">BUILTIN</a> <a id="222" class="Keyword">WORD64</a> <a id="229" href="Agda.Builtin.Word.html#197" class="Postulate">Word64</a> <a id="236" class="Symbol">#-}</a>
+
+<a id="241" class="Keyword">primitive</a>
+  <a id="primWord64ToNat"></a><a id="253" href="Agda.Builtin.Word.html#253" class="Primitive">primWord64ToNat</a>   <a id="271" class="Symbol">:</a> <a id="273" href="Agda.Builtin.Word.html#197" class="Postulate">Word64</a> <a id="280" class="Symbol">→</a> <a id="282" href="Agda.Builtin.Nat.html#192" class="Datatype">Nat</a>
+  <a id="primWord64FromNat"></a><a id="288" href="Agda.Builtin.Word.html#288" class="Primitive">primWord64FromNat</a> <a id="306" class="Symbol">:</a> <a id="308" href="Agda.Builtin.Nat.html#192" class="Datatype">Nat</a> <a id="312" class="Symbol">→</a> <a id="314" href="Agda.Builtin.Word.html#197" class="Postulate">Word64</a>
+</pre></body></html>
