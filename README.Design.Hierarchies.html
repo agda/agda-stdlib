@@ -1,0 +1,302 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>README.Design.Hierarchies</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- An explanation about how mathematical hierarchies are laid out.</a>
+<a id="173" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="247" class="Symbol">{-#</a> <a id="251" class="Keyword">OPTIONS</a> <a id="259" class="Pragma">--warning</a> <a id="269" class="Pragma">noMissingDefinitions</a> <a id="290" class="Symbol">#-}</a>
+
+<a id="295" class="Keyword">module</a> <a id="302" href="README.Design.Hierarchies.html" class="Module">README.Design.Hierarchies</a> <a id="328" class="Keyword">where</a>
+
+<a id="335" class="Keyword">open</a> <a id="340" class="Keyword">import</a> <a id="347" href="Data.Sum.html" class="Module">Data.Sum</a> <a id="356" class="Keyword">using</a> <a id="362" class="Symbol">(</a><a id="363" href="Data.Sum.Base.html#734" class="Datatype Operator">_⊎_</a><a id="366" class="Symbol">)</a>
+<a id="368" class="Keyword">open</a> <a id="373" class="Keyword">import</a> <a id="380" href="Level.html" class="Module">Level</a> <a id="386" class="Keyword">using</a> <a id="392" class="Symbol">(</a><a id="393" href="Agda.Primitive.html#423" class="Postulate">Level</a><a id="398" class="Symbol">;</a> <a id="400" href="Agda.Primitive.html#636" class="Primitive Operator">_⊔_</a><a id="403" class="Symbol">;</a> <a id="405" href="Agda.Primitive.html#606" class="Primitive">suc</a><a id="408" class="Symbol">)</a>
+<a id="410" class="Keyword">open</a> <a id="415" class="Keyword">import</a> <a id="422" href="Relation.Binary.html" class="Module">Relation.Binary</a> <a id="438" class="Keyword">using</a> <a id="444" class="Symbol">(</a><a id="445" href="Relation.Binary.Core.html#1689" class="Function Operator">_Preserves₂_⟶_⟶_</a><a id="461" class="Symbol">)</a>
+
+<a id="464" class="Keyword">private</a>
+  <a id="474" class="Keyword">variable</a>
+    <a id="487" href="README.Design.Hierarchies.html#487" class="Generalizable">a</a> <a id="489" href="README.Design.Hierarchies.html#489" class="Generalizable">b</a> <a id="491" href="README.Design.Hierarchies.html#491" class="Generalizable">ℓ</a> <a id="493" class="Symbol">:</a> <a id="495" href="Agda.Primitive.html#423" class="Postulate">Level</a>
+    <a id="505" href="README.Design.Hierarchies.html#505" class="Generalizable">A</a> <a id="507" class="Symbol">:</a> <a id="509" class="PrimitiveType">Set</a> <a id="513" href="README.Design.Hierarchies.html#487" class="Generalizable">a</a>
+
+<a id="516" class="Comment">------------------------------------------------------------------------</a>
+<a id="589" class="Comment">-- Introduction</a>
+<a id="605" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="679" class="Comment">-- One of the key design decisions facing the library is how to handle</a>
+<a id="750" class="Comment">-- mathematical hierarchies, e.g.</a>
+<a id="784" class="Comment">--   ∙ Binary relations: preorder → partial order → total order</a>
+<a id="848" class="Comment">--                                ↘ equivalence</a>
+<a id="896" class="Comment">--   ∙ Algebraic structures: magma → semigroup → monoid → group</a>
+<a id="960" class="Comment">--                                 ↘ band → semilattice</a>
+<a id="1016" class="Comment">--</a>
+<a id="1019" class="Comment">-- Some of the hierarchies in the library are:</a>
+<a id="1066" class="Comment">--   ∙ Algebra</a>
+<a id="1081" class="Comment">--   ∙ Function</a>
+<a id="1097" class="Comment">--   ∙ Relation.Binary</a>
+<a id="1120" class="Comment">--   ∙ Relation.Binary.Indexed</a>
+<a id="1151" class="Comment">--</a>
+<a id="1154" class="Comment">-- A given hierarchy `X` is always split into 4 seperate folders:</a>
+<a id="1220" class="Comment">--   ∙ X.Core</a>
+<a id="1234" class="Comment">--   ∙ X.Definitions</a>
+<a id="1255" class="Comment">--   ∙ X.Structures</a>
+<a id="1275" class="Comment">--   ∙ X.Bundles</a>
+<a id="1292" class="Comment">-- all four of which are publicly re-exported by `X` itself.</a>
+<a id="1353" class="Comment">--</a>
+<a id="1356" class="Comment">-- Additionally a hierarchy `X` may contain additional files</a>
+<a id="1417" class="Comment">--   ∙ X.Consequences</a>
+<a id="1439" class="Comment">--   ∙ X.Constructs</a>
+<a id="1459" class="Comment">--   ∙ X.Properties</a>
+<a id="1479" class="Comment">--   ∙ X.Morphisms</a>
+<a id="1498" class="Comment">--</a>
+<a id="1501" class="Comment">-- Descriptions of these modules are now described below using the</a>
+<a id="1568" class="Comment">-- running example of the `Relation.Binary` and `Algebra` hierarchies.</a>
+
+<a id="1640" class="Comment">-- Note that we redefine everything here for illustrative purposes,</a>
+<a id="1708" class="Comment">-- and that the definitions given below may be slightly simpler</a>
+<a id="1772" class="Comment">-- than the real definitions in order to focus on the points being</a>
+<a id="1839" class="Comment">-- discussed.</a>
+
+
+<a id="1855" class="Comment">------------------------------------------------------------------------</a>
+<a id="1928" class="Comment">-- Main hierarchy modules</a>
+<a id="1954" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="2028" class="Comment">------------------------------------------------------------------------</a>
+<a id="2101" class="Comment">-- X.Core</a>
+
+<a id="2112" class="Comment">-- The Core module contains the basic units of the hierarchy.</a>
+
+<a id="2175" class="Comment">-- For example for binary relations these are homoegeneous and</a>
+<a id="2238" class="Comment">-- heterogeneous binary relations:</a>
+
+<a id="REL"></a><a id="2274" href="README.Design.Hierarchies.html#2274" class="Function">REL</a> <a id="2278" class="Symbol">:</a> <a id="2280" class="PrimitiveType">Set</a> <a id="2284" href="README.Design.Hierarchies.html#487" class="Generalizable">a</a> <a id="2286" class="Symbol">→</a> <a id="2288" class="PrimitiveType">Set</a> <a id="2292" href="README.Design.Hierarchies.html#489" class="Generalizable">b</a> <a id="2294" class="Symbol">→</a> <a id="2296" class="Symbol">(</a><a id="2297" href="README.Design.Hierarchies.html#2297" class="Bound">ℓ</a> <a id="2299" class="Symbol">:</a> <a id="2301" href="Agda.Primitive.html#423" class="Postulate">Level</a><a id="2306" class="Symbol">)</a> <a id="2308" class="Symbol">→</a> <a id="2310" class="PrimitiveType">Set</a> <a id="2314" class="Symbol">(</a><a id="2315" href="README.Design.Hierarchies.html#487" class="Generalizable">a</a> <a id="2317" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="2319" href="README.Design.Hierarchies.html#489" class="Generalizable">b</a> <a id="2321" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="2323" href="Agda.Primitive.html#606" class="Primitive">suc</a> <a id="2327" href="README.Design.Hierarchies.html#2297" class="Bound">ℓ</a><a id="2328" class="Symbol">)</a>
+<a id="2330" href="README.Design.Hierarchies.html#2274" class="Function">REL</a> <a id="2334" href="README.Design.Hierarchies.html#2334" class="Bound">A</a> <a id="2336" href="README.Design.Hierarchies.html#2336" class="Bound">B</a> <a id="2338" href="README.Design.Hierarchies.html#2338" class="Bound">ℓ</a> <a id="2340" class="Symbol">=</a> <a id="2342" href="README.Design.Hierarchies.html#2334" class="Bound">A</a> <a id="2344" class="Symbol">→</a> <a id="2346" href="README.Design.Hierarchies.html#2336" class="Bound">B</a> <a id="2348" class="Symbol">→</a> <a id="2350" class="PrimitiveType">Set</a> <a id="2354" href="README.Design.Hierarchies.html#2338" class="Bound">ℓ</a>
+
+<a id="Rel"></a><a id="2357" href="README.Design.Hierarchies.html#2357" class="Function">Rel</a> <a id="2361" class="Symbol">:</a> <a id="2363" class="PrimitiveType">Set</a> <a id="2367" href="README.Design.Hierarchies.html#487" class="Generalizable">a</a> <a id="2369" class="Symbol">→</a> <a id="2371" class="Symbol">(</a><a id="2372" href="README.Design.Hierarchies.html#2372" class="Bound">ℓ</a> <a id="2374" class="Symbol">:</a> <a id="2376" href="Agda.Primitive.html#423" class="Postulate">Level</a><a id="2381" class="Symbol">)</a> <a id="2383" class="Symbol">→</a> <a id="2385" class="PrimitiveType">Set</a> <a id="2389" class="Symbol">(</a><a id="2390" href="README.Design.Hierarchies.html#487" class="Generalizable">a</a> <a id="2392" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="2394" href="Agda.Primitive.html#606" class="Primitive">suc</a> <a id="2398" href="README.Design.Hierarchies.html#2372" class="Bound">ℓ</a><a id="2399" class="Symbol">)</a>
+<a id="2401" href="README.Design.Hierarchies.html#2357" class="Function">Rel</a> <a id="2405" href="README.Design.Hierarchies.html#2405" class="Bound">A</a> <a id="2407" href="README.Design.Hierarchies.html#2407" class="Bound">ℓ</a> <a id="2409" class="Symbol">=</a> <a id="2411" href="README.Design.Hierarchies.html#2405" class="Bound">A</a> <a id="2413" class="Symbol">→</a> <a id="2415" href="README.Design.Hierarchies.html#2405" class="Bound">A</a> <a id="2417" class="Symbol">→</a> <a id="2419" class="PrimitiveType">Set</a> <a id="2423" href="README.Design.Hierarchies.html#2407" class="Bound">ℓ</a>
+
+<a id="2426" class="Comment">-- and in Algebra these are unary and binary operators, e.g.</a>
+
+<a id="Op₁"></a><a id="2488" href="README.Design.Hierarchies.html#2488" class="Function">Op₁</a> <a id="2492" class="Symbol">:</a> <a id="2494" class="PrimitiveType">Set</a> <a id="2498" href="README.Design.Hierarchies.html#487" class="Generalizable">a</a> <a id="2500" class="Symbol">→</a> <a id="2502" class="PrimitiveType">Set</a> <a id="2506" href="README.Design.Hierarchies.html#487" class="Generalizable">a</a>
+<a id="2508" href="README.Design.Hierarchies.html#2488" class="Function">Op₁</a> <a id="2512" href="README.Design.Hierarchies.html#2512" class="Bound">A</a> <a id="2514" class="Symbol">=</a> <a id="2516" href="README.Design.Hierarchies.html#2512" class="Bound">A</a> <a id="2518" class="Symbol">→</a> <a id="2520" href="README.Design.Hierarchies.html#2512" class="Bound">A</a>
+
+<a id="Op₂"></a><a id="2523" href="README.Design.Hierarchies.html#2523" class="Function">Op₂</a> <a id="2527" class="Symbol">:</a> <a id="2529" class="PrimitiveType">Set</a> <a id="2533" href="README.Design.Hierarchies.html#487" class="Generalizable">a</a> <a id="2535" class="Symbol">→</a> <a id="2537" class="PrimitiveType">Set</a> <a id="2541" href="README.Design.Hierarchies.html#487" class="Generalizable">a</a>
+<a id="2543" href="README.Design.Hierarchies.html#2523" class="Function">Op₂</a> <a id="2547" href="README.Design.Hierarchies.html#2547" class="Bound">A</a> <a id="2549" class="Symbol">=</a> <a id="2551" href="README.Design.Hierarchies.html#2547" class="Bound">A</a> <a id="2553" class="Symbol">→</a> <a id="2555" href="README.Design.Hierarchies.html#2547" class="Bound">A</a> <a id="2557" class="Symbol">→</a> <a id="2559" href="README.Design.Hierarchies.html#2547" class="Bound">A</a>
+
+
+<a id="2563" class="Comment">------------------------------------------------------------------------</a>
+<a id="2636" class="Comment">-- X.Definitions</a>
+
+<a id="2654" class="Comment">-- The Definitions module defines the various properties that the</a>
+<a id="2720" class="Comment">-- basic units of the hierarchy may have.</a>
+
+<a id="2763" class="Comment">-- For example in Relation.Binary this includes reflexivity,</a>
+<a id="2824" class="Comment">-- transitivity etc.</a>
+
+<a id="Reflexive"></a><a id="2846" href="README.Design.Hierarchies.html#2846" class="Function">Reflexive</a> <a id="2856" class="Symbol">:</a> <a id="2858" href="README.Design.Hierarchies.html#2357" class="Function">Rel</a> <a id="2862" href="README.Design.Hierarchies.html#505" class="Generalizable">A</a> <a id="2864" href="README.Design.Hierarchies.html#491" class="Generalizable">ℓ</a> <a id="2866" class="Symbol">→</a> <a id="2868" class="PrimitiveType">Set</a> <a id="2872" class="Symbol">_</a>
+<a id="2874" href="README.Design.Hierarchies.html#2846" class="Function">Reflexive</a> <a id="2884" href="README.Design.Hierarchies.html#2884" class="Bound Operator">_∼_</a> <a id="2888" class="Symbol">=</a> <a id="2890" class="Symbol">∀</a> <a id="2892" class="Symbol">{</a><a id="2893" href="README.Design.Hierarchies.html#2893" class="Bound">x</a><a id="2894" class="Symbol">}</a> <a id="2896" class="Symbol">→</a> <a id="2898" href="README.Design.Hierarchies.html#2893" class="Bound">x</a> <a id="2900" href="README.Design.Hierarchies.html#2884" class="Bound Operator">∼</a> <a id="2902" href="README.Design.Hierarchies.html#2893" class="Bound">x</a>
+
+<a id="Symmetric"></a><a id="2905" href="README.Design.Hierarchies.html#2905" class="Function">Symmetric</a> <a id="2915" class="Symbol">:</a> <a id="2917" href="README.Design.Hierarchies.html#2357" class="Function">Rel</a> <a id="2921" href="README.Design.Hierarchies.html#505" class="Generalizable">A</a> <a id="2923" href="README.Design.Hierarchies.html#491" class="Generalizable">ℓ</a> <a id="2925" class="Symbol">→</a> <a id="2927" class="PrimitiveType">Set</a> <a id="2931" class="Symbol">_</a>
+<a id="2933" href="README.Design.Hierarchies.html#2905" class="Function">Symmetric</a> <a id="2943" href="README.Design.Hierarchies.html#2943" class="Bound Operator">_∼_</a> <a id="2947" class="Symbol">=</a> <a id="2949" class="Symbol">∀</a> <a id="2951" class="Symbol">{</a><a id="2952" href="README.Design.Hierarchies.html#2952" class="Bound">x</a> <a id="2954" href="README.Design.Hierarchies.html#2954" class="Bound">y</a><a id="2955" class="Symbol">}</a> <a id="2957" class="Symbol">→</a> <a id="2959" href="README.Design.Hierarchies.html#2952" class="Bound">x</a> <a id="2961" href="README.Design.Hierarchies.html#2943" class="Bound Operator">∼</a> <a id="2963" href="README.Design.Hierarchies.html#2954" class="Bound">y</a> <a id="2965" class="Symbol">→</a> <a id="2967" href="README.Design.Hierarchies.html#2954" class="Bound">y</a> <a id="2969" href="README.Design.Hierarchies.html#2943" class="Bound Operator">∼</a> <a id="2971" href="README.Design.Hierarchies.html#2952" class="Bound">x</a>
+
+<a id="Transitive"></a><a id="2974" href="README.Design.Hierarchies.html#2974" class="Function">Transitive</a> <a id="2985" class="Symbol">:</a> <a id="2987" href="README.Design.Hierarchies.html#2357" class="Function">Rel</a> <a id="2991" href="README.Design.Hierarchies.html#505" class="Generalizable">A</a> <a id="2993" href="README.Design.Hierarchies.html#491" class="Generalizable">ℓ</a> <a id="2995" class="Symbol">→</a> <a id="2997" class="PrimitiveType">Set</a> <a id="3001" class="Symbol">_</a>
+<a id="3003" href="README.Design.Hierarchies.html#2974" class="Function">Transitive</a> <a id="3014" href="README.Design.Hierarchies.html#3014" class="Bound Operator">_∼_</a> <a id="3018" class="Symbol">=</a> <a id="3020" class="Symbol">∀</a> <a id="3022" class="Symbol">{</a><a id="3023" href="README.Design.Hierarchies.html#3023" class="Bound">x</a> <a id="3025" href="README.Design.Hierarchies.html#3025" class="Bound">y</a> <a id="3027" href="README.Design.Hierarchies.html#3027" class="Bound">z</a><a id="3028" class="Symbol">}</a> <a id="3030" class="Symbol">→</a> <a id="3032" href="README.Design.Hierarchies.html#3023" class="Bound">x</a> <a id="3034" href="README.Design.Hierarchies.html#3014" class="Bound Operator">∼</a> <a id="3036" href="README.Design.Hierarchies.html#3025" class="Bound">y</a> <a id="3038" class="Symbol">→</a> <a id="3040" href="README.Design.Hierarchies.html#3025" class="Bound">y</a> <a id="3042" href="README.Design.Hierarchies.html#3014" class="Bound Operator">∼</a> <a id="3044" href="README.Design.Hierarchies.html#3027" class="Bound">z</a> <a id="3046" class="Symbol">→</a> <a id="3048" href="README.Design.Hierarchies.html#3023" class="Bound">x</a> <a id="3050" href="README.Design.Hierarchies.html#3014" class="Bound Operator">∼</a> <a id="3052" href="README.Design.Hierarchies.html#3027" class="Bound">z</a>
+
+<a id="Total"></a><a id="3055" href="README.Design.Hierarchies.html#3055" class="Function">Total</a> <a id="3061" class="Symbol">:</a> <a id="3063" href="README.Design.Hierarchies.html#2357" class="Function">Rel</a> <a id="3067" href="README.Design.Hierarchies.html#505" class="Generalizable">A</a> <a id="3069" href="README.Design.Hierarchies.html#491" class="Generalizable">ℓ</a> <a id="3071" class="Symbol">→</a> <a id="3073" class="PrimitiveType">Set</a> <a id="3077" class="Symbol">_</a>
+<a id="3079" href="README.Design.Hierarchies.html#3055" class="Function">Total</a> <a id="3085" href="README.Design.Hierarchies.html#3085" class="Bound Operator">_∼_</a> <a id="3089" class="Symbol">=</a> <a id="3091" class="Symbol">∀</a> <a id="3093" href="README.Design.Hierarchies.html#3093" class="Bound">x</a> <a id="3095" href="README.Design.Hierarchies.html#3095" class="Bound">y</a> <a id="3097" class="Symbol">→</a> <a id="3099" href="README.Design.Hierarchies.html#3093" class="Bound">x</a> <a id="3101" href="README.Design.Hierarchies.html#3085" class="Bound Operator">∼</a> <a id="3103" href="README.Design.Hierarchies.html#3095" class="Bound">y</a> <a id="3105" href="Data.Sum.Base.html#734" class="Datatype Operator">⊎</a> <a id="3107" href="README.Design.Hierarchies.html#3095" class="Bound">y</a> <a id="3109" href="README.Design.Hierarchies.html#3085" class="Bound Operator">∼</a> <a id="3111" href="README.Design.Hierarchies.html#3093" class="Bound">x</a>
+
+<a id="3114" class="Comment">-- For example in Algebra these are associativity, commutativity.</a>
+<a id="3180" class="Comment">-- Note that all definitions for Algebra are based on some notion of</a>
+<a id="3249" class="Comment">-- underlying equality.</a>
+
+<a id="Associative"></a><a id="3274" href="README.Design.Hierarchies.html#3274" class="Function">Associative</a> <a id="3286" class="Symbol">:</a> <a id="3288" href="README.Design.Hierarchies.html#2357" class="Function">Rel</a> <a id="3292" href="README.Design.Hierarchies.html#505" class="Generalizable">A</a> <a id="3294" href="README.Design.Hierarchies.html#491" class="Generalizable">ℓ</a> <a id="3296" class="Symbol">→</a> <a id="3298" href="README.Design.Hierarchies.html#2523" class="Function">Op₂</a> <a id="3302" href="README.Design.Hierarchies.html#505" class="Generalizable">A</a> <a id="3304" class="Symbol">→</a> <a id="3306" class="PrimitiveType">Set</a> <a id="3310" class="Symbol">_</a>
+<a id="3312" href="README.Design.Hierarchies.html#3274" class="Function">Associative</a> <a id="3324" href="README.Design.Hierarchies.html#3324" class="Bound Operator">_≈_</a> <a id="3328" href="README.Design.Hierarchies.html#3328" class="Bound Operator">_∙_</a> <a id="3332" class="Symbol">=</a> <a id="3334" class="Symbol">∀</a> <a id="3336" href="README.Design.Hierarchies.html#3336" class="Bound">x</a> <a id="3338" href="README.Design.Hierarchies.html#3338" class="Bound">y</a> <a id="3340" href="README.Design.Hierarchies.html#3340" class="Bound">z</a> <a id="3342" class="Symbol">→</a> <a id="3344" class="Symbol">((</a><a id="3346" href="README.Design.Hierarchies.html#3336" class="Bound">x</a> <a id="3348" href="README.Design.Hierarchies.html#3328" class="Bound Operator">∙</a> <a id="3350" href="README.Design.Hierarchies.html#3338" class="Bound">y</a><a id="3351" class="Symbol">)</a> <a id="3353" href="README.Design.Hierarchies.html#3328" class="Bound Operator">∙</a> <a id="3355" href="README.Design.Hierarchies.html#3340" class="Bound">z</a><a id="3356" class="Symbol">)</a> <a id="3358" href="README.Design.Hierarchies.html#3324" class="Bound Operator">≈</a> <a id="3360" class="Symbol">(</a><a id="3361" href="README.Design.Hierarchies.html#3336" class="Bound">x</a> <a id="3363" href="README.Design.Hierarchies.html#3328" class="Bound Operator">∙</a> <a id="3365" class="Symbol">(</a><a id="3366" href="README.Design.Hierarchies.html#3338" class="Bound">y</a> <a id="3368" href="README.Design.Hierarchies.html#3328" class="Bound Operator">∙</a> <a id="3370" href="README.Design.Hierarchies.html#3340" class="Bound">z</a><a id="3371" class="Symbol">))</a>
+
+<a id="Commutative"></a><a id="3375" href="README.Design.Hierarchies.html#3375" class="Function">Commutative</a> <a id="3387" class="Symbol">:</a> <a id="3389" href="README.Design.Hierarchies.html#2357" class="Function">Rel</a> <a id="3393" href="README.Design.Hierarchies.html#505" class="Generalizable">A</a> <a id="3395" href="README.Design.Hierarchies.html#491" class="Generalizable">ℓ</a> <a id="3397" class="Symbol">→</a> <a id="3399" href="README.Design.Hierarchies.html#2523" class="Function">Op₂</a> <a id="3403" href="README.Design.Hierarchies.html#505" class="Generalizable">A</a> <a id="3405" class="Symbol">→</a> <a id="3407" class="PrimitiveType">Set</a> <a id="3411" class="Symbol">_</a>
+<a id="3413" href="README.Design.Hierarchies.html#3375" class="Function">Commutative</a> <a id="3425" href="README.Design.Hierarchies.html#3425" class="Bound Operator">_≈_</a> <a id="3429" href="README.Design.Hierarchies.html#3429" class="Bound Operator">_∙_</a> <a id="3433" class="Symbol">=</a> <a id="3435" class="Symbol">∀</a> <a id="3437" href="README.Design.Hierarchies.html#3437" class="Bound">x</a> <a id="3439" href="README.Design.Hierarchies.html#3439" class="Bound">y</a> <a id="3441" class="Symbol">→</a> <a id="3443" class="Symbol">(</a><a id="3444" href="README.Design.Hierarchies.html#3437" class="Bound">x</a> <a id="3446" href="README.Design.Hierarchies.html#3429" class="Bound Operator">∙</a> <a id="3448" href="README.Design.Hierarchies.html#3439" class="Bound">y</a><a id="3449" class="Symbol">)</a> <a id="3451" href="README.Design.Hierarchies.html#3425" class="Bound Operator">≈</a> <a id="3453" class="Symbol">(</a><a id="3454" href="README.Design.Hierarchies.html#3439" class="Bound">y</a> <a id="3456" href="README.Design.Hierarchies.html#3429" class="Bound Operator">∙</a> <a id="3458" href="README.Design.Hierarchies.html#3437" class="Bound">x</a><a id="3459" class="Symbol">)</a>
+
+<a id="LeftIdentity"></a><a id="3462" href="README.Design.Hierarchies.html#3462" class="Function">LeftIdentity</a> <a id="3475" class="Symbol">:</a> <a id="3477" href="README.Design.Hierarchies.html#2357" class="Function">Rel</a> <a id="3481" href="README.Design.Hierarchies.html#505" class="Generalizable">A</a> <a id="3483" href="README.Design.Hierarchies.html#491" class="Generalizable">ℓ</a> <a id="3485" class="Symbol">→</a> <a id="3487" href="README.Design.Hierarchies.html#505" class="Generalizable">A</a> <a id="3489" class="Symbol">→</a> <a id="3491" href="README.Design.Hierarchies.html#2523" class="Function">Op₂</a> <a id="3495" href="README.Design.Hierarchies.html#505" class="Generalizable">A</a> <a id="3497" class="Symbol">→</a> <a id="3499" class="PrimitiveType">Set</a> <a id="3503" class="Symbol">_</a>
+<a id="3505" href="README.Design.Hierarchies.html#3462" class="Function">LeftIdentity</a> <a id="3518" href="README.Design.Hierarchies.html#3518" class="Bound Operator">_≈_</a> <a id="3522" href="README.Design.Hierarchies.html#3522" class="Bound">e</a> <a id="3524" href="README.Design.Hierarchies.html#3524" class="Bound Operator">_∙_</a> <a id="3528" class="Symbol">=</a> <a id="3530" class="Symbol">∀</a> <a id="3532" href="README.Design.Hierarchies.html#3532" class="Bound">x</a> <a id="3534" class="Symbol">→</a> <a id="3536" class="Symbol">(</a><a id="3537" href="README.Design.Hierarchies.html#3522" class="Bound">e</a> <a id="3539" href="README.Design.Hierarchies.html#3524" class="Bound Operator">∙</a> <a id="3541" href="README.Design.Hierarchies.html#3532" class="Bound">x</a><a id="3542" class="Symbol">)</a> <a id="3544" href="README.Design.Hierarchies.html#3518" class="Bound Operator">≈</a> <a id="3546" href="README.Design.Hierarchies.html#3532" class="Bound">x</a>
+
+<a id="RightIdentity"></a><a id="3549" href="README.Design.Hierarchies.html#3549" class="Function">RightIdentity</a> <a id="3563" class="Symbol">:</a> <a id="3565" href="README.Design.Hierarchies.html#2357" class="Function">Rel</a> <a id="3569" href="README.Design.Hierarchies.html#505" class="Generalizable">A</a> <a id="3571" href="README.Design.Hierarchies.html#491" class="Generalizable">ℓ</a> <a id="3573" class="Symbol">→</a> <a id="3575" href="README.Design.Hierarchies.html#505" class="Generalizable">A</a> <a id="3577" class="Symbol">→</a> <a id="3579" href="README.Design.Hierarchies.html#2523" class="Function">Op₂</a> <a id="3583" href="README.Design.Hierarchies.html#505" class="Generalizable">A</a> <a id="3585" class="Symbol">→</a> <a id="3587" class="PrimitiveType">Set</a> <a id="3591" class="Symbol">_</a>
+<a id="3593" href="README.Design.Hierarchies.html#3549" class="Function">RightIdentity</a> <a id="3607" href="README.Design.Hierarchies.html#3607" class="Bound Operator">_≈_</a> <a id="3611" href="README.Design.Hierarchies.html#3611" class="Bound">e</a> <a id="3613" href="README.Design.Hierarchies.html#3613" class="Bound Operator">_∙_</a> <a id="3617" class="Symbol">=</a> <a id="3619" class="Symbol">∀</a> <a id="3621" href="README.Design.Hierarchies.html#3621" class="Bound">x</a> <a id="3623" class="Symbol">→</a> <a id="3625" class="Symbol">(</a><a id="3626" href="README.Design.Hierarchies.html#3621" class="Bound">x</a> <a id="3628" href="README.Design.Hierarchies.html#3613" class="Bound Operator">∙</a> <a id="3630" href="README.Design.Hierarchies.html#3611" class="Bound">e</a><a id="3631" class="Symbol">)</a> <a id="3633" href="README.Design.Hierarchies.html#3607" class="Bound Operator">≈</a> <a id="3635" href="README.Design.Hierarchies.html#3621" class="Bound">x</a>
+
+<a id="3638" class="Comment">-- Note that the types in `Definitions` modules are not meant to express</a>
+<a id="3711" class="Comment">-- the full concept on their own. For example the `Associative` type does</a>
+<a id="3785" class="Comment">-- not require the underlying relation to be an equivalence relation.</a>
+<a id="3855" class="Comment">-- Instead they are designed to aid the modular reuse of the core</a>
+<a id="3921" class="Comment">-- concepts. The complete concepts are captured in various</a>
+<a id="3980" class="Comment">-- structures/bundles where the definitions are correctly used in</a>
+<a id="4046" class="Comment">-- context.</a>
+
+
+<a id="4060" class="Comment">------------------------------------------------------------------------</a>
+<a id="4133" class="Comment">-- X.Structures</a>
+
+<a id="4150" class="Comment">-- When an abstract hierarchy of some sort (for instance semigroup →</a>
+<a id="4219" class="Comment">-- monoid → group) is included in the library the basic approach is to</a>
+<a id="4290" class="Comment">-- specify the properties of every concept in terms of a record</a>
+<a id="4354" class="Comment">-- containing just properties, parameterised on the underlying</a>
+<a id="4417" class="Comment">-- sets, relations and operations. For example:</a>
+
+<a id="4466" class="Keyword">record</a> <a id="IsEquivalence"></a><a id="4473" href="README.Design.Hierarchies.html#4473" class="Record">IsEquivalence</a> <a id="4487" class="Symbol">{</a><a id="4488" href="README.Design.Hierarchies.html#4488" class="Bound">A</a> <a id="4490" class="Symbol">:</a> <a id="4492" class="PrimitiveType">Set</a> <a id="4496" href="README.Design.Hierarchies.html#487" class="Generalizable">a</a><a id="4497" class="Symbol">}</a>
+                     <a id="4520" class="Symbol">(</a><a id="4521" href="README.Design.Hierarchies.html#4521" class="Bound Operator">_≈_</a> <a id="4525" class="Symbol">:</a> <a id="4527" href="README.Design.Hierarchies.html#2357" class="Function">Rel</a> <a id="4531" href="README.Design.Hierarchies.html#4488" class="Bound">A</a> <a id="4533" href="README.Design.Hierarchies.html#491" class="Generalizable">ℓ</a><a id="4534" class="Symbol">)</a>
+                     <a id="4557" class="Symbol">:</a> <a id="4559" class="PrimitiveType">Set</a> <a id="4563" class="Symbol">(</a><a id="4564" href="README.Design.Hierarchies.html#4496" class="Bound">a</a> <a id="4566" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="4568" href="README.Design.Hierarchies.html#4533" class="Bound">ℓ</a><a id="4569" class="Symbol">)</a>
+                     <a id="4592" class="Keyword">where</a>
+  <a id="4600" class="Keyword">field</a>
+    <a id="IsEquivalence.refl"></a><a id="4610" href="README.Design.Hierarchies.html#4610" class="Field">refl</a>  <a id="4616" class="Symbol">:</a> <a id="4618" href="README.Design.Hierarchies.html#2846" class="Function">Reflexive</a> <a id="4628" href="README.Design.Hierarchies.html#4521" class="Bound Operator">_≈_</a>
+    <a id="IsEquivalence.sym"></a><a id="4636" href="README.Design.Hierarchies.html#4636" class="Field">sym</a>   <a id="4642" class="Symbol">:</a> <a id="4644" href="README.Design.Hierarchies.html#2905" class="Function">Symmetric</a> <a id="4654" href="README.Design.Hierarchies.html#4521" class="Bound Operator">_≈_</a>
+    <a id="IsEquivalence.trans"></a><a id="4662" href="README.Design.Hierarchies.html#4662" class="Field">trans</a> <a id="4668" class="Symbol">:</a> <a id="4670" href="README.Design.Hierarchies.html#2974" class="Function">Transitive</a> <a id="4681" href="README.Design.Hierarchies.html#4521" class="Bound Operator">_≈_</a>
+
+<a id="4686" class="Comment">-- More specific concepts are then specified in terms of the simpler</a>
+<a id="4755" class="Comment">-- ones:</a>
+
+<a id="4765" class="Keyword">record</a> <a id="IsMagma"></a><a id="4772" href="README.Design.Hierarchies.html#4772" class="Record">IsMagma</a> <a id="4780" class="Symbol">{</a><a id="4781" href="README.Design.Hierarchies.html#4781" class="Bound">A</a> <a id="4783" class="Symbol">:</a> <a id="4785" class="PrimitiveType">Set</a> <a id="4789" href="README.Design.Hierarchies.html#487" class="Generalizable">a</a><a id="4790" class="Symbol">}</a> <a id="4792" class="Symbol">(</a><a id="4793" href="README.Design.Hierarchies.html#4793" class="Bound">≈</a> <a id="4795" class="Symbol">:</a> <a id="4797" href="README.Design.Hierarchies.html#2357" class="Function">Rel</a> <a id="4801" href="README.Design.Hierarchies.html#4781" class="Bound">A</a> <a id="4803" href="README.Design.Hierarchies.html#491" class="Generalizable">ℓ</a><a id="4804" class="Symbol">)</a> <a id="4806" class="Symbol">(</a><a id="4807" href="README.Design.Hierarchies.html#4807" class="Bound">∙</a> <a id="4809" class="Symbol">:</a> <a id="4811" href="README.Design.Hierarchies.html#2523" class="Function">Op₂</a> <a id="4815" href="README.Design.Hierarchies.html#4781" class="Bound">A</a><a id="4816" class="Symbol">)</a> <a id="4818" class="Symbol">:</a> <a id="4820" class="PrimitiveType">Set</a> <a id="4824" class="Symbol">(</a><a id="4825" href="README.Design.Hierarchies.html#4789" class="Bound">a</a> <a id="4827" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="4829" href="README.Design.Hierarchies.html#4803" class="Bound">ℓ</a><a id="4830" class="Symbol">)</a> <a id="4832" class="Keyword">where</a>
+  <a id="4840" class="Keyword">field</a>
+    <a id="IsMagma.isEquivalence"></a><a id="4850" href="README.Design.Hierarchies.html#4850" class="Field">isEquivalence</a> <a id="4864" class="Symbol">:</a> <a id="4866" href="README.Design.Hierarchies.html#4473" class="Record">IsEquivalence</a> <a id="4880" href="README.Design.Hierarchies.html#4793" class="Bound">≈</a>
+    <a id="IsMagma.∙-cong"></a><a id="4886" href="README.Design.Hierarchies.html#4886" class="Field">∙-cong</a>        <a id="4900" class="Symbol">:</a> <a id="4902" href="README.Design.Hierarchies.html#4807" class="Bound">∙</a> <a id="4904" href="Relation.Binary.Core.html#1689" class="Function Operator">Preserves₂</a> <a id="4915" href="README.Design.Hierarchies.html#4793" class="Bound">≈</a> <a id="4917" href="Relation.Binary.Core.html#1689" class="Function Operator">⟶</a> <a id="4919" href="README.Design.Hierarchies.html#4793" class="Bound">≈</a> <a id="4921" href="Relation.Binary.Core.html#1689" class="Function Operator">⟶</a> <a id="4923" href="README.Design.Hierarchies.html#4793" class="Bound">≈</a>
+
+<a id="4926" class="Keyword">record</a> <a id="IsSemigroup"></a><a id="4933" href="README.Design.Hierarchies.html#4933" class="Record">IsSemigroup</a> <a id="4945" class="Symbol">{</a><a id="4946" href="README.Design.Hierarchies.html#4946" class="Bound">A</a> <a id="4948" class="Symbol">:</a> <a id="4950" class="PrimitiveType">Set</a> <a id="4954" href="README.Design.Hierarchies.html#487" class="Generalizable">a</a><a id="4955" class="Symbol">}</a> <a id="4957" class="Symbol">(</a><a id="4958" href="README.Design.Hierarchies.html#4958" class="Bound">≈</a> <a id="4960" class="Symbol">:</a> <a id="4962" href="README.Design.Hierarchies.html#2357" class="Function">Rel</a> <a id="4966" href="README.Design.Hierarchies.html#4946" class="Bound">A</a> <a id="4968" href="README.Design.Hierarchies.html#491" class="Generalizable">ℓ</a><a id="4969" class="Symbol">)</a> <a id="4971" class="Symbol">(</a><a id="4972" href="README.Design.Hierarchies.html#4972" class="Bound">∙</a> <a id="4974" class="Symbol">:</a> <a id="4976" href="README.Design.Hierarchies.html#2523" class="Function">Op₂</a> <a id="4980" href="README.Design.Hierarchies.html#4946" class="Bound">A</a><a id="4981" class="Symbol">)</a> <a id="4983" class="Symbol">:</a> <a id="4985" class="PrimitiveType">Set</a> <a id="4989" class="Symbol">(</a><a id="4990" href="README.Design.Hierarchies.html#4954" class="Bound">a</a> <a id="4992" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="4994" href="README.Design.Hierarchies.html#4968" class="Bound">ℓ</a><a id="4995" class="Symbol">)</a> <a id="4997" class="Keyword">where</a>
+  <a id="5005" class="Keyword">field</a>
+    <a id="IsSemigroup.isMagma"></a><a id="5015" href="README.Design.Hierarchies.html#5015" class="Field">isMagma</a>      <a id="5028" class="Symbol">:</a> <a id="5030" href="README.Design.Hierarchies.html#4772" class="Record">IsMagma</a> <a id="5038" href="README.Design.Hierarchies.html#4958" class="Bound">≈</a> <a id="5040" href="README.Design.Hierarchies.html#4972" class="Bound">∙</a>
+    <a id="IsSemigroup.associative"></a><a id="5046" href="README.Design.Hierarchies.html#5046" class="Field">associative</a>  <a id="5059" class="Symbol">:</a> <a id="5061" href="README.Design.Hierarchies.html#3274" class="Function">Associative</a> <a id="5073" href="README.Design.Hierarchies.html#4958" class="Bound">≈</a> <a id="5075" href="README.Design.Hierarchies.html#4972" class="Bound">∙</a>
+
+  <a id="5080" class="Keyword">open</a> <a id="5085" href="README.Design.Hierarchies.html#4772" class="Module">IsMagma</a> <a id="5093" href="README.Design.Hierarchies.html#5015" class="Field">isMagma</a> <a id="5101" class="Keyword">public</a>
+
+<a id="5109" class="Comment">-- Note here that `open IsMagma isMagma public` ensures that the</a>
+<a id="5174" class="Comment">-- fields of the `isMagma` record can be accessed directly; this</a>
+<a id="5239" class="Comment">-- technique enables the user of an `IsSemigroup` record to use underlying</a>
+<a id="5314" class="Comment">-- records without having to manually open an entire record hierarchy.</a>
+<a id="5385" class="Comment">-- This is not always possible, though. Consider the following definition</a>
+<a id="5459" class="Comment">-- of preorders:</a>
+
+<a id="5477" class="Keyword">record</a> <a id="IsPreorder"></a><a id="5484" href="README.Design.Hierarchies.html#5484" class="Record">IsPreorder</a> <a id="5495" class="Symbol">{</a><a id="5496" href="README.Design.Hierarchies.html#5496" class="Bound">A</a> <a id="5498" class="Symbol">:</a> <a id="5500" class="PrimitiveType">Set</a> <a id="5504" href="README.Design.Hierarchies.html#487" class="Generalizable">a</a><a id="5505" class="Symbol">}</a>
+                  <a id="5525" class="Symbol">(</a><a id="5526" href="README.Design.Hierarchies.html#5526" class="Bound Operator">_≈_</a> <a id="5530" class="Symbol">:</a> <a id="5532" href="README.Design.Hierarchies.html#2357" class="Function">Rel</a> <a id="5536" href="README.Design.Hierarchies.html#5496" class="Bound">A</a> <a id="5538" href="README.Design.Hierarchies.html#491" class="Generalizable">ℓ</a><a id="5539" class="Symbol">)</a> <a id="5541" class="Comment">-- The underlying equality.</a>
+                  <a id="5587" class="Symbol">(</a><a id="5588" href="README.Design.Hierarchies.html#5588" class="Bound Operator">_∼_</a> <a id="5592" class="Symbol">:</a> <a id="5594" href="README.Design.Hierarchies.html#2357" class="Function">Rel</a> <a id="5598" href="README.Design.Hierarchies.html#5496" class="Bound">A</a> <a id="5600" href="README.Design.Hierarchies.html#491" class="Generalizable">ℓ</a><a id="5601" class="Symbol">)</a> <a id="5603" class="Comment">-- The relation.</a>
+                  <a id="5638" class="Symbol">:</a> <a id="5640" class="PrimitiveType">Set</a> <a id="5644" class="Symbol">(</a><a id="5645" href="README.Design.Hierarchies.html#5504" class="Bound">a</a> <a id="5647" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="5649" href="README.Design.Hierarchies.html#5538" class="Bound">ℓ</a><a id="5650" class="Symbol">)</a> <a id="5652" class="Keyword">where</a>
+  <a id="5660" class="Keyword">field</a>
+    <a id="IsPreorder.isEquivalence"></a><a id="5670" href="README.Design.Hierarchies.html#5670" class="Field">isEquivalence</a> <a id="5684" class="Symbol">:</a> <a id="5686" href="README.Design.Hierarchies.html#4473" class="Record">IsEquivalence</a> <a id="5700" href="README.Design.Hierarchies.html#5526" class="Bound Operator">_≈_</a>
+    <a id="IsPreorder.refl"></a><a id="5708" href="README.Design.Hierarchies.html#5708" class="Field">refl</a>          <a id="5722" class="Symbol">:</a> <a id="5724" href="README.Design.Hierarchies.html#2846" class="Function">Reflexive</a> <a id="5734" href="README.Design.Hierarchies.html#5588" class="Bound Operator">_∼_</a>
+    <a id="IsPreorder.trans"></a><a id="5742" href="README.Design.Hierarchies.html#5742" class="Field">trans</a>         <a id="5756" class="Symbol">:</a> <a id="5758" href="README.Design.Hierarchies.html#2974" class="Function">Transitive</a> <a id="5769" href="README.Design.Hierarchies.html#5588" class="Bound Operator">_∼_</a>
+
+  <a id="5776" class="Keyword">module</a> <a id="Eq"></a><a id="5783" href="README.Design.Hierarchies.html#5783" class="Module">Eq</a> <a id="5786" class="Symbol">=</a> <a id="5788" href="README.Design.Hierarchies.html#4473" class="Module">IsEquivalence</a> <a id="5802" href="README.Design.Hierarchies.html#5670" class="Field">isEquivalence</a>
+
+<a id="5817" class="Comment">-- The IsEquivalence field in IsPreorder is not opened publicly because</a>
+<a id="5889" class="Comment">-- the `refl` and `trans` fields would clash with those in the</a>
+<a id="5952" class="Comment">-- `IsPreorder` record. Instead we provide an internal module and the</a>
+<a id="6022" class="Comment">-- equality fields can be accessed via `Eq.refl` and `Eq.trans`.</a>
+
+
+<a id="6089" class="Comment">------------------------------------------------------------------------</a>
+<a id="6162" class="Comment">-- X.Bundles</a>
+
+<a id="6176" class="Comment">-- Although structures are useful for describing the properties of a</a>
+<a id="6245" class="Comment">-- given set of operations/relations, sometimes you don&#39;t require the</a>
+<a id="6315" class="Comment">-- properties to hold for a given set of objects but only that such a</a>
+<a id="6385" class="Comment">-- set of objects exists. In this case bundles are what you&#39;re after.</a>
+
+<a id="6456" class="Comment">-- Each structure has a corresponding bundle that include the structure</a>
+<a id="6528" class="Comment">-- along with the corresponding sets, relations and operations as</a>
+<a id="6594" class="Comment">-- fields.</a>
+
+<a id="6606" class="Keyword">record</a> <a id="Setoid"></a><a id="6613" href="README.Design.Hierarchies.html#6613" class="Record">Setoid</a> <a id="6620" href="README.Design.Hierarchies.html#6620" class="Bound">c</a> <a id="6622" href="README.Design.Hierarchies.html#6622" class="Bound">ℓ</a> <a id="6624" class="Symbol">:</a> <a id="6626" class="PrimitiveType">Set</a> <a id="6630" class="Symbol">(</a><a id="6631" href="Agda.Primitive.html#606" class="Primitive">suc</a> <a id="6635" class="Symbol">(</a><a id="6636" href="README.Design.Hierarchies.html#6620" class="Bound">c</a> <a id="6638" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="6640" href="README.Design.Hierarchies.html#6622" class="Bound">ℓ</a><a id="6641" class="Symbol">))</a> <a id="6644" class="Keyword">where</a>
+  <a id="6652" class="Keyword">field</a>
+    <a id="Setoid.Carrier"></a><a id="6662" href="README.Design.Hierarchies.html#6662" class="Field">Carrier</a>       <a id="6676" class="Symbol">:</a> <a id="6678" class="PrimitiveType">Set</a> <a id="6682" href="README.Design.Hierarchies.html#6620" class="Bound">c</a>
+    <a id="Setoid._≈_"></a><a id="6688" href="README.Design.Hierarchies.html#6688" class="Field Operator">_≈_</a>           <a id="6702" class="Symbol">:</a> <a id="6704" href="README.Design.Hierarchies.html#2357" class="Function">Rel</a> <a id="6708" href="README.Design.Hierarchies.html#6662" class="Field">Carrier</a> <a id="6716" href="README.Design.Hierarchies.html#6622" class="Bound">ℓ</a>
+    <a id="Setoid.isEquivalence"></a><a id="6722" href="README.Design.Hierarchies.html#6722" class="Field">isEquivalence</a> <a id="6736" class="Symbol">:</a> <a id="6738" href="README.Design.Hierarchies.html#4473" class="Record">IsEquivalence</a> <a id="6752" href="README.Design.Hierarchies.html#6688" class="Field Operator">_≈_</a>
+
+  <a id="6759" class="Keyword">open</a> <a id="6764" href="README.Design.Hierarchies.html#4473" class="Module">IsEquivalence</a> <a id="6778" href="README.Design.Hierarchies.html#6722" class="Field">isEquivalence</a> <a id="6792" class="Keyword">public</a>
+
+<a id="6800" class="Comment">-- The contents of the structure is always re-exported publicly,</a>
+<a id="6865" class="Comment">-- providing access to its fields.</a>
+
+<a id="6901" class="Keyword">record</a> <a id="Magma"></a><a id="6908" href="README.Design.Hierarchies.html#6908" class="Record">Magma</a> <a id="6914" href="README.Design.Hierarchies.html#6914" class="Bound">c</a> <a id="6916" href="README.Design.Hierarchies.html#6916" class="Bound">ℓ</a> <a id="6918" class="Symbol">:</a> <a id="6920" class="PrimitiveType">Set</a> <a id="6924" class="Symbol">(</a><a id="6925" href="Agda.Primitive.html#606" class="Primitive">suc</a> <a id="6929" class="Symbol">(</a><a id="6930" href="README.Design.Hierarchies.html#6914" class="Bound">c</a> <a id="6932" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="6934" href="README.Design.Hierarchies.html#6916" class="Bound">ℓ</a><a id="6935" class="Symbol">))</a> <a id="6938" class="Keyword">where</a>
+  <a id="6946" class="Keyword">infixl</a> <a id="6953" class="Number">7</a> <a id="6955" href="README.Design.Hierarchies.html#7034" class="Field Operator">_∙_</a>
+  <a id="6961" class="Keyword">infix</a>  <a id="6968" class="Number">4</a> <a id="6970" href="README.Design.Hierarchies.html#7006" class="Field Operator">_≈_</a>
+  <a id="6976" class="Keyword">field</a>
+    <a id="Magma.Carrier"></a><a id="6986" href="README.Design.Hierarchies.html#6986" class="Field">Carrier</a> <a id="6994" class="Symbol">:</a> <a id="6996" class="PrimitiveType">Set</a> <a id="7000" href="README.Design.Hierarchies.html#6914" class="Bound">c</a>
+    <a id="Magma._≈_"></a><a id="7006" href="README.Design.Hierarchies.html#7006" class="Field Operator">_≈_</a>     <a id="7014" class="Symbol">:</a> <a id="7016" href="README.Design.Hierarchies.html#2357" class="Function">Rel</a> <a id="7020" href="README.Design.Hierarchies.html#6986" class="Field">Carrier</a> <a id="7028" href="README.Design.Hierarchies.html#6916" class="Bound">ℓ</a>
+    <a id="Magma._∙_"></a><a id="7034" href="README.Design.Hierarchies.html#7034" class="Field Operator">_∙_</a>     <a id="7042" class="Symbol">:</a> <a id="7044" href="README.Design.Hierarchies.html#2523" class="Function">Op₂</a> <a id="7048" href="README.Design.Hierarchies.html#6986" class="Field">Carrier</a>
+    <a id="Magma.isMagma"></a><a id="7060" href="README.Design.Hierarchies.html#7060" class="Field">isMagma</a> <a id="7068" class="Symbol">:</a> <a id="7070" href="README.Design.Hierarchies.html#4772" class="Record">IsMagma</a> <a id="7078" href="README.Design.Hierarchies.html#7006" class="Field Operator">_≈_</a> <a id="7082" href="README.Design.Hierarchies.html#7034" class="Field Operator">_∙_</a>
+
+  <a id="7089" class="Keyword">open</a> <a id="7094" href="README.Design.Hierarchies.html#4772" class="Module">IsMagma</a> <a id="7102" href="README.Design.Hierarchies.html#7060" class="Field">isMagma</a> <a id="7110" class="Keyword">public</a>
+
+
+<a id="7119" class="Keyword">record</a> <a id="Semigroup"></a><a id="7126" href="README.Design.Hierarchies.html#7126" class="Record">Semigroup</a> <a id="7136" class="Symbol">:</a> <a id="7138" class="PrimitiveType">Set</a> <a id="7142" class="Symbol">(</a><a id="7143" href="Agda.Primitive.html#606" class="Primitive">suc</a> <a id="7147" class="Symbol">(</a><a id="7148" href="README.Design.Hierarchies.html#7148" class="Bound">a</a> <a id="7150" href="Agda.Primitive.html#636" class="Primitive Operator">⊔</a> <a id="7152" href="README.Design.Hierarchies.html#7152" class="Bound">ℓ</a><a id="7153" class="Symbol">))</a> <a id="7156" class="Keyword">where</a>
+  <a id="7164" class="Keyword">infixl</a> <a id="7171" class="Number">7</a> <a id="7173" href="README.Design.Hierarchies.html#7260" class="Field Operator">_∙_</a>
+  <a id="7179" class="Keyword">infix</a>  <a id="7186" class="Number">4</a> <a id="7188" href="README.Design.Hierarchies.html#7228" class="Field Operator">_≈_</a>
+  <a id="7194" class="Keyword">field</a>
+    <a id="Semigroup.Carrier"></a><a id="7204" href="README.Design.Hierarchies.html#7204" class="Field">Carrier</a>     <a id="7216" class="Symbol">:</a> <a id="7218" class="PrimitiveType">Set</a> <a id="7222" href="README.Design.Hierarchies.html#7148" class="Bound">a</a>
+    <a id="Semigroup._≈_"></a><a id="7228" href="README.Design.Hierarchies.html#7228" class="Field Operator">_≈_</a>         <a id="7240" class="Symbol">:</a> <a id="7242" href="README.Design.Hierarchies.html#2357" class="Function">Rel</a> <a id="7246" href="README.Design.Hierarchies.html#7204" class="Field">Carrier</a> <a id="7254" href="README.Design.Hierarchies.html#7152" class="Bound">ℓ</a>
+    <a id="Semigroup._∙_"></a><a id="7260" href="README.Design.Hierarchies.html#7260" class="Field Operator">_∙_</a>         <a id="7272" class="Symbol">:</a> <a id="7274" href="README.Design.Hierarchies.html#2523" class="Function">Op₂</a> <a id="7278" href="README.Design.Hierarchies.html#7204" class="Field">Carrier</a>
+    <a id="Semigroup.isSemigroup"></a><a id="7290" href="README.Design.Hierarchies.html#7290" class="Field">isSemigroup</a> <a id="7302" class="Symbol">:</a> <a id="7304" href="README.Design.Hierarchies.html#4933" class="Record">IsSemigroup</a> <a id="7316" href="README.Design.Hierarchies.html#7228" class="Field Operator">_≈_</a> <a id="7320" href="README.Design.Hierarchies.html#7260" class="Field Operator">_∙_</a>
+
+  <a id="7327" class="Keyword">open</a> <a id="7332" href="README.Design.Hierarchies.html#4933" class="Module">IsSemigroup</a> <a id="7344" href="README.Design.Hierarchies.html#7290" class="Field">isSemigroup</a> <a id="7356" class="Keyword">public</a>
+
+  <a id="Semigroup.magma"></a><a id="7366" href="README.Design.Hierarchies.html#7366" class="Function">magma</a> <a id="7372" class="Symbol">:</a> <a id="7374" href="README.Design.Hierarchies.html#6908" class="Record">Magma</a> <a id="7380" href="README.Design.Hierarchies.html#7148" class="Bound">a</a> <a id="7382" href="README.Design.Hierarchies.html#7152" class="Bound">ℓ</a>
+  <a id="7386" href="README.Design.Hierarchies.html#7366" class="Function">magma</a> <a id="7392" class="Symbol">=</a> <a id="7394" class="Keyword">record</a> <a id="7401" class="Symbol">{</a> <a id="7403" href="README.Design.Hierarchies.html#7060" class="Field">isMagma</a> <a id="7411" class="Symbol">=</a> <a id="7413" href="README.Design.Hierarchies.html#5015" class="Function">isMagma</a> <a id="7421" class="Symbol">}</a>
+
+<a id="7424" class="Comment">-- Note that the Semigroup record does not include a Magma field.</a>
+<a id="7490" class="Comment">-- Instead the Semigroup record includes a &quot;repackaging function&quot;</a>
+<a id="7556" class="Comment">-- semigroup which converts a Magma to a Semigroup.</a>
+
+<a id="7609" class="Comment">-- The above setup may seem a bit complicated, but it has been arrived</a>
+<a id="7680" class="Comment">-- at after a lot of thought and is designed to both make the hierarchies</a>
+<a id="7754" class="Comment">-- easy to work with whilst also providing enough flexibility for the</a>
+<a id="7824" class="Comment">-- different applications of their concepts.</a>
+
+<a id="7870" class="Comment">-- NOTE: bundles for the function hierarchy are designed a little</a>
+<a id="7936" class="Comment">-- differently, as a function with an unknown domain an codomain is</a>
+<a id="8004" class="Comment">-- of little use.</a>
+
+<a id="8023" class="Comment">------------------------------------------------------------------------</a>
+<a id="8096" class="Comment">-- Other hierarchy modules</a>
+<a id="8123" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="8197" class="Comment">------------------------------------------------------------------------</a>
+<a id="8270" class="Comment">-- X.Consequences</a>
+
+<a id="8289" class="Comment">-- The &quot;consequences&quot; modules contains proofs for how the different</a>
+<a id="8357" class="Comment">-- types in the `Definitions` module relate to each other. For example:</a>
+<a id="8429" class="Comment">-- that any total relation is reflexive or that commutativity allows</a>
+<a id="8498" class="Comment">-- one to translate between left and right identities.</a>
+
+<a id="total⇒refl"></a><a id="8554" href="README.Design.Hierarchies.html#8554" class="MissingDefinition Postulate">total⇒refl</a><a id="8564" class="MissingDefinition"> </a><a id="8565" class="MissingDefinition Symbol">:</a><a id="8566" class="MissingDefinition"> </a><a id="8567" class="MissingDefinition Symbol">∀</a><a id="8568" class="MissingDefinition"> </a><a id="8569" class="MissingDefinition Symbol">{</a><a id="8570" href="README.Design.Hierarchies.html#8570" class="MissingDefinition Bound Operator">_∼_</a><a id="8573" class="MissingDefinition"> </a><a id="8574" class="MissingDefinition Symbol">:</a><a id="8575" class="MissingDefinition"> </a><a id="8576" href="README.Design.Hierarchies.html#2357" class="MissingDefinition Function">Rel</a><a id="8579" class="MissingDefinition"> </a><a id="8580" href="README.Design.Hierarchies.html#505" class="MissingDefinition Generalizable">A</a><a id="8581" class="MissingDefinition"> </a><a id="8582" href="README.Design.Hierarchies.html#491" class="MissingDefinition Generalizable">ℓ</a><a id="8583" class="MissingDefinition Symbol">}</a><a id="8584" class="MissingDefinition"> </a><a id="8585" class="MissingDefinition Symbol">→</a><a id="8586" class="MissingDefinition"> </a><a id="8587" href="README.Design.Hierarchies.html#3055" class="MissingDefinition Function">Total</a><a id="8592" class="MissingDefinition"> </a><a id="8593" href="README.Design.Hierarchies.html#8570" class="MissingDefinition Bound Operator">_∼_</a><a id="8596" class="MissingDefinition"> </a><a id="8597" class="MissingDefinition Symbol">→</a><a id="8598" class="MissingDefinition"> </a><a id="8599" href="README.Design.Hierarchies.html#2846" class="MissingDefinition Function">Reflexive</a><a id="8608" class="MissingDefinition"> </a><a id="8609" href="README.Design.Hierarchies.html#8570" class="MissingDefinition Bound Operator">_∼_</a>
+
+<a id="idˡ+comm⇒idʳ"></a><a id="8614" href="README.Design.Hierarchies.html#8614" class="MissingDefinition Postulate">idˡ+comm⇒idʳ</a><a id="8626" class="MissingDefinition"> </a><a id="8627" class="MissingDefinition Symbol">:</a><a id="8628" class="MissingDefinition"> </a><a id="8629" class="MissingDefinition Symbol">∀</a><a id="8630" class="MissingDefinition"> </a><a id="8631" class="MissingDefinition Symbol">{</a><a id="8632" href="README.Design.Hierarchies.html#8632" class="MissingDefinition Bound Operator">_≈_</a><a id="8635" class="MissingDefinition"> </a><a id="8636" class="MissingDefinition Symbol">:</a><a id="8637" class="MissingDefinition"> </a><a id="8638" href="README.Design.Hierarchies.html#2357" class="MissingDefinition Function">Rel</a><a id="8641" class="MissingDefinition"> </a><a id="8642" href="README.Design.Hierarchies.html#505" class="MissingDefinition Generalizable">A</a><a id="8643" class="MissingDefinition"> </a><a id="8644" href="README.Design.Hierarchies.html#491" class="MissingDefinition Generalizable">ℓ</a><a id="8645" class="MissingDefinition Symbol">}</a><a id="8646" class="MissingDefinition"> </a><a id="8647" class="MissingDefinition Symbol">{</a><a id="8648" href="README.Design.Hierarchies.html#8648" class="MissingDefinition Bound">e</a><a id="8649" class="MissingDefinition"> </a><a id="8650" href="README.Design.Hierarchies.html#8650" class="MissingDefinition Bound Operator">_∙_</a><a id="8653" class="MissingDefinition Symbol">}</a><a id="8654" class="MissingDefinition"> </a><a id="8655" class="MissingDefinition Symbol">→</a><a id="8656" class="MissingDefinition"> </a><a id="8657" href="README.Design.Hierarchies.html#3375" class="MissingDefinition Function">Commutative</a><a id="8668" class="MissingDefinition"> </a><a id="8669" href="README.Design.Hierarchies.html#8632" class="MissingDefinition Bound Operator">_≈_</a><a id="8672" class="MissingDefinition"> </a><a id="8673" href="README.Design.Hierarchies.html#8650" class="MissingDefinition Bound Operator">_∙_</a><a id="8676" class="MissingDefinition"> </a><a id="8677" class="MissingDefinition Symbol">→</a>
+               <a id="8694" href="README.Design.Hierarchies.html#3462" class="MissingDefinition Function">LeftIdentity</a><a id="8706" class="MissingDefinition"> </a><a id="8707" href="README.Design.Hierarchies.html#8632" class="MissingDefinition Bound Operator">_≈_</a><a id="8710" class="MissingDefinition"> </a><a id="8711" href="README.Design.Hierarchies.html#8648" class="MissingDefinition Bound">e</a><a id="8712" class="MissingDefinition"> </a><a id="8713" href="README.Design.Hierarchies.html#8650" class="MissingDefinition Bound Operator">_∙_</a><a id="8716" class="MissingDefinition"> </a><a id="8717" class="MissingDefinition Symbol">→</a><a id="8718" class="MissingDefinition">  </a><a id="8720" href="README.Design.Hierarchies.html#3549" class="MissingDefinition Function">RightIdentity</a><a id="8733" class="MissingDefinition"> </a><a id="8734" href="README.Design.Hierarchies.html#8632" class="MissingDefinition Bound Operator">_≈_</a><a id="8737" class="MissingDefinition"> </a><a id="8738" href="README.Design.Hierarchies.html#8648" class="MissingDefinition Bound">e</a><a id="8739" class="MissingDefinition"> </a><a id="8740" href="README.Design.Hierarchies.html#8650" class="MissingDefinition Bound Operator">_∙_</a>
+
+<a id="8745" class="Comment">------------------------------------------------------------------------</a>
+<a id="8818" class="Comment">-- X.Construct</a>
+
+<a id="8834" class="Comment">-- The &quot;construct&quot; folder contains various generic ways of constructing</a>
+<a id="8906" class="Comment">-- new instances of the hierarchy. For example</a>
+
+<a id="8954" class="Keyword">import</a> <a id="8961" href="Relation.Binary.Construct.Intersection.html" class="Module">Relation.Binary.Construct.Intersection</a>
+
+<a id="9001" class="Comment">-- takes in two relations and forms the new relation that says two</a>
+<a id="9068" class="Comment">-- elements are only related if they are related via both of the</a>
+<a id="9133" class="Comment">-- original relations.</a>
+
+<a id="9157" class="Comment">-- These files are layed out in four parts, mimicking the main modules</a>
+<a id="9228" class="Comment">-- of the hierarchy itself. First they define the new relation, then</a>
+<a id="9297" class="Comment">-- subsequently how the definitions, then structures and finally</a>
+<a id="9362" class="Comment">-- bundles can be translated across to it.</a>
+
+<a id="9406" class="Comment">------------------------------------------------------------------------</a>
+<a id="9479" class="Comment">-- X.Morphisms</a>
+
+<a id="9495" class="Comment">-- The `Morphisms` folder is a sub-hierarchy containing relationships</a>
+<a id="9565" class="Comment">-- such homomorphisms, monomorphisms and isomorphisms between the</a>
+<a id="9631" class="Comment">-- structures and bundles in the hierarchy.</a>
+
+<a id="9676" class="Comment">------------------------------------------------------------------------</a>
+<a id="9749" class="Comment">-- X.Properties</a>
+
+<a id="9766" class="Comment">-- The `Properties` folder contains additional proofs about the theory</a>
+<a id="9837" class="Comment">-- of each bundle. They are usually designed so as a bundle&#39;s</a>
+<a id="9899" class="Comment">-- `Properties` file re-exports the contents of the `Properties` files</a>
+<a id="9970" class="Comment">-- above it in the hierarchy. For example</a>
+<a id="10012" class="Comment">-- `Algebra.Properties.AbelianGroup` re-exports the contents of</a>
+<a id="10076" class="Comment">-- `Algebra.Properties.Group`.</a>
+</pre></body></html>

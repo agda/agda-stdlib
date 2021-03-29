@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.List.Relation.Unary.Unique.DecSetoid</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Lists made up entirely of unique elements (setoid equality)</a>
+<a id="169" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="243" class="Symbol">{-#</a> <a id="247" class="Keyword">OPTIONS</a> <a id="255" class="Pragma">--without-K</a> <a id="267" class="Pragma">--safe</a> <a id="274" class="Symbol">#-}</a>
+
+<a id="279" class="Keyword">open</a> <a id="284" class="Keyword">import</a> <a id="291" href="Relation.Binary.html" class="Module">Relation.Binary</a> <a id="307" class="Keyword">using</a> <a id="313" class="Symbol">(</a><a id="314" href="Relation.Binary.Bundles.html#1391" class="Record">DecSetoid</a><a id="323" class="Symbol">)</a>
+<a id="325" class="Keyword">import</a> <a id="332" href="Data.List.Relation.Unary.AllPairs.html" class="Module">Data.List.Relation.Unary.AllPairs</a> <a id="366" class="Symbol">as</a> <a id="369" class="Module">AllPairs</a>
+<a id="378" class="Keyword">open</a> <a id="383" class="Keyword">import</a> <a id="390" href="Relation.Unary.html" class="Module">Relation.Unary</a> <a id="405" class="Keyword">using</a> <a id="411" class="Symbol">(</a><a id="412" href="Relation.Unary.html#3536" class="Function">Decidable</a><a id="421" class="Symbol">)</a>
+<a id="423" class="Keyword">open</a> <a id="428" class="Keyword">import</a> <a id="435" href="Relation.Nullary.Negation.html" class="Module">Relation.Nullary.Negation</a> <a id="461" class="Keyword">using</a> <a id="467" class="Symbol">(</a><a id="468" href="Relation.Nullary.Negation.Core.html#1355" class="Function">¬?</a><a id="470" class="Symbol">)</a>
+
+<a id="473" class="Keyword">module</a> <a id="480" href="Data.List.Relation.Unary.Unique.DecSetoid.html" class="Module">Data.List.Relation.Unary.Unique.DecSetoid</a>
+  <a id="524" class="Symbol">{</a><a id="525" href="Data.List.Relation.Unary.Unique.DecSetoid.html#525" class="Bound">a</a> <a id="527" href="Data.List.Relation.Unary.Unique.DecSetoid.html#527" class="Bound">ℓ</a><a id="528" class="Symbol">}</a> <a id="530" class="Symbol">(</a><a id="531" href="Data.List.Relation.Unary.Unique.DecSetoid.html#531" class="Bound">DS</a> <a id="534" class="Symbol">:</a> <a id="536" href="Relation.Binary.Bundles.html#1391" class="Record">DecSetoid</a> <a id="546" href="Data.List.Relation.Unary.Unique.DecSetoid.html#525" class="Bound">a</a> <a id="548" href="Data.List.Relation.Unary.Unique.DecSetoid.html#527" class="Bound">ℓ</a><a id="549" class="Symbol">)</a> <a id="551" class="Keyword">where</a>
+
+<a id="558" class="Keyword">open</a> <a id="563" href="Relation.Binary.Bundles.html#1391" class="Module">DecSetoid</a> <a id="573" href="Data.List.Relation.Unary.Unique.DecSetoid.html#531" class="Bound">DS</a> <a id="576" class="Keyword">renaming</a> <a id="585" class="Symbol">(</a>setoid <a id="593" class="Symbol">to</a> S<a id="597" class="Symbol">)</a>
+
+<a id="600" class="Comment">------------------------------------------------------------------------</a>
+<a id="673" class="Comment">-- Re-export setoid definition</a>
+
+<a id="705" class="Keyword">open</a> <a id="710" class="Keyword">import</a> <a id="717" href="Data.List.Relation.Unary.Unique.Setoid.html" class="Module">Data.List.Relation.Unary.Unique.Setoid</a> <a id="756" href="Data.List.Relation.Unary.Unique.DecSetoid.html#596" class="Function">S</a> <a id="758" class="Keyword">public</a>
+
+<a id="766" class="Comment">------------------------------------------------------------------------</a>
+<a id="839" class="Comment">-- Additional properties</a>
+
+<a id="unique?"></a><a id="865" href="Data.List.Relation.Unary.Unique.DecSetoid.html#865" class="Function">unique?</a> <a id="873" class="Symbol">:</a> <a id="875" href="Relation.Unary.html#3536" class="Function">Decidable</a> <a id="885" href="Data.List.Relation.Unary.Unique.Setoid.html#719" class="Datatype">Unique</a>
+<a id="892" href="Data.List.Relation.Unary.Unique.DecSetoid.html#865" class="Function">unique?</a> <a id="900" class="Symbol">=</a> <a id="902" href="Data.List.Relation.Unary.AllPairs.html#2422" class="Function">AllPairs.allPairs?</a> <a id="921" class="Symbol">(λ</a> <a id="924" href="Data.List.Relation.Unary.Unique.DecSetoid.html#924" class="Bound">x</a> <a id="926" href="Data.List.Relation.Unary.Unique.DecSetoid.html#926" class="Bound">y</a> <a id="928" class="Symbol">→</a> <a id="930" href="Relation.Nullary.Negation.Core.html#1355" class="Function">¬?</a> <a id="933" class="Symbol">(</a><a id="934" href="Data.List.Relation.Unary.Unique.DecSetoid.html#924" class="Bound">x</a> <a id="936" href="Relation.Binary.Structures.html#1921" class="Function Operator">≟</a> <a id="938" href="Data.List.Relation.Unary.Unique.DecSetoid.html#926" class="Bound">y</a><a id="939" class="Symbol">))</a>
+</pre></body></html>
