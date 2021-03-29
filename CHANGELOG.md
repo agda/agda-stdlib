@@ -37,6 +37,9 @@ Non-backwards compatible changes
   * The types of the `clause` and `absurd-clause` constructors of the
     `Clause` datatype now take an extra argument `(tel : Telescope)`,
     where `Telescope = List (String × Arg Type)`.
+  * The following constructors have been added to the `Sort` datatype:
+    `prop : (t : Term) → Sort`, `propLit : (n : Nat) → Sort`, and
+    `inf : (n : Nat) → Sort`.
 
   See the release notes of Agda 2.6.2 for more information.
 

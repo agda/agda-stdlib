@@ -237,6 +237,14 @@ set-injective refl = refl
 slit-injective : ∀ {x y} → Sort.lit x ≡ lit y → x ≡ y
 slit-injective refl = refl
 
+prop-injective : ∀ {x y} → prop x ≡ prop y → x ≡ y
+prop-injective refl = refl
+
+propLit-injective : ∀ {x y} → propLit x ≡ propLit y → x ≡ y
+propLit-injective refl = refl
+
+inf-injective : ∀ {x y} → inf x ≡ inf y → x ≡ y
+inf-injective refl = refl
 
 var x args ≟ var x′ args′ =
   Dec.map′ (uncurry (cong₂ var)) var-injective (x ℕ.≟ x′ ×-dec args ≟-Args args′)
@@ -349,13 +357,40 @@ unknown     ≟ pat-lam _ _ = no λ()
 
 set t   ≟-Sort set t′  = Dec.map′ (cong set) set-injective (t ≟ t′)
 lit n   ≟-Sort lit n′  = Dec.map′ (cong lit) slit-injective (n ℕ.≟ n′)
+prop t   ≟-Sort prop t′  = Dec.map′ (cong prop) prop-injective (t ≟ t′)
+propLit n   ≟-Sort propLit n′  = Dec.map′ (cong propLit) propLit-injective (n ℕ.≟ n′)
+inf n   ≟-Sort inf n′  = Dec.map′ (cong inf) inf-injective (n ℕ.≟ n′)
 unknown ≟-Sort unknown = yes refl
 set _   ≟-Sort lit _   = no λ()
+set _   ≟-Sort prop _   = no λ()
+set _   ≟-Sort propLit _   = no λ()
+set _   ≟-Sort inf _   = no λ()
 set _   ≟-Sort unknown = no λ()
 lit _   ≟-Sort set _   = no λ()
+lit _   ≟-Sort prop _   = no λ()
+lit _   ≟-Sort propLit _   = no λ()
+lit _   ≟-Sort inf _   = no λ()
 lit _   ≟-Sort unknown = no λ()
+prop _  ≟-Sort set _   = no λ()
+prop _  ≟-Sort lit _   = no λ()
+prop _  ≟-Sort propLit _   = no λ()
+prop _  ≟-Sort inf _   = no λ()
+prop _  ≟-Sort unknown   = no λ()
+propLit _  ≟-Sort set _   = no λ()
+propLit _  ≟-Sort lit _   = no λ()
+propLit _  ≟-Sort prop _   = no λ()
+propLit _  ≟-Sort inf _   = no λ()
+propLit _  ≟-Sort unknown   = no λ()
+inf _  ≟-Sort set _   = no λ()
+inf _  ≟-Sort lit _   = no λ()
+inf _  ≟-Sort prop _   = no λ()
+inf _  ≟-Sort propLit _   = no λ()
+inf _  ≟-Sort unknown   = no λ()
 unknown ≟-Sort set _   = no λ()
 unknown ≟-Sort lit _   = no λ()
+unknown ≟-Sort prop _   = no λ()
+unknown ≟-Sort propLit _   = no λ()
+unknown ≟-Sort inf _   = no λ()
 
 
 pat-con-injective₁ : ∀ {c c′ args args′} → Pattern.con c args ≡ con c′ args′ → c ≡ c′

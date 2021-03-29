@@ -7,6 +7,12 @@ for file in $( find src -name "*.agda" | sort ); do
     if [[ ! $i == *Unsafe \
        && ! $i == Reflection \
        && ! $i == IO* \
-       && ! $i == *TrustMe ]]; then echo "import $i" >> safe.agda; fi
+       && ! $i == *TrustMe \
+       && ! $i == Debug* \
+       && ! $i == Codata.Musical* \
+       && ! $i == Foreign* \
+       && ! $i == System* \
+       && ! $i == Text.Pretty* \
+       ]]; then echo "import $i" >> safe.agda; fi
   fi
 done

@@ -111,9 +111,12 @@ module _ (actions : Actions) where
   traverseTel Γ ((x , ty) ∷ tel) =
     _∷_ ∘ (x ,_) <$> traverseArg Γ ty ⊛ traverseTel ((x , ty) ∷cxt Γ) tel
 
-  traverseSort Γ (Sort.set t)   = Sort.set <$> traverseTerm Γ t
-  traverseSort Γ t@(Sort.lit _) = pure t
-  traverseSort Γ t@Sort.unknown = pure t
+  traverseSort Γ (Sort.set t)       = Sort.set <$> traverseTerm Γ t
+  traverseSort Γ t@(Sort.lit _)     = pure t
+  traverseSort Γ (Sort.prop t)      = Sort.prop <$> traverseTerm Γ t
+  traverseSort Γ t@(Sort.propLit _) = pure t
+  traverseSort Γ t@(Sort.inf _)     = pure t
+  traverseSort Γ t@Sort.unknown     = pure t
 
   traversePattern Γ (Pattern.con c ps) = Pattern.con <$> onCon Γ c ⊛ traversePats Γ ps
   traversePattern Γ (Pattern.dot t)    = Pattern.dot <$> traverseTerm Γ t
