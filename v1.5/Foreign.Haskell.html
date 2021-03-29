@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Foreign.Haskell</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Type(s) used (only) when calling out to Haskell via the FFI</a>
+<a id="169" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="243" class="Symbol">{-#</a> <a id="247" class="Keyword">OPTIONS</a> <a id="255" class="Pragma">--without-K</a> <a id="267" class="Symbol">#-}</a>
+
+<a id="272" class="Keyword">module</a> <a id="279" href="Foreign.Haskell.html" class="Module">Foreign.Haskell</a> <a id="295" class="Keyword">where</a>
+
+<a id="302" class="Keyword">open</a> <a id="307" class="Keyword">import</a> <a id="314" href="Level.html" class="Module">Level</a>
+
+<a id="321" class="Comment">------------------------------------------------------------------------</a>
+<a id="394" class="Comment">-- Pairs</a>
+
+<a id="404" class="Keyword">open</a> <a id="409" class="Keyword">import</a> <a id="416" href="Foreign.Haskell.Pair.html" class="Module">Foreign.Haskell.Pair</a> <a id="437" class="Keyword">public</a>
+  <a id="446" class="Keyword">renaming</a>
+  <a id="457" class="Symbol">(</a> <a id="459" href="Foreign.Haskell.Pair.html#863" class="Function">toForeign</a>   <a id="471" class="Symbol">to</a> <a id="Pair.toForeign"></a><a id="474" href="Foreign.Haskell.html#474" class="Function">toForeignPair</a>
+  <a id="490" class="Symbol">;</a> <a id="492" href="Foreign.Haskell.Pair.html#921" class="Function">fromForeign</a> <a id="504" class="Symbol">to</a> <a id="Pair.fromForeign"></a><a id="507" href="Foreign.Haskell.html#507" class="Function">fromForeignPair</a>
+  <a id="525" class="Symbol">)</a>
+
+<a id="528" class="Comment">------------------------------------------------------------------------</a>
+<a id="601" class="Comment">-- Sums</a>
+
+<a id="610" class="Keyword">open</a> <a id="615" class="Keyword">import</a> <a id="622" href="Foreign.Haskell.Either.html" class="Module">Foreign.Haskell.Either</a> <a id="645" class="Keyword">public</a>
+  <a id="654" class="Keyword">renaming</a>
+  <a id="665" class="Symbol">(</a> <a id="667" href="Foreign.Haskell.Either.html#876" class="Function">toForeign</a>   <a id="679" class="Symbol">to</a> <a id="Either.toForeign"></a><a id="682" href="Foreign.Haskell.html#682" class="Function">toForeignEither</a>
+  <a id="700" class="Symbol">;</a> <a id="702" href="Foreign.Haskell.Either.html#965" class="Function">fromForeign</a> <a id="714" class="Symbol">to</a> <a id="Either.fromForeign"></a><a id="717" href="Foreign.Haskell.html#717" class="Function">fromForeignEither</a>
+  <a id="737" class="Symbol">)</a>
+
+<a id="740" class="Comment">------------------------------------------------------------------------</a>
+<a id="813" class="Comment">-- Maybe</a>
+
+<a id="823" class="Keyword">open</a> <a id="828" class="Keyword">import</a> <a id="835" href="Foreign.Haskell.Maybe.html" class="Module">Foreign.Haskell.Maybe</a> <a id="857" class="Keyword">public</a>
+  <a id="866" class="Keyword">renaming</a>
+  <a id="877" class="Symbol">(</a> <a id="879" href="Foreign.Haskell.Maybe.html#797" class="Function">toForeign</a>   <a id="891" class="Symbol">to</a> <a id="Maybe.toForeign"></a><a id="894" href="Foreign.Haskell.html#894" class="Function">toForeignMaybe</a>
+  <a id="911" class="Symbol">;</a> <a id="913" href="Foreign.Haskell.Maybe.html#889" class="Function">fromForeign</a> <a id="925" class="Symbol">to</a> <a id="Maybe.fromForeign"></a><a id="928" href="Foreign.Haskell.html#928" class="Function">fromForeignMaybe</a>
+  <a id="947" class="Symbol">)</a>
+
+<a id="950" class="Comment">------------------------------------------------------------------------</a>
+<a id="1023" class="Comment">-- DEPRECATED NAMES</a>
+<a id="1043" class="Comment">------------------------------------------------------------------------</a>
+<a id="1116" class="Comment">-- Please use the new names as continuing support for the old names is</a>
+<a id="1187" class="Comment">-- not guaranteed.</a>
+
+<a id="1207" class="Keyword">open</a> <a id="1212" class="Keyword">import</a> <a id="1219" href="Data.Unit.html" class="Module">Data.Unit</a> <a id="1229" class="Keyword">using</a> <a id="1235" class="Symbol">(</a><a id="1236" href="Agda.Builtin.Unit.html#164" class="Record">⊤</a><a id="1237" class="Symbol">;</a> <a id="1239" href="Agda.Builtin.Unit.html#201" class="InductiveConstructor">tt</a><a id="1241" class="Symbol">)</a>
+
+<a id="1244" class="Comment">-- Version 1.1</a>
+
+<a id="Unit"></a><a id="1260" href="Foreign.Haskell.html#1260" class="Function">Unit</a> <a id="1265" class="Symbol">=</a> <a id="1267" href="Agda.Builtin.Unit.html#164" class="Record">⊤</a>
+<a id="1269" class="Symbol">{-#</a> <a id="1273" class="Keyword">WARNING_ON_USAGE</a> <a id="1290" class="Pragma">Unit</a>
+<a id="1295" class="String">&quot;Warning: Unit was deprecated in v1.1.
+Please use ⊤ from Data.Unit instead.&quot;</a>
+<a id="1372" class="Symbol">#-}</a>
+<a id="unit"></a><a id="1376" href="Foreign.Haskell.html#1376" class="Function">unit</a> <a id="1381" class="Symbol">=</a> <a id="1383" href="Agda.Builtin.Unit.html#201" class="InductiveConstructor">tt</a>
+<a id="1386" class="Symbol">{-#</a> <a id="1390" class="Keyword">WARNING_ON_USAGE</a> <a id="1407" class="Pragma">unit</a>
+<a id="1412" class="String">&quot;Warning: unit was deprecated in v1.1.
+Please use tt from Data.Unit instead.&quot;</a>
+<a id="1490" class="Symbol">#-}</a>
+</pre></body></html>
