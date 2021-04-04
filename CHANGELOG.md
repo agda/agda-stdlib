@@ -35,6 +35,15 @@ Bug-fixes
   `Relation.Binary.Reasoning.Base.Partial`, they will need to adjust their additional
   combinators to use the new `singleStep`/`multiStep` constructors of `_IsRelatedTo_`.
 
+* The proof `isEquivalence` in `Function.Properties.(Equivalence/Inverse)` used to be 
+  defined in an anonymous module that took two unneccessary `Setoid` arguments:
+  ```agda
+  module _ (R : Setoid a ℓ₁) (S : Setoid b ℓ₂) where
+    isEquivalence : IsEquivalence (Equivalence {a} {b})
+  ```
+  Their definitions have now been moved out of the anonymous modules so that they no
+  longer require these unnecessary arguments.
+
 Non-backwards compatible changes
 --------------------------------
 
