@@ -34,7 +34,7 @@ open import Relation.Binary.Consequences using (flip-Connex)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Nullary.Decidable using (True; via-injection; map′)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Negation using (contradiction; contradiction₂)
 open import Relation.Nullary.Reflects using (fromEquivalence)
 
 open import Algebra.Definitions {A = ℕ} _≡_
@@ -406,6 +406,9 @@ n<1+n n = ≤-refl
 
 n<1⇒n≡0 : ∀ {n} → n < 1 → n ≡ 0
 n<1⇒n≡0 (s≤s n≤0) = n≤0⇒n≡0 n≤0
+
+n>0⇒n≢0 : ∀ {n} → n > 0 → n ≢ 0
+n>0⇒n≢0 {suc n} _ ()
 
 n≢0⇒n>0 : ∀ {n} → n ≢ 0 → n > 0
 n≢0⇒n>0 {zero}  0≢0 =  contradiction refl 0≢0
@@ -883,10 +886,13 @@ m*n≡0⇒m≡0∨n≡0 : ∀ m {n} → m * n ≡ 0 → m ≡ 0 ⊎ n ≡ 0
 m*n≡0⇒m≡0∨n≡0 zero    {n}     eq = inj₁ refl
 m*n≡0⇒m≡0∨n≡0 (suc m) {zero}  eq = inj₂ refl
 
+m≢0∧n≢0⇒m*n≢0 : ∀ {m n} → m ≢ 0 → n ≢ 0 → m * n ≢ 0
+m≢0∧n≢0⇒m*n≢0 m≢0 n≢0 m*n≡0 = contradiction₂ (m*n≡0⇒m≡0∨n≡0 _ m*n≡0) m≢0 n≢0
+
 m*n≡1⇒m≡1 : ∀ m n → m * n ≡ 1 → m ≡ 1
-m*n≡1⇒m≡1 (suc zero)    n             _  = refl
-m*n≡1⇒m≡1 (suc (suc m)) (suc zero)    ()
-m*n≡1⇒m≡1 (suc (suc m)) zero          eq =
+m*n≡1⇒m≡1 (suc zero)    n          _  = refl
+m*n≡1⇒m≡1 (suc (suc m)) (suc zero) ()
+m*n≡1⇒m≡1 (suc (suc m)) zero       eq =
   contradiction (trans (sym $ *-zeroʳ m) eq) λ()
 
 m*n≡1⇒n≡1 : ∀ m n → m * n ≡ 1 → n ≡ 1
@@ -1477,6 +1483,10 @@ m∸n≢0⇒n<m {m} {n} m∸n≢0 with n <? m
 
 m>n⇒m∸n≢0 : ∀ {m n} → m > n → m ∸ n ≢ 0
 m>n⇒m∸n≢0 {n = suc n} (s≤s m>n) = m>n⇒m∸n≢0 m>n
+
+m≤n⇒n∸m≤n : ∀ {m n} → m ≤ n → n ∸ m ≤ n
+m≤n⇒n∸m≤n z≤n       = ≤-refl
+m≤n⇒n∸m≤n (s≤s m≤n) = ≤-step (m≤n⇒n∸m≤n m≤n)
 
 ---------------------------------------------------------------
 -- Properties of _∸_ and _+_

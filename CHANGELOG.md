@@ -168,6 +168,13 @@ New modules
   Data.Nat.PseudoRandom.LCG
   ```
 
+* Factorial, combinations and permutations for ℕ.
+  ```
+  Data.Nat.Factorial
+  Data.Nat.Combinatorics
+  Data.Nat.Combinatorics.Base
+  ```
+
 * Broke up `Data.List.Relation.Binary.Pointwise` and introduced:
   ```
   Data.List.Relation.Binary.Pointwise.Base
@@ -298,6 +305,8 @@ Other minor additions
 * Added new proofs to `Data.Nat.Divisibility`:
   ```agda
   *-pres-∣ : o ∣ m → p ∣ n → o * p ∣ m * n
+  m*n∣⇒m∣  : m * n ∣ i → m ∣ i
+  m*n∣⇒n∣  : m * n ∣ i → n ∣ i
   ```
 
 * Added new proofs to `Data.Nat.GCD`:
@@ -352,10 +361,9 @@ Other minor additions
 
   pred[n]≤n : pred n ≤ n
 
+  n>0⇒n≢0 : n > 0 → n ≢ 0
   n<1⇒n≡0 : n < 1 → n ≡ 0
   m<n⇒0<n : m < n → 0 < n
-
-  m≤n*m : 0 < n → m ≤ n * m
 
   ≤-isTotalPreorder         : IsTotalPreorder _≡_ _≤_
   ≤-totalPreorder           : TotalPreorder 0ℓ 0ℓ 0ℓ
@@ -375,6 +383,10 @@ Other minor additions
   antimono-≤-distrib-⊓      : f Preserves _≤_ ⟶ _≥_ → f (x ⊓ y) ≈ f x ⊔ f y
   antimono-≤-distrib-⊔      : f Preserves _≤_ ⟶ _≥_ → f (x ⊔ y) ≈ f x ⊓ f y
 
+
+  m≤n*m                     : 0 < n → m ≤ n * m
+  m≤n⇒n∸m≤n                 : m ≤ n → n ∸ m ≤ n
+  m≢0∧n≢0⇒m*n≢0             : m ≢ 0 → n ≢ 0 → m * n ≢ 0
   [m*n]*[o*p]≡[m*o]*[n*p]   : (m * n) * (o * p) ≡ (m * o) * (n * p)
   ```
 
