@@ -8,7 +8,7 @@
 -- longer compatible with the ordinary combinators defined in
 -- `Relation.Unary`.
 
-{-# OPTIONS --without-K --safe --sized-types #-}
+{-# OPTIONS --without-K --sized-types #-}
 
 module Relation.Unary.Sized  where
 

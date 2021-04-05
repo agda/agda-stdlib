@@ -4,7 +4,7 @@
 -- Examples of pretty printing of rose trees
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe --sized-types #-}
+{-# OPTIONS --without-K --sized-types #-}
 
 module README.Text.Tree where
 
