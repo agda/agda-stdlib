@@ -43,6 +43,13 @@ Non-backwards compatible changes
 
   See the release notes of Agda 2.6.2 for more information.
 
+#### Sized types
+
+* Sized types are no longer considered safe in Agda 2.6.2. As a
+  result, all modules that use `--sized-types` no longer have the
+  `--safe` flag.  For a full list of affected modules, refer to
+  https://github.com/agda/agda-stdlib/pull/1465/files#diff-e1c0e3196e4cea6ff808f5d2906031a7657130e10181516206647b83c7014584R91-R131.
+
 #### Other
 
 * `Data.Maybe.Base` now re-exports the definition of `Maybe` given by
