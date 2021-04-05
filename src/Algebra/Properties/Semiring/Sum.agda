@@ -22,10 +22,10 @@ open import Algebra.Properties.CommutativeMonoid.Sum +-commutativeMonoid public
 ------------------------------------------------------------------------
 -- Properties
 
-sum-distribˡ : ∀ {n} x (ys : Vector Carrier n) → x * sum ys ≈ sum (map (x *_) ys)
-sum-distribˡ {zero} x ys = zeroʳ x
-sum-distribˡ {suc n} x ys = trans (distribˡ x (head ys) (sum (tail ys))) (+-congˡ (sum-distribˡ x (tail ys)))
+*-distribˡ-sum : ∀ {n} x (ys : Vector Carrier n) → x * sum ys ≈ sum (map (x *_) ys)
+*-distribˡ-sum {zero} x ys = zeroʳ x
+*-distribˡ-sum {suc n} x ys = trans (distribˡ x (head ys) (sum (tail ys))) (+-congˡ (*-distribˡ-sum x (tail ys)))
 
-sum-distribʳ : ∀ {n} x (ys : Vector Carrier n) → sum ys * x ≈ sum (map (_* x) ys)
-sum-distribʳ {zero} x ys = zeroˡ x
-sum-distribʳ {suc n} x ys = trans (distribʳ x (head ys) (sum (tail ys))) (+-congˡ (sum-distribʳ x (tail ys)))
+*-distribʳ-sum : ∀ {n} x (ys : Vector Carrier n) → sum ys * x ≈ sum (map (_* x) ys)
+*-distribʳ-sum {zero} x ys = zeroˡ x
+*-distribʳ-sum {suc n} x ys = trans (distribʳ x (head ys) (sum (tail ys))) (+-congˡ (*-distribʳ-sum x (tail ys)))
