@@ -949,8 +949,8 @@ Other minor additions
 
 * Added new proofs to `Relation.Binary.Consequences`:
   ```agda
-  mono⇒cong     : Symmetric _≈_ → _≈_ ⇒ _≤_ → Antisymmetric _≈_ _≤_ → f Preserves _≤_ ⟶ _≤_ → f Preserves _≈_ ⟶ _≈_
-  antimono⇒cong : Symmetric _≈_ → _≈_ ⇒ _≤_ → Antisymmetric _≈_ _≤_ → f Preserves _≤_ ⟶ (flip _≤_) → f Preserves _≈_ ⟶ _≈_
+  mono⇒cong     : Symmetric ≈₁ → ≈₁ ⇒ ≤₁ → Antisymmetric ≈₂ ≤₂ → ∀ {f} → f Preserves ≤₁ ⟶ ≤₂        → f Preserves ≈₁ ⟶ ≈₂
+  antimono⇒cong : Symmetric ≈₁ → ≈₁ ⇒ ≤₁ → Antisymmetric ≈₂ ≤₂ → ∀ {f} → f Preserves ≤₁ ⟶ (flip ≤₂) → f Preserves ≈₁ ⟶ ≈₂
   ```
 
 * Added new proofs to `Relation.Binary.Construct.Converse`:

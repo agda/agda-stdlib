@@ -22,9 +22,8 @@ open import Relation.Unary using (∁; Pred)
 
 private
   variable
-    a b ℓ ℓ₁ ℓ₂ p : Level
-    A : Set a
-    B : Set b
+    a ℓ ℓ₁ ℓ₂ ℓ₃ ℓ₄ p : Level
+    A B : Set a
 
 ------------------------------------------------------------------------
 -- Substitutive properties
@@ -62,19 +61,19 @@ module _ {_≈_ : Rel A ℓ₁} {_≤_ : Rel A ℓ₂} where
   ... | inj₁ x≤y = yes x≤y
   ... | inj₂ y≤x = map′ refl (flip antisym y≤x) (x ≟ y)
 
-mono⇒cong : (_≈_ : Rel A ℓ₁) {_≤_ : Rel A ℓ₂} →
-            Symmetric _≈_ → _≈_ ⇒ _≤_ → Antisymmetric _≈_ _≤_ →
-            ∀ {f} → f Preserves _≤_ ⟶ _≤_ → f Preserves _≈_ ⟶ _≈_
-mono⇒cong _ sym reflexive antisym mono x≈y = antisym
-  (mono (reflexive x≈y))
-  (mono (reflexive (sym x≈y)))
+module _ (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂) {≤₁ : Rel A ℓ₃} {≤₂ : Rel B ℓ₄} where
 
-antimono⇒cong : (_≈_ : Rel A ℓ₁) {_≤_ : Rel A ℓ₂} →
-                Symmetric _≈_ → _≈_ ⇒ _≤_ → Antisymmetric _≈_ _≤_ →
-                ∀ {f} → f Preserves _≤_ ⟶ (flip _≤_) → f Preserves _≈_ ⟶ _≈_
-antimono⇒cong _ sym reflexive antisym antimono p≈q = antisym
-  (antimono (reflexive (sym p≈q)))
-  (antimono (reflexive p≈q))
+  mono⇒cong : Symmetric ≈₁ → ≈₁ ⇒ ≤₁ → Antisymmetric ≈₂ ≤₂ →
+              ∀ {f} → f Preserves ≤₁ ⟶ ≤₂ → f Preserves ≈₁ ⟶ ≈₂
+  mono⇒cong sym reflexive antisym mono x≈y = antisym
+    (mono (reflexive x≈y))
+    (mono (reflexive (sym x≈y)))
+
+  antimono⇒cong : Symmetric ≈₁ → ≈₁ ⇒ ≤₁ → Antisymmetric ≈₂ ≤₂ →
+                  ∀ {f} → f Preserves ≤₁ ⟶ (flip ≤₂) → f Preserves ≈₁ ⟶ ≈₂
+  antimono⇒cong sym reflexive antisym antimono p≈q = antisym
+    (antimono (reflexive (sym p≈q)))
+    (antimono (reflexive p≈q))
 
 ------------------------------------------------------------------------
 -- Proofs for strict orders
