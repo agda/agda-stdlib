@@ -133,13 +133,6 @@ New modules
 * Added `Data.Maybe.Relation.Binary.Connected`, a variant of the `Pointwise` 
   relation where `nothing` is also related to `just`.
 
-* Added various generic morphism constructions for binary relations:
-  ```agda
-  Relation.Binary.Morphism.Construct.Composition
-  Relation.Binary.Morphism.Construct.Constant
-  Relation.Binary.Morphism.Construct.Identity
-  ```
-
 * Specifications for min and max operators
   ```
   Algebra.Construct.NaturalChoice.MinOp
