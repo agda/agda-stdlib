@@ -147,6 +147,11 @@ New modules
   Algebra.Construct.LexProduct.Inner
   ```
 
+* Properties of sums over semirings
+  ```
+  Algebra.Properties.Semiring.Sum
+  ```
+
 * Sorting algorithms over lists:
   ```
   Data.List.Sort
