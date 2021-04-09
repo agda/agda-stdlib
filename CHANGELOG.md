@@ -465,11 +465,15 @@ Other minor additions
 
 * Added new proof to `Data.List.Relation.Binary.Subset.Setoid.Properties`:
   ```agda
+  xs⊆x∷xs    : xs ⊆ x ∷ xs
+  ∷⁺ʳ        : xs ⊆ ys → x ∷ xs ⊆ x ∷ ys
   applyUpTo⁺ : m ≤ n → applyUpTo f m ⊆ applyUpTo f n
   ```
 
 * Added new proof to `Data.List.Relation.Binary.Subset.Propositional.Properties`:
   ```agda
+  xs⊆x∷xs    : xs ⊆ x ∷ xs
+  ∷⁺ʳ        : xs ⊆ ys → x ∷ xs ⊆ x ∷ ys
   applyUpTo⁺ : m ≤ n → applyUpTo f m ⊆ applyUpTo f n
   ```
 
