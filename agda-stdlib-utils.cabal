@@ -1,5 +1,5 @@
 name:            agda-stdlib-utils
-version:         1.5-dev
+version:         1.6-dev
 cabal-version:   >= 1.10
 build-type:      Simple
 description:     Helper programs.
@@ -9,7 +9,7 @@ tested-with:     GHC == 8.0.2
                  GHC == 8.4.4
                  GHC == 8.6.2
                  GHC == 8.8.3
-                 GHC == 8.10.1
+                 GHC == 8.10.3
 
 executable GenerateEverything
   hs-source-dirs:   .

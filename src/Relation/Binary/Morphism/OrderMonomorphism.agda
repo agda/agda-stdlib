@@ -9,9 +9,12 @@
 
 {-# OPTIONS --without-K --safe #-}
 
+open import Algebra.Morphism.Definitions
 open import Function.Base
+open import Data.Product using (_,_; map)
 open import Relation.Binary
 open import Relation.Binary.Morphism
+import Relation.Binary.Morphism.RelMonomorphism as RawRelation
 
 module Relation.Binary.Morphism.OrderMonomorphism
   {a b ℓ₁ ℓ₂ ℓ₃ ℓ₄} {A : Set a} {B : Set b}
@@ -20,9 +23,6 @@ module Relation.Binary.Morphism.OrderMonomorphism
   {⟦_⟧ : A → B}
   (isOrderMonomorphism : IsOrderMonomorphism _≈₁_ _≈₂_ _∼₁_ _∼₂_ ⟦_⟧)
   where
-
-open import Data.Product using (map)
-import Relation.Binary.Morphism.RelMonomorphism as RawRelation
 
 open IsOrderMonomorphism isOrderMonomorphism
 

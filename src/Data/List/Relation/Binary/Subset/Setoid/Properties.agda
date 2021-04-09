@@ -16,6 +16,7 @@ open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Relation.Unary.All as All using (All)
 import Data.List.Membership.Setoid as Membership
 open import Data.List.Membership.Setoid.Properties
+open import Data.Nat.Base using (ℕ; s≤s; _≤_)
 import Data.List.Relation.Binary.Subset.Setoid as Subset
 import Data.List.Relation.Binary.Sublist.Setoid as Sublist
 import Data.List.Relation.Binary.Equality.Setoid as Equality
@@ -170,6 +171,19 @@ module _ (S : Setoid a ℓ) where
 ------------------------------------------------------------------------
 -- Properties of list functions
 ------------------------------------------------------------------------
+-- ∷
+
+module _ (S : Setoid a ℓ) where
+
+  open Subset S
+
+  xs⊆x∷xs : ∀ xs x → xs ⊆ x ∷ xs
+  xs⊆x∷xs xs x = there
+
+  ∷⁺ʳ : ∀ {xs ys} x → xs ⊆ ys → x ∷ xs ⊆ x ∷ ys
+  ∷⁺ʳ x xs⊆ys (here  p) = here p
+  ∷⁺ʳ x xs⊆ys (there p) = there (xs⊆ys p)
+
 -- ++
 
 module _ (S : Setoid a ℓ) where
@@ -221,6 +235,18 @@ module _ (S : Setoid a ℓ) where
              P ⋐ Q → ∀ {xs ys} → xs ⊆ ys → filter P? xs ⊆ filter Q? ys
   filter⁺′ P? P-resp Q? Q-resp P⋐Q xs⊆ys v∈fxs with ∈-filter⁻ S P? P-resp v∈fxs
   ... | v∈xs , Pv = ∈-filter⁺ S Q? Q-resp (xs⊆ys v∈xs) (P⋐Q Pv)
+
+------------------------------------------------------------------------
+-- applyUpTo
+
+module _ (S : Setoid a ℓ) where
+
+  open Setoid S renaming (Carrier to A)
+  open Subset S
+
+  applyUpTo⁺ : ∀ (f : ℕ → A) {m n} → m ≤ n → applyUpTo f m ⊆ applyUpTo f n
+  applyUpTo⁺ _ (s≤s m≤n) (here  f≡f[0]) = here f≡f[0]
+  applyUpTo⁺ _ (s≤s m≤n) (there v∈xs)   = there (applyUpTo⁺ _ m≤n v∈xs)
 
 
 ------------------------------------------------------------------------
