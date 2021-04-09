@@ -16,7 +16,7 @@ open import Relation.Nullary.Negation using (contradiction)
 module Algebra.Properties.CancellativeCommutativeSemiring
   {a ℓ} (R : CancellativeCommutativeSemiring a ℓ)
   where
-  
+
 open CancellativeCommutativeSemiring R
 open import Algebra.Consequences.Setoid setoid
 open import Relation.Binary.Reasoning.Setoid setoid
