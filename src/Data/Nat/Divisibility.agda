@@ -174,7 +174,13 @@ m∣m*n n = divides n (*-comm _ n)
 ∣m⇒∣m*n {i} {m} n (divides q refl) = ∣-trans (n∣m*n q) (m∣m*n n)
 
 ∣n⇒∣m*n : ∀ {i} m {n} → i ∣ n → i ∣ m * n
-∣n⇒∣m*n {i} m {n} i∣n = subst (i ∣_) (*-comm n m) (∣m⇒∣m*n m i∣n)
+∣n⇒∣m*n m {n} rewrite *-comm m n = ∣m⇒∣m*n m
+
+m*n∣⇒m∣ : ∀ {i} m n → m * n ∣ i → m ∣ i
+m*n∣⇒m∣ m n (divides q refl) = ∣n⇒∣m*n q (m∣m*n n)
+
+m*n∣⇒n∣ : ∀ {i} m n → m * n ∣ i → n ∣ i
+m*n∣⇒n∣ m n rewrite *-comm m n = m*n∣⇒m∣ n m
 
 *-monoʳ-∣ : ∀ {i j} k → i ∣ j → k * i ∣ k * j
 *-monoʳ-∣ {i} {j} k (divides q refl) = divides q $ begin-equality
