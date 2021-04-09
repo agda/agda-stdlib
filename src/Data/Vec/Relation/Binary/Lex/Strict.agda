@@ -303,10 +303,14 @@ module ≤-Reasoning {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂}
 
   open import Relation.Binary.Reasoning.Base.Triple
     (≤-isPreorder ≈-isEquivalence ≺-trans ≺-resp-≈)
-    (<-irrefl ≺-irrefl)
     (<-trans ≈-isPartialEquivalence ≺-resp-≈ ≺-trans)
     (<-respects₂ ≈-isPartialEquivalence ≺-resp-≈)
     (<⇒≤ {m = n})
     (<-transˡ ≈-isPartialEquivalence ≺-resp-≈ ≺-trans)
     (<-transʳ ≈-isPartialEquivalence ≺-resp-≈ ≺-trans)
+    as Reasoning
     public
+    hiding (begin-irrefl)
+
+  infix 1 begin-irrefl_
+  begin-irrefl_ = Reasoning.begin-irrefl (<-irrefl ≺-irrefl)
