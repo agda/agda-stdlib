@@ -43,3 +43,19 @@ open import Algebra.Properties.Semigroup.Divisibility semigroup public
 ∣-preorder = record
   { isPreorder = ∣-isPreorder
   }
+
+------------------------------------------------------------------------
+-- Properties of mutual divisibiity
+
+∣∣-refl : Reflexive _∣∣_
+∣∣-refl = ∣-refl , ∣-refl
+
+∣∣-reflexive : _≈_ ⇒ _∣∣_
+∣∣-reflexive x≈y = ∣-reflexive x≈y , ∣-reflexive (sym x≈y)
+
+∣∣-isEquivalence : IsEquivalence _∣∣_
+∣∣-isEquivalence = record
+  { refl  = λ {x} → ∣∣-refl {x}
+  ; sym   = λ {x} {y} → ∣∣-sym {x} {y}
+  ; trans = λ {x} {y} {z} → ∣∣-trans {x} {y} {z}
+  }

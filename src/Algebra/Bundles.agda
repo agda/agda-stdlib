@@ -763,6 +763,7 @@ record CancellativeCommutativeSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
     ; _≉_
     )
 
+
 ------------------------------------------------------------------------
 -- Bundles with 2 binary operations, 1 unary operation & 2 elements
 ------------------------------------------------------------------------
