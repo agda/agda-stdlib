@@ -8,8 +8,9 @@
 
 module Data.Rational.Unnormalised.Base where
 
+open import Data.Bool.Base using (Bool; if_then_else_)
 open import Data.Integer.Base as ℤ
-  using (ℤ; ∣_∣; +_; +0; +[1+_]; -[1+_]; +<+; +≤+)
+  using (ℤ; +_; +0; +[1+_]; -[1+_]; +<+; +≤+)
 open import Data.Nat as ℕ using (ℕ; zero; suc)
 open import Level using (0ℓ)
 open import Relation.Nullary using (¬_)
@@ -91,6 +92,14 @@ _≯_ : Rel ℚᵘ 0ℓ
 x ≯ y = ¬ (x > y)
 
 ------------------------------------------------------------------------
+-- Boolean ordering
+
+infix 4 _≤ᵇ_
+
+_≤ᵇ_ : ℚᵘ → ℚᵘ → Bool
+p ≤ᵇ q = (↥ p ℤ.* ↧ q) ℤ.≤ᵇ (↥ q ℤ.* ↧ p)
+
+------------------------------------------------------------------------
 -- Constructing rationals
 
 infix 4 _≢0
@@ -109,8 +118,8 @@ n / suc d = mkℚᵘ n d
 -- Operations on rationals
 
 infix  8 -_ 1/_
-infixl 7 _*_ _÷_
-infixl 6 _-_ _+_
+infixl 7 _*_ _÷_ _⊓_
+infixl 6 _-_ _+_ _⊔_
 
 -- negation
 
@@ -134,14 +143,26 @@ p - q = p + (- q)
 
 -- reciprocal: requires a proof that the numerator is not zero
 
-1/_ : (p : ℚᵘ) → .{n≢0 : ∣ ↥ p ∣ ≢0} → ℚᵘ
+1/_ : (p : ℚᵘ) → .{n≢0 : ℤ.∣ ↥ p ∣ ≢0} → ℚᵘ
 1/ mkℚᵘ +[1+ n ] d = mkℚᵘ +[1+ d ] n
 1/ mkℚᵘ -[1+ n ] d = mkℚᵘ -[1+ d ] n
 
 -- division: requires a proof that the denominator is not zero
 
-_÷_ : (p q : ℚᵘ) → .{n≢0 : ∣ ↥ q ∣ ≢0} → ℚᵘ
+_÷_ : (p q : ℚᵘ) → .{n≢0 : ℤ.∣ ↥ q ∣ ≢0} → ℚᵘ
 (p ÷ q) {n≢0} = p * (1/_ q {n≢0})
+
+-- max
+_⊔_ : (p q : ℚᵘ) → ℚᵘ
+p ⊔ q = if p ≤ᵇ q then q else p
+
+-- min
+_⊓_ : (p q : ℚᵘ) → ℚᵘ
+p ⊓ q = if p ≤ᵇ q then p else q
+
+-- absolute value
+∣_∣ : ℚᵘ → ℚᵘ
+∣ mkℚᵘ p q ∣ = mkℚᵘ (+ ℤ.∣ p ∣) q
 
 ------------------------------------------------------------------------------
 -- Some constants

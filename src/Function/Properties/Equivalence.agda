@@ -25,14 +25,12 @@ private
 ------------------------------------------------------------------------
 -- Setoid bundles
 
-module _ (R : Setoid a ℓ₁) (S : Setoid b ℓ₂) where
-
-  isEquivalence : IsEquivalence (Equivalence {a} {b})
-  isEquivalence = record
-    { refl = λ {x} → Identity.equivalence x
-    ; sym = Symmetry.equivalence
-    ; trans = Composition.equivalence
-    }
+isEquivalence : IsEquivalence (Equivalence {a} {b})
+isEquivalence = record
+  { refl = λ {x} → Identity.equivalence x
+  ; sym = Symmetry.equivalence
+  ; trans = Composition.equivalence
+  }
 
 ------------------------------------------------------------------------
 -- Propositional bundles

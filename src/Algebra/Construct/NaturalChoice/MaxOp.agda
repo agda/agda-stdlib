@@ -9,21 +9,24 @@
 open import Algebra.Core
 open import Algebra.Construct.NaturalChoice.Base
 import Algebra.Construct.NaturalChoice.MinOp as MinOp
-
+open import Function.Base using (flip)
 open import Relation.Binary
 open import Relation.Binary.Construct.Converse using ()
-  renaming (totalOrder to flip)
+  renaming (totalPreorder to flipOrder)
 
 module Algebra.Construct.NaturalChoice.MaxOp
-  {a ℓ₁ ℓ₂} (O : TotalOrder a ℓ₁ ℓ₂) (maxOp : MaxOperator O)
+  {a ℓ₁ ℓ₂} {O : TotalPreorder a ℓ₁ ℓ₂} (maxOp : MaxOperator O)
   where
 
-open TotalOrder O renaming (Carrier to A)
+open TotalPreorder O renaming (Carrier to A; _≲_ to _≤_)
 open MaxOperator maxOp
 
 -- Max is just min with a flipped order
 
-open MinOp (flip O) (MaxOp⇒MinOp maxOp) public
+private
+  module Min = MinOp (MaxOp⇒MinOp maxOp)
+
+open Min public
   using ()
   renaming
   ( ⊓-cong       to  ⊔-cong
@@ -71,5 +74,8 @@ open MinOp (flip O) (MaxOp⇒MinOp maxOp) public
   ; ⊓-mono-≤           to  ⊔-mono-≤
   ; ⊓-monoˡ-≤          to  ⊔-monoˡ-≤
   ; ⊓-monoʳ-≤          to  ⊔-monoʳ-≤
-  ; mono-≤-distrib-⊓   to  mono-≤-distrib-⊔
   )
+
+mono-≤-distrib-⊔ : ∀ {f} → f Preserves _≈_ ⟶ _≈_ → f Preserves _≤_ ⟶ _≤_ →
+                   ∀ x y → f (x ⊔ y) ≈ f x ⊔ f y
+mono-≤-distrib-⊔ cong pres = Min.mono-≤-distrib-⊓ cong pres

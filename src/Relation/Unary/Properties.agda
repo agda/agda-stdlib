@@ -10,7 +10,7 @@ module Relation.Unary.Properties where
 
 open import Data.Product using (_×_; _,_; swap; proj₁)
 open import Data.Sum.Base using (inj₁; inj₂)
-open import Data.Unit using (tt)
+open import Data.Unit.Base using (tt)
 open import Level
 open import Relation.Binary.Core
 open import Relation.Binary.Definitions hiding (Decidable; Universal)
@@ -18,7 +18,7 @@ open import Relation.Unary
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Product using (_×-dec_)
 open import Relation.Nullary.Sum using (_⊎-dec_)
-open import Relation.Nullary.Negation using (¬?)
+open import Relation.Nullary.Negation.Core using (¬?)
 open import Function.Base using (_$_; _∘_)
 
 private

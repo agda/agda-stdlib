@@ -13,17 +13,23 @@ open import Data.Sum.Base as Sum using (inj₁; inj₂; [_,_])
 open import Data.Product using (_,_)
 open import Function.Base using (id; _∘_)
 open import Relation.Binary
+open import Relation.Binary.Consequences
 
 module Algebra.Construct.NaturalChoice.MinOp
-  {a ℓ₁ ℓ₂} (O : TotalOrder a ℓ₁ ℓ₂) (minOp : MinOperator O) where
+  {a ℓ₁ ℓ₂} {O : TotalPreorder a ℓ₁ ℓ₂} (minOp : MinOperator O) where
 
-open TotalOrder O renaming (Carrier to A)
+open TotalPreorder O renaming
+  ( Carrier   to A
+  ; _≲_       to _≤_
+  ; ≲-resp-≈  to ≤-resp-≈
+  ; ≲-respʳ-≈ to ≤-respʳ-≈
+  ; ≲-respˡ-≈ to ≤-respˡ-≈
+  )
 open MinOperator minOp
 
 open import Algebra.Definitions _≈_
 open import Algebra.Structures _≈_
-open import Relation.Binary.Reasoning.PartialOrder poset
-open import Relation.Binary.Properties.Poset poset
+open import Relation.Binary.Reasoning.Preorder preorder
 
 ------------------------------------------------------------------------
 -- Helpful properties
@@ -212,15 +218,15 @@ x⊓y≈y⇒y≤x {x} {y} x⊓y≈y = x⊓y≈x⇒x≤y (begin-equality
   x ⊓ y  ≈⟨ x⊓y≈y ⟩
   y      ∎)
 
-mono-≤-distrib-⊓ : ∀ {f} → f Preserves _≤_ ⟶ _≤_ →
+mono-≤-distrib-⊓ : ∀ {f} → f Preserves _≈_ ⟶ _≈_ → f Preserves _≤_ ⟶ _≤_ →
                    ∀ x y → f (x ⊓ y) ≈ f x ⊓ f y
-mono-≤-distrib-⊓ {f} mono x y with total x y
+mono-≤-distrib-⊓ {f} cong mono x y with total x y
 ... | inj₁ x≤y = begin-equality
-  f (x ⊓ y)  ≈⟨ mono⇒cong mono (x≤y⇒x⊓y≈x x≤y) ⟩
+  f (x ⊓ y)  ≈⟨ cong (x≤y⇒x⊓y≈x x≤y) ⟩
   f x        ≈˘⟨ x≤y⇒x⊓y≈x (mono x≤y) ⟩
   f x ⊓ f y  ∎
 ... | inj₂ y≤x = begin-equality
-  f (x ⊓ y)  ≈⟨ mono⇒cong mono (x≥y⇒x⊓y≈y y≤x) ⟩
+  f (x ⊓ y)  ≈⟨ cong (x≥y⇒x⊓y≈y y≤x) ⟩
   f y        ≈˘⟨ x≥y⇒x⊓y≈y (mono y≤x) ⟩
   f x ⊓ f y  ∎
 

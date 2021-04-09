@@ -14,6 +14,7 @@ open import Data.Bool.Properties using (T-∧)
 open import Data.Empty
 open import Data.Fin.Base using (Fin) renaming (zero to fzero; suc to fsuc)
 open import Data.List.Base as List hiding (lookup)
+open import Data.List.Properties as Listₚ using (partition-defn)
 open import Data.List.Membership.Propositional
 open import Data.List.Membership.Propositional.Properties
 import Data.List.Membership.Setoid as SetoidMembership
@@ -27,7 +28,7 @@ import Data.List.Relation.Binary.Equality.Setoid as ListEq using (_≋_; []; _�
 open import Data.List.Relation.Binary.Pointwise using (Pointwise; []; _∷_)
 open import Data.List.Relation.Binary.Subset.Propositional using (_⊆_)
 open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
-open import Data.Maybe.Relation.Unary.All as MAll using (just; nothing)
+open import Data.Maybe.Relation.Unary.All as Maybe using (just; nothing)
 open import Data.Nat.Base using (zero; suc; z≤n; s≤s; _<_)
 open import Data.Nat.Properties using (≤-refl; ≤-step)
 open import Data.Product as Prod using (_×_; _,_; uncurry; uncurry′)
@@ -44,7 +45,8 @@ open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary
 open import Relation.Nullary.Negation using (¬?; contradiction; decidable-stable)
 open import Relation.Unary
-  using (Decidable; Pred; Universal) renaming (_⊆_ to _⋐_)
+  using (Decidable; Pred; Universal; ∁; _∩_; _⟨×⟩_) renaming (_⊆_ to _⋐_)
+open import Relation.Unary.Properties using (∁?)
 
 private
   variable
@@ -325,6 +327,40 @@ map-updateAt (px ∷ pxs) (there i) feq = cong (_ ∷_) (map-updateAt pxs i feq)
 ------------------------------------------------------------------------
 -- Introduction (⁺) and elimination (⁻) rules for list operations
 ------------------------------------------------------------------------
+-- singleton
+
+singleton⁻ : All P [ x ] → P x
+singleton⁻ (px ∷ []) = px
+
+-- head
+
+head⁺ : All P xs → Maybe.All P (head xs)
+head⁺ []       = nothing
+head⁺ (px ∷ _) = just px
+
+-- tail
+
+tail⁺ : All P xs → Maybe.All (All P) (tail xs)
+tail⁺ []        = nothing
+tail⁺ (_ ∷ pxs) = just pxs
+
+-- last
+
+last⁺ : All P xs → Maybe.All P (last xs)
+last⁺ []                 = nothing
+last⁺ (px ∷ [])          = just px
+last⁺ (px ∷ pxs@(_ ∷ _)) = last⁺ pxs
+
+-- uncons
+
+uncons⁺ : All P xs → Maybe.All (P ⟨×⟩ All P) (uncons xs)
+uncons⁺ []         = nothing
+uncons⁺ (px ∷ pxs) = just (px , pxs)
+
+uncons⁻ : Maybe.All (P ⟨×⟩ All P) (uncons xs) → All P xs
+uncons⁻ {xs = []}     nothing           = []
+uncons⁻ {xs = x ∷ xs} (just (px , pxs)) = px ∷ pxs
+
 -- map
 
 map⁺ : ∀ {f : A → B} → All (P ∘ f) xs → All P (map f xs)
@@ -344,7 +380,7 @@ gmap g = map⁺ ∘ All.map g
 -- mapMaybe
 
 mapMaybe⁺ : ∀ {f : A → Maybe B} →
-            All (MAll.All P) (map f xs) → All P (mapMaybe f xs)
+            All (Maybe.All P) (map f xs) → All P (mapMaybe f xs)
 mapMaybe⁺ {xs = []}     {f = f} []         = []
 mapMaybe⁺ {xs = x ∷ xs} {f = f} (px ∷ pxs) with f x
 ... | nothing = mapMaybe⁺ pxs
@@ -393,6 +429,27 @@ concat⁻ {xss = []}       []  = []
 concat⁻ {xss = xs ∷ xss} pxs = ++⁻ˡ xs pxs ∷ concat⁻ (++⁻ʳ xs pxs)
 
 ------------------------------------------------------------------------
+-- snoc
+
+∷ʳ⁺ : All P xs → P x → All P (xs ∷ʳ x)
+∷ʳ⁺ pxs px = ++⁺ pxs (px ∷ [])
+
+∷ʳ⁻ : All P (xs ∷ʳ x) → All P xs × P x
+∷ʳ⁻ pxs = Prod.map₂ singleton⁻ $ ++⁻ _ pxs
+
+-- unsnoc
+
+unsnoc⁺ : All P xs → Maybe.All (All P ⟨×⟩ P) (unsnoc xs)
+unsnoc⁺ {xs = xs} pxs with initLast xs
+unsnoc⁺ {xs = .[]}        pxs | []       = nothing
+unsnoc⁺ {xs = .(xs ∷ʳ x)} pxs | xs ∷ʳ′ x = just (∷ʳ⁻ pxs)
+
+unsnoc⁻ : Maybe.All (All P ⟨×⟩ P) (unsnoc xs) → All P xs
+unsnoc⁻ {xs = xs} pxs with initLast xs
+unsnoc⁻ {xs = .[]}        nothing           | []       = []
+unsnoc⁻ {xs = .(xs ∷ʳ x)} (just (pxs , px)) | xs ∷ʳ′ x = ∷ʳ⁺ pxs px
+
+------------------------------------------------------------------------
 -- cartesianProductWith and cartesianProduct
 
 module _ (S₁ : Setoid a ℓ₁) (S₂ : Setoid b ℓ₂) where
@@ -420,10 +477,47 @@ drop⁺ zero    pxs        = pxs
 drop⁺ (suc n) []         = []
 drop⁺ (suc n) (px ∷ pxs) = drop⁺ n pxs
 
+dropWhile⁺ : (Q? : Decidable Q) → All P xs → All P (dropWhile Q? xs)
+dropWhile⁺               Q? []         = []
+dropWhile⁺ {xs = x ∷ xs} Q? (px ∷ pxs) with does (Q? x)
+... | true  = dropWhile⁺ Q? pxs
+... | false = px ∷ pxs
+
+dropWhile⁻ : (P? : Decidable P) → dropWhile P? xs ≡ [] → All P xs
+dropWhile⁻ {xs = []}     P? eq = []
+dropWhile⁻ {xs = x ∷ xs} P? eq with P? x
+... | yes px = px ∷ (dropWhile⁻ P? eq)
+... | no ¬px = case eq of λ ()
+
+all-head-dropWhile : (P? : Decidable P) →
+                     ∀ xs → Maybe.All (∁ P) (head (dropWhile P? xs))
+all-head-dropWhile P? []       = nothing
+all-head-dropWhile P? (x ∷ xs) with P? x
+... | yes px = all-head-dropWhile P? xs
+... | no ¬px = just ¬px
+
 take⁺ : ∀ n → All P xs → All P (take n xs)
 take⁺ zero    pxs        = []
 take⁺ (suc n) []         = []
 take⁺ (suc n) (px ∷ pxs) = px ∷ take⁺ n pxs
+
+takeWhile⁺ : (Q? : Decidable Q) → All P xs → All P (takeWhile Q? xs)
+takeWhile⁺               Q? []         = []
+takeWhile⁺ {xs = x ∷ xs} Q? (px ∷ pxs) with does (Q? x)
+... | true  = px ∷ takeWhile⁺ Q? pxs
+... | false = []
+
+takeWhile⁻ : (P? : Decidable P) → takeWhile P? xs ≡ xs → All P xs
+takeWhile⁻ {xs = []}     P? eq = []
+takeWhile⁻ {xs = x ∷ xs} P? eq with P? x
+... | yes px = px ∷ takeWhile⁻ P? (Listₚ.∷-injectiveʳ eq)
+... | no ¬px = case eq of λ ()
+
+all-takeWhile : (P? : Decidable P) → ∀ xs → All P (takeWhile P? xs)
+all-takeWhile P? []       = []
+all-takeWhile P? (x ∷ xs) with P? x
+... | yes px = px ∷ all-takeWhile P? xs
+... | no ¬px = []
 
 ------------------------------------------------------------------------
 -- applyUpTo
@@ -439,6 +533,12 @@ applyUpTo⁻ : ∀ f n → All P (applyUpTo f n) → ∀ {i} → i < n → P (f 
 applyUpTo⁻ f (suc n) (px ∷ _)   (s≤s z≤n)       = px
 applyUpTo⁻ f (suc n) (_  ∷ pxs) (s≤s (s≤s i<n)) =
   applyUpTo⁻ (f ∘ suc) n pxs (s≤s i<n)
+
+------------------------------------------------------------------------
+-- upTo
+
+all-upTo : ∀ n → All (_< n) (upTo n)
+all-upTo n = applyUpTo⁺₁ id n id
 
 ------------------------------------------------------------------------
 -- applyDownFrom
@@ -500,6 +600,16 @@ module _ (P? : Decidable P) where
   filter⁻ {xs = x ∷ xs}       all⁺        all⁻  | no  ¬Px | no  ¬¬Px = contradiction ¬Px ¬¬Px
 
 ------------------------------------------------------------------------
+-- partition
+
+module _ {P : A → Set p} (P? : Decidable P) where
+
+  partition-All : ∀ xs → (let ys , zs = partition P? xs) →
+                  All P ys × All (∁ P) zs
+  partition-All xs rewrite partition-defn P? xs =
+    all-filter P? xs , all-filter (∁? P?) xs
+
+------------------------------------------------------------------------
 -- derun and deduplicate
 
 module _ {R : A → A → Set q} (R? : B.Decidable R) where
@@ -546,28 +656,13 @@ zipWith⁺ f (Pfxy ∷ Pfxsys) = Pfxy ∷ zipWith⁺ f Pfxsys
 ------------------------------------------------------------------------
 -- Operations for constructing lists
 ------------------------------------------------------------------------
--- singleton
-
-singleton⁻ : All P [ x ] → P x
-singleton⁻ (px ∷ []) = px
-
-------------------------------------------------------------------------
--- snoc
-
-∷ʳ⁺ : All P xs → P x → All P (xs ∷ʳ x)
-∷ʳ⁺ pxs px = ++⁺ pxs (px ∷ [])
-
-∷ʳ⁻ : All P (xs ∷ʳ x) → All P xs × P x
-∷ʳ⁻ pxs = Prod.map₂ singleton⁻ $ ++⁻ _ pxs
-
-------------------------------------------------------------------------
 -- fromMaybe
 
-fromMaybe⁺ : ∀ {mx} → MAll.All P mx → All P (fromMaybe mx)
+fromMaybe⁺ : ∀ {mx} → Maybe.All P mx → All P (fromMaybe mx)
 fromMaybe⁺ (just px) = px ∷ []
 fromMaybe⁺ nothing   = []
 
-fromMaybe⁻ : ∀ mx → All P (fromMaybe mx) → MAll.All P mx
+fromMaybe⁻ : ∀ mx → All P (fromMaybe mx) → Maybe.All P mx
 fromMaybe⁻ (just x) (px ∷ []) = just px
 fromMaybe⁻ nothing  p         = nothing
 
