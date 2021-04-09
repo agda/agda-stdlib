@@ -59,7 +59,9 @@ Non-backwards compatible changes
 
 * The new modules `Relation.Binary.Morphism.(Constant/Identity/Composition)` that
   were added in the last release no longer have module-level arguments. This is in order
-  to allow proofs about newly added morphism bundles to be added to these files.
+  to allow proofs about newly added morphism bundles to be added to these files. This is
+  only a breaking change if you were supplying the module arguments upon import, in which
+  case you will have to change to supplying them upon application of the proofs.
 
 Deprecated modules
 ------------------
