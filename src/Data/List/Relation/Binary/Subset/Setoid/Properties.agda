@@ -171,6 +171,19 @@ module _ (S : Setoid a ℓ) where
 ------------------------------------------------------------------------
 -- Properties of list functions
 ------------------------------------------------------------------------
+-- ∷
+
+module _ (S : Setoid a ℓ) where
+
+  open Subset S
+
+  xs⊆x∷xs : ∀ xs x → xs ⊆ x ∷ xs
+  xs⊆x∷xs xs x = there
+
+  ∷⁺ʳ : ∀ {xs ys} x → xs ⊆ ys → x ∷ xs ⊆ x ∷ ys
+  ∷⁺ʳ x xs⊆ys (here  p) = here p
+  ∷⁺ʳ x xs⊆ys (there p) = there (xs⊆ys p)
+
 -- ++
 
 module _ (S : Setoid a ℓ) where
