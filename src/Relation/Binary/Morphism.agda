@@ -15,3 +15,4 @@ module Relation.Binary.Morphism where
 
 open import Relation.Binary.Morphism.Definitions public
 open import Relation.Binary.Morphism.Structures public
+open import Relation.Binary.Morphism.Bundles public
