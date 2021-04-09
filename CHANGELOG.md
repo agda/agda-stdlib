@@ -130,15 +130,10 @@ Deprecated names
 New modules
 -----------
 
-* Specifications and properties for greatest common divisor
+* Properties of cancellative commutative semirings
   ```
-  Algebra.Properties.Semiring.GCD
   Algebra.Properties.CancellativeCommutativeSemiring
-  Algebra.Properties.CancellativeCommutativeSemiring.GCD
   ```
-
-* Added `Data.Maybe.Relation.Binary.Connected`, a variant of the `Pointwise` 
-  relation where `nothing` is also related to `just`.
 
 * Specifications for min and max operators
   ```
@@ -165,6 +160,9 @@ New modules
   Data.List.Sort.Base
   Data.List.Sort.MergeSort
   ```
+
+* Added `Data.Maybe.Relation.Binary.Connected`, a variant of the `Pointwise` 
+  relation where `nothing` is also related to `just`.
 
 * Linear congruential pseudo random generators for ℕ.
   /!\ NB: LCGs must not be used for cryptographic applications
@@ -213,13 +211,41 @@ Other minor additions
 
 * Added new proofs to `Algebra.Consequences.Setoid`:
   ```agda
-  comm+cancelˡ-nonZero⇒cancelʳ-nonZero : AlmostLeftCancellative 0# _•_ → AlmostRightCancellative 0# _•_
-  comm+cancelʳ-nonZero⇒cancelˡ-nonZero : AlmostRightCancellative 0# _•_ → AlmostLeftCancellative 0# _•_
+  comm+almostCancelˡ⇒almostCancelʳ : AlmostLeftCancellative  e _•_ → AlmostRightCancellative e _•_
+  comm+almostCancelʳ⇒almostCancelˡ : AlmostRightCancellative e _•_ → AlmostLeftCancellative  e _•_
   ```
 
-* Added new definitions to `Algebra.Structures`:
+* Added new proofs in `Algebra.Properties.Magma.Divisibility`:
   ```agda
-  IsGCDSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ)
+  ∣∣-sym     : Symmetric _∣∣_
+  ∣∣-respʳ-≈ : _∣∣_ Respectsʳ _≈_
+  ∣∣-respˡ-≈ : _∣∣_ Respectsˡ _≈_
+  ∣∣-resp-≈  : _∣∣_ Respects₂ _≈_
+  ```
+
+* Added new proofs in `Algebra.Properties.Semigroup.Divisibility`:
+  ```agda
+  ∣∣-trans : Transitive _∣∣_
+  ```
+
+* Added new proofs in `Algebra.Properties.CommutativeSemigroup.Divisibility`:
+  ```agda
+  x∣y∧z∣x/y⇒xz∣y : ((x/y , _) : x ∣ y) → z ∣ x/y → x ∙ z ∣ y
+  x∣y⇒zx∣zy      : x ∣ y → z ∙ x ∣ z ∙ y
+  ```
+
+* Added new proofs in `Algebra.Properties.Monoid.Divisibility`:
+  ```agda
+  ∣∣-refl          : Reflexive _∣∣_
+  ∣∣-reflexive     : _≈_ ⇒ _∣∣_
+  ∣∣-isEquivalence : IsEquivalence _∣∣_
+  ```
+
+* Added new proofs in `Algebra.Properties.CancellativeCommutativeSemiring`:
+  ```agda
+  xy≈0⇒x≈0∨y≈0 : Decidable _≈_ →  x * y ≈ 0# → x ≈ 0# ⊎ y ≈ 0#
+  x≉0∧y≉0⇒xy≉0 : Decidable _≈_ →  x ≉ 0# → y ≉ 0# → x * y ≉ 0#
+  xy∣x⇒y∣1     : x ≉ 0# → x * y ∣ x → y ∣ 1#
   ```
 
 * Added new function in `Data.Char.Base`:
@@ -969,17 +995,4 @@ Other minor additions
 * Added new proofs to `Relation.Nullary.Negation`:
   ```agda
   contradiction₂ : P ⊎ Q → ¬ P → ¬ Q → Whatever
-  ```
-
-* Added new proofs in `Algebra.Properties.CommutativeSemigroup.Divisibility`:
-  ```agda
-  x∣y∧z∣x/y⇒xz∣y : ((x/y , _) : x ∣ y) → z ∣ x/y → x ∙ z ∣ y
-  x∣y⇒zx∣zy      : x ∣ y → z ∙ x ∣ z ∙ y
-  ```
-
-* Added new proofs in `Algebra.Properties.CancellativeCommutativeSemiring`:
-  ```agda
-  xy≈0⇒x≈0∨y≈0 : Decidable _≈_ →  x * y ≈ 0# → x ≈ 0# ⊎ y ≈ 0#
-  x≉0∧y≉0⇒xy≉0 : Decidable _≈_ →  x ≉ 0# → y ≉ 0# → x * y ≉ 0#
-  xy∣x⇒y∣1     : x ≉ 0# → x * y ∣ x → y ∣ 1#
   ```

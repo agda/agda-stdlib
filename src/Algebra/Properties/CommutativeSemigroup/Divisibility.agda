@@ -29,6 +29,9 @@ open import Algebra.Properties.Semigroup.Divisibility semigroup public
 open import Algebra.Properties.CommutativeMagma.Divisibility commutativeMagma public
   using (x∣xy; xy≈z⇒x∣z; ∣-factors; ∣-factors-≈)
 
+------------------------------------------------------------------------------
+-- New properties
+
 x∣y∧z∣x/y⇒xz∣y : ∀ {x y z} → ((x/y , _) : x ∣ y) → z ∣ x/y → x ∙ z ∣ y
 x∣y∧z∣x/y⇒xz∣y {x} {y} {z} (x/y , x/y∙x≈y) (p , pz≈x/y) = p , (begin
   p ∙ (x ∙ z)  ≈⟨ x∙yz≈xz∙y p x z ⟩

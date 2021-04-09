@@ -63,7 +63,7 @@ Coprime x y = ∀ {z} → z ∣ x → z ∣ y → z ∣ 1#
 record Irreducible (p : A) : Set (a ⊔ ℓ) where
   constructor mkIrred
   field
-    p∤1      : p ∤ 1#
+    p∤1       : p ∤ 1#
     split-∣1 : ∀ {x y} → p ≈ (x * y) → x ∣ 1# ⊎ y ∣ 1#
 
 record Prime (p : A) : Set (a ⊔ ℓ) where
@@ -71,14 +71,3 @@ record Prime (p : A) : Set (a ⊔ ℓ) where
   field
     p≉0     : p ≉ 0#
     split-∣ : ∀ {x y} → p ∣ x * y → p ∣ x ⊎ p ∣ y
-
-
-------------------------------------------------------------------------
--- Greatest common divisor
-
-record IsGCD (x y gcd : A) : Set (a ⊔ ℓ) where
-  constructor mkIsGCD
-  field
-    divides₁ : gcd ∣ x
-    divides₂ : gcd ∣ y
-    greatest : ∀ {z} → z ∣ x → z ∣ y → z ∣ gcd
