@@ -39,6 +39,15 @@ Bug-fixes
   polymorphic as it should have been. This has been fixed. The old, less universe
   polymorphic variant is still available under the new name `_⊎′_`.
   
+* The proof `isEquivalence` in `Function.Properties.(Equivalence/Inverse)` used to be 
+  defined in an anonymous module that took two unneccessary `Setoid` arguments:
+  ```agda
+  module _ (R : Setoid a ℓ₁) (S : Setoid b ℓ₂) where
+    isEquivalence : IsEquivalence (Equivalence {a} {b})
+  ```
+  Their definitions have now been moved out of the anonymous modules so that they no
+  longer require these unnecessary arguments.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -51,6 +60,12 @@ Non-backwards compatible changes
   complex functions (`parensIfSpace`, `wordsBy`, `words`, `linesBy`, `lines`,
   `rectangle`, `rectangleˡ`, `rectangleʳ`, `rectangleᶜ`) have been moved to
   `Data.String`.
+
+* The new modules `Relation.Binary.Morphism.(Constant/Identity/Composition)` that
+  were added in the last release no longer have module-level arguments. This is in order
+  to allow proofs about newly added morphism bundles to be added to these files. This is
+  only a breaking change if you were supplying the module arguments upon import, in which
+  case you will have to change to supplying them upon application of the proofs.
 
 Deprecated modules
 ------------------
@@ -128,13 +143,6 @@ New modules
 * Added `Data.Maybe.Relation.Binary.Connected`, a variant of the `Pointwise` 
   relation where `nothing` is also related to `just`.
 
-* Added various generic morphism constructions for binary relations:
-  ```agda
-  Relation.Binary.Morphism.Construct.Composition
-  Relation.Binary.Morphism.Construct.Constant
-  Relation.Binary.Morphism.Construct.Identity
-  ```
-
 * Specifications for min and max operators
   ```
   Algebra.Construct.NaturalChoice.MinOp
@@ -147,6 +155,11 @@ New modules
   Algebra.Construct.LexProduct
   Algebra.Construct.LexProduct.Base
   Algebra.Construct.LexProduct.Inner
+  ```
+
+* Properties of sums over semirings
+  ```
+  Algebra.Properties.Semiring.Sum
   ```
 
 * Sorting algorithms over lists:
@@ -201,6 +214,11 @@ New modules
   ```
   Data.Tree.Rose.Show
   Data.Tree.Binary.Show
+  ```
+
+* Bundles for binary relation morphisms
+  ```
+  Relation.Binary.Morphism.Bundles
   ```
 
 Other minor additions
@@ -474,11 +492,15 @@ Other minor additions
 
 * Added new proof to `Data.List.Relation.Binary.Subset.Setoid.Properties`:
   ```agda
+  xs⊆x∷xs    : xs ⊆ x ∷ xs
+  ∷⁺ʳ        : xs ⊆ ys → x ∷ xs ⊆ x ∷ ys
   applyUpTo⁺ : m ≤ n → applyUpTo f m ⊆ applyUpTo f n
   ```
 
 * Added new proof to `Data.List.Relation.Binary.Subset.Propositional.Properties`:
   ```agda
+  xs⊆x∷xs    : xs ⊆ x ∷ xs
+  ∷⁺ʳ        : xs ⊆ ys → x ∷ xs ⊆ x ∷ ys
   applyUpTo⁺ : m ≤ n → applyUpTo f m ⊆ applyUpTo f n
   ```
 
@@ -940,14 +962,41 @@ Other minor additions
 
 * Added new proofs to `Relation.Binary.Consequences`:
   ```agda
-  mono⇒cong     : Symmetric _≈_ → _≈_ ⇒ _≤_ → Antisymmetric _≈_ _≤_ → f Preserves _≤_ ⟶ _≤_ → f Preserves _≈_ ⟶ _≈_
-  antimono⇒cong : Symmetric _≈_ → _≈_ ⇒ _≤_ → Antisymmetric _≈_ _≤_ → f Preserves _≤_ ⟶ (flip _≤_) → f Preserves _≈_ ⟶ _≈_
+  mono⇒cong     : Symmetric ≈₁ → ≈₁ ⇒ ≤₁ → Antisymmetric ≈₂ ≤₂ → ∀ {f} → f Preserves ≤₁ ⟶ ≤₂        → f Preserves ≈₁ ⟶ ≈₂
+  antimono⇒cong : Symmetric ≈₁ → ≈₁ ⇒ ≤₁ → Antisymmetric ≈₂ ≤₂ → ∀ {f} → f Preserves ≤₁ ⟶ (flip ≤₂) → f Preserves ≈₁ ⟶ ≈₂
   ```
 
 * Added new proofs to `Relation.Binary.Construct.Converse`:
   ```agda
   totalPreorder   : TotalPreorder a ℓ₁ ℓ₂ → TotalPreorder a ℓ₁ ℓ₂
   isTotalPreorder : IsTotalPreorder ≈ ∼  → IsTotalPreorder ≈ (flip ∼)
+  ```
+
+
+* Added new proofs to `Relation.Binary.Morphism.Construct.Constant`:
+  ```agda
+  setoidHomomorphism : (S : Setoid a ℓ₁) (T : Setoid b ℓ₂) → ∀ x → SetoidHomomorphism S T
+  preorderHomomorphism : (P : Preorder a ℓ₁ ℓ₂) (Q : Preorder b ℓ₃ ℓ₄) → ∀ x → PreorderHomomorphism P Q
+  ```
+
+* Added new proofs to `Relation.Binary.Morphism.Construct.Composition`:
+  ```agda
+  setoidHomomorphism : SetoidHomomorphism S T → SetoidHomomorphism T U → SetoidHomomorphism S U
+  setoidMonomorphism : SetoidMonomorphism S T → SetoidMonomorphism T U → SetoidMonomorphism S U
+  setoidIsomorphism  : SetoidIsomorphism S T → SetoidIsomorphism T U → SetoidIsomorphism S U
+  
+  preorderHomomorphism : PreorderHomomorphism P Q → PreorderHomomorphism Q R → PreorderHomomorphism P R
+  posetHomomorphism    : PosetHomomorphism P Q → PosetHomomorphism Q R → PosetHomomorphism P R
+  ```
+
+* Added new proofs to `Relation.Binary.Morphism.Construct.Identity`:
+  ```agda
+  setoidHomomorphism : (S : Setoid a ℓ₁) → SetoidHomomorphism S S
+  setoidMonomorphism : (S : Setoid a ℓ₁) → SetoidMonomorphism S S
+  setoidIsomorphism  : (S : Setoid a ℓ₁) → SetoidIsomorphism S S
+  
+  preorderHomomorphism : (P : Preorder a ℓ₁ ℓ₂) → PreorderHomomorphism P P
+  posetHomomorphism    : (P : Poset a ℓ₁ ℓ₂) → PosetHomomorphism P P
   ```
 
 * Added new proofs to `Relation.Nullary.Negation`:

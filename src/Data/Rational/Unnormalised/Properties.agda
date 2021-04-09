@@ -317,10 +317,10 @@ p ≤? q = Dec.map′ *≤* drop-*≤* (↥ p ℤ.* ↧ q ℤ.≤? ↥ q ℤ.* �
 -- Other properties of _≤_
 
 mono⇒cong : ∀ {f} → f Preserves _≤_ ⟶ _≤_ → f Preserves _≃_ ⟶ _≃_
-mono⇒cong = BC.mono⇒cong _ ≃-sym ≤-reflexive ≤-antisym
+mono⇒cong = BC.mono⇒cong _≃_ _≃_ ≃-sym ≤-reflexive ≤-antisym
 
 antimono⇒cong : ∀ {f} → f Preserves _≤_ ⟶ _≥_ → f Preserves _≃_ ⟶ _≃_
-antimono⇒cong = BC.antimono⇒cong _ ≃-sym ≤-reflexive ≤-antisym
+antimono⇒cong = BC.antimono⇒cong _≃_ _≃_ ≃-sym ≤-reflexive ≤-antisym
 
 ------------------------------------------------------------------------
 -- Properties of _≤ᵇ_
