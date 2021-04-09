@@ -330,14 +330,17 @@ n≮n {n} = <-irrefl refl
 module ≤-Reasoning where
   open import Relation.Binary.Reasoning.Base.Triple
     ≤-isPreorder
-    <-irrefl
     <-trans
     (resp₂ _<_)
     <⇒≤
     <-≤-trans
     ≤-<-trans
+    as Reasoning
     public
-    hiding (step-≈; step-≈˘)
+    hiding (begin-irrefl; step-≈; step-≈˘)
+
+  infix 1 begin-irrefl_
+  begin-irrefl_ = Reasoning.begin-irrefl <-irrefl
 
 ------------------------------------------------------------------------
 -- Properties of Positive/NonPositive/Negative/NonNegative and _≤_/_<_
@@ -2601,4 +2604,3 @@ Please use *-cancelˡ-<-nonNeg instead."
 "Warning: *-cancelʳ-<-non-neg was deprecated in v1.5.
 Please use *-cancelʳ-<-nonNeg instead."
 #-}
-

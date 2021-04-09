@@ -15,7 +15,6 @@ open import Relation.Binary
 module Relation.Binary.Reasoning.Base.Triple {a ℓ₁ ℓ₂ ℓ₃} {A : Set a}
   {_≈_ : Rel A ℓ₁} {_≤_ : Rel A ℓ₂} {_<_ : Rel A ℓ₃}
   (isPreorder : IsPreorder _≈_ _≤_)
-  (<-irrefl : Irreflexive _≈_ _<_)
   (<-trans : Transitive _<_) (<-resp-≈ : _<_ Respects₂ _≈_) (<⇒≤ : _<_ ⇒ _≤_)
   (<-≤-trans : Trans _<_ _≤_ _<_) (≤-<-trans : Trans _≤_ _<_ _<_)
   where
@@ -25,7 +24,7 @@ open import Function.Base using (case_of_; id)
 open import Level using (Level; _⊔_; Lift; lift)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; refl; sym)
-open import Relation.Nullary using (Dec; yes; no)
+open import Relation.Nullary using (Dec; yes; no; ¬_)
 open import Relation.Nullary.Decidable using (True; toWitness)
 open import Relation.Nullary.Negation using (contradiction)
 
@@ -78,7 +77,7 @@ extractEquality (isEquality x≈y) = x≈y
 -- See `Relation.Binary.Reasoning.Base.Partial` for the design decisions
 -- behind these combinators.
 
-infix  1 begin_ begin-strict_ begin-irrefl_ begin-equality_
+infix  1 begin_ begin-strict_ begin-equality_
 infixr 2 step-< step-≤ step-≈ step-≈˘ step-≡ step-≡˘ _≡⟨⟩_
 infix  3 _∎
 
@@ -92,11 +91,20 @@ begin (equals    x≈y) = ≤-reflexive x≈y
 begin-strict_ : ∀ {x y} (r : x IsRelatedTo y) → {s : True (IsStrict? r)} → x < y
 begin-strict_ r {s} = extractStrict (toWitness s)
 
-begin-irrefl_ : ∀ {x} (r : x IsRelatedTo x) → {s : True (IsStrict? r)} → ∀ {a} {A : Set a} → A
-begin-irrefl_ r {s} = contradiction (extractStrict (toWitness s)) (<-irrefl Eq.refl)
-
 begin-equality_ : ∀ {x y} (r : x IsRelatedTo y) → {s : True (IsEquality? r)} → x ≈ y
 begin-equality_ r {s} = extractEquality (toWitness s)
+
+
+begin-irrefl : Irreflexive _≈_ _<_ →
+                ∀ {x} (r : x IsRelatedTo x) {s : True (IsStrict? r)} →
+                ∀ {a} {A : Set a} → A
+begin-irrefl <-irrefl {x} r {s} =  contradiction x<x x≮x where
+
+  x<x : x < x
+  x<x = extractStrict (toWitness s)
+
+  x≮x : ¬ (x < x)
+  x≮x = <-irrefl Eq.refl
 
 -- Step with the strict relation
 
