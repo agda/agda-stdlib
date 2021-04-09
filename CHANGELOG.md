@@ -35,6 +35,10 @@ Bug-fixes
   `Relation.Binary.Reasoning.Base.Partial`, they will need to adjust their additional
   combinators to use the new `singleStep`/`multiStep` constructors of `_IsRelatedTo_`.
 
+* The sum operator `_⊎_` in `Data.Container.Indexed.Combinator` was not as universe 
+  polymorphic as it should have been. This has been fixed. The old, less universe
+  polymorphic variant is still available under the new name `_⊎′_`.
+  
 * The proof `isEquivalence` in `Function.Properties.(Equivalence/Inverse)` used to be 
   defined in an anonymous module that took two unneccessary `Setoid` arguments:
   ```agda
@@ -176,6 +180,11 @@ New modules
   ```
   Data.List.Relation.Binary.Pointwise.Base
   Data.List.Relation.Binary.Pointwise.Properties
+  ```
+
+* Heterogeneous `All` predicate for disjoint sums:
+  ```
+  Data.Sum.Relation.Unary.All
   ```
 
 * Broke up `Codata.Musical.Colist` into a multitude of modules:
