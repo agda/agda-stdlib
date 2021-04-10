@@ -24,7 +24,7 @@ open import Data.Nat.Base
   renaming (suc to 1+_; _+_ to _+ℕ_; _*_ to _*ℕ_; _≤_ to _≤ℕ_)
 import Data.Nat.Properties as ℕₚ
 open import Data.Product using (proj₁; proj₂; uncurry)
-open import Function using (_∘_)
+open import Function.Base using (_∘_)
 open import Relation.Binary
 open import Relation.Binary.Consequences
 open import Relation.Binary.PropositionalEquality
@@ -108,7 +108,7 @@ as 1# ≟ bs 1# = map′ (cong _1#) 1#-injective (as ≟ₑ bs)
 0<1+ {b ∷ bs} = <-trans (less (s≤s z≤n)) 1<2+
 
 <⇒≢ : ∀ {a b} → a < b → a ≢ b
-<⇒≢ lt eq = asym⟶irr (resp₂ _<_) sym <-asym eq lt
+<⇒≢ lt eq = asym⇒irr (resp₂ _<_) sym <-asym eq lt
 
 <-cmp : Trichotomous _≡_ _<_
 <-cmp 0#            0#            = tri≈ (<-irrefl refl) refl (<-irrefl refl)

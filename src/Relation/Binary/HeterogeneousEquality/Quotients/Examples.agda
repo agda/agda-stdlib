@@ -16,13 +16,14 @@ import Relation.Binary.PropositionalEquality as ≡
 open import Data.Nat.Base
 open import Data.Nat.Properties
 open import Data.Product
-open import Function
+open import Function.Base
+
 open ≅-Reasoning
 
 ℕ² = ℕ × ℕ
 
 _∼_ : ℕ² → ℕ² → Set
-(x , y) ∼ (x' , y') = x + y' ≅ x' + y
+(x , y) ∼ (x′ , y′) = x + y′ ≅ x′ + y
 
 infix 10 _∼_
 
@@ -60,7 +61,7 @@ module Integers (quot : Quotients 0ℓ 0ℓ) where
   _+²_ : ℕ² → ℕ² → ℕ²
   (x₁ , y₁) +² (x₂ , y₂) = x₁ + x₂ , y₁ + y₂
 
-  +²-cong : ∀{a b a' b'} → a ∼ a' → b ∼ b' → a +² b ∼ a' +² b'
+  +²-cong : ∀{a b a′ b′} → a ∼ a′ → b ∼ b′ → a +² b ∼ a′ +² b′
   +²-cong {a₁ , b₁} {c₁ , d₁} {a₂ , b₂} {c₂ , d₂} ab∼cd₁ ab∼cd₂ = begin
     (a₁ + c₁) + (b₂ + d₂) ≡⟨ ≡.cong (_+ (b₂ + d₂)) (+-comm a₁ c₁) ⟩
     (c₁ + a₁) + (b₂ + d₂) ≡⟨ +-assoc c₁ a₁ (b₂ + d₂) ⟩
@@ -83,7 +84,7 @@ module Integers (quot : Quotients 0ℓ 0ℓ) where
 
     _+ℤ_ : ℤ → ℤ → ℤ
     _+ℤ_ = Properties₂.lift₂ ext Int Int (λ i j → abs (i +² j))
-         $ λ {a} {b} {c} p p' → compat-abs (+²-cong {a} {b} {c} p p')
+         $ λ {a} {b} {c} p p′ → compat-abs (+²-cong {a} {b} {c} p p′)
 
     zero² : ℕ²
     zero² = 0 , 0

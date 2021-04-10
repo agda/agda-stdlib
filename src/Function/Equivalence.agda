@@ -8,11 +8,16 @@
 
 module Function.Equivalence where
 
-open import Function using (flip)
+-- Note: use of the standard function hierarchy is encouraged. The
+-- module `Function` re-exports `Congruent` and `IsCongruent`.
+-- The alternative definitions found in this file will eventually be
+-- deprecated.
+
+open import Function.Base using (flip)
 open import Function.Equality as F
   using (_⟶_; _⟨$⟩_) renaming (_∘_ to _⟪∘⟫_)
 open import Level
-open import Relation.Binary
+open import Relation.Binary hiding (_⇔_)
 import Relation.Binary.PropositionalEquality as P
 
 ------------------------------------------------------------------------

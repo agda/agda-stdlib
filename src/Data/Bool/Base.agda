@@ -71,4 +71,3 @@ if false then t else f = f
 T : Bool → Set
 T true  = ⊤
 T false = ⊥
-

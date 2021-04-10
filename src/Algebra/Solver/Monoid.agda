@@ -19,7 +19,7 @@ open import Data.Maybe.Base as Maybe
 open import Data.Nat.Base using (ℕ)
 open import Data.Product
 open import Data.Vec.Base using (Vec; lookup)
-open import Function using (_∘_; _$_)
+open import Function.Base using (_∘_; _$_)
 open import Relation.Binary using (Decidable)
 
 open import Relation.Binary.PropositionalEquality as P using (_≡_)

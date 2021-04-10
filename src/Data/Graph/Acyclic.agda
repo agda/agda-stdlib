@@ -170,6 +170,8 @@ module _ {ℓ e} {N : Set ℓ} {E : Set e} where
 -- Finds the context and remaining graph corresponding to a given node
 -- index.
 
+  infix 4 _[_]
+
   _[_] : ∀ {n} → Graph N E n → (i : Fin n) → Graph N E (suc (n - suc i))
   (c & g) [ zero ]  = c & g
   (c & g) [ suc i ] = g [ i ]
@@ -279,11 +281,11 @@ reverse : ∀ {ℓ e} {N : Set ℓ} {E : Set e} →
           ∀ {n} → Graph N E n → Graph N E n
 reverse {N = N} {E} g =
   foldl (Graph N E)
-        (λ i g' c →
+        (λ i g′ c →
            context (label c)
                    (List.map (Prod.swap ∘ Prod.map PC.reverse id) $
                              preds g i)
-           & g')
+           & g′)
         ∅ g
 
 private

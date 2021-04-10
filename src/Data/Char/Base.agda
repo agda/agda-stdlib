@@ -10,9 +10,11 @@ module Data.Char.Base where
 
 open import Level using (zero)
 import Data.Nat.Base as ℕ
-open import Function
-open import Relation.Binary using (Rel)
-open import Relation.Binary.PropositionalEquality
+open import Data.Bool.Base using (Bool)
+open import Function.Base using (_on_)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.PropositionalEquality.Core
+open import Relation.Binary.Construct.Closure.Reflexive
 
 ------------------------------------------------------------------------
 -- Re-export the type, and renamed primitives
@@ -39,13 +41,24 @@ open import Agda.Builtin.Char public using ( Char )
 open import Agda.Builtin.String public using ()
   renaming ( primShowChar to show )
 
-infix 4 _≈_
+infix 4 _≈_ _≉_
 _≈_ : Rel Char zero
 _≈_ = _≡_ on toℕ
+
+_≉_ : Rel Char zero
+_≉_ = _≢_ on toℕ
+
+infix 4 _≈ᵇ_
+_≈ᵇ_ : (c d : Char) → Bool
+c ≈ᵇ d = toℕ c ℕ.≡ᵇ toℕ d
 
 infix 4 _<_
 _<_ : Rel Char zero
 _<_ = ℕ._<_ on toℕ
+
+infix 4 _≤_
+_≤_ : Rel Char zero
+_≤_ = ReflClosure _<_
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

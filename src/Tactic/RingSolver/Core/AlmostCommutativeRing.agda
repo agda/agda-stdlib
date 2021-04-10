@@ -15,7 +15,7 @@ open import Algebra.Structures using (IsCommutativeSemiring)
 open import Algebra.Definitions
 open import Algebra.Bundles using (RawRing; CommutativeRing; CommutativeSemiring)
 import Algebra.Morphism as Morphism
-open import Function
+open import Function hiding (Morphism)
 open import Level
 open import Data.Maybe.Base as Maybe using (Maybe; just; nothing)
 
@@ -30,7 +30,7 @@ record IsAlmostCommutativeRing
 
   open IsCommutativeSemiring isCommutativeSemiring public
 
-import Algebra.Operations.Ring as Exp
+import Algebra.Definitions.RawSemiring as Exp
 
 record AlmostCommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 -_
@@ -59,10 +59,11 @@ record AlmostCommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
     }
 
   open CommutativeSemiring commutativeSemiring public
-    using ( +-semigroup; +-monoid; +-commutativeMonoid
-          ; *-semigroup; *-monoid; *-commutativeMonoid
-          ; semiring
-          )
+    using
+    ( +-semigroup; +-monoid; +-commutativeMonoid
+    ; *-semigroup; *-monoid; *-commutativeMonoid
+    ; rawSemiring; semiring
+    )
 
   rawRing : RawRing _ _
   rawRing = record
@@ -75,7 +76,7 @@ record AlmostCommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
     }
 
   _^_ : Carrier → ℕ → Carrier
-  _^_ = Exp._^_ rawRing
+  _^_ = Exp._^′_ rawSemiring
   {-# NOINLINE _^_ #-}
 
   refl : ∀ {x} → x ≈ x

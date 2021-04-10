@@ -6,6 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
+open import Algebra.Core using (Op₂)
 open import Relation.Binary using (Setoid)
 
 module Data.List.Relation.Binary.Equality.Setoid {a ℓ} (S : Setoid a ℓ) where
@@ -14,7 +15,7 @@ open import Data.Fin.Base
 open import Data.List.Base
 open import Data.List.Relation.Binary.Pointwise as PW using (Pointwise)
 open import Data.List.Relation.Unary.Unique.Setoid S using (Unique)
-open import Function using (_∘_)
+open import Function.Base using (_∘_)
 open import Level
 open import Relation.Binary renaming (Rel to Rel₂)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
@@ -99,13 +100,22 @@ module _ {b ℓ₂} (T : Setoid b ℓ₂) where
   map⁺ {f} pres xs≋ys = PW.map⁺ f f (PW.map pres xs≋ys)
 
 ------------------------------------------------------------------------
+-- foldr
+
+foldr⁺ : ∀ {_•_ : Op₂ A} {_◦_ : Op₂ A} →
+         (∀ {w x y z} → w ≈ x → y ≈ z → (w • y) ≈ (x ◦ z)) →
+         ∀ {xs ys e f} → e ≈ f → xs ≋ ys →
+         foldr _•_ e xs ≈ foldr _◦_ f ys
+foldr⁺ ∙⇔◦ e≈f xs≋ys = PW.foldr⁺ ∙⇔◦ e≈f xs≋ys
+
+------------------------------------------------------------------------
 -- _++_
 
 ++⁺ : ∀ {ws xs ys zs} → ws ≋ xs → ys ≋ zs → ws ++ ys ≋ xs ++ zs
 ++⁺ = PW.++⁺
 
 ++-cancelˡ : ∀ xs {ys zs} → xs ++ ys ≋ xs ++ zs → ys ≋ zs
-++-cancelˡ = PW.++-cancelˡ
+++-cancelˡ xs = PW.++-cancelˡ xs
 
 ++-cancelʳ : ∀ {xs} ys zs → ys ++ xs ≋ zs ++ xs → ys ≋ zs
 ++-cancelʳ = PW.++-cancelʳ

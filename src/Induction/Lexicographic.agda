@@ -19,10 +19,12 @@ open import Level
         RecStruct (Σ A B) _ _
 Σ-Rec RecA RecB P (x , y) =
   -- Either x is constant and y is "smaller", ...
-  RecB x (λ y' → P (x , y')) y
+  RecB x (λ y′ → P (x , y′)) y
     ×
   -- ...or x is "smaller" and y is arbitrary.
-  RecA (λ x' → ∀ y' → P (x' , y')) x
+  RecA (λ x′ → ∀ y′ → P (x′ , y′)) x
+
+infixr 2 _⊗_
 
 _⊗_ : ∀ {a b ℓ₁ ℓ₂ ℓ₃} {A : Set a} {B : Set b} →
       RecStruct A (ℓ₁ ⊔ b) ℓ₂ → RecStruct B ℓ₁ ℓ₃ →
@@ -41,14 +43,14 @@ RecA ⊗ RecB = Σ-Rec RecA (λ _ → RecB)
   (p₁ x y p₂x , p₂x)
   where
   p₁ : ∀ x y →
-       RecA (λ x' → ∀ y' → P (x' , y')) x →
-       RecB x (λ y' → P (x , y')) y
+       RecA (λ x′ → ∀ y′ → P (x′ , y′)) x →
+       RecB x (λ y′ → P (x , y′)) y
   p₁ x y x-rec = recB x
-                      (λ y' → P (x , y'))
+                      (λ y′ → P (x , y′))
                       (λ y y-rec → f (x , y) (y-rec , x-rec))
                       y
 
-  p₂ : ∀ x → RecA (λ x' → ∀ y' → P (x' , y')) x
+  p₂ : ∀ x → RecA (λ x′ → ∀ y′ → P (x′ , y′)) x
   p₂ = recA (λ x → ∀ y → P (x , y))
             (λ x x-rec y → f (x , y) (p₁ x y x-rec , x-rec))
 

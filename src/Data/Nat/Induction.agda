@@ -12,10 +12,9 @@ open import Function
 open import Data.Nat.Base
 open import Data.Nat.Properties using (≤⇒≤′)
 open import Data.Product
-open import Data.Unit
+open import Data.Unit.Polymorphic
 open import Induction
 open import Induction.WellFounded as WF
-open import Level using (Lift)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Unary
 
@@ -28,7 +27,7 @@ open WF public using (Acc; acc)
 -- Ordinary induction
 
 Rec : ∀ ℓ → RecStruct ℕ ℓ ℓ
-Rec ℓ P zero    = Lift ℓ ⊤
+Rec ℓ P zero    = ⊤
 Rec ℓ P (suc n) = P n
 
 recBuilder : ∀ {ℓ} → RecursorBuilder (Rec ℓ)
@@ -42,7 +41,7 @@ rec = build recBuilder
 -- Complete induction
 
 CRec : ∀ ℓ → RecStruct ℕ ℓ ℓ
-CRec ℓ P zero    = Lift ℓ ⊤
+CRec ℓ P zero    = ⊤
 CRec ℓ P (suc n) = P n × CRec ℓ P n
 
 cRecBuilder : ∀ {ℓ} → RecursorBuilder (CRec ℓ)
@@ -83,6 +82,22 @@ module _ {ℓ} where
 
 <-wellFounded : WellFounded _<_
 <-wellFounded = Subrelation.wellFounded ≤⇒≤′ <′-wellFounded
+
+-- A version of `<-wellFounded` that cheats by skipping building
+-- the first billion proofs. Use this when you require the function
+-- using the proof of well-foundedness to evaluate fast.
+--
+-- IMPORTANT: You have to be a little bit careful when using this to always
+-- make the function be strict in some other argument than the accessibility
+-- proof, otherwise you will have neutral terms unfolding a billion times
+-- before getting stuck.
+<-wellFounded-fast : WellFounded _<_
+<-wellFounded-fast = <-wellFounded-skip 1000000000
+  where
+  <-wellFounded-skip : ∀ (k : ℕ) → WellFounded _<_
+  <-wellFounded-skip zero    n       = <-wellFounded n
+  <-wellFounded-skip (suc k) zero    = <-wellFounded 0
+  <-wellFounded-skip (suc k) (suc n) = acc (λ m _ → <-wellFounded-skip k m)
 
 module _ {ℓ} where
   open WF.All <-wellFounded ℓ public

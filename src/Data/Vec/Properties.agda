@@ -26,6 +26,7 @@ open import Level using (Level)
 open import Relation.Binary as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; _≗_; cong₂)
+open P.≡-Reasoning
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Nullary using (Dec; does; yes; no)
 open import Relation.Nullary.Decidable using (map′)
@@ -70,6 +71,91 @@ module _ {n} {x y : A} {xs ys : Vec A n} where
 -- See also Data.Vec.Properties.WithK.[]=-irrelevant.
 
 ------------------------------------------------------------------------
+-- take
+
+unfold-take : ∀ n {m} x (xs : Vec A (n + m)) → take (suc n) (x ∷ xs) ≡ x ∷ take n xs
+unfold-take n x xs with splitAt n xs
+unfold-take n x .(xs ++ ys) | xs , ys , refl = refl
+
+take-distr-zipWith : ∀ {m n} → (f : A → B → C) →
+                     (xs : Vec A (m + n)) → (ys : Vec B (m + n)) →
+                     take m (zipWith f xs ys) ≡ zipWith f (take m xs) (take m ys)
+take-distr-zipWith {m = zero}  f  xs       ys = refl
+take-distr-zipWith {m = suc m} f (x ∷ xs) (y ∷ ys) = begin
+    take (suc m) (zipWith f (x ∷ xs) (y ∷ ys))
+  ≡⟨⟩
+    take (suc m) (f x y ∷ (zipWith f xs ys))
+  ≡⟨ unfold-take m (f x y) (zipWith f xs ys) ⟩
+    f x y ∷ take m (zipWith f xs ys)
+  ≡⟨ P.cong (f x y ∷_) (take-distr-zipWith f xs ys) ⟩
+    f x y ∷ (zipWith f (take m xs) (take m ys))
+  ≡⟨⟩
+    zipWith f (x ∷ (take m xs)) (y ∷ (take m ys))
+  ≡˘⟨ P.cong₂ (zipWith f) (unfold-take m x xs) (unfold-take m y ys) ⟩
+    zipWith f (take (suc m) (x ∷ xs)) (take (suc m) (y ∷ ys))
+  ∎
+
+take-distr-map : ∀ {n} → (f : A → B) → (m : ℕ) → (xs : Vec A (m + n)) →
+                 take m (map f xs) ≡ map f (take m xs)
+take-distr-map f zero xs = refl
+take-distr-map f (suc m) (x ∷ xs) =
+  begin
+    take (suc m) (map f (x ∷ xs)) ≡⟨⟩
+    take (suc m) (f x ∷ map f xs) ≡⟨ unfold-take m (f x) (map f xs) ⟩
+    f x ∷ (take m (map f xs))     ≡⟨ P.cong (f x ∷_) (take-distr-map f m xs) ⟩
+    f x ∷ (map f (take m xs))     ≡⟨⟩
+    map f (x ∷ take m xs)         ≡˘⟨ P.cong (map f) (unfold-take m x xs) ⟩
+    map f (take (suc m) (x ∷ xs)) ∎
+
+------------------------------------------------------------------------
+-- drop
+
+unfold-drop : ∀ n {m} x (xs : Vec A (n + m)) → drop (suc n) (x ∷ xs) ≡ drop n xs
+unfold-drop n x xs with splitAt n xs
+unfold-drop n x .(xs ++ ys) | xs , ys , refl = refl
+
+drop-distr-zipWith : ∀ {m n} → (f : A → B → C) →
+                     (x : Vec A (m + n)) → (y : Vec B (m + n)) →
+                     drop m (zipWith f x y) ≡ zipWith f (drop m x) (drop m y)
+drop-distr-zipWith {m = zero} f   xs       ys = refl
+drop-distr-zipWith {m = suc m} f (x ∷ xs) (y ∷ ys) = begin
+    drop (suc m) (zipWith f (x ∷ xs) (y ∷ ys))
+  ≡⟨⟩
+    drop (suc m) (f x y ∷ (zipWith f xs ys))
+  ≡⟨ unfold-drop m (f x y) (zipWith f xs ys) ⟩
+    drop m (zipWith f xs ys)
+  ≡⟨ drop-distr-zipWith f xs ys ⟩
+    zipWith f (drop m xs) (drop m ys)
+  ≡˘⟨ P.cong₂ (zipWith f) (unfold-drop m x xs) (unfold-drop m y ys) ⟩
+    zipWith f (drop (suc m) (x ∷ xs)) (drop (suc m) (y ∷ ys))
+  ∎
+
+drop-distr-map : ∀ {n} → (f : A → B) → (m : ℕ) → (x : Vec A (m + n)) →
+                 drop m (map f x) ≡ map f (drop m x)
+drop-distr-map f zero x = refl
+drop-distr-map f (suc m) (x ∷ xs) = begin
+  drop (suc m) (map f (x ∷ xs)) ≡⟨⟩
+  drop (suc m) (f x ∷ map f xs) ≡⟨ unfold-drop m (f x) (map f xs) ⟩
+  drop m (map f xs)             ≡⟨ drop-distr-map f m xs ⟩
+  map f (drop m xs)             ≡⟨ P.cong (map f) (P.sym (unfold-drop m x xs)) ⟩
+  map f (drop (suc m) (x ∷ xs)) ∎
+
+------------------------------------------------------------------------
+-- take and drop together
+
+take-drop-id : ∀ {n} → (m : ℕ) → (x : Vec A (m + n)) → take m x ++ drop m x ≡ x
+take-drop-id zero x = refl
+take-drop-id (suc m) (x ∷ xs) = begin
+    take (suc m) (x ∷ xs) ++ drop (suc m) (x ∷ xs)
+  ≡⟨ cong₂ _++_ (unfold-take m x xs) (unfold-drop m x xs) ⟩
+    (x ∷ take m xs) ++ (drop m xs)
+  ≡⟨⟩
+    x ∷ (take m xs ++ drop m xs)
+  ≡⟨ P.cong (x ∷_) (take-drop-id m xs) ⟩
+    x ∷ xs
+  ∎
+
+------------------------------------------------------------------------
 -- lookup
 
 []=⇒lookup : ∀ {n} {x : A} {xs} {i : Fin n} →
@@ -101,6 +187,15 @@ lookup⇒[]= (suc i) (_ ∷ xs) p    = there (lookup⇒[]= i xs p)
   []=⇒lookup∘lookup⇒[]= (x ∷ xs) zero    refl = refl
   []=⇒lookup∘lookup⇒[]= (x ∷ xs) (suc i) p    =
     []=⇒lookup∘lookup⇒[]= xs i p
+
+lookup-inject≤-take : ∀ m {n} (m≤m+n : m ≤ m + n) (i : Fin m) (xs : Vec A (m + n)) →
+                      lookup xs (Fin.inject≤ i m≤m+n) ≡ lookup (take m xs) i
+lookup-inject≤-take (suc m) m≤m+n zero (x ∷ xs)
+  rewrite unfold-take m x xs = refl
+lookup-inject≤-take (suc (suc m)) m≤m+n (suc zero) (x ∷ x' ∷ xs)
+  rewrite unfold-take (suc m) x (x' ∷ xs) | unfold-take m x' xs = refl
+lookup-inject≤-take (suc (suc m)) (s≤s (s≤s m≤m+n)) (suc (suc i)) (x ∷ x' ∷ xs)
+  rewrite unfold-take (suc m) x (x' ∷ xs) | unfold-take m x' xs = lookup-inject≤-take m m≤m+n i xs
 
 ------------------------------------------------------------------------
 -- updateAt (_[_]%=_)
@@ -297,26 +392,26 @@ map-[]≔ f xs i = map-updateAt xs i refl
 ------------------------------------------------------------------------
 -- _++_
 
-module _ {m} {ys ys' : Vec A m} where
+module _ {m} {ys ys′ : Vec A m} where
 
   -- See also Data.Vec.Properties.WithK.++-assoc.
 
-  ++-injectiveˡ : ∀ {n} (xs xs' : Vec A n) →
-                  xs ++ ys ≡ xs' ++ ys' → xs ≡ xs'
+  ++-injectiveˡ : ∀ {n} (xs xs′ : Vec A n) →
+                  xs ++ ys ≡ xs′ ++ ys′ → xs ≡ xs′
   ++-injectiveˡ []       []         _  = refl
-  ++-injectiveˡ (x ∷ xs) (x' ∷ xs') eq =
+  ++-injectiveˡ (x ∷ xs) (x′ ∷ xs′) eq =
     P.cong₂ _∷_ (∷-injectiveˡ eq) (++-injectiveˡ _ _ (∷-injectiveʳ eq))
 
-  ++-injectiveʳ : ∀ {n} (xs xs' : Vec A n) →
-                  xs ++ ys ≡ xs' ++ ys' → ys ≡ ys'
+  ++-injectiveʳ : ∀ {n} (xs xs′ : Vec A n) →
+                  xs ++ ys ≡ xs′ ++ ys′ → ys ≡ ys′
   ++-injectiveʳ []       []         eq = eq
-  ++-injectiveʳ (x ∷ xs) (x' ∷ xs') eq =
-    ++-injectiveʳ xs xs' (∷-injectiveʳ eq)
+  ++-injectiveʳ (x ∷ xs) (x′ ∷ xs′) eq =
+    ++-injectiveʳ xs xs′ (∷-injectiveʳ eq)
 
-  ++-injective  : ∀ {n} (xs xs' : Vec A n) →
-                  xs ++ ys ≡ xs' ++ ys' → xs ≡ xs' × ys ≡ ys'
-  ++-injective xs xs' eq =
-    (++-injectiveˡ xs xs' eq , ++-injectiveʳ xs xs' eq)
+  ++-injective  : ∀ {n} (xs xs′ : Vec A n) →
+                  xs ++ ys ≡ xs′ ++ ys′ → xs ≡ xs′ × ys ≡ ys′
+  ++-injective xs xs′ eq =
+    (++-injectiveˡ xs xs′ eq , ++-injectiveʳ xs xs′ eq)
 
 lookup-++-< : ∀ {m n} (xs : Vec A m) (ys : Vec A n) →
               ∀ i (i<m : toℕ i < m) →
@@ -600,14 +695,19 @@ map-replicate :  ∀ (f : A → B) (x : A) n →
 map-replicate f x zero = refl
 map-replicate f x (suc n) = P.cong (f x ∷_) (map-replicate f x n)
 
+zipWith-replicate : ∀ {n : ℕ} (_⊕_ : A → B → C) (x : A) (y : B) →
+                    zipWith {n = n} _⊕_ (replicate x) (replicate y) ≡ replicate (x ⊕ y)
+zipWith-replicate {n = zero} _⊕_ x y = refl
+zipWith-replicate {n = suc n} _⊕_ x y = P.cong (x ⊕ y ∷_) (zipWith-replicate _⊕_ x y)
+
 zipWith-replicate₁ : ∀ {n} (_⊕_ : A → B → C) (x : A) (ys : Vec B n) →
-                   zipWith _⊕_ (replicate x) ys ≡ map (x ⊕_) ys
+                     zipWith _⊕_ (replicate x) ys ≡ map (x ⊕_) ys
 zipWith-replicate₁ _⊕_ x []       = refl
 zipWith-replicate₁ _⊕_ x (y ∷ ys) =
   P.cong (x ⊕ y ∷_) (zipWith-replicate₁ _⊕_ x ys)
 
 zipWith-replicate₂ : ∀ {n} (_⊕_ : A → B → C) (xs : Vec A n) (y : B) →
-                   zipWith _⊕_ xs (replicate y) ≡ map (_⊕ y) xs
+                     zipWith _⊕_ xs (replicate y) ≡ map (_⊕ y) xs
 zipWith-replicate₂ _⊕_ []       y = refl
 zipWith-replicate₂ _⊕_ (x ∷ xs) y =
   P.cong (x ⊕ y ∷_) (zipWith-replicate₂ _⊕_ xs y)

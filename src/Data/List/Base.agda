@@ -22,14 +22,15 @@ open import Data.These.Base as These using (These; this; that; these)
 open import Function.Base using (id; _∘_ ; _∘′_; const; flip)
 open import Level using (Level)
 open import Relation.Nullary using (does)
-open import Relation.Nullary.Negation using (¬?)
+open import Relation.Nullary.Negation.Core using (¬?)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Unary.Properties using (∁?)
-open import Relation.Binary as B using (Rel)
+open import Relation.Binary.Core using (Rel)
+import Relation.Binary.Definitions as B
 
 private
   variable
-    a b c p : Level
+    a b c p ℓ : Level
     A : Set a
     B : Set b
     C : Set c
@@ -68,6 +69,13 @@ intercalate : List A → List (List A) → List A
 intercalate xs []         = []
 intercalate xs (ys ∷ [])  = ys
 intercalate xs (ys ∷ yss) = ys ++ xs ++ intercalate xs yss
+
+cartesianProductWith : (A → B → C) → List A → List B → List C
+cartesianProductWith f []       _  = []
+cartesianProductWith f (x ∷ xs) ys = map (f x) ys ++ cartesianProductWith f xs ys
+
+cartesianProduct : List A → List B → List (A × B)
+cartesianProduct = cartesianProductWith _,_
 
 ------------------------------------------------------------------------
 -- Aligning and zipping
@@ -109,6 +117,13 @@ unzip = unzipWith id
 
 partitionSums : List (A ⊎ B) → List A × List B
 partitionSums = partitionSumsWith id
+
+merge : {R : Rel A ℓ} → B.Decidable R → List A → List A → List A
+merge R? []       ys       = ys
+merge R? xs       []       = xs
+merge R? (x ∷ xs) (y ∷ ys) = if does (R? x y)
+  then x ∷ merge R? xs (y ∷ ys)
+  else y ∷ merge R? (x ∷ xs) ys
 
 ------------------------------------------------------------------------
 -- Operations for reducing lists
@@ -193,7 +208,7 @@ applyUpTo f zero    = []
 applyUpTo f (suc n) = f zero ∷ applyUpTo (f ∘ suc) n
 
 applyDownFrom : (ℕ → A) → ℕ → List A
-applyDownFrom f zero = []
+applyDownFrom f zero    = []
 applyDownFrom f (suc n) = f n ∷ applyDownFrom f n
 
 tabulate : ∀ {n} (f : Fin n → A) → List A
@@ -215,15 +230,13 @@ downFrom = applyDownFrom id
 allFin : ∀ n → List (Fin n)
 allFin n = tabulate id
 
--- Other
-
 unfold : ∀ (P : ℕ → Set b)
          (f : ∀ {n} → P (suc n) → Maybe (A × P n)) →
          ∀ {n} → P n → List A
 unfold P f {n = zero}  s = []
 unfold P f {n = suc n} s with f s
 ... | nothing       = []
-... | just (x , s') = x ∷ unfold P f s'
+... | just (x , s′) = x ∷ unfold P f s′
 
 ------------------------------------------------------------------------
 -- Operations for deconstructing lists
@@ -244,6 +257,11 @@ head (x ∷ _) = just x
 tail : List A → Maybe (List A)
 tail []       = nothing
 tail (_ ∷ xs) = just xs
+
+last : List A → Maybe A
+last []       = nothing
+last (x ∷ []) = just x
+last (_ ∷ xs) = last xs
 
 take : ℕ → List A → List A
 take zero    xs       = []
@@ -337,7 +355,7 @@ infixr 5 _ʳ++_
 _ʳ++_ : List A → List A → List A
 _ʳ++_ = flip reverseAcc
 
--- Snoc.
+-- Snoc: Cons, but from the right.
 
 infixl 6 _∷ʳ_
 
@@ -357,17 +375,56 @@ xs ∷ʳ? x = maybe′ (xs ∷ʳ_) xs x
 
 -- Backwards initialisation
 
-infixl 5 _∷ʳ'_
+infixl 5 _∷ʳ′_
 
 data InitLast {A : Set a} : List A → Set a where
   []    : InitLast []
-  _∷ʳ'_ : (xs : List A) (x : A) → InitLast (xs ∷ʳ x)
+  _∷ʳ′_ : (xs : List A) (x : A) → InitLast (xs ∷ʳ x)
 
 initLast : (xs : List A) → InitLast xs
 initLast []               = []
 initLast (x ∷ xs)         with initLast xs
-... | []       = [] ∷ʳ' x
-... | ys ∷ʳ' y = (x ∷ ys) ∷ʳ' y
+... | []       = [] ∷ʳ′ x
+... | ys ∷ʳ′ y = (x ∷ ys) ∷ʳ′ y
+
+-- uncons, but from the right
+unsnoc : List A → Maybe (List A × A)
+unsnoc as with initLast as
+... | []       = nothing
+... | xs ∷ʳ′ x = just (xs , x)
+
+------------------------------------------------------------------------
+-- Splitting a list
+
+-- The predicate `P` represents the notion of newline character for the type `A`
+-- It is used to split the input list into a list of lines. Some lines may be
+-- empty if the input contains at least two consecutive newline characters.
+
+linesBy : ∀ {P : Pred A p} → Decidable P → List A → List (List A)
+linesBy {A = A} P? = go nothing where
+
+  go : Maybe (List A) → List A → List (List A)
+  go acc []       = maybe′ ([_] ∘′ reverse) [] acc
+  go acc (c ∷ cs) with does (P? c)
+  ... | true  = reverse (Maybe.fromMaybe [] acc) ∷ go nothing cs
+  ... | false = go (just (c ∷ Maybe.fromMaybe [] acc)) cs
+
+-- The predicate `P` represents the notion of space character for the type `A`.
+-- It is used to split the input list into a list of words. All the words are
+-- non empty and the output does not contain any space characters.
+
+wordsBy : ∀ {P : Pred A p} → Decidable P → List A → List (List A)
+wordsBy {A = A} P? = go [] where
+
+  cons : List A → List (List A) → List (List A)
+  cons [] ass = ass
+  cons as ass = reverse as ∷ ass
+
+  go : List A → List A → List (List A)
+  go acc []       = cons acc []
+  go acc (c ∷ cs) with does (P? c)
+  ... | true  = cons acc (go [] cs)
+  ... | false = go (c ∷ acc) cs
 
 ------------------------------------------------------------------------
 -- DEPRECATED
@@ -417,3 +474,13 @@ boolSpan p (x ∷ xs) with p x
 
 boolBreak : (A → Bool) → List A → (List A × List A)
 boolBreak p = boolSpan (not ∘ p)
+
+-- Version 1.4
+
+infixl 5 _∷ʳ'_
+_∷ʳ'_ : (xs : List A) (x : A) → InitLast (xs ∷ʳ x)
+_∷ʳ'_ = InitLast._∷ʳ′_
+{-# WARNING_ON_USAGE _∷ʳ'_
+"Warning: _∷ʳ'_ (ending in an apostrophe) was deprecated in v1.4.
+Please use _∷ʳ′_ (ending in a prime) instead."
+#-}

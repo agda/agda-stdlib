@@ -25,7 +25,7 @@ open import Data.Product        using (_,_)
 open import Function
 open import Reflection.Argument
 open import Reflection.Term
-open import Reflection.TypeChecking.MonadSyntax
+open import Reflection.TypeChecking.Monad.Syntax
 
 open import Tactic.RingSolver.NonReflective renaming (solve to solve-fn)
 open import Tactic.RingSolver.Core.AlmostCommutativeRing
@@ -61,6 +61,8 @@ private
     -- explicit argument and the terms of it's arguments and inserts
     -- the required ring arguments
     --   e.g. "_+_" $ʳ xs = "_+_ {_} {_} ring xs"
+    infixr 6 _$ʳ_
+
     _$ʳ_ : Name → Args Term → Term
     nm $ʳ args = def nm (2 ⋯⟅∷⟆ ring ⟨∷⟩ args)
 
@@ -89,6 +91,7 @@ private
       -- type it contains, and the third is the number of variables it's
       -- indexed by. All three of these could likely be inferred, but to
       -- make things easier we supply the third because we know it.
+      infix -1 _$ᵉ_
       _$ᵉ_ : Name → List (Arg Term) → Term
       e $ᵉ xs = con e (1 ⋯⟅∷⟆ quote Carrier $ʳ [] ⟅∷⟆ toTerm numVars ⟅∷⟆ xs)
 
@@ -96,6 +99,7 @@ private
       Κ′ : Term → Term
       Κ′ x = quote Κ $ᵉ (x ⟨∷⟩ [])
 
+      infix 4 _⇓≟_
       _⇓≟_ : Maybe Name → Name → Bool
       nothing ⇓≟ _ = false
       just x  ⇓≟ y = primQNameEquality x y
@@ -154,7 +158,7 @@ private
       callSolver : Vec String numVars → Term → Term → Args Type
       callSolver nms lhs rhs =
           2 ⋯⟅∷⟆ ring ⟨∷⟩ toTerm numVars ⟨∷⟩
-          vlams nms (quote _⊜_  $ʳ (toTerm numVars ⟨∷⟩ E lhs ⟨∷⟩ E rhs ⟨∷⟩ [])) ⟨∷⟩
+          vlams nms (quote _⊜_  $ʳ (toTerm numVars ⟅∷⟆ E lhs ⟨∷⟩ E rhs ⟨∷⟩ [])) ⟨∷⟩
           hlams nms (quote refl $ʳ (1 ⋯⟅∷⟆ [])) ⟨∷⟩
           []
         where

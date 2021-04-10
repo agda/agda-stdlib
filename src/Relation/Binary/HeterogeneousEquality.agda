@@ -96,7 +96,7 @@ cong₂ : ∀ {A : Set a} {B : A → Set b} {C : ∀ x → B x → Set c} {x y u
 cong₂ f refl refl = refl
 
 resp₂ : ∀ (∼ : Rel A ℓ) → ∼ Respects₂ (λ x y → x ≅ y)
-resp₂ _∼_ = subst⟶resp₂ _∼_ subst
+resp₂ _∼_ = subst⇒resp₂ _∼_ subst
 
 module _ {I : Set ℓ} (A : I → Set a) {B : {k : I} → A k → Set b} where
 

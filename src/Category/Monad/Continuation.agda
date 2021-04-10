@@ -58,7 +58,7 @@ DContTIMonadDCont : ∀ (K : I → Set f) {M} →
 DContTIMonadDCont K Mon = record
   { monad = DContTIMonad K Mon
   ; reset = λ e k → e return >>= k
-  ; shift = λ e k → e (λ a k' → (k a) >>= k') return
+  ; shift = λ e k → e (λ a k′ → (k a) >>= k′) return
   }
   where
   open RawIMonad Mon

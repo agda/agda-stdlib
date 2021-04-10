@@ -43,25 +43,25 @@ open _∣_ using (quotient) public
 
 ∣ᵤ⇒∣ : ∀ {k i} → k ∣ᵤ i → k ∣ i
 ∣ᵤ⇒∣ {k} {i} (divides 0 eq) = divides (+ 0) (∣n∣≡0⇒n≡0 eq)
-∣ᵤ⇒∣ {k} {i} (divides q@(ℕ.suc q') eq) with k ≟ + 0
+∣ᵤ⇒∣ {k} {i} (divides q@(ℕ.suc q′) eq) with k ≟ + 0
 ... | yes refl = divides (+ 0) (∣n∣≡0⇒n≡0 (trans eq (ℕ.*-zeroʳ q)))
 ... | no ¬k≠0  = divides ((S._*_ on sign) i k ◃ q) (◃-≡ sign-eq abs-eq) where
 
-  k'   = ℕ.suc (ℕ.pred ∣ k ∣)
-  ikq' = sign i S.* sign k ◃ ℕ.suc q'
+  k′   = ℕ.suc (ℕ.pred ∣ k ∣)
+  ikq′ = sign i S.* sign k ◃ ℕ.suc q′
 
   sign-eq : sign i ≡ sign (((S._*_ on sign) i k ◃ q) * k)
   sign-eq = sym $ begin
-    sign (((S._*_ on sign) i k ◃ ℕ.suc q') * k)
-      ≡⟨ cong (λ m → sign (sign ikq' S.* sign k ◃ ∣ ikq' ∣ ℕ.* m))
+    sign (((S._*_ on sign) i k ◃ ℕ.suc q′) * k)
+      ≡⟨ cong (λ m → sign (sign ikq′ S.* sign k ◃ ∣ ikq′ ∣ ℕ.* m))
               (sym (ℕ.suc[pred[n]]≡n (¬k≠0 ∘ ∣n∣≡0⇒n≡0))) ⟩
-    sign (sign ikq' S.* sign k ◃ ∣ ikq' ∣ ℕ.* k')
-      ≡⟨ cong (λ m → sign (sign ikq' S.* sign k ◃ m ℕ.* k'))
-              (abs-◃ (sign i S.* sign k) (ℕ.suc q')) ⟩
-    sign (sign ikq' S.* sign k ◃ _)
-      ≡⟨ sign-◃ (sign ikq' S.* sign k) (ℕ.pred ∣ k ∣ ℕ.+ q' ℕ.* k') ⟩
-    sign ikq' S.* sign k
-      ≡⟨ cong (S._* sign k) (sign-◃ (sign i S.* sign k) q') ⟩
+    sign (sign ikq′ S.* sign k ◃ ∣ ikq′ ∣ ℕ.* k′)
+      ≡⟨ cong (λ m → sign (sign ikq′ S.* sign k ◃ m ℕ.* k′))
+              (abs-◃ (sign i S.* sign k) (ℕ.suc q′)) ⟩
+    sign (sign ikq′ S.* sign k ◃ _)
+      ≡⟨ sign-◃ (sign ikq′ S.* sign k) (ℕ.pred ∣ k ∣ ℕ.+ q′ ℕ.* k′) ⟩
+    sign ikq′ S.* sign k
+      ≡⟨ cong (S._* sign k) (sign-◃ (sign i S.* sign k) q′) ⟩
     sign i S.* sign k S.* sign k
         ≡⟨ SProp.*-assoc (sign i) (sign k) (sign k) ⟩
     sign i S.* (sign k S.* sign k)
@@ -73,11 +73,11 @@ open _∣_ using (quotient) public
 
   abs-eq : ∣ i ∣ ≡ ∣ ((S._*_ on sign) i k ◃ q) * k ∣
   abs-eq = sym $ begin
-    ∣ ((S._*_ on sign) i k ◃ ℕ.suc q') * k ∣
-      ≡⟨ abs-◃ (sign ikq' S.* sign k) (∣ ikq' ∣ ℕ.* ∣ k ∣) ⟩
-    ∣ ikq' ∣ ℕ.* ∣ k ∣
-      ≡⟨ cong (ℕ._* ∣ k ∣) (abs-◃ (sign i S.* sign k) (ℕ.suc q')) ⟩
-    ℕ.suc q' ℕ.* ∣ k ∣
+    ∣ ((S._*_ on sign) i k ◃ ℕ.suc q′) * k ∣
+      ≡⟨ abs-◃ (sign ikq′ S.* sign k) (∣ ikq′ ∣ ℕ.* ∣ k ∣) ⟩
+    ∣ ikq′ ∣ ℕ.* ∣ k ∣
+      ≡⟨ cong (ℕ._* ∣ k ∣) (abs-◃ (sign i S.* sign k) (ℕ.suc q′)) ⟩
+    ℕ.suc q′ ℕ.* ∣ k ∣
       ≡⟨ sym eq ⟩
     ∣ i ∣
       ∎ where open ≡-Reasoning
@@ -126,6 +126,8 @@ module ∣-Reasoning where
 
 ------------------------------------------------------------------------
 -- Other properties of _∣_
+
+infix 4 _∣?_
 
 _∣?_ : Decidable _∣_
 k ∣? m = DEC.map′ ∣ᵤ⇒∣ ∣⇒∣ᵤ (∣ k ∣ ℕ.∣? ∣ m ∣)

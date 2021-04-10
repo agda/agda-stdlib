@@ -16,7 +16,7 @@ open import Data.Product.Relation.Binary.Pointwise.NonDependent as Pointwise
   using (Pointwise)
 open import Data.Sum.Base using (inj₁; inj₂; _-⊎-_; [_,_])
 open import Data.Empty
-open import Function
+open import Function.Base
 open import Induction.WellFounded
 open import Level
 open import Relation.Nullary
@@ -78,7 +78,7 @@ module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂} {_<₂_ : Rel B ℓ�
   ×-asymmetric sym₁ resp₁ asym₁ asym₂ = asym
     where
     irrefl₁ : Irreflexive _≈₁_ _<₁_
-    irrefl₁ = asym⟶irr resp₁ sym₁ asym₁
+    irrefl₁ = asym⇒irr resp₁ sym₁ asym₁
 
     asym : Asymmetric _<ₗₑₓ_
     asym (inj₁ x₁<y₁) (inj₁ y₁<x₁) = asym₁ x₁<y₁ y₁<x₁
@@ -144,16 +144,16 @@ module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂}
     open IsEquivalence eq₁
 
     respʳ : _<ₗₑₓ_ Respectsʳ _≋_
-    respʳ y≈y' (inj₁ x₁<y₁) = inj₁ (proj₁ resp₁ (proj₁ y≈y') x₁<y₁)
-    respʳ y≈y' (inj₂ x≈<y)  =
-      inj₂ ( trans (proj₁ x≈<y) (proj₁ y≈y')
-           , proj₁ resp₂ (proj₂ y≈y') (proj₂ x≈<y) )
+    respʳ y≈y′ (inj₁ x₁<y₁) = inj₁ (proj₁ resp₁ (proj₁ y≈y′) x₁<y₁)
+    respʳ y≈y′ (inj₂ x≈<y)  =
+      inj₂ ( trans (proj₁ x≈<y) (proj₁ y≈y′)
+           , proj₁ resp₂ (proj₂ y≈y′) (proj₂ x≈<y) )
 
     respˡ : _<ₗₑₓ_ Respectsˡ _≋_
-    respˡ x≈x' (inj₁ x₁<y₁) = inj₁ (proj₂ resp₁ (proj₁ x≈x') x₁<y₁)
-    respˡ x≈x' (inj₂ x≈<y)  =
-      inj₂ ( trans (sym $ proj₁ x≈x') (proj₁ x≈<y)
-           , proj₂ resp₂ (proj₂ x≈x') (proj₂ x≈<y) )
+    respˡ x≈x′ (inj₁ x₁<y₁) = inj₁ (proj₂ resp₁ (proj₁ x≈x′) x₁<y₁)
+    respˡ x≈x′ (inj₂ x≈<y)  =
+      inj₂ ( trans (sym $ proj₁ x≈x′) (proj₁ x≈<y)
+           , proj₂ resp₂ (proj₂ x≈x′) (proj₂ x≈<y) )
 
   ×-compare : Symmetric _≈₁_ →
               Trichotomous _≈₁_ _<₁_ → Trichotomous _≈₂_ _<₂_ →

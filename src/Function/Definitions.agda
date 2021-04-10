@@ -19,13 +19,14 @@ module Function.Definitions
 open import Data.Product using (∃; _×_)
 import Function.Definitions.Core1 as Core₁
 import Function.Definitions.Core2 as Core₂
+open import Function.Base
 open import Level using (_⊔_)
 
 ------------------------------------------------------------------------
 -- Definitions
 
 Congruent : (A → B) → Set (a ⊔ ℓ₁ ⊔ ℓ₂)
-Congruent f = ∀ {x y} → x ≈₁ y → f x ≈₂ f y
+Congruent f = ∀ {x y} → x ≈₁ y →  f x ≈₂ f y
 
 Injective : (A → B) → Set (a ⊔ ℓ₁ ⊔ ℓ₂)
 Injective f = ∀ {x y} → f x ≈₂ f y → x ≈₁ y

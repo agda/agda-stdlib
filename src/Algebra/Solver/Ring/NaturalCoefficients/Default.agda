@@ -16,17 +16,17 @@ open import Algebra
 module Algebra.Solver.Ring.NaturalCoefficients.Default
   {r₁ r₂} (R : CommutativeSemiring r₁ r₂) where
 
-import Algebra.Operations.Semiring as SemiringOps
+import Algebra.Properties.Semiring.Mult as SemiringMultiplication
 open import Data.Maybe.Base using (Maybe; map)
 open import Data.Nat using (_≟_)
-open import Relation.Binary.Consequences using (dec⟶weaklyDec)
+open import Relation.Binary.Consequences using (dec⇒weaklyDec)
 import Relation.Binary.PropositionalEquality as P
 
 open CommutativeSemiring R
-open SemiringOps semiring
+open SemiringMultiplication semiring
 
 private
   dec : ∀ m n → Maybe (m × 1# ≈ n × 1#)
-  dec m n = map (λ { P.refl → refl }) (dec⟶weaklyDec _≟_ m n)
+  dec m n = map (λ { P.refl → refl }) (dec⇒weaklyDec _≟_ m n)
 
 open import Algebra.Solver.Ring.NaturalCoefficients R dec public

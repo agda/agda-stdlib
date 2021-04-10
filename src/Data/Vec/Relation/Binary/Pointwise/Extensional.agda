@@ -15,12 +15,12 @@ open import Data.Vec.Relation.Binary.Pointwise.Inductive as Inductive
   using ([]; _∷_)
   renaming (Pointwise to IPointwise)
 open import Level using (_⊔_)
-open import Function using (_∘_)
+open import Function.Base using (_∘_)
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence as Equiv
   using (_⇔_; ⇔-setoid; equivalence; module Equivalence)
 open import Level using (Level; _⊔_; 0ℓ)
-open import Relation.Binary
+open import Relation.Binary hiding (_⇔_)
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Binary.Construct.Closure.Transitive as Plus
   hiding (equivalent; map)
@@ -201,7 +201,7 @@ private
   ix∙⁺jz : IPointwise (Plus _R_) ix jz
   ix∙⁺jz = [ iRj ] ∷ xR⁺z ∷ []
 
-  ¬ix⁺∙jz : ¬ Plus′ (IPointwise _R_) ix jz
+  ¬ix⁺∙jz : ¬ TransClosure (IPointwise _R_) ix jz
   ¬ix⁺∙jz [ iRj ∷ () ∷ [] ]
   ¬ix⁺∙jz ((iRj ∷ xRy ∷ []) ∷ [ () ∷ yRz ∷ [] ])
   ¬ix⁺∙jz ((iRj ∷ xRy ∷ []) ∷ (() ∷ yRz ∷ []) ∷ _)

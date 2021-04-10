@@ -10,7 +10,7 @@ module Codata.Musical.Stream where
 
 open import Codata.Musical.Notation
 open import Codata.Musical.Colist using (Colist; []; _∷_)
-open import Data.Vec    using (Vec;    []; _∷_)
+open import Data.Vec.Base using (Vec; []; _∷_)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
