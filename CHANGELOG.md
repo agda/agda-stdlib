@@ -35,7 +35,11 @@ Bug-fixes
   `Relation.Binary.Reasoning.Base.Partial`, they will need to adjust their additional
   combinators to use the new `singleStep`/`multiStep` constructors of `_IsRelatedTo_`.
 
-* The proof `isEquivalence` in `Function.Properties.(Equivalence/Inverse)` used to be
+* The sum operator `_⊎_` in `Data.Container.Indexed.Combinator` was not as universe 
+  polymorphic as it should have been. This has been fixed. The old, less universe
+  polymorphic variant is still available under the new name `_⊎′_`.
+  
+* The proof `isEquivalence` in `Function.Properties.(Equivalence/Inverse)` used to be 
   defined in an anonymous module that took two unneccessary `Setoid` arguments:
   ```agda
   module _ (R : Setoid a ℓ₁) (S : Setoid b ℓ₂) where
@@ -144,8 +148,10 @@ Deprecated names
 New modules
 -----------
 
-* Added `Data.Maybe.Relation.Binary.Connected`, a variant of the `Pointwise`
-  relation where `nothing` is also related to `just`.
+* Properties of cancellative commutative semirings
+  ```
+  Algebra.Properties.CancellativeCommutativeSemiring
+  ```
 
 * Specifications for min and max operators
   ```
@@ -173,6 +179,9 @@ New modules
   Data.List.Sort.MergeSort
   ```
 
+* Added `Data.Maybe.Relation.Binary.Connected`, a variant of the `Pointwise` 
+  relation where `nothing` is also related to `just`.
+
 * Linear congruential pseudo random generators for ℕ.
   /!\ NB: LCGs must not be used for cryptographic applications
   /!\ NB: the example parameters provided are not claimed to be good
@@ -184,6 +193,11 @@ New modules
   ```
   Data.List.Relation.Binary.Pointwise.Base
   Data.List.Relation.Binary.Pointwise.Properties
+  ```
+
+* Heterogeneous `All` predicate for disjoint sums:
+  ```
+  Data.Sum.Relation.Unary.All
   ```
 
 * Broke up `Codata.Musical.Colist` into a multitude of modules:
@@ -234,6 +248,45 @@ New modules
 
 Other minor additions
 ---------------------
+
+* Added new proofs to `Algebra.Consequences.Setoid`:
+  ```agda
+  comm+almostCancelˡ⇒almostCancelʳ : AlmostLeftCancellative  e _•_ → AlmostRightCancellative e _•_
+  comm+almostCancelʳ⇒almostCancelˡ : AlmostRightCancellative e _•_ → AlmostLeftCancellative  e _•_
+  ```
+
+* Added new proofs in `Algebra.Properties.Magma.Divisibility`:
+  ```agda
+  ∣∣-sym     : Symmetric _∣∣_
+  ∣∣-respʳ-≈ : _∣∣_ Respectsʳ _≈_
+  ∣∣-respˡ-≈ : _∣∣_ Respectsˡ _≈_
+  ∣∣-resp-≈  : _∣∣_ Respects₂ _≈_
+  ```
+
+* Added new proofs in `Algebra.Properties.Semigroup.Divisibility`:
+  ```agda
+  ∣∣-trans : Transitive _∣∣_
+  ```
+
+* Added new proofs in `Algebra.Properties.CommutativeSemigroup.Divisibility`:
+  ```agda
+  x∣y∧z∣x/y⇒xz∣y : ((x/y , _) : x ∣ y) → z ∣ x/y → x ∙ z ∣ y
+  x∣y⇒zx∣zy      : x ∣ y → z ∙ x ∣ z ∙ y
+  ```
+
+* Added new proofs in `Algebra.Properties.Monoid.Divisibility`:
+  ```agda
+  ∣∣-refl          : Reflexive _∣∣_
+  ∣∣-reflexive     : _≈_ ⇒ _∣∣_
+  ∣∣-isEquivalence : IsEquivalence _∣∣_
+  ```
+
+* Added new proofs in `Algebra.Properties.CancellativeCommutativeSemiring`:
+  ```agda
+  xy≈0⇒x≈0∨y≈0 : Decidable _≈_ →  x * y ≈ 0# → x ≈ 0# ⊎ y ≈ 0#
+  x≉0∧y≉0⇒xy≉0 : Decidable _≈_ →  x ≉ 0# → y ≉ 0# → x * y ≉ 0#
+  xy∣x⇒y∣1     : x ≉ 0# → x * y ∣ x → y ∣ 1#
+  ```
 
 * Added new function in `Data.Char.Base`:
   ```agda

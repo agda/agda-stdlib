@@ -11,9 +11,9 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Bundles using (RawMagma)
-open import Data.Product using (∃; _×_; _,_)
+open import Data.Product using (_×_; ∃)
 open import Level using (_⊔_)
-open import Relation.Binary
+open import Relation.Binary.Core
 open import Relation.Nullary using (¬_)
 
 module Algebra.Definitions.RawMagma
@@ -21,7 +21,6 @@ module Algebra.Definitions.RawMagma
   where
 
 open RawMagma M renaming (Carrier to A)
-open import Algebra.Definitions _≈_
 
 ------------------------------------------------------------------------
 -- Divisibility
@@ -44,8 +43,11 @@ x ∣ʳ y = ∃ λ q → (q ∙ x) ≈ y
 _∤ʳ_ : Rel A (a ⊔ ℓ)
 x ∤ʳ y = ¬ x ∣ʳ y
 
--- _∣ˡ_ and _∣ʳ_ are only equivalent in the commutative case. In this
--- case we take the right definition to be the primary one.
+-- General divisibility
+
+-- The relations _∣ˡ_ and _∣ʳ_ are only equivalent when _∙_ is
+-- commutative. When that is not the case we take `_∣ʳ_` to be the
+-- primary one.
 
 _∣_ : Rel A (a ⊔ ℓ)
 _∣_ = _∣ʳ_
@@ -54,15 +56,18 @@ _∤_ : Rel A (a ⊔ ℓ)
 x ∤ y = ¬ x ∣ y
 
 ------------------------------------------------------------------------
--- Mutual divisibility
+-- Mutual divisibility.
 
--- When in a cancellative monoid, elements related by _∣∣_ are called
--- associated and if x ∣∣ y then x and y differ by an invertible factor.
+-- In a  monoid, this is an equivalence relation extending _≈_.
+-- When in a cancellative monoid,  elements related by _∣∣_ are called
+-- associated, and `x ∣∣ y` means that `x` and `y` differ by some
+-- invertible factor.
 
-infix 5 _∣∣_ _∤∤_
+-- Example: for ℕ  this is equivalent to x ≡ y,
+--          for ℤ  this is equivalent to (x ≡ y or x ≡ - y).
 
 _∣∣_ : Rel A (a ⊔ ℓ)
 x ∣∣ y = x ∣ y × y ∣ x
 
 _∤∤_ : Rel A (a ⊔ ℓ)
-x ∤∤ y =  ¬ x ∣∣ y
+x ∤∤ y = ¬ x ∣∣ y
