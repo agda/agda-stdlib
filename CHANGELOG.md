@@ -48,6 +48,9 @@ Bug-fixes
   Their definitions have now been moved out of the anonymous modules so that they no
   longer require these unnecessary arguments.
 
+* In `Relation.Binary.Reasoning.StrictPartialOrder` filled a missing argument to the
+  re-exported `Relation.Binary.Reasoning.Base.Triple`.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -1027,25 +1030,13 @@ Other minor additions
   record IsTotalPreorder (_≲_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂)
   ```
 
-* In `Relation.Binary.Reasoning.Base.Triple` new function:
-  ```agda
-  begin-irrefl : Irreflexive _≈_ _<_ → (r : x IsRelatedTo x) → {s : True (IsStrict? r)} → A
-  ```
-  Specialised versions are available in:
-  ```
-  Data.Nat.Properties
-  Data.Integer.Properties
-  Data.Rational.Unnormalised.Properties
-  Data.Rational.Properties
-  Relation.Binary.Reasoning.StrictPartialOrder
-  Relation.Binary.Reasoning.PartialOrder
-  ```
-
 * Re-exported and defined new functions in `Data.Tree.AVL.Key`:
   ```agda
-  _≈⁺_ : Rel Key _
-  [_]ᴱ : x ≈ y → [ x ] ≈⁺ [ y ]
-  sym⁺ : l ≈⁺ u → u ≈⁺ l
+  _≈⁺_    : Rel Key _
+  [_]ᴱ    : x ≈ y → [ x ] ≈⁺ [ y ]
+  refl⁺   : Reflexive _≈⁺_
+  sym⁺    : l ≈⁺ u → u ≈⁺ l
+  irrefl⁺ : ∀ k → ¬ (k <⁺ k)
 
   strictPartialOrder : StrictPartialOrder _ _ _
   strictTotalOrder   : StrictTotalOrder _ _ _
