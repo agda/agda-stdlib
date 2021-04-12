@@ -27,6 +27,7 @@ open import Relation.Binary.Consequences
 open import Relation.Binary.Morphism
 import Relation.Binary.Morphism.OrderMonomorphism as OrderMonomorphism
 open import Relation.Binary.PropositionalEquality
+import Relation.Binary.Reasoning.Base.Triple as InequalityReasoning
 open import Relation.Nullary using (¬_; yes; no)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Negation using (contradiction)
@@ -522,21 +523,13 @@ x ≤? y with <-cmp x y
 ------------------------------------------------------------------------------
 -- Equational reasoning for _≤_ and _<_
 
-module ≤-Reasoning where
-
-  open import Relation.Binary.Reasoning.Base.Triple
-    ≤-isPreorder
-    <-trans
-    (resp₂ _<_)
-    <⇒≤
-    <-≤-trans
-    ≤-<-trans
-    as Reasoning
-    public
-    hiding (begin-irrefl; step-≈; step-≈˘)
-
-  infix 1 begin-irrefl_
-  begin-irrefl_ = Reasoning.begin-irrefl <-irrefl
+module ≤-Reasoning = InequalityReasoning
+  ≤-isPreorder
+  <-irrefl
+  <-trans
+  (resp₂ _<_) <⇒≤
+  <-≤-trans ≤-<-trans
+  hiding (step-≈; step-≈˘)
 
 ------------------------------------------------------------------------------
 -- Properties of _<ℕ_

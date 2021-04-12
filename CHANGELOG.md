@@ -1036,12 +1036,9 @@ Other minor additions
   Specialised versions are available in:
   ```
   Data.Nat.Properties
-  Data.Nat.Binary.Properties
   Data.Integer.Properties
   Data.Rational.Unnormalised.Properties
   Data.Rational.Properties
-  Data.Vec.Relation.Binary.Lex.Strict
-  Data.Vec.Relation.Binary.Lex.NonStrict
   Relation.Binary.Reasoning.StrictPartialOrder
   Relation.Binary.Reasoning.PartialOrder
   ```
