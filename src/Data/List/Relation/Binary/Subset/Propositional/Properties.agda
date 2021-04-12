@@ -142,6 +142,9 @@ xs⊆x∷xs = Setoidₚ.xs⊆x∷xs (setoid _)
 ∷⁺ʳ : ∀ x → xs ⊆ ys → x ∷ xs ⊆ x ∷ ys
 ∷⁺ʳ = Setoidₚ.∷⁺ʳ (setoid _)
 
+∈-∷⁺ʳ : ∀ {x} → x ∈ ys → xs ⊆ ys → x ∷ xs ⊆ ys
+∈-∷⁺ʳ = Setoidₚ.∈-∷⁺ʳ (setoid _)
+
 ------------------------------------------------------------------------
 -- _++_
 

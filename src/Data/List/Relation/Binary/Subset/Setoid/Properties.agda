@@ -175,7 +175,9 @@ module _ (S : Setoid a ℓ) where
 
 module _ (S : Setoid a ℓ) where
 
+  open Setoid S
   open Subset S
+  open Membership S
 
   xs⊆x∷xs : ∀ xs x → xs ⊆ x ∷ xs
   xs⊆x∷xs xs x = there
@@ -184,6 +186,11 @@ module _ (S : Setoid a ℓ) where
   ∷⁺ʳ x xs⊆ys (here  p) = here p
   ∷⁺ʳ x xs⊆ys (there p) = there (xs⊆ys p)
 
+  ∈-∷⁺ʳ : ∀ {xs ys x} → x ∈ ys → xs ⊆ ys → x ∷ xs ⊆ ys
+  ∈-∷⁺ʳ x∈ys _  (here  v≈x)  = ∈-resp-≈ S (sym v≈x) x∈ys
+  ∈-∷⁺ʳ _ xs⊆ys (there x∈xs) = xs⊆ys x∈xs
+
+------------------------------------------------------------------------
 -- ++
 
 module _ (S : Setoid a ℓ) where
