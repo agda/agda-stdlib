@@ -537,7 +537,8 @@ Other minor additions
 * Added new proof to `Data.List.Relation.Binary.Subset.Setoid.Properties`:
   ```agda
   xs⊆x∷xs    : xs ⊆ x ∷ xs
-  ∷⁺ʳ        : xs ⊆ ys → x ∷ xs ⊆ x ∷ ys
+  ∷⁺ʳ        : xs ⊆ ys → x ∷ xs ⊆ x ∷ ys  
+  ∈-∷⁺ʳ      : x ∈ ys → xs ⊆ ys → x ∷ xs ⊆ ys
   applyUpTo⁺ : m ≤ n → applyUpTo f m ⊆ applyUpTo f n
   ```
 
@@ -545,6 +546,7 @@ Other minor additions
   ```agda
   xs⊆x∷xs    : xs ⊆ x ∷ xs
   ∷⁺ʳ        : xs ⊆ ys → x ∷ xs ⊆ x ∷ ys
+  ∈-∷⁺ʳ      : x ∈ ys → xs ⊆ ys → x ∷ xs ⊆ ys
   applyUpTo⁺ : m ≤ n → applyUpTo f m ⊆ applyUpTo f n
   ```
 
