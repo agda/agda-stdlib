@@ -143,52 +143,57 @@
 <a id="4284" class="Keyword">import</a> <a id="4291" href="README.Data.List.Relation.Binary.Permutation.html" class="Module">README.Data.List.Relation.Binary.Permutation</a>
 
 <a id="4337" class="Comment">------------------------------------------------------------------------</a>
-<a id="4410" class="Comment">-- Other binary relations</a>
+<a id="4410" class="Comment">-- Subsets</a>
 
-<a id="4437" class="Comment">-- There exist many other binary relations in the</a>
-<a id="4487" class="Comment">-- `Data.List.Relation.Binary` folder, including:</a>
+<a id="4422" class="Comment">-- Instead one might want to order lists by the subset relation which</a>
+<a id="4492" class="Comment">-- forms a partial order over lists. One list is a subset of another if</a>
+<a id="4564" class="Comment">-- every element in the first list occurs at least once in the second.</a>
 
-<a id="4538" class="Comment">--    1. lexicographic orderings</a>
+<a id="4636" class="Keyword">import</a> <a id="4643" href="README.Data.List.Relation.Binary.Subset.html" class="Module">README.Data.List.Relation.Binary.Subset</a>
 
-<a id="4572" class="Keyword">import</a> <a id="4579" href="Data.List.Relation.Binary.Lex.Strict.html" class="Module">Data.List.Relation.Binary.Lex.Strict</a>
+<a id="4684" class="Comment">------------------------------------------------------------------------</a>
+<a id="4757" class="Comment">-- Other binary relations</a>
 
-<a id="4617" class="Comment">--    2. bag/multiset equality</a>
+<a id="4784" class="Comment">-- There exist many other binary relations in the</a>
+<a id="4834" class="Comment">-- `Data.List.Relation.Binary` folder, including:</a>
 
-<a id="4649" class="Keyword">import</a> <a id="4656" href="Data.List.Relation.Binary.BagAndSetEquality.html" class="Module">Data.List.Relation.Binary.BagAndSetEquality</a>
+<a id="4885" class="Comment">--    1. lexicographic orderings</a>
 
-<a id="4701" class="Comment">--    3. the subset relations.</a>
+<a id="4919" class="Keyword">import</a> <a id="4926" href="Data.List.Relation.Binary.Lex.Strict.html" class="Module">Data.List.Relation.Binary.Lex.Strict</a>
 
-<a id="4733" class="Keyword">import</a> <a id="4740" href="Data.List.Relation.Binary.Subset.Propositional.html" class="Module">Data.List.Relation.Binary.Subset.Propositional</a>
+<a id="4964" class="Comment">--    2. bag/multiset equality</a>
 
-<a id="4788" class="Comment">--    4. the sublist relations</a>
+<a id="4996" class="Keyword">import</a> <a id="5003" href="Data.List.Relation.Binary.BagAndSetEquality.html" class="Module">Data.List.Relation.Binary.BagAndSetEquality</a>
 
-<a id="4820" class="Keyword">import</a> <a id="4827" href="Data.List.Relation.Binary.Sublist.Propositional.html" class="Module">Data.List.Relation.Binary.Sublist.Propositional</a>
+<a id="5048" class="Comment">--    3. the sublist relations</a>
 
-
-<a id="4877" class="Comment">------------------------------------------------------------------------</a>
-<a id="4950" class="Comment">-- 4. Ternary relations over lists</a>
-<a id="4985" class="Comment">------------------------------------------------------------------------</a>
-
-<a id="5059" class="Comment">-- Ternary relations relate three different lists, and are found in the</a>
-<a id="5131" class="Comment">-- folder `Data.List.Relation.Ternary`.</a>
-
-<a id="5172" class="Comment">------------------------------------------------------------------------</a>
-<a id="5245" class="Comment">-- Interleaving</a>
-
-<a id="5262" class="Comment">-- Given two lists, a third list is an `Interleaving` of them if there</a>
-<a id="5333" class="Comment">-- exists an order preserving partition of it that reconstructs the</a>
-<a id="5401" class="Comment">-- original two lists.</a>
-
-<a id="5425" class="Keyword">import</a> <a id="5432" href="README.Data.List.Relation.Ternary.Interleaving.html" class="Module">README.Data.List.Relation.Ternary.Interleaving</a>
+<a id="5080" class="Keyword">import</a> <a id="5087" href="Data.List.Relation.Binary.Sublist.Propositional.html" class="Module">Data.List.Relation.Binary.Sublist.Propositional</a>
 
 
-<a id="5481" class="Comment">------------------------------------------------------------------------</a>
-<a id="5554" class="Comment">-- 5. Membership</a>
-<a id="5571" class="Comment">------------------------------------------------------------------------</a>
+<a id="5137" class="Comment">------------------------------------------------------------------------</a>
+<a id="5210" class="Comment">-- 4. Ternary relations over lists</a>
+<a id="5245" class="Comment">------------------------------------------------------------------------</a>
 
-<a id="5645" class="Comment">-- Although simply a specialisation of the unary predicate `Any`,</a>
-<a id="5711" class="Comment">-- membership of a list is not strictly a unary or a binary relation</a>
-<a id="5780" class="Comment">-- over lists. Therefore it lives it it&#39;s own top-level folder.</a>
+<a id="5319" class="Comment">-- Ternary relations relate three different lists, and are found in the</a>
+<a id="5391" class="Comment">-- folder `Data.List.Relation.Ternary`.</a>
 
-<a id="5845" class="Keyword">import</a> <a id="5852" href="README.Data.List.Membership.html" class="Module">README.Data.List.Membership</a>
+<a id="5432" class="Comment">------------------------------------------------------------------------</a>
+<a id="5505" class="Comment">-- Interleaving</a>
+
+<a id="5522" class="Comment">-- Given two lists, a third list is an `Interleaving` of them if there</a>
+<a id="5593" class="Comment">-- exists an order preserving partition of it that reconstructs the</a>
+<a id="5661" class="Comment">-- original two lists.</a>
+
+<a id="5685" class="Keyword">import</a> <a id="5692" href="README.Data.List.Relation.Ternary.Interleaving.html" class="Module">README.Data.List.Relation.Ternary.Interleaving</a>
+
+
+<a id="5741" class="Comment">------------------------------------------------------------------------</a>
+<a id="5814" class="Comment">-- 5. Membership</a>
+<a id="5831" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="5905" class="Comment">-- Although simply a specialisation of the unary predicate `Any`,</a>
+<a id="5971" class="Comment">-- membership of a list is not strictly a unary or a binary relation</a>
+<a id="6040" class="Comment">-- over lists. Therefore it lives it it&#39;s own top-level folder.</a>
+
+<a id="6105" class="Keyword">import</a> <a id="6112" href="README.Data.List.Membership.html" class="Module">README.Data.List.Membership</a>
 </pre></body></html>
