@@ -11,7 +11,7 @@ module Function.Construct.Composition where
 open import Data.Product using (_,_)
 open import Function
 open import Level using (Level)
-open import Relation.Binary hiding (_⇔_)
+open import Relation.Binary as B hiding (_⇔_; IsEquivalence)
 
 private
   variable
@@ -139,6 +139,12 @@ module _ {R : Setoid a ℓ₁} {S : Setoid b ℓ₂} {T : Setoid c ℓ₃} where
 
   open Setoid renaming (_≈_ to ≈)
 
+  function : Func R S → Func S T → Func R T
+  function f g = record
+    { f    = G.f ∘ F.f
+    ; cong = congruent (≈ R) (≈ S) (≈ T) F.cong G.cong
+    } where module F = Func f; module G = Func g
+
   injection : Injection R S → Injection S T → Injection R T
   injection inj₁ inj₂ = record
     { f         = G.f ∘ F.f
@@ -198,7 +204,10 @@ module _ {R : Setoid a ℓ₁} {S : Setoid b ℓ₂} {T : Setoid c ℓ₃} where
 ------------------------------------------------------------------------
 -- Propositional bundles
 
-infix 8 _∘-↣_ _∘-↠_ _∘-⤖_ _∘-⇔_ _∘-↩_ _∘-↪_ _∘-↔_
+infix 8 _∘-⟶_ _∘-↣_ _∘-↠_ _∘-⤖_ _∘-⇔_ _∘-↩_ _∘-↪_ _∘-↔_
+
+_∘-⟶_ : (A ⟶ B) → (B ⟶ C) → (A ⟶ C)
+_∘-⟶_ = function
 
 _∘-↣_ : A ↣ B → B ↣ C → A ↣ C
 _∘-↣_ = injection

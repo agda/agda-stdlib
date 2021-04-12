@@ -7,7 +7,9 @@ procedure should be followed:
 
 * Update `README.md`
 
-* Update `lib.cabal` version to `X.Y`.
+* Update `agda-stdlib-utils.cabal` version to `X.Y`.
+
+* Update the version in standard-library.agda-lib to `X.Y`
 
 * Update `notes/installation-guide.txt`
 
@@ -26,9 +28,13 @@ procedure should be followed:
     cd agda
     make fast-forward-std-lib
 
+* Build the latest version of Agda
+
+    make quicker-install-bin
+
 * Run the tests involving the library:
 
-    make test
+    make test-using-std-lib
 
 * Commit the changes and push
 
@@ -56,6 +62,29 @@ procedure should be followed:
 
 * Announce the release of the new version on the Agda mailing lists
   (users and developers).
+
+* Add v$VERSION to the list of protected directories in the .travis.yml
+  file of BOTH master and experimental. They should look something like:
+
+  >  git checkout HEAD -- v0.16/ v0.17/ v1.0/ v1.1/ (...)
+
+  Commit & push these changes. This will prevent the next step from being
+  overwritten by travis.
+
+* Generate and upload documentation for the released version:
+
+    cp travis/* .
+    runhaskell GenerateEverything.hs
+    ./index.sh
+    agda -i. -isrc --html index.agda
+    mv html v$VERSION
+    git checkout gh-pages
+    git add v$VERSION/*.html v$VERSION/*.css
+    git commit -m "[ release ] doc for version $VERSION"
+    git push
+
+  After that you can cleanup the generated files and copies of things taken from travis/
+  from your agda-stdlib directory.
 
 #### Post-release
 

@@ -20,7 +20,7 @@ import Data.List.Membership.Setoid.Properties as Membershipₛ
 open import Data.List.Relation.Binary.Equality.Propositional
   using (_≋_; ≡⇒≋; ≋⇒≡)
 open import Data.List.Categorical using (monad)
-open import Data.Nat.Base using (ℕ; zero; suc; pred; s≤s; _≤_; _<_)
+open import Data.Nat.Base using (ℕ; zero; suc; pred; s≤s; _≤_; _<_; _≤ᵇ_)
 open import Data.Nat.Properties
 open import Data.Product hiding (map)
 open import Data.Product.Function.NonDependent.Propositional using (_×-cong_)
@@ -39,6 +39,7 @@ open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; trans; cong; subst; →-to-⟶; _≗_)
 import Relation.Binary.Properties.DecTotalOrder as DTOProperties
 open import Relation.Unary using (_⟨×⟩_; Decidable)
+import Relation.Nullary.Reflects as Reflects
 open import Relation.Nullary.Reflects using (invert)
 open import Relation.Nullary using (¬_; Dec; does; yes; no; _because_)
 open import Relation.Nullary.Negation
@@ -183,6 +184,38 @@ module _ (f : ℕ → A) where
   ∈-applyUpTo⁻ : ∀ {v n} → v ∈ applyUpTo f n →
                  ∃ λ i → i < n × v ≡ f i
   ∈-applyUpTo⁻ = Membershipₛ.∈-applyUpTo⁻ (P.setoid _) f
+
+------------------------------------------------------------------------
+-- upTo
+
+∈-upTo⁺ : ∀ {n i} → i < n → i ∈ upTo n
+∈-upTo⁺ = ∈-applyUpTo⁺ id
+
+∈-upTo⁻ : ∀ {n i} → i ∈ upTo n → i < n
+∈-upTo⁻ p with ∈-applyUpTo⁻ id p
+... | _ , i<n , refl = i<n
+
+------------------------------------------------------------------------
+-- applyDownFrom
+
+module _ (f : ℕ → A) where
+
+  ∈-applyDownFrom⁺ : ∀ {i n} → i < n → f i ∈ applyDownFrom f n
+  ∈-applyDownFrom⁺ = Membershipₛ.∈-applyDownFrom⁺ (P.setoid _) f
+
+  ∈-applyDownFrom⁻ : ∀ {v n} → v ∈ applyDownFrom f n →
+                     ∃ λ i → i < n × v ≡ f i
+  ∈-applyDownFrom⁻ = Membershipₛ.∈-applyDownFrom⁻ (P.setoid _) f
+
+------------------------------------------------------------------------
+-- downFrom
+
+∈-downFrom⁺ : ∀ {n i} → i < n → i ∈ downFrom n
+∈-downFrom⁺ i<n = ∈-applyDownFrom⁺ id i<n
+
+∈-downFrom⁻ : ∀ {n i} → i ∈ downFrom n → i < n
+∈-downFrom⁻ p with ∈-applyDownFrom⁻ id p
+... | _ , i<n , refl = i<n
 
 ------------------------------------------------------------------------
 -- tabulate
@@ -331,16 +364,17 @@ finite inj (x ∷ xs) fᵢ∈x∷xs = excluded-middle helper
     lemma i≤j i≰1+j refl = i≰1+j (≤-step i≤j)
 
     f′ⱼ∈xs : ∀ j → f′ j ∈ xs
-    f′ⱼ∈xs j with i ≤? j
-    ... | yes i≤j = ∈-if-not-i (<⇒≢ (s≤s i≤j))
-    ... | no  i≰j = ∈-if-not-i (<⇒≢ (≰⇒> i≰j) ∘ sym)
+    f′ⱼ∈xs j with i ≤ᵇ j | Reflects.invert (≤ᵇ-reflects-≤ i j)
+    ... | true  | p = ∈-if-not-i (<⇒≢ (s≤s p))
+    ... | false | p = ∈-if-not-i (<⇒≢ (≰⇒> p) ∘ sym)
 
     f′-injective′ : Injective {B = P.setoid _} (→-to-⟶ f′)
-    f′-injective′ {j} {k} eq with i ≤? j | i ≤? k
-    ... | yes _   | yes _   = P.cong pred (f-inj eq)
-    ... | yes i≤j | no  i≰k = contradiction (f-inj eq) (lemma i≤j i≰k)
-    ... | no  i≰j | yes i≤k = contradiction (f-inj eq) (lemma i≤k i≰j ∘ sym)
-    ... | no  _   | no  _   = f-inj eq
+    f′-injective′ {j} {k} eq with i ≤ᵇ j | Reflects.invert (≤ᵇ-reflects-≤ i j)
+                                | i ≤ᵇ k | Reflects.invert (≤ᵇ-reflects-≤ i k)
+    ... | true  | p | true  | q = P.cong pred (f-inj eq)
+    ... | true  | p | false | q = contradiction (f-inj eq) (lemma p q)
+    ... | false | p | true  | q = contradiction (f-inj eq) (lemma q p ∘ sym)
+    ... | false | p | false | q = f-inj eq
 
     f′-inj = record
       { to        = →-to-⟶ f′

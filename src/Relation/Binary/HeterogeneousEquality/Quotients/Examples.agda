@@ -16,7 +16,8 @@ import Relation.Binary.PropositionalEquality as ≡
 open import Data.Nat.Base
 open import Data.Nat.Properties
 open import Data.Product
-open import Function
+open import Function.Base
+
 open ≅-Reasoning
 
 ℕ² = ℕ × ℕ

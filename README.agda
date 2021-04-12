@@ -1,7 +1,7 @@
 module README where
 
 ------------------------------------------------------------------------
--- The Agda standard library, version 1.4-dev
+-- The Agda standard library, version 1.6-dev
 --
 -- Authors: Nils Anders Danielsson, Matthew Daggitt, Guillaume Allais
 -- with contributions from Andreas Abel, Stevan Andjelkovic,
@@ -16,7 +16,8 @@ module README where
 -- Noam Zeilberger and other anonymous contributors.
 ------------------------------------------------------------------------
 
--- This version of the library has been tested using Agda 2.6.1.
+-- This version of the library has been tested using Agda 2.6.1 and
+-- 2.6.1.1.
 
 -- The library comes with a .agda-lib file, for use with the library
 -- management system.
@@ -72,6 +73,8 @@ import README.Data
 -- • IO
 --     Input/output-related functions.
 
+import README.IO
+
 -- • Level
 --     Universe levels.
 
@@ -89,6 +92,9 @@ import README.Data
 
 -- • Tactic
 --     Tactics for automatic proof generation
+
+-- ∙ Text
+--     Format-based printing, Pretty-printing, and regular expressions
 
 
 ------------------------------------------------------------------------
@@ -183,6 +189,10 @@ import Codata.Thunk
 
 import IO
 
+-- ∙ Text
+
+-- Dependently typed formatted printing
+import Text.Printf
 
 ------------------------------------------------------------------------
 -- More documentation
@@ -212,22 +222,6 @@ import README.Nary
 
 import README.Inspect
 
--- Explaining string formats and the behaviour of printf
-
-import README.Text.Printf
-
--- Showcasing the pretty printing module
-
-import README.Text.Pretty
-
--- Explaining how to display tables of strings:
-
-import README.Text.Tabular
-
--- Explaining how to display a tree:
-
-import README.Text.Tree
-
 -- Explaining how to use the automatic solvers
 
 import README.Tactic.MonoidSolver
@@ -237,6 +231,21 @@ import README.Tactic.RingSolver
 
 import README.Foreign.Haskell
 
+-- Explaining string formats and the behaviour of printf
+
+import README.Text.Printf
+
+-- Showcasing the pretty printing module
+
+import README.Text.Pretty
+
+-- Demonstrating the regular expression matching
+
+import README.Text.Regex
+
+-- Explaining how to display tables of strings:
+
+import README.Text.Tabular
 
 ------------------------------------------------------------------------
 -- Core modules

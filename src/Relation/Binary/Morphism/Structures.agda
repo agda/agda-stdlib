@@ -22,7 +22,7 @@ private
     ℓ₁ ℓ₂ ℓ₃ ℓ₄ : Level
 
 ------------------------------------------------------------------------
--- Raw relations
+-- Relations
 ------------------------------------------------------------------------
 
 record IsRelHomomorphism (_∼₁_ : Rel A ℓ₁) (_∼₂_ : Rel B ℓ₂)
@@ -46,14 +46,14 @@ record IsRelIsomorphism (_∼₁_ : Rel A ℓ₁) (_∼₂_ : Rel B ℓ₂)
     isMonomorphism : IsRelMonomorphism _∼₁_ _∼₂_ ⟦_⟧
     surjective     : Surjective _∼₁_ _∼₂_ ⟦_⟧
 
-  open IsRelMonomorphism isMonomorphism
+  open IsRelMonomorphism isMonomorphism public
 
   bijective : Bijective _∼₁_ _∼₂_ ⟦_⟧
   bijective = injective , surjective
 
 
 ------------------------------------------------------------------------
--- Raw orders
+-- Orders
 ------------------------------------------------------------------------
 
 record IsOrderHomomorphism (_≈₁_ : Rel A ℓ₁) (_≈₂_ : Rel B ℓ₂)

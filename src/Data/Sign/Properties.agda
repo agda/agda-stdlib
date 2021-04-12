@@ -129,6 +129,14 @@ s*s≡+ : ∀ s → s * s ≡ +
 s*s≡+ + = refl
 s*s≡+ - = refl
 
+s*opposite[s]≡- : ∀ s → s * opposite s ≡ -
+s*opposite[s]≡- + = refl
+s*opposite[s]≡- - = refl
+
+opposite[s]*s≡- : ∀ s → opposite s * s ≡ -
+opposite[s]*s≡- + = refl
+opposite[s]*s≡- - = refl
+
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
 ------------------------------------------------------------------------

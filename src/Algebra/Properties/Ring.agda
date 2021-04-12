@@ -13,7 +13,7 @@ module Algebra.Properties.Ring {r₁ r₂} (R : Ring r₁ r₂) where
 open Ring R
 
 import Algebra.Properties.AbelianGroup as AbelianGroupProperties
-open import Function using (_$_)
+open import Function.Base using (_$_)
 open import Relation.Binary.Reasoning.Setoid setoid
 
 ------------------------------------------------------------------------

@@ -9,30 +9,41 @@
 module Relation.Binary.Construct.Closure.Symmetric where
 
 open import Data.Sum.Base as Sum using (_⊎_)
-open import Function using (id)
+open import Function.Base using (id)
+open import Level using (Level)
 open import Relation.Binary
 
-open Sum public using () renaming (inj₁ to fwd; inj₂ to bwd)
+private
+  variable
+    a ℓ ℓ₁ ℓ₂ : Level
+    A B : Set a
 
--- The symmetric closure of a relation.
+------------------------------------------------------------------------
+-- Definition
 
-SymClosure : ∀ {a ℓ} {A : Set a} → Rel A ℓ → Rel A ℓ
+SymClosure : Rel A ℓ → Rel A ℓ
 SymClosure _∼_ a b = a ∼ b ⊎ b ∼ a
 
-module _ {a ℓ} {A : Set a} where
+open Sum public using ()
+  renaming (inj₁ to fwd; inj₂ to bwd)
 
-  -- Symmetric closures are symmetric.
+------------------------------------------------------------------------
+-- Operations
 
-  symmetric : (_∼_ : Rel A ℓ) → Symmetric (SymClosure _∼_)
-  symmetric _ (fwd a∼b) = bwd a∼b
-  symmetric _ (bwd b∼a) = fwd b∼a
+-- A generalised variant of map which allows the index type to change.
+gmap : {P : Rel A ℓ₁} {Q : Rel B ℓ₂} (f : A → B) →
+       P =[ f ]⇒ Q → SymClosure P =[ f ]⇒ SymClosure Q
+gmap _ g = Sum.map g g
 
-  -- A generalised variant of map which allows the index type to change.
+map : {P : Rel A ℓ₁} {Q : Rel A ℓ₂} →
+      P ⇒ Q → SymClosure P ⇒ SymClosure Q
+map = gmap id
 
-  gmap : ∀ {b ℓ₂} {B : Set b} {P : Rel A ℓ} {Q : Rel B ℓ₂} →
-         (f : A → B) → P =[ f ]⇒ Q → SymClosure P =[ f ]⇒ SymClosure Q
-  gmap _ g = Sum.map g g
+------------------------------------------------------------------------
+-- Properties
 
-  map : ∀ {ℓ₂} {P : Rel A ℓ} {Q : Rel A ℓ₂} →
-        P ⇒ Q → SymClosure P ⇒ SymClosure Q
-  map = gmap id
+-- Symmetric closures are symmetric.
+symmetric : (_∼_ : Rel A ℓ) → Symmetric (SymClosure _∼_)
+symmetric _ (fwd a∼b) = bwd a∼b
+symmetric _ (bwd b∼a) = fwd b∼a
+

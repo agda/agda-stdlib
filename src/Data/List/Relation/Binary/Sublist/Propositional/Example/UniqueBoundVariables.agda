@@ -38,6 +38,9 @@ open import Data.List.Relation.Binary.Sublist.Propositional.Properties using
 
 open import Data.Product using (_,_; proj₁; proj₂)
 
+infixr 8 _⇒_
+infix 1 _⊢_~_▷_
+
 -- Simple types over a set Base of base types.
 
 data Ty : Set where

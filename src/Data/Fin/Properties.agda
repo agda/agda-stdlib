@@ -12,16 +12,17 @@ module Data.Fin.Properties where
 open import Category.Applicative using (RawApplicative)
 open import Category.Functor using (RawFunctor)
 open import Data.Bool.Base using (Bool; true; false; not; _∧_; _∨_)
-open import Data.Empty using (⊥-elim)
+open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Fin.Base
 open import Data.Fin.Patterns
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_)
 import Data.Nat.Properties as ℕₚ
 open import Data.Unit using (tt)
 open import Data.Product using (∃; ∃₂; ∄; _×_; _,_; map; proj₁; uncurry; <_,_>)
-open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_])
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]; [_,_]′)
 open import Data.Sum.Properties using ([,]-map-commute; [,]-∘-distr)
 open import Function.Base using (_∘_; id; _$_)
+open import Function.Bundles using (_↔_; mk↔′)
 open import Function.Equivalence using (_⇔_; equivalence)
 open import Function.Injection using (_↣_)
 open import Relation.Binary as B hiding (Decidable; _⇔_)
@@ -44,6 +45,12 @@ open import Relation.Unary.Properties using (U?)
 
 ¬Fin0 : ¬ Fin 0
 ¬Fin0 ()
+
+------------------------------------------------------------------------
+-- Bundles
+
+Fin0↔⊥ : Fin 0 ↔ ⊥
+Fin0↔⊥ = mk↔′ ¬Fin0 (λ ()) (λ ()) (λ ())
 
 ------------------------------------------------------------------------
 -- Properties of _≡_
@@ -151,13 +158,13 @@ fromℕ-def : ∀ n → fromℕ n ≡ fromℕ< ℕₚ.≤-refl
 fromℕ-def zero    = refl
 fromℕ-def (suc n) = cong suc (fromℕ-def n)
 
-fromℕ<-irrelevant : ∀ m n {o} → m ≡ n →
-                    (m<o : m ℕ.< o) →
-                    (n<o : n ℕ.< o) →
-                    fromℕ< m<o ≡ fromℕ< n<o
-fromℕ<-irrelevant 0 0 r (s≤s z≤n) (s≤s z≤n) = refl
-fromℕ<-irrelevant (suc _) (suc _) r (s≤s (s≤s p)) (s≤s (s≤s q))
-  = cong suc (fromℕ<-irrelevant _ _ (ℕₚ.suc-injective r) (s≤s p) (s≤s q))
+fromℕ<-cong : ∀ m n {o} → m ≡ n →
+              (m<o : m ℕ.< o) →
+              (n<o : n ℕ.< o) →
+              fromℕ< m<o ≡ fromℕ< n<o
+fromℕ<-cong 0       0       r (s≤s z≤n)     (s≤s z≤n)     = refl
+fromℕ<-cong (suc _) (suc _) r (s≤s (s≤s p)) (s≤s (s≤s q))
+  = cong suc (fromℕ<-cong _ _ (ℕₚ.suc-injective r) (s≤s p) (s≤s q))
 
 fromℕ<-injective : ∀ m n {o} →
                    (m<o : m ℕ.< o) →
@@ -481,7 +488,7 @@ pred< (suc i) p = ≤̄⇒inject₁< ℕₚ.≤-refl
 -- splitAt
 ------------------------------------------------------------------------
 
--- Fin (m + n) ≃ Fin m ⊎ Fin n
+-- Fin (m + n) ↔ Fin m ⊎ Fin n
 
 splitAt-inject+ : ∀ m n i → splitAt m (inject+ n i) ≡ inj₁ i
 splitAt-inject+ (suc m) n zero = refl
@@ -491,14 +498,18 @@ splitAt-raise : ∀ m n i → splitAt m (raise {n} m i) ≡ inj₂ i
 splitAt-raise zero    n i = refl
 splitAt-raise (suc m) n i rewrite splitAt-raise m n i = refl
 
-inject+-raise-splitAt : ∀ m n i → [ inject+ n , raise {n} m ] (splitAt m i) ≡ i
-inject+-raise-splitAt zero    n i       = refl
-inject+-raise-splitAt (suc m) n zero    = refl
-inject+-raise-splitAt (suc m) n (suc i) = begin
-  [ inject+ n , raise {n} (suc m) ] (splitAt (suc m) (suc i))  ≡⟨ [,]-map-commute (splitAt m i) ⟩
-  [ suc ∘ (inject+ n) , suc ∘ (raise {n} m) ] (splitAt m i)    ≡˘⟨ [,]-∘-distr suc (splitAt m i) ⟩
-  suc ([ inject+ n , raise {n} m ] (splitAt m i))              ≡⟨ cong suc (inject+-raise-splitAt m n i) ⟩
-  suc i                                                        ∎
+splitAt-join : ∀ m n i → splitAt m (join m n i) ≡ i
+splitAt-join m n (inj₁ x) = splitAt-inject+ m n x
+splitAt-join m n (inj₂ y) = splitAt-raise m n y
+
+join-splitAt : ∀ m n i → join m n (splitAt m i) ≡ i
+join-splitAt zero    n i       = refl
+join-splitAt (suc m) n zero    = refl
+join-splitAt (suc m) n (suc i) = begin
+  [ inject+ n , raise {n} (suc m) ]′ (splitAt (suc m) (suc i))  ≡⟨ [,]-map-commute (splitAt m i) ⟩
+  [ suc ∘ (inject+ n) , suc ∘ (raise {n} m) ]′ (splitAt m i)    ≡˘⟨ [,]-∘-distr suc (splitAt m i) ⟩
+  suc ([ inject+ n , raise {n} m ]′ (splitAt m i))              ≡⟨ cong suc (join-splitAt m n i) ⟩
+  suc i                                                         ∎
   where open ≡-Reasoning
 
 -- splitAt "m" "i" ≡ inj₁ "i" if i < m
@@ -512,6 +523,41 @@ splitAt-< (suc m) (suc i) (s≤s i<m) = cong (Sum.map suc id) (splitAt-< m i i<m
 splitAt-≥ : ∀ m {n} i → (i≥m : toℕ i ℕ.≥ m) → splitAt m {n} i ≡ inj₂ (reduce≥ i i≥m)
 splitAt-≥ zero    i       _         = refl
 splitAt-≥ (suc m) (suc i) (s≤s i≥m) = cong (Sum.map suc id) (splitAt-≥ m i i≥m)
+
+------------------------------------------------------------------------
+-- Bundles
+
++↔⊎ : ∀ {m n} → Fin (m ℕ.+ n) ↔ (Fin m ⊎ Fin n)
++↔⊎ {m} {n} = mk↔′ (splitAt m {n}) (join m n) (splitAt-join m n) (join-splitAt m n)
+
+------------------------------------------------------------------------
+-- remQuot
+------------------------------------------------------------------------
+
+-- Fin (m * n) ↔ Fin m × Fin n
+
+remQuot-combine : ∀ {n k} (x : Fin n) y → remQuot k (combine x y) ≡ (x , y)
+remQuot-combine {suc n} {k} 0F y rewrite splitAt-inject+ k (n ℕ.* k) y = refl
+remQuot-combine {suc n} {k} (suc x) y rewrite splitAt-raise k (n ℕ.* k) (combine x y) = cong (Data.Product.map₁ suc) (remQuot-combine x y)
+
+combine-remQuot : ∀ {n} k (i : Fin (n ℕ.* k)) → uncurry combine (remQuot {n} k i) ≡ i
+combine-remQuot {suc n} k i with splitAt k i | P.inspect (splitAt k) i
+... | inj₁ j | P.[ eq ] = begin
+  join k (n ℕ.* k) (inj₁ j)      ≡˘⟨ cong (join k (n ℕ.* k)) eq ⟩
+  join k (n ℕ.* k) (splitAt k i) ≡⟨ join-splitAt k (n ℕ.* k) i ⟩
+  i                              ∎
+  where open ≡-Reasoning
+... | inj₂ j | P.[ eq ] = begin
+  raise {n ℕ.* k} k (uncurry combine (remQuot {n} k j)) ≡⟨ cong (raise k) (combine-remQuot {n} k j) ⟩
+  join k (n ℕ.* k) (inj₂ j)                             ≡˘⟨ cong (join k (n ℕ.* k)) eq ⟩
+  join k (n ℕ.* k) (splitAt k i)                        ≡⟨ join-splitAt k (n ℕ.* k) i ⟩
+  i                                                     ∎
+  where open ≡-Reasoning
+
+------------------------------------------------------------------------
+-- Bundles
+*↔× : ∀ {m n} → Fin (m ℕ.* n) ↔ (Fin m × Fin n)
+*↔× {m} {n} = mk↔′ (remQuot {m} n) (uncurry combine) (uncurry remQuot-combine) (combine-remQuot {m} n)
 
 ------------------------------------------------------------------------
 -- lift
@@ -888,4 +934,12 @@ decSetoid = ≡-decSetoid
 {-# WARNING_ON_USAGE decSetoid
 "Warning: decSetoid was deprecated in v1.2.
 Please use ≡-decSetoid instead."
+#-}
+
+-- Version 1.5
+
+inject+-raise-splitAt = join-splitAt
+{-# WARNING_ON_USAGE inject+-raise-splitAt
+"Warning: decSetoid was deprecated in v1.5.
+Please use join-splitAt instead."
 #-}

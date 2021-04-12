@@ -6,13 +6,14 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Relation.Binary hiding (Decidable)
+open import Relation.Binary as B hiding (Decidable)
 
 module Data.List.Relation.Binary.Permutation.Setoid.Properties
   {a ℓ} (S : Setoid a ℓ)
   where
 
 open import Algebra
+open import Data.Bool.Base using (true; false)
 open import Data.Fin.Base using (Fin)
 open import Data.List.Base as List hiding (head; tail)
 open import Data.List.Relation.Binary.Pointwise as Pointwise
@@ -25,14 +26,12 @@ open import Data.List.Relation.Unary.AllPairs using (AllPairs; []; _∷_)
 import Data.List.Relation.Unary.Unique.Setoid as Unique
 import Data.List.Membership.Setoid as Membership
 open import Data.List.Membership.Setoid.Properties using (∈-∃++; ∈-insert)
-open import Data.List.Relation.Binary.BagAndSetEquality
-  using (bag; _∼[_]_; empty-unique; drop-cons; commutativeMonoid)
 import Data.List.Properties as Lₚ
 open import Data.Nat hiding (_⊔_)
 open import Data.Nat.Induction
 open import Data.Nat.Properties
 open import Data.Product using (_,_; _×_; ∃; ∃₂; proj₁; proj₂)
-open import Function using (_∘_; _⟨_⟩_; flip)
+open import Function.Base using (_∘_; _⟨_⟩_; flip)
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Inverse as Inv using (inverse)
 open import Level using (Level; _⊔_)
@@ -40,7 +39,7 @@ open import Relation.Unary using (Pred; Decidable)
 open import Relation.Binary.Properties.Setoid S using (≉-resp₂)
 open import Relation.Binary.PropositionalEquality as ≡
   using (_≡_ ; refl; sym; cong; cong₂; subst; _≢_; inspect)
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary using (yes; no; does)
 open import Relation.Nullary.Negation using (contradiction)
 
 private
@@ -165,6 +164,9 @@ shift {v} {w} v≈w (x ∷ xs) ys = begin
   x ∷ w ∷ xs ++ ys        <<⟨ ↭-refl ⟩
   w ∷ x ∷ xs ++ ys        ∎
 
+↭-shift : ∀ {v} (xs ys : List A) → xs ++ [ v ] ++ ys ↭ v ∷ xs ++ ys
+↭-shift = shift ≈-refl
+
 ++⁺ˡ : ∀ xs {ys zs : List A} → ys ↭ zs → xs ++ ys ↭ xs ++ zs
 ++⁺ˡ []       ys↭zs = ys↭zs
 ++⁺ˡ (x ∷ xs) ys↭zs = ↭-prep _ (++⁺ˡ xs ys↭zs)
@@ -197,7 +199,7 @@ shift {v} {w} v≈w (x ∷ xs) ys = begin
 ++-comm (x ∷ xs) ys = begin
   x ∷ xs ++ ys         <⟨ ++-comm xs ys ⟩
   x ∷ ys ++ xs         ≡⟨ cong (λ v → x ∷ v ++ xs) (≡.sym (Lₚ.++-identityʳ _)) ⟩
-  (x ∷ ys ++ []) ++ xs ↭⟨ ++⁺ʳ xs (↭-sym (shift ≈-refl ys [])) ⟩
+  (x ∷ ys ++ []) ++ xs ↭⟨ ++⁺ʳ xs (↭-sym (↭-shift ys [])) ⟩
   (ys ++ [ x ]) ++ xs  ↭⟨ ++-assoc ys [ x ] xs ⟩
   ys ++ ([ x ] ++ xs)  ≡⟨⟩
   ys ++ (x ∷ xs)       ∎
@@ -349,12 +351,12 @@ dropMiddleElement {v} ws xs {ys} {zs} p = helper p ws xs ≋-refl ≋-refl
     y ∷ ys           ≋⟨ ≈₁ ∷ tail ≋₁ ⟩
     _ ∷ as           ↭⟨ prep y≈w p ⟩
     _ ∷ bs           ≋⟨ ≋-sym ≋₂ ⟩
-    w ∷ xs ++ v ∷ zs ↭⟨ ↭-prep w (shift ≈-refl xs zs) ⟩
+    w ∷ xs ++ v ∷ zs ↭⟨ ↭-prep w (↭-shift xs zs) ⟩
     w ∷ v ∷ xs ++ zs ↭⟨ swap ≈-refl (lemma (head ≋₁) v≈z ≈₂) ↭-refl ⟩
     z ∷ w ∷ xs ++ zs ∎
   helper {_ ∷ a ∷ as} {_ ∷ b ∷ bs} (swap y≈v w≈z p) (y ∷ w ∷ ws) (z ∷ []) {ys} {zs}    (≈₁ ∷ ≋₁) (≈₂ ∷ ≋₂) = begin
     y ∷ w ∷ ws ++ ys ↭⟨ swap (lemma ≈₁ y≈v (head ≋₂)) ≈-refl ↭-refl ⟩
-    w ∷ v ∷ ws ++ ys ↭⟨ ↭-prep w (↭-sym (shift ≈-refl ws ys)) ⟩
+    w ∷ v ∷ ws ++ ys ↭⟨ ↭-prep w (↭-sym (↭-shift ws ys)) ⟩
     w ∷ ws ++ v ∷ ys ≋⟨ ≋₁ ⟩
     _ ∷ as           ↭⟨ prep w≈z p ⟩
     _ ∷ bs           ≋⟨ ≋-sym (≈₂ ∷ tail ≋₂) ⟩
@@ -429,11 +431,49 @@ module _ {p} {P : Pred A p} (P? : Decidable P) (P≈ : P Respects _≈_) where
   ... | yes _  | yes _  = swap x≈z w≈y (filter⁺ xs↭ys)
 
 ------------------------------------------------------------------------
+-- partition
+
+module _ {p} {P : Pred A p} (P? : Decidable P) where
+
+  partition-↭ : ∀ xs → (let ys , zs = partition P? xs) → xs ↭ ys ++ zs
+  partition-↭ []       = ↭-refl
+  partition-↭ (x ∷ xs) with does (P? x)
+  ... | true  = ↭-prep x (partition-↭ xs)
+  ... | false = ↭-trans (↭-prep x (partition-↭ xs)) (↭-sym (↭-shift _ _))
+    where open PermutationReasoning
+
+------------------------------------------------------------------------
+-- merge
+
+module _ {ℓ} {R : Rel A ℓ} (R? : B.Decidable R) where
+
+  merge-↭ : ∀ xs ys → merge R? xs ys ↭ xs ++ ys
+  merge-↭ []       []       = ↭-refl
+  merge-↭ []       (y ∷ ys) = ↭-refl
+  merge-↭ (x ∷ xs) []       = ↭-sym (++-identityʳ (x ∷ xs))
+  merge-↭ (x ∷ xs) (y ∷ ys)
+    with does (R? x y) | merge-↭ xs (y ∷ ys) | merge-↭ (x ∷ xs) ys
+  ... | true  | rec | _   = ↭-prep x rec
+  ... | false | _   | rec = begin
+    y ∷ merge R? (x ∷ xs) ys <⟨ rec ⟩
+    y ∷ x ∷ xs ++ ys         ↭˘⟨ ↭-shift (x ∷ xs) ys ⟩
+    (x ∷ xs) ++ y ∷ ys       ≡˘⟨ Lₚ.++-assoc [ x ] xs (y ∷ ys) ⟩
+    x ∷ xs ++ y ∷ ys         ∎
+    where open PermutationReasoning
+
+------------------------------------------------------------------------
 -- _∷ʳ_
 
 ∷↭∷ʳ : ∀ (x : A) xs → x ∷ xs ↭ xs ∷ʳ x
 ∷↭∷ʳ x xs = ↭-sym (begin
-  xs ++ [ x ]   ↭⟨ shift ≈-refl xs [] ⟩
+  xs ++ [ x ]   ↭⟨ ↭-shift xs [] ⟩
   x ∷ xs ++ []  ≡⟨ Lₚ.++-identityʳ _ ⟩
   x ∷ xs        ∎)
   where open PermutationReasoning
+
+------------------------------------------------------------------------
+-- ʳ++
+
+++↭ʳ++ : ∀ (xs ys : List A) → xs ++ ys ↭ xs ʳ++ ys
+++↭ʳ++ []       ys = ↭-refl
+++↭ʳ++ (x ∷ xs) ys = ↭-trans (↭-sym (↭-shift xs ys)) (++↭ʳ++ xs (x ∷ ys))

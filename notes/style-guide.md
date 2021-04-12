@@ -8,6 +8,11 @@ automate most of this.
 
 ## File structure
 
+* The standard library uses a standard line length of 72 characters. Please
+  try to stay within this limit. Having said that this is the most violated
+  rule in the style-guide and it is recognised that it is not always possible
+  to achieve whilst using meaningful names.
+
 #### Indentation
 
 * The contents of a top-level module should have zero indentation.
@@ -30,6 +35,51 @@ automate most of this.
 * As can be seen in the example above, function arrows at line breaks
   should always go at the end of the line rather than the beginning of the
   next line.
+
+#### Empty lines
+
+* All module headers and standard term definitions should have a single
+  empty line after them.
+
+* There should be _two_ empty lines between adjacent record or module definitions
+  in order to better distinguish the end of the record or module, as they will
+  already be using single empty lines between internal definitions.
+
+* For example:
+  ```agda
+  module Test1 where
+
+    def1 : ...
+    def1 = ...
+
+    def2 : ...
+    def2 = ...
+
+
+  module Test2 where
+
+    record Record1 : Set where
+      field
+        field1 : ...
+
+      aux1 : ...
+      aux1 = ...
+
+      aux2 : ...
+      aux2 = ...
+
+
+   record Record2 : Set where
+     field
+       field2 : ...
+
+
+   record1 : Record1
+   record1 = { field1 = ... }
+
+   record2 : Record2
+   record2 = { field2 = ... }
+  ```
 
 #### Modules
 
@@ -245,15 +295,32 @@ line of code, indented by two spaces.
   function arguments and therefore should not be prepended to function
   arguments.
 
+#### Comments
+
+* Comments should be placed above a term rather than on the same line, e.g.
+  ```agda
+  -- Multiplication of two elements
+  _*_ : A → A → A
+  _*_ = ...
+  ```
+  rather than:
+  ```agda
+  _*_ : A → A → A -- Multiplication of two elements
+  _*_ = ...
+  ```
+
+* Files can be seperated into different logical parts using comments of
+  the following style where the header is 72 characters wide:
+  ```agda
+  ------------------------------------------------------------------------
+  -- TITLE
+  ```
+
 #### Other
 
 * The `with` syntax is preferred over the use of `case` from the `Function`
   module.
 
-* The standard library uses a standard line length of 72 characters. Please
-  try to stay within this limit. Having said that this is the most violated
-  rule in the style-guide and it is recognised that it is not always possible
-  to achieve whilst maintaining meaningful names.
 
 ## Types
 
@@ -266,10 +333,26 @@ line of code, indented by two spaces.
 * If there are lots of implicit arguments that are common to a collection
   of proofs they should be extracted by using an anonymous module.
 
-* Implicit of type `Level` and `Set` can be generalized using the keyword
-  `variable`. At the moment the policy is *not* to generalize over any other
-  types to minimize the amount of information that users have to keep in
-  their head concurrently.
+#### Variables
+
+* `Level` and `Set`s can always be generalized using the keyword `variable`.
+
+* A file may only declare variables of other types if those types are used
+  in the definition of the main type that the file concerns itself with.
+  At the moment the policy is *not* to generalize over any other types to
+  minimize the amount of information that users have to keep in their head
+  concurrently.
+
+* Example 1: the main type in `Data.List.Properties` is `List A` where `A : Set a`.
+  Therefore it may declare variables over `Level`, `Set a`, `A`, `List A`. It may
+  not declare variables, for example, over predicates (e.g. `P : Pred A p`) as
+  predicates are not used in the definition of `List`, even though they are used
+  in may list functions such as `filter`.
+
+* Example 2: the main type in `Data.List.Relation.Unary.All` is `All P xs` where
+  `A : Set a`, `P : Pred A p`, `xs : List A`. It therefore may declare variables
+  over `Level`, `Set a`, `A`, `List A`, `Pred A p`. It may not declare, for example,
+  variables of type `Rel` or `Vec`.
 
 ## Naming conventions
 

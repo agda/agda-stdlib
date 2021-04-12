@@ -19,7 +19,7 @@ open import Data.List.Relation.Binary.Prefix.Heterogeneous as Prefix
   using (Prefix)
 open import Data.Nat.Base
 open import Data.Nat.Properties
-open import Function using (_$_; flip)
+open import Function.Base using (_$_; flip)
 open import Relation.Nullary using (Dec; does; ¬_)
 import Relation.Nullary.Decidable as Dec
 open import Relation.Unary as U using (Pred)

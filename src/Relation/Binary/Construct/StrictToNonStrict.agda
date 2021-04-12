@@ -20,7 +20,7 @@ module Relation.Binary.Construct.StrictToNonStrict
 open import Data.Product
 open import Data.Sum.Base
 open import Data.Empty
-open import Function
+open import Function.Base
 open import Relation.Binary.Consequences
 open import Relation.Nullary
 open import Relation.Nullary.Sum using (_⊎-dec_)
@@ -29,6 +29,7 @@ open import Relation.Nullary.Sum using (_⊎-dec_)
 -- Conversion
 
 -- _<_ can be turned into _≤_ as follows:
+infix 4  _≤_
 
 _≤_ : Rel A _
 x ≤ y = (x < y) ⊎ (x ≈ y)
@@ -53,7 +54,7 @@ antisym eq trans irrefl = as
   as (inj₂ x≈y) _          = x≈y
   as (inj₁ _)   (inj₂ y≈x) = Eq.sym y≈x
   as (inj₁ x<y) (inj₁ y<x) =
-    ⊥-elim (trans∧irr⟶asym {_≈_ = _≈_} Eq.refl trans irrefl x<y y<x)
+    ⊥-elim (trans∧irr⇒asym {_≈_ = _≈_} Eq.refl trans irrefl x<y y<x)
 
 trans : IsEquivalence _≈_ → _<_ Respects₂ _≈_ → Transitive _<_ →
         Transitive _≤_

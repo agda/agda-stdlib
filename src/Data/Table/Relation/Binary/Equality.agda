@@ -19,7 +19,7 @@ Use Data.Vec.Functional.Relation.Binary.Pointwise instead."
 open import Relation.Binary using (Setoid)
 open import Data.Table.Base
 open import Data.Nat.Base using (ℕ)
-open import Function using (_∘_)
+open import Function.Base using (_∘_)
 open import Relation.Binary.PropositionalEquality
   as P using (_≡_; _→-setoid_)
 

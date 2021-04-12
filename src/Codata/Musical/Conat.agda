@@ -10,45 +10,26 @@ module Codata.Musical.Conat where
 
 open import Codata.Musical.Notation
 open import Data.Nat.Base using (ℕ; zero; suc)
-open import Function
+open import Function.Base using (_∋_)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
 ------------------------------------------------------------------------
--- The type
+-- Re-exporting the type and basic operations
 
-data Coℕ : Set where
-  zero : Coℕ
-  suc  : (n : ∞ Coℕ) → Coℕ
+open import Codata.Musical.Conat.Base public
+
+------------------------------------------------------------------------
+-- Some properties
 
 module Coℕ-injective where
 
  suc-injective : ∀ {m n} → (Coℕ ∋ suc m) ≡ suc n → m ≡ n
  suc-injective P.refl = P.refl
 
-------------------------------------------------------------------------
--- Some operations
-
-pred : Coℕ → Coℕ
-pred zero    = zero
-pred (suc n) = ♭ n
-
-fromℕ : ℕ → Coℕ
-fromℕ zero    = zero
-fromℕ (suc n) = suc (♯ fromℕ n)
-
 fromℕ-injective : ∀ {m n} → fromℕ m ≡ fromℕ n → m ≡ n
 fromℕ-injective {zero}  {zero}  eq = P.refl
 fromℕ-injective {suc m} {suc n} eq = P.cong suc (fromℕ-injective (P.cong pred eq))
-
-∞ℕ : Coℕ
-∞ℕ = suc (♯ ∞ℕ)
-
-infixl 6 _+_
-
-_+_ : Coℕ → Coℕ → Coℕ
-zero  + n = n
-suc m + n = suc (♯ (♭ m + n))
 
 ------------------------------------------------------------------------
 -- Equality

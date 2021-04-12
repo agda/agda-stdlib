@@ -11,7 +11,7 @@ module Relation.Binary.Lattice where
 open import Algebra.Core
 open import Algebra.Definitions
 open import Data.Product using (_×_; _,_)
-open import Function using (flip)
+open import Function.Base using (flip)
 open import Level using (suc; _⊔_)
 open import Relation.Binary
 

@@ -23,6 +23,7 @@ open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Nat.Base
 open import Data.Nat.Properties
 open import Data.Product as Prod hiding (map; zip)
+import Data.Product.Relation.Unary.All as Prod using (All)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.These.Base as These using (These; this; that; these)
 open import Function
@@ -496,6 +497,22 @@ concat-map {f = f} xss = begin
   foldr (λ ys → map f ys ++_) [] xss         ≡⟨ sym (foldr-fusion (map f) [] (map-++-commute f) xss) ⟩
   map f (concat xss)                         ∎
 
+concat-++ : (xss yss : List (List A)) → concat xss ++ concat yss ≡ concat (xss ++ yss)
+concat-++ [] yss = refl
+concat-++ ([] ∷ xss) yss = concat-++ xss yss
+concat-++ ((x ∷ xs) ∷ xss) yss = cong (x ∷_) (concat-++ (xs ∷ xss) yss)
+
+concat-concat : concat {A = A} ∘ map concat ≗ concat ∘ concat
+concat-concat [] = refl
+concat-concat (xss ∷ xsss) = begin
+  concat (map concat (xss ∷ xsss))   ≡⟨ cong (concat xss ++_) (concat-concat xsss) ⟩
+  concat xss ++ concat (concat xsss) ≡⟨ concat-++ xss (concat xsss) ⟩
+  concat (concat (xss ∷ xsss))       ∎
+
+concat-[-] : concat {A = A} ∘ map [_] ≗ id
+concat-[-] [] = refl
+concat-[-] (x ∷ xs) = cong (x ∷_) (concat-[-] xs)
+
 ------------------------------------------------------------------------
 -- sum
 
@@ -801,6 +818,13 @@ module _ {P : Pred A p} (P? : Decidable P) where
   partition-defn (x ∷ xs) with does (P? x)
   ...  | true  = cong (Prod.map (x ∷_) id) (partition-defn xs)
   ...  | false = cong (Prod.map id (x ∷_)) (partition-defn xs)
+
+  length-partition : ∀ xs → (let (ys , zs) = partition P? xs) →
+                     length ys ≤ length xs × length zs ≤ length xs
+  length-partition []       = z≤n , z≤n
+  length-partition (x ∷ xs) with does (P? x) | length-partition xs
+  ...  | true  | rec = Prod.map s≤s ≤-step rec
+  ...  | false | rec = Prod.map ≤-step s≤s rec
 
 ------------------------------------------------------------------------
 -- _ʳ++_

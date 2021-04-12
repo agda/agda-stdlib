@@ -12,7 +12,7 @@
 module Data.List.Relation.Binary.Lex.NonStrict where
 
 open import Data.Empty using (⊥)
-open import Function
+open import Function.Base
 open import Data.Unit.Base using (⊤; tt)
 open import Data.Product
 open import Data.List.Base
@@ -23,10 +23,12 @@ open import Relation.Nullary
 open import Relation.Binary
 import Relation.Binary.Construct.NonStrictToStrict as Conv
 
+import Data.List.Relation.Binary.Lex as Core
+
 ------------------------------------------------------------------------
 -- Publically re-export definitions from Core
 
-open import Data.List.Relation.Binary.Lex.Core as Core public
+open Core public
   using (base; halt; this; next; ¬≤-this; ¬≤-next)
 
 ------------------------------------------------------------------------

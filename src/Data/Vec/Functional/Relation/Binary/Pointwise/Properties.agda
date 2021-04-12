@@ -18,7 +18,7 @@ open import Data.Product.Relation.Binary.Pointwise.NonDependent
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
 open import Data.Vec.Functional as VF hiding (map)
 open import Data.Vec.Functional.Relation.Binary.Pointwise
-open import Function
+open import Function.Base
 open import Level using (Level)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as ≡ using (_≡_)

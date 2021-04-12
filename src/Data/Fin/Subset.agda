@@ -20,15 +20,23 @@ open import Data.Vec hiding (foldr; foldl)
 import Data.Vec.Relation.Binary.Pointwise.Extensional as Pointwise
 open import Relation.Nullary
 
+private
+  variable
+    n : ℕ
+
 ------------------------------------------------------------------------
 -- Definitions
+
+-- Partitions a finite set into two parts, the inside and the outside.
+-- Note that it would be great to shorten these to `in` and `out` but
+-- `in` is a keyword (e.g. let ... in ...)
 
 -- Sides.
 
 open import Data.Bool.Base public
   using () renaming (Bool to Side; true to inside; false to outside)
 
--- Partitions a finite set into two parts, the inside and the outside.
+-- Subset
 
 Subset : ℕ → Set
 Subset = Vec Side
@@ -37,15 +45,15 @@ Subset = Vec Side
 -- Special subsets
 
 -- The empty subset
-⊥ : ∀ {n} → Subset n
+⊥ : Subset n
 ⊥ = replicate outside
 
 -- The full subset
-⊤ : ∀ {n} → Subset n
+⊤ : Subset n
 ⊤ = replicate inside
 
 -- A singleton subset, containing just the given element.
-⁅_⁆ : ∀ {n} → Fin n → Subset n
+⁅_⁆ : Fin n → Subset n
 ⁅ zero  ⁆ = inside  ∷ ⊥
 ⁅ suc i ⁆ = outside ∷ ⁅ i ⁆
 
@@ -54,22 +62,22 @@ Subset = Vec Side
 
 infix 4 _∈_ _∉_ _⊆_ _⊈_ _⊂_ _⊄_
 
-_∈_ : ∀ {n} → Fin n → Subset n → Set
+_∈_ : Fin n → Subset n → Set
 x ∈ p = p [ x ]= inside
 
-_∉_ : ∀ {n} → Fin n → Subset n → Set
+_∉_ : Fin n → Subset n → Set
 x ∉ p = ¬ (x ∈ p)
 
-_⊆_ : ∀ {n} → Subset n → Subset n → Set
+_⊆_ : Subset n → Subset n → Set
 p ⊆ q = ∀ {x} → x ∈ p → x ∈ q
 
-_⊈_ : ∀ {n} → Subset n → Subset n → Set
+_⊈_ : Subset n → Subset n → Set
 p ⊈ q = ¬ (p ⊆ q)
 
-_⊂_ : ∀ {n} → Subset n → Subset n → Set
+_⊂_ : Subset n → Subset n → Set
 p ⊂ q = p ⊆ q × ∃ (λ x → x ∈ q × x ∉ p)
 
-_⊄_ : ∀ {n} → Subset n → Subset n → Set
+_⊄_ : Subset n → Subset n → Set
 p ⊄ q = ¬ (p ⊂ q)
 
 ------------------------------------------------------------------------
@@ -77,39 +85,52 @@ p ⊄ q = ¬ (p ⊂ q)
 
 infixr 7 _∩_
 infixr 6 _∪_
+infixl 5 _─_ _-_
 
 -- Complement
-∁ : ∀ {n} → Op₁ (Subset n)
+∁ : Op₁ (Subset n)
 ∁ p = map not p
 
 -- Intersection
-_∩_ : ∀ {n} → Op₂ (Subset n)
+_∩_ : Op₂ (Subset n)
 p ∩ q = zipWith _∧_ p q
 
 -- Union
-_∪_ : ∀ {n} → Op₂ (Subset n)
+_∪_ : Op₂ (Subset n)
 p ∪ q = zipWith _∨_ p q
 
+-- Difference
+_─_ : Op₂ (Subset n)
+p ─ q = zipWith diff p q
+  where
+  diff : Side → Side → Side
+  diff x inside  = outside
+  diff x outside = x
+
 -- N-ary union
-⋃ : ∀ {n} → List (Subset n) → Subset n
+⋃ : List (Subset n) → Subset n
 ⋃ = foldr _∪_ ⊥
 
 -- N-ary intersection
-⋂ : ∀ {n} → List (Subset n) → Subset n
+⋂ : List (Subset n) → Subset n
 ⋂ = foldr _∩_ ⊤
 
+-- Element removal
+_-_ : Subset n → Fin n → Subset n
+p - x = p ─ ⁅ x ⁆
+
 -- Size
-∣_∣ : ∀ {n} → Subset n → ℕ
+∣_∣ : Subset n → ℕ
 ∣ p ∣ = count (_≟ inside) p
 
 ------------------------------------------------------------------------
 -- Properties
 
-Nonempty : ∀ {n} (p : Subset n) → Set
+Nonempty : ∀ (p : Subset n) → Set
 Nonempty p = ∃ λ f → f ∈ p
 
-Empty : ∀ {n} (p : Subset n) → Set
+Empty : ∀ (p : Subset n) → Set
 Empty p = ¬ Nonempty p
 
-Lift : ∀ {n ℓ} → (Fin n → Set ℓ) → (Subset n → Set ℓ)
+Lift : ∀ {ℓ} → (Fin n → Set ℓ) → (Subset n → Set ℓ)
 Lift P p = ∀ {x} → x ∈ p → P x

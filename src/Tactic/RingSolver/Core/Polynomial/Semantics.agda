@@ -19,9 +19,9 @@ open import Data.List    using ([]; _∷_)
 open import Data.Product using (_,_; _×_)
 open import Data.List.Kleene using (_+; _*; ∹_; _&_; [])
 
-open Homomorphism homo
+open Homomorphism homo hiding (_^_)
 open import Tactic.RingSolver.Core.Polynomial.Base from
-open import Algebra.Operations.Ring rawRing
+open import Algebra.Properties.Semiring.Exp.TCOptimised semiring
 
 drop : ∀ {i n} → i ≤′ n → Vec Carrier n → Vec Carrier i
 drop ≤′-refl         xs       = xs
@@ -33,7 +33,7 @@ drop-1 si≤n xs = uncons (drop si≤n xs)
 
 _*⟨_⟩^_ : Carrier → Carrier → ℕ → Carrier
 x *⟨ ρ ⟩^ zero = x
-x *⟨ ρ ⟩^ suc i = ρ ^ i +1 * x
+x *⟨ ρ ⟩^ suc i = ρ ^ (suc i) * x
 {-# INLINE _*⟨_⟩^_ #-}
 
 --------------------------------------------------------------------------------

@@ -74,6 +74,9 @@ subst P refl p = p
 subst₂ : ∀ (_∼_ : REL A B ℓ) {x y u v} → x ≡ y → u ≡ v → x ∼ u → y ∼ v
 subst₂ _ refl refl p = p
 
+resp : ∀ (P : A → Set ℓ) → P Respects _≡_
+resp P refl p = p
+
 respˡ : ∀ (∼ : Rel A ℓ) → ∼ Respectsˡ _≡_
 respˡ _∼_ refl x∼y = x∼y
 

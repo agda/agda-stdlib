@@ -1,26 +1,23 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Examples of pretty printing of rose trees
+-- Some examples showing how the Rose tree module can be used
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe --sized-types #-}
 
-module README.Text.Tree where
+module README.Data.Tree.Rose where
 
 open import Data.List.Base
-open import Data.String.Base
-open import Data.Tree.Rose
+open import Data.String.Base using (String; unlines)
+open import Data.Tree.Rose using (Rose; node)
 open import Function.Base
 open import Agda.Builtin.Equality
 
 ------------------------------------------------------------------------
--- We import the module defining the pretty printer for rose trees
+-- Pretty-printing
 
-open import Text.Tree.Linear
-
-------------------------------------------------------------------------
--- Example
+open import Data.Tree.Rose.Show using (display)
 
 _ : unlines (display
   $ node [ "one" ]

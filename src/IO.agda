@@ -9,64 +9,70 @@
 module IO where
 
 open import Codata.Musical.Notation
-open import Codata.Musical.Colist
 open import Codata.Musical.Costring
-open import Data.Unit.Polymorphic
-open import Data.String
-open import Function
+open import Data.Unit.Polymorphic.Base
+open import Data.String.Base
+import Data.Unit.Base as Unit0
+open import Function.Base using (_∘_)
 import IO.Primitive as Prim
 open import Level
 
+private
+  variable
+    a b : Level
+    A : Set a
+    B : Set b
+
 ------------------------------------------------------------------------
--- The IO monad
+-- Re-exporting the basic type and functions
 
--- One cannot write "infinitely large" computations with the
--- postulated IO monad in IO.Primitive without turning off the
--- termination checker (or going via the FFI, or perhaps abusing
--- something else). The following coinductive deep embedding is
--- introduced to avoid this problem. Possible non-termination is
--- isolated to the run function below.
-
-infixl 1 _>>=_ _>>_
-
-data IO {a} (A : Set a) : Set (suc a) where
-  lift   : (m : Prim.IO A) → IO A
-  return : (x : A) → IO A
-  _>>=_  : {B : Set a} (m : ∞ (IO B)) (f : (x : B) → ∞ (IO A)) → IO A
-  _>>_   : {B : Set a} (m₁ : ∞ (IO B)) (m₂ : ∞ (IO A)) → IO A
-
-{-# NON_TERMINATING #-}
-
-run : ∀ {a} {A : Set a} → IO A → Prim.IO A
-run (lift m)   = m
-run (return x) = Prim.return x
-run (m  >>= f) = Prim._>>=_ (run (♭ m )) λ x → run (♭ (f x))
-run (m₁ >> m₂) = Prim._>>=_ (run (♭ m₁)) λ _ → run (♭ m₂)
+open import IO.Base public
 
 ------------------------------------------------------------------------
 -- Utilities
 
-sequence : ∀ {a} {A : Set a} → Colist (IO A) → IO (Colist A)
-sequence []       = return []
-sequence (c ∷ cs) = ♯ c                  >>= λ x  →
-                    ♯ (♯ sequence (♭ cs) >>= λ xs →
-                    ♯ return (x ∷ ♯ xs))
+module Colist where
 
--- The reason for not defining sequence′ in terms of sequence is
--- efficiency (the unused results could cause unnecessary memory use).
+  open import Codata.Musical.Colist.Base
 
-sequence′ : ∀ {a} {A : Set a} → Colist (IO A) → IO ⊤
-sequence′ []       = return _
-sequence′ (c ∷ cs) = ♯ c                   >>
-                     ♯ (♯ sequence′ (♭ cs) >>
-                     ♯ return _)
+  sequence : Colist (IO A) → IO (Colist A)
+  sequence []       = return []
+  sequence (c ∷ cs) = bind (♯ c)               λ x  → ♯
+                      bind (♯ sequence (♭ cs)) λ xs → ♯
+                      return (x ∷ ♯ xs)
 
-module _ {a b} {A : Set a} {B : Set b} where
+  -- The reason for not defining sequence′ in terms of sequence is
+  -- efficiency (the unused results could cause unnecessary memory use).
+
+  sequence′ : Colist (IO A) → IO ⊤
+  sequence′ []       = return _
+  sequence′ (c ∷ cs) = seq (♯ c) (♯ sequence′ (♭ cs))
 
   mapM : (A → IO B) → Colist A → IO (Colist B)
   mapM f = sequence ∘ map f
 
   mapM′ : (A → IO B) → Colist A → IO ⊤
+  mapM′ f = sequence′ ∘ map f
+
+module List where
+
+  open import Data.List.Base
+
+  sequence : List (IO A) → IO (List A)
+  sequence []       = ⦇ [] ⦈
+  sequence (c ∷ cs) = ⦇ c ∷ sequence cs ⦈
+
+  -- The reason for not defining sequence′ in terms of sequence is
+  -- efficiency (the unused results could cause unnecessary memory use).
+
+  sequence′ : List (IO A) → IO ⊤
+  sequence′ []       = return _
+  sequence′ (c ∷ cs) = c >> sequence′ cs
+
+  mapM : (A → IO B) → List A → IO (List B)
+  mapM f = sequence ∘ map f
+
+  mapM′ : (A → IO B) → List A → IO ⊤
   mapM′ f = sequence′ ∘ map f
 
 ------------------------------------------------------------------------
@@ -81,50 +87,12 @@ module _ {a b} {A : Set a} {B : Set b} where
 -- the locale. For older versions of the library (going back to at
 -- least version 3) the functions use ISO-8859-1.
 
-getContents : IO Costring
-getContents = lift Prim.getContents
+open import IO.Finite public
+  renaming (readFile to readFiniteFile)
 
-readFile : String → IO Costring
-readFile f = lift (Prim.readFile f)
-
--- Reads a finite file. Raises an exception if the file path refers to
--- a non-physical file (like "/dev/zero").
-
-readFiniteFile : String → IO String
-readFiniteFile f = lift (Prim.readFiniteFile f)
-
-writeFile∞ : String → Costring → IO ⊤
-writeFile∞ f s =
-  ♯ lift (Prim.writeFile f s) >>
-  ♯ return _
-
-writeFile : String → String → IO ⊤
-writeFile f s = writeFile∞ f (toCostring s)
-
-appendFile∞ : String → Costring → IO ⊤
-appendFile∞ f s =
-  ♯ lift (Prim.appendFile f s) >>
-  ♯ return _
-
-appendFile : String → String → IO ⊤
-appendFile f s = appendFile∞ f (toCostring s)
-
-putStr∞ : Costring → IO ⊤
-putStr∞ s =
-  ♯ lift (Prim.putStr s) >>
-  ♯ return _
-
-putStr : String → IO ⊤
-putStr s = putStr∞ (toCostring s)
-
-putStrLn∞ : Costring → IO ⊤
-putStrLn∞ s =
-  ♯ lift (Prim.putStrLn s) >>
-  ♯ return _
-
-putStrLn : String → IO ⊤
-putStrLn s = putStrLn∞ (toCostring s)
-
--- Note that the commands writeFile, appendFile, putStr and putStrLn
--- perform two conversions (string → costring → Haskell list). It may
--- be preferable to only perform one conversion.
+open import IO.Infinite public
+  renaming ( writeFile  to writeFile∞
+           ; appendFile to appendFile∞
+           ; putStr     to putStr∞
+           ; putStrLn   to putStrLn∞
+           )

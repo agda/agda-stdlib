@@ -11,14 +11,15 @@
 
 module Data.Nat.Base where
 
+open import Data.Bool.Base using (Bool; true; false)
 open import Data.Empty using (⊥)
-open import Data.Unit using (⊤; tt)
+open import Data.Unit.Base using (⊤; tt)
 open import Level using (0ℓ)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; _≢_; refl)
 open import Relation.Nullary using (¬_)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Negation.Core using (contradiction)
 open import Relation.Unary using (Pred)
 
 ------------------------------------------------------------------------
@@ -38,6 +39,11 @@ open import Agda.Builtin.Nat public
 
 open import Agda.Builtin.Nat public
   using () renaming (_<_ to _<ᵇ_)
+
+infix 4 _≤ᵇ_
+_≤ᵇ_ : (m n : ℕ) → Bool
+zero  ≤ᵇ n = true
+suc m ≤ᵇ n = m <ᵇ n
 
 ------------------------------------------------------------------------
 -- Standard ordering relations
