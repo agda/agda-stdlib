@@ -33,7 +33,7 @@ module _ {x y xs} where
   head : Sorted (x ∷ y ∷ xs) → x ≤ y
   head = Linked.head
 
-  tail : Sorted (x ∷ y ∷ xs) → Sorted (y ∷ xs)
+  tail : Sorted (x ∷ xs) → Sorted xs
   tail = Linked.tail
 
 ------------------------------------------------------------------------

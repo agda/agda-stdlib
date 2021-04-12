@@ -12,28 +12,10 @@ Highlights
 
 * First verified implementation of a sorting algorithm (available from `Data.List.Sort`).
 
+* Pseudo random generators for ℕ (available from `Data.Nat.Pseudorandom.LCG`)
+
 Bug-fixes
 ---------
-
-* Despite being designed for use with non-reflexive relations, the combinators
-  in `Relation.Binary.Reasoning.Base.Partial` required users to provide a proof
-  of reflexivity of the relation over the last element in the chain:
-  ```agda
-  begin
-    x  ⟨ x∼y ⟩
-    y  ∎⟨ y∼y ⟩
-  ```
-  These have now been redefined so that this proof is no longer needed:
-  ```agda
-  begin
-    x  ⟨ x∼y ⟩
-    y  ∎
-  ```
-  For direct users of `Relation.Binary.Reasoning.PartialSetoid` API this is a
-  backwards compatible change as the `_∎⟨_⟩` combinator has simply been deprecated. For
-  users who were building their own reasoning combinators on top of
-  `Relation.Binary.Reasoning.Base.Partial`, they will need to adjust their additional
-  combinators to use the new `singleStep`/`multiStep` constructors of `_IsRelatedTo_`.
 
 * The sum operator `_⊎_` in `Data.Container.Indexed.Combinator` was not as universe 
   polymorphic as it should have been. This has been fixed. The old, less universe
@@ -48,33 +30,49 @@ Bug-fixes
   Their definitions have now been moved out of the anonymous modules so that they no
   longer require these unnecessary arguments.
 
+* Despite being designed for use with non-reflexive relations, the combinators
+  in `Relation.Binary.Reasoning.Base.Partial` required users to provide a proof
+  of reflexivity of the relation over the last element in the chain:
+  ```agda
+  begin
+    x  ⟨ x∼y ⟩
+    y  ∎⟨ y∼y ⟩
+  ```
+  The combinators have been redefined so that this proof is no longer needed:
+  ```agda
+  begin
+    x  ⟨ x∼y ⟩
+    y  ∎
+  ```
+  This is a backwards compatible change when using the 
+  `Relation.Binary.Reasoning.PartialSetoid` API directly as the old `_∎⟨_⟩` 
+  combinator has simply been deprecated. For users who were building their 
+  own reasoning combinators on top of `Relation.Binary.Reasoning.Base.Partial`,
+  they will need to adjust their additional combinators to use the new 
+  `singleStep`/`multiStep` constructors of `_IsRelatedTo_`.
+
 * In `Relation.Binary.Reasoning.StrictPartialOrder` filled a missing argument to the
   re-exported `Relation.Binary.Reasoning.Base.Triple`.
 
 Non-backwards compatible changes
 --------------------------------
 
-* `Data.List.Relation.Binary.Lex.Core` has been thinned to minimise its
-  dependencies. The more complex properties (`transitive`, `respects₂`,
-  `[]<[]-⇔`, `∷<∷-⇔`, and `decidable`) have been moved to
-  `Data.List.Relation.Binary.Lex`.
-
 * `Data.String.Base` has been thinned to minimise its dependencies. The more
   complex functions (`parensIfSpace`, `wordsBy`, `words`, `linesBy`, `lines`,
   `rectangle`, `rectangleˡ`, `rectangleʳ`, `rectangleᶜ`) have been moved to
   `Data.String`.
-
-* The new modules `Relation.Binary.Morphism.(Constant/Identity/Composition)` that
-  were added in the last release no longer have module-level arguments. This is in order
-  to allow proofs about newly added morphism bundles to be added to these files. This is
-  only a breaking change if you were supplying the module arguments upon import, in which
-  case you will have to change to supplying them upon application of the proofs.
 
 * In `Data.Tree.AVL.Indexed` the type alias `K&_` defined in terms of `Σ` has been changed
   into a standalone record to help with parameter inference. The record constructor remains
   the same so you will only observe the change if you are using functions explicitly expecting
   a pair (e.g. `(un)curry`). In this case you can use `Data.Tree.AVL.Value`'s `(to/from)Pair`
   to convert back and forth.
+
+* The new modules `Relation.Binary.Morphism.(Constant/Identity/Composition)` that
+  were added in the last release no longer have module-level arguments. This is in order
+  to allow proofs about newly added morphism bundles to be added to these files. This is
+  only a breaking change if you were supplying the module arguments upon import, in which
+  case you will have to change to supplying them upon application of the proofs.
 
 Deprecated modules
 ------------------
@@ -87,17 +85,17 @@ Deprecated names
 
 * In `Data.Nat.Properties`:
   ```agda
-  m≤n⇒n⊔m≡n   ↦  m≥n⇒m⊔n≡m
-  m≤n⇒n⊓m≡m   ↦  m≥n⇒m⊓n≡n
-  n⊔m≡m⇒n≤m   ↦  m⊔n≡n⇒m≤n
-  n⊔m≡n⇒m≤n   ↦  m⊔n≡m⇒n≤m
-  n≤m⊔n       ↦  m≤n⊔m
-  ⊔-least     ↦  ⊔-lub
-  ⊓-greatest  ↦  ⊓-glb
-  ⊔-pres-≤m   ↦  ⊔-lub
-  ⊓-pres-m≤   ↦  ⊓-glb
-  ⊔-abs-⊓     ↦  ⊔-absorbs-⊓
-  ⊓-abs-⊔     ↦  ⊓-absorbs-⊔
+  m≤n⇒n⊔m≡n       ↦  m≥n⇒m⊔n≡m
+  m≤n⇒n⊓m≡m       ↦  m≥n⇒m⊓n≡n
+  n⊔m≡m⇒n≤m       ↦  m⊔n≡n⇒m≤n
+  n⊔m≡n⇒m≤n       ↦  m⊔n≡m⇒n≤m
+  n≤m⊔n           ↦  m≤n⊔m
+  ⊔-least         ↦  ⊔-lub
+  ⊓-greatest      ↦  ⊓-glb
+  ⊔-pres-≤m       ↦  ⊔-lub
+  ⊓-pres-m≤       ↦  ⊓-glb
+  ⊔-abs-⊓         ↦  ⊔-absorbs-⊓
+  ⊓-abs-⊔         ↦  ⊓-absorbs-⊔
   ∣m+n-m+o∣≡∣n-o| ↦ ∣m+n-m+o∣≡∣n-o∣ -- note final character is a \| rather than a |
   ```
 
@@ -149,66 +147,32 @@ Deprecated names
 New modules
 -----------
 
-* Properties of cancellative commutative semirings
+* Properties of cancellative commutative semirings:
   ```
   Algebra.Properties.CancellativeCommutativeSemiring
   ```
 
-* Specifications for min and max operators
+* Specifications for min and max operators:
   ```
   Algebra.Construct.NaturalChoice.MinOp
   Algebra.Construct.NaturalChoice.MaxOp
   Algebra.Construct.NaturalChoice.MinMaxOp
   ```
 
-* Lexicographic product over algebraic structures
+* Lexicographic product over algebraic structures:
   ```
   Algebra.Construct.LexProduct
   Algebra.Construct.LexProduct.Base
   Algebra.Construct.LexProduct.Inner
   ```
 
-* Properties of sums over semirings
+* Properties of sums over semirings:
   ```
   Algebra.Properties.Semiring.Sum
   ```
 
-* Sorting algorithms over lists:
-  ```
-  Data.List.Sort
-  Data.List.Sort.Base
-  Data.List.Sort.MergeSort
-  ```
-
-* Added `Data.Maybe.Relation.Binary.Connected`, a variant of the `Pointwise` 
-  relation where `nothing` is also related to `just`.
-
-* Linear congruential pseudo random generators for ℕ.
-  /!\ NB: LCGs must not be used for cryptographic applications
-  /!\ NB: the example parameters provided are not claimed to be good
-  ```
-  Data.Nat.PseudoRandom.LCG
-  ```
-
-* Broke up `Data.List.Relation.Binary.Pointwise` and introduced:
-  ```
-  Data.List.Relation.Binary.Pointwise.Base
-  Data.List.Relation.Binary.Pointwise.Properties
-  ```
-
-* Heterogeneous `All` predicate for disjoint sums:
-  ```
-  Data.Sum.Relation.Unary.All
-  ```
-
-* Wrapping n-ary relations into a record definition so type-inference 
-  remembers the things being related.
-  ```
-  Data.Wrap
-  ```
-  (see also `README.Data.Wrap` for an explanation)
-  
-* Broke up `Codata.Musical.Colist` into a multitude of modules:
+* Broke up `Codata.Musical.Colist` into a multitude of modules
+  in order to simply module dependency graph:
   ```
   Codata.Musical.Colist.Base
   Codata.Musical.Colist.Properties
@@ -219,6 +183,61 @@ New modules
   Codata.Musical.Colist.Relation.Unary.Any.Properties
   ```
 
+* Broke up `Data.List.Relation.Binary.Pointwise` into several modules
+  in order to simply module dependency graph:
+  ```
+  Data.List.Relation.Binary.Pointwise.Base
+  Data.List.Relation.Binary.Pointwise.Properties
+  ```
+
+* Sorting algorithms over lists:
+  ```
+  Data.List.Sort
+  Data.List.Sort.Base
+  Data.List.Sort.MergeSort
+  ```
+
+* A variant of the `Pointwise` relation over `Maybe` where `nothing` is also 
+  related to `just`:
+  ```
+  Data.Maybe.Relation.Binary.Connected
+  ```
+
+* Linear congruential pseudo random generators for ℕ:
+  ```
+  Data.Nat.PseudoRandom.LCG
+  ```
+  /!\ NB: LCGs must not be used for cryptographic applications
+  /!\ NB: the example parameters provided are not claimed to be good
+
+* Heterogeneous `All` predicate for disjoint sums:
+  ```
+  Data.Sum.Relation.Unary.All
+  ```
+
+* Functions for printing trees:
+  ```
+  Data.Tree.Rose.Show
+  Data.Tree.Binary.Show
+  ```
+
+* Basic unary predicates for AVL trees:
+  ```
+  Data.Tree.AVL.Indexed.Relation.Unary.All
+  Data.Tree.AVL.Indexed.Relation.Unary.Any
+  Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties
+
+  Data.Tree.AVL.Relation.Unary.Any
+  Data.Tree.AVL.Map.Relation.Unary.Any
+  ```
+
+* Wrapping n-ary relations into a record definition so type-inference 
+  remembers the things being related:
+  ```
+  Data.Wrap
+  ```
+  (see `README.Data.Wrap` for an explanation)
+  
 * Broke up `IO` into a many smaller modules:
   ```
   IO.Base
@@ -226,30 +245,12 @@ New modules
   IO.Infinite
   ```
 
-* Instantiate a homogeneously indexed bundle at a particular index
+* Instantiate a homogeneously indexed bundle at a particular index:
   ```
   Relation.Binary.Indexed.Homogeneous.Construct.At
   ```
 
-* Functionality for showing trees:
-  ```
-  Data.Tree.Rose.Show
-  Data.Tree.Binary.Show
-  ```
-
-* Added new modules in `Data.Tree.AVL`:
-  ```
-  Data.Tree.AVL.Indexed.Relation.Unary.All
-
-  Data.Tree.AVL.Relation.Unary.Any
-
-  Data.Tree.AVL.Indexed.Relation.Unary.Any
-  Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties
-
-  Data.Tree.AVL.Map.Relation.Unary.Any
-  ```
-
-* Bundles for binary relation morphisms
+* Bundles for binary relation morphisms:
   ```
   Relation.Binary.Morphism.Bundles
   ```
@@ -261,6 +262,17 @@ Other minor additions
   ```agda
   comm+almostCancelˡ⇒almostCancelʳ : AlmostLeftCancellative  e _•_ → AlmostRightCancellative e _•_
   comm+almostCancelʳ⇒almostCancelˡ : AlmostRightCancellative e _•_ → AlmostLeftCancellative  e _•_
+  ```
+
+* Added new proofs in `Algebra.Morphism.GroupMonomorphism`:
+  ```agda
+  ⁻¹-distrib-∙ : ((x ◦ y) ⁻¹₂ ≈₂ (x ⁻¹₂) ◦ (y ⁻¹₂)) → ((x ∙ y) ⁻¹₁ ≈₁ (x ⁻¹₁) ∙ (y ⁻¹₁))
+  ```
+
+* Added new proofs in `Algebra.Morphism.RingMonomorphism`:
+  ```agda
+  neg-distribˡ-* : ((⊝ (x ⊛ y)) ≈₂ ((⊝ x) ⊛ y)) → ((- (x * y)) ≈₁ ((- x) * y))
+  neg-distribʳ-* : ((⊝ (x ⊛ y)) ≈₂ (x ⊛ (⊝ y))) → ((- (x * y)) ≈₁ (x * (- y)))
   ```
 
 * Added new proofs in `Algebra.Properties.Magma.Divisibility`:
@@ -296,103 +308,17 @@ Other minor additions
   xy∣x⇒y∣1     : x ≉ 0# → x * y ∣ x → y ∣ 1#
   ```
 
+* Added new functions to `Codata.Stream`:
+  ```agda
+  nats        : Stream ℕ ∞
+  interleave⁺ : List⁺ (Stream A i) → Stream A i
+  cantor      : Stream (Stream A ∞) ∞ → Stream A ∞
+  plane       : Stream A ∞ → ((a : A) → Stream (B a) ∞) → Stream (Σ A B) ∞
+  ```
+
 * Added new function in `Data.Char.Base`:
   ```agda
   _≈ᵇ_ : (c d : Char) → Bool
-  ```
-
-* Added new proofs in `Algebra.Morphism.GroupMonomorphism`:
-  ```agda
-  ⁻¹-distrib-∙ : ((x ◦ y) ⁻¹₂ ≈₂ (x ⁻¹₂) ◦ (y ⁻¹₂)) → ((x ∙ y) ⁻¹₁ ≈₁ (x ⁻¹₁) ∙ (y ⁻¹₁))
-  ```
-
-* Added new proofs in `Algebra.Morphism.RingMonomorphism`:
-  ```agda
-  neg-distribˡ-* : ((⊝ (x ⊛ y)) ≈₂ ((⊝ x) ⊛ y)) → ((- (x * y)) ≈₁ ((- x) * y))
-  neg-distribʳ-* : ((⊝ (x ⊛ y)) ≈₂ (x ⊛ (⊝ y))) → ((- (x * y)) ≈₁ (x * (- y)))
-  ```
-
-* Added new function in `Data.List.Base`:
-  ```agda
-  last : List A → Maybe A
-  merge : Decidable R → List A → List A → List A
-  ```
-
-* Added new proof in `Data.List.Properties`:
-  ```agda
-  length-partition : (let (ys , zs) = partition P? xs) → length ys ≤ length xs × length zs ≤ length xs
-  ```
-
-* Added new proof in `Data.List.Relation.Binary.Permutation.Setoid.Properties`:
-  ```agda
-  ↭-shift     : xs ++ [ v ] ++ ys ↭ v ∷ xs ++ ys
-  ↭-merge     : merge R? xs ys ↭ xs ++ ys
-  ↭-partition : (let ys , zs = partition P? xs) → xs ↭ ys ++ zs
-  ```
-
-* Added new operations in `Data.List.Relation.Unary.Linked`:
-  ```agda
-  head′ : Linked R (x ∷ xs) → Connected R (just x) (head xs)
-  _∷′_  : Connected R (just x) (head xs) → Linked R xs → Linked R (x ∷ xs)
-  ```
-
-* Generalised the type of operation `tail` in `Data.List.Relation.Unary.Linked`
-  from `Linked R (x ∷ y ∷ xs) → Linked R (y ∷ xs)` to `Linked R (x ∷ xs) → Linked R xs`.
-
-* Added new proof in `Data.List.Relation.Unary.Linked.Properties`:
-  ```agda
-  ++⁺ : Linked R xs → Connected R (last xs) (head ys) → Linked R ys → Linked R (xs ++ ys)
-  ```
-
-* Added new proof in `Data.List.Relation.Unary.Sorted.TotalOrder.Properties`:
-  ```agda
-  ++⁺    : Sorted O xs → Connected _≤_ (last xs) (head ys) → Sorted O ys → Sorted O (xs ++ ys)
-  merge⁺ : Sorted O xs → Sorted O ys → Sorted O (merge _≤?_ xs ys)
-  ```
-
-* Added new proofs in `Data.List.Relation.Unary.All.Properties`:
-  ```agda
-  head⁺ : All P xs → Maybe.All P (head xs)
-  tail⁺ : All P xs → Maybe.All (All P) (tail xs)
-  last⁺ : All P xs → Maybe.All P (last xs)
-
-  uncons⁺ : All P xs → Maybe.All (P ⟨×⟩ All P) (uncons xs)
-  uncons⁻ : Maybe.All (P ⟨×⟩ All P) (uncons xs) → All P xs
-  unsnoc⁺ : All P xs → Maybe.All (All P ⟨×⟩ P) (unsnoc xs)
-  unsnoc⁻ : Maybe.All (All P ⟨×⟩ P) (unsnoc xs) → All P xs
-
-  dropWhile⁺ : (Q? : Decidable Q) → All P xs → All P (dropWhile Q? xs)
-  dropWhile⁻ : (P? : Decidable P) → dropWhile P? xs ≡ [] → All P xs
-  takeWhile⁺ : (Q? : Decidable Q) → All P xs → All P (takeWhile Q? xs)
-  takeWhile⁻ : (P? : Decidable P) → takeWhile P? xs ≡ xs → All P xs
-
-  all-head-dropWhile : (P? : Decidable P) → ∀ xs → Maybe.All (∁ P) (head (dropWhile P? xs))
-  all-takeWhile      : (P? : Decidable P) → ∀ xs → All P (takeWhile P? xs)
-  ```
-
-* Added new proofs in `Data.Maybe.Relation.Unary.All.Properties`:
-  ```agda
-  All⇒Connectedˡ : All (R x) y → Connected R (just x) y
-  All⇒Connectedʳ : All (λ v → R v y) x → Connected R x (just y
-  ```
-
-* Added new proofs to `Data.Nat.DivMod`:
-  ```agda
-  m<n⇒m/n≡0       : m < n → m / n ≡ 0
-  m/n≡1+[m∸n]/n   : m ≥ n → m / n ≡ 1 + (m ∸ n) / n
-  m*n/m*o≡n/o     : (m * n) / (m * o) ≡ n / o
-  /-cancelʳ-≡     : o ∣ m → o ∣ n → m / o ≡ n / o → m ≡ n
-  /-*-interchange : o ∣ m → p ∣ n → (m * n) / (o * p) ≡ m / o * n / p
-  ```
-
-* Added new proofs to `Data.Nat.Divisibility`:
-  ```agda
-  *-pres-∣ : o ∣ m → p ∣ n → o * p ∣ m * n
-  ```
-
-* Added new proofs to `Data.Nat.GCD`:
-  ```agda
-  m/gcd[m,n]≢0 : {m≢0 : Dec.False (m ≟ 0)} → m / gcd m n ≢ 0
   ```
 
 * Added new operations to `Data.Fin.Base`:
@@ -405,17 +331,17 @@ Other minor additions
   ```agda
   remQuot-combine : ∀ x y → remQuot k (combine x y) ≡ (x , y)
   combine-remQuot : ∀ k i → uncurry combine (remQuot k i) ≡ i
-  *↔× : Fin (m * n) ↔ (Fin m × Fin n)
+  *↔×             : Fin (m * n) ↔ (Fin m × Fin n)
   ```
 
 * Added new operations to `Data.Fin.Subset`:
-  ```
+  ```agda
   _─_ : Op₂ (Subset n)
   _-_ : Subset n → Fin n → Subset n
   ```
 
 * Added new proofs to `Data.Fin.Subset.Properties`:
-  ```
+  ```agda
   s⊂s             : p ⊂ q → s ∷ p ⊂ s ∷ q
   ∣p∣≤∣x∷p∣       : ∣ p ∣ ≤ ∣ x ∷ p ∣
 
@@ -434,48 +360,6 @@ Other minor additions
   x∈p⇒p-x⊂p       : x ∈ p → p - x ⊂ p
   x∈p⇒∣p-x∣<∣p∣   : x ∈ p → ∣ p - x ∣ < ∣ p ∣
   x∈p∧x≢y⇒x∈p-y   : x ∈ p → x ≢ y → x ∈ p - y
-  ```
-
-* Added new proofs to `Data.Nat.Properties`:
-  ```agda
-  >⇒≢ : _>_ ⇒ _≢_
-
-  pred[n]≤n : pred n ≤ n
-
-  n<1⇒n≡0 : n < 1 → n ≡ 0
-  m<n⇒0<n : m < n → 0 < n
-
-  m≤n*m : 0 < n → m ≤ n * m
-
-  ≤-isTotalPreorder         : IsTotalPreorder _≡_ _≤_
-  ≤-totalPreorder           : TotalPreorder 0ℓ 0ℓ 0ℓ
-
-  ⊔-⊓-absorptive            : Absorptive _⊓_ _
-  ⊔-⊓-isLattice             : IsLattice _⊔_ _⊓_
-  ⊔-⊓-isDistributiveLattice : IsDistributiveLattice _⊔_ _⊓_
-
-  ⊓-commutativeSemigroup    : CommutativeSemigroup 0ℓ 0ℓ
-  ⊔-commutativeSemigroup    : CommutativeSemigroup 0ℓ 0ℓ
-  ⊔-0-monoid                : Monoid 0ℓ 0ℓ
-  ⊔-⊓-lattice               : Lattice 0ℓ 0ℓ
-  ⊔-⊓-distributiveLattice   : DistributiveLattice 0ℓ 0ℓ
-
-  mono-≤-distrib-⊔          : f Preserves _≤_ ⟶ _≤_ → f (x ⊔ y) ≈ f x ⊔ f y
-  mono-≤-distrib-⊓          : f Preserves _≤_ ⟶ _≤_ → f (x ⊓ y) ≈ f x ⊓ f y
-  antimono-≤-distrib-⊓      : f Preserves _≤_ ⟶ _≥_ → f (x ⊓ y) ≈ f x ⊔ f y
-  antimono-≤-distrib-⊔      : f Preserves _≤_ ⟶ _≥_ → f (x ⊔ y) ≈ f x ⊓ f y
-
-  [m*n]*[o*p]≡[m*o]*[n*p]   : (m * n) * (o * p) ≡ (m * o) * (n * p)
-  ```
-
-* Added new definition in `Data.Nat.Base`:
-  ```agda
-  _≤ᵇ_ : (m n : ℕ) → Bool
-  ```
-
-* Added new proof to `Data.Nat.Induction`:
-  ```agda
-  <-wellFounded-fast : WellFounded _<_
   ```
 
 * Added new relation to `Data.Integer.Base`:
@@ -529,17 +413,75 @@ Other minor additions
   i⊔j≤k⇒j≤k                 : i ⊔ j ≤ k → j ≤ k
   i⊓j≤i⊔j                   : i ⊓ j ≤ i ⊔ j
 
-  +-*-commutativeSemiring : CommutativeSemiring 0ℓ 0ℓ
+  +-*-commutativeSemiring   : CommutativeSemiring 0ℓ 0ℓ
   ```
 
-* Added new definitions and proofs to `Relation.Binary.Properties.(Poset/TotalOrder/DecTotalOrder)`:
+* Added new functions in `Data.List.Base`:
   ```agda
-  _≰_       : Rel A p₃
-  ≰-respˡ-≈ : _≰_ Respectsˡ _≈_
-  ≰-respʳ-≈ : _≰_ Respectsʳ _≈_
+  last  : List A → Maybe A
+  merge : Decidable R → List A → List A → List A
   ```
 
-* Added new proofs to `Data.List.Relation.Binary.Pointwise`:
+* Added new proof in `Data.List.Properties`:
+  ```agda
+  length-partition : (let (ys , zs) = partition P? xs) → length ys ≤ length xs × length zs ≤ length xs
+  ```
+
+* Added new proofs in `Data.List.Relation.Unary.All.Properties`:
+  ```agda
+  head⁺ : All P xs → Maybe.All P (head xs)
+  tail⁺ : All P xs → Maybe.All (All P) (tail xs)
+  last⁺ : All P xs → Maybe.All P (last xs)
+
+  uncons⁺ : All P xs → Maybe.All (P ⟨×⟩ All P) (uncons xs)
+  uncons⁻ : Maybe.All (P ⟨×⟩ All P) (uncons xs) → All P xs
+  unsnoc⁺ : All P xs → Maybe.All (All P ⟨×⟩ P) (unsnoc xs)
+  unsnoc⁻ : Maybe.All (All P ⟨×⟩ P) (unsnoc xs) → All P xs
+
+  dropWhile⁺ : (Q? : Decidable Q) → All P xs → All P (dropWhile Q? xs)
+  dropWhile⁻ : (P? : Decidable P) → dropWhile P? xs ≡ [] → All P xs
+  takeWhile⁺ : (Q? : Decidable Q) → All P xs → All P (takeWhile Q? xs)
+  takeWhile⁻ : (P? : Decidable P) → takeWhile P? xs ≡ xs → All P xs
+
+  all-head-dropWhile : (P? : Decidable P) → ∀ xs → Maybe.All (∁ P) (head (dropWhile P? xs))
+  all-takeWhile      : (P? : Decidable P) → ∀ xs → All P (takeWhile P? xs)
+  all-upTo           : All (_< n) (upTo n)
+  ```
+
+* Added new operations in `Data.List.Relation.Unary.Linked`:
+  ```agda
+  head′ : Linked R (x ∷ xs) → Connected R (just x) (head xs)
+  _∷′_  : Connected R (just x) (head xs) → Linked R xs → Linked R (x ∷ xs)
+  ```
+
+* Generalised the type of operation `tail` in `Data.List.Relation.Unary.Linked`
+  from `Linked R (x ∷ y ∷ xs) → Linked R (y ∷ xs)` to `Linked R (x ∷ xs) → Linked R xs`.
+
+* Added new proof in `Data.List.Relation.Unary.Linked.Properties`:
+  ```agda
+  ++⁺ : Linked R xs → Connected R (last xs) (head ys) → Linked R ys → Linked R (xs ++ ys)
+  ```
+
+* Added new proof in `Data.List.Relation.Unary.Sorted.TotalOrder.Properties`:
+  ```agda
+  ++⁺    : Sorted O xs → Connected _≤_ (last xs) (head ys) → Sorted O ys → Sorted O (xs ++ ys)
+  merge⁺ : Sorted O xs → Sorted O ys → Sorted O (merge _≤?_ xs ys)
+  ```
+
+* Added new proof to `Data.List.Relation.Binary.Equality.Setoid`:
+  ```agda
+  foldr⁺ : (w ≈ x → y ≈ z → (w • y) ≈ (x ◦ z)) →
+           e ≈ f → xs ≋ ys → foldr _•_ e xs ≈ foldr _◦_ f ys
+  ```
+
+* Added new proof in `Data.List.Relation.Binary.Permutation.Setoid.Properties`:
+  ```agda
+  ↭-shift     : xs ++ [ v ] ++ ys ↭ v ∷ xs ++ ys
+  ↭-merge     : merge R? xs ys ↭ xs ++ ys
+  ↭-partition : (let ys , zs = partition P? xs) → xs ↭ ys ++ zs
+  ```
+
+* Added new proofs to `Data.List.Relation.Binary.Pointwise.Properties`:
   ```agda
   foldr⁺  : (R w x → R y z → R (w • y) (x ◦ z)) →
             R e f → Pointwise R xs ys → R (foldr _•_ e xs) (foldr _◦_ f ys)
@@ -551,18 +493,7 @@ Other minor additions
             R (lookup xs i) (lookup ys j)
   ```
 
-* Added new proof to `Data.List.Relation.Unary.All.Properties`:
-  ```agda
-  all-upTo : All (_< n) (upTo n)
-  ```
-
-* Added new proof to `Data.List.Relation.Binary.Equality.Setoid`:
-  ```agda
-  foldr⁺ : (w ≈ x → y ≈ z → (w • y) ≈ (x ◦ z)) →
-           e ≈ f → xs ≋ ys → foldr _•_ e xs ≈ foldr _◦_ f ys
-  ```
-
-* Added new proof to `Data.List.Relation.Binary.Subset.Setoid.Properties`:
+* Added new proof to `Data.List.Relation.Binary.Subset.(Setoid/Propositional).Properties`:
   ```agda
   xs⊆x∷xs    : xs ⊆ x ∷ xs
   ∷⁺ʳ        : xs ⊆ ys → x ∷ xs ⊆ x ∷ ys  
@@ -570,12 +501,69 @@ Other minor additions
   applyUpTo⁺ : m ≤ n → applyUpTo f m ⊆ applyUpTo f n
   ```
 
-* Added new proof to `Data.List.Relation.Binary.Subset.Propositional.Properties`:
+* Added new proofs in `Data.Maybe.Relation.Unary.All.Properties`:
   ```agda
-  xs⊆x∷xs    : xs ⊆ x ∷ xs
-  ∷⁺ʳ        : xs ⊆ ys → x ∷ xs ⊆ x ∷ ys
-  ∈-∷⁺ʳ      : x ∈ ys → xs ⊆ ys → x ∷ xs ⊆ ys
-  applyUpTo⁺ : m ≤ n → applyUpTo f m ⊆ applyUpTo f n
+  All⇒Connectedˡ : All (R x) y → Connected R (just x) y
+  All⇒Connectedʳ : All (λ v → R v y) x → Connected R x (just y
+  ```
+
+* Added new definition in `Data.Nat.Base`:
+  ```agda
+  _≤ᵇ_ : (m n : ℕ) → Bool
+  ```
+
+* Added new proofs to `Data.Nat.DivMod`:
+  ```agda
+  m<n⇒m/n≡0       : m < n → m / n ≡ 0
+  m/n≡1+[m∸n]/n   : m ≥ n → m / n ≡ 1 + (m ∸ n) / n
+  m*n/m*o≡n/o     : (m * n) / (m * o) ≡ n / o
+  /-cancelʳ-≡     : o ∣ m → o ∣ n → m / o ≡ n / o → m ≡ n
+  /-*-interchange : o ∣ m → p ∣ n → (m * n) / (o * p) ≡ m / o * n / p
+  ```
+
+* Added new proofs to `Data.Nat.Divisibility`:
+  ```agda
+  *-pres-∣ : o ∣ m → p ∣ n → o * p ∣ m * n
+  ```
+
+* Added new proofs to `Data.Nat.GCD`:
+  ```agda
+  m/gcd[m,n]≢0 : {m≢0 : Dec.False (m ≟ 0)} → m / gcd m n ≢ 0
+  ```
+
+* Added new proof to `Data.Nat.Induction`:
+  ```agda
+  <-wellFounded-fast : WellFounded _<_
+  ```
+
+* Added new proofs to `Data.Nat.Properties`:
+  ```agda
+  >⇒≢       : _>_ ⇒ _≢_
+  
+  pred[n]≤n : pred n ≤ n
+  n<1⇒n≡0   : n < 1 → n ≡ 0
+  m<n⇒0<n   : m < n → 0 < n
+  m≤n*m     : 0 < n → m ≤ n * m
+
+  ≤-isTotalPreorder         : IsTotalPreorder _≡_ _≤_
+  ≤-totalPreorder           : TotalPreorder 0ℓ 0ℓ 0ℓ
+
+  ⊔-⊓-absorptive            : Absorptive _⊓_ _
+  ⊔-⊓-isLattice             : IsLattice _⊔_ _⊓_
+  ⊔-⊓-isDistributiveLattice : IsDistributiveLattice _⊔_ _⊓_
+
+  ⊓-commutativeSemigroup    : CommutativeSemigroup 0ℓ 0ℓ
+  ⊔-commutativeSemigroup    : CommutativeSemigroup 0ℓ 0ℓ
+  ⊔-0-monoid                : Monoid 0ℓ 0ℓ
+  ⊔-⊓-lattice               : Lattice 0ℓ 0ℓ
+  ⊔-⊓-distributiveLattice   : DistributiveLattice 0ℓ 0ℓ
+
+  mono-≤-distrib-⊔          : f Preserves _≤_ ⟶ _≤_ → f (x ⊔ y) ≈ f x ⊔ f y
+  mono-≤-distrib-⊓          : f Preserves _≤_ ⟶ _≤_ → f (x ⊓ y) ≈ f x ⊓ f y
+  antimono-≤-distrib-⊓      : f Preserves _≤_ ⟶ _≥_ → f (x ⊓ y) ≈ f x ⊔ f y
+  antimono-≤-distrib-⊔      : f Preserves _≤_ ⟶ _≥_ → f (x ⊔ y) ≈ f x ⊓ f y
+
+  [m*n]*[o*p]≡[m*o]*[n*p]   : (m * n) * (o * p) ≡ (m * o) * (n * p)
   ```
 
 * Add new functions to `Data.Rational.Base`:
@@ -796,7 +784,7 @@ Other minor additions
   ∣p*q∣≡∣p∣*∣q∣              : ∣ p * q ∣ ≡ ∣ p ∣ * ∣ q ∣
   ```
 
-* Add new relations and functions to `Data.Rational.Unnormalised`:
+* Add new relations and functions to `Data.Rational.Unnormalised.Base`:
   ```agda
   _≤ᵇ_ : ℤ → ℤ → Bool
   _⊔_  : (p q : ℚᵘ) → ℚᵘ
@@ -998,17 +986,6 @@ Other minor additions
   ∣p*q∣≃∣p∣*∣q∣             : ∣ p * q ∣ ≃ ∣ p ∣ * ∣ q ∣
   ```
 
-* Added new function to `Data.Tree.Rose`:
-  ```agda
-  fromBinary : (A → C) → (B → C) → Tree.Binary A B → Rose C ∞
-  ```
-
-* Added new definitions to `IO`:
-  ```agda
-  getLine : IO String
-  Main : Set
-  ```
-
 * Added new functions and pattern synonyms to `Data.Tree.AVL.Indexed`:
   ```agda
   foldr : (∀ {k} → Val k → A → A) → A → Tree V l u h → A
@@ -1018,25 +995,6 @@ Other minor additions
   pattern node⁻ k₁ k₂ t₁ t₂ bal t₃ = node k₁ (node k₂ t₁ t₂ bal) t₃ ∼-
 
   ordered : Tree V l u n → l <⁺ u
-  ```
-
-* Added new functions to `Codata.Stream`:
-  ```agda
-  nats : Stream ℕ ∞
-
-  interleave⁺ : List⁺ (Stream A i) → Stream A i
-  cantor      : Stream (Stream A ∞) ∞ → Stream A ∞
-  plane       : Stream A ∞ → ((a : A) → Stream (B a) ∞) → Stream (Σ A B) ∞
-  ```
-
-  * Added new definitions to `Relation.Binary.Bundles`:
-  ```agda
-  record TotalPreorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂))
-  ```
-
-* Added new definitions to `Relation.Binary.Structures`:
-  ```agda
-  record IsTotalPreorder (_≲_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂)
   ```
 
 * Re-exported and defined new functions in `Data.Tree.AVL.Key`:
@@ -1051,10 +1009,38 @@ Other minor additions
   strictTotalOrder   : StrictTotalOrder _ _ _
   ```
 
+* Added new function to `Data.Tree.Rose`:
+  ```agda
+  fromBinary : (A → C) → (B → C) → Tree.Binary A B → Rose C ∞
+  ```
+
+* Added new definitions to `IO`:
+  ```agda
+  getLine : IO String
+  Main : Set
+  ```
+
+  * Added new definitions to `Relation.Binary.Bundles`:
+  ```agda
+  record TotalPreorder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂))
+  ```
+
+* Added new definitions to `Relation.Binary.Structures`:
+  ```agda
+  record IsTotalPreorder (_≲_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂)
+  ```
+
 * Added new proofs to `Relation.Binary.Properties.Poset`:
   ```agda
   mono⇒cong     : f Preserves _≤_ ⟶ _≤_ → f Preserves _≈_ ⟶ _≈_
   antimono⇒cong : f Preserves _≤_ ⟶ _≥_ → f Preserves _≈_ ⟶ _≈_
+  ```
+
+* Added new definitions and proofs to `Relation.Binary.Properties.(Poset/TotalOrder/DecTotalOrder)`:
+  ```agda
+  _≰_       : Rel A p₃
+  ≰-respˡ-≈ : _≰_ Respectsˡ _≈_
+  ≰-respʳ-≈ : _≰_ Respectsʳ _≈_
   ```
 
 * Added new proofs to `Relation.Binary.Consequences`:
@@ -1069,10 +1055,9 @@ Other minor additions
   isTotalPreorder : IsTotalPreorder ≈ ∼  → IsTotalPreorder ≈ (flip ∼)
   ```
 
-
 * Added new proofs to `Relation.Binary.Morphism.Construct.Constant`:
   ```agda
-  setoidHomomorphism : (S : Setoid a ℓ₁) (T : Setoid b ℓ₂) → ∀ x → SetoidHomomorphism S T
+  setoidHomomorphism   : (S : Setoid a ℓ₁) (T : Setoid b ℓ₂) → ∀ x → SetoidHomomorphism S T
   preorderHomomorphism : (P : Preorder a ℓ₁ ℓ₂) (Q : Preorder b ℓ₃ ℓ₄) → ∀ x → PreorderHomomorphism P Q
   ```
 
