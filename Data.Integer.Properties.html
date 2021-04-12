@@ -773,7 +773,7 @@
 <a id="25246" href="Data.Integer.Properties.html#25184" class="Function">+-identityˡ</a> <a id="25258" class="Symbol">(</a><a id="25259" href="Agda.Builtin.Int.html#264" class="InductiveConstructor Operator">+</a>   <a id="25263" class="Symbol">_</a> <a id="25265" class="Symbol">)</a> <a id="25267" class="Symbol">=</a> <a id="25269" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
 
 <a id="+-identityʳ"></a><a id="25275" href="Data.Integer.Properties.html#25275" class="Function">+-identityʳ</a> <a id="25287" class="Symbol">:</a> <a id="25289" href="Algebra.Definitions.html#1341" class="Function">RightIdentity</a> <a id="25303" href="Data.Integer.Base.html#1444" class="InductiveConstructor">+0</a> <a id="25306" href="Data.Integer.Base.html#4844" class="Function Operator">_+_</a>
-<a id="25310" href="Data.Integer.Properties.html#25275" class="Function">+-identityʳ</a> <a id="25322" class="Symbol">=</a> <a id="25324" href="Algebra.Consequences.Setoid.html#1742" class="Function">comm+idˡ⇒idʳ</a> <a id="25337" href="Data.Integer.Properties.html#24980" class="Function">+-comm</a> <a id="25344" href="Data.Integer.Properties.html#25184" class="Function">+-identityˡ</a>
+<a id="25310" href="Data.Integer.Properties.html#25275" class="Function">+-identityʳ</a> <a id="25322" class="Symbol">=</a> <a id="25324" href="Algebra.Consequences.Setoid.html#1775" class="Function">comm+idˡ⇒idʳ</a> <a id="25337" href="Data.Integer.Properties.html#24980" class="Function">+-comm</a> <a id="25344" href="Data.Integer.Properties.html#25184" class="Function">+-identityˡ</a>
 
 <a id="+-identity"></a><a id="25357" href="Data.Integer.Properties.html#25357" class="Function">+-identity</a> <a id="25368" class="Symbol">:</a> <a id="25370" href="Algebra.Definitions.html#1416" class="Function">Identity</a> <a id="25379" href="Data.Integer.Base.html#1444" class="InductiveConstructor">+0</a> <a id="25382" href="Data.Integer.Base.html#4844" class="Function Operator">_+_</a>
 <a id="25386" href="Data.Integer.Properties.html#25357" class="Function">+-identity</a> <a id="25397" class="Symbol">=</a> <a id="25399" href="Data.Integer.Properties.html#25184" class="Function">+-identityˡ</a> <a id="25411" href="Agda.Builtin.Sigma.html#236" class="InductiveConstructor Operator">,</a> <a id="25413" href="Data.Integer.Properties.html#25275" class="Function">+-identityʳ</a>
@@ -867,7 +867,7 @@
 <a id="29066" href="Data.Integer.Properties.html#28968" class="Function">+-inverseˡ</a> <a id="29077" href="Data.Integer.Base.html#1467" class="InductiveConstructor Operator">+[1+</a> <a id="29082" href="Data.Integer.Properties.html#29082" class="Bound">n</a> <a id="29084" href="Data.Integer.Base.html#1467" class="InductiveConstructor Operator">]</a> <a id="29086" class="Symbol">=</a> <a id="29088" href="Data.Integer.Properties.html#18134" class="Function">n⊖n≡0</a> <a id="29094" class="Symbol">(</a><a id="29095" href="Agda.Builtin.Nat.html#223" class="InductiveConstructor">suc</a> <a id="29099" href="Data.Integer.Properties.html#29082" class="Bound">n</a><a id="29100" class="Symbol">)</a>
 
 <a id="+-inverseʳ"></a><a id="29103" href="Data.Integer.Properties.html#29103" class="Function">+-inverseʳ</a> <a id="29114" class="Symbol">:</a> <a id="29116" href="Algebra.Definitions.html#1792" class="Function">RightInverse</a> <a id="29129" href="Data.Integer.Base.html#1444" class="InductiveConstructor">+0</a> <a id="29132" href="Data.Integer.Base.html#4499" class="Function Operator">-_</a> <a id="29135" href="Data.Integer.Base.html#4844" class="Function Operator">_+_</a>
-<a id="29139" href="Data.Integer.Properties.html#29103" class="Function">+-inverseʳ</a> <a id="29150" class="Symbol">=</a> <a id="29152" href="Algebra.Consequences.Setoid.html#2478" class="Function">comm+invˡ⇒invʳ</a> <a id="29167" href="Data.Integer.Properties.html#24980" class="Function">+-comm</a> <a id="29174" href="Data.Integer.Properties.html#28968" class="Function">+-inverseˡ</a>
+<a id="29139" href="Data.Integer.Properties.html#29103" class="Function">+-inverseʳ</a> <a id="29150" class="Symbol">=</a> <a id="29152" href="Algebra.Consequences.Setoid.html#3175" class="Function">comm+invˡ⇒invʳ</a> <a id="29167" href="Data.Integer.Properties.html#24980" class="Function">+-comm</a> <a id="29174" href="Data.Integer.Properties.html#28968" class="Function">+-inverseˡ</a>
 
 <a id="+-inverse"></a><a id="29186" href="Data.Integer.Properties.html#29186" class="Function">+-inverse</a> <a id="29196" class="Symbol">:</a> <a id="29198" href="Algebra.Definitions.html#1882" class="Function">Inverse</a> <a id="29206" href="Data.Integer.Base.html#1444" class="InductiveConstructor">+0</a> <a id="29209" href="Data.Integer.Base.html#4499" class="Function Operator">-_</a> <a id="29212" href="Data.Integer.Base.html#4844" class="Function Operator">_+_</a>
 <a id="29216" href="Data.Integer.Properties.html#29186" class="Function">+-inverse</a> <a id="29226" class="Symbol">=</a> <a id="29228" href="Data.Integer.Properties.html#28968" class="Function">+-inverseˡ</a> <a id="29239" href="Agda.Builtin.Sigma.html#236" class="InductiveConstructor Operator">,</a> <a id="29241" href="Data.Integer.Properties.html#29103" class="Function">+-inverseʳ</a>
@@ -1295,7 +1295,7 @@
 <a id="43788" href="Data.Integer.Properties.html#43673" class="Function">*-identityˡ</a> <a id="43800" href="Data.Integer.Base.html#1467" class="InductiveConstructor Operator">+[1+</a> <a id="43805" href="Data.Integer.Properties.html#43805" class="Bound">n</a> <a id="43807" href="Data.Integer.Base.html#1467" class="InductiveConstructor Operator">]</a> <a id="43809" class="Keyword">rewrite</a> <a id="43817" href="Data.Nat.Properties.html#13279" class="Function">ℕₚ.+-identityʳ</a> <a id="43832" href="Data.Integer.Properties.html#43805" class="Bound">n</a> <a id="43834" class="Symbol">=</a> <a id="43836" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
 
 <a id="*-identityʳ"></a><a id="43842" href="Data.Integer.Properties.html#43842" class="Function">*-identityʳ</a> <a id="43854" class="Symbol">:</a> <a id="43856" href="Algebra.Definitions.html#1341" class="Function">RightIdentity</a> <a id="43870" class="Symbol">(</a><a id="43871" href="Agda.Builtin.Int.html#264" class="InductiveConstructor Operator">+</a> <a id="43873" class="Number">1</a><a id="43874" class="Symbol">)</a> <a id="43876" href="Data.Integer.Base.html#5169" class="Function Operator">_*_</a>
-<a id="43880" href="Data.Integer.Properties.html#43842" class="Function">*-identityʳ</a> <a id="43892" class="Symbol">=</a> <a id="43894" href="Algebra.Consequences.Setoid.html#1742" class="Function">comm+idˡ⇒idʳ</a> <a id="43907" href="Data.Integer.Properties.html#43383" class="Function">*-comm</a> <a id="43914" href="Data.Integer.Properties.html#43673" class="Function">*-identityˡ</a>
+<a id="43880" href="Data.Integer.Properties.html#43842" class="Function">*-identityʳ</a> <a id="43892" class="Symbol">=</a> <a id="43894" href="Algebra.Consequences.Setoid.html#1775" class="Function">comm+idˡ⇒idʳ</a> <a id="43907" href="Data.Integer.Properties.html#43383" class="Function">*-comm</a> <a id="43914" href="Data.Integer.Properties.html#43673" class="Function">*-identityˡ</a>
 
 <a id="*-identity"></a><a id="43927" href="Data.Integer.Properties.html#43927" class="Function">*-identity</a> <a id="43938" class="Symbol">:</a> <a id="43940" href="Algebra.Definitions.html#1416" class="Function">Identity</a> <a id="43949" class="Symbol">(</a><a id="43950" href="Agda.Builtin.Int.html#264" class="InductiveConstructor Operator">+</a> <a id="43952" class="Number">1</a><a id="43953" class="Symbol">)</a> <a id="43955" href="Data.Integer.Base.html#5169" class="Function Operator">_*_</a>
 <a id="43959" href="Data.Integer.Properties.html#43927" class="Function">*-identity</a> <a id="43970" class="Symbol">=</a> <a id="43972" href="Data.Integer.Properties.html#43673" class="Function">*-identityˡ</a> <a id="43984" href="Agda.Builtin.Sigma.html#236" class="InductiveConstructor Operator">,</a> <a id="43986" href="Data.Integer.Properties.html#43842" class="Function">*-identityʳ</a>
@@ -1304,7 +1304,7 @@
 <a id="44025" href="Data.Integer.Properties.html#43999" class="Function">*-zeroˡ</a> <a id="44033" href="Data.Integer.Properties.html#44033" class="Bound">n</a> <a id="44035" class="Symbol">=</a> <a id="44037" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
 
 <a id="*-zeroʳ"></a><a id="44043" href="Data.Integer.Properties.html#44043" class="Function">*-zeroʳ</a> <a id="44051" class="Symbol">:</a> <a id="44053" href="Algebra.Definitions.html#1567" class="Function">RightZero</a> <a id="44063" href="Data.Integer.Base.html#1444" class="InductiveConstructor">+0</a> <a id="44066" href="Data.Integer.Base.html#5169" class="Function Operator">_*_</a>
-<a id="44070" href="Data.Integer.Properties.html#44043" class="Function">*-zeroʳ</a> <a id="44078" class="Symbol">=</a> <a id="44080" href="Algebra.Consequences.Setoid.html#2032" class="Function">comm+zeˡ⇒zeʳ</a> <a id="44093" href="Data.Integer.Properties.html#43383" class="Function">*-comm</a> <a id="44100" href="Data.Integer.Properties.html#43999" class="Function">*-zeroˡ</a>
+<a id="44070" href="Data.Integer.Properties.html#44043" class="Function">*-zeroʳ</a> <a id="44078" class="Symbol">=</a> <a id="44080" href="Algebra.Consequences.Setoid.html#2065" class="Function">comm+zeˡ⇒zeʳ</a> <a id="44093" href="Data.Integer.Properties.html#43383" class="Function">*-comm</a> <a id="44100" href="Data.Integer.Properties.html#43999" class="Function">*-zeroˡ</a>
 
 <a id="*-zero"></a><a id="44109" href="Data.Integer.Properties.html#44109" class="Function">*-zero</a> <a id="44116" class="Symbol">:</a> <a id="44118" href="Algebra.Definitions.html#1634" class="Function">Zero</a> <a id="44123" href="Data.Integer.Base.html#1444" class="InductiveConstructor">+0</a> <a id="44126" href="Data.Integer.Base.html#5169" class="Function Operator">_*_</a>
 <a id="44130" href="Data.Integer.Properties.html#44109" class="Function">*-zero</a> <a id="44137" class="Symbol">=</a> <a id="44139" href="Data.Integer.Properties.html#43999" class="Function">*-zeroˡ</a> <a id="44147" href="Agda.Builtin.Sigma.html#236" class="InductiveConstructor Operator">,</a> <a id="44149" href="Data.Integer.Properties.html#44043" class="Function">*-zeroʳ</a>
@@ -1552,14 +1552,14 @@
   <a id="52067" class="Symbol">{</a> <a id="52069" href="Algebra.Bundles.html#17686" class="Field">isCommutativeSemiring</a> <a id="52091" class="Symbol">=</a> <a id="52093" href="Data.Integer.Properties.html#50787" class="Function">+-*-isCommutativeSemiring</a>
   <a id="52121" class="Symbol">}</a>
 
-<a id="+-*-ring"></a><a id="52124" href="Data.Integer.Properties.html#52124" class="Function">+-*-ring</a> <a id="52133" class="Symbol">:</a> <a id="52135" href="Algebra.Bundles.html#20862" class="Record">Ring</a> <a id="52140" href="Level.html#512" class="Function">0ℓ</a> <a id="52143" href="Level.html#512" class="Function">0ℓ</a>
+<a id="+-*-ring"></a><a id="52124" href="Data.Integer.Properties.html#52124" class="Function">+-*-ring</a> <a id="52133" class="Symbol">:</a> <a id="52135" href="Algebra.Bundles.html#20863" class="Record">Ring</a> <a id="52140" href="Level.html#512" class="Function">0ℓ</a> <a id="52143" href="Level.html#512" class="Function">0ℓ</a>
 <a id="52146" href="Data.Integer.Properties.html#52124" class="Function">+-*-ring</a> <a id="52155" class="Symbol">=</a> <a id="52157" class="Keyword">record</a>
-  <a id="52166" class="Symbol">{</a> <a id="52168" href="Algebra.Bundles.html#21138" class="Field">isRing</a> <a id="52175" class="Symbol">=</a> <a id="52177" href="Data.Integer.Properties.html#50946" class="Function">+-*-isRing</a>
+  <a id="52166" class="Symbol">{</a> <a id="52168" href="Algebra.Bundles.html#21139" class="Field">isRing</a> <a id="52175" class="Symbol">=</a> <a id="52177" href="Data.Integer.Properties.html#50946" class="Function">+-*-isRing</a>
   <a id="52190" class="Symbol">}</a>
 
-<a id="+-*-commutativeRing"></a><a id="52193" href="Data.Integer.Properties.html#52193" class="Function">+-*-commutativeRing</a> <a id="52213" class="Symbol">:</a> <a id="52215" href="Algebra.Bundles.html#21948" class="Record">CommutativeRing</a> <a id="52231" href="Level.html#512" class="Function">0ℓ</a> <a id="52234" href="Level.html#512" class="Function">0ℓ</a>
+<a id="+-*-commutativeRing"></a><a id="52193" href="Data.Integer.Properties.html#52193" class="Function">+-*-commutativeRing</a> <a id="52213" class="Symbol">:</a> <a id="52215" href="Algebra.Bundles.html#21949" class="Record">CommutativeRing</a> <a id="52231" href="Level.html#512" class="Function">0ℓ</a> <a id="52234" href="Level.html#512" class="Function">0ℓ</a>
 <a id="52237" href="Data.Integer.Properties.html#52193" class="Function">+-*-commutativeRing</a> <a id="52257" class="Symbol">=</a> <a id="52259" class="Keyword">record</a>
-  <a id="52268" class="Symbol">{</a> <a id="52270" href="Algebra.Bundles.html#22305" class="Field">isCommutativeRing</a> <a id="52288" class="Symbol">=</a> <a id="52290" href="Data.Integer.Properties.html#51152" class="Function">+-*-isCommutativeRing</a>
+  <a id="52268" class="Symbol">{</a> <a id="52270" href="Algebra.Bundles.html#22306" class="Field">isCommutativeRing</a> <a id="52288" class="Symbol">=</a> <a id="52290" href="Data.Integer.Properties.html#51152" class="Function">+-*-isCommutativeRing</a>
   <a id="52314" class="Symbol">}</a>
 
 <a id="52317" class="Comment">------------------------------------------------------------------------</a>
@@ -2438,68 +2438,66 @@ Please use *-cancelˡ-&lt;-nonNeg instead.&quot;</a>
 Please use *-cancelʳ-&lt;-nonNeg instead.&quot;</a>
 <a id="85891" class="Symbol">#-}</a>
 
+<a id="85896" class="Comment">-- Version 1.6</a>
 
-
-<a id="85898" class="Comment">-- Version 1.6</a>
-
-<a id="m≤n⇒m⊓n≡m"></a><a id="85914" href="Data.Integer.Properties.html#85914" class="Function">m≤n⇒m⊓n≡m</a> <a id="85924" class="Symbol">=</a> <a id="85926" href="Data.Integer.Properties.html#64217" class="Function">i≤j⇒i⊓j≡i</a>
-<a id="85936" class="Symbol">{-#</a> <a id="85940" class="Keyword">WARNING_ON_USAGE</a> <a id="85957" class="Pragma">m≤n⇒m⊓n≡m</a>
-<a id="85967" class="String">&quot;Warning: m≤n⇒m⊓n≡m was deprecated in v1.6
+<a id="m≤n⇒m⊓n≡m"></a><a id="85912" href="Data.Integer.Properties.html#85912" class="Function">m≤n⇒m⊓n≡m</a> <a id="85922" class="Symbol">=</a> <a id="85924" href="Data.Integer.Properties.html#64217" class="Function">i≤j⇒i⊓j≡i</a>
+<a id="85934" class="Symbol">{-#</a> <a id="85938" class="Keyword">WARNING_ON_USAGE</a> <a id="85955" class="Pragma">m≤n⇒m⊓n≡m</a>
+<a id="85965" class="String">&quot;Warning: m≤n⇒m⊓n≡m was deprecated in v1.6
 Please use i≤j⇒i⊓j≡i instead.&quot;</a>
-<a id="86041" class="Symbol">#-}</a>
-<a id="m⊓n≡m⇒m≤n"></a><a id="86045" href="Data.Integer.Properties.html#86045" class="Function">m⊓n≡m⇒m≤n</a> <a id="86055" class="Symbol">=</a> <a id="86057" href="Data.Integer.Properties.html#68820" class="Function">i⊓j≡i⇒i≤j</a>
-<a id="86067" class="Symbol">{-#</a> <a id="86071" class="Keyword">WARNING_ON_USAGE</a> <a id="86088" class="Pragma">m⊓n≡m⇒m≤n</a>
-<a id="86098" class="String">&quot;Warning: m≤n⇒m⊓n≡m was deprecated in v1.6
+<a id="86039" class="Symbol">#-}</a>
+<a id="m⊓n≡m⇒m≤n"></a><a id="86043" href="Data.Integer.Properties.html#86043" class="Function">m⊓n≡m⇒m≤n</a> <a id="86053" class="Symbol">=</a> <a id="86055" href="Data.Integer.Properties.html#68820" class="Function">i⊓j≡i⇒i≤j</a>
+<a id="86065" class="Symbol">{-#</a> <a id="86069" class="Keyword">WARNING_ON_USAGE</a> <a id="86086" class="Pragma">m⊓n≡m⇒m≤n</a>
+<a id="86096" class="String">&quot;Warning: m≤n⇒m⊓n≡m was deprecated in v1.6
 Please use i⊓j≡i⇒i≤j instead.&quot;</a>
-<a id="86172" class="Symbol">#-}</a>
-<a id="m≥n⇒m⊓n≡n"></a><a id="86176" href="Data.Integer.Properties.html#86176" class="Function">m≥n⇒m⊓n≡n</a> <a id="86186" class="Symbol">=</a> <a id="86188" href="Data.Integer.Properties.html#64387" class="Function">i≥j⇒i⊓j≡j</a>
-<a id="86198" class="Symbol">{-#</a> <a id="86202" class="Keyword">WARNING_ON_USAGE</a> <a id="86219" class="Pragma">m≥n⇒m⊓n≡n</a>
-<a id="86229" class="String">&quot;Warning: m≥n⇒m⊓n≡n was deprecated in v1.6
+<a id="86170" class="Symbol">#-}</a>
+<a id="m≥n⇒m⊓n≡n"></a><a id="86174" href="Data.Integer.Properties.html#86174" class="Function">m≥n⇒m⊓n≡n</a> <a id="86184" class="Symbol">=</a> <a id="86186" href="Data.Integer.Properties.html#64387" class="Function">i≥j⇒i⊓j≡j</a>
+<a id="86196" class="Symbol">{-#</a> <a id="86200" class="Keyword">WARNING_ON_USAGE</a> <a id="86217" class="Pragma">m≥n⇒m⊓n≡n</a>
+<a id="86227" class="String">&quot;Warning: m≥n⇒m⊓n≡n was deprecated in v1.6
 Please use i≥j⇒i⊓j≡j instead.&quot;</a>
-<a id="86303" class="Symbol">#-}</a>
-<a id="m⊓n≡n⇒m≥n"></a><a id="86307" href="Data.Integer.Properties.html#86307" class="Function">m⊓n≡n⇒m≥n</a> <a id="86317" class="Symbol">=</a> <a id="86319" href="Data.Integer.Properties.html#68757" class="Function">i⊓j≡j⇒j≤i</a>
-<a id="86329" class="Symbol">{-#</a> <a id="86333" class="Keyword">WARNING_ON_USAGE</a> <a id="86350" class="Pragma">m⊓n≡n⇒m≥n</a>
-<a id="86360" class="String">&quot;Warning: m⊓n≡n⇒m≥n was deprecated in v1.6
+<a id="86301" class="Symbol">#-}</a>
+<a id="m⊓n≡n⇒m≥n"></a><a id="86305" href="Data.Integer.Properties.html#86305" class="Function">m⊓n≡n⇒m≥n</a> <a id="86315" class="Symbol">=</a> <a id="86317" href="Data.Integer.Properties.html#68757" class="Function">i⊓j≡j⇒j≤i</a>
+<a id="86327" class="Symbol">{-#</a> <a id="86331" class="Keyword">WARNING_ON_USAGE</a> <a id="86348" class="Pragma">m⊓n≡n⇒m≥n</a>
+<a id="86358" class="String">&quot;Warning: m⊓n≡n⇒m≥n was deprecated in v1.6
 Please use i⊓j≡j⇒j≤i instead.&quot;</a>
-<a id="86434" class="Symbol">#-}</a>
-<a id="m⊓n≤n"></a><a id="86438" href="Data.Integer.Properties.html#86438" class="Function">m⊓n≤n</a> <a id="86444" class="Symbol">=</a> <a id="86446" href="Data.Integer.Properties.html#68936" class="Function">i⊓j≤j</a>
-<a id="86452" class="Symbol">{-#</a> <a id="86456" class="Keyword">WARNING_ON_USAGE</a> <a id="86473" class="Pragma">m⊓n≤n</a>
-<a id="86479" class="String">&quot;Warning: m⊓n≤n was deprecated in v1.6
+<a id="86432" class="Symbol">#-}</a>
+<a id="m⊓n≤n"></a><a id="86436" href="Data.Integer.Properties.html#86436" class="Function">m⊓n≤n</a> <a id="86442" class="Symbol">=</a> <a id="86444" href="Data.Integer.Properties.html#68936" class="Function">i⊓j≤j</a>
+<a id="86450" class="Symbol">{-#</a> <a id="86454" class="Keyword">WARNING_ON_USAGE</a> <a id="86471" class="Pragma">m⊓n≤n</a>
+<a id="86477" class="String">&quot;Warning: m⊓n≤n was deprecated in v1.6
 Please use i⊓j≤j instead.&quot;</a>
-<a id="86545" class="Symbol">#-}</a>
-<a id="m⊓n≤m"></a><a id="86549" href="Data.Integer.Properties.html#86549" class="Function">m⊓n≤m</a> <a id="86555" class="Symbol">=</a> <a id="86557" href="Data.Integer.Properties.html#68883" class="Function">i⊓j≤i</a>
-<a id="86563" class="Symbol">{-#</a> <a id="86567" class="Keyword">WARNING_ON_USAGE</a> <a id="86584" class="Pragma">m⊓n≤m</a>
-<a id="86590" class="String">&quot;Warning: m⊓n≤m was deprecated in v1.6
+<a id="86543" class="Symbol">#-}</a>
+<a id="m⊓n≤m"></a><a id="86547" href="Data.Integer.Properties.html#86547" class="Function">m⊓n≤m</a> <a id="86553" class="Symbol">=</a> <a id="86555" href="Data.Integer.Properties.html#68883" class="Function">i⊓j≤i</a>
+<a id="86561" class="Symbol">{-#</a> <a id="86565" class="Keyword">WARNING_ON_USAGE</a> <a id="86582" class="Pragma">m⊓n≤m</a>
+<a id="86588" class="String">&quot;Warning: m⊓n≤m was deprecated in v1.6
 Please use i⊓j≤i instead.&quot;</a>
-<a id="86656" class="Symbol">#-}</a>
-<a id="m≤n⇒m⊔n≡n"></a><a id="86660" href="Data.Integer.Properties.html#86660" class="Function">m≤n⇒m⊔n≡n</a> <a id="86670" class="Symbol">=</a> <a id="86672" href="Data.Integer.Properties.html#64557" class="Function">i≤j⇒i⊔j≡j</a>
-<a id="86682" class="Symbol">{-#</a> <a id="86686" class="Keyword">WARNING_ON_USAGE</a> <a id="86703" class="Pragma">m≤n⇒m⊔n≡n</a>
-<a id="86713" class="String">&quot;Warning: m≤n⇒m⊔n≡n was deprecated in v1.6
+<a id="86654" class="Symbol">#-}</a>
+<a id="m≤n⇒m⊔n≡n"></a><a id="86658" href="Data.Integer.Properties.html#86658" class="Function">m≤n⇒m⊔n≡n</a> <a id="86668" class="Symbol">=</a> <a id="86670" href="Data.Integer.Properties.html#64557" class="Function">i≤j⇒i⊔j≡j</a>
+<a id="86680" class="Symbol">{-#</a> <a id="86684" class="Keyword">WARNING_ON_USAGE</a> <a id="86701" class="Pragma">m≤n⇒m⊔n≡n</a>
+<a id="86711" class="String">&quot;Warning: m≤n⇒m⊔n≡n was deprecated in v1.6
 Please use i≤j⇒i⊔j≡j instead.&quot;</a>
-<a id="86787" class="Symbol">#-}</a>
-<a id="m⊔n≡n⇒m≤n"></a><a id="86791" href="Data.Integer.Properties.html#86791" class="Function">m⊔n≡n⇒m≤n</a> <a id="86801" class="Symbol">=</a> <a id="86803" href="Data.Integer.Properties.html#69250" class="Function">i⊔j≡j⇒i≤j</a>
-<a id="86813" class="Symbol">{-#</a> <a id="86817" class="Keyword">WARNING_ON_USAGE</a> <a id="86834" class="Pragma">m⊔n≡n⇒m≤n</a>
-<a id="86844" class="String">&quot;Warning: m⊔n≡n⇒m≤n was deprecated in v1.6
+<a id="86785" class="Symbol">#-}</a>
+<a id="m⊔n≡n⇒m≤n"></a><a id="86789" href="Data.Integer.Properties.html#86789" class="Function">m⊔n≡n⇒m≤n</a> <a id="86799" class="Symbol">=</a> <a id="86801" href="Data.Integer.Properties.html#69250" class="Function">i⊔j≡j⇒i≤j</a>
+<a id="86811" class="Symbol">{-#</a> <a id="86815" class="Keyword">WARNING_ON_USAGE</a> <a id="86832" class="Pragma">m⊔n≡n⇒m≤n</a>
+<a id="86842" class="String">&quot;Warning: m⊔n≡n⇒m≤n was deprecated in v1.6
 Please use i⊔j≡j⇒i≤j instead.&quot;</a>
-<a id="86918" class="Symbol">#-}</a>
-<a id="m≥n⇒m⊔n≡m"></a><a id="86922" href="Data.Integer.Properties.html#86922" class="Function">m≥n⇒m⊔n≡m</a> <a id="86932" class="Symbol">=</a> <a id="86934" href="Data.Integer.Properties.html#64727" class="Function">i≥j⇒i⊔j≡i</a>
-<a id="86944" class="Symbol">{-#</a> <a id="86948" class="Keyword">WARNING_ON_USAGE</a> <a id="86965" class="Pragma">m≥n⇒m⊔n≡m</a>
-<a id="86975" class="String">&quot;Warning: m≥n⇒m⊔n≡m was deprecated in v1.6
+<a id="86916" class="Symbol">#-}</a>
+<a id="m≥n⇒m⊔n≡m"></a><a id="86920" href="Data.Integer.Properties.html#86920" class="Function">m≥n⇒m⊔n≡m</a> <a id="86930" class="Symbol">=</a> <a id="86932" href="Data.Integer.Properties.html#64727" class="Function">i≥j⇒i⊔j≡i</a>
+<a id="86942" class="Symbol">{-#</a> <a id="86946" class="Keyword">WARNING_ON_USAGE</a> <a id="86963" class="Pragma">m≥n⇒m⊔n≡m</a>
+<a id="86973" class="String">&quot;Warning: m≥n⇒m⊔n≡m was deprecated in v1.6
 Please use i≥j⇒i⊔j≡i instead.&quot;</a>
-<a id="87049" class="Symbol">#-}</a>
-<a id="m⊔n≡m⇒m≥n"></a><a id="87053" href="Data.Integer.Properties.html#87053" class="Function">m⊔n≡m⇒m≥n</a> <a id="87063" class="Symbol">=</a> <a id="87065" href="Data.Integer.Properties.html#69313" class="Function">i⊔j≡i⇒j≤i</a>
-<a id="87075" class="Symbol">{-#</a> <a id="87079" class="Keyword">WARNING_ON_USAGE</a> <a id="87096" class="Pragma">m⊔n≡m⇒m≥n</a>
-<a id="87106" class="String">&quot;Warning: m⊔n≡m⇒m≥n was deprecated in v1.6
+<a id="87047" class="Symbol">#-}</a>
+<a id="m⊔n≡m⇒m≥n"></a><a id="87051" href="Data.Integer.Properties.html#87051" class="Function">m⊔n≡m⇒m≥n</a> <a id="87061" class="Symbol">=</a> <a id="87063" href="Data.Integer.Properties.html#69313" class="Function">i⊔j≡i⇒j≤i</a>
+<a id="87073" class="Symbol">{-#</a> <a id="87077" class="Keyword">WARNING_ON_USAGE</a> <a id="87094" class="Pragma">m⊔n≡m⇒m≥n</a>
+<a id="87104" class="String">&quot;Warning: m⊔n≡m⇒m≥n was deprecated in v1.6
 Please use i⊔j≡i⇒j≤i instead.&quot;</a>
-<a id="87180" class="Symbol">#-}</a>
-<a id="m≤m⊔n"></a><a id="87184" href="Data.Integer.Properties.html#87184" class="Function">m≤m⊔n</a> <a id="87190" class="Symbol">=</a> <a id="87192" href="Data.Integer.Properties.html#69376" class="Function">i≤i⊔j</a>
-<a id="87198" class="Symbol">{-#</a> <a id="87202" class="Keyword">WARNING_ON_USAGE</a> <a id="87219" class="Pragma">m≤m⊔n</a>
-<a id="87225" class="String">&quot;Warning: m≤m⊔n was deprecated in v1.6
+<a id="87178" class="Symbol">#-}</a>
+<a id="m≤m⊔n"></a><a id="87182" href="Data.Integer.Properties.html#87182" class="Function">m≤m⊔n</a> <a id="87188" class="Symbol">=</a> <a id="87190" href="Data.Integer.Properties.html#69376" class="Function">i≤i⊔j</a>
+<a id="87196" class="Symbol">{-#</a> <a id="87200" class="Keyword">WARNING_ON_USAGE</a> <a id="87217" class="Pragma">m≤m⊔n</a>
+<a id="87223" class="String">&quot;Warning: m≤m⊔n was deprecated in v1.6
 Please use i≤i⊔j instead.&quot;</a>
-<a id="87291" class="Symbol">#-}</a>
-<a id="n≤m⊔n"></a><a id="87295" href="Data.Integer.Properties.html#87295" class="Function">n≤m⊔n</a> <a id="87301" class="Symbol">=</a> <a id="87303" href="Data.Integer.Properties.html#69429" class="Function">i≤j⊔i</a>
-<a id="87309" class="Symbol">{-#</a> <a id="87313" class="Keyword">WARNING_ON_USAGE</a> <a id="87330" class="Pragma">n≤m⊔n</a>
-<a id="87336" class="String">&quot;Warning: n≤m⊔n was deprecated in v1.6
+<a id="87289" class="Symbol">#-}</a>
+<a id="n≤m⊔n"></a><a id="87293" href="Data.Integer.Properties.html#87293" class="Function">n≤m⊔n</a> <a id="87299" class="Symbol">=</a> <a id="87301" href="Data.Integer.Properties.html#69429" class="Function">i≤j⊔i</a>
+<a id="87307" class="Symbol">{-#</a> <a id="87311" class="Keyword">WARNING_ON_USAGE</a> <a id="87328" class="Pragma">n≤m⊔n</a>
+<a id="87334" class="String">&quot;Warning: n≤m⊔n was deprecated in v1.6
 Please use i≤j⊔i instead.&quot;</a>
-<a id="87402" class="Symbol">#-}</a>
+<a id="87400" class="Symbol">#-}</a>
 </pre></body></html>

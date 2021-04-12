@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Wrap</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Turn a relation into a record definition so as to remember the things</a>
+<a id="179" class="Comment">-- being related.</a>
+<a id="197" class="Comment">-- This module has a readme file: README.Data.Wrap</a>
+<a id="248" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="322" class="Symbol">{-#</a> <a id="326" class="Keyword">OPTIONS</a> <a id="334" class="Pragma">--without-K</a> <a id="346" class="Pragma">--safe</a> <a id="353" class="Symbol">#-}</a>
+
+<a id="358" class="Keyword">module</a> <a id="365" href="Data.Wrap.html" class="Module">Data.Wrap</a> <a id="375" class="Keyword">where</a>
+
+<a id="382" class="Keyword">open</a> <a id="387" class="Keyword">import</a> <a id="394" href="Data.Product.Nary.NonDependent.html" class="Module">Data.Product.Nary.NonDependent</a>
+<a id="425" class="Keyword">open</a> <a id="430" class="Keyword">import</a> <a id="437" href="Function.Nary.NonDependent.html" class="Module">Function.Nary.NonDependent</a>
+<a id="464" class="Keyword">open</a> <a id="469" class="Keyword">import</a> <a id="476" href="Level.html" class="Module">Level</a> <a id="482" class="Keyword">using</a> <a id="488" class="Symbol">(</a><a id="489" href="Agda.Primitive.html#423" class="Postulate">Level</a><a id="494" class="Symbol">)</a>
+<a id="496" class="Keyword">open</a> <a id="501" class="Keyword">import</a> <a id="508" href="Relation.Nary.html" class="Module">Relation.Nary</a>
+
+<a id="523" class="Keyword">private</a>
+  <a id="533" class="Keyword">variable</a>
+    <a id="546" href="Data.Wrap.html#546" class="Generalizable">ℓ</a> <a id="548" class="Symbol">:</a> <a id="550" href="Agda.Primitive.html#423" class="Postulate">Level</a>
+
+<a id="557" class="Keyword">record</a> <a id="Wrap′"></a><a id="564" href="Data.Wrap.html#564" class="Record">Wrap′</a> <a id="570" class="Symbol">{</a><a id="571" href="Data.Wrap.html#571" class="Bound">n</a><a id="572" class="Symbol">}</a> <a id="574" class="Symbol">{</a><a id="575" href="Data.Wrap.html#575" class="Bound">ls</a><a id="577" class="Symbol">}</a> <a id="579" class="Symbol">{</a><a id="580" href="Data.Wrap.html#580" class="Bound">A</a> <a id="582" class="Symbol">:</a> <a id="584" href="Function.Nary.NonDependent.Base.html#2330" class="Function">Sets</a> <a id="589" href="Data.Wrap.html#571" class="Bound">n</a> <a id="591" href="Data.Wrap.html#575" class="Bound">ls</a><a id="593" class="Symbol">}</a> <a id="595" class="Symbol">(</a><a id="596" href="Data.Wrap.html#596" class="Bound">F</a> <a id="598" class="Symbol">:</a> <a id="600" href="Data.Wrap.html#580" class="Bound">A</a> <a id="602" href="Function.Nary.NonDependent.Base.html#2849" class="Function Operator">⇉</a> <a id="604" class="PrimitiveType">Set</a> <a id="608" href="Data.Wrap.html#546" class="Generalizable">ℓ</a><a id="609" class="Symbol">)</a> <a id="611" class="Symbol">(</a><a id="612" href="Data.Wrap.html#612" class="Bound">xs</a> <a id="615" class="Symbol">:</a> <a id="617" href="Data.Product.Nary.NonDependent.html#1738" class="Function">Product</a> <a id="625" href="Data.Wrap.html#571" class="Bound">n</a> <a id="627" href="Data.Wrap.html#580" class="Bound">A</a><a id="628" class="Symbol">)</a>
+                  <a id="648" class="Symbol">:</a> <a id="650" class="PrimitiveType">Set</a> <a id="654" href="Data.Wrap.html#608" class="Bound">ℓ</a> <a id="656" class="Keyword">where</a>
+  <a id="664" class="Keyword">constructor</a> <a id="[_]"></a><a id="676" href="Data.Wrap.html#676" class="InductiveConstructor Operator">[_]</a>
+  <a id="682" class="Keyword">field</a>
+    <a id="Wrap′.get"></a><a id="692" href="Data.Wrap.html#692" class="Field">get</a> <a id="696" class="Symbol">:</a> <a id="698" href="Data.Product.Nary.NonDependent.html#3828" class="Function">uncurryₙ</a> <a id="707" href="Data.Wrap.html#571" class="Bound">n</a> <a id="709" href="Data.Wrap.html#596" class="Bound">F</a> <a id="711" href="Data.Wrap.html#612" class="Bound">xs</a>
+
+<a id="715" class="Keyword">open</a> <a id="720" href="Data.Wrap.html#564" class="Module">Wrap′</a> <a id="726" class="Keyword">public</a>
+
+<a id="Wrap"></a><a id="734" href="Data.Wrap.html#734" class="Function">Wrap</a> <a id="739" class="Symbol">:</a> <a id="741" class="Symbol">∀</a> <a id="743" class="Symbol">{</a><a id="744" href="Data.Wrap.html#744" class="Bound">n</a> <a id="746" href="Data.Wrap.html#746" class="Bound">ls</a><a id="748" class="Symbol">}</a> <a id="750" class="Symbol">{</a><a id="751" href="Data.Wrap.html#751" class="Bound">A</a> <a id="753" class="Symbol">:</a> <a id="755" href="Function.Nary.NonDependent.Base.html#2330" class="Function">Sets</a> <a id="760" href="Data.Wrap.html#744" class="Bound">n</a> <a id="762" href="Data.Wrap.html#746" class="Bound">ls</a><a id="764" class="Symbol">}</a> <a id="766" class="Symbol">→</a> <a id="768" href="Data.Wrap.html#751" class="Bound">A</a> <a id="770" href="Function.Nary.NonDependent.Base.html#2849" class="Function Operator">⇉</a> <a id="772" class="PrimitiveType">Set</a> <a id="776" href="Data.Wrap.html#546" class="Generalizable">ℓ</a> <a id="778" class="Symbol">→</a> <a id="780" href="Data.Wrap.html#751" class="Bound">A</a> <a id="782" href="Function.Nary.NonDependent.Base.html#2849" class="Function Operator">⇉</a> <a id="784" class="PrimitiveType">Set</a> <a id="788" href="Data.Wrap.html#546" class="Generalizable">ℓ</a>
+<a id="790" href="Data.Wrap.html#734" class="Function">Wrap</a> <a id="795" class="Symbol">{</a><a id="796" class="Argument">n</a> <a id="798" class="Symbol">=</a> <a id="800" href="Data.Wrap.html#800" class="Bound">n</a><a id="801" class="Symbol">}</a> <a id="803" href="Data.Wrap.html#803" class="Bound">F</a> <a id="805" class="Symbol">=</a> <a id="807" href="Data.Product.Nary.NonDependent.html#3630" class="Function">curryₙ</a> <a id="814" href="Data.Wrap.html#800" class="Bound">n</a> <a id="816" class="Symbol">(</a><a id="817" href="Data.Wrap.html#564" class="Record">Wrap′</a> <a id="823" href="Data.Wrap.html#803" class="Bound">F</a><a id="824" class="Symbol">)</a>
+</pre></body></html>
