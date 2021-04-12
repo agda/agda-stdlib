@@ -201,6 +201,13 @@ New modules
   Data.Sum.Relation.Unary.All
   ```
 
+* Wrapping n-ary relations into a record definition so type-inference 
+  remembers the things being related.
+  ```
+  Data.Wrap
+  ```
+  (see also `README.Data.Wrap` for an explanation)
+  
 * Broke up `Codata.Musical.Colist` into a multitude of modules:
   ```
   Codata.Musical.Colist.Base
