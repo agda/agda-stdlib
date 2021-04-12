@@ -2437,8 +2437,6 @@ Please use *-cancelˡ-<-nonNeg instead."
 Please use *-cancelʳ-<-nonNeg instead."
 #-}
 
-
-
 -- Version 1.6
 
 m≤n⇒m⊓n≡m = i≤j⇒i⊓j≡i

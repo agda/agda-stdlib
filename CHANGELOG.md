@@ -1,7 +1,7 @@
 Version 1.6-dev
 ===============
 
-The library has been tested using Agda 2.6.1 and 2.6.1.1.
+The library has been tested using Agda 2.6.1 and 2.6.1.3.
 
 Highlights
 ----------
@@ -15,23 +15,23 @@ Highlights
 Bug-fixes
 ---------
 
-* Despite being designed for use with non-reflexive relations, the combinators 
+* Despite being designed for use with non-reflexive relations, the combinators
   in `Relation.Binary.Reasoning.Base.Partial` required users to provide a proof
   of reflexivity of the relation over the last element in the chain:
   ```agda
-  begin 
+  begin
     x  ⟨ x∼y ⟩
     y  ∎⟨ y∼y ⟩
   ```
   These have now been redefined so that this proof is no longer needed:
   ```agda
-  begin 
+  begin
     x  ⟨ x∼y ⟩
     y  ∎
   ```
-  For direct users of `Relation.Binary.Reasoning.PartialSetoid` API this is a 
+  For direct users of `Relation.Binary.Reasoning.PartialSetoid` API this is a
   backwards compatible change as the `_∎⟨_⟩` combinator has simply been deprecated. For
-  users who were building their own reasoning combinators on top of 
+  users who were building their own reasoning combinators on top of
   `Relation.Binary.Reasoning.Base.Partial`, they will need to adjust their additional
   combinators to use the new `singleStep`/`multiStep` constructors of `_IsRelatedTo_`.
 
@@ -47,6 +47,9 @@ Bug-fixes
   ```
   Their definitions have now been moved out of the anonymous modules so that they no
   longer require these unnecessary arguments.
+
+* In `Relation.Binary.Reasoning.StrictPartialOrder` filled a missing argument to the
+  re-exported `Relation.Binary.Reasoning.Base.Triple`.
 
 Non-backwards compatible changes
 --------------------------------
@@ -66,6 +69,12 @@ Non-backwards compatible changes
   to allow proofs about newly added morphism bundles to be added to these files. This is
   only a breaking change if you were supplying the module arguments upon import, in which
   case you will have to change to supplying them upon application of the proofs.
+
+* In `Data.Tree.AVL.Indexed` the type alias `K&_` defined in terms of `Σ` has been changed
+  into a standalone record to help with parameter inference. The record constructor remains
+  the same so you will only observe the change if you are using functions explicitly expecting
+  a pair (e.g. `(un)curry`). In this case you can use `Data.Tree.AVL.Value`'s `(to/from)Pair`
+  to convert back and forth.
 
 Deprecated modules
 ------------------
@@ -219,6 +228,18 @@ New modules
   ```
   Data.Tree.Rose.Show
   Data.Tree.Binary.Show
+  ```
+
+* Added new modules in `Data.Tree.AVL`:
+  ```
+  Data.Tree.AVL.Indexed.Relation.Unary.All
+
+  Data.Tree.AVL.Relation.Unary.Any
+
+  Data.Tree.AVL.Indexed.Relation.Unary.Any
+  Data.Tree.AVL.Indexed.Relation.Unary.Any.Properties
+
+  Data.Tree.AVL.Map.Relation.Unary.Any
   ```
 
 * Bundles for binary relation morphisms
@@ -979,6 +1000,17 @@ Other minor additions
   Main : Set
   ```
 
+* Added new functions and pattern synonyms to `Data.Tree.AVL.Indexed`:
+  ```agda
+  foldr : (∀ {k} → Val k → A → A) → A → Tree V l u h → A
+  size  : Tree V → ℕ
+
+  pattern node⁺ k₁ t₁ k₂ t₂ t₃ bal = node k₁ t₁ (node k₂ t₂ t₃ bal) ∼+
+  pattern node⁻ k₁ k₂ t₁ t₂ bal t₃ = node k₁ (node k₂ t₁ t₂ bal) t₃ ∼-
+
+  ordered : Tree V l u n → l <⁺ u
+  ```
+
 * Added new functions to `Codata.Stream`:
   ```agda
   nats : Stream ℕ ∞
@@ -996,6 +1028,18 @@ Other minor additions
 * Added new definitions to `Relation.Binary.Structures`:
   ```agda
   record IsTotalPreorder (_≲_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂)
+  ```
+
+* Re-exported and defined new functions in `Data.Tree.AVL.Key`:
+  ```agda
+  _≈⁺_    : Rel Key _
+  [_]ᴱ    : x ≈ y → [ x ] ≈⁺ [ y ]
+  refl⁺   : Reflexive _≈⁺_
+  sym⁺    : l ≈⁺ u → u ≈⁺ l
+  irrefl⁺ : ∀ k → ¬ (k <⁺ k)
+
+  strictPartialOrder : StrictPartialOrder _ _ _
+  strictTotalOrder   : StrictTotalOrder _ _ _
   ```
 
 * Added new proofs to `Relation.Binary.Properties.Poset`:
@@ -1028,7 +1072,7 @@ Other minor additions
   setoidHomomorphism : SetoidHomomorphism S T → SetoidHomomorphism T U → SetoidHomomorphism S U
   setoidMonomorphism : SetoidMonomorphism S T → SetoidMonomorphism T U → SetoidMonomorphism S U
   setoidIsomorphism  : SetoidIsomorphism S T → SetoidIsomorphism T U → SetoidIsomorphism S U
-  
+
   preorderHomomorphism : PreorderHomomorphism P Q → PreorderHomomorphism Q R → PreorderHomomorphism P R
   posetHomomorphism    : PosetHomomorphism P Q → PosetHomomorphism Q R → PosetHomomorphism P R
   ```
@@ -1038,7 +1082,7 @@ Other minor additions
   setoidHomomorphism : (S : Setoid a ℓ₁) → SetoidHomomorphism S S
   setoidMonomorphism : (S : Setoid a ℓ₁) → SetoidMonomorphism S S
   setoidIsomorphism  : (S : Setoid a ℓ₁) → SetoidIsomorphism S S
-  
+
   preorderHomomorphism : (P : Preorder a ℓ₁ ℓ₂) → PreorderHomomorphism P P
   posetHomomorphism    : (P : Poset a ℓ₁ ℓ₂) → PosetHomomorphism P P
   ```

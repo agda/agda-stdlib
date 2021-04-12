@@ -26,14 +26,14 @@ private
     b : Level
     B : Set b
 
-import Data.Tree.AVL strictTotalOrder as AVL
+import Data.Tree.AVL.Map strictTotalOrder as AVL
 open StrictTotalOrder strictTotalOrder renaming (Carrier to A)
 
 ------------------------------------------------------------------------
 -- The set type (note that Set is a reserved word)
 
 ⟨Set⟩ : Set (a ⊔ ℓ₂)
-⟨Set⟩ = AVL.Tree (AVL.const ⊤)
+⟨Set⟩ = AVL.Map ⊤
 
 ------------------------------------------------------------------------
 -- Repackaged functions
@@ -68,7 +68,7 @@ toList : ⟨Set⟩ → List A
 toList = List.map proj₁ ∘ AVL.toList
 
 foldr : (A → B → B) → B → ⟨Set⟩ → B
-foldr cons nil = AVL.foldr (λ {k} _ → cons k) nil
+foldr cons nil = AVL.foldr (const ∘′ cons) nil
 
 size : ⟨Set⟩ → ℕ
 size = AVL.size
