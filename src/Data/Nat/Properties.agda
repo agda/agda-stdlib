@@ -444,7 +444,6 @@ m<n⇒m≤1+n (s≤s (s≤s m<n)) = s≤s (m<n⇒m≤1+n (s≤s m<n))
 module ≤-Reasoning where
   open import Relation.Binary.Reasoning.Base.Triple
     ≤-isPreorder
-    <-irrefl
     <-trans
     (resp₂ _<_)
     <⇒≤

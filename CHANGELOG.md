@@ -73,8 +73,6 @@ Non-backwards compatible changes
   a pair (e.g. `(un)curry`). In this case you can use `Data.Tree.AVL.Value`'s `(to/from)Pair`
   to convert back and forth.
 
-* In `Relation.Binary.Reasoning.Base.Triple`, added a new parameter `<-irrefl : Irreflexive _≈_ _<_`
-
 Deprecated modules
 ------------------
 

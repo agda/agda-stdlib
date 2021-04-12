@@ -52,8 +52,7 @@ import Relation.Binary.Construct.NonStrictToStrict _≈_ _≤_ as Strict
 
 open import Relation.Binary.Reasoning.Base.Triple
   isPreorder
-  Strict.<-irrefl
-  (Strict.<-trans isPartialOrder)
+  (Strict.trans isPartialOrder)
   (Strict.<-resp-≈ isEquivalence ≤-resp-≈)
   Strict.<⇒≤
   (Strict.<-≤-trans Eq.sym trans antisym ≤-respʳ-≈)
