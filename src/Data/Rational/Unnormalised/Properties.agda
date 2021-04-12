@@ -509,17 +509,13 @@ p <? q = Dec.map′ *<* drop-*<* (↥ p ℤ.* ↧ q ℤ.<? ↥ q ℤ.* ↧ p)
 module ≤-Reasoning where
   open import Relation.Binary.Reasoning.Base.Triple
     ≤-isPreorder
+    <-irrefl
     <-trans
     <-resp-≃
     <⇒≤
     <-≤-trans
     ≤-<-trans
-    as Reasoning
     public
-    hiding (begin-irrefl)
-
-  infix 1 begin-irrefl_
-  begin-irrefl_ = Reasoning.begin-irrefl <-irrefl
 
 ------------------------------------------------------------------------
 -- Properties of ↥_/↧_

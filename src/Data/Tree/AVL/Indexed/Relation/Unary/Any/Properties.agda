@@ -30,6 +30,7 @@ open StrictTotalOrder sto renaming (Carrier to Key); open Eq using (_≉_; sym; 
 
 import Relation.Binary.Reasoning.StrictPartialOrder as <-Reasoning
 
+
 private
   variable
     v p q : Level
