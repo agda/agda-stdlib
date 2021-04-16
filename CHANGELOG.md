@@ -448,6 +448,11 @@ Other minor additions
   all-upTo           : All (_< n) (upTo n)
   ```
 
+* Added new proof in `Data.List.Relation.Unary.First.Properties`:
+  ```agda
+  cofirst? : Decidable P → Decidable (First (∁ P) P)
+  ```
+
 * Added new operations in `Data.List.Relation.Unary.Linked`:
   ```agda
   head′ : Linked R (x ∷ xs) → Connected R (just x) (head xs)
