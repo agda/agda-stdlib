@@ -14,12 +14,20 @@ Highlights
 
 * Pseudo random generators for ℕ (available from `Data.Nat.Pseudorandom.LCG`)
 
+* Large increase in the number of proofs about both normalised and unnormalised rational numbers.
+
+* Drastically increased performance of normalised rational numbers.
+
 Bug-fixes
 ---------
 
 * The sum operator `_⊎_` in `Data.Container.Indexed.Combinator` was not as universe 
   polymorphic as it should have been. This has been fixed. The old, less universe
   polymorphic variant is still available under the new name `_⊎′_`.
+
+* The performance of the `gcd` operator over naturals and hence all operations in 
+  `Data.Rational.Base` has been drastically increased by using the new `<-wellFounded-fast`
+  operation in `Data.Nat.Induction`.
   
 * The proof `isEquivalence` in `Function.Properties.(Equivalence/Inverse)` used to be 
   defined in an anonymous module that took two unneccessary `Setoid` arguments:
