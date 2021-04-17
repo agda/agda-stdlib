@@ -789,12 +789,14 @@ Other minor additions
   ∣-∣-nonNeg                 : NonNegative ∣ p ∣
   0≤∣p∣                      : 0ℚ ≤ ∣ p ∣
   0≤p⇒∣p∣≡p                  : 0ℚ ≤ p → ∣ p ∣ ≡ p
+  ∣p∣≡p⇒0≤p                  : ∣ p ∣ ≡ p → 0ℚ ≤ p
   ∣-p∣≡∣p∣                   : ∣ - p ∣ ≡ ∣ p ∣
-  ∣p∣≡p⇒p≡0                  : ∣ p ∣ ≡ 0ℚ → p ≡ 0ℚ
-  ∣p∣≡p⊎∣p∣≡-p               : ∣ p ∣ ≡ p ⊎ ∣ p ∣ ≡ - p
+  ∣p∣≡0⇒p≡0                  : ∣ p ∣ ≡ 0ℚ → p ≡ 0ℚ
+  ∣p∣≡p∨∣p∣≡-p               : ∣ p ∣ ≡ p ⊎ ∣ p ∣ ≡ - p
   ∣p+q∣≤∣p∣+∣q∣              : ∣ p + q ∣ ≤ ∣ p ∣ + ∣ q ∣
   ∣p-q∣≤∣p∣+∣q∣              : ∣ p - q ∣ ≤ ∣ p ∣ + ∣ q ∣
   ∣p*q∣≡∣p∣*∣q∣              : ∣ p * q ∣ ≡ ∣ p ∣ * ∣ q ∣
+  ∣∣p∣∣≡∣p∣                  : ∣ ∣ p ∣ ∣ ≡ ∣ p ∣
   ```
 
 * Add new relations and functions to `Data.Rational.Unnormalised.Base`:
@@ -826,6 +828,9 @@ Other minor additions
 
   ≤ᵇ⇒≤                      : T (p ≤ᵇ q) → p ≤ q
   ≤⇒≤ᵇ                      : p ≤ q → T (p ≤ᵇ q)
+
+  p+p≃0⇒p≃0                 : p + p ≃ 0ℚᵘ → p ≃ 0ℚᵘ
+  p≃-p⇒p≃0                  : p ≃ - p → p ≃ 0ℚᵘ
 
   neg-cancel-<              : - p < - q → q < p
   neg-cancel-≤-≥            : - p ≤ - q → q ≤ p
@@ -986,17 +991,22 @@ Other minor additions
   *-distribʳ-⊓-nonPos       : NonPositive p → (q ⊓ r) * p ≃ (q * p) ⊔ (r * p)
 
   ∣-∣-cong                  : p ≃ q → ∣ p ∣ ≃ ∣ q ∣
+  ∣-∣-nonNeg                : NonNegative ∣ p ∣
+  0≤∣p∣                     : 0 ≤ ∣ p ∣
   ∣p∣≃0⇒p≃0                 : ∣ p ∣ ≃ 0ℚᵘ → p ≃ 0ℚᵘ
   ∣-p∣≡∣p∣                  : ∣ - p ∣ ≡ ∣ p ∣
   ∣-p∣≃∣p∣                  : ∣ - p ∣ ≃ ∣ p ∣
   0≤p⇒∣p∣≡p                 : 0ℚᵘ ≤ p → ∣ p ∣ ≡ p
   0≤p⇒∣p∣≃p                 : 0ℚᵘ ≤ p → ∣ p ∣ ≃ p
   ∣p∣≡p⇒0≤p                 : ∣ p ∣ ≡ p → 0ℚᵘ ≤ p
+  ∣p∣≃p⇒0≤p                 : ∣ p ∣ ≃ p → 0ℚᵘ ≤ p
   ∣p∣≡p∨∣p∣≡-p              : (∣ p ∣ ≡ p) ⊎ (∣ p ∣ ≡ - p)
   ∣p+q∣≤∣p∣+∣q∣             : ∣ p + q ∣ ≤ ∣ p ∣ + ∣ q ∣
   ∣p-q∣≤∣p∣+∣q∣             : ∣ p - q ∣ ≤ ∣ p ∣ + ∣ q ∣
   ∣p*q∣≡∣p∣*∣q∣             : ∣ p * q ∣ ≡ ∣ p ∣ * ∣ q ∣
   ∣p*q∣≃∣p∣*∣q∣             : ∣ p * q ∣ ≃ ∣ p ∣ * ∣ q ∣
+  ∣∣p∣∣≡∣p∣                 : ∣ ∣ p ∣ ∣ ≡ ∣ p ∣
+  ∣∣p∣∣≃∣p∣                 : ∣ ∣ p ∣ ∣ ≃ ∣ p ∣
   ```
 
 * Added new functions and pattern synonyms to `Data.Tree.AVL.Indexed`:
