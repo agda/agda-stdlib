@@ -1640,12 +1640,9 @@ toℚᵘ-homo-∣-∣ (mkℚ -[1+ _ ] _ _) = *≡* refl
 
 ∣p∣≡p⇒0≤p : ∀ {p} → ∣ p ∣ ≡ p → 0ℚ ≤ p
 ∣p∣≡p⇒0≤p {p} ∣p∣≡p = toℚᵘ-cancel-≤ (ℚᵘ.∣p∣≃p⇒0≤p (begin-equality
-    ℚᵘ.∣ toℚᵘ p ∣
-  ≈⟨ ℚᵘ.≃-sym (toℚᵘ-homo-∣-∣ p) ⟩
-    toℚᵘ ∣ p ∣
-  ≡⟨ cong toℚᵘ ∣p∣≡p ⟩
-    toℚᵘ p
-  ∎))
+  ℚᵘ.∣ toℚᵘ p ∣  ≈⟨ ℚᵘ.≃-sym (toℚᵘ-homo-∣-∣ p) ⟩
+  toℚᵘ ∣ p ∣     ≡⟨ cong toℚᵘ ∣p∣≡p ⟩
+  toℚᵘ p         ∎))
   where open ℚᵘ.≤-Reasoning
 
 ∣p∣≡p∨∣p∣≡-p : ∀ p → ∣ p ∣ ≡ p ⊎ ∣ p ∣ ≡ - p
