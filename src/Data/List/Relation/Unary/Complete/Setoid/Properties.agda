@@ -4,6 +4,8 @@
 -- Properties of lists which contain every element of a given type
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Data.Fin hiding (_≟_)
 open import Data.List.Base
 open import Data.List.Membership.Setoid.Properties as Membership
@@ -22,9 +24,9 @@ open import Relation.Binary
 open import Relation.Binary.PropositionalEquality using (_≡_)
 open import Relation.Binary.Properties.Setoid using (respʳ-flip)
 
-open Setoid
-
 module Data.List.Relation.Unary.Complete.Setoid.Properties where
+
+open Setoid
 
 private
   variable

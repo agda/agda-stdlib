@@ -4,6 +4,8 @@
 -- Lists which contain every element of a given type
 ------------------------------------------------------------------------
 
+{-# OPTIONS --without-K --safe #-}
+
 open import Data.List
 open import Level
 open import Relation.Binary
