@@ -9,15 +9,14 @@
 
 open import Relation.Binary using (Rel; Setoid; Substitutive; Symmetric; Total)
 
-module Algebra.Consequences.Setoid
-  {a ℓ} (S : Setoid a ℓ) where
+module Algebra.Consequences.Setoid {a ℓ} (S : Setoid a ℓ) where
 
 open Setoid S renaming (Carrier to A)
-
 open import Algebra.Core
 open import Algebra.Definitions _≈_
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.Product using (_,_)
+open import Function.Base using (_$_)
 import Relation.Binary.Consequences as Bin
 open import Relation.Binary.Reasoning.Setoid S
 open import Relation.Unary using (Pred)
@@ -25,7 +24,7 @@ open import Relation.Unary using (Pred)
 ------------------------------------------------------------------------
 -- Re-exports
 
--- Export base lemmas that don't require the setoidd
+-- Export base lemmas that don't require the setoid
 
 open import Algebra.Consequences.Base public
 
@@ -34,19 +33,19 @@ open import Algebra.Consequences.Base public
 
 module _ {_•_ : Op₂ A} (comm : Commutative _•_) where
 
-  comm+cancelˡ⇒cancelʳ : LeftCancellative _•_ →  RightCancellative _•_
-  comm+cancelˡ⇒cancelʳ cancelˡ {x} y z eq = cancelˡ x (begin
+  comm+cancelˡ⇒cancelʳ : LeftCancellative _•_ → RightCancellative _•_
+  comm+cancelˡ⇒cancelʳ cancelˡ {x} y z eq = cancelˡ x $ begin
     x • y ≈⟨ comm x y ⟩
     y • x ≈⟨ eq ⟩
     z • x ≈⟨ comm z x ⟩
-    x • z ∎)
+    x • z ∎
 
   comm+cancelʳ⇒cancelˡ : RightCancellative _•_ → LeftCancellative _•_
-  comm+cancelʳ⇒cancelˡ cancelʳ x {y} {z} eq = cancelʳ y z (begin
+  comm+cancelʳ⇒cancelˡ cancelʳ x {y} {z} eq = cancelʳ y z $ begin
     y • x ≈⟨ comm y x ⟩
     x • y ≈⟨ eq ⟩
     x • z ≈⟨ comm x z ⟩
-    z • x ∎)
+    z • x ∎
 
 ------------------------------------------------------------------------
 -- Monoid-like structures
@@ -76,6 +75,24 @@ module _ {_•_ : Op₂ A} (comm : Commutative _•_) {e : A} where
     e • x ≈⟨ comm e x ⟩
     x • e ≈⟨ zeʳ x ⟩
     e     ∎
+
+  comm+almostCancelˡ⇒almostCancelʳ : AlmostLeftCancellative e _•_ →
+                                     AlmostRightCancellative e _•_
+  comm+almostCancelˡ⇒almostCancelʳ cancelˡ-nonZero {x} y z x≉e yx≈zx =
+    cancelˡ-nonZero y z x≉e $ begin
+      x • y ≈⟨ comm x y ⟩
+      y • x ≈⟨ yx≈zx ⟩
+      z • x ≈⟨ comm z x ⟩
+      x • z ∎
+
+  comm+almostCancelʳ⇒almostCancelˡ : AlmostRightCancellative e _•_ →
+                                     AlmostLeftCancellative e _•_
+  comm+almostCancelʳ⇒almostCancelˡ cancelʳ-nonZero {x} y z x≉e xy≈xz =
+    cancelʳ-nonZero y z x≉e $ begin
+      y • x ≈⟨ comm y x ⟩
+      x • y ≈⟨ xy≈xz ⟩
+      x • z ≈⟨ comm x z ⟩
+      z • x ∎
 
 ------------------------------------------------------------------------
 -- Group-like structures

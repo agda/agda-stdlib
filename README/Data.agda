@@ -212,3 +212,8 @@ import README.Data.Trie.NonDependent
 
 import README.Data.Container.FreeMonad
 import README.Data.Container.Indexed
+
+-- Wrapping n-ary relations into a record definition so type-inference
+-- remembers the things being related.
+
+import README.Data.Wrap

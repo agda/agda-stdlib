@@ -19,13 +19,31 @@ module README where
 ------------------------------------------------------------------------
 
 -- This version of the library has been tested using Agda 2.6.1 and
--- 2.6.1.1.
+-- 2.6.1.3.
 
 -- The library comes with a .agda-lib file, for use with the library
 -- management system.
 
 -- Currently the library does not support the JavaScript compiler
 -- backend.
+
+------------------------------------------------------------------------
+-- Stability guarantees
+------------------------------------------------------------------------
+
+-- We do our best to adhere to the spirit of semantic versioning in that
+-- minor versions should not break people's code. This applies to the
+-- the entire library with one exception: modules with names that end in
+-- either ".Core" or ".Primitive".
+
+-- The former have (mostly) been created to avoid mutual recursion
+-- between modules and the latter to bind primitive operations to the
+-- more efficient operations supplied by the relevant backend.
+
+-- These modules may undergo backwards incompatible changes between
+-- minor versions and therefore are imported directly at your own risk.
+-- Instead their contents should be accessed by their parent module,
+-- whose interface will remain stable.
 
 ------------------------------------------------------------------------
 -- High-level overview of contents
@@ -193,27 +211,8 @@ import IO
 
 -- ∙ Text
 
--- Explaining string formats and the behaviour of printf
-
-import README.Text.Printf
-
--- Showcasing the pretty printing module
-
-import README.Text.Pretty
-
--- Demonstrating the regular expression matching
-
-import README.Text.Regex
-
--- Explaining how to display tables of strings:
-
-import README.Text.Tabular
-
--- Explaining how to display a tree:
-
-import README.Text.Tree
-
-
+-- Dependently typed formatted printing
+import Text.Printf
 
 ------------------------------------------------------------------------
 -- More documentation
@@ -252,15 +251,21 @@ import README.Tactic.RingSolver
 
 import README.Foreign.Haskell
 
+-- Explaining string formats and the behaviour of printf
 
-------------------------------------------------------------------------
--- Core modules
-------------------------------------------------------------------------
+import README.Text.Printf
 
--- Some modules have names ending in ".Core". These modules are
--- internal, and have (mostly) been created to avoid mutual recursion
--- between modules. They should not be imported directly; their
--- contents are reexported by other modules.
+-- Showcasing the pretty printing module
+
+import README.Text.Pretty
+
+-- Demonstrating the regular expression matching
+
+import README.Text.Regex
+
+-- Explaining how to display tables of strings:
+
+import README.Text.Tabular
 
 ------------------------------------------------------------------------
 -- All library modules

@@ -17,10 +17,11 @@ open import Data.Nat.DivMod.Core
 open import Data.Nat.Divisibility.Core
 open import Data.Nat.Induction
 open import Data.Nat.Properties
-open import Data.Nat.Tactic.RingSolver
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable using (False; toWitnessFalse)
+
+import Algebra.Properties.CommutativeSemigroup *-commutativeSemigroup as *-CS
 
 open ≤-Reasoning
 
@@ -122,7 +123,7 @@ m<[1+n%d]⇒m≤[n%d] {m} n (suc d-1) = k<1+a[modₕ]n⇒k≤a[modₕ]n 0 m n d-
 %-distribˡ-* m n d@(suc d-1) = begin-equality
   (m * n)                                             % d ≡⟨ cong (λ h → (h * n) % d) (m≡m%n+[m/n]*n m d-1) ⟩
   ((m′ + k * d) * n)                                  % d ≡⟨ cong (λ h → ((m′ + k * d) * h) % d) (m≡m%n+[m/n]*n n d-1) ⟩
-  ((m′ + k * d) * (n′ + j * d))                       % d ≡⟨ cong (_% d) (lemma m′ n′ k j d) ⟩
+  ((m′ + k * d) * (n′ + j * d))                       % d ≡⟨ cong (_% d) lemma ⟩
   (m′ * n′ + (m′ * j + (n′ + j * d) * k) * d)         % d ≡⟨ [m+kn]%n≡m%n (m′ * n′) (m′ * j + (n′ + j * d) * k) d-1 ⟩
   (m′ * n′)                                           % d ≡⟨⟩
   ((m % d) * (n % d)) % d ∎
@@ -131,8 +132,14 @@ m<[1+n%d]⇒m≤[n%d] {m} n (suc d-1) = k<1+a[modₕ]n⇒k≤a[modₕ]n 0 m n d-
   n′ = n % d
   k = m / d
   j = n / d
-  lemma : ∀ m′ n′ k j d → (m′ + k * d) * (n′ + j * d) ≡ m′ * n′ + (m′ * j + (n′ + j * d) * k) * d
-  lemma = solve-∀
+  lemma : (m′ + k * d) * (n′ + j * d) ≡ m′ * n′ + (m′ * j + (n′ + j * d) * k) * d
+  lemma = begin-equality
+    (m′ + k * d) * (n′ + j * d)                       ≡⟨ *-distribʳ-+ (n′ + j * d) m′ (k * d) ⟩
+    m′ * (n′ + j * d) + (k * d) * (n′ + j * d)        ≡⟨ cong₂ _+_ (*-distribˡ-+ m′ n′ (j * d)) (*-comm (k * d) (n′ + j * d)) ⟩
+    (m′ * n′ + m′ * (j * d)) + (n′ + j * d) * (k * d) ≡⟨ +-assoc (m′ * n′) (m′ * (j * d)) ((n′ + j * d) * (k * d)) ⟩
+    m′ * n′ + (m′ * (j * d) + (n′ + j * d) * (k * d)) ≡˘⟨ cong (m′ * n′ +_) (cong₂ _+_ (*-assoc m′ j d) (*-assoc (n′ + j * d) k d)) ⟩
+    m′ * n′ + ((m′ * j) * d + ((n′ + j * d) * k) * d) ≡˘⟨ cong (m′ * n′ +_) (*-distribʳ-+ d (m′ * j) ((n′ + j * d) * k)) ⟩
+    m′ * n′ + (m′ * j + (n′ + j * d) * k) * d         ∎
 
 %-remove-+ˡ : ∀ {m} n {d} {≢0} → d ∣ m → ((m + n) % d) {≢0} ≡ (n % d) {≢0}
 %-remove-+ˡ {m} n {d@(suc d-1)} (divides p refl) = begin-equality
@@ -193,6 +200,14 @@ m/n<m m n@(suc n-1) m≥1 n≥2 = *-cancelʳ-< {n} (m / n) m (begin-strict
 /-monoʳ-≤ : ∀ m {n o} {n≢0 o≢0} → n ≥ o → (m / n) {n≢0} ≤ (m / o) {o≢0}
 /-monoʳ-≤ _ {n≢0 = n≢0} {o≢0} n≥o = /-mono-≤ {o≢0 = n≢0} {o≢0} ≤-refl n≥o
 
+/-cancelʳ-≡ : ∀ {m n o o≢0} → o ∣ m → o ∣ n →
+              (m / o) {o≢0} ≡ (n / o) {o≢0} → m ≡ n
+/-cancelʳ-≡ {m} {n} {o} {o≢0} o∣m o∣n m/o≡n/o = begin-equality
+  m                 ≡˘⟨ m*[n/m]≡n {o} {m} o∣m ⟩
+  o * (m / o) {o≢0} ≡⟨  cong (o *_) m/o≡n/o ⟩
+  o * (n / o) {o≢0} ≡⟨  m*[n/m]≡n {o} {n} o∣n ⟩
+  n                 ∎
+
 m<n⇒m/n≡0 : ∀ {m n n≢0} → m < n → (m / n) {n≢0} ≡ 0
 m<n⇒m/n≡0 {m} {suc n} {n≢0} (s≤s m≤n) = divₕ-finish n m n m≤n
 
@@ -221,13 +236,6 @@ m≥n⇒m/n>0 {m@(suc m-1)} {n@(suc n-1)} m≥n = begin
   m % d             <⟨ m%n<n m d-1 ⟩
   d                 ∎)
 
-*-/-assoc : ∀ m {n d} {≢0} → d ∣ n → (m * n / d) {≢0} ≡ m * ((n / d) {≢0})
-*-/-assoc zero    {_} {d@(suc _)} d∣n = 0/n≡0 (suc d)
-*-/-assoc (suc m) {n} {d@(suc _)} d∣n = begin-equality
-  (n + m * n) / d     ≡⟨ +-distrib-/-∣ˡ _ d∣n ⟩
-  n / d + (m * n) / d ≡⟨ cong (n / d +_) (*-/-assoc m d∣n) ⟩
-  n / d + m * (n / d) ∎
-
 m/n≡1+[m∸n]/n : ∀ {m n n≢0} → m ≥ n → (m / n) {n≢0} ≡ 1 + ((m ∸ n) / n) {n≢0}
 m/n≡1+[m∸n]/n {m@(suc m-1)} {n@(suc n-1)} {n≢0} m≥n = begin-equality
   m / n                              ≡⟨⟩
@@ -236,21 +244,36 @@ m/n≡1+[m∸n]/n {m@(suc m-1)} {n@(suc n-1)} {n≢0} m≥n = begin-equality
   1 + (div-helper 0 n-1 (m ∸ n) n-1) ≡⟨⟩
   1 + (m ∸ n) / n                    ∎
 
-/-cancelˡ : ∀ m n o {o≢0} {mo≢0} → ((m * n) / (m * o)) {mo≢0} ≡ (n / o) {o≢0}
-/-cancelˡ m@(suc m-1) n o {o≢0} = /-cancelˡ-Acc (<-wellFounded n)
+m*n/m*o≡n/o : ∀ m n o {o≢0} {mo≢0} → ((m * n) / (m * o)) {mo≢0} ≡ (n / o) {o≢0}
+m*n/m*o≡n/o m@(suc m-1) n o {o≢0} = helper (<-wellFounded n)
   where
-  /-cancelˡ-Acc : ∀ {n} → Acc _<_ n → (m * n) / (m * o) ≡ n / o
-  /-cancelˡ-Acc {n} (acc rec) with n <? o
+  helper : ∀ {n} → Acc _<_ n → (m * n) / (m * o) ≡ n / o
+  helper {n} (acc rec) with n <? o
   ... | yes n<o = trans (m<n⇒m/n≡0 (*-monoʳ-< m-1 n<o)) (sym (m<n⇒m/n≡0 n<o))
-  ... | no ¬n<o = begin-equality
-    (m * n) / (m * o)             ≡⟨ m/n≡1+[m∸n]/n (*-monoʳ-≤ m (≮⇒≥ ¬n<o)) ⟩
+  ... | no  n≮o = begin-equality
+    (m * n) / (m * o)             ≡⟨ m/n≡1+[m∸n]/n (*-monoʳ-≤ m (≮⇒≥ n≮o)) ⟩
     1 + (m * n ∸ m * o) / (m * o) ≡⟨ cong suc (/-congˡ {o = m * o} (sym (*-distribˡ-∸ m n o))) ⟩
-    1 + (m * (n ∸ o)) / (m * o)   ≡⟨ cong suc (/-cancelˡ-Acc (rec (n ∸ o) n∸o<n)) ⟩
+    1 + (m * (n ∸ o)) / (m * o)   ≡⟨ cong suc (helper (rec (n ∸ o) n∸o<n)) ⟩
     1 + (n ∸ o) / o               ≡˘⟨ cong₂ _+_ (n/n≡1 o) refl ⟩
     o / o + (n ∸ o) / o           ≡˘⟨ +-distrib-/-∣ˡ (n ∸ o) (divides 1 ((sym (*-identityˡ o)))) ⟩
-    (o + (n ∸ o)) / o             ≡⟨ /-congˡ {o = o} (m+[n∸m]≡n (≮⇒≥ ¬n<o)) ⟩
+    (o + (n ∸ o)) / o             ≡⟨ /-congˡ {o = o} (m+[n∸m]≡n (≮⇒≥ n≮o)) ⟩
     n / o                         ∎
-    where n∸o<n = ∸-monoʳ-< (n≢0⇒n>0 (toWitnessFalse o≢0)) (≮⇒≥ ¬n<o)
+    where n∸o<n = ∸-monoʳ-< (n≢0⇒n>0 (toWitnessFalse o≢0)) (≮⇒≥ n≮o)
+
+*-/-assoc : ∀ m {n d} {≢0} → d ∣ n → (m * n / d) {≢0} ≡ m * ((n / d) {≢0})
+*-/-assoc zero    {_} {d@(suc _)} d∣n = 0/n≡0 (suc d)
+*-/-assoc (suc m) {n} {d@(suc _)} d∣n = begin-equality
+  (n + m * n) / d     ≡⟨ +-distrib-/-∣ˡ _ d∣n ⟩
+  n / d + (m * n) / d ≡⟨ cong (n / d +_) (*-/-assoc m d∣n) ⟩
+  n / d + m * (n / d) ∎
+
+/-*-interchange : ∀ {m n o p op≢0 o≢0 p≢0} → o ∣ m → p ∣ n →
+                  ((m * n) / (o * p)) {op≢0} ≡ (m / o) {o≢0} * (n / p) {p≢0}
+/-*-interchange {m} {n} {o@(suc _)} {p@(suc _)} o∣m p∣n = *-cancelˡ-≡ (pred (o * p)) (begin-equality
+  (o * p) * ((m * n) / (o * p)) ≡⟨  m*[n/m]≡n (*-pres-∣ o∣m p∣n) ⟩
+  m * n                         ≡˘⟨ cong₂ _*_ (m*[n/m]≡n o∣m) (m*[n/m]≡n p∣n) ⟩
+  (o * (m / o)) * (p * (n / p)) ≡⟨ [m*n]*[o*p]≡[m*o]*[n*p] o (m / o) p (n / p) ⟩
+  (o * p) * ((m / o) * (n / p)) ∎)
 
 ------------------------------------------------------------------------
 --  A specification of integer division.

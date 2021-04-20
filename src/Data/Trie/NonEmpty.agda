@@ -125,8 +125,8 @@ toList⁺ (node nd) = These.mergeThese List⁺._⁺++⁺_
   where
 
   fromVal    = [_] ∘′ -,_
-  fromTries⁺ = concatMap (uncurry λ k → List⁺.map (Prod.map (k ∷_) id) ∘′ toList⁺)
-             ∘′ Tree⁺.toList⁺
+  fromTrie⁺  = λ (k , v) → List⁺.map (Prod.map (k ∷_) id) (toList⁺ v)
+  fromTries⁺ = concatMap fromTrie⁺ ∘′ Tree⁺.toList⁺
 
 ------------------------------------------------------------------------
 -- Modification

@@ -71,4 +71,3 @@ record Prime (p : A) : Set (a ⊔ ℓ) where
   field
     p≉0     : p ≉ 0#
     split-∣ : ∀ {x y} → p ∣ x * y → p ∣ x ⊎ p ∣ y
-

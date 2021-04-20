@@ -23,10 +23,12 @@ open import Relation.Nullary
 open import Relation.Binary
 import Relation.Binary.Construct.NonStrictToStrict as Conv
 
+import Data.List.Relation.Binary.Lex as Core
+
 ------------------------------------------------------------------------
 -- Publically re-export definitions from Core
 
-open import Data.List.Relation.Binary.Lex.Core as Core public
+open Core public
   using (base; halt; this; next; ¬≤-this; ¬≤-next)
 
 ------------------------------------------------------------------------

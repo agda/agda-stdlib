@@ -10,7 +10,7 @@
 open import Relation.Binary
 
 module Data.Tree.AVL.Key
-  {a ℓ₁ ℓ₂} (strictTotalOrder : StrictTotalOrder a ℓ₁ ℓ₂)
+  {a ℓ₁ ℓ₂} (sto : StrictTotalOrder a ℓ₁ ℓ₂)
   where
 
 open import Level
@@ -18,12 +18,16 @@ open import Data.Empty
 open import Data.Unit
 open import Data.Product
 open import Relation.Binary.PropositionalEquality using (_≡_ ; refl)
+open import Relation.Nullary using (¬_)
 open import Relation.Nullary.Construct.Add.Extrema
   as AddExtremaToSet using (_±)
-open import Relation.Binary.Construct.Add.Extrema.Strict
-  as AddExtremaToOrder using ()
+import Relation.Binary.Construct.Add.Extrema.Equality
+  as AddExtremaToEquality
+import Relation.Binary.Construct.Add.Extrema.Strict
+  as AddExtremaToOrder
 
-open StrictTotalOrder strictTotalOrder renaming (Carrier to Key)
+open StrictTotalOrder sto renaming (Carrier to Key)
+  using (_≈_; _<_; trans; irrefl; module Eq)
 
 -----------------------------------------------------------------------
 -- Keys are augmented with new extrema (i.e. an artificial minimum and
@@ -37,6 +41,16 @@ open AddExtremaToSet public
   renaming
   ( ⊥± to ⊥⁺
   ; ⊤± to ⊤⁺
+  )
+
+-----------------------------------------------------------------------
+-- The equality is extended in a corresponding manner
+
+open AddExtremaToEquality _≈_ public
+  using ()
+  renaming
+  ( _≈±_ to _≈⁺_
+  ; [_]  to [_]ᴱ
   )
 
 -----------------------------------------------------------------------
@@ -63,5 +77,26 @@ l < x < u = l <⁺ [ x ] × [ x ] <⁺ u
 ⊥⁺<[_]<⊤⁺ : ∀ k → ⊥⁺ < k < ⊤⁺
 ⊥⁺<[ k ]<⊤⁺ = ⊥⁺<[ k ] , [ k ]<⊤⁺
 
+refl⁺ : Reflexive _≈⁺_
+refl⁺ = AddExtremaToEquality.≈±-refl _≈_ Eq.refl
+
+sym⁺ : ∀ {l u} → l ≈⁺ u → u ≈⁺ l
+sym⁺ = AddExtremaToEquality.≈±-sym _≈_ Eq.sym
+
 trans⁺ : ∀ l {m u} → l <⁺ m → m <⁺ u → l <⁺ u
 trans⁺ l = AddExtremaToOrder.<±-trans _<_ trans
+
+irrefl⁺ : ∀ k → ¬ (k <⁺ k)
+irrefl⁺ k = AddExtremaToOrder.<±-irrefl _<_ irrefl refl⁺
+
+-- Bundle
+
+strictPartialOrder : StrictPartialOrder _ _ _
+strictPartialOrder = record
+  { isStrictPartialOrder = AddExtremaToOrder.<±-isStrictPartialOrder STO._<_ STO.isStrictPartialOrder
+  } where module STO = StrictTotalOrder sto
+
+strictTotalOrder : StrictTotalOrder _ _ _
+strictTotalOrder = record
+  { isStrictTotalOrder = AddExtremaToOrder.<±-isStrictTotalOrder STO._<_ STO.isStrictTotalOrder
+  } where module STO = StrictTotalOrder sto

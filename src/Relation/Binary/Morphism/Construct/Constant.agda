@@ -6,36 +6,54 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Data.Product using (_,_)
-open import Function.Base using (const; _∘_)
-open import Function.Definitions using (Congruent)
-open import Function.Construct.Composition using (surjective)
+open import Function.Base using (const)
+open import Level using (Level)
 open import Relation.Binary
 open import Relation.Binary.Morphism.Structures
+open import Relation.Binary.Morphism.Bundles
 
-module Relation.Binary.Morphism.Construct.Constant
-  {a b ℓ₁ ℓ₂} {A : Set a} {B : Set b}
-  (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂) (≈-refl : Reflexive ≈₂)
-  where
+module Relation.Binary.Morphism.Construct.Constant where
+
+private
+  variable
+    a b ℓ₁ ℓ₂ ℓ₃ ℓ₄ : Level
+    A B : Set a
 
 ------------------------------------------------------------------------
 -- Relations
 ------------------------------------------------------------------------
 
-isRelHomomorphism : ∀ x → IsRelHomomorphism ≈₁ ≈₂ (const x)
-isRelHomomorphism x = record
-  { cong = const ≈-refl
-  }
+module _ (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂) where
+
+  isRelHomomorphism : Reflexive ≈₂ →
+                      ∀ x → IsRelHomomorphism ≈₁ ≈₂ (const x)
+  isRelHomomorphism refl x = record
+    { cong = const refl
+    }
+
+module _ (S : Setoid a ℓ₁) (T : Setoid b ℓ₂) where
+
+  setoidHomomorphism : ∀ x → SetoidHomomorphism S T
+  setoidHomomorphism x = record
+    { isRelHomomorphism = isRelHomomorphism _ _ T.refl x
+    } where module T = Setoid T
 
 ------------------------------------------------------------------------
 -- Orders
 ------------------------------------------------------------------------
 
-module _ {ℓ₃ ℓ₄} (∼₁ : Rel A ℓ₃) (∼₂ : Rel B ℓ₄) where
+module _ (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂) (∼₁ : Rel A ℓ₃) (∼₂ : Rel B ℓ₄) where
 
-  isOrderHomomorphism : Reflexive ∼₂ →
+  isOrderHomomorphism : Reflexive ≈₂ → Reflexive ∼₂ →
                         ∀ x → IsOrderHomomorphism ≈₁ ≈₂ ∼₁ ∼₂ (const x)
-  isOrderHomomorphism ∼-refl x = record
+  isOrderHomomorphism ≈-refl ∼-refl x = record
     { cong = const ≈-refl
     ; mono = const ∼-refl
     }
+
+module _ (P : Preorder a ℓ₁ ℓ₂) (Q : Preorder b ℓ₃ ℓ₄) where
+
+  preorderHomomorphism : ∀ x → PreorderHomomorphism P Q
+  preorderHomomorphism x = record
+    { isOrderHomomorphism = isOrderHomomorphism _ _ _ _ Q.Eq.refl Q.refl x
+    } where module Q = Preorder Q

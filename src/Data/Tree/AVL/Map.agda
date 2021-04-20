@@ -15,10 +15,11 @@ module Data.Tree.AVL.Map
   where
 
 open import Data.Bool.Base using (Bool)
-open import Data.List.Base using (List)
-open import Data.Maybe.Base using (Maybe)
+open import Data.List.Base as List using (List)
+open import Data.Maybe.Base as Maybe using (Maybe)
 open import Data.Nat.Base using (ℕ)
-open import Data.Product using (_×_)
+open import Data.Product as Prod using (_×_)
+open import Function.Base using (_∘′_)
 open import Level using (Level; _⊔_)
 
 private
@@ -67,19 +68,19 @@ _∈?_ : Key → Map V → Bool
 _∈?_ = AVL._∈?_
 
 headTail : Map V → Maybe ((Key × V) × Map V)
-headTail = AVL.headTail
+headTail = Maybe.map (Prod.map₁ AVL.toPair) ∘′ AVL.headTail
 
 initLast : Map V → Maybe (Map V × (Key × V))
-initLast = AVL.initLast
+initLast = Maybe.map (Prod.map₂ AVL.toPair) ∘′ AVL.initLast
 
 foldr : (Key → V → A → A) → A → Map V → A
 foldr cons = AVL.foldr (λ {k} → cons k)
 
 fromList : List (Key × V) → Map V
-fromList = AVL.fromList
+fromList = AVL.fromList ∘′ List.map AVL.fromPair
 
 toList : Map V → List (Key × V)
-toList = AVL.toList
+toList = List.map AVL.toPair ∘′ AVL.toList
 
 size : Map V → ℕ
 size = AVL.size

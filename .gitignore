@@ -5,6 +5,7 @@
 *.hi
 *.lagda.el
 *.o
+*.svg
 *.tix
 *.vim
 *~
