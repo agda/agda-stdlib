@@ -9,6 +9,10 @@ Highlights
 Bug-fixes
 ---------
 
+* Added missing module `Function.Metric` which re-exports 
+  `Function.Metric.(Core/Definitions/Structures/Bundles)`. This module was referred
+  to in the documentation of its children but until now was not present.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -20,6 +24,14 @@ Deprecated names
 
 New modules
 -----------
+
+* Metrics specialised to co-domains with rational numbers:
+  ```
+  Function.Metric.Rational
+  Function.Metric.Rational.Definitions
+  Function.Metric.Rational.Structures
+  Function.Metric.Rational.Bundles
+  ```
 
 Other minor additions
 ---------------------
