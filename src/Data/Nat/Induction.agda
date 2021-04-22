@@ -10,13 +10,18 @@ module Data.Nat.Induction where
 
 open import Function
 open import Data.Nat.Base
-open import Data.Nat.Properties using (≤⇒≤′)
+open import Data.Nat.Properties using (≤⇒≤′; n<1+n)
 open import Data.Product
 open import Data.Unit.Polymorphic
 open import Induction
 open import Induction.WellFounded as WF
+open import Level using (Level)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Unary
+
+private
+  variable
+    ℓ : Level
 
 ------------------------------------------------------------------------
 -- Re-export accessability
@@ -98,6 +103,16 @@ module _ {ℓ} where
   <-wellFounded-skip zero    n       = <-wellFounded n
   <-wellFounded-skip (suc k) zero    = <-wellFounded 0
   <-wellFounded-skip (suc k) (suc n) = acc (λ m _ → <-wellFounded-skip k m)
+
+<-weakInduction : (P : Pred ℕ ℓ) →
+                  P zero →
+                  (∀ i → P i → P (suc i)) →
+                  ∀ i → P i
+<-weakInduction P P₀ Pᵢ⇒Pᵢ₊₁ i = induct (<-wellFounded-fast i)
+  where
+  induct : ∀ {i} → Acc _<_ i → P i
+  induct {zero}  _         = P₀
+  induct {suc i} (acc rec) = Pᵢ⇒Pᵢ₊₁ i (induct (rec i (n<1+n i)))
 
 module _ {ℓ} where
   open WF.All <-wellFounded ℓ public

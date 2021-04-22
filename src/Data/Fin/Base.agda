@@ -18,7 +18,7 @@ open import Data.Nat.Properties.Core using (≤-pred)
 open import Data.Product as Product using (_×_; _,_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (id; _∘_; _on_)
-open import Level using () renaming (zero to ℓ₀)
+open import Level using (0ℓ)
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable.Core using (True; toWitness)
 open import Relation.Binary.Core
@@ -243,13 +243,20 @@ punchIn (suc i) (suc j) = suc (punchIn i j)
 ------------------------------------------------------------------------
 -- Order relations
 
-infix 4 _≤_ _<_
+infix 4 _≤_ _≥_ _<_ _>_
 
-_≤_ : ∀ {n} → Rel (Fin n) ℓ₀
+_≤_ : ∀ {n} → Rel (Fin n) 0ℓ
 _≤_ = ℕ._≤_ on toℕ
 
-_<_ : ∀ {n} → Rel (Fin n) ℓ₀
+_≥_ : ∀ {n} → Rel (Fin n) 0ℓ
+_≥_ = ℕ._≥_ on toℕ
+
+_<_ : ∀ {n} → Rel (Fin n) 0ℓ
 _<_ = ℕ._<_ on toℕ
+
+_>_ : ∀ {n} → Rel (Fin n) 0ℓ
+_>_ = ℕ._>_ on toℕ
+
 
 data _≺_ : ℕ → ℕ → Set where
   _≻toℕ_ : ∀ n (i : Fin n) → toℕ i ≺ n
