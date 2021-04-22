@@ -1619,8 +1619,8 @@ toℚᵘ-homo-∣-∣ (mkℚ -[1+ _ ] _ _) = *≡* refl
 ------------------------------------------------------------------------
 -- Properties
 
-∣p∣≡p⇒p≡0 : ∀ p → ∣ p ∣ ≡ 0ℚ → p ≡ 0ℚ
-∣p∣≡p⇒p≡0 (mkℚ +0 zero _) ∣p∣≡0 = refl
+∣p∣≡0⇒p≡0 : ∀ p → ∣ p ∣ ≡ 0ℚ → p ≡ 0ℚ
+∣p∣≡0⇒p≡0 (mkℚ +0 zero _) ∣p∣≡0 = refl
 
 0≤∣p∣ : ∀ p → 0ℚ ≤ ∣ p ∣
 0≤∣p∣ p = *≤* (begin
@@ -1638,9 +1638,16 @@ toℚᵘ-homo-∣-∣ (mkℚ -[1+ _ ] _ _) = *≡* refl
 ∣-p∣≡∣p∣ (mkℚ (+ zero) d-1 _) = refl
 ∣-p∣≡∣p∣ (mkℚ -[1+ n ] d-1 _) = refl
 
-∣p∣≡p⊎∣p∣≡-p : ∀ p → ∣ p ∣ ≡ p ⊎ ∣ p ∣ ≡ - p
-∣p∣≡p⊎∣p∣≡-p (mkℚ (+ n) d-1 _) = inj₁ refl
-∣p∣≡p⊎∣p∣≡-p (mkℚ (-[1+ n ]) d-1 _) = inj₂ refl
+∣p∣≡p⇒0≤p : ∀ {p} → ∣ p ∣ ≡ p → 0ℚ ≤ p
+∣p∣≡p⇒0≤p {p} ∣p∣≡p = toℚᵘ-cancel-≤ (ℚᵘ.∣p∣≃p⇒0≤p (begin-equality
+  ℚᵘ.∣ toℚᵘ p ∣  ≈⟨ ℚᵘ.≃-sym (toℚᵘ-homo-∣-∣ p) ⟩
+  toℚᵘ ∣ p ∣     ≡⟨ cong toℚᵘ ∣p∣≡p ⟩
+  toℚᵘ p         ∎))
+  where open ℚᵘ.≤-Reasoning
+
+∣p∣≡p∨∣p∣≡-p : ∀ p → ∣ p ∣ ≡ p ⊎ ∣ p ∣ ≡ - p
+∣p∣≡p∨∣p∣≡-p (mkℚ (+ n) d-1 _) = inj₁ refl
+∣p∣≡p∨∣p∣≡-p (mkℚ (-[1+ n ]) d-1 _) = inj₂ refl
 
 ∣p+q∣≤∣p∣+∣q∣ : ∀ p q → ∣ p + q ∣ ≤ ∣ p ∣ + ∣ q ∣
 ∣p+q∣≤∣p∣+∣q∣ p q = toℚᵘ-cancel-≤ (begin
@@ -1674,6 +1681,8 @@ toℚᵘ-homo-∣-∣ (mkℚ -[1+ _ ] _ _) = *≡* refl
 ∣-∣-nonNeg (mkℚ +0       _ _) = _
 ∣-∣-nonNeg (mkℚ -[1+ _ ] _ _) = _
 
+∣∣p∣∣≡∣p∣ : ∀ p → ∣ ∣ p ∣ ∣ ≡ ∣ p ∣
+∣∣p∣∣≡∣p∣ p = 0≤p⇒∣p∣≡p (0≤∣p∣ p)
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

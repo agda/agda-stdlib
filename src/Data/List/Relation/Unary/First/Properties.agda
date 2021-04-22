@@ -85,6 +85,11 @@ module _ {a p} {A : Set a} {P : Pred A p} where
                $ Sum.map₂ (All⇒¬First contradiction)
                $ first (Sum.fromDec ∘ P?) xs
 
+  cofirst? : Decidable P → Decidable (First (∁ P) P)
+  cofirst? P? xs = Sum.toDec
+                 $ Sum.map₂ (All⇒¬First id)
+                 $ first (Sum.swap ∘ Sum.fromDec ∘ P?) xs
+
 ------------------------------------------------------------------------
 -- Conversion to Any
 
