@@ -1,5 +1,5 @@
 name:            agda-stdlib-utils
-version:         1.6
+version:         1.7
 cabal-version:   >= 1.10
 build-type:      Simple
 description:     Helper programs.
