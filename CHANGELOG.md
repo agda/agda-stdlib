@@ -1,22 +1,23 @@
-Version 1.6-dev
-===============
+Version 1.6
+===========
 
 The library has been tested using Agda 2.6.1 and 2.6.1.3.
 
 Highlights
 ----------
 
-* Drastically reorganised the module hierarchy in the dependency graph of
-  the `IO` module so that we may compile a program as simple as hello world
-  without pulling upwards of 130 modules.
+* Reorganised module hierarchy in the dependency graph of
+  the `IO` module so that a program as simple as "Hello world" may be
+  compiled without pulling upwards of 130 modules.
 
 * First verified implementation of a sorting algorithm (available from `Data.List.Sort`).
 
 * Pseudo random generators for ℕ (available from `Data.Nat.Pseudorandom.LCG`)
 
-* Large increase in the number of proofs about both normalised and unnormalised rational numbers.
+* Drastic increase in performance of normalised rational numbers.
 
-* Drastically increased performance of normalised rational numbers.
+* Large number of additional proofs about both normalised and unnormalised rational numbers.
+
 
 Bug-fixes
 ---------
