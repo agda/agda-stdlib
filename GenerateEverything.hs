@@ -133,7 +133,7 @@ sizedTypesModules = map modToFile
   , "Data.Container"
   , "Data.Container.Any"
   , "Data.Container.FreeMonad"
-  , "Data.Nat.PseudoRandom.LCG"
+  , "Data.Nat.PseudoRandom.LCG.Unsafe"
   , "Data.Tree.Rose"
   , "Data.Tree.Rose.Properties"
   , "Data.Trie"
