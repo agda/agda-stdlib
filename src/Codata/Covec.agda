@@ -4,7 +4,7 @@
 -- The Covec type and some operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe --sized-types #-}
+{-# OPTIONS --without-K --sized-types #-}
 
 module Codata.Covec where
 

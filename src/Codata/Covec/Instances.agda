@@ -4,7 +4,7 @@
 -- Typeclass instances for Covec
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe --sized-types #-}
+{-# OPTIONS --without-K --sized-types #-}
 
 module Codata.Covec.Instances where
 

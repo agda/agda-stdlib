@@ -64,6 +64,17 @@ Non-backwards compatible changes
     and `Reflection.Argument.Quantity`. The constructors of the types
     `Modality` and `Quantity` are reexported from `Reflection`.
 
+#### Sized types
+
+* Sized types are no longer considered safe in Agda 2.6.2. As a
+  result, all modules that use `--sized-types` no longer have the
+  `--safe` flag.  For a full list of affected modules, refer to the
+  relevant [commit](https://github.com/agda/agda-stdlib/pull/1465/files#diff-e1c0e3196e4cea6ff808f5d2906031a7657130e10181516206647b83c7014584R91-R131.)
+
+* In order to keep `Data.Nat.Pseudorandom.LCG` safe, the function
+  `stream` that relies on the newly unsafe `Codata` modules has
+  been moved to the new module `Data.Nat.Pseudorandom.LCG.Unsafe`.
+
 #### Other
 
 * `Data.Maybe.Base` now re-exports the definition of `Maybe` given by

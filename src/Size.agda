@@ -4,7 +4,7 @@
 -- Sizes for Agda's sized types
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe --sized-types #-}
+{-# OPTIONS --without-K --sized-types #-}
 
 module Size where
 

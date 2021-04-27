@@ -4,7 +4,7 @@
 -- Properties of operations on the Covec type
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe --sized-types #-}
+{-# OPTIONS --without-K --sized-types #-}
 
 module Codata.Covec.Properties where
 
@@ -29,4 +29,3 @@ module _ {a b c} {A : Set a} {B : Set b} {C : Set c} where
  map-map-fusion : ∀ (f : A → B) (g : B → C) {m} as {i} → i , m ⊢ map g (map f as) ≈ map (g ∘ f) as
  map-map-fusion f g []       = []
  map-map-fusion f g (a ∷ as) = Eq.refl ∷ λ where .force → map-map-fusion f g (as .force)
-
