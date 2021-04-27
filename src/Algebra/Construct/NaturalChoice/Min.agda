@@ -21,7 +21,7 @@ module Algebra.Construct.NaturalChoice.Min
 
 open TotalOrder O renaming (Carrier to A)
 
-----------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Definition
 
 infixl 7 _⊓_
@@ -31,7 +31,7 @@ x ⊓ y with total x y
 ... | inj₁ x≤y = x
 ... | inj₂ y≤x = y
 
-----------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Properties
 
 x≤y⇒x⊓y≈x : ∀ {x y} → x ≤ y → x ⊓ y ≈ x
@@ -44,10 +44,10 @@ x≤y⇒y⊓x≈x {x} {y} x≤y with total y x
 ... | inj₁ y≤x = antisym y≤x x≤y
 ... | inj₂ _   = Eq.refl
 
-minOperator : MinOperator O
+minOperator : MinOperator totalPreorder
 minOperator = record
   { x≤y⇒x⊓y≈x = x≤y⇒x⊓y≈x
   ; x≥y⇒x⊓y≈y = x≤y⇒y⊓x≈x
   }
 
-open MinOp O minOperator public
+open MinOp minOperator public

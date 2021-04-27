@@ -8,9 +8,12 @@
 
 module Data.List.Relation.Unary.Linked {a} {A : Set a} where
 
-open import Data.List.Base using (List; []; _∷_)
+open import Data.List.Base as List using (List; []; _∷_)
 open import Data.List.Relation.Unary.All as All using (All; []; _∷_)
 open import Data.Product as Prod using (_,_; _×_; uncurry; <_,_>)
+open import Data.Maybe.Base using (just)
+open import Data.Maybe.Relation.Binary.Connected
+  using (Connected; just; just-nothing)
 open import Function.Base using (id; _∘_)
 open import Level using (Level; _⊔_)
 open import Relation.Binary as B using (Rel; _⇒_)
@@ -41,13 +44,27 @@ data Linked (R : Rel A ℓ) : List A → Set (a ⊔ ℓ) where
 ------------------------------------------------------------------------
 -- Operations
 
-module _ {R : Rel A p} {x y xs} where
+module _ {R : Rel A p} where
 
-  head : Linked R (x ∷ y ∷ xs) → R x y
+  head : ∀ {x y xs} → Linked R (x ∷ y ∷ xs) → R x y
   head (Rxy ∷ Rxs) = Rxy
 
-  tail : Linked R (x ∷ y ∷ xs) → Linked R (y ∷ xs)
-  tail (Rxy ∷ Rxs) = Rxs
+  tail : ∀ {x xs} → Linked R (x ∷ xs) → Linked R xs
+  tail [-]       = []
+  tail (_ ∷ Rxs) = Rxs
+
+  head′ : ∀ {x xs} → Linked R (x ∷ xs) → Connected R (just x) (List.head xs)
+  head′ [-]       = just-nothing
+  head′ (Rxy ∷ _) = just Rxy
+
+  infixr 5 _∷′_
+
+  _∷′_ : ∀ {x xs} →
+         Connected R (just x) (List.head xs) →
+         Linked R xs →
+         Linked R (x ∷ xs)
+  _∷′_ {xs = []}     _  _            = [-]
+  _∷′_ {xs = y ∷ xs} (just Rxy) Ryxs = Rxy ∷ Ryxs
 
 module _ {R : Rel A p} {S : Rel A q} where
 

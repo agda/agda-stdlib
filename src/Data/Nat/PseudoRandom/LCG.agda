@@ -10,9 +10,10 @@
 module Data.Nat.PseudoRandom.LCG where
 
 open import Codata.Stream using (Stream; unfold)
-open import Data.Nat using (ℕ; _+_; _*_; _^_; _≟_)
+open import Data.Nat using (ℕ; zero; suc; _+_; _*_; _^_; _≟_)
 open import Data.Nat.DivMod using (_%_)
 open import Data.Product using (<_,_>)
+open import Data.List.Base using (List; []; _∷_)
 open import Function.Base using (id)
 open import Relation.Nullary.Decidable using (False)
 
@@ -32,6 +33,10 @@ step gen x =
 
 stream : Generator → ℕ → Stream ℕ _
 stream gen = unfold < step gen , id >
+
+list : ℕ → Generator → ℕ → List ℕ
+list zero    gen x = []
+list (suc k) gen x = x ∷ list k gen (step gen x)
 
 ------------------------------------------------------------------------
 -- Examples of parameters

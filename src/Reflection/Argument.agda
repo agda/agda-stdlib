@@ -13,6 +13,8 @@ open import Data.Product using (_×_; _,_; uncurry; <_,_>)
 open import Data.Nat using (ℕ)
 open import Reflection.Argument.Visibility
 open import Reflection.Argument.Relevance
+open import Reflection.Argument.Quantity
+open import Reflection.Argument.Modality
 open import Reflection.Argument.Information as Information
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
@@ -34,9 +36,11 @@ open Arg public
 
 -- Pattern synonyms
 
-pattern vArg ty = arg (arg-info visible relevant)   ty
-pattern hArg ty = arg (arg-info hidden relevant)    ty
-pattern iArg ty = arg (arg-info instance′ relevant) ty
+pattern defaultModality = modality relevant quantity-ω
+
+pattern vArg ty = arg (arg-info visible   defaultModality) ty
+pattern hArg ty = arg (arg-info hidden    defaultModality) ty
+pattern iArg ty = arg (arg-info instance′ defaultModality) ty
 
 ------------------------------------------------------------------------
 -- Lists of arguments

@@ -4,14 +4,13 @@
 -- Primitive IO: simple bindings to Haskell types and functions
 ------------------------------------------------------------------------
 
+-- NOTE: the contents of this module should be accessed via `IO`.
+
 {-# OPTIONS --without-K #-}
 
 module IO.Primitive where
 
-open import Codata.Musical.Costring
-open import Data.Char.Base
-open import Data.String.Base
-open import Data.Unit using () renaming (⊤ to Unit)
+open import Agda.Builtin.IO
 
 ------------------------------------------------------------------------
 -- The IO monad
@@ -28,69 +27,3 @@ postulate
 {-# COMPILE GHC _>>=_  = \_ _ _ _ -> (>>=) #-}
 {-# COMPILE UHC return = \_ _ x -> UHC.Agda.Builtins.primReturn x #-}
 {-# COMPILE UHC _>>=_  = \_ _ _ _ x y -> UHC.Agda.Builtins.primBind x y #-}
-
-------------------------------------------------------------------------
--- Simple lazy IO
-
--- Note that the functions below produce commands which, when
--- executed, may raise exceptions.
-
--- Note also that the semantics of these functions depends on the
--- version of the Haskell base library. If the version is 4.2.0.0 (or
--- later?), then the functions use the character encoding specified by
--- the locale. For older versions of the library (going back to at
--- least version 3) the functions use ISO-8859-1.
-
-{-# FOREIGN GHC import qualified Data.Text    #-}
-{-# FOREIGN GHC import qualified Data.Text.IO #-}
-{-# FOREIGN GHC import qualified System.IO    #-}
-{-# FOREIGN GHC import qualified Control.Exception #-}
-
-postulate
-  getLine     : IO String
-  getContents : IO Costring
-  readFile    : String → IO Costring
-  writeFile   : String → Costring → IO Unit
-  appendFile  : String → Costring → IO Unit
-  putStr      : Costring → IO Unit
-  putStrLn    : Costring → IO Unit
-
-  -- Reads a finite file. Raises an exception if the file path refers
-  -- to a non-physical file (like "/dev/zero").
-
-  readFiniteFile : String → IO String
-
-{-# FOREIGN GHC
-  readFiniteFile :: Data.Text.Text -> IO Data.Text.Text
-  readFiniteFile f = do
-    h <- System.IO.openFile (Data.Text.unpack f) System.IO.ReadMode
-    Control.Exception.bracketOnError (return ()) (\_ -> System.IO.hClose h)
-                                                 (\_ -> System.IO.hFileSize h)
-    Data.Text.IO.hGetContents h
-
-  fromColist :: MAlonzo.Code.Codata.Musical.Colist.AgdaColist a -> [a]
-  fromColist MAlonzo.Code.Codata.Musical.Colist.Nil         = []
-  fromColist (MAlonzo.Code.Codata.Musical.Colist.Cons x xs) =
-    x : fromColist (MAlonzo.RTE.flat xs)
-
-  toColist :: [a] -> MAlonzo.Code.Codata.Musical.Colist.AgdaColist a
-  toColist []       = MAlonzo.Code.Codata.Musical.Colist.Nil
-  toColist (x : xs) =
-    MAlonzo.Code.Codata.Musical.Colist.Cons x (MAlonzo.RTE.Sharp (toColist xs))
-#-}
-
-{-# COMPILE GHC getLine        = fmap Data.Text.pack getLine                        #-}
-{-# COMPILE GHC getContents    = fmap toColist getContents                          #-}
-{-# COMPILE GHC readFile       = fmap toColist . readFile . Data.Text.unpack        #-}
-{-# COMPILE GHC writeFile      = \x -> writeFile (Data.Text.unpack x) . fromColist  #-}
-{-# COMPILE GHC appendFile     = \x -> appendFile (Data.Text.unpack x) . fromColist #-}
-{-# COMPILE GHC putStr         = putStr . fromColist                                #-}
-{-# COMPILE GHC putStrLn       = putStrLn . fromColist                              #-}
-{-# COMPILE GHC readFiniteFile = readFiniteFile                        #-}
-{-# COMPILE UHC getContents    = UHC.Agda.Builtins.primGetContents     #-}
-{-# COMPILE UHC readFile       = UHC.Agda.Builtins.primReadFile        #-}
-{-# COMPILE UHC writeFile      = UHC.Agda.Builtins.primWriteFile       #-}
-{-# COMPILE UHC appendFile     = UHC.Agda.Builtins.primAppendFile      #-}
-{-# COMPILE UHC putStr         = UHC.Agda.Builtins.primPutStr          #-}
-{-# COMPILE UHC putStrLn       = UHC.Agda.Builtins.primPutStrLn        #-}
-{-# COMPILE UHC readFiniteFile = UHC.Agda.Builtins.primReadFiniteFile  #-}

@@ -6,21 +6,19 @@
 
 {-# OPTIONS --without-K --safe #-}
 
+open import Function.Base using (flip; _∘_)
 open import Relation.Binary
+import Relation.Binary.Consequences as Consequences
+open import Relation.Nullary using (¬_)
 
 module Relation.Binary.Properties.Poset
    {p₁ p₂ p₃} (P : Poset p₁ p₂ p₃) where
 
 open Poset P renaming (Carrier to A)
 
-open import Function.Base using (flip)
 import Relation.Binary.Construct.NonStrictToStrict _≈_ _≤_ as ToStrict
 import Relation.Binary.Properties.Preorder preorder as PreorderProperties
-open import Relation.Nullary using (¬_)
-
-private
-  _≉_ : Rel A p₂
-  x ≉ y = ¬ (x ≈ y)
+open Eq using (_≉_)
 
 ------------------------------------------------------------------------
 -- The _≥_ relation is also a poset.
@@ -56,6 +54,20 @@ open Poset ≥-poset public
   ; trans     to ≥-trans
   ; antisym   to ≥-antisym
   )
+
+------------------------------------------------------------------------
+-- Negated order
+
+infix 4 _≰_
+
+_≰_ : Rel A p₃
+x ≰ y = ¬ (x ≤ y)
+
+≰-respˡ-≈ : _≰_ Respectsˡ _≈_
+≰-respˡ-≈ x≈y = _∘ ≤-respˡ-≈ (Eq.sym x≈y)
+
+≰-respʳ-≈ : _≰_ Respectsʳ _≈_
+≰-respʳ-≈ x≈y = _∘ ≤-respʳ-≈ (Eq.sym x≈y)
 
 ------------------------------------------------------------------------
 -- Partial orders can be turned into strict partial orders
@@ -97,14 +109,10 @@ open StrictPartialOrder <-strictPartialOrder public
 -- Other properties
 
 mono⇒cong : ∀ {f} → f Preserves _≤_ ⟶ _≤_ → f Preserves _≈_ ⟶ _≈_
-mono⇒cong f-mono p≈q = antisym
-  (f-mono (reflexive p≈q))
-  (f-mono (reflexive (Eq.sym p≈q)))
+mono⇒cong = Consequences.mono⇒cong _≈_ _≈_ Eq.sym reflexive antisym
 
 antimono⇒cong : ∀ {f} → f Preserves _≤_ ⟶ _≥_ → f Preserves _≈_ ⟶ _≈_
-antimono⇒cong f-mono p≈q = antisym
-  (f-mono (reflexive (Eq.sym p≈q)))
-  (f-mono (reflexive p≈q))
+antimono⇒cong = Consequences.antimono⇒cong _≈_ _≈_ Eq.sym reflexive antisym
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

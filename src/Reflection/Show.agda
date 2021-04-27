@@ -20,12 +20,13 @@ open import Data.Product using (_×_; _,_)
 open import Data.String as String
 import Data.Word as Word
 open import Relation.Nullary using (yes; no)
-open import Function.Base using (_∘′_)
+open import Function.Base using (id; _∘′_; case_of_)
 
 open import Reflection.Abstraction hiding (map)
 open import Reflection.Argument hiding (map)
 open import Reflection.Argument.Relevance
 open import Reflection.Argument.Visibility
+open import Reflection.Argument.Modality
 open import Reflection.Argument.Information
 open import Reflection.Definition
 open import Reflection.Literal
@@ -106,10 +107,15 @@ mutual
   showPatterns []       = ""
   showPatterns (a ∷ ps) = showArg a <+> showPatterns ps
     where
+    -- Quantities are ignored.
     showArg : Arg Pattern → String
-    showArg (arg (arg-info visible r) p)   = showRel r ++ showPattern p
-    showArg (arg (arg-info hidden r) p)    = braces (showRel r ++ showPattern p)
-    showArg (arg (arg-info instance′ r) p) = braces (braces (showRel r ++ showPattern p))
+    showArg (arg (arg-info h (modality r _)) p) =
+      braces? (showRel r ++ showPattern p)
+      where
+      braces? = case h of λ where
+        visible   → id
+        hidden    → braces
+        instance′ → braces ∘′ braces
 
   showPattern : Pattern → String
   showPattern (con c []) = showName c

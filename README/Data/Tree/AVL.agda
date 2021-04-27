@@ -20,6 +20,7 @@ import Data.Tree.AVL
 -- natural numbers as keys and vectors of strings as values.
 
 open import Data.Nat.Properties using (<-strictTotalOrder)
+open import Data.Product as Prod using (_,_; _,′_)
 open import Data.String using (String)
 open import Data.Vec using (Vec; _∷_; [])
 open import Relation.Binary.PropositionalEquality
@@ -60,7 +61,6 @@ t₃ = delete 2 t₂
 -- Conversion of a list of key-value mappings to a tree.
 
 open import Data.List using (_∷_; [])
-open import Data.Product as Prod using (_,_; _,′_)
 
 t₄ : Tree
 t₄ = fromList ((2 , v₂) ∷ (1 , v₁) ∷ [])
@@ -111,14 +111,14 @@ open import Function.Base using (id)
 v₆ : headTail t₀ ≡ nothing
 v₆ = refl
 
-v₇ : Maybe.map (Prod.map id toList) (headTail t₂) ≡
+v₇ : Maybe.map (Prod.map₂ toList) (headTail t₂) ≡
      just ((1 , v₁) , ((2 , v₂) ∷ []))
 v₇ = refl
 
 v₈ : initLast t₀ ≡ nothing
 v₈ = refl
 
-v₉ : Maybe.map (Prod.map toList id) (initLast t₄) ≡
+v₉ : Maybe.map (Prod.map₁ toList) (initLast t₄) ≡
      just (((1 , v₁) ∷ []) ,′ (2 , v₂))
 v₉ = refl
 

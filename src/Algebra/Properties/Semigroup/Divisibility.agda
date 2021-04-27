@@ -21,8 +21,14 @@ open Semigroup S
 open import Algebra.Properties.Magma.Divisibility magma public
 
 ------------------------------------------------------------------------
--- Additional properties
+-- Properties of _∣_
 
 ∣-trans : Transitive _∣_
 ∣-trans (p , px≈y) (q , qy≈z) =
   q ∙ p , trans (assoc q p _) (trans (∙-congˡ px≈y) qy≈z)
+
+------------------------------------------------------------------------
+-- Properties of _∣∣_
+
+∣∣-trans : Transitive _∣∣_
+∣∣-trans (x∣y , y∣x) (y∣z , z∣y) = ∣-trans x∣y y∣z , ∣-trans z∣y y∣x

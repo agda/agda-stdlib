@@ -10,25 +10,19 @@ module Data.String.Base where
 
 open import Level using (zero)
 open import Data.Bool.Base using (true; false)
-open import Data.Bool.Properties using (T?)
 open import Data.Char.Base as Char using (Char)
-import Data.Char.Properties as Char using (_≟_)
-open import Data.List.Base as List using (List; _∷_; []; [_])
-open import Data.List.NonEmpty as NE using (List⁺)
-open import Data.List.Relation.Binary.Pointwise using (Pointwise)
-open import Data.List.Relation.Binary.Lex.Strict using (Lex-<; Lex-≤)
+open import Data.List.Base as List using (List; [_]; _∷_; [])
+open import Data.List.NonEmpty.Base as NE using (List⁺)
+open import Data.List.Relation.Binary.Pointwise.Base using (Pointwise)
+open import Data.List.Relation.Binary.Lex.Core using (Lex-<; Lex-≤)
 open import Data.Maybe.Base as Maybe using (Maybe)
-open import Data.Nat.Base as ℕ using (ℕ; _∸_; ⌊_/2⌋; ⌈_/2⌉; _⊔_)
-import Data.Nat.Properties as ℕₚ
+open import Data.Nat.Base using (ℕ; _∸_; ⌊_/2⌋; ⌈_/2⌉)
 open import Data.Product using (proj₁; proj₂)
-open import Data.Vec.Base as Vec using (Vec)
-open import Function
-open import Relation.Binary using (Rel)
-open import Relation.Binary.PropositionalEquality using (_≡_; refl)
-open import Relation.Nullary using (does)
+open import Function.Base using (_on_; _∘′_; _∘_)
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 open import Relation.Unary using (Pred; Decidable)
-
-open import Data.List.Membership.DecPropositional Char._≟_
+open import Relation.Nullary using (does)
 
 ------------------------------------------------------------------------
 -- From Agda.Builtin: type and renamed primitives
@@ -102,42 +96,14 @@ concat = List.foldr _++_ ""
 intersperse : String → List String → String
 intersperse sep = concat ∘′ (List.intersperse sep)
 
--- String-specific functions
-
-wordsBy : ∀ {p} {P : Pred Char p} → Decidable P → String → List String
-wordsBy P? = List.map fromList ∘ List.wordsBy P? ∘ toList
-
-words : String → List String
-words = wordsBy (T? ∘ Char.isSpace)
-
--- `words` ignores contiguous whitespace
-_ : words " abc  b   " ≡ "abc" ∷ "b" ∷ []
-_ = refl
-
 unwords : List String → String
 unwords = intersperse " "
-
-linesBy : ∀ {p} {P : Pred Char p} → Decidable P → String → List String
-linesBy P? = List.map fromList ∘ List.linesBy P? ∘ toList
-
-lines : String → List String
-lines = linesBy ('\n' Char.≟_)
-
--- `lines` preserves empty lines
-_ : lines "\nabc\n\nb\n\n\n" ≡ "" ∷ "abc" ∷ "" ∷ "b" ∷ "" ∷ "" ∷ []
-_ = refl
 
 unlines : List String → String
 unlines = intersperse "\n"
 
 parens : String → String
 parens s = "(" ++ s ++ ")"
-
--- enclose string with parens if it contains a space character
-parensIfSpace : String → String
-parensIfSpace s with does (' ' ∈? toList s)
-... | true  = parens s
-... | false = s
 
 braces : String → String
 braces s = "{" ++ s ++ "}"
@@ -190,28 +156,3 @@ fromAlignment : Alignment → ℕ → String → String
 fromAlignment Left   = padRight ' '
 fromAlignment Center = padBoth ' ' ' '
 fromAlignment Right  = padLeft ' '
-
-------------------------------------------------------------------------
--- Rectangle
-
--- Build a rectangular column by:
--- Given a vector of cells and a padding function for each one
--- Compute the max of the widths, and pad the strings accordingly.
-
-rectangle : ∀ {n} → Vec (ℕ → String → String) n →
-            Vec String n → Vec String n
-rectangle pads cells = Vec.zipWith (λ p c → p width c) pads cells where
-
-  sizes = List.map length (Vec.toList cells)
-  width = List.foldr _⊔_ 0 sizes
-
--- Special cases for left, center, and right alignment
-
-rectangleˡ : ∀ {n} → Char → Vec String n → Vec String n
-rectangleˡ c = rectangle (Vec.replicate $ padLeft c)
-
-rectangleʳ : ∀ {n} → Char → Vec String n → Vec String n
-rectangleʳ c = rectangle (Vec.replicate $ padRight c)
-
-rectangleᶜ : ∀ {n} → Char → Char → Vec String n → Vec String n
-rectangleᶜ cₗ cᵣ = rectangle (Vec.replicate $ padBoth cₗ cᵣ)

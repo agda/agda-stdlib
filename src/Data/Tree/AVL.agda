@@ -36,12 +36,12 @@ private
 
 open StrictTotalOrder strictTotalOrder renaming (Carrier to Key)
 import Data.Tree.AVL.Indexed strictTotalOrder as Indexed
-open Indexed using (K&_ ; ⊥⁺ ; ⊤⁺; ⊥⁺<⊤⁺; ⊥⁺<[_]<⊤⁺; ⊥⁺<[_]; [_]<⊤⁺)
+open Indexed using (⊥⁺; ⊤⁺; ⊥⁺<⊤⁺; ⊥⁺<[_]<⊤⁺; ⊥⁺<[_]; [_]<⊤⁺)
 
 ------------------------------------------------------------------------
 -- Re-export some core definitions publically
 
-open Indexed using (Value; MkValue; const) public
+open Indexed using (K&_;_,_; toPair; fromPair; Value; MkValue; const) public
 
 ------------------------------------------------------------------------
 -- Types and functions with hidden indices
@@ -92,12 +92,12 @@ module _ {v} {V : Value v} where
   _∈?_ : Key → Tree V → Bool
   k ∈? t = is-just (lookup k t)
 
-  headTail : Tree V → Maybe ((K& V) × Tree V)
+  headTail : Tree V → Maybe (K& V × Tree V)
   headTail (tree (Indexed.leaf _)) = nothing
   headTail (tree {h = suc _} t)    with Indexed.headTail t
   ... | (k , _ , _ , t′) = just (k , tree (Indexed.castˡ ⊥⁺<[ _ ] t′))
 
-  initLast : Tree V → Maybe (Tree V × (K& V))
+  initLast : Tree V → Maybe (Tree V × K& V)
   initLast (tree (Indexed.leaf _)) = nothing
   initLast (tree {h = suc _} t)    with Indexed.initLast t
   ... | (k , _ , _ , t′) = just (tree (Indexed.castʳ t′ [ _ ]<⊤⁺) , k)
@@ -108,7 +108,7 @@ module _ {v} {V : Value v} where
   -- The input does not need to be ordered.
 
   fromList : List (K& V) → Tree V
-  fromList = List.foldr (uncurry insert) empty
+  fromList = List.foldr (uncurry insert ∘′ toPair) empty
 
   -- Returns an ordered list.
 

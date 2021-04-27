@@ -14,7 +14,7 @@
 
 module Data.Integer.Base where
 
-open import Data.Bool.Base using (true; false)
+open import Data.Bool.Base using (Bool; true; false)
 open import Data.Empty using (⊥)
 open import Data.Unit.Base using (⊤)
 open import Data.Nat.Base as ℕ
@@ -32,6 +32,7 @@ infix  8 -_
 infixl 7 _*_ _⊓_
 infixl 6 _+_ _-_ _⊖_ _⊔_
 infix  4 _≤_ _≥_ _<_ _>_ _≰_ _≱_ _≮_ _≯_
+infix  4 _≤ᵇ_
 
 ------------------------------------------------------------------------
 -- Types
@@ -106,6 +107,16 @@ x ≮ y = ¬ (x < y)
 
 _≯_ : Rel ℤ 0ℓ
 x ≯ y = ¬ (x > y)
+
+------------------------------------------------------------------------
+-- Boolean ordering
+
+-- A boolean version.
+_≤ᵇ_ : ℤ → ℤ → Bool
+-[1+ m ] ≤ᵇ -[1+ n ] = n ℕ.≤ᵇ m
+(+ m)    ≤ᵇ -[1+ n ] = false
+-[1+ m ] ≤ᵇ (+ n)    = true
+(+ m)    ≤ᵇ (+ n)    = m ℕ.≤ᵇ n
 
 ------------------------------------------------------------------------
 -- Simple predicates

@@ -14,7 +14,7 @@ open import Data.Nat.DivMod
 open import Data.Nat.GCD.Lemmas
 open import Data.Nat.Properties
 open import Data.Nat.Induction
-  using (Acc; acc; <′-Rec; <′-recBuilder; <-wellFounded)
+  using (Acc; acc; <′-Rec; <′-recBuilder; <-wellFounded-fast)
 open import Data.Product
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Function
@@ -43,9 +43,9 @@ gcd′ m n@(suc n-1) (acc rec) n<m = gcd′ n (m % n) (rec _ n<m) (m%n<n m n-1)
 
 gcd : ℕ → ℕ → ℕ
 gcd m n with <-cmp m n
-... | tri< m<n _ _ = gcd′ n m (<-wellFounded n) m<n
+... | tri< m<n _ _ = gcd′ n m (<-wellFounded-fast n) m<n
 ... | tri≈ _ _ _   = m
-... | tri> _ _ n<m = gcd′ m n (<-wellFounded m) n<m
+... | tri> _ _ n<m = gcd′ m n (<-wellFounded-fast m) n<m
 
 ------------------------------------------------------------------------
 -- Core properties of gcd′
@@ -144,6 +144,9 @@ gcd[m,n]≤n m n = ∣⇒≤ (gcd[m,n]∣n m (suc n))
 
 n/gcd[m,n]≢0 : ∀ m n {n≢0 : Dec.False (n ≟ 0)} {gcd≢0} → (n / gcd m n) {gcd≢0} ≢ 0
 n/gcd[m,n]≢0 m n@(suc n-1) {n≢0} {gcd≢0} = m<n⇒n≢0 (m≥n⇒m/n>0 {n} {gcd m n} {gcd≢0} (gcd[m,n]≤n m n-1))
+
+m/gcd[m,n]≢0 : ∀ m n {m≢0 : Dec.False (m ≟ 0)} {gcd≢0} → (m / gcd m n) {gcd≢0} ≢ 0
+m/gcd[m,n]≢0 m@(suc _) n rewrite gcd-comm m n = n/gcd[m,n]≢0 n m
 
 ------------------------------------------------------------------------
 -- A formal specification of GCD

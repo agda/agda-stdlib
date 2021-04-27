@@ -19,7 +19,7 @@ open import Data.Maybe.Base hiding (map ; fromMaybe ; zipWith ; alignWith ; zip 
 open import Data.Product as P hiding (map ; zip)
 open import Data.Sum.Base as S hiding (map)
 open import Data.These.Base as T using (These; this; that; these)
-open import Function
+open import Function.Base using (id)
 
 ------------------------------------------------------------------------
 -- Definition

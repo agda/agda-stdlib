@@ -77,19 +77,19 @@ _∈?_ : ∀ {i} → Key i → Map → Bool
 _∈?_ k = AVL._∈?_ (-, k)
 
 headTail : Map → Maybe (KV × Map)
-headTail m = Maybe.map (Prod.map toKV id) (AVL.headTail m)
+headTail m = Maybe.map (Prod.map₁ (toKV ∘′ AVL.toPair)) (AVL.headTail m)
 
 initLast : Map → Maybe (Map × KV)
-initLast m = Maybe.map (Prod.map id toKV) (AVL.initLast m)
+initLast m = Maybe.map (Prod.map₂ (toKV ∘′ AVL.toPair)) (AVL.initLast m)
 
 foldr : (∀ {k} → Value k → A → A) → A → Map → A
 foldr cons = AVL.foldr cons
 
 fromList : List KV → Map
-fromList = AVL.fromList ∘ List.map fromKV
+fromList = AVL.fromList ∘ List.map (AVL.fromPair ∘′ fromKV)
 
 toList : Map → List KV
-toList = List.map toKV ∘ AVL.toList
+toList = List.map (toKV ∘′ AVL.toPair) ∘ AVL.toList
 
 size : Map → ℕ
 size = AVL.size
