@@ -59,7 +59,10 @@ module _ where
 
 private
   η : Visibility → (Args Term → Term) → Args Term → Term
-  η h f args = lam h (abs "x" (f (weakenArgs 1 args ++ arg (arg-info h relevant) (var 0 []) ∷ [])))
+  η h f args =
+    lam h (abs "x" (f (weakenArgs 1 args ++
+                       arg (arg-info h defaultModality) (var 0 []) ∷
+                       [])))
 
 η-expand : Visibility → Term → Term
 η-expand h (var x      args) = η h (var (suc x)) args

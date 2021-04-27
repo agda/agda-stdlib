@@ -29,9 +29,11 @@ Non-backwards compatible changes
 
 #### Reflection
 
-* The representation of reflected syntax in `Reflection.Term` and
-  `Reflection.Pattern` has been updated to match the new
-  representation used in Agda 2.6.2. Specifically, the following changes were made:
+* The representation of reflected syntax in `Reflection.Term`,
+  `Reflection.Pattern`, `Reflection.Argument` and
+  `Reflection.Argument.Information` has been updated to match the new
+  representation used in Agda 2.6.2. Specifically, the following
+  changes were made:
 
   * The type of the `var` constructor of the `Pattern` datatype has
     been changed from `(x : String) → Pattern` to `(x : Int) →
@@ -47,6 +49,20 @@ Non-backwards compatible changes
   * The following constructors have been added to the `Sort` datatype:
     `prop : (t : Term) → Sort`, `propLit : (n : Nat) → Sort`, and
     `inf : (n : Nat) → Sort`.
+
+  * In `Reflection.Argument.Information` the function `relevance` was
+    replaced by `modality`.
+
+  * The type of the `arg-info` constructor is now
+    `(v : Visibility) (m : Modality) → ArgInfo`.
+
+  * In `Reflection.Argument` (as well as `Reflection`) there is a new
+    pattern synonym `defaultModality`, and the pattern synonyms
+    `vArg`, `hArg` and `iArg` have been changed.
+
+  * Two new modules have been added, `Reflection.Argument.Modality`
+    and `Reflection.Argument.Quantity`. The constructors of the types
+    `Modality` and `Quantity` are reexported from `Reflection`.
 
 #### Other
 

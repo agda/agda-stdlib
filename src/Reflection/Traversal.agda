@@ -80,13 +80,15 @@ module _ (actions : Actions) where
   traverseTerm Γ (var x args)      = var       <$> onVar Γ x ⊛ traverseArgs Γ args
   traverseTerm Γ (con c args)      = con       <$> onCon Γ c ⊛ traverseArgs Γ args
   traverseTerm Γ (def f args)      = def       <$> onDef Γ f ⊛ traverseArgs Γ args
-  traverseTerm Γ (lam v t)         = lam v     <$> traverseAbs (arg (arg-info v relevant) unknown) Γ t
   traverseTerm Γ (pat-lam cs args) = pat-lam   <$> traverseClauses Γ cs ⊛ traverseArgs Γ args
   traverseTerm Γ (pi a b)          = pi        <$> traverseArg Γ a ⊛ traverseAbs a Γ b
   traverseTerm Γ (agda-sort s)     = agda-sort <$> traverseSort Γ s
   traverseTerm Γ (meta x args)     = meta      <$> onMeta Γ x ⊛ traverseArgs Γ args
   traverseTerm Γ t@(lit _)         = pure t
   traverseTerm Γ t@unknown         = pure t
+  traverseTerm Γ (lam v t)         = lam v     <$> traverseAbs (arg (arg-info v m) unknown) Γ t
+    where
+    m = defaultModality
 
   traverseArg Γ (arg i t) = arg i <$> traverseTerm Γ t
   traverseArgs Γ []       = pure []
