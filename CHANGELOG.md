@@ -37,8 +37,3 @@ Other minor additions
   <-weakInduction : P zero      → (∀ i → P (inject₁ i) → P (suc i)) → ∀ i → P i
   >-weakInduction : P (fromℕ n) → (∀ i → P (suc i) → P (inject₁ i)) → ∀ i → P i
   ```
-
-* Added new proofs to `Data.Nat.Induction`:
-  ```agda
-  <-weakInduction : P zero → (∀ i → P i → P (suc i)) → ∀ i → P i
-  ```
