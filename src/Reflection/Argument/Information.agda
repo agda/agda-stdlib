@@ -23,7 +23,7 @@ private
     m m′ : Modality
 
 ------------------------------------------------------------------------
--- Re-exporting the builtins publically
+-- Re-exporting the builtins publicly
 
 open import Agda.Builtin.Reflection public using (ArgInfo)
 open ArgInfo public
