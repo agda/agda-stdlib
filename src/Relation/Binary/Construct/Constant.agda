@@ -8,13 +8,19 @@
 
 module Relation.Binary.Construct.Constant where
 
+open import Level
 open import Relation.Binary
 
-------------------------------------------------------------------------
--- Definition
+private
+  variable
+    a b c : Level
+    A : Set a
+    B : Set b
 
-Const : ∀ {a b c} {A : Set a} {B : Set b} → Set c → REL A B c
-Const I = λ _ _ → I
+------------------------------------------------------------------------
+-- Re-export definition
+
+open import Relation.Binary.Construct.Constant.Core public
 
 ------------------------------------------------------------------------
 -- Properties

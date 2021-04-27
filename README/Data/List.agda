@@ -142,6 +142,15 @@ import README.Data.List.Relation.Binary.Equality
 import README.Data.List.Relation.Binary.Permutation
 
 ------------------------------------------------------------------------
+-- Subsets
+
+-- Instead one might want to order lists by the subset relation which
+-- forms a partial order over lists. One list is a subset of another if
+-- every element in the first list occurs at least once in the second.
+
+import README.Data.List.Relation.Binary.Subset
+
+------------------------------------------------------------------------
 -- Other binary relations
 
 -- There exist many other binary relations in the
@@ -155,11 +164,7 @@ import Data.List.Relation.Binary.Lex.Strict
 
 import Data.List.Relation.Binary.BagAndSetEquality
 
---    3. the subset relations.
-
-import Data.List.Relation.Binary.Subset.Propositional
-
---    4. the sublist relations
+--    3. the sublist relations
 
 import Data.List.Relation.Binary.Sublist.Propositional
 

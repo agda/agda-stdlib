@@ -24,17 +24,18 @@ open import Relation.Binary.Consequences
 open import Data.List.Relation.Binary.Pointwise as Pointwise
    using (Pointwise; []; _∷_; head; tail)
 
-open import Data.List.Relation.Binary.Lex.Core as Core public
-  using (base; halt; this; next; ¬≤-this; ¬≤-next)
+import Data.List.Relation.Binary.Lex as Core
+
+----------------------------------------------------------------------
+-- Re-exporting core definitions
+
+open Core public
+  using (Lex-<; Lex-≤; base; halt; this; next; ¬≤-this; ¬≤-next)
 
 ----------------------------------------------------------------------
 -- Strict lexicographic ordering.
 
 module _ {a ℓ₁ ℓ₂} {A : Set a} where
-
-  Lex-< : (_≈_ : Rel A ℓ₁) (_≺_ : Rel A ℓ₂) →
-          Rel (List A) (a ⊔ ℓ₁ ⊔ ℓ₂)
-  Lex-< = Core.Lex ⊥
 
   -- Properties
 
@@ -57,7 +58,7 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
     <-asymmetric sym resp as = asym
       where
       irrefl : Irreflexive _≈_ _≺_
-      irrefl = asym⟶irr resp sym as
+      irrefl = asym⇒irr resp sym as
 
       asym : Asymmetric _<_
       asym (base bot)       _                = bot
@@ -132,10 +133,6 @@ module _ {a ℓ₁ ℓ₂} {A : Set a} where
 -- Non-strict lexicographic ordering.
 
 module _ {a ℓ₁ ℓ₂} {A : Set a} where
-
-  Lex-≤ : (_≈_ : Rel A ℓ₁) (_≺_ : Rel A ℓ₂) →
-          Rel (List A) (a ⊔ ℓ₁ ⊔ ℓ₂)
-  Lex-≤ = Core.Lex ⊤
 
   -- Properties
 

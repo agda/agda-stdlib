@@ -29,70 +29,12 @@ private
     Whatever : Set w
 
 ------------------------------------------------------------------------
--- Uses of negation
+-- Re-export public definitions
 
-contradiction : P → ¬ P → Whatever
-contradiction p ¬p = ⊥-elim (¬p p)
-
-contraposition : (P → Q) → ¬ Q → ¬ P
-contraposition f ¬q p = contradiction (f p) ¬q
-
--- Note also the following use of flip:
-
-private
-  note : (P → ¬ Q) → Q → ¬ P
-  note = flip
-
--- If we can decide P, then we can decide its negation.
-
-¬-reflects : ∀ {b} → Reflects P b → Reflects (¬ P) (not b)
-¬-reflects (ofʸ  p) = ofⁿ (_$ p)
-¬-reflects (ofⁿ ¬p) = ofʸ ¬p
-
-¬? : Dec P → Dec (¬ P)
-does  (¬? p?) = not (does p?)
-proof (¬? p?) = ¬-reflects (proof p?)
+open import Relation.Nullary.Negation.Core public
 
 ------------------------------------------------------------------------
--- Quantifier juggling
-
-module _ {P : Pred A p} where
-
-  ∃⟶¬∀¬ : ∃ P → ¬ (∀ x → ¬ P x)
-  ∃⟶¬∀¬ = flip uncurry
-
-  ∀⟶¬∃¬ : (∀ x → P x) → ¬ ∃ λ x → ¬ P x
-  ∀⟶¬∃¬ ∀xPx (x , ¬Px) = ¬Px (∀xPx x)
-
-  ¬∃⟶∀¬ : ¬ ∃ (λ x → P x) → ∀ x → ¬ P x
-  ¬∃⟶∀¬ = curry
-
-  ∀¬⟶¬∃ : (∀ x → ¬ P x) → ¬ ∃ (λ x → P x)
-  ∀¬⟶¬∃ = uncurry
-
-  ∃¬⟶¬∀ : ∃ (λ x → ¬ P x) → ¬ (∀ x → P x)
-  ∃¬⟶¬∀ = flip ∀⟶¬∃¬
-
-------------------------------------------------------------------------
--- Double-negation
-
-¬¬-map : (P → Q) → ¬ ¬ P → ¬ ¬ Q
-¬¬-map f = contraposition (contraposition f)
-
--- Stability under double-negation.
-
-Stable : Set p → Set p
-Stable P = ¬ ¬ P → P
-
--- Everything is stable in the double-negation monad.
-
-stable : ¬ ¬ Stable P
-stable ¬[¬¬p→p] = ¬[¬¬p→p] (λ ¬¬p → ⊥-elim (¬¬p (¬[¬¬p→p] ∘ const)))
-
--- Negated predicates are stable.
-
-negated-stable : Stable (¬ P)
-negated-stable ¬¬¬P P = ¬¬¬P (λ ¬P → ¬P P)
+-- Other properties
 
 -- Decidable predicates are stable.
 

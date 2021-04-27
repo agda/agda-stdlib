@@ -16,7 +16,6 @@ open import Function.Base using (_∘_)
 open import Level
 open import Relation.Binary.Core
 open import Relation.Binary.Definitions
--- open import Relation.Unary using (Pred)
 open import Relation.Nullary using (¬_)
 
 private

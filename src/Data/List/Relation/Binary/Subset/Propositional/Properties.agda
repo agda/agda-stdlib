@@ -134,6 +134,18 @@ map⁺ f xs⊆ys =
   _⟨$⟩_ (Inverse.from (map-∈↔ f))
 
 ------------------------------------------------------------------------
+-- ∷
+
+xs⊆x∷xs : ∀ (xs : List A) x → xs ⊆ x ∷ xs
+xs⊆x∷xs = Setoidₚ.xs⊆x∷xs (setoid _)
+
+∷⁺ʳ : ∀ x → xs ⊆ ys → x ∷ xs ⊆ x ∷ ys
+∷⁺ʳ = Setoidₚ.∷⁺ʳ (setoid _)
+
+∈-∷⁺ʳ : ∀ {x} → x ∈ ys → xs ⊆ ys → x ∷ xs ⊆ ys
+∈-∷⁺ʳ = Setoidₚ.∈-∷⁺ʳ (setoid _)
+
+------------------------------------------------------------------------
 -- _++_
 
 xs⊆xs++ys : ∀ (xs ys : List A) → xs ⊆ xs ++ ys

@@ -43,7 +43,7 @@ module _ (◦-isMagma : IsMagma _≈₂_ _◦_) where
   open IsMagma ◦-isMagma renaming (∙-cong to ◦-cong)
   open SetoidReasoning setoid
 
-  inverseˡ : LeftInverse _≈₂_ ε₂ _⁻¹₂ _◦_ → LeftInverse _≈₁_ ε₁ _⁻¹₁  _∙_
+  inverseˡ : LeftInverse _≈₂_ ε₂ _⁻¹₂ _◦_ → LeftInverse _≈₁_ ε₁ _⁻¹₁ _∙_
   inverseˡ invˡ x = injective (begin
     ⟦ x ⁻¹₁ ∙ x ⟧     ≈⟨ ∙-homo (x ⁻¹₁ ) x ⟩
     ⟦ x ⁻¹₁ ⟧ ◦ ⟦ x ⟧ ≈⟨ ◦-cong (⁻¹-homo x) refl ⟩
@@ -51,7 +51,7 @@ module _ (◦-isMagma : IsMagma _≈₂_ _◦_) where
     ε₂                ≈˘⟨ ε-homo ⟩
     ⟦ ε₁ ⟧ ∎)
 
-  inverseʳ : RightInverse _≈₂_ ε₂ _⁻¹₂ _◦_ → RightInverse _≈₁_ ε₁ _⁻¹₁  _∙_
+  inverseʳ : RightInverse _≈₂_ ε₂ _⁻¹₂ _◦_ → RightInverse _≈₁_ ε₁ _⁻¹₁ _∙_
   inverseʳ invʳ x = injective (begin
     ⟦ x ∙ x ⁻¹₁ ⟧     ≈⟨ ∙-homo x (x ⁻¹₁) ⟩
     ⟦ x ⟧ ◦ ⟦ x ⁻¹₁ ⟧ ≈⟨ ◦-cong refl (⁻¹-homo x) ⟩
@@ -59,15 +59,29 @@ module _ (◦-isMagma : IsMagma _≈₂_ _◦_) where
     ε₂                ≈˘⟨ ε-homo ⟩
     ⟦ ε₁ ⟧ ∎)
 
-  inverse : Inverse _≈₂_ ε₂ _⁻¹₂ _◦_ → Inverse _≈₁_ ε₁ _⁻¹₁  _∙_
+  inverse : Inverse _≈₂_ ε₂ _⁻¹₂ _◦_ → Inverse _≈₁_ ε₁ _⁻¹₁ _∙_
   inverse (invˡ , invʳ) = inverseˡ invˡ , inverseʳ invʳ
 
   ⁻¹-cong : Congruent₁ _≈₂_ _⁻¹₂ → Congruent₁ _≈₁_ _⁻¹₁
-  ⁻¹-cong  ⁻¹-cong {x} {y} x≈y = injective (begin
+  ⁻¹-cong ⁻¹-cong {x} {y} x≈y = injective (begin
     ⟦ x ⁻¹₁ ⟧ ≈⟨ ⁻¹-homo x ⟩
     ⟦ x ⟧ ⁻¹₂ ≈⟨ ⁻¹-cong (⟦⟧-cong x≈y) ⟩
     ⟦ y ⟧ ⁻¹₂ ≈˘⟨ ⁻¹-homo y ⟩
     ⟦ y ⁻¹₁ ⟧ ∎)
+
+module _ (◦-isAbelianGroup : IsAbelianGroup _≈₂_ _◦_ ε₂ _⁻¹₂) where
+
+  open IsAbelianGroup ◦-isAbelianGroup renaming (∙-cong to ◦-cong; ⁻¹-cong to ⁻¹₂-cong)
+  open SetoidReasoning setoid
+
+  ⁻¹-distrib-∙ : (∀ x y → (x ◦ y) ⁻¹₂ ≈₂ (x ⁻¹₂) ◦ (y ⁻¹₂)) → (∀ x y → (x ∙ y) ⁻¹₁ ≈₁ (x ⁻¹₁) ∙ (y ⁻¹₁))
+  ⁻¹-distrib-∙ ⁻¹-distrib-∙ x y = injective (begin
+    ⟦ (x ∙ y) ⁻¹₁ ⟧       ≈⟨ ⁻¹-homo (x ∙ y) ⟩
+    ⟦ x ∙ y ⟧ ⁻¹₂         ≈⟨ ⁻¹₂-cong (∙-homo x y) ⟩
+    (⟦ x ⟧ ◦ ⟦ y ⟧) ⁻¹₂   ≈⟨ ⁻¹-distrib-∙ ⟦ x ⟧ ⟦ y ⟧ ⟩
+    ⟦ x ⟧ ⁻¹₂ ◦ ⟦ y ⟧ ⁻¹₂ ≈⟨ sym (◦-cong (⁻¹-homo x) (⁻¹-homo y)) ⟩
+    ⟦ x ⁻¹₁ ⟧ ◦ ⟦ y ⁻¹₁ ⟧ ≈⟨ sym (∙-homo (x ⁻¹₁) (y ⁻¹₁)) ⟩
+    ⟦ (x ⁻¹₁) ∙ (y ⁻¹₁) ⟧ ∎)
 
 isGroup : IsGroup _≈₂_ _◦_ ε₂ _⁻¹₂ → IsGroup _≈₁_ _∙_ ε₁ _⁻¹₁
 isGroup isGroup = record

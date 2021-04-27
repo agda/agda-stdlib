@@ -94,6 +94,20 @@ record IsPreorder (_∼_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
   ∼-resp-≈ : _∼_ Respects₂ _≈_
   ∼-resp-≈ = ∼-respʳ-≈ , ∼-respˡ-≈
 
+
+record IsTotalPreorder (_≲_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
+  field
+    isPreorder : IsPreorder _≲_
+    total      : Total _≲_
+
+  open IsPreorder isPreorder public
+    renaming
+    ( ∼-respˡ-≈ to ≲-respˡ-≈
+    ; ∼-respʳ-≈ to ≲-respʳ-≈
+    ; ∼-resp-≈  to ≲-resp-≈
+    )
+
+
 ------------------------------------------------------------------------
 -- Partial orders
 ------------------------------------------------------------------------
@@ -142,7 +156,7 @@ record IsStrictPartialOrder (_<_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) wh
   module Eq = IsEquivalence isEquivalence
 
   asym : Asymmetric _<_
-  asym {x} {y} = trans∧irr⟶asym Eq.refl trans irrefl {x = x} {y}
+  asym {x} {y} = trans∧irr⇒asym Eq.refl trans irrefl {x = x} {y}
 
   <-respʳ-≈ : _<_ Respectsʳ _≈_
   <-respʳ-≈ = proj₁ <-resp-≈
@@ -191,6 +205,12 @@ record IsTotalOrder (_≤_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
 
   open IsPartialOrder isPartialOrder public
 
+  isTotalPreorder : IsTotalPreorder _≤_
+  isTotalPreorder = record
+    { isPreorder = isPreorder
+    ; total      = total
+    }
+
 
 record IsDecTotalOrder (_≤_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
   infix 4 _≟_ _≤?_
@@ -234,10 +254,10 @@ record IsStrictTotalOrder (_<_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) wher
   infix 4 _≟_ _<?_
 
   _≟_ : Decidable _≈_
-  _≟_ = tri⟶dec≈ compare
+  _≟_ = tri⇒dec≈ compare
 
   _<?_ : Decidable _<_
-  _<?_ = tri⟶dec< compare
+  _<?_ = tri⇒dec< compare
 
   isDecEquivalence : IsDecEquivalence
   isDecEquivalence = record
@@ -250,9 +270,9 @@ record IsStrictTotalOrder (_<_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) wher
   isStrictPartialOrder : IsStrictPartialOrder _<_
   isStrictPartialOrder = record
     { isEquivalence = isEquivalence
-    ; irrefl        = tri⟶irr compare
+    ; irrefl        = tri⇒irr compare
     ; trans         = trans
-    ; <-resp-≈      = trans∧tri⟶resp≈ Eq.sym Eq.trans trans compare
+    ; <-resp-≈      = trans∧tri⇒resp Eq.sym Eq.trans trans compare
     }
 
   isDecStrictPartialOrder : IsDecStrictPartialOrder _<_

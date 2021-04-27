@@ -16,7 +16,7 @@ import Algebra.Morphism as Morphism
 open import Algebra.Construct.NaturalChoice.Base
 import Algebra.Construct.NaturalChoice.MinMaxOp as MinMaxOp
 import Algebra.Properties.AbelianGroup
-open import Data.Bool.Base using (true; false)
+open import Data.Bool.Base using (T; true; false)
 open import Data.Empty using (⊥-elim)
 open import Data.Integer.Base renaming (suc to sucℤ)
 open import Data.Nat as ℕ
@@ -129,6 +129,12 @@ _≤?_ : Decidable _≤_
   ; trans         = ≤-trans
   }
 
+≤-isTotalPreorder : IsTotalPreorder _≡_ _≤_
+≤-isTotalPreorder = record
+  { isPreorder = ≤-isPreorder
+  ; total      = ≤-total
+  }
+
 ≤-isPartialOrder : IsPartialOrder _≡_ _≤_
 ≤-isPartialOrder = record
   { isPreorder = ≤-isPreorder
@@ -156,6 +162,11 @@ _≤?_ : Decidable _≤_
   { isPreorder = ≤-isPreorder
   }
 
+≤-totalPreorder : TotalPreorder 0ℓ 0ℓ 0ℓ
+≤-totalPreorder = record
+  { isTotalPreorder = ≤-isTotalPreorder
+  }
+
 ≤-poset : Poset 0ℓ 0ℓ 0ℓ
 ≤-poset = record
   { isPartialOrder = ≤-isPartialOrder
@@ -170,6 +181,20 @@ _≤?_ : Decidable _≤_
 ≤-decTotalOrder = record
   { isDecTotalOrder = ≤-isDecTotalOrder
   }
+
+------------------------------------------------------------------------
+-- Properties of _≤ᵇ_
+------------------------------------------------------------------------
+
+≤ᵇ⇒≤ : ∀ {i j} → T (i ≤ᵇ j) → i ≤ j
+≤ᵇ⇒≤ {+ _}       {+ _}       i≤j = +≤+ (ℕₚ.≤ᵇ⇒≤ _ _ i≤j)
+≤ᵇ⇒≤ { -[1+ _ ]} {+ _}       i≤j = -≤+
+≤ᵇ⇒≤ { -[1+ _ ]} { -[1+ _ ]} i≤j = -≤- (ℕₚ.≤ᵇ⇒≤ _ _ i≤j)
+
+≤⇒≤ᵇ : ∀ {i j} → i ≤ j → T (i ≤ᵇ j)
+≤⇒≤ᵇ (-≤- n≤m) = ℕₚ.≤⇒≤ᵇ n≤m
+≤⇒≤ᵇ -≤+ = _
+≤⇒≤ᵇ (+≤+ m≤n) = ℕₚ.≤⇒≤ᵇ m≤n
 
 ------------------------------------------------------------------------
 -- Properties _<_
@@ -1806,7 +1831,6 @@ neg-distribʳ-* x y = begin
   + zero      ∎) n≮n
   where open ≤-Reasoning
 
-
 ------------------------------------------------------------------------
 -- Properties of _*_ and ∣_∣
 
@@ -1854,13 +1878,13 @@ i≥j⇒i⊔j≡i (-≤- i≥j) = cong -[1+_] (ℕₚ.m≤n⇒m⊓n≡m i≥j)
 i≥j⇒i⊔j≡i -≤+       = refl
 i≥j⇒i⊔j≡i (+≤+ i≤j) = cong +_ (ℕₚ.m≥n⇒m⊔n≡m i≤j)
 
-⊓-operator : MinOperator ≤-totalOrder
+⊓-operator : MinOperator ≤-totalPreorder
 ⊓-operator = record
   { x≤y⇒x⊓y≈x = i≤j⇒i⊓j≡i
   ; x≥y⇒x⊓y≈y = i≥j⇒i⊓j≡j
   }
 
-⊔-operator : MaxOperator ≤-totalOrder
+⊔-operator : MaxOperator ≤-totalPreorder
 ⊔-operator = record
   { x≤y⇒x⊔y≈y = i≤j⇒i⊔j≡j
   ; x≥y⇒x⊔y≈x = i≥j⇒i⊔j≡i
@@ -1870,19 +1894,19 @@ i≥j⇒i⊔j≡i (+≤+ i≤j) = cong +_ (ℕₚ.m≥n⇒m⊔n≡m i≤j)
 -- Automatically derived properties of _⊓_ and _⊔_
 
 private
-  module ⊓-⊔-properties = MinMaxOp ≤-totalOrder ⊓-operator ⊔-operator
+  module ⊓-⊔-properties = MinMaxOp ⊓-operator ⊔-operator
 
 open ⊓-⊔-properties public
   using
-  ( ⊓-idem                    -- : Idempotent _⊓_ q
-  ; ⊓-sel                     -- : Selective _⊓_ q
-  ; ⊓-assoc                   -- : Associative _⊓_ q
-  ; ⊓-comm                    -- : Commutative _⊔_ q
+  ( ⊓-idem                    -- : Idempotent _⊓_
+  ; ⊓-sel                     -- : Selective _⊓_
+  ; ⊓-assoc                   -- : Associative _⊓_
+  ; ⊓-comm                    -- : Commutative _⊓_
 
-  ; ⊔-idem                    -- : Idempotent _⊔_ q
-  ; ⊔-sel                     -- : Selective _⊔_ q
-  ; ⊔-assoc                   -- : Associative _⊔_ q
-  ; ⊔-comm                    -- : Commutative _⊔_ q
+  ; ⊔-idem                    -- : Idempotent _⊔_
+  ; ⊔-sel                     -- : Selective _⊔_
+  ; ⊔-assoc                   -- : Associative _⊔_
+  ; ⊔-comm                    -- : Commutative _⊔_
 
   ; ⊓-distribˡ-⊔              -- : _⊓_ DistributesOverˡ _⊔_
   ; ⊓-distribʳ-⊔              -- : _⊓_ DistributesOverʳ _⊔_
@@ -1890,46 +1914,46 @@ open ⊓-⊔-properties public
   ; ⊔-distribˡ-⊓              -- : _⊔_ DistributesOverˡ _⊓_
   ; ⊔-distribʳ-⊓              -- : _⊔_ DistributesOverʳ _⊓_
   ; ⊔-distrib-⊓               -- : _⊔_ DistributesOver  _⊓_
-  ; ⊓-absorbs-⊔               -- : _⊓_ Absorbs _⊔_ q
-  ; ⊔-absorbs-⊓               -- : _⊔_ Absorbs _⊓_ q
-  ; ⊔-⊓-absorptive            -- : Absorptive _⊔_ _⊓_ q
-  ; ⊓-⊔-absorptive            -- : Absorptive _⊓_ _⊔_ q
+  ; ⊓-absorbs-⊔               -- : _⊓_ Absorbs _⊔_
+  ; ⊔-absorbs-⊓               -- : _⊔_ Absorbs _⊓_
+  ; ⊔-⊓-absorptive            -- : Absorptive _⊔_ _⊓_
+  ; ⊓-⊔-absorptive            -- : Absorptive _⊓_ _⊔_
 
-  ; ⊓-isMagma                 -- : IsMagma _⊓_ q
-  ; ⊓-isSemigroup             -- : IsSemigroup _⊓_ q
-  ; ⊓-isCommutativeSemigroup  -- : IsCommutativeSemigroup _⊓_ q
-  ; ⊓-isBand                  -- : IsBand _⊓_ q
-  ; ⊓-isSemilattice           -- : IsSemilattice _⊓_ q
-  ; ⊓-isSelectiveMagma        -- : IsSelectiveMagma _⊓_ q
+  ; ⊓-isMagma                 -- : IsMagma _⊓_
+  ; ⊓-isSemigroup             -- : IsSemigroup _⊓_
+  ; ⊓-isCommutativeSemigroup  -- : IsCommutativeSemigroup _⊓_
+  ; ⊓-isBand                  -- : IsBand _⊓_
+  ; ⊓-isSemilattice           -- : IsSemilattice _⊓_
+  ; ⊓-isSelectiveMagma        -- : IsSelectiveMagma _⊓_
 
-  ; ⊔-isMagma                 -- : IsMagma _⊔_ q
-  ; ⊔-isSemigroup             -- : IsSemigroup _⊔_ q
-  ; ⊔-isCommutativeSemigroup  -- : IsCommutativeSemigroup _⊔_ q
-  ; ⊔-isBand                  -- : IsBand _⊔_ q
-  ; ⊔-isSemilattice           -- : IsSemilattice _⊔_ q
-  ; ⊔-isSelectiveMagma        -- : IsSelectiveMagma _⊔_ q
+  ; ⊔-isMagma                 -- : IsMagma _⊔_
+  ; ⊔-isSemigroup             -- : IsSemigroup _⊔_
+  ; ⊔-isCommutativeSemigroup  -- : IsCommutativeSemigroup _⊔_
+  ; ⊔-isBand                  -- : IsBand _⊔_
+  ; ⊔-isSemilattice           -- : IsSemilattice _⊔_
+  ; ⊔-isSelectiveMagma        -- : IsSelectiveMagma _⊔_
 
-  ; ⊔-⊓-isLattice             -- : IsLattice _⊔_ _⊓_ q
-  ; ⊓-⊔-isLattice             -- : IsLattice _⊓_ _⊔_ q
+  ; ⊔-⊓-isLattice             -- : IsLattice _⊔_ _⊓_
+  ; ⊓-⊔-isLattice             -- : IsLattice _⊓_ _⊔_
   ; ⊔-⊓-isDistributiveLattice -- : IsDistributiveLattice _⊔_ _⊓_
   ; ⊓-⊔-isDistributiveLattice -- : IsDistributiveLattice _⊓_ _⊔_
 
-  ; ⊓-magma                   -- : Magma _ _ q
-  ; ⊓-semigroup               -- : Semigroup _ _ q
-  ; ⊓-band                    -- : Band _ _ q
-  ; ⊓-commutativeSemigroup    -- : CommutativeSemigroup _ _ q
-  ; ⊓-semilattice             -- : Semilattice _ _ q
-  ; ⊓-selectiveMagma          -- : SelectiveMagma _ _ q
+  ; ⊓-magma                   -- : Magma _ _
+  ; ⊓-semigroup               -- : Semigroup _ _
+  ; ⊓-band                    -- : Band _ _
+  ; ⊓-commutativeSemigroup    -- : CommutativeSemigroup _ _
+  ; ⊓-semilattice             -- : Semilattice _ _
+  ; ⊓-selectiveMagma          -- : SelectiveMagma _ _
 
-  ; ⊔-magma                   -- : Magma _ _ q
-  ; ⊔-semigroup               -- : Semigroup _ _ q
-  ; ⊔-band                    -- : Band _ _ q
-  ; ⊔-commutativeSemigroup    -- : CommutativeSemigroup _ _ q
-  ; ⊔-semilattice             -- : Semilattice _ _ q
-  ; ⊔-selectiveMagma          -- : SelectiveMagma _ _ q
+  ; ⊔-magma                   -- : Magma _ _
+  ; ⊔-semigroup               -- : Semigroup _ _
+  ; ⊔-band                    -- : Band _ _
+  ; ⊔-commutativeSemigroup    -- : CommutativeSemigroup _ _
+  ; ⊔-semilattice             -- : Semilattice _ _
+  ; ⊔-selectiveMagma          -- : SelectiveMagma _ _
 
-  ; ⊔-⊓-lattice               -- : Lattice _ _ q
-  ; ⊓-⊔-lattice               -- : Lattice _ _ q
+  ; ⊔-⊓-lattice               -- : Lattice _ _
+  ; ⊓-⊔-lattice               -- : Lattice _ _
   ; ⊔-⊓-distributiveLattice   -- : DistributiveLattice _ _
   ; ⊓-⊔-distributiveLattice   -- : DistributiveLattice _ _
 
@@ -1944,26 +1968,21 @@ open ⊓-⊔-properties public
   ; ⊔-mono-≤                  -- : _⊔_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
   ; ⊔-monoˡ-≤                 -- : ∀ n → (_⊔ n) Preserves _≤_ ⟶ _≤_
   ; ⊔-monoʳ-≤                 -- : ∀ n → (n ⊔_) Preserves _≤_ ⟶ _≤_
-
-  ; mono-≤-distrib-⊔          -- : ∀ {f} → f Preserves _≤_ ⟶ _≤_ → ∀ x y → f (x ⊔ y) ≈ f x ⊔ f y q
-  ; mono-≤-distrib-⊓          -- : ∀ {f} → f Preserves _≤_ ⟶ _≤_ → ∀ x y → f (x ⊓ y) ≈ f x ⊓ f y q
-  ; antimono-≤-distrib-⊓      -- : ∀ {f} → f Preserves _≤_ ⟶ _≥_ → ∀ x y → f (x ⊓ y) ≈ f x ⊔ f y q
-  ; antimono-≤-distrib-⊔      -- : ∀ {f} → f Preserves _≤_ ⟶ _≥_ → ∀ x y → f (x ⊔ y) ≈ f x ⊓ f y q
   )
   renaming
-  ( x⊓y≈y⇒y≤x to i⊓j≡j⇒j≤i    -- : ∀ {i j} → i ⊓ j ≡ j → j ≤ i q
-  ; x⊓y≈x⇒x≤y to i⊓j≡i⇒i≤j    -- : ∀ {i j} → i ⊓ j ≡ i → i ≤ j q
-  ; x⊓y≤x     to i⊓j≤i        -- : ∀ i j → i ⊓ j ≤ i q
-  ; x⊓y≤y     to i⊓j≤j        -- : ∀ i j → i ⊓ j ≤ j q
+  ( x⊓y≈y⇒y≤x to i⊓j≡j⇒j≤i    -- : ∀ {i j} → i ⊓ j ≡ j → j ≤ i
+  ; x⊓y≈x⇒x≤y to i⊓j≡i⇒i≤j    -- : ∀ {i j} → i ⊓ j ≡ i → i ≤ j
+  ; x⊓y≤x     to i⊓j≤i        -- : ∀ i j → i ⊓ j ≤ i
+  ; x⊓y≤y     to i⊓j≤j        -- : ∀ i j → i ⊓ j ≤ j
   ; x≤y⇒x⊓z≤y to i≤j⇒i⊓k≤j    -- : ∀ {i j} k → i ≤ j → i ⊓ k ≤ j
   ; x≤y⇒z⊓x≤y to i≤j⇒k⊓i≤j    -- : ∀ {i j} k → i ≤ j → k ⊓ i ≤ j
   ; x≤y⊓z⇒x≤y to i≤j⊓k⇒i≤j    -- : ∀ {i} j k → i ≤ j ⊓ k → i ≤ j
   ; x≤y⊓z⇒x≤z to i≤j⊓k⇒i≤k    -- : ∀ {i} j k → i ≤ j ⊓ k → i ≤ k
 
-  ; x⊔y≈y⇒x≤y to i⊔j≡j⇒i≤j    -- : ∀ {i j} → i ⊔ j ≡ j → i ≤ j q
-  ; x⊔y≈x⇒y≤x to i⊔j≡i⇒j≤i    -- : ∀ {i j} → i ⊔ j ≡ i → j ≤ i q
-  ; x≤x⊔y     to i≤i⊔j        -- : ∀ i j → i ≤ i ⊔ j q
-  ; x≤y⊔x     to i≤j⊔i        -- : ∀ i j → i ≤ j ⊔ i q
+  ; x⊔y≈y⇒x≤y to i⊔j≡j⇒i≤j    -- : ∀ {i j} → i ⊔ j ≡ j → i ≤ j
+  ; x⊔y≈x⇒y≤x to i⊔j≡i⇒j≤i    -- : ∀ {i j} → i ⊔ j ≡ i → j ≤ i
+  ; x≤x⊔y     to i≤i⊔j        -- : ∀ i j → i ≤ i ⊔ j
+  ; x≤y⊔x     to i≤j⊔i        -- : ∀ i j → i ≤ j ⊔ i
   ; x≤y⇒x≤y⊔z to i≤j⇒i≤j⊔k    -- : ∀ {i j} k → i ≤ j → i ≤ j ⊔ k
   ; x≤y⇒x≤z⊔y to i≤j⇒i≤k⊔j    -- : ∀ {i j} k → i ≤ j → i ≤ k ⊔ j
   ; x⊔y≤z⇒x≤z to i⊔j≤k⇒i≤k    -- : ∀ i j {k} → i ⊔ j ≤ k → i ≤ k
@@ -1974,6 +1993,22 @@ open ⊓-⊔-properties public
 
 ------------------------------------------------------------------------
 -- Other properties of _⊓_ and _⊔_
+
+mono-≤-distrib-⊔ : ∀ {f} → f Preserves _≤_ ⟶ _≤_ →
+                   ∀ m n → f (m ⊔ n) ≡ f m ⊔ f n
+mono-≤-distrib-⊔ {f} = ⊓-⊔-properties.mono-≤-distrib-⊔ (cong f)
+
+mono-≤-distrib-⊓ : ∀ {f} → f Preserves _≤_ ⟶ _≤_ →
+                   ∀ m n → f (m ⊓ n) ≡ f m ⊓ f n
+mono-≤-distrib-⊓ {f} = ⊓-⊔-properties.mono-≤-distrib-⊓ (cong f)
+
+antimono-≤-distrib-⊓ : ∀ {f} → f Preserves _≤_ ⟶ _≥_ →
+                       ∀ m n → f (m ⊓ n) ≡ f m ⊔ f n
+antimono-≤-distrib-⊓ {f} = ⊓-⊔-properties.antimono-≤-distrib-⊓ (cong f)
+
+antimono-≤-distrib-⊔ : ∀ {f} → f Preserves _≤_ ⟶ _≥_ →
+                       ∀ m n → f (m ⊔ n) ≡ f m ⊓ f n
+antimono-≤-distrib-⊔ {f} = ⊓-⊔-properties.antimono-≤-distrib-⊔ (cong f)
 
 mono-<-distrib-⊓ : ∀ f → f Preserves _<_ ⟶ _<_ → ∀ m n → f (m ⊓ n) ≡ f m ⊓ f n
 mono-<-distrib-⊓ f f-mono-< m n with <-cmp m n
@@ -2401,8 +2436,6 @@ Please use *-cancelˡ-<-nonNeg instead."
 "Warning: *-cancelʳ-<-non-neg was deprecated in v1.5.
 Please use *-cancelʳ-<-nonNeg instead."
 #-}
-
-
 
 -- Version 1.6
 

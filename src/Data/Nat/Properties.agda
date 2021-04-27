@@ -17,6 +17,7 @@ open import Algebra.Morphism
 open import Algebra.Consequences.Propositional
 open import Algebra.Construct.NaturalChoice.Base
 import Algebra.Construct.NaturalChoice.MinMaxOp as MinMaxOp
+import Algebra.Properties.CommutativeSemigroup as CommSemigroupProperties
 open import Data.Bool.Base using (Bool; false; true; T)
 open import Data.Bool.Properties using (T?)
 open import Data.Empty using (⊥)
@@ -184,6 +185,12 @@ _≥?_ = flip _≤?_
   ; trans         = ≤-trans
   }
 
+≤-isTotalPreorder : IsTotalPreorder _≡_ _≤_
+≤-isTotalPreorder = record
+  { isPreorder = ≤-isPreorder
+  ; total      = ≤-total
+  }
+
 ≤-isPartialOrder : IsPartialOrder _≡_ _≤_
 ≤-isPartialOrder = record
   { isPreorder = ≤-isPreorder
@@ -209,6 +216,11 @@ _≥?_ = flip _≤?_
 ≤-preorder : Preorder 0ℓ 0ℓ 0ℓ
 ≤-preorder = record
   { isPreorder = ≤-isPreorder
+  }
+
+≤-totalPreorder : TotalPreorder 0ℓ 0ℓ 0ℓ
+≤-totalPreorder = record
+  { isTotalPreorder = ≤-isTotalPreorder
   }
 
 ≤-poset : Poset 0ℓ 0ℓ 0ℓ
@@ -406,8 +418,7 @@ m<n⇒n≢0 : ∀ {m n} → m < n → n ≢ 0
 m<n⇒n≢0 (s≤s m≤n) ()
 
 m<n⇒m≤1+n : ∀ {m n} → m < n → m ≤ suc n
-m<n⇒m≤1+n (s≤s z≤n)       = z≤n
-m<n⇒m≤1+n (s≤s (s≤s m<n)) = s≤s (m<n⇒m≤1+n (s≤s m<n))
+m<n⇒m≤1+n = ≤-step ∘ <⇒≤
 
 ∀[m≤n⇒m≢o]⇒n<o : ∀ n o → (∀ {m} → m ≤ n → m ≢ o) → n < o
 ∀[m≤n⇒m≢o]⇒n<o _       zero    m≤n⇒n≢0 = contradiction refl (m≤n⇒n≢0 z≤n)
@@ -880,6 +891,14 @@ m*n≡1⇒m≡1 (suc (suc m)) zero          eq =
 m*n≡1⇒n≡1 : ∀ m n → m * n ≡ 1 → n ≡ 1
 m*n≡1⇒n≡1 m n eq = m*n≡1⇒m≡1 n m (trans (*-comm n m) eq)
 
+[m*n]*[o*p]≡[m*o]*[n*p] : ∀ m n o p → (m * n) * (o * p) ≡ (m * o) * (n * p)
+[m*n]*[o*p]≡[m*o]*[n*p] m n o p = begin-equality
+  (m * n) * (o * p) ≡⟨  *-assoc m n (o * p) ⟩
+  m * (n * (o * p)) ≡⟨  cong (m *_) (x∙yz≈y∙xz n o p) ⟩
+  m * (o * (n * p)) ≡˘⟨ *-assoc m o (n * p) ⟩
+  (m * o) * (n * p) ∎
+  where open CommSemigroupProperties *-commutativeSemigroup
+
 ------------------------------------------------------------------------
 -- Other properties of _*_ and _≤_/_<_
 
@@ -1021,30 +1040,30 @@ m≥n⇒m⊓n≡n {zero}  {zero}  z≤n       = refl
 m≥n⇒m⊓n≡n {suc m} {zero}  z≤n       = refl
 m≥n⇒m⊓n≡n {suc m} {suc n} (s≤s m≤n) = cong suc (m≥n⇒m⊓n≡n m≤n)
 
-⊓-operator : MinOperator ≤-totalOrder
+⊓-operator : MinOperator ≤-totalPreorder
 ⊓-operator = record
   { x≤y⇒x⊓y≈x = m≤n⇒m⊓n≡m
   ; x≥y⇒x⊓y≈y = m≥n⇒m⊓n≡n
   }
 
-⊔-operator : MaxOperator ≤-totalOrder
+⊔-operator : MaxOperator ≤-totalPreorder
 ⊔-operator = record
   { x≤y⇒x⊔y≈y = m≤n⇒m⊔n≡n
   ; x≥y⇒x⊔y≈x = m≥n⇒m⊔n≡m
   }
 
 ------------------------------------------------------------------------
--- Automatically derived properties of _⊓_ and _⊔_
+-- Derived properties of _⊓_ and _⊔_
 
 private
-  module ⊓-⊔-properties = MinMaxOp ≤-totalOrder ⊓-operator ⊔-operator
+  module ⊓-⊔-properties = MinMaxOp ⊓-operator ⊔-operator
 
 open ⊓-⊔-properties public
   using
   ( ⊓-idem                    -- : Idempotent _⊓_
   ; ⊓-sel                     -- : Selective _⊓_
   ; ⊓-assoc                   -- : Associative _⊓_
-  ; ⊓-comm                    -- : Commutative _⊔_
+  ; ⊓-comm                    -- : Commutative _⊓_
 
   ; ⊔-idem                    -- : Idempotent _⊔_
   ; ⊔-sel                     -- : Selective _⊔_
@@ -1111,11 +1130,6 @@ open ⊓-⊔-properties public
   ; ⊔-mono-≤                  -- : _⊔_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
   ; ⊔-monoˡ-≤                 -- : ∀ n → (_⊔ n) Preserves _≤_ ⟶ _≤_
   ; ⊔-monoʳ-≤                 -- : ∀ n → (n ⊔_) Preserves _≤_ ⟶ _≤_
-
-  ; mono-≤-distrib-⊔          -- : ∀ {f} → f Preserves _≤_ ⟶ _≤_ → ∀ x y → f (x ⊔ y) ≈ f x ⊔ f y
-  ; mono-≤-distrib-⊓          -- : ∀ {f} → f Preserves _≤_ ⟶ _≤_ → ∀ x y → f (x ⊓ y) ≈ f x ⊓ f y
-  ; antimono-≤-distrib-⊓      -- : ∀ {f} → f Preserves _≤_ ⟶ _≥_ → ∀ x y → f (x ⊓ y) ≈ f x ⊔ f y
-  ; antimono-≤-distrib-⊔      -- : ∀ {f} → f Preserves _≤_ ⟶ _≥_ → ∀ x y → f (x ⊔ y) ≈ f x ⊓ f y
   )
   renaming
   ( x⊓y≈y⇒y≤x to m⊓n≡n⇒n≤m    -- : ∀ {m n} → m ⊓ n ≡ n → n ≤ m
@@ -1140,7 +1154,7 @@ open ⊓-⊔-properties public
   )
 
 ------------------------------------------------------------------------
--- Algebraic properties
+-- Automatically derived properties of _⊓_ and _⊔_
 
 ⊔-identityˡ : LeftIdentity 0 _⊔_
 ⊔-identityˡ _ = refl
@@ -1182,6 +1196,22 @@ open ⊓-⊔-properties public
 
 ------------------------------------------------------------------------
 -- Other properties of _⊔_ and _≤_/_<_
+
+mono-≤-distrib-⊔ : ∀ {f} → f Preserves _≤_ ⟶ _≤_ →
+                   ∀ m n → f (m ⊔ n) ≡ f m ⊔ f n
+mono-≤-distrib-⊔ {f} = ⊓-⊔-properties.mono-≤-distrib-⊔ (cong f)
+
+mono-≤-distrib-⊓ : ∀ {f} → f Preserves _≤_ ⟶ _≤_ →
+                   ∀ m n → f (m ⊓ n) ≡ f m ⊓ f n
+mono-≤-distrib-⊓ {f} = ⊓-⊔-properties.mono-≤-distrib-⊓ (cong f)
+
+antimono-≤-distrib-⊓ : ∀ {f} → f Preserves _≤_ ⟶ _≥_ →
+                       ∀ m n → f (m ⊓ n) ≡ f m ⊔ f n
+antimono-≤-distrib-⊓ {f} = ⊓-⊔-properties.antimono-≤-distrib-⊓ (cong f)
+
+antimono-≤-distrib-⊔ : ∀ {f} → f Preserves _≤_ ⟶ _≥_ →
+                       ∀ m n → f (m ⊔ n) ≡ f m ⊓ f n
+antimono-≤-distrib-⊔ {f} = ⊓-⊔-properties.antimono-≤-distrib-⊔ (cong f)
 
 m<n⇒m<n⊔o : ∀ {m n} o → m < n → m < n ⊔ o
 m<n⇒m<n⊔o = m≤n⇒m≤n⊔o
@@ -1619,9 +1649,9 @@ m≤n⇒∣n-m∣≡n∸m {_} {_}     (s≤s m≤n) = m≤n⇒∣n-m∣≡n∸m 
 ∣m-m+n∣≡n zero    n = refl
 ∣m-m+n∣≡n (suc m) n = ∣m-m+n∣≡n m n
 
-∣m+n-m+o∣≡∣n-o| : ∀ m n o → ∣ m + n - m + o ∣ ≡ ∣ n - o ∣
-∣m+n-m+o∣≡∣n-o| zero    n o = refl
-∣m+n-m+o∣≡∣n-o| (suc m) n o = ∣m+n-m+o∣≡∣n-o| m n o
+∣m+n-m+o∣≡∣n-o∣ : ∀ m n o → ∣ m + n - m + o ∣ ≡ ∣ n - o ∣
+∣m+n-m+o∣≡∣n-o∣ zero    n o = refl
+∣m+n-m+o∣≡∣n-o∣ (suc m) n o = ∣m+n-m+o∣≡∣n-o∣ m n o
 
 m∸n≤∣m-n∣ : ∀ m n → m ∸ n ≤ ∣ m - n ∣
 m∸n≤∣m-n∣ m n with ≤-total m n
@@ -2218,10 +2248,15 @@ Please use ∣m-n∣≡m∸n⇒n≤m instead."
 "Warning: ∣n-n+m∣≡m was deprecated in v1.1.
 Please use ∣m-m+n∣≡n instead."
 #-}
-∣n+m-n+o∣≡∣m-o| = ∣m+n-m+o∣≡∣n-o|
+∣n+m-n+o∣≡∣m-o| = ∣m+n-m+o∣≡∣n-o∣
 {-# WARNING_ON_USAGE ∣n+m-n+o∣≡∣m-o|
 "Warning: ∣n+m-n+o∣≡∣m-o| was deprecated in v1.1.
-Please use ∣m+n-m+o∣≡∣n-o| instead."
+Please use ∣m+n-m+o∣≡∣n-o∣ instead."
+#-}
+∣m+n-m+o∣≡∣n-o| = ∣m+n-m+o∣≡∣n-o∣
+{-# WARNING_ON_USAGE ∣m+n-m+o∣≡∣n-o|
+"Warning: ∣m+n-m+o∣≡∣n-o| was deprecated in v1.6.
+Please use ∣m+n-m+o∣≡∣n-o∣ instead. Note the final is a \\| rather than a |"
 #-}
 n∸m≤∣n-m∣ = m∸n≤∣m-n∣
 {-# WARNING_ON_USAGE n∸m≤∣n-m∣

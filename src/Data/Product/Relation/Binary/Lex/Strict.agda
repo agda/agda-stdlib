@@ -78,7 +78,7 @@ module _ {_≈₁_ : Rel A ℓ₁} {_<₁_ : Rel A ℓ₂} {_<₂_ : Rel B ℓ�
   ×-asymmetric sym₁ resp₁ asym₁ asym₂ = asym
     where
     irrefl₁ : Irreflexive _≈₁_ _<₁_
-    irrefl₁ = asym⟶irr resp₁ sym₁ asym₁
+    irrefl₁ = asym⇒irr resp₁ sym₁ asym₁
 
     asym : Asymmetric _<ₗₑₓ_
     asym (inj₁ x₁<y₁) (inj₁ y₁<x₁) = asym₁ x₁<y₁ y₁<x₁
