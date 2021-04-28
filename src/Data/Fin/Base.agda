@@ -240,6 +240,14 @@ punchIn zero    j       = suc j
 punchIn (suc i) zero    = zero
 punchIn (suc i) (suc j) = suc (punchIn i j)
 
+-- The surjection f(i,j) such that f(i,i) = f(i,i+1) = i
+
+pinch : ∀ {m} → Fin m → Fin (suc m) → Fin m
+pinch zero zero = zero
+pinch zero (suc j) = j
+pinch (suc i) zero = zero
+pinch (suc i) (suc j) = suc (pinch i j)
+
 ------------------------------------------------------------------------
 -- Order relations
 
