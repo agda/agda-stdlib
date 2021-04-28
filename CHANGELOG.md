@@ -33,6 +33,12 @@ New modules
   Function.Metric.Rational.Bundles
   ```
 
+* Lists that contain every element of a type:
+  ```
+  Data.List.Relation.Unary.Complete.Setoid
+  Data.List.Relation.Unary.Complete.Setoid.Properties
+  ```
+
 Other minor additions
 ---------------------
 
@@ -48,4 +54,10 @@ Other minor additions
   
   <-weakInduction : P zero      → (∀ i → P (inject₁ i) → P (suc i)) → ∀ i → P i
   >-weakInduction : P (fromℕ n) → (∀ i → P (suc i) → P (inject₁ i)) → ∀ i → P i
+  ```
+
+* Added new proofs to `Relation.Binary.Properties.Setoid`:
+  ```agda
+  respʳ-flip : _≈_ Respectsʳ (flip _≈_)
+  respˡ-flip : _≈_ Respectsˡ (flip _≈_)
   ```
