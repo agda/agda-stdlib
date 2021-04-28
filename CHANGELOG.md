@@ -35,3 +35,17 @@ New modules
 
 Other minor additions
 ---------------------
+
+* Added new relations to `Data.Fin.Base`:
+  ```agda
+  _≥_ = ℕ._≥_ on toℕ
+  _>_ = ℕ._>_ on toℕ
+  ```
+
+* Added new proofs to `Data.Fin.Induction`:
+  ```agda
+  >-wellFounded   : WellFounded {A = Fin n} _>_
+  
+  <-weakInduction : P zero      → (∀ i → P (inject₁ i) → P (suc i)) → ∀ i → P i
+  >-weakInduction : P (fromℕ n) → (∀ i → P (suc i) → P (inject₁ i)) → ∀ i → P i
+  ```
