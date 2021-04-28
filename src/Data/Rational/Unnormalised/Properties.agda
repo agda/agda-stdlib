@@ -717,6 +717,9 @@ nonNeg∧nonPos⇒0 {mkℚᵘ +0 _} _ _ = *≡* refl
   q + r ≈⟨ +-comm q r ⟩
   r + q ∎ where open ≤-Reasoning
 
+p+p≃0⇒p≃0 : ∀ p → p + p ≃ 0ℚᵘ → p ≃ 0ℚᵘ
+p+p≃0⇒p≃0 (mkℚᵘ (ℤ.+ ℕ.zero) _) (*≡* _) = *≡* refl
+
 ------------------------------------------------------------------------
 -- Properties of _+_ and -_
 
@@ -728,6 +731,13 @@ neg-distrib-+ p q = ↥↧≡⇒≡ (begin
     (ℤ.- ↥ p) ℤ.* ↧ q ℤ.+ (ℤ.- ↥ q) ℤ.* ↧ p ∎
   ) refl
   where open ≡-Reasoning
+
+p≃-p⇒p≃0 : ∀ p → p ≃ - p → p ≃ 0ℚᵘ
+p≃-p⇒p≃0 p p≃-p = p+p≃0⇒p≃0 p (begin-equality
+  p + p  ≈⟨ +-congʳ p p≃-p ⟩
+  p - p  ≈⟨ +-inverseʳ p ⟩
+  0ℚᵘ    ∎)
+  where open ≤-Reasoning
 
 ------------------------------------------------------------------------
 -- Properties of _+_ and _≤_
@@ -1647,6 +1657,11 @@ neg-distrib-⊓-⊔ = antimono-≤-distrib-⊓ neg-mono-≤
 ∣p∣≃0⇒p≃0 {mkℚᵘ (ℤ.+ n)  d-1} p≃0ℚ = p≃0ℚ
 ∣p∣≃0⇒p≃0 {mkℚᵘ -[1+ n ] d-1} (*≡* ())
 
+0≤∣p∣ : ∀ p → 0ℚᵘ ≤ ∣ p ∣
+0≤∣p∣ (mkℚᵘ ℤ.+0       _) = *≤* (ℤ.+≤+ ℕ.z≤n)
+0≤∣p∣ (mkℚᵘ ℤ.+[1+ _ ] _) = *≤* (ℤ.+≤+ ℕ.z≤n)
+0≤∣p∣ (mkℚᵘ ℤ.-[1+ _ ] _) = *≤* (ℤ.+≤+ ℕ.z≤n)
+
 ∣-p∣≡∣p∣ : ∀ p → ∣ - p ∣ ≡ ∣ p ∣
 ∣-p∣≡∣p∣ (mkℚᵘ +[1+ n ] d) = refl
 ∣-p∣≡∣p∣ (mkℚᵘ +0       d) = refl
@@ -1673,6 +1688,11 @@ neg-distrib-⊓-⊔ = antimono-≤-distrib-⊓ neg-mono-≤
 ∣p∣≡p∨∣p∣≡-p : ∀ p → (∣ p ∣ ≡ p) ⊎ (∣ p ∣ ≡ - p)
 ∣p∣≡p∨∣p∣≡-p (mkℚᵘ (ℤ.+ n)    d-1) = inj₁ refl
 ∣p∣≡p∨∣p∣≡-p (mkℚᵘ (-[1+ n ]) d-1) = inj₂ refl
+
+∣p∣≃p⇒0≤p : ∀ {p} → ∣ p ∣ ≃ p → 0ℚᵘ ≤ p
+∣p∣≃p⇒0≤p {p} ∣p∣≃p with ∣p∣≡p∨∣p∣≡-p p
+... | inj₁ ∣p∣≡p  = ∣p∣≡p⇒0≤p ∣p∣≡p
+... | inj₂ ∣p∣≡-p rewrite ∣p∣≡-p = ≤-reflexive (≃-sym (p≃-p⇒p≃0 p (≃-sym ∣p∣≃p)))
 
 ∣p+q∣≤∣p∣+∣q∣ : ∀ p q → ∣ p + q ∣ ≤ ∣ p ∣ + ∣ q ∣
 ∣p+q∣≤∣p∣+∣q∣ p q = *≤* (begin
@@ -1732,6 +1752,16 @@ neg-distrib-⊓-⊔ = antimono-≤-distrib-⊓ neg-mono-≤
 ∣p*q∣≃∣p∣*∣q∣ : ∀ p q → ∣ p * q ∣ ≃ ∣ p ∣ * ∣ q ∣
 ∣p*q∣≃∣p∣*∣q∣ p q = ≃-reflexive (∣p*q∣≡∣p∣*∣q∣ p q)
 
+∣∣p∣∣≡∣p∣ : ∀ p → ∣ ∣ p ∣ ∣ ≡ ∣ p ∣
+∣∣p∣∣≡∣p∣ p = 0≤p⇒∣p∣≡p (0≤∣p∣ p)
+
+∣∣p∣∣≃∣p∣ : ∀ p → ∣ ∣ p ∣ ∣ ≃ ∣ p ∣
+∣∣p∣∣≃∣p∣ p = ≃-reflexive (∣∣p∣∣≡∣p∣ p)
+
+∣-∣-nonNeg : ∀ p → NonNegative ∣ p ∣
+∣-∣-nonNeg (mkℚᵘ +[1+ _ ] _) = _
+∣-∣-nonNeg (mkℚᵘ +0       _) = _
+∣-∣-nonNeg (mkℚᵘ -[1+ _ ] _) = _
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

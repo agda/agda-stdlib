@@ -14,7 +14,7 @@ open import Data.Nat.DivMod
 open import Data.Nat.GCD.Lemmas
 open import Data.Nat.Properties
 open import Data.Nat.Induction
-  using (Acc; acc; <′-Rec; <′-recBuilder; <-wellFounded)
+  using (Acc; acc; <′-Rec; <′-recBuilder; <-wellFounded-fast)
 open import Data.Product
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Function
@@ -43,9 +43,9 @@ gcd′ m n@(suc n-1) (acc rec) n<m = gcd′ n (m % n) (rec _ n<m) (m%n<n m n-1)
 
 gcd : ℕ → ℕ → ℕ
 gcd m n with <-cmp m n
-... | tri< m<n _ _ = gcd′ n m (<-wellFounded n) m<n
+... | tri< m<n _ _ = gcd′ n m (<-wellFounded-fast n) m<n
 ... | tri≈ _ _ _   = m
-... | tri> _ _ n<m = gcd′ m n (<-wellFounded m) n<m
+... | tri> _ _ n<m = gcd′ m n (<-wellFounded-fast m) n<m
 
 ------------------------------------------------------------------------
 -- Core properties of gcd′

@@ -9,6 +9,9 @@
 
 module IO.Primitive.Infinite where
 
+-- NOTE: the contents of this module should be accessed via `IO` or
+-- `IO.Infinite`.
+
 open import Codata.Musical.Costring
 open import Agda.Builtin.String
 open import Agda.Builtin.Unit renaming (⊤ to Unit)

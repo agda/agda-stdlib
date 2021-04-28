@@ -4,6 +4,8 @@
 -- Primitive IO: simple bindings to Haskell types and functions
 ------------------------------------------------------------------------
 
+-- NOTE: the contents of this module should be accessed via `IO`.
+
 {-# OPTIONS --without-K #-}
 
 module IO.Primitive where

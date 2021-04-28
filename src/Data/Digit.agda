@@ -51,7 +51,7 @@ Bit     = Digit 2
 
 toNatDigits : (base : ℕ) {base≤16 : True (1 ≤? base)} → ℕ → List ℕ
 toNatDigits base@(suc zero)    n = replicate n 1
-toNatDigits base@(suc (suc b)) n = aux (<-wellFounded n) []
+toNatDigits base@(suc (suc b)) n = aux (<-wellFounded-fast n) []
   where
   aux : {n : ℕ} → Acc _<_ n → List ℕ → List ℕ
   aux {zero}        _        xs =  (0 ∷ xs)
