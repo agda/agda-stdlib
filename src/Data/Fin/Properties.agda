@@ -18,7 +18,7 @@ open import Data.Fin.Patterns
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_)
 import Data.Nat.Properties as ℕₚ
 open import Data.Unit using (tt)
-open import Data.Product using (∃; ∃₂; ∄; _×_; _,_; map; proj₁; uncurry; <_,_>)
+open import Data.Product using (Σ-syntax; ∃; ∃₂; ∄; _×_; _,_; map; proj₁; uncurry; <_,_>)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]; [_,_]′)
 open import Data.Sum.Properties using ([,]-map-commute; [,]-∘-distr)
 open import Function.Base using (_∘_; id; _$_)
@@ -674,6 +674,23 @@ punchOut-punchIn (suc i) {suc j} = cong suc (begin
   punchOut (punchInᵢ≢i i j ∘ sym)                             ≡⟨ punchOut-punchIn i ⟩
   j                                                           ∎)
   where open ≡-Reasoning
+
+
+------------------------------------------------------------------------
+-- pinch
+------------------------------------------------------------------------
+
+pinch-surjective : ∀ {m} i (j : Fin m) → Σ[ k ∈ Fin (suc m) ] (pinch i k ≡ j)
+pinch-surjective 0F 0F = zero , refl
+pinch-surjective 0F (suc j) = (suc (suc j)) , refl
+pinch-surjective (suc i) 0F = zero , refl
+pinch-surjective (suc i) (suc j) = map suc (cong suc) (pinch-surjective i j)
+
+pinch-mono-≤ : ∀ {m} (i : Fin m) → (pinch i) Preserves _≤_ ⟶ _≤_
+pinch-mono-≤ 0F {0F} {k} 0≤n = z≤n
+pinch-mono-≤ 0F {suc j} {suc k} (s≤s j≤k) = j≤k
+pinch-mono-≤ (suc i) {0F} {k} 0≤n = z≤n
+pinch-mono-≤ (suc i) {suc j} {suc k} (s≤s j≤k) = s≤s (pinch-mono-≤ i j≤k)
 
 ------------------------------------------------------------------------
 -- Quantification
