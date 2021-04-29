@@ -71,3 +71,4 @@ Other minor additions
   ```agda
   pinch-surjective : ∀ {m} (i : Fin m) → Surjective _≡_ (pinch i)
   pinch-mono-≤ : ∀ {m} (i : Fin m) → (pinch i) Preserves _≤_ ⟶ _≤_
+  ```
