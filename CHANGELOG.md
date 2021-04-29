@@ -33,6 +33,12 @@ New modules
   Function.Metric.Rational.Bundles
   ```
 
+* Lists that contain every element of a type:
+  ```
+  Data.List.Relation.Unary.Complete.Setoid
+  Data.List.Relation.Unary.Complete.Setoid.Properties
+  ```
+
 Other minor additions
 ---------------------
 
@@ -50,12 +56,18 @@ Other minor additions
   >-weakInduction : P (fromℕ n) → (∀ i → P (suc i) → P (inject₁ i)) → ∀ i → P i
   ```
 
+* Added new proofs to `Relation.Binary.Properties.Setoid`:
+  ```agda
+  respʳ-flip : _≈_ Respectsʳ (flip _≈_)
+  respˡ-flip : _≈_ Respectsˡ (flip _≈_)
+  ```
+
 * Added new function to `Data.Fin.Base`:
   ```agda
   pinch : ∀ {n} → Fin n → Fin (suc n) → Fin n
   ```
+
 * Added new proofs to `Data.Fin.Properties`:
   ```agda
   pinch-surjective : ∀ {m} (i : Fin m) → Surjective _≡_ (pinch i)
   pinch-mono-≤ : ∀ {m} (i : Fin m) → (pinch i) Preserves _≤_ ⟶ _≤_
-  ```
