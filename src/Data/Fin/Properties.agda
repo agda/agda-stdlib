@@ -23,6 +23,7 @@ open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]; [_,_]′)
 open import Data.Sum.Properties using ([,]-map-commute; [,]-∘-distr)
 open import Function.Base using (_∘_; id; _$_)
 open import Function.Bundles using (_↔_; mk↔′)
+open import Function.Definitions.Core2 using (Surjective)
 open import Function.Equivalence using (_⇔_; equivalence)
 open import Function.Injection using (_↣_)
 open import Relation.Binary as B hiding (Decidable; _⇔_)
@@ -680,16 +681,15 @@ punchOut-punchIn (suc i) {suc j} = cong suc (begin
 -- pinch
 ------------------------------------------------------------------------
 
-pinch-surjective : ∀ {m} i (j : Fin m) → Σ[ k ∈ Fin (suc m) ] (pinch i k ≡ j)
-pinch-surjective 0F 0F = zero , refl
-pinch-surjective 0F (suc j) = (suc (suc j)) , refl
-pinch-surjective (suc i) 0F = zero , refl
+pinch-surjective : ∀ {m} (i : Fin m) → Surjective _≡_ (pinch i)
+pinch-surjective _       zero    = zero , refl
+pinch-surjective zero    (suc j) = suc (suc j) , refl
 pinch-surjective (suc i) (suc j) = map suc (cong suc) (pinch-surjective i j)
 
 pinch-mono-≤ : ∀ {m} (i : Fin m) → (pinch i) Preserves _≤_ ⟶ _≤_
-pinch-mono-≤ 0F {0F} {k} 0≤n = z≤n
-pinch-mono-≤ 0F {suc j} {suc k} (s≤s j≤k) = j≤k
-pinch-mono-≤ (suc i) {0F} {k} 0≤n = z≤n
+pinch-mono-≤ 0F      {0F}    {k}     0≤n       = z≤n
+pinch-mono-≤ 0F      {suc j} {suc k} (s≤s j≤k) = j≤k
+pinch-mono-≤ (suc i) {0F}    {k}     0≤n       = z≤n
 pinch-mono-≤ (suc i) {suc j} {suc k} (s≤s j≤k) = s≤s (pinch-mono-≤ i j≤k)
 
 ------------------------------------------------------------------------
