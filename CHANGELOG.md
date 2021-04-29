@@ -49,3 +49,13 @@ Other minor additions
   <-weakInduction : P zero      → (∀ i → P (inject₁ i) → P (suc i)) → ∀ i → P i
   >-weakInduction : P (fromℕ n) → (∀ i → P (suc i) → P (inject₁ i)) → ∀ i → P i
   ```
+
+* Added new function to `Data.Fin.Base`:
+  ```agda
+  pinch : ∀ {n} → Fin n → Fin (suc n) → Fin n
+  ```
+* Added new proofs to `Data.Fin.Properties`:
+  ```agda
+  pinch-surjective : ∀ {m} (i : Fin m) → Surjective _≡_ (pinch i)
+  pinch-mono-≤ : ∀ {m} (i : Fin m) → (pinch i) Preserves _≤_ ⟶ _≤_
+  ```
