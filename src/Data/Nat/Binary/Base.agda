@@ -13,9 +13,9 @@
 module Data.Nat.Binary.Base where
 
 open import Algebra.Core using (Op₂)
-open import Data.Bool using (if_then_else_)
+open import Data.Bool.Base using (if_then_else_)
 open import Data.Nat.Base as ℕ using (ℕ)
-open import Data.Nat.DivMod using (_%_ ; _/_ ; m/n≤m)
+open import Data.Nat.DivMod using (_%_ ; _/_)
 open import Data.Nat.Properties using (≤-refl ; ≤-trans)
 open import Data.Sum.Base using (_⊎_)
 open import Function.Base using (_on_)
@@ -115,32 +115,21 @@ toℕ zero     =  0
 toℕ 2[1+ x ] =  2 ℕ.* (ℕ.suc (toℕ x))
 toℕ 1+[2 x ] =  ℕ.suc (2 ℕ.* (toℕ x))
 
--- Costs O(n), could be improved using `_/_` and `_%_`
+fromℕ-helper : ℕ → ℕ → ℕᵇ
+fromℕ-helper 0 _ = zero
+fromℕ-helper (ℕ.suc n) (ℕ.suc w) =
+  if (n % 2 ℕ.≡ᵇ 0)
+    then 1+[2 fromℕ-helper (n / 2) w ]
+    else 2[1+ fromℕ-helper (n / 2) w ]
+fromℕ-helper _ 0 = zero
+
 fromℕ : ℕ → ℕᵇ
-fromℕ 0         = zero
-fromℕ (ℕ.suc n) = suc (fromℕ n)
+fromℕ n = fromℕ-helper n n
 
+-- An alternative slower definition
 fromℕ' : ℕ → ℕᵇ
-fromℕ' n = helper n n ≤-refl
-  where
-    helper : (n w : ℕ) → n ℕ.≤ w → ℕᵇ
-    helper 0 _ _ = zero
-    helper (ℕ.suc n) (ℕ.suc w) (ℕ._≤_.s≤s p) =
-      if (n % 2 ℕ.≡ᵇ 0)
-      then 1+[2 helper (n / 2) w (≤-trans (m/n≤m n 2) p) ]
-      else 2[1+ helper (n / 2) w (≤-trans (m/n≤m n 2) p) ]
-
-fromℕ″ : ℕ → ℕᵇ
-fromℕ″ n = helper n n
-  where
-    helper : ℕ → ℕ → ℕᵇ
-    helper 0 _ = zero
-    helper (ℕ.suc n) (ℕ.suc w) =
-      if (n % 2 ℕ.≡ᵇ 0)
-      then 1+[2 helper (n / 2) w ]
-      else 2[1+ helper (n / 2) w ]
-    helper _ 0 = zero -- impossible
-
+fromℕ' 0 = zero
+fromℕ' (ℕ.suc n) = suc (fromℕ' n)
 
 -- An alternative ordering lifted from ℕ
 
