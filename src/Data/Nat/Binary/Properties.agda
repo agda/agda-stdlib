@@ -98,14 +98,20 @@ toℕ-pred zero     =  refl
 toℕ-pred 2[1+ x ] =  cong ℕ.pred $ sym $ ℕₚ.*-distribˡ-+ 2 1 (toℕ x)
 toℕ-pred 1+[2 x ] =  toℕ-double x
 
-toℕ-fromℕ : toℕ ∘ fromℕ ≗ id
-toℕ-fromℕ 0         = refl
-toℕ-fromℕ (ℕ.suc n) = begin
-  toℕ (fromℕ (ℕ.suc n))   ≡⟨⟩
-  toℕ (suc (fromℕ n))     ≡⟨ toℕ-suc (fromℕ n) ⟩
-  ℕ.suc (toℕ (fromℕ n))   ≡⟨ cong ℕ.suc (toℕ-fromℕ n) ⟩
+toℕ-fromℕ' : toℕ ∘ fromℕ' ≗ id
+toℕ-fromℕ' 0         = refl
+toℕ-fromℕ' (ℕ.suc n) = begin
+  toℕ (fromℕ' (ℕ.suc n))   ≡⟨⟩
+  toℕ (suc (fromℕ' n))     ≡⟨ toℕ-suc (fromℕ' n) ⟩
+  ℕ.suc (toℕ (fromℕ' n))   ≡⟨ cong ℕ.suc (toℕ-fromℕ' n) ⟩
   ℕ.suc n                 ∎
   where open ≡-Reasoning
+
+fromℕ≡fromℕ' : fromℕ ≗ fromℕ'
+fromℕ≡fromℕ' n = {!   !}
+
+toℕ-fromℕ : toℕ ∘ fromℕ ≗ id
+toℕ-fromℕ n rewrite fromℕ≡fromℕ' n = toℕ-fromℕ' n
 
 toℕ-injective : Injective _≡_ _≡_ toℕ
 toℕ-injective {zero}     {zero}     _               =  refl
@@ -654,15 +660,19 @@ suc-+ 1+[2 x ] 1+[2 y ] =  refl
 1+≗suc : (1ᵇ +_) ≗ suc
 1+≗suc = suc-+ zero
 
-fromℕ-homo-+ : ∀ m n → fromℕ (m ℕ.+ n) ≡ fromℕ m + fromℕ n
-fromℕ-homo-+ 0         _ = refl
-fromℕ-homo-+ (ℕ.suc m) n = begin
-  fromℕ ((ℕ.suc m) ℕ.+ n)          ≡⟨⟩
-  suc (fromℕ (m ℕ.+ n))            ≡⟨ cong suc (fromℕ-homo-+ m n) ⟩
+fromℕ'-homo-+ : ∀ m n → fromℕ' (m ℕ.+ n) ≡ fromℕ' m + fromℕ' n
+fromℕ'-homo-+ 0         _ = refl
+fromℕ'-homo-+ (ℕ.suc m) n = begin
+  fromℕ' ((ℕ.suc m) ℕ.+ n)         ≡⟨⟩
+  suc (fromℕ' (m ℕ.+ n))           ≡⟨ cong suc (fromℕ'-homo-+ m n) ⟩
   suc (a + b)                      ≡⟨ sym (suc-+ a b) ⟩
   (suc a) + b                      ≡⟨⟩
-  (fromℕ (ℕ.suc m)) + (fromℕ n)    ∎
-  where open ≡-Reasoning;  a = fromℕ m;  b = fromℕ n
+  (fromℕ' (ℕ.suc m)) + (fromℕ' n)  ∎
+  where open ≡-Reasoning;  a = fromℕ' m;  b = fromℕ' n
+
+fromℕ-homo-+ : ∀ m n → fromℕ (m ℕ.+ n) ≡ fromℕ m + fromℕ n
+fromℕ-homo-+ m n rewrite fromℕ≡fromℕ' (m ℕ.+ n) | fromℕ≡fromℕ' m | fromℕ≡fromℕ' n =
+  fromℕ'-homo-+ m n
 
 ------------------------------------------------------------------------
 -- Algebraic properties of _+_
