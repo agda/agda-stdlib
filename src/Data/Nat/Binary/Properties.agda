@@ -12,8 +12,12 @@ open import Algebra.Bundles
 open import Algebra.Morphism.Structures
 import Algebra.Morphism.MonoidMonomorphism as MonoidMonomorphism
 open import Algebra.Consequences.Propositional
+open import Data.Bool.Base using (if_then_else_; Bool; true; false)
+open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Nat.Binary.Base
 open import Data.Nat as ℕ using (ℕ; z≤n; s≤s)
+import Data.Nat.DivMod as ℕ÷
+open import Data.Nat.DivMod.Core using (divₕ-extractAcc)
 import Data.Nat.Properties as ℕₚ
 open import Data.Nat.Solver
 open import Data.Product using (_,_; proj₁; proj₂; ∃)
@@ -107,8 +111,57 @@ toℕ-fromℕ' (ℕ.suc n) = begin
   ℕ.suc n                 ∎
   where open ≡-Reasoning
 
+fromℕ-helper≡fromℕ' : ∀ n w → n ℕ.≤ w → fromℕ-helper n w ≡ fromℕ' n
+fromℕ-helper≡fromℕ' ℕ.zero w p = refl
+fromℕ-helper≡fromℕ' (ℕ.suc n) (ℕ.suc w) (s≤s n≤w) =
+  head-tail-cong _ _
+    (trans (head-homo' _ _) (sym (head-homo n)))
+    (trans
+      (trans
+        (tail-homo' (n ℕ÷.% 2 ℕ.≡ᵇ 0) _)
+        (fromℕ-helper≡fromℕ' (n ℕ÷./ 2) w (ℕₚ.≤-trans (ℕ÷.m/n≤m n 2) n≤w)))
+      (sym (tail-homo n)))
+  where
+  head : ℕᵇ → Maybe Bool
+  head zero = nothing
+  head 2[1+ n ] = just false
+  head 1+[2 n ] = just true
+  head-suc : ∀ n → head (suc (suc (suc n))) ≡ head (suc n)
+  head-suc zero = refl
+  head-suc 2[1+ n ] = refl
+  head-suc 1+[2 n ] = refl
+  head-homo : ∀ n → head (suc (fromℕ' n)) ≡ just (n ℕ÷.% 2 ℕ.≡ᵇ 0)
+  head-homo ℕ.zero = refl
+  head-homo (ℕ.suc ℕ.zero) = refl
+  head-homo (ℕ.suc (ℕ.suc n)) = trans (head-suc (fromℕ' n)) (head-homo n)
+  head-homo' : ∀ x xs → head (if x then (1+[2 xs ]) else (2[1+ xs ])) ≡ just x
+  head-homo' false xs = refl
+  head-homo' true xs = refl
+  tail : ℕᵇ → ℕᵇ
+  tail zero = zero
+  tail 2[1+ n ] = n
+  tail 1+[2 n ] = n
+  tail-suc : ∀ n → suc (tail (suc n)) ≡ tail (suc (suc (suc n)))
+  tail-suc zero = refl
+  tail-suc 2[1+ n ] = refl
+  tail-suc 1+[2 n ] = refl
+  tail-homo : ∀ n → tail (suc (fromℕ' n)) ≡ fromℕ' (n ℕ÷./ 2)
+  tail-homo ℕ.zero = refl
+  tail-homo (ℕ.suc ℕ.zero) = refl
+  tail-homo (ℕ.suc (ℕ.suc n)) =
+    trans
+      (trans (sym (tail-suc (fromℕ' n))) (cong suc (tail-homo n)))
+      (cong fromℕ' (sym (divₕ-extractAcc 1 1 n 1)))
+  tail-homo' : ∀ x xs → tail (if x then (1+[2 xs ]) else (2[1+ xs ])) ≡ xs
+  tail-homo' false xs = refl
+  tail-homo' true xs = refl
+  head-tail-cong : ∀ m n → head m ≡ head n → tail m ≡ tail n → m ≡ n
+  head-tail-cong zero zero p q = refl
+  head-tail-cong 2[1+ m ] 2[1+ n ] p q = cong 2[1+_] q
+  head-tail-cong 1+[2 m ] 1+[2 n ] p q = cong 1+[2_] q
+
 fromℕ≡fromℕ' : fromℕ ≗ fromℕ'
-fromℕ≡fromℕ' n = {!   !}
+fromℕ≡fromℕ' n = fromℕ-helper≡fromℕ' n n ℕₚ.≤-refl
 
 toℕ-fromℕ : toℕ ∘ fromℕ ≗ id
 toℕ-fromℕ n rewrite fromℕ≡fromℕ' n = toℕ-fromℕ' n
