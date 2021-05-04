@@ -65,3 +65,8 @@ Other minor additions
   respʳ-flip : _≈_ Respectsʳ (flip _≈_)
   respˡ-flip : _≈_ Respectsˡ (flip _≈_)
   ```
+
+* Added new proof to `Data.Nat.DivMod`:
+  ```agda
+  m/n≤m : ∀ m n {≢0} → (m / n) {≢0} ≤ m
+  ```
