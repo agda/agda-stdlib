@@ -185,12 +185,6 @@ m/n*n≤m m n@(suc n-1) = begin
   m % n + (m / n) * n  ≡⟨ sym (m≡m%n+[m/n]*n m n-1) ⟩
   m                    ∎
 
-m/n≤m : ∀ m n {≢0} → (m / n) {≢0} ≤ m
-m/n≤m m n@(suc n-1) = *-cancelʳ-≤ (m / n) m n-1 (begin
-  (m / n) * n ≤⟨ m/n*n≤m m n ⟩
-  m           ≤⟨ m≤m*n m (s≤s z≤n) ⟩
-  m * n       ∎)
-
 m/n<m : ∀ m n {≢0} → m ≥ 1 → n ≥ 2 → (m / n) {≢0} < m
 m/n<m m n@(suc n-1) m≥1 n≥2 = *-cancelʳ-< {n} (m / n) m (begin-strict
   (m / n) * n ≤⟨ m/n*n≤m m n ⟩

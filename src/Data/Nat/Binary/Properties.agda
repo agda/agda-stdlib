@@ -201,7 +201,7 @@ fromℕ-injective {x} {y} f[x]≡f[y] = begin
   where open ≡-Reasoning
 
 fromℕ-toℕ : fromℕ ∘ toℕ ≗ id
-fromℕ-toℕ =  toℕ-injective ∘ toℕ-fromℕ ∘ toℕ
+fromℕ-toℕ = toℕ-injective ∘ toℕ-fromℕ ∘ toℕ
 
 fromℕ-pred : ∀ n → fromℕ (ℕ.pred n) ≡ pred (fromℕ n)
 fromℕ-pred n = begin
