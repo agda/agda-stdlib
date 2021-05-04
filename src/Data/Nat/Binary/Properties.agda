@@ -115,13 +115,17 @@ fromℕ-helper≡fromℕ' : ∀ n w → n ℕ.≤ w → fromℕ-helper n w ≡ f
 fromℕ-helper≡fromℕ' ℕ.zero w p = refl
 fromℕ-helper≡fromℕ' (ℕ.suc n) (ℕ.suc w) (s≤s n≤w) =
   head-tail-cong _ _
-    (trans (head-homo' _ _) (sym (head-homo n)))
-    (trans
-      (trans
-        (tail-homo' (n ℕ÷.% 2 ℕ.≡ᵇ 0) _)
-        (fromℕ-helper≡fromℕ' (n ℕ÷./ 2) w (ℕₚ.≤-trans (ℕ÷.m/n≤m n 2) n≤w)))
-      (sym (tail-homo n)))
+    (begin
+    head (fromℕ-helper (ℕ.suc n) (ℕ.suc w))  ≡⟨ head-homo' _ _ ⟩
+    just (n ℕ÷.% 2 ℕ.≡ᵇ 0)                   ≡˘⟨ head-homo n ⟩
+    head (fromℕ' (ℕ.suc n))                  ∎)
+    (begin
+    tail (fromℕ-helper (ℕ.suc n) (ℕ.suc w))  ≡⟨ tail-homo' (n ℕ÷.% 2 ℕ.≡ᵇ 0) _ ⟩
+    fromℕ-helper (n ℕ÷./ 2) w                ≡⟨ fromℕ-helper≡fromℕ' (n ℕ÷./ 2) w (ℕₚ.≤-trans (ℕ÷.m/n≤m n 2) n≤w) ⟩
+    fromℕ' (n ℕ÷./ 2)                        ≡˘⟨ tail-homo n ⟩
+    tail (fromℕ' (ℕ.suc n))                  ∎)
   where
+  open ≡-Reasoning
   head : ℕᵇ → Maybe Bool
   head zero = nothing
   head 2[1+ n ] = just false
@@ -148,10 +152,11 @@ fromℕ-helper≡fromℕ' (ℕ.suc n) (ℕ.suc w) (s≤s n≤w) =
   tail-homo : ∀ n → tail (suc (fromℕ' n)) ≡ fromℕ' (n ℕ÷./ 2)
   tail-homo ℕ.zero = refl
   tail-homo (ℕ.suc ℕ.zero) = refl
-  tail-homo (ℕ.suc (ℕ.suc n)) =
-    trans
-      (trans (sym (tail-suc (fromℕ' n))) (cong suc (tail-homo n)))
-      (cong fromℕ' (sym (divₕ-extractAcc 1 1 n 1)))
+  tail-homo (ℕ.suc (ℕ.suc n)) = begin
+    tail (suc (fromℕ' (ℕ.suc (ℕ.suc n))))  ≡˘⟨ tail-suc (fromℕ' n) ⟩
+    suc (tail (suc (fromℕ' n)))            ≡⟨ cong suc (tail-homo n) ⟩
+    fromℕ' (ℕ.suc (n ℕ÷./ 2))              ≡⟨ cong fromℕ' (sym (divₕ-extractAcc 1 1 n 1)) ⟩
+    fromℕ' (ℕ.suc (ℕ.suc n) ℕ÷./ 2)        ∎
   tail-homo' : ∀ x xs → tail (if x then (1+[2 xs ]) else (2[1+ xs ])) ≡ xs
   tail-homo' false xs = refl
   tail-homo' true xs = refl
