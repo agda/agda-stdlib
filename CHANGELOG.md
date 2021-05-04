@@ -16,6 +16,10 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
+* Replaced O(n) implementation of `Data.Nat.Binary.fromℕ` with O(log n). The old
+  implementation is maintained under `Data.Nat.Binary.fromℕ'` and proven to be
+  equivalent.
+
 Deprecated modules
 ------------------
 
