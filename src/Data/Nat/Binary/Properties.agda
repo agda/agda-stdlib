@@ -20,7 +20,8 @@ import Data.Nat.DivMod as ℕ÷
 open import Data.Nat.DivMod.Core using (divₕ-extractAcc)
 import Data.Nat.Properties as ℕₚ
 open import Data.Nat.Solver
-open import Data.Product using (_,_; proj₁; proj₂; ∃)
+open import Data.Product using (_×_; _,_; proj₁; proj₂; ∃)
+import Data.Product.Properties as Productₚ
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base using (_∘_; _$_; id)
 open import Function.Definitions using (Injective)
@@ -114,22 +115,28 @@ toℕ-fromℕ' (ℕ.suc n) = begin
 fromℕ-helper≡fromℕ' : ∀ n w → n ℕ.≤ w → fromℕ-helper n w ≡ fromℕ' n
 fromℕ-helper≡fromℕ' ℕ.zero w p = refl
 fromℕ-helper≡fromℕ' (ℕ.suc n) (ℕ.suc w) (s≤s n≤w) =
-  head-tail-cong _ _
-    (begin
-    head (fromℕ-helper (ℕ.suc n) (ℕ.suc w))  ≡⟨ head-homo' _ _ ⟩
-    just (n ℕ÷.% 2 ℕ.≡ᵇ 0)                   ≡˘⟨ head-homo n ⟩
-    head (fromℕ' (ℕ.suc n))                  ∎)
-    (begin
-    tail (fromℕ-helper (ℕ.suc n) (ℕ.suc w))  ≡⟨ tail-homo' (n ℕ÷.% 2 ℕ.≡ᵇ 0) _ ⟩
-    fromℕ-helper (n ℕ÷./ 2) w                ≡⟨ fromℕ-helper≡fromℕ' (n ℕ÷./ 2) w (ℕₚ.≤-trans (ℕ÷.m/n≤m n 2) n≤w) ⟩
-    fromℕ' (n ℕ÷./ 2)                        ≡˘⟨ tail-homo n ⟩
-    tail (fromℕ' (ℕ.suc n))                  ∎)
+  split-cong _ _ (begin
+    split (fromℕ-helper (ℕ.suc n) (ℕ.suc w))            ≡⟨ split-if _ _ ⟩
+    just (n ℕ÷.% 2 ℕ.≡ᵇ 0) , fromℕ-helper (n ℕ÷./ 2) w  ≡⟨ cong (_ ,_) rec-n/2 ⟩
+    just (n ℕ÷.% 2 ℕ.≡ᵇ 0) , fromℕ' (n ℕ÷./ 2)          ≡˘⟨ cong₂ _,_ (head-homo n) (tail-homo n) ⟩
+    head (fromℕ' (ℕ.suc n)) , tail (fromℕ' (ℕ.suc n))   ≡⟨⟩
+    split (fromℕ' (ℕ.suc n))                            ∎)
   where
   open ≡-Reasoning
-  head : ℕᵇ → Maybe Bool
-  head zero = nothing
-  head 2[1+ n ] = just false
-  head 1+[2 n ] = just true
+  rec-n/2 = fromℕ-helper≡fromℕ' (n ℕ÷./ 2) w (ℕₚ.≤-trans (ℕ÷.m/n≤m n 2) n≤w)
+  split : ℕᵇ → Maybe Bool × ℕᵇ
+  split zero = nothing , zero
+  split 2[1+ n ] = just false , n
+  split 1+[2 n ] = just true , n
+  head = proj₁ ∘ split
+  tail = proj₂ ∘ split
+  split-cong : ∀ m n → split m ≡ split n → m ≡ n
+  split-cong zero zero refl = refl
+  split-cong 2[1+ m ] 2[1+ .m ] refl = refl
+  split-cong 1+[2 m ] 1+[2 .m ] refl = refl
+  split-if : ∀ x xs → split (if x then 1+[2 xs ] else 2[1+ xs ]) ≡ (just x , xs)
+  split-if false xs = refl
+  split-if true xs = refl
   head-suc : ∀ n → head (suc (suc (suc n))) ≡ head (suc n)
   head-suc zero = refl
   head-suc 2[1+ n ] = refl
@@ -138,13 +145,6 @@ fromℕ-helper≡fromℕ' (ℕ.suc n) (ℕ.suc w) (s≤s n≤w) =
   head-homo ℕ.zero = refl
   head-homo (ℕ.suc ℕ.zero) = refl
   head-homo (ℕ.suc (ℕ.suc n)) = trans (head-suc (fromℕ' n)) (head-homo n)
-  head-homo' : ∀ x xs → head (if x then (1+[2 xs ]) else (2[1+ xs ])) ≡ just x
-  head-homo' false xs = refl
-  head-homo' true xs = refl
-  tail : ℕᵇ → ℕᵇ
-  tail zero = zero
-  tail 2[1+ n ] = n
-  tail 1+[2 n ] = n
   tail-suc : ∀ n → suc (tail (suc n)) ≡ tail (suc (suc (suc n)))
   tail-suc zero = refl
   tail-suc 2[1+ n ] = refl
@@ -157,13 +157,6 @@ fromℕ-helper≡fromℕ' (ℕ.suc n) (ℕ.suc w) (s≤s n≤w) =
     suc (tail (suc (fromℕ' n)))            ≡⟨ cong suc (tail-homo n) ⟩
     fromℕ' (ℕ.suc (n ℕ÷./ 2))              ≡⟨ cong fromℕ' (sym (divₕ-extractAcc 1 1 n 1)) ⟩
     fromℕ' (ℕ.suc (ℕ.suc n) ℕ÷./ 2)        ∎
-  tail-homo' : ∀ x xs → tail (if x then (1+[2 xs ]) else (2[1+ xs ])) ≡ xs
-  tail-homo' false xs = refl
-  tail-homo' true xs = refl
-  head-tail-cong : ∀ m n → head m ≡ head n → tail m ≡ tail n → m ≡ n
-  head-tail-cong zero zero p q = refl
-  head-tail-cong 2[1+ m ] 2[1+ n ] p q = cong 2[1+_] q
-  head-tail-cong 1+[2 m ] 1+[2 n ] p q = cong 1+[2_] q
 
 fromℕ≡fromℕ' : fromℕ ≗ fromℕ'
 fromℕ≡fromℕ' n = fromℕ-helper≡fromℕ' n n ℕₚ.≤-refl
