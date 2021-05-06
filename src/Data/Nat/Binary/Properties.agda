@@ -112,43 +112,43 @@ toℕ-fromℕ' (ℕ.suc n) = begin
   ℕ.suc n                 ∎
   where open ≡-Reasoning
 
-fromℕ-helper≡fromℕ' : ∀ n w → n ℕ.≤ w → fromℕ-helper n w ≡ fromℕ' n
-fromℕ-helper≡fromℕ' ℕ.zero w p = refl
-fromℕ-helper≡fromℕ' (ℕ.suc n) (ℕ.suc w) (s≤s n≤w) =
-  split-cong _ _ (begin
-    split (fromℕ-helper (ℕ.suc n) (ℕ.suc w))            ≡⟨ split-if _ _ ⟩
-    just (n ℕ÷.% 2 ℕ.≡ᵇ 0) , fromℕ-helper (n ℕ÷./ 2) w  ≡⟨ cong (_ ,_) rec-n/2 ⟩
-    just (n ℕ÷.% 2 ℕ.≡ᵇ 0) , fromℕ' (n ℕ÷./ 2)          ≡˘⟨ cong₂ _,_ (head-homo n) (tail-homo n) ⟩
-    head (fromℕ' (ℕ.suc n)) , tail (fromℕ' (ℕ.suc n))   ≡⟨⟩
-    split (fromℕ' (ℕ.suc n))                            ∎)
+fromℕ≡fromℕ' : fromℕ ≗ fromℕ'
+fromℕ≡fromℕ' n = fromℕ-helper≡fromℕ' n n ℕₚ.≤-refl
   where
-  open ≡-Reasoning
-  rec-n/2 = fromℕ-helper≡fromℕ' (n ℕ÷./ 2) w (ℕₚ.≤-trans (ℕ÷.m/n≤m n 2) n≤w)
   split : ℕᵇ → Maybe Bool × ℕᵇ
-  split zero = nothing , zero
+  split zero     = nothing , zero
   split 2[1+ n ] = just false , n
   split 1+[2 n ] = just true , n
+
   head = proj₁ ∘ split
   tail = proj₂ ∘ split
+
   split-cong : ∀ m n → split m ≡ split n → m ≡ n
   split-cong zero zero refl = refl
   split-cong 2[1+ m ] 2[1+ .m ] refl = refl
   split-cong 1+[2 m ] 1+[2 .m ] refl = refl
+
   split-if : ∀ x xs → split (if x then 1+[2 xs ] else 2[1+ xs ]) ≡ (just x , xs)
   split-if false xs = refl
   split-if true xs = refl
+
   head-suc : ∀ n → head (suc (suc (suc n))) ≡ head (suc n)
   head-suc zero = refl
   head-suc 2[1+ n ] = refl
   head-suc 1+[2 n ] = refl
-  head-homo : ∀ n → head (suc (fromℕ' n)) ≡ just (n ℕ÷.% 2 ℕ.≡ᵇ 0)
-  head-homo ℕ.zero = refl
-  head-homo (ℕ.suc ℕ.zero) = refl
-  head-homo (ℕ.suc (ℕ.suc n)) = trans (head-suc (fromℕ' n)) (head-homo n)
+
   tail-suc : ∀ n → suc (tail (suc n)) ≡ tail (suc (suc (suc n)))
   tail-suc zero = refl
   tail-suc 2[1+ n ] = refl
   tail-suc 1+[2 n ] = refl
+
+  head-homo : ∀ n → head (suc (fromℕ' n)) ≡ just (n ℕ÷.% 2 ℕ.≡ᵇ 0)
+  head-homo ℕ.zero = refl
+  head-homo (ℕ.suc ℕ.zero) = refl
+  head-homo (ℕ.suc (ℕ.suc n)) = trans (head-suc (fromℕ' n)) (head-homo n)
+
+  open ≡-Reasoning
+
   tail-homo : ∀ n → tail (suc (fromℕ' n)) ≡ fromℕ' (n ℕ÷./ 2)
   tail-homo ℕ.zero = refl
   tail-homo (ℕ.suc ℕ.zero) = refl
@@ -158,8 +158,16 @@ fromℕ-helper≡fromℕ' (ℕ.suc n) (ℕ.suc w) (s≤s n≤w) =
     fromℕ' (ℕ.suc (n ℕ÷./ 2))              ≡⟨ cong fromℕ' (sym (divₕ-extractAcc 1 1 n 1)) ⟩
     fromℕ' (ℕ.suc (ℕ.suc n) ℕ÷./ 2)        ∎
 
-fromℕ≡fromℕ' : fromℕ ≗ fromℕ'
-fromℕ≡fromℕ' n = fromℕ-helper≡fromℕ' n n ℕₚ.≤-refl
+  fromℕ-helper≡fromℕ' : ∀ n w → n ℕ.≤ w → fromℕ.helper n n w ≡ fromℕ' n
+  fromℕ-helper≡fromℕ' ℕ.zero w p = refl
+  fromℕ-helper≡fromℕ' (ℕ.suc n) (ℕ.suc w) (s≤s n≤w) =
+    split-cong _ _ (begin
+      split (fromℕ.helper n (ℕ.suc n) (ℕ.suc w))            ≡⟨ split-if _ _ ⟩
+      just (n ℕ÷.% 2 ℕ.≡ᵇ 0) , fromℕ.helper n (n ℕ÷./ 2) w  ≡⟨ cong (_ ,_) rec-n/2 ⟩
+      just (n ℕ÷.% 2 ℕ.≡ᵇ 0) , fromℕ' (n ℕ÷./ 2)            ≡˘⟨ cong₂ _,_ (head-homo n) (tail-homo n) ⟩
+      head (fromℕ' (ℕ.suc n)) , tail (fromℕ' (ℕ.suc n))     ≡⟨⟩
+      split (fromℕ' (ℕ.suc n))                              ∎)
+    where rec-n/2 = fromℕ-helper≡fromℕ' (n ℕ÷./ 2) w (ℕₚ.≤-trans (ℕ÷.m/n≤m n 2) n≤w)
 
 toℕ-fromℕ : toℕ ∘ fromℕ ≗ id
 toℕ-fromℕ n rewrite fromℕ≡fromℕ' n = toℕ-fromℕ' n

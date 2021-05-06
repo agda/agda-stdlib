@@ -114,16 +114,17 @@ toℕ zero     =  0
 toℕ 2[1+ x ] =  2 ℕ.* (ℕ.suc (toℕ x))
 toℕ 1+[2 x ] =  ℕ.suc (2 ℕ.* (toℕ x))
 
-fromℕ-helper : ℕ → ℕ → ℕᵇ
-fromℕ-helper 0 _ = zero
-fromℕ-helper (ℕ.suc n) (ℕ.suc w) =
-  if (n % 2 ℕ.≡ᵇ 0)
-    then 1+[2 fromℕ-helper (n / 2) w ]
-    else 2[1+ fromℕ-helper (n / 2) w ]
-fromℕ-helper _ 0 = zero
-
 fromℕ : ℕ → ℕᵇ
-fromℕ n = fromℕ-helper n n
+fromℕ n = helper n n
+  module fromℕ where
+  helper : ℕ → ℕ → ℕᵇ
+  helper 0 _ = zero
+  helper (ℕ.suc n) (ℕ.suc w) =
+    if (n % 2 ℕ.≡ᵇ 0)
+      then 1+[2 helper (n / 2) w ]
+      else 2[1+ helper (n / 2) w ]
+  -- Impossible case
+  helper _ 0 = zero
 
 -- An alternative slower definition
 fromℕ' : ℕ → ℕᵇ
