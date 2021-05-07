@@ -123,10 +123,10 @@ fromℕ≡fromℕ' n = fromℕ-helper≡fromℕ' n n ℕₚ.≤-refl
   head = proj₁ ∘ split
   tail = proj₂ ∘ split
 
-  split-cong : ∀ m n → split m ≡ split n → m ≡ n
-  split-cong zero zero refl = refl
-  split-cong 2[1+ m ] 2[1+ .m ] refl = refl
-  split-cong 1+[2 m ] 1+[2 .m ] refl = refl
+  split-injective : Injective _≡_ _≡_ split
+  split-injective {zero} {zero} refl = refl
+  split-injective {2[1+ _ ]} {2[1+ _ ]} refl = refl
+  split-injective {1+[2 _ ]} {1+[2 _ ]} refl = refl
 
   split-if : ∀ x xs → split (if x then 1+[2 xs ] else 2[1+ xs ]) ≡ (just x , xs)
   split-if false xs = refl
@@ -161,7 +161,7 @@ fromℕ≡fromℕ' n = fromℕ-helper≡fromℕ' n n ℕₚ.≤-refl
   fromℕ-helper≡fromℕ' : ∀ n w → n ℕ.≤ w → fromℕ.helper n n w ≡ fromℕ' n
   fromℕ-helper≡fromℕ' ℕ.zero w p = refl
   fromℕ-helper≡fromℕ' (ℕ.suc n) (ℕ.suc w) (s≤s n≤w) =
-    split-cong _ _ (begin
+    split-injective (begin
       split (fromℕ.helper n (ℕ.suc n) (ℕ.suc w))            ≡⟨ split-if _ _ ⟩
       just (n ℕ÷.% 2 ℕ.≡ᵇ 0) , fromℕ.helper n (n ℕ÷./ 2) w  ≡⟨ cong (_ ,_) rec-n/2 ⟩
       just (n ℕ÷.% 2 ℕ.≡ᵇ 0) , fromℕ' (n ℕ÷./ 2)            ≡˘⟨ cong₂ _,_ (head-homo n) (tail-homo n) ⟩
