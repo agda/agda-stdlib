@@ -240,6 +240,13 @@ punchIn zero    j       = suc j
 punchIn (suc i) zero    = zero
 punchIn (suc i) (suc j) = suc (punchIn i j)
 
+-- The function f(i,j) such that f(i,j) = if j≤i then j else j-1
+
+pinch : ∀ {n} → Fin n → Fin (suc n) → Fin n
+pinch {suc n} _       zero    = zero
+pinch {suc n} zero    (suc j) = j
+pinch {suc n} (suc i) (suc j) = suc (pinch i j)
+
 ------------------------------------------------------------------------
 -- Order relations
 

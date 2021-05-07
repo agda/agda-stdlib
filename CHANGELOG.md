@@ -65,6 +65,16 @@ Other minor additions
   respʳ-flip : _≈_ Respectsʳ (flip _≈_)
   respˡ-flip : _≈_ Respectsˡ (flip _≈_)
   ```
+* Added new function to `Data.Fin.Base`:
+  ```agda
+  pinch : ∀ {n} → Fin n → Fin (suc n) → Fin n
+  ```
+
+* Added new proofs to `Data.Fin.Properties`:
+  ```agda
+  pinch-surjective : ∀ {m} (i : Fin m) → Surjective _≡_ (pinch i)
+  pinch-mono-≤ : ∀ {m} (i : Fin m) → (pinch i) Preserves _≤_ ⟶ _≤_
+  ```
 
 * Added new proofs to `Data.Nat.Binary.Properties`:
   ```agda
