@@ -66,6 +66,19 @@ Other minor additions
   respˡ-flip : _≈_ Respectsˡ (flip _≈_)
   ```
 
+* Added new proofs to `Data.Nat.Binary.Properties`:
+  ```agda
+  fromℕ≡fromℕ' : fromℕ ≗ fromℕ'
+  toℕ-fromℕ' : toℕ ∘ fromℕ' ≗ id
+  fromℕ'-homo-+ : ∀ m n → fromℕ' (m ℕ.+ n) ≡ fromℕ' m + fromℕ' n
+  ```
+
+* Rewrote proofs in `Data.Nat.Binary.Properties` for new implementation of `fromℕ`:
+  ```agda
+  toℕ-fromℕ : toℕ ∘ fromℕ ≗ id
+  fromℕ-homo-+ : ∀ m n → fromℕ (m ℕ.+ n) ≡ fromℕ m + fromℕ n
+  ```
+
 * Added new proof to `Data.Nat.DivMod`:
   ```agda
   m/n≤m : ∀ m n {≢0} → (m / n) {≢0} ≤ m
