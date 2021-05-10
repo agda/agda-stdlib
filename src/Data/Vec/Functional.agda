@@ -19,8 +19,9 @@ open import Data.Fin.Base
 open import Data.List.Base as L using (List)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
 open import Data.Product using (Σ; ∃; _×_; _,_; proj₁; proj₂; uncurry)
-open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_])
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Data.Vec.Base as V using (Vec)
+import Data.Vec.Recursive.Base as Nary
 open import Function.Base
 open import Level using (Level)
 
@@ -66,6 +67,14 @@ _∷_ : ∀ {n} → A → Vector A n → Vector A (suc n)
 (x ∷ xs) zero    = x
 (x ∷ xs) (suc i) = xs i
 
+-- Syntactic sugar for vectors, allowing one to write: `[ x , y , z ]`
+-- rather than `x ∷ y ∷ z ∷ []` or pattern-matching on the argument.
+--
+-- NOTE: requires you to import `_,_` from `Data.Product`
+[_] : ∀ {n} → A Nary.^ (suc n) → Vector A (suc n)
+[_] {n = zero}  x        = x ∷ []
+[_] {n = suc n} (x , xs) = x ∷ [ xs ]
+
 length : ∀ {n} → Vector A n → ℕ
 length {n = n} _ = n
 
@@ -103,7 +112,7 @@ map : (A → B) → ∀ {n} → Vector A n → Vector B n
 map f xs = f ∘ xs
 
 _++_ : ∀ {m n} → Vector A m → Vector A n → Vector A (m ℕ.+ n)
-_++_ {m = m} xs ys i = [ xs , ys ] (splitAt m i)
+_++_ {m = m} xs ys i = Sum.[ xs , ys ] (splitAt m i)
 
 concat : ∀ {m n} → Vector (Vector A m) n → Vector A (n ℕ.* m)
 concat {m = m} xss i = uncurry (flip xss) (quotRem m i)

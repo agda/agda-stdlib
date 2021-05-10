@@ -6,6 +6,9 @@ The library has been tested using Agda 2.6.1 and 2.6.1.3.
 Highlights
 ----------
 
+* Enhanced `[_]` for `Data.List` and `Data.Vector`, allowing one to write `[ x , y , z ]`
+  instead of `x ∷ y ∷ z ∷ []` (although cannot be used in pattern matching).
+
 Bug-fixes
 ---------
 
@@ -39,6 +42,15 @@ New modules
   Data.List.Relation.Unary.Complete.Setoid.Properties
   ```
 
+Major changes
+-------------
+
+* Enhanced the definition of `[_]` in `Data.List` and `Data.Vector` so that one
+  can write `[ x , y , z ]` instead of `x ∷ y ∷ z ∷ []`. The implementation is
+  uses `Data.Vec.Recursive` which in turn uses `Data.Product` and therefore you
+  will need to have `_,_` from `Data.Product` imported for this to work. Note that
+  you still cannot use `[_]` in pattern matching.
+
 Other minor additions
 ---------------------
 
@@ -64,11 +76,16 @@ Other minor additions
 
 * Added new function to `Data.Fin.Base`:
   ```agda
-  pinch : ∀ {n} → Fin n → Fin (suc n) → Fin n
+  pinch : Fin n → Fin (suc n) → Fin n
   ```
 
 * Added new proofs to `Data.Fin.Properties`:
   ```agda
-  pinch-surjective : ∀ {m} (i : Fin m) → Surjective _≡_ (pinch i)
-  pinch-mono-≤ : ∀ {m} (i : Fin m) → (pinch i) Preserves _≤_ ⟶ _≤_
+  pinch-surjective : Surjective _≡_ (pinch i)
+  pinch-mono-≤     : (pinch i) Preserves _≤_ ⟶ _≤_
+  ```
+
+* Added standard "sugar" for `Data.Vec.Functional`:
+  ```agda
+  [_] : A ^ (suc n) → Vector A (suc n)
   ```

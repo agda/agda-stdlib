@@ -9,11 +9,12 @@
 module Data.Vec.Base where
 
 open import Data.Bool.Base
-open import Data.Nat.Base
+open import Data.Nat.Base hiding (_^_)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base as List using (List)
 open import Data.Product as Prod using (∃; ∃₂; _×_; _,_)
 open import Data.These.Base as These using (These; this; that; these)
+open import Data.Vec.Recursive.Base using (_^_)
 open import Function.Base using (const; _∘′_; id; _∘_)
 open import Level using (Level)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
@@ -205,8 +206,13 @@ count P? (x ∷ xs) with does (P? x)
 ------------------------------------------------------------------------
 -- Operations for building vectors
 
-[_] : A → Vec A 1
-[ x ] = x ∷ []
+-- Syntactic sugar for vectors, allowing one to write: `[ x , y , z ]`
+-- rather than `x ∷ y ∷ z ∷ []`.
+--
+-- NOTE: requires you to import `_,_` from `Data.Product`
+[_] : ∀ {n} → A ^ (suc n) → Vec A (suc n)
+[_] {n = zero}  x        = x ∷ []
+[_] {n = suc n} (x , xs) = x ∷ [ xs ]
 
 replicate : ∀ {n} → A → Vec A n
 replicate {n = zero}  x = []
