@@ -509,7 +509,7 @@ concat-concat (xss ∷ xsss) = begin
   concat xss ++ concat (concat xsss) ≡⟨ concat-++ xss (concat xsss) ⟩
   concat (concat (xss ∷ xsss))       ∎
 
-concat-[-] : concat {A = A} ∘ map [_] ≗ id
+concat-[-] : concat {A = A} ∘ map ([_] {n = 0}) ≗ id
 concat-[-] [] = refl
 concat-[-] (x ∷ xs) = cong (x ∷_) (concat-[-] xs)
 
