@@ -4,7 +4,7 @@
 -- Exiting the program.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --guardedness --sized-types #-}
 
 module System.Exit where
 

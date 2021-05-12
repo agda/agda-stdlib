@@ -5,7 +5,7 @@
 -- manipulating potentially infinite objects
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --guardedness --sized-types #-}
 
 module IO.Primitive.Infinite where
 

@@ -4,7 +4,7 @@
 -- Miscellanous information about the system environment
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --guardedness --sized-types #-}
 
 module System.Environment where
 

@@ -4,7 +4,7 @@
 -- IO only involving infinite objects
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --guardedness #-}
+{-# OPTIONS --without-K --guardedness --sized-types #-}
 
 module IO.Infinite where
 

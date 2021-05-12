@@ -4,6 +4,8 @@
 -- Example use case for a fresh list: sorted list
 ------------------------------------------------------------------------
 
+{-# OPTIONS --sized-types #-}
+
 module README.Data.List.Fresh where
 
 open import Data.Nat

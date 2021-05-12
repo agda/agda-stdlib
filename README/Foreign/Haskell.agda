@@ -4,6 +4,8 @@
 -- A simple example of a program using the foreign function interface
 ------------------------------------------------------------------------
 
+{-# OPTIONS --guardedness --sized-types #-}
+
 module README.Foreign.Haskell where
 
 -- In order to be considered safe by Agda, the standard library cannot

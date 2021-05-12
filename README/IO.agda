@@ -4,7 +4,7 @@
 -- Simple examples of programs using IO
 ------------------------------------------------------------------------
 
-{-# OPTIONS --guardedness #-}
+{-# OPTIONS --guardedness --sized-types #-}
 
 module README.IO where
 
