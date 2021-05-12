@@ -12,11 +12,15 @@ open import Algebra.Bundles
 open import Algebra.Morphism.Structures
 import Algebra.Morphism.MonoidMonomorphism as MonoidMonomorphism
 open import Algebra.Consequences.Propositional
+open import Data.Bool.Base using (if_then_else_; Bool; true; false)
+open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Nat.Binary.Base
 open import Data.Nat as ℕ using (ℕ; z≤n; s≤s)
+open import Data.Nat.DivMod using (_%_; _/_; m/n≤m; +-distrib-/-∣ˡ)
+open import Data.Nat.Divisibility using (∣-refl)
 import Data.Nat.Properties as ℕₚ
 open import Data.Nat.Solver
-open import Data.Product using (_,_; proj₁; proj₂; ∃)
+open import Data.Product using (_×_; _,_; proj₁; proj₂; ∃)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Function.Base using (_∘_; _$_; id)
 open import Function.Definitions using (Injective)
@@ -98,14 +102,74 @@ toℕ-pred zero     =  refl
 toℕ-pred 2[1+ x ] =  cong ℕ.pred $ sym $ ℕₚ.*-distribˡ-+ 2 1 (toℕ x)
 toℕ-pred 1+[2 x ] =  toℕ-double x
 
-toℕ-fromℕ : toℕ ∘ fromℕ ≗ id
-toℕ-fromℕ 0         = refl
-toℕ-fromℕ (ℕ.suc n) = begin
-  toℕ (fromℕ (ℕ.suc n))   ≡⟨⟩
-  toℕ (suc (fromℕ n))     ≡⟨ toℕ-suc (fromℕ n) ⟩
-  ℕ.suc (toℕ (fromℕ n))   ≡⟨ cong ℕ.suc (toℕ-fromℕ n) ⟩
+toℕ-fromℕ' : toℕ ∘ fromℕ' ≗ id
+toℕ-fromℕ' 0         = refl
+toℕ-fromℕ' (ℕ.suc n) = begin
+  toℕ (fromℕ' (ℕ.suc n))   ≡⟨⟩
+  toℕ (suc (fromℕ' n))     ≡⟨ toℕ-suc (fromℕ' n) ⟩
+  ℕ.suc (toℕ (fromℕ' n))   ≡⟨ cong ℕ.suc (toℕ-fromℕ' n) ⟩
   ℕ.suc n                 ∎
   where open ≡-Reasoning
+
+fromℕ≡fromℕ' : fromℕ ≗ fromℕ'
+fromℕ≡fromℕ' n = fromℕ-helper≡fromℕ' n n ℕₚ.≤-refl
+  where
+  split : ℕᵇ → Maybe Bool × ℕᵇ
+  split zero     = nothing , zero
+  split 2[1+ n ] = just false , n
+  split 1+[2 n ] = just true , n
+
+  head = proj₁ ∘ split
+  tail = proj₂ ∘ split
+
+  split-injective : Injective _≡_ _≡_ split
+  split-injective {zero} {zero} refl = refl
+  split-injective {2[1+ _ ]} {2[1+ _ ]} refl = refl
+  split-injective {1+[2 _ ]} {1+[2 _ ]} refl = refl
+
+  split-if : ∀ x xs → split (if x then 1+[2 xs ] else 2[1+ xs ]) ≡ (just x , xs)
+  split-if false xs = refl
+  split-if true xs = refl
+
+  head-suc : ∀ n → head (suc (suc (suc n))) ≡ head (suc n)
+  head-suc zero = refl
+  head-suc 2[1+ n ] = refl
+  head-suc 1+[2 n ] = refl
+
+  tail-suc : ∀ n → suc (tail (suc n)) ≡ tail (suc (suc (suc n)))
+  tail-suc zero = refl
+  tail-suc 2[1+ n ] = refl
+  tail-suc 1+[2 n ] = refl
+
+  head-homo : ∀ n → head (suc (fromℕ' n)) ≡ just (n % 2 ℕ.≡ᵇ 0)
+  head-homo ℕ.zero = refl
+  head-homo (ℕ.suc ℕ.zero) = refl
+  head-homo (ℕ.suc (ℕ.suc n)) = trans (head-suc (fromℕ' n)) (head-homo n)
+
+  open ≡-Reasoning
+
+  tail-homo : ∀ n → tail (suc (fromℕ' n)) ≡ fromℕ' (n / 2)
+  tail-homo ℕ.zero = refl
+  tail-homo (ℕ.suc ℕ.zero) = refl
+  tail-homo (ℕ.suc (ℕ.suc n)) = begin
+    tail (suc (fromℕ' (ℕ.suc (ℕ.suc n))))  ≡˘⟨ tail-suc (fromℕ' n) ⟩
+    suc (tail (suc (fromℕ' n)))            ≡⟨ cong suc (tail-homo n) ⟩
+    fromℕ' (ℕ.suc (n / 2))                 ≡˘⟨ cong fromℕ' (+-distrib-/-∣ˡ {2} n ∣-refl) ⟩
+    fromℕ' (ℕ.suc (ℕ.suc n) / 2)           ∎
+
+  fromℕ-helper≡fromℕ' : ∀ n w → n ℕ.≤ w → fromℕ.helper n n w ≡ fromℕ' n
+  fromℕ-helper≡fromℕ' ℕ.zero w p = refl
+  fromℕ-helper≡fromℕ' (ℕ.suc n) (ℕ.suc w) (s≤s n≤w) =
+    split-injective (begin
+      split (fromℕ.helper n (ℕ.suc n) (ℕ.suc w))         ≡⟨ split-if _ _ ⟩
+      just (n % 2 ℕ.≡ᵇ 0) , fromℕ.helper n (n / 2) w     ≡⟨ cong (_ ,_) rec-n/2 ⟩
+      just (n % 2 ℕ.≡ᵇ 0) , fromℕ' (n / 2)               ≡˘⟨ cong₂ _,_ (head-homo n) (tail-homo n) ⟩
+      head (fromℕ' (ℕ.suc n)) , tail (fromℕ' (ℕ.suc n))  ≡⟨⟩
+      split (fromℕ' (ℕ.suc n))                           ∎)
+    where rec-n/2 = fromℕ-helper≡fromℕ' (n / 2) w (ℕₚ.≤-trans (m/n≤m n 2) n≤w)
+
+toℕ-fromℕ : toℕ ∘ fromℕ ≗ id
+toℕ-fromℕ n rewrite fromℕ≡fromℕ' n = toℕ-fromℕ' n
 
 toℕ-injective : Injective _≡_ _≡_ toℕ
 toℕ-injective {zero}     {zero}     _               =  refl
@@ -144,7 +208,7 @@ fromℕ-injective {x} {y} f[x]≡f[y] = begin
   where open ≡-Reasoning
 
 fromℕ-toℕ : fromℕ ∘ toℕ ≗ id
-fromℕ-toℕ =  toℕ-injective ∘ toℕ-fromℕ ∘ toℕ
+fromℕ-toℕ = toℕ-injective ∘ toℕ-fromℕ ∘ toℕ
 
 fromℕ-pred : ∀ n → fromℕ (ℕ.pred n) ≡ pred (fromℕ n)
 fromℕ-pred n = begin
@@ -654,15 +718,19 @@ suc-+ 1+[2 x ] 1+[2 y ] =  refl
 1+≗suc : (1ᵇ +_) ≗ suc
 1+≗suc = suc-+ zero
 
-fromℕ-homo-+ : ∀ m n → fromℕ (m ℕ.+ n) ≡ fromℕ m + fromℕ n
-fromℕ-homo-+ 0         _ = refl
-fromℕ-homo-+ (ℕ.suc m) n = begin
-  fromℕ ((ℕ.suc m) ℕ.+ n)          ≡⟨⟩
-  suc (fromℕ (m ℕ.+ n))            ≡⟨ cong suc (fromℕ-homo-+ m n) ⟩
+fromℕ'-homo-+ : ∀ m n → fromℕ' (m ℕ.+ n) ≡ fromℕ' m + fromℕ' n
+fromℕ'-homo-+ 0         _ = refl
+fromℕ'-homo-+ (ℕ.suc m) n = begin
+  fromℕ' ((ℕ.suc m) ℕ.+ n)         ≡⟨⟩
+  suc (fromℕ' (m ℕ.+ n))           ≡⟨ cong suc (fromℕ'-homo-+ m n) ⟩
   suc (a + b)                      ≡⟨ sym (suc-+ a b) ⟩
   (suc a) + b                      ≡⟨⟩
-  (fromℕ (ℕ.suc m)) + (fromℕ n)    ∎
-  where open ≡-Reasoning;  a = fromℕ m;  b = fromℕ n
+  (fromℕ' (ℕ.suc m)) + (fromℕ' n)  ∎
+  where open ≡-Reasoning;  a = fromℕ' m;  b = fromℕ' n
+
+fromℕ-homo-+ : ∀ m n → fromℕ (m ℕ.+ n) ≡ fromℕ m + fromℕ n
+fromℕ-homo-+ m n rewrite fromℕ≡fromℕ' (m ℕ.+ n) | fromℕ≡fromℕ' m | fromℕ≡fromℕ' n =
+  fromℕ'-homo-+ m n
 
 ------------------------------------------------------------------------
 -- Algebraic properties of _+_

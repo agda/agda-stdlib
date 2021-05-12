@@ -16,6 +16,10 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
+* Replaced O(n) implementation of `Data.Nat.Binary.fromℕ` with O(log n). The old
+  implementation is maintained under `Data.Nat.Binary.fromℕ'` and proven to be
+  equivalent.
+
 Deprecated modules
 ------------------
 
@@ -61,7 +65,6 @@ Other minor additions
   respʳ-flip : _≈_ Respectsʳ (flip _≈_)
   respˡ-flip : _≈_ Respectsˡ (flip _≈_)
   ```
-
 * Added new function to `Data.Fin.Base`:
   ```agda
   pinch : ∀ {n} → Fin n → Fin (suc n) → Fin n
@@ -71,4 +74,22 @@ Other minor additions
   ```agda
   pinch-surjective : ∀ {m} (i : Fin m) → Surjective _≡_ (pinch i)
   pinch-mono-≤ : ∀ {m} (i : Fin m) → (pinch i) Preserves _≤_ ⟶ _≤_
+  ```
+
+* Added new proofs to `Data.Nat.Binary.Properties`:
+  ```agda
+  fromℕ≡fromℕ' : fromℕ ≗ fromℕ'
+  toℕ-fromℕ' : toℕ ∘ fromℕ' ≗ id
+  fromℕ'-homo-+ : ∀ m n → fromℕ' (m ℕ.+ n) ≡ fromℕ' m + fromℕ' n
+  ```
+
+* Rewrote proofs in `Data.Nat.Binary.Properties` for new implementation of `fromℕ`:
+  ```agda
+  toℕ-fromℕ : toℕ ∘ fromℕ ≗ id
+  fromℕ-homo-+ : ∀ m n → fromℕ (m ℕ.+ n) ≡ fromℕ m + fromℕ n
+  ```
+
+* Added new proof to `Data.Nat.DivMod`:
+  ```agda
+  m/n≤m : ∀ m n {≢0} → (m / n) {≢0} ≤ m
   ```
