@@ -29,6 +29,12 @@ Deprecated names
 New modules
 -----------
 
+* Identity morphisms and composition of morphisms between algebraic structures:
+  ```
+  Algebra.Morphism.Construct.Composition
+  Algebra.Morphism.Construct.Identity
+  ```
+
 * Metrics specialised to co-domains with rational numbers:
   ```
   Function.Metric.Rational
