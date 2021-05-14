@@ -567,3 +567,8 @@ record IsBooleanAlgebra
     ¬-cong                : Congruent₁ ¬
 
   open IsDistributiveLattice isDistributiveLattice public
+ 
+record IsUnitalMagma (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
+  field
+    isMagma : IsMagma ∙
+    identity    : Identity ε ∙
