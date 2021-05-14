@@ -571,4 +571,4 @@ record IsBooleanAlgebra
 record IsUnitalMagma (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
   field
     isMagma : IsMagma ∙
-    identity    : Identity ε ∙
+    identity : Identity ε ∙
