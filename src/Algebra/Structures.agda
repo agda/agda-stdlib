@@ -580,18 +580,3 @@ record IsUnitalMagma (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
 
   identityʳ : RightIdentity ε ∙
   identityʳ = proj₂ identity
-
-record IsSemiGroupoid (∙ : Op₂ A) : Set (a ⊔ ℓ) where
-  field
-    assoc : Associative ∙
-
-record IsSmallCategory (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ)  where
-  field
-    isSemiGroupoid : IsSemiGroupoid ∙
-    identity : Identity ε ∙
-
-  identityˡ : LeftIdentity ε ∙
-  identityˡ = proj₁ identity
-
-  identityʳ : RightIdentity ε ∙
-  identityʳ = proj₂ identity
