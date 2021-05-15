@@ -583,7 +583,7 @@ record IsUnitalMagma (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
 
 record IsSemiGroupoid (∙ : Op₂ A) : Set (a ⊔ ℓ) where
   field
-    assoc   : Associative ∙
+    assoc : Associative ∙
 
 record IsSmallCategory (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ)  where
   field
