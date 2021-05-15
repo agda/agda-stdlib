@@ -572,3 +572,11 @@ record IsUnitalMagma (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
   field
     isMagma : IsMagma ∙
     identity : Identity ε ∙
+
+  open IsMagma isMagma public
+
+  identityˡ : LeftIdentity ε ∙
+  identityˡ = proj₁ identity
+
+  identityʳ : RightIdentity ε ∙
+  identityʳ = proj₂ identity
