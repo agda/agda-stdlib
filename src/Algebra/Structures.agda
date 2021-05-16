@@ -580,3 +580,16 @@ record IsUnitalMagma (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
 
   identityʳ : RightIdentity ε ∙
   identityʳ = proj₂ identity
+
+record IsQuasigroup (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) where
+  field
+    isMagma  : IsMagma _∙_
+    inverse   : Inverse ε _⁻¹ _∙_
+
+  open IsMagma isMagma public
+
+  inverseˡ : LeftInverse ε _⁻¹ _∙_
+  inverseˡ = proj₁ inverse
+
+  inverseʳ : RightInverse ε _⁻¹ _∙_
+  inverseʳ = proj₂ inverse
