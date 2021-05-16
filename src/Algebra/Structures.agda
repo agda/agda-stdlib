@@ -567,7 +567,7 @@ record IsBooleanAlgebra
     ¬-cong                : Congruent₁ ¬
 
   open IsDistributiveLattice isDistributiveLattice public
- 
+
 record IsUnitalMagma (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
   field
     isMagma : IsMagma ∙
@@ -593,3 +593,4 @@ record IsQuasigroup (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ �
 
   inverseʳ : RightInverse ε _⁻¹ _∙_
   inverseʳ = proj₂ inverse
+
