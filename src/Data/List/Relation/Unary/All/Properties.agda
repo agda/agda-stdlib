@@ -329,7 +329,7 @@ map-updateAt (px ∷ pxs) (there i) feq = cong (_ ∷_) (map-updateAt pxs i feq)
 ------------------------------------------------------------------------
 -- singleton
 
-singleton⁻ : All P [ x ] → P x
+singleton⁻ : {A : Set a} {P : Pred A p} {x : A} → All P [ x ] → P x
 singleton⁻ (px ∷ []) = px
 
 -- head

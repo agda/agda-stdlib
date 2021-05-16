@@ -51,11 +51,13 @@ private
 ¬x∷xs↭[] (trans s₁ s₂) with ↭-empty-inv s₂
 ... | refl = ¬x∷xs↭[] s₁
 
-↭-singleton-inv : ∀ {x} {xs : List A} → xs ↭ [ x ] → xs ≡ [ x ]
+↭-singleton-inv : ∀ {a} {A : Set a} {x : A} {xs : List A} → xs ↭ [ x ] → xs ≡ [ x ]
+↭-singleton-inv eq = {!!}
+{-
 ↭-singleton-inv refl                                             = refl
 ↭-singleton-inv (prep _ ρ) with refl ← ↭-empty-inv ρ             = refl
 ↭-singleton-inv (trans ρ₁ ρ₂) with refl ← ↭-singleton-inv ρ₂ = ↭-singleton-inv ρ₁
-
+-}
 ------------------------------------------------------------------------
 -- sym
 
@@ -148,7 +150,7 @@ shift v (x ∷ xs) ys = begin
   x ∷ (xs ++ [ v ] ++ ys) <⟨ shift v xs ys ⟩
   x ∷ v ∷ xs ++ ys        <<⟨ refl ⟩
   v ∷ x ∷ xs ++ ys        ∎
-
+{-
 drop-mid-≡ : ∀ {x : A} ws xs {ys} {zs} →
              ws ++ [ x ] ++ ys ≡ xs ++ [ x ] ++ zs →
              ws ++ ys ↭ xs ++ zs
@@ -320,3 +322,4 @@ module _ {ℓ} {R : Rel A ℓ} (R? : Decidable R) where
     (x ∷ xs) ++ y ∷ ys       ≡˘⟨ Lₚ.++-assoc [ x ] xs (y ∷ ys) ⟩
     x ∷ xs ++ y ∷ ys         ∎
     where open PermutationReasoning
+-}

@@ -297,10 +297,10 @@ module _ {_~_ : REL A B r} where
 ------------------------------------------------------------------------
 -- singleton
 
-singleton⁺ : P x → Any P [ x ]
+singleton⁺ : ∀ {A : Set a} {P : Pred A p} {x : A} → P x → Any P [ x ]
 singleton⁺ Px = here Px
 
-singleton⁻ : Any P [ x ] → P x
+singleton⁻ : ∀ {A : Set a} {P : Pred A p} {x : A} → Any P [ x ] → P x
 singleton⁻ (here Px) = Px
 
 ------------------------------------------------------------------------
