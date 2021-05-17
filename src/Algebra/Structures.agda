@@ -106,6 +106,18 @@ record IsSemilattice (∧ : Op₂ A) : Set (a ⊔ ℓ) where
 ------------------------------------------------------------------------
 -- Structures with 1 binary operation & 1 element
 ------------------------------------------------------------------------
+record IsUnitalMagma (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
+  field
+    isMagma : IsMagma ∙
+    identity : Identity ε ∙
+
+  open IsMagma isMagma public
+
+  identityˡ : LeftIdentity ε ∙
+  identityˡ = proj₁ identity
+
+  identityʳ : RightIdentity ε ∙
+  identityʳ = proj₂ identity
 
 record IsMonoid (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
   field
@@ -162,6 +174,19 @@ module IsBoundedLattice {∙ : Op₂ A}
 ------------------------------------------------------------------------
 -- Structures with 1 binary operation, 1 unary operation & 1 element
 ------------------------------------------------------------------------
+record IsQuasigroup (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) where
+  field
+    isMagma  : IsMagma _∙_
+    inverse   : Inverse ε _⁻¹ _∙_
+
+  open IsMagma isMagma public
+
+  inverseˡ : LeftInverse ε _⁻¹ _∙_
+  inverseˡ = proj₁ inverse
+
+  inverseʳ : RightInverse ε _⁻¹ _∙_
+  inverseʳ = proj₂ inverse
+
 
 record IsGroup (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) where
   field
@@ -567,30 +592,4 @@ record IsBooleanAlgebra
     ¬-cong                : Congruent₁ ¬
 
   open IsDistributiveLattice isDistributiveLattice public
-
-record IsUnitalMagma (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
-  field
-    isMagma : IsMagma ∙
-    identity : Identity ε ∙
-
-  open IsMagma isMagma public
-
-  identityˡ : LeftIdentity ε ∙
-  identityˡ = proj₁ identity
-
-  identityʳ : RightIdentity ε ∙
-  identityʳ = proj₂ identity
-
-record IsQuasigroup (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) where
-  field
-    isMagma  : IsMagma _∙_
-    inverse   : Inverse ε _⁻¹ _∙_
-
-  open IsMagma isMagma public
-
-  inverseˡ : LeftInverse ε _⁻¹ _∙_
-  inverseˡ = proj₁ inverse
-
-  inverseʳ : RightInverse ε _⁻¹ _∙_
-  inverseʳ = proj₂ inverse
 
