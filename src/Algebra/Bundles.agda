@@ -165,8 +165,6 @@ record Semilattice c ℓ : Set (suc (c ⊔ ℓ)) where
 -- Bundles with 1 binary operation & 1 element
 ------------------------------------------------------------------------
 
--- A raw monoid is a monoid without any laws.
-
 record UnitalMagma c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _∙_
   infix  4 _≈_
@@ -185,6 +183,7 @@ record UnitalMagma c ℓ : Set (suc (c ⊔ ℓ)) where
   open Magma magma public
     using (_≉_; rawMagma)
 
+-- A raw monoid is a monoid without any laws.
 
 record RawMonoid c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _∙_
