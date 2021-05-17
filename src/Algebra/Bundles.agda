@@ -309,6 +309,25 @@ record RawGroup c ℓ : Set (suc (c ⊔ ℓ)) where
   open RawMonoid rawMonoid public
     using (_≉_; rawMagma)
 
+record Quasigroup c ℓ : Set (suc (c ⊔ ℓ)) where
+  infix  8 _⁻¹
+  infixl 7 _∙_
+  infix  4 _≈_
+  field
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    _∙_     : Op₂ Carrier
+    ε       : Carrier
+    _⁻¹     : Op₁ Carrier
+    isQuasigroup : IsQuasigroup _≈_ _∙_ ε _⁻¹
+
+  open IsQuasigroup isQuasigroup public
+
+  magma : Magma _ _
+  magma = record { isMagma = isMagma }
+
+  open Magma magma public
+    using (_≉_; rawMagma)
 
 record Group c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 _⁻¹
