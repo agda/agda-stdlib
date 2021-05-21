@@ -24,8 +24,7 @@ srcDir         = "src"
 
 unsafeModules :: [FilePath]
 unsafeModules = map modToFile
-  [ "Codata.Musical.Cofin"
-  , "Codata.Musical.Colist"
+  [ "Codata.Musical.Colist"
   , "Codata.Musical.Colist.Base"
   , "Codata.Musical.Colist.Properties"
   , "Codata.Musical.Colist.Bisimilarity"
@@ -34,10 +33,8 @@ unsafeModules = map modToFile
   , "Codata.Musical.Colist.Relation.Unary.Any"
   , "Codata.Musical.Colist.Relation.Unary.Any.Properties"
   , "Codata.Musical.Colist.Infinite-merge"
-  , "Codata.Musical.Conat"
   , "Codata.Musical.Costring"
   , "Codata.Musical.Covec"
-  , "Codata.Musical.M"
   , "Codata.Musical.Conversion"
   , "Codata.Musical.Stream"
   , "Debug.Trace"

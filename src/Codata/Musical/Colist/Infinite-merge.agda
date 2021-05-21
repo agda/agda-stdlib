@@ -4,7 +4,7 @@
 -- Infinite merge operation for coinductive lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --guardedness --sized-types #-}
+{-# OPTIONS --without-K --guardedness #-}
 
 module Codata.Musical.Colist.Infinite-merge where
 

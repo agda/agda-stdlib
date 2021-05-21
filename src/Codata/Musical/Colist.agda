@@ -4,7 +4,7 @@
 -- Coinductive lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types --guardedness #-}
+{-# OPTIONS --without-K --guardedness #-}
 
 -- Disabled to prevent warnings from BoundedVec
 {-# OPTIONS --warn=noUserWarning #-}
