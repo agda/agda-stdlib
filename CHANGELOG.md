@@ -75,6 +75,17 @@ Non-backwards compatible changes
   `stream` that relies on the newly unsafe `Codata` modules has
   been moved to the new module `Data.Nat.Pseudorandom.LCG.Unsafe`.
 
+* In order to avoid the usage of the `--sized-types` in the
+  `Codata.Musical` directory, the functions `fromMusical` and
+  `toMusical` defined in `Codata.Musical.Colist`,
+  `Codata.Musical.Conat`, `Codata.Musical.Cofin`, `Codata.Musical.M`,
+  and `Codata.Musical.Stream` have been moved to a new module
+  `Codata.Musical.Conversion` and renamed to
+  `fromMusicalColist`/`toMusicalColist`,
+  `fromMusicalConat`/`toMusicalConat`,
+  `fromMusicalCofin`/`toMusicalCofin`, `fromMusicalM/toMusicalM`, and
+  `fromMusicalStream`/`toMusicalStream` respectively.
+
 #### Other
 
 * `Data.Maybe.Base` now re-exports the definition of `Maybe` given by

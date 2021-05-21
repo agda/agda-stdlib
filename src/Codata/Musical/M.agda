@@ -45,19 +45,3 @@ module _ {s p ℓ} {C : Container s p} (open Container C)
   unfold : S → M C
   unfold seed = let (x , f) = alg seed in
                 inf (x , λ p → ♯ unfold (f p))
-
-------------------------------------------------------------------------
--- Legacy
-
-import Codata.M as M
-open import Codata.Thunk
-import Size
-
-module _ {s p} {C : Container s p} where
-
-  fromMusical : ∀ {i} → M C → M.M C i
-  fromMusical (inf t) = M.inf (C.map rec t) where
-    rec = λ x → λ where .force → fromMusical (♭ x)
-
-  toMusical : M.M C Size.∞ → M C
-  toMusical (M.inf (s , f)) = inf (s , λ p → ♯ toMusical (f p .force))
