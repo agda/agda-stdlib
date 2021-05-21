@@ -12,7 +12,7 @@ Highlights
 Bug-fixes
 ---------
 
-* Added missing module `Function.Metric` which re-exports 
+* Added missing module `Function.Metric` which re-exports
   `Function.Metric.(Core/Definitions/Structures/Bundles)`. This module was referred
   to in the documentation of its children but until now was not present.
 
@@ -38,14 +38,14 @@ Non-backwards compatible changes
   * The type of the `var` constructor of the `Pattern` datatype has
     been changed from `(x : String) → Pattern` to `(x : Int) →
     Pattern`.
-	
+
   * The type of the `dot` constructor of the `Pattern` datatype has
     been changed from `Pattern` to `(t : Term) → Pattern`.
-	
+
   * The types of the `clause` and `absurd-clause` constructors of the
     `Clause` datatype now take an extra argument `(tel : Telescope)`,
     where `Telescope = List (String × Arg Type)`.
-	
+
   * The following constructors have been added to the `Sort` datatype:
     `prop : (t : Term) → Sort`, `propLit : (n : Nat) → Sort`, and
     `inf : (n : Nat) → Sort`.
@@ -79,7 +79,7 @@ Non-backwards compatible changes
 
 * `Data.Maybe.Base` now re-exports the definition of `Maybe` given by
   `Agda.Builtin.Maybe`. The `Foreign.Haskell` modules and definitions
-  corresponding to `Maybe` have been removed. See the release notes of 
+  corresponding to `Maybe` have been removed. See the release notes of
   Agda 2.6.2 for more information.
 
 Deprecated modules
