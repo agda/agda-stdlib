@@ -4,7 +4,7 @@
 -- A simple example of a program using the foreign function interface
 ------------------------------------------------------------------------
 
-{-# OPTIONS --guardedness --sized-types #-}
+{-# OPTIONS --guardedness #-}
 
 module README.Foreign.Haskell where
 
