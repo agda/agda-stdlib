@@ -4,7 +4,7 @@
 -- Coinductive lists
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types --guardedness #-}
+{-# OPTIONS --without-K --guardedness #-}
 
 -- Disabled to prevent warnings from BoundedVec
 {-# OPTIONS --warn=noUserWarning #-}
@@ -258,23 +258,6 @@ not-finite-and-infinite :
   ∀ {xs : Colist A} → Finite xs → Infinite xs → ⊥
 not-finite-and-infinite (x ∷ fin) (.x ∷ inf) =
   not-finite-and-infinite fin (♭ inf)
-
-------------------------------------------------------------------------
--- Legacy
-
-import Codata.Colist as C
-open import Codata.Thunk
-import Size
-
-fromMusical : ∀ {i} → Colist A → C.Colist A i
-fromMusical []       = C.[]
-fromMusical (x ∷ xs) = x C.∷ λ where .force → fromMusical (♭ xs)
-
-toMusical : C.Colist A Size.∞ → Colist A
-toMusical C.[]       = []
-toMusical (x C.∷ xs) = x ∷ ♯ toMusical (xs .force)
-
-
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

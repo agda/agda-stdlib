@@ -12,7 +12,7 @@ Highlights
 Bug-fixes
 ---------
 
-* Added missing module `Function.Metric` which re-exports 
+* Added missing module `Function.Metric` which re-exports
   `Function.Metric.(Core/Definitions/Structures/Bundles)`. This module was referred
   to in the documentation of its children but until now was not present.
 
@@ -38,14 +38,14 @@ Non-backwards compatible changes
   * The type of the `var` constructor of the `Pattern` datatype has
     been changed from `(x : String) → Pattern` to `(x : Int) →
     Pattern`.
-	
+
   * The type of the `dot` constructor of the `Pattern` datatype has
     been changed from `Pattern` to `(t : Term) → Pattern`.
-	
+
   * The types of the `clause` and `absurd-clause` constructors of the
     `Clause` datatype now take an extra argument `(tel : Telescope)`,
     where `Telescope = List (String × Arg Type)`.
-	
+
   * The following constructors have been added to the `Sort` datatype:
     `prop : (t : Term) → Sort`, `propLit : (n : Nat) → Sort`, and
     `inf : (n : Nat) → Sort`.
@@ -75,11 +75,22 @@ Non-backwards compatible changes
   `stream` that relies on the newly unsafe `Codata` modules has
   been moved to the new module `Data.Nat.Pseudorandom.LCG.Unsafe`.
 
+* In order to avoid the usage of the `--sized-types` in the
+  `Codata.Musical` directory, the functions `fromMusical` and
+  `toMusical` defined in `Codata.Musical.Colist`,
+  `Codata.Musical.Conat`, `Codata.Musical.Cofin`, `Codata.Musical.M`,
+  and `Codata.Musical.Stream` have been moved to a new module
+  `Codata.Musical.Conversion` and renamed to
+  `fromMusicalColist`/`toMusicalColist`,
+  `fromMusicalConat`/`toMusicalConat`,
+  `fromMusicalCofin`/`toMusicalCofin`, `fromMusicalM/toMusicalM`, and
+  `fromMusicalStream`/`toMusicalStream` respectively.
+
 #### Other
 
 * `Data.Maybe.Base` now re-exports the definition of `Maybe` given by
   `Agda.Builtin.Maybe`. The `Foreign.Haskell` modules and definitions
-  corresponding to `Maybe` have been removed. See the release notes of 
+  corresponding to `Maybe` have been removed. See the release notes of
   Agda 2.6.2 for more information.
 
 Deprecated modules
