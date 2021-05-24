@@ -35,8 +35,8 @@ New modules
 
 * Lists that contain every element of a type:
   ```
-  Data.List.Relation.Unary.Complete.Setoid
-  Data.List.Relation.Unary.Complete.Setoid.Properties
+  Data.List.Relation.Unary.Enumerates.Setoid
+  Data.List.Relation.Unary.Enumerates.Setoid.Properties
   ```
 
 Other minor additions
