@@ -13,6 +13,8 @@ Bug-fixes
   `Function.Metric.(Core/Definitions/Structures/Bundles)`. This module was referred
   to in the documentation of its children but until now was not present.
 
+* Missing fixity declaration added to `_<_` in `Relation.Binary.Construct.NonStrictToStrict`.
+
 Non-backwards compatible changes
 --------------------------------
 
