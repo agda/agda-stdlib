@@ -73,9 +73,9 @@
 <a id="2133" class="Comment">-- `String → ℕ → ℕ → ℕ → String` function.</a>
 
 <a id="2177" href="README.Text.Printf.html#2177" class="Function">_</a> <a id="2179" class="Symbol">:</a> <a id="2181" href="Agda.Builtin.String.html#336" class="Postulate">String</a> <a id="2188" class="Symbol">→</a> <a id="2190" href="Agda.Builtin.Nat.html#192" class="Datatype">ℕ</a> <a id="2192" class="Symbol">→</a> <a id="2194" href="Agda.Builtin.Nat.html#192" class="Datatype">ℕ</a> <a id="2196" class="Symbol">→</a> <a id="2198" href="Agda.Builtin.Nat.html#192" class="Datatype">ℕ</a> <a id="2200" class="Symbol">→</a> <a id="2202" href="Agda.Builtin.String.html#336" class="Postulate">String</a>
-<a id="2209" class="Symbol">_</a> <a id="2211" class="Symbol">=</a> <a id="2213" href="Text.Printf.html#1310" class="Function">printf</a> <a id="2220" class="String">&quot;%s: %u + %u ≡ %u&quot;</a>
+<a id="2209" class="Symbol">_</a> <a id="2211" class="Symbol">=</a> <a id="2213" href="Text.Printf.html#1322" class="Function">printf</a> <a id="2220" class="String">&quot;%s: %u + %u ≡ %u&quot;</a>
 
-<a id="2240" href="README.Text.Printf.html#2240" class="Function">_</a> <a id="2242" class="Symbol">:</a> <a id="2244" href="Text.Printf.html#1310" class="Function">printf</a> <a id="2251" class="String">&quot;%s: %u + %u ≡ %u&quot;</a> <a id="2270" class="String">&quot;example&quot;</a> <a id="2280" class="Number">3</a> <a id="2282" class="Number">2</a> <a id="2284" class="Number">5</a>
+<a id="2240" href="README.Text.Printf.html#2240" class="Function">_</a> <a id="2242" class="Symbol">:</a> <a id="2244" href="Text.Printf.html#1322" class="Function">printf</a> <a id="2251" class="String">&quot;%s: %u + %u ≡ %u&quot;</a> <a id="2270" class="String">&quot;example&quot;</a> <a id="2280" class="Number">3</a> <a id="2282" class="Number">2</a> <a id="2284" class="Number">5</a>
   <a id="2288" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="2290" class="String">&quot;example: 3 + 2 ≡ 5&quot;</a>
 <a id="2311" class="Symbol">_</a> <a id="2313" class="Symbol">=</a> <a id="2315" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
 
@@ -83,10 +83,10 @@
 <a id="2393" class="Comment">-- `Error e` where `e` is the lexing error.</a>
 
 <a id="2438" href="README.Text.Printf.html#2438" class="Function">_</a> <a id="2440" class="Symbol">:</a> <a id="2442" href="Text.Printf.Generic.html#1260" class="Record">Text.Printf.Error</a> <a id="2460" class="Symbol">(</a><a id="2461" href="Text.Format.Generic.html#2363" class="InductiveConstructor">UnexpectedEndOfString</a> <a id="2483" class="String">&quot;%s: %u + %u ≡ %&quot;</a><a id="2500" class="Symbol">)</a>
-<a id="2502" class="Symbol">_</a> <a id="2504" class="Symbol">=</a> <a id="2506" href="Text.Printf.html#1310" class="Function">printf</a> <a id="2513" class="String">&quot;%s: %u + %u ≡ %&quot;</a>
+<a id="2502" class="Symbol">_</a> <a id="2504" class="Symbol">=</a> <a id="2506" href="Text.Printf.html#1322" class="Function">printf</a> <a id="2513" class="String">&quot;%s: %u + %u ≡ %&quot;</a>
 
 <a id="2532" href="README.Text.Printf.html#2532" class="Function">_</a> <a id="2534" class="Symbol">:</a> <a id="2536" href="Text.Printf.Generic.html#1260" class="Record">Text.Printf.Error</a> <a id="2554" class="Symbol">(</a><a id="2555" href="Text.Format.Generic.html#2466" class="InductiveConstructor">InvalidType</a> <a id="2567" class="String">&quot;%s: %u + %&quot;</a> <a id="2580" class="String">&#39;a&#39;</a> <a id="2584" class="String">&quot; ≡ %u&quot;</a><a id="2591" class="Symbol">)</a>
-<a id="2593" class="Symbol">_</a> <a id="2595" class="Symbol">=</a> <a id="2597" href="Text.Printf.html#1310" class="Function">printf</a> <a id="2604" class="String">&quot;%s: %u + %a ≡ %u&quot;</a>
+<a id="2593" class="Symbol">_</a> <a id="2595" class="Symbol">=</a> <a id="2597" href="Text.Printf.html#1322" class="Function">printf</a> <a id="2604" class="String">&quot;%s: %u + %a ≡ %u&quot;</a>
 
 <a id="2624" class="Comment">-- Trying to pass arguments to such an ̀Error` type will lead to a</a>
 <a id="2691" class="Comment">-- unification error which hopefully makes the problem clear e.g.</a>

@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Algebra.Properties.CommutativeSemiring.Exp</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Exponentiation defined over a commutative semiring as repeated multiplication</a>
+<a id="187" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="261" class="Symbol">{-#</a> <a id="265" class="Keyword">OPTIONS</a> <a id="273" class="Pragma">--without-K</a> <a id="285" class="Pragma">--safe</a> <a id="292" class="Symbol">#-}</a>
+
+<a id="297" class="Keyword">open</a> <a id="302" class="Keyword">import</a> <a id="309" href="Algebra.html" class="Module">Algebra</a>
+
+<a id="318" class="Keyword">module</a> <a id="325" href="Algebra.Properties.CommutativeSemiring.Exp.html" class="Module">Algebra.Properties.CommutativeSemiring.Exp</a>
+  <a id="370" class="Symbol">{</a><a id="371" href="Algebra.Properties.CommutativeSemiring.Exp.html#371" class="Bound">a</a> <a id="373" href="Algebra.Properties.CommutativeSemiring.Exp.html#373" class="Bound">ℓ</a><a id="374" class="Symbol">}</a> <a id="376" class="Symbol">(</a><a id="377" href="Algebra.Properties.CommutativeSemiring.Exp.html#377" class="Bound">S</a> <a id="379" class="Symbol">:</a> <a id="381" href="Algebra.Bundles.html#17351" class="Record">CommutativeSemiring</a> <a id="401" href="Algebra.Properties.CommutativeSemiring.Exp.html#371" class="Bound">a</a> <a id="403" href="Algebra.Properties.CommutativeSemiring.Exp.html#373" class="Bound">ℓ</a><a id="404" class="Symbol">)</a> <a id="406" class="Keyword">where</a>
+
+<a id="413" class="Keyword">open</a> <a id="418" href="Algebra.Bundles.html#17351" class="Module">CommutativeSemiring</a> <a id="438" href="Algebra.Properties.CommutativeSemiring.Exp.html#377" class="Bound">S</a>
+<a id="440" class="Keyword">import</a> <a id="447" href="Algebra.Properties.CommutativeMonoid.Mult.html" class="Module">Algebra.Properties.CommutativeMonoid.Mult</a> <a id="489" href="Algebra.Bundles.html#18235" class="Function">*-commutativeMonoid</a> as <a id="Mult"></a><a id="512" href="Algebra.Properties.CommutativeSemiring.Exp.html#512" class="Module">Mult</a>
+
+<a id="518" class="Comment">------------------------------------------------------------------------</a>
+<a id="591" class="Comment">-- Definition</a>
+
+<a id="606" class="Keyword">open</a> <a id="611" class="Keyword">import</a> <a id="618" href="Algebra.Properties.Semiring.Exp.html" class="Module">Algebra.Properties.Semiring.Exp</a> <a id="650" href="Algebra.Bundles.html#17812" class="Function">semiring</a> <a id="659" class="Keyword">public</a>
+
+<a id="667" class="Comment">------------------------------------------------------------------------</a>
+<a id="740" class="Comment">-- Properties</a>
+
+<a id="^-distrib-*"></a><a id="755" href="Algebra.Properties.CommutativeSemiring.Exp.html#755" class="Function">^-distrib-*</a> <a id="767" class="Symbol">:</a> <a id="769" class="Symbol">∀</a> <a id="771" href="Algebra.Properties.CommutativeSemiring.Exp.html#771" class="Bound">x</a> <a id="773" href="Algebra.Properties.CommutativeSemiring.Exp.html#773" class="Bound">y</a> <a id="775" href="Algebra.Properties.CommutativeSemiring.Exp.html#775" class="Bound">n</a> <a id="777" class="Symbol">→</a> <a id="779" class="Symbol">(</a><a id="780" href="Algebra.Properties.CommutativeSemiring.Exp.html#771" class="Bound">x</a> <a id="782" href="Algebra.Bundles.html#17574" class="Field Operator">*</a> <a id="784" href="Algebra.Properties.CommutativeSemiring.Exp.html#773" class="Bound">y</a><a id="785" class="Symbol">)</a> <a id="787" href="Algebra.Definitions.RawSemiring.html#1231" class="Function Operator">^</a> <a id="789" href="Algebra.Properties.CommutativeSemiring.Exp.html#775" class="Bound">n</a> <a id="791" href="Algebra.Bundles.html#17492" class="Field Operator">≈</a> <a id="793" href="Algebra.Properties.CommutativeSemiring.Exp.html#771" class="Bound">x</a> <a id="795" href="Algebra.Definitions.RawSemiring.html#1231" class="Function Operator">^</a> <a id="797" href="Algebra.Properties.CommutativeSemiring.Exp.html#775" class="Bound">n</a> <a id="799" href="Algebra.Bundles.html#17574" class="Field Operator">*</a> <a id="801" href="Algebra.Properties.CommutativeSemiring.Exp.html#773" class="Bound">y</a> <a id="803" href="Algebra.Definitions.RawSemiring.html#1231" class="Function Operator">^</a> <a id="805" href="Algebra.Properties.CommutativeSemiring.Exp.html#775" class="Bound">n</a>
+<a id="807" href="Algebra.Properties.CommutativeSemiring.Exp.html#755" class="Function">^-distrib-*</a> <a id="819" class="Symbol">=</a> <a id="821" href="Algebra.Properties.CommutativeMonoid.Mult.html#1158" class="Function">Mult.×-distrib-+</a>
+</pre></body></html>

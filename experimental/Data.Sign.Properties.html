@@ -17,7 +17,7 @@
 <a id="418" class="Keyword">open</a> <a id="423" class="Keyword">import</a> <a id="430" href="Level.html" class="Module">Level</a> <a id="436" class="Keyword">using</a> <a id="442" class="Symbol">(</a><a id="443" href="Level.html#512" class="Function">0ℓ</a><a id="445" class="Symbol">)</a>
 <a id="447" class="Keyword">open</a> <a id="452" class="Keyword">import</a> <a id="459" href="Relation.Binary.html" class="Module">Relation.Binary</a> <a id="475" class="Keyword">using</a> <a id="481" class="Symbol">(</a><a id="482" href="Relation.Binary.Definitions.html#4575" class="Function">Decidable</a><a id="491" class="Symbol">;</a> <a id="493" href="Relation.Binary.Bundles.html#1009" class="Record">Setoid</a><a id="499" class="Symbol">;</a> <a id="501" href="Relation.Binary.Bundles.html#1391" class="Record">DecSetoid</a><a id="510" class="Symbol">)</a>
 <a id="512" class="Keyword">open</a> <a id="517" class="Keyword">import</a> <a id="524" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a>
-<a id="562" class="Keyword">open</a> <a id="567" class="Keyword">import</a> <a id="574" href="Relation.Nullary.html" class="Module">Relation.Nullary</a> <a id="591" class="Keyword">using</a> <a id="597" class="Symbol">(</a><a id="598" href="Relation.Nullary.html#1645" class="InductiveConstructor">yes</a><a id="601" class="Symbol">;</a> <a id="603" href="Relation.Nullary.html#1682" class="InductiveConstructor">no</a><a id="605" class="Symbol">)</a>
+<a id="562" class="Keyword">open</a> <a id="567" class="Keyword">import</a> <a id="574" href="Relation.Nullary.html" class="Module">Relation.Nullary</a> <a id="591" class="Keyword">using</a> <a id="597" class="Symbol">(</a><a id="598" href="Relation.Nullary.html#1648" class="InductiveConstructor">yes</a><a id="601" class="Symbol">;</a> <a id="603" href="Relation.Nullary.html#1685" class="InductiveConstructor">no</a><a id="605" class="Symbol">)</a>
 
 <a id="608" class="Keyword">open</a> <a id="613" class="Keyword">import</a> <a id="620" href="Algebra.Structures.html" class="Module">Algebra.Structures</a> <a id="639" class="Symbol">{</a><a id="640" class="Argument">A</a> <a id="642" class="Symbol">=</a> <a id="644" href="Data.Sign.Base.html#507" class="Datatype">Sign</a><a id="648" class="Symbol">}</a> <a id="650" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a>
 <a id="654" class="Keyword">open</a> <a id="659" class="Keyword">import</a> <a id="666" href="Algebra.Definitions.html" class="Module">Algebra.Definitions</a> <a id="686" class="Symbol">{</a><a id="687" class="Argument">A</a> <a id="689" class="Symbol">=</a> <a id="691" href="Data.Sign.Base.html#507" class="Datatype">Sign</a><a id="695" class="Symbol">}</a> <a id="697" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a>
@@ -28,10 +28,10 @@
 <a id="788" class="Keyword">infix</a> <a id="794" class="Number">4</a> <a id="796" href="Data.Sign.Properties.html#801" class="Function Operator">_≟_</a>
 
 <a id="_≟_"></a><a id="801" href="Data.Sign.Properties.html#801" class="Function Operator">_≟_</a> <a id="805" class="Symbol">:</a> <a id="807" href="Relation.Binary.Definitions.html#4575" class="Function">Decidable</a> <a id="817" class="Symbol">{</a><a id="818" class="Argument">A</a> <a id="820" class="Symbol">=</a> <a id="822" href="Data.Sign.Base.html#507" class="Datatype">Sign</a><a id="826" class="Symbol">}</a> <a id="828" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a>
-<a id="832" href="Data.Sign.Base.html#526" class="InductiveConstructor">-</a> <a id="834" href="Data.Sign.Properties.html#801" class="Function Operator">≟</a> <a id="836" href="Data.Sign.Base.html#526" class="InductiveConstructor">-</a> <a id="838" class="Symbol">=</a> <a id="840" href="Relation.Nullary.html#1645" class="InductiveConstructor">yes</a> <a id="844" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
-<a id="849" href="Data.Sign.Base.html#526" class="InductiveConstructor">-</a> <a id="851" href="Data.Sign.Properties.html#801" class="Function Operator">≟</a> <a id="853" href="Data.Sign.Base.html#537" class="InductiveConstructor">+</a> <a id="855" class="Symbol">=</a> <a id="857" href="Relation.Nullary.html#1682" class="InductiveConstructor">no</a> <a id="860" class="Symbol">λ()</a>
-<a id="864" href="Data.Sign.Base.html#537" class="InductiveConstructor">+</a> <a id="866" href="Data.Sign.Properties.html#801" class="Function Operator">≟</a> <a id="868" href="Data.Sign.Base.html#526" class="InductiveConstructor">-</a> <a id="870" class="Symbol">=</a> <a id="872" href="Relation.Nullary.html#1682" class="InductiveConstructor">no</a> <a id="875" class="Symbol">λ()</a>
-<a id="879" href="Data.Sign.Base.html#537" class="InductiveConstructor">+</a> <a id="881" href="Data.Sign.Properties.html#801" class="Function Operator">≟</a> <a id="883" href="Data.Sign.Base.html#537" class="InductiveConstructor">+</a> <a id="885" class="Symbol">=</a> <a id="887" href="Relation.Nullary.html#1645" class="InductiveConstructor">yes</a> <a id="891" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
+<a id="832" href="Data.Sign.Base.html#526" class="InductiveConstructor">-</a> <a id="834" href="Data.Sign.Properties.html#801" class="Function Operator">≟</a> <a id="836" href="Data.Sign.Base.html#526" class="InductiveConstructor">-</a> <a id="838" class="Symbol">=</a> <a id="840" href="Relation.Nullary.html#1648" class="InductiveConstructor">yes</a> <a id="844" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
+<a id="849" href="Data.Sign.Base.html#526" class="InductiveConstructor">-</a> <a id="851" href="Data.Sign.Properties.html#801" class="Function Operator">≟</a> <a id="853" href="Data.Sign.Base.html#537" class="InductiveConstructor">+</a> <a id="855" class="Symbol">=</a> <a id="857" href="Relation.Nullary.html#1685" class="InductiveConstructor">no</a> <a id="860" class="Symbol">λ()</a>
+<a id="864" href="Data.Sign.Base.html#537" class="InductiveConstructor">+</a> <a id="866" href="Data.Sign.Properties.html#801" class="Function Operator">≟</a> <a id="868" href="Data.Sign.Base.html#526" class="InductiveConstructor">-</a> <a id="870" class="Symbol">=</a> <a id="872" href="Relation.Nullary.html#1685" class="InductiveConstructor">no</a> <a id="875" class="Symbol">λ()</a>
+<a id="879" href="Data.Sign.Base.html#537" class="InductiveConstructor">+</a> <a id="881" href="Data.Sign.Properties.html#801" class="Function Operator">≟</a> <a id="883" href="Data.Sign.Base.html#537" class="InductiveConstructor">+</a> <a id="885" class="Symbol">=</a> <a id="887" href="Relation.Nullary.html#1648" class="InductiveConstructor">yes</a> <a id="891" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
 
 <a id="≡-setoid"></a><a id="897" href="Data.Sign.Properties.html#897" class="Function">≡-setoid</a> <a id="906" class="Symbol">:</a> <a id="908" href="Relation.Binary.Bundles.html#1009" class="Record">Setoid</a> <a id="915" href="Level.html#512" class="Function">0ℓ</a> <a id="918" href="Level.html#512" class="Function">0ℓ</a>
 <a id="921" href="Data.Sign.Properties.html#897" class="Function">≡-setoid</a> <a id="930" class="Symbol">=</a> <a id="932" href="Relation.Binary.PropositionalEquality.Properties.html#3972" class="Function">setoid</a> <a id="939" href="Data.Sign.Base.html#507" class="Datatype">Sign</a>
@@ -97,9 +97,9 @@
   <a id="2301" class="Symbol">;</a> <a id="2303" href="Algebra.Structures.html#1210" class="Field">∙-cong</a>        <a id="2317" class="Symbol">=</a> <a id="2319" href="Relation.Binary.PropositionalEquality.Core.html#1367" class="Function">cong₂</a> <a id="2325" href="Data.Sign.Base.html#748" class="Function Operator">_*_</a>
   <a id="2331" class="Symbol">}</a>
 
-<a id="*-magma"></a><a id="2334" href="Data.Sign.Properties.html#2334" class="Function">*-magma</a> <a id="2342" class="Symbol">:</a> <a id="2344" href="Algebra.Bundles.html#912" class="Record">Magma</a> <a id="2350" href="Level.html#512" class="Function">0ℓ</a> <a id="2353" href="Level.html#512" class="Function">0ℓ</a>
+<a id="*-magma"></a><a id="2334" href="Data.Sign.Properties.html#2334" class="Function">*-magma</a> <a id="2342" class="Symbol">:</a> <a id="2344" href="Algebra.Bundles.html#1000" class="Record">Magma</a> <a id="2350" href="Level.html#512" class="Function">0ℓ</a> <a id="2353" href="Level.html#512" class="Function">0ℓ</a>
 <a id="2356" href="Data.Sign.Properties.html#2334" class="Function">*-magma</a> <a id="2364" class="Symbol">=</a> <a id="2366" class="Keyword">record</a>
-  <a id="2375" class="Symbol">{</a> <a id="2377" href="Algebra.Bundles.html#1064" class="Field">isMagma</a> <a id="2385" class="Symbol">=</a> <a id="2387" href="Data.Sign.Properties.html#2222" class="Function">*-isMagma</a>
+  <a id="2375" class="Symbol">{</a> <a id="2377" href="Algebra.Bundles.html#1152" class="Field">isMagma</a> <a id="2385" class="Symbol">=</a> <a id="2387" href="Data.Sign.Properties.html#2222" class="Function">*-isMagma</a>
   <a id="2399" class="Symbol">}</a>
 
 <a id="*-isSemigroup"></a><a id="2402" href="Data.Sign.Properties.html#2402" class="Function">*-isSemigroup</a> <a id="2416" class="Symbol">:</a> <a id="2418" href="Algebra.Structures.html#1787" class="Record">IsSemigroup</a> <a id="2430" href="Data.Sign.Base.html#748" class="Function Operator">_*_</a>
@@ -108,9 +108,9 @@
   <a id="2483" class="Symbol">;</a> <a id="2485" href="Algebra.Structures.html#1867" class="Field">assoc</a>   <a id="2493" class="Symbol">=</a> <a id="2495" href="Data.Sign.Properties.html#1728" class="Function">*-assoc</a>
   <a id="2505" class="Symbol">}</a>
 
-<a id="*-semigroup"></a><a id="2508" href="Data.Sign.Properties.html#2508" class="Function">*-semigroup</a> <a id="2520" class="Symbol">:</a> <a id="2522" href="Algebra.Bundles.html#2051" class="Record">Semigroup</a> <a id="2532" href="Level.html#512" class="Function">0ℓ</a> <a id="2535" href="Level.html#512" class="Function">0ℓ</a>
+<a id="*-semigroup"></a><a id="2508" href="Data.Sign.Properties.html#2508" class="Function">*-semigroup</a> <a id="2520" class="Symbol">:</a> <a id="2522" href="Algebra.Bundles.html#2143" class="Record">Semigroup</a> <a id="2532" href="Level.html#512" class="Function">0ℓ</a> <a id="2535" href="Level.html#512" class="Function">0ℓ</a>
 <a id="2538" href="Data.Sign.Properties.html#2508" class="Function">*-semigroup</a> <a id="2550" class="Symbol">=</a> <a id="2552" class="Keyword">record</a>
-  <a id="2561" class="Symbol">{</a> <a id="2563" href="Algebra.Bundles.html#2219" class="Field">isSemigroup</a> <a id="2575" class="Symbol">=</a> <a id="2577" href="Data.Sign.Properties.html#2402" class="Function">*-isSemigroup</a>
+  <a id="2561" class="Symbol">{</a> <a id="2563" href="Algebra.Bundles.html#2311" class="Field">isSemigroup</a> <a id="2575" class="Symbol">=</a> <a id="2577" href="Data.Sign.Properties.html#2402" class="Function">*-isSemigroup</a>
   <a id="2593" class="Symbol">}</a>
 
 <a id="*-isMonoid"></a><a id="2596" href="Data.Sign.Properties.html#2596" class="Function">*-isMonoid</a> <a id="2607" class="Symbol">:</a> <a id="2609" href="Algebra.Structures.html#2801" class="Record">IsMonoid</a> <a id="2618" href="Data.Sign.Base.html#748" class="Function Operator">_*_</a> <a id="2622" href="Data.Sign.Base.html#537" class="InductiveConstructor">+</a>
@@ -119,9 +119,9 @@
   <a id="2678" class="Symbol">;</a> <a id="2680" href="Algebra.Structures.html#2894" class="Field">identity</a>    <a id="2692" class="Symbol">=</a> <a id="2694" href="Data.Sign.Properties.html#1561" class="Function">*-identity</a>
   <a id="2707" class="Symbol">}</a>
 
-<a id="*-monoid"></a><a id="2710" href="Data.Sign.Properties.html#2710" class="Function">*-monoid</a> <a id="2719" class="Symbol">:</a> <a id="2721" href="Algebra.Bundles.html#4280" class="Record">Monoid</a> <a id="2728" href="Level.html#512" class="Function">0ℓ</a> <a id="2731" href="Level.html#512" class="Function">0ℓ</a>
+<a id="*-monoid"></a><a id="2710" href="Data.Sign.Properties.html#2710" class="Function">*-monoid</a> <a id="2719" class="Symbol">:</a> <a id="2721" href="Algebra.Bundles.html#4421" class="Record">Monoid</a> <a id="2728" href="Level.html#512" class="Function">0ℓ</a> <a id="2731" href="Level.html#512" class="Function">0ℓ</a>
 <a id="2734" href="Data.Sign.Properties.html#2710" class="Function">*-monoid</a> <a id="2743" class="Symbol">=</a> <a id="2745" class="Keyword">record</a>
-  <a id="2754" class="Symbol">{</a> <a id="2756" href="Algebra.Bundles.html#4459" class="Field">isMonoid</a> <a id="2765" class="Symbol">=</a> <a id="2767" href="Data.Sign.Properties.html#2596" class="Function">*-isMonoid</a>
+  <a id="2754" class="Symbol">{</a> <a id="2756" href="Algebra.Bundles.html#4600" class="Field">isMonoid</a> <a id="2765" class="Symbol">=</a> <a id="2767" href="Data.Sign.Properties.html#2596" class="Function">*-isMonoid</a>
   <a id="2780" class="Symbol">}</a>
 
 <a id="2783" class="Comment">-- Other properties of _*_</a>
@@ -130,35 +130,43 @@
 <a id="2835" href="Data.Sign.Properties.html#2811" class="Function">s*s≡+</a> <a id="2841" href="Data.Sign.Base.html#537" class="InductiveConstructor">+</a> <a id="2843" class="Symbol">=</a> <a id="2845" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
 <a id="2850" href="Data.Sign.Properties.html#2811" class="Function">s*s≡+</a> <a id="2856" href="Data.Sign.Base.html#526" class="InductiveConstructor">-</a> <a id="2858" class="Symbol">=</a> <a id="2860" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
 
-<a id="2866" class="Comment">------------------------------------------------------------------------</a>
-<a id="2939" class="Comment">-- DEPRECATED NAMES</a>
-<a id="2959" class="Comment">------------------------------------------------------------------------</a>
-<a id="3032" class="Comment">-- Please use the new names as continuing support for the old names is</a>
-<a id="3103" class="Comment">-- not guaranteed.</a>
+<a id="s*opposite[s]≡-"></a><a id="2866" href="Data.Sign.Properties.html#2866" class="Function">s*opposite[s]≡-</a> <a id="2882" class="Symbol">:</a> <a id="2884" class="Symbol">∀</a> <a id="2886" href="Data.Sign.Properties.html#2886" class="Bound">s</a> <a id="2888" class="Symbol">→</a> <a id="2890" href="Data.Sign.Properties.html#2886" class="Bound">s</a> <a id="2892" href="Data.Sign.Base.html#748" class="Function Operator">*</a> <a id="2894" href="Data.Sign.Base.html#658" class="Function">opposite</a> <a id="2903" href="Data.Sign.Properties.html#2886" class="Bound">s</a> <a id="2905" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="2907" href="Data.Sign.Base.html#526" class="InductiveConstructor">-</a>
+<a id="2909" href="Data.Sign.Properties.html#2866" class="Function">s*opposite[s]≡-</a> <a id="2925" href="Data.Sign.Base.html#537" class="InductiveConstructor">+</a> <a id="2927" class="Symbol">=</a> <a id="2929" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
+<a id="2934" href="Data.Sign.Properties.html#2866" class="Function">s*opposite[s]≡-</a> <a id="2950" href="Data.Sign.Base.html#526" class="InductiveConstructor">-</a> <a id="2952" class="Symbol">=</a> <a id="2954" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
 
-<a id="opposite-not-equal"></a><a id="3123" href="Data.Sign.Properties.html#3123" class="Function">opposite-not-equal</a> <a id="3142" class="Symbol">=</a> <a id="3144" href="Data.Sign.Properties.html#1090" class="Function">s≢opposite[s]</a>
-<a id="3158" class="Symbol">{-#</a> <a id="3162" class="Keyword">WARNING_ON_USAGE</a> <a id="3179" class="Pragma">opposite-not-equal</a>
-<a id="3198" class="String">&quot;Warning: opposite-not-equal was deprecated in v0.15.
+<a id="opposite[s]*s≡-"></a><a id="2960" href="Data.Sign.Properties.html#2960" class="Function">opposite[s]*s≡-</a> <a id="2976" class="Symbol">:</a> <a id="2978" class="Symbol">∀</a> <a id="2980" href="Data.Sign.Properties.html#2980" class="Bound">s</a> <a id="2982" class="Symbol">→</a> <a id="2984" href="Data.Sign.Base.html#658" class="Function">opposite</a> <a id="2993" href="Data.Sign.Properties.html#2980" class="Bound">s</a> <a id="2995" href="Data.Sign.Base.html#748" class="Function Operator">*</a> <a id="2997" href="Data.Sign.Properties.html#2980" class="Bound">s</a> <a id="2999" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="3001" href="Data.Sign.Base.html#526" class="InductiveConstructor">-</a>
+<a id="3003" href="Data.Sign.Properties.html#2960" class="Function">opposite[s]*s≡-</a> <a id="3019" href="Data.Sign.Base.html#537" class="InductiveConstructor">+</a> <a id="3021" class="Symbol">=</a> <a id="3023" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
+<a id="3028" href="Data.Sign.Properties.html#2960" class="Function">opposite[s]*s≡-</a> <a id="3044" href="Data.Sign.Base.html#526" class="InductiveConstructor">-</a> <a id="3046" class="Symbol">=</a> <a id="3048" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
+
+<a id="3054" class="Comment">------------------------------------------------------------------------</a>
+<a id="3127" class="Comment">-- DEPRECATED NAMES</a>
+<a id="3147" class="Comment">------------------------------------------------------------------------</a>
+<a id="3220" class="Comment">-- Please use the new names as continuing support for the old names is</a>
+<a id="3291" class="Comment">-- not guaranteed.</a>
+
+<a id="opposite-not-equal"></a><a id="3311" href="Data.Sign.Properties.html#3311" class="Function">opposite-not-equal</a> <a id="3330" class="Symbol">=</a> <a id="3332" href="Data.Sign.Properties.html#1090" class="Function">s≢opposite[s]</a>
+<a id="3346" class="Symbol">{-#</a> <a id="3350" class="Keyword">WARNING_ON_USAGE</a> <a id="3367" class="Pragma">opposite-not-equal</a>
+<a id="3386" class="String">&quot;Warning: opposite-not-equal was deprecated in v0.15.
 Please use s≢opposite[s] instead.&quot;</a>
-<a id="3287" class="Symbol">#-}</a>
-<a id="opposite-cong"></a><a id="3291" href="Data.Sign.Properties.html#3291" class="Function">opposite-cong</a> <a id="3305" class="Symbol">=</a> <a id="3307" href="Data.Sign.Properties.html#1166" class="Function">opposite-injective</a>
-<a id="3326" class="Symbol">{-#</a> <a id="3330" class="Keyword">WARNING_ON_USAGE</a> <a id="3347" class="Pragma">opposite-cong</a>
-<a id="3361" class="String">&quot;Warning: opposite-cong was deprecated in v0.15.
+<a id="3475" class="Symbol">#-}</a>
+<a id="opposite-cong"></a><a id="3479" href="Data.Sign.Properties.html#3479" class="Function">opposite-cong</a> <a id="3493" class="Symbol">=</a> <a id="3495" href="Data.Sign.Properties.html#1166" class="Function">opposite-injective</a>
+<a id="3514" class="Symbol">{-#</a> <a id="3518" class="Keyword">WARNING_ON_USAGE</a> <a id="3535" class="Pragma">opposite-cong</a>
+<a id="3549" class="String">&quot;Warning: opposite-cong was deprecated in v0.15.
 Please use opposite-injective instead.&quot;</a>
-<a id="3450" class="Symbol">#-}</a>
-<a id="cancel-*-left"></a><a id="3454" href="Data.Sign.Properties.html#3454" class="Function">cancel-*-left</a> <a id="3468" class="Symbol">=</a> <a id="3470" href="Data.Sign.Properties.html#2053" class="Function">*-cancelˡ-≡</a>
-<a id="3482" class="Symbol">{-#</a> <a id="3486" class="Keyword">WARNING_ON_USAGE</a> <a id="3503" class="Pragma">cancel-*-left</a>
-<a id="3517" class="String">&quot;Warning: cancel-*-left was deprecated in v0.15.
+<a id="3638" class="Symbol">#-}</a>
+<a id="cancel-*-left"></a><a id="3642" href="Data.Sign.Properties.html#3642" class="Function">cancel-*-left</a> <a id="3656" class="Symbol">=</a> <a id="3658" href="Data.Sign.Properties.html#2053" class="Function">*-cancelˡ-≡</a>
+<a id="3670" class="Symbol">{-#</a> <a id="3674" class="Keyword">WARNING_ON_USAGE</a> <a id="3691" class="Pragma">cancel-*-left</a>
+<a id="3705" class="String">&quot;Warning: cancel-*-left was deprecated in v0.15.
 Please use *-cancelˡ-≡ instead.&quot;</a>
-<a id="3599" class="Symbol">#-}</a>
-<a id="cancel-*-right"></a><a id="3603" href="Data.Sign.Properties.html#3603" class="Function">cancel-*-right</a> <a id="3618" class="Symbol">=</a> <a id="3620" href="Data.Sign.Properties.html#1860" class="Function">*-cancelʳ-≡</a>
-<a id="3632" class="Symbol">{-#</a> <a id="3636" class="Keyword">WARNING_ON_USAGE</a> <a id="3653" class="Pragma">cancel-*-right</a>
-<a id="3668" class="String">&quot;Warning: cancel-*-right was deprecated in v0.15.
+<a id="3787" class="Symbol">#-}</a>
+<a id="cancel-*-right"></a><a id="3791" href="Data.Sign.Properties.html#3791" class="Function">cancel-*-right</a> <a id="3806" class="Symbol">=</a> <a id="3808" href="Data.Sign.Properties.html#1860" class="Function">*-cancelʳ-≡</a>
+<a id="3820" class="Symbol">{-#</a> <a id="3824" class="Keyword">WARNING_ON_USAGE</a> <a id="3841" class="Pragma">cancel-*-right</a>
+<a id="3856" class="String">&quot;Warning: cancel-*-right was deprecated in v0.15.
 Please use *-cancelʳ-≡ instead.&quot;</a>
-<a id="3751" class="Symbol">#-}</a>
-<a id="*-cancellative"></a><a id="3755" href="Data.Sign.Properties.html#3755" class="Function">*-cancellative</a> <a id="3770" class="Symbol">=</a> <a id="3772" href="Data.Sign.Properties.html#2152" class="Function">*-cancel-≡</a>
-<a id="3783" class="Symbol">{-#</a> <a id="3787" class="Keyword">WARNING_ON_USAGE</a> <a id="3804" class="Pragma">*-cancellative</a>
-<a id="3819" class="String">&quot;Warning: *-cancellative was deprecated in v0.15.
+<a id="3939" class="Symbol">#-}</a>
+<a id="*-cancellative"></a><a id="3943" href="Data.Sign.Properties.html#3943" class="Function">*-cancellative</a> <a id="3958" class="Symbol">=</a> <a id="3960" href="Data.Sign.Properties.html#2152" class="Function">*-cancel-≡</a>
+<a id="3971" class="Symbol">{-#</a> <a id="3975" class="Keyword">WARNING_ON_USAGE</a> <a id="3992" class="Pragma">*-cancellative</a>
+<a id="4007" class="String">&quot;Warning: *-cancellative was deprecated in v0.15.
 Please use *-cancel-≡ instead.&quot;</a>
-<a id="3901" class="Symbol">#-}</a>
+<a id="4089" class="Symbol">#-}</a>
 </pre></body></html>
