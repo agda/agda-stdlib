@@ -12,7 +12,6 @@ tested-with:     GHC == 8.0.2
                  GHC == 8.10.4
                  GHC == 9.0.1
 
-
 executable GenerateEverything
   hs-source-dirs:   .
   main-is:          GenerateEverything.hs

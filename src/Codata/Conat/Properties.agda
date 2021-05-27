@@ -4,7 +4,7 @@
 -- Properties for Conats
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe --sized-types #-}
+{-# OPTIONS --without-K --sized-types #-}
 
 module Codata.Conat.Properties where
 

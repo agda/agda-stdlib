@@ -1,3 +1,5 @@
+{-# OPTIONS --rewriting #-}
+
 module index where
 
 -- You probably want to start with this module:

@@ -24,8 +24,7 @@ srcDir         = "src"
 
 unsafeModules :: [FilePath]
 unsafeModules = map modToFile
-  [ "Codata.Musical.Cofin"
-  , "Codata.Musical.Colist"
+  [ "Codata.Musical.Colist"
   , "Codata.Musical.Colist.Base"
   , "Codata.Musical.Colist.Properties"
   , "Codata.Musical.Colist.Bisimilarity"
@@ -34,10 +33,9 @@ unsafeModules = map modToFile
   , "Codata.Musical.Colist.Relation.Unary.Any"
   , "Codata.Musical.Colist.Relation.Unary.Any.Properties"
   , "Codata.Musical.Colist.Infinite-merge"
-  , "Codata.Musical.Conat"
   , "Codata.Musical.Costring"
   , "Codata.Musical.Covec"
-  , "Codata.Musical.M"
+  , "Codata.Musical.Conversion"
   , "Codata.Musical.Stream"
   , "Debug.Trace"
   , "Foreign.Haskell"
@@ -59,7 +57,7 @@ unsafeModules = map modToFile
   , "System.Exit.Primitive"
   , "Text.Pretty.Core"
   , "Text.Pretty"
-  ]
+  ] ++ sizedTypesModules
 
 isUnsafeModule :: FilePath -> Bool
 isUnsafeModule fp =
@@ -78,6 +76,8 @@ withKModules = map modToFile
   , "Data.Star.Pointer"
   , "Data.Star.Vec"
   , "Data.String.Unsafe"
+  , "Reflection.Annotated"
+  , "Reflection.Annotated.Free"
   , "Relation.Binary.HeterogeneousEquality"
   , "Relation.Binary.HeterogeneousEquality.Core"
   , "Relation.Binary.HeterogeneousEquality.Quotients.Examples"
@@ -95,6 +95,57 @@ isWithKModule =
   -- to `isWithKModule`.
   \ fp -> unqualifiedModuleName fp == "WithK"
        || fp `elem` withKModules
+
+sizedTypesModules :: [FilePath]
+sizedTypesModules = map modToFile
+  [ "Codata.Cofin"
+  , "Codata.Cofin.Literals"
+  , "Codata.Colist"
+  , "Codata.Colist.Bisimilarity"
+  , "Codata.Colist.Categorical"
+  , "Codata.Colist.Properties"
+  , "Codata.Conat"
+  , "Codata.Conat.Bisimilarity"
+  , "Codata.Conat.Literals"
+  , "Codata.Conat.Properties"
+  , "Codata.Covec"
+  , "Codata.Covec.Bisimilarity"
+  , "Codata.Covec.Categorical"
+  , "Codata.Covec.Instances"
+  , "Codata.Covec.Properties"
+  , "Codata.Cowriter"
+  , "Codata.Cowriter.Bisimilarity"
+  , "Codata.Delay"
+  , "Codata.Delay.Bisimilarity"
+  , "Codata.Delay.Categorical"
+  , "Codata.Delay.Properties"
+  , "Codata.M"
+  , "Codata.M.Bisimilarity"
+  , "Codata.M.Properties"
+  , "Codata.Stream"
+  , "Codata.Stream.Bisimilarity"
+  , "Codata.Stream.Categorical"
+  , "Codata.Stream.Instances"
+  , "Codata.Stream.Properties"
+  , "Codata.Thunk"
+  , "Data.Container"
+  , "Data.Container.Any"
+  , "Data.Container.FreeMonad"
+  , "Data.Nat.PseudoRandom.LCG.Unsafe"
+  , "Data.Tree.Binary.Show"
+  , "Data.Tree.Rose"
+  , "Data.Tree.Rose.Properties"
+  , "Data.Tree.Rose.Show"
+  , "Data.Trie"
+  , "Data.Trie.NonEmpty"
+  , "Relation.Unary.Sized"
+  , "Size"
+  , "Text.Tree.Linear"
+  ]
+
+isSizedTypesModule :: FilePath -> Bool
+isSizedTypesModule =
+  \ fp -> fp `elem` sizedTypesModules
 
 unqualifiedModuleName :: FilePath -> String
 unqualifiedModuleName = dropExtension . takeFileName
@@ -137,10 +188,9 @@ extractHeader mod = extract
                               , "Please see other existing files or consult HACKING.md."
                               ]
 
--- | A crude classifier looking for lines containing options & trying to guess
---   whether the safe file is using either @--guardedness@ or @--sized-types@
+-- | A crude classifier looking for lines containing options
 
-data Status = Deprecated | Unsafe | Safe | SafeGuardedness | SafeSizedTypes
+data Status = Deprecated | Unsafe | Safe
   deriving (Eq)
 
 classify :: FilePath -> [String] -> [String] -> Status
@@ -154,8 +204,6 @@ classify fp hd ls
   -- And then perform the actual classification
   | deprecated                = Deprecated
   | isUnsafe                  = Unsafe
-  | guardedness               = SafeGuardedness
-  | sizedtypes                = SafeSizedTypes
   | safe                      = Safe
   -- We know that @not (isUnsafe || safe)@, all cases are covered
   | otherwise                 = error "IMPOSSIBLE"
@@ -167,8 +215,6 @@ classify fp hd ls
     isUnsafe = isUnsafeModule fp
 
     -- based on detected OPTIONS
-    guardedness = option "--guardedness"
-    sizedtypes  = option "--sized-types"
     safe        = option "--safe"
     withK       = option "--with-K"
     withoutK    = option "--without-K"
@@ -221,9 +267,7 @@ checkFilePaths cat fps = forM_ fps $ \ fp -> do
 -- Collecting all non-Core library files, analysing them and generating
 -- 4 files:
 -- Everything.agda                 all the modules
--- EverythingSafe.agda             all the safe modules (may be incompatible)
--- EverythingSafeGuardedness.agda  all the safe modules using --guardedness
--- EverythingSafeSizedTypes.agda   all the safe modules using --sized-types
+-- EverythingSafe.agda             all the safe modules
 
 main = do
   args <- getArgs
@@ -245,31 +289,16 @@ main = do
 
   writeFileUTF8 (allOutputFile ++ ".agda") $
     unlines [ header
+            , "{-# OPTIONS --rewriting --guardedness --sized-types #-}\n"
             , mkModule allOutputFile
             , format libraryfiles
             ]
 
   writeFileUTF8 (safeOutputFile ++ ".agda") $
     unlines [ header
-            , "{-# OPTIONS --guardedness --sized-types #-}\n"
+            , "{-# OPTIONS --safe --guardedness #-}\n"
             , mkModule safeOutputFile
             , format $ filter ((Unsafe /=) . status) libraryfiles
-            ]
-
-  let safeGuardednessOutputFile = safeOutputFile ++ "Guardedness"
-  writeFileUTF8 (safeGuardednessOutputFile ++ ".agda") $
-    unlines [ header
-            , "{-# OPTIONS --safe --guardedness #-}\n"
-            , mkModule safeGuardednessOutputFile
-            , format $ filter ((SafeGuardedness ==) . status) libraryfiles
-            ]
-
-  let safeSizedTypesOutputFile = safeOutputFile ++ "SizedTypes"
-  writeFileUTF8 (safeSizedTypesOutputFile ++ ".agda") $
-    unlines [ header
-            , "{-# OPTIONS --safe --sized-types #-}\n"
-            , mkModule safeSizedTypesOutputFile
-            , format $ filter ((SafeSizedTypes ==) . status) libraryfiles
             ]
 
 -- | Usage info.

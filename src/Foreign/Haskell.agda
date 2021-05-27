@@ -29,15 +29,6 @@ open import Foreign.Haskell.Either public
   )
 
 ------------------------------------------------------------------------
--- Maybe
-
-open import Foreign.Haskell.Maybe public
-  renaming
-  ( toForeign   to toForeignMaybe
-  ; fromForeign to fromForeignMaybe
-  )
-
-------------------------------------------------------------------------
 -- DEPRECATED NAMES
 ------------------------------------------------------------------------
 -- Please use the new names as continuing support for the old names is

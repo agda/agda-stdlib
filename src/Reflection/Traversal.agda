@@ -26,6 +26,7 @@ open RawApplicative AppF
 -- compute the length of the context everytime it's needed.
 record Cxt : Set where
   constructor _,_
+  pattern
   field
     len     : ℕ
     context : List (String × Arg Term)
@@ -65,34 +66,29 @@ module _ (actions : Actions) where
 
   open Actions actions
 
-  private
-    patternTelescope : Args Pattern → List (String × Arg Term)
-    patternTelescope []       = []
-    patternTelescope (arg i (Pattern.var s)     ∷ ps) = (s , arg i unknown) ∷ patternTelescope ps
-    patternTelescope (arg _ (Pattern.con c ps₁) ∷ ps) = patternTelescope ps₁ ++ patternTelescope ps
-    patternTelescope (arg i Pattern.dot         ∷ ps) = patternTelescope ps
-    patternTelescope (arg i (Pattern.lit l)     ∷ ps) = patternTelescope ps
-    patternTelescope (arg i (Pattern.proj f)    ∷ ps) = patternTelescope ps
-    patternTelescope (arg i Pattern.absurd      ∷ ps) = patternTelescope ps
-
   traverseTerm    : Action Term
   traverseSort    : Action Sort
+  traversePattern : Action Pattern
   traverseArgs    : Action (List (Arg Term))
   traverseArg     : Action (Arg Term)
+  traversePats    : Action (List (Arg Pattern))
   traverseAbs     : Arg Term → Action (Abs Term)
   traverseClauses : Action Clauses
   traverseClause  : Action Clause
+  traverseTel     : Action (List (String × Arg Term))
 
   traverseTerm Γ (var x args)      = var       <$> onVar Γ x ⊛ traverseArgs Γ args
   traverseTerm Γ (con c args)      = con       <$> onCon Γ c ⊛ traverseArgs Γ args
   traverseTerm Γ (def f args)      = def       <$> onDef Γ f ⊛ traverseArgs Γ args
-  traverseTerm Γ (lam v t)         = lam v     <$> traverseAbs (arg (arg-info v relevant) unknown) Γ t
   traverseTerm Γ (pat-lam cs args) = pat-lam   <$> traverseClauses Γ cs ⊛ traverseArgs Γ args
   traverseTerm Γ (pi a b)          = pi        <$> traverseArg Γ a ⊛ traverseAbs a Γ b
   traverseTerm Γ (agda-sort s)     = agda-sort <$> traverseSort Γ s
   traverseTerm Γ (meta x args)     = meta      <$> onMeta Γ x ⊛ traverseArgs Γ args
   traverseTerm Γ t@(lit _)         = pure t
   traverseTerm Γ t@unknown         = pure t
+  traverseTerm Γ (lam v t)         = lam v     <$> traverseAbs (arg (arg-info v m) unknown) Γ t
+    where
+    m = defaultModality
 
   traverseArg Γ (arg i t) = arg i <$> traverseTerm Γ t
   traverseArgs Γ []       = pure []
@@ -103,10 +99,33 @@ module _ (actions : Actions) where
   traverseClauses Γ []       = pure []
   traverseClauses Γ (c ∷ cs) = _∷_ <$> traverseClause Γ c ⊛ traverseClauses Γ cs
 
-  traverseClause Γ (Clause.clause ps t) =
-    Clause.clause ps <$> traverseTerm (patternTelescope ps ++cxt Γ) t
-  traverseClause Γ c@(Clause.absurd-clause ps) = pure c
+  traverseClause Γ (Clause.clause tel ps t) =
+      Clause.clause <$> traverseTel Γ tel
+                     ⊛  traversePats Γ′ ps
+                     ⊛ traverseTerm Γ′ t
+    where Γ′ = reverse tel ++cxt Γ
+  traverseClause Γ (Clause.absurd-clause tel ps) =
+      Clause.absurd-clause <$> traverseTel Γ tel
+                            ⊛  traversePats Γ′ ps
+    where Γ′ = reverse tel ++cxt Γ
 
-  traverseSort Γ (Sort.set t)   = Sort.set <$> traverseTerm Γ t
-  traverseSort Γ t@(Sort.lit _) = pure t
-  traverseSort Γ t@Sort.unknown = pure t
+  traverseTel Γ [] = pure []
+  traverseTel Γ ((x , ty) ∷ tel) =
+    _∷_ ∘ (x ,_) <$> traverseArg Γ ty ⊛ traverseTel ((x , ty) ∷cxt Γ) tel
+
+  traverseSort Γ (Sort.set t)       = Sort.set <$> traverseTerm Γ t
+  traverseSort Γ t@(Sort.lit _)     = pure t
+  traverseSort Γ (Sort.prop t)      = Sort.prop <$> traverseTerm Γ t
+  traverseSort Γ t@(Sort.propLit _) = pure t
+  traverseSort Γ t@(Sort.inf _)     = pure t
+  traverseSort Γ t@Sort.unknown     = pure t
+
+  traversePattern Γ (Pattern.con c ps) = Pattern.con <$> onCon Γ c ⊛ traversePats Γ ps
+  traversePattern Γ (Pattern.dot t)    = Pattern.dot <$> traverseTerm Γ t
+  traversePattern Γ (Pattern.var x)    = Pattern.var <$> onVar Γ x
+  traversePattern Γ p@(Pattern.lit _)  = pure p
+  traversePattern Γ p@(Pattern.proj _) = pure p
+  traversePattern Γ (Pattern.absurd x) = Pattern.absurd <$> onVar Γ x
+
+  traversePats Γ [] = pure []
+  traversePats Γ (arg i p ∷ ps) = _∷_ ∘ arg i <$> traversePattern Γ p ⊛ traversePats Γ ps

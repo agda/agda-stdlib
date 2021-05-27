@@ -1154,7 +1154,7 @@ open ⊓-⊔-properties public
   )
 
 ------------------------------------------------------------------------
--- Algebraic properties
+-- Automatically derived properties of _⊓_ and _⊔_
 
 ⊔-identityˡ : LeftIdentity 0 _⊔_
 ⊔-identityˡ _ = refl

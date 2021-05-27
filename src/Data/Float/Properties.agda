@@ -83,20 +83,3 @@ x ≟ y = map′ ≈⇒≡ ≈-reflexive (x ≈? y)
 
 ≡-decSetoid : DecSetoid _ _
 ≡-decSetoid = decSetoid _≟_
-
-------------------------------------------------------------------------
--- Boolean equality test.
-
-infix 4 _==_
-_==_ : Float → Float → Bool
-w₁ == w₂ = RN.⌊ w₁ ≟ w₂ ⌋
-
-------------------------------------------------------------------------
--- Properties of _<_
-
-infix 4 _<?_
-_<?_ : Decidable _<_
-_<?_ = On.decidable toWord Word._<_ Wₚ._<?_
-
-<-strictTotalOrder-≈ : StrictTotalOrder _ _ _
-<-strictTotalOrder-≈ = On.strictTotalOrder Wₚ.<-strictTotalOrder-≈ toWord

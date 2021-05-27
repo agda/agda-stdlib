@@ -5,6 +5,8 @@
 -- library.
 ------------------------------------------------------------------------
 
+{-# OPTIONS --sized-types --guardedness #-}
+
 module README.Data where
 
 -- The top-level folder `Data` contains all the definitions of datatypes

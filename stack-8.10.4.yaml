@@ -1,0 +1,10 @@
+resolver: ghc-8.10.4
+compiler: ghc-8.10.4
+compiler-check: match-exact
+
+extra-deps:
+  - filemanip-0.3.6.3
+  - unix-compat-0.5.2
+
+packages:
+- '.'

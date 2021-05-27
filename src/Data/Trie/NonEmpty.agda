@@ -4,7 +4,7 @@
 -- Non empty trie, basic type and operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe --sized-types #-}
+{-# OPTIONS --without-K --sized-types #-}
 
 open import Relation.Binary using (StrictTotalOrder)
 

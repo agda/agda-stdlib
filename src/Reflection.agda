@@ -16,7 +16,7 @@ import Agda.Builtin.Reflection as Builtin
 open import Reflection.Abstraction as Abstraction public
   using (Abs; abs)
 open import Reflection.Argument as Argument public
-  using (Arg; arg; Args; vArg; hArg; iArg)
+  using (Arg; arg; Args; vArg; hArg; iArg; defaultModality)
 open import Reflection.Definition as Definition  public
   using (Definition)
 open import Reflection.Meta as Meta public
@@ -30,6 +30,8 @@ open import Reflection.Pattern as Pattern public
 open import Reflection.Term as Term public
   using (Term; Type; Clause; Clauses; Sort)
 
+import Reflection.Argument.Modality as Modality
+import Reflection.Argument.Quantity as Quantity
 import Reflection.Argument.Relevance as Relevance
 import Reflection.Argument.Visibility as Visibility
 import Reflection.Argument.Information as Information
@@ -37,6 +39,8 @@ import Reflection.Argument.Information as Information
 open Definition.Definition public
 open Information.ArgInfo public
 open Literal.Literal public
+open Modality.Modality public
+open Quantity.Quantity public
 open Relevance.Relevance public
 open Term.Term public
 open Visibility.Visibility public
@@ -166,10 +170,10 @@ visibility = Information.visibility
 Please use Reflection.Argument.Information's visibility instead."
 #-}
 
-relevance = Information.relevance
+relevance = Modality.relevance
 {-# WARNING_ON_USAGE relevance
 "Warning: relevance was deprecated in v1.3.
-Please use Reflection.Argument.Information's relevance instead."
+Please use Reflection.Argument.Modality's relevance instead."
 #-}
 
 infix 4 _≟-AbsTerm_ _≟-AbsType_ _≟-ArgTerm_ _≟-ArgType_ _≟-Args_
