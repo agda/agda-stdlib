@@ -17,7 +17,7 @@ open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 open import Data.List
   using
   (List
-  ; []; _∷_
+  ; []; _∷_; [_]
   ; sum; map; take; reverse; _++_; drop
   )
 
@@ -25,6 +25,15 @@ open import Data.List
 
 list₁ : List ℕ
 list₁ = 3 ∷ 1 ∷ 2 ∷ []
+
+-- Alternatively if you have `_,_` imported from `Data.Product`
+-- you may also define them using the syntactic sugar common in
+-- other languages.
+
+open import Data.Product using (_,_)
+
+list₂ : List ℕ
+list₂ = [ 3 , 1 , 2 ]
 
 -- Basic operations over lists are also exported by the same file.
 

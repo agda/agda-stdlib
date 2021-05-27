@@ -19,6 +19,7 @@ open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _+_; _*_ ; _≤_ ; s≤s
 open import Data.Product as Prod using (_×_; _,_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Data.These.Base as These using (These; this; that; these)
+open import Data.Vec.Recursive.Base using (_^_)
 open import Function.Base using (id; _∘_ ; _∘′_; const; flip)
 open import Level using (Level)
 open import Relation.Nullary using (does)
@@ -170,8 +171,13 @@ length = foldr (const suc) 0
 ------------------------------------------------------------------------
 -- Operations for constructing lists
 
-[_] : A → List A
-[ x ] = x ∷ []
+-- Syntactic sugar for lists, allowing one to write: `[ x , y , z ]`
+-- rather than `x ∷ y ∷ z ∷ []`.
+--
+-- NOTE: requires you to import `_,_` from `Data.Product`
+[_] : ∀ {n} → A ^ (suc n) → List A
+[_] {n = zero}  x        = x ∷ []
+[_] {n = suc n} (x , xs) = x ∷ [ xs ]
 
 fromMaybe : Maybe A → List A
 fromMaybe (just x) = [ x ]
