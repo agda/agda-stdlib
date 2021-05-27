@@ -1,13 +1,20 @@
 Version 1.7
 ===========
 
-The library has been tested using Agda 2.6.2
+The library has been tested using Agda 2.6.2 release candidate 1.
 
 Highlights
 ----------
 
 * New module for making system calls during type checking, `Reflection.External`,
   which re-exports `Agda.Builtin.Reflection.External`.
+  
+* New predicate for lists that are enumerations their type in
+  `Data.List.Relation.Unary.Enumerates`.
+  
+* New weak induction schemes in `Data.Fin.Induction` that allows one to avoid 
+  the complicated use of `Acc`/`inject`/`raise` when proving inductive properties
+  over finite sets.
 
 Bug-fixes
 ---------
@@ -16,22 +23,20 @@ Bug-fixes
   `Function.Metric.(Core/Definitions/Structures/Bundles)`. This module was referred
   to in the documentation of its children but until now was not present.
 
-* Missing fixity declaration added to `_<_` in `Relation.Binary.Construct.NonStrictToStrict`.
+* Added missing fixity declaration to `_<_` in 
+  `Relation.Binary.Construct.NonStrictToStrict`.
 
 Non-backwards compatible changes
 --------------------------------
 
-* Replaced O(n) implementation of `Data.Nat.Binary.fromℕ` with O(log n). The old
-  implementation is maintained under `Data.Nat.Binary.fromℕ'` and proven to be
-  equivalent.
-
-#### Changes to floating-point arithmetic
+#### Floating-point arithmetic
 
 * The functions in `Data.Float.Base` were updated following changes upstream,
   in `Agda.Builtin.Float`, see <https://github.com/agda/agda/pull/4885>.
 
 * The bitwise binary relations on floating-point numbers (`_<_`, `_≈ᵇ_`, `_==_`)
-  have been removed without replacement, as they were deeply unintuitive, e.g., `∀ x → x < -x`.
+  have been removed without replacement, as they were deeply unintuitive, 
+  e.g., `∀ x → x < -x`.
 
 #### Reflection
 
@@ -81,18 +86,31 @@ Non-backwards compatible changes
   `stream` that relies on the newly unsafe `Codata` modules has
   been moved to the new module `Data.Nat.Pseudorandom.LCG.Unsafe`.
 
-* In order to avoid the usage of the `--sized-types` in the
+* In order to avoid the unsafe usage of the `--sized-types` in the
   `Codata.Musical` directory, the functions `fromMusical` and
-  `toMusical` defined in `Codata.Musical.Colist`,
-  `Codata.Musical.Conat`, `Codata.Musical.Cofin`, `Codata.Musical.M`,
-  and `Codata.Musical.Stream` have been moved to a new module
-  `Codata.Musical.Conversion` and renamed to
-  `fromMusicalColist`/`toMusicalColist`,
-  `fromMusicalConat`/`toMusicalConat`,
-  `fromMusicalCofin`/`toMusicalCofin`, `fromMusicalM/toMusicalM`, and
-  `fromMusicalStream`/`toMusicalStream` respectively.
+  `toMusical` defined in:
+  ```
+  Codata.Musical.Colist
+  Codata.Musical.Conat
+  Codata.Musical.Cofin
+  Codata.Musical.M
+  Codata.Musical.Stream
+  ```
+  have been moved to a new module `Codata.Musical.Conversion` and renamed to
+  ```
+  fromMusicalColist/toMusicalColist
+  fromMusicalConat/toMusicalConat
+  fromMusicalCofin/toMusicalCofin
+  fromMusicalM/toMusicalM
+  fromMusicalStream/toMusicalStream
+  ```
+  respectively.
 
 #### Other
+
+* Replaced existing O(n) implementation of `Data.Nat.Binary.fromℕ` with a new O(log n)
+  implementation. The old implementation is maintained under `Data.Nat.Binary.fromℕ'`
+  and proven to be equivalent to the new one.
 
 * `Data.Maybe.Base` now re-exports the definition of `Maybe` given by
   `Agda.Builtin.Maybe`. The `Foreign.Haskell` modules and definitions
@@ -113,14 +131,18 @@ New modules
   Reflection.External
   ```
 
-* Added `Reflection.Universe` defining a universe for the reflected syntax types.
-* Added `Reflection.Annotated` defining annotated reflected syntax and
-  functions to compute annotations and traverse terms based on annotations.
-* Added `Reflection.Annotated.Free` implementing free variable annotations for
-  reflected terms.
+* New modules for universes and annotations of reflected syntax:
+  ```
+  Reflection.Universe
+  Reflection.Annotated
+  Reflection.Annotated.Free
+  ```
 
-* Added `Relation.Unary.Sized` for unary relations over sized types now that `Size`
+* Added new module for unary relations over sized types now that `Size`
   lives in it's own universe since Agda 2.6.2.
+  ```agda
+  Relation.Unary.Sized
+  ```
 
 * Metrics specialised to co-domains with rational numbers:
   ```
@@ -158,33 +180,34 @@ Other minor additions
   respʳ-flip : _≈_ Respectsʳ (flip _≈_)
   respˡ-flip : _≈_ Respectsˡ (flip _≈_)
   ```
+
 * Added new function to `Data.Fin.Base`:
   ```agda
-  pinch : ∀ {n} → Fin n → Fin (suc n) → Fin n
+  pinch : Fin n → Fin (suc n) → Fin n
   ```
 
 * Added new proofs to `Data.Fin.Properties`:
   ```agda
-  pinch-surjective : ∀ {m} (i : Fin m) → Surjective _≡_ (pinch i)
-  pinch-mono-≤ : ∀ {m} (i : Fin m) → (pinch i) Preserves _≤_ ⟶ _≤_
+  pinch-surjective : Surjective _≡_ (pinch i)
+  pinch-mono-≤     : (pinch i) Preserves _≤_ ⟶ _≤_
   ```
 
 * Added new proofs to `Data.Nat.Binary.Properties`:
   ```agda
-  fromℕ≡fromℕ' : fromℕ ≗ fromℕ'
-  toℕ-fromℕ' : toℕ ∘ fromℕ' ≗ id
-  fromℕ'-homo-+ : ∀ m n → fromℕ' (m ℕ.+ n) ≡ fromℕ' m + fromℕ' n
+  fromℕ≡fromℕ'  : fromℕ ≗ fromℕ'
+  toℕ-fromℕ'    : toℕ ∘ fromℕ' ≗ id
+  fromℕ'-homo-+ : fromℕ' (m ℕ.+ n) ≡ fromℕ' m + fromℕ' n
   ```
 
 * Rewrote proofs in `Data.Nat.Binary.Properties` for new implementation of `fromℕ`:
   ```agda
-  toℕ-fromℕ : toℕ ∘ fromℕ ≗ id
-  fromℕ-homo-+ : ∀ m n → fromℕ (m ℕ.+ n) ≡ fromℕ m + fromℕ n
+  toℕ-fromℕ    : toℕ ∘ fromℕ ≗ id
+  fromℕ-homo-+ : fromℕ (m ℕ.+ n) ≡ fromℕ m + fromℕ n
   ```
 
 * Added new proof to `Data.Nat.DivMod`:
   ```agda
-  m/n≤m : ∀ m n {≢0} → (m / n) {≢0} ≤ 
+  m/n≤m : (m / n) {≢0} ≤ m
   ```
 
 * Added new type in `Size`:
