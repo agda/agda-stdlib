@@ -4,14 +4,9 @@
 -- Containers, based on the work of Abbott and others
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Container where
-
-open import Level using (_⊔_)
-open import Codata.M hiding (map)
-open import Data.W
-open import Size
 
 ------------------------------------------------------------------------
 -- Re-exporting content to maintain backwards compatibility
@@ -40,11 +35,3 @@ module Morphism where
 
   open import Data.Container.Morphism
     using (id; _∘_) public
-
--- The least and greatest fixpoints of a container.
-
-μ : ∀ {s p} → Container s p → Set (s ⊔ p)
-μ = W
-
-ν : ∀ {s p} → Container s p → Set (s ⊔ p)
-ν C = M C ∞

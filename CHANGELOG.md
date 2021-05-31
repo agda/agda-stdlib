@@ -82,13 +82,12 @@ Non-backwards compatible changes
   `--safe` flag.  For a full list of affected modules, refer to the
   relevant [commit](https://github.com/agda/agda-stdlib/pull/1465/files#diff-e1c0e3196e4cea6ff808f5d2906031a7657130e10181516206647b83c7014584R91-R131.)
 
-* In order to keep `Data.Nat.Pseudorandom.LCG` safe, the function
+* In order to maintain the safety of `Data.Nat.Pseudorandom.LCG`, the function
   `stream` that relies on the newly unsafe `Codata` modules has
   been moved to the new module `Data.Nat.Pseudorandom.LCG.Unsafe`.
 
-* In order to avoid the unsafe usage of the `--sized-types` in the
-  `Codata.Musical` directory, the functions `fromMusical` and
-  `toMusical` defined in:
+* In order to maintain the safety of the modules in the `Codata.Musical` directory, 
+  the functions `fromMusical` and `toMusical` defined in:
   ```
   Codata.Musical.Colist
   Codata.Musical.Conat
@@ -105,6 +104,9 @@ Non-backwards compatible changes
   fromMusicalStream/toMusicalStream
   ```
   respectively.
+
+* In order to maintain the safety of `Data.Container`, the least and greatest fixed points of containers,
+  `μ` and `ν`, have been moved from `Data.Container` to a new module `Data.Container.FixedPoints`.
 
 #### Other
 

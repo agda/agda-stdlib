@@ -4,7 +4,7 @@
 -- The free monad construction on containers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Container.FreeMonad where
 
@@ -38,7 +38,7 @@ _⋆C_ : ∀ {x s p} → Container s p → Set x → Container (s ⊔ x) p
 C ⋆C X = const X ⊎ C
 
 _⋆_ : ∀ {x s p} → Container s p → Set x → Set (x ⊔ s ⊔ p)
-C ⋆ X = μ (C ⋆C X)
+C ⋆ X = W (C ⋆C X)
 
 module _ {s p} {C : Container s p} where
 
