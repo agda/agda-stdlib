@@ -4,6 +4,8 @@ import Control.Applicative
 import Control.Monad
 
 import qualified Data.List as List
+import qualified Data.List.NonEmpty as List1
+import Data.Maybe
 
 import System.Directory
 import System.Environment
@@ -181,7 +183,9 @@ extractHeader mod = extract
     = info
   extract (d1@(_:_) : _)
     | not (delimiter d1)
-    , last d1 == '\r'
+      -- Andreas, issue #1510: there is a haunting of Prelude.last, so use List1.last instead.
+    , let d1' = fromMaybe (error "GenerateEverything.extractHeader: impossible") (List1.nonEmpty d1)
+    , List1.last d1' == '\r'
     = error $ mod ++ " contains \\r, probably due to git misconfiguration; maybe set autocrf to input?"
   extract _ = error $ unwords [ mod ++ " is malformed."
                               , "It needs to have a module header."
