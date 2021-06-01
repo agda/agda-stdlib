@@ -8,11 +8,11 @@ Highlights
 
 * New module for making system calls during type checking, `Reflection.External`,
   which re-exports `Agda.Builtin.Reflection.External`.
-  
+
 * New predicate for lists that are enumerations their type in
   `Data.List.Relation.Unary.Enumerates`.
-  
-* New weak induction schemes in `Data.Fin.Induction` that allows one to avoid 
+
+* New weak induction schemes in `Data.Fin.Induction` that allows one to avoid
   the complicated use of `Acc`/`inject`/`raise` when proving inductive properties
   over finite sets.
 
@@ -23,7 +23,7 @@ Bug-fixes
   `Function.Metric.(Core/Definitions/Structures/Bundles)`. This module was referred
   to in the documentation of its children but until now was not present.
 
-* Added missing fixity declaration to `_<_` in 
+* Added missing fixity declaration to `_<_` in
   `Relation.Binary.Construct.NonStrictToStrict`.
 
 Non-backwards compatible changes
@@ -35,7 +35,7 @@ Non-backwards compatible changes
   in `Agda.Builtin.Float`, see <https://github.com/agda/agda/pull/4885>.
 
 * The bitwise binary relations on floating-point numbers (`_<_`, `_≈ᵇ_`, `_==_`)
-  have been removed without replacement, as they were deeply unintuitive, 
+  have been removed without replacement, as they were deeply unintuitive,
   e.g., `∀ x → x < -x`.
 
 #### Reflection
@@ -97,14 +97,7 @@ Non-backwards compatible changes
   Codata.Musical.Stream
   ```
   have been moved to a new module `Codata.Musical.Conversion` and renamed to
-  ```
-  fromMusicalColist/toMusicalColist
-  fromMusicalConat/toMusicalConat
-  fromMusicalCofin/toMusicalCofin
-  fromMusicalM/toMusicalM
-  fromMusicalStream/toMusicalStream
-  ```
-  respectively.
+  `X.fromMusical` and `X.toMusical` for each of `Codata.Musical.X`.
 
 #### Other
 
@@ -170,7 +163,7 @@ Other minor additions
 * Added new proofs to `Data.Fin.Induction`:
   ```agda
   >-wellFounded   : WellFounded {A = Fin n} _>_
-  
+
   <-weakInduction : P zero      → (∀ i → P (inject₁ i) → P (suc i)) → ∀ i → P i
   >-weakInduction : P (fromℕ n) → (∀ i → P (suc i) → P (inject₁ i)) → ∀ i → P i
   ```
