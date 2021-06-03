@@ -105,9 +105,9 @@ Non-backwards compatible changes
   ```
   respectively.
 
-* In order to maintain the safety of `Data.Container`, the greatest fixpoint 
-  of containers, `ν`, has been moved from `Data.Container` to a new module 
-  `Data.Container.GreatestFixpoint`.
+* In order to maintain the safety of `Data.Container(.Indexed)`, the greatest fixpoint 
+  of containers, `ν`, has been moved from `Data.Container(.Indexed)` to a new module 
+  `Data.Container.GreatestFixpoint(.Indexed)`.
 
 #### Other
 
