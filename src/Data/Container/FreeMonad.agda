@@ -13,7 +13,7 @@ open import Data.Sum.Base using (inj₁; inj₂ ; [_,_]′)
 open import Data.Product
 open import Data.Container
 open import Data.Container.Combinator using (const; _⊎_)
-open import Data.W
+open import Data.W using (sup)
 open import Category.Monad
 
 infixl 1 _⋆C_
@@ -38,7 +38,7 @@ _⋆C_ : ∀ {x s p} → Container s p → Set x → Container (s ⊔ x) p
 C ⋆C X = const X ⊎ C
 
 _⋆_ : ∀ {x s p} → Container s p → Set x → Set (x ⊔ s ⊔ p)
-C ⋆ X = W (C ⋆C X)
+C ⋆ X = μ (C ⋆C X)
 
 module _ {s p} {C : Container s p} where
 

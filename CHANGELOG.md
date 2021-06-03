@@ -105,8 +105,9 @@ Non-backwards compatible changes
   ```
   respectively.
 
-* In order to maintain the safety of `Data.Container`, the least and greatest fixed points of containers,
-  `μ` and `ν`, have been moved from `Data.Container` to a new module `Data.Container.FixedPoints`.
+* In order to maintain the safety of `Data.Container`, the greatest fixpoint 
+  of containers, `ν`, has been moved from `Data.Container` to a new module 
+  `Data.Container.GreatestFixpoint`.
 
 #### Other
 
