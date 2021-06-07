@@ -1,0 +1,110 @@
+name: Ubuntu build
+on:
+  push:
+    branches:
+      - master
+      - experimental
+  pull_request:
+    branches:
+      - master
+      - experimental
+
+## See 'Pick Agda version' for branch-specific commit selection
+env:
+  GHC_VERSION: 8.6.5
+  CABAL_VERSION: 3.2.0.0
+  CABAL_INSTALL: cabal install --overwrite-policy=always --ghc-options='-O1 +RTS -M6G -RTS'
+  AGDA: agda -Werror +RTS -M3.5G -H3.5G -A128M -RTS -i. -i src/
+
+jobs:
+  test-stdlib:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Initialise variables
+        run: |
+          if [[ '${{ github.ref }}' == 'refs/heads/master' \
+             || '${{ github.base_ref }}' == 'master' ]]; then
+            # Pick Agda version for master
+            echo "AGDA_COMMIT=tags/v2.6.1.3.20210524" >> $GITHUB_ENV;
+            echo "AGDA_HTML_DIR=html" >> $GITHUB_ENV
+          elif [[ '${{ github.ref }}' == 'refs/heads/experimental' \
+               || '${{ github.base_ref }}' == 'experimental' ]]; then
+            # Pick Agda version for experimental
+            echo "AGDA_COMMIT=tags/v2.6.1.3.20210524" >> $GITHUB_ENV;
+            echo "AGDA_HTML_DIR=html/experimental" >> $GITHUB_ENV
+          fi
+
+          if [[ '${{ github.ref }}' == 'refs/heads/master' \
+             || '${{ github.ref }}' == 'refs/heads/experimental' ]]; then
+             echo "AGDA_DEPLOY=true" >> $GITHUB_ENV
+          fi
+
+      - name: Cache cabal packages
+        uses: actions/cache@v2
+        id: cache-cabal
+        with:
+          path: |
+            ~/.cabal/packages
+            ~/.cabal/store
+            ~/.cabal/bin
+          key: ${{ runner.os }}-${{ env.GHC_VERSION }}-${{ env.CABAL_VERSION }}-${{ env.AGDA_COMMIT }}
+
+      - name: Install cabal
+        if: steps.cache-cabal.outputs.cache-hit != 'true'
+        uses: actions/setup-haskell@v1.1.3
+        with:
+          ghc-version: ${{ env.GHC_VERSION }}
+          cabal-version: ${{ env.CABAL_VERSION }}
+
+      - name: Put cabal programs in PATH
+        run: echo "~/.cabal/bin" >> $GITHUB_PATH
+
+      - name: Cabal update
+        run: cabal update
+
+      - name: Download and install Agda from github
+        if: steps.cache-cabal.outputs.cache-hit != 'true'
+        run: |
+          git clone https://github.com/agda/agda
+          cd agda
+          git checkout ${{ env.AGDA_COMMIT }}
+          mkdir -p doc
+          touch doc/user-manual.pdf
+          ${{ env.CABAL_INSTALL }}
+          cd ..
+
+     # Download and test stdlib
+      - name: Checkout stdlib
+        uses: actions/checkout@v2
+
+      - name: Test stdlib
+        run: |
+          ${{ env.CABAL_INSTALL }} agda-stdlib-utils.cabal
+          cabal run GenerateEverything
+          cp travis/* .
+          ./index.sh
+          ${{ env.AGDA }} --safe EverythingSafe.agda
+          ${{ env.AGDA }} --html --html-dir ${{ env.AGDA_HTML_DIR }} index.agda
+
+      # This is a massive hack at the moment
+      # - name: Compile stdlib
+      #   run: |
+      #     ${{ env.AGDA }} -c --no-main --ghc-dont-call-ghc --compile-dir=tmp Everything.agda
+      #     cd tmp
+      #     yes | cabal init --interactive
+      #     head -n -17 tmp.cabal > tmp
+      #     mv tmp tmp.cabal
+      #     cat ../travis/ghc-options >> tmp.cabal
+      #     cabal build
+
+##          ${{ env.AGDA }} -c README/Foreign/Haskell.agda && ./Haskell
+
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@4.1.3
+        if: ${{ success() && env.AGDA_DEPLOY }}
+
+        with:
+          branch: gh-pages
+          folder: html
+          git-config-name: Github Actions
