@@ -4,7 +4,7 @@
 -- Greatest fixpoint for containers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --guardedness #-}
+{-# OPTIONS --safe --without-K --guardedness #-}
 
 module Data.Container.Indexed.GreatestFixpoint where
 
