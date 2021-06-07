@@ -9,12 +9,12 @@
 module Data.W where
 
 open import Level
-open import Function
-open import Data.Product hiding (map)
-open import Data.Container.Core hiding (map)
+open import Function.Base using (_$_; _∘_; const)
+open import Data.Product using (_,_; -,_; proj₂)
+open import Data.Container.Core using (Container; ⟦_⟧; Shape; Position; _⇒_; ⟪_⟫)
 open import Data.Container.Relation.Unary.All using (□; all)
-open import Relation.Nullary
-open import Agda.Builtin.Equality
+open import Relation.Nullary using (¬_)
+open import Agda.Builtin.Equality using (_≡_; refl)
 
 private
   variable
