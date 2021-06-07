@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.List.Membership.DecPropositional</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Decidable propositional membership over lists</a>
+<a id="155" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="229" class="Symbol">{-#</a> <a id="233" class="Keyword">OPTIONS</a> <a id="241" class="Pragma">--without-K</a> <a id="253" class="Pragma">--safe</a> <a id="260" class="Symbol">#-}</a>
+
+<a id="265" class="Keyword">open</a> <a id="270" class="Keyword">import</a> <a id="277" href="Relation.Binary.html" class="Module">Relation.Binary</a> <a id="293" class="Keyword">using</a> <a id="299" class="Symbol">(</a><a id="300" href="Relation.Binary.Core.html#5213" class="Function">Decidable</a><a id="309" class="Symbol">)</a>
+<a id="311" class="Keyword">open</a> <a id="316" class="Keyword">import</a> <a id="323" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a> <a id="361" class="Keyword">using</a> <a id="367" class="Symbol">(</a><a id="368" href="Agda.Builtin.Equality.html#125" class="Datatype Operator">_≡_</a><a id="371" class="Symbol">;</a> <a id="373" href="Relation.Binary.PropositionalEquality.html#1647" class="Function">decSetoid</a><a id="382" class="Symbol">)</a>
+
+<a id="385" class="Keyword">module</a> <a id="392" href="Data.List.Membership.DecPropositional.html" class="Module">Data.List.Membership.DecPropositional</a>
+  <a id="432" class="Symbol">{</a><a id="433" href="Data.List.Membership.DecPropositional.html#433" class="Bound">a</a><a id="434" class="Symbol">}</a> <a id="436" class="Symbol">{</a><a id="437" href="Data.List.Membership.DecPropositional.html#437" class="Bound">A</a> <a id="439" class="Symbol">:</a> <a id="441" class="PrimitiveType">Set</a> <a id="445" href="Data.List.Membership.DecPropositional.html#433" class="Bound">a</a><a id="446" class="Symbol">}</a> <a id="448" class="Symbol">(</a><a id="449" href="Data.List.Membership.DecPropositional.html#449" class="Bound Operator">_≟_</a> <a id="453" class="Symbol">:</a> <a id="455" href="Relation.Binary.Core.html#5213" class="Function">Decidable</a> <a id="465" class="Symbol">(</a><a id="466" href="Agda.Builtin.Equality.html#125" class="Datatype Operator">_≡_</a> <a id="470" class="Symbol">{</a><a id="471" class="Argument">A</a> <a id="473" class="Symbol">=</a> <a id="475" href="Data.List.Membership.DecPropositional.html#437" class="Bound">A</a><a id="476" class="Symbol">}))</a> <a id="480" class="Keyword">where</a>
+
+<a id="487" class="Comment">------------------------------------------------------------------------</a>
+<a id="560" class="Comment">-- Re-export contents of propositional membership</a>
+
+<a id="611" class="Keyword">open</a> <a id="616" class="Keyword">import</a> <a id="623" href="Data.List.Membership.Propositional.html" class="Module">Data.List.Membership.Propositional</a> <a id="658" class="Symbol">{</a><a id="659" class="Argument">A</a> <a id="661" class="Symbol">=</a> <a id="663" href="Data.List.Membership.DecPropositional.html#437" class="Bound">A</a><a id="664" class="Symbol">}</a> <a id="666" class="Keyword">public</a>
+<a id="673" class="Keyword">open</a> <a id="678" class="Keyword">import</a> <a id="685" href="Data.List.Membership.DecSetoid.html" class="Module">Data.List.Membership.DecSetoid</a> <a id="716" class="Symbol">(</a><a id="717" href="Relation.Binary.PropositionalEquality.html#1647" class="Function">decSetoid</a> <a id="727" href="Data.List.Membership.DecPropositional.html#449" class="Bound Operator">_≟_</a><a id="730" class="Symbol">)</a> <a id="732" class="Keyword">public</a>
+  <a id="741" class="Keyword">using</a> <a id="747" class="Symbol">(</a>_∈?_<a id="752" class="Symbol">)</a>
+
+</pre></body></html>

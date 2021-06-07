@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Sum.Instances</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Typeclass instances for sums</a>
+<a id="138" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="212" class="Symbol">{-#</a> <a id="216" class="Keyword">OPTIONS</a> <a id="224" class="Pragma">--without-K</a> <a id="236" class="Pragma">--safe</a> <a id="243" class="Symbol">#-}</a>
+
+<a id="248" class="Keyword">module</a> <a id="255" href="Data.Sum.Instances.html" class="Module">Data.Sum.Instances</a> <a id="274" class="Keyword">where</a>
+
+<a id="281" class="Keyword">open</a> <a id="286" class="Keyword">import</a> <a id="293" href="Data.Sum.Base.html" class="Module">Data.Sum.Base</a>
+<a id="307" class="Keyword">open</a> <a id="312" class="Keyword">import</a> <a id="319" href="Data.Sum.Properties.html" class="Module">Data.Sum.Properties</a>
+<a id="339" class="Keyword">open</a> <a id="344" class="Keyword">import</a> <a id="351" href="Level.html" class="Module">Level</a>
+<a id="357" class="Keyword">open</a> <a id="362" class="Keyword">import</a> <a id="369" href="Relation.Binary.PropositionalEquality.Core.html" class="Module">Relation.Binary.PropositionalEquality.Core</a>
+<a id="412" class="Keyword">open</a> <a id="417" class="Keyword">import</a> <a id="424" href="Relation.Binary.PropositionalEquality.Properties.html" class="Module">Relation.Binary.PropositionalEquality.Properties</a>
+  <a id="475" class="Keyword">using</a> <a id="481" class="Symbol">(</a><a id="482" href="Relation.Binary.PropositionalEquality.Properties.html#3548" class="Function">isDecEquivalence</a><a id="498" class="Symbol">)</a>
+<a id="500" class="Keyword">open</a> <a id="505" class="Keyword">import</a> <a id="512" href="Relation.Binary.TypeClasses.html" class="Module">Relation.Binary.TypeClasses</a>
+
+<a id="541" class="Keyword">private</a>
+  <a id="551" class="Keyword">variable</a>
+    <a id="564" href="Data.Sum.Instances.html#564" class="Generalizable">a</a> <a id="566" href="Data.Sum.Instances.html#566" class="Generalizable">b</a> <a id="568" class="Symbol">:</a> <a id="570" href="Agda.Primitive.html#597" class="Postulate">Level</a>
+    <a id="580" href="Data.Sum.Instances.html#580" class="Generalizable">A</a> <a id="582" class="Symbol">:</a> <a id="584" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="588" href="Data.Sum.Instances.html#564" class="Generalizable">a</a>
+    <a id="594" href="Data.Sum.Instances.html#594" class="Generalizable">B</a> <a id="596" class="Symbol">:</a> <a id="598" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="602" href="Data.Sum.Instances.html#566" class="Generalizable">b</a>
+
+<a id="605" class="Keyword">instance</a>
+  <a id="⊎-≡-isDecEquivalence"></a><a id="616" href="Data.Sum.Instances.html#616" class="Function">⊎-≡-isDecEquivalence</a> <a id="637" class="Symbol">:</a> <a id="639" class="Symbol">{{</a><a id="641" href="Relation.Binary.Structures.html#1824" class="Record">IsDecEquivalence</a> <a id="658" class="Symbol">{</a><a id="659" class="Argument">A</a> <a id="661" class="Symbol">=</a> <a id="663" href="Data.Sum.Instances.html#580" class="Generalizable">A</a><a id="664" class="Symbol">}</a> <a id="666" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a><a id="669" class="Symbol">}}</a> <a id="672" class="Symbol">→</a> <a id="674" class="Symbol">{{</a><a id="676" href="Relation.Binary.Structures.html#1824" class="Record">IsDecEquivalence</a> <a id="693" class="Symbol">{</a><a id="694" class="Argument">A</a> <a id="696" class="Symbol">=</a> <a id="698" href="Data.Sum.Instances.html#594" class="Generalizable">B</a><a id="699" class="Symbol">}</a> <a id="701" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a><a id="704" class="Symbol">}}</a> <a id="707" class="Symbol">→</a> <a id="709" href="Relation.Binary.Structures.html#1824" class="Record">IsDecEquivalence</a> <a id="726" class="Symbol">{</a><a id="727" class="Argument">A</a> <a id="729" class="Symbol">=</a> <a id="731" href="Data.Sum.Instances.html#580" class="Generalizable">A</a> <a id="733" href="Data.Sum.Base.html#734" class="Datatype Operator">⊎</a> <a id="735" href="Data.Sum.Instances.html#594" class="Generalizable">B</a><a id="736" class="Symbol">}</a> <a id="738" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a>
+  <a id="744" href="Data.Sum.Instances.html#616" class="Function">⊎-≡-isDecEquivalence</a> <a id="765" class="Symbol">=</a> <a id="767" href="Relation.Binary.PropositionalEquality.Properties.html#3548" class="Function">isDecEquivalence</a> <a id="784" class="Symbol">(</a><a id="785" href="Data.Sum.Properties.html#960" class="Function">≡-dec</a> <a id="791" href="Relation.Binary.Structures.html#1921" class="Field Operator">_≟_</a> <a id="795" href="Relation.Binary.Structures.html#1921" class="Field Operator">_≟_</a><a id="798" class="Symbol">)</a>
+</pre></body></html>

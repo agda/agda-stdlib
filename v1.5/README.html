@@ -1,0 +1,281 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>README</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Keyword">module</a> <a id="8" href="README.html" class="Module">README</a> <a id="15" class="Keyword">where</a>
+
+<a id="22" class="Comment">------------------------------------------------------------------------</a>
+<a id="95" class="Comment">-- The Agda standard library, version 1.5</a>
+<a id="137" class="Comment">--</a>
+<a id="140" class="Comment">-- Authors: Nils Anders Danielsson, Matthew Daggitt, Guillaume Allais</a>
+<a id="210" class="Comment">-- with contributions from Andreas Abel, Stevan Andjelkovic,</a>
+<a id="271" class="Comment">-- Jean-Philippe Bernardy, Peter Berry, Bradley Hardy Joachim Breitner,</a>
+<a id="343" class="Comment">-- Samuel Bronson, Daniel Brown, Jacques Carette, James Chapman,</a>
+<a id="408" class="Comment">-- Liang-Ting Chen, Dominique Devriese, Dan Doel, Érdi Gergő,</a>
+<a id="470" class="Comment">-- Zack Grannan, Helmut Grohne, Simon Foster, Liyang Hu, Jason Hu,</a>
+<a id="537" class="Comment">-- Patrik Jansson, Alan Jeffrey, Wen Kokke, Evgeny Kotelnikov,</a>
+<a id="600" class="Comment">-- Sergei Meshveliani, Eric Mertens, Darin Morrison, Guilhem Moulin,</a>
+<a id="669" class="Comment">-- Shin-Cheng Mu, Ulf Norell, Noriyuki Ohkawa, Nicolas Pouillard,</a>
+<a id="735" class="Comment">-- Andrés Sicard-Ramírez, Lex van der Stoep, Sandro Stucki, Milo Turner,</a>
+<a id="808" class="Comment">-- Noam Zeilberger and other anonymous contributors.</a>
+<a id="861" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="935" class="Comment">-- This version of the library has been tested using Agda 2.6.1 and</a>
+<a id="1003" class="Comment">-- 2.6.1.1.</a>
+
+<a id="1016" class="Comment">-- The library comes with a .agda-lib file, for use with the library</a>
+<a id="1085" class="Comment">-- management system.</a>
+
+<a id="1108" class="Comment">-- Currently the library does not support the JavaScript compiler</a>
+<a id="1174" class="Comment">-- backend.</a>
+
+<a id="1187" class="Comment">------------------------------------------------------------------------</a>
+<a id="1260" class="Comment">-- High-level overview of contents</a>
+<a id="1295" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="1369" class="Comment">-- The top-level module names of the library are currently allocated</a>
+<a id="1438" class="Comment">-- as follows:</a>
+<a id="1453" class="Comment">--</a>
+<a id="1456" class="Comment">-- • Algebra</a>
+<a id="1469" class="Comment">--     Abstract algebra (monoids, groups, rings etc.), along with</a>
+<a id="1535" class="Comment">--     properties needed to specify these structures (associativity,</a>
+<a id="1604" class="Comment">--     commutativity, etc.), and operations on and proofs about the</a>
+<a id="1672" class="Comment">--     structures.</a>
+
+<a id="1692" class="Comment">-- • Axiom</a>
+<a id="1703" class="Comment">--     Types and consequences of various additional axioms not</a>
+<a id="1766" class="Comment">--     necessarily included in Agda, e.g. uniqueness of identity</a>
+<a id="1831" class="Comment">--     proofs, function extensionality and excluded middle.</a>
+
+<a id="1892" class="Keyword">import</a> <a id="1899" href="README.Axiom.html" class="Module">README.Axiom</a>
+
+<a id="1913" class="Comment">-- • Category</a>
+<a id="1927" class="Comment">--     Category theory-inspired idioms used to structure functional</a>
+<a id="1995" class="Comment">--     programs (functors and monads, for instance).</a>
+
+<a id="2049" class="Comment">-- • Codata</a>
+<a id="2061" class="Comment">--     Coinductive data types and properties. There are two different</a>
+<a id="2131" class="Comment">--     approaches taken. The `Codata` folder contains the new more</a>
+<a id="2198" class="Comment">--     standard approach using sized types. The `Codata.Musical`</a>
+<a id="2263" class="Comment">--     folder contains modules using the old musical notation.</a>
+
+<a id="2327" class="Comment">-- • Data</a>
+<a id="2337" class="Comment">--     Data types and properties.</a>
+
+<a id="2372" class="Keyword">import</a> <a id="2379" href="README.Data.html" class="Module">README.Data</a>
+
+<a id="2392" class="Comment">-- • Function</a>
+<a id="2406" class="Comment">--     Combinators and properties related to functions.</a>
+
+<a id="2463" class="Comment">-- • Foreign</a>
+<a id="2476" class="Comment">--     Related to the foreign function interface.</a>
+
+<a id="2527" class="Comment">-- • Induction</a>
+<a id="2542" class="Comment">--     A general framework for induction (includes lexicographic and</a>
+<a id="2611" class="Comment">--     well-founded induction).</a>
+
+<a id="2644" class="Comment">-- • IO</a>
+<a id="2652" class="Comment">--     Input/output-related functions.</a>
+
+<a id="2692" class="Comment">-- • Level</a>
+<a id="2703" class="Comment">--     Universe levels.</a>
+
+<a id="2728" class="Comment">-- • Reflection</a>
+<a id="2744" class="Comment">--     Support for reflection.</a>
+
+<a id="2776" class="Comment">-- • Relation</a>
+<a id="2790" class="Comment">--     Properties of and proofs about relations.</a>
+
+<a id="2840" class="Comment">-- • Size</a>
+<a id="2850" class="Comment">--     Sizes used by the sized types mechanism.</a>
+
+<a id="2899" class="Comment">-- • Strict</a>
+<a id="2911" class="Comment">--     Provides access to the builtins relating to strictness.</a>
+
+<a id="2975" class="Comment">-- • Tactic</a>
+<a id="2987" class="Comment">--     Tactics for automatic proof generation</a>
+
+<a id="3034" class="Comment">-- ∙ Text</a>
+<a id="3044" class="Comment">--     Format-based printing, Pretty-printing, and regular expressions</a>
+
+
+<a id="3117" class="Comment">------------------------------------------------------------------------</a>
+<a id="3190" class="Comment">-- Library design</a>
+<a id="3208" class="Comment">------------------------------------------------------------------------</a>
+<a id="3281" class="Comment">-- The following modules contain a discussion of some of the choices</a>
+<a id="3350" class="Comment">-- that have been made whilst designing the library.</a>
+
+<a id="3404" class="Comment">-- • How mathematical hierarchies (e.g. preorder, partial order, total</a>
+<a id="3475" class="Comment">-- order) are handled in the library.</a>
+
+<a id="3514" class="Keyword">import</a> <a id="3521" href="README.Design.Hierarchies.html" class="Module">README.Design.Hierarchies</a>
+
+<a id="3548" class="Comment">-- • How decidability is handled in the library.</a>
+
+<a id="3598" class="Keyword">import</a> <a id="3605" href="README.Design.Decidability.html" class="Module">README.Design.Decidability</a>
+
+
+<a id="3634" class="Comment">------------------------------------------------------------------------</a>
+<a id="3707" class="Comment">-- A selection of useful library modules</a>
+<a id="3748" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="3822" class="Comment">-- Note that module names in source code are often hyperlinked to the</a>
+<a id="3892" class="Comment">-- corresponding module. In the Emacs mode you can follow these</a>
+<a id="3956" class="Comment">-- hyperlinks by typing M-. or clicking with the middle mouse button.</a>
+
+<a id="4027" class="Comment">-- • Some data types</a>
+
+<a id="4049" class="Keyword">import</a> <a id="4056" href="Data.Bool.html" class="Module">Data.Bool</a>     <a id="4070" class="Comment">-- Booleans.</a>
+<a id="4083" class="Keyword">import</a> <a id="4090" href="Data.Char.html" class="Module">Data.Char</a>     <a id="4104" class="Comment">-- Characters.</a>
+<a id="4119" class="Keyword">import</a> <a id="4126" href="Data.Empty.html" class="Module">Data.Empty</a>    <a id="4140" class="Comment">-- The empty type.</a>
+<a id="4159" class="Keyword">import</a> <a id="4166" href="Data.Fin.html" class="Module">Data.Fin</a>      <a id="4180" class="Comment">-- Finite sets.</a>
+<a id="4196" class="Keyword">import</a> <a id="4203" href="Data.List.html" class="Module">Data.List</a>     <a id="4217" class="Comment">-- Lists.</a>
+<a id="4227" class="Keyword">import</a> <a id="4234" href="Data.Maybe.html" class="Module">Data.Maybe</a>    <a id="4248" class="Comment">-- The maybe type.</a>
+<a id="4267" class="Keyword">import</a> <a id="4274" href="Data.Nat.html" class="Module">Data.Nat</a>      <a id="4288" class="Comment">-- Natural numbers.</a>
+<a id="4308" class="Keyword">import</a> <a id="4315" href="Data.Product.html" class="Module">Data.Product</a>  <a id="4329" class="Comment">-- Products.</a>
+<a id="4342" class="Keyword">import</a> <a id="4349" href="Data.String.html" class="Module">Data.String</a>   <a id="4363" class="Comment">-- Strings.</a>
+<a id="4375" class="Keyword">import</a> <a id="4382" href="Data.Sum.html" class="Module">Data.Sum</a>      <a id="4396" class="Comment">-- Disjoint sums.</a>
+<a id="4414" class="Keyword">import</a> <a id="4421" href="Data.Unit.html" class="Module">Data.Unit</a>     <a id="4435" class="Comment">-- The unit type.</a>
+<a id="4453" class="Keyword">import</a> <a id="4460" href="Data.Vec.html" class="Module">Data.Vec</a>      <a id="4474" class="Comment">-- Fixed-length vectors.</a>
+
+<a id="4500" class="Comment">-- • Some co-inductive data types</a>
+
+<a id="4535" class="Keyword">import</a> <a id="4542" href="Codata.Stream.html" class="Module">Codata.Stream</a> <a id="4556" class="Comment">-- Streams.</a>
+<a id="4568" class="Keyword">import</a> <a id="4575" href="Codata.Colist.html" class="Module">Codata.Colist</a> <a id="4589" class="Comment">-- Colists.</a>
+
+<a id="4602" class="Comment">-- • Some types used to structure computations</a>
+
+<a id="4650" class="Keyword">import</a> <a id="4657" href="Category.Functor.html" class="Module">Category.Functor</a>      <a id="4679" class="Comment">-- Functors.</a>
+<a id="4692" class="Keyword">import</a> <a id="4699" href="Category.Applicative.html" class="Module">Category.Applicative</a>  <a id="4721" class="Comment">-- Applicative functors.</a>
+<a id="4746" class="Keyword">import</a> <a id="4753" href="Category.Monad.html" class="Module">Category.Monad</a>        <a id="4775" class="Comment">-- Monads.</a>
+
+<a id="4787" class="Comment">-- • Equality</a>
+
+<a id="4802" class="Comment">-- Propositional equality:</a>
+<a id="4829" class="Keyword">import</a> <a id="4836" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a>
+
+<a id="4875" class="Comment">-- Convenient syntax for &quot;equational reasoning&quot; using a preorder:</a>
+<a id="4941" class="Keyword">import</a> <a id="4948" href="Relation.Binary.Reasoning.Preorder.html" class="Module">Relation.Binary.Reasoning.Preorder</a>
+
+<a id="4984" class="Comment">-- Solver for commutative ring or semiring equalities:</a>
+<a id="5039" class="Keyword">import</a> <a id="5046" href="Algebra.Solver.Ring.html" class="Module">Algebra.Solver.Ring</a>
+
+<a id="5067" class="Comment">-- • Properties of functions, sets and relations</a>
+
+<a id="5117" class="Comment">-- Monoids, rings and similar algebraic structures:</a>
+<a id="5169" class="Keyword">import</a> <a id="5176" href="Algebra.html" class="Module">Algebra</a>
+
+<a id="5185" class="Comment">-- Negation, decidability, and similar operations on sets:</a>
+<a id="5244" class="Keyword">import</a> <a id="5251" href="Relation.Nullary.html" class="Module">Relation.Nullary</a>
+
+<a id="5269" class="Comment">-- Properties of homogeneous binary relations:</a>
+<a id="5316" class="Keyword">import</a> <a id="5323" href="Relation.Binary.html" class="Module">Relation.Binary</a>
+
+<a id="5340" class="Comment">-- • Induction</a>
+
+<a id="5356" class="Comment">-- An abstraction of various forms of recursion/induction:</a>
+<a id="5415" class="Keyword">import</a> <a id="5422" href="Induction.html" class="Module">Induction</a>
+
+<a id="5433" class="Comment">-- Well-founded induction:</a>
+<a id="5460" class="Keyword">import</a> <a id="5467" href="Induction.WellFounded.html" class="Module">Induction.WellFounded</a>
+
+<a id="5490" class="Comment">-- Various forms of induction for natural numbers:</a>
+<a id="5541" class="Keyword">import</a> <a id="5548" href="Data.Nat.Induction.html" class="Module">Data.Nat.Induction</a>
+
+<a id="5568" class="Comment">-- • Support for coinduction</a>
+
+<a id="5598" class="Keyword">import</a> <a id="5605" href="Codata.Musical.Notation.html" class="Module">Codata.Musical.Notation</a>
+<a id="5629" class="Keyword">import</a> <a id="5636" href="Codata.Thunk.html" class="Module">Codata.Thunk</a>
+
+<a id="5650" class="Comment">-- • IO</a>
+
+<a id="5659" class="Keyword">import</a> <a id="5666" href="IO.html" class="Module">IO</a>
+
+<a id="5670" class="Comment">-- ∙ Text</a>
+
+<a id="5681" class="Comment">-- Explaining string formats and the behaviour of printf</a>
+
+<a id="5739" class="Keyword">import</a> <a id="5746" href="README.Text.Printf.html" class="Module">README.Text.Printf</a>
+
+<a id="5766" class="Comment">-- Showcasing the pretty printing module</a>
+
+<a id="5808" class="Keyword">import</a> <a id="5815" href="README.Text.Pretty.html" class="Module">README.Text.Pretty</a>
+
+<a id="5835" class="Comment">-- Demonstrating the regular expression matching</a>
+
+<a id="5885" class="Keyword">import</a> <a id="5892" href="README.Text.Regex.html" class="Module">README.Text.Regex</a>
+
+<a id="5911" class="Comment">-- Explaining how to display tables of strings:</a>
+
+<a id="5960" class="Keyword">import</a> <a id="5967" href="README.Text.Tabular.html" class="Module">README.Text.Tabular</a>
+
+<a id="5988" class="Comment">-- Explaining how to display a tree:</a>
+
+<a id="6026" class="Keyword">import</a> <a id="6033" href="README.Text.Tree.html" class="Module">README.Text.Tree</a>
+
+
+
+<a id="6053" class="Comment">------------------------------------------------------------------------</a>
+<a id="6126" class="Comment">-- More documentation</a>
+<a id="6148" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="6222" class="Comment">-- Some examples showing how the case expression can be used.</a>
+
+<a id="6285" class="Keyword">import</a> <a id="6292" href="README.Case.html" class="Module">README.Case</a>
+
+<a id="6305" class="Comment">-- Some examples showing how combinators can be used to emulate</a>
+<a id="6369" class="Comment">-- &quot;functional reasoning&quot;</a>
+
+<a id="6396" class="Keyword">import</a> <a id="6403" href="README.Function.Reasoning.html" class="Module">README.Function.Reasoning</a>
+
+<a id="6430" class="Comment">-- An example showing how to use the debug tracing mechanism to inspect</a>
+<a id="6502" class="Comment">-- the behaviour of compiled Agda programs.</a>
+
+<a id="6547" class="Keyword">import</a> <a id="6554" href="README.Debug.Trace.html" class="Module">README.Debug.Trace</a>
+
+<a id="6574" class="Comment">-- An exploration of the generic programs acting on n-ary functions and</a>
+<a id="6646" class="Comment">-- n-ary heterogeneous products</a>
+
+<a id="6679" class="Keyword">import</a> <a id="6686" href="README.Nary.html" class="Module">README.Nary</a>
+
+<a id="6699" class="Comment">-- Explaining the inspect idiom: use case, equivalent handwritten</a>
+<a id="6765" class="Comment">-- auxiliary definitions, and implementation details.</a>
+
+<a id="6820" class="Keyword">import</a> <a id="6827" href="README.Inspect.html" class="Module">README.Inspect</a>
+
+<a id="6843" class="Comment">-- Explaining how to use the automatic solvers</a>
+
+<a id="6891" class="Keyword">import</a> <a id="6898" href="README.Tactic.MonoidSolver.html" class="Module">README.Tactic.MonoidSolver</a>
+<a id="6925" class="Keyword">import</a> <a id="6932" href="README.Tactic.RingSolver.html" class="Module">README.Tactic.RingSolver</a>
+
+<a id="6958" class="Comment">-- Explaining how the Haskell FFI works</a>
+
+<a id="6999" class="Keyword">import</a> <a id="7006" href="README.Foreign.Haskell.html" class="Module">README.Foreign.Haskell</a>
+
+
+<a id="7031" class="Comment">------------------------------------------------------------------------</a>
+<a id="7104" class="Comment">-- Core modules</a>
+<a id="7120" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="7194" class="Comment">-- Some modules have names ending in &quot;.Core&quot;. These modules are</a>
+<a id="7258" class="Comment">-- internal, and have (mostly) been created to avoid mutual recursion</a>
+<a id="7328" class="Comment">-- between modules. They should not be imported directly; their</a>
+<a id="7392" class="Comment">-- contents are reexported by other modules.</a>
+
+<a id="7438" class="Comment">------------------------------------------------------------------------</a>
+<a id="7511" class="Comment">-- All library modules</a>
+<a id="7534" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="7608" class="Comment">-- For short descriptions of every library module, see Everything;</a>
+<a id="7675" class="Comment">-- to exclude unsafe modules, see EverythingSafe:</a>
+
+<a id="7726" class="Keyword">import</a> <a id="7733" href="Everything.html" class="Module">Everything</a>
+<a id="7744" class="Keyword">import</a> <a id="7751" href="EverythingSafe.html" class="Module">EverythingSafe</a>
+
+<a id="7767" class="Comment">-- Note that the Everything* modules are generated automatically. If</a>
+<a id="7836" class="Comment">-- you have downloaded the library from its Git repository and want</a>
+<a id="7904" class="Comment">-- to type check README then you can (try to) construct Everything by</a>
+<a id="7974" class="Comment">-- running &quot;cabal install &amp;&amp; GenerateEverything&quot;.</a>
+
+<a id="8025" class="Comment">-- Note that all library sources are located under src or ffi. The</a>
+<a id="8092" class="Comment">-- modules README, README.* and Everything are not really part of the</a>
+<a id="8162" class="Comment">-- library, so these modules are located in the top-level directory</a>
+<a id="8230" class="Comment">-- instead.</a>
+</pre></body></html>

@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Relation.Binary.Construction.Extrema</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Freely adding Extrema to any Set</a>
+<a id="142" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="216" class="Keyword">module</a> <a id="223" href="Relation.Binary.Construction.Extrema.html" class="Module">Relation.Binary.Construction.Extrema</a> <a id="260" class="Keyword">where</a>
+
+<a id="267" class="Keyword">open</a> <a id="272" class="Keyword">import</a> <a id="279" href="Relation.Binary.Construction.Infimum.html" class="Module">Relation.Binary.Construction.Infimum</a> <a id="316" class="Symbol">as</a> <a id="319" class="Module">Infimum</a>   <a id="329" class="Keyword">using</a> <a id="335" class="Symbol">(</a><a id="336" href="Data.Maybe.Base.html#335" class="Datatype">_₋</a><a id="338" class="Symbol">)</a>
+<a id="340" class="Keyword">open</a> <a id="345" class="Keyword">import</a> <a id="352" href="Relation.Binary.Construction.Supremum.html" class="Module">Relation.Binary.Construction.Supremum</a> <a id="390" class="Symbol">as</a> <a id="393" class="Module">Supremum</a> <a id="402" class="Keyword">using</a> <a id="408" class="Symbol">(</a><a id="409" href="Data.Maybe.Base.html#335" class="Datatype">_⁺</a><a id="411" class="Symbol">)</a>
+
+<a id="_±"></a><a id="414" href="Relation.Binary.Construction.Extrema.html#414" class="Function Operator">_±</a> <a id="417" class="Symbol">:</a> <a id="419" class="Symbol">∀</a> <a id="421" class="Symbol">{</a><a id="422" href="Relation.Binary.Construction.Extrema.html#422" class="Bound">a</a><a id="423" class="Symbol">}</a> <a id="425" class="Symbol">→</a> <a id="427" class="PrimitiveType">Set</a> <a id="431" href="Relation.Binary.Construction.Extrema.html#422" class="Bound">a</a> <a id="433" class="Symbol">→</a> <a id="435" class="PrimitiveType">Set</a> <a id="439" href="Relation.Binary.Construction.Extrema.html#422" class="Bound">a</a>
+<a id="441" href="Relation.Binary.Construction.Extrema.html#441" class="Bound">A</a> <a id="443" href="Relation.Binary.Construction.Extrema.html#414" class="Function Operator">±</a> <a id="445" class="Symbol">=</a> <a id="447" href="Relation.Binary.Construction.Extrema.html#441" class="Bound">A</a> <a id="449" href="Data.Maybe.Base.html#335" class="Datatype Operator">₋</a> <a id="451" href="Data.Maybe.Base.html#335" class="Datatype Operator">⁺</a>
+
+<a id="454" class="Keyword">pattern</a> <a id="⊥⁺"></a><a id="462" href="Relation.Binary.Construction.Extrema.html#462" class="InductiveConstructor">⊥⁺</a>    <a id="468" class="Symbol">=</a> <a id="470" class="InductiveConstructor Operator">Supremum.[</a> <a id="481" class="InductiveConstructor">Infimum.⊥⁺</a> <a id="492" class="InductiveConstructor Operator">]</a>
+<a id="494" class="Keyword">pattern</a> <a id="[_]"></a><a id="502" href="Relation.Binary.Construction.Extrema.html#502" class="InductiveConstructor Operator">[_]</a> <a id="506" href="Relation.Binary.Construction.Extrema.html#531" class="Bound">k</a> <a id="508" class="Symbol">=</a> <a id="510" class="InductiveConstructor Operator">Supremum.[</a> <a id="521" class="InductiveConstructor Operator">Infimum.[</a> <a id="531" href="Relation.Binary.Construction.Extrema.html#531" class="Bound">k</a> <a id="533" class="InductiveConstructor Operator">]</a> <a id="535" class="InductiveConstructor Operator">]</a>
+<a id="537" class="Keyword">pattern</a> <a id="⊤⁺"></a><a id="545" href="Relation.Binary.Construction.Extrema.html#545" class="InductiveConstructor">⊤⁺</a>    <a id="551" class="Symbol">=</a> <a id="553" class="InductiveConstructor">Supremum.⊤⁺</a>
+</pre></body></html>

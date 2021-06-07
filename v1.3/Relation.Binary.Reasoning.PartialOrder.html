@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Relation.Binary.Reasoning.PartialOrder</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Convenient syntax for &quot;equational reasoning&quot; using a partial order</a>
+<a id="176" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="250" class="Comment">-- Example uses:</a>
+<a id="267" class="Comment">--</a>
+<a id="270" class="Comment">--    u≤x : u ≤ x</a>
+<a id="288" class="Comment">--    u≤x = begin</a>
+<a id="306" class="Comment">--      u  ≈⟨ u≈v ⟩</a>
+<a id="326" class="Comment">--      v  ≡⟨ v≡w ⟩</a>
+<a id="346" class="Comment">--      w  &lt;⟨ w≤x ⟩</a>
+<a id="366" class="Comment">--      x  ∎</a>
+<a id="379" class="Comment">--</a>
+<a id="382" class="Comment">--    u&lt;x : u &lt; x</a>
+<a id="400" class="Comment">--    u&lt;x = begin-strict</a>
+<a id="425" class="Comment">--      u  ≈⟨ u≈v ⟩</a>
+<a id="445" class="Comment">--      v  ≡⟨ v≡w ⟩</a>
+<a id="465" class="Comment">--      w  &lt;⟨ w≤x ⟩</a>
+<a id="485" class="Comment">--      x  ∎</a>
+<a id="498" class="Comment">--</a>
+<a id="501" class="Comment">--    u&lt;e : u &lt; e</a>
+<a id="519" class="Comment">--    u&lt;e = begin-strict</a>
+<a id="544" class="Comment">--      u  ≈⟨ u≈v ⟩</a>
+<a id="564" class="Comment">--      v  ≡⟨ v≡w ⟩</a>
+<a id="584" class="Comment">--      w  &lt;⟨ w&lt;x ⟩</a>
+<a id="604" class="Comment">--      x  ≤⟨ x≤y ⟩</a>
+<a id="624" class="Comment">--      y  &lt;⟨ y&lt;z ⟩</a>
+<a id="644" class="Comment">--      z  ≡˘⟨ d≡z ⟩</a>
+<a id="665" class="Comment">--      d  ≈˘⟨ e≈d ⟩</a>
+<a id="686" class="Comment">--      e  ∎</a>
+<a id="699" class="Comment">--</a>
+<a id="702" class="Comment">--    u≈w : u ≈ w</a>
+<a id="720" class="Comment">--    u≈w = begin-equality</a>
+<a id="747" class="Comment">--      u  ≈⟨ u≈v ⟩</a>
+<a id="767" class="Comment">--      v  ≡⟨ v≡w ⟩</a>
+<a id="787" class="Comment">--      w  ∎</a>
+
+<a id="801" class="Symbol">{-#</a> <a id="805" class="Keyword">OPTIONS</a> <a id="813" class="Pragma">--without-K</a> <a id="825" class="Pragma">--safe</a> <a id="832" class="Symbol">#-}</a>
+
+<a id="837" class="Keyword">open</a> <a id="842" class="Keyword">import</a> <a id="849" href="Relation.Binary.html" class="Module">Relation.Binary</a>
+
+<a id="866" class="Keyword">module</a> <a id="873" href="Relation.Binary.Reasoning.PartialOrder.html" class="Module">Relation.Binary.Reasoning.PartialOrder</a>
+  <a id="914" class="Symbol">{</a><a id="915" href="Relation.Binary.Reasoning.PartialOrder.html#915" class="Bound">p₁</a> <a id="918" href="Relation.Binary.Reasoning.PartialOrder.html#918" class="Bound">p₂</a> <a id="921" href="Relation.Binary.Reasoning.PartialOrder.html#921" class="Bound">p₃</a><a id="923" class="Symbol">}</a> <a id="925" class="Symbol">(</a><a id="926" href="Relation.Binary.Reasoning.PartialOrder.html#926" class="Bound">P</a> <a id="928" class="Symbol">:</a> <a id="930" href="Relation.Binary.Bundles.html#2525" class="Record">Poset</a> <a id="936" href="Relation.Binary.Reasoning.PartialOrder.html#915" class="Bound">p₁</a> <a id="939" href="Relation.Binary.Reasoning.PartialOrder.html#918" class="Bound">p₂</a> <a id="942" href="Relation.Binary.Reasoning.PartialOrder.html#921" class="Bound">p₃</a><a id="944" class="Symbol">)</a> <a id="946" class="Keyword">where</a>
+
+<a id="953" class="Keyword">open</a> <a id="958" href="Relation.Binary.Bundles.html#2525" class="Module">Poset</a> <a id="964" href="Relation.Binary.Reasoning.PartialOrder.html#926" class="Bound">P</a>
+<a id="966" class="Keyword">import</a> <a id="973" href="Relation.Binary.Construct.NonStrictToStrict.html" class="Module">Relation.Binary.Construct.NonStrictToStrict</a> <a id="1017" href="Relation.Binary.Bundles.html#2628" class="Field Operator">_≈_</a> <a id="1021" href="Relation.Binary.Bundles.html#2664" class="Field Operator">_≤_</a> <a id="1025" class="Symbol">as</a> <a id="Strict"></a><a id="1028" href="Relation.Binary.Reasoning.PartialOrder.html#1028" class="Module">Strict</a>
+
+<a id="1036" class="Comment">------------------------------------------------------------------------</a>
+<a id="1109" class="Comment">-- Re-export contents of base module</a>
+
+<a id="1147" class="Keyword">open</a> <a id="1152" class="Keyword">import</a> <a id="1159" href="Relation.Binary.Reasoning.Base.Triple.html" class="Module">Relation.Binary.Reasoning.Base.Triple</a>
+  <a id="1199" href="Relation.Binary.Structures.html#2966" class="Function">isPreorder</a>
+  <a id="1212" class="Symbol">(</a><a id="1213" href="Relation.Binary.Construct.NonStrictToStrict.html#5152" class="Function">Strict.trans</a> <a id="1226" href="Relation.Binary.Bundles.html#2700" class="Field">isPartialOrder</a><a id="1240" class="Symbol">)</a>
+  <a id="1244" class="Symbol">(</a><a id="1245" href="Relation.Binary.Construct.NonStrictToStrict.html#3088" class="Function">Strict.&lt;-resp-≈</a> <a id="1261" href="Relation.Binary.Structures.html#2228" class="Function">isEquivalence</a> <a id="1275" href="Relation.Binary.Structures.html#3160" class="Function">≤-resp-≈</a><a id="1283" class="Symbol">)</a>
+  <a id="1287" href="Relation.Binary.Construct.NonStrictToStrict.html#1003" class="Function">Strict.&lt;⇒≤</a>
+  <a id="1300" class="Symbol">(</a><a id="1301" href="Relation.Binary.Construct.NonStrictToStrict.html#2190" class="Function">Strict.&lt;-≤-trans</a> <a id="1318" href="Relation.Binary.Structures.html#1594" class="Function">Eq.sym</a> <a id="1325" href="Relation.Binary.Structures.html#2361" class="Function">trans</a> <a id="1331" href="Relation.Binary.Structures.html#2998" class="Function">antisym</a> <a id="1339" href="Relation.Binary.Structures.html#3131" class="Function">≤-respʳ-≈</a><a id="1348" class="Symbol">)</a>
+  <a id="1352" class="Symbol">(</a><a id="1353" href="Relation.Binary.Construct.NonStrictToStrict.html#2429" class="Function">Strict.≤-&lt;-trans</a> <a id="1370" href="Relation.Binary.Structures.html#2361" class="Function">trans</a> <a id="1376" href="Relation.Binary.Structures.html#2998" class="Function">antisym</a> <a id="1384" href="Relation.Binary.Structures.html#3102" class="Function">≤-respˡ-≈</a><a id="1393" class="Symbol">)</a>
+  <a id="1397" class="Keyword">public</a>
+
+
+
+<a id="1407" class="Comment">------------------------------------------------------------------------</a>
+<a id="1480" class="Comment">-- DEPRECATED NAMES</a>
+<a id="1500" class="Comment">------------------------------------------------------------------------</a>
+<a id="1573" class="Comment">-- Please use the new names as continuing support for the old names is</a>
+<a id="1644" class="Comment">-- not guaranteed.</a>
+
+<a id="1664" class="Comment">-- Version 1.0</a>
+
+<a id="1680" class="Keyword">infixr</a> <a id="1687" class="Number">2</a> <a id="1689" href="Relation.Binary.Reasoning.PartialOrder.html#1696" class="Function Operator">_≈⟨⟩_</a>
+
+<a id="_≈⟨⟩_"></a><a id="1696" href="Relation.Binary.Reasoning.PartialOrder.html#1696" class="Function Operator">_≈⟨⟩_</a> <a id="1702" class="Symbol">=</a> <a id="1704" href="Relation.Binary.Reasoning.Base.Triple.html#5018" class="Function Operator">_≡⟨⟩_</a>
+<a id="1710" class="Symbol">{-#</a> <a id="1714" class="Keyword">WARNING_ON_USAGE</a> <a id="1731" class="Pragma">_≈⟨⟩_</a>
+<a id="1737" class="String">&quot;Warning: _≈⟨⟩_ was deprecated in v1.0.
+Please use _≡⟨⟩_ instead.&quot;</a>
+<a id="1804" class="Symbol">#-}</a>
+</pre></body></html>

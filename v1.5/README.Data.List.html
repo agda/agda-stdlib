@@ -1,0 +1,194 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>README.Data.List</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Documentation for the List type</a>
+<a id="141" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="215" class="Keyword">module</a> <a id="222" href="README.Data.List.html" class="Module">README.Data.List</a> <a id="239" class="Keyword">where</a>
+
+<a id="246" class="Keyword">open</a> <a id="251" class="Keyword">import</a> <a id="258" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a> <a id="272" class="Keyword">using</a> <a id="278" class="Symbol">(</a><a id="279" href="Agda.Builtin.Nat.html#192" class="Datatype">ℕ</a><a id="280" class="Symbol">;</a> <a id="282" href="Agda.Builtin.Nat.html#325" class="Primitive Operator">_+_</a><a id="285" class="Symbol">)</a>
+<a id="287" class="Keyword">open</a> <a id="292" class="Keyword">import</a> <a id="299" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a> <a id="337" class="Keyword">using</a> <a id="343" class="Symbol">(</a><a id="344" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a><a id="347" class="Symbol">;</a> <a id="349" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a><a id="353" class="Symbol">)</a>
+
+<a id="356" class="Comment">------------------------------------------------------------------------</a>
+<a id="429" class="Comment">-- 1. Basics</a>
+<a id="442" class="Comment">------------------------------------------------------------------------</a>
+<a id="515" class="Comment">-- The `List` datatype is exported by the following file:</a>
+
+<a id="574" class="Keyword">open</a> <a id="579" class="Keyword">import</a> <a id="586" href="Data.List.html" class="Module">Data.List</a>
+  <a id="598" class="Keyword">using</a>
+  <a id="606" class="Symbol">(</a><a id="607" href="Agda.Builtin.List.html#148" class="Datatype">List</a>
+  <a id="614" class="Symbol">;</a> <a id="616" href="Data.List.Base.html#10010" class="InductiveConstructor">[]</a><a id="618" class="Symbol">;</a> <a id="620" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">_∷_</a>
+  <a id="626" class="Symbol">;</a> <a id="628" href="Data.List.Base.html#4497" class="Function">sum</a><a id="631" class="Symbol">;</a> <a id="633" href="Data.List.Base.html#1497" class="Function">map</a><a id="636" class="Symbol">;</a> <a id="638" href="Data.List.Base.html#6934" class="Function">take</a><a id="642" class="Symbol">;</a> <a id="644" href="Data.List.Base.html#9444" class="Function">reverse</a><a id="651" class="Symbol">;</a> <a id="653" href="Data.List.Base.html#1763" class="Function Operator">_++_</a><a id="657" class="Symbol">;</a> <a id="659" href="Data.List.Base.html#7054" class="Function">drop</a>
+  <a id="666" class="Symbol">)</a>
+
+<a id="669" class="Comment">-- Lists are built using the &quot;[]&quot; and &quot;_∷_&quot; constructors.</a>
+
+<a id="list₁"></a><a id="728" href="README.Data.List.html#728" class="Function">list₁</a> <a id="734" class="Symbol">:</a> <a id="736" href="Agda.Builtin.List.html#148" class="Datatype">List</a> <a id="741" href="Agda.Builtin.Nat.html#192" class="Datatype">ℕ</a>
+<a id="743" href="README.Data.List.html#728" class="Function">list₁</a> <a id="749" class="Symbol">=</a> <a id="751" class="Number">3</a> <a id="753" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">∷</a> <a id="755" class="Number">1</a> <a id="757" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">∷</a> <a id="759" class="Number">2</a> <a id="761" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">∷</a> <a id="763" href="Agda.Builtin.List.html#185" class="InductiveConstructor">[]</a>
+
+<a id="767" class="Comment">-- Basic operations over lists are also exported by the same file.</a>
+
+<a id="lem₁"></a><a id="835" href="README.Data.List.html#835" class="Function">lem₁</a> <a id="840" class="Symbol">:</a> <a id="842" href="Data.List.Base.html#4497" class="Function">sum</a> <a id="846" href="README.Data.List.html#728" class="Function">list₁</a> <a id="852" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="854" class="Number">6</a>
+<a id="856" href="README.Data.List.html#835" class="Function">lem₁</a> <a id="861" class="Symbol">=</a> <a id="863" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
+
+<a id="lem₂"></a><a id="869" href="README.Data.List.html#869" class="Function">lem₂</a> <a id="874" class="Symbol">:</a> <a id="876" href="Data.List.Base.html#1497" class="Function">map</a> <a id="880" class="Symbol">(</a><a id="881" href="Agda.Builtin.Nat.html#325" class="Primitive Operator">_+</a> <a id="884" class="Number">2</a><a id="885" class="Symbol">)</a> <a id="887" href="README.Data.List.html#728" class="Function">list₁</a> <a id="893" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="895" class="Number">5</a> <a id="897" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">∷</a> <a id="899" class="Number">3</a> <a id="901" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">∷</a> <a id="903" class="Number">4</a> <a id="905" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">∷</a> <a id="907" href="Agda.Builtin.List.html#185" class="InductiveConstructor">[]</a>
+<a id="910" href="README.Data.List.html#869" class="Function">lem₂</a> <a id="915" class="Symbol">=</a> <a id="917" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
+
+<a id="lem₃"></a><a id="923" href="README.Data.List.html#923" class="Function">lem₃</a> <a id="928" class="Symbol">:</a> <a id="930" href="Data.List.Base.html#6934" class="Function">take</a> <a id="935" class="Number">2</a> <a id="937" href="README.Data.List.html#728" class="Function">list₁</a> <a id="943" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="945" class="Number">3</a> <a id="947" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">∷</a> <a id="949" class="Number">1</a> <a id="951" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">∷</a> <a id="953" href="Agda.Builtin.List.html#185" class="InductiveConstructor">[]</a>
+<a id="956" href="README.Data.List.html#923" class="Function">lem₃</a> <a id="961" class="Symbol">=</a> <a id="963" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
+
+<a id="lem₄"></a><a id="969" href="README.Data.List.html#969" class="Function">lem₄</a> <a id="974" class="Symbol">:</a> <a id="976" href="Data.List.Base.html#9444" class="Function">reverse</a> <a id="984" href="README.Data.List.html#728" class="Function">list₁</a> <a id="990" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="992" class="Number">2</a> <a id="994" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">∷</a> <a id="996" class="Number">1</a> <a id="998" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">∷</a> <a id="1000" class="Number">3</a> <a id="1002" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">∷</a> <a id="1004" href="Agda.Builtin.List.html#185" class="InductiveConstructor">[]</a>
+<a id="1007" href="README.Data.List.html#969" class="Function">lem₄</a> <a id="1012" class="Symbol">=</a> <a id="1014" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
+
+<a id="lem₅"></a><a id="1020" href="README.Data.List.html#1020" class="Function">lem₅</a> <a id="1025" class="Symbol">:</a> <a id="1027" href="README.Data.List.html#728" class="Function">list₁</a> <a id="1033" href="Data.List.Base.html#1763" class="Function Operator">++</a> <a id="1036" href="README.Data.List.html#728" class="Function">list₁</a> <a id="1042" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="1044" class="Number">3</a> <a id="1046" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">∷</a> <a id="1048" class="Number">1</a> <a id="1050" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">∷</a> <a id="1052" class="Number">2</a> <a id="1054" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">∷</a> <a id="1056" class="Number">3</a> <a id="1058" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">∷</a> <a id="1060" class="Number">1</a> <a id="1062" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">∷</a> <a id="1064" class="Number">2</a> <a id="1066" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">∷</a> <a id="1068" href="Agda.Builtin.List.html#185" class="InductiveConstructor">[]</a>
+<a id="1071" href="README.Data.List.html#1020" class="Function">lem₅</a> <a id="1076" class="Symbol">=</a> <a id="1078" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
+
+<a id="1084" class="Comment">-- Various basic properties of these operations can be found in:</a>
+
+<a id="1150" class="Keyword">open</a> <a id="1155" class="Keyword">import</a> <a id="1162" href="Data.List.Properties.html" class="Module">Data.List.Properties</a>
+
+<a id="lem₆"></a><a id="1184" href="README.Data.List.html#1184" class="Function">lem₆</a> <a id="1189" class="Symbol">:</a> <a id="1191" class="Symbol">∀</a> <a id="1193" href="README.Data.List.html#1193" class="Bound">n</a> <a id="1195" class="Symbol">(</a><a id="1196" href="README.Data.List.html#1196" class="Bound">xs</a> <a id="1199" class="Symbol">:</a> <a id="1201" href="Agda.Builtin.List.html#148" class="Datatype">List</a> <a id="1206" href="Agda.Builtin.Nat.html#192" class="Datatype">ℕ</a><a id="1207" class="Symbol">)</a> <a id="1209" class="Symbol">→</a> <a id="1211" href="Data.List.Base.html#6934" class="Function">take</a> <a id="1216" href="README.Data.List.html#1193" class="Bound">n</a> <a id="1218" href="README.Data.List.html#1196" class="Bound">xs</a> <a id="1221" href="Data.List.Base.html#1763" class="Function Operator">++</a> <a id="1224" href="Data.List.Base.html#7054" class="Function">drop</a> <a id="1229" href="README.Data.List.html#1193" class="Bound">n</a> <a id="1231" href="README.Data.List.html#1196" class="Bound">xs</a> <a id="1234" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="1236" href="README.Data.List.html#1196" class="Bound">xs</a>
+<a id="1239" href="README.Data.List.html#1184" class="Function">lem₆</a> <a id="1244" class="Symbol">=</a> <a id="1246" href="Data.List.Properties.html#25542" class="Function">take++drop</a>
+
+<a id="lem₇"></a><a id="1258" href="README.Data.List.html#1258" class="Function">lem₇</a> <a id="1263" class="Symbol">:</a> <a id="1265" class="Symbol">∀</a> <a id="1267" class="Symbol">(</a><a id="1268" href="README.Data.List.html#1268" class="Bound">xs</a> <a id="1271" class="Symbol">:</a> <a id="1273" href="Agda.Builtin.List.html#148" class="Datatype">List</a> <a id="1278" href="Agda.Builtin.Nat.html#192" class="Datatype">ℕ</a><a id="1279" class="Symbol">)</a> <a id="1281" class="Symbol">→</a> <a id="1283" href="Data.List.Base.html#9444" class="Function">reverse</a> <a id="1291" class="Symbol">(</a><a id="1292" href="Data.List.Base.html#9444" class="Function">reverse</a> <a id="1300" href="README.Data.List.html#1268" class="Bound">xs</a><a id="1302" class="Symbol">)</a> <a id="1304" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="1306" href="README.Data.List.html#1268" class="Bound">xs</a>
+<a id="1309" href="README.Data.List.html#1258" class="Function">lem₇</a> <a id="1314" class="Symbol">=</a> <a id="1316" href="Data.List.Properties.html#34519" class="Function">reverse-involutive</a>
+
+<a id="lem₈"></a><a id="1336" href="README.Data.List.html#1336" class="Function">lem₈</a> <a id="1341" class="Symbol">:</a> <a id="1343" class="Symbol">∀</a> <a id="1345" class="Symbol">(</a><a id="1346" href="README.Data.List.html#1346" class="Bound">xs</a> <a id="1349" href="README.Data.List.html#1349" class="Bound">ys</a> <a id="1352" href="README.Data.List.html#1352" class="Bound">zs</a> <a id="1355" class="Symbol">:</a> <a id="1357" href="Agda.Builtin.List.html#148" class="Datatype">List</a> <a id="1362" href="Agda.Builtin.Nat.html#192" class="Datatype">ℕ</a><a id="1363" class="Symbol">)</a> <a id="1365" class="Symbol">→</a> <a id="1367" class="Symbol">(</a><a id="1368" href="README.Data.List.html#1346" class="Bound">xs</a> <a id="1371" href="Data.List.Base.html#1763" class="Function Operator">++</a> <a id="1374" href="README.Data.List.html#1349" class="Bound">ys</a><a id="1376" class="Symbol">)</a> <a id="1378" href="Data.List.Base.html#1763" class="Function Operator">++</a> <a id="1381" href="README.Data.List.html#1352" class="Bound">zs</a> <a id="1384" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="1386" href="README.Data.List.html#1346" class="Bound">xs</a> <a id="1389" href="Data.List.Base.html#1763" class="Function Operator">++</a> <a id="1392" class="Symbol">(</a><a id="1393" href="README.Data.List.html#1349" class="Bound">ys</a> <a id="1396" href="Data.List.Base.html#1763" class="Function Operator">++</a> <a id="1399" href="README.Data.List.html#1352" class="Bound">zs</a><a id="1401" class="Symbol">)</a>
+<a id="1403" href="README.Data.List.html#1336" class="Function">lem₈</a> <a id="1408" class="Symbol">=</a> <a id="1410" href="Data.List.Properties.html#5366" class="Function">++-assoc</a>
+
+
+<a id="1421" class="Comment">------------------------------------------------------------------------</a>
+<a id="1494" class="Comment">-- 2. Unary relations over lists</a>
+<a id="1527" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="1601" class="Comment">-- Unary relations in `Data.List.Relation.Unary` are used to reason</a>
+<a id="1669" class="Comment">-- about the properties of an individual list.</a>
+
+<a id="1717" class="Comment">------------------------------------------------------------------------</a>
+<a id="1790" class="Comment">-- Any</a>
+
+<a id="1798" class="Comment">-- The predicate `Any` encodes the idea of at least one element of a</a>
+<a id="1867" class="Comment">-- given list satisfying a given property (or more formally a</a>
+<a id="1929" class="Comment">-- predicate, see the `Pred` type in `Relation.Unary`).</a>
+
+<a id="1986" class="Keyword">import</a> <a id="1993" href="README.Data.List.Relation.Unary.Any.html" class="Module">README.Data.List.Relation.Unary.Any</a>
+
+<a id="2030" class="Comment">------------------------------------------------------------------------</a>
+<a id="2103" class="Comment">-- All</a>
+
+<a id="2111" class="Comment">-- The dual to `Any` is the predicate `All` which encodes the idea that</a>
+<a id="2183" class="Comment">-- every element in a given list satisfies a given property.</a>
+
+<a id="2245" class="Keyword">import</a> <a id="2252" href="README.Data.List.Relation.Unary.All.html" class="Module">README.Data.List.Relation.Unary.All</a>
+
+<a id="2289" class="Comment">------------------------------------------------------------------------</a>
+<a id="2362" class="Comment">-- Other unary relations</a>
+
+<a id="2388" class="Comment">-- There exist many other unary relations in the</a>
+<a id="2437" class="Comment">-- `Data.List.Relation.Unary` folder, including:</a>
+
+<a id="2487" class="Comment">--    1. lists with every pair of elements related</a>
+
+<a id="2539" class="Keyword">import</a> <a id="2546" href="Data.List.Relation.Unary.AllPairs.html" class="Module">Data.List.Relation.Unary.AllPairs</a>
+
+<a id="2581" class="Comment">--    2. lists with only unique elements</a>
+
+<a id="2623" class="Keyword">import</a> <a id="2630" href="Data.List.Relation.Unary.Unique.Setoid.html" class="Module">Data.List.Relation.Unary.Unique.Setoid</a>
+
+<a id="2670" class="Comment">--    3. lists with each pair of neighbouring elements related</a>
+
+<a id="2734" class="Keyword">import</a> <a id="2741" href="Data.List.Relation.Unary.Linked.html" class="Module">Data.List.Relation.Unary.Linked</a>
+
+
+<a id="2775" class="Comment">------------------------------------------------------------------------</a>
+<a id="2848" class="Comment">-- 3. Binary relations over lists</a>
+<a id="2882" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="2956" class="Comment">-- Binary relations relate two different lists, and are found in the</a>
+<a id="3025" class="Comment">-- folder `Data.List.Relation.Binary`.</a>
+
+<a id="3065" class="Comment">------------------------------------------------------------------------</a>
+<a id="3138" class="Comment">-- Pointwise</a>
+
+<a id="3152" class="Comment">-- One of the most basic ways to form a binary relation between two</a>
+<a id="3220" class="Comment">-- lists of type `List A`, given a binary relation over `A`, is to say</a>
+<a id="3291" class="Comment">-- that two lists are related if they are the same length and:</a>
+<a id="3354" class="Comment">--   i) the first elements in the lists are related</a>
+<a id="3406" class="Comment">--   ii) the second elements in the lists are related</a>
+<a id="3460" class="Comment">--   iii) the third elements in the lists are related etc.</a>
+<a id="3519" class="Comment">--   etc.</a>
+
+<a id="3530" class="Comment">-- This is known as the pointwise lifting of a relation</a>
+
+<a id="3587" class="Keyword">import</a> <a id="3594" href="README.Data.List.Relation.Binary.Pointwise.html" class="Module">README.Data.List.Relation.Binary.Pointwise</a>
+
+<a id="3638" class="Comment">------------------------------------------------------------------------</a>
+<a id="3711" class="Comment">-- Equality</a>
+
+<a id="3724" class="Comment">-- There are many different options for what it means for two</a>
+<a id="3786" class="Comment">-- different lists of type `List A` to be &quot;equal&quot;. We will initially</a>
+<a id="3855" class="Comment">-- consider notions of equality that require the list elements to be</a>
+<a id="3924" class="Comment">-- pointwise equal.</a>
+
+<a id="3945" class="Keyword">import</a> <a id="3952" href="README.Data.List.Relation.Binary.Equality.html" class="Module">README.Data.List.Relation.Binary.Equality</a>
+
+<a id="3995" class="Comment">------------------------------------------------------------------------</a>
+<a id="4068" class="Comment">-- Permutations</a>
+
+<a id="4085" class="Comment">-- Alternatively you might consider two lists to be equal if they</a>
+<a id="4151" class="Comment">-- contain the same elements regardless of the order of the elements.</a>
+<a id="4221" class="Comment">-- This is known as either &quot;set equality&quot; or a &quot;permutation&quot;.</a>
+
+<a id="4284" class="Keyword">import</a> <a id="4291" href="README.Data.List.Relation.Binary.Permutation.html" class="Module">README.Data.List.Relation.Binary.Permutation</a>
+
+<a id="4337" class="Comment">------------------------------------------------------------------------</a>
+<a id="4410" class="Comment">-- Other binary relations</a>
+
+<a id="4437" class="Comment">-- There exist many other binary relations in the</a>
+<a id="4487" class="Comment">-- `Data.List.Relation.Binary` folder, including:</a>
+
+<a id="4538" class="Comment">--    1. lexicographic orderings</a>
+
+<a id="4572" class="Keyword">import</a> <a id="4579" href="Data.List.Relation.Binary.Lex.Strict.html" class="Module">Data.List.Relation.Binary.Lex.Strict</a>
+
+<a id="4617" class="Comment">--    2. bag/multiset equality</a>
+
+<a id="4649" class="Keyword">import</a> <a id="4656" href="Data.List.Relation.Binary.BagAndSetEquality.html" class="Module">Data.List.Relation.Binary.BagAndSetEquality</a>
+
+<a id="4701" class="Comment">--    3. the subset relations.</a>
+
+<a id="4733" class="Keyword">import</a> <a id="4740" href="Data.List.Relation.Binary.Subset.Propositional.html" class="Module">Data.List.Relation.Binary.Subset.Propositional</a>
+
+<a id="4788" class="Comment">--    4. the sublist relations</a>
+
+<a id="4820" class="Keyword">import</a> <a id="4827" href="Data.List.Relation.Binary.Sublist.Propositional.html" class="Module">Data.List.Relation.Binary.Sublist.Propositional</a>
+
+
+<a id="4877" class="Comment">------------------------------------------------------------------------</a>
+<a id="4950" class="Comment">-- 4. Ternary relations over lists</a>
+<a id="4985" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="5059" class="Comment">-- Ternary relations relate three different lists, and are found in the</a>
+<a id="5131" class="Comment">-- folder `Data.List.Relation.Ternary`.</a>
+
+<a id="5172" class="Comment">------------------------------------------------------------------------</a>
+<a id="5245" class="Comment">-- Interleaving</a>
+
+<a id="5262" class="Comment">-- Given two lists, a third list is an `Interleaving` of them if there</a>
+<a id="5333" class="Comment">-- exists an order preserving partition of it that reconstructs the</a>
+<a id="5401" class="Comment">-- original two lists.</a>
+
+<a id="5425" class="Keyword">import</a> <a id="5432" href="README.Data.List.Relation.Ternary.Interleaving.html" class="Module">README.Data.List.Relation.Ternary.Interleaving</a>
+
+
+<a id="5481" class="Comment">------------------------------------------------------------------------</a>
+<a id="5554" class="Comment">-- 5. Membership</a>
+<a id="5571" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="5645" class="Comment">-- Although simply a specialisation of the unary predicate `Any`,</a>
+<a id="5711" class="Comment">-- membership of a list is not strictly a unary or a binary relation</a>
+<a id="5780" class="Comment">-- over lists. Therefore it lives it it&#39;s own top-level folder.</a>
+
+<a id="5845" class="Keyword">import</a> <a id="5852" href="README.Data.List.Membership.html" class="Module">README.Data.List.Membership</a>
+</pre></body></html>

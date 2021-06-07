@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.String.Unsafe</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Unsafe String operations and proofs</a>
+<a id="145" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="219" class="Symbol">{-#</a> <a id="223" class="Keyword">OPTIONS</a> <a id="231" class="Pragma">--with-K</a> <a id="240" class="Symbol">#-}</a>
+
+<a id="245" class="Keyword">module</a> <a id="252" href="Data.String.Unsafe.html" class="Module">Data.String.Unsafe</a> <a id="271" class="Keyword">where</a>
+
+<a id="278" class="Keyword">open</a> <a id="283" class="Keyword">import</a> <a id="290" href="Data.String.Base.html" class="Module">Data.String.Base</a>
+
+<a id="308" class="Keyword">open</a> <a id="313" class="Keyword">import</a> <a id="320" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a> <a id="358" class="Keyword">using</a> <a id="364" class="Symbol">(</a><a id="365" href="Agda.Builtin.Equality.html#125" class="Datatype Operator">_≡_</a><a id="368" class="Symbol">)</a>
+<a id="370" class="Keyword">open</a> <a id="375" class="Keyword">import</a> <a id="382" href="Relation.Binary.PropositionalEquality.TrustMe.html" class="Module">Relation.Binary.PropositionalEquality.TrustMe</a> <a id="428" class="Keyword">using</a> <a id="434" class="Symbol">(</a><a id="435" href="Relation.Binary.PropositionalEquality.TrustMe.html#501" class="Function">trustMe</a><a id="442" class="Symbol">)</a>
+
+<a id="445" class="Comment">------------------------------------------------------------------------</a>
+<a id="518" class="Comment">-- Properties of conversion functions</a>
+
+<a id="toList∘fromList"></a><a id="557" href="Data.String.Unsafe.html#557" class="Function">toList∘fromList</a> <a id="573" class="Symbol">:</a> <a id="575" class="Symbol">∀</a> <a id="577" href="Data.String.Unsafe.html#577" class="Bound">s</a> <a id="579" class="Symbol">→</a> <a id="581" href="Agda.Builtin.String.html#303" class="Primitive">toList</a> <a id="588" class="Symbol">(</a><a id="589" href="Agda.Builtin.String.html#345" class="Primitive">fromList</a> <a id="598" href="Data.String.Unsafe.html#577" class="Bound">s</a><a id="599" class="Symbol">)</a> <a id="601" href="Agda.Builtin.Equality.html#125" class="Datatype Operator">≡</a> <a id="603" href="Data.String.Unsafe.html#577" class="Bound">s</a>
+<a id="605" href="Data.String.Unsafe.html#557" class="Function">toList∘fromList</a> <a id="621" href="Data.String.Unsafe.html#621" class="Bound">s</a> <a id="623" class="Symbol">=</a> <a id="625" href="Relation.Binary.PropositionalEquality.TrustMe.html#501" class="Function">trustMe</a>
+
+<a id="fromList∘toList"></a><a id="634" href="Data.String.Unsafe.html#634" class="Function">fromList∘toList</a> <a id="650" class="Symbol">:</a> <a id="652" class="Symbol">∀</a> <a id="654" href="Data.String.Unsafe.html#654" class="Bound">s</a> <a id="656" class="Symbol">→</a> <a id="658" href="Agda.Builtin.String.html#345" class="Primitive">fromList</a> <a id="667" class="Symbol">(</a><a id="668" href="Agda.Builtin.String.html#303" class="Primitive">toList</a> <a id="675" href="Data.String.Unsafe.html#654" class="Bound">s</a><a id="676" class="Symbol">)</a> <a id="678" href="Agda.Builtin.Equality.html#125" class="Datatype Operator">≡</a> <a id="680" href="Data.String.Unsafe.html#654" class="Bound">s</a>
+<a id="682" href="Data.String.Unsafe.html#634" class="Function">fromList∘toList</a> <a id="698" href="Data.String.Unsafe.html#698" class="Bound">s</a> <a id="700" class="Symbol">=</a> <a id="702" href="Relation.Binary.PropositionalEquality.TrustMe.html#501" class="Function">trustMe</a>
+</pre></body></html>

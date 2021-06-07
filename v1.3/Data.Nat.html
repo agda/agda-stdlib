@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Nat</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Natural numbers</a>
+<a id="125" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="199" class="Comment">-- See README.Data.Nat for examples of how to use and reason about</a>
+<a id="266" class="Comment">-- naturals.</a>
+
+<a id="280" class="Symbol">{-#</a> <a id="284" class="Keyword">OPTIONS</a> <a id="292" class="Pragma">--without-K</a> <a id="304" class="Pragma">--safe</a> <a id="311" class="Symbol">#-}</a>
+
+<a id="316" class="Keyword">module</a> <a id="323" href="Data.Nat.html" class="Module">Data.Nat</a> <a id="332" class="Keyword">where</a>
+
+<a id="339" class="Comment">------------------------------------------------------------------------</a>
+<a id="412" class="Comment">-- Publicly re-export the contents of the base module</a>
+
+<a id="467" class="Keyword">open</a> <a id="472" class="Keyword">import</a> <a id="479" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a> <a id="493" class="Keyword">public</a>
+
+<a id="501" class="Comment">------------------------------------------------------------------------</a>
+<a id="574" class="Comment">-- Publicly re-export queries</a>
+
+<a id="605" class="Keyword">open</a> <a id="610" class="Keyword">import</a> <a id="617" href="Data.Nat.Properties.html" class="Module">Data.Nat.Properties</a> <a id="637" class="Keyword">public</a>
+  <a id="646" class="Keyword">using</a>
+  <a id="654" class="Symbol">(</a> <a id="656" href="Data.Nat.Properties.html#2225" class="Function Operator">_≟_</a>
+  <a id="662" class="Symbol">;</a> <a id="664" href="Data.Nat.Properties.html#4678" class="Function Operator">_≤?_</a> <a id="669" class="Symbol">;</a> <a id="671" href="Data.Nat.Properties.html#4769" class="Function Operator">_≥?_</a> <a id="676" class="Symbol">;</a> <a id="678" href="Data.Nat.Properties.html#8905" class="Function Operator">_&lt;?_</a> <a id="683" class="Symbol">;</a> <a id="685" href="Data.Nat.Properties.html#8947" class="Function Operator">_&gt;?_</a>
+  <a id="692" class="Symbol">;</a> <a id="694" href="Data.Nat.Properties.html#54415" class="Function Operator">_≤′?_</a><a id="699" class="Symbol">;</a> <a id="701" href="Data.Nat.Properties.html#54519" class="Function Operator">_≥′?_</a><a id="706" class="Symbol">;</a> <a id="708" href="Data.Nat.Properties.html#54473" class="Function Operator">_&lt;′?_</a><a id="713" class="Symbol">;</a> <a id="715" href="Data.Nat.Properties.html#54562" class="Function Operator">_&gt;′?_</a>
+  <a id="723" class="Symbol">;</a> <a id="725" href="Data.Nat.Properties.html#56228" class="Function Operator">_≤″?_</a><a id="730" class="Symbol">;</a> <a id="732" href="Data.Nat.Properties.html#56163" class="Function Operator">_&lt;″?_</a><a id="737" class="Symbol">;</a> <a id="739" href="Data.Nat.Properties.html#56318" class="Function Operator">_≥″?_</a><a id="744" class="Symbol">;</a> <a id="746" href="Data.Nat.Properties.html#56361" class="Function Operator">_&gt;″?_</a>
+  <a id="754" class="Symbol">)</a>
+
+<a id="757" class="Comment">------------------------------------------------------------------------</a>
+<a id="830" class="Comment">-- Deprecated</a>
+
+<a id="845" class="Comment">-- Version 0.17</a>
+
+<a id="862" class="Keyword">open</a> <a id="867" class="Keyword">import</a> <a id="874" href="Data.Nat.Properties.html" class="Module">Data.Nat.Properties</a> <a id="894" class="Keyword">public</a>
+  <a id="903" class="Keyword">using</a> <a id="909" class="Symbol">(</a><a id="910" href="Data.Nat.Properties.html#3448" class="Function">≤-pred</a><a id="916" class="Symbol">)</a>
+</pre></body></html>

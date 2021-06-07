@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Relation.Nullary</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Operations on nullary relations (like negation and decidability)</a>
+<a id="174" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="248" class="Comment">-- Some operations on/properties of nullary relations, i.e. sets.</a>
+
+<a id="315" class="Symbol">{-#</a> <a id="319" class="Keyword">OPTIONS</a> <a id="327" class="Pragma">--without-K</a> <a id="339" class="Pragma">--safe</a> <a id="346" class="Symbol">#-}</a>
+
+<a id="351" class="Keyword">module</a> <a id="358" href="Relation.Nullary.html" class="Module">Relation.Nullary</a> <a id="375" class="Keyword">where</a>
+
+<a id="382" class="Keyword">open</a> <a id="387" class="Keyword">import</a> <a id="394" href="Agda.Builtin.Equality.html" class="Module">Agda.Builtin.Equality</a>
+
+<a id="417" class="Keyword">open</a> <a id="422" class="Keyword">import</a> <a id="429" href="Data.Bool.Base.html" class="Module">Data.Bool.Base</a>
+<a id="444" class="Keyword">open</a> <a id="449" class="Keyword">import</a> <a id="456" href="Data.Empty.html" class="Module">Data.Empty</a> <a id="467" class="Keyword">hiding</a> <a id="474" class="Symbol">(</a><a id="475" href="Data.Empty.html#628" class="Function">⊥-elim</a><a id="481" class="Symbol">)</a>
+<a id="483" class="Keyword">open</a> <a id="488" class="Keyword">import</a> <a id="495" href="Data.Empty.Irrelevant.html" class="Module">Data.Empty.Irrelevant</a>
+<a id="517" class="Keyword">open</a> <a id="522" class="Keyword">import</a> <a id="529" href="Level.html" class="Module">Level</a>
+
+<a id="536" class="Comment">------------------------------------------------------------------------</a>
+<a id="609" class="Comment">-- Negation.</a>
+
+<a id="623" class="Keyword">infix</a> <a id="629" class="Number">3</a> <a id="631" href="Relation.Nullary.html#653" class="Function Operator">¬_</a>
+<a id="634" class="Keyword">infix</a> <a id="640" class="Number">2</a> <a id="642" href="Relation.Nullary.html#1556" class="InductiveConstructor Operator">_because_</a>
+
+<a id="¬_"></a><a id="653" href="Relation.Nullary.html#653" class="Function Operator">¬_</a> <a id="656" class="Symbol">:</a> <a id="658" class="Symbol">∀</a> <a id="660" class="Symbol">{</a><a id="661" href="Relation.Nullary.html#661" class="Bound">ℓ</a><a id="662" class="Symbol">}</a> <a id="664" class="Symbol">→</a> <a id="666" class="PrimitiveType">Set</a> <a id="670" href="Relation.Nullary.html#661" class="Bound">ℓ</a> <a id="672" class="Symbol">→</a> <a id="674" class="PrimitiveType">Set</a> <a id="678" href="Relation.Nullary.html#661" class="Bound">ℓ</a>
+<a id="680" href="Relation.Nullary.html#653" class="Function Operator">¬</a> <a id="682" href="Relation.Nullary.html#682" class="Bound">P</a> <a id="684" class="Symbol">=</a> <a id="686" href="Relation.Nullary.html#682" class="Bound">P</a> <a id="688" class="Symbol">→</a> <a id="690" href="Data.Empty.html#526" class="Datatype">⊥</a>
+
+<a id="693" class="Comment">------------------------------------------------------------------------</a>
+<a id="766" class="Comment">-- `Reflects` idiom.</a>
+
+<a id="788" class="Comment">-- The truth value of P is reflected by a boolean value.</a>
+
+<a id="846" class="Keyword">data</a> <a id="Reflects"></a><a id="851" href="Relation.Nullary.html#851" class="Datatype">Reflects</a> <a id="860" class="Symbol">{</a><a id="861" href="Relation.Nullary.html#861" class="Bound">p</a><a id="862" class="Symbol">}</a> <a id="864" class="Symbol">(</a><a id="865" href="Relation.Nullary.html#865" class="Bound">P</a> <a id="867" class="Symbol">:</a> <a id="869" class="PrimitiveType">Set</a> <a id="873" href="Relation.Nullary.html#861" class="Bound">p</a><a id="874" class="Symbol">)</a> <a id="876" class="Symbol">:</a> <a id="878" href="Agda.Builtin.Bool.html#163" class="Datatype">Bool</a> <a id="883" class="Symbol">→</a> <a id="885" class="PrimitiveType">Set</a> <a id="889" href="Relation.Nullary.html#861" class="Bound">p</a> <a id="891" class="Keyword">where</a>
+  <a id="Reflects.ofʸ"></a><a id="899" href="Relation.Nullary.html#899" class="InductiveConstructor">ofʸ</a> <a id="903" class="Symbol">:</a> <a id="905" class="Symbol">(</a> <a id="907" href="Relation.Nullary.html#907" class="Bound">p</a> <a id="909" class="Symbol">:</a>   <a id="913" href="Relation.Nullary.html#865" class="Bound">P</a><a id="914" class="Symbol">)</a> <a id="916" class="Symbol">→</a> <a id="918" href="Relation.Nullary.html#851" class="Datatype">Reflects</a> <a id="927" href="Relation.Nullary.html#865" class="Bound">P</a> <a id="929" href="Agda.Builtin.Bool.html#188" class="InductiveConstructor">true</a>
+  <a id="Reflects.ofⁿ"></a><a id="936" href="Relation.Nullary.html#936" class="InductiveConstructor">ofⁿ</a> <a id="940" class="Symbol">:</a> <a id="942" class="Symbol">(</a><a id="943" href="Relation.Nullary.html#943" class="Bound">¬p</a> <a id="946" class="Symbol">:</a> <a id="948" href="Relation.Nullary.html#653" class="Function Operator">¬</a> <a id="950" href="Relation.Nullary.html#865" class="Bound">P</a><a id="951" class="Symbol">)</a> <a id="953" class="Symbol">→</a> <a id="955" href="Relation.Nullary.html#851" class="Datatype">Reflects</a> <a id="964" href="Relation.Nullary.html#865" class="Bound">P</a> <a id="966" href="Agda.Builtin.Bool.html#182" class="InductiveConstructor">false</a>
+
+<a id="973" class="Comment">------------------------------------------------------------------------</a>
+<a id="1046" class="Comment">-- Decidability.</a>
+
+<a id="1064" class="Comment">-- Decidability proofs have two parts: the `does` term which contains</a>
+<a id="1134" class="Comment">-- the boolean result and the `proof` term which contains a proof that</a>
+<a id="1205" class="Comment">-- reflects the boolean result. This definition allows the boolean</a>
+<a id="1272" class="Comment">-- part of the decision procedure to compute independently from the</a>
+<a id="1340" class="Comment">-- proof. This leads to better computational behaviour when we only care</a>
+<a id="1413" class="Comment">-- about the result and not the proof. See README.Decidability for</a>
+<a id="1480" class="Comment">-- further details.</a>
+
+<a id="1501" class="Keyword">record</a> <a id="Dec"></a><a id="1508" href="Relation.Nullary.html#1508" class="Record">Dec</a> <a id="1512" class="Symbol">{</a><a id="1513" href="Relation.Nullary.html#1513" class="Bound">p</a><a id="1514" class="Symbol">}</a> <a id="1516" class="Symbol">(</a><a id="1517" href="Relation.Nullary.html#1517" class="Bound">P</a> <a id="1519" class="Symbol">:</a> <a id="1521" class="PrimitiveType">Set</a> <a id="1525" href="Relation.Nullary.html#1513" class="Bound">p</a><a id="1526" class="Symbol">)</a> <a id="1528" class="Symbol">:</a> <a id="1530" class="PrimitiveType">Set</a> <a id="1534" href="Relation.Nullary.html#1513" class="Bound">p</a> <a id="1536" class="Keyword">where</a>
+  <a id="1544" class="Keyword">constructor</a> <a id="_because_"></a><a id="1556" href="Relation.Nullary.html#1556" class="InductiveConstructor Operator">_because_</a>
+  <a id="1568" class="Keyword">field</a>
+    <a id="Dec.does"></a><a id="1578" href="Relation.Nullary.html#1578" class="Field">does</a>  <a id="1584" class="Symbol">:</a> <a id="1586" href="Agda.Builtin.Bool.html#163" class="Datatype">Bool</a>
+    <a id="Dec.proof"></a><a id="1595" href="Relation.Nullary.html#1595" class="Field">proof</a> <a id="1601" class="Symbol">:</a> <a id="1603" href="Relation.Nullary.html#851" class="Datatype">Reflects</a> <a id="1612" href="Relation.Nullary.html#1517" class="Bound">P</a> <a id="1614" href="Relation.Nullary.html#1578" class="Field">does</a>
+
+<a id="1620" class="Keyword">open</a> <a id="1625" href="Relation.Nullary.html#1508" class="Module">Dec</a> <a id="1629" class="Keyword">public</a>
+
+<a id="1637" class="Keyword">pattern</a> <a id="yes"></a><a id="1645" href="Relation.Nullary.html#1645" class="InductiveConstructor">yes</a> <a id="1649" href="Relation.Nullary.html#1672" class="Bound">p</a> <a id="1651" class="Symbol">=</a>  <a id="1654" href="Agda.Builtin.Bool.html#188" class="InductiveConstructor">true</a> <a id="1659" href="Relation.Nullary.html#1556" class="InductiveConstructor Operator">because</a> <a id="1667" href="Relation.Nullary.html#899" class="InductiveConstructor">ofʸ</a>  <a id="1672" href="Relation.Nullary.html#1672" class="Bound">p</a>
+<a id="1674" class="Keyword">pattern</a> <a id="no"></a><a id="1682" href="Relation.Nullary.html#1682" class="InductiveConstructor">no</a> <a id="1685" href="Relation.Nullary.html#1708" class="Bound">¬p</a> <a id="1688" class="Symbol">=</a> <a id="1690" href="Agda.Builtin.Bool.html#182" class="InductiveConstructor">false</a> <a id="1696" href="Relation.Nullary.html#1556" class="InductiveConstructor Operator">because</a> <a id="1704" href="Relation.Nullary.html#936" class="InductiveConstructor">ofⁿ</a> <a id="1708" href="Relation.Nullary.html#1708" class="Bound">¬p</a>
+
+<a id="1712" class="Comment">-- Given an irrelevant proof of a decidable type, a proof can</a>
+<a id="1774" class="Comment">-- be recomputed and subsequently used in relevant contexts.</a>
+<a id="recompute"></a><a id="1835" href="Relation.Nullary.html#1835" class="Function">recompute</a> <a id="1845" class="Symbol">:</a> <a id="1847" class="Symbol">∀</a> <a id="1849" class="Symbol">{</a><a id="1850" href="Relation.Nullary.html#1850" class="Bound">a</a><a id="1851" class="Symbol">}</a> <a id="1853" class="Symbol">{</a><a id="1854" href="Relation.Nullary.html#1854" class="Bound">A</a> <a id="1856" class="Symbol">:</a> <a id="1858" class="PrimitiveType">Set</a> <a id="1862" href="Relation.Nullary.html#1850" class="Bound">a</a><a id="1863" class="Symbol">}</a> <a id="1865" class="Symbol">→</a> <a id="1867" href="Relation.Nullary.html#1508" class="Record">Dec</a> <a id="1871" href="Relation.Nullary.html#1854" class="Bound">A</a> <a id="1873" class="Symbol">→</a> <a id="1875" class="Symbol">.</a><a id="1876" href="Relation.Nullary.html#1854" class="Bound">A</a> <a id="1878" class="Symbol">→</a> <a id="1880" href="Relation.Nullary.html#1854" class="Bound">A</a>
+<a id="1882" href="Relation.Nullary.html#1835" class="Function">recompute</a> <a id="1892" class="Symbol">(</a><a id="1893" href="Relation.Nullary.html#1645" class="InductiveConstructor">yes</a> <a id="1897" href="Relation.Nullary.html#1897" class="Bound">x</a><a id="1898" class="Symbol">)</a> <a id="1900" class="Symbol">_</a> <a id="1902" class="Symbol">=</a> <a id="1904" href="Relation.Nullary.html#1897" class="Bound">x</a>
+<a id="1906" href="Relation.Nullary.html#1835" class="Function">recompute</a> <a id="1916" class="Symbol">(</a><a id="1917" href="Relation.Nullary.html#1682" class="InductiveConstructor">no</a> <a id="1920" href="Relation.Nullary.html#1920" class="Bound">¬p</a><a id="1922" class="Symbol">)</a> <a id="1924" href="Relation.Nullary.html#1924" class="Bound">x</a> <a id="1926" class="Symbol">=</a> <a id="1928" href="Data.Empty.Irrelevant.html#327" class="Function">⊥-elim</a> <a id="1935" class="Symbol">(</a><a id="1936" href="Relation.Nullary.html#1920" class="Bound">¬p</a> <a id="1939" href="Relation.Nullary.html#1924" class="Bound">x</a><a id="1940" class="Symbol">)</a>
+
+<a id="1943" class="Comment">------------------------------------------------------------------------</a>
+<a id="2016" class="Comment">-- Irrelevant types</a>
+
+<a id="Irrelevant"></a><a id="2037" href="Relation.Nullary.html#2037" class="Function">Irrelevant</a> <a id="2048" class="Symbol">:</a> <a id="2050" class="Symbol">∀</a> <a id="2052" class="Symbol">{</a><a id="2053" href="Relation.Nullary.html#2053" class="Bound">p</a><a id="2054" class="Symbol">}</a> <a id="2056" class="Symbol">→</a> <a id="2058" class="PrimitiveType">Set</a> <a id="2062" href="Relation.Nullary.html#2053" class="Bound">p</a> <a id="2064" class="Symbol">→</a> <a id="2066" class="PrimitiveType">Set</a> <a id="2070" href="Relation.Nullary.html#2053" class="Bound">p</a>
+<a id="2072" href="Relation.Nullary.html#2037" class="Function">Irrelevant</a> <a id="2083" href="Relation.Nullary.html#2083" class="Bound">P</a> <a id="2085" class="Symbol">=</a> <a id="2087" class="Symbol">∀</a> <a id="2089" class="Symbol">(</a><a id="2090" href="Relation.Nullary.html#2090" class="Bound">p₁</a> <a id="2093" href="Relation.Nullary.html#2093" class="Bound">p₂</a> <a id="2096" class="Symbol">:</a> <a id="2098" href="Relation.Nullary.html#2083" class="Bound">P</a><a id="2099" class="Symbol">)</a> <a id="2101" class="Symbol">→</a> <a id="2103" href="Relation.Nullary.html#2090" class="Bound">p₁</a> <a id="2106" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="2108" href="Relation.Nullary.html#2093" class="Bound">p₂</a>
+</pre></body></html>

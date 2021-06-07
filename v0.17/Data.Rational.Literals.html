@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.Rational.Literals</title><link rel="stylesheet" href="Agda.css"></head><body><pre><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Rational Literals</a>
+<a id="127" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="201" class="Keyword">module</a> <a id="208" href="Data.Rational.Literals.html" class="Module">Data.Rational.Literals</a> <a id="231" class="Keyword">where</a>
+
+<a id="238" class="Keyword">open</a> <a id="243" class="Keyword">import</a> <a id="250" href="Agda.Builtin.FromNat.html" class="Module">Agda.Builtin.FromNat</a>
+<a id="271" class="Keyword">open</a> <a id="276" class="Keyword">import</a> <a id="283" href="Agda.Builtin.FromNeg.html" class="Module">Agda.Builtin.FromNeg</a>
+<a id="304" class="Keyword">open</a> <a id="309" class="Keyword">import</a> <a id="316" href="Data.Unit.html" class="Module">Data.Unit</a>
+<a id="326" class="Keyword">open</a> <a id="331" class="Keyword">import</a> <a id="338" href="Data.Nat.html" class="Module">Data.Nat</a>
+<a id="347" class="Keyword">open</a> <a id="352" class="Keyword">import</a> <a id="359" href="Data.Nat.Coprimality.html" class="Module">Data.Nat.Coprimality</a>
+<a id="380" class="Keyword">open</a> <a id="385" class="Keyword">import</a> <a id="392" href="Data.Integer.html" class="Module">Data.Integer</a>
+<a id="405" class="Keyword">open</a> <a id="410" class="Keyword">import</a> <a id="417" href="Data.Rational.html" class="Module">Data.Rational</a>
+<a id="431" class="Keyword">open</a> <a id="436" class="Keyword">import</a> <a id="443" href="Relation.Nullary.Decidable.html" class="Module">Relation.Nullary.Decidable</a>
+
+<a id="fromℤ"></a><a id="471" href="Data.Rational.Literals.html#471" class="Function">fromℤ</a> <a id="477" class="Symbol">:</a> <a id="479" href="Agda.Builtin.Int.html#178" class="Datatype">ℤ</a> <a id="481" class="Symbol">→</a> <a id="483" href="Data.Rational.html#1203" class="Record">ℚ</a>
+<a id="485" href="Data.Rational.Literals.html#471" class="Function">fromℤ</a> <a id="491" href="Data.Rational.Literals.html#491" class="Bound">z</a> <a id="493" class="Symbol">=</a> <a id="495" class="Keyword">record</a>
+  <a id="504" class="Symbol">{</a> <a id="506" href="Data.Rational.html#1229" class="Field">numerator</a>     <a id="520" class="Symbol">=</a> <a id="522" href="Data.Rational.Literals.html#491" class="Bound">z</a>
+  <a id="526" class="Symbol">;</a> <a id="528" href="Data.Rational.html#1251" class="Field">denominator-1</a> <a id="542" class="Symbol">=</a> <a id="544" href="Agda.Builtin.Nat.html#115" class="InductiveConstructor">zero</a>
+  <a id="551" class="Symbol">;</a> <a id="553" href="Data.Rational.html#1273" class="Field">isCoprime</a>     <a id="567" class="Symbol">=</a> <a id="569" href="Relation.Nullary.Decidable.html#1209" class="Function">fromWitness</a> <a id="581" class="Symbol">(λ</a> <a id="584" class="Symbol">{</a><a id="585" href="Data.Rational.Literals.html#585" class="Bound">i</a><a id="586" class="Symbol">}</a> <a id="588" class="Symbol">→</a> <a id="590" href="Data.Nat.Coprimality.html#1770" class="Function">sym</a> <a id="594" class="Symbol">(</a><a id="595" href="Data.Nat.Coprimality.html#1844" class="Function">1-coprimeTo</a> <a id="607" href="Data.Integer.Base.html#1039" class="Function Operator">∣</a> <a id="609" href="Data.Rational.Literals.html#491" class="Bound">z</a> <a id="611" href="Data.Integer.Base.html#1039" class="Function Operator">∣</a><a id="612" class="Symbol">))</a>
+  <a id="617" class="Symbol">}</a>
+
+<a id="number"></a><a id="620" href="Data.Rational.Literals.html#620" class="Function">number</a> <a id="627" class="Symbol">:</a> <a id="629" href="Agda.Builtin.FromNat.html#129" class="Record">Number</a> <a id="636" href="Data.Rational.html#1203" class="Record">ℚ</a>
+<a id="638" href="Data.Rational.Literals.html#620" class="Function">number</a> <a id="645" class="Symbol">=</a> <a id="647" class="Keyword">record</a>
+  <a id="656" class="Symbol">{</a> <a id="658" href="Agda.Builtin.FromNat.html#185" class="Field">Constraint</a> <a id="669" class="Symbol">=</a> <a id="671" class="Symbol">λ</a> <a id="673" href="Data.Rational.Literals.html#673" class="Bound">_</a> <a id="675" class="Symbol">→</a> <a id="677" href="Agda.Builtin.Unit.html#69" class="Record">⊤</a>
+  <a id="681" class="Symbol">;</a> <a id="683" href="Agda.Builtin.FromNat.html#214" class="Field">fromNat</a>    <a id="694" class="Symbol">=</a> <a id="696" class="Symbol">λ</a> <a id="698" href="Data.Rational.Literals.html#698" class="Bound">n</a> <a id="700" class="Symbol">→</a> <a id="702" href="Data.Rational.Literals.html#471" class="Function">fromℤ</a> <a id="708" class="Symbol">(</a><a id="709" href="Agda.Builtin.Int.html#196" class="InductiveConstructor Operator">+</a> <a id="711" href="Data.Rational.Literals.html#698" class="Bound">n</a><a id="712" class="Symbol">)</a>
+  <a id="716" class="Symbol">}</a>
+
+<a id="negative"></a><a id="719" href="Data.Rational.Literals.html#719" class="Function">negative</a> <a id="728" class="Symbol">:</a> <a id="730" href="Agda.Builtin.FromNeg.html#129" class="Record">Negative</a> <a id="739" href="Data.Rational.html#1203" class="Record">ℚ</a>
+<a id="741" href="Data.Rational.Literals.html#719" class="Function">negative</a> <a id="750" class="Symbol">=</a> <a id="752" class="Keyword">record</a>
+  <a id="761" class="Symbol">{</a> <a id="763" href="Agda.Builtin.FromNeg.html#187" class="Field">Constraint</a> <a id="774" class="Symbol">=</a> <a id="776" class="Symbol">λ</a> <a id="778" href="Data.Rational.Literals.html#778" class="Bound">_</a> <a id="780" class="Symbol">→</a> <a id="782" href="Agda.Builtin.Unit.html#69" class="Record">⊤</a>
+  <a id="786" class="Symbol">;</a> <a id="788" href="Agda.Builtin.FromNeg.html#216" class="Field">fromNeg</a>    <a id="799" class="Symbol">=</a> <a id="801" class="Symbol">λ</a> <a id="803" href="Data.Rational.Literals.html#803" class="Bound">n</a> <a id="805" class="Symbol">→</a> <a id="807" href="Data.Rational.Literals.html#471" class="Function">fromℤ</a> <a id="813" class="Symbol">(</a><a id="814" href="Data.Integer.Base.html#1787" class="Function Operator">-</a> <a id="816" class="Symbol">(</a><a id="817" href="Agda.Builtin.Int.html#196" class="InductiveConstructor Operator">+</a> <a id="819" href="Data.Rational.Literals.html#803" class="Bound">n</a><a id="820" class="Symbol">))</a>
+  <a id="825" class="Symbol">}</a>
+</pre></body></html>

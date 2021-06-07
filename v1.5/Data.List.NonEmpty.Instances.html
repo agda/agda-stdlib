@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Data.List.NonEmpty.Instances</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Typeclass instances for List⁺</a>
+<a id="139" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="213" class="Symbol">{-#</a> <a id="217" class="Keyword">OPTIONS</a> <a id="225" class="Pragma">--without-K</a> <a id="237" class="Pragma">--safe</a> <a id="244" class="Symbol">#-}</a>
+
+<a id="249" class="Keyword">module</a> <a id="256" href="Data.List.NonEmpty.Instances.html" class="Module">Data.List.NonEmpty.Instances</a> <a id="285" class="Keyword">where</a>
+
+<a id="292" class="Keyword">open</a> <a id="297" class="Keyword">import</a> <a id="304" href="Data.List.NonEmpty.Categorical.html" class="Module">Data.List.NonEmpty.Categorical</a>
+
+<a id="336" class="Keyword">instance</a>
+  <a id="nonEmptyListFunctor"></a><a id="347" href="Data.List.NonEmpty.Instances.html#347" class="Function">nonEmptyListFunctor</a> <a id="367" class="Symbol">=</a> <a id="369" href="Data.List.NonEmpty.Categorical.html#674" class="Function">functor</a>
+  <a id="nonEmptyListApplicative"></a><a id="379" href="Data.List.NonEmpty.Instances.html#379" class="Function">nonEmptyListApplicative</a> <a id="403" class="Symbol">=</a> <a id="405" href="Data.List.NonEmpty.Categorical.html#751" class="Function">applicative</a>
+  <a id="nonEmptyListMonad"></a><a id="419" href="Data.List.NonEmpty.Instances.html#419" class="Function">nonEmptyListMonad</a> <a id="437" class="Symbol">=</a> <a id="439" href="Data.List.NonEmpty.Categorical.html#979" class="Function">monad</a>
+  <a id="nonEmptyListComonad"></a><a id="447" href="Data.List.NonEmpty.Instances.html#447" class="Function">nonEmptyListComonad</a> <a id="467" class="Symbol">=</a> <a id="469" href="Data.List.NonEmpty.Categorical.html#1170" class="Function">comonad</a>
+  <a id="nonEmptyListMonadT"></a><a id="479" href="Data.List.NonEmpty.Instances.html#479" class="Function">nonEmptyListMonadT</a> <a id="498" class="Symbol">=</a> <a id="500" class="Symbol">λ</a> <a id="502" class="Symbol">{</a><a id="503" href="Data.List.NonEmpty.Instances.html#503" class="Bound">ℓ</a><a id="504" class="Symbol">}</a> <a id="506" class="Symbol">{</a><a id="507" href="Data.List.NonEmpty.Instances.html#507" class="Bound">M</a><a id="508" class="Symbol">}</a> <a id="510" class="Symbol">{{</a><a id="512" href="Data.List.NonEmpty.Instances.html#512" class="Bound">inst</a><a id="516" class="Symbol">}}</a> <a id="519" class="Symbol">→</a> <a id="521" href="Data.List.NonEmpty.Categorical.html#2288" class="Function">monadT</a> <a id="528" class="Symbol">{</a><a id="529" href="Data.List.NonEmpty.Instances.html#503" class="Bound">ℓ</a><a id="530" class="Symbol">}</a> <a id="532" class="Symbol">{</a><a id="533" href="Data.List.NonEmpty.Instances.html#507" class="Bound">M</a><a id="534" class="Symbol">}</a> <a id="536" href="Data.List.NonEmpty.Instances.html#512" class="Bound">inst</a>
+</pre></body></html>
