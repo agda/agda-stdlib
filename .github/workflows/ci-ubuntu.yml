@@ -84,6 +84,13 @@ jobs:
           cp travis/* .
           ./index.sh
           ${{ env.AGDA }} --safe EverythingSafe.agda
+          ${{ env.AGDA }} index.agda
+
+      - name: Generate HTML
+        run: |
+          git clone --depth 1 --single-branch --branch gh-pages https://github.com/agda/agda-stdlib html
+          rm -f '${{ env.AGDA_HTML_DIR }}'/*.html
+          rm -f '${{ env.AGDA_HTML_DIR }}'/*.css
           ${{ env.AGDA }} --html --html-dir ${{ env.AGDA_HTML_DIR }} index.agda
 
       # This is a massive hack at the moment
@@ -100,7 +107,7 @@ jobs:
 ##          ${{ env.AGDA }} -c README/Foreign/Haskell.agda && ./Haskell
 
 
-      - name: Deploy
+      - name: Deploy HTML
         uses: JamesIves/github-pages-deploy-action@4.1.3
         if: ${{ success() && env.AGDA_DEPLOY }}
 
