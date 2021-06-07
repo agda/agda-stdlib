@@ -11,7 +11,7 @@
 <a id="303" class="Keyword">open</a> <a id="308" class="Keyword">import</a> <a id="315" href="Data.Bool.Base.html" class="Module">Data.Bool.Base</a> <a id="330" class="Keyword">using</a> <a id="336" class="Symbol">(</a><a id="337" href="Agda.Builtin.Bool.html#182" class="InductiveConstructor">false</a><a id="342" class="Symbol">;</a> <a id="344" href="Agda.Builtin.Bool.html#188" class="InductiveConstructor">true</a><a id="348" class="Symbol">)</a>
 <a id="350" class="Keyword">open</a> <a id="355" class="Keyword">import</a> <a id="362" href="Data.Product.html" class="Module">Data.Product</a> <a id="375" class="Keyword">using</a> <a id="381" class="Symbol">(</a><a id="382" href="Data.Product.html#1167" class="Function Operator">_×_</a><a id="385" class="Symbol">;</a> <a id="387" href="Agda.Builtin.Sigma.html#236" class="InductiveConstructor Operator">_,_</a><a id="390" class="Symbol">;</a> <a id="392" href="Data.Product.html#5317" class="Function">swap</a><a id="396" class="Symbol">;</a> <a id="398" href="Data.Product.html#2486" class="Function">map</a><a id="401" class="Symbol">;</a> <a id="403" href="Data.Product.html#4884" class="Function">uncurry′</a><a id="411" class="Symbol">)</a>
 <a id="413" class="Keyword">open</a> <a id="418" class="Keyword">import</a> <a id="425" href="Function.Base.html" class="Module">Function.Base</a> <a id="439" class="Keyword">using</a> <a id="445" class="Symbol">(</a><a id="446" href="Function.Base.html#1031" class="Function Operator">_∘_</a><a id="449" class="Symbol">)</a>
-<a id="451" class="Keyword">open</a> <a id="456" class="Keyword">import</a> <a id="463" href="Level.html" class="Module">Level</a> <a id="469" class="Keyword">using</a> <a id="475" class="Symbol">(</a><a id="476" href="Agda.Primitive.html#423" class="Postulate">Level</a><a id="481" class="Symbol">;</a> <a id="483" href="Agda.Primitive.html#636" class="Primitive Operator">_⊔_</a><a id="486" class="Symbol">)</a>
+<a id="451" class="Keyword">open</a> <a id="456" class="Keyword">import</a> <a id="463" href="Level.html" class="Module">Level</a> <a id="469" class="Keyword">using</a> <a id="475" class="Symbol">(</a><a id="476" href="Agda.Primitive.html#597" class="Postulate">Level</a><a id="481" class="Symbol">;</a> <a id="483" href="Agda.Primitive.html#810" class="Primitive Operator">_⊔_</a><a id="486" class="Symbol">)</a>
 <a id="488" class="Keyword">open</a> <a id="493" class="Keyword">import</a> <a id="500" href="Relation.Binary.Definitions.html" class="Module">Relation.Binary.Definitions</a> <a id="528" class="Keyword">using</a> <a id="534" class="Symbol">(</a><a id="535" href="Relation.Binary.Definitions.html#4575" class="Function">Decidable</a><a id="544" class="Symbol">)</a>
 <a id="546" class="Keyword">open</a> <a id="551" class="Keyword">import</a> <a id="558" href="Relation.Nullary.html" class="Module">Relation.Nullary</a> <a id="575" class="Keyword">using</a> <a id="581" class="Symbol">(</a><a id="582" href="Relation.Nullary.html#1581" class="Field">does</a><a id="586" class="Symbol">;</a> <a id="588" href="Relation.Nullary.html#1648" class="InductiveConstructor">yes</a><a id="591" class="Symbol">;</a> <a id="593" href="Relation.Nullary.html#1685" class="InductiveConstructor">no</a><a id="595" class="Symbol">)</a>
 <a id="597" class="Keyword">open</a> <a id="602" class="Keyword">import</a> <a id="609" href="Relation.Nullary.Negation.html" class="Module">Relation.Nullary.Negation</a>
@@ -27,18 +27,18 @@
 
 <a id="923" class="Keyword">open</a> <a id="928" class="Keyword">module</a> <a id="M"></a><a id="935" href="Algebra.Construct.LexProduct.Inner.html#935" class="Module">M</a> <a id="937" class="Symbol">=</a> <a id="939" href="Algebra.Bundles.html#1000" class="Module">Magma</a> <a id="945" href="Algebra.Construct.LexProduct.Inner.html#844" class="Bound">M</a>
   <a id="949" class="Keyword">renaming</a>
-  <a id="960" class="Symbol">(</a> <a id="962" href="Algebra.Bundles.html#1078" class="Function">Carrier</a>  <a id="971" class="Symbol">to</a> <a id="M.Carrier"></a><a id="974" href="Algebra.Construct.LexProduct.Inner.html#974" class="Function">A</a>
-  <a id="978" class="Symbol">;</a> <a id="980" href="Algebra.Bundles.html#1098" class="Function Operator">_≈_</a>      <a id="989" class="Symbol">to</a> <a id="M._≈_"></a><a id="992" href="Algebra.Construct.LexProduct.Inner.html#992" class="Function Operator">_≈₁_</a>
-  <a id="999" class="Symbol">;</a> <a id="1001" href="Algebra.Bundles.html#949" class="Function Operator">_≉_</a>      <a id="1010" class="Symbol">to</a> <a id="M._≉_"></a><a id="1013" href="Algebra.Construct.LexProduct.Inner.html#1013" class="Function Operator">_≉₁_</a>
+  <a id="960" class="Symbol">(</a> <a id="962" href="Algebra.Bundles.html#1078" class="Function">Carrier</a>  <a id="971" class="Symbol">to</a> <a id="974" class="Function">A</a>
+  <a id="978" class="Symbol">;</a> <a id="980" href="Algebra.Bundles.html#1098" class="Function Operator">_≈_</a>      <a id="989" class="Symbol">to</a> <a id="992" class="Function Operator">_≈₁_</a>
+  <a id="999" class="Symbol">;</a> <a id="1001" href="Algebra.Bundles.html#949" class="Function Operator">_≉_</a>      <a id="1010" class="Symbol">to</a> <a id="1013" class="Function Operator">_≉₁_</a>
   <a id="1020" class="Symbol">)</a>
 
 <a id="1023" class="Keyword">open</a> <a id="1028" class="Keyword">module</a> <a id="N"></a><a id="1035" href="Algebra.Construct.LexProduct.Inner.html#1035" class="Module">N</a> <a id="1037" class="Symbol">=</a> <a id="1039" href="Algebra.Bundles.html#1000" class="Module">Magma</a> <a id="1045" href="Algebra.Construct.LexProduct.Inner.html#862" class="Bound">N</a>
   <a id="1049" class="Keyword">using</a> <a id="1055" class="Symbol">()</a>
   <a id="1060" class="Keyword">renaming</a>
-  <a id="1071" class="Symbol">(</a> <a id="1073" href="Algebra.Bundles.html#1078" class="Function">Carrier</a> <a id="1081" class="Symbol">to</a> <a id="N.Carrier"></a><a id="1084" href="Algebra.Construct.LexProduct.Inner.html#1084" class="Function">B</a>
-  <a id="1088" class="Symbol">;</a> <a id="1090" href="Algebra.Bundles.html#1126" class="Function Operator">_∙_</a>     <a id="1098" class="Symbol">to</a> <a id="N._∙_"></a><a id="1101" href="Algebra.Construct.LexProduct.Inner.html#1101" class="Function Operator">_◦_</a>
-  <a id="1107" class="Symbol">;</a> <a id="1109" href="Algebra.Bundles.html#1098" class="Function Operator">_≈_</a>     <a id="1117" class="Symbol">to</a> <a id="N._≈_"></a><a id="1120" href="Algebra.Construct.LexProduct.Inner.html#1120" class="Function Operator">_≈₂_</a>
-  <a id="1127" class="Symbol">;</a> <a id="1129" href="Algebra.Structures.html#1210" class="Function">∙-cong</a>  <a id="1137" class="Symbol">to</a> <a id="N.∙-cong"></a><a id="1140" href="Algebra.Construct.LexProduct.Inner.html#1140" class="Function">◦-cong</a>
+  <a id="1071" class="Symbol">(</a> <a id="1073" href="Algebra.Bundles.html#1078" class="Function">Carrier</a> <a id="1081" class="Symbol">to</a> <a id="1084" class="Function">B</a>
+  <a id="1088" class="Symbol">;</a> <a id="1090" href="Algebra.Bundles.html#1126" class="Function Operator">_∙_</a>     <a id="1098" class="Symbol">to</a> <a id="1101" class="Function Operator">_◦_</a>
+  <a id="1107" class="Symbol">;</a> <a id="1109" href="Algebra.Bundles.html#1098" class="Function Operator">_≈_</a>     <a id="1117" class="Symbol">to</a> <a id="1120" class="Function Operator">_≈₂_</a>
+  <a id="1127" class="Symbol">;</a> <a id="1129" href="Algebra.Structures.html#1210" class="Function">∙-cong</a>  <a id="1137" class="Symbol">to</a> <a id="1140" class="Function">◦-cong</a>
   <a id="1149" class="Symbol">)</a>
 
 <a id="1152" class="Keyword">private</a>
@@ -50,7 +50,7 @@
 <a id="1277" class="Comment">-- Base definition</a>
 
 <a id="1297" class="Keyword">open</a> <a id="1302" href="Algebra.Construct.LexProduct.Base.html" class="Module">Base</a> <a id="1307" href="Algebra.Bundles.html#1126" class="Function Operator">_∙_</a> <a id="1311" href="Algebra.Construct.LexProduct.Inner.html#1101" class="Function Operator">_◦_</a> <a id="1315" href="Algebra.Construct.LexProduct.Inner.html#882" class="Bound Operator">_≟₁_</a> <a id="1320" class="Keyword">public</a>
-  <a id="1329" class="Keyword">using</a> <a id="1335" class="Symbol">(</a>innerLex<a id="1344" class="Symbol">)</a>
+  <a id="1329" class="Keyword">using</a> <a id="1335" class="Symbol">(</a><a id="1336" href="Algebra.Construct.LexProduct.Base.html#1011" class="Function">innerLex</a><a id="1344" class="Symbol">)</a>
 
 <a id="1347" class="Comment">-- Save ourselves some typing in this file</a>
 <a id="1390" class="Keyword">private</a>

@@ -33,7 +33,7 @@
 <a id="1194" class="Comment">-- are first proved for these unnormalised rationals and then translated</a>
 <a id="1267" class="Comment">-- into the normalised rationals.</a>
 
-<a id="1302" class="Keyword">record</a> <a id="ℚᵘ"></a><a id="1309" href="Data.Rational.Unnormalised.Base.html#1309" class="Record">ℚᵘ</a> <a id="1312" class="Symbol">:</a> <a id="1314" class="PrimitiveType">Set</a> <a id="1318" class="Keyword">where</a>
+<a id="1302" class="Keyword">record</a> <a id="ℚᵘ"></a><a id="1309" href="Data.Rational.Unnormalised.Base.html#1309" class="Record">ℚᵘ</a> <a id="1312" class="Symbol">:</a> <a id="1314" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="1318" class="Keyword">where</a>
   <a id="1326" class="Keyword">constructor</a> <a id="mkℚᵘ"></a><a id="1338" href="Data.Rational.Unnormalised.Base.html#1338" class="InductiveConstructor">mkℚᵘ</a>
   <a id="1345" class="Keyword">field</a>
     <a id="ℚᵘ.numerator"></a><a id="1355" href="Data.Rational.Unnormalised.Base.html#1355" class="Field">numerator</a>     <a id="1369" class="Symbol">:</a> <a id="1371" href="Agda.Builtin.Int.html#246" class="Datatype">ℤ</a>
@@ -47,9 +47,9 @@
 
 <a id="1501" class="Keyword">open</a> <a id="1506" href="Data.Rational.Unnormalised.Base.html#1309" class="Module">ℚᵘ</a> <a id="1509" class="Keyword">public</a> <a id="1516" class="Keyword">using</a> <a id="1522" class="Symbol">()</a>
   <a id="1527" class="Keyword">renaming</a>
-  <a id="1538" class="Symbol">(</a> <a id="1540" href="Data.Rational.Unnormalised.Base.html#1355" class="Field">numerator</a>    <a id="1553" class="Symbol">to</a> <a id="ℚᵘ.numerator"></a><a id="1556" href="Data.Rational.Unnormalised.Base.html#1556" class="Field">↥_</a>
-  <a id="1561" class="Symbol">;</a> <a id="1563" href="Data.Rational.Unnormalised.Base.html#1453" class="Function">denominator</a>  <a id="1576" class="Symbol">to</a> <a id="ℚᵘ.denominator"></a><a id="1579" href="Data.Rational.Unnormalised.Base.html#1579" class="Function">↧_</a>
-  <a id="1584" class="Symbol">;</a> <a id="1586" href="Data.Rational.Unnormalised.Base.html#1398" class="Function">denominatorℕ</a> <a id="1599" class="Symbol">to</a> <a id="ℚᵘ.denominatorℕ"></a><a id="1602" href="Data.Rational.Unnormalised.Base.html#1602" class="Function">↧ₙ_</a>
+  <a id="1538" class="Symbol">(</a> <a id="1540" href="Data.Rational.Unnormalised.Base.html#1355" class="Field">numerator</a>    <a id="1553" class="Symbol">to</a> <a id="1556" class="Field">↥_</a>
+  <a id="1561" class="Symbol">;</a> <a id="1563" href="Data.Rational.Unnormalised.Base.html#1453" class="Function">denominator</a>  <a id="1576" class="Symbol">to</a> <a id="1579" class="Function">↧_</a>
+  <a id="1584" class="Symbol">;</a> <a id="1586" href="Data.Rational.Unnormalised.Base.html#1398" class="Function">denominatorℕ</a> <a id="1599" class="Symbol">to</a> <a id="1602" class="Function">↧ₙ_</a>
   <a id="1608" class="Symbol">)</a>
 
 <a id="1611" class="Comment">------------------------------------------------------------------------</a>
@@ -104,7 +104,7 @@
 <a id="2642" class="Comment">-- Constructing rationals</a>
 
 <a id="2669" class="Keyword">infix</a> <a id="2675" class="Number">4</a> <a id="2677" href="Data.Rational.Unnormalised.Base.html#2681" class="Function Operator">_≢0</a>
-<a id="_≢0"></a><a id="2681" href="Data.Rational.Unnormalised.Base.html#2681" class="Function Operator">_≢0</a> <a id="2685" class="Symbol">:</a> <a id="2687" href="Agda.Builtin.Nat.html#192" class="Datatype">ℕ</a> <a id="2689" class="Symbol">→</a> <a id="2691" class="PrimitiveType">Set</a>
+<a id="_≢0"></a><a id="2681" href="Data.Rational.Unnormalised.Base.html#2681" class="Function Operator">_≢0</a> <a id="2685" class="Symbol">:</a> <a id="2687" href="Agda.Builtin.Nat.html#192" class="Datatype">ℕ</a> <a id="2689" class="Symbol">→</a> <a id="2691" href="Agda.Primitive.html#326" class="Primitive">Set</a>
 <a id="2695" href="Data.Rational.Unnormalised.Base.html#2695" class="Bound">n</a> <a id="2697" href="Data.Rational.Unnormalised.Base.html#2681" class="Function Operator">≢0</a> <a id="2700" class="Symbol">=</a> <a id="2702" href="Relation.Nullary.Decidable.Core.html#1406" class="Function">False</a> <a id="2708" class="Symbol">(</a><a id="2709" href="Data.Rational.Unnormalised.Base.html#2695" class="Bound">n</a> <a id="2711" href="Data.Nat.Properties.html#2529" class="Function Operator">ℕ.≟</a> <a id="2715" class="Number">0</a><a id="2716" class="Symbol">)</a>
 
 <a id="2719" class="Comment">-- An alternative constructor for ℚᵘ. See the constants section below</a>
