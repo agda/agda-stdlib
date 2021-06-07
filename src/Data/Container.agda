@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Level using (_⊔_)
+open import Level using (Level; _⊔_)
 open import Data.W using (W)
 
 module Data.Container where
@@ -39,11 +39,18 @@ module Morphism where
   open import Data.Container.Morphism
     using (id; _∘_) public
 
+private
+  variable
+    s p : Level
+
 -- The least fixpoint of a container.
 
-μ : ∀ {s p} → Container s p → Set (s ⊔ p)
+μ : Container s p → Set (s ⊔ p)
 μ = W
 
 -- The greatest fixpoint of a container can be found
--- in `Data.Container.GreatestFixpoint` as it uses unsafe
--- sized types.
+-- in `Data.Container.GreatestFixpoint` as it relies
+-- on the `guardedness` flag.
+
+-- You can find sized alternatives in `Data.Container.Sized`
+-- as they rely on the unsafe flag `--sized-types`.
