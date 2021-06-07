@@ -17,18 +17,18 @@
   <a id="593" class="Symbol">{</a><a id="594" href="Algebra.Properties.Monoid.Mult.TCOptimised.html#594" class="Bound">a</a> <a id="596" href="Algebra.Properties.Monoid.Mult.TCOptimised.html#596" class="Bound">ℓ</a><a id="597" class="Symbol">}</a> <a id="599" class="Symbol">(</a><a id="600" href="Algebra.Properties.Monoid.Mult.TCOptimised.html#600" class="Bound">M</a> <a id="602" class="Symbol">:</a> <a id="604" href="Algebra.Bundles.html#4421" class="Record">Monoid</a> <a id="611" href="Algebra.Properties.Monoid.Mult.TCOptimised.html#594" class="Bound">a</a> <a id="613" href="Algebra.Properties.Monoid.Mult.TCOptimised.html#596" class="Bound">ℓ</a><a id="614" class="Symbol">)</a> <a id="616" class="Keyword">where</a>
 
 <a id="623" class="Keyword">open</a> <a id="628" href="Algebra.Bundles.html#4421" class="Module">Monoid</a> <a id="635" href="Algebra.Properties.Monoid.Mult.TCOptimised.html#600" class="Bound">M</a> <a id="637" class="Keyword">renaming</a>
-  <a id="648" class="Symbol">(</a> _∙_       <a id="660" class="Symbol">to</a> _+_
-  <a id="669" class="Symbol">;</a> ∙-cong    <a id="681" class="Symbol">to</a> +-cong
-  <a id="693" class="Symbol">;</a> ∙-congˡ   <a id="705" class="Symbol">to</a> +-congˡ
-  <a id="718" class="Symbol">;</a> ∙-congʳ   <a id="730" class="Symbol">to</a> +-congʳ
-  <a id="743" class="Symbol">;</a> identityˡ <a id="755" class="Symbol">to</a> +-identityˡ
-  <a id="772" class="Symbol">;</a> identityʳ <a id="784" class="Symbol">to</a> +-identityʳ
-  <a id="801" class="Symbol">;</a> assoc     <a id="813" class="Symbol">to</a> +-assoc
-  <a id="826" class="Symbol">;</a> ε         <a id="838" class="Symbol">to</a> 0#
+  <a id="648" class="Symbol">(</a> <a id="650" href="Algebra.Bundles.html#4550" class="Field Operator">_∙_</a>       <a id="660" class="Symbol">to</a> <a id="663" class="Field Operator">_+_</a>
+  <a id="669" class="Symbol">;</a> <a id="671" href="Algebra.Structures.html#1210" class="Function">∙-cong</a>    <a id="681" class="Symbol">to</a> <a id="684" class="Function">+-cong</a>
+  <a id="693" class="Symbol">;</a> <a id="695" href="Algebra.Structures.html#1360" class="Function">∙-congˡ</a>   <a id="705" class="Symbol">to</a> <a id="708" class="Function">+-congˡ</a>
+  <a id="718" class="Symbol">;</a> <a id="720" href="Algebra.Structures.html#1421" class="Function">∙-congʳ</a>   <a id="730" class="Symbol">to</a> <a id="733" class="Function">+-congʳ</a>
+  <a id="743" class="Symbol">;</a> <a id="745" href="Algebra.Structures.html#2963" class="Function">identityˡ</a> <a id="755" class="Symbol">to</a> <a id="758" class="Function">+-identityˡ</a>
+  <a id="772" class="Symbol">;</a> <a id="774" href="Algebra.Structures.html#3024" class="Function">identityʳ</a> <a id="784" class="Symbol">to</a> <a id="787" class="Function">+-identityʳ</a>
+  <a id="801" class="Symbol">;</a> <a id="803" href="Algebra.Structures.html#1867" class="Function">assoc</a>     <a id="813" class="Symbol">to</a> <a id="816" class="Function">+-assoc</a>
+  <a id="826" class="Symbol">;</a> <a id="828" href="Algebra.Bundles.html#4577" class="Field">ε</a>         <a id="838" class="Symbol">to</a> <a id="841" class="Field">0#</a>
   <a id="846" class="Symbol">)</a>
 
-<a id="849" class="Keyword">open</a> <a id="854" class="Keyword">import</a> <a id="861" href="Algebra.Properties.Monoid.Mult.html" class="Module">Algebra.Properties.Monoid.Mult</a> <a id="892" href="Algebra.Properties.Monoid.Mult.TCOptimised.html#600" class="Bound">M</a> <a id="894" class="Symbol">as</a> <a id="U"></a><a id="897" href="Algebra.Properties.Monoid.Mult.TCOptimised.html#897" class="Module">U</a>
-  <a id="901" class="Keyword">using</a> <a id="907" class="Symbol">()</a> <a id="910" class="Keyword">renaming</a> <a id="919" class="Symbol">(</a><a id="920" href="Algebra.Definitions.RawMonoid.html#1080" class="Function Operator">_×_</a> <a id="924" class="Symbol">to</a> <a id="U._×_"></a><a id="927" href="Algebra.Properties.Monoid.Mult.TCOptimised.html#927" class="Function Operator">_×ᵤ_</a><a id="931" class="Symbol">)</a>
+<a id="849" class="Keyword">open</a> <a id="854" class="Keyword">import</a> <a id="861" href="Algebra.Properties.Monoid.Mult.html" class="Module">Algebra.Properties.Monoid.Mult</a> <a id="892" href="Algebra.Properties.Monoid.Mult.TCOptimised.html#600" class="Bound">M</a> as <a id="U"></a><a id="897" href="Algebra.Properties.Monoid.Mult.TCOptimised.html#897" class="Module">U</a>
+  <a id="901" class="Keyword">using</a> <a id="907" class="Symbol">()</a> <a id="910" class="Keyword">renaming</a> <a id="919" class="Symbol">(</a><a id="920" href="Algebra.Definitions.RawMonoid.html#1080" class="Function Operator">_×_</a> <a id="924" class="Symbol">to</a> <a id="927" class="Function Operator">_×ᵤ_</a><a id="931" class="Symbol">)</a>
 
 <a id="934" class="Keyword">open</a> <a id="939" class="Keyword">import</a> <a id="946" href="Relation.Binary.Reasoning.Setoid.html" class="Module">Relation.Binary.Reasoning.Setoid</a> <a id="979" href="Algebra.Structures.html#1285" class="Function">setoid</a>
 
@@ -36,7 +36,7 @@
 <a id="1060" class="Comment">-- Definition</a>
 
 <a id="1075" class="Keyword">open</a> <a id="1080" class="Keyword">import</a> <a id="1087" href="Algebra.Definitions.RawMonoid.html" class="Module">Algebra.Definitions.RawMonoid</a> <a id="1117" href="Algebra.Bundles.html#4814" class="Function">rawMonoid</a> <a id="1127" class="Keyword">public</a>
-  <a id="1136" class="Keyword">using</a> <a id="1142" class="Symbol">()</a> <a id="1145" class="Keyword">renaming</a> <a id="1154" class="Symbol">(</a>_×′_ <a id="1160" class="Symbol">to</a> _×_<a id="1166" class="Symbol">)</a>
+  <a id="1136" class="Keyword">using</a> <a id="1142" class="Symbol">()</a> <a id="1145" class="Keyword">renaming</a> <a id="1154" class="Symbol">(</a><a id="1155" href="Algebra.Definitions.RawMonoid.html#1836" class="Function Operator">_×′_</a> <a id="1160" class="Symbol">to</a> <a id="1163" class="Function Operator">_×_</a><a id="1166" class="Symbol">)</a>
 
 <a id="1169" class="Comment">------------------------------------------------------------------------</a>
 <a id="1242" class="Comment">-- Properties</a>

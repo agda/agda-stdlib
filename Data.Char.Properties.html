@@ -31,7 +31,7 @@
 <a id="1064" class="Comment">-- Primitive properties</a>
 
 <a id="1089" class="Keyword">open</a> <a id="1094" class="Keyword">import</a> <a id="1101" href="Agda.Builtin.Char.Properties.html" class="Module">Agda.Builtin.Char.Properties</a>
-  <a id="1132" class="Keyword">renaming</a> <a id="1141" class="Symbol">(</a> <a id="1143" href="Agda.Builtin.Char.Properties.html#219" class="Primitive">primCharToNatInjective</a> <a id="1166" class="Symbol">to</a> <a id="Properties.primCharToNatInjective"></a><a id="1169" href="Data.Char.Properties.html#1169" class="Primitive">toℕ-injective</a><a id="1182" class="Symbol">)</a>
+  <a id="1132" class="Keyword">renaming</a> <a id="1141" class="Symbol">(</a> <a id="1143" href="Agda.Builtin.Char.Properties.html#219" class="Primitive">primCharToNatInjective</a> <a id="1166" class="Symbol">to</a> <a id="1169" class="Primitive">toℕ-injective</a><a id="1182" class="Symbol">)</a>
   <a id="1186" class="Keyword">public</a>
 
 <a id="1194" class="Comment">------------------------------------------------------------------------</a>
@@ -79,7 +79,7 @@
   <a id="2223" class="Comment">-- The following unit test does not type-check (at the time of</a>
   <a id="2288" class="Comment">-- writing) if _==_ is replaced by primCharEquality.</a>
 
-  <a id="2344" class="Keyword">data</a> <a id="P"></a><a id="2349" href="Data.Char.Properties.html#2349" class="Datatype">P</a> <a id="2351" class="Symbol">:</a> <a id="2353" class="Symbol">(</a><a id="2354" href="Agda.Builtin.Char.html#227" class="Postulate">Char</a> <a id="2359" class="Symbol">→</a> <a id="2361" href="Agda.Builtin.Bool.html#163" class="Datatype">Bool</a><a id="2365" class="Symbol">)</a> <a id="2367" class="Symbol">→</a> <a id="2369" class="PrimitiveType">Set</a> <a id="2373" class="Keyword">where</a>
+  <a id="2344" class="Keyword">data</a> <a id="P"></a><a id="2349" href="Data.Char.Properties.html#2349" class="Datatype">P</a> <a id="2351" class="Symbol">:</a> <a id="2353" class="Symbol">(</a><a id="2354" href="Agda.Builtin.Char.html#227" class="Postulate">Char</a> <a id="2359" class="Symbol">→</a> <a id="2361" href="Agda.Builtin.Bool.html#163" class="Datatype">Bool</a><a id="2365" class="Symbol">)</a> <a id="2367" class="Symbol">→</a> <a id="2369" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="2373" class="Keyword">where</a>
     <a id="P.MkP"></a><a id="2383" href="Data.Char.Properties.html#2383" class="InductiveConstructor">MkP</a> <a id="2387" class="Symbol">:</a> <a id="2389" class="Symbol">(</a><a id="2390" href="Data.Char.Properties.html#2390" class="Bound">c</a> <a id="2392" class="Symbol">:</a> <a id="2394" href="Agda.Builtin.Char.html#227" class="Postulate">Char</a><a id="2398" class="Symbol">)</a> <a id="2400" class="Symbol">→</a> <a id="2402" href="Data.Char.Properties.html#2349" class="Datatype">P</a> <a id="2404" class="Symbol">(</a><a id="2405" href="Data.Char.Properties.html#2390" class="Bound">c</a> <a id="2407" href="Data.Char.Properties.html#2158" class="Function Operator">==_</a><a id="2410" class="Symbol">)</a>
 
   <a id="unit-test"></a><a id="2415" href="Data.Char.Properties.html#2415" class="Function">unit-test</a> <a id="2425" class="Symbol">:</a> <a id="2427" href="Data.Char.Properties.html#2349" class="Datatype">P</a> <a id="2429" class="Symbol">(</a><a id="2430" class="String">&#39;x&#39;</a> <a id="2434" href="Data.Char.Properties.html#2158" class="Function Operator">==_</a><a id="2437" class="Symbol">)</a>

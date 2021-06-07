@@ -15,13 +15,13 @@
 <a id="349" class="Keyword">open</a> <a id="354" class="Keyword">import</a> <a id="361" href="Data.Nat.html" class="Module">Data.Nat</a>
 <a id="370" class="Keyword">open</a> <a id="375" class="Keyword">import</a> <a id="382" href="Data.Nat.Properties.html" class="Module">Data.Nat.Properties</a>
 <a id="402" class="Keyword">open</a> <a id="407" class="Keyword">import</a> <a id="414" href="Data.Product.html" class="Module">Data.Product</a>
-<a id="427" class="Keyword">open</a> <a id="432" class="Keyword">import</a> <a id="439" href="Level.html" class="Module">Level</a> <a id="445" class="Keyword">using</a> <a id="451" class="Symbol">(</a><a id="452" href="Agda.Primitive.html#423" class="Postulate">Level</a><a id="457" class="Symbol">)</a>
+<a id="427" class="Keyword">open</a> <a id="432" class="Keyword">import</a> <a id="439" href="Level.html" class="Module">Level</a> <a id="445" class="Keyword">using</a> <a id="451" class="Symbol">(</a><a id="452" href="Agda.Primitive.html#597" class="Postulate">Level</a><a id="457" class="Symbol">)</a>
 <a id="459" class="Keyword">open</a> <a id="464" class="Keyword">import</a> <a id="471" href="Relation.Binary.html" class="Module">Relation.Binary</a>
 
 <a id="488" class="Keyword">private</a>
   <a id="498" class="Keyword">variable</a>
-    <a id="511" href="README.Data.Wrap.html#511" class="Generalizable">c</a> <a id="513" href="README.Data.Wrap.html#513" class="Generalizable">ℓ</a> <a id="515" class="Symbol">:</a> <a id="517" href="Agda.Primitive.html#423" class="Postulate">Level</a>
-    <a id="527" href="README.Data.Wrap.html#527" class="Generalizable">A</a> <a id="529" class="Symbol">:</a> <a id="531" class="PrimitiveType">Set</a> <a id="535" href="README.Data.Wrap.html#511" class="Generalizable">c</a>
+    <a id="511" href="README.Data.Wrap.html#511" class="Generalizable">c</a> <a id="513" href="README.Data.Wrap.html#513" class="Generalizable">ℓ</a> <a id="515" class="Symbol">:</a> <a id="517" href="Agda.Primitive.html#597" class="Postulate">Level</a>
+    <a id="527" href="README.Data.Wrap.html#527" class="Generalizable">A</a> <a id="529" class="Symbol">:</a> <a id="531" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="535" href="README.Data.Wrap.html#511" class="Generalizable">c</a>
     <a id="541" href="README.Data.Wrap.html#541" class="Generalizable">m</a> <a id="543" href="README.Data.Wrap.html#543" class="Generalizable">n</a> <a id="545" class="Symbol">:</a> <a id="547" href="Agda.Builtin.Nat.html#192" class="Datatype">ℕ</a>
 
 <a id="550" class="Comment">------------------------------------------------------------------------</a>
@@ -34,7 +34,7 @@
   <a id="830" class="Comment">-- type `Monoid c ℓ → Set c`.</a>
   <a id="862" class="Comment">-- Using `Wrap`, we can convert `Monoid.Carrier` into an equivalent</a>
   <a id="932" class="Comment">-- “wrapped” version: `MonoidEl`.</a>
-  <a id="Instances.MonoidEl"></a><a id="968" href="README.Data.Wrap.html#968" class="Function">MonoidEl</a> <a id="977" class="Symbol">:</a> <a id="979" href="Algebra.Bundles.html#4421" class="Record">Monoid</a> <a id="986" href="README.Data.Wrap.html#511" class="Generalizable">c</a> <a id="988" href="README.Data.Wrap.html#513" class="Generalizable">ℓ</a> <a id="990" class="Symbol">→</a> <a id="992" class="PrimitiveType">Set</a> <a id="996" href="README.Data.Wrap.html#511" class="Generalizable">c</a>
+  <a id="Instances.MonoidEl"></a><a id="968" href="README.Data.Wrap.html#968" class="Function">MonoidEl</a> <a id="977" class="Symbol">:</a> <a id="979" href="Algebra.Bundles.html#4421" class="Record">Monoid</a> <a id="986" href="README.Data.Wrap.html#511" class="Generalizable">c</a> <a id="988" href="README.Data.Wrap.html#513" class="Generalizable">ℓ</a> <a id="990" class="Symbol">→</a> <a id="992" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="996" href="README.Data.Wrap.html#511" class="Generalizable">c</a>
   <a id="1000" href="README.Data.Wrap.html#968" class="Function">MonoidEl</a> <a id="1009" class="Symbol">=</a> <a id="1011" href="Data.Wrap.html#734" class="Function">Wrap</a> <a id="1016" href="Algebra.Bundles.html#4500" class="Field">Monoid.Carrier</a>
 
   <a id="1034" class="Comment">-- We can turn any monoid into the equivalent monoid where the elements</a>
@@ -78,7 +78,7 @@
   <a id="2546" class="Comment">-- However, with wrapped monoids, we are going to remember the monoid</a>
   <a id="2618" class="Comment">-- while checking any monoid expressions, so we can afford to have just</a>
   <a id="2692" class="Comment">-- one, polymorphic, version of `_∙_` visible globally.</a>
-  <a id="2750" class="Keyword">open</a> <a id="2755" class="Keyword">module</a> <a id="Wrap-monoid"></a><a id="2762" href="README.Data.Wrap.html#2762" class="Module">Wrap-monoid</a> <a id="2774" class="Symbol">{</a><a id="2775" href="README.Data.Wrap.html#2775" class="Bound">c</a> <a id="2777" href="README.Data.Wrap.html#2777" class="Bound">ℓ</a><a id="2778" class="Symbol">}</a> <a id="2780" class="Symbol">{</a><a id="2781" href="README.Data.Wrap.html#2781" class="Bound">M</a> <a id="2783" class="Symbol">:</a> <a id="2785" href="Algebra.Bundles.html#4421" class="Record">Monoid</a> <a id="2792" href="README.Data.Wrap.html#2775" class="Bound">c</a> <a id="2794" href="README.Data.Wrap.html#2777" class="Bound">ℓ</a><a id="2795" class="Symbol">}</a> <a id="2797" class="Symbol">=</a> <a id="2799" href="Algebra.Bundles.html#4421" class="Module">Monoid</a> <a id="2806" class="Symbol">(</a><a id="2807" href="README.Data.Wrap.html#1441" class="Function">Wrap-monoid</a> <a id="2819" href="README.Data.Wrap.html#2781" class="Bound">M</a><a id="2820" class="Symbol">)</a>
+  <a id="2750" class="Keyword">open</a> <a id="2755" class="Keyword">module</a> <a id="Instances.Wrap-monoid"></a><a id="2762" href="README.Data.Wrap.html#2762" class="Module">Wrap-monoid</a> <a id="2774" class="Symbol">{</a><a id="2775" href="README.Data.Wrap.html#2775" class="Bound">c</a> <a id="2777" href="README.Data.Wrap.html#2777" class="Bound">ℓ</a><a id="2778" class="Symbol">}</a> <a id="2780" class="Symbol">{</a><a id="2781" href="README.Data.Wrap.html#2781" class="Bound">M</a> <a id="2783" class="Symbol">:</a> <a id="2785" href="Algebra.Bundles.html#4421" class="Record">Monoid</a> <a id="2792" href="README.Data.Wrap.html#2775" class="Bound">c</a> <a id="2794" href="README.Data.Wrap.html#2777" class="Bound">ℓ</a><a id="2795" class="Symbol">}</a> <a id="2797" class="Symbol">=</a> <a id="2799" href="Algebra.Bundles.html#4421" class="Module">Monoid</a> <a id="2806" class="Symbol">(</a><a id="2807" href="README.Data.Wrap.html#1441" class="Function">Wrap-monoid</a> <a id="2819" href="README.Data.Wrap.html#2781" class="Bound">M</a><a id="2820" class="Symbol">)</a>
 
   <a id="2825" class="Comment">-- Now we can test out this construct on some existing monoids.</a>
 
@@ -112,7 +112,7 @@
 
   <a id="3960" class="Keyword">open</a> <a id="3965" class="Keyword">import</a> <a id="3972" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a>
 
-  <a id="4013" class="Keyword">module</a> <a id="Naïve"></a><a id="4020" href="README.Data.Wrap.html#4020" class="Module">Naïve</a> <a id="4026" class="Keyword">where</a>
+  <a id="4013" class="Keyword">module</a> <a id="Unification.Naïve"></a><a id="4020" href="README.Data.Wrap.html#4020" class="Module">Naïve</a> <a id="4026" class="Keyword">where</a>
 
     <a id="4037" class="Comment">-- We want to work with factorisations of natural numbers in a</a>
     <a id="4104" class="Comment">-- “proof-relevant” style. We could draw out `Factor m n o` as</a>
@@ -120,7 +120,7 @@
     <a id="4182" class="Comment">--  /*\</a>
     <a id="4194" class="Comment">-- n   o.</a>
 
-    <a id="Unification.Naïve.Factor"></a><a id="4209" href="README.Data.Wrap.html#4209" class="Function">Factor</a> <a id="4216" class="Symbol">:</a> <a id="4218" class="Symbol">(</a><a id="4219" href="README.Data.Wrap.html#4219" class="Bound">m</a> <a id="4221" href="README.Data.Wrap.html#4221" class="Bound">n</a> <a id="4223" href="README.Data.Wrap.html#4223" class="Bound">o</a> <a id="4225" class="Symbol">:</a> <a id="4227" href="Agda.Builtin.Nat.html#192" class="Datatype">ℕ</a><a id="4228" class="Symbol">)</a> <a id="4230" class="Symbol">→</a> <a id="4232" class="PrimitiveType">Set</a>
+    <a id="Unification.Naïve.Factor"></a><a id="4209" href="README.Data.Wrap.html#4209" class="Function">Factor</a> <a id="4216" class="Symbol">:</a> <a id="4218" class="Symbol">(</a><a id="4219" href="README.Data.Wrap.html#4219" class="Bound">m</a> <a id="4221" href="README.Data.Wrap.html#4221" class="Bound">n</a> <a id="4223" href="README.Data.Wrap.html#4223" class="Bound">o</a> <a id="4225" class="Symbol">:</a> <a id="4227" href="Agda.Builtin.Nat.html#192" class="Datatype">ℕ</a><a id="4228" class="Symbol">)</a> <a id="4230" class="Symbol">→</a> <a id="4232" href="Agda.Primitive.html#326" class="Primitive">Set</a>
     <a id="4240" href="README.Data.Wrap.html#4209" class="Function">Factor</a> <a id="4247" href="README.Data.Wrap.html#4247" class="Bound">m</a> <a id="4249" href="README.Data.Wrap.html#4249" class="Bound">n</a> <a id="4251" href="README.Data.Wrap.html#4251" class="Bound">o</a> <a id="4253" class="Symbol">=</a> <a id="4255" href="README.Data.Wrap.html#4247" class="Bound">m</a> <a id="4257" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="4259" href="README.Data.Wrap.html#4249" class="Bound">n</a> <a id="4261" href="Agda.Builtin.Nat.html#528" class="Primitive Operator">*</a> <a id="4263" href="README.Data.Wrap.html#4251" class="Bound">o</a>
 
     <a id="4270" class="Comment">-- We can prove a basic lemma about `Factor`: the following tree rotation</a>
@@ -165,11 +165,11 @@
     <a id="6012" class="Comment">-- `Factor m no p`, because both instances of `Factor` compute and we&#39;re</a>
     <a id="6089" class="Comment">-- left trying to unify `? * ?` against `no * p`.</a>
 
-  <a id="6142" class="Keyword">module</a> <a id="Wrapped"></a><a id="6149" href="README.Data.Wrap.html#6149" class="Module">Wrapped</a> <a id="6157" class="Keyword">where</a>
+  <a id="6142" class="Keyword">module</a> <a id="Unification.Wrapped"></a><a id="6149" href="README.Data.Wrap.html#6149" class="Module">Wrapped</a> <a id="6157" class="Keyword">where</a>
 
     <a id="6168" class="Comment">-- We can use `Wrap` to stop the computation of `Factor`.</a>
 
-    <a id="Unification.Wrapped.Factor"></a><a id="6231" href="README.Data.Wrap.html#6231" class="Function">Factor</a> <a id="6238" class="Symbol">:</a> <a id="6240" class="Symbol">(</a><a id="6241" href="README.Data.Wrap.html#6241" class="Bound">m</a> <a id="6243" href="README.Data.Wrap.html#6243" class="Bound">n</a> <a id="6245" href="README.Data.Wrap.html#6245" class="Bound">o</a> <a id="6247" class="Symbol">:</a> <a id="6249" href="Agda.Builtin.Nat.html#192" class="Datatype">ℕ</a><a id="6250" class="Symbol">)</a> <a id="6252" class="Symbol">→</a> <a id="6254" class="PrimitiveType">Set</a>
+    <a id="Unification.Wrapped.Factor"></a><a id="6231" href="README.Data.Wrap.html#6231" class="Function">Factor</a> <a id="6238" class="Symbol">:</a> <a id="6240" class="Symbol">(</a><a id="6241" href="README.Data.Wrap.html#6241" class="Bound">m</a> <a id="6243" href="README.Data.Wrap.html#6243" class="Bound">n</a> <a id="6245" href="README.Data.Wrap.html#6245" class="Bound">o</a> <a id="6247" class="Symbol">:</a> <a id="6249" href="Agda.Builtin.Nat.html#192" class="Datatype">ℕ</a><a id="6250" class="Symbol">)</a> <a id="6252" class="Symbol">→</a> <a id="6254" href="Agda.Primitive.html#326" class="Primitive">Set</a>
     <a id="6262" href="README.Data.Wrap.html#6231" class="Function">Factor</a> <a id="6269" class="Symbol">=</a> <a id="6271" href="Data.Wrap.html#734" class="Function">Wrap</a> <a id="6276" class="Symbol">λ</a> <a id="6278" href="README.Data.Wrap.html#6278" class="Bound">m</a> <a id="6280" href="README.Data.Wrap.html#6280" class="Bound">n</a> <a id="6282" href="README.Data.Wrap.html#6282" class="Bound">o</a> <a id="6284" class="Symbol">→</a> <a id="6286" href="README.Data.Wrap.html#6278" class="Bound">m</a> <a id="6288" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="6290" href="README.Data.Wrap.html#6280" class="Bound">n</a> <a id="6292" href="Agda.Builtin.Nat.html#528" class="Primitive Operator">*</a> <a id="6294" href="README.Data.Wrap.html#6282" class="Bound">o</a>
 
     <a id="6301" class="Comment">-- Because `assoc-→` needs access to the implementation of `Factor`, the</a>

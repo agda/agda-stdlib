@@ -23,22 +23,22 @@
   <a id="839" class="Symbol">(</a><a id="840" href="Algebra.Construct.LexProduct.html#840" class="Bound Operator">_≟₁_</a> <a id="845" class="Symbol">:</a> <a id="847" href="Relation.Binary.Definitions.html#4575" class="Function">Decidable</a> <a id="857" class="Symbol">(</a><a id="858" href="Algebra.Bundles.html#1098" class="Field Operator">Magma._≈_</a> <a id="868" href="Algebra.Construct.LexProduct.html#802" class="Bound">M</a><a id="869" class="Symbol">))</a>
   <a id="874" class="Keyword">where</a>
 
-<a id="881" class="Keyword">open</a> <a id="886" href="Algebra.Bundles.html#1000" class="Module">Magma</a> <a id="892" href="Algebra.Construct.LexProduct.html#802" class="Bound">M</a> <a id="894" class="Keyword">using</a> <a id="900" class="Symbol">(</a>_∙_ <a id="905" class="Symbol">;</a> ∙-cong<a id="913" class="Symbol">)</a>
+<a id="881" class="Keyword">open</a> <a id="886" href="Algebra.Bundles.html#1000" class="Module">Magma</a> <a id="892" href="Algebra.Construct.LexProduct.html#802" class="Bound">M</a> <a id="894" class="Keyword">using</a> <a id="900" class="Symbol">(</a><a id="901" href="Algebra.Bundles.html#1126" class="Field Operator">_∙_</a> <a id="905" class="Symbol">;</a> <a id="907" href="Algebra.Structures.html#1210" class="Function">∙-cong</a><a id="913" class="Symbol">)</a>
   <a id="917" class="Keyword">renaming</a>
-  <a id="928" class="Symbol">(</a> Carrier  <a id="939" class="Symbol">to</a> A
-  <a id="946" class="Symbol">;</a> _≈_      <a id="957" class="Symbol">to</a> _≈₁_
-  <a id="967" class="Symbol">;</a> _≉_      <a id="978" class="Symbol">to</a> _≉₁_
+  <a id="928" class="Symbol">(</a> <a id="930" href="Algebra.Bundles.html#1078" class="Field">Carrier</a>  <a id="939" class="Symbol">to</a> <a id="942" class="Field">A</a>
+  <a id="946" class="Symbol">;</a> <a id="948" href="Algebra.Bundles.html#1098" class="Field Operator">_≈_</a>      <a id="957" class="Symbol">to</a> <a id="960" class="Field Operator">_≈₁_</a>
+  <a id="967" class="Symbol">;</a> <a id="969" href="Algebra.Bundles.html#949" class="Function Operator">_≉_</a>      <a id="978" class="Symbol">to</a> <a id="981" class="Function Operator">_≉₁_</a>
   <a id="988" class="Symbol">)</a>
 
 <a id="991" class="Keyword">open</a> <a id="996" href="Algebra.Bundles.html#1000" class="Module">Magma</a> <a id="1002" href="Algebra.Construct.LexProduct.html#820" class="Bound">N</a> <a id="1004" class="Keyword">using</a> <a id="1010" class="Symbol">()</a>
   <a id="1015" class="Keyword">renaming</a>
-  <a id="1026" class="Symbol">(</a> Carrier <a id="1036" class="Symbol">to</a> B
-  <a id="1043" class="Symbol">;</a> _∙_     <a id="1053" class="Symbol">to</a> _◦_
-  <a id="1062" class="Symbol">;</a> _≈_     <a id="1072" class="Symbol">to</a> _≈₂_
-  <a id="1082" class="Symbol">;</a> refl    <a id="1092" class="Symbol">to</a> ≈₂-refl
+  <a id="1026" class="Symbol">(</a> <a id="1028" href="Algebra.Bundles.html#1078" class="Field">Carrier</a> <a id="1036" class="Symbol">to</a> <a id="1039" class="Field">B</a>
+  <a id="1043" class="Symbol">;</a> <a id="1045" href="Algebra.Bundles.html#1126" class="Field Operator">_∙_</a>     <a id="1053" class="Symbol">to</a> <a id="1056" class="Field Operator">_◦_</a>
+  <a id="1062" class="Symbol">;</a> <a id="1064" href="Algebra.Bundles.html#1098" class="Field Operator">_≈_</a>     <a id="1072" class="Symbol">to</a> <a id="1075" class="Field Operator">_≈₂_</a>
+  <a id="1082" class="Symbol">;</a> <a id="1084" href="Relation.Binary.Structures.html#1568" class="Function">refl</a>    <a id="1092" class="Symbol">to</a> <a id="1095" class="Function">≈₂-refl</a>
   <a id="1105" class="Symbol">)</a>
 
-<a id="1108" class="Keyword">import</a> <a id="1115" href="Algebra.Construct.LexProduct.Inner.html" class="Module">Algebra.Construct.LexProduct.Inner</a> <a id="1150" href="Algebra.Construct.LexProduct.html#802" class="Bound">M</a> <a id="1152" href="Algebra.Construct.LexProduct.html#820" class="Bound">N</a> <a id="1154" href="Algebra.Construct.LexProduct.html#840" class="Bound Operator">_≟₁_</a> <a id="1159" class="Symbol">as</a> <a id="InnerLex"></a><a id="1162" href="Algebra.Construct.LexProduct.html#1162" class="Module">InnerLex</a>
+<a id="1108" class="Keyword">import</a> <a id="1115" href="Algebra.Construct.LexProduct.Inner.html" class="Module">Algebra.Construct.LexProduct.Inner</a> <a id="1150" href="Algebra.Construct.LexProduct.html#802" class="Bound">M</a> <a id="1152" href="Algebra.Construct.LexProduct.html#820" class="Bound">N</a> <a id="1154" href="Algebra.Construct.LexProduct.html#840" class="Bound Operator">_≟₁_</a> as <a id="InnerLex"></a><a id="1162" href="Algebra.Construct.LexProduct.html#1162" class="Module">InnerLex</a>
 
 <a id="1172" class="Keyword">private</a>
   <a id="1182" class="Keyword">infix</a> <a id="1188" class="Number">4</a> <a id="1190" href="Algebra.Construct.LexProduct.html#1196" class="Function Operator">_≋_</a>
@@ -53,7 +53,7 @@
 <a id="1356" class="Comment">------------------------------------------------------------------------</a>
 
 <a id="1430" class="Keyword">open</a> <a id="1435" class="Keyword">import</a> <a id="1442" href="Algebra.Construct.LexProduct.Base.html" class="Module">Algebra.Construct.LexProduct.Base</a> <a id="1476" href="Algebra.Bundles.html#1126" class="Function Operator">_∙_</a> <a id="1480" href="Algebra.Construct.LexProduct.html#1056" class="Function Operator">_◦_</a> <a id="1484" href="Algebra.Construct.LexProduct.html#840" class="Bound Operator">_≟₁_</a> <a id="1489" class="Keyword">public</a>
-  <a id="1498" class="Keyword">renaming</a> <a id="1507" class="Symbol">(</a>lex <a id="1512" class="Symbol">to</a> _⊕_<a id="1518" class="Symbol">)</a>
+  <a id="1498" class="Keyword">renaming</a> <a id="1507" class="Symbol">(</a><a id="1508" href="Algebra.Construct.LexProduct.Base.html#1281" class="Function">lex</a> <a id="1512" class="Symbol">to</a> <a id="1515" class="Function">_⊕_</a><a id="1518" class="Symbol">)</a>
 
 <a id="1521" class="Comment">------------------------------------------------------------------------</a>
 <a id="1594" class="Comment">-- Properties</a>
