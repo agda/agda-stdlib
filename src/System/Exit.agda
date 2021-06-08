@@ -9,9 +9,10 @@
 module System.Exit where
 
 open import Level using (Level)
+open import Data.Bool.Base using (Bool; true; false; not)
 open import Data.Nat.Base using (ℕ)
 open import Data.String.Base using (String)
-open import Function.Base using (_$_)
+open import Function.Base using (_$_; _∘′_)
 open import IO using (IO; lift; _>>_; putStrLn)
 
 ------------------------------------------------------------------------
@@ -23,6 +24,16 @@ open import System.Exit.Primitive as Prim
         ; ExitFailure
         )
   public
+
+------------------------------------------------------------------------
+-- Tests
+
+isSuccess : ExitCode → Bool
+isSuccess ExitSuccess     = true
+isSuccess (ExitFailure _) = false
+
+isFailure : ExitCode → Bool
+isFailure  = not ∘′ isSuccess
 
 ------------------------------------------------------------------------
 -- Various exiting function
