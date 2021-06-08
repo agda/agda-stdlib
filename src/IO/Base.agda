@@ -8,10 +8,13 @@
 
 module IO.Base where
 
-open import Codata.Musical.Notation
-open import Data.Unit.Polymorphic.Base
-import IO.Primitive as Prim
 open import Level
+open import Codata.Musical.Notation
+open import Data.Bool.Base using (Bool; true; false; not)
+open import Agda.Builtin.Maybe using (Maybe; nothing; just)
+open import Data.Unit.Polymorphic.Base
+open import Function.Base using (_∘′_)
+import IO.Primitive as Prim
 
 private
   variable
@@ -86,5 +89,27 @@ Main = Prim.IO {0ℓ} ⊤
 ------------------------------------------------------------------------
 -- Utilities
 
+-- Throw away the result
 ignore : IO A → IO ⊤
 ignore io = io >> return _
+
+-- Conditional executions
+when : Bool → IO {a} ⊤ → IO ⊤
+when true m = m
+when false _ = pure _
+
+unless : Bool → IO {a} ⊤ → IO ⊤
+unless = when ∘′ not
+
+whenJust : Maybe A → (A → IO {a} ⊤) → IO ⊤
+whenJust (just a) k = k a
+whenJust nothing  _ = pure _
+
+-- Keep running an IO action until we get a value. Convenient when user
+-- input is involved and it may be malformed.
+untilJust : IO (Maybe A) → IO A
+-- Note that here we are forced to use `bind` & the musical notation
+-- explicitly to guarantee that the corecursive call is guarded
+untilJust m = bind (♯ m) λ where
+  nothing  → ♯ untilJust m
+  (just a) → ♯ return a
