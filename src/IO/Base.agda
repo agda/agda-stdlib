@@ -38,6 +38,14 @@ data IO (A : Set a) : Set (suc a) where
 pure : A → IO A
 pure = return
 
+lift! : IO A → IO (Lift b A)
+lift!         (lift io)   = lift (io Prim.>>= λ a → Prim.return (Level.lift a))
+lift!         (return a)  = return (Level.lift a)
+lift! {b = b} (bind m f)  = bind (♯ lift! {b = b} (♭ m))
+                                 (λ x → ♯ lift! (♭ (f (lower x))))
+lift! {b = b} (seq m₁ m₂) = seq (♯ lift! {b = b} (♭ m₁))
+                                (♯ lift! (♭ m₂))
+
 module _ {A B : Set a} where
 
   infixl 1 _<$>_ _<*>_ _>>=_ _>>_
