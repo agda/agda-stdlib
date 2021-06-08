@@ -130,7 +130,7 @@ sizedTypesModules = map modToFile
   , "Codata.Stream.Instances"
   , "Codata.Stream.Properties"
   , "Codata.Thunk"
-  , "Data.Container.Sized"
+  , "Data.Container.Fixpoints.Sized"
   , "Data.W.Sized"
   , "Data.Nat.PseudoRandom.LCG.Unsafe"
   , "Data.Tree.Binary.Show"

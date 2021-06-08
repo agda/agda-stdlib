@@ -1,12 +1,12 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Sized containers, based on the work of Abbott and others
+-- Sized fixpoints of containers, based on the work of Abbott and others
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --sized-types #-}
 
-module Data.Container.Sized where
+module Data.Container.Fixpoints.Sized where
 
 open import Level
 open import Size

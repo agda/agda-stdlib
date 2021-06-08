@@ -8,11 +8,11 @@ Highlights
 
 * New module for making system calls during type checking, `Reflection.External`,
   which re-exports `Agda.Builtin.Reflection.External`.
-  
+
 * New predicate for lists that are enumerations their type in
   `Data.List.Relation.Unary.Enumerates`.
-  
-* New weak induction schemes in `Data.Fin.Induction` that allows one to avoid 
+
+* New weak induction schemes in `Data.Fin.Induction` that allows one to avoid
   the complicated use of `Acc`/`inject`/`raise` when proving inductive properties
   over finite sets.
 
@@ -23,7 +23,7 @@ Bug-fixes
   `Function.Metric.(Core/Definitions/Structures/Bundles)`. This module was referred
   to in the documentation of its children but until now was not present.
 
-* Added missing fixity declaration to `_<_` in 
+* Added missing fixity declaration to `_<_` in
   `Relation.Binary.Construct.NonStrictToStrict`.
 
 Non-backwards compatible changes
@@ -35,7 +35,7 @@ Non-backwards compatible changes
   in `Agda.Builtin.Float`, see <https://github.com/agda/agda/pull/4885>.
 
 * The bitwise binary relations on floating-point numbers (`_<_`, `_≈ᵇ_`, `_==_`)
-  have been removed without replacement, as they were deeply unintuitive, 
+  have been removed without replacement, as they were deeply unintuitive,
   e.g., `∀ x → x < -x`.
 
 #### Reflection
@@ -86,7 +86,7 @@ Non-backwards compatible changes
   `stream` that relies on the newly unsafe `Codata` modules has
   been moved to the new module `Data.Nat.Pseudorandom.LCG.Unsafe`.
 
-* In order to maintain the safety of the modules in the `Codata.Musical` directory, 
+* In order to maintain the safety of the modules in the `Codata.Musical` directory,
   the functions `fromMusical` and `toMusical` defined in:
   ```
   Codata.Musical.Colist
@@ -105,8 +105,8 @@ Non-backwards compatible changes
   ```
   respectively.
 
-* In order to maintain the safety of `Data.Container(.Indexed)`, the greatest fixpoint 
-  of containers, `ν`, has been moved from `Data.Container(.Indexed)` to a new module 
+* In order to maintain the safety of `Data.Container(.Indexed)`, the greatest fixpoint
+  of containers, `ν`, has been moved from `Data.Container(.Indexed)` to a new module
   `Data.Container.GreatestFixpoint(.Indexed)`.
 
 #### Other
@@ -161,6 +161,11 @@ New modules
   Data.List.Relation.Unary.Enumerates.Setoid.Properties
   ```
 
+* (Unsafe) Sized W type:
+  ```
+  Data.W.Sized
+  ```
+
 Other minor additions
 ---------------------
 
@@ -173,7 +178,7 @@ Other minor additions
 * Added new proofs to `Data.Fin.Induction`:
   ```agda
   >-wellFounded   : WellFounded {A = Fin n} _>_
-  
+
   <-weakInduction : P zero      → (∀ i → P (inject₁ i) → P (suc i)) → ∀ i → P i
   >-weakInduction : P (fromℕ n) → (∀ i → P (suc i) → P (inject₁ i)) → ∀ i → P i
   ```

@@ -18,7 +18,7 @@ private
     o c r : Level
     O : Set o
 
--- This lives in its own module due to its unsafe use of sized types.
+-- This lives in its own module due to its use of guardedness.
 -- The least fixpoint can be found in `Data.Container.Indexed`
 
 ν : Container O O c r → Pred O _
