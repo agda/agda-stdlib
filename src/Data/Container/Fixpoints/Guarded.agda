@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Greatest fixpoint for containers
+-- Fixpoints for containers - using guardedness
 ------------------------------------------------------------------------
 
 {-# OPTIONS --safe --without-K --guardedness #-}
@@ -18,7 +18,8 @@ private
 
 -- The least fixpoint can be found in `Data.Container`
 
-open Data.Container using (μ) public
+open Data.Container public
+  using (μ)
 
 -- This lives in its own module due to its use of guardedness.
 

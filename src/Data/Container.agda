@@ -49,8 +49,8 @@ private
 μ = W
 
 -- The greatest fixpoint of a container can be found
--- in `Data.Container.GreatestFixpoint` as it relies
+-- in `Data.Container.Fixpoints.Guarded` as it relies
 -- on the `guardedness` flag.
 
--- You can find sized alternatives in `Data.Container.Sized`
+-- You can find sized alternatives in `Data.Container.Fixpoints.Sized`
 -- as they rely on the unsafe flag `--sized-types`.

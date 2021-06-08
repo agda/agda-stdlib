@@ -107,7 +107,7 @@ Non-backwards compatible changes
 
 * In order to maintain the safety of `Data.Container(.Indexed)`, the greatest fixpoint
   of containers, `ν`, has been moved from `Data.Container(.Indexed)` to a new module
-  `Data.Container.GreatestFixpoint(.Indexed)`.
+  `Data.Container(.Indexed).Fixpoints.Guarded` which also re-exports the least fixpoint.
 
 #### Other
 
@@ -161,9 +161,14 @@ New modules
   Data.List.Relation.Unary.Enumerates.Setoid.Properties
   ```
 
-* (Unsafe) Sized W type:
+* (Unsafe) sized W type:
   ```
   Data.W.Sized
+  ```
+
+* (Unsafe) container fixpoints:
+  ```
+  Data.Container.Fixpoints.Sized
   ```
 
 Other minor additions
