@@ -24,6 +24,10 @@ data ExitCode : Set where
 toExitCode :: AgdaExitCode -> SE.ExitCode
 toExitCode AgdaExitSuccess = SE.ExitSuccess
 toExitCode (AgdaExitFailure n) = SE.ExitFailure (fromIntegral n)
+
+fromExitCode :: SE.ExitCode -> AgdaExitCode
+fromExitCode SE.ExitSuccess = AgdaExitSuccess
+fromExitCode (SE.ExitFailure n) = AgdaExitFailure (fromIntegral n)
 #-}
 
 postulate
