@@ -12,6 +12,7 @@ open import Level
 open import Codata.Musical.Notation
 open import Data.Bool.Base using (Bool; true; false; not)
 open import Agda.Builtin.Maybe using (Maybe; nothing; just)
+import Agda.Builtin.Unit as Unit0
 open import Data.Unit.Polymorphic.Base
 open import Function.Base using (_∘′_)
 import IO.Primitive as Prim
@@ -88,6 +89,10 @@ Main = Prim.IO {0ℓ} ⊤
 
 ------------------------------------------------------------------------
 -- Utilities
+
+-- Make a unit-returning primitive level polymorphic
+lift′ : Prim.IO Unit0.⊤ → IO {a} ⊤
+lift′ io = lift (io Prim.>>= λ _ → Prim.return _)
 
 -- Throw away the result
 ignore : IO A → IO ⊤
