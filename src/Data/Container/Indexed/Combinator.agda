@@ -4,7 +4,7 @@
 -- Indexed container combinators
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe --guardedness #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Container.Indexed.Combinator where
 

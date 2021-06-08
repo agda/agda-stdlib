@@ -4,7 +4,7 @@
 -- The free monad construction on containers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Container.FreeMonad where
 
@@ -13,7 +13,7 @@ open import Data.Sum.Base using (inj₁; inj₂ ; [_,_]′)
 open import Data.Product
 open import Data.Container
 open import Data.Container.Combinator using (const; _⊎_)
-open import Data.W
+open import Data.W using (sup)
 open import Category.Monad
 
 infixl 1 _⋆C_
