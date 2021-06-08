@@ -8,12 +8,12 @@
 
 module System.Exit.Primitive where
 
-open import Data.Nat.Base using (ℕ)
+open import Agda.Builtin.Nat using (Nat)
 open import IO.Primitive using (IO)
 
 data ExitCode : Set where
   ExitSuccess : ExitCode
-  ExitFailure : ℕ → ExitCode
+  ExitFailure : Nat → ExitCode
 
 {-# FOREIGN GHC data AgdaExitCode = AgdaExitSuccess | AgdaExitFailure Integer #-}
 {-# COMPILE GHC ExitCode = data AgdaExitCode (AgdaExitSuccess | AgdaExitFailure) #-}
