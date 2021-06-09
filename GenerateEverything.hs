@@ -60,6 +60,7 @@ unsafeModules = map modToFile
   , "System.Clock.Primitive"
   , "System.Directory"
   , "System.Directory.Primitive"
+  , "System.Directory.Tree"
   , "System.Environment"
   , "System.Environment.Primitive"
   , "System.Exit"
@@ -68,6 +69,7 @@ unsafeModules = map modToFile
   , "System.FilePath.Posix.Primitive"
   , "System.Process"
   , "System.Process.Primitive"
+  , "Test.Golden"
   , "Text.Pretty.Core"
   , "Text.Pretty"
   ] ++ sizedTypesModules
