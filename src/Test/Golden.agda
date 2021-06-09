@@ -84,7 +84,7 @@ open import Data.List.Base as List using (List; []; _∷_; _++_; filter; partiti
 open import Data.List.Relation.Binary.Infix.Heterogeneous.Properties using (infix?)
 open import Data.List.Relation.Unary.Any using (any?)
 open import Data.Maybe.Base using (Maybe; just; nothing)
-open import Data.Nat.Base using (ℕ; _≡ᵇ_; _<ᵇ_; _+_)
+open import Data.Nat.Base using (ℕ; _≡ᵇ_; _<ᵇ_; _+_; _∸_)
 open import Data.Nat.Show using (show)
 open import Data.Product using (_×_; _,_)
 open import Data.String as String using (String; lines; unlines; unwords; concat)
@@ -233,9 +233,12 @@ runTest opts testPath = do
       when b $ writeFile (testPath String.++ "/expected") out
 
     printTiming : Bool → Time → String → IO _
-    printTiming true  time msg = putStrLn (unwords (msg ∷ Clock.show time (# 3) ∷ []))
     printTiming false _    msg = putStrLn msg
-
+    printTiming true  time msg =
+      let time  = Clock.show time (# 2)
+          spent = String.length time + String.length msg
+          pad   = String.replicate (72 ∸ spent) ' '
+      in putStrLn (concat (msg ∷ pad ∷ time ∷ []))
 
 -- A test pool is characterised by
 --  + a name
