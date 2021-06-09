@@ -62,6 +62,8 @@ unsafeModules = map modToFile
   , "System.Environment.Primitive"
   , "System.Exit"
   , "System.Exit.Primitive"
+  , "System.FilePath.Posix.Primitive"
+  , "System.FilePath.Posix"
   , "System.Process"
   , "System.Process.Primitive"
   , "Text.Pretty.Core"
