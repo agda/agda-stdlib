@@ -99,14 +99,16 @@ open import Codata.Musical.Notation using (♯_)
 open import IO
 
 open import System.Clock as Clock using (time′; Time)
+open import System.Directory using (doesFileExist; doesDirectoryExist)
 open import System.Environment using (getArgs)
 open import System.Exit using (exitSuccess; exitFailure; die; isFailure)
+open import System.FilePath.Posix using (mkFilePath)
 open import System.Process using (callCommand; system)
 
 record Options : Set where
   field
     -- What is the name of the Agda executable?
-    exeUnderTest : String -- TODO: filepath library
+    exeUnderTest : String
     -- Should we only run some specific cases?
     onlyNames    : List String
     -- Should we run the test suite interactively?
@@ -171,17 +173,25 @@ Result : Set
 Result = String ⊎ String
 
 -- Run the specified golden test with the supplied options.
--- TODO: filepath library
 runTest : Options → String → IO Result
 runTest opts testPath = do
+
+  true ← doesDirectoryExist (mkFilePath testPath)
+    where false → fail directoryNotFound
+
   time ← time′ $ callCommand $ unwords
            $ "cd" ∷ testPath
-           ∷ "&&" ∷ "sh ./run" ∷ opts .exeUnderTest ∷ "| tr -d '\\r' > output"
+           ∷ "&&" ∷ "sh ./run" ∷ opts .exeUnderTest
+           ∷ "| tr -d '\\r' > output"
            ∷ []
 
-  -- TODO: check the files exist before reading them!
-  out ← readFiniteFile (testPath String.++ "/output")
-  exp ← readFiniteFile (testPath String.++ "/expected")
+  just out ← readLocalFile "output"
+    where nothing → fail (fileNotFound "output")
+  just exp ← readLocalFile "expected"
+    where nothing → do if opts .interactive
+                         then mayOverwrite nothing out
+                         else putStrLn (fileNotFound "expected")
+                       pure (inj₁ testPath)
 
   let result = does (out String.≟ exp)
 
@@ -195,6 +205,29 @@ runTest opts testPath = do
   pure $ if result then inj₂ testPath else inj₁ testPath
 
   where
+
+    directoryNotFound : String
+    directoryNotFound = unwords
+                      $ "Directory"
+                      ∷ testPath
+                      ∷ "does not exist" ∷ []
+
+    fileNotFound : String → String
+    fileNotFound name = unwords
+                      $ "File"
+                      ∷ (testPath String.++ "/output")
+                      ∷ "does not exist" ∷ []
+
+    fail : String → IO Result
+    fail msg = do putStrLn msg
+                  pure (inj₁ testPath)
+
+    readLocalFile : String → IO (Maybe String)
+    readLocalFile name = do
+      let fp = concat (testPath ∷ "/" ∷ name ∷ [])
+      true ← doesFileExist (mkFilePath fp)
+        where false → pure nothing
+      just <$> readFiniteFile fp
 
     getAnswer : IO Bool
     getAnswer = untilJust $ do

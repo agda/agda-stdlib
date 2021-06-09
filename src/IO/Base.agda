@@ -14,7 +14,7 @@ open import Data.Bool.Base using (Bool; true; false; not)
 open import Agda.Builtin.Maybe using (Maybe; nothing; just)
 import Agda.Builtin.Unit as Unit0
 open import Data.Unit.Polymorphic.Base
-open import Function.Base using (_∘′_)
+open import Function.Base using (_∘′_; const)
 import IO.Primitive as Prim
 
 private
@@ -59,6 +59,9 @@ module _ {A B : Set a} where
 
   _<$>_ : (A → B) → IO A → IO B
   f <$> m = pure f <*> m
+
+  _<$_ : B → IO A → IO B
+  b <$ m = (const b) <$> m
 
   _>>=_ : IO A → (A → IO B) → IO B
   m >>= f = bind (♯ m) λ x → ♯ f x
