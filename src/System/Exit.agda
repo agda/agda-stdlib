@@ -10,7 +10,7 @@ module System.Exit where
 
 open import Level using (Level)
 open import Data.Bool.Base using (Bool; true; false; not)
-open import Data.Nat.Base using (ℕ)
+open import Data.Integer.Base using (ℤ; +_)
 open import Data.String.Base using (String)
 open import Function.Base using (_$_; _∘′_)
 open import IO using (IO; lift; _>>_; putStrLn)
@@ -47,7 +47,7 @@ exitWith : ExitCode → IO A
 exitWith c = lift (Prim.exitWith c)
 
 exitFailure : IO A
-exitFailure = exitWith (ExitFailure 1)
+exitFailure = exitWith (ExitFailure (+ 1))
 
 exitSuccess : IO A
 exitSuccess = exitWith ExitSuccess

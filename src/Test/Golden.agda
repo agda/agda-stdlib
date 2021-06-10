@@ -80,6 +80,7 @@ module Test.Golden where
 open import Data.Bool.Base using (Bool; true; false; if_then_else_)
 import Data.Char as Char
 open import Data.Fin using (#_)
+import Data.Integer.Base as ℤ
 open import Data.List.Base as List using (List; []; _∷_; _++_; filter; partitionSums)
 open import Data.List.Relation.Binary.Infix.Heterogeneous.Properties using (infix?)
 open import Data.List.Relation.Unary.Any using (any?)
@@ -101,7 +102,7 @@ open import IO
 open import System.Clock as Clock using (time′; Time)
 open import System.Directory using (doesFileExist; doesDirectoryExist)
 open import System.Environment using (getArgs)
-open import System.Exit using (exitSuccess; exitFailure; die; isFailure)
+open import System.Exit
 open import System.FilePath.Posix using (mkFilePath)
 open import System.Process using (callCommand; system)
 
@@ -242,6 +243,10 @@ runTest opts testPath = do
     expVsOut : String → String → List String
     expVsOut exp out = "Expected:" ∷ exp ∷ "Given:" ∷ out ∷ []
 
+    hasFailed : ExitCode → Bool
+    hasFailed ExitSuccess        = false
+    hasFailed (ExitFailure code) = code ℤ.≤ᵇ ℤ.+ 0
+
     mayOverwrite : Maybe String → String → IO _
     mayOverwrite mexp out = do
       case mexp of λ where
@@ -258,7 +263,7 @@ runTest opts testPath = do
             ∷ []
           putStrLn $ unlines
             $ "Golden value differs from actual value."
-            ∷ (if isFailure code then expVsOut exp out else [])
+            ∷ (if hasFailed code then expVsOut exp out else [])
             ++ "Accept actual value as new golden value? [y/N]"
             ∷ []
 
