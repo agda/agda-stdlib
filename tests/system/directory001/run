@@ -1,4 +1,2 @@
 $1 -c Main.agda > /dev/null
 ./Main > output
-
-rm -rf _build/
