@@ -18,7 +18,10 @@ Everything.agda
 EverythingSafe.agda
 EverythingSafeGuardedness.agda
 EverythingSafeSizedTypes.agda
+failures
 GenerateEverything
 Haskell
 html
 MAlonzo
+output
+runtests

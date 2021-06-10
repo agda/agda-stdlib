@@ -245,7 +245,7 @@ runTest opts testPath = do
     mayOverwrite : Maybe String → String → IO _
     mayOverwrite mexp out = do
       case mexp of λ where
-        nothing → putStr $ unlines
+        nothing → putStrLn $ unlines
           $ "Golden value missing. I computed the following result:"
           ∷ out
           ∷ "Accept new golden value? [y/N]"
@@ -266,12 +266,12 @@ runTest opts testPath = do
       when b $ writeFile (testPath String.++ "/expected") out
 
     printTiming : Bool → Time → String → IO _
-    printTiming false _    msg = putStrLn msg
+    printTiming false _    msg = putStrLn (testPath String.++ msg)
     printTiming true  time msg =
       let time  = Clock.show time (# 2)
-          spent = String.length time + String.length msg
+          spent = List.sum $ List.map String.length (testPath ∷ time ∷ msg ∷ [])
           pad   = String.replicate (72 ∸ spent) ' '
-      in putStrLn (concat (msg ∷ pad ∷ time ∷ []))
+      in putStrLn (concat (testPath ∷ msg ∷ pad ∷ time ∷ []))
 
 -- A test pool is characterised by
 --  + a name
@@ -359,7 +359,7 @@ runner tests = do
   let nsucc = List.length (res .success)
   let nfail = List.length (res .failure)
   let ntotal = nsucc + nfail
-  putStrLn $ concat $ show nsucc ∷ "/" ∷ show ntotal ∷ " test successful" ∷ []
+  putStrLn $ concat $ show nsucc ∷ "/" ∷ show ntotal ∷ " tests successful" ∷ []
 
   -- deal with failures
   let list = unlines (res .failure)

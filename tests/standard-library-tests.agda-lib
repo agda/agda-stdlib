@@ -1,0 +1,2 @@
+name: standard-library-tests
+include: ../src/ .

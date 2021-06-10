@@ -39,12 +39,14 @@ postulate
 
 {-# FOREIGN GHC import System.Process  #-}
 {-# FOREIGN GHC import qualified Data.Text as T  #-}
+{-# FOREIGN GHC import MAlonzo.Code.System.Exit.Primitive #-}
 
-{-# COMPILE GHC callCommand cmd = callCommand (T.unpack cmd) #-}
-{-# COMPILE GHC system cmd = map fromExitCode (system (T.unpack cmd)) #-}
-{-# COMPILE GHC callProcess exe = callProcess (T.unpack exe) . map T.unpack #-}
-{-# COMPILE GHC readProcess exe args = map T.pack . readProcess (T.unpack exe) (map T.unpack args) . T.unpack #-}
-{-# COMPILE GHC readProcessWithExitCode exe args stdin =
-           let (ex, out, err) = readProcessWithExitCode (T.unpack exe) (map T.unpack args) (T.unpack stdin) in
-           (fromExitCode ex, T.pack out, T.pack err)
+{-# COMPILE GHC callCommand = \ cmd -> callCommand (T.unpack cmd) #-}
+{-# COMPILE GHC system = \ cmd -> fmap fromExitCode (system (T.unpack cmd)) #-}
+{-# COMPILE GHC callProcess = \ exe -> callProcess (T.unpack exe) . map T.unpack #-}
+{-# COMPILE GHC readProcess = \ exe args -> fmap T.pack . readProcess (T.unpack exe) (map T.unpack args) . T.unpack #-}
+{-# COMPILE GHC readProcessWithExitCode = \ exe args stdin ->
+           do { (ex, out, err) <- readProcessWithExitCode (T.unpack exe) (map T.unpack args) (T.unpack stdin)
+              ; pure (fromExitCode ex, (T.pack out, T.pack err))
+              }
 #-}
