@@ -1,2 +1,2 @@
-name: directory001
+name: num001
 include: ../../../src/ .

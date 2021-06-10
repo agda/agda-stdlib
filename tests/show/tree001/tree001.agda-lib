@@ -1,2 +1,2 @@
-name: directory001
+name: tree001
 include: ../../../src/ .
