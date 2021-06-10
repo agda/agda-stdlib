@@ -60,7 +60,6 @@ unsafeModules = map modToFile
   , "System.Clock.Primitive"
   , "System.Directory"
   , "System.Directory.Primitive"
-  , "System.Directory.Tree"
   , "System.Environment"
   , "System.Environment.Primitive"
   , "System.Exit"
