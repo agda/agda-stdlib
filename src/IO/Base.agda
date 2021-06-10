@@ -14,7 +14,7 @@ open import Data.Bool.Base using (Bool; true; false; not)
 open import Agda.Builtin.Maybe using (Maybe; nothing; just)
 import Agda.Builtin.Unit as Unit0
 open import Data.Unit.Polymorphic.Base
-open import Function.Base using (_∘′_; const)
+open import Function.Base using (_∘′_; const; flip)
 import IO.Primitive as Prim
 
 private
@@ -53,6 +53,7 @@ lift! {b = b} (seq m₁ m₂) = seq (♯ lift! {b = b} (♭ m₁))
 module _ {A B : Set a} where
 
   infixl 1 _<$>_ _<*>_ _>>=_ _>>_
+  infixr 1 _=<<_
 
   _<*>_ : IO (A → B) → IO A → IO B
   mf <*> mx = bind (♯ mf) λ f → ♯ (bind (♯ mx) λ x → ♯ pure (f x))
@@ -66,8 +67,14 @@ module _ {A B : Set a} where
   _>>=_ : IO A → (A → IO B) → IO B
   m >>= f = bind (♯ m) λ x → ♯ f x
 
+  _=<<_ : (A → IO B) → IO A → IO B
+  _=<<_ = flip _>>=_
+
   _>>_ : IO A → IO B → IO B
   m₁ >> m₂ = seq (♯ m₁) (♯ m₂)
+
+  _<<_ : IO B → IO A → IO B
+  _<<_ = flip _>>_
 
 ------------------------------------------------------------------------
 -- Running programs
