@@ -13,9 +13,15 @@ directoryTreeTests = mkTestPool "Directory Tree"
   $ "directory001"
   ∷ []
 
+showTests : TestPool
+showTests = mkTestPool "Show instances"
+  $ "tree001"
+  ∷ []
+
 main : Main
 main = run $ ignore $ runner
-  $ testPaths "standard-library" directoryTreeTests
+  $ testPaths "system" directoryTreeTests
+  ∷ testPaths "show" showTests
   ∷ [] where
 
   testPaths : String -> TestPool -> TestPool

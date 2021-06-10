@@ -1,5 +1,5 @@
 runtests: runtests.agda
-	$(AGDA) -c runtests
+	$(AGDA) -c runtests.agda
 
 test: runtests
 	./runtests $(AGDA_EXEC) --interactive --timing --failure-file failures
