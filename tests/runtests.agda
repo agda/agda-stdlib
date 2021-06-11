@@ -23,6 +23,7 @@ showTests = mkTestPool "Show instances"
 textTests : TestPool
 textTests = mkTestPool "Text libraries"
   $ "regex"
+  ∷ "tabular"
   ∷ []
 
 main : Main
