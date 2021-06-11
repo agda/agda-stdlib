@@ -180,14 +180,9 @@ runTest opts testPath = do
   true ← doesDirectoryExist (mkFilePath testPath)
     where false → fail directoryNotFound
 
-  let exe = concat $ "\""
-                   ∷ opts .exeUnderTest
-                   ∷ " --compile-dir=../.." -- this should allow some caching across the tests!
-                   ∷ "\""
-                   ∷ []
   time ← time′ $ callCommand $ unwords
            $ "cd" ∷ testPath
-           ∷ "&&" ∷ "sh ./run" ∷ exe
+           ∷ "&&" ∷ "sh ./run" ∷ opts .exeUnderTest
            ∷ "| tr -d '\\r' > output"
            ∷ []
 
