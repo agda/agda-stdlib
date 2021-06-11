@@ -86,19 +86,8 @@ jobs:
           ${{ env.AGDA }} --safe EverythingSafe.agda
           ${{ env.AGDA }} --html --html-dir ${{ env.AGDA_HTML_DIR }} index.agda
 
-      # This is a massive hack at the moment
-      # - name: Compile stdlib
-      #   run: |
-      #     ${{ env.AGDA }} -c --no-main --ghc-dont-call-ghc --compile-dir=tmp Everything.agda
-      #     cd tmp
-      #     yes | cabal init --interactive
-      #     head -n -17 tmp.cabal > tmp
-      #     mv tmp tmp.cabal
-      #     cat ../travis/ghc-options >> tmp.cabal
-      #     cabal build
-
-##          ${{ env.AGDA }} -c README/Foreign/Haskell.agda && ./Haskell
-
+      - name: Run golden tests
+        run: make testsuite
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@4.1.3
