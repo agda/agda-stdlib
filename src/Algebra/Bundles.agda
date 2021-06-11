@@ -203,7 +203,6 @@ record RawMonoid c ℓ : Set (suc (c ⊔ ℓ)) where
   open RawMagma rawMagma public
     using (_≉_)
 
-
 record Monoid c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _∙_
   infix  4 _≈_
@@ -225,6 +224,11 @@ record Monoid c ℓ : Set (suc (c ⊔ ℓ)) where
   rawMonoid : RawMonoid _ _
   rawMonoid = record { _≈_ = _≈_; _∙_ = _∙_; ε = ε}
 
+  unitalMagma : UnitalMagma _ _
+  unitalMagma = record { isUnitalMagma = isUnitalMagma  }
+
+  open UnitalMagma unitalMagma public
+    using (isMagma)
 
 record CommutativeMonoid c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _∙_

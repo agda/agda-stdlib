@@ -132,6 +132,14 @@ record IsMonoid (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
   identityʳ : RightIdentity ε ∙
   identityʳ = proj₂ identity
 
+  isUnitalMagma : IsUnitalMagma ∙ ε
+  isUnitalMagma = record
+    { isMagma = isMagma
+    ; identity = identity
+    }
+
+  open IsUnitalMagma isUnitalMagma public
+    using (isMagma)
 
 record IsCommutativeMonoid (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
   field
