@@ -117,17 +117,17 @@ module Infix where
   []⁻¹ᴹ (inj₁ (mkMatch .[] []∈e (here []))) = inj₁ []∈e
   []⁻¹ᴹ (inj₂ (mkMatch .[] []∈acc []))      = inj₂ []∈acc
 
-  step : ∀ {e acc} x {xs} → Match (Infix _≡_) xs e ⊎ Match (Prefix _≡_) xs (eat x (e ∣ acc)) →
+  step : ∀ {e acc} x {xs} → Match (Infix _≡_) xs e ⊎ Match (Prefix _≡_) xs (eat x (acc ∣ e)) →
                             Match (Infix _≡_) (x ∷ xs) e ⊎ Match (Prefix _≡_) (x ∷ xs) acc
   step x (inj₁ (mkMatch ys ys∈e p)) = inj₁ (mkMatch ys ys∈e (there p))
-  step {e} {acc} x (inj₂ (mkMatch ys ys∈e p)) with eat-sound x (e ∣ acc) ys∈e
-  ... | sum (inj₁ xys∈e) = inj₁ (mkMatch (x ∷ ys) xys∈e (here (refl ∷ p)))
-  ... | sum (inj₂ xys∈e) = inj₂ (mkMatch (x ∷ ys) xys∈e (refl ∷ p))
+  step {e} {acc} x (inj₂ (mkMatch ys ys∈e p)) with eat-sound x (acc ∣ e) ys∈e
+  ... | sum (inj₂ xys∈e) = inj₁ (mkMatch (x ∷ ys) xys∈e (here (refl ∷ p)))
+  ... | sum (inj₁ xys∈e) = inj₂ (mkMatch (x ∷ ys) xys∈e (refl ∷ p))
 
   step⁻¹ : ∀ {e acc} x {xs} →
            [] ∉ e → [] ∉ acc →
            Match (Infix _≡_) (x ∷ xs) e ⊎ Match (Prefix _≡_) (x ∷ xs) acc →
-           Match (Infix _≡_) xs e ⊎ Match (Prefix _≡_) xs (eat x (e ∣ acc))
+           Match (Infix _≡_) xs e ⊎ Match (Prefix _≡_) xs (eat x (acc ∣ e))
   -- can't possibly be the empty match
   step⁻¹ x []∉e []∉acc (inj₁ (mkMatch .[] ys∈e (here []))) = contradiction ys∈e []∉e
   step⁻¹ x []∉e []∉acc (inj₂ (mkMatch .[] ys∈e []))        = contradiction ys∈e []∉acc
@@ -135,9 +135,9 @@ module Infix where
   step⁻¹ x []∉e []∉acc (inj₁ (mkMatch ys ys∈e (there p))) = inj₁ (mkMatch ys ys∈e p)
   -- if it starts 'here' we're in prefix territory
   step⁻¹ {e} {acc} x []∉e []∉acc (inj₁ (mkMatch (.x ∷ ys) ys∈e (here (refl ∷ p))))
-    = inj₂ (mkMatch ys (eat-complete x (e ∣ acc) (sum (inj₁ ys∈e))) p)
+    = inj₂ (mkMatch ys (eat-complete x (acc ∣ e) (sum (inj₂ ys∈e))) p)
   step⁻¹ {e} {acc} x []∉e []∉acc (inj₂ (mkMatch (.x ∷ ys) ys∈e (refl ∷ p)))
-    = inj₂ (mkMatch ys (eat-complete x (e ∣ acc) (sum (inj₂ ys∈e))) p)
+    = inj₂ (mkMatch ys (eat-complete x (acc ∣ e) (sum (inj₁ ys∈e))) p)
 
   -- search non-deterministically: at each step, the `acc` regex is changed
   -- to accomodate the fact the match may be starting just now
@@ -146,7 +146,7 @@ module Infix where
   ... | yes []∈acc = yes (inj₂ (mkMatch [] []∈acc []))
   searchND [] e acc []∉e | no []∉acc = no ([ []∉e , []∉acc ]′ ∘′ []⁻¹ᴹ)
   searchND (x ∷ xs) e acc []∉e | no []∉acc
-    = map′ (step x) (step⁻¹ x []∉e []∉acc) (searchND xs e (eat x (e ∣ acc)) []∉e)
+    = map′ (step x) (step⁻¹ x []∉e []∉acc) (searchND xs e (eat x (acc ∣ e)) []∉e)
 
   search : Decidable (Match (Infix _≡_))
   search xs e with []∈? e
