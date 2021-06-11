@@ -16,6 +16,8 @@ open import Relation.Nullary
 
 open import Codata.Musical.Notation
 open import Codata.Colist using (Colist; _∷_; [])
+open import Codata.Musical.Colist renaming (Colist to Colist♩) using (_∷_; [])
+open import Codata.Musical.Conversion
 
 variable
   i : Size
@@ -95,15 +97,15 @@ eval t with redex t
 open import IO.Base
 open import IO.Finite
 
-trace : Colist (Lam n) _ → IO {0ℓ} ⊤
+trace : Colist♩ (Lam n) → IO {0ℓ} ⊤
 trace []       = pure _
 trace (t ∷ ts) = seq (♯ putStrLn (show lam t))
-                     (♯ trace (ts .force))
+                     (♯ trace (♭ ts))
 
 `id : Lam 0
 `id = lam (var (# 0))
 
 main : Main
 main = run $ do
-  trace (eval `id)
-  trace (eval (app `id (app (app `id `id) (app `id `id))))
+  trace (Colist.toMusical $ eval `id)
+  trace (Colist.toMusical $ eval (app `id (app (app `id `id) (app `id `id))))
