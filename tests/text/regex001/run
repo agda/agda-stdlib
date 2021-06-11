@@ -1,4 +1,4 @@
-$1 --compile-dir=../../_build -c Main.agda > /dev/null
+$1 --compile-dir=../../_build -c Main.agda > log
 ./../../_build/Main > output
 
 rm ../../_build/Main

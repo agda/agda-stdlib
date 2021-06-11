@@ -1,5 +1,5 @@
-Match found: $1 --compile-dir=../../_build -c [Main.agda] > /dev/null
+Match found: $1 --compile-dir=../../_build -c [Main.agda] > log
+Match found: ./../../[_build/]Main > output
 No match found
-No match found
-No match found
-No match found
+Match found: rm ../../[_build/]Main
+Match found: rm ../../[_build/MAlonzo/Code/]Main*
