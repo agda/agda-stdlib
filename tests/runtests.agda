@@ -9,7 +9,7 @@ open import Function.Base
 open import Test.Golden
 
 directoryTreeTests : TestPool
-directoryTreeTests = mkTestPool "Directory Tree"
+directoryTreeTests = mkTestPool "System modules"
   $ "directory"
   ∷ []
 
@@ -22,7 +22,8 @@ showTests = mkTestPool "Show instances"
 
 textTests : TestPool
 textTests = mkTestPool "Text libraries"
-  $ "regex"
+  $ "printf"
+  ∷ "regex"
   ∷ "tabular"
   ∷ []
 
