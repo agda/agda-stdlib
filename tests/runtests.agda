@@ -8,8 +8,13 @@ open import IO.Base
 open import Function.Base
 open import Test.Golden
 
-directoryTreeTests : TestPool
-directoryTreeTests = mkTestPool "System modules"
+dataTests : TestPool
+dataTests = mkTestPool "Data structures"
+  $ "list"
+  ∷ []
+
+systemTests : TestPool
+systemTests = mkTestPool "System modules"
   $ "directory"
   ∷ "environment"
   ∷ []
@@ -30,9 +35,10 @@ textTests = mkTestPool "Text libraries"
 
 main : Main
 main = run $ ignore $ runner
-  $ testPaths "system" directoryTreeTests
+  $ testPaths "system" systemTests
   ∷ testPaths "show"   showTests
   ∷ testPaths "text"   textTests
+  ∷ testPaths "data"   dataTests
   ∷ [] where
 
   testPaths : String -> TestPool -> TestPool
