@@ -10,18 +10,18 @@ open import Test.Golden
 
 directoryTreeTests : TestPool
 directoryTreeTests = mkTestPool "Directory Tree"
-  $ "directory001"
+  $ "directory"
   ∷ []
 
 showTests : TestPool
 showTests = mkTestPool "Show instances"
-  $ "tree001"
-  ∷ "num001"
+  $ "tree"
+  ∷ "num"
   ∷ []
 
 textTests : TestPool
 textTests = mkTestPool "Text libraries"
-  $ "regex001"
+  $ "regex"
   ∷ []
 
 main : Main
