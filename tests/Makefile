@@ -1,6 +1,6 @@
 runtests: runtests.agda
-	rm _build/runtests
-	rm _build/MAlonzo/Code/Qruntests*
+	rm -f _build/runtests
+	rm -f _build/MAlonzo/Code/Qruntests*
 	$(AGDA) --compile-dir=_build/ -c runtests.agda
 
 test: runtests
