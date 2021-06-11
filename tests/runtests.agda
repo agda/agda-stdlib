@@ -15,8 +15,9 @@ directoryTreeTests = mkTestPool "Directory Tree"
 
 showTests : TestPool
 showTests = mkTestPool "Show instances"
-  $ "tree"
-  ∷ "num"
+  $ "num"
+  ∷ "reflection"
+  ∷ "tree"
   ∷ []
 
 textTests : TestPool
