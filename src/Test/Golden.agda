@@ -99,7 +99,7 @@ open import Relation.Nullary using (does)
 open import Codata.Musical.Notation using (♯_)
 open import IO
 
-open import System.Clock as Clock using (time′; Time)
+open import System.Clock as Clock using (time′; Time; seconds)
 open import System.Directory using (doesFileExist; doesDirectoryExist)
 open import System.Environment using (getArgs)
 open import System.Exit
@@ -273,7 +273,7 @@ runTest opts testPath = do
     printTiming : Bool → Time → String → IO _
     printTiming false _    msg = putStrLn (testPath String.++ msg)
     printTiming true  time msg =
-      let time  = Clock.show time (# 2)
+      let time  = show (time .seconds) String.++ "s"
           spent = List.sum $ List.map String.length (testPath ∷ time ∷ msg ∷ [])
           pad   = String.replicate (72 ∸ spent) ' '
       in putStrLn (concat (testPath ∷ msg ∷ pad ∷ time ∷ []))
