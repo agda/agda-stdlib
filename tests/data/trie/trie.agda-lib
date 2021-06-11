@@ -1,2 +1,2 @@
-name: list
+name: trie
 include: ../../../src/ .
