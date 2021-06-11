@@ -11,6 +11,7 @@ open import Test.Golden
 directoryTreeTests : TestPool
 directoryTreeTests = mkTestPool "System modules"
   $ "directory"
+  ∷ "environment"
   ∷ []
 
 showTests : TestPool
