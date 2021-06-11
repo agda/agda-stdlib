@@ -1,0 +1,5 @@
+Match found: $1 --compile-dir=../../_build -c [Main.agda] > /dev/null
+No match found
+No match found
+No match found
+No match found

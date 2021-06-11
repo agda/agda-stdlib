@@ -19,10 +19,16 @@ showTests = mkTestPool "Show instances"
   ∷ "num001"
   ∷ []
 
+textTests : TestPool
+textTests = mkTestPool "Text libraries"
+  $ "regex001"
+  ∷ []
+
 main : Main
 main = run $ ignore $ runner
   $ testPaths "system" directoryTreeTests
-  ∷ testPaths "show" showTests
+  ∷ testPaths "show"   showTests
+  ∷ testPaths "text"   textTests
   ∷ [] where
 
   testPaths : String -> TestPool -> TestPool
