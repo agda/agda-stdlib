@@ -4,14 +4,12 @@
 -- Containers, based on the work of Abbott and others
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --sized-types #-}
+{-# OPTIONS --without-K --safe #-}
+
+open import Level using (Level; _⊔_)
+open import Data.W using (W)
 
 module Data.Container where
-
-open import Level using (_⊔_)
-open import Codata.M hiding (map)
-open import Data.W
-open import Size
 
 ------------------------------------------------------------------------
 -- Re-exporting content to maintain backwards compatibility
@@ -41,10 +39,18 @@ module Morphism where
   open import Data.Container.Morphism
     using (id; _∘_) public
 
--- The least and greatest fixpoints of a container.
+private
+  variable
+    s p : Level
 
-μ : ∀ {s p} → Container s p → Set (s ⊔ p)
+-- The least fixpoint of a container.
+
+μ : Container s p → Set (s ⊔ p)
 μ = W
 
-ν : ∀ {s p} → Container s p → Set (s ⊔ p)
-ν C = M C ∞
+-- The greatest fixpoint of a container can be found
+-- in `Data.Container.Fixpoints.Guarded` as it relies
+-- on the `guardedness` flag.
+
+-- You can find sized alternatives in `Data.Container.Fixpoints.Sized`
+-- as they rely on the unsafe flag `--sized-types`.

@@ -82,13 +82,12 @@ Non-backwards compatible changes
   `--safe` flag.  For a full list of affected modules, refer to the
   relevant [commit](https://github.com/agda/agda-stdlib/pull/1465/files#diff-e1c0e3196e4cea6ff808f5d2906031a7657130e10181516206647b83c7014584R91-R131.)
 
-* In order to keep `Data.Nat.Pseudorandom.LCG` safe, the function
+* In order to maintain the safety of `Data.Nat.Pseudorandom.LCG`, the function
   `stream` that relies on the newly unsafe `Codata` modules has
   been moved to the new module `Data.Nat.Pseudorandom.LCG.Unsafe`.
 
-* In order to avoid the unsafe usage of the `--sized-types` in the
-  `Codata.Musical` directory, the functions `fromMusical` and
-  `toMusical` defined in:
+* In order to maintain the safety of the modules in the `Codata.Musical` directory,
+  the functions `fromMusical` and `toMusical` defined in:
   ```
   Codata.Musical.Colist
   Codata.Musical.Conat
@@ -98,6 +97,10 @@ Non-backwards compatible changes
   ```
   have been moved to a new module `Codata.Musical.Conversion` and renamed to
   `X.fromMusical` and `X.toMusical` for each of `Codata.Musical.X`.
+
+* In order to maintain the safety of `Data.Container(.Indexed)`, the greatest fixpoint
+  of containers, `ν`, has been moved from `Data.Container(.Indexed)` to a new module
+  `Data.Container(.Indexed).Fixpoints.Guarded` which also re-exports the least fixpoint.
 
 #### Other
 
@@ -149,6 +152,16 @@ New modules
   ```
   Data.List.Relation.Unary.Enumerates.Setoid
   Data.List.Relation.Unary.Enumerates.Setoid.Properties
+  ```
+
+* (Unsafe) sized W type:
+  ```
+  Data.W.Sized
+  ```
+
+* (Unsafe) container fixpoints:
+  ```
+  Data.Container.Fixpoints.Sized
   ```
 
 Other minor additions
