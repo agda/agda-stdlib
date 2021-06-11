@@ -11,6 +11,7 @@ open import Test.Golden
 dataTests : TestPool
 dataTests = mkTestPool "Data structures"
   $ "list"
+  ∷ "trie"
   ∷ []
 
 systemTests : TestPool
