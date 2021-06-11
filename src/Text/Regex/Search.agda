@@ -96,6 +96,7 @@ module Prefix where
   []∉e ∷⁻¹ᴹ (mkMatch (._ ∷ ys) ys∈e (refl ∷ ys≤xs)) = mkMatch ys (eat-complete _ _ ys∈e) ys≤xs
 
   shortest : Decidable (Match (Prefix _≡_))
+  shortest xs ∅ = no (∉∅ ∘ match)
   shortest xs e with []∈? e
   ... | yes []∈e = yes ([]ᴹ []∈e)
   shortest []       e | no []∉e = no ([]∉e ∘′ []⁻¹ᴹ)
@@ -105,6 +106,7 @@ module Prefix where
 
   longest : Decidable (Match (Prefix _≡_))
   longest []       e = map′ []ᴹ []⁻¹ᴹ ([]∈? e)
+  longest xs       ∅ = no (∉∅ ∘ match)
   longest (x ∷ xs) e with longest xs (eat x e)
   ... | yes p = yes (x ∷ᴹ p)
   ... | no ¬p with []∈? e
@@ -143,7 +145,9 @@ module Infix where
   -- to accomodate the fact the match may be starting just now
   searchND : ∀ xs e acc → [] ∉ e → Dec (Match (Infix _≡_) xs e ⊎ Match (Prefix _≡_) xs acc)
   searchND xs e acc []∉e with []∈? acc
-  ... | yes []∈acc = yes (inj₂ (mkMatch [] []∈acc []))
+  ... | yes []∈acc with Prefix.longest xs acc -- get the best match possible
+  ... | yes longer = yes (inj₂ longer)
+  ... | no noMatch = contradiction (mkMatch [] []∈acc []) noMatch
   searchND [] e acc []∉e | no []∉acc = no ([ []∉e , []∉acc ]′ ∘′ []⁻¹ᴹ)
   searchND (x ∷ xs) e acc []∉e | no []∉acc
     = map′ (step x) (step⁻¹ x []∉e []∉acc) (searchND xs e (eat x (acc ∣ e)) []∉e)
