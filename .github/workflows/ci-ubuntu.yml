@@ -73,16 +73,19 @@ jobs:
           ${{ env.CABAL_INSTALL }}
           cd ..
 
-     # Download and test stdlib
+      # Download and test stdlib
       - name: Checkout stdlib
         uses: actions/checkout@v2
+
+      - name: Install agda-stdlib-utils
+        run: |
+          ${{ env.CABAL_INSTALL }} agda-stdlib-utils.cabal
 
       - name: Run golden tests
         run: make testsuite AGDA_EXEC='~/.cabal/bin/agda'
 
       - name: Test stdlib
         run: |
-          ${{ env.CABAL_INSTALL }} agda-stdlib-utils.cabal
           cabal run GenerateEverything
           cp travis/* .
           ./index.sh
