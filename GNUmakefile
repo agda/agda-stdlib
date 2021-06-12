@@ -13,7 +13,7 @@ test: Everything.agda check-whitespace
 	$(AGDA) -i. -isrc README.agda
 
 testsuite:
-	make -C tests test AGDA="$(AGDA)" AGDA_EXEC="$(AGDA_EXEC)"
+	$(MAKE) -C tests test AGDA="$(AGDA)" AGDA_EXEC="$(AGDA_EXEC)"
 
 check-whitespace:
 	cabal exec -- fix-whitespace --check
