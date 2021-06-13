@@ -4,7 +4,7 @@
 -- An explanation about how mathematical hierarchies are laid out.
 ------------------------------------------------------------------------
 
-{-# OPTIONS --warning noMissingDefinitions #-}
+{-# OPTIONS --allow-unsolved-metas #-}
 
 module README.Design.Hierarchies where
 
@@ -261,9 +261,11 @@ record Semigroup : Set (suc (a ⊔ ℓ)) where
 -- one to translate between left and right identities.
 
 total⇒refl : ∀ {_∼_ : Rel A ℓ} → Total _∼_ → Reflexive _∼_
+total⇒refl = {!!}
 
 idˡ+comm⇒idʳ : ∀ {_≈_ : Rel A ℓ} {e _∙_} → Commutative _≈_ _∙_ →
                LeftIdentity _≈_ e _∙_ →  RightIdentity _≈_ e _∙_
+idˡ+comm⇒idʳ = {!!}
 
 ------------------------------------------------------------------------
 -- X.Construct

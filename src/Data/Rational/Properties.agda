@@ -1491,11 +1491,11 @@ open ⊓-⊔-properties public
 
 mono-≤-distrib-⊔ : ∀ {f} → f Preserves _≤_ ⟶ _≤_ →
                    ∀ p q → f (p ⊔ q) ≡ f p ⊔ f q
-mono-≤-distrib-⊔ = ⊓-⊔-properties.mono-≤-distrib-⊔ (cong _)
+mono-≤-distrib-⊔ {f} = ⊓-⊔-properties.mono-≤-distrib-⊔ (cong f)
 
 mono-≤-distrib-⊓ : ∀ {f} → f Preserves _≤_ ⟶ _≤_ →
                    ∀ p q → f (p ⊓ q) ≡ f p ⊓ f q
-mono-≤-distrib-⊓ = ⊓-⊔-properties.mono-≤-distrib-⊓ (cong _)
+mono-≤-distrib-⊓ {f} = ⊓-⊔-properties.mono-≤-distrib-⊓ (cong f)
 
 mono-<-distrib-⊓ : ∀ {f} → f Preserves _<_ ⟶ _<_ →
                    ∀ p q → f (p ⊓ q) ≡ f p ⊓ f q
@@ -1537,11 +1537,11 @@ mono-<-distrib-⊔ {f} f-mono-< p q with <-cmp p q
 
 antimono-≤-distrib-⊓ : ∀ {f} → f Preserves _≤_ ⟶ _≥_ →
                        ∀ p q → f (p ⊓ q) ≡ f p ⊔ f q
-antimono-≤-distrib-⊓ = ⊓-⊔-properties.antimono-≤-distrib-⊓ (cong _)
+antimono-≤-distrib-⊓ {f} = ⊓-⊔-properties.antimono-≤-distrib-⊓ (cong f)
 
 antimono-≤-distrib-⊔ : ∀ {f} → f Preserves _≤_ ⟶ _≥_ →
                        ∀ p q → f (p ⊔ q) ≡ f p ⊓ f q
-antimono-≤-distrib-⊔ = ⊓-⊔-properties.antimono-≤-distrib-⊔ (cong _)
+antimono-≤-distrib-⊔ {f} = ⊓-⊔-properties.antimono-≤-distrib-⊔ (cong f)
 
 ------------------------------------------------------------------------
 -- Properties of _⊓_ and _*_

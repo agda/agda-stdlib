@@ -4,7 +4,7 @@
 -- Conat Literals
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe --sized-types #-}
+{-# OPTIONS --without-K --sized-types #-}
 
 module Codata.Conat.Literals where
 

@@ -4,7 +4,7 @@
 -- 1 dimensional pretty printing of rose trees
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe --sized-types #-}
+{-# OPTIONS --without-K --sized-types #-}
 
 module Data.Tree.Rose.Show where
 
