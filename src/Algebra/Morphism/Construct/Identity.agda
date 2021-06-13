@@ -22,19 +22,19 @@ open import Data.Product using (_,_)
 open import Function.Base using (id)
 open import Level using (Level)
 open import Relation.Binary.Morphism.Construct.Identity using (isRelHomomorphism)
+open import Relation.Binary.Definitions using (Reflexive)
 
 private
   variable
     c ℓ : Level
 
-module _ (M : Magma c ℓ) where
-  open Magma M
-  open MagmaMorphisms rawMagma rawMagma
+module _ (M : RawMagma c ℓ) (open RawMagma M) (refl : Reflexive _≈_) where
+  open MagmaMorphisms M M
 
   isMagmaHomomorphism : IsMagmaHomomorphism id
   isMagmaHomomorphism = record
-    { isRelHomomorphism = isRelHomomorphism _≈_
-    ; homo = λ _ _ → refl
+    { isRelHomomorphism = isRelHomomorphism _
+    ; homo              = λ _ _ → refl
     }
 
   isMagmaMonomorphism : IsMagmaMonomorphism id
@@ -49,13 +49,12 @@ module _ (M : Magma c ℓ) where
     ; surjective = _, refl
     }
 
-module _ (M : Monoid c ℓ) where
-  open Monoid M
-  open MonoidMorphisms rawMonoid rawMonoid
+module _ (M : RawMonoid c ℓ) (open RawMonoid M) (refl : Reflexive _≈_) where
+  open MonoidMorphisms M M
 
   isMonoidHomomorphism : IsMonoidHomomorphism id
   isMonoidHomomorphism = record
-    { isMagmaHomomorphism = isMagmaHomomorphism magma
+    { isMagmaHomomorphism = isMagmaHomomorphism _ refl
     ; ε-homo = refl
     }
 
@@ -71,13 +70,12 @@ module _ (M : Monoid c ℓ) where
     ; surjective = _, refl
     }
 
-module _ (G : Group c ℓ) where
-  open Group G
-  open GroupMorphisms rawGroup rawGroup
+module _ (G : RawGroup c ℓ) (open RawGroup G) (refl : Reflexive _≈_) where
+  open GroupMorphisms G G
 
   isGroupHomomorphism : IsGroupHomomorphism id
   isGroupHomomorphism = record
-    { isMonoidHomomorphism = isMonoidHomomorphism monoid
+    { isMonoidHomomorphism = isMonoidHomomorphism _ refl
     ; ⁻¹-homo = λ _ → refl
     }
 
@@ -93,14 +91,13 @@ module _ (G : Group c ℓ) where
     ; surjective = _, refl
     }
 
-module _ (R : NearSemiring c ℓ) where
-  open NearSemiring R
-  open NearSemiringMorphisms rawNearSemiring rawNearSemiring
+module _ (R : RawNearSemiring c ℓ) (open RawNearSemiring R) (refl : Reflexive _≈_) where
+  open NearSemiringMorphisms R R
 
   isNearSemiringHomomorphism : IsNearSemiringHomomorphism id
   isNearSemiringHomomorphism = record
-    { +-isMonoidHomomorphism = isMonoidHomomorphism +-monoid
-    ; *-isMagmaHomomorphism = isMagmaHomomorphism *-magma
+    { +-isMonoidHomomorphism = isMonoidHomomorphism _ refl
+    ; *-isMagmaHomomorphism  = isMagmaHomomorphism  _ refl
     }
 
   isNearSemiringMonomorphism : IsNearSemiringMonomorphism id
@@ -115,14 +112,13 @@ module _ (R : NearSemiring c ℓ) where
     ; surjective = _, refl
     }
 
-module _ (R : Semiring c ℓ) where
-  open Semiring R
-  open SemiringMorphisms rawSemiring rawSemiring
+module _ (R : RawSemiring c ℓ) (open RawSemiring R) (refl : Reflexive _≈_) where
+  open SemiringMorphisms R R
 
   isSemiringHomomorphism : IsSemiringHomomorphism id
   isSemiringHomomorphism = record
-    { +-isMonoidHomomorphism = isMonoidHomomorphism +-monoid
-    ; *-isMonoidHomomorphism = isMonoidHomomorphism *-monoid
+    { +-isMonoidHomomorphism = isMonoidHomomorphism _ refl
+    ; *-isMonoidHomomorphism = isMonoidHomomorphism _ refl
     }
 
   isSemiringMonomorphism : IsSemiringMonomorphism id
@@ -137,14 +133,13 @@ module _ (R : Semiring c ℓ) where
     ; surjective = _, refl
     }
 
-module _ (R : Ring c ℓ) where
-  open Ring R
-  open RingMorphisms rawRing rawRing
+module _ (R : RawRing c ℓ) (open RawRing R) (refl : Reflexive _≈_) where
+  open RingMorphisms R R
 
   isRingHomomorphism : IsRingHomomorphism id
   isRingHomomorphism = record
-    { +-isGroupHomomorphism = isGroupHomomorphism +-group
-    ; *-isMonoidHomomorphism = isMonoidHomomorphism *-monoid
+    { +-isGroupHomomorphism  = isGroupHomomorphism  _ refl
+    ; *-isMonoidHomomorphism = isMonoidHomomorphism _ refl
     }
 
   isRingMonomorphism : IsRingMonomorphism id
@@ -159,14 +154,13 @@ module _ (R : Ring c ℓ) where
     ; surjective = _, refl
     }
 
-module _ (R : Lattice c ℓ) where
-  open Lattice R
-  open LatticeMorphisms rawLattice rawLattice
+module _ (L : RawLattice c ℓ) (open RawLattice L) (refl : Reflexive _≈_) where
+  open LatticeMorphisms L L
 
   isLatticeHomomorphism : IsLatticeHomomorphism id
   isLatticeHomomorphism = record
-    { ∧-isMagmaHomomorphism = isMagmaHomomorphism ∧-magma
-    ; ∨-isMagmaHomomorphism = isMagmaHomomorphism ∨-magma
+    { ∧-isMagmaHomomorphism = isMagmaHomomorphism _ refl
+    ; ∨-isMagmaHomomorphism = isMagmaHomomorphism _ refl
     }
 
   isLatticeMonomorphism : IsLatticeMonomorphism id

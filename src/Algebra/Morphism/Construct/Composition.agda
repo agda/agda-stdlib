@@ -12,393 +12,294 @@ open import Algebra.Bundles
 open import Algebra.Morphism.Structures
 open import Data.Product
 open import Function.Base using (_∘_)
+import Function.Construct.Composition as Func
 open import Level using (Level)
 open import Relation.Binary.Morphism.Construct.Composition
+open import Relation.Binary.Definitions using (Transitive)
 
 private
   variable
     a b c ℓ₁ ℓ₂ ℓ₃ : Level
 
-module _
-  {M₁ : Magma a ℓ₁} {M₂ : Magma b ℓ₂} {M₃ : Magma c ℓ₃}
-  {f : Magma.Carrier M₁ → Magma.Carrier M₂}
-  {g : Magma.Carrier M₂ → Magma.Carrier M₃}
-  where
+------------------------------------------------------------------------
+-- Magmas
 
-  open Magma
-  private
-    module M₁ = Magma M₁
-    module M₂ = Magma M₂
-    module M₃ = Magma M₃
+module _ {M₁ : RawMagma a ℓ₁}
+         {M₂ : RawMagma b ℓ₂}
+         {M₃ : RawMagma c ℓ₃}
+         (open RawMagma)
+         (≈₃-trans : Transitive (_≈_ M₃))
+         {f : Carrier M₁ → Carrier M₂}
+         {g : Carrier M₂ → Carrier M₃}
+         where
 
   isMagmaHomomorphism
-    : IsMagmaHomomorphism M₁.rawMagma M₂.rawMagma f
-    → IsMagmaHomomorphism M₂.rawMagma M₃.rawMagma g
-    → IsMagmaHomomorphism M₁.rawMagma M₃.rawMagma (g ∘ f)
+    : IsMagmaHomomorphism M₁ M₂ f
+    → IsMagmaHomomorphism M₂ M₃ g
+    → IsMagmaHomomorphism M₁ M₃ (g ∘ f)
   isMagmaHomomorphism f-homo g-homo = record
-    { isRelHomomorphism = isRelHomomorphism f-homo.isRelHomomorphism g-homo.isRelHomomorphism
-    ; homo = λ x y → M₃.trans (g-homo.⟦⟧-cong (f-homo.homo x y)) (g-homo.homo (f x) (f y))
-    }
-    where
-      module f-homo = IsMagmaHomomorphism f-homo
-      module g-homo = IsMagmaHomomorphism g-homo
+    { isRelHomomorphism = isRelHomomorphism F.isRelHomomorphism G.isRelHomomorphism
+    ; homo              = λ x y → ≈₃-trans (G.⟦⟧-cong (F.homo x y)) (G.homo (f x) (f y))
+    } where module F = IsMagmaHomomorphism f-homo; module G = IsMagmaHomomorphism g-homo
 
   isMagmaMonomorphism
-    : IsMagmaMonomorphism M₁.rawMagma M₂.rawMagma f
-    → IsMagmaMonomorphism M₂.rawMagma M₃.rawMagma g
-    → IsMagmaMonomorphism M₁.rawMagma M₃.rawMagma (g ∘ f)
+    : IsMagmaMonomorphism M₁ M₂ f
+    → IsMagmaMonomorphism M₂ M₃ g
+    → IsMagmaMonomorphism M₁ M₃ (g ∘ f)
   isMagmaMonomorphism f-mono g-mono = record
-    { isMagmaHomomorphism = isMagmaHomomorphism f-mono.isMagmaHomomorphism g-mono.isMagmaHomomorphism
-    ; injective = f-mono.injective ∘ g-mono.injective
-    }
-    where
-      module f-mono = IsMagmaMonomorphism f-mono
-      module g-mono = IsMagmaMonomorphism g-mono
+    { isMagmaHomomorphism = isMagmaHomomorphism F.isMagmaHomomorphism G.isMagmaHomomorphism
+    ; injective           = F.injective ∘ G.injective
+    } where module F = IsMagmaMonomorphism f-mono; module G = IsMagmaMonomorphism g-mono
 
   isMagmaIsomorphism
-    : IsMagmaIsomorphism M₁.rawMagma M₂.rawMagma f
-    → IsMagmaIsomorphism M₂.rawMagma M₃.rawMagma g
-    → IsMagmaIsomorphism M₁.rawMagma M₃.rawMagma (g ∘ f)
+    : IsMagmaIsomorphism M₁ M₂ f
+    → IsMagmaIsomorphism M₂ M₃ g
+    → IsMagmaIsomorphism M₁ M₃ (g ∘ f)
   isMagmaIsomorphism f-iso g-iso = record
-    { isMagmaMonomorphism = isMagmaMonomorphism f-iso.isMagmaMonomorphism g-iso.isMagmaMonomorphism
-    ; surjective = λ x →
-      let
-        x′ , p = g-iso.surjective x
-        x″ , q = f-iso.surjective x′
-      in x″ , M₃.trans (g-iso.⟦⟧-cong q) p
-    }
-    where
-      module f-iso = IsMagmaIsomorphism f-iso
-      module g-iso = IsMagmaIsomorphism g-iso
+    { isMagmaMonomorphism = isMagmaMonomorphism F.isMagmaMonomorphism G.isMagmaMonomorphism
+    ; surjective          = Func.surjective (_≈_ M₁) _ _ ≈₃-trans G.⟦⟧-cong F.surjective G.surjective
+    } where module F = IsMagmaIsomorphism f-iso; module G = IsMagmaIsomorphism g-iso
 
-module _
-  {M₁ : Monoid a ℓ₁} {M₂ : Monoid b ℓ₂} {M₃ : Monoid c ℓ₃}
-  {f : Monoid.Carrier M₁ → Monoid.Carrier M₂}
-  {g : Monoid.Carrier M₂ → Monoid.Carrier M₃}
-  where
 
-  open Monoid
-  private
-    module M₁ = Monoid M₁
-    module M₂ = Monoid M₂
-    module M₃ = Monoid M₃
+------------------------------------------------------------------------
+-- Monoids
+
+module _ {M₁ : RawMonoid a ℓ₁}
+         {M₂ : RawMonoid b ℓ₂}
+         {M₃ : RawMonoid c ℓ₃}
+         (open RawMonoid)
+         (≈₃-trans : Transitive (_≈_ M₃))
+         {f : Carrier M₁ → Carrier M₂}
+         {g : Carrier M₂ → Carrier M₃}
+         where
 
   isMonoidHomomorphism
-    : IsMonoidHomomorphism M₁.rawMonoid M₂.rawMonoid f
-    → IsMonoidHomomorphism M₂.rawMonoid M₃.rawMonoid g
-    → IsMonoidHomomorphism M₁.rawMonoid M₃.rawMonoid (g ∘ f)
+    : IsMonoidHomomorphism M₁ M₂ f
+    → IsMonoidHomomorphism M₂ M₃ g
+    → IsMonoidHomomorphism M₁ M₃ (g ∘ f)
   isMonoidHomomorphism f-homo g-homo = record
-    { isMagmaHomomorphism = isMagmaHomomorphism
-      {M₁ = M₁.magma} {M₂ = M₂.magma} {M₃ = M₃.magma}
-      f-homo.isMagmaHomomorphism g-homo.isMagmaHomomorphism
-    ; ε-homo = M₃.trans (g-homo.⟦⟧-cong (f-homo.ε-homo)) g-homo.ε-homo
-    }
-    where
-      module f-homo = IsMonoidHomomorphism f-homo
-      module g-homo = IsMonoidHomomorphism g-homo
+    { isMagmaHomomorphism = isMagmaHomomorphism ≈₃-trans F.isMagmaHomomorphism G.isMagmaHomomorphism
+    ; ε-homo              = ≈₃-trans (G.⟦⟧-cong F.ε-homo) G.ε-homo
+    } where module F = IsMonoidHomomorphism f-homo; module G = IsMonoidHomomorphism g-homo
 
   isMonoidMonomorphism
-    : IsMonoidMonomorphism M₁.rawMonoid M₂.rawMonoid f
-    → IsMonoidMonomorphism M₂.rawMonoid M₃.rawMonoid g
-    → IsMonoidMonomorphism M₁.rawMonoid M₃.rawMonoid (g ∘ f)
+    : IsMonoidMonomorphism M₁ M₂ f
+    → IsMonoidMonomorphism M₂ M₃ g
+    → IsMonoidMonomorphism M₁ M₃ (g ∘ f)
   isMonoidMonomorphism f-mono g-mono = record
-    { isMonoidHomomorphism = isMonoidHomomorphism f-mono.isMonoidHomomorphism g-mono.isMonoidHomomorphism
-    ; injective = f-mono.injective ∘ g-mono.injective
-    }
-    where
-      module f-mono = IsMonoidMonomorphism f-mono
-      module g-mono = IsMonoidMonomorphism g-mono
+    { isMonoidHomomorphism = isMonoidHomomorphism F.isMonoidHomomorphism G.isMonoidHomomorphism
+    ; injective            = F.injective ∘ G.injective
+    } where module F = IsMonoidMonomorphism f-mono; module G = IsMonoidMonomorphism g-mono
 
   isMonoidIsomorphism
-    : IsMonoidIsomorphism M₁.rawMonoid M₂.rawMonoid f
-    → IsMonoidIsomorphism M₂.rawMonoid M₃.rawMonoid g
-    → IsMonoidIsomorphism M₁.rawMonoid M₃.rawMonoid (g ∘ f)
+    : IsMonoidIsomorphism M₁ M₂ f
+    → IsMonoidIsomorphism M₂ M₃ g
+    → IsMonoidIsomorphism M₁ M₃ (g ∘ f)
   isMonoidIsomorphism f-iso g-iso = record
-    { isMonoidMonomorphism = isMonoidMonomorphism f-iso.isMonoidMonomorphism g-iso.isMonoidMonomorphism
-    ; surjective = λ x →
-      let
-        x′ , p = g-iso.surjective x
-        x″ , q = f-iso.surjective x′
-      in x″ , M₃.trans (g-iso.⟦⟧-cong q) p
-    }
-    where
-      module f-iso = IsMonoidIsomorphism f-iso
-      module g-iso = IsMonoidIsomorphism g-iso
+    { isMonoidMonomorphism = isMonoidMonomorphism F.isMonoidMonomorphism G.isMonoidMonomorphism
+    ; surjective           = Func.surjective (_≈_ M₁) _ _ ≈₃-trans G.⟦⟧-cong F.surjective G.surjective
+    } where module F = IsMonoidIsomorphism f-iso; module G = IsMonoidIsomorphism g-iso
 
-module _
-  {G₁ : Group a ℓ₁} {G₂ : Group b ℓ₂} {G₃ : Group c ℓ₃}
-  {f : Group.Carrier G₁ → Group.Carrier G₂}
-  {g : Group.Carrier G₂ → Group.Carrier G₃}
-  where
 
-  open Group
-  private
-    module G₁ = Group G₁
-    module G₂ = Group G₂
-    module G₃ = Group G₃
+------------------------------------------------------------------------
+-- Groups
+
+module _ {G₁ : RawGroup a ℓ₁}
+         {G₂ : RawGroup b ℓ₂}
+         {G₃ : RawGroup c ℓ₃}
+         (open RawGroup)
+         (≈₃-trans : Transitive (_≈_ G₃))
+         {f : Carrier G₁ → Carrier G₂}
+         {g : Carrier G₂ → Carrier G₃}
+         where
+
 
   isGroupHomomorphism
-    : IsGroupHomomorphism G₁.rawGroup G₂.rawGroup f
-    → IsGroupHomomorphism G₂.rawGroup G₃.rawGroup g
-    → IsGroupHomomorphism G₁.rawGroup G₃.rawGroup (g ∘ f)
+    : IsGroupHomomorphism G₁ G₂ f
+    → IsGroupHomomorphism G₂ G₃ g
+    → IsGroupHomomorphism G₁ G₃ (g ∘ f)
   isGroupHomomorphism f-homo g-homo = record
-    { isMonoidHomomorphism = isMonoidHomomorphism
-      {M₁ = G₁.monoid} {M₂ = G₂.monoid} {M₃ = G₃.monoid}
-      f-homo.isMonoidHomomorphism g-homo.isMonoidHomomorphism
-    ; ⁻¹-homo = λ x → G₃.trans (g-homo.⟦⟧-cong (f-homo.⁻¹-homo x)) (g-homo.⁻¹-homo (f x))
-    }
-    where
-      module f-homo = IsGroupHomomorphism f-homo
-      module g-homo = IsGroupHomomorphism g-homo
+    { isMonoidHomomorphism = isMonoidHomomorphism ≈₃-trans F.isMonoidHomomorphism G.isMonoidHomomorphism
+    ; ⁻¹-homo              = λ x → ≈₃-trans (G.⟦⟧-cong (F.⁻¹-homo x)) (G.⁻¹-homo (f x))
+    } where module F = IsGroupHomomorphism f-homo; module G = IsGroupHomomorphism g-homo
 
   isGroupMonomorphism
-    : IsGroupMonomorphism G₁.rawGroup G₂.rawGroup f
-    → IsGroupMonomorphism G₂.rawGroup G₃.rawGroup g
-    → IsGroupMonomorphism G₁.rawGroup G₃.rawGroup (g ∘ f)
+    : IsGroupMonomorphism G₁ G₂ f
+    → IsGroupMonomorphism G₂ G₃ g
+    → IsGroupMonomorphism G₁ G₃ (g ∘ f)
   isGroupMonomorphism f-mono g-mono = record
-    { isGroupHomomorphism = isGroupHomomorphism f-mono.isGroupHomomorphism g-mono.isGroupHomomorphism
-    ; injective = f-mono.injective ∘ g-mono.injective
-    }
-    where
-      module f-mono = IsGroupMonomorphism f-mono
-      module g-mono = IsGroupMonomorphism g-mono
+    { isGroupHomomorphism = isGroupHomomorphism F.isGroupHomomorphism G.isGroupHomomorphism
+    ; injective           = F.injective ∘ G.injective
+    } where module F = IsGroupMonomorphism f-mono; module G = IsGroupMonomorphism g-mono
 
   isGroupIsomorphism
-    : IsGroupIsomorphism G₁.rawGroup G₂.rawGroup f
-    → IsGroupIsomorphism G₂.rawGroup G₃.rawGroup g
-    → IsGroupIsomorphism G₁.rawGroup G₃.rawGroup (g ∘ f)
+    : IsGroupIsomorphism G₁ G₂ f
+    → IsGroupIsomorphism G₂ G₃ g
+    → IsGroupIsomorphism G₁ G₃ (g ∘ f)
   isGroupIsomorphism f-iso g-iso = record
-    { isGroupMonomorphism = isGroupMonomorphism f-iso.isGroupMonomorphism g-iso.isGroupMonomorphism
-    ; surjective = λ x →
-      let
-        x′ , p = g-iso.surjective x
-        x″ , q = f-iso.surjective x′
-      in x″ , G₃.trans (g-iso.⟦⟧-cong q) p
-    }
-    where
-      module f-iso = IsGroupIsomorphism f-iso
-      module g-iso = IsGroupIsomorphism g-iso
+    { isGroupMonomorphism = isGroupMonomorphism F.isGroupMonomorphism G.isGroupMonomorphism
+    ; surjective          = Func.surjective (_≈_ G₁) _ _ ≈₃-trans G.⟦⟧-cong F.surjective G.surjective
+    } where module F = IsGroupIsomorphism f-iso; module G = IsGroupIsomorphism g-iso
 
-module _
-  {R₁ : NearSemiring a ℓ₁} {R₂ : NearSemiring b ℓ₂} {R₃ : NearSemiring c ℓ₃}
-  {f : NearSemiring.Carrier R₁ → NearSemiring.Carrier R₂}
-  {g : NearSemiring.Carrier R₂ → NearSemiring.Carrier R₃}
-  where
 
-  open NearSemiring
-  private
-    module R₁ = NearSemiring R₁
-    module R₂ = NearSemiring R₂
-    module R₃ = NearSemiring R₃
+------------------------------------------------------------------------
+-- Near semirings
+
+module _ {R₁ : RawNearSemiring a ℓ₁}
+         {R₂ : RawNearSemiring b ℓ₂}
+         {R₃ : RawNearSemiring c ℓ₃}
+         (open RawNearSemiring)
+         (≈₃-trans : Transitive (_≈_ R₃))
+         {f : Carrier R₁ → Carrier R₂}
+         {g : Carrier R₂ → Carrier R₃}
+         where
 
   isNearSemiringHomomorphism
-    : IsNearSemiringHomomorphism R₁.rawNearSemiring R₂.rawNearSemiring f
-    → IsNearSemiringHomomorphism R₂.rawNearSemiring R₃.rawNearSemiring g
-    → IsNearSemiringHomomorphism R₁.rawNearSemiring R₃.rawNearSemiring (g ∘ f)
+    : IsNearSemiringHomomorphism R₁ R₂ f
+    → IsNearSemiringHomomorphism R₂ R₃ g
+    → IsNearSemiringHomomorphism R₁ R₃ (g ∘ f)
   isNearSemiringHomomorphism f-homo g-homo = record
-    { +-isMonoidHomomorphism = isMonoidHomomorphism
-      {M₁ = R₁.+-monoid} {M₂ = R₂.+-monoid} {M₃ = R₃.+-monoid}
-      f-homo.+-isMonoidHomomorphism g-homo.+-isMonoidHomomorphism
-    ; *-isMagmaHomomorphism = isMagmaHomomorphism
-      {M₁ = R₁.*-magma} {M₂ = R₂.*-magma} {M₃ = R₃.*-magma}
-      f-homo.*-isMagmaHomomorphism g-homo.*-isMagmaHomomorphism
-    }
-    where
-      module f-homo = IsNearSemiringHomomorphism f-homo
-      module g-homo = IsNearSemiringHomomorphism g-homo
+    { +-isMonoidHomomorphism = isMonoidHomomorphism ≈₃-trans F.+-isMonoidHomomorphism G.+-isMonoidHomomorphism
+    ; *-isMagmaHomomorphism  = isMagmaHomomorphism  ≈₃-trans F.*-isMagmaHomomorphism  G.*-isMagmaHomomorphism
+    } where module F = IsNearSemiringHomomorphism f-homo; module G = IsNearSemiringHomomorphism g-homo
 
   isNearSemiringMonomorphism
-    : IsNearSemiringMonomorphism R₁.rawNearSemiring R₂.rawNearSemiring f
-    → IsNearSemiringMonomorphism R₂.rawNearSemiring R₃.rawNearSemiring g
-    → IsNearSemiringMonomorphism R₁.rawNearSemiring R₃.rawNearSemiring (g ∘ f)
+    : IsNearSemiringMonomorphism R₁ R₂ f
+    → IsNearSemiringMonomorphism R₂ R₃ g
+    → IsNearSemiringMonomorphism R₁ R₃ (g ∘ f)
   isNearSemiringMonomorphism f-mono g-mono = record
-    { isNearSemiringHomomorphism = isNearSemiringHomomorphism f-mono.isNearSemiringHomomorphism g-mono.isNearSemiringHomomorphism
-    ; injective = f-mono.injective ∘ g-mono.injective
-    }
-    where
-      module f-mono = IsNearSemiringMonomorphism f-mono
-      module g-mono = IsNearSemiringMonomorphism g-mono
+    { isNearSemiringHomomorphism = isNearSemiringHomomorphism F.isNearSemiringHomomorphism G.isNearSemiringHomomorphism
+    ; injective                  = F.injective ∘ G.injective
+    } where module F = IsNearSemiringMonomorphism f-mono; module G = IsNearSemiringMonomorphism g-mono
 
   isNearSemiringIsomorphism
-    : IsNearSemiringIsomorphism R₁.rawNearSemiring R₂.rawNearSemiring f
-    → IsNearSemiringIsomorphism R₂.rawNearSemiring R₃.rawNearSemiring g
-    → IsNearSemiringIsomorphism R₁.rawNearSemiring R₃.rawNearSemiring (g ∘ f)
+    : IsNearSemiringIsomorphism R₁ R₂ f
+    → IsNearSemiringIsomorphism R₂ R₃ g
+    → IsNearSemiringIsomorphism R₁ R₃ (g ∘ f)
   isNearSemiringIsomorphism f-iso g-iso = record
-    { isNearSemiringMonomorphism = isNearSemiringMonomorphism f-iso.isNearSemiringMonomorphism g-iso.isNearSemiringMonomorphism
-    ; surjective = λ x →
-      let
-        x′ , p = g-iso.surjective x
-        x″ , q = f-iso.surjective x′
-      in x″ , R₃.trans (IsMonoidHomomorphism.⟦⟧-cong (g-iso.+-isMonoidHomomorphism) q) p
-    }
-    where
-      module f-iso = IsNearSemiringIsomorphism f-iso
-      module g-iso = IsNearSemiringIsomorphism g-iso
+    { isNearSemiringMonomorphism = isNearSemiringMonomorphism F.isNearSemiringMonomorphism G.isNearSemiringMonomorphism
+    ; surjective                 = Func.surjective (_≈_ R₁) _ _ ≈₃-trans G.⟦⟧-cong F.surjective G.surjective
+    } where module F = IsNearSemiringIsomorphism f-iso; module G = IsNearSemiringIsomorphism g-iso
+
+
+------------------------------------------------------------------------
+-- Semirings
 
 module _
-  {R₁ : Semiring a ℓ₁} {R₂ : Semiring b ℓ₂} {R₃ : Semiring c ℓ₃}
-  {f : Semiring.Carrier R₁ → Semiring.Carrier R₂}
-  {g : Semiring.Carrier R₂ → Semiring.Carrier R₃}
+  {R₁ : RawSemiring a ℓ₁}
+  {R₂ : RawSemiring b ℓ₂}
+  {R₃ : RawSemiring c ℓ₃}
+  (open RawSemiring)
+  (≈₃-trans : Transitive (_≈_ R₃))
+  {f : Carrier R₁ → Carrier R₂}
+  {g : Carrier R₂ → Carrier R₃}
   where
 
-  open Semiring
-  private
-    module R₁ = Semiring R₁
-    module R₂ = Semiring R₂
-    module R₃ = Semiring R₃
 
   isSemiringHomomorphism
-    : IsSemiringHomomorphism R₁.rawSemiring R₂.rawSemiring f
-    → IsSemiringHomomorphism R₂.rawSemiring R₃.rawSemiring g
-    → IsSemiringHomomorphism R₁.rawSemiring R₃.rawSemiring (g ∘ f)
+    : IsSemiringHomomorphism R₁ R₂ f
+    → IsSemiringHomomorphism R₂ R₃ g
+    → IsSemiringHomomorphism R₁ R₃ (g ∘ f)
   isSemiringHomomorphism f-homo g-homo = record
-    { +-isMonoidHomomorphism = isMonoidHomomorphism
-      {M₁ = R₁.+-monoid} {M₂ = R₂.+-monoid} {M₃ = R₃.+-monoid}
-      f-homo.+-isMonoidHomomorphism g-homo.+-isMonoidHomomorphism
-    ; *-isMonoidHomomorphism = isMonoidHomomorphism
-      {M₁ = R₁.*-monoid} {M₂ = R₂.*-monoid} {M₃ = R₃.*-monoid}
-      f-homo.*-isMonoidHomomorphism g-homo.*-isMonoidHomomorphism
-    }
-    where
-      module f-homo = IsSemiringHomomorphism f-homo
-      module g-homo = IsSemiringHomomorphism g-homo
+    { +-isMonoidHomomorphism = isMonoidHomomorphism ≈₃-trans F.+-isMonoidHomomorphism G.+-isMonoidHomomorphism
+    ; *-isMonoidHomomorphism = isMonoidHomomorphism ≈₃-trans F.*-isMonoidHomomorphism G.*-isMonoidHomomorphism
+    } where module F = IsSemiringHomomorphism f-homo; module G = IsSemiringHomomorphism g-homo
 
   isSemiringMonomorphism
-    : IsSemiringMonomorphism R₁.rawSemiring R₂.rawSemiring f
-    → IsSemiringMonomorphism R₂.rawSemiring R₃.rawSemiring g
-    → IsSemiringMonomorphism R₁.rawSemiring R₃.rawSemiring (g ∘ f)
+    : IsSemiringMonomorphism R₁ R₂ f
+    → IsSemiringMonomorphism R₂ R₃ g
+    → IsSemiringMonomorphism R₁ R₃ (g ∘ f)
   isSemiringMonomorphism f-mono g-mono = record
-    { isSemiringHomomorphism = isSemiringHomomorphism f-mono.isSemiringHomomorphism g-mono.isSemiringHomomorphism
-    ; injective = f-mono.injective ∘ g-mono.injective
-    }
-    where
-      module f-mono = IsSemiringMonomorphism f-mono
-      module g-mono = IsSemiringMonomorphism g-mono
+    { isSemiringHomomorphism = isSemiringHomomorphism F.isSemiringHomomorphism G.isSemiringHomomorphism
+    ; injective              = F.injective ∘ G.injective
+    } where module F = IsSemiringMonomorphism f-mono; module G = IsSemiringMonomorphism g-mono
 
   isSemiringIsomorphism
-    : IsSemiringIsomorphism R₁.rawSemiring R₂.rawSemiring f
-    → IsSemiringIsomorphism R₂.rawSemiring R₃.rawSemiring g
-    → IsSemiringIsomorphism R₁.rawSemiring R₃.rawSemiring (g ∘ f)
+    : IsSemiringIsomorphism R₁ R₂ f
+    → IsSemiringIsomorphism R₂ R₃ g
+    → IsSemiringIsomorphism R₁ R₃ (g ∘ f)
   isSemiringIsomorphism f-iso g-iso = record
-    { isSemiringMonomorphism = isSemiringMonomorphism f-iso.isSemiringMonomorphism g-iso.isSemiringMonomorphism
-    ; surjective = λ x →
-      let
-        x′ , p = g-iso.surjective x
-        x″ , q = f-iso.surjective x′
-      in x″ , R₃.trans (IsMonoidHomomorphism.⟦⟧-cong (g-iso.+-isMonoidHomomorphism) q) p
-    }
-    where
-      module f-iso = IsSemiringIsomorphism f-iso
-      module g-iso = IsSemiringIsomorphism g-iso
+    { isSemiringMonomorphism = isSemiringMonomorphism F.isSemiringMonomorphism G.isSemiringMonomorphism
+    ; surjective             = Func.surjective (_≈_ R₁) _ _ ≈₃-trans G.⟦⟧-cong F.surjective G.surjective
+    } where module F = IsSemiringIsomorphism f-iso; module G = IsSemiringIsomorphism g-iso
 
-module _
-  {R₁ : Ring a ℓ₁} {R₂ : Ring b ℓ₂} {R₃ : Ring c ℓ₃}
-  {f : Ring.Carrier R₁ → Ring.Carrier R₂}
-  {g : Ring.Carrier R₂ → Ring.Carrier R₃}
-  where
 
-  open Ring
-  private
-    module R₁ = Ring R₁
-    module R₂ = Ring R₂
-    module R₃ = Ring R₃
+------------------------------------------------------------------------
+-- Rings
+
+module _ {R₁ : RawRing a ℓ₁}
+         {R₂ : RawRing b ℓ₂}
+         {R₃ : RawRing c ℓ₃}
+         (open RawRing)
+         (≈₃-trans : Transitive (_≈_ R₃))
+         {f : Carrier R₁ → Carrier R₂}
+         {g : Carrier R₂ → Carrier R₃}
+         where
+
 
   isRingHomomorphism
-    : IsRingHomomorphism R₁.rawRing R₂.rawRing f
-    → IsRingHomomorphism R₂.rawRing R₃.rawRing g
-    → IsRingHomomorphism R₁.rawRing R₃.rawRing (g ∘ f)
+    : IsRingHomomorphism R₁ R₂ f
+    → IsRingHomomorphism R₂ R₃ g
+    → IsRingHomomorphism R₁ R₃ (g ∘ f)
   isRingHomomorphism f-homo g-homo = record
-    { +-isGroupHomomorphism = isGroupHomomorphism
-      {G₁ = R₁.+-group} {G₂ = R₂.+-group} {G₃ = R₃.+-group}
-      f-homo.+-isGroupHomomorphism g-homo.+-isGroupHomomorphism
-    ; *-isMonoidHomomorphism = isMonoidHomomorphism
-      {M₁ = R₁.*-monoid} {M₂ = R₂.*-monoid} {M₃ = R₃.*-monoid}
-      f-homo.*-isMonoidHomomorphism g-homo.*-isMonoidHomomorphism
-    }
-    where
-      module f-homo = IsRingHomomorphism f-homo
-      module g-homo = IsRingHomomorphism g-homo
+    { +-isGroupHomomorphism = isGroupHomomorphism   ≈₃-trans F.+-isGroupHomomorphism  G.+-isGroupHomomorphism
+    ; *-isMonoidHomomorphism = isMonoidHomomorphism ≈₃-trans F.*-isMonoidHomomorphism G.*-isMonoidHomomorphism
+    } where module F = IsRingHomomorphism f-homo; module G = IsRingHomomorphism g-homo
 
   isRingMonomorphism
-    : IsRingMonomorphism R₁.rawRing R₂.rawRing f
-    → IsRingMonomorphism R₂.rawRing R₃.rawRing g
-    → IsRingMonomorphism R₁.rawRing R₃.rawRing (g ∘ f)
+    : IsRingMonomorphism R₁ R₂ f
+    → IsRingMonomorphism R₂ R₃ g
+    → IsRingMonomorphism R₁ R₃ (g ∘ f)
   isRingMonomorphism f-mono g-mono = record
-    { isRingHomomorphism = isRingHomomorphism f-mono.isRingHomomorphism g-mono.isRingHomomorphism
-    ; injective = f-mono.injective ∘ g-mono.injective
-    }
-    where
-      module f-mono = IsRingMonomorphism f-mono
-      module g-mono = IsRingMonomorphism g-mono
+    { isRingHomomorphism = isRingHomomorphism F.isRingHomomorphism G.isRingHomomorphism
+    ; injective = F.injective ∘ G.injective
+    } where module F = IsRingMonomorphism f-mono;  module G = IsRingMonomorphism g-mono
 
   isRingIsomorphism
-    : IsRingIsomorphism R₁.rawRing R₂.rawRing f
-    → IsRingIsomorphism R₂.rawRing R₃.rawRing g
-    → IsRingIsomorphism R₁.rawRing R₃.rawRing (g ∘ f)
+    : IsRingIsomorphism R₁ R₂ f
+    → IsRingIsomorphism R₂ R₃ g
+    → IsRingIsomorphism R₁ R₃ (g ∘ f)
   isRingIsomorphism f-iso g-iso = record
-    { isRingMonomorphism = isRingMonomorphism f-iso.isRingMonomorphism g-iso.isRingMonomorphism
-    ; surjective = λ x →
-      let
-        x′ , p = g-iso.surjective x
-        x″ , q = f-iso.surjective x′
-      in x″ , R₃.trans (IsGroupHomomorphism.⟦⟧-cong (g-iso.+-isGroupHomomorphism) q) p
-    }
-    where
-      module f-iso = IsRingIsomorphism f-iso
-      module g-iso = IsRingIsomorphism g-iso
+    { isRingMonomorphism = isRingMonomorphism F.isRingMonomorphism G.isRingMonomorphism
+    ; surjective         = Func.surjective (_≈_ R₁) _ _ ≈₃-trans G.⟦⟧-cong F.surjective G.surjective
+    } where module F = IsRingIsomorphism f-iso; module G = IsRingIsomorphism g-iso
 
-module _
-  {L₁ : Lattice a ℓ₁} {L₂ : Lattice b ℓ₂} {L₃ : Lattice c ℓ₃}
-  {f : Lattice.Carrier L₁ → Lattice.Carrier L₂}
-  {g : Lattice.Carrier L₂ → Lattice.Carrier L₃}
-  where
 
-  open Lattice
-  private
-    module L₁ = Lattice L₁
-    module L₂ = Lattice L₂
-    module L₃ = Lattice L₃
+------------------------------------------------------------------------
+-- Lattices
+
+module _ {L₁ : RawLattice a ℓ₁}
+         {L₂ : RawLattice b ℓ₂}
+         {L₃ : RawLattice c ℓ₃}
+         (open RawLattice)
+         (≈₃-trans : Transitive (_≈_ L₃))
+         {f : Carrier L₁ → Carrier L₂}
+         {g : Carrier L₂ → Carrier L₃}
+         where
 
   isLatticeHomomorphism
-    : IsLatticeHomomorphism L₁.rawLattice L₂.rawLattice f
-    → IsLatticeHomomorphism L₂.rawLattice L₃.rawLattice g
-    → IsLatticeHomomorphism L₁.rawLattice L₃.rawLattice (g ∘ f)
+    : IsLatticeHomomorphism L₁ L₂ f
+    → IsLatticeHomomorphism L₂ L₃ g
+    → IsLatticeHomomorphism L₁ L₃ (g ∘ f)
   isLatticeHomomorphism f-homo g-homo = record
-    { ∧-isMagmaHomomorphism = isMagmaHomomorphism
-      {M₁ = L₁.∧-magma} {M₂ = L₂.∧-magma} {M₃ = L₃.∧-magma}
-      f-homo.∧-isMagmaHomomorphism g-homo.∧-isMagmaHomomorphism
-    ; ∨-isMagmaHomomorphism = isMagmaHomomorphism
-      {M₁ = L₁.∨-magma} {M₂ = L₂.∨-magma} {M₃ = L₃.∨-magma}
-      f-homo.∨-isMagmaHomomorphism g-homo.∨-isMagmaHomomorphism
-    }
-    where
-      module f-homo = IsLatticeHomomorphism f-homo
-      module g-homo = IsLatticeHomomorphism g-homo
+    { ∧-isMagmaHomomorphism = isMagmaHomomorphism ≈₃-trans F.∧-isMagmaHomomorphism G.∧-isMagmaHomomorphism
+    ; ∨-isMagmaHomomorphism = isMagmaHomomorphism ≈₃-trans F.∨-isMagmaHomomorphism G.∨-isMagmaHomomorphism
+    } where module F = IsLatticeHomomorphism f-homo; module G = IsLatticeHomomorphism g-homo
 
   isLatticeMonomorphism
-    : IsLatticeMonomorphism L₁.rawLattice L₂.rawLattice f
-    → IsLatticeMonomorphism L₂.rawLattice L₃.rawLattice g
-    → IsLatticeMonomorphism L₁.rawLattice L₃.rawLattice (g ∘ f)
+    : IsLatticeMonomorphism L₁ L₂ f
+    → IsLatticeMonomorphism L₂ L₃ g
+    → IsLatticeMonomorphism L₁ L₃ (g ∘ f)
   isLatticeMonomorphism f-mono g-mono = record
-    { isLatticeHomomorphism = isLatticeHomomorphism f-mono.isLatticeHomomorphism g-mono.isLatticeHomomorphism
-    ; injective = f-mono.injective ∘ g-mono.injective
-    }
-    where
-      module f-mono = IsLatticeMonomorphism f-mono
-      module g-mono = IsLatticeMonomorphism g-mono
+    { isLatticeHomomorphism = isLatticeHomomorphism F.isLatticeHomomorphism G.isLatticeHomomorphism
+    ; injective             = F.injective ∘ G.injective
+    } where module F = IsLatticeMonomorphism f-mono; module G = IsLatticeMonomorphism g-mono
 
   isLatticeIsomorphism
-    : IsLatticeIsomorphism L₁.rawLattice L₂.rawLattice f
-    → IsLatticeIsomorphism L₂.rawLattice L₃.rawLattice g
-    → IsLatticeIsomorphism L₁.rawLattice L₃.rawLattice (g ∘ f)
+    : IsLatticeIsomorphism L₁ L₂ f
+    → IsLatticeIsomorphism L₂ L₃ g
+    → IsLatticeIsomorphism L₁ L₃ (g ∘ f)
   isLatticeIsomorphism f-iso g-iso = record
-    { isLatticeMonomorphism = isLatticeMonomorphism f-iso.isLatticeMonomorphism g-iso.isLatticeMonomorphism
-    ; surjective = λ x →
-      let
-        x′ , p = g-iso.surjective x
-        x″ , q = f-iso.surjective x′
-      in x″ , L₃.trans (IsMagmaHomomorphism.⟦⟧-cong (g-iso.∧-isMagmaHomomorphism) q) p
-    }
-    where
-      module f-iso = IsLatticeIsomorphism f-iso
-      module g-iso = IsLatticeIsomorphism g-iso
+    { isLatticeMonomorphism = isLatticeMonomorphism F.isLatticeMonomorphism G.isLatticeMonomorphism
+    ; surjective            = Func.surjective (_≈_ L₁) _ _ ≈₃-trans G.⟦⟧-cong F.surjective G.surjective
+    } where module F = IsLatticeIsomorphism f-iso; module G = IsLatticeIsomorphism g-iso

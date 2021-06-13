@@ -395,29 +395,6 @@ record Lattice c ℓ : Set (suc (c ⊔ ℓ)) where
   open Setoid setoid public
     using (_≉_)
 
-  ∨-commutativeSemigroup : CommutativeSemigroup c ℓ
-  ∨-commutativeSemigroup = record
-    { isCommutativeSemigroup = ∨-isCommutativeSemigroup
-    }
-
-  open CommutativeSemigroup ∨-commutativeSemigroup public
-    using ()
-    renaming
-      ( magma to ∨-magma
-      ; semigroup to ∨-semigroup
-      )
-
-  ∧-commutativeSemigroup : CommutativeSemigroup c ℓ
-  ∧-commutativeSemigroup = record
-    { isCommutativeSemigroup = ∧-isCommutativeSemigroup
-    }
-
-  open CommutativeSemigroup ∧-commutativeSemigroup public
-    using ()
-    renaming
-      ( magma to ∧-magma
-      ; semigroup to ∧-semigroup
-      )
 
 record DistributiveLattice c ℓ : Set (suc (c ⊔ ℓ)) where
   infixr 7 _∧_

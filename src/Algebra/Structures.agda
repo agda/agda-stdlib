@@ -250,42 +250,6 @@ record IsLattice (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
   ∨-congʳ : RightCongruent ∨
   ∨-congʳ y≈z = ∨-cong y≈z refl
 
-  ∨-isMagma : IsMagma ∨
-  ∨-isMagma = record
-    { isEquivalence = isEquivalence
-    ; ∙-cong = ∨-cong
-    }
-
-  ∨-isSemigroup : IsSemigroup ∨
-  ∨-isSemigroup = record
-    { isMagma = ∨-isMagma
-    ; assoc = ∨-assoc
-    }
-
-  ∨-isCommutativeSemigroup : IsCommutativeSemigroup ∨
-  ∨-isCommutativeSemigroup = record
-    { isSemigroup = ∨-isSemigroup
-    ; comm = ∨-comm
-    }
-
-  ∧-isMagma : IsMagma ∧
-  ∧-isMagma = record
-    { isEquivalence = isEquivalence
-    ; ∙-cong = ∧-cong
-    }
-
-  ∧-isSemigroup : IsSemigroup ∧
-  ∧-isSemigroup = record
-    { isMagma = ∧-isMagma
-    ; assoc = ∧-assoc
-    }
-
-  ∧-isCommutativeSemigroup : IsCommutativeSemigroup ∧
-  ∧-isCommutativeSemigroup = record
-    { isSemigroup = ∧-isSemigroup
-    ; comm = ∧-comm
-    }
-
 
 record IsDistributiveLattice (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
   field
