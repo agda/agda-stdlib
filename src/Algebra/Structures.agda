@@ -317,7 +317,7 @@ record IsNearSemiring (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
     ; identityˡ   to +-identityˡ
     ; identityʳ   to +-identityʳ
     ; isMagma     to +-isMagma
-    ; isUnitalMagma to +-isUnitalMagma 
+    ; isUnitalMagma to +-isUnitalMagma
     ; isSemigroup to +-isSemigroup
     )
 
@@ -340,9 +340,12 @@ record IsSemiringWithoutOne (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
     zero                  : Zero 0# *
 
   open IsCommutativeMonoid +-isCommutativeMonoid public using ()
-    renaming ( comm to +-comm ; isMonoid to +-isMonoid ;
-    isCommutativeMagma to +-isCommutativeMagma ;
-    isCommutativeSemigroup to +-isCommutativeSemigroup )
+    renaming
+    ( comm to +-comm
+    ; isMonoid to +-isMonoid
+    ; isCommutativeMagma to +-isCommutativeMagma
+    ; isCommutativeSemigroup to +-isCommutativeSemigroup
+    )
 
   zeroˡ : LeftZero 0# *
   zeroˡ = proj₁ zero

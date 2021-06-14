@@ -515,10 +515,11 @@ record NearSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open Monoid +-monoid public
     using (_≉_) renaming
-    ( rawMagma  to +-rawMagma
-    ; magma     to +-magma
-    ; semigroup to +-semigroup
-    ; rawMonoid to +-rawMonoid
+    ( rawMagma    to  +-rawMagma
+    ; magma       to  +-magma
+    ; semigroup   to  +-semigroup
+    ; unitalMagma to  +-unitalMagma
+    ; rawMonoid   to  +-rawMonoid
     )
 
   *-semigroup : Semigroup _ _
