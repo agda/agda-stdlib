@@ -341,9 +341,9 @@ record IsSemiringWithoutOne (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
 
   open IsCommutativeMonoid +-isCommutativeMonoid public using ()
     renaming
-    ( comm to +-comm
-    ; isMonoid to +-isMonoid
-    ; isCommutativeMagma to +-isCommutativeMagma
+    ( comm                   to +-comm
+    ; isMonoid               to +-isMonoid
+    ; isCommutativeMagma     to +-isCommutativeMagma
     ; isCommutativeSemigroup to +-isCommutativeSemigroup
     )
 
