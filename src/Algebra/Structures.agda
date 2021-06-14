@@ -317,6 +317,7 @@ record IsNearSemiring (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
     ; identityˡ   to +-identityˡ
     ; identityʳ   to +-identityʳ
     ; isMagma     to +-isMagma
+    ; isUnitalMagma to +-isUnitalMagma 
     ; isSemigroup to +-isSemigroup
     )
 
@@ -338,14 +339,10 @@ record IsSemiringWithoutOne (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
     distrib               : * DistributesOver +
     zero                  : Zero 0# *
 
-  open IsCommutativeMonoid +-isCommutativeMonoid public
-    using ()
-    renaming
-    ( comm                   to +-comm
-    ; isMonoid               to +-isMonoid
-    ; isCommutativeMagma     to +-isCommutativeMagma
-    ; isCommutativeSemigroup to +-isCommutativeSemigroup
-    )
+  open IsCommutativeMonoid +-isCommutativeMonoid public using ()
+    renaming ( comm to +-comm ; isMonoid to +-isMonoid ;
+    isCommutativeMagma to +-isCommutativeMagma ;
+    isCommutativeSemigroup to +-isCommutativeSemigroup )
 
   zeroˡ : LeftZero 0# *
   zeroˡ = proj₁ zero
@@ -414,6 +411,7 @@ record IsSemiringWithoutAnnihilatingZero (+ * : Op₂ A)
     ; isMagma                to +-isMagma
     ; isSemigroup            to +-isSemigroup
     ; isMonoid               to +-isMonoid
+    ; isUnitalMagma          to +-isUnitalMagma
     ; isCommutativeMagma     to +-isCommutativeMagma
     ; isCommutativeSemigroup to +-isCommutativeSemigroup
     )
@@ -522,6 +520,7 @@ record IsRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
     ; isMagma                to +-isMagma
     ; isSemigroup            to +-isSemigroup
     ; isMonoid               to +-isMonoid
+    ; isUnitalMagma          to +-isUnitalMagma
     ; isCommutativeMagma     to +-isCommutativeMagma
     ; isCommutativeMonoid    to +-isCommutativeMonoid
     ; isCommutativeSemigroup to +-isCommutativeSemigroup
