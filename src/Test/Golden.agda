@@ -46,7 +46,7 @@
 --
 -- The test harness has several options that may be set:
 --
--- + `Agda`         The path of the executable we are testing.
+-- + `exeUnderTest` The path of the executable we are testing (typically `agda`)
 -- + `onlyNames`    The tests to run relative to the generated executable.
 -- + `onlyFile`     The file listing the tests to run relative to the generated executable.
 -- + `interactive`  Whether to offer to update the expected file or not.
