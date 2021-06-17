@@ -146,8 +146,8 @@ module Infix where
   searchND : ∀ xs e acc → [] ∉ e → Dec (Match (Infix _≡_) xs e ⊎ Match (Prefix _≡_) xs acc)
   searchND xs e acc []∉e with []∈? acc
   ... | yes []∈acc with Prefix.longest xs acc -- get the best match possible
-  ... | yes longer = yes (inj₂ longer)
-  ... | no noMatch = contradiction (mkMatch [] []∈acc []) noMatch
+  ...               | yes longer = yes (inj₂ longer)
+  ...               | no noMatch = contradiction (mkMatch [] []∈acc []) noMatch
   searchND [] e acc []∉e | no []∉acc = no ([ []∉e , []∉acc ]′ ∘′ []⁻¹ᴹ)
   searchND (x ∷ xs) e acc []∉e | no []∉acc
     = map′ (step x) (step⁻¹ x []∉e []∉acc) (searchND xs e (eat x (acc ∣ e)) []∉e)
