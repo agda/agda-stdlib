@@ -10,10 +10,18 @@ module System.Clock where
 
 open import Level using (Level; 0ℓ; Lift; lower)
 open import Data.Bool.Base using (if_then_else_)
+open import Data.Fin.Base using (Fin; toℕ)
 open import Data.Nat.Base using (ℕ; zero; suc; _+_; _∸_; _^_; _<ᵇ_)
+import Data.Nat.Show as ℕ
+open import Data.Nat.DivMod using (_div_)
+import Data.Nat.Properties as ℕₚ
+open import Data.String.Base using (String; _++_; padLeft)
+
 open import IO.Base
 open import Function.Base using (_$_; _∘′_)
 open import Foreign.Haskell using (_,_)
+
+open import Relation.Nullary.Decidable using (False; fromWitnessFalse; toWitnessFalse)
 
 private
   variable
@@ -24,17 +32,26 @@ private
 -- Re-exporting the Clock data structure
 
 open import System.Clock.Primitive as Prim
-  using ( Clock
-        ; Monotonic
-        ; Realtime
-        ; ProcessCPUTime
-        ; ThreadCPUTime
-        ; MonotonicRaw
-        ; Boottime
-        ; MonotonicCoarse
-        ; RealtimeCoarse
-        )
   public
+  using ( Clock
+        -- System-wide monotonic time since an arbitrary point in the past
+        ; Monotonic
+        -- System-wide real time since the Epoch
+        ; RealTime
+        -- Amount of execution time of the current process
+        ; ProcessCPUTime
+        -- Amount of execution time of the current OS thread
+        ; ThreadCPUTime
+        -- A raw hardware version of Monotonic ignoring adjustments
+        ; MonotonicRaw
+        -- Linux-specific clocks
+        -- Similar to Monotonic, includes time spent suspended
+        ; BootTime
+        -- Faster but less precise alternative to Monotonic
+        ; MonotonicCoarse
+        -- Faster but less precise alternative to RealTime
+        ; RealTimeCoarse
+        )
 
 ------------------------------------------------------------------------
 -- Defining a more convenient representation
@@ -69,9 +86,9 @@ record Timed (A : Set a) : Set a where
 
 time : IO A → IO (Timed A)
 time io = do
-  start ← lift! $ getTime Realtime
+  start ← lift! $ getTime RealTime
   a     ← io
-  end   ← lift! $ getTime Realtime
+  end   ← lift! $ getTime RealTime
   return $ mkTimed a $ diff (lower start) (lower end)
 
 time′ : IO {0ℓ} A → IO Time
@@ -80,22 +97,16 @@ time′ io = Timed.time <$> time io
 ------------------------------------------------------------------------
 -- Showing time
 
-import Data.Nat.Show as ℕ
-open import Data.Nat.DivMod using (_div_)
-import Data.Nat.Properties as ℕₚ
-open import Data.Fin.Base using (Fin; toℕ)
-open import Data.String.Base using (String; _++_; padLeft)
-open import Data.Char.Base using (Char)
-open import Relation.Nullary.Decidable using (False; fromWitnessFalse; toWitnessFalse)
-
-show : Time → Fin 9 → String
+show : Time →   -- Time in seconds and nanoseconds
+       Fin 10 → -- Number of decimals to show
+                -- (in [0,9] because we are using nanoseconds)
+       String
 show (mkTime s ns) prec = secs ++ "s" ++ padLeft '0' decimals nsecs where
-  decimals  = toℕ prec
-  secs      = ℕ.show s
-  nsecs     = ℕ.show ((ns div (10 ^ (9 ∸ decimals)))
-                           {exp-nz 10 (9 ∸ decimals)})
+  decimals = toℕ prec
+  secs     = ℕ.show s
 
-   where
+  exp-nz : ∀ x n {x≠0 : False (x ℕₚ.≟ 0)} → False (x ^ n ℕₚ.≟ 0)
+  exp-nz x n {x≠0} = fromWitnessFalse (toWitnessFalse x≠0 ∘′ ℕₚ.m^n≡0⇒m≡0 x n)
 
-    exp-nz : ∀ x n {x≠0 : False (x ℕₚ.≟ 0)} → False (x ^ n ℕₚ.≟ 0)
-    exp-nz x n {x≠0} = fromWitnessFalse (toWitnessFalse x≠0 ∘′ ℕₚ.m^n≡0⇒m≡0 x n)
+  prf      = exp-nz 10 (9 ∸ decimals)
+  nsecs    = ℕ.show ((ns div (10 ^ (9 ∸ decimals))) {prf})

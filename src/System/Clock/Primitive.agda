@@ -13,9 +13,9 @@ open import IO.Primitive using (IO)
 open import Foreign.Haskell using (Pair)
 
 data Clock : Set where
-  Monotonic Realtime ProcessCPUTime : Clock
-  ThreadCPUTime MonotonicRaw Boottime : Clock
-  MonotonicCoarse RealtimeCoarse : Clock
+  Monotonic RealTime ProcessCPUTime : Clock
+  ThreadCPUTime MonotonicRaw BootTime : Clock
+  MonotonicCoarse RealTimeCoarse : Clock
 
 {-# COMPILE GHC Clock = data Clock (Monotonic | Realtime | ProcessCPUTime
                                    | ThreadCPUTime | MonotonicRaw | Boottime
