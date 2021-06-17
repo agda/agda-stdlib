@@ -305,7 +305,7 @@ module Summary where
   merge (mkSummary ws1 ls1) (mkSummary ws2 ls2) =
    mkSummary (ws2 ++ ws1) (ls2 ++ ls1)
 
-  update : List Result -> Summary -> Summary
+  update : List Result → Summary → Summary
   update res sum =
     let (ls2 , ws2) = partitionSums res in
     merge sum (mkSummary ws2 ls2)
@@ -313,7 +313,7 @@ module Summary where
 open Summary using (Summary) hiding (module Summary)
 
 -- Only keep the tests that have been asked for
-filterTests : Options -> List String -> List String
+filterTests : Options → List String → List String
 filterTests opts = case onlyNames opts of λ where
   [] → id
   xs → let names = List.map String.toList xs in

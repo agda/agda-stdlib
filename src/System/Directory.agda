@@ -89,9 +89,9 @@ absoluteToKnownNature relative = makeRelative
 
 -- Existence tests
 
-doesPathExist                : FilePath n -> IO Bool
-doesFileExist                : FilePath n -> IO Bool
-doesDirectoryExist           : FilePath n -> IO Bool
+doesPathExist                : FilePath n → IO Bool
+doesFileExist                : FilePath n → IO Bool
+doesDirectoryExist           : FilePath n → IO Bool
 findExecutable               : String → IO (Maybe AbsolutePath)
 findExecutables              : String → IO (List AbsolutePath)
 findExecutablesInDirectories : List (FilePath n) → String → IO (List (FilePath n))

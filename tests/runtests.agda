@@ -43,7 +43,7 @@ main = run $ ignore $ runner
   ∷ testPaths "data"   dataTests
   ∷ [] where
 
-  testPaths : String -> TestPool -> TestPool
+  testPaths : String → TestPool → TestPool
   testPaths dir pool =
     let testCases = List.map ((dir ++ "/") ++_) (pool .TestPool.testCases)
     in record pool { testCases = testCases }
