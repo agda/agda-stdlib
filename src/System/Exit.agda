@@ -19,11 +19,11 @@ open import IO using (IO; lift; _>>_; putStrLn)
 -- Re-exporting the ExitCode data structure
 
 open import System.Exit.Primitive as Prim
+  public
   using ( ExitCode
         ; ExitSuccess
         ; ExitFailure
         )
-  public
 
 ------------------------------------------------------------------------
 -- Tests

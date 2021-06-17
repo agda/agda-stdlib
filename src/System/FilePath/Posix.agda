@@ -20,6 +20,7 @@ open import Function
 open import Foreign.Haskell.Coerce
 
 open import System.FilePath.Posix.Primitive as Prim
+  public
   using ( module Nature
         ; Nature
         ; FilePath
@@ -80,7 +81,7 @@ open import System.FilePath.Posix.Primitive as Prim
         ; isAbsolute
         ; isValid
         ; makeValid
-        ) public
+        )
 
 private
   variable

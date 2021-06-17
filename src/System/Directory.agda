@@ -21,6 +21,7 @@ open import Function
 open import System.FilePath.Posix hiding (makeRelative)
 
 open import System.Directory.Primitive as Prim
+  public
   using ( XdgDirectory
         ; XdgData
         ; XdgConfig
@@ -29,7 +30,7 @@ open import System.Directory.Primitive as Prim
         ; XdgDataDirs
         ; XdgConfigDirs
         ; exeExtension
-        ) public
+        )
 
 private
   variable
