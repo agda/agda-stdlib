@@ -21,6 +21,11 @@ open import Foreign.Haskell.Coerce
 
 open import System.FilePath.Posix.Primitive as Prim
   public
+  -- Some of these functions are not directly re-exported because their
+  -- respective types mentions FFI-friendly versions of the stdlib's types
+  -- e.g. `Pair` instead of `_×_`.
+  -- A wrapper is systematically defined below using Foreign.Haskell.Coerce's
+  -- zero-cost coercion to expose a more useful function to users.
   using ( module Nature
         ; Nature
         ; FilePath
@@ -76,7 +81,7 @@ open import System.FilePath.Posix.Primitive as Prim
         ; normalise
         ; equalFilePath
         ; makeRelative
-     -- ; checkFilePath see below: coerce neededc
+     -- ; checkFilePath see below: coerce needed
         ; isRelative
         ; isAbsolute
         ; isValid
