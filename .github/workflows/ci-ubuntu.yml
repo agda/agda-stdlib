@@ -77,11 +77,6 @@ jobs:
       - name: Checkout stdlib
         uses: actions/checkout@v2
 
-      - name: Golden testing
-        run: |
-          ${{ env.CABAL_INSTALL }} --lib clock
-          make testsuite AGDA_EXEC='~/.cabal/bin/agda'
-
       - name: Test stdlib
         run: |
           cabal run GenerateEverything
@@ -89,6 +84,11 @@ jobs:
           ./index.sh
           ${{ env.AGDA }} --safe EverythingSafe.agda
           ${{ env.AGDA }} index.agda
+
+      - name: Golden testing
+        run: |
+          ${{ env.CABAL_INSTALL }} --lib clock
+          make testsuite AGDA_EXEC='~/.cabal/bin/agda'
 
       - name: Generate HTML
         run: |
