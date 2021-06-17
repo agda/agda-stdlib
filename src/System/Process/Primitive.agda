@@ -18,11 +18,8 @@ open import System.Exit.Primitive using (ExitCode)
 
 postulate
 
-
   callCommand : String → IO ⊤
-
-  system : String -> IO ExitCode
-
+  system      : String → IO ExitCode
   callProcess : String → List String → IO ⊤
 
   readProcess
