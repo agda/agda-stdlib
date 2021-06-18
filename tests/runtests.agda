@@ -30,7 +30,8 @@ showTests = mkTestPool "Show instances"
 
 textTests : TestPool
 textTests = mkTestPool "Text libraries"
-  $ "printf"
+  $ "pretty"
+  ∷ "printf"
   ∷ "regex"
   ∷ "tabular"
   ∷ []
