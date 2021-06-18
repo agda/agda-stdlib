@@ -86,7 +86,7 @@ open import Data.List.Relation.Binary.Infix.Heterogeneous.Properties using (infi
 open import Data.List.Relation.Unary.Any using (any?)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Nat.Base using (ℕ; _≡ᵇ_; _<ᵇ_; _+_; _∸_)
-open import Data.Nat.Show using (show)
+import Data.Nat.Show as ℕ
 open import Data.Product using (_×_; _,_)
 open import Data.String as String using (String; lines; unlines; unwords; concat)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
@@ -140,12 +140,20 @@ usage = unwords
   ∷ "[--only [NAMES]]"
   ∷ []
 
+data Error : Set where
+  MissingExecutable : Error
+  InvalidArgument : String → Error
+
+show : Error → String
+show MissingExecutable = "Expected a path to Agda, got nothing"
+show (InvalidArgument arg) = "Invalid argument: " String.++ arg
+
 -- Process the command line options
-options : List String → IO (Maybe Options)
+options : List String → IO (Error ⊎ Options)
 options(exe ∷ rest) = mkOptions exe rest where
 
-  go : List String → Maybe String → Options → Maybe (Maybe String × Options)
-  go []                             mfp opts = just (mfp , opts)
+  go : List String → Maybe String → Options → String ⊎ (Maybe String × Options)
+  go []                             mfp opts = inj₂ (mfp , opts)
   go ("--timing"            ∷ args) mfp opts =
     go args mfp (record opts { timing = true })
   go ("--interactive"       ∷ args) mfp opts =
@@ -153,19 +161,21 @@ options(exe ∷ rest) = mkOptions exe rest where
   go ("--failure-file" ∷ fp ∷ args) mfp opts =
     go args mfp (record opts { failureFile = just fp })
   go ("--only"              ∷ args) mfp opts =
-    go args mfp (record opts { onlyNames = args })
-  go _ _ _ = nothing
+    inj₂ (mfp , (record opts { onlyNames = args }))
+  go ("--only-file" ∷ fp    ∷ args) mfp opts =
+    go args (just fp) (record opts { onlyNames = args })
+  go (arg ∷ _) _ _ = inj₁ arg
 
-  mkOptions : String → List String → IO (Maybe Options)
+  mkOptions : String → List String → IO (Error ⊎ Options)
   mkOptions exe rest = do
-    just (mfp , opts) ← pure $ go rest nothing (initOptions exe)
-      where _ → pure nothing
+    inj₂ (mfp , opts) ← pure $ go rest nothing (initOptions exe)
+      where inj₁ arg → pure (inj₁ (InvalidArgument arg))
     just fp ← pure mfp
-      where _ → pure (just opts)
+      where _ → pure (inj₂ opts)
     only ← readFiniteFile fp
-    pure $ just $ record opts { onlyNames = lines only ++ onlyNames opts }
+    pure $ inj₂ $ record opts { onlyNames = lines only ++ onlyNames opts }
 
-options _ = pure nothing
+options [] = pure (inj₁ MissingExecutable)
 
 
 -- The result of a test run
@@ -273,7 +283,7 @@ runTest opts testPath = do
     printTiming : Bool → Time → String → IO _
     printTiming false _    msg = putStrLn (testPath String.++ msg)
     printTiming true  time msg =
-      let time  = show (time .seconds) String.++ "s"
+      let time  = ℕ.show (time .seconds) String.++ "s"
           spent = List.sum $ List.map String.length (testPath ∷ time ∷ msg ∷ [])
           pad   = String.replicate (72 ∸ spent) ' '
       in putStrLn (concat (testPath ∷ msg ∷ pad ∷ time ∷ []))
@@ -352,8 +362,8 @@ runner : List TestPool → IO ⊤
 runner tests = do
   -- figure out the options
   args ← getArgs
-  just opts ← options args
-    where nothing → die usage
+  inj₂ opts ← options args
+    where inj₁ err → die (unlines (show err ∷ usage ∷ []))
 
   -- run the tests
   ress ← List.mapM (poolRunner opts) tests
@@ -364,7 +374,7 @@ runner tests = do
   let nsucc = List.length (res .success)
   let nfail = List.length (res .failure)
   let ntotal = nsucc + nfail
-  putStrLn $ concat $ show nsucc ∷ "/" ∷ show ntotal ∷ " tests successful" ∷ []
+  putStrLn $ concat $ ℕ.show nsucc ∷ "/" ∷ ℕ.show ntotal ∷ " tests successful" ∷ []
 
   -- deal with failures
   let list = unlines (res .failure)
