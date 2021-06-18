@@ -9,7 +9,37 @@ on:
       - master
       - experimental
 
-## See 'Pick Agda version' for branch-specific commit selection
+########################################################################
+## CONFIGURATION
+##
+## See SETTINGS for the most important configuration variable: AGDA_COMMIT.
+## It has to be defined as a build step because it is potentially branch
+## dependent.
+##
+## As for the rest:
+##
+## Basically do not touch GHC_VERSION and CABAL_VERSION as long as
+## they aren't a problem in the build. If you have time to waste, it
+## could be worth investigating whether newer versions of ghc produce
+## more efficient Agda executable and could cut down the build time.
+## Just be aware that actions are flaky and small variations are to be
+## expected.
+##
+## The CABAL_INSTALL variable only passes `-O1` optimisations to ghc
+## because github actions cannot currently handle a build using `-O2`.
+## To be experimented with again in the future to see if things have
+## gotten better.
+##
+## The AGDA variable specifies the command to use to build the library.
+## It currently passes the flag `-Werror` to ensure maximal compliance
+## with e.g. not relying on deprecated definitions.
+## The rest are some arbitrary runtime arguments that shape the way Agda
+## allocates and garbage collects memory. It should make things faster.
+## Limits can be bumped if the builds start erroring with out of memory
+## errors.
+##
+########################################################################
+
 env:
   GHC_VERSION: 8.6.5
   CABAL_VERSION: 3.2.0.0
@@ -20,6 +50,19 @@ jobs:
   test-stdlib:
     runs-on: ubuntu-latest
     steps:
+
+########################################################################
+## SETTINGS
+##
+## AGDA_COMMIT picks the version of Agda to use to build the library.
+## It can either be a hash of a specific commit (to target a bugfix for
+## instance) or a tag e.g. tags/v2.6.1.3 (to target a released version).
+##
+## AGDA_HTML_DIR picks the html/ subdir in which to publish the docs.
+## The content of the html/ directory will be deployed so we put the
+## master version at the root and the experimental in a subdirectory.
+########################################################################
+
       - name: Initialise variables
         run: |
           if [[ '${{ github.ref }}' == 'refs/heads/master' \
@@ -39,6 +82,15 @@ jobs:
              echo "AGDA_DEPLOY=true" >> $GITHUB_ENV
           fi
 
+########################################################################
+## CACHING
+########################################################################
+
+
+      # This caching step allows us to save a lot of building time by only
+      # downloading ghc and cabal and rebuilding Agda if absolutely necessary
+      # i.e. if we change either the version of Agda, ghc, or cabal that we want
+      # to use for the build.
       - name: Cache cabal packages
         uses: actions/cache@v2
         id: cache-cabal
@@ -48,6 +100,10 @@ jobs:
             ~/.cabal/store
             ~/.cabal/bin
           key: ${{ runner.os }}-${{ env.GHC_VERSION }}-${{ env.CABAL_VERSION }}-${{ env.AGDA_COMMIT }}
+
+########################################################################
+## INSTALLATION STEPS
+########################################################################
 
       - name: Install cabal
         if: steps.cache-cabal.outputs.cache-hit != 'true'
@@ -73,7 +129,11 @@ jobs:
           ${{ env.CABAL_INSTALL }}
           cd ..
 
-      # Download and test stdlib
+########################################################################
+## TESTING
+########################################################################
+
+      # By default github actions do not pull the repo
       - name: Checkout stdlib
         uses: actions/checkout@v2
 
@@ -90,6 +150,15 @@ jobs:
           ${{ env.CABAL_INSTALL }} --lib clock
           make testsuite INTERACTIVE='' AGDA_EXEC='~/.cabal/bin/agda'
 
+
+########################################################################
+## DOC DEPLOYMENT
+########################################################################
+
+      # We start by retrieving the currently deployed docs
+      # We remove the content that is in the directory we are going to populate
+      # so that stale files corresponding to deleted modules do not accumulate.
+      # We then generate the docs in the AGDA_HTML_DIR subdirectory
       - name: Generate HTML
         run: |
           git clone --depth 1 --single-branch --branch gh-pages https://github.com/agda/agda-stdlib html
