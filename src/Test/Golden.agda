@@ -209,9 +209,9 @@ runTest opts testPath = do
 
   if result
     then printTiming (opts .timing) time $
-           withCommand (mkCommand foreground normal green) $ "success"
+           withCommand (mkCommand foreground normal green) "success"
     else do printTiming (opts .timing) time $
-              withCommand (mkCommand foreground bright red)   $ "FAILURE"
+              withCommand (mkCommand foreground bright red) "FAILURE"
             if opts .interactive
               then mayOverwrite (just exp) out
               else putStrLn (unlines (expVsOut exp out))
