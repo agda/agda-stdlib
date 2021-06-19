@@ -100,6 +100,7 @@ open import Codata.Musical.Notation using (♯_)
 open import IO
 
 open import System.Clock as Clock using (time′; Time; seconds)
+open import System.Console.ANSI
 open import System.Directory using (doesFileExist; doesDirectoryExist)
 open import System.Environment using (getArgs)
 open import System.Exit
@@ -207,8 +208,10 @@ runTest opts testPath = do
   let result = does (out String.≟ exp)
 
   if result
-    then printTiming (opts .timing) time ": success"
-    else do printTiming (opts .timing) time ": FAILURE"
+    then printTiming (opts .timing) time $
+           withCommand (mkCommand foreground normal green) $ "success"
+    else do printTiming (opts .timing) time $
+              withCommand (mkCommand foreground bright red)   $ "FAILURE"
             if opts .interactive
               then mayOverwrite (just exp) out
               else putStrLn (unlines (expVsOut exp out))
@@ -281,12 +284,14 @@ runTest opts testPath = do
       when b $ writeFile (testPath String.++ "/expected") out
 
     printTiming : Bool → Time → String → IO _
-    printTiming false _    msg = putStrLn (testPath String.++ msg)
+    printTiming false _    msg = putStrLn $ concat (testPath ∷ ": " ∷ msg ∷ [])
     printTiming true  time msg =
       let time  = ℕ.show (time .seconds) String.++ "s"
-          spent = List.sum $ List.map String.length (testPath ∷ time ∷ msg ∷ [])
+          spent = 9 + List.sum (List.map String.length (testPath ∷ time ∷ []))
+               -- ^ hack: both "success" and "FAILURE" have the same length
+               --   can't use `String.length msg` because the msg contains escape codes
           pad   = String.replicate (72 ∸ spent) ' '
-      in putStrLn (concat (testPath ∷ msg ∷ pad ∷ time ∷ []))
+      in putStrLn (concat (testPath ∷ ": " ∷ msg ∷ pad ∷ time ∷ []))
 
 -- A test pool is characterised by
 --  + a name
