@@ -17,7 +17,8 @@ dataTests = mkTestPool "Data structures"
 
 systemTests : TestPool
 systemTests = mkTestPool "System modules"
-  $ "directory"
+  $ "ansi"
+  ∷ "directory"
   ∷ "environment"
   ∷ []
 
