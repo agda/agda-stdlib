@@ -9,7 +9,7 @@
 module System.Exit.Primitive where
 
 open import Agda.Builtin.Int using (Int)
-open import IO.Primitive using (IO)
+open import Agda.Builtin.IO using (IO)
 
 data ExitCode : Set where
   ExitSuccess : ExitCode

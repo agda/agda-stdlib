@@ -10,11 +10,11 @@ module System.Directory.Primitive where
 
 open import Agda.Builtin.Unit using (⊤)
 open import Agda.Builtin.Bool using (Bool)
+open import Agda.Builtin.IO using (IO)
 open import Agda.Builtin.List using (List)
 open import Agda.Builtin.Maybe using (Maybe)
 open import Agda.Builtin.Nat using (Nat)
 open import Agda.Builtin.String using (String)
-open import IO.Primitive using (IO)
 open import System.FilePath.Posix.Primitive
 
 {-# FOREIGN GHC import System.Directory #-}
