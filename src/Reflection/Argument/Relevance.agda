@@ -13,7 +13,7 @@ open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
 
 ------------------------------------------------------------------------
--- Re-exporting the builtins publically
+-- Re-exporting the builtins publicly
 
 open import Agda.Builtin.Reflection public using (Relevance)
 open Relevance public

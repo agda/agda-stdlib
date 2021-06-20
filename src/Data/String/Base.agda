@@ -15,8 +15,9 @@ open import Data.List.Base as List using (List; [_]; _∷_; [])
 open import Data.List.NonEmpty.Base as NE using (List⁺)
 open import Data.List.Relation.Binary.Pointwise.Base using (Pointwise)
 open import Data.List.Relation.Binary.Lex.Core using (Lex-<; Lex-≤)
+open import Data.Maybe.Base as Maybe using (Maybe)
 open import Data.Nat.Base using (ℕ; _∸_; ⌊_/2⌋; ⌈_/2⌉)
-
+open import Data.Product using (proj₁; proj₂)
 open import Function.Base using (_on_; _∘′_; _∘_)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
@@ -33,7 +34,8 @@ import Agda.Builtin.String as String
 
 open String public using ( String )
   renaming
-  ( primStringToList   to toList
+  ( primStringUncons   to uncons
+  ; primStringToList   to toList
   ; primStringFromList to fromList
   ; primShowString     to show
   )
@@ -59,6 +61,14 @@ _≤_ = Lex-≤ _≡_ Char._<_ on toList
 
 ------------------------------------------------------------------------
 -- Operations
+
+-- List-like operations
+
+head : String → Maybe Char
+head = Maybe.map proj₁ ∘′ uncons
+
+tail : String → Maybe String
+tail = Maybe.map proj₂ ∘′ uncons
 
 -- Additional conversion functions
 

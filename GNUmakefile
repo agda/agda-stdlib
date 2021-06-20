@@ -5,9 +5,7 @@ AGDA=$(AGDA_EXEC) $(RTS_OPTIONS)
 # Before running `make test` the `fix-whitespace` program should
 # be installed:
 #
-#   git clone git@github.com:agda/fix-whitespace --depth 1
-#   cd fix-whitespace
-#   cabal install
+#   cabal install fix-whitespace
 
 test: Everything.agda check-whitespace
 	$(AGDA) -i. -isrc README.agda

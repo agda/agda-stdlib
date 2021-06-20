@@ -4,7 +4,7 @@
 -- A categorical view of Delay
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe --sized-types #-}
+{-# OPTIONS --without-K --sized-types #-}
 
 module Codata.Delay.Categorical where
 

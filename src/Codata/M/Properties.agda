@@ -4,7 +4,7 @@
 -- Properties of operations on M-types
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe --sized-types #-}
+{-# OPTIONS --without-K --sized-types #-}
 
 module Codata.M.Properties where
 

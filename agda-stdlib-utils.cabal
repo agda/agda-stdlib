@@ -1,5 +1,5 @@
 name:            agda-stdlib-utils
-version:         1.7
+version:         1.8-dev
 cabal-version:   >= 1.10
 build-type:      Simple
 description:     Helper programs.
@@ -9,18 +9,19 @@ tested-with:     GHC == 8.0.2
                  GHC == 8.4.4
                  GHC == 8.6.5
                  GHC == 8.8.4
-                 GHC == 8.10.4
+                 GHC == 8.10.5
                  GHC == 9.0.1
-
 
 executable GenerateEverything
   hs-source-dirs:   .
   main-is:          GenerateEverything.hs
   default-language: Haskell2010
+  default-extensions: PatternGuards, PatternSynonyms
   build-depends:      base >= 4.9.0.0 && < 4.16
                     , directory >= 1.0.0.0 && < 1.4
                     , filemanip >= 0.3.6.2 && < 0.4
                     , filepath >= 1.4.1.0 && < 1.5
+                    , mtl      >= 2.2.2   && < 2.3
 
 executable AllNonAsciiChars
   hs-source-dirs:   .

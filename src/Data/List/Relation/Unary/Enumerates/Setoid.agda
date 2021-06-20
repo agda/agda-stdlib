@@ -10,7 +10,7 @@ open import Data.List
 open import Level
 open import Relation.Binary
 
-module Data.List.Relation.Unary.Complete.Setoid
+module Data.List.Relation.Unary.Enumerates.Setoid
   {a ℓ} (S : Setoid a ℓ) where
 
 open Setoid S renaming (Carrier to A)
@@ -19,5 +19,5 @@ open import Data.List.Membership.Setoid S
 ------------------------------------------------------------------------
 -- Definition
 
-Complete : List A → Set (a ⊔ ℓ)
-Complete xs = ∀ x → x ∈ xs
+IsEnumeration : List A → Set (a ⊔ ℓ)
+IsEnumeration xs = ∀ x → x ∈ xs
