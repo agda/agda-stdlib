@@ -52,6 +52,7 @@
 -- + `interactive`  Whether to offer to update the expected file or not.
 -- + `timing`       Whether to display time taken for each test.
 -- + `failureFile`  The file in which to write the list of failing tests.
+-- + `colour`       The output should use ANSI escape codes
 --
 -- We provide an options parser (`options`) that takes the list of command line
 -- arguments and constructs this for you.
@@ -68,6 +69,7 @@
 --   [--interactive]
 --   [--only-file PATH]
 --   [--failure-file PATH]
+--   [--no-colour]
 --   [--only [NAMES]]
 --```
 --
@@ -84,11 +86,11 @@ import Data.Integer.Base as ℤ
 open import Data.List.Base as List using (List; []; _∷_; _++_; filter; partitionSums)
 open import Data.List.Relation.Binary.Infix.Heterogeneous.Properties using (infix?)
 open import Data.List.Relation.Unary.Any using (any?)
-open import Data.Maybe.Base using (Maybe; just; nothing)
+open import Data.Maybe.Base using (Maybe; just; nothing; fromMaybe)
 open import Data.Nat.Base using (ℕ; _≡ᵇ_; _<ᵇ_; _+_; _∸_)
 import Data.Nat.Show as ℕ
 open import Data.Product using (_×_; _,_)
-open import Data.String as String using (String; lines; unlines; unwords; concat)
+open import Data.String as String using (String; lines; unlines; unwords; concat; _≟_)
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.Unit.Base using (⊤)
 
@@ -102,7 +104,7 @@ open import IO
 open import System.Clock as Clock using (time′; Time; seconds)
 open import System.Console.ANSI
 open import System.Directory using (doesFileExist; doesDirectoryExist)
-open import System.Environment using (getArgs)
+open import System.Environment using (getArgs; lookupEnv)
 open import System.Exit
 open import System.FilePath.Posix using (mkFilePath)
 open import System.Process using (callCommand; system)
@@ -112,13 +114,15 @@ record Options : Set where
     -- What is the name of the Agda executable?
     exeUnderTest : String
     -- Should we only run some specific cases?
-    onlyNames    : List String
+    onlyNames : List String
     -- Should we run the test suite interactively?
     interactive : Bool
     -- Should we time and display the tests?
     timing : Bool
     -- Should we write the list of failing cases to a file?
     failureFile : Maybe String
+    -- Should we use ANSI escape codes to colour the output?
+    colour : Bool
 open Options
 
 initOptions : String → Options
@@ -128,6 +132,7 @@ initOptions exe = record
   ; interactive  = false
   ; timing       = false
   ; failureFile  = nothing
+  ; colour       = true
   }
 
 usage : String
@@ -138,6 +143,7 @@ usage = unwords
   ∷ "[--interactive]"
   ∷ "[--failure-file PATH]"
   ∷ "[--only-file PATH]"
+  ∷ "[--no-colour]"
   ∷ "[--only [NAMES]]"
   ∷ []
 
@@ -165,12 +171,18 @@ options(exe ∷ rest) = mkOptions exe rest where
     inj₂ (mfp , (record opts { onlyNames = args }))
   go ("--only-file" ∷ fp    ∷ args) mfp opts =
     go args (just fp) (record opts { onlyNames = args })
+  go ("--no-colour"         ∷ args) mfp opts =
+    go args mfp (record opts { colour = false })
   go (arg ∷ _) _ _ = inj₁ arg
 
   mkOptions : String → List String → IO (Error ⊎ Options)
   mkOptions exe rest = do
     inj₂ (mfp , opts) ← pure $ go rest nothing (initOptions exe)
       where inj₁ arg → pure (inj₁ (InvalidArgument arg))
+    term ← fromMaybe "" <$> lookupEnv "TERM"
+    let opts = if does (term ≟ "DUMB")
+               then record opts { colour = false }
+               else opts
     just fp ← pure mfp
       where _ → pure (inj₂ opts)
     only ← readFiniteFile fp
@@ -208,10 +220,16 @@ runTest opts testPath = do
   let result = does (out String.≟ exp)
 
   if result
-    then printTiming (opts .timing) time $
-           withCommand (setColour foreground classic green) "success"
-    else do printTiming (opts .timing) time $
-              withCommand (setColour foreground bright red) "FAILURE"
+    then printTiming (opts .timing) time
+           $ if opts .colour
+               then withCommand (setColour foreground classic green)
+               else id
+           $ "success"
+    else do printTiming (opts .timing) time
+             $ if opts .colour
+               then withCommand (setColour foreground bright red)
+               else id
+             $ "FAILURE"
             if opts .interactive
               then mayOverwrite (just exp) out
               else putStrLn (unlines (expVsOut exp out))
