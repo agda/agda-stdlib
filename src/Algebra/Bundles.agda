@@ -386,7 +386,7 @@ record Lattice c ℓ : Set (suc (c ⊔ ℓ)) where
     ; _∨_  = _∨_
     }
 
-  open RawLattice rawLattice
+  open RawLattice rawLattice public
     using (∨-rawMagma; ∧-rawMagma)
 
   setoid : Setoid _ _

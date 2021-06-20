@@ -122,6 +122,12 @@ Deprecated names
 New modules
 -----------
 
+* Identity morphisms and composition of morphisms between algebraic structures:
+  ```
+  Algebra.Morphism.Construct.Composition
+  Algebra.Morphism.Construct.Identity
+  ```
+
 * New module for making system calls during type checking:
   ```agda
   Reflection.External
@@ -166,6 +172,20 @@ New modules
 
 Other minor additions
 ---------------------
+
+* In `Algebra.Bundles`, `Lattice` now provides
+  ```agda
+  ∨-commutativeSemigroup : CommutativeSemigroup c ℓ
+  ∧-commutativeSemigroup : CommutativeSemigroup c ℓ
+  ```
+  and their corresponding algebraic subbundles.
+
+* In `Algebra.Structures`, `IsLattice` now provides
+  ```
+  ∨-isCommutativeSemigroup : IsCommutativeSemigroup ∨
+  ∧-isCommutativeSemigroup : IsCommutativeSemigroup ∧
+  ```
+  and their corresponding algebraic substructures.
 
 * Added new relations to `Data.Fin.Base`:
   ```agda
