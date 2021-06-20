@@ -12,6 +12,7 @@
 
 module Data.Fin.Base where
 
+open import Data.Bool.Base using (Bool)
 open import Data.Empty using (⊥-elim)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; z≤n; s≤s)
 open import Data.Nat.Properties.Core using (≤-pred)
@@ -246,6 +247,15 @@ pinch : ∀ {n} → Fin n → Fin (suc n) → Fin n
 pinch {suc n} _       zero    = zero
 pinch {suc n} zero    (suc j) = j
 pinch {suc n} (suc i) (suc j) = suc (pinch i j)
+
+------------------------------------------------------------------------
+-- Equality relations
+
+-- Note that unlike other boolean `_≡ᵇ_` tests, this test is *not*
+-- efficient as it first converts the unary representation to `ℕ`.
+infix 4 _≡ᵇ_
+_≡ᵇ_ : ∀ {m n} → Fin m → Fin n → Bool
+i ≡ᵇ j = toℕ i ℕ.≡ᵇ toℕ j
 
 ------------------------------------------------------------------------
 -- Order relations

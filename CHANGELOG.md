@@ -27,6 +27,11 @@ New modules
   Algebra.Morphism.Construct.Identity
   ```
 
+* The start of a small section about matrices
+  ```
+  Data.Matrix
+  ```
+
 Other minor additions
 ---------------------
 
@@ -46,3 +51,14 @@ Other minor additions
 
 Other minor additions
 ---------------------
+
+* Added new operation in `Data.Fin.Base`:
+  ```agda
+  _≡ᵇ_ : Fin m → Fin n → Bool
+  ```
+
+* Added new operation in `Data.Vec.Functional`:
+  ```agda
+  foldr+ : Op₂ A → Vector A (suc n) → A
+  foldl+ : Op₂ A → Vector A (suc n) → A
+  ```
