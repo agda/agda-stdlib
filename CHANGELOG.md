@@ -1,7 +1,7 @@
 Version 1.7
 ===========
 
-The library has been tested using Agda 2.6.2 release candidate 1.
+The library has been tested using Agda 2.6.2.
 
 Highlights
 ----------
