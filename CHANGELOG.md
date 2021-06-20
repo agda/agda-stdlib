@@ -93,13 +93,15 @@ Other minor additions
   ```agda
   m/n≤m : ∀ m n {≢0} → (m / n) {≢0} ≤ m
   ```
+
 * Added `UnitalMagma` and `QuasiGroup` to the Algebra.Bundles:
   ```agda
   record UnitalMagma c ℓ : Set (suc (c ⊔ ℓ))
-  record Quasigroup c ℓ : Set (suc (c ⊔ ℓ))
+  record Quasigroup  c ℓ : Set (suc (c ⊔ ℓ))
   ```
+
 * Added new records to `Algebra.Structures`:
   ```agda
-  record IsUnitalMagma (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ)
-  record IsQuasigroup (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ)
+  record IsUnitalMagma (_∙_ : Op₂ A) (ε : A) : Set (a ⊔ ℓ)
+  record IsQuasigroup  (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ)
   ```

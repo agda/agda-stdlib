@@ -106,9 +106,10 @@ record IsSemilattice (∧ : Op₂ A) : Set (a ⊔ ℓ) where
 ------------------------------------------------------------------------
 -- Structures with 1 binary operation & 1 element
 ------------------------------------------------------------------------
+
 record IsUnitalMagma (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
   field
-    isMagma : IsMagma ∙
+    isMagma  : IsMagma ∙
     identity : Identity ε ∙
 
   open IsMagma isMagma public
@@ -118,6 +119,7 @@ record IsUnitalMagma (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
 
   identityʳ : RightIdentity ε ∙
   identityʳ = proj₂ identity
+
 
 record IsMonoid (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
   field
@@ -134,9 +136,10 @@ record IsMonoid (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
 
   isUnitalMagma : IsUnitalMagma ∙ ε
   isUnitalMagma = record
-    { isMagma = isMagma
+    { isMagma  = isMagma
     ; identity = identity
     }
+
 
 record IsCommutativeMonoid (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
   field
@@ -179,6 +182,7 @@ module IsBoundedLattice {∙ : Op₂ A}
 ------------------------------------------------------------------------
 -- Structures with 1 binary operation, 1 unary operation & 1 element
 ------------------------------------------------------------------------
+
 record IsQuasigroup (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) where
   field
     isMagma  : IsMagma _∙_
@@ -191,6 +195,7 @@ record IsQuasigroup (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ �
 
   inverseʳ : RightInverse ε _⁻¹ _∙_
   inverseʳ = proj₂ inverse
+
 
 record IsGroup (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) where
   field
@@ -217,6 +222,12 @@ record IsGroup (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) w
   uniqueʳ-⁻¹ : ∀ x y → (x ∙ y) ≈ ε → y ≈ (x ⁻¹)
   uniqueʳ-⁻¹ = Consequences.assoc+id+invˡ⇒invʳ-unique
                 setoid ∙-cong assoc identity inverseˡ
+
+  isQuasigroup : IsQuasigroup _∙_ ε _⁻¹
+  isQuasigroup = record
+    { isMagma = isMagma
+    ; inverse = inverse
+    }
 
 
 record IsAbelianGroup (∙ : Op₂ A)
@@ -306,16 +317,16 @@ record IsNearSemiring (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
 
   open IsMonoid +-isMonoid public
     renaming
-    ( assoc       to +-assoc
-    ; ∙-cong      to +-cong
-    ; ∙-congˡ     to +-congˡ
-    ; ∙-congʳ     to +-congʳ
-    ; identity    to +-identity
-    ; identityˡ   to +-identityˡ
-    ; identityʳ   to +-identityʳ
-    ; isMagma     to +-isMagma
+    ( assoc         to +-assoc
+    ; ∙-cong        to +-cong
+    ; ∙-congˡ       to +-congˡ
+    ; ∙-congʳ       to +-congʳ
+    ; identity      to +-identity
+    ; identityˡ     to +-identityˡ
+    ; identityʳ     to +-identityʳ
+    ; isMagma       to +-isMagma
     ; isUnitalMagma to +-isUnitalMagma
-    ; isSemigroup to +-isSemigroup
+    ; isSemigroup   to +-isSemigroup
     )
 
   open IsSemigroup *-isSemigroup public
@@ -524,6 +535,7 @@ record IsRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
     ; isCommutativeMagma     to +-isCommutativeMagma
     ; isCommutativeMonoid    to +-isCommutativeMonoid
     ; isCommutativeSemigroup to +-isCommutativeSemigroup
+    ; isQuasigroup           to +-isQuasigroup
     ; isGroup                to +-isGroup
     )
 
@@ -598,4 +610,3 @@ record IsBooleanAlgebra
     ¬-cong                : Congruent₁ ¬
 
   open IsDistributiveLattice isDistributiveLattice public
-
