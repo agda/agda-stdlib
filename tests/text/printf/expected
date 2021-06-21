@@ -1,0 +1,6 @@
+example: 3 + 2 ≡ 5
+example: 3 + -3 ≡ 0
+gcd(-9,15) ≡ 3
+lcm(-9,15) ≡ 45
+A char: c
+A float: 3.14

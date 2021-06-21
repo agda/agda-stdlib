@@ -8,10 +8,14 @@
 
 module IO.Base where
 
-open import Codata.Musical.Notation
-open import Data.Unit.Polymorphic.Base
-import IO.Primitive as Prim
 open import Level
+open import Codata.Musical.Notation
+open import Data.Bool.Base using (Bool; true; false; not)
+open import Agda.Builtin.Maybe using (Maybe; nothing; just)
+import Agda.Builtin.Unit as Unit0
+open import Data.Unit.Polymorphic.Base
+open import Function.Base using (_∘′_; const; flip)
+import IO.Primitive as Prim
 
 private
   variable
@@ -38,9 +42,18 @@ data IO (A : Set a) : Set (suc a) where
 pure : A → IO A
 pure = return
 
+lift! : IO A → IO (Lift b A)
+lift!         (lift io)   = lift (io Prim.>>= λ a → Prim.return (Level.lift a))
+lift!         (return a)  = return (Level.lift a)
+lift! {b = b} (bind m f)  = bind (♯ lift! {b = b} (♭ m))
+                                 (λ x → ♯ lift! (♭ (f (lower x))))
+lift! {b = b} (seq m₁ m₂) = seq (♯ lift! {b = b} (♭ m₁))
+                                (♯ lift! (♭ m₂))
+
 module _ {A B : Set a} where
 
   infixl 1 _<$>_ _<*>_ _>>=_ _>>_
+  infixr 1 _=<<_
 
   _<*>_ : IO (A → B) → IO A → IO B
   mf <*> mx = bind (♯ mf) λ f → ♯ (bind (♯ mx) λ x → ♯ pure (f x))
@@ -48,11 +61,20 @@ module _ {A B : Set a} where
   _<$>_ : (A → B) → IO A → IO B
   f <$> m = pure f <*> m
 
+  _<$_ : B → IO A → IO B
+  b <$ m = (const b) <$> m
+
   _>>=_ : IO A → (A → IO B) → IO B
   m >>= f = bind (♯ m) λ x → ♯ f x
 
+  _=<<_ : (A → IO B) → IO A → IO B
+  _=<<_ = flip _>>=_
+
   _>>_ : IO A → IO B → IO B
   m₁ >> m₂ = seq (♯ m₁) (♯ m₂)
+
+  _<<_ : IO B → IO A → IO B
+  _<<_ = flip _>>_
 
 ------------------------------------------------------------------------
 -- Running programs
@@ -78,5 +100,31 @@ Main = Prim.IO {0ℓ} ⊤
 ------------------------------------------------------------------------
 -- Utilities
 
+-- Make a unit-returning primitive level polymorphic
+lift′ : Prim.IO Unit0.⊤ → IO {a} ⊤
+lift′ io = lift (io Prim.>>= λ _ → Prim.return _)
+
+-- Throw away the result
 ignore : IO A → IO ⊤
 ignore io = io >> return _
+
+-- Conditional executions
+when : Bool → IO {a} ⊤ → IO ⊤
+when true m = m
+when false _ = pure _
+
+unless : Bool → IO {a} ⊤ → IO ⊤
+unless = when ∘′ not
+
+whenJust : Maybe A → (A → IO {a} ⊤) → IO ⊤
+whenJust (just a) k = k a
+whenJust nothing  _ = pure _
+
+-- Keep running an IO action until we get a value. Convenient when user
+-- input is involved and it may be malformed.
+untilJust : IO (Maybe A) → IO A
+-- Note that here we are forced to use `bind` & the musical notation
+-- explicitly to guarantee that the corecursive call is guarded
+untilJust m = bind (♯ m) λ where
+  nothing  → ♯ untilJust m
+  (just a) → ♯ return a

@@ -34,21 +34,25 @@ open import Data.List.Extrema.Core ℕₚ.≤-totalOrder using (⊓ᴸ)
 
 import Text.Pretty.Core as Core
 
-Doc = List Core.Block
+record Doc : Set where
+  constructor mkDoc
+  field runDoc : List Core.Block
+open Doc public
 
 render : Doc → String
 render = Core.render
        ∘ maybe′ (foldr₁ (⊓ᴸ Core.Block.height) ∘′ uncurry List⁺._∷_) Core.empty
        ∘ uncons
+       ∘′ runDoc
 
 ------------------------------------------------------------------------
 -- Basic building blocks
 
 fail : Doc
-fail = []
+fail = mkDoc []
 
 text : String → Doc
-text = filter (Core.valid width) ∘ pure ∘ Core.text
+text = mkDoc ∘′ filter (Core.valid width) ∘ pure ∘ Core.text
 
 empty : Doc
 empty = text ""
@@ -86,10 +90,13 @@ llbracket = char '⟦'; rrbracket = char '⟧'
 
 infixr 5 _<>_
 _<>_ : Doc → Doc → Doc
-xs <> ys = filter (Core.valid width) (Core._<>_ <$> xs ⊛ ys)
+xs <> ys = mkDoc $
+  let candidates = Core._<>_ <$> runDoc xs ⊛ runDoc ys in
+  filter (Core.valid width) candidates
+
 
 flush : Doc → Doc
-flush = map Core.flush
+flush = mkDoc ∘′ map Core.flush ∘′ runDoc
 
 infixr 5 _<+>_
 _<+>_ : Doc → Doc → Doc
@@ -101,7 +108,7 @@ x $$ y = flush x <> y
 
 infixr 4 _<|>_
 _<|>_ : Doc → Doc → Doc
-x <|> y = x ++ y
+x <|> y = mkDoc (runDoc x ++ runDoc y)
 
 ------------------------------------------------------------------------
 -- Combining lists of documents
