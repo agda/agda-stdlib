@@ -1,0 +1,122 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>System.FilePath.Posix</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Posix filepaths</a>
+<a id="125" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="199" class="Symbol">{-#</a> <a id="203" class="Keyword">OPTIONS</a> <a id="211" class="Pragma">--without-K</a> <a id="223" class="Pragma">--guardedness</a> <a id="237" class="Symbol">#-}</a>
+
+<a id="242" class="Keyword">module</a> <a id="249" href="System.FilePath.Posix.html" class="Module">System.FilePath.Posix</a> <a id="271" class="Keyword">where</a>
+
+<a id="278" class="Keyword">open</a> <a id="283" class="Keyword">import</a> <a id="290" href="Agda.Builtin.Bool.html" class="Module">Agda.Builtin.Bool</a> <a id="308" class="Keyword">using</a> <a id="314" class="Symbol">(</a><a id="315" href="Agda.Builtin.Bool.html#163" class="Datatype">Bool</a><a id="319" class="Symbol">)</a>
+<a id="321" class="Keyword">open</a> <a id="326" class="Keyword">import</a> <a id="333" href="Agda.Builtin.List.html" class="Module">Agda.Builtin.List</a> <a id="351" class="Keyword">using</a> <a id="357" class="Symbol">(</a><a id="358" href="Agda.Builtin.List.html#148" class="Datatype">List</a><a id="362" class="Symbol">)</a>
+<a id="364" class="Keyword">open</a> <a id="369" class="Keyword">import</a> <a id="376" href="Agda.Builtin.String.html" class="Module">Agda.Builtin.String</a> <a id="396" class="Keyword">using</a> <a id="402" class="Symbol">(</a><a id="403" href="Agda.Builtin.String.html#336" class="Postulate">String</a><a id="409" class="Symbol">)</a>
+<a id="411" class="Keyword">open</a> <a id="416" class="Keyword">import</a> <a id="423" href="IO.Base.html" class="Module">IO.Base</a> <a id="431" class="Keyword">using</a> <a id="437" class="Symbol">(</a><a id="438" href="IO.Base.html#1121" class="Datatype">IO</a><a id="440" class="Symbol">;</a> <a id="442" href="IO.Base.html#1158" class="InductiveConstructor">lift</a><a id="446" class="Symbol">)</a>
+<a id="448" class="Keyword">open</a> <a id="453" class="Keyword">import</a> <a id="460" href="Data.Maybe.Base.html" class="Module">Data.Maybe.Base</a> <a id="476" class="Keyword">using</a> <a id="482" class="Symbol">(</a><a id="483" href="Agda.Builtin.Maybe.html#136" class="Datatype">Maybe</a><a id="488" class="Symbol">)</a>
+<a id="490" class="Keyword">open</a> <a id="495" class="Keyword">import</a> <a id="502" href="Data.Product.html" class="Module">Data.Product</a> <a id="515" class="Keyword">using</a> <a id="521" class="Symbol">(</a><a id="522" href="Data.Product.html#1167" class="Function Operator">_×_</a><a id="525" class="Symbol">)</a>
+<a id="527" class="Keyword">open</a> <a id="532" class="Keyword">import</a> <a id="539" href="Data.Sum.Base.html" class="Module">Data.Sum.Base</a> <a id="553" class="Keyword">using</a> <a id="559" class="Symbol">(</a><a id="560" href="Data.Sum.Base.html#734" class="Datatype Operator">_⊎_</a><a id="563" class="Symbol">)</a>
+<a id="565" class="Keyword">open</a> <a id="570" class="Keyword">import</a> <a id="577" href="Function.html" class="Module">Function</a>
+
+<a id="587" class="Keyword">open</a> <a id="592" class="Keyword">import</a> <a id="599" href="Foreign.Haskell.Coerce.html" class="Module">Foreign.Haskell.Coerce</a>
+
+<a id="623" class="Keyword">open</a> <a id="628" class="Keyword">import</a> <a id="635" href="System.FilePath.Posix.Primitive.html" class="Module">System.FilePath.Posix.Primitive</a> <a id="667" class="Symbol">as</a> <a id="670" class="Module">Prim</a>
+  <a id="677" class="Keyword">public</a>
+  <a id="686" class="Comment">-- Some of these functions are not directly re-exported because their</a>
+  <a id="758" class="Comment">-- respective types mentions FFI-friendly versions of the stdlib&#39;s types</a>
+  <a id="833" class="Comment">-- e.g. `Pair` instead of `_×_`.</a>
+  <a id="868" class="Comment">-- A wrapper is systematically defined below using Foreign.Haskell.Coerce&#39;s</a>
+  <a id="946" class="Comment">-- zero-cost coercion to expose a more useful function to users.</a>
+  <a id="1013" class="Keyword">using</a> <a id="1019" class="Symbol">(</a> <a id="1021" class="Keyword">module</a> <a id="1028" href="System.FilePath.Posix.Primitive.html#964" class="Module">Nature</a>
+        <a id="1043" class="Symbol">;</a> <a id="1045" href="System.FilePath.Posix.Primitive.html#994" class="Postulate">Nature</a>
+        <a id="1060" class="Symbol">;</a> <a id="1062" href="System.FilePath.Posix.Primitive.html#1470" class="Postulate">FilePath</a>
+        <a id="1079" class="Symbol">;</a> <a id="1081" href="System.FilePath.Posix.Primitive.html#2547" class="Postulate">mkFilePath</a>
+        <a id="1100" class="Symbol">;</a> <a id="1102" href="System.FilePath.Posix.Primitive.html#1500" class="Postulate">getFilePath</a>
+        <a id="1122" class="Symbol">;</a> <a id="1124" href="System.FilePath.Posix.Primitive.html#2180" class="Function">AbsolutePath</a>
+        <a id="1145" class="Symbol">;</a> <a id="1147" href="System.FilePath.Posix.Primitive.html#2220" class="Function">RelativePath</a>
+        <a id="1168" class="Symbol">;</a> <a id="1170" href="System.FilePath.Posix.Primitive.html#2260" class="Function">SomePath</a>
+        <a id="1187" class="Symbol">;</a> <a id="1189" href="System.FilePath.Posix.Primitive.html#1538" class="Postulate">Extension</a>
+        <a id="1207" class="Symbol">;</a> <a id="1209" href="System.FilePath.Posix.Primitive.html#1559" class="Postulate">mkExtension</a>
+        <a id="1229" class="Symbol">;</a> <a id="1231" href="System.FilePath.Posix.Primitive.html#1595" class="Postulate">getExtension</a>
+     <a id="1249" class="Comment">-- Separator predicates</a>
+        <a id="1281" class="Symbol">;</a> <a id="1283" href="System.FilePath.Posix.Primitive.html#2660" class="Postulate">pathSeparator</a>
+        <a id="1305" class="Symbol">;</a> <a id="1307" href="System.FilePath.Posix.Primitive.html#2691" class="Postulate">pathSeparators</a>
+        <a id="1330" class="Symbol">;</a> <a id="1332" href="System.FilePath.Posix.Primitive.html#2727" class="Postulate">isPathSeparator</a>
+        <a id="1356" class="Symbol">;</a> <a id="1358" href="System.FilePath.Posix.Primitive.html#2765" class="Postulate">searchPathSeparator</a>
+        <a id="1386" class="Symbol">;</a> <a id="1388" href="System.FilePath.Posix.Primitive.html#2796" class="Postulate">isSearchPathSeparator</a>
+        <a id="1418" class="Symbol">;</a> <a id="1420" href="System.FilePath.Posix.Primitive.html#2834" class="Postulate">extSeparator</a>
+        <a id="1441" class="Symbol">;</a> <a id="1443" href="System.FilePath.Posix.Primitive.html#2865" class="Postulate">isExtSeparator</a>
+     <a id="1463" class="Comment">-- $PATH methods</a>
+        <a id="1488" class="Symbol">;</a> <a id="1490" href="System.FilePath.Posix.Primitive.html#2924" class="Postulate">splitSearchPath</a>
+     <a id="1511" class="Comment">-- ; getSearchPath see below: lift needed</a>
+     <a id="1558" class="Comment">-- Extension functions</a>
+     <a id="1586" class="Comment">-- ; splitExtension see below: coerce needed</a>
+        <a id="1639" class="Symbol">;</a> <a id="1641" href="System.FilePath.Posix.Primitive.html#3096" class="Postulate">takeExtension</a>
+        <a id="1663" class="Symbol">;</a> <a id="1665" href="System.FilePath.Posix.Primitive.html#3141" class="Postulate">replaceExtension</a>
+        <a id="1690" class="Symbol">;</a> <a id="1692" href="System.FilePath.Posix.Primitive.html#3199" class="Postulate">dropExtension</a>
+        <a id="1714" class="Symbol">;</a> <a id="1716" href="System.FilePath.Posix.Primitive.html#3245" class="Postulate">addExtension</a>
+        <a id="1737" class="Symbol">;</a> <a id="1739" href="System.FilePath.Posix.Primitive.html#3303" class="Postulate">hasExtension</a>
+        <a id="1760" class="Symbol">;</a> <a id="1762" href="System.FilePath.Posix.Primitive.html#3406" class="Postulate">takeExtensions</a>
+        <a id="1785" class="Symbol">;</a> <a id="1787" href="System.FilePath.Posix.Primitive.html#3451" class="Postulate">replaceExtensions</a>
+        <a id="1813" class="Symbol">;</a> <a id="1815" href="System.FilePath.Posix.Primitive.html#3509" class="Postulate">dropExtensions</a>
+        <a id="1838" class="Symbol">;</a> <a id="1840" href="System.FilePath.Posix.Primitive.html#3555" class="Postulate">isExtensionOf</a>
+     <a id="1859" class="Comment">-- ; stripExtension see below: coerce needed</a>
+     <a id="1909" class="Comment">-- Filename/directory functions</a>
+     <a id="1946" class="Comment">-- ; splitFileName see below: coerce needed</a>
+        <a id="1998" class="Symbol">;</a> <a id="2000" href="System.FilePath.Posix.Primitive.html#3774" class="Postulate">takeFileName</a>
+        <a id="2021" class="Symbol">;</a> <a id="2023" href="System.FilePath.Posix.Primitive.html#3815" class="Postulate">replaceFileName</a>
+        <a id="2047" class="Symbol">;</a> <a id="2049" href="System.FilePath.Posix.Primitive.html#3869" class="Postulate">dropFileName</a>
+        <a id="2070" class="Symbol">;</a> <a id="2072" href="System.FilePath.Posix.Primitive.html#3914" class="Postulate">takeBaseName</a>
+        <a id="2093" class="Symbol">;</a> <a id="2095" href="System.FilePath.Posix.Primitive.html#3955" class="Postulate">replaceBaseName</a>
+        <a id="2119" class="Symbol">;</a> <a id="2121" href="System.FilePath.Posix.Primitive.html#4009" class="Postulate">takeDirectory</a>
+        <a id="2143" class="Symbol">;</a> <a id="2145" href="System.FilePath.Posix.Primitive.html#4054" class="Postulate">replaceDirectory</a>
+        <a id="2170" class="Symbol">;</a> <a id="2172" href="System.FilePath.Posix.Primitive.html#4112" class="Postulate">combine</a>
+        <a id="2188" class="Symbol">;</a> <a id="2190" href="System.FilePath.Posix.Primitive.html#4172" class="Postulate">splitPath</a>
+        <a id="2208" class="Symbol">;</a> <a id="2210" href="System.FilePath.Posix.Primitive.html#4224" class="Postulate">joinPath</a>
+        <a id="2227" class="Symbol">;</a> <a id="2229" href="System.FilePath.Posix.Primitive.html#4278" class="Postulate">splitDirectories</a>
+      <a id="2252" class="Comment">-- Trailing slash functions</a>
+        <a id="2288" class="Symbol">;</a> <a id="2290" href="System.FilePath.Posix.Primitive.html#4644" class="Postulate">hasTrailingPathSeparator</a>
+        <a id="2323" class="Symbol">;</a> <a id="2325" href="System.FilePath.Posix.Primitive.html#4692" class="Postulate">addTrailingPathSeparator</a>
+        <a id="2358" class="Symbol">;</a> <a id="2360" href="System.FilePath.Posix.Primitive.html#4746" class="Postulate">dropTrailingPathSeparator</a>
+     <a id="2391" class="Comment">-- File name manipulations</a>
+        <a id="2426" class="Symbol">;</a> <a id="2428" href="System.FilePath.Posix.Primitive.html#4831" class="Postulate">normalise</a>
+        <a id="2446" class="Symbol">;</a> <a id="2448" href="System.FilePath.Posix.Primitive.html#4873" class="Postulate">equalFilePath</a>
+        <a id="2470" class="Symbol">;</a> <a id="2472" href="System.FilePath.Posix.Primitive.html#4922" class="Postulate">makeRelative</a>
+     <a id="2490" class="Comment">-- ; checkFilePath see below: coerce needed</a>
+        <a id="2542" class="Symbol">;</a> <a id="2544" href="System.FilePath.Posix.Primitive.html#5043" class="Postulate">isRelative</a>
+        <a id="2563" class="Symbol">;</a> <a id="2565" href="System.FilePath.Posix.Primitive.html#5079" class="Postulate">isAbsolute</a>
+        <a id="2584" class="Symbol">;</a> <a id="2586" href="System.FilePath.Posix.Primitive.html#5115" class="Postulate">isValid</a>
+        <a id="2602" class="Symbol">;</a> <a id="2604" href="System.FilePath.Posix.Primitive.html#5151" class="Postulate">makeValid</a>
+        <a id="2622" class="Symbol">)</a>
+
+<a id="2625" class="Keyword">private</a>
+  <a id="2635" class="Keyword">variable</a>
+    <a id="2648" href="System.FilePath.Posix.html#2648" class="Generalizable">m</a> <a id="2650" href="System.FilePath.Posix.html#2650" class="Generalizable">n</a> <a id="2652" class="Symbol">:</a> <a id="2654" href="System.FilePath.Posix.Primitive.html#994" class="Postulate">Nature</a>
+
+<a id="2662" class="Comment">-- singleton type for Nature</a>
+<a id="2691" class="Keyword">data</a> <a id="KnownNature"></a><a id="2696" href="System.FilePath.Posix.html#2696" class="Datatype">KnownNature</a> <a id="2708" class="Symbol">:</a> <a id="2710" href="System.FilePath.Posix.Primitive.html#994" class="Postulate">Nature</a> <a id="2717" class="Symbol">→</a> <a id="2719" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="2723" class="Keyword">where</a>
+  <a id="2731" class="Keyword">instance</a>
+    <a id="KnownNature.absolute"></a><a id="2744" href="System.FilePath.Posix.html#2744" class="InductiveConstructor">absolute</a> <a id="2753" class="Symbol">:</a> <a id="2755" href="System.FilePath.Posix.html#2696" class="Datatype">KnownNature</a> <a id="2767" href="System.FilePath.Posix.Primitive.html#1020" class="Postulate">Nature.absolute</a>
+    <a id="KnownNature.relative"></a><a id="2787" href="System.FilePath.Posix.html#2787" class="InductiveConstructor">relative</a> <a id="2796" class="Symbol">:</a> <a id="2798" href="System.FilePath.Posix.html#2696" class="Datatype">KnownNature</a> <a id="2810" href="System.FilePath.Posix.Primitive.html#1011" class="Postulate">Nature.relative</a>
+
+<a id="currentDirectory"></a><a id="2827" href="System.FilePath.Posix.html#2827" class="Function">currentDirectory</a> <a id="2844" class="Symbol">:</a> <a id="2846" href="System.FilePath.Posix.Primitive.html#2260" class="Function">SomePath</a>
+<a id="2855" href="System.FilePath.Posix.html#2827" class="Function">currentDirectory</a> <a id="2872" class="Symbol">=</a> <a id="2874" href="System.FilePath.Posix.Primitive.html#2547" class="Postulate">mkFilePath</a> <a id="2885" class="String">&quot;.&quot;</a>
+
+<a id="splitExtension"></a><a id="2890" href="System.FilePath.Posix.html#2890" class="Function">splitExtension</a>  <a id="2906" class="Symbol">:</a> <a id="2908" href="System.FilePath.Posix.Primitive.html#1470" class="Postulate">FilePath</a> <a id="2917" href="System.FilePath.Posix.html#2650" class="Generalizable">n</a> <a id="2919" class="Symbol">→</a> <a id="2921" href="System.FilePath.Posix.Primitive.html#1470" class="Postulate">FilePath</a> <a id="2930" href="System.FilePath.Posix.html#2650" class="Generalizable">n</a> <a id="2932" href="Data.Product.html#1167" class="Function Operator">×</a> <a id="2934" href="System.FilePath.Posix.Primitive.html#1538" class="Postulate">Extension</a>
+<a id="2944" href="System.FilePath.Posix.html#2890" class="Function">splitExtension</a> <a id="2959" class="Symbol">=</a> <a id="2961" href="Foreign.Haskell.Coerce.html#2592" class="Postulate">coerce</a> <a id="2968" href="System.FilePath.Posix.Primitive.html#3033" class="Postulate">Prim.splitExtension</a>
+
+<a id="splitExtensions"></a><a id="2989" href="System.FilePath.Posix.html#2989" class="Function">splitExtensions</a> <a id="3005" class="Symbol">:</a> <a id="3007" href="System.FilePath.Posix.Primitive.html#1470" class="Postulate">FilePath</a> <a id="3016" href="System.FilePath.Posix.html#2650" class="Generalizable">n</a> <a id="3018" class="Symbol">→</a> <a id="3020" href="System.FilePath.Posix.Primitive.html#1470" class="Postulate">FilePath</a> <a id="3029" href="System.FilePath.Posix.html#2650" class="Generalizable">n</a> <a id="3031" href="Data.Product.html#1167" class="Function Operator">×</a> <a id="3033" href="System.FilePath.Posix.Primitive.html#1538" class="Postulate">Extension</a>
+<a id="3043" href="System.FilePath.Posix.html#2989" class="Function">splitExtensions</a> <a id="3059" class="Symbol">=</a> <a id="3061" href="Foreign.Haskell.Coerce.html#2592" class="Postulate">coerce</a> <a id="3068" href="System.FilePath.Posix.Primitive.html#3343" class="Postulate">Prim.splitExtensions</a>
+
+<a id="stripExtension"></a><a id="3090" href="System.FilePath.Posix.html#3090" class="Function">stripExtension</a> <a id="3105" class="Symbol">:</a> <a id="3107" href="System.FilePath.Posix.Primitive.html#1538" class="Postulate">Extension</a> <a id="3117" class="Symbol">→</a> <a id="3119" href="System.FilePath.Posix.Primitive.html#1470" class="Postulate">FilePath</a> <a id="3128" href="System.FilePath.Posix.html#2650" class="Generalizable">n</a> <a id="3130" class="Symbol">→</a> <a id="3132" href="Agda.Builtin.Maybe.html#136" class="Datatype">Maybe</a> <a id="3138" class="Symbol">(</a><a id="3139" href="System.FilePath.Posix.Primitive.html#1470" class="Postulate">FilePath</a> <a id="3148" href="System.FilePath.Posix.html#2650" class="Generalizable">n</a><a id="3149" class="Symbol">)</a>
+<a id="3151" href="System.FilePath.Posix.html#3090" class="Function">stripExtension</a> <a id="3166" class="Symbol">=</a> <a id="3168" href="Foreign.Haskell.Coerce.html#2592" class="Postulate">coerce</a> <a id="3175" href="System.FilePath.Posix.Primitive.html#3607" class="Postulate">Prim.stripExtension</a>
+
+<a id="getSearchPath"></a><a id="3196" href="System.FilePath.Posix.html#3196" class="Function">getSearchPath</a> <a id="3210" class="Symbol">:</a> <a id="3212" href="IO.Base.html#1121" class="Datatype">IO</a> <a id="3215" class="Symbol">(</a><a id="3216" href="Agda.Builtin.List.html#148" class="Datatype">List</a> <a id="3221" href="System.FilePath.Posix.Primitive.html#2260" class="Function">SomePath</a><a id="3229" class="Symbol">)</a>
+<a id="3231" href="System.FilePath.Posix.html#3196" class="Function">getSearchPath</a> <a id="3245" class="Symbol">=</a> <a id="3247" href="IO.Base.html#1158" class="InductiveConstructor">lift</a> <a id="3252" href="System.FilePath.Posix.Primitive.html#2967" class="Postulate">Prim.getSearchPath</a>
+
+<a id="splitFileName"></a><a id="3272" href="System.FilePath.Posix.html#3272" class="Function">splitFileName</a> <a id="3286" class="Symbol">:</a> <a id="3288" href="System.FilePath.Posix.Primitive.html#1470" class="Postulate">FilePath</a> <a id="3297" href="System.FilePath.Posix.html#2650" class="Generalizable">n</a> <a id="3299" class="Symbol">→</a> <a id="3301" href="System.FilePath.Posix.Primitive.html#1470" class="Postulate">FilePath</a> <a id="3310" href="System.FilePath.Posix.html#2650" class="Generalizable">n</a> <a id="3312" href="Data.Product.html#1167" class="Function Operator">×</a> <a id="3314" href="System.FilePath.Posix.Primitive.html#2220" class="Function">RelativePath</a>
+<a id="3327" href="System.FilePath.Posix.html#3272" class="Function">splitFileName</a> <a id="3341" class="Symbol">=</a> <a id="3343" href="Foreign.Haskell.Coerce.html#2592" class="Postulate">coerce</a> <a id="3350" href="System.FilePath.Posix.Primitive.html#3709" class="Postulate">Prim.splitFileName</a>
+
+<a id="checkFilePath"></a><a id="3370" href="System.FilePath.Posix.html#3370" class="Function">checkFilePath</a> <a id="3384" class="Symbol">:</a> <a id="3386" href="System.FilePath.Posix.Primitive.html#1470" class="Postulate">FilePath</a> <a id="3395" href="System.FilePath.Posix.html#2650" class="Generalizable">n</a> <a id="3397" class="Symbol">→</a> <a id="3399" href="System.FilePath.Posix.Primitive.html#2220" class="Function">RelativePath</a> <a id="3412" href="Data.Sum.Base.html#734" class="Datatype Operator">⊎</a> <a id="3414" href="System.FilePath.Posix.Primitive.html#2180" class="Function">AbsolutePath</a>
+<a id="3427" href="System.FilePath.Posix.html#3370" class="Function">checkFilePath</a> <a id="3441" class="Symbol">=</a> <a id="3443" href="Foreign.Haskell.Coerce.html#2592" class="Postulate">coerce</a> <a id="3450" href="System.FilePath.Posix.Primitive.html#4979" class="Postulate">Prim.checkFilePath</a>
+</pre></body></html>
