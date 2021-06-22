@@ -73,6 +73,11 @@ New modules
   Data.Rational.Unnormalised.Show
   ```
 
+* Properties of bijections:
+  ```
+  Function.Properties.Bijection
+  ```
+
 * Various system types and primitives:
   ```
   System.Clock.Primitive
@@ -118,13 +123,23 @@ Other minor additions
   ```
   and their corresponding algebraic substructures.
 
-* In `Data.String.Properties`:
+* Added new proofs in `Data.String.Properties`:
   ```
   ≤-isDecTotalOrder-≈ : IsDecTotalOrder _≈_ _≤_
   ≤-decTotalOrder-≈   :  DecTotalOrder _ _ _
   ```
 
-* In `IO`:
+* Added new proofs in `Function.Construct.Symmetry`:
+  ```
+  bijective     : Bijective ≈₁ ≈₂ f → Symmetric ≈₂ → Transitive ≈₂ → Congruent ≈₁ ≈₂ f → Bijective ≈₂ ≈₁ f⁻¹
+  isBijection   : IsBijection ≈₁ ≈₂ f → Congruent ≈₂ ≈₁ f⁻¹ → IsBijection ≈₂ ≈₁ f⁻¹
+  isBijection-≡ : IsBijection ≈₁ _≡_ f → IsBijection _≡_ ≈₁ f⁻¹
+  bijection     : Bijection R S → Congruent IB.Eq₂._≈_ IB.Eq₁._≈_ f⁻¹ → Bijection S R
+  bijection-≡   : Bijection R (setoid B) → Bijection (setoid B) R
+  sym-⤖        : A ⤖ B → B ⤖ A
+  ```
+
+* Added new operations in `IO`:
   ```
   Colist.forM  : Colist A → (A → IO B) → IO (Colist B)
   Colist.forM′ : Colist A → (A → IO B) → IO ⊤
@@ -133,7 +148,7 @@ Other minor additions
   List.forM′ : List A → (A → IO B) → IO ⊤
   ```
 
-* In `IO.Base`:
+* Added new operations in `IO.Base`:
   ```
   lift! : IO A → IO (Lift b A)
   _<$_  : B → IO A → IO B
@@ -148,7 +163,7 @@ Other minor additions
   untilJust : IO (Maybe A) → IO A
   ```
 
-* In `System.Exit`:
+* Added new operations in `System.Exit`:
   ```
   isSuccess : ExitCode → Bool
   isFailure : ExitCode → Bool
