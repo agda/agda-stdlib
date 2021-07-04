@@ -123,6 +123,11 @@ Other minor additions
   ```
   and their corresponding algebraic substructures.
 
+* Added new proof to `Data.Product.Properties`:
+  ```agda
+  map-cong₂ : f ≗ g → h ≗ i → map f h ≗ map g i
+  ```
+
 * Added new proofs in `Data.String.Properties`:
   ```
   ≤-isDecTotalOrder-≈ : IsDecTotalOrder _≈_ _≤_

@@ -20,9 +20,11 @@ open import Relation.Nullary using (Dec; yes; no)
 
 private
   variable
-    a b ℓ : Level
+    a b c d ℓ : Level
     A : Set a
     B : Set b
+    C : Set c
+    D : Set d
 
 ------------------------------------------------------------------------
 -- Equality (dependent)
@@ -52,6 +54,9 @@ module _ {B : A → Set b} where
 
 ,-injective : ∀ {a c : A} {b d : B} → (a , b) ≡ (c , d) → a ≡ c × b ≡ d
 ,-injective refl = refl , refl
+
+map-cong₂ : ∀ {f g : A → C} {h i : B → D} → f ≗ g → h ≗ i → map f h ≗ map g i
+map-cong₂ p q (x , y) = cong₂ _,_ (p x) (q y)
 
 -- The following properties are definitionally true (because of η)
 -- but for symmetry with ⊎ it is convenient to define and name them.
