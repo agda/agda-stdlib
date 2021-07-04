@@ -16,7 +16,7 @@ open import Codata.M.Bisimilarity
 open import Data.Container.Core as C hiding (map)
 import Data.Container.Morphism as Mp
 open import Data.Product as Prod using (_,_)
-open import Data.Product.Properties
+open import Data.Product.Properties hiding (map-cong)
 open import Function
 import Relation.Binary.PropositionalEquality as P
 
