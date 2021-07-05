@@ -9,10 +9,13 @@
 
 module Function.Properties.Inverse where
 
-open import Function.Bundles using (Inverse; _↔_)
+open import Data.Product using (_,_; proj₁; proj₂)
+open import Function.Bundles
 open import Level using (Level)
 open import Relation.Binary using (Setoid; IsEquivalence)
 open import Relation.Binary.PropositionalEquality using (setoid)
+import Relation.Binary.Reasoning.Setoid as SetoidReasoning
+open import Function.Consequences
 
 import Function.Construct.Identity as Identity
 import Function.Construct.Symmetry as Symmetry
@@ -42,3 +45,26 @@ isEquivalence = record
   ; sym = Symmetry.inverse
   ; trans = Composition.inverse
   }
+
+------------------------------------------------------------------------
+-- Conversion functions
+
+module _ (A : Setoid a ℓ₁) (B : Setoid b ℓ₂) where
+
+  Inverse⇒Bijection : Inverse A B → Bijection A B
+  Inverse⇒Bijection record { f = f ; f⁻¹ = f⁻¹ ; cong₁ = cong₁ ; cong₂ = cong₂ ; inverse = inverse } = record
+    { f         = f
+    ; cong      = cong₁
+    ; bijective = Inverseᵇ⇒Bijective A B cong₂ inverse }
+
+  Inverse⇒Equivalence : Inverse A B → Equivalence A B
+  Inverse⇒Equivalence record { f = f ; f⁻¹ = f⁻¹ ; cong₁ = cong₁ ; cong₂ = cong₂ } = record
+    { f = f ; g = f⁻¹ ; cong₁ = cong₁ ; cong₂ = cong₂ }
+
+module _ {A : Set a} {B : Set b} where
+
+  ↔⇒⤖ : A ↔ B → A ⤖ B
+  ↔⇒⤖ = Inverse⇒Bijection (setoid A) (setoid B)
+
+  ↔⇒⇔ : A ↔ B → A ⇔ B
+  ↔⇒⇔ = Inverse⇒Equivalence (setoid A) (setoid B)

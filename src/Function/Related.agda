@@ -19,6 +19,21 @@ open import Function.LeftInverse as LeftInv using (LeftInverse)
 open import Function.Surjection  as Surj    using (Surjection)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
+open import Data.Product using (_,_; proj₁; proj₂; <_,_>)
+
+import Function.Bundles.Related as R
+import Function.Bundles as B
+
+open R public using
+  ( Kind
+  ; implication
+  ; reverse-implication
+  ; equivalence
+  ; injection
+  ; reverse-injection
+  ; left-inverse
+  ; surjection
+  ; bijection )
 
 ------------------------------------------------------------------------
 -- Wrapper types
@@ -47,20 +62,6 @@ open _↢_ public
 -- The idea to include kinds other than equivalence and bijection came
 -- from Simon Thompson and Bengt Nordström. /NAD
 
-data Kind : Set where
-  implication         : Kind
-  reverse-implication : Kind
-  equivalence         : Kind
-  injection           : Kind
-  reverse-injection   : Kind
-  left-inverse        : Kind
-  surjection          : Kind
-  bijection           : Kind
-
--- Interpretation of the codes above. The code "bijection" is
--- interpreted as Inverse rather than Bijection; the two types are
--- equivalent.
-
 infix 4 _∼[_]_
 
 _∼[_]_ : ∀ {ℓ₁ ℓ₂} → Set ℓ₁ → Kind → Set ℓ₂ → Set _
@@ -72,6 +73,36 @@ A ∼[ reverse-injection   ] B = A ↢ B
 A ∼[ left-inverse        ] B = LeftInverse (P.setoid A) (P.setoid B)
 A ∼[ surjection          ] B = Surjection  (P.setoid A) (P.setoid B)
 A ∼[ bijection           ] B = Inverse     (P.setoid A) (P.setoid B)
+
+module _ {ℓ₁ ℓ₂} {A : Set ℓ₁} {B : Set ℓ₂} where
+
+  toRelated : {K : Kind} → A R.∼[ K ] B → A ∼[ K ] B
+  toRelated {implication}         rel = B.Func.f rel
+  toRelated {reverse-implication} rel = lam (B.Func.f rel)
+  toRelated {equivalence}         rel = Eq.equivalence (B.Equivalence.f rel) (B.Equivalence.g rel)
+  toRelated {injection}           rel = Inj.injection (B.Injection.f rel) (B.Injection.injective rel)
+  toRelated {reverse-injection}   rel = lam (Inj.injection (B.Injection.f rel) (B.Injection.injective rel))
+  toRelated {left-inverse}        rel =
+    LeftInv.leftInverse (B.RightInverse.f rel) (B.RightInverse.g rel) (B.RightInverse.inverseʳ rel)
+  toRelated {surjection}          rel with B.Surjection.surjective rel
+  ... | surj = Surj.surjection (B.Surjection.f rel) (proj₁ ∘ surj) (proj₂ ∘ surj)
+  toRelated {bijection}           rel with B.Bijection.bijective rel
+  ... | (inj , surj) = Inv.inverse (B.Bijection.f rel) (proj₁ ∘ surj) (inj ∘ proj₂ ∘ surj ∘ (B.Bijection.f rel)) (proj₂ ∘ surj)
+
+  fromRelated : {K : Kind} → A ∼[ K ] B → A R.∼[ K ] B
+  fromRelated {implication}         rel = B.mk⟶ rel
+  fromRelated {reverse-implication} rel = B.mk⟶ (app-← rel)
+  fromRelated {equivalence}         record { to = to ; from = from } = B.mk⇔ (to ⟨$⟩_) (from ⟨$⟩_)
+  fromRelated {injection}           rel = B.mk↣ (Inj.Injection.injective rel)
+  fromRelated {reverse-injection}   (lam app-↢) = B.mk↣ (Inj.Injection.injective app-↢)
+  fromRelated {left-inverse}        record { to = to ; from = from ; left-inverse-of = left-inverse-of } =
+    B.mk↪ {f = to ⟨$⟩_} {g = from ⟨$⟩_} left-inverse-of
+  fromRelated {surjection}          record { to = to ; surjective = surjective } with surjective
+  ... | record { from = from ; right-inverse-of = right-inverse-of } = B.mk↠ {f = to ⟨$⟩_} < from ⟨$⟩_ , right-inverse-of >
+  fromRelated {bijection}           record { to = to ; from = from ; inverse-of = inverse-of } with inverse-of
+  ... | record { left-inverse-of = left-inverse-of ; right-inverse-of = right-inverse-of } = B.mk⤖
+    ((λ {x y} h → P.subst₂ P._≡_ (left-inverse-of x) (left-inverse-of y) (P.cong (from ⟨$⟩_) h)) ,
+    < from ⟨$⟩_ , right-inverse-of >)
 
 -- A non-infix synonym.
 
