@@ -182,7 +182,10 @@ _∋_ : (A : Set a) → A → A
 A ∋ x = x
 
 -- Conversely it is sometimes useful to be able to extract the
--- type of a given expression.
+-- level or the type of a given expression.
+
+levelOf : {A : Set a} → A → Level
+levelOf {a = a} _ = a
 
 typeOf : {A : Set a} → A → Set a
 typeOf {A = A} _ = A

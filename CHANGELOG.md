@@ -129,6 +129,11 @@ Other minor additions
   ≤-decTotalOrder-≈   :  DecTotalOrder _ _ _
   ```
 
+* Added new function in `Function.Base`:
+  ```
+  levelOf : {A : Set a} → A → Level
+  ```
+
 * Added new proofs in `Function.Construct.Symmetry`:
   ```
   bijective     : Bijective ≈₁ ≈₂ f → Symmetric ≈₂ → Transitive ≈₂ → Congruent ≈₁ ≈₂ f → Bijective ≈₂ ≈₁ f⁻¹
