@@ -52,14 +52,16 @@ isEquivalence = record
 module _ (A : Setoid a ℓ₁) (B : Setoid b ℓ₂) where
 
   Inverse⇒Bijection : Inverse A B → Bijection A B
-  Inverse⇒Bijection record { f = f ; f⁻¹ = f⁻¹ ; cong₁ = cong₁ ; cong₂ = cong₂ ; inverse = inverse } = record
+  Inverse⇒Bijection I = record
     { f         = f
     ; cong      = cong₁
-    ; bijective = Inverseᵇ⇒Bijective A B cong₂ inverse }
+    ; bijective = inverseᵇ⇒bijective A B cong₂ inverse }
+    where open Inverse I
 
   Inverse⇒Equivalence : Inverse A B → Equivalence A B
-  Inverse⇒Equivalence record { f = f ; f⁻¹ = f⁻¹ ; cong₁ = cong₁ ; cong₂ = cong₂ } = record
+  Inverse⇒Equivalence I = record
     { f = f ; g = f⁻¹ ; cong₁ = cong₁ ; cong₂ = cong₂ }
+    where open Inverse I
 
 module _ {A : Set a} {B : Set b} where
 

@@ -21,7 +21,6 @@ module Function.Bundles where
 
 import Function.Definitions as FunctionDefinitions
 import Function.Structures as FunctionStructures
-import Relation.Binary.Reasoning.Setoid as SetoidReasoning
 open import Level using (Level; _⊔_; suc)
 open import Data.Product using (_,_; proj₁; proj₂)
 open import Relation.Binary hiding (_⇔_)

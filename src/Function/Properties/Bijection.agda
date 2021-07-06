@@ -2,7 +2,6 @@
 -- The Agda standard library
 --
 -- Conversions for bijections
---   This file is meant to be imported qualified.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -27,7 +26,7 @@ private
 module _ (A : Setoid a ℓ₁) (B : Setoid b ℓ₂) where
 
   Bijection⇒Inverse : Bijection A B → Inverse A B
-  Bijection⇒Inverse record { f = f ; cong = cong ; bijective = bijective } = record
+  Bijection⇒Inverse b = record
     { f =     f
     ; f⁻¹ =   λ y → proj₁ (proj₂ bijective y)
     ; cong₁ = cong
@@ -38,6 +37,7 @@ module _ (A : Setoid a ℓ₁) (B : Setoid b ℓ₂) where
         f (proj₁ (proj₂ bijective y)) ∎)
       ; inverse = (λ x → proj₂ (proj₂ bijective x)) , λ y → proj₁ bijective (proj₂ (proj₂ bijective (f y))) }
     where open SetoidReasoning B
+          open Bijection b
 
   Bijection⇒Equivalence : Bijection A B → Equivalence A B
   Bijection⇒Equivalence b = Inverse⇒Equivalence A B (Bijection⇒Inverse b)

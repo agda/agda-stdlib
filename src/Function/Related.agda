@@ -27,13 +27,14 @@ import Function.Bundles as B
 open R public using
   ( Kind
   ; implication
-  ; reverse-implication
   ; equivalence
   ; injection
-  ; reverse-injection
-  ; left-inverse
   ; surjection
   ; bijection )
+  renaming
+  ( reverseImplication to reverse-implication
+  ; reverseInjection to reverse-injection
+  ; leftInverse to left-inverse )
 
 ------------------------------------------------------------------------
 -- Wrapper types

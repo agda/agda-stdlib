@@ -2,7 +2,6 @@
 -- The Agda standard library
 --
 -- Conversions for right inverses
---   This file is meant to be imported qualified.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -22,10 +21,11 @@ private
 module _ (A : Setoid a ℓ₁) (B : Setoid b ℓ₂) where
 
   RightInverse⇒Surjection : RightInverse A B → Surjection B A
-  RightInverse⇒Surjection record { f = f ; g = g ; cong₁ = cong₁ ; cong₂ = cong₂ ; inverseʳ = inverseʳ } = record
+  RightInverse⇒Surjection I = record
     { f = g
     ; cong = cong₂
     ; surjective = λ a → f a , inverseʳ a }
+    where open RightInverse I
 
 ------------------------------------------------------------------------
 -- Conversion functions

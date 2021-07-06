@@ -2,7 +2,6 @@
 -- The Agda standard library
 --
 -- Conversions for surjections
---   This file is meant to be imported qualified.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -24,9 +23,9 @@ private
 -- Conversion functions
 
 ↠⇒↪ : A ↠ B → B ↪ A
-↠⇒↪ record { f = f ; cong = cong ; surjective = surjective } =
-  mk↪ {f = proj₁ ∘ surjective} {g = f} (proj₂ ∘ surjective)
+↠⇒↪ s = mk↪ {f = proj₁ ∘ surjective} {g = f} (proj₂ ∘ surjective)
+  where open Surjection s
 
 ↠⇒⇔ : A ↠ B → A ⇔ B
-↠⇒⇔ record { f = f ; cong = cong ; surjective = surjective } =
-  mk⇔ f (proj₁ ∘ surjective)
+↠⇒⇔ s = mk⇔ f (proj₁ ∘ surjective)
+  where open Surjection s
