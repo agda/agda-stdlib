@@ -20,6 +20,8 @@ Bug-fixes
   rather than a natural. The previous binding was incorrectly assuming that
   all exit codes where non-negative.
 
+* In `/-monoˡ-≤` in `Data.Nat.DivMod` the parameter `o` was implicit but not inferrable. It has been changed to explicit.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -53,6 +55,37 @@ Non-backwards compatible changes
   So `[a-zA-Z]+.agdai?` run on "the path _build/Main.agdai corresponds to"
   will return "Main.agdai" when it used to be happy to just return "n.agda".
 
+#### Non-zero operators
+
+* TODO
+
+* The following proofs have been changed to use non-zero instance arguments 
+  and therefore if you passed the value `x` as the `n` argument you will
+  now have to pass `suc n` instead:
+  In `Data.Nat.DivMod`:
+  ```agda
+  m≡m%n+[m/n]*n : ∀ m n → m ≡ m % suc n + (m / suc n) * suc n
+  m%n≡m∸m/n*n   : ∀ m n → m % suc n ≡ m ∸ (m / suc n) * suc n
+  n%n≡0         : ∀ n → suc n % suc n ≡ 0
+  m%n%n≡m%n     : ∀ m n → m % suc n % suc n ≡ m % suc n
+  [m+n]%n≡m%n   : ∀ m n → (m + suc n) % suc n ≡ m % suc n
+  [m+kn]%n≡m%n  : ∀ m k n → (m + k * (suc n)) % suc n ≡ m % suc n
+  m*n%n≡0       : ∀ m n → (m * suc n) % suc n ≡ 0
+  m%n<n         : ∀ m n → m % suc n < suc n
+  m%n≤m         : ∀ m n → m % suc n ≤ m
+  m≤n⇒m%n≡m     : ∀ {m n} → m ≤ n → m % suc n ≡ m
+  ```
+  Data.Nat.Divisibility
+  ```
+  m%n≡0⇒n∣m : ∀ m n → m % suc n ≡ 0 → suc n ∣ m
+  n∣m⇒m%n≡0 : ∀ m n → suc n ∣ m → m % suc n ≡ 0
+  m%n≡0⇔n∣m : ∀ m n → m % suc n ≡ 0 ⇔ suc n ∣ m
+  ```
+  Data.Nat.GCD
+  ```
+  GCD-* : ∀ {m n d c} → GCD (m * suc c) (n * suc c) (d * suc c) → GCD m n d
+  ```
+  
 Deprecated modules
 ------------------
 

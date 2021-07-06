@@ -57,9 +57,9 @@ coprime⇒gcd≡1 coprime = GCD.unique (gcd-GCD _ _) (coprime⇒GCD≡1 coprime)
 gcd≡1⇒coprime : ∀ {m n} → gcd m n ≡ 1 → Coprime m n
 gcd≡1⇒coprime gcd≡1 = GCD≡1⇒coprime (subst (GCD _ _) gcd≡1 (gcd-GCD _ _))
 
-coprime-/gcd : ∀ m n {gcd≢0} →
-               Coprime ((m / gcd m n) {gcd≢0}) ((n / gcd m n) {gcd≢0})
-coprime-/gcd m n {gcd≢0} = GCD≡1⇒coprime (GCD-/gcd m n {gcd≢0})
+coprime-/gcd : ∀ m n .{{_ : NonZero (gcd m n)}} →
+               Coprime (m / gcd m n) (n / gcd m n)
+coprime-/gcd m n = GCD≡1⇒coprime (GCD-/gcd m n)
 
 ------------------------------------------------------------------------
 -- Relational properties of Coprime

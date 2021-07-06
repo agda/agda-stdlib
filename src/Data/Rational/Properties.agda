@@ -223,7 +223,7 @@ normalize-coprime : ∀ {n d-1} .(c : Coprime n (suc d-1)) →
                     normalize n (suc d-1) ≡ mkℚ (+ n) d-1 c
 normalize-coprime {n} {d-1} c = begin
   normalize n d              ≡⟨⟩
-  mkℚ+ (n ℕ./ g) (d ℕ./ g) _ ≡⟨ mkℚ+-cong n/g≢0 d/1≢0 {c₂ = c₂} (ℕ./-congʳ {n≢0 = g≢0} g≡1) (ℕ./-congʳ {n≢0 = g≢0} g≡1) ⟩
+  mkℚ+ (n ℕ./ g) (d ℕ./ g) _ ≡⟨ mkℚ+-cong n/g≢0 d/1≢0 {c₂ = c₂} (ℕ./-congʳ g≡1) (ℕ./-congʳ g≡1) ⟩
   mkℚ+ (n ℕ./ 1) (d ℕ./ 1) _ ≡⟨ mkℚ+-cong d/1≢0 _ {c₂ = c} (ℕ.n/1≡n n) (ℕ.n/1≡n d) ⟩
   mkℚ+ n d _                 ≡⟨⟩
   mkℚ (+ n) d-1 _            ∎
@@ -233,8 +233,8 @@ normalize-coprime {n} {d-1} c = begin
   c₂ : Coprime (n ℕ./ 1) (d ℕ./ 1)
   c₂ = subst₂ Coprime (sym (ℕ.n/1≡n n)) (sym (ℕ.n/1≡n d)) c′
   g≡1 = C.coprime⇒gcd≡1 c′
-  g≢0   = fromWitnessFalse (ℕ.gcd[m,n]≢0 n d (inj₂ λ()))
-  n/g≢0 = fromWitnessFalse (ℕ.n/gcd[m,n]≢0 n d {_} {g≢0})
+  instance g≢0 = ℕ.≢-nonZero (ℕ.gcd[m,n]≢0 n d (inj₂ λ()))
+  n/g≢0 = fromWitnessFalse (ℕ.n/gcd[m,n]≢0 n d)
   d/1≢0 = fromWitnessFalse (subst (_≢ 0) (sym (ℕ.n/1≡n d)) λ())
 
 ↥-normalize : ∀ i n {n≢0} → ↥ (normalize i n {n≢0}) ℤ.* gcd (+ i) (+ n) ≡ + i
@@ -247,8 +247,8 @@ normalize-coprime {n} {d-1} c = begin
   where
   open ≡-Reasoning
   g     = ℕ.gcd i n
-  g≢0   = fromWitnessFalse (ℕ.gcd[m,n]≢0 i n (inj₂ λ()))
-  n/g≢0 = fromWitnessFalse (ℕ.n/gcd[m,n]≢0 i n {_} {g≢0})
+  instance g≢0 = ℕ.≢-nonZero (ℕ.gcd[m,n]≢0 i n (inj₂ λ()))
+  n/g≢0 = fromWitnessFalse (ℕ.n/gcd[m,n]≢0 i n)
 
 ↧-normalize : ∀ i n {n≢0} → ↧ (normalize i n {n≢0}) ℤ.* gcd (+ i) (+ n) ≡ + n
 ↧-normalize i n@(suc n-1) = begin
@@ -260,8 +260,8 @@ normalize-coprime {n} {d-1} c = begin
   where
   open ≡-Reasoning
   g     = ℕ.gcd i n
-  g≢0   = fromWitnessFalse (ℕ.gcd[m,n]≢0 i n (inj₂ λ()))
-  n/g≢0 = fromWitnessFalse (ℕ.n/gcd[m,n]≢0 i n {_} {g≢0})
+  instance g≢0 = ℕ.≢-nonZero (ℕ.gcd[m,n]≢0 i n (inj₂ λ()))
+  n/g≢0 = fromWitnessFalse (ℕ.n/gcd[m,n]≢0 i n)
 
 normalize-cong : ∀ {m₁ n₁ m₂ n₂ n₁≢0 n₂≢0} → m₁ ≡ m₂ → n₁ ≡ n₂ →
                  normalize m₁ n₁ {n₁≢0} ≡ normalize m₂ n₂ {n₂≢0}
@@ -269,36 +269,41 @@ normalize-cong {m} {n} {.m} {.n} {n≢0₁} {n≢0₂} refl refl =
   mkℚ+-cong n/g₁≢0 n/g₂≢0 (ℕ./-congʳ {n = g} {g} refl) (ℕ./-congʳ {n = g} {g} refl)
   where
   g = ℕ.gcd m n
-  g₁≢0 = ℕ.gcd[m,n]≢0 m n (inj₂ (toWitnessFalse n≢0₁))
-  g₂≢0 = ℕ.gcd[m,n]≢0 m n (inj₂ (toWitnessFalse n≢0₂))
-  n/g₁ = (n ℕ./ g) {fromWitnessFalse g₁≢0}
-  n/g₂ = (n ℕ./ g) {fromWitnessFalse g₂≢0}
-  n/g₁≢0 = fromWitnessFalse (ℕ.n/gcd[m,n]≢0 m n {n≢0₁} {fromWitnessFalse g₁≢0})
-  n/g₂≢0 = fromWitnessFalse (ℕ.n/gcd[m,n]≢0 m n {n≢0₂} {fromWitnessFalse g₂≢0})
+  n≢0₁′ = toWitnessFalse n≢0₁
+  n≢0₂′ = toWitnessFalse n≢0₂
+  instance g₁≢0 = ℕ.≢-nonZero (ℕ.gcd[m,n]≢0 m n (inj₂ n≢0₁′))
+  instance g₂≢0 = ℕ.≢-nonZero (ℕ.gcd[m,n]≢0 m n (inj₂ n≢0₂′))
+  n/g₁ = n ℕ./ g
+  n/g₂ = n ℕ./ g
+  n/g₁≢0 = fromWitnessFalse (ℕ.n/gcd[m,n]≢0 m n {{ℕ.≢-nonZero n≢0₁′}})
+  n/g₂≢0 = fromWitnessFalse (ℕ.n/gcd[m,n]≢0 m n {{ℕ.≢-nonZero n≢0₂′}})
 
 normalize-nonNeg : ∀ m n {n≢0} → NonNegative (normalize m n {n≢0})
 normalize-nonNeg m n {n≢0} = mkℚ+-nonNeg (m ℕ./ ℕ.gcd m n) (n ℕ./ ℕ.gcd m n) {n/g≢0}
   where
-  g≢0   = fromWitnessFalse (ℕ.gcd[m,n]≢0 m n (inj₂ (toWitnessFalse n≢0)))
-  n/g≢0 = fromWitnessFalse (ℕ.n/gcd[m,n]≢0 m n {n≢0} {g≢0})
+  n≢0′ = toWitnessFalse n≢0
+  instance g≢0 = ℕ.≢-nonZero (ℕ.gcd[m,n]≢0 m n (inj₂ n≢0′))
+  n/g≢0 = fromWitnessFalse (ℕ.n/gcd[m,n]≢0 m n {{ℕ.≢-nonZero n≢0′}})
 
 normalize-pos : ∀ m n {n≢0} → ℕ.NonZero m → Positive (normalize m n {n≢0})
 normalize-pos m@(suc _) n {n≢0} m≢0 = mkℚ+-pos (m ℕ./ ℕ.gcd m n) (n ℕ./ ℕ.gcd m n) {n/g≢0} (ℕ.≢-nonZero m/g≢0)
   where
-  g≢0   = fromWitnessFalse (ℕ.gcd[m,n]≢0 m n (inj₂ (toWitnessFalse n≢0)))
-  n/g≢0 = fromWitnessFalse (ℕ.n/gcd[m,n]≢0 m n {n≢0} {g≢0})
-  m/g≢0 = ℕ.m/gcd[m,n]≢0 m n {_} {g≢0}
+  n≢0′ = toWitnessFalse n≢0
+  instance g≢0 = ℕ.≢-nonZero (ℕ.gcd[m,n]≢0 m n (inj₂ n≢0′))
+  n/g≢0 = fromWitnessFalse (ℕ.n/gcd[m,n]≢0 m n {{ℕ.≢-nonZero n≢0′}})
+  m/g≢0 = ℕ.m/gcd[m,n]≢0 m n
 
 normalize-injective-≃ : ∀ m n c d {c≢0 d≢0} →
                         normalize m c {c≢0} ≡ normalize n d {d≢0} →
                         m ℕ.* d ≡ n ℕ.* c
 normalize-injective-≃ m n c d {c≢0} {d≢0} eq = ℕ./-cancelʳ-≡
-  {o≢0 = gcd[m,c]*gcd[n,d]≢0} md∣gcd[m,c]gcd[n,d] nc∣gcd[m,c]gcd[n,d]
+  md∣gcd[m,c]gcd[n,d]
+  nc∣gcd[m,c]gcd[n,d]
   (begin
     (m ℕ.* d) ℕ./ (gcd[m,c] ℕ.* gcd[n,d]) ≡⟨  ℕ./-*-interchange gcd[m,c]∣m gcd[n,d]∣d ⟩
     (m ℕ./ gcd[m,c]) ℕ.* (d ℕ./ gcd[n,d]) ≡⟨  cong₂ ℕ._*_ m/gcd[m,c]≡n/gcd[n,d] (sym c/gcd[m,c]≡d/gcd[n,d]) ⟩
     (n ℕ./ gcd[n,d]) ℕ.* (c ℕ./ gcd[m,c]) ≡˘⟨ ℕ./-*-interchange gcd[n,d]∣n gcd[m,c]∣c ⟩
-    (n ℕ.* c) ℕ./ (gcd[n,d] ℕ.* gcd[m,c]) ≡⟨  ℕ./-congʳ {n≢0 = gcd[n,d]*gcd[m,c]≢0} (ℕ.*-comm gcd[n,d] gcd[m,c]) ⟩
+    (n ℕ.* c) ℕ./ (gcd[n,d] ℕ.* gcd[m,c]) ≡⟨  ℕ./-congʳ (ℕ.*-comm gcd[n,d] gcd[m,c]) ⟩
     (n ℕ.* c) ℕ./ (gcd[m,c] ℕ.* gcd[n,d]) ∎)
   where
   open ≡-Reasoning
@@ -312,20 +317,21 @@ normalize-injective-≃ m n c d {c≢0} {d≢0} eq = ℕ./-cancelʳ-≡
   nc∣gcd[n,d]gcd[m,c] = *-pres-∣ gcd[n,d]∣n gcd[m,c]∣c
   nc∣gcd[m,c]gcd[n,d] = subst (_∣ n ℕ.* c) (ℕ.*-comm gcd[n,d] gcd[m,c]) nc∣gcd[n,d]gcd[m,c]
 
-  gcd[m,c]≢0′  = ℕ.gcd[m,n]≢0 m c (inj₂ (toWitnessFalse c≢0))
-  gcd[n,d]≢0′  = ℕ.gcd[m,n]≢0 n d (inj₂ (toWitnessFalse d≢0))
-  gcd[m,c]≢0   = fromWitnessFalse gcd[m,c]≢0′
-  gcd[n,d]≢0   = fromWitnessFalse gcd[n,d]≢0′
-  c/gcd[m,c]≢0 = fromWitnessFalse (ℕ.n/gcd[m,n]≢0 m c {c≢0} {gcd[m,c]≢0})
-  d/gcd[n,d]≢0 = fromWitnessFalse (ℕ.n/gcd[m,n]≢0 n d {d≢0} {gcd[n,d]≢0})
+  c≢0′ = toWitnessFalse c≢0
+  d≢0′ = toWitnessFalse d≢0
+  gcd[m,c]≢0′  = ℕ.gcd[m,n]≢0 m c (inj₂ c≢0′)
+  gcd[n,d]≢0′  = ℕ.gcd[m,n]≢0 n d (inj₂ d≢0′)
+  instance gcd[m,c]≢0 = ℕ.≢-nonZero gcd[m,c]≢0′
+  instance gcd[n,d]≢0 = ℕ.≢-nonZero gcd[n,d]≢0′
+  c/gcd[m,c]≢0 = fromWitnessFalse (ℕ.n/gcd[m,n]≢0 m c {{ℕ.≢-nonZero c≢0′}})
+  d/gcd[n,d]≢0 = fromWitnessFalse (ℕ.n/gcd[m,n]≢0 n d {{ℕ.≢-nonZero d≢0′}})
   gcd[m,c]*gcd[n,d]≢0′ = Sum.[ gcd[m,c]≢0′ , gcd[n,d]≢0′ ] ∘ ℕ.m*n≡0⇒m≡0∨n≡0 _
-  gcd[m,c]*gcd[n,d]≢0  = fromWitnessFalse gcd[m,c]*gcd[n,d]≢0′
-  gcd[n,d]*gcd[m,c]≢0  = fromWitnessFalse (subst (_≢ 0) (ℕ.*-comm gcd[m,c] gcd[n,d]) gcd[m,c]*gcd[n,d]≢0′)
+  instance gcd[m,c]*gcd[n,d]≢0 = ℕ.≢-nonZero gcd[m,c]*gcd[n,d]≢0′
+  instance gcd[n,d]*gcd[m,c]≢0 = ℕ.≢-nonZero (subst (_≢ 0) (ℕ.*-comm gcd[m,c] gcd[n,d]) gcd[m,c]*gcd[n,d]≢0′)
 
   div = mkℚ+-injective c/gcd[m,c]≢0 d/gcd[n,d]≢0 eq
   m/gcd[m,c]≡n/gcd[n,d] = proj₁ div
   c/gcd[m,c]≡d/gcd[n,d] = proj₂ div
-
 
 ------------------------------------------------------------------------
 -- Properties of _/_
@@ -1635,7 +1641,7 @@ toℚᵘ-homo-∣-∣ (mkℚ -[1+ _ ] _ _) = *≡* refl
 
 ∣-p∣≡∣p∣ : ∀ p → ∣ - p ∣ ≡ ∣ p ∣
 ∣-p∣≡∣p∣ (mkℚ +[1+ n ] d-1 _) = refl
-∣-p∣≡∣p∣ (mkℚ (+ zero) d-1 _) = refl
+∣-p∣≡∣p∣ (mkℚ +0       d-1 _) = refl
 ∣-p∣≡∣p∣ (mkℚ -[1+ n ] d-1 _) = refl
 
 ∣p∣≡p⇒0≤p : ∀ {p} → ∣ p ∣ ≡ p → 0ℚ ≤ p

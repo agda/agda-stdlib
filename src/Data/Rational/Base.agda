@@ -129,11 +129,11 @@ p ≤ᵇ q = (↥ p ℤ.* ↧ q) ℤ.≤ᵇ (↥ q ℤ.* ↧ p)
 -- and returns them in a normalized form, e.g. say 2 and 7
 
 normalize : ∀ (m n : ℕ) {n≢0 : n ≢0} → ℚ
-normalize m n {n≢0} = mkℚ+ (m ℕ./ gcd m n) (n ℕ./ gcd m n)
-  {n/g≢0} (coprime-/gcd m n {g≢0})
+normalize m n {n≢0} = mkℚ+ ((m ℕ./ gcd m n) {{g≢0}}) ((n ℕ./ gcd m n) {{g≢0}})
+  {n/g≢0} (coprime-/gcd m n {{g≢0}})
   where
-  g≢0   = fromWitnessFalse (gcd[m,n]≢0 m n (inj₂ (toWitnessFalse n≢0)))
-  n/g≢0 = fromWitnessFalse (n/gcd[m,n]≢0 m n {n≢0} {g≢0})
+  g≢0   = ℕ.≢-nonZero (gcd[m,n]≢0 m n (inj₂ (toWitnessFalse n≢0)))
+  n/g≢0 = fromWitnessFalse (n/gcd[m,n]≢0 m n {{ℕ.≢-nonZero (toWitnessFalse n≢0)}} {{g≢0}})
 
 -- A constructor for ℚ that (unlike mkℚ) automatically normalises it's
 -- arguments. See the constants section below for how to use this operator.

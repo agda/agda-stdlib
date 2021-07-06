@@ -103,6 +103,14 @@ NonZero (suc x) = ⊤
 >-nonZero : ∀ {n} → n > 0 → NonZero n
 >-nonZero (s≤s 0<n) = tt
 
+-- Destructors
+
+≢-nonZero⁻¹ : ∀ {n} → .(NonZero n) → n ≢ 0
+≢-nonZero⁻¹ {suc n} _ ()
+
+>-nonZero⁻¹ : ∀ {n} → .(NonZero n) → n > 0
+>-nonZero⁻¹ {suc n} _ = s≤s z≤n
+
 ------------------------------------------------------------------------
 -- Arithmetic
 
