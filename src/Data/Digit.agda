@@ -19,6 +19,7 @@ open import Data.Product
 open import Data.Vec.Base as Vec using (Vec; _∷_; [])
 open import Data.Nat.DivMod
 open import Data.Nat.Induction
+open import Data.Unit using (tt)
 open import Relation.Nullary using (does)
 open import Relation.Nullary.Decidable
 open import Relation.Binary using (Decidable)
