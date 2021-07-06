@@ -1,4 +1,4 @@
-Version 1.8-dev
+Version 2.0-dev
 ===============
 
 The library has been tested using Agda 2.6.2.
