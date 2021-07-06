@@ -53,6 +53,10 @@ Non-backwards compatible changes
   So `[a-zA-Z]+.agdai?` run on "the path _build/Main.agdai corresponds to"
   will return "Main.agdai" when it used to be happy to just return "n.agda".
 
+* The constructors `+0` and `+[1+_]` from `Data.Integer.Base` are no longer 
+  exported by `Data.Rational.Base`. You will have to open `Data.Integer(.Base)`
+  directly to use them.
+
 Deprecated modules
 ------------------
 
