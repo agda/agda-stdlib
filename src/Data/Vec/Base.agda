@@ -167,6 +167,17 @@ fs ⊛* xs = fs >>= λ f → map f xs
 allPairs : ∀ {m n} → Vec A m → Vec B n → Vec (A × B) (m * n)
 allPairs xs ys = map _,_ xs ⊛* ys
 
+-- Diagonal
+
+diagonal : ∀ {n} → Vec (Vec A n) n → Vec A n
+diagonal [] = []
+diagonal (xs ∷ xss) = head xs ∷ diagonal (map tail xss)
+
+infixl 1 _>>=′_
+
+_>>=′_ : ∀ {n} → Vec A n → (A → Vec B n) → Vec B n
+xs >>=′ f = diagonal (map f xs)
+
 ------------------------------------------------------------------------
 -- Operations for reducing vectors
 
