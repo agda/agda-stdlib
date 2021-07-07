@@ -1111,8 +1111,6 @@ toℚᵘ-isSemiringMonomorphism-+-* = record
 
 toℚᵘ-isRingHomomorphism-+-* : IsRingHomomorphism +-*-rawRing ℚᵘ.+-*-rawRing toℚᵘ
 toℚᵘ-isRingHomomorphism-+-* = record
-  -- { +-isGroupHomomorphism  = toℚᵘ-isGroupHomomorphism-+
-  --; *-isMonoidHomomorphism = toℚᵘ-isMonoidHomomorphism-*
   { isSemiringHomomorphism = toℚᵘ-isSemiringHomomorphism-+-*
   ; -‿homo                 = toℚᵘ-homo‿-
   }
