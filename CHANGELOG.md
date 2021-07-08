@@ -31,6 +31,9 @@ Non-backwards compatible changes
   `IsRelHomomorphism`. Similarly, `IsLatticeHomomorphism` is now built as
   `IsRelHomomorphism` along with proofs that `_∧_` and `_∨_` are homorphic.
 
+  Also, `⁻¹-homo` in `IsRingHomomorphism` has been renamed to `-‿homo`.
+
+
 * In `Text.Pretty`, `Doc` is now a record rather than a type alias. This
   helps Agda reconstruct the `width` parameter when the module is opened
   without it being applied. In particular this allows users to write
