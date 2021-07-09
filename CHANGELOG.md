@@ -53,6 +53,8 @@ Non-backwards compatible changes
   So `[a-zA-Z]+.agdai?` run on "the path _build/Main.agdai corresponds to"
   will return "Main.agdai" when it used to be happy to just return "n.agda".
 
+* In `Relation.Binary.Reasoning.Base.Triple`, added a new parameter `<-irrefl : Irreflexive _≈_ _<_`
+
 Deprecated modules
 ------------------
 
@@ -167,4 +169,21 @@ Other minor additions
   ```
   isSuccess : ExitCode → Bool
   isFailure : ExitCode → Bool
+  ```
+
+* In `Relation.Binary.Reasoning.Base.Triple` new function:
+  ```agda
+  begin-irrefl : Irreflexive _≈_ _<_ → (r : x IsRelatedTo x) → {s : True (IsStrict? r)} → A
+  ```
+  Specialised versions are available in:
+  ```
+  Data.Nat.Properties
+  Data.Nat.Binary.Properties
+  Data.Integer.Properties
+  Data.Rational.Unnormalised.Properties
+  Data.Rational.Properties
+  Data.Vec.Relation.Binary.Lex.Strict
+  Data.Vec.Relation.Binary.Lex.NonStrict
+  Relation.Binary.Reasoning.StrictPartialOrder
+  Relation.Binary.Reasoning.PartialOrder
   ```
