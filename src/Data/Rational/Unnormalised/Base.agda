@@ -14,6 +14,7 @@ open import Data.Integer.Base as ℤ
 open import Data.Nat as ℕ using (ℕ; zero; suc)
 open import Level using (0ℓ)
 open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Nullary.Decidable using (False)
 open import Relation.Unary using (Pred)
 open import Relation.Binary using (Rel)
@@ -206,8 +207,8 @@ NonNegative p = ℤ.NonNegative (↥ p)
 ≢-nonZero : ∀ {p} → p ≠ 0ℚᵘ → NonZero p
 ≢-nonZero {mkℚᵘ -[1+ _ ] _      } _   = _
 ≢-nonZero {mkℚᵘ +[1+ _ ] _      } _   = _
-≢-nonZero {mkℚᵘ +0       zero   } p≢0 = p≢0 (*≡* refl)
-≢-nonZero {mkℚᵘ +0       (suc d)} p≢0 = p≢0 (*≡* refl)
+≢-nonZero {mkℚᵘ +0       zero   } p≢0 = contradiction (*≡* refl) p≢0
+≢-nonZero {mkℚᵘ +0       (suc d)} p≢0 = contradiction (*≡* refl) p≢0
 
 >-nonZero : ∀ {p} → p > 0ℚᵘ → NonZero p
 >-nonZero {mkℚᵘ +0       _} (*<* (+<+ ()))

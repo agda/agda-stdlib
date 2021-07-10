@@ -191,8 +191,8 @@ NonNegative p = ℚᵘ.NonNegative (toℚᵘ p)
 ≢-nonZero : ∀ {p} → p ≢ 0ℚ → NonZero p
 ≢-nonZero {mkℚ -[1+ _ ] _       _} _   = _
 ≢-nonZero {mkℚ +[1+ _ ] _       _} _   = _
-≢-nonZero {mkℚ +0       zero    _} p≢0 = p≢0 refl
-≢-nonZero {mkℚ +0       (suc d) c} p≢0 = ¬0-coprimeTo-2+ (C.recompute c)
+≢-nonZero {mkℚ +0       zero    _} p≢0 = contradiction refl p≢0
+≢-nonZero {mkℚ +0       (suc d) c} p≢0 = contradiction (λ {i} → C.recompute c {i}) ¬0-coprimeTo-2+
 
 >-nonZero : ∀ {p} → p > 0ℚ → NonZero p
 >-nonZero {p} (*<* p<q) = ℚᵘ.>-nonZero {toℚᵘ p} (ℚᵘ.*<* p<q)

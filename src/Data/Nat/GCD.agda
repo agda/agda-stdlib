@@ -39,8 +39,8 @@ import Relation.Nullary.Decidable as Dec
 -- accordingly.
 
 gcd′ : ∀ m n → Acc _<_ m → n < m → ℕ
-gcd′ m zero        _         _   = m
-gcd′ m n@(suc n-1) (acc rec) n<m = gcd′ n (m % n) (rec _ n<m) (m%n<n m n)
+gcd′ m zero      _         _   = m
+gcd′ m n@(suc _) (acc rec) n<m = gcd′ n (m % n) (rec _ n<m) (m%n<n m n)
 
 gcd : ℕ → ℕ → ℕ
 gcd m n with <-cmp m n

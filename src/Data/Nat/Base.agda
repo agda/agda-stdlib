@@ -11,7 +11,7 @@
 
 module Data.Nat.Base where
 
-open import Data.Bool.Base using (Bool; true; false)
+open import Data.Bool.Base using (Bool; true; false; T; not)
 open import Data.Empty using (⊥)
 open import Data.Unit.Base using (⊤; tt)
 open import Level using (0ℓ)
@@ -78,26 +78,22 @@ a ≯ b = ¬ a > b
 ------------------------------------------------------------------------
 -- Simple predicates
 
--- Defining `NonZero` in terms of `⊤` and `⊥` allows Agda to
--- automatically infer nonZero-ness for any natural of the form
--- `suc n`. Consequently in many circumstances this eliminates the need
--- to explicitly pass a proof when the NonZero argument is either an
--- implicit or an instance argument.
---
--- It could alternatively be defined using a datatype with an instance
--- constructor but then it would not be inferrable when passed as an
--- implicit argument.
+-- Defining in terms of `⊤` and `⊥` allows Agda to automatically infer
+-- nonZero-ness for any natural of the form `suc n`. Consequently in
+-- many circumstances this eliminates the need to explicitly pass a
+-- proof when the NonZero argument is either an implicit or an
+-- instance argument.
 --
 -- See `Data.Nat.DivMod` for an example.
 
 NonZero : ℕ → Set
 NonZero zero    = ⊥
-NonZero (suc x) = ⊤
+NonZero (suc _) = ⊤
 
 -- Constructors
 
 ≢-nonZero : ∀ {n} → n ≢ 0 → NonZero n
-≢-nonZero {zero}  0≢0 = 0≢0 refl
+≢-nonZero {zero}  0≢0 = contradiction refl 0≢0
 ≢-nonZero {suc n} n≢0 = tt
 
 >-nonZero : ∀ {n} → n > 0 → NonZero n

@@ -26,6 +26,7 @@ open import Relation.Binary using (Rel)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; _≢_; refl)
 open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred)
 
 infix  8 -_
@@ -148,7 +149,7 @@ NonNegative -[1+ n ] = ⊥
 
 ≢-nonZero : ∀ {i} → i ≢ 0ℤ → NonZero i
 ≢-nonZero { +[1+ n ]} _   = _
-≢-nonZero { +0}       0≢0 = 0≢0 refl
+≢-nonZero { +0}       0≢0 = contradiction refl 0≢0
 ≢-nonZero { -[1+ n ]} _   = _
 
 >-nonZero : ∀ {i} → i > 0ℤ → NonZero i
