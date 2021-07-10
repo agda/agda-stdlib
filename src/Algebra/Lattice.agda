@@ -14,4 +14,5 @@
 module Algebra.Lattice where
 
 open import Algebra.Lattice.Structures public
+open import Algebra.Lattice.Structures.Biased public
 open import Algebra.Lattice.Bundles public

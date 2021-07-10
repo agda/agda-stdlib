@@ -19,9 +19,8 @@ open import Algebra.Core
 open import Algebra.Bundles
 open import Algebra.Structures
 open import Algebra.Lattice.Structures
+open import Level using (suc; _⊔_)
 open import Relation.Binary
-open import Function.Base
-open import Level
 
 record Semilattice c ℓ : Set (suc (c ⊔ ℓ)) where
   infixr 7 _∙_
@@ -94,6 +93,7 @@ record BoundedSemilattice c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open Semilattice semilattice public using (rawMagma; magma; semigroup; band)
 
+
 record BoundedMeetSemilattice c ℓ : Set (suc (c ⊔ ℓ)) where
   infixr 7 _∧_
   infix  4 _≈_
@@ -132,6 +132,7 @@ record BoundedJoinSemilattice c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open BoundedSemilattice boundedSemilattice public
     using (rawMagma; magma; semigroup; band; semilattice)
+
 
 record RawLattice c ℓ : Set (suc (c ⊔ ℓ)) where
   infixr 7 _∧_
@@ -176,7 +177,7 @@ record Lattice c ℓ : Set (suc (c ⊔ ℓ)) where
   open RawLattice rawLattice public
     using (∨-rawMagma; ∧-rawMagma)
 
-  setoid : Setoid _ _
+  setoid : Setoid c ℓ
   setoid = record { isEquivalence = isEquivalence }
 
   open Setoid setoid public
@@ -200,7 +201,10 @@ record DistributiveLattice c ℓ : Set (suc (c ⊔ ℓ)) where
   lattice = record { isLattice = isLattice }
 
   open Lattice lattice public
-    using (_≉_; rawLattice; setoid)
+    using
+    ( _≉_; rawLattice
+    ; ∨-rawMagma; ∧-rawMagma
+    )
 
 
 record BooleanAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
@@ -221,7 +225,13 @@ record BooleanAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
   open IsBooleanAlgebra isBooleanAlgebra public
 
   distributiveLattice : DistributiveLattice _ _
-  distributiveLattice = record { isDistributiveLattice = isDistributiveLattice }
+  distributiveLattice = record
+    { isDistributiveLattice = isDistributiveLattice
+    }
 
   open DistributiveLattice distributiveLattice public
-    using (_≉_; setoid; lattice)
+    using
+    ( _≉_; rawLattice
+    ; ∨-rawMagma; ∧-rawMagma
+    ; lattice
+    )

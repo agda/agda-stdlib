@@ -33,7 +33,6 @@ record IsCommutativeMonoidˡ (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
   open IsSemigroup isSemigroup
 
   private
-
     identityʳ : RightIdentity ε ∙
     identityʳ = Consequences.comm+idˡ⇒idʳ setoid comm identityˡ
 
@@ -102,7 +101,7 @@ record IsCommutativeSemiringˡ (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) whe
                 +-CM.setoid +-CM.∙-cong *-comm distribʳ
 
     distrib : * DistributesOver +
-    distrib = (distribˡ , distribʳ)
+    distrib = distribˡ , distribʳ
 
     zeroʳ : RightZero 0# *
     zeroʳ = Consequences.comm+zeˡ⇒zeʳ +-CM.setoid *-comm zeroˡ

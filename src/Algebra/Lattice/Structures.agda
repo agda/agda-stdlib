@@ -3,6 +3,9 @@
 --
 -- Some lattice-like structures defined by properties of _∧_ and _∨_
 -- (not packed up with sets, operations, etc.)
+--
+-- For lattices defined via an order relation, see
+-- Relation.Binary.Lattice.
 ------------------------------------------------------------------------
 
 -- The contents of this module should be accessed via `Algebra.Lattice`,
@@ -11,6 +14,7 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Core
+open import Data.Product using (proj₁; proj₂)
 open import Level using (_⊔_)
 open import Relation.Binary using (Rel; Setoid; IsEquivalence)
 
@@ -37,9 +41,9 @@ record IsSemilattice (∙ : Op₂ A) : Set (a ⊔ ℓ) where
     ; ∙-congʳ to ∧-congʳ
     )
 
-
 -- Used to bring names appropriate for a meet semilattice into scope.
-module IsMeetSemilattice {∧} (L : IsSemilattice ∧) where
+IsMeetSemilattice = IsSemilattice
+module IsMeetSemilattice {∧} (L : IsMeetSemilattice ∧) where
   open IsSemilattice L public
     renaming
     ( ∧-cong  to ∧-cong
@@ -47,9 +51,9 @@ module IsMeetSemilattice {∧} (L : IsSemilattice ∧) where
     ; ∧-congʳ to ∧-congʳ
     )
 
-
 -- Used to bring names appropriate for a join semilattice into scope.
-module IsJoinSemilattice {∨} (L : IsSemilattice ∨) where
+IsJoinSemilattice = IsSemilattice
+module IsJoinSemilattice {∨} (L : IsJoinSemilattice ∨) where
   open IsSemilattice L public
     renaming
     ( ∧-cong  to ∨-cong
@@ -60,6 +64,8 @@ module IsJoinSemilattice {∨} (L : IsSemilattice ∨) where
 ------------------------------------------------------------------------
 -- Structures with 1 binary operation & 1 element
 
+-- A bounded semi-lattice is the same thing as an idempotent commutative
+-- monoid.
 IsBoundedSemilattice = IsIdempotentCommutativeMonoid
 module IsBoundedSemilattice {∙ ε} (L : IsBoundedSemilattice ∙ ε) where
 
@@ -72,46 +78,88 @@ module IsBoundedSemilattice {∙ ε} (L : IsBoundedSemilattice ∙ ε) where
     }
 
 
--- Used to bring names appropriate for a meet semilattice into scope.
-module IsBoundedMeetSemilattice
-  {∧ ⊤} (isBoundedSemilattice : IsBoundedSemilattice ∧ ⊤)
+-- Used to bring names appropriate for a bounded meet semilattice
+-- into scope.
+IsBoundedMeetSemilattice = IsBoundedSemilattice
+module IsBoundedMeetSemilattice {∧ ⊤} (L : IsBoundedMeetSemilattice ∧ ⊤)
   where
 
-  private module M = IsBoundedSemilattice isBoundedSemilattice
+  private module M = IsBoundedSemilattice L
 
-  open M using (isSemilattice)
-  open M public using (identity; identityˡ; identityʳ)
+  open M public using () renaming
+    ( identity  to ∧-identity
+    ; identityˡ to ∧-identityˡ
+    ; identityʳ to ∧-identityʳ
+    )
 
-  open IsMeetSemilattice isSemilattice public
+  open IsMeetSemilattice M.isSemilattice public
 
 
--- Used to bring names appropriate for a join semilattice into scope.
-module IsBoundedJoinSemilattice
-  {∧ ⊤} (isBoundedSemilattice : IsBoundedSemilattice ∧ ⊤)
+-- Used to bring names appropriate for a bounded join semilattice
+-- into scope.
+module IsBoundedJoinSemilattice {∨ ⊥} (L : IsBoundedSemilattice ∨ ⊥)
   where
 
-  private module M = IsBoundedSemilattice isBoundedSemilattice
+  private module M = IsBoundedSemilattice L
 
-  open M using (isSemilattice)
-  open M public using (identity; identityˡ; identityʳ)
+  open M public using () renaming
+    ( identity  to ∨-identity
+    ; identityˡ to ∨-identityˡ
+    ; identityʳ to ∨-identityʳ
+    )
 
-  open IsJoinSemilattice isSemilattice public
+  open IsJoinSemilattice M.isSemilattice public
 
 
 ------------------------------------------------------------------------
 -- Structures with 2 binary operations
 
+-- Note that `IsLattice` is not defined in terms of `IsMeetSemilattice`
+-- and `IsJoinSemilattice` for two reasons:
+--   1) it would result in a structure with two *different* proofs that
+--   the equality relation `≈` is an equivalence relation.
+--   2) the idempotence laws of ∨ and ∧ can be derived from the
+--   absorption laws, which makes the corresponding "idem" fields
+--   redundant.
+--
+-- It is possible to construct the `IsLattice` record from
+-- `IsMeetSemilattice` and `IsJoinSemilattice` via the `IsLattice₂`
+-- record found in `Algebra.Lattice.Structures.Biased`.
+--
+-- The derived idempotence laws are stated and proved in
+-- `Algebra.Lattice.Properties.Lattice` along with the fact that every
+-- lattice consists of two semilattices.
+
 record IsLattice (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
   field
-    isJoinSemilattice : IsSemilattice ∨
-    isMeetSemilattice : IsSemilattice ∧
+    isEquivalence : IsEquivalence _≈_
+    ∨-comm        : Commutative ∨
+    ∨-assoc       : Associative ∨
+    ∨-cong        : Congruent₂ ∨
+    ∧-comm        : Commutative ∧
+    ∧-assoc       : Associative ∧
+    ∧-cong        : Congruent₂ ∧
+    absorptive    : Absorptive ∨ ∧
 
-  open IsJoinSemilattice isJoinSemilattice public
-  open IsMeetSemilattice isMeetSemilattice public
-    hiding
-    ( isPartialEquivalence; isEquivalence; setoid
-    ; refl; reflexive; sym; trans; ∧-congʳ; ∧-congˡ
-    )
+  open IsEquivalence isEquivalence public
+
+  ∨-absorbs-∧ : ∨ Absorbs ∧
+  ∨-absorbs-∧ = proj₁ absorptive
+
+  ∧-absorbs-∨ : ∧ Absorbs ∨
+  ∧-absorbs-∨ = proj₂ absorptive
+
+  ∧-congˡ : LeftCongruent ∧
+  ∧-congˡ y≈z = ∧-cong refl y≈z
+
+  ∧-congʳ : RightCongruent ∧
+  ∧-congʳ y≈z = ∧-cong y≈z refl
+
+  ∨-congˡ : LeftCongruent ∨
+  ∨-congˡ y≈z = ∨-cong refl y≈z
+
+  ∨-congʳ : RightCongruent ∨
+  ∨-congʳ y≈z = ∨-cong y≈z refl
 
 
 record IsDistributiveLattice (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
@@ -126,8 +174,9 @@ record IsDistributiveLattice (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
 ------------------------------------------------------------------------
 -- Structures with 2 binary ops, 1 unary op and 2 elements.
 
-record IsBooleanAlgebra
-         (∨ ∧ : Op₂ A) (¬ : Op₁ A) (⊤ ⊥ : A) : Set (a ⊔ ℓ) where
+record IsBooleanAlgebra (∨ ∧ : Op₂ A) (¬ : Op₁ A) (⊤ ⊥ : A) : Set (a ⊔ ℓ)
+  where
+
   field
     isDistributiveLattice : IsDistributiveLattice ∨ ∧
     ∨-complement          : Inverse ⊤ ¬ ∨
