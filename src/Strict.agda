@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- This module is DEPRECATED, please use `Data.Record` directly.
+-- This module is DEPRECATED, please use `Function.Strict` directly.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -10,7 +10,7 @@ module Strict where
 
 {-# WARNING_ON_IMPORT
 "Strict was deprecated in v1.8.
-Use Function.Strict instead."
+Use `Function.Strict` instead (also re-exported by `Function`)."
 #-}
 
 open import Function.Strict public
