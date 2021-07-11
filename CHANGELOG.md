@@ -64,6 +64,10 @@ Non-backwards compatible changes
   So `[a-zA-Z]+.agdai?` run on "the path _build/Main.agdai corresponds to"
   will return "Main.agdai" when it used to be happy to just return "n.agda".
 
+* The constructors `+0` and `+[1+_]` from `Data.Integer.Base` are no longer 
+  exported by `Data.Rational.Base`. You will have to open `Data.Integer(.Base)`
+  directly to use them.
+
 Deprecated modules
 ------------------
 
@@ -148,6 +152,11 @@ Other minor additions
   ```agda
   +-*-rawNearSemiring : RawNearSemiring 0ℓ 0ℓ
   +-*-rawSemiring : RawSemiring 0ℓ 0ℓ
+  ```
+
+* Added new proof to `Data.Product.Properties`:
+  ```agda
+  map-cong : f ≗ g → h ≗ i → map f h ≗ map g i
   ```
 
 * Added new proofs in `Data.String.Properties`:
