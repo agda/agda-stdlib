@@ -5,9 +5,6 @@
 The Agda standard library
 =========================
 
-**NOTE**: The library is currently gearing up for the release of v2.6.2 therefore the
-`master` branch is currently only compatible with release candidate 1 of Agda-2.6.2!
-
 The standard library aims to contain all the tools needed to write both
 programs and proofs easily. While we always try and write efficient
 code, we prioritize ease of proof over type-checking and normalization
