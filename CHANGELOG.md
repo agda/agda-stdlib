@@ -1,4 +1,4 @@
-Version 1.8-dev
+Version 2.0-dev
 ===============
 
 The library has been tested using Agda 2.6.2.
@@ -22,6 +22,17 @@ Bug-fixes
 
 Non-backwards compatible changes
 --------------------------------
+
+* In `Algebra.Morphism.Structures`, `IsNearSemiringHomomorphism`,
+  `IsSemiringHomomorphism`, and `IsRingHomomorphism` have been redeisgned to
+  build up from `IsMonoidHomomorphism`, `IsNearSemiringHomomorphism`, and
+  `IsSemiringHomomorphism` respectively, adding a single property at each step.
+  This means that they no longer need to have two separate proofs of
+  `IsRelHomomorphism`. Similarly, `IsLatticeHomomorphism` is now built as
+  `IsRelHomomorphism` along with proofs that `_∧_` and `_∨_` are homorphic.
+
+  Also, `⁻¹-homo` in `IsRingHomomorphism` has been renamed to `-‿homo`.
+
 
 * In `Text.Pretty`, `Doc` is now a record rather than a type alias. This
   helps Agda reconstruct the `width` parameter when the module is opened
@@ -53,6 +64,10 @@ Non-backwards compatible changes
   So `[a-zA-Z]+.agdai?` run on "the path _build/Main.agdai corresponds to"
   will return "Main.agdai" when it used to be happy to just return "n.agda".
 
+* The constructors `+0` and `+[1+_]` from `Data.Integer.Base` are no longer 
+  exported by `Data.Rational.Base`. You will have to open `Data.Integer(.Base)`
+  directly to use them.
+
 Deprecated modules
 ------------------
 
@@ -71,6 +86,11 @@ New modules
 * Show module for unnormalised rationals:
   ```
   Data.Rational.Unnormalised.Show
+  ```
+
+* Properties of bijections:
+  ```
+  Function.Properties.Bijection
   ```
 
 * Various system types and primitives:
@@ -118,22 +138,45 @@ Other minor additions
   ```
   and their corresponding algebraic substructures.
 
-* In `Data.String.Properties`:
+* Added new definitions and proofs in `Data.Rational.Properties`:
+  ```agda
+  +-*-rawNearSemiring : RawNearSemiring 0ℓ 0ℓ
+  +-*-rawSemiring : RawSemiring 0ℓ 0ℓ
+  toℚᵘ-isNearSemiringHomomorphism-+-* : IsNearSemiringHomomorphism +-*-rawNearSemiring ℚᵘ.+-*-rawNearSemiring toℚᵘ
+  toℚᵘ-isNearSemiringMonomorphism-+-* : IsNearSemiringMonomorphism +-*-rawNearSemiring ℚᵘ.+-*-rawNearSemiring toℚᵘ
+  toℚᵘ-isSemiringHomomorphism-+-* : IsSemiringHomomorphism +-*-rawSemiring ℚᵘ.+-*-rawSemiring toℚᵘ
+  toℚᵘ-isSemiringMonomorphism-+-* : IsSemiringMonomorphism +-*-rawSemiring ℚᵘ.+-*-rawSemiring toℚᵘ
+  ```
+
+* Added new definitions in `Data.Rational.Unnormalised.Properties`:
+  ```agda
+  +-*-rawNearSemiring : RawNearSemiring 0ℓ 0ℓ
+  +-*-rawSemiring : RawSemiring 0ℓ 0ℓ
+  ```
+
+* Added new proof to `Data.Product.Properties`:
+  ```agda
+  map-cong : f ≗ g → h ≗ i → map f h ≗ map g i
+  ```
+
+* Added new proofs in `Data.String.Properties`:
   ```
   ≤-isDecTotalOrder-≈ : IsDecTotalOrder _≈_ _≤_
   ≤-decTotalOrder-≈   :  DecTotalOrder _ _ _
   ```
 
-* In `Data.Vec.Base`:
+* Added new definitions in `Data.Vec.Base`:
   ```agda
   diagonal : ∀ {n} → Vec (Vec A n) n → Vec A n
   _>>=′_ : ∀ {n} → Vec A n → (A → Vec B n) → Vec B n
   ```
-  In `Data.Vec.Categorical`:
+  
+* Added new instance in `Data.Vec.Categorical`:
   ```agda
   monad : RawMonad (λ (A : Set a) → Vec A n)
   ```
-  In `Data.Vec.Properties`:
+  
+* Added new proofs in `Data.Vec.Properties`:
   ```agda
   map-const : ∀ {n} (xs : Vec A n) (x : B) → map {n = n} (const x) xs ≡ replicate x
   map-⊛ : ∀ {n} (f : A → B → C) (g : A → B) (xs : Vec A n) → (map f xs ⊛ map g xs) ≡ map (f ˢ g) xs
@@ -141,7 +184,17 @@ Other minor additions
   transpose-replicate : ∀ {m n} (xs : Vec A m) → transpose (replicate {n = n} xs) ≡ map replicate xs
   ```
 
-* In `IO`:
+* Added new proofs in `Function.Construct.Symmetry`:
+  ```
+  bijective     : Bijective ≈₁ ≈₂ f → Symmetric ≈₂ → Transitive ≈₂ → Congruent ≈₁ ≈₂ f → Bijective ≈₂ ≈₁ f⁻¹
+  isBijection   : IsBijection ≈₁ ≈₂ f → Congruent ≈₂ ≈₁ f⁻¹ → IsBijection ≈₂ ≈₁ f⁻¹
+  isBijection-≡ : IsBijection ≈₁ _≡_ f → IsBijection _≡_ ≈₁ f⁻¹
+  bijection     : Bijection R S → Congruent IB.Eq₂._≈_ IB.Eq₁._≈_ f⁻¹ → Bijection S R
+  bijection-≡   : Bijection R (setoid B) → Bijection (setoid B) R
+  sym-⤖        : A ⤖ B → B ⤖ A
+  ```
+
+* Added new operations in `IO`:
   ```
   Colist.forM  : Colist A → (A → IO B) → IO (Colist B)
   Colist.forM′ : Colist A → (A → IO B) → IO ⊤
@@ -150,7 +203,7 @@ Other minor additions
   List.forM′ : List A → (A → IO B) → IO ⊤
   ```
 
-* In `IO.Base`:
+* Added new operations in `IO.Base`:
   ```
   lift! : IO A → IO (Lift b A)
   _<$_  : B → IO A → IO B
@@ -165,7 +218,7 @@ Other minor additions
   untilJust : IO (Maybe A) → IO A
   ```
 
-* In `System.Exit`:
+* Added new operations in `System.Exit`:
   ```
   isSuccess : ExitCode → Bool
   isFailure : ExitCode → Bool

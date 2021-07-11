@@ -579,6 +579,25 @@ nonNeg∧nonPos⇒0 {mkℚᵘ +0 _} _ _ = *≡* refl
   ; _⁻¹ = -_
   }
 
++-*-rawNearSemiring : RawNearSemiring 0ℓ 0ℓ
++-*-rawNearSemiring = record
+  { Carrier = ℚᵘ
+  ; _≈_ = _≃_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; 0# = 0ℚᵘ
+  }
+
++-*-rawSemiring : RawSemiring 0ℓ 0ℓ
++-*-rawSemiring = record
+  { Carrier = ℚᵘ
+  ; _≈_ = _≃_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; 0# = 0ℚᵘ
+  ; 1# = 1ℚᵘ
+  }
+
 +-*-rawRing : RawRing 0ℓ 0ℓ
 +-*-rawRing = record
   { Carrier = ℚᵘ

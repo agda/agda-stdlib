@@ -1,8 +1,8 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- An Equivalence (on functions) is an Equivalence relation
---   This file is meant to be imported qualified.
+-- Some basic properties of equivalences. This file is designed to be
+-- imported qualified.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -20,12 +20,12 @@ import Function.Construct.Composition as Composition
 
 private
   variable
-    a b ℓ₁ ℓ₂ : Level
+    a ℓ : Level
 
 ------------------------------------------------------------------------
 -- Setoid bundles
 
-isEquivalence : IsEquivalence (Equivalence {a} {b})
+isEquivalence : IsEquivalence (Equivalence {a} {ℓ})
 isEquivalence = record
   { refl = λ {x} → Identity.equivalence x
   ; sym = Symmetry.equivalence
@@ -35,7 +35,7 @@ isEquivalence = record
 ------------------------------------------------------------------------
 -- Propositional bundles
 
-⇔-isEquivalence : IsEquivalence {ℓ = ℓ₁} _⇔_
+⇔-isEquivalence : IsEquivalence {ℓ = ℓ} _⇔_
 ⇔-isEquivalence = record
   { refl = λ {x} → Identity.equivalence (setoid x)
   ; sym = Symmetry.equivalence

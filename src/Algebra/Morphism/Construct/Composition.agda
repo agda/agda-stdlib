@@ -160,7 +160,7 @@ module _ {R₁ : RawNearSemiring a ℓ₁}
     → IsNearSemiringHomomorphism R₁ R₃ (g ∘ f)
   isNearSemiringHomomorphism f-homo g-homo = record
     { +-isMonoidHomomorphism = isMonoidHomomorphism ≈₃-trans F.+-isMonoidHomomorphism G.+-isMonoidHomomorphism
-    ; *-isMagmaHomomorphism  = isMagmaHomomorphism  ≈₃-trans F.*-isMagmaHomomorphism  G.*-isMagmaHomomorphism
+    ; *-homo = λ x y → ≈₃-trans (G.⟦⟧-cong (F.*-homo x y)) (G.*-homo (f x) (f y))
     } where module F = IsNearSemiringHomomorphism f-homo; module G = IsNearSemiringHomomorphism g-homo
 
   isNearSemiringMonomorphism
@@ -201,8 +201,8 @@ module _
     → IsSemiringHomomorphism R₂ R₃ g
     → IsSemiringHomomorphism R₁ R₃ (g ∘ f)
   isSemiringHomomorphism f-homo g-homo = record
-    { +-isMonoidHomomorphism = isMonoidHomomorphism ≈₃-trans F.+-isMonoidHomomorphism G.+-isMonoidHomomorphism
-    ; *-isMonoidHomomorphism = isMonoidHomomorphism ≈₃-trans F.*-isMonoidHomomorphism G.*-isMonoidHomomorphism
+    { isNearSemiringHomomorphism = isNearSemiringHomomorphism ≈₃-trans F.isNearSemiringHomomorphism G.isNearSemiringHomomorphism
+    ; 1#-homo                    = ≈₃-trans (G.⟦⟧-cong F.1#-homo) G.1#-homo
     } where module F = IsSemiringHomomorphism f-homo; module G = IsSemiringHomomorphism g-homo
 
   isSemiringMonomorphism
@@ -242,8 +242,8 @@ module _ {R₁ : RawRing a ℓ₁}
     → IsRingHomomorphism R₂ R₃ g
     → IsRingHomomorphism R₁ R₃ (g ∘ f)
   isRingHomomorphism f-homo g-homo = record
-    { +-isGroupHomomorphism = isGroupHomomorphism   ≈₃-trans F.+-isGroupHomomorphism  G.+-isGroupHomomorphism
-    ; *-isMonoidHomomorphism = isMonoidHomomorphism ≈₃-trans F.*-isMonoidHomomorphism G.*-isMonoidHomomorphism
+    { isSemiringHomomorphism = isSemiringHomomorphism ≈₃-trans F.isSemiringHomomorphism G.isSemiringHomomorphism
+    ; -‿homo                 = λ x → ≈₃-trans (G.⟦⟧-cong (F.-‿homo x)) (G.-‿homo (f x))
     } where module F = IsRingHomomorphism f-homo; module G = IsRingHomomorphism g-homo
 
   isRingMonomorphism
@@ -282,8 +282,9 @@ module _ {L₁ : RawLattice a ℓ₁}
     → IsLatticeHomomorphism L₂ L₃ g
     → IsLatticeHomomorphism L₁ L₃ (g ∘ f)
   isLatticeHomomorphism f-homo g-homo = record
-    { ∧-isMagmaHomomorphism = isMagmaHomomorphism ≈₃-trans F.∧-isMagmaHomomorphism G.∧-isMagmaHomomorphism
-    ; ∨-isMagmaHomomorphism = isMagmaHomomorphism ≈₃-trans F.∨-isMagmaHomomorphism G.∨-isMagmaHomomorphism
+    { isRelHomomorphism = isRelHomomorphism F.isRelHomomorphism G.isRelHomomorphism
+    ; ∧-homo            = λ x y → ≈₃-trans (G.⟦⟧-cong (F.∧-homo x y)) (G.∧-homo (f x) (f y))
+    ; ∨-homo            = λ x y → ≈₃-trans (G.⟦⟧-cong (F.∨-homo x y)) (G.∨-homo (f x) (f y))
     } where module F = IsLatticeHomomorphism f-homo; module G = IsLatticeHomomorphism g-homo
 
   isLatticeMonomorphism
