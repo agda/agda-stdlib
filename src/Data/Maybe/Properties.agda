@@ -31,6 +31,9 @@ private
 ------------------------------------------------------------------------
 -- Equality
 
+just≢nothing : ∀ {x} → (Maybe A ∋ just x) ≢ nothing
+just≢nothing ()
+
 just-injective : ∀ {x y} → (Maybe A ∋ just x) ≡ just y → x ≡ y
 just-injective refl = refl
 
