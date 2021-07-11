@@ -1,4 +1,4 @@
-Version 1.8-dev
+Version 2.0-dev
 ===============
 
 The library has been tested using Agda 2.6.2.
@@ -73,6 +73,12 @@ Non-backwards compatible changes
 * Added some convenient helper functions for constructing the lattice records
   in `Algebra.Lattice.Structures.Biased` (these are re-exported by `Algebra.Lattice`).
 
+### Other
+
+* The constructors `+0` and `+[1+_]` from `Data.Integer.Base` are no longer 
+  exported by `Data.Rational.Base`. You will have to open `Data.Integer(.Base)`
+  directly to use them.
+
 Deprecated modules
 ------------------
 
@@ -142,6 +148,11 @@ Other minor additions
   ∧-isCommutativeSemigroup : IsCommutativeSemigroup ∧
   ```
   and their corresponding algebraic substructures.
+
+* Added new proof to `Data.Product.Properties`:
+  ```agda
+  map-cong : f ≗ g → h ≗ i → map f h ≗ map g i
+  ```
 
 * Added new proofs in `Data.String.Properties`:
   ```
