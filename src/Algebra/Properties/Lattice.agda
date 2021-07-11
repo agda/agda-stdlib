@@ -1,189 +1,36 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Some derivable properties
+-- This module is DEPRECATED. Please use
+-- `Algebra.Lattice.Properties.Lattice` instead.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra.Bundles
-
-module Algebra.Properties.Lattice {l₁ l₂} (L : Lattice l₁ l₂) where
-
-open Lattice L
-open import Algebra.Structures _≈_
-open import Algebra.Definitions _≈_
-import Algebra.Properties.Semilattice as SemilatticeProperties
+open import Algebra.Lattice.Bundles
 open import Relation.Binary
-import Relation.Binary.Lattice as R
-open import Relation.Binary.Reasoning.Setoid  setoid
 open import Function.Base
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence using (_⇔_; module Equivalence)
 open import Data.Product using (_,_; swap)
 
-------------------------------------------------------------------------
--- _∧_ is a semilattice
+module Algebra.Properties.Lattice {l₁ l₂} (L : Lattice l₁ l₂) where
 
-∧-idem : Idempotent _∧_
-∧-idem x = begin
-  x ∧ x            ≈⟨ ∧-congˡ (sym (∨-absorbs-∧ _ _)) ⟩
-  x ∧ (x ∨ x ∧ x)  ≈⟨ ∧-absorbs-∨ _ _ ⟩
-  x                ∎
+open import Algebra.Lattice.Properties.Lattice L public
 
-∧-isMagma : IsMagma _∧_
-∧-isMagma = record
-  { isEquivalence = isEquivalence
-  ; ∙-cong        = ∧-cong
-  }
+{-# WARNING_ON_IMPORT
+"Algebra.Properties.Lattice was deprecated in v2.0.
+Use Algebra.Lattice.Properties.Lattice instead."
+#-}
 
-∧-isSemigroup : IsSemigroup _∧_
-∧-isSemigroup = record
-  { isMagma = ∧-isMagma
-  ; assoc   = ∧-assoc
-  }
-
-∧-isBand : IsBand _∧_
-∧-isBand = record
-  { isSemigroup = ∧-isSemigroup
-  ; idem        = ∧-idem
-  }
-
-∧-isSemilattice : IsSemilattice _∧_
-∧-isSemilattice = record
-  { isBand = ∧-isBand
-  ; comm   = ∧-comm
-  }
-
-∧-semilattice : Semilattice l₁ l₂
-∧-semilattice = record
-  { isSemilattice = ∧-isSemilattice
-  }
-
-open SemilatticeProperties ∧-semilattice public
-  using
-  ( ∧-isOrderTheoreticMeetSemilattice
-  ; ∧-isOrderTheoreticJoinSemilattice
-  ; ∧-orderTheoreticMeetSemilattice
-  ; ∧-orderTheoreticJoinSemilattice
-  )
-
-------------------------------------------------------------------------
--- _∨_ is a semilattice
-
-∨-idem : Idempotent _∨_
-∨-idem x = begin
-  x ∨ x      ≈⟨ ∨-congˡ (sym (∧-idem _)) ⟩
-  x ∨ x ∧ x  ≈⟨ ∨-absorbs-∧ _ _ ⟩
-  x          ∎
-
-∨-isMagma : IsMagma _∨_
-∨-isMagma = record
-  { isEquivalence = isEquivalence
-  ; ∙-cong        = ∨-cong
-  }
-
-∨-isSemigroup : IsSemigroup _∨_
-∨-isSemigroup = record
-  { isMagma = ∨-isMagma
-  ; assoc   = ∨-assoc
-  }
-
-∨-isBand : IsBand _∨_
-∨-isBand = record
-  { isSemigroup = ∨-isSemigroup
-  ; idem        = ∨-idem
-  }
-
-∨-isSemilattice : IsSemilattice _∨_
-∨-isSemilattice = record
-  { isBand = ∨-isBand
-  ; comm   = ∨-comm
-  }
-
-∨-semilattice : Semilattice l₁ l₂
-∨-semilattice = record
-  { isSemilattice = ∨-isSemilattice
-  }
-
-open SemilatticeProperties ∨-semilattice public
-  using ()
-  renaming
-  ( ∧-isOrderTheoreticMeetSemilattice to ∨-isOrderTheoreticMeetSemilattice
-  ; ∧-isOrderTheoreticJoinSemilattice to ∨-isOrderTheoreticJoinSemilattice
-  ; ∧-orderTheoreticMeetSemilattice   to ∨-orderTheoreticMeetSemilattice
-  ; ∧-orderTheoreticJoinSemilattice   to ∨-orderTheoreticJoinSemilattice
-  )
-
-------------------------------------------------------------------------
--- The dual construction is also a lattice.
-
-∧-∨-isLattice : IsLattice _∧_ _∨_
-∧-∨-isLattice = record
-  { isEquivalence = isEquivalence
-  ; ∨-comm        = ∧-comm
-  ; ∨-assoc       = ∧-assoc
-  ; ∨-cong        = ∧-cong
-  ; ∧-comm        = ∨-comm
-  ; ∧-assoc       = ∨-assoc
-  ; ∧-cong        = ∨-cong
-  ; absorptive    = swap absorptive
-  }
-
-∧-∨-lattice : Lattice _ _
-∧-∨-lattice = record
-  { isLattice = ∧-∨-isLattice
-  }
-
-------------------------------------------------------------------------
--- Every algebraic lattice can be turned into an order-theoretic one.
-
-open SemilatticeProperties ∧-semilattice public using (poset)
-open Poset poset using (_≤_; isPartialOrder)
-
-∨-∧-isOrderTheoreticLattice : R.IsLattice _≈_ _≤_ _∨_ _∧_
-∨-∧-isOrderTheoreticLattice = record
-  { isPartialOrder = isPartialOrder
-  ; supremum       = supremum
-  ; infimum        = infimum
-  }
-  where
-  open R.MeetSemilattice ∧-orderTheoreticMeetSemilattice using (infimum)
-  open R.JoinSemilattice ∨-orderTheoreticJoinSemilattice using (x≤x∨y; y≤x∨y; ∨-least)
-    renaming (_≤_ to _≤′_)
-
-  -- An alternative but equivalent interpretation of the order _≤_.
-
-  sound : ∀ {x y} → x ≤′ y → x ≤ y
-  sound {x} {y} y≈y∨x = sym $ begin
-    x ∧ y        ≈⟨ ∧-congˡ y≈y∨x ⟩
-    x ∧ (y ∨ x)  ≈⟨ ∧-congˡ (∨-comm y x) ⟩
-    x ∧ (x ∨ y)  ≈⟨ ∧-absorbs-∨ x y ⟩
-    x            ∎
-
-  complete : ∀ {x y} → x ≤ y → x ≤′ y
-  complete {x} {y} x≈x∧y = sym $ begin
-    y ∨ x        ≈⟨ ∨-congˡ x≈x∧y ⟩
-    y ∨ (x ∧ y)  ≈⟨ ∨-congˡ (∧-comm x y) ⟩
-    y ∨ (y ∧ x)  ≈⟨ ∨-absorbs-∧ y x ⟩
-    y            ∎
-
-  supremum : R.Supremum _≤_ _∨_
-  supremum x y =
-     sound (x≤x∨y x y) ,
-     sound (y≤x∨y x y) ,
-     λ z x≤z y≤z → sound (∨-least (complete x≤z) (complete y≤z))
-
-∨-∧-orderTheoreticLattice : R.Lattice _ _ _
-∨-∧-orderTheoreticLattice = record
-  { isLattice = ∨-∧-isOrderTheoreticLattice
-  }
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
 ------------------------------------------------------------------------
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
+
+open Lattice L
 
 -- Version 1.1
 

@@ -84,32 +84,24 @@ IsBoundedMeetSemilattice = IsBoundedSemilattice
 module IsBoundedMeetSemilattice {∧ ⊤} (L : IsBoundedMeetSemilattice ∧ ⊤)
   where
 
-  private module M = IsBoundedSemilattice L
+  open IsBoundedSemilattice L public
+    using (identity; identityˡ; identityʳ)
+    renaming (isSemilattice to isMeetSemilattice)
 
-  open M public using () renaming
-    ( identity  to ∧-identity
-    ; identityˡ to ∧-identityˡ
-    ; identityʳ to ∧-identityʳ
-    )
-
-  open IsMeetSemilattice M.isSemilattice public
+  open IsMeetSemilattice isMeetSemilattice public
 
 
 -- Used to bring names appropriate for a bounded join semilattice
 -- into scope.
-module IsBoundedJoinSemilattice {∨ ⊥} (L : IsBoundedSemilattice ∨ ⊥)
+IsBoundedJoinSemilattice = IsBoundedSemilattice
+module IsBoundedJoinSemilattice {∨ ⊥} (L : IsBoundedJoinSemilattice ∨ ⊥)
   where
 
-  private module M = IsBoundedSemilattice L
+  open IsBoundedSemilattice L public
+    using (identity; identityˡ; identityʳ)
+    renaming (isSemilattice to isJoinSemilattice)
 
-  open M public using () renaming
-    ( identity  to ∨-identity
-    ; identityˡ to ∨-identityˡ
-    ; identityʳ to ∨-identityʳ
-    )
-
-  open IsJoinSemilattice M.isSemilattice public
-
+  open IsJoinSemilattice isJoinSemilattice public
 
 ------------------------------------------------------------------------
 -- Structures with 2 binary operations

@@ -202,7 +202,7 @@ record DistributiveLattice c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open Lattice lattice public
     using
-    ( _≉_; rawLattice
+    ( _≉_; setoid; rawLattice
     ; ∨-rawMagma; ∧-rawMagma
     )
 
@@ -231,7 +231,7 @@ record BooleanAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open DistributiveLattice distributiveLattice public
     using
-    ( _≉_; rawLattice
+    ( _≉_; setoid; rawLattice
     ; ∨-rawMagma; ∧-rawMagma
     ; lattice
     )

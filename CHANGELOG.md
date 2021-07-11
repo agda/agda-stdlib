@@ -23,6 +23,8 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
+### Improvements to pretty printing and regexes
+
 * In `Text.Pretty`, `Doc` is now a record rather than a type alias. This
   helps Agda reconstruct the `width` parameter when the module is opened
   without it being applied. In particular this allows users to write
@@ -52,6 +54,24 @@ Non-backwards compatible changes
 
   So `[a-zA-Z]+.agdai?` run on "the path _build/Main.agdai corresponds to"
   will return "Main.agdai" when it used to be happy to just return "n.agda".
+
+### Creation of separate `Algebra.Lattice` hierarchy
+
+* In order to improve modularity and consistency with `Relation.Binary.Lattice`, 
+  the structures & bundles for `Semilattice`, `Lattice`, `DistributiveLattice`
+  & `BooleanAlgebra` have been moved out of the `Algebra` modules and into their
+  own hierarchy in `Algebra.Lattice`.
+
+* The modules `Algebra.Properties.(Semilattice/Lattice/DistributiveLattice/BooleanAlgebra)`
+  have been moved under `Algebra.Lattice.Properties`.
+
+* Added new `IsBoundedSemilattice`/`BoundedSemilattice` records.
+
+* Added new aliases `Is(Meet/Join)(Bounded)Semilattice` for `Is(Bounded)Semilattice`
+  which can be used to indicate meet/join-ness of the original structures.
+
+* Added some convenient helper functions for constructing the lattice records
+  in `Algebra.Lattice.Structures.Biased` (these are re-exported by `Algebra.Lattice`).
 
 Deprecated modules
 ------------------
