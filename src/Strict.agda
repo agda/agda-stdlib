@@ -10,7 +10,7 @@ module Strict where
 
 {-# WARNING_ON_IMPORT
 "Strict was deprecated in v1.8.
-Use `Function.Strict` instead (also re-exported by `Function`)."
+Use `Function.Strict instead (also re-exported by `Function`)."
 #-}
 
 open import Function.Strict public
