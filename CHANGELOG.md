@@ -23,6 +23,17 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
+* In `Algebra.Morphism.Structures`, `IsNearSemiringHomomorphism`,
+  `IsSemiringHomomorphism`, and `IsRingHomomorphism` have been redeisgned to
+  build up from `IsMonoidHomomorphism`, `IsNearSemiringHomomorphism`, and
+  `IsSemiringHomomorphism` respectively, adding a single property at each step.
+  This means that they no longer need to have two separate proofs of
+  `IsRelHomomorphism`. Similarly, `IsLatticeHomomorphism` is now built as
+  `IsRelHomomorphism` along with proofs that `_∧_` and `_∨_` are homorphic.
+
+  Also, `⁻¹-homo` in `IsRingHomomorphism` has been renamed to `-‿homo`.
+
+
 * In `Text.Pretty`, `Doc` is now a record rather than a type alias. This
   helps Agda reconstruct the `width` parameter when the module is opened
   without it being applied. In particular this allows users to write
@@ -126,6 +137,22 @@ Other minor additions
   ∧-isCommutativeSemigroup : IsCommutativeSemigroup ∧
   ```
   and their corresponding algebraic substructures.
+
+* Added new definitions and proofs in `Data.Rational.Properties`:
+  ```agda
+  +-*-rawNearSemiring : RawNearSemiring 0ℓ 0ℓ
+  +-*-rawSemiring : RawSemiring 0ℓ 0ℓ
+  toℚᵘ-isNearSemiringHomomorphism-+-* : IsNearSemiringHomomorphism +-*-rawNearSemiring ℚᵘ.+-*-rawNearSemiring toℚᵘ
+  toℚᵘ-isNearSemiringMonomorphism-+-* : IsNearSemiringMonomorphism +-*-rawNearSemiring ℚᵘ.+-*-rawNearSemiring toℚᵘ
+  toℚᵘ-isSemiringHomomorphism-+-* : IsSemiringHomomorphism +-*-rawSemiring ℚᵘ.+-*-rawSemiring toℚᵘ
+  toℚᵘ-isSemiringMonomorphism-+-* : IsSemiringMonomorphism +-*-rawSemiring ℚᵘ.+-*-rawSemiring toℚᵘ
+  ```
+
+* Added new definitions in `Data.Rational.Unnormalised.Properties`:
+  ```agda
+  +-*-rawNearSemiring : RawNearSemiring 0ℓ 0ℓ
+  +-*-rawSemiring : RawSemiring 0ℓ 0ℓ
+  ```
 
 * Added new proof to `Data.Product.Properties`:
   ```agda

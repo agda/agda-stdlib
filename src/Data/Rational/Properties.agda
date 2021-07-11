@@ -785,6 +785,23 @@ private
   ; _⁻¹ = -_
   }
 
++-*-rawNearSemiring : RawNearSemiring 0ℓ 0ℓ
++-*-rawNearSemiring = record
+  { _≈_ = _≡_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; 0#  = 0ℚ
+  }
+
++-*-rawSemiring : RawSemiring 0ℓ 0ℓ
++-*-rawSemiring = record
+  { _≈_ = _≡_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; 0#  = 0ℚ
+  ; 1#  = 1ℚ
+  }
+
 +-*-rawRing : RawRing 0ℓ 0ℓ
 +-*-rawRing = record
   { _≈_ = _≡_
@@ -1068,10 +1085,34 @@ toℚᵘ-isMonoidMonomorphism-* = record
   ; injective            = toℚᵘ-injective
   }
 
+toℚᵘ-isNearSemiringHomomorphism-+-* : IsNearSemiringHomomorphism +-*-rawNearSemiring ℚᵘ.+-*-rawNearSemiring toℚᵘ
+toℚᵘ-isNearSemiringHomomorphism-+-* = record
+  { +-isMonoidHomomorphism = toℚᵘ-isMonoidHomomorphism-+
+  ; *-homo                 = toℚᵘ-homo-*
+  }
+
+toℚᵘ-isNearSemiringMonomorphism-+-* : IsNearSemiringMonomorphism +-*-rawNearSemiring ℚᵘ.+-*-rawNearSemiring toℚᵘ
+toℚᵘ-isNearSemiringMonomorphism-+-* = record
+  { isNearSemiringHomomorphism = toℚᵘ-isNearSemiringHomomorphism-+-*
+  ; injective                  = toℚᵘ-injective
+  }
+
+toℚᵘ-isSemiringHomomorphism-+-* : IsSemiringHomomorphism +-*-rawSemiring ℚᵘ.+-*-rawSemiring toℚᵘ
+toℚᵘ-isSemiringHomomorphism-+-* = record
+  { isNearSemiringHomomorphism = toℚᵘ-isNearSemiringHomomorphism-+-*
+  ; 1#-homo                    = ℚᵘ.≃-refl
+  }
+
+toℚᵘ-isSemiringMonomorphism-+-* : IsSemiringMonomorphism +-*-rawSemiring ℚᵘ.+-*-rawSemiring toℚᵘ
+toℚᵘ-isSemiringMonomorphism-+-* = record
+  { isSemiringHomomorphism = toℚᵘ-isSemiringHomomorphism-+-*
+  ; injective              = toℚᵘ-injective
+  }
+
 toℚᵘ-isRingHomomorphism-+-* : IsRingHomomorphism +-*-rawRing ℚᵘ.+-*-rawRing toℚᵘ
 toℚᵘ-isRingHomomorphism-+-* = record
-  { +-isGroupHomomorphism  = toℚᵘ-isGroupHomomorphism-+
-  ; *-isMonoidHomomorphism = toℚᵘ-isMonoidHomomorphism-*
+  { isSemiringHomomorphism = toℚᵘ-isSemiringHomomorphism-+-*
+  ; -‿homo                 = toℚᵘ-homo‿-
   }
 
 toℚᵘ-isRingMonomorphism-+-* : IsRingMonomorphism +-*-rawRing ℚᵘ.+-*-rawRing toℚᵘ
