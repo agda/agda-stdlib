@@ -53,13 +53,16 @@ Non-backwards compatible changes
   So `[a-zA-Z]+.agdai?` run on "the path _build/Main.agdai corresponds to"
   will return "Main.agdai" when it used to be happy to just return "n.agda".
 
-Deprecated modules
-------------------
+### Strict functions
 
 * The module `Strict` has been deprecated in favour of `Function.Strict` 
-  and the definitions of `_$!_` and `_$!′_` have been moved from `Function.Base`
-  to `Function.Strict` (although they continue to be re-exported by `Function.Base`
-  for compatibility).
+  and the definitions of strict application, `_$!_` and `_$!′_`, have been
+  moved from `Function.Base` to `Function.Strict`.
+  
+* The contents of `Function.Strict` is now re-exported by `Function`.
+
+Deprecated modules
+------------------
 
 Deprecated names
 ----------------

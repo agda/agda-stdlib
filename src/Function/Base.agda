@@ -4,15 +4,15 @@
 -- Simple combinators working solely on and with functions
 ------------------------------------------------------------------------
 
--- The contents of this file can be accessed from `Function`.
--- See `Function.Strict` for strict versions of these combinators.
+-- The contents of this module is also accessible via the `Function`
+-- module. See `Function.Strict` for strict versions of these
+-- combinators.
 
 {-# OPTIONS --without-K --safe #-}
 
 module Function.Base where
 
-open import Level
-import Function.Strict
+open import Level using (Level)
 
 private
   variable
@@ -243,9 +243,6 @@ _*_ on f = f -⟨ _*_ ⟩- f
 
 ------------------------------------------------------------------------
 -- Deprecated
-
-open Function.Strict public
-  using (_$!_; _$!′_)
 
 _-[_]-_ = _-⟪_⟫-_
 {-# WARNING_ON_USAGE _-[_]-_

@@ -4,12 +4,16 @@
 -- Strict combinators (i.e. that use call-by-value)
 ------------------------------------------------------------------------
 
+-- The contents of this module is also accessible via the `Function`
+-- module.
+
 {-# OPTIONS --without-K --safe #-}
 
 module Function.Strict where
 
-open import Level using (Level)
 open import Agda.Builtin.Equality using (_≡_)
+open import Function.Base using (flip)
+open import Level using (Level)
 
 private
   variable
@@ -39,7 +43,7 @@ f $! x = force x f
 -- Flipped application
 _!|>_ : ∀ {A : Set a} {B : A → Set b} →
        (a : A) → (∀ a → B a) → B a
-x !|> f = f $! x
+_!|>_ = flip _$!_
 
 ------------------------------------------------------------------------
 -- Non-dependent combinators
