@@ -13,7 +13,7 @@ open import Codata.Thunk using (Thunk; force)
 open import Codata.Conat
 open import Codata.Covec
 open import Codata.Covec.Bisimilarity
-open import Function
+open import Function.Base using (id; _∘_)
 open import Relation.Binary.PropositionalEquality as Eq
 
 -- Functor laws

@@ -23,7 +23,7 @@ import Data.List.Relation.Binary.Equality.Propositional as Eq
 open import Data.Product as Prod using (_,_)
 open import Data.Vec.Base as Vec using (_∷_)
 
-open import Function
+open import Function.Base using (id; _$_; _∘′_; const)
 open import Relation.Binary.PropositionalEquality as P using (_≡_; _≢_)
 
 private
@@ -93,7 +93,7 @@ module _ {a b} {A : Set a} {B : Set b} where
 map-identity : ∀ (as : Stream A ∞) → i ⊢ map id as ≈ as
 map-identity (a ∷ as) = P.refl ∷ λ where .force → map-identity (as .force)
 
-map-map-fusion : ∀ (f : A → B) (g : B → C) as → i ⊢ map g (map f as) ≈ map (g ∘ f) as
+map-map-fusion : ∀ (f : A → B) (g : B → C) as → i ⊢ map g (map f as) ≈ map (g ∘′ f) as
 map-map-fusion f g (a ∷ as) = P.refl ∷ λ where .force → map-map-fusion f g (as .force)
 
 
