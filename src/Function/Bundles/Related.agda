@@ -1,5 +1,4 @@
 ------------------------------------------------------------------------
-
 -- The Agda standard library
 --
 -- Relatedness for the function hierarchy
