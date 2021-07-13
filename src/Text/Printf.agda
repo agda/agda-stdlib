@@ -18,7 +18,7 @@ open import Data.Sum.Base using (_⊎_; inj₁; inj₂)
 open import Data.Unit using (⊤)
 open import Function.Nary.NonDependent
 open import Function
-open import Strict
+open import Function.Strict
 
 import Data.Char.Base    as Cₛ
 import Data.Integer.Show as ℤₛ

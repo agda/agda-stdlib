@@ -10,7 +10,7 @@ module Codata.Stream.Categorical where
 
 open import Data.Product using (<_,_>)
 open import Codata.Stream
-open import Function
+open import Function.Base
 open import Category.Functor
 open import Category.Applicative
 open import Category.Comonad

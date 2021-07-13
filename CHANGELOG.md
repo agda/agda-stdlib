@@ -64,6 +64,16 @@ Non-backwards compatible changes
   So `[a-zA-Z]+.agdai?` run on "the path _build/Main.agdai corresponds to"
   will return "Main.agdai" when it used to be happy to just return "n.agda".
 
+### Strict functions
+
+* The module `Strict` has been deprecated in favour of `Function.Strict` 
+  and the definitions of strict application, `_$!_` and `_$!′_`, have been
+  moved from `Function.Base` to `Function.Strict`.
+  
+* The contents of `Function.Strict` is now re-exported by `Function`.
+
+### Other
+
 * The constructors `+0` and `+[1+_]` from `Data.Integer.Base` are no longer 
   exported by `Data.Rational.Base`. You will have to open `Data.Integer(.Base)`
   directly to use them.
@@ -173,6 +183,12 @@ Other minor additions
   bijection     : Bijection R S → Congruent IB.Eq₂._≈_ IB.Eq₁._≈_ f⁻¹ → Bijection S R
   bijection-≡   : Bijection R (setoid B) → Bijection (setoid B) R
   sym-⤖        : A ⤖ B → B ⤖ A
+  ```
+
+* Added new operations in `Function.Strict`:
+  ```
+  _!|>_  : (a : A) → (∀ a → B a) → B a
+  _!|>′_ : A → (A → B) → B
   ```
 
 * Added new operations in `IO`:
