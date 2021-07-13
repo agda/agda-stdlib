@@ -11,7 +11,7 @@
 
 <a id="299" class="Keyword">open</a> <a id="304" class="Keyword">import</a> <a id="311" href="Function.html" class="Module">Function</a>
 <a id="320" class="Keyword">open</a> <a id="325" class="Keyword">import</a> <a id="332" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a>
-<a id="346" class="Keyword">open</a> <a id="351" class="Keyword">import</a> <a id="358" href="Data.Nat.Properties.html" class="Module">Data.Nat.Properties</a> <a id="378" class="Keyword">using</a> <a id="384" class="Symbol">(</a><a id="385" href="Data.Nat.Properties.html#57331" class="Function">≤⇒≤′</a><a id="389" class="Symbol">;</a> <a id="391" href="Data.Nat.Properties.html#11216" class="Function">n&lt;1+n</a><a id="396" class="Symbol">)</a>
+<a id="346" class="Keyword">open</a> <a id="351" class="Keyword">import</a> <a id="358" href="Data.Nat.Properties.html" class="Module">Data.Nat.Properties</a> <a id="378" class="Keyword">using</a> <a id="384" class="Symbol">(</a><a id="385" href="Data.Nat.Properties.html#57314" class="Function">≤⇒≤′</a><a id="389" class="Symbol">;</a> <a id="391" href="Data.Nat.Properties.html#11199" class="Function">n&lt;1+n</a><a id="396" class="Symbol">)</a>
 <a id="398" class="Keyword">open</a> <a id="403" class="Keyword">import</a> <a id="410" href="Data.Product.html" class="Module">Data.Product</a>
 <a id="423" class="Keyword">open</a> <a id="428" class="Keyword">import</a> <a id="435" href="Data.Unit.Polymorphic.html" class="Module">Data.Unit.Polymorphic</a>
 <a id="457" class="Keyword">open</a> <a id="462" class="Keyword">import</a> <a id="469" href="Induction.html" class="Module">Induction</a>
@@ -87,7 +87,7 @@
 <a id="2283" href="Data.Nat.Induction.html#2251" class="Function">&lt;-Rec</a> <a id="2289" class="Symbol">=</a> <a id="2291" href="Induction.WellFounded.html#794" class="Function">WfRec</a> <a id="2297" href="Data.Nat.Base.html#1645" class="Function Operator">_&lt;_</a>
 
 <a id="&lt;-wellFounded"></a><a id="2302" href="Data.Nat.Induction.html#2302" class="Function">&lt;-wellFounded</a> <a id="2316" class="Symbol">:</a> <a id="2318" href="Induction.WellFounded.html#1248" class="Function">WellFounded</a> <a id="2330" href="Data.Nat.Base.html#1645" class="Function Operator">_&lt;_</a>
-<a id="2334" href="Data.Nat.Induction.html#2302" class="Function">&lt;-wellFounded</a> <a id="2348" class="Symbol">=</a> <a id="2350" href="Induction.WellFounded.html#4621" class="Function">Subrelation.wellFounded</a> <a id="2374" href="Data.Nat.Properties.html#57331" class="Function">≤⇒≤′</a> <a id="2379" href="Data.Nat.Induction.html#1701" class="Function">&lt;′-wellFounded</a>
+<a id="2334" href="Data.Nat.Induction.html#2302" class="Function">&lt;-wellFounded</a> <a id="2348" class="Symbol">=</a> <a id="2350" href="Induction.WellFounded.html#4621" class="Function">Subrelation.wellFounded</a> <a id="2374" href="Data.Nat.Properties.html#57314" class="Function">≤⇒≤′</a> <a id="2379" href="Data.Nat.Induction.html#1701" class="Function">&lt;′-wellFounded</a>
 
 <a id="2395" class="Comment">-- A version of `&lt;-wellFounded` that cheats by skipping building</a>
 <a id="2460" class="Comment">-- the first billion proofs. Use this when you require the function</a>
