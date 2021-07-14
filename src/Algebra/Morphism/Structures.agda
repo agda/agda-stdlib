@@ -453,7 +453,7 @@ module RingMorphisms (R₁ : RawRing a ℓ₁) (R₂ : RawRing b ℓ₂) where
       renaming ( isMagmaIsomorphism to +-isMagmaIsomorphism
                ; isMonoidIsomorphism to +-isMonoidIsomorphisn
                )
-      
+
 
     *-isMonoidIsomorphism : *.IsMonoidIsomorphism ⟦_⟧
     *-isMonoidIsomorphism = record
