@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Some basic properties of bijections. 
+-- Some basic properties of bijections.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
