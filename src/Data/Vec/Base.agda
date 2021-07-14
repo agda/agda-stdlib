@@ -154,15 +154,16 @@ _⊛_ : ∀ {n} → Vec (A → B) n → Vec A n → Vec B n
 
 -- Multiplication
 
-infixl 1 _>>=_
+module Product where
+  infixl 1 _>>=_
 
-_>>=_ : ∀ {m n} → Vec A m → (A → Vec B n) → Vec B (m * n)
-xs >>= f = concat (map f xs)
+  _>>=_ : ∀ {m n} → Vec A m → (A → Vec B n) → Vec B (m * n)
+  xs >>= f = concat (map f xs)
 
 infixl 4 _⊛*_
 
 _⊛*_ : ∀ {m n} → Vec (A → B) m → Vec A n → Vec B (m * n)
-fs ⊛* xs = fs >>= λ f → map f xs
+fs ⊛* xs = fs Product.>>= λ f → map f xs
 
 allPairs : ∀ {m n} → Vec A m → Vec B n → Vec (A × B) (m * n)
 allPairs xs ys = map _,_ xs ⊛* ys
@@ -173,10 +174,11 @@ diagonal : ∀ {n} → Vec (Vec A n) n → Vec A n
 diagonal [] = []
 diagonal (xs ∷ xss) = head xs ∷ diagonal (map tail xss)
 
-infixl 1 _>>=′_
+module Diagonal where
+  infixl 1 _>>=_
 
-_>>=′_ : ∀ {n} → Vec A n → (A → Vec B n) → Vec B n
-xs >>=′ f = diagonal (map f xs)
+  _>>=_ : ∀ {n} → Vec A n → (A → Vec B n) → Vec B n
+  xs >>= f = diagonal (map f xs)
 
 ------------------------------------------------------------------------
 -- Operations for reducing vectors

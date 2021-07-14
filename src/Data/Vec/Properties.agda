@@ -644,11 +644,11 @@ zipWith-is-⊛ : ∀ {n} (f : A → B → C) (xs : Vec A n) (ys : Vec B n) →
 zipWith-is-⊛ f []       []       = refl
 zipWith-is-⊛ f (x ∷ xs) (y ∷ ys) = P.cong (_ ∷_) (zipWith-is-⊛ f xs ys)
 
-⊛-is->>=′ : ∀ {n} (fs : Vec (A → B) n) (xs : Vec A n) →
-            (fs ⊛ xs) ≡ (fs >>=′ flip map xs)
-⊛-is->>=′ [] [] = refl
-⊛-is->>=′ (f ∷ fs) (x ∷ xs) = P.cong (f x ∷_) $ begin
-  fs ⊛ xs                                          ≡⟨ ⊛-is->>=′ fs xs ⟩
+⊛-is->>= : ∀ {n} (fs : Vec (A → B) n) (xs : Vec A n) →
+           (fs ⊛ xs) ≡ (fs Diagonal.>>= flip map xs)
+⊛-is->>= [] [] = refl
+⊛-is->>= (f ∷ fs) (x ∷ xs) = P.cong (f x ∷_) $ begin
+  fs ⊛ xs                                          ≡⟨ ⊛-is->>= fs xs ⟩
   diagonal (map (flip map xs) fs)                  ≡⟨⟩
   diagonal (map (tail ∘ flip map (x ∷ xs)) fs)     ≡⟨ P.cong diagonal (map-∘ _ _ _) ⟩
   diagonal (map tail (map (flip map (x ∷ xs)) fs)) ∎

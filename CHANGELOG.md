@@ -33,6 +33,9 @@ Non-backwards compatible changes
 
   Also, `⁻¹-homo` in `IsRingHomomorphism` has been renamed to `-‿homo`.
 
+* move definition of `_>>=_` under `Data.Vec.Base` to its submodule `Product`
+  in order to keep another definition of `_>>=_`, located in `Diagonal`
+  which is also a submodule of `Data.Vec.Base`.
 
 * In `Text.Pretty`, `Doc` is now a record rather than a type alias. This
   helps Agda reconstruct the `width` parameter when the module is opened
@@ -168,7 +171,7 @@ Other minor additions
 * Added new definitions in `Data.Vec.Base`:
   ```agda
   diagonal : ∀ {n} → Vec (Vec A n) n → Vec A n
-  _>>=′_ : ∀ {n} → Vec A n → (A → Vec B n) → Vec B n
+  Diagonal._>>=_ : ∀ {n} → Vec A n → (A → Vec B n) → Vec B n
   ```
   
 * Added new instance in `Data.Vec.Categorical`:
@@ -180,7 +183,7 @@ Other minor additions
   ```agda
   map-const : ∀ {n} (xs : Vec A n) (x : B) → map {n = n} (const x) xs ≡ replicate x
   map-⊛ : ∀ {n} (f : A → B → C) (g : A → B) (xs : Vec A n) → (map f xs ⊛ map g xs) ≡ map (f ˢ g) xs
-  ⊛-is->>=′ : ∀ {n} (fs : Vec (A → B) n) (xs : Vec A n) → (fs ⊛ xs) ≡ (fs >>=′ flip map xs)
+  ⊛-is->>= : ∀ {n} (fs : Vec (A → B) n) (xs : Vec A n) → (fs ⊛ xs) ≡ (fs Diagonal.>>= flip map xs)
   transpose-replicate : ∀ {m n} (xs : Vec A m) → transpose (replicate {n = n} xs) ≡ map replicate xs
   ```
 
