@@ -264,7 +264,7 @@ n≤0⇒n≡0 z≤n = refl
 -- Relationships between the various relations
 
 <⇒≤ : _<_ ⇒ _≤_
-<⇒≤ (s≤s m≤n) = ≤-trans m≤n (≤-step ≤-refl)
+<⇒≤ (s≤s m≤n) = ≤-step m≤n
 
 <⇒≢ : _<_ ⇒ _≢_
 <⇒≢ m<n refl = 1+n≰n m<n
@@ -418,8 +418,7 @@ m<n⇒n≢0 : ∀ {m n} → m < n → n ≢ 0
 m<n⇒n≢0 (s≤s m≤n) ()
 
 m<n⇒m≤1+n : ∀ {m n} → m < n → m ≤ suc n
-m<n⇒m≤1+n (s≤s z≤n)       = z≤n
-m<n⇒m≤1+n (s≤s (s≤s m<n)) = s≤s (m<n⇒m≤1+n (s≤s m<n))
+m<n⇒m≤1+n = ≤-step ∘ <⇒≤
 
 ∀[m≤n⇒m≢o]⇒n<o : ∀ n o → (∀ {m} → m ≤ n → m ≢ o) → n < o
 ∀[m≤n⇒m≢o]⇒n<o _       zero    m≤n⇒n≢0 = contradiction refl (m≤n⇒n≢0 z≤n)
@@ -1155,7 +1154,7 @@ open ⊓-⊔-properties public
   )
 
 ------------------------------------------------------------------------
--- Algebraic properties
+-- Automatically derived properties of _⊓_ and _⊔_
 
 ⊔-identityˡ : LeftIdentity 0 _⊔_
 ⊔-identityˡ _ = refl

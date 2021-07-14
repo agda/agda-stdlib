@@ -7,12 +7,11 @@
 -- (2006/9).
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe --guardedness #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Container.Indexed where
 
 open import Level
-open import Codata.Musical.M.Indexed
 open import Data.Product as Prod hiding (map)
 open import Data.W.Indexed
 open import Function.Base renaming (id to ⟨id⟩; _∘_ to _⟨∘⟩_)
@@ -37,9 +36,8 @@ I ▷ O = Container I O zero zero
 
 -- The least and greatest fixpoint.
 
-μ ν : ∀ {o c r} {O : Set o} → Container O O c r → Pred O _
+μ : ∀ {o c r} {O : Set o} → Container O O c r → Pred O _
 μ = W
-ν = M
 
 -- An equivalence relation is defined in Data.Container.Indexed.WithK.
 

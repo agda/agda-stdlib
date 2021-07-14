@@ -10,13 +10,18 @@ module Data.Nat.Induction where
 
 open import Function
 open import Data.Nat.Base
-open import Data.Nat.Properties using (≤⇒≤′)
+open import Data.Nat.Properties using (≤⇒≤′; n<1+n)
 open import Data.Product
 open import Data.Unit.Polymorphic
 open import Induction
 open import Induction.WellFounded as WF
+open import Level using (Level)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Unary
+
+private
+  variable
+    ℓ : Level
 
 ------------------------------------------------------------------------
 -- Re-export accessability

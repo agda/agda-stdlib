@@ -1,0 +1,8 @@
+(setq column-number-mode t)
+(setq-default show-trailing-whitespace
+              t)
+(add-hook 'write-file-hooks
+          'delete-trailing-whitespace)
+(setq column-number-mode t)
+(setq-default show-trailing-whitespace t)
+(add-hook 'write-file-hooks 'delete-trailing-whitespace)

@@ -4,7 +4,7 @@
 -- Conat Literals
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe --sized-types #-}
+{-# OPTIONS --without-K --sized-types #-}
 
 module Codata.Cofin.Literals where
 
@@ -20,4 +20,3 @@ number n = record
   { Constraint = λ k → True (suc k ℕ≤? n)
   ; fromNat    = λ n {{p}} → fromℕ< (toWitness p)
   }
-

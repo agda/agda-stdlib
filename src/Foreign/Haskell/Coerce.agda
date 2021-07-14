@@ -41,7 +41,6 @@ import Data.Maybe.Base as STD
 import Data.Product    as STD
 import Data.Sum.Base   as STD
 
-import Foreign.Haskell.Maybe  as FFI
 import Foreign.Haskell.Pair   as FFI
 import Foreign.Haskell.Either as FFI
 
@@ -107,14 +106,6 @@ instance
 -- can be converted to their FFI equivalents which are bound to actual
 -- Haskell types.
 
--- Maybe
-
-  maybe-toFFI : Coercible₁ a b STD.Maybe FFI.Maybe
-  maybe-toFFI = TrustMe
-
-  maybe-fromFFI : Coercible₁ a b FFI.Maybe STD.Maybe
-  maybe-fromFFI = TrustMe
-
 -- Product
 
   pair-toFFI : Coercible₂ a b c d STD._×_ FFI.Pair
@@ -133,6 +124,11 @@ instance
 
 -- We follow up with purely structural rules for builtin data types which
 -- already have known low-level representations.
+
+-- Maybe
+
+  coerce-maybe : Coercible₁ a b STD.Maybe STD.Maybe
+  coerce-maybe = TrustMe
 
 -- List
 

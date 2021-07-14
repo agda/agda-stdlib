@@ -4,7 +4,7 @@
 -- Costrings
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K #-}
+{-# OPTIONS --without-K --guardedness #-}
 
 module Codata.Musical.Costring where
 

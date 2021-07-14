@@ -5,16 +5,13 @@
 -- /!\ NB: LCGs must not be used for cryptographic applications
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe --sized-types #-}
+{-# OPTIONS --without-K --safe #-}
 
 module Data.Nat.PseudoRandom.LCG where
 
-open import Codata.Stream using (Stream; unfold)
 open import Data.Nat using (ℕ; zero; suc; _+_; _*_; _^_; _≟_)
 open import Data.Nat.DivMod using (_%_)
-open import Data.Product using (<_,_>)
 open import Data.List.Base using (List; []; _∷_)
-open import Function.Base using (id)
 open import Relation.Nullary.Decidable using (False)
 
 ------------------------------------------------------------------------
@@ -30,9 +27,6 @@ step : Generator → ℕ → ℕ
 step gen x =
   let open Generator gen in
   ((multiplier * x + increment) % modulus) {modulus≢0}
-
-stream : Generator → ℕ → Stream ℕ _
-stream gen = unfold < step gen , id >
 
 list : ℕ → Generator → ℕ → List ℕ
 list zero    gen x = []

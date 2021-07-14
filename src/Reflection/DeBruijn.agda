@@ -8,10 +8,10 @@
 
 module Reflection.DeBruijn where
 
-open import Data.Bool using (Bool; true; false; _∨_; if_then_else_)
-open import Data.Nat as Nat using (ℕ; zero; suc; _+_; _∸_; _<ᵇ_; _≡ᵇ_)
-open import Data.List using (List; []; _∷_; _++_)
-open import Data.Maybe using (Maybe; nothing; just)
+open import Data.Bool.Base using (Bool; true; false; _∨_; if_then_else_)
+open import Data.Nat.Base as Nat using (ℕ; zero; suc; _+_; _∸_; _<ᵇ_; _≡ᵇ_)
+open import Data.List.Base using (List; []; _∷_; _++_)
+open import Data.Maybe.Base using (Maybe; nothing; just)
 import Data.Maybe.Categorical as Maybe
 import Function.Identity.Categorical as Identity
 open import Category.Applicative using (RawApplicative)
@@ -59,7 +59,10 @@ module _ where
 
 private
   η : Visibility → (Args Term → Term) → Args Term → Term
-  η h f args = lam h (abs "x" (f (weakenArgs 1 args ++ arg (arg-info h relevant) (var 0 []) ∷ [])))
+  η h f args =
+    lam h (abs "x" (f (weakenArgs 1 args ++
+                       arg (arg-info h defaultModality) (var 0 []) ∷
+                       [])))
 
 η-expand : Visibility → Term → Term
 η-expand h (var x      args) = η h (var (suc x)) args
