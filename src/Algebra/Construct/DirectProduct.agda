@@ -162,21 +162,17 @@ abelianGroup G H = record
     }
   } where module G = AbelianGroup G; module H = AbelianGroup H
 
-isSemiringWithoutAnnihilatingZero :
-  (R : SemiringWithoutAnnihilatingZero a ℓ₁) →
-  (S : SemiringWithoutAnnihilatingZero b ℓ₂) →
-  let module R = SemiringWithoutAnnihilatingZero R
-      module S = SemiringWithoutAnnihilatingZero S
-  in
-  IsSemiringWithoutAnnihilatingZero (Pointwise R._≈_ S._≈_) (zip R._+_ S._+_)
-    (zip R._*_ S._*_) (R.0# , S.0#) (R.1# , S.1#)
-
-isSemiringWithoutAnnihilatingZero R S = record
-  { +-isCommutativeMonoid = CommutativeMonoid.isCommutativeMonoid
-                              (commutativeMonoid R.+-commutativeMonoid
-                                                 S.+-commutativeMonoid)
-  ; *-isMonoid = Monoid.isMonoid (monoid R.*-monoid S.*-monoid)
-  ; distrib = distribˡ , distribʳ
+semiringWithoutAnnihilatingZero : SemiringWithoutAnnihilatingZero a ℓ₁ →
+                                  SemiringWithoutAnnihilatingZero b ℓ₂ →
+                                  SemiringWithoutAnnihilatingZero (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+semiringWithoutAnnihilatingZero R S = record
+  { isSemiringWithoutAnnihilatingZero = record
+      { +-isCommutativeMonoid = CommutativeMonoid.isCommutativeMonoid
+                                  (commutativeMonoid R.+-commutativeMonoid
+                                                     S.+-commutativeMonoid)
+      ; *-isMonoid = Monoid.isMonoid (monoid R.*-monoid S.*-monoid)
+      ; distrib    = distribˡ , distribʳ
+      }
   }
   where
   module R = SemiringWithoutAnnihilatingZero R
@@ -191,28 +187,19 @@ isSemiringWithoutAnnihilatingZero R S = record
   distribʳ : _DistributesOverʳ_ _≈_ _*_ _+_
   distribʳ (x , y) (z₁ , z₂) (u₁ , u₂) = R.distribʳ x z₁ u₁ , S.distribʳ y z₂ u₂
 
-semiringWithoutAnnihilatingZero :
-  SemiringWithoutAnnihilatingZero a ℓ₁ →
-  SemiringWithoutAnnihilatingZero b ℓ₂ →
-  SemiringWithoutAnnihilatingZero (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
-semiringWithoutAnnihilatingZero R S = record
-  { isSemiringWithoutAnnihilatingZero = isSemiringWithoutAnnihilatingZero R S
-  }
-  where module R = SemiringWithoutAnnihilatingZero R
-        module S = SemiringWithoutAnnihilatingZero S
-
 semiring : Semiring a ℓ₁ → Semiring b ℓ₂ → Semiring (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
 semiring R S = record
   { isSemiring = record
-      { isSemiringWithoutAnnihilatingZero = isSemiringWithoutAnnihilatingZero
-                                              R.semiringWithoutAnnihilatingZero
-                                              S.semiringWithoutAnnihilatingZero
+      { isSemiringWithoutAnnihilatingZero =
+          SemiringWithoutAnnihilatingZero.isSemiringWithoutAnnihilatingZero U
       ; zero = zeroˡ , zeroʳ
       }
   }
   where
   module R = Semiring R
   module S = Semiring S
+  U = semiringWithoutAnnihilatingZero R.semiringWithoutAnnihilatingZero
+                                      S.semiringWithoutAnnihilatingZero
   _≈_ = Pointwise R._≈_ S._≈_
   zr  = R.0# , S.0#
   _*_ = zip R._*_ S._*_
@@ -227,23 +214,20 @@ commutativeSemiring : CommutativeSemiring a ℓ₁ → CommutativeSemiring b ℓ
                       CommutativeSemiring (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
 commutativeSemiring R S = record
   { isCommutativeSemiring = record
-      { isSemiring = isSemiring
-      ; *-comm     = *-comm
+      { isSemiring = record
+          { isSemiringWithoutAnnihilatingZero =
+              Semiring.isSemiringWithoutAnnihilatingZero U
+          ; zero = Semiring.zero U
+          }
+      ; *-comm = *-comm
       }
   }
   where
   module R = CommutativeSemiring R
   module S = CommutativeSemiring S
-  isSemiring = record
-    { isSemiringWithoutAnnihilatingZero =
-        isSemiringWithoutAnnihilatingZero R.semiringWithoutAnnihilatingZero
-                                          S.semiringWithoutAnnihilatingZero
-    ; zero = Semiring.zero (semiring R.semiring S.semiring)
-    }
-
+  U   = semiring R.semiring S.semiring
   _≈_ = Pointwise R._≈_ S._≈_
   _*_ = zip R._*_ S._*_
 
   *-comm : Commutative _≈_ _*_
   *-comm (x , y) (z , u) = R.*-comm x z , S.*-comm y u
-
