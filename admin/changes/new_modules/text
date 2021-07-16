@@ -1,0 +1,13 @@
+Added new modules to produce textual
+representations
+of common data
+structures.
+
+Text.Tabular.Core
+Text.Tabular.Vec
+Text.Tabular.List
+
+Text.Pretty.Core
+Text.Pretty
+
+Text.Tree.Linear
