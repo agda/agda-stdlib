@@ -35,7 +35,7 @@ applicative = record
 monad : RawMonad (λ (A : Set a) → Vec A n)
 monad = record
   { return = replicate
-  ; _>>=_ = Diagonal._>>=_
+  ; _>>=_ = DiagonalBind._>>=_
   }
 
 ------------------------------------------------------------------------

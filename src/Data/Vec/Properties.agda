@@ -645,7 +645,7 @@ zipWith-is-⊛ f []       []       = refl
 zipWith-is-⊛ f (x ∷ xs) (y ∷ ys) = P.cong (_ ∷_) (zipWith-is-⊛ f xs ys)
 
 ⊛-is->>= : ∀ {n} (fs : Vec (A → B) n) (xs : Vec A n) →
-           (fs ⊛ xs) ≡ (fs Diagonal.>>= flip map xs)
+           (fs ⊛ xs) ≡ (fs DiagonalBind.>>= flip map xs)
 ⊛-is->>= [] [] = refl
 ⊛-is->>= (f ∷ fs) (x ∷ xs) = P.cong (f x ∷_) $ begin
   fs ⊛ xs                                          ≡⟨ ⊛-is->>= fs xs ⟩

@@ -415,7 +415,7 @@ module _ {P : Pred B p} where
 
 module _ {A B : Set a} {P : Pred B p} {m} {f : A → Vec B m} where
 
-  open Product
+  open CartesianBind
 
   >>=↔ : ∀ {n} {xs : Vec A n} → Any (Any P ∘ f) xs ↔ Any P (xs >>= f)
   >>=↔ = concat↔ ∘↔ map↔
