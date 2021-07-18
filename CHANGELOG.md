@@ -139,12 +139,16 @@ Other minor additions
 * Added new functions to `Algebra.Construct.DirectProduct`:
   ```agda
   rawSemiring : RawSemiring a ℓ₁ → RawSemiring b ℓ₂ → RawSemiring (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  rawRing : RawRing a ℓ₁ → RawRing b ℓ₂ → RawRing (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
   semiringWithoutAnnihilatingZero : SemiringWithoutAnnihilatingZero a ℓ₁ →
                                     SemiringWithoutAnnihilatingZero b ℓ₂ →
                                     SemiringWithoutAnnihilatingZero (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
-   semiring : Semiring a ℓ₁ → Semiring b ℓ₂ → Semiring (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
-   commutativeSemiring : CommutativeSemiring a ℓ₁ → CommutativeSemiring b ℓ₂ →
-                         CommutativeSemiring (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  semiring : Semiring a ℓ₁ → Semiring b ℓ₂ → Semiring (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  commutativeSemiring : CommutativeSemiring a ℓ₁ → CommutativeSemiring b ℓ₂ →
+                        CommutativeSemiring (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  ring : Ring a ℓ₁ → Ring b ℓ₂ → Ring (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  commutativeRing : CommutativeRing a ℓ₁ → CommutativeRing b ℓ₂ →
+                    CommutativeRing (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
  ```
 	
 * Added new definitions to `Algebra.Structures`:
