@@ -209,6 +209,13 @@ record IsLoop (∙ : Op₂ A) (ε : A) (⁻¹ : Op₁ A) : Set (a ⊔ ℓ) where
   identityʳ : RightIdentity ε ∙
   identityʳ = proj₂ identity
 
+  isUnitalMagma : IsUnitalMagma ∙ ε
+  isUnitalMagma = record
+    { isMagma  = isMagma
+    ; identity = identity
+    }
+
+
 record IsGroup (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) where
   field
     isMonoid  : IsMonoid _∙_ ε
@@ -239,6 +246,12 @@ record IsGroup (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) w
   isQuasigroup = record
     { isMagma = isMagma
     ; inverse = inverse
+    }
+
+  isLoop : IsLoop _∙_ ε _⁻¹
+  isLoop = record
+    { isQuasigroup = isQuasigroup
+    ; identity = identity
     }
 
 record IsAbelianGroup (∙ : Op₂ A)
@@ -547,6 +560,7 @@ record IsRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
     ; isCommutativeMonoid    to +-isCommutativeMonoid
     ; isCommutativeSemigroup to +-isCommutativeSemigroup
     ; isQuasigroup           to +-isQuasigroup
+    ; isLoop                 to +-isLoop
     ; isGroup                to +-isGroup
     )
 
