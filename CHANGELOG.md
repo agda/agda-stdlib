@@ -69,15 +69,15 @@ Non-backwards compatible changes
 
 ### Strict functions
 
-* The module `Strict` has been deprecated in favour of `Function.Strict` 
+* The module `Strict` has been deprecated in favour of `Function.Strict`
   and the definitions of strict application, `_$!_` and `_$!′_`, have been
   moved from `Function.Base` to `Function.Strict`.
-  
+
 * The contents of `Function.Strict` is now re-exported by `Function`.
 
 ### Other
 
-* The constructors `+0` and `+[1+_]` from `Data.Integer.Base` are no longer 
+* The constructors `+0` and `+[1+_]` from `Data.Integer.Base` are no longer
   exported by `Data.Rational.Base`. You will have to open `Data.Integer(.Base)`
   directly to use them.
 
@@ -122,6 +122,11 @@ New modules
 * A golden testing library with test pools, an options parser, a runner:
   ```
   Test.Golden
+  ```
+
+* A small library for function arguments with default values:
+  ```
+  Data.Default
   ```
 
 Other minor additions
@@ -183,12 +188,12 @@ Other minor additions
   diagonal : ∀ {n} → Vec (Vec A n) n → Vec A n
   DiagonalBind._>>=_ : ∀ {n} → Vec A n → (A → Vec B n) → Vec B n
   ```
-  
+
 * Added new instance in `Data.Vec.Categorical`:
   ```agda
   monad : RawMonad (λ (A : Set a) → Vec A n)
   ```
-  
+
 * Added new proofs in `Data.Vec.Properties`:
   ```agda
   map-const : ∀ {n} (xs : Vec A n) (x : B) → map {n = n} (const x) xs ≡ replicate x
