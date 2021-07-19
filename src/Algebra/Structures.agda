@@ -196,20 +196,21 @@ record IsQuasigroup (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ �
   inverseʳ : RightInverse ε _⁻¹ _∙_
   inverseʳ = proj₂ inverse
 
-record IsLoop (∙ : Op₂ A) (ε : A) (⁻¹ : Op₁ A) : Set (a ⊔ ℓ) where
+
+record IsLoop (_∙_ : Op₂ A) (ε : A) (⁻¹ : Op₁ A) : Set (a ⊔ ℓ) where
   field
-    isQuasigroup : IsQuasigroup ∙ ε ⁻¹
-    identity : Identity ε ∙
+    isQuasigroup : IsQuasigroup _∙_  ε ⁻¹
+    identity : Identity ε _∙_
 
   open IsQuasigroup isQuasigroup public
 
-  identityˡ : LeftIdentity ε ∙
+  identityˡ : LeftIdentity ε _∙_
   identityˡ = proj₁ identity
 
-  identityʳ : RightIdentity ε ∙
+  identityʳ : RightIdentity ε _∙_
   identityʳ = proj₂ identity
 
-  isUnitalMagma : IsUnitalMagma ∙ ε
+  isUnitalMagma : IsUnitalMagma _∙_  ε
   isUnitalMagma = record
     { isMagma  = isMagma
     ; identity = identity
@@ -253,6 +254,7 @@ record IsGroup (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) w
     { isQuasigroup = isQuasigroup
     ; identity = identity
     }
+
 
 record IsAbelianGroup (∙ : Op₂ A)
                       (ε : A) (⁻¹ : Op₁ A) : Set (a ⊔ ℓ) where
