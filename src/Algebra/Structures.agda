@@ -240,7 +240,7 @@ record IsGroup (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) w
     { isMagma = isMagma
     ; inverse = inverse
     }
-    
+
 record IsAbelianGroup (∙ : Op₂ A)
                       (ε : A) (⁻¹ : Op₁ A) : Set (a ⊔ ℓ) where
   field

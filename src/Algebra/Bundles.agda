@@ -347,7 +347,7 @@ record Loop c ℓ : Set (suc (c ⊔ ℓ)) where
     ε       : Carrier
     _⁻¹     : Op₁ Carrier
     isLoop : IsLoop _≈_ _∙_ ε _⁻¹
-    
+
   open IsLoop isLoop public
 
   quasigroup : Quasigroup _ _
@@ -383,7 +383,7 @@ record Group c ℓ : Set (suc (c ⊔ ℓ)) where
   quasigroup = record
     { isQuasigroup = isQuasigroup
     }
-    
+
 record AbelianGroup c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 _⁻¹
   infixl 7 _∙_
