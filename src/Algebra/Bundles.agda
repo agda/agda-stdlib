@@ -336,6 +336,26 @@ record Quasigroup c ℓ : Set (suc (c ⊔ ℓ)) where
     using (_≉_; rawMagma)
 
 
+record Loop c ℓ : Set (suc (c ⊔ ℓ)) where
+  infix  8 _⁻¹
+  infixl 7 _∙_
+  infix  4 _≈_
+  field
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    _∙_     : Op₂ Carrier
+    ε       : Carrier
+    _⁻¹     : Op₁ Carrier
+    isLoop : IsLoop _≈_ _∙_ ε _⁻¹
+    
+  open IsLoop isLoop public
+
+  quasigroup : Quasigroup _ _
+  quasigroup = record { isQuasigroup = isQuasigroup }
+
+  open Quasigroup quasigroup public
+    using (_≉_; rawMagma; magma)
+
 record Group c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 _⁻¹
   infixl 7 _∙_
@@ -363,8 +383,7 @@ record Group c ℓ : Set (suc (c ⊔ ℓ)) where
   quasigroup = record
     { isQuasigroup = isQuasigroup
     }
-
-
+    
 record AbelianGroup c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 _⁻¹
   infixl 7 _∙_
