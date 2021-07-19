@@ -33,6 +33,9 @@ Non-backwards compatible changes
 
   Also, `⁻¹-homo` in `IsRingHomomorphism` has been renamed to `-‿homo`.
 
+* move definition of `_>>=_` under `Data.Vec.Base` to its submodule `CartesianBind`
+  in order to keep another new definition of `_>>=_`, located in `DiagonalBind`
+  which is also a submodule of `Data.Vec.Base`.
 
 * In `Text.Pretty`, `Doc` is now a record rather than a type alias. This
   helps Agda reconstruct the `width` parameter when the module is opened
@@ -173,6 +176,25 @@ Other minor additions
   ```
   ≤-isDecTotalOrder-≈ : IsDecTotalOrder _≈_ _≤_
   ≤-decTotalOrder-≈   :  DecTotalOrder _ _ _
+  ```
+
+* Added new definitions in `Data.Vec.Base`:
+  ```agda
+  diagonal : ∀ {n} → Vec (Vec A n) n → Vec A n
+  DiagonalBind._>>=_ : ∀ {n} → Vec A n → (A → Vec B n) → Vec B n
+  ```
+  
+* Added new instance in `Data.Vec.Categorical`:
+  ```agda
+  monad : RawMonad (λ (A : Set a) → Vec A n)
+  ```
+  
+* Added new proofs in `Data.Vec.Properties`:
+  ```agda
+  map-const : ∀ {n} (xs : Vec A n) (x : B) → map {n = n} (const x) xs ≡ replicate x
+  map-⊛ : ∀ {n} (f : A → B → C) (g : A → B) (xs : Vec A n) → (map f xs ⊛ map g xs) ≡ map (f ˢ g) xs
+  ⊛-is->>= : ∀ {n} (fs : Vec (A → B) n) (xs : Vec A n) → (fs ⊛ xs) ≡ (fs DiagonalBind.>>= flip map xs)
+  transpose-replicate : ∀ {m n} (xs : Vec A m) → transpose (replicate {n = n} xs) ≡ map replicate xs
   ```
 
 * Added new proofs in `Function.Construct.Symmetry`:
