@@ -454,7 +454,6 @@ module RingMorphisms (R₁ : RawRing a ℓ₁) (R₂ : RawRing b ℓ₂) where
                ; isMonoidIsomorphism to +-isMonoidIsomorphisn
                )
 
-
     *-isMonoidIsomorphism : *.IsMonoidIsomorphism ⟦_⟧
     *-isMonoidIsomorphism = record
       { isMonoidMonomorphism = *-isMonoidMonomorphism
