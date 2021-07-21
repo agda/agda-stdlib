@@ -103,6 +103,11 @@ New modules
   Function.Properties.Bijection
   ```
 
+* Polymorphic verstions of some unary relations
+ ```
+ Relation.Unary.Polymorphic
+ ```
+ 
 * Various system types and primitives:
   ```
   System.Clock.Primitive
