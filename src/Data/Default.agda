@@ -23,26 +23,4 @@ instance
   default : ∀ {a} {A : Set a} {x : A} → WithDefault x
   default {x = x} .value = x
 
-
-
-------------------------------------------------------------------------
--- Example
-------------------------------------------------------------------------
-
-private
-
-  open import Agda.Builtin.Nat
-  open import Agda.Builtin.Equality
-
-  -- `inc` increments its argument by the value `step`, defaulting to 1
-  inc : {{step : WithDefault 1}} → Nat → Nat
-  inc {{step}} n = step .value + n
-
-  -- and indeed incrementing 2 gives you 3
-  _ : inc 2 ≡ 3
-  _ = refl
-
-  -- but you can also insist that you want to use a bigger increment by
-  -- passing the `step` argument explicitly
-  _ : inc {{10 !}} 2 ≡ 12
-  _ = refl
+-- See README.Data.Default for an example
