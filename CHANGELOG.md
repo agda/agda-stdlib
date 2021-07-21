@@ -106,6 +106,11 @@ New modules
   Function.Properties.Bijection
   ```
 
+* Both versions of equality on predications are equivalences
+  ```
+  Relation.Unary.Relation.Binary.Equality
+  ```
+  
 * Various system types and primitives:
   ```
   System.Clock.Primitive
@@ -252,6 +257,12 @@ Other minor additions
   untilJust : IO (Maybe A) → IO A
   ```
 
+* Equality of predicates
+  ```
+  _≐_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
+  _≐′_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
+  ```
+  
 * Added new operations in `System.Exit`:
   ```
   isSuccess : ExitCode → Bool
