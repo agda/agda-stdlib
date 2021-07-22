@@ -4,7 +4,7 @@
 -- Bisimilarity for M-types
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe --sized-types #-}
+{-# OPTIONS --without-K --sized-types #-}
 
 module Codata.M.Bisimilarity where
 
@@ -15,7 +15,7 @@ open import Codata.M
 open import Data.Container.Core
 open import Data.Container.Relation.Binary.Pointwise using (Pointwise; _,_)
 open import Data.Product using (_,_)
-open import Function.Base
+open import Function.Base using (_∋_)
 open import Relation.Binary
 import Relation.Binary.PropositionalEquality as P
 

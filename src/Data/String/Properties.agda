@@ -129,6 +129,18 @@ x <? y = StrictLex.<-decidable Charₚ._≟_ Charₚ._<?_ (toList x) (toList y)
     toList
     (StrictLex.≤-isDecPartialOrder Charₚ.<-isStrictTotalOrder)
 
+≤-isDecTotalOrder-≈ : IsDecTotalOrder _≈_ _≤_
+≤-isDecTotalOrder-≈ =
+  On.isDecTotalOrder
+    toList
+    (StrictLex.≤-isDecTotalOrder Charₚ.<-isStrictTotalOrder)
+
+≤-decTotalOrder-≈ :  DecTotalOrder _ _ _
+≤-decTotalOrder-≈ =
+  On.decTotalOrder
+    (StrictLex.≤-decTotalOrder Charₚ.<-strictTotalOrder)
+    toList
+
 ≤-decPoset-≈ : DecPoset _ _ _
 ≤-decPoset-≈ =
   On.decPoset

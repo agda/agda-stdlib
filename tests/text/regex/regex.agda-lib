@@ -1,0 +1,2 @@
+name: regex
+include: ../../../src/ .

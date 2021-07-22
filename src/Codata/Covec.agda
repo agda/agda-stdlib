@@ -4,7 +4,7 @@
 -- The Covec type and some operations
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe --sized-types #-}
+{-# OPTIONS --without-K --sized-types #-}
 
 module Codata.Covec where
 
@@ -17,7 +17,7 @@ open import Codata.Conat.Properties
 open import Codata.Cofin as Cofin using (Cofin; zero; suc)
 open import Codata.Colist as Colist using (Colist ; [] ; _∷_)
 open import Codata.Stream as Stream using (Stream ; _∷_)
-open import Function
+open import Function.Base using (_∘′_)
 
 data Covec {ℓ} (A : Set ℓ) (i : Size) : Conat ∞ → Set ℓ where
   []  : Covec A i zero

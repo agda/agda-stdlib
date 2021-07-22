@@ -4,7 +4,7 @@
 -- Bisimilarity for Cowriter
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe --sized-types #-}
+{-# OPTIONS --without-K --sized-types #-}
 
 module Codata.Cowriter.Bisimilarity where
 

@@ -4,7 +4,7 @@
 -- Properties of operations on the Colist type
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe --sized-types #-}
+{-# OPTIONS --without-K --sized-types #-}
 
 module Codata.Colist.Properties where
 

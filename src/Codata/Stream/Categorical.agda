@@ -4,13 +4,13 @@
 -- A categorical view of Stream
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe --sized-types #-}
+{-# OPTIONS --without-K --sized-types #-}
 
 module Codata.Stream.Categorical where
 
 open import Data.Product using (<_,_>)
 open import Codata.Stream
-open import Function
+open import Function.Base
 open import Category.Functor
 open import Category.Applicative
 open import Category.Comonad

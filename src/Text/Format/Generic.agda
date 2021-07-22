@@ -23,7 +23,7 @@ open import Data.String.Base
 import Data.Sum.Categorical.Left as Sumₗ
 open import Function
 open import Function.Nary.NonDependent using (0ℓs; Sets)
-open import Strict
+open import Function.Strict
 
 ------------------------------------------------------------------------
 -- Format specifications.

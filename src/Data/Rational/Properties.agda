@@ -20,7 +20,7 @@ import Algebra.Morphism.RingMonomorphism as RingMonomorphisms
 import Algebra.Morphism.LatticeMonomorphism as LatticeMonomorphisms
 import Algebra.Properties.CommutativeSemigroup as CommSemigroupProperties
 open import Data.Bool.Base using (T; true; false)
-open import Data.Integer.Base as ℤ using (ℤ; +_; -[1+_]; 0ℤ; 1ℤ; _◃_)
+open import Data.Integer.Base as ℤ using (ℤ; +_; -[1+_]; +[1+_]; +0; 0ℤ; 1ℤ; _◃_)
 open import Data.Integer.Coprimality using (coprime-divisor)
 import Data.Integer.Properties as ℤ
 open import Data.Integer.GCD using (gcd; gcd[i,j]≡0⇒i≡0; gcd[i,j]≡0⇒j≡0)
@@ -785,6 +785,23 @@ private
   ; _⁻¹ = -_
   }
 
++-*-rawNearSemiring : RawNearSemiring 0ℓ 0ℓ
++-*-rawNearSemiring = record
+  { _≈_ = _≡_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; 0#  = 0ℚ
+  }
+
++-*-rawSemiring : RawSemiring 0ℓ 0ℓ
++-*-rawSemiring = record
+  { _≈_ = _≡_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; 0#  = 0ℚ
+  ; 1#  = 1ℚ
+  }
+
 +-*-rawRing : RawRing 0ℓ 0ℓ
 +-*-rawRing = record
   { _≈_ = _≡_
@@ -1068,10 +1085,34 @@ toℚᵘ-isMonoidMonomorphism-* = record
   ; injective            = toℚᵘ-injective
   }
 
+toℚᵘ-isNearSemiringHomomorphism-+-* : IsNearSemiringHomomorphism +-*-rawNearSemiring ℚᵘ.+-*-rawNearSemiring toℚᵘ
+toℚᵘ-isNearSemiringHomomorphism-+-* = record
+  { +-isMonoidHomomorphism = toℚᵘ-isMonoidHomomorphism-+
+  ; *-homo                 = toℚᵘ-homo-*
+  }
+
+toℚᵘ-isNearSemiringMonomorphism-+-* : IsNearSemiringMonomorphism +-*-rawNearSemiring ℚᵘ.+-*-rawNearSemiring toℚᵘ
+toℚᵘ-isNearSemiringMonomorphism-+-* = record
+  { isNearSemiringHomomorphism = toℚᵘ-isNearSemiringHomomorphism-+-*
+  ; injective                  = toℚᵘ-injective
+  }
+
+toℚᵘ-isSemiringHomomorphism-+-* : IsSemiringHomomorphism +-*-rawSemiring ℚᵘ.+-*-rawSemiring toℚᵘ
+toℚᵘ-isSemiringHomomorphism-+-* = record
+  { isNearSemiringHomomorphism = toℚᵘ-isNearSemiringHomomorphism-+-*
+  ; 1#-homo                    = ℚᵘ.≃-refl
+  }
+
+toℚᵘ-isSemiringMonomorphism-+-* : IsSemiringMonomorphism +-*-rawSemiring ℚᵘ.+-*-rawSemiring toℚᵘ
+toℚᵘ-isSemiringMonomorphism-+-* = record
+  { isSemiringHomomorphism = toℚᵘ-isSemiringHomomorphism-+-*
+  ; injective              = toℚᵘ-injective
+  }
+
 toℚᵘ-isRingHomomorphism-+-* : IsRingHomomorphism +-*-rawRing ℚᵘ.+-*-rawRing toℚᵘ
 toℚᵘ-isRingHomomorphism-+-* = record
-  { +-isGroupHomomorphism  = toℚᵘ-isGroupHomomorphism-+
-  ; *-isMonoidHomomorphism = toℚᵘ-isMonoidHomomorphism-*
+  { isSemiringHomomorphism = toℚᵘ-isSemiringHomomorphism-+-*
+  ; -‿homo                 = toℚᵘ-homo‿-
   }
 
 toℚᵘ-isRingMonomorphism-+-* : IsRingMonomorphism +-*-rawRing ℚᵘ.+-*-rawRing toℚᵘ
@@ -1491,11 +1532,11 @@ open ⊓-⊔-properties public
 
 mono-≤-distrib-⊔ : ∀ {f} → f Preserves _≤_ ⟶ _≤_ →
                    ∀ p q → f (p ⊔ q) ≡ f p ⊔ f q
-mono-≤-distrib-⊔ = ⊓-⊔-properties.mono-≤-distrib-⊔ (cong _)
+mono-≤-distrib-⊔ {f} = ⊓-⊔-properties.mono-≤-distrib-⊔ (cong f)
 
 mono-≤-distrib-⊓ : ∀ {f} → f Preserves _≤_ ⟶ _≤_ →
                    ∀ p q → f (p ⊓ q) ≡ f p ⊓ f q
-mono-≤-distrib-⊓ = ⊓-⊔-properties.mono-≤-distrib-⊓ (cong _)
+mono-≤-distrib-⊓ {f} = ⊓-⊔-properties.mono-≤-distrib-⊓ (cong f)
 
 mono-<-distrib-⊓ : ∀ {f} → f Preserves _<_ ⟶ _<_ →
                    ∀ p q → f (p ⊓ q) ≡ f p ⊓ f q
@@ -1537,11 +1578,11 @@ mono-<-distrib-⊔ {f} f-mono-< p q with <-cmp p q
 
 antimono-≤-distrib-⊓ : ∀ {f} → f Preserves _≤_ ⟶ _≥_ →
                        ∀ p q → f (p ⊓ q) ≡ f p ⊔ f q
-antimono-≤-distrib-⊓ = ⊓-⊔-properties.antimono-≤-distrib-⊓ (cong _)
+antimono-≤-distrib-⊓ {f} = ⊓-⊔-properties.antimono-≤-distrib-⊓ (cong f)
 
 antimono-≤-distrib-⊔ : ∀ {f} → f Preserves _≤_ ⟶ _≥_ →
                        ∀ p q → f (p ⊔ q) ≡ f p ⊓ f q
-antimono-≤-distrib-⊔ = ⊓-⊔-properties.antimono-≤-distrib-⊔ (cong _)
+antimono-≤-distrib-⊔ {f} = ⊓-⊔-properties.antimono-≤-distrib-⊔ (cong f)
 
 ------------------------------------------------------------------------
 -- Properties of _⊓_ and _*_

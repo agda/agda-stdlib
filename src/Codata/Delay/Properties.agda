@@ -4,7 +4,7 @@
 -- Properties of operations on the Delay type
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe --sized-types #-}
+{-# OPTIONS --without-K --sized-types #-}
 
 module Codata.Delay.Properties where
 
@@ -16,7 +16,7 @@ open import Codata.Conat
 open import Codata.Conat.Bisimilarity as Coℕ using (zero ; suc)
 open import Codata.Delay
 open import Codata.Delay.Bisimilarity
-open import Function
+open import Function.Base using (id; _∘′_)
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
 module _ {a} {A : Set a} where
@@ -102,6 +102,6 @@ module _ {a} {A B : Set a} where
       (d⇓ : d ⇓) → (f⇓ : f (extract d⇓) ⇓) →
       toℕ (length-⇓ bind⇓) ≡ toℕ (length-⇓ d⇓) ℕ.+ toℕ (length-⇓ f⇓)
   bind⇓-length {f = f} bind⇓ d⇓@(now s') f⇓ =
-    Eq.cong (toℕ ∘ length-⇓) (⇓-unique bind⇓ f⇓)
+    Eq.cong (toℕ ∘′ length-⇓) (⇓-unique bind⇓ f⇓)
   bind⇓-length {d = d@(later dt)} {f = f} bind⇓@(later bind'⇓) d⇓@(later r) f⇓ =
     Eq.cong ℕ.suc (bind⇓-length bind'⇓ r f⇓)

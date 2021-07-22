@@ -4,7 +4,7 @@
 -- "Finite" sets indexed on coinductive "natural" numbers
 ------------------------------------------------------------------------
 
-{-# OPTIONS --without-K --safe --sized-types #-}
+{-# OPTIONS --without-K --sized-types #-}
 
 module Codata.Cofin where
 
@@ -15,14 +15,14 @@ open import Codata.Conat as Conat
 open import Codata.Conat.Bisimilarity as Bisim using (_⊢_≲_ ; s≲s)
 open import Data.Nat.Base
 open import Data.Fin.Base as Fin hiding (fromℕ; fromℕ≤; fromℕ<; toℕ)
-open import Function
+open import Function.Base using (_∋_)
 open import Relation.Binary.PropositionalEquality
 
 ------------------------------------------------------------------------
 -- The type
 
--- Note that `Cofin infnity` is /not/ finite. Note also that this is not a
--- coinductive type, but it is indexed on a coinductive type.
+-- Note that `Cofin infinity` is /not/ finite. Note also that this is
+-- not a coinductive type, but it is indexed on a coinductive type.
 
 data Cofin : Conat ∞ → Set where
   zero : ∀ {n} → Cofin (suc n)
