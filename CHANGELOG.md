@@ -81,6 +81,12 @@ Non-backwards compatible changes
   exported by `Data.Rational.Base`. You will have to open `Data.Integer(.Base)`
   directly to use them.
 
+* The relations `_≤_` `_≥_` `_<_` `_>_` in `Data.Fin.Base` have been
+  generalised so they can now relate `Fin` terms with different indices.
+  Should be mostly backwards compatible, but very occasionally when proving
+  properties about the orderings themselves the second index must be provided
+  explicitly.
+
 Deprecated modules
 ------------------
 
