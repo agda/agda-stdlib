@@ -6,8 +6,8 @@ The library has been tested using Agda 2.6.1 and 2.6.1.3.
 Highlights
 ----------
 
-* Enhanced `[_]` for `Data.List` and `Data.Vector`, allowing one to write `[ x , y , z ]`
-  instead of `x ∷ y ∷ z ∷ []` (although cannot be used in pattern matching).
+* List literal syntax for `List`/`Vec`/`Vector`, allowing one to write `[ x , y , z ]`
+  instead of `x ∷ y ∷ z ∷ []`.
 
 Bug-fixes
 ---------

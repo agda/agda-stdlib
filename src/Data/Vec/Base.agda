@@ -21,6 +21,8 @@ open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 open import Relation.Nullary using (does)
 open import Relation.Unary using (Pred; Decidable)
 
+import Data.TypeClasses.ListSyntax as ListSyntax
+
 private
   variable
     a b c p : Level
@@ -206,14 +208,6 @@ count P? (x ∷ xs) with does (P? x)
 ------------------------------------------------------------------------
 -- Operations for building vectors
 
--- Syntactic sugar for vectors, allowing one to write: `[ x , y , z ]`
--- rather than `x ∷ y ∷ z ∷ []`.
---
--- NOTE: requires you to import `_,_` from `Data.Product`
-[_] : ∀ {n} → A ^ (suc n) → Vec A (suc n)
-[_] {n = zero}  x        = x ∷ []
-[_] {n = suc n} (x , xs) = x ∷ [ xs ]
-
 replicate : ∀ {n} → A → Vec A n
 replicate {n = zero}  x = []
 replicate {n = suc n} x = x ∷ replicate x
@@ -260,7 +254,12 @@ uncons : ∀ {n} → Vec A (suc n) → A × Vec A n
 uncons (x ∷ xs) = x , xs
 
 ------------------------------------------------------------------------
--- Operations for converting between lists
+-- Conversion operations
+
+fromProduct : ∀ {n} → A ^ n → Vec A n
+fromProduct {n = zero}        _        = []
+fromProduct {n = suc zero}    x        = x ∷ []
+fromProduct {n = suc (suc n)} (x , xs) = x ∷ fromProduct xs
 
 toList : ∀ {n} → Vec A n → List A
 toList []       = List.[]
@@ -279,7 +278,7 @@ reverse {A = A} = foldl (Vec A) (λ rev x → x ∷ rev) []
 infixl 5 _∷ʳ_
 
 _∷ʳ_ : ∀ {n} → Vec A n → A → Vec A (1 + n)
-[]       ∷ʳ y = [ y ]
+[]       ∷ʳ y = y ∷ []
 (x ∷ xs) ∷ʳ y = x ∷ (xs ∷ʳ y)
 
 initLast : ∀ {n} (xs : Vec A (1 + n)) →
@@ -303,3 +302,12 @@ last .(ys ∷ʳ y) | (ys , y , refl) = y
 transpose : ∀ {m n} → Vec (Vec A n) m → Vec (Vec A m) n
 transpose []         = replicate []
 transpose (as ∷ ass) = replicate _∷_ ⊛ as ⊛ transpose ass
+
+------------------------------------------------------------------------
+-- Instances
+
+open ListSyntax public
+
+instance
+  listSyntax : HasSizedListSyntax A (Vec A)
+  listSyntax = hasListSyntax fromProduct

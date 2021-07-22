@@ -20,6 +20,7 @@ open import Data.Product as Prod using (_×_; _,_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Data.These.Base as These using (These; this; that; these)
 open import Data.Vec.Recursive.Base using (_^_)
+open import Data.Unit using (tt)
 open import Function.Base using (id; _∘_ ; _∘′_; const; flip)
 open import Level using (Level)
 open import Relation.Nullary using (does)
@@ -27,7 +28,9 @@ open import Relation.Nullary.Negation.Core using (¬?)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Unary.Properties using (∁?)
 open import Relation.Binary.Core using (Rel)
+
 import Relation.Binary.Definitions as B
+import Data.TypeClasses.ListSyntax as ListSyntax
 
 private
   variable
@@ -171,17 +174,14 @@ length = foldr (const suc) 0
 ------------------------------------------------------------------------
 -- Operations for constructing lists
 
--- Syntactic sugar for lists, allowing one to write: `[ x , y , z ]`
--- rather than `x ∷ y ∷ z ∷ []`.
---
--- NOTE: requires you to import `_,_` from `Data.Product`
-[_] : ∀ {n} → A ^ (suc n) → List A
-[_] {n = zero}  x        = x ∷ []
-[_] {n = suc n} (x , xs) = x ∷ [ xs ]
-
 fromMaybe : Maybe A → List A
-fromMaybe (just x) = [ x ]
+fromMaybe (just x) = x ∷ []
 fromMaybe nothing  = []
+
+fromProduct : ∀ {n} → A ^ n → List A
+fromProduct {n = 0}           _        = []
+fromProduct {n = 1}           x        = x ∷ []
+fromProduct {n = suc (suc n)} (x , xs) = x ∷ fromProduct xs
 
 replicate : ℕ → A → List A
 replicate zero    x = []
@@ -366,7 +366,7 @@ _ʳ++_ = flip reverseAcc
 infixl 6 _∷ʳ_
 
 _∷ʳ_ : List A → A → List A
-xs ∷ʳ x = xs ++ [ x ]
+xs ∷ʳ x = xs ++ (x ∷ [])
 
 -- Conditional versions of cons and snoc
 
@@ -402,22 +402,24 @@ unsnoc as with initLast as
 ------------------------------------------------------------------------
 -- Splitting a list
 
--- The predicate `P` represents the notion of newline character for the type `A`
--- It is used to split the input list into a list of lines. Some lines may be
--- empty if the input contains at least two consecutive newline characters.
+-- The predicate `P` represents the notion of newline character for the
+-- type `A`. It is used to split the input list into a list of lines.
+-- Some lines may be empty if the input contains at least two
+-- consecutive newline characters.
 
 linesBy : ∀ {P : Pred A p} → Decidable P → List A → List (List A)
 linesBy {A = A} P? = go nothing where
 
   go : Maybe (List A) → List A → List (List A)
-  go acc []       = maybe′ ([_] ∘′ reverse) [] acc
+  go acc []       = maybe′ ((_∷ []) ∘′ reverse) [] acc
   go acc (c ∷ cs) with does (P? c)
   ... | true  = reverse (Maybe.fromMaybe [] acc) ∷ go nothing cs
   ... | false = go (just (c ∷ Maybe.fromMaybe [] acc)) cs
 
--- The predicate `P` represents the notion of space character for the type `A`.
--- It is used to split the input list into a list of words. All the words are
--- non empty and the output does not contain any space characters.
+-- The predicate `P` represents the notion of space character for the
+-- type `A`. It is used to split the input list into a list of words.
+-- All the words are non-empty and the output does not contain any
+-- space characters.
 
 wordsBy : ∀ {P : Pred A p} → Decidable P → List A → List (List A)
 wordsBy {A = A} P? = go [] where
@@ -431,6 +433,16 @@ wordsBy {A = A} P? = go [] where
   go acc (c ∷ cs) with does (P? c)
   ... | true  = cons acc (go [] cs)
   ... | false = go (c ∷ acc) cs
+
+------------------------------------------------------------------------
+-- Instances
+
+open ListSyntax public
+
+instance
+  listSyntax : HasListSyntax A (List A)
+  listSyntax = hasListSyntax fromProduct
+
 
 ------------------------------------------------------------------------
 -- DEPRECATED

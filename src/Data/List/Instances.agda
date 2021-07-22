@@ -29,14 +29,14 @@ private
     A : Set a
 
 instance
-  listFunctor = functor
-  listApplicative = applicative
+  listFunctor         = functor
+  listApplicative     = applicative
   listApplicativeZero = applicativeZero
-  listAlternative = alternative
-  listMonad = monad
-  listMonadZero = monadZero
-  listMonadPlus = monadPlus
-  listMonadT = λ {ℓ} {M} {{inst}} → monadT {ℓ} {M} inst
+  listAlternative     = alternative
+  listMonad           = monad
+  listMonadZero       = monadZero
+  listMonadPlus       = monadPlus
+  listMonadT          = λ {ℓ} {M} {{inst}} → monadT {ℓ} {M} inst
 
   List-≡-isDecEquivalence : {{IsDecEquivalence {A = A} _≡_}} → IsDecEquivalence {A = List A} _≡_
   List-≡-isDecEquivalence = isDecEquivalence (≡-dec _≟_)

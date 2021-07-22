@@ -21,9 +21,11 @@ open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
 open import Data.Product using (Σ; ∃; _×_; _,_; proj₁; proj₂; uncurry)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Data.Vec.Base as V using (Vec)
-import Data.Vec.Recursive.Base as Nary
+open import Data.Vec.Recursive.Base using (_^_)
 open import Function.Base
 open import Level using (Level)
+
+import Data.TypeClasses.ListSyntax as ListSyntax
 
 infixr 5 _∷_ _++_
 infixl 4 _⊛_
@@ -43,7 +45,21 @@ Vector : Set a → ℕ → Set a
 Vector A n = Fin n → A
 
 ------------------------------------------------------------------------
+-- Basic constructors
+
+[] : Vector A zero
+[] ()
+
+_∷_ : ∀ {n} → A → Vector A n → Vector A (suc n)
+(x ∷ xs) zero    = x
+(x ∷ xs) (suc i) = xs i
+
+------------------------------------------------------------------------
 -- Conversion
+
+fromProduct : ∀ {n} → A ^ (suc n) → Vector A (suc n)
+fromProduct {n = zero}  x        = x ∷ []
+fromProduct {n = suc n} (x , xs) = x ∷ fromProduct xs
 
 toVec : ∀ {n} → Vector A n → Vec A n
 toVec = V.tabulate
@@ -60,20 +76,6 @@ fromList = L.lookup
 ------------------------------------------------------------------------
 -- Basic operations
 
-[] : Vector A zero
-[] ()
-
-_∷_ : ∀ {n} → A → Vector A n → Vector A (suc n)
-(x ∷ xs) zero    = x
-(x ∷ xs) (suc i) = xs i
-
--- Syntactic sugar for vectors, allowing one to write: `[ x , y , z ]`
--- rather than `x ∷ y ∷ z ∷ []` or pattern-matching on the argument.
---
--- NOTE: requires you to import `_,_` from `Data.Product`
-[_] : ∀ {n} → A Nary.^ (suc n) → Vector A (suc n)
-[_] {n = zero}  x        = x ∷ []
-[_] {n = suc n} (x , xs) = x ∷ [ xs ]
 
 length : ∀ {n} → Vector A n → ℕ
 length {n = n} _ = n
@@ -163,3 +165,12 @@ last {n = n} xs = xs (fromℕ n)
 
 transpose : ∀ {m n} → Vector (Vector A n) m → Vector (Vector A m) n
 transpose = flip
+
+------------------------------------------------------------------------
+-- Instances
+
+open ListSyntax public
+
+instance
+  listSyntax : HasSizedListSyntax A (Vector A)
+  listSyntax = hasListSyntax fromProduct
