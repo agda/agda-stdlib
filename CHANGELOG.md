@@ -131,6 +131,7 @@ Other minor additions
   ```agda
   record UnitalMagma c ℓ : Set (suc (c ⊔ ℓ))
   record Quasigroup  c ℓ : Set (suc (c ⊔ ℓ))
+  record Loop c ℓ : Set (suc (c ⊔ ℓ))
   ```
   and the existing record `Lattice` now provides
   ```agda
@@ -158,6 +159,7 @@ Other minor additions
   ```agda
   record IsUnitalMagma (_∙_ : Op₂ A) (ε : A) : Set (a ⊔ ℓ)
   record IsQuasigroup  (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ)
+  record IsLoop (_∙_ : Op₂ A) (ε : A) (⁻¹ : Op₁ A) : Set (a ⊔ ℓ)
   ```
   and the existing record `IsLattice` now provides
   ```
