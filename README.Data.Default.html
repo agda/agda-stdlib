@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>README.Data.Default</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- An example showing how to define a function taking an optional</a>
+<a id="172" class="Comment">-- argument that default to a specified value if none is passed.</a>
+<a id="237" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="311" class="Symbol">{-#</a> <a id="315" class="Keyword">OPTIONS</a> <a id="323" class="Pragma">--without-K</a> <a id="335" class="Pragma">--safe</a> <a id="342" class="Symbol">#-}</a>
+
+<a id="347" class="Keyword">module</a> <a id="354" href="README.Data.Default.html" class="Module">README.Data.Default</a> <a id="374" class="Keyword">where</a>
+
+<a id="381" class="Keyword">open</a> <a id="386" class="Keyword">import</a> <a id="393" href="Data.Default.html" class="Module">Data.Default</a>
+<a id="406" class="Keyword">open</a> <a id="411" class="Keyword">import</a> <a id="418" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a>
+<a id="432" class="Keyword">open</a> <a id="437" class="Keyword">import</a> <a id="444" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a>
+
+<a id="483" class="Comment">-- An argument of type `WithDefault {a} {A} x` is an argument of type</a>
+<a id="553" class="Comment">-- `A` that happens to default to `x` if no other value is specified</a>
+
+<a id="623" class="Comment">-- Note that you will only get this behaviour if the `default` instance</a>
+<a id="695" class="Comment">-- is in scope so you should either import `Data.Default` in your client</a>
+<a id="768" class="Comment">-- modules or publicly re-export the type and the instance!</a>
+
+<a id="829" class="Comment">-- `inc` increments its argument by the value `step`, defaulting to 1</a>
+<a id="inc"></a><a id="899" href="README.Data.Default.html#899" class="Function">inc</a> <a id="903" class="Symbol">:</a> <a id="905" class="Symbol">{{</a><a id="907" href="README.Data.Default.html#907" class="Bound">step</a> <a id="912" class="Symbol">:</a> <a id="914" href="Data.Default.html#567" class="Record">WithDefault</a> <a id="926" class="Number">1</a><a id="927" class="Symbol">}}</a> <a id="930" class="Symbol">→</a> <a id="932" href="Agda.Builtin.Nat.html#192" class="Datatype">ℕ</a> <a id="934" class="Symbol">→</a> <a id="936" href="Agda.Builtin.Nat.html#192" class="Datatype">ℕ</a>
+<a id="938" href="README.Data.Default.html#899" class="Function">inc</a> <a id="942" class="Symbol">{{</a><a id="944" href="README.Data.Default.html#944" class="Bound">step</a><a id="948" class="Symbol">}}</a> <a id="951" href="README.Data.Default.html#951" class="Bound">n</a> <a id="953" class="Symbol">=</a> <a id="955" href="README.Data.Default.html#944" class="Bound">step</a> <a id="960" class="Symbol">.</a><a id="961" href="Data.Default.html#642" class="Field">value</a> <a id="967" href="Agda.Builtin.Nat.html#325" class="Primitive Operator">+</a> <a id="969" href="README.Data.Default.html#951" class="Bound">n</a>
+
+<a id="972" class="Comment">-- and indeed incrementing 2 gives you 3</a>
+<a id="1013" href="README.Data.Default.html#1013" class="Function">_</a> <a id="1015" class="Symbol">:</a> <a id="1017" href="README.Data.Default.html#899" class="Function">inc</a> <a id="1021" class="Number">2</a> <a id="1023" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="1025" class="Number">3</a>
+<a id="1027" class="Symbol">_</a> <a id="1029" class="Symbol">=</a> <a id="1031" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
+
+<a id="1037" class="Comment">-- but you can also insist that you want to use a bigger increment by</a>
+<a id="1107" class="Comment">-- passing the `step` argument explicitly</a>
+<a id="1149" href="README.Data.Default.html#1149" class="Function">_</a> <a id="1151" class="Symbol">:</a> <a id="1153" href="README.Data.Default.html#899" class="Function">inc</a> <a id="1157" class="Symbol">{{</a><a id="1159" class="Number">10</a> <a id="1162" href="Data.Default.html#631" class="InductiveConstructor Operator">!</a><a id="1163" class="Symbol">}}</a> <a id="1166" class="Number">2</a> <a id="1168" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="1170" class="Number">12</a>
+<a id="1173" class="Symbol">_</a> <a id="1175" class="Symbol">=</a> <a id="1177" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
+</pre></body></html>
