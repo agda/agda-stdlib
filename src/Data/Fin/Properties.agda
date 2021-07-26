@@ -221,15 +221,15 @@ toℕ-cast {n = suc n} eq (suc k) = cong suc (toℕ-cast (cong ℕ.pred eq) k)
 ≤-total : ∀ {n} → Total (_≤_ {n})
 ≤-total x y = ℕₚ.≤-total (toℕ x) (toℕ y)
 
-≤-irrelevant : ∀ {n} → Irrelevant (_≤_ {n})
+≤-irrelevant : ∀ {m n} → Irrelevant (_≤_ {m} {n})
 ≤-irrelevant = ℕₚ.≤-irrelevant
 
 infix 4 _≤?_ _<?_
 
-_≤?_ : ∀ {n} → B.Decidable (_≤_ {n})
+_≤?_ : ∀ {m n} → B.Decidable (_≤_ {m} {n})
 a ≤? b = toℕ a ℕₚ.≤? toℕ b
 
-_<?_ : ∀ {n} → B.Decidable (_<_ {n})
+_<?_ : ∀ {m n} → B.Decidable (_<_ {m} {n})
 m <? n = suc (toℕ m) ℕₚ.≤? toℕ n
 
 ------------------------------------------------------------------------
@@ -247,7 +247,6 @@ m <? n = suc (toℕ m) ℕₚ.≤? toℕ n
   { isPreorder = ≤-isPreorder
   ; antisym    = ≤-antisym
   }
-
 
 ≤-isTotalOrder : ∀ {n} → IsTotalOrder _≡_ (_≤_ {n})
 ≤-isTotalOrder = record
@@ -308,16 +307,16 @@ m <? n = suc (toℕ m) ℕₚ.≤? toℕ n
 ... | tri> i≮j i≢j j<i = tri> (i≮j ∘ ℕₚ.≤-pred) (i≢j ∘ suc-injective) (s≤s j<i)
 ... | tri≈ i≮j i≡j j≮i = tri≈ (i≮j ∘ ℕₚ.≤-pred) (cong suc i≡j)        (j≮i ∘ ℕₚ.≤-pred)
 
-<-respˡ-≡ : ∀ {n} → (_<_ {n}) Respectsˡ _≡_
+<-respˡ-≡ : ∀ {m n} → (_<_ {m} {n}) Respectsˡ _≡_
 <-respˡ-≡ refl x≤y = x≤y
 
-<-respʳ-≡ : ∀ {n} → (_<_ {n}) Respectsʳ _≡_
+<-respʳ-≡ : ∀ {m n} → (_<_ {m} {n}) Respectsʳ _≡_
 <-respʳ-≡ refl x≤y = x≤y
 
 <-resp₂-≡ : ∀ {n} → (_<_ {n}) Respects₂ _≡_
 <-resp₂-≡ = <-respʳ-≡ , <-respˡ-≡
 
-<-irrelevant : ∀ {n} → Irrelevant (_<_ {n})
+<-irrelevant : ∀ {m n} → Irrelevant (_<_ {m} {n})
 <-irrelevant = ℕₚ.<-irrelevant
 
 ------------------------------------------------------------------------
