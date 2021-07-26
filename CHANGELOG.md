@@ -20,6 +20,11 @@ Bug-fixes
   rather than a natural. The previous binding was incorrectly assuming that
   all exit codes where non-negative.
 
+* In `Function.Definitions` the definitions of `Surjection`, `Inverseˡ`, 
+  `Inverseʳ` were not being re-exported correctly and therefore had an unsolved 
+  meta-variable whenever this module was explicitly parameterised. This has
+  been fixed.
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -81,6 +86,25 @@ Non-backwards compatible changes
 Deprecated modules
 ------------------
 
+### Deprecation of old function hierarchy
+
+* The module `Function.Related` has been deprecated in favour of `Function.Related.Propositional`
+  whose code uses the new function hierarchy. This also opens up the possibility of a more
+  general `Function.Related.Setoid` at a later date. Several of the names have been changed
+  in this process to bring them into line with the camelcase naming convention used
+  in the rest of the library:
+  ```agda
+  reverse-implication ↦ reverseImplication 
+  reverse-injection   ↦ reverseInjection
+  left-inverse        ↦ leftInverse
+  
+  Symmetric-kind      ↦ SymmetricKind
+  Forward-kind        ↦ ForwardKind
+  Backward-kind       ↦ BackwardKind
+  Equivalence-kind    ↦ EquivalenceKind
+  ```
+
+
 Deprecated names
 ----------------
 
@@ -100,7 +124,10 @@ New modules
 
 * Properties of bijections:
   ```
+  Function.Consequences
   Function.Properties.Bijection
+  Function.Properties.RightInverse
+  Function.Properties.Surjection
   ```
 
 * Various system types and primitives:
@@ -189,6 +216,11 @@ Other minor additions
   ```
   _!|>_  : (a : A) → (∀ a → B a) → B a
   _!|>′_ : A → (A → B) → B
+  ```
+
+* Added new definition to the `Surjection` module in `Function.Related.Surjection`:
+  ```
+  f⁻ = proj₁ ∘ surjective
   ```
 
 * Added new operations in `IO`:
