@@ -69,17 +69,23 @@ Non-backwards compatible changes
 
 ### Strict functions
 
-* The module `Strict` has been deprecated in favour of `Function.Strict` 
+* The module `Strict` has been deprecated in favour of `Function.Strict`
   and the definitions of strict application, `_$!_` and `_$!′_`, have been
   moved from `Function.Base` to `Function.Strict`.
-  
+
 * The contents of `Function.Strict` is now re-exported by `Function`.
 
 ### Other
 
-* The constructors `+0` and `+[1+_]` from `Data.Integer.Base` are no longer 
+* The constructors `+0` and `+[1+_]` from `Data.Integer.Base` are no longer
   exported by `Data.Rational.Base`. You will have to open `Data.Integer(.Base)`
   directly to use them.
+
+* The relations `_≤_` `_≥_` `_<_` `_>_` in `Data.Fin.Base` have been
+  generalised so they can now relate `Fin` terms with different indices.
+  Should be mostly backwards compatible, but very occasionally when proving
+  properties about the orderings themselves the second index must be provided
+  explicitly.
 
 Deprecated modules
 ------------------
@@ -110,7 +116,12 @@ New modules
   ```
   Relation.Unary.Relation.Binary.Equality
   ```
-  
+
+* Polymorphic verstions of some unary relations
+ ```
+ Relation.Unary.Polymorphic
+ ```
+ 
 * Various system types and primitives:
   ```
   System.Clock.Primitive
@@ -129,6 +140,11 @@ New modules
   Test.Golden
   ```
 
+* A small library for function arguments with default values:
+  ```
+  Data.Default
+  ```
+
 Other minor additions
 ---------------------
 
@@ -136,6 +152,7 @@ Other minor additions
   ```agda
   record UnitalMagma c ℓ : Set (suc (c ⊔ ℓ))
   record Quasigroup  c ℓ : Set (suc (c ⊔ ℓ))
+  record Loop c ℓ : Set (suc (c ⊔ ℓ))
   ```
   and the existing record `Lattice` now provides
   ```agda
@@ -163,6 +180,7 @@ Other minor additions
   ```agda
   record IsUnitalMagma (_∙_ : Op₂ A) (ε : A) : Set (a ⊔ ℓ)
   record IsQuasigroup  (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ)
+  record IsLoop (_∙_ : Op₂ A) (ε : A) (⁻¹ : Op₁ A) : Set (a ⊔ ℓ)
   ```
   and the existing record `IsLattice` now provides
   ```
@@ -203,12 +221,12 @@ Other minor additions
   diagonal : ∀ {n} → Vec (Vec A n) n → Vec A n
   DiagonalBind._>>=_ : ∀ {n} → Vec A n → (A → Vec B n) → Vec B n
   ```
-  
+
 * Added new instance in `Data.Vec.Categorical`:
   ```agda
   monad : RawMonad (λ (A : Set a) → Vec A n)
   ```
-  
+
 * Added new proofs in `Data.Vec.Properties`:
   ```agda
   map-const : ∀ {n} (xs : Vec A n) (x : B) → map {n = n} (const x) xs ≡ replicate x
