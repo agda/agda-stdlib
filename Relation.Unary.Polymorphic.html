@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Relation.Unary.Polymorphic</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Polymorphic versions of standard definitions in Relation.Unary</a>
+<a id="172" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="246" class="Symbol">{-#</a> <a id="250" class="Keyword">OPTIONS</a> <a id="258" class="Pragma">--without-K</a> <a id="270" class="Pragma">--safe</a> <a id="277" class="Symbol">#-}</a>
+
+<a id="282" class="Keyword">module</a> <a id="289" href="Relation.Unary.Polymorphic.html" class="Module">Relation.Unary.Polymorphic</a> <a id="316" class="Keyword">where</a>
+
+<a id="323" class="Keyword">open</a> <a id="328" class="Keyword">import</a> <a id="335" href="Data.Empty.Polymorphic.html" class="Module">Data.Empty.Polymorphic</a> <a id="358" class="Keyword">using</a> <a id="364" class="Symbol">(</a><a id="365" href="Data.Empty.Polymorphic.html#331" class="Function">⊥</a><a id="366" class="Symbol">)</a>
+<a id="368" class="Keyword">open</a> <a id="373" class="Keyword">import</a> <a id="380" href="Data.Unit.Polymorphic.html" class="Module">Data.Unit.Polymorphic</a> <a id="402" class="Keyword">using</a> <a id="408" class="Symbol">(</a><a id="409" href="Data.Unit.Polymorphic.Base.html#480" class="Function">⊤</a><a id="410" class="Symbol">)</a>
+<a id="412" class="Keyword">open</a> <a id="417" class="Keyword">import</a> <a id="424" href="Level.html" class="Module">Level</a> <a id="430" class="Keyword">using</a> <a id="436" class="Symbol">(</a><a id="437" href="Agda.Primitive.html#597" class="Postulate">Level</a><a id="442" class="Symbol">)</a>
+<a id="444" class="Keyword">open</a> <a id="449" class="Keyword">import</a> <a id="456" href="Relation.Unary.html" class="Module">Relation.Unary</a> <a id="471" class="Keyword">using</a> <a id="477" class="Symbol">(</a><a id="478" href="Relation.Unary.html#1101" class="Function">Pred</a><a id="482" class="Symbol">)</a>
+
+<a id="485" class="Keyword">private</a>
+  <a id="495" class="Keyword">variable</a>
+    <a id="508" href="Relation.Unary.Polymorphic.html#508" class="Generalizable">a</a> <a id="510" href="Relation.Unary.Polymorphic.html#510" class="Generalizable">ℓ</a> <a id="512" class="Symbol">:</a> <a id="514" href="Agda.Primitive.html#597" class="Postulate">Level</a>
+    <a id="524" href="Relation.Unary.Polymorphic.html#524" class="Generalizable">A</a> <a id="526" class="Symbol">:</a> <a id="528" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="532" href="Relation.Unary.Polymorphic.html#508" class="Generalizable">a</a>
+
+<a id="535" class="Comment">------------------------------------------------------------------------</a>
+<a id="608" class="Comment">-- Special sets</a>
+
+<a id="625" class="Comment">-- The empty set.</a>
+
+<a id="∅"></a><a id="644" href="Relation.Unary.Polymorphic.html#644" class="Function">∅</a> <a id="646" class="Symbol">:</a> <a id="648" href="Relation.Unary.html#1101" class="Function">Pred</a> <a id="653" href="Relation.Unary.Polymorphic.html#524" class="Generalizable">A</a> <a id="655" href="Relation.Unary.Polymorphic.html#510" class="Generalizable">ℓ</a>
+<a id="657" href="Relation.Unary.Polymorphic.html#644" class="Function">∅</a> <a id="659" class="Symbol">=</a> <a id="661" class="Symbol">λ</a> <a id="663" href="Relation.Unary.Polymorphic.html#663" class="Bound">_</a> <a id="665" class="Symbol">→</a> <a id="667" href="Data.Empty.Polymorphic.html#331" class="Function">⊥</a>
+
+<a id="670" class="Comment">-- The universal set.</a>
+
+<a id="U"></a><a id="693" href="Relation.Unary.Polymorphic.html#693" class="Function">U</a> <a id="695" class="Symbol">:</a> <a id="697" href="Relation.Unary.html#1101" class="Function">Pred</a> <a id="702" href="Relation.Unary.Polymorphic.html#524" class="Generalizable">A</a> <a id="704" href="Relation.Unary.Polymorphic.html#510" class="Generalizable">ℓ</a>
+<a id="706" href="Relation.Unary.Polymorphic.html#693" class="Function">U</a> <a id="708" class="Symbol">=</a> <a id="710" class="Symbol">λ</a> <a id="712" href="Relation.Unary.Polymorphic.html#712" class="Bound">_</a> <a id="714" class="Symbol">→</a> <a id="716" href="Data.Unit.Polymorphic.Base.html#480" class="Function">⊤</a>
+</pre></body></html>
