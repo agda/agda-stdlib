@@ -6,26 +6,22 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Function.Bundles.Related where
+module Function.Related.Propositional where
 
 open import Level
-open import Relation.Binary using (Sym; Reflexive; Trans; IsEquivalence; Setoid; IsPreorder; Preorder)
+open import Relation.Binary
+  using (Sym; Reflexive; Trans; IsEquivalence; Setoid; IsPreorder; Preorder)
 open import Function.Bundles
 open import Function.Base
-open import Function.Equality using (_⟨$⟩_)
-import Function.Equivalence as Eq
-import Function.Injection   as Inj
-import Function.Inverse     as Inv
-import Function.LeftInverse as LeftInv
-import Function.Surjection  as Surj
-import Relation.Binary.PropositionalEquality as P
-open import Function.Properties.Bijection
-open import Function.Properties.Surjection
-open import Function.Properties.Inverse
-open import Function.Properties.RightInverse
+open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
-import Function.Construct.Symmetry as Symmetry
-import Function.Construct.Identity as Identity
+open import Function.Properties.Surjection   using (↠⇒↪; ↠⇒⇔)
+open import Function.Properties.RightInverse using (↪⇒↠)
+open import Function.Properties.Bijection    using (⤖⇒↔; ⤖⇒⇔)
+open import Function.Properties.Inverse      using (↔⇒⤖)
+
+import Function.Construct.Symmetry    as Symmetry
+import Function.Construct.Identity    as Identity
 import Function.Construct.Composition as Composition
 
 ------------------------------------------------------------------------
@@ -48,11 +44,11 @@ data Kind : Set where
 
 private
   variable
-    k : Kind
-    a b c : Level
+    a b c p : Level
     A : Set a
     B : Set b
     C : Set c
+    k : Kind
 
 -- Interpretation of the codes above. The code "bijection" is
 -- interpreted as Inverse rather than Bijection; the two types are
@@ -87,9 +83,9 @@ Related k A B = A ∼[ k ] B
 ⤖⇒ {k = surjection}         = Bijection.surjection
 ⤖⇒ {k = bijection}          = id
 
--- Actual equality also implies any kind of relatedness.
+-- Propositional equality also implies any kind of relatedness.
 
-≡⇒ : A P.≡ B → A ∼[ k ] B
+≡⇒ : A ≡ B → A ∼[ k ] B
 ≡⇒ P.refl = ⤖⇒ (Identity.id-⤖ _)
 
 ------------------------------------------------------------------------
@@ -97,13 +93,13 @@ Related k A B = A ∼[ k ] B
 
 -- Kinds whose interpretation is symmetric.
 
-data Symmetric-kind : Set where
-  equivalence : Symmetric-kind
-  bijection   : Symmetric-kind
+data SymmetricKind : Set where
+  equivalence : SymmetricKind
+  bijection   : SymmetricKind
 
 -- Forgetful map.
 
-⌊_⌋ : Symmetric-kind → Kind
+⌊_⌋ : SymmetricKind → Kind
 ⌊ equivalence ⌋ = equivalence
 ⌊ bijection   ⌋ = bijection
 
@@ -112,17 +108,17 @@ data Symmetric-kind : Set where
 -- Kinds whose interpretation include a function which "goes in the
 -- forward direction".
 
-data Forward-kind : Set where
-  implication : Forward-kind
-  equivalence : Forward-kind
-  injection   : Forward-kind
-  leftInverse : Forward-kind
-  surjection  : Forward-kind
-  bijection   : Forward-kind
+data ForwardKind : Set where
+  implication : ForwardKind
+  equivalence : ForwardKind
+  injection   : ForwardKind
+  leftInverse : ForwardKind
+  surjection  : ForwardKind
+  bijection   : ForwardKind
 
 -- Forgetful map.
 
-⌊_⌋→ : Forward-kind → Kind
+⌊_⌋→ : ForwardKind → Kind
 ⌊ implication  ⌋→ = implication
 ⌊ equivalence  ⌋→ = equivalence
 ⌊ injection    ⌋→ = injection
@@ -142,17 +138,17 @@ data Forward-kind : Set where
 
 -- Kinds whose interpretation include a function which "goes backwards".
 
-data Backward-kind : Set where
-  reverseImplication : Backward-kind
-  equivalence        : Backward-kind
-  reverseInjection   : Backward-kind
-  leftInverse        : Backward-kind
-  surjection         : Backward-kind
-  bijection          : Backward-kind
+data BackwardKind : Set where
+  reverseImplication : BackwardKind
+  equivalence        : BackwardKind
+  reverseInjection   : BackwardKind
+  leftInverse        : BackwardKind
+  surjection         : BackwardKind
+  bijection          : BackwardKind
 
 -- Forgetful map.
 
-⌊_⌋← : Backward-kind → Kind
+⌊_⌋← : BackwardKind → Kind
 ⌊ reverseImplication ⌋← = reverseImplication
 ⌊ equivalence        ⌋← = equivalence
 ⌊ reverseInjection   ⌋← = reverseInjection
@@ -173,15 +169,15 @@ data Backward-kind : Set where
 -- Kinds whose interpretation include functions going in both
 -- directions.
 
-data Equivalence-kind : Set where
-  equivalence : Equivalence-kind
-  leftInverse : Equivalence-kind
-  surjection  : Equivalence-kind
-  bijection   : Equivalence-kind
+data EquivalenceKind : Set where
+  equivalence : EquivalenceKind
+  leftInverse : EquivalenceKind
+  surjection  : EquivalenceKind
+  bijection   : EquivalenceKind
 
 -- Forgetful map.
 
-⌊_⌋⇔ : Equivalence-kind → Kind
+⌊_⌋⇔ : EquivalenceKind → Kind
 ⌊ equivalence ⌋⇔ = equivalence
 ⌊ leftInverse ⌋⇔ = leftInverse
 ⌊ surjection  ⌋⇔ = surjection
@@ -197,17 +193,17 @@ data Equivalence-kind : Set where
 
 -- Conversions between special kinds.
 
-⇔⌊_⌋ : Symmetric-kind → Equivalence-kind
+⇔⌊_⌋ : SymmetricKind → EquivalenceKind
 ⇔⌊ equivalence ⌋ = equivalence
 ⇔⌊ bijection   ⌋ = bijection
 
-→⌊_⌋ : Equivalence-kind → Forward-kind
+→⌊_⌋ : EquivalenceKind → ForwardKind
 →⌊ equivalence ⌋ = equivalence
 →⌊ leftInverse ⌋ = leftInverse
 →⌊ surjection  ⌋ = surjection
 →⌊ bijection   ⌋ = bijection
 
-←⌊_⌋ : Equivalence-kind → Backward-kind
+←⌊_⌋ : EquivalenceKind → BackwardKind
 ←⌊ equivalence ⌋ = equivalence
 ←⌊ leftInverse ⌋ = leftInverse
 ←⌊ surjection  ⌋ = surjection
@@ -255,7 +251,7 @@ K-refl {k = leftInverse}        = Identity.id-↪ _
 K-refl {k = surjection}         = Identity.id-↠ _
 K-refl {k = bijection}          = Identity.id-⤖ _
 
-K-reflexive : P._≡_ Relation.Binary.⇒ Related {a} k
+K-reflexive : _≡_ Relation.Binary.⇒ Related {a} k
 K-reflexive P.refl = K-refl
 
 K-trans : Trans (Related {a} {b} k)
@@ -282,7 +278,7 @@ SK-isEquivalence k = record
   ; trans = K-trans
   }
 
-SK-setoid : Symmetric-kind → (ℓ : Level) → Setoid _ _
+SK-setoid : SymmetricKind → (ℓ : Level) → Setoid _ _
 SK-setoid k ℓ = record { isEquivalence = SK-isEquivalence {ℓ} k }
 
 K-isPreorder : ∀ k → IsPreorder {ℓ = a} _⤖_ (Related k)
@@ -319,7 +315,7 @@ module EquationalReasoning where
   _↔⟨⟩_ : (A : Set a) → A ∼[ k ] B → A ∼[ k ] B
   A ↔⟨⟩ A⇔B = A⇔B
 
-  _≡⟨_⟩_ : (A : Set a) → A P.≡ B → B ∼[ k ] C → A ∼[ k ] C
+  _≡⟨_⟩_ : (A : Set a) → A ≡ B → B ∼[ k ] C → A ∼[ k ] C
   A ≡⟨ A≡B ⟩ B⇔C = A ∼⟨ ≡⇒ A≡B ⟩ B⇔C
 
   _∎ : (A : Set a) → A ∼[ k ] A
@@ -330,25 +326,25 @@ module EquationalReasoning where
 -- Every unary relation induces a preorder and, for symmetric kinds,
 -- an equivalence. (No claim is made that these relations are unique.)
 
-InducedRelation₁ : Kind → ∀ {s} → (A → Set s) → A → A → Set _
-InducedRelation₁ k S = λ x y → S x ∼[ k ] S y
+InducedRelation₁ : Kind → (P : A → Set p) → A → A → Set _
+InducedRelation₁ k P = λ x y → P x ∼[ k ] P y
 
-InducedPreorder₁ : Kind → ∀ {s} → (A → Set s) → Preorder _ _ _
-InducedPreorder₁ k S = record
-  { _≈_        = P._≡_
-  ; _∼_        = InducedRelation₁ k S
+InducedPreorder₁ : Kind → (P : A → Set p) → Preorder _ _ _
+InducedPreorder₁ k P = record
+  { _≈_        = _≡_
+  ; _∼_        = InducedRelation₁ k P
   ; isPreorder = record
     { isEquivalence = P.isEquivalence
     ; reflexive     = reflexive ∘
                       K-reflexive ∘
-                      P.cong S
+                      P.cong P
     ; trans         = K-trans
     }
   } where open Preorder (K-preorder _ _)
 
-InducedEquivalence₁ : Symmetric-kind → ∀ {s} → (A → Set s) → Setoid _ _
-InducedEquivalence₁ k S = record
-  { _≈_           = InducedRelation₁ ⌊ k ⌋ S
+InducedEquivalence₁ : SymmetricKind → (P : A → Set p) → Setoid _ _
+InducedEquivalence₁ k P = record
+  { _≈_           = InducedRelation₁ ⌊ k ⌋ P
   ; isEquivalence = record
     { refl  = K-refl
     ; sym   = SK-sym
@@ -365,7 +361,7 @@ InducedRelation₂ k _S_ = λ x y → ∀ {z} → (z S x) ∼[ k ] (z S y)
 
 InducedPreorder₂ : Kind → ∀ {s} → (A → B → Set s) → Preorder _ _ _
 InducedPreorder₂ k _S_ = record
-  { _≈_        = P._≡_
+  { _≈_        = _≡_
   ; _∼_        = InducedRelation₂ k _S_
   ; isPreorder = record
     { isEquivalence = P.isEquivalence
@@ -378,7 +374,7 @@ InducedPreorder₂ k _S_ = record
     }
   } where open Preorder (K-preorder _ _)
 
-InducedEquivalence₂ : Symmetric-kind → ∀ {s} → (A → B → Set s) → Setoid _ _
+InducedEquivalence₂ : SymmetricKind → ∀ {s} → (A → B → Set s) → Setoid _ _
 InducedEquivalence₂ k _S_ = record
   { _≈_           = InducedRelation₂ ⌊ k ⌋ _S_
   ; isEquivalence = record

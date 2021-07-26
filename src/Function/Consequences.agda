@@ -8,33 +8,39 @@
 
 module Function.Consequences where
 
-import Function.Definitions as FunctionDefinitions
-import Function.Structures as FunctionStructures
-open import Relation.Binary
-open import Level
 open import Data.Product
+open import Function.Definitions
+open import Level
+open import Relation.Binary
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning
 
 private
   variable
     a b ℓ₁ ℓ₂ : Level
+    A : Set a
+    B : Set b
 
-module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
+module _ (≈₁ : Rel A ℓ₁) (≈₂ : Rel B ℓ₂) {f f⁻¹} where
 
-  open Setoid From using () renaming (Carrier to A; _≈_ to _≈₁_)
-  open Setoid To   using () renaming (Carrier to B; _≈_ to _≈₂_)
-  open FunctionDefinitions _≈₁_ _≈₂_
+  inverseˡ⇒surjective : Inverseˡ ≈₁ ≈₂ f f⁻¹ → Surjective ≈₁ ≈₂ f
+  inverseˡ⇒surjective invˡ y = (f⁻¹ y , invˡ y)
 
-  inverseᵇ⇒injective : ∀ {f f⁻¹} → FunctionDefinitions.Congruent _≈₂_ _≈₁_ f⁻¹ → Inverseᵇ f f⁻¹ → Injective f
-  inverseᵇ⇒injective {f} {f⁻¹} cong₂ (invˡ , invʳ) {x} {y} x≈y = begin
+  inverseʳ⇒surjective : Inverseʳ ≈₁ ≈₂ f f⁻¹ → Surjective ≈₂ ≈₁ f⁻¹
+  inverseʳ⇒surjective invʳ y = (f y , invʳ y)
+
+module _ (From : Setoid a ℓ₁) {≈₂ : Rel B ℓ₂} where
+
+  open Setoid From using () renaming (Carrier to A; _≈_ to ≈₁)
+
+  inverseʳ⇒injective : ∀ {f f⁻¹} → Congruent ≈₂ ≈₁ f⁻¹ →
+                       Inverseʳ ≈₁ ≈₂ f f⁻¹ → Injective ≈₁ ≈₂ f
+  inverseʳ⇒injective {f} {f⁻¹} cong₂ invʳ {x} {y} x≈y = begin
     x         ≈˘⟨ invʳ x ⟩
-    f⁻¹ (f x) ≈⟨ cong₂ x≈y ⟩
-    f⁻¹ (f y) ≈⟨ invʳ y ⟩
+    f⁻¹ (f x) ≈⟨  cong₂ x≈y ⟩
+    f⁻¹ (f y) ≈⟨  invʳ y ⟩
     y         ∎
     where open SetoidReasoning From
 
-  inverseᵇ⇒surjective : ∀ {f f⁻¹} → Inverseᵇ f f⁻¹ → Surjective f
-  inverseᵇ⇒surjective {f} {f⁻¹} (invˡ , invʳ) y = (f⁻¹ y , invˡ y)
-
-  inverseᵇ⇒bijective : ∀ {f f⁻¹} → FunctionDefinitions.Congruent _≈₂_ _≈₁_ f⁻¹ → Inverseᵇ f f⁻¹ → Bijective f
-  inverseᵇ⇒bijective {f} {f⁻¹} cong₂ inv = (inverseᵇ⇒injective cong₂ inv , inverseᵇ⇒surjective inv)
+  inverseᵇ⇒bijective : ∀ {f f⁻¹} → Congruent ≈₂ ≈₁ f⁻¹ → Inverseᵇ ≈₁ ≈₂ f f⁻¹ → Bijective ≈₁ ≈₂ f
+  inverseᵇ⇒bijective cong₂ (invˡ , invʳ) =
+    (inverseʳ⇒injective cong₂ invʳ , inverseˡ⇒surjective ≈₁ ≈₂ invˡ)

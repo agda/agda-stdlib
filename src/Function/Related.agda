@@ -21,8 +21,17 @@ open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Data.Product using (_,_; proj₁; proj₂; <_,_>)
 
-import Function.Bundles.Related as R
+import Function.Related.Propositional as R
 import Function.Bundles as B
+
+private
+  variable
+    ℓ₁ ℓ₂ : Level
+    A : Set ℓ₁
+    B : Set ℓ₂
+
+------------------------------------------------------------------------
+-- Re-export core concepts from non-deprecated Related code
 
 open R public using
   ( Kind
@@ -30,11 +39,12 @@ open R public using
   ; equivalence
   ; injection
   ; surjection
-  ; bijection )
-  renaming
+  ; bijection
+  ) renaming
   ( reverseImplication to reverse-implication
-  ; reverseInjection to reverse-injection
-  ; leftInverse to left-inverse )
+  ; reverseInjection   to reverse-injection
+  ; leftInverse        to left-inverse
+  )
 
 ------------------------------------------------------------------------
 -- Wrapper types
@@ -74,12 +84,6 @@ A ∼[ reverse-injection   ] B = A ↢ B
 A ∼[ left-inverse        ] B = LeftInverse (P.setoid A) (P.setoid B)
 A ∼[ surjection          ] B = Surjection  (P.setoid A) (P.setoid B)
 A ∼[ bijection           ] B = Inverse     (P.setoid A) (P.setoid B)
-
-private
-  variable
-    ℓ₁ ℓ₂ : Level
-    A : Set ℓ₁
-    B : Set ℓ₂
 
 toRelated : {K : Kind} → A R.∼[ K ] B → A ∼[ K ] B
 toRelated {K = implication}         rel = B.Func.f rel

@@ -30,7 +30,7 @@ private
 ------------------------------------------------------------------------
 -- Setoid bundles
 
-isEquivalence : IsEquivalence (Inverse {a} {ℓ})
+isEquivalence : IsEquivalence (Inverse {a} {b})
 isEquivalence = record
   { refl  = λ {x} → Identity.inverse x
   ; sym   = Symmetry.inverse
@@ -52,16 +52,19 @@ isEquivalence = record
 -- Conversion functions
 
 Inverse⇒Bijection : Inverse S T → Bijection S T
-Inverse⇒Bijection {S = S} {T = T} I = record
+Inverse⇒Bijection {S = S} I = record
   { f         = f
   ; cong      = cong₁
-  ; bijective = inverseᵇ⇒bijective S T cong₂ inverse
+  ; bijective = inverseᵇ⇒bijective S cong₂ inverse
   } where open Inverse I
 
 Inverse⇒Equivalence : Inverse S T → Equivalence S T
 Inverse⇒Equivalence I = record
-  { f = f ; g = f⁻¹ ; cong₁ = cong₁ ; cong₂ = cong₂ }
-  where open Inverse I
+  { f     = f
+  ; g     = f⁻¹
+  ; cong₁ = cong₁
+  ; cong₂ = cong₂
+  } where open Inverse I
 
 ↔⇒⤖ : A ↔ B → A ⤖ B
 ↔⇒⤖ = Inverse⇒Bijection
