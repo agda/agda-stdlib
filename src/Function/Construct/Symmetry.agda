@@ -184,17 +184,17 @@ module _ {R : Setoid a ℓ₁} {S : Setoid b ℓ₂} where
 ------------------------------------------------------------------------
 -- Propositional bundles
 
-sym-⤖ : A ⤖ B → B ⤖ A
-sym-⤖ b = bijection b (cong _)
+⤖-sym : A ⤖ B → B ⤖ A
+⤖-sym b = bijection b (cong _)
 
-sym-⇔ : A ⇔ B → B ⇔ A
-sym-⇔ = equivalence
+⇔-sym : A ⇔ B → B ⇔ A
+⇔-sym = equivalence
 
-sym-↩ : A ↩ B → B ↪ A
-sym-↩ = rightInverse
+↩-sym : A ↩ B → B ↪ A
+↩-sym = rightInverse
 
-sym-↪ : A ↪ B → B ↩ A
-sym-↪ = leftInverse
+↪-sym : A ↪ B → B ↩ A
+↪-sym = leftInverse
 
-sym-↔ : A ↔ B → B ↔ A
-sym-↔ = inverse
+↔-sym : A ↔ B → B ↔ A
+↔-sym = inverse
