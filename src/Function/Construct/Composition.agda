@@ -204,28 +204,28 @@ module _ {R : Setoid a ℓ₁} {S : Setoid b ℓ₂} {T : Setoid c ℓ₃} where
 ------------------------------------------------------------------------
 -- Propositional bundles
 
-infix 8 ⟶_-_∘ ↣_-_∘ ↠_-_∘ ⤖_-_∘ ⇔_-_∘ ↩_-_∘ ↪_-_∘ ↔_-_∘
+infix 8 _⟶-∘_ _↣-∘_ _↠-∘_ _⤖-∘_ _⇔-∘_ _↩-∘_ _↪-∘_ _↔-∘_
 
-⟶_-_∘ : (A ⟶ B) → (B ⟶ C) → (A ⟶ C)
-⟶_-_∘ = function
+_⟶-∘_ : (A ⟶ B) → (B ⟶ C) → (A ⟶ C)
+_⟶-∘_ = function
 
-↣_-_∘ : A ↣ B → B ↣ C → A ↣ C
-↣_-_∘ = injection
+_↣-∘_ : A ↣ B → B ↣ C → A ↣ C
+_↣-∘_ = injection
 
-↠_-_∘ : A ↠ B → B ↠ C → A ↠ C
-↠_-_∘ = surjection
+_↠-∘_ : A ↠ B → B ↠ C → A ↠ C
+_↠-∘_ = surjection
 
-⤖_-_∘ : A ⤖ B → B ⤖ C → A ⤖ C
-⤖_-_∘ = bijection
+_⤖-∘_ : A ⤖ B → B ⤖ C → A ⤖ C
+_⤖-∘_ = bijection
 
-⇔_-_∘ : A ⇔ B → B ⇔ C → A ⇔ C
-⇔_-_∘ = equivalence
+_⇔-∘_ : A ⇔ B → B ⇔ C → A ⇔ C
+_⇔-∘_ = equivalence
 
-↩_-_∘ : A ↩ B → B ↩ C → A ↩ C
-↩_-_∘ = leftInverse
+_↩-∘_ : A ↩ B → B ↩ C → A ↩ C
+_↩-∘_ = leftInverse
 
-↪_-_∘ : A ↪ B → B ↪ C → A ↪ C
-↪_-_∘ = rightInverse
+_↪-∘_  : A ↪ B → B ↪ C → A ↪ C
+_↪-∘_ = rightInverse
 
-↔_-_∘ : A ↔ B → B ↔ C → A ↔ C
-↔_-_∘ = inverse
+_↔-∘_ : A ↔ B → B ↔ C → A ↔ C
+_↔-∘_ = inverse
