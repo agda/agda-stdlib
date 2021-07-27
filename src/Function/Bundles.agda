@@ -19,6 +19,7 @@
 
 module Function.Bundles where
 
+open import Function.Base using (_∘_)
 import Function.Definitions as FunctionDefinitions
 import Function.Structures as FunctionStructures
 open import Level using (Level; _⊔_; suc)
@@ -92,6 +93,9 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       cong       : f Preserves _≈₁_ ⟶ _≈₂_
       surjective : Surjective f
 
+    f⁻ : B → A
+    f⁻ = proj₁ ∘ surjective
+
     isCongruent : IsCongruent f
     isCongruent = record
       { cong           = cong
@@ -133,7 +137,7 @@ module _ (From : Setoid a ℓ₁) (To : Setoid b ℓ₂) where
       }
 
     open Injection  injection  public using (isInjection)
-    open Surjection surjection public using (isSurjection)
+    open Surjection surjection public using (isSurjection; f⁻)
 
     isBijection : IsBijection f
     isBijection = record

@@ -31,16 +31,16 @@ Congruent f = ∀ {x y} → x ≈₁ y →  f x ≈₂ f y
 Injective : (A → B) → Set (a ⊔ ℓ₁ ⊔ ℓ₂)
 Injective f = ∀ {x y} → f x ≈₂ f y → x ≈₁ y
 
-open Core₂ _≈₂_ public
+open Core₂ {A = A} _≈₂_ public
   using (Surjective)
 
 Bijective : (A → B) → Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
 Bijective f = Injective f × Surjective f
 
-open Core₂ _≈₂_ public
+open Core₂ {A = A} _≈₂_ public
   using (Inverseˡ)
 
-open Core₁ _≈₁_ public
+open Core₁ {B = B} _≈₁_ public
   using (Inverseʳ)
 
 Inverseᵇ : (A → B) → (B → A) → Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
