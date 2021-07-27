@@ -117,6 +117,12 @@ Deprecated modules
 Deprecated names
 ----------------
 
+* In `Data.List.Properties`:
+  ```agda
+  zipWith-identityˡ ↦ zipWith-zeroˡ
+  zipWith-identityʳ ↦ zipWith-zeroʳ
+  ```
+
 New modules
 -----------
 
