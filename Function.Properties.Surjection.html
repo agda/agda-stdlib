@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Function.Properties.Surjection</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Conversions for surjections</a>
+<a id="137" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="211" class="Symbol">{-#</a> <a id="215" class="Keyword">OPTIONS</a> <a id="223" class="Pragma">--without-K</a> <a id="235" class="Pragma">--safe</a> <a id="242" class="Symbol">#-}</a>
+
+<a id="247" class="Keyword">module</a> <a id="254" href="Function.Properties.Surjection.html" class="Module">Function.Properties.Surjection</a> <a id="285" class="Keyword">where</a>
+
+<a id="292" class="Keyword">open</a> <a id="297" class="Keyword">import</a> <a id="304" href="Function.Base.html" class="Module">Function.Base</a>
+<a id="318" class="Keyword">open</a> <a id="323" class="Keyword">import</a> <a id="330" href="Function.Bundles.html" class="Module">Function.Bundles</a>
+<a id="347" class="Keyword">open</a> <a id="352" class="Keyword">import</a> <a id="359" href="Level.html" class="Module">Level</a> <a id="365" class="Keyword">using</a> <a id="371" class="Symbol">(</a><a id="372" href="Agda.Primitive.html#597" class="Postulate">Level</a><a id="377" class="Symbol">)</a>
+<a id="379" class="Keyword">open</a> <a id="384" class="Keyword">import</a> <a id="391" href="Data.Product.html" class="Module">Data.Product</a>
+
+<a id="405" class="Keyword">private</a>
+  <a id="415" class="Keyword">variable</a>
+    <a id="428" href="Function.Properties.Surjection.html#428" class="Generalizable">a</a> <a id="430" href="Function.Properties.Surjection.html#430" class="Generalizable">b</a> <a id="432" class="Symbol">:</a> <a id="434" href="Agda.Primitive.html#597" class="Postulate">Level</a>
+    <a id="444" href="Function.Properties.Surjection.html#444" class="Generalizable">A</a> <a id="446" class="Symbol">:</a> <a id="448" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="452" href="Function.Properties.Surjection.html#428" class="Generalizable">a</a>
+    <a id="458" href="Function.Properties.Surjection.html#458" class="Generalizable">B</a> <a id="460" class="Symbol">:</a> <a id="462" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="466" href="Function.Properties.Surjection.html#430" class="Generalizable">b</a>
+
+<a id="469" class="Comment">------------------------------------------------------------------------</a>
+<a id="542" class="Comment">-- Conversion functions</a>
+
+<a id="↠⇒↪"></a><a id="567" href="Function.Properties.Surjection.html#567" class="Function">↠⇒↪</a> <a id="571" class="Symbol">:</a> <a id="573" href="Function.Properties.Surjection.html#444" class="Generalizable">A</a> <a id="575" href="Function.Bundles.html#8448" class="Function Operator">↠</a> <a id="577" href="Function.Properties.Surjection.html#458" class="Generalizable">B</a> <a id="579" class="Symbol">→</a> <a id="581" href="Function.Properties.Surjection.html#458" class="Generalizable">B</a> <a id="583" href="Function.Bundles.html#8745" class="Function Operator">↪</a> <a id="585" href="Function.Properties.Surjection.html#444" class="Generalizable">A</a>
+<a id="587" href="Function.Properties.Surjection.html#567" class="Function">↠⇒↪</a> <a id="591" href="Function.Properties.Surjection.html#591" class="Bound">s</a> <a id="593" class="Symbol">=</a> <a id="595" href="Function.Bundles.html#10049" class="Function">mk↪</a> <a id="599" class="Symbol">{</a><a id="600" class="Argument">f</a> <a id="602" class="Symbol">=</a> <a id="604" href="Agda.Builtin.Sigma.html#252" class="Field">proj₁</a> <a id="610" href="Function.Base.html#1106" class="Function Operator">∘</a> <a id="612" href="Function.Bundles.html#2840" class="Field">surjective</a><a id="622" class="Symbol">}</a> <a id="624" class="Symbol">{</a><a id="625" class="Argument">g</a> <a id="627" class="Symbol">=</a> <a id="629" href="Function.Bundles.html#2772" class="Field">f</a><a id="630" class="Symbol">}</a> <a id="632" class="Symbol">(</a><a id="633" href="Agda.Builtin.Sigma.html#264" class="Field">proj₂</a> <a id="639" href="Function.Base.html#1106" class="Function Operator">∘</a> <a id="641" href="Function.Bundles.html#2840" class="Field">surjective</a><a id="651" class="Symbol">)</a>
+  <a id="655" class="Keyword">where</a> <a id="661" class="Keyword">open</a> <a id="666" href="Function.Bundles.html#2715" class="Module">Surjection</a> <a id="677" href="Function.Properties.Surjection.html#591" class="Bound">s</a>
+
+<a id="↠⇒⇔"></a><a id="680" href="Function.Properties.Surjection.html#680" class="Function">↠⇒⇔</a> <a id="684" class="Symbol">:</a> <a id="686" href="Function.Properties.Surjection.html#444" class="Generalizable">A</a> <a id="688" href="Function.Bundles.html#8448" class="Function Operator">↠</a> <a id="690" href="Function.Properties.Surjection.html#458" class="Generalizable">B</a> <a id="692" class="Symbol">→</a> <a id="694" href="Function.Properties.Surjection.html#444" class="Generalizable">A</a> <a id="696" href="Function.Bundles.html#8595" class="Function Operator">⇔</a> <a id="698" href="Function.Properties.Surjection.html#458" class="Generalizable">B</a>
+<a id="700" href="Function.Properties.Surjection.html#680" class="Function">↠⇒⇔</a> <a id="704" href="Function.Properties.Surjection.html#704" class="Bound">s</a> <a id="706" class="Symbol">=</a> <a id="708" href="Function.Bundles.html#9699" class="Function">mk⇔</a> <a id="712" href="Function.Bundles.html#2772" class="Field">f</a> <a id="714" class="Symbol">(</a><a id="715" href="Agda.Builtin.Sigma.html#252" class="Field">proj₁</a> <a id="721" href="Function.Base.html#1106" class="Function Operator">∘</a> <a id="723" href="Function.Bundles.html#2840" class="Field">surjective</a><a id="733" class="Symbol">)</a>
+  <a id="737" class="Keyword">where</a> <a id="743" class="Keyword">open</a> <a id="748" href="Function.Bundles.html#2715" class="Module">Surjection</a> <a id="759" href="Function.Properties.Surjection.html#704" class="Bound">s</a>
+</pre></body></html>
