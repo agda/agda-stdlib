@@ -86,7 +86,7 @@ Related k A B = A ∼[ k ] B
 -- Propositional equality also implies any kind of relatedness.
 
 ≡⇒ : A ≡ B → A ∼[ k ] B
-≡⇒ P.refl = ⤖⇒ (Identity.id-⤖ _)
+≡⇒ P.refl = ⤖⇒ (Identity.⤖-id _)
 
 ------------------------------------------------------------------------
 -- Special kinds of kinds
