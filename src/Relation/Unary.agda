@@ -70,7 +70,7 @@ x ∉ P = ¬ x ∈ P
 ------------------------------------------------------------------------
 -- Subset relations
 
-infix 4 _⊆_ _⊇_ _⊈_ _⊉_ _⊂_ _⊃_ _⊄_ _⊅_
+infix 4 _⊆_ _⊇_ _⊈_ _⊉_ _⊂_ _⊃_ _⊄_ _⊅_ _≐_ _≐′_
 
 _⊆_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
 P ⊆ Q = ∀ {x} → x ∈ P → x ∈ Q
@@ -95,6 +95,9 @@ P ⊄ Q = ¬ (P ⊂ Q)
 
 _⊅_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
 P ⊅ Q = ¬ (P ⊃ Q)
+
+_≐_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
+P ≐ Q = (P ⊆ Q) × (Q ⊆ P)
 
 -- The following primed variants of _⊆_ can be used when 'x' can't
 -- be inferred from 'x ∈ P'.
@@ -124,6 +127,9 @@ P ⊄′ Q = ¬ (P ⊂′ Q)
 
 _⊅′_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
 P ⊅′ Q = ¬ (P ⊃′ Q)
+
+_≐′_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
+P ≐′ Q = (P ⊆′ Q) × (Q ⊆′ P)
 
 ------------------------------------------------------------------------
 -- Properties of sets

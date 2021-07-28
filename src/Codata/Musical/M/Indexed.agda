@@ -13,7 +13,7 @@ open import Level
 open import Codata.Musical.Notation
 open import Data.Product
 open import Data.Container.Indexed.Core
-open import Function
+open import Function.Base using (_∘_)
 open import Relation.Unary
 
 -- The family of indexed M-types.

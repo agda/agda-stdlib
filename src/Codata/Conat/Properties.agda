@@ -13,7 +13,7 @@ open import Data.Nat.Base using (ℕ; zero; suc)
 open import Codata.Thunk
 open import Codata.Conat
 open import Codata.Conat.Bisimilarity
-open import Function
+open import Function.Base using (_∋_)
 open import Relation.Nullary
 open import Relation.Nullary.Decidable using (map′)
 open import Relation.Binary

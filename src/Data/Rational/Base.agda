@@ -10,7 +10,7 @@ module Data.Rational.Base where
 
 open import Data.Bool.Base using (Bool; true; false; if_then_else_)
 open import Function.Base using (id)
-open import Data.Integer.Base as ℤ using (ℤ; +_; +0; -[1+_])
+open import Data.Integer.Base as ℤ using (ℤ; +_; +0; +[1+_]; -[1+_])
 import Data.Integer.GCD as ℤ
 import Data.Integer.DivMod as ℤ
 open import Data.Nat.GCD
@@ -34,13 +34,6 @@ open import Relation.Binary.PropositionalEquality
   using (_≡_; _≢_; refl; subst; cong; cong₂; module ≡-Reasoning)
 
 open ≡-Reasoning
-
--- Note, these are re-exported publicly to maintain backwards
--- compatability. Although we are unable (?) to put a warning on them,
--- using these from `Data.Rational` should be viewed as a deprecated
--- feature.
-
-open import Data.Integer public using (+0; +[1+_])
 
 ------------------------------------------------------------------------
 -- Rational numbers in reduced form. Note that there is exactly one

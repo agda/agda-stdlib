@@ -32,6 +32,12 @@ applicative = record
   ; _⊛_  = Vec._⊛_
   }
 
+monad : RawMonad (λ (A : Set a) → Vec A n)
+monad = record
+  { return = replicate
+  ; _>>=_ = DiagonalBind._>>=_
+  }
+
 ------------------------------------------------------------------------
 -- Get access to other monadic functions
 

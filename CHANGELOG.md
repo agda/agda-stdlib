@@ -20,10 +20,30 @@ Bug-fixes
   rather than a natural. The previous binding was incorrectly assuming that
   all exit codes where non-negative.
 
-* In `/-monoˡ-≤` in `Data.Nat.DivMod` the parameter `o` was implicit but not inferrable. It has been changed to explicit.
+* In `/-monoˡ-≤` in `Data.Nat.DivMod` the parameter `o` was implicit but not inferrable. 
+  It has been changed to be explicit.
+
+* In `Function.Definitions` the definitions of `Surjection`, `Inverseˡ`, 
+  `Inverseʳ` were not being re-exported correctly and therefore had an unsolved 
+  meta-variable whenever this module was explicitly parameterised. This has
+  been fixed.
 
 Non-backwards compatible changes
 --------------------------------
+
+* In `Algebra.Morphism.Structures`, `IsNearSemiringHomomorphism`,
+  `IsSemiringHomomorphism`, and `IsRingHomomorphism` have been redeisgned to
+  build up from `IsMonoidHomomorphism`, `IsNearSemiringHomomorphism`, and
+  `IsSemiringHomomorphism` respectively, adding a single property at each step.
+  This means that they no longer need to have two separate proofs of
+  `IsRelHomomorphism`. Similarly, `IsLatticeHomomorphism` is now built as
+  `IsRelHomomorphism` along with proofs that `_∧_` and `_∨_` are homorphic.
+
+  Also, `⁻¹-homo` in `IsRingHomomorphism` has been renamed to `-‿homo`.
+
+* move definition of `_>>=_` under `Data.Vec.Base` to its submodule `CartesianBind`
+  in order to keep another new definition of `_>>=_`, located in `DiagonalBind`
+  which is also a submodule of `Data.Vec.Base`.
 
 * In `Text.Pretty`, `Doc` is now a record rather than a type alias. This
   helps Agda reconstruct the `width` parameter when the module is opened
@@ -85,9 +105,48 @@ Non-backwards compatible changes
   ```
   GCD-* : ∀ {m n d c} → GCD (m * suc c) (n * suc c) (d * suc c) → GCD m n d
   ```
-  
+
+### Strict functions
+
+* The module `Strict` has been deprecated in favour of `Function.Strict`
+  and the definitions of strict application, `_$!_` and `_$!′_`, have been
+  moved from `Function.Base` to `Function.Strict`.
+
+* The contents of `Function.Strict` is now re-exported by `Function`.
+
+### Other
+
+* The constructors `+0` and `+[1+_]` from `Data.Integer.Base` are no longer
+  exported by `Data.Rational.Base`. You will have to open `Data.Integer(.Base)`
+  directly to use them.
+
+* The relations `_≤_` `_≥_` `_<_` `_>_` in `Data.Fin.Base` have been
+  generalised so they can now relate `Fin` terms with different indices.
+  Should be mostly backwards compatible, but very occasionally when proving
+  properties about the orderings themselves the second index must be provided
+  explicitly.
+
 Deprecated modules
 ------------------
+
+### Deprecation of old function hierarchy
+
+* The module `Function.Related` has been deprecated in favour of `Function.Related.Propositional`
+  whose code uses the new function hierarchy. This also opens up the possibility of a more
+  general `Function.Related.Setoid` at a later date. Several of the names have been changed
+  in this process to bring them into line with the camelcase naming convention used
+  in the rest of the library:
+  ```agda
+  reverse-implication ↦ reverseImplication 
+  reverse-injection   ↦ reverseInjection
+  left-inverse        ↦ leftInverse
+  
+  Symmetric-kind      ↦ SymmetricKind
+  Forward-kind        ↦ ForwardKind
+  Backward-kind       ↦ BackwardKind
+  Equivalence-kind    ↦ EquivalenceKind
+  ```
+
 
 Deprecated names
 ----------------
@@ -108,9 +167,22 @@ New modules
 
 * Properties of bijections:
   ```
+  Function.Consequences
   Function.Properties.Bijection
+  Function.Properties.RightInverse
+  Function.Properties.Surjection
   ```
 
+* Both versions of equality on predications are equivalences
+  ```
+  Relation.Unary.Relation.Binary.Equality
+  ```
+
+* Polymorphic verstions of some unary relations
+ ```
+ Relation.Unary.Polymorphic
+ ```
+ 
 * Various system types and primitives:
   ```
   System.Clock.Primitive
@@ -129,6 +201,11 @@ New modules
   Test.Golden
   ```
 
+* A small library for function arguments with default values:
+  ```
+  Data.Default
+  ```
+
 Other minor additions
 ---------------------
 
@@ -136,6 +213,7 @@ Other minor additions
   ```agda
   record UnitalMagma c ℓ : Set (suc (c ⊔ ℓ))
   record Quasigroup  c ℓ : Set (suc (c ⊔ ℓ))
+  record Loop c ℓ : Set (suc (c ⊔ ℓ))
   ```
   and the existing record `Lattice` now provides
   ```agda
@@ -144,10 +222,26 @@ Other minor additions
   ```
   and their corresponding algebraic subbundles.
 
+* Added new functions to `Algebra.Construct.DirectProduct`:
+  ```agda
+  rawSemiring : RawSemiring a ℓ₁ → RawSemiring b ℓ₂ → RawSemiring (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  rawRing : RawRing a ℓ₁ → RawRing b ℓ₂ → RawRing (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  semiringWithoutAnnihilatingZero : SemiringWithoutAnnihilatingZero a ℓ₁ →
+                                    SemiringWithoutAnnihilatingZero b ℓ₂ →
+                                    SemiringWithoutAnnihilatingZero (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  semiring : Semiring a ℓ₁ → Semiring b ℓ₂ → Semiring (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  commutativeSemiring : CommutativeSemiring a ℓ₁ → CommutativeSemiring b ℓ₂ →
+                        CommutativeSemiring (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  ring : Ring a ℓ₁ → Ring b ℓ₂ → Ring (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  commutativeRing : CommutativeRing a ℓ₁ → CommutativeRing b ℓ₂ →
+                    CommutativeRing (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+ ```
+	
 * Added new definitions to `Algebra.Structures`:
   ```agda
   record IsUnitalMagma (_∙_ : Op₂ A) (ε : A) : Set (a ⊔ ℓ)
   record IsQuasigroup  (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ)
+  record IsLoop (_∙_ : Op₂ A) (ε : A) (⁻¹ : Op₁ A) : Set (a ⊔ ℓ)
   ```
   and the existing record `IsLattice` now provides
   ```
@@ -156,10 +250,50 @@ Other minor additions
   ```
   and their corresponding algebraic substructures.
 
+* Added new definitions and proofs in `Data.Rational.Properties`:
+  ```agda
+  +-*-rawNearSemiring : RawNearSemiring 0ℓ 0ℓ
+  +-*-rawSemiring : RawSemiring 0ℓ 0ℓ
+  toℚᵘ-isNearSemiringHomomorphism-+-* : IsNearSemiringHomomorphism +-*-rawNearSemiring ℚᵘ.+-*-rawNearSemiring toℚᵘ
+  toℚᵘ-isNearSemiringMonomorphism-+-* : IsNearSemiringMonomorphism +-*-rawNearSemiring ℚᵘ.+-*-rawNearSemiring toℚᵘ
+  toℚᵘ-isSemiringHomomorphism-+-* : IsSemiringHomomorphism +-*-rawSemiring ℚᵘ.+-*-rawSemiring toℚᵘ
+  toℚᵘ-isSemiringMonomorphism-+-* : IsSemiringMonomorphism +-*-rawSemiring ℚᵘ.+-*-rawSemiring toℚᵘ
+  ```
+
+* Added new definitions in `Data.Rational.Unnormalised.Properties`:
+  ```agda
+  +-*-rawNearSemiring : RawNearSemiring 0ℓ 0ℓ
+  +-*-rawSemiring : RawSemiring 0ℓ 0ℓ
+  ```
+
+* Added new proof to `Data.Product.Properties`:
+  ```agda
+  map-cong : f ≗ g → h ≗ i → map f h ≗ map g i
+  ```
+
 * Added new proofs in `Data.String.Properties`:
   ```
   ≤-isDecTotalOrder-≈ : IsDecTotalOrder _≈_ _≤_
   ≤-decTotalOrder-≈   :  DecTotalOrder _ _ _
+  ```
+
+* Added new definitions in `Data.Vec.Base`:
+  ```agda
+  diagonal : ∀ {n} → Vec (Vec A n) n → Vec A n
+  DiagonalBind._>>=_ : ∀ {n} → Vec A n → (A → Vec B n) → Vec B n
+  ```
+
+* Added new instance in `Data.Vec.Categorical`:
+  ```agda
+  monad : RawMonad (λ (A : Set a) → Vec A n)
+  ```
+
+* Added new proofs in `Data.Vec.Properties`:
+  ```agda
+  map-const : ∀ {n} (xs : Vec A n) (x : B) → map {n = n} (const x) xs ≡ replicate x
+  map-⊛ : ∀ {n} (f : A → B → C) (g : A → B) (xs : Vec A n) → (map f xs ⊛ map g xs) ≡ map (f ˢ g) xs
+  ⊛-is->>= : ∀ {n} (fs : Vec (A → B) n) (xs : Vec A n) → (fs ⊛ xs) ≡ (fs DiagonalBind.>>= flip map xs)
+  transpose-replicate : ∀ {m n} (xs : Vec A m) → transpose (replicate {n = n} xs) ≡ map replicate xs
   ```
 
 * Added new proofs in `Function.Construct.Symmetry`:
@@ -170,6 +304,17 @@ Other minor additions
   bijection     : Bijection R S → Congruent IB.Eq₂._≈_ IB.Eq₁._≈_ f⁻¹ → Bijection S R
   bijection-≡   : Bijection R (setoid B) → Bijection (setoid B) R
   sym-⤖        : A ⤖ B → B ⤖ A
+  ```
+
+* Added new operations in `Function.Strict`:
+  ```
+  _!|>_  : (a : A) → (∀ a → B a) → B a
+  _!|>′_ : A → (A → B) → B
+  ```
+
+* Added new definition to the `Surjection` module in `Function.Related.Surjection`:
+  ```
+  f⁻ = proj₁ ∘ surjective
   ```
 
 * Added new operations in `IO`:
@@ -196,6 +341,12 @@ Other minor additions
   untilJust : IO (Maybe A) → IO A
   ```
 
+* Equality of predicates
+  ```
+  _≐_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
+  _≐′_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
+  ```
+  
 * Added new operations in `System.Exit`:
   ```
   isSuccess : ExitCode → Bool

@@ -23,6 +23,7 @@ open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable.Core using (True; toWitness)
 open import Relation.Binary.Core
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; _≢_; refl; cong)
+open import Relation.Binary.Indexed.Heterogeneous using (IRel)
 
 ------------------------------------------------------------------------
 -- Types
@@ -252,17 +253,17 @@ pinch {suc n} (suc i) (suc j) = suc (pinch i j)
 
 infix 4 _≤_ _≥_ _<_ _>_
 
-_≤_ : ∀ {n} → Rel (Fin n) 0ℓ
-_≤_ = ℕ._≤_ on toℕ
+_≤_ : IRel Fin 0ℓ
+i ≤ j = toℕ i ℕ.≤ toℕ j
 
-_≥_ : ∀ {n} → Rel (Fin n) 0ℓ
-_≥_ = ℕ._≥_ on toℕ
+_≥_ : IRel Fin 0ℓ
+i ≥ j = toℕ i ℕ.≥ toℕ j
 
-_<_ : ∀ {n} → Rel (Fin n) 0ℓ
-_<_ = ℕ._<_ on toℕ
+_<_ : IRel Fin 0ℓ
+i < j = toℕ i ℕ.< toℕ j
 
-_>_ : ∀ {n} → Rel (Fin n) 0ℓ
-_>_ = ℕ._>_ on toℕ
+_>_ : IRel Fin 0ℓ
+i > j = toℕ i ℕ.> toℕ j
 
 
 data _≺_ : ℕ → ℕ → Set where

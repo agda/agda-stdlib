@@ -219,3 +219,8 @@ import README.Data.Container.Indexed
 -- remembers the things being related.
 
 import README.Data.Wrap
+
+-- Specifying the default value a function's argument should take if it
+-- is not passed explicitly.
+
+import README.Data.Default
