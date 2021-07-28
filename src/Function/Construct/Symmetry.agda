@@ -198,3 +198,42 @@ module _ {R : Setoid a ℓ₁} {S : Setoid b ℓ₂} where
 
 ↔-sym : A ↔ B → B ↔ A
 ↔-sym = inverse
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 1.7
+
+sym-⤖ = ⤖-sym
+{-# WARNING_ON_USAGE sym-⤖
+"Warning: sym-⤖ was deprecated in v1.7.
+Please use ⤖-sym instead."
+#-}
+
+sym-⇔ = ⇔-sym
+{-# WARNING_ON_USAGE sym-⇔
+"Warning: sym-⇔ was deprecated in v1.7.
+Please use ⇔-sym instead."
+#-}
+
+sym-↩ = ↩-sym
+{-# WARNING_ON_USAGE sym-↩
+"Warning: sym-↩ was deprecated in v1.7.
+Please use ↩-sym instead."
+#-}
+
+sym-↪ = ↪-sym
+{-# WARNING_ON_USAGE sym-↪
+"Warning: sym-↪ was deprecated in v1.7.
+Please use ↪-sym instead."
+#-}
+
+sym-↔ = ↔-sym
+{-# WARNING_ON_USAGE sym-↔
+"Warning: sym-↔ was deprecated in v1.7.
+Please use ↔-sym instead."
+#-}
