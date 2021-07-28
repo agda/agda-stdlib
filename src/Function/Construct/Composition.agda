@@ -229,3 +229,59 @@ _↪-∘_ = rightInverse
 
 _↔-∘_ : A ↔ B → B ↔ C → A ↔ C
 _↔-∘_ = inverse
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 1.7
+
+_∘-⟶_ = _⟶-∘_
+{-# WARNING_ON_USAGE _∘-⟶_
+"Warning: _∘-⟶_ was deprecated in v1.7.
+Please use _⟶-∘_ instead."
+#-}
+
+_∘-↣_ = _↣-∘_
+{-# WARNING_ON_USAGE _∘-↣_
+"Warning: _∘-↣_ was deprecated in v1.7.
+Please use _↣-∘_ instead."
+#-}
+
+_∘-↠_ = _↠-∘_
+{-# WARNING_ON_USAGE _∘-↠_
+"Warning: _∘-↠_ was deprecated in v1.7.
+Please use _↠-∘_ instead."
+#-}
+
+_∘-⤖_ = _⤖-∘_
+{-# WARNING_ON_USAGE _∘-⤖_
+"Warning: _∘-⤖_ was deprecated in v1.7.
+Please use _⤖-∘_ instead."
+#-}
+
+_∘-⇔_ = _⇔-∘_
+{-# WARNING_ON_USAGE _∘-⇔_
+"Warning: _∘-⇔_ was deprecated in v1.7.
+Please use _⇔-∘_ instead."
+#-}
+
+_∘-↩_ = _↩-∘_
+{-# WARNING_ON_USAGE _∘-↩_
+"Warning: _∘-↩_ was deprecated in v1.7.
+Please use _↩-∘_ instead."
+#-}
+
+_∘-↪_ = _↪-∘_
+{-# WARNING_ON_USAGE _∘-↪_
+"Warning: _∘-↪_ was deprecated in v1.7.
+Please use _↪-∘_ instead."
+#-}
+
+_∘-↔_ = _↔-∘_
+{-# WARNING_ON_USAGE _∘-↔_
+"Warning: _∘-↔_ was deprecated in v1.7.
+Please use _↔-∘_ instead."
+#-}
