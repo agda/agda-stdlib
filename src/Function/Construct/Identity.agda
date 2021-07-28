@@ -200,3 +200,60 @@ module _ (A : Set a) where
 
   ↔-id : A ↔ A
   ↔-id = inverse (setoid A)
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 1.7
+
+id-⟶ = ⟶-id
+{-# WARNING_ON_USAGE id-⟶
+"Warning: id-⟶ was deprecated in v1.7.
+Please use ⟶-id instead."
+#-}
+
+id-↣ = ↣-id
+{-# WARNING_ON_USAGE id-↣
+"Warning: id-↣ was deprecated in v1.7.
+Please use ↣-id instead."
+#-}
+
+id-↠ = ↠-id
+{-# WARNING_ON_USAGE id-↠
+"Warning: id-↠ was deprecated in v1.7.
+Please use ↠-id instead."
+#-}
+
+id-⤖ = ⤖-id
+{-# WARNING_ON_USAGE id-⤖
+"Warning: id-⤖ was deprecated in v1.7.
+Please use ⤖-id instead."
+#-}
+
+id-⇔ = ⇔-id
+{-# WARNING_ON_USAGE id-⇔
+"Warning: id-⇔ was deprecated in v1.7.
+Please use ⇔-id instead."
+#-}
+
+id-↩ = ↩-id
+{-# WARNING_ON_USAGE id-↩
+"Warning: id-↩ was deprecated in v1.7.
+Please use ↩-id instead."
+#-}
+
+id-↪ = ↪-id
+{-# WARNING_ON_USAGE id-↪
+"Warning: id-↪ was deprecated in v1.7.
+Please use ↪-id instead."
+#-}
+
+id-↔ = ↔-id
+{-# WARNING_ON_USAGE id-↔
+"Warning: id-↔ was deprecated in v1.7.
+Please use ↔-id instead."
+#-}
