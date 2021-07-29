@@ -237,52 +237,52 @@ _↔-∘_ = inverse
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 1.7
+-- Version v2.0
 
 _∘-⟶_ = _⟶-∘_
 {-# WARNING_ON_USAGE _∘-⟶_
-"Warning: _∘-⟶_ was deprecated in v1.7.
+"Warning: _∘-⟶_ was deprecated in v2.0.
 Please use _⟶-∘_ instead."
 #-}
 
 _∘-↣_ = _↣-∘_
 {-# WARNING_ON_USAGE _∘-↣_
-"Warning: _∘-↣_ was deprecated in v1.7.
+"Warning: _∘-↣_ was deprecated in v2.0.
 Please use _↣-∘_ instead."
 #-}
 
 _∘-↠_ = _↠-∘_
 {-# WARNING_ON_USAGE _∘-↠_
-"Warning: _∘-↠_ was deprecated in v1.7.
+"Warning: _∘-↠_ was deprecated in v2.0.
 Please use _↠-∘_ instead."
 #-}
 
 _∘-⤖_ = _⤖-∘_
 {-# WARNING_ON_USAGE _∘-⤖_
-"Warning: _∘-⤖_ was deprecated in v1.7.
+"Warning: _∘-⤖_ was deprecated in v2.0.
 Please use _⤖-∘_ instead."
 #-}
 
 _∘-⇔_ = _⇔-∘_
 {-# WARNING_ON_USAGE _∘-⇔_
-"Warning: _∘-⇔_ was deprecated in v1.7.
+"Warning: _∘-⇔_ was deprecated in v2.0.
 Please use _⇔-∘_ instead."
 #-}
 
 _∘-↩_ = _↩-∘_
 {-# WARNING_ON_USAGE _∘-↩_
-"Warning: _∘-↩_ was deprecated in v1.7.
+"Warning: _∘-↩_ was deprecated in v2.0.
 Please use _↩-∘_ instead."
 #-}
 
 _∘-↪_ = _↪-∘_
 {-# WARNING_ON_USAGE _∘-↪_
-"Warning: _∘-↪_ was deprecated in v1.7.
+"Warning: _∘-↪_ was deprecated in v2.0.
 Please use _↪-∘_ instead."
 #-}
 
 _∘-↔_ = _↔-∘_
 {-# WARNING_ON_USAGE _∘-↔_
-"Warning: _∘-↔_ was deprecated in v1.7.
+"Warning: _∘-↔_ was deprecated in v2.0.
 Please use _↔-∘_ instead."
 #-}

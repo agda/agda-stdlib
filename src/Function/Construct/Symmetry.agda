@@ -206,34 +206,34 @@ module _ {R : Setoid a ℓ₁} {S : Setoid b ℓ₂} where
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 1.7
+-- Version v2.0
 
 sym-⤖ = ⤖-sym
 {-# WARNING_ON_USAGE sym-⤖
-"Warning: sym-⤖ was deprecated in v1.7.
+"Warning: sym-⤖ was deprecated in v2.0.
 Please use ⤖-sym instead."
 #-}
 
 sym-⇔ = ⇔-sym
 {-# WARNING_ON_USAGE sym-⇔
-"Warning: sym-⇔ was deprecated in v1.7.
+"Warning: sym-⇔ was deprecated in v2.0.
 Please use ⇔-sym instead."
 #-}
 
 sym-↩ = ↩-sym
 {-# WARNING_ON_USAGE sym-↩
-"Warning: sym-↩ was deprecated in v1.7.
+"Warning: sym-↩ was deprecated in v2.0.
 Please use ↩-sym instead."
 #-}
 
 sym-↪ = ↪-sym
 {-# WARNING_ON_USAGE sym-↪
-"Warning: sym-↪ was deprecated in v1.7.
+"Warning: sym-↪ was deprecated in v2.0.
 Please use ↪-sym instead."
 #-}
 
 sym-↔ = ↔-sym
 {-# WARNING_ON_USAGE sym-↔
-"Warning: sym-↔ was deprecated in v1.7.
+"Warning: sym-↔ was deprecated in v2.0.
 Please use ↔-sym instead."
 #-}

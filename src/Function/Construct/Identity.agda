@@ -208,52 +208,52 @@ module _ (A : Set a) where
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 1.7
+-- Version v2.0
 
 id-⟶ = ⟶-id
 {-# WARNING_ON_USAGE id-⟶
-"Warning: id-⟶ was deprecated in v1.7.
+"Warning: id-⟶ was deprecated in v2.0.
 Please use ⟶-id instead."
 #-}
 
 id-↣ = ↣-id
 {-# WARNING_ON_USAGE id-↣
-"Warning: id-↣ was deprecated in v1.7.
+"Warning: id-↣ was deprecated in v2.0.
 Please use ↣-id instead."
 #-}
 
 id-↠ = ↠-id
 {-# WARNING_ON_USAGE id-↠
-"Warning: id-↠ was deprecated in v1.7.
+"Warning: id-↠ was deprecated in v2.0.
 Please use ↠-id instead."
 #-}
 
 id-⤖ = ⤖-id
 {-# WARNING_ON_USAGE id-⤖
-"Warning: id-⤖ was deprecated in v1.7.
+"Warning: id-⤖ was deprecated in v2.0.
 Please use ⤖-id instead."
 #-}
 
 id-⇔ = ⇔-id
 {-# WARNING_ON_USAGE id-⇔
-"Warning: id-⇔ was deprecated in v1.7.
+"Warning: id-⇔ was deprecated in v2.0.
 Please use ⇔-id instead."
 #-}
 
 id-↩ = ↩-id
 {-# WARNING_ON_USAGE id-↩
-"Warning: id-↩ was deprecated in v1.7.
+"Warning: id-↩ was deprecated in v2.0.
 Please use ↩-id instead."
 #-}
 
 id-↪ = ↪-id
 {-# WARNING_ON_USAGE id-↪
-"Warning: id-↪ was deprecated in v1.7.
+"Warning: id-↪ was deprecated in v2.0.
 Please use ↪-id instead."
 #-}
 
 id-↔ = ↔-id
 {-# WARNING_ON_USAGE id-↔
-"Warning: id-↔ was deprecated in v1.7.
+"Warning: id-↔ was deprecated in v2.0.
 Please use ↔-id instead."
 #-}
