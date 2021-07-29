@@ -19,7 +19,7 @@ open import Data.Nat.Coprimality as C
   using (Coprime; Bézout-coprime; coprime-/gcd; coprime?; ¬0-coprimeTo-2+)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc) hiding (module ℕ)
 import Data.Nat.DivMod as ℕ
-open import Data.Rational.Unnormalised.Base as ℚᵘ using (ℚᵘ; mkℚᵘ; _≢0)
+open import Data.Rational.Unnormalised.Base as ℚᵘ using (ℚᵘ; mkℚᵘ)
 open import Data.Product
 open import Data.Sign using (Sign)
 open import Data.Sum.Base using (inj₂)
@@ -59,7 +59,7 @@ open ℚ public using ()
   ; denominatorℕ to ↧ₙ_
   )
 
-mkℚ+ : ∀ n d → .{d≢0 : d ≢0} → .(Coprime n d) → ℚ
+mkℚ+ : ∀ n d → .{{_ : ℕ.NonZero d}} → .(Coprime n d) → ℚ
 mkℚ+ n (suc d) coprime = mkℚ (+ n) d coprime
 
 ------------------------------------------------------------------------
@@ -121,21 +121,21 @@ p ≤ᵇ q = (↥ p ℤ.* ↧ q) ℤ.≤ᵇ (↥ q ℤ.* ↧ p)
 -- A constructor for ℚ that takes two natural numbers, say 6 and 21,
 -- and returns them in a normalized form, e.g. say 2 and 7
 
-normalize : ∀ (m n : ℕ) {n≢0 : n ≢0} → ℚ
-normalize m n {n≢0} = mkℚ+ ((m ℕ./ gcd m n) {{g≢0}}) ((n ℕ./ gcd m n) {{g≢0}})
-  {n/g≢0} (coprime-/gcd m n {{g≢0}})
+normalize : ∀ (m n : ℕ) .{{_ : ℕ.NonZero n}} → ℚ
+normalize m n {{n≢0}} = mkℚ+ (m ℕ./ gcd m n) (n ℕ./ gcd m n) (coprime-/gcd m n)
   where
-  g≢0   = ℕ.≢-nonZero (gcd[m,n]≢0 m n (inj₂ (toWitnessFalse n≢0)))
-  n/g≢0 = fromWitnessFalse (n/gcd[m,n]≢0 m n {{ℕ.≢-nonZero (toWitnessFalse n≢0)}} {{g≢0}})
+    instance
+      g≢0   = ℕ.≢-nonZero (gcd[m,n]≢0 m n (inj₂ (ℕ.≢-nonZero⁻¹ n≢0)))
+      n/g≢0 = ℕ.≢-nonZero (n/gcd[m,n]≢0 m n {{n≢0}} {{g≢0}})
 
 -- A constructor for ℚ that (unlike mkℚ) automatically normalises it's
 -- arguments. See the constants section below for how to use this operator.
 
 infixl 7 _/_
 
-_/_ : (n : ℤ) (d : ℕ) → {d≢0 : d ≢0} → ℚ
-(+ n      / d) {d≢0} =   normalize n       d {d≢0}
-(-[1+ n ] / d) {d≢0} = - normalize (suc n) d {d≢0}
+_/_ : (n : ℤ) (d : ℕ) → .{{_ : ℕ.NonZero d}} → ℚ
+(+ n      / d) =   normalize n       d
+(-[1+ n ] / d) = - normalize (suc n) d
 
 ------------------------------------------------------------------------
 -- Conversion to and from unnormalized rationals
@@ -225,13 +225,13 @@ _-_ : ℚ → ℚ → ℚ
 p - q = p + (- q)
 
 -- reciprocal: requires a proof that the numerator is not zero
-1/_ : (p : ℚ) → .{n≢0 : ℤ.∣ ↥ p ∣ ≢0} → ℚ
+1/_ : (p : ℚ) → .{{_ : NonZero p}} → ℚ
 1/ mkℚ +[1+ n ] d prf = mkℚ +[1+ d ] n (C.sym prf)
 1/ mkℚ -[1+ n ] d prf = mkℚ -[1+ d ] n (C.sym prf)
 
 -- division: requires a proof that the denominator is not zero
-_÷_ : (p q : ℚ) → .{n≢0 : ℤ.∣ ↥ q ∣ ≢0} → ℚ
-(p ÷ q) {n≢0} = p * (1/ q) {n≢0}
+_÷_ : (p q : ℚ) → .{{_ : NonZero q}} → ℚ
+p ÷ q = p * (1/ q)
 
 -- max
 _⊔_ : (p q : ℚ) → ℚ

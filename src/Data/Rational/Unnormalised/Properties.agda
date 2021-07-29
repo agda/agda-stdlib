@@ -47,24 +47,25 @@ open import Algebra.Properties.CommutativeSemigroup ℤ.*-commutativeSemigroup
 -- Properties of _/_
 ------------------------------------------------------------------------
 
-/-cong : ∀ {p₁ q₁ p₂ q₂} → p₁ ≡ p₂ → q₁ ≡ q₂ → ∀ q₁≢0 q₂≢0 → (p₁ / q₁) {q₁≢0} ≡ (p₂ / q₂) {q₂≢0}
-/-cong {p} {suc q} {.p} {.(suc q)} refl refl q₁≢0 q₂≢0 = refl
+/-cong : ∀ {n₁ d₁ n₂ d₂} .{{_ : ℕ.NonZero d₁}} .{{_ : ℕ.NonZero d₂}} →
+         n₁ ≡ n₂ → d₁ ≡ d₂ → n₁ / d₁ ≡ n₂ / d₂
+/-cong refl refl = refl
 
-↥[p/q]≡p : ∀ p q {q≢0} → ↥ (p / q) {q≢0} ≡ p
-↥[p/q]≡p p (suc q) {q≢0} = refl
+↥[n/d]≡n : ∀ n d .{{_ : ℕ.NonZero d}} → ↥ (n / d) ≡ n
+↥[n/d]≡n n (suc d) = refl
 
-↧[p/q]≡q : ∀ p q {q≢0} → ↧ (p / q) {q≢0} ≡ ℤ.+ q
-↧[p/q]≡q p (suc q) {q≢0} = refl
+↧[n/d]≡d : ∀ n d .{{_ : ℕ.NonZero d}} → ↧ (n / d) ≡ ℤ.+ d
+↧[n/d]≡d n (suc d) = refl
 
 ------------------------------------------------------------------------
 -- Properties of Positive/Negative/NonPositive/NonNegative predicates
 ------------------------------------------------------------------------
 
-positive⇒nonNegative : ∀ {q} → Positive q → NonNegative q
+positive⇒nonNegative : ∀ {p} → Positive p → NonNegative p
 positive⇒nonNegative {mkℚᵘ +0       _} _ = _
 positive⇒nonNegative {mkℚᵘ +[1+ n ] _} _ = _
 
-negative⇒nonPositive : ∀ {q} → Negative q → NonPositive q
+negative⇒nonPositive : ∀ {p} → Negative p → NonPositive p
 negative⇒nonPositive {mkℚᵘ +0       _} _ = _
 negative⇒nonPositive {mkℚᵘ -[1+ n ] _} _ = _
 
@@ -356,20 +357,6 @@ drop-*<* (*<* pq<qp) = pq<qp
 
 ≮⇒≥ : _≮_ ⇒ _≥_
 ≮⇒≥ p≮q = *≤* (ℤ.≮⇒≥ (p≮q ∘ *<*))
-
-p≄0⇒∣↥p∣≢0 : ∀ p → p ≠ 0ℚᵘ → ℤ.∣ (↥ p) ∣ ≢0
-p≄0⇒∣↥p∣≢0 p = Dec.fromWitnessFalse ∘ contraposition (lemma₁ p)
-  where
-    open ≡-Reasoning
-    lemma₁ : ∀ p → ℤ.∣ (↥ p) ∣ ≡ 0 → p ≃ 0ℚᵘ
-    lemma₁ (mkℚᵘ (ℤ.+ ℕ.zero) d-1) ∣↥p∣≡0 = *≡* refl
-
-∣↥p∣≢0⇒p≄0 : ∀ p → ℤ.∣ (↥ p) ∣ ≢0 → p ≠ 0ℚᵘ
-∣↥p∣≢0⇒p≄0 p = contraposition (lemma₁ p) ∘ Dec.toWitnessFalse
-  where
-    open ≡-Reasoning
-    lemma₁ : ∀ p → p ≃ 0ℚᵘ → ℤ.∣ (↥ p) ∣ ≡ 0
-    lemma₁ (mkℚᵘ (ℤ.+ ℕ.zero) d-1) (*≡* ↥p1≡0↧p) = refl
 
 ------------------------------------------------------------------------
 -- Relational properties
@@ -1059,7 +1046,7 @@ p≤q⇒0≤q-p {p} {q} p≤q = begin
 *-identity : Identity _≃_ 1ℚᵘ _*_
 *-identity = *-identityˡ , *-identityʳ
 
-*-inverseˡ : ∀ p {p≢0 : ℤ.∣ ↥ p ∣ ≢0} → 1/_ p {p≢0} * p ≃ 1ℚᵘ
+*-inverseˡ : ∀ p .{{_ : NonZero p}} → (1/ p) * p ≃ 1ℚᵘ
 *-inverseˡ p@(mkℚᵘ -[1+ n ] d) = *-inverseˡ (mkℚᵘ +[1+ n ] d)
 *-inverseˡ p@(mkℚᵘ +[1+ n ] d) = *≡* $ cong +[1+_] $ begin
   (n ℕ.+ d ℕ.* suc n) ℕ.* 1 ≡⟨ ℕ.*-identityʳ _ ⟩
@@ -1070,8 +1057,8 @@ p≤q⇒0≤q-p {p} {q} p≤q = begin
   d ℕ.+ n ℕ.* suc d ℕ.+ 0   ∎
   where open ≡-Reasoning; open ℕ-solver
 
-*-inverseʳ : ∀ p {p≢0 : ℤ.∣ ↥ p ∣ ≢0} → p * 1/_ p {p≢0} ≃ 1ℚᵘ
-*-inverseʳ p {p≢0} = ≃-trans (*-comm p (1/ p)) (*-inverseˡ p {p≢0})
+*-inverseʳ : ∀ p .{{_ : NonZero p}} → p * 1/ p ≃ 1ℚᵘ
+*-inverseʳ p = ≃-trans (*-comm p (1/ p)) (*-inverseˡ p)
 
 *-zeroˡ : LeftZero _≃_ 0ℚᵘ _*_
 *-zeroˡ p = *≡* refl
@@ -1115,26 +1102,21 @@ neg-distribʳ-* p q = *≡* $ cong (ℤ._* (↧ p ℤ.* ↧ q))
 ------------------------------------------------------------------------
 -- Properties of _*_ and _/_
 
-*-cancelˡ-/ : ∀ p {q r} pr≢0 r≢0 → ((ℤ.+ p ℤ.* q) / (p ℕ.* r)) {pr≢0} ≃ (q / r) {r≢0}
-*-cancelˡ-/ p {q} {r} pr≢0 r≢0 = *≡* (begin-equality
-  (↥ ((ℤ.+ p ℤ.* q) / (p ℕ.* r))) ℤ.* (↧ (q / r)) ≡⟨ cong (ℤ._* (↧ (q / r) {r≢0})) (↥[p/q]≡p (ℤ.+ p ℤ.* q) (p ℕ.* r) {pr≢0}) ⟩
-  (ℤ.+ p ℤ.* q) ℤ.* (↧ (q / r))                   ≡⟨ cong ((ℤ.+ p ℤ.* q) ℤ.*_) (↧[p/q]≡q q r {r≢0}) ⟩
-  (ℤ.+ p ℤ.* q) ℤ.* ℤ.+ r                         ≡⟨ solve 3 (λ a b c → ((a :* b) :* c) := (b :* (a :* c))) refl (ℤ.+ p) q (ℤ.+ r) ⟩
-  (q ℤ.* (ℤ.+ p ℤ.* ℤ.+ r))                       ≡˘⟨ cong (ℤ._* (ℤ.+ p ℤ.* ℤ.+ r)) (↥[p/q]≡p q r {r≢0}) ⟩
-  (↥ (q / r)) ℤ.* (ℤ.+ p ℤ.* ℤ.+ r)               ≡⟨  cong ((↥ (q / r) {r≢0}) ℤ.*_) (ℤ.pos-distrib-* p r) ⟩
-  (↥ (q / r)) ℤ.* (ℤ.+ (p ℕ.* r))                 ≡˘⟨ cong ((↥ (q / r) {r≢0}) ℤ.*_) (↧[p/q]≡q (ℤ.+ p ℤ.* q) (p ℕ.* r) {pr≢0}) ⟩
+*-cancelˡ-/ : ∀ p {q r} .{{_ : ℕ.NonZero r}} .{{_ : ℕ.NonZero (p ℕ.* r)}} →
+              ((ℤ.+ p ℤ.* q) / (p ℕ.* r)) ≃ (q / r)
+*-cancelˡ-/ p {q} {r} = *≡* (begin-equality
+  (↥ ((ℤ.+ p ℤ.* q) / (p ℕ.* r))) ℤ.* (↧ (q / r)) ≡⟨  cong (ℤ._* ↧ (q / r)) (↥[n/d]≡n (ℤ.+ p ℤ.* q) (p ℕ.* r)) ⟩
+  (ℤ.+ p ℤ.* q) ℤ.* (↧ (q / r))                   ≡⟨  cong ((ℤ.+ p ℤ.* q) ℤ.*_) (↧[n/d]≡d q r) ⟩
+  (ℤ.+ p ℤ.* q) ℤ.* ℤ.+ r                         ≡⟨  xy∙z≈y∙xz (ℤ.+ p) q (ℤ.+ r) ⟩
+  (q ℤ.* (ℤ.+ p ℤ.* ℤ.+ r))                       ≡˘⟨ cong (ℤ._* (ℤ.+ p ℤ.* ℤ.+ r)) (↥[n/d]≡n q r) ⟩
+  (↥ (q / r)) ℤ.* (ℤ.+ p ℤ.* ℤ.+ r)               ≡⟨  cong (↥ (q / r) ℤ.*_) (ℤ.pos-distrib-* p r) ⟩
+  (↥ (q / r)) ℤ.* (ℤ.+ (p ℕ.* r))                 ≡˘⟨ cong (↥ (q / r) ℤ.*_) (↧[n/d]≡d (ℤ.+ p ℤ.* q) (p ℕ.* r)) ⟩
   (↥ (q / r)) ℤ.* (↧ ((ℤ.+ p ℤ.* q) / (p ℕ.* r))) ∎)
-  where open ℤ.≤-Reasoning; open ℤ-solver
+  where open ℤ.≤-Reasoning
 
-*-cancelʳ-/ : ∀ p {q r} rp≢0 r≢0 → ((q ℤ.* ℤ.+ p) / (r ℕ.* p)) {rp≢0} ≃ (q / r) {r≢0}
-*-cancelʳ-/ p {q} {r} rp≢0 r≢0 = begin-equality
-  ((q ℤ.* ℤ.+ p) / (r ℕ.* p)) {rp≢0}              ≡⟨ /-cong (ℤ.*-comm q (ℤ.+ p)) (ℕ.*-comm r p) rp≢0 pr≢0 ⟩
-  ((ℤ.+ p ℤ.* q) / (p ℕ.* r)) {pr≢0}              ≈⟨ *-cancelˡ-/ p pr≢0 r≢0 ⟩
-  (q / r) {r≢0}                                   ∎
-  where
-  open ≤-Reasoning
-  pr≢0 : p ℕ.* r ≢0
-  pr≢0 = Dec.fromWitnessFalse (subst (_≢ 0) (ℕ.*-comm r p) (Dec.toWitnessFalse rp≢0))
+*-cancelʳ-/ : ∀ p {q r} .{{_ : ℕ.NonZero r}} .{{_ : ℕ.NonZero (r ℕ.* p)}} →
+              ((q ℤ.* ℤ.+ p) / (r ℕ.* p)) ≃ (q / r)
+*-cancelʳ-/ p {q} {r} rewrite ℕ.*-comm r p | ℤ.*-comm q (ℤ.+ p) = *-cancelˡ-/ p
 
 ------------------------------------------------------------------------
 -- Properties of _*_ and _≤_
@@ -1393,42 +1375,36 @@ private
 ------------------------------------------------------------------------
 
 private
-  pos⇒≢0 : ∀ p → Positive p → ℤ.∣ ↥ p ∣ ≢0
-  pos⇒≢0 p p>0 = Dec.fromWitnessFalse (contraposition ℤ.∣n∣≡0⇒n≡0 (≢-sym (ℤ.<⇒≢ (ℤ.positive⁻¹ p>0))))
+  pos⇒≢0 : ∀ p → Positive p → NonZero p
+  pos⇒≢0 (mkℚᵘ (+[1+ _ ]) _) _ = _
 
-  neg⇒≢0 : ∀ p → Negative p → ℤ.∣ ↥ p ∣ ≢0
-  neg⇒≢0 p p<0 = Dec.fromWitnessFalse (contraposition ℤ.∣n∣≡0⇒n≡0 (ℤ.<⇒≢ (ℤ.negative⁻¹ p<0)))
+  neg⇒≢0 : ∀ p → Negative p → NonZero p
+  neg⇒≢0 (mkℚᵘ (-[1+ _ ]) _) _ = _
 
-  1/p≢0 : ∀ p {p≢0} → ℤ.∣ (↥ ((1/ p) {p≢0})) ∣ ≢0
-  1/p≢0 (mkℚᵘ (+[1+ n ]) d-1) = tt
-  1/p≢0 (mkℚᵘ (-[1+ n ]) d-1) = tt
+  1/p≢0 : ∀ p .{{_ : NonZero p}} → NonZero (1/ p)
+  1/p≢0 (mkℚᵘ (+[1+ _ ]) _) = _
+  1/p≢0 (mkℚᵘ (-[1+ _ ]) _) = _
 
-  p>1⇒p≢0 : ∀ {p} → p > 1ℚᵘ → ℤ.∣ ↥ p ∣ ≢0
-  p>1⇒p≢0 {p} (*<* 1↧p<↥p1) = Dec.fromWitnessFalse (contraposition ℤ.∣n∣≡0⇒n≡0 (≢-sym (ℤ.<⇒≢ (begin-strict
-    +0           ≤⟨ ℤ.+≤+ ℕ.z≤n ⟩
-    ↧ p          ≡˘⟨ ℤ.*-identityˡ _ ⟩
-    1ℤ ℤ.* ↧ p   <⟨ 1↧p<↥p1 ⟩
-    ↥ p ℤ.* 1ℤ   ≡⟨ ℤ.*-identityʳ _ ⟩
-    ↥ p          ∎))))
-    where open ℤ.≤-Reasoning
+  p>1⇒p≢0 : ∀ {p} → p > 1ℚᵘ → NonZero p
+  p>1⇒p≢0 {p} p>1 = pos⇒≢0 p (positive (<-trans (*<* (ℤ.+<+ ℕ.≤-refl)) p>1))
 
-1/-involutive-≡ : ∀ p {p≢0} → (1/ (1/ p) {p≢0}) {1/p≢0 p {p≢0}} ≡ p
+1/-involutive-≡ : ∀ p .{{_ : NonZero p}} → (1/ (1/ p)) {{1/p≢0 p}} ≡ p
 1/-involutive-≡ (mkℚᵘ +[1+ n ] d-1) = refl
 1/-involutive-≡ (mkℚᵘ -[1+ n ] d-1) = refl
 
-1/-involutive : ∀ p {p≢0} → (1/ (1/ p) {p≢0}) {1/p≢0 p {p≢0}} ≃ p
-1/-involutive p {p≢0} = ≃-reflexive (1/-involutive-≡ p {p≢0})
+1/-involutive : ∀ p .{{_ : NonZero p}} → (1/ (1/ p)) {{1/p≢0 p}} ≃ p
+1/-involutive p = ≃-reflexive (1/-involutive-≡ p)
 
-pos⇒1/pos : ∀ p (p>0 : Positive p) → Positive ((1/ p) {pos⇒≢0 p p>0})
+pos⇒1/pos : ∀ p (p>0 : Positive p) → Positive ((1/ p) {{pos⇒≢0 p p>0}})
 pos⇒1/pos (mkℚᵘ +[1+ n ] d-1) _ = tt
 
-neg⇒1/neg : ∀ p (p<0 : Negative p) → Negative ((1/ p) {neg⇒≢0 p p<0})
+neg⇒1/neg : ∀ p (p<0 : Negative p) → Negative ((1/ p) {{neg⇒≢0 p p<0}})
 neg⇒1/neg (mkℚᵘ -[1+ n ] d-1) _ = tt
 
-p>1⇒1/p<1 : ∀ {p} → (p>1 : p > 1ℚᵘ) → (1/ p) {p>1⇒p≢0 p>1} < 1ℚᵘ
-p>1⇒1/p<1 {p} p>1 = lemma′ p (p>1⇒p≢0 p>1) p>1 where
-  open ℤ.≤-Reasoning
-  lemma′ : ∀ p p≢0 → p > 1ℚᵘ → (1/ p) {p≢0} < 1ℚᵘ
+p>1⇒1/p<1 : ∀ {p} → (p>1 : p > 1ℚᵘ) → (1/ p) {{p>1⇒p≢0 p>1}} < 1ℚᵘ
+p>1⇒1/p<1 {p} p>1 = lemma′ p (p>1⇒p≢0 p>1) p>1
+  where
+  lemma′ : ∀ p p≢0 → p > 1ℚᵘ → (1/ p) {{p≢0}} < 1ℚᵘ
   lemma′ (mkℚᵘ n@(+[1+ _ ]) d-1) _ (*<* ↥p1>1↧p) = *<* (begin-strict
     ↥ (1/ mkℚᵘ n d-1) ℤ.* 1ℤ         ≡⟨⟩
     +[1+ d-1 ] ℤ.* 1ℤ                ≡⟨ ℤ.*-comm +[1+ d-1 ] 1ℤ ⟩
@@ -1436,6 +1412,7 @@ p>1⇒1/p<1 {p} p>1 = lemma′ p (p>1⇒p≢0 p>1) p>1 where
     n  ℤ.* 1ℤ                        ≡⟨ ℤ.*-comm n 1ℤ ⟩
     1ℤ ℤ.* n                         ≡⟨⟩
     (↥ 1ℚᵘ) ℤ.* (↧ (1/ mkℚᵘ n d-1))  ∎)
+    where open ℤ.≤-Reasoning
 
 ------------------------------------------------------------------------
 -- Properties of _⊓_ and _⊔_
@@ -1717,11 +1694,11 @@ neg-distrib-⊓-⊔ = antimono-≤-distrib-⊓ neg-mono-≤
 ∣p+q∣≤∣p∣+∣q∣ p q = *≤* (begin
   ↥ ∣ p + q ∣ ℤ.* ↧ (∣ p ∣ + ∣ q ∣)                ≡⟨⟩
   ↥ ∣ (↥p↧q ℤ.+ ↥q↧p) / ↧p↧q ∣ ℤ.* ℤ.+ ↧p↧q        ≡⟨⟩
-  ↥ (ℤ.+ ℤ.∣ ↥p↧q ℤ.+ ↥q↧p ∣ / ↧p↧q) ℤ.* ℤ.+ ↧p↧q  ≡⟨ cong (λ h → h ℤ.* ℤ.+ ↧p↧q) (↥[p/q]≡p (ℤ.+ ℤ.∣ ↥p↧q ℤ.+ ↥q↧p ∣) ↧p↧q) ⟩
+  ↥ (ℤ.+ ℤ.∣ ↥p↧q ℤ.+ ↥q↧p ∣ / ↧p↧q) ℤ.* ℤ.+ ↧p↧q  ≡⟨ cong (λ h → h ℤ.* ℤ.+ ↧p↧q) (↥[n/d]≡n (ℤ.+ ℤ.∣ ↥p↧q ℤ.+ ↥q↧p ∣) ↧p↧q) ⟩
   ℤ.+ ℤ.∣ ↥p↧q ℤ.+ ↥q↧p ∣ ℤ.* ℤ.+ ↧p↧q             ≤⟨ ℤ.*-monoʳ-≤-pos ↧p↧q-1 (ℤ.+≤+ (ℤ.∣m+n∣≤∣m∣+∣n∣ ↥p↧q ↥q↧p)) ⟩
   (ℤ.+ ℤ.∣ ↥p↧q ∣ ℤ.+ ℤ.+ ℤ.∣ ↥q↧p ∣) ℤ.* ℤ.+ ↧p↧q ≡˘⟨ cong₂ (λ h₁ h₂ → (h₁ ℤ.+ h₂) ℤ.* ℤ.+ ↧p↧q) ∣↥p∣↧q≡∣↥p↧q∣ ∣↥q∣↧p≡∣↥q↧p∣ ⟩
   (∣↥p∣↧q ℤ.+ ∣↥q∣↧p) ℤ.* ℤ.+ ↧p↧q                 ≡⟨⟩
-  (↥∣p∣↧q ℤ.+ ↥∣q∣↧p) ℤ.* ℤ.+ ↧p↧q                 ≡⟨ cong (ℤ._* ℤ.+ ↧p↧q) (↥[p/q]≡p (↥∣p∣↧q ℤ.+ ↥∣q∣↧p) ↧p↧q) ⟩
+  (↥∣p∣↧q ℤ.+ ↥∣q∣↧p) ℤ.* ℤ.+ ↧p↧q                 ≡⟨ cong (ℤ._* ℤ.+ ↧p↧q) (↥[n/d]≡n (↥∣p∣↧q ℤ.+ ↥∣q∣↧p) ↧p↧q) ⟩
   ↥ ((↥∣p∣↧q ℤ.+ ↥∣q∣↧p) / ↧p↧q) ℤ.* ℤ.+ ↧p↧q      ≡⟨⟩
   ↥ (∣ p ∣ + ∣ q ∣) ℤ.* ↧ ∣ p + q ∣ ∎)
   where
@@ -1794,4 +1771,18 @@ neg-mono-<-> = neg-mono-<
 {-# WARNING_ON_USAGE neg-mono-<->
 "Warning: neg-mono-<-> was deprecated in v1.5.
 Please use neg-mono-< instead."
+#-}
+
+-- Version 2.0
+
+↥[p/q]≡p = ↥[n/d]≡n
+{-# WARNING_ON_USAGE ↥[p/q]≡p
+"Warning: ↥[p/q]≡p was deprecated in v2.0.
+Please use ↥[n/d]≡n instead."
+#-}
+
+↧[p/q]≡q = ↧[n/d]≡d
+{-# WARNING_ON_USAGE ↧[p/q]≡q
+"Warning: ↧[p/q]≡q was deprecated in v2.0.
+Please use ↧[n/d]≡d instead."
 #-}
