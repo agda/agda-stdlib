@@ -90,7 +90,10 @@ Non-backwards compatible changes
   ```
   which means that as long as an instance of `NonZero n` is in scope then you can write
   `m / n` without having to explicitly provide a proof as instance search will fill it in
-  for you.
+  for you. The full list of such operations changed is as follows:
+    - In `Data.Nat.DivMod`: `_/_`, `_%_`, `_div_`, `_mod_`
+	- In `Data.Nat.Pseudorandom.LCG`: `Generator`
+	- In `Data.Integer.DivMod`: `_divℕ_`, `_div_`, `_modℕ_`, `_mod_`
   
 * At the moment, there are 4 different ways such instance arguments can be provided,
   listed in order of convenience and clarity:
