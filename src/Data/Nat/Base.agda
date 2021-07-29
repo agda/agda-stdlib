@@ -12,8 +12,6 @@
 module Data.Nat.Base where
 
 open import Data.Bool.Base using (Bool; true; false; T; not)
-open import Data.Empty using (⊥)
-open import Data.Unit.Base as Unit using (⊤)
 open import Level using (0ℓ)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core
@@ -78,29 +76,30 @@ a ≯ b = ¬ a > b
 ------------------------------------------------------------------------
 -- Simple predicates
 
--- Defining in terms of `⊤` and `⊥` allows Agda to automatically infer
--- nonZero-ness for any natural of the form `suc n`. Consequently in
--- many circumstances this eliminates the need to explicitly pass a
--- proof when the NonZero argument is either an implicit or an
--- instance argument.
+-- Defining `NonZero` in terms of `T` and therefore ultimately `⊤` and
+-- `⊥` allows Agda to automatically infer nonZero-ness for any natural
+-- of the form `suc n`. Consequently in many circumstances this
+-- eliminates the need to explicitly pass a proof when the NonZero
+-- argument is either an implicit or an instance argument.
 --
 -- See `Data.Nat.DivMod` for an example.
 
-NonZero : ℕ → Set
-NonZero zero    = ⊥
-NonZero (suc _) = ⊤
+record NonZero (n : ℕ) : Set where
+  field
+    nonZero : T (not (n ≡ᵇ 0))
 
-open Unit public
-  using (tt)
+instance
+  nonZero : ∀ {n} → NonZero (suc n)
+  nonZero = _
 
 -- Constructors
 
 ≢-nonZero : ∀ {n} → n ≢ 0 → NonZero n
 ≢-nonZero {zero}  0≢0 = contradiction refl 0≢0
-≢-nonZero {suc n} n≢0 = tt
+≢-nonZero {suc n} n≢0 = _
 
 >-nonZero : ∀ {n} → n > 0 → NonZero n
->-nonZero (s≤s 0<n) = tt
+>-nonZero (s≤s 0<n) = _
 
 -- Destructors
 
