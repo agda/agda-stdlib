@@ -13,7 +13,7 @@ module Data.Nat.Base where
 
 open import Data.Bool.Base using (Bool; true; false; T; not)
 open import Data.Empty using (⊥)
-open import Data.Unit.Base using (⊤; tt)
+open import Data.Unit.Base as Unit using (⊤)
 open import Level using (0ℓ)
 open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core
@@ -89,6 +89,9 @@ a ≯ b = ¬ a > b
 NonZero : ℕ → Set
 NonZero zero    = ⊥
 NonZero (suc _) = ⊤
+
+open Unit public
+  using (tt)
 
 -- Constructors
 

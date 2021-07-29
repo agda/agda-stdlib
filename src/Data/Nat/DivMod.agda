@@ -17,7 +17,6 @@ open import Data.Nat.DivMod.Core
 open import Data.Nat.Divisibility.Core
 open import Data.Nat.Induction
 open import Data.Nat.Properties
-import Data.Unit
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable using (False; toWitnessFalse)
@@ -36,9 +35,6 @@ open ≤-Reasoning
 -- form `suc n`, and hence minimises the number of these proofs that
 -- need be passed around. You can therefore write `m / suc n` without
 -- further elaboration.
-
--- IMPORTANT: To get the instances to fire, you will need `tt` from
--- `Data.Unit` in scope.
 
 infixl 7 _/_ _%_
 

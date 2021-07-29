@@ -17,7 +17,6 @@ open import Data.Nat.Induction
   using (Acc; acc; <′-Rec; <′-recBuilder; <-wellFounded-fast)
 open import Data.Product
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
-open import Data.Unit using (tt)
 open import Function
 open import Induction using (build)
 open import Induction.Lexicographic using (_⊗_; [_⊗_])
