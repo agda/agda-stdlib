@@ -39,17 +39,3 @@ module _ {a} (A : Set a) ℓ where
   setoid = record
     { isEquivalence = isEquivalence
     }
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 0.17
-
-Always-setoid = setoid
-{-# WARNING_ON_USAGE Always-setoid
-"Warning: Always-setoid was deprecated in v0.14.
-Please use setoid instead."
-#-}

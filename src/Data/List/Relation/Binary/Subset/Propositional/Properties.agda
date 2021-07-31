@@ -260,21 +260,6 @@ module _ {P : Pred A p} (P? : Decidable P) where
 -- DEPRECATED
 ------------------------------------------------------------------------
 
--- Version 0.16
-
-boolFilter-⊆ : ∀ (p : A → Bool) →
-               (xs : List A) → boolFilter p xs ⊆ xs
-boolFilter-⊆ p (x ∷ xs) with p x | boolFilter-⊆ p xs
-... | false | hyp = there ∘ hyp
-... | true  | hyp =
-  λ { (here  eq)          → here eq
-    ; (there ∈boolFilter) → there (hyp ∈boolFilter)
-    }
-{-# WARNING_ON_USAGE boolFilter-⊆
-"Warning: boolFilter was deprecated in v0.16.
-Please use filter instead."
-#-}
-
 -- Version 1.5
 
 mono = Any-resp-⊆

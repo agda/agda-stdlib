@@ -99,12 +99,6 @@ record BoundedJoinSemilattice c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ�
   joinSemilattice : JoinSemilattice c ℓ₁ ℓ₂
   joinSemilattice = record { isJoinSemilattice = isJoinSemilattice }
 
-  joinSemiLattice = joinSemilattice
-  {-# WARNING_ON_USAGE joinSemiLattice
-  "Warning: joinSemiLattice was deprecated in v0.17.
-  Please use joinSemilattice instead."
-  #-}
-
   open JoinSemilattice joinSemilattice public using (preorder; poset)
 
 ------------------------------------------------------------------------
@@ -174,12 +168,6 @@ record BoundedMeetSemilattice c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ�
 
   meetSemilattice : MeetSemilattice c ℓ₁ ℓ₂
   meetSemilattice = record { isMeetSemilattice = isMeetSemilattice }
-
-  meetSemiLattice = meetSemilattice
-  {-# WARNING_ON_USAGE meetSemiLattice
-  "Warning: meetSemiLattice was deprecated in v0.17.
-  Please use meetSemilattice instead."
-  #-}
 
   open MeetSemilattice meetSemilattice public using (preorder; poset)
 
