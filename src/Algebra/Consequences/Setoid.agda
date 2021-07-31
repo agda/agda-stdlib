@@ -64,6 +64,12 @@ module _ {_•_ : Op₂ A} (comm : Commutative _•_) {e : A} where
     x • e ≈⟨ idʳ x ⟩
     x     ∎
 
+  comm+idˡ⇒id : LeftIdentity e _•_ → Identity e _•_
+  comm+idˡ⇒id idˡ = idˡ , comm+idˡ⇒idʳ idˡ
+
+  comm+idʳ⇒id : RightIdentity e _•_ → Identity e _•_
+  comm+idʳ⇒id idʳ = comm+idʳ⇒idˡ idʳ , idʳ
+
   comm+zeˡ⇒zeʳ : LeftZero e _•_ → RightZero e _•_
   comm+zeˡ⇒zeʳ zeˡ x = begin
     x • e ≈⟨ comm x e ⟩
@@ -75,6 +81,12 @@ module _ {_•_ : Op₂ A} (comm : Commutative _•_) {e : A} where
     e • x ≈⟨ comm e x ⟩
     x • e ≈⟨ zeʳ x ⟩
     e     ∎
+
+  comm+zeˡ⇒ze : LeftZero e _•_ → Zero e _•_
+  comm+zeˡ⇒ze zeˡ = zeˡ , comm+zeˡ⇒zeʳ zeˡ
+
+  comm+zeʳ⇒ze : RightZero e _•_ → Zero e _•_
+  comm+zeʳ⇒ze zeʳ = comm+zeʳ⇒zeˡ zeʳ , zeʳ
 
   comm+almostCancelˡ⇒almostCancelʳ : AlmostLeftCancellative e _•_ →
                                      AlmostRightCancellative e _•_
@@ -156,6 +168,12 @@ module _ {_•_ _◦_ : Op₂ A}
     (y ◦ z) • x       ≈⟨ distrˡ x y z ⟩
     (y • x) ◦ (z • x) ≈⟨ ◦-cong (•-comm y x) (•-comm z x) ⟩
     (x • y) ◦ (x • z) ∎
+
+  comm+distrˡ⇒distr :  _•_ DistributesOverˡ _◦_ → _•_ DistributesOver _◦_
+  comm+distrˡ⇒distr distrˡ = distrˡ , comm+distrˡ⇒distrʳ distrˡ
+
+  comm+distrʳ⇒distr :  _•_ DistributesOverʳ _◦_ → _•_ DistributesOver _◦_
+  comm+distrʳ⇒distr distrʳ = comm+distrʳ⇒distrˡ distrʳ , distrʳ
 
   comm⇒sym[distribˡ] : ∀ x → Symmetric (λ y z → (x ◦ (y • z)) ≈ ((x ◦ y) • (x ◦ z)))
   comm⇒sym[distribˡ] x {y} {z} prf = begin
