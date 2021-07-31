@@ -178,7 +178,7 @@ nonNegative {+[1+ n ]} _ = _
 infix 5 _◂_ _◃_
 
 _◃_ : Sign → ℕ → ℤ
-_      ◃ ℕ.zero  = + ℕ.zero
+_      ◃ ℕ.zero  = +0
 Sign.+ ◃ n       = + n
 Sign.- ◃ ℕ.suc n = -[1+ n ]
 

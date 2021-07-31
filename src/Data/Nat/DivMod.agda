@@ -186,15 +186,15 @@ m/n*n≤m m n@(suc n-1) = begin
   m                    ∎
 
 m/n≤m : ∀ m n .{{_ : NonZero n}} → (m / n) ≤ m
-m/n≤m m n@(suc n-1) = *-cancelʳ-≤ (m / n) m n-1 (begin
+m/n≤m m n = *-cancelʳ-≤ (m / n) m n (begin
   (m / n) * n ≤⟨ m/n*n≤m m n ⟩
-  m           ≤⟨ m≤m*n m (s≤s z≤n) ⟩
+  m           ≤⟨ m≤m*n m n ⟩
   m * n       ∎)
 
-m/n<m : ∀ m n .{{_ : NonZero n}} → m ≥ 1 → n ≥ 2 → m / n < m
-m/n<m m n@(suc n-1) m≥1 n≥2 = *-cancelʳ-< {n} (m / n) m (begin-strict
+m/n<m : ∀ m n .{{_ : NonZero m}} .{{_ : NonZero n}} → n ≥ 2 → m / n < m
+m/n<m m n n≥2 = *-cancelʳ-< (m / n) m (begin-strict
   (m / n) * n ≤⟨ m/n*n≤m m n ⟩
-  m           <⟨ m<m*n m≥1 n≥2 ⟩
+  m           <⟨ m<m*n m n n≥2 ⟩
   m * n       ∎)
 
 /-mono-≤ : ∀ {m n o p} .{{_ : NonZero o}} .{{_ : NonZero p}} →
@@ -258,7 +258,7 @@ m*n/m*o≡n/o m@(suc m-1) n o {{o≢0}} = helper (<-wellFounded n)
   where
   helper : ∀ {n} → Acc _<_ n → (m * n) / (m * o) ≡ n / o
   helper {n} (acc rec) with n <? o
-  ... | yes n<o = trans (m<n⇒m/n≡0 (*-monoʳ-< m-1 n<o)) (sym (m<n⇒m/n≡0 n<o))
+  ... | yes n<o = trans (m<n⇒m/n≡0 (*-monoʳ-< m n<o)) (sym (m<n⇒m/n≡0 n<o))
   ... | no  n≮o = begin-equality
     (m * n) / (m * o)             ≡⟨  m/n≡1+[m∸n]/n (*-monoʳ-≤ m (≮⇒≥ n≮o)) ⟩
     1 + (m * n ∸ m * o) / (m * o) ≡˘⟨ cong (λ v → 1 + v / (m * o)) (*-distribˡ-∸ m n o) ⟩
@@ -278,7 +278,7 @@ m*n/m*o≡n/o m@(suc m-1) n o {{o≢0}} = helper (<-wellFounded n)
 
 /-*-interchange : ∀ {m n o p} .{{_ : NonZero o}} .{{_ : NonZero p}} .{{_ : NonZero (o * p)}} →
                   o ∣ m → p ∣ n → (m * n) / (o * p) ≡ (m / o) * (n / p)
-/-*-interchange {m} {n} {o@(suc _)} {p@(suc _)} o∣m p∣n = *-cancelˡ-≡ (pred (o * p)) (begin-equality
+/-*-interchange {m} {n} {o@(suc _)} {p@(suc _)} o∣m p∣n = *-cancelˡ-≡ (o * p) (begin-equality
   (o * p) * ((m * n) / (o * p)) ≡⟨  m*[n/m]≡n (*-pres-∣ o∣m p∣n) ⟩
   m * n                         ≡˘⟨ cong₂ _*_ (m*[n/m]≡n o∣m) (m*[n/m]≡n p∣n) ⟩
   (o * (m / o)) * (p * (n / p)) ≡⟨ [m*n]*[o*p]≡[m*o]*[n*p] o (m / o) p (n / p) ⟩

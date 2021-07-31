@@ -131,6 +131,16 @@ Non-backwards compatible changes
   ```
   This does however mean that if you passed in the value `x` to these proofs before, then you
   will now have to pass in `suc x`. The full list of such proofs is below:
+  - In `Data.Nat.Properties`:
+	```agda
+	*-cancelʳ-≡ : ∀ m n {o} → m * suc o ≡ n * suc o → m ≡ n
+	*-cancelˡ-≡ : ∀ {m n} o → suc o * m ≡ suc o * n → m ≡ n
+	*-cancelʳ-≤ : ∀ m n o → m * suc o ≤ n * suc o → m ≤ n
+	*-cancelˡ-≤ : ∀ {m n} o → suc o * m ≤ suc o * n → m ≤ n
+	*-monoˡ-<   : ∀ n → (_* suc n) Preserves _<_ ⟶ _<_
+	*-monoʳ-<   : ∀ n → (suc n *_) Preserves _<_ ⟶ _<_
+	```
+
   - In `Data.Nat.DivMod`:
 	```agda
     m≡m%n+[m/n]*n : ∀ m n → m ≡ m % suc n + (m / suc n) * suc n
@@ -144,16 +154,66 @@ Non-backwards compatible changes
     m%n≤m         : ∀ m n → m % suc n ≤ m
     m≤n⇒m%n≡m     : ∀ {m n} → m ≤ n → m % suc n ≡ m
     ```
+
   - In `Data.Nat.Divisibility`
     ```agda
     m%n≡0⇒n∣m : ∀ m n → m % suc n ≡ 0 → suc n ∣ m
     n∣m⇒m%n≡0 : ∀ m n → suc n ∣ m → m % suc n ≡ 0
     m%n≡0⇔n∣m : ∀ m n → m % suc n ≡ 0 ⇔ suc n ∣ m
-    ```
+	∣⇒≤       : ∀ {m n} → m ∣ suc n → m ≤ suc n
+	>⇒∤        : ∀ {m n} → m > suc n → m ∤ suc n
+	*-cancelˡ-∣ : ∀ {i j} k → suc k * i ∣ suc k * j → i ∣ j
+	```
+
   - In `Data.Nat.GCD`
     ```
     GCD-* : ∀ {m n d c} → GCD (m * suc c) (n * suc c) (d * suc c) → GCD m n d
+	gcd[m,n]≤n : ∀ m n → gcd m (suc n) ≤ suc n
     ```
+
+  - In `Data.Nat.Coprimality`:
+	```
+	Bézout-coprime : ∀ {i j d} → Bézout.Identity (suc d) (i * suc d) (j * suc d) → Coprime i j
+	```
+	
+  - In `Data.Integer.Properties`:
+	```
+	sign-◃    : ∀ s n → sign (s ◃ suc n) ≡ s
+	sign-cong : ∀ {s₁ s₂ n₁ n₂} → s₁ ◃ suc n₁ ≡ s₂ ◃ suc n₂ → s₁ ≡ s₂
+	-◃<+◃     : ∀ m n → Sign.- ◃ (suc m) < Sign.+ ◃ n
+	m⊖1+n<m   : ∀ m n → m ⊖ suc n < + m
+    ```
+
+  - In `Data.Integer.Divisibility`:
+	```
+	*-cancelˡ-∣ : ∀ k {i j} → k ≢ + 0 → k * i ∣ k * j → i ∣ j
+	*-cancelʳ-∣ : ∀ k {i j} → k ≢ + 0 → i * k ∣ j * k → i ∣ j
+	```
+
+  - In `Data.Integer.Divisibility.Signed`:
+	```
+    *-cancelˡ-∣ : ∀ k {i j} → k ≢ + 0 → k * i ∣ k * j → i ∣ j
+	*-cancelʳ-∣ : ∀ k {i j} → k ≢ + 0 → i * k ∣ j * k → i ∣ j
+	```
+
+* A couple of other proofs in have also changed form:
+  - In `Data.Nat.Properties`:
+  ```
+  m≤m*n          : ∀ m {n} → 0 < n → m ≤ m * n 
+  m≤n*m          : ∀ m {n} → 0 < n → m ≤ n * m
+  m<m*n          : ∀ {m n} → 0 < m → 1 < n → m < m * n
+  suc[pred[n]]≡n : ∀ {n} → n ≢ 0 → suc (pred n) ≡ n
+  ```
+  - In `Data.Nat.DivMod`:
+  ```
+  m/n<m         : ∀ m n {≢0} → m ≥ 1 → n ≥ 2 → (m / n) {≢0} < m
+  ```
+  - In `Data.Integer.Properties`:
+  ```
+  *-cancelʳ-≡ : ∀ i j k → k ≢ + 0 → i * k ≡ j * k → i ≡ j
+  *-cancelˡ-≡ : ∀ i j k → i ≢ + 0 → i * j ≡ i * k → j ≡ k
+  *-cancelʳ-≤-pos : ∀ m n o → m * + suc o ≤ n * + suc o → m ≤ n
+  ```
 
 ### Strict functions
 
@@ -199,6 +259,11 @@ Deprecated modules
 
 Deprecated names
 ----------------
+
+* In `Data.Nat.Properties`:
+  ```
+  suc[pred[n]]≡n ↦ suc-pred
+  ```
 
 New modules
 -----------
@@ -298,6 +363,16 @@ Other minor additions
   ∧-isCommutativeSemigroup : IsCommutativeSemigroup ∧
   ```
   and their corresponding algebraic substructures.
+
+* Added new proofs in `Data.Integer.Properties`:
+  ```agda
+  sign-cong′ : s₁ ◃ n₁ ≡ s₂ ◃ n₂ → s₁ ≡ s₂ ⊎ (n₁ ≡ 0 × n₂ ≡ 0)
+  ```
+
+* Added new proofs in `Data.Nat.Properties`:
+  ```agda
+  m*n≡0⇒m≡0 : .{{_ : NonZero n}} → m * n ≡ 0 → m ≡ 0
+  ```
 
 * Added new definitions and proofs in `Data.Rational.Properties`:
   ```agda

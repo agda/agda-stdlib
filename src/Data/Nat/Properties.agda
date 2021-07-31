@@ -869,18 +869,20 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
 ------------------------------------------------------------------------
 -- Other properties of _*_ and _≡_
 
-*-cancelʳ-≡ : ∀ m n {o} → m * suc o ≡ n * suc o → m ≡ n
-*-cancelʳ-≡ zero    zero        eq = refl
-*-cancelʳ-≡ (suc m) (suc n) {o} eq =
+*-cancelʳ-≡ : ∀ m n {o} .{{_ : NonZero o}} → m * o ≡ n * o → m ≡ n
+*-cancelʳ-≡ zero    zero    {suc o} eq = refl
+*-cancelʳ-≡ (suc m) (suc n) {suc o} eq =
   cong suc (*-cancelʳ-≡ m n (+-cancelˡ-≡ (suc o) eq))
 
-*-cancelˡ-≡ : ∀ {m n} o → suc o * m ≡ suc o * n → m ≡ n
-*-cancelˡ-≡ {m} {n} o eq = *-cancelʳ-≡ m n
-  (subst₂ _≡_ (*-comm (suc o) m) (*-comm (suc o) n) eq)
+*-cancelˡ-≡ : ∀ {m n} o .{{_ : NonZero o}} → o * m ≡ o * n → m ≡ n
+*-cancelˡ-≡ {m} {n} o rewrite *-comm o m | *-comm o n = *-cancelʳ-≡ m n
 
 m*n≡0⇒m≡0∨n≡0 : ∀ m {n} → m * n ≡ 0 → m ≡ 0 ⊎ n ≡ 0
 m*n≡0⇒m≡0∨n≡0 zero    {n}     eq = inj₁ refl
 m*n≡0⇒m≡0∨n≡0 (suc m) {zero}  eq = inj₂ refl
+
+m*n≡0⇒m≡0 : ∀ m n .{{_ : NonZero n}} → m * n ≡ 0 → m ≡ 0
+m*n≡0⇒m≡0 zero (suc _) eq = refl
 
 m*n≡1⇒m≡1 : ∀ m n → m * n ≡ 1 → m ≡ 1
 m*n≡1⇒m≡1 (suc zero)    n             _  = refl
@@ -902,13 +904,13 @@ m*n≡1⇒n≡1 m n eq = m*n≡1⇒m≡1 n m (trans (*-comm n m) eq)
 ------------------------------------------------------------------------
 -- Other properties of _*_ and _≤_/_<_
 
-*-cancelʳ-≤ : ∀ m n o → m * suc o ≤ n * suc o → m ≤ n
-*-cancelʳ-≤ zero    _       _ _  = z≤n
-*-cancelʳ-≤ (suc m) (suc n) o le =
-  s≤s (*-cancelʳ-≤ m n o (+-cancelˡ-≤ (suc o) le))
+*-cancelʳ-≤ : ∀ m n o .{{_ : NonZero o}} → m * o ≤ n * o → m ≤ n
+*-cancelʳ-≤ zero    _       (suc o) _  = z≤n
+*-cancelʳ-≤ (suc m) (suc n) (suc o) le =
+  s≤s (*-cancelʳ-≤ m n (suc o) (+-cancelˡ-≤ (suc o) le))
 
-*-cancelˡ-≤ : ∀ {m n} o → suc o * m ≤ suc o * n → m ≤ n
-*-cancelˡ-≤ {m} {n} o rewrite *-comm (suc o) m | *-comm (suc o) n = *-cancelʳ-≤ m n o
+*-cancelˡ-≤ : ∀ {m n} o .{{_ : NonZero o}} → o * m ≤ o * n → m ≤ n
+*-cancelˡ-≤ {m} {n} o rewrite *-comm o m | *-comm o n = *-cancelʳ-≤ m n o
 
 *-mono-≤ : _*_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
 *-mono-≤ z≤n       _   = z≤n
@@ -925,32 +927,32 @@ m*n≡1⇒n≡1 m n eq = m*n≡1⇒m≡1 n m (trans (*-comm n m) eq)
 *-mono-< (s≤s (s≤s m≤n)) (s≤s u≤v) =
   +-mono-< (s≤s u≤v) (*-mono-< (s≤s m≤n) (s≤s u≤v))
 
-*-monoˡ-< : ∀ n → (_* suc n) Preserves _<_ ⟶ _<_
-*-monoˡ-< n (s≤s z≤n)       = s≤s z≤n
-*-monoˡ-< n (s≤s (s≤s m≤o)) =
-  +-mono-≤-< (≤-refl {suc n}) (*-monoˡ-< n (s≤s m≤o))
+*-monoˡ-< : ∀ n .{{_ : NonZero n}} → (_* n) Preserves _<_ ⟶ _<_
+*-monoˡ-< (suc n) (s≤s z≤n)       = s≤s z≤n
+*-monoˡ-< (suc n) (s≤s (s≤s m≤o)) =
+  +-mono-≤-< (≤-refl {suc n}) (*-monoˡ-< (suc n) (s≤s m≤o))
 
-*-monoʳ-< : ∀ n → (suc n *_) Preserves _<_ ⟶ _<_
-*-monoʳ-< zero    (s≤s m≤o) = +-mono-≤ (s≤s m≤o) z≤n
-*-monoʳ-< (suc n) (s≤s m≤o) =
-  +-mono-≤ (s≤s m≤o) (<⇒≤ (*-monoʳ-< n (s≤s m≤o)))
+*-monoʳ-< : ∀ n .{{_ : NonZero n}} → (n *_) Preserves _<_ ⟶ _<_
+*-monoʳ-< (suc zero)    (s≤s m≤o) = +-mono-≤ (s≤s m≤o) z≤n
+*-monoʳ-< (suc (suc n)) (s≤s m≤o) =
+  +-mono-≤ (s≤s m≤o) (<⇒≤ (*-monoʳ-< (suc n) (s≤s m≤o)))
 
-m≤m*n : ∀ m {n} → 0 < n → m ≤ m * n
-m≤m*n m {n} 0<n = begin
+m≤m*n : ∀ m n .{{_ : NonZero n}} → m ≤ m * n
+m≤m*n m n@(suc _) = begin
   m     ≡⟨ sym (*-identityʳ m) ⟩
-  m * 1 ≤⟨ *-monoʳ-≤ m 0<n ⟩
+  m * 1 ≤⟨ *-monoʳ-≤ m (s≤s z≤n) ⟩
   m * n ∎
 
-m≤n*m : ∀ m {n} → 0 < n → m ≤ n * m
-m≤n*m m {n} 0<n = begin
-  m     ≤⟨ m≤m*n m 0<n ⟩
+m≤n*m : ∀ m n .{{_ : NonZero n}} → m ≤ n * m
+m≤n*m m n@(suc _) = begin
+  m     ≤⟨ m≤m*n m n ⟩
   m * n ≡⟨ *-comm m n ⟩
   n * m ∎
 
-m<m*n :  ∀ {m n} → 0 < m → 1 < n → m < m * n
-m<m*n {m@(suc m-1)} {n@(suc (suc n-2))} (s≤s _) (s≤s (s≤s _)) = begin-strict
+m<m*n : ∀ m n .{{_ : NonZero m}} → 1 < n → m < m * n
+m<m*n m@(suc m-1) n@(suc (suc n-2)) (s≤s (s≤s _)) = begin-strict
   m           <⟨ s≤s (s≤s (m≤n+m m-1 n-2)) ⟩
-  n + m-1     ≤⟨ +-monoʳ-≤ n (m≤m*n m-1 0<1+n) ⟩
+  n + m-1     ≤⟨ +-monoʳ-≤ n (m≤m*n m-1 n) ⟩
   n + m-1 * n ≡⟨⟩
   m * n       ∎
 
@@ -960,7 +962,6 @@ m<m*n {m@(suc m-1)} {n@(suc (suc n-2))} (s≤s _) (s≤s (s≤s _)) = begin-stri
 *-cancelʳ-< {m}     (suc n) (suc o) nm<om =
   s≤s (*-cancelʳ-< n o (+-cancelˡ-< m nm<om))
 
--- Redo in terms of `comm+cancelʳ⇒cancelˡ` when generalised
 *-cancelˡ-< : LeftCancellative _<_ _*_
 *-cancelˡ-< x {y} {z} rewrite *-comm x y | *-comm x z = *-cancelʳ-< y z
 
@@ -1613,9 +1614,8 @@ pred[n]≤n {suc n} = n≤1+n n
 <⇒≤pred : ∀ {m n} → m < n → m ≤ pred n
 <⇒≤pred (s≤s le) = le
 
-suc[pred[n]]≡n : ∀ {n} → n ≢ 0 → suc (pred n) ≡ n
-suc[pred[n]]≡n {zero}  n≢0 = contradiction refl n≢0
-suc[pred[n]]≡n {suc n} n≢0 = refl
+suc-pred : ∀ n .{{_ : NonZero n}} → suc (pred n) ≡ n
+suc-pred (suc n) = refl
 
 ------------------------------------------------------------------------
 -- Properties of ∣_-_∣
@@ -2223,7 +2223,7 @@ Please use m^n≡1⇒n≡0∨m≡1 instead."
 "Warning: [i+j]∸[i+k]≡j∸k was deprecated in v1.1.
 Please use [m+n]∸[m+o]≡n∸o instead."
 #-}
-m≢0⇒suc[pred[m]]≡m = suc[pred[n]]≡n
+m≢0⇒suc[pred[m]]≡m = suc-pred
 {-# WARNING_ON_USAGE m≢0⇒suc[pred[m]]≡m
 "Warning: m≢0⇒suc[pred[m]]≡m was deprecated in v1.1.
 Please use suc[pred[n]]≡n instead."
@@ -2392,4 +2392,13 @@ n≤m⊔n = m≤n⊔m
 ⊓-abs-⊔ = ⊓-absorbs-⊔
 {-# WARNING_ON_USAGE ⊓-abs-⊔
 "Warning: ⊓-abs-⊔ was deprecated in v1.6. Please use ⊓-absorbs-⊔ instead."
+#-}
+
+-- Version 2.0
+
+suc[pred[n]]≡n : ∀ {n} → n ≢ 0 → suc (pred n) ≡ n
+suc[pred[n]]≡n {zero}  0≢0 = contradiction refl 0≢0
+suc[pred[n]]≡n {suc n} _   = refl
+{-# WARNING_ON_USAGE suc[pred[n]]≡n
+"Warning: suc[pred[n]]≡n was deprecated in v2.0. Please use suc-pred instead. Note that the proof now uses instance arguments"
 #-}
