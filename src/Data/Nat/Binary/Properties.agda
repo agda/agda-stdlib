@@ -175,7 +175,7 @@ toℕ-injective : Injective _≡_ _≡_ toℕ
 toℕ-injective {zero}     {zero}     _               =  refl
 toℕ-injective {2[1+ x ]} {2[1+ y ]} 2[1+xN]≡2[1+yN] =  cong 2[1+_] x≡y
   where
-  1+xN≡1+yN = ℕₚ.*-cancelˡ-≡ {ℕ.suc _} {ℕ.suc _} 1 2[1+xN]≡2[1+yN]
+  1+xN≡1+yN = ℕₚ.*-cancelˡ-≡ {ℕ.suc _} {ℕ.suc _} 2 2[1+xN]≡2[1+yN]
   xN≡yN     = cong ℕ.pred 1+xN≡1+yN
   x≡y       = toℕ-injective xN≡yN
 
@@ -188,7 +188,7 @@ toℕ-injective {1+[2 x ]} {2[1+ y ]} 1+2xN≡2[1+yN] =
 toℕ-injective {1+[2 x ]} {1+[2 y ]} 1+2xN≡1+2yN =  cong 1+[2_] x≡y
   where
   2xN≡2yN = cong ℕ.pred 1+2xN≡1+2yN
-  xN≡yN   = ℕₚ.*-cancelˡ-≡ 1 2xN≡2yN
+  xN≡yN   = ℕₚ.*-cancelˡ-≡ 2 2xN≡2yN
   x≡y     = toℕ-injective xN≡yN
 
 toℕ-surjective : Surjective _≡_ toℕ
@@ -291,7 +291,7 @@ toℕ-mono-< {1+[2 x ]} {2[1+ y ]} (odd<even (inj₁ x<y)) =   begin
   where open ℕₚ.≤-Reasoning;  xN = toℕ x;  yN = toℕ y;  xN<yN = toℕ-mono-< x<y
 toℕ-mono-< {1+[2 x ]} {2[1+ .x ]} (odd<even (inj₂ refl)) =
   ℕₚ.≤-reflexive (sym (ℕₚ.*-distribˡ-+ 2 1 (toℕ x)))
-toℕ-mono-< {1+[2 x ]} {1+[2 y ]} (odd<odd x<y) =  ℕₚ.+-monoʳ-< 1 (ℕₚ.*-monoʳ-< 1 xN<yN)
+toℕ-mono-< {1+[2 x ]} {1+[2 y ]} (odd<odd x<y) =  ℕₚ.+-monoʳ-< 1 (ℕₚ.*-monoʳ-< 2 xN<yN)
   where xN = toℕ x;  yN = toℕ y;  xN<yN = toℕ-mono-< x<y
 
 toℕ-cancel-< : ∀ {x y} → toℕ x ℕ.< toℕ y → x < y
@@ -306,7 +306,7 @@ toℕ-cancel-< {1+[2 x ]} {2[1+ y ]} x<y with toℕ x ℕₚ.≟ toℕ y
 ... | yes x≡y = odd<even (inj₂ (toℕ-injective x≡y))
 ... | no  x≢y
   rewrite ℕₚ.+-suc (toℕ y) (toℕ y ℕ.+ 0) =
-  odd<even (inj₁ (toℕ-cancel-< (ℕₚ.≤∧≢⇒< (ℕₚ.*-cancelˡ-≤ 1 (ℕₚ.+-cancelˡ-≤ 2 x<y)) x≢y)))
+  odd<even (inj₁ (toℕ-cancel-< (ℕₚ.≤∧≢⇒< (ℕₚ.*-cancelˡ-≤ 2 (ℕₚ.+-cancelˡ-≤ 2 x<y)) x≢y)))
 toℕ-cancel-< {1+[2 x ]} {1+[2 y ]} x<y =
   odd<odd (toℕ-cancel-< (ℕₚ.*-cancelˡ-< 2 (ℕ.≤-pred x<y)))
 
