@@ -200,6 +200,12 @@ Deprecated modules
 Deprecated names
 ----------------
 
+* In `Data.List.Properties`:
+  ```agda
+  zipWith-identityˡ ↦ zipWith-zeroˡ
+  zipWith-identityʳ ↦ zipWith-zeroʳ
+  ```
+
   * In `Function.Construct.Composition`:
 
     _∘-⟶_   ↦   _⟶-∘_
@@ -229,7 +235,7 @@ Deprecated names
     sym-↩   ↦   ↩-sym
     sym-↪   ↦   ↪-sym
     sym-↔   ↦   ↔-sym
-
+    ```
 
 New modules
 -----------
