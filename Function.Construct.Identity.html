@@ -178,27 +178,84 @@
 
 <a id="3891" class="Keyword">module</a> <a id="3898" href="Function.Construct.Identity.html#3898" class="Module">_</a> <a id="3900" class="Symbol">(</a><a id="3901" href="Function.Construct.Identity.html#3901" class="Bound">A</a> <a id="3903" class="Symbol">:</a> <a id="3905" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="3909" href="Function.Construct.Identity.html#643" class="Generalizable">a</a><a id="3910" class="Symbol">)</a> <a id="3912" class="Keyword">where</a>
 
-  <a id="3921" href="Function.Construct.Identity.html#3921" class="Function">id-⟶</a> <a id="3926" class="Symbol">:</a> <a id="3928" href="Function.Construct.Identity.html#3901" class="Bound">A</a> <a id="3930" href="Function.Bundles.html#8307" class="Function Operator">⟶</a> <a id="3932" href="Function.Construct.Identity.html#3901" class="Bound">A</a>
-  <a id="3936" href="Function.Construct.Identity.html#3921" class="Function">id-⟶</a> <a id="3941" class="Symbol">=</a> <a id="3943" href="Function.Construct.Identity.html#2659" class="Function">function</a> <a id="3952" class="Symbol">(</a><a id="3953" href="Relation.Binary.PropositionalEquality.Properties.html#3972" class="Function">setoid</a> <a id="3960" href="Function.Construct.Identity.html#3901" class="Bound">A</a><a id="3961" class="Symbol">)</a>
+  <a id="3921" href="Function.Construct.Identity.html#3921" class="Function">⟶-id</a> <a id="3926" class="Symbol">:</a> <a id="3928" href="Function.Construct.Identity.html#3901" class="Bound">A</a> <a id="3930" href="Function.Bundles.html#8307" class="Function Operator">⟶</a> <a id="3932" href="Function.Construct.Identity.html#3901" class="Bound">A</a>
+  <a id="3936" href="Function.Construct.Identity.html#3921" class="Function">⟶-id</a> <a id="3941" class="Symbol">=</a> <a id="3943" href="Function.Construct.Identity.html#2659" class="Function">function</a> <a id="3952" class="Symbol">(</a><a id="3953" href="Relation.Binary.PropositionalEquality.Properties.html#3972" class="Function">setoid</a> <a id="3960" href="Function.Construct.Identity.html#3901" class="Bound">A</a><a id="3961" class="Symbol">)</a>
 
-  <a id="3966" href="Function.Construct.Identity.html#3966" class="Function">id-↣</a> <a id="3971" class="Symbol">:</a> <a id="3973" href="Function.Construct.Identity.html#3901" class="Bound">A</a> <a id="3975" href="Function.Bundles.html#8375" class="Function Operator">↣</a> <a id="3977" href="Function.Construct.Identity.html#3901" class="Bound">A</a>
-  <a id="3981" href="Function.Construct.Identity.html#3966" class="Function">id-↣</a> <a id="3986" class="Symbol">=</a> <a id="3988" href="Function.Construct.Identity.html#2740" class="Function">injection</a> <a id="3998" class="Symbol">(</a><a id="3999" href="Relation.Binary.PropositionalEquality.Properties.html#3972" class="Function">setoid</a> <a id="4006" href="Function.Construct.Identity.html#3901" class="Bound">A</a><a id="4007" class="Symbol">)</a>
+  <a id="3966" href="Function.Construct.Identity.html#3966" class="Function">↣-id</a> <a id="3971" class="Symbol">:</a> <a id="3973" href="Function.Construct.Identity.html#3901" class="Bound">A</a> <a id="3975" href="Function.Bundles.html#8375" class="Function Operator">↣</a> <a id="3977" href="Function.Construct.Identity.html#3901" class="Bound">A</a>
+  <a id="3981" href="Function.Construct.Identity.html#3966" class="Function">↣-id</a> <a id="3986" class="Symbol">=</a> <a id="3988" href="Function.Construct.Identity.html#2740" class="Function">injection</a> <a id="3998" class="Symbol">(</a><a id="3999" href="Relation.Binary.PropositionalEquality.Properties.html#3972" class="Function">setoid</a> <a id="4006" href="Function.Construct.Identity.html#3901" class="Bound">A</a><a id="4007" class="Symbol">)</a>
 
-  <a id="4012" href="Function.Construct.Identity.html#4012" class="Function">id-↠</a> <a id="4017" class="Symbol">:</a> <a id="4019" href="Function.Construct.Identity.html#3901" class="Bound">A</a> <a id="4021" href="Function.Bundles.html#8448" class="Function Operator">↠</a> <a id="4023" href="Function.Construct.Identity.html#3901" class="Bound">A</a>
-  <a id="4027" href="Function.Construct.Identity.html#4012" class="Function">id-↠</a> <a id="4032" class="Symbol">=</a> <a id="4034" href="Function.Construct.Identity.html#2870" class="Function">surjection</a> <a id="4045" class="Symbol">(</a><a id="4046" href="Relation.Binary.PropositionalEquality.Properties.html#3972" class="Function">setoid</a> <a id="4053" href="Function.Construct.Identity.html#3901" class="Bound">A</a><a id="4054" class="Symbol">)</a>
+  <a id="4012" href="Function.Construct.Identity.html#4012" class="Function">↠-id</a> <a id="4017" class="Symbol">:</a> <a id="4019" href="Function.Construct.Identity.html#3901" class="Bound">A</a> <a id="4021" href="Function.Bundles.html#8448" class="Function Operator">↠</a> <a id="4023" href="Function.Construct.Identity.html#3901" class="Bound">A</a>
+  <a id="4027" href="Function.Construct.Identity.html#4012" class="Function">↠-id</a> <a id="4032" class="Symbol">=</a> <a id="4034" href="Function.Construct.Identity.html#2870" class="Function">surjection</a> <a id="4045" class="Symbol">(</a><a id="4046" href="Relation.Binary.PropositionalEquality.Properties.html#3972" class="Function">setoid</a> <a id="4053" href="Function.Construct.Identity.html#3901" class="Bound">A</a><a id="4054" class="Symbol">)</a>
 
-  <a id="4059" href="Function.Construct.Identity.html#4059" class="Function">id-⤖</a> <a id="4064" class="Symbol">:</a> <a id="4066" href="Function.Construct.Identity.html#3901" class="Bound">A</a> <a id="4068" href="Function.Bundles.html#8522" class="Function Operator">⤖</a> <a id="4070" href="Function.Construct.Identity.html#3901" class="Bound">A</a>
-  <a id="4074" href="Function.Construct.Identity.html#4059" class="Function">id-⤖</a> <a id="4079" class="Symbol">=</a> <a id="4081" href="Function.Construct.Identity.html#3012" class="Function">bijection</a> <a id="4091" class="Symbol">(</a><a id="4092" href="Relation.Binary.PropositionalEquality.Properties.html#3972" class="Function">setoid</a> <a id="4099" href="Function.Construct.Identity.html#3901" class="Bound">A</a><a id="4100" class="Symbol">)</a>
+  <a id="4059" href="Function.Construct.Identity.html#4059" class="Function">⤖-id</a> <a id="4064" class="Symbol">:</a> <a id="4066" href="Function.Construct.Identity.html#3901" class="Bound">A</a> <a id="4068" href="Function.Bundles.html#8522" class="Function Operator">⤖</a> <a id="4070" href="Function.Construct.Identity.html#3901" class="Bound">A</a>
+  <a id="4074" href="Function.Construct.Identity.html#4059" class="Function">⤖-id</a> <a id="4079" class="Symbol">=</a> <a id="4081" href="Function.Construct.Identity.html#3012" class="Function">bijection</a> <a id="4091" class="Symbol">(</a><a id="4092" href="Relation.Binary.PropositionalEquality.Properties.html#3972" class="Function">setoid</a> <a id="4099" href="Function.Construct.Identity.html#3901" class="Bound">A</a><a id="4100" class="Symbol">)</a>
 
-  <a id="4105" href="Function.Construct.Identity.html#4105" class="Function">id-⇔</a> <a id="4110" class="Symbol">:</a> <a id="4112" href="Function.Construct.Identity.html#3901" class="Bound">A</a> <a id="4114" href="Function.Bundles.html#8595" class="Function Operator">⇔</a> <a id="4116" href="Function.Construct.Identity.html#3901" class="Bound">A</a>
-  <a id="4120" href="Function.Construct.Identity.html#4105" class="Function">id-⇔</a> <a id="4125" class="Symbol">=</a> <a id="4127" href="Function.Construct.Identity.html#3147" class="Function">equivalence</a> <a id="4139" class="Symbol">(</a><a id="4140" href="Relation.Binary.PropositionalEquality.Properties.html#3972" class="Function">setoid</a> <a id="4147" href="Function.Construct.Identity.html#3901" class="Bound">A</a><a id="4148" class="Symbol">)</a>
+  <a id="4105" href="Function.Construct.Identity.html#4105" class="Function">⇔-id</a> <a id="4110" class="Symbol">:</a> <a id="4112" href="Function.Construct.Identity.html#3901" class="Bound">A</a> <a id="4114" href="Function.Bundles.html#8595" class="Function Operator">⇔</a> <a id="4116" href="Function.Construct.Identity.html#3901" class="Bound">A</a>
+  <a id="4120" href="Function.Construct.Identity.html#4105" class="Function">⇔-id</a> <a id="4125" class="Symbol">=</a> <a id="4127" href="Function.Construct.Identity.html#3147" class="Function">equivalence</a> <a id="4139" class="Symbol">(</a><a id="4140" href="Relation.Binary.PropositionalEquality.Properties.html#3972" class="Function">setoid</a> <a id="4147" href="Function.Construct.Identity.html#3901" class="Bound">A</a><a id="4148" class="Symbol">)</a>
 
-  <a id="4153" href="Function.Construct.Identity.html#4153" class="Function">id-↩</a> <a id="4158" class="Symbol">:</a> <a id="4160" href="Function.Construct.Identity.html#3901" class="Bound">A</a> <a id="4162" href="Function.Bundles.html#8670" class="Function Operator">↩</a> <a id="4164" href="Function.Construct.Identity.html#3901" class="Bound">A</a>
-  <a id="4168" href="Function.Construct.Identity.html#4153" class="Function">id-↩</a> <a id="4173" class="Symbol">=</a> <a id="4175" href="Function.Construct.Identity.html#3277" class="Function">leftInverse</a> <a id="4187" class="Symbol">(</a><a id="4188" href="Relation.Binary.PropositionalEquality.Properties.html#3972" class="Function">setoid</a> <a id="4195" href="Function.Construct.Identity.html#3901" class="Bound">A</a><a id="4196" class="Symbol">)</a>
+  <a id="4153" href="Function.Construct.Identity.html#4153" class="Function">↩-id</a> <a id="4158" class="Symbol">:</a> <a id="4160" href="Function.Construct.Identity.html#3901" class="Bound">A</a> <a id="4162" href="Function.Bundles.html#8670" class="Function Operator">↩</a> <a id="4164" href="Function.Construct.Identity.html#3901" class="Bound">A</a>
+  <a id="4168" href="Function.Construct.Identity.html#4153" class="Function">↩-id</a> <a id="4173" class="Symbol">=</a> <a id="4175" href="Function.Construct.Identity.html#3277" class="Function">leftInverse</a> <a id="4187" class="Symbol">(</a><a id="4188" href="Relation.Binary.PropositionalEquality.Properties.html#3972" class="Function">setoid</a> <a id="4195" href="Function.Construct.Identity.html#3901" class="Bound">A</a><a id="4196" class="Symbol">)</a>
 
-  <a id="4201" href="Function.Construct.Identity.html#4201" class="Function">id-↪</a> <a id="4206" class="Symbol">:</a> <a id="4208" href="Function.Construct.Identity.html#3901" class="Bound">A</a> <a id="4210" href="Function.Bundles.html#8745" class="Function Operator">↪</a> <a id="4212" href="Function.Construct.Identity.html#3901" class="Bound">A</a>
-  <a id="4216" href="Function.Construct.Identity.html#4201" class="Function">id-↪</a> <a id="4221" class="Symbol">=</a> <a id="4223" href="Function.Construct.Identity.html#3454" class="Function">rightInverse</a> <a id="4236" class="Symbol">(</a><a id="4237" href="Relation.Binary.PropositionalEquality.Properties.html#3972" class="Function">setoid</a> <a id="4244" href="Function.Construct.Identity.html#3901" class="Bound">A</a><a id="4245" class="Symbol">)</a>
+  <a id="4201" href="Function.Construct.Identity.html#4201" class="Function">↪-id</a> <a id="4206" class="Symbol">:</a> <a id="4208" href="Function.Construct.Identity.html#3901" class="Bound">A</a> <a id="4210" href="Function.Bundles.html#8745" class="Function Operator">↪</a> <a id="4212" href="Function.Construct.Identity.html#3901" class="Bound">A</a>
+  <a id="4216" href="Function.Construct.Identity.html#4201" class="Function">↪-id</a> <a id="4221" class="Symbol">=</a> <a id="4223" href="Function.Construct.Identity.html#3454" class="Function">rightInverse</a> <a id="4236" class="Symbol">(</a><a id="4237" href="Relation.Binary.PropositionalEquality.Properties.html#3972" class="Function">setoid</a> <a id="4244" href="Function.Construct.Identity.html#3901" class="Bound">A</a><a id="4245" class="Symbol">)</a>
 
-  <a id="4250" href="Function.Construct.Identity.html#4250" class="Function">id-↔</a> <a id="4255" class="Symbol">:</a> <a id="4257" href="Function.Construct.Identity.html#3901" class="Bound">A</a> <a id="4259" href="Function.Bundles.html#8896" class="Function Operator">↔</a> <a id="4261" href="Function.Construct.Identity.html#3901" class="Bound">A</a>
-  <a id="4265" href="Function.Construct.Identity.html#4250" class="Function">id-↔</a> <a id="4270" class="Symbol">=</a> <a id="4272" href="Function.Construct.Identity.html#3634" class="Function">inverse</a> <a id="4280" class="Symbol">(</a><a id="4281" href="Relation.Binary.PropositionalEquality.Properties.html#3972" class="Function">setoid</a> <a id="4288" href="Function.Construct.Identity.html#3901" class="Bound">A</a><a id="4289" class="Symbol">)</a>
+  <a id="4250" href="Function.Construct.Identity.html#4250" class="Function">↔-id</a> <a id="4255" class="Symbol">:</a> <a id="4257" href="Function.Construct.Identity.html#3901" class="Bound">A</a> <a id="4259" href="Function.Bundles.html#8896" class="Function Operator">↔</a> <a id="4261" href="Function.Construct.Identity.html#3901" class="Bound">A</a>
+  <a id="4265" href="Function.Construct.Identity.html#4250" class="Function">↔-id</a> <a id="4270" class="Symbol">=</a> <a id="4272" href="Function.Construct.Identity.html#3634" class="Function">inverse</a> <a id="4280" class="Symbol">(</a><a id="4281" href="Relation.Binary.PropositionalEquality.Properties.html#3972" class="Function">setoid</a> <a id="4288" href="Function.Construct.Identity.html#3901" class="Bound">A</a><a id="4289" class="Symbol">)</a>
+
+
+<a id="4293" class="Comment">------------------------------------------------------------------------</a>
+<a id="4366" class="Comment">-- DEPRECATED NAMES</a>
+<a id="4386" class="Comment">------------------------------------------------------------------------</a>
+<a id="4459" class="Comment">-- Please use the new names as continuing support for the old names is</a>
+<a id="4530" class="Comment">-- not guaranteed.</a>
+
+<a id="4550" class="Comment">-- Version v2.0</a>
+
+<a id="id-⟶"></a><a id="4567" href="Function.Construct.Identity.html#4567" class="Function">id-⟶</a> <a id="4572" class="Symbol">=</a> <a id="4574" href="Function.Construct.Identity.html#3921" class="Function">⟶-id</a>
+<a id="4579" class="Symbol">{-#</a> <a id="4583" class="Keyword">WARNING_ON_USAGE</a> <a id="4600" class="Pragma">id-⟶</a>
+<a id="4605" class="String">&quot;Warning: id-⟶ was deprecated in v2.0.
+Please use ⟶-id instead.&quot;</a>
+<a id="4670" class="Symbol">#-}</a>
+
+<a id="id-↣"></a><a id="4675" href="Function.Construct.Identity.html#4675" class="Function">id-↣</a> <a id="4680" class="Symbol">=</a> <a id="4682" href="Function.Construct.Identity.html#3966" class="Function">↣-id</a>
+<a id="4687" class="Symbol">{-#</a> <a id="4691" class="Keyword">WARNING_ON_USAGE</a> <a id="4708" class="Pragma">id-↣</a>
+<a id="4713" class="String">&quot;Warning: id-↣ was deprecated in v2.0.
+Please use ↣-id instead.&quot;</a>
+<a id="4778" class="Symbol">#-}</a>
+
+<a id="id-↠"></a><a id="4783" href="Function.Construct.Identity.html#4783" class="Function">id-↠</a> <a id="4788" class="Symbol">=</a> <a id="4790" href="Function.Construct.Identity.html#4012" class="Function">↠-id</a>
+<a id="4795" class="Symbol">{-#</a> <a id="4799" class="Keyword">WARNING_ON_USAGE</a> <a id="4816" class="Pragma">id-↠</a>
+<a id="4821" class="String">&quot;Warning: id-↠ was deprecated in v2.0.
+Please use ↠-id instead.&quot;</a>
+<a id="4886" class="Symbol">#-}</a>
+
+<a id="id-⤖"></a><a id="4891" href="Function.Construct.Identity.html#4891" class="Function">id-⤖</a> <a id="4896" class="Symbol">=</a> <a id="4898" href="Function.Construct.Identity.html#4059" class="Function">⤖-id</a>
+<a id="4903" class="Symbol">{-#</a> <a id="4907" class="Keyword">WARNING_ON_USAGE</a> <a id="4924" class="Pragma">id-⤖</a>
+<a id="4929" class="String">&quot;Warning: id-⤖ was deprecated in v2.0.
+Please use ⤖-id instead.&quot;</a>
+<a id="4994" class="Symbol">#-}</a>
+
+<a id="id-⇔"></a><a id="4999" href="Function.Construct.Identity.html#4999" class="Function">id-⇔</a> <a id="5004" class="Symbol">=</a> <a id="5006" href="Function.Construct.Identity.html#4105" class="Function">⇔-id</a>
+<a id="5011" class="Symbol">{-#</a> <a id="5015" class="Keyword">WARNING_ON_USAGE</a> <a id="5032" class="Pragma">id-⇔</a>
+<a id="5037" class="String">&quot;Warning: id-⇔ was deprecated in v2.0.
+Please use ⇔-id instead.&quot;</a>
+<a id="5102" class="Symbol">#-}</a>
+
+<a id="id-↩"></a><a id="5107" href="Function.Construct.Identity.html#5107" class="Function">id-↩</a> <a id="5112" class="Symbol">=</a> <a id="5114" href="Function.Construct.Identity.html#4153" class="Function">↩-id</a>
+<a id="5119" class="Symbol">{-#</a> <a id="5123" class="Keyword">WARNING_ON_USAGE</a> <a id="5140" class="Pragma">id-↩</a>
+<a id="5145" class="String">&quot;Warning: id-↩ was deprecated in v2.0.
+Please use ↩-id instead.&quot;</a>
+<a id="5210" class="Symbol">#-}</a>
+
+<a id="id-↪"></a><a id="5215" href="Function.Construct.Identity.html#5215" class="Function">id-↪</a> <a id="5220" class="Symbol">=</a> <a id="5222" href="Function.Construct.Identity.html#4201" class="Function">↪-id</a>
+<a id="5227" class="Symbol">{-#</a> <a id="5231" class="Keyword">WARNING_ON_USAGE</a> <a id="5248" class="Pragma">id-↪</a>
+<a id="5253" class="String">&quot;Warning: id-↪ was deprecated in v2.0.
+Please use ↪-id instead.&quot;</a>
+<a id="5318" class="Symbol">#-}</a>
+
+<a id="id-↔"></a><a id="5323" href="Function.Construct.Identity.html#5323" class="Function">id-↔</a> <a id="5328" class="Symbol">=</a> <a id="5330" href="Function.Construct.Identity.html#4250" class="Function">↔-id</a>
+<a id="5335" class="Symbol">{-#</a> <a id="5339" class="Keyword">WARNING_ON_USAGE</a> <a id="5356" class="Pragma">id-↔</a>
+<a id="5361" class="String">&quot;Warning: id-↔ was deprecated in v2.0.
+Please use ↔-id instead.&quot;</a>
+<a id="5426" class="Symbol">#-}</a>
 </pre></body></html>
