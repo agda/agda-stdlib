@@ -11,6 +11,6 @@ module Relation.Binary.Lattice where
 ------------------------------------------------------------------------
 -- Re-export various components of the lattice relation hierarchy
 
-open import Relation.Lattice.Definitions public
-open import Relation.Lattice.Structures public
-open import Relation.Lattice.Bundles public
+open import Relation.Binary.Lattice.Definitions public
+open import Relation.Binary.Lattice.Structures public
+open import Relation.Binary.Lattice.Bundles public
