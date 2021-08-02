@@ -184,17 +184,56 @@ module _ {R : Setoid a ℓ₁} {S : Setoid b ℓ₂} where
 ------------------------------------------------------------------------
 -- Propositional bundles
 
-sym-⤖ : A ⤖ B → B ⤖ A
-sym-⤖ b = bijection b (cong _)
+⤖-sym : A ⤖ B → B ⤖ A
+⤖-sym b = bijection b (cong _)
 
-sym-⇔ : A ⇔ B → B ⇔ A
-sym-⇔ = equivalence
+⇔-sym : A ⇔ B → B ⇔ A
+⇔-sym = equivalence
 
-sym-↩ : A ↩ B → B ↪ A
-sym-↩ = rightInverse
+↩-sym : A ↩ B → B ↪ A
+↩-sym = rightInverse
 
-sym-↪ : A ↪ B → B ↩ A
-sym-↪ = leftInverse
+↪-sym : A ↪ B → B ↩ A
+↪-sym = leftInverse
 
-sym-↔ : A ↔ B → B ↔ A
-sym-↔ = inverse
+↔-sym : A ↔ B → B ↔ A
+↔-sym = inverse
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version v2.0
+
+sym-⤖ = ⤖-sym
+{-# WARNING_ON_USAGE sym-⤖
+"Warning: sym-⤖ was deprecated in v2.0.
+Please use ⤖-sym instead."
+#-}
+
+sym-⇔ = ⇔-sym
+{-# WARNING_ON_USAGE sym-⇔
+"Warning: sym-⇔ was deprecated in v2.0.
+Please use ⇔-sym instead."
+#-}
+
+sym-↩ = ↩-sym
+{-# WARNING_ON_USAGE sym-↩
+"Warning: sym-↩ was deprecated in v2.0.
+Please use ↩-sym instead."
+#-}
+
+sym-↪ = ↪-sym
+{-# WARNING_ON_USAGE sym-↪
+"Warning: sym-↪ was deprecated in v2.0.
+Please use ↪-sym instead."
+#-}
+
+sym-↔ = ↔-sym
+{-# WARNING_ON_USAGE sym-↔
+"Warning: sym-↔ was deprecated in v2.0.
+Please use ↔-sym instead."
+#-}
