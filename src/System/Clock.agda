@@ -11,9 +11,9 @@ module System.Clock where
 open import Level using (Level; 0ℓ; Lift; lower)
 open import Data.Bool.Base using (if_then_else_)
 open import Data.Fin.Base using (Fin; toℕ)
-open import Data.Nat.Base using (ℕ; zero; suc; _+_; _∸_; _^_; _<ᵇ_)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc; _+_; _∸_; _^_; _<ᵇ_)
 import Data.Nat.Show as ℕ
-open import Data.Nat.DivMod using (_div_)
+open import Data.Nat.DivMod using (_/_)
 import Data.Nat.Properties as ℕₚ
 open import Data.String.Base using (String; _++_; padLeft)
 
@@ -105,8 +105,8 @@ show (mkTime s ns) prec = secs ++ "s" ++ padLeft '0' decimals nsecs where
   decimals = toℕ prec
   secs     = ℕ.show s
 
-  exp-nz : ∀ x n {x≠0 : False (x ℕₚ.≟ 0)} → False (x ^ n ℕₚ.≟ 0)
-  exp-nz x n {x≠0} = fromWitnessFalse (toWitnessFalse x≠0 ∘′ ℕₚ.m^n≡0⇒m≡0 x n)
+  exp-nz : ∀ x n {x≠0 : ℕ.NonZero x} → ℕ.NonZero (x ^ n)
+  exp-nz x n {x≠0} =  ℕ.≢-nonZero (ℕ.≢-nonZero⁻¹ x≠0 ∘′ ℕₚ.m^n≡0⇒m≡0 x n)
 
   prf      = exp-nz 10 (9 ∸ decimals)
-  nsecs    = ℕ.show ((ns div (10 ^ (9 ∸ decimals))) {prf})
+  nsecs    = ℕ.show ((ns / (10 ^ (9 ∸ decimals))) {{prf}})

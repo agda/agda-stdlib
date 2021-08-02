@@ -9,24 +9,23 @@
 
 module Data.Nat.PseudoRandom.LCG where
 
-open import Data.Nat using (ℕ; zero; suc; _+_; _*_; _^_; _≟_)
+open import Data.Nat.Base
 open import Data.Nat.DivMod using (_%_)
 open import Data.List.Base using (List; []; _∷_)
-open import Relation.Nullary.Decidable using (False)
 
 ------------------------------------------------------------------------
 -- Type and generator
 
 record Generator : Set where
-  field multiplier  : ℕ
-        increment   : ℕ
-        modulus     : ℕ
-        {modulus≢0} : False (modulus ≟ 0)
+  field multiplier     : ℕ
+        increment      : ℕ
+        modulus        : ℕ
+        .{{modulus≢0}} : NonZero modulus
 
 step : Generator → ℕ → ℕ
 step gen x =
   let open Generator gen in
-  ((multiplier * x + increment) % modulus) {modulus≢0}
+  ((multiplier * x + increment) % modulus)
 
 list : ℕ → Generator → ℕ → List ℕ
 list zero    gen x = []

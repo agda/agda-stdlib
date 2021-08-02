@@ -20,6 +20,9 @@ Bug-fixes
   rather than a natural. The previous binding was incorrectly assuming that
   all exit codes where non-negative.
 
+* In `/-monoˡ-≤` in `Data.Nat.DivMod` the parameter `o` was implicit but not inferrable. 
+  It has been changed to be explicit.
+
 * In `Function.Definitions` the definitions of `Surjection`, `Inverseˡ`, 
   `Inverseʳ` were not being re-exported correctly and therefore had an unsolved 
   meta-variable whenever this module was explicitly parameterised. This has
@@ -72,6 +75,86 @@ Non-backwards compatible changes
   So `[a-zA-Z]+.agdai?` run on "the path _build/Main.agdai corresponds to"
   will return "Main.agdai" when it used to be happy to just return "n.agda".
 
+#### Proofs of non-zeroness as instance arguments
+
+* Many numeric operations in the library require their arguments to be non-zero.
+  The previous way of constructing and passing round these proofs resulted in clunky code.
+  As described on the [mailing list](https://lists.chalmers.se/pipermail/agda/2021/012693.html)
+  we have converted the operations to take the proofs of non-zeroness as irrelevant 
+  [instance arguments](https://agda.readthedocs.io/en/latest/language/instance-arguments.html).
+  See the mailing list for a fuller explanation of the motivation and implementation.
+
+* For example the type signature of division is now:
+  ```
+  _/_ : (dividend divisor : ℕ) .{{_ : NonZero divisor}} → ℕ
+  ```
+  which means that as long as an instance of `NonZero n` is in scope then you can write
+  `m / n` without having to explicitly provide a proof as instance search will fill it in
+  for you. The full list of such operations changed is as follows:
+    - In `Data.Nat.DivMod`: `_/_`, `_%_`, `_div_`, `_mod_`
+	- In `Data.Nat.Pseudorandom.LCG`: `Generator`
+	- In `Data.Integer.DivMod`: `_divℕ_`, `_div_`, `_modℕ_`, `_mod_`
+  
+* At the moment, there are 4 different ways such instance arguments can be provided,
+  listed in order of convenience and clarity:
+    1. By default there is always an instance of `NonZero (suc n)` for any `n` which 
+	   will be picked up automatically:
+	   ```
+	   0/n≡0 : 0 / suc n ≡ 0
+	   ```
+	2. You can take the proof an instance argument as a parameter, e.g. 
+	   ```
+	   0/n≡0 : {{_ : NonZero n}} → 0 / n ≡ 0
+	   ```
+	3. You can define an instance argument in scope higher-up (or in a `where` clause):
+	   ```
+	   instance 
+	     n≢0 : NonZero n
+	     n≢0 = ...
+
+	   0/n≡0 : 0 / n ≡ 0
+	   ```
+	4. You can provide the instance argument explicitly, e.g. `0/n≡0 : ∀ n (n≢0 : NonZero n) → ((0 / n) {{n≢0}}) ≡ 0`
+	   ```
+	   0/n≡0 : ∀ n (n≢0 : NonZero n) → ((0 / n) {{n≢0}}) ≡ 0
+	   ```
+
+* Previously one of the hacks used in proofs was to explicitly put everything in the form `suc n`.
+  This often made the proofs extremely difficult to use if you're term wasn't in that form. These
+  proofs have now all been updated to use instance arguments instead, e.g.
+  ```
+  n/n≡1 : ∀ n → suc n / suc n ≡ 1 
+  ```
+  becomes
+  ```
+  n/n≡1 : ∀ n {{_ : NonZero n}} → n / n ≡ 1
+  ```
+  This does however mean that if you passed in the value `x` to these proofs before, then you
+  will now have to pass in `suc x`. The full list of such proofs is below:
+  - In `Data.Nat.DivMod`:
+	```agda
+    m≡m%n+[m/n]*n : ∀ m n → m ≡ m % suc n + (m / suc n) * suc n
+    m%n≡m∸m/n*n   : ∀ m n → m % suc n ≡ m ∸ (m / suc n) * suc n
+    n%n≡0         : ∀ n → suc n % suc n ≡ 0
+    m%n%n≡m%n     : ∀ m n → m % suc n % suc n ≡ m % suc n
+    [m+n]%n≡m%n   : ∀ m n → (m + suc n) % suc n ≡ m % suc n
+    [m+kn]%n≡m%n  : ∀ m k n → (m + k * (suc n)) % suc n ≡ m % suc n
+    m*n%n≡0       : ∀ m n → (m * suc n) % suc n ≡ 0
+    m%n<n         : ∀ m n → m % suc n < suc n
+    m%n≤m         : ∀ m n → m % suc n ≤ m
+    m≤n⇒m%n≡m     : ∀ {m n} → m ≤ n → m % suc n ≡ m
+    ```
+  - In `Data.Nat.Divisibility`
+    ```agda
+    m%n≡0⇒n∣m : ∀ m n → m % suc n ≡ 0 → suc n ∣ m
+    n∣m⇒m%n≡0 : ∀ m n → suc n ∣ m → m % suc n ≡ 0
+    m%n≡0⇔n∣m : ∀ m n → m % suc n ≡ 0 ⇔ suc n ∣ m
+    ```
+  - In `Data.Nat.GCD`
+    ```
+    GCD-* : ∀ {m n d c} → GCD (m * suc c) (n * suc c) (d * suc c) → GCD m n d
+    ```
+
 ### Strict functions
 
 * The module `Strict` has been deprecated in favour of `Function.Strict`
@@ -122,6 +205,37 @@ Deprecated names
   zipWith-identityˡ ↦ zipWith-zeroˡ
   zipWith-identityʳ ↦ zipWith-zeroʳ
   ```
+
+  * In `Function.Construct.Composition`:
+
+    _∘-⟶_   ↦   _⟶-∘_
+    _∘-↣_   ↦   _↣-∘_
+    _∘-↠_   ↦   _↠-∘_
+    _∘-⤖_   ↦   _⤖-∘_
+    _∘-⇔_   ↦   _⇔-∘_
+    _∘-↩_   ↦   _↩-∘_
+    _∘-↪_   ↦   _↪-∘_
+    _∘-↔_   ↦   _↔-∘_
+
+  * In `Function.Construct.Identity`:
+
+    id-⟶   ↦   ⟶-id
+    id-↣   ↦   ↣-id
+    id-↠   ↦   ↠-id
+    id-⤖   ↦   ⤖-id
+    id-⇔   ↦   ⇔-id
+    id-↩   ↦   ↩-id
+    id-↪   ↦   ↪-id
+    id-↔   ↦   ↔-id
+
+  * In `Function.Construct.Symmetry`:
+
+    sym-⤖   ↦   ⤖-sym
+    sym-⇔   ↦   ⇔-sym
+    sym-↩   ↦   ↩-sym
+    sym-↪   ↦   ↪-sym
+    sym-↔   ↦   ↔-sym
+    ```
 
 New modules
 -----------
