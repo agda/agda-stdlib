@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Properties of lattice relations
+-- Structures for lattice
 ------------------------------------------------------------------------
 
 -- The contents of this module should be accessed via `Relation.Binary.Lattice`.
