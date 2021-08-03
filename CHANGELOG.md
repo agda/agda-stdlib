@@ -175,6 +175,10 @@ Non-backwards compatible changes
   properties about the orderings themselves the second index must be provided
   explicitly.
 
+  ### Creation of `Relation.Binary.Lattice` hierarchy
+  * In order to improve modularity Relation.Binary.Lattice is split out into Relation.Binary.Lattice.(Definitions/Structures/Bundles).
+  ###
+
 Deprecated modules
 ------------------
 
