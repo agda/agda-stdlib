@@ -8,22 +8,25 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Relation.Binary.Lattice.Structures where
+open import Relation.Binary
+
+module Relation.Binary.Lattice.Structures
+ {a ℓ₁ ℓ₂} {A : Set a}
+ (_≈_ : Rel A ℓ₁) -- The underlying equality.
+ (_≤_ : Rel A ℓ₂) -- The partial order.
+ where
 
 open import Algebra.Core
 open import Algebra.Definitions
 open import Data.Product using (_×_; _,_)
 open import Level using (suc; _⊔_)
-open import Relation.Binary
+
 open import Relation.Binary.Lattice.Definitions
 
 ------------------------------------------------------------------------
 -- Join semilattices
 
-record IsJoinSemilattice {a ℓ₁ ℓ₂} {A : Set a}
-                         (_≈_ : Rel A ℓ₁) -- The underlying equality.
-                         (_≤_ : Rel A ℓ₂) -- The partial order.
-                         (_∨_ : Op₂ A)    -- The join operation.
+record IsJoinSemilattice (_∨_ : Op₂ A)    -- The join operation.
                          : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
   field
     isPartialOrder : IsPartialOrder _≈_ _≤_
@@ -40,14 +43,11 @@ record IsJoinSemilattice {a ℓ₁ ℓ₂} {A : Set a}
 
   open IsPartialOrder isPartialOrder public
 
-record IsBoundedJoinSemilattice {a ℓ₁ ℓ₂} {A : Set a}
-                                (_≈_ : Rel A ℓ₁) -- The underlying equality.
-                                (_≤_ : Rel A ℓ₂) -- The partial order.
-                                (_∨_ : Op₂ A)    -- The join operation.
+record IsBoundedJoinSemilattice (_∨_ : Op₂ A)    -- The join operation.
                                 (⊥   : A)        -- The minimum.
                                 : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
   field
-    isJoinSemilattice : IsJoinSemilattice _≈_ _≤_ _∨_
+    isJoinSemilattice : IsJoinSemilattice _∨_
     minimum           : Minimum _≤_ ⊥
 
   open IsJoinSemilattice isJoinSemilattice public
@@ -55,10 +55,7 @@ record IsBoundedJoinSemilattice {a ℓ₁ ℓ₂} {A : Set a}
 ------------------------------------------------------------------------
 -- Meet semilattices
 
-record IsMeetSemilattice {a ℓ₁ ℓ₂} {A : Set a}
-                         (_≈_ : Rel A ℓ₁) -- The underlying equality.
-                         (_≤_ : Rel A ℓ₂) -- The partial order.
-                         (_∧_ : Op₂ A)    -- The meet operation.
+record IsMeetSemilattice (_∧_ : Op₂ A)    -- The meet operation.
                          : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
   field
     isPartialOrder : IsPartialOrder _≈_ _≤_
@@ -75,14 +72,11 @@ record IsMeetSemilattice {a ℓ₁ ℓ₂} {A : Set a}
 
   open IsPartialOrder isPartialOrder public
 
-record IsBoundedMeetSemilattice {a ℓ₁ ℓ₂} {A : Set a}
-                                (_≈_ : Rel A ℓ₁) -- The underlying equality.
-                                (_≤_ : Rel A ℓ₂) -- The partial order.
-                                (_∧_ : Op₂ A)    -- The join operation.
+record IsBoundedMeetSemilattice (_∧_ : Op₂ A)    -- The join operation.
                                 (⊤   : A)        -- The maximum.
                                 : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
   field
-    isMeetSemilattice : IsMeetSemilattice _≈_ _≤_ _∧_
+    isMeetSemilattice : IsMeetSemilattice _∧_
     maximum           : Maximum _≤_ ⊤
 
   open IsMeetSemilattice isMeetSemilattice public
@@ -90,10 +84,7 @@ record IsBoundedMeetSemilattice {a ℓ₁ ℓ₂} {A : Set a}
 ------------------------------------------------------------------------
 -- Lattices
 
-record IsLattice {a ℓ₁ ℓ₂} {A : Set a}
-                 (_≈_ : Rel A ℓ₁) -- The underlying equality.
-                 (_≤_ : Rel A ℓ₂) -- The partial order.
-                 (_∨_ : Op₂ A)    -- The join operation.
+record IsLattice (_∨_ : Op₂ A)    -- The join operation.
                  (_∧_ : Op₂ A)    -- The meet operation.
                  : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
   field
@@ -101,13 +92,13 @@ record IsLattice {a ℓ₁ ℓ₂} {A : Set a}
     supremum       : Supremum _≤_ _∨_
     infimum        : Infimum _≤_ _∧_
 
-  isJoinSemilattice : IsJoinSemilattice _≈_ _≤_ _∨_
+  isJoinSemilattice : IsJoinSemilattice  _∨_
   isJoinSemilattice = record
     { isPartialOrder = isPartialOrder
     ; supremum       = supremum
     }
 
-  isMeetSemilattice : IsMeetSemilattice _≈_ _≤_ _∧_
+  isMeetSemilattice : IsMeetSemilattice  _∧_
   isMeetSemilattice = record
     { isPartialOrder = isPartialOrder
     ; infimum        = infimum
@@ -119,40 +110,34 @@ record IsLattice {a ℓ₁ ℓ₂} {A : Set a}
     using (x∧y≤x; x∧y≤y; ∧-greatest)
   open IsPartialOrder isPartialOrder public
 
-record IsDistributiveLattice {a ℓ₁ ℓ₂} {A : Set a}
-                             (_≈_ : Rel A ℓ₁) -- The underlying equality.
-                             (_≤_ : Rel A ℓ₂) -- The partial order.
-                             (_∨_ : Op₂ A)    -- The join operation.
+record IsDistributiveLattice (_∨_ : Op₂ A)    -- The join operation.
                              (_∧_ : Op₂ A)    -- The meet operation.
                              : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
   field
-    isLattice    : IsLattice _≈_ _≤_ _∨_ _∧_
+    isLattice    : IsLattice _∨_ _∧_
     ∧-distribˡ-∨ : _DistributesOverˡ_ _≈_ _∧_ _∨_
 
   open IsLattice isLattice public
 
-record IsBoundedLattice {a ℓ₁ ℓ₂} {A : Set a}
-                        (_≈_ : Rel A ℓ₁) -- The underlying equality.
-                        (_≤_ : Rel A ℓ₂) -- The partial order.
-                        (_∨_ : Op₂ A)    -- The join operation.
+record IsBoundedLattice (_∨_ : Op₂ A)    -- The join operation.
                         (_∧_ : Op₂ A)    -- The meet operation.
                         (⊤   : A)        -- The maximum.
                         (⊥   : A)        -- The minimum.
                         : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
   field
-    isLattice : IsLattice _≈_ _≤_ _∨_ _∧_
+    isLattice : IsLattice _∨_ _∧_
     maximum   : Maximum _≤_ ⊤
     minimum   : Minimum _≤_ ⊥
 
   open IsLattice isLattice public
 
-  isBoundedJoinSemilattice : IsBoundedJoinSemilattice _≈_ _≤_ _∨_ ⊥
+  isBoundedJoinSemilattice : IsBoundedJoinSemilattice  _∨_ ⊥
   isBoundedJoinSemilattice = record
     { isJoinSemilattice = isJoinSemilattice
     ; minimum           = minimum
     }
 
-  isBoundedMeetSemilattice : IsBoundedMeetSemilattice _≈_ _≤_ _∧_ ⊤
+  isBoundedMeetSemilattice : IsBoundedMeetSemilattice _∧_ ⊤
   isBoundedMeetSemilattice = record
     { isMeetSemilattice = isMeetSemilattice
     ; maximum           = maximum
@@ -161,17 +146,14 @@ record IsBoundedLattice {a ℓ₁ ℓ₂} {A : Set a}
 ------------------------------------------------------------------------
 -- Heyting algebras (a bounded lattice with exponential operator)
 
-record IsHeytingAlgebra {a ℓ₁ ℓ₂} {A : Set a}
-                        (_≈_ : Rel A ℓ₁) -- The underlying equality.
-                        (_≤_ : Rel A ℓ₂) -- The partial order.
-                        (_∨_ : Op₂ A)    -- The join operation.
+record IsHeytingAlgebra (_∨_ : Op₂ A)    -- The join operation.
                         (_∧_ : Op₂ A)    -- The meet operation.
                         (_⇨_ : Op₂ A)    -- The exponential operation.
                         (⊤   : A)        -- The maximum.
                         (⊥   : A)        -- The minimum.
                         : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
   field
-    isBoundedLattice : IsBoundedLattice _≈_ _≤_ _∨_ _∧_ ⊤ ⊥
+    isBoundedLattice : IsBoundedLattice _∨_ _∧_ ⊤ ⊥
     exponential      : Exponential _≤_ _∧_ _⇨_
 
   transpose-⇨ : ∀ {w x y} → (w ∧ x) ≤ y → w ≤ (x ⇨ y)
@@ -185,10 +167,7 @@ record IsHeytingAlgebra {a ℓ₁ ℓ₂} {A : Set a}
 ------------------------------------------------------------------------
 -- Boolean algebras (a specialized Heyting algebra)
 
-record IsBooleanAlgebra {a ℓ₁ ℓ₂} {A : Set a}
-                        (_≈_ : Rel A ℓ₁) -- The underlying equality.
-                        (_≤_ : Rel A ℓ₂) -- The partial order.
-                        (_∨_ : Op₂ A)    -- The join operation.
+record IsBooleanAlgebra (_∨_ : Op₂ A)    -- The join operation.
                         (_∧_ : Op₂ A)    -- The meet operation.
                         (¬_ : Op₁ A)     -- The negation operation.
                         (⊤   : A)        -- The maximum.
@@ -199,6 +178,6 @@ record IsBooleanAlgebra {a ℓ₁ ℓ₂} {A : Set a}
   x ⇨ y = (¬ x) ∨ y
 
   field
-    isHeytingAlgebra : IsHeytingAlgebra _≈_ _≤_ _∨_ _∧_ _⇨_ ⊤ ⊥
+    isHeytingAlgebra : IsHeytingAlgebra _∨_ _∧_ _⇨_ ⊤ ⊥
 
   open IsHeytingAlgebra isHeytingAlgebra public
