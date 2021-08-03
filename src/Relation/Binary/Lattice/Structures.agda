@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Structures for lattice
+-- Structures for order-theoretic lattices
 ------------------------------------------------------------------------
 
 -- The contents of this module should be accessed via `Relation.Binary.Lattice`.

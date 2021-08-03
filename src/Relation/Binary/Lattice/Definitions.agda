@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Properties of lattice relations
+-- Definitions f0r order-theoretic lattices 
 ------------------------------------------------------------------------
 
 -- The contents of this module should be accessed via `Relation.Binary.Lattice`.
