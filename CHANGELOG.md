@@ -265,6 +265,43 @@ Deprecated names
   suc[pred[n]]≡n ↦ suc-pred
   ```
 
+* In `Data.List.Properties`:
+  ```agda
+  zipWith-identityˡ ↦ zipWith-zeroˡ
+  zipWith-identityʳ ↦ zipWith-zeroʳ
+  ```
+
+  * In `Function.Construct.Composition`:
+
+    _∘-⟶_   ↦   _⟶-∘_
+    _∘-↣_   ↦   _↣-∘_
+    _∘-↠_   ↦   _↠-∘_
+    _∘-⤖_   ↦   _⤖-∘_
+    _∘-⇔_   ↦   _⇔-∘_
+    _∘-↩_   ↦   _↩-∘_
+    _∘-↪_   ↦   _↪-∘_
+    _∘-↔_   ↦   _↔-∘_
+
+  * In `Function.Construct.Identity`:
+
+    id-⟶   ↦   ⟶-id
+    id-↣   ↦   ↣-id
+    id-↠   ↦   ↠-id
+    id-⤖   ↦   ⤖-id
+    id-⇔   ↦   ⇔-id
+    id-↩   ↦   ↩-id
+    id-↪   ↦   ↪-id
+    id-↔   ↦   ↔-id
+
+  * In `Function.Construct.Symmetry`:
+
+    sym-⤖   ↦   ⤖-sym
+    sym-⇔   ↦   ⇔-sym
+    sym-↩   ↦   ↩-sym
+    sym-↪   ↦   ↪-sym
+    sym-↔   ↦   ↔-sym
+    ```
+
 New modules
 -----------
 

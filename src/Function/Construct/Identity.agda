@@ -177,26 +177,83 @@ module _ (S : Setoid a ℓ) where
 
 module _ (A : Set a) where
 
-  id-⟶ : A ⟶ A
-  id-⟶ = function (setoid A)
+  ⟶-id : A ⟶ A
+  ⟶-id = function (setoid A)
 
-  id-↣ : A ↣ A
-  id-↣ = injection (setoid A)
+  ↣-id : A ↣ A
+  ↣-id = injection (setoid A)
 
-  id-↠ : A ↠ A
-  id-↠ = surjection (setoid A)
+  ↠-id : A ↠ A
+  ↠-id = surjection (setoid A)
 
-  id-⤖ : A ⤖ A
-  id-⤖ = bijection (setoid A)
+  ⤖-id : A ⤖ A
+  ⤖-id = bijection (setoid A)
 
-  id-⇔ : A ⇔ A
-  id-⇔ = equivalence (setoid A)
+  ⇔-id : A ⇔ A
+  ⇔-id = equivalence (setoid A)
 
-  id-↩ : A ↩ A
-  id-↩ = leftInverse (setoid A)
+  ↩-id : A ↩ A
+  ↩-id = leftInverse (setoid A)
 
-  id-↪ : A ↪ A
-  id-↪ = rightInverse (setoid A)
+  ↪-id : A ↪ A
+  ↪-id = rightInverse (setoid A)
 
-  id-↔ : A ↔ A
-  id-↔ = inverse (setoid A)
+  ↔-id : A ↔ A
+  ↔-id = inverse (setoid A)
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version v2.0
+
+id-⟶ = ⟶-id
+{-# WARNING_ON_USAGE id-⟶
+"Warning: id-⟶ was deprecated in v2.0.
+Please use ⟶-id instead."
+#-}
+
+id-↣ = ↣-id
+{-# WARNING_ON_USAGE id-↣
+"Warning: id-↣ was deprecated in v2.0.
+Please use ↣-id instead."
+#-}
+
+id-↠ = ↠-id
+{-# WARNING_ON_USAGE id-↠
+"Warning: id-↠ was deprecated in v2.0.
+Please use ↠-id instead."
+#-}
+
+id-⤖ = ⤖-id
+{-# WARNING_ON_USAGE id-⤖
+"Warning: id-⤖ was deprecated in v2.0.
+Please use ⤖-id instead."
+#-}
+
+id-⇔ = ⇔-id
+{-# WARNING_ON_USAGE id-⇔
+"Warning: id-⇔ was deprecated in v2.0.
+Please use ⇔-id instead."
+#-}
+
+id-↩ = ↩-id
+{-# WARNING_ON_USAGE id-↩
+"Warning: id-↩ was deprecated in v2.0.
+Please use ↩-id instead."
+#-}
+
+id-↪ = ↪-id
+{-# WARNING_ON_USAGE id-↪
+"Warning: id-↪ was deprecated in v2.0.
+Please use ↪-id instead."
+#-}
+
+id-↔ = ↔-id
+{-# WARNING_ON_USAGE id-↔
+"Warning: id-↔ was deprecated in v2.0.
+Please use ↔-id instead."
+#-}

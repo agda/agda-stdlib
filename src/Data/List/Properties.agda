@@ -286,13 +286,13 @@ module _ (f : A → A → B) where
 
 module _ (f : A → B → C) where
 
-  zipWith-identityˡ : ∀ xs → zipWith f [] xs ≡ []
-  zipWith-identityˡ []       = refl
-  zipWith-identityˡ (x ∷ xs) = refl
+  zipWith-zeroˡ : ∀ xs → zipWith f [] xs ≡ []
+  zipWith-zeroˡ []       = refl
+  zipWith-zeroˡ (x ∷ xs) = refl
 
-  zipWith-identityʳ : ∀ xs → zipWith f xs [] ≡ []
-  zipWith-identityʳ []       = refl
-  zipWith-identityʳ (x ∷ xs) = refl
+  zipWith-zeroʳ : ∀ xs → zipWith f xs [] ≡ []
+  zipWith-zeroʳ []       = refl
+  zipWith-zeroʳ (x ∷ xs) = refl
 
   length-zipWith : ∀ xs ys →
                    length (zipWith f xs ys) ≡ length xs ⊓ length ys
@@ -1092,4 +1092,18 @@ mapIsFold = map-is-foldr
 {-# WARNING_ON_USAGE mapIsFold
 "Warning: mapIsFold was deprecated in v0.17.
 Please use map-is-foldr instead."
+#-}
+
+-- Version 2.0
+
+zipWith-identityˡ = zipWith-zeroˡ
+{-# WARNING_ON_USAGE zipWith-identityˡ
+"Warning: zipWith-identityˡ was deprecated in v2.0.
+Please use zipWith-zeroˡ instead."
+#-}
+
+zipWith-identityʳ = zipWith-zeroʳ
+{-# WARNING_ON_USAGE zipWith-identityʳ
+"Warning: zipWith-identityʳ was deprecated in v2.0.
+Please use zipWith-zeroʳ instead."
 #-}
