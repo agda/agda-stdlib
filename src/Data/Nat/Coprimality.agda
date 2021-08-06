@@ -112,12 +112,11 @@ recompute {n} {d} c = Nullary.recompute (coprime? n d) c
 -- If the "gcd" in Bézout's identity is non-zero, then the "other"
 -- divisors are coprime.
 
-Bézout-coprime : ∀ {i j d} →
-                 Bézout.Identity (suc d) (i * suc d) (j * suc d) →
-                 Coprime i j
-Bézout-coprime (Bézout.+- x y eq) (divides q₁ refl , divides q₂ refl) =
+Bézout-coprime : ∀ {i j d} .{{_ : NonZero d}} →
+                 Bézout.Identity d (i * d) (j * d) → Coprime i j
+Bézout-coprime {d = suc _} (Bézout.+- x y eq) (divides q₁ refl , divides q₂ refl) =
   lem₁₀ y q₂ x q₁ eq
-Bézout-coprime (Bézout.-+ x y eq) (divides q₁ refl , divides q₂ refl) =
+Bézout-coprime {d = suc _} (Bézout.-+ x y eq) (divides q₁ refl , divides q₂ refl) =
   lem₁₀ x q₁ y q₂ eq
 
 -- Coprime numbers satisfy Bézout's identity.

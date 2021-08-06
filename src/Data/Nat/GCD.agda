@@ -120,7 +120,7 @@ gcd-universality {m} {n} forwards backwards with backwards ∣-refl
 -- This could be simplified with some nice backwards/forwards reasoning
 -- after the new function hierarchy is up and running.
 gcd[cm,cn]/c≡gcd[m,n] : ∀ c m n .{{_ : NonZero c}} → gcd (c * m) (c * n) / c ≡ gcd m n
-gcd[cm,cn]/c≡gcd[m,n] c@(suc c-1) m n = gcd-universality forwards backwards
+gcd[cm,cn]/c≡gcd[m,n] c m n = gcd-universality forwards backwards
   where
   forwards : ∀ {d : ℕ} → d ∣ m × d ∣ n → d ∣ gcd (c * m) (c * n) / c
   forwards {d} (d∣m , d∣n) = m*n∣o⇒n∣o/m c d (gcd-greatest (*-monoʳ-∣ c d∣m) (*-monoʳ-∣ c d∣n))
@@ -128,25 +128,25 @@ gcd[cm,cn]/c≡gcd[m,n] c@(suc c-1) m n = gcd-universality forwards backwards
   backwards : ∀ {d : ℕ} → d ∣ gcd (c * m) (c * n) / c → d ∣ m × d ∣ n
   backwards {d} d∣gcd[cm,cn]/c with m∣n/o⇒o*m∣n (gcd-greatest (m∣m*n m) (m∣m*n n)) d∣gcd[cm,cn]/c
   ... | cd∣gcd[cm,n] =
-    *-cancelˡ-∣ c-1 (∣-trans cd∣gcd[cm,n] (gcd[m,n]∣m (c * m) _)) ,
-    *-cancelˡ-∣ c-1 (∣-trans cd∣gcd[cm,n] (gcd[m,n]∣n (c * m) _))
+    *-cancelˡ-∣ c (∣-trans cd∣gcd[cm,n] (gcd[m,n]∣m (c * m) _)) ,
+    *-cancelˡ-∣ c (∣-trans cd∣gcd[cm,n] (gcd[m,n]∣n (c * m) _))
 
 c*gcd[m,n]≡gcd[cm,cn] : ∀ c m n → c * gcd m n ≡ gcd (c * m) (c * n)
-c*gcd[m,n]≡gcd[cm,cn] zero        m n = P.sym gcd[0,0]≡0
-c*gcd[m,n]≡gcd[cm,cn] c@(suc c-1) m n = begin
+c*gcd[m,n]≡gcd[cm,cn] zero      m n = P.sym gcd[0,0]≡0
+c*gcd[m,n]≡gcd[cm,cn] c@(suc _) m n = begin
   c * gcd m n                   ≡⟨ cong (c *_) (P.sym (gcd[cm,cn]/c≡gcd[m,n] c m n)) ⟩
   c * (gcd (c * m) (c * n) / c) ≡⟨ m*[n/m]≡n (gcd-greatest (m∣m*n m) (m∣m*n n)) ⟩
   gcd (c * m) (c * n)           ∎
   where open P.≡-Reasoning
 
-gcd[m,n]≤n : ∀ m n → gcd m (suc n) ≤ suc n
-gcd[m,n]≤n m n = ∣⇒≤ (gcd[m,n]∣n m (suc n))
+gcd[m,n]≤n : ∀ m n .{{_ : NonZero n}} → gcd m n ≤ n
+gcd[m,n]≤n m n = ∣⇒≤ (gcd[m,n]∣n m n)
 
 n/gcd[m,n]≢0 : ∀ m n .{{_ : NonZero n}} .{{_ : NonZero (gcd m n)}} → n / gcd m n ≢ 0
-n/gcd[m,n]≢0 m n@(suc n-1) = m<n⇒n≢0 (m≥n⇒m/n>0 {n} {gcd m n} (gcd[m,n]≤n m n-1))
+n/gcd[m,n]≢0 m n = m<n⇒n≢0 (m≥n⇒m/n>0 {n} {gcd m n} (gcd[m,n]≤n m n))
 
 m/gcd[m,n]≢0 : ∀ m n .{{_ : NonZero m}} .{{_ : NonZero (gcd m n)}} → m / gcd m n ≢ 0
-m/gcd[m,n]≢0 m@(suc _) n rewrite gcd-comm m n = n/gcd[m,n]≢0 n m
+m/gcd[m,n]≢0 m n rewrite gcd-comm m n = n/gcd[m,n]≢0 n m
 
 ------------------------------------------------------------------------
 -- A formal specification of GCD
