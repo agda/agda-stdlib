@@ -94,7 +94,16 @@ Non-backwards compatible changes
     - In `Data.Nat.DivMod`: `_/_`, `_%_`, `_div_`, `_mod_`
 	- In `Data.Nat.Pseudorandom.LCG`: `Generator`
 	- In `Data.Integer.DivMod`: `_divℕ_`, `_div_`, `_modℕ_`, `_mod_`
-  
+	- In `Data.Rational`: `mkℚ+`, `normalize`, `_/_`, `1/_`
+	- In `Data.Rational.Unnormalised`: `_/_`, `1/_`, `_÷_`
+
+* Consequently the definition of `_≢0` has been removed from `Data.Rational.Unnormalised.Base`
+  and the following proofs about it have been removed from `Data.Rational.Unnormalised.Properties`:
+  ```
+  p≄0⇒∣↥p∣≢0 : ∀ p → p ≠ 0ℚᵘ → ℤ.∣ (↥ p) ∣ ≢0
+  ∣↥p∣≢0⇒p≄0 : ∀ p → ℤ.∣ (↥ p) ∣ ≢0 → p ≠ 0ℚᵘ
+  ```
+
 * At the moment, there are 4 different ways such instance arguments can be provided,
   listed in order of convenience and clarity:
     1. By default there is always an instance of `NonZero (suc n)` for any `n` which 
@@ -199,6 +208,12 @@ Deprecated modules
 
 Deprecated names
 ----------------
+
+* In `Data.Rational.Unnormalised.Properties`:
+  ```
+  ↥[p/q]≡p = ↥[n/d]≡n
+  ↧[p/q]≡q = ↧[n/d]≡d
+  ```
 
 * In `Data.List.Properties`:
   ```agda
