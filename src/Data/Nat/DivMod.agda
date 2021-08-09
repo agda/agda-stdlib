@@ -90,6 +90,9 @@ m*n%n≡0 m (suc n-1) = [m+kn]%n≡m%n 0 m (suc n-1)
 m%n<n : ∀ m n .{{_ : NonZero n}} → m % n < n
 m%n<n m (suc n-1) = s≤s (a[modₕ]n<n 0 m n-1)
 
+m%n≤n : ∀ m n .{{_ : NonZero n}} → m % n ≤ n
+m%n≤n m n = <⇒≤ (m%n<n m n)
+
 m%n≤m : ∀ m n .{{_ : NonZero n}} → m % n ≤ m
 m%n≤m m (suc n-1) = a[modₕ]n≤a 0 m n-1
 
