@@ -14,17 +14,23 @@ open import Algebra.Core
 open import Data.Product using (_×_; _,_)
 open import Function.Base using (flip)
 open import Relation.Binary
+open import Level
+
+private
+  variable
+    a ℓ : Level
+    A : Set a
 
 ------------------------------------------------------------------------
 -- Relationships between orders and operators
 
-Supremum : ∀ {a ℓ} {A : Set a} → Rel A ℓ → Op₂ A → Set _
+Supremum : Rel A ℓ → Op₂ A → Set _
 Supremum _≤_ _∨_ =
   ∀ x y → x ≤ (x ∨ y) × y ≤ (x ∨ y) × ∀ z → x ≤ z → y ≤ z → (x ∨ y) ≤ z
 
-Infimum : ∀ {a ℓ} {A : Set a} → Rel A ℓ → Op₂ A → Set _
+Infimum : Rel A ℓ → Op₂ A → Set _
 Infimum _≤_ = Supremum (flip _≤_)
 
-Exponential : ∀ {a ℓ} {A : Set a} → Rel A ℓ → Op₂ A → Op₂ A → Set _
+Exponential : Rel A ℓ → Op₂ A → Op₂ A → Set _
 Exponential _≤_ _∧_ _⇨_ =
   ∀ w x y → ((w ∧ x) ≤ y → w ≤ (x ⇨ y)) × (w ≤ (x ⇨ y) → (w ∧ x) ≤ y)
