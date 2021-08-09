@@ -372,8 +372,11 @@ New modules
   Data.Default
   ```
 
-Other minor additions
----------------------
+Other minor changes
+-------------------
+
+* The module `Algebra` now publicly re-exports the contents of
+  `Algebra.Structures.Biased`.
 
 * Added new definitions to `Algebra.Bundles`:
   ```agda
@@ -387,6 +390,16 @@ Other minor additions
   ∧-commutativeSemigroup : CommutativeSemigroup c ℓ
   ```
   and their corresponding algebraic subbundles.
+
+* Added new proofs to `Algebra.Consequences.Setoid`:
+  ```agda
+  comm+idˡ⇒id       : Commutative _•_ → LeftIdentity  e _•_ → Identity e _•_
+  comm+idʳ⇒id       : Commutative _•_ → RightIdentity e _•_ → Identity e _•_
+  comm+zeˡ⇒ze       : Commutative _•_ → LeftZero      e _•_ → Zero     e _•_
+  comm+zeʳ⇒ze       : Commutative _•_ → RightZero     e _•_ → Zero     e _•_
+  comm+distrˡ⇒distr : Commutative _•_ → _•_ DistributesOverˡ _◦_ → _•_ DistributesOver _◦_
+  comm+distrʳ⇒distr : Commutative _•_ → _•_ DistributesOverʳ _◦_ → _•_ DistributesOver _◦_
+  ```
 
 * Added new functions to `Algebra.Construct.DirectProduct`:
   ```agda
