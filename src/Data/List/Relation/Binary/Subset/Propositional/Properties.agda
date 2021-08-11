@@ -232,7 +232,7 @@ module _ {xs : List A} {f : ∀ {x} → x ∈ xs → B}
          where
 
   map-with-∈⁺ : (xs⊆ys : xs ⊆ ys) → (∀ {x} → f {x} ≗ g ∘ xs⊆ys) →
-                map-with-∈ xs f ⊆ map-with-∈ ys g
+                mapWith∈ xs f ⊆ mapWith∈ ys g
   map-with-∈⁺ xs⊆ys f≈g {x} =
     _⟨$⟩_ (Inverse.to Any.map-with-∈↔) ∘
     Prod.map₂ (Prod.map xs⊆ys (λ {x∈xs} x≡fx∈xs → begin
