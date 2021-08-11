@@ -53,14 +53,14 @@ m%n≡0⇔n∣m m n = equivalence (m%n≡0⇒n∣m m n) (n∣m⇒m%n≡0 m n)
 ------------------------------------------------------------------------
 -- Properties of _∣_ and _≤_
 
-∣⇒≤ : ∀ {m n} → m ∣ suc n → m ≤ suc n
-∣⇒≤ {m} {n} (divides (suc q) eq) = begin
+∣⇒≤ : ∀ {m n} .{{_ : NonZero n}} → m ∣ n → m ≤ n
+∣⇒≤ {m} {n@(suc _)} (divides (suc q) eq) = begin
   m          ≤⟨ m≤m+n m (q * m) ⟩
   suc q * m  ≡⟨ sym eq ⟩
-  suc n      ∎
+  n          ∎
   where open ≤-Reasoning
 
->⇒∤ : ∀ {m n} → m > suc n → m ∤ suc n
+>⇒∤ : ∀ {m n} .{{_ : NonZero n}} → m > n → m ∤ n
 >⇒∤ (s≤s m>n) m∣n = contradiction (∣⇒≤ m∣n) (≤⇒≯ m>n)
 
 ------------------------------------------------------------------------
@@ -188,18 +188,18 @@ m∣m*n n = divides n (*-comm _ n)
 *-monoˡ-∣ : ∀ {i j} k → i ∣ j → i * k ∣ j * k
 *-monoˡ-∣ {i} {j} k rewrite *-comm i k | *-comm j k = *-monoʳ-∣ k
 
-*-cancelˡ-∣ : ∀ {i j} k → suc k * i ∣ suc k * j → i ∣ j
-*-cancelˡ-∣ {i} {j} k (divides q eq) =
+*-cancelˡ-∣ : ∀ {i j} k .{{_ : NonZero k}} → k * i ∣ k * j → i ∣ j
+*-cancelˡ-∣ {i} {j} k@(suc _) (divides q eq) =
   divides q $ *-cancelʳ-≡ j (q * i) $ begin-equality
-    j * (suc k)      ≡⟨ *-comm j (suc k) ⟩
-    suc k * j        ≡⟨ eq ⟩
-    q * (suc k * i)  ≡⟨ cong (q *_) (*-comm (suc k) i) ⟩
-    q * (i * suc k)  ≡⟨ sym (*-assoc q i (suc k)) ⟩
-    (q * i) * suc k  ∎
+    j * k        ≡⟨ *-comm j k ⟩
+    k * j        ≡⟨ eq ⟩
+    q * (k * i)  ≡⟨ cong (q *_) (*-comm k i) ⟩
+    q * (i * k)  ≡⟨ sym (*-assoc q i k) ⟩
+    (q * i) * k  ∎
     where open ≤-Reasoning
 
-*-cancelʳ-∣ : ∀ {i j} k {k≢0 : False (k ≟ 0)} → i * k ∣ j * k → i ∣ j
-*-cancelʳ-∣ {i} {j} k@(suc k-1) rewrite *-comm i k | *-comm j k = *-cancelˡ-∣ k-1
+*-cancelʳ-∣ : ∀ {i j} k .{{_ : NonZero k}} → i * k ∣ j * k → i ∣ j
+*-cancelʳ-∣ {i} {j} k rewrite *-comm i k | *-comm j k = *-cancelˡ-∣ k
 
 ------------------------------------------------------------------------
 -- Properties of _∣_ and _∸_

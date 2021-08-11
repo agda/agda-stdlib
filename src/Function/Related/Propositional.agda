@@ -86,7 +86,7 @@ Related k A B = A ∼[ k ] B
 -- Propositional equality also implies any kind of relatedness.
 
 ≡⇒ : A ≡ B → A ∼[ k ] B
-≡⇒ P.refl = ⤖⇒ (Identity.id-⤖ _)
+≡⇒ P.refl = ⤖⇒ (Identity.⤖-id _)
 
 ------------------------------------------------------------------------
 -- Special kinds of kinds
@@ -230,26 +230,26 @@ bijection          op = bijection
 reverse : A ∼[ k ] B → B ∼[ k op ] A
 reverse {k = implication}        = id
 reverse {k = reverseImplication} = id
-reverse {k = equivalence}        = Symmetry.sym-⇔
+reverse {k = equivalence}        = Symmetry.⇔-sym
 reverse {k = injection}          = id
 reverse {k = reverseInjection}   = id
 reverse {k = leftInverse}        = ↪⇒↠
 reverse {k = surjection}         = ↠⇒↪
-reverse {k = bijection}          = ↔⇒⤖ ∘ Symmetry.sym-↔ ∘ ⤖⇒↔
+reverse {k = bijection}          = ↔⇒⤖ ∘ Symmetry.↔-sym ∘ ⤖⇒↔
 
 ------------------------------------------------------------------------
 -- For a fixed universe level every kind is a preorder and each
 -- symmetric kind is an equivalence
 
 K-refl : Reflexive (Related {a} k)
-K-refl {k = implication}        = Identity.id-⟶ _
-K-refl {k = reverseImplication} = Identity.id-⟶ _
-K-refl {k = equivalence}        = Identity.id-⇔ _
-K-refl {k = injection}          = Identity.id-↣ _
-K-refl {k = reverseInjection}   = Identity.id-↣ _
-K-refl {k = leftInverse}        = Identity.id-↪ _
-K-refl {k = surjection}         = Identity.id-↠ _
-K-refl {k = bijection}          = Identity.id-⤖ _
+K-refl {k = implication}        = Identity.⟶-id _
+K-refl {k = reverseImplication} = Identity.⟶-id _
+K-refl {k = equivalence}        = Identity.⇔-id _
+K-refl {k = injection}          = Identity.↣-id _
+K-refl {k = reverseInjection}   = Identity.↣-id _
+K-refl {k = leftInverse}        = Identity.↪-id _
+K-refl {k = surjection}         = Identity.↠-id _
+K-refl {k = bijection}          = Identity.⤖-id _
 
 K-reflexive : _≡_ Relation.Binary.⇒ Related {a} k
 K-reflexive P.refl = K-refl
@@ -257,14 +257,14 @@ K-reflexive P.refl = K-refl
 K-trans : Trans (Related {a} {b} k)
                 (Related {b} {c} k)
                 (Related {a} {c} k)
-K-trans {k = implication}        = Composition._∘-⟶_
-K-trans {k = reverseImplication} = flip Composition._∘-⟶_
-K-trans {k = equivalence}        = Composition._∘-⇔_
-K-trans {k = injection}          = Composition._∘-↣_
-K-trans {k = reverseInjection}   = flip Composition._∘-↣_
-K-trans {k = leftInverse}        = Composition._∘-↪_
-K-trans {k = surjection}         = Composition._∘-↠_
-K-trans {k = bijection}          = Composition._∘-⤖_
+K-trans {k = implication}        = Composition._⟶-∘_
+K-trans {k = reverseImplication} = flip Composition._⟶-∘_
+K-trans {k = equivalence}        = Composition._⇔-∘_
+K-trans {k = injection}          = Composition._↣-∘_
+K-trans {k = reverseInjection}   = flip Composition._↣-∘_
+K-trans {k = leftInverse}        = Composition._↪-∘_
+K-trans {k = surjection}         = Composition._↠-∘_
+K-trans {k = bijection}          = Composition._⤖-∘_
 
 SK-sym : ∀ {k} → Sym (Related {a} {b} ⌊ k ⌋)
                      (Related {b} {a} ⌊ k ⌋)

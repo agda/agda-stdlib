@@ -15,7 +15,6 @@ open import Data.Nat as ℕ using (ℕ; zero; suc)
 open import Level using (0ℓ)
 open import Relation.Nullary using (¬_)
 open import Relation.Nullary.Negation using (contradiction)
-open import Relation.Nullary.Decidable using (False)
 open import Relation.Unary using (Pred)
 open import Relation.Binary using (Rel)
 open import Relation.Binary.PropositionalEquality.Core
@@ -103,67 +102,13 @@ p ≤ᵇ q = (↥ p ℤ.* ↧ q) ℤ.≤ᵇ (↥ q ℤ.* ↧ p)
 ------------------------------------------------------------------------
 -- Constructing rationals
 
-infix 4 _≢0
-_≢0 : ℕ → Set
-n ≢0 = False (n ℕ.≟ 0)
-
 -- An alternative constructor for ℚᵘ. See the constants section below
 -- for examples of how to use this operator.
 
 infixl 7 _/_
 
-_/_ : (n : ℤ) (d : ℕ) .{d≢0 : d ≢0} → ℚᵘ
+_/_ : (n : ℤ) (d : ℕ) .{{_ : ℕ.NonZero d}} → ℚᵘ
 n / suc d = mkℚᵘ n d
-
-------------------------------------------------------------------------------
--- Operations on rationals
-
-infix  8 -_ 1/_
-infixl 7 _*_ _÷_ _⊓_
-infixl 6 _-_ _+_ _⊔_
-
--- negation
-
--_ : ℚᵘ → ℚᵘ
-- mkℚᵘ n d = mkℚᵘ (ℤ.- n) d
-
--- addition
-
-_+_ : ℚᵘ → ℚᵘ → ℚᵘ
-p + q = (↥ p ℤ.* ↧ q ℤ.+ ↥ q ℤ.* ↧ p) / (↧ₙ p ℕ.* ↧ₙ q)
-
--- multiplication
-
-_*_ : ℚᵘ → ℚᵘ → ℚᵘ
-p * q = (↥ p ℤ.* ↥ q) / (↧ₙ p ℕ.* ↧ₙ q)
-
--- subtraction
-
-_-_ : ℚᵘ → ℚᵘ → ℚᵘ
-p - q = p + (- q)
-
--- reciprocal: requires a proof that the numerator is not zero
-
-1/_ : (p : ℚᵘ) → .{n≢0 : ℤ.∣ ↥ p ∣ ≢0} → ℚᵘ
-1/ mkℚᵘ +[1+ n ] d = mkℚᵘ +[1+ d ] n
-1/ mkℚᵘ -[1+ n ] d = mkℚᵘ -[1+ d ] n
-
--- division: requires a proof that the denominator is not zero
-
-_÷_ : (p q : ℚᵘ) → .{n≢0 : ℤ.∣ ↥ q ∣ ≢0} → ℚᵘ
-(p ÷ q) {n≢0} = p * (1/_ q {n≢0})
-
--- max
-_⊔_ : (p q : ℚᵘ) → ℚᵘ
-p ⊔ q = if p ≤ᵇ q then q else p
-
--- min
-_⊓_ : (p q : ℚᵘ) → ℚᵘ
-p ⊓ q = if p ≤ᵇ q then p else q
-
--- absolute value
-∣_∣ : ℚᵘ → ℚᵘ
-∣ mkℚᵘ p q ∣ = mkℚᵘ (+ ℤ.∣ p ∣) q
 
 ------------------------------------------------------------------------------
 -- Some constants
@@ -178,7 +123,7 @@ p ⊓ q = if p ≤ᵇ q then p else q
 ½ = + 1 / 2
 
 -½ : ℚᵘ
--½ = - ½
+-½ = ℤ.- (+ 1) / 2
 
 ------------------------------------------------------------------------
 -- Simple predicates
@@ -198,7 +143,7 @@ NonPositive p = ℤ.NonPositive (↥ p)
 NonNegative : Pred ℚᵘ 0ℓ
 NonNegative p = ℤ.NonNegative (↥ p)
 
--- Constructors
+-- Constructors and destructors
 
 -- Note: these could be proved more elegantly using the constructors
 -- from ℤ but it requires importing `Data.Integer.Properties` which
@@ -237,3 +182,53 @@ nonPositive {mkℚᵘ -[1+ n ] _} (*≤* _) = _
 nonNegative : ∀ {p} → p ≥ 0ℚᵘ → NonNegative p
 nonNegative {mkℚᵘ +0       _} (*≤* _) = _
 nonNegative {mkℚᵘ +[1+ n ] _} (*≤* _) = _
+
+------------------------------------------------------------------------------
+-- Operations on rationals
+
+infix  8 -_ 1/_
+infixl 7 _*_ _÷_ _⊓_
+infixl 6 _-_ _+_ _⊔_
+
+-- negation
+
+-_ : ℚᵘ → ℚᵘ
+- mkℚᵘ n d = mkℚᵘ (ℤ.- n) d
+
+-- addition
+
+_+_ : ℚᵘ → ℚᵘ → ℚᵘ
+p + q = (↥ p ℤ.* ↧ q ℤ.+ ↥ q ℤ.* ↧ p) / (↧ₙ p ℕ.* ↧ₙ q)
+
+-- multiplication
+
+_*_ : ℚᵘ → ℚᵘ → ℚᵘ
+p * q = (↥ p ℤ.* ↥ q) / (↧ₙ p ℕ.* ↧ₙ q)
+
+-- subtraction
+
+_-_ : ℚᵘ → ℚᵘ → ℚᵘ
+p - q = p + (- q)
+
+-- reciprocal: requires a proof that the numerator is not zero
+
+1/_ : (p : ℚᵘ) → .{{_ : NonZero p}} → ℚᵘ
+1/ mkℚᵘ +[1+ n ] d = mkℚᵘ +[1+ d ] n
+1/ mkℚᵘ -[1+ n ] d = mkℚᵘ -[1+ d ] n
+
+-- division: requires a proof that the denominator is not zero
+
+_÷_ : (p q : ℚᵘ) → .{{_ : NonZero q}} → ℚᵘ
+p ÷ q = p * (1/ q)
+
+-- max
+_⊔_ : (p q : ℚᵘ) → ℚᵘ
+p ⊔ q = if p ≤ᵇ q then q else p
+
+-- min
+_⊓_ : (p q : ℚᵘ) → ℚᵘ
+p ⊓ q = if p ≤ᵇ q then p else q
+
+-- absolute value
+∣_∣ : ℚᵘ → ℚᵘ
+∣ mkℚᵘ p q ∣ = mkℚᵘ (+ ℤ.∣ p ∣) q
