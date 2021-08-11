@@ -238,6 +238,9 @@ Non-backwards compatible changes
   exported by `Data.Rational.Base`. You will have to open `Data.Integer(.Base)`
   directly to use them.
 
+* The first two arguments of `m≡n⇒m-n≡0` (now `i≡j⇒i-j≡0`) in `Data.Integer.Base`
+  have been made implicit.
+
 * The relations `_≤_` `_≥_` `_<_` `_>_` in `Data.Fin.Base` have been
   generalised so they can now relate `Fin` terms with different indices.
   Should be mostly backwards compatible, but very occasionally when proving
@@ -273,21 +276,53 @@ Deprecated modules
 Deprecated names
 ----------------
 
+* In `Data.Integer.Properties` references to variables in names have
+  been made consistent so that `m`, `n` always refer to naturals and
+  `i` and `j` always refer to integers:
+  ```
+  n≮n            ↦  i≮i
+  ∣n∣≡0⇒n≡0      ↦  ∣i∣≡0⇒i≡0
+  ∣-n∣≡∣n∣       ↦  ∣-i∣≡∣i∣
+  0≤n⇒+∣n∣≡n     ↦  0≤i⇒+∣i∣≡i
+  +∣n∣≡n⇒0≤n     ↦  +∣i∣≡i⇒0≤i
+  +∣n∣≡n⊎+∣n∣≡-n ↦  +∣i∣≡i⊎+∣i∣≡-i
+  ∣m+n∣≤∣m∣+∣n∣  ↦  ∣i+j∣≤∣i∣+∣j∣
+  ∣m-n∣≤∣m∣+∣n∣  ↦  ∣i-j∣≤∣i∣+∣j∣
+  signₙ◃∣n∣≡n    ↦  signᵢ◃∣i∣≡i
+  ◃-≡            ↦  ◃-cong
+  ∣m-n∣≡∣n-m∣    ↦  ∣i-j∣≡∣j-i∣
+  m≡n⇒m-n≡0      ↦  i≡j⇒i-j≡0
+  m-n≡0⇒m≡n      ↦  i-j≡0⇒i≡j
+  m≤n⇒m-n≤0      ↦  i≤j⇒i-j≤0
+  m-n≤0⇒m≤n      ↦  i-j≤0⇒i≤j
+  m≤n⇒0≤n-m      ↦  i≤j⇒0≤j-i
+  0≤n-m⇒m≤n      ↦  0≤i-j⇒j≤i
+  n≤1+n          ↦  i≤suc[i]
+  n≢1+n          ↦  i≢suc[i]
+  m≤pred[n]⇒m<n  ↦  i≤pred[j]⇒i<j
+  m<n⇒m≤pred[n]  ↦  i<j⇒i≤pred[j]
+  -1*n≡-n        ↦  -1*i≡-i
+  m*n≡0⇒m≡0∨n≡0  ↦  i*j≡0⇒i≡0∨j≡0
+  ∣m*n∣≡∣m∣*∣n∣  ↦  ∣i*j∣≡∣i∣*∣j∣
+  +-pos-monoʳ-≤  ↦  +-monoʳ-≤
+  +-neg-monoʳ-≤  ↦  +-monoʳ-≤
+  ```
+  
 * In `Data.Nat.Properties`:
   ```
-  suc[pred[n]]≡n ↦ suc-pred
+  suc[pred[n]]≡n  ↦  suc-pred
   ```
 
 * In `Data.Rational.Unnormalised.Properties`:
   ```
-  ↥[p/q]≡p = ↥[n/d]≡n
-  ↧[p/q]≡q = ↧[n/d]≡d
+  ↥[p/q]≡p  ↦  ↥[n/d]≡n
+  ↧[p/q]≡q  ↦  ↧[n/d]≡d
   ```
 
 * In `Data.List.Properties`:
   ```agda
-  zipWith-identityˡ ↦ zipWith-zeroˡ
-  zipWith-identityʳ ↦ zipWith-zeroʳ
+  zipWith-identityˡ  ↦  zipWith-zeroˡ
+  zipWith-identityʳ  ↦  zipWith-zeroʳ
   ```
 
   * In `Function.Construct.Composition`:
