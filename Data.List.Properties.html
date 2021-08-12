@@ -986,126 +986,23 @@
   <a id="36737" href="Data.List.Properties.html#36672" class="Function">∷ʳ-injectiveʳ</a> <a id="36751" href="Data.List.Properties.html#36751" class="Bound">xs</a> <a id="36754" href="Data.List.Properties.html#36754" class="Bound">ys</a> <a id="36757" href="Data.List.Properties.html#36757" class="Bound">eq</a> <a id="36760" class="Symbol">=</a> <a id="36762" href="Agda.Builtin.Sigma.html#264" class="Field">proj₂</a> <a id="36768" class="Symbol">(</a><a id="36769" href="Data.List.Properties.html#36203" class="Function">∷ʳ-injective</a> <a id="36782" href="Data.List.Properties.html#36751" class="Bound">xs</a> <a id="36785" href="Data.List.Properties.html#36754" class="Bound">ys</a> <a id="36788" href="Data.List.Properties.html#36757" class="Bound">eq</a><a id="36790" class="Symbol">)</a>
 
 
+<a id="36794" class="Comment">------------------------------------------------------------------------</a>
+<a id="36867" class="Comment">-- DEPRECATED</a>
+<a id="36881" class="Comment">------------------------------------------------------------------------</a>
+<a id="36954" class="Comment">-- Please use the new names as continuing support for the old names is</a>
+<a id="37025" class="Comment">-- not guaranteed.</a>
 
-<a id="36795" class="Comment">------------------------------------------------------------------------</a>
-<a id="36868" class="Comment">-- DEPRECATED</a>
-<a id="36882" class="Comment">------------------------------------------------------------------------</a>
-<a id="36955" class="Comment">-- Please use the new names as continuing support for the old names is</a>
-<a id="37026" class="Comment">-- not guaranteed.</a>
+<a id="37045" class="Comment">-- Version 2.0</a>
 
-<a id="37046" class="Comment">-- Version 0.15</a>
-
-<a id="gfilter-just"></a><a id="37063" href="Data.List.Properties.html#37063" class="Function">gfilter-just</a>      <a id="37081" class="Symbol">=</a> <a id="37083" href="Data.List.Properties.html#4261" class="Function">mapMaybe-just</a>
-<a id="37097" class="Symbol">{-#</a> <a id="37101" class="Keyword">WARNING_ON_USAGE</a> <a id="37118" class="Pragma">gfilter-just</a>
-<a id="37131" class="String">&quot;Warning: gfilter-just was deprecated in v0.15.
-Please use mapMaybe-just instead.&quot;</a>
-<a id="37214" class="Symbol">#-}</a>
-<a id="gfilter-nothing"></a><a id="37218" href="Data.List.Properties.html#37218" class="Function">gfilter-nothing</a>   <a id="37236" class="Symbol">=</a> <a id="37238" href="Data.List.Properties.html#4402" class="Function">mapMaybe-nothing</a>
-<a id="37255" class="Symbol">{-#</a> <a id="37259" class="Keyword">WARNING_ON_USAGE</a> <a id="37276" class="Pragma">gfilter-nothing</a>
-<a id="37292" class="String">&quot;Warning: gfilter-nothing was deprecated in v0.15.
-Please use mapMaybe-nothing instead.&quot;</a>
-<a id="37381" class="Symbol">#-}</a>
-<a id="gfilter-concatMap"></a><a id="37385" href="Data.List.Properties.html#37385" class="Function">gfilter-concatMap</a> <a id="37403" class="Symbol">=</a> <a id="37405" href="Data.List.Properties.html#4615" class="Function">mapMaybe-concatMap</a>
-<a id="37424" class="Symbol">{-#</a> <a id="37428" class="Keyword">WARNING_ON_USAGE</a> <a id="37445" class="Pragma">gfilter-concatMap</a>
-<a id="37463" class="String">&quot;Warning: gfilter-concatMap was deprecated in v0.15.
-Please use mapMaybe-concatMap instead.&quot;</a>
-<a id="37556" class="Symbol">#-}</a>
-<a id="length-gfilter"></a><a id="37560" href="Data.List.Properties.html#37560" class="Function">length-gfilter</a>    <a id="37578" class="Symbol">=</a> <a id="37580" href="Data.List.Properties.html#4842" class="Function">length-mapMaybe</a>
-<a id="37596" class="Symbol">{-#</a> <a id="37600" class="Keyword">WARNING_ON_USAGE</a> <a id="37617" class="Pragma">length-gfilter</a>
-<a id="37632" class="String">&quot;Warning: length-gfilter was deprecated in v0.15.
-Please use length-mapMaybe instead.&quot;</a>
-<a id="37719" class="Symbol">#-}</a>
-<a id="right-identity-unique"></a><a id="37723" href="Data.List.Properties.html#37723" class="Function">right-identity-unique</a> <a id="37745" class="Symbol">=</a> <a id="37747" href="Data.List.Properties.html#5818" class="Function">++-identityʳ-unique</a>
-<a id="37767" class="Symbol">{-#</a> <a id="37771" class="Keyword">WARNING_ON_USAGE</a> <a id="37788" class="Pragma">right-identity-unique</a>
-<a id="37810" class="String">&quot;Warning: right-identity-unique was deprecated in v0.15.
-Please use ++-identityʳ-unique instead.&quot;</a>
-<a id="37908" class="Symbol">#-}</a>
-<a id="left-identity-unique"></a><a id="37912" href="Data.List.Properties.html#37912" class="Function">left-identity-unique</a>  <a id="37934" class="Symbol">=</a> <a id="37936" href="Data.List.Properties.html#6023" class="Function">++-identityˡ-unique</a>
-<a id="37956" class="Symbol">{-#</a> <a id="37960" class="Keyword">WARNING_ON_USAGE</a> <a id="37977" class="Pragma">left-identity-unique</a>
-<a id="37998" class="String">&quot;Warning: left-identity-unique was deprecated in v0.15.
-Please use ++-identityˡ-unique instead.&quot;</a>
-<a id="38095" class="Symbol">#-}</a>
-
-<a id="38100" class="Comment">-- Version 0.16</a>
-
-<a id="38117" class="Keyword">module</a> <a id="38124" href="Data.List.Properties.html#38124" class="Module">_</a> <a id="38126" class="Symbol">(</a><a id="38127" href="Data.List.Properties.html#38127" class="Bound">p</a> <a id="38129" class="Symbol">:</a> <a id="38131" href="Data.List.Properties.html#1934" class="Generalizable">A</a> <a id="38133" class="Symbol">→</a> <a id="38135" href="Agda.Builtin.Bool.html#163" class="Datatype">Bool</a><a id="38139" class="Symbol">)</a> <a id="38141" class="Keyword">where</a>
-
-  <a id="38150" href="Data.List.Properties.html#38150" class="Function">boolTakeWhile++boolDropWhile</a> <a id="38179" class="Symbol">:</a> <a id="38181" class="Symbol">∀</a> <a id="38183" href="Data.List.Properties.html#38183" class="Bound">xs</a> <a id="38186" class="Symbol">→</a> <a id="38188" href="Data.List.Base.html#12954" class="Function">boolTakeWhile</a> <a id="38202" href="Data.List.Properties.html#38127" class="Bound">p</a> <a id="38204" href="Data.List.Properties.html#38183" class="Bound">xs</a> <a id="38207" href="Data.List.Base.html#1810" class="Function Operator">++</a> <a id="38210" href="Data.List.Base.html#13118" class="Function">boolDropWhile</a> <a id="38224" href="Data.List.Properties.html#38127" class="Bound">p</a> <a id="38226" href="Data.List.Properties.html#38183" class="Bound">xs</a> <a id="38229" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="38231" href="Data.List.Properties.html#38183" class="Bound">xs</a>
-  <a id="38236" href="Data.List.Properties.html#38150" class="Function">boolTakeWhile++boolDropWhile</a> <a id="38265" href="Agda.Builtin.List.html#185" class="InductiveConstructor">[]</a>       <a id="38274" class="Symbol">=</a> <a id="38276" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
-  <a id="38283" href="Data.List.Properties.html#38150" class="Function">boolTakeWhile++boolDropWhile</a> <a id="38312" class="Symbol">(</a><a id="38313" href="Data.List.Properties.html#38313" class="Bound">x</a> <a id="38315" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">∷</a> <a id="38317" href="Data.List.Properties.html#38317" class="Bound">xs</a><a id="38319" class="Symbol">)</a> <a id="38321" class="Keyword">with</a> <a id="38326" href="Data.List.Properties.html#38127" class="Bound">p</a> <a id="38328" href="Data.List.Properties.html#38313" class="Bound">x</a>
-  <a id="38332" class="Symbol">...</a> <a id="38336" class="Symbol">|</a> <a id="38338" href="Agda.Builtin.Bool.html#188" class="InductiveConstructor">true</a>  <a id="38344" class="Symbol">=</a> <a id="38346" href="Relation.Binary.PropositionalEquality.Core.html#1130" class="Function">cong</a> <a id="38351" class="Symbol">(</a><a id="38352" class="Bound">x</a> <a id="38354" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">∷_</a><a id="38356" class="Symbol">)</a> <a id="38358" class="Symbol">(</a><a id="38359" href="Data.List.Properties.html#38150" class="Function">boolTakeWhile++boolDropWhile</a> <a id="38388" class="Bound">xs</a><a id="38390" class="Symbol">)</a>
-  <a id="38394" class="Symbol">...</a> <a id="38398" class="Symbol">|</a> <a id="38400" href="Agda.Builtin.Bool.html#182" class="InductiveConstructor">false</a> <a id="38406" class="Symbol">=</a> <a id="38408" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
-  <a id="38415" class="Symbol">{-#</a> <a id="38419" class="Keyword">WARNING_ON_USAGE</a> <a id="38436" class="Pragma">boolTakeWhile++boolDropWhile</a>
-  <a id="38467" class="String">&quot;Warning: boolTakeWhile and boolDropWhile were deprecated in v0.16.
-  Please use takeWhile and dropWhile instead.&quot;</a>
-  <a id="38584" class="Symbol">#-}</a>
-  <a id="38590" href="Data.List.Properties.html#38590" class="Function">boolSpan-defn</a> <a id="38604" class="Symbol">:</a> <a id="38606" href="Data.List.Base.html#13282" class="Function">boolSpan</a> <a id="38615" href="Data.List.Properties.html#38127" class="Bound">p</a> <a id="38617" href="Relation.Binary.PropositionalEquality.html#1471" class="Function Operator">≗</a> <a id="38619" href="Data.Product.html#2313" class="Function Operator">&lt;</a> <a id="38621" href="Data.List.Base.html#12954" class="Function">boolTakeWhile</a> <a id="38635" href="Data.List.Properties.html#38127" class="Bound">p</a> <a id="38637" href="Data.Product.html#2313" class="Function Operator">,</a> <a id="38639" href="Data.List.Base.html#13118" class="Function">boolDropWhile</a> <a id="38653" href="Data.List.Properties.html#38127" class="Bound">p</a> <a id="38655" href="Data.Product.html#2313" class="Function Operator">&gt;</a>
-  <a id="38659" href="Data.List.Properties.html#38590" class="Function">boolSpan-defn</a> <a id="38673" href="Agda.Builtin.List.html#185" class="InductiveConstructor">[]</a>       <a id="38682" class="Symbol">=</a> <a id="38684" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
-  <a id="38691" href="Data.List.Properties.html#38590" class="Function">boolSpan-defn</a> <a id="38705" class="Symbol">(</a><a id="38706" href="Data.List.Properties.html#38706" class="Bound">x</a> <a id="38708" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">∷</a> <a id="38710" href="Data.List.Properties.html#38710" class="Bound">xs</a><a id="38712" class="Symbol">)</a> <a id="38714" class="Keyword">with</a> <a id="38719" href="Data.List.Properties.html#38127" class="Bound">p</a> <a id="38721" href="Data.List.Properties.html#38706" class="Bound">x</a>
-  <a id="38725" class="Symbol">...</a> <a id="38729" class="Symbol">|</a> <a id="38731" href="Agda.Builtin.Bool.html#188" class="InductiveConstructor">true</a>  <a id="38737" class="Symbol">=</a> <a id="38739" href="Relation.Binary.PropositionalEquality.Core.html#1130" class="Function">cong</a> <a id="38744" class="Symbol">(</a><a id="38745" href="Data.Product.html#2486" class="Function">Prod.map</a> <a id="38754" class="Symbol">(</a><a id="38755" class="Bound">x</a> <a id="38757" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">∷_</a><a id="38759" class="Symbol">)</a> <a id="38761" href="Function.Base.html#695" class="Function">id</a><a id="38763" class="Symbol">)</a> <a id="38765" class="Symbol">(</a><a id="38766" href="Data.List.Properties.html#38590" class="Function">boolSpan-defn</a> <a id="38780" class="Bound">xs</a><a id="38782" class="Symbol">)</a>
-  <a id="38786" class="Symbol">...</a> <a id="38790" class="Symbol">|</a> <a id="38792" href="Agda.Builtin.Bool.html#182" class="InductiveConstructor">false</a> <a id="38798" class="Symbol">=</a> <a id="38800" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
-  <a id="38807" class="Symbol">{-#</a> <a id="38811" class="Keyword">WARNING_ON_USAGE</a> <a id="38828" class="Pragma">boolSpan-defn</a>
-  <a id="38844" class="String">&quot;Warning: boolSpan, boolTakeWhile and boolDropWhile were deprecated in v0.16.
-  Please use span, takeWhile and dropWhile instead.&quot;</a>
-  <a id="38977" class="Symbol">#-}</a>
-  <a id="38983" href="Data.List.Properties.html#38983" class="Function">length-boolFilter</a> <a id="39001" class="Symbol">:</a> <a id="39003" class="Symbol">∀</a> <a id="39005" href="Data.List.Properties.html#39005" class="Bound">xs</a> <a id="39008" class="Symbol">→</a> <a id="39010" href="Data.List.Base.html#4864" class="Function">length</a> <a id="39017" class="Symbol">(</a><a id="39018" href="Data.List.Base.html#12601" class="Function">boolFilter</a> <a id="39029" href="Data.List.Properties.html#38127" class="Bound">p</a> <a id="39031" href="Data.List.Properties.html#39005" class="Bound">xs</a><a id="39033" class="Symbol">)</a> <a id="39035" href="Data.Nat.Base.html#1469" class="Datatype Operator">≤</a> <a id="39037" href="Data.List.Base.html#4864" class="Function">length</a> <a id="39044" href="Data.List.Properties.html#39005" class="Bound">xs</a>
-  <a id="39049" href="Data.List.Properties.html#38983" class="Function">length-boolFilter</a> <a id="39067" href="Data.List.Properties.html#39067" class="Bound">xs</a> <a id="39070" class="Symbol">=</a>
-    <a id="39076" href="Data.List.Properties.html#4842" class="Function">length-mapMaybe</a> <a id="39092" class="Symbol">(λ</a> <a id="39095" href="Data.List.Properties.html#39095" class="Bound">x</a> <a id="39097" class="Symbol">→</a> <a id="39099" href="Data.Bool.Base.html#1283" class="Function Operator">if</a> <a id="39102" href="Data.List.Properties.html#38127" class="Bound">p</a> <a id="39104" href="Data.List.Properties.html#39095" class="Bound">x</a> <a id="39106" href="Data.Bool.Base.html#1283" class="Function Operator">then</a> <a id="39111" href="Agda.Builtin.Maybe.html#174" class="InductiveConstructor">just</a> <a id="39116" href="Data.List.Properties.html#39095" class="Bound">x</a> <a id="39118" href="Data.Bool.Base.html#1283" class="Function Operator">else</a> <a id="39123" href="Agda.Builtin.Maybe.html#195" class="InductiveConstructor">nothing</a><a id="39130" class="Symbol">)</a> <a id="39132" href="Data.List.Properties.html#39067" class="Bound">xs</a>
-  <a id="39137" class="Symbol">{-#</a> <a id="39141" class="Keyword">WARNING_ON_USAGE</a> <a id="39158" class="Pragma">length-boolFilter</a>
-  <a id="39178" class="String">&quot;Warning: boolFilter was deprecated in v0.16.
-  Please use filter instead.&quot;</a>
-  <a id="39256" class="Symbol">#-}</a>
-  <a id="39262" href="Data.List.Properties.html#39262" class="Function">boolPartition-defn</a> <a id="39281" class="Symbol">:</a> <a id="39283" href="Data.List.Base.html#12708" class="Function">boolPartition</a> <a id="39297" href="Data.List.Properties.html#38127" class="Bound">p</a> <a id="39299" href="Relation.Binary.PropositionalEquality.html#1471" class="Function Operator">≗</a> <a id="39301" href="Data.Product.html#2313" class="Function Operator">&lt;</a> <a id="39303" href="Data.List.Base.html#12601" class="Function">boolFilter</a> <a id="39314" href="Data.List.Properties.html#38127" class="Bound">p</a> <a id="39316" href="Data.Product.html#2313" class="Function Operator">,</a> <a id="39318" href="Data.List.Base.html#12601" class="Function">boolFilter</a> <a id="39329" class="Symbol">(</a><a id="39330" href="Data.Bool.Base.html#932" class="Function">not</a> <a id="39334" href="Function.Base.html#1106" class="Function Operator">∘</a> <a id="39336" href="Data.List.Properties.html#38127" class="Bound">p</a><a id="39337" class="Symbol">)</a> <a id="39339" href="Data.Product.html#2313" class="Function Operator">&gt;</a>
-  <a id="39343" href="Data.List.Properties.html#39262" class="Function">boolPartition-defn</a> <a id="39362" href="Agda.Builtin.List.html#185" class="InductiveConstructor">[]</a>       <a id="39371" class="Symbol">=</a> <a id="39373" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
-  <a id="39380" href="Data.List.Properties.html#39262" class="Function">boolPartition-defn</a> <a id="39399" class="Symbol">(</a><a id="39400" href="Data.List.Properties.html#39400" class="Bound">x</a> <a id="39402" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">∷</a> <a id="39404" href="Data.List.Properties.html#39404" class="Bound">xs</a><a id="39406" class="Symbol">)</a> <a id="39408" class="Keyword">with</a> <a id="39413" href="Data.List.Properties.html#38127" class="Bound">p</a> <a id="39415" href="Data.List.Properties.html#39400" class="Bound">x</a>
-  <a id="39419" class="Symbol">...</a>  <a id="39424" class="Symbol">|</a> <a id="39426" href="Agda.Builtin.Bool.html#188" class="InductiveConstructor">true</a>  <a id="39432" class="Symbol">=</a> <a id="39434" href="Relation.Binary.PropositionalEquality.Core.html#1130" class="Function">cong</a> <a id="39439" class="Symbol">(</a><a id="39440" href="Data.Product.html#2486" class="Function">Prod.map</a> <a id="39449" class="Symbol">(</a><a id="39450" class="Bound">x</a> <a id="39452" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">∷_</a><a id="39454" class="Symbol">)</a> <a id="39456" href="Function.Base.html#695" class="Function">id</a><a id="39458" class="Symbol">)</a> <a id="39460" class="Symbol">(</a><a id="39461" href="Data.List.Properties.html#39262" class="Function">boolPartition-defn</a> <a id="39480" class="Bound">xs</a><a id="39482" class="Symbol">)</a>
-  <a id="39486" class="Symbol">...</a>  <a id="39491" class="Symbol">|</a> <a id="39493" href="Agda.Builtin.Bool.html#182" class="InductiveConstructor">false</a> <a id="39499" class="Symbol">=</a> <a id="39501" href="Relation.Binary.PropositionalEquality.Core.html#1130" class="Function">cong</a> <a id="39506" class="Symbol">(</a><a id="39507" href="Data.Product.html#2486" class="Function">Prod.map</a> <a id="39516" href="Function.Base.html#695" class="Function">id</a> <a id="39519" class="Symbol">(</a><a id="39520" class="Bound">x</a> <a id="39522" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">∷_</a><a id="39524" class="Symbol">))</a> <a id="39527" class="Symbol">(</a><a id="39528" href="Data.List.Properties.html#39262" class="Function">boolPartition-defn</a> <a id="39547" class="Bound">xs</a><a id="39549" class="Symbol">)</a>
-  <a id="39553" class="Symbol">{-#</a> <a id="39557" class="Keyword">WARNING_ON_USAGE</a> <a id="39574" class="Pragma">boolPartition-defn</a>
-  <a id="39595" class="String">&quot;Warning: boolPartition and boolFilter were deprecated in v0.16.
-  Please use partition and filter instead.&quot;</a>
-  <a id="39706" class="Symbol">#-}</a>
-
-<a id="39711" class="Keyword">module</a> <a id="39718" href="Data.List.Properties.html#39718" class="Module">_</a> <a id="39720" class="Symbol">(</a><a id="39721" href="Data.List.Properties.html#39721" class="Bound">P</a> <a id="39723" class="Symbol">:</a> <a id="39725" href="Data.List.Properties.html#1934" class="Generalizable">A</a> <a id="39727" class="Symbol">→</a> <a id="39729" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="39733" href="Data.List.Properties.html#1920" class="Generalizable">p</a><a id="39734" class="Symbol">)</a> <a id="39736" class="Symbol">(</a><a id="39737" href="Data.List.Properties.html#39737" class="Bound">P?</a> <a id="39740" class="Symbol">:</a> <a id="39742" href="Relation.Unary.html#3675" class="Function">Decidable</a> <a id="39752" href="Data.List.Properties.html#39721" class="Bound">P</a><a id="39753" class="Symbol">)</a> <a id="39755" class="Keyword">where</a>
-
-  <a id="39764" href="Data.List.Properties.html#39764" class="Function">boolFilter-filters</a> <a id="39783" class="Symbol">:</a> <a id="39785" class="Symbol">∀</a> <a id="39787" href="Data.List.Properties.html#39787" class="Bound">xs</a> <a id="39790" class="Symbol">→</a> <a id="39792" href="Data.List.Relation.Unary.All.html#1444" class="Datatype">All</a> <a id="39796" href="Data.List.Properties.html#39721" class="Bound">P</a> <a id="39798" class="Symbol">(</a><a id="39799" href="Data.List.Base.html#12601" class="Function">boolFilter</a> <a id="39810" class="Symbol">(</a><a id="39811" href="Relation.Nullary.Decidable.Core.html#1027" class="Function">isYes</a> <a id="39817" href="Function.Base.html#1106" class="Function Operator">∘</a> <a id="39819" href="Data.List.Properties.html#39737" class="Bound">P?</a><a id="39821" class="Symbol">)</a> <a id="39823" href="Data.List.Properties.html#39787" class="Bound">xs</a><a id="39825" class="Symbol">)</a>
-  <a id="39829" href="Data.List.Properties.html#39764" class="Function">boolFilter-filters</a> <a id="39848" href="Agda.Builtin.List.html#185" class="InductiveConstructor">[]</a>       <a id="39857" class="Symbol">=</a> <a id="39859" href="Data.List.Relation.Unary.All.html#1507" class="InductiveConstructor">[]</a>
-  <a id="39864" href="Data.List.Properties.html#39764" class="Function">boolFilter-filters</a> <a id="39883" class="Symbol">(</a><a id="39884" href="Data.List.Properties.html#39884" class="Bound">x</a> <a id="39886" href="Agda.Builtin.List.html#200" class="InductiveConstructor Operator">∷</a> <a id="39888" href="Data.List.Properties.html#39888" class="Bound">xs</a><a id="39890" class="Symbol">)</a> <a id="39892" class="Keyword">with</a> <a id="39897" href="Data.List.Properties.html#39737" class="Bound">P?</a> <a id="39900" href="Data.List.Properties.html#39884" class="Bound">x</a>
-  <a id="39904" class="Symbol">...</a> <a id="39908" class="Symbol">|</a> <a id="39910" href="Agda.Builtin.Bool.html#188" class="InductiveConstructor">true</a>  <a id="39916" href="Relation.Nullary.html#1559" class="InductiveConstructor Operator">because</a> <a id="39924" href="Data.List.Properties.html#39924" class="Bound">[px]</a> <a id="39929" class="Symbol">=</a> <a id="39931" href="Relation.Nullary.Reflects.html#1031" class="Function">invert</a> <a id="39938" href="Data.List.Properties.html#39924" class="Bound">[px]</a> <a id="39943" href="Data.List.Relation.Unary.All.html#1524" class="InductiveConstructor Operator">∷</a> <a id="39945" href="Data.List.Properties.html#39764" class="Function">boolFilter-filters</a> <a id="39964" class="Bound">xs</a>
-  <a id="39969" class="Symbol">...</a> <a id="39973" class="Symbol">|</a> <a id="39975" href="Agda.Builtin.Bool.html#182" class="InductiveConstructor">false</a> <a id="39981" href="Relation.Nullary.html#1559" class="InductiveConstructor Operator">because</a>  <a id="39990" class="Symbol">_</a>   <a id="39994" class="Symbol">=</a> <a id="39996" href="Data.List.Properties.html#39764" class="Function">boolFilter-filters</a> <a id="40015" class="Bound">xs</a>
-  <a id="40020" class="Symbol">{-#</a> <a id="40024" class="Keyword">WARNING_ON_USAGE</a> <a id="40041" class="Pragma">boolFilter-filters</a>
-  <a id="40062" class="String">&quot;Warning: boolFilter was deprecated in v0.16.
-  Please use filter instead.&quot;</a>
-  <a id="40140" class="Symbol">#-}</a>
-
-<a id="40145" class="Comment">-- Version 0.17</a>
-
-<a id="idIsFold"></a><a id="40162" href="Data.List.Properties.html#40162" class="Function">idIsFold</a>  <a id="40172" class="Symbol">=</a> <a id="40174" href="Data.List.Properties.html#15869" class="Function">id-is-foldr</a>
-<a id="40186" class="Symbol">{-#</a> <a id="40190" class="Keyword">WARNING_ON_USAGE</a> <a id="40207" class="Pragma">idIsFold</a>
-<a id="40216" class="String">&quot;Warning: idIsFold was deprecated in v0.17.
-Please use id-is-foldr instead.&quot;</a>
-<a id="40293" class="Symbol">#-}</a>
-<a id="++IsFold"></a><a id="40297" href="Data.List.Properties.html#40297" class="Function">++IsFold</a>  <a id="40307" class="Symbol">=</a> <a id="40309" href="Data.List.Properties.html#15975" class="Function">++-is-foldr</a>
-<a id="40321" class="Symbol">{-#</a> <a id="40325" class="Keyword">WARNING_ON_USAGE</a> <a id="40342" class="Pragma">++IsFold</a>
-<a id="40351" class="String">&quot;Warning: ++IsFold was deprecated in v0.17.
-Please use ++-is-foldr instead.&quot;</a>
-<a id="40428" class="Symbol">#-}</a>
-<a id="mapIsFold"></a><a id="40432" href="Data.List.Properties.html#40432" class="Function">mapIsFold</a> <a id="40442" class="Symbol">=</a> <a id="40444" href="Data.List.Properties.html#16447" class="Function">map-is-foldr</a>
-<a id="40457" class="Symbol">{-#</a> <a id="40461" class="Keyword">WARNING_ON_USAGE</a> <a id="40478" class="Pragma">mapIsFold</a>
-<a id="40488" class="String">&quot;Warning: mapIsFold was deprecated in v0.17.
-Please use map-is-foldr instead.&quot;</a>
-<a id="40567" class="Symbol">#-}</a>
-
-<a id="40572" class="Comment">-- Version 2.0</a>
-
-<a id="zipWith-identityˡ"></a><a id="40588" href="Data.List.Properties.html#40588" class="Function">zipWith-identityˡ</a> <a id="40606" class="Symbol">=</a> <a id="40608" href="Data.List.Properties.html#10144" class="Function">zipWith-zeroˡ</a>
-<a id="40622" class="Symbol">{-#</a> <a id="40626" class="Keyword">WARNING_ON_USAGE</a> <a id="40643" class="Pragma">zipWith-identityˡ</a>
-<a id="40661" class="String">&quot;Warning: zipWith-identityˡ was deprecated in v2.0.
+<a id="zipWith-identityˡ"></a><a id="37061" href="Data.List.Properties.html#37061" class="Function">zipWith-identityˡ</a> <a id="37079" class="Symbol">=</a> <a id="37081" href="Data.List.Properties.html#10144" class="Function">zipWith-zeroˡ</a>
+<a id="37095" class="Symbol">{-#</a> <a id="37099" class="Keyword">WARNING_ON_USAGE</a> <a id="37116" class="Pragma">zipWith-identityˡ</a>
+<a id="37134" class="String">&quot;Warning: zipWith-identityˡ was deprecated in v2.0.
 Please use zipWith-zeroˡ instead.&quot;</a>
-<a id="40748" class="Symbol">#-}</a>
+<a id="37221" class="Symbol">#-}</a>
 
-<a id="zipWith-identityʳ"></a><a id="40753" href="Data.List.Properties.html#40753" class="Function">zipWith-identityʳ</a> <a id="40771" class="Symbol">=</a> <a id="40773" href="Data.List.Properties.html#10255" class="Function">zipWith-zeroʳ</a>
-<a id="40787" class="Symbol">{-#</a> <a id="40791" class="Keyword">WARNING_ON_USAGE</a> <a id="40808" class="Pragma">zipWith-identityʳ</a>
-<a id="40826" class="String">&quot;Warning: zipWith-identityʳ was deprecated in v2.0.
+<a id="zipWith-identityʳ"></a><a id="37226" href="Data.List.Properties.html#37226" class="Function">zipWith-identityʳ</a> <a id="37244" class="Symbol">=</a> <a id="37246" href="Data.List.Properties.html#10255" class="Function">zipWith-zeroʳ</a>
+<a id="37260" class="Symbol">{-#</a> <a id="37264" class="Keyword">WARNING_ON_USAGE</a> <a id="37281" class="Pragma">zipWith-identityʳ</a>
+<a id="37299" class="String">&quot;Warning: zipWith-identityʳ was deprecated in v2.0.
 Please use zipWith-zeroʳ instead.&quot;</a>
-<a id="40913" class="Symbol">#-}</a>
+<a id="37386" class="Symbol">#-}</a>
 </pre></body></html>

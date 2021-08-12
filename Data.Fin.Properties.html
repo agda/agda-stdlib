@@ -249,17 +249,17 @@
   <a id="8647" class="Symbol">;</a> <a id="8649" href="Relation.Binary.Structures.html#3275" class="Field">antisym</a>    <a id="8660" class="Symbol">=</a> <a id="8662" href="Data.Fin.Properties.html#7843" class="Function">≤-antisym</a>
   <a id="8674" class="Symbol">}</a>
 
-<a id="≤-isTotalOrder"></a><a id="8677" href="Data.Fin.Properties.html#8677" class="Function">≤-isTotalOrder</a> <a id="8692" class="Symbol">:</a> <a id="8694" class="Symbol">∀</a> <a id="8696" class="Symbol">{</a><a id="8697" href="Data.Fin.Properties.html#8697" class="Bound">n</a><a id="8698" class="Symbol">}</a> <a id="8700" class="Symbol">→</a> <a id="8702" href="Relation.Binary.Structures.html#5297" class="Record">IsTotalOrder</a> <a id="8715" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a> <a id="8719" class="Symbol">(</a><a id="8720" href="Data.Fin.Base.html#7247" class="Function Operator">_≤_</a> <a id="8724" class="Symbol">{</a><a id="8725" href="Data.Fin.Properties.html#8697" class="Bound">n</a><a id="8726" class="Symbol">})</a>
+<a id="≤-isTotalOrder"></a><a id="8677" href="Data.Fin.Properties.html#8677" class="Function">≤-isTotalOrder</a> <a id="8692" class="Symbol">:</a> <a id="8694" class="Symbol">∀</a> <a id="8696" class="Symbol">{</a><a id="8697" href="Data.Fin.Properties.html#8697" class="Bound">n</a><a id="8698" class="Symbol">}</a> <a id="8700" class="Symbol">→</a> <a id="8702" href="Relation.Binary.Structures.html#5160" class="Record">IsTotalOrder</a> <a id="8715" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a> <a id="8719" class="Symbol">(</a><a id="8720" href="Data.Fin.Base.html#7247" class="Function Operator">_≤_</a> <a id="8724" class="Symbol">{</a><a id="8725" href="Data.Fin.Properties.html#8697" class="Bound">n</a><a id="8726" class="Symbol">})</a>
 <a id="8729" href="Data.Fin.Properties.html#8677" class="Function">≤-isTotalOrder</a> <a id="8744" class="Symbol">=</a> <a id="8746" class="Keyword">record</a>
-  <a id="8755" class="Symbol">{</a> <a id="8757" href="Relation.Binary.Structures.html#5364" class="Field">isPartialOrder</a> <a id="8772" class="Symbol">=</a> <a id="8774" href="Data.Fin.Properties.html#8533" class="Function">≤-isPartialOrder</a>
-  <a id="8793" class="Symbol">;</a> <a id="8795" href="Relation.Binary.Structures.html#5404" class="Field">total</a>          <a id="8810" class="Symbol">=</a> <a id="8812" href="Data.Fin.Properties.html#7949" class="Function">≤-total</a>
+  <a id="8755" class="Symbol">{</a> <a id="8757" href="Relation.Binary.Structures.html#5227" class="Field">isPartialOrder</a> <a id="8772" class="Symbol">=</a> <a id="8774" href="Data.Fin.Properties.html#8533" class="Function">≤-isPartialOrder</a>
+  <a id="8793" class="Symbol">;</a> <a id="8795" href="Relation.Binary.Structures.html#5267" class="Field">total</a>          <a id="8810" class="Symbol">=</a> <a id="8812" href="Data.Fin.Properties.html#7949" class="Function">≤-total</a>
   <a id="8822" class="Symbol">}</a>
 
-<a id="≤-isDecTotalOrder"></a><a id="8825" href="Data.Fin.Properties.html#8825" class="Function">≤-isDecTotalOrder</a> <a id="8843" class="Symbol">:</a> <a id="8845" class="Symbol">∀</a> <a id="8847" class="Symbol">{</a><a id="8848" href="Data.Fin.Properties.html#8848" class="Bound">n</a><a id="8849" class="Symbol">}</a> <a id="8851" class="Symbol">→</a> <a id="8853" href="Relation.Binary.Structures.html#5614" class="Record">IsDecTotalOrder</a> <a id="8869" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a> <a id="8873" class="Symbol">(</a><a id="8874" href="Data.Fin.Base.html#7247" class="Function Operator">_≤_</a> <a id="8878" class="Symbol">{</a><a id="8879" href="Data.Fin.Properties.html#8848" class="Bound">n</a><a id="8880" class="Symbol">})</a>
+<a id="≤-isDecTotalOrder"></a><a id="8825" href="Data.Fin.Properties.html#8825" class="Function">≤-isDecTotalOrder</a> <a id="8843" class="Symbol">:</a> <a id="8845" class="Symbol">∀</a> <a id="8847" class="Symbol">{</a><a id="8848" href="Data.Fin.Properties.html#8848" class="Bound">n</a><a id="8849" class="Symbol">}</a> <a id="8851" class="Symbol">→</a> <a id="8853" href="Relation.Binary.Structures.html#5477" class="Record">IsDecTotalOrder</a> <a id="8869" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a> <a id="8873" class="Symbol">(</a><a id="8874" href="Data.Fin.Base.html#7247" class="Function Operator">_≤_</a> <a id="8878" class="Symbol">{</a><a id="8879" href="Data.Fin.Properties.html#8848" class="Bound">n</a><a id="8880" class="Symbol">})</a>
 <a id="8883" href="Data.Fin.Properties.html#8825" class="Function">≤-isDecTotalOrder</a> <a id="8901" class="Symbol">=</a> <a id="8903" class="Keyword">record</a>
-  <a id="8912" class="Symbol">{</a> <a id="8914" href="Relation.Binary.Structures.html#5703" class="Field">isTotalOrder</a> <a id="8927" class="Symbol">=</a> <a id="8929" href="Data.Fin.Properties.html#8677" class="Function">≤-isTotalOrder</a>
-  <a id="8946" class="Symbol">;</a> <a id="8948" href="Relation.Binary.Structures.html#5739" class="Field Operator">_≟_</a>          <a id="8961" class="Symbol">=</a> <a id="8963" href="Data.Fin.Properties.html#2542" class="Function Operator">_≟_</a>
-  <a id="8969" class="Symbol">;</a> <a id="8971" href="Relation.Binary.Structures.html#5772" class="Field Operator">_≤?_</a>         <a id="8984" class="Symbol">=</a> <a id="8986" href="Data.Fin.Properties.html#8126" class="Function Operator">_≤?_</a>
+  <a id="8912" class="Symbol">{</a> <a id="8914" href="Relation.Binary.Structures.html#5566" class="Field">isTotalOrder</a> <a id="8927" class="Symbol">=</a> <a id="8929" href="Data.Fin.Properties.html#8677" class="Function">≤-isTotalOrder</a>
+  <a id="8946" class="Symbol">;</a> <a id="8948" href="Relation.Binary.Structures.html#5602" class="Field Operator">_≟_</a>          <a id="8961" class="Symbol">=</a> <a id="8963" href="Data.Fin.Properties.html#2542" class="Function Operator">_≟_</a>
+  <a id="8969" class="Symbol">;</a> <a id="8971" href="Relation.Binary.Structures.html#5635" class="Field Operator">_≤?_</a>         <a id="8984" class="Symbol">=</a> <a id="8986" href="Data.Fin.Properties.html#8126" class="Function Operator">_≤?_</a>
   <a id="8993" class="Symbol">}</a>
 
 <a id="8996" class="Comment">------------------------------------------------------------------------</a>
@@ -331,11 +331,11 @@
   <a id="10968" class="Symbol">;</a> <a id="10970" href="Relation.Binary.Structures.html#4134" class="Field">&lt;-resp-≈</a>      <a id="10984" class="Symbol">=</a> <a id="10986" href="Data.Fin.Properties.html#10524" class="Function">&lt;-resp₂-≡</a>
   <a id="10998" class="Symbol">}</a>
 
-<a id="&lt;-isStrictTotalOrder"></a><a id="11001" href="Data.Fin.Properties.html#11001" class="Function">&lt;-isStrictTotalOrder</a> <a id="11022" class="Symbol">:</a> <a id="11024" class="Symbol">∀</a> <a id="11026" class="Symbol">{</a><a id="11027" href="Data.Fin.Properties.html#11027" class="Bound">n</a><a id="11028" class="Symbol">}</a> <a id="11030" class="Symbol">→</a> <a id="11032" href="Relation.Binary.Structures.html#6539" class="Record">IsStrictTotalOrder</a> <a id="11051" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a> <a id="11055" class="Symbol">(</a><a id="11056" href="Data.Fin.Base.html#7333" class="Function Operator">_&lt;_</a> <a id="11060" class="Symbol">{</a><a id="11061" href="Data.Fin.Properties.html#11027" class="Bound">n</a><a id="11062" class="Symbol">})</a>
+<a id="&lt;-isStrictTotalOrder"></a><a id="11001" href="Data.Fin.Properties.html#11001" class="Function">&lt;-isStrictTotalOrder</a> <a id="11022" class="Symbol">:</a> <a id="11024" class="Symbol">∀</a> <a id="11026" class="Symbol">{</a><a id="11027" href="Data.Fin.Properties.html#11027" class="Bound">n</a><a id="11028" class="Symbol">}</a> <a id="11030" class="Symbol">→</a> <a id="11032" href="Relation.Binary.Structures.html#6402" class="Record">IsStrictTotalOrder</a> <a id="11051" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a> <a id="11055" class="Symbol">(</a><a id="11056" href="Data.Fin.Base.html#7333" class="Function Operator">_&lt;_</a> <a id="11060" class="Symbol">{</a><a id="11061" href="Data.Fin.Properties.html#11027" class="Bound">n</a><a id="11062" class="Symbol">})</a>
 <a id="11065" href="Data.Fin.Properties.html#11001" class="Function">&lt;-isStrictTotalOrder</a> <a id="11086" class="Symbol">=</a> <a id="11088" class="Keyword">record</a>
-  <a id="11097" class="Symbol">{</a> <a id="11099" href="Relation.Binary.Structures.html#6612" class="Field">isEquivalence</a> <a id="11113" class="Symbol">=</a> <a id="11115" href="Relation.Binary.PropositionalEquality.Properties.html#3427" class="Function">P.isEquivalence</a>
-  <a id="11133" class="Symbol">;</a> <a id="11135" href="Relation.Binary.Structures.html#6646" class="Field">trans</a>         <a id="11149" class="Symbol">=</a> <a id="11151" href="Data.Fin.Properties.html#9817" class="Function">&lt;-trans</a>
-  <a id="11161" class="Symbol">;</a> <a id="11163" href="Relation.Binary.Structures.html#6681" class="Field">compare</a>       <a id="11177" class="Symbol">=</a> <a id="11179" href="Data.Fin.Properties.html#9878" class="Function">&lt;-cmp</a>
+  <a id="11097" class="Symbol">{</a> <a id="11099" href="Relation.Binary.Structures.html#6475" class="Field">isEquivalence</a> <a id="11113" class="Symbol">=</a> <a id="11115" href="Relation.Binary.PropositionalEquality.Properties.html#3427" class="Function">P.isEquivalence</a>
+  <a id="11133" class="Symbol">;</a> <a id="11135" href="Relation.Binary.Structures.html#6509" class="Field">trans</a>         <a id="11149" class="Symbol">=</a> <a id="11151" href="Data.Fin.Properties.html#9817" class="Function">&lt;-trans</a>
+  <a id="11161" class="Symbol">;</a> <a id="11163" href="Relation.Binary.Structures.html#6544" class="Field">compare</a>       <a id="11177" class="Symbol">=</a> <a id="11179" href="Data.Fin.Properties.html#9878" class="Function">&lt;-cmp</a>
   <a id="11187" class="Symbol">}</a>
 
 <a id="11190" class="Comment">------------------------------------------------------------------------</a>
@@ -818,146 +818,77 @@
 <a id="30801" class="Comment">-- Please use the new names as continuing support for the old names is</a>
 <a id="30872" class="Comment">-- not guaranteed.</a>
 
-<a id="30892" class="Comment">-- Version 0.15</a>
+<a id="30892" class="Comment">-- Version 1.0</a>
 
-<a id="cmp"></a><a id="30909" href="Data.Fin.Properties.html#30909" class="Function">cmp</a>              <a id="30926" class="Symbol">=</a> <a id="30928" href="Data.Fin.Properties.html#9878" class="Function">&lt;-cmp</a>
-<a id="30934" class="Symbol">{-#</a> <a id="30938" class="Keyword">WARNING_ON_USAGE</a> <a id="30955" class="Pragma">cmp</a>
-<a id="30959" class="String">&quot;Warning: cmp was deprecated in v0.15.
-Please use &lt;-cmp instead.&quot;</a>
-<a id="31025" class="Symbol">#-}</a>
-<a id="strictTotalOrder"></a><a id="31029" href="Data.Fin.Properties.html#31029" class="Function">strictTotalOrder</a> <a id="31046" class="Symbol">=</a> <a id="31048" href="Data.Fin.Properties.html#11418" class="Function">&lt;-strictTotalOrder</a>
-<a id="31067" class="Symbol">{-#</a> <a id="31071" class="Keyword">WARNING_ON_USAGE</a> <a id="31088" class="Pragma">strictTotalOrder</a>
-<a id="31105" class="String">&quot;Warning: strictTotalOrder was deprecated in v0.15.
-Please use &lt;-strictTotalOrder instead.&quot;</a>
-<a id="31197" class="Symbol">#-}</a>
-
-<a id="31202" class="Comment">-- Version 0.16</a>
-
-<a id="to-from"></a><a id="31219" href="Data.Fin.Properties.html#31219" class="Function">to-from</a> <a id="31227" class="Symbol">=</a> <a id="31229" href="Data.Fin.Properties.html#4703" class="Function">toℕ-fromℕ</a>
-<a id="31239" class="Symbol">{-#</a> <a id="31243" class="Keyword">WARNING_ON_USAGE</a> <a id="31260" class="Pragma">to-from</a>
-<a id="31268" class="String">&quot;Warning: to-from was deprecated in v0.16.
-Please use toℕ-fromℕ instead.&quot;</a>
-<a id="31342" class="Symbol">#-}</a>
-<a id="from-to"></a><a id="31346" href="Data.Fin.Properties.html#31346" class="Function">from-to</a>          <a id="31363" class="Symbol">=</a> <a id="31365" href="Data.Fin.Properties.html#4808" class="Function">fromℕ-toℕ</a>
-<a id="31375" class="Symbol">{-#</a> <a id="31379" class="Keyword">WARNING_ON_USAGE</a> <a id="31396" class="Pragma">from-to</a>
-<a id="31404" class="String">&quot;Warning: from-to was deprecated in v0.16.
-Please use fromℕ-toℕ instead.&quot;</a>
-<a id="31478" class="Symbol">#-}</a>
-<a id="bounded"></a><a id="31482" href="Data.Fin.Properties.html#31482" class="Function">bounded</a> <a id="31490" class="Symbol">=</a> <a id="31492" href="Data.Fin.Properties.html#3947" class="Function">toℕ&lt;n</a>
-<a id="31498" class="Symbol">{-#</a> <a id="31502" class="Keyword">WARNING_ON_USAGE</a> <a id="31519" class="Pragma">bounded</a>
-<a id="31527" class="String">&quot;Warning: bounded was deprecated in v0.16.
-Please use toℕ&lt;n instead.&quot;</a>
-<a id="31597" class="Symbol">#-}</a>
-<a id="prop-toℕ-≤"></a><a id="31601" href="Data.Fin.Properties.html#31601" class="Function">prop-toℕ-≤</a> <a id="31612" class="Symbol">=</a> <a id="31614" href="Data.Fin.Properties.html#4108" class="Function">toℕ≤pred[n]</a>
-<a id="31626" class="Symbol">{-#</a> <a id="31630" class="Keyword">WARNING_ON_USAGE</a> <a id="31647" class="Pragma">prop-toℕ-≤</a>
-<a id="31658" class="String">&quot;Warning: prop-toℕ-≤ was deprecated in v0.16.
-Please use toℕ≤pred[n] instead.&quot;</a>
-<a id="31737" class="Symbol">#-}</a>
-<a id="prop-toℕ-≤′"></a><a id="31741" href="Data.Fin.Properties.html#31741" class="Function">prop-toℕ-≤′</a> <a id="31753" class="Symbol">=</a> <a id="31755" href="Data.Fin.Properties.html#4454" class="Function">toℕ≤pred[n]′</a>
-<a id="31768" class="Symbol">{-#</a> <a id="31772" class="Keyword">WARNING_ON_USAGE</a> <a id="31789" class="Pragma">prop-toℕ-≤′</a>
-<a id="31801" class="String">&quot;Warning: prop-toℕ-≤′ was deprecated in v0.16.
-Please use toℕ≤pred[n]′ instead.&quot;</a>
-<a id="31882" class="Symbol">#-}</a>
-<a id="inject-lemma"></a><a id="31886" href="Data.Fin.Properties.html#31886" class="Function">inject-lemma</a> <a id="31899" class="Symbol">=</a> <a id="31901" href="Data.Fin.Properties.html#12136" class="Function">toℕ-inject</a>
-<a id="31912" class="Symbol">{-#</a> <a id="31916" class="Keyword">WARNING_ON_USAGE</a> <a id="31933" class="Pragma">inject-lemma</a>
-<a id="31946" class="String">&quot;Warning: inject-lemma was deprecated in v0.16.
-Please use toℕ-inject instead.&quot;</a>
-<a id="32026" class="Symbol">#-}</a>
-<a id="inject+-lemma"></a><a id="32030" href="Data.Fin.Properties.html#32030" class="Function">inject+-lemma</a> <a id="32044" class="Symbol">=</a> <a id="32046" href="Data.Fin.Properties.html#12472" class="Function">toℕ-inject+</a>
-<a id="32058" class="Symbol">{-#</a> <a id="32062" class="Keyword">WARNING_ON_USAGE</a> <a id="32079" class="Pragma">inject+-lemma</a>
-<a id="32093" class="String">&quot;Warning: inject+-lemma was deprecated in v0.16.
-Please use toℕ-inject+ instead.&quot;</a>
-<a id="32175" class="Symbol">#-}</a>
-<a id="inject₁-lemma"></a><a id="32179" href="Data.Fin.Properties.html#32179" class="Function">inject₁-lemma</a> <a id="32193" class="Symbol">=</a> <a id="32195" href="Data.Fin.Properties.html#12990" class="Function">toℕ-inject₁</a>
-<a id="32207" class="Symbol">{-#</a> <a id="32211" class="Keyword">WARNING_ON_USAGE</a> <a id="32228" class="Pragma">inject₁-lemma</a>
-<a id="32242" class="String">&quot;Warning: inject₁-lemma was deprecated in v0.16.
-Please use toℕ-inject₁ instead.&quot;</a>
-<a id="32324" class="Symbol">#-}</a>
-<a id="inject≤-lemma"></a><a id="32328" href="Data.Fin.Properties.html#32328" class="Function">inject≤-lemma</a> <a id="32342" class="Symbol">=</a> <a id="32344" href="Data.Fin.Properties.html#15668" class="Function">toℕ-inject≤</a>
-<a id="32356" class="Symbol">{-#</a> <a id="32360" class="Keyword">WARNING_ON_USAGE</a> <a id="32377" class="Pragma">inject≤-lemma</a>
-<a id="32391" class="String">&quot;Warning: inject≤-lemma was deprecated in v0.16.
-Please use toℕ-inject≤ instead.&quot;</a>
-<a id="32473" class="Symbol">#-}</a>
-
-<a id="32478" class="Comment">-- Version 0.17</a>
-
-<a id="≤+≢⇒&lt;"></a><a id="32495" href="Data.Fin.Properties.html#32495" class="Function">≤+≢⇒&lt;</a> <a id="32501" class="Symbol">=</a> <a id="32503" href="Data.Fin.Properties.html#11716" class="Function">≤∧≢⇒&lt;</a>
-<a id="32509" class="Symbol">{-#</a> <a id="32513" class="Keyword">WARNING_ON_USAGE</a> <a id="32530" class="Pragma">≤+≢⇒&lt;</a>
-<a id="32536" class="String">&quot;Warning: ≤+≢⇒&lt; was deprecated in v0.17.
-Please use ≤∧≢⇒&lt; instead.&quot;</a>
-<a id="32604" class="Symbol">#-}</a>
-
-<a id="32609" class="Comment">-- Version 1.0</a>
-
-<a id="≤-irrelevance"></a><a id="32625" href="Data.Fin.Properties.html#32625" class="Function">≤-irrelevance</a> <a id="32639" class="Symbol">=</a> <a id="32641" href="Data.Fin.Properties.html#8025" class="Function">≤-irrelevant</a>
-<a id="32654" class="Symbol">{-#</a> <a id="32658" class="Keyword">WARNING_ON_USAGE</a> <a id="32675" class="Pragma">≤-irrelevance</a>
-<a id="32689" class="String">&quot;Warning: ≤-irrelevance was deprecated in v1.0.
+<a id="≤-irrelevance"></a><a id="30908" href="Data.Fin.Properties.html#30908" class="Function">≤-irrelevance</a> <a id="30922" class="Symbol">=</a> <a id="30924" href="Data.Fin.Properties.html#8025" class="Function">≤-irrelevant</a>
+<a id="30937" class="Symbol">{-#</a> <a id="30941" class="Keyword">WARNING_ON_USAGE</a> <a id="30958" class="Pragma">≤-irrelevance</a>
+<a id="30972" class="String">&quot;Warning: ≤-irrelevance was deprecated in v1.0.
 Please use ≤-irrelevant instead.&quot;</a>
-<a id="32771" class="Symbol">#-}</a>
-<a id="&lt;-irrelevance"></a><a id="32775" href="Data.Fin.Properties.html#32775" class="Function">&lt;-irrelevance</a> <a id="32789" class="Symbol">=</a> <a id="32791" href="Data.Fin.Properties.html#10603" class="Function">&lt;-irrelevant</a>
-<a id="32804" class="Symbol">{-#</a> <a id="32808" class="Keyword">WARNING_ON_USAGE</a> <a id="32825" class="Pragma">&lt;-irrelevance</a>
-<a id="32839" class="String">&quot;Warning: &lt;-irrelevance was deprecated in v1.0.
+<a id="31054" class="Symbol">#-}</a>
+<a id="&lt;-irrelevance"></a><a id="31058" href="Data.Fin.Properties.html#31058" class="Function">&lt;-irrelevance</a> <a id="31072" class="Symbol">=</a> <a id="31074" href="Data.Fin.Properties.html#10603" class="Function">&lt;-irrelevant</a>
+<a id="31087" class="Symbol">{-#</a> <a id="31091" class="Keyword">WARNING_ON_USAGE</a> <a id="31108" class="Pragma">&lt;-irrelevance</a>
+<a id="31122" class="String">&quot;Warning: &lt;-irrelevance was deprecated in v1.0.
 Please use &lt;-irrelevant instead.&quot;</a>
-<a id="32921" class="Symbol">#-}</a>
+<a id="31204" class="Symbol">#-}</a>
 
-<a id="32926" class="Comment">-- Version 1.1</a>
+<a id="31209" class="Comment">-- Version 1.1</a>
 
-<a id="32942" class="Keyword">infixl</a> <a id="32949" class="Number">6</a> <a id="32951" href="Data.Fin.Properties.html#32956" class="Function Operator">_+′_</a>
-<a id="_+′_"></a><a id="32956" href="Data.Fin.Properties.html#32956" class="Function Operator">_+′_</a> <a id="32961" class="Symbol">:</a> <a id="32963" class="Symbol">∀</a> <a id="32965" class="Symbol">{</a><a id="32966" href="Data.Fin.Properties.html#32966" class="Bound">m</a> <a id="32968" href="Data.Fin.Properties.html#32968" class="Bound">n</a><a id="32969" class="Symbol">}</a> <a id="32971" class="Symbol">(</a><a id="32972" href="Data.Fin.Properties.html#32972" class="Bound">i</a> <a id="32974" class="Symbol">:</a> <a id="32976" href="Data.Fin.Base.html#1189" class="Datatype">Fin</a> <a id="32980" href="Data.Fin.Properties.html#32966" class="Bound">m</a><a id="32981" class="Symbol">)</a> <a id="32983" class="Symbol">(</a><a id="32984" href="Data.Fin.Properties.html#32984" class="Bound">j</a> <a id="32986" class="Symbol">:</a> <a id="32988" href="Data.Fin.Base.html#1189" class="Datatype">Fin</a> <a id="32992" href="Data.Fin.Properties.html#32968" class="Bound">n</a><a id="32993" class="Symbol">)</a> <a id="32995" class="Symbol">→</a> <a id="32997" href="Data.Fin.Base.html#1189" class="Datatype">Fin</a> <a id="33001" class="Symbol">(</a><a id="33002" href="Data.Nat.Base.html#2927" class="Function">ℕ.pred</a> <a id="33009" href="Data.Fin.Properties.html#32966" class="Bound">m</a> <a id="33011" href="Agda.Builtin.Nat.html#325" class="Primitive Operator">ℕ.+</a> <a id="33015" href="Data.Fin.Properties.html#32968" class="Bound">n</a><a id="33016" class="Symbol">)</a>
-<a id="33018" href="Data.Fin.Properties.html#33018" class="Bound">i</a> <a id="33020" href="Data.Fin.Properties.html#32956" class="Function Operator">+′</a> <a id="33023" href="Data.Fin.Properties.html#33023" class="Bound">j</a> <a id="33025" class="Symbol">=</a> <a id="33027" href="Data.Fin.Base.html#3180" class="Function">inject≤</a> <a id="33035" class="Symbol">(</a><a id="33036" href="Data.Fin.Properties.html#33018" class="Bound">i</a> <a id="33038" href="Data.Fin.Base.html#5467" class="Function Operator">+</a> <a id="33040" href="Data.Fin.Properties.html#33023" class="Bound">j</a><a id="33041" class="Symbol">)</a> <a id="33043" class="Symbol">(</a><a id="33044" href="Data.Nat.Properties.html#17919" class="Function">ℕₚ.+-monoˡ-≤</a> <a id="33057" class="Symbol">_</a> <a id="33059" class="Symbol">(</a><a id="33060" href="Data.Fin.Properties.html#4108" class="Function">toℕ≤pred[n]</a> <a id="33072" href="Data.Fin.Properties.html#33018" class="Bound">i</a><a id="33073" class="Symbol">))</a>
-<a id="33076" class="Symbol">{-#</a> <a id="33080" class="Keyword">WARNING_ON_USAGE</a> <a id="33097" class="Pragma">_+′_</a>
-<a id="33102" class="String">&quot;Warning: _+′_ was deprecated in v1.1.
+<a id="31225" class="Keyword">infixl</a> <a id="31232" class="Number">6</a> <a id="31234" href="Data.Fin.Properties.html#31239" class="Function Operator">_+′_</a>
+<a id="_+′_"></a><a id="31239" href="Data.Fin.Properties.html#31239" class="Function Operator">_+′_</a> <a id="31244" class="Symbol">:</a> <a id="31246" class="Symbol">∀</a> <a id="31248" class="Symbol">{</a><a id="31249" href="Data.Fin.Properties.html#31249" class="Bound">m</a> <a id="31251" href="Data.Fin.Properties.html#31251" class="Bound">n</a><a id="31252" class="Symbol">}</a> <a id="31254" class="Symbol">(</a><a id="31255" href="Data.Fin.Properties.html#31255" class="Bound">i</a> <a id="31257" class="Symbol">:</a> <a id="31259" href="Data.Fin.Base.html#1189" class="Datatype">Fin</a> <a id="31263" href="Data.Fin.Properties.html#31249" class="Bound">m</a><a id="31264" class="Symbol">)</a> <a id="31266" class="Symbol">(</a><a id="31267" href="Data.Fin.Properties.html#31267" class="Bound">j</a> <a id="31269" class="Symbol">:</a> <a id="31271" href="Data.Fin.Base.html#1189" class="Datatype">Fin</a> <a id="31275" href="Data.Fin.Properties.html#31251" class="Bound">n</a><a id="31276" class="Symbol">)</a> <a id="31278" class="Symbol">→</a> <a id="31280" href="Data.Fin.Base.html#1189" class="Datatype">Fin</a> <a id="31284" class="Symbol">(</a><a id="31285" href="Data.Nat.Base.html#2927" class="Function">ℕ.pred</a> <a id="31292" href="Data.Fin.Properties.html#31249" class="Bound">m</a> <a id="31294" href="Agda.Builtin.Nat.html#325" class="Primitive Operator">ℕ.+</a> <a id="31298" href="Data.Fin.Properties.html#31251" class="Bound">n</a><a id="31299" class="Symbol">)</a>
+<a id="31301" href="Data.Fin.Properties.html#31301" class="Bound">i</a> <a id="31303" href="Data.Fin.Properties.html#31239" class="Function Operator">+′</a> <a id="31306" href="Data.Fin.Properties.html#31306" class="Bound">j</a> <a id="31308" class="Symbol">=</a> <a id="31310" href="Data.Fin.Base.html#3180" class="Function">inject≤</a> <a id="31318" class="Symbol">(</a><a id="31319" href="Data.Fin.Properties.html#31301" class="Bound">i</a> <a id="31321" href="Data.Fin.Base.html#5467" class="Function Operator">+</a> <a id="31323" href="Data.Fin.Properties.html#31306" class="Bound">j</a><a id="31324" class="Symbol">)</a> <a id="31326" class="Symbol">(</a><a id="31327" href="Data.Nat.Properties.html#17919" class="Function">ℕₚ.+-monoˡ-≤</a> <a id="31340" class="Symbol">_</a> <a id="31342" class="Symbol">(</a><a id="31343" href="Data.Fin.Properties.html#4108" class="Function">toℕ≤pred[n]</a> <a id="31355" href="Data.Fin.Properties.html#31301" class="Bound">i</a><a id="31356" class="Symbol">))</a>
+<a id="31359" class="Symbol">{-#</a> <a id="31363" class="Keyword">WARNING_ON_USAGE</a> <a id="31380" class="Pragma">_+′_</a>
+<a id="31385" class="String">&quot;Warning: _+′_ was deprecated in v1.1.
 Please use `raise` or `inject+` from `Data.Fin` instead.&quot;</a>
-<a id="33199" class="Symbol">#-}</a>
+<a id="31482" class="Symbol">#-}</a>
 
-<a id="33204" class="Comment">-- Version 1.2</a>
+<a id="31487" class="Comment">-- Version 1.2</a>
 
-<a id="fromℕ≤-toℕ"></a><a id="33220" href="Data.Fin.Properties.html#33220" class="Function">fromℕ≤-toℕ</a> <a id="33231" class="Symbol">=</a> <a id="33233" href="Data.Fin.Properties.html#5223" class="Function">fromℕ&lt;-toℕ</a>
-<a id="33244" class="Symbol">{-#</a> <a id="33248" class="Keyword">WARNING_ON_USAGE</a> <a id="33265" class="Pragma">fromℕ≤-toℕ</a>
-<a id="33276" class="String">&quot;Warning: fromℕ≤-toℕ was deprecated in v1.2.
+<a id="fromℕ≤-toℕ"></a><a id="31503" href="Data.Fin.Properties.html#31503" class="Function">fromℕ≤-toℕ</a> <a id="31514" class="Symbol">=</a> <a id="31516" href="Data.Fin.Properties.html#5223" class="Function">fromℕ&lt;-toℕ</a>
+<a id="31527" class="Symbol">{-#</a> <a id="31531" class="Keyword">WARNING_ON_USAGE</a> <a id="31548" class="Pragma">fromℕ≤-toℕ</a>
+<a id="31559" class="String">&quot;Warning: fromℕ≤-toℕ was deprecated in v1.2.
 Please use fromℕ&lt;-toℕ instead.&quot;</a>
-<a id="33353" class="Symbol">#-}</a>
-<a id="toℕ-fromℕ≤"></a><a id="33357" href="Data.Fin.Properties.html#33357" class="Function">toℕ-fromℕ≤</a> <a id="33368" class="Symbol">=</a> <a id="33370" href="Data.Fin.Properties.html#5405" class="Function">toℕ-fromℕ&lt;</a>
-<a id="33381" class="Symbol">{-#</a> <a id="33385" class="Keyword">WARNING_ON_USAGE</a> <a id="33402" class="Pragma">toℕ-fromℕ≤</a>
-<a id="33413" class="String">&quot;Warning: toℕ-fromℕ≤ was deprecated in v1.2.
+<a id="31636" class="Symbol">#-}</a>
+<a id="toℕ-fromℕ≤"></a><a id="31640" href="Data.Fin.Properties.html#31640" class="Function">toℕ-fromℕ≤</a> <a id="31651" class="Symbol">=</a> <a id="31653" href="Data.Fin.Properties.html#5405" class="Function">toℕ-fromℕ&lt;</a>
+<a id="31664" class="Symbol">{-#</a> <a id="31668" class="Keyword">WARNING_ON_USAGE</a> <a id="31685" class="Pragma">toℕ-fromℕ≤</a>
+<a id="31696" class="String">&quot;Warning: toℕ-fromℕ≤ was deprecated in v1.2.
 Please use toℕ-fromℕ&lt; instead.&quot;</a>
-<a id="33490" class="Symbol">#-}</a>
-<a id="fromℕ≤≡fromℕ≤″"></a><a id="33494" href="Data.Fin.Properties.html#33494" class="Function">fromℕ≤≡fromℕ≤″</a> <a id="33509" class="Symbol">=</a> <a id="33511" href="Data.Fin.Properties.html#6558" class="Function">fromℕ&lt;≡fromℕ&lt;″</a>
-<a id="33526" class="Symbol">{-#</a> <a id="33530" class="Keyword">WARNING_ON_USAGE</a> <a id="33547" class="Pragma">fromℕ≤≡fromℕ≤″</a>
-<a id="33562" class="String">&quot;Warning: fromℕ≤≡fromℕ≤″ was deprecated in v1.2.
+<a id="31773" class="Symbol">#-}</a>
+<a id="fromℕ≤≡fromℕ≤″"></a><a id="31777" href="Data.Fin.Properties.html#31777" class="Function">fromℕ≤≡fromℕ≤″</a> <a id="31792" class="Symbol">=</a> <a id="31794" href="Data.Fin.Properties.html#6558" class="Function">fromℕ&lt;≡fromℕ&lt;″</a>
+<a id="31809" class="Symbol">{-#</a> <a id="31813" class="Keyword">WARNING_ON_USAGE</a> <a id="31830" class="Pragma">fromℕ≤≡fromℕ≤″</a>
+<a id="31845" class="String">&quot;Warning: fromℕ≤≡fromℕ≤″ was deprecated in v1.2.
 Please use fromℕ&lt;≡fromℕ&lt;″ instead.&quot;</a>
-<a id="33647" class="Symbol">#-}</a>
-<a id="toℕ-fromℕ≤″"></a><a id="33651" href="Data.Fin.Properties.html#33651" class="Function">toℕ-fromℕ≤″</a> <a id="33663" class="Symbol">=</a> <a id="33665" href="Data.Fin.Properties.html#6858" class="Function">toℕ-fromℕ&lt;″</a>
-<a id="33677" class="Symbol">{-#</a> <a id="33681" class="Keyword">WARNING_ON_USAGE</a> <a id="33698" class="Pragma">toℕ-fromℕ≤″</a>
-<a id="33710" class="String">&quot;Warning: toℕ-fromℕ≤″ was deprecated in v1.2.
+<a id="31930" class="Symbol">#-}</a>
+<a id="toℕ-fromℕ≤″"></a><a id="31934" href="Data.Fin.Properties.html#31934" class="Function">toℕ-fromℕ≤″</a> <a id="31946" class="Symbol">=</a> <a id="31948" href="Data.Fin.Properties.html#6858" class="Function">toℕ-fromℕ&lt;″</a>
+<a id="31960" class="Symbol">{-#</a> <a id="31964" class="Keyword">WARNING_ON_USAGE</a> <a id="31981" class="Pragma">toℕ-fromℕ≤″</a>
+<a id="31993" class="String">&quot;Warning: toℕ-fromℕ≤″ was deprecated in v1.2.
 Please use toℕ-fromℕ&lt;″ instead.&quot;</a>
-<a id="33789" class="Symbol">#-}</a>
-<a id="isDecEquivalence"></a><a id="33793" href="Data.Fin.Properties.html#33793" class="Function">isDecEquivalence</a> <a id="33810" class="Symbol">=</a> <a id="33812" href="Data.Fin.Properties.html#2798" class="Function">≡-isDecEquivalence</a>
-<a id="33831" class="Symbol">{-#</a> <a id="33835" class="Keyword">WARNING_ON_USAGE</a> <a id="33852" class="Pragma">isDecEquivalence</a>
-<a id="33869" class="String">&quot;Warning: isDecEquivalence was deprecated in v1.2.
+<a id="32072" class="Symbol">#-}</a>
+<a id="isDecEquivalence"></a><a id="32076" href="Data.Fin.Properties.html#32076" class="Function">isDecEquivalence</a> <a id="32093" class="Symbol">=</a> <a id="32095" href="Data.Fin.Properties.html#2798" class="Function">≡-isDecEquivalence</a>
+<a id="32114" class="Symbol">{-#</a> <a id="32118" class="Keyword">WARNING_ON_USAGE</a> <a id="32135" class="Pragma">isDecEquivalence</a>
+<a id="32152" class="String">&quot;Warning: isDecEquivalence was deprecated in v1.2.
 Please use ≡-isDecEquivalence instead.&quot;</a>
-<a id="33960" class="Symbol">#-}</a>
-<a id="preorder"></a><a id="33964" href="Data.Fin.Properties.html#33964" class="Function">preorder</a> <a id="33973" class="Symbol">=</a> <a id="33975" href="Data.Fin.Properties.html#3040" class="Function">≡-preorder</a>
-<a id="33986" class="Symbol">{-#</a> <a id="33990" class="Keyword">WARNING_ON_USAGE</a> <a id="34007" class="Pragma">preorder</a>
-<a id="34016" class="String">&quot;Warning: preorder was deprecated in v1.2.
+<a id="32243" class="Symbol">#-}</a>
+<a id="preorder"></a><a id="32247" href="Data.Fin.Properties.html#32247" class="Function">preorder</a> <a id="32256" class="Symbol">=</a> <a id="32258" href="Data.Fin.Properties.html#3040" class="Function">≡-preorder</a>
+<a id="32269" class="Symbol">{-#</a> <a id="32273" class="Keyword">WARNING_ON_USAGE</a> <a id="32290" class="Pragma">preorder</a>
+<a id="32299" class="String">&quot;Warning: preorder was deprecated in v1.2.
 Please use ≡-preorder instead.&quot;</a>
-<a id="34091" class="Symbol">#-}</a>
-<a id="setoid"></a><a id="34095" href="Data.Fin.Properties.html#34095" class="Function">setoid</a> <a id="34102" class="Symbol">=</a> <a id="34104" href="Data.Fin.Properties.html#3107" class="Function">≡-setoid</a>
-<a id="34113" class="Symbol">{-#</a> <a id="34117" class="Keyword">WARNING_ON_USAGE</a> <a id="34134" class="Pragma">setoid</a>
-<a id="34141" class="String">&quot;Warning: setoid was deprecated in v1.2.
+<a id="32374" class="Symbol">#-}</a>
+<a id="setoid"></a><a id="32378" href="Data.Fin.Properties.html#32378" class="Function">setoid</a> <a id="32385" class="Symbol">=</a> <a id="32387" href="Data.Fin.Properties.html#3107" class="Function">≡-setoid</a>
+<a id="32396" class="Symbol">{-#</a> <a id="32400" class="Keyword">WARNING_ON_USAGE</a> <a id="32417" class="Pragma">setoid</a>
+<a id="32424" class="String">&quot;Warning: setoid was deprecated in v1.2.
 Please use ≡-setoid instead.&quot;</a>
-<a id="34212" class="Symbol">#-}</a>
-<a id="decSetoid"></a><a id="34216" href="Data.Fin.Properties.html#34216" class="Function">decSetoid</a> <a id="34226" class="Symbol">=</a> <a id="34228" href="Data.Fin.Properties.html#3164" class="Function">≡-decSetoid</a>
-<a id="34240" class="Symbol">{-#</a> <a id="34244" class="Keyword">WARNING_ON_USAGE</a> <a id="34261" class="Pragma">decSetoid</a>
-<a id="34271" class="String">&quot;Warning: decSetoid was deprecated in v1.2.
+<a id="32495" class="Symbol">#-}</a>
+<a id="decSetoid"></a><a id="32499" href="Data.Fin.Properties.html#32499" class="Function">decSetoid</a> <a id="32509" class="Symbol">=</a> <a id="32511" href="Data.Fin.Properties.html#3164" class="Function">≡-decSetoid</a>
+<a id="32523" class="Symbol">{-#</a> <a id="32527" class="Keyword">WARNING_ON_USAGE</a> <a id="32544" class="Pragma">decSetoid</a>
+<a id="32554" class="String">&quot;Warning: decSetoid was deprecated in v1.2.
 Please use ≡-decSetoid instead.&quot;</a>
-<a id="34348" class="Symbol">#-}</a>
+<a id="32631" class="Symbol">#-}</a>
 
-<a id="34353" class="Comment">-- Version 1.5</a>
+<a id="32636" class="Comment">-- Version 1.5</a>
 
-<a id="inject+-raise-splitAt"></a><a id="34369" href="Data.Fin.Properties.html#34369" class="Function">inject+-raise-splitAt</a> <a id="34391" class="Symbol">=</a> <a id="34393" href="Data.Fin.Properties.html#17662" class="Function">join-splitAt</a>
-<a id="34406" class="Symbol">{-#</a> <a id="34410" class="Keyword">WARNING_ON_USAGE</a> <a id="34427" class="Pragma">inject+-raise-splitAt</a>
-<a id="34449" class="String">&quot;Warning: decSetoid was deprecated in v1.5.
+<a id="inject+-raise-splitAt"></a><a id="32652" href="Data.Fin.Properties.html#32652" class="Function">inject+-raise-splitAt</a> <a id="32674" class="Symbol">=</a> <a id="32676" href="Data.Fin.Properties.html#17662" class="Function">join-splitAt</a>
+<a id="32689" class="Symbol">{-#</a> <a id="32693" class="Keyword">WARNING_ON_USAGE</a> <a id="32710" class="Pragma">inject+-raise-splitAt</a>
+<a id="32732" class="String">&quot;Warning: decSetoid was deprecated in v1.5.
 Please use join-splitAt instead.&quot;</a>
-<a id="34527" class="Symbol">#-}</a>
+<a id="32810" class="Symbol">#-}</a>
 </pre></body></html>

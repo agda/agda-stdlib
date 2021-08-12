@@ -22,7 +22,7 @@
 <a id="641" class="Keyword">open</a> <a id="646" class="Keyword">import</a> <a id="653" href="Relation.Binary.Indexed.Heterogeneous.html" class="Module">Relation.Binary.Indexed.Heterogeneous</a>
   <a id="693" class="Keyword">using</a> <a id="699" class="Symbol">(</a><a id="700" href="Relation.Binary.Indexed.Heterogeneous.Bundles.html#789" class="Record">IndexedSetoid</a><a id="713" class="Symbol">)</a>
 <a id="715" class="Keyword">open</a> <a id="720" class="Keyword">import</a> <a id="727" href="Relation.Binary.Indexed.Heterogeneous.Construct.At.html" class="Module">Relation.Binary.Indexed.Heterogeneous.Construct.At</a>
-  <a id="780" class="Keyword">using</a> <a id="786" class="Symbol">(</a><a id="787" href="Relation.Binary.Indexed.Heterogeneous.Construct.At.html#2088" class="Function Operator">_atₛ_</a><a id="792" class="Symbol">)</a>
+  <a id="780" class="Keyword">using</a> <a id="786" class="Symbol">(</a><a id="787" href="Relation.Binary.Indexed.Heterogeneous.Construct.At.html#2055" class="Function Operator">_atₛ_</a><a id="792" class="Symbol">)</a>
 <a id="794" class="Keyword">open</a> <a id="799" class="Keyword">import</a> <a id="806" href="Relation.Binary.PropositionalEquality.html" class="Module">Relation.Binary.PropositionalEquality</a> <a id="844" class="Symbol">as</a> <a id="847" class="Module">P</a> <a id="849" class="Keyword">using</a> <a id="855" class="Symbol">(</a><a id="856" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a><a id="859" class="Symbol">;</a> <a id="861" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a><a id="865" class="Symbol">)</a>
 
 <a id="868" class="Keyword">import</a> <a id="875" href="Relation.Binary.HeterogeneousEquality.Core.html" class="Module">Relation.Binary.HeterogeneousEquality.Core</a> <a id="918" class="Symbol">as</a> <a id="921" class="Module">Core</a>
@@ -175,7 +175,7 @@
   <a id="5057" class="Symbol">}</a>
 
 <a id="≡↔≅"></a><a id="5060" href="Relation.Binary.HeterogeneousEquality.html#5060" class="Function">≡↔≅</a> <a id="5064" class="Symbol">:</a> <a id="5066" class="Symbol">∀</a> <a id="5068" class="Symbol">{</a><a id="5069" href="Relation.Binary.HeterogeneousEquality.html#5069" class="Bound">A</a> <a id="5071" class="Symbol">:</a> <a id="5073" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="5077" href="Relation.Binary.HeterogeneousEquality.html#950" class="Generalizable">a</a><a id="5078" class="Symbol">}</a> <a id="5080" class="Symbol">(</a><a id="5081" href="Relation.Binary.HeterogeneousEquality.html#5081" class="Bound">B</a> <a id="5083" class="Symbol">:</a> <a id="5085" href="Relation.Binary.HeterogeneousEquality.html#5069" class="Bound">A</a> <a id="5087" class="Symbol">→</a> <a id="5089" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="5093" href="Relation.Binary.HeterogeneousEquality.html#952" class="Generalizable">b</a><a id="5094" class="Symbol">)</a> <a id="5096" class="Symbol">{</a><a id="5097" href="Relation.Binary.HeterogeneousEquality.html#5097" class="Bound">x</a> <a id="5099" class="Symbol">:</a> <a id="5101" href="Relation.Binary.HeterogeneousEquality.html#5069" class="Bound">A</a><a id="5102" class="Symbol">}</a> <a id="5104" class="Symbol">→</a>
-      <a id="5112" href="Function.Inverse.html#1385" class="Record">Inverse</a> <a id="5120" class="Symbol">(</a><a id="5121" href="Relation.Binary.PropositionalEquality.Properties.html#3972" class="Function">P.setoid</a> <a id="5130" class="Symbol">(</a><a id="5131" href="Relation.Binary.HeterogeneousEquality.html#5081" class="Bound">B</a> <a id="5133" href="Relation.Binary.HeterogeneousEquality.html#5097" class="Bound">x</a><a id="5134" class="Symbol">))</a> <a id="5137" class="Symbol">((</a><a id="5139" href="Relation.Binary.HeterogeneousEquality.html#4834" class="Function">indexedSetoid</a> <a id="5153" href="Relation.Binary.HeterogeneousEquality.html#5081" class="Bound">B</a><a id="5154" class="Symbol">)</a> <a id="5156" href="Relation.Binary.Indexed.Heterogeneous.Construct.At.html#2088" class="Function Operator">atₛ</a> <a id="5160" href="Relation.Binary.HeterogeneousEquality.html#5097" class="Bound">x</a><a id="5161" class="Symbol">)</a>
+      <a id="5112" href="Function.Inverse.html#1385" class="Record">Inverse</a> <a id="5120" class="Symbol">(</a><a id="5121" href="Relation.Binary.PropositionalEquality.Properties.html#3972" class="Function">P.setoid</a> <a id="5130" class="Symbol">(</a><a id="5131" href="Relation.Binary.HeterogeneousEquality.html#5081" class="Bound">B</a> <a id="5133" href="Relation.Binary.HeterogeneousEquality.html#5097" class="Bound">x</a><a id="5134" class="Symbol">))</a> <a id="5137" class="Symbol">((</a><a id="5139" href="Relation.Binary.HeterogeneousEquality.html#4834" class="Function">indexedSetoid</a> <a id="5153" href="Relation.Binary.HeterogeneousEquality.html#5081" class="Bound">B</a><a id="5154" class="Symbol">)</a> <a id="5156" href="Relation.Binary.Indexed.Heterogeneous.Construct.At.html#2055" class="Function Operator">atₛ</a> <a id="5160" href="Relation.Binary.HeterogeneousEquality.html#5097" class="Bound">x</a><a id="5161" class="Symbol">)</a>
 <a id="5163" href="Relation.Binary.HeterogeneousEquality.html#5060" class="Function">≡↔≅</a> <a id="5167" href="Relation.Binary.HeterogeneousEquality.html#5167" class="Bound">B</a> <a id="5169" class="Symbol">=</a> <a id="5171" class="Keyword">record</a>
   <a id="5180" class="Symbol">{</a> <a id="5182" href="Function.Inverse.html#1523" class="Field">to</a>         <a id="5193" class="Symbol">=</a> <a id="5195" class="Keyword">record</a> <a id="5202" class="Symbol">{</a> <a id="5204" href="Function.Equality.html#1064" class="Field Operator">_⟨$⟩_</a> <a id="5210" class="Symbol">=</a> <a id="5212" href="Function.Base.html#695" class="Function">id</a><a id="5214" class="Symbol">;</a> <a id="5216" href="Function.Equality.html#1131" class="Field">cong</a> <a id="5221" class="Symbol">=</a> <a id="5223" href="Relation.Binary.HeterogeneousEquality.Core.html#899" class="Function">≡-to-≅</a> <a id="5230" class="Symbol">}</a>
   <a id="5234" class="Symbol">;</a> <a id="5236" href="Function.Inverse.html#1550" class="Field">from</a>       <a id="5247" class="Symbol">=</a> <a id="5249" class="Keyword">record</a> <a id="5256" class="Symbol">{</a> <a id="5258" href="Function.Equality.html#1064" class="Field Operator">_⟨$⟩_</a> <a id="5264" class="Symbol">=</a> <a id="5266" href="Function.Base.html#695" class="Function">id</a><a id="5268" class="Symbol">;</a> <a id="5270" href="Function.Equality.html#1131" class="Field">cong</a> <a id="5275" class="Symbol">=</a> <a id="5277" href="Relation.Binary.HeterogeneousEquality.Core.html#842" class="Function">≅-to-≡</a> <a id="5284" class="Symbol">}</a>
@@ -287,44 +287,36 @@
 <a id="8277" class="Comment">-- Please use the new names as continuing support for the old names is</a>
 <a id="8348" class="Comment">-- not guaranteed.</a>
 
-<a id="8368" class="Comment">-- Version 0.15</a>
+<a id="8368" class="Comment">-- Version 1.0</a>
 
-<a id="proof-irrelevance"></a><a id="8385" href="Relation.Binary.HeterogeneousEquality.html#8385" class="Function">proof-irrelevance</a> <a id="8403" class="Symbol">=</a> <a id="8405" href="Relation.Binary.HeterogeneousEquality.html#3916" class="Function">≅-irrelevant</a>
-<a id="8418" class="Symbol">{-#</a> <a id="8422" class="Keyword">WARNING_ON_USAGE</a> <a id="8439" class="Pragma">proof-irrelevance</a>
-<a id="8457" class="String">&quot;Warning: proof-irrelevance was deprecated in v0.15.
+<a id="≅-irrelevance"></a><a id="8384" href="Relation.Binary.HeterogeneousEquality.html#8384" class="Function">≅-irrelevance</a> <a id="8398" class="Symbol">=</a> <a id="8400" href="Relation.Binary.HeterogeneousEquality.html#3916" class="Function">≅-irrelevant</a>
+<a id="8413" class="Symbol">{-#</a> <a id="8417" class="Keyword">WARNING_ON_USAGE</a> <a id="8434" class="Pragma">≅-irrelevance</a>
+<a id="8448" class="String">&quot;Warning: ≅-irrelevance was deprecated in v1.0.
 Please use ≅-irrelevant instead.&quot;</a>
-<a id="8544" class="Symbol">#-}</a>
-
-<a id="8549" class="Comment">-- Version 1.0</a>
-
-<a id="≅-irrelevance"></a><a id="8565" href="Relation.Binary.HeterogeneousEquality.html#8565" class="Function">≅-irrelevance</a> <a id="8579" class="Symbol">=</a> <a id="8581" href="Relation.Binary.HeterogeneousEquality.html#3916" class="Function">≅-irrelevant</a>
-<a id="8594" class="Symbol">{-#</a> <a id="8598" class="Keyword">WARNING_ON_USAGE</a> <a id="8615" class="Pragma">≅-irrelevance</a>
-<a id="8629" class="String">&quot;Warning: ≅-irrelevance was deprecated in v1.0.
-Please use ≅-irrelevant instead.&quot;</a>
-<a id="8711" class="Symbol">#-}</a>
-<a id="≅-heterogeneous-irrelevance"></a><a id="8715" href="Relation.Binary.HeterogeneousEquality.html#8715" class="Function">≅-heterogeneous-irrelevance</a> <a id="8743" class="Symbol">=</a> <a id="8745" href="Relation.Binary.HeterogeneousEquality.html#4106" class="Function">≅-heterogeneous-irrelevant</a>
-<a id="8772" class="Symbol">{-#</a> <a id="8776" class="Keyword">WARNING_ON_USAGE</a> <a id="8793" class="Pragma">≅-heterogeneous-irrelevance</a>
-<a id="8821" class="String">&quot;Warning: ≅-heterogeneous-irrelevance was deprecated in v1.0.
+<a id="8530" class="Symbol">#-}</a>
+<a id="≅-heterogeneous-irrelevance"></a><a id="8534" href="Relation.Binary.HeterogeneousEquality.html#8534" class="Function">≅-heterogeneous-irrelevance</a> <a id="8562" class="Symbol">=</a> <a id="8564" href="Relation.Binary.HeterogeneousEquality.html#4106" class="Function">≅-heterogeneous-irrelevant</a>
+<a id="8591" class="Symbol">{-#</a> <a id="8595" class="Keyword">WARNING_ON_USAGE</a> <a id="8612" class="Pragma">≅-heterogeneous-irrelevance</a>
+<a id="8640" class="String">&quot;Warning: ≅-heterogeneous-irrelevance was deprecated in v1.0.
 Please use ≅-heterogeneous-irrelevant instead.&quot;</a>
-<a id="8931" class="Symbol">#-}</a>
-<a id="≅-heterogeneous-irrelevanceˡ"></a><a id="8935" href="Relation.Binary.HeterogeneousEquality.html#8935" class="Function">≅-heterogeneous-irrelevanceˡ</a> <a id="8964" class="Symbol">=</a> <a id="8966" href="Relation.Binary.HeterogeneousEquality.html#4227" class="Function">≅-heterogeneous-irrelevantˡ</a>
-<a id="8994" class="Symbol">{-#</a> <a id="8998" class="Keyword">WARNING_ON_USAGE</a> <a id="9015" class="Pragma">≅-heterogeneous-irrelevanceˡ</a>
-<a id="9044" class="String">&quot;Warning: ≅-heterogeneous-irrelevanceˡ was deprecated in v1.0.
+<a id="8750" class="Symbol">#-}</a>
+<a id="≅-heterogeneous-irrelevanceˡ"></a><a id="8754" href="Relation.Binary.HeterogeneousEquality.html#8754" class="Function">≅-heterogeneous-irrelevanceˡ</a> <a id="8783" class="Symbol">=</a> <a id="8785" href="Relation.Binary.HeterogeneousEquality.html#4227" class="Function">≅-heterogeneous-irrelevantˡ</a>
+<a id="8813" class="Symbol">{-#</a> <a id="8817" class="Keyword">WARNING_ON_USAGE</a> <a id="8834" class="Pragma">≅-heterogeneous-irrelevanceˡ</a>
+<a id="8863" class="String">&quot;Warning: ≅-heterogeneous-irrelevanceˡ was deprecated in v1.0.
 Please use ≅-heterogeneous-irrelevantˡ instead.&quot;</a>
-<a id="9156" class="Symbol">#-}</a>
-<a id="≅-heterogeneous-irrelevanceʳ"></a><a id="9160" href="Relation.Binary.HeterogeneousEquality.html#9160" class="Function">≅-heterogeneous-irrelevanceʳ</a> <a id="9189" class="Symbol">=</a> <a id="9191" href="Relation.Binary.HeterogeneousEquality.html#4350" class="Function">≅-heterogeneous-irrelevantʳ</a>
-<a id="9219" class="Symbol">{-#</a> <a id="9223" class="Keyword">WARNING_ON_USAGE</a> <a id="9240" class="Pragma">≅-heterogeneous-irrelevanceʳ</a>
-<a id="9269" class="String">&quot;Warning: ≅-heterogeneous-irrelevanceʳ was deprecated in v1.0.
+<a id="8975" class="Symbol">#-}</a>
+<a id="≅-heterogeneous-irrelevanceʳ"></a><a id="8979" href="Relation.Binary.HeterogeneousEquality.html#8979" class="Function">≅-heterogeneous-irrelevanceʳ</a> <a id="9008" class="Symbol">=</a> <a id="9010" href="Relation.Binary.HeterogeneousEquality.html#4350" class="Function">≅-heterogeneous-irrelevantʳ</a>
+<a id="9038" class="Symbol">{-#</a> <a id="9042" class="Keyword">WARNING_ON_USAGE</a> <a id="9059" class="Pragma">≅-heterogeneous-irrelevanceʳ</a>
+<a id="9088" class="String">&quot;Warning: ≅-heterogeneous-irrelevanceʳ was deprecated in v1.0.
 Please use ≅-heterogeneous-irrelevantʳ instead.&quot;</a>
-<a id="9381" class="Symbol">#-}</a>
-<a id="Extensionality"></a><a id="9385" href="Relation.Binary.HeterogeneousEquality.html#9385" class="Function">Extensionality</a> <a id="9400" class="Symbol">=</a> <a id="9402" href="Axiom.Extensionality.Heterogeneous.html#772" class="Function">Ext.Extensionality</a>
-<a id="9421" class="Symbol">{-#</a> <a id="9425" class="Keyword">WARNING_ON_USAGE</a> <a id="9442" class="Pragma">Extensionality</a>
-<a id="9457" class="String">&quot;Warning: Extensionality was deprecated in v1.0.
+<a id="9200" class="Symbol">#-}</a>
+<a id="Extensionality"></a><a id="9204" href="Relation.Binary.HeterogeneousEquality.html#9204" class="Function">Extensionality</a> <a id="9219" class="Symbol">=</a> <a id="9221" href="Axiom.Extensionality.Heterogeneous.html#772" class="Function">Ext.Extensionality</a>
+<a id="9240" class="Symbol">{-#</a> <a id="9244" class="Keyword">WARNING_ON_USAGE</a> <a id="9261" class="Pragma">Extensionality</a>
+<a id="9276" class="String">&quot;Warning: Extensionality was deprecated in v1.0.
 Please use Extensionality from `Axiom.Extensionality.Heterogeneous` instead.&quot;</a>
-<a id="9584" class="Symbol">#-}</a>
-<a id="≡-ext-to-≅-ext"></a><a id="9588" href="Relation.Binary.HeterogeneousEquality.html#9588" class="Function">≡-ext-to-≅-ext</a> <a id="9603" class="Symbol">=</a> <a id="9605" href="Axiom.Extensionality.Heterogeneous.html#1126" class="Function">Ext.≡-ext⇒≅-ext</a>
-<a id="9621" class="Symbol">{-#</a> <a id="9625" class="Keyword">WARNING_ON_USAGE</a> <a id="9642" class="Pragma">≡-ext-to-≅-ext</a>
-<a id="9657" class="String">&quot;Warning: ≡-ext-to-≅-ext was deprecated in v1.0.
+<a id="9403" class="Symbol">#-}</a>
+<a id="≡-ext-to-≅-ext"></a><a id="9407" href="Relation.Binary.HeterogeneousEquality.html#9407" class="Function">≡-ext-to-≅-ext</a> <a id="9422" class="Symbol">=</a> <a id="9424" href="Axiom.Extensionality.Heterogeneous.html#1126" class="Function">Ext.≡-ext⇒≅-ext</a>
+<a id="9440" class="Symbol">{-#</a> <a id="9444" class="Keyword">WARNING_ON_USAGE</a> <a id="9461" class="Pragma">≡-ext-to-≅-ext</a>
+<a id="9476" class="String">&quot;Warning: ≡-ext-to-≅-ext was deprecated in v1.0.
 Please use ≡-ext⇒≅-ext from `Axiom.Extensionality.Heterogeneous` instead.&quot;</a>
-<a id="9781" class="Symbol">#-}</a>
+<a id="9600" class="Symbol">#-}</a>
 </pre></body></html>

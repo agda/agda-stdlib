@@ -246,21 +246,21 @@
       <a id="8891" class="Symbol">}</a>
     <a id="8897" class="Keyword">where</a> <a id="8903" class="Keyword">open</a> <a id="8908" href="Relation.Binary.Structures.html#3950" class="Module">IsStrictPartialOrder</a>
 
-  <a id="8932" href="Data.Product.Relation.Binary.Lex.Strict.html#8932" class="Function">×-isStrictTotalOrder</a> <a id="8953" class="Symbol">:</a> <a id="8955" href="Relation.Binary.Structures.html#6539" class="Record">IsStrictTotalOrder</a> <a id="8974" href="Data.Product.Relation.Binary.Lex.Strict.html#7340" class="Bound Operator">_≈₁_</a> <a id="8979" href="Data.Product.Relation.Binary.Lex.Strict.html#7358" class="Bound Operator">_&lt;₁_</a> <a id="8984" class="Symbol">→</a>
-                         <a id="9011" href="Relation.Binary.Structures.html#6539" class="Record">IsStrictTotalOrder</a> <a id="9030" href="Data.Product.Relation.Binary.Lex.Strict.html#7385" class="Bound Operator">_≈₂_</a> <a id="9035" href="Data.Product.Relation.Binary.Lex.Strict.html#7403" class="Bound Operator">_&lt;₂_</a> <a id="9040" class="Symbol">→</a>
-                         <a id="9067" href="Relation.Binary.Structures.html#6539" class="Record">IsStrictTotalOrder</a> <a id="9086" href="Data.Product.Relation.Binary.Lex.Strict.html#7441" class="Function Operator">_≋_</a> <a id="9090" href="Data.Product.Relation.Binary.Lex.Strict.html#7474" class="Function Operator">_&lt;ₗₑₓ_</a>
+  <a id="8932" href="Data.Product.Relation.Binary.Lex.Strict.html#8932" class="Function">×-isStrictTotalOrder</a> <a id="8953" class="Symbol">:</a> <a id="8955" href="Relation.Binary.Structures.html#6402" class="Record">IsStrictTotalOrder</a> <a id="8974" href="Data.Product.Relation.Binary.Lex.Strict.html#7340" class="Bound Operator">_≈₁_</a> <a id="8979" href="Data.Product.Relation.Binary.Lex.Strict.html#7358" class="Bound Operator">_&lt;₁_</a> <a id="8984" class="Symbol">→</a>
+                         <a id="9011" href="Relation.Binary.Structures.html#6402" class="Record">IsStrictTotalOrder</a> <a id="9030" href="Data.Product.Relation.Binary.Lex.Strict.html#7385" class="Bound Operator">_≈₂_</a> <a id="9035" href="Data.Product.Relation.Binary.Lex.Strict.html#7403" class="Bound Operator">_&lt;₂_</a> <a id="9040" class="Symbol">→</a>
+                         <a id="9067" href="Relation.Binary.Structures.html#6402" class="Record">IsStrictTotalOrder</a> <a id="9086" href="Data.Product.Relation.Binary.Lex.Strict.html#7441" class="Function Operator">_≋_</a> <a id="9090" href="Data.Product.Relation.Binary.Lex.Strict.html#7474" class="Function Operator">_&lt;ₗₑₓ_</a>
   <a id="9099" href="Data.Product.Relation.Binary.Lex.Strict.html#8932" class="Function">×-isStrictTotalOrder</a> <a id="9120" href="Data.Product.Relation.Binary.Lex.Strict.html#9120" class="Bound">spo₁</a> <a id="9125" href="Data.Product.Relation.Binary.Lex.Strict.html#9125" class="Bound">spo₂</a> <a id="9130" class="Symbol">=</a>
     <a id="9136" class="Keyword">record</a>
-      <a id="9149" class="Symbol">{</a> <a id="9151" href="Relation.Binary.Structures.html#6612" class="Field">isEquivalence</a> <a id="9165" class="Symbol">=</a> <a id="9167" href="Data.Product.Relation.Binary.Pointwise.NonDependent.html#4551" class="Function">Pointwise.×-isEquivalence</a>
-                          <a id="9219" class="Symbol">(</a><a id="9220" href="Relation.Binary.Structures.html#6612" class="Field">isEquivalence</a> <a id="9234" href="Data.Product.Relation.Binary.Lex.Strict.html#9120" class="Bound">spo₁</a><a id="9238" class="Symbol">)</a> <a id="9240" class="Symbol">(</a><a id="9241" href="Relation.Binary.Structures.html#6612" class="Field">isEquivalence</a> <a id="9255" href="Data.Product.Relation.Binary.Lex.Strict.html#9125" class="Bound">spo₂</a><a id="9259" class="Symbol">)</a>
-      <a id="9267" class="Symbol">;</a> <a id="9269" href="Relation.Binary.Structures.html#6646" class="Field">trans</a>         <a id="9283" class="Symbol">=</a> <a id="9285" href="Data.Product.Relation.Binary.Lex.Strict.html#1840" class="Function">×-transitive</a> <a id="9298" class="Symbol">{</a><a id="9299" class="Argument">_&lt;₁_</a> <a id="9304" class="Symbol">=</a> <a id="9306" href="Data.Product.Relation.Binary.Lex.Strict.html#7358" class="Bound Operator">_&lt;₁_</a><a id="9310" class="Symbol">}</a> <a id="9312" class="Symbol">{</a><a id="9313" class="Argument">_&lt;₂_</a> <a id="9318" class="Symbol">=</a> <a id="9320" href="Data.Product.Relation.Binary.Lex.Strict.html#7403" class="Bound Operator">_&lt;₂_</a><a id="9324" class="Symbol">}</a>
-                          <a id="9352" class="Symbol">(</a><a id="9353" href="Relation.Binary.Structures.html#6612" class="Field">isEquivalence</a> <a id="9367" href="Data.Product.Relation.Binary.Lex.Strict.html#9120" class="Bound">spo₁</a><a id="9371" class="Symbol">)</a>
-                          <a id="9399" class="Symbol">(</a><a id="9400" href="Relation.Binary.Structures.html#4134" class="Function">&lt;-resp-≈</a> <a id="9409" href="Data.Product.Relation.Binary.Lex.Strict.html#9120" class="Bound">spo₁</a><a id="9413" class="Symbol">)</a> <a id="9415" class="Symbol">(</a><a id="9416" href="Relation.Binary.Structures.html#6646" class="Field">trans</a> <a id="9422" href="Data.Product.Relation.Binary.Lex.Strict.html#9120" class="Bound">spo₁</a><a id="9426" class="Symbol">)</a>
-                          <a id="9454" class="Symbol">(</a><a id="9455" href="Relation.Binary.Structures.html#6646" class="Field">trans</a> <a id="9461" href="Data.Product.Relation.Binary.Lex.Strict.html#9125" class="Bound">spo₂</a><a id="9465" class="Symbol">)</a>
-      <a id="9473" class="Symbol">;</a> <a id="9475" href="Relation.Binary.Structures.html#6681" class="Field">compare</a>       <a id="9489" class="Symbol">=</a> <a id="9491" href="Data.Product.Relation.Binary.Lex.Strict.html#5620" class="Function">×-compare</a> <a id="9501" class="Symbol">(</a><a id="9502" href="Relation.Binary.Structures.html#1594" class="Function">Eq.sym</a> <a id="9509" href="Data.Product.Relation.Binary.Lex.Strict.html#9120" class="Bound">spo₁</a><a id="9513" class="Symbol">)</a> <a id="9515" class="Symbol">(</a><a id="9516" href="Relation.Binary.Structures.html#6681" class="Field">compare</a> <a id="9524" href="Data.Product.Relation.Binary.Lex.Strict.html#9120" class="Bound">spo₁</a><a id="9528" class="Symbol">)</a>
-                                                <a id="9578" class="Symbol">(</a><a id="9579" href="Relation.Binary.Structures.html#6681" class="Field">compare</a> <a id="9587" href="Data.Product.Relation.Binary.Lex.Strict.html#9125" class="Bound">spo₂</a><a id="9591" class="Symbol">)</a>
+      <a id="9149" class="Symbol">{</a> <a id="9151" href="Relation.Binary.Structures.html#6475" class="Field">isEquivalence</a> <a id="9165" class="Symbol">=</a> <a id="9167" href="Data.Product.Relation.Binary.Pointwise.NonDependent.html#4551" class="Function">Pointwise.×-isEquivalence</a>
+                          <a id="9219" class="Symbol">(</a><a id="9220" href="Relation.Binary.Structures.html#6475" class="Field">isEquivalence</a> <a id="9234" href="Data.Product.Relation.Binary.Lex.Strict.html#9120" class="Bound">spo₁</a><a id="9238" class="Symbol">)</a> <a id="9240" class="Symbol">(</a><a id="9241" href="Relation.Binary.Structures.html#6475" class="Field">isEquivalence</a> <a id="9255" href="Data.Product.Relation.Binary.Lex.Strict.html#9125" class="Bound">spo₂</a><a id="9259" class="Symbol">)</a>
+      <a id="9267" class="Symbol">;</a> <a id="9269" href="Relation.Binary.Structures.html#6509" class="Field">trans</a>         <a id="9283" class="Symbol">=</a> <a id="9285" href="Data.Product.Relation.Binary.Lex.Strict.html#1840" class="Function">×-transitive</a> <a id="9298" class="Symbol">{</a><a id="9299" class="Argument">_&lt;₁_</a> <a id="9304" class="Symbol">=</a> <a id="9306" href="Data.Product.Relation.Binary.Lex.Strict.html#7358" class="Bound Operator">_&lt;₁_</a><a id="9310" class="Symbol">}</a> <a id="9312" class="Symbol">{</a><a id="9313" class="Argument">_&lt;₂_</a> <a id="9318" class="Symbol">=</a> <a id="9320" href="Data.Product.Relation.Binary.Lex.Strict.html#7403" class="Bound Operator">_&lt;₂_</a><a id="9324" class="Symbol">}</a>
+                          <a id="9352" class="Symbol">(</a><a id="9353" href="Relation.Binary.Structures.html#6475" class="Field">isEquivalence</a> <a id="9367" href="Data.Product.Relation.Binary.Lex.Strict.html#9120" class="Bound">spo₁</a><a id="9371" class="Symbol">)</a>
+                          <a id="9399" class="Symbol">(</a><a id="9400" href="Relation.Binary.Structures.html#4134" class="Function">&lt;-resp-≈</a> <a id="9409" href="Data.Product.Relation.Binary.Lex.Strict.html#9120" class="Bound">spo₁</a><a id="9413" class="Symbol">)</a> <a id="9415" class="Symbol">(</a><a id="9416" href="Relation.Binary.Structures.html#6509" class="Field">trans</a> <a id="9422" href="Data.Product.Relation.Binary.Lex.Strict.html#9120" class="Bound">spo₁</a><a id="9426" class="Symbol">)</a>
+                          <a id="9454" class="Symbol">(</a><a id="9455" href="Relation.Binary.Structures.html#6509" class="Field">trans</a> <a id="9461" href="Data.Product.Relation.Binary.Lex.Strict.html#9125" class="Bound">spo₂</a><a id="9465" class="Symbol">)</a>
+      <a id="9473" class="Symbol">;</a> <a id="9475" href="Relation.Binary.Structures.html#6544" class="Field">compare</a>       <a id="9489" class="Symbol">=</a> <a id="9491" href="Data.Product.Relation.Binary.Lex.Strict.html#5620" class="Function">×-compare</a> <a id="9501" class="Symbol">(</a><a id="9502" href="Relation.Binary.Structures.html#1594" class="Function">Eq.sym</a> <a id="9509" href="Data.Product.Relation.Binary.Lex.Strict.html#9120" class="Bound">spo₁</a><a id="9513" class="Symbol">)</a> <a id="9515" class="Symbol">(</a><a id="9516" href="Relation.Binary.Structures.html#6544" class="Field">compare</a> <a id="9524" href="Data.Product.Relation.Binary.Lex.Strict.html#9120" class="Bound">spo₁</a><a id="9528" class="Symbol">)</a>
+                                                <a id="9578" class="Symbol">(</a><a id="9579" href="Relation.Binary.Structures.html#6544" class="Field">compare</a> <a id="9587" href="Data.Product.Relation.Binary.Lex.Strict.html#9125" class="Bound">spo₂</a><a id="9591" class="Symbol">)</a>
       <a id="9599" class="Symbol">}</a>
-    <a id="9605" class="Keyword">where</a> <a id="9611" class="Keyword">open</a> <a id="9616" href="Relation.Binary.Structures.html#6539" class="Module">IsStrictTotalOrder</a>
+    <a id="9605" class="Keyword">where</a> <a id="9611" class="Keyword">open</a> <a id="9616" href="Relation.Binary.Structures.html#6402" class="Module">IsStrictTotalOrder</a>
 
 <a id="9636" class="Comment">------------------------------------------------------------------------</a>
 <a id="9709" class="Comment">-- &quot;Bundles&quot; can also be combined.</a>
@@ -287,54 +287,4 @@
   <a id="10457" class="Symbol">{</a> <a id="10459" href="Relation.Binary.Bundles.html#7126" class="Field">isStrictTotalOrder</a> <a id="10478" class="Symbol">=</a> <a id="10480" href="Data.Product.Relation.Binary.Lex.Strict.html#8932" class="Function">×-isStrictTotalOrder</a>
       <a id="10507" class="Symbol">(</a><a id="10508" href="Relation.Binary.Bundles.html#7126" class="Field">isStrictTotalOrder</a> <a id="10527" href="Data.Product.Relation.Binary.Lex.Strict.html#10440" class="Bound">s₁</a><a id="10529" class="Symbol">)</a> <a id="10531" class="Symbol">(</a><a id="10532" href="Relation.Binary.Bundles.html#7126" class="Field">isStrictTotalOrder</a> <a id="10551" href="Data.Product.Relation.Binary.Lex.Strict.html#10443" class="Bound">s₂</a><a id="10553" class="Symbol">)</a>
   <a id="10557" class="Symbol">}</a> <a id="10559" class="Keyword">where</a> <a id="10565" class="Keyword">open</a> <a id="10570" href="Relation.Binary.Bundles.html#6928" class="Module">StrictTotalOrder</a>
-
-
-<a id="10589" class="Comment">------------------------------------------------------------------------</a>
-<a id="10662" class="Comment">-- DEPRECATED NAMES</a>
-<a id="10682" class="Comment">------------------------------------------------------------------------</a>
-<a id="10755" class="Comment">-- Please use the new names as continuing support for the old names is</a>
-<a id="10826" class="Comment">-- not guaranteed.</a>
-
-<a id="10846" class="Comment">-- Version 0.15</a>
-
-<a id="_×-irreflexive_"></a><a id="10863" href="Data.Product.Relation.Binary.Lex.Strict.html#10863" class="Function Operator">_×-irreflexive_</a> <a id="10879" class="Symbol">=</a> <a id="10881" href="Data.Product.Relation.Binary.Lex.Strict.html#4072" class="Function">×-irreflexive</a>
-<a id="10895" class="Symbol">{-#</a> <a id="10899" class="Keyword">WARNING_ON_USAGE</a> <a id="10916" class="Pragma">_×-irreflexive_</a>
-<a id="10932" class="String">&quot;Warning: _×-irreflexive_ was deprecated in v0.15.
-Please use ×-irreflexive instead.&quot;</a>
-<a id="11018" class="Symbol">#-}</a>
-<a id="_×-isPreorder_"></a><a id="11022" href="Data.Product.Relation.Binary.Lex.Strict.html#11022" class="Function Operator">_×-isPreorder_</a>           <a id="11047" class="Symbol">=</a> <a id="11049" href="Data.Product.Relation.Binary.Lex.Strict.html#7507" class="Function">×-isPreorder</a>
-<a id="11062" class="Symbol">{-#</a> <a id="11066" class="Keyword">WARNING_ON_USAGE</a> <a id="11083" class="Pragma">_×-isPreorder_</a>
-<a id="11098" class="String">&quot;Warning: _×-isPreorder_ was deprecated in v0.15.
-Please use ×-isPreorder instead.&quot;</a>
-<a id="11182" class="Symbol">#-}</a>
-<a id="_×-isStrictPartialOrder_"></a><a id="11186" href="Data.Product.Relation.Binary.Lex.Strict.html#11186" class="Function Operator">_×-isStrictPartialOrder_</a> <a id="11211" class="Symbol">=</a> <a id="11213" href="Data.Product.Relation.Binary.Lex.Strict.html#8051" class="Function">×-isStrictPartialOrder</a>
-<a id="11236" class="Symbol">{-#</a> <a id="11240" class="Keyword">WARNING_ON_USAGE</a> <a id="11257" class="Pragma">_×-isStrictPartialOrder_</a>
-<a id="11282" class="String">&quot;Warning: _×-isStrictPartialOrder_ was deprecated in v0.15.
-Please use ×-isStrictPartialOrder instead.&quot;</a>
-<a id="11386" class="Symbol">#-}</a>
-<a id="_×-isStrictTotalOrder_"></a><a id="11390" href="Data.Product.Relation.Binary.Lex.Strict.html#11390" class="Function Operator">_×-isStrictTotalOrder_</a>   <a id="11415" class="Symbol">=</a> <a id="11417" href="Data.Product.Relation.Binary.Lex.Strict.html#8932" class="Function">×-isStrictTotalOrder</a>
-<a id="11438" class="Symbol">{-#</a> <a id="11442" class="Keyword">WARNING_ON_USAGE</a> <a id="11459" class="Pragma">_×-isStrictTotalOrder_</a>
-<a id="11482" class="String">&quot;Warning: _×-isStrictTotalOrder_ was deprecated in v0.15.
-Please use ×-isStrictTotalOrder instead.&quot;</a>
-<a id="11582" class="Symbol">#-}</a>
-<a id="_×-preorder_"></a><a id="11586" href="Data.Product.Relation.Binary.Lex.Strict.html#11586" class="Function Operator">_×-preorder_</a>             <a id="11611" class="Symbol">=</a> <a id="11613" href="Data.Product.Relation.Binary.Lex.Strict.html#9745" class="Function">×-preorder</a>
-<a id="11624" class="Symbol">{-#</a> <a id="11628" class="Keyword">WARNING_ON_USAGE</a> <a id="11645" class="Pragma">_×-preorder_</a>
-<a id="11658" class="String">&quot;Warning: _×-preorder_ was deprecated in v0.15.
-Please use ×-preorder instead.&quot;</a>
-<a id="11738" class="Symbol">#-}</a>
-<a id="_×-strictPartialOrder_"></a><a id="11742" href="Data.Product.Relation.Binary.Lex.Strict.html#11742" class="Function Operator">_×-strictPartialOrder_</a>   <a id="11767" class="Symbol">=</a> <a id="11769" href="Data.Product.Relation.Binary.Lex.Strict.html#9950" class="Function">×-strictPartialOrder</a>
-<a id="11790" class="Symbol">{-#</a> <a id="11794" class="Keyword">WARNING_ON_USAGE</a> <a id="11811" class="Pragma">_×-strictPartialOrder_</a>
-<a id="11834" class="String">&quot;Warning: _×-strictPartialOrder_ was deprecated in v0.15.
-Please use ×-strictPartialOrder instead.&quot;</a>
-<a id="11934" class="Symbol">#-}</a>
-<a id="_×-strictTotalOrder_"></a><a id="11938" href="Data.Product.Relation.Binary.Lex.Strict.html#11938" class="Function Operator">_×-strictTotalOrder_</a>     <a id="11963" class="Symbol">=</a> <a id="11965" href="Data.Product.Relation.Binary.Lex.Strict.html#10281" class="Function">×-strictTotalOrder</a>
-<a id="11984" class="Symbol">{-#</a> <a id="11988" class="Keyword">WARNING_ON_USAGE</a> <a id="12005" class="Pragma">_×-strictTotalOrder_</a>
-<a id="12026" class="String">&quot;Warning: _×-strictTotalOrder_ was deprecated in v0.15.
-Please use ×-strictTotalOrder instead.&quot;</a>
-<a id="12122" class="Symbol">#-}</a>
-<a id="×-≈-respects₂"></a><a id="12126" href="Data.Product.Relation.Binary.Lex.Strict.html#12126" class="Function">×-≈-respects₂</a>            <a id="12151" class="Symbol">=</a> <a id="12153" href="Data.Product.Relation.Binary.Lex.Strict.html#4936" class="Function">×-respects₂</a>
-<a id="12165" class="Symbol">{-#</a> <a id="12169" class="Keyword">WARNING_ON_USAGE</a> <a id="12186" class="Pragma">×-≈-respects₂</a>
-<a id="12200" class="String">&quot;Warning: ×-≈-respects₂ was deprecated in v0.15.
-Please use ×-respects₂ instead.&quot;</a>
-<a id="12282" class="Symbol">#-}</a>
 </pre></body></html>

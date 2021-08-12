@@ -74,11 +74,11 @@
   <a id="1891" href="Data.Nat.Induction.html#1783" class="Function">&lt;′-wellFounded′</a> <a id="1907" class="Symbol">(</a><a id="1908" href="Agda.Builtin.Nat.html#223" class="InductiveConstructor">suc</a> <a id="1912" href="Data.Nat.Induction.html#1912" class="Bound">n</a><a id="1913" class="Symbol">)</a>  <a id="1916" href="Data.Nat.Induction.html#1916" class="Bound">m</a> <a id="1918" class="Symbol">(</a><a id="1919" href="Data.Nat.Base.html#4000" class="InductiveConstructor">≤′-step</a> <a id="1927" href="Data.Nat.Induction.html#1927" class="Bound">m&lt;n</a><a id="1930" class="Symbol">)</a> <a id="1932" class="Symbol">=</a> <a id="1934" href="Data.Nat.Induction.html#1783" class="Function">&lt;′-wellFounded′</a> <a id="1950" href="Data.Nat.Induction.html#1912" class="Bound">n</a> <a id="1952" href="Data.Nat.Induction.html#1916" class="Bound">m</a> <a id="1954" href="Data.Nat.Induction.html#1927" class="Bound">m&lt;n</a>
 
 <a id="1959" class="Keyword">module</a> <a id="1966" href="Data.Nat.Induction.html#1966" class="Module">_</a> <a id="1968" class="Symbol">{</a><a id="1969" href="Data.Nat.Induction.html#1969" class="Bound">ℓ</a><a id="1970" class="Symbol">}</a> <a id="1972" class="Keyword">where</a>
-  <a id="1980" class="Keyword">open</a> <a id="1985" href="Induction.WellFounded.html#2837" class="Module">WF.All</a> <a id="1992" href="Data.Nat.Induction.html#1701" class="Function">&lt;′-wellFounded</a> <a id="2007" href="Data.Nat.Induction.html#1969" class="Bound">ℓ</a> <a id="2009" class="Keyword">public</a>
-    <a id="2020" class="Keyword">renaming</a> <a id="2029" class="Symbol">(</a> <a id="2031" href="Induction.WellFounded.html#2891" class="Function">wfRecBuilder</a> <a id="2044" class="Symbol">to</a> <a id="2047" class="Function">&lt;′-recBuilder</a>
-             <a id="2074" class="Symbol">;</a> <a id="2076" href="Induction.WellFounded.html#2999" class="Function">wfRec</a>        <a id="2089" class="Symbol">to</a> <a id="2092" class="Function">&lt;′-rec</a>
+  <a id="1980" class="Keyword">open</a> <a id="1985" href="Induction.WellFounded.html#2527" class="Module">WF.All</a> <a id="1992" href="Data.Nat.Induction.html#1701" class="Function">&lt;′-wellFounded</a> <a id="2007" href="Data.Nat.Induction.html#1969" class="Bound">ℓ</a> <a id="2009" class="Keyword">public</a>
+    <a id="2020" class="Keyword">renaming</a> <a id="2029" class="Symbol">(</a> <a id="2031" href="Induction.WellFounded.html#2581" class="Function">wfRecBuilder</a> <a id="2044" class="Symbol">to</a> <a id="2047" class="Function">&lt;′-recBuilder</a>
+             <a id="2074" class="Symbol">;</a> <a id="2076" href="Induction.WellFounded.html#2689" class="Function">wfRec</a>        <a id="2089" class="Symbol">to</a> <a id="2092" class="Function">&lt;′-rec</a>
              <a id="2112" class="Symbol">)</a>
-    <a id="2118" class="Keyword">hiding</a> <a id="2125" class="Symbol">(</a><a id="2126" href="Induction.WellFounded.html#3060" class="Function">wfRec-builder</a><a id="2139" class="Symbol">)</a>
+    <a id="2118" class="Keyword">hiding</a> <a id="2125" class="Symbol">(</a><a id="2126" href="Induction.WellFounded.html#2750" class="Function">wfRec-builder</a><a id="2139" class="Symbol">)</a>
 
 <a id="2142" class="Comment">------------------------------------------------------------------------</a>
 <a id="2215" class="Comment">-- Complete induction based on _&lt;_</a>
@@ -87,7 +87,7 @@
 <a id="2283" href="Data.Nat.Induction.html#2251" class="Function">&lt;-Rec</a> <a id="2289" class="Symbol">=</a> <a id="2291" href="Induction.WellFounded.html#794" class="Function">WfRec</a> <a id="2297" href="Data.Nat.Base.html#1579" class="Function Operator">_&lt;_</a>
 
 <a id="&lt;-wellFounded"></a><a id="2302" href="Data.Nat.Induction.html#2302" class="Function">&lt;-wellFounded</a> <a id="2316" class="Symbol">:</a> <a id="2318" href="Induction.WellFounded.html#1248" class="Function">WellFounded</a> <a id="2330" href="Data.Nat.Base.html#1579" class="Function Operator">_&lt;_</a>
-<a id="2334" href="Data.Nat.Induction.html#2302" class="Function">&lt;-wellFounded</a> <a id="2348" class="Symbol">=</a> <a id="2350" href="Induction.WellFounded.html#4621" class="Function">Subrelation.wellFounded</a> <a id="2374" href="Data.Nat.Properties.html#57401" class="Function">≤⇒≤′</a> <a id="2379" href="Data.Nat.Induction.html#1701" class="Function">&lt;′-wellFounded</a>
+<a id="2334" href="Data.Nat.Induction.html#2302" class="Function">&lt;-wellFounded</a> <a id="2348" class="Symbol">=</a> <a id="2350" href="Induction.WellFounded.html#4180" class="Function">Subrelation.wellFounded</a> <a id="2374" href="Data.Nat.Properties.html#57401" class="Function">≤⇒≤′</a> <a id="2379" href="Data.Nat.Induction.html#1701" class="Function">&lt;′-wellFounded</a>
 
 <a id="2395" class="Comment">-- A version of `&lt;-wellFounded` that cheats by skipping building</a>
 <a id="2460" class="Comment">-- the first billion proofs. Use this when you require the function</a>
@@ -106,54 +106,10 @@
   <a id="3099" href="Data.Nat.Induction.html#2938" class="Function">&lt;-wellFounded-skip</a> <a id="3118" class="Symbol">(</a><a id="3119" href="Agda.Builtin.Nat.html#223" class="InductiveConstructor">suc</a> <a id="3123" href="Data.Nat.Induction.html#3123" class="Bound">k</a><a id="3124" class="Symbol">)</a> <a id="3126" class="Symbol">(</a><a id="3127" href="Agda.Builtin.Nat.html#223" class="InductiveConstructor">suc</a> <a id="3131" href="Data.Nat.Induction.html#3131" class="Bound">n</a><a id="3132" class="Symbol">)</a> <a id="3134" class="Symbol">=</a> <a id="3136" href="Induction.WellFounded.html#1062" class="InductiveConstructor">acc</a> <a id="3140" class="Symbol">(λ</a> <a id="3143" href="Data.Nat.Induction.html#3143" class="Bound">m</a> <a id="3145" href="Data.Nat.Induction.html#3145" class="Bound">_</a> <a id="3147" class="Symbol">→</a> <a id="3149" href="Data.Nat.Induction.html#2938" class="Function">&lt;-wellFounded-skip</a> <a id="3168" href="Data.Nat.Induction.html#3123" class="Bound">k</a> <a id="3170" href="Data.Nat.Induction.html#3143" class="Bound">m</a><a id="3171" class="Symbol">)</a>
 
 <a id="3174" class="Keyword">module</a> <a id="3181" href="Data.Nat.Induction.html#3181" class="Module">_</a> <a id="3183" class="Symbol">{</a><a id="3184" href="Data.Nat.Induction.html#3184" class="Bound">ℓ</a><a id="3185" class="Symbol">}</a> <a id="3187" class="Keyword">where</a>
-  <a id="3195" class="Keyword">open</a> <a id="3200" href="Induction.WellFounded.html#2837" class="Module">WF.All</a> <a id="3207" href="Data.Nat.Induction.html#2302" class="Function">&lt;-wellFounded</a> <a id="3221" href="Data.Nat.Induction.html#3184" class="Bound">ℓ</a> <a id="3223" class="Keyword">public</a>
-    <a id="3234" class="Keyword">renaming</a> <a id="3243" class="Symbol">(</a> <a id="3245" href="Induction.WellFounded.html#2891" class="Function">wfRecBuilder</a> <a id="3258" class="Symbol">to</a> <a id="3261" class="Function">&lt;-recBuilder</a>
-             <a id="3287" class="Symbol">;</a> <a id="3289" href="Induction.WellFounded.html#2999" class="Function">wfRec</a>        <a id="3302" class="Symbol">to</a> <a id="3305" class="Function">&lt;-rec</a>
+  <a id="3195" class="Keyword">open</a> <a id="3200" href="Induction.WellFounded.html#2527" class="Module">WF.All</a> <a id="3207" href="Data.Nat.Induction.html#2302" class="Function">&lt;-wellFounded</a> <a id="3221" href="Data.Nat.Induction.html#3184" class="Bound">ℓ</a> <a id="3223" class="Keyword">public</a>
+    <a id="3234" class="Keyword">renaming</a> <a id="3243" class="Symbol">(</a> <a id="3245" href="Induction.WellFounded.html#2581" class="Function">wfRecBuilder</a> <a id="3258" class="Symbol">to</a> <a id="3261" class="Function">&lt;-recBuilder</a>
+             <a id="3287" class="Symbol">;</a> <a id="3289" href="Induction.WellFounded.html#2689" class="Function">wfRec</a>        <a id="3302" class="Symbol">to</a> <a id="3305" class="Function">&lt;-rec</a>
              <a id="3324" class="Symbol">)</a>
-    <a id="3330" class="Keyword">hiding</a> <a id="3337" class="Symbol">(</a><a id="3338" href="Induction.WellFounded.html#3060" class="Function">wfRec-builder</a><a id="3351" class="Symbol">)</a>
+    <a id="3330" class="Keyword">hiding</a> <a id="3337" class="Symbol">(</a><a id="3338" href="Induction.WellFounded.html#2750" class="Function">wfRec-builder</a><a id="3351" class="Symbol">)</a>
 
-
-<a id="3355" class="Comment">------------------------------------------------------------------------</a>
-<a id="3428" class="Comment">-- DEPRECATED NAMES</a>
-<a id="3448" class="Comment">------------------------------------------------------------------------</a>
-<a id="3521" class="Comment">-- Please use the new names as continuing support for the old names is</a>
-<a id="3592" class="Comment">-- not guaranteed.</a>
-
-<a id="3612" class="Comment">-- Version 0.15</a>
-
-<a id="rec-builder"></a><a id="3629" href="Data.Nat.Induction.html#3629" class="Function">rec-builder</a>      <a id="3646" class="Symbol">=</a> <a id="3648" href="Data.Nat.Induction.html#964" class="Function">recBuilder</a>
-<a id="3659" class="Symbol">{-#</a> <a id="3663" class="Keyword">WARNING_ON_USAGE</a> <a id="3680" class="Pragma">rec-builder</a>
-<a id="3692" class="String">&quot;Warning: rec-builder was deprecated in v0.15.
-Please use recBuilder instead.&quot;</a>
-<a id="3771" class="Symbol">#-}</a>
-<a id="cRec-builder"></a><a id="3775" href="Data.Nat.Induction.html#3775" class="Function">cRec-builder</a>     <a id="3792" class="Symbol">=</a> <a id="3794" href="Data.Nat.Induction.html#1323" class="Function">cRecBuilder</a>
-<a id="3806" class="Symbol">{-#</a> <a id="3810" class="Keyword">WARNING_ON_USAGE</a> <a id="3827" class="Pragma">cRec-builder</a>
-<a id="3840" class="String">&quot;Warning: cRec-builder was deprecated in v0.15.
-Please use cRecBuilder instead.&quot;</a>
-<a id="3921" class="Symbol">#-}</a>
-<a id="&lt;′-rec-builder"></a><a id="3925" href="Data.Nat.Induction.html#3925" class="Function">&lt;′-rec-builder</a>   <a id="3942" class="Symbol">=</a> <a id="3944" href="Data.Nat.Induction.html#2047" class="Function">&lt;′-recBuilder</a>
-<a id="3958" class="Symbol">{-#</a> <a id="3962" class="Keyword">WARNING_ON_USAGE</a> <a id="3979" class="Pragma">&lt;′-rec-builder</a>
-<a id="3994" class="String">&quot;Warning: &lt;′-rec-builder was deprecated in v0.15.
-Please use &lt;′-recBuilder instead.&quot;</a>
-<a id="4079" class="Symbol">#-}</a>
-<a id="&lt;-rec-builder"></a><a id="4083" href="Data.Nat.Induction.html#4083" class="Function">&lt;-rec-builder</a>    <a id="4100" class="Symbol">=</a> <a id="4102" href="Data.Nat.Induction.html#3261" class="Function">&lt;-recBuilder</a>
-<a id="4115" class="Symbol">{-#</a> <a id="4119" class="Keyword">WARNING_ON_USAGE</a> <a id="4136" class="Pragma">&lt;-rec-builder</a>
-<a id="4150" class="String">&quot;Warning: &lt;-rec-builder was deprecated in v0.15.
-Please use &lt;-recBuilder instead.&quot;</a>
-<a id="4233" class="Symbol">#-}</a>
-<a id="&lt;′-well-founded"></a><a id="4237" href="Data.Nat.Induction.html#4237" class="Function">&lt;′-well-founded</a>  <a id="4254" class="Symbol">=</a> <a id="4256" href="Data.Nat.Induction.html#1701" class="Function">&lt;′-wellFounded</a>
-<a id="4271" class="Symbol">{-#</a> <a id="4275" class="Keyword">WARNING_ON_USAGE</a> <a id="4292" class="Pragma">&lt;′-well-founded</a>
-<a id="4308" class="String">&quot;Warning: &lt;′-well-founded was deprecated in v0.15.
-Please use &lt;′-wellFounded instead.&quot;</a>
-<a id="4395" class="Symbol">#-}</a>
-<a id="&lt;′-well-founded′"></a><a id="4399" href="Data.Nat.Induction.html#4399" class="Function">&lt;′-well-founded′</a> <a id="4416" class="Symbol">=</a> <a id="4418" href="Data.Nat.Induction.html#1783" class="Function">&lt;′-wellFounded′</a>
-<a id="4434" class="Symbol">{-#</a> <a id="4438" class="Keyword">WARNING_ON_USAGE</a> <a id="4455" class="Pragma">&lt;′-well-founded′</a>
-<a id="4472" class="String">&quot;Warning: &lt;′-well-founded′ was deprecated in v0.15.
-Please use &lt;′-wellFounded′ instead.&quot;</a>
-<a id="4561" class="Symbol">#-}</a>
-<a id="&lt;-well-founded"></a><a id="4565" href="Data.Nat.Induction.html#4565" class="Function">&lt;-well-founded</a>   <a id="4582" class="Symbol">=</a> <a id="4584" href="Data.Nat.Induction.html#2302" class="Function">&lt;-wellFounded</a>
-<a id="4598" class="Symbol">{-#</a> <a id="4602" class="Keyword">WARNING_ON_USAGE</a> <a id="4619" class="Pragma">&lt;-well-founded</a>
-<a id="4634" class="String">&quot;Warning: &lt;-well-founded was deprecated in v0.15.
-Please use &lt;-wellFounded instead.&quot;</a>
-<a id="4719" class="Symbol">#-}</a>
 </pre></body></html>
