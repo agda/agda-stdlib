@@ -75,6 +75,10 @@ Non-backwards compatible changes
   So `[a-zA-Z]+.agdai?` run on "the path _build/Main.agdai corresponds to"
   will return "Main.agdai" when it used to be happy to just return "n.agda".
 
+#### Removed deprecated names
+
+* All modules and names that were deprecated prior to v1.0 have been removed.
+
 #### Proofs of non-zeroness as instance arguments
 
 * Many numeric operations in the library require their arguments to be non-zero.

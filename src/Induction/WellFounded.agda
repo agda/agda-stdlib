@@ -46,12 +46,6 @@ data Acc {A : Set a} (_<_ : Rel A ℓ) (x : A) : Set (a ⊔ ℓ) where
 WellFounded : Rel A ℓ → Set _
 WellFounded _<_ = ∀ x → Acc _<_ x
 
-Well-founded = WellFounded
-{-# WARNING_ON_USAGE Well-founded
-"Warning: Well-founded was deprecated in v0.15.
-Please use WellFounded instead."
-#-}
-
 ------------------------------------------------------------------------
 -- Basic properties
 
@@ -80,12 +74,6 @@ module Some {_<_ : Rel A r} {ℓ} where
                  wfRec P f x q ≡ f x (λ y y<x → wfRec P f y (acc-inverse q y y<x))
   unfold-wfRec P f (acc rs) = refl
 
-  wfRec-builder = wfRecBuilder
-  {-# WARNING_ON_USAGE wfRec-builder
-  "Warning: wfRec-builder was deprecated in v0.15.
-\ \Please use wfRecBuilder instead."
-  #-}
-
 
 ------------------------------------------------------------------------
 -- Well-founded induction for all elements, assuming they are all
@@ -100,10 +88,6 @@ module All {_<_ : Rel A r} (wf : WellFounded _<_) ℓ where
   wfRec = build wfRecBuilder
 
   wfRec-builder = wfRecBuilder
-  {-# WARNING_ON_USAGE wfRec-builder
-  "Warning: wfRec-builder was deprecated in v0.15.
-\ \Please use wfRecBuilder instead."
-  #-}
 
 module FixPoint
   {_<_ : Rel A r} (wf : WellFounded _<_)
@@ -140,12 +124,6 @@ module Subrelation {_<₁_ : Rel A ℓ₁} {_<₂_ : Rel A ℓ₂}
   wellFounded : WellFounded _<₂_ → WellFounded _<₁_
   wellFounded wf = λ x → accessible (wf x)
 
-  well-founded = wellFounded
-  {-# WARNING_ON_USAGE well-founded
-  "Warning: well-founded was deprecated in v0.15.
-\ \Please use wellFounded instead."
-  #-}
-
 
 -- DEPRECATED in v1.4.
 -- Please use proofs in `Relation.Binary.Construct.On` instead.
@@ -164,10 +142,6 @@ module InverseImage {_<_ : Rel B ℓ} (f : A → B) where
   #-}
   {-# WARNING_ON_USAGE wellFounded
   "Warning: wellFounded was deprecated in v1.4.
-\ \Please use wellFounded from `Relation.Binary.Construct.On` instead."
-  #-}
-  {-# WARNING_ON_USAGE well-founded
-  "Warning: well-founded was deprecated in v0.15.
 \ \Please use wellFounded from `Relation.Binary.Construct.On` instead."
   #-}
 
@@ -201,14 +175,6 @@ module TransitiveClosure {A : Set a} (_<_ : Rel A ℓ) where
   {-# WARNING_ON_USAGE _<⁺_
   "Warning: _<⁺_ was deprecated in v1.5.
 \ \Please use TransClosure from Relation.Binary.Construct.Closure.Transitive instead."
-  #-}
-  downwards-closed = downwardsClosed
-  {-# WARNING_ON_USAGE downwards-closed
-  "Warning: downwards-closed was deprecated in v0.15."
-  #-}
-  well-founded     = wellFounded
-  {-# WARNING_ON_USAGE well-founded
-  "Warning: well-founded was deprecated in v0.15."
   #-}
 
 
@@ -257,10 +223,6 @@ module Lexicographic {A : Set a} {B : A → Set b}
   {-# WARNING_ON_USAGE wellFounded
   "Warning: wellFounded was deprecated in v1.3.
 \ \Please use `×-wellFounded` from `Data.Product.Relation.Binary.Lex.Strict` instead."
-  #-}
-  {-# WARNING_ON_USAGE well-founded
-  "Warning: well-founded was deprecated in v0.15.
-\ \Please use wellFounded instead."
   #-}
 
 

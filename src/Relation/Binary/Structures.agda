@@ -164,12 +164,6 @@ record IsStrictPartialOrder (_<_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) wh
   <-respˡ-≈ : _<_ Respectsˡ _≈_
   <-respˡ-≈ = proj₂ <-resp-≈
 
-  asymmetric = asym
-  {-# WARNING_ON_USAGE asymmetric
-  "Warning: asymmetric was deprecated in v0.16.
-  Please use asym instead."
-  #-}
-
 
 record IsDecStrictPartialOrder (_<_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
   infix 4 _≟_ _<?_

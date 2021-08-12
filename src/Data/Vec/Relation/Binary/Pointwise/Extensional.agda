@@ -214,17 +214,3 @@ private
     ¬ix⁺∙jz (Equivalence.to Plus.equivalent ⟨$⟩
                Plus.map (_⟨$⟩_ (Equivalence.to equivalent))
                  (∙⁺⇒⁺∙ (Equivalence.from equivalent ⟨$⟩ ix∙⁺jz)))
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 0.15
-
-Pointwise-≡ = Pointwise-≡↔≡
-{-# WARNING_ON_USAGE Pointwise-≡
-"Warning: Pointwise-≡ was deprecated in v0.15.
-Please use Pointwise-≡↔≡ instead."
-#-}

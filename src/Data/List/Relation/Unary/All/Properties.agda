@@ -742,29 +742,6 @@ module _ (S : Setoid c ℓ) where
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 0.16
-
-All-all = all⁻
-{-# WARNING_ON_USAGE All-all
-"Warning: All-all was deprecated in v0.16.
-Please use all⁻ instead."
-#-}
-all-All = all⁺
-{-# WARNING_ON_USAGE all-All
-"Warning: all-All was deprecated in v0.16.
-Please use all⁺ instead."
-#-}
-All-map = map⁺
-{-# WARNING_ON_USAGE All-map
-"Warning: All-map was deprecated in v0.16.
-Please use map⁺ instead."
-#-}
-map-All = map⁻
-{-# WARNING_ON_USAGE map-All
-"Warning: map-All was deprecated in v0.16.
-Please use map⁻ instead."
-#-}
-
 -- Version 1.0
 
 filter⁺₁ = all-filter

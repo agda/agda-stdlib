@@ -35,7 +35,7 @@ module _ {A B C : Set} {A→B : A → B} {B→C : B → C} where
 open import Data.Nat
 open import Data.List.Base
 open import Data.Char.Base
-open import Data.String using (String; toList; fromList; _==_)
+open import Data.String as String using (String; toList; fromList; _==_)
 open import Function
 open import Data.Bool hiding (_≤?_)
 open import Data.Product as P using (_×_; <_,_>; uncurry; proj₁)
@@ -56,7 +56,7 @@ subpalindromes str = let Chars = List Char in
   |> filter (λ cs → 2 ≤? length cs)        ∶ List Chars
   -- only keep the ones that are palindromes
   |> map < fromList , fromList ∘ reverse > ∶ List (String × String)
-  |> boolFilter (uncurry _==_)             ∶ List (String × String)
+  |> filter (uncurry String._≟_)           ∶ List (String × String)
   |> map proj₁                             ∶ List String
 
 -- Test cases

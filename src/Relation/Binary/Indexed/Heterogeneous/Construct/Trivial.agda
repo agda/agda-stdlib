@@ -10,8 +10,7 @@ module Relation.Binary.Indexed.Heterogeneous.Construct.Trivial
   {i} {I : Set i} where
 
 open import Relation.Binary
-open import Relation.Binary.Indexed.Heterogeneous hiding (Rel)
-  hiding (IsEquivalence; Setoid)
+open import Relation.Binary.Indexed.Heterogeneous
 
 ------------------------------------------------------------------------
 -- Structures
