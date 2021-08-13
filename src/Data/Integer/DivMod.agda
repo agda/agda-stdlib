@@ -87,7 +87,7 @@ a≡a%ℕn+[a/ℕn]*n -[1+ n ] d with (ℕ.suc n) NDM.divMod d
   - + sr - (- (+ 1) * + d + (+ sq * + d))
     ≡⟨ cong (_+_ (- (+ sr))) (neg-distrib-+ (- (+ 1) * + d) (+ sq * + d)) ⟩
   - + sr + (- (-[1+ 0 ] * + d) + - (+ sq * + d))
-    ≡⟨ cong₂ (λ p q → - + sr + (- p + q)) (-1*n≡-n (+ d))
+    ≡⟨ cong₂ (λ p q → - + sr + (- p + q)) (-1*i≡-i (+ d))
                                             (neg-distribˡ-* (+ sq) (+ d)) ⟩
   - + sr + ((- - + d) + -[1+ q ] * + d)
     ≡⟨ sym (+-assoc (- + sr) (- - + d) (-[1+ q ] * + d)) ⟩
@@ -114,7 +114,7 @@ div-pos-is-divℕ : ∀ n d .{{_ : ℕ.NonZero d}} → n div (+ d) ≡ n divℕ 
 div-pos-is-divℕ n (ℕ.suc d) = *-identityˡ (n divℕ ℕ.suc d)
 
 div-neg-is-neg-divℕ : ∀ n d .{{_ : ℕ.NonZero d}} .{{_ : NonZero (- + d)}} → n div (- + d) ≡ - (n divℕ d)
-div-neg-is-neg-divℕ n (ℕ.suc d) = -1*n≡-n (n divℕ ℕ.suc d)
+div-neg-is-neg-divℕ n (ℕ.suc d) = -1*i≡-i (n divℕ ℕ.suc d)
 
 0≤n⇒0≤n/ℕd : ∀ n d .{{_ : ℕ.NonZero d}} → +0 ℤ.≤ n → +0 ℤ.≤ (n divℕ d)
 0≤n⇒0≤n/ℕd (+ n) d (+≤+ m≤n) = +≤+ ℕ.z≤n
@@ -156,5 +156,5 @@ a≡a%n+[a/n]*n n -[1+ d ]    = begin
   + r + q * + sd         ≡⟨⟩
   + r + q * - -[1+ d ]   ≡⟨ cong (_+_ (+ r)) (sym (neg-distribʳ-* q -[1+ d ])) ⟩
   + r + - (q * -[1+ d ]) ≡⟨ cong (_+_ (+ r)) (neg-distribˡ-* q -[1+ d ]) ⟩
-  + r + - q * -[1+ d ]   ≡⟨ cong (_+_ (+ r) ∘′ (_* -[1+ d ])) (sym (-1*n≡-n q)) ⟩
+  + r + - q * -[1+ d ]   ≡⟨ cong (_+_ (+ r) ∘′ (_* -[1+ d ])) (sym (-1*i≡-i q)) ⟩
   + r + n div -[1+ d ] * -[1+ d ] ∎ where open ≡-Reasoning
