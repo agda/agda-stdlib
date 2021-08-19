@@ -228,6 +228,14 @@ Non-backwards compatible changes
   *-cancelʳ-≤-pos : ∀ m n o → m * + suc o ≤ n * + suc o → m ≤ n
   ```
 
+### Implementation of division and modulus for `ℤ`
+
+* The previous implementations of `_divℕ_`, `_div_`, `_modℕ_`, `_mod_`
+  in `Data.Integer.DivMod` internally converted to the unary `Fin` datatype
+  resulting in poor performance. The implementation has been updated to
+  use the corresponding operations from `Data.Nat.DivMod` which are 
+  efficiently implemented using the Haskell backend.
+
 ### Strict functions
 
 * The module `Strict` has been deprecated in favour of `Function.Strict`
@@ -329,36 +337,38 @@ Deprecated names
   zipWith-identityʳ  ↦  zipWith-zeroʳ
   ```
 
-  * In `Function.Construct.Composition`:
-
-    _∘-⟶_   ↦   _⟶-∘_
-    _∘-↣_   ↦   _↣-∘_
-    _∘-↠_   ↦   _↠-∘_
-    _∘-⤖_   ↦   _⤖-∘_
-    _∘-⇔_   ↦   _⇔-∘_
-    _∘-↩_   ↦   _↩-∘_
-    _∘-↪_   ↦   _↪-∘_
-    _∘-↔_   ↦   _↔-∘_
+* In `Function.Construct.Composition`:
+  ```
+  _∘-⟶_   ↦   _⟶-∘_
+  _∘-↣_   ↦   _↣-∘_
+  _∘-↠_   ↦   _↠-∘_
+  _∘-⤖_  ↦   _⤖-∘_
+  _∘-⇔_   ↦   _⇔-∘_
+  _∘-↩_   ↦   _↩-∘_
+  _∘-↪_   ↦   _↪-∘_
+  _∘-↔_   ↦   _↔-∘_
+  ```
 
   * In `Function.Construct.Identity`:
+  ```
+  id-⟶   ↦   ⟶-id
+  id-↣   ↦   ↣-id
+  id-↠   ↦   ↠-id
+  id-⤖  ↦   ⤖-id
+  id-⇔   ↦   ⇔-id
+  id-↩   ↦   ↩-id
+  id-↪   ↦   ↪-id
+  id-↔   ↦   ↔-id
+  ```
 
-    id-⟶   ↦   ⟶-id
-    id-↣   ↦   ↣-id
-    id-↠   ↦   ↠-id
-    id-⤖   ↦   ⤖-id
-    id-⇔   ↦   ⇔-id
-    id-↩   ↦   ↩-id
-    id-↪   ↦   ↪-id
-    id-↔   ↦   ↔-id
-
-  * In `Function.Construct.Symmetry`:
-
-    sym-⤖   ↦   ⤖-sym
-    sym-⇔   ↦   ⇔-sym
-    sym-↩   ↦   ↩-sym
-    sym-↪   ↦   ↪-sym
-    sym-↔   ↦   ↔-sym
-    ```
+* In `Function.Construct.Symmetry`:
+  ```
+  sym-⤖   ↦   ⤖-sym
+  sym-⇔   ↦   ⇔-sym
+  sym-↩   ↦   ↩-sym
+  sym-↪   ↦   ↪-sym
+  sym-↔   ↦   ↔-sym
+  ```
 
 New modules
 -----------
@@ -480,6 +490,11 @@ Other minor changes
 * Added new proofs in `Data.Nat.Properties`:
   ```agda
   m*n≡0⇒m≡0 : .{{_ : NonZero n}} → m * n ≡ 0 → m ≡ 0
+  ```
+
+* Added new proofs in `Data.Nat.DivMod`:
+  ```agda
+  m%n≤n : .{{_ : NonZero n}} → m % n ≤ n
   ```
 
 * Added new definitions and proofs in `Data.Rational.Properties`:
