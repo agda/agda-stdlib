@@ -401,27 +401,3 @@ True↔ (false because ofⁿ ¬p) _ =
 
    to∘from : ∀ v → to (from v) ≡ v
    to∘from P.refl = P.refl
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 0.17
-
-×-CommutativeMonoid = ×-commutativeMonoid
-{-# WARNING_ON_USAGE ×-CommutativeMonoid
-"Warning: ×-CommutativeMonoid was deprecated in v0.17.
-Please use ×-commutativeMonoid instead."
-#-}
-⊎-CommutativeMonoid = ⊎-commutativeMonoid
-{-# WARNING_ON_USAGE ⊎-CommutativeMonoid
-"Warning: ⊎-CommutativeMonoid was deprecated in v0.17.
-Please use ⊎-commutativeMonoid instead."
-#-}
-×⊎-CommutativeSemiring = ×-⊎-commutativeSemiring
-{-# WARNING_ON_USAGE ×⊎-CommutativeSemiring
-"Warning: ×⊎-CommutativeSemiring was deprecated in v0.17.
-Please use ×-⊎-commutativeSemiring instead."
-#-}

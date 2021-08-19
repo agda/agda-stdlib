@@ -256,17 +256,3 @@ Pointwise-≡⇒≡ (P.refl ∷ xs∼ys) = P.cong (_ ∷_) (Pointwise-≡⇒≡ 
 
 Pointwise-≡↔≡ : ∀ {n} {xs ys : Vec A n} → Pointwise _≡_ xs ys ⇔ xs ≡ ys
 Pointwise-≡↔≡ = equivalence Pointwise-≡⇒≡ ≡⇒Pointwise-≡
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 0.15
-
-Pointwise-≡ = Pointwise-≡↔≡
-{-# WARNING_ON_USAGE Pointwise-≡
-"Warning: Pointwise-≡ was deprecated in v0.15.
-Please use Pointwise-≡↔≡ instead."
-#-}

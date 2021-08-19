@@ -79,7 +79,7 @@ a≡a%ℕn+[a/ℕn]*n n@(-[1+ _ ]) d with ∣ n ∣ ℕ.% d in eq
   - + r - + (q ℕ.* d)                    ≡⟨ cong (_-_ (- + r)) (sym (pos-distrib-* q d)) ⟩
   - + r - (+ q * + d)                    ≡⟨⟩
   - + r - pred +[1+ q ] * + d            ≡⟨ cong (_-_ (- + r)) (*-distribʳ-+ (+ d) -1ℤ +[1+ q ]) ⟩
-  - + r - (-1ℤ * + d + (+[1+ q ] * + d)) ≡⟨ cong (λ v → - + r - (v + (+[1+ q ] * + d))) (-1*n≡-n (+ d))  ⟩
+  - + r - (-1ℤ * + d + (+[1+ q ] * + d)) ≡⟨ cong (λ v → - + r - (v + (+[1+ q ] * + d))) (-1*i≡-i (+ d))  ⟩
   - + r - (- + d     + (+[1+ q ] * + d)) ≡⟨ cong (_+_ (- + r)) (neg-distrib-+ (- + d) (+[1+ q ] * + d)) ⟩
   - + r + (- - + d + - (+[1+ q ] * + d)) ≡⟨ cong (λ v → - + r + (v + - (+[1+ q ] * + d))) (neg-involutive (+ d))  ⟩
   - + r + (+ d     + - (+[1+ q ] * + d)) ≡⟨ cong (λ v → - + r + (+ d + v)) (neg-distribˡ-* +[1+ q ] (+ d)) ⟩
@@ -100,7 +100,7 @@ div-pos-is-divℕ n (ℕ.suc d) = *-identityˡ (n divℕ ℕ.suc d)
 
 div-neg-is-neg-divℕ : ∀ n d .{{_ : ℕ.NonZero d}} .{{_ : NonZero (- + d)}} →
                       n div (- + d) ≡ - (n divℕ d)
-div-neg-is-neg-divℕ n (ℕ.suc d) = -1*n≡-n (n divℕ ℕ.suc d)
+div-neg-is-neg-divℕ n (ℕ.suc d) = -1*i≡-i (n divℕ ℕ.suc d)
 
 0≤n⇒0≤n/ℕd : ∀ n d .{{_ : ℕ.NonZero d}} → 0ℤ ≤ n → 0ℤ ≤ (n divℕ d)
 0≤n⇒0≤n/ℕd (+ n) d (+≤+ m≤n) = +≤+ ℕ.z≤n
@@ -142,5 +142,5 @@ a≡a%n+[a/n]*n n d@(-[1+ _ ]) = begin-equality
   + r + q * + ∣d∣    ≡⟨⟩
   + r + q * - d      ≡⟨ cong (_+_ (+ r)) (sym (neg-distribʳ-* q d)) ⟩
   + r + - (q * d)    ≡⟨ cong (_+_ (+ r)) (neg-distribˡ-* q d) ⟩
-  + r + - q * d      ≡⟨ cong (_+_ (+ r) ∘′ (_* d)) (sym (-1*n≡-n q)) ⟩
+  + r + - q * d      ≡⟨ cong (_+_ (+ r) ∘′ (_* d)) (sym (-1*i≡-i q)) ⟩
   + r + n div d * d  ∎

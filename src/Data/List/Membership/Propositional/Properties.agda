@@ -388,30 +388,3 @@ there-injective-≢∈ : ∀ {xs} {x y z : A} {x∈xs : x ∈ xs} {y∈xs : y �
                      there {x = z} x∈xs ≢∈ there y∈xs →
                      x∈xs ≢∈ y∈xs
 there-injective-≢∈ neq refl eq = neq refl (P.cong there eq)
-
-------------------------------------------------------------------------
--- DEPRECATED
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 0.15
-
-boolFilter-∈ : ∀ (p : A → Bool) (xs : List A) {x} →
-           x ∈ xs → p x ≡ true → x ∈ boolFilter p xs
-boolFilter-∈ p (x ∷ xs) (here refl) px≡true rewrite px≡true = here refl
-boolFilter-∈ p (y ∷ xs) (there pxs) px≡true with p y
-... | true  = there (boolFilter-∈ p xs pxs px≡true)
-... | false =        boolFilter-∈ p xs pxs px≡true
-{-# WARNING_ON_USAGE boolFilter-∈
-"Warning: boolFilter was deprecated in v0.15.
-Please use filter instead."
-#-}
-
--- Version 0.16
-
-filter-∈ = ∈-filter⁺
-{-# WARNING_ON_USAGE filter-∈
-"Warning: filter-∈ was deprecated in v0.16.
-Please use ∈-filter⁺ instead."
-#-}

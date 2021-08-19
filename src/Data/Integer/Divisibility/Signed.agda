@@ -42,10 +42,10 @@ open _∣_ using (quotient) public
 -- Conversion between signed and unsigned divisibility
 
 ∣ᵤ⇒∣ : ∀ {k i} → k ∣ᵤ i → k ∣ i
-∣ᵤ⇒∣ {k} {i} (divides 0           eq) = divides (+ 0) (∣n∣≡0⇒n≡0 eq)
+∣ᵤ⇒∣ {k} {i} (divides 0           eq) = divides (+ 0) (∣i∣≡0⇒i≡0 eq)
 ∣ᵤ⇒∣ {k} {i} (divides q@(ℕ.suc _) eq) with k ≟ +0
-... | yes refl = divides +0 (∣n∣≡0⇒n≡0 (trans eq (ℕ.*-zeroʳ q)))
-... | no  neq  = divides (sign i S.* sign k ◃ q) (◃-≡ sign-eq abs-eq)
+... | yes refl = divides +0 (∣i∣≡0⇒i≡0 (trans eq (ℕ.*-zeroʳ q)))
+... | no  neq  = divides (sign i S.* sign k ◃ q) (◃-cong sign-eq abs-eq)
   where
   ikq = sign i S.* sign k ◃ q
 
@@ -75,7 +75,7 @@ open _∣_ using (quotient) public
 
   abs-eq : ∣ i ∣ ≡ ∣ ikq * k ∣
   abs-eq = sym $ begin
-    ∣ ikq * k ∣        ≡⟨ ∣m*n∣≡∣m∣*∣n∣ ikq k ⟩
+    ∣ ikq * k ∣        ≡⟨ ∣i*j∣≡∣i∣*∣j∣ ikq k ⟩
     ∣ ikq ∣ ℕ.* ∣ k ∣  ≡⟨ cong (ℕ._* ∣ k ∣) (abs-◃ (sign i S.* sign k) q) ⟩
     q ℕ.* ∣ k ∣        ≡⟨ sym eq ⟩
     ∣ i ∣              ∎
@@ -133,7 +133,7 @@ _∣?_ : Decidable _∣_
 k ∣? m = DEC.map′ ∣ᵤ⇒∣ ∣⇒∣ᵤ (∣ k ∣ ℕ.∣? ∣ m ∣)
 
 0∣⇒≡0 : ∀ {m} → 0ℤ ∣ m → m ≡ 0ℤ
-0∣⇒≡0 0|m = ∣n∣≡0⇒n≡0 (ℕ.0∣⇒≡0 (∣⇒∣ᵤ 0|m))
+0∣⇒≡0 0|m = ∣i∣≡0⇒i≡0 (ℕ.0∣⇒≡0 (∣⇒∣ᵤ 0|m))
 
 m∣∣m∣ : ∀ {m} → m ∣ (+ ∣ m ∣)
 m∣∣m∣ = ∣ᵤ⇒∣ ℕ.∣-refl
@@ -148,7 +148,7 @@ m∣∣m∣ = ∣ᵤ⇒∣ ℕ.∣-refl
 ∣m⇒∣-m : ∀ {i m} → i ∣ m → i ∣ - m
 ∣m⇒∣-m {i} {m} i∣m = ∣ᵤ⇒∣ $′ begin
   ∣ i ∣   ∣⟨ ∣⇒∣ᵤ i∣m ⟩
-  ∣ m ∣   ≡⟨ sym (∣-n∣≡∣n∣ m) ⟩
+  ∣ m ∣   ≡⟨ sym (∣-i∣≡∣i∣ m) ⟩
   ∣ - m ∣ ∎
   where open ℕ.∣-Reasoning
 
