@@ -1003,7 +1003,7 @@ record BooleanAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
 ------------------------------------------------------------------------
 -- Structures with 2 binary operations, 2 unary operation & 2 elements
 ------------------------------------------------------------------------
--- A raw field is a ring without any laws.
+-- A raw field is a field without any laws.
 
 record RawField c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  9 1#\_
