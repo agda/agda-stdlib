@@ -436,6 +436,8 @@ Other minor changes
   record UnitalMagma c ℓ : Set (suc (c ⊔ ℓ))
   record Quasigroup  c ℓ : Set (suc (c ⊔ ℓ))
   record Loop c ℓ : Set (suc (c ⊔ ℓ))
+  record RawField c ℓ : Set (suc (c ⊔ ℓ)
+  record Field c ℓ : Set (suc (c ⊔ ℓ))
   ```
   and the existing record `Lattice` now provides
   ```agda
@@ -474,6 +476,7 @@ Other minor changes
   record IsUnitalMagma (_∙_ : Op₂ A) (ε : A) : Set (a ⊔ ℓ)
   record IsQuasigroup  (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ)
   record IsLoop (_∙_ : Op₂ A) (ε : A) (⁻¹ : Op₁ A) : Set (a ⊔ ℓ)
+  record IsField (+ * : Op₂ A)(-_ 1#/_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ)
   ```
   and the existing record `IsLattice` now provides
   ```
@@ -598,4 +601,8 @@ Other minor changes
   ```
   isSuccess : ExitCode → Bool
   isFailure : ExitCode → Bool
+  ```
+* Added new definitions to `Algebra.Morphism.Structures`:
+  ```agda
+module FieldMorphisms (F₁ : RawField a ℓ₁) (F₂ : RawField b ℓ₂)
   ```
