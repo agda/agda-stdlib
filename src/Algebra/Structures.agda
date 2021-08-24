@@ -637,3 +637,15 @@ record IsBooleanAlgebra
     ¬-cong                : Congruent₁ ¬
 
   open IsDistributiveLattice isDistributiveLattice public
+
+------------------------------------------------------------------------
+-- Structures with 2 binary operations, 2 unary operation & 2 elements
+------------------------------------------------------------------------
+
+record IsField (+ * : Op₂ A)(-_ 1#/_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
+  field
+    isCommutativeRing : IsCommutativeRing + * -_ 0# 1#
+    *-inverse         : Inverse  1# 1#/_ *
+
+  open IsCommutativeRing isCommutativeRing public
+
