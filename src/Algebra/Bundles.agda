@@ -1021,7 +1021,6 @@ record RawField c ℓ : Set (suc (c ⊔ ℓ)) where
     0#                : Carrier
     1#                : Carrier
 
-
   rawRing : RawRing _ _
   rawRing = record
     { _≈_ = _≈_

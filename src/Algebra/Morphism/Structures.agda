@@ -578,7 +578,6 @@ module FieldMorphisms (F₁ : RawField a ℓ₁) (F₂ : RawField b ℓ₂) wher
   open FunctionDefinitions _≈₁_ _≈₂_
   open RingMorphisms rawRing₁ rawRing₂
 
-
   record IsFieldHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       isRingHomomorphism : IsRingHomomorphism ⟦_⟧
