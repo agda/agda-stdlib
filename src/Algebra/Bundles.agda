@@ -1006,7 +1006,7 @@ record BooleanAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
 -- A raw field is a field without any laws.
 
 record RawField c ℓ : Set (suc (c ⊔ ℓ)) where
-  infix  9 1#\_
+  infix  9 1#/_
   infix  8 -_
   infixl 7 _*_
   infixl 6 _+_
@@ -1017,7 +1017,7 @@ record RawField c ℓ : Set (suc (c ⊔ ℓ)) where
     _+_               : Op₂ Carrier
     _*_               : Op₂ Carrier
     -_                : Op₁ Carrier
-    1#\_              : Op₁ Carrier
+    1#/_              : Op₁ Carrier
     0#                : Carrier
     1#                : Carrier
 
@@ -1033,7 +1033,7 @@ record RawField c ℓ : Set (suc (c ⊔ ℓ)) where
 
 
 record Field c ℓ : Set (suc (c ⊔ ℓ)) where
-  infix  9 1#\_
+  infix  9 1#/_
   infix  8 -_
   infixl 7 _*_
   infixl 6 _+_
@@ -1044,10 +1044,10 @@ record Field c ℓ : Set (suc (c ⊔ ℓ)) where
     _+_               : Op₂ Carrier
     _*_               : Op₂ Carrier
     -_                : Op₁ Carrier
-    1#\_              : Op₁ Carrier
+    1#/_              : Op₁ Carrier
     0#                : Carrier
     1#                : Carrier
-    isField           : IsField _≈_ _+_ _*_ -_ 1#\_ 0# 1#
+    isField           : IsField _≈_ _+_ _*_ -_ 1#/_ 0# 1#
 
   open IsField isField public
 

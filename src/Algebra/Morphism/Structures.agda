@@ -563,14 +563,14 @@ module FieldMorphisms (F₁ : RawField a ℓ₁) (F₂ : RawField b ℓ₂) wher
   open RawField F₁ renaming
     ( Carrier to A; _≈_ to _≈₁_
     ; -_ to -₁_
-    ; 1#\_ to #1\₁_
+    ; 1#/_ to #1/₁_
     ; rawRing to rawRing₁
     )
 
   open RawField F₂ renaming
     ( Carrier to B; _≈_ to _≈₂_
     ; -_ to -₂_
-    ; 1#\_ to #1\₂_
+    ; 1#/_ to #1/₂_
     ; rawRing to rawRing₂
     )
 
@@ -581,7 +581,7 @@ module FieldMorphisms (F₁ : RawField a ℓ₁) (F₂ : RawField b ℓ₂) wher
   record IsFieldHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       isRingHomomorphism : IsRingHomomorphism ⟦_⟧
-      -‿homo : Homomorphic₁ ⟦_⟧ #1\₁_ #1\₂_
+      -‿homo : Homomorphic₁ ⟦_⟧ #1/₁_ #1/₂_
 
     open IsRingHomomorphism isRingHomomorphism public
 
