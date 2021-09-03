@@ -90,7 +90,7 @@ a≡a%ℕn+[a/ℕn]*n n@(-[1+ _ ]) d with ∣ n ∣ ℕ.% d in eq
 
 [n/ℕd]*d≤n : ∀ n d .{{_ : ℕ.NonZero d}} → (n divℕ d) * + d ≤ n
 [n/ℕd]*d≤n n d = let q = n divℕ d; r = n modℕ d in begin
-  q * + d        ≤⟨  n≤m+n r ⟩
+  q * + d        ≤⟨  i≤j+i _ (+ r) ⟩
   + r + q * + d  ≡˘⟨ a≡a%ℕn+[a/ℕn]*n n d ⟩
   n              ∎
 

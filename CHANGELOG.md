@@ -79,21 +79,27 @@ Non-backwards compatible changes
 
 * All modules and names that were deprecated prior to v1.0 have been removed.
 
-#### Proofs of non-zeroness as instance arguments
+#### Proofs of non-zeroness/positivity/negativity as instance arguments
 
-* Many numeric operations in the library require their arguments to be non-zero.
-  The previous way of constructing and passing round these proofs resulted in clunky code.
-  As described on the [mailing list](https://lists.chalmers.se/pipermail/agda/2021/012693.html)
-  we have converted the operations to take the proofs of non-zeroness as irrelevant 
-  [instance arguments](https://agda.readthedocs.io/en/latest/language/instance-arguments.html).
+* Many numeric operations in the library require their arguments to be non-zero,
+  and various proofs require their arguments to be non-zero/positive/negative etc.
+  As discussed on the [mailing list](https://lists.chalmers.se/pipermail/agda/2021/012693.html),
+  the previous way of constructing and passing round these proofs was extremely clunky and lead
+  to messy and difficult to read code. We have therefore changed every occurrence where we need
+  a proof of non-zeroness/positivity/etc. to take it as an irrelevant 
+  [instance argument](https://agda.readthedocs.io/en/latest/language/instance-arguments.html).
   See the mailing list for a fuller explanation of the motivation and implementation.
 
-* For example the type signature of division is now:
+* For example, whereas the type signature of division used to be:
+  ```
+  _/_ : (dividend divisor : ℕ) {≢0 : False (divisor ≟ 0)} → ℕ
+  ```
+  it is now:
   ```
   _/_ : (dividend divisor : ℕ) .{{_ : NonZero divisor}} → ℕ
   ```
   which means that as long as an instance of `NonZero n` is in scope then you can write
-  `m / n` without having to explicitly provide a proof as instance search will fill it in
+  `m / n` without having to explicitly provide a proof, as instance search will fill it in
   for you. The full list of such operations changed is as follows:
     - In `Data.Nat.DivMod`: `_/_`, `_%_`, `_div_`, `_mod_`
 	- In `Data.Nat.Pseudorandom.LCG`: `Generator`
@@ -101,25 +107,24 @@ Non-backwards compatible changes
 	- In `Data.Rational`: `mkℚ+`, `normalize`, `_/_`, `1/_`
 	- In `Data.Rational.Unnormalised`: `_/_`, `1/_`, `_÷_`
 
-* Consequently the definition of `_≢0` has been removed from `Data.Rational.Unnormalised.Base`
-  and the following proofs about it have been removed from `Data.Rational.Unnormalised.Properties`:
-  ```
-  p≄0⇒∣↥p∣≢0 : ∀ p → p ≠ 0ℚᵘ → ℤ.∣ (↥ p) ∣ ≢0
-  ∣↥p∣≢0⇒p≄0 : ∀ p → ℤ.∣ (↥ p) ∣ ≢0 → p ≠ 0ℚᵘ
-  ```
-
 * At the moment, there are 4 different ways such instance arguments can be provided,
   listed in order of convenience and clarity:
-    1. By default there is always an instance of `NonZero (suc n)` for any `n` which 
-	   will be picked up automatically:
+    1. *Automatic basic instances* - the standard library provides instances based on the constructors of each
+	   numeric type in `Data.X.Base`. For example, `Data.Nat.Base` constains an instance of `NonZero (suc n)` for any `n`
+	   and `Data.Integer.Base` contains an instance of `NonNegative (+ n)` for any `n`. Consequently,
+	   if the argument is of the required form, these instances will always be filled in by instance search 
+	   automatically, e.g.
 	   ```
 	   0/n≡0 : 0 / suc n ≡ 0
 	   ```
-	2. You can take the proof an instance argument as a parameter, e.g. 
+	2. *Take the instance as an argument* - You can provide the instance argument as a parameter to your function
+	   and Agda's instance search will automatically use it in the correct place without you having to
+	   explicitly pass it, e.g. 
 	   ```
-	   0/n≡0 : {{_ : NonZero n}} → 0 / n ≡ 0
+	   0/n≡0 : .{{_ : NonZero n}} → 0 / n ≡ 0
 	   ```
-	3. You can define an instance argument in scope higher-up (or in a `where` clause):
+	3. *Define the instance locally* - You can define an instance argument in scope (e.g. in a `where` clause)
+	   and Agda's instance search will again find it automatically, e.g.
 	   ```
 	   instance 
 	     n≢0 : NonZero n
@@ -127,105 +132,36 @@ Non-backwards compatible changes
 
 	   0/n≡0 : 0 / n ≡ 0
 	   ```
-	4. You can provide the instance argument explicitly, e.g. `0/n≡0 : ∀ n (n≢0 : NonZero n) → ((0 / n) {{n≢0}}) ≡ 0`
+	4. *Pass the instance argument explicitly* - Finally, if all else fails you can pass the
+	   instance argument explicitly into the function using `{{ }}`, e.g.
 	   ```
 	   0/n≡0 : ∀ n (n≢0 : NonZero n) → ((0 / n) {{n≢0}}) ≡ 0
 	   ```
+	   Suitable constructors for `NonZero`/`Positive` etc. can be found in `Data.X.Base`.
 
-* Previously one of the hacks used in proofs was to explicitly put everything in the form `suc n`.
-  This often made the proofs extremely difficult to use if you're term wasn't in that form. These
-  proofs have now all been updated to use instance arguments instead, e.g.
+* A full list of proofs that have changed to use instance arguments is available at the end of this file.
+  Notable changes to proofs are now discussed below.
+
+* Previously one of the hacks used in proofs was to explicitly refer to everything in the correct form,
+  e.g. if the argument `n` had to be non-zero then you would refer to the argument as `suc n` everywhere
+  instead of `n`, e.g.
   ```
   n/n≡1 : ∀ n → suc n / suc n ≡ 1 
   ```
-  becomes
+  This made the proofs extremely difficult to use if your term wasn't in the right form.
+  After being updated to use instance arguments instead, the proof above becomes:
   ```
   n/n≡1 : ∀ n {{_ : NonZero n}} → n / n ≡ 1
   ```
-  This does however mean that if you passed in the value `x` to these proofs before, then you
-  will now have to pass in `suc x`. The full list of such proofs is below:
-  - In `Data.Nat.Properties`:
-	```agda
-	*-cancelʳ-≡ : ∀ m n {o} → m * suc o ≡ n * suc o → m ≡ n
-	*-cancelˡ-≡ : ∀ {m n} o → suc o * m ≡ suc o * n → m ≡ n
-	*-cancelʳ-≤ : ∀ m n o → m * suc o ≤ n * suc o → m ≤ n
-	*-cancelˡ-≤ : ∀ {m n} o → suc o * m ≤ suc o * n → m ≤ n
-	*-monoˡ-<   : ∀ n → (_* suc n) Preserves _<_ ⟶ _<_
-	*-monoʳ-<   : ∀ n → (suc n *_) Preserves _<_ ⟶ _<_
-	```
+  However, note that this means that if you passed in the value `x` to these proofs before, then you
+  will now have to pass in `suc x`. The proofs for which the arguments have changed form in this way
+  are highlighted in the list at the bottom of the file.
 
-  - In `Data.Nat.DivMod`:
-	```agda
-    m≡m%n+[m/n]*n : ∀ m n → m ≡ m % suc n + (m / suc n) * suc n
-    m%n≡m∸m/n*n   : ∀ m n → m % suc n ≡ m ∸ (m / suc n) * suc n
-    n%n≡0         : ∀ n → suc n % suc n ≡ 0
-    m%n%n≡m%n     : ∀ m n → m % suc n % suc n ≡ m % suc n
-    [m+n]%n≡m%n   : ∀ m n → (m + suc n) % suc n ≡ m % suc n
-    [m+kn]%n≡m%n  : ∀ m k n → (m + k * (suc n)) % suc n ≡ m % suc n
-    m*n%n≡0       : ∀ m n → (m * suc n) % suc n ≡ 0
-    m%n<n         : ∀ m n → m % suc n < suc n
-    m%n≤m         : ∀ m n → m % suc n ≤ m
-    m≤n⇒m%n≡m     : ∀ {m n} → m ≤ n → m % suc n ≡ m
-    ```
-
-  - In `Data.Nat.Divisibility`
-    ```agda
-    m%n≡0⇒n∣m : ∀ m n → m % suc n ≡ 0 → suc n ∣ m
-    n∣m⇒m%n≡0 : ∀ m n → suc n ∣ m → m % suc n ≡ 0
-    m%n≡0⇔n∣m : ∀ m n → m % suc n ≡ 0 ⇔ suc n ∣ m
-	∣⇒≤       : ∀ {m n} → m ∣ suc n → m ≤ suc n
-	>⇒∤        : ∀ {m n} → m > suc n → m ∤ suc n
-	*-cancelˡ-∣ : ∀ {i j} k → suc k * i ∣ suc k * j → i ∣ j
-	```
-
-  - In `Data.Nat.GCD`
-    ```
-    GCD-* : ∀ {m n d c} → GCD (m * suc c) (n * suc c) (d * suc c) → GCD m n d
-	gcd[m,n]≤n : ∀ m n → gcd m (suc n) ≤ suc n
-    ```
-
-  - In `Data.Nat.Coprimality`:
-	```
-	Bézout-coprime : ∀ {i j d} → Bézout.Identity (suc d) (i * suc d) (j * suc d) → Coprime i j
-	```
-	
-  - In `Data.Integer.Properties`:
-	```
-	sign-◃    : ∀ s n → sign (s ◃ suc n) ≡ s
-	sign-cong : ∀ {s₁ s₂ n₁ n₂} → s₁ ◃ suc n₁ ≡ s₂ ◃ suc n₂ → s₁ ≡ s₂
-	-◃<+◃     : ∀ m n → Sign.- ◃ (suc m) < Sign.+ ◃ n
-	m⊖1+n<m   : ∀ m n → m ⊖ suc n < + m
-    ```
-
-  - In `Data.Integer.Divisibility`:
-	```
-	*-cancelˡ-∣ : ∀ k {i j} → k ≢ + 0 → k * i ∣ k * j → i ∣ j
-	*-cancelʳ-∣ : ∀ k {i j} → k ≢ + 0 → i * k ∣ j * k → i ∣ j
-	```
-
-  - In `Data.Integer.Divisibility.Signed`:
-	```
-    *-cancelˡ-∣ : ∀ k {i j} → k ≢ + 0 → k * i ∣ k * j → i ∣ j
-	*-cancelʳ-∣ : ∀ k {i j} → k ≢ + 0 → i * k ∣ j * k → i ∣ j
-	```
-
-* A couple of other proofs in have also changed form:
-  - In `Data.Nat.Properties`:
+* Finally, the definition of `_≢0` has been removed from `Data.Rational.Unnormalised.Base`
+  and the following proofs about it have been removed from `Data.Rational.Unnormalised.Properties`:
   ```
-  m≤m*n          : ∀ m {n} → 0 < n → m ≤ m * n 
-  m≤n*m          : ∀ m {n} → 0 < n → m ≤ n * m
-  m<m*n          : ∀ {m n} → 0 < m → 1 < n → m < m * n
-  suc[pred[n]]≡n : ∀ {n} → n ≢ 0 → suc (pred n) ≡ n
-  ```
-  - In `Data.Nat.DivMod`:
-  ```
-  m/n<m         : ∀ m n {≢0} → m ≥ 1 → n ≥ 2 → (m / n) {≢0} < m
-  ```
-  - In `Data.Integer.Properties`:
-  ```
-  *-cancelʳ-≡ : ∀ i j k → k ≢ + 0 → i * k ≡ j * k → i ≡ j
-  *-cancelˡ-≡ : ∀ i j k → i ≢ + 0 → i * j ≡ i * k → j ≡ k
-  *-cancelʳ-≤-pos : ∀ m n o → m * + suc o ≤ n * + suc o → m ≤ n
+  p≄0⇒∣↥p∣≢0 : ∀ p → p ≠ 0ℚᵘ → ℤ.∣ (↥ p) ∣ ≢0
+  ∣↥p∣≢0⇒p≄0 : ∀ p → ℤ.∣ (↥ p) ∣ ≢0 → p ≠ 0ℚᵘ
   ```
 
 ### Implementation of division and modulus for `ℤ`
@@ -316,8 +252,19 @@ Deprecated names
   -1*n≡-n        ↦  -1*i≡-i
   m*n≡0⇒m≡0∨n≡0  ↦  i*j≡0⇒i≡0∨j≡0
   ∣m*n∣≡∣m∣*∣n∣  ↦  ∣i*j∣≡∣i∣*∣j∣
-  +-pos-monoʳ-≤  ↦  +-monoʳ-≤
-  +-neg-monoʳ-≤  ↦  +-monoʳ-≤
+  m≤m+n          ↦  i≤i+j
+  n≤m+n          ↦  i≤j+i
+  m-n≤m          ↦  i≤i-j
+
+  +-pos-monoʳ-≤    ↦  +-monoʳ-≤
+  +-neg-monoʳ-≤    ↦  +-monoʳ-≤
+  *-monoʳ-≤-pos    ↦  *-monoʳ-≤-nonNeg
+  *-monoˡ-≤-pos    ↦  *-monoˡ-≤-nonNeg
+  *-monoʳ-≤-neg    ↦  *-monoʳ-≤-nonPos
+  *-monoˡ-≤-neg    ↦  *-monoˡ-≤-nonPos
+  *-cancelˡ-<-neg  ↦  *-cancelˡ-<-nonPos
+  *-cancelʳ-<-neg  ↦  *-cancelʳ-<-nonPos
+
   ```
   
 * In `Data.Nat.Properties`:
@@ -327,8 +274,26 @@ Deprecated names
 
 * In `Data.Rational.Unnormalised.Properties`:
   ```
-  ↥[p/q]≡p  ↦  ↥[n/d]≡n
-  ↧[p/q]≡q  ↦  ↧[n/d]≡d
+  ↥[p/q]≡p         ↦  ↥[n/d]≡n
+  ↧[p/q]≡q         ↦  ↧[n/d]≡d
+  *-monoˡ-≤-pos    ↦  *-monoˡ-≤-nonNeg 
+  *-monoʳ-≤-pos    ↦  *-monoʳ-≤-nonNeg
+  *-monoˡ-≤-neg    ↦  *-monoˡ-≤-nonPos
+  *-monoʳ-≤-neg    ↦  *-monoʳ-≤-nonPos
+  *-cancelˡ-<-pos  ↦  *-cancelˡ-<-nonNeg
+  *-cancelʳ-<-pos  ↦  *-cancelʳ-<-nonNeg
+  ```
+
+* In `Data.Rational.Properties`:
+  ```
+  *-monoʳ-≤-neg    ↦  *-monoʳ-≤-nonPos
+  *-monoˡ-≤-neg    ↦  *-monoˡ-≤-nonPos
+  *-monoʳ-≤-pos    ↦  *-monoʳ-≤-nonNeg
+  *-monoˡ-≤-pos    ↦  *-monoˡ-≤-nonNeg
+  *-cancelˡ-<-pos  ↦  *-cancelˡ-<-nonNeg
+  *-cancelʳ-<-pos  ↦  *-cancelʳ-<-nonNeg
+  *-cancelˡ-<-neg  ↦  *-cancelˡ-<-nonPos
+  *-cancelʳ-<-neg  ↦  *-cancelʳ-<-nonPos
   ```
 
 * In `Data.List.Properties`:
@@ -598,4 +563,188 @@ Other minor changes
   ```
   isSuccess : ExitCode → Bool
   isFailure : ExitCode → Bool
+  ```
+
+
+NonZero/Positive/Negative changes
+---------------------------------
+
+This is a full list of proofs that have changed form to use irrelevant instance arguments:
+
+* In `Data.Nat.Properties`:
+  ```
+  *-cancelʳ-≡ : ∀ m n {o} → m * suc o ≡ n * suc o → m ≡ n
+  *-cancelˡ-≡ : ∀ {m n} o → suc o * m ≡ suc o * n → m ≡ n
+  *-cancelʳ-≤ : ∀ m n o → m * suc o ≤ n * suc o → m ≤ n
+  *-cancelˡ-≤ : ∀ {m n} o → suc o * m ≤ suc o * n → m ≤ n
+  *-monoˡ-<   : ∀ n → (_* suc n) Preserves _<_ ⟶ _<_
+  *-monoʳ-<   : ∀ n → (suc n *_) Preserves _<_ ⟶ _<_
+	
+  m≤m*n          : ∀ m {n} → 0 < n → m ≤ m * n 
+  m≤n*m          : ∀ m {n} → 0 < n → m ≤ n * m
+  m<m*n          : ∀ {m n} → 0 < m → 1 < n → m < m * n
+  suc[pred[n]]≡n : ∀ {n} → n ≢ 0 → suc (pred n) ≡ n
+  ```
+
+* In `Data.Nat.Coprimality`:
+  ```
+  Bézout-coprime : ∀ {i j d} → Bézout.Identity (suc d) (i * suc d) (j * suc d) → Coprime i j
+  ```
+
+* In `Data.Nat.Divisibility`
+  ```agda
+  m%n≡0⇒n∣m : ∀ m n → m % suc n ≡ 0 → suc n ∣ m
+  n∣m⇒m%n≡0 : ∀ m n → suc n ∣ m → m % suc n ≡ 0
+  m%n≡0⇔n∣m : ∀ m n → m % suc n ≡ 0 ⇔ suc n ∣ m
+  ∣⇒≤       : ∀ {m n} → m ∣ suc n → m ≤ suc n
+  >⇒∤        : ∀ {m n} → m > suc n → m ∤ suc n
+  *-cancelˡ-∣ : ∀ {i j} k → suc k * i ∣ suc k * j → i ∣ j
+  ```
+
+* In `Data.Nat.DivMod`:
+  ```
+  m≡m%n+[m/n]*n : ∀ m n → m ≡ m % suc n + (m / suc n) * suc n
+  m%n≡m∸m/n*n   : ∀ m n → m % suc n ≡ m ∸ (m / suc n) * suc n
+  n%n≡0         : ∀ n → suc n % suc n ≡ 0
+  m%n%n≡m%n     : ∀ m n → m % suc n % suc n ≡ m % suc n
+  [m+n]%n≡m%n   : ∀ m n → (m + suc n) % suc n ≡ m % suc n
+  [m+kn]%n≡m%n  : ∀ m k n → (m + k * (suc n)) % suc n ≡ m % suc n
+  m*n%n≡0       : ∀ m n → (m * suc n) % suc n ≡ 0
+  m%n<n         : ∀ m n → m % suc n < suc n
+  m%n≤m         : ∀ m n → m % suc n ≤ m
+  m≤n⇒m%n≡m     : ∀ {m n} → m ≤ n → m % suc n ≡ m
+	
+  m/n<m         : ∀ m n {≢0} → m ≥ 1 → n ≥ 2 → (m / n) {≢0} < m
+  ```
+
+* In `Data.Nat.GCD`
+  ```
+  GCD-* : ∀ {m n d c} → GCD (m * suc c) (n * suc c) (d * suc c) → GCD m n d
+  gcd[m,n]≤n : ∀ m n → gcd m (suc n) ≤ suc n
+  ```
+
+* In `Data.Integer.Properties`:
+  ```
+  sign-◃    : ∀ s n → sign (s ◃ suc n) ≡ s
+  sign-cong : ∀ {s₁ s₂ n₁ n₂} → s₁ ◃ suc n₁ ≡ s₂ ◃ suc n₂ → s₁ ≡ s₂
+  -◃<+◃     : ∀ m n → Sign.- ◃ (suc m) < Sign.+ ◃ n
+  m⊖1+n<m   : ∀ m n → m ⊖ suc n < + m
+  
+  *-cancelʳ-≡     : ∀ i j k → k ≢ + 0 → i * k ≡ j * k → i ≡ j
+  *-cancelˡ-≡     : ∀ i j k → i ≢ + 0 → i * j ≡ i * k → j ≡ k
+  *-cancelʳ-≤-pos : ∀ m n o → m * + suc o ≤ n * + suc o → m ≤ n
+  
+  ≤-steps     : ∀ n → i ≤ j → i ≤ + n + j
+  ≤-steps-neg : ∀ n → i ≤ j → i - + n ≤ j
+  n≤m+n       : ∀ n → i ≤ + n + i
+  m≤m+n       : ∀ n → i ≤ i + + n
+  m-n≤m       : ∀ i n → i - + n ≤ i
+  
+  *-cancelʳ-≤-pos    : ∀ m n o → m * + suc o ≤ n * + suc o → m ≤ n
+  *-cancelˡ-≤-pos    : ∀ m j k → + suc m * j ≤ + suc m * k → j ≤ k
+  *-cancelˡ-≤-neg    : ∀ m {j k} → -[1+ m ] * j ≤ -[1+ m ] * k → j ≥ k
+  *-cancelʳ-≤-neg    : ∀ {n o} m → n * -[1+ m ] ≤ o * -[1+ m ] → n ≥ o
+  *-cancelˡ-<-nonNeg : ∀ n → + n * i < + n * j → i < j
+  *-cancelʳ-<-nonNeg : ∀ n → i * + n < j * + n → i < j
+  *-monoʳ-≤-nonNeg   : ∀ n → (_* + n) Preserves _≤_ ⟶ _≤_
+  *-monoˡ-≤-nonNeg   : ∀ n → (+ n *_) Preserves _≤_ ⟶ _≤_
+  *-monoˡ-≤-nonPos   : ∀ i → NonPositive i → (i *_) Preserves _≤_ ⟶ _≥_
+  *-monoʳ-≤-nonPos   : ∀ i → NonPositive i → (_* i) Preserves _≤_ ⟶ _≥_
+  *-monoˡ-<-pos      : ∀ n → (+[1+ n ] *_) Preserves _<_ ⟶ _<_
+  *-monoʳ-<-pos      : ∀ n → (_* +[1+ n ]) Preserves _<_ ⟶ _<_
+  *-monoˡ-<-neg      : ∀ n → (-[1+ n ] *_) Preserves _<_ ⟶ _>_
+  *-monoʳ-<-neg      : ∀ n → (_* -[1+ n ]) Preserves _<_ ⟶ _>_
+  *-cancelˡ-<-nonPos : ∀ n → NonPositive n → n * i < n * j → i > j
+  *-cancelʳ-<-nonPos : ∀ n → NonPositive n → i * n < j * n → i > j
+  
+  *-distribˡ-⊓-nonNeg : ∀ m j k → + m * (j ⊓ k) ≡ (+ m * j) ⊓ (+ m * k)
+  *-distribʳ-⊓-nonNeg : ∀ m j k → (j ⊓ k) * + m ≡ (j * + m) ⊓ (k * + m)
+  *-distribˡ-⊓-nonPos : ∀ i → NonPositive i → ∀ j k → i * (j ⊓ k) ≡ (i * j) ⊔ (i * k)
+  *-distribʳ-⊓-nonPos : ∀ i → NonPositive i → ∀ j k → (j ⊓ k) * i ≡ (j * i) ⊔ (k * i)
+  *-distribˡ-⊔-nonNeg : ∀ m j k → + m * (j ⊔ k) ≡ (+ m * j) ⊔ (+ m * k)
+  *-distribʳ-⊔-nonNeg : ∀ m j k → (j ⊔ k) * + m ≡ (j * + m) ⊔ (k * + m)
+  *-distribˡ-⊔-nonPos : ∀ i → NonPositive i → ∀ j k → i * (j ⊔ k) ≡ (i * j) ⊓ (i * k)
+  *-distribʳ-⊔-nonPos : ∀ i → NonPositive i → ∀ j k → (j ⊔ k) * i ≡ (j * i) ⊓ (k * i)
+  ```
+
+* In `Data.Integer.Divisibility`:
+  ```
+  *-cancelˡ-∣ : ∀ k {i j} → k ≢ + 0 → k * i ∣ k * j → i ∣ j
+  *-cancelʳ-∣ : ∀ k {i j} → k ≢ + 0 → i * k ∣ j * k → i ∣ j
+  ```
+
+* In `Data.Integer.Divisibility.Signed`:
+  ```
+  *-cancelˡ-∣ : ∀ k {i j} → k ≢ + 0 → k * i ∣ k * j → i ∣ j
+  *-cancelʳ-∣ : ∀ k {i j} → k ≢ + 0 → i * k ∣ j * k → i ∣ j
+  ```
+
+* In `Data.Rational.Unnormalised.Properties`:
+  ```agda
+  ≤-steps : ∀ {p q r} → NonNegative r → p ≤ q → p ≤ r + q
+  p≤p+q   : ∀ {p q} → NonNegative q → p ≤ p + q
+  p≤q+p   : ∀ {p} → NonNegative p → ∀ {q} → q ≤ p + q
+  
+  *-cancelʳ-≤-pos    : ∀ {r} → Positive r → ∀ {p q} → p * r ≤ q * r → p ≤ q
+  *-cancelˡ-≤-pos    : ∀ {r} → Positive r → ∀ {p q} → r * p ≤ r * q → p ≤ q
+  *-cancelʳ-≤-neg    : ∀ r → Negative r → ∀ {p q} → p * r ≤ q * r → q ≤ p
+  *-cancelˡ-≤-neg    : ∀ r → Negative r → ∀ {p q} → r * p ≤ r * q → q ≤ p
+  *-cancelˡ-<-nonNeg : ∀ {r} → NonNegative r → ∀ {p q} → r * p < r * q → p < q
+  *-cancelʳ-<-nonNeg : ∀ {r} → NonNegative r → ∀ {p q} → p * r < q * r → p < q
+  *-cancelˡ-<-nonPos : ∀ r → NonPositive r → ∀ {p q} → r * p < r * q → q < p
+  *-cancelʳ-<-nonPos : ∀ r → NonPositive r → ∀ {p q} → p * r < q * r → q < p
+  *-monoˡ-≤-nonNeg   : ∀ {r} → NonNegative r → (_* r) Preserves _≤_ ⟶ _≤_
+  *-monoʳ-≤-nonNeg   : ∀ {r} → NonNegative r → (r *_) Preserves _≤_ ⟶ _≤_
+  *-monoˡ-≤-nonPos   : ∀ r → NonPositive r → (_* r) Preserves _≤_ ⟶ _≥_
+  *-monoʳ-≤-nonPos   : ∀ r → NonPositive r → (r *_) Preserves _≤_ ⟶ _≥_
+  *-monoˡ-<-pos      : ∀ {r} → Positive r → (_* r) Preserves _<_ ⟶ _<_
+  *-monoʳ-<-pos      : ∀ {r} → Positive r → (r *_) Preserves _<_ ⟶ _<_
+  *-monoˡ-<-neg      : ∀ r → Negative r → (_* r) Preserves _<_ ⟶ _>_
+  *-monoʳ-<-neg      : ∀ r → Negative r → (r *_) Preserves _<_ ⟶ _>_
+  
+  pos⇒1/pos : ∀ p (p>0 : Positive p) → Positive ((1/ p) {{pos⇒≢0 p p>0}})
+  neg⇒1/neg : ∀ p (p<0 : Negative p) → Negative ((1/ p) {{neg⇒≢0 p p<0}})
+  
+  *-distribʳ-⊓-nonNeg : ∀ p → NonNegative p → ∀ q r → (q ⊓ r) * p ≃ (q * p) ⊓ (r * p)
+  *-distribˡ-⊓-nonNeg : ∀ p → NonNegative p → ∀ q r → p * (q ⊓ r) ≃ (p * q) ⊓ (p * r)
+  *-distribˡ-⊔-nonNeg : ∀ p → NonNegative p → ∀ q r → p * (q ⊔ r) ≃ (p * q) ⊔ (p * r)
+  *-distribʳ-⊔-nonNeg : ∀ p → NonNegative p → ∀ q r → (q ⊔ r) * p ≃ (q * p) ⊔ (r * p)
+  *-distribˡ-⊔-nonPos : ∀ p → NonPositive p → ∀ q r → p * (q ⊔ r) ≃ (p * q) ⊓ (p * r)
+  *-distribʳ-⊔-nonPos : ∀ p → NonPositive p → ∀ q r → (q ⊔ r) * p ≃ (q * p) ⊓ (r * p)
+  *-distribˡ-⊓-nonPos : ∀ p → NonPositive p → ∀ q r → p * (q ⊓ r) ≃ (p * q) ⊔ (p * r)
+  *-distribʳ-⊓-nonPos : ∀ p → NonPositive p → ∀ q r → (q ⊓ r) * p ≃ (q * p) ⊔ (r * p)
+  ```
+
+* In `Data.Rational.Properties`:
+  ```
+  *-cancelʳ-≤-pos    : ∀ r → Positive r → ∀ {p q} → p * r ≤ q * r → p ≤ q
+  *-cancelˡ-≤-pos    : ∀ r → Positive r → ∀ {p q} → r * p ≤ r * q → p ≤ q
+  *-cancelʳ-≤-neg    : ∀ r → Negative r → ∀ {p q} → p * r ≤ q * r → p ≥ q
+  *-cancelˡ-≤-neg    : ∀ r → Negative r → ∀ {p q} → r * p ≤ r * q → p ≥ q
+  *-cancelˡ-<-nonNeg : ∀ r → NonNegative r → ∀ {p q} → r * p < r * q → p < q
+  *-cancelʳ-<-nonNeg : ∀ r → NonNegative r → ∀ {p q} → p * r < q * r → p < q
+  *-cancelˡ-<-nonPos : ∀ r → NonPositive r → ∀ {p q} → r * p < r * q → p > q
+  *-cancelʳ-<-nonPos : ∀ r → NonPositive r → ∀ {p q} → p * r < q * r → p > q
+  *-monoʳ-≤-nonNeg   : ∀ r → NonNegative r → (_* r) Preserves _≤_ ⟶ _≤_
+  *-monoˡ-≤-nonNeg   : ∀ r → NonNegative r → (r *_) Preserves _≤_ ⟶ _≤_
+  *-monoʳ-≤-nonPos   : ∀ r → NonPositive r → (_* r) Preserves _≤_ ⟶ _≥_
+  *-monoˡ-≤-nonPos   : ∀ r → NonPositive r → (r *_) Preserves _≤_ ⟶ _≥_
+  *-monoˡ-<-pos      : ∀ r → Positive r → (_* r) Preserves _<_ ⟶ _<_
+  *-monoʳ-<-pos      : ∀ r → Positive r → (r *_) Preserves _<_ ⟶ _<_
+  *-monoˡ-<-neg      : ∀ r → Negative r → (_* r) Preserves _<_ ⟶ _>_
+  *-monoʳ-<-neg      : ∀ r → Negative r → (r *_) Preserves _<_ ⟶ _>_
+  
+  *-distribˡ-⊓-nonNeg : ∀ p → NonNegative p → ∀ q r → p * (q ⊓ r) ≡ (p * q) ⊓ (p * r)
+  *-distribʳ-⊓-nonNeg : ∀ p → NonNegative p → ∀ q r → (q ⊓ r) * p ≡ (q * p) ⊓ (r * p)
+  *-distribˡ-⊔-nonNeg : ∀ p → NonNegative p → ∀ q r → p * (q ⊔ r) ≡ (p * q) ⊔ (p * r)
+  *-distribʳ-⊔-nonNeg : ∀ p → NonNegative p → ∀ q r → (q ⊔ r) * p ≡ (q * p) ⊔ (r * p)
+  *-distribˡ-⊔-nonPos : ∀ p → NonPositive p → ∀ q r → p * (q ⊔ r) ≡ (p * q) ⊓ (p * r)
+  *-distribʳ-⊔-nonPos : ∀ p → NonPositive p → ∀ q r → (q ⊔ r) * p ≡ (q * p) ⊓ (r * p)
+  *-distribˡ-⊓-nonPos : ∀ p → NonPositive p → ∀ q r → p * (q ⊓ r) ≡ (p * q) ⊔ (p * r)
+  *-distribʳ-⊓-nonPos : ∀ p → NonPositive p → ∀ q r → (q ⊓ r) * p ≡ (q * p) ⊔ (r * p)
+  
+  pos⇒1/pos : ∀ p (p>0 : Positive p) → Positive ((1/ p) {{pos⇒≢0 p p>0}})
+  neg⇒1/neg : ∀ p (p<0 : Negative p) → Negative ((1/ p) {{neg⇒≢0 p p<0}})
+  1/pos⇒pos : ∀ p .{{_ : NonZero p}} → (1/p : Positive (1/ p)) → Positive p
+  1/neg⇒neg : ∀ p .{{_ : NonZero p}} → (1/p : Negative (1/ p)) → Negative p
   ```

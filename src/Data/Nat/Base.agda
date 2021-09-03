@@ -88,6 +88,8 @@ record NonZero (n : ℕ) : Set where
   field
     nonZero : T (not (n ≡ᵇ 0))
 
+-- Instances
+
 instance
   nonZero : ∀ {n} → NonZero (suc n)
   nonZero = _
