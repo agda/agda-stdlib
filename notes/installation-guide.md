@@ -1,6 +1,8 @@
 Installation instructions
 =========================
 
+Note: the full story on installing Agda libraries can be found at [readthedocs](http://agda.readthedocs.io/en/latest/tools/package-system.html).
+
 Use version v1.7 of the standard library with Agda 2.6.2.
 
 1. Navigate to a suitable directory `$HERE` (replace appropriately) where
@@ -28,7 +30,14 @@ Use version v1.7 of the standard library with Agda 2.6.2.
    cabal install
    ```
 
-5. Register the standard library with Agda's package system by adding
+5. Locate the file `$HOME/.agda/libraries` where `$HOME` on Ubuntu/MacOS
+   is an environment variable that points to your home directory. The
+   value of the environment variable can be found by running `echo $HOME`.
+
+   Note that the `.agda` directory and the `libraries` file within it,
+   may not exist and you may have to create them.
+
+6. Register the standard library with Agda's package system by adding
    the following line to `$HOME/.agda/libraries`:
    ```
    $HERE/agda-stdlib-1.7/standard-library.agda-lib
@@ -50,5 +59,3 @@ Now, the standard library is ready to be used either:
   ```
   standard-library
   ```
-
-Find the [full story at readthedocs](http://agda.readthedocs.io/en/latest/tools/package-system.html) about installing Agda libraries.
