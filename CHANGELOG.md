@@ -349,11 +349,6 @@ New modules
   Data.Default
   ```
 
-* Functions for rounding rationals to integers:
-  ```
-  Data.Rational.Rounding
-  ```
-
 * Show module for unnormalised rationals:
   ```
   Data.Rational.Unnormalised.Show
@@ -466,6 +461,12 @@ Other minor changes
   ```agda
   m%n≤n : .{{_ : NonZero n}} → m % n ≤ n
   ```
+
+* Added new rounding functions in `Data.Rational.Base`:
+  ```agda
+  floor ceiling truncate round ⌊_⌋ ⌈_⌉ [_] : ℚ → ℤ
+  fracPart : ℚ → ℚ
+  ``` 
 
 * Added new definitions and proofs in `Data.Rational.Properties`:
   ```agda
