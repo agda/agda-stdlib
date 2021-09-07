@@ -478,6 +478,12 @@ Other minor changes
   toℚᵘ-isSemiringMonomorphism-+-* : IsSemiringMonomorphism +-*-rawSemiring ℚᵘ.+-*-rawSemiring toℚᵘ
   ```
 
+* Added new rounding functions in `Data.Rational.Unnormalised.Base`:
+  ```agda
+  floor ceiling truncate round ⌊_⌋ ⌈_⌉ [_] : ℚᵘ → ℤ
+  fracPart : ℚᵘ → ℚᵘ
+  ``` 
+
 * Added new definitions in `Data.Rational.Unnormalised.Properties`:
   ```agda
   +-*-rawNearSemiring : RawNearSemiring 0ℓ 0ℓ

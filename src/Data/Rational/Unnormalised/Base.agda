@@ -8,9 +8,10 @@
 
 module Data.Rational.Unnormalised.Base where
 
-open import Data.Bool.Base using (Bool; if_then_else_)
+open import Data.Bool.Base using (Bool; true; false; if_then_else_)
 open import Data.Integer.Base as ℤ
   using (ℤ; +_; +0; +[1+_]; -[1+_]; +<+; +≤+)
+import Data.Integer.DivMod as ℤ
 open import Data.Nat as ℕ using (ℕ; zero; suc)
 open import Level using (0ℓ)
 open import Relation.Nullary using (¬_)
@@ -232,3 +233,34 @@ p ⊓ q = if p ≤ᵇ q then p else q
 -- absolute value
 ∣_∣ : ℚᵘ → ℚᵘ
 ∣ mkℚᵘ p q ∣ = mkℚᵘ (+ ℤ.∣ p ∣) q
+
+------------------------------------------------------------------------
+-- Rounding functions
+
+-- Floor (round towards -∞)
+floor : ℚᵘ → ℤ
+floor p = (↥ p) ℤ.div (↧ p)
+
+-- Ceiling (round towards +∞)
+ceiling : ℚᵘ → ℤ
+ceiling p = ℤ.- floor (- p)
+
+-- Truncate  (round towards 0)
+truncate : ℚᵘ → ℤ
+truncate p with p ≤ᵇ 0ℚᵘ
+... | true  = ceiling p
+... | false = floor p
+
+-- Round (to nearest integer)
+round : ℚᵘ → ℤ
+round p = floor (p + ½)
+
+-- Fractional part (remainder after floor)
+fracPart : ℚᵘ → ℚᵘ
+fracPart p = p - floor p / 1
+
+--- Extra notations  ⌊ ⌋ floor,  ⌈ ⌉ ceiling,  [] truncate
+⌊_⌋ ⌈_⌉ [_] : ℚᵘ → ℤ
+⌊ p ⌋ = floor p
+⌈ p ⌉ = ceiling p
+[ p ] = truncate p
