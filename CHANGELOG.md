@@ -344,6 +344,16 @@ New modules
   Algebra.Morphism.Construct.Identity
   ```
 
+* A small library for function arguments with default values:
+  ```
+  Data.Default
+  ```
+
+* Functions for rounding rationals to integers:
+  ```
+  Data.Rational.Rounding
+  ```
+
 * Show module for unnormalised rationals:
   ```
   Data.Rational.Unnormalised.Show
@@ -363,9 +373,9 @@ New modules
   ```
 
 * Polymorphic verstions of some unary relations
- ```
- Relation.Unary.Polymorphic
- ```
+  ```
+  Relation.Unary.Polymorphic
+  ```
  
 * Various system types and primitives:
   ```
@@ -383,11 +393,6 @@ New modules
 * A golden testing library with test pools, an options parser, a runner:
   ```
   Test.Golden
-  ```
-
-* A small library for function arguments with default values:
-  ```
-  Data.Default
   ```
 
 Other minor changes
