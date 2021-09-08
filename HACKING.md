@@ -46,21 +46,6 @@ How to make changes
    in the library. See `agda-stdlib-fork/notes/style-guide.md` for a
    selection of the most important ones.
 
-6. Document your changes in `agda-stdlib-fork/CHANGELOG.md`.
-
-7. Ensure your changes are compatible with the rest of the library by
-   running the commands
-   ```
-   make clean
-   make test
-   ```
-   inside the `agda-stdlib-fork` folder. Continue to correct any bugs
-   thrown up until the tests are passed.
-
-   Your proposed changes MUST pass these tests. Note that the tests
-   require the use of a tool called `fix-whitespace`. See the
-   instructions at the end of this file for how to install this.
-
    If you are creating new modules, please make sure you are having a
    proper header, and a brief description of what the module is for, e.g.
    ```
@@ -84,6 +69,24 @@ How to make changes
    * Either be called `SOME/PATH/Unsafe.agda` or `SOME/PATH/WithK.agda`
    * Or explicitly declared as either unsafe or needing K in `GenerateEverything.hs`
 
+6. Document your changes in `agda-stdlib-fork/CHANGELOG.md`.
+
+7. [ Optional ] Ensure your changes are compatible with the rest of the library
+   by running the commands
+   ```
+   make clean
+   make test
+   ```
+   inside the `agda-stdlib-fork` folder. Continue to correct any bugs
+   thrown up until the tests are passed. Note that the tests
+   require the use of a tool called `fix-whitespace`. See the
+   instructions at the end of this file for how to install this.
+   
+   Note this step is optional as these tests will also be run automatically
+   by our CI infrastructure when you open a pull request on Github, but it
+   can be useful to run it locally to get a faster turn around time when finding
+   problems.
+
 ### Upload your changes
 
 8. Use the `git add X` command to add changes to file `X` to the commit,
@@ -101,11 +104,11 @@ How to make changes
    ```
 
 11. Go to your fork on Github at `https://github.com/USER_NAME/agda-stdlib`
-        and follow the [official Git instructions](https://help.github.com/en/articles/creating-a-pull-request-from-a-fork)
-        to open a pull request to the main standard library repository.
+    and follow the [official Git instructions](https://help.github.com/en/articles/creating-a-pull-request-from-a-fork)
+    to open a pull request to the main standard library repository.
 
 12. The library maintainers will then be made aware of your requested
-        changes and should be in touch soon.
+    changes and should be in touch soon.
 
 How to enforce whitespace policies
 ----------------------------------
