@@ -253,11 +253,13 @@ truncate p with p ≤ᵇ 0ℚᵘ
 
 -- Round (to nearest integer)
 round : ℚᵘ → ℤ
-round p = floor (p + ½)
+round p with p ≤ᵇ 0ℚᵘ
+... | true  = ceiling (p - ½)
+... | false = floor (p + ½)
 
 -- Fractional part (remainder after floor)
 fracPart : ℚᵘ → ℚᵘ
-fracPart p = p - floor p / 1
+fracPart p = ∣ p - truncate p / 1 ∣
 
 --- Extra notations  ⌊ ⌋ floor,  ⌈ ⌉ ceiling,  [] truncate
 ⌊_⌋ ⌈_⌉ [_] : ℚᵘ → ℤ
