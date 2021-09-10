@@ -13,6 +13,7 @@ dataTests = mkTestPool "Data structures"
   $ "colist"
   ∷ "list"
   ∷ "rational"
+  ∷ "rational-unnormalised"
   ∷ "trie"
   ∷ []
 
