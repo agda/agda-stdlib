@@ -272,8 +272,7 @@ round p with p ≤ᵇ 0ℚ
 fracPart : ℚ → ℚ
 fracPart p = ∣ p - truncate p / 1 ∣
 
---- Extra notations  ⌊ ⌋ floor,  ⌈ ⌉ ceiling,  [] truncate
-⌊_⌋ ⌈_⌉ [_] : ℚ → ℤ
-⌊ p ⌋ = floor p
-⌈ p ⌉ = ceiling p
-[ p ] = truncate p
+-- Extra notations  ⌊ ⌋ floor,  ⌈ ⌉ ceiling,  [ ] truncate
+syntax floor p = ⌊ p ⌋
+syntax ceiling p = ⌈ p ⌉
+syntax truncate p = [ p ]
