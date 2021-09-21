@@ -344,6 +344,11 @@ New modules
   Algebra.Morphism.Construct.Identity
   ```
 
+* A small library for function arguments with default values:
+  ```
+  Data.Default
+  ```
+
 * Show module for unnormalised rationals:
   ```
   Data.Rational.Unnormalised.Show
@@ -363,9 +368,9 @@ New modules
   ```
 
 * Polymorphic verstions of some unary relations
- ```
- Relation.Unary.Polymorphic
- ```
+  ```
+  Relation.Unary.Polymorphic
+  ```
  
 * Various system types and primitives:
   ```
@@ -383,11 +388,6 @@ New modules
 * A golden testing library with test pools, an options parser, a runner:
   ```
   Test.Golden
-  ```
-
-* A small library for function arguments with default values:
-  ```
-  Data.Default
   ```
 
 Other minor changes
@@ -462,6 +462,12 @@ Other minor changes
   m%n≤n : .{{_ : NonZero n}} → m % n ≤ n
   ```
 
+* Added new rounding functions in `Data.Rational.Base`:
+  ```agda
+  floor ceiling truncate round ⌊_⌋ ⌈_⌉ [_] : ℚ → ℤ
+  fracPart : ℚ → ℚ
+  ``` 
+
 * Added new definitions and proofs in `Data.Rational.Properties`:
   ```agda
   +-*-rawNearSemiring : RawNearSemiring 0ℓ 0ℓ
@@ -471,6 +477,12 @@ Other minor changes
   toℚᵘ-isSemiringHomomorphism-+-* : IsSemiringHomomorphism +-*-rawSemiring ℚᵘ.+-*-rawSemiring toℚᵘ
   toℚᵘ-isSemiringMonomorphism-+-* : IsSemiringMonomorphism +-*-rawSemiring ℚᵘ.+-*-rawSemiring toℚᵘ
   ```
+
+* Added new rounding functions in `Data.Rational.Unnormalised.Base`:
+  ```agda
+  floor ceiling truncate round ⌊_⌋ ⌈_⌉ [_] : ℚᵘ → ℤ
+  fracPart : ℚᵘ → ℚᵘ
+  ``` 
 
 * Added new definitions in `Data.Rational.Unnormalised.Properties`:
   ```agda
