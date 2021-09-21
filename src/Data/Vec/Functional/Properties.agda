@@ -166,12 +166,12 @@ lookup-++-≥ : ∀ {m n} (xs : Vector A m) (ys : Vector A n) →
 lookup-++-≥ {m = m} xs ys i i≥m = cong Sum.[ xs , ys ] (Finₚ.splitAt-≥ m i i≥m)
 
 lookup-++ˡ : ∀ {m n} (xs : Vector A m) (ys : Vector A n) i →
-             (xs ++ ys) (inject+ n i) ≡ xs i
-lookup-++ˡ {m = m} {n = n} xs ys i = cong Sum.[ xs , ys ] (Finₚ.splitAt-inject+ m n i)
+             (xs ++ ys) (i ↑ˡ n) ≡ xs i
+lookup-++ˡ {m = m} {n = n} xs ys i = cong Sum.[ xs , ys ] (Finₚ.splitAt-↑ˡ m i n)
 
 lookup-++ʳ : ∀ {m n} (xs : Vector A m) (ys : Vector A n) i →
-             (xs ++ ys) (raise m i) ≡ ys i
-lookup-++ʳ {m = m} {n = n} xs ys i = cong Sum.[ xs , ys ] (Finₚ.splitAt-raise m n i)
+             (xs ++ ys) (m ↑ʳ i) ≡ ys i
+lookup-++ʳ {m = m} {n = n} xs ys i = cong Sum.[ xs , ys ] (Finₚ.splitAt-↑ʳ m n i)
 
 module _ {m} {ys ys′ : Vector A m} where
 
@@ -194,19 +194,19 @@ module _ {m} {ys ys′ : Vector A m} where
   ++-injectiveˡ : ∀ {n} (xs xs′ : Vector A n) →
                   xs ++ ys ≗ xs′ ++ ys′ → xs ≗ xs′
   ++-injectiveˡ xs xs′ eq i = begin
-    xs i                        ≡˘⟨ lookup-++ˡ xs ys i ⟩
-    (xs ++ ys) (inject+ m i)    ≡⟨ eq (inject+ m i) ⟩
-    (xs′ ++ ys′) (inject+ m i)  ≡⟨ lookup-++ˡ xs′ ys′ i ⟩
-    xs′ i                       ∎
+    xs i                   ≡˘⟨ lookup-++ˡ xs ys i ⟩
+    (xs ++ ys) (i ↑ˡ m)    ≡⟨ eq (i ↑ˡ m) ⟩
+    (xs′ ++ ys′) (i ↑ˡ m)  ≡⟨ lookup-++ˡ xs′ ys′ i ⟩
+    xs′ i                  ∎
     where open ≡-Reasoning
 
   ++-injectiveʳ : ∀ {n} (xs xs′ : Vector A n) →
                   xs ++ ys ≗ xs′ ++ ys′ → ys ≗ ys′
   ++-injectiveʳ {n} xs xs′ eq i = begin
-    ys i                      ≡˘⟨ lookup-++ʳ xs ys i ⟩
-    (xs ++ ys) (raise n i)    ≡⟨ eq (raise n i)   ⟩
-    (xs′ ++ ys′) (raise n i)  ≡⟨ lookup-++ʳ xs′ ys′ i ⟩
-    ys′ i                     ∎
+    ys i                   ≡˘⟨ lookup-++ʳ xs ys i ⟩
+    (xs ++ ys) (n ↑ʳ i)    ≡⟨ eq (n ↑ʳ i)   ⟩
+    (xs′ ++ ys′) (n ↑ʳ i)  ≡⟨ lookup-++ʳ xs′ ys′ i ⟩
+    ys′ i                  ∎
     where open ≡-Reasoning
 
   ++-injective : ∀ {n} (xs xs′ : Vector A n) →

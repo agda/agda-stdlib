@@ -21,7 +21,7 @@ open import Data.Unit using (tt)
 open import Data.Product using (Σ-syntax; ∃; ∃₂; ∄; _×_; _,_; map; proj₁; uncurry; <_,_>)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]; [_,_]′)
 open import Data.Sum.Properties using ([,]-map-commute; [,]-∘-distr)
-open import Function.Base using (_∘_; id; _$_)
+open import Function.Base using (_∘_; id; _$_; flip)
 open import Function.Bundles using (_↔_; mk↔′)
 open import Function.Definitions.Core2 using (Surjective)
 open import Function.Equivalence using (_⇔_; equivalence)
@@ -105,9 +105,27 @@ toℕ-strengthen : ∀ {n} (i : Fin n) → toℕ (strengthen i) ≡ toℕ i
 toℕ-strengthen zero    = refl
 toℕ-strengthen (suc i) = cong suc (toℕ-strengthen i)
 
-toℕ-raise : ∀ {m} n (i : Fin m) → toℕ (raise n i) ≡ n ℕ.+ toℕ i
+------------------------------------------------------------------------
+-- ↑ˡ
+------------------------------------------------------------------------
+
+_toℕ-↑ˡ_ : ∀ {m} (i : Fin m) n → toℕ (i ↑ˡ n) ≡ toℕ i
+zero    toℕ-↑ˡ n = refl
+(suc i) toℕ-↑ˡ n = cong suc (i toℕ-↑ˡ n)
+
+------------------------------------------------------------------------
+-- ↑ʳ
+------------------------------------------------------------------------
+
+_toℕ-↑ʳ_ : ∀ {m} n (i : Fin m) → toℕ (n ↑ʳ i) ≡ n ℕ.+ toℕ i
+zero    toℕ-↑ʳ i = refl
+(suc n) toℕ-↑ʳ i = cong suc (n toℕ-↑ʳ i)
+
+toℕ-raise : ∀ {m} n (i : Fin m) → toℕ (n ↑ʳ i) ≡ n ℕ.+ toℕ i
+{-
 toℕ-raise zero    i = refl
 toℕ-raise (suc n) i = cong suc (toℕ-raise n i)
+-}
 
 toℕ<n : ∀ {n} (i : Fin n) → toℕ i ℕ.< n
 toℕ<n zero    = s≤s z≤n
@@ -375,10 +393,11 @@ toℕ-inject {i = suc i} (suc j) = cong suc (toℕ-inject j)
 -- inject+
 ------------------------------------------------------------------------
 
-toℕ-inject+ : ∀ {m} n (i : Fin m) → toℕ i ≡ toℕ (inject+ n i)
+toℕ-inject+ : ∀ {m} n (i : Fin m) → toℕ i ≡ toℕ (i ↑ˡ n)
+{-
 toℕ-inject+ n zero    = refl
 toℕ-inject+ n (suc i) = cong suc (toℕ-inject+ n i)
-
+-}
 ------------------------------------------------------------------------
 -- inject₁
 ------------------------------------------------------------------------
@@ -490,25 +509,38 @@ pred< (suc i) p = ≤̄⇒inject₁< ℕₚ.≤-refl
 
 -- Fin (m + n) ↔ Fin m ⊎ Fin n
 
-splitAt-inject+ : ∀ m n i → splitAt m (inject+ n i) ≡ inj₁ i
+splitAt-↑ˡ : ∀ m i n → splitAt m (i ↑ˡ n) ≡ inj₁ i
+splitAt-↑ˡ (suc m) zero    n = refl
+splitAt-↑ˡ (suc m) (suc i) n rewrite splitAt-↑ˡ m i n = refl
+
+splitAt-inject+ : ∀ m n i → splitAt m (i ↑ˡ n) ≡ inj₁ i
+{-
 splitAt-inject+ (suc m) n zero = refl
 splitAt-inject+ (suc m) n (suc i) rewrite splitAt-inject+ m n i = refl
+-}
 
+splitAt-↑ʳ : ∀ m n i → splitAt m (m ↑ʳ i) ≡ inj₂ {B = Fin n} i
+splitAt-↑ʳ zero    n i = refl
+splitAt-↑ʳ (suc m) n i rewrite splitAt-↑ʳ m n i = refl
+
+splitAt-raise : ∀ m n i → splitAt m (m ↑ʳ i) ≡ inj₂ {B = Fin n} i
+{-
 splitAt-raise : ∀ m n i → splitAt m (raise {n} m i) ≡ inj₂ i
 splitAt-raise zero    n i = refl
 splitAt-raise (suc m) n i rewrite splitAt-raise m n i = refl
+-}
 
 splitAt-join : ∀ m n i → splitAt m (join m n i) ≡ i
-splitAt-join m n (inj₁ x) = splitAt-inject+ m n x
-splitAt-join m n (inj₂ y) = splitAt-raise m n y
+splitAt-join m n (inj₁ x) = splitAt-↑ˡ m x n
+splitAt-join m n (inj₂ y) = splitAt-↑ʳ m n y
 
 join-splitAt : ∀ m n i → join m n (splitAt m i) ≡ i
 join-splitAt zero    n i       = refl
 join-splitAt (suc m) n zero    = refl
 join-splitAt (suc m) n (suc i) = begin
-  [ inject+ n , raise {n} (suc m) ]′ (splitAt (suc m) (suc i))  ≡⟨ [,]-map-commute (splitAt m i) ⟩
-  [ suc ∘ (inject+ n) , suc ∘ (raise {n} m) ]′ (splitAt m i)    ≡˘⟨ [,]-∘-distr suc (splitAt m i) ⟩
-  suc ([ inject+ n , raise {n} m ]′ (splitAt m i))              ≡⟨ cong suc (join-splitAt m n i) ⟩
+  [ _↑ˡ n , (suc m) ↑ʳ_ ]′ (splitAt (suc m) (suc i)) ≡⟨ [,]-map-commute (splitAt m i) ⟩
+  [ suc ∘ (_↑ˡ n) , suc ∘ (m ↑ʳ_) ]′ (splitAt m i)   ≡˘⟨ [,]-∘-distr suc (splitAt m i) ⟩
+  suc ([ _↑ˡ n , m ↑ʳ_ ]′ (splitAt m i))             ≡⟨ cong suc (join-splitAt m n i) ⟩
   suc i                                                         ∎
   where open ≡-Reasoning
 
@@ -537,8 +569,8 @@ splitAt-≥ (suc m) (suc i) (s≤s i≥m) = cong (Sum.map suc id) (splitAt-≥ m
 -- Fin (m * n) ↔ Fin m × Fin n
 
 remQuot-combine : ∀ {n k} (x : Fin n) y → remQuot k (combine x y) ≡ (x , y)
-remQuot-combine {suc n} {k} 0F y rewrite splitAt-inject+ k (n ℕ.* k) y = refl
-remQuot-combine {suc n} {k} (suc x) y rewrite splitAt-raise k (n ℕ.* k) (combine x y) = cong (Data.Product.map₁ suc) (remQuot-combine x y)
+remQuot-combine {suc n} {k} 0F y rewrite splitAt-↑ˡ k y (n ℕ.* k) = refl
+remQuot-combine {suc n} {k} (suc x) y rewrite splitAt-↑ʳ k (n ℕ.* k) (combine x y) = cong (Data.Product.map₁ suc) (remQuot-combine x y)
 
 combine-remQuot : ∀ {n} k (i : Fin (n ℕ.* k)) → uncurry combine (remQuot {n} k i) ≡ i
 combine-remQuot {suc n} k i with splitAt k i | P.inspect (splitAt k) i
@@ -548,10 +580,10 @@ combine-remQuot {suc n} k i with splitAt k i | P.inspect (splitAt k) i
   i                              ∎
   where open ≡-Reasoning
 ... | inj₂ j | P.[ eq ] = begin
-  raise {n ℕ.* k} k (uncurry combine (remQuot {n} k j)) ≡⟨ cong (raise k) (combine-remQuot {n} k j) ⟩
-  join k (n ℕ.* k) (inj₂ j)                             ≡˘⟨ cong (join k (n ℕ.* k)) eq ⟩
-  join k (n ℕ.* k) (splitAt k i)                        ≡⟨ join-splitAt k (n ℕ.* k) i ⟩
-  i                                                     ∎
+  k ↑ʳ (uncurry combine (remQuot {n} k j)) ≡⟨ cong (k ↑ʳ_) (combine-remQuot {n} k j) ⟩
+  join k (n ℕ.* k) (inj₂ j)                ≡˘⟨ cong (join k (n ℕ.* k)) eq ⟩
+  join k (n ℕ.* k) (splitAt k i)           ≡⟨ join-splitAt k (n ℕ.* k) i ⟩
+  i                                        ∎
   where open ≡-Reasoning
 
 ------------------------------------------------------------------------
@@ -889,4 +921,27 @@ inject+-raise-splitAt = join-splitAt
 {-# WARNING_ON_USAGE inject+-raise-splitAt
 "Warning: decSetoid was deprecated in v1.5.
 Please use join-splitAt instead."
+#-}
+
+-- Version 2.0
+
+toℕ-raise = _toℕ-↑ʳ_
+{-# WARNING_ON_USAGE toℕ-raise
+"Warning: toℕ-raise was deprecated in v2.0.
+Please use _toℕ-↑_ʳ instead."
+#-}
+toℕ-inject+ n i = sym (i toℕ-↑ˡ n)
+{-# WARNING_ON_USAGE toℕ-inject+
+"Warning: toℕ-inject+ was deprecated in v2.0.
+Please use _toℕ-↑ˡ_ instead."
+#-}
+splitAt-inject+ m n i = splitAt-↑ˡ m i n
+{-# WARNING_ON_USAGE splitAt-inject+
+"Warning: splitAt-inject+ was deprecated in v2.0.
+Please use splitAt-↑ˡ instead."
+#-}
+splitAt-raise = splitAt-↑ʳ
+{-# WARNING_ON_USAGE splitAt-raise
+"Warning: splitAt-raise was deprecated in v2.0.
+Please use splitAt-↑ʳ instead."
 #-}

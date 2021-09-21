@@ -17,7 +17,7 @@ open import Data.Nat.Base as ℕ using (ℕ; zero; suc; z≤n; s≤s)
 open import Data.Nat.Properties.Core using (≤-pred)
 open import Data.Product as Product using (_×_; _,_)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
-open import Function.Base using (id; _∘_; _on_)
+open import Function.Base using (id; _∘_; _on_; flip)
 open import Level using (0ℓ)
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable.Core using (True; toWitness)
@@ -77,11 +77,24 @@ fromℕ<″ zero    (ℕ.less-than-or-equal refl) = zero
 fromℕ<″ (suc m) (ℕ.less-than-or-equal refl) =
   suc (fromℕ<″ m (ℕ.less-than-or-equal refl))
 
--- raise m "i" = "m + i".
+-- canonical liftings of smaller i:Fin m to larger index Fin (n + m)
 
+-- injection on the left: "i" ↑ˡ n = "i"
+_↑ˡ_ : ∀ {m} → Fin m → ∀ n → Fin (m ℕ.+ n)
+zero    ↑ˡ n = zero
+(suc i) ↑ˡ n = suc (i ↑ˡ n)
+
+-- injection on the right: n ↑ʳ "i" = "n + i".
+_↑ʳ_ : ∀ {m} n → Fin m → Fin (n ℕ.+ m)
+zero    ↑ʳ i = i
+(suc n) ↑ʳ i = suc (n ↑ʳ i)
+
+-- raise n "i" = "n + i".
 raise : ∀ {m} n → Fin m → Fin (n ℕ.+ m)
+{-
 raise zero    i = i
 raise (suc n) i = suc (raise n i)
+-}
 
 -- reduce≥ "m + i" _ = "i".
 
@@ -100,8 +113,10 @@ inject! {n = suc _} {i = suc _}  zero    = zero
 inject! {n = suc _} {i = suc _}  (suc j) = suc (inject! j)
 
 inject+ : ∀ {m} n → Fin m → Fin (m ℕ.+ n)
+{-
 inject+ n zero    = zero
 inject+ n (suc i) = suc (inject+ n i)
+-}
 
 inject₁ : ∀ {m} → Fin m → Fin (suc m)
 inject₁ zero    = zero
@@ -134,7 +149,7 @@ splitAt (suc m) (suc i) = Sum.map suc id (splitAt m i)
 
 -- inverse of above function
 join : ∀ m n → Fin m ⊎ Fin n → Fin (m ℕ.+ n)
-join m n = [ inject+ n , raise {n} m ]′
+join m n = [ _↑ˡ n , m ↑ʳ_ ]′
 
 -- quotRem k "i" = "i % k" , "i / k"
 -- This is dual to group from Data.Vec.
@@ -150,8 +165,8 @@ remQuot k = Product.swap ∘ quotRem k
 
 -- inverse of remQuot
 combine : ∀ {n k} → Fin n → Fin k → Fin (n ℕ.* k)
-combine {suc n} {k} zero y = inject+ (n ℕ.* k) y
-combine {suc n} {k} (suc x) y = raise k (combine x y)
+combine {suc n} {k} zero y = y ↑ˡ (n ℕ.* k)
+combine {suc n} {k} (suc x) y = k ↑ʳ (combine x y)
 
 ------------------------------------------------------------------------
 -- Operations
@@ -306,4 +321,17 @@ fromℕ≤″ = fromℕ<″
 {-# WARNING_ON_USAGE fromℕ≤″
 "Warning: fromℕ≤″ was deprecated in v1.2.
 Please use fromℕ<″ instead."
+#-}
+
+-- Version 2.0
+
+raise = _↑ʳ_
+{-# WARNING_ON_USAGE raise
+"Warning: raise was deprecated in v2.0.
+Please use _↑_ʳ instead."
+#-}
+inject+ = flip _↑ˡ_
+{-# WARNING_ON_USAGE inject+
+"Warning: inject+ was deprecated in v2.0.
+Please use _↑ˡ_ instead."
 #-}

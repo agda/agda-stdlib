@@ -81,7 +81,7 @@ How to make changes
    thrown up until the tests are passed. Note that the tests
    require the use of a tool called `fix-whitespace`. See the
    instructions at the end of this file for how to install this.
-   
+
    Note this step is optional as these tests will also be run automatically
    by our CI infrastructure when you open a pull request on Github, but it
    can be useful to run it locally to get a faster turn around time when finding

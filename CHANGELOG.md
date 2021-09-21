@@ -335,6 +335,12 @@ Deprecated names
   sym-↔   ↦   ↔-sym
   ```
 
+* In `Data.Fin.Base`: two new, hopefully more memorable, names `↑ˡ` `↑ʳ` for the 'left', resp. 'right' injection of a Fin m into a larger Fin (n + m), with argument order to reflect the position of the Fin m argument. Knock-on changes in `Data.Fin.Properties`, `Data.Vec.Properties`, `Data.Vec.Functional`, `Data.Vec.Functional.Properties`, `Data.Vec.Functional.Relation.Binary.Pointwise.Properties`, `Data.Vec.Functional.Relation.Unary.All.Properties`. 
+  ```
+  inject+   ↦   flip _↑ˡ_
+  raise     ↦   _↑ʳ_
+  ```
+
 New modules
 -----------
 

@@ -138,10 +138,10 @@ unzip : ∀ {n} → Vector (A × B) n → Vector A n × Vector B n
 unzip = unzipWith id
 
 take : ∀ m {n} → Vector A (m ℕ.+ n) → Vector A m
-take _ {n = n} xs = xs ∘ inject+ n
+take _ {n = n} xs = xs ∘ (_↑ˡ n)
 
 drop : ∀ m {n} → Vector A (m ℕ.+ n) → Vector A n
-drop m xs = xs ∘ raise m
+drop m xs = xs ∘ (m ↑ʳ_)
 
 reverse : ∀ {n} → Vector A n → Vector A n
 reverse xs = xs ∘ opposite

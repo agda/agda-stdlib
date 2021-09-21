@@ -11,7 +11,7 @@ module Data.Vec.Properties where
 open import Algebra.Definitions
 open import Data.Bool.Base using (true; false)
 open import Data.Empty using (⊥-elim)
-open import Data.Fin.Base as Fin using (Fin; zero; suc; toℕ; fromℕ)
+open import Data.Fin.Base as Fin using (Fin; zero; suc; toℕ; fromℕ; _↑ˡ_; _↑ʳ_)
 open import Data.List.Base as List using (List)
 open import Data.Nat.Base
 open import Data.Nat.Properties using (+-assoc; ≤-step)
@@ -343,11 +343,19 @@ lookup∘updateAt′ i j xs i≢j =
              xs [ i ]≔ lookup xs i ≡ xs
 []≔-lookup xs i = updateAt-id-relative i xs refl
 
+[]≔-++-↑ˡ : ∀ {m n x} (xs : Vec A m) (ys : Vec A n) i →
+                 (xs ++ ys) [ i ↑ˡ n ]≔ x ≡ (xs [ i ]≔ x) ++ ys
+[]≔-++-↑ˡ (x ∷ xs) ys zero    = refl
+[]≔-++-↑ˡ (x ∷ xs) ys (suc i) =
+  P.cong (x ∷_) $ []≔-++-↑ˡ xs ys i
+
 []≔-++-inject+ : ∀ {m n x} (xs : Vec A m) (ys : Vec A n) i →
-                 (xs ++ ys) [ Fin.inject+ n i ]≔ x ≡ (xs [ i ]≔ x) ++ ys
+                 (xs ++ ys) [ i ↑ˡ n ]≔ x ≡ (xs [ i ]≔ x) ++ ys
+{-
 []≔-++-inject+ (x ∷ xs) ys zero    = refl
 []≔-++-inject+ (x ∷ xs) ys (suc i) =
   P.cong (x ∷_) $ []≔-++-inject+ xs ys i
+-}
 
 lookup∘update : ∀ {n} (i : Fin n) (xs : Vec A n) x →
                 lookup (xs [ i ]≔ x) i ≡ x
@@ -436,12 +444,12 @@ lookup-++-≥ []       ys i       i≥m       = refl
 lookup-++-≥ (x ∷ xs) ys (suc i) (s≤s i≥m) = lookup-++-≥ xs ys i i≥m
 
 lookup-++ˡ : ∀ {m n} (xs : Vec A m) (ys : Vec A n) i →
-             lookup (xs ++ ys) (Fin.inject+ n i) ≡ lookup xs i
+             lookup (xs ++ ys) (i ↑ˡ n) ≡ lookup xs i
 lookup-++ˡ (x ∷ xs) ys zero    = refl
 lookup-++ˡ (x ∷ xs) ys (suc i) = lookup-++ˡ xs ys i
 
 lookup-++ʳ : ∀ {m n} (xs : Vec A m) (ys : Vec A n) i →
-             lookup (xs ++ ys) (Fin.raise m i) ≡ lookup ys i
+             lookup (xs ++ ys) (m ↑ʳ i) ≡ lookup ys i
 lookup-++ʳ []       ys       zero    = refl
 lookup-++ʳ []       (y ∷ xs) (suc i) = lookup-++ʳ [] xs i
 lookup-++ʳ (x ∷ xs) ys       i       = lookup-++ʳ xs ys i
@@ -860,4 +868,12 @@ lookup-++-+′ = lookup-++ʳ
 {-# WARNING_ON_USAGE lookup-++-+′
 "Warning: lookup-++-+′ was deprecated in v1.1.
 Please use lookup-++ʳ instead."
+#-}
+
+-- Version 2.0
+
+[]≔-++-inject+ = []≔-++-↑ˡ
+{-# WARNING_ON_USAGE []≔-++-inject+
+"Warning: []≔-++-inject+ was deprecated in v2.0.
+Please use []≔-++-↑ˡ instead."
 #-}
