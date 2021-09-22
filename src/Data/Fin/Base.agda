@@ -105,12 +105,6 @@ inject! : ∀ {n} {i : Fin (suc n)} → Fin′ i → Fin n
 inject! {n = suc _} {i = suc _}  zero    = zero
 inject! {n = suc _} {i = suc _}  (suc j) = suc (inject! j)
 
-inject+ : ∀ {m} n → Fin m → Fin (m ℕ.+ n)
-{-
-inject+ n zero    = zero
-inject+ n (suc i) = suc (inject+ n i)
--}
-
 inject₁ : ∀ {m} → Fin m → Fin (suc m)
 inject₁ zero    = zero
 inject₁ (suc i) = suc (inject₁ i)
@@ -323,7 +317,8 @@ raise = _↑ʳ_
 "Warning: raise was deprecated in v2.0.
 Please use _↑_ʳ instead."
 #-}
-inject+ = flip _↑ˡ_
+inject+ : ∀ {m} n → Fin m → Fin (m ℕ.+ n)
+inject+ n i = i ↑ˡ n
 {-# WARNING_ON_USAGE inject+
 "Warning: inject+ was deprecated in v2.0.
 Please use _↑ˡ_ instead.

@@ -106,7 +106,7 @@ toℕ-strengthen zero    = refl
 toℕ-strengthen (suc i) = cong suc (toℕ-strengthen i)
 
 ------------------------------------------------------------------------
--- ↑ˡ: "i" ↑ˡ n = "i" in Fin (m + n)
+-- toℕ-↑ˡ: "i" ↑ˡ n = "i" in Fin (m + n)
 ------------------------------------------------------------------------
 
 toℕ-↑ˡ : ∀ {m} (i : Fin m) n → toℕ (i ↑ˡ n) ≡ toℕ i
@@ -114,7 +114,7 @@ toℕ-↑ˡ zero    n = refl
 toℕ-↑ˡ (suc i) n = cong suc (toℕ-↑ˡ i n)
 
 ------------------------------------------------------------------------
--- ↑ʳ: n ↑ʳ "i" = "n + i" in Fin (n + m)
+-- toℕ-↑ʳ: n ↑ʳ "i" = "n + i" in Fin (n + m)
 ------------------------------------------------------------------------
 
 toℕ-↑ʳ : ∀ {m} n (i : Fin m) → toℕ (n ↑ʳ i) ≡ n ℕ.+ toℕ i
@@ -384,15 +384,6 @@ toℕ-inject {i = suc i} zero    = refl
 toℕ-inject {i = suc i} (suc j) = cong suc (toℕ-inject j)
 
 ------------------------------------------------------------------------
--- inject+
-------------------------------------------------------------------------
-
-toℕ-inject+ : ∀ {m} n (i : Fin m) → toℕ i ≡ toℕ (i ↑ˡ n)
-{-
-toℕ-inject+ n zero    = refl
-toℕ-inject+ n (suc i) = cong suc (toℕ-inject+ n i)
--}
-------------------------------------------------------------------------
 -- inject₁
 ------------------------------------------------------------------------
 
@@ -507,22 +498,9 @@ splitAt-↑ˡ : ∀ m i n → splitAt m (i ↑ˡ n) ≡ inj₁ i
 splitAt-↑ˡ (suc m) zero    n = refl
 splitAt-↑ˡ (suc m) (suc i) n rewrite splitAt-↑ˡ m i n = refl
 
-splitAt-inject+ : ∀ m n i → splitAt m (i ↑ˡ n) ≡ inj₁ i
-{-
-splitAt-inject+ (suc m) n zero = refl
-splitAt-inject+ (suc m) n (suc i) rewrite splitAt-inject+ m n i = refl
--}
-
 splitAt-↑ʳ : ∀ m n i → splitAt m (m ↑ʳ i) ≡ inj₂ {B = Fin n} i
 splitAt-↑ʳ zero    n i = refl
 splitAt-↑ʳ (suc m) n i rewrite splitAt-↑ʳ m n i = refl
-
-splitAt-raise : ∀ m n i → splitAt m (m ↑ʳ i) ≡ inj₂ {B = Fin n} i
-{-
-splitAt-raise : ∀ m n i → splitAt m (raise {n} m i) ≡ inj₂ i
-splitAt-raise zero    n i = refl
-splitAt-raise (suc m) n i rewrite splitAt-raise m n i = refl
--}
 
 splitAt-join : ∀ m n i → splitAt m (join m n i) ≡ i
 splitAt-join m n (inj₁ x) = splitAt-↑ˡ m x n
@@ -924,6 +902,7 @@ toℕ-raise = toℕ-↑ʳ
 "Warning: toℕ-raise was deprecated in v2.0.
 Please use toℕ-↑ʳ instead."
 #-}
+toℕ-inject+ : ∀ {m} n (i : Fin m) → toℕ i ≡ toℕ (i ↑ˡ n)
 toℕ-inject+ n i = sym (toℕ-↑ˡ i n)
 {-# WARNING_ON_USAGE toℕ-inject+
 "Warning: toℕ-inject+ was deprecated in v2.0.
@@ -932,12 +911,14 @@ NB argument order has been flipped:
 the left-hand argument is the Fin m
 the right-hand is the Nat index increment."
 #-}
+splitAt-inject+ : ∀ m n i → splitAt m (i ↑ˡ n) ≡ inj₁ i
 splitAt-inject+ m n i = splitAt-↑ˡ m i n
 {-# WARNING_ON_USAGE splitAt-inject+
 "Warning: splitAt-inject+ was deprecated in v2.0.
 Please use splitAt-↑ˡ instead.
 NB argument order has been flipped."
 #-}
+splitAt-raise : ∀ m n i → splitAt m (m ↑ʳ i) ≡ inj₂ {B = Fin n} i
 splitAt-raise = splitAt-↑ʳ
 {-# WARNING_ON_USAGE splitAt-raise
 "Warning: splitAt-raise was deprecated in v2.0.
