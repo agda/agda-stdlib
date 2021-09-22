@@ -349,13 +349,10 @@ lookup∘updateAt′ i j xs i≢j =
 []≔-++-↑ˡ (x ∷ xs) ys (suc i) =
   P.cong (x ∷_) $ []≔-++-↑ˡ xs ys i
 
-[]≔-++-inject+ : ∀ {m n x} (xs : Vec A m) (ys : Vec A n) i →
-                 (xs ++ ys) [ i ↑ˡ n ]≔ x ≡ (xs [ i ]≔ x) ++ ys
-{-
-[]≔-++-inject+ (x ∷ xs) ys zero    = refl
-[]≔-++-inject+ (x ∷ xs) ys (suc i) =
-  P.cong (x ∷_) $ []≔-++-inject+ xs ys i
--}
+[]≔-++-↑ʳ : ∀ {m n y} (xs : Vec A m) (ys : Vec A n) i →
+                 (xs ++ ys) [ m ↑ʳ i ]≔ y ≡ xs ++ (ys [ i ]≔ y)
+[]≔-++-↑ʳ {m = zero}     []    (y ∷ ys) i = refl
+[]≔-++-↑ʳ {m = suc n} (x ∷ xs) (y ∷ ys) i = P.cong (x ∷_) $ []≔-++-↑ʳ xs (y ∷ ys) i 
 
 lookup∘update : ∀ {n} (i : Fin n) (xs : Vec A n) x →
                 lookup (xs [ i ]≔ x) i ≡ x
@@ -872,6 +869,8 @@ Please use lookup-++ʳ instead."
 
 -- Version 2.0
 
+[]≔-++-inject+ : ∀ {m n x} (xs : Vec A m) (ys : Vec A n) i →
+                 (xs ++ ys) [ i ↑ˡ n ]≔ x ≡ (xs [ i ]≔ x) ++ ys
 []≔-++-inject+ = []≔-++-↑ˡ
 {-# WARNING_ON_USAGE []≔-++-inject+
 "Warning: []≔-++-inject+ was deprecated in v2.0.

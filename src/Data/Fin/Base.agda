@@ -77,24 +77,17 @@ fromℕ<″ zero    (ℕ.less-than-or-equal refl) = zero
 fromℕ<″ (suc m) (ℕ.less-than-or-equal refl) =
   suc (fromℕ<″ m (ℕ.less-than-or-equal refl))
 
--- canonical liftings of smaller i:Fin m to larger index Fin (n + m)
+-- canonical liftings of i:Fin m to larger index 
 
--- injection on the left: "i" ↑ˡ n = "i"
+-- injection on the left: "i" ↑ˡ n = "i" in Fin (m + n)
 _↑ˡ_ : ∀ {m} → Fin m → ∀ n → Fin (m ℕ.+ n)
 zero    ↑ˡ n = zero
 (suc i) ↑ˡ n = suc (i ↑ˡ n)
 
--- injection on the right: n ↑ʳ "i" = "n + i".
+-- injection on the right: n ↑ʳ "i" = "n + i" in Fin (n + m)
 _↑ʳ_ : ∀ {m} n → Fin m → Fin (n ℕ.+ m)
 zero    ↑ʳ i = i
 (suc n) ↑ʳ i = suc (n ↑ʳ i)
-
--- raise n "i" = "n + i".
-raise : ∀ {m} n → Fin m → Fin (n ℕ.+ m)
-{-
-raise zero    i = i
-raise (suc n) i = suc (raise n i)
--}
 
 -- reduce≥ "m + i" _ = "i".
 
@@ -333,5 +326,8 @@ Please use _↑_ʳ instead."
 inject+ = flip _↑ˡ_
 {-# WARNING_ON_USAGE inject+
 "Warning: inject+ was deprecated in v2.0.
-Please use _↑ˡ_ instead."
+Please use _↑ˡ_ instead.
+NB argument order has been flipped:
+the left-hand argument is the Fin m
+the right-hand is the Nat index increment."
 #-}

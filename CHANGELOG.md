@@ -335,11 +335,27 @@ Deprecated names
   sym-↔   ↦   ↔-sym
   ```
 
-* In `Data.Fin.Base`: two new, hopefully more memorable, names `↑ˡ` `↑ʳ` for the 'left', resp. 'right' injection of a Fin m into a larger Fin (n + m), with argument order to reflect the position of the Fin m argument. Knock-on changes in `Data.Fin.Properties`, `Data.Vec.Properties`, `Data.Vec.Functional`, `Data.Vec.Functional.Properties`, `Data.Vec.Functional.Relation.Binary.Pointwise.Properties`, `Data.Vec.Functional.Relation.Unary.All.Properties`. 
+* In `Data.Fin.Base`: 
+two new, hopefully more memorable, names `↑ˡ` `↑ʳ` for the 'left', resp. 'right' injection of a Fin m into a 'larger' type, `Fin (m + n)`, resp. `Fin (n + m)`, with argument order to reflect the position of the Fin m argument. 
   ```
   inject+   ↦   flip _↑ˡ_
   raise     ↦   _↑ʳ_
   ```
+
+* In `Data.Fin.Properties`: 
+  ```
+  toℕ-raise       ↦ toℕ-↑ʳ
+  toℕ-inject+ n i ↦ sym (toℕ-↑ˡ i n)
+  splitAt-inject+ m n i ↦ splitAt-↑ˡ m i n
+  splitAt-raise ↦ splitAt-↑ʳ
+  ```
+
+* In `Data.Vec.Properties`: 
+  ```
+  []≔-++-inject+       ↦ []≔-++-↑ˡ
+  ```
+  Additionally, `[]≔-++-↑ʳ`, by analogy. 
+
 
 New modules
 -----------

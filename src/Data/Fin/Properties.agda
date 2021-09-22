@@ -106,26 +106,20 @@ toℕ-strengthen zero    = refl
 toℕ-strengthen (suc i) = cong suc (toℕ-strengthen i)
 
 ------------------------------------------------------------------------
--- ↑ˡ
+-- ↑ˡ: "i" ↑ˡ n = "i" in Fin (m + n)
 ------------------------------------------------------------------------
 
-_toℕ-↑ˡ_ : ∀ {m} (i : Fin m) n → toℕ (i ↑ˡ n) ≡ toℕ i
-zero    toℕ-↑ˡ n = refl
-(suc i) toℕ-↑ˡ n = cong suc (i toℕ-↑ˡ n)
+toℕ-↑ˡ : ∀ {m} (i : Fin m) n → toℕ (i ↑ˡ n) ≡ toℕ i
+toℕ-↑ˡ zero    n = refl
+toℕ-↑ˡ (suc i) n = cong suc (toℕ-↑ˡ i n)
 
 ------------------------------------------------------------------------
--- ↑ʳ
+-- ↑ʳ: n ↑ʳ "i" = "n + i" in Fin (n + m)
 ------------------------------------------------------------------------
 
-_toℕ-↑ʳ_ : ∀ {m} n (i : Fin m) → toℕ (n ↑ʳ i) ≡ n ℕ.+ toℕ i
-zero    toℕ-↑ʳ i = refl
-(suc n) toℕ-↑ʳ i = cong suc (n toℕ-↑ʳ i)
-
-toℕ-raise : ∀ {m} n (i : Fin m) → toℕ (n ↑ʳ i) ≡ n ℕ.+ toℕ i
-{-
-toℕ-raise zero    i = refl
-toℕ-raise (suc n) i = cong suc (toℕ-raise n i)
--}
+toℕ-↑ʳ : ∀ {m} n (i : Fin m) → toℕ (n ↑ʳ i) ≡ n ℕ.+ toℕ i
+toℕ-↑ʳ zero    i = refl
+toℕ-↑ʳ (suc n) i = cong suc (toℕ-↑ʳ n i)
 
 toℕ<n : ∀ {n} (i : Fin n) → toℕ i ℕ.< n
 toℕ<n zero    = s≤s z≤n
@@ -925,20 +919,24 @@ Please use join-splitAt instead."
 
 -- Version 2.0
 
-toℕ-raise = _toℕ-↑ʳ_
+toℕ-raise = toℕ-↑ʳ
 {-# WARNING_ON_USAGE toℕ-raise
 "Warning: toℕ-raise was deprecated in v2.0.
-Please use _toℕ-↑_ʳ instead."
+Please use toℕ-↑ʳ instead."
 #-}
-toℕ-inject+ n i = sym (i toℕ-↑ˡ n)
+toℕ-inject+ n i = sym (toℕ-↑ˡ i n)
 {-# WARNING_ON_USAGE toℕ-inject+
 "Warning: toℕ-inject+ was deprecated in v2.0.
-Please use _toℕ-↑ˡ_ instead."
+Please use toℕ-↑ˡ instead.
+NB argument order has been flipped:
+the left-hand argument is the Fin m
+the right-hand is the Nat index increment."
 #-}
 splitAt-inject+ m n i = splitAt-↑ˡ m i n
 {-# WARNING_ON_USAGE splitAt-inject+
 "Warning: splitAt-inject+ was deprecated in v2.0.
-Please use splitAt-↑ˡ instead."
+Please use splitAt-↑ˡ instead.
+NB argument order has been flipped."
 #-}
 splitAt-raise = splitAt-↑ʳ
 {-# WARNING_ON_USAGE splitAt-raise
