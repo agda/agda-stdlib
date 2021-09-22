@@ -352,7 +352,7 @@ lookup∘updateAt′ i j xs i≢j =
 []≔-++-↑ʳ : ∀ {m n y} (xs : Vec A m) (ys : Vec A n) i →
                  (xs ++ ys) [ m ↑ʳ i ]≔ y ≡ xs ++ (ys [ i ]≔ y)
 []≔-++-↑ʳ {m = zero}     []    (y ∷ ys) i = refl
-[]≔-++-↑ʳ {m = suc n} (x ∷ xs) (y ∷ ys) i = P.cong (x ∷_) $ []≔-++-↑ʳ xs (y ∷ ys) i 
+[]≔-++-↑ʳ {m = suc n} (x ∷ xs) (y ∷ ys) i = P.cong (x ∷_) $ []≔-++-↑ʳ xs (y ∷ ys) i
 
 lookup∘update : ∀ {n} (i : Fin n) (xs : Vec A n) x →
                 lookup (xs [ i ]≔ x) i ≡ x

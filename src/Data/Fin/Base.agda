@@ -77,7 +77,7 @@ fromℕ<″ zero    (ℕ.less-than-or-equal refl) = zero
 fromℕ<″ (suc m) (ℕ.less-than-or-equal refl) =
   suc (fromℕ<″ m (ℕ.less-than-or-equal refl))
 
--- canonical liftings of i:Fin m to larger index 
+-- canonical liftings of i:Fin m to larger index
 
 -- injection on the left: "i" ↑ˡ n = "i" in Fin (m + n)
 _↑ˡ_ : ∀ {m} → Fin m → ∀ n → Fin (m ℕ.+ n)
