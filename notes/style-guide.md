@@ -313,13 +313,25 @@ line of code, indented by two spaces.
   the following style, where the header is 72 characters wide:
   ```agda
   ------------------------------------------------------------------------
-  -- TITLE
+  -- <Title>
   ```
+  Use sentence case in the title: `Rounding functions`, not `Rounding Functions` or `ROUNDING FUNCTIONS`.
 
 #### Other
 
 * The `with` syntax is preferred over the use of `case` from the `Function`
-  module.
+  module. The `|` should not be aligned with the `with` statement, i.e.
+  ```agda
+  filter p (x ∷ xs) with p x
+  ... | true  = x ∷ filter p xs
+  ... | false = filter p xs
+  ```
+  instead of
+  ```agda
+  filter p (x ∷ xs) with p x
+  ...                  | true  = x ∷ filter p xs
+  ...                  | false = filter p xs
+  ```
 
 
 ## Types
