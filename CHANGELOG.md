@@ -528,6 +528,8 @@ Other minor changes
   map-⊛ : ∀ {n} (f : A → B → C) (g : A → B) (xs : Vec A n) → (map f xs ⊛ map g xs) ≡ map (f ˢ g) xs
   ⊛-is->>= : ∀ {n} (fs : Vec (A → B) n) (xs : Vec A n) → (fs ⊛ xs) ≡ (fs DiagonalBind.>>= flip map xs)
   transpose-replicate : ∀ {m n} (xs : Vec A m) → transpose (replicate {n = n} xs) ≡ map replicate xs
+  []≔-++-↑ʳ : ∀ {m n y} (xs : Vec A m) (ys : Vec A n) i →
+                 (xs ++ ys) [ m ↑ʳ i ]≔ y ≡ xs ++ (ys [ i ]≔ y)
   ```
 
 * Added new proofs in `Function.Construct.Symmetry`:
