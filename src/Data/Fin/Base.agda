@@ -80,11 +80,13 @@ fromℕ<″ (suc m) (ℕ.less-than-or-equal refl) =
 -- canonical liftings of i:Fin m to larger index
 
 -- injection on the left: "i" ↑ˡ n = "i" in Fin (m + n)
+infixl 5 _↑ˡ_
 _↑ˡ_ : ∀ {m} → Fin m → ∀ n → Fin (m ℕ.+ n)
 zero    ↑ˡ n = zero
 (suc i) ↑ˡ n = suc (i ↑ˡ n)
 
 -- injection on the right: n ↑ʳ "i" = "n + i" in Fin (n + m)
+infixr 5 _↑ʳ_
 _↑ʳ_ : ∀ {m} n → Fin m → Fin (n ℕ.+ m)
 zero    ↑ʳ i = i
 (suc n) ↑ʳ i = suc (n ↑ʳ i)
