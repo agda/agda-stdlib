@@ -20,8 +20,40 @@ open import Relation.Unary using (Pred)
 
 private
   variable
-    a p : Level
+    a b c p : Level
     A B C : Set a
+
+------------------------------------------------------------------------
+-- Standard eliminator for the propositional equality type
+
+J : ∀ {A : Set a} {x : A} (B : (y : A) → x ≡ y → Set b)
+  → {y : A} (p : x ≡ y) → B x refl → B y p
+J B refl b = b
+
+------------------------------------------------------------------------
+-- Binary and/or dependent versions of standard operations on equality
+
+dcong : ∀ {A : Set a} {B : A → Set b}
+         (f : (x : A) → B x) {x y}
+       → (p : x ≡ y) → subst B p (f x) ≡ f y
+dcong f refl = refl
+
+dcong₂ : ∀ {A : Set a} {B : A → Set b} {C : Set c}
+         (f : (x : A) → B x → C) {x₁ x₂ y₁ y₂}
+       → (p : x₁ ≡ x₂) → subst B p y₁ ≡ y₂
+       → f x₁ y₁ ≡ f x₂ y₂
+dcong₂ f refl refl = refl
+
+dsubst₂ : ∀ {A : Set a} {B : A → Set b} (C : (x : A) → B x → Set c)
+          {x₁ x₂ y₁ y₂} (p : x₁ ≡ x₂) → subst B p y₁ ≡ y₂
+        → C x₁ y₁ → C x₂ y₂
+dsubst₂ C refl refl c = c
+
+ddcong₂ : ∀ {A : Set a} {B : A → Set b} {C : (x : A) → B x → Set c}
+         (f : (x : A) (y : B x) → C x y) {x₁ x₂ y₁ y₂}
+         (p : x₁ ≡ x₂) (q : subst B p y₁ ≡ y₂)
+       → dsubst₂ C p q (f x₁ y₁) ≡ f x₂ y₂
+ddcong₂ f refl refl = refl
 
 ------------------------------------------------------------------------
 -- Various equality rearrangement lemmas
