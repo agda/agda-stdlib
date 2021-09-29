@@ -335,6 +335,28 @@ Deprecated names
   sym-↔   ↦   ↔-sym
   ```
 
+* In `Data.Fin.Base`: 
+two new, hopefully more memorable, names `↑ˡ` `↑ʳ` for the 'left', resp. 'right' injection of a Fin m into a 'larger' type, `Fin (m + n)`, resp. `Fin (n + m)`, with argument order to reflect the position of the Fin m argument. 
+  ```
+  inject+   ↦   flip _↑ˡ_
+  raise     ↦   _↑ʳ_
+  ```
+
+* In `Data.Fin.Properties`: 
+  ```
+  toℕ-raise       ↦ toℕ-↑ʳ
+  toℕ-inject+ n i ↦ sym (toℕ-↑ˡ i n)
+  splitAt-inject+ m n i ↦ splitAt-↑ˡ m i n
+  splitAt-raise ↦ splitAt-↑ʳ
+  ```
+
+* In `Data.Vec.Properties`: 
+  ```
+  []≔-++-inject+       ↦ []≔-++-↑ˡ
+  ```
+  Additionally, `[]≔-++-↑ʳ`, by analogy. 
+
+
 New modules
 -----------
 
@@ -518,6 +540,7 @@ Other minor changes
   map-⊛ : ∀ {n} (f : A → B → C) (g : A → B) (xs : Vec A n) → (map f xs ⊛ map g xs) ≡ map (f ˢ g) xs
   ⊛-is->>= : ∀ {n} (fs : Vec (A → B) n) (xs : Vec A n) → (fs ⊛ xs) ≡ (fs DiagonalBind.>>= flip map xs)
   transpose-replicate : ∀ {m n} (xs : Vec A m) → transpose (replicate {n = n} xs) ≡ map replicate xs
+  []≔-++-↑ʳ : ∀ {m n y} (xs : Vec A m) (ys : Vec A n) i → (xs ++ ys) [ m ↑ʳ i ]≔ y ≡ xs ++ (ys [ i ]≔ y)
   ```
 
 * Added new proofs in `Function.Construct.Symmetry`:

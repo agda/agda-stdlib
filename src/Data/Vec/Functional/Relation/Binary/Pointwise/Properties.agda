@@ -120,13 +120,13 @@ module _ (R : REL A B r) where
 
   ++⁻ˡ : ∀ {m n} (xs : Vector A m) (ys : Vector B m) {xs′ ys′} →
          Pointwise R (xs ++ xs′) (ys ++ ys′) → Pointwise R xs ys
-  ++⁻ˡ {m} {n} _ _ rs i with rs (inject+ n i)
-  ... | r rewrite splitAt-inject+ m n i = r
+  ++⁻ˡ {m} {n} _ _ rs i with rs (i ↑ˡ n)
+  ... | r rewrite splitAt-↑ˡ m i n = r
 
   ++⁻ʳ : ∀ {m n} (xs : Vector A m) (ys : Vector B m) {xs′ ys′} →
          Pointwise R (xs ++ xs′) (ys ++ ys′) → Pointwise R xs′ ys′
-  ++⁻ʳ {m} {n} _ _ rs i with rs (raise m i)
-  ... | r rewrite splitAt-raise m n i = r
+  ++⁻ʳ {m} {n} _ _ rs i with rs (m ↑ʳ i)
+  ... | r rewrite splitAt-↑ʳ m n i = r
 
   ++⁻ : ∀ {m n} xs ys {xs′ ys′} →
         Pointwise R (xs ++ xs′) (ys ++ ys′) →
