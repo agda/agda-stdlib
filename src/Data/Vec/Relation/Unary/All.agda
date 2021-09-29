@@ -11,7 +11,9 @@ module Data.Vec.Relation.Unary.All where
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Product as Prod using (_×_; _,_; uncurry; <_,_>)
+open import Data.Sum.Base as Sum using (inj₁; inj₂)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
+open import Data.Vec.Relation.Unary.Any using (Any; here; there)
 open import Function.Base using (_∘_)
 open import Level using (Level; _⊔_)
 open import Relation.Nullary hiding (Irrelevant)
@@ -107,6 +109,14 @@ satisfiable : Satisfiable P → ∀ {n} → Satisfiable (All P {n})
 satisfiable (x , p) {zero}  = [] , []
 satisfiable (x , p) {suc n} = Prod.map (x ∷_) (p ∷_) (satisfiable (x , p))
 
+------------------------------------------------------------------------
+-- Generalised decidability procedure
+
+decide :  Π[ P ∪ Q ] → Π[ All P {n} ∪ Any Q ]
+decide p∪q [] = inj₁ []
+decide p∪q (x ∷ xs) with p∪q x
+... | inj₂ qx = inj₂ (here qx)
+... | inj₁ px = Sum.map (px ∷_) there (decide p∪q xs)
 
 
 all = all?

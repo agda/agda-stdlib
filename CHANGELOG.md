@@ -570,13 +570,27 @@ Other minor changes
   _≐_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
   _≐′_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
   ```
-  
+
 * Added new operations in `System.Exit`:
   ```
   isSuccess : ExitCode → Bool
   isFailure : ExitCode → Bool
   ```
 
+* Added new functions in `Data.List.Relation.Unary.All`:
+  ```
+  decide :  Π[ P ∪ Q ] → Π[ All P ∪ Any Q ]
+  ```
+
+* Added new functions in `Data.List.Fresh.Relation.Unary.All`:
+  ```
+  decide :  Π[ P ∪ Q ] → Π[ All {R = R} P ∪ Any Q ]
+  ```
+
+* Added new functions in `Data.Vec.Relation.Unary.All`:
+  ```
+  decide :  Π[ P ∪ Q ] → Π[ All P ∪ Any Q ]
+  ```
 
 NonZero/Positive/Negative changes
 ---------------------------------
