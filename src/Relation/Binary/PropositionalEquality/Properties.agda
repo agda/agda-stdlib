@@ -26,16 +26,15 @@ private
 ------------------------------------------------------------------------
 -- Standard eliminator for the propositional equality type
 
-J : ∀ {A : Set a} {x : A} (B : (y : A) → x ≡ y → Set b)
-  → {y : A} (p : x ≡ y) → B x refl → B y p
+J : {A : Set} {x : A} (B : (y : A) → x ≡ y → Set b)
+    {y : A} (p : x ≡ y) → B x refl → B y p
 J B refl b = b
 
 ------------------------------------------------------------------------
 -- Binary and/or dependent versions of standard operations on equality
 
-dcong : ∀ {A : Set a} {B : A → Set b}
-         (f : (x : A) → B x) {x y}
-       → (p : x ≡ y) → subst B p (f x) ≡ f y
+dcong : ∀ {A : Set a} {B : A → Set b} (f : (x : A) → B x) {x y}
+      → (p : x ≡ y) → subst B p (f x) ≡ f y
 dcong f refl = refl
 
 dcong₂ : ∀ {A : Set a} {B : A → Set b} {C : Set c}
