@@ -335,6 +335,28 @@ Deprecated names
   sym-↔   ↦   ↔-sym
   ```
 
+* In `Data.Fin.Base`: 
+two new, hopefully more memorable, names `↑ˡ` `↑ʳ` for the 'left', resp. 'right' injection of a Fin m into a 'larger' type, `Fin (m + n)`, resp. `Fin (n + m)`, with argument order to reflect the position of the Fin m argument. 
+  ```
+  inject+   ↦   flip _↑ˡ_
+  raise     ↦   _↑ʳ_
+  ```
+
+* In `Data.Fin.Properties`: 
+  ```
+  toℕ-raise       ↦ toℕ-↑ʳ
+  toℕ-inject+ n i ↦ sym (toℕ-↑ˡ i n)
+  splitAt-inject+ m n i ↦ splitAt-↑ˡ m i n
+  splitAt-raise ↦ splitAt-↑ʳ
+  ```
+
+* In `Data.Vec.Properties`: 
+  ```
+  []≔-++-inject+       ↦ []≔-++-↑ˡ
+  ```
+  Additionally, `[]≔-++-↑ʳ`, by analogy. 
+
+
 New modules
 -----------
 
@@ -518,6 +540,7 @@ Other minor changes
   map-⊛ : ∀ {n} (f : A → B → C) (g : A → B) (xs : Vec A n) → (map f xs ⊛ map g xs) ≡ map (f ˢ g) xs
   ⊛-is->>= : ∀ {n} (fs : Vec (A → B) n) (xs : Vec A n) → (fs ⊛ xs) ≡ (fs DiagonalBind.>>= flip map xs)
   transpose-replicate : ∀ {m n} (xs : Vec A m) → transpose (replicate {n = n} xs) ≡ map replicate xs
+  []≔-++-↑ʳ : ∀ {m n y} (xs : Vec A m) (ys : Vec A n) i → (xs ++ ys) [ m ↑ʳ i ]≔ y ≡ xs ++ (ys [ i ]≔ y)
   ```
 
 * Added new proofs in `Function.Construct.Symmetry`:
@@ -590,6 +613,26 @@ Other minor changes
 * Added new functions in `Data.Vec.Relation.Unary.All`:
   ```
   decide :  Π[ P ∪ Q ] → Π[ All P ∪ Any Q ]
+  ```
+
+* Added new operations in
+  `Relation.Binary.PropositionalEquality.Properties`:
+  ```
+  J : {A : Set} {x : A} (B : (y : A) → x ≡ y → Set b)
+      {y : A} (p : x ≡ y) → B x refl → B y p
+  dcong : ∀ {A : Set a} {B : A → Set b} (f : (x : A) → B x) {x y}
+        → (p : x ≡ y) → subst B p (f x) ≡ f y
+  dcong₂ : ∀ {A : Set a} {B : A → Set b} {C : Set c}
+           (f : (x : A) → B x → C) {x₁ x₂ y₁ y₂}
+         → (p : x₁ ≡ x₂) → subst B p y₁ ≡ y₂
+         → f x₁ y₁ ≡ f x₂ y₂
+  dsubst₂ : ∀ {A : Set a} {B : A → Set b} (C : (x : A) → B x → Set c)
+            {x₁ x₂ y₁ y₂} (p : x₁ ≡ x₂) → subst B p y₁ ≡ y₂
+          → C x₁ y₁ → C x₂ y₂
+  ddcong₂ : ∀ {A : Set a} {B : A → Set b} {C : (x : A) → B x → Set c}
+           (f : (x : A) (y : B x) → C x y) {x₁ x₂ y₁ y₂}
+           (p : x₁ ≡ x₂) (q : subst B p y₁ ≡ y₂)
+         → dsubst₂ C p q (f x₁ y₁) ≡ f x₂ y₂
   ```
 
 NonZero/Positive/Negative changes
