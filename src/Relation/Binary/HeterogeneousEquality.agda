@@ -79,6 +79,10 @@ subst-removable : ∀ (P : Pred A p) {x y} (eq : x ≅ y) z →
                   subst P eq z ≅ z
 subst-removable P refl z = refl
 
+subst₂-removable : ∀ (_∼_ : REL A B ℓ) {x y u v} (eq₁ : x ≅ y) (eq₂ : u ≅ v) p →
+                   subst₂ _∼_ eq₁ eq₂ p ≅ p
+subst₂-removable _ refl refl _ = refl
+
 ≡-subst-removable : ∀ (P : Pred A p) {x y} (eq : x ≡ y) z →
                     P.subst P eq z ≅ z
 ≡-subst-removable P refl z = refl
