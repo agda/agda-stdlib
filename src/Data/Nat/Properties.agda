@@ -589,8 +589,8 @@ m≢1+n+m m m≡1+n+m = m≢1+m+n m (trans m≡1+n+m (cong suc (+-comm _ m)))
 m+1+n≢m : ∀ m {n} → m + suc n ≢ m
 m+1+n≢m (suc m) = (m+1+n≢m m) ∘ suc-injective
 
-n+1+m≢m : ∀ m {n} → n + suc m ≢ m
-n+1+m≢m m {n} rewrite +-suc n m = ≢-sym (m≢1+n+m m)
+m+1+n≢n : ∀ m {n} → m + suc n ≢ n
+m+1+n≢n m {n} rewrite +-suc m n = ≢-sym (m≢1+n+m n)
 
 m+1+n≢0 : ∀ m {n} → m + suc n ≢ 0
 m+1+n≢0 m {n} rewrite +-suc m n = λ()
