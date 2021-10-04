@@ -339,65 +339,63 @@ True↔ (false because ofⁿ ¬p) _ =
 ------------------------------------------------------------------------
 -- Equality between pairs can be expressed as a pair of equalities
 
-Σ-≡,≡↔≡ : ∀ {a b} {A : Set a} {B : A → Set b} {p₁ p₂ : Σ A B} →
-          (∃ λ (p : proj₁ p₁ ≡ proj₁ p₂) →
-             P.subst B p (proj₂ p₁) ≡ proj₂ p₂) ↔
-          (p₁ ≡ p₂)
-Σ-≡,≡↔≡ {A = A} {B} = inverse to from left-inverse-of right-inverse-of
-  where
-  to : {p₁ p₂ : Σ A B} →
-       Σ (proj₁ p₁ ≡ proj₁ p₂)
-         (λ p → P.subst B p (proj₂ p₁) ≡ proj₂ p₂) →
-       p₁ ≡ p₂
-  to (P.refl , P.refl) = P.refl
-
-  from : {p₁ p₂ : Σ A B} →
-         p₁ ≡ p₂ →
+module _ {a b} {A : Set a} {B : A → Set b} {p₁ p₂ : Σ A B} where
+  private
+    to : {p₁ p₂ : Σ A B} →
          Σ (proj₁ p₁ ≡ proj₁ p₂)
-           (λ p → P.subst B p (proj₂ p₁) ≡ proj₂ p₂)
-  from P.refl = P.refl , P.refl
+           (λ p → P.subst B p (proj₂ p₁) ≡ proj₂ p₂) →
+         p₁ ≡ p₂
+    to (P.refl , P.refl) = P.refl
 
-  left-inverse-of : {p₁ p₂ : Σ A B}
-                    (p : Σ (proj₁ p₁ ≡ proj₁ p₂)
-                           (λ x → P.subst B x (proj₂ p₁) ≡ proj₂ p₂)) →
-                    from (to p) ≡ p
-  left-inverse-of (P.refl , P.refl) = P.refl
+    from : {p₁ p₂ : Σ A B} →
+           p₁ ≡ p₂ →
+           Σ (proj₁ p₁ ≡ proj₁ p₂)
+             (λ p → P.subst B p (proj₂ p₁) ≡ proj₂ p₂)
+    from P.refl = P.refl , P.refl
 
-  right-inverse-of : {p₁ p₂ : Σ A B} (p : p₁ ≡ p₂) → to (from p) ≡ p
-  right-inverse-of P.refl = P.refl
+    left-inverse-of : {p₁ p₂ : Σ A B}
+                      (p : Σ (proj₁ p₁ ≡ proj₁ p₂)
+                             (λ x → P.subst B x (proj₂ p₁) ≡ proj₂ p₂)) →
+                      from (to p) ≡ p
+    left-inverse-of (P.refl , P.refl) = P.refl
 
-×-≡,≡↔≡ : ∀ {a b} {A : Set a} {B : Set b} {p₁ p₂ : A × B} →
-          (proj₁ p₁ ≡ proj₁ p₂ × proj₂ p₁ ≡ proj₂ p₂) ↔ p₁ ≡ p₂
-×-≡,≡↔≡ {A = A} {B} = inverse to from left-inverse-of right-inverse-of
-  where
-  to : {p₁ p₂ : A × B} →
-       (proj₁ p₁ ≡ proj₁ p₂) × (proj₂ p₁ ≡ proj₂ p₂) → p₁ ≡ p₂
-  to (P.refl , P.refl) = P.refl
+    right-inverse-of : {p₁ p₂ : Σ A B} (p : p₁ ≡ p₂) → to (from p) ≡ p
+    right-inverse-of P.refl = P.refl
 
-  from : {p₁ p₂ : A × B} → p₁ ≡ p₂ →
-         (proj₁ p₁ ≡ proj₁ p₂) × (proj₂ p₁ ≡ proj₂ p₂)
-  from P.refl = P.refl , P.refl
+  Σ-≡,≡↔≡ : (∃ λ (p : proj₁ p₁ ≡ proj₁ p₂) →
+               P.subst B p (proj₂ p₁) ≡ proj₂ p₂) ↔
+            p₁ ≡ p₂
+  Σ-≡,≡↔≡ = inverse to from left-inverse-of right-inverse-of
 
-  left-inverse-of : {p₁ p₂ : A × B} →
-                    (p : (proj₁ p₁ ≡ proj₁ p₂) × (proj₂ p₁ ≡ proj₂ p₂)) →
-                    from (to p) ≡ p
-  left-inverse-of (P.refl , P.refl) = P.refl
+  Σ-≡,≡→≡ : (∃ λ (p : proj₁ p₁ ≡ proj₁ p₂) →
+               P.subst B p (proj₂ p₁) ≡ proj₂ p₂) →
+            p₁ ≡ p₂
+  Σ-≡,≡→≡ = to
 
-  right-inverse-of : {p₁ p₂ : A × B} (p : p₁ ≡ p₂) → to (from p) ≡ p
-  right-inverse-of P.refl = P.refl
+module _ {a b} {A : Set a} {B : Set b} {p₁ p₂ : A × B} where
+  private
+    to : {p₁ p₂ : A × B} →
+         (proj₁ p₁ ≡ proj₁ p₂) × (proj₂ p₁ ≡ proj₂ p₂) → p₁ ≡ p₂
+    to (P.refl , P.refl) = P.refl
+
+    from : {p₁ p₂ : A × B} → p₁ ≡ p₂ →
+           (proj₁ p₁ ≡ proj₁ p₂) × (proj₂ p₁ ≡ proj₂ p₂)
+    from P.refl = P.refl , P.refl
+
+    left-inverse-of : {p₁ p₂ : A × B} →
+                      (p : (proj₁ p₁ ≡ proj₁ p₂) × (proj₂ p₁ ≡ proj₂ p₂)) →
+                      from (to p) ≡ p
+    left-inverse-of (P.refl , P.refl) = P.refl
+
+    right-inverse-of : {p₁ p₂ : A × B} (p : p₁ ≡ p₂) → to (from p) ≡ p
+    right-inverse-of P.refl = P.refl
+
+  ×-≡,≡↔≡ : (proj₁ p₁ ≡ proj₁ p₂ × proj₂ p₁ ≡ proj₂ p₂) ↔ p₁ ≡ p₂
+  ×-≡,≡↔≡ = inverse to from left-inverse-of right-inverse-of
+
+  ×-≡,≡→≡ : (proj₁ p₁ ≡ proj₁ p₂ × proj₂ p₁ ≡ proj₂ p₂) → p₁ ≡ p₂
+  ×-≡,≡→≡ = to
 
 ×-≡×≡↔≡,≡ : ∀ {a b} {A : Set a} {B : Set b} {x y} (p : A × B) →
             (x ≡ proj₁ p × y ≡ proj₂ p) ↔ (x , y) ≡ p
-×-≡×≡↔≡,≡ {x = x} {y} p = inverse to from from∘to to∘from
-   where
-   to : (x ≡ proj₁ p × y ≡ proj₂ p) → (x , y) ≡ p
-   to = uncurry $ P.cong₂ _,_
-
-   from : (x , y) ≡ p → (x ≡ proj₁ p × y ≡ proj₂ p)
-   from = < P.cong proj₁ , P.cong proj₂ >
-
-   from∘to : ∀ v → from (to v) ≡ v
-   from∘to (P.refl , P.refl) = P.refl
-
-   to∘from : ∀ v → to (from v) ≡ v
-   to∘from P.refl = P.refl
+×-≡×≡↔≡,≡ _ = ×-≡,≡↔≡

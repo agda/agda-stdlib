@@ -195,7 +195,7 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
            P.subst B₁ (P.sym (LeftInverse.left-inverse-of A₁↞A₂ x)) y)
 
     left-inverse-of : ∀ p → from (to p) ≡ p
-    left-inverse-of (x , y) = Inverse.to Σ-≡,≡↔≡ ⟨$⟩
+    left-inverse-of (x , y) = Σ-≡,≡→≡
       ( LeftInverse.left-inverse-of A₁↞A₂ x
       , (P.subst B₁ (LeftInverse.left-inverse-of A₁↞A₂ x)
            (LeftInverse.from B₁↞B₂ ⟨$⟩ (LeftInverse.to B₁↞B₂ ⟨$⟩
@@ -231,7 +231,7 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
            P.subst B₂ (P.sym (Surjection.right-inverse-of A₁↠A₂ x)) y)
 
     right-inverse-of : ∀ p → to (from p) ≡ p
-    right-inverse-of (x , y) = Inverse.to Σ-≡,≡↔≡ ⟨$⟩
+    right-inverse-of (x , y) = Σ-≡,≡→≡
       ( Surjection.right-inverse-of A₁↠A₂ x
       , (P.subst B₂ (Surjection.right-inverse-of A₁↠A₂ x)
            (Surjection.to B₁↠B₂ ⟨$⟩ (Surjection.from B₁↠B₂ ⟨$⟩
@@ -266,7 +266,7 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
     left-inverse-of :
       ∀ p → Surjection.from surjection′ ⟨$⟩
               (Surjection.to surjection′ ⟨$⟩ p) ≡ p
-    left-inverse-of (x , y) = Inverse.to Σ-≡,≡↔≡ ⟨$⟩
+    left-inverse-of (x , y) = Σ-≡,≡→≡
       ( _≃_.left-inverse-of A₁≃A₂ x
       , (P.subst B₁ (_≃_.left-inverse-of A₁≃A₂ x)
            (Inverse.from B₁↔B₂ ⟨$⟩
