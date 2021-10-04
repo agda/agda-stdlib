@@ -418,6 +418,11 @@ New modules
   Test.Golden
   ```
 
+* New interfaces for using Haskell datatypes:
+  ```
+  Foreign.Haskell.List.NonEmpty
+  ```
+
 Other minor changes
 -------------------
 
