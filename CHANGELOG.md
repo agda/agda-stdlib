@@ -588,6 +588,11 @@ Other minor changes
   untilJust : IO (Maybe A) → IO A
   ```
 
+* Added new proofs in `Relation.Binary.PropositionalEquality.Properties`:
+  ```
+  subst-application′ : subst Q eq (f x p) ≡ f y (subst P eq p)
+  ```
+
 * Equality of predicates
   ```
   _≐_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
