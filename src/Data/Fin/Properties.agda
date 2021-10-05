@@ -13,6 +13,7 @@ open import Category.Applicative using (RawApplicative)
 open import Category.Functor using (RawFunctor)
 open import Data.Bool.Base using (Bool; true; false; not; _∧_; _∨_)
 open import Data.Empty using (⊥; ⊥-elim)
+open import Data.Unit using (⊤)
 open import Data.Fin.Base
 open import Data.Fin.Patterns
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_)
@@ -52,6 +53,9 @@ open import Relation.Unary.Properties using (U?)
 
 Fin0↔⊥ : Fin 0 ↔ ⊥
 Fin0↔⊥ = mk↔′ ¬Fin0 (λ ()) (λ ()) (λ ())
+
+Fin1↔⊤ : Fin 1 ↔ ⊤
+Fin1↔⊤ = mk↔′ (λ { 0F → tt }) (λ { tt → 0F }) (λ { tt → refl }) λ { 0F → refl }
 
 ------------------------------------------------------------------------
 -- Properties of _≡_

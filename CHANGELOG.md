@@ -469,6 +469,11 @@ Other minor changes
   ```
   and their corresponding algebraic substructures.
 
+* Added a new `Inverse` bundle in `Data.Fin.Properties`:
+  ```
+  Fin1↔⊤ : Fin 1 ↔ ⊤
+  ```
+
 * Added new proofs in `Data.Integer.Properties`:
   ```agda
   sign-cong′ : s₁ ◃ n₁ ≡ s₂ ◃ n₂ → s₁ ≡ s₂ ⊎ (n₁ ≡ 0 × n₂ ≡ 0)
