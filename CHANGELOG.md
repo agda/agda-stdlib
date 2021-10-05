@@ -589,6 +589,11 @@ Other minor changes
   untilJust : IO (Maybe A) → IO A
   ```
 
+* Added new proofs in `Relation.Binary.HeterogeneousEquality`:
+  ```
+  subst₂-removable : subst₂ _∼_ eq₁ eq₂ p ≅ p
+  ```
+
 * Equality of predicates
   ```
   _≐_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
