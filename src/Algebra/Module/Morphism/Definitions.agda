@@ -16,6 +16,7 @@ module Algebra.Module.Morphism.Definitions
   where
 
 open import Algebra.Core
+open import Algebra.Morphism.Definitions A B _≈_ public
 
 Homomorphicₗ : (A → B) → Opₗ R A → Opₗ R B → Set _
 Homomorphicₗ ⟦_⟧ _∙_ _∘_ = ∀ r x → ⟦ r ∙ x ⟧ ≈ (r ∘ ⟦ x ⟧)
