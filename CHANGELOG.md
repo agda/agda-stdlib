@@ -348,6 +348,7 @@ two new, hopefully more memorable, names `↑ˡ` `↑ʳ` for the 'left', resp. '
   toℕ-inject+ n i ↦ sym (toℕ-↑ˡ i n)
   splitAt-inject+ m n i ↦ splitAt-↑ˡ m i n
   splitAt-raise ↦ splitAt-↑ʳ
+  Fin0↔⊥        ↦ 0↔⊥
   ```
 
 * In `Data.Vec.Properties`: 
@@ -471,7 +472,7 @@ Other minor changes
 
 * Added a new `Inverse` bundle in `Data.Fin.Properties`:
   ```
-  Fin1↔⊤ : Fin 1 ↔ ⊤
+  1↔⊤ : Fin 1 ↔ ⊤
   ```
 
 * Added new proofs in `Data.Integer.Properties`:

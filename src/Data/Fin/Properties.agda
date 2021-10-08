@@ -50,11 +50,11 @@ open import Relation.Unary.Properties using (U?)
 ------------------------------------------------------------------------
 -- Bundles
 
-Fin0↔⊥ : Fin 0 ↔ ⊥
-Fin0↔⊥ = mk↔′ ¬Fin0 (λ ()) (λ ()) (λ ())
+0↔⊥ : Fin 0 ↔ ⊥
+0↔⊥ = mk↔′ ¬Fin0 (λ ()) (λ ()) (λ ())
 
-Fin1↔⊤ : Fin 1 ↔ ⊤
-Fin1↔⊤ = mk↔′ (λ { 0F → tt }) (λ { tt → 0F }) (λ { tt → refl }) λ { 0F → refl }
+1↔⊤ : Fin 1 ↔ ⊤
+1↔⊤ = mk↔′ (λ { 0F → tt }) (λ { tt → 0F }) (λ { tt → refl }) λ { 0F → refl }
 
 ------------------------------------------------------------------------
 -- Properties of _≡_
@@ -926,4 +926,10 @@ splitAt-raise = splitAt-↑ʳ
 {-# WARNING_ON_USAGE splitAt-raise
 "Warning: splitAt-raise was deprecated in v2.0.
 Please use splitAt-↑ʳ instead."
+#-}
+Fin0↔⊥ : Fin 0 ↔ ⊥
+Fin0↔⊥ = 0↔⊥
+{-# WARNING_ON_USAGE Fin0↔⊥
+"Warning: Fin0↔⊥ was deprecated in v2.0.
+Please use 0↔⊥ instead."
 #-}
