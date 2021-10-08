@@ -356,6 +356,12 @@ two new, hopefully more memorable, names `↑ˡ` `↑ʳ` for the 'left', resp. '
   ```
   Additionally, `[]≔-++-↑ʳ`, by analogy. 
 
+* In `Foreign.Haskell.Either` and `Foreign.Haskell.Pair`:
+  ```
+  toForeign   ↦ Foreign.Haskell.Coerce.coerce
+  fromForeign ↦ Foreign.Haskell.Coerce.coerce
+  ```
+
 
 New modules
 -----------
