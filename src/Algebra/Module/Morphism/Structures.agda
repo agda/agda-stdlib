@@ -144,3 +144,59 @@ module LeftModuleMorphisms
       { isGroupMonomorphism = +ᴹ-isGroupMonomorphism
       ; surjective          = surjective
       }
+
+module RightSemimoduleMorphisms
+  {semiring : Semiring r ℓr}
+  (M₁ : RightSemimodule semiring m₁ ℓm₁)
+  (M₂ : RightSemimodule semiring m₂ ℓm₂)
+  where
+
+  open Semiring semiring renaming (Carrier to R)
+  open RightSemimodule M₁ renaming (Carrierᴹ to A; _*ᵣ_ to _*ᵣ₁_; _≈ᴹ_ to _≈ᴹ₁_)
+  open RightSemimodule M₂ renaming (Carrierᴹ to B; _*ᵣ_ to _*ᵣ₂_; _≈ᴹ_ to _≈ᴹ₂_)
+  open MorphismDefinitions R A B _≈ᴹ₂_
+  open FunctionDefinitions _≈ᴹ₁_ _≈ᴹ₂_
+  open MorphismStructures.MonoidMorphisms (RightSemimodule.+ᴹ-rawMonoid M₁) (RightSemimodule.+ᴹ-rawMonoid M₂)
+
+  record IsRightSemimoduleHomomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
+    field
+      +ᴹ-isMonoidHomomorphism : IsMonoidHomomorphism ⟦_⟧
+      *ᵣ-homo                 : Homomorphicᵣ ⟦_⟧ _*ᵣ₁_ _*ᵣ₂_
+
+    open IsMonoidHomomorphism +ᴹ-isMonoidHomomorphism public
+      using (isRelHomomorphism)
+      renaming (isMagmaHomomorphism to +ᴹ-isMagmaHomomorphism; homo to +ᴹ-homo; ε-homo to 0ᴹ-homo)
+
+  record IsRightSemimoduleMonomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
+    field
+      isRightSemimoduleHomomorphism : IsRightSemimoduleHomomorphism ⟦_⟧
+      injective                    : Injective ⟦_⟧
+
+    open IsRightSemimoduleHomomorphism isRightSemimoduleHomomorphism public
+
+    +ᴹ-isMonoidMonomorphism : IsMonoidMonomorphism ⟦_⟧
+    +ᴹ-isMonoidMonomorphism = record
+      { isMonoidHomomorphism = +ᴹ-isMonoidHomomorphism
+      ; injective            = injective
+      }
+
+    open IsMonoidMonomorphism +ᴹ-isMonoidMonomorphism public
+      using (isRelMonomorphism)
+      renaming (isMagmaMonomorphism to +ᴹ-isMagmaMonomorphism)
+
+  record IsRightSemimoduleIsomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ m₂ ⊔ ℓm₁ ⊔ ℓm₂) where
+    field
+      isRightSemimoduleMonomorphism : IsRightSemimoduleMonomorphism ⟦_⟧
+      surjective                   : Surjective ⟦_⟧
+
+    open IsRightSemimoduleMonomorphism isRightSemimoduleMonomorphism public
+
+    +ᴹ-isMonoidIsomorphism : IsMonoidIsomorphism ⟦_⟧
+    +ᴹ-isMonoidIsomorphism = record
+      { isMonoidMonomorphism = +ᴹ-isMonoidMonomorphism
+      ; surjective           = surjective
+      }
+
+    open IsMonoidIsomorphism +ᴹ-isMonoidIsomorphism public
+      using (isRelIsomorphism)
+      renaming (isMagmaIsomorphism to +ᴹ-isMagmaIsomorphism)
