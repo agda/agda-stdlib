@@ -16,7 +16,7 @@ open import Level
 
 private
   variable
-    r ℓr m₁ m₂ ℓm₁ ℓm₂ : Level
+    r ℓr s ℓs m₁ m₂ ℓm₁ ℓm₂ : Level
 
 module LeftSemimoduleMorphisms
   {semiring : Semiring r ℓr}
@@ -270,4 +270,87 @@ module RightModuleMorphisms
     +ᴹ-isGroupIsomorphism = record
       { isGroupMonomorphism = +ᴹ-isGroupMonomorphism
       ; surjective          = surjective
+      }
+
+module BisemimoduleMorphisms
+  {R-semiring : Semiring r ℓr}
+  {S-semiring : Semiring s ℓs}
+  (M₁ : Bisemimodule R-semiring S-semiring m₁ ℓm₁)
+  (M₂ : Bisemimodule R-semiring S-semiring m₂ ℓm₂)
+  where
+
+  open Semiring R-semiring renaming (Carrier to R)
+  open Semiring S-semiring renaming (Carrier to S)
+  open Bisemimodule M₁ renaming (Carrierᴹ to A; _*ₗ_ to _*ₗ₁_; _*ᵣ_ to _*ᵣ₁_; _≈ᴹ_ to _≈ᴹ₁_)
+  open Bisemimodule M₂ renaming (Carrierᴹ to B; _*ₗ_ to _*ₗ₂_; _*ᵣ_ to _*ᵣ₂_; _≈ᴹ_ to _≈ᴹ₂_)
+  open MorphismDefinitions R A B _≈ᴹ₂_ using (Homomorphicₗ)
+  open MorphismDefinitions S A B _≈ᴹ₂_ using (Homomorphicᵣ)
+  open FunctionDefinitions _≈ᴹ₁_ _≈ᴹ₂_
+  open MorphismStructures.MonoidMorphisms (Bisemimodule.+ᴹ-rawMonoid M₁) (Bisemimodule.+ᴹ-rawMonoid M₂)
+  open LeftSemimoduleMorphisms (Bisemimodule.leftSemimodule M₁) (Bisemimodule.leftSemimodule M₂)
+  open RightSemimoduleMorphisms (Bisemimodule.rightSemimodule M₁) (Bisemimodule.rightSemimodule M₂)
+
+  record IsBisemimoduleHomomorphism (⟦_⟧ : A → B) : Set (r ⊔ s ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
+    field
+      +ᴹ-isMonoidHomomorphism : IsMonoidHomomorphism ⟦_⟧
+      *ₗ-homo                 : Homomorphicₗ ⟦_⟧ _*ₗ₁_ _*ₗ₂_
+      *ᵣ-homo                 : Homomorphicᵣ ⟦_⟧ _*ᵣ₁_ _*ᵣ₂_
+
+    isLeftSemimoduleHomomorphism : IsLeftSemimoduleHomomorphism ⟦_⟧
+    isLeftSemimoduleHomomorphism = record
+      { +ᴹ-isMonoidHomomorphism = +ᴹ-isMonoidHomomorphism
+      ; *ₗ-homo                 = *ₗ-homo
+      }
+
+    open IsLeftSemimoduleHomomorphism isLeftSemimoduleHomomorphism public
+      using (isRelHomomorphism; +ᴹ-isMagmaHomomorphism; +ᴹ-homo; 0ᴹ-homo)
+
+    isRightSemimoduleHomomorphism : IsRightSemimoduleHomomorphism ⟦_⟧
+    isRightSemimoduleHomomorphism = record
+      { +ᴹ-isMonoidHomomorphism = +ᴹ-isMonoidHomomorphism
+      ; *ᵣ-homo                 = *ᵣ-homo
+      }
+
+  record IsBisemimoduleMonomorphism (⟦_⟧ : A → B) : Set (r ⊔ s ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
+    field
+      isBisemimoduleHomomorphism : IsBisemimoduleHomomorphism ⟦_⟧
+      injective                  : Injective ⟦_⟧
+
+    open IsBisemimoduleHomomorphism isBisemimoduleHomomorphism public
+
+    isLeftSemimoduleMonomorphism : IsLeftSemimoduleMonomorphism ⟦_⟧
+    isLeftSemimoduleMonomorphism = record
+      { isLeftSemimoduleHomomorphism = isLeftSemimoduleHomomorphism
+      ; injective                    = injective
+      }
+
+    open IsLeftSemimoduleMonomorphism isLeftSemimoduleMonomorphism public
+      using (isRelMonomorphism; +ᴹ-isMagmaMonomorphism; +ᴹ-isMonoidMonomorphism)
+
+    isRightSemimoduleMonomorphism : IsRightSemimoduleMonomorphism ⟦_⟧
+    isRightSemimoduleMonomorphism = record
+      { isRightSemimoduleHomomorphism = isRightSemimoduleHomomorphism
+      ; injective                     = injective
+      }
+
+  record IsBisemimoduleIsomorphism (⟦_⟧ : A → B) : Set (r ⊔ s ⊔ m₁ ⊔ m₂ ⊔ ℓm₁ ⊔ ℓm₂) where
+    field
+      isBisemimoduleMonomorphism : IsBisemimoduleMonomorphism ⟦_⟧
+      surjective                 : Surjective ⟦_⟧
+
+    open IsBisemimoduleMonomorphism isBisemimoduleMonomorphism public
+
+    isLeftSemimoduleIsomorphism : IsLeftSemimoduleIsomorphism ⟦_⟧
+    isLeftSemimoduleIsomorphism = record
+      { isLeftSemimoduleMonomorphism = isLeftSemimoduleMonomorphism
+      ; surjective                   = surjective
+      }
+
+    open IsLeftSemimoduleIsomorphism isLeftSemimoduleIsomorphism public
+      using (isRelIsomorphism; +ᴹ-isMagmaIsomorphism; +ᴹ-isMonoidIsomorphism)
+
+    isRightSemimoduleIsomorphism : IsRightSemimoduleIsomorphism ⟦_⟧
+    isRightSemimoduleIsomorphism = record
+      { isRightSemimoduleMonomorphism = isRightSemimoduleMonomorphism
+      ; surjective                    = surjective
       }
