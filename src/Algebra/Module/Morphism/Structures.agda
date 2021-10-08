@@ -200,3 +200,74 @@ module RightSemimoduleMorphisms
     open IsMonoidIsomorphism +ᴹ-isMonoidIsomorphism public
       using (isRelIsomorphism)
       renaming (isMagmaIsomorphism to +ᴹ-isMagmaIsomorphism)
+
+module RightModuleMorphisms
+  {ring : Ring r ℓr}
+  (M₁ : RightModule ring m₁ ℓm₁)
+  (M₂ : RightModule ring m₂ ℓm₂)
+  where
+
+  open Ring ring renaming (Carrier to R)
+  open RightModule M₁ renaming (Carrierᴹ to A; -ᴹ_ to -ᴹ₁_; _≈ᴹ_ to _≈ᴹ₁_)
+  open RightModule M₂ renaming (Carrierᴹ to B; -ᴹ_ to -ᴹ₂_; _≈ᴹ_ to _≈ᴹ₂_)
+  open MorphismDefinitions R A B _≈ᴹ₂_
+  open FunctionDefinitions _≈ᴹ₁_ _≈ᴹ₂_
+  open MorphismStructures.GroupMorphisms (RightModule.+ᴹ-rawGroup M₁) (RightModule.+ᴹ-rawGroup M₂)
+  open RightSemimoduleMorphisms (RightModule.rightSemimodule M₁) (RightModule.rightSemimodule M₂)
+
+  record IsRightModuleHomomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
+    field
+      isRightSemimoduleHomomorphism : IsRightSemimoduleHomomorphism ⟦_⟧
+      -ᴹ-homo                      : Homomorphic₁ ⟦_⟧ -ᴹ₁_ -ᴹ₂_
+
+    open IsRightSemimoduleHomomorphism isRightSemimoduleHomomorphism public
+
+    +ᴹ-isGroupHomomorphism : IsGroupHomomorphism ⟦_⟧
+    +ᴹ-isGroupHomomorphism = record
+      { isMonoidHomomorphism = +ᴹ-isMonoidHomomorphism
+      ; ⁻¹-homo              = -ᴹ-homo
+      }
+
+  record IsRightModuleMonomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
+    field
+      isRightModuleHomomorphism : IsRightModuleHomomorphism ⟦_⟧
+      injective                : Injective ⟦_⟧
+
+    open IsRightModuleHomomorphism isRightModuleHomomorphism public
+
+    isRightSemimoduleMonomorphism : IsRightSemimoduleMonomorphism ⟦_⟧
+    isRightSemimoduleMonomorphism = record
+      { isRightSemimoduleHomomorphism = isRightSemimoduleHomomorphism
+      ; injective                    = injective
+      }
+
+    open IsRightSemimoduleMonomorphism isRightSemimoduleMonomorphism public
+      using (isRelMonomorphism; +ᴹ-isMagmaMonomorphism; +ᴹ-isMonoidMonomorphism)
+
+    +ᴹ-isGroupMonomorphism : IsGroupMonomorphism ⟦_⟧
+    +ᴹ-isGroupMonomorphism = record
+      { isGroupHomomorphism = +ᴹ-isGroupHomomorphism
+      ; injective           = injective
+      }
+
+  record IsRightModuleIsomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ m₂ ⊔ ℓm₁ ⊔ ℓm₂) where
+    field
+      isRightModuleMonomorphism : IsRightModuleMonomorphism ⟦_⟧
+      surjective               : Surjective ⟦_⟧
+
+    open IsRightModuleMonomorphism isRightModuleMonomorphism public
+
+    isRightSemimoduleIsomorphism : IsRightSemimoduleIsomorphism ⟦_⟧
+    isRightSemimoduleIsomorphism = record
+      { isRightSemimoduleMonomorphism = isRightSemimoduleMonomorphism
+      ; surjective                   = surjective
+      }
+
+    open IsRightSemimoduleIsomorphism isRightSemimoduleIsomorphism public
+      using (isRelIsomorphism; +ᴹ-isMagmaIsomorphism; +ᴹ-isMonoidIsomorphism)
+
+    +ᴹ-isGroupIsomorphism : IsGroupIsomorphism ⟦_⟧
+    +ᴹ-isGroupIsomorphism = record
+      { isGroupMonomorphism = +ᴹ-isGroupMonomorphism
+      ; surjective          = surjective
+      }
