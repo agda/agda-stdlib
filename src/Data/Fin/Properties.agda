@@ -894,7 +894,7 @@ Please use ≡-decSetoid instead."
 
 inject+-raise-splitAt = join-splitAt
 {-# WARNING_ON_USAGE inject+-raise-splitAt
-"Warning: decSetoid was deprecated in v1.5.
+"Warning: inject+-raise-splitAt was deprecated in v1.5.
 Please use join-splitAt instead."
 #-}
 
