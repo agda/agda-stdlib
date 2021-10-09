@@ -489,3 +489,56 @@ module BimoduleMorphisms
       { isBisemimoduleMonomorphism = isBisemimoduleMonomorphism
       ; surjective                 = surjective
       }
+
+module SemimoduleMorphisms
+  {commutativeSemiring : CommutativeSemiring r ℓr}
+  (M₁ : Semimodule commutativeSemiring m₁ ℓm₁)
+  (M₂ : Semimodule commutativeSemiring m₂ ℓm₂)
+  where
+
+  open Semimodule M₁ renaming (Carrierᴹ to A; _≈ᴹ_ to _≈ᴹ₁_)
+  open Semimodule M₂ renaming (Carrierᴹ to B; _≈ᴹ_ to _≈ᴹ₂_)
+  open FunctionDefinitions _≈ᴹ₁_ _≈ᴹ₂_
+  open BisemimoduleMorphisms (Semimodule.bisemimodule M₁) (Semimodule.bisemimodule M₂)
+
+  record IsSemimoduleHomomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
+    field
+      isBisemimoduleHomomorphism : IsBisemimoduleHomomorphism ⟦_⟧
+
+    open IsBisemimoduleHomomorphism isBisemimoduleHomomorphism public
+
+  record IsSemimoduleMonomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
+    field
+      isSemimoduleHomomorphism : IsSemimoduleHomomorphism ⟦_⟧
+      injective                : Injective ⟦_⟧
+
+    open IsSemimoduleHomomorphism isSemimoduleHomomorphism public
+
+    isBisemimoduleMonomorphism : IsBisemimoduleMonomorphism ⟦_⟧
+    isBisemimoduleMonomorphism = record
+      { isBisemimoduleHomomorphism = isBisemimoduleHomomorphism
+      ; injective                  = injective
+      }
+
+    open IsBisemimoduleMonomorphism isBisemimoduleMonomorphism public
+      using ( isRelMonomorphism; +ᴹ-isMagmaMonomorphism; +ᴹ-isMonoidMonomorphism
+            ; isLeftSemimoduleMonomorphism; isRightSemimoduleMonomorphism
+            )
+
+  record IsSemimoduleIsomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ m₂ ⊔ ℓm₁ ⊔ ℓm₂) where
+    field
+      isSemimoduleMonomorphism : IsSemimoduleMonomorphism ⟦_⟧
+      surjective               : Surjective ⟦_⟧
+
+    open IsSemimoduleMonomorphism isSemimoduleMonomorphism public
+
+    isBisemimoduleIsomorphism : IsBisemimoduleIsomorphism ⟦_⟧
+    isBisemimoduleIsomorphism = record
+      { isBisemimoduleMonomorphism = isBisemimoduleMonomorphism
+      ; surjective                 = surjective
+      }
+
+    open IsBisemimoduleIsomorphism isBisemimoduleIsomorphism public
+      using ( isRelIsomorphism; +ᴹ-isMagmaIsomorphism; +ᴹ-isMonoidIsomorphism
+            ; isLeftSemimoduleIsomorphism; isRightSemimoduleIsomorphism
+            )
