@@ -476,6 +476,7 @@ Other minor changes
 
 * Added new proofs in `Data.Nat.Properties`:
   ```agda
+  n+1+m≢m   : n + suc m ≢ m
   m*n≡0⇒m≡0 : .{{_ : NonZero n}} → m * n ≡ 0 → m ≡ 0
   ```
 
@@ -591,6 +592,11 @@ Other minor changes
 * Added new proofs in `Relation.Binary.PropositionalEquality.Properties`:
   ```
   subst-application′ : subst Q eq (f x p) ≡ f y (subst P eq p)
+  ```
+
+* Added new proofs in `Relation.Binary.HeterogeneousEquality`:
+  ```
+  subst₂-removable : subst₂ _∼_ eq₁ eq₂ p ≅ p
   ```
 
 * Equality of predicates
