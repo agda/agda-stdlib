@@ -354,3 +354,138 @@ module BisemimoduleMorphisms
       { isRightSemimoduleMonomorphism = isRightSemimoduleMonomorphism
       ; surjective                    = surjective
       }
+
+module BimoduleMorphisms
+  {R-ring : Ring r ℓr}
+  {S-ring : Ring s ℓs}
+  (M₁ : Bimodule R-ring S-ring m₁ ℓm₁)
+  (M₂ : Bimodule R-ring S-ring m₂ ℓm₂)
+  where
+
+  open Ring R-ring renaming (Carrier to R)
+  open Ring S-ring renaming (Carrier to S)
+  open Bimodule M₁ renaming (Carrierᴹ to A; _*ₗ_ to _*ₗ₁_; _*ᵣ_ to _*ᵣ₁_; _≈ᴹ_ to _≈ᴹ₁_)
+  open Bimodule M₂ renaming (Carrierᴹ to B; _*ₗ_ to _*ₗ₂_; _*ᵣ_ to _*ᵣ₂_; _≈ᴹ_ to _≈ᴹ₂_)
+  open MorphismDefinitions R A B _≈ᴹ₂_ using (Homomorphicₗ)
+  open MorphismDefinitions S A B _≈ᴹ₂_ using (Homomorphicᵣ)
+  open FunctionDefinitions _≈ᴹ₁_ _≈ᴹ₂_
+  open MorphismStructures.GroupMorphisms (Bimodule.+ᴹ-rawGroup M₁) (Bimodule.+ᴹ-rawGroup M₂)
+  open LeftModuleMorphisms (Bimodule.leftModule M₁) (Bimodule.leftModule M₂)
+  open RightModuleMorphisms (Bimodule.rightModule M₁) (Bimodule.rightModule M₂)
+  open BisemimoduleMorphisms (Bimodule.bisemimodule M₁) (Bimodule.bisemimodule M₂)
+
+  record IsBimoduleHomomorphism (⟦_⟧ : A → B) : Set (r ⊔ s ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
+    field
+      +ᴹ-isGroupHomomorphism : IsGroupHomomorphism ⟦_⟧
+      *ₗ-homo                 : Homomorphicₗ ⟦_⟧ _*ₗ₁_ _*ₗ₂_
+      *ᵣ-homo                 : Homomorphicᵣ ⟦_⟧ _*ᵣ₁_ _*ᵣ₂_
+
+    open IsGroupHomomorphism +ᴹ-isGroupHomomorphism public
+      using (isRelHomomorphism)
+      renaming ( isMagmaHomomorphism to +ᴹ-isMagmaHomomorphism; isMonoidHomomorphism to +ᴹ-isMonoidHomomorphism
+               ; homo to +ᴹ-homo; ε-homo to 0ᴹ-homo; ⁻¹-homo to -ᴹ-homo
+               )
+
+    isBisemimoduleHomomorphism : IsBisemimoduleHomomorphism ⟦_⟧
+    isBisemimoduleHomomorphism = record
+      { +ᴹ-isMonoidHomomorphism = +ᴹ-isMonoidHomomorphism
+      ; *ₗ-homo                 = *ₗ-homo
+      ; *ᵣ-homo                 = *ᵣ-homo
+      }
+
+    open IsBisemimoduleHomomorphism isBisemimoduleHomomorphism public
+      using (isLeftSemimoduleHomomorphism; isRightSemimoduleHomomorphism)
+
+    isLeftModuleHomomorphism : IsLeftModuleHomomorphism ⟦_⟧
+    isLeftModuleHomomorphism = record
+      { isLeftSemimoduleHomomorphism = isLeftSemimoduleHomomorphism
+      ; -ᴹ-homo                      = -ᴹ-homo
+      }
+
+    isRightModuleHomomorphism : IsRightModuleHomomorphism ⟦_⟧
+    isRightModuleHomomorphism = record
+      { isRightSemimoduleHomomorphism = isRightSemimoduleHomomorphism
+      ; -ᴹ-homo                   = -ᴹ-homo
+      }
+
+  record IsBimoduleMonomorphism (⟦_⟧ : A → B) : Set (r ⊔ s ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
+    field
+      isBimoduleHomomorphism : IsBimoduleHomomorphism ⟦_⟧
+      injective              : Injective ⟦_⟧
+
+    open IsBimoduleHomomorphism isBimoduleHomomorphism public
+
+    +ᴹ-isGroupMonomorphism : IsGroupMonomorphism ⟦_⟧
+    +ᴹ-isGroupMonomorphism = record
+      { isGroupHomomorphism = +ᴹ-isGroupHomomorphism
+      ; injective           = injective
+      }
+
+    open IsGroupMonomorphism +ᴹ-isGroupMonomorphism public
+      using (isRelMonomorphism)
+      renaming (isMagmaMonomorphism to +ᴹ-isMagmaMonomorphism; isMonoidMonomorphism to +ᴹ-isMonoidMonomorphism)
+
+    isLeftModuleMonomorphism : IsLeftModuleMonomorphism ⟦_⟧
+    isLeftModuleMonomorphism = record
+      { isLeftModuleHomomorphism = isLeftModuleHomomorphism
+      ; injective                = injective
+      }
+
+    open IsLeftModuleMonomorphism isLeftModuleMonomorphism public
+      using (isLeftSemimoduleMonomorphism)
+
+    isRightModuleMonomorphism : IsRightModuleMonomorphism ⟦_⟧
+    isRightModuleMonomorphism = record
+      { isRightModuleHomomorphism = isRightModuleHomomorphism
+      ; injective                 = injective
+      }
+
+    open IsRightModuleMonomorphism isRightModuleMonomorphism public
+      using (isRightSemimoduleMonomorphism)
+
+    isBisemimoduleMonomorphism : IsBisemimoduleMonomorphism ⟦_⟧
+    isBisemimoduleMonomorphism = record
+      { isBisemimoduleHomomorphism = isBisemimoduleHomomorphism
+      ; injective                  = injective
+      }
+
+  record IsBimoduleIsomorphism (⟦_⟧ : A → B) : Set (r ⊔ s ⊔ m₁ ⊔ m₂ ⊔ ℓm₁ ⊔ ℓm₂) where
+    field
+      isBimoduleMonomorphism : IsBimoduleMonomorphism ⟦_⟧
+      surjective             : Surjective ⟦_⟧
+
+    open IsBimoduleMonomorphism isBimoduleMonomorphism public
+
+    +ᴹ-isGroupIsomorphism : IsGroupIsomorphism ⟦_⟧
+    +ᴹ-isGroupIsomorphism = record
+      { isGroupMonomorphism = +ᴹ-isGroupMonomorphism
+      ; surjective          = surjective
+      }
+
+    open IsGroupIsomorphism +ᴹ-isGroupIsomorphism public
+      using (isRelIsomorphism)
+      renaming (isMagmaIsomorphism to +ᴹ-isMagmaIsomorphism; isMonoidIsomorphism to +ᴹ-isMonoidIsomorphism)
+
+    isLeftModuleIsomorphism : IsLeftModuleIsomorphism ⟦_⟧
+    isLeftModuleIsomorphism = record
+      { isLeftModuleMonomorphism = isLeftModuleMonomorphism
+      ; surjective               = surjective
+      }
+
+    open IsLeftModuleIsomorphism isLeftModuleIsomorphism public
+      using (isLeftSemimoduleIsomorphism)
+
+    isRightModuleIsomorphism : IsRightModuleIsomorphism ⟦_⟧
+    isRightModuleIsomorphism = record
+      { isRightModuleMonomorphism = isRightModuleMonomorphism
+      ; surjective                = surjective
+      }
+
+    open IsRightModuleIsomorphism isRightModuleIsomorphism public
+      using (isRightSemimoduleIsomorphism)
+
+    isBisemimoduleIsomorphism : IsBisemimoduleIsomorphism ⟦_⟧
+    isBisemimoduleIsomorphism = record
+      { isBisemimoduleMonomorphism = isBisemimoduleMonomorphism
+      ; surjective                 = surjective
+      }
