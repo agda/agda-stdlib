@@ -37,7 +37,7 @@ module LeftSemimoduleMorphisms
       *ₗ-homo                 : Homomorphicₗ ⟦_⟧ _*ₗ₁_ _*ₗ₂_
 
     open IsMonoidHomomorphism +ᴹ-isMonoidHomomorphism public
-      using (isRelHomomorphism)
+      using (isRelHomomorphism; ⟦⟧-cong)
       renaming (isMagmaHomomorphism to +ᴹ-isMagmaHomomorphism; homo to +ᴹ-homo; ε-homo to 0ᴹ-homo)
 
   record IsLeftSemimoduleMonomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
@@ -94,7 +94,7 @@ module LeftModuleMorphisms
       *ₗ-homo                : Homomorphicₗ ⟦_⟧ _*ₗ₁_ _*ₗ₂_
 
     open IsGroupHomomorphism +ᴹ-isGroupHomomorphism public
-      using (isRelHomomorphism)
+      using (isRelHomomorphism; ⟦⟧-cong)
       renaming ( isMagmaHomomorphism to +ᴹ-isMagmaHomomorphism; isMonoidHomomorphism to +ᴹ-isMonoidHomomorphism
                ; homo to +ᴹ-homo; ε-homo to 0ᴹ-homo; ⁻¹-homo to -ᴹ-homo
                )
@@ -168,7 +168,7 @@ module RightSemimoduleMorphisms
       *ᵣ-homo                 : Homomorphicᵣ ⟦_⟧ _*ᵣ₁_ _*ᵣ₂_
 
     open IsMonoidHomomorphism +ᴹ-isMonoidHomomorphism public
-      using (isRelHomomorphism)
+      using (isRelHomomorphism; ⟦⟧-cong)
       renaming (isMagmaHomomorphism to +ᴹ-isMagmaHomomorphism; homo to +ᴹ-homo; ε-homo to 0ᴹ-homo)
 
   record IsRightSemimoduleMonomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
@@ -225,7 +225,7 @@ module RightModuleMorphisms
       *ᵣ-homo                : Homomorphicᵣ ⟦_⟧ _*ᵣ₁_ _*ᵣ₂_
 
     open IsGroupHomomorphism +ᴹ-isGroupHomomorphism public
-      using (isRelHomomorphism)
+      using (isRelHomomorphism; ⟦⟧-cong)
       renaming ( isMagmaHomomorphism to +ᴹ-isMagmaHomomorphism; isMonoidHomomorphism to +ᴹ-isMonoidHomomorphism
                ; homo to +ᴹ-homo; ε-homo to 0ᴹ-homo; ⁻¹-homo to -ᴹ-homo
                )
@@ -310,7 +310,7 @@ module BisemimoduleMorphisms
       }
 
     open IsLeftSemimoduleHomomorphism isLeftSemimoduleHomomorphism public
-      using (isRelHomomorphism; +ᴹ-isMagmaHomomorphism; +ᴹ-homo; 0ᴹ-homo)
+      using (isRelHomomorphism; ⟦⟧-cong; +ᴹ-isMagmaHomomorphism; +ᴹ-homo; 0ᴹ-homo)
 
     isRightSemimoduleHomomorphism : IsRightSemimoduleHomomorphism ⟦_⟧
     isRightSemimoduleHomomorphism = record
@@ -388,7 +388,7 @@ module BimoduleMorphisms
       *ᵣ-homo                 : Homomorphicᵣ ⟦_⟧ _*ᵣ₁_ _*ᵣ₂_
 
     open IsGroupHomomorphism +ᴹ-isGroupHomomorphism public
-      using (isRelHomomorphism)
+      using (isRelHomomorphism; ⟦⟧-cong)
       renaming ( isMagmaHomomorphism to +ᴹ-isMagmaHomomorphism; isMonoidHomomorphism to +ᴹ-isMonoidHomomorphism
                ; homo to +ᴹ-homo; ε-homo to 0ᴹ-homo; ⁻¹-homo to -ᴹ-homo
                )
