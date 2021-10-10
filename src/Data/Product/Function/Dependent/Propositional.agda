@@ -108,7 +108,7 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
 
     to-injective : Injective (P.→-to-⟶ {B = P.setoid _} to)
     to-injective {(x₁ , x₂)} {(y₁ , y₂)} =
-      (Inverse.to Σ-≡,≡↔≡ ⟨$⟩_) ∘′
+      Σ-≡,≡→≡ ∘′
 
       map (_≃_.injective A₁≃A₂) (λ {eq₁} eq₂ →
 
@@ -173,7 +173,7 @@ module _ {a₁ a₂} {A₁ : Set a₁} {A₂ : Set a₂}
         P.subst B₁ (_≃_.injective A₁≃A₂ eq₁) x₂  ≡⟨ Injection.injective B₁↣B₂ lemma ⟩
         y₂                                       ∎) ∘
 
-      (Inverse.from Σ-≡,≡↔≡ ⟨$⟩_)
+      Σ-≡,≡←≡
 
   ↞ : (A₁↞A₂ : A₁ ↞ A₂) →
       (∀ {x} → B₁ (LeftInverse.from A₁↞A₂ ⟨$⟩ x) ↞ B₂ x) →

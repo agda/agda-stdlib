@@ -340,61 +340,49 @@ True↔ (false because ofⁿ ¬p) _ =
 -- Equality between pairs can be expressed as a pair of equalities
 
 module _ {a b} {A : Set a} {B : A → Set b} {p₁ p₂ : Σ A B} where
+  Σ-≡,≡→≡ : Σ (proj₁ p₁ ≡ proj₁ p₂)
+              (λ p → P.subst B p (proj₂ p₁) ≡ proj₂ p₂) →
+            p₁ ≡ p₂
+  Σ-≡,≡→≡ (P.refl , P.refl) = P.refl
+
+  Σ-≡,≡←≡ : p₁ ≡ p₂ →
+            Σ (proj₁ p₁ ≡ proj₁ p₂)
+              (λ p → P.subst B p (proj₂ p₁) ≡ proj₂ p₂)
+  Σ-≡,≡←≡ P.refl = P.refl , P.refl
+
   private
-    to : {p₁ p₂ : Σ A B} →
-         Σ (proj₁ p₁ ≡ proj₁ p₂)
-           (λ p → P.subst B p (proj₂ p₁) ≡ proj₂ p₂) →
-         p₁ ≡ p₂
-    to (P.refl , P.refl) = P.refl
 
-    from : {p₁ p₂ : Σ A B} →
-           p₁ ≡ p₂ →
-           Σ (proj₁ p₁ ≡ proj₁ p₂)
-             (λ p → P.subst B p (proj₂ p₁) ≡ proj₂ p₂)
-    from P.refl = P.refl , P.refl
-
-    left-inverse-of : {p₁ p₂ : Σ A B}
-                      (p : Σ (proj₁ p₁ ≡ proj₁ p₂)
+    left-inverse-of : (p : Σ (proj₁ p₁ ≡ proj₁ p₂)
                              (λ x → P.subst B x (proj₂ p₁) ≡ proj₂ p₂)) →
-                      from (to p) ≡ p
+                      Σ-≡,≡←≡ (Σ-≡,≡→≡ p) ≡ p
     left-inverse-of (P.refl , P.refl) = P.refl
 
-    right-inverse-of : {p₁ p₂ : Σ A B} (p : p₁ ≡ p₂) → to (from p) ≡ p
+    right-inverse-of : (p : p₁ ≡ p₂) → Σ-≡,≡→≡ (Σ-≡,≡←≡ p) ≡ p
     right-inverse-of P.refl = P.refl
 
   Σ-≡,≡↔≡ : (∃ λ (p : proj₁ p₁ ≡ proj₁ p₂) →
                P.subst B p (proj₂ p₁) ≡ proj₂ p₂) ↔
             p₁ ≡ p₂
-  Σ-≡,≡↔≡ = inverse to from left-inverse-of right-inverse-of
-
-  Σ-≡,≡→≡ : (∃ λ (p : proj₁ p₁ ≡ proj₁ p₂) →
-               P.subst B p (proj₂ p₁) ≡ proj₂ p₂) →
-            p₁ ≡ p₂
-  Σ-≡,≡→≡ = to
+  Σ-≡,≡↔≡ = inverse Σ-≡,≡→≡ Σ-≡,≡←≡ left-inverse-of right-inverse-of
 
 module _ {a b} {A : Set a} {B : Set b} {p₁ p₂ : A × B} where
+  ×-≡,≡→≡ : (proj₁ p₁ ≡ proj₁ p₂) × (proj₂ p₁ ≡ proj₂ p₂) → p₁ ≡ p₂
+  ×-≡,≡→≡ (P.refl , P.refl) = P.refl
+
+  ×-≡,≡←≡ : p₁ ≡ p₂ →
+            (proj₁ p₁ ≡ proj₁ p₂) × (proj₂ p₁ ≡ proj₂ p₂)
+  ×-≡,≡←≡ P.refl = P.refl , P.refl
+
   private
-    to : {p₁ p₂ : A × B} →
-         (proj₁ p₁ ≡ proj₁ p₂) × (proj₂ p₁ ≡ proj₂ p₂) → p₁ ≡ p₂
-    to (P.refl , P.refl) = P.refl
-
-    from : {p₁ p₂ : A × B} → p₁ ≡ p₂ →
-           (proj₁ p₁ ≡ proj₁ p₂) × (proj₂ p₁ ≡ proj₂ p₂)
-    from P.refl = P.refl , P.refl
-
-    left-inverse-of : {p₁ p₂ : A × B} →
-                      (p : (proj₁ p₁ ≡ proj₁ p₂) × (proj₂ p₁ ≡ proj₂ p₂)) →
-                      from (to p) ≡ p
+    left-inverse-of : (p : (proj₁ p₁ ≡ proj₁ p₂) × (proj₂ p₁ ≡ proj₂ p₂)) →
+                      ×-≡,≡←≡ (×-≡,≡→≡ p) ≡ p
     left-inverse-of (P.refl , P.refl) = P.refl
 
-    right-inverse-of : {p₁ p₂ : A × B} (p : p₁ ≡ p₂) → to (from p) ≡ p
+    right-inverse-of : (p : p₁ ≡ p₂) → ×-≡,≡→≡ (×-≡,≡←≡ p) ≡ p
     right-inverse-of P.refl = P.refl
 
   ×-≡,≡↔≡ : (proj₁ p₁ ≡ proj₁ p₂ × proj₂ p₁ ≡ proj₂ p₂) ↔ p₁ ≡ p₂
-  ×-≡,≡↔≡ = inverse to from left-inverse-of right-inverse-of
-
-  ×-≡,≡→≡ : (proj₁ p₁ ≡ proj₁ p₂ × proj₂ p₁ ≡ proj₂ p₂) → p₁ ≡ p₂
-  ×-≡,≡→≡ = to
+  ×-≡,≡↔≡ = inverse ×-≡,≡→≡ ×-≡,≡←≡ left-inverse-of right-inverse-of
 
 ×-≡×≡↔≡,≡ : ∀ {a b} {A : Set a} {B : Set b} {x y} (p : A × B) →
             (x ≡ proj₁ p × y ≡ proj₂ p) ↔ (x , y) ≡ p
