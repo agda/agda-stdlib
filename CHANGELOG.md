@@ -360,6 +360,14 @@ two new, hopefully more memorable, names `↑ˡ` `↑ʳ` for the 'left', resp. '
 New modules
 -----------
 
+* Morphisms between module-like algebraic structures:
+  ```
+  Algebra.Module.Morphism.Construct.Composition
+  Algebra.Module.Morphism.Construct.Identity
+  Algebra.Module.Morphism.Definitions
+  Algebra.Module.Morphism.Structures
+  ```
+
 * Identity morphisms and composition of morphisms between algebraic structures:
   ```
   Algebra.Morphism.Construct.Composition
