@@ -81,8 +81,8 @@ module LeftModuleMorphisms
   where
 
   open Ring ring renaming (Carrier to R)
-  open LeftModule M₁ renaming (Carrierᴹ to A; -ᴹ_ to -ᴹ₁_; _≈ᴹ_ to _≈ᴹ₁_)
-  open LeftModule M₂ renaming (Carrierᴹ to B; -ᴹ_ to -ᴹ₂_; _≈ᴹ_ to _≈ᴹ₂_)
+  open LeftModule M₁ renaming (Carrierᴹ to A; _*ₗ_ to _*ₗ₁_; _≈ᴹ_ to _≈ᴹ₁_)
+  open LeftModule M₂ renaming (Carrierᴹ to B; _*ₗ_ to _*ₗ₂_; _≈ᴹ_ to _≈ᴹ₂_)
   open MorphismDefinitions R A B _≈ᴹ₂_
   open FunctionDefinitions _≈ᴹ₁_ _≈ᴹ₂_
   open MorphismStructures.GroupMorphisms (LeftModule.+ᴹ-rawGroup M₁) (LeftModule.+ᴹ-rawGroup M₂)
@@ -90,15 +90,19 @@ module LeftModuleMorphisms
 
   record IsLeftModuleHomomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
     field
-      isLeftSemimoduleHomomorphism : IsLeftSemimoduleHomomorphism ⟦_⟧
-      -ᴹ-homo                      : Homomorphic₁ ⟦_⟧ -ᴹ₁_ -ᴹ₂_
+      +ᴹ-isGroupHomomorphism : IsGroupHomomorphism ⟦_⟧
+      *ₗ-homo                : Homomorphicₗ ⟦_⟧ _*ₗ₁_ _*ₗ₂_
 
-    open IsLeftSemimoduleHomomorphism isLeftSemimoduleHomomorphism public
+    open IsGroupHomomorphism +ᴹ-isGroupHomomorphism public
+      using (isRelHomomorphism)
+      renaming ( isMagmaHomomorphism to +ᴹ-isMagmaHomomorphism; isMonoidHomomorphism to +ᴹ-isMonoidHomomorphism
+               ; homo to +ᴹ-homo; ε-homo to 0ᴹ-homo; ⁻¹-homo to -ᴹ-homo
+               )
 
-    +ᴹ-isGroupHomomorphism : IsGroupHomomorphism ⟦_⟧
-    +ᴹ-isGroupHomomorphism = record
-      { isMonoidHomomorphism = +ᴹ-isMonoidHomomorphism
-      ; ⁻¹-homo              = -ᴹ-homo
+    isLeftSemimoduleHomomorphism : IsLeftSemimoduleHomomorphism ⟦_⟧
+    isLeftSemimoduleHomomorphism = record
+      { +ᴹ-isMonoidHomomorphism = +ᴹ-isMonoidHomomorphism
+      ; *ₗ-homo                 = *ₗ-homo
       }
 
   record IsLeftModuleMonomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
@@ -208,8 +212,8 @@ module RightModuleMorphisms
   where
 
   open Ring ring renaming (Carrier to R)
-  open RightModule M₁ renaming (Carrierᴹ to A; -ᴹ_ to -ᴹ₁_; _≈ᴹ_ to _≈ᴹ₁_)
-  open RightModule M₂ renaming (Carrierᴹ to B; -ᴹ_ to -ᴹ₂_; _≈ᴹ_ to _≈ᴹ₂_)
+  open RightModule M₁ renaming (Carrierᴹ to A; _*ᵣ_ to _*ᵣ₁_; _≈ᴹ_ to _≈ᴹ₁_)
+  open RightModule M₂ renaming (Carrierᴹ to B; _*ᵣ_ to _*ᵣ₂_; _≈ᴹ_ to _≈ᴹ₂_)
   open MorphismDefinitions R A B _≈ᴹ₂_
   open FunctionDefinitions _≈ᴹ₁_ _≈ᴹ₂_
   open MorphismStructures.GroupMorphisms (RightModule.+ᴹ-rawGroup M₁) (RightModule.+ᴹ-rawGroup M₂)
@@ -217,15 +221,18 @@ module RightModuleMorphisms
 
   record IsRightModuleHomomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
     field
-      isRightSemimoduleHomomorphism : IsRightSemimoduleHomomorphism ⟦_⟧
-      -ᴹ-homo                      : Homomorphic₁ ⟦_⟧ -ᴹ₁_ -ᴹ₂_
+      +ᴹ-isGroupHomomorphism : IsGroupHomomorphism ⟦_⟧
+      *ᵣ-homo                : Homomorphicᵣ ⟦_⟧ _*ᵣ₁_ _*ᵣ₂_
 
-    open IsRightSemimoduleHomomorphism isRightSemimoduleHomomorphism public
-
-    +ᴹ-isGroupHomomorphism : IsGroupHomomorphism ⟦_⟧
-    +ᴹ-isGroupHomomorphism = record
-      { isMonoidHomomorphism = +ᴹ-isMonoidHomomorphism
-      ; ⁻¹-homo              = -ᴹ-homo
+    open IsGroupHomomorphism +ᴹ-isGroupHomomorphism public
+      using (isRelHomomorphism)
+      renaming ( isMagmaHomomorphism to +ᴹ-isMagmaHomomorphism; isMonoidHomomorphism to +ᴹ-isMonoidHomomorphism
+               ; homo to +ᴹ-homo; ε-homo to 0ᴹ-homo; ⁻¹-homo to -ᴹ-homo
+               )
+    isRightSemimoduleHomomorphism : IsRightSemimoduleHomomorphism ⟦_⟧
+    isRightSemimoduleHomomorphism = record
+      { +ᴹ-isMonoidHomomorphism = +ᴹ-isMonoidHomomorphism
+      ; *ᵣ-homo                 = *ᵣ-homo
       }
 
   record IsRightModuleMonomorphism (⟦_⟧ : A → B) : Set (r ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
@@ -398,14 +405,14 @@ module BimoduleMorphisms
 
     isLeftModuleHomomorphism : IsLeftModuleHomomorphism ⟦_⟧
     isLeftModuleHomomorphism = record
-      { isLeftSemimoduleHomomorphism = isLeftSemimoduleHomomorphism
-      ; -ᴹ-homo                      = -ᴹ-homo
+      { +ᴹ-isGroupHomomorphism = +ᴹ-isGroupHomomorphism
+      ; *ₗ-homo                = *ₗ-homo
       }
 
     isRightModuleHomomorphism : IsRightModuleHomomorphism ⟦_⟧
     isRightModuleHomomorphism = record
-      { isRightSemimoduleHomomorphism = isRightSemimoduleHomomorphism
-      ; -ᴹ-homo                   = -ᴹ-homo
+      { +ᴹ-isGroupHomomorphism = +ᴹ-isGroupHomomorphism
+      ; *ᵣ-homo                = *ᵣ-homo
       }
 
   record IsBimoduleMonomorphism (⟦_⟧ : A → B) : Set (r ⊔ s ⊔ m₁ ⊔ ℓm₁ ⊔ ℓm₂) where
