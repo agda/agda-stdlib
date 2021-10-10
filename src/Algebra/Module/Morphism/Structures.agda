@@ -622,3 +622,12 @@ module ModuleMorphisms
       { isSemimoduleMonomorphism = isSemimoduleMonomorphism
       ; surjective               = surjective
       }
+
+open LeftSemimoduleMorphisms public
+open LeftModuleMorphisms public
+open RightSemimoduleMorphisms public
+open RightModuleMorphisms public
+open BisemimoduleMorphisms public
+open BimoduleMorphisms public
+open SemimoduleMorphisms public
+open ModuleMorphisms public
