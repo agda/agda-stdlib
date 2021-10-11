@@ -17,7 +17,7 @@ open import Data.Fin.Base
 open import Data.Fin.Patterns
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_)
 import Data.Nat.Properties as ℕₚ
-open import Data.Unit using (tt)
+open import Data.Unit using (⊤; tt)
 open import Data.Product using (Σ-syntax; ∃; ∃₂; ∄; _×_; _,_; map; proj₁; uncurry; <_,_>)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]; [_,_]′)
 open import Data.Sum.Properties using ([,]-map-commute; [,]-∘-distr)
@@ -50,8 +50,11 @@ open import Relation.Unary.Properties using (U?)
 ------------------------------------------------------------------------
 -- Bundles
 
-Fin0↔⊥ : Fin 0 ↔ ⊥
-Fin0↔⊥ = mk↔′ ¬Fin0 (λ ()) (λ ()) (λ ())
+0↔⊥ : Fin 0 ↔ ⊥
+0↔⊥ = mk↔′ ¬Fin0 (λ ()) (λ ()) (λ ())
+
+1↔⊤ : Fin 1 ↔ ⊤
+1↔⊤ = mk↔′ (λ { 0F → tt }) (λ { tt → 0F }) (λ { tt → refl }) λ { 0F → refl }
 
 ------------------------------------------------------------------------
 -- Properties of _≡_
@@ -891,7 +894,7 @@ Please use ≡-decSetoid instead."
 
 inject+-raise-splitAt = join-splitAt
 {-# WARNING_ON_USAGE inject+-raise-splitAt
-"Warning: decSetoid was deprecated in v1.5.
+"Warning: inject+-raise-splitAt was deprecated in v1.5.
 Please use join-splitAt instead."
 #-}
 
@@ -923,4 +926,10 @@ splitAt-raise = splitAt-↑ʳ
 {-# WARNING_ON_USAGE splitAt-raise
 "Warning: splitAt-raise was deprecated in v2.0.
 Please use splitAt-↑ʳ instead."
+#-}
+Fin0↔⊥ : Fin 0 ↔ ⊥
+Fin0↔⊥ = 0↔⊥
+{-# WARNING_ON_USAGE Fin0↔⊥
+"Warning: Fin0↔⊥ was deprecated in v2.0.
+Please use 0↔⊥ instead."
 #-}

@@ -348,6 +348,7 @@ two new, hopefully more memorable, names `↑ˡ` `↑ʳ` for the 'left', resp. '
   toℕ-inject+ n i ↦ sym (toℕ-↑ˡ i n)
   splitAt-inject+ m n i ↦ splitAt-↑ˡ m i n
   splitAt-raise ↦ splitAt-↑ʳ
+  Fin0↔⊥        ↦ 0↔⊥
   ```
 
 * In `Data.Vec.Properties`: 
@@ -479,6 +480,11 @@ Other minor changes
   ∧-isCommutativeSemigroup : IsCommutativeSemigroup ∧
   ```
   and their corresponding algebraic substructures.
+
+* Added a new `Inverse` bundle in `Data.Fin.Properties`:
+  ```
+  1↔⊤ : Fin 1 ↔ ⊤
+  ```
 
 * Added new proofs in `Data.Integer.Properties`:
   ```agda
