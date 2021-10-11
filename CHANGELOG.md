@@ -20,11 +20,11 @@ Bug-fixes
   rather than a natural. The previous binding was incorrectly assuming that
   all exit codes where non-negative.
 
-* In `/-monoˡ-≤` in `Data.Nat.DivMod` the parameter `o` was implicit but not inferrable. 
+* In `/-monoˡ-≤` in `Data.Nat.DivMod` the parameter `o` was implicit but not inferrable.
   It has been changed to be explicit.
 
-* In `Function.Definitions` the definitions of `Surjection`, `Inverseˡ`, 
-  `Inverseʳ` were not being re-exported correctly and therefore had an unsolved 
+* In `Function.Definitions` the definitions of `Surjection`, `Inverseˡ`,
+  `Inverseʳ` were not being re-exported correctly and therefore had an unsolved
   meta-variable whenever this module was explicitly parameterised. This has
   been fixed.
 
@@ -86,7 +86,7 @@ Non-backwards compatible changes
   As discussed on the [mailing list](https://lists.chalmers.se/pipermail/agda/2021/012693.html),
   the previous way of constructing and passing round these proofs was extremely clunky and lead
   to messy and difficult to read code. We have therefore changed every occurrence where we need
-  a proof of non-zeroness/positivity/etc. to take it as an irrelevant 
+  a proof of non-zeroness/positivity/etc. to take it as an irrelevant
   [instance argument](https://agda.readthedocs.io/en/latest/language/instance-arguments.html).
   See the mailing list for a fuller explanation of the motivation and implementation.
 
@@ -112,21 +112,21 @@ Non-backwards compatible changes
     1. *Automatic basic instances* - the standard library provides instances based on the constructors of each
 	   numeric type in `Data.X.Base`. For example, `Data.Nat.Base` constains an instance of `NonZero (suc n)` for any `n`
 	   and `Data.Integer.Base` contains an instance of `NonNegative (+ n)` for any `n`. Consequently,
-	   if the argument is of the required form, these instances will always be filled in by instance search 
+	   if the argument is of the required form, these instances will always be filled in by instance search
 	   automatically, e.g.
 	   ```
 	   0/n≡0 : 0 / suc n ≡ 0
 	   ```
 	2. *Take the instance as an argument* - You can provide the instance argument as a parameter to your function
 	   and Agda's instance search will automatically use it in the correct place without you having to
-	   explicitly pass it, e.g. 
+	   explicitly pass it, e.g.
 	   ```
 	   0/n≡0 : .{{_ : NonZero n}} → 0 / n ≡ 0
 	   ```
 	3. *Define the instance locally* - You can define an instance argument in scope (e.g. in a `where` clause)
 	   and Agda's instance search will again find it automatically, e.g.
 	   ```
-	   instance 
+	   instance
 	     n≢0 : NonZero n
 	     n≢0 = ...
 
@@ -146,7 +146,7 @@ Non-backwards compatible changes
   e.g. if the argument `n` had to be non-zero then you would refer to the argument as `suc n` everywhere
   instead of `n`, e.g.
   ```
-  n/n≡1 : ∀ n → suc n / suc n ≡ 1 
+  n/n≡1 : ∀ n → suc n / suc n ≡ 1
   ```
   This made the proofs extremely difficult to use if your term wasn't in the right form.
   After being updated to use instance arguments instead, the proof above becomes:
@@ -169,7 +169,7 @@ Non-backwards compatible changes
 * The previous implementations of `_divℕ_`, `_div_`, `_modℕ_`, `_mod_`
   in `Data.Integer.DivMod` internally converted to the unary `Fin` datatype
   resulting in poor performance. The implementation has been updated to
-  use the corresponding operations from `Data.Nat.DivMod` which are 
+  use the corresponding operations from `Data.Nat.DivMod` which are
   efficiently implemented using the Haskell backend.
 
 ### Strict functions
@@ -210,10 +210,10 @@ Deprecated modules
   in this process to bring them into line with the camelcase naming convention used
   in the rest of the library:
   ```agda
-  reverse-implication ↦ reverseImplication 
+  reverse-implication ↦ reverseImplication
   reverse-injection   ↦ reverseInjection
   left-inverse        ↦ leftInverse
-  
+
   Symmetric-kind      ↦ SymmetricKind
   Forward-kind        ↦ ForwardKind
   Backward-kind       ↦ BackwardKind
@@ -266,7 +266,7 @@ Deprecated names
   *-cancelʳ-<-neg  ↦  *-cancelʳ-<-nonPos
 
   ```
-  
+
 * In `Data.Nat.Properties`:
   ```
   suc[pred[n]]≡n  ↦  suc-pred
@@ -276,7 +276,7 @@ Deprecated names
   ```
   ↥[p/q]≡p         ↦  ↥[n/d]≡n
   ↧[p/q]≡q         ↦  ↧[n/d]≡d
-  *-monoˡ-≤-pos    ↦  *-monoˡ-≤-nonNeg 
+  *-monoˡ-≤-pos    ↦  *-monoˡ-≤-nonNeg
   *-monoʳ-≤-pos    ↦  *-monoʳ-≤-nonNeg
   *-monoˡ-≤-neg    ↦  *-monoˡ-≤-nonPos
   *-monoʳ-≤-neg    ↦  *-monoʳ-≤-nonPos
@@ -357,6 +357,12 @@ two new, hopefully more memorable, names `↑ˡ` `↑ʳ` for the 'left', resp. '
   ```
   Additionally, `[]≔-++-↑ʳ`, by analogy. 
 
+* In `Foreign.Haskell.Either` and `Foreign.Haskell.Pair`:
+  ```
+  toForeign   ↦ Foreign.Haskell.Coerce.coerce
+  fromForeign ↦ Foreign.Haskell.Coerce.coerce
+  ```
+
 
 New modules
 -----------
@@ -394,7 +400,7 @@ New modules
   ```
   Relation.Unary.Polymorphic
   ```
- 
+
 * Various system types and primitives:
   ```
   System.Clock.Primitive
@@ -411,6 +417,11 @@ New modules
 * A golden testing library with test pools, an options parser, a runner:
   ```
   Test.Golden
+  ```
+
+* New interfaces for using Haskell datatypes:
+  ```
+  Foreign.Haskell.List.NonEmpty
   ```
 
 Other minor changes
@@ -456,7 +467,7 @@ Other minor changes
   commutativeRing : CommutativeRing a ℓ₁ → CommutativeRing b ℓ₂ →
                     CommutativeRing (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
  ```
-	
+
 * Added new definitions to `Algebra.Structures`:
   ```agda
   record IsUnitalMagma (_∙_ : Op₂ A) (ε : A) : Set (a ⊔ ℓ)
@@ -495,7 +506,7 @@ Other minor changes
   ```agda
   floor ceiling truncate round ⌊_⌋ ⌈_⌉ [_] : ℚ → ℤ
   fracPart : ℚ → ℚ
-  ``` 
+  ```
 
 * Added new definitions and proofs in `Data.Rational.Properties`:
   ```agda
@@ -511,7 +522,7 @@ Other minor changes
   ```agda
   floor ceiling truncate round ⌊_⌋ ⌈_⌉ [_] : ℚᵘ → ℤ
   fracPart : ℚᵘ → ℚᵘ
-  ``` 
+  ```
 
 * Added new definitions in `Data.Rational.Unnormalised.Properties`:
   ```agda
@@ -605,11 +616,26 @@ Other minor changes
   _≐_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
   _≐′_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
   ```
-  
+
 * Added new operations in `System.Exit`:
   ```
   isSuccess : ExitCode → Bool
   isFailure : ExitCode → Bool
+  ```
+
+* Added new functions in `Data.List.Relation.Unary.All`:
+  ```
+  decide :  Π[ P ∪ Q ] → Π[ All P ∪ Any Q ]
+  ```
+
+* Added new functions in `Data.List.Fresh.Relation.Unary.All`:
+  ```
+  decide :  Π[ P ∪ Q ] → Π[ All {R = R} P ∪ Any Q ]
+  ```
+
+* Added new functions in `Data.Vec.Relation.Unary.All`:
+  ```
+  decide :  Π[ P ∪ Q ] → Π[ All P ∪ Any Q ]
   ```
 
 * Added new operations in
@@ -645,8 +671,8 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   *-cancelˡ-≤ : ∀ {m n} o → suc o * m ≤ suc o * n → m ≤ n
   *-monoˡ-<   : ∀ n → (_* suc n) Preserves _<_ ⟶ _<_
   *-monoʳ-<   : ∀ n → (suc n *_) Preserves _<_ ⟶ _<_
-	
-  m≤m*n          : ∀ m {n} → 0 < n → m ≤ m * n 
+
+  m≤m*n          : ∀ m {n} → 0 < n → m ≤ m * n
   m≤n*m          : ∀ m {n} → 0 < n → m ≤ n * m
   m<m*n          : ∀ {m n} → 0 < m → 1 < n → m < m * n
   suc[pred[n]]≡n : ∀ {n} → n ≢ 0 → suc (pred n) ≡ n
@@ -679,7 +705,7 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   m%n<n         : ∀ m n → m % suc n < suc n
   m%n≤m         : ∀ m n → m % suc n ≤ m
   m≤n⇒m%n≡m     : ∀ {m n} → m ≤ n → m % suc n ≡ m
-	
+
   m/n<m         : ∀ m n {≢0} → m ≥ 1 → n ≥ 2 → (m / n) {≢0} < m
   ```
 
@@ -695,17 +721,17 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   sign-cong : ∀ {s₁ s₂ n₁ n₂} → s₁ ◃ suc n₁ ≡ s₂ ◃ suc n₂ → s₁ ≡ s₂
   -◃<+◃     : ∀ m n → Sign.- ◃ (suc m) < Sign.+ ◃ n
   m⊖1+n<m   : ∀ m n → m ⊖ suc n < + m
-  
+
   *-cancelʳ-≡     : ∀ i j k → k ≢ + 0 → i * k ≡ j * k → i ≡ j
   *-cancelˡ-≡     : ∀ i j k → i ≢ + 0 → i * j ≡ i * k → j ≡ k
   *-cancelʳ-≤-pos : ∀ m n o → m * + suc o ≤ n * + suc o → m ≤ n
-  
+
   ≤-steps     : ∀ n → i ≤ j → i ≤ + n + j
   ≤-steps-neg : ∀ n → i ≤ j → i - + n ≤ j
   n≤m+n       : ∀ n → i ≤ + n + i
   m≤m+n       : ∀ n → i ≤ i + + n
   m-n≤m       : ∀ i n → i - + n ≤ i
-  
+
   *-cancelʳ-≤-pos    : ∀ m n o → m * + suc o ≤ n * + suc o → m ≤ n
   *-cancelˡ-≤-pos    : ∀ m j k → + suc m * j ≤ + suc m * k → j ≤ k
   *-cancelˡ-≤-neg    : ∀ m {j k} → -[1+ m ] * j ≤ -[1+ m ] * k → j ≥ k
@@ -722,7 +748,7 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   *-monoʳ-<-neg      : ∀ n → (_* -[1+ n ]) Preserves _<_ ⟶ _>_
   *-cancelˡ-<-nonPos : ∀ n → NonPositive n → n * i < n * j → i > j
   *-cancelʳ-<-nonPos : ∀ n → NonPositive n → i * n < j * n → i > j
-  
+
   *-distribˡ-⊓-nonNeg : ∀ m j k → + m * (j ⊓ k) ≡ (+ m * j) ⊓ (+ m * k)
   *-distribʳ-⊓-nonNeg : ∀ m j k → (j ⊓ k) * + m ≡ (j * + m) ⊓ (k * + m)
   *-distribˡ-⊓-nonPos : ∀ i → NonPositive i → ∀ j k → i * (j ⊓ k) ≡ (i * j) ⊔ (i * k)
@@ -750,7 +776,7 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   ≤-steps : ∀ {p q r} → NonNegative r → p ≤ q → p ≤ r + q
   p≤p+q   : ∀ {p q} → NonNegative q → p ≤ p + q
   p≤q+p   : ∀ {p} → NonNegative p → ∀ {q} → q ≤ p + q
-  
+
   *-cancelʳ-≤-pos    : ∀ {r} → Positive r → ∀ {p q} → p * r ≤ q * r → p ≤ q
   *-cancelˡ-≤-pos    : ∀ {r} → Positive r → ∀ {p q} → r * p ≤ r * q → p ≤ q
   *-cancelʳ-≤-neg    : ∀ r → Negative r → ∀ {p q} → p * r ≤ q * r → q ≤ p
@@ -767,10 +793,10 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   *-monoʳ-<-pos      : ∀ {r} → Positive r → (r *_) Preserves _<_ ⟶ _<_
   *-monoˡ-<-neg      : ∀ r → Negative r → (_* r) Preserves _<_ ⟶ _>_
   *-monoʳ-<-neg      : ∀ r → Negative r → (r *_) Preserves _<_ ⟶ _>_
-  
+
   pos⇒1/pos : ∀ p (p>0 : Positive p) → Positive ((1/ p) {{pos⇒≢0 p p>0}})
   neg⇒1/neg : ∀ p (p<0 : Negative p) → Negative ((1/ p) {{neg⇒≢0 p p<0}})
-  
+
   *-distribʳ-⊓-nonNeg : ∀ p → NonNegative p → ∀ q r → (q ⊓ r) * p ≃ (q * p) ⊓ (r * p)
   *-distribˡ-⊓-nonNeg : ∀ p → NonNegative p → ∀ q r → p * (q ⊓ r) ≃ (p * q) ⊓ (p * r)
   *-distribˡ-⊔-nonNeg : ∀ p → NonNegative p → ∀ q r → p * (q ⊔ r) ≃ (p * q) ⊔ (p * r)
@@ -799,7 +825,7 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   *-monoʳ-<-pos      : ∀ r → Positive r → (r *_) Preserves _<_ ⟶ _<_
   *-monoˡ-<-neg      : ∀ r → Negative r → (_* r) Preserves _<_ ⟶ _>_
   *-monoʳ-<-neg      : ∀ r → Negative r → (r *_) Preserves _<_ ⟶ _>_
-  
+
   *-distribˡ-⊓-nonNeg : ∀ p → NonNegative p → ∀ q r → p * (q ⊓ r) ≡ (p * q) ⊓ (p * r)
   *-distribʳ-⊓-nonNeg : ∀ p → NonNegative p → ∀ q r → (q ⊓ r) * p ≡ (q * p) ⊓ (r * p)
   *-distribˡ-⊔-nonNeg : ∀ p → NonNegative p → ∀ q r → p * (q ⊔ r) ≡ (p * q) ⊔ (p * r)
@@ -808,7 +834,7 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   *-distribʳ-⊔-nonPos : ∀ p → NonPositive p → ∀ q r → (q ⊔ r) * p ≡ (q * p) ⊓ (r * p)
   *-distribˡ-⊓-nonPos : ∀ p → NonPositive p → ∀ q r → p * (q ⊓ r) ≡ (p * q) ⊔ (p * r)
   *-distribʳ-⊓-nonPos : ∀ p → NonPositive p → ∀ q r → (q ⊓ r) * p ≡ (q * p) ⊔ (r * p)
-  
+
   pos⇒1/pos : ∀ p (p>0 : Positive p) → Positive ((1/ p) {{pos⇒≢0 p p>0}})
   neg⇒1/neg : ∀ p (p<0 : Negative p) → Negative ((1/ p) {{neg⇒≢0 p p<0}})
   1/pos⇒pos : ∀ p .{{_ : NonZero p}} → (1/p : Positive (1/ p)) → Positive p

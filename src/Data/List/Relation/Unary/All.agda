@@ -17,6 +17,7 @@ open import Data.List.Membership.Propositional renaming (_∈_ to _∈ₚ_)
 import Data.List.Membership.Setoid as SetoidMembership
 open import Data.Product as Prod
   using (∃; -,_; _×_; _,_; proj₁; proj₂; uncurry)
+open import Data.Sum.Base as Sum using (inj₁; inj₂)
 open import Function
 open import Level
 open import Relation.Nullary hiding (Irrelevant)
@@ -217,6 +218,14 @@ irrelevant irr (px₁ ∷ pxs₁) (px₂ ∷ pxs₂) =
 satisfiable : Satisfiable (All P)
 satisfiable = [] , []
 
+------------------------------------------------------------------------
+-- Generalised decidability procedure
+
+decide :  Π[ P ∪ Q ] → Π[ All P ∪ Any Q ]
+decide p∪q [] = inj₁ []
+decide p∪q (x ∷ xs) with p∪q x
+... | inj₂ qx = inj₂ (here qx)
+... | inj₁ px = Sum.map (px ∷_) there (decide p∪q xs)
 
 ------------------------------------------------------------------------
 -- DEPRECATED
