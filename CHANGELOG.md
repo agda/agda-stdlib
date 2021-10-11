@@ -356,6 +356,12 @@ two new, hopefully more memorable, names `↑ˡ` `↑ʳ` for the 'left', resp. '
   ```
   Additionally, `[]≔-++-↑ʳ`, by analogy. 
 
+* In `Foreign.Haskell.Either` and `Foreign.Haskell.Pair`:
+  ```
+  toForeign   ↦ Foreign.Haskell.Coerce.coerce
+  fromForeign ↦ Foreign.Haskell.Coerce.coerce
+  ```
+
 
 New modules
 -----------
@@ -410,6 +416,11 @@ New modules
 * A golden testing library with test pools, an options parser, a runner:
   ```
   Test.Golden
+  ```
+
+* New interfaces for using Haskell datatypes:
+  ```
+  Foreign.Haskell.List.NonEmpty
   ```
 
 Other minor changes
