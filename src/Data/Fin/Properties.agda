@@ -129,6 +129,10 @@ toℕ-↑ʳ : ∀ {m} n (i : Fin m) → toℕ (n ↑ʳ i) ≡ n ℕ.+ toℕ i
 toℕ-↑ʳ zero    i = refl
 toℕ-↑ʳ (suc n) i = cong suc (toℕ-↑ʳ n i)
 
+↑ʳ-injective : ∀ {m} n (i j : Fin m) → n ↑ʳ i ≡ n ↑ʳ j → i ≡ j
+↑ʳ-injective zero i .i refl = refl
+↑ʳ-injective (suc n) i j eq = ↑ʳ-injective n i j (suc-injective eq)
+
 toℕ<n : ∀ {n} (i : Fin n) → toℕ i ℕ.< n
 toℕ<n zero    = s≤s z≤n
 toℕ<n (suc i) = s≤s (toℕ<n i)
@@ -146,10 +150,6 @@ toℕ≤pred[n] (suc {n = suc n} i)  = s≤s (toℕ≤pred[n] i)
 -- it can be removed in favor of toℕ≤pred[n]′.
 toℕ≤pred[n]′ : ∀ {n} (i : Fin n) → toℕ i ℕ.≤ ℕ.pred n
 toℕ≤pred[n]′ i = ℕₚ.<⇒≤pred (toℕ<n i)
-
-↑ʳ-injective : ∀ {m} n (i j : Fin m) → n ↑ʳ i ≡ n ↑ʳ j → i ≡ j
-↑ʳ-injective zero i .i refl = refl
-↑ʳ-injective (suc n) i j eq = ↑ʳ-injective n i j (suc-injective eq)
 
 ------------------------------------------------------------------------
 -- fromℕ
