@@ -130,7 +130,7 @@ toℕ-↑ʳ zero    i = refl
 toℕ-↑ʳ (suc n) i = cong suc (toℕ-↑ʳ n i)
 
 ↑ʳ-injective : ∀ {m} n (i j : Fin m) → n ↑ʳ i ≡ n ↑ʳ j → i ≡ j
-↑ʳ-injective zero i .i refl = refl
+↑ʳ-injective zero i i refl = refl
 ↑ʳ-injective (suc n) i j eq = ↑ʳ-injective n i j (suc-injective eq)
 
 toℕ<n : ∀ {n} (i : Fin n) → toℕ i ℕ.< n
