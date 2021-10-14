@@ -34,6 +34,14 @@ open Pair public
 
 toForeign : A × B → Pair A B
 toForeign (a , b) = (a , b)
+{-# WARNING_ON_USAGE toForeign
+"Warning: toForeign was deprecated in 2.0.
+Please use Foreign.Haskell.Coerce.coerce instead."
+#-}
 
 fromForeign : Pair A B → A × B
 fromForeign (a , b) = (a , b)
+{-# WARNING_ON_USAGE fromForeign
+"Warning: fromForeign was deprecated in 2.0.
+Please use Foreign.Haskell.Coerce.coerce instead."
+#-}

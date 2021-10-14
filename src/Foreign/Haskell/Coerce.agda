@@ -35,14 +35,16 @@ open import Level using (Level; _⊔_)
 open import Agda.Builtin.Nat
 open import Agda.Builtin.Int
 
-import IO.Primitive    as STD
-import Data.List.Base  as STD
-import Data.Maybe.Base as STD
-import Data.Product    as STD
-import Data.Sum.Base   as STD
+import IO.Primitive            as STD
+import Data.List.Base          as STD
+import Data.List.NonEmpty.Base as STD
+import Data.Maybe.Base         as STD
+import Data.Product            as STD
+import Data.Sum.Base           as STD
 
-import Foreign.Haskell.Pair   as FFI
-import Foreign.Haskell.Either as FFI
+import Foreign.Haskell.Pair          as FFI
+import Foreign.Haskell.Either        as FFI
+import Foreign.Haskell.List.NonEmpty as FFI
 
 private
   variable
@@ -121,6 +123,14 @@ instance
 
   either-fromFFI : Coercible₂ a b c d FFI.Either STD._⊎_
   either-fromFFI = TrustMe
+
+-- NonEmpty
+
+  nonEmpty-toFFI : Coercible₁ a b STD.List⁺ FFI.NonEmpty
+  nonEmpty-toFFI = TrustMe
+
+  nonEmpty-fromFFI : Coercible₁ a b FFI.NonEmpty STD.List⁺
+  nonEmpty-fromFFI = TrustMe
 
 -- We follow up with purely structural rules for builtin data types which
 -- already have known low-level representations.
