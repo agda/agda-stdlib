@@ -606,6 +606,11 @@ Other minor changes
   untilJust : IO (Maybe A) → IO A
   ```
 
+* Added new proofs in `Relation.Binary.PropositionalEquality.Properties`:
+  ```
+  subst-application′ : subst Q eq (f x p) ≡ f y (subst P eq p)
+  ```
+
 * Added new proofs in `Relation.Binary.HeterogeneousEquality`:
   ```
   subst₂-removable : subst₂ _∼_ eq₁ eq₂ p ≅ p

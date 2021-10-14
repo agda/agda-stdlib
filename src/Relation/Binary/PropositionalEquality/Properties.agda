@@ -120,6 +120,15 @@ subst-∘ : ∀ {x y : A} {P : Pred B p} {f : A → B}
           subst (P ∘ f) x≡y p ≡ subst P (cong f x≡y) p
 subst-∘ refl = refl
 
+-- Lemma 2.3.11 in the HoTT book, and `transport_map` in the UniMath
+-- library
+subst-application′ : ∀ {a b₁ b₂} {A : Set a}
+                     (B₁ : A → Set b₁) {B₂ : A → Set b₂}
+                     {x₁ x₂ : A} {y : B₁ x₁}
+                     (g : ∀ x → B₁ x → B₂ x) (eq : x₁ ≡ x₂) →
+                     subst B₂ eq (g x₁ y) ≡ g x₂ (subst B₁ eq y)
+subst-application′ _ _ refl = refl
+
 subst-application : ∀ {a₁ a₂ b₁ b₂} {A₁ : Set a₁} {A₂ : Set a₂}
                     (B₁ : A₁ → Set b₁) {B₂ : A₂ → Set b₂}
                     {f : A₂ → A₁} {x₁ x₂ : A₂} {y : B₁ (f x₁)}
