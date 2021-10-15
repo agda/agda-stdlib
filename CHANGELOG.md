@@ -541,6 +541,14 @@ Other minor changes
   ≤-decTotalOrder-≈   :  DecTotalOrder _ _ _
   ```
 
+* Added new proofs in `Data.Sum.Properties`:
+  ```
+  map-assocˡ : (f : A → C) (g : B → D) (h : C → F) →
+    map (map f g) h ∘ assocˡ ≗ assocˡ ∘ map f (map g h)
+  map-assocʳ : (f : A → C) (g : B → D) (h : C → F) →
+    map f (map g h) ∘ assocʳ ≗ assocʳ ∘ map (map f g) h
+  ```
+
 * Added new definitions in `Data.Vec.Base`:
   ```agda
   diagonal : ∀ {n} → Vec (Vec A n) n → Vec A n
