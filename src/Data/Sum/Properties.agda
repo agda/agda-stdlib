@@ -73,15 +73,15 @@ map₁₂-commute (inj₂ _) = refl
 
 map-assocˡ : (f : A → C) (g : B → D) (h : C → F) →
   map (map f g) h ∘ assocˡ ≗ assocˡ ∘ map f (map g h)
-map-assocˡ _ _ _ (inj₁ _)        = refl
-map-assocˡ _ _ _ (inj₂ (inj₁ _)) = refl
-map-assocˡ _ _ _ (inj₂ (inj₂ _)) = refl
+map-assocˡ _ _ _ (inj₁       x ) = refl
+map-assocˡ _ _ _ (inj₂ (inj₁ y)) = refl
+map-assocˡ _ _ _ (inj₂ (inj₂ z)) = refl
 
 map-assocʳ : (f : A → C) (g : B → D) (h : C → F) →
   map f (map g h) ∘ assocʳ ≗ assocʳ ∘ map (map f g) h
 map-assocʳ _ _ _ (inj₁ (inj₁ x)) = refl
 map-assocʳ _ _ _ (inj₁ (inj₂ y)) = refl
-map-assocʳ _ _ _ (inj₂ z)        = refl
+map-assocʳ _ _ _ (inj₂       z ) = refl
 
 [,]-cong : {f f′ : A → B} {g g′ : C → B} →
            f ≗ f′ → g ≗ g′ →
