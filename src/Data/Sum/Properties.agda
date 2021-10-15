@@ -81,7 +81,7 @@ map-assocʳ : (f : A → C) (g : B → D) (h : C → F) →
   map f (map g h) ∘ assocʳ ≗ assocʳ ∘ map (map f g) h
 map-assocʳ _ _ _ (inj₁ (inj₁ x)) = refl
 map-assocʳ _ _ _ (inj₁ (inj₂ y)) = refl
-map-assocʳ _ _ _ (inj₂ z) = refl
+map-assocʳ _ _ _ (inj₂ z)        = refl
 
 [,]-cong : {f f′ : A → B} {g g′ : C → B} →
            f ≗ f′ → g ≗ g′ →
