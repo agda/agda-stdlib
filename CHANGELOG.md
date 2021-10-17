@@ -609,6 +609,7 @@ Other minor changes
 * Added new proofs in `Relation.Binary.PropositionalEquality.Properties`:
   ```
   subst-application′ : subst Q eq (f x p) ≡ f y (subst P eq p)
+  sym-cong : sym (cong f p) ≡ cong f (sym p)
   ```
 
 * Added new proofs in `Relation.Binary.HeterogeneousEquality`:
