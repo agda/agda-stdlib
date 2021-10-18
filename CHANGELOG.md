@@ -606,6 +606,24 @@ Other minor changes
   untilJust : IO (Maybe A) → IO A
   ```
 
+* Added new operations in `Relation.Binary.Construct.Closure.Equivalence`:
+  ```
+  lift   : IsEquivalence _∼_ → _⟶_ ⇒ _∼_ → EqClosure _⟶_ ⇒ _∼_
+  return : _⟶_ ⇒ EqClosure _⟶_
+  join   : EqClosure (EqClosure _⟶_) ⇒ EqClosure _⟶_
+  _⋆     : _⟶₁_ ⇒ EqClosure _⟶₂_ → EqClosure _⟶₁_ ⇒ EqClosure _⟶₂_
+  _>>=_  : EqClosure _⟶₁_ a b → _⟶₁_ ⇒ EqClosure _⟶₂_ → EqClosure _⟶₂_ a b
+  ```
+
+* Added new operations in `Relation.Binary.Construct.Closure.Symmetric`:
+  ```
+  lift   : Symmetric _∼_ → _⟶_ ⇒ _∼_ → SymClosure _⟶_ ⇒ _∼_
+  return : _⟶_ ⇒ SymClosure _⟶_
+  join   : SymClosure (SymClosure _⟶_) ⇒ SymClosure _⟶_
+  _⋆     : _⟶₁_ ⇒ SymClosure _⟶₂_ → SymClosure _⟶₁_ ⇒ SymClosure _⟶₂_
+  _>>=_  : SymClosure _⟶₁_ a b → _⟶₁_ ⇒ SymClosure _⟶₂_ → SymClosure _⟶₂_ a b
+  ```
+
 * Added new proofs in `Relation.Binary.PropositionalEquality.Properties`:
   ```
   subst-application′ : subst Q eq (f x p) ≡ f y (subst P eq p)
