@@ -9,16 +9,17 @@
 
 module Data.Fin.Properties where
 
+open import Axiom.Extensionality.Propositional
 open import Category.Applicative using (RawApplicative)
 open import Category.Functor using (RawFunctor)
 open import Data.Bool.Base using (Bool; true; false; not; _∧_; _∨_)
 open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Fin.Base
 open import Data.Fin.Patterns
-open import Data.Nat.Base as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_; _^_)
 import Data.Nat.Properties as ℕₚ
 open import Data.Unit using (⊤; tt)
-open import Data.Product using (Σ-syntax; ∃; ∃₂; ∄; _×_; _,_; map; proj₁; uncurry; <_,_>)
+open import Data.Product using (Σ-syntax; ∃; ∃₂; ∄; _×_; _,_; map; proj₁; proj₂; uncurry; <_,_>)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]; [_,_]′)
 open import Data.Sum.Properties using ([,]-map-commute; [,]-∘-distr)
 open import Function.Base using (_∘_; id; _$_; flip)
@@ -28,7 +29,7 @@ open import Function.Equivalence using (_⇔_; equivalence)
 open import Function.Injection using (_↣_)
 open import Relation.Binary as B hiding (Decidable; _⇔_)
 open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; _≢_; refl; sym; trans; cong; subst; module ≡-Reasoning)
+  using (_≡_; _≢_; refl; sym; trans; cong; subst; _≗_; module ≡-Reasoning)
 open import Relation.Nullary.Decidable as Dec using (map′)
 open import Relation.Nullary.Reflects
 open import Relation.Nullary.Negation using (contradiction)
@@ -563,8 +564,61 @@ combine-remQuot {suc n} k i with splitAt k i | P.inspect (splitAt k) i
 
 ------------------------------------------------------------------------
 -- Bundles
+
 *↔× : ∀ {m n} → Fin (m ℕ.* n) ↔ (Fin m × Fin n)
 *↔× {m} {n} = mk↔′ (remQuot {m} n) (uncurry combine) (uncurry remQuot-combine) (combine-remQuot {m} n)
+
+------------------------------------------------------------------------
+-- fin→fun
+------------------------------------------------------------------------
+
+fin→fun→fin : ∀ {m n} → fun→fin {m}{n} ∘ fin→fun ≗ id
+fin→fun→fin {zero}  {n} zero = refl
+fin→fun→fin {suc m} {n} k =
+  begin
+    combine (fin→fun {suc m}{n} k zero) (fun→fin (λ i → fin→fun {suc m}{n} k (suc i)))
+  ≡⟨⟩
+    combine (proj₁ (remQuot {n} (n ^ m) k))
+      (fun→fin (fin→fun {m} (proj₂ (remQuot {n} (n ^ m) k))))
+  ≡⟨ cong (λ □ → combine (proj₁ (remQuot {n} (n ^ m) k)) □)
+       (fin→fun→fin {m} (proj₂ (remQuot {n} (n ^ m) k))) ⟩
+    combine (proj₁ (remQuot {n} (n ^ m) k)) (proj₂ (remQuot {n} (n ^ m) k))
+  ≡⟨⟩
+    uncurry combine (remQuot {n} (n ^ m) k)
+  ≡⟨ combine-remQuot {n = n} (n ^ m) k ⟩
+    k
+  ∎
+  where open ≡-Reasoning
+
+fun→fin→fun : ∀ {m n} (f : Fin m → Fin n) → fin→fun (fun→fin f) ≗ f
+fun→fin→fun {suc m} {n} f  zero   =
+  begin
+    proj₁ (remQuot (n ^ m) (combine (f zero) (fun→fin (f ∘ suc))))
+  ≡⟨ cong proj₁ (remQuot-combine _ _) ⟩
+    proj₁ (f zero , fun→fin (f ∘ suc))
+  ≡⟨⟩
+    f zero
+  ∎
+  where open ≡-Reasoning
+fun→fin→fun {suc m} {n} f (suc i) =
+  begin
+    fin→fun (proj₂ (remQuot {n} (n ^ m) (combine (f zero) (fun→fin (f ∘ suc))))) i
+  ≡⟨ cong (λ □ → fin→fun (proj₂ □) i) (remQuot-combine {n} _ _) ⟩
+    fin→fun (proj₂ (f zero , fun→fin (f ∘ suc))) i
+  ≡⟨⟩
+    fin→fun (fun→fin (f ∘ suc)) i
+  ≡⟨ fun→fin→fun (f ∘ suc) i ⟩
+    (f ∘ suc) i
+  ≡⟨⟩
+    f (suc i)
+  ∎
+  where open ≡-Reasoning
+
+------------------------------------------------------------------------
+-- Bundles
+
+^↔→ : ∀ {m n} → Extensionality _ _ → Fin (n ^ m) ↔ (Fin m → Fin n)
+^↔→ {m} {n} ext = mk↔′ fin→fun fun→fin (ext ∘ fun→fin→fun) (fin→fun→fin {m} {n})
 
 ------------------------------------------------------------------------
 -- lift

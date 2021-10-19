@@ -481,9 +481,18 @@ Other minor changes
   ```
   and their corresponding algebraic substructures.
 
-* Added a new `Inverse` bundle in `Data.Fin.Properties`:
+* Added a new functions in `Data.Fin`:
+  ```
+  fin→fun : ∀ {m n} → Fin (n ^ m) → (Fin m → Fin n)
+  fun→fin : ∀ {m n} → (Fin m → Fin n) → Fin (n ^ m)
+  ```
+
+* Added a new proofs and `Inverse` bundles in `Data.Fin.Properties`:
   ```
   1↔⊤ : Fin 1 ↔ ⊤
+  fin→fun→fin : ∀ {m n} → fun→fin {m}{n} ∘ fin→fun ≗ id
+  fun→fin→fun : ∀ {m n} (f : Fin m → Fin n) → fin→fun (fun→fin f) ≗ f
+  ^↔→ : ∀ {m n} → Extensionality _ _ → Fin (n ^ m) ↔ (Fin m → Fin n)
   ```
 
 * Added new proofs in `Data.Integer.Properties`:

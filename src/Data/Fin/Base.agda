@@ -13,9 +13,9 @@
 module Data.Fin.Base where
 
 open import Data.Empty using (⊥-elim)
-open import Data.Nat.Base as ℕ using (ℕ; zero; suc; z≤n; s≤s)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc; z≤n; s≤s; _^_)
 open import Data.Nat.Properties.Core using (≤-pred)
-open import Data.Product as Product using (_×_; _,_)
+open import Data.Product as Product using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (id; _∘_; _on_; flip)
 open import Level using (0ℓ)
@@ -156,6 +156,16 @@ remQuot k = Product.swap ∘ quotRem k
 combine : ∀ {n k} → Fin n → Fin k → Fin (n ℕ.* k)
 combine {suc n} {k} zero y = y ↑ˡ (n ℕ.* k)
 combine {suc n} {k} (suc x) y = k ↑ʳ (combine x y)
+
+-- Next in progression after splitAt and remQuot
+fin→fun : ∀ {m n} → Fin (n ^ m) → (Fin m → Fin n)
+fin→fun {suc m} {n} k  zero   = proj₁ (remQuot {n} (n ^ m) k)
+fin→fun {suc m} {n} k (suc i) = fin→fun {m} (proj₂ (remQuot {n} (n ^ m) k)) i
+
+-- inverse of above function
+fun→fin : ∀ {m n} → (Fin m → Fin n) → Fin (n ^ m)
+fun→fin {zero } f = zero
+fun→fin {suc m} f = combine (f zero) (fun→fin (f ∘ suc))
 
 ------------------------------------------------------------------------
 -- Operations
