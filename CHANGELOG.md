@@ -481,7 +481,7 @@ Other minor changes
   ```
   and their corresponding algebraic substructures.
 
-* Added a new functions in `Data.Fin`:
+* Added new functions in `Data.Fin`:
   ```
   fin→fun : ∀ {m n} → Fin (n ^ m) → (Fin m → Fin n)
   fun→fin : ∀ {m n} → (Fin m → Fin n) → Fin (n ^ m)
