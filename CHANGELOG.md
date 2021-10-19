@@ -487,7 +487,7 @@ Other minor changes
   fun→fin : ∀ {m n} → (Fin m → Fin n) → Fin (n ^ m)
   ```
 
-* Added a new proofs and `Inverse` bundles in `Data.Fin.Properties`:
+* Added new proofs and `Inverse` bundles in `Data.Fin.Properties`:
   ```
   1↔⊤ : Fin 1 ↔ ⊤
   fin→fun→fin : ∀ {m n} → fun→fin {m}{n} ∘ fin→fun ≗ id
