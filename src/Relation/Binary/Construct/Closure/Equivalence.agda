@@ -22,12 +22,13 @@ private
   variable
     a ℓ ℓ₁ ℓ₂ : Level
     A B : Set a
+    R S : Rel A ℓ
 
 ------------------------------------------------------------------------
 -- Definition
 
 EqClosure : {A : Set a} → Rel A ℓ → Rel A (a ⊔ ℓ)
-EqClosure _∼_ = Star (SymClosure _∼_)
+EqClosure R = Star (SymClosure R)
 
 ------------------------------------------------------------------------
 -- Properties
@@ -60,43 +61,39 @@ setoid _∼_ = record
 -- Operations
 
 -- A generalised variant of map which allows the index type to change.
-gmap : {P : Rel A ℓ₁} {Q : Rel B ℓ₂} →
-       (f : A → B) → P =[ f ]⇒ Q → EqClosure P =[ f ]⇒ EqClosure Q
-gmap {Q = Q} f = Star.gmap f ∘ SC.gmap {Q = Q} f
+gmap : (f : A → B) → R =[ f ]⇒ S → EqClosure R =[ f ]⇒ EqClosure S
+gmap f = Star.gmap f ∘ SC.gmap f
 
-map : ∀ {P : Rel A ℓ₁} {Q : Rel A ℓ₂} →
-      P ⇒ Q → EqClosure P ⇒ EqClosure Q
+map : R ⇒ S → EqClosure R ⇒ EqClosure S
 map = gmap id
 
-module _ {_⟶_ : Rel A ℓ₁} {_∼_ : Rel A ℓ₂} (∼-equiv : IsEquivalence _∼_) (⟶⇒∼ : _⟶_ ⇒ _∼_) where
-  open IsEquivalence ∼-equiv renaming (refl to ∼-refl; sym to ∼-sym; trans to ∼-trans)
+module _ (S-equiv : IsEquivalence S) (R⇒S : R ⇒ S) where
+  open IsEquivalence S-equiv renaming (refl to S-refl; sym to S-sym; trans to S-trans)
 
-  lift : EqClosure _⟶_ ⇒ _∼_
-  lift = Star.fold _∼_ (∼-trans ∘ SC.lift ∼-sym ⟶⇒∼) ∼-refl
+  lift : EqClosure R ⇒ S
+  lift = Star.fold S (S-trans ∘ SC.lift S-sym R⇒S) S-refl
 
-  fold : EqClosure _⟶_ ⇒ _∼_
+  fold : EqClosure R ⇒ S
   fold = lift
 
-module _ {_⟶_ : Rel A ℓ₁} {_∼_ : Rel B ℓ₂} (∼-equiv : IsEquivalence _∼_) (f : A → B) (⟶⇒∼ : _⟶_ =[ f ]⇒ _∼_) where
-  gfold : EqClosure _⟶_ =[ f ]⇒ _∼_
-  gfold = fold (On.isEquivalence f ∼-equiv) ⟶⇒∼
+module _ (S-equiv : IsEquivalence S) (f : A → B) (R⇒S : R =[ f ]⇒ S) where
+  gfold : EqClosure R =[ f ]⇒ S
+  gfold = fold (On.isEquivalence f S-equiv) R⇒S
 
-module _ {_⟶_ : Rel A ℓ} where
-  return : _⟶_ ⇒ EqClosure _⟶_
-  return = Star.return ∘ SC.return
+return : R ⇒ EqClosure R
+return = Star.return ∘ SC.return
 
-  join : EqClosure (EqClosure _⟶_) ⇒ EqClosure _⟶_
-  join = lift (isEquivalence _⟶_) id
+join : EqClosure (EqClosure R) ⇒ EqClosure R
+join = lift (isEquivalence _) id
 
-  concat = join
+concat = join
 
-module _ {_⟶₁_ : Rel A ℓ₁} {_⟶₂_ : Rel A ℓ₂} where
-  infix 10 _⋆
+infix 10 _⋆
 
-  _⋆ : _⟶₁_ ⇒ EqClosure _⟶₂_ → EqClosure _⟶₁_ ⇒ EqClosure _⟶₂_
-  _⋆ f m = join (map f m)
+_⋆ : R ⇒ EqClosure S → EqClosure R ⇒ EqClosure S
+_⋆ f m = join (map f m)
 
-  infixl 1 _>>=_
+infixl 1 _>>=_
 
-  _>>=_ : {a b : A} → EqClosure _⟶₁_ a b → _⟶₁_ ⇒ EqClosure _⟶₂_ → EqClosure _⟶₂_ a b
-  m >>= f = (f ⋆) m
+_>>=_ : {a b : A} → EqClosure R a b → R ⇒ EqClosure S → EqClosure S a b
+m >>= f = (f ⋆) m

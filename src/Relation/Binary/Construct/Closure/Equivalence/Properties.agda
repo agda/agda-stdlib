@@ -21,7 +21,7 @@ module _ {a ℓ} {A : Set a} {_⟶_ : Rel A ℓ} where
     _↔_  = EqClosure _⟶_
 
   a—↠b⇒a↔b : ∀ {a b} → a —↠ b → a ↔ b
-  a—↠b⇒a↔b = RTrans.map SymClosure.return
+  a—↠b⇒a↔b = RTrans.map SymClosure.fwd
 
   a—↠b⇒b↔a : ∀ {a b} → a —↠ b → b ↔ a
   a—↠b⇒b↔a = symmetric _ ∘′ a—↠b⇒a↔b

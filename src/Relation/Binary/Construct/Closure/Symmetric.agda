@@ -17,63 +17,60 @@ private
   variable
     a ℓ ℓ₁ ℓ₂ : Level
     A B : Set a
+    R S : Rel A ℓ
 
 ------------------------------------------------------------------------
 -- Definition
 
-data SymClosure {A : Set a} (_∼_ : Rel A ℓ) : Rel A (a ⊔ ℓ) where
-  fwd : {a b : A} → a ∼ b → SymClosure _∼_ a b
-  bwd : {a b : A} → b ∼ a → SymClosure _∼_ a b
+data SymClosure {A : Set a} (R : Rel A ℓ) : Rel A (a ⊔ ℓ) where
+  fwd : {a b : A} → R a b → SymClosure R a b
+  bwd : {a b : A} → R b a → SymClosure R a b
 
 ------------------------------------------------------------------------
 -- Properties
 
 -- Symmetric closures are symmetric.
-symmetric : (_∼_ : Rel A ℓ) → Symmetric (SymClosure _∼_)
-symmetric _ (fwd a∼b) = bwd a∼b
-symmetric _ (bwd b∼a) = fwd b∼a
+symmetric : (R : Rel A ℓ) → Symmetric (SymClosure R)
+symmetric _ (fwd aRb) = bwd aRb
+symmetric _ (bwd bRa) = fwd bRa
 
 ------------------------------------------------------------------------
 -- Operations
 
 -- A generalised variant of map which allows the index type to change.
-gmap : {P : Rel A ℓ₁} {Q : Rel B ℓ₂} (f : A → B) →
-       P =[ f ]⇒ Q → SymClosure P =[ f ]⇒ SymClosure Q
-gmap _ g (fwd a⟶b) = fwd (g a⟶b)
-gmap _ g (bwd a⟵b) = bwd (g a⟵b)
+gmap : (f : A → B) → R =[ f ]⇒ S → SymClosure R =[ f ]⇒ SymClosure S
+gmap _ g (fwd aRb) = fwd (g aRb)
+gmap _ g (bwd bRa) = bwd (g bRa)
 
-map : {P : Rel A ℓ₁} {Q : Rel A ℓ₂} →
-      P ⇒ Q → SymClosure P ⇒ SymClosure Q
+map : R ⇒ S → SymClosure R ⇒ SymClosure S
 map = gmap id
 
-module _ {_⟶_ : Rel A ℓ₁} {_∼_ : Rel A ℓ₂} (∼-symmetric : Symmetric _∼_) (⟶⇒∼ : _⟶_ ⇒ _∼_) where
-  lift : SymClosure _⟶_ ⇒ _∼_
-  lift (fwd a⟶b) = ⟶⇒∼ a⟶b
-  lift (bwd a⟵b) = ∼-symmetric (⟶⇒∼ a⟵b)
+module _ (S-symmetric : Symmetric S) (R⇒S : R ⇒ S) where
+  lift : SymClosure R ⇒ S
+  lift (fwd aRb) = R⇒S aRb
+  lift (bwd bRa) = S-symmetric (R⇒S bRa)
 
-  fold : SymClosure _⟶_ ⇒ _∼_
+  fold : SymClosure R ⇒ S
   fold = lift
 
-module _ {_⟶_ : Rel A ℓ₁} {_∼_ : Rel B ℓ₂} (∼-symmetric : Symmetric _∼_) (f : A → B) (⟶⇒∼ : _⟶_ =[ f ]⇒ _∼_) where
-  gfold : SymClosure _⟶_ =[ f ]⇒ _∼_
-  gfold = fold (On.symmetric f _∼_ ∼-symmetric) ⟶⇒∼
+module _ (S-symmetric : Symmetric S) (f : A → B) (R⇒S : R =[ f ]⇒ S) where
+  gfold : SymClosure R =[ f ]⇒ S
+  gfold = fold (On.symmetric f S S-symmetric) R⇒S
 
-module _ {_⟶_ : Rel A ℓ} where
-  return : _⟶_ ⇒ SymClosure _⟶_
-  return = fwd
+return : R ⇒ SymClosure R
+return = fwd
 
-  join : SymClosure (SymClosure _⟶_) ⇒ SymClosure _⟶_
-  join = lift (symmetric _⟶_) id
+join : SymClosure (SymClosure R) ⇒ SymClosure R
+join = lift (symmetric _) id
 
-  concat = join
+concat = join
 
-module _ {_⟶₁_ : Rel A ℓ₁} {_⟶₂_ : Rel A ℓ₂} where
-  infix 10 _⋆
+infix 10 _⋆
 
-  _⋆ : _⟶₁_ ⇒ SymClosure _⟶₂_ → SymClosure _⟶₁_ ⇒ SymClosure _⟶₂_
-  _⋆ f m = join (map f m)
+_⋆ : R ⇒ SymClosure S → SymClosure R ⇒ SymClosure S
+_⋆ f m = join (map f m)
 
-  infixl 1 _>>=_
+infixl 1 _>>=_
 
-  _>>=_ : {a b : A} → SymClosure _⟶₁_ a b → _⟶₁_ ⇒ SymClosure _⟶₂_ → SymClosure _⟶₂_ a b
-  m >>= f = (f ⋆) m
+_>>=_ : {a b : A} → SymClosure R a b → R ⇒ SymClosure S → SymClosure S a b
+m >>= f = (f ⋆) m
