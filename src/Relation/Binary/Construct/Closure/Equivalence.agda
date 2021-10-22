@@ -70,11 +70,8 @@ map = gmap id
 module _ (S-equiv : IsEquivalence S) (R⇒S : R ⇒ S) where
   open IsEquivalence S-equiv renaming (refl to S-refl; sym to S-sym; trans to S-trans)
 
-  lift : EqClosure R ⇒ S
-  lift = Star.fold S (S-trans ∘ SC.lift S-sym R⇒S) S-refl
-
   fold : EqClosure R ⇒ S
-  fold = lift
+  fold = Star.fold S (S-trans ∘ SC.fold S-sym R⇒S) S-refl
 
 module _ (S-equiv : IsEquivalence S) (f : A → B) (R⇒S : R =[ f ]⇒ S) where
   gfold : EqClosure R =[ f ]⇒ S
@@ -84,16 +81,9 @@ return : R ⇒ EqClosure R
 return = Star.return ∘ SC.return
 
 join : EqClosure (EqClosure R) ⇒ EqClosure R
-join = lift (isEquivalence _) id
-
-concat = join
+join = fold (isEquivalence _) id
 
 infix 10 _⋆
 
 _⋆ : R ⇒ EqClosure S → EqClosure R ⇒ EqClosure S
 _⋆ f m = join (map f m)
-
-infixl 1 _>>=_
-
-_>>=_ : {a b : A} → EqClosure R a b → R ⇒ EqClosure S → EqClosure S a b
-m >>= f = (f ⋆) m

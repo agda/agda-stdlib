@@ -46,12 +46,9 @@ map : R ⇒ S → SymClosure R ⇒ SymClosure S
 map = gmap id
 
 module _ (S-symmetric : Symmetric S) (R⇒S : R ⇒ S) where
-  lift : SymClosure R ⇒ S
-  lift (fwd aRb) = R⇒S aRb
-  lift (bwd bRa) = S-symmetric (R⇒S bRa)
-
   fold : SymClosure R ⇒ S
-  fold = lift
+  fold (fwd aRb) = R⇒S aRb
+  fold (bwd bRa) = S-symmetric (R⇒S bRa)
 
 module _ (S-symmetric : Symmetric S) (f : A → B) (R⇒S : R =[ f ]⇒ S) where
   gfold : SymClosure R =[ f ]⇒ S
@@ -61,16 +58,9 @@ return : R ⇒ SymClosure R
 return = fwd
 
 join : SymClosure (SymClosure R) ⇒ SymClosure R
-join = lift (symmetric _) id
-
-concat = join
+join = fold (symmetric _) id
 
 infix 10 _⋆
 
 _⋆ : R ⇒ SymClosure S → SymClosure R ⇒ SymClosure S
 _⋆ f m = join (map f m)
-
-infixl 1 _>>=_
-
-_>>=_ : {a b : A} → SymClosure R a b → R ⇒ SymClosure S → SymClosure S a b
-m >>= f = (f ⋆) m
