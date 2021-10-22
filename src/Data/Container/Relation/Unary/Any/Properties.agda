@@ -221,7 +221,7 @@ module _ {s₁ s₂ p₁ p₂} {C₁ : Container s₁ p₁} {C₂ : Container s�
           , P.subst (P ∘′ proj₂ xs) (P.sym (right-inverse-of position⊸m _)) p
 
     f∘t : f ∘ t ≗ id
-    f∘t (any (p₂ , p)) = P.cong any $ Inverse.to Σ-≡,≡↔≡ ⟨$⟩
+    f∘t (any (p₂ , p)) = P.cong any $ Σ-≡,≡→≡
       ( left-inverse-of position⊸m p₂
       , (P.subst (P ∘ proj₂ xs ∘ to position⊸m)
            (left-inverse-of position⊸m p₂)
@@ -263,7 +263,7 @@ module _ {s₁ s₂ p₁ p₂} {C₁ : Container s₁ p₁} {C₂ : Container s�
       )
 
     t∘f : t ∘ f ≗ id
-    t∘f (any (p₁ , p)) = P.cong any $ Inverse.to Σ-≡,≡↔≡ ⟨$⟩
+    t∘f (any (p₁ , p)) = P.cong any $ Σ-≡,≡→≡
       ( right-inverse-of position⊸m p₁
       , (P.subst (P ∘ proj₂ xs)
            (right-inverse-of position⊸m p₁)
