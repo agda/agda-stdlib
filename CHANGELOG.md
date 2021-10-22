@@ -484,6 +484,8 @@ Other minor changes
 * Added a new `Inverse` bundle in `Data.Fin.Properties`:
   ```
   1↔⊤ : Fin 1 ↔ ⊤
+  ↑ˡ-injective : ∀ {m} n (i j : Fin m) → i ↑ˡ n ≡ j ↑ˡ n → i ≡ j
+  ↑ʳ-injective : ∀ {m} n (i j : Fin m) → n ↑ʳ i ≡ n ↑ʳ j → i ≡ j
   ```
 
 * Added new proofs in `Data.Integer.Properties`:
