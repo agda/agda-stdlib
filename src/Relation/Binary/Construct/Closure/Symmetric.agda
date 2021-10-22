@@ -8,9 +8,10 @@
 
 module Relation.Binary.Construct.Closure.Symmetric where
 
-open import Function.Base using (id)
+open import Function.Base using (id; _on_)
 open import Level using (Level; _⊔_)
 open import Relation.Binary
+import Relation.Binary.Construct.On as On
 
 private
   variable
@@ -45,19 +46,24 @@ map : {P : Rel A ℓ₁} {Q : Rel A ℓ₂} →
       P ⇒ Q → SymClosure P ⇒ SymClosure Q
 map = gmap id
 
-module _ {_⟶_ : Rel A ℓ₁} (_∼_ : Rel A ℓ₂) (∼-symmetric : Symmetric _∼_) (⟶⇒∼ : _⟶_ ⇒ _∼_) where
+module _ {_⟶_ : Rel A ℓ₁} {_∼_ : Rel A ℓ₂} (∼-symmetric : Symmetric _∼_) (⟶⇒∼ : _⟶_ ⇒ _∼_) where
   lift : SymClosure _⟶_ ⇒ _∼_
   lift (fwd a⟶b) = ⟶⇒∼ a⟶b
   lift (bwd a⟵b) = ∼-symmetric (⟶⇒∼ a⟵b)
 
+  fold : SymClosure _⟶_ ⇒ _∼_
   fold = lift
+
+module _ {_⟶_ : Rel A ℓ₁} {_∼_ : Rel B ℓ₂} (∼-symmetric : Symmetric _∼_) (f : A → B) (⟶⇒∼ : _⟶_ =[ f ]⇒ _∼_) where
+  gfold : SymClosure _⟶_ =[ f ]⇒ _∼_
+  gfold = fold (On.symmetric f _∼_ ∼-symmetric) ⟶⇒∼
 
 module _ {_⟶_ : Rel A ℓ} where
   return : _⟶_ ⇒ SymClosure _⟶_
   return = fwd
 
   join : SymClosure (SymClosure _⟶_) ⇒ SymClosure _⟶_
-  join = lift (SymClosure _⟶_) (symmetric _⟶_) id
+  join = lift (symmetric _⟶_) id
 
   concat = join
 

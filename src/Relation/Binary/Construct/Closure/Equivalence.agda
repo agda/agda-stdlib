@@ -9,13 +9,14 @@
 
 module Relation.Binary.Construct.Closure.Equivalence where
 
-open import Function.Base using (flip; id; _∘_)
+open import Function.Base using (flip; id; _∘_; _on_)
 open import Level using (Level; _⊔_)
 open import Relation.Binary
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive as Star
   using (Star; ε; _◅◅_; reverse)
 open import Relation.Binary.Construct.Closure.Symmetric as SC
   using (SymClosure)
+import Relation.Binary.Construct.On as On
 
 private
   variable
@@ -67,20 +68,25 @@ map : ∀ {P : Rel A ℓ₁} {Q : Rel A ℓ₂} →
       P ⇒ Q → EqClosure P ⇒ EqClosure Q
 map = gmap id
 
-module _ {_⟶_ : Rel A ℓ₁} (_∼_ : Rel A ℓ₂) (∼-equiv : IsEquivalence _∼_) (⟶⇒∼ : _⟶_ ⇒ _∼_) where
+module _ {_⟶_ : Rel A ℓ₁} {_∼_ : Rel A ℓ₂} (∼-equiv : IsEquivalence _∼_) (⟶⇒∼ : _⟶_ ⇒ _∼_) where
   open IsEquivalence ∼-equiv renaming (refl to ∼-refl; sym to ∼-sym; trans to ∼-trans)
 
   lift : EqClosure _⟶_ ⇒ _∼_
-  lift = Star.fold _∼_ (∼-trans ∘ SC.lift _∼_ ∼-sym ⟶⇒∼) ∼-refl
+  lift = Star.fold _∼_ (∼-trans ∘ SC.lift ∼-sym ⟶⇒∼) ∼-refl
 
+  fold : EqClosure _⟶_ ⇒ _∼_
   fold = lift
+
+module _ {_⟶_ : Rel A ℓ₁} {_∼_ : Rel B ℓ₂} (∼-equiv : IsEquivalence _∼_) (f : A → B) (⟶⇒∼ : _⟶_ =[ f ]⇒ _∼_) where
+  gfold : EqClosure _⟶_ =[ f ]⇒ _∼_
+  gfold = fold (On.isEquivalence f ∼-equiv) ⟶⇒∼
 
 module _ {_⟶_ : Rel A ℓ} where
   return : _⟶_ ⇒ EqClosure _⟶_
   return = Star.return ∘ SC.return
 
   join : EqClosure (EqClosure _⟶_) ⇒ EqClosure _⟶_
-  join = lift (EqClosure _⟶_) (isEquivalence _⟶_) id
+  join = lift (isEquivalence _⟶_) id
 
   concat = join
 

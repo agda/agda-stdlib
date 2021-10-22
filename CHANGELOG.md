@@ -608,7 +608,8 @@ Other minor changes
 
 * Added new operations in `Relation.Binary.Construct.Closure.Equivalence`:
   ```
-  lift   : IsEquivalence _∼_ → _⟶_ ⇒ _∼_ → EqClosure _⟶_ ⇒ _∼_
+  fold   : IsEquivalence _∼_ → _⟶_ ⇒ _∼_ → EqClosure _⟶_ ⇒ _∼_
+  gfold  : IsEquivalence _∼_ → _⟶_ =[ f ]⇒ _∼_ → EqClosure _⟶_ =[ f ]⇒ _∼_
   return : _⟶_ ⇒ EqClosure _⟶_
   join   : EqClosure (EqClosure _⟶_) ⇒ EqClosure _⟶_
   _⋆     : _⟶₁_ ⇒ EqClosure _⟶₂_ → EqClosure _⟶₁_ ⇒ EqClosure _⟶₂_
@@ -617,7 +618,8 @@ Other minor changes
 
 * Added new operations in `Relation.Binary.Construct.Closure.Symmetric`:
   ```
-  lift   : Symmetric _∼_ → _⟶_ ⇒ _∼_ → SymClosure _⟶_ ⇒ _∼_
+  fold   : Symmetric _∼_ → _⟶_ ⇒ _∼_ → SymClosure _⟶_ ⇒ _∼_
+  gfold  : Symmetric _∼_ → _⟶_ =[ f ]⇒ _∼_ → SymClosure _⟶_ =[ f ]⇒ _∼_
   return : _⟶_ ⇒ SymClosure _⟶_
   join   : SymClosure (SymClosure _⟶_) ⇒ SymClosure _⟶_
   _⋆     : _⟶₁_ ⇒ SymClosure _⟶₂_ → SymClosure _⟶₁_ ⇒ SymClosure _⟶₂_
