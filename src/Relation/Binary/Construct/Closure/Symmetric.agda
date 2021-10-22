@@ -22,9 +22,9 @@ private
 ------------------------------------------------------------------------
 -- Definition
 
-data SymClosure {A : Set a} (R : Rel A ℓ) : Rel A (a ⊔ ℓ) where
-  fwd : {a b : A} → R a b → SymClosure R a b
-  bwd : {a b : A} → R b a → SymClosure R a b
+data SymClosure {A : Set a} (R : Rel A ℓ) (a b : A) : Set ℓ where
+  fwd : R a b → SymClosure R a b
+  bwd : R b a → SymClosure R a b
 
 ------------------------------------------------------------------------
 -- Properties
