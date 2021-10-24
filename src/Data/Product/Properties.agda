@@ -67,33 +67,38 @@ swap-involutive _ = refl
 ------------------------------------------------------------------------
 -- Equality between pairs can be expressed as a pair of equalities
 
-Σ-≡,≡↔≡ : {A : Set a} {B : A → Set b} {p₁@(a₁ , b₁) p₂@(a₂ , b₂) : Σ A B} →
-          (∃ λ (p : a₁ ≡ a₂) → subst B p b₁ ≡ b₂) ↔ (p₁ ≡ p₂)
-Σ-≡,≡↔≡ {A = A} {B = B} = mk↔ {f = to} (right-inverse-of , left-inverse-of)
-  where
-  to : {p₁@(a₁ , b₁) p₂@(a₂ , b₂) : Σ A B} →
-       Σ (a₁ ≡ a₂) (λ p → subst B p b₁ ≡ b₂) → p₁ ≡ p₂
-  to (refl , refl) = refl
+module _ {A : Set a} {B : A → Set b} {p₁@(a₁ , b₁) p₂@(a₂ , b₂) : Σ A B} where
+  Σ-≡,≡→≡ : Σ (a₁ ≡ a₂) (λ p → subst B p b₁ ≡ b₂) → p₁ ≡ p₂
+  Σ-≡,≡→≡ (refl , refl) = refl
 
-  from : {p₁@(a₁ , b₁) p₂@(a₂ , b₂) : Σ A B} →
-         p₁ ≡ p₂ → Σ (a₁ ≡ a₂) (λ p → subst B p b₁ ≡ b₂)
-  from refl = refl , refl
+  Σ-≡,≡←≡ : p₁ ≡ p₂ → Σ (a₁ ≡ a₂) (λ p → subst B p b₁ ≡ b₂)
+  Σ-≡,≡←≡ refl = refl , refl
 
-  left-inverse-of : {p₁@(a₁ , b₁) p₂@(a₂ , b₂) : Σ A B} →
-                    (p : Σ (a₁ ≡ a₂) (λ x → subst B x b₁ ≡ b₂)) →
-                    from (to p) ≡ p
-  left-inverse-of (refl , refl) = refl
+  private
+    left-inverse-of : (p : Σ (a₁ ≡ a₂) (λ x → subst B x b₁ ≡ b₂)) →
+                      Σ-≡,≡←≡ (Σ-≡,≡→≡ p) ≡ p
+    left-inverse-of (refl , refl) = refl
 
-  right-inverse-of : {p₁ p₂ : Σ A B} (p : p₁ ≡ p₂) → to (from p) ≡ p
-  right-inverse-of refl = refl
+    right-inverse-of : (p : p₁ ≡ p₂) → Σ-≡,≡→≡ (Σ-≡,≡←≡ p) ≡ p
+    right-inverse-of refl = refl
+
+  Σ-≡,≡↔≡ : (∃ λ (p : a₁ ≡ a₂) → subst B p b₁ ≡ b₂) ↔ p₁ ≡ p₂
+  Σ-≡,≡↔≡ = mk↔′ Σ-≡,≡→≡ Σ-≡,≡←≡ right-inverse-of left-inverse-of
 
 -- the non-dependent case. Proofs are exactly as above, and straightforward.
-×-≡,≡↔≡ : {p₁@(a₁ , b₁) p₂@(a₂ , b₂) : A × B} → (a₁ ≡ a₂ × b₁ ≡ b₂) ↔ p₁ ≡ p₂
-×-≡,≡↔≡ = mk↔′
-  (λ {(refl , refl) → refl})
-  (λ { refl         → refl , refl})
-  (λ {refl → refl})
-  (λ {(refl , refl) → refl})
+module _ {p₁@(a₁ , b₁) p₂@(a₂ , b₂) : A × B} where
+  ×-≡,≡→≡ : (a₁ ≡ a₂ × b₁ ≡ b₂) → p₁ ≡ p₂
+  ×-≡,≡→≡ (refl , refl) = refl
+
+  ×-≡,≡←≡ : p₁ ≡ p₂ → (a₁ ≡ a₂ × b₁ ≡ b₂)
+  ×-≡,≡←≡ refl = refl , refl
+
+  ×-≡,≡↔≡ : (a₁ ≡ a₂ × b₁ ≡ b₂) ↔ p₁ ≡ p₂
+  ×-≡,≡↔≡ = mk↔′
+    ×-≡,≡→≡
+    ×-≡,≡←≡
+    (λ { refl          → refl        })
+    (λ { (refl , refl) → refl        })
 
 ------------------------------------------------------------------------
 -- The order of ∃₂ can be swapped

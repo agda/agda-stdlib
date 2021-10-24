@@ -116,6 +116,11 @@ toℕ-↑ˡ : ∀ {m} (i : Fin m) n → toℕ (i ↑ˡ n) ≡ toℕ i
 toℕ-↑ˡ zero    n = refl
 toℕ-↑ˡ (suc i) n = cong suc (toℕ-↑ˡ i n)
 
+↑ˡ-injective : ∀ {m} n (i j : Fin m) → i ↑ˡ n ≡ j ↑ˡ n → i ≡ j
+↑ˡ-injective n zero zero refl = refl
+↑ˡ-injective n (suc i) (suc j) eq =
+  cong suc (↑ˡ-injective n i j (suc-injective eq))
+
 ------------------------------------------------------------------------
 -- toℕ-↑ʳ: n ↑ʳ "i" = "n + i" in Fin (n + m)
 ------------------------------------------------------------------------
@@ -123,6 +128,10 @@ toℕ-↑ˡ (suc i) n = cong suc (toℕ-↑ˡ i n)
 toℕ-↑ʳ : ∀ {m} n (i : Fin m) → toℕ (n ↑ʳ i) ≡ n ℕ.+ toℕ i
 toℕ-↑ʳ zero    i = refl
 toℕ-↑ʳ (suc n) i = cong suc (toℕ-↑ʳ n i)
+
+↑ʳ-injective : ∀ {m} n (i j : Fin m) → n ↑ʳ i ≡ n ↑ʳ j → i ≡ j
+↑ʳ-injective zero i i refl = refl
+↑ʳ-injective (suc n) i j eq = ↑ʳ-injective n i j (suc-injective eq)
 
 toℕ<n : ∀ {n} (i : Fin n) → toℕ i ℕ.< n
 toℕ<n zero    = s≤s z≤n

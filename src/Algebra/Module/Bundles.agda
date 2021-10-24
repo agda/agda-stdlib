@@ -104,7 +104,7 @@ record LeftModule (ring : Ring r ℓr) m ℓm : Set (r ⊔ ℓr ⊔ suc (m ⊔ �
   +ᴹ-abelianGroup = record { isAbelianGroup = +ᴹ-isAbelianGroup }
 
   open AbelianGroup +ᴹ-abelianGroup public
-    using () renaming (group to +ᴹ-group)
+    using () renaming (group to +ᴹ-group; rawGroup to +ᴹ-rawGroup)
 
 ------------------------------------------------------------------------
 -- Right modules
@@ -172,7 +172,7 @@ record RightModule (ring : Ring r ℓr) m ℓm : Set (r ⊔ ℓr ⊔ suc (m ⊔ 
   +ᴹ-abelianGroup = record { isAbelianGroup = +ᴹ-isAbelianGroup }
 
   open AbelianGroup +ᴹ-abelianGroup public
-    using () renaming (group to +ᴹ-group)
+    using () renaming (group to +ᴹ-group; rawGroup to +ᴹ-rawGroup)
 
 ------------------------------------------------------------------------
 -- Bimodules
@@ -239,7 +239,7 @@ record Bimodule (R-ring : Ring r ℓr) (S-ring : Ring s ℓs) m ℓm
 
   open LeftModule leftModule public
     using ( +ᴹ-abelianGroup; +ᴹ-commutativeMonoid; +ᴹ-group; +ᴹ-monoid
-          ; +ᴹ-semigroup; +ᴹ-magma; +ᴹ-rawMagma; +ᴹ-rawMonoid)
+          ; +ᴹ-semigroup; +ᴹ-magma; +ᴹ-rawMagma; +ᴹ-rawMonoid; +ᴹ-rawGroup)
 
   bisemimodule : Bisemimodule R.semiring S.semiring m ℓm
   bisemimodule = record { isBisemimodule = isBisemimodule }
@@ -326,7 +326,7 @@ record Module (commutativeRing : CommutativeRing r ℓr) m ℓm
   open Bimodule bimodule public
     using ( leftModule; rightModule; leftSemimodule; rightSemimodule
           ; +ᴹ-abelianGroup; +ᴹ-group; +ᴹ-commutativeMonoid; +ᴹ-monoid
-          ; +ᴹ-semigroup; +ᴹ-magma ; +ᴹ-rawMonoid; +ᴹ-rawMagma)
+          ; +ᴹ-semigroup; +ᴹ-magma ; +ᴹ-rawMonoid; +ᴹ-rawMagma; +ᴹ-rawGroup)
 
   semimodule : Semimodule commutativeSemiring m ℓm
   semimodule = record { isSemimodule = isSemimodule }

@@ -367,6 +367,14 @@ two new, hopefully more memorable, names `↑ˡ` `↑ʳ` for the 'left', resp. '
 New modules
 -----------
 
+* Morphisms between module-like algebraic structures:
+  ```
+  Algebra.Module.Morphism.Construct.Composition
+  Algebra.Module.Morphism.Construct.Identity
+  Algebra.Module.Morphism.Definitions
+  Algebra.Module.Morphism.Structures
+  ```
+
 * Identity morphisms and composition of morphisms between algebraic structures:
   ```
   Algebra.Morphism.Construct.Composition
@@ -484,6 +492,8 @@ Other minor changes
 * Added a new `Inverse` bundle in `Data.Fin.Properties`:
   ```
   1↔⊤ : Fin 1 ↔ ⊤
+  ↑ˡ-injective : ∀ {m} n (i j : Fin m) → i ↑ˡ n ≡ j ↑ˡ n → i ≡ j
+  ↑ʳ-injective : ∀ {m} n (i j : Fin m) → n ↑ʳ i ≡ n ↑ʳ j → i ≡ j
   ```
 
 * Added new proofs in `Data.Integer.Properties`:
@@ -535,10 +545,27 @@ Other minor changes
   map-cong : f ≗ g → h ≗ i → map f h ≗ map g i
   ```
 
+* Added new definitions to `Data.Product.Properties` and
+  `Function.Related.TypeIsomorphisms` for convenience:
+  ```
+  Σ-≡,≡→≡ : (∃ λ (p : proj₁ p₁ ≡ proj₁ p₂) → subst B p (proj₂ p₁) ≡ proj₂ p₂) → p₁ ≡ p₂
+  Σ-≡,≡←≡ : p₁ ≡ p₂ → (∃ λ (p : proj₁ p₁ ≡ proj₁ p₂) → subst B p (proj₂ p₁) ≡ proj₂ p₂)
+  ×-≡,≡→≡ : (proj₁ p₁ ≡ proj₁ p₂ × proj₂ p₁ ≡ proj₂ p₂) → p₁ ≡ p₂
+  ×-≡,≡←≡ : p₁ ≡ p₂ → (proj₁ p₁ ≡ proj₁ p₂ × proj₂ p₁ ≡ proj₂ p₂)
+  ```
+
 * Added new proofs in `Data.String.Properties`:
   ```
   ≤-isDecTotalOrder-≈ : IsDecTotalOrder _≈_ _≤_
   ≤-decTotalOrder-≈   :  DecTotalOrder _ _ _
+  ```
+
+* Added new proofs in `Data.Sum.Properties`:
+  ```
+  map-assocˡ : (f : A → C) (g : B → D) (h : C → F) →
+    map (map f g) h ∘ assocˡ ≗ assocˡ ∘ map f (map g h)
+  map-assocʳ : (f : A → C) (g : B → D) (h : C → F) →
+    map f (map g h) ∘ assocʳ ≗ assocʳ ∘ map (map f g) h
   ```
 
 * Added new definitions in `Data.Vec.Base`:
