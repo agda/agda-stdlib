@@ -152,6 +152,12 @@ quotRem {suc n} k i with splitAt k i
 remQuot : ∀ {n} k → Fin (n ℕ.* k) → Fin n × Fin k
 remQuot k = Product.swap ∘ quotRem k
 
+quot : ∀ {n} k → Fin (n ℕ.* k) → Fin n
+quot {n} k = proj₁ ∘ remQuot {n} k
+
+rem : ∀ {n} k → Fin (n ℕ.* k) → Fin k
+rem {n} k = proj₂ ∘ remQuot {n} k
+
 -- inverse of remQuot
 combine : ∀ {n k} → Fin n → Fin k → Fin (n ℕ.* k)
 combine {suc n} {k} zero y = y ↑ˡ (n ℕ.* k)

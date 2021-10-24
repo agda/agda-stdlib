@@ -481,10 +481,12 @@ Other minor changes
   ```
   and their corresponding algebraic substructures.
 
-* Added new functions in `Data.Fin`:
+* Added new functions in `Data.Fin.Base`:
   ```
   fin→fun : ∀ {m n} → Fin (n ^ m) → (Fin m → Fin n)
   fun→fin : ∀ {m n} → (Fin m → Fin n) → Fin (n ^ m)
+  quot : ∀ {n} k → Fin (n * k) → Fin n
+  rem  : ∀ {n} k → Fin (n * k) → Fin k
   ```
 
 * Added new proofs and `Inverse` bundles in `Data.Fin.Properties`:

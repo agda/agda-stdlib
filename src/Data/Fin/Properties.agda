@@ -576,13 +576,13 @@ fin→fun→fin : ∀ {m n} → fun→fin {m}{n} ∘ fin→fun ≗ id
 fin→fun→fin {zero}  {n} zero = refl
 fin→fun→fin {suc m} {n} k =
   begin
-    combine (fin→fun {suc m}{n} k zero) (fun→fin (λ i → fin→fun {suc m}{n} k (suc i)))
+    combine (fin→fun {suc m} {n} k zero) (fun→fin (λ i → fin→fun {suc m}{n} k (suc i)))
   ≡⟨⟩
-    combine (proj₁ (remQuot {n} (n ^ m) k))
-      (fun→fin (fin→fun {m} (proj₂ (remQuot {n} (n ^ m) k))))
-  ≡⟨ cong (λ □ → combine (proj₁ (remQuot {n} (n ^ m) k)) □)
-       (fin→fun→fin {m} (proj₂ (remQuot {n} (n ^ m) k))) ⟩
-    combine (proj₁ (remQuot {n} (n ^ m) k)) (proj₂ (remQuot {n} (n ^ m) k))
+    combine (quot {n} (n ^ m) k)
+      (fun→fin (fin→fun {m} (rem {n} (n ^ m) k)))
+  ≡⟨ cong (λ ● → combine (quot {n} (n ^ m) k) ●)
+       (fin→fun→fin {m} (rem {n} (n ^ m) k)) ⟩
+    combine (quot {n} (n ^ m) k) (rem {n} (n ^ m) k)
   ≡⟨⟩
     uncurry combine (remQuot {n} (n ^ m) k)
   ≡⟨ combine-remQuot {n = n} (n ^ m) k ⟩
@@ -593,7 +593,7 @@ fin→fun→fin {suc m} {n} k =
 fun→fin→fun : ∀ {m n} (f : Fin m → Fin n) → fin→fun (fun→fin f) ≗ f
 fun→fin→fun {suc m} {n} f  zero   =
   begin
-    proj₁ (remQuot (n ^ m) (combine (f zero) (fun→fin (f ∘ suc))))
+    quot (n ^ m) (combine (f zero) (fun→fin (f ∘ suc)))
   ≡⟨ cong proj₁ (remQuot-combine _ _) ⟩
     proj₁ (f zero , fun→fin (f ∘ suc))
   ≡⟨⟩
@@ -602,8 +602,8 @@ fun→fin→fun {suc m} {n} f  zero   =
   where open ≡-Reasoning
 fun→fin→fun {suc m} {n} f (suc i) =
   begin
-    fin→fun (proj₂ (remQuot {n} (n ^ m) (combine (f zero) (fun→fin (f ∘ suc))))) i
-  ≡⟨ cong (λ □ → fin→fun (proj₂ □) i) (remQuot-combine {n} _ _) ⟩
+    fin→fun (rem {n} (n ^ m) (combine (f zero) (fun→fin (f ∘ suc)))) i
+  ≡⟨ cong (λ ● → fin→fun (proj₂ ●) i) (remQuot-combine {n} _ _) ⟩
     fin→fun (proj₂ (f zero , fun→fin (f ∘ suc))) i
   ≡⟨⟩
     fin→fun (fun→fin (f ∘ suc)) i
