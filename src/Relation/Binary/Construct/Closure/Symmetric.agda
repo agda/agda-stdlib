@@ -9,7 +9,7 @@
 module Relation.Binary.Construct.Closure.Symmetric where
 
 open import Function.Base using (id; _on_)
-open import Level using (Level; _⊔_)
+open import Level using (Level)
 open import Relation.Binary
 import Relation.Binary.Construct.On as On
 
