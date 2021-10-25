@@ -45,14 +45,12 @@ gmap _ g (bwd bRa) = bwd (g bRa)
 map : R ⇒ S → SymClosure R ⇒ SymClosure S
 map = gmap id
 
-module _ (S-symmetric : Symmetric S) (R⇒S : R ⇒ S) where
-  fold : SymClosure R ⇒ S
-  fold (fwd aRb) = R⇒S aRb
-  fold (bwd bRa) = S-symmetric (R⇒S bRa)
+fold : Symmetric S → R ⇒ S → SymClosure R ⇒ S
+fold S-sym R⇒S (fwd aRb) = R⇒S aRb
+fold S-sym R⇒S (bwd bRa) = S-sym (R⇒S bRa)
 
-module _ (S-symmetric : Symmetric S) (f : A → B) (R⇒S : R =[ f ]⇒ S) where
-  gfold : SymClosure R =[ f ]⇒ S
-  gfold = fold (On.symmetric f S S-symmetric) R⇒S
+gfold : Symmetric S → (f : A → B) → R =[ f ]⇒ S → SymClosure R =[ f ]⇒ S
+gfold {S = S} S-sym f R⇒S = fold (On.symmetric f S S-sym) R⇒S
 
 return : R ⇒ SymClosure R
 return = fwd

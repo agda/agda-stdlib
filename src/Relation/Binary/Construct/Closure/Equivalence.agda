@@ -67,15 +67,12 @@ gmap f = Star.gmap f ∘ SC.gmap f
 map : R ⇒ S → EqClosure R ⇒ EqClosure S
 map = gmap id
 
-module _ (S-equiv : IsEquivalence S) (R⇒S : R ⇒ S) where
-  open IsEquivalence S-equiv renaming (refl to S-refl; sym to S-sym; trans to S-trans)
+fold : IsEquivalence S → R ⇒ S → EqClosure R ⇒ S
+fold S-equiv R⇒S = Star.fold _ (trans ∘ SC.fold sym R⇒S) refl
+  where open IsEquivalence S-equiv
 
-  fold : EqClosure R ⇒ S
-  fold = Star.fold S (S-trans ∘ SC.fold S-sym R⇒S) S-refl
-
-module _ (S-equiv : IsEquivalence S) (f : A → B) (R⇒S : R =[ f ]⇒ S) where
-  gfold : EqClosure R =[ f ]⇒ S
-  gfold = fold (On.isEquivalence f S-equiv) R⇒S
+gfold : IsEquivalence S → (f : A → B) → R =[ f ]⇒ S → EqClosure R =[ f ]⇒ S
+gfold S-equiv f R⇒S = fold (On.isEquivalence f S-equiv) R⇒S
 
 return : R ⇒ EqClosure R
 return = Star.return ∘ SC.return
