@@ -85,6 +85,9 @@ cong-∘ : ∀ {x y : A} {f : B → C} {g : A → B} (p : x ≡ y) →
          cong (f ∘ g) p ≡ cong f (cong g p)
 cong-∘ refl = refl
 
+sym-cong : ∀ {x y : A} {f : A → B} (p : x ≡ y) → sym (cong f p) ≡ cong f (sym p)
+sym-cong refl = refl
+
 trans-cong : ∀ {x y z : A} {f : A → B} (p : x ≡ y) {q : y ≡ z} →
              trans (cong f p) (cong f q) ≡ cong f (trans p q)
 trans-cong refl = refl
