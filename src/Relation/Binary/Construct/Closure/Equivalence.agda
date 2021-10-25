@@ -60,7 +60,7 @@ setoid _∼_ = record
 ------------------------------------------------------------------------
 -- Operations
 
--- A generalised variant of map which allows the index type to change.
+-- A generalised variant of `map` which allows the index type to change.
 gmap : (f : A → B) → R =[ f ]⇒ S → EqClosure R =[ f ]⇒ EqClosure S
 gmap f = Star.gmap f ∘ SC.gmap f
 
@@ -71,12 +71,15 @@ fold : IsEquivalence S → R ⇒ S → EqClosure R ⇒ S
 fold S-equiv R⇒S = Star.fold _ (trans ∘ SC.fold sym R⇒S) refl
   where open IsEquivalence S-equiv
 
+-- A generalised variant of `fold`.
 gfold : IsEquivalence S → (f : A → B) → R =[ f ]⇒ S → EqClosure R =[ f ]⇒ S
 gfold S-equiv f R⇒S = fold (On.isEquivalence f S-equiv) R⇒S
 
+-- `return` could also be called `singleton`.
 return : R ⇒ EqClosure R
 return = Star.return ∘ SC.return
 
+-- `join` could also be called `concat`.
 join : EqClosure (EqClosure R) ⇒ EqClosure R
 join = fold (isEquivalence _) id
 

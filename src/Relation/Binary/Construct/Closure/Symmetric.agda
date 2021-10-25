@@ -37,7 +37,7 @@ symmetric _ (bwd bRa) = fwd bRa
 ------------------------------------------------------------------------
 -- Operations
 
--- A generalised variant of map which allows the index type to change.
+-- A generalised variant of `map` which allows the index type to change.
 gmap : (f : A → B) → R =[ f ]⇒ S → SymClosure R =[ f ]⇒ SymClosure S
 gmap _ g (fwd aRb) = fwd (g aRb)
 gmap _ g (bwd bRa) = bwd (g bRa)
@@ -49,12 +49,15 @@ fold : Symmetric S → R ⇒ S → SymClosure R ⇒ S
 fold S-sym R⇒S (fwd aRb) = R⇒S aRb
 fold S-sym R⇒S (bwd bRa) = S-sym (R⇒S bRa)
 
+-- A generalised variant of `fold`.
 gfold : Symmetric S → (f : A → B) → R =[ f ]⇒ S → SymClosure R =[ f ]⇒ S
 gfold {S = S} S-sym f R⇒S = fold (On.symmetric f S S-sym) R⇒S
 
+-- `return` could also be called `singleton`.
 return : R ⇒ SymClosure R
 return = fwd
 
+-- `join` could also be called `concat`.
 join : SymClosure (SymClosure R) ⇒ SymClosure R
 join = fold (symmetric _) id
 
