@@ -195,6 +195,13 @@ Non-backwards compatible changes
   properties about the orderings themselves the second index must be provided
   explicitly.
 
+* The operation `SymClosure` on relations in
+  `Relation.Binary.Construct.Closure.Symmetric` has been reimplemented
+  as a data type `SymClosure _⟶_ a b` that is parameterized by the
+  input relation `_⟶_` (as well as the elements `a` and `b` of the
+  domain) so that `_⟶_` can be inferred, which it could not from the
+  previous implementation using the sum type `a ⟶ b ⊎ b ⟶ a`.
+
   ### Creation of `Relation.Binary.Lattice` hierarchy
   * In order to improve modularity Relation.Binary.Lattice is split out into Relation.Binary.Lattice.(Definitions/Structures/Bundles).
   ###
@@ -631,6 +638,24 @@ Other minor changes
 
   whenJust  : Maybe A → (A → IO {a} ⊤) → IO ⊤
   untilJust : IO (Maybe A) → IO A
+  ```
+
+* Added new operations in `Relation.Binary.Construct.Closure.Equivalence`:
+  ```
+  fold   : IsEquivalence _∼_ → _⟶_ ⇒ _∼_ → EqClosure _⟶_ ⇒ _∼_
+  gfold  : IsEquivalence _∼_ → _⟶_ =[ f ]⇒ _∼_ → EqClosure _⟶_ =[ f ]⇒ _∼_
+  return : _⟶_ ⇒ EqClosure _⟶_
+  join   : EqClosure (EqClosure _⟶_) ⇒ EqClosure _⟶_
+  _⋆     : _⟶₁_ ⇒ EqClosure _⟶₂_ → EqClosure _⟶₁_ ⇒ EqClosure _⟶₂_
+  ```
+
+* Added new operations in `Relation.Binary.Construct.Closure.Symmetric`:
+  ```
+  fold   : Symmetric _∼_ → _⟶_ ⇒ _∼_ → SymClosure _⟶_ ⇒ _∼_
+  gfold  : Symmetric _∼_ → _⟶_ =[ f ]⇒ _∼_ → SymClosure _⟶_ =[ f ]⇒ _∼_
+  return : _⟶_ ⇒ SymClosure _⟶_
+  join   : SymClosure (SymClosure _⟶_) ⇒ SymClosure _⟶_
+  _⋆     : _⟶₁_ ⇒ SymClosure _⟶₂_ → SymClosure _⟶₁_ ⇒ SymClosure _⟶₂_
   ```
 
 * Added new proofs in `Relation.Binary.PropositionalEquality.Properties`:
