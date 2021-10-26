@@ -196,11 +196,11 @@ Non-backwards compatible changes
   explicitly.
 
 * The operation `SymClosure` on relations in
-  `Relation.Binary.Construct.Closure.Symmetric` has been implemented
+  `Relation.Binary.Construct.Closure.Symmetric` has been reimplemented
   as a data type `SymClosure _⟶_ a b` that is parameterized by the
   input relation `_⟶_` (as well as the elements `a` and `b` of the
   domain) so that `_⟶_` can be inferred, which it could not from the
-  implementation as the reindexed sum type `a ⟶ b ⊎ b ⟶ a`.
+  previous implementation using the sum type `a ⟶ b ⊎ b ⟶ a`.
 
   ### Creation of `Relation.Binary.Lattice` hierarchy
   * In order to improve modularity Relation.Binary.Lattice is split out into Relation.Binary.Lattice.(Definitions/Structures/Bundles).
