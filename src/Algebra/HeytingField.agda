@@ -4,7 +4,7 @@ open import Algebra
 open import Relation.Binary
 open import Level using (_⊔_)
 
-module Algebra.Properties.HeytingField where
+module Algebra.HeytingField where
 
 open import Relation.Binary.Apartness
 open import Data.Product using (∃-syntax)
@@ -22,10 +22,10 @@ module _
 
   record IsLocalRing : Set (a ⊔ r1) where
     field
-      isRing : IsCommutativeRing _≈_ _+_ _*_ -_ 0# 1#
-      isApartness : IsApartness _#_ _≈_
+      isCommutativeRing : IsCommutativeRing _≈_ _+_ _*_ -_ 0# 1#
+      isApartness : IsApartness _≈_ _#_
 
-    open IsCommutativeRing isRing public
+    open IsCommutativeRing isCommutativeRing public
     open IsApartness isApartness public
 
 
