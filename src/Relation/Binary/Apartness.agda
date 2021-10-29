@@ -11,7 +11,7 @@ open import Data.Product using (_×_; _,_)
 open import Function using (_∘_)
 
 
-module Local {a r1} {A : Set a} (_#_ : Rel A r1) where
+module Props {a r1} {A : Set a} (_#_ : Rel A r1) where
 
   _¬#_ : A → A → Set r1
   x ¬# y = ¬ (x # y)
@@ -31,7 +31,7 @@ module Local {a r1} {A : Set a} (_#_ : Rel A r1) where
 
 module _ {a r1 r2} {A : Set a} (_≈_ : Rel A r1) (_#_ : Rel A r2) where
 
-  open Local _#_
+  open Props _#_
 
   irrefl⇒refl-¬ : Reflexive _≈_ → Irreflexive _≈_ _#_ → Reflexive _¬#_
   irrefl⇒refl-¬ re irr = irr re
@@ -57,13 +57,13 @@ module _ {a r1 r2} {A : Set a} (_≈_ : Rel A r1) (_#_ : Rel A r2) where
 module Test where
   open import Data.Nat
   open import Relation.Binary.PropositionalEquality
-  open Local
 
   data _#_ : ℕ → ℕ → Set where
     z#s : ∀ {m : ℕ} → zero # suc m
     s#z : ∀ {m : ℕ} → suc m # zero
     s#s : ∀ {m n : ℕ} → m # n → suc m # suc n
 
+  open Props _#_
 
   #-reduce : ∀ {m n : ℕ} → suc m # suc n → m # n
   #-reduce (s#s x) = x
@@ -80,13 +80,13 @@ module Test where
   #-sym (s#s x) = s#s (#-sym x)
 
 
-  #-comp : Comparison _#_
-  #-comp {zero} {zero} {suc z} z#s = inj₂ z#s
-  #-comp {zero} {suc y} {suc z} z#s = inj₁ z#s
-  #-comp {suc x} {zero} {zero} s#z = inj₁ s#z
-  #-comp {suc x} {suc y} {zero} s#z = inj₂ s#z
-  #-comp {suc x} {zero} {suc z} (s#s x#z) = inj₁ s#z
-  #-comp {suc x} {suc y} {suc z} (s#s x#z) = map s#s s#s (#-comp x#z)
+  #-comp : Comparison
+  #-comp {y = zero} z#s = inj₂ z#s
+  #-comp {y = suc _} z#s = inj₁ z#s
+  #-comp {y = zero} s#z = inj₁ s#z
+  #-comp {y = suc _} s#z = inj₂ s#z
+  #-comp {y = zero} (s#s x#z) = inj₁ s#z
+  #-comp {y = suc _} (s#s x#z) = map s#s s#s (#-comp x#z)
 
 
   #-apart : IsApartness _≡_ _#_
