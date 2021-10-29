@@ -1,9 +1,8 @@
 {-# OPTIONS --without-K --safe #-}
 
-open import Relation.Binary
-
 module Relation.Binary.Apartness where
 
+open import Relation.Binary
 open import Level using (Level; _⊔_)
 open import Relation.Nullary using (¬_)
 open import Data.Sum using (_⊎_; [_,_]′; inj₁; inj₂; map)
