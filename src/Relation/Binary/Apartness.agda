@@ -13,9 +13,8 @@ open import Relation.Binary.Definitions using (Symmetric; Transitive; Reflexive;
 open import Relation.Binary.Structures using (IsEquivalence)
 open import Level using (Level; _⊔_) renaming (suc to lsuc)
 open import Relation.Nullary using (¬_)
-open import Data.Sum using (_⊎_; [_,_]′; inj₁; inj₂; map)
-open import Data.Product using (_×_; _,_)
-open import Function using (_∘_)
+open import Data.Sum using (_⊎_; [_,_]′)
+open import Data.Product using (_×_)
 
 
 module Properties {c ℓ₁} {Carrier : Set c} (_#_ : Rel Carrier ℓ₁) where

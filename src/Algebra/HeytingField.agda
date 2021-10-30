@@ -14,6 +14,7 @@ open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.Structures using (IsEquivalence)
 open import Level using (Level; _⊔_) renaming (suc to lsuc)
 open import Data.Product using (∃-syntax; _×_)
+
 import Relation.Binary.Apartness as A
 
 
@@ -26,8 +27,10 @@ module Structures
 
   open A.Structures hiding (¬#-equiv)
 
-  invertible : Carrier → Set _
-  invertible x = ∃[ 1/x ] (x * 1/x) ≈ 1#
+  -- does this need to be public?
+  private
+    invertible : Carrier → Set _
+    invertible x = ∃[ 1/x ] (x * 1/x) ≈ 1#
 
 
   record IsLocalCommutativeRing : Set (c ⊔ ℓ₁ ⊔ ℓ₂) where
