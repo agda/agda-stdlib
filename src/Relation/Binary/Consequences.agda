@@ -44,7 +44,6 @@ module _ {_∼_ : Rel A ℓ} {P : Pred A p} where
   resp⇒¬-resp : Symmetric _∼_ → P Respects _∼_ → (∁ P) Respects _∼_
   resp⇒¬-resp sym resp x∼y ¬Px Py = ¬Px (resp (sym x∼y) Py)
 
-
 ------------------------------------------------------------------------
 -- Proofs for negation
 
@@ -69,8 +68,6 @@ module _ {_≈_ : Rel A ℓ₁} {_∼_ : Rel A ℓ₂} where
 
   irrefl⇒¬-refl : Reflexive _≈_ → Irreflexive _≈_ _∼_ → Reflexive _≁_
   irrefl⇒¬-refl re irr = irr re
-
-
 
 ------------------------------------------------------------------------
 -- Proofs for non-strict orders
