@@ -1,3 +1,11 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Bundles for local algebraic structures
+------------------------------------------------------------------------
+
+{-# OPTIONS --without-K --safe #-}
+
 module Algebra.Local.Bundles where
 
 open import Level using (_⊔_; suc)
