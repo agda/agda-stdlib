@@ -287,4 +287,3 @@ record IsApartness {ℓ₁} (_#_ : Rel A ℓ₁) : Set (a ⊔ ℓ ⊔ ℓ₁) wh
     irrefl : Irreflexive _≈_ _#_
     sym    : Symmetric _#_
     comp   : Comparison _#_
-
