@@ -208,6 +208,15 @@ record NonEmpty {A : Set a} {B : Set b}
 
 
 
+-- Definitions for apartness relations
+
+Comparison : Rel A ℓ → Set _
+Comparison _#_ = ∀ {x y} z → x # y → (x # z) ⊎ (z # y)
+
+Tight : Rel A ℓ₁ → Rel A ℓ₂ → Set _
+Tight _≈_ _#_ = ∀ {x y} → ¬ x # y → x ≈ y
+
+
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
 ------------------------------------------------------------------------
