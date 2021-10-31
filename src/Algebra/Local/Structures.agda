@@ -32,13 +32,15 @@ module _
     _-_ : Op₂ Carrier
     x - y = x + (- y)
 
+    Iso : ∀ {a b} → Set a → Set b → Set _
+    Iso A B = (A → B) × (B → A)
+
+
   record IsLocalCommutativeRing : Set (c ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       isCommutativeRing : IsCommutativeRing _≈_ _+_ _*_ -_ 0# 1#
-      isApartness : IsApartness _≈_ _#_
-      #⇔invertible
-        : ∀ {x y}
-        → (x # y → Invertible _≈_ 1# _*_ (x - y)) × (Invertible _≈_ 1# _*_ (x - y) → x # y)
+      isApartness       : IsApartness _≈_ _#_
+      #⇔invertible      : ∀ {x y} → Iso (x # y) (Invertible _≈_ 1# _*_ (x - y))
 
     open IsCommutativeRing isCommutativeRing public
     open IsApartness isApartness public
@@ -53,6 +55,6 @@ module _
   record IsHeytingField : Set (c ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       isLocalCommutativeRing : IsLocalCommutativeRing
-      isTight : Tight _≈_ _#_
+      isTight                : Tight _≈_ _#_
 
     open IsLocalCommutativeRing isLocalCommutativeRing public
