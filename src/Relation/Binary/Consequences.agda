@@ -59,7 +59,7 @@ module _ {_∼_ : Rel A ℓ} where
   comp⇒≁-trans comp {i = x} {j = z} {k = y} x≁z z≁y x∼y = [ x≁z , z≁y ]′ (comp z x∼y)
 
 ------------------------------------------------------------------------
--- Proofs for apartness relations
+-- Proofs for Irreflexive relations
 
 module _ {_≈_ : Rel A ℓ₁} {_∼_ : Rel A ℓ₂} where
   private
