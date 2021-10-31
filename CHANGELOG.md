@@ -491,20 +491,20 @@ Other minor changes
 
 * Added new functions in `Data.Fin.Base`:
   ```
-  fin→fun : ∀ {m n} → Fin (n ^ m) → (Fin m → Fin n)
-  fun→fin : ∀ {m n} → (Fin m → Fin n) → Fin (n ^ m)
-  quot : ∀ {n} k → Fin (n * k) → Fin n
-  rem  : ∀ {n} k → Fin (n * k) → Fin k
+  fin→fun : Fin (n ^ m) → (Fin m → Fin n)
+  fun→fin : (Fin m → Fin n) → Fin (n ^ m)
+  quot : Fin (n * k) → Fin n
+  rem  : Fin (n * k) → Fin k
   ```
 
 * Added new proofs and `Inverse` bundles in `Data.Fin.Properties`:
   ```
   1↔⊤ : Fin 1 ↔ ⊤
-  ↑ˡ-injective : ∀ {m} n (i j : Fin m) → i ↑ˡ n ≡ j ↑ˡ n → i ≡ j
-  ↑ʳ-injective : ∀ {m} n (i j : Fin m) → n ↑ʳ i ≡ n ↑ʳ j → i ≡ j
-  fin→fun→fin : ∀ {m n} → fun→fin {m}{n} ∘ fin→fun ≗ id
-  fun→fin→fun : ∀ {m n} (f : Fin m → Fin n) → fin→fun (fun→fin f) ≗ f
-  ^↔→ : ∀ {m n} → Extensionality _ _ → Fin (n ^ m) ↔ (Fin m → Fin n)
+  ↑ˡ-injective : i ↑ˡ n ≡ j ↑ˡ n → i ≡ j
+  ↑ʳ-injective : n ↑ʳ i ≡ n ↑ʳ j → i ≡ j
+  fin→fun→fin : fun→fin {m}{n} ∘ fin→fun ≗ id
+  fun→fin→fun : fin→fun (fun→fin f) ≗ f
+  ^↔→ : Extensionality _ _ → Fin (n ^ m) ↔ (Fin m → Fin n)
   ```
 
 * Added new proofs in `Data.Integer.Properties`:
