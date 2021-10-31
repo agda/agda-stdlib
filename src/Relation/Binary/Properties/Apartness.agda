@@ -1,3 +1,11 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Apartness properties
+------------------------------------------------------------------------
+
+{-# OPTIONS --without-K --safe #-}
+
 module Relation.Binary.Properties.Apartness where
 
 open import Relation.Binary.Core using (Rel)
