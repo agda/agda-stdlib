@@ -297,3 +297,14 @@ record StrictTotalOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) wh
   "Warning: decSetoid was deprecated in v1.3.
   Please use Eq.decSetoid instead."
   #-}
+
+
+
+  record Apartness c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
+    field
+      Carrier     : Set c
+      _≈_         : Rel Carrier ℓ₁
+      _#_         : Rel Carrier ℓ₂
+      isApartness : IsApartness _≈_ _#_
+      
+    open IsApartness isApartness public
