@@ -278,3 +278,13 @@ record IsStrictTotalOrder (_<_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) wher
 
   open IsStrictPartialOrder isStrictPartialOrder public
     using (irrefl; asym; <-respʳ-≈; <-respˡ-≈; <-resp-≈)
+
+
+-- Apartness relations
+
+record IsApartness {ℓ₁} (_#_ : Rel A ℓ₁) : Set (a ⊔ ℓ ⊔ ℓ₁) where
+  field
+    irrefl : Irreflexive _≈_ _#_
+    sym    : Symmetric _#_
+    comp   : Comparison _#_
+

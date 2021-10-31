@@ -9,14 +9,14 @@
 module Relation.Binary.Consequences where
 
 open import Data.Maybe.Base using (just; nothing; decToMaybe)
-open import Data.Sum.Base as Sum using (inj₁; inj₂)
+open import Data.Sum.Base as Sum using (inj₁; inj₂; [_,_]′)
 open import Data.Product using (_,_)
 open import Data.Empty.Irrelevant using (⊥-elim)
 open import Function.Base using (_∘_; _$_; flip)
 open import Level using (Level)
 open import Relation.Binary.Core
 open import Relation.Binary.Definitions
-open import Relation.Nullary using (yes; no; recompute)
+open import Relation.Nullary using (yes; no; recompute; ¬_)
 open import Relation.Nullary.Decidable.Core using (map′)
 open import Relation.Unary using (∁; Pred)
 
@@ -43,6 +43,34 @@ module _ {_∼_ : Rel A ℓ} {P : Pred A p} where
 
   resp⇒¬-resp : Symmetric _∼_ → P Respects _∼_ → (∁ P) Respects _∼_
   resp⇒¬-resp sym resp x∼y ¬Px Py = ¬Px (resp (sym x∼y) Py)
+
+
+------------------------------------------------------------------------
+-- Proofs for negation
+
+module _ {_∼_ : Rel A ℓ} where
+  private
+    _≁_ : A → A → Set _
+    x ≁ y = ¬ (x ∼ y)
+
+  sym⇒≁-sym : Symmetric _∼_ → Symmetric _≁_
+  sym⇒≁-sym sym≁ x≁y y∼x = x≁y (sym≁ y∼x)
+
+  comp⇒≁-trans : Comparison _∼_ → Transitive _≁_
+  comp⇒≁-trans comp {i = x} {j = z} {k = y} x≁z z≁y x∼y = [ x≁z , z≁y ]′ (comp z x∼y)
+
+------------------------------------------------------------------------
+-- Proofs for apartness relations
+
+module _ {_≈_ : Rel A ℓ₁} {_∼_ : Rel A ℓ₂} where
+  private
+    _≁_ : A → A → Set _
+    x ≁ y = ¬ (x ∼ y)
+
+  irrefl⇒¬-refl : Reflexive _≈_ → Irreflexive _≈_ _∼_ → Reflexive _≁_
+  irrefl⇒¬-refl re irr = irr re
+
+
 
 ------------------------------------------------------------------------
 -- Proofs for non-strict orders

@@ -57,3 +57,20 @@ open A.Properties _#_
 ... | ()
 #-tight {suc x} {suc y} (¬sx#sy , ¬sy#sx) =
   cong suc (#-tight (¬sx#sy ∘ s#s , ¬sy#sx ∘ s#s))
+
+
+
+
+module Test where
+  open import Relation.Nullary using (¬_)
+  open import Data.Product using (_×_)
+
+  sm≢sn→m≢n : ∀ {m n} → ¬ suc m ≡ suc n → ¬ m ≡ n
+  sm≢sn→m≢n sm≢sn m≡n = sm≢sn (cong suc m≡n)
+
+  ≢→# : ∀ {x y} → ¬ (x ≡ y) → x # y
+  ≢→# {zero} {zero} z≢z with z≢z refl
+  ... | ()
+  ≢→# {zero} {suc y} _ = z#s
+  ≢→# {suc x} {zero} _ = s#z
+  ≢→# {suc x} {suc y} sx≢sy = s#s (≢→# (sm≢sn→m≢n sx≢sy))
