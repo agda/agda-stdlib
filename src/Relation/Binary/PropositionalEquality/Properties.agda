@@ -26,7 +26,7 @@ private
 ------------------------------------------------------------------------
 -- Standard eliminator for the propositional equality type
 
-J : {A : Set} {x : A} (B : (y : A) → x ≡ y → Set b)
+J : {A : Set a} {x : A} (B : (y : A) → x ≡ y → Set b)
     {y : A} (p : x ≡ y) → B x refl → B y p
 J B refl b = b
 
