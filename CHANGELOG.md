@@ -699,7 +699,7 @@ Other minor changes
 * Added new operations in
   `Relation.Binary.PropositionalEquality.Properties`:
   ```
-  J : {A : Set} {x : A} (B : (y : A) → x ≡ y → Set b)
+  J : {A : Set a} {x : A} (B : (y : A) → x ≡ y → Set b)
       {y : A} (p : x ≡ y) → B x refl → B y p
   dcong : ∀ {A : Set a} {B : A → Set b} (f : (x : A) → B x) {x y}
         → (p : x ≡ y) → subst B p (f x) ≡ f y
