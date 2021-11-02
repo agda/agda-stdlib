@@ -581,7 +581,7 @@ combine-remQuot {suc n} k i with splitAt k i | P.inspect (splitAt k) i
 -- fin→fun
 ------------------------------------------------------------------------
 
-fin→fun→fin : ∀ {m n} → fun→fin {m}{n} ∘ fin→fun ≗ id
+fin→fun→fin : ∀ {m n} → fun→fin {m} {n} ∘ fin→fun ≗ id
 fin→fun→fin {zero}  {n} zero = refl
 fin→fun→fin {suc m} {n} k =
   begin
@@ -589,15 +589,14 @@ fin→fun→fin {suc m} {n} k =
   ≡⟨⟩
     combine (quotient {n} (n ^ m) k)
       (fun→fin (fin→fun {m} (remainder {n} (n ^ m) k)))
-  ≡⟨ cong (λ ● → combine (quotient {n} (n ^ m) k) ●)
+  ≡⟨ cong (combine (quotient {n} (n ^ m) k))
        (fin→fun→fin {m} (remainder {n} (n ^ m) k)) ⟩
     combine (quotient {n} (n ^ m) k) (remainder {n} (n ^ m) k)
   ≡⟨⟩
     uncurry combine (remQuot {n} (n ^ m) k)
   ≡⟨ combine-remQuot {n = n} (n ^ m) k ⟩
     k
-  ∎
-  where open ≡-Reasoning
+  ∎ where open ≡-Reasoning
 
 fun→fin→fun : ∀ {m n} (f : Fin m → Fin n) → fin→fun (fun→fin f) ≗ f
 fun→fin→fun {suc m} {n} f  zero   =
@@ -607,12 +606,11 @@ fun→fin→fun {suc m} {n} f  zero   =
     proj₁ (f zero , fun→fin (f ∘ suc))
   ≡⟨⟩
     f zero
-  ∎
-  where open ≡-Reasoning
+  ∎ where open ≡-Reasoning
 fun→fin→fun {suc m} {n} f (suc i) =
   begin
     fin→fun (remainder {n} (n ^ m) (combine (f zero) (fun→fin (f ∘ suc)))) i
-  ≡⟨ cong (λ ● → fin→fun (proj₂ ●) i) (remQuot-combine {n} _ _) ⟩
+  ≡⟨ cong (λ rq → fin→fun (proj₂ rq) i) (remQuot-combine {n} _ _) ⟩
     fin→fun (proj₂ (f zero , fun→fin (f ∘ suc))) i
   ≡⟨⟩
     fin→fun (fun→fin (f ∘ suc)) i
@@ -620,8 +618,7 @@ fun→fin→fun {suc m} {n} f (suc i) =
     (f ∘ suc) i
   ≡⟨⟩
     f (suc i)
-  ∎
-  where open ≡-Reasoning
+  ∎ where open ≡-Reasoning
 
 ------------------------------------------------------------------------
 -- Bundles
