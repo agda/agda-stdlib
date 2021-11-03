@@ -282,8 +282,11 @@ record IsStrictTotalOrder (_<_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) wher
 
 -- Apartness relations
 
-record IsApartness {ℓ₁} (_#_ : Rel A ℓ₁) : Set (a ⊔ ℓ ⊔ ℓ₁) where
+record IsApartnessRelation (_#_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
   field
     irrefl : Irreflexive _≈_ _#_
     sym    : Symmetric _#_
     comp   : Comparison _#_
+
+  _¬#_ : A → A → Set _
+  x ¬# y = ¬ (x # y)

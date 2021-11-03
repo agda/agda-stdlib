@@ -52,11 +52,11 @@ module _ {_∼_ : Rel A ℓ} where
     _≁_ : A → A → Set _
     x ≁ y = ¬ (x ∼ y)
 
-  sym⇒≁-sym : Symmetric _∼_ → Symmetric _≁_
-  sym⇒≁-sym sym≁ x≁y y∼x = x≁y (sym≁ y∼x)
+  sym⇒¬-sym : Symmetric _∼_ → Symmetric _≁_
+  sym⇒¬-sym sym≁ x≁y y∼x = x≁y (sym≁ y∼x)
 
-  comp⇒≁-trans : Comparison _∼_ → Transitive _≁_
-  comp⇒≁-trans comp {i = x} {j = z} {k = y} x≁z z≁y x∼y = [ x≁z , z≁y ]′ (comp z x∼y)
+  comp⇒¬-trans : Comparison _∼_ → Transitive _≁_
+  comp⇒¬-trans comp {i = x} {j = z} {k = y} x≁z z≁y x∼y = [ x≁z , z≁y ]′ (comp z x∼y)
 
 ------------------------------------------------------------------------
 -- Proofs for Irreflexive relations
