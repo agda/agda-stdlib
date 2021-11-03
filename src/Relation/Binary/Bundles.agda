@@ -300,11 +300,11 @@ record StrictTotalOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) wh
 
 
 
-record Apartness c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
+record ApartnessRelation c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   field
     Carrier     : Set c
     _≈_         : Rel Carrier ℓ₁
     _#_         : Rel Carrier ℓ₂
-    isApartness : IsApartness _≈_ _#_
+    isApartnessRelation : IsApartnessRelation _≈_ _#_
 
-  open IsApartness isApartness public
+  open IsApartnessRelation isApartnessRelation public
