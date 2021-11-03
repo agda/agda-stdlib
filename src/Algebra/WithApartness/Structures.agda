@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Local algebraic structures
+-- Algebraic structures with an apartness relation
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -51,6 +51,6 @@ record IsHeytingCommutativeRing : Set (c ⊔ ℓ₁ ⊔ ℓ₂) where
 record IsHeytingField : Set (c ⊔ ℓ₁ ⊔ ℓ₂) where
   field
     isHeytingCommutativeRing : IsHeytingCommutativeRing
-    tight-#                  : Tight _≈_ _#_
+    tight                    : Tight _≈_ _#_
 
   open IsHeytingCommutativeRing isHeytingCommutativeRing public
