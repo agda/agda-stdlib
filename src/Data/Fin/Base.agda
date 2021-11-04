@@ -164,14 +164,14 @@ combine {suc n} {k} zero    y = y ↑ˡ (n ℕ.* k)
 combine {suc n} {k} (suc x) y = k ↑ʳ (combine x y)
 
 -- Next in progression after splitAt and remQuot
-fin→fun : ∀ {m n} → Fin (n ^ m) → (Fin m → Fin n)
-fin→fun {suc m} {n} k zero    = quotient (n ^ m) k
-fin→fun {suc m} {n} k (suc i) = fin→fun (remainder {n} (n ^ m) k) i
+finToFun : ∀ {m n} → Fin (n ^ m) → (Fin m → Fin n)
+finToFun {suc m} {n} k zero    = quotient (n ^ m) k
+finToFun {suc m} {n} k (suc i) = finToFun (remainder {n} (n ^ m) k) i
 
 -- inverse of above function
-fun→fin : ∀ {m n} → (Fin m → Fin n) → Fin (n ^ m)
-fun→fin {zero}  f = zero
-fun→fin {suc m} f = combine (f zero) (fun→fin (f ∘ suc))
+funToFin : ∀ {m n} → (Fin m → Fin n) → Fin (n ^ m)
+funToFin {zero}  f = zero
+funToFin {suc m} f = combine (f zero) (funToFin (f ∘ suc))
 
 ------------------------------------------------------------------------
 -- Operations
