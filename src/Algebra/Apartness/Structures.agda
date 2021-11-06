@@ -19,11 +19,9 @@ open import Relation.Binary.Definitions using (Tight)
 open import Relation.Nullary using (¬_)
 import Relation.Binary.Properties.ApartnessRelation as ApartnessRelation
 
-
 private
   Iso : ∀ {a b} → Set a → Set b → Set _
   Iso A B = (A → B) × (B → A)
-
 
 record IsHeytingCommutativeRing
   {c ℓ₁ ℓ₂} {Carrier : Set c}
