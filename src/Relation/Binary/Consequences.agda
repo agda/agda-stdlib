@@ -55,8 +55,9 @@ module _ {_∼_ : Rel A ℓ} where
   sym⇒¬-sym : Symmetric _∼_ → Symmetric _≁_
   sym⇒¬-sym sym≁ x≁y y∼x = x≁y (sym≁ y∼x)
 
-  comp⇒¬-trans : Comparison _∼_ → Transitive _≁_
-  comp⇒¬-trans comp {i = x} {j = z} {k = y} x≁z z≁y x∼y = [ x≁z , z≁y ]′ (comp z x∼y)
+  -- N.B. the implicit arguments to Cotransitive are permuted w.r.t. those of Transitive
+  cotrans⇒¬-trans : Cotransitive _∼_ → Transitive _≁_
+  cotrans⇒¬-trans comp {i = x} {j = z} {k = y} x≁z z≁y x∼y = [ x≁z , z≁y ]′ (comp z x∼y)
 
 ------------------------------------------------------------------------
 -- Proofs for Irreflexive relations
