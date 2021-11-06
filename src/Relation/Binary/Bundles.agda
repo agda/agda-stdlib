@@ -301,6 +301,7 @@ record StrictTotalOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) wh
 
 
 record ApartnessRelation c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
+  infix 4 _≈_ _#_
   field
     Carrier     : Set c
     _≈_         : Rel Carrier ℓ₁
