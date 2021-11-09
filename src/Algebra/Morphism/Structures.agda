@@ -555,6 +555,50 @@ module LatticeMorphisms (L₁ : RawLattice a ℓ₁) (L₂ : RawLattice b ℓ₂
     open ∧.IsMagmaIsomorphism ∧-isMagmaIsomorphism public
       using (isRelIsomorphism)
 
+ ------------------------------------------------------------------------
+-- Morphisms over field-like structures
+------------------------------------------------------------------------
+module FieldMorphisms (F₁ : RawField a ℓ₁) (F₂ : RawField b ℓ₂) where
+
+  open RawField F₁ renaming
+    ( Carrier to A; _≈_ to _≈₁_
+    ; -_ to -₁_
+    ; 1#/_ to #1/₁_
+    ; rawRing to rawRing₁
+    )
+
+  open RawField F₂ renaming
+    ( Carrier to B; _≈_ to _≈₂_
+    ; -_ to -₂_
+    ; 1#/_ to #1/₂_
+    ; rawRing to rawRing₂
+    )
+
+  open MorphismDefinitions A B _≈₂_
+  open FunctionDefinitions _≈₁_ _≈₂_
+  open RingMorphisms rawRing₁ rawRing₂
+
+  record IsFieldHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      isRingHomomorphism : IsRingHomomorphism ⟦_⟧
+      -‿homo : Homomorphic₁ ⟦_⟧ #1/₁_ #1/₂_
+
+    open IsRingHomomorphism isRingHomomorphism public
+
+  record IsFieldMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      isFieldHomomorphism : IsFieldHomomorphism ⟦_⟧
+      injective          : Injective ⟦_⟧
+
+    open IsFieldHomomorphism isFieldHomomorphism public
+
+  record IsFieldIsomorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+    field
+      isFieldMonomorphism : IsFieldMonomorphism ⟦_⟧
+      surjective         : Surjective ⟦_⟧
+
+    open IsFieldMonomorphism isFieldMonomorphism public
+
 ------------------------------------------------------------------------
 -- Re-export contents of modules publicly
 
@@ -565,3 +609,4 @@ open NearSemiringMorphisms public
 open SemiringMorphisms public
 open RingMorphisms public
 open LatticeMorphisms public
+open FieldMorphisms public

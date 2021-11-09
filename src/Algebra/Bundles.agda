@@ -1000,6 +1000,61 @@ record BooleanAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
   open DistributiveLattice distributiveLattice public
     using (_≉_; setoid; lattice)
 
+------------------------------------------------------------------------
+-- Structures with 2 binary operations, 2 unary operation & 2 elements
+------------------------------------------------------------------------
+-- A raw field is a field without any laws.
+
+record RawField c ℓ : Set (suc (c ⊔ ℓ)) where
+  infix  9 1#/_
+  infix  8 -_
+  infixl 7 _*_
+  infixl 6 _+_
+  infix  4 _≈_
+  field
+    Carrier           : Set c
+    _≈_               : Rel Carrier ℓ
+    _+_               : Op₂ Carrier
+    _*_               : Op₂ Carrier
+    -_                : Op₁ Carrier
+    1#/_              : Op₁ Carrier
+    0#                : Carrier
+    1#                : Carrier
+
+  rawRing : RawRing _ _
+  rawRing = record
+    { _≈_ = _≈_
+    ; _+_ = _+_
+    ; _*_ = _*_
+    ; -_  = -_
+    ; 0#  = 0#
+    ; 1#  = 1#
+    }
+
+
+record Field c ℓ : Set (suc (c ⊔ ℓ)) where
+  infix  9 1#/_
+  infix  8 -_
+  infixl 7 _*_
+  infixl 6 _+_
+  infix  4 _≈_
+  field
+    Carrier           : Set c
+    _≈_               : Rel Carrier ℓ
+    _+_               : Op₂ Carrier
+    _*_               : Op₂ Carrier
+    -_                : Op₁ Carrier
+    1#/_              : Op₁ Carrier
+    0#                : Carrier
+    1#                : Carrier
+    isField           : IsField _≈_ _+_ _*_ -_ 1#/_ 0# 1#
+
+  open IsField isField public
+
+  commutativeRing : CommutativeRing _ _
+  commutativeRing = record {isCommutativeRing = isCommutativeRing}
+
+  open CommutativeRing commutativeRing public using (_≉_; rawRing; +-quasigroup; +-loop; +-group; +-abelianGroup; *-isMonoid; ring)
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
