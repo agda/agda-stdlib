@@ -68,8 +68,8 @@ open PW public using (++⁺ ; ++⁻ ; ++ˡ⁻; ++ʳ⁻)
 ++-identityʳ []       = []
 ++-identityʳ (x ∷ xs) = refl ∷ ++-identityʳ xs
 
-++-assoc : ∀ {n m k} (xs : Vec A n) → (ys : Vec A m) 
-    → (zs : Vec A k) → (xs ++ ys) ++ zs ≋ xs ++ (ys ++ zs)
+++-assoc : ∀ {n m k} (xs : Vec A n) (ys : Vec A m) (zs : Vec A k) → 
+             (xs ++ ys) ++ zs ≋ xs ++ (ys ++ zs)
 ++-assoc [] ys zs = ≋-refl
 ++-assoc (x ∷ xs) ys zs = refl ∷ ++-assoc xs ys zs
 
