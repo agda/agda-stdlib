@@ -30,6 +30,11 @@ on:
 ## To be experimented with again in the future to see if things have
 ## gotten better.
 ##
+## We use `v1-install` rather than `install` as Agda as a community
+## hasn't figured out how to manage dependencies with the new local
+## style builds (see agda/agda#4627 for details). Once this is resolved
+## we should upgrade to `install`.
+##
 ## The AGDA variable specifies the command to use to build the library.
 ## It currently passes the flag `-Werror` to ensure maximal compliance
 ## with e.g. not relying on deprecated definitions.
