@@ -15,6 +15,7 @@ open import Algebra.Bundles
 import Algebra.Morphism as Morphism
 open import Algebra.Construct.NaturalChoice.Base
 import Algebra.Construct.NaturalChoice.MinMaxOp as MinMaxOp
+import Algebra.Lattice.Construct.NaturalChoice.MinMaxOp as LatticeMinMaxOp
 import Algebra.Properties.AbelianGroup
 open import Data.Bool.Base using (T; true; false)
 open import Data.Integer.Base renaming (suc to sucℤ)
@@ -1782,7 +1783,8 @@ i≥j⇒i⊔j≡i (+≤+ i≤j) = cong +_ (ℕ.m≥n⇒m⊔n≡m i≤j)
 -- Automatically derived properties of _⊓_ and _⊔_
 
 private
-  module ⊓-⊔-properties = MinMaxOp ⊓-operator ⊔-operator
+  module ⊓-⊔-properties        = MinMaxOp        ⊓-operator ⊔-operator
+  module ⊓-⊔-latticeProperties = LatticeMinMaxOp ⊓-operator ⊔-operator
 
 open ⊓-⊔-properties public
   using
@@ -1811,39 +1813,25 @@ open ⊓-⊔-properties public
   ; ⊓-isSemigroup             -- : IsSemigroup _⊓_
   ; ⊓-isCommutativeSemigroup  -- : IsCommutativeSemigroup _⊓_
   ; ⊓-isBand                  -- : IsBand _⊓_
-  ; ⊓-isSemilattice           -- : IsSemilattice _⊓_
   ; ⊓-isSelectiveMagma        -- : IsSelectiveMagma _⊓_
 
   ; ⊔-isMagma                 -- : IsMagma _⊔_
   ; ⊔-isSemigroup             -- : IsSemigroup _⊔_
   ; ⊔-isCommutativeSemigroup  -- : IsCommutativeSemigroup _⊔_
   ; ⊔-isBand                  -- : IsBand _⊔_
-  ; ⊔-isSemilattice           -- : IsSemilattice _⊔_
   ; ⊔-isSelectiveMagma        -- : IsSelectiveMagma _⊔_
-
-  ; ⊔-⊓-isLattice             -- : IsLattice _⊔_ _⊓_
-  ; ⊓-⊔-isLattice             -- : IsLattice _⊓_ _⊔_
-  ; ⊔-⊓-isDistributiveLattice -- : IsDistributiveLattice _⊔_ _⊓_
-  ; ⊓-⊔-isDistributiveLattice -- : IsDistributiveLattice _⊓_ _⊔_
 
   ; ⊓-magma                   -- : Magma _ _
   ; ⊓-semigroup               -- : Semigroup _ _
   ; ⊓-band                    -- : Band _ _
   ; ⊓-commutativeSemigroup    -- : CommutativeSemigroup _ _
-  ; ⊓-semilattice             -- : Semilattice _ _
   ; ⊓-selectiveMagma          -- : SelectiveMagma _ _
 
   ; ⊔-magma                   -- : Magma _ _
   ; ⊔-semigroup               -- : Semigroup _ _
   ; ⊔-band                    -- : Band _ _
   ; ⊔-commutativeSemigroup    -- : CommutativeSemigroup _ _
-  ; ⊔-semilattice             -- : Semilattice _ _
   ; ⊔-selectiveMagma          -- : SelectiveMagma _ _
-
-  ; ⊔-⊓-lattice               -- : Lattice _ _
-  ; ⊓-⊔-lattice               -- : Lattice _ _
-  ; ⊔-⊓-distributiveLattice   -- : DistributiveLattice _ _
-  ; ⊓-⊔-distributiveLattice   -- : DistributiveLattice _ _
 
   ; ⊓-glb                     -- : ∀ {m n o} → m ≥ o → n ≥ o → m ⊓ n ≥ o
   ; ⊓-triangulate             -- : ∀ m n o → m ⊓ n ⊓ o ≡ (m ⊓ n) ⊓ (n ⊓ o)
@@ -1877,6 +1865,23 @@ open ⊓-⊔-properties public
   ; x⊔y≤z⇒y≤z to i⊔j≤k⇒j≤k    -- : ∀ i j {k} → i ⊔ j ≤ k → j ≤ k
 
   ; x⊓y≤x⊔y   to i⊓j≤i⊔j      -- : ∀ i j → i ⊓ j ≤ i ⊔ j
+  )
+
+open ⊓-⊔-latticeProperties public
+  using
+  ( ⊓-isSemilattice           -- : IsSemilattice _⊓_
+  ; ⊔-isSemilattice           -- : IsSemilattice _⊔_
+  ; ⊔-⊓-isLattice             -- : IsLattice _⊔_ _⊓_
+  ; ⊓-⊔-isLattice             -- : IsLattice _⊓_ _⊔_
+  ; ⊔-⊓-isDistributiveLattice -- : IsDistributiveLattice _⊔_ _⊓_
+  ; ⊓-⊔-isDistributiveLattice -- : IsDistributiveLattice _⊓_ _⊔_
+
+  ; ⊓-semilattice             -- : Semilattice _ _
+  ; ⊔-semilattice             -- : Semilattice _ _
+  ; ⊔-⊓-lattice               -- : Lattice _ _
+  ; ⊓-⊔-lattice               -- : Lattice _ _
+  ; ⊔-⊓-distributiveLattice   -- : DistributiveLattice _ _
+  ; ⊓-⊔-distributiveLattice   -- : DistributiveLattice _ _
   )
 
 ------------------------------------------------------------------------
