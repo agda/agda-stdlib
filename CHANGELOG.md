@@ -67,23 +67,63 @@ Non-backwards compatible changes
   So `[a-zA-Z]+.agdai?` run on "the path _build/Main.agdai corresponds to"
   will return "Main.agdai" when it used to be happy to just return "n.agda".
 
-### Creation of separate `Algebra.Lattice` hierarchy
+
+### Refactoring of algebraic lattice hierarchy
 
 * In order to improve modularity and consistency with `Relation.Binary.Lattice`, 
   the structures & bundles for `Semilattice`, `Lattice`, `DistributiveLattice`
   & `BooleanAlgebra` have been moved out of the `Algebra` modules and into their
   own hierarchy in `Algebra.Lattice`.
 
-* The modules `Algebra.Properties.(Semilattice/Lattice/DistributiveLattice/BooleanAlgebra)`
-  have been moved under `Algebra.Lattice.Properties`.
+* All submodules, (e.g. `Algebra.Properties.Semilattice` or `Algebra.Morphism.Lattice`)
+  have been moved to the corresponding place under `Algebra.Lattice` (e.g.
+  `Algebra.Lattice.Properties.Semilattice` or `Algebra.Lattice.Morphism.Lattice`).
+
+* Changed definition of `IsDistributiveLattice` and `IsBooleanAlgebra` so that they are 
+  no longer right-biased which hinders compositionality. More concretely, `IsDistributiveLattice`
+  now has fields:
+  ```agda
+  ∨-distrib-∧ : ∨ DistributesOver ∧
+  ∧-distrib-∨ : ∧ DistributesOver ∨
+  ```
+  instead of
+  ```agda
+  ∨-distribʳ-∧ : ∨ DistributesOverʳ ∧
+  ```
+  and `IsBooleanAlgebra` now has fields:
+  ```
+  ∨-complement : Inverse ⊤ ¬ ∨
+  ∧-complement : Inverse ⊥ ¬ ∧
+  ```
+  instead of:
+  ```agda
+  ∨-complementʳ : RightInverse ⊤ ¬ ∨
+  ∧-complementʳ : RightInverse ⊥ ¬ ∧
+  ```
+
+* To allow construction of these structures via their old form, smart constructors
+  have been added to a new module `Algebra.Lattice.Structures.Biased`, which are by
+  re-exported automatically by `Algebra.Lattice`. For example, if before you wrote:
+  ```agda
+  ∧-∨-isDistributiveLattice = record
+    { isLattice    = ∧-∨-isLattice
+    ; ∨-distribʳ-∧ = ∨-distribʳ-∧
+    }
+  ```
+  you can use the smart constructor `isDistributiveLatticeʳʲᵐ` to write:
+  ```agda
+  ∧-∨-isDistributiveLattice = isDistributiveLatticeʳʲᵐ (record
+    { isLattice    = ∧-∨-isLattice
+    ; ∨-distribʳ-∧ = ∨-distribʳ-∧
+    })
+  ```
+  without having to prove full distributivity.
 
 * Added new `IsBoundedSemilattice`/`BoundedSemilattice` records.
 
 * Added new aliases `Is(Meet/Join)(Bounded)Semilattice` for `Is(Bounded)Semilattice`
   which can be used to indicate meet/join-ness of the original structures.
 
-* Added some convenient helper functions for constructing the lattice records
-  in `Algebra.Lattice.Structures.Biased` (these are re-exported by `Algebra.Lattice`).
 
 #### Proofs of non-zeroness/positivity/negativity as instance arguments
 
@@ -489,12 +529,15 @@ Other minor changes
 
 * Added new proofs to `Algebra.Consequences.Setoid`:
   ```agda
-  comm+idˡ⇒id       : Commutative _•_ → LeftIdentity  e _•_ → Identity e _•_
-  comm+idʳ⇒id       : Commutative _•_ → RightIdentity e _•_ → Identity e _•_
-  comm+zeˡ⇒ze       : Commutative _•_ → LeftZero      e _•_ → Zero     e _•_
-  comm+zeʳ⇒ze       : Commutative _•_ → RightZero     e _•_ → Zero     e _•_
-  comm+distrˡ⇒distr : Commutative _•_ → _•_ DistributesOverˡ _◦_ → _•_ DistributesOver _◦_
-  comm+distrʳ⇒distr : Commutative _•_ → _•_ DistributesOverʳ _◦_ → _•_ DistributesOver _◦_
+  comm+idˡ⇒id              : Commutative _•_ → LeftIdentity  e _•_ → Identity e _•_
+  comm+idʳ⇒id              : Commutative _•_ → RightIdentity e _•_ → Identity e _•_
+  comm+zeˡ⇒ze              : Commutative _•_ → LeftZero      e _•_ → Zero     e _•_
+  comm+zeʳ⇒ze              : Commutative _•_ → RightZero     e _•_ → Zero     e _•_
+  comm+invˡ⇒inv            : Commutative _•_ → LeftInverse  e _⁻¹ _•_ → Inverse e _⁻¹ _•_
+  comm+invʳ⇒inv            : Commutative _•_ → RightInverse e _⁻¹ _•_ → Inverse e _⁻¹ _•_
+  comm+distrˡ⇒distr        : Commutative _•_ → _•_ DistributesOverˡ _◦_ → _•_ DistributesOver _◦_
+  comm+distrʳ⇒distr        : Commutative _•_ → _•_ DistributesOverʳ _◦_ → _•_ DistributesOver _◦_
+  distrib+absorbs⇒distribˡ : Associative _•_ → Commutative _◦_ → _•_ Absorbs _◦_ → _◦_ Absorbs _•_ → _◦_ DistributesOver _•_ → _•_ DistributesOverˡ _◦_
   ```
 
 * Added new functions to `Algebra.Construct.DirectProduct`:

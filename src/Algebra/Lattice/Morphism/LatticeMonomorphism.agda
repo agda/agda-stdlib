@@ -9,17 +9,18 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra.Structures
-open import Algebra.Definitions
-open import Algebra.Bundles
-open import Algebra.Morphism.Structures
-import Relation.Binary.Morphism.RelMonomorphism as RelMonomorphisms
+open import Algebra
+open import Algebra.Lattice
+open import Algebra.Lattice.Morphism.Structures
+import Algebra.Consequences.Setoid as Consequences
 import Algebra.Morphism.MagmaMonomorphism as MagmaMonomorphisms
-import Algebra.Properties.Lattice as LatticeProperties
-open import Data.Product using (_,_)
+import Algebra.Lattice.Properties.Lattice as LatticeProperties
+open import Data.Product using (_,_; map)
+open import Relation.Binary
+import Relation.Binary.Morphism.RelMonomorphism as RelMonomorphisms
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning
 
-module Algebra.Morphism.LatticeMonomorphism
+module Algebra.Lattice.Morphism.LatticeMonomorphism
   {a b ℓ₁ ℓ₂} {L₁ : RawLattice a ℓ₁} {L₂ : RawLattice b ℓ₂} {⟦_⟧}
   (isLatticeMonomorphism : IsLatticeMonomorphism L₁ L₂ ⟦_⟧)
   where
@@ -68,7 +69,11 @@ module _ (⊔-⊓-isLattice : IsLattice _≈₂_ _⊔_ _⊓_) where
     ; ∨-absorbs-∧ to ⊔-absorbs-⊓
     ; ∧-absorbs-∨ to ⊓-absorbs-⊔
     )
-  open SetoidReasoning (record { isEquivalence = isEquivalence })
+
+  setoid : Setoid b ℓ₂
+  setoid = record { isEquivalence = isEquivalence }
+
+  open SetoidReasoning setoid
 
   ∨-absorbs-∧ : _Absorbs_ _≈₁_ _∨_ _∧_
   ∨-absorbs-∧ x y = injective (begin
@@ -112,8 +117,8 @@ isLattice isLattice = record
 
 isDistributiveLattice : IsDistributiveLattice _≈₂_ _⊔_ _⊓_ →
                         IsDistributiveLattice _≈₁_ _∨_ _∧_
-isDistributiveLattice isDL = record
-  { isLattice    = isLattice L.isLattice
-  ; ∨-distribʳ-∧ = distribʳ  L.isLattice L.∨-distribʳ-∧
-  } where module L = IsDistributiveLattice isDL
+isDistributiveLattice isDL = isDistributiveLatticeʳʲᵐ (record
+  { isLattice     = isLattice L.isLattice
+  ; ∨-distribʳ-∧  = distribʳ  L.isLattice L.∨-distribʳ-∧
+  }) where module L = IsDistributiveLattice isDL
 

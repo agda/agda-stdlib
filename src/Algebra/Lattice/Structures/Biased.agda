@@ -13,6 +13,7 @@
 {-# OPTIONS --without-K --safe #-}
 
 open import Algebra.Core
+open import Algebra.Consequences.Setoid
 open import Data.Product using (proj₁; proj₂)
 open import Level using (_⊔_)
 open import Relation.Binary using (Rel; Setoid; IsEquivalence)
@@ -24,6 +25,12 @@ module Algebra.Lattice.Structures.Biased
 
 open import Algebra.Definitions _≈_
 open import Algebra.Lattice.Structures _≈_
+
+private
+  variable
+    ∧ ∨ : Op₂ A
+    ¬   : Op₁ A
+    ⊤ ⊥ : A
 
 ------------------------------------------------------------------------
 -- Lattice
@@ -41,18 +48,74 @@ record IsLattice₂ (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
     isMeetSemilattice : IsMeetSemilattice ∧
     absorptive        : Absorptive ∨ ∧
 
-isLattice₂ : ∀ {∨ ∧} → IsLattice₂ ∨ ∧ → IsLattice ∨ ∧
-isLattice₂ L = record
-  { isEquivalence = ML.isEquivalence
-  ; ∨-comm        = JL.comm
-  ; ∨-assoc       = JL.assoc
-  ; ∨-cong        = JL.∨-cong
-  ; ∧-comm        = ML.comm
-  ; ∧-assoc       = ML.assoc
-  ; ∧-cong        = ML.∧-cong
-  ; absorptive    = absorptive
-  }
-  where
-    open IsLattice₂ L
-    module ML = IsMeetSemilattice isMeetSemilattice
-    module JL = IsJoinSemilattice isJoinSemilattice
+  module ML = IsMeetSemilattice isMeetSemilattice
+  module JL = IsJoinSemilattice isJoinSemilattice
+
+  isLattice₂ : IsLattice ∨ ∧
+  isLattice₂ = record
+    { isEquivalence = ML.isEquivalence
+    ; ∨-comm        = JL.comm
+    ; ∨-assoc       = JL.assoc
+    ; ∨-cong        = JL.∨-cong
+    ; ∧-comm        = ML.comm
+    ; ∧-assoc       = ML.assoc
+    ; ∧-cong        = ML.∧-cong
+    ; absorptive    = absorptive
+    }
+
+open IsLattice₂ public using (isLattice₂)
+
+------------------------------------------------------------------------
+-- DistributiveLattice
+
+-- A version of distributive lattice that is biased towards the (r)ight
+-- distributivity law for (j)oin and (m)eet.
+record IsDistributiveLatticeʳʲᵐ (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
+  field
+    isLattice    : IsLattice ∨ ∧
+    ∨-distribʳ-∧ : ∨ DistributesOverʳ ∧
+
+  open IsLattice isLattice public
+
+  setoid : Setoid a ℓ
+  setoid = record { isEquivalence = isEquivalence }
+
+  ∨-distrib-∧  = comm+distrʳ⇒distr setoid ∧-cong ∨-comm ∨-distribʳ-∧
+  ∧-distribˡ-∨ = distrib+absorbs⇒distribˡ setoid ∧-cong ∧-assoc ∨-comm ∧-absorbs-∨ ∨-absorbs-∧ ∨-distrib-∧
+  ∧-distrib-∨  = comm+distrˡ⇒distr setoid ∨-cong ∧-comm ∧-distribˡ-∨
+
+  isDistributiveLatticeʳʲᵐ : IsDistributiveLattice ∨ ∧
+  isDistributiveLatticeʳʲᵐ = record
+    { isLattice   = isLattice
+    ; ∨-distrib-∧ = ∨-distrib-∧
+    ; ∧-distrib-∨ = ∧-distrib-∨
+    }
+
+open IsDistributiveLatticeʳʲᵐ public using (isDistributiveLatticeʳʲᵐ)
+
+------------------------------------------------------------------------
+-- BooleanAlgebra
+
+-- A (r)ight biased version of a boolean algebra.
+record IsBooleanAlgebraʳ
+         (∨ ∧ : Op₂ A) (¬ : Op₁ A) (⊤ ⊥ : A) : Set (a ⊔ ℓ) where
+  field
+    isDistributiveLattice : IsDistributiveLattice ∨ ∧
+    ∨-complementʳ         : RightInverse ⊤ ¬ ∨
+    ∧-complementʳ         : RightInverse ⊥ ¬ ∧
+    ¬-cong                : Congruent₁ ¬
+
+  open IsDistributiveLattice isDistributiveLattice public
+
+  setoid : Setoid a ℓ
+  setoid = record { isEquivalence = isEquivalence }
+
+  isBooleanAlgebraʳ : IsBooleanAlgebra  ∨ ∧ ¬ ⊤ ⊥
+  isBooleanAlgebraʳ = record
+    { isDistributiveLattice = isDistributiveLattice
+    ; ∨-complement          = comm+invʳ⇒inv setoid ∨-comm ∨-complementʳ
+    ; ∧-complement          = comm+invʳ⇒inv setoid ∧-comm ∧-complementʳ
+    ; ¬-cong                = ¬-cong
+    }
+
+open IsBooleanAlgebraʳ public using (isBooleanAlgebraʳ)

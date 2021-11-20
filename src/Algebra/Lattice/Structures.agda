@@ -162,6 +162,17 @@ record IsDistributiveLattice (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
 
   open IsLattice isLattice public
 
+  ∨-distribˡ-∧ : ∨ DistributesOverˡ ∧
+  ∨-distribˡ-∧ = proj₁ ∨-distrib-∧
+
+  ∨-distribʳ-∧ : ∨ DistributesOverʳ ∧
+  ∨-distribʳ-∧ = proj₂ ∨-distrib-∧
+
+  ∧-distribˡ-∨ : ∧ DistributesOverˡ ∨
+  ∧-distribˡ-∨ = proj₁ ∧-distrib-∨
+
+  ∧-distribʳ-∨ : ∧ DistributesOverʳ ∨
+  ∧-distribʳ-∨ = proj₂ ∧-distrib-∨
 
 ------------------------------------------------------------------------
 -- Structures with 2 binary ops, 1 unary op and 2 elements.
@@ -176,3 +187,15 @@ record IsBooleanAlgebra (∨ ∧ : Op₂ A) (¬ : Op₁ A) (⊤ ⊥ : A) : Set (
     ¬-cong                : Congruent₁ ¬
 
   open IsDistributiveLattice isDistributiveLattice public
+
+  ∨-complementˡ : LeftInverse ⊤ ¬ ∨
+  ∨-complementˡ = proj₁ ∨-complement
+
+  ∨-complementʳ : RightInverse ⊤ ¬ ∨
+  ∨-complementʳ = proj₂ ∨-complement
+
+  ∧-complementˡ : LeftInverse ⊥ ¬ ∧
+  ∧-complementˡ = proj₁ ∧-complement
+
+  ∧-complementʳ : RightInverse ⊥ ¬ ∧
+  ∧-complementʳ = proj₂ ∧-complement

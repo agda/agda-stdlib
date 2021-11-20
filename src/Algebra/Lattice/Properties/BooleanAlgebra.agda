@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Some derivable properties
+-- Some derivable properties of Boolean algebras
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -9,9 +9,9 @@
 -- Disabled to prevent warnings from deprecated names
 {-# OPTIONS --warn=noUserWarning #-}
 
-open import Algebra.Bundles
+open import Algebra.Lattice.Bundles
 
-module Algebra.Properties.BooleanAlgebra
+module Algebra.Lattice.Properties.BooleanAlgebra
   {b₁ b₂} (B : BooleanAlgebra b₁ b₂)
   where
 
@@ -22,6 +22,8 @@ open import Algebra.Core
 open import Algebra.Structures _≈_
 open import Algebra.Definitions _≈_
 open import Algebra.Consequences.Setoid setoid
+open import Algebra.Bundles
+open import Algebra.Lattice.Structures _≈_
 open import Relation.Binary.Reasoning.Setoid setoid
 open import Relation.Binary
 open import Function.Base
@@ -36,28 +38,13 @@ open DistribLatticeProperties distributiveLattice public
   hiding (replace-equality)
 
 ------------------------------------------------------------------------
--- Some simple consequences
-
-∨-complementˡ : LeftInverse ⊤ ¬_ _∨_
-∨-complementˡ = comm+invʳ⇒invˡ ∨-comm ∨-complementʳ
-
-∨-complement : Inverse ⊤ ¬_ _∨_
-∨-complement = ∨-complementˡ , ∨-complementʳ
-
-∧-complementˡ : LeftInverse ⊥ ¬_ _∧_
-∧-complementˡ = comm+invʳ⇒invˡ ∧-comm ∧-complementʳ
-
-∧-complement : Inverse ⊥ ¬_ _∧_
-∧-complement = ∧-complementˡ , ∧-complementʳ
-
-------------------------------------------------------------------------
 -- The dual construction is also a boolean algebra
 
 ∧-∨-isBooleanAlgebra : IsBooleanAlgebra _∧_ _∨_ ¬_ ⊥ ⊤
 ∧-∨-isBooleanAlgebra = record
   { isDistributiveLattice = ∧-∨-isDistributiveLattice
-  ; ∨-complementʳ         = ∧-complementʳ
-  ; ∧-complementʳ         = ∨-complementʳ
+  ; ∨-complement          = ∧-complement
+  ; ∧-complement          = ∨-complement
   ; ¬-cong                = ¬-cong
   }
 
@@ -97,7 +84,7 @@ open DistribLatticeProperties distributiveLattice public
 ∧-zeroʳ x = begin
   x ∧ ⊥          ≈˘⟨ ∧-congˡ (∧-complementʳ x) ⟩
   x ∧  x  ∧ ¬ x  ≈˘⟨ ∧-assoc x x (¬ x) ⟩
-  (x ∧ x) ∧ ¬ x  ≈⟨  ∧-congʳ (∧-idempotent x) ⟩
+  (x ∧ x) ∧ ¬ x  ≈⟨  ∧-congʳ (∧-idem x) ⟩
   x       ∧ ¬ x  ≈⟨  ∧-complementʳ x ⟩
   ⊥              ∎
 
@@ -111,7 +98,7 @@ open DistribLatticeProperties distributiveLattice public
 ∨-zeroʳ x = begin
   x ∨ ⊤          ≈˘⟨ ∨-congˡ (∨-complementʳ x) ⟩
   x ∨  x  ∨ ¬ x  ≈˘⟨ ∨-assoc x x (¬ x) ⟩
-  (x ∨ x) ∨ ¬ x  ≈⟨ ∨-congʳ (∨-idempotent x) ⟩
+  (x ∨ x) ∨ ¬ x  ≈⟨ ∨-congʳ (∨-idem x) ⟩
   x       ∨ ¬ x  ≈⟨ ∨-complementʳ x ⟩
   ⊤              ∎
 
@@ -230,7 +217,7 @@ deMorgan₁ x y = lemma (x ∧ y) (¬ x ∨ ¬ y) lem₁ lem₂
     ⊥                              ∎
 
   lem₃ = begin
-    (x ∧ y) ∨ ¬ x          ≈⟨ ∨-∧-distribʳ _ _ _ ⟩
+    (x ∧ y) ∨ ¬ x          ≈⟨ ∨-distribʳ-∧ _ _ _ ⟩
     (x ∨ ¬ x) ∧ (y ∨ ¬ x)  ≈⟨ ∧-congʳ $ ∨-complementʳ _ ⟩
     ⊤ ∧ (y ∨ ¬ x)          ≈⟨ ∧-identityˡ _ ⟩
     y ∨ ¬ x                ≈⟨ ∨-comm _ _ ⟩
@@ -336,7 +323,7 @@ module XorRing
   ⊕-inverseˡ : LeftInverse ⊥ id _⊕_
   ⊕-inverseˡ x = begin
     x ⊕ x               ≈⟨ ⊕-def _ _ ⟩
-    (x ∨ x) ∧ ¬ (x ∧ x) ≈⟨ helper (∨-idempotent _) (∧-idempotent _) ⟩
+    (x ∨ x) ∧ ¬ (x ∧ x) ≈⟨ helper (∨-idem _) (∧-idem _) ⟩
     x ∧ ¬ x             ≈⟨ ∧-complementʳ _ ⟩
     ⊥                   ∎
 
@@ -378,7 +365,7 @@ module XorRing
         y ∧ (x ∧ z)  ∎
 
       lem₁ = begin
-        x ∧ (y ∧ z)        ≈˘⟨ ∧-congʳ (∧-idempotent _) ⟩
+        x ∧ (y ∧ z)        ≈˘⟨ ∧-congʳ (∧-idem _) ⟩
         (x ∧ x) ∧ (y ∧ z)  ≈⟨ ∧-assoc _ _ _ ⟩
         x ∧ (x ∧ (y ∧ z))  ≈⟨ ∧-congˡ lem₂ ⟩
         x ∧ (y ∧ (x ∧ z))  ≈˘⟨ ∧-assoc _ _ _ ⟩
@@ -404,10 +391,10 @@ module XorRing
              ((x ∨ u) ∧ (y ∨ u)) ∧
              ((x ∨ v) ∧ (y ∨ v))
     lemma₂ x y u v = begin
-        (x ∧ y) ∨ (u ∧ v)              ≈⟨ ∨-∧-distribˡ _ _ _ ⟩
-        ((x ∧ y) ∨ u) ∧ ((x ∧ y) ∨ v)  ≈⟨ ∨-∧-distribʳ _ _ _
+        (x ∧ y) ∨ (u ∧ v)              ≈⟨ ∨-distribˡ-∧ _ _ _ ⟩
+        ((x ∧ y) ∨ u) ∧ ((x ∧ y) ∨ v)  ≈⟨ ∨-distribʳ-∧ _ _ _
                                             ⟨ ∧-cong ⟩
-                                          ∨-∧-distribʳ _ _ _ ⟩
+                                          ∨-distribʳ-∧ _ _ _ ⟩
         ((x ∨ u) ∧ (y ∨ u)) ∧
         ((x ∨ v) ∧ (y ∨ v))            ∎
 
@@ -433,7 +420,7 @@ module XorRing
     (x ⊕ y) ⊕ z                                ∎
     where
     lem₁ = begin
-      ((x ∨ y) ∨ z) ∧ ((¬ x ∨ ¬ y) ∨ z)  ≈˘⟨ ∨-∧-distribʳ _ _ _ ⟩
+      ((x ∨ y) ∨ z) ∧ ((¬ x ∨ ¬ y) ∨ z)  ≈˘⟨ ∨-distribʳ-∧ _ _ _ ⟩
       ((x ∨ y) ∧ (¬ x ∨ ¬ y)) ∨ z        ≈˘⟨ ∨-congʳ $ ∧-congˡ (deMorgan₁ _ _) ⟩
       ((x ∨ y) ∧ ¬ (x ∧ y)) ∨ z          ∎
 
@@ -449,7 +436,7 @@ module XorRing
       ¬ ((x ∨ y) ∧ ¬ (x ∧ y))            ∎
 
     lem₂ = begin
-      ((x ∨ ¬ y) ∨ ¬ z) ∧ ((¬ x ∨ y) ∨ ¬ z)  ≈˘⟨ ∨-∧-distribʳ _ _ _ ⟩
+      ((x ∨ ¬ y) ∨ ¬ z) ∧ ((¬ x ∨ y) ∨ ¬ z)  ≈˘⟨ ∨-distribʳ-∧ _ _ _ ⟩
       ((x ∨ ¬ y) ∧ (¬ x ∨ y)) ∨ ¬ z          ≈⟨ ∨-congʳ lem₂′ ⟩
       ¬ ((x ∨ y) ∧ ¬ (x ∧ y)) ∨ ¬ z          ≈˘⟨ deMorgan₁ _ _ ⟩
       ¬ (((x ∨ y) ∧ ¬ (x ∧ y)) ∧ z)          ∎
@@ -571,42 +558,3 @@ _⊕_ : Op₂ Carrier
 x ⊕ y = (x ∨ y) ∧ ¬ (x ∧ y)
 
 module DefaultXorRing = XorRing _⊕_ (λ _ _ → refl)
-
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 1.1
-
-¬⊥=⊤ = ⊥≉⊤
-{-# WARNING_ON_USAGE ¬⊥=⊤
-"Warning: ¬⊥=⊤ was deprecated in v1.1.
-Please use ⊥≉⊤ instead."
-#-}
-¬⊤=⊥ = ⊤≉⊥
-{-# WARNING_ON_USAGE ¬⊤=⊥
-"Warning: ¬⊤=⊥ was deprecated in v1.1.
-Please use ⊤≉⊥ instead."
-#-}
-
--- Version 1.4
-
-replace-equality : {_≈′_ : Rel Carrier b₂} →
-                   (∀ {x y} → x ≈ y ⇔ (x ≈′ y)) →
-                   BooleanAlgebra _ _
-replace-equality {_≈′_} ≈⇔≈′ = record
-  { isBooleanAlgebra =  record
-    { isDistributiveLattice = DistributiveLattice.isDistributiveLattice
-        (DistribLatticeProperties.replace-equality distributiveLattice ≈⇔≈′)
-    ; ∨-complementʳ         = λ x → to ⟨$⟩ ∨-complementʳ x
-    ; ∧-complementʳ         = λ x → to ⟨$⟩ ∧-complementʳ x
-    ; ¬-cong                = λ i≈j → to ⟨$⟩ ¬-cong (from ⟨$⟩ i≈j)
-    }
-  } where open module E {x y} = Equivalence (≈⇔≈′ {x} {y})
-{-# WARNING_ON_USAGE replace-equality
-"Warning: replace-equality was deprecated in v1.4.
-Please use isBooleanAlgebra from `Algebra.Construct.Subst.Equality` instead."
-#-}

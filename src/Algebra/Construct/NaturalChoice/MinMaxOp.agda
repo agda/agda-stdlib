@@ -1,7 +1,8 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Properties of min and max operators specified over a total order
+-- Properties of min and max operators specified over a total
+-- preorder.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -106,62 +107,6 @@ open import Algebra.Construct.NaturalChoice.MaxOp maxOp public
 
 ⊓-⊔-absorptive : Absorptive _⊓_ _⊔_
 ⊓-⊔-absorptive = ⊓-absorbs-⊔ , ⊔-absorbs-⊓
-
-⊔-⊓-isLattice : IsLattice _⊔_ _⊓_
-⊔-⊓-isLattice = record
-  { isEquivalence = isEquivalence
-  ; ∨-comm        = ⊔-comm
-  ; ∨-assoc       = ⊔-assoc
-  ; ∨-cong        = ⊔-cong
-  ; ∧-comm        = ⊓-comm
-  ; ∧-assoc       = ⊓-assoc
-  ; ∧-cong        = ⊓-cong
-  ; absorptive    = ⊔-⊓-absorptive
-  }
-
-⊓-⊔-isLattice : IsLattice _⊓_ _⊔_
-⊓-⊔-isLattice = record
-  { isEquivalence = isEquivalence
-  ; ∨-comm        = ⊓-comm
-  ; ∨-assoc       = ⊓-assoc
-  ; ∨-cong        = ⊓-cong
-  ; ∧-comm        = ⊔-comm
-  ; ∧-assoc       = ⊔-assoc
-  ; ∧-cong        = ⊔-cong
-  ; absorptive    = ⊓-⊔-absorptive
-  }
-
-⊓-⊔-isDistributiveLattice : IsDistributiveLattice _⊓_ _⊔_
-⊓-⊔-isDistributiveLattice = record
-  { isLattice    = ⊓-⊔-isLattice
-  ; ∨-distribʳ-∧ = ⊓-distribʳ-⊔
-  }
-
-⊔-⊓-isDistributiveLattice : IsDistributiveLattice _⊔_ _⊓_
-⊔-⊓-isDistributiveLattice = record
-  { isLattice    = ⊔-⊓-isLattice
-  ; ∨-distribʳ-∧ = ⊔-distribʳ-⊓
-  }
-
-⊔-⊓-lattice : Lattice _ _
-⊔-⊓-lattice = record
-  { isLattice = ⊔-⊓-isLattice
-  }
-
-⊓-⊔-lattice : Lattice _ _
-⊓-⊔-lattice = record
-  { isLattice = ⊓-⊔-isLattice
-  }
-
-⊔-⊓-distributiveLattice : DistributiveLattice _ _
-⊔-⊓-distributiveLattice = record
-  { isDistributiveLattice = ⊔-⊓-isDistributiveLattice
-  }
-
-⊓-⊔-distributiveLattice : DistributiveLattice _ _
-⊓-⊔-distributiveLattice = record
-  { isDistributiveLattice = ⊓-⊔-isDistributiveLattice
-  }
 
 ------------------------------------------------------------------------
 -- Other joint properties

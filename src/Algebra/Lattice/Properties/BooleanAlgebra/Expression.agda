@@ -6,9 +6,9 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Algebra
+open import Algebra.Lattice
 
-module Algebra.Properties.BooleanAlgebra.Expression
+module Algebra.Lattice.Properties.BooleanAlgebra.Expression
   {b} (B : BooleanAlgebra b b)
   where
 
@@ -154,7 +154,7 @@ lift n = record
                          solve i 3
                                (λ x y z → (y and z) or x ,
                                           (y or x) and (z or x))
-                               (∨-∧-distribʳ _ _ _) _ _ _
+                               (∨-distribʳ-∧ _ _ _) _ _ _
       }
     ; ∨-complementʳ = λ _ → ext λ i →
                         solve i 1 (λ x → x or (not x) , top)
