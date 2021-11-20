@@ -148,7 +148,7 @@ jobs:
 
       - name: Golden testing
         run: |
-          ${{ env.CABAL_INSTALL }} --lib clock
+          ${{ env.CABAL_INSTALL }} clock
           make testsuite INTERACTIVE='' AGDA_EXEC='~/.cabal/bin/agda'
 
 
