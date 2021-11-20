@@ -38,7 +38,7 @@ open import Level using (Level; _⊔_)
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Binary.Properties.Setoid S using (≉-resp₂)
 open import Relation.Binary.PropositionalEquality as ≡
-  using (_≡_ ; refl; sym; cong; cong₂; subst; _≢_; inspect)
+  using (_≡_ ; refl; sym; cong; cong₂; subst; _≢_)
 open import Relation.Nullary using (yes; no; does)
 open import Relation.Nullary.Negation using (contradiction)
 

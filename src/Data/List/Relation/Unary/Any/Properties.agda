@@ -42,7 +42,7 @@ open import Function.Related as Related using (Kind; Related; SK-sym)
 open import Level using (Level)
 open import Relation.Binary as B hiding (_⇔_)
 open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; refl; inspect)
+  using (_≡_; refl)
 open import Relation.Unary as U
   using (Pred; _⟨×⟩_; _⟨→⟩_) renaming (_⊆_ to _⋐_)
 open import Relation.Nullary using (¬_; _because_; does; ofʸ; ofⁿ; yes; no)
@@ -171,9 +171,9 @@ any⁺ p (there {x = x} pxs) with p x
 ... | false = any⁺ p pxs
 
 any⁻ : ∀ (p : A → Bool) xs → T (any p xs) → Any (T ∘ p) xs
-any⁻ p (x ∷ xs) px∷xs with p x | inspect p x
-... | true  | P.[ eq ] = here (Equivalence.from T-≡ ⟨$⟩ eq)
-... | false | _        = there (any⁻ p xs px∷xs)
+any⁻ p (x ∷ xs) px∷xs with p x in eq
+... | true  = here (Equivalence.from T-≡ ⟨$⟩ eq)
+... | false = there (any⁻ p xs px∷xs)
 
 any⇔ : ∀ {p : A → Bool} → Any (T ∘ p) xs ⇔ T (any p xs)
 any⇔ = equivalence (any⁺ _) (any⁻ _ _)

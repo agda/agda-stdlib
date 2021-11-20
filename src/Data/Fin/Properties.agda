@@ -558,13 +558,13 @@ remQuot-combine {suc n} {k} 0F y rewrite splitAt-↑ˡ k y (n ℕ.* k) = refl
 remQuot-combine {suc n} {k} (suc x) y rewrite splitAt-↑ʳ k (n ℕ.* k) (combine x y) = cong (Data.Product.map₁ suc) (remQuot-combine x y)
 
 combine-remQuot : ∀ {n} k (i : Fin (n ℕ.* k)) → uncurry combine (remQuot {n} k i) ≡ i
-combine-remQuot {suc n} k i with splitAt k i | P.inspect (splitAt k) i
-... | inj₁ j | P.[ eq ] = begin
+combine-remQuot {suc n} k i with splitAt k i in eq
+... | inj₁ j = begin
   join k (n ℕ.* k) (inj₁ j)      ≡˘⟨ cong (join k (n ℕ.* k)) eq ⟩
   join k (n ℕ.* k) (splitAt k i) ≡⟨ join-splitAt k (n ℕ.* k) i ⟩
   i                              ∎
   where open ≡-Reasoning
-... | inj₂ j | P.[ eq ] = begin
+... | inj₂ j = begin
   k ↑ʳ (uncurry combine (remQuot {n} k j)) ≡⟨ cong (k ↑ʳ_) (combine-remQuot {n} k j) ⟩
   join k (n ℕ.* k) (inj₂ j)                ≡˘⟨ cong (join k (n ℕ.* k)) eq ⟩
   join k (n ℕ.* k) (splitAt k i)           ≡⟨ join-splitAt k (n ℕ.* k) i ⟩

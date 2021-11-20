@@ -61,24 +61,6 @@ _≗_ {A = A} {B = B} = Setoid._≈_ (A →-setoid B)
 →-to-⟶ = :→-to-Π
 
 ------------------------------------------------------------------------
--- Inspect
-
--- Inspect can be used when you want to pattern match on the result r
--- of some expression e, and you also need to "remember" that r ≡ e.
-
--- See README.Inspect for an explanation of how/why to use this.
-
-record Reveal_·_is_ {A : Set a} {B : A → Set b}
-                    (f : (x : A) → B x) (x : A) (y : B x) :
-                    Set (a ⊔ b) where
-  constructor [_]
-  field eq : f x ≡ y
-
-inspect : ∀ {A : Set a} {B : A → Set b}
-          (f : (x : A) → B x) (x : A) → Reveal f · x is f x
-inspect f x = [ refl ]
-
-------------------------------------------------------------------------
 -- Propositionality
 
 isPropositional : Set a → Set a
@@ -143,4 +125,25 @@ Please use lower-extensionality from `Axiom.Extensionality.Propositional` instea
 {-# WARNING_ON_USAGE ∀-extensionality
 "Warning: ∀-extensionality was deprecated in v1.0.
 Please use ∀-extensionality from `Axiom.Extensionality.Propositional` instead."
+#-}
+
+-- Version 2.0
+
+record Reveal_·_is_ {A : Set a} {B : A → Set b}
+                    (f : (x : A) → B x) (x : A) (y : B x) :
+                    Set (a ⊔ b) where
+  constructor [_]
+  field eq : f x ≡ y
+
+inspect : ∀ {A : Set a} {B : A → Set b}
+          (f : (x : A) → B x) (x : A) → Reveal f · x is f x
+inspect f x = [ refl ]
+
+{-# WARNING_ON_USAGE Reveal_·_is_
+"Warning: Reveal_·_is_ was deprecated in v2.0.
+Please use new `with ... in` syntax described at https://agda.readthedocs.io/en/v2.6.2/language/with-abstraction.html#with-abstraction-equality instead."
+#-}
+{-# WARNING_ON_USAGE inspect
+"Warning: inspect was deprecated in v2.0.
+Please use new `with ... in` syntax described at https://agda.readthedocs.io/en/v2.6.2/language/with-abstraction.html#with-abstraction-equality instead."
 #-}

@@ -333,13 +333,11 @@ module _ {P : Pred A p} where
 
   concat⁺∘concat⁻ : ∀ {n m} (xss : Vec (Vec A n) m) (p : Any P (concat xss)) →
                    concat⁺ (concat⁻ xss p) ≡ p
-  concat⁺∘concat⁻ (xs ∷ xss) p  with ++⁻ xs p | P.inspect (++⁻ xs) p
-  ... | inj₁ pxs | P.[ p=inj₁ ]
-    = P.trans (P.cong [ ++⁺ˡ , ++⁺ʳ xs ]′ (P.sym p=inj₁))
-    $ ++⁺∘++⁻ xs p
-  ... | inj₂ pxss | P.[ p=inj₂ ] rewrite concat⁺∘concat⁻ xss pxss
-    = P.trans (P.cong [ ++⁺ˡ , ++⁺ʳ xs ]′ (P.sym p=inj₂))
-    $ ++⁺∘++⁻ xs p
+  concat⁺∘concat⁻ (xs ∷ xss) p  with ++⁻ xs p in eq
+  ... | inj₁ pxs
+    = P.trans (P.cong [ ++⁺ˡ , ++⁺ʳ xs ]′ (P.sym eq)) $ ++⁺∘++⁻ xs p
+  ... | inj₂ pxss rewrite concat⁺∘concat⁻ xss pxss
+    = P.trans (P.cong [ ++⁺ˡ , ++⁺ʳ xs ]′ (P.sym eq)) $ ++⁺∘++⁻ xs p
 
   concat⁻∘concat⁺ : ∀ {n m} {xss : Vec (Vec A n) m} (p : Any (Any P) xss) →
                     concat⁻ xss (concat⁺ p) ≡ p
