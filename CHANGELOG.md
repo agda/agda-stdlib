@@ -222,6 +222,10 @@ Non-backwards compatible changes
   in order to keep another new definition of `_>>=_`, located in `DiagonalBind`
   which is also a submodule of `Data.Vec.Base`.
 
+* The constructors `+0` and `+[1+_]` from `Data.Integer.Base` are no longer 
+  exported by `Data.Rational.Base`. You will have to open `Data.Integer(.Base)`
+  directly to use them.
+
 Deprecated modules
 ------------------
 
