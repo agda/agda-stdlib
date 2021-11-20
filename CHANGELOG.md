@@ -7,7 +7,7 @@ Highlights
 ----------
 
 * A golden testing library in `Test.Golden`. This allows you to run a set
-  of tests and make sure their output matches an expected `golden' value.
+  of tests and make sure their output matches an expected `golden` value.
   The test runner has many options: filtering tests by name, dumping the
   list of failures to a file, timing the runs, coloured output, etc.
   Cf. the comments in `Test.Golden` and the standard library's own tests
