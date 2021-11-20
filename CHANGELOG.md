@@ -342,14 +342,14 @@ Deprecated names
   sym-↔   ↦   ↔-sym
   ```
 
-* In `Data.Fin.Base`: 
-two new, hopefully more memorable, names `↑ˡ` `↑ʳ` for the 'left', resp. 'right' injection of a Fin m into a 'larger' type, `Fin (m + n)`, resp. `Fin (n + m)`, with argument order to reflect the position of the Fin m argument. 
+* In `Data.Fin.Base`:
+two new, hopefully more memorable, names `↑ˡ` `↑ʳ` for the 'left', resp. 'right' injection of a Fin m into a 'larger' type, `Fin (m + n)`, resp. `Fin (n + m)`, with argument order to reflect the position of the Fin m argument.
   ```
   inject+   ↦   flip _↑ˡ_
   raise     ↦   _↑ʳ_
   ```
 
-* In `Data.Fin.Properties`: 
+* In `Data.Fin.Properties`:
   ```
   toℕ-raise       ↦ toℕ-↑ʳ
   toℕ-inject+ n i ↦ sym (toℕ-↑ˡ i n)
@@ -358,11 +358,11 @@ two new, hopefully more memorable, names `↑ˡ` `↑ʳ` for the 'left', resp. '
   Fin0↔⊥        ↦ 0↔⊥
   ```
 
-* In `Data.Vec.Properties`: 
+* In `Data.Vec.Properties`:
   ```
   []≔-++-inject+       ↦ []≔-++-↑ˡ
   ```
-  Additionally, `[]≔-++-↑ʳ`, by analogy. 
+  Additionally, `[]≔-++-↑ʳ`, by analogy.
 
 * In `Foreign.Haskell.Either` and `Foreign.Haskell.Pair`:
   ```
@@ -391,6 +391,11 @@ New modules
 * A small library for function arguments with default values:
   ```
   Data.Default
+  ```
+
+* A small library for a non-empty fresh list:
+  ```
+  Data.List.Fresh.NonEmpty
   ```
 
 * Show module for unnormalised rationals:
