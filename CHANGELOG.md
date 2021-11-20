@@ -77,7 +77,8 @@ Non-backwards compatible changes
 
 * All submodules, (e.g. `Algebra.Properties.Semilattice` or `Algebra.Morphism.Lattice`)
   have been moved to the corresponding place under `Algebra.Lattice` (e.g.
-  `Algebra.Lattice.Properties.Semilattice` or `Algebra.Lattice.Morphism.Lattice`).
+  `Algebra.Lattice.Properties.Semilattice` or `Algebra.Lattice.Morphism.Lattice`). See
+  the `Deprecated modules` section below for full details.
 
 * Changed definition of `IsDistributiveLattice` and `IsBooleanAlgebra` so that they are 
   no longer right-biased which hinders compositionality. More concretely, `IsDistributiveLattice`
@@ -287,6 +288,17 @@ Deprecated modules
   Equivalence-kind    ↦ EquivalenceKind
   ```
 
+### Moving `Algebra.Lattice` files
+
+* As discussed above the following files have been moved:
+  ```agda
+  Algebra.Properties.Semilattice               ↦ Algebra.Lattice.Properties.Semilattice
+  Algebra.Properties.Lattice                   ↦ Algebra.Lattice.Properties.Lattice
+  Algebra.Properties.DistributiveLattice       ↦ Algebra.Lattice.Properties.DistributiveLattice
+  Algebra.Properties.BooleanAlgebra            ↦ Algebra.Lattice.Properties.BooleanAlgebra
+  Algebra.Properties.BooleanAlgebra.Expression ↦ Algebra.Lattice.Properties.BooleanAlgebra.Expression
+  Algebra.Morphism.LatticeMonomorphism         ↦ Algebra.Lattice.Morphism.LatticeMonomorphism
+  ```
 
 Deprecated names
 ----------------
