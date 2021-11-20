@@ -30,6 +30,11 @@ on:
 ## To be experimented with again in the future to see if things have
 ## gotten better.
 ##
+## We use `v1-install` rather than `install` as Agda as a community
+## hasn't figured out how to manage dependencies with the new local
+## style builds (see agda/agda#4627 for details). Once this is resolved
+## we should upgrade to `install`.
+##
 ## The AGDA variable specifies the command to use to build the library.
 ## It currently passes the flag `-Werror` to ensure maximal compliance
 ## with e.g. not relying on deprecated definitions.
@@ -43,7 +48,8 @@ on:
 env:
   GHC_VERSION: 8.6.5
   CABAL_VERSION: 3.2.0.0
-  CABAL_INSTALL: cabal install --overwrite-policy=always --ghc-options='-O1 +RTS -M6G -RTS'
+  CABAL_INSTALL: cabal v1-install --ghc-options='-O1 +RTS -M6G -RTS'
+  # CABAL_INSTALL: cabal install --overwrite-policy=always --ghc-options='-O1 +RTS -M6G -RTS'
   AGDA: agda -Werror +RTS -M3.5G -H3.5G -A128M -RTS -i. -i src/
 
 jobs:
@@ -147,7 +153,7 @@ jobs:
 
       - name: Golden testing
         run: |
-          ${{ env.CABAL_INSTALL }} --lib clock
+          ${{ env.CABAL_INSTALL }} clock
           make testsuite INTERACTIVE='' AGDA_EXEC='~/.cabal/bin/agda'
 
 
