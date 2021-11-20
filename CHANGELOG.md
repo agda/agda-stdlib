@@ -195,6 +195,13 @@ Non-backwards compatible changes
   properties about the orderings themselves the second index must be provided
   explicitly.
 
+* The operation `SymClosure` on relations in
+  `Relation.Binary.Construct.Closure.Symmetric` has been reimplemented
+  as a data type `SymClosure _⟶_ a b` that is parameterized by the
+  input relation `_⟶_` (as well as the elements `a` and `b` of the
+  domain) so that `_⟶_` can be inferred, which it could not from the
+  previous implementation using the sum type `a ⟶ b ⊎ b ⟶ a`.
+
   ### Creation of `Relation.Binary.Lattice` hierarchy
   * In order to improve modularity Relation.Binary.Lattice is split out into Relation.Binary.Lattice.(Definitions/Structures/Bundles).
   ###
@@ -644,9 +651,28 @@ Other minor changes
   untilJust : IO (Maybe A) → IO A
   ```
 
+* Added new operations in `Relation.Binary.Construct.Closure.Equivalence`:
+  ```
+  fold   : IsEquivalence _∼_ → _⟶_ ⇒ _∼_ → EqClosure _⟶_ ⇒ _∼_
+  gfold  : IsEquivalence _∼_ → _⟶_ =[ f ]⇒ _∼_ → EqClosure _⟶_ =[ f ]⇒ _∼_
+  return : _⟶_ ⇒ EqClosure _⟶_
+  join   : EqClosure (EqClosure _⟶_) ⇒ EqClosure _⟶_
+  _⋆     : _⟶₁_ ⇒ EqClosure _⟶₂_ → EqClosure _⟶₁_ ⇒ EqClosure _⟶₂_
+  ```
+
+* Added new operations in `Relation.Binary.Construct.Closure.Symmetric`:
+  ```
+  fold   : Symmetric _∼_ → _⟶_ ⇒ _∼_ → SymClosure _⟶_ ⇒ _∼_
+  gfold  : Symmetric _∼_ → _⟶_ =[ f ]⇒ _∼_ → SymClosure _⟶_ =[ f ]⇒ _∼_
+  return : _⟶_ ⇒ SymClosure _⟶_
+  join   : SymClosure (SymClosure _⟶_) ⇒ SymClosure _⟶_
+  _⋆     : _⟶₁_ ⇒ SymClosure _⟶₂_ → SymClosure _⟶₁_ ⇒ SymClosure _⟶₂_
+  ```
+
 * Added new proofs in `Relation.Binary.PropositionalEquality.Properties`:
   ```
   subst-application′ : subst Q eq (f x p) ≡ f y (subst P eq p)
+  sym-cong : sym (cong f p) ≡ cong f (sym p)
   ```
 
 * Added new proofs in `Relation.Binary.HeterogeneousEquality`:
@@ -684,7 +710,7 @@ Other minor changes
 * Added new operations in
   `Relation.Binary.PropositionalEquality.Properties`:
   ```
-  J : {A : Set} {x : A} (B : (y : A) → x ≡ y → Set b)
+  J : {A : Set a} {x : A} (B : (y : A) → x ≡ y → Set b)
       {y : A} (p : x ≡ y) → B x refl → B y p
   dcong : ∀ {A : Set a} {B : A → Set b} (f : (x : A) → B x) {x y}
         → (p : x ≡ y) → subst B p (f x) ≡ f y

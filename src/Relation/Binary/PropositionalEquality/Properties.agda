@@ -26,7 +26,7 @@ private
 ------------------------------------------------------------------------
 -- Standard eliminator for the propositional equality type
 
-J : {A : Set} {x : A} (B : (y : A) → x ≡ y → Set b)
+J : {A : Set a} {x : A} (B : (y : A) → x ≡ y → Set b)
     {y : A} (p : x ≡ y) → B x refl → B y p
 J B refl b = b
 
@@ -84,6 +84,9 @@ cong-id refl = refl
 cong-∘ : ∀ {x y : A} {f : B → C} {g : A → B} (p : x ≡ y) →
          cong (f ∘ g) p ≡ cong f (cong g p)
 cong-∘ refl = refl
+
+sym-cong : ∀ {x y : A} {f : A → B} (p : x ≡ y) → sym (cong f p) ≡ cong f (sym p)
+sym-cong refl = refl
 
 trans-cong : ∀ {x y z : A} {f : A → B} (p : x ≡ y) {q : y ≡ z} →
              trans (cong f p) (cong f q) ≡ cong f (trans p q)
