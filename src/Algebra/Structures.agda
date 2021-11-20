@@ -1,8 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Some algebraic structures (not packed up with sets, operations,
--- etc.)
+-- Some algebraic structures (not packed up with sets, operations, etc.)
 ------------------------------------------------------------------------
 
 -- The contents of this module should be accessed via `Algebra`, unless
@@ -92,17 +91,6 @@ record IsCommutativeSemigroup (∙ : Op₂ A) : Set (a ⊔ ℓ) where
     ; comm    = comm
     }
 
-
-record IsSemilattice (∧ : Op₂ A) : Set (a ⊔ ℓ) where
-  field
-    isBand : IsBand ∧
-    comm   : Commutative ∧
-
-  open IsBand isBand public
-    renaming (∙-cong to ∧-cong; ∙-congˡ to ∧-congˡ; ∙-congʳ to ∧-congʳ)
-
-
-
 ------------------------------------------------------------------------
 -- Structures with 1 binary operation & 1 element
 ------------------------------------------------------------------------
@@ -166,17 +154,8 @@ record IsIdempotentCommutativeMonoid (∙ : Op₂ A)
 
   open IsCommutativeMonoid isCommutativeMonoid public
 
-
--- Idempotent commutative monoids are also known as bounded lattices.
--- Note that the BoundedLattice necessarily uses the notation inherited
--- from monoids rather than lattices.
-
-IsBoundedLattice = IsIdempotentCommutativeMonoid
-
-module IsBoundedLattice {∙ : Op₂ A}
-                        {ε : A}
-                        (isIdemCommMonoid : IsIdempotentCommutativeMonoid ∙ ε) =
-       IsIdempotentCommutativeMonoid isIdemCommMonoid
+  isBand : IsBand ∙
+  isBand = record { isSemigroup = isSemigroup ; idem = idem }
 
 
 ------------------------------------------------------------------------
@@ -273,62 +252,6 @@ record IsAbelianGroup (∙ : Op₂ A)
   open IsCommutativeMonoid isCommutativeMonoid public
     using (isCommutativeMagma; isCommutativeSemigroup)
 
-
-------------------------------------------------------------------------
--- Structures with 2 binary operations
-------------------------------------------------------------------------
-
--- Note that `IsLattice` is not defined in terms of `IsSemilattice`
--- because the idempotence laws of ∨ and ∧ can be derived from the
--- absorption laws, which makes the corresponding "idem" fields
--- redundant.  The derived idempotence laws are stated and proved in
--- `Algebra.Properties.Lattice` along with the fact that every lattice
--- consists of two semilattices.
-
-record IsLattice (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
-  field
-    isEquivalence : IsEquivalence _≈_
-    ∨-comm        : Commutative ∨
-    ∨-assoc       : Associative ∨
-    ∨-cong        : Congruent₂ ∨
-    ∧-comm        : Commutative ∧
-    ∧-assoc       : Associative ∧
-    ∧-cong        : Congruent₂ ∧
-    absorptive    : Absorptive ∨ ∧
-
-  open IsEquivalence isEquivalence public
-
-  ∨-absorbs-∧ : ∨ Absorbs ∧
-  ∨-absorbs-∧ = proj₁ absorptive
-
-  ∧-absorbs-∨ : ∧ Absorbs ∨
-  ∧-absorbs-∨ = proj₂ absorptive
-
-  ∧-congˡ : LeftCongruent ∧
-  ∧-congˡ y≈z = ∧-cong refl y≈z
-
-  ∧-congʳ : RightCongruent ∧
-  ∧-congʳ y≈z = ∧-cong y≈z refl
-
-  ∨-congˡ : LeftCongruent ∨
-  ∨-congˡ y≈z = ∨-cong refl y≈z
-
-  ∨-congʳ : RightCongruent ∨
-  ∨-congʳ y≈z = ∨-cong y≈z refl
-
-
-record IsDistributiveLattice (∨ ∧ : Op₂ A) : Set (a ⊔ ℓ) where
-  field
-    isLattice    : IsLattice ∨ ∧
-    ∨-distribʳ-∧ : ∨ DistributesOverʳ ∧
-
-  open IsLattice isLattice public
-
-  ∨-∧-distribʳ = ∨-distribʳ-∧
-  {-# WARNING_ON_USAGE ∨-∧-distribʳ
-  "Warning: ∨-∧-distribʳ was deprecated in v1.1.
-  Please use ∨-distribʳ-∧ instead."
-  #-}
 
 ------------------------------------------------------------------------
 -- Structures with 2 binary operations & 1 element
@@ -627,13 +550,3 @@ record IsCommutativeRing
     ; *-isCommutativeMonoid
     )
 
-
-record IsBooleanAlgebra
-         (∨ ∧ : Op₂ A) (¬ : Op₁ A) (⊤ ⊥ : A) : Set (a ⊔ ℓ) where
-  field
-    isDistributiveLattice : IsDistributiveLattice ∨ ∧
-    ∨-complementʳ         : RightInverse ⊤ ¬ ∨
-    ∧-complementʳ         : RightInverse ⊥ ¬ ∧
-    ¬-cong                : Congruent₁ ¬
-
-  open IsDistributiveLattice isDistributiveLattice public

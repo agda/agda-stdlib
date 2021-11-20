@@ -47,9 +47,6 @@ band = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
 commutativeSemigroup : CommutativeSemigroup c ℓ
 commutativeSemigroup = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
 
-semilattice : Semilattice c ℓ
-semilattice = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
-
 monoid : Monoid c ℓ
 monoid = record { Carrier = ⊤ ; _≈_ = λ _ _ → ⊤ }
 

@@ -1,7 +1,8 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Properties of a min operator derived from a spec over a total order.
+-- Properties of a min operator derived from a spec over a total
+-- preorder.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -142,12 +143,6 @@ x⊓y≤y x y with total x y
   ; comm        = ⊓-comm
   }
 
-⊓-isSemilattice : IsSemilattice _⊓_
-⊓-isSemilattice = record
-  { isBand = ⊓-isBand
-  ; comm   = ⊓-comm
-  }
-
 ⊓-isSelectiveMagma : IsSelectiveMagma _⊓_
 ⊓-isSelectiveMagma = record
   { isMagma = ⊓-isMagma
@@ -161,7 +156,7 @@ x⊓y≤y x y with total x y
   }
 
 ------------------------------------------------------------------------
--- Raw bandles
+-- Raw bundles
 
 ⊓-rawMagma : RawMagma _ _
 ⊓-rawMagma = record { _≈_ = _≈_ ; _∙_ = _⊓_ }
@@ -187,11 +182,6 @@ x⊓y≤y x y with total x y
 ⊓-commutativeSemigroup : CommutativeSemigroup _ _
 ⊓-commutativeSemigroup = record
   { isCommutativeSemigroup = ⊓-isCommutativeSemigroup
-  }
-
-⊓-semilattice : Semilattice _ _
-⊓-semilattice = record
-  { isSemilattice = ⊓-isSemilattice
   }
 
 ⊓-selectiveMagma : SelectiveMagma _ _

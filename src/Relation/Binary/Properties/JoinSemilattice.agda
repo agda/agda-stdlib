@@ -13,8 +13,7 @@ module Relation.Binary.Properties.JoinSemilattice
 
 open JoinSemilattice J
 
-import Algebra as Alg
-import Algebra.Structures as Alg
+import Algebra.Lattice as Alg
 open import Algebra.Definitions _≈_
 open import Data.Product
 open import Function.Base using (_∘_; flip)

@@ -7,7 +7,7 @@ Highlights
 ----------
 
 * A golden testing library in `Test.Golden`. This allows you to run a set
-  of tests and make sure their output matches an expected `golden' value.
+  of tests and make sure their output matches an expected `golden` value.
   The test runner has many options: filtering tests by name, dumping the
   list of failures to a file, timing the runs, coloured output, etc.
   Cf. the comments in `Test.Golden` and the standard library's own tests
@@ -31,19 +31,11 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
-* In `Algebra.Morphism.Structures`, `IsNearSemiringHomomorphism`,
-  `IsSemiringHomomorphism`, and `IsRingHomomorphism` have been redeisgned to
-  build up from `IsMonoidHomomorphism`, `IsNearSemiringHomomorphism`, and
-  `IsSemiringHomomorphism` respectively, adding a single property at each step.
-  This means that they no longer need to have two separate proofs of
-  `IsRelHomomorphism`. Similarly, `IsLatticeHomomorphism` is now built as
-  `IsRelHomomorphism` along with proofs that `_∧_` and `_∨_` are homorphic.
+#### Removed deprecated names
 
-  Also, `⁻¹-homo` in `IsRingHomomorphism` has been renamed to `-‿homo`.
+* All modules and names that were deprecated prior to v1.0 have been removed.
 
-* move definition of `_>>=_` under `Data.Vec.Base` to its submodule `CartesianBind`
-  in order to keep another new definition of `_>>=_`, located in `DiagonalBind`
-  which is also a submodule of `Data.Vec.Base`.
+### Improvements to pretty printing and regexes
 
 * In `Text.Pretty`, `Doc` is now a record rather than a type alias. This
   helps Agda reconstruct the `width` parameter when the module is opened
@@ -75,9 +67,64 @@ Non-backwards compatible changes
   So `[a-zA-Z]+.agdai?` run on "the path _build/Main.agdai corresponds to"
   will return "Main.agdai" when it used to be happy to just return "n.agda".
 
-#### Removed deprecated names
 
-* All modules and names that were deprecated prior to v1.0 have been removed.
+### Refactoring of algebraic lattice hierarchy
+
+* In order to improve modularity and consistency with `Relation.Binary.Lattice`, 
+  the structures & bundles for `Semilattice`, `Lattice`, `DistributiveLattice`
+  & `BooleanAlgebra` have been moved out of the `Algebra` modules and into their
+  own hierarchy in `Algebra.Lattice`.
+
+* All submodules, (e.g. `Algebra.Properties.Semilattice` or `Algebra.Morphism.Lattice`)
+  have been moved to the corresponding place under `Algebra.Lattice` (e.g.
+  `Algebra.Lattice.Properties.Semilattice` or `Algebra.Lattice.Morphism.Lattice`). See
+  the `Deprecated modules` section below for full details.
+
+* Changed definition of `IsDistributiveLattice` and `IsBooleanAlgebra` so that they are 
+  no longer right-biased which hinders compositionality. More concretely, `IsDistributiveLattice`
+  now has fields:
+  ```agda
+  ∨-distrib-∧ : ∨ DistributesOver ∧
+  ∧-distrib-∨ : ∧ DistributesOver ∨
+  ```
+  instead of
+  ```agda
+  ∨-distribʳ-∧ : ∨ DistributesOverʳ ∧
+  ```
+  and `IsBooleanAlgebra` now has fields:
+  ```
+  ∨-complement : Inverse ⊤ ¬ ∨
+  ∧-complement : Inverse ⊥ ¬ ∧
+  ```
+  instead of:
+  ```agda
+  ∨-complementʳ : RightInverse ⊤ ¬ ∨
+  ∧-complementʳ : RightInverse ⊥ ¬ ∧
+  ```
+
+* To allow construction of these structures via their old form, smart constructors
+  have been added to a new module `Algebra.Lattice.Structures.Biased`, which are by
+  re-exported automatically by `Algebra.Lattice`. For example, if before you wrote:
+  ```agda
+  ∧-∨-isDistributiveLattice = record
+    { isLattice    = ∧-∨-isLattice
+    ; ∨-distribʳ-∧ = ∨-distribʳ-∧
+    }
+  ```
+  you can use the smart constructor `isDistributiveLatticeʳʲᵐ` to write:
+  ```agda
+  ∧-∨-isDistributiveLattice = isDistributiveLatticeʳʲᵐ (record
+    { isLattice    = ∧-∨-isLattice
+    ; ∨-distribʳ-∧ = ∨-distribʳ-∧
+    })
+  ```
+  without having to prove full distributivity.
+
+* Added new `IsBoundedSemilattice`/`BoundedSemilattice` records.
+
+* Added new aliases `Is(Meet/Join)(Bounded)Semilattice` for `Is(Bounded)Semilattice`
+  which can be used to indicate meet/join-ness of the original structures.
+
 
 #### Proofs of non-zeroness/positivity/negativity as instance arguments
 
@@ -202,9 +249,23 @@ Non-backwards compatible changes
   domain) so that `_⟶_` can be inferred, which it could not from the
   previous implementation using the sum type `a ⟶ b ⊎ b ⟶ a`.
 
-  ### Creation of `Relation.Binary.Lattice` hierarchy
-  * In order to improve modularity Relation.Binary.Lattice is split out into Relation.Binary.Lattice.(Definitions/Structures/Bundles).
-  ###
+* In `Algebra.Morphism.Structures`, `IsNearSemiringHomomorphism`,
+  `IsSemiringHomomorphism`, and `IsRingHomomorphism` have been redeisgned to
+  build up from `IsMonoidHomomorphism`, `IsNearSemiringHomomorphism`, and
+  `IsSemiringHomomorphism` respectively, adding a single property at each step.
+  This means that they no longer need to have two separate proofs of
+  `IsRelHomomorphism`. Similarly, `IsLatticeHomomorphism` is now built as
+  `IsRelHomomorphism` along with proofs that `_∧_` and `_∨_` are homorphic.
+
+  Also, `⁻¹-homo` in `IsRingHomomorphism` has been renamed to `-‿homo`.
+
+* Moved definition of `_>>=_` under `Data.Vec.Base` to its submodule `CartesianBind`
+  in order to keep another new definition of `_>>=_`, located in `DiagonalBind`
+  which is also a submodule of `Data.Vec.Base`.
+
+* The constructors `+0` and `+[1+_]` from `Data.Integer.Base` are no longer 
+  exported by `Data.Rational.Base`. You will have to open `Data.Integer(.Base)`
+  directly to use them.
 
 Deprecated modules
 ------------------
@@ -227,6 +288,17 @@ Deprecated modules
   Equivalence-kind    ↦ EquivalenceKind
   ```
 
+### Moving `Algebra.Lattice` files
+
+* As discussed above the following files have been moved:
+  ```agda
+  Algebra.Properties.Semilattice               ↦ Algebra.Lattice.Properties.Semilattice
+  Algebra.Properties.Lattice                   ↦ Algebra.Lattice.Properties.Lattice
+  Algebra.Properties.DistributiveLattice       ↦ Algebra.Lattice.Properties.DistributiveLattice
+  Algebra.Properties.BooleanAlgebra            ↦ Algebra.Lattice.Properties.BooleanAlgebra
+  Algebra.Properties.BooleanAlgebra.Expression ↦ Algebra.Lattice.Properties.BooleanAlgebra.Expression
+  Algebra.Morphism.LatticeMonomorphism         ↦ Algebra.Lattice.Morphism.LatticeMonomorphism
+  ```
 
 Deprecated names
 ----------------
@@ -411,6 +483,15 @@ New modules
   Function.Properties.Surjection
   ```
 
+* In order to improve modularity, the contents of `Relation.Binary.Lattice` has been 
+  split out into the standard:
+  ```
+  Relation.Binary.Lattice.Definitions
+  Relation.Binary.Lattice.Structures
+  Relation.Binary.Lattice.Bundles
+  ```
+  All contents is re-exported by `Relation.Binary.Lattice` as before.
+
 * Both versions of equality on predications are equivalences
   ```
   Relation.Unary.Relation.Binary.Equality
@@ -465,12 +546,15 @@ Other minor changes
 
 * Added new proofs to `Algebra.Consequences.Setoid`:
   ```agda
-  comm+idˡ⇒id       : Commutative _•_ → LeftIdentity  e _•_ → Identity e _•_
-  comm+idʳ⇒id       : Commutative _•_ → RightIdentity e _•_ → Identity e _•_
-  comm+zeˡ⇒ze       : Commutative _•_ → LeftZero      e _•_ → Zero     e _•_
-  comm+zeʳ⇒ze       : Commutative _•_ → RightZero     e _•_ → Zero     e _•_
-  comm+distrˡ⇒distr : Commutative _•_ → _•_ DistributesOverˡ _◦_ → _•_ DistributesOver _◦_
-  comm+distrʳ⇒distr : Commutative _•_ → _•_ DistributesOverʳ _◦_ → _•_ DistributesOver _◦_
+  comm+idˡ⇒id              : Commutative _•_ → LeftIdentity  e _•_ → Identity e _•_
+  comm+idʳ⇒id              : Commutative _•_ → RightIdentity e _•_ → Identity e _•_
+  comm+zeˡ⇒ze              : Commutative _•_ → LeftZero      e _•_ → Zero     e _•_
+  comm+zeʳ⇒ze              : Commutative _•_ → RightZero     e _•_ → Zero     e _•_
+  comm+invˡ⇒inv            : Commutative _•_ → LeftInverse  e _⁻¹ _•_ → Inverse e _⁻¹ _•_
+  comm+invʳ⇒inv            : Commutative _•_ → RightInverse e _⁻¹ _•_ → Inverse e _⁻¹ _•_
+  comm+distrˡ⇒distr        : Commutative _•_ → _•_ DistributesOverˡ _◦_ → _•_ DistributesOver _◦_
+  comm+distrʳ⇒distr        : Commutative _•_ → _•_ DistributesOverʳ _◦_ → _•_ DistributesOver _◦_
+  distrib+absorbs⇒distribˡ : Associative _•_ → Commutative _◦_ → _•_ Absorbs _◦_ → _◦_ Absorbs _•_ → _◦_ DistributesOver _•_ → _•_ DistributesOverˡ _◦_
   ```
 
 * Added new functions to `Algebra.Construct.DirectProduct`:

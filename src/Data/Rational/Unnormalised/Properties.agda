@@ -9,10 +9,12 @@
 module Data.Rational.Unnormalised.Properties where
 
 open import Algebra
-import Algebra.Consequences.Setoid as FC
+open import Algebra.Lattice
+import Algebra.Consequences.Setoid as Consequences
 open import Algebra.Consequences.Propositional
 open import Algebra.Construct.NaturalChoice.Base
 import Algebra.Construct.NaturalChoice.MinMaxOp as MinMaxOp
+import Algebra.Lattice.Construct.NaturalChoice.MinMaxOp as LatticeMinMaxOp
 open import Data.Bool.Base using (T; true; false)
 open import Data.Nat.Base as ℕ using (suc; pred)
 import Data.Nat.Properties as ℕ
@@ -1072,7 +1074,7 @@ p≤q⇒0≤q-p {p} {q} p≤q = begin
 *-zeroˡ p = *≡* refl
 
 *-zeroʳ : RightZero _≃_ 0ℚᵘ _*_
-*-zeroʳ = FC.comm+zeˡ⇒zeʳ ≃-setoid *-comm *-zeroˡ
+*-zeroʳ = Consequences.comm+zeˡ⇒zeʳ ≃-setoid *-comm *-zeroˡ
 
 *-zero : Zero _≃_ 0ℚᵘ _*_
 *-zero = *-zeroˡ , *-zeroʳ
@@ -1091,7 +1093,7 @@ p≤q⇒0≤q-p {p} {q} p≤q = begin
   in *≡* eq where open ℤ-solver
 
 *-distribʳ-+ : _DistributesOverʳ_ _≃_ _*_ _+_
-*-distribʳ-+ = FC.comm+distrˡ⇒distrʳ ≃-setoid +-cong *-comm *-distribˡ-+
+*-distribʳ-+ = Consequences.comm+distrˡ⇒distrʳ ≃-setoid +-cong *-comm *-distribˡ-+
 
 *-distrib-+ : _DistributesOver_ _≃_ _*_ _+_
 *-distrib-+ = *-distribˡ-+ , *-distribʳ-+
@@ -1402,7 +1404,8 @@ p≥q⇒p⊓q≃q {p} {q} p≥q with p ≤ᵇ q | inspect (p ≤ᵇ_) q
 -- Derived properties of _⊓_ and _⊔_
 
 private
-  module ⊓-⊔-properties = MinMaxOp ⊓-operator ⊔-operator
+  module ⊓-⊔-properties        = MinMaxOp        ⊓-operator ⊔-operator
+  module ⊓-⊔-latticeProperties = LatticeMinMaxOp ⊓-operator ⊔-operator
 
 open ⊓-⊔-properties public
   using
@@ -1437,39 +1440,25 @@ open ⊓-⊔-properties public
   ; ⊓-isSemigroup             -- : IsSemigroup _≃_ _⊓_
   ; ⊓-isCommutativeSemigroup  -- : IsCommutativeSemigroup _≃_ _⊓_
   ; ⊓-isBand                  -- : IsBand _≃_ _⊓_
-  ; ⊓-isSemilattice           -- : IsSemilattice _≃_ _⊓_
   ; ⊓-isSelectiveMagma        -- : IsSelectiveMagma _≃_ _⊓_
 
   ; ⊔-isMagma                 -- : IsMagma _≃_ _⊔_
   ; ⊔-isSemigroup             -- : IsSemigroup _≃_ _⊔_
   ; ⊔-isCommutativeSemigroup  -- : IsCommutativeSemigroup _≃_ _⊔_
   ; ⊔-isBand                  -- : IsBand _≃_ _⊔_
-  ; ⊔-isSemilattice           -- : IsSemilattice _≃_ _⊔_
   ; ⊔-isSelectiveMagma        -- : IsSelectiveMagma _≃_ _⊔_
-
-  ; ⊔-⊓-isLattice             -- : IsLattice _≃_ _⊔_ _⊓_
-  ; ⊓-⊔-isLattice             -- : IsLattice _≃_ _⊓_ _⊔_
-  ; ⊔-⊓-isDistributiveLattice -- : IsDistributiveLattice _≃_ _⊔_ _⊓_
-  ; ⊓-⊔-isDistributiveLattice -- : IsDistributiveLattice _≃_ _⊓_ _⊔_
 
   ; ⊓-magma                   -- : Magma _ _
   ; ⊓-semigroup               -- : Semigroup _ _
   ; ⊓-band                    -- : Band _ _
   ; ⊓-commutativeSemigroup    -- : CommutativeSemigroup _ _
-  ; ⊓-semilattice             -- : Semilattice _ _
   ; ⊓-selectiveMagma          -- : SelectiveMagma _ _
 
   ; ⊔-magma                   -- : Magma _ _
   ; ⊔-semigroup               -- : Semigroup _ _
   ; ⊔-band                    -- : Band _ _
   ; ⊔-commutativeSemigroup    -- : CommutativeSemigroup _ _
-  ; ⊔-semilattice             -- : Semilattice _ _
   ; ⊔-selectiveMagma          -- : SelectiveMagma _ _
-
-  ; ⊔-⊓-lattice               -- : Lattice _ _
-  ; ⊓-⊔-lattice               -- : Lattice _ _
-  ; ⊔-⊓-distributiveLattice   -- : DistributiveLattice _ _
-  ; ⊓-⊔-distributiveLattice   -- : DistributiveLattice _ _
 
   ; ⊓-triangulate             -- : ∀ p q r → p ⊓ q ⊓ r ≃ (p ⊓ q) ⊓ (q ⊓ r)
   ; ⊔-triangulate             -- : ∀ p q r → p ⊔ q ⊔ r ≃ (p ⊔ q) ⊔ (q ⊔ r)
@@ -1505,6 +1494,23 @@ open ⊓-⊔-properties public
   ; x⊔y≤z⇒y≤z  to p⊔q≤r⇒q≤r      -- : ∀ p q {r} → p ⊔ q ≤ r → q ≤ r
 
   ; x⊓y≤x⊔y    to p⊓q≤p⊔q        -- : ∀ p q → p ⊓ q ≤ p ⊔ q
+  )
+
+open ⊓-⊔-latticeProperties public
+  using
+  ( ⊓-semilattice             -- : Semilattice _ _
+  ; ⊔-semilattice             -- : Semilattice _ _
+  ; ⊔-⊓-lattice               -- : Lattice _ _
+  ; ⊓-⊔-lattice               -- : Lattice _ _
+  ; ⊔-⊓-distributiveLattice   -- : DistributiveLattice _ _
+  ; ⊓-⊔-distributiveLattice   -- : DistributiveLattice _ _
+
+  ; ⊓-isSemilattice           -- : IsSemilattice _≃_ _⊓_
+  ; ⊔-isSemilattice           -- : IsSemilattice _≃_ _⊔_
+  ; ⊔-⊓-isLattice             -- : IsLattice _≃_ _⊔_ _⊓_
+  ; ⊓-⊔-isLattice             -- : IsLattice _≃_ _⊓_ _⊔_
+  ; ⊔-⊓-isDistributiveLattice -- : IsDistributiveLattice _≃_ _⊔_ _⊓_
+  ; ⊓-⊔-isDistributiveLattice -- : IsDistributiveLattice _≃_ _⊓_ _⊔_
   )
 
 ------------------------------------------------------------------------
