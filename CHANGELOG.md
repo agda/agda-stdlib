@@ -496,11 +496,22 @@ Other minor changes
   ```
   and their corresponding algebraic substructures.
 
-* Added a new `Inverse` bundle in `Data.Fin.Properties`:
+* Added new functions in `Data.Fin.Base`:
   ```
-  1↔⊤ : Fin 1 ↔ ⊤
-  ↑ˡ-injective : ∀ {m} n (i j : Fin m) → i ↑ˡ n ≡ j ↑ˡ n → i ≡ j
-  ↑ʳ-injective : ∀ {m} n (i j : Fin m) → n ↑ʳ i ≡ n ↑ʳ j → i ≡ j
+  finToFun  : Fin (n ^ m) → (Fin m → Fin n)
+  funToFin  : (Fin m → Fin n) → Fin (n ^ m)
+  quotient  : Fin (n * k) → Fin n
+  remainder : Fin (n * k) → Fin k
+  ```
+
+* Added new proofs and `Inverse` bundles in `Data.Fin.Properties`:
+  ```
+  1↔⊤                : Fin 1 ↔ ⊤
+  ↑ˡ-injective       : i ↑ˡ n ≡ j ↑ˡ n → i ≡ j
+  ↑ʳ-injective       : n ↑ʳ i ≡ n ↑ʳ j → i ≡ j
+  finTofun-funToFin  : funToFin ∘ finToFun ≗ id
+  funTofin-funToFun  : finToFun (funToFin f) ≗ f
+  ^↔→                : Extensionality _ _ → Fin (n ^ m) ↔ (Fin m → Fin n)
   ```
 
 * Added new proofs in `Data.Integer.Properties`:
