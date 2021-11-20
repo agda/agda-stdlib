@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Boolean algebra expressions
+-- This module is DEPRECATED.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

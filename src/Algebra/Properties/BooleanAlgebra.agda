@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Some derivable properties
+-- This module is DEPRECATED.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

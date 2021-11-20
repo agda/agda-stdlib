@@ -1,8 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- This module is DEPRECATED. Please use
--- `Algebra.Lattice.Properties.DistributiveLattice` instead.
+-- This module is DEPRECATED.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
