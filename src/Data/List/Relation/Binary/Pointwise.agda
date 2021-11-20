@@ -281,29 +281,6 @@ Pointwise-≡↔≡ = record
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 0.15
-
-Rel    = Pointwise
-{-# WARNING_ON_USAGE Rel
-"Warning: Rel was deprecated in v0.15.
-Please use Pointwise instead."
-#-}
-Rel≡⇒≡ = Pointwise-≡⇒≡
-{-# WARNING_ON_USAGE Rel≡⇒≡
-"Warning: Rel≡⇒≡ was deprecated in v0.15.
-Please use Pointwise-≡⇒≡ instead."
-#-}
-≡⇒Rel≡ = ≡⇒Pointwise-≡
-{-# WARNING_ON_USAGE ≡⇒Rel≡
-"Warning: ≡⇒Rel≡ was deprecated in v0.15.
-Please use ≡⇒Pointwise-≡ instead."
-#-}
-Rel↔≡  = Pointwise-≡↔≡
-{-# WARNING_ON_USAGE Rel↔≡
-"Warning: Rel↔≡ was deprecated in v0.15.
-Please use Pointwise-≡↔≡ instead."
-#-}
-
 -- Version 1.0
 
 decidable-≡ = ≡-dec

@@ -586,20 +586,20 @@ module _ {P : B → Set p} where
 
   map-with-∈⁺ : ∀ {xs : List A} (f : ∀ {x} → x ∈ xs → B) →
                 (∃₂ λ x (x∈xs : x ∈ xs) → P (f x∈xs)) →
-                Any P (map-with-∈ xs f)
+                Any P (mapWith∈ xs f)
   map-with-∈⁺ f (_ , here refl  , p) = here p
   map-with-∈⁺ f (_ , there x∈xs , p) =
     there $ map-with-∈⁺ (f ∘ there) (_ , x∈xs , p)
 
   map-with-∈⁻ : ∀ (xs : List A) (f : ∀ {x} → x ∈ xs → B) →
-                Any P (map-with-∈ xs f) →
+                Any P (mapWith∈ xs f) →
                 ∃₂ λ x (x∈xs : x ∈ xs) → P (f x∈xs)
   map-with-∈⁻ (y ∷ xs) f (here  p) = (y , here refl , p)
   map-with-∈⁻ (y ∷ xs) f (there p) =
     Prod.map₂ (Prod.map there id) $ map-with-∈⁻ xs (f ∘ there) p
 
   map-with-∈↔ : ∀ {xs : List A} {f : ∀ {x} → x ∈ xs → B} →
-                (∃₂ λ x (x∈xs : x ∈ xs) → P (f x∈xs)) ↔ Any P (map-with-∈ xs f)
+                (∃₂ λ x (x∈xs : x ∈ xs) → P (f x∈xs)) ↔ Any P (mapWith∈ xs f)
   map-with-∈↔ = inverse (map-with-∈⁺ _) (map-with-∈⁻ _ _) (from∘to _) (to∘from _ _)
     where
     from∘to : ∀ {xs : List A} (f : ∀ {x} → x ∈ xs → B)
@@ -610,7 +610,7 @@ module _ {P : B → Set p} where
       rewrite from∘to (f ∘ there) (_ , x∈xs , p) = refl
 
     to∘from : ∀ (xs : List A) (f : ∀ {x} → x ∈ xs → B)
-              (p : Any P (map-with-∈ xs f)) →
+              (p : Any P (mapWith∈ xs f)) →
               map-with-∈⁺ f (map-with-∈⁻ xs f p) ≡ p
     to∘from (y ∷ xs) f (here  p) = refl
     to∘from (y ∷ xs) f (there p) =

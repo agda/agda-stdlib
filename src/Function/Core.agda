@@ -4,7 +4,7 @@
 -- Core definitions for Functions
 ------------------------------------------------------------------------
 
--- The contents of this file should usually be accessed from `Function`.
+-- The contents of this file should always be accessed from `Function`.
 
 {-# OPTIONS --without-K --safe #-}
 

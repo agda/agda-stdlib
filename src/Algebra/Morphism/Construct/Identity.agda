@@ -97,7 +97,7 @@ module _ (R : RawNearSemiring c ℓ) (open RawNearSemiring R) (refl : Reflexive 
   isNearSemiringHomomorphism : IsNearSemiringHomomorphism id
   isNearSemiringHomomorphism = record
     { +-isMonoidHomomorphism = isMonoidHomomorphism _ refl
-    ; *-isMagmaHomomorphism  = isMagmaHomomorphism  _ refl
+    ; *-homo                 = λ _ _ → refl
     }
 
   isNearSemiringMonomorphism : IsNearSemiringMonomorphism id
@@ -117,8 +117,8 @@ module _ (R : RawSemiring c ℓ) (open RawSemiring R) (refl : Reflexive _≈_) w
 
   isSemiringHomomorphism : IsSemiringHomomorphism id
   isSemiringHomomorphism = record
-    { +-isMonoidHomomorphism = isMonoidHomomorphism _ refl
-    ; *-isMonoidHomomorphism = isMonoidHomomorphism _ refl
+    { isNearSemiringHomomorphism = isNearSemiringHomomorphism _ refl
+    ; 1#-homo                    = refl
     }
 
   isSemiringMonomorphism : IsSemiringMonomorphism id
@@ -138,8 +138,8 @@ module _ (R : RawRing c ℓ) (open RawRing R) (refl : Reflexive _≈_) where
 
   isRingHomomorphism : IsRingHomomorphism id
   isRingHomomorphism = record
-    { +-isGroupHomomorphism  = isGroupHomomorphism  _ refl
-    ; *-isMonoidHomomorphism = isMonoidHomomorphism _ refl
+    { isSemiringHomomorphism = isSemiringHomomorphism _ refl
+    ; -‿homo                 = λ _ → refl
     }
 
   isRingMonomorphism : IsRingMonomorphism id
@@ -159,8 +159,9 @@ module _ (L : RawLattice c ℓ) (open RawLattice L) (refl : Reflexive _≈_) whe
 
   isLatticeHomomorphism : IsLatticeHomomorphism id
   isLatticeHomomorphism = record
-    { ∧-isMagmaHomomorphism = isMagmaHomomorphism _ refl
-    ; ∨-isMagmaHomomorphism = isMagmaHomomorphism _ refl
+    { isRelHomomorphism = isRelHomomorphism _
+    ; ∧-homo            = λ _ _ → refl
+    ; ∨-homo            = λ _ _ → refl
     }
 
   isLatticeMonomorphism : IsLatticeMonomorphism id

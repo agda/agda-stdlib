@@ -264,7 +264,7 @@ n≤0⇒n≡0 z≤n = refl
 -- Relationships between the various relations
 
 <⇒≤ : _<_ ⇒ _≤_
-<⇒≤ (s≤s m≤n) = ≤-trans m≤n (≤-step ≤-refl)
+<⇒≤ (s≤s m≤n) = ≤-step m≤n
 
 <⇒≢ : _<_ ⇒ _≢_
 <⇒≢ m<n refl = 1+n≰n m<n
@@ -589,6 +589,9 @@ m≢1+n+m m m≡1+n+m = m≢1+m+n m (trans m≡1+n+m (cong suc (+-comm _ m)))
 m+1+n≢m : ∀ m {n} → m + suc n ≢ m
 m+1+n≢m (suc m) = (m+1+n≢m m) ∘ suc-injective
 
+m+1+n≢n : ∀ m {n} → m + suc n ≢ n
+m+1+n≢n m {n} rewrite +-suc m n = ≢-sym (m≢1+n+m n)
+
 m+1+n≢0 : ∀ m {n} → m + suc n ≢ 0
 m+1+n≢0 m {n} rewrite +-suc m n = λ()
 
@@ -869,18 +872,20 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
 ------------------------------------------------------------------------
 -- Other properties of _*_ and _≡_
 
-*-cancelʳ-≡ : ∀ m n {o} → m * suc o ≡ n * suc o → m ≡ n
-*-cancelʳ-≡ zero    zero        eq = refl
-*-cancelʳ-≡ (suc m) (suc n) {o} eq =
+*-cancelʳ-≡ : ∀ m n {o} .{{_ : NonZero o}} → m * o ≡ n * o → m ≡ n
+*-cancelʳ-≡ zero    zero    {suc o} eq = refl
+*-cancelʳ-≡ (suc m) (suc n) {suc o} eq =
   cong suc (*-cancelʳ-≡ m n (+-cancelˡ-≡ (suc o) eq))
 
-*-cancelˡ-≡ : ∀ {m n} o → suc o * m ≡ suc o * n → m ≡ n
-*-cancelˡ-≡ {m} {n} o eq = *-cancelʳ-≡ m n
-  (subst₂ _≡_ (*-comm (suc o) m) (*-comm (suc o) n) eq)
+*-cancelˡ-≡ : ∀ {m n} o .{{_ : NonZero o}} → o * m ≡ o * n → m ≡ n
+*-cancelˡ-≡ {m} {n} o rewrite *-comm o m | *-comm o n = *-cancelʳ-≡ m n
 
 m*n≡0⇒m≡0∨n≡0 : ∀ m {n} → m * n ≡ 0 → m ≡ 0 ⊎ n ≡ 0
 m*n≡0⇒m≡0∨n≡0 zero    {n}     eq = inj₁ refl
 m*n≡0⇒m≡0∨n≡0 (suc m) {zero}  eq = inj₂ refl
+
+m*n≡0⇒m≡0 : ∀ m n .{{_ : NonZero n}} → m * n ≡ 0 → m ≡ 0
+m*n≡0⇒m≡0 zero (suc _) eq = refl
 
 m*n≡1⇒m≡1 : ∀ m n → m * n ≡ 1 → m ≡ 1
 m*n≡1⇒m≡1 (suc zero)    n             _  = refl
@@ -902,13 +907,13 @@ m*n≡1⇒n≡1 m n eq = m*n≡1⇒m≡1 n m (trans (*-comm n m) eq)
 ------------------------------------------------------------------------
 -- Other properties of _*_ and _≤_/_<_
 
-*-cancelʳ-≤ : ∀ m n o → m * suc o ≤ n * suc o → m ≤ n
-*-cancelʳ-≤ zero    _       _ _  = z≤n
-*-cancelʳ-≤ (suc m) (suc n) o le =
-  s≤s (*-cancelʳ-≤ m n o (+-cancelˡ-≤ (suc o) le))
+*-cancelʳ-≤ : ∀ m n o .{{_ : NonZero o}} → m * o ≤ n * o → m ≤ n
+*-cancelʳ-≤ zero    _       (suc o) _  = z≤n
+*-cancelʳ-≤ (suc m) (suc n) (suc o) le =
+  s≤s (*-cancelʳ-≤ m n (suc o) (+-cancelˡ-≤ (suc o) le))
 
-*-cancelˡ-≤ : ∀ {m n} o → suc o * m ≤ suc o * n → m ≤ n
-*-cancelˡ-≤ {m} {n} o rewrite *-comm (suc o) m | *-comm (suc o) n = *-cancelʳ-≤ m n o
+*-cancelˡ-≤ : ∀ {m n} o .{{_ : NonZero o}} → o * m ≤ o * n → m ≤ n
+*-cancelˡ-≤ {m} {n} o rewrite *-comm o m | *-comm o n = *-cancelʳ-≤ m n o
 
 *-mono-≤ : _*_ Preserves₂ _≤_ ⟶ _≤_ ⟶ _≤_
 *-mono-≤ z≤n       _   = z≤n
@@ -925,32 +930,32 @@ m*n≡1⇒n≡1 m n eq = m*n≡1⇒m≡1 n m (trans (*-comm n m) eq)
 *-mono-< (s≤s (s≤s m≤n)) (s≤s u≤v) =
   +-mono-< (s≤s u≤v) (*-mono-< (s≤s m≤n) (s≤s u≤v))
 
-*-monoˡ-< : ∀ n → (_* suc n) Preserves _<_ ⟶ _<_
-*-monoˡ-< n (s≤s z≤n)       = s≤s z≤n
-*-monoˡ-< n (s≤s (s≤s m≤o)) =
-  +-mono-≤-< (≤-refl {suc n}) (*-monoˡ-< n (s≤s m≤o))
+*-monoˡ-< : ∀ n .{{_ : NonZero n}} → (_* n) Preserves _<_ ⟶ _<_
+*-monoˡ-< (suc n) (s≤s z≤n)       = s≤s z≤n
+*-monoˡ-< (suc n) (s≤s (s≤s m≤o)) =
+  +-mono-≤-< (≤-refl {suc n}) (*-monoˡ-< (suc n) (s≤s m≤o))
 
-*-monoʳ-< : ∀ n → (suc n *_) Preserves _<_ ⟶ _<_
-*-monoʳ-< zero    (s≤s m≤o) = +-mono-≤ (s≤s m≤o) z≤n
-*-monoʳ-< (suc n) (s≤s m≤o) =
-  +-mono-≤ (s≤s m≤o) (<⇒≤ (*-monoʳ-< n (s≤s m≤o)))
+*-monoʳ-< : ∀ n .{{_ : NonZero n}} → (n *_) Preserves _<_ ⟶ _<_
+*-monoʳ-< (suc zero)    (s≤s m≤o) = +-mono-≤ (s≤s m≤o) z≤n
+*-monoʳ-< (suc (suc n)) (s≤s m≤o) =
+  +-mono-≤ (s≤s m≤o) (<⇒≤ (*-monoʳ-< (suc n) (s≤s m≤o)))
 
-m≤m*n : ∀ m {n} → 0 < n → m ≤ m * n
-m≤m*n m {n} 0<n = begin
+m≤m*n : ∀ m n .{{_ : NonZero n}} → m ≤ m * n
+m≤m*n m n@(suc _) = begin
   m     ≡⟨ sym (*-identityʳ m) ⟩
-  m * 1 ≤⟨ *-monoʳ-≤ m 0<n ⟩
+  m * 1 ≤⟨ *-monoʳ-≤ m (s≤s z≤n) ⟩
   m * n ∎
 
-m≤n*m : ∀ m {n} → 0 < n → m ≤ n * m
-m≤n*m m {n} 0<n = begin
-  m     ≤⟨ m≤m*n m 0<n ⟩
+m≤n*m : ∀ m n .{{_ : NonZero n}} → m ≤ n * m
+m≤n*m m n@(suc _) = begin
+  m     ≤⟨ m≤m*n m n ⟩
   m * n ≡⟨ *-comm m n ⟩
   n * m ∎
 
-m<m*n :  ∀ {m n} → 0 < m → 1 < n → m < m * n
-m<m*n {m@(suc m-1)} {n@(suc (suc n-2))} (s≤s _) (s≤s (s≤s _)) = begin-strict
+m<m*n : ∀ m n .{{_ : NonZero m}} → 1 < n → m < m * n
+m<m*n m@(suc m-1) n@(suc (suc n-2)) (s≤s (s≤s _)) = begin-strict
   m           <⟨ s≤s (s≤s (m≤n+m m-1 n-2)) ⟩
-  n + m-1     ≤⟨ +-monoʳ-≤ n (m≤m*n m-1 0<1+n) ⟩
+  n + m-1     ≤⟨ +-monoʳ-≤ n (m≤m*n m-1 n) ⟩
   n + m-1 * n ≡⟨⟩
   m * n       ∎
 
@@ -960,7 +965,6 @@ m<m*n {m@(suc m-1)} {n@(suc (suc n-2))} (s≤s _) (s≤s (s≤s _)) = begin-stri
 *-cancelʳ-< {m}     (suc n) (suc o) nm<om =
   s≤s (*-cancelʳ-< n o (+-cancelˡ-< m nm<om))
 
--- Redo in terms of `comm+cancelʳ⇒cancelˡ` when generalised
 *-cancelˡ-< : LeftCancellative _<_ _*_
 *-cancelˡ-< x {y} {z} rewrite *-comm x y | *-comm x z = *-cancelʳ-< y z
 
@@ -1613,9 +1617,8 @@ pred[n]≤n {suc n} = n≤1+n n
 <⇒≤pred : ∀ {m n} → m < n → m ≤ pred n
 <⇒≤pred (s≤s le) = le
 
-suc[pred[n]]≡n : ∀ {n} → n ≢ 0 → suc (pred n) ≡ n
-suc[pred[n]]≡n {zero}  n≢0 = contradiction refl n≢0
-suc[pred[n]]≡n {suc n} n≢0 = refl
+suc-pred : ∀ n .{{_ : NonZero n}} → suc (pred n) ≡ n
+suc-pred (suc n) = refl
 
 ------------------------------------------------------------------------
 -- Properties of ∣_-_∣
@@ -2020,144 +2023,6 @@ eq? inj = via-injection inj _≟_
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 0.14
-
-_*-mono_ = *-mono-≤
-{-# WARNING_ON_USAGE _*-mono_
-"Warning: _*-mono_ was deprecated in v0.14.
-Please use *-mono-≤ instead."
-#-}
-_+-mono_ = +-mono-≤
-{-# WARNING_ON_USAGE _+-mono_
-"Warning: _+-mono_ was deprecated in v0.14.
-Please use +-mono-≤ instead."
-#-}
-+-right-identity = +-identityʳ
-{-# WARNING_ON_USAGE +-right-identity
-"Warning: +-right-identity was deprecated in v0.14.
-Please use +-identityʳ instead."
-#-}
-*-right-zero     = *-zeroʳ
-{-# WARNING_ON_USAGE *-right-zero
-"Warning: *-right-zero was deprecated in v0.14.
-Please use *-zeroʳ instead."
-#-}
-distribʳ-*-+     = *-distribʳ-+
-{-# WARNING_ON_USAGE distribʳ-*-+
-"Warning: distribʳ-*-+ was deprecated in v0.14.
-Please use *-distribʳ-+ instead."
-#-}
-*-distrib-∸ʳ     = *-distribʳ-∸
-{-# WARNING_ON_USAGE *-distrib-∸ʳ
-"Warning: *-distrib-∸ʳ was deprecated in v0.14.
-Please use *-distribʳ-∸ instead."
-#-}
-cancel-+-left    = +-cancelˡ-≡
-{-# WARNING_ON_USAGE cancel-+-left
-"Warning: cancel-+-left was deprecated in v0.14.
-Please use +-cancelˡ-≡ instead."
-#-}
-cancel-+-left-≤  = +-cancelˡ-≤
-{-# WARNING_ON_USAGE cancel-+-left-≤
-"Warning: cancel-+-left-≤ was deprecated in v0.14.
-Please use +-cancelˡ-≤ instead."
-#-}
-cancel-*-right   = *-cancelʳ-≡
-{-# WARNING_ON_USAGE cancel-*-right
-"Warning: cancel-*-right was deprecated in v0.14.
-Please use *-cancelʳ-≡ instead."
-#-}
-cancel-*-right-≤ = *-cancelʳ-≤
-{-# WARNING_ON_USAGE cancel-*-right-≤
-"Warning: cancel-*-right-≤ was deprecated in v0.14.
-Please use *-cancelʳ-≤ instead."
-#-}
-strictTotalOrder                      = <-strictTotalOrder
-{-# WARNING_ON_USAGE strictTotalOrder
-"Warning: strictTotalOrder was deprecated in v0.14.
-Please use <-strictTotalOrder instead."
-#-}
-isCommutativeSemiring                 = +-*-isCommutativeSemiring
-{-# WARNING_ON_USAGE isCommutativeSemiring
-"Warning: isCommutativeSemiring was deprecated in v0.14.
-Please use *-+-isCommutativeSemiring instead."
-#-}
-commutativeSemiring                   = +-*-commutativeSemiring
-{-# WARNING_ON_USAGE commutativeSemiring
-"Warning: commutativeSemiring was deprecated in v0.14.
-Please use *-+-commutativeSemiring instead."
-#-}
-isDistributiveLattice                 = ⊓-⊔-isDistributiveLattice
-{-# WARNING_ON_USAGE isDistributiveLattice
-"Warning: isDistributiveLattice was deprecated in v0.14.
-Please use ⊓-⊔-isDistributiveLattice instead."
-#-}
-distributiveLattice                   = ⊓-⊔-distributiveLattice
-{-# WARNING_ON_USAGE distributiveLattice
-"Warning: distributiveLattice was deprecated in v0.14.
-Please use ⊓-⊔-distributiveLattice instead."
-#-}
-⊔-⊓-0-isSemiringWithoutOne            = ⊔-⊓-isSemiringWithoutOne
-{-# WARNING_ON_USAGE ⊔-⊓-0-isSemiringWithoutOne
-"Warning: ⊔-⊓-0-isSemiringWithoutOne was deprecated in v0.14.
-Please use ⊔-⊓-isSemiringWithoutOne instead."
-#-}
-⊔-⊓-0-isCommutativeSemiringWithoutOne = ⊔-⊓-isCommutativeSemiringWithoutOne
-{-# WARNING_ON_USAGE ⊔-⊓-0-isCommutativeSemiringWithoutOne
-"Warning: ⊔-⊓-0-isCommutativeSemiringWithoutOne was deprecated in v0.14.
-Please use ⊔-⊓-isCommutativeSemiringWithoutOne instead."
-#-}
-⊔-⊓-0-commutativeSemiringWithoutOne   = ⊔-⊓-commutativeSemiringWithoutOne
-{-# WARNING_ON_USAGE ⊔-⊓-0-commutativeSemiringWithoutOne
-"Warning: ⊔-⊓-0-commutativeSemiringWithoutOne was deprecated in v0.14.
-Please use ⊔-⊓-commutativeSemiringWithoutOne instead."
-#-}
-
--- Version 0.15
-
-¬i+1+j≤i  = m+1+n≰m
-{-# WARNING_ON_USAGE ¬i+1+j≤i
-"Warning: ¬i+1+j≤i was deprecated in v0.15.
-Please use m+1+n≰m instead."
-#-}
-≤-steps   = ≤-stepsˡ
-{-# WARNING_ON_USAGE ≤-steps
-"Warning: ≤-steps was deprecated in v0.15.
-Please use ≤-stepsˡ instead."
-#-}
-
--- Version 0.17
-
-i∸k∸j+j∸k≡i+j∸k : ∀ i j k → i ∸ (k ∸ j) + (j ∸ k) ≡ i + j ∸ k
-i∸k∸j+j∸k≡i+j∸k zero    j k    = cong (_+ (j ∸ k)) (0∸n≡0 (k ∸ j))
-i∸k∸j+j∸k≡i+j∸k (suc i) j zero = cong (λ x → suc i ∸ x + j) (0∸n≡0 j)
-i∸k∸j+j∸k≡i+j∸k (suc i) zero (suc k) = begin-equality
-  i ∸ k + 0  ≡⟨ +-identityʳ _ ⟩
-  i ∸ k      ≡⟨ cong (_∸ k) (sym (+-identityʳ _)) ⟩
-  i + 0 ∸ k  ∎
-i∸k∸j+j∸k≡i+j∸k (suc i) (suc j) (suc k) = begin-equality
-  suc i ∸ (k ∸ j) + (j ∸ k) ≡⟨ i∸k∸j+j∸k≡i+j∸k (suc i) j k ⟩
-  suc i + j ∸ k             ≡⟨ cong (_∸ k) (sym (+-suc i j)) ⟩
-  i + suc j ∸ k             ∎
-{-# WARNING_ON_USAGE i∸k∸j+j∸k≡i+j∸k
-"Warning: i∸k∸j+j∸k≡i+j∸k was deprecated in v0.17."
-#-}
-im≡jm+n⇒[i∸j]m≡n : ∀ i j m n → i * m ≡ j * m + n → (i ∸ j) * m ≡ n
-im≡jm+n⇒[i∸j]m≡n i j m n eq = begin-equality
-  (i ∸ j) * m            ≡⟨ *-distribʳ-∸ m i j ⟩
-  (i * m) ∸ (j * m)      ≡⟨ cong (_∸ j * m) eq ⟩
-  (j * m + n) ∸ (j * m)  ≡⟨ cong (_∸ j * m) (+-comm (j * m) n) ⟩
-  (n + j * m) ∸ (j * m)  ≡⟨ m+n∸n≡m n (j * m) ⟩
-  n                      ∎
-{-# WARNING_ON_USAGE im≡jm+n⇒[i∸j]m≡n
-"Warning: im≡jm+n⇒[i∸j]m≡n was deprecated in v0.17."
-#-}
-≤+≢⇒< = ≤∧≢⇒<
-{-# WARNING_ON_USAGE ≤+≢⇒<
-"Warning: ≤+≢⇒< was deprecated in v0.17.
-Please use ≤∧≢⇒< instead."
-#-}
-
 -- Version 1.0
 
 ≤-irrelevance = ≤-irrelevant
@@ -2223,7 +2088,7 @@ Please use m^n≡1⇒n≡0∨m≡1 instead."
 "Warning: [i+j]∸[i+k]≡j∸k was deprecated in v1.1.
 Please use [m+n]∸[m+o]≡n∸o instead."
 #-}
-m≢0⇒suc[pred[m]]≡m = suc[pred[n]]≡n
+m≢0⇒suc[pred[m]]≡m = suc-pred
 {-# WARNING_ON_USAGE m≢0⇒suc[pred[m]]≡m
 "Warning: m≢0⇒suc[pred[m]]≡m was deprecated in v1.1.
 Please use suc[pred[n]]≡n instead."
@@ -2392,4 +2257,13 @@ n≤m⊔n = m≤n⊔m
 ⊓-abs-⊔ = ⊓-absorbs-⊔
 {-# WARNING_ON_USAGE ⊓-abs-⊔
 "Warning: ⊓-abs-⊔ was deprecated in v1.6. Please use ⊓-absorbs-⊔ instead."
+#-}
+
+-- Version 2.0
+
+suc[pred[n]]≡n : ∀ {n} → n ≢ 0 → suc (pred n) ≡ n
+suc[pred[n]]≡n {zero}  0≢0 = contradiction refl 0≢0
+suc[pred[n]]≡n {suc n} _   = refl
+{-# WARNING_ON_USAGE suc[pred[n]]≡n
+"Warning: suc[pred[n]]≡n was deprecated in v2.0. Please use suc-pred instead. Note that the proof now uses instance arguments"
 #-}

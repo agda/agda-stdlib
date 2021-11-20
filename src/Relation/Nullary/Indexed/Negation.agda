@@ -21,4 +21,4 @@ open import Relation.Nullary.Indexed
 ¬-cong : ∀ {a b c} {A : Set a} {B : Set b} →
          Extensionality a c → Extensionality b c →
          A ↔ B → (¬ c A) ↔ (¬ c B)
-¬-cong extA extB A≈B = →-cong-↔ extA extB A≈B (Identity.id-↔ ⊥)
+¬-cong extA extB A≈B = →-cong-↔ extA extB A≈B (Identity.↔-id ⊥)

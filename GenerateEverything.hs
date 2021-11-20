@@ -47,6 +47,7 @@ unsafeModules = map modToFile
   , "Foreign.Haskell.Coerce"
   , "Foreign.Haskell.Either"
   , "Foreign.Haskell.Maybe"
+  , "Foreign.Haskell.List.NonEmpty"
   , "Foreign.Haskell.Pair"
   , "IO"
   , "IO.Base"
@@ -297,8 +298,9 @@ checkFilePaths cat fps = forM_ fps $ \ fp -> do
 
 main = do
   args <- getArgs
-  case args of
-    [] -> return ()
+  includeDeprecated <- case args of
+    [] -> return False
+    ["--include-deprecated"] -> return True
     _  -> hPutStr stderr usage >> exitFailure
 
   checkFilePaths "unsafe" unsafeModules
@@ -309,7 +311,8 @@ main = do
                find always
                     (extension ==? ".agda" ||? extension ==? ".lagda")
                     srcDir
-  libraryfiles <- filter ((Deprecated /=) . status) <$> mapM analyse modules
+  libraryfiles <- (if includeDeprecated then id
+    else (filter ((Deprecated /=) . status) <$>)) (mapM analyse modules)
 
   let mkModule str = "module " ++ str ++ " where"
 

@@ -136,35 +136,3 @@ s*opposite[s]≡- - = refl
 opposite[s]*s≡- : ∀ s → opposite s * s ≡ -
 opposite[s]*s≡- + = refl
 opposite[s]*s≡- - = refl
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
-opposite-not-equal = s≢opposite[s]
-{-# WARNING_ON_USAGE opposite-not-equal
-"Warning: opposite-not-equal was deprecated in v0.15.
-Please use s≢opposite[s] instead."
-#-}
-opposite-cong = opposite-injective
-{-# WARNING_ON_USAGE opposite-cong
-"Warning: opposite-cong was deprecated in v0.15.
-Please use opposite-injective instead."
-#-}
-cancel-*-left = *-cancelˡ-≡
-{-# WARNING_ON_USAGE cancel-*-left
-"Warning: cancel-*-left was deprecated in v0.15.
-Please use *-cancelˡ-≡ instead."
-#-}
-cancel-*-right = *-cancelʳ-≡
-{-# WARNING_ON_USAGE cancel-*-right
-"Warning: cancel-*-right was deprecated in v0.15.
-Please use *-cancelʳ-≡ instead."
-#-}
-*-cancellative = *-cancel-≡
-{-# WARNING_ON_USAGE *-cancellative
-"Warning: *-cancellative was deprecated in v0.15.
-Please use *-cancel-≡ instead."
-#-}

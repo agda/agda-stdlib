@@ -20,7 +20,7 @@ import Algebra.Morphism.RingMonomorphism as RingMonomorphisms
 import Algebra.Morphism.LatticeMonomorphism as LatticeMonomorphisms
 import Algebra.Properties.CommutativeSemigroup as CommSemigroupProperties
 open import Data.Bool.Base using (T; true; false)
-open import Data.Integer.Base as ℤ using (ℤ; +_; -[1+_]; 0ℤ; 1ℤ; _◃_)
+open import Data.Integer.Base as ℤ using (ℤ; +_; -[1+_]; +[1+_]; +0; 0ℤ; 1ℤ; _◃_)
 open import Data.Integer.Coprimality using (coprime-divisor)
 import Data.Integer.Properties as ℤ
 open import Data.Integer.GCD using (gcd; gcd[i,j]≡0⇒i≡0; gcd[i,j]≡0⇒j≡0)
@@ -62,10 +62,6 @@ open import Algebra.Definitions {A = ℚ} _≡_
 open import Algebra.Structures  {A = ℚ} _≡_
 
 private
-  infix 4 _≢0
-  _≢0 : ℕ → Set
-  n ≢0 = False (n ℕ.≟ 0)
-
   variable
     p q r : ℚ
 
@@ -87,9 +83,11 @@ mkℚ-injective refl = refl , refl
 
 infix 4 _≟_
 
-_≟_ : Decidable {A = ℚ} _≡_
-mkℚ n₁ d₁ _ ≟ mkℚ n₂ d₂ _ =
-  map′ (λ uv → uncurry mkℚ-cong uv) mkℚ-injective (n₁ ℤ.≟ n₂ ×-dec d₁ ℕ.≟ d₂)
+_≟_ : DecidableEquality ℚ
+mkℚ n₁ d₁ _ ≟ mkℚ n₂ d₂ _ = map′
+  (uncurry mkℚ-cong)
+  mkℚ-injective
+  (n₁ ℤ.≟ n₂ ×-dec d₁ ℕ.≟ d₂)
 
 ≡-setoid : Setoid 0ℓ 0ℓ
 ≡-setoid = setoid ℚ
@@ -101,33 +99,33 @@ mkℚ n₁ d₁ _ ≟ mkℚ n₂ d₂ _ =
 -- mkℚ+
 ------------------------------------------------------------------------
 
-mkℚ+-cong : ∀ {n₁ n₂ d₁ d₂} d₁≢0 d₂≢0
+mkℚ+-cong : ∀ {n₁ n₂ d₁ d₂} .{{_ : ℕ.NonZero d₁}} .{{_ : ℕ.NonZero d₂}}
            .{c₁ : Coprime n₁ d₁}
            .{c₂ : Coprime n₂ d₂} →
            n₁ ≡ n₂ → d₁ ≡ d₂ →
-           mkℚ+ n₁ d₁ {d₁≢0} c₁ ≡ mkℚ+ n₂ d₂ {d₂≢0} c₂
-mkℚ+-cong _ _ refl refl = refl
+           mkℚ+ n₁ d₁ c₁ ≡ mkℚ+ n₂ d₂ c₂
+mkℚ+-cong refl refl = refl
 
-mkℚ+-injective : ∀ {n₁ n₂ d₁ d₂} d₁≢0 d₂≢0
+mkℚ+-injective : ∀ {n₁ n₂ d₁ d₂} .{{_ : ℕ.NonZero d₁}} .{{_ : ℕ.NonZero d₂}}
            .{c₁ : Coprime n₁ d₁}
            .{c₂ : Coprime n₂ d₂} →
-           mkℚ+ n₁ d₁ {d₁≢0} c₁ ≡ mkℚ+ n₂ d₂ {d₂≢0} c₂ →
+           mkℚ+ n₁ d₁ c₁ ≡ mkℚ+ n₂ d₂ c₂ →
            n₁ ≡ n₂ × d₁ ≡ d₂
-mkℚ+-injective {d₁ = suc _} {suc _} _ _ refl = refl , refl
+mkℚ+-injective {d₁ = suc _} {suc _} refl = refl , refl
 
-↥-mkℚ+ : ∀ n d {d≢0} .{c : Coprime n d} → ↥ (mkℚ+ n d {d≢0} c) ≡ + n
+↥-mkℚ+ : ∀ n d .{{_ : ℕ.NonZero d}} .{c : Coprime n d} → ↥ (mkℚ+ n d c) ≡ + n
 ↥-mkℚ+ n (suc d) = refl
 
-↧-mkℚ+ : ∀ n d {d≢0} .{c : Coprime n d} → ↧ (mkℚ+ n d {d≢0} c) ≡ + d
+↧-mkℚ+ : ∀ n d .{{_ : ℕ.NonZero d}} .{c : Coprime n d} → ↧ (mkℚ+ n d c) ≡ + d
 ↧-mkℚ+ n (suc d) = refl
 
-mkℚ+-nonNeg : ∀ n d {d≢0} .{c : Coprime n d} →
-              NonNegative (mkℚ+ n d {d≢0} c)
+mkℚ+-nonNeg : ∀ n d .{{_ : ℕ.NonZero d}} .{c : Coprime n d} →
+              NonNegative (mkℚ+ n d c)
 mkℚ+-nonNeg n (suc d) = _
 
-mkℚ+-pos : ∀ n d {d≢0} .{c : Coprime n d} → ℕ.NonZero n →
-           Positive (mkℚ+ n d {d≢0} c)
-mkℚ+-pos (suc n) (suc d) nz = _
+mkℚ+-pos : ∀ n d .{{_ : ℕ.NonZero n}} .{{_ : ℕ.NonZero d}}
+           .{c : Coprime n d} → Positive (mkℚ+ n d c)
+mkℚ+-pos (suc n) (suc d) = _
 
 ------------------------------------------------------------------------
 -- Numerator and denominator equality
@@ -159,18 +157,18 @@ mkℚ+-pos (suc n) (suc d) nz = _
 
   helper : mkℚ n₁ d₁ c₁ ≡ mkℚ n₂ d₂ c₂
   helper with ∣-antisym 1+d₁∣1+d₂ 1+d₂∣1+d₁
-  ... | refl with ℤ.*-cancelʳ-≡ n₁ n₂ (+ suc d₁) (λ ()) eq
+  ... | refl with ℤ.*-cancelʳ-≡ n₁ n₂ (+ suc d₁) eq
   ...   | refl = refl
 
 ------------------------------------------------------------------------
 -- Properties of ↥
 ------------------------------------------------------------------------
 
-↥p≡0⇒p≡0 : ∀ p → ↥ p ≡ + 0 → p ≡ 0ℚ
+↥p≡0⇒p≡0 : ∀ p → ↥ p ≡ 0ℤ → p ≡ 0ℚ
 ↥p≡0⇒p≡0 (mkℚ +0 d-1 0-coprime-d) ↥p≡0 = mkℚ-cong refl d-1≡0
   where d-1≡0 = ℕ.suc-injective (C.0-coprimeTo-m⇒m≡1 (C.recompute 0-coprime-d))
 
-p≡0⇒↥p≡0 : ∀ p → p ≡ 0ℚ → ↥ p ≡ + 0
+p≡0⇒↥p≡0 : ∀ p → p ≡ 0ℚ → ↥ p ≡ 0ℤ
 p≡0⇒↥p≡0 p refl = refl
 
 ------------------------------------------------------------------------
@@ -222,83 +220,87 @@ neg-pos {mkℚ +[1+ _ ] _ _} _ = _
 normalize-coprime : ∀ {n d-1} .(c : Coprime n (suc d-1)) →
                     normalize n (suc d-1) ≡ mkℚ (+ n) d-1 c
 normalize-coprime {n} {d-1} c = begin
-  normalize n d              ≡⟨⟩
-  mkℚ+ (n ℕ./ g) (d ℕ./ g) _ ≡⟨ mkℚ+-cong n/g≢0 d/1≢0 {c₂ = c₂} (ℕ./-congʳ {n≢0 = g≢0} g≡1) (ℕ./-congʳ {n≢0 = g≢0} g≡1) ⟩
-  mkℚ+ (n ℕ./ 1) (d ℕ./ 1) _ ≡⟨ mkℚ+-cong d/1≢0 _ {c₂ = c} (ℕ.n/1≡n n) (ℕ.n/1≡n d) ⟩
-  mkℚ+ n d _                 ≡⟨⟩
-  mkℚ (+ n) d-1 _            ∎
+  normalize n d                                  ≡⟨⟩
+  mkℚ+ ((n ℕ./ g) {{g≢0}}) ((d ℕ./ g) {{g≢0}}) _ ≡⟨ mkℚ+-cong {c₂ = c₂} (ℕ./-congʳ {{g≢0}} g≡1) (ℕ./-congʳ {{g≢0}} g≡1) ⟩
+  mkℚ+ (n ℕ./ 1) (d ℕ./ 1) _                     ≡⟨ mkℚ+-cong {c₂ = c} (ℕ.n/1≡n n) (ℕ.n/1≡n d) ⟩
+  mkℚ+ n d _                                     ≡⟨⟩
+  mkℚ (+ n) d-1 _                                ∎
   where
   open ≡-Reasoning; d = suc d-1; g = ℕ.gcd n d
   c′ = C.recompute c
   c₂ : Coprime (n ℕ./ 1) (d ℕ./ 1)
   c₂ = subst₂ Coprime (sym (ℕ.n/1≡n n)) (sym (ℕ.n/1≡n d)) c′
   g≡1 = C.coprime⇒gcd≡1 c′
-  g≢0   = fromWitnessFalse (ℕ.gcd[m,n]≢0 n d (inj₂ λ()))
-  n/g≢0 = fromWitnessFalse (ℕ.n/gcd[m,n]≢0 n d {_} {g≢0})
-  d/1≢0 = fromWitnessFalse (subst (_≢ 0) (sym (ℕ.n/1≡n d)) λ())
+  instance
+    g≢0   = ℕ.≢-nonZero (ℕ.gcd[m,n]≢0 n d (inj₂ λ()))
+    n/g≢0 = ℕ.≢-nonZero (ℕ.n/gcd[m,n]≢0 n d {{_}} {{g≢0}})
+    d/1≢0 = ℕ.≢-nonZero (subst (_≢ 0) (sym (ℕ.n/1≡n d)) λ())
 
-↥-normalize : ∀ i n {n≢0} → ↥ (normalize i n {n≢0}) ℤ.* gcd (+ i) (+ n) ≡ + i
-↥-normalize i n@(suc n-1) = begin
-  ↥ (normalize i n) ℤ.* + g  ≡⟨ cong (ℤ._* + g) (↥-mkℚ+ _ (n ℕ./ g) {n/g≢0}) ⟩
-  + (i ℕ./ g)       ℤ.* + g  ≡⟨⟩
-  S.+ ◃ i ℕ./ g     ℕ.* g    ≡⟨ cong (S.+ ◃_) (ℕ.m/n*n≡m (ℕ.gcd[m,n]∣m i n)) ⟩
+↥-normalize : ∀ i n .{{_ : ℕ.NonZero n}} → ↥ (normalize i n) ℤ.* gcd (+ i) (+ n) ≡ + i
+↥-normalize i n {{n≢0}} = begin
+  ↥ (normalize i n) ℤ.* + g  ≡⟨ cong (ℤ._* + g) (↥-mkℚ+ _ ((n ℕ./ g) {{g≢0}})) ⟩
+  + i/g     ℤ.* + g          ≡⟨⟩
+  S.+ ◃ i/g ℕ.* g            ≡⟨ cong (S.+ ◃_) (ℕ.m/n*n≡m {{g≢0}} (ℕ.gcd[m,n]∣m i n)) ⟩
   S.+ ◃ i                    ≡⟨ ℤ.+◃n≡+n i ⟩
   + i                        ∎
   where
   open ≡-Reasoning
   g     = ℕ.gcd i n
-  g≢0   = fromWitnessFalse (ℕ.gcd[m,n]≢0 i n (inj₂ λ()))
-  n/g≢0 = fromWitnessFalse (ℕ.n/gcd[m,n]≢0 i n {_} {g≢0})
+  g≢0 = ℕ.≢-nonZero (ℕ.gcd[m,n]≢0 i n (inj₂ (ℕ.≢-nonZero⁻¹ n≢0)))
+  instance n/g≢0 = ℕ.≢-nonZero (ℕ.n/gcd[m,n]≢0 i n {{n≢0}} {{g≢0}})
+  i/g = (i ℕ./ g) {{g≢0}}
 
-↧-normalize : ∀ i n {n≢0} → ↧ (normalize i n {n≢0}) ℤ.* gcd (+ i) (+ n) ≡ + n
-↧-normalize i n@(suc n-1) = begin
-  ↧ (normalize i n) ℤ.* + g  ≡⟨ cong (ℤ._* + g) (↧-mkℚ+ _ (n ℕ./ g) {n/g≢0}) ⟩
+↧-normalize : ∀ i n .{{_ : ℕ.NonZero n}} → ↧ (normalize i n) ℤ.* gcd (+ i) (+ n) ≡ + n
+↧-normalize i n {{n≢0}} = begin
+  ↧ (normalize i n) ℤ.* + g  ≡⟨ cong (ℤ._* + g) (↧-mkℚ+ _ ((n ℕ./ g) {{g≢0}})) ⟩
   + (n ℕ./ g)       ℤ.* + g  ≡⟨⟩
   S.+ ◃ n ℕ./ g     ℕ.* g    ≡⟨ cong (S.+ ◃_) (ℕ.m/n*n≡m (ℕ.gcd[m,n]∣n i n)) ⟩
   S.+ ◃ n                    ≡⟨ ℤ.+◃n≡+n n ⟩
   + n                        ∎
   where
   open ≡-Reasoning
-  g     = ℕ.gcd i n
-  g≢0   = fromWitnessFalse (ℕ.gcd[m,n]≢0 i n (inj₂ λ()))
-  n/g≢0 = fromWitnessFalse (ℕ.n/gcd[m,n]≢0 i n {_} {g≢0})
+  g = ℕ.gcd i n
+  instance g≢0   = ℕ.≢-nonZero (ℕ.gcd[m,n]≢0   i n (inj₂ (ℕ.≢-nonZero⁻¹ n≢0)))
+  instance n/g≢0 = ℕ.≢-nonZero (ℕ.n/gcd[m,n]≢0 i n {{n≢0}} {{g≢0}})
 
-normalize-cong : ∀ {m₁ n₁ m₂ n₂ n₁≢0 n₂≢0} → m₁ ≡ m₂ → n₁ ≡ n₂ →
-                 normalize m₁ n₁ {n₁≢0} ≡ normalize m₂ n₂ {n₂≢0}
-normalize-cong {m} {n} {.m} {.n} {n≢0₁} {n≢0₂} refl refl =
-  mkℚ+-cong n/g₁≢0 n/g₂≢0 (ℕ./-congʳ {n = g} {g} refl) (ℕ./-congʳ {n = g} {g} refl)
+normalize-cong : ∀ {m₁ n₁ m₂ n₂} .{{_ : ℕ.NonZero n₁}} .{{_ : ℕ.NonZero n₂}} →
+                 m₁ ≡ m₂ → n₁ ≡ n₂ → normalize m₁ n₁ ≡ normalize m₂ n₂
+normalize-cong {m} {n} {{n₁≢0}} {{n₂≢0}} refl refl =
+  mkℚ+-cong (ℕ./-congʳ {n = g} refl) (ℕ./-congʳ {n = g} refl)
   where
   g = ℕ.gcd m n
-  g₁≢0 = ℕ.gcd[m,n]≢0 m n (inj₂ (toWitnessFalse n≢0₁))
-  g₂≢0 = ℕ.gcd[m,n]≢0 m n (inj₂ (toWitnessFalse n≢0₂))
-  n/g₁ = (n ℕ./ g) {fromWitnessFalse g₁≢0}
-  n/g₂ = (n ℕ./ g) {fromWitnessFalse g₂≢0}
-  n/g₁≢0 = fromWitnessFalse (ℕ.n/gcd[m,n]≢0 m n {n≢0₁} {fromWitnessFalse g₁≢0})
-  n/g₂≢0 = fromWitnessFalse (ℕ.n/gcd[m,n]≢0 m n {n≢0₂} {fromWitnessFalse g₂≢0})
+  instance
+    g≢0   = ℕ.≢-nonZero (ℕ.gcd[m,n]≢0 m n (inj₂ (ℕ.≢-nonZero⁻¹ n₂≢0)))
+    n/g≢0 = ℕ.≢-nonZero (ℕ.n/gcd[m,n]≢0 m n {{n₁≢0}} {{g≢0}})
 
-normalize-nonNeg : ∀ m n {n≢0} → NonNegative (normalize m n {n≢0})
-normalize-nonNeg m n {n≢0} = mkℚ+-nonNeg (m ℕ./ ℕ.gcd m n) (n ℕ./ ℕ.gcd m n) {n/g≢0}
+normalize-nonNeg : ∀ m n .{{_ : ℕ.NonZero n}} → NonNegative (normalize m n)
+normalize-nonNeg m n {{n≢0}} = mkℚ+-nonNeg ((m ℕ./ g) {{g≢0}}) ((n ℕ./ g) {{g≢0}})
   where
-  g≢0   = fromWitnessFalse (ℕ.gcd[m,n]≢0 m n (inj₂ (toWitnessFalse n≢0)))
-  n/g≢0 = fromWitnessFalse (ℕ.n/gcd[m,n]≢0 m n {n≢0} {g≢0})
+  g = ℕ.gcd m n
+  instance
+    g≢0   = ℕ.≢-nonZero (ℕ.gcd[m,n]≢0 m n (inj₂ (ℕ.≢-nonZero⁻¹ n≢0)))
+    n/g≢0 = ℕ.≢-nonZero (ℕ.n/gcd[m,n]≢0 m n {{n≢0}} {{g≢0}})
 
-normalize-pos : ∀ m n {n≢0} → ℕ.NonZero m → Positive (normalize m n {n≢0})
-normalize-pos m@(suc _) n {n≢0} m≢0 = mkℚ+-pos (m ℕ./ ℕ.gcd m n) (n ℕ./ ℕ.gcd m n) {n/g≢0} (ℕ.≢-nonZero m/g≢0)
+normalize-pos : ∀ m n .{{_ : ℕ.NonZero n}} .{{_ : ℕ.NonZero m}} → Positive (normalize m n)
+normalize-pos m n {{n≢0}} {{m≢0}} = mkℚ+-pos (m ℕ./ ℕ.gcd m n) (n ℕ./ ℕ.gcd m n)
   where
-  g≢0   = fromWitnessFalse (ℕ.gcd[m,n]≢0 m n (inj₂ (toWitnessFalse n≢0)))
-  n/g≢0 = fromWitnessFalse (ℕ.n/gcd[m,n]≢0 m n {n≢0} {g≢0})
-  m/g≢0 = ℕ.m/gcd[m,n]≢0 m n {_} {g≢0}
+  g = ℕ.gcd m n
+  instance
+    g≢0   = ℕ.≢-nonZero (ℕ.gcd[m,n]≢0 m n (inj₂ (ℕ.≢-nonZero⁻¹ n≢0)))
+    n/g≢0 = ℕ.≢-nonZero (ℕ.n/gcd[m,n]≢0 m n {{n≢0}} {{g≢0}})
+    m/g≢0 = ℕ.≢-nonZero (ℕ.m/gcd[m,n]≢0 m n {{m≢0}} {{g≢0}})
 
-normalize-injective-≃ : ∀ m n c d {c≢0 d≢0} →
-                        normalize m c {c≢0} ≡ normalize n d {d≢0} →
+normalize-injective-≃ : ∀ m n c d {{_ : ℕ.NonZero c}} {{_ : ℕ.NonZero d}} →
+                        normalize m c ≡ normalize n d →
                         m ℕ.* d ≡ n ℕ.* c
-normalize-injective-≃ m n c d {c≢0} {d≢0} eq = ℕ./-cancelʳ-≡
-  {o≢0 = gcd[m,c]*gcd[n,d]≢0} md∣gcd[m,c]gcd[n,d] nc∣gcd[m,c]gcd[n,d]
+normalize-injective-≃ m n c d {{c≢0}} {{d≢0}} eq = ℕ./-cancelʳ-≡
+  md∣gcd[m,c]gcd[n,d]
+  nc∣gcd[m,c]gcd[n,d]
   (begin
     (m ℕ.* d) ℕ./ (gcd[m,c] ℕ.* gcd[n,d]) ≡⟨  ℕ./-*-interchange gcd[m,c]∣m gcd[n,d]∣d ⟩
     (m ℕ./ gcd[m,c]) ℕ.* (d ℕ./ gcd[n,d]) ≡⟨  cong₂ ℕ._*_ m/gcd[m,c]≡n/gcd[n,d] (sym c/gcd[m,c]≡d/gcd[n,d]) ⟩
     (n ℕ./ gcd[n,d]) ℕ.* (c ℕ./ gcd[m,c]) ≡˘⟨ ℕ./-*-interchange gcd[n,d]∣n gcd[m,c]∣c ⟩
-    (n ℕ.* c) ℕ./ (gcd[n,d] ℕ.* gcd[m,c]) ≡⟨  ℕ./-congʳ {n≢0 = gcd[n,d]*gcd[m,c]≢0} (ℕ.*-comm gcd[n,d] gcd[m,c]) ⟩
+    (n ℕ.* c) ℕ./ (gcd[n,d] ℕ.* gcd[m,c]) ≡⟨  ℕ./-congʳ (ℕ.*-comm gcd[n,d] gcd[m,c]) ⟩
     (n ℕ.* c) ℕ./ (gcd[m,c] ℕ.* gcd[n,d]) ∎)
   where
   open ≡-Reasoning
@@ -312,72 +314,70 @@ normalize-injective-≃ m n c d {c≢0} {d≢0} eq = ℕ./-cancelʳ-≡
   nc∣gcd[n,d]gcd[m,c] = *-pres-∣ gcd[n,d]∣n gcd[m,c]∣c
   nc∣gcd[m,c]gcd[n,d] = subst (_∣ n ℕ.* c) (ℕ.*-comm gcd[n,d] gcd[m,c]) nc∣gcd[n,d]gcd[m,c]
 
-  gcd[m,c]≢0′  = ℕ.gcd[m,n]≢0 m c (inj₂ (toWitnessFalse c≢0))
-  gcd[n,d]≢0′  = ℕ.gcd[m,n]≢0 n d (inj₂ (toWitnessFalse d≢0))
-  gcd[m,c]≢0   = fromWitnessFalse gcd[m,c]≢0′
-  gcd[n,d]≢0   = fromWitnessFalse gcd[n,d]≢0′
-  c/gcd[m,c]≢0 = fromWitnessFalse (ℕ.n/gcd[m,n]≢0 m c {c≢0} {gcd[m,c]≢0})
-  d/gcd[n,d]≢0 = fromWitnessFalse (ℕ.n/gcd[m,n]≢0 n d {d≢0} {gcd[n,d]≢0})
+  gcd[m,c]≢0′          = ℕ.gcd[m,n]≢0 m c (inj₂ (ℕ.≢-nonZero⁻¹ c≢0))
+  gcd[n,d]≢0′          = ℕ.gcd[m,n]≢0 n d (inj₂ (ℕ.≢-nonZero⁻¹ d≢0))
   gcd[m,c]*gcd[n,d]≢0′ = Sum.[ gcd[m,c]≢0′ , gcd[n,d]≢0′ ] ∘ ℕ.m*n≡0⇒m≡0∨n≡0 _
-  gcd[m,c]*gcd[n,d]≢0  = fromWitnessFalse gcd[m,c]*gcd[n,d]≢0′
-  gcd[n,d]*gcd[m,c]≢0  = fromWitnessFalse (subst (_≢ 0) (ℕ.*-comm gcd[m,c] gcd[n,d]) gcd[m,c]*gcd[n,d]≢0′)
+  instance
+    gcd[m,c]≢0   = ℕ.≢-nonZero gcd[m,c]≢0′
+    gcd[n,d]≢0   = ℕ.≢-nonZero gcd[n,d]≢0′
+    c/gcd[m,c]≢0 = ℕ.≢-nonZero (ℕ.n/gcd[m,n]≢0 m c {{c≢0}} {{gcd[m,c]≢0}})
+    d/gcd[n,d]≢0 = ℕ.≢-nonZero (ℕ.n/gcd[m,n]≢0 n d {{d≢0}} {{gcd[n,d]≢0}})
+    gcd[m,c]*gcd[n,d]≢0 = ℕ.≢-nonZero gcd[m,c]*gcd[n,d]≢0′
+    gcd[n,d]*gcd[m,c]≢0 = ℕ.≢-nonZero (subst (_≢ 0) (ℕ.*-comm gcd[m,c] gcd[n,d]) gcd[m,c]*gcd[n,d]≢0′)
 
-  div = mkℚ+-injective c/gcd[m,c]≢0 d/gcd[n,d]≢0 eq
+  div = mkℚ+-injective eq
   m/gcd[m,c]≡n/gcd[n,d] = proj₁ div
   c/gcd[m,c]≡d/gcd[n,d] = proj₂ div
-
 
 ------------------------------------------------------------------------
 -- Properties of _/_
 ------------------------------------------------------------------------
 
-↥-/ : ∀ i n {n≢0} → ↥ (i / n) {n≢0} ℤ.* gcd i (+ n) ≡ i
-↥-/ (+ m)    (suc n) = ↥-normalize m (suc n)
-↥-/ -[1+ m ] (suc n) = begin-equality
+↥-/ : ∀ i n .{{_ : ℕ.NonZero n}} → ↥ (i / n) ℤ.* gcd i (+ n) ≡ i
+↥-/ (+ m)    n = ↥-normalize m n
+↥-/ -[1+ m ] n = begin-equality
   ↥ (- norm)   ℤ.* + g  ≡⟨ cong (ℤ._* + g) (↥-neg norm) ⟩
   ℤ.- (↥ norm) ℤ.* + g  ≡⟨ sym (ℤ.neg-distribˡ-* (↥ norm) (+ g)) ⟩
-  ℤ.- (↥ norm  ℤ.* + g) ≡⟨ cong (ℤ.-_) (↥-normalize (suc m) (suc n)) ⟩
+  ℤ.- (↥ norm  ℤ.* + g) ≡⟨ cong (ℤ.-_) (↥-normalize (suc m) n) ⟩
   S.- ◃ suc m           ≡⟨⟩
   -[1+ m ]              ∎
   where
   open ℤ.≤-Reasoning
-  g = ℕ.gcd (suc m) (suc n)
-  norm = normalize (suc m) (suc n)
+  g    = ℕ.gcd (suc m) n
+  norm = normalize (suc m) n
 
-↧-/ : ∀ i n {n≢0} → ↧ (i / n) {n≢0} ℤ.* gcd i (+ n) ≡ + n
-↧-/ (+ m)    (suc n) = ↧-normalize m (suc n)
-↧-/ -[1+ m ] (suc n) = begin-equality
+↧-/ : ∀ i n .{{_ : ℕ.NonZero n}} → ↧ (i / n) ℤ.* gcd i (+ n) ≡ + n
+↧-/ (+ m)    n = ↧-normalize m n
+↧-/ -[1+ m ] n = begin-equality
   ↧ (- norm) ℤ.* + g  ≡⟨ cong (ℤ._* + g) (↧-neg norm) ⟩
-  ↧ norm     ℤ.* + g  ≡⟨ ↧-normalize (suc m) (suc n) ⟩
-  + (suc n)           ∎
+  ↧ norm     ℤ.* + g  ≡⟨ ↧-normalize (suc m) n ⟩
+  + n                 ∎
   where
   open ℤ.≤-Reasoning
-  g = ℕ.gcd (suc m) (suc n)
-  norm = normalize (suc m) (suc n)
+  g    = ℕ.gcd (suc m) n
+  norm = normalize (suc m) n
 
 ↥p/↧p≡p : ∀ p → ↥ p / ↧ₙ p ≡ p
 ↥p/↧p≡p (mkℚ (+ n)    d-1 prf) = normalize-coprime prf
 ↥p/↧p≡p (mkℚ -[1+ n ] d-1 prf) = cong (-_) (normalize-coprime prf)
 
-0/n≡0 : ∀ n {n≢0} → (0ℤ / n) {n≢0} ≡ 0ℚ
-0/n≡0 n@(suc n-1) {n≢0} = mkℚ+-cong n/n≢0 _ {c₂ = 0-cop-1} (ℕ.0/n≡0 (ℕ.gcd 0 n)) (ℕ.n/n≡1 n)
+0/n≡0 : ∀ n .{{_ : ℕ.NonZero n}} → 0ℤ / n ≡ 0ℚ
+0/n≡0 n@(suc n-1) {{n≢0}} = mkℚ+-cong {{n/n≢0}} {c₂ = 0-cop-1} (ℕ.0/n≡0 (ℕ.gcd 0 n)) (ℕ.n/n≡1 n)
   where
-  n/n≢0 = subst _≢0 (sym (ℕ.n/n≡1 n)) _
   0-cop-1 = C.sym (C.1-coprimeTo 0)
+  n/n≢0   = ℕ.>-nonZero (subst (ℕ._> 0) (sym (ℕ.n/n≡1 n)) (ℕ.s≤s ℕ.z≤n))
 
-/-cong : ∀ {p₁ q₁ p₂ q₂ q₁≢0 q₂≢0} → p₁ ≡ p₂ → q₁ ≡ q₂ →
-         (p₁ / q₁) {q₁≢0} ≡ (p₂ / q₂) {q₂≢0}
-/-cong {+ n}       {q} {q₁≢0 = q≢0₁} {q≢0₂} refl refl =
-  normalize-cong {n} {q} {n} {q} {n₁≢0 = q≢0₁} {q≢0₂} refl refl
-/-cong { -[1+ n ]} {q} {q₁≢0 = q≢0₁} {q≢0₂} refl refl =
-  cong -_ (normalize-cong {suc n} {q} {suc n} {q} {q≢0₁} {q≢0₂} refl refl)
+/-cong : ∀ {p₁ q₁ p₂ q₂} .{{_ : ℕ.NonZero q₁}} .{{_ : ℕ.NonZero q₂}} →
+         p₁ ≡ p₂ → q₁ ≡ q₂ → p₁ / q₁ ≡ p₂ / q₂
+/-cong {+ n}       refl = normalize-cong {n} refl
+/-cong { -[1+ n ]} refl = cong -_ ∘′ normalize-cong {suc n} refl
 
 private
   /-injective-≃-helper : ∀ {m n c-1 d-1} →
                          - normalize (suc m) (suc c-1) ≡ normalize n (suc d-1) →
                           mkℚᵘ -[1+ m ] c-1 ≃ᵘ mkℚᵘ (+ n) d-1
   /-injective-≃-helper {m} {n} {c-1} {d-1} eq
-    with normalize-pos (suc m) (suc c-1) _ | normalize-nonNeg n (suc d-1)
+    with normalize-pos (suc m) (suc c-1) | normalize-nonNeg n (suc d-1)
   ... | norm[m,c]-pos | norm[n,d]-nonNeg =
     contradiction (sym eq) (nonNeg≢neg _ _ norm[n,d]-nonNeg (neg-pos norm[m,c]-pos))
 
@@ -595,10 +595,10 @@ toℚᵘ-isOrderMonomorphism-< = record
   (n₁  ℤ.* sd₃) ℤ.* sd₂  ≡⟨ ℤ.*-assoc n₁ sd₃ sd₂ ⟩
   n₁   ℤ.* (sd₃ ℤ.* sd₂) ≡⟨ cong (n₁ ℤ.*_) (ℤ.*-comm sd₃ sd₂) ⟩
   n₁   ℤ.* (sd₂ ℤ.* sd₃) ≡⟨ sym (ℤ.*-assoc n₁ sd₂ sd₃) ⟩
-  (n₁  ℤ.* sd₂) ℤ.* sd₃  <⟨ ℤ.*-monoʳ-<-pos (ℕ.pred (↧ₙ r)) p<q ⟩
+  (n₁  ℤ.* sd₂) ℤ.* sd₃  <⟨ ℤ.*-monoʳ-<-pos (↧ r) p<q ⟩
   (n₂  ℤ.* sd₁) ℤ.* sd₃  ≡⟨ cong (ℤ._* sd₃) (ℤ.*-comm n₂ sd₁) ⟩
   (sd₁ ℤ.* n₂)  ℤ.* sd₃  ≡⟨ ℤ.*-assoc sd₁ n₂ sd₃ ⟩
-  sd₁  ℤ.* (n₂  ℤ.* sd₃) ≤⟨ ℤ.*-monoˡ-≤-pos (ℕ.pred (↧ₙ p)) q≤r ⟩
+  sd₁  ℤ.* (n₂  ℤ.* sd₃) ≤⟨ ℤ.*-monoˡ-≤-nonNeg (↧ p) q≤r ⟩
   sd₁  ℤ.* (n₃  ℤ.* sd₂) ≡⟨ sym (ℤ.*-assoc sd₁ n₃ sd₂) ⟩
   (sd₁ ℤ.* n₃)  ℤ.* sd₂  ≡⟨ cong (ℤ._* sd₂) (ℤ.*-comm sd₁ n₃) ⟩
   (n₃  ℤ.* sd₁) ℤ.* sd₂  ∎))
@@ -611,10 +611,10 @@ toℚᵘ-isOrderMonomorphism-< = record
   (n₁  ℤ.* sd₃) ℤ.* sd₂  ≡⟨ ℤ.*-assoc n₁ sd₃ sd₂ ⟩
   n₁   ℤ.* (sd₃ ℤ.* sd₂) ≡⟨ cong (n₁ ℤ.*_) (ℤ.*-comm sd₃ sd₂) ⟩
   n₁   ℤ.* (sd₂ ℤ.* sd₃) ≡⟨ sym (ℤ.*-assoc n₁ sd₂ sd₃) ⟩
-  (n₁  ℤ.* sd₂) ℤ.* sd₃  ≤⟨ ℤ.*-monoʳ-≤-pos (ℕ.pred (↧ₙ r)) p≤q ⟩
+  (n₁  ℤ.* sd₂) ℤ.* sd₃  ≤⟨ ℤ.*-monoʳ-≤-nonNeg (↧ r) p≤q ⟩
   (n₂  ℤ.* sd₁) ℤ.* sd₃  ≡⟨ cong (ℤ._* sd₃) (ℤ.*-comm n₂ sd₁) ⟩
   (sd₁ ℤ.* n₂)  ℤ.* sd₃  ≡⟨ ℤ.*-assoc sd₁ n₂ sd₃ ⟩
-  sd₁  ℤ.* (n₂  ℤ.* sd₃) <⟨ ℤ.*-monoˡ-<-pos (ℕ.pred (↧ₙ p)) q<r ⟩
+  sd₁  ℤ.* (n₂  ℤ.* sd₃) <⟨ ℤ.*-monoˡ-<-pos (↧ p) q<r ⟩
   sd₁  ℤ.* (n₃  ℤ.* sd₂) ≡⟨ sym (ℤ.*-assoc sd₁ n₃ sd₂) ⟩
   (sd₁ ℤ.* n₃)  ℤ.* sd₂  ≡⟨ cong (ℤ._* sd₂) (ℤ.*-comm sd₁ n₃) ⟩
   (n₃  ℤ.* sd₁) ℤ.* sd₂  ∎))
@@ -785,6 +785,23 @@ private
   ; _⁻¹ = -_
   }
 
++-*-rawNearSemiring : RawNearSemiring 0ℓ 0ℓ
++-*-rawNearSemiring = record
+  { _≈_ = _≡_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; 0#  = 0ℚ
+  }
+
++-*-rawSemiring : RawSemiring 0ℓ 0ℓ
++-*-rawSemiring = record
+  { _≈_ = _≡_
+  ; _+_ = _+_
+  ; _*_ = _*_
+  ; 0#  = 0ℚ
+  ; 1#  = 1ℚ
+  }
+
 +-*-rawRing : RawRing 0ℓ 0ℓ
 +-*-rawRing = record
   { _≈_ = _≡_
@@ -815,7 +832,7 @@ toℚᵘ-homo-+ p q with +-nf p q ℤ.≟ 0ℤ
   eq : ↥ (p + q) ≡ 0ℤ
   eq rewrite eq2 = cong ↥_ (0/n≡0 (↧ₙ p ℕ.* ↧ₙ q))
 
-... | no  nf[p,q]≢0 = *≡* (ℤ.*-cancelʳ-≡ _ _ (+-nf p q) nf[p,q]≢0 (begin
+... | no  nf[p,q]≢0 = *≡* (ℤ.*-cancelʳ-≡ _ _ (+-nf p q) {{ℤ.≢-nonZero nf[p,q]≢0}} (begin
   ↥ (p + q) ℤ.* ↧+ᵘ p q    ℤ.* +-nf p q   ≡⟨ xy∙z≈xz∙y (↥ (p + q)) _ _ ⟩
   ↥ (p + q) ℤ.* +-nf p q   ℤ.* ↧+ᵘ p q    ≡⟨ cong (ℤ._* ↧+ᵘ p q) (↥-+ p q) ⟩
   ↥+ᵘ p q   ℤ.* ↧+ᵘ p q                   ≡⟨ cong (↥+ᵘ p q ℤ.*_) (sym (↧-+ p q)) ⟩
@@ -1038,7 +1055,7 @@ toℚᵘ-homo-* p q with *-nf p q ℤ.≟ 0ℤ
 
   eq : ↥ (p * q) ≡ 0ℤ
   eq rewrite eq2 = cong ↥_ (0/n≡0 (↧ₙ p ℕ.* ↧ₙ q))
-... | no  nf[p,q]≢0 = *≡* (ℤ.*-cancelʳ-≡ _ _ (*-nf p q) nf[p,q]≢0 (begin
+... | no  nf[p,q]≢0 = *≡* (ℤ.*-cancelʳ-≡ _ _ (*-nf p q) {{ℤ.≢-nonZero nf[p,q]≢0}} (begin
   ↥ (p * q)     ℤ.* (↧ p ℤ.* ↧ q) ℤ.* *-nf p q ≡⟨ xy∙z≈xz∙y (↥ (p * q)) _ _ ⟩
   ↥ (p * q)     ℤ.* *-nf p q ℤ.* (↧ p ℤ.* ↧ q) ≡⟨ cong (ℤ._* (↧ p ℤ.* ↧ q)) (↥-* p q) ⟩
   (↥ p ℤ.* ↥ q) ℤ.* (↧ p ℤ.* ↧ q)              ≡⟨ cong ((↥ p ℤ.* ↥ q) ℤ.*_) (sym (↧-* p q)) ⟩
@@ -1046,7 +1063,7 @@ toℚᵘ-homo-* p q with *-nf p q ℤ.≟ 0ℤ
   (↥ p ℤ.* ↥ q) ℤ.* ↧ (p * q)  ℤ.* *-nf p q    ∎))
   where open ≡-Reasoning; open CommSemigroupProperties ℤ.*-commutativeSemigroup
 
-toℚᵘ-homo-1/ : ∀ p {p≢0} → toℚᵘ ((1/ p) {p≢0}) ℚᵘ.≃ (ℚᵘ.1/ toℚᵘ p) {p≢0}
+toℚᵘ-homo-1/ : ∀ p .{{_ : NonZero p}} → toℚᵘ (1/ p) ℚᵘ.≃ (ℚᵘ.1/ toℚᵘ p)
 toℚᵘ-homo-1/ (mkℚ +[1+ _ ] _ _) = ℚᵘ.≃-refl
 toℚᵘ-homo-1/ (mkℚ -[1+ _ ] _ _) = ℚᵘ.≃-refl
 
@@ -1068,10 +1085,34 @@ toℚᵘ-isMonoidMonomorphism-* = record
   ; injective            = toℚᵘ-injective
   }
 
+toℚᵘ-isNearSemiringHomomorphism-+-* : IsNearSemiringHomomorphism +-*-rawNearSemiring ℚᵘ.+-*-rawNearSemiring toℚᵘ
+toℚᵘ-isNearSemiringHomomorphism-+-* = record
+  { +-isMonoidHomomorphism = toℚᵘ-isMonoidHomomorphism-+
+  ; *-homo                 = toℚᵘ-homo-*
+  }
+
+toℚᵘ-isNearSemiringMonomorphism-+-* : IsNearSemiringMonomorphism +-*-rawNearSemiring ℚᵘ.+-*-rawNearSemiring toℚᵘ
+toℚᵘ-isNearSemiringMonomorphism-+-* = record
+  { isNearSemiringHomomorphism = toℚᵘ-isNearSemiringHomomorphism-+-*
+  ; injective                  = toℚᵘ-injective
+  }
+
+toℚᵘ-isSemiringHomomorphism-+-* : IsSemiringHomomorphism +-*-rawSemiring ℚᵘ.+-*-rawSemiring toℚᵘ
+toℚᵘ-isSemiringHomomorphism-+-* = record
+  { isNearSemiringHomomorphism = toℚᵘ-isNearSemiringHomomorphism-+-*
+  ; 1#-homo                    = ℚᵘ.≃-refl
+  }
+
+toℚᵘ-isSemiringMonomorphism-+-* : IsSemiringMonomorphism +-*-rawSemiring ℚᵘ.+-*-rawSemiring toℚᵘ
+toℚᵘ-isSemiringMonomorphism-+-* = record
+  { isSemiringHomomorphism = toℚᵘ-isSemiringHomomorphism-+-*
+  ; injective              = toℚᵘ-injective
+  }
+
 toℚᵘ-isRingHomomorphism-+-* : IsRingHomomorphism +-*-rawRing ℚᵘ.+-*-rawRing toℚᵘ
 toℚᵘ-isRingHomomorphism-+-* = record
-  { +-isGroupHomomorphism  = toℚᵘ-isGroupHomomorphism-+
-  ; *-isMonoidHomomorphism = toℚᵘ-isMonoidHomomorphism-*
+  { isSemiringHomomorphism = toℚᵘ-isSemiringHomomorphism-+-*
+  ; -‿homo                 = toℚᵘ-homo‿-
   }
 
 toℚᵘ-isRingMonomorphism-+-* : IsRingMonomorphism +-*-rawRing ℚᵘ.+-*-rawRing toℚᵘ
@@ -1119,16 +1160,16 @@ private
 *-distrib-+ : _*_ DistributesOver _+_
 *-distrib-+ = *-distribˡ-+ , *-distribʳ-+
 
-*-inverseˡ : ∀ p {p≢0 : ℤ.∣ ↥ p ∣ ≢0} → (1/ p) {p≢0} * p ≡ 1ℚ
-*-inverseˡ p {p≢0} = toℚᵘ-injective (begin-equality
+*-inverseˡ : ∀ p .{{_ : NonZero p}} → (1/ p) * p ≡ 1ℚ
+*-inverseˡ p = toℚᵘ-injective (begin-equality
   toℚᵘ (1/ p * p)             ≈⟨ toℚᵘ-homo-* (1/ p) p ⟩
-  toℚᵘ (1/ p) ℚᵘ.* toℚᵘ p     ≈⟨ ℚᵘ.*-congʳ (toℚᵘ-homo-1/ p {p≢0}) ⟩
-  ℚᵘ.1/ (toℚᵘ p) ℚᵘ.* toℚᵘ p  ≈⟨ ℚᵘ.*-inverseˡ (toℚᵘ p) {p≢0} ⟩
+  toℚᵘ (1/ p) ℚᵘ.* toℚᵘ p     ≈⟨ ℚᵘ.*-congʳ (toℚᵘ-homo-1/ p) ⟩
+  ℚᵘ.1/ (toℚᵘ p) ℚᵘ.* toℚᵘ p  ≈⟨ ℚᵘ.*-inverseˡ (toℚᵘ p) ⟩
   ℚᵘ.1ℚᵘ                      ∎)
   where open ℚᵘ.≤-Reasoning
 
-*-inverseʳ : ∀ p {p≢0 : ℤ.∣ ↥ p ∣ ≢0} → p * (1/ p) {p≢0} ≡ 1ℚ
-*-inverseʳ p {p≢0} = trans (*-comm p (1/ p)) (*-inverseˡ p {p≢0})
+*-inverseʳ : ∀ p .{{_ : NonZero p}} → p * (1/ p) ≡ 1ℚ
+*-inverseʳ p = trans (*-comm p (1/ p)) (*-inverseˡ p)
 
 neg-distribˡ-* : ∀ p q → - (p * q) ≡ - p * q
 neg-distribˡ-* = +-*-Monomorphism.neg-distribˡ-* ℚᵘ.+-0-isGroup ℚᵘ.*-isMagma ℚᵘ.neg-distribˡ-*
@@ -1190,164 +1231,99 @@ neg-distribʳ-* = +-*-Monomorphism.neg-distribʳ-* ℚᵘ.+-0-isGroup ℚᵘ.*-i
   { isCommutativeRing = +-*-isCommutativeRing
   }
 
-
 ------------------------------------------------------------------------
 -- Properties of _*_ and _≤_
 
-*-cancelʳ-≤-pos : ∀ r → Positive r → ∀ {p q} → p * r ≤ q * r → p ≤ q
-*-cancelʳ-≤-pos r r>0 {p} {q} pr≤qr = toℚᵘ-cancel-≤ (ℚᵘ.*-cancelʳ-≤-pos {toℚᵘ r} r>0 (begin
+*-cancelʳ-≤-pos : ∀ r .{{_ : Positive r}} → p * r ≤ q * r → p ≤ q
+*-cancelʳ-≤-pos {p} {q} r pr≤qr = toℚᵘ-cancel-≤ (ℚᵘ.*-cancelʳ-≤-pos (toℚᵘ r) (begin
   toℚᵘ p ℚᵘ.* toℚᵘ r  ≈˘⟨ toℚᵘ-homo-* p r ⟩
   toℚᵘ (p * r)        ≤⟨  toℚᵘ-mono-≤ pr≤qr ⟩
   toℚᵘ (q * r)        ≈⟨  toℚᵘ-homo-* q r ⟩
   toℚᵘ q ℚᵘ.* toℚᵘ r  ∎))
   where open ℚᵘ.≤-Reasoning
 
-*-cancelˡ-≤-pos : ∀ r → Positive r → ∀ {p q} → r * p ≤ r * q → p ≤ q
-*-cancelˡ-≤-pos r r>0 {p} {q} rp≤rq = toℚᵘ-cancel-≤ (ℚᵘ.*-cancelˡ-≤-pos {toℚᵘ r} r>0 (begin
-  toℚᵘ r ℚᵘ.* toℚᵘ p  ≈˘⟨ toℚᵘ-homo-* r p ⟩
-  toℚᵘ (r * p)        ≤⟨  toℚᵘ-mono-≤ rp≤rq ⟩
-  toℚᵘ (r * q)        ≈⟨  toℚᵘ-homo-* r q ⟩
-  toℚᵘ r ℚᵘ.* toℚᵘ q  ∎))
-  where open ℚᵘ.≤-Reasoning
+*-cancelˡ-≤-pos : ∀ r .{{_ : Positive r}} → r * p ≤ r * q → p ≤ q
+*-cancelˡ-≤-pos {p} {q} r rewrite *-comm r p | *-comm r q = *-cancelʳ-≤-pos r
 
-*-monoʳ-≤-nonNeg : ∀ r → NonNegative r → (_* r) Preserves _≤_ ⟶ _≤_
-*-monoʳ-≤-nonNeg r r≥0 {p} {q} p≤q = toℚᵘ-cancel-≤ (begin
+*-monoʳ-≤-nonNeg : ∀ r .{{_ : NonNegative r}} → (_* r) Preserves _≤_ ⟶ _≤_
+*-monoʳ-≤-nonNeg r {p} {q} p≤q = toℚᵘ-cancel-≤ (begin
   toℚᵘ (p * r)        ≈⟨  toℚᵘ-homo-* p r ⟩
-  toℚᵘ p ℚᵘ.* toℚᵘ r  ≤⟨  ℚᵘ.*-monoˡ-≤-nonNeg r≥0 (toℚᵘ-mono-≤ p≤q) ⟩
+  toℚᵘ p ℚᵘ.* toℚᵘ r  ≤⟨  ℚᵘ.*-monoˡ-≤-nonNeg (toℚᵘ r) (toℚᵘ-mono-≤ p≤q) ⟩
   toℚᵘ q ℚᵘ.* toℚᵘ r  ≈˘⟨ toℚᵘ-homo-* q r ⟩
   toℚᵘ (q * r)        ∎)
   where open ℚᵘ.≤-Reasoning
 
-*-monoˡ-≤-nonNeg : ∀ r → NonNegative r → (r *_) Preserves _≤_ ⟶ _≤_
-*-monoˡ-≤-nonNeg r r≥0 {p} {q} p≤q = toℚᵘ-cancel-≤ (begin
-  toℚᵘ (r * p)        ≈⟨  toℚᵘ-homo-* r p ⟩
-  toℚᵘ r ℚᵘ.* toℚᵘ p  ≤⟨  ℚᵘ.*-monoʳ-≤-nonNeg {toℚᵘ r} r≥0 (toℚᵘ-mono-≤ p≤q) ⟩
-  toℚᵘ r ℚᵘ.* toℚᵘ q  ≈˘⟨ toℚᵘ-homo-* r q ⟩
-  toℚᵘ (r * q)        ∎)
-  where open ℚᵘ.≤-Reasoning
+*-monoˡ-≤-nonNeg : ∀ r .{{_ : NonNegative r}} → (r *_) Preserves _≤_ ⟶ _≤_
+*-monoˡ-≤-nonNeg r {p} {q} rewrite *-comm r p | *-comm r q = *-monoʳ-≤-nonNeg r
 
-*-monoʳ-≤-pos : ∀ r → Positive r → (_* r) Preserves _≤_ ⟶ _≤_
-*-monoʳ-≤-pos r = *-monoʳ-≤-nonNeg r ∘ pos⇒nonNeg r
-
-*-monoˡ-≤-pos : ∀ r → Positive r → (r *_) Preserves _≤_ ⟶ _≤_
-*-monoˡ-≤-pos r = *-monoˡ-≤-nonNeg r ∘ pos⇒nonNeg r
-
-*-monoʳ-≤-nonPos : ∀ r → NonPositive r → (_* r) Preserves _≤_ ⟶ _≥_
-*-monoʳ-≤-nonPos r r≤0 {p} {q} p≤q = toℚᵘ-cancel-≤ (begin
+*-monoʳ-≤-nonPos : ∀ r .{{_ : NonPositive r}} → (_* r) Preserves _≤_ ⟶ _≥_
+*-monoʳ-≤-nonPos r {p} {q} p≤q = toℚᵘ-cancel-≤ (begin
   toℚᵘ (q * r)        ≈⟨ toℚᵘ-homo-* q r ⟩
-  toℚᵘ q ℚᵘ.* toℚᵘ r  ≤⟨ ℚᵘ.*-monoˡ-≤-nonPos (toℚᵘ r) r≤0 (toℚᵘ-mono-≤ p≤q) ⟩
+  toℚᵘ q ℚᵘ.* toℚᵘ r  ≤⟨ ℚᵘ.*-monoˡ-≤-nonPos (toℚᵘ r) (toℚᵘ-mono-≤ p≤q) ⟩
   toℚᵘ p ℚᵘ.* toℚᵘ r  ≈˘⟨ toℚᵘ-homo-* p r ⟩
   toℚᵘ (p * r)        ∎)
   where open ℚᵘ.≤-Reasoning
 
-*-monoˡ-≤-nonPos : ∀ r → NonPositive r → (r *_) Preserves _≤_ ⟶ _≥_
-*-monoˡ-≤-nonPos r r≤0 {p} {q} p≤q = toℚᵘ-cancel-≤ (begin
-  toℚᵘ (r * q)        ≈⟨ toℚᵘ-homo-* r q ⟩
-  toℚᵘ r ℚᵘ.* toℚᵘ q  ≤⟨ ℚᵘ.*-monoʳ-≤-nonPos (toℚᵘ r) r≤0 (toℚᵘ-mono-≤ p≤q) ⟩
-  toℚᵘ r ℚᵘ.* toℚᵘ p  ≈˘⟨ toℚᵘ-homo-* r p ⟩
-  toℚᵘ (r * p)        ∎)
-  where open ℚᵘ.≤-Reasoning
+*-monoˡ-≤-nonPos : ∀ r .{{_ : NonPositive r}} → (r *_) Preserves _≤_ ⟶ _≥_
+*-monoˡ-≤-nonPos r {p} {q} rewrite *-comm r p | *-comm r q = *-monoʳ-≤-nonPos r
 
-*-monoʳ-≤-neg : ∀ r → Negative r → (_* r) Preserves _≤_ ⟶ _≥_
-*-monoʳ-≤-neg r = *-monoʳ-≤-nonPos r ∘ ℚᵘ.negative⇒nonPositive {toℚᵘ r}
-
-*-monoˡ-≤-neg : ∀ r → Negative r → (r *_) Preserves _≤_ ⟶ _≥_
-*-monoˡ-≤-neg r = *-monoˡ-≤-nonPos r ∘ ℚᵘ.negative⇒nonPositive {toℚᵘ r}
-
-*-cancelʳ-≤-neg : ∀ r → Negative r → ∀ {p q} → p * r ≤ q * r → p ≥ q
-*-cancelʳ-≤-neg r r≤0 {p} {q} pr≤qr = toℚᵘ-cancel-≤ (ℚᵘ.*-cancelʳ-≤-neg _ r≤0 (begin
+*-cancelʳ-≤-neg : ∀ r .{{_ : Negative r}} → p * r ≤ q * r → p ≥ q
+*-cancelʳ-≤-neg {p} {q} r pr≤qr = toℚᵘ-cancel-≤ (ℚᵘ.*-cancelʳ-≤-neg _ (begin
   toℚᵘ p ℚᵘ.* toℚᵘ r  ≈˘⟨ toℚᵘ-homo-* p r ⟩
   toℚᵘ (p * r)        ≤⟨  toℚᵘ-mono-≤ pr≤qr ⟩
   toℚᵘ (q * r)        ≈⟨  toℚᵘ-homo-* q r ⟩
   toℚᵘ q ℚᵘ.* toℚᵘ r  ∎))
   where open ℚᵘ.≤-Reasoning
 
-*-cancelˡ-≤-neg : ∀ r → Negative r → ∀ {p q} → r * p ≤ r * q → p ≥ q
-*-cancelˡ-≤-neg r r≤0 {p} {q} rp≤rq = toℚᵘ-cancel-≤ (ℚᵘ.*-cancelˡ-≤-neg (toℚᵘ r) r≤0 (begin
-  toℚᵘ r ℚᵘ.* toℚᵘ p  ≈˘⟨ toℚᵘ-homo-* r p ⟩
-  toℚᵘ (r * p)        ≤⟨  toℚᵘ-mono-≤ rp≤rq ⟩
-  toℚᵘ (r * q)        ≈⟨  toℚᵘ-homo-* r q ⟩
-  toℚᵘ r ℚᵘ.* toℚᵘ q  ∎))
-  where open ℚᵘ.≤-Reasoning
+*-cancelˡ-≤-neg : ∀ r .{{_ : Negative r}} → r * p ≤ r * q → p ≥ q
+*-cancelˡ-≤-neg {p} {q} r rewrite *-comm r p | *-comm r q = *-cancelʳ-≤-neg r
 
 ------------------------------------------------------------------------
 -- Properties of _*_ and _<_
 
-*-monoˡ-<-pos : ∀ r → Positive r → (_* r) Preserves _<_ ⟶ _<_
-*-monoˡ-<-pos r r>0 {p} {q} p<q = toℚᵘ-cancel-< (begin-strict
+*-monoˡ-<-pos : ∀ r .{{_ : Positive r}} → (_* r) Preserves _<_ ⟶ _<_
+*-monoˡ-<-pos r {p} {q} p<q = toℚᵘ-cancel-< (begin-strict
   toℚᵘ (p * r)        ≈⟨ toℚᵘ-homo-* p r ⟩
-  toℚᵘ p ℚᵘ.* toℚᵘ r  <⟨ ℚᵘ.*-monoˡ-<-pos {toℚᵘ r} r>0 (toℚᵘ-mono-< p<q) ⟩
+  toℚᵘ p ℚᵘ.* toℚᵘ r  <⟨ ℚᵘ.*-monoˡ-<-pos (toℚᵘ r) (toℚᵘ-mono-< p<q) ⟩
   toℚᵘ q ℚᵘ.* toℚᵘ r  ≈˘⟨ toℚᵘ-homo-* q r ⟩
   toℚᵘ (q * r)        ∎)
   where open ℚᵘ.≤-Reasoning
 
-*-monoʳ-<-pos : ∀ r → Positive r → (r *_) Preserves _<_ ⟶ _<_
-*-monoʳ-<-pos r r>0 {p} {q} p<q = toℚᵘ-cancel-< (begin-strict
-  toℚᵘ (r * p)        ≈⟨ toℚᵘ-homo-* r p ⟩
-  toℚᵘ r ℚᵘ.* toℚᵘ p  <⟨ ℚᵘ.*-monoʳ-<-pos {toℚᵘ r} r>0 (toℚᵘ-mono-< p<q) ⟩
-  toℚᵘ r ℚᵘ.* toℚᵘ q  ≈˘⟨ toℚᵘ-homo-* r q ⟩
-  toℚᵘ (r * q)        ∎)
-  where open ℚᵘ.≤-Reasoning
+*-monoʳ-<-pos : ∀ r .{{_ : Positive r}} → (r *_) Preserves _<_ ⟶ _<_
+*-monoʳ-<-pos r {p} {q} rewrite *-comm r p | *-comm r q = *-monoˡ-<-pos r
 
-*-cancelˡ-<-nonNeg : ∀ r → NonNegative r → ∀ {p q} → r * p < r * q → p < q
-*-cancelˡ-<-nonNeg r r≥0 {p} {q} rp<rq = toℚᵘ-cancel-< (ℚᵘ.*-cancelˡ-<-nonNeg {toℚᵘ r} r≥0 (begin-strict
+*-cancelˡ-<-nonNeg : ∀ r .{{_ : NonNegative r}} → ∀ {p q} → r * p < r * q → p < q
+*-cancelˡ-<-nonNeg r {p} {q} rp<rq = toℚᵘ-cancel-< (ℚᵘ.*-cancelˡ-<-nonNeg (toℚᵘ r) (begin-strict
   toℚᵘ r ℚᵘ.* toℚᵘ p  ≈˘⟨ toℚᵘ-homo-* r p ⟩
   toℚᵘ (r * p)        <⟨ toℚᵘ-mono-< rp<rq ⟩
   toℚᵘ (r * q)        ≈⟨ toℚᵘ-homo-* r q ⟩
   toℚᵘ r ℚᵘ.* toℚᵘ q  ∎))
   where open ℚᵘ.≤-Reasoning
 
-*-cancelʳ-<-nonNeg : ∀ r → NonNegative r → ∀ {p q} → p * r < q * r → p < q
-*-cancelʳ-<-nonNeg r r≥0 {p} {q} pr<qr = toℚᵘ-cancel-< (ℚᵘ.*-cancelʳ-<-nonNeg {toℚᵘ r} r≥0 (begin-strict
-  toℚᵘ p ℚᵘ.* toℚᵘ r  ≈˘⟨ toℚᵘ-homo-* p r ⟩
-  toℚᵘ (p * r)        <⟨ toℚᵘ-mono-< pr<qr ⟩
+*-cancelʳ-<-nonNeg : ∀ r .{{_ : NonNegative r}} → ∀ {p q} → p * r < q * r → p < q
+*-cancelʳ-<-nonNeg r {p} {q} rewrite *-comm p r | *-comm q r = *-cancelˡ-<-nonNeg r
+
+*-monoˡ-<-neg : ∀ r .{{_ : Negative r}} → (_* r) Preserves _<_ ⟶ _>_
+*-monoˡ-<-neg r {p} {q} p<q = toℚᵘ-cancel-< (begin-strict
   toℚᵘ (q * r)        ≈⟨ toℚᵘ-homo-* q r ⟩
-  toℚᵘ q ℚᵘ.* toℚᵘ r  ∎))
-  where open ℚᵘ.≤-Reasoning
-
-*-cancelˡ-<-pos : ∀ r → Positive r → ∀ {p q} → r * p < r * q → p < q
-*-cancelˡ-<-pos r = *-cancelˡ-<-nonNeg r ∘ pos⇒nonNeg r
-
-*-cancelʳ-<-pos : ∀ r → Positive r → ∀ {p q} → p * r < q * r → p < q
-*-cancelʳ-<-pos r = *-cancelʳ-<-nonNeg r ∘ pos⇒nonNeg r
-
-*-monoˡ-<-neg : ∀ r → Negative r → (_* r) Preserves _<_ ⟶ _>_
-*-monoˡ-<-neg r r<0 {p} {q} p<q = toℚᵘ-cancel-< (begin-strict
-  toℚᵘ (q * r)        ≈⟨ toℚᵘ-homo-* q r ⟩
-  toℚᵘ q ℚᵘ.* toℚᵘ r  <⟨ ℚᵘ.*-monoˡ-<-neg (toℚᵘ r) r<0 (toℚᵘ-mono-< p<q) ⟩
+  toℚᵘ q ℚᵘ.* toℚᵘ r  <⟨ ℚᵘ.*-monoˡ-<-neg (toℚᵘ r) (toℚᵘ-mono-< p<q) ⟩
   toℚᵘ p ℚᵘ.* toℚᵘ r  ≈˘⟨ toℚᵘ-homo-* p r ⟩
   toℚᵘ (p * r)        ∎)
   where open ℚᵘ.≤-Reasoning
 
-*-monoʳ-<-neg : ∀ r → Negative r → (r *_) Preserves _<_ ⟶ _>_
-*-monoʳ-<-neg r r<0 {p} {q} p<q = toℚᵘ-cancel-< (begin-strict
-  toℚᵘ (r * q)        ≈⟨ toℚᵘ-homo-* r q ⟩
-  toℚᵘ r ℚᵘ.* toℚᵘ q  <⟨ ℚᵘ.*-monoʳ-<-neg (toℚᵘ r) r<0 (toℚᵘ-mono-< p<q) ⟩
-  toℚᵘ r ℚᵘ.* toℚᵘ p  ≈˘⟨ toℚᵘ-homo-* r p ⟩
-  toℚᵘ (r * p)        ∎)
-  where open ℚᵘ.≤-Reasoning
+*-monoʳ-<-neg : ∀ r .{{_ : Negative r}} → (r *_) Preserves _<_ ⟶ _>_
+*-monoʳ-<-neg r {p} {q} rewrite *-comm r p | *-comm r q = *-monoˡ-<-neg r
 
-*-cancelˡ-<-nonPos : ∀ r → NonPositive r → ∀ {p q} → r * p < r * q → p > q
-*-cancelˡ-<-nonPos r r≤0 {p} {q} rp<rq = toℚᵘ-cancel-< (ℚᵘ.*-cancelˡ-<-nonPos (toℚᵘ r) r≤0 (begin-strict
+*-cancelˡ-<-nonPos : ∀ r .{{_ : NonPositive r}} → r * p < r * q → p > q
+*-cancelˡ-<-nonPos {p} {q} r rp<rq = toℚᵘ-cancel-< (ℚᵘ.*-cancelˡ-<-nonPos (toℚᵘ r) (begin-strict
   toℚᵘ r ℚᵘ.* toℚᵘ p  ≈˘⟨ toℚᵘ-homo-* r p ⟩
   toℚᵘ (r * p)        <⟨  toℚᵘ-mono-< rp<rq ⟩
   toℚᵘ (r * q)        ≈⟨  toℚᵘ-homo-* r q ⟩
   toℚᵘ r ℚᵘ.* toℚᵘ q  ∎))
   where open ℚᵘ.≤-Reasoning
 
-*-cancelʳ-<-nonPos : ∀ r → NonPositive r → ∀ {p q} → p * r < q * r → p > q
-*-cancelʳ-<-nonPos r r≤0 {p} {q} pr<qr = toℚᵘ-cancel-< (ℚᵘ.*-cancelʳ-<-nonPos (toℚᵘ r) r≤0 (begin-strict
-  toℚᵘ p ℚᵘ.* toℚᵘ r  ≈˘⟨ toℚᵘ-homo-* p r ⟩
-  toℚᵘ (p * r)        <⟨  toℚᵘ-mono-< pr<qr ⟩
-  toℚᵘ (q * r)        ≈⟨  toℚᵘ-homo-* q r ⟩
-  toℚᵘ q ℚᵘ.* toℚᵘ r  ∎))
-  where open ℚᵘ.≤-Reasoning
-
-*-cancelˡ-<-neg : ∀ r → Negative r → ∀ {p q} → r * p < r * q → p > q
-*-cancelˡ-<-neg r = *-cancelˡ-<-nonPos r ∘ neg⇒nonPos r
-
-*-cancelʳ-<-neg : ∀ r → Negative r → ∀ {p q} → p * r < q * r → p > q
-*-cancelʳ-<-neg r = *-cancelʳ-<-nonPos r ∘ neg⇒nonPos r
+*-cancelʳ-<-nonPos : ∀ r .{{_ : NonPositive r}} → p * r < q * r → p > q
+*-cancelʳ-<-nonPos {p} {q} r rewrite *-comm p r | *-comm q r = *-cancelˡ-<-nonPos r
 
 ------------------------------------------------------------------------
 -- Properties of _⊓_
@@ -1546,63 +1522,63 @@ antimono-≤-distrib-⊔ {f} = ⊓-⊔-properties.antimono-≤-distrib-⊔ (cong
 ------------------------------------------------------------------------
 -- Properties of _⊓_ and _*_
 
-*-distribˡ-⊓-nonNeg : ∀ p → NonNegative p → ∀ q r → p * (q ⊓ r) ≡ (p * q) ⊓ (p * r)
-*-distribˡ-⊓-nonNeg p p≥0 = mono-≤-distrib-⊓ (*-monoˡ-≤-nonNeg p p≥0)
+*-distribˡ-⊓-nonNeg : ∀ p .{{_ : NonNegative p}} → ∀ q r → p * (q ⊓ r) ≡ (p * q) ⊓ (p * r)
+*-distribˡ-⊓-nonNeg p = mono-≤-distrib-⊓ (*-monoˡ-≤-nonNeg p)
 
-*-distribʳ-⊓-nonNeg : ∀ p → NonNegative p → ∀ q r → (q ⊓ r) * p ≡ (q * p) ⊓ (r * p)
-*-distribʳ-⊓-nonNeg p p≥0 = mono-≤-distrib-⊓ (*-monoʳ-≤-nonNeg p p≥0)
+*-distribʳ-⊓-nonNeg : ∀ p .{{_ : NonNegative p}} → ∀ q r → (q ⊓ r) * p ≡ (q * p) ⊓ (r * p)
+*-distribʳ-⊓-nonNeg p = mono-≤-distrib-⊓ (*-monoʳ-≤-nonNeg p)
 
-*-distribˡ-⊔-nonNeg : ∀ p → NonNegative p → ∀ q r → p * (q ⊔ r) ≡ (p * q) ⊔ (p * r)
-*-distribˡ-⊔-nonNeg p p≥0 = mono-≤-distrib-⊔ (*-monoˡ-≤-nonNeg p p≥0)
+*-distribˡ-⊔-nonNeg : ∀ p .{{_ : NonNegative p}} → ∀ q r → p * (q ⊔ r) ≡ (p * q) ⊔ (p * r)
+*-distribˡ-⊔-nonNeg p = mono-≤-distrib-⊔ (*-monoˡ-≤-nonNeg p)
 
-*-distribʳ-⊔-nonNeg : ∀ p → NonNegative p → ∀ q r → (q ⊔ r) * p ≡ (q * p) ⊔ (r * p)
-*-distribʳ-⊔-nonNeg p p≥0 = mono-≤-distrib-⊔ (*-monoʳ-≤-nonNeg p p≥0)
+*-distribʳ-⊔-nonNeg : ∀ p .{{_ : NonNegative p}} → ∀ q r → (q ⊔ r) * p ≡ (q * p) ⊔ (r * p)
+*-distribʳ-⊔-nonNeg p = mono-≤-distrib-⊔ (*-monoʳ-≤-nonNeg p)
 
 ------------------------------------------------------------------------
 -- Properties of _⊓_, _⊔_ and _*_
 
-*-distribˡ-⊔-nonPos : ∀ p → NonPositive p → ∀ q r → p * (q ⊔ r) ≡ (p * q) ⊓ (p * r)
-*-distribˡ-⊔-nonPos p p≤0 = antimono-≤-distrib-⊔ (*-monoˡ-≤-nonPos p p≤0)
+*-distribˡ-⊔-nonPos : ∀ p .{{_ : NonPositive p}} → ∀ q r → p * (q ⊔ r) ≡ (p * q) ⊓ (p * r)
+*-distribˡ-⊔-nonPos p = antimono-≤-distrib-⊔ (*-monoˡ-≤-nonPos p)
 
-*-distribʳ-⊔-nonPos : ∀ p → NonPositive p → ∀ q r → (q ⊔ r) * p ≡ (q * p) ⊓ (r * p)
-*-distribʳ-⊔-nonPos p p≤0 = antimono-≤-distrib-⊔ (*-monoʳ-≤-nonPos p p≤0)
+*-distribʳ-⊔-nonPos : ∀ p .{{_ : NonPositive p}} → ∀ q r → (q ⊔ r) * p ≡ (q * p) ⊓ (r * p)
+*-distribʳ-⊔-nonPos p = antimono-≤-distrib-⊔ (*-monoʳ-≤-nonPos p)
 
-*-distribˡ-⊓-nonPos : ∀ p → NonPositive p → ∀ q r → p * (q ⊓ r) ≡ (p * q) ⊔ (p * r)
-*-distribˡ-⊓-nonPos p p≤0 = antimono-≤-distrib-⊓ (*-monoˡ-≤-nonPos p p≤0)
+*-distribˡ-⊓-nonPos : ∀ p .{{_ : NonPositive p}} → ∀ q r → p * (q ⊓ r) ≡ (p * q) ⊔ (p * r)
+*-distribˡ-⊓-nonPos p = antimono-≤-distrib-⊓ (*-monoˡ-≤-nonPos p)
 
-*-distribʳ-⊓-nonPos : ∀ p → NonPositive p → ∀ q r → (q ⊓ r) * p ≡ (q * p) ⊔ (r * p)
-*-distribʳ-⊓-nonPos p p≤0 = antimono-≤-distrib-⊓ (*-monoʳ-≤-nonPos p p≤0)
+*-distribʳ-⊓-nonPos : ∀ p .{{_ : NonPositive p}} → ∀ q r → (q ⊓ r) * p ≡ (q * p) ⊔ (r * p)
+*-distribʳ-⊓-nonPos p = antimono-≤-distrib-⊓ (*-monoʳ-≤-nonPos p)
 
 ------------------------------------------------------------------------
 -- Properties of 1/_
 ------------------------------------------------------------------------
 
 private
-  pos⇒≢0 : ∀ p → Positive p → ℤ.∣ ↥ p ∣ ≢0
-  pos⇒≢0 p p>0 = Dec.fromWitnessFalse (contraposition ℤ.∣n∣≡0⇒n≡0 (≢-sym (ℤ.<⇒≢ (ℤ.positive⁻¹ p>0))))
+  pos⇒≢0 : ∀ p → Positive p → NonZero p
+  pos⇒≢0 (mkℚ +[1+ _ ] _ _) p>0 = _
 
-  neg⇒≢0 : ∀ p → Negative p → ℤ.∣ ↥ p ∣ ≢0
-  neg⇒≢0 p p<0 = Dec.fromWitnessFalse (contraposition ℤ.∣n∣≡0⇒n≡0 (ℤ.<⇒≢ (ℤ.negative⁻¹ p<0)))
+  neg⇒≢0 : ∀ p → Negative p → NonZero p
+  neg⇒≢0 (mkℚ -[1+ _ ] _ _) p<0 = _
 
-  1/p≢0 : ∀ p {p≢0} → ℤ.∣ ↥ ((1/ p) {p≢0}) ∣ ≢0
+  1/p≢0 : ∀ p .{{_ : NonZero p}} → NonZero (1/ p)
   1/p≢0 (mkℚ +[1+ _ ] _ _) = _
   1/p≢0 (mkℚ -[1+ _ ] _ _) = _
 
-1/-involutive : ∀ p {p≢0} → (1/ (1/ p) {p≢0}) {1/p≢0 p {p≢0}} ≡ p
+1/-involutive : ∀ p .{{p≢0 : NonZero p}} → (1/ (1/ p)) {{1/p≢0 p}} ≡ p
 1/-involutive (mkℚ +[1+ n ] d-1 _) = refl
 1/-involutive (mkℚ -[1+ n ] d-1 _) = refl
 
-pos⇒1/pos : ∀ p (p>0 : Positive p) → Positive ((1/ p) {pos⇒≢0 p p>0})
-pos⇒1/pos (mkℚ +[1+ n ] d-1 _) _ = tt
+pos⇒1/pos : ∀ p .{{p>0 : Positive p}} → Positive ((1/ p) {{pos⇒≢0 p p>0}})
+pos⇒1/pos (mkℚ +[1+ _ ] _ _) = _
 
-neg⇒1/neg : ∀ p (p<0 : Negative p) → Negative ((1/ p) {neg⇒≢0 p p<0})
-neg⇒1/neg (mkℚ -[1+ n ] d-1 _) _ = _
+neg⇒1/neg : ∀ p .{{p<0 : Negative p}} → Negative ((1/ p) {{neg⇒≢0 p p<0}})
+neg⇒1/neg (mkℚ -[1+ _ ] _ _) = _
 
-1/pos⇒pos : ∀ p {p≢0} → (1/p : Positive ((1/ p) {p≢0})) → Positive p
-1/pos⇒pos p {p≢0} 1/p>0 = subst Positive (1/-involutive p {p≢0}) (pos⇒1/pos (1/ p) 1/p>0)
+1/pos⇒pos : ∀ p .{{_ : NonZero p}} .{{_ : Positive (1/ p)}} → Positive p
+1/pos⇒pos p = subst Positive (1/-involutive p) (pos⇒1/pos (1/ p))
 
-1/neg⇒neg : ∀ p {p≢0} → (1/p : Negative ((1/ p) {p≢0})) → Negative p
-1/neg⇒neg p {p≢0} 1/p>0 = subst Negative (1/-involutive p {p≢0}) (neg⇒1/neg (1/ p) 1/p>0)
+1/neg⇒neg : ∀ p .{{_ : NonZero p}} .{{_ : Negative (1/ p)}} → Negative p
+1/neg⇒neg p = subst Negative (1/-involutive p) (neg⇒1/neg (1/ p))
 
 ------------------------------------------------------------------------
 -- Properties of ∣_∣
@@ -1635,7 +1611,7 @@ toℚᵘ-homo-∣-∣ (mkℚ -[1+ _ ] _ _) = *≡* refl
 
 ∣-p∣≡∣p∣ : ∀ p → ∣ - p ∣ ≡ ∣ p ∣
 ∣-p∣≡∣p∣ (mkℚ +[1+ n ] d-1 _) = refl
-∣-p∣≡∣p∣ (mkℚ (+ zero) d-1 _) = refl
+∣-p∣≡∣p∣ (mkℚ +0       d-1 _) = refl
 ∣-p∣≡∣p∣ (mkℚ -[1+ n ] d-1 _) = refl
 
 ∣p∣≡p⇒0≤p : ∀ {p} → ∣ p ∣ ≡ p → 0ℚ ≤ p
@@ -1684,6 +1660,7 @@ toℚᵘ-homo-∣-∣ (mkℚ -[1+ _ ] _ _) = *≡* refl
 ∣∣p∣∣≡∣p∣ : ∀ p → ∣ ∣ p ∣ ∣ ≡ ∣ p ∣
 ∣∣p∣∣≡∣p∣ p = 0≤p⇒∣p∣≡p (0≤∣p∣ p)
 
+
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
 ------------------------------------------------------------------------
@@ -1696,4 +1673,55 @@ toℚᵘ-homo-∣-∣ (mkℚ -[1+ _ ] _ _) = *≡* refl
 {-# WARNING_ON_USAGE ≤-irrelevance
 "Warning: ≤-irrelevance was deprecated in v1.0.
 Please use ≤-irrelevant instead."
+#-}
+
+-- Version 2.0
+
+*-monoʳ-≤-neg : ∀ r → Negative r → (_* r) Preserves _≤_ ⟶ _≥_
+*-monoʳ-≤-neg r@(mkℚ -[1+ _ ] _ _) _ = *-monoʳ-≤-nonPos r
+{-# WARNING_ON_USAGE *-monoʳ-≤-neg
+"Warning: *-monoʳ-≤-neg was deprecated in v2.0.
+Please use *-monoʳ-≤-nonPos instead."
+#-}
+*-monoˡ-≤-neg : ∀ r → Negative r → (r *_) Preserves _≤_ ⟶ _≥_
+*-monoˡ-≤-neg r@(mkℚ -[1+ _ ] _ _) _ = *-monoˡ-≤-nonPos r
+{-# WARNING_ON_USAGE *-monoˡ-≤-neg
+"Warning: *-monoˡ-≤-neg was deprecated in v2.0.
+Please use *-monoˡ-≤-nonPos instead."
+#-}
+*-monoʳ-≤-pos : ∀ r → Positive r → (_* r) Preserves _≤_ ⟶ _≤_
+*-monoʳ-≤-pos r@(mkℚ +[1+ _ ] _ _) _ = *-monoʳ-≤-nonNeg r
+{-# WARNING_ON_USAGE *-monoʳ-≤-pos
+"Warning: *-monoʳ-≤-pos was deprecated in v2.0.
+Please use *-monoʳ-≤-nonNeg instead."
+#-}
+*-monoˡ-≤-pos : ∀ r → Positive r → (r *_) Preserves _≤_ ⟶ _≤_
+*-monoˡ-≤-pos r@(mkℚ +[1+ _ ] _ _) _ = *-monoˡ-≤-nonNeg r
+{-# WARNING_ON_USAGE *-monoˡ-≤-pos
+"Warning: *-monoˡ-≤-pos was deprecated in v2.0.
+Please use *-monoˡ-≤-nonNeg instead."
+#-}
+*-cancelˡ-<-pos : ∀ r → Positive r → ∀ {p q} → r * p < r * q → p < q
+*-cancelˡ-<-pos r@(mkℚ +[1+ _ ] _ _) _ = *-cancelˡ-<-nonNeg r
+{-# WARNING_ON_USAGE *-cancelˡ-<-pos
+"Warning: *-cancelˡ-<-pos was deprecated in v2.0.
+Please use *-cancelˡ-<-nonNeg instead."
+#-}
+*-cancelʳ-<-pos : ∀ r → Positive r → ∀ {p q} → p * r < q * r → p < q
+*-cancelʳ-<-pos r@(mkℚ +[1+ _ ] _ _) _ = *-cancelʳ-<-nonNeg r
+{-# WARNING_ON_USAGE *-cancelʳ-<-pos
+"Warning: *-cancelʳ-<-pos was deprecated in v2.0.
+Please use *-cancelʳ-<-nonNeg instead."
+#-}
+*-cancelˡ-<-neg : ∀ r → Negative r → ∀ {p q} → r * p < r * q → p > q
+*-cancelˡ-<-neg r@(mkℚ -[1+ _ ] _ _) _ = *-cancelˡ-<-nonPos r
+{-# WARNING_ON_USAGE *-cancelˡ-<-neg
+"Warning: *-cancelˡ-<-neg was deprecated in v2.0.
+Please use *-cancelˡ-<-nonPos instead."
+#-}
+*-cancelʳ-<-neg : ∀ r → Negative r → ∀ {p q} → p * r < q * r → p > q
+*-cancelʳ-<-neg r@(mkℚ -[1+ _ ] _ _) _ = *-cancelʳ-<-nonPos r
+{-# WARNING_ON_USAGE *-cancelʳ-<-neg
+"Warning: *-cancelʳ-<-neg was deprecated in v2.0.
+Please use *-cancelʳ-<-nonPos instead."
 #-}

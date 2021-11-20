@@ -43,22 +43,15 @@ open ℕᵈ public using (divides)
   where open ℕᵈ.∣-Reasoning
 
 *-monoˡ-∣ : ∀ k → (_* k) Preserves _∣_ ⟶ _∣_
-*-monoˡ-∣ k {i} {j}
-  rewrite *-comm i k
-        | *-comm j k
-        = *-monoʳ-∣ k
+*-monoˡ-∣ k {i} {j} rewrite *-comm i k | *-comm j k = *-monoʳ-∣ k
 
-*-cancelˡ-∣ : ∀ k {i j} → k ≢ + 0 → k * i ∣ k * j → i ∣ j
-*-cancelˡ-∣ k {i} {j} k≢0 k*i∣k*j = ℕᵈ.*-cancelˡ-∣ (ℕ.pred ∣ k ∣) $ begin
-  let ∣k∣-is-suc = ℕᵖ.suc[pred[n]]≡n (k≢0 ∘ ∣n∣≡0⇒n≡0) in
-  ℕ.suc (ℕ.pred ∣ k ∣) ℕ.* ∣ i ∣ ≡⟨ cong (ℕ._* ∣ i ∣) (∣k∣-is-suc) ⟩
-  ∣ k ∣ ℕ.* ∣ i ∣                ≡⟨ sym (abs-*-commute k i) ⟩
-  ∣ k * i ∣                      ∣⟨ k*i∣k*j ⟩
-  ∣ k * j ∣                      ≡⟨ abs-*-commute k j ⟩
-  ∣ k ∣ ℕ.* ∣ j ∣                ≡⟨ cong (ℕ._* ∣ j ∣) (sym ∣k∣-is-suc) ⟩
-  ℕ.suc (ℕ.pred ∣ k ∣) ℕ.* ∣ j ∣ ∎
+*-cancelˡ-∣ : ∀ k {i j} .{{_ : NonZero k}} → k * i ∣ k * j → i ∣ j
+*-cancelˡ-∣ k {i} {j} k*i∣k*j = ℕᵈ.*-cancelˡ-∣ ∣ k ∣ $ begin
+  ∣ k ∣ ℕ.* ∣ i ∣  ≡⟨ sym (abs-*-commute k i) ⟩
+  ∣ k * i ∣        ∣⟨ k*i∣k*j ⟩
+  ∣ k * j ∣        ≡⟨ abs-*-commute k j ⟩
+  ∣ k ∣ ℕ.* ∣ j ∣  ∎
   where open ℕᵈ.∣-Reasoning
 
-*-cancelʳ-∣ : ∀ k {i j} → k ≢ + 0 → i * k ∣ j * k → i ∣ j
-*-cancelʳ-∣ k {i} {j} ≢0 = *-cancelˡ-∣ k ≢0 ∘
-  subst₂ _∣_ (*-comm i k) (*-comm j k)
+*-cancelʳ-∣ : ∀ k {i j} .{{_ : NonZero k}} → i * k ∣ j * k → i ∣ j
+*-cancelʳ-∣ k {i} {j} rewrite *-comm i k | *-comm j k = *-cancelˡ-∣ k

@@ -317,6 +317,26 @@ record Quasigroup c ℓ : Set (suc (c ⊔ ℓ)) where
     using (_≉_; rawMagma)
 
 
+record Loop c ℓ : Set (suc (c ⊔ ℓ)) where
+  infix  8 _⁻¹
+  infixl 7 _∙_
+  infix  4 _≈_
+  field
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    _∙_     : Op₂ Carrier
+    ε       : Carrier
+    _⁻¹     : Op₁ Carrier
+    isLoop : IsLoop _≈_ _∙_ ε _⁻¹
+
+  open IsLoop isLoop public
+
+  quasigroup : Quasigroup _ _
+  quasigroup = record { isQuasigroup = isQuasigroup }
+
+  open Quasigroup quasigroup public
+    using (_≉_; rawMagma; magma)
+
 record Group c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 _⁻¹
   infixl 7 _∙_
@@ -345,6 +365,10 @@ record Group c ℓ : Set (suc (c ⊔ ℓ)) where
     { isQuasigroup = isQuasigroup
     }
 
+  loop : Loop c ℓ
+  loop = record
+    { isLoop = isLoop
+    }
 
 record AbelianGroup c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 _⁻¹
@@ -365,7 +389,7 @@ record AbelianGroup c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open Group group public using
     (_≉_; rawMagma; magma; semigroup
-    ; rawMonoid; monoid; rawGroup; quasigroup
+    ; rawMonoid; monoid; rawGroup; quasigroup; loop
     )
 
   commutativeMonoid : CommutativeMonoid _ _
@@ -807,7 +831,7 @@ record Ring c ℓ : Set (suc (c ⊔ ℓ)) where
     )
 
   open AbelianGroup +-abelianGroup public
-    using () renaming (group to +-group; quasigroup to +-quasigroup)
+    using () renaming (group to +-group; quasigroup to +-quasigroup; loop to +-loop)
 
   rawRing : RawRing _ _
   rawRing = record
@@ -840,7 +864,7 @@ record CommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
   ring : Ring _ _
   ring = record { isRing = isRing }
 
-  open Ring ring public using (_≉_; rawRing; +-quasigroup; +-group; +-abelianGroup)
+  open Ring ring public using (_≉_; rawRing; +-quasigroup; +-loop; +-group; +-abelianGroup)
 
   commutativeSemiring : CommutativeSemiring _ _
   commutativeSemiring =

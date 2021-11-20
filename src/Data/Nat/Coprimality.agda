@@ -57,9 +57,9 @@ coprime⇒gcd≡1 coprime = GCD.unique (gcd-GCD _ _) (coprime⇒GCD≡1 coprime)
 gcd≡1⇒coprime : ∀ {m n} → gcd m n ≡ 1 → Coprime m n
 gcd≡1⇒coprime gcd≡1 = GCD≡1⇒coprime (subst (GCD _ _) gcd≡1 (gcd-GCD _ _))
 
-coprime-/gcd : ∀ m n {gcd≢0} →
-               Coprime ((m / gcd m n) {gcd≢0}) ((n / gcd m n) {gcd≢0})
-coprime-/gcd m n {gcd≢0} = GCD≡1⇒coprime (GCD-/gcd m n {gcd≢0})
+coprime-/gcd : ∀ m n .{{_ : NonZero (gcd m n)}} →
+               Coprime (m / gcd m n) (n / gcd m n)
+coprime-/gcd m n = GCD≡1⇒coprime (GCD-/gcd m n)
 
 ------------------------------------------------------------------------
 -- Relational properties of Coprime
@@ -112,12 +112,11 @@ recompute {n} {d} c = Nullary.recompute (coprime? n d) c
 -- If the "gcd" in Bézout's identity is non-zero, then the "other"
 -- divisors are coprime.
 
-Bézout-coprime : ∀ {i j d} →
-                 Bézout.Identity (suc d) (i * suc d) (j * suc d) →
-                 Coprime i j
-Bézout-coprime (Bézout.+- x y eq) (divides q₁ refl , divides q₂ refl) =
+Bézout-coprime : ∀ {i j d} .{{_ : NonZero d}} →
+                 Bézout.Identity d (i * d) (j * d) → Coprime i j
+Bézout-coprime {d = suc _} (Bézout.+- x y eq) (divides q₁ refl , divides q₂ refl) =
   lem₁₀ y q₂ x q₁ eq
-Bézout-coprime (Bézout.-+ x y eq) (divides q₁ refl , divides q₂ refl) =
+Bézout-coprime {d = suc _} (Bézout.-+ x y eq) (divides q₁ refl , divides q₂ refl) =
   lem₁₀ x q₁ y q₂ eq
 
 -- Coprime numbers satisfy Bézout's identity.

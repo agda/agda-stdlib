@@ -10,7 +10,7 @@ module Data.Rational.Base where
 
 open import Data.Bool.Base using (Bool; true; false; if_then_else_)
 open import Function.Base using (id)
-open import Data.Integer.Base as ℤ using (ℤ; +_; +0; -[1+_])
+open import Data.Integer.Base as ℤ using (ℤ; +_; +0; +[1+_]; -[1+_])
 import Data.Integer.GCD as ℤ
 import Data.Integer.DivMod as ℤ
 open import Data.Nat.GCD
@@ -19,7 +19,7 @@ open import Data.Nat.Coprimality as C
   using (Coprime; Bézout-coprime; coprime-/gcd; coprime?; ¬0-coprimeTo-2+)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc) hiding (module ℕ)
 import Data.Nat.DivMod as ℕ
-open import Data.Rational.Unnormalised.Base as ℚᵘ using (ℚᵘ; mkℚᵘ; _≢0)
+open import Data.Rational.Unnormalised.Base as ℚᵘ using (ℚᵘ; mkℚᵘ)
 open import Data.Product
 open import Data.Sign using (Sign)
 open import Data.Sum.Base using (inj₂)
@@ -34,13 +34,6 @@ open import Relation.Binary.PropositionalEquality
   using (_≡_; _≢_; refl; subst; cong; cong₂; module ≡-Reasoning)
 
 open ≡-Reasoning
-
--- Note, these are re-exported publicly to maintain backwards
--- compatability. Although we are unable (?) to put a warning on them,
--- using these from `Data.Rational` should be viewed as a deprecated
--- feature.
-
-open import Data.Integer public using (+0; +[1+_])
 
 ------------------------------------------------------------------------
 -- Rational numbers in reduced form. Note that there is exactly one
@@ -66,7 +59,7 @@ open ℚ public using ()
   ; denominatorℕ to ↧ₙ_
   )
 
-mkℚ+ : ∀ n d → .{d≢0 : d ≢0} → .(Coprime n d) → ℚ
+mkℚ+ : ∀ n d → .{{_ : ℕ.NonZero d}} → .(Coprime n d) → ℚ
 mkℚ+ n (suc d) coprime = mkℚ (+ n) d coprime
 
 ------------------------------------------------------------------------
@@ -128,21 +121,21 @@ p ≤ᵇ q = (↥ p ℤ.* ↧ q) ℤ.≤ᵇ (↥ q ℤ.* ↧ p)
 -- A constructor for ℚ that takes two natural numbers, say 6 and 21,
 -- and returns them in a normalized form, e.g. say 2 and 7
 
-normalize : ∀ (m n : ℕ) {n≢0 : n ≢0} → ℚ
-normalize m n {n≢0} = mkℚ+ (m ℕ./ gcd m n) (n ℕ./ gcd m n)
-  {n/g≢0} (coprime-/gcd m n {g≢0})
+normalize : ∀ (m n : ℕ) .{{_ : ℕ.NonZero n}} → ℚ
+normalize m n {{n≢0}} = mkℚ+ (m ℕ./ gcd m n) (n ℕ./ gcd m n) (coprime-/gcd m n)
   where
-  g≢0   = fromWitnessFalse (gcd[m,n]≢0 m n (inj₂ (toWitnessFalse n≢0)))
-  n/g≢0 = fromWitnessFalse (n/gcd[m,n]≢0 m n {n≢0} {g≢0})
+    instance
+      g≢0   = ℕ.≢-nonZero (gcd[m,n]≢0 m n (inj₂ (ℕ.≢-nonZero⁻¹ n≢0)))
+      n/g≢0 = ℕ.≢-nonZero (n/gcd[m,n]≢0 m n {{n≢0}} {{g≢0}})
 
 -- A constructor for ℚ that (unlike mkℚ) automatically normalises it's
 -- arguments. See the constants section below for how to use this operator.
 
 infixl 7 _/_
 
-_/_ : (n : ℤ) (d : ℕ) → {d≢0 : d ≢0} → ℚ
-(+ n      / d) {d≢0} =   normalize n       d {d≢0}
-(-[1+ n ] / d) {d≢0} = - normalize (suc n) d {d≢0}
+_/_ : (n : ℤ) (d : ℕ) → .{{_ : ℕ.NonZero d}} → ℚ
+(+ n      / d) =   normalize n       d
+(-[1+ n ] / d) = - normalize (suc n) d
 
 ------------------------------------------------------------------------
 -- Conversion to and from unnormalized rationals
@@ -191,8 +184,8 @@ NonNegative p = ℚᵘ.NonNegative (toℚᵘ p)
 ≢-nonZero : ∀ {p} → p ≢ 0ℚ → NonZero p
 ≢-nonZero {mkℚ -[1+ _ ] _       _} _   = _
 ≢-nonZero {mkℚ +[1+ _ ] _       _} _   = _
-≢-nonZero {mkℚ +0       zero    _} p≢0 = p≢0 refl
-≢-nonZero {mkℚ +0       (suc d) c} p≢0 = ¬0-coprimeTo-2+ (C.recompute c)
+≢-nonZero {mkℚ +0       zero    _} p≢0 = contradiction refl p≢0
+≢-nonZero {mkℚ +0       (suc d) c} p≢0 = contradiction (λ {i} → C.recompute c {i}) ¬0-coprimeTo-2+
 
 >-nonZero : ∀ {p} → p > 0ℚ → NonZero p
 >-nonZero {p} (*<* p<q) = ℚᵘ.>-nonZero {toℚᵘ p} (ℚᵘ.*<* p<q)
@@ -232,13 +225,13 @@ _-_ : ℚ → ℚ → ℚ
 p - q = p + (- q)
 
 -- reciprocal: requires a proof that the numerator is not zero
-1/_ : (p : ℚ) → .{n≢0 : ℤ.∣ ↥ p ∣ ≢0} → ℚ
+1/_ : (p : ℚ) → .{{_ : NonZero p}} → ℚ
 1/ mkℚ +[1+ n ] d prf = mkℚ +[1+ d ] n (C.sym prf)
 1/ mkℚ -[1+ n ] d prf = mkℚ -[1+ d ] n (C.sym prf)
 
 -- division: requires a proof that the denominator is not zero
-_÷_ : (p q : ℚ) → .{n≢0 : ℤ.∣ ↥ q ∣ ≢0} → ℚ
-(p ÷ q) {n≢0} = p * (1/ q) {n≢0}
+_÷_ : (p q : ℚ) → .{{_ : NonZero q}} → ℚ
+p ÷ q = p * (1/ q)
 
 -- max
 _⊔_ : (p q : ℚ) → ℚ
@@ -251,3 +244,35 @@ p ⊓ q = if p ≤ᵇ q then p else q
 -- absolute value
 ∣_∣ : ℚ → ℚ
 ∣ mkℚ n d c ∣ = mkℚ (+ ℤ.∣ n ∣) d c
+
+------------------------------------------------------------------------
+-- Rounding functions
+
+-- Floor (round towards -∞)
+floor : ℚ → ℤ
+floor p = (↥ p) ℤ.div (↧ p)
+
+-- Ceiling (round towards +∞)
+ceiling : ℚ → ℤ
+ceiling p = ℤ.- floor (- p)
+
+-- Truncate  (round towards 0)
+truncate : ℚ → ℤ
+truncate p with p ≤ᵇ 0ℚ
+... | true  = ceiling p
+... | false = floor p
+
+-- Round (to nearest integer)
+round : ℚ → ℤ
+round p with p ≤ᵇ 0ℚ
+... | true  = ceiling (p - ½)
+... | false = floor (p + ½)
+
+-- Fractional part (remainder after floor)
+fracPart : ℚ → ℚ
+fracPart p = ∣ p - truncate p / 1 ∣
+
+-- Extra notations  ⌊ ⌋ floor,  ⌈ ⌉ ceiling,  [ ] truncate
+syntax floor p = ⌊ p ⌋
+syntax ceiling p = ⌈ p ⌉
+syntax truncate p = [ p ]

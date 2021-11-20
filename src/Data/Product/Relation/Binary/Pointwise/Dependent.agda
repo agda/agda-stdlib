@@ -78,25 +78,3 @@ module _ {a b ℓ₁ ℓ₂} where
     } where
     module Eq = Setoid s₁
     module IEq = IndexedSetoid s₂
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 0.15
-
-Rel = Pointwise
-{-# WARNING_ON_USAGE Rel
-"Warning: Rel was deprecated in v0.15.
-Please use Pointwise instead."
-#-}
-
--- Version 0.15
-
-REL = POINTWISE
-{-# WARNING_ON_USAGE REL
-"Warning: REL was deprecated in v1.0.
-Please use POINTWISE instead."
-#-}

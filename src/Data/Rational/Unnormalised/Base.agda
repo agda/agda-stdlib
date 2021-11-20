@@ -8,13 +8,14 @@
 
 module Data.Rational.Unnormalised.Base where
 
-open import Data.Bool.Base using (Bool; if_then_else_)
+open import Data.Bool.Base using (Bool; true; false; if_then_else_)
 open import Data.Integer.Base as ℤ
   using (ℤ; +_; +0; +[1+_]; -[1+_]; +<+; +≤+)
+import Data.Integer.DivMod as ℤ
 open import Data.Nat as ℕ using (ℕ; zero; suc)
 open import Level using (0ℓ)
 open import Relation.Nullary using (¬_)
-open import Relation.Nullary.Decidable using (False)
+open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred)
 open import Relation.Binary using (Rel)
 open import Relation.Binary.PropositionalEquality.Core
@@ -102,17 +103,86 @@ p ≤ᵇ q = (↥ p ℤ.* ↧ q) ℤ.≤ᵇ (↥ q ℤ.* ↧ p)
 ------------------------------------------------------------------------
 -- Constructing rationals
 
-infix 4 _≢0
-_≢0 : ℕ → Set
-n ≢0 = False (n ℕ.≟ 0)
-
 -- An alternative constructor for ℚᵘ. See the constants section below
 -- for examples of how to use this operator.
 
 infixl 7 _/_
 
-_/_ : (n : ℤ) (d : ℕ) .{d≢0 : d ≢0} → ℚᵘ
+_/_ : (n : ℤ) (d : ℕ) .{{_ : ℕ.NonZero d}} → ℚᵘ
 n / suc d = mkℚᵘ n d
+
+------------------------------------------------------------------------------
+-- Some constants
+
+0ℚᵘ : ℚᵘ
+0ℚᵘ = + 0 / 1
+
+1ℚᵘ : ℚᵘ
+1ℚᵘ = + 1 / 1
+
+½ : ℚᵘ
+½ = + 1 / 2
+
+-½ : ℚᵘ
+-½ = ℤ.- (+ 1) / 2
+
+------------------------------------------------------------------------
+-- Simple predicates
+
+NonZero : Pred ℚᵘ 0ℓ
+NonZero p = ℤ.NonZero (↥ p)
+
+Positive : Pred ℚᵘ 0ℓ
+Positive p = ℤ.Positive (↥ p)
+
+Negative : Pred ℚᵘ 0ℓ
+Negative p = ℤ.Negative (↥ p)
+
+NonPositive : Pred ℚᵘ 0ℓ
+NonPositive p = ℤ.NonPositive (↥ p)
+
+NonNegative : Pred ℚᵘ 0ℓ
+NonNegative p = ℤ.NonNegative (↥ p)
+
+-- Constructors and destructors
+
+-- Note: these could be proved more elegantly using the constructors
+-- from ℤ but it requires importing `Data.Integer.Properties` which
+-- we would like to avoid doing.
+
+≢-nonZero : ∀ {p} → p ≠ 0ℚᵘ → NonZero p
+≢-nonZero {mkℚᵘ -[1+ _ ] _      } _   = _
+≢-nonZero {mkℚᵘ +[1+ _ ] _      } _   = _
+≢-nonZero {mkℚᵘ +0       zero   } p≢0 = contradiction (*≡* refl) p≢0
+≢-nonZero {mkℚᵘ +0       (suc d)} p≢0 = contradiction (*≡* refl) p≢0
+
+>-nonZero : ∀ {p} → p > 0ℚᵘ → NonZero p
+>-nonZero {mkℚᵘ +0       _} (*<* (+<+ ()))
+>-nonZero {mkℚᵘ +[1+ n ] _} (*<* _) = _
+
+<-nonZero : ∀ {p} → p < 0ℚᵘ → NonZero p
+<-nonZero {mkℚᵘ +[1+ n ] _} (*<* _) = _
+<-nonZero {mkℚᵘ +0 _}       (*<* (+<+ ()))
+<-nonZero {mkℚᵘ -[1+ n ] _} (*<* _) = _
+
+positive : ∀ {p} → p > 0ℚᵘ → Positive p
+positive {mkℚᵘ +[1+ n ]   _} (*<* _) = _
+positive {mkℚᵘ +0         _} (*<* (+<+ ()))
+positive {mkℚᵘ (-[1+_] n) _} (*<* ())
+
+negative : ∀ {p} → p < 0ℚᵘ → Negative p
+negative {mkℚᵘ +[1+ n ]   _} (*<* (+<+ ()))
+negative {mkℚᵘ +0         _} (*<* (+<+ ()))
+negative {mkℚᵘ (-[1+_] n) _} (*<* _       ) = _
+
+nonPositive : ∀ {p} → p ≤ 0ℚᵘ → NonPositive p
+nonPositive {mkℚᵘ +[1+ n ] _} (*≤* (+≤+ ()))
+nonPositive {mkℚᵘ +0       _} (*≤* _) = _
+nonPositive {mkℚᵘ -[1+ n ] _} (*≤* _) = _
+
+nonNegative : ∀ {p} → p ≥ 0ℚᵘ → NonNegative p
+nonNegative {mkℚᵘ +0       _} (*≤* _) = _
+nonNegative {mkℚᵘ +[1+ n ] _} (*≤* _) = _
 
 ------------------------------------------------------------------------------
 -- Operations on rationals
@@ -143,14 +213,14 @@ p - q = p + (- q)
 
 -- reciprocal: requires a proof that the numerator is not zero
 
-1/_ : (p : ℚᵘ) → .{n≢0 : ℤ.∣ ↥ p ∣ ≢0} → ℚᵘ
+1/_ : (p : ℚᵘ) → .{{_ : NonZero p}} → ℚᵘ
 1/ mkℚᵘ +[1+ n ] d = mkℚᵘ +[1+ d ] n
 1/ mkℚᵘ -[1+ n ] d = mkℚᵘ -[1+ d ] n
 
 -- division: requires a proof that the denominator is not zero
 
-_÷_ : (p q : ℚᵘ) → .{n≢0 : ℤ.∣ ↥ q ∣ ≢0} → ℚᵘ
-(p ÷ q) {n≢0} = p * (1/_ q {n≢0})
+_÷_ : (p q : ℚᵘ) → .{{_ : NonZero q}} → ℚᵘ
+p ÷ q = p * (1/ q)
 
 -- max
 _⊔_ : (p q : ℚᵘ) → ℚᵘ
@@ -164,75 +234,34 @@ p ⊓ q = if p ≤ᵇ q then p else q
 ∣_∣ : ℚᵘ → ℚᵘ
 ∣ mkℚᵘ p q ∣ = mkℚᵘ (+ ℤ.∣ p ∣) q
 
-------------------------------------------------------------------------------
--- Some constants
-
-0ℚᵘ : ℚᵘ
-0ℚᵘ = + 0 / 1
-
-1ℚᵘ : ℚᵘ
-1ℚᵘ = + 1 / 1
-
-½ : ℚᵘ
-½ = + 1 / 2
-
--½ : ℚᵘ
--½ = - ½
-
 ------------------------------------------------------------------------
--- Simple predicates
+-- Rounding functions
 
-NonZero : Pred ℚᵘ 0ℓ
-NonZero p = ℤ.NonZero (↥ p)
+-- Floor (round towards -∞)
+floor : ℚᵘ → ℤ
+floor p = (↥ p) ℤ.div (↧ p)
 
-Positive : Pred ℚᵘ 0ℓ
-Positive p = ℤ.Positive (↥ p)
+-- Ceiling (round towards +∞)
+ceiling : ℚᵘ → ℤ
+ceiling p = ℤ.- floor (- p)
 
-Negative : Pred ℚᵘ 0ℓ
-Negative p = ℤ.Negative (↥ p)
+-- Truncate  (round towards 0)
+truncate : ℚᵘ → ℤ
+truncate p with p ≤ᵇ 0ℚᵘ
+... | true  = ceiling p
+... | false = floor p
 
-NonPositive : Pred ℚᵘ 0ℓ
-NonPositive p = ℤ.NonPositive (↥ p)
+-- Round (to nearest integer)
+round : ℚᵘ → ℤ
+round p with p ≤ᵇ 0ℚᵘ
+... | true  = ceiling (p - ½)
+... | false = floor (p + ½)
 
-NonNegative : Pred ℚᵘ 0ℓ
-NonNegative p = ℤ.NonNegative (↥ p)
+-- Fractional part (remainder after floor)
+fracPart : ℚᵘ → ℚᵘ
+fracPart p = ∣ p - truncate p / 1 ∣
 
--- Constructors
-
--- Note: these could be proved more elegantly using the constructors
--- from ℤ but it requires importing `Data.Integer.Properties` which
--- we would like to avoid doing.
-
-≢-nonZero : ∀ {p} → p ≠ 0ℚᵘ → NonZero p
-≢-nonZero {mkℚᵘ -[1+ _ ] _      } _   = _
-≢-nonZero {mkℚᵘ +[1+ _ ] _      } _   = _
-≢-nonZero {mkℚᵘ +0       zero   } p≢0 = p≢0 (*≡* refl)
-≢-nonZero {mkℚᵘ +0       (suc d)} p≢0 = p≢0 (*≡* refl)
-
->-nonZero : ∀ {p} → p > 0ℚᵘ → NonZero p
->-nonZero {mkℚᵘ +0       _} (*<* (+<+ ()))
->-nonZero {mkℚᵘ +[1+ n ] _} (*<* _) = _
-
-<-nonZero : ∀ {p} → p < 0ℚᵘ → NonZero p
-<-nonZero {mkℚᵘ +[1+ n ] _} (*<* _) = _
-<-nonZero {mkℚᵘ +0 _}       (*<* (+<+ ()))
-<-nonZero {mkℚᵘ -[1+ n ] _} (*<* _) = _
-
-positive : ∀ {p} → p > 0ℚᵘ → Positive p
-positive {mkℚᵘ +[1+ n ]   _} (*<* _) = _
-positive {mkℚᵘ +0         _} (*<* (+<+ ()))
-positive {mkℚᵘ (-[1+_] n) _} (*<* ())
-
-negative : ∀ {p} → p < 0ℚᵘ → Negative p
-negative {mkℚᵘ +[1+ n ]   _} (*<* (+<+ ()))
-negative {mkℚᵘ +0         _} (*<* (+<+ ()))
-negative {mkℚᵘ (-[1+_] n) _} (*<* _       ) = _
-
-nonPositive : ∀ {p} → p ≤ 0ℚᵘ → NonPositive p
-nonPositive {mkℚᵘ +[1+ n ] _} (*≤* (+≤+ ()))
-nonPositive {mkℚᵘ +0       _} (*≤* _) = _
-nonPositive {mkℚᵘ -[1+ n ] _} (*≤* _) = _
-
-nonNegative : ∀ {p} → p ≥ 0ℚᵘ → NonNegative p
-nonNegative {mkℚᵘ +0       _} (*≤* _) = _
-nonNegative {mkℚᵘ +[1+ n ] _} (*≤* _) = _
+-- Extra notations  ⌊ ⌋ floor,  ⌈ ⌉ ceiling,  [ ] truncate
+syntax floor p = ⌊ p ⌋
+syntax ceiling p = ⌈ p ⌉
+syntax truncate p = [ p ]

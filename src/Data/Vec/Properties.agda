@@ -11,7 +11,7 @@ module Data.Vec.Properties where
 open import Algebra.Definitions
 open import Data.Bool.Base using (true; false)
 open import Data.Empty using (⊥-elim)
-open import Data.Fin.Base as Fin using (Fin; zero; suc; toℕ; fromℕ)
+open import Data.Fin.Base as Fin using (Fin; zero; suc; toℕ; fromℕ; _↑ˡ_; _↑ʳ_)
 open import Data.List.Base as List using (List)
 open import Data.Nat.Base
 open import Data.Nat.Properties using (+-assoc; ≤-step)
@@ -343,11 +343,16 @@ lookup∘updateAt′ i j xs i≢j =
              xs [ i ]≔ lookup xs i ≡ xs
 []≔-lookup xs i = updateAt-id-relative i xs refl
 
-[]≔-++-inject+ : ∀ {m n x} (xs : Vec A m) (ys : Vec A n) i →
-                 (xs ++ ys) [ Fin.inject+ n i ]≔ x ≡ (xs [ i ]≔ x) ++ ys
-[]≔-++-inject+ (x ∷ xs) ys zero    = refl
-[]≔-++-inject+ (x ∷ xs) ys (suc i) =
-  P.cong (x ∷_) $ []≔-++-inject+ xs ys i
+[]≔-++-↑ˡ : ∀ {m n x} (xs : Vec A m) (ys : Vec A n) i →
+                 (xs ++ ys) [ i ↑ˡ n ]≔ x ≡ (xs [ i ]≔ x) ++ ys
+[]≔-++-↑ˡ (x ∷ xs) ys zero    = refl
+[]≔-++-↑ˡ (x ∷ xs) ys (suc i) =
+  P.cong (x ∷_) $ []≔-++-↑ˡ xs ys i
+
+[]≔-++-↑ʳ : ∀ {m n y} (xs : Vec A m) (ys : Vec A n) i →
+                 (xs ++ ys) [ m ↑ʳ i ]≔ y ≡ xs ++ (ys [ i ]≔ y)
+[]≔-++-↑ʳ {m = zero}     []    (y ∷ ys) i = refl
+[]≔-++-↑ʳ {m = suc n} (x ∷ xs) (y ∷ ys) i = P.cong (x ∷_) $ []≔-++-↑ʳ xs (y ∷ ys) i
 
 lookup∘update : ∀ {n} (i : Fin n) (xs : Vec A n) x →
                 lookup (xs [ i ]≔ x) i ≡ x
@@ -363,6 +368,10 @@ lookup∘update′ {i = i} {j} i≢j xs y = lookup∘updateAt′ i j i≢j xs
 map-id : ∀ {n} → map {A = A} {n = n} id ≗ id
 map-id []       = refl
 map-id (x ∷ xs) = P.cong (x ∷_) (map-id xs)
+
+map-const : ∀ {n} (xs : Vec A n) (y : B) → map {n = n} (const y) xs ≡ replicate y
+map-const [] _ = refl
+map-const (_ ∷ xs) y = P.cong (y ∷_) (map-const xs y)
 
 map-cong : ∀ {n} {f g : A → B} → f ≗ g → map {n = n} f ≗ map g
 map-cong f≗g []       = refl
@@ -388,6 +397,11 @@ map-updateAt (x ∷ xs) (suc i) eq = P.cong (_ ∷_) (map-updateAt xs i eq)
 map-[]≔ : ∀ {n} (f : A → B) (xs : Vec A n) (i : Fin n) {x : A} →
           map f (xs [ i ]≔ x) ≡ map f xs [ i ]≔ f x
 map-[]≔ f xs i = map-updateAt xs i refl
+
+map-⊛ : ∀ {n} (f : A → B → C) (g : A → B) (xs : Vec A n) →
+        (map f xs ⊛ map g xs) ≡ map (f ˢ g) xs
+map-⊛ f g [] = refl
+map-⊛ f g (x ∷ xs) = P.cong (f x (g x) ∷_) (map-⊛ f g xs)
 
 ------------------------------------------------------------------------
 -- _++_
@@ -427,12 +441,12 @@ lookup-++-≥ []       ys i       i≥m       = refl
 lookup-++-≥ (x ∷ xs) ys (suc i) (s≤s i≥m) = lookup-++-≥ xs ys i i≥m
 
 lookup-++ˡ : ∀ {m n} (xs : Vec A m) (ys : Vec A n) i →
-             lookup (xs ++ ys) (Fin.inject+ n i) ≡ lookup xs i
+             lookup (xs ++ ys) (i ↑ˡ n) ≡ lookup xs i
 lookup-++ˡ (x ∷ xs) ys zero    = refl
 lookup-++ˡ (x ∷ xs) ys (suc i) = lookup-++ˡ xs ys i
 
 lookup-++ʳ : ∀ {m n} (xs : Vec A m) (ys : Vec A n) i →
-             lookup (xs ++ ys) (Fin.raise m i) ≡ lookup ys i
+             lookup (xs ++ ys) (m ↑ʳ i) ≡ lookup ys i
 lookup-++ʳ []       ys       zero    = refl
 lookup-++ʳ []       (y ∷ xs) (suc i) = lookup-++ʳ [] xs i
 lookup-++ʳ (x ∷ xs) ys       i       = lookup-++ʳ xs ys i
@@ -635,6 +649,16 @@ zipWith-is-⊛ : ∀ {n} (f : A → B → C) (xs : Vec A n) (ys : Vec B n) →
 zipWith-is-⊛ f []       []       = refl
 zipWith-is-⊛ f (x ∷ xs) (y ∷ ys) = P.cong (_ ∷_) (zipWith-is-⊛ f xs ys)
 
+⊛-is->>= : ∀ {n} (fs : Vec (A → B) n) (xs : Vec A n) →
+           (fs ⊛ xs) ≡ (fs DiagonalBind.>>= flip map xs)
+⊛-is->>= [] [] = refl
+⊛-is->>= (f ∷ fs) (x ∷ xs) = P.cong (f x ∷_) $ begin
+  fs ⊛ xs                                          ≡⟨ ⊛-is->>= fs xs ⟩
+  diagonal (map (flip map xs) fs)                  ≡⟨⟩
+  diagonal (map (tail ∘ flip map (x ∷ xs)) fs)     ≡⟨ P.cong diagonal (map-∘ _ _ _) ⟩
+  diagonal (map tail (map (flip map (x ∷ xs)) fs)) ∎
+  where open P.≡-Reasoning
+
 ------------------------------------------------------------------------
 -- foldr
 
@@ -694,6 +718,15 @@ map-replicate :  ∀ (f : A → B) (x : A) n →
                  map f (replicate x) ≡ replicate {n = n} (f x)
 map-replicate f x zero = refl
 map-replicate f x (suc n) = P.cong (f x ∷_) (map-replicate f x n)
+
+transpose-replicate : ∀ {m n} (xs : Vec A m) → transpose (replicate {n = n} xs) ≡ map replicate xs
+transpose-replicate {n = zero} _ = P.sym (map-const _ [])
+transpose-replicate {n = suc n} xs = begin
+  transpose (replicate xs)                        ≡⟨⟩
+  (replicate _∷_ ⊛ xs ⊛ transpose (replicate xs)) ≡⟨ P.cong₂ _⊛_ (P.sym (map-is-⊛ _∷_ xs)) (transpose-replicate xs) ⟩
+  (map _∷_ xs ⊛ map replicate xs)                 ≡⟨ map-⊛ _∷_ replicate xs ⟩
+  map replicate xs                                ∎
+  where open P.≡-Reasoning
 
 zipWith-replicate : ∀ {n : ℕ} (_⊕_ : A → B → C) (x : A) (y : B) →
                     zipWith {n = n} _⊕_ (replicate x) (replicate y) ≡ replicate (x ⊕ y)
@@ -832,4 +865,14 @@ lookup-++-+′ = lookup-++ʳ
 {-# WARNING_ON_USAGE lookup-++-+′
 "Warning: lookup-++-+′ was deprecated in v1.1.
 Please use lookup-++ʳ instead."
+#-}
+
+-- Version 2.0
+
+[]≔-++-inject+ : ∀ {m n x} (xs : Vec A m) (ys : Vec A n) i →
+                 (xs ++ ys) [ i ↑ˡ n ]≔ x ≡ (xs [ i ]≔ x) ++ ys
+[]≔-++-inject+ = []≔-++-↑ˡ
+{-# WARNING_ON_USAGE []≔-++-inject+
+"Warning: []≔-++-inject+ was deprecated in v2.0.
+Please use []≔-++-↑ˡ instead."
 #-}

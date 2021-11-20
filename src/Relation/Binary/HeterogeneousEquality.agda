@@ -28,7 +28,7 @@ import Relation.Binary.HeterogeneousEquality.Core as Core
 
 private
   variable
-    a b c p ℓ : Level
+    a b c p r ℓ : Level
     A : Set a
     B : Set b
     C : Set c
@@ -72,14 +72,18 @@ trans refl eq = eq
 subst : Substitutive {A = A} (λ x y → x ≅ y) ℓ
 subst P refl p = p
 
-subst₂ : ∀ (_∼_ : REL A B ℓ) {x y u v} → x ≅ y → u ≅ v → x ∼ u → y ∼ v
-subst₂ _ refl refl p = p
+subst₂ : ∀ (_∼_ : REL A B r) {x y u v} → x ≅ y → u ≅ v → x ∼ u → y ∼ v
+subst₂ _∼_ refl refl z = z
 
-subst-removable : ∀ (P : Pred A p) {x y} (eq : x ≅ y) z →
+subst-removable : ∀ (P : Pred A p) {x y} (eq : x ≅ y) (z : P x) →
                   subst P eq z ≅ z
 subst-removable P refl z = refl
 
-≡-subst-removable : ∀ (P : Pred A p) {x y} (eq : x ≡ y) z →
+subst₂-removable : ∀ (_∼_ : REL A B r) {x y u v} (eq₁ : x ≅ y) (eq₂ : u ≅ v) (z : x ∼ u) →
+                   subst₂ _∼_ eq₁ eq₂ z ≅ z
+subst₂-removable _∼_ refl refl z = refl
+
+≡-subst-removable : ∀ (P : Pred A p) {x y} (eq : x ≡ y) (z : P x) →
                     P.subst P eq z ≅ z
 ≡-subst-removable P refl z = refl
 
@@ -285,14 +289,6 @@ inspect f x = [ refl ]
 ------------------------------------------------------------------------
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
-
--- Version 0.15
-
-proof-irrelevance = ≅-irrelevant
-{-# WARNING_ON_USAGE proof-irrelevance
-"Warning: proof-irrelevance was deprecated in v0.15.
-Please use ≅-irrelevant instead."
-#-}
 
 -- Version 1.0
 

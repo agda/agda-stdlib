@@ -14,7 +14,7 @@
 
 module Data.Integer.Base where
 
-open import Data.Bool.Base using (Bool; true; false)
+open import Data.Bool.Base using (Bool; T; true; false)
 open import Data.Empty using (⊥)
 open import Data.Unit.Base using (⊤)
 open import Data.Nat.Base as ℕ
@@ -26,6 +26,7 @@ open import Relation.Binary using (Rel)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; _≢_; refl)
 open import Relation.Nullary using (¬_)
+open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred)
 
 infix  8 -_
@@ -126,29 +127,45 @@ _≤ᵇ_ : ℤ → ℤ → Bool
 NonZero : Pred ℤ 0ℓ
 NonZero i = ℕ.NonZero ∣ i ∣
 
-Positive : Pred ℤ 0ℓ
-Positive +[1+ n ] = ⊤
-Positive +0       = ⊥
-Positive -[1+ n ] = ⊥
+record Positive (i : ℤ) : Set where
+  field
+    pos : T (1ℤ ≤ᵇ i)
 
-Negative : Pred ℤ 0ℓ
-Negative (+ n)    = ⊥
-Negative -[1+ n ] = ⊤
+record NonNegative (i : ℤ) : Set where
+  field
+    nonNeg : T (0ℤ ≤ᵇ i)
 
-NonPositive : Pred ℤ 0ℓ
-NonPositive +[1+ n ] = ⊥
-NonPositive +0       = ⊤
-NonPositive -[1+ n ] = ⊤
+record NonPositive (i : ℤ) : Set where
+  field
+    nonPos : T (i ≤ᵇ 0ℤ)
 
-NonNegative : Pred ℤ 0ℓ
-NonNegative (+ n)    = ⊤
-NonNegative -[1+ n ] = ⊥
+record Negative (i : ℤ) : Set where
+  field
+    neg : T (i ≤ᵇ -1ℤ)
+
+-- Instances
+
+instance
+  pos : ∀ {n} → Positive +[1+ n ]
+  pos = _
+
+  nonNeg : ∀ {n} → NonNegative (+ n)
+  nonNeg = _
+
+  nonPos0 : NonPositive 0ℤ
+  nonPos0 = _
+
+  nonPos : ∀ {n} → NonPositive -[1+ n ]
+  nonPos = _
+
+  neg : ∀ {n} → Negative -[1+ n ]
+  neg = _
 
 -- Constructors
 
 ≢-nonZero : ∀ {i} → i ≢ 0ℤ → NonZero i
 ≢-nonZero { +[1+ n ]} _   = _
-≢-nonZero { +0}       0≢0 = 0≢0 refl
+≢-nonZero { +0}       0≢0 = contradiction refl 0≢0
 ≢-nonZero { -[1+ n ]} _   = _
 
 >-nonZero : ∀ {i} → i > 0ℤ → NonZero i
@@ -177,7 +194,7 @@ nonNegative {+[1+ n ]} _ = _
 infix 5 _◂_ _◃_
 
 _◃_ : Sign → ℕ → ℤ
-_      ◃ ℕ.zero  = + ℕ.zero
+_      ◃ ℕ.zero  = +0
 Sign.+ ◃ n       = + n
 Sign.- ◃ ℕ.suc n = -[1+ n ]
 

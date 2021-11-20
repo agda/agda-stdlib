@@ -123,19 +123,19 @@ module _ (+-isGroup : IsGroup _≈₂_ _⊕_ 0#₂ ⊝_)
 
   neg-distribˡ-* : (∀ x y → (⊝ (x ⊛ y)) ≈₂ ((⊝ x) ⊛ y)) → (∀ x y → (- (x * y)) ≈₁ ((- x) * y))
   neg-distribˡ-* neg-distribˡ-* x y = injective (begin
-    ⟦ - (x * y) ⟧     ≈⟨ ⁻¹-homo (x * y) ⟩
+    ⟦ - (x * y) ⟧     ≈⟨ -‿homo (x * y) ⟩
     ⊝ ⟦ x * y ⟧       ≈⟨ ⁻¹-cong (*-homo x y) ⟩
     ⊝ (⟦ x ⟧ ⊛ ⟦ y ⟧) ≈⟨ neg-distribˡ-* ⟦ x ⟧ ⟦ y ⟧ ⟩
-    ⊝ ⟦ x ⟧ ⊛ ⟦ y ⟧   ≈⟨ ◦-cong (sym (⁻¹-homo x)) refl ⟩
+    ⊝ ⟦ x ⟧ ⊛ ⟦ y ⟧   ≈⟨ ◦-cong (sym (-‿homo x)) refl ⟩
     ⟦ - x ⟧ ⊛ ⟦ y ⟧   ≈⟨ sym (*-homo (- x) y) ⟩
     ⟦ - x * y ⟧       ∎)
 
   neg-distribʳ-* : (∀ x y → (⊝ (x ⊛ y)) ≈₂ (x ⊛ (⊝ y))) → (∀ x y → (- (x * y)) ≈₁ (x * (- y)))
   neg-distribʳ-* neg-distribʳ-* x y = injective (begin
-    ⟦ - (x * y) ⟧     ≈⟨ ⁻¹-homo (x * y) ⟩
+    ⟦ - (x * y) ⟧     ≈⟨ -‿homo (x * y) ⟩
     ⊝ ⟦ x * y ⟧       ≈⟨ ⁻¹-cong (*-homo x y) ⟩
     ⊝ (⟦ x ⟧ ⊛ ⟦ y ⟧) ≈⟨ neg-distribʳ-* ⟦ x ⟧ ⟦ y ⟧ ⟩
-    ⟦ x ⟧ ⊛ ⊝ ⟦ y ⟧   ≈⟨ ◦-cong refl (sym (⁻¹-homo y)) ⟩
+    ⟦ x ⟧ ⊛ ⊝ ⟦ y ⟧   ≈⟨ ◦-cong refl (sym (-‿homo y)) ⟩
     ⟦ x ⟧ ⊛ ⟦ - y ⟧   ≈⟨ sym (*-homo x (- y)) ⟩
     ⟦ x * - y ⟧       ∎)
 
