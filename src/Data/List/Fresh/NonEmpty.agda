@@ -13,7 +13,6 @@ open import Data.List.Fresh as List# using (List#; []; cons; fresh)
 open import Data.Maybe.Base using (Maybe; nothing; just)
 open import Data.Nat using (ℕ; suc)
 open import Data.Product using (_×_; _,_)
-open import Data.Unit.Polymorphic.Base using (⊤; tt)
 open import Relation.Binary as B using (Rel)
 
 private
@@ -22,17 +21,22 @@ private
     A : Set a
     R : Rel A r
 
-module _ {a} (A : Set a) (R : Rel A r) where
+------------------------------------------------------------------------
+-- Definition
 
-  infixr 5 _∷#⁺_
-  record List#⁺ : Set (a ⊔ r) where
-    constructor _∷#⁺_
-    field
-      head : A
-      tail : List# A R
-      {rel} : fresh A R head tail
+infixr 5 _∷#⁺_
+
+record List#⁺ (A : Set a) (R : Rel A r) : Set (a ⊔ r) where
+  constructor _∷#⁺_
+  field
+    head : A
+    tail : List# A R
+    {rel} : fresh A R head tail
 
 open List#⁺
+
+------------------------------------------------------------------------
+-- Operations
 
 uncons : List#⁺ A R → A × List# A R
 uncons (x ∷#⁺ xs) = x , xs
