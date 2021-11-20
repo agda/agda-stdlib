@@ -716,6 +716,13 @@ Other minor changes
          → dsubst₂ C p q (f x₁ y₁) ≡ f x₂ y₂
   ```
 
+* Added vector associativity proof to 
+  `Data/Vec/Relation/Binary/Equality/Setoid.agda`:
+  ```
+  ++-assoc : ∀ {n m k} (xs : Vec A n) → (ys : Vec A m) 
+      → (zs : Vec A k) → (xs ++ ys) ++ zs ≋ xs ++ (ys ++ zs)
+  ```
+
 NonZero/Positive/Negative changes
 ---------------------------------
 
