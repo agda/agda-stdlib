@@ -23,32 +23,9 @@ open import Relation.Binary.Properties.JoinSemilattice joinSemilattice
 
 open Setoid setoid
 
-∧-distribʳ-∨ : _∧_ DistributesOverʳ _∨_
-∧-distribʳ-∨ x y z = begin
-  (y ∨ z) ∧ x    ≈⟨ ∧-comm _ _ ⟩
-  x ∧ (y ∨ z)    ≈⟨ ∧-distribˡ-∨ x y z ⟩
-  x ∧ y ∨ x ∧ z  ≈⟨ ∨-cong (∧-comm _ _) (∧-comm _ _) ⟩
-  y ∧ x ∨ z ∧ x  ∎
+open import Relation.Binary.Lattice.Properties.DistributiveLattice
 
-∧-distrib-∨ : _∧_ DistributesOver _∨_
-∧-distrib-∨ = ∧-distribˡ-∨ , ∧-distribʳ-∨
-
-∨-distribˡ-∧ : _∨_ DistributesOverˡ _∧_
-∨-distribˡ-∧ x y z = begin
-  x ∨ y ∧ z                  ≈⟨ ∨-cong (sym (∨-absorbs-∧ x y)) refl ⟩
-  (x ∨ x ∧ y) ∨ y ∧ z        ≈⟨ ∨-cong (∨-cong refl (∧-comm _ _)) refl ⟩
-  (x ∨ y ∧ x) ∨ y ∧ z        ≈⟨ ∨-assoc x (y ∧ x) (y ∧ z) ⟩
-  x ∨ y ∧ x ∨ y ∧ z          ≈⟨ ∨-cong refl (sym (∧-distribˡ-∨ y x z)) ⟩
-  x ∨ y ∧ (x ∨ z)            ≈⟨ ∨-cong (sym (∧-absorbs-∨ _ _)) refl ⟩
-  x ∧ (x ∨ z) ∨ y ∧ (x ∨ z)  ≈⟨ sym (∧-distribʳ-∨ (x ∨ z) x y) ⟩
-  (x ∨ y) ∧ (x ∨ z)          ∎
-
-∨-distribʳ-∧ : _∨_ DistributesOverʳ _∧_
-∨-distribʳ-∧ x y z = begin
-  y ∧ z ∨ x          ≈⟨ ∨-comm _ _ ⟩
-  x ∨ y ∧ z          ≈⟨ ∨-distribˡ-∧ _ _ _ ⟩
-  (x ∨ y) ∧ (x ∨ z)  ≈⟨ ∧-cong (∨-comm _ _) (∨-comm _ _) ⟩
-  (y ∨ x) ∧ (z ∨ x)  ∎
-
-∨-distrib-∧ : _∨_ DistributesOver _∧_
-∨-distrib-∧ = ∨-distribˡ-∧ , ∨-distribʳ-∧
+{-# WARNING_ON_IMPORT
+"Relation.Binary.Properties.DistributiveLattice was deprecated in v2.0.
+Use Relation.Binary.Properties.DistributiveLattice instead."
+#-}

@@ -18,29 +18,12 @@ open import Data.Product
 open import Function.Base using (flip)
 open import Relation.Binary
 open import Relation.Binary.Properties.Poset poset
-import Relation.Binary.Properties.JoinSemilattice as J
+import Relation.Binary.Lattice.Properties.JoinSemilattice as J
 
--- The dual construction is a join semilattice.
+open import Relation.Binary.Lattice.Properties.MeetSemilattice
 
-dualIsJoinSemilattice : IsJoinSemilattice _≈_ (flip _≤_) _∧_
-dualIsJoinSemilattice = record
-  { isPartialOrder = invIsPartialOrder
-  ; supremum       = infimum
-  }
+{-# WARNING_ON_IMPORT
+"Relation.Binary.Properties.MeetSemilattice was deprecated in v2.0.
+Use Relation.Binary.Properties.MeetSemilattice instead."
+#-}
 
-dualJoinSemilattice : JoinSemilattice c ℓ₁ ℓ₂
-dualJoinSemilattice = record
-  { _∨_               = _∧_
-  ; isJoinSemilattice = dualIsJoinSemilattice
-  }
-
-open J dualJoinSemilattice public
-  using (isAlgSemilattice; algSemilattice)
-  renaming
-    ( ∨-monotonic  to ∧-monotonic
-    ; ∨-cong       to ∧-cong
-    ; ∨-comm       to ∧-comm
-    ; ∨-assoc      to ∧-assoc
-    ; ∨-idempotent to ∧-idempotent
-    ; x≤y⇒x∨y≈y    to y≤x⇒x∧y≈y
-    )

@@ -21,20 +21,9 @@ open import Relation.Binary.Properties.JoinSemilattice joinSemilattice
 
 open Setoid setoid renaming (trans to ≈-trans)
 
-∧-zeroʳ : RightZero ⊥ _∧_
-∧-zeroʳ x = y≤x⇒x∧y≈y (minimum x)
+open import Relation.Binary.Lattice.Properties.BoundedLattice
 
-∧-zeroˡ : LeftZero ⊥ _∧_
-∧-zeroˡ x = ≈-trans (∧-comm ⊥ x) (∧-zeroʳ x)
-
-∧-zero : Zero ⊥ _∧_
-∧-zero = ∧-zeroˡ , ∧-zeroʳ
-
-∨-zeroʳ : RightZero ⊤ _∨_
-∨-zeroʳ x = x≤y⇒x∨y≈y (maximum x)
-
-∨-zeroˡ : LeftZero ⊤ _∨_
-∨-zeroˡ x = ≈-trans (∨-comm ⊤ x) (∨-zeroʳ x)
-
-∨-zero : Zero ⊤ _∨_
-∨-zero = ∨-zeroˡ , ∨-zeroʳ
+{-# WARNING_ON_IMPORT
+"Relation.Binary.Properties.BoundedLattice was deprecated in v2.0.
+Use Relation.Binary.Properties.BoundedLattice instead."
+#-}

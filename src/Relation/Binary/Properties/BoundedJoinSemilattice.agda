@@ -19,35 +19,9 @@ open import Function.Base using (_∘_; flip)
 open import Relation.Binary
 open import Relation.Binary.Properties.Poset poset
 
--- Bottom is an identity of the meet operation.
+open import Relation.Binary.Lattice.Properties.BoundedJoinSemilattice
 
-identityˡ : LeftIdentity ⊥ _∨_
-identityˡ x =
-  let _ , x≤⊥∨x , least = supremum ⊥ x
-  in antisym (least x (minimum x) refl) x≤⊥∨x
-
-identityʳ : RightIdentity ⊥ _∨_
-identityʳ x =
-  let x≤x∨⊥ , _ , least = supremum x ⊥
-  in antisym (least x refl (minimum x)) x≤x∨⊥
-
-identity : Identity ⊥ _∨_
-identity = identityˡ , identityʳ
-
-
--- The dual construction is a bounded meet semilattice.
-
-dualIsBoundedMeetSemilattice : IsBoundedMeetSemilattice _≈_ (flip _≤_) _∨_ ⊥
-dualIsBoundedMeetSemilattice = record
-  { isMeetSemilattice = record
-    { isPartialOrder  = invIsPartialOrder
-    ; infimum         = supremum
-    }
-  ; maximum           = minimum
-  }
-
-dualBoundedMeetSemilattice : BoundedMeetSemilattice c ℓ₁ ℓ₂
-dualBoundedMeetSemilattice = record
-  { ⊤                        = ⊥
-  ; isBoundedMeetSemilattice = dualIsBoundedMeetSemilattice
-  }
+{-# WARNING_ON_IMPORT
+"Relation.Binary.Properties.BoundedJoinSemilattice was deprecated in v2.0.
+Use Relation.Binary.Properties.BoundedJoinSemilattice instead."
+#-}

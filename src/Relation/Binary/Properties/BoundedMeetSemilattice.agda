@@ -20,22 +20,9 @@ open import Relation.Binary
 open import Relation.Binary.Properties.Poset poset
 import Relation.Binary.Properties.BoundedJoinSemilattice as J
 
--- The dual construction is a bounded join semilattice.
+open import Relation.Binary.Lattice.Properties.BoundedMeetSemilattice
 
-dualIsBoundedJoinSemilattice : IsBoundedJoinSemilattice _≈_ (flip _≤_) _∧_ ⊤
-dualIsBoundedJoinSemilattice = record
-  { isJoinSemilattice = record
-    { isPartialOrder  = invIsPartialOrder
-    ; supremum        = infimum
-    }
-  ; minimum           = maximum
-  }
-
-dualBoundedJoinSemilattice : BoundedJoinSemilattice c ℓ₁ ℓ₂
-dualBoundedJoinSemilattice = record
-  { ⊥                        = ⊤
-  ; isBoundedJoinSemilattice = dualIsBoundedJoinSemilattice
-  }
-
-open J dualBoundedJoinSemilattice
-  hiding (dualIsBoundedMeetSemilattice; dualBoundedMeetSemilattice) public
+{-# WARNING_ON_IMPORT
+"Relation.Binary.Properties.BoundedMeetSemilattice was deprecated in v2.0.
+Use Relation.Binary.Properties.BoundedMeetSemilattice instead."
+#-}
