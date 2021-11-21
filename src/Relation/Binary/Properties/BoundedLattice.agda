@@ -13,14 +13,6 @@ module Relation.Binary.Properties.BoundedLattice
 
 open BoundedLattice L
 
-open import Algebra.Definitions _≈_
-open import Data.Product using (_,_)
-open import Relation.Binary using (Setoid)
-open import Relation.Binary.Properties.MeetSemilattice meetSemilattice
-open import Relation.Binary.Properties.JoinSemilattice joinSemilattice
-
-open Setoid setoid renaming (trans to ≈-trans)
-
 open import Relation.Binary.Lattice.Properties.BoundedLattice
 
 {-# WARNING_ON_IMPORT

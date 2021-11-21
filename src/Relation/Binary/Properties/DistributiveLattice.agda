@@ -13,16 +13,6 @@ module Relation.Binary.Properties.DistributiveLattice
 
 open DistributiveLattice L hiding (refl)
 
-open import Algebra.Definitions _≈_
-open import Data.Product using (_,_)
-open import Relation.Binary
-open import Relation.Binary.Reasoning.Setoid setoid
-open import Relation.Binary.Properties.Lattice lattice
-open import Relation.Binary.Properties.MeetSemilattice meetSemilattice
-open import Relation.Binary.Properties.JoinSemilattice joinSemilattice
-
-open Setoid setoid
-
 open import Relation.Binary.Lattice.Properties.DistributiveLattice
 
 {-# WARNING_ON_IMPORT
