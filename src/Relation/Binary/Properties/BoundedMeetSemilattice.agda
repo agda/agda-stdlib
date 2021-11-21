@@ -24,5 +24,5 @@ open import Relation.Binary.Lattice.Properties.BoundedMeetSemilattice
 
 {-# WARNING_ON_IMPORT
 "Relation.Binary.Properties.BoundedMeetSemilattice was deprecated in v2.0.
-Use Relation.Binary.Properties.BoundedMeetSemilattice instead."
+Use Relation.Binary.Lattice.Properties.BoundedMeetSemilattice instead."
 #-}

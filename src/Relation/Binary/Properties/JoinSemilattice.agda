@@ -26,5 +26,5 @@ open import Relation.Binary.Lattice.Properties.JoinSemilattice
 
 {-# WARNING_ON_IMPORT
 "Relation.Binary.Properties.JoinSemilattice was deprecated in v2.0.
-Use Relation.Binary.Properties.JoinSemilattice instead."
+Use Relation.Binary.Lattice.Properties.JoinSemilattice instead."
 #-}

@@ -28,6 +28,6 @@ open import Relation.Binary.Lattice.Properties.Lattice
 
 {-# WARNING_ON_IMPORT
 "Relation.Binary.Properties.Lattice was deprecated in v2.0.
-Use Relation.Binary.Properties.Lattice instead."
+Use Relation.Binary.Lattice.Properties.Lattice instead."
 #-}
 

@@ -25,5 +25,5 @@ open import Relation.Binary.Lattice.Properties.BoundedLattice
 
 {-# WARNING_ON_IMPORT
 "Relation.Binary.Properties.BoundedLattice was deprecated in v2.0.
-Use Relation.Binary.Properties.BoundedLattice instead."
+Use Relation.Binary.Lattice.Properties.BoundedLattice instead."
 #-}
