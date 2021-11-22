@@ -11,9 +11,7 @@ open import Relation.Binary.Lattice
 module Relation.Binary.Properties.MeetSemilattice
   {c ℓ₁ ℓ₂} (M : MeetSemilattice c ℓ₁ ℓ₂) where
 
-open MeetSemilattice M
-
-open import Relation.Binary.Lattice.Properties.MeetSemilattice
+open import Relation.Binary.Lattice.Properties.MeetSemilattice M public
 
 {-# WARNING_ON_IMPORT
 "Relation.Binary.Properties.MeetSemilattice was deprecated in v2.0.

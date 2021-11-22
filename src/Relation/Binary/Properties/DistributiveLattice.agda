@@ -11,9 +11,7 @@ open import Relation.Binary.Lattice
 module Relation.Binary.Properties.DistributiveLattice
   {c ℓ₁ ℓ₂} (L : DistributiveLattice c ℓ₁ ℓ₂) where
 
-open DistributiveLattice L hiding (refl)
-
-open import Relation.Binary.Lattice.Properties.DistributiveLattice
+open import Relation.Binary.Lattice.Properties.DistributiveLattice L public
 
 {-# WARNING_ON_IMPORT
 "Relation.Binary.Properties.DistributiveLattice was deprecated in v2.0.

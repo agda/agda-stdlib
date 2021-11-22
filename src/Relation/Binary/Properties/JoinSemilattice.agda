@@ -11,9 +11,7 @@ open import Relation.Binary.Lattice
 module Relation.Binary.Properties.JoinSemilattice
   {c ℓ₁ ℓ₂} (J : JoinSemilattice c ℓ₁ ℓ₂) where
 
-open JoinSemilattice J
-
-open import Relation.Binary.Lattice.Properties.JoinSemilattice
+open import Relation.Binary.Lattice.Properties.JoinSemilattice J public
 
 {-# WARNING_ON_IMPORT
 "Relation.Binary.Properties.JoinSemilattice was deprecated in v2.0.

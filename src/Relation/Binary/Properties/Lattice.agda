@@ -11,9 +11,7 @@ open import Relation.Binary.Lattice
 module Relation.Binary.Properties.Lattice
   {c ℓ₁ ℓ₂} (L : Lattice c ℓ₁ ℓ₂) where
 
-open Lattice L
-
-open import Relation.Binary.Lattice.Properties.Lattice
+open import Relation.Binary.Lattice.Properties.Lattice L public
 
 {-# WARNING_ON_IMPORT
 "Relation.Binary.Properties.Lattice was deprecated in v2.0.
