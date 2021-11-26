@@ -1,7 +1,8 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Properties satisfied by bounded meet semilattices
+-- This module is DEPRECATED. Please use
+-- `Relation.Binary.Lattice.Properties.BoundedMeetSemilattice` instead.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -11,9 +12,7 @@ open import Relation.Binary.Lattice
 module Relation.Binary.Properties.BoundedMeetSemilattice
   {c ℓ₁ ℓ₂} (M : BoundedMeetSemilattice c ℓ₁ ℓ₂) where
 
-open BoundedMeetSemilattice M
-
-open import Relation.Binary.Lattice.Properties.BoundedMeetSemilattice
+open import Relation.Binary.Lattice.Properties.BoundedMeetSemilattice M public
 
 {-# WARNING_ON_IMPORT
 "Relation.Binary.Properties.BoundedMeetSemilattice was deprecated in v2.0.

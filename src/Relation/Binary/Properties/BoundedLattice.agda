@@ -1,7 +1,8 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Properties satisfied by bounded lattice
+-- This module is DEPRECATED. Please use
+-- `Relation.Binary.Lattice.Properties.BoundedLattice` instead.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

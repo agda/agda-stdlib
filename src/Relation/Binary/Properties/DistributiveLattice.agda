@@ -1,7 +1,8 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Properties for distributive lattice
+-- This module is DEPRECATED. Please use
+-- `Relation.Binary.Lattice.Properties.DistributiveLattice` instead.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

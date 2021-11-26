@@ -1,7 +1,8 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Properties satisfied by join semilattices
+-- This module is DEPRECATED. Please use
+-- `Relation.Binary.Lattice.Properties.JoinSemilattice` instead.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

@@ -1,7 +1,8 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Properties satisfied by lattices
+-- This module is DEPRECATED. Please use
+-- `Relation.Binary.Lattice.Properties.Lattice` instead.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

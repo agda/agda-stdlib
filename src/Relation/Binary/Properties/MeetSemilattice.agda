@@ -1,7 +1,8 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Properties satisfied by meet semilattices
+-- This module is DEPRECATED. Please use
+-- `Relation.Binary.Lattice.Properties.MeetSemilattice` instead.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
