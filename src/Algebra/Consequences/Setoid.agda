@@ -117,11 +117,17 @@ module _ {_•_ : Op₂ A} {_⁻¹ : Op₁ A} {e} (comm : Commutative _•_) whe
     (x ⁻¹) • x ≈⟨ invˡ x ⟩
     e          ∎
 
+  comm+invˡ⇒inv : LeftInverse e _⁻¹ _•_ → Inverse e _⁻¹ _•_
+  comm+invˡ⇒inv invˡ = invˡ , comm+invˡ⇒invʳ invˡ
+
   comm+invʳ⇒invˡ : RightInverse e _⁻¹ _•_ → LeftInverse e _⁻¹ _•_
   comm+invʳ⇒invˡ invʳ x = begin
     (x ⁻¹) • x ≈⟨ comm (x ⁻¹) x ⟩
     x • (x ⁻¹) ≈⟨ invʳ x ⟩
     e          ∎
+
+  comm+invʳ⇒inv : RightInverse e _⁻¹ _•_ → Inverse e _⁻¹ _•_
+  comm+invʳ⇒inv invʳ = comm+invʳ⇒invˡ invʳ , invʳ
 
 module _ {_•_ : Op₂ A} {_⁻¹ : Op₁ A} {e} (cong : Congruent₂ _•_) where
 
@@ -181,6 +187,26 @@ module _ {_•_ _◦_ : Op₂ A}
     x ◦ (y • z)       ≈⟨ prf ⟩
     (x ◦ y) • (x ◦ z) ≈⟨ •-comm (x ◦ y) (x ◦ z) ⟩
     (x ◦ z) • (x ◦ y) ∎
+
+
+module _ {_•_ _◦_ : Op₂ A}
+         (•-cong  : Congruent₂ _•_)
+         (•-assoc : Associative _•_)
+         (◦-comm  : Commutative _◦_)
+         where
+
+  distrib+absorbs⇒distribˡ : _•_ Absorbs _◦_ →
+                             _◦_ Absorbs _•_ →
+                             _◦_ DistributesOver _•_ →
+                             _•_ DistributesOverˡ _◦_
+  distrib+absorbs⇒distribˡ •-absorbs-◦ ◦-absorbs-• (◦-distribˡ-• , ◦-distribʳ-•) x y z = begin
+    x • (y ◦ z)                    ≈˘⟨ •-cong (•-absorbs-◦ _ _) refl ⟩
+    (x • (x ◦ y)) • (y ◦ z)        ≈⟨  •-cong (•-cong refl (◦-comm _ _)) refl ⟩
+    (x • (y ◦ x)) • (y ◦ z)        ≈⟨  •-assoc _ _ _ ⟩
+    x • ((y ◦ x) • (y ◦ z))        ≈˘⟨ •-cong refl (◦-distribˡ-• _ _ _) ⟩
+    x • (y ◦ (x • z))              ≈˘⟨ •-cong (◦-absorbs-• _ _) refl ⟩
+    (x ◦ (x • z)) • (y ◦ (x • z))  ≈˘⟨ ◦-distribʳ-• _ _ _ ⟩
+    (x • y) ◦ (x • z)              ∎
 
 ----------------------------------------------------------------------
 -- Ring-like structures

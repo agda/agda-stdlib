@@ -10,10 +10,12 @@ module Data.Fin.Subset.Properties where
 
 import Algebra.Definitions as AlgebraicDefinitions
 import Algebra.Structures as AlgebraicStructures
+import Algebra.Lattice.Structures as AlgebraicLatticeStructures
 open import Algebra.Bundles
-import Algebra.Properties.Lattice as L
-import Algebra.Properties.DistributiveLattice as DL
-import Algebra.Properties.BooleanAlgebra as BA
+open import Algebra.Lattice.Bundles
+import Algebra.Lattice.Properties.Lattice as L
+import Algebra.Lattice.Properties.DistributiveLattice as DL
+import Algebra.Lattice.Properties.BooleanAlgebra as BA
 open import Data.Bool.Base using (not)
 open import Data.Bool.Properties
 open import Data.Fin.Base using (Fin; suc; zero)
@@ -402,7 +404,8 @@ module _ {n : ℕ} where
 
 module _ (n : ℕ) where
 
-  open AlgebraicStructures {A = Subset n} _≡_
+  open AlgebraicStructures        {A = Subset n} _≡_
+  open AlgebraicLatticeStructures {A = Subset n} _≡_
 
   ∩-isMagma : IsMagma _∩_
   ∩-isMagma = record
@@ -580,7 +583,8 @@ module _ {n : ℕ} where
 
 module _ (n : ℕ) where
 
-  open AlgebraicStructures {A = Subset n} _≡_
+  open AlgebraicStructures        {A = Subset n} _≡_
+  open AlgebraicLatticeStructures {A = Subset n} _≡_
 
   ∪-isMagma : IsMagma _∪_
   ∪-isMagma = record
@@ -678,8 +682,9 @@ module _ (n : ℕ) where
 
   ∪-∩-isDistributiveLattice : IsDistributiveLattice _∪_ _∩_
   ∪-∩-isDistributiveLattice = record
-    { isLattice    = ∪-∩-isLattice
-    ; ∨-distribʳ-∧ = ∪-distribʳ-∩
+    { isLattice   = ∪-∩-isLattice
+    ; ∨-distrib-∧ = ∪-distrib-∩
+    ; ∧-distrib-∨ = ∩-distrib-∪
     }
 
   ∪-∩-distributiveLattice : DistributiveLattice _ _
@@ -690,8 +695,8 @@ module _ (n : ℕ) where
   ∪-∩-isBooleanAlgebra : IsBooleanAlgebra _∪_ _∩_ ∁ ⊤ ⊥
   ∪-∩-isBooleanAlgebra = record
     { isDistributiveLattice = ∪-∩-isDistributiveLattice
-    ; ∨-complementʳ         = ∪-inverseʳ
-    ; ∧-complementʳ         = ∩-inverseʳ
+    ; ∨-complement          = ∪-inverse
+    ; ∧-complement          = ∩-inverse
     ; ¬-cong                = cong ∁
     }
 

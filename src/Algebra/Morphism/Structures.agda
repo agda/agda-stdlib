@@ -599,7 +599,7 @@ module FieldMorphisms (F₁ : RawField a ℓ₁) (F₂ : RawField b ℓ₂) wher
 
     open IsFieldMonomorphism isFieldMonomorphism public
 
-------------------------------------------------------------------------
+
 -- Re-export contents of modules publicly
 
 open MagmaMorphisms public
