@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- The max operator derived from an arbitrary total preorder.
+-- The max operator derived from an arbitrary total order
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

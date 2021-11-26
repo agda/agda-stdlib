@@ -9,8 +9,6 @@
 module Data.Bool.Properties where
 
 open import Algebra.Bundles
-open import Algebra.Lattice.Bundles
-import Algebra.Lattice.Properties.BooleanAlgebra as BooleanAlgebraProperties
 open import Data.Bool.Base
 open import Data.Empty
 open import Data.Product
@@ -28,8 +26,6 @@ import Relation.Unary as U
 
 open import Algebra.Definitions {A = Bool} _≡_
 open import Algebra.Structures {A = Bool} _≡_
-open import Algebra.Lattice.Structures {A = Bool} _≡_
-
 open ≡-Reasoning
 
 private
@@ -573,9 +569,8 @@ true  <? _     = no  (λ())
 
 ∨-∧-isDistributiveLattice : IsDistributiveLattice _∨_ _∧_
 ∨-∧-isDistributiveLattice = record
-  { isLattice   = ∨-∧-isLattice
-  ; ∨-distrib-∧ = ∨-distrib-∧
-  ; ∧-distrib-∨ = ∧-distrib-∨
+  { isLattice    = ∨-∧-isLattice
+  ; ∨-distribʳ-∧ = ∨-distribʳ-∧
   }
 
 ∨-∧-distributiveLattice : DistributiveLattice 0ℓ 0ℓ
@@ -586,9 +581,9 @@ true  <? _     = no  (λ())
 ∨-∧-isBooleanAlgebra : IsBooleanAlgebra _∨_ _∧_ not true false
 ∨-∧-isBooleanAlgebra = record
   { isDistributiveLattice = ∨-∧-isDistributiveLattice
-  ; ∨-complement          = ∨-inverse
-  ; ∧-complement          = ∧-inverse
-  ; ¬-cong                = cong not
+  ; ∨-complementʳ = ∨-inverseʳ
+  ; ∧-complementʳ = ∧-inverseʳ
+  ; ¬-cong        = cong not
   }
 
 ∨-∧-booleanAlgebra : BooleanAlgebra 0ℓ 0ℓ
@@ -606,7 +601,8 @@ xor-is-ok false y = sym (∧-identityʳ _)
 xor-∧-commutativeRing : CommutativeRing 0ℓ 0ℓ
 xor-∧-commutativeRing = commutativeRing
   where
-  open BooleanAlgebraProperties ∨-∧-booleanAlgebra
+  import Algebra.Properties.BooleanAlgebra as BA
+  open BA ∨-∧-booleanAlgebra
   open XorRing _xor_ xor-is-ok
 
 ------------------------------------------------------------------------
