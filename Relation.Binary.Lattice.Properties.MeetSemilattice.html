@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Relation.Binary.Lattice.Properties.MeetSemilattice</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Properties satisfied by meet semilattices</a>
+<a id="151" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="225" class="Symbol">{-#</a> <a id="229" class="Keyword">OPTIONS</a> <a id="237" class="Pragma">--without-K</a> <a id="249" class="Pragma">--safe</a> <a id="256" class="Symbol">#-}</a>
+
+<a id="261" class="Keyword">open</a> <a id="266" class="Keyword">import</a> <a id="273" href="Relation.Binary.Lattice.html" class="Module">Relation.Binary.Lattice</a>
+
+<a id="298" class="Keyword">module</a> <a id="305" href="Relation.Binary.Lattice.Properties.MeetSemilattice.html" class="Module">Relation.Binary.Lattice.Properties.MeetSemilattice</a>
+  <a id="358" class="Symbol">{</a><a id="359" href="Relation.Binary.Lattice.Properties.MeetSemilattice.html#359" class="Bound">c</a> <a id="361" href="Relation.Binary.Lattice.Properties.MeetSemilattice.html#361" class="Bound">ℓ₁</a> <a id="364" href="Relation.Binary.Lattice.Properties.MeetSemilattice.html#364" class="Bound">ℓ₂</a><a id="366" class="Symbol">}</a> <a id="368" class="Symbol">(</a><a id="369" href="Relation.Binary.Lattice.Properties.MeetSemilattice.html#369" class="Bound">M</a> <a id="371" class="Symbol">:</a> <a id="373" href="Relation.Binary.Lattice.Bundles.html#2024" class="Record">MeetSemilattice</a> <a id="389" href="Relation.Binary.Lattice.Properties.MeetSemilattice.html#359" class="Bound">c</a> <a id="391" href="Relation.Binary.Lattice.Properties.MeetSemilattice.html#361" class="Bound">ℓ₁</a> <a id="394" href="Relation.Binary.Lattice.Properties.MeetSemilattice.html#364" class="Bound">ℓ₂</a><a id="396" class="Symbol">)</a> <a id="398" class="Keyword">where</a>
+
+<a id="405" class="Keyword">open</a> <a id="410" href="Relation.Binary.Lattice.Bundles.html#2024" class="Module">MeetSemilattice</a> <a id="426" href="Relation.Binary.Lattice.Properties.MeetSemilattice.html#369" class="Bound">M</a>
+
+<a id="429" class="Keyword">open</a> <a id="434" class="Keyword">import</a> <a id="441" href="Algebra.Definitions.html" class="Module">Algebra.Definitions</a> <a id="461" href="Relation.Binary.Lattice.Bundles.html#2156" class="Field Operator">_≈_</a>
+<a id="465" class="Keyword">open</a> <a id="470" class="Keyword">import</a> <a id="477" href="Data.Product.html" class="Module">Data.Product</a>
+<a id="490" class="Keyword">open</a> <a id="495" class="Keyword">import</a> <a id="502" href="Function.Base.html" class="Module">Function.Base</a> <a id="516" class="Keyword">using</a> <a id="522" class="Symbol">(</a><a id="523" href="Function.Base.html#1629" class="Function">flip</a><a id="527" class="Symbol">)</a>
+<a id="529" class="Keyword">open</a> <a id="534" class="Keyword">import</a> <a id="541" href="Relation.Binary.html" class="Module">Relation.Binary</a>
+<a id="557" class="Keyword">open</a> <a id="562" class="Keyword">import</a> <a id="569" href="Relation.Binary.Properties.Poset.html" class="Module">Relation.Binary.Properties.Poset</a> <a id="602" href="Relation.Binary.Lattice.Bundles.html#2453" class="Function">poset</a>
+<a id="608" class="Keyword">import</a> <a id="615" href="Relation.Binary.Lattice.Properties.JoinSemilattice.html" class="Module">Relation.Binary.Lattice.Properties.JoinSemilattice</a> <a id="666" class="Symbol">as</a> <a id="669" class="Module">J</a>
+
+<a id="672" class="Comment">-- The dual construction is a join semilattice.</a>
+
+<a id="dualIsJoinSemilattice"></a><a id="721" href="Relation.Binary.Lattice.Properties.MeetSemilattice.html#721" class="Function">dualIsJoinSemilattice</a> <a id="743" class="Symbol">:</a> <a id="745" href="Relation.Binary.Lattice.Structures.html#818" class="Record">IsJoinSemilattice</a> <a id="763" href="Relation.Binary.Lattice.Bundles.html#2156" class="Field Operator">_≈_</a> <a id="767" class="Symbol">(</a><a id="768" href="Function.Base.html#1629" class="Function">flip</a> <a id="773" href="Relation.Binary.Lattice.Bundles.html#2224" class="Field Operator">_≤_</a><a id="776" class="Symbol">)</a> <a id="778" href="Relation.Binary.Lattice.Bundles.html#2286" class="Field Operator">_∧_</a>
+<a id="782" href="Relation.Binary.Lattice.Properties.MeetSemilattice.html#721" class="Function">dualIsJoinSemilattice</a> <a id="804" class="Symbol">=</a> <a id="806" class="Keyword">record</a>
+  <a id="815" class="Symbol">{</a> <a id="817" href="Relation.Binary.Lattice.Structures.html#939" class="Field">isPartialOrder</a> <a id="832" class="Symbol">=</a> <a id="834" href="Relation.Binary.Properties.Poset.html#3166" class="Function">invIsPartialOrder</a>
+  <a id="854" class="Symbol">;</a> <a id="856" href="Relation.Binary.Lattice.Structures.html#983" class="Field">supremum</a>       <a id="871" class="Symbol">=</a> <a id="873" href="Relation.Binary.Lattice.Structures.html#1946" class="Function">infimum</a>
+  <a id="883" class="Symbol">}</a>
+
+<a id="dualJoinSemilattice"></a><a id="886" href="Relation.Binary.Lattice.Properties.MeetSemilattice.html#886" class="Function">dualJoinSemilattice</a> <a id="906" class="Symbol">:</a> <a id="908" href="Relation.Binary.Lattice.Bundles.html#625" class="Record">JoinSemilattice</a> <a id="924" href="Relation.Binary.Lattice.Properties.MeetSemilattice.html#359" class="Bound">c</a> <a id="926" href="Relation.Binary.Lattice.Properties.MeetSemilattice.html#361" class="Bound">ℓ₁</a> <a id="929" href="Relation.Binary.Lattice.Properties.MeetSemilattice.html#364" class="Bound">ℓ₂</a>
+<a id="932" href="Relation.Binary.Lattice.Properties.MeetSemilattice.html#886" class="Function">dualJoinSemilattice</a> <a id="952" class="Symbol">=</a> <a id="954" class="Keyword">record</a>
+  <a id="963" class="Symbol">{</a> <a id="965" href="Relation.Binary.Lattice.Bundles.html#887" class="Field Operator">_∨_</a>               <a id="983" class="Symbol">=</a> <a id="985" href="Relation.Binary.Lattice.Bundles.html#2286" class="Field Operator">_∧_</a>
+  <a id="991" class="Symbol">;</a> <a id="993" href="Relation.Binary.Lattice.Bundles.html#950" class="Field">isJoinSemilattice</a> <a id="1011" class="Symbol">=</a> <a id="1013" href="Relation.Binary.Lattice.Properties.MeetSemilattice.html#721" class="Function">dualIsJoinSemilattice</a>
+  <a id="1037" class="Symbol">}</a>
+
+<a id="1040" class="Keyword">open</a> <a id="1045" href="Relation.Binary.Lattice.Properties.JoinSemilattice.html" class="Module">J</a> <a id="1047" href="Relation.Binary.Lattice.Properties.MeetSemilattice.html#886" class="Function">dualJoinSemilattice</a> <a id="1067" class="Keyword">public</a>
+  <a id="1076" class="Keyword">using</a> <a id="1082" class="Symbol">(</a><a id="1083" href="Relation.Binary.Lattice.Properties.JoinSemilattice.html#2394" class="Function">isAlgSemilattice</a><a id="1099" class="Symbol">;</a> <a id="1101" href="Relation.Binary.Lattice.Properties.JoinSemilattice.html#2720" class="Function">algSemilattice</a><a id="1115" class="Symbol">)</a>
+  <a id="1119" class="Keyword">renaming</a>
+    <a id="1132" class="Symbol">(</a> <a id="1134" href="Relation.Binary.Lattice.Properties.JoinSemilattice.html#768" class="Function">∨-monotonic</a>  <a id="1147" class="Symbol">to</a> <a id="1150" class="Function">∧-monotonic</a>
+    <a id="1166" class="Symbol">;</a> <a id="1168" href="Relation.Binary.Lattice.Properties.JoinSemilattice.html#995" class="Function">∨-cong</a>       <a id="1181" class="Symbol">to</a> <a id="1184" class="Function">∧-cong</a>
+    <a id="1195" class="Symbol">;</a> <a id="1197" href="Relation.Binary.Lattice.Properties.JoinSemilattice.html#1301" class="Function">∨-comm</a>       <a id="1210" class="Symbol">to</a> <a id="1213" class="Function">∧-comm</a>
+    <a id="1224" class="Symbol">;</a> <a id="1226" href="Relation.Binary.Lattice.Properties.JoinSemilattice.html#1498" class="Function">∨-assoc</a>      <a id="1239" class="Symbol">to</a> <a id="1242" class="Function">∧-assoc</a>
+    <a id="1254" class="Symbol">;</a> <a id="1256" href="Relation.Binary.Lattice.Properties.JoinSemilattice.html#1993" class="Function">∨-idempotent</a> <a id="1269" class="Symbol">to</a> <a id="1272" class="Function">∧-idempotent</a>
+    <a id="1289" class="Symbol">;</a> <a id="1291" href="Relation.Binary.Lattice.Properties.JoinSemilattice.html#2119" class="Function">x≤y⇒x∨y≈y</a>    <a id="1304" class="Symbol">to</a> <a id="1307" class="Function">y≤x⇒x∧y≈y</a>
+    <a id="1321" class="Symbol">)</a>
+</pre></body></html>
