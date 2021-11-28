@@ -111,15 +111,6 @@ commutativeSemigroup G H = record
     }
   } where module G = CommutativeSemigroup G; module H = CommutativeSemigroup H
 
-semilattice : Semilattice a ℓ₁ → Semilattice b ℓ₂ →
-              Semilattice (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
-semilattice L M = record
-  { isSemilattice = record
-    { isBand = Band.isBand (band L.band M.band)
-    ; comm = λ x y → (L.comm , M.comm) <*> x <*> y
-    }
-  } where module L = Semilattice L; module M = Semilattice M
-
 monoid : Monoid a ℓ₁ → Monoid b ℓ₂ → Monoid (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
 monoid M N = record
   { ε = M.ε , N.ε

@@ -1,7 +1,8 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Properties of a max operator derived from a spec over a total order.
+-- Properties of a max operator derived from a spec over a total
+-- preorder.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -48,7 +49,6 @@ open Min public
   ; ⊓-isSemigroup             to  ⊔-isSemigroup
   ; ⊓-isCommutativeSemigroup  to  ⊔-isCommutativeSemigroup
   ; ⊓-isBand                  to  ⊔-isBand
-  ; ⊓-isSemilattice           to  ⊔-isSemilattice
   ; ⊓-isMonoid                to  ⊔-isMonoid
   ; ⊓-isSelectiveMagma        to  ⊔-isSelectiveMagma
 
@@ -56,7 +56,6 @@ open Min public
   ; ⊓-semigroup               to  ⊔-semigroup
   ; ⊓-commutativeSemigroup    to  ⊔-commutativeSemigroup
   ; ⊓-band                    to  ⊔-band
-  ; ⊓-semilattice             to  ⊔-semilattice
   ; ⊓-monoid                  to  ⊔-monoid
   ; ⊓-selectiveMagma          to  ⊔-selectiveMagma
 
