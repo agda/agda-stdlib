@@ -132,13 +132,19 @@ Interchangable : Op₂ A → Op₂ A → Set _
 Interchangable _∘_ _∙_ = ∀ w x y z → ((w ∙ x) ∘ (y ∙ z)) ≈ ((w ∘ y) ∙ (x ∘ z))
 
 _LeftDivisionˡ_ : Op₂ A → Op₂ A → Set _
-_*_ LeftDivisionˡ _\\_ = ∀ x y → (x * (x \\ y)) ≈ y
+_∙_ LeftDivisionˡ _\\_ = ∀ x y → (x ∙ (x \\ y)) ≈ y
 
 _LeftDivisionʳ_ : Op₂ A → Op₂ A → Set _
-_*_ LeftDivisionʳ _\\_ = ∀ x y → (x \\ (x * y)) ≈ y
+_∙_ LeftDivisionʳ _\\_ = ∀ x y → (x \\ (x ∙ y)) ≈ y
 
 _RightDivisionˡ_ : Op₂ A → Op₂ A → Set _
-_*_ RightDivisionˡ _//_ = ∀ x y → ((y // x) * x) ≈ y
+_∙_ RightDivisionˡ _//_ = ∀ x y → ((y // x) ∙ x) ≈ y
 
 _RightDivisionʳ_ : Op₂ A → Op₂ A → Set _
-_*_ RightDivisionʳ _//_ = ∀ x y → ((y * x) // x) ≈ y
+_∙_ RightDivisionʳ _//_ = ∀ x y → ((y ∙ x) // x) ≈ y
+
+LeftDivision : Op₂ A → Op₂ A → Set _
+LeftDivision ∙ \\ = (∙ LeftDivisionˡ \\) × (∙ LeftDivisionʳ \\)
+
+RightDivision : Op₂ A → Op₂ A → Set _
+RightDivision ∙ // = (∙ RightDivisionˡ //) × (∙ RightDivisionʳ //)
