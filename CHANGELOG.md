@@ -463,6 +463,7 @@ New modules
   Algebra.Module.Morphism.Construct.Identity
   Algebra.Module.Morphism.Definitions
   Algebra.Module.Morphism.Structures
+  Algebra.Module
   ```
 
 * Identity morphisms and composition of morphisms between algebraic structures:
