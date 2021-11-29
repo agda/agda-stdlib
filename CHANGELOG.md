@@ -28,6 +28,9 @@ Bug-fixes
   meta-variable whenever this module was explicitly parameterised. This has
   been fixed.
 
+* Add module `Algebra.Module` that re-exports the contents of 
+  `Algebra.Module.(Definitions/Structures/Bundles)`
+
 Non-backwards compatible changes
 --------------------------------
 
