@@ -28,6 +28,9 @@ Bug-fixes
   meta-variable whenever this module was explicitly parameterised. This has
   been fixed.
 
+* Add module Algebra.Module that re-exports the contents of 
+  Algebra.Module.(Definitions/Structures/Bundles)
+
 Non-backwards compatible changes
 --------------------------------
 
@@ -463,7 +466,6 @@ New modules
   Algebra.Module.Morphism.Construct.Identity
   Algebra.Module.Morphism.Definitions
   Algebra.Module.Morphism.Structures
-  Algebra.Module
   ```
 
 * Identity morphisms and composition of morphisms between algebraic structures:
