@@ -917,11 +917,11 @@ record RawQuasiGroup c ℓ : Set (suc (c ⊔ ℓ)) where
 
 record Quasigroup c ℓ : Set (suc (c ⊔ ℓ)) where
   field
-    Carrier : Set c
-    _≈_     : Rel Carrier ℓ
-    _∙_     : Op₂ Carrier
-    _\\_    : Op₂ Carrier
-    _//_    : Op₂ Carrier
+    Carrier      : Set c
+    _≈_          : Rel Carrier ℓ
+    _∙_          : Op₂ Carrier
+    _\\_         : Op₂ Carrier
+    _//_         : Op₂ Carrier
     isQuasigroup : IsQuasigroup  _≈_ _∙_ _\\_ _//_
 
   open IsQuasigroup isQuasigroup public
