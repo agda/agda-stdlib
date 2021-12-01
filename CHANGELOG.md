@@ -583,6 +583,11 @@ Other minor changes
                     CommutativeRing (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
  ```
 
+* Added new proofs to `Algebra.Properties.CommutativeSemigroup`:
+  ```
+  interchange : Interchangable _∙_ _∙_
+  ```
+
 * Added new definitions to `Algebra.Structures`:
   ```agda
   record IsUnitalMagma (_∙_ : Op₂ A) (ε : A) : Set (a ⊔ ℓ)
