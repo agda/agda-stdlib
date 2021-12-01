@@ -568,23 +568,3 @@ record IsLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
     identity     : Identity ε ∙
 
   open IsQuasigroup isQuasigroup public
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 2.0
-
---IsQuasigroup = IsInvertibleMagma
-{- WARNING_ON_USAGE IsQuasigroup
-"Warning: IsQuasigroup was deprecated in v2.0.
-Please use IsInvertibleMagma instead."
--}
-
---IsLoop = IsInvertibleUnitalMagma
-{- WARNING_ON_USAGE IsLoop
-"Warning: IsLoop was deprecated in v2.0.
-Please use IsInvertibleUnitalMagma instead."
--}

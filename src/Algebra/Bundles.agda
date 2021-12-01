@@ -1002,17 +1002,3 @@ RawSemigroup = RawMagma
 "Warning: RawSemigroup was deprecated in v1.0.
 Please use RawMagma instead."
 #-}
-
--- Version 2.0
-
---Quasigroup = InvertibleMagma
-{- WARNING_ON_USAGE Quasigroup
-"Warning: Quasigroup was deprecated in v2.0.
-Please use InvertibleMagma instead."
--}
-
---Loop = InvertibleUnitalMagma
-{- WARNING_ON_USAGE Loop
-"Warning: Loop was deprecated in v2.0.
-Please use InvertibleUnitalMagma instead."
--}
