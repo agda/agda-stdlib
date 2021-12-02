@@ -23,6 +23,9 @@ Bug-fixes
 * In `/-monoˡ-≤` in `Data.Nat.DivMod` the parameter `o` was implicit but not inferrable.
   It has been changed to be explicit.
 
+* In `+-distrib-/-∣ʳ` in `Data.Nat.DivMod` the parameter `m` was implicit but not inferrable,
+  while `n` is explicit but inferrable.  They have been changed.
+
 * In `Function.Definitions` the definitions of `Surjection`, `Inverseˡ`,
   `Inverseʳ` were not being re-exported correctly and therefore had an unsolved
   meta-variable whenever this module was explicitly parameterised. This has
