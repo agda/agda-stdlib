@@ -545,8 +545,12 @@ Other minor changes
 * Added new definitions to `Algebra.Bundles`:
   ```agda
   record UnitalMagma c ℓ : Set (suc (c ⊔ ℓ))
-  record Quasigroup  c ℓ : Set (suc (c ⊔ ℓ))
-  record Loop c ℓ : Set (suc (c ⊔ ℓ))
+  record InvertibleMagma c ℓ : Set (suc (c ⊔ ℓ))
+  record InvertibleUnitalMagma c ℓ : Set (suc (c ⊔ ℓ))
+  record RawQuasiGroup c ℓ : Set (suc (c ⊔ ℓ))
+  record Quasigroup c ℓ : Set (suc (c ⊔ ℓ))
+  record RawLoop  c ℓ : Set (suc (c ⊔ ℓ))
+  record Loop  c ℓ : Set (suc (c ⊔ ℓ))
   ```
   and the existing record `Lattice` now provides
   ```agda
@@ -554,6 +558,16 @@ Other minor changes
   ∧-commutativeSemigroup : CommutativeSemigroup c ℓ
   ```
   and their corresponding algebraic subbundles.
+
+* Added new definition to `Algebra.Definitions`:
+  ```agda
+  LeftDivisionˡ : Op₂ A → Op₂ A → Set _
+  LeftDivisionʳ : Op₂ A → Op₂ A → Set _
+  RightDivisionˡ : Op₂ A → Op₂ A → Set _
+  RightDivisionʳ : Op₂ A → Op₂ A → Set _
+  LeftDivision : Op₂ A → Op₂ A → Set _
+  RightDivision : Op₂ A → Op₂ A → Set _
+  ```
 
 * Added new proofs to `Algebra.Consequences.Setoid`:
   ```agda
@@ -586,8 +600,10 @@ Other minor changes
 * Added new definitions to `Algebra.Structures`:
   ```agda
   record IsUnitalMagma (_∙_ : Op₂ A) (ε : A) : Set (a ⊔ ℓ)
-  record IsQuasigroup  (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ)
-  record IsLoop (_∙_ : Op₂ A) (ε : A) (⁻¹ : Op₁ A) : Set (a ⊔ ℓ)
+  record IsInvertibleMagma (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ)
+  record IsInvertibleUnitalMagma (_∙_ : Op₂ A) (ε : A) (⁻¹ : Op₁ A) : Set (a ⊔ ℓ)
+  record IsQuasigroup (∙ \\ // : Op₂ A) : Set (a ⊔ ℓ)
+  record IsLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ)
   ```
   and the existing record `IsLattice` now provides
   ```
