@@ -557,8 +557,8 @@ record IsCommutativeRing
 record IsQuasigroup (∙ \\ // : Op₂ A) : Set (a ⊔ ℓ) where
   field
     isEquivalence :  IsEquivalence _≈_
-    leftDivision  :  LeftDivision ∙ \\
-    rightDivision :  RightDivision ∙ //
+    leftDivides  :  LeftDivides ∙ \\
+    rightDivides :  RightDivides ∙ //
 
   open IsEquivalence isEquivalence public
 

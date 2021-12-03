@@ -131,20 +131,20 @@ AlmostCancellative e _•_ = AlmostLeftCancellative e _•_ × AlmostRightCancel
 Interchangable : Op₂ A → Op₂ A → Set _
 Interchangable _∘_ _∙_ = ∀ w x y z → ((w ∙ x) ∘ (y ∙ z)) ≈ ((w ∘ y) ∙ (x ∘ z))
 
-LeftDivisionˡ : Op₂ A → Op₂ A → Set _
-LeftDivisionˡ _∙_  _\\_ = ∀ x y → (x ∙ (x \\ y)) ≈ y
+LeftDividesˡ : Op₂ A → Op₂ A → Set _
+LeftDividesˡ _∙_  _\\_ = ∀ x y → (x ∙ (x \\ y)) ≈ y
 
-LeftDivisionʳ : Op₂ A → Op₂ A → Set _
-LeftDivisionʳ _∙_ _\\_ = ∀ x y → (x \\ (x ∙ y)) ≈ y
+LeftDividesʳ : Op₂ A → Op₂ A → Set _
+LeftDividesʳ _∙_ _\\_ = ∀ x y → (x \\ (x ∙ y)) ≈ y
 
-RightDivisionˡ : Op₂ A → Op₂ A → Set _
-RightDivisionˡ _∙_ _//_ = ∀ x y → ((y // x) ∙ x) ≈ y
+RightDividesˡ : Op₂ A → Op₂ A → Set _
+RightDividesˡ _∙_ _//_ = ∀ x y → ((y // x) ∙ x) ≈ y
 
-RightDivisionʳ : Op₂ A → Op₂ A → Set _
-RightDivisionʳ _∙_ _//_ = ∀ x y → ((y ∙ x) // x) ≈ y
+RightDividesʳ : Op₂ A → Op₂ A → Set _
+RightDividesʳ _∙_ _//_ = ∀ x y → ((y ∙ x) // x) ≈ y
 
-LeftDivision : Op₂ A → Op₂ A → Set _
-LeftDivision ∙ \\ = (LeftDivisionˡ ∙ \\) × (LeftDivisionʳ ∙ \\)
+LeftDivides : Op₂ A → Op₂ A → Set _
+LeftDivides ∙ \\ = (LeftDividesˡ ∙ \\) × (LeftDividesʳ ∙ \\)
 
-RightDivision : Op₂ A → Op₂ A → Set _
-RightDivision ∙ // = (RightDivisionˡ ∙ //) × (RightDivisionʳ ∙ //)
+RightDivides : Op₂ A → Op₂ A → Set _
+RightDivides ∙ // = (RightDividesˡ ∙ //) × (RightDividesʳ ∙ //)

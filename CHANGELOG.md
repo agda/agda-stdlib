@@ -561,12 +561,12 @@ Other minor changes
 
 * Added new definition to `Algebra.Definitions`:
   ```agda
-  LeftDivisionˡ : Op₂ A → Op₂ A → Set _
-  LeftDivisionʳ : Op₂ A → Op₂ A → Set _
-  RightDivisionˡ : Op₂ A → Op₂ A → Set _
-  RightDivisionʳ : Op₂ A → Op₂ A → Set _
-  LeftDivision : Op₂ A → Op₂ A → Set _
-  RightDivision : Op₂ A → Op₂ A → Set _
+  LeftDividesˡ : Op₂ A → Op₂ A → Set _
+  LeftDividesʳ : Op₂ A → Op₂ A → Set _
+  RightDividesˡ : Op₂ A → Op₂ A → Set _
+  RightDividesʳ : Op₂ A → Op₂ A → Set _
+  LeftDivides : Op₂ A → Op₂ A → Set _
+  RightDivides : Op₂ A → Op₂ A → Set _
   ```
 
 * Added new proofs to `Algebra.Consequences.Setoid`:
