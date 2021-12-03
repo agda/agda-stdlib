@@ -887,6 +887,10 @@ record CommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
 ------------------------------------------------------------------------
 
 record RawQuasiGroup c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _∙_
+  infixl 7 _\\_
+  infixl 7 _//_
+  infix  4 _≈_
   field
     Carrier : Set c
     _≈_     : Rel Carrier ℓ
@@ -916,6 +920,10 @@ record RawQuasiGroup c ℓ : Set (suc (c ⊔ ℓ)) where
     using (_≉_)
 
 record Quasigroup c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _∙_
+  infixl 7 _\\_
+  infixl 7 _//_
+  infix  4 _≈_
   field
     Carrier      : Set c
     _≈_          : Rel Carrier ℓ
@@ -944,6 +952,10 @@ record Quasigroup c ℓ : Set (suc (c ⊔ ℓ)) where
     using (_≉_)
 
 record RawLoop  c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _∙_
+  infixl 7 _\\_
+  infixl 7 _//_
+  infix  4 _≈_
   field
     Carrier : Set c
     _≈_     : Rel Carrier ℓ
@@ -964,6 +976,10 @@ record RawLoop  c ℓ : Set (suc (c ⊔ ℓ)) where
     using (_≉_ ; ∙-rawMagma; \\-rawMagma; //-rawMagma)
 
 record Loop  c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _∙_
+  infixl 7 _\\_
+  infixl 7 _//_
+  infix  4 _≈_
   field
     Carrier : Set c
     _≈_     : Rel Carrier ℓ
