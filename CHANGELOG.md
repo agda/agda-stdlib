@@ -696,6 +696,8 @@ Other minor changes
   ```agda
   diagonal : ∀ {n} → Vec (Vec A n) n → Vec A n
   DiagonalBind._>>=_ : ∀ {n} → Vec A n → (A → Vec B n) → Vec B n
+  truncate : ∀ {m n} → m ≤ n → Vec A n → Vec A m
+  pad : ∀ {m n} → m ≤ n → A → Vec A m → Vec A n
   ```
 
 * Added new instance in `Data.Vec.Categorical`:
@@ -708,8 +710,16 @@ Other minor changes
   map-const : ∀ {n} (xs : Vec A n) (x : B) → map {n = n} (const x) xs ≡ replicate x
   map-⊛ : ∀ {n} (f : A → B → C) (g : A → B) (xs : Vec A n) → (map f xs ⊛ map g xs) ≡ map (f ˢ g) xs
   ⊛-is->>= : ∀ {n} (fs : Vec (A → B) n) (xs : Vec A n) → (fs ⊛ xs) ≡ (fs DiagonalBind.>>= flip map xs)
+  pad-refl : ∀ {n} → (a : A) → (xs : Vec A n) → pad ≤-refl a xs ≡ xs
+  pad-replicate : ∀ {m n} → (le : m ≤ n) → (a : A) → replicate a ≡ pad le a (replicate a)
+  pad-trans : ∀ {m n p} → (le₁ : m ≤ n) → (le₂ : n ≤ p) → (a : A) → (xs : Vec A m) →
+              pad (≤-trans le₁ le₂) a xs ≡ pad le₂ a (pad le₁ a xs)
   transpose-replicate : ∀ {m n} (xs : Vec A m) → transpose (replicate {n = n} xs) ≡ map replicate xs
   []≔-++-↑ʳ : ∀ {m n y} (xs : Vec A m) (ys : Vec A n) i → (xs ++ ys) [ m ↑ʳ i ]≔ y ≡ xs ++ (ys [ i ]≔ y)
+
+  truncate-refl : ∀ {n} → (xs : Vec A n) → truncate ≤-refl xs ≡ xs
+  truncate-trans : ∀ {m n p} → (le₁ : m ≤ n) → (le₂ : n ≤ p) → (xs : Vec A p) →
+                   truncate (≤-trans le₁ le₂) xs ≡ truncate le₁ (truncate le₂ xs)
   ```
 
 * Added new proofs in `Function.Construct.Symmetry`:
