@@ -14,7 +14,8 @@ open import Data.Empty using (⊥-elim)
 open import Data.Fin.Base as Fin using (Fin; zero; suc; toℕ; fromℕ; _↑ˡ_; _↑ʳ_)
 open import Data.List.Base as List using (List)
 open import Data.Nat.Base
-open import Data.Nat.Properties using (+-assoc; ≤-step)
+open import Data.Nat.Properties
+  using (+-assoc; ≤-step; ≤-refl; ≤-trans)
 open import Data.Product as Prod
   using (_×_; _,_; proj₁; proj₂; <_,_>; uncurry)
 open import Data.Sum.Base using ([_,_]′)
@@ -25,7 +26,7 @@ open import Function.Inverse using (_↔_; inverse)
 open import Level using (Level)
 open import Relation.Binary as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; _≢_; refl; _≗_; cong₂)
+  using (_≡_; _≢_; refl; _≗_; cong; cong₂)
 open P.≡-Reasoning
 open import Relation.Unary using (Pred; Decidable)
 open import Relation.Nullary using (Dec; does; yes; no)
@@ -154,6 +155,41 @@ take-drop-id (suc m) (x ∷ xs) = begin
   ≡⟨ P.cong (x ∷_) (take-drop-id m xs) ⟩
     x ∷ xs
   ∎
+
+--------------------------------------------------------------------------------
+-- truncate
+
+truncate-refl : ∀ {n} → (xs : Vec A n) → truncate ≤-refl xs ≡ xs
+truncate-refl []       = refl
+truncate-refl (x ∷ xs) = cong (x ∷_) (truncate-refl xs)
+
+truncate-trans : ∀ {m n p} → (le₁ : m ≤ n) → (le₂ : n ≤ p) → (xs : Vec A p) →
+                 truncate (≤-trans le₁ le₂) xs ≡ truncate le₁ (truncate le₂ xs)
+truncate-trans z≤n       le₂       xs = refl
+truncate-trans (s≤s le₁) (s≤s le₂) (x ∷ xs) = cong (x ∷_) (truncate-trans le₁ le₂ xs)
+
+--------------------------------------------------------------------------------
+-- pad
+
+pad-refl : ∀ {n} → (a : A) → (xs : Vec A n) → pad ≤-refl a xs ≡ xs
+pad-refl a []       = refl
+pad-refl a (x ∷ xs) = cong (x ∷_) (pad-refl a xs)
+
+pad-replicate : ∀ {m n} → (le : m ≤ n) → (a : A) → replicate a ≡ pad le a (replicate a)
+pad-replicate z≤n      a = refl
+pad-replicate (s≤s le) a = cong (a ∷_) (pad-replicate le a)
+
+pad-trans : ∀ {m n p} → (le₁ : m ≤ n) → (le₂ : n ≤ p) → (a : A) → (xs : Vec A m) →
+            pad (≤-trans le₁ le₂) a xs ≡ pad le₂ a (pad le₁ a xs)
+pad-trans z≤n       le₂       a []       = pad-replicate le₂ a
+pad-trans (s≤s le₁) (s≤s le₂) a (x ∷ xs) = cong (x ∷_) (pad-trans le₁ le₂ a xs)
+
+--------------------------------------------------------------------------------
+-- truncate and pad together
+
+truncate-pad-id : ∀ {m n} → (le : m ≤ n) → (a : A) → (xs : Vec A m) → truncate le (pad le a xs) ≡ xs
+truncate-pad-id z≤n      a []       = refl
+truncate-pad-id (s≤s le) a (x ∷ xs) = cong (x ∷_) (truncate-pad-id le a xs)
 
 ------------------------------------------------------------------------
 -- lookup
