@@ -8,7 +8,7 @@
 
 module Data.Vec.Base where
 
-open import Data.Bool.Base
+open import Data.Bool.Base using (Bool; true; false)
 open import Data.Nat.Base
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base as List using (List)
@@ -265,6 +265,19 @@ split (x ∷ y ∷ xs) = Prod.map (x ∷_) (y ∷_) (split xs)
 
 uncons : ∀ {n} → Vec A (suc n) → A × Vec A n
 uncons (x ∷ xs) = x , xs
+
+------------------------------------------------------------------------
+-- Operations involving ≤
+
+-- Take the first 'm' elements of a vector.
+truncate : ∀ {m n} → m ≤ n → Vec A n → Vec A m
+truncate z≤n      _        = []
+truncate (s≤s le) (x ∷ xs) = x ∷ (truncate le xs)
+
+-- Pad out a vector with extra elements.
+pad : ∀ {m n} → m ≤ n → A → Vec A m → Vec A n
+pad z≤n      a xs       = replicate a
+pad (s≤s le) a (x ∷ xs) = x ∷ pad le a xs
 
 ------------------------------------------------------------------------
 -- Operations for converting between lists
