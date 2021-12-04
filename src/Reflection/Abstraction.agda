@@ -10,7 +10,7 @@ module Reflection.Abstraction where
 
 open import Data.List.Base as List using (List)
 open import Data.Product using (_×_; _,_; uncurry; <_,_>)
-import Data.String as String
+open import Data.String as String using (String)
 open import Level
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
@@ -22,14 +22,16 @@ private
   variable
     a b : Level
     A B : Set a
+    s t : String
+    x y : A
 
 ------------------------------------------------------------------------
--- Re-exporting the builtins publically
+-- Re-exporting the builtins publicly
 
-open import Agda.Builtin.Reflection public using (Abs)
+open import Agda.Builtin.Reflection public
+  using (Abs)
+
 open Abs public
-
--- Pattern synonyms
 
 ------------------------------------------------------------------------
 -- Operations
@@ -40,13 +42,13 @@ map f (abs s x) = abs s (f x)
 ------------------------------------------------------------------------
 -- Decidable equality
 
-abs-injective₁ : ∀ {i i′} {a a′ : A} → abs i a ≡ abs i′ a′ → i ≡ i′
+abs-injective₁ : abs s x ≡ abs t y → s ≡ t
 abs-injective₁ refl = refl
 
-abs-injective₂ : ∀ {i i′} {a a′ : A} → abs i a ≡ abs i′ a′ → a ≡ a′
+abs-injective₂ : abs s x ≡ abs t y → x ≡ y
 abs-injective₂ refl = refl
 
-abs-injective : ∀ {i i′} {a a′ : A} → abs i a ≡ abs i′ a′ → i ≡ i′ × a ≡ a′
+abs-injective : abs s x ≡ abs t y → s ≡ t × x ≡ y
 abs-injective = < abs-injective₁ , abs-injective₂ >
 
 -- We often need decidability of equality for Abs A when implementing it
@@ -57,9 +59,9 @@ abs-injective = < abs-injective₁ , abs-injective₂ >
 unAbs : Abs A → A
 unAbs (abs s a) = a
 
-unAbs-dec : {x y : Abs A} → Dec (unAbs x ≡ unAbs y) → Dec (x ≡ y)
-unAbs-dec {x = abs i a} {abs i′ a′} a≟a′ =
-  Dec.map′ (uncurry (cong₂ abs)) abs-injective ((i String.≟ i′) ×-dec a≟a′)
+unAbs-dec : {abs1 abs2 : Abs A} → Dec (unAbs abs1 ≡ unAbs abs2) → Dec (abs1 ≡ abs2)
+unAbs-dec {abs1 = abs s a} {abs t a′} a≟a′ =
+  Dec.map′ (uncurry (cong₂ abs)) abs-injective (s String.≟ t ×-dec a≟a′)
 
-≡-dec : Decidable {A = A} _≡_ → Decidable {A = Abs A} _≡_
+≡-dec : DecidableEquality A → DecidableEquality (Abs A)
 ≡-dec _≟_ x y = unAbs-dec (unAbs x ≟ unAbs y)

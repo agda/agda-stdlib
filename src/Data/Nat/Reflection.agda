@@ -9,7 +9,7 @@
 module Data.Nat.Reflection where
 
 open import Data.Nat.Base as ℕ
-open import Data.Fin.Base as Fin
+import Data.Fin.Base as Fin
 open import Data.List.Base using ([])
 open import Reflection.Term
 open import Reflection.Argument
@@ -17,9 +17,13 @@ open import Reflection.Argument
 ------------------------------------------------------------------------
 -- Term
 
+pattern `ℕ     = def (quote ℕ) []
+pattern `zero  = con (quote zero) []
+pattern `suc x = con (quote suc) (x ⟨∷⟩ [])
+
 toTerm : ℕ → Term
-toTerm zero    = con (quote ℕ.zero) []
-toTerm (suc i) = con (quote ℕ.suc)  (toTerm i ⟨∷⟩ [])
+toTerm zero    = `zero
+toTerm (suc i) = `suc (toTerm i)
 
 toFinTerm : ℕ → Term
 toFinTerm zero    = con (quote Fin.zero) (1 ⋯⟅∷⟆ [])

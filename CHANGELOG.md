@@ -481,6 +481,12 @@ New modules
   Data.List.Fresh.NonEmpty
   ```
 
+* Reflection utilities for some specific types:
+  ```
+  Data.List.Reflection
+  Data.Vec.Reflection
+  ```
+
 * Show module for unnormalised rationals:
   ```
   Data.Rational.Unnormalised.Show
@@ -628,6 +634,13 @@ Other minor changes
 * Added new proofs in `Data.Nat.DivMod`:
   ```agda
   m%n≤n : .{{_ : NonZero n}} → m % n ≤ n
+  ```
+
+* Added new patterns in `Data.Nat.Reflection`:
+  ```agda
+  pattern `ℕ     = def (quote ℕ) []
+  pattern `zero  = con (quote ℕ.zero) []
+  pattern `suc x = con (quote ℕ.suc) (x ⟨∷⟩ [])
   ```
 
 * Added new rounding functions in `Data.Rational.Base`:
@@ -805,6 +818,14 @@ Other minor changes
 * Added new functions in `Data.Vec.Relation.Unary.All`:
   ```
   decide :  Π[ P ∪ Q ] → Π[ All P ∪ Any Q ]
+  ```
+
+* Added new functions in `Reflection.Term`:
+  ```
+  stripPis : Term → List (String × Arg Type) × Term
+  prependLams : List (String × Visibility) → Term → Term
+  prependHLams : List String → Term → Term
+  prependVLams : List String → Term → Term
   ```
 
 * Added new operations in
