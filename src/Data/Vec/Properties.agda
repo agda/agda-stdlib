@@ -171,25 +171,25 @@ truncate-trans (s≤s le₁) (s≤s le₂) (x ∷ xs) = cong (x ∷_) (truncate-
 --------------------------------------------------------------------------------
 -- pad
 
-pad-refl : ∀ {n} → (a : A) → (xs : Vec A n) → pad ≤-refl a xs ≡ xs
-pad-refl a []       = refl
-pad-refl a (x ∷ xs) = cong (x ∷_) (pad-refl a xs)
+padRight-refl : ∀ {n} → (a : A) → (xs : Vec A n) → padRight ≤-refl a xs ≡ xs
+padRight-refl a []       = refl
+padRight-refl a (x ∷ xs) = cong (x ∷_) (padRight-refl a xs)
 
-pad-replicate : ∀ {m n} → (le : m ≤ n) → (a : A) → replicate a ≡ pad le a (replicate a)
-pad-replicate z≤n      a = refl
-pad-replicate (s≤s le) a = cong (a ∷_) (pad-replicate le a)
+padRight-replicate : ∀ {m n} → (le : m ≤ n) → (a : A) → replicate a ≡ padRight le a (replicate a)
+padRight-replicate z≤n      a = refl
+padRight-replicate (s≤s le) a = cong (a ∷_) (padRight-replicate le a)
 
-pad-trans : ∀ {m n p} → (le₁ : m ≤ n) → (le₂ : n ≤ p) → (a : A) → (xs : Vec A m) →
-            pad (≤-trans le₁ le₂) a xs ≡ pad le₂ a (pad le₁ a xs)
-pad-trans z≤n       le₂       a []       = pad-replicate le₂ a
-pad-trans (s≤s le₁) (s≤s le₂) a (x ∷ xs) = cong (x ∷_) (pad-trans le₁ le₂ a xs)
+padRight-trans : ∀ {m n p} → (le₁ : m ≤ n) → (le₂ : n ≤ p) → (a : A) → (xs : Vec A m) →
+            padRight (≤-trans le₁ le₂) a xs ≡ padRight le₂ a (padRight le₁ a xs)
+padRight-trans z≤n       le₂       a []       = padRight-replicate le₂ a
+padRight-trans (s≤s le₁) (s≤s le₂) a (x ∷ xs) = cong (x ∷_) (padRight-trans le₁ le₂ a xs)
 
 --------------------------------------------------------------------------------
--- truncate and pad together
+-- truncate and padRight together
 
-truncate-pad-id : ∀ {m n} → (le : m ≤ n) → (a : A) → (xs : Vec A m) → truncate le (pad le a xs) ≡ xs
-truncate-pad-id z≤n      a []       = refl
-truncate-pad-id (s≤s le) a (x ∷ xs) = cong (x ∷_) (truncate-pad-id le a xs)
+truncate-padRight-id : ∀ {m n} → (le : m ≤ n) → (a : A) → (xs : Vec A m) → truncate le (padRight le a xs) ≡ xs
+truncate-padRight-id z≤n      a []       = refl
+truncate-padRight-id (s≤s le) a (x ∷ xs) = cong (x ∷_) (truncate-padRight-id le a xs)
 
 ------------------------------------------------------------------------
 -- lookup

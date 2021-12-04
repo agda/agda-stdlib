@@ -275,9 +275,9 @@ truncate z≤n      _        = []
 truncate (s≤s le) (x ∷ xs) = x ∷ (truncate le xs)
 
 -- Pad out a vector with extra elements.
-pad : ∀ {m n} → m ≤ n → A → Vec A m → Vec A n
-pad z≤n      a xs       = replicate a
-pad (s≤s le) a (x ∷ xs) = x ∷ pad le a xs
+padRight : ∀ {m n} → m ≤ n → A → Vec A m → Vec A n
+padRight z≤n      a xs       = replicate a
+padRight (s≤s le) a (x ∷ xs) = x ∷ padRight le a xs
 
 ------------------------------------------------------------------------
 -- Operations for converting between lists
