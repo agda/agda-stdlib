@@ -70,4 +70,5 @@ record Prime (p : A) : Set (a ⊔ ℓ) where
   constructor mkPrime
   field
     p≉0     : p ≉ 0#
+    p∤1     : p ∤ 1#
     split-∣ : ∀ {x y} → p ∣ x * y → p ∣ x ⊎ p ∣ y
