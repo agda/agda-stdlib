@@ -43,10 +43,13 @@ open import Tactic.RingSolver.Core.AlmostCommutativeRing
 ------------------------------------------------------------------------------
 
 module IntegerExamples where
-  open import Data.Integer hiding (_*_)
+  open import Data.Integer
   open import Data.Integer.Tactic.RingSolver
 
-  open AlmostCommutativeRing ring using (_*_; _^_)
+  open AlmostCommutativeRing ring using (_^_)
+
+  test : ∀ x → x + - 1 ≡ x + - 1
+  test = solve-∀
 
   -- Everything is automatic: you just ask Agda to solve it and it does!
   lemma₁ : ∀ x y → x + y * 1 + 3 ≡ 3 + 1 + y + x + - 1

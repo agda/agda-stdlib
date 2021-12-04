@@ -267,6 +267,18 @@ Non-backwards compatible changes
   exported by `Data.Rational.Base`. You will have to open `Data.Integer(.Base)`
   directly to use them.
 
+Major improvements
+------------------
+
+### Improvements to ring solver tactic
+
+* The ring solver tactic has been greatly improved. In particular:
+  1. When using it for concrete ring types, e.g. ℤ, the equality can now use
+	all the ring operations defined natively for that type, rather than having
+	to use the operations defined in `AlmostCommutativeRing`. For example
+	previously you could not use `Data.Integer.Base._*_` but instead had to
+	use `AlmostCommutativeRing._*_`.
+
 Deprecated modules
 ------------------
 

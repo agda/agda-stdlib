@@ -17,14 +17,14 @@ open import Data.Maybe.Base as Maybe using (Maybe; just; nothing; fromMaybe)
 open import Data.Nat.Base            using (ℕ; suc; zero; _<ᵇ_)
 open import Data.Bool.Base           using (Bool; if_then_else_; true; false)
 open import Data.Unit.Base           using (⊤)
-open import Data.String.Base         using (String)
+open import Data.String as String    using (String; _++_; parens)
 open import Data.Product             using (_,_; proj₁)
 open import Function
 open import Relation.Nullary.Decidable
 
 open import Reflection
 open import Reflection.Argument
-open import Reflection.Term
+open import Reflection.Term as Term
 open import Reflection.Name as Name
 open import Reflection.TypeChecking.Monad.Syntax
 open import Data.Nat.Reflection
@@ -78,15 +78,15 @@ private
 `AlmostCommutativeRing : Term
 `AlmostCommutativeRing = def (quote AlmostCommutativeRing) (2 ⋯⟨∷⟩ [])
 
-record RingOperatorNames : Set where
+record RingOperatorTerms : Set where
   constructor +⇒_*⇒_^⇒_-⇒_
   field
-    +′ *′ ^′ -′ : Maybe Name
+    +′ *′ ^′ -′ : Term
 
 checkIsRing : Term → TC Term
 checkIsRing ring = checkType ring `AlmostCommutativeRing
 
-module RingReflection (ring : Term) where
+module RingReflection (`ring : Term) where
 
   -- Takes the name of a function that takes the ring as it's first
   -- explicit argument and the terms of it's arguments and inserts
@@ -94,7 +94,7 @@ module RingReflection (ring : Term) where
   --   e.g. "_+_" $ʳ xs = "_+_ {_} {_} ring xs"
   infixr 6 _$ʳ_
   _$ʳ_ : Name → Args Term → Term
-  nm $ʳ args = def nm (2 ⋯⟅∷⟆ ring ⟨∷⟩ args)
+  nm $ʳ args = def nm (2 ⋯⟅∷⟆ `ring ⟨∷⟩ args)
 
   `Carrier : Term
   `Carrier = quote Carrier $ʳ []
@@ -108,17 +108,15 @@ module RingReflection (ring : Term) where
   `trans : Term → Term → Term
   `trans x≈y y≈z = quote trans $ʳ (3 ⋯⟅∷⟆ x≈y ⟨∷⟩ y≈z ⟨∷⟩ [])
 
-  getFieldName : Name → TC (Maybe Name)
-  getFieldName nm = normalise (nm $ʳ []) <&> λ where
-    (def f args) → just f
-    _            → nothing
-
-  getRingOperatorNames : TC RingOperatorNames
-  getRingOperatorNames = ⦇
-    +⇒ getFieldName (quote _+_)
-    *⇒ getFieldName (quote _*_)
-    ^⇒ getFieldName (quote _^_)
-    -⇒ getFieldName (quote -_)
+  -- Normalises each of the fields of the ring operator so we can
+  -- compare the result against the normalised definitions we come
+  -- across when converting the term passed to the macro.
+  getRingOperatorTerms : Name → TC RingOperatorTerms
+  getRingOperatorTerms ring = ⦇
+    +⇒ normalise (quote _+_ $ʳ [])
+    *⇒ normalise (quote _*_ $ʳ [])
+    ^⇒ normalise (quote _^_ $ʳ [])
+    -⇒ normalise (quote  -_ $ʳ [])
     ⦈
 
 ------------------------------------------------------------------------
@@ -169,48 +167,56 @@ module RingSolverReflection (ring : Term) (numberOfVariables : ℕ) where
   -- We're in luck, though, because all other cases in the following
   -- function *are* recognizable. As a result, the "catch-all" case
   -- will just assume that it has a constant expression.
-  convertTerm : RingOperatorNames → VarMap → Term → Term
-  convertTerm operatorNames varMap = convert
+  convertTerm : RingOperatorTerms → VarMap → Term → TC Term
+  convertTerm operatorTerms varMap = convert
     where
-    open RingOperatorNames operatorNames
+    open RingOperatorTerms operatorTerms
 
     mutual
-      convert : Term → Term
-      -- Recognise the ring's fields
+      convert : Term → TC Term
+      -- Definitions in ring's fields
       convert (def (quote _+_) xs) = convertOp₂ (quote _⊕_) xs
       convert (def (quote _*_) xs) = convertOp₂ (quote _⊗_) xs
       convert (def (quote  -_) xs) = convertOp₁ (quote  ⊝_) xs
       convert (def (quote _^_) xs) = convertExp xs
-      -- Recognise the underlying implementation of the ring's fields
-      convert (def nm          xs) =
-        if +′ ⇓≟ nm then convertOp₂ (quote _⊕_) xs else
-        if *′ ⇓≟ nm then convertOp₂ (quote _⊗_) xs else
-        if -′ ⇓≟ nm then convertOp₁ (quote  ⊝_) xs else
-        if ^′ ⇓≟ nm then convertExp xs else `Κ (def nm xs)
+      -- Other definitions the underlying implementation of the ring's fields
+      convert (def nm          xs) = convertUnknownName nm xs
       -- Variables
-      convert v@(var x _)          = fromMaybe (`Κ v) (varMap x)
+      convert v@(var x _)          = return $ fromMaybe (`Κ v) (varMap x)
       -- Special case to recognise "suc" for naturals
-      convert (`suc x)             = quote _⊕_ $ᵉ (`Κ (toTerm 1) ⟨∷⟩ convert x ⟨∷⟩ [])
-      convert t                    = `Κ t
+      convert (`suc x)             = convertSuc x
+      convert t                    = return $ `Κ t
 
       -- Application of a ring operator often doesn't have a type as
       -- simple as "Carrier → Carrier → Carrier": there may be hidden
       -- arguments, etc. Here, we do our best to handle those cases,
       -- by just taking the last two explicit arguments.
-      convertOp₂ : Name → List (Arg Term) → Term
-      convertOp₂ nm (x ⟨∷⟩ y ⟨∷⟩ []) = nm $ᵉ (convert x ⟨∷⟩ convert y ⟨∷⟩ [])
+      convertOp₂ : Name → Args Term → TC Term
+      convertOp₂ nm (x ⟨∷⟩ y ⟨∷⟩ []) = do x' ← convert x; y' ← convert y; return (nm $ᵉ (x' ⟨∷⟩ y' ⟨∷⟩ []))
       convertOp₂ nm (x ∷ xs)         = convertOp₂ nm xs
-      convertOp₂ _  _                = unknown
+      convertOp₂ _  _                = return unknown
 
-      convertOp₁ : Name → List (Arg Term) → Term
-      convertOp₁ nm (x ⟨∷⟩ []) = nm $ᵉ (convert x ⟨∷⟩ [])
+      convertOp₁ : Name → Args Term → TC Term
+      convertOp₁ nm (x ⟨∷⟩ []) = do x' ← convert x; return (nm $ᵉ (x' ⟨∷⟩ []))
       convertOp₁ nm (x ∷ xs)   = convertOp₁ nm xs
-      convertOp₁ _  _          = unknown
+      convertOp₁ _  _          = return unknown
 
-      convertExp : List (Arg Term) → Term
-      convertExp (x ⟨∷⟩ y ⟨∷⟩ []) = quote _⊛_ $ᵉ (convert x ⟨∷⟩ y ⟨∷⟩ [])
+      convertExp : Args Term → TC Term
+      convertExp (x ⟨∷⟩ y ⟨∷⟩ []) = do x' ← convert x; return (quote _⊛_ $ᵉ (x' ⟨∷⟩ y ⟨∷⟩ []))
       convertExp (x ∷ xs)         = convertExp xs
-      convertExp _                = unknown
+      convertExp _                = return unknown
+
+      convertUnknownName : Name → Args Term → TC Term
+      convertUnknownName nm xs = do
+        nameTerm ← normalise (def nm [])
+        if ⌊ nameTerm Term.≟ +′ ⌋ then convertOp₂ (quote _⊕_) xs else
+          if ⌊ nameTerm Term.≟ *′ ⌋ then convertOp₂ (quote _⊗_) xs else
+            if ⌊ nameTerm Term.≟ -′ ⌋ then convertOp₁ (quote ⊝_)  xs else
+              if ⌊ nameTerm Term.≟ ^′ ⌋ then convertExp             xs else
+                return (`Κ (def nm xs))
+
+      convertSuc : Term → TC Term
+      convertSuc x = do x' ← convert x; return (quote _⊕_ $ᵉ (`Κ (toTerm 1) ⟨∷⟩ x' ⟨∷⟩ []))
 
 ------------------------------------------------------------------------
 -- Macros
@@ -234,15 +240,31 @@ quantifiedVarMap numVars i =
     then just (var i [])
     else nothing
 
-constructCallToSolver : Term → RingOperatorNames → List String → Term → Term → Term
-constructCallToSolver `ring opNames variables `lhs `rhs = `solver `ring numVars
-  (prependVLams variables (_`⊜_ `ring numVars (conv `lhs) (conv `rhs)))
-  (prependHLams variables (`refl `ring))
+constructCallToSolver : Term → RingOperatorTerms → List String → Term → Term → TC Term
+constructCallToSolver `ring opNames variables `lhs `rhs = do
+  `lhsExpr ← conv `lhs
+  `rhsExpr ← conv `rhs
+
+  let res = `solver `ring numVars
+                    (prependVLams variables (_`⊜_ `ring numVars `lhsExpr `rhsExpr))
+                    (prependHLams variables (`refl `ring))
+  {-
+  typeError
+    ( strErr (String.unwords variables)
+    ∷ strErr "\n"
+    ∷ termErr (prependVLams variables `lhsExpr)
+    ∷ strErr "\n"
+    ∷ termErr (prependVLams variables `rhsExpr)
+    ∷ strErr "\n"
+    ∷ termErr res ∷ []
+    )
+  -}
+  return res
   where
   numVars : ℕ
   numVars = List.length variables
 
-  conv : Term → Term
+  conv : Term → TC Term
   conv = convertTerm `ring numVars opNames (quantifiedVarMap numVars)
 
 -- This is the main macro which solves for equations in which the
@@ -258,16 +280,17 @@ solve-∀-macro : Name → Term → TC ⊤
 solve-∀-macro ring hole = do
   `ring ← checkIsRing (def ring [])
   commitTC
-  operatorNames ← getRingOperatorNames `ring
+  operatorTerms ← getRingOperatorTerms `ring ring
 
   -- Obtain and sanitise the goal type
   `hole ← inferType hole >>= reduce
   let variablesAndTypes , equation = stripPis `hole
+
   let variables = List.map proj₁ variablesAndTypes
   just (lhs ∷ rhs ∷ []) ← pure (getVisibleArgs 2 equation)
     where nothing → malformedForallTypeError `hole
 
-  let solverCall = constructCallToSolver `ring operatorNames variables lhs rhs
+  solverCall ← constructCallToSolver `ring operatorTerms variables lhs rhs
   unify hole solverCall
 
 macro
@@ -305,9 +328,11 @@ getVariableIndices = go []
   go t `[]`              = just t
   go _ _                 = nothing
 
-constructSolution : Term → RingOperatorNames → NatSet → Term → Term → Term
-constructSolution `ring opNames variables `lhs `rhs =
-  `trans `ring (`sym `ring (conv `lhs)) (conv `rhs)
+constructSolution : Term → RingOperatorTerms → NatSet → Term → Term → TC Term
+constructSolution `ring opTerms variables `lhs `rhs = do
+  `lhsExpr ← conv `lhs
+  `rhsExpr ← conv `rhs
+  return $ `trans `ring (`sym `ring `lhsExpr) `rhsExpr
   where
   numVars = List.length variables
 
@@ -317,7 +342,9 @@ constructSolution `ring opNames variables `lhs `rhs =
   ρ : Term
   ρ = curriedTerm variables
 
-  conv = λ t → `correct `ring numVars (convertTerm `ring numVars opNames varMap t) ρ
+  conv = λ t → do
+    t' ← convertTerm `ring numVars opTerms varMap t
+    return $ `correct `ring numVars t' ρ
 
 -- Use this macro when you want to solve something *under* a lambda. For example:
 -- say you have a long proof, and you just want the solver to deal with an
@@ -336,7 +363,7 @@ solve-macro : Term → Name → Term → TC ⊤
 solve-macro variables ring hole = do
   `ring ← checkIsRing (def ring [])
   commitTC
-  operatorNames ← getRingOperatorNames `ring
+  operatorTerms ← getRingOperatorTerms `ring ring
 
   -- Obtain and sanitise the list of variables
   listOfVariables′ ← checkIsListOfVariables `ring variables
@@ -349,7 +376,7 @@ solve-macro variables ring hole = do
   just (lhs ∷ rhs ∷ []) ← pure (getVisibleArgs 2 hole′)
     where nothing → malformedGoalError hole′
 
-  let solution = constructSolution `ring operatorNames variableIndices lhs rhs
+  solution ← constructSolution `ring operatorTerms variableIndices lhs rhs
   unify hole solution
 
 macro

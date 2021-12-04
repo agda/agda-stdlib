@@ -471,6 +471,6 @@ word within a compound word is capitalized except for the first word.
 * When using reflection, the name of anything of type `Term` should be preceded
   by a backtick. For example ```List : Term → Term`` would be the function
   constructing the reflection of the `List` type.
-  
+
 * The names of patterns for reflected syntax are also *appended* with an
   additional backtick.
