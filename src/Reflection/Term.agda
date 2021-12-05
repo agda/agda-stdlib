@@ -8,34 +8,39 @@
 
 module Reflection.Term where
 
-open import Data.List.Base hiding (_++_)
+open import Data.List.Base as List hiding (_++_)
 import Data.List.Properties as Lₚ
 open import Data.Nat as ℕ using (ℕ; zero; suc)
 open import Data.Product
 import Data.Product.Properties as Product
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.String as String using (String)
-open import Reflection.Abstraction
-open import Reflection.Argument
-open import Reflection.Argument.Information using (visibility)
-import Reflection.Argument.Visibility as Visibility; open Visibility.Visibility
-import Reflection.Literal as Literal
-import Reflection.Meta as Meta
-open import Reflection.Name as Name using (Name)
+open import Function.Base using (_∘_)
 open import Relation.Nullary
 open import Relation.Nullary.Product using (_×-dec_)
 open import Relation.Nullary.Decidable as Dec
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
 
+open import Reflection.Abstraction
+open import Reflection.Argument
+open import Reflection.Argument.Information using (visibility)
+open import Reflection.Argument.Visibility as Visibility hiding (_≟_)
+import Reflection.Literal as Literal
+import Reflection.Meta as Meta
+open import Reflection.Name as Name using (Name)
+
 ------------------------------------------------------------------------
 -- Re-exporting the builtin type and constructors
 
 open import Agda.Builtin.Reflection as Builtin public
   using (Sort; Type; Term; Clause; Pattern)
-open Sort public
-open Term public renaming (agda-sort to sort)
-open Clause public
+
+open Term public
+  renaming (agda-sort to sort)
+
+open Sort    public
+open Clause  public
 open Pattern public
 
 ------------------------------------------------------------------------
@@ -82,6 +87,23 @@ _⋯⟅∷⟆_ : ℕ → Args Term → Args Term
 zero  ⋯⟅∷⟆ xs = xs
 suc i ⋯⟅∷⟆ xs = unknown ⟅∷⟆ (i ⋯⟅∷⟆ xs)
 {-# INLINE _⋯⟅∷⟆_ #-}
+
+-- Strips off any pi bindings returning the list of variables removed
+-- and the eventual body of the expression, e.g.
+--
+--   stripPis `∀ x {y} → f x y` = (["x", "y"], f x y)
+stripPis : Term → List (String × Arg Type) × Term
+stripPis (Π[ s ∶ t ] x) = map₁ ((s , t) ∷_) (stripPis x)
+stripPis x              = [] , x
+
+prependLams : List (String × Visibility) → Term → Term
+prependLams xs t = foldr (λ {(s , v) t → lam v (abs s t)}) t xs
+
+prependHLams : List String → Term → Term
+prependHLams vs = prependLams (List.map (_, hidden) vs)
+
+prependVLams : List String → Term → Term
+prependVLams vs = prependLams (List.map (_, visible) vs)
 
 ------------------------------------------------------------------------
 -- Decidable equality

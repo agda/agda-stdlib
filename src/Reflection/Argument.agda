@@ -27,6 +27,8 @@ private
   variable
     a b : Level
     A B : Set a
+    i j : ArgInfo
+    x y : A
 
 ------------------------------------------------------------------------
 -- Re-exporting the builtins publicly
@@ -45,12 +47,16 @@ pattern iArg ty = arg (arg-info instance′ defaultModality) ty
 ------------------------------------------------------------------------
 -- Lists of arguments
 
-Args : {a : Level} (A : Set a) → Set a
+Args : (A : Set a) → Set a
 Args A = List (Arg A)
 
-infixr 5 _⟨∷⟩_ _⟅∷⟆_
-pattern _⟨∷⟩_ x xs = vArg x ∷ xs
-pattern _⟅∷⟆_ x xs = hArg x ∷ xs
+-- Pattern for appending a visible argument
+infixr 5 _⟨∷⟩_
+pattern _⟨∷⟩_ x args = vArg x ∷ args
+
+-- Pattern for appending a hidden argument
+infixr 5 _⟅∷⟆_
+pattern _⟅∷⟆_ x args = hArg x ∷ args
 
 ------------------------------------------------------------------------
 -- Operations
@@ -64,13 +70,13 @@ map-Args f xs = List.map (map f) xs
 ------------------------------------------------------------------------
 -- Decidable equality
 
-arg-injective₁ : ∀ {i i′} {a a′ : A} → arg i a ≡ arg i′ a′ → i ≡ i′
+arg-injective₁ : arg i x ≡ arg j y → i ≡ j
 arg-injective₁ refl = refl
 
-arg-injective₂ : ∀ {i i′} {a a′ : A} → arg i a ≡ arg i′ a′ → a ≡ a′
+arg-injective₂ : arg i x ≡ arg j y → x ≡ y
 arg-injective₂ refl = refl
 
-arg-injective : ∀ {i i′} {a a′ : A} → arg i a ≡ arg i′ a′ → i ≡ i′ × a ≡ a′
+arg-injective : arg i x ≡ arg j y → i ≡ j × x ≡ y
 arg-injective = < arg-injective₁ , arg-injective₂ >
 
 -- We often need decidability of equality for Arg A when implementing it
@@ -81,9 +87,9 @@ arg-injective = < arg-injective₁ , arg-injective₂ >
 unArg : Arg A → A
 unArg (arg i a) = a
 
-unArg-dec : {x y : Arg A} → Dec (unArg x ≡ unArg y) → Dec (x ≡ y)
-unArg-dec {x = arg i a} {arg i′ a′} a≟a′ =
-  Dec.map′ (uncurry (cong₂ arg)) arg-injective ((i Information.≟ i′) ×-dec a≟a′)
+unArg-dec : {arg1 arg2 : Arg A} → Dec (unArg arg1 ≡ unArg arg2) → Dec (arg1 ≡ arg2)
+unArg-dec {arg1 = arg i x} {arg j y} arg1≟arg2 =
+  Dec.map′ (uncurry (cong₂ arg)) arg-injective (i Information.≟ j ×-dec arg1≟arg2)
 
 ≡-dec : DecidableEquality A → DecidableEquality (Arg A)
 ≡-dec _≟_ x y = unArg-dec (unArg x ≟ unArg y)
