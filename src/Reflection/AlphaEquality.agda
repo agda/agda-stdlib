@@ -208,9 +208,6 @@ mutual
   (meta _ _   )     =α=-Term (pat-lam _ _)       = false
   (unknown    )     =α=-Term (pat-lam _ _)       = false
 
-------------------------------------------------------------------------
--- Grunt work cases
-
   _=α=-Sort_ : Sort → Sort → Bool
   (set t    ) =α=-Sort (set t′    ) = t =α=-Term t′
   (lit n    ) =α=-Sort (lit n′    ) = n ≡ᵇ n′
