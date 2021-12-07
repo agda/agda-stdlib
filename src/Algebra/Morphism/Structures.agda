@@ -473,26 +473,26 @@ module QuasigroupMorphisms (Q₁ : RawQuasigroup a ℓ₁) (Q₂ : RawQuasigroup
                                    \\-rawMagma to \\-rawMagma₁; //-rawMagma to //-rawMagma₁;
                                    _≈_ to _≈₁_; _∙_ to _∙₁_; _\\_ to _\\₁_; _//_ to _//₁_)
   open RawQuasigroup Q₂ renaming (Carrier to B; ∙-rawMagma to ∙-rawMagma₂;
-                                   \\-rawMagma to \\-rawMagma₂; //-rawMagma to //-rawMagma₂;  
+                                   \\-rawMagma to \\-rawMagma₂; //-rawMagma to //-rawMagma₂;
                                   _≈_ to _≈₂_; _∙_ to _∙₂_; _\\_ to _\\₂_; _//_ to _//₂_)
 
-  module ∙ = MagmaMorphisms ∙-rawMagma₁ ∙-rawMagma₂
+  module ∙  = MagmaMorphisms ∙-rawMagma₁ ∙-rawMagma₂
   module \\ = MagmaMorphisms \\-rawMagma₁ \\-rawMagma₂
   module // = MagmaMorphisms //-rawMagma₁ //-rawMagma₂
 
   open MorphismDefinitions A B _≈₂_
   open FunctionDefinitions _≈₁_ _≈₂_
- 
+
   record IsQuasigroupHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       isRelHomomorphism : IsRelHomomorphism _≈₁_ _≈₂_ ⟦_⟧
-      ∙-homo            : Homomorphic₂ ⟦_⟧ _∙₁_ _∙₂_   
+      ∙-homo            : Homomorphic₂ ⟦_⟧ _∙₁_ _∙₂_
       \\-homo           : Homomorphic₂ ⟦_⟧ _\\₁_ _\\₂_
       //-homo           : Homomorphic₂ ⟦_⟧ _//₁_ _//₂_
 
     open IsRelHomomorphism isRelHomomorphism public
       renaming (cong to ⟦⟧-cong)
-    
+
     ∙-isMagmaHomomorphism : ∙.IsMagmaHomomorphism ⟦_⟧
     ∙-isMagmaHomomorphism = record
       { isRelHomomorphism = isRelHomomorphism
@@ -501,66 +501,66 @@ module QuasigroupMorphisms (Q₁ : RawQuasigroup a ℓ₁) (Q₂ : RawQuasigroup
 
     \\-isMagmaHomomorphism : \\.IsMagmaHomomorphism ⟦_⟧
     \\-isMagmaHomomorphism = record
-      { isRelHomomorphism = isRelHomomorphism
+      { isRelHomomorphism  = isRelHomomorphism
       ; homo = \\-homo
       }
-       
+
     //-isMagmaHomomorphism : //.IsMagmaHomomorphism ⟦_⟧
     //-isMagmaHomomorphism = record
-      { isRelHomomorphism = isRelHomomorphism
+      { isRelHomomorphism  = isRelHomomorphism
       ; homo = //-homo
       }
 
   record IsQuasigroupMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       isQuasigroupHomomorphism : IsQuasigroupHomomorphism ⟦_⟧
-      injective             : Injective ⟦_⟧
+      injective                : Injective ⟦_⟧
 
     open IsQuasigroupHomomorphism isQuasigroupHomomorphism public
 
 
-    ∙-isMagmaMonomorphism : ∙.IsMagmaMonomorphism ⟦_⟧
-    ∙-isMagmaMonomorphism = record
+    ∙-isMagmaMonomorphism   : ∙.IsMagmaMonomorphism ⟦_⟧
+    ∙-isMagmaMonomorphism   = record
       { isMagmaHomomorphism = ∙-isMagmaHomomorphism
       ; injective           = injective
       }
 
-    \\-isMagmaMonomorphism : \\.IsMagmaMonomorphism ⟦_⟧
-    \\-isMagmaMonomorphism = record
+    \\-isMagmaMonomorphism  : \\.IsMagmaMonomorphism ⟦_⟧
+    \\-isMagmaMonomorphism  = record
       { isMagmaHomomorphism = \\-isMagmaHomomorphism
       ; injective           = injective
       }
-       
-    //-isMagmaMonomorphism : //.IsMagmaMonomorphism ⟦_⟧
-    //-isMagmaMonomorphism = record
+
+    //-isMagmaMonomorphism  : //.IsMagmaMonomorphism ⟦_⟧
+    //-isMagmaMonomorphism  = record
       { isMagmaHomomorphism = //-isMagmaHomomorphism
       ; injective           = injective
       }
-  
+
     open //.IsMagmaMonomorphism //-isMagmaMonomorphism public
       using (isRelMonomorphism)
 
-  
+
   record IsQuasigroupIsomorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       isQuasigroupMonomorphism : IsQuasigroupMonomorphism ⟦_⟧
-      surjective            : Surjective ⟦_⟧
+      surjective               : Surjective ⟦_⟧
 
     open IsQuasigroupMonomorphism isQuasigroupMonomorphism public
 
-    ∙-isMagmaIsomorphism : ∙.IsMagmaIsomorphism ⟦_⟧
+    ∙-isMagmaIsomorphism    : ∙.IsMagmaIsomorphism ⟦_⟧
     ∙-isMagmaIsomorphism    = record
       { isMagmaMonomorphism = ∙-isMagmaMonomorphism
       ; surjective          = surjective
       }
 
-    \\-isMagmaIsomorphism : \\.IsMagmaIsomorphism ⟦_⟧
+    \\-isMagmaIsomorphism   : \\.IsMagmaIsomorphism ⟦_⟧
     \\-isMagmaIsomorphism   = record
       { isMagmaMonomorphism = \\-isMagmaMonomorphism
       ; surjective          = surjective
       }
-       
-    //-isMagmaIsomorphism : //.IsMagmaIsomorphism ⟦_⟧
+
+    //-isMagmaIsomorphism   : //.IsMagmaIsomorphism ⟦_⟧
     //-isMagmaIsomorphism   = record
       { isMagmaMonomorphism = //-isMagmaMonomorphism
       ; surjective          = surjective
@@ -579,7 +579,7 @@ module LoopMorphisms (L₁ : RawLoop a ℓ₁) (L₂ : RawLoop b ℓ₂) where
                                    \\-rawMagma to \\-rawMagma₁; //-rawMagma to //-rawMagma₁;
                                    _≈_ to _≈₁_; _∙_ to _∙₁_; _\\_ to _\\₁_; _//_ to _//₁_; ε to ε₁)
   open RawLoop L₂ renaming (Carrier to B; ∙-rawMagma to ∙-rawMagma₂;
-                                 \\-rawMagma to \\-rawMagma₂; //-rawMagma to //-rawMagma₂;  
+                                 \\-rawMagma to \\-rawMagma₂; //-rawMagma to //-rawMagma₂;
                                   _≈_ to _≈₂_; _∙_ to _∙₂_; _\\_ to _\\₂_; _//_ to _//₂_ ; ε to ε₂)
   open MorphismDefinitions A B _≈₂_
   open FunctionDefinitions _≈₁_ _≈₂_
