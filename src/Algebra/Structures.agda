@@ -162,7 +162,7 @@ record IsIdempotentCommutativeMonoid (∙ : Op₂ A)
 -- Structures with 1 binary operation, 1 unary operation & 1 element
 ------------------------------------------------------------------------
 
-record IsQuasigroup (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) where
+record IsInvertibleMagma (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) where
   field
     isMagma  : IsMagma _∙_
     inverse   : Inverse ε _⁻¹ _∙_
@@ -176,12 +176,12 @@ record IsQuasigroup (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ �
   inverseʳ = proj₂ inverse
 
 
-record IsLoop (_∙_ : Op₂ A) (ε : A) (⁻¹ : Op₁ A) : Set (a ⊔ ℓ) where
+record IsInvertibleUnitalMagma (_∙_ : Op₂ A) (ε : A) (⁻¹ : Op₁ A) : Set (a ⊔ ℓ) where
   field
-    isQuasigroup : IsQuasigroup _∙_  ε ⁻¹
-    identity : Identity ε _∙_
+    isInvertibleMagma : IsInvertibleMagma _∙_  ε ⁻¹
+    identity          : Identity ε _∙_
 
-  open IsQuasigroup isQuasigroup public
+  open IsInvertibleMagma isInvertibleMagma public
 
   identityˡ : LeftIdentity ε _∙_
   identityˡ = proj₁ identity
@@ -222,15 +222,15 @@ record IsGroup (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) w
   uniqueʳ-⁻¹ = Consequences.assoc+id+invˡ⇒invʳ-unique
                 setoid ∙-cong assoc identity inverseˡ
 
-  isQuasigroup : IsQuasigroup _∙_ ε _⁻¹
-  isQuasigroup = record
+  isInvertibleMagma : IsInvertibleMagma _∙_ ε _⁻¹
+  isInvertibleMagma = record
     { isMagma = isMagma
     ; inverse = inverse
     }
 
-  isLoop : IsLoop _∙_ ε _⁻¹
-  isLoop = record
-    { isQuasigroup = isQuasigroup
+  isInvertibleUnitalMagma : IsInvertibleUnitalMagma _∙_ ε _⁻¹
+  isInvertibleUnitalMagma = record
+    { isInvertibleMagma = isInvertibleMagma
     ; identity = identity
     }
 
@@ -465,28 +465,28 @@ record IsRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
 
   open IsAbelianGroup +-isAbelianGroup public
     renaming
-    ( assoc                  to +-assoc
-    ; ∙-cong                 to +-cong
-    ; ∙-congˡ                to +-congˡ
-    ; ∙-congʳ                to +-congʳ
-    ; identity               to +-identity
-    ; identityˡ              to +-identityˡ
-    ; identityʳ              to +-identityʳ
-    ; inverse                to -‿inverse
-    ; inverseˡ               to -‿inverseˡ
-    ; inverseʳ               to -‿inverseʳ
-    ; ⁻¹-cong                to -‿cong
-    ; comm                   to +-comm
-    ; isMagma                to +-isMagma
-    ; isSemigroup            to +-isSemigroup
-    ; isMonoid               to +-isMonoid
-    ; isUnitalMagma          to +-isUnitalMagma
-    ; isCommutativeMagma     to +-isCommutativeMagma
-    ; isCommutativeMonoid    to +-isCommutativeMonoid
-    ; isCommutativeSemigroup to +-isCommutativeSemigroup
-    ; isQuasigroup           to +-isQuasigroup
-    ; isLoop                 to +-isLoop
-    ; isGroup                to +-isGroup
+    ( assoc                   to +-assoc
+    ; ∙-cong                  to +-cong
+    ; ∙-congˡ                 to +-congˡ
+    ; ∙-congʳ                 to +-congʳ
+    ; identity                to +-identity
+    ; identityˡ               to +-identityˡ
+    ; identityʳ               to +-identityʳ
+    ; inverse                 to -‿inverse
+    ; inverseˡ                to -‿inverseˡ
+    ; inverseʳ                to -‿inverseʳ
+    ; ⁻¹-cong                 to -‿cong
+    ; comm                    to +-comm
+    ; isMagma                 to +-isMagma
+    ; isSemigroup             to +-isSemigroup
+    ; isMonoid                to +-isMonoid
+    ; isUnitalMagma           to +-isUnitalMagma
+    ; isCommutativeMagma      to +-isCommutativeMagma
+    ; isCommutativeMonoid     to +-isCommutativeMonoid
+    ; isCommutativeSemigroup  to +-isCommutativeSemigroup
+    ; isInvertibleMagma       to +-isInvertibleMagma
+    ; isInvertibleUnitalMagma to +-isInvertibleUnitalMagma
+    ; isGroup                 to +-isGroup
     )
 
   open IsMonoid *-isMonoid public
@@ -550,3 +550,21 @@ record IsCommutativeRing
     ; *-isCommutativeMonoid
     )
 
+------------------------------------------------------------------------
+-- Structures with 3 binary operations
+------------------------------------------------------------------------
+
+record IsQuasigroup (∙ \\ // : Op₂ A) : Set (a ⊔ ℓ) where
+  field
+    isEquivalence :  IsEquivalence _≈_
+    leftDivides  :  LeftDivides ∙ \\
+    rightDivides :  RightDivides ∙ //
+
+  open IsEquivalence isEquivalence public
+
+record IsLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
+  field
+    isQuasigroup : IsQuasigroup ∙ \\ //
+    identity     : Identity ε ∙
+
+  open IsQuasigroup isQuasigroup public
