@@ -467,12 +467,12 @@ module RingMorphisms (R₁ : RawRing a ℓ₁) (R₂ : RawRing b ℓ₂) where
 ------------------------------------------------------------------------
 -- Morphisms over quasigroup-like structures
 ------------------------------------------------------------------------
-module QuasiGroupMorphisms (Q₁ : RawQuasiGroup a ℓ₁) (Q₂ : RawQuasiGroup b ℓ₂) where
+module QuasigroupMorphisms (Q₁ : RawQuasigroup a ℓ₁) (Q₂ : RawQuasigroup b ℓ₂) where
 
-  open RawQuasiGroup Q₁ renaming (Carrier to A; ∙-rawMagma to ∙-rawMagma₁;
+  open RawQuasigroup Q₁ renaming (Carrier to A; ∙-rawMagma to ∙-rawMagma₁;
                                    \\-rawMagma to \\-rawMagma₁; //-rawMagma to //-rawMagma₁;
                                    _≈_ to _≈₁_; _∙_ to _∙₁_; _\\_ to _\\₁_; _//_ to _//₁_)
-  open RawQuasiGroup Q₂ renaming (Carrier to B; ∙-rawMagma to ∙-rawMagma₂;
+  open RawQuasigroup Q₂ renaming (Carrier to B; ∙-rawMagma to ∙-rawMagma₂;
                                    \\-rawMagma to \\-rawMagma₂; //-rawMagma to //-rawMagma₂;  
                                   _≈_ to _≈₂_; _∙_ to _∙₂_; _\\_ to _\\₂_; _//_ to _//₂_)
 
@@ -483,7 +483,7 @@ module QuasiGroupMorphisms (Q₁ : RawQuasiGroup a ℓ₁) (Q₂ : RawQuasiGroup
   open MorphismDefinitions A B _≈₂_
   open FunctionDefinitions _≈₁_ _≈₂_
  
-  record IsQuasiGroupHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+  record IsQuasigroupHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
     field
       isRelHomomorphism : IsRelHomomorphism _≈₁_ _≈₂_ ⟦_⟧
       ∙-homo            : Homomorphic₂ ⟦_⟧ _∙₁_ _∙₂_   
@@ -511,12 +511,12 @@ module QuasiGroupMorphisms (Q₁ : RawQuasiGroup a ℓ₁) (Q₂ : RawQuasiGroup
       ; homo = //-homo
       }
 
-  record IsQuasiGroupMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
+  record IsQuasigroupMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
     field
-      isQuasiGroupHomomorphism : IsQuasiGroupHomomorphism ⟦_⟧
+      isQuasigroupHomomorphism : IsQuasigroupHomomorphism ⟦_⟧
       injective             : Injective ⟦_⟧
 
-    open IsQuasiGroupHomomorphism isQuasiGroupHomomorphism public
+    open IsQuasigroupHomomorphism isQuasigroupHomomorphism public
 
 
     ∙-isMagmaMonomorphism : ∙.IsMagmaMonomorphism ⟦_⟧
@@ -541,12 +541,12 @@ module QuasiGroupMorphisms (Q₁ : RawQuasiGroup a ℓ₁) (Q₂ : RawQuasiGroup
       using (isRelMonomorphism)
 
   
-  record IsQuasiGroupIsomorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
+  record IsQuasigroupIsomorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) where
     field
-      isQuasiGroupMonomorphism : IsQuasiGroupMonomorphism ⟦_⟧
+      isQuasigroupMonomorphism : IsQuasigroupMonomorphism ⟦_⟧
       surjective            : Surjective ⟦_⟧
 
-    open IsQuasiGroupMonomorphism isQuasiGroupMonomorphism public
+    open IsQuasigroupMonomorphism isQuasigroupMonomorphism public
 
     ∙-isMagmaIsomorphism : ∙.IsMagmaIsomorphism ⟦_⟧
     ∙-isMagmaIsomorphism    = record
@@ -584,14 +584,14 @@ module LoopMorphisms (L₁ : RawLoop a ℓ₁) (L₂ : RawLoop b ℓ₂) where
   open MorphismDefinitions A B _≈₂_
   open FunctionDefinitions _≈₁_ _≈₂_
 
-  open QuasiGroupMorphisms (RawLoop.rawQuasiGroup L₁) (RawLoop.rawQuasiGroup L₂)
+  open QuasigroupMorphisms (RawLoop.rawQuasigroup L₁) (RawLoop.rawQuasigroup L₂)
 
   record IsLoopHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
     field
-      isQuasiGroupHomomorphism : IsQuasiGroupHomomorphism ⟦_⟧
+      isQuasigroupHomomorphism : IsQuasigroupHomomorphism ⟦_⟧
       ε-homo                   : Homomorphic₀ ⟦_⟧ ε₁ ε₂
 
-    open IsQuasiGroupHomomorphism isQuasiGroupHomomorphism public
+    open IsQuasigroupHomomorphism isQuasigroupHomomorphism public
 
   record IsLoopMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂) where
     field
@@ -616,5 +616,5 @@ open GroupMorphisms public
 open NearSemiringMorphisms public
 open SemiringMorphisms public
 open RingMorphisms public
-open QuasiGroupMorphisms public
+open QuasigroupMorphisms public
 open LoopMorphisms public
