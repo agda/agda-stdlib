@@ -1076,3 +1076,9 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   1/pos⇒pos : ∀ p .{{_ : NonZero p}} → (1/p : Positive (1/ p)) → Positive p
   1/neg⇒neg : ∀ p .{{_ : NonZero p}} → (1/p : Negative (1/ p)) → Negative p
   ```
+
+* In `Data.Fin.Permutation.Components`:
+  ```
+  `reverse` is deprecated to use `opposite` in `Data.Fin.Base` 
+  ```
+
