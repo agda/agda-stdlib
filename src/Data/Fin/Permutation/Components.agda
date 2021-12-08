@@ -76,6 +76,12 @@ reverse-suc {n} {i} = begin
   n ∸ suc (toℕ i)            ≡⟨ sym (reverse-prop i) ⟩
   toℕ (opposite i)            ∎
 
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
 -- Version 2.0
 
 reverse = opposite
