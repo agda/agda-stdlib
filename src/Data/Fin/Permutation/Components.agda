@@ -56,10 +56,10 @@ transpose-inverse i j {k} with k ≟ j
 reverse-prop : ∀ {n} → (i : Fin n) → toℕ (opposite i) ≡ n ∸ suc (toℕ i)
 reverse-prop {suc n} zero = toℕ-fromℕ n
 reverse-prop {suc n} (suc i) = begin
-    toℕ (inject₁ (opposite i)) ≡⟨ toℕ-inject₁ (opposite i) ⟩ 
-    toℕ (opposite i) ≡⟨ reverse-prop i ⟩ 
+    toℕ (inject₁ (opposite i)) ≡⟨ toℕ-inject₁ (opposite i) ⟩
+    toℕ (opposite i) ≡⟨ reverse-prop i ⟩
     n ∸ suc (toℕ i)   ∎
-         
+
 -- toℕ-inject≤ _ (ℕₚ.m∸n≤m (suc n) (toℕ i))
 reverse-involutive : ∀ {n} → Involutive _≡_ (opposite {n})
 reverse-involutive {suc n} i = toℕ-injective (begin
@@ -75,7 +75,7 @@ reverse-suc {n} {i} = begin
   n ∸ toℕ (suc i)            ≡⟨⟩
   n ∸ suc (toℕ i)            ≡⟨ sym (reverse-prop i) ⟩
   toℕ (opposite i)            ∎
- 
+
 -- Version 2.0
 
 reverse = opposite
