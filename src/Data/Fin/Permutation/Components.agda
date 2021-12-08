@@ -37,9 +37,6 @@ transpose i j k with does (k ≟ i)
 
 -- reverse i = n ∸ 1 ∸ i
 
-reverse : ∀ {n} → Fin n → Fin n
-reverse {suc n} i  = inject≤ (n ℕ- i) (ℕₚ.m∸n≤m (suc n) (toℕ i))
-
 --------------------------------------------------------------------------------
 --  Properties
 --------------------------------------------------------------------------------
@@ -56,23 +53,33 @@ transpose-inverse i j {k} with k ≟ j
 ...   | false because [k≢i] rewrite dec-false (k ≟ i) (invert [k≢i])
                                   | dec-false (k ≟ j) (invert [k≢j]) = refl
 
-reverse-prop : ∀ {n} → (i : Fin n) → toℕ (reverse i) ≡ n ∸ suc (toℕ i)
-reverse-prop {suc n} i = begin
-  toℕ (inject≤ (n ℕ- i) _)  ≡⟨ toℕ-inject≤ _ (ℕₚ.m∸n≤m (suc n) (toℕ i)) ⟩
-  toℕ (n ℕ- i)              ≡⟨ toℕ‿ℕ- n i ⟩
-  n ∸ toℕ i                 ∎
-
-reverse-involutive : ∀ {n} → Involutive _≡_ (reverse {n})
+reverse-prop : ∀ {n} → (i : Fin n) → toℕ (opposite i) ≡ n ∸ suc (toℕ i)
+reverse-prop {suc n} zero = toℕ-fromℕ n
+reverse-prop {suc n} (suc i) = begin
+    toℕ (inject₁ (opposite i)) ≡⟨ toℕ-inject₁ (opposite i) ⟩ 
+    toℕ (opposite i) ≡⟨ reverse-prop i ⟩ 
+    n ∸ suc (toℕ i)   ∎
+         
+-- toℕ-inject≤ _ (ℕₚ.m∸n≤m (suc n) (toℕ i))
+reverse-involutive : ∀ {n} → Involutive _≡_ (opposite {n})
 reverse-involutive {suc n} i = toℕ-injective (begin
-  toℕ (reverse (reverse i)) ≡⟨ reverse-prop (reverse i) ⟩
-  n ∸ (toℕ (reverse i))     ≡⟨ cong (n ∸_) (reverse-prop i) ⟩
+  toℕ (opposite (opposite i)) ≡⟨ reverse-prop (opposite i) ⟩
+  n ∸ (toℕ (opposite i))     ≡⟨ cong (n ∸_) (reverse-prop i) ⟩
   n ∸ (n ∸ (toℕ i))         ≡⟨ ℕₚ.m∸[m∸n]≡n (ℕₚ.≤-pred (toℕ<n i)) ⟩
   toℕ i                     ∎)
 
-reverse-suc : ∀ {n} {i : Fin n} → toℕ (reverse (suc i)) ≡ toℕ (reverse i)
+reverse-suc : ∀ {n} {i : Fin n} → toℕ (opposite (suc i)) ≡ toℕ (opposite i)
 reverse-suc {n} {i} = begin
-  toℕ (reverse (suc i))      ≡⟨ reverse-prop (suc i) ⟩
+  toℕ (opposite (suc i))      ≡⟨ reverse-prop (suc i) ⟩
   suc n ∸ suc (toℕ (suc i))  ≡⟨⟩
   n ∸ toℕ (suc i)            ≡⟨⟩
   n ∸ suc (toℕ i)            ≡⟨ sym (reverse-prop i) ⟩
-  toℕ (reverse i)            ∎
+  toℕ (opposite i)            ∎
+ 
+-- Version 2.0
+
+reverse = opposite
+{-# WARNING_ON_USAGE reverse
+"Warning: reverse was deprecated in v2.0.
+Please use opposite from Data.Fin.Base instead."
+#-}
