@@ -470,10 +470,10 @@ module RingMorphisms (R₁ : RawRing a ℓ₁) (R₂ : RawRing b ℓ₂) where
 module QuasigroupMorphisms (Q₁ : RawQuasigroup a ℓ₁) (Q₂ : RawQuasigroup b ℓ₂) where
 
   open RawQuasigroup Q₁ renaming (Carrier to A; ∙-rawMagma to ∙-rawMagma₁;
-                                   \\-rawMagma to \\-rawMagma₁; //-rawMagma to //-rawMagma₁;
-                                   _≈_ to _≈₁_; _∙_ to _∙₁_; _\\_ to _\\₁_; _//_ to _//₁_)
+                                  \\-rawMagma to \\-rawMagma₁; //-rawMagma to //-rawMagma₁;
+                                  _≈_ to _≈₁_; _∙_ to _∙₁_; _\\_ to _\\₁_; _//_ to _//₁_)
   open RawQuasigroup Q₂ renaming (Carrier to B; ∙-rawMagma to ∙-rawMagma₂;
-                                   \\-rawMagma to \\-rawMagma₂; //-rawMagma to //-rawMagma₂;
+                                  \\-rawMagma to \\-rawMagma₂; //-rawMagma to //-rawMagma₂;
                                   _≈_ to _≈₂_; _∙_ to _∙₂_; _\\_ to _\\₂_; _//_ to _//₂_)
 
   module ∙  = MagmaMorphisms ∙-rawMagma₁ ∙-rawMagma₂
@@ -576,11 +576,11 @@ module QuasigroupMorphisms (Q₁ : RawQuasigroup a ℓ₁) (Q₂ : RawQuasigroup
 module LoopMorphisms (L₁ : RawLoop a ℓ₁) (L₂ : RawLoop b ℓ₂) where
 
   open RawLoop L₁ renaming (Carrier to A; ∙-rawMagma to ∙-rawMagma₁;
-                                   \\-rawMagma to \\-rawMagma₁; //-rawMagma to //-rawMagma₁;
-                                   _≈_ to _≈₁_; _∙_ to _∙₁_; _\\_ to _\\₁_; _//_ to _//₁_; ε to ε₁)
+                            \\-rawMagma to \\-rawMagma₁; //-rawMagma to //-rawMagma₁;
+                             _≈_ to _≈₁_; _∙_ to _∙₁_; _\\_ to _\\₁_; _//_ to _//₁_; ε to ε₁)
   open RawLoop L₂ renaming (Carrier to B; ∙-rawMagma to ∙-rawMagma₂;
-                                 \\-rawMagma to \\-rawMagma₂; //-rawMagma to //-rawMagma₂;
-                                  _≈_ to _≈₂_; _∙_ to _∙₂_; _\\_ to _\\₂_; _//_ to _//₂_ ; ε to ε₂)
+                            \\-rawMagma to \\-rawMagma₂; //-rawMagma to //-rawMagma₂;
+                            _≈_ to _≈₂_; _∙_ to _∙₂_; _\\_ to _\\₂_; _//_ to _//₂_ ; ε to ε₂)
   open MorphismDefinitions A B _≈₂_
   open FunctionDefinitions _≈₁_ _≈₂_
 
