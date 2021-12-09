@@ -35,8 +35,6 @@ transpose i j k with does (k ≟ i)
 ...   | true  = i
 ...   | false = k
 
--- reverse i = n ∸ 1 ∸ i
-
 --------------------------------------------------------------------------------
 --  Properties
 --------------------------------------------------------------------------------
@@ -60,7 +58,6 @@ reverse-prop {suc n} (suc i) = begin
   toℕ (opposite i)           ≡⟨ reverse-prop i ⟩
   n ∸ suc (toℕ i)            ∎
 
--- toℕ-inject≤ _ (ℕₚ.m∸n≤m (suc n) (toℕ i))
 reverse-involutive : ∀ {n} → Involutive _≡_ (opposite {n})
 reverse-involutive {suc n} i = toℕ-injective (begin
   toℕ (opposite (opposite i)) ≡⟨ reverse-prop (opposite i) ⟩
