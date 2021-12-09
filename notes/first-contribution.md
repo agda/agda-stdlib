@@ -1,7 +1,7 @@
 How to contribute a first PR to agda-stdlib
 ===========================================
 
-The typical workflow when contributing with the standard library's repository
+The typical workflow when contributing to the standard library's repository
 is to interact with two remote versions of the repository:
 
 1. agda/agda-stdlib, the official one from which you can pull updates so that
@@ -10,7 +10,7 @@ is to interact with two remote versions of the repository:
 2. USER/agda-stdlib, your fork to which you can push branches with contributions
    you would like to merge
 
-This tutorial guides you to setup a local copy of agda-stdlib so that you can
+This tutorial guides you to set up a local copy of agda-stdlib so that you can
 start contributing. Once things are set up properly,  you can stick to only
 steps 4., 5. and 6. for future contributions.
 
@@ -25,7 +25,7 @@ We assume in the rest of this document that this username is 'USER'.
 ------------------------------------------
 
 Obtain a local copy of the agda-stdlib repository. Here we are going to retrieve
-from the `agda/agda-stdlib` repository so that `master` always points to the
+it from the `agda/agda-stdlib` repository so that `master` always points to the
 state the official library is in.
 
 ```shell
@@ -70,7 +70,8 @@ git pull
 ```
 
 The second step is to create a branch for that feature based off of `master`.
-We promptly push this new branch to our fork.
+Make sure to pick a fresh name in place of `new_feature`. We promptly push
+this new branch to our fork using the `-u` option fo `push`.
 
 ```shell
 git checkout -b new_feature
@@ -91,7 +92,7 @@ git status
 ```
 
 and making sure there is nothing left to commit or no local commits to push.
-You should get
+You should get something like:
 
 ```
 On branch new_feature
@@ -106,9 +107,9 @@ the green 'New pull request' button and then the 'compare across forks' link.
 You can then select your fork as the 'head repository' and the corresponding
 feature branch and click on the big green 'Create pull request' button.
 
-6. Updating the PR
+6. Update the PR
 ------------------
 
-If after opening a PR you realise you have forgotten something or have received
+If after opening a PR you realise you have forgotten something, or have received
 a review asking you to change something, you can simply push more commits to the
 branch and they will automatically be added to the PR.
