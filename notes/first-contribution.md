@@ -11,8 +11,8 @@ is to interact with two remote versions of the repository:
    you would like to merge
 
 This tutorial guides you to setup a local copy of agda-stdlib so that you can
-start contributing. Once things are set up properly you can stick to step 4.
-and 5. alone for future contributions.
+start contributing. Once things are set up properly,  you can stick to only
+steps 4., 5. and 6. for future contributions.
 
 1. Fork the agda-stdlib repository
 ----------------------------------
@@ -105,3 +105,10 @@ the green 'New pull request' button and then the 'compare across forks' link.
 
 You can then select your fork as the 'head repository' and the corresponding
 feature branch and click on the big green 'Create pull request' button.
+
+6. Updating the PR
+------------------
+
+If after opening a PR you realise you have forgotten something or have received
+a review asking you to change something, you can simply push more commits to the
+branch and they will automatically be added to the PR.
