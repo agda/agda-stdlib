@@ -641,6 +641,13 @@ Other minor changes
   ```
   and their corresponding algebraic substructures.
 
+* Added new definitions to `Category.Monad.State`:
+  ```agda
+  runState : ∀ {s a : Set f} → State s a -> s -> a × s
+  evalState : ∀ {s a : Set f} → State s a -> s -> a
+  execState : ∀ {s a : Set f} → State s a -> s -> s
+  ```
+
 * Added new functions in `Data.Fin.Base`:
   ```
   finToFun  : Fin (n ^ m) → (Fin m → Fin n)
