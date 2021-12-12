@@ -38,9 +38,9 @@ open import Data.Unit using (⊤; tt)
 open import Tactic.RingSolver.Core.AlmostCommutativeRing
   using (AlmostCommutativeRing)
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Integer examples
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 module IntegerExamples where
   open import Data.Integer
@@ -48,27 +48,39 @@ module IntegerExamples where
 
   open AlmostCommutativeRing ring using (_^_)
 
-  test : ∀ x → x + - 1 ≡ x + - 1
-  test = solve-∀
-
   -- Everything is automatic: you just ask Agda to solve it and it does!
-  lemma₁ : ∀ x y → x + y * 1 + 3 ≡ 3 + 1 + y + x + - 1
+
+  -- Addition
+  lemma₁ : ∀ x y → x + y + 3 ≡ 2 + y + x + 1
   lemma₁ = solve-∀
 
-  lemma₂ : ∀ x y → (x + y) ^ 2 ≡ x ^ 2 + 2 * x * y + y ^ 2
+  -- Multiplication
+  lemma₂ : ∀ x → x * 2 + 1 ≡ x + 1 + x
   lemma₂ = solve-∀
 
+  -- Negation
+  lemma₃ : ∀ x y → (- x) + (- y) ≡ - (x + y)
+  lemma₃ = solve-∀
+
+  -- Subtraction
+  lemma₄ : ∀ x y → (x - y) * 2 - 2 ≡ (- 2) * y - 1 + 2 * x - 1
+  lemma₄ = solve-∀
+
+  -- Exponentiation by constant literals
+  lemma₅ : ∀ x y → (x + y) ^ 2 ≡ x ^ 2 + 2 * x * y + y ^ 2
+  lemma₅ = solve-∀
+
   -- It can be interleaved with manual proofs as well.
-  lemma₃ : ∀ x y z → y ≡ z → x + y * 1 + 3 ≡ 2 + z + x + 1
-  lemma₃ x y z y≡z = begin
+  lemma₆ : ∀ x y z → y ≡ z → x + y * 1 + 3 ≡ 2 + z + x + 1
+  lemma₆ x y z y≡z = begin
     x + y * 1 + 3 ≡⟨ solve (x ∷ y ∷ []) ⟩
     2 + y + x + 1 ≡⟨ cong (λ v → 2 + v + x + 1) y≡z ⟩
     2 + z + x + 1 ∎
     where open ≡-Reasoning
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Natural examples
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 module NaturalExamples where
   open import Data.Nat
@@ -79,11 +91,12 @@ module NaturalExamples where
   lemma₁ : ∀ x y → x + y * 1 + 3 ≡ 2 + 1 + y + x
   lemma₁ = solve-∀
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Checking invariants
-------------------------------------------------------------------------------
--- The solver makes it easy to prove invariants, without having to rewrite
--- proof code every time something changes in the data structure.
+------------------------------------------------------------------------
+-- The solver makes it easy to prove invariants, without having to
+-- rewrite proof code every time something changes in the data
+-- structure.
 
 module _ {a} {A : Set a} (_≤_ : A → A → Bool) where
   open import Data.Nat hiding (_≤_)

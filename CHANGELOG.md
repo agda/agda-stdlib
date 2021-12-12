@@ -282,11 +282,14 @@ Major improvements
 ### Improvements to ring solver tactic
 
 * The ring solver tactic has been greatly improved. In particular:
-  1. When using it for concrete ring types, e.g. ℤ, the equality can now use
-	all the ring operations defined natively for that type, rather than having
-	to use the operations defined in `AlmostCommutativeRing`. For example
-	previously you could not use `Data.Integer.Base._*_` but instead had to
-	use `AlmostCommutativeRing._*_`.
+  1. When the solver is used for concrete ring types, e.g. ℤ, the equality can now use
+	 all the ring operations defined natively for that type, rather than having
+	 to use the operations defined in `AlmostCommutativeRing`. For example
+	 previously you could not use `Data.Integer.Base._*_` but instead had to
+	 use `AlmostCommutativeRing._*_`.
+  2. The solver now supports use of the subtraction operator `_-_` whenever
+     it is defined immediately in terms of `_+_` and `-_`. This is the case for
+	 `Data.Integer` and `Data.Rational`.
 
 Deprecated modules
 ------------------
@@ -538,6 +541,11 @@ New modules
 * Polymorphic verstions of some unary relations
   ```
   Relation.Unary.Polymorphic
+  ```
+
+* Alpha equality over reflected terms
+  ```
+  Reflection.AlphaEquality
   ```
 
 * Various system types and primitives:

@@ -25,6 +25,7 @@ open import Relation.Nullary.Decidable
 open import Reflection
 open import Reflection.Argument
 open import Reflection.Term as Term
+open import Reflection.AlphaEquality
 open import Reflection.Name as Name
 open import Reflection.TypeChecking.Monad.Syntax
 open import Data.Nat.Reflection
@@ -41,12 +42,6 @@ open AlmostCommutativeRing
 -- Utilities
 
 private
-  infix 4 _⇓≟_
-  _⇓≟_ : Maybe Name → Name → Bool
-  nothing ⇓≟ _ = false
-  just x  ⇓≟ y = ⌊ x Name.≟ y ⌋
-  {-# INLINE _⇓≟_ #-}
-
   VarMap : Set
   VarMap = ℕ → Maybe Term
 
@@ -55,7 +50,8 @@ private
   getVisible _                            = nothing
 
   getVisibleArgs : ∀ n → Term → Maybe (Vec Term n)
-  getVisibleArgs n (def _ xs) = Maybe.map Vec.reverse (List.foldl f c (List.mapMaybe getVisible xs) n)
+  getVisibleArgs n (def _ xs) = Maybe.map Vec.reverse
+    (List.foldl f c (List.mapMaybe getVisible xs) n)
     where
     f : (∀ n → Maybe (Vec Term n)) → Term → ∀ n → Maybe (Vec Term n)
     f xs x zero    = just []
@@ -79,9 +75,9 @@ private
 `AlmostCommutativeRing = def (quote AlmostCommutativeRing) (2 ⋯⟨∷⟩ [])
 
 record RingOperatorTerms : Set where
-  constructor +⇒_*⇒_^⇒_-⇒_
+  constructor add⇒_mul⇒_pow⇒_neg⇒_sub⇒_
   field
-    +′ *′ ^′ -′ : Term
+    add mul pow neg sub : Term
 
 checkIsRing : Term → TC Term
 checkIsRing ring = checkType ring `AlmostCommutativeRing
@@ -111,12 +107,13 @@ module RingReflection (`ring : Term) where
   -- Normalises each of the fields of the ring operator so we can
   -- compare the result against the normalised definitions we come
   -- across when converting the term passed to the macro.
-  getRingOperatorTerms : Name → TC RingOperatorTerms
-  getRingOperatorTerms ring = ⦇
-    +⇒ normalise (quote _+_ $ʳ [])
-    *⇒ normalise (quote _*_ $ʳ [])
-    ^⇒ normalise (quote _^_ $ʳ [])
-    -⇒ normalise (quote  -_ $ʳ [])
+  getRingOperatorTerms : TC RingOperatorTerms
+  getRingOperatorTerms = ⦇
+    add⇒ normalise (quote _+_  $ʳ [])
+    mul⇒ normalise (quote _*_  $ʳ [])
+    pow⇒ normalise (quote _^_  $ʳ [])
+    neg⇒ normalise (quote (-_) $ʳ [])
+    sub⇒ normalise (quote _-_  $ʳ [])
     ⦈
 
 ------------------------------------------------------------------------
@@ -174,17 +171,19 @@ module RingSolverReflection (ring : Term) (numberOfVariables : ℕ) where
 
     mutual
       convert : Term → TC Term
-      -- Definitions in ring's fields
+      -- First try and match directly against the fields
       convert (def (quote _+_) xs) = convertOp₂ (quote _⊕_) xs
       convert (def (quote _*_) xs) = convertOp₂ (quote _⊗_) xs
       convert (def (quote  -_) xs) = convertOp₁ (quote  ⊝_) xs
       convert (def (quote _^_) xs) = convertExp xs
+      convert (def (quote _-_) xs) = convertSub xs
       -- Other definitions the underlying implementation of the ring's fields
       convert (def nm          xs) = convertUnknownName nm xs
       -- Variables
       convert v@(var x _)          = return $ fromMaybe (`Κ v) (varMap x)
       -- Special case to recognise "suc" for naturals
       convert (`suc x)             = convertSuc x
+      -- Otherwise we're forced to treat it as a constant
       convert t                    = return $ `Κ t
 
       -- Application of a ring operator often doesn't have a type as
@@ -192,28 +191,44 @@ module RingSolverReflection (ring : Term) (numberOfVariables : ℕ) where
       -- arguments, etc. Here, we do our best to handle those cases,
       -- by just taking the last two explicit arguments.
       convertOp₂ : Name → Args Term → TC Term
-      convertOp₂ nm (x ⟨∷⟩ y ⟨∷⟩ []) = do x' ← convert x; y' ← convert y; return (nm $ᵉ (x' ⟨∷⟩ y' ⟨∷⟩ []))
+      convertOp₂ nm (x ⟨∷⟩ y ⟨∷⟩ []) = do
+        x' ← convert x
+        y' ← convert y
+        return (nm $ᵉ (x' ⟨∷⟩ y' ⟨∷⟩ []))
       convertOp₂ nm (x ∷ xs)         = convertOp₂ nm xs
       convertOp₂ _  _                = return unknown
 
       convertOp₁ : Name → Args Term → TC Term
-      convertOp₁ nm (x ⟨∷⟩ []) = do x' ← convert x; return (nm $ᵉ (x' ⟨∷⟩ []))
+      convertOp₁ nm (x ⟨∷⟩ []) = do
+        x' ← convert x
+        return (nm $ᵉ (x' ⟨∷⟩ []))
       convertOp₁ nm (x ∷ xs)   = convertOp₁ nm xs
       convertOp₁ _  _          = return unknown
 
       convertExp : Args Term → TC Term
-      convertExp (x ⟨∷⟩ y ⟨∷⟩ []) = do x' ← convert x; return (quote _⊛_ $ᵉ (x' ⟨∷⟩ y ⟨∷⟩ []))
+      convertExp (x ⟨∷⟩ y ⟨∷⟩ []) = do
+        x' ← convert x
+        return (quote _⊛_ $ᵉ (x' ⟨∷⟩ y ⟨∷⟩ []))
       convertExp (x ∷ xs)         = convertExp xs
       convertExp _                = return unknown
+
+      convertSub : Args Term → TC Term
+      convertSub (x ⟨∷⟩ y ⟨∷⟩ []) = do
+        x'  ← convert x
+        -y' ← convertOp₁ (quote (⊝_)) (y ⟨∷⟩ [])
+        return (quote _⊕_ $ᵉ x' ⟨∷⟩ -y' ⟨∷⟩ [])
+      convertSub (x ∷ xs)         = convertSub xs
+      convertSub _                = return unknown
 
       convertUnknownName : Name → Args Term → TC Term
       convertUnknownName nm xs = do
         nameTerm ← normalise (def nm [])
-        if ⌊ nameTerm Term.≟ +′ ⌋ then convertOp₂ (quote _⊕_) xs else
-          if ⌊ nameTerm Term.≟ *′ ⌋ then convertOp₂ (quote _⊗_) xs else
-            if ⌊ nameTerm Term.≟ -′ ⌋ then convertOp₁ (quote ⊝_)  xs else
-              if ⌊ nameTerm Term.≟ ^′ ⌋ then convertExp             xs else
-                return (`Κ (def nm xs))
+        if (nameTerm =α= add) then convertOp₂ (quote _⊕_) xs else
+          if (nameTerm =α= mul) then convertOp₂ (quote _⊗_) xs else
+            if (nameTerm =α= neg) then convertOp₁ (quote ⊝_)  xs else
+              if (nameTerm =α= pow) then convertExp             xs else
+                if (nameTerm =α= sub) then convertSub            xs else
+                  return (`Κ (def nm xs))
 
       convertSuc : Term → TC Term
       convertSuc x = do x' ← convert x; return (quote _⊕_ $ᵉ (`Κ (toTerm 1) ⟨∷⟩ x' ⟨∷⟩ []))
@@ -245,21 +260,9 @@ constructCallToSolver `ring opNames variables `lhs `rhs = do
   `lhsExpr ← conv `lhs
   `rhsExpr ← conv `rhs
 
-  let res = `solver `ring numVars
+  return $ `solver `ring numVars
                     (prependVLams variables (_`⊜_ `ring numVars `lhsExpr `rhsExpr))
                     (prependHLams variables (`refl `ring))
-  {-
-  typeError
-    ( strErr (String.unwords variables)
-    ∷ strErr "\n"
-    ∷ termErr (prependVLams variables `lhsExpr)
-    ∷ strErr "\n"
-    ∷ termErr (prependVLams variables `rhsExpr)
-    ∷ strErr "\n"
-    ∷ termErr res ∷ []
-    )
-  -}
-  return res
   where
   numVars : ℕ
   numVars = List.length variables
@@ -280,7 +283,7 @@ solve-∀-macro : Name → Term → TC ⊤
 solve-∀-macro ring hole = do
   `ring ← checkIsRing (def ring [])
   commitTC
-  operatorTerms ← getRingOperatorTerms `ring ring
+  operatorTerms ← getRingOperatorTerms `ring
 
   -- Obtain and sanitise the goal type
   `hole ← inferType hole >>= reduce
@@ -363,7 +366,7 @@ solve-macro : Term → Name → Term → TC ⊤
 solve-macro variables ring hole = do
   `ring ← checkIsRing (def ring [])
   commitTC
-  operatorTerms ← getRingOperatorTerms `ring ring
+  operatorTerms ← getRingOperatorTerms `ring
 
   -- Obtain and sanitise the list of variables
   listOfVariables′ ← checkIsListOfVariables `ring variables

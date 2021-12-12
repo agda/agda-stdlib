@@ -97,7 +97,7 @@ stripPis (Π[ s ∶ t ] x) = map₁ ((s , t) ∷_) (stripPis x)
 stripPis x              = [] , x
 
 prependLams : List (String × Visibility) → Term → Term
-prependLams xs t = foldr (λ {(s , v) t → lam v (abs s t)}) t xs
+prependLams xs t = foldr (λ {(s , v) t → lam v (abs s t)}) t (reverse xs)
 
 prependHLams : List String → Term → Term
 prependHLams vs = prependLams (List.map (_, hidden) vs)
