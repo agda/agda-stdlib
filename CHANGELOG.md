@@ -664,6 +664,11 @@ Other minor changes
   sign-cong′ : s₁ ◃ n₁ ≡ s₂ ◃ n₂ → s₁ ≡ s₂ ⊎ (n₁ ≡ 0 × n₂ ≡ 0)
   ```
 
+* Added new proofs in `Data.List.Relation.Binary.Lex.Strict`:
+  ```agda
+  xs≮[] : ∀ xs → ¬ xs < []
+  ```
+
 * Added new proofs in `Data.Nat.Properties`:
   ```agda
   n+1+m≢m   : n + suc m ≢ m
