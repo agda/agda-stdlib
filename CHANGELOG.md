@@ -34,6 +34,9 @@ Bug-fixes
 * Add module `Algebra.Module` that re-exports the contents of 
   `Algebra.Module.(Definitions/Structures/Bundles)`
 
+* In `Algebra.Definitions.RawSemiring` the record `prime` add `p∤1 : p ∤ 1#` to the field.
+
+
 Non-backwards compatible changes
 --------------------------------
 
