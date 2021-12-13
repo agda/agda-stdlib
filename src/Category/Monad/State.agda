@@ -148,3 +148,15 @@ LiftMonadState S₂ Mon = record
   ; put   = λ s′ s → put s′ >> return (_ , s)
   }
   where open RawIMonadState Mon
+
+------------------------------------------------------------------------
+-- Issue 526
+
+runState : {s a : Set f} → State s a → s → a × s
+runState = id
+
+evalState : {s a : Set f} → State s a → s → a
+evalState ma s = proj₁ (runState ma s)
+
+execState : {s a : Set f} → State s a → s → s
+execState ma s = proj₂ (runState ma s)
