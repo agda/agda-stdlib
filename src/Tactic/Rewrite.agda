@@ -220,18 +220,3 @@ macro
       (e0 , e1) ← endpoints goal
       let f = anti-unify 0 e0 e1
       unify (`cong f eq) hole
-
-
-open Eq.≡-Reasoning
-open import Data.Nat.Properties
-
-example : ∀ (m n : ℕ) → m ≡ n → suc (suc (m + 0)) + m ≡ suc (suc n) + (n + 0)
-example m n eq = begin
-    suc (suc (m + 0)) + m
-  ≡⟨ rw (+-identityʳ m) ⟩
-    suc (suc m) + m
-  ≡⟨ rw eq ⟩
-    suc (suc n) + n
-  ≡˘⟨ rw (+-identityʳ n) ⟩
-    suc (suc n) + (n + 0)
-  ∎
