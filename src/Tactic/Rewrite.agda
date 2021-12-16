@@ -3,6 +3,21 @@
 --
 -- A simple tactic for used to automatically compute the function
 -- argument to cong.
+--
+-- The main use for this tactic is getting a similar experience to
+-- 'rewrite' during equational reasoning. This allows us to write very
+-- succinct proofs:
+--
+-- example : ∀ m n → m ≡ n → suc (suc (m + 0)) + m ≡ suc (suc n) + (n + 0)
+-- example m n eq = begin
+--     suc (suc (m + 0)) + m
+--   ≡⟨ rw (+-identityʳ m) ⟩
+--     suc (suc m) + m
+--   ≡⟨ rw eq ⟩
+--     suc (suc n) + n
+--   ≡˘⟨ rw (+-identityʳ n) ⟩
+--     suc (suc n) + (n + 0)
+--   ∎
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -74,6 +89,16 @@ private
 
 ----------------------------------------------------------------------
 -- Anti-Unification
+--
+-- The core idea of the tactic is that we can compute the input
+-- to 'cong' by syntactically anti-unifying both sides of the
+-- equality, and then using that to construct a lambda
+-- where all the differences are replaced by the lambda-abstracted
+-- variable.
+--
+-- For instance, the two terms 'suc (m + (m + 0)) + (m + 0)' and
+-- 'suc (m + m) + (m + 0)' would anti unify to 'suc (m + _) + (m + 0)'
+-- which we can then use to construct the lambda 'λ ϕ → suc (m + ϕ) + (m + 0)'.
 ----------------------------------------------------------------------
 
 anti-unify : ℕ → Term → Term → Term
@@ -170,8 +195,14 @@ anti-unify-clauses ϕ _ _ =
 
 macro
   rw : Term → Term → TC ⊤
-  rw eq hole = withNormalisation false $ do
-    goal ← inferType hole
-    (e0 , e1) ← endpoints goal
-    let f = anti-unify 0 e0 e1
-    unify (`cong f eq) hole
+  rw eq hole =
+    -- NOTE: We avoid doing normalisation here as this tactic
+    -- is mainly meant for equational reasoning. In that context,
+    -- the endpoints are already specified in the form that the
+    -- programmer expects them to be in, so normalising buys us
+    -- nothing.
+    withNormalisation false $ do
+      goal ← inferType hole
+      (e0 , e1) ← endpoints goal
+      let f = anti-unify 0 e0 e1
+      unify (`cong f eq) hole
