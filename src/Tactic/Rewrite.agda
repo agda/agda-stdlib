@@ -101,92 +101,93 @@ private
 -- which we can then use to construct the lambda 'λ ϕ → suc (m + ϕ) + (m + 0)'.
 ----------------------------------------------------------------------
 
-anti-unify : ℕ → Term → Term → Term
-anti-unify-args : ℕ → Args Term → Args Term → Maybe (Args Term)
-anti-unify-clauses : ℕ → Clauses → Clauses → Maybe Clauses
-anti-unify-clause : ℕ → Clause → Clause → Maybe Clause
-
-anti-unify ϕ (var x args) (var y args') with x Nat.≡ᵇ y | anti-unify-args ϕ args args'
-... | _     | nothing    = var ϕ []
-... | false | just uargs = var ϕ uargs
-... | true  | just uargs = var x uargs
-anti-unify ϕ (con c args) (con c' args') with c Name.≡ᵇ c' | anti-unify-args ϕ args args'
-... | _     | nothing    = var ϕ []
-... | false | just uargs = var ϕ []
-... | true  | just uargs = con c uargs
-anti-unify ϕ (def f args) (def f' args') with f Name.≡ᵇ f' | anti-unify-args ϕ args args'
-... | _     | nothing    = var ϕ []
-... | false | just uargs = var ϕ []
-... | true  | just uargs = def f uargs
-anti-unify ϕ (lam v (abs s t)) (lam _ (abs _ t')) =
-  lam v (abs s (anti-unify (suc ϕ) t t'))
-anti-unify ϕ (pat-lam cs args) (pat-lam cs' args') with anti-unify-clauses ϕ cs cs' | anti-unify-args ϕ args args'
-... | nothing  | _       = var ϕ []
-... | _        | nothing = var ϕ []
-... | just ucs | just uargs = pat-lam ucs uargs
-anti-unify ϕ (Π[ s ∶ arg i a ] b) (Π[ _ ∶ arg _ a' ] b') =
-  Π[ s ∶ arg i (anti-unify ϕ a a') ] anti-unify (suc ϕ) b b'
-anti-unify ϕ (sort (set t)) (sort (set t')) =
-  sort (set (anti-unify ϕ t t'))
-anti-unify ϕ (sort (lit n)) (sort (lit n')) with n Nat.≡ᵇ n'
-... | true  = sort (lit n)
-... | false = var ϕ []
-anti-unify ϕ (sort (prop t)) (sort (prop t')) =
-  sort (prop (anti-unify ϕ t t'))
-anti-unify ϕ (sort (propLit n)) (sort (propLit n')) with n Nat.≡ᵇ n'
-... | true  = sort (propLit n)
-... | false = var ϕ []
-anti-unify ϕ (sort (inf n)) (sort (inf n')) with n Nat.≡ᵇ n'
-... | true  = sort (inf n)
-... | false = var ϕ []
-anti-unify ϕ (sort unknown) (sort unknown) =
-  sort unknown
-anti-unify ϕ (lit (nat n)) (lit (nat n')) with n Nat.≡ᵇ n'
-... | true  = lit (nat n)
-... | false = var ϕ []
-anti-unify ϕ (lit (word64 n)) (lit (word64 n')) with Word.toℕ n Nat.≡ᵇ Word.toℕ n'
-... | true  = lit (word64 n)
-... | false = var ϕ []
-anti-unify ϕ (lit (float x)) (lit (float x')) with x Float.≡ᵇ x'
-... | true  = lit (float x)
-... | false = var ϕ []
-anti-unify ϕ (lit (char c)) (lit (char c')) with Char.toℕ c Nat.≡ᵇ Char.toℕ c'
-... | true  = lit (char c)
-... | false = var ϕ []
-anti-unify ϕ (lit (string s)) (lit (string s')) with s String.≡ᵇ s'
-... | true = lit (string s)
-... | false = var ϕ []
-anti-unify ϕ (lit (name x)) (lit (name x')) with x Name.≡ᵇ x'
-... | true  = lit (name x)
-... | false = var ϕ []
-anti-unify ϕ (lit (meta x)) (lit (meta x')) with x Meta.≡ᵇ x'
-... | true = lit (meta x)
-... | false = var ϕ []
-anti-unify ϕ (meta x args) (meta x' args') with x Meta.≡ᵇ x' | anti-unify-args ϕ args args'
-... | _     | nothing    = var ϕ []
-... | false | _          = var ϕ []
-... | true  | just uargs = meta x uargs
-anti-unify ϕ unknown unknown = unknown
-anti-unify ϕ _ _ = var ϕ []
-
-anti-unify-args ϕ (arg i t ∷ args) (arg _ t' ∷ args') =
-  Maybe.map (arg i (anti-unify ϕ t t') ∷_) (anti-unify-args ϕ args args')
-anti-unify-args ϕ [] [] =
-  just []
-anti-unify-args ϕ _ _ =
-  nothing
-
-anti-unify-clause ϕ (clause Γ pats t) (clause Δ pats' t') =
-  Maybe.when (Γ =α=-Telescope Δ ∧ pats =α=-ArgsPattern pats') (clause Γ pats (anti-unify (ϕ + patterns-bindings pats) t t'))
-anti-unify-clause ϕ (absurd-clause Γ pats) (absurd-clause Δ pats') =
-  Maybe.when (Γ =α=-Telescope Δ ∧ pats =α=-ArgsPattern pats') (absurd-clause Γ pats)
-anti-unify-clause ϕ _ _ =
-  nothing
-
-anti-unify-clauses ϕ (c ∷ cs) (c' ∷ cs') =
-  Maybe.ap (Maybe.map _∷_ (anti-unify-clause ϕ c c')) (anti-unify-clauses ϕ cs cs')
-anti-unify-clauses ϕ _ _ =
-  just []
+private
+  anti-unify : ℕ → Term → Term → Term
+  anti-unify-args : ℕ → Args Term → Args Term → Maybe (Args Term)
+  anti-unify-clauses : ℕ → Clauses → Clauses → Maybe Clauses
+  anti-unify-clause : ℕ → Clause → Clause → Maybe Clause
+  
+  anti-unify ϕ (var x args) (var y args') with x Nat.≡ᵇ y | anti-unify-args ϕ args args'
+  ... | _     | nothing    = var ϕ []
+  ... | false | just uargs = var ϕ uargs
+  ... | true  | just uargs = var x uargs
+  anti-unify ϕ (con c args) (con c' args') with c Name.≡ᵇ c' | anti-unify-args ϕ args args'
+  ... | _     | nothing    = var ϕ []
+  ... | false | just uargs = var ϕ []
+  ... | true  | just uargs = con c uargs
+  anti-unify ϕ (def f args) (def f' args') with f Name.≡ᵇ f' | anti-unify-args ϕ args args'
+  ... | _     | nothing    = var ϕ []
+  ... | false | just uargs = var ϕ []
+  ... | true  | just uargs = def f uargs
+  anti-unify ϕ (lam v (abs s t)) (lam _ (abs _ t')) =
+    lam v (abs s (anti-unify (suc ϕ) t t'))
+  anti-unify ϕ (pat-lam cs args) (pat-lam cs' args') with anti-unify-clauses ϕ cs cs' | anti-unify-args ϕ args args'
+  ... | nothing  | _       = var ϕ []
+  ... | _        | nothing = var ϕ []
+  ... | just ucs | just uargs = pat-lam ucs uargs
+  anti-unify ϕ (Π[ s ∶ arg i a ] b) (Π[ _ ∶ arg _ a' ] b') =
+    Π[ s ∶ arg i (anti-unify ϕ a a') ] anti-unify (suc ϕ) b b'
+  anti-unify ϕ (sort (set t)) (sort (set t')) =
+    sort (set (anti-unify ϕ t t'))
+  anti-unify ϕ (sort (lit n)) (sort (lit n')) with n Nat.≡ᵇ n'
+  ... | true  = sort (lit n)
+  ... | false = var ϕ []
+  anti-unify ϕ (sort (prop t)) (sort (prop t')) =
+    sort (prop (anti-unify ϕ t t'))
+  anti-unify ϕ (sort (propLit n)) (sort (propLit n')) with n Nat.≡ᵇ n'
+  ... | true  = sort (propLit n)
+  ... | false = var ϕ []
+  anti-unify ϕ (sort (inf n)) (sort (inf n')) with n Nat.≡ᵇ n'
+  ... | true  = sort (inf n)
+  ... | false = var ϕ []
+  anti-unify ϕ (sort unknown) (sort unknown) =
+    sort unknown
+  anti-unify ϕ (lit (nat n)) (lit (nat n')) with n Nat.≡ᵇ n'
+  ... | true  = lit (nat n)
+  ... | false = var ϕ []
+  anti-unify ϕ (lit (word64 n)) (lit (word64 n')) with Word.toℕ n Nat.≡ᵇ Word.toℕ n'
+  ... | true  = lit (word64 n)
+  ... | false = var ϕ []
+  anti-unify ϕ (lit (float x)) (lit (float x')) with x Float.≡ᵇ x'
+  ... | true  = lit (float x)
+  ... | false = var ϕ []
+  anti-unify ϕ (lit (char c)) (lit (char c')) with Char.toℕ c Nat.≡ᵇ Char.toℕ c'
+  ... | true  = lit (char c)
+  ... | false = var ϕ []
+  anti-unify ϕ (lit (string s)) (lit (string s')) with s String.≡ᵇ s'
+  ... | true = lit (string s)
+  ... | false = var ϕ []
+  anti-unify ϕ (lit (name x)) (lit (name x')) with x Name.≡ᵇ x'
+  ... | true  = lit (name x)
+  ... | false = var ϕ []
+  anti-unify ϕ (lit (meta x)) (lit (meta x')) with x Meta.≡ᵇ x'
+  ... | true = lit (meta x)
+  ... | false = var ϕ []
+  anti-unify ϕ (meta x args) (meta x' args') with x Meta.≡ᵇ x' | anti-unify-args ϕ args args'
+  ... | _     | nothing    = var ϕ []
+  ... | false | _          = var ϕ []
+  ... | true  | just uargs = meta x uargs
+  anti-unify ϕ unknown unknown = unknown
+  anti-unify ϕ _ _ = var ϕ []
+  
+  anti-unify-args ϕ (arg i t ∷ args) (arg _ t' ∷ args') =
+    Maybe.map (arg i (anti-unify ϕ t t') ∷_) (anti-unify-args ϕ args args')
+  anti-unify-args ϕ [] [] =
+    just []
+  anti-unify-args ϕ _ _ =
+    nothing
+  
+  anti-unify-clause ϕ (clause Γ pats t) (clause Δ pats' t') =
+    Maybe.when (Γ =α=-Telescope Δ ∧ pats =α=-ArgsPattern pats') (clause Γ pats (anti-unify (ϕ + patterns-bindings pats) t t'))
+  anti-unify-clause ϕ (absurd-clause Γ pats) (absurd-clause Δ pats') =
+    Maybe.when (Γ =α=-Telescope Δ ∧ pats =α=-ArgsPattern pats') (absurd-clause Γ pats)
+  anti-unify-clause ϕ _ _ =
+    nothing
+  
+  anti-unify-clauses ϕ (c ∷ cs) (c' ∷ cs') =
+    Maybe.ap (Maybe.map _∷_ (anti-unify-clause ϕ c c')) (anti-unify-clauses ϕ cs cs')
+  anti-unify-clauses ϕ _ _ =
+    just []
 
 
 ----------------------------------------------------------------------
