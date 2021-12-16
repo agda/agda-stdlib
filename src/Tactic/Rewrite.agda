@@ -11,11 +11,11 @@
 -- example : ∀ m n → m ≡ n → suc (suc (m + 0)) + m ≡ suc (suc n) + (n + 0)
 -- example m n eq = begin
 --     suc (suc (m + 0)) + m
---   ≡⟨ rw (+-identityʳ m) ⟩
+--   ≡⟨ cong! (+-identityʳ m) ⟩
 --     suc (suc m) + m
---   ≡⟨ rw eq ⟩
+--   ≡⟨ cong! eq ⟩
 --     suc (suc n) + n
---   ≡˘⟨ rw (+-identityʳ n) ⟩
+--   ≡˘⟨ cong! (+-identityʳ n) ⟩
 --     suc (suc n) + (n + 0)
 --   ∎
 ------------------------------------------------------------------------
@@ -190,6 +190,8 @@ private
 macro
   rw : Term → Term → TC ⊤
   rw eq hole =
+  cong! : Term → Term → TC ⊤
+  cong! eq hole =
     -- NOTE: We avoid doing normalisation here as this tactic
     -- is mainly meant for equational reasoning. In that context,
     -- the endpoints are already specified in the form that the
