@@ -8,7 +8,7 @@
 
 open import Algebra.Bundles using (RawSemiring)
 open import Data.Sum.Base using (_⊎_)
-open import Data.Nat using (ℕ)
+open import Data.Nat using (ℕ; zero; suc)
 open import Level using (_⊔_)
 open import Relation.Binary.Core using (Rel)
 
@@ -59,8 +59,8 @@ x ^′ n  = n Mult.×′ x
 infixr  8 _^[_]*_ _^ᵗ_
 
 _^[_]*_ : A → ℕ → A → A
-x ^[ ℕ.zero ]*  y = y
-x ^[ ℕ.suc n ]* y = x ^[ n ]* (x * y)
+x ^[ zero ]*  y = y
+x ^[ suc n ]* y = x ^[ n ]* (x * y)
 
 _^ᵗ_ : A → ℕ → A
 x ^ᵗ n = x ^[ n ]* 1#
