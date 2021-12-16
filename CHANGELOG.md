@@ -495,6 +495,11 @@ New modules
   Algebra.Morphism.Construct.Identity
   ```
 
+* 'Optimised' tail-recursive exponentiation properties:
+  ```
+  Algebra.Properties.Semiring.Exp.TailRecursiveOptimised
+  ```
+
 * A small library for function arguments with default values:
   ```
   Data.Default
@@ -631,6 +636,12 @@ Other minor changes
   commutativeRing : CommutativeRing a ℓ₁ → CommutativeRing b ℓ₂ →
                     CommutativeRing (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
  ```
+
+* Added new functions to `Algebra.Definitions.RawSemiring`:
+  ```agda
+  _^[_]*_ : A → ℕ → A → A
+  _^ᵗ_     : A → ℕ → A
+  ```
 
 * Added new proofs to `Algebra.Properties.CommutativeSemigroup`:
   ```

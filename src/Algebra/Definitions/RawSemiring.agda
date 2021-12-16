@@ -56,7 +56,7 @@ x ^′ n  = n Mult.×′ x
 
 -- Exponentiation optimised for tail-recursion
 
-infixr  8 _^[_]*_ _^ᵗ_
+infixr 8 _^[_]*_ _^ᵗ_
 
 _^[_]*_ : A → ℕ → A → A
 x ^[ zero ]*  y = y
