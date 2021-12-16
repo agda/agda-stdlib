@@ -47,12 +47,23 @@ infixr 8 _^_
 _^_ : A → ℕ → A
 x ^ n  = n Mult.× x
 
--- Exponentiation optimsed for type-checking
+-- Exponentiation optimised for type-checking
 
 infixr 8 _^′_
 _^′_ : A → ℕ → A
 x ^′ n  = n Mult.×′ x
 {-# INLINE _^′_ #-}
+
+-- Exponentiation optimised for tail-recursion
+
+infixr  8 _^[_]*_ _^ᵗ_
+
+_^[_]*_ : A → ℕ → A → A
+x ^[ ℕ.zero ]*  y = y
+x ^[ ℕ.suc n ]* y = x ^[ n ]* (x * y)
+
+_^ᵗ_ : A → ℕ → A
+x ^ᵗ n = x ^[ n ]* 1#
 
 ------------------------------------------------------------------------
 -- Primality
