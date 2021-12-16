@@ -29,7 +29,7 @@ open import Relation.Nullary using (¬_)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred)
 
-infix  8 -_
+infix  8 -_ _^_
 infixl 7 _*_ _⊓_
 infixl 6 _+_ _-_ _⊖_ _⊔_
 infix  4 _≤_ _≥_ _<_ _>_ _≰_ _≱_ _≮_ _≯_
@@ -251,6 +251,12 @@ pred i = -1ℤ + i
 
 _*_ : ℤ → ℤ → ℤ
 i * j = sign i S* sign j ◃ ∣ i ∣ ℕ* ∣ j ∣
+
+-- Exponentiation.
+
+_^_ : ℤ → ℕ → ℤ
+i ^ ℕ.zero    = 1ℤ
+i ^ (ℕ.suc m) = i * i ^ m
 
 -- Maximum.
 
