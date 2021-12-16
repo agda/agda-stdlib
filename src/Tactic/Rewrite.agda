@@ -82,20 +82,39 @@ private
   patternsDescend ϕ []       =
     [] , ϕ
 
-  -- Helper for constructing applications of 'cong'
-  `cong : Term → Term → Term
-  `cong f eq = def (quote cong) (4 ⋯⟅∷⟆ vArg (vLam "ϕ" f) ∷ 2 ⋯⟅∷⟆ vArg eq ∷ [])
-
   -- Construct an error when the goal is not 'x ≡ y' for some 'x' and 'y'.
   notEqualityError : ∀ {A : Set} Term → TC A
   notEqualityError goal = typeError (strErr "Cannot rewrite a goal that is not equality: " ∷ termErr goal ∷ [])
 
-  -- Extract out both endpoints of an equality type.
-  endpoints : Term → TC (Term × Term)
-  endpoints goal@(def x (lvl ∷ tp ∷ (arg _ e0) ∷ (arg _ e1) ∷ [])) =
-    if x Name.≡ᵇ (quote _≡_) then return (e0 , e1) else notEqualityError goal 
-  endpoints (meta m args) = blockOnMeta m
-  endpoints goal = notEqualityError goal 
+  record EqualityGoal : Set where
+    constructor equals
+    field
+      level : Term
+      type  : Term
+      lhs   : Term
+      rhs   : Term
+
+  destructEqualityGoal : Term → TC EqualityGoal
+  destructEqualityGoal goal@(def (quote _≡_) (lvl ∷ tp ∷ lhs ∷ rhs ∷ [])) =
+    return $ equals (unArg lvl) (unArg tp) (unArg lhs) (unArg rhs)
+  destructEqualityGoal (meta m args) =
+    blockOnMeta m
+  destructEqualityGoal goal =
+    notEqualityError goal
+
+  -- Helper for constructing applications of 'cong'
+  `cong : ∀ {a} {A : Set a} {x y : A} → EqualityGoal → Term → x ≡ y → TC Term
+  `cong {a = a} {A = A} {x = x} {y = y} eqGoal f x≡y = do
+    -- NOTE: We apply all implicit arguments here to ensure that using
+    -- equality proofs with implicits don't lead to unsolved metavariable
+    -- errors.
+    let open EqualityGoal eqGoal
+    eq ← quoteTC x≡y
+    `a ← quoteTC a
+    `A ← quoteTC A
+    `x ← quoteTC x
+    `y ← quoteTC y
+    return $ def (quote cong) $ `a ⟅∷⟆ `A ⟅∷⟆ level ⟅∷⟆ type ⟅∷⟆ vLam "ϕ" f ⟨∷⟩ `x ⟅∷⟆ `y ⟅∷⟆ eq ⟨∷⟩ []
 
 ----------------------------------------------------------------------
 -- Anti-Unification
@@ -159,14 +178,14 @@ private
   ... | true  | just uargs = meta x uargs
   antiUnify ϕ unknown unknown = unknown
   antiUnify ϕ _ _ = var ϕ []
-  
+
   antiUnifyArgs ϕ (arg i t ∷ args) (arg _ t' ∷ args') =
     Maybe.map (arg i (antiUnify ϕ t t') ∷_) (antiUnifyArgs ϕ args args')
   antiUnifyArgs ϕ [] [] =
     just []
   antiUnifyArgs ϕ _ _ =
     nothing
-  
+
   antiUnifyClause ϕ (clause Γ pats t) (clause Δ pats' t') =
     Maybe.when ((Γ =α= Δ) ∧ (pats =α= pats'))
       let (upats , ϕ') = patternsDescend ϕ pats
@@ -176,7 +195,7 @@ private
       absurd-clause Γ pats
   antiUnifyClause ϕ _ _ =
     nothing
-  
+
   antiUnifyClauses ϕ (c ∷ cs) (c' ∷ cs') =
     Maybe.ap (Maybe.map _∷_ (antiUnifyClause ϕ c c')) (antiUnifyClauses ϕ cs cs')
   antiUnifyClauses ϕ _ _ =
@@ -188,17 +207,16 @@ private
 ----------------------------------------------------------------------
 
 macro
-  rw : Term → Term → TC ⊤
-  rw eq hole =
-  cong! : Term → Term → TC ⊤
-  cong! eq hole =
+  cong! : ∀ {a} {A : Set a} {x y : A} → x ≡ y → Term → TC ⊤
+  cong! x≡y hole =
     -- NOTE: We avoid doing normalisation here as this tactic
     -- is mainly meant for equational reasoning. In that context,
-    -- the endpoints are already specified in the form that the
-    -- programmer expects them to be in, so normalising buys us
-    -- nothing.
+    -- the endpoints of the equality are already specified in
+    -- the form that the -- programmer expects them to be in,
+    -- so normalising buys us nothing.
     withNormalisation false $ do
-      goal ← reduce hole >>= inferType 
-      (e0 , e1) ← endpoints goal
-      let f = antiUnify 0 e0 e1
-      unify (`cong f eq) hole
+      goal ← inferType hole
+      eqGoal ← destructEqualityGoal goal
+      let cong-lam = antiUnify 0 (EqualityGoal.lhs eqGoal) (EqualityGoal.rhs eqGoal)
+      cong-tm ← `cong eqGoal cong-lam x≡y
+      unify cong-tm hole
