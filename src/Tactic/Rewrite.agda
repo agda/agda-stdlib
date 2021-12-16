@@ -36,7 +36,7 @@ open import Data.Unit.Base            using (⊤)
 open import Data.Word.Base   as Word  using (toℕ)
 open import Data.Product
 
-open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong)
+open import Relation.Binary.PropositionalEquality as Eq using (_≡_; refl; cong)
 
 -- 'Data.String.Properties' defines this via 'Dec', so let's use the builtin
 -- for maximum speed.
@@ -59,19 +59,29 @@ open import Reflection.TypeChecking.Monad.Syntax
 ----------------------------------------------------------------------
 
 private
-  -- Determine the number of variables a pattern binds
-  pattern-bindings : Pattern → ℕ
-  patterns-bindings : Args Pattern → ℕ
+  -- Descend past a variable.
+  var-descend : ℕ → ℕ → ℕ
+  var-descend ϕ x = if ϕ Nat.≤ᵇ x then suc x else x
 
-  pattern-bindings (con _ ps) = suc (patterns-bindings ps)
-  pattern-bindings (dot t)    = 0
-  pattern-bindings (var x)    = 1
-  pattern-bindings (lit l)    = 0
-  pattern-bindings (proj f)   = 1
-  pattern-bindings (absurd x) = 0
+  -- Descend a variable underneath pattern variables.
+  pattern-descend : ℕ → Pattern → (Pattern × ℕ)
+  patterns-descend : ℕ → Args Pattern → (Args Pattern × ℕ)
 
-  patterns-bindings [] = 0
-  patterns-bindings (arg i pat ∷ pats) = pattern-bindings pat + patterns-bindings pats
+  pattern-descend ϕ (con c ps) =
+    let (ps' , ϕ') = patterns-descend ϕ ps
+    in (con c ps' , ϕ')
+  pattern-descend ϕ (dot t)    = (dot t) , ϕ
+  pattern-descend ϕ (var x)    = var (var-descend ϕ x) , suc ϕ
+  pattern-descend ϕ (lit l)    = (lit l) , ϕ
+  pattern-descend ϕ (proj f)   = (proj f) , ϕ
+  pattern-descend ϕ (absurd x) = absurd (var-descend ϕ x) , suc ϕ
+
+  patterns-descend ϕ ((arg i p) ∷ ps) =
+    let (p' , ϕ') = pattern-descend ϕ p
+        (ps' , ϕ'') = patterns-descend ϕ' ps
+    in (arg i p ∷ ps' , ϕ'')
+  patterns-descend ϕ []       =
+    [] , ϕ
 
   -- Helper for constructing applications of 'cong'
   `cong : Term → Term → Term
@@ -85,6 +95,7 @@ private
   endpoints : Term → TC (Term × Term)
   endpoints goal@(def x (lvl ∷ tp ∷ (arg _ e0) ∷ (arg _ e1) ∷ [])) =
     if x Name.≡ᵇ (quote _≡_) then return (e0 , e1) else not-equality-error goal 
+  endpoints (meta m args) = blockOnMeta m
   endpoints goal = not-equality-error goal 
 
 ----------------------------------------------------------------------
@@ -110,7 +121,7 @@ private
   anti-unify ϕ (var x args) (var y args') with x Nat.≡ᵇ y | anti-unify-args ϕ args args'
   ... | _     | nothing    = var ϕ []
   ... | false | just uargs = var ϕ uargs
-  ... | true  | just uargs = var x uargs
+  ... | true  | just uargs = var (var-descend ϕ x) uargs
   anti-unify ϕ (con c args) (con c' args') with c Name.≡ᵇ c' | anti-unify-args ϕ args args'
   ... | _     | nothing    = var ϕ []
   ... | false | just uargs = var ϕ []
@@ -178,7 +189,9 @@ private
     nothing
   
   anti-unify-clause ϕ (clause Γ pats t) (clause Δ pats' t') =
-    Maybe.when (Γ =α=-Telescope Δ ∧ pats =α=-ArgsPattern pats') (clause Γ pats (anti-unify (ϕ + patterns-bindings pats) t t'))
+    Maybe.when (Γ =α=-Telescope Δ ∧ pats =α=-ArgsPattern pats')
+      let (upats , ϕ') = patterns-descend ϕ pats in
+      (clause Γ upats (anti-unify ϕ' t t'))
   anti-unify-clause ϕ (absurd-clause Γ pats) (absurd-clause Δ pats') =
     Maybe.when (Γ =α=-Telescope Δ ∧ pats =α=-ArgsPattern pats') (absurd-clause Γ pats)
   anti-unify-clause ϕ _ _ =
@@ -203,7 +216,22 @@ macro
     -- programmer expects them to be in, so normalising buys us
     -- nothing.
     withNormalisation false $ do
-      goal ← inferType hole
+      goal ← reduce hole >>= inferType 
       (e0 , e1) ← endpoints goal
       let f = anti-unify 0 e0 e1
       unify (`cong f eq) hole
+
+
+open Eq.≡-Reasoning
+open import Data.Nat.Properties
+
+example : ∀ (m n : ℕ) → m ≡ n → suc (suc (m + 0)) + m ≡ suc (suc n) + (n + 0)
+example m n eq = begin
+    suc (suc (m + 0)) + m
+  ≡⟨ rw (+-identityʳ m) ⟩
+    suc (suc m) + m
+  ≡⟨ rw eq ⟩
+    suc (suc n) + n
+  ≡˘⟨ rw (+-identityʳ n) ⟩
+    suc (suc n) + (n + 0)
+  ∎
