@@ -29,7 +29,8 @@ open import Relation.Nullary using (¬_)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred)
 
-infix  8 -_ _^_
+infix  8 -_
+infixr 8 _^_
 infixl 7 _*_ _⊓_
 infixl 6 _+_ _-_ _⊖_ _⊔_
 infix  4 _≤_ _≥_ _<_ _>_ _≰_ _≱_ _≮_ _≯_
