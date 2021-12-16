@@ -46,7 +46,7 @@ module IntegerExamples where
   open import Data.Integer
   open import Data.Integer.Tactic.RingSolver
 
-  open AlmostCommutativeRing ring using (_^_)
+  open AlmostCommutativeRing ring hiding (_^_)
 
   -- Everything is automatic: you just ask Agda to solve it and it does!
 
