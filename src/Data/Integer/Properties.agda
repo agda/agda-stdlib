@@ -614,6 +614,14 @@ n⊖n≡0 n with n ℕ.<ᵇ n in leq
 ... | true  | q = contradiction (ℕ.<-transʳ p q) (ℕ.<-irrefl refl)
 ... | false | q = refl
 
+≤-⊖ : m ℕ.≤ n → n ⊖ m ≡ + (n ∸ m)
+≤-⊖ (z≤n {n})                                    = refl
+≤-⊖ (s≤s {m} {n} p) = begin
+  suc n ⊖ suc m     ≡⟨ [1+m]⊖[1+n]≡m⊖n n m ⟩
+  n ⊖ m             ≡⟨ ≤-⊖ p ⟩
+  + (n ∸ m)         ≡⟨⟩
+  + (suc n ∸ suc m) ∎ where open ≡-Reasoning
+
 ⊖-≤ : m ℕ.≤ n → m ⊖ n ≡ - + (n ∸ m)
 ⊖-≤ {m} {n} p with m ℕ.<ᵇ n | Reflects.invert (ℕ.<ᵇ-reflects-< m n)
 ... | true  | q = refl
@@ -624,6 +632,13 @@ n⊖n≡0 n with n ℕ.<ᵇ n in leq
 
 ⊖-≰ : n ℕ.≰ m → m ⊖ n ≡ - + (n ∸ m)
 ⊖-≰ = ⊖-< ∘ ℕ.≰⇒>
+
+∣⊖∣-≤ : m ℕ.≤ n → ∣ m ⊖ n ∣ ≡ n ∸ m
+∣⊖∣-≤ {m} {n} p = begin
+  ∣ m ⊖ n ∣         ≡⟨ cong ∣_∣ (⊖-≤ p) ⟩
+  ∣ - (+ (n ∸ m)) ∣ ≡⟨ ∣-i∣≡∣i∣ (+ (n ∸ m)) ⟩
+  ∣ + (n ∸ m) ∣     ≡⟨⟩
+  n ∸ m             ∎ where open ≡-Reasoning
 
 ∣⊖∣-< : m ℕ.< n → ∣ m ⊖ n ∣ ≡ n ∸ m
 ∣⊖∣-< {m} {n} p = begin
@@ -1097,6 +1112,26 @@ neg-minus-pos (suc m) (suc n) = cong (-[1+_] ∘ suc) (ℕ.+-comm (suc m) n)
   ∣ m ⊖ n ∣      ≡⟨  ∣m⊖n∣≡∣n⊖m∣ m n ⟩
   ∣ n ⊖ m ∣      ≡˘⟨ cong ∣_∣ ([+m]-[+n]≡m⊖n n m) ⟩
   ∣ + n - + m ∣  ∎ where open ≡-Reasoning
+
+∣-∣-≤ : i ≤ j → + ∣ i - j ∣ ≡ j - i
+∣-∣-≤ (-≤- {m} {n} n≤m) = begin
+  + ∣ -[1+ m ] + +[1+ n ] ∣ ≡⟨ cong (λ j → + ∣ j ∣) ([1+m]⊖[1+n]≡m⊖n n m) ⟩
+  + ∣ n ⊖ m ∣               ≡⟨ cong +_ (∣⊖∣-≤ n≤m) ⟩ 
+  + ( m ∸ n )              ≡⟨ sym (≤-⊖ n≤m) ⟩ 
+  m ⊖ n                    ≡⟨ sym ([1+m]⊖[1+n]≡m⊖n m n) ⟩ 
+  suc m ⊖ suc n            ∎ where open ≡-Reasoning
+∣-∣-≤ (-≤+ {m} {zero}) = refl
+∣-∣-≤ (-≤+ {m} {suc n}) = begin
+  + ∣ -[1+ m ] - + suc n ∣ ≡⟨⟩
+  + suc (suc m ℕ.+ n)    ≡⟨ cong (λ n → + suc n) (ℕ.+-comm (suc m) n) ⟩
+  + (suc n ℕ.+ suc m)    ≡⟨⟩
+  + suc n - -[1+ m ]      ∎ where open ≡-Reasoning
+∣-∣-≤ (+≤+ {m} {n} m≤n) = begin
+  + ∣ + m - + n ∣ ≡⟨ cong (λ j → + ∣ j ∣) (m-n≡m⊖n m n) ⟩
+  + ∣ m ⊖ n ∣     ≡⟨ cong +_ ( ∣⊖∣-≤ m≤n ) ⟩
+  + (n ∸ m)      ≡⟨ sym (≤-⊖  m≤n) ⟩ 
+  n ⊖ m          ≡⟨ sym (m-n≡m⊖n n m) ⟩ 
+  + n - + m      ∎ where open ≡-Reasoning
 
 i≡j⇒i-j≡0 : i ≡ j → i - j ≡ 0ℤ
 i≡j⇒i-j≡0 {i} refl = +-inverseʳ i
