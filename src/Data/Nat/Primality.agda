@@ -31,7 +31,7 @@ Composite (suc (suc n)) = Σ[ i ∈ Fin n ] 2 + toℕ i ∣ 2 + n
 composite? : Decidable Composite
 composite? 0 = no λ()
 composite? 1 = no λ()
-composite? (suc (suc n)) = any? λ _ → _ ∣? _
+composite? (suc (suc n)) = any? (λ _ → _ ∣? _)
 
 -- Definition of primality.
 
