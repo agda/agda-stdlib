@@ -548,6 +548,11 @@ New modules
   Reflection.AlphaEquality
   ```
 
+* `cong!` tactic for deriving arguments to `cong`
+  ```
+  Tactic.Rewrite
+  ```
+
 * Various system types and primitives:
   ```
   System.Clock.Primitive
