@@ -18,7 +18,7 @@ open import Function
 
 private
   variable
-    a b m f : Level
+    a b f m : Level
     A : Set a
     B : Set b
 
