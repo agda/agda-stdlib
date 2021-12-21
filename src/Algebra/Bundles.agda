@@ -886,7 +886,7 @@ record CommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
 -- Bundles with 3 binary operations
 ------------------------------------------------------------------------
 
-record RawQuasiGroup c ℓ : Set (suc (c ⊔ ℓ)) where
+record RawQuasigroup c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _∙_
   infixl 7 _\\_
   infixl 7 _//_
@@ -934,15 +934,15 @@ record Quasigroup c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open IsQuasigroup isQuasigroup public
 
-  rawQuasiGroup : RawQuasiGroup c ℓ
-  rawQuasiGroup = record
+  rawQuasigroup : RawQuasigroup c ℓ
+  rawQuasigroup = record
     { _≈_  = _≈_
     ; _∙_  = _∙_
     ; _\\_  = _\\_
     ; _//_  = _//_
     }
 
-  open RawQuasiGroup rawQuasiGroup public
+  open RawQuasigroup rawQuasigroup public
     using (_≈_; //-rawMagma; \\-rawMagma; ∙-rawMagma)
 
   setoid : Setoid _ _
@@ -964,15 +964,15 @@ record RawLoop  c ℓ : Set (suc (c ⊔ ℓ)) where
     _//_    : Op₂ Carrier
     ε       : Carrier
 
-  rawQuasiGroup : RawQuasiGroup c ℓ
-  rawQuasiGroup = record
+  rawQuasigroup : RawQuasigroup c ℓ
+  rawQuasigroup = record
     { _≈_ = _≈_
     ; _∙_ = _∙_
     ; _\\_ = _\\_
     ; _//_ = _//_
     }
 
-  open RawQuasiGroup rawQuasiGroup public
+  open RawQuasigroup rawQuasigroup public
     using (_≉_ ; ∙-rawMagma; \\-rawMagma; //-rawMagma)
 
 record Loop  c ℓ : Set (suc (c ⊔ ℓ)) where
