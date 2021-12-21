@@ -670,6 +670,13 @@ Other minor changes
   remainder : Fin (n * k) → Fin k
   ```
 
+* Added new definitions and proofs in `Data.Fin.Permutation`:
+  ```agda
+  insert : Fin (suc m) → Fin (suc n) → Permutation m n → Permutation (suc m) (suc n)
+  insert-remove : insert i (π ⟨$⟩ʳ i) (remove i π) ≈ π
+  remove-insert : remove i (insert i j π) ≈ π
+  ```
+
 * Added new proofs and `Inverse` bundles in `Data.Fin.Properties`:
   ```
   1↔⊤                : Fin 1 ↔ ⊤
