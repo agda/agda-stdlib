@@ -699,6 +699,14 @@ Other minor changes
 * Added new proofs in `Data.Integer.Properties`:
   ```agda
   sign-cong′ : s₁ ◃ n₁ ≡ s₂ ◃ n₂ → s₁ ≡ s₂ ⊎ (n₁ ≡ 0 × n₂ ≡ 0)
+  ¬[1≡0] : ¬ 1ℤ ≡ 0ℤ
+  ^-identityʳ : ∀ i → i ^ 1 ≡ i
+  ^-zeroˡ : ∀ n → 1ℤ ^ n ≡ 1ℤ
+  ^-distribˡ-+-* : ∀ i m n → i ^ (m ℕ.+ n) ≡ i ^ m * i ^ n
+  ^-semigroup-morphism : ∀ {i} → IsSemigroupMorphism ℕ.+-semigroup *-semigroup (i ^_)
+  ^-monoid-morphism : ∀ {i} → IsMonoidMorphism  ℕ.+-0-monoid *-1-monoid (i ^_)
+  ^-*-assoc : ∀ i m n → (i ^ m) ^ n ≡ i ^ (m ℕ.* n)
+  i^n≡0⇒i≡0 : ∀ i n → i ^ n ≡ 0ℤ → i ≡ 0ℤ
   ```
 
 * Added new proofs in `Data.List.Relation.Binary.Lex.Strict`:
