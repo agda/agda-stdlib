@@ -97,7 +97,7 @@ transpose i j = permutation (PC.transpose i j) (PC.transpose j i) record
 -- Reverse the order of indices
 
 reverse : Permutation′ n
-reverse = permutation PC.reverse PC.reverse record
+reverse = permutation opposite opposite record
   { left-inverse-of  = PC.reverse-involutive
   ; right-inverse-of = PC.reverse-involutive
   }
