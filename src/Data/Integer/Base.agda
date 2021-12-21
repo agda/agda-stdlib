@@ -253,7 +253,7 @@ pred i = -1ℤ + i
 _*_ : ℤ → ℤ → ℤ
 i * j = sign i S* sign j ◃ ∣ i ∣ ℕ* ∣ j ∣
 
--- Exponentiation.
+-- Naïve exponentiation.
 
 _^_ : ℤ → ℕ → ℤ
 i ^ ℕ.zero    = 1ℤ
