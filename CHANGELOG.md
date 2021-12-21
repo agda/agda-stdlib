@@ -652,6 +652,13 @@ Other minor changes
   ```
   and their corresponding algebraic substructures.
 
+* Added new functions in `Category.Monad.State`:
+  ```
+  runState  : State s a → s → a × s
+  evalState : State s a → s → a 
+  execState : State s a → s → s
+  ```
+
 * Added new records to `Algebra.Morphism.Structures`:
   ```agda
   record IsQuasigroupHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
