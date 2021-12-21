@@ -17,13 +17,14 @@ module Algebra.Properties.Semiring.Exp.TailRecursiveOptimised
 open Semiring S renaming (zero to *-zero)
 open import Relation.Binary.Reasoning.Setoid setoid
 open import Algebra.Properties.Semiring.Exp S as U
-  using (_^_)
+  using () renaming (_^_ to _^ᵘ_)
 
 ------------------------------------------------------------------------
 -- Re-export definition from the monoid
 
 open import Algebra.Definitions.RawSemiring rawSemiring public
-  using (_^[_]*_; _^ᵗ_)
+  using (_^[_]*_)
+  renaming (_^ᵗ_ to _^_)
 
 ------------------------------------------------------------------------
 -- Properties of _^[_]*_
@@ -53,30 +54,30 @@ x^[m+n]*y≈x^[m]*x^[n]*y x (suc m) n y = begin
   x ^[ m ]* x ^[ n ]* (x * y) ≈⟨ ^[]*-congʳ x m (x^[m]*[x*y]≈x*x^[m]*y x n y) ⟩
   x ^[ suc m ]* x ^[ n ]* y   ∎
 
-x^ᵗm*y≈x^[m]*y : ∀ x m y → x ^ᵗ m * y ≈ x ^[ m ]* y
-x^ᵗm*y≈x^[m]*y x m y = begin
-  x ^ᵗ m * y         ≈⟨ x^[m]*y*z≈x^[m]*[y*z] x m 1# y ⟩
+x^m*y≈x^[m]*y : ∀ x m y → x ^ m * y ≈ x ^[ m ]* y
+x^m*y≈x^[m]*y x m y = begin
+  x ^ m * y         ≈⟨ x^[m]*y*z≈x^[m]*[y*z] x m 1# y ⟩
   x ^[ m ]* (1# * y) ≈⟨ ^[]*-congʳ x m (*-identityˡ y) ⟩
   x ^[ m ]* y        ∎
 
 ------------------------------------------------------------------------
--- Properties of _^ᵗ_
+-- Properties of _^_
 
-x^ᵗ0≈1 : ∀ x → x ^ᵗ zero ≈ 1#
-x^ᵗ0≈1 x = refl
+x^0≈1 : ∀ x → x ^ zero ≈ 1#
+x^0≈1 x = refl
 
-x^ᵗ[m+1]≈x*[x^ᵗm] : ∀ x m → x ^ᵗ (suc m) ≈ x * x ^ᵗ m
-x^ᵗ[m+1]≈x*[x^ᵗm] x m = x^[m]*[x*y]≈x*x^[m]*y x m 1#
+x^[m+1]≈x*[x^m] : ∀ x m → x ^ (suc m) ≈ x * x ^ m
+x^[m+1]≈x*[x^m] x m = x^[m]*[x*y]≈x*x^[m]*y x m 1#
 
-x^ᵗ[m+n]≈[x^ᵗm]*[x^ᵗn] : ∀ x m n → x ^ᵗ (m ℕ.+ n) ≈ x ^ᵗ m * x ^ᵗ n
-x^ᵗ[m+n]≈[x^ᵗm]*[x^ᵗn] x m n = begin
-  x ^ᵗ (m  ℕ.+ n)   ≈⟨ x^[m+n]*y≈x^[m]*x^[n]*y x m n 1# ⟩
-  x ^[ m ]* (x ^ᵗ n) ≈˘⟨ x^ᵗm*y≈x^[m]*y x m (x ^ᵗ n) ⟩
-  x ^ᵗ m * x ^ᵗ n    ∎
+x^[m+n]≈[x^m]*[x^n] : ∀ x m n → x ^ (m ℕ.+ n) ≈ x ^ m * x ^ n
+x^[m+n]≈[x^m]*[x^n] x m n = begin
+  x ^ (m  ℕ.+ n)   ≈⟨ x^[m+n]*y≈x^[m]*x^[n]*y x m n 1# ⟩
+  x ^[ m ]* (x ^ n) ≈˘⟨ x^m*y≈x^[m]*y x m (x ^ n) ⟩
+  x ^ m * x ^ n    ∎
 
-^ᵗ≈^ : ∀ x m → x ^ᵗ m ≈ x ^ m
-^ᵗ≈^ x zero    = refl
-^ᵗ≈^ x (suc m) = begin
-  x ^ᵗ (suc m) ≈⟨ x^ᵗ[m+1]≈x*[x^ᵗm] x m ⟩
-  x * x ^ᵗ m   ≈⟨ *-congˡ (^ᵗ≈^ x m) ⟩
-  x * x ^ m   ∎
+^≈^ᵘ : ∀ x m → x ^ m ≈ x ^ᵘ m
+^≈^ᵘ x zero    = refl
+^≈^ᵘ x (suc m) = begin
+  x ^ (suc m) ≈⟨ x^[m+1]≈x*[x^m] x m ⟩
+  x * x ^ m   ≈⟨ *-congˡ (^≈^ᵘ x m) ⟩
+  x * x ^ᵘ m   ∎
