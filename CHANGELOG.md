@@ -691,6 +691,11 @@ Other minor changes
   ^↔→                : Extensionality _ _ → Fin (n ^ m) ↔ (Fin m → Fin n)
   ```
 
+* Added new functions in `Data.Integer.Base`:
+  ```
+  _^_ : ℤ → ℕ → ℤ
+  ```
+
 * Added new proofs in `Data.Integer.Properties`:
   ```agda
   sign-cong′ : s₁ ◃ n₁ ≡ s₂ ◃ n₂ → s₁ ≡ s₂ ⊎ (n₁ ≡ 0 × n₂ ≡ 0)
