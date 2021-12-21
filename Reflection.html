@@ -23,7 +23,7 @@
 <a id="699" class="Keyword">open</a> <a id="704" class="Keyword">import</a> <a id="711" href="Reflection.Meta.html" class="Module">Reflection.Meta</a> <a id="727" class="Symbol">as</a> <a id="730" class="Module">Meta</a> <a id="735" class="Keyword">public</a>
   <a id="744" class="Keyword">using</a> <a id="750" class="Symbol">(</a><a id="751" href="Agda.Builtin.Reflection.html#2458" class="Postulate">Meta</a><a id="755" class="Symbol">)</a>
 <a id="757" class="Keyword">open</a> <a id="762" class="Keyword">import</a> <a id="769" href="Reflection.Name.html" class="Module">Reflection.Name</a> <a id="785" class="Symbol">as</a> <a id="788" class="Module">Name</a> <a id="793" class="Keyword">public</a>
-  <a id="802" class="Keyword">using</a> <a id="808" class="Symbol">(</a><a id="809" href="Agda.Builtin.Reflection.html#489" class="Postulate">Name</a><a id="813" class="Symbol">;</a> <a id="815" href="Reflection.Name.html#1058" class="Function">Names</a><a id="820" class="Symbol">)</a>
+  <a id="802" class="Keyword">using</a> <a id="808" class="Symbol">(</a><a id="809" href="Agda.Builtin.Reflection.html#489" class="Postulate">Name</a><a id="813" class="Symbol">;</a> <a id="815" href="Reflection.Name.html#1085" class="Function">Names</a><a id="820" class="Symbol">)</a>
 <a id="822" class="Keyword">open</a> <a id="827" class="Keyword">import</a> <a id="834" href="Reflection.Literal.html" class="Module">Reflection.Literal</a> <a id="853" class="Symbol">as</a> <a id="856" class="Module">Literal</a> <a id="864" class="Keyword">public</a>
   <a id="873" class="Keyword">using</a> <a id="879" class="Symbol">(</a><a id="880" href="Agda.Builtin.Reflection.html#4092" class="Datatype">Literal</a><a id="887" class="Symbol">)</a>
 <a id="889" class="Keyword">open</a> <a id="894" class="Keyword">import</a> <a id="901" href="Reflection.Pattern.html" class="Module">Reflection.Pattern</a> <a id="920" class="Symbol">as</a> <a id="923" class="Module">Pattern</a> <a id="931" class="Keyword">public</a>
@@ -99,19 +99,19 @@ Please use Reflection.Argument.Information&#39;s ArgInfo instead.&quot;</a>
 <a id="2761" class="Keyword">infix</a> <a id="2767" class="Number">4</a> <a id="2769" href="Reflection.html#2874" class="Function Operator">_≟-Lit_</a> <a id="2777" href="Reflection.html#3018" class="Function Operator">_≟-Name_</a> <a id="2786" href="Reflection.html#3159" class="Function Operator">_≟-Meta_</a> <a id="2795" href="Reflection.html#3300" class="Function Operator">_≟-Visibility_</a> <a id="2810" href="Reflection.html#3480" class="Function Operator">_≟-Relevance_</a> <a id="2824" href="Reflection.html#3655" class="Function Operator">_≟-Arg-info_</a>
         <a id="2845" href="Reflection.html#3831" class="Function Operator">_≟-Pattern_</a> <a id="2857" href="Reflection.html#3987" class="Function Operator">_≟-ArgPatterns_</a>
 
-<a id="_≟-Lit_"></a><a id="2874" href="Reflection.html#2874" class="Function Operator">_≟-Lit_</a> <a id="2882" class="Symbol">=</a> <a id="2884" href="Reflection.Literal.html#1537" class="Function Operator">Literal._≟_</a>
+<a id="_≟-Lit_"></a><a id="2874" href="Reflection.html#2874" class="Function Operator">_≟-Lit_</a> <a id="2882" class="Symbol">=</a> <a id="2884" href="Reflection.Literal.html#1598" class="Function Operator">Literal._≟_</a>
 <a id="2896" class="Symbol">{-#</a> <a id="2900" class="Keyword">WARNING_ON_USAGE</a> <a id="2917" class="Pragma">_≟-Lit_</a>
 <a id="2925" class="String">&quot;Warning: _≟-Lit_ was deprecated in v1.3.
 Please use Reflection.Literal&#39;s _≟_ instead.&quot;</a>
 <a id="3013" class="Symbol">#-}</a>
 
-<a id="_≟-Name_"></a><a id="3018" href="Reflection.html#3018" class="Function Operator">_≟-Name_</a> <a id="3027" class="Symbol">=</a> <a id="3029" href="Reflection.Name.html#1403" class="Function Operator">Name._≟_</a>
+<a id="_≟-Name_"></a><a id="3018" href="Reflection.html#3018" class="Function Operator">_≟-Name_</a> <a id="3027" class="Symbol">=</a> <a id="3029" href="Reflection.Name.html#1430" class="Function Operator">Name._≟_</a>
 <a id="3038" class="Symbol">{-#</a> <a id="3042" class="Keyword">WARNING_ON_USAGE</a> <a id="3059" class="Pragma">_≟-Name_</a>
 <a id="3068" class="String">&quot;Warning: _≟-Name_ was deprecated in v1.3.
 Please use Reflection.Name&#39;s _≟_ instead.&quot;</a>
 <a id="3154" class="Symbol">#-}</a>
 
-<a id="_≟-Meta_"></a><a id="3159" href="Reflection.html#3159" class="Function Operator">_≟-Meta_</a> <a id="3168" class="Symbol">=</a> <a id="3170" href="Reflection.Meta.html#862" class="Function Operator">Meta._≟_</a>
+<a id="_≟-Meta_"></a><a id="3159" href="Reflection.html#3159" class="Function Operator">_≟-Meta_</a> <a id="3168" class="Symbol">=</a> <a id="3170" href="Reflection.Meta.html#888" class="Function Operator">Meta._≟_</a>
 <a id="3179" class="Symbol">{-#</a> <a id="3183" class="Keyword">WARNING_ON_USAGE</a> <a id="3200" class="Pragma">_≟-Meta_</a>
 <a id="3209" class="String">&quot;Warning: _≟-Meta_ was deprecated in v1.3.
 Please use Reflection.Meta&#39;s _≟_ instead.&quot;</a>
