@@ -275,13 +275,15 @@ Non-backwards compatible changes
 * The types of the proofs `pos⇒1/pos`/`1/pos⇒pos` and `neg⇒1/neg`/`1/neg⇒neg` in
   `Data.Rational(.Unnormalised).Properties` have been switched, as the previous
   naming scheme didn't correctly generalise to e.g. `pos+pos⇒pos`. For example
-  the proof `1/pos⇒pos` now has the type:
+  the types of `pos⇒1/pos`/`1/pos⇒pos` were:
   ```
-  ∀ p .{{_ : Positive p}} → Positive (1/ p)
+  pos⇒1/pos : ∀ p .{{_ : NonZero p}} .{{Positive (1/ p)}} → Positive p
+  1/pos⇒pos : ∀ p .{{_ : Positive p}} → Positive (1/ p)
   ```
-  rather than
+  but are now:
   ```
-  ∀ p .{{_ : NonZero p}} .{{Positive (1/ p)}} → Positive p
+  pos⇒1/pos : ∀ p .{{_ : Positive p}} → Positive (1/ p)
+  1/pos⇒pos : ∀ p .{{_ : NonZero p}} .{{Positive (1/ p)}} → Positive p
   ```
 
 Major improvements
