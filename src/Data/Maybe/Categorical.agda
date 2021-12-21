@@ -18,33 +18,31 @@ open import Function
 
 private
   variable
-    a b f m : Level
+    a b m f : Level
     A : Set a
     B : Set b
-    F : Set f → Set f
-    M : Set m → Set m
 
 ------------------------------------------------------------------------
 -- Maybe applicative functor
 
-functor : RawFunctor {a} Maybe
+functor : RawFunctor {f} Maybe
 functor = record
   { _<$>_ = map
   }
 
-applicative : RawApplicative {a} Maybe
+applicative : RawApplicative {f} Maybe
 applicative = record
   { pure = just
   ; _⊛_  = maybe map (const nothing)
   }
 
-applicativeZero : RawApplicativeZero {a} Maybe
+applicativeZero : RawApplicativeZero {f} Maybe
 applicativeZero = record
   { applicative = applicative
   ; ∅           = nothing
   }
 
-alternative : RawAlternative {a} Maybe
+alternative : RawAlternative {f} Maybe
 alternative = record
   { applicativeZero = applicativeZero
   ; _∣_             = _<∣>_
@@ -53,7 +51,7 @@ alternative = record
 ------------------------------------------------------------------------
 -- Maybe monad transformer
 
-monadT : RawMonadT {a} (_∘′ Maybe)
+monadT : RawMonadT {f} (_∘′ Maybe)
 monadT M = record
   { return = M.return ∘ just
   ; _>>=_  = λ m f → m M.>>= maybe f (M.return nothing)
@@ -63,17 +61,17 @@ monadT M = record
 ------------------------------------------------------------------------
 -- Maybe monad
 
-monad : RawMonad {a} Maybe
+monad : RawMonad {f} Maybe
 monad = monadT Id.monad
 
-monadZero : RawMonadZero {a} Maybe
+monadZero : RawMonadZero {f} Maybe
 monadZero = record
   { monad           = monad
   ; applicativeZero = applicativeZero
   }
 
-monadPlus : RawMonadPlus {a} Maybe
-monadPlus {a} = record
+monadPlus : RawMonadPlus {f} Maybe
+monadPlus {f} = record
   { monad       = monad
   ; alternative = alternative
   }
@@ -81,7 +79,7 @@ monadPlus {a} = record
 ------------------------------------------------------------------------
 -- Get access to other monadic functions
 
-module TraversableA (App : RawApplicative F) where
+module TraversableA {F} (App : RawApplicative {f} F) where
 
   open RawApplicative App
 
@@ -95,7 +93,7 @@ module TraversableA (App : RawApplicative F) where
   forA : Maybe A → (A → F B) → F (Maybe B)
   forA = flip mapA
 
-module TraversableM (Mon : RawMonad M) where
+module TraversableM {M} (Mon : RawMonad {m} M) where
 
   open RawMonad Mon
 
