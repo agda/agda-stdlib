@@ -51,28 +51,6 @@ transpose-inverse i j {k} with k ≟ j
 ...   | false because [k≢i] rewrite dec-false (k ≟ i) (invert [k≢i])
                                   | dec-false (k ≟ j) (invert [k≢j]) = refl
 
-reverse-prop : ∀ {n} → (i : Fin n) → toℕ (opposite i) ≡ n ∸ suc (toℕ i)
-reverse-prop {suc n} zero = toℕ-fromℕ n
-reverse-prop {suc n} (suc i) = begin
-  toℕ (inject₁ (opposite i)) ≡⟨ toℕ-inject₁ (opposite i) ⟩
-  toℕ (opposite i)           ≡⟨ reverse-prop i ⟩
-  n ∸ suc (toℕ i)            ∎
-
-reverse-involutive : ∀ {n} → Involutive _≡_ (opposite {n})
-reverse-involutive {suc n} i = toℕ-injective (begin
-  toℕ (opposite (opposite i)) ≡⟨ reverse-prop (opposite i) ⟩
-  n ∸ (toℕ (opposite i))     ≡⟨ cong (n ∸_) (reverse-prop i) ⟩
-  n ∸ (n ∸ (toℕ i))         ≡⟨ ℕₚ.m∸[m∸n]≡n (ℕₚ.≤-pred (toℕ<n i)) ⟩
-  toℕ i                     ∎)
-
-reverse-suc : ∀ {n} {i : Fin n} → toℕ (opposite (suc i)) ≡ toℕ (opposite i)
-reverse-suc {n} {i} = begin
-  toℕ (opposite (suc i))      ≡⟨ reverse-prop (suc i) ⟩
-  suc n ∸ suc (toℕ (suc i))  ≡⟨⟩
-  n ∸ toℕ (suc i)            ≡⟨⟩
-  n ∸ suc (toℕ i)            ≡⟨ sym (reverse-prop i) ⟩
-  toℕ (opposite i)            ∎
-
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
 ------------------------------------------------------------------------
@@ -85,4 +63,22 @@ reverse = opposite
 {-# WARNING_ON_USAGE reverse
 "Warning: reverse was deprecated in v2.0.
 Please use opposite from Data.Fin.Base instead."
+#-}
+
+reverse-prop = opposite-prop
+{-# WARNING_ON_USAGE reverse
+"Warning: reverse-prop was deprecated in v2.0.
+Please use opposite-prop from Data.Fin.Properties instead."
+#-}
+
+reverse-involutive = opposite-involutive
+{-# WARNING_ON_USAGE reverse
+"Warning: reverse-involutive was deprecated in v2.0.
+Please use opposite-involutive from Data.Fin.Properties instead."
+#-}
+
+reverse-suc = opposite-suc
+{-# WARNING_ON_USAGE reverse
+"Warning: reverse-suc was deprecated in v2.0.
+Please use opposite-suc from Data.Fin.Properties instead."
 #-}
