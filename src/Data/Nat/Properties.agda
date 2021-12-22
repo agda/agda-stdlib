@@ -27,7 +27,7 @@ open import Data.Product using (_×_; _,_)
 open import Data.Sum.Base as Sum
 open import Data.Unit using (tt)
 open import Function.Base
-open import Function.Injection using (_↣_)
+open import Function.Bundles using (_↣_)
 open import Function.Metric.Nat
 open import Level using (0ℓ)
 open import Relation.Binary

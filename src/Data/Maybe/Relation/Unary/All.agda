@@ -14,7 +14,7 @@ open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.Any using (Any; just)
 open import Data.Product as Prod using (_,_)
 open import Function.Base using (id; _∘′_)
-open import Function.Equivalence using (_⇔_; equivalence)
+open import Function.Bundles using (_⇔_; mk⇔)
 open import Level
 open import Relation.Binary.PropositionalEquality as P using (_≡_; cong)
 open import Relation.Unary
@@ -37,7 +37,7 @@ module _ {a p} {A : Set a} {P : Pred A p} where
   drop-just (just px) = px
 
   just-equivalence : ∀ {x} → P x ⇔ All P (just x)
-  just-equivalence = equivalence just drop-just
+  just-equivalence = mk⇔ just drop-just
 
   map : ∀ {q} {Q : Pred A q} → P ⊆ Q → All P ⊆ All Q
   map f (just px) = just (f px)
