@@ -13,7 +13,7 @@ open import Tactic.Rewrite using (cong!)
 -- Usage
 ----------------------------------------------------------------------
 
--- When performing large equational reasoning proofs, it's quite 
+-- When performing large equational reasoning proofs, it's quite
 -- common to have to construct sophisticated lambdas to pass
 -- into 'cong'. This can be extremely tedious, and can bog down
 -- large proofs in piles of boilerplate. The 'cong!' tactic
@@ -79,13 +79,13 @@ module LiteralTests
 
   test₁ : 40 + 2 ≡ 42
   test₁ = cong! refl
-  
+
   test₂ : 48 ≡ 42 → 42 ≡ 48
   test₂ eq = cong! (sym eq)
-  
-  test₃ : (f : ℕ → ℕ) → f 48 ≡ f 42 
+
+  test₃ : (f : ℕ → ℕ) → f 48 ≡ f 42
   test₃ f = cong! assumption
-  
+
   test₄ : (f : ℕ → ℕ → ℕ) → f 48 48 ≡ f 42 42
   test₄ f = cong! assumption
 
@@ -111,7 +111,7 @@ module HigherOrderTests
 
   test₂ : f ≡ g → ∀ n → f (f (f n)) ≡ g (g (g n))
   test₂ eq n = cong! eq
- 
+
 module EquationalReasoningTests where
 
   test₁ : ∀ m n → m ≡ n → suc (suc (m + 0)) + m ≡ suc (suc n) + (n + 0)

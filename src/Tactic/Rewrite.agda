@@ -135,7 +135,7 @@ private
   antiUnifyArgs : ℕ → Args Term → Args Term → Maybe (Args Term)
   antiUnifyClauses : ℕ → Clauses → Clauses → Maybe Clauses
   antiUnifyClause : ℕ → Clause → Clause → Maybe Clause
-  
+
   antiUnify ϕ (var x args) (var y args') with x Nat.≡ᵇ y | antiUnifyArgs ϕ args args'
   ... | _     | nothing    = var ϕ []
   ... | false | just uargs = var ϕ uargs
