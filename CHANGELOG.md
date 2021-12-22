@@ -302,6 +302,8 @@ Non-backwards compatible changes
     * `∪⇔⊎`
     * `∃-Subset-[]-⇔`
     * `∃-Subset-∷-⇔`
+  * `Data.List.Countdown`
+    * `empty`
   * `Data.List.Fresh.Relation.Unary.Any`
     * `⊎⇔Any`
   * `Data.List.Relation.Binary.Lex`
