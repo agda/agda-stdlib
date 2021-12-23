@@ -480,8 +480,9 @@ two new, hopefully more memorable, names `↑ˡ` `↑ʳ` for the 'left', resp. '
   splitAt-raise ↦ splitAt-↑ʳ
   Fin0↔⊥        ↦ 0↔⊥
   ```
-
+  
 * In `Data.Vec.Properties`:
+
   ```
   []≔-++-inject+       ↦ []≔-++-↑ˡ
   ```
@@ -829,6 +830,7 @@ Other minor changes
   ```agda
   diagonal : ∀ {n} → Vec (Vec A n) n → Vec A n
   DiagonalBind._>>=_ : ∀ {n} → Vec A n → (A → Vec B n) → Vec B n
+  _ʳ++_ : ∀ {m n} → Vec A m → Vec A n → Vec A (m + n)
   ```
 
 * Added new instance in `Data.Vec.Categorical`:
@@ -843,6 +845,63 @@ Other minor changes
   ⊛-is->>= : ∀ {n} (fs : Vec (A → B) n) (xs : Vec A n) → (fs ⊛ xs) ≡ (fs DiagonalBind.>>= flip map xs)
   transpose-replicate : ∀ {m n} (xs : Vec A m) → transpose (replicate {n = n} xs) ≡ map replicate xs
   []≔-++-↑ʳ : ∀ {m n y} (xs : Vec A m) (ys : Vec A n) i → (xs ++ ys) [ m ↑ʳ i ]≔ y ≡ xs ++ (ys [ i ]≔ y)
+  map-++-commute : ∀ {A : Set a} {B : Set b} {m} {n} (f : A → B) xs ys →
+                 map f (xs ++ ys) ≡ map {n = m} f xs ++ map {n = n} f ys
+  foldr-[] : ∀ {A : Set a} (B : ℕ → Set b)
+           (f : ∀ {n} → A → B n → B (suc n)) {e} → foldr B f e [] ≡ e
+  foldr-++ : ∀ {A : Set a} (B : ℕ → Set b)
+           (f : ∀ {n} → A → B n → B (suc n)) {e} →
+           ∀ {m n} {xs} {ys} →
+           foldr B {m + n} f e (xs ++ ys) ≡ foldr (B ∘ (_+ n)) f (foldr B {n} f e ys) xs
+  foldl-universal : ∀ {A : Set a} (B : ℕ → Set b)
+                  (f : ∀ {n} → B n → A → B (suc n)) {e}
+                  (h : ∀ {c} (C : ℕ → Set c) →
+                       (g : ∀ {n} → C n → A → C (suc n)) → C zero →
+                       ∀ {n} → Vec A n → C n) →
+                  (∀ {c} {C} {g : ∀ {n} → C n → A → C (suc n)} e →
+                   h {c} C g e [] ≡ e) →
+                  (∀ {c} {C} {g : ∀ {n} → C n → A → C (suc n)} e →
+                   ∀ {n} x →
+                   (h {c} C g e {suc n}) ∘ (x ∷_) ≗ h (C ∘ suc) (λ {n} → g {suc n}) (g e x)) →
+                  ∀ {n} → h B f e ≗ foldl B {n} f e
+  foldl-[] : ∀ {A : Set a} (B : ℕ → Set b)
+           (f : ∀ {n} → B n → A → B (suc n)) {e} → foldl B f e [] ≡ e
+  foldl-fusion : ∀ {A : Set a}
+               {B : ℕ → Set b} {C : ℕ → Set c}
+               (h : ∀ {n} → B n → C n) →
+               {f : ∀ {n} → B n → A → B (suc n)} (d : B zero) →
+               {g : ∀ {n} → C n → A → C (suc n)} (e : C zero) →
+               (h {zero} d ≡ e) →
+               (∀ {n} b x → h (f {n} b x) ≡ g (h b) x) →
+               ∀ {n} → h ∘ foldl B {n} f d ≗ foldl C g e
+  foldr-∷ʳ : ∀ {A : Set a} (B : ℕ → Set b)
+           (f : ∀ {n} → A → B n → B (suc n)) {n} e y ys →
+           foldr B {suc n} f e (ys ∷ʳ y) ≡ foldr (B ∘ suc) {n} f (f y e) ys
+  foldl-∷ʳ : ∀ {A : Set a} (B : ℕ → Set b)
+           (f : ∀ {n} → B n → A → B (suc n)) {n} e y ys →
+           foldl B {suc n} f e (ys ∷ʳ y) ≡ f (foldl B {n} f e ys) y
+  foldr-ʳ++ : ∀ (B : ℕ → Set b) (f : ∀ {n} → A → B n → B (suc n))
+           {m} {n} b (xs : Vec A m) {ys : Vec A n} →
+           foldr B f b (xs ʳ++ ys)
+           ≡
+           foldl (B ∘ (_+ n)) ((λ {m} → flip (f {m + n}))) (foldr B f b ys) xs
+  ∷ʳ-injective : ∀ {n} (xs ys : Vec A n) → xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys × x ≡ y
+  ∷ʳ-injectiveˡ : ∀ {n} (xs ys : Vec A n) → xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys
+  ∷ʳ-map-commute : (f : A → B) → ∀ {n} x (xs : Vec A n) →
+                 map f (xs ∷ʳ x) ≡ (map f xs) ∷ʳ (f x)
+  unfold-reverse : ∀ {n} (x : A) xs → reverse (x ∷ xs) ≡ reverse {n = n} xs ∷ʳ x
+  unfold-ʳ++ : ∀ {m n} {xs : Vec A m} {ys : Vec A n} → xs ʳ++ ys ≡ reverse xs ++ ys
+  reverse-map-commute : (f : A → B) →
+                      ∀ {n} (xs : Vec A n) → map f (reverse xs) ≡ reverse (map f xs)
+  map-ʳ++ : ∀ {A : Set a} {B : Set b} {m n} (f : A → B) (xs : Vec A m) {ys : Vec A n} →
+          map f (xs ʳ++ ys) ≡ map f xs ʳ++ map f ys
+  reverse-foldr : ∀ {B : ℕ → Set b} {n} (f : ∀ {n} → A → B n → B (suc n)) b →
+                foldr B f b ∘ reverse ≗ foldl B {n} (λ {n} → flip (f {n})) b
+  reverse-foldl : ∀ {B : ℕ → Set b} {n} (f : ∀ {n} → B n → A → B (suc n)) b →
+                foldl B {n} f b ∘ reverse ≗ foldr B (λ {n} → flip (f {n})) b
+  reverse-involutive : ∀ {n} → Involutive {A = Vec A n} _≡_ reverse
+  reverse-reverse : ∀ {n} {xs ys : Vec A n} →
+                  reverse xs ≡ ys → reverse ys ≡ xs
   ```
 
 * Added new proofs in `Function.Construct.Symmetry`:
