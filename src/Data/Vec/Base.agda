@@ -10,13 +10,14 @@ module Data.Vec.Base where
 
 open import Data.Bool.Base
 open import Data.Nat.Base
+open import Data.Nat.Properties
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base as List using (List)
 open import Data.Product as Prod using (∃; ∃₂; _×_; _,_)
 open import Data.These.Base as These using (These; this; that; these)
 open import Function.Base using (const; _∘′_; id; _∘_)
 open import Level using (Level)
-open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; sym; trans; subst)
 open import Relation.Nullary using (does)
 open import Relation.Unary using (Pred; Decidable)
 
@@ -280,14 +281,27 @@ fromList (List._∷_ x xs) = x ∷ fromList xs
 ------------------------------------------------------------------------
 -- Operations for reversing vectors
 
-reverse : ∀ {n} → Vec A n → Vec A n
-reverse {A = A} = foldl (Vec A) (λ rev x → x ∷ rev) []
+-- snoc
 
 infixl 5 _∷ʳ_
 
 _∷ʳ_ : ∀ {n} → Vec A n → A → Vec A (1 + n)
 []       ∷ʳ y = [ y ]
 (x ∷ xs) ∷ʳ y = x ∷ (xs ∷ʳ y)
+
+-- vanilla reverse
+
+reverse : ∀ {n} → Vec A n → Vec A n
+reverse {A = A} = foldl (Vec A) (λ rev x → x ∷ rev) []
+
+-- reverse-append
+
+infix 5 _ʳ++_
+
+_ʳ++_ : ∀ {m n} → Vec A m → Vec A n → Vec A (m + n)
+_ʳ++_ {A = A} {m} {n} xs ys = foldl ((Vec A) ∘ (_+ n)) (λ rev x → x ∷ rev) ys xs
+
+-- init and last
 
 initLast : ∀ {n} (xs : Vec A (1 + n)) →
            ∃₂ λ (ys : Vec A n) (y : A) → xs ≡ ys ∷ʳ y
