@@ -10,6 +10,7 @@
 module Data.Fin.Properties where
 
 open import Axiom.Extensionality.Propositional
+open import Algebra.Definitions using (Involutive)
 open import Category.Applicative using (RawApplicative)
 open import Category.Functor using (RawFunctor)
 open import Data.Bool.Base using (Bool; true; false; not; _∧_; _∨_)
@@ -880,6 +881,34 @@ module _ {a} {A : Set a} where
   eq? : ∀ {n} → A ↣ Fin n → B.Decidable {A = A} _≡_
   eq? inj = Dec.via-injection inj _≟_
 
+------------------------------------------------------------------------
+-- Opposite
+------------------------------------------------------------------------
+
+opposite-prop : ∀ {n} → (i : Fin n) → toℕ (opposite i) ≡ n ∸ suc (toℕ i)
+opposite-prop {suc n} zero = toℕ-fromℕ n
+opposite-prop {suc n} (suc i) = begin
+  toℕ (inject₁ (opposite i)) ≡⟨ toℕ-inject₁ (opposite i) ⟩
+  toℕ (opposite i)           ≡⟨ opposite-prop i ⟩
+  n ∸ suc (toℕ i)            ∎
+  where open ≡-Reasoning
+
+opposite-involutive : ∀ {n} → Involutive {A = Fin n} _≡_ opposite
+opposite-involutive {suc n} i = toℕ-injective (begin
+  toℕ (opposite (opposite i)) ≡⟨ opposite-prop (opposite i) ⟩
+  n ∸ (toℕ (opposite i))     ≡⟨ cong (n ∸_) (opposite-prop i) ⟩
+  n ∸ (n ∸ (toℕ i))         ≡⟨ ℕₚ.m∸[m∸n]≡n (ℕₚ.≤-pred (toℕ<n i)) ⟩
+  toℕ i                     ∎)
+  where open ≡-Reasoning
+
+opposite-suc : ∀ {n} {i : Fin n} → toℕ (opposite (suc i)) ≡ toℕ (opposite i)
+opposite-suc {n} {i} = begin
+  toℕ (opposite (suc i))      ≡⟨ opposite-prop (suc i) ⟩
+  suc n ∸ suc (toℕ (suc i))  ≡⟨⟩
+  n ∸ toℕ (suc i)            ≡⟨⟩
+  n ∸ suc (toℕ i)            ≡⟨ sym (opposite-prop i) ⟩
+  toℕ (opposite i)            ∎
+  where open ≡-Reasoning
 
 
 ------------------------------------------------------------------------
@@ -997,3 +1026,4 @@ Fin0↔⊥ = 0↔⊥
 "Warning: Fin0↔⊥ was deprecated in v2.0.
 Please use 0↔⊥ instead."
 #-}
+
