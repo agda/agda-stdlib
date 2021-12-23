@@ -8,6 +8,7 @@
 
 module Data.Maybe.Categorical where
 
+open import Level
 open import Data.Maybe.Base
 open import Category.Functor
 open import Category.Applicative
@@ -15,27 +16,33 @@ open import Category.Monad
 import Function.Identity.Categorical as Id
 open import Function
 
+private
+  variable
+    a b f m : Level
+    A : Set a
+    B : Set b
+
 ------------------------------------------------------------------------
 -- Maybe applicative functor
 
-functor : ∀ {f} → RawFunctor {f} Maybe
+functor : RawFunctor {f} Maybe
 functor = record
   { _<$>_ = map
   }
 
-applicative : ∀ {f} → RawApplicative {f} Maybe
+applicative : RawApplicative {f} Maybe
 applicative = record
   { pure = just
   ; _⊛_  = maybe map (const nothing)
   }
 
-applicativeZero : ∀ {f} → RawApplicativeZero {f} Maybe
+applicativeZero : RawApplicativeZero {f} Maybe
 applicativeZero = record
   { applicative = applicative
   ; ∅           = nothing
   }
 
-alternative : ∀ {f} → RawAlternative {f} Maybe
+alternative : RawAlternative {f} Maybe
 alternative = record
   { applicativeZero = applicativeZero
   ; _∣_             = _<∣>_
@@ -44,7 +51,7 @@ alternative = record
 ------------------------------------------------------------------------
 -- Maybe monad transformer
 
-monadT : ∀ {f} → RawMonadT {f} (_∘′ Maybe)
+monadT : RawMonadT {f} (_∘′ Maybe)
 monadT M = record
   { return = M.return ∘ just
   ; _>>=_  = λ m f → m M.>>= maybe f (M.return nothing)
@@ -54,16 +61,16 @@ monadT M = record
 ------------------------------------------------------------------------
 -- Maybe monad
 
-monad : ∀ {f} → RawMonad {f} Maybe
+monad : RawMonad {f} Maybe
 monad = monadT Id.monad
 
-monadZero : ∀ {f} → RawMonadZero {f} Maybe
+monadZero : RawMonadZero {f} Maybe
 monadZero = record
   { monad           = monad
   ; applicativeZero = applicativeZero
   }
 
-monadPlus : ∀ {f} → RawMonadPlus {f} Maybe
+monadPlus : RawMonadPlus {f} Maybe
 monadPlus {f} = record
   { monad       = monad
   ; alternative = alternative
@@ -72,21 +79,21 @@ monadPlus {f} = record
 ------------------------------------------------------------------------
 -- Get access to other monadic functions
 
-module TraversableA {f F} (App : RawApplicative {f} F) where
+module TraversableA {F} (App : RawApplicative {f} F) where
 
   open RawApplicative App
 
-  sequenceA : ∀ {A} → Maybe (F A) → F (Maybe A)
+  sequenceA : Maybe (F A) → F (Maybe A)
   sequenceA nothing  = pure nothing
   sequenceA (just x) = just <$> x
 
-  mapA : ∀ {a} {A : Set a} {B} → (A → F B) → Maybe A → F (Maybe B)
+  mapA : (A → F B) → Maybe A → F (Maybe B)
   mapA f = sequenceA ∘ map f
 
-  forA : ∀ {a} {A : Set a} {B} → Maybe A → (A → F B) → F (Maybe B)
+  forA : Maybe A → (A → F B) → F (Maybe B)
   forA = flip mapA
 
-module TraversableM {m M} (Mon : RawMonad {m} M) where
+module TraversableM {M} (Mon : RawMonad {m} M) where
 
   open RawMonad Mon
 
