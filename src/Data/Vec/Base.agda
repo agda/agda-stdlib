@@ -17,7 +17,7 @@ open import Data.Product as Prod using (∃; ∃₂; _×_; _,_)
 open import Data.These.Base as These using (These; this; that; these)
 open import Function.Base using (const; _∘′_; id; _∘_)
 open import Level using (Level)
-open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; sym; trans; subst)
+open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl)
 open import Relation.Nullary using (does)
 open import Relation.Unary using (Pred; Decidable)
 
