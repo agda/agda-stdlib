@@ -38,6 +38,10 @@ open import Agda.Builtin.Nat public
 open import Agda.Builtin.Nat public
   using () renaming (_<_ to _<ᵇ_)
 
+private
+  variable
+    n : ℕ
+
 infix 4 _≤ᵇ_
 _≤ᵇ_ : (m n : ℕ) → Bool
 zero  ≤ᵇ n = true
@@ -91,24 +95,24 @@ record NonZero (n : ℕ) : Set where
 -- Instances
 
 instance
-  nonZero : ∀ {n} → NonZero (suc n)
+  nonZero : NonZero (suc n)
   nonZero = _
 
 -- Constructors
 
-≢-nonZero : ∀ {n} → n ≢ 0 → NonZero n
+≢-nonZero : n ≢ 0 → NonZero n
 ≢-nonZero {zero}  0≢0 = contradiction refl 0≢0
 ≢-nonZero {suc n} n≢0 = _
 
->-nonZero : ∀ {n} → n > 0 → NonZero n
+>-nonZero : n > 0 → NonZero n
 >-nonZero (s≤s 0<n) = _
 
 -- Destructors
 
-≢-nonZero⁻¹ : ∀ {n} → .(NonZero n) → n ≢ 0
+≢-nonZero⁻¹ : .(NonZero n) → n ≢ 0
 ≢-nonZero⁻¹ {suc n} _ ()
 
->-nonZero⁻¹ : ∀ {n} → .(NonZero n) → n > 0
+>-nonZero⁻¹ : .(NonZero n) → n > 0
 >-nonZero⁻¹ {suc n} _ = s≤s z≤n
 
 ------------------------------------------------------------------------
