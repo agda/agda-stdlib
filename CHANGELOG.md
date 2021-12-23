@@ -238,10 +238,6 @@ Non-backwards compatible changes
 
 ### Other
 
-* The constructors `+0` and `+[1+_]` from `Data.Integer.Base` are no longer
-  exported by `Data.Rational.Base`. You will have to open `Data.Integer(.Base)`
-  directly to use them.
-
 * The first two arguments of `m≡n⇒m-n≡0` (now `i≡j⇒i-j≡0`) in `Data.Integer.Base`
   have been made implicit.
 
@@ -275,6 +271,20 @@ Non-backwards compatible changes
 * The constructors `+0` and `+[1+_]` from `Data.Integer.Base` are no longer 
   exported by `Data.Rational.Base`. You will have to open `Data.Integer(.Base)`
   directly to use them.
+
+* The types of the proofs `pos⇒1/pos`/`1/pos⇒pos` and `neg⇒1/neg`/`1/neg⇒neg` in
+  `Data.Rational(.Unnormalised).Properties` have been switched, as the previous
+  naming scheme didn't correctly generalise to e.g. `pos+pos⇒pos`. For example
+  the types of `pos⇒1/pos`/`1/pos⇒pos` were:
+  ```
+  pos⇒1/pos : ∀ p .{{_ : NonZero p}} .{{Positive (1/ p)}} → Positive p
+  1/pos⇒pos : ∀ p .{{_ : Positive p}} → Positive (1/ p)
+  ```
+  but are now:
+  ```
+  pos⇒1/pos : ∀ p .{{_ : Positive p}} → Positive (1/ p)
+  1/pos⇒pos : ∀ p .{{_ : NonZero p}} .{{Positive (1/ p)}} → Positive p
+  ```
 
 Major improvements
 ------------------
@@ -396,6 +406,10 @@ Deprecated names
   *-monoʳ-≤-neg    ↦  *-monoʳ-≤-nonPos
   *-cancelˡ-<-pos  ↦  *-cancelˡ-<-nonNeg
   *-cancelʳ-<-pos  ↦  *-cancelʳ-<-nonNeg
+  
+  positive⇒nonNegative  ↦ pos⇒nonNeg
+  negative⇒nonPositive  ↦ neg⇒nonPos
+  negative<positive     ↦ neg<pos
   ```
 
 * In `Data.Rational.Properties`:
@@ -408,6 +422,8 @@ Deprecated names
   *-cancelʳ-<-pos  ↦  *-cancelʳ-<-nonNeg
   *-cancelˡ-<-neg  ↦  *-cancelˡ-<-nonPos
   *-cancelʳ-<-neg  ↦  *-cancelʳ-<-nonPos
+
+  negative<positive     ↦ neg<pos
   ```
 
 * In `Data.List.Properties`:
@@ -548,6 +564,11 @@ New modules
   Reflection.AlphaEquality
   ```
 
+* `cong!` tactic for deriving arguments to `cong`
+  ```
+  Tactic.Rewrite
+  ```
+
 * Various system types and primitives:
   ```
   System.Clock.Primitive
@@ -652,6 +673,13 @@ Other minor changes
   ```
   and their corresponding algebraic substructures.
 
+* Added new functions in `Category.Monad.State`:
+  ```
+  runState  : State s a → s → a × s
+  evalState : State s a → s → a 
+  execState : State s a → s → s
+  ```
+
 * Added new records to `Algebra.Morphism.Structures`:
   ```agda
   record IsQuasigroupHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
@@ -690,6 +718,16 @@ Other minor changes
   xs≮[] : ∀ xs → ¬ xs < []
   ```
 
+* Added new definitions and proofs to `Data.Nat.Primality`:
+  ```agda
+  Composite : ℕ → Set
+  composite? : Decidable composite
+  composite⇒¬prime : Composite n → ¬ Prime n
+  ¬composite⇒prime : 2 ≤ n → ¬ Composite n → Prime n
+  prime⇒¬composite : Prime n → ¬ Composite n
+  ¬prime⇒composite : 2 ≤ n → ¬ Prime n → Composite n
+  ```
+
 * Added new proofs in `Data.Nat.Properties`:
   ```agda
   n≮0       : n ≮ 0
@@ -723,6 +761,10 @@ Other minor changes
   toℚᵘ-isNearSemiringMonomorphism-+-* : IsNearSemiringMonomorphism +-*-rawNearSemiring ℚᵘ.+-*-rawNearSemiring toℚᵘ
   toℚᵘ-isSemiringHomomorphism-+-* : IsSemiringHomomorphism +-*-rawSemiring ℚᵘ.+-*-rawSemiring toℚᵘ
   toℚᵘ-isSemiringMonomorphism-+-* : IsSemiringMonomorphism +-*-rawSemiring ℚᵘ.+-*-rawSemiring toℚᵘ
+  
+  pos⇒nonZero       : .{{Positive p}} → NonZero p
+  neg⇒nonZero       : .{{Negative p}} → NonZero p
+  nonZero⇒1/nonZero : .{{_ : NonZero p}} → NonZero (1/ p)
   ```
 
 * Added new rounding functions in `Data.Rational.Unnormalised.Base`:
@@ -734,7 +776,25 @@ Other minor changes
 * Added new definitions in `Data.Rational.Unnormalised.Properties`:
   ```agda
   +-*-rawNearSemiring : RawNearSemiring 0ℓ 0ℓ
-  +-*-rawSemiring : RawSemiring 0ℓ 0ℓ
+  +-*-rawSemiring     : RawSemiring 0ℓ 0ℓ
+
+  ≰⇒≥ : _≰_ ⇒ _≥_
+  
+  *-mono-≤-nonNeg   : .{{_ : NonNegative p}} .{{_ : NonNegative r}} → p ≤ q → r ≤ s → p * r ≤ q * s
+  *-mono-<-nonNeg   : .{{_ : NonNegative p}} .{{_ : NonNegative r}} → p < q → r < s → p * r < q * s
+  1/-antimono-≤-pos : .{{_ : Positive p}}    .{{_ : Positive q}}    → p ≤ q → 1/ q ≤ 1/ p
+  ⊓-mono-<          : _⊓_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
+  ⊔-mono-<          : _⊔_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
+
+  pos⇒nonZero          : ∀ p .{{_ : Positive p}} → NonZero p
+  neg⇒nonZero          : ∀ p .{{_ : Negative p}} → NonZero p
+  pos+pos⇒pos          : ∀ p .{{_ : Positive p}}    → ∀ q .{{_ : Positive q}}    → Positive (p + q)
+  nonNeg+nonNeg⇒nonNeg : ∀ p .{{_ : NonNegative p}} → ∀ q .{{_ : NonNegative q}} → NonNegative (p + q)
+  pos*pos⇒pos          : ∀ p .{{_ : Positive p}}    → ∀ q .{{_ : Positive q}}    → Positive (p * q)
+  nonNeg*nonNeg⇒nonNeg : ∀ p .{{_ : NonNegative p}} → ∀ q .{{_ : NonNegative q}} → NonNegative (p * q)
+  pos⊓pos⇒pos          : ∀ p .{{_ : Positive p}}    → ∀ q .{{_ : Positive q}}    → Positive (p ⊓ q)
+  pos⊔pos⇒pos          : ∀ p .{{_ : Positive p}}    → ∀ q .{{_ : Positive q}}    → Positive (p ⊔ q)
+  1/nonZero⇒nonZero    : ∀ p .{{_ : NonZero p}} → NonZero (1/ p)
   ```
 
 * Added new proof to `Data.Product.Properties`:
@@ -980,6 +1040,12 @@ This is a full list of proofs that have changed form to use irrelevant instance 
 
 * In `Data.Integer.Properties`:
   ```
+  positive⁻¹        : ∀ {i} → Positive i → i > 0ℤ
+  negative⁻¹        : ∀ {i} → Negative i → i < 0ℤ
+  nonPositive⁻¹     : ∀ {i} → NonPositive i → i ≤ 0ℤ
+  nonNegative⁻¹     : ∀ {i} → NonNegative i → i ≥ 0ℤ
+  negative<positive : ∀ {i j} → Negative i → Positive j → i < j
+
   sign-◃    : ∀ s n → sign (s ◃ suc n) ≡ s
   sign-cong : ∀ {s₁ s₂ n₁ n₂} → s₁ ◃ suc n₁ ≡ s₂ ◃ suc n₂ → s₁ ≡ s₂
   -◃<+◃     : ∀ m n → Sign.- ◃ (suc m) < Sign.+ ◃ n
@@ -1036,6 +1102,15 @@ This is a full list of proofs that have changed form to use irrelevant instance 
 
 * In `Data.Rational.Unnormalised.Properties`:
   ```agda
+  positive⁻¹           : ∀ {q} → .(Positive q) → q > 0ℚᵘ
+  nonNegative⁻¹        : ∀ {q} → .(NonNegative q) → q ≥ 0ℚᵘ
+  negative⁻¹           : ∀ {q} → .(Negative q) → q < 0ℚᵘ
+  nonPositive⁻¹        : ∀ {q} → .(NonPositive q) → q ≤ 0ℚᵘ
+  positive⇒nonNegative : ∀ {p} → Positive p → NonNegative p
+  negative⇒nonPositive : ∀ {p} → Negative p → NonPositive p
+  negative<positive    : ∀ {p q} → .(Negative p) → .(Positive q) → p < q
+  nonNeg∧nonPos⇒0      : ∀ {p} → .(NonNegative p) → .(NonPositive p) → p ≃ 0ℚᵘ
+  
   ≤-steps : ∀ {p q r} → NonNegative r → p ≤ q → p ≤ r + q
   p≤p+q   : ∀ {p q} → NonNegative q → p ≤ p + q
   p≤q+p   : ∀ {p} → NonNegative p → ∀ {q} → q ≤ p + q
@@ -1072,6 +1147,16 @@ This is a full list of proofs that have changed form to use irrelevant instance 
 
 * In `Data.Rational.Properties`:
   ```
+  positive⁻¹ : Positive p → p > 0ℚ
+  nonNegative⁻¹ : NonNegative p → p ≥ 0ℚ
+  negative⁻¹ : Negative p → p < 0ℚ
+  nonPositive⁻¹ : NonPositive p → p ≤ 0ℚ
+  negative<positive : Negative p → Positive q → p < q
+  nonNeg≢neg : ∀ p q → NonNegative p → Negative q → p ≢ q
+  pos⇒nonNeg : ∀ p → Positive p → NonNegative p
+  neg⇒nonPos : ∀ p → Negative p → NonPositive p
+  nonNeg∧nonZero⇒pos : ∀ p → NonNegative p → NonZero p → Positive p
+
   *-cancelʳ-≤-pos    : ∀ r → Positive r → ∀ {p q} → p * r ≤ q * r → p ≤ q
   *-cancelˡ-≤-pos    : ∀ r → Positive r → ∀ {p q} → r * p ≤ r * q → p ≤ q
   *-cancelʳ-≤-neg    : ∀ r → Negative r → ∀ {p q} → p * r ≤ q * r → p ≥ q
@@ -1103,3 +1188,12 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   1/pos⇒pos : ∀ p .{{_ : NonZero p}} → (1/p : Positive (1/ p)) → Positive p
   1/neg⇒neg : ∀ p .{{_ : NonZero p}} → (1/p : Negative (1/ p)) → Negative p
   ```
+
+* In `Data.Fin.Permutation.Components`:
+  ```
+  `reverse` is deprecated to use `opposite` in `Data.Fin.Base` 
+  `reverse-prop` is deprecated to use `opposite-prop` in `Data.Fin.Properties`
+  `reverse-involutive` is deprecated to use `opposite-involutive` in `Data.Fin.Properties`
+  `reverse-suc` is deprecated to use `opposite-suc` in `Data.Fin.Properties`
+  ```
+

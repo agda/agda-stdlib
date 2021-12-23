@@ -8,6 +8,7 @@
 
 module Reflection.Literal where
 
+open import Data.Bool.Base as Bool using (Bool; true; false)
 import Data.Char as Char
 import Data.Float as Float
 import Data.Nat as ℕ
@@ -102,3 +103,6 @@ meta x ≟ char x₁ = no (λ ())
 meta x ≟ string x₁ = no (λ ())
 meta x ≟ name x₁ = no (λ ())
 meta x ≟ meta x₁ = Dec.map′ (cong meta) meta-injective (x Meta.≟ x₁)
+
+_≡ᵇ_ : Literal → Literal → Bool
+l ≡ᵇ l′ = Dec.isYes (l ≟ l′)

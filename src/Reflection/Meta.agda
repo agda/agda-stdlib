@@ -16,7 +16,7 @@ import Relation.Binary.Construct.On as On
 open import Relation.Binary.PropositionalEquality
 
 open import Agda.Builtin.Reflection public
-  using (Meta) renaming (primMetaToNat to toℕ)
+  using (Meta) renaming (primMetaToNat to toℕ; primMetaEquality to _≡ᵇ_)
 
 open import Agda.Builtin.Reflection.Properties public
   renaming (primMetaToNatInjective to toℕ-injective)

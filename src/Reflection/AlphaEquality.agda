@@ -106,7 +106,7 @@ mutual
   (arg i a) =α=-ArgPattern (arg i′ a′) = a =α=-Pattern a′
 
   _=α=-Term_ : Term → Term → Bool
-  (var     x  args) =α=-Term (var     x′  args′) = (x  ≡ᵇ  x′)  ∧ (args =α=-ArgsTerm args′)
+  (var     x  args) =α=-Term (var     x′  args′) = (x  ℕ.≡ᵇ  x′)  ∧ (args =α=-ArgsTerm args′)
   (con     c  args) =α=-Term (con     c′  args′) = (c  =α= c′)  ∧ (args =α=-ArgsTerm args′)
   (def     f  args) =α=-Term (def     f′  args′) = (f  =α= f′)  ∧ (args =α=-ArgsTerm args′)
   (meta    x  args) =α=-Term (meta     x′ args′) = (x  =α= x′)  ∧ (args =α=-ArgsTerm args′)
@@ -210,10 +210,10 @@ mutual
 
   _=α=-Sort_ : Sort → Sort → Bool
   (set t    ) =α=-Sort (set t′    ) = t =α=-Term t′
-  (lit n    ) =α=-Sort (lit n′    ) = n ≡ᵇ n′
+  (lit n    ) =α=-Sort (lit n′    ) = n ℕ.≡ᵇ n′
   (prop t   ) =α=-Sort (prop t′   ) = t =α=-Term t′
-  (propLit n) =α=-Sort (propLit n′) = n ≡ᵇ n′
-  (inf n    ) =α=-Sort (inf n′    ) = n ≡ᵇ n′
+  (propLit n) =α=-Sort (propLit n′) = n ℕ.≡ᵇ n′
+  (inf n    ) =α=-Sort (inf n′    ) = n ℕ.≡ᵇ n′
   (unknown  ) =α=-Sort (unknown   ) = true
 
   (set _    ) =α=-Sort (lit _    ) = false
@@ -267,11 +267,11 @@ mutual
 
   _=α=-Pattern_ : Pattern → Pattern → Bool
   (con c ps) =α=-Pattern (con c′ ps′) = (c =α= c′) ∧ (ps =α=-ArgsPattern ps′)
-  (var x   ) =α=-Pattern (var x′    ) = x ≡ᵇ x′
+  (var x   ) =α=-Pattern (var x′    ) = x ℕ.≡ᵇ x′
   (lit l   ) =α=-Pattern (lit l′    ) = l =α= l′
   (proj a  ) =α=-Pattern (proj a′   ) = a =α= a′
   (dot t   ) =α=-Pattern (dot t′    ) = t =α=-Term t′
-  (absurd x) =α=-Pattern (absurd x′ ) = x ≡ᵇ x′
+  (absurd x) =α=-Pattern (absurd x′ ) = x ℕ.≡ᵇ x′
 
   (con x x₁) =α=-Pattern (dot x₂    ) = false
   (con x x₁) =α=-Pattern (var x₂    ) = false
