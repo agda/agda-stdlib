@@ -718,6 +718,16 @@ Other minor changes
   xs≮[] : ∀ xs → ¬ xs < []
   ```
 
+* Added new definitions and proofs to `Data.Nat.Primality`:
+  ```agda
+  Composite : ℕ → Set
+  composite? : Decidable composite
+  composite⇒¬prime : Composite n → ¬ Prime n
+  ¬composite⇒prime : 2 ≤ n → ¬ Composite n → Prime n
+  prime⇒¬composite : Prime n → ¬ Composite n
+  ¬prime⇒composite : 2 ≤ n → ¬ Prime n → Composite n
+  ```
+
 * Added new proofs in `Data.Nat.Properties`:
   ```agda
   n≮0       : n ≮ 0
