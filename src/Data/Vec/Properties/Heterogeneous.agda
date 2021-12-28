@@ -8,29 +8,18 @@
 
 module Data.Vec.Properties.Heterogeneous where
 
-open import Data.Bool.Base using (true; false)
-open import Data.Empty using (⊥-elim)
-open import Data.Fin.Base as Fin using (Fin; zero; suc; toℕ; fromℕ; _↑ˡ_; _↑ʳ_)
-open import Data.List.Base as List using (List)
 open import Data.Nat.Base
 open import Data.Nat.Properties using (+-assoc; +-suc)
 open import Data.Product as Prod
-  using (_×_; _,_; proj₁; proj₂; <_,_>; uncurry)
-open import Data.Sum.Base using ([_,_]′)
-open import Data.Sum.Properties using ([,]-map-commute)
+  using (_×_; _,_; Σ; Σ-syntax; proj₁; proj₂)
 open import Data.Vec.Base
 open import Data.Vec.Properties
-open import Function.Base
-open import Function.Inverse using (_↔_; inverse)
+-- open import Function.Base
+-- open import Function.Inverse using (_↔_; inverse)
 open import Level using (Level)
-open import Relation.Binary as B hiding (Decidable)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; _≗_; cong₂)
 open P.≡-Reasoning
-open import Relation.Unary using (Pred; Decidable)
-open import Relation.Nullary using (Dec; does; yes; no)
-open import Relation.Nullary.Decidable using (map′)
-open import Relation.Nullary.Product using (_×-dec_)
 
 private
   variable
@@ -69,13 +58,13 @@ Vec≡-≡ []       = refl
 Vec≡-≡ (z ∷ eq) = P.cong (z ∷_) (Vec≡-≡ eq)
 
 Vec≡-transport : ∀ {m n} {xs : Vec A m} {ys : Vec A n} → xs [ m ]≡[ n ] ys →
-  Prod.∃ λ (eq : m ≡ n) → (P.subst (Vec A) eq xs ≡ ys)
+  Σ[ eq ∈ m ≡ n ] P.subst (Vec A) eq xs ≡ ys
 Vec≡-transport []       = refl , refl
 Vec≡-transport (z ∷ eq) with Vec≡-transport eq
 ... | refl , refl = refl , refl
 
 transport-Vec≡ : ∀ {m n} {xs : Vec A m} {ys : Vec A n} →
-                 (Prod.∃ λ (eq : m ≡ n) → P.subst (Vec A) eq xs ≡ ys) →
+                 Σ[ eq ∈ m ≡ n ] P.subst (Vec A) eq xs ≡ ys →
                  xs [ m ]≡[ n ] ys
 
 transport-Vec≡ (refl , refl) = Vec≡-refl
