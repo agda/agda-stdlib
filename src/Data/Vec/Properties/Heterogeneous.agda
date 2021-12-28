@@ -42,7 +42,7 @@ syntax ≡ᵥ {m = m} xs {n} ys = xs [ m ]≡[ n ] ys
 
 ≡ᵥ-refl : ∀ {n} {xs : Vec A n} → xs [ n ]≡[ n ] xs
 ≡ᵥ-refl {xs = []}       = []
-≡ᵥ-refl {xs = (x ∷ xs)} = x ∷ ≡ᵥ-refl
+≡ᵥ-refl {xs = x ∷ xs} = x ∷ ≡ᵥ-refl
 
 ≡ᵥ-sym : ∀ {m n} {xs : Vec A m} {ys} → xs [ m ]≡[ n ] ys → ys [ n ]≡[ m ] xs
 ≡ᵥ-sym []       = []
@@ -76,7 +76,7 @@ transport-≡ᵥ (refl , refl) = ≡ᵥ-refl
 
 -- This is an adaptation of `≡-Reasoning` from
 -- `Relation.Binary.Reasoning.PropositionalEquality.Core`
--- to account for heterogeneous `Vec` equality
+-- to account for heterogeneous `Vec` equality `≡ᵥ`
 
 module ≡ᵥ-Reasoning {A : Set a} where
 
