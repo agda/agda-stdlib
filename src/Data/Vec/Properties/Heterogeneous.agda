@@ -46,36 +46,36 @@ private
 data Vec≡-syntax {a : Level} {A : Set a} : {m : ℕ} (xs : Vec A m) {n : ℕ} (ys : Vec A n) → Set (Level.suc a) where
 
   []  : Vec≡-syntax [] []
-  _∷_ : ∀ {m n} {xs} {ys} {z} → Vec≡-syntax {m = m} xs {n} ys →
+  _∷_ : ∀ {m n} z {xs} {ys} → Vec≡-syntax {m = m} xs {n} ys →
         Vec≡-syntax (z ∷ xs) (z ∷ ys)
 
 syntax Vec≡-syntax {m = m} xs {n} ys = xs [ m ]≡[ n ] ys
 
 Vec≡-refl : ∀ {n} {xs : Vec A n} → xs [ n ]≡[ n ] xs
 Vec≡-refl {xs = []}       = []
-Vec≡-refl {xs = (x ∷ xs)} = _∷_ Vec≡-refl
+Vec≡-refl {xs = (x ∷ xs)} = x ∷ Vec≡-refl
 
 Vec≡-sym : ∀ {m n} {xs : Vec A m} {ys} → xs [ m ]≡[ n ] ys → ys [ n ]≡[ m ] xs
 Vec≡-sym []       = []
-Vec≡-sym (_∷_ eq) = _∷_ (Vec≡-sym eq)
+Vec≡-sym (z ∷ eq) = z ∷ (Vec≡-sym eq)
 
 Vec≡-trans : ∀ {m n p} {xs : Vec A m} {ys} {zs} →
   xs [ m ]≡[ n ] ys → ys [ n ]≡[ p ] zs → xs [ m ]≡[ p ] zs
 Vec≡-trans []       t = t
-Vec≡-trans (_∷_ eq) (_∷_ t) = _∷_ (Vec≡-trans eq t)
+Vec≡-trans (z ∷ eq) (z ∷ t) = z ∷ (Vec≡-trans eq t)
 
 Vec≡-≡ : ∀ {n} {xs ys : Vec A n} → xs [ n ]≡[ n ] ys → xs ≡ ys
 Vec≡-≡ []       = refl
-Vec≡-≡ (_∷_ eq) = P.cong (_ ∷_) (Vec≡-≡ eq)
+Vec≡-≡ (z ∷ eq) = P.cong (z ∷_) (Vec≡-≡ eq)
 
 Vec≡-transport : ∀ {m n} {xs : Vec A m} {ys : Vec A n} → xs [ m ]≡[ n ] ys →
   Prod.∃ λ (eq : m ≡ n) → (P.subst (Vec A) eq xs ≡ ys)
 Vec≡-transport []       = refl , refl
-Vec≡-transport (_∷_ eq) with Vec≡-transport eq
+Vec≡-transport (z ∷ eq) with Vec≡-transport eq
 ... | refl , refl = refl , refl
 
 transport-Vec≡ : ∀ {m n} {xs : Vec A m} {ys : Vec A n} →
-                 (Prod.∃ λ (eq : m ≡ n) → (P.subst (Vec A) eq xs ≡ ys)) →
+                 (Prod.∃ λ (eq : m ≡ n) → P.subst (Vec A) eq xs ≡ ys) →
                  xs [ m ]≡[ n ] ys
 
 transport-Vec≡ (refl , refl) = Vec≡-refl
@@ -86,12 +86,12 @@ transport-Vec≡ (refl , refl) = Vec≡-refl
 
 ++-[] : ∀ {m} {xs : Vec A m} → (xs ++ []) [ m + 0 ]≡[ m ] xs
 ++-[] {xs = []}     = []
-++-[] {xs = x ∷ xs} = _∷_ (++-[] {xs = xs})
+++-[] {xs = x ∷ xs} = _ ∷ (++-[] {xs = xs})
 
 ++-assoc : ∀ {m n p} (xs : Vec A m) {ys : Vec A n} {zs : Vec A p} →
   (xs ++ (ys ++ zs)) [ m + (n + p) ]≡[ (m + n) + p ] ((xs ++ ys) ++ zs)
 ++-assoc [] = Vec≡-refl
-++-assoc (x ∷ xs) = _∷_ (++-assoc xs)
+++-assoc (x ∷ xs) = _ ∷ (++-assoc xs)
 
 ʳ++-[] : ∀ {m} {xs : Vec A m} → (xs ʳ++ []) [ m + 0 ]≡[ m ] (reverse xs)
 ʳ++-[] {xs = xs} = P.subst (λ v → Vec≡-syntax v (reverse xs))
@@ -111,12 +111,12 @@ transport-Vec≡ (refl , refl) = Vec≡-refl
 ʳ++-Vec≡-cong : ∀ {m n p} (xs : Vec A m) {ys : Vec A n} {zs : Vec A p} →
   ys [ n ]≡[ p ] zs → (xs ʳ++ ys) [ m + n ]≡[ m + p ] (xs ʳ++ zs)
 ʳ++-Vec≡-cong [] eq = eq
-ʳ++-Vec≡-cong (x ∷ xs) {ys} eq = Vec≡-trans (Vec≡-sym (ʳ++-∷ x xs)) (Vec≡-trans (ʳ++-Vec≡-cong xs (_∷_ eq)) (ʳ++-∷ x xs))
+ʳ++-Vec≡-cong (x ∷ xs) {ys} eq = Vec≡-trans (Vec≡-sym (ʳ++-∷ x xs)) (Vec≡-trans (ʳ++-Vec≡-cong xs (x ∷ eq)) (ʳ++-∷ x xs))
 
 Vec≡-ʳ++-cong : ∀ {m n p} {xs : Vec A m} {ys : Vec A n} (zs : Vec A p) →
   xs [ m ]≡[ n ] ys → (xs ʳ++ zs) [ m + p ]≡[ n + p ] (ys ʳ++ zs)
 Vec≡-ʳ++-cong zs []       = Vec≡-refl
-Vec≡-ʳ++-cong {xs = z ∷ xs} {ys = z ∷ ys} zs (_∷_ {z = z} eq) = Vec≡-trans (Vec≡-sym (ʳ++-∷ z xs)) (Vec≡-trans (Vec≡-ʳ++-cong (z ∷ zs) eq) (ʳ++-∷ z ys))
+Vec≡-ʳ++-cong {xs = z ∷ xs} {ys = z ∷ ys} zs (z ∷ eq) = Vec≡-trans (Vec≡-sym (ʳ++-∷ z xs)) (Vec≡-trans (Vec≡-ʳ++-cong (z ∷ zs) eq) (ʳ++-∷ z ys))
 
 -- Reverse-append of append is reverse-append after reverse-append.
 
