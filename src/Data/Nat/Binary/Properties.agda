@@ -45,16 +45,20 @@ import Relation.Binary.Construct.StrictToNonStrict _≡_ _<_
   as StrictToNonStrict
 open +-*-Solver
 
+private
+  variable
+    x : ℕᵇ
+
 infix 4  _<?_ _≟_ _≤?_
 
 ------------------------------------------------------------------------
 -- Properties of _≡_
 ------------------------------------------------------------------------
 
-2[1+x]≢0 : ∀ {x} → 2[1+ x ] ≢ 0ᵇ
+2[1+x]≢0 : 2[1+ x ] ≢ 0ᵇ
 2[1+x]≢0 ()
 
-1+[2x]≢0 : ∀ {x} → 1+[2 x ] ≢ 0ᵇ
+1+[2x]≢0 : 1+[2 x ] ≢ 0ᵇ
 1+[2x]≢0 ()
 
 2[1+_]-injective : Injective _≡_ _≡_ 2[1+_]
@@ -213,16 +217,16 @@ fromℕ-toℕ = toℕ-injective ∘ toℕ-fromℕ ∘ toℕ
 fromℕ-pred : ∀ n → fromℕ (ℕ.pred n) ≡ pred (fromℕ n)
 fromℕ-pred n = begin
   fromℕ (ℕ.pred n)        ≡⟨ cong (fromℕ ∘ ℕ.pred) (sym (toℕ-fromℕ n)) ⟩
-  fromℕ (ℕ.pred (toℕ x))  ≡⟨ cong fromℕ (sym (toℕ-pred x)) ⟩
-  fromℕ (toℕ (pred x))    ≡⟨ fromℕ-toℕ (pred x) ⟩
-  pred x                  ≡⟨ refl ⟩
+  fromℕ (ℕ.pred (toℕ y))  ≡⟨ cong fromℕ (sym (toℕ-pred y)) ⟩
+  fromℕ (toℕ (pred y))    ≡⟨ fromℕ-toℕ (pred y) ⟩
+  pred y                  ≡⟨ refl ⟩
   pred (fromℕ n)          ∎
-  where open ≡-Reasoning;  x = fromℕ n
+  where open ≡-Reasoning;  y = fromℕ n
 
-x≡0⇒toℕ[x]≡0 : ∀ {x} → x ≡ zero → toℕ x ≡ 0
+x≡0⇒toℕ[x]≡0 : x ≡ zero → toℕ x ≡ 0
 x≡0⇒toℕ[x]≡0 {zero} _ = refl
 
-toℕ[x]≡0⇒x≡0 : ∀ {x} → toℕ x ≡ 0 → x ≡ zero
+toℕ[x]≡0⇒x≡0 : toℕ x ≡ 0 → x ≡ zero
 toℕ[x]≡0⇒x≡0 {zero} _ = refl
 
 ------------------------------------------------------------------------
@@ -230,10 +234,10 @@ toℕ[x]≡0⇒x≡0 {zero} _ = refl
 ------------------------------------------------------------------------
 -- Basic properties
 
-x≮0 : ∀ {x} → x ≮ zero
+x≮0 : x ≮ zero
 x≮0 ()
 
-x≢0⇒x>0 : ∀ {x} → x ≢ zero → x > zero
+x≢0⇒x>0 : x ≢ zero → x > zero
 x≢0⇒x>0 {zero}     0≢0 =  contradiction refl 0≢0
 x≢0⇒x>0 {2[1+ _ ]} _   =  0<even
 x≢0⇒x>0 {1+[2 _ ]} _   =  0<odd
@@ -460,7 +464,7 @@ x<1+[2x] 1+[2 x ] = odd<odd (x<1+[2x] x)
 0≤x 2[1+ _ ] =  inj₁ 0<even
 0≤x 1+[2 x ] =  inj₁ 0<odd
 
-x≤0⇒x≡0 : ∀ {x} → x ≤ zero → x ≡ zero
+x≤0⇒x≡0 : x ≤ zero → x ≡ zero
 x≤0⇒x≡0 (inj₂ x≡0) = x≡0
 
 ------------------------------------------------------------------------------
@@ -889,7 +893,7 @@ x<x+1 x = x<x+y x 0<odd
 x<1+x : ∀ x → x < 1ᵇ + x
 x<1+x x rewrite +-comm 1ᵇ x = x<x+1 x
 
-x<1⇒x≡0 : ∀ {x} → x < 1ᵇ → x ≡ zero
+x<1⇒x≡0 : x < 1ᵇ → x ≡ zero
 x<1⇒x≡0 0<odd = refl
 
 ------------------------------------------------------------------------
@@ -1245,16 +1249,16 @@ x≢0∧y≢0⇒x*y≢0 {x} {_} x≢0 y≢0 xy≡0  with x*y≡0⇒x≡0∨y≡0
 -- Properties of double
 ------------------------------------------------------------------------
 
-double[x]≡0⇒x≡0 : ∀ {x} → double x ≡ zero → x ≡ zero
+double[x]≡0⇒x≡0 : double x ≡ zero → x ≡ zero
 double[x]≡0⇒x≡0 {zero} _ = refl
 
-x≡0⇒double[x]≡0 : ∀ {x} → x ≡ 0ᵇ → double x ≡ 0ᵇ
+x≡0⇒double[x]≡0 : x ≡ 0ᵇ → double x ≡ 0ᵇ
 x≡0⇒double[x]≡0 = cong double
 
-x≢0⇒double[x]≢0 : ∀ {x} → x ≢ zero → double x ≢ zero
+x≢0⇒double[x]≢0 : x ≢ zero → double x ≢ zero
 x≢0⇒double[x]≢0 x≢0 = x≢0 ∘ double[x]≡0⇒x≡0
 
-double≢1 : ∀ {x} → double x ≢ 1ᵇ
+double≢1 : double x ≢ 1ᵇ
 double≢1 {zero} ()
 
 double≗2* : double ≗ 2ᵇ *_
@@ -1354,7 +1358,7 @@ double-suc x = begin
   suc (double 1+[2 x ])   ∎
   where open ≡-Reasoning;  2x = double x
 
-suc≢0 : ∀ {x} → suc x ≢ zero
+suc≢0 : suc x ≢ zero
 suc≢0 {zero}     ()
 suc≢0 {2[1+ _ ]} ()
 suc≢0 {1+[2 _ ]} ()
@@ -1452,7 +1456,7 @@ pred-suc zero     =  refl
 pred-suc 2[1+ x ] =  sym (2[1+_]-double-suc x)
 pred-suc 1+[2 x ] =  refl
 
-suc-pred : ∀ {x} → x ≢ zero → suc (pred x) ≡ x
+suc-pred : x ≢ zero → suc (pred x) ≡ x
 suc-pred {zero}     0≢0 =  contradiction refl 0≢0
 suc-pred {2[1+ _ ]} _   =  refl
 suc-pred {1+[2 x ]} _   =  sym (1+[2_]-suc-double x)
@@ -1468,7 +1472,7 @@ pred-mono-≤ {x} {y} x≤y = begin
   where
   open ≤-Reasoning;  m = toℕ x;  n = toℕ y
 
-pred[x]<x : ∀ {x} → x ≢ zero → pred x < x
+pred[x]<x : x ≢ zero → pred x < x
 pred[x]<x {x} x≢0 = begin-strict
   pred x       <⟨ x<suc[x] (pred x) ⟩
   suc (pred x) ≡⟨ suc-pred x≢0 ⟩
@@ -1490,7 +1494,7 @@ pred[x]+y≡x+pred[y] {x} {y} x≢0 y≢0 = begin
 -- Properties of size
 ------------------------------------------------------------------------
 
-|x|≡0⇒x≡0 : ∀ {x} → size x ≡ 0 → x ≡ 0ᵇ
+|x|≡0⇒x≡0 : size x ≡ 0 → x ≡ 0ᵇ
 |x|≡0⇒x≡0 {zero} refl =  refl
 
 
