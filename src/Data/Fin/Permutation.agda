@@ -290,7 +290,7 @@ lift₀-transpose i j (suc k) with does (k ≟ i)
 
 insert-punchIn : ∀ i j (π : Permutation m n) k → insert i j π ⟨$⟩ʳ punchIn i k ≡ punchIn j (π ⟨$⟩ʳ k)
 insert-punchIn i j π k with i ≟ punchIn i k
-... | yes i≡punchInᵢk = ⊥-elim (punchInᵢ≢i i k (sym i≡punchInᵢk))
+... | yes i≡punchInᵢk = contradiction (sym i≡punchInᵢk) (punchInᵢ≢i i k)
 ... | no  i≢punchInᵢk = begin
   punchIn j (π ⟨$⟩ʳ punchOut i≢punchInᵢk) ≡⟨ cong (λ l → punchIn j (π ⟨$⟩ʳ l)) (punchOut-cong i refl) ⟩
   punchIn j (π ⟨$⟩ʳ punchOut (punchInᵢ≢i i k ∘ sym)) ≡⟨ cong (λ l → punchIn j (π ⟨$⟩ʳ l)) (punchOut-punchIn i) ⟩
@@ -313,4 +313,4 @@ remove-insert i j π k with i ≟ i
     ≡⟨ punchOut-punchIn j ⟩
   π ⟨$⟩ʳ k
     ∎
-... | no i≢i = ⊥-elim (i≢i refl)
+... | no i≢i = contradiction refl i≢i
