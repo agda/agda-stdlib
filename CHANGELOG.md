@@ -699,7 +699,6 @@ Other minor changes
 * Added new proofs in `Data.Integer.Properties`:
   ```agda
   sign-cong′ : s₁ ◃ n₁ ≡ s₂ ◃ n₂ → s₁ ≡ s₂ ⊎ (n₁ ≡ 0 × n₂ ≡ 0)
-  ¬[1≡0] : ¬ 1ℤ ≡ 0ℤ
   ^-identityʳ : ∀ i → i ^ 1 ≡ i
   ^-zeroˡ : ∀ n → 1ℤ ^ n ≡ 1ℤ
   ^-distribˡ-+-* : ∀ i m n → i ^ (m ℕ.+ n) ≡ i ^ m * i ^ n
