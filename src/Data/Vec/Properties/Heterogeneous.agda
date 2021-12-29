@@ -124,7 +124,7 @@ module ≡ᵥ-Reasoning {A : Set a} where
 
 ʳ++-[] : ∀ {m} {xs : Vec A m} → (xs ʳ++ []) [ m + 0 ]≡[ m ] (reverse xs)
 ʳ++-[] {xs = xs} = P.subst (λ v → ≡ᵥ v (reverse xs))
-                     (P.sym (unfold-ʳ++ xs {ys = []})) (++-[] (reverse xs))
+                     (P.sym (unfold-ʳ++ xs [])) (++-[] (reverse xs))
 
 -- unfolding reverse-append on cons
 
@@ -182,9 +182,9 @@ module ≡ᵥ-Reasoning {A : Set a} where
 reverse-++-commute′ : ∀ {m n p} (xs : Vec A m) {ys : Vec A n} (zs : Vec A p) →
                      (reverse (xs ++ ys) ++ zs) [ m + n + p ]≡[ n + (m + p) ] (reverse ys ++ (reverse xs ++ zs))
 reverse-++-commute′ xs {ys} zs
-  rewrite P.sym (unfold-ʳ++ (xs ++ ys) {ys = zs})
-    | P.sym (unfold-ʳ++ xs {ys = zs})
-    | P.sym (unfold-ʳ++ ys {ys = xs ʳ++ zs})
+  rewrite P.sym (unfold-ʳ++ (xs ++ ys) zs)
+    | P.sym (unfold-ʳ++ xs zs)
+    | P.sym (unfold-ʳ++ ys (xs ʳ++ zs))
   = ʳ++-++ xs
 
 reverse-++-commute : ∀ {m n} (xs : Vec A m) (ys : Vec A n) →

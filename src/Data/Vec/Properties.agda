@@ -802,7 +802,7 @@ module _ {b} (B : ℕ → Set b) (f : Opʳ {A = A} B) where
   -- foldr after a reverse is a foldl
 
   reverse-foldr : ∀ {n} e →
-                foldr B f e ∘ reverse ≗ foldl B {n} (λ {n} → flip (f {n})) e
+                foldr B {n} f e ∘ reverse ≗ foldl B (λ {n} → flip (f {n})) e
   reverse-foldr e xs =
     foldl-fusion (foldr B f e) [] e refl (λ b x → refl) xs
 
