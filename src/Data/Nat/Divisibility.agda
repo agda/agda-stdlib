@@ -15,7 +15,7 @@ open import Data.Nat.Properties
 open import Data.Product
 open import Data.Unit using (tt)
 open import Function.Base
-open import Function.Equivalence using (_⇔_; equivalence)
+open import Function.Bundles using (_⇔_; mk⇔)
 open import Level using (0ℓ)
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable as Dec using (False)
@@ -48,7 +48,7 @@ n∣m⇒m%n≡0 m n (divides v eq) = begin-equality
   where open ≤-Reasoning
 
 m%n≡0⇔n∣m : ∀ m n .{{_ : NonZero n}} → m % n ≡ 0 ⇔ n ∣ m
-m%n≡0⇔n∣m m n = equivalence (m%n≡0⇒n∣m m n) (n∣m⇒m%n≡0 m n)
+m%n≡0⇔n∣m m n = mk⇔ (m%n≡0⇒n∣m m n) (n∣m⇒m%n≡0 m n)
 
 ------------------------------------------------------------------------
 -- Properties of _∣_ and _≤_

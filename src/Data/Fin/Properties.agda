@@ -24,10 +24,8 @@ open import Data.Product using (Σ-syntax; ∃; ∃₂; ∄; _×_; _,_; map; pro
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]; [_,_]′)
 open import Data.Sum.Properties using ([,]-map-commute; [,]-∘-distr)
 open import Function.Base using (_∘_; id; _$_; flip)
-open import Function.Bundles using (_↔_; mk↔′)
+open import Function.Bundles using (_↣_; _⇔_; _↔_; mk⇔; mk↔′)
 open import Function.Definitions.Core2 using (Surjective)
-open import Function.Equivalence using (_⇔_; equivalence)
-open import Function.Injection using (_↣_)
 open import Relation.Binary as B hiding (Decidable; _⇔_)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; trans; cong; subst; _≗_; module ≡-Reasoning)
@@ -774,7 +772,7 @@ module _ {n p} {P : Pred (Fin (suc n)) p} where
   ∀-cons z s (suc i) = s i
 
   ∀-cons-⇔ : (P zero × Π[ P ∘ suc ]) ⇔ Π[ P ]
-  ∀-cons-⇔ = equivalence (uncurry ∀-cons) < _$ zero , _∘ suc >
+  ∀-cons-⇔ = mk⇔ (uncurry ∀-cons) < _$ zero , _∘ suc >
 
   ∃-here : P zero → ∃⟨ P ⟩
   ∃-here = zero ,_
@@ -787,7 +785,7 @@ module _ {n p} {P : Pred (Fin (suc n)) p} where
   ∃-toSum (suc f , P₁₊) = inj₂ (f , P₁₊)
 
   ⊎⇔∃ : (P zero ⊎ ∃⟨ P ∘ suc ⟩) ⇔ ∃⟨ P ⟩
-  ⊎⇔∃ = equivalence [ ∃-here , ∃-there ] ∃-toSum
+  ⊎⇔∃ = mk⇔ [ ∃-here , ∃-there ] ∃-toSum
 
 decFinSubset : ∀ {n p q} {P : Pred (Fin n) p} {Q : Pred (Fin n) q} →
                Decidable Q → (∀ {f} → Q f → Dec (P f)) → Dec (Q ⊆ P)

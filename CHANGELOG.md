@@ -286,6 +286,64 @@ Non-backwards compatible changes
   1/pos⇒pos : ∀ p .{{_ : NonZero p}} .{{Positive (1/ p)}} → Positive p
   ```
 
+* Various modules have changed the types of some definitions to use the new
+  function hierachy:
+  * `Data.Fin.Properties`
+    * `∀-cons-⇔`
+    * `⊎⇔∃`
+  * `Data.Fin.Subset.Properties`
+    * `out⊆-⇔`
+    * `in⊆in-⇔`
+    * `out⊂in-⇔`
+    * `out⊂out-⇔`
+    * `in⊂in-⇔`
+    * `x∈⁅y⁆⇔x≡y`
+    * `∩⇔×`
+    * `∪⇔⊎`
+    * `∃-Subset-[]-⇔`
+    * `∃-Subset-∷-⇔`
+  * `Data.List.Countdown`
+    * `empty`
+  * `Data.List.Fresh.Relation.Unary.Any`
+    * `⊎⇔Any`
+  * `Data.List.Relation.Binary.Lex`
+    * `[]<[]-⇔`
+    * `∷<∷-⇔`
+  * `Data.List.Relation.Binary.Sublist.Heterogeneous.Properties`
+    * `∷⁻¹`
+    * `∷ʳ⁻¹`
+    * `Sublist-[x]-bijection`
+  * `Data.List.Relation.Binary.Sublist.Setoid.Properties`
+    * `∷⁻¹`
+    * `∷ʳ⁻¹`
+    * `[x]⊆xs⤖x∈xs`
+  * `Data.Maybe.Relation.Binary.Connected`
+    * `just-equivalence`
+  * `Data.Maybe.Relation.Binary.Pointwise`
+    * `just-equivalence`
+  * `Data.Maybe.Relation.Unary.All`
+    * `just-equivalence`
+  * `Data.Maybe.Relation.Unary.Any`
+    * `just-equivalence`
+  * `Data.Nat.Divisibility`
+    * `m%n≡0⇔n∣m`
+  * `Data.Nat.Properties`
+    * `eq?`
+  * `Data.Vec.Relation.Binary.Lex.Core`
+    * `P⇔[]<[]`
+    * `∷<∷-⇔`
+  * `Data.Vec.Relation.Binary.Pointwise.Extensional`
+    * `equivalent`
+    * `Pointwise-≡↔≡`
+  * `Data.Vec.Relation.Binary.Pointwise.Inductive`
+    * `Pointwise-≡↔≡`
+  * `Relation.Binary.Construct.Closure.Reflexive.Properties`
+    * `⊎⇔Refl`
+  * `Relation.Binary.Construct.Closure.Transitive`
+    * `equivalent`
+  * `Relation.Nullary.Decidable`
+    * `map`
+
 Major improvements
 ------------------
 
