@@ -704,11 +704,11 @@ foldr-[] : ∀ {A : Set a} (B : ℕ → Set b)
 foldr-[] B f = refl
 
 foldr-++ : ∀ {A : Set a} (B : ℕ → Set b)
-           (f : ∀ {n} → A → B n → B (suc n)) {e} →
-           ∀ {m n} {xs} {ys} →
-           foldr B {m + n} f e (xs ++ ys) ≡ foldr (B ∘ (_+ n)) f (foldr B {n} f e ys) xs
-foldr-++ B f {xs = []}     = refl
-foldr-++ B f {xs = x ∷ xs} = P.cong (f x) (foldr-++ B f {xs = xs})
+           (f : ∀ {n} → A → B n → B (suc n)) e →
+           ∀ {m n} (xs : Vec A m) {ys : Vec A n} →
+           foldr B f e (xs ++ ys) ≡ foldr (B ∘ (_+ n)) f (foldr B f e ys) xs
+foldr-++ B f e []       = refl
+foldr-++ B f e (x ∷ xs) = P.cong (f x) (foldr-++ B f e xs)
 
 foldl-universal : ∀ {A : Set a} (B : ℕ → Set b)
                   (f : ∀ {n} → B n → A → B (suc n)) {e}
@@ -742,7 +742,7 @@ foldl-fusion : ∀ {A : Set a}
                (h : ∀ {n} → B n → C n) →
                {f : ∀ {n} → B n → A → B (suc n)} (d : B zero) →
                {g : ∀ {n} → C n → A → C (suc n)} (e : C zero) →
-               (h {zero} d ≡ e) →
+               (h d ≡ e) →
                (∀ {n} b x → h (f {n} b x) ≡ g (h b) x) →
                ∀ {n} → h ∘ foldl B {n} f d ≗ foldl C g e
 foldl-fusion h {f} d {g} e base fuse []       = base
