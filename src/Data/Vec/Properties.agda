@@ -369,12 +369,12 @@ map-id : ∀ {n} → map {A = A} {n = n} id ≗ id
 map-id []       = refl
 map-id (x ∷ xs) = P.cong (x ∷_) (map-id xs)
 
-map-const : ∀ {n} (xs : Vec A n) (y : B) → map {n = n} (const y) xs ≡ replicate y
+map-const : ∀ {n} (xs : Vec A n) (y : B) → map (const y) xs ≡ replicate y
 map-const [] _ = refl
 map-const (_ ∷ xs) y = P.cong (y ∷_) (map-const xs y)
 
-map-++-commute : ∀ {A : Set a} {B : Set b} {m} {n} (f : A → B) xs ys →
-                 map f (xs ++ ys) ≡ map {n = m} f xs ++ map {n = n} f ys
+map-++-commute : ∀ {m} {n} (f : A → B) (xs : Vec A m) (ys : Vec A n) →
+                 map f (xs ++ ys) ≡ map f xs ++ map f ys
 map-++-commute f []       ys = refl
 map-++-commute f (x ∷ xs) ys = P.cong (f x ∷_) (map-++-commute f xs ys)
 
