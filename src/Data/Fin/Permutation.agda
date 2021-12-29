@@ -228,7 +228,7 @@ insert {m} {n} i j π = permutation to from record
     punchIn j (π ⟨$⟩ʳ punchOut (punchInᵢ≢i i (π ⟨$⟩ˡ punchOut j≢k) ∘ sym)) ≡⟨ cong (λ l → punchIn j (π ⟨$⟩ʳ l)) (punchOut-punchIn i) ⟩
     punchIn j (π ⟨$⟩ʳ (π ⟨$⟩ˡ punchOut j≢k))                              ≡⟨ cong (punchIn j) (inverseʳ π) ⟩
     punchIn j (punchOut j≢k)                                              ≡⟨ punchIn-punchOut j≢k ⟩
-    k ∎
+    k                                                                     ∎
 
 ------------------------------------------------------------------------
 -- Other properties
@@ -292,9 +292,9 @@ insert-punchIn : ∀ i j (π : Permutation m n) k → insert i j π ⟨$⟩ʳ pu
 insert-punchIn i j π k with i ≟ punchIn i k
 ... | yes i≡punchInᵢk = contradiction (sym i≡punchInᵢk) (punchInᵢ≢i i k)
 ... | no  i≢punchInᵢk = begin
-  punchIn j (π ⟨$⟩ʳ punchOut i≢punchInᵢk) ≡⟨ cong (λ l → punchIn j (π ⟨$⟩ʳ l)) (punchOut-cong i refl) ⟩
+  punchIn j (π ⟨$⟩ʳ punchOut i≢punchInᵢk)            ≡⟨ cong (λ l → punchIn j (π ⟨$⟩ʳ l)) (punchOut-cong i refl) ⟩
   punchIn j (π ⟨$⟩ʳ punchOut (punchInᵢ≢i i k ∘ sym)) ≡⟨ cong (λ l → punchIn j (π ⟨$⟩ʳ l)) (punchOut-punchIn i) ⟩
-  punchIn j (π ⟨$⟩ʳ k) ∎
+  punchIn j (π ⟨$⟩ʳ k)                               ∎
 
 insert-remove : ∀ i (π : Permutation (suc m) (suc n)) → insert i (π ⟨$⟩ʳ i) (remove i π) ≈ π
 insert-remove {m = m} {n = n} i π j with i ≟ j
