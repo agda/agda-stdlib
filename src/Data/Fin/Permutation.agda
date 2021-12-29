@@ -306,6 +306,7 @@ insert-remove {m = m} {n = n} i π j with i ≟ j
 
 remove-insert : ∀ i j (π : Permutation m n) → remove i (insert i j π) ≈ π
 remove-insert i j π k with i ≟ i
+... | no i≢i = contradiction refl i≢i
 ... | yes _ = begin
   punchOut {i = j} _
     ≡⟨ punchOut-cong j (insert-punchIn i j π k) ⟩
@@ -313,4 +314,3 @@ remove-insert i j π k with i ≟ i
     ≡⟨ punchOut-punchIn j ⟩
   π ⟨$⟩ʳ k
     ∎
-... | no i≢i = contradiction refl i≢i
