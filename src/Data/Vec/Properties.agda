@@ -723,8 +723,8 @@ unfold-reverse x xs = P.sym (foldl-fusion (_∷ʳ x) [] [ x ] refl (λ b x → r
 
 -- reverse-append is append of reverse.
 
-unfold-ʳ++ : ∀ {m n} (xs : Vec A m) {ys : Vec A n} → xs ʳ++ ys ≡ reverse xs ++ ys
-unfold-ʳ++ xs {ys} = P.sym (foldl-fusion (_++ ys) [] ys refl (λ b x → refl) xs)
+unfold-ʳ++ : ∀ {m n} (xs : Vec A m) (ys : Vec A n) → xs ʳ++ ys ≡ reverse xs ++ ys
+unfold-ʳ++ xs ys = P.sym (foldl-fusion (_++ ys) [] ys refl (λ b x → refl) xs)
 
 ------------------------------------------------------------------------
 module _ {b} (B : ℕ → Set b) (f : Opˡ {A = A} B) where
@@ -894,13 +894,13 @@ map-ʳ++ : ∀ (f : A → B) {m n} (xs : Vec A m) {ys : Vec A n} →
           map f (xs ʳ++ ys) ≡ map f xs ʳ++ map f ys
 map-ʳ++ f xs {ys} = begin
   map f (xs ʳ++ ys)
-    ≡⟨ P.cong (map f) (unfold-ʳ++ xs) ⟩
+    ≡⟨ P.cong (map f) (unfold-ʳ++ xs ys) ⟩
   map f (reverse xs ++ ys)
     ≡⟨ map-++-commute f (reverse xs) ys ⟩
   map f (reverse xs) ++ map f ys
     ≡⟨ P.cong (_++ map f ys) (reverse-map-commute f xs) ⟩
   reverse (map f xs) ++ map f ys
-    ≡⟨ P.sym (unfold-ʳ++ (map f xs)) ⟩
+    ≡⟨ P.sym (unfold-ʳ++ (map f xs) (map f ys)) ⟩
   map f xs ʳ++ map f ys ∎
     where open P.≡-Reasoning
 
