@@ -346,7 +346,6 @@ module _ {a b r} {A : Set a} {B : Set b} {R : REL A B r} where
   toAny∘fromAny≗id (there p) = P.cong there (toAny∘fromAny≗id p)
 
   Sublist-[x]-bijection : ∀ {x xs} → (Sublist R [ x ] xs) ⤖ (Any (R x) xs)
-  -- Sublist-[x]-bijection = mk⤖ toAny fromAny toAny-injective toAny∘fromAny≗id
   Sublist-[x]-bijection = mk⤖ (toAny-injective , < fromAny , toAny∘fromAny≗id >)
 
 ------------------------------------------------------------------------
