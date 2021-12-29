@@ -1082,3 +1082,8 @@ Please use lookup-++ʳ instead."
 "Warning: []≔-++-inject+ was deprecated in v2.0.
 Please use []≔-++-↑ˡ instead."
 #-}
+idIsFold = idIsFoldr
+{-# WARNING_ON_USAGE idIsFold
+"Warning: idIsFold was deprecated in v2.0.
+Please use idIsFoldr instead."
+#-}
