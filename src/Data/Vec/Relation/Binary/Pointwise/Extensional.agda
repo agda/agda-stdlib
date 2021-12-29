@@ -140,8 +140,7 @@ Pointwise-≡⇒≡ {xs = x ∷ xs} {y ∷ ys} xs∼ys     =
 ≡⇒Pointwise-≡ P.refl = refl P.refl
 
 Pointwise-≡↔≡ : ∀ {n} {xs ys : Vec A n} → Pointwise _≡_ xs ys ⇔ xs ≡ ys
-Pointwise-≡↔≡ {ℓ} {A} =
-  mk⇔ Pointwise-≡⇒≡ ≡⇒Pointwise-≡
+Pointwise-≡↔≡ {ℓ} {A} = mk⇔ Pointwise-≡⇒≡ ≡⇒Pointwise-≡
 
 ------------------------------------------------------------------------
 -- Pointwise and Plus commute when the underlying relation is
