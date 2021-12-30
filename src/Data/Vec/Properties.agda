@@ -843,7 +843,7 @@ module _ {x y : A} where
 ------------------------------------------------------------------------
 -- map and _∷ʳ_, _ʳ++_ and reverse
 
--- map and _∷ʳ_ 
+-- map and _∷ʳ_
 
 map-∷ʳ : (f : A → B) → ∀ {n} x (xs : Vec A n) →
                  map f (xs ∷ʳ x) ≡ (map f xs) ∷ʳ (f x)
@@ -869,8 +869,7 @@ map-reverse f (x ∷ xs) = begin
   reverse (map f (x ∷ xs)) ∎
     where open P.≡-Reasoning
 
--- _ʳ++_ and map
--- map distributes over reverse-append.
+-- map and _ʳ++_ 
 
 map-ʳ++ : ∀ (f : A → B) {m n} (xs : Vec A m) {ys : Vec A n} →
           map f (xs ʳ++ ys) ≡ map f xs ʳ++ map f ys
