@@ -836,6 +836,8 @@ Other minor changes
   ```agda
   diagonal : ∀ {n} → Vec (Vec A n) n → Vec A n
   DiagonalBind._>>=_ : ∀ {n} → Vec A n → (A → Vec B n) → Vec B n
+  FoldrOp : {a b} (A : Set a) (B : ℕ → Set b) → Set (a ⊔ b)
+  FoldlOp : {a b} (A : Set a) (B : ℕ → Set b) → Set (a ⊔ b)
   _ʳ++_ : ∀ {m n} → Vec A m → Vec A n → Vec A (m + n)
   ```
 
