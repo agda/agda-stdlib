@@ -734,16 +734,16 @@ module _ {b} (B : ℕ → Set b) (f : FoldlOp A B) where
 
   -- foldl after a reverse is a foldr
 
-  reverse-foldl : ∀ {n} e →
+  foldl-reverse : ∀ {n} e →
                 foldl B {n} f e ∘ reverse ≗ foldr B (λ {n} → flip (f {n})) e
-  reverse-foldl {n = zero}  e []       = refl
-  reverse-foldl {n = suc n} e (x ∷ xs) = begin
+  foldl-reverse {n = zero}  e []       = refl
+  foldl-reverse {n = suc n} e (x ∷ xs) = begin
     foldl B {suc n} f e (reverse (x ∷ xs))
       ≡⟨ P.cong (foldl B {suc n} f e) (unfold-reverse x xs) ⟩
     foldl B {suc n} f e (reverse xs ∷ʳ x)
       ≡⟨ foldl-∷ʳ B f e x (reverse xs) ⟩
     f (foldl B f e (reverse xs)) x
-      ≡⟨ P.cong (λ b → f b x) (reverse-foldl e xs) ⟩
+      ≡⟨ P.cong (λ b → f b x) (foldl-reverse e xs) ⟩
     f (foldr B (λ {n} → flip (f {n})) e xs) x
       ≡⟨⟩
     foldr B (λ {n} → flip f) e (x ∷ xs)
@@ -801,9 +801,9 @@ module _ {b} (B : ℕ → Set b) (f : FoldrOp A B) where
 
   -- foldr after a reverse is a foldl
 
-  reverse-foldr : ∀ {n} e →
+  foldr-reverse : ∀ {n} e →
                 foldr B {n} f e ∘ reverse ≗ foldl B (λ {n} → flip (f {n})) e
-  reverse-foldr e xs =
+  foldr-reverse e xs =
     foldl-fusion (foldr B f e) [] e refl (λ b x → refl) xs
 
 
@@ -893,7 +893,7 @@ map-ʳ++ f xs {ys} = begin
 
 reverse-involutive : ∀ {n} → Involutive {A = Vec A n} _≡_ reverse
 reverse-involutive {A = A} xs = begin
-  reverse (reverse xs)    ≡⟨ reverse-foldl (Vec A) (λ b x → x ∷ b) [] xs ⟩
+  reverse (reverse xs)    ≡⟨ foldl-reverse (Vec A) (λ b x → x ∷ b) [] xs ⟩
   foldr (Vec A) _∷_ [] xs ≡⟨ P.sym (idIsFoldr xs) ⟩
   xs ∎
     where open P.≡-Reasoning
@@ -907,7 +907,6 @@ reverse-reverse {xs = xs} {ys = ys} eq =  begin
     where open P.≡-Reasoning
 
 
-
 ------------------------------------------------------------------------
 -- sum
 
@@ -919,6 +918,7 @@ sum-++ (x ∷ xs) {ys} = begin
   x + (sum xs + sum ys)  ≡⟨ P.sym (+-assoc x (sum xs) (sum ys)) ⟩
   sum (x ∷ xs) + sum ys  ∎
   where open P.≡-Reasoning
+
 
 ------------------------------------------------------------------------
 -- replicate
