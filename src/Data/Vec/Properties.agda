@@ -729,23 +729,22 @@ foldl-∷ʳ : ∀ (B : ℕ → Set b) (f : FoldlOp A B) {n} e y (ys : Vec A n) �
 foldl-∷ʳ B f e y []       = refl
 foldl-∷ʳ B f e y (x ∷ xs) = foldl-∷ʳ (B ∘ suc) f (f e x) y xs
 
-module _ (B : ℕ → Set b) (f : FoldlOp A B) where
+module _ (B : ℕ → Set b) (f : FoldlOp A B) {e : B zero} where
 
-  foldl-[] : ∀ {e} → foldl B f e [] ≡ e
+  foldl-[] : foldl B f e [] ≡ e
   foldl-[] = refl
 
   -- foldl after a reverse is a foldr
 
-  foldl-reverse : ∀ {n} e →
-                foldl B {n} f e ∘ reverse ≗ foldr B (λ {n} → flip (f {n})) e
-  foldl-reverse {n = zero}  e []       = refl
-  foldl-reverse {n = suc n} e (x ∷ xs) = begin
-    foldl B {suc n} f e (reverse (x ∷ xs))
-      ≡⟨ P.cong (foldl B {suc n} f e) (unfold-reverse x xs) ⟩
-    foldl B {suc n} f e (reverse xs ∷ʳ x)
+  foldl-reverse : ∀ {n} → foldl B {n} f e ∘ reverse ≗ foldr B (λ {n} → flip (f {n})) e
+  foldl-reverse []       = refl
+  foldl-reverse (x ∷ xs) = begin
+    foldl B f e (reverse (x ∷ xs))
+      ≡⟨ P.cong (foldl B f e) (unfold-reverse x xs) ⟩
+    foldl B f e (reverse xs ∷ʳ x)
       ≡⟨ foldl-∷ʳ B f e x (reverse xs) ⟩
     f (foldl B f e (reverse xs)) x
-      ≡⟨ P.cong (λ b → f b x) (foldl-reverse e xs) ⟩
+      ≡⟨ P.cong (λ b → f b x) (foldl-reverse xs) ⟩
     f (foldr B (λ {n} → flip (f {n})) e xs) x
       ≡⟨⟩
     foldr B (λ {n} → flip f) e (x ∷ xs)
@@ -760,15 +759,14 @@ module _ (B : ℕ → Set b) (f : FoldlOp A B) where
 
 -- The (uniqueness part of the) universality property for foldr.
 
-module _ (B : ℕ → Set b) (f : FoldrOp A B) where
+module _ (B : ℕ → Set b) (f : FoldrOp A B) {e : B zero} where
 
-  foldr-universal : ∀ {e}
-                  (h : ∀ {n} → Vec A n → B n) →
-                  h [] ≡ e →
-                  (∀ {n} x → h ∘ (x ∷_) ≗ f {n} x ∘ h) →
-                  ∀ {n} → h ≗ foldr B {n} f e
-  foldr-universal {_} h base step []       = base
-  foldr-universal {e} h base step (x ∷ xs) = begin
+  foldr-universal : (h : ∀ {n} → Vec A n → B n) →
+                    h [] ≡ e →
+                    (∀ {n} x → h ∘ (x ∷_) ≗ f {n} x ∘ h) →
+                    ∀ {n} → h ≗ foldr B {n} f e
+  foldr-universal h base step []       = base
+  foldr-universal h base step (x ∷ xs) = begin
     h (x ∷ xs)
       ≡⟨ step x xs ⟩
     f x (h xs)
@@ -777,34 +775,33 @@ module _ (B : ℕ → Set b) (f : FoldrOp A B) where
       ∎
     where open P.≡-Reasoning
 
-  foldr-[] : ∀ {e} → foldr B f e [] ≡ e
+  foldr-[] : foldr B f e [] ≡ e
   foldr-[] = refl
 
-  foldr-++ : ∀ e {m n} (xs : Vec A m) {ys : Vec A n} →
+  foldr-++ : ∀ {m n} (xs : Vec A m) {ys : Vec A n} →
            foldr B f e (xs ++ ys) ≡ foldr (B ∘ (_+ n)) f (foldr B f e ys) xs
-  foldr-++ e []       = refl
-  foldr-++ e (x ∷ xs) = P.cong (f x) (foldr-++ e xs)
+  foldr-++ []       = refl
+  foldr-++ (x ∷ xs) = P.cong (f x) (foldr-++ xs)
 
   -- foldr and _-∷ʳ_
 
-  foldr-∷ʳ : ∀ {n} e y ys →
-           foldr B {suc n} f e (ys ∷ʳ y) ≡ foldr (B ∘ suc) {n} f (f y e) ys
-  foldr-∷ʳ e y [] = refl
-  foldr-∷ʳ e y (x ∷ xs) = P.cong (f x) (foldr-∷ʳ e y xs)
+  foldr-∷ʳ : ∀ {n} y (ys : Vec A n) →
+           foldr B f e (ys ∷ʳ y) ≡ foldr (B ∘ suc) f (f y e) ys
+  foldr-∷ʳ y [] = refl
+  foldr-∷ʳ y (x ∷ xs) = P.cong (f x) (foldr-∷ʳ y xs)
 
   -- foldr after a reverse-append is a foldl
 
-  foldr-ʳ++ : ∀ e {m} {n} (xs : Vec A m) {ys : Vec A n} →
+  foldr-ʳ++ : ∀ {m} {n} (xs : Vec A m) {ys : Vec A n} →
               foldr B f e (xs ʳ++ ys)
               ≡
               foldl (B ∘ (_+ n)) ((λ {m} → flip (f {m + n}))) (foldr B f e ys) xs
-  foldr-ʳ++ e xs {ys} = foldl-fusion (foldr B f e) refl (λ b x → refl) xs
+  foldr-ʳ++ xs {ys} = foldl-fusion (foldr B f e) refl (λ b x → refl) xs
 
   -- foldr after a reverse is a foldl
 
-  foldr-reverse : ∀ {n} e →
-                foldr B {n} f e ∘ reverse ≗ foldl B (λ {n} → flip (f {n})) e
-  foldr-reverse e xs = foldl-fusion (foldr B f e) refl (λ b x → refl) xs
+  foldr-reverse : ∀ {n} → foldr B {n} f e ∘ reverse ≗ foldl B (λ {n} → flip (f {n})) e
+  foldr-reverse xs = foldl-fusion (foldr B f e) refl (λ b x → refl) xs
 
 
 ------------------------------------------------------------------------
@@ -895,7 +892,7 @@ module _ (f : A → B) where
 
 reverse-involutive : ∀ {n} → Involutive {A = Vec A n} _≡_ reverse
 reverse-involutive {A = A} xs = begin
-  reverse (reverse xs)    ≡⟨ foldl-reverse (Vec A) (λ b x → x ∷ b) [] xs ⟩
+  reverse (reverse xs)    ≡⟨ foldl-reverse (Vec A) (λ b x → x ∷ b) xs ⟩
   foldr (Vec A) _∷_ [] xs ≡⟨ P.sym (idIsFoldr xs) ⟩
   xs ∎
     where open P.≡-Reasoning
@@ -913,7 +910,7 @@ reverse-reverse {xs = xs} {ys = ys} eq =  begin
 -- sum
 
 sum-++ : ∀ {m n} (xs : Vec ℕ m) {ys : Vec ℕ n} →
-                 sum (xs ++ ys) ≡ sum xs + sum ys
+         sum (xs ++ ys) ≡ sum xs + sum ys
 sum-++ []       {_}  = refl
 sum-++ (x ∷ xs) {ys} = begin
   x + sum (xs ++ ys)     ≡⟨ P.cong (x +_) (sum-++ xs) ⟩
