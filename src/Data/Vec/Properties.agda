@@ -373,10 +373,10 @@ map-const : ∀ {n} (xs : Vec A n) (y : B) → map (const y) xs ≡ replicate y
 map-const [] _ = refl
 map-const (_ ∷ xs) y = P.cong (y ∷_) (map-const xs y)
 
-map-++-commute : ∀ {m} {n} (f : A → B) (xs : Vec A m) (ys : Vec A n) →
+map-++ : ∀ {m} {n} (f : A → B) (xs : Vec A m) (ys : Vec A n) →
                  map f (xs ++ ys) ≡ map f xs ++ map f ys
-map-++-commute f []       ys = refl
-map-++-commute f (x ∷ xs) ys = P.cong (f x ∷_) (map-++-commute f xs ys)
+map-++ f []       ys = refl
+map-++ f (x ∷ xs) ys = P.cong (f x ∷_) (map-++ f xs ys)
 
 map-cong : ∀ {n} {f g : A → B} → f ≗ g → map {n = n} f ≗ map g
 map-cong f≗g []       = refl
@@ -896,7 +896,7 @@ map-ʳ++ f xs {ys} = begin
   map f (xs ʳ++ ys)
     ≡⟨ P.cong (map f) (unfold-ʳ++ xs ys) ⟩
   map f (reverse xs ++ ys)
-    ≡⟨ map-++-commute f (reverse xs) ys ⟩
+    ≡⟨ map-++ f (reverse xs) ys ⟩
   map f (reverse xs) ++ map f ys
     ≡⟨ P.cong (_++ map f ys) (reverse-map-commute f xs) ⟩
   reverse (map f xs) ++ map f ys
@@ -908,11 +908,11 @@ map-ʳ++ f xs {ys} = begin
 ------------------------------------------------------------------------
 -- sum
 
-sum-++-commute : ∀ {m n} (xs : Vec ℕ m) {ys : Vec ℕ n} →
+sum-++ : ∀ {m n} (xs : Vec ℕ m) {ys : Vec ℕ n} →
                  sum (xs ++ ys) ≡ sum xs + sum ys
-sum-++-commute []       {_}  = refl
-sum-++-commute (x ∷ xs) {ys} = begin
-  x + sum (xs ++ ys)     ≡⟨ P.cong (x +_) (sum-++-commute xs) ⟩
+sum-++ []       {_}  = refl
+sum-++ (x ∷ xs) {ys} = begin
+  x + sum (xs ++ ys)     ≡⟨ P.cong (x +_) (sum-++ xs) ⟩
   x + (sum xs + sum ys)  ≡⟨ P.sym (+-assoc x (sum xs) (sum ys)) ⟩
   sum (x ∷ xs) + sum ys  ∎
   where open P.≡-Reasoning
@@ -1091,4 +1091,9 @@ idIsFold = idIsFoldr
 {-# WARNING_ON_USAGE idIsFold
 "Warning: idIsFold was deprecated in v2.0.
 Please use idIsFoldr instead."
+#-}
+sum-++-commute = sum-++
+{-# WARNING_ON_USAGE sum-++-commute
+"Warning: sum-++-commute was deprecated in v2.0.
+Please use sum-++ instead."
 #-}
