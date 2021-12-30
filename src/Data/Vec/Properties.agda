@@ -669,7 +669,7 @@ zipWith-is-⊛ f (x ∷ xs) (y ∷ ys) = P.cong (_ ∷_) (zipWith-is-⊛ f xs ys
 
 -- The (uniqueness part of the) universality property for foldl.
 
-foldl-universal : ∀ {b} (B : ℕ → Set b) (f : FoldlOp A B) e
+foldl-universal : ∀ (B : ℕ → Set b) (f : FoldlOp A B) e
                   (h : ∀ {c} (C : ℕ → Set c) (g : FoldlOp A C) (e : C zero) →
                        ∀ {n} → Vec A n → C n) →
                   (∀ {c} {C} {g : FoldlOp A C} e → h {c} C g e [] ≡ e) →
@@ -690,14 +690,14 @@ foldl-universal B f e h base step (x ∷ xs) = begin
 
 foldl-fusion : ∀ {B : ℕ → Set b} {C : ℕ → Set c}
                (h : ∀ {n} → B n → C n) →
-               {f : FoldlOp A B} (d : B zero) →
-               {g : FoldlOp A C} (e : C zero) →
+               {f : FoldlOp A B} {d : B zero} →
+               {g : FoldlOp A C} {e : C zero} →
                (h d ≡ e) →
                (∀ {n} b x → h (f {n} b x) ≡ g (h b) x) →
                ∀ {n} → h ∘ foldl B {n} f d ≗ foldl C g e
-foldl-fusion h {f} d {g} e base fuse []       = base
-foldl-fusion h {f} d {g} e base fuse (x ∷ xs) =
-  foldl-fusion (λ {n} → h {suc n}) (f d x) (g e x) eq fuse xs
+foldl-fusion h {f} {d} {g} {e} base fuse []       = base
+foldl-fusion h {f} {d} {g} {e} base fuse (x ∷ xs) =
+  foldl-fusion (λ {n} → h {suc n}) eq fuse xs
   where
     open P.≡-Reasoning
     eq : h (f d x) ≡ g e x
@@ -706,28 +706,30 @@ foldl-fusion h {f} d {g} e base fuse (x ∷ xs) =
        g (h d) x ≡⟨ P.cong (λ e → g e x) base ⟩
        g e x     ∎
 
--- foldl and _-∷ʳ_
-
-foldl-∷ʳ : ∀ (B : ℕ → Set b) (f : FoldlOp A B) {n} e y ys →
-           foldl B {suc n} f e (ys ∷ʳ y) ≡ f (foldl B {n} f e ys) y
-foldl-∷ʳ B f e y []       = refl
-foldl-∷ʳ B f e y (x ∷ xs) = foldl-∷ʳ (B ∘ suc) f (f e x) y xs
-
 ------------------------------------------------------------------------
 -- _∷ʳ_, _ʳ++_ and reverse
 
 -- reverse of cons is snoc of reverse.
 
 unfold-reverse : ∀ {n} x (xs : Vec A n) → reverse (x ∷ xs) ≡ reverse xs ∷ʳ x
-unfold-reverse x xs = P.sym (foldl-fusion (_∷ʳ x) [] [ x ] refl (λ b x → refl) xs)
+unfold-reverse x xs = P.sym (foldl-fusion (_∷ʳ x) refl (λ b x → refl) xs)
 
 -- reverse-append is append of reverse.
 
 unfold-ʳ++ : ∀ {m n} (xs : Vec A m) (ys : Vec A n) → xs ʳ++ ys ≡ reverse xs ++ ys
-unfold-ʳ++ xs ys = P.sym (foldl-fusion (_++ ys) [] ys refl (λ b x → refl) xs)
+unfold-ʳ++ xs ys = P.sym (foldl-fusion (_++ ys) refl (λ b x → refl) xs)
 
 ------------------------------------------------------------------------
-module _ {b} (B : ℕ → Set b) (f : FoldlOp A B) where
+-- misc. properties of foldl
+
+-- foldl and _-∷ʳ_
+
+foldl-∷ʳ : ∀ (B : ℕ → Set b) (f : FoldlOp A B) {n} e y (ys : Vec A n) →
+           foldl B f e (ys ∷ʳ y) ≡ f (foldl B f e ys) y
+foldl-∷ʳ B f e y []       = refl
+foldl-∷ʳ B f e y (x ∷ xs) = foldl-∷ʳ (B ∘ suc) f (f e x) y xs
+
+module _ (B : ℕ → Set b) (f : FoldlOp A B) where
 
   foldl-[] : ∀ {e} → foldl B f e [] ≡ e
   foldl-[] = refl
@@ -758,7 +760,7 @@ module _ {b} (B : ℕ → Set b) (f : FoldlOp A B) where
 
 -- The (uniqueness part of the) universality property for foldr.
 
-module _ {b} (B : ℕ → Set b) (f : FoldrOp A B) where
+module _ (B : ℕ → Set b) (f : FoldrOp A B) where
 
   foldr-universal : ∀ {e}
                   (h : ∀ {n} → Vec A n → B n) →
@@ -796,15 +798,13 @@ module _ {b} (B : ℕ → Set b) (f : FoldrOp A B) where
               foldr B f e (xs ʳ++ ys)
               ≡
               foldl (B ∘ (_+ n)) ((λ {m} → flip (f {m + n}))) (foldr B f e ys) xs
-  foldr-ʳ++ e xs {ys} =
-    foldl-fusion (foldr B f e) ys (foldr B f e ys) refl (λ b x → refl) xs
+  foldr-ʳ++ e xs {ys} = foldl-fusion (foldr B f e) refl (λ b x → refl) xs
 
   -- foldr after a reverse is a foldl
 
   foldr-reverse : ∀ {n} e →
                 foldr B {n} f e ∘ reverse ≗ foldl B (λ {n} → flip (f {n})) e
-  foldr-reverse e xs =
-    foldl-fusion (foldr B f e) [] e refl (λ b x → refl) xs
+  foldr-reverse e xs = foldl-fusion (foldr B f e) refl (λ b x → refl) xs
 
 
 ------------------------------------------------------------------------
@@ -843,47 +843,49 @@ module _ {x y : A} where
 ------------------------------------------------------------------------
 -- map and _∷ʳ_, _ʳ++_ and reverse
 
--- map and _∷ʳ_
+module _ (f : A → B) where
 
-map-∷ʳ : (f : A → B) → ∀ {n} x (xs : Vec A n) →
-                 map f (xs ∷ʳ x) ≡ (map f xs) ∷ʳ (f x)
-map-∷ʳ f x [] = refl
-map-∷ʳ f x (y ∷ xs) = P.cong (f y ∷_) (map-∷ʳ f x xs)
+  -- map and _∷ʳ_
 
--- map and reverse
+  map-∷ʳ : ∀ {n} x (xs : Vec A n) →
+           map f (xs ∷ʳ x) ≡ (map f xs) ∷ʳ (f x)
+  map-∷ʳ x [] = refl
+  map-∷ʳ x (y ∷ xs) = P.cong (f y ∷_) (map-∷ʳ x xs)
 
-map-reverse : (f : A → B) → ∀ {n} (xs : Vec A n) →
-                      map f (reverse xs) ≡ reverse (map f xs)
-map-reverse f [] = refl
-map-reverse f (x ∷ xs) = begin
-  map f (reverse (x ∷ xs))
-    ≡⟨ P.cong (map f) (unfold-reverse x xs) ⟩
-  map f (reverse xs ∷ʳ x)
-    ≡⟨ map-∷ʳ f x (reverse xs) ⟩
-  map f (reverse xs) ∷ʳ f x
-    ≡⟨ P.cong (_∷ʳ f x) (map-reverse f xs ) ⟩
-  reverse (map f xs) ∷ʳ f x
-    ≡⟨ P.sym (unfold-reverse (f x) (map f xs)) ⟩
-  reverse (f x ∷ map f xs)
-    ≡⟨⟩
-  reverse (map f (x ∷ xs)) ∎
-    where open P.≡-Reasoning
+  -- map and reverse
 
--- map and _ʳ++_
+  map-reverse : ∀ {n} (xs : Vec A n) →
+                map f (reverse xs) ≡ reverse (map f xs)
+  map-reverse [] = refl
+  map-reverse (x ∷ xs) = begin
+    map f (reverse (x ∷ xs))
+      ≡⟨ P.cong (map f) (unfold-reverse x xs) ⟩
+    map f (reverse xs ∷ʳ x)
+      ≡⟨ map-∷ʳ x (reverse xs) ⟩
+    map f (reverse xs) ∷ʳ f x
+      ≡⟨ P.cong (_∷ʳ f x) (map-reverse xs ) ⟩
+    reverse (map f xs) ∷ʳ f x
+      ≡⟨ P.sym (unfold-reverse (f x) (map f xs)) ⟩
+    reverse (f x ∷ map f xs)
+      ≡⟨⟩
+    reverse (map f (x ∷ xs)) ∎
+      where open P.≡-Reasoning
 
-map-ʳ++ : ∀ (f : A → B) {m n} (xs : Vec A m) {ys : Vec A n} →
-          map f (xs ʳ++ ys) ≡ map f xs ʳ++ map f ys
-map-ʳ++ f xs {ys} = begin
-  map f (xs ʳ++ ys)
-    ≡⟨ P.cong (map f) (unfold-ʳ++ xs ys) ⟩
-  map f (reverse xs ++ ys)
-    ≡⟨ map-++ f (reverse xs) ys ⟩
-  map f (reverse xs) ++ map f ys
-    ≡⟨ P.cong (_++ map f ys) (map-reverse f xs) ⟩
-  reverse (map f xs) ++ map f ys
-    ≡⟨ P.sym (unfold-ʳ++ (map f xs) (map f ys)) ⟩
-  map f xs ʳ++ map f ys ∎
-    where open P.≡-Reasoning
+  -- map and _ʳ++_
+
+  map-ʳ++ : ∀ {m n} (xs : Vec A m) {ys : Vec A n} →
+            map f (xs ʳ++ ys) ≡ map f xs ʳ++ map f ys
+  map-ʳ++ xs {ys} = begin
+    map f (xs ʳ++ ys)
+      ≡⟨ P.cong (map f) (unfold-ʳ++ xs ys) ⟩
+    map f (reverse xs ++ ys)
+      ≡⟨ map-++ f (reverse xs) ys ⟩
+    map f (reverse xs) ++ map f ys
+      ≡⟨ P.cong (_++ map f ys) (map-reverse xs) ⟩
+    reverse (map f xs) ++ map f ys
+      ≡⟨ P.sym (unfold-ʳ++ (map f xs) (map f ys)) ⟩
+    map f xs ʳ++ map f ys ∎
+      where open P.≡-Reasoning
 
 
 ------------------------------------------------------------------------
