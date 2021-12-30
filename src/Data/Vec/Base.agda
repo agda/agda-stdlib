@@ -184,28 +184,34 @@ module DiagonalBind where
 ------------------------------------------------------------------------
 -- Operations for reducing vectors
 
-module _ {a b} {A : Set a} (B : ℕ → Set b) where
+module _ (A : Set a) (B : ℕ → Set b) where
 
-  Opʳ = ∀ {n} → A → B n → B (suc n)
-  Opˡ = ∀ {n} → B n → A → B (suc n)
+  FoldrOp = ∀ {n} → A → B n → B (suc n)
+  FoldlOp = ∀ {n} → B n → A → B (suc n)
 
-  foldr : ∀ {m} →
-        Opʳ →
+foldr : ∀ (B : ℕ → Set b) {m} →
+        FoldrOp A B →
         B zero →
         Vec A m → B m
-  foldr _⊕_ n []       = n
-  foldr _⊕_ n (x ∷ xs) = x ⊕ foldr _⊕_ n xs
+foldr B _⊕_ n []       = n
+foldr B _⊕_ n (x ∷ xs) = x ⊕ foldr B _⊕_ n xs
 
-foldl : ∀ {b} (B : ℕ → Set b) {m} →
-        Opˡ {A = A} B →
+foldl : ∀ (B : ℕ → Set b) {m} →
+        FoldlOp A B →
         B zero →
         Vec A m → B m
 foldl B _⊕_ n []       = n
 foldl B _⊕_ n (x ∷ xs) = foldl (B ∘ suc) _⊕_ (n ⊕ x) xs
 
+foldr₀ : ∀ {n} → (A → A → A) → A → Vec A n → A
+foldr₀ _⊕_ = foldr _ λ {n} → _⊕_
+
 foldr₁ : ∀ {n} → (A → A → A) → Vec A (suc n) → A
 foldr₁ _⊕_ (x ∷ [])     = x
 foldr₁ _⊕_ (x ∷ y ∷ ys) = x ⊕ foldr₁ _⊕_ (y ∷ ys)
+
+foldl₀ : ∀ {n} → (A → A → A) → A → Vec A n → A
+foldl₀ _⊕_ = foldl _ λ {n} → _⊕_
 
 foldl₁ : ∀ {n} → (A → A → A) → Vec A (suc n) → A
 foldl₁ _⊕_ (x ∷ xs) = foldl _ _⊕_ x xs
@@ -293,9 +299,6 @@ infixl 5 _∷ʳ_
 _∷ʳ_ : ∀ {n} → Vec A n → A → Vec A (suc n)
 []       ∷ʳ y = [ y ]
 (x ∷ xs) ∷ʳ y = x ∷ (xs ∷ʳ y)
-{- better ?
-_∷ʳ_ {A = A} xs y = foldr ((Vec A) ∘ suc) (λ x r → x ∷ r) [ y ] xs
--}
 
 -- vanilla reverse
 
