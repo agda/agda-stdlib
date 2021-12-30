@@ -669,11 +669,11 @@ zipWith-is-⊛ f (x ∷ xs) (y ∷ ys) = P.cong (_ ∷_) (zipWith-is-⊛ f xs ys
 
 -- The (uniqueness part of the) universality property for foldl.
 
-foldl-universal : ∀ {b} (B : ℕ → Set b) (f : Opˡ {A = A} B) e
-                  (h : ∀ {c} (C : ℕ → Set c) (g : Opˡ {A = A} C) (e : C zero) →
+foldl-universal : ∀ {b} (B : ℕ → Set b) (f : FoldlOp A B) e
+                  (h : ∀ {c} (C : ℕ → Set c) (g : FoldlOp A C) (e : C zero) →
                        ∀ {n} → Vec A n → C n) →
-                  (∀ {c} {C} {g : Opˡ {A = A} C} e → h {c} C g e [] ≡ e) →
-                  (∀ {c} {C} {g : Opˡ {A = A} C} e {n} x →
+                  (∀ {c} {C} {g : FoldlOp A C} e → h {c} C g e [] ≡ e) →
+                  (∀ {c} {C} {g : FoldlOp A C} e {n} x →
                    (h {c} C g e {suc n}) ∘ (x ∷_) ≗ h (C ∘ suc) (λ {n} → g {suc n}) (g e x)) →
                   ∀ {n} → h B f e ≗ foldl B {n} f e
 foldl-universal B f e h base step []       = base e
@@ -690,8 +690,8 @@ foldl-universal B f e h base step (x ∷ xs) = begin
 
 foldl-fusion : ∀ {B : ℕ → Set b} {C : ℕ → Set c}
                (h : ∀ {n} → B n → C n) →
-               {f : Opˡ {A = A} B} (d : B zero) →
-               {g : Opˡ {A = A} C} (e : C zero) →
+               {f : FoldlOp A B} (d : B zero) →
+               {g : FoldlOp A C} (e : C zero) →
                (h d ≡ e) →
                (∀ {n} b x → h (f {n} b x) ≡ g (h b) x) →
                ∀ {n} → h ∘ foldl B {n} f d ≗ foldl C g e
@@ -708,7 +708,7 @@ foldl-fusion h {f} d {g} e base fuse (x ∷ xs) =
 
 -- foldl and _-∷ʳ_
 
-foldl-∷ʳ : ∀ (B : ℕ → Set b) (f : Opˡ {A = A} B) {n} e y ys →
+foldl-∷ʳ : ∀ (B : ℕ → Set b) (f : FoldlOp A B) {n} e y ys →
            foldl B {suc n} f e (ys ∷ʳ y) ≡ f (foldl B {n} f e ys) y
 foldl-∷ʳ B f e y []       = refl
 foldl-∷ʳ B f e y (x ∷ xs) = foldl-∷ʳ (B ∘ suc) f (f e x) y xs
@@ -727,7 +727,7 @@ unfold-ʳ++ : ∀ {m n} (xs : Vec A m) (ys : Vec A n) → xs ʳ++ ys ≡ reverse
 unfold-ʳ++ xs ys = P.sym (foldl-fusion (_++ ys) [] ys refl (λ b x → refl) xs)
 
 ------------------------------------------------------------------------
-module _ {b} (B : ℕ → Set b) (f : Opˡ {A = A} B) where
+module _ {b} (B : ℕ → Set b) (f : FoldlOp A B) where
 
   foldl-[] : ∀ {e} → foldl B f e [] ≡ e
   foldl-[] = refl
@@ -758,7 +758,7 @@ module _ {b} (B : ℕ → Set b) (f : Opˡ {A = A} B) where
 
 -- The (uniqueness part of the) universality property for foldr.
 
-module _ {b} (B : ℕ → Set b) (f : Opʳ {A = A} B) where
+module _ {b} (B : ℕ → Set b) (f : FoldrOp A B) where
 
   foldr-universal : ∀ {e}
                   (h : ∀ {n} → Vec A n → B n) →
@@ -811,8 +811,8 @@ module _ {b} (B : ℕ → Set b) (f : Opʳ {A = A} B) where
 
 -- fusion and identity as consequences of universality
 
-foldr-fusion : ∀ {B : ℕ → Set b} {f : Opʳ {A = A} B} e
-               {C : ℕ → Set c} {g : Opʳ {A = A} C}
+foldr-fusion : ∀ {B : ℕ → Set b} {f : FoldrOp A B} e
+               {C : ℕ → Set c} {g : FoldrOp A C}
                (h : ∀ {n} → B n → C n) →
                (∀ {n} x → h ∘ f {n} x ≗ g x ∘ h) →
                ∀ {n} → h ∘ foldr B {n} f e ≗ foldr C g (h e)
