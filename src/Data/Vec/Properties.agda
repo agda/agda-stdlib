@@ -841,12 +841,51 @@ module _ {x y : A} where
 
 
 ------------------------------------------------------------------------
--- _∷ʳ_ and map
+-- map and _∷ʳ_, _ʳ++_ and reverse
 
-∷ʳ-map-commute : (f : A → B) → ∀ {n} x (xs : Vec A n) →
+-- map and _∷ʳ_ 
+
+map-∷ʳ : (f : A → B) → ∀ {n} x (xs : Vec A n) →
                  map f (xs ∷ʳ x) ≡ (map f xs) ∷ʳ (f x)
-∷ʳ-map-commute f x [] = refl
-∷ʳ-map-commute f x (y ∷ xs) = P.cong (f y ∷_) (∷ʳ-map-commute f x xs)
+map-∷ʳ f x [] = refl
+map-∷ʳ f x (y ∷ xs) = P.cong (f y ∷_) (map-∷ʳ f x xs)
+
+-- map and reverse
+
+map-reverse : (f : A → B) → ∀ {n} (xs : Vec A n) →
+                      map f (reverse xs) ≡ reverse (map f xs)
+map-reverse f [] = refl
+map-reverse f (x ∷ xs) = begin
+  map f (reverse (x ∷ xs))
+    ≡⟨ P.cong (map f) (unfold-reverse x xs) ⟩
+  map f (reverse xs ∷ʳ x)
+    ≡⟨ map-∷ʳ f x (reverse xs) ⟩
+  map f (reverse xs) ∷ʳ f x
+    ≡⟨ P.cong (_∷ʳ f x) (map-reverse f xs ) ⟩
+  reverse (map f xs) ∷ʳ f x
+    ≡⟨ P.sym (unfold-reverse (f x) (map f xs)) ⟩
+  reverse (f x ∷ map f xs)
+    ≡⟨⟩
+  reverse (map f (x ∷ xs)) ∎
+    where open P.≡-Reasoning
+
+-- _ʳ++_ and map
+-- map distributes over reverse-append.
+
+map-ʳ++ : ∀ (f : A → B) {m n} (xs : Vec A m) {ys : Vec A n} →
+          map f (xs ʳ++ ys) ≡ map f xs ʳ++ map f ys
+map-ʳ++ f xs {ys} = begin
+  map f (xs ʳ++ ys)
+    ≡⟨ P.cong (map f) (unfold-ʳ++ xs ys) ⟩
+  map f (reverse xs ++ ys)
+    ≡⟨ map-++ f (reverse xs) ys ⟩
+  map f (reverse xs) ++ map f ys
+    ≡⟨ P.cong (_++ map f ys) (map-reverse f xs) ⟩
+  reverse (map f xs) ++ map f ys
+    ≡⟨ P.sym (unfold-ʳ++ (map f xs) (map f ys)) ⟩
+  map f xs ʳ++ map f ys ∎
+    where open P.≡-Reasoning
+
 
 ------------------------------------------------------------------------
 -- reverse
@@ -868,41 +907,6 @@ reverse-reverse {xs = xs} {ys = ys} eq =  begin
   xs ∎
     where open P.≡-Reasoning
 
--- reverse and map
-
-reverse-map-commute : (f : A → B) → ∀ {n} (xs : Vec A n) →
-                      map f (reverse xs) ≡ reverse (map f xs)
-reverse-map-commute f [] = refl
-reverse-map-commute f (x ∷ xs) = begin
-  map f (reverse (x ∷ xs))
-    ≡⟨ P.cong (map f) (unfold-reverse x xs) ⟩
-  map f (reverse xs ∷ʳ x)
-    ≡⟨ ∷ʳ-map-commute f x (reverse xs) ⟩
-  map f (reverse xs) ∷ʳ f x
-    ≡⟨ P.cong (_∷ʳ f x) (reverse-map-commute f xs ) ⟩
-  reverse (map f xs) ∷ʳ f x
-    ≡⟨ P.sym (unfold-reverse (f x) (map f xs)) ⟩
-  reverse (f x ∷ map f xs)
-    ≡⟨⟩
-  reverse (map f (x ∷ xs)) ∎
-    where open P.≡-Reasoning
-
--- _ʳ++_ and map
--- map distributes over reverse-append.
-
-map-ʳ++ : ∀ (f : A → B) {m n} (xs : Vec A m) {ys : Vec A n} →
-          map f (xs ʳ++ ys) ≡ map f xs ʳ++ map f ys
-map-ʳ++ f xs {ys} = begin
-  map f (xs ʳ++ ys)
-    ≡⟨ P.cong (map f) (unfold-ʳ++ xs ys) ⟩
-  map f (reverse xs ++ ys)
-    ≡⟨ map-++ f (reverse xs) ys ⟩
-  map f (reverse xs) ++ map f ys
-    ≡⟨ P.cong (_++ map f ys) (reverse-map-commute f xs) ⟩
-  reverse (map f xs) ++ map f ys
-    ≡⟨ P.sym (unfold-ʳ++ (map f xs) (map f ys)) ⟩
-  map f xs ʳ++ map f ys ∎
-    where open P.≡-Reasoning
 
 
 ------------------------------------------------------------------------
