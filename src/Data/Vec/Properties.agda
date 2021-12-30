@@ -869,7 +869,7 @@ map-reverse f (x ∷ xs) = begin
   reverse (map f (x ∷ xs)) ∎
     where open P.≡-Reasoning
 
--- map and _ʳ++_ 
+-- map and _ʳ++_
 
 map-ʳ++ : ∀ (f : A → B) {m n} (xs : Vec A m) {ys : Vec A n} →
           map f (xs ʳ++ ys) ≡ map f xs ʳ++ map f ys
