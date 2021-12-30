@@ -853,53 +853,50 @@ Other minor changes
   ⊛-is->>= : ∀ {n} (fs : Vec (A → B) n) (xs : Vec A n) → (fs ⊛ xs) ≡ (fs DiagonalBind.>>= flip map xs)
   transpose-replicate : ∀ {m n} (xs : Vec A m) → transpose (replicate {n = n} xs) ≡ map replicate xs
   []≔-++-↑ʳ : ∀ {m n y} (xs : Vec A m) (ys : Vec A n) i → (xs ++ ys) [ m ↑ʳ i ]≔ y ≡ xs ++ (ys [ i ]≔ y)
-  map-++ : ∀ {A : Set a} {B : Set b} {m} {n} (f : A → B) xs ys →
-           map f (xs ++ ys) ≡ map {n = m} f xs ++ map {n = n} f ys
-  foldr-[] : ∀ {A : Set a} (B : ℕ → Set b) (f : FoldrOp A B) {e} → foldr B f e [] ≡ e
-  foldr-++ : ∀ {A : Set a} (B : ℕ → Set b) (f : FoldrOp A B) {e} →
-             ∀ {m n} {xs} {ys} →
-             foldr B {m + n} f e (xs ++ ys) ≡ foldr (B ∘ (_+ n)) f (foldr B {n} f e ys) xs
+  map-++ : ∀ (f : A → B) {m} {n} (xs : Vec A m) (ys : Vec A n) →
+           map f (xs ++ ys) ≡ map f xs ++ map f ys
   foldl-universal : ∀ {A : Set a} (B : ℕ → Set b)
-                  (f : ∀ {n} → B n → A → B (suc n)) {e}
-                  (h : ∀ {c} (C : ℕ → Set c) →
-                       (g : ∀ {n} → C n → A → C (suc n)) → C zero →
-                       ∀ {n} → Vec A n → C n) →
-                  (∀ {c} {C} {g : ∀ {n} → C n → A → C (suc n)} e →
-                   h {c} C g e [] ≡ e) →
-                  (∀ {c} {C} {g : ∀ {n} → C n → A → C (suc n)} e →
-                   ∀ {n} x →
-                   (h {c} C g e {suc n}) ∘ (x ∷_) ≗ h (C ∘ suc) (λ {n} → g {suc n}) (g e x)) →
-                  ∀ {n} → h B f e ≗ foldl B {n} f e
-  foldl-[] : ∀ {A : Set a} (B : ℕ → Set b) (f : FoldlOp A B) {e} → foldl B f e [] ≡ e
+                    (f : FoldlOp A B) {e}
+                    (h : ∀ {c} (C : ℕ → Set c) (g : FoldlOp A C) (e : C zero) →
+                         ∀ {n} → Vec A n → C n) →
+                    (∀ {c} {C} {g : FoldlOp A C} e → h {c} C g e [] ≡ e) →
+                    (∀ {c} {C} {g : FoldlOp A C} e → ∀ {n} x →
+                     (h {c} C g e {suc n}) ∘ (x ∷_) ≗ h (C ∘ suc) (λ {n} → g {suc n}) (g e x)) →
+                    ∀ {n} → h B f e ≗ foldl B {n} f e
   foldl-fusion : ∀ {A : Set a} {B : ℕ → Set b} {C : ℕ → Set c}
-               (h : ∀ {n} → B n → C n) →
-               {f : FoldlOp A B} {d : B zero} →
-               {g : FoldlOp A C} {e : C zero} →
-               (h d ≡ e) →
-               (∀ {n} b x → h (f {n} b x) ≡ g (h b) x) →
-               ∀ {n} → h ∘ foldl B {n} f d ≗ foldl C g e
-  foldr-∷ʳ : ∀ {A : Set a} (B : ℕ → Set b) (f : FoldrOp A B) {e} →
-             ∀ {n} y (ys : Vec A n) → foldr B f e (ys ∷ʳ y) ≡ foldr (B ∘ suc) f (f y e) ys
+                 (h : ∀ {n} → B n → C n) →
+                 {f : FoldlOp A B} {d : B zero} →
+                 {g : FoldlOp A C} {e : C zero} →
+                 (h d ≡ e) →
+                 (∀ {n} b x → h (f {n} b x) ≡ g (h b) x) →
+                 ∀ {n} → h ∘ foldl B {n} f d ≗ foldl C g e
+  unfold-reverse : ∀ {n} (x : A) xs → reverse (x ∷ xs) ≡ reverse {n = n} xs ∷ʳ x
+  unfold-ʳ++ : ∀ {m n} {xs : Vec A m} {ys : Vec A n} → xs ʳ++ ys ≡ reverse xs ++ ys
   foldl-∷ʳ : ∀ {A : Set a} (B : ℕ → Set b) (f : FoldrOp A B) {e} →
              ∀ {n} y (ys : Vec A n) → foldl B f e (ys ∷ʳ y) ≡ f (foldl B f e ys) y
+  foldl-[] : ∀ {A : Set a} (B : ℕ → Set b) (f : FoldlOp A B) {e} → foldl B f e [] ≡ e
+  foldl-reverse : ∀ {B : ℕ → Set b} {n} (f : FoldlOp A B) e →
+                foldl B {n} f e ∘ reverse ≗ foldr B (λ {n} → flip (f {n})) e
+  foldr-[] : ∀ {A : Set a} (B : ℕ → Set b) (f : FoldrOp A B) {e} → foldr B f e [] ≡ e
+  foldr-++ : ∀ {A : Set a} (B : ℕ → Set b) (f : FoldrOp A B) {e} →
+             ∀ {m n} (xs : Vec A m) {ys : Vec A n} →
+             foldr B f e (xs ++ ys) ≡ foldr (B ∘ (_+ n)) f (foldr B f e ys) xs
+  foldr-∷ʳ : ∀ {A : Set a} (B : ℕ → Set b) (f : FoldrOp A B) {e} →
+             ∀ {n} y (ys : Vec A n) → foldr B f e (ys ∷ʳ y) ≡ foldr (B ∘ suc) f (f y e) ys
   foldr-ʳ++ : ∀ (B : ℕ → Set b) (f : FoldrOp A B) {e} →
               ∀ {m} {n} b (xs : Vec A m) {ys : Vec A n} →
               foldr B f e (xs ʳ++ ys)
               ≡
               foldl (B ∘ (_+ n)) ((λ {m} → flip (f {m + n}))) (foldr B f e ys) xs
+  foldr-reverse : ∀ {B : ℕ → Set b} (f : FoldrOp A B) {e} {n} →
+                foldr B {n} f e ∘ reverse ≗ foldl B (λ {n} → flip (f {n})) e
   ∷ʳ-injective : ∀ {n} (xs ys : Vec A n) → xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys × x ≡ y
   ∷ʳ-injectiveˡ : ∀ {n} (xs ys : Vec A n) → xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys
   ∷ʳ-injectiveʳ : ∀ {n} (xs ys : Vec A n) → xs ∷ʳ x ≡ ys ∷ʳ y → x ≡ y
-  unfold-reverse : ∀ {n} (x : A) xs → reverse (x ∷ xs) ≡ reverse {n = n} xs ∷ʳ x
-  unfold-ʳ++ : ∀ {m n} {xs : Vec A m} {ys : Vec A n} → xs ʳ++ ys ≡ reverse xs ++ ys
   map-∷ʳ : (f : A → B) → ∀ {n} x (xs : Vec A n) → map f (xs ∷ʳ x) ≡ (map f xs) ∷ʳ (f x)
   map-reverse : (f : A → B) → ∀ {n} (xs : Vec A n) → map f (reverse xs) ≡ reverse (map f xs)
   map-ʳ++ : ∀ (f : A → B) {m n} (xs : Vec A m) {ys : Vec A n} →
             map f (xs ʳ++ ys) ≡ map f xs ʳ++ map f ys
-  foldr-reverse : ∀ {B : ℕ → Set b} (f : FoldrOp A B) {e} {n} →
-                foldr B f e ∘ reverse ≗ foldl B {n} (λ {n} → flip (f {n})) e
-  foldl-reverse : ∀ {B : ℕ → Set b} {n} (f : FoldlOp A B) e →
-                foldl B {n} f e ∘ reverse ≗ foldr B (λ {n} → flip (f {n})) e
   reverse-involutive : ∀ {n} → Involutive {A = Vec A n} _≡_ reverse
   reverse-reverse : ∀ {n} {xs ys : Vec A n} → reverse xs ≡ ys → reverse ys ≡ xs
   ```
