@@ -891,15 +891,19 @@ Other minor changes
               foldl (B ∘ (_+ n)) ((λ {m} → flip (f {m + n}))) (foldr B f e ys) xs
   foldr-reverse : ∀ {B : ℕ → Set b} (f : FoldrOp A B) {e} {n} →
                 foldr B {n} f e ∘ reverse ≗ foldl B (λ {n} → flip (f {n})) e
+  ++-is-foldr : ∀ {m n} (xs : Vec A m) {ys : Vec A n} →
+                xs ++ ys ≡ foldr ((Vec A) ∘ (_+ n)) _∷_ ys xs
   ∷ʳ-injective : ∀ {n} (xs ys : Vec A n) → xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys × x ≡ y
   ∷ʳ-injectiveˡ : ∀ {n} (xs ys : Vec A n) → xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys
   ∷ʳ-injectiveʳ : ∀ {n} (xs ys : Vec A n) → xs ∷ʳ x ≡ ys ∷ʳ y → x ≡ y
+  map-is-foldr : (f : A → B) → ∀ {n} → map {n = n} f ≗ foldr (Vec B) (λ x ys → f x ∷ ys) []
   map-∷ʳ : (f : A → B) → ∀ {n} x (xs : Vec A n) → map f (xs ∷ʳ x) ≡ (map f xs) ∷ʳ (f x)
   map-reverse : (f : A → B) → ∀ {n} (xs : Vec A n) → map f (reverse xs) ≡ reverse (map f xs)
   map-ʳ++ : ∀ (f : A → B) {m n} (xs : Vec A m) {ys : Vec A n} →
             map f (xs ʳ++ ys) ≡ map f xs ʳ++ map f ys
   reverse-involutive : ∀ {n} → Involutive {A = Vec A n} _≡_ reverse
   reverse-reverse : ∀ {n} {xs ys : Vec A n} → reverse xs ≡ ys → reverse ys ≡ xs
+  reverse-injective : ∀ {n} {xs ys : Vec A n} → reverse xs ≡ reverse ys → xs ≡ ys
   ```
 
 * Added new proofs in `Function.Construct.Symmetry`:

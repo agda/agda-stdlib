@@ -819,6 +819,11 @@ foldr-fusion {B = B} {f} e {C} h fuse =
 id-is-foldr : ∀ {n} → id ≗ foldr (Vec A) {n} _∷_ []
 id-is-foldr = foldr-universal _ _ id refl (λ _ _ → refl)
 
+++-is-foldr : ∀ {m n} (xs : Vec A m) {ys : Vec A n} →
+              xs ++ ys ≡ foldr ((Vec A) ∘ (_+ n)) _∷_ ys xs
+++-is-foldr {A = A} {n = n} xs {ys} =
+  foldr-universal ((Vec A) ∘ (_+ n)) _∷_ (_++ ys) refl (λ x b → refl) xs
+
 
 ------------------------------------------------------------------------
 -- _∷ʳ_
@@ -841,6 +846,9 @@ module _ {x y : A} where
 -- map and _∷ʳ_, _ʳ++_ and reverse
 
 module _ (f : A → B) where
+
+  map-is-foldr : ∀ {n} → map {n = n} f ≗ foldr (Vec B) (λ x ys → f x ∷ ys) []
+  map-is-foldr = foldr-universal (Vec B) (λ x ys → f x ∷ ys) (map f) refl λ x b → refl
 
   -- map and _∷ʳ_
 
@@ -897,12 +905,21 @@ reverse-involutive {A = A} xs = begin
   xs ∎
     where open P.≡-Reasoning
 
+-- reverse is injective.
+
 reverse-reverse : ∀ {n} {xs ys : Vec A n} →
                   reverse xs ≡ ys → reverse ys ≡ xs
 reverse-reverse {xs = xs} {ys = ys} eq =  begin
   reverse ys           ≡⟨ P.sym (P.cong reverse eq) ⟩
   reverse (reverse xs) ≡⟨ reverse-involutive xs ⟩
   xs ∎
+    where open P.≡-Reasoning
+
+reverse-injective : ∀ {n} {xs ys : Vec A n} → reverse xs ≡ reverse ys → xs ≡ ys
+reverse-injective {n = n} {xs} {ys} eq = begin
+  xs                   ≡⟨ P.sym (reverse-reverse eq) ⟩
+  reverse (reverse ys) ≡⟨ reverse-involutive ys ⟩
+  ys ∎
     where open P.≡-Reasoning
 
 
