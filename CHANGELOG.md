@@ -452,7 +452,7 @@ two new, hopefully more memorable, names `↑ˡ` `↑ʳ` for the 'left', resp. '
 
   ```
   []≔-++-inject+       ↦ []≔-++-↑ˡ
-  idIsFold  ↦  idIsFoldr
+  idIsFold  ↦  id-is-foldr
   sum-++-commute ↦ sum-++
   ```
   Additionally, `[]≔-++-↑ʳ`, by analogy.

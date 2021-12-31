@@ -816,8 +816,8 @@ foldr-fusion : ∀ {B : ℕ → Set b} {f : FoldrOp A B} e
 foldr-fusion {B = B} {f} e {C} h fuse =
   foldr-universal C _ _ refl (λ x xs → fuse x (foldr B f e xs))
 
-idIsFoldr : ∀ {n} → id ≗ foldr (Vec A) {n} _∷_ []
-idIsFoldr = foldr-universal _ _ id refl (λ _ _ → refl)
+id-is-foldr : ∀ {n} → id ≗ foldr (Vec A) {n} _∷_ []
+id-is-foldr = foldr-universal _ _ id refl (λ _ _ → refl)
 
 
 ------------------------------------------------------------------------
@@ -893,7 +893,7 @@ module _ (f : A → B) where
 reverse-involutive : ∀ {n} → Involutive {A = Vec A n} _≡_ reverse
 reverse-involutive {A = A} xs = begin
   reverse (reverse xs)    ≡⟨ foldl-reverse (Vec A) (λ b x → x ∷ b) xs ⟩
-  foldr (Vec A) _∷_ [] xs ≡⟨ P.sym (idIsFoldr xs) ⟩
+  foldr (Vec A) _∷_ [] xs ≡⟨ P.sym (id-is-foldr xs) ⟩
   xs ∎
     where open P.≡-Reasoning
 
@@ -1089,10 +1089,10 @@ Please use lookup-++ʳ instead."
 "Warning: []≔-++-inject+ was deprecated in v2.0.
 Please use []≔-++-↑ˡ instead."
 #-}
-idIsFold = idIsFoldr
+idIsFold = id-is-foldr
 {-# WARNING_ON_USAGE idIsFold
 "Warning: idIsFold was deprecated in v2.0.
-Please use idIsFoldr instead."
+Please use id-is-foldr instead."
 #-}
 sum-++-commute = sum-++
 {-# WARNING_ON_USAGE sum-++-commute
