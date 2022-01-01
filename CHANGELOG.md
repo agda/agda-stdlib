@@ -1014,6 +1014,11 @@ Other minor changes
   transpose-replicate : transpose (replicate xs) ≡ map replicate xs
   ```
 
+* Added new proofs in `Data.Vec.Relation.Binary.Lex.Strict`:
+  ```agda
+  xs≮[] : ∀ {n} (xs : Vec A n) → ¬ xs < []
+  ```
+
 * Added new functions in `Data.Vec.Relation.Unary.All`:
   ```
   decide :  Π[ P ∪ Q ] → Π[ All P ∪ Any Q ]
