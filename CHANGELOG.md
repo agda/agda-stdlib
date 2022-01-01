@@ -835,10 +835,14 @@ Other minor changes
 
 * Added new definitions in `Data.Vec.Base`:
   ```agda
+  FoldrOp A B = ∀ {n} → A → B n → B (suc n)
+  FoldlOp A B = ∀ {n} → B n → A → B (suc n)
+  
+  foldr′ : ∀ {n} → (A → B → B) → B → Vec A n → B
+  foldl′ : ∀ {n} → (B → A → B) → B → Vec A n → B
+
   diagonal : ∀ {n} → Vec (Vec A n) n → Vec A n
   DiagonalBind._>>=_ : ∀ {n} → Vec A n → (A → Vec B n) → Vec B n
-  FoldrOp : {a b} (A : Set a) (B : ℕ → Set b) → Set (a ⊔ b)
-  FoldlOp : {a b} (A : Set a) (B : ℕ → Set b) → Set (a ⊔ b)
   _ʳ++_ : ∀ {m n} → Vec A m → Vec A n → Vec A (m + n)
   ```
 
@@ -871,7 +875,7 @@ Other minor changes
                  (h d ≡ e) →
                  (∀ {n} b x → h (f {n} b x) ≡ g (h b) x) →
                  ∀ {n} → h ∘ foldl B {n} f d ≗ foldl C g e
-  unfold-reverse : ∀ {n} (x : A) xs → reverse (x ∷ xs) ≡ reverse {n = n} xs ∷ʳ x
+  reverse-∷  : ∀ {n} (x : A) xs → reverse (x ∷ xs) ≡ reverse {n = n} xs ∷ʳ x
   unfold-ʳ++ : ∀ {m n} {xs : Vec A m} {ys : Vec A n} → xs ʳ++ ys ≡ reverse xs ++ ys
   foldl-∷ʳ : ∀ {A : Set a} (B : ℕ → Set b) (f : FoldrOp A B) {e} →
              ∀ {n} y (ys : Vec A n) → foldl B f e (ys ∷ʳ y) ≡ f (foldl B f e ys) y

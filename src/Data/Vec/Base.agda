@@ -10,7 +10,6 @@ module Data.Vec.Base where
 
 open import Data.Bool.Base
 open import Data.Nat.Base
-open import Data.Nat.Properties
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base as List using (List)
 open import Data.Product as Prod using (∃; ∃₂; _×_; _,_)
@@ -184,6 +183,8 @@ module DiagonalBind where
 ------------------------------------------------------------------------
 -- Operations for reducing vectors
 
+-- Dependent folds
+
 module _ (A : Set a) (B : ℕ → Set b) where
 
   FoldrOp = ∀ {n} → A → B n → B (suc n)
@@ -203,15 +204,19 @@ foldl : ∀ (B : ℕ → Set b) {m} →
 foldl B _⊕_ n []       = n
 foldl B _⊕_ n (x ∷ xs) = foldl (B ∘ suc) _⊕_ (n ⊕ x) xs
 
-foldr₀ : ∀ {n} → (A → A → A) → A → Vec A n → A
-foldr₀ _⊕_ = foldr _ λ {n} → _⊕_
+-- Non-dependent folds
+
+foldr′ : ∀ {n} → (A → B → B) → B → Vec A n → B
+foldr′ _⊕_ = foldr _ λ {n} → _⊕_
+
+foldl′ : ∀ {n} → (B → A → B) → B → Vec A n → B
+foldl′ _⊕_ = foldl _ λ {n} → _⊕_
+
+-- Non-empty folds
 
 foldr₁ : ∀ {n} → (A → A → A) → Vec A (suc n) → A
 foldr₁ _⊕_ (x ∷ [])     = x
 foldr₁ _⊕_ (x ∷ y ∷ ys) = x ⊕ foldr₁ _⊕_ (y ∷ ys)
-
-foldl₀ : ∀ {n} → (A → A → A) → A → Vec A n → A
-foldl₀ _⊕_ = foldl _ λ {n} → _⊕_
 
 foldl₁ : ∀ {n} → (A → A → A) → Vec A (suc n) → A
 foldl₁ _⊕_ (x ∷ xs) = foldl _ _⊕_ x xs
