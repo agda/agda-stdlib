@@ -460,7 +460,7 @@ module _ {f : A → A → A} where
   zipWith-assoc assoc (x ∷ xs) (y ∷ ys) (z ∷ zs) =
     cong₂ _∷_ (assoc x y z) (zipWith-assoc assoc xs ys zs)
 
-  zipWith-idem : ∀ {f : A → A → A} → Idempotent _≡_ f →
+  zipWith-idem : Idempotent _≡_ f →
                  Idempotent {A = Vec A n} _≡_ (zipWith f)
   zipWith-idem idem []       = refl
   zipWith-idem idem (x ∷ xs) =
