@@ -735,7 +735,7 @@ map-is-foldr f = foldr-universal (Vec _) (λ x ys → f x ∷ ys) (map f) refl (
               xs ++ ys ≡ foldr (Vec A ∘ (_+ n)) _∷_ ys xs
 ++-is-foldr {A = A} {n = n} {ys} xs =
   foldr-universal (Vec A ∘ (_+ n)) _∷_ (_++ ys) refl (λ _ _ → refl) xs
- 
+
 ------------------------------------------------------------------------
 -- _∷ʳ_
 
