@@ -10,7 +10,6 @@ module Data.Vec.Properties where
 
 open import Algebra.Definitions
 open import Data.Bool.Base using (true; false)
-open import Data.Empty using (⊥-elim)
 open import Data.Fin.Base as Fin using (Fin; zero; suc; toℕ; fromℕ; _↑ˡ_; _↑ʳ_)
 open import Data.List.Base as List using (List)
 open import Data.Nat.Base
@@ -31,6 +30,7 @@ open import Relation.Unary using (Pred; Decidable)
 open import Relation.Nullary using (Dec; does; yes; no)
 open import Relation.Nullary.Decidable using (map′)
 open import Relation.Nullary.Product using (_×-dec_)
+open import Relation.Nullary.Negation using (contradiction)
 
 private
   variable
@@ -204,7 +204,7 @@ updateAt-updates (suc i) (x ∷ xs) (there loc) = there (updateAt-updates i xs l
 
 updateAt-minimal : ∀ (i j : Fin n) {f : A → A} (xs : Vec A n) →
                    i ≢ j → xs [ i ]= x → (updateAt j f xs) [ i ]= x
-updateAt-minimal zero    zero    (x ∷ xs) 0≢0 here        = ⊥-elim (0≢0 refl)
+updateAt-minimal zero    zero    (x ∷ xs) 0≢0 here        = contradiction refl 0≢0
 updateAt-minimal zero    (suc j) (x ∷ xs) _   here        = here
 updateAt-minimal (suc i) zero    (x ∷ xs) _   (there loc) = there loc
 updateAt-minimal (suc i) (suc j) (x ∷ xs) i≢j (there loc) =
@@ -275,7 +275,7 @@ updateAt-cong i f≗g xs = updateAt-cong-relative i xs (f≗g (lookup xs i))
 
 updateAt-commutes : ∀ (i j : Fin n) {f g : A → A} → i ≢ j →
                     updateAt i f ∘ updateAt j g ≗ updateAt j g ∘ updateAt i f
-updateAt-commutes zero    zero    0≢0 (x ∷ xs) = ⊥-elim (0≢0 refl)
+updateAt-commutes zero    zero    0≢0 (x ∷ xs) = contradiction refl 0≢0
 updateAt-commutes zero    (suc j) i≢j (x ∷ xs) = refl
 updateAt-commutes (suc i) zero    i≢j (x ∷ xs) = refl
 updateAt-commutes (suc i) (suc j) i≢j (x ∷ xs) =
@@ -472,7 +472,7 @@ module _ {f : A → A → A} where
 
 module _ {f : A → A → A} {e : A} where
 
-  zipWith-identityˡ : LeftIdentity _≡_ e f → 
+  zipWith-identityˡ : LeftIdentity _≡_ e f →
                       LeftIdentity _≡_ (replicate e) (zipWith {n = n} f)
   zipWith-identityˡ idˡ []       = refl
   zipWith-identityˡ idˡ (x ∷ xs) =
@@ -827,7 +827,7 @@ module _ (f : A → B) where
   map-∷ʳ : ∀ x (xs : Vec A n) → map f (xs ∷ʳ x) ≡ map f xs ∷ʳ f x
   map-∷ʳ x []       = refl
   map-∷ʳ x (y ∷ xs) = P.cong (f y ∷_) (map-∷ʳ x xs)
-  
+
   -- map and reverse
 
   map-reverse : ∀ (xs : Vec A n) → map f (reverse xs) ≡ reverse (map f xs)
@@ -1000,7 +1000,7 @@ insert-punchIn (x ∷ xs) (suc i)  v (suc j) = insert-punchIn xs i v j
 
 remove-punchOut : ∀ (xs : Vec A (suc n)) {i} {j} (i≢j : i ≢ j) →
                   lookup (remove xs i) (Fin.punchOut i≢j) ≡ lookup xs j
-remove-punchOut (x ∷ xs)     {zero}  {zero}  i≢j = ⊥-elim (i≢j refl)
+remove-punchOut (x ∷ xs)     {zero}  {zero}  i≢j = contradiction refl i≢j
 remove-punchOut (x ∷ xs)     {zero}  {suc j} i≢j = refl
 remove-punchOut (x ∷ y ∷ xs) {suc i} {zero}  i≢j = refl
 remove-punchOut (x ∷ y ∷ xs) {suc i} {suc j} i≢j =
