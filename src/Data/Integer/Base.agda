@@ -30,6 +30,7 @@ open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred)
 
 infix  8 -_
+infixr 8 _^_
 infixl 7 _*_ _⊓_
 infixl 6 _+_ _-_ _⊖_ _⊔_
 infix  4 _≤_ _≥_ _<_ _>_ _≰_ _≱_ _≮_ _≯_
@@ -251,6 +252,12 @@ pred i = -1ℤ + i
 
 _*_ : ℤ → ℤ → ℤ
 i * j = sign i S* sign j ◃ ∣ i ∣ ℕ* ∣ j ∣
+
+-- Naïve exponentiation.
+
+_^_ : ℤ → ℕ → ℤ
+i ^ ℕ.zero    = 1ℤ
+i ^ (ℕ.suc m) = i * i ^ m
 
 -- Maximum.
 

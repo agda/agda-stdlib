@@ -569,6 +569,11 @@ New modules
   Algebra.Morphism.Construct.Identity
   ```
 
+* 'Optimised' tail-recursive exponentiation properties:
+  ```
+  Algebra.Properties.Semiring.Exp.TailRecursiveOptimised
+  ```
+
 * A small library for function arguments with default values:
   ```
   Data.Default
@@ -711,6 +716,12 @@ Other minor changes
                     CommutativeRing (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
  ```
 
+* Added new functions to `Algebra.Definitions.RawSemiring`:
+  ```agda
+  _^[_]*_ : A → ℕ → A → A
+  _^ᵗ_     : A → ℕ → A
+  ```
+
 * Added new proofs to `Algebra.Properties.CommutativeSemigroup`:
   ```
   interchange : Interchangable _∙_ _∙_
@@ -774,9 +785,24 @@ Other minor changes
   ^↔→                : Extensionality _ _ → Fin (n ^ m) ↔ (Fin m → Fin n)
   ```
 
+* Added new functions in `Data.Integer.Base`:
+  ```
+  _^_ : ℤ → ℕ → ℤ
+  ```
+
 * Added new proofs in `Data.Integer.Properties`:
   ```agda
   sign-cong′ : s₁ ◃ n₁ ≡ s₂ ◃ n₂ → s₁ ≡ s₂ ⊎ (n₁ ≡ 0 × n₂ ≡ 0)
+  ≤-⊖ : m ℕ.≤ n → n ⊖ m ≡ + (n ∸ m)
+  ∣⊖∣-≤ : m ℕ.≤ n → ∣ m ⊖ n ∣ ≡ n ∸ m
+  ∣-∣-≤ : i ≤ j → + ∣ i - j ∣ ≡ j - i
+  ^-identityʳ : ∀ i → i ^ 1 ≡ i
+  ^-zeroˡ : ∀ n → 1ℤ ^ n ≡ 1ℤ
+  ^-distribˡ-+-* : ∀ i m n → i ^ (m ℕ.+ n) ≡ i ^ m * i ^ n
+  ^-semigroup-morphism : ∀ {i} → IsSemigroupMorphism ℕ.+-semigroup *-semigroup (i ^_)
+  ^-monoid-morphism : ∀ {i} → IsMonoidMorphism  ℕ.+-0-monoid *-1-monoid (i ^_)
+  ^-*-assoc : ∀ i m n → (i ^ m) ^ n ≡ i ^ (m ℕ.* n)
+  i^n≡0⇒i≡0 : ∀ i n → i ^ n ≡ 0ℤ → i ≡ 0ℤ
   ```
 
 * Added new proofs in `Data.List.Relation.Binary.Lex.Strict`:

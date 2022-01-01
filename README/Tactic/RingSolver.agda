@@ -43,7 +43,7 @@ open import Tactic.RingSolver.Core.AlmostCommutativeRing
 ------------------------------------------------------------------------
 
 module IntegerExamples where
-  open import Data.Integer
+  open import Data.Integer hiding (_^_)
   open import Data.Integer.Tactic.RingSolver
 
   open AlmostCommutativeRing ring using (_^_)

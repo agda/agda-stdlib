@@ -25,7 +25,7 @@ open import Data.Nat as ℕ
 import Data.Nat.Properties as ℕ
 open import Data.Nat.Solver
 open import Data.Product using (proj₁; proj₂; _,_)
-open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
+open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Sign as Sign using (Sign) renaming (_*_ to _𝕊*_)
 import Data.Sign.Properties as 𝕊ₚ
 open import Data.Product using (_×_)
@@ -33,7 +33,7 @@ open import Function.Base using (_∘_; _$_; id)
 open import Level using (0ℓ)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
-open import Relation.Nullary using (yes; no)
+open import Relation.Nullary using (yes; no; ¬_)
 import Relation.Nullary.Reflects as Reflects
 open import Relation.Nullary.Negation using (contradiction)
 import Relation.Nullary.Decidable as Dec
@@ -614,6 +614,14 @@ n⊖n≡0 n with n ℕ.<ᵇ n in leq
 ... | true  | q = contradiction (ℕ.<-transʳ p q) (ℕ.<-irrefl refl)
 ... | false | q = refl
 
+≤-⊖ : m ℕ.≤ n → n ⊖ m ≡ + (n ∸ m)
+≤-⊖ (z≤n {n})       = refl
+≤-⊖ (s≤s {m} {n} p) = begin
+  suc n ⊖ suc m     ≡⟨ [1+m]⊖[1+n]≡m⊖n n m ⟩
+  n ⊖ m             ≡⟨ ≤-⊖ p ⟩
+  + (n ∸ m)         ≡⟨⟩
+  + (suc n ∸ suc m) ∎ where open ≡-Reasoning
+
 ⊖-≤ : m ℕ.≤ n → m ⊖ n ≡ - + (n ∸ m)
 ⊖-≤ {m} {n} p with m ℕ.<ᵇ n | Reflects.invert (ℕ.<ᵇ-reflects-< m n)
 ... | true  | q = refl
@@ -624,6 +632,13 @@ n⊖n≡0 n with n ℕ.<ᵇ n in leq
 
 ⊖-≰ : n ℕ.≰ m → m ⊖ n ≡ - + (n ∸ m)
 ⊖-≰ = ⊖-< ∘ ℕ.≰⇒>
+
+∣⊖∣-≤ : m ℕ.≤ n → ∣ m ⊖ n ∣ ≡ n ∸ m
+∣⊖∣-≤ {m} {n} p = begin
+  ∣ m ⊖ n ∣         ≡⟨ cong ∣_∣ (⊖-≤ p) ⟩
+  ∣ - (+ (n ∸ m)) ∣ ≡⟨ ∣-i∣≡∣i∣ (+ (n ∸ m)) ⟩
+  ∣ + (n ∸ m) ∣     ≡⟨⟩
+  n ∸ m             ∎ where open ≡-Reasoning
 
 ∣⊖∣-< : m ℕ.< n → ∣ m ⊖ n ∣ ≡ n ∸ m
 ∣⊖∣-< {m} {n} p = begin
@@ -1097,6 +1112,26 @@ neg-minus-pos (suc m) (suc n) = cong (-[1+_] ∘ suc) (ℕ.+-comm (suc m) n)
   ∣ m ⊖ n ∣      ≡⟨  ∣m⊖n∣≡∣n⊖m∣ m n ⟩
   ∣ n ⊖ m ∣      ≡˘⟨ cong ∣_∣ ([+m]-[+n]≡m⊖n n m) ⟩
   ∣ + n - + m ∣  ∎ where open ≡-Reasoning
+
+∣-∣-≤ : i ≤ j → + ∣ i - j ∣ ≡ j - i
+∣-∣-≤ (-≤- {m} {n} n≤m) = begin
+  + ∣ -[1+ m ] + +[1+ n ] ∣ ≡⟨ cong (λ j → + ∣ j ∣) ([1+m]⊖[1+n]≡m⊖n n m) ⟩
+  + ∣ n ⊖ m ∣               ≡⟨ cong +_ (∣⊖∣-≤ n≤m) ⟩
+  + ( m ∸ n )              ≡⟨ sym (≤-⊖ n≤m) ⟩
+  m ⊖ n                    ≡⟨ sym ([1+m]⊖[1+n]≡m⊖n m n) ⟩
+  suc m ⊖ suc n            ∎ where open ≡-Reasoning
+∣-∣-≤ (-≤+ {m} {zero}) = refl
+∣-∣-≤ (-≤+ {m} {suc n}) = begin
+  + ∣ -[1+ m ] - + suc n ∣ ≡⟨⟩
+  + suc (suc m ℕ.+ n)    ≡⟨ cong (λ n → + suc n) (ℕ.+-comm (suc m) n) ⟩
+  + (suc n ℕ.+ suc m)    ≡⟨⟩
+  + suc n - -[1+ m ]      ∎ where open ≡-Reasoning
+∣-∣-≤ (+≤+ {m} {n} m≤n) = begin
+  + ∣ + m - + n ∣ ≡⟨ cong (λ j → + ∣ j ∣) (m-n≡m⊖n m n) ⟩
+  + ∣ m ⊖ n ∣     ≡⟨ cong +_ ( ∣⊖∣-≤ m≤n ) ⟩
+  + (n ∸ m)      ≡⟨ sym (≤-⊖  m≤n) ⟩
+  n ⊖ m          ≡⟨ sym (m-n≡m⊖n n m) ⟩
+  + n - + m      ∎ where open ≡-Reasoning
 
 i≡j⇒i-j≡0 : i ≡ j → i - j ≡ 0ℤ
 i≡j⇒i-j≡0 {i} refl = +-inverseʳ i
@@ -1590,6 +1625,55 @@ i*j≡0⇒i≡0∨j≡0 : ∀ i {j} → i * j ≡ 0ℤ → i ≡ 0ℤ ⊎ j ≡ 
 i*j≡0⇒i≡0∨j≡0 i p with ℕ.m*n≡0⇒m≡0∨n≡0 ∣ i ∣ (abs-cong {t = Sign.+} p)
 ... | inj₁ ∣i∣≡0 = inj₁ (∣i∣≡0⇒i≡0 ∣i∣≡0)
 ... | inj₂ ∣j∣≡0 = inj₂ (∣i∣≡0⇒i≡0 ∣j∣≡0)
+
+------------------------------------------------------------------------
+-- Properties of _^_
+------------------------------------------------------------------------
+
+^-identityʳ : ∀ i → i ^ 1 ≡ i
+^-identityʳ =  *-identityʳ
+
+^-zeroˡ : ∀ n → 1ℤ ^ n ≡ 1ℤ
+^-zeroˡ zero  = refl
+^-zeroˡ (suc n) = begin
+  1ℤ ^ suc n    ≡⟨⟩
+  1ℤ * (1ℤ ^ n) ≡⟨ *-identityˡ (1ℤ ^ n) ⟩
+  1ℤ ^ n        ≡⟨ ^-zeroˡ n ⟩
+  1ℤ            ∎
+  where open ≡-Reasoning
+
+^-distribˡ-+-* : ∀ i m n → i ^ (m ℕ.+ n) ≡ i ^ m * i ^ n
+^-distribˡ-+-* i zero    n = sym (*-identityˡ (i ^ n))
+^-distribˡ-+-* i (suc m) n = begin
+  i * (i ^ (m ℕ.+ n))    ≡⟨ cong (i *_) (^-distribˡ-+-* i m n) ⟩
+  i * ((i ^ m) * (i ^ n)) ≡⟨ sym (*-assoc i _ _) ⟩
+  (i * (i ^ m)) * (i ^ n) ∎
+  where open ≡-Reasoning
+
+^-semigroup-morphism : ∀ {i} → Morphism.IsSemigroupMorphism ℕ.+-semigroup *-semigroup (i ^_)
+^-semigroup-morphism = record
+  { ⟦⟧-cong = cong (_ ^_)
+  ; ∙-homo  = ^-distribˡ-+-* _
+  }
+
+^-monoid-morphism : ∀ {i} → Morphism.IsMonoidMorphism  ℕ.+-0-monoid *-1-monoid (i ^_)
+^-monoid-morphism = record
+  { sm-homo = ^-semigroup-morphism
+  ; ε-homo  = refl
+  }
+
+^-*-assoc : ∀ i m n → (i ^ m) ^ n ≡ i ^ (m ℕ.* n)
+^-*-assoc i m zero    = cong (i ^_) (sym $ ℕ.*-zeroʳ m)
+^-*-assoc i m (suc n) = begin
+  (i ^ m) * ((i ^ m) ^ n)    ≡⟨ cong ((i ^ m) *_) (^-*-assoc i m n) ⟩
+  (i ^ m) * (i ^ (m ℕ.* n)) ≡⟨ sym (^-distribˡ-+-* i m (m ℕ.* n)) ⟩
+  i ^ (m ℕ.+ m ℕ.* n)      ≡⟨ cong (i ^_) (sym (ℕ.*-suc m n)) ⟩
+  i ^ (m ℕ.* (suc n))       ∎
+  where open ≡-Reasoning
+
+i^n≡0⇒i≡0 : ∀ i n → i ^ n ≡ 0ℤ → i ≡ 0ℤ
+i^n≡0⇒i≡0 i zero    ()
+i^n≡0⇒i≡0 i (suc n) eq = [ id , i^n≡0⇒i≡0 i n ]′ (i*j≡0⇒i≡0∨j≡0 i eq)
 
 ------------------------------------------------------------------------
 -- Properties of _*_ and +_/-_
