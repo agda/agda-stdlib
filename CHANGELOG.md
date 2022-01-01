@@ -490,6 +490,31 @@ Deprecated names
   zipWith-identityʳ  ↦  zipWith-zeroʳ
   ```
 
+* In `Data.Fin.Base`:
+two new, hopefully more memorable, names `↑ˡ` `↑ʳ` for the 'left', resp. 'right' injection of a Fin m into a 'larger' type, `Fin (m + n)`, resp. `Fin (n + m)`, with argument order to reflect the position of the Fin m argument.
+  ```
+  inject+   ↦   flip _↑ˡ_
+  raise     ↦   _↑ʳ_
+  ```
+
+* In `Data.Fin.Properties`:
+  ```
+  toℕ-raise       ↦ toℕ-↑ʳ
+  toℕ-inject+ n i ↦ sym (toℕ-↑ˡ i n)
+  splitAt-inject+ m n i ↦ splitAt-↑ˡ m i n
+  splitAt-raise ↦ splitAt-↑ʳ
+  Fin0↔⊥        ↦ 0↔⊥
+  ```
+  
+* In `Data.Vec.Properties`:
+
+  ```
+  []≔-++-inject+       ↦ []≔-++-↑ˡ
+  idIsFold  ↦  id-is-foldr
+  sum-++-commute ↦ sum-++
+  ```
+  Additionally, `[]≔-++-↑ʳ`, by analogy.
+
 * In `Function.Construct.Composition`:
   ```
   _∘-⟶_   ↦   _⟶-∘_
@@ -522,28 +547,6 @@ Deprecated names
   sym-↪   ↦   ↪-sym
   sym-↔   ↦   ↔-sym
   ```
-
-* In `Data.Fin.Base`:
-two new, hopefully more memorable, names `↑ˡ` `↑ʳ` for the 'left', resp. 'right' injection of a Fin m into a 'larger' type, `Fin (m + n)`, resp. `Fin (n + m)`, with argument order to reflect the position of the Fin m argument.
-  ```
-  inject+   ↦   flip _↑ˡ_
-  raise     ↦   _↑ʳ_
-  ```
-
-* In `Data.Fin.Properties`:
-  ```
-  toℕ-raise       ↦ toℕ-↑ʳ
-  toℕ-inject+ n i ↦ sym (toℕ-↑ˡ i n)
-  splitAt-inject+ m n i ↦ splitAt-↑ˡ m i n
-  splitAt-raise ↦ splitAt-↑ʳ
-  Fin0↔⊥        ↦ 0↔⊥
-  ```
-
-* In `Data.Vec.Properties`:
-  ```
-  []≔-++-inject+       ↦ []≔-++-↑ˡ
-  ```
-  Additionally, `[]≔-++-↑ʳ`, by analogy.
 
 * In `Foreign.Haskell.Either` and `Foreign.Haskell.Pair`:
   ```
@@ -588,6 +591,11 @@ New modules
   ```
   Data.List.Reflection
   Data.Vec.Reflection
+  ```
+
+* A small library for heterogenous equational reasoning on vectors:
+  ```
+  Data.Vec.Properties.Heterogeneous
   ```
 
 * Show module for unnormalised rationals:
@@ -919,8 +927,15 @@ Other minor changes
 
 * Added new definitions in `Data.Vec.Base`:
   ```agda
+  FoldrOp A B = ∀ {n} → A → B n → B (suc n)
+  FoldlOp A B = ∀ {n} → B n → A → B (suc n)
+  
+  foldr′ : ∀ {n} → (A → B → B) → B → Vec A n → B
+  foldl′ : ∀ {n} → (B → A → B) → B → Vec A n → B
+
   diagonal : ∀ {n} → Vec (Vec A n) n → Vec A n
   DiagonalBind._>>=_ : ∀ {n} → Vec A n → (A → Vec B n) → Vec B n
+  _ʳ++_ : ∀ {m n} → Vec A m → Vec A n → Vec A (m + n)
   ```
 
 * Added new instance in `Data.Vec.Categorical`:
@@ -935,6 +950,56 @@ Other minor changes
   ⊛-is->>= : ∀ {n} (fs : Vec (A → B) n) (xs : Vec A n) → (fs ⊛ xs) ≡ (fs DiagonalBind.>>= flip map xs)
   transpose-replicate : ∀ {m n} (xs : Vec A m) → transpose (replicate {n = n} xs) ≡ map replicate xs
   []≔-++-↑ʳ : ∀ {m n y} (xs : Vec A m) (ys : Vec A n) i → (xs ++ ys) [ m ↑ʳ i ]≔ y ≡ xs ++ (ys [ i ]≔ y)
+  map-++ : ∀ (f : A → B) {m} {n} (xs : Vec A m) (ys : Vec A n) →
+           map f (xs ++ ys) ≡ map f xs ++ map f ys
+  foldl-universal : ∀ {A : Set a} (B : ℕ → Set b)
+                    (f : FoldlOp A B) {e}
+                    (h : ∀ {c} (C : ℕ → Set c) (g : FoldlOp A C) (e : C zero) →
+                         ∀ {n} → Vec A n → C n) →
+                    (∀ {c} {C} {g : FoldlOp A C} e → h {c} C g e [] ≡ e) →
+                    (∀ {c} {C} {g : FoldlOp A C} e → ∀ {n} x →
+                     (h {c} C g e {suc n}) ∘ (x ∷_) ≗ h (C ∘ suc) (λ {n} → g {suc n}) (g e x)) →
+                    ∀ {n} → h B f e ≗ foldl B {n} f e
+  foldl-fusion : ∀ {A : Set a} {B : ℕ → Set b} {C : ℕ → Set c}
+                 (h : ∀ {n} → B n → C n) →
+                 {f : FoldlOp A B} {d : B zero} →
+                 {g : FoldlOp A C} {e : C zero} →
+                 (h d ≡ e) →
+                 (∀ {n} b x → h (f {n} b x) ≡ g (h b) x) →
+                 ∀ {n} → h ∘ foldl B {n} f d ≗ foldl C g e
+  reverse-∷  : ∀ {n} (x : A) xs → reverse (x ∷ xs) ≡ reverse {n = n} xs ∷ʳ x
+  unfold-ʳ++ : ∀ {m n} {xs : Vec A m} {ys : Vec A n} → xs ʳ++ ys ≡ reverse xs ++ ys
+  foldl-∷ʳ : ∀ {A : Set a} (B : ℕ → Set b) (f : FoldrOp A B) {e} →
+             ∀ {n} y (ys : Vec A n) → foldl B f e (ys ∷ʳ y) ≡ f (foldl B f e ys) y
+  foldl-[] : ∀ {A : Set a} (B : ℕ → Set b) (f : FoldlOp A B) {e} → foldl B f e [] ≡ e
+  foldl-reverse : ∀ {B : ℕ → Set b} {n} (f : FoldlOp A B) e →
+                foldl B {n} f e ∘ reverse ≗ foldr B (λ {n} → flip (f {n})) e
+  foldr-[] : ∀ {A : Set a} (B : ℕ → Set b) (f : FoldrOp A B) {e} → foldr B f e [] ≡ e
+  foldr-++ : ∀ {A : Set a} (B : ℕ → Set b) (f : FoldrOp A B) {e} →
+             ∀ {m n} (xs : Vec A m) {ys : Vec A n} →
+             foldr B f e (xs ++ ys) ≡ foldr (B ∘ (_+ n)) f (foldr B f e ys) xs
+  foldr-∷ʳ : ∀ {A : Set a} (B : ℕ → Set b) (f : FoldrOp A B) {e} →
+             ∀ {n} y (ys : Vec A n) → foldr B f e (ys ∷ʳ y) ≡ foldr (B ∘ suc) f (f y e) ys
+  foldr-ʳ++ : ∀ (B : ℕ → Set b) (f : FoldrOp A B) {e} →
+              ∀ {m} {n} b (xs : Vec A m) {ys : Vec A n} →
+              foldr B f e (xs ʳ++ ys)
+              ≡
+              foldl (B ∘ (_+ n)) ((λ {m} → flip (f {m + n}))) (foldr B f e ys) xs
+  foldr-reverse : ∀ {B : ℕ → Set b} (f : FoldrOp A B) {e} {n} →
+                foldr B {n} f e ∘ reverse ≗ foldl B (λ {n} → flip (f {n})) e
+  ++-is-foldr : ∀ {m n} (xs : Vec A m) {ys : Vec A n} →
+                xs ++ ys ≡ foldr ((Vec A) ∘ (_+ n)) _∷_ ys xs
+  ∷ʳ-injective : ∀ {n} (xs ys : Vec A n) → xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys × x ≡ y
+  ∷ʳ-injectiveˡ : ∀ {n} (xs ys : Vec A n) → xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys
+  ∷ʳ-injectiveʳ : ∀ {n} (xs ys : Vec A n) → xs ∷ʳ x ≡ ys ∷ʳ y → x ≡ y
+  map-is-foldr : (f : A → B) → ∀ {n} → map {n = n} f ≗ foldr (Vec B) (λ x ys → f x ∷ ys) []
+  map-∷ʳ : (f : A → B) → ∀ {n} x (xs : Vec A n) → map f (xs ∷ʳ x) ≡ (map f xs) ∷ʳ (f x)
+  map-reverse : (f : A → B) → ∀ {n} (xs : Vec A n) → map f (reverse xs) ≡ reverse (map f xs)
+  map-ʳ++ : ∀ (f : A → B) {m n} (xs : Vec A m) {ys : Vec A n} →
+            map f (xs ʳ++ ys) ≡ map f xs ʳ++ map f ys
+  reverse-involutive : ∀ {n} → Involutive {A = Vec A n} _≡_ reverse
+  reverse-reverse : ∀ {n} {xs ys : Vec A n} → reverse xs ≡ ys → reverse ys ≡ xs
+  reverse-injective : ∀ {n} {xs ys : Vec A n} → reverse xs ≡ reverse ys → xs ≡ ys
   ```
 
 * Added new proofs in `Function.Construct.Symmetry`:

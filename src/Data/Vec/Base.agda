@@ -183,23 +183,40 @@ module DiagonalBind where
 ------------------------------------------------------------------------
 -- Operations for reducing vectors
 
-foldr : ∀ {a b} {A : Set a} (B : ℕ → Set b) {m} →
-        (∀ {n} → A → B n → B (suc n)) →
+-- Dependent folds
+
+module _ (A : Set a) (B : ℕ → Set b) where
+
+  FoldrOp = ∀ {n} → A → B n → B (suc n)
+  FoldlOp = ∀ {n} → B n → A → B (suc n)
+
+foldr : ∀ (B : ℕ → Set b) {m} →
+        FoldrOp A B →
         B zero →
         Vec A m → B m
-foldr b _⊕_ n []       = n
-foldr b _⊕_ n (x ∷ xs) = x ⊕ foldr b _⊕_ n xs
+foldr B _⊕_ n []       = n
+foldr B _⊕_ n (x ∷ xs) = x ⊕ foldr B _⊕_ n xs
+
+foldl : ∀ (B : ℕ → Set b) {m} →
+        FoldlOp A B →
+        B zero →
+        Vec A m → B m
+foldl B _⊕_ n []       = n
+foldl B _⊕_ n (x ∷ xs) = foldl (B ∘ suc) _⊕_ (n ⊕ x) xs
+
+-- Non-dependent folds
+
+foldr′ : ∀ {n} → (A → B → B) → B → Vec A n → B
+foldr′ _⊕_ = foldr _ λ {n} → _⊕_
+
+foldl′ : ∀ {n} → (B → A → B) → B → Vec A n → B
+foldl′ _⊕_ = foldl _ λ {n} → _⊕_
+
+-- Non-empty folds
 
 foldr₁ : ∀ {n} → (A → A → A) → Vec A (suc n) → A
 foldr₁ _⊕_ (x ∷ [])     = x
 foldr₁ _⊕_ (x ∷ y ∷ ys) = x ⊕ foldr₁ _⊕_ (y ∷ ys)
-
-foldl : ∀ {a b} {A : Set a} (B : ℕ → Set b) {m} →
-        (∀ {n} → B n → A → B (suc n)) →
-        B zero →
-        Vec A m → B m
-foldl b _⊕_ n []       = n
-foldl b _⊕_ n (x ∷ xs) = foldl (λ n → b (suc n)) _⊕_ (n ⊕ x) xs
 
 foldl₁ : ∀ {n} → (A → A → A) → Vec A (suc n) → A
 foldl₁ _⊕_ (x ∷ xs) = foldl _ _⊕_ x xs
@@ -280,14 +297,27 @@ fromList (List._∷_ x xs) = x ∷ fromList xs
 ------------------------------------------------------------------------
 -- Operations for reversing vectors
 
-reverse : ∀ {n} → Vec A n → Vec A n
-reverse {A = A} = foldl (Vec A) (λ rev x → x ∷ rev) []
+-- snoc
 
 infixl 5 _∷ʳ_
 
-_∷ʳ_ : ∀ {n} → Vec A n → A → Vec A (1 + n)
+_∷ʳ_ : ∀ {n} → Vec A n → A → Vec A (suc n)
 []       ∷ʳ y = [ y ]
 (x ∷ xs) ∷ʳ y = x ∷ (xs ∷ʳ y)
+
+-- vanilla reverse
+
+reverse : ∀ {n} → Vec A n → Vec A n
+reverse {A = A} = foldl (Vec A) (λ rev x → x ∷ rev) []
+
+-- reverse-append
+
+infix 5 _ʳ++_
+
+_ʳ++_ : ∀ {m n} → Vec A m → Vec A n → Vec A (m + n)
+_ʳ++_ {A = A} {n = n} xs ys = foldl ((Vec A) ∘ (_+ n)) (λ rev x → x ∷ rev) ys xs
+
+-- init and last
 
 initLast : ∀ {n} (xs : Vec A (1 + n)) →
            ∃₂ λ (ys : Vec A n) (y : A) → xs ≡ ys ∷ʳ y
