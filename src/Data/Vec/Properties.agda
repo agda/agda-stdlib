@@ -328,8 +328,7 @@ lookup∘updateAt′ i j xs i≢j =
               xs [ i ]= x → (xs [ j ]≔ y) [ i ]= x
 []≔-minimal xs i j i≢j loc = updateAt-minimal i j xs i≢j loc
 
-[]≔-lookup : ∀ (xs : Vec A n) (i : Fin n) →
-             xs [ i ]≔ lookup xs i ≡ xs
+[]≔-lookup : ∀ (xs : Vec A n) (i : Fin n) → xs [ i ]≔ lookup xs i ≡ xs
 []≔-lookup xs i = updateAt-id-relative i xs refl
 
 []≔-++-↑ˡ : ∀ (xs : Vec A m) (ys : Vec A n) i →
@@ -388,13 +387,13 @@ map-updateAt : ∀ {f : A → B} {g : A → A} {h : B → B}
 map-updateAt (x ∷ xs) zero    eq = cong (_∷ _) eq
 map-updateAt (x ∷ xs) (suc i) eq = cong (_ ∷_) (map-updateAt xs i eq)
 
-map-[]≔ : (f : A → B) (xs : Vec A n) (i : Fin n) →
+map-[]≔ : ∀ (f : A → B) (xs : Vec A n) (i : Fin n) →
           map f (xs [ i ]≔ x) ≡ map f xs [ i ]≔ f x
 map-[]≔ f xs i = map-updateAt xs i refl
 
-map-⊛ : (f : A → B → C) (g : A → B) (xs : Vec A n) →
+map-⊛ : ∀ (f : A → B → C) (g : A → B) (xs : Vec A n) →
         (map f xs ⊛ map g xs) ≡ map (f ˢ g) xs
-map-⊛ f g [] = refl
+map-⊛ f g []       = refl
 map-⊛ f g (x ∷ xs) = cong (f x (g x) ∷_) (map-⊛ f g xs)
 
 ------------------------------------------------------------------------
@@ -611,8 +610,8 @@ unzip∘zip (x ∷ xs) (y ∷ ys) =
   cong (Prod.map (x ∷_) (y ∷_)) (unzip∘zip xs ys)
 
 zip∘unzip : ∀ (xys : Vec (A × B) n) → uncurry zip (unzip xys) ≡ xys
-zip∘unzip []              = refl
-zip∘unzip ((x , y) ∷ xys) = cong ((x , y) ∷_) (zip∘unzip xys)
+zip∘unzip []         = refl
+zip∘unzip (xy ∷ xys) = cong (xy ∷_) (zip∘unzip xys)
 
 ×v↔v× : (Vec A n × Vec B n) ↔ Vec (A × B) n
 ×v↔v× = inverse (uncurry zip) unzip (uncurry unzip∘zip) zip∘unzip
@@ -681,49 +680,13 @@ foldl-fusion h {f} {d} {g} {e} base fuse (x ∷ xs) =
   where
     eq : h (f d x) ≡ g e x
     eq = begin
-       h (f d x) ≡⟨ fuse d x ⟩
-       g (h d) x ≡⟨ cong (λ e → g e x) base ⟩
-       g e x     ∎
+      h (f d x) ≡⟨ fuse d x ⟩
+      g (h d) x ≡⟨ cong (λ e → g e x) base ⟩
+      g e x     ∎
 
-------------------------------------------------------------------------
--- _∷ʳ_, _ʳ++_ and reverse
+foldl-[] : ∀ (B : ℕ → Set b) (f : FoldlOp A B) {e} → foldl B f e [] ≡ e
+foldl-[] _ _ = refl
 
--- reverse of cons is snoc of reverse.
-
-reverse-∷ : ∀ x (xs : Vec A n) → reverse (x ∷ xs) ≡ reverse xs ∷ʳ x
-reverse-∷ x xs = sym (foldl-fusion (_∷ʳ x) refl (λ b x → refl) xs)
-
--- reverse-append is append of reverse.
-
-unfold-ʳ++ : ∀ (xs : Vec A m) (ys : Vec A n) → xs ʳ++ ys ≡ reverse xs ++ ys
-unfold-ʳ++ xs ys = sym (foldl-fusion (_++ ys) refl (λ b x → refl) xs)
-
-------------------------------------------------------------------------
--- misc. properties of foldl
-
--- foldl and _-∷ʳ_
-
-foldl-∷ʳ : ∀ (B : ℕ → Set b) (f : FoldlOp A B) e y (ys : Vec A n) →
-           foldl B f e (ys ∷ʳ y) ≡ f (foldl B f e ys) y
-foldl-∷ʳ B f e y []       = refl
-foldl-∷ʳ B f e y (x ∷ xs) = foldl-∷ʳ (B ∘ suc) f (f e x) y xs
-
-module _ (B : ℕ → Set b) (f : FoldlOp A B) {e : B zero} where
-
-  foldl-[] : foldl B f e [] ≡ e
-  foldl-[] = refl
-
-  -- foldl after a reverse is a foldr
-
-  foldl-reverse : foldl {n = n} B f e ∘ reverse ≗ foldr B (flip f) e
-  foldl-reverse []       = refl
-  foldl-reverse (x ∷ xs) = begin
-    foldl B f e (reverse (x ∷ xs)) ≡⟨ cong (foldl B f e) (reverse-∷ x xs) ⟩
-    foldl B f e (reverse xs ∷ʳ x)  ≡⟨ foldl-∷ʳ B f e x (reverse xs) ⟩
-    f (foldl B f e (reverse xs)) x ≡⟨ cong (flip f x) (foldl-reverse xs) ⟩
-    f (foldr B (flip f) e xs) x    ≡⟨⟩
-    foldr B (flip f) e (x ∷ xs)    ∎
-  
 ------------------------------------------------------------------------
 -- foldr
 
@@ -742,7 +705,7 @@ module _ (B : ℕ → Set b) (f : FoldrOp A B) {e : B zero} where
     h (x ∷ xs)           ≡⟨ step x xs ⟩
     f x (h xs)           ≡⟨ cong (f x) (foldr-universal h base step xs) ⟩
     f x (foldr B f e xs) ∎
-  
+
   foldr-[] : foldr B f e [] ≡ e
   foldr-[] = refl
 
@@ -751,31 +714,10 @@ module _ (B : ℕ → Set b) (f : FoldrOp A B) {e : B zero} where
   foldr-++ []       = refl
   foldr-++ (x ∷ xs) = cong (f x) (foldr-++ xs)
 
-  -- foldr and _-∷ʳ_
-
-  foldr-∷ʳ : ∀ y (ys : Vec A n) →
-             foldr B f e (ys ∷ʳ y) ≡ foldr (B ∘ suc) f (f y e) ys
-  foldr-∷ʳ y []       = refl
-  foldr-∷ʳ y (x ∷ xs) = cong (f x) (foldr-∷ʳ y xs)
-
-  -- foldr after a reverse-append is a foldl
-
-  foldr-ʳ++ : ∀ (xs : Vec A m) {ys : Vec A n} →
-              foldr B f e (xs ʳ++ ys) ≡
-              foldl (B ∘ (_+ n)) (flip f) (foldr B f e ys) xs
-  foldr-ʳ++ xs = foldl-fusion (foldr B f e) refl (λ _ _ → refl) xs
-
-  -- foldr after a reverse is a foldl
-
-  foldr-reverse : foldr {n = n} B f e ∘ reverse ≗ foldl B (flip f) e
-  foldr-reverse xs = foldl-fusion (foldr B f e) refl (λ _ _ → refl) xs
-
-------------------------------------------------------------------------
-
 -- fusion and identity as consequences of universality
 
 foldr-fusion : ∀ {B : ℕ → Set b} {f : FoldrOp A B} e
-               {C : ℕ → Set c} {g : FoldrOp A C}
+                 {C : ℕ → Set c} {g : FoldrOp A C}
                (h : ∀ {n} → B n → C n) →
                (∀ {n} x → h ∘ f {n} x ≗ g x ∘ h) →
                h ∘ foldr {n = n} B f e ≗ foldr C g (h e)
@@ -785,65 +727,70 @@ foldr-fusion {B = B} {f} e {C} h fuse =
 id-is-foldr : id ≗ foldr {n = n} (Vec A) _∷_ []
 id-is-foldr = foldr-universal _ _ id refl (λ _ _ → refl)
 
+map-is-foldr : ∀ (f : A → B) →
+               map {n = n} f ≗ foldr (Vec B) (λ x ys → f x ∷ ys) []
+map-is-foldr f = foldr-universal (Vec _) (λ x ys → f x ∷ ys) (map f) refl (λ _ _ → refl)
+
 ++-is-foldr : ∀ (xs : Vec A m) →
               xs ++ ys ≡ foldr (Vec A ∘ (_+ n)) _∷_ ys xs
 ++-is-foldr {A = A} {n = n} {ys} xs =
   foldr-universal (Vec A ∘ (_+ n)) _∷_ (_++ ys) refl (λ _ _ → refl) xs
-
+ 
 ------------------------------------------------------------------------
 -- _∷ʳ_
 
-module _ {x y : A} where
+∷ʳ-injective : ∀ (xs ys : Vec A n) → xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys × x ≡ y
+∷ʳ-injective []       []        refl = (refl , refl)
+∷ʳ-injective (x ∷ xs) (y  ∷ ys) eq   with ∷-injective eq
+... | refl , eq′ = Prod.map₁ (cong (x ∷_)) (∷ʳ-injective xs ys eq′)
 
-  ∷ʳ-injective : ∀ (xs ys : Vec A n) → xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys × x ≡ y
-  ∷ʳ-injective []       []        refl = (refl , refl)
-  ∷ʳ-injective (x ∷ xs) (y  ∷ ys) eq   with ∷-injective eq
-  ... | refl , eq′ = Prod.map₁ (cong (x ∷_)) (∷ʳ-injective xs ys eq′)
+∷ʳ-injectiveˡ : ∀ (xs ys : Vec A n) → xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys
+∷ʳ-injectiveˡ xs ys eq = proj₁ (∷ʳ-injective xs ys eq)
 
-  ∷ʳ-injectiveˡ : ∀ (xs ys : Vec A n) → xs ∷ʳ x ≡ ys ∷ʳ y → xs ≡ ys
-  ∷ʳ-injectiveˡ xs ys eq = proj₁ (∷ʳ-injective xs ys eq)
+∷ʳ-injectiveʳ : ∀ (xs ys : Vec A n) → xs ∷ʳ x ≡ ys ∷ʳ y → x ≡ y
+∷ʳ-injectiveʳ xs ys eq = proj₂ (∷ʳ-injective xs ys eq)
 
-  ∷ʳ-injectiveʳ : ∀ (xs ys : Vec A n) → xs ∷ʳ x ≡ ys ∷ʳ y → x ≡ y
-  ∷ʳ-injectiveʳ xs ys eq = proj₂ (∷ʳ-injective xs ys eq)
+foldl-∷ʳ : ∀ (B : ℕ → Set b) (f : FoldlOp A B) e y (ys : Vec A n) →
+           foldl B f e (ys ∷ʳ y) ≡ f (foldl B f e ys) y
+foldl-∷ʳ B f e y []       = refl
+foldl-∷ʳ B f e y (x ∷ xs) = foldl-∷ʳ (B ∘ suc) f (f e x) y xs
 
-------------------------------------------------------------------------
--- map and _∷ʳ_, _ʳ++_ and reverse
+foldr-∷ʳ : ∀ (B : ℕ → Set b) (f : FoldrOp A B) {e} y (ys : Vec A n) →
+           foldr B f e (ys ∷ʳ y) ≡ foldr (B ∘ suc) f (f y e) ys
+foldr-∷ʳ B f y []       = refl
+foldr-∷ʳ B f y (x ∷ xs) = cong (f x) (foldr-∷ʳ B f y xs)
 
-module _ (f : A → B) where
+-- map and _∷ʳ_
 
-  map-is-foldr : map {n = n} f ≗ foldr (Vec B) (λ x ys → f x ∷ ys) []
-  map-is-foldr = foldr-universal (Vec B) (λ x ys → f x ∷ ys) (map f) refl (λ _ _ → refl)
+map-∷ʳ : ∀ (f : A → B) x (xs : Vec A n) → map f (xs ∷ʳ x) ≡ map f xs ∷ʳ f x
+map-∷ʳ f x []       = refl
+map-∷ʳ f x (y ∷ xs) = cong (f y ∷_) (map-∷ʳ f x xs)
 
-  -- map and _∷ʳ_
-
-  map-∷ʳ : ∀ x (xs : Vec A n) → map f (xs ∷ʳ x) ≡ map f xs ∷ʳ f x
-  map-∷ʳ x []       = refl
-  map-∷ʳ x (y ∷ xs) = cong (f y ∷_) (map-∷ʳ x xs)
-
-  -- map and reverse
-
-  map-reverse : ∀ (xs : Vec A n) → map f (reverse xs) ≡ reverse (map f xs)
-  map-reverse []       = refl
-  map-reverse (x ∷ xs) = begin
-    map f (reverse (x ∷ xs))  ≡⟨  cong (map f) (reverse-∷ x xs) ⟩
-    map f (reverse xs ∷ʳ x)   ≡⟨  map-∷ʳ x (reverse xs) ⟩
-    map f (reverse xs) ∷ʳ f x ≡⟨  cong (_∷ʳ f x) (map-reverse xs ) ⟩
-    reverse (map f xs) ∷ʳ f x ≡˘⟨ reverse-∷ (f x) (map f xs) ⟩
-    reverse (f x ∷ map f xs)  ≡⟨⟩
-    reverse (map f (x ∷ xs))  ∎
-  
-  -- map and _ʳ++_
-
-  map-ʳ++ : ∀ (xs : Vec A m) → map f (xs ʳ++ ys) ≡ map f xs ʳ++ map f ys
-  map-ʳ++ {ys = ys} xs = begin
-    map f (xs ʳ++ ys)              ≡⟨  cong (map f) (unfold-ʳ++ xs ys) ⟩
-    map f (reverse xs ++ ys)       ≡⟨  map-++ f (reverse xs) ys ⟩
-    map f (reverse xs) ++ map f ys ≡⟨  cong (_++ map f ys) (map-reverse xs) ⟩
-    reverse (map f xs) ++ map f ys ≡˘⟨ unfold-ʳ++ (map f xs) (map f ys) ⟩
-    map f xs ʳ++ map f ys          ∎
-  
 ------------------------------------------------------------------------
 -- reverse
+
+-- reverse of cons is snoc of reverse.
+
+reverse-∷ : ∀ x (xs : Vec A n) → reverse (x ∷ xs) ≡ reverse xs ∷ʳ x
+reverse-∷ x xs = sym (foldl-fusion (_∷ʳ x) refl (λ b x → refl) xs)
+
+-- foldl after a reverse is a foldr
+
+foldl-reverse : ∀ (B : ℕ → Set b) (f : FoldlOp A B) {e} →
+                foldl {n = n} B f e ∘ reverse ≗ foldr B (flip f) e
+foldl-reverse _ _ {e} []       = refl
+foldl-reverse B f {e} (x ∷ xs) = begin
+  foldl B f e (reverse (x ∷ xs)) ≡⟨ cong (foldl B f e) (reverse-∷ x xs) ⟩
+  foldl B f e (reverse xs ∷ʳ x)  ≡⟨ foldl-∷ʳ B f e x (reverse xs) ⟩
+  f (foldl B f e (reverse xs)) x ≡⟨ cong (flip f x) (foldl-reverse B f xs) ⟩
+  f (foldr B (flip f) e xs) x    ≡⟨⟩
+  foldr B (flip f) e (x ∷ xs)    ∎
+
+-- foldr after a reverse is a foldl
+
+foldr-reverse : ∀ (B : ℕ → Set b) (f : FoldrOp A B) {e} →
+                foldr {n = n} B f e ∘ reverse ≗ foldl B (flip f) e
+foldr-reverse B f {e} xs = foldl-fusion (foldr B f e) refl (λ _ _ → refl) xs
 
 -- reverse is involutive.
 
@@ -866,6 +813,46 @@ reverse-injective {xs = xs} {ys} eq = begin
   xs                   ≡˘⟨ reverse-reverse eq ⟩
   reverse (reverse ys) ≡⟨  reverse-involutive ys ⟩
   ys                   ∎
+
+-- map and reverse
+
+map-reverse : ∀ (f : A → B) (xs : Vec A n) →
+              map f (reverse xs) ≡ reverse (map f xs)
+map-reverse f []       = refl
+map-reverse f (x ∷ xs) = begin
+  map f (reverse (x ∷ xs))  ≡⟨  cong (map f) (reverse-∷ x xs) ⟩
+  map f (reverse xs ∷ʳ x)   ≡⟨  map-∷ʳ f x (reverse xs) ⟩
+  map f (reverse xs) ∷ʳ f x ≡⟨  cong (_∷ʳ f x) (map-reverse f xs ) ⟩
+  reverse (map f xs) ∷ʳ f x ≡˘⟨ reverse-∷ (f x) (map f xs) ⟩
+  reverse (f x ∷ map f xs)  ≡⟨⟩
+  reverse (map f (x ∷ xs))  ∎
+
+------------------------------------------------------------------------
+-- _ʳ++_
+
+-- reverse-append is append of reverse.
+
+unfold-ʳ++ : ∀ (xs : Vec A m) (ys : Vec A n) → xs ʳ++ ys ≡ reverse xs ++ ys
+unfold-ʳ++ xs ys = sym (foldl-fusion (_++ ys) refl (λ b x → refl) xs)
+
+-- foldr after a reverse-append is a foldl
+
+foldr-ʳ++ : ∀ (B : ℕ → Set b) (f : FoldrOp A B) {e}
+            (xs : Vec A m) {ys : Vec A n} →
+            foldr B f e (xs ʳ++ ys) ≡
+            foldl (B ∘ (_+ n)) (flip f) (foldr B f e ys) xs
+foldr-ʳ++ B f {e} xs = foldl-fusion (foldr B f e) refl (λ _ _ → refl) xs
+
+-- map and _ʳ++_
+
+map-ʳ++ : ∀ (f : A → B) (xs : Vec A m) →
+          map f (xs ʳ++ ys) ≡ map f xs ʳ++ map f ys
+map-ʳ++ {ys = ys} f xs = begin
+  map f (xs ʳ++ ys)              ≡⟨  cong (map f) (unfold-ʳ++ xs ys) ⟩
+  map f (reverse xs ++ ys)       ≡⟨  map-++ f (reverse xs) ys ⟩
+  map f (reverse xs) ++ map f ys ≡⟨  cong (_++ map f ys) (map-reverse f xs) ⟩
+  reverse (map f xs) ++ map f ys ≡˘⟨ unfold-ʳ++ (map f xs) (map f ys) ⟩
+  map f xs ʳ++ map f ys          ∎
 
 ------------------------------------------------------------------------
 -- sum
