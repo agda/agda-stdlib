@@ -637,6 +637,11 @@ New modules
   ```
   All contents is re-exported by `Relation.Binary.Lattice` as before.
 
+* Algebraic properties of `_∩_` and `_∪_` for predicates
+  ```
+  Relation.Unary.Algebra
+  ```
+
 * Both versions of equality on predications are equivalences
   ```
   Relation.Unary.Relation.Binary.Equality
