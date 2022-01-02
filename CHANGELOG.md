@@ -642,9 +642,10 @@ New modules
   Relation.Unary.Relation.Binary.Equality
   ```
 
-* Polymorphic verstions of some unary relations
+* Polymorphic versions of some unary relations and their properties
   ```
   Relation.Unary.Polymorphic
+  Relation.Unary.Polymorphic.Properties
   ```
 
 * Alpha equality over reflected terms
