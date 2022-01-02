@@ -855,6 +855,7 @@ Other minor changes
   ¬composite⇒prime : 2 ≤ n → ¬ Composite n → Prime n
   prime⇒¬composite : Prime n → ¬ Composite n
   ¬prime⇒composite : 2 ≤ n → ¬ Prime n → Composite n
+  euclid'sLemma    : Prime p → p ∣ m * n → p ∣ m ⊎ p ∣ n
   ```
 
 * Added new proofs in `Data.Nat.Properties`:
