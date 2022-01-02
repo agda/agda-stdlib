@@ -647,6 +647,11 @@ New modules
   Relation.Unary.Relation.Binary.Equality
   ```
 
+* The subset relations on predicates define an order
+  ```
+  Relation.Unary.Relation.Binary.Subset
+  ```
+
 * Polymorphic versions of some unary relations and their properties
   ```
   Relation.Unary.Polymorphic
