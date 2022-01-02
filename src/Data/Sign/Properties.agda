@@ -12,7 +12,7 @@ open import Algebra.Bundles
 open import Data.Empty
 open import Data.Sign.Base
 open import Data.Product using (_,_)
-open import Function
+open import Function hiding (Inverse)
 open import Level using (0ℓ)
 open import Relation.Binary using (Decidable; Setoid; DecSetoid)
 open import Relation.Binary.PropositionalEquality
@@ -54,6 +54,10 @@ opposite-injective { + } { + } refl = refl
 
 -- Algebraic properties of _*_
 
+s*s≡+ : ∀ s → s * s ≡ +
+s*s≡+ + = refl
+s*s≡+ - = refl
+
 *-identityˡ : LeftIdentity + _*_
 *-identityˡ _ = refl
 
@@ -90,6 +94,9 @@ opposite-injective { + } { + } refl = refl
 *-cancel-≡ : Cancellative _*_
 *-cancel-≡ = *-cancelˡ-≡ , *-cancelʳ-≡
 
+*-inverse : Inverse + id _*_
+*-inverse = s*s≡+ , s*s≡+
+
 *-isMagma : IsMagma _*_
 *-isMagma = record
   { isEquivalence = isEquivalence
@@ -112,6 +119,17 @@ opposite-injective { + } { + } refl = refl
   { isSemigroup = *-isSemigroup
   }
 
+*-isCommutativeSemigroup : IsCommutativeSemigroup _*_
+*-isCommutativeSemigroup = record
+  { isSemigroup = *-isSemigroup
+  ; comm = *-comm
+  }
+
+*-commutativeSemigroup : CommutativeSemigroup 0ℓ 0ℓ
+*-commutativeSemigroup = record
+  { isCommutativeSemigroup = *-isCommutativeSemigroup
+  }
+
 *-isMonoid : IsMonoid _*_ +
 *-isMonoid = record
   { isSemigroup = *-isSemigroup
@@ -123,11 +141,36 @@ opposite-injective { + } { + } refl = refl
   { isMonoid = *-isMonoid
   }
 
--- Other properties of _*_
+*-isCommutativeMonoid : IsCommutativeMonoid _*_ +
+*-isCommutativeMonoid = record
+   { isMonoid = *-isMonoid
+   ; comm = *-comm
+   }
 
-s*s≡+ : ∀ s → s * s ≡ +
-s*s≡+ + = refl
-s*s≡+ - = refl
+*-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
+*-commutativeMonoid = record
+  { isCommutativeMonoid = *-isCommutativeMonoid
+  }
+
+*-isGroup : IsGroup _*_ + id
+*-isGroup = record
+  { isMonoid = *-isMonoid
+  ; inverse = *-inverse
+  ; ⁻¹-cong = id
+  }
+
+*-group : Group 0ℓ 0ℓ
+*-group = record
+  { isGroup = *-isGroup
+  }
+
+*-isAbelianGroup : IsAbelianGroup _*_ + id
+*-isAbelianGroup = record
+  { isGroup = *-isGroup
+  ; comm = *-comm
+  }
+
+-- Other properties of _*_
 
 s*opposite[s]≡- : ∀ s → s * opposite s ≡ -
 s*opposite[s]≡- + = refl
