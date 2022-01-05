@@ -30,61 +30,77 @@ instance
 
 open import Data.List as List using (List; _∷_; [])
 open import Function
-open import Relation.Binary.PropositionalEquality as ≡
-  using (subst; _≡_; module ≡-Reasoning)
+open import Relation.Binary.PropositionalEquality
+  using (subst; cong; _≡_; module ≡-Reasoning)
 open import Data.Bool as Bool using (Bool; true; false; if_then_else_)
 open import Data.Unit using (⊤; tt)
 
-open import Tactic.RingSolver.Core.AlmostCommutativeRing using (AlmostCommutativeRing)
+open import Tactic.RingSolver.Core.AlmostCommutativeRing
+  using (AlmostCommutativeRing)
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Integer examples
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 module IntegerExamples where
+  open import Data.Integer
   open import Data.Integer.Tactic.RingSolver
 
-  open AlmostCommutativeRing ring
+  open AlmostCommutativeRing ring using (_^_)
 
   -- Everything is automatic: you just ask Agda to solve it and it does!
-  lemma₁ : ∀ x y → x + y * 1 + 3 ≈ 3 + 1 + y + x + - 1
+
+  -- Addition
+  lemma₁ : ∀ x y → x + y + 3 ≡ 2 + y + x + 1
   lemma₁ = solve-∀
 
-  lemma₂ : ∀ x y → (x + y) ^ 2 ≈ x ^ 2 + 2 * x * y + y ^ 2
+  -- Multiplication
+  lemma₂ : ∀ x → x * 2 + 1 ≡ x + 1 + x
   lemma₂ = solve-∀
 
-  -- It can interact with manual proofs as well.
-  lemma₃ : ∀ x y → x + y * 1 + 3 ≈ 2 + 1 + y + x
-  lemma₃ x y = begin
-    x + y * 1 + 3 ≡⟨ +-comm x (y * 1) ⟨ +-cong ⟩ refl ⟩
-    y * 1 + x + 3 ≡⟨ solve (x ∷ y ∷ []) ⟩
-    3 + y + x     ≡⟨⟩
-    2 + 1 + y + x ∎
+  -- Negation
+  lemma₃ : ∀ x y → (- x) + (- y) ≡ - (x + y)
+  lemma₃ = solve-∀
+
+  -- Subtraction
+  lemma₄ : ∀ x y → (x - y) * 2 - 2 ≡ (- 2) * y - 1 + 2 * x - 1
+  lemma₄ = solve-∀
+
+  -- Exponentiation by constant literals
+  lemma₅ : ∀ x y → (x + y) ^ 2 ≡ x ^ 2 + 2 * x * y + y ^ 2
+  lemma₅ = solve-∀
+
+  -- It can be interleaved with manual proofs as well.
+  lemma₆ : ∀ x y z → y ≡ z → x + y * 1 + 3 ≡ 2 + z + x + 1
+  lemma₆ x y z y≡z = begin
+    x + y * 1 + 3 ≡⟨ solve (x ∷ y ∷ []) ⟩
+    2 + y + x + 1 ≡⟨ cong (λ v → 2 + v + x + 1) y≡z ⟩
+    2 + z + x + 1 ∎
     where open ≡-Reasoning
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Natural examples
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 module NaturalExamples where
+  open import Data.Nat
   open import Data.Nat.Tactic.RingSolver
-
-  open AlmostCommutativeRing ring
 
   -- The solver is flexible enough to work with ℕ (even though it asks
   -- for rings!)
-  lemma₁ : ∀ x y → x + y * 1 + 3 ≈ 2 + 1 + y + x
+  lemma₁ : ∀ x y → x + y * 1 + 3 ≡ 2 + 1 + y + x
   lemma₁ = solve-∀
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------
 -- Checking invariants
-------------------------------------------------------------------------------
--- The solver makes it easy to prove invariants, without having to rewrite
--- proof code every time something changes in the data structure.
+------------------------------------------------------------------------
+-- The solver makes it easy to prove invariants, without having to
+-- rewrite proof code every time something changes in the data
+-- structure.
 
 module _ {a} {A : Set a} (_≤_ : A → A → Bool) where
+  open import Data.Nat hiding (_≤_)
   open import Data.Nat.Tactic.RingSolver
-  open AlmostCommutativeRing ring
 
   -- A Skew Heap, indexed by its size.
   data Tree : ℕ → Set a where
@@ -93,8 +109,8 @@ module _ {a} {A : Set a} (_≤_ : A → A → Bool) where
 
   -- A substitution operator, to clean things up.
   infixr 1 _⇒_
-  _⇒_ : ∀ {n} → Tree n → ∀ {m} → n ≈ m → Tree m
-  x ⇒ n≈m  = subst Tree n≈m x
+  _⇒_ : ∀ {n} → Tree n → ∀ {m} → n ≡ m → Tree m
+  x ⇒ n≡m  = subst Tree n≡m x
 
   open ≡-Reasoning
 

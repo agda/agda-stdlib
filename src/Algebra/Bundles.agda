@@ -315,7 +315,7 @@ record RawGroup c ℓ : Set (suc (c ⊔ ℓ)) where
     using (_≉_; rawMagma)
 
 
-record Quasigroup c ℓ : Set (suc (c ⊔ ℓ)) where
+record InvertibleMagma c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 _⁻¹
   infixl 7 _∙_
   infix  4 _≈_
@@ -325,9 +325,9 @@ record Quasigroup c ℓ : Set (suc (c ⊔ ℓ)) where
     _∙_     : Op₂ Carrier
     ε       : Carrier
     _⁻¹     : Op₁ Carrier
-    isQuasigroup : IsQuasigroup _≈_ _∙_ ε _⁻¹
+    isInvertibleMagma : IsInvertibleMagma _≈_ _∙_ ε _⁻¹
 
-  open IsQuasigroup isQuasigroup public
+  open IsInvertibleMagma isInvertibleMagma public
 
   magma : Magma _ _
   magma = record { isMagma = isMagma }
@@ -336,24 +336,24 @@ record Quasigroup c ℓ : Set (suc (c ⊔ ℓ)) where
     using (_≉_; rawMagma)
 
 
-record Loop c ℓ : Set (suc (c ⊔ ℓ)) where
+record InvertibleUnitalMagma c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 _⁻¹
   infixl 7 _∙_
   infix  4 _≈_
   field
-    Carrier : Set c
-    _≈_     : Rel Carrier ℓ
-    _∙_     : Op₂ Carrier
-    ε       : Carrier
-    _⁻¹     : Op₁ Carrier
-    isLoop : IsLoop _≈_ _∙_ ε _⁻¹
+    Carrier                  : Set c
+    _≈_                      : Rel Carrier ℓ
+    _∙_                      : Op₂ Carrier
+    ε                        : Carrier
+    _⁻¹                      : Op₁ Carrier
+    isInvertibleUnitalMagma  : IsInvertibleUnitalMagma _≈_ _∙_ ε _⁻¹
 
-  open IsLoop isLoop public
+  open IsInvertibleUnitalMagma isInvertibleUnitalMagma public
 
-  quasigroup : Quasigroup _ _
-  quasigroup = record { isQuasigroup = isQuasigroup }
+  invertibleMagma : InvertibleMagma _ _
+  invertibleMagma = record { isInvertibleMagma = isInvertibleMagma }
 
-  open Quasigroup quasigroup public
+  open InvertibleMagma invertibleMagma public
     using (_≉_; rawMagma; magma)
 
 record Group c ℓ : Set (suc (c ⊔ ℓ)) where
@@ -379,14 +379,14 @@ record Group c ℓ : Set (suc (c ⊔ ℓ)) where
   open Monoid monoid public
     using (_≉_; rawMagma; magma; semigroup; unitalMagma; rawMonoid)
 
-  quasigroup : Quasigroup c ℓ
-  quasigroup = record
-    { isQuasigroup = isQuasigroup
+  invertibleMagma : InvertibleMagma c ℓ
+  invertibleMagma = record
+    { isInvertibleMagma = isInvertibleMagma
     }
 
-  loop : Loop c ℓ
-  loop = record
-    { isLoop = isLoop
+  invertibleUnitalMagma : InvertibleUnitalMagma c ℓ
+  invertibleUnitalMagma = record
+    { isInvertibleUnitalMagma = isInvertibleUnitalMagma
     }
 
 record AbelianGroup c ℓ : Set (suc (c ⊔ ℓ)) where
@@ -408,7 +408,7 @@ record AbelianGroup c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open Group group public using
     (_≉_; rawMagma; magma; semigroup
-    ; rawMonoid; monoid; rawGroup; quasigroup; loop
+    ; rawMonoid; monoid; rawGroup; invertibleMagma; invertibleUnitalMagma
     )
 
   commutativeMonoid : CommutativeMonoid _ _
@@ -925,7 +925,7 @@ record Ring c ℓ : Set (suc (c ⊔ ℓ)) where
     )
 
   open AbelianGroup +-abelianGroup public
-    using () renaming (group to +-group; quasigroup to +-quasigroup; loop to +-loop)
+    using () renaming (group to +-group; invertibleMagma to +-invertibleMagma; invertibleUnitalMagma to +-invertibleUnitalMagma)
 
   rawRing : RawRing _ _
   rawRing = record
@@ -958,7 +958,7 @@ record CommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
   ring : Ring _ _
   ring = record { isRing = isRing }
 
-  open Ring ring public using (_≉_; rawRing; +-quasigroup; +-loop; +-group; +-abelianGroup)
+  open Ring ring public using (_≉_; rawRing; +-invertibleMagma; +-invertibleUnitalMagma; +-group; +-abelianGroup)
 
   commutativeSemiring : CommutativeSemiring _ _
   commutativeSemiring =
@@ -1056,6 +1056,129 @@ record Field c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open CommutativeRing commutativeRing public using (_≉_; rawRing; +-quasigroup; +-loop; +-group; +-abelianGroup; *-isMonoid; ring)
 
+------------------------------------------------------------------------
+-- Bundles with 3 binary operations
+------------------------------------------------------------------------
+
+record RawQuasigroup c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _∙_
+  infixl 7 _\\_
+  infixl 7 _//_
+  infix  4 _≈_
+  field
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    _∙_     : Op₂ Carrier
+    _\\_    : Op₂ Carrier
+    _//_    : Op₂ Carrier
+
+  ∙-rawMagma : RawMagma c ℓ
+  ∙-rawMagma = record
+    { _≈_ = _≈_
+    ; _∙_ = _∙_
+    }
+
+  \\-rawMagma : RawMagma c ℓ
+  \\-rawMagma = record
+    { _≈_ = _≈_
+    ; _∙_ = _\\_
+    }
+
+  //-rawMagma : RawMagma c ℓ
+  //-rawMagma = record
+    { _≈_ = _≈_
+    ; _∙_ = _//_
+    }
+
+  open RawMagma \\-rawMagma public
+    using (_≉_)
+
+record Quasigroup c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _∙_
+  infixl 7 _\\_
+  infixl 7 _//_
+  infix  4 _≈_
+  field
+    Carrier      : Set c
+    _≈_          : Rel Carrier ℓ
+    _∙_          : Op₂ Carrier
+    _\\_         : Op₂ Carrier
+    _//_         : Op₂ Carrier
+    isQuasigroup : IsQuasigroup  _≈_ _∙_ _\\_ _//_
+
+  open IsQuasigroup isQuasigroup public
+
+  rawQuasigroup : RawQuasigroup c ℓ
+  rawQuasigroup = record
+    { _≈_  = _≈_
+    ; _∙_  = _∙_
+    ; _\\_  = _\\_
+    ; _//_  = _//_
+    }
+
+  open RawQuasigroup rawQuasigroup public
+    using (_≈_; //-rawMagma; \\-rawMagma; ∙-rawMagma)
+
+  setoid : Setoid _ _
+  setoid = record { isEquivalence = isEquivalence }
+
+  open Setoid setoid public
+    using (_≉_)
+
+record RawLoop  c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _∙_
+  infixl 7 _\\_
+  infixl 7 _//_
+  infix  4 _≈_
+  field
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    _∙_     : Op₂ Carrier
+    _\\_    : Op₂ Carrier
+    _//_    : Op₂ Carrier
+    ε       : Carrier
+
+  rawQuasigroup : RawQuasigroup c ℓ
+  rawQuasigroup = record
+    { _≈_ = _≈_
+    ; _∙_ = _∙_
+    ; _\\_ = _\\_
+    ; _//_ = _//_
+    }
+
+  open RawQuasigroup rawQuasigroup public
+    using (_≉_ ; ∙-rawMagma; \\-rawMagma; //-rawMagma)
+
+record Loop  c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _∙_
+  infixl 7 _\\_
+  infixl 7 _//_
+  infix  4 _≈_
+  field
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    _∙_     : Op₂ Carrier
+    _\\_    : Op₂ Carrier
+    _//_    : Op₂ Carrier
+    ε       : Carrier
+    isLoop : IsLoop  _≈_ _∙_ _\\_ _//_ ε
+
+  open IsLoop isLoop public
+
+  rawLoop : RawLoop c ℓ
+  rawLoop = record
+    { _≈_ = _≈_
+    ; _∙_ = _∙_
+    ; _\\_ = _\\_
+    ; _//_ = _//_
+    ; ε = ε
+    }
+
+  quasigroup : Quasigroup _ _
+  quasigroup = record { isQuasigroup = isQuasigroup }
+
+  open Quasigroup quasigroup public
+    using (_≉_; ∙-rawMagma; \\-rawMagma; //-rawMagma)
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
 ------------------------------------------------------------------------

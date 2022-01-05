@@ -26,7 +26,7 @@ open import Data.Product using (_×_; _,_)
 open import Data.Sum.Base as Sum
 open import Data.Unit using (tt)
 open import Function.Base
-open import Function.Injection using (_↣_)
+open import Function.Bundles using (_↣_)
 open import Function.Metric.Nat
 open import Level using (0ℓ)
 open import Relation.Binary
@@ -394,6 +394,9 @@ _>?_ = flip _<?_
 
 ------------------------------------------------------------------------
 -- Other properties of _<_
+
+n≮0 : ∀ {n} → n ≮ 0
+n≮0 ()
 
 n≮n : ∀ n → n ≮ n
 n≮n n = <-irrefl (refl {x = n})

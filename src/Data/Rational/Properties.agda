@@ -175,17 +175,23 @@ p≡0⇒↥p≡0 p refl = refl
 -- Basic properties of sign predicates
 ------------------------------------------------------------------------
 
-nonNeg≢neg : ∀ p q → NonNegative p → Negative q → p ≢ q
-nonNeg≢neg (mkℚ (+ _) _ _) (mkℚ -[1+ _ ] _ _) _ _ ()
+nonNeg≢neg : ∀ p q → .{{NonNegative p}} → .{{Negative q}} → p ≢ q
+nonNeg≢neg (mkℚ (+ _) _ _) (mkℚ -[1+ _ ] _ _) ()
 
-pos⇒nonNeg : ∀ p → Positive p → NonNegative p
-pos⇒nonNeg p = ℚᵘ.positive⇒nonNegative {toℚᵘ p}
+pos⇒nonNeg : ∀ p → .{{Positive p}} → NonNegative p
+pos⇒nonNeg p = ℚᵘ.pos⇒nonNeg (toℚᵘ p)
 
-neg⇒nonPos : ∀ p → Negative p → NonPositive p
-neg⇒nonPos p = ℚᵘ.negative⇒nonPositive {toℚᵘ p}
+neg⇒nonPos : ∀ p → .{{Negative p}} → NonPositive p
+neg⇒nonPos p = ℚᵘ.neg⇒nonPos (toℚᵘ p)
 
-nonNeg∧nonZero⇒pos : ∀ p → NonNegative p → NonZero p → Positive p
-nonNeg∧nonZero⇒pos (mkℚ +[1+ _ ] _ _) _ _ = _
+nonNeg∧nonZero⇒pos : ∀ p → .{{NonNegative p}} → .{{NonZero p}} → Positive p
+nonNeg∧nonZero⇒pos (mkℚ +[1+ _ ] _ _) = _
+
+pos⇒nonZero : ∀ p → .{{Positive p}} → NonZero p
+pos⇒nonZero (mkℚ +[1+ _ ] _ _) = _
+
+neg⇒nonZero : ∀ p → .{{Negative p}} → NonZero p
+neg⇒nonZero (mkℚ -[1+ _ ] _ _) = _
 
 ------------------------------------------------------------------------
 -- Properties of -_
@@ -379,7 +385,7 @@ private
   /-injective-≃-helper {m} {n} {c-1} {d-1} eq
     with normalize-pos (suc m) (suc c-1) | normalize-nonNeg n (suc d-1)
   ... | norm[m,c]-pos | norm[n,d]-nonNeg =
-    contradiction (sym eq) (nonNeg≢neg _ _ norm[n,d]-nonNeg (neg-pos norm[m,c]-pos))
+    contradiction (sym eq) (nonNeg≢neg _ _ {{norm[n,d]-nonNeg}} {{neg-pos norm[m,c]-pos}})
 
 /-injective-≃ : ∀ p q → ↥ᵘ p / ↧ₙᵘ p ≡ ↥ᵘ q / ↧ₙᵘ q → p ≃ᵘ q
 /-injective-≃ (mkℚᵘ (+ m)    c-1) (mkℚᵘ (+ n)    d-1) eq =
@@ -695,20 +701,20 @@ module ≤-Reasoning where
 ------------------------------------------------------------------------
 -- Properties of Positive/NonPositive/Negative/NonNegative and _≤_/_<_
 
-positive⁻¹ : Positive p → p > 0ℚ
-positive⁻¹ p>0 = toℚᵘ-cancel-< (ℚᵘ.positive⁻¹ p>0)
+positive⁻¹ : ∀ p → .{{Positive p}} → p > 0ℚ
+positive⁻¹ p = toℚᵘ-cancel-< (ℚᵘ.positive⁻¹ (toℚᵘ p))
 
-nonNegative⁻¹ : NonNegative p → p ≥ 0ℚ
-nonNegative⁻¹ p≥0 = toℚᵘ-cancel-≤ (ℚᵘ.nonNegative⁻¹ p≥0)
+nonNegative⁻¹ : ∀ p → .{{NonNegative p}} → p ≥ 0ℚ
+nonNegative⁻¹ p = toℚᵘ-cancel-≤ (ℚᵘ.nonNegative⁻¹ (toℚᵘ p))
 
-negative⁻¹ : Negative p → p < 0ℚ
-negative⁻¹ p<0 = toℚᵘ-cancel-< (ℚᵘ.negative⁻¹ p<0)
+negative⁻¹ : ∀ p → .{{Negative p}} → p < 0ℚ
+negative⁻¹ p = toℚᵘ-cancel-< (ℚᵘ.negative⁻¹ (toℚᵘ p))
 
-nonPositive⁻¹ : NonPositive p → p ≤ 0ℚ
-nonPositive⁻¹ p≤0 = toℚᵘ-cancel-≤ (ℚᵘ.nonPositive⁻¹ p≤0)
+nonPositive⁻¹ : ∀ p → .{{NonPositive p}} → p ≤ 0ℚ
+nonPositive⁻¹ p = toℚᵘ-cancel-≤ (ℚᵘ.nonPositive⁻¹ (toℚᵘ p))
 
-negative<positive : Negative p → Positive q → p < q
-negative<positive p<0 q>0 = toℚᵘ-cancel-< (ℚᵘ.negative<positive p<0 q>0)
+neg<pos : ∀ p q → .{{Negative p}} → .{{Positive q}} → p < q
+neg<pos p q = toℚᵘ-cancel-< (ℚᵘ.neg<pos (toℚᵘ p) (toℚᵘ q))
 
 ------------------------------------------------------------------------
 -- Properties of -_ and _≤_/_<_
@@ -1553,32 +1559,25 @@ antimono-≤-distrib-⊔ {f} = ⊓-⊔-properties.antimono-≤-distrib-⊔ (cong
 -- Properties of 1/_
 ------------------------------------------------------------------------
 
-private
-  pos⇒≢0 : ∀ p → Positive p → NonZero p
-  pos⇒≢0 (mkℚ +[1+ _ ] _ _) p>0 = _
+nonZero⇒1/nonZero : ∀ p .{{_ : NonZero p}} → NonZero (1/ p)
+nonZero⇒1/nonZero (mkℚ +[1+ _ ] _ _) = _
+nonZero⇒1/nonZero (mkℚ -[1+ _ ] _ _) = _
 
-  neg⇒≢0 : ∀ p → Negative p → NonZero p
-  neg⇒≢0 (mkℚ -[1+ _ ] _ _) p<0 = _
-
-  1/p≢0 : ∀ p .{{_ : NonZero p}} → NonZero (1/ p)
-  1/p≢0 (mkℚ +[1+ _ ] _ _) = _
-  1/p≢0 (mkℚ -[1+ _ ] _ _) = _
-
-1/-involutive : ∀ p .{{p≢0 : NonZero p}} → (1/ (1/ p)) {{1/p≢0 p}} ≡ p
+1/-involutive : ∀ p .{{_ : NonZero p}} → (1/ (1/ p)) {{nonZero⇒1/nonZero p}} ≡ p
 1/-involutive (mkℚ +[1+ n ] d-1 _) = refl
 1/-involutive (mkℚ -[1+ n ] d-1 _) = refl
 
-pos⇒1/pos : ∀ p .{{p>0 : Positive p}} → Positive ((1/ p) {{pos⇒≢0 p p>0}})
-pos⇒1/pos (mkℚ +[1+ _ ] _ _) = _
+1/pos⇒pos : ∀ p .{{_ : Positive p}} → Positive ((1/ p) {{pos⇒nonZero p}})
+1/pos⇒pos (mkℚ +[1+ _ ] _ _) = _
 
-neg⇒1/neg : ∀ p .{{p<0 : Negative p}} → Negative ((1/ p) {{neg⇒≢0 p p<0}})
-neg⇒1/neg (mkℚ -[1+ _ ] _ _) = _
+1/neg⇒neg : ∀ p .{{_ : Negative p}} → Negative ((1/ p) {{neg⇒nonZero p}})
+1/neg⇒neg (mkℚ -[1+ _ ] _ _) = _
 
-1/pos⇒pos : ∀ p .{{_ : NonZero p}} .{{_ : Positive (1/ p)}} → Positive p
-1/pos⇒pos p = subst Positive (1/-involutive p) (pos⇒1/pos (1/ p))
+pos⇒1/pos : ∀ p .{{_ : NonZero p}} .{{_ : Positive (1/ p)}} → Positive p
+pos⇒1/pos p = subst Positive (1/-involutive p) (1/pos⇒pos (1/ p))
 
-1/neg⇒neg : ∀ p .{{_ : NonZero p}} .{{_ : Negative (1/ p)}} → Negative p
-1/neg⇒neg p = subst Negative (1/-involutive p) (neg⇒1/neg (1/ p))
+neg⇒1/neg : ∀ p .{{_ : NonZero p}} .{{_ : Negative (1/ p)}} → Negative p
+neg⇒1/neg p = subst Negative (1/-involutive p) (1/neg⇒neg (1/ p))
 
 ------------------------------------------------------------------------
 -- Properties of ∣_∣
@@ -1724,4 +1723,10 @@ Please use *-cancelˡ-<-nonPos instead."
 {-# WARNING_ON_USAGE *-cancelʳ-<-neg
 "Warning: *-cancelʳ-<-neg was deprecated in v2.0.
 Please use *-cancelʳ-<-nonPos instead."
+#-}
+negative<positive : Negative p → Positive q → p < q
+negative<positive {p} {q} p<0 q>0 = neg<pos p q {{p<0}} {{q>0}}
+{-# WARNING_ON_USAGE negative<positive
+"Warning: negative<positive was deprecated in v2.0.
+Please use neg<pos instead."
 #-}

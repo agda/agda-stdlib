@@ -373,21 +373,21 @@ module ≤-Reasoning where
 ------------------------------------------------------------------------
 -- Properties of Positive/NonPositive/Negative/NonNegative and _≤_/_<_
 
-positive⁻¹ : ∀ {i} → Positive i → i > 0ℤ
-positive⁻¹ {+[1+ n ]} _ = +<+ (s≤s z≤n)
+positive⁻¹ : ∀ i → .{{Positive i}} → i > 0ℤ
+positive⁻¹ +[1+ n ] = +<+ (s≤s z≤n)
 
-negative⁻¹ : ∀ {i} → Negative i → i < 0ℤ
-negative⁻¹ { -[1+ n ]} _ = -<+
+negative⁻¹ : ∀ i → .{{Negative i}} → i < 0ℤ
+negative⁻¹ -[1+ n ] = -<+
 
-nonPositive⁻¹ : ∀ {i} → NonPositive i → i ≤ 0ℤ
-nonPositive⁻¹ {+0}        _ = +≤+ z≤n
-nonPositive⁻¹ { -[1+ n ]} _ = -≤+
+nonPositive⁻¹ : ∀ i → .{{NonPositive i}} → i ≤ 0ℤ
+nonPositive⁻¹ +0       = +≤+ z≤n
+nonPositive⁻¹ -[1+ n ] = -≤+
 
-nonNegative⁻¹ : ∀ {i} → NonNegative i → i ≥ 0ℤ
-nonNegative⁻¹ {+ n} _ = +≤+ z≤n
+nonNegative⁻¹ : ∀ i → .{{NonNegative i}} → i ≥ 0ℤ
+nonNegative⁻¹ (+ n) = +≤+ z≤n
 
-negative<positive : ∀ {i j} → Negative i → Positive j → i < j
-negative<positive m<0 n>0 = <-trans (negative⁻¹ m<0) (positive⁻¹ n>0)
+negative<positive : ∀ i j → .{{Negative i}} → .{{Positive j}} → i < j
+negative<positive i j = <-trans (negative⁻¹ i) (positive⁻¹ j)
 
 ------------------------------------------------------------------------
 -- Properties of -_

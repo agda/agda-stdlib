@@ -79,6 +79,9 @@ record AlmostCommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
   _^_ = Exp._^′_ rawSemiring
   {-# NOINLINE _^_ #-}
 
+  _-_ : Carrier → Carrier → Carrier
+  _-_ x y = x + (- y)
+
   refl : ∀ {x} → x ≈ x
   refl = IsAlmostCommutativeRing.refl isAlmostCommutativeRing
 
@@ -94,7 +97,7 @@ record _-Raw-AlmostCommutative⟶_
     ⟦_⟧    : Morphism
     +-homo : Homomorphic₂ ⟦_⟧ F._+_ T._+_
     *-homo : Homomorphic₂ ⟦_⟧ F._*_ T._*_
-    -‿homo : Homomorphic₁ ⟦_⟧ F.-_  T.-_
+    -‿homo : Homomorphic₁ ⟦_⟧ (F.-_)  (T.-_)
     0-homo : Homomorphic₀ ⟦_⟧ F.0#  T.0#
     1-homo : Homomorphic₀ ⟦_⟧ F.1#  T.1#
 

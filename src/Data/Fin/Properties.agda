@@ -9,6 +9,8 @@
 
 module Data.Fin.Properties where
 
+open import Axiom.Extensionality.Propositional
+open import Algebra.Definitions using (Involutive)
 open import Category.Applicative using (RawApplicative)
 open import Category.Functor using (RawFunctor)
 open import Data.Bool.Base using (Bool; true; false; not; _∧_; _∨_)
@@ -22,10 +24,8 @@ open import Data.Product using (Σ-syntax; ∃; ∃₂; ∄; _×_; _,_; map; pro
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]; [_,_]′)
 open import Data.Sum.Properties using ([,]-map-commute; [,]-∘-distr)
 open import Function.Base using (_∘_; id; _$_; flip)
-open import Function.Bundles using (_↔_; mk↔′)
+open import Function.Bundles using (_↣_; _⇔_; _↔_; mk⇔; mk↔′)
 open import Function.Definitions.Core2 using (Surjective)
-open import Function.Equivalence using (_⇔_; equivalence)
-open import Function.Injection using (_↣_)
 open import Relation.Binary as B hiding (Decidable; _⇔_)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; trans; cong; subst; module ≡-Reasoning)
@@ -718,7 +718,7 @@ module _ {n p} {P : Pred (Fin (suc n)) p} where
   ∀-cons z s (suc i) = s i
 
   ∀-cons-⇔ : (P zero × Π[ P ∘ suc ]) ⇔ Π[ P ]
-  ∀-cons-⇔ = equivalence (uncurry ∀-cons) < _$ zero , _∘ suc >
+  ∀-cons-⇔ = mk⇔ (uncurry ∀-cons) < _$ zero , _∘ suc >
 
   ∃-here : P zero → ∃⟨ P ⟩
   ∃-here = zero ,_
@@ -731,7 +731,7 @@ module _ {n p} {P : Pred (Fin (suc n)) p} where
   ∃-toSum (suc f , P₁₊) = inj₂ (f , P₁₊)
 
   ⊎⇔∃ : (P zero ⊎ ∃⟨ P ∘ suc ⟩) ⇔ ∃⟨ P ⟩
-  ⊎⇔∃ = equivalence [ ∃-here , ∃-there ] ∃-toSum
+  ⊎⇔∃ = mk⇔ [ ∃-here , ∃-there ] ∃-toSum
 
 decFinSubset : ∀ {n p q} {P : Pred (Fin n) p} {Q : Pred (Fin n) q} →
                Decidable Q → (∀ {f} → Q f → Dec (P f)) → Dec (Q ⊆ P)
@@ -825,6 +825,34 @@ module _ {a} {A : Set a} where
   eq? : ∀ {n} → A ↣ Fin n → B.Decidable {A = A} _≡_
   eq? inj = Dec.via-injection inj _≟_
 
+------------------------------------------------------------------------
+-- Opposite
+------------------------------------------------------------------------
+
+opposite-prop : ∀ {n} → (i : Fin n) → toℕ (opposite i) ≡ n ∸ suc (toℕ i)
+opposite-prop {suc n} zero = toℕ-fromℕ n
+opposite-prop {suc n} (suc i) = begin
+  toℕ (inject₁ (opposite i)) ≡⟨ toℕ-inject₁ (opposite i) ⟩
+  toℕ (opposite i)           ≡⟨ opposite-prop i ⟩
+  n ∸ suc (toℕ i)            ∎
+  where open ≡-Reasoning
+
+opposite-involutive : ∀ {n} → Involutive {A = Fin n} _≡_ opposite
+opposite-involutive {suc n} i = toℕ-injective (begin
+  toℕ (opposite (opposite i)) ≡⟨ opposite-prop (opposite i) ⟩
+  n ∸ (toℕ (opposite i))     ≡⟨ cong (n ∸_) (opposite-prop i) ⟩
+  n ∸ (n ∸ (toℕ i))         ≡⟨ ℕₚ.m∸[m∸n]≡n (ℕₚ.≤-pred (toℕ<n i)) ⟩
+  toℕ i                     ∎)
+  where open ≡-Reasoning
+
+opposite-suc : ∀ {n} {i : Fin n} → toℕ (opposite (suc i)) ≡ toℕ (opposite i)
+opposite-suc {n} {i} = begin
+  toℕ (opposite (suc i))      ≡⟨ opposite-prop (suc i) ⟩
+  suc n ∸ suc (toℕ (suc i))  ≡⟨⟩
+  n ∸ toℕ (suc i)            ≡⟨⟩
+  n ∸ suc (toℕ i)            ≡⟨ sym (opposite-prop i) ⟩
+  toℕ (opposite i)            ∎
+  where open ≡-Reasoning
 
 
 ------------------------------------------------------------------------
@@ -942,3 +970,4 @@ Fin0↔⊥ = 0↔⊥
 "Warning: Fin0↔⊥ was deprecated in v2.0.
 Please use 0↔⊥ instead."
 #-}
+

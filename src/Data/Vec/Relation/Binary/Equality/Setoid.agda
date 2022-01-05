@@ -68,6 +68,11 @@ open PW public using (++⁺ ; ++⁻ ; ++ˡ⁻; ++ʳ⁻)
 ++-identityʳ []       = []
 ++-identityʳ (x ∷ xs) = refl ∷ ++-identityʳ xs
 
+++-assoc : ∀ {n m k} (xs : Vec A n) (ys : Vec A m) (zs : Vec A k) →
+             (xs ++ ys) ++ zs ≋ xs ++ (ys ++ zs)
+++-assoc [] ys zs = ≋-refl
+++-assoc (x ∷ xs) ys zs = refl ∷ ++-assoc xs ys zs
+
 map-++-commute : ∀ {b m n} {B : Set b}
                    (f : B → A) (xs : Vec B m) {ys : Vec B n} →
                    map f (xs ++ ys) ≋ map f xs ++ map f ys

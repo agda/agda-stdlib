@@ -23,10 +23,19 @@ Bug-fixes
 * In `/-monoˡ-≤` in `Data.Nat.DivMod` the parameter `o` was implicit but not inferrable.
   It has been changed to be explicit.
 
+* In `+-distrib-/-∣ʳ` in `Data.Nat.DivMod` the parameter `m` was implicit but not inferrable,
+  while `n` is explicit but inferrable.  They have been changed.
+
 * In `Function.Definitions` the definitions of `Surjection`, `Inverseˡ`,
   `Inverseʳ` were not being re-exported correctly and therefore had an unsolved
   meta-variable whenever this module was explicitly parameterised. This has
   been fixed.
+
+* Add module `Algebra.Module` that re-exports the contents of 
+  `Algebra.Module.(Definitions/Structures/Bundles)`
+
+* In `Algebra.Definitions.RawSemiring` the record `prime` add `p∤1 : p ∤ 1#` to the field.
+
 
 Non-backwards compatible changes
 --------------------------------
@@ -182,10 +191,6 @@ Non-backwards compatible changes
 
 ### Other
 
-* The constructors `+0` and `+[1+_]` from `Data.Integer.Base` are no longer
-  exported by `Data.Rational.Base`. You will have to open `Data.Integer(.Base)`
-  directly to use them.
-
 * The first two arguments of `m≡n⇒m-n≡0` (now `i≡j⇒i-j≡0`) in `Data.Integer.Base`
   have been made implicit.
 
@@ -205,6 +210,93 @@ Non-backwards compatible changes
   ### Creation of `Relation.Binary.Lattice` hierarchy
   * In order to improve modularity Relation.Binary.Lattice is split out into Relation.Binary.Lattice.(Definitions/Structures/Bundles).
   ###
+
+* The types of the proofs `pos⇒1/pos`/`1/pos⇒pos` and `neg⇒1/neg`/`1/neg⇒neg` in
+  `Data.Rational(.Unnormalised).Properties` have been switched, as the previous
+  naming scheme didn't correctly generalise to e.g. `pos+pos⇒pos`. For example
+  the types of `pos⇒1/pos`/`1/pos⇒pos` were:
+  ```
+  pos⇒1/pos : ∀ p .{{_ : NonZero p}} .{{Positive (1/ p)}} → Positive p
+  1/pos⇒pos : ∀ p .{{_ : Positive p}} → Positive (1/ p)
+  ```
+  but are now:
+  ```
+  pos⇒1/pos : ∀ p .{{_ : Positive p}} → Positive (1/ p)
+  1/pos⇒pos : ∀ p .{{_ : NonZero p}} .{{Positive (1/ p)}} → Positive p
+  ```
+
+* Various modules have changed the types of some definitions to use the new
+  function hierachy:
+  * `Data.Fin.Properties`
+    * `∀-cons-⇔`
+    * `⊎⇔∃`
+  * `Data.Fin.Subset.Properties`
+    * `out⊆-⇔`
+    * `in⊆in-⇔`
+    * `out⊂in-⇔`
+    * `out⊂out-⇔`
+    * `in⊂in-⇔`
+    * `x∈⁅y⁆⇔x≡y`
+    * `∩⇔×`
+    * `∪⇔⊎`
+    * `∃-Subset-[]-⇔`
+    * `∃-Subset-∷-⇔`
+  * `Data.List.Countdown`
+    * `empty`
+  * `Data.List.Fresh.Relation.Unary.Any`
+    * `⊎⇔Any`
+  * `Data.List.Relation.Binary.Lex`
+    * `[]<[]-⇔`
+    * `∷<∷-⇔`
+  * `Data.List.Relation.Binary.Sublist.Heterogeneous.Properties`
+    * `∷⁻¹`
+    * `∷ʳ⁻¹`
+    * `Sublist-[x]-bijection`
+  * `Data.List.Relation.Binary.Sublist.Setoid.Properties`
+    * `∷⁻¹`
+    * `∷ʳ⁻¹`
+    * `[x]⊆xs⤖x∈xs`
+  * `Data.Maybe.Relation.Binary.Connected`
+    * `just-equivalence`
+  * `Data.Maybe.Relation.Binary.Pointwise`
+    * `just-equivalence`
+  * `Data.Maybe.Relation.Unary.All`
+    * `just-equivalence`
+  * `Data.Maybe.Relation.Unary.Any`
+    * `just-equivalence`
+  * `Data.Nat.Divisibility`
+    * `m%n≡0⇔n∣m`
+  * `Data.Nat.Properties`
+    * `eq?`
+  * `Data.Vec.Relation.Binary.Lex.Core`
+    * `P⇔[]<[]`
+    * `∷<∷-⇔`
+  * `Data.Vec.Relation.Binary.Pointwise.Extensional`
+    * `equivalent`
+    * `Pointwise-≡↔≡`
+  * `Data.Vec.Relation.Binary.Pointwise.Inductive`
+    * `Pointwise-≡↔≡`
+  * `Relation.Binary.Construct.Closure.Reflexive.Properties`
+    * `⊎⇔Refl`
+  * `Relation.Binary.Construct.Closure.Transitive`
+    * `equivalent`
+  * `Relation.Nullary.Decidable`
+    * `map`
+
+Major improvements
+------------------
+
+### Improvements to ring solver tactic
+
+* The ring solver tactic has been greatly improved. In particular:
+  1. When the solver is used for concrete ring types, e.g. ℤ, the equality can now use
+	 all the ring operations defined natively for that type, rather than having
+	 to use the operations defined in `AlmostCommutativeRing`. For example
+	 previously you could not use `Data.Integer.Base._*_` but instead had to
+	 use `AlmostCommutativeRing._*_`.
+  2. The solver now supports use of the subtraction operator `_-_` whenever
+     it is defined immediately in terms of `_+_` and `-_`. This is the case for
+	 `Data.Integer` and `Data.Rational`.
 
 Deprecated modules
 ------------------
@@ -227,7 +319,29 @@ Deprecated modules
   Equivalence-kind    ↦ EquivalenceKind
   ```
 
+### Moving `Algebra.Lattice` files
 
+* As discussed above the following files have been moved:
+  ```agda
+  Algebra.Properties.Semilattice               ↦ Algebra.Lattice.Properties.Semilattice
+  Algebra.Properties.Lattice                   ↦ Algebra.Lattice.Properties.Lattice
+  Algebra.Properties.DistributiveLattice       ↦ Algebra.Lattice.Properties.DistributiveLattice
+  Algebra.Properties.BooleanAlgebra            ↦ Algebra.Lattice.Properties.BooleanAlgebra
+  Algebra.Properties.BooleanAlgebra.Expression ↦ Algebra.Lattice.Properties.BooleanAlgebra.Expression
+  Algebra.Morphism.LatticeMonomorphism         ↦ Algebra.Lattice.Morphism.LatticeMonomorphism
+  ```
+### Moving `Relation.Binary.Properties.XLattice` files
+
+* The following files have been moved:
+  ```agda
+  Relation.Binary.Properties.BoundedJoinSemilattice.agda       ↦ Relation.Binary.Lattice.Properties.BoundedJoinSemilattice.agda
+  Relation.Binary.Properties.BoundedLattice.agda               ↦ Relation.Binary.Lattice.Properties.BoundedLattice.agda
+  Relation.Binary.Properties.BoundedMeetSemilattice.agda       ↦ Relation.Binary.Lattice.Properties.BoundedMeetSemilattice.agda
+  Relation.Binary.Properties.DistributiveLattice.agda          ↦ Relation.Binary.Lattice.Properties.DistributiveLattice.agda
+  Relation.Binary.Properties.JoinSemilattice.agda              ↦ Relation.Binary.Lattice.Properties.JoinSemilattice.agda
+  Relation.Binary.Properties.Lattice.agda                      ↦ Relation.Binary.Lattice.Properties.Lattice.agda
+  Relation.Binary.Properties.MeetSemilattice.agda              ↦ Relation.Binary.Lattice.Properties.MeetSemilattice.agda
+  ```
 Deprecated names
 ----------------
 
@@ -289,6 +403,10 @@ Deprecated names
   *-monoʳ-≤-neg    ↦  *-monoʳ-≤-nonPos
   *-cancelˡ-<-pos  ↦  *-cancelˡ-<-nonNeg
   *-cancelʳ-<-pos  ↦  *-cancelʳ-<-nonNeg
+  
+  positive⇒nonNegative  ↦ pos⇒nonNeg
+  negative⇒nonPositive  ↦ neg⇒nonPos
+  negative<positive     ↦ neg<pos
   ```
 
 * In `Data.Rational.Properties`:
@@ -301,6 +419,8 @@ Deprecated names
   *-cancelʳ-<-pos  ↦  *-cancelʳ-<-nonNeg
   *-cancelˡ-<-neg  ↦  *-cancelˡ-<-nonPos
   *-cancelʳ-<-neg  ↦  *-cancelʳ-<-nonPos
+
+  negative<positive     ↦ neg<pos
   ```
 
 * In `Data.List.Properties`:
@@ -393,6 +513,17 @@ New modules
   Data.Default
   ```
 
+* A small library for a non-empty fresh list:
+  ```
+  Data.List.Fresh.NonEmpty
+  ```
+
+* Reflection utilities for some specific types:
+  ```
+  Data.List.Reflection
+  Data.Vec.Reflection
+  ```
+
 * Show module for unnormalised rationals:
   ```
   Data.Rational.Unnormalised.Show
@@ -414,6 +545,16 @@ New modules
 * Polymorphic verstions of some unary relations
   ```
   Relation.Unary.Polymorphic
+  ```
+
+* Alpha equality over reflected terms
+  ```
+  Reflection.AlphaEquality
+  ```
+
+* `cong!` tactic for deriving arguments to `cong`
+  ```
+  Tactic.Rewrite
   ```
 
 * Various system types and primitives:
@@ -448,10 +589,12 @@ Other minor changes
 * Added new definitions to `Algebra.Bundles`:
   ```agda
   record UnitalMagma c ℓ : Set (suc (c ⊔ ℓ))
-  record Quasigroup  c ℓ : Set (suc (c ⊔ ℓ))
-  record Loop c ℓ : Set (suc (c ⊔ ℓ))
-  record RawField c ℓ : Set (suc (c ⊔ ℓ)
-  record Field c ℓ : Set (suc (c ⊔ ℓ))
+  record InvertibleMagma c ℓ : Set (suc (c ⊔ ℓ))
+  record InvertibleUnitalMagma c ℓ : Set (suc (c ⊔ ℓ))
+  record RawQuasiGroup c ℓ : Set (suc (c ⊔ ℓ))
+  record Quasigroup c ℓ : Set (suc (c ⊔ ℓ))
+  record RawLoop  c ℓ : Set (suc (c ⊔ ℓ))
+  record Loop  c ℓ : Set (suc (c ⊔ ℓ))
   ```
   and the existing record `Lattice` now provides
   ```agda
@@ -459,6 +602,16 @@ Other minor changes
   ∧-commutativeSemigroup : CommutativeSemigroup c ℓ
   ```
   and their corresponding algebraic subbundles.
+
+* Added new definition to `Algebra.Definitions`:
+  ```agda
+  LeftDividesˡ : Op₂ A → Op₂ A → Set _
+  LeftDividesʳ : Op₂ A → Op₂ A → Set _
+  RightDividesˡ : Op₂ A → Op₂ A → Set _
+  RightDividesʳ : Op₂ A → Op₂ A → Set _
+  LeftDivides : Op₂ A → Op₂ A → Set _
+  RightDivides : Op₂ A → Op₂ A → Set _
+  ```
 
 * Added new proofs to `Algebra.Consequences.Setoid`:
   ```agda
@@ -485,12 +638,18 @@ Other minor changes
                     CommutativeRing (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
  ```
 
+* Added new proofs to `Algebra.Properties.CommutativeSemigroup`:
+  ```
+  interchange : Interchangable _∙_ _∙_
+  ```
+
 * Added new definitions to `Algebra.Structures`:
   ```agda
   record IsUnitalMagma (_∙_ : Op₂ A) (ε : A) : Set (a ⊔ ℓ)
-  record IsQuasigroup  (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ)
-  record IsLoop (_∙_ : Op₂ A) (ε : A) (⁻¹ : Op₁ A) : Set (a ⊔ ℓ)
-  record IsField (+ * : Op₂ A)(-_ 1#/_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ)
+  record IsInvertibleMagma (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ)
+  record IsInvertibleUnitalMagma (_∙_ : Op₂ A) (ε : A) (⁻¹ : Op₁ A) : Set (a ⊔ ℓ)
+  record IsQuasigroup (∙ \\ // : Op₂ A) : Set (a ⊔ ℓ)
+  record IsLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ)
   ```
   and the existing record `IsLattice` now provides
   ```
@@ -499,11 +658,47 @@ Other minor changes
   ```
   and their corresponding algebraic substructures.
 
-* Added a new `Inverse` bundle in `Data.Fin.Properties`:
+* Added new functions in `Category.Monad.State`:
   ```
-  1↔⊤ : Fin 1 ↔ ⊤
-  ↑ˡ-injective : ∀ {m} n (i j : Fin m) → i ↑ˡ n ≡ j ↑ˡ n → i ≡ j
-  ↑ʳ-injective : ∀ {m} n (i j : Fin m) → n ↑ʳ i ≡ n ↑ʳ j → i ≡ j
+  runState  : State s a → s → a × s
+  evalState : State s a → s → a 
+  execState : State s a → s → s
+  ```
+
+* Added new records to `Algebra.Morphism.Structures`:
+  ```agda
+  record IsQuasigroupHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
+  record IsQuasigroupMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
+  record IsQuasigroupIsomorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂)
+  record IsLoopHomomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
+  record IsLoopMonomorphism (⟦_⟧ : A → B) : Set (a ⊔ ℓ₁ ⊔ ℓ₂)
+  record IsLoopIsomorphism (⟦_⟧ : A → B) : Set (a ⊔ b ⊔ ℓ₁ ⊔ ℓ₂) 
+  ```
+
+* Added new functions in `Data.Fin.Base`:
+  ```
+  finToFun  : Fin (n ^ m) → (Fin m → Fin n)
+  funToFin  : (Fin m → Fin n) → Fin (n ^ m)
+  quotient  : Fin (n * k) → Fin n
+  remainder : Fin (n * k) → Fin k
+  ```
+
+* Added new definitions and proofs in `Data.Fin.Permutation`:
+  ```agda
+  insert : Fin (suc m) → Fin (suc n) → Permutation m n → Permutation (suc m) (suc n)
+  insert-punchIn : insert i j π ⟨$⟩ʳ punchIn i k ≡ punchIn j (π ⟨$⟩ʳ k)
+  insert-remove : insert i (π ⟨$⟩ʳ i) (remove i π) ≈ π
+  remove-insert : remove i (insert i j π) ≈ π
+  ```
+
+* Added new proofs and `Inverse` bundles in `Data.Fin.Properties`:
+  ```
+  1↔⊤                : Fin 1 ↔ ⊤
+  ↑ˡ-injective       : i ↑ˡ n ≡ j ↑ˡ n → i ≡ j
+  ↑ʳ-injective       : n ↑ʳ i ≡ n ↑ʳ j → i ≡ j
+  finTofun-funToFin  : funToFin ∘ finToFun ≗ id
+  funTofin-funToFun  : finToFun (funToFin f) ≗ f
+  ^↔→                : Extensionality _ _ → Fin (n ^ m) ↔ (Fin m → Fin n)
   ```
 
 * Added new proofs in `Data.Integer.Properties`:
@@ -511,8 +706,24 @@ Other minor changes
   sign-cong′ : s₁ ◃ n₁ ≡ s₂ ◃ n₂ → s₁ ≡ s₂ ⊎ (n₁ ≡ 0 × n₂ ≡ 0)
   ```
 
+* Added new proofs in `Data.List.Relation.Binary.Lex.Strict`:
+  ```agda
+  xs≮[] : ∀ xs → ¬ xs < []
+  ```
+
+* Added new definitions and proofs to `Data.Nat.Primality`:
+  ```agda
+  Composite : ℕ → Set
+  composite? : Decidable composite
+  composite⇒¬prime : Composite n → ¬ Prime n
+  ¬composite⇒prime : 2 ≤ n → ¬ Composite n → Prime n
+  prime⇒¬composite : Prime n → ¬ Composite n
+  ¬prime⇒composite : 2 ≤ n → ¬ Prime n → Composite n
+  ```
+
 * Added new proofs in `Data.Nat.Properties`:
   ```agda
+  n≮0       : n ≮ 0
   n+1+m≢m   : n + suc m ≢ m
   m*n≡0⇒m≡0 : .{{_ : NonZero n}} → m * n ≡ 0 → m ≡ 0
   ```
@@ -520,6 +731,13 @@ Other minor changes
 * Added new proofs in `Data.Nat.DivMod`:
   ```agda
   m%n≤n : .{{_ : NonZero n}} → m % n ≤ n
+  ```
+
+* Added new patterns in `Data.Nat.Reflection`:
+  ```agda
+  pattern `ℕ     = def (quote ℕ) []
+  pattern `zero  = con (quote ℕ.zero) []
+  pattern `suc x = con (quote ℕ.suc) (x ⟨∷⟩ [])
   ```
 
 * Added new rounding functions in `Data.Rational.Base`:
@@ -536,6 +754,10 @@ Other minor changes
   toℚᵘ-isNearSemiringMonomorphism-+-* : IsNearSemiringMonomorphism +-*-rawNearSemiring ℚᵘ.+-*-rawNearSemiring toℚᵘ
   toℚᵘ-isSemiringHomomorphism-+-* : IsSemiringHomomorphism +-*-rawSemiring ℚᵘ.+-*-rawSemiring toℚᵘ
   toℚᵘ-isSemiringMonomorphism-+-* : IsSemiringMonomorphism +-*-rawSemiring ℚᵘ.+-*-rawSemiring toℚᵘ
+  
+  pos⇒nonZero       : .{{Positive p}} → NonZero p
+  neg⇒nonZero       : .{{Negative p}} → NonZero p
+  nonZero⇒1/nonZero : .{{_ : NonZero p}} → NonZero (1/ p)
   ```
 
 * Added new rounding functions in `Data.Rational.Unnormalised.Base`:
@@ -547,7 +769,25 @@ Other minor changes
 * Added new definitions in `Data.Rational.Unnormalised.Properties`:
   ```agda
   +-*-rawNearSemiring : RawNearSemiring 0ℓ 0ℓ
-  +-*-rawSemiring : RawSemiring 0ℓ 0ℓ
+  +-*-rawSemiring     : RawSemiring 0ℓ 0ℓ
+
+  ≰⇒≥ : _≰_ ⇒ _≥_
+  
+  *-mono-≤-nonNeg   : .{{_ : NonNegative p}} .{{_ : NonNegative r}} → p ≤ q → r ≤ s → p * r ≤ q * s
+  *-mono-<-nonNeg   : .{{_ : NonNegative p}} .{{_ : NonNegative r}} → p < q → r < s → p * r < q * s
+  1/-antimono-≤-pos : .{{_ : Positive p}}    .{{_ : Positive q}}    → p ≤ q → 1/ q ≤ 1/ p
+  ⊓-mono-<          : _⊓_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
+  ⊔-mono-<          : _⊔_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
+
+  pos⇒nonZero          : ∀ p .{{_ : Positive p}} → NonZero p
+  neg⇒nonZero          : ∀ p .{{_ : Negative p}} → NonZero p
+  pos+pos⇒pos          : ∀ p .{{_ : Positive p}}    → ∀ q .{{_ : Positive q}}    → Positive (p + q)
+  nonNeg+nonNeg⇒nonNeg : ∀ p .{{_ : NonNegative p}} → ∀ q .{{_ : NonNegative q}} → NonNegative (p + q)
+  pos*pos⇒pos          : ∀ p .{{_ : Positive p}}    → ∀ q .{{_ : Positive q}}    → Positive (p * q)
+  nonNeg*nonNeg⇒nonNeg : ∀ p .{{_ : NonNegative p}} → ∀ q .{{_ : NonNegative q}} → NonNegative (p * q)
+  pos⊓pos⇒pos          : ∀ p .{{_ : Positive p}}    → ∀ q .{{_ : Positive q}}    → Positive (p ⊓ q)
+  pos⊔pos⇒pos          : ∀ p .{{_ : Positive p}}    → ∀ q .{{_ : Positive q}}    → Positive (p ⊔ q)
+  1/nonZero⇒nonZero    : ∀ p .{{_ : NonZero p}} → NonZero (1/ p)
   ```
 
 * Added new proof to `Data.Product.Properties`:
@@ -699,6 +939,14 @@ Other minor changes
   decide :  Π[ P ∪ Q ] → Π[ All P ∪ Any Q ]
   ```
 
+* Added new functions in `Reflection.Term`:
+  ```
+  stripPis : Term → List (String × Arg Type) × Term
+  prependLams : List (String × Visibility) → Term → Term
+  prependHLams : List String → Term → Term
+  prependVLams : List String → Term → Term
+  ```
+
 * Added new operations in
   `Relation.Binary.PropositionalEquality.Properties`:
   ```
@@ -778,6 +1026,12 @@ This is a full list of proofs that have changed form to use irrelevant instance 
 
 * In `Data.Integer.Properties`:
   ```
+  positive⁻¹        : ∀ {i} → Positive i → i > 0ℤ
+  negative⁻¹        : ∀ {i} → Negative i → i < 0ℤ
+  nonPositive⁻¹     : ∀ {i} → NonPositive i → i ≤ 0ℤ
+  nonNegative⁻¹     : ∀ {i} → NonNegative i → i ≥ 0ℤ
+  negative<positive : ∀ {i j} → Negative i → Positive j → i < j
+
   sign-◃    : ∀ s n → sign (s ◃ suc n) ≡ s
   sign-cong : ∀ {s₁ s₂ n₁ n₂} → s₁ ◃ suc n₁ ≡ s₂ ◃ suc n₂ → s₁ ≡ s₂
   -◃<+◃     : ∀ m n → Sign.- ◃ (suc m) < Sign.+ ◃ n
@@ -834,6 +1088,15 @@ This is a full list of proofs that have changed form to use irrelevant instance 
 
 * In `Data.Rational.Unnormalised.Properties`:
   ```agda
+  positive⁻¹           : ∀ {q} → .(Positive q) → q > 0ℚᵘ
+  nonNegative⁻¹        : ∀ {q} → .(NonNegative q) → q ≥ 0ℚᵘ
+  negative⁻¹           : ∀ {q} → .(Negative q) → q < 0ℚᵘ
+  nonPositive⁻¹        : ∀ {q} → .(NonPositive q) → q ≤ 0ℚᵘ
+  positive⇒nonNegative : ∀ {p} → Positive p → NonNegative p
+  negative⇒nonPositive : ∀ {p} → Negative p → NonPositive p
+  negative<positive    : ∀ {p q} → .(Negative p) → .(Positive q) → p < q
+  nonNeg∧nonPos⇒0      : ∀ {p} → .(NonNegative p) → .(NonPositive p) → p ≃ 0ℚᵘ
+  
   ≤-steps : ∀ {p q r} → NonNegative r → p ≤ q → p ≤ r + q
   p≤p+q   : ∀ {p q} → NonNegative q → p ≤ p + q
   p≤q+p   : ∀ {p} → NonNegative p → ∀ {q} → q ≤ p + q
@@ -870,6 +1133,16 @@ This is a full list of proofs that have changed form to use irrelevant instance 
 
 * In `Data.Rational.Properties`:
   ```
+  positive⁻¹ : Positive p → p > 0ℚ
+  nonNegative⁻¹ : NonNegative p → p ≥ 0ℚ
+  negative⁻¹ : Negative p → p < 0ℚ
+  nonPositive⁻¹ : NonPositive p → p ≤ 0ℚ
+  negative<positive : Negative p → Positive q → p < q
+  nonNeg≢neg : ∀ p q → NonNegative p → Negative q → p ≢ q
+  pos⇒nonNeg : ∀ p → Positive p → NonNegative p
+  neg⇒nonPos : ∀ p → Negative p → NonPositive p
+  nonNeg∧nonZero⇒pos : ∀ p → NonNegative p → NonZero p → Positive p
+
   *-cancelʳ-≤-pos    : ∀ r → Positive r → ∀ {p q} → p * r ≤ q * r → p ≤ q
   *-cancelˡ-≤-pos    : ∀ r → Positive r → ∀ {p q} → r * p ≤ r * q → p ≤ q
   *-cancelʳ-≤-neg    : ∀ r → Negative r → ∀ {p q} → p * r ≤ q * r → p ≥ q
@@ -905,3 +1178,12 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   ```agda
   module FieldMorphisms (F₁ : RawField a ℓ₁) (F₂ : RawField b ℓ₂)
   ```
+
+* In `Data.Fin.Permutation.Components`:
+  ```
+  `reverse` is deprecated to use `opposite` in `Data.Fin.Base` 
+  `reverse-prop` is deprecated to use `opposite-prop` in `Data.Fin.Properties`
+  `reverse-involutive` is deprecated to use `opposite-involutive` in `Data.Fin.Properties`
+  `reverse-suc` is deprecated to use `opposite-suc` in `Data.Fin.Properties`
+  ```
+

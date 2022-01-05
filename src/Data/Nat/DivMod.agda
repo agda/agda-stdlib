@@ -239,9 +239,9 @@ m≥n⇒m/n>0 {m@(suc _)} {n@(suc _)} m≥n = begin
   n % d             <⟨ m%n<n n d ⟩
   d                 ∎)
 
-+-distrib-/-∣ʳ : ∀ {m} n {d} .{{_ : NonZero d}} →
++-distrib-/-∣ʳ : ∀ m {n} {d} .{{_ : NonZero d}} →
                  d ∣ n → (m + n) / d ≡ m / d + n / d
-+-distrib-/-∣ʳ {m} n {d} (divides p refl) = +-distrib-/ m n (begin-strict
++-distrib-/-∣ʳ m {n} {d} (divides p refl) = +-distrib-/ m n (begin-strict
   m % d + p * d % d ≡⟨ cong (m % d +_) (m*n%n≡0 p d) ⟩
   m % d + 0         ≡⟨ +-identityʳ _ ⟩
   m % d             <⟨ m%n<n m d ⟩
