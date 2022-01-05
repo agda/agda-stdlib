@@ -60,8 +60,11 @@ module _ {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
     _≋_ = Pointwise _≈_
     _<_ = Lex-< _≈_ _≺_
 
+  xs≮[] : ∀ {n} (xs : Vec A n) → ¬ xs < []
+  xs≮[] _ (base ())
+
   ¬[]<[] : ¬ [] < []
-  ¬[]<[] (base ())
+  ¬[]<[] = xs≮[] []
 
   module _ (≺-irrefl : Irreflexive _≈_ _≺_) where
 
