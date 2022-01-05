@@ -7,7 +7,7 @@ Highlights
 ----------
 
 * A golden testing library in `Test.Golden`. This allows you to run a set
-  of tests and make sure their output matches an expected `golden` value.
+  of tests and make sure their output matches an expected `golden' value.
   The test runner has many options: filtering tests by name, dumping the
   list of failures to a file, timing the runs, coloured output, etc.
   Cf. the comments in `Test.Golden` and the standard library's own tests
@@ -46,11 +46,19 @@ Bug-fixes
 Non-backwards compatible changes
 --------------------------------
 
-#### Removed deprecated names
+* In `Algebra.Morphism.Structures`, `IsNearSemiringHomomorphism`,
+  `IsSemiringHomomorphism`, and `IsRingHomomorphism` have been redeisgned to
+  build up from `IsMonoidHomomorphism`, `IsNearSemiringHomomorphism`, and
+  `IsSemiringHomomorphism` respectively, adding a single property at each step.
+  This means that they no longer need to have two separate proofs of
+  `IsRelHomomorphism`. Similarly, `IsLatticeHomomorphism` is now built as
+  `IsRelHomomorphism` along with proofs that `_∧_` and `_∨_` are homorphic.
 
-* All modules and names that were deprecated prior to v1.0 have been removed.
+  Also, `⁻¹-homo` in `IsRingHomomorphism` has been renamed to `-‿homo`.
 
-### Improvements to pretty printing and regexes
+* move definition of `_>>=_` under `Data.Vec.Base` to its submodule `CartesianBind`
+  in order to keep another new definition of `_>>=_`, located in `DiagonalBind`
+  which is also a submodule of `Data.Vec.Base`.
 
 * In `Text.Pretty`, `Doc` is now a record rather than a type alias. This
   helps Agda reconstruct the `width` parameter when the module is opened
@@ -82,7 +90,9 @@ Non-backwards compatible changes
   So `[a-zA-Z]+.agdai?` run on "the path _build/Main.agdai corresponds to"
   will return "Main.agdai" when it used to be happy to just return "n.agda".
 
+#### Removed deprecated names
 
+* All modules and names that were deprecated prior to v1.0 have been removed.
 ### Refactoring of algebraic lattice hierarchy
 
 * In order to improve modularity and consistency with `Relation.Binary.Lattice`, 
@@ -319,23 +329,9 @@ Non-backwards compatible changes
   domain) so that `_⟶_` can be inferred, which it could not from the
   previous implementation using the sum type `a ⟶ b ⊎ b ⟶ a`.
 
-* In `Algebra.Morphism.Structures`, `IsNearSemiringHomomorphism`,
-  `IsSemiringHomomorphism`, and `IsRingHomomorphism` have been redeisgned to
-  build up from `IsMonoidHomomorphism`, `IsNearSemiringHomomorphism`, and
-  `IsSemiringHomomorphism` respectively, adding a single property at each step.
-  This means that they no longer need to have two separate proofs of
-  `IsRelHomomorphism`. Similarly, `IsLatticeHomomorphism` is now built as
-  `IsRelHomomorphism` along with proofs that `_∧_` and `_∨_` are homorphic.
-
-  Also, `⁻¹-homo` in `IsRingHomomorphism` has been renamed to `-‿homo`.
-
-* Moved definition of `_>>=_` under `Data.Vec.Base` to its submodule `CartesianBind`
-  in order to keep another new definition of `_>>=_`, located in `DiagonalBind`
-  which is also a submodule of `Data.Vec.Base`.
-
-* The constructors `+0` and `+[1+_]` from `Data.Integer.Base` are no longer 
-  exported by `Data.Rational.Base`. You will have to open `Data.Integer(.Base)`
-  directly to use them.
+  ### Creation of `Relation.Binary.Lattice` hierarchy
+  * In order to improve modularity Relation.Binary.Lattice is split out into Relation.Binary.Lattice.(Definitions/Structures/Bundles).
+  ###
 
 * The types of the proofs `pos⇒1/pos`/`1/pos⇒pos` and `neg⇒1/neg`/`1/neg⇒neg` in
   `Data.Rational(.Unnormalised).Properties` have been switched, as the previous
@@ -565,6 +561,28 @@ Deprecated names
   sym-↔   ↦   ↔-sym
   ```
 
+* In `Data.Fin.Base`: 
+two new, hopefully more memorable, names `↑ˡ` `↑ʳ` for the 'left', resp. 'right' injection of a Fin m into a 'larger' type, `Fin (m + n)`, resp. `Fin (n + m)`, with argument order to reflect the position of the Fin m argument. 
+  ```
+  inject+   ↦   flip _↑ˡ_
+  raise     ↦   _↑ʳ_
+  ```
+
+* In `Data.Fin.Properties`: 
+  ```
+  toℕ-raise       ↦ toℕ-↑ʳ
+  toℕ-inject+ n i ↦ sym (toℕ-↑ˡ i n)
+  splitAt-inject+ m n i ↦ splitAt-↑ˡ m i n
+  splitAt-raise ↦ splitAt-↑ʳ
+  Fin0↔⊥        ↦ 0↔⊥
+  ```
+
+* In `Data.Vec.Properties`: 
+  ```
+  []≔-++-inject+       ↦ []≔-++-↑ˡ
+  ```
+  Additionally, `[]≔-++-↑ʳ`, by analogy. 
+
 * In `Foreign.Haskell.Either` and `Foreign.Haskell.Pair`:
   ```
   toForeign   ↦ Foreign.Haskell.Coerce.coerce
@@ -627,15 +645,6 @@ New modules
   Function.Properties.RightInverse
   Function.Properties.Surjection
   ```
-
-* In order to improve modularity, the contents of `Relation.Binary.Lattice` has been 
-  split out into the standard:
-  ```
-  Relation.Binary.Lattice.Definitions
-  Relation.Binary.Lattice.Structures
-  Relation.Binary.Lattice.Bundles
-  ```
-  All contents is re-exported by `Relation.Binary.Lattice` as before.
 
 * Both versions of equality on predications are equivalences
   ```
@@ -705,15 +714,12 @@ Other minor changes
 
 * Added new proofs to `Algebra.Consequences.Setoid`:
   ```agda
-  comm+idˡ⇒id              : Commutative _•_ → LeftIdentity  e _•_ → Identity e _•_
-  comm+idʳ⇒id              : Commutative _•_ → RightIdentity e _•_ → Identity e _•_
-  comm+zeˡ⇒ze              : Commutative _•_ → LeftZero      e _•_ → Zero     e _•_
-  comm+zeʳ⇒ze              : Commutative _•_ → RightZero     e _•_ → Zero     e _•_
-  comm+invˡ⇒inv            : Commutative _•_ → LeftInverse  e _⁻¹ _•_ → Inverse e _⁻¹ _•_
-  comm+invʳ⇒inv            : Commutative _•_ → RightInverse e _⁻¹ _•_ → Inverse e _⁻¹ _•_
-  comm+distrˡ⇒distr        : Commutative _•_ → _•_ DistributesOverˡ _◦_ → _•_ DistributesOver _◦_
-  comm+distrʳ⇒distr        : Commutative _•_ → _•_ DistributesOverʳ _◦_ → _•_ DistributesOver _◦_
-  distrib+absorbs⇒distribˡ : Associative _•_ → Commutative _◦_ → _•_ Absorbs _◦_ → _◦_ Absorbs _•_ → _◦_ DistributesOver _•_ → _•_ DistributesOverˡ _◦_
+  comm+idˡ⇒id       : Commutative _•_ → LeftIdentity  e _•_ → Identity e _•_
+  comm+idʳ⇒id       : Commutative _•_ → RightIdentity e _•_ → Identity e _•_
+  comm+zeˡ⇒ze       : Commutative _•_ → LeftZero      e _•_ → Zero     e _•_
+  comm+zeʳ⇒ze       : Commutative _•_ → RightZero     e _•_ → Zero     e _•_
+  comm+distrˡ⇒distr : Commutative _•_ → _•_ DistributesOverˡ _◦_ → _•_ DistributesOver _◦_
+  comm+distrʳ⇒distr : Commutative _•_ → _•_ DistributesOverʳ _◦_ → _•_ DistributesOver _◦_
   ```
 
 * Added new functions to `Algebra.Construct.DirectProduct`:
@@ -1126,6 +1132,24 @@ Other minor changes
   ddcong₂ : (p : x₁ ≡ x₂) (q : subst B p y₁ ≡ y₂) → dsubst₂ C p q (f x₁ y₁) ≡ f x₂ y₂
   ```
 
+* Added new operations in
+  `Relation.Binary.PropositionalEquality.Properties`:
+  ```
+  J : {A : Set a} {x : A} (B : (y : A) → x ≡ y → Set b)
+      {y : A} (p : x ≡ y) → B x refl → B y p
+  dcong : ∀ {A : Set a} {B : A → Set b} (f : (x : A) → B x) {x y}
+        → (p : x ≡ y) → subst B p (f x) ≡ f y
+  dcong₂ : ∀ {A : Set a} {B : A → Set b} {C : Set c}
+           (f : (x : A) → B x → C) {x₁ x₂ y₁ y₂}
+         → (p : x₁ ≡ x₂) → subst B p y₁ ≡ y₂
+         → f x₁ y₁ ≡ f x₂ y₂
+  dsubst₂ : ∀ {A : Set a} {B : A → Set b} (C : (x : A) → B x → Set c)
+            {x₁ x₂ y₁ y₂} (p : x₁ ≡ x₂) → subst B p y₁ ≡ y₂
+          → C x₁ y₁ → C x₂ y₂
+  ddcong₂ : ∀ {A : Set a} {B : A → Set b} {C : (x : A) → B x → Set c}
+           (f : (x : A) (y : B x) → C x y) {x₁ x₂ y₁ y₂}
+           (p : x₁ ≡ x₂) (q : subst B p y₁ ≡ y₂)
+         → dsubst₂ C p q (f x₁ y₁) ≡ f x₂ y₂
 * Added new operations in `System.Exit`:
   ```
   isSuccess : ExitCode → Bool
@@ -1338,5 +1362,9 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   neg⇒1/neg : ∀ p (p<0 : Negative p) → Negative ((1/ p) {{neg⇒≢0 p p<0}})
   1/pos⇒pos : ∀ p .{{_ : NonZero p}} → (1/p : Positive (1/ p)) → Positive p
   1/neg⇒neg : ∀ p .{{_ : NonZero p}} → (1/p : Negative (1/ p)) → Negative p
+  ```
+  * Added new definitions to `Algebra.Morphism.Structures`:
+  ```agda
+  module FieldMorphisms (F₁ : RawField a ℓ₁) (F₂ : RawField b ℓ₂)
   ```
 
