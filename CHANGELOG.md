@@ -1115,6 +1115,7 @@ Other minor changes
   ```
   _≐_  : Pred A ℓ₁ → Pred A ℓ₂ → Set _
   _≐′_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
+  _∖_  : Pred A ℓ₁ → Pred A ℓ₂ → Pred A _
   ```
 
 * Added new operations in `Relation.Binary.PropositionalEquality.Properties`:
