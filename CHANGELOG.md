@@ -1130,54 +1130,55 @@ Other minor changes
 
 * Added new proofs in `Relation.Unary.Properties`:
   ```
-  ⊆-reflexive : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _≐_ _⊆_
-  ⊆-antisym : Antisymmetric {A = Pred A ℓ} _≐_ _⊆_
-  ⊆-min : Min {B = Pred A ℓ} _⊆_ ∅
-  ⊆-max : Max {A = Pred A ℓ} _⊆_ U
-  P⊂Q⇒P⊆Q : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _⊂_ _⊆_
-  ⊂-trans : Trans {A = Pred A ℓ₁} {B = Pred A ℓ₂} {C = Pred A ℓ₃} _⊂_ _⊂_ _⊂_
-  ⊂-⊆-trans : Trans {A = Pred A ℓ₁} {B = Pred A ℓ₂} {C = Pred A ℓ₃} _⊂_ _⊆_ _⊂_
-  ⊆-⊂-trans : Trans {A = Pred A ℓ₁} {B = Pred A ℓ₂} {C = Pred A ℓ₃} _⊆_ _⊂_ _⊂_
-  ⊂-respʳ-≐ : (_⊂_ {A = A} {ℓ₁} {ℓ₂}) Respectsʳ _≐_
-  ⊂-respˡ-≐ : (_⊂_ {A = A} {ℓ₁} {ℓ₂}) Respectsˡ _≐_
-  ⊂-resp-≐ : (_⊂_ {A = A} {ℓ}) Respects₂ _≐_
-  ⊂-irrefl : Irreflexive {A = Pred A ℓ₁} {B = Pred A ℓ₂} _≐_ _⊂_
-  ⊂-antisym : Antisymmetric {A = Pred A ℓ} _≐_ _⊂_
-  ⊂-asym : Asymmetric {A = Pred A ℓ} _⊂_
+  ⊆-refl : Reflexive _⊆_
+  ⊆-reflexive : _≐_ ⇒ _⊆_
+  ⊆-antisym : Antisymmetric _≐_ _⊆_
+  ⊆-min : Min _⊆_ ∅
+  ⊆-max : Max _⊆_ U
+  ⊂⇒⊆ : _⊂_ ⇒ _⊆_
+  ⊂-trans : Trans _⊂_ _⊂_ _⊂_
+  ⊂-⊆-trans : Trans _⊂_ _⊆_ _⊂_
+  ⊆-⊂-trans : Trans _⊆_ _⊂_ _⊂_
+  ⊂-respʳ-≐ : _⊂_ Respectsʳ _≐_
+  ⊂-respˡ-≐ : _⊂_ Respectsˡ _≐_
+  ⊂-resp-≐ : _⊂_ Respects₂ _≐_
+  ⊂-irrefl : Irreflexive _≐_ _⊂_
+  ⊂-antisym : Antisymmetric _≐_ _⊂_
+  ⊂-asym : Asymmetric _⊂_
   ∅-⊆′ : (P : Pred A ℓ) → ∅ ⊆′ P
   ⊆′-U : (P : Pred A ℓ) → P ⊆′ U
-  ⊆′-refl : Reflexive (_⊆′_ {A = A} {ℓ})
-  ⊆′-reflexive : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _≐′_  _⊆′_
-  ⊆′-trans : Trans {A = Pred A ℓ₁} {B = Pred A ℓ₂} {C = Pred A ℓ₃} _⊆′_ _⊆′_ _⊆′_
-  ⊆′-antisym : Antisymmetric {A = Pred A ℓ} _≐′_ _⊆′_
-  ⊆′-min : Min {B = Pred A ℓ} _⊆′_ ∅
-  ⊆′-max : Max {A = Pred A ℓ} _⊆′_ U
-  P⊂′Q⇒P⊆′Q : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _⊂′_ _⊆′_
-  ⊂′-trans : Trans {A = Pred A ℓ₁} {B = Pred A ℓ₂} {C = Pred A ℓ₃} _⊂′_ _⊂′_ _⊂′_
-  ⊂′-⊆′-trans : Trans {A = Pred A ℓ₁} {B = Pred A ℓ₂} {C = Pred A ℓ₃} _⊂′_ _⊆′_ _⊂′_
-  ⊆′-⊂′-trans : Trans {A = Pred A ℓ₁} {B = Pred A ℓ₂} {C = Pred A ℓ₃} _⊆′_ _⊂′_ _⊂′_
-  ⊂′-respʳ-≐′ : (_⊂′_ {A = A} {ℓ₁} {ℓ₂}) Respectsʳ _≐′_
-  ⊂′-respˡ-≐′ : (_⊂′_ {A = A} {ℓ₁} {ℓ₂}) Respectsˡ _≐′_
-  ⊂′-resp-≐′ : (_⊂′_ {A = A} {ℓ}) Respects₂ _≐′_
-  ⊂′-irrefl : Irreflexive {A = Pred A ℓ₁} {B = Pred A ℓ₂} _≐′_ _⊂′_
-  ⊂′-antisym : Antisymmetric {A = Pred A ℓ} _≐′_ _⊂′_
-  P⊆Q⇒P⊆′Q : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _⊆_ _⊆′_
-  P⊆′Q⇒P⊆Q : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _⊆′_ _⊆_
-  P⊂Q⇒P⊂′Q : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _⊂_ _⊂′_
-  P⊂′Q⇒P⊂Q : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _⊂′_ _⊂_
-  ≐-refl : Reflexive {A = Pred A ℓ} _≐_
-  ≐-sym : Sym {A = Pred A ℓ₁} {B = Pred A ℓ₂} _≐_ _≐_
-  ≐-trans : Trans {A = Pred A ℓ₁} {B = Pred A ℓ₂} {C = Pred A ℓ₃} _≐_ _≐_ _≐_
-  ≐′-refl : Reflexive {A = Pred A ℓ} _≐′_
-  ≐′-sym : Sym {A = Pred A ℓ₁} {B = Pred A ℓ₂} _≐′_ _≐′_
-  ≐′-trans : Trans {A = Pred A ℓ₁} {B = Pred A ℓ₂} {C = Pred A ℓ₃} _≐′_ _≐′_ _≐′_
-  P≐Q⇒P≐′Q : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _≐_ _≐′_
-  P≐′Q⇒P≐Q : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _≐′_ _≐_
+  ⊆′-refl : Reflexive {A = Pred A ℓ} _⊆′_
+  ⊆′-reflexive : _≐′_ ⇒ _⊆′_
+  ⊆′-trans : Trans _⊆′_ _⊆′_ _⊆′_
+  ⊆′-antisym : Antisymmetric _≐′_ _⊆′_
+  ⊆′-min : Min _⊆′_ ∅
+  ⊆′-max : Max _⊆′_ U
+  ⊂′⇒⊆′ : _⊂′_ ⇒ _⊆′_
+  ⊂′-trans : Trans _⊂′_ _⊂′_ _⊂′_
+  ⊂′-⊆′-trans : Trans _⊂′_ _⊆′_ _⊂′_
+  ⊆′-⊂′-trans : Trans _⊆′_ _⊂′_ _⊂′_
+  ⊂′-respʳ-≐′ : _⊂′_ Respectsʳ _≐′_
+  ⊂′-respˡ-≐′ : _⊂′_ Respectsˡ _≐′_
+  ⊂′-resp-≐′ : _⊂′_ Respects₂ _≐′_
+  ⊂′-irrefl : Irreflexive _≐′_ _⊂′_
+  ⊂′-antisym : Antisymmetric _≐′_ _⊂′_
+  ⊆⇒⊆′ : _⊆_ ⇒ _⊆′_
+  ⊆′⇒⊆ : _⊆′_ ⇒ _⊆_
+  ⊂⇒⊂′ : _⊂_ ⇒ _⊂′_
+  ⊂′⇒⊂ : _⊂′_ ⇒ _⊂_
+  ≐-refl : Reflexive _≐_
+  ≐-sym : Sym _≐_ _≐_
+  ≐-trans : Trans _≐_ _≐_ _≐_
+  ≐′-refl : Reflexive _≐′_
+  ≐′-sym : Sym _≐′_ _≐′_
+  ≐′-trans : Trans _≐′_ _≐′_ _≐′_
+  ≐⇒≐′ : _≐_ ⇒ _≐′_
+  ≐′⇒≐ : _≐′_ ⇒ _≐_
   ```
 
 * Generalised proofs in `Relation.Unary.Properties`:
   ```
-  ⊆-trans : Trans {A = Pred A ℓ₁} {B = Pred A ℓ₂} {C = Pred A ℓ₃} _⊆_ _⊆_ _⊆_
+  ⊆-trans : Trans _⊆_ _⊆_ _⊆_
   ```
 
 * Added new operations in `Relation.Binary.PropositionalEquality.Properties`:

@@ -78,8 +78,8 @@ U-Universal = λ _ → _
 ⊆-max : Max {A = Pred A ℓ} _⊆_ U
 ⊆-max = ⊆-U
 
-P⊂Q⇒P⊆Q : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _⊂_ _⊆_
-P⊂Q⇒P⊆Q = proj₁
+⊂⇒⊆ : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _⊂_ _⊆_
+⊂⇒⊆ = proj₁
 
 ⊂-trans : Trans {A = Pred A ℓ₁} {B = Pred A ℓ₂} {C = Pred A ℓ₃} _⊂_ _⊂_ _⊂_
 ⊂-trans (P⊆Q , Q⊈P) (Q⊆R , R⊈Q) = (λ x∈P → Q⊆R (P⊆Q x∈P)) , (λ R⊆P → R⊈Q (λ x∈R → P⊆Q (R⊆P x∈R)))
@@ -90,13 +90,13 @@ P⊂Q⇒P⊆Q = proj₁
 ⊆-⊂-trans : Trans {A = Pred A ℓ₁} {B = Pred A ℓ₂} {C = Pred A ℓ₃} _⊆_ _⊂_ _⊂_
 ⊆-⊂-trans P⊆Q (Q⊆R , R⊈Q) = (λ x∈P → Q⊆R (P⊆Q x∈P)) , (λ R⊆P → R⊈Q (λ R⊆Q → P⊆Q (R⊆P R⊆Q)))
 
-⊂-respʳ-≐ : (_⊂_ {A = A} {ℓ₁} {ℓ₂}) Respectsʳ _≐_
+⊂-respʳ-≐ : _Respectsʳ_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _⊂_ _≐_
 ⊂-respʳ-≐ (Q⊆R , _) P⊂Q = ⊂-⊆-trans P⊂Q Q⊆R
 
-⊂-respˡ-≐ : (_⊂_ {A = A} {ℓ₁} {ℓ₂}) Respectsˡ _≐_
+⊂-respˡ-≐ : _Respectsˡ_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _⊂_ _≐_
 ⊂-respˡ-≐ (_ , R⊆Q) P⊂Q = ⊆-⊂-trans R⊆Q P⊂Q
 
-⊂-resp-≐ : (_⊂_ {A = A} {ℓ}) Respects₂ _≐_
+⊂-resp-≐ : _Respects₂_ {A = Pred A ℓ} _⊂_ _≐_
 ⊂-resp-≐ = ⊂-respʳ-≐ , ⊂-respˡ-≐
 
 ⊂-irrefl : Irreflexive {A = Pred A ℓ₁} {B = Pred A ℓ₂} _≐_ _⊂_
@@ -114,10 +114,10 @@ P⊂Q⇒P⊆Q = proj₁
 ⊆′-U : (P : Pred A ℓ) → P ⊆′ U
 ⊆′-U _ _ _ = _
 
-⊆′-refl : Reflexive (_⊆′_ {A = A} {ℓ})
+⊆′-refl : Reflexive {A = Pred A ℓ} _⊆′_
 ⊆′-refl x x∈P = x∈P
 
-⊆′-reflexive : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _≐′_  _⊆′_
+⊆′-reflexive : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _≐′_ _⊆′_
 ⊆′-reflexive (P⊆Q , Q⊆P) = P⊆Q
 
 ⊆′-trans : Trans {A = Pred A ℓ₁} {B = Pred A ℓ₂} {C = Pred A ℓ₃} _⊆′_ _⊆′_ _⊆′_
@@ -132,8 +132,8 @@ P⊂Q⇒P⊆Q = proj₁
 ⊆′-max : Max {A = Pred A ℓ} _⊆′_ U
 ⊆′-max = ⊆′-U
 
-P⊂′Q⇒P⊆′Q : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _⊂′_ _⊆′_
-P⊂′Q⇒P⊆′Q = proj₁
+⊂′⇒⊆′ : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _⊂′_ _⊆′_
+⊂′⇒⊆′ = proj₁
 
 ⊂′-trans : Trans {A = Pred A ℓ₁} {B = Pred A ℓ₂} {C = Pred A ℓ₃} _⊂′_ _⊂′_ _⊂′_
 ⊂′-trans (P⊆Q , Q⊈P) (Q⊆R , R⊈Q) = ⊆′-trans P⊆Q Q⊆R , λ R⊆P → R⊈Q (⊆′-trans R⊆P P⊆Q)
@@ -144,13 +144,13 @@ P⊂′Q⇒P⊆′Q = proj₁
 ⊆′-⊂′-trans : Trans {A = Pred A ℓ₁} {B = Pred A ℓ₂} {C = Pred A ℓ₃} _⊆′_ _⊂′_ _⊂′_
 ⊆′-⊂′-trans P⊆Q (Q⊆R , R⊈Q) = ⊆′-trans P⊆Q Q⊆R , λ R⊆P → R⊈Q (⊆′-trans R⊆P P⊆Q)
 
-⊂′-respʳ-≐′ : (_⊂′_ {A = A} {ℓ₁} {ℓ₂}) Respectsʳ _≐′_
+⊂′-respʳ-≐′ : _Respectsʳ_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _⊂′_ _≐′_
 ⊂′-respʳ-≐′ (Q⊆R , _) P⊂Q = ⊂′-⊆′-trans P⊂Q Q⊆R
 
-⊂′-respˡ-≐′ : (_⊂′_ {A = A} {ℓ₁} {ℓ₂}) Respectsˡ _≐′_
+⊂′-respˡ-≐′ : _Respectsˡ_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _⊂′_ _≐′_
 ⊂′-respˡ-≐′ (_ , R⊆Q) P⊂Q = ⊆′-⊂′-trans R⊆Q P⊂Q
 
-⊂′-resp-≐′ : (_⊂′_ {A = A} {ℓ}) Respects₂ _≐′_
+⊂′-resp-≐′ : _Respects₂_ {A = Pred A ℓ₁} _⊂′_ _≐′_
 ⊂′-resp-≐′ = ⊂′-respʳ-≐′ , ⊂′-respˡ-≐′
 
 ⊂′-irrefl : Irreflexive {A = Pred A ℓ₁} {B = Pred A ℓ₂} _≐′_ _⊂′_
@@ -159,17 +159,17 @@ P⊂′Q⇒P⊆′Q = proj₁
 ⊂′-antisym : Antisymmetric {A = Pred A ℓ} _≐′_ _⊂′_
 ⊂′-antisym (P⊆Q , _) (Q⊆P , _) = ⊆′-antisym P⊆Q Q⊆P
 
-P⊆Q⇒P⊆′Q : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _⊆_ _⊆′_
-P⊆Q⇒P⊆′Q P⊆Q _ x∈P = P⊆Q x∈P
+⊆⇒⊆′ : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _⊆_ _⊆′_
+⊆⇒⊆′ P⊆Q _ x∈P = P⊆Q x∈P
 
-P⊆′Q⇒P⊆Q : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _⊆′_ _⊆_
-P⊆′Q⇒P⊆Q P⊆Q x∈P = P⊆Q _ x∈P
+⊆′⇒⊆ : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _⊆′_ _⊆_
+⊆′⇒⊆ P⊆Q x∈P = P⊆Q _ x∈P
 
-P⊂Q⇒P⊂′Q : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _⊂_ _⊂′_
-P⊂Q⇒P⊂′Q = Product.map P⊆Q⇒P⊆′Q (_∘ P⊆′Q⇒P⊆Q)
+⊂⇒⊂′ : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _⊂_ _⊂′_
+⊂⇒⊂′ = Product.map ⊆⇒⊆′ (_∘ ⊆′⇒⊆)
 
-P⊂′Q⇒P⊂Q : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _⊂′_ _⊂_
-P⊂′Q⇒P⊂Q = Product.map P⊆′Q⇒P⊆Q (_∘ P⊆Q⇒P⊆′Q)
+⊂′⇒⊂ : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _⊂′_ _⊂_
+⊂′⇒⊂ = Product.map ⊆′⇒⊆ (_∘ ⊆⇒⊆′)
 
 ----------------------------------------------------------------------
 -- Equality properties
@@ -192,11 +192,11 @@ P⊂′Q⇒P⊂Q = Product.map P⊆′Q⇒P⊆Q (_∘ P⊆Q⇒P⊆′Q)
 ≐′-trans : Trans {A = Pred A ℓ₁} {B = Pred A ℓ₂} {C = Pred A ℓ₃} _≐′_ _≐′_ _≐′_
 ≐′-trans = zip′ (λ P⊆Q Q⊆R x x∈P → Q⊆R x (P⊆Q x x∈P)) λ Q⊆P R⊆Q x x∈R → Q⊆P x (R⊆Q x x∈R)
 
-P≐Q⇒P≐′Q : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _≐_ _≐′_
-P≐Q⇒P≐′Q = Product.map P⊆Q⇒P⊆′Q P⊆Q⇒P⊆′Q
+≐⇒≐′ : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _≐_ _≐′_
+≐⇒≐′ = Product.map ⊆⇒⊆′ ⊆⇒⊆′
 
-P≐′Q⇒P≐Q : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _≐′_ _≐_
-P≐′Q⇒P≐Q = Product.map P⊆′Q⇒P⊆Q P⊆′Q⇒P⊆Q
+≐′⇒≐ : Binary._⇒_ {A = Pred A ℓ₁} {B = Pred A ℓ₂} _≐′_ _≐_
+≐′⇒≐ = Product.map ⊆′⇒⊆ ⊆′⇒⊆
 
 ----------------------------------------------------------------------
 -- Decidability properties
