@@ -171,6 +171,9 @@ n∣m*n m = divides m refl
 m∣m*n : ∀ {m} n → m ∣ m * n
 m∣m*n n = divides n (*-comm _ n)
 
+n∣m*n*o : ∀ m {n} o → n ∣ m * n * o
+n∣m*n*o m o = ∣-trans (n∣m*n m) (m∣m*n o)
+
 ∣m⇒∣m*n : ∀ {i m} n → i ∣ m → i ∣ m * n
 ∣m⇒∣m*n {i} {m} n (divides q refl) = ∣-trans (n∣m*n q) (m∣m*n n)
 

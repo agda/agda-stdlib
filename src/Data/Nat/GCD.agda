@@ -166,7 +166,14 @@ module GCD where
       -- greatest common divisor according to the partial order _∣_.
       greatest : ∀ {d} → d ∣ m × d ∣ n → d ∣ gcd
 
+    gcd∣m : gcd ∣ m
+    gcd∣m = proj₁ commonDivisor
+
+    gcd∣n : gcd ∣ n
+    gcd∣n = proj₂ commonDivisor
+
   open GCD public
+
 
   -- The gcd is unique.
 
