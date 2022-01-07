@@ -194,6 +194,7 @@ infixr 9 _⊢_
 infixr 8 _⇒_
 infixr 7 _∩_
 infixr 6 _∪_
+infixr 6 _∖_
 infix 4 _≬_
 
 -- Complement.
@@ -215,6 +216,11 @@ P ∪ Q = λ x → x ∈ P ⊎ x ∈ Q
 
 _∩_ : Pred A ℓ₁ → Pred A ℓ₂ → Pred A _
 P ∩ Q = λ x → x ∈ P × x ∈ Q
+
+-- Difference.
+
+_∖_ : Pred A ℓ₁ → Pred A ℓ₂ → Pred A _
+P ∖ Q = λ x → x ∈ P × x ∉ Q
 
 -- Infinitary union.
 
