@@ -1130,7 +1130,6 @@ Other minor changes
 
 * Added new proofs in `Relation.Unary.Properties`:
   ```
-  ⊆-refl : Reflexive _⊆_
   ⊆-reflexive : _≐_ ⇒ _⊆_
   ⊆-antisym : Antisymmetric _≐_ _⊆_
   ⊆-min : Min _⊆_ ∅
@@ -1144,7 +1143,6 @@ Other minor changes
   ⊂-resp-≐ : _⊂_ Respects₂ _≐_
   ⊂-irrefl : Irreflexive _≐_ _⊂_
   ⊂-antisym : Antisymmetric _≐_ _⊂_
-  ⊂-asym : Asymmetric _⊂_
   ∅-⊆′ : (P : Pred A ℓ) → ∅ ⊆′ P
   ⊆′-U : (P : Pred A ℓ) → P ⊆′ U
   ⊆′-refl : Reflexive {A = Pred A ℓ} _⊆′_
