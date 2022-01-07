@@ -455,13 +455,13 @@ lookup-splitAt (suc m) (x ∷ xs) ys (suc i) = trans
 module _ {f : A → A → A} where
 
   zipWith-assoc : Associative _≡_ f →
-                  Associative {A = Vec A n}  _≡_ (zipWith f)
+                  Associative _≡_ (zipWith {n = n} f)
   zipWith-assoc assoc []       []       []       = refl
   zipWith-assoc assoc (x ∷ xs) (y ∷ ys) (z ∷ zs) =
     cong₂ _∷_ (assoc x y z) (zipWith-assoc assoc xs ys zs)
 
   zipWith-idem : Idempotent _≡_ f →
-                 Idempotent {A = Vec A n} _≡_ (zipWith f)
+                 Idempotent _≡_ (zipWith {n = n} f)
   zipWith-idem idem []       = refl
   zipWith-idem idem (x ∷ xs) =
     cong₂ _∷_ (idem x) (zipWith-idem idem xs)
@@ -526,10 +526,10 @@ module _ {f g : A → A → A} where
   zipWith-absorbs abs (x ∷ xs) (y ∷ ys) =
     cong₂ _∷_ (abs x y) (zipWith-absorbs abs xs ys)
 
-module _ {f : A → A → B} where
+module _ {f g : A → A → B} where
 
-  zipWith-comm : ∀ (comm : ∀ x y → f x y ≡ f y x) (xs ys : Vec A n) →
-                 zipWith f xs ys ≡ zipWith f ys xs
+  zipWith-comm : ∀ (comm : ∀ x y → f x y ≡ g y x) (xs ys : Vec A n) →
+                 zipWith f xs ys ≡ zipWith g ys xs
   zipWith-comm comm []       []       = refl
   zipWith-comm comm (x ∷ xs) (y ∷ ys) =
     cong₂ _∷_ (comm x y) (zipWith-comm comm xs ys)
