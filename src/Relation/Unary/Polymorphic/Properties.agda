@@ -54,10 +54,10 @@ U-Universal _ = _
 ⊆-U : (P : Pred A ℓ₁) → P ⊆ U {ℓ = ℓ₂}
 ⊆-U _ _ = _
 
-⊆-min : Minimum (_⊆_ {A = A} {ℓ}) ∅
+⊆-min : Min {A = Pred A ℓ₁} {B = Pred A ℓ₂} _⊆_ ∅
 ⊆-min = ∅-⊆
 
-⊆-max : Maximum (_⊆_ {A = A} {ℓ}) U
+⊆-max : Max {A = Pred A ℓ₁} {B = Pred A ℓ₂} _⊆_ U
 ⊆-max = ⊆-U
 
 ∅-⊆′ : (P : Pred A ℓ₁) → ∅ {ℓ = ℓ₂} ⊆′ P
@@ -66,8 +66,8 @@ U-Universal _ = _
 ⊆′-U : (P : Pred A ℓ₁) → P ⊆′ U {ℓ = ℓ₂}
 ⊆′-U _ _ _ = _
 
-⊆′-min : Minimum (_⊆′_ {A = A} {ℓ}) ∅
+⊆′-min : Min {A = Pred A ℓ₁} {B = Pred A ℓ₂} _⊆′_ ∅
 ⊆′-min = ∅-⊆′
 
-⊆′-max : Maximum (_⊆′_ {A = A} {ℓ}) U
+⊆′-max : Max {A = Pred A ℓ₁} {B = Pred A ℓ₂} _⊆′_ U
 ⊆′-max = ⊆′-U
