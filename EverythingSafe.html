@@ -2354,140 +2354,150 @@
 <a id="69788" class="Comment">-- Unary relations</a>
 <a id="69807" class="Keyword">import</a> <a id="69814" href="Relation.Unary.html" class="Module">Relation.Unary</a>
 
-<a id="69830" class="Comment">-- Closures of a unary relation with respect to a binary one.</a>
-<a id="69892" class="Keyword">import</a> <a id="69899" href="Relation.Unary.Closure.Base.html" class="Module">Relation.Unary.Closure.Base</a>
+<a id="69830" class="Comment">-- Algebraic properties of constructions over unary relations</a>
+<a id="69892" class="Keyword">import</a> <a id="69899" href="Relation.Unary.Algebra.html" class="Module">Relation.Unary.Algebra</a>
 
-<a id="69928" class="Comment">-- Closure of a unary relation with respect to a preorder</a>
-<a id="69986" class="Keyword">import</a> <a id="69993" href="Relation.Unary.Closure.Preorder.html" class="Module">Relation.Unary.Closure.Preorder</a>
+<a id="69923" class="Comment">-- Closures of a unary relation with respect to a binary one.</a>
+<a id="69985" class="Keyword">import</a> <a id="69992" href="Relation.Unary.Closure.Base.html" class="Module">Relation.Unary.Closure.Base</a>
 
-<a id="70026" class="Comment">-- Closures of a unary relation with respect to a strict partial order</a>
-<a id="70097" class="Keyword">import</a> <a id="70104" href="Relation.Unary.Closure.StrictPartialOrder.html" class="Module">Relation.Unary.Closure.StrictPartialOrder</a>
+<a id="70021" class="Comment">-- Closure of a unary relation with respect to a preorder</a>
+<a id="70079" class="Keyword">import</a> <a id="70086" href="Relation.Unary.Closure.Preorder.html" class="Module">Relation.Unary.Closure.Preorder</a>
 
-<a id="70147" class="Comment">-- Some properties imply others</a>
-<a id="70179" class="Keyword">import</a> <a id="70186" href="Relation.Unary.Consequences.html" class="Module">Relation.Unary.Consequences</a>
+<a id="70119" class="Comment">-- Closures of a unary relation with respect to a strict partial order</a>
+<a id="70190" class="Keyword">import</a> <a id="70197" href="Relation.Unary.Closure.StrictPartialOrder.html" class="Module">Relation.Unary.Closure.StrictPartialOrder</a>
 
-<a id="70215" class="Comment">-- Indexed unary relations</a>
-<a id="70242" class="Keyword">import</a> <a id="70249" href="Relation.Unary.Indexed.html" class="Module">Relation.Unary.Indexed</a>
+<a id="70240" class="Comment">-- Some properties imply others</a>
+<a id="70272" class="Keyword">import</a> <a id="70279" href="Relation.Unary.Consequences.html" class="Module">Relation.Unary.Consequences</a>
 
-<a id="70273" class="Comment">-- Polymorphic versions of standard definitions in Relation.Unary</a>
-<a id="70339" class="Keyword">import</a> <a id="70346" href="Relation.Unary.Polymorphic.html" class="Module">Relation.Unary.Polymorphic</a>
+<a id="70308" class="Comment">-- Indexed unary relations</a>
+<a id="70335" class="Keyword">import</a> <a id="70342" href="Relation.Unary.Indexed.html" class="Module">Relation.Unary.Indexed</a>
 
-<a id="70374" class="Comment">-- Predicate transformers</a>
-<a id="70400" class="Keyword">import</a> <a id="70407" href="Relation.Unary.PredicateTransformer.html" class="Module">Relation.Unary.PredicateTransformer</a>
+<a id="70366" class="Comment">-- Polymorphic versions of standard definitions in Relation.Unary</a>
+<a id="70432" class="Keyword">import</a> <a id="70439" href="Relation.Unary.Polymorphic.html" class="Module">Relation.Unary.Polymorphic</a>
 
-<a id="70444" class="Comment">-- Properties of constructions over unary relations</a>
-<a id="70496" class="Keyword">import</a> <a id="70503" href="Relation.Unary.Properties.html" class="Module">Relation.Unary.Properties</a>
+<a id="70467" class="Comment">-- Properties of polymorphic versions of standard definitions in</a>
+<a id="70532" class="Comment">-- Relation.Unary</a>
+<a id="70550" class="Keyword">import</a> <a id="70557" href="Relation.Unary.Polymorphic.Properties.html" class="Module">Relation.Unary.Polymorphic.Properties</a>
 
-<a id="70530" class="Comment">-- Equality of unary relations</a>
-<a id="70561" class="Keyword">import</a> <a id="70568" href="Relation.Unary.Relation.Binary.Equality.html" class="Module">Relation.Unary.Relation.Binary.Equality</a>
+<a id="70596" class="Comment">-- Predicate transformers</a>
+<a id="70622" class="Keyword">import</a> <a id="70629" href="Relation.Unary.PredicateTransformer.html" class="Module">Relation.Unary.PredicateTransformer</a>
 
-<a id="70609" class="Comment">-- ANSI escape codes</a>
-<a id="70630" class="Keyword">import</a> <a id="70637" href="System.Console.ANSI.html" class="Module">System.Console.ANSI</a>
+<a id="70666" class="Comment">-- Properties of constructions over unary relations</a>
+<a id="70718" class="Keyword">import</a> <a id="70725" href="Relation.Unary.Properties.html" class="Module">Relation.Unary.Properties</a>
 
-<a id="70658" class="Comment">-- Reflection-based solver for monoid equalities</a>
-<a id="70707" class="Keyword">import</a> <a id="70714" href="Tactic.MonoidSolver.html" class="Module">Tactic.MonoidSolver</a>
+<a id="70752" class="Comment">-- Equality of unary relations</a>
+<a id="70783" class="Keyword">import</a> <a id="70790" href="Relation.Unary.Relation.Binary.Equality.html" class="Module">Relation.Unary.Relation.Binary.Equality</a>
 
-<a id="70735" class="Comment">-- A simple tactic for used to automatically compute the function</a>
-<a id="70801" class="Comment">-- argument to cong.</a>
-<a id="70822" class="Keyword">import</a> <a id="70829" href="Tactic.Rewrite.html" class="Module">Tactic.Rewrite</a>
+<a id="70831" class="Comment">-- Order properties of the subset relations _⊆_ and _⊂_</a>
+<a id="70887" class="Keyword">import</a> <a id="70894" href="Relation.Unary.Relation.Binary.Subset.html" class="Module">Relation.Unary.Relation.Binary.Subset</a>
 
-<a id="70845" class="Comment">-- A solver that uses reflection to automatically obtain and solve</a>
-<a id="70912" class="Comment">-- equations over rings.</a>
-<a id="70937" class="Keyword">import</a> <a id="70944" href="Tactic.RingSolver.html" class="Module">Tactic.RingSolver</a>
+<a id="70933" class="Comment">-- ANSI escape codes</a>
+<a id="70954" class="Keyword">import</a> <a id="70961" href="System.Console.ANSI.html" class="Module">System.Console.ANSI</a>
 
-<a id="70963" class="Comment">-- Almost commutative rings</a>
-<a id="70991" class="Keyword">import</a> <a id="70998" href="Tactic.RingSolver.Core.AlmostCommutativeRing.html" class="Module">Tactic.RingSolver.Core.AlmostCommutativeRing</a>
+<a id="70982" class="Comment">-- Reflection-based solver for monoid equalities</a>
+<a id="71031" class="Keyword">import</a> <a id="71038" href="Tactic.MonoidSolver.html" class="Module">Tactic.MonoidSolver</a>
 
-<a id="71044" class="Comment">-- A type for expressions over a raw ring.</a>
-<a id="71087" class="Keyword">import</a> <a id="71094" href="Tactic.RingSolver.Core.Expression.html" class="Module">Tactic.RingSolver.Core.Expression</a>
+<a id="71059" class="Comment">-- A simple tactic for used to automatically compute the function</a>
+<a id="71125" class="Comment">-- argument to cong.</a>
+<a id="71146" class="Keyword">import</a> <a id="71153" href="Tactic.Rewrite.html" class="Module">Tactic.Rewrite</a>
 
-<a id="71129" class="Comment">-- Simple implementation of sets of ℕ.</a>
-<a id="71168" class="Keyword">import</a> <a id="71175" href="Tactic.RingSolver.Core.NatSet.html" class="Module">Tactic.RingSolver.Core.NatSet</a>
+<a id="71169" class="Comment">-- A solver that uses reflection to automatically obtain and solve</a>
+<a id="71236" class="Comment">-- equations over rings.</a>
+<a id="71261" class="Keyword">import</a> <a id="71268" href="Tactic.RingSolver.html" class="Module">Tactic.RingSolver</a>
 
-<a id="71206" class="Comment">-- Sparse polynomials in a commutative ring, encoded in Horner normal</a>
-<a id="71276" class="Comment">-- form.</a>
-<a id="71285" class="Keyword">import</a> <a id="71292" href="Tactic.RingSolver.Core.Polynomial.Base.html" class="Module">Tactic.RingSolver.Core.Polynomial.Base</a>
+<a id="71287" class="Comment">-- Almost commutative rings</a>
+<a id="71315" class="Keyword">import</a> <a id="71322" href="Tactic.RingSolver.Core.AlmostCommutativeRing.html" class="Module">Tactic.RingSolver.Core.AlmostCommutativeRing</a>
 
-<a id="71332" class="Comment">-- Some specialised instances of the ring solver</a>
-<a id="71381" class="Keyword">import</a> <a id="71388" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism</a>
+<a id="71368" class="Comment">-- A type for expressions over a raw ring.</a>
+<a id="71411" class="Keyword">import</a> <a id="71418" href="Tactic.RingSolver.Core.Expression.html" class="Module">Tactic.RingSolver.Core.Expression</a>
 
-<a id="71436" class="Comment">-- Homomorphism proofs for addition over polynomials</a>
-<a id="71489" class="Keyword">import</a> <a id="71496" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Addition.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Addition</a>
+<a id="71453" class="Comment">-- Simple implementation of sets of ℕ.</a>
+<a id="71492" class="Keyword">import</a> <a id="71499" href="Tactic.RingSolver.Core.NatSet.html" class="Module">Tactic.RingSolver.Core.NatSet</a>
 
-<a id="71553" class="Comment">-- Homomorphism proofs for constants over polynomials</a>
-<a id="71607" class="Keyword">import</a> <a id="71614" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Constants.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Constants</a>
+<a id="71530" class="Comment">-- Sparse polynomials in a commutative ring, encoded in Horner normal</a>
+<a id="71600" class="Comment">-- form.</a>
+<a id="71609" class="Keyword">import</a> <a id="71616" href="Tactic.RingSolver.Core.Polynomial.Base.html" class="Module">Tactic.RingSolver.Core.Polynomial.Base</a>
 
-<a id="71672" class="Comment">-- Homomorphism proofs for exponentiation over polynomials</a>
-<a id="71731" class="Keyword">import</a> <a id="71738" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Exponentiation.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Exponentiation</a>
+<a id="71656" class="Comment">-- Some specialised instances of the ring solver</a>
+<a id="71705" class="Keyword">import</a> <a id="71712" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism</a>
 
-<a id="71801" class="Comment">-- Lemmas for use in proving the polynomial homomorphism.</a>
-<a id="71859" class="Keyword">import</a> <a id="71866" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Lemmas.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Lemmas</a>
+<a id="71760" class="Comment">-- Homomorphism proofs for addition over polynomials</a>
+<a id="71813" class="Keyword">import</a> <a id="71820" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Addition.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Addition</a>
 
-<a id="71921" class="Comment">-- Homomorphism proofs for multiplication over polynomials</a>
-<a id="71980" class="Keyword">import</a> <a id="71987" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Multiplication.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Multiplication</a>
+<a id="71877" class="Comment">-- Homomorphism proofs for constants over polynomials</a>
+<a id="71931" class="Keyword">import</a> <a id="71938" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Constants.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Constants</a>
 
-<a id="72050" class="Comment">-- Homomorphism proofs for negation over polynomials</a>
-<a id="72103" class="Keyword">import</a> <a id="72110" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Negation.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Negation</a>
+<a id="71996" class="Comment">-- Homomorphism proofs for exponentiation over polynomials</a>
+<a id="72055" class="Keyword">import</a> <a id="72062" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Exponentiation.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Exponentiation</a>
 
-<a id="72167" class="Comment">-- Homomorphism proofs for variables and constants over polynomials</a>
-<a id="72235" class="Keyword">import</a> <a id="72242" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Variables.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Variables</a>
+<a id="72125" class="Comment">-- Lemmas for use in proving the polynomial homomorphism.</a>
+<a id="72183" class="Keyword">import</a> <a id="72190" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Lemmas.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Lemmas</a>
 
-<a id="72300" class="Comment">-- Bundles of parameters for passing to the Ring Solver</a>
-<a id="72356" class="Keyword">import</a> <a id="72363" href="Tactic.RingSolver.Core.Polynomial.Parameters.html" class="Module">Tactic.RingSolver.Core.Polynomial.Parameters</a>
+<a id="72245" class="Comment">-- Homomorphism proofs for multiplication over polynomials</a>
+<a id="72304" class="Keyword">import</a> <a id="72311" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Multiplication.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Multiplication</a>
 
-<a id="72409" class="Comment">-- Polynomial reasoning</a>
-<a id="72433" class="Keyword">import</a> <a id="72440" href="Tactic.RingSolver.Core.Polynomial.Reasoning.html" class="Module">Tactic.RingSolver.Core.Polynomial.Reasoning</a>
+<a id="72374" class="Comment">-- Homomorphism proofs for negation over polynomials</a>
+<a id="72427" class="Keyword">import</a> <a id="72434" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Negation.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Negation</a>
 
-<a id="72485" class="Comment">-- &quot;Evaluating&quot; a polynomial, using Horner&#39;s method.</a>
-<a id="72538" class="Keyword">import</a> <a id="72545" href="Tactic.RingSolver.Core.Polynomial.Semantics.html" class="Module">Tactic.RingSolver.Core.Polynomial.Semantics</a>
+<a id="72491" class="Comment">-- Homomorphism proofs for variables and constants over polynomials</a>
+<a id="72559" class="Keyword">import</a> <a id="72566" href="Tactic.RingSolver.Core.Polynomial.Homomorphism.Variables.html" class="Module">Tactic.RingSolver.Core.Polynomial.Homomorphism.Variables</a>
 
-<a id="72590" class="Comment">-- An implementation of the ring solver that requires you to manually</a>
-<a id="72660" class="Comment">-- pass the equation you wish to solve.</a>
-<a id="72700" class="Keyword">import</a> <a id="72707" href="Tactic.RingSolver.NonReflective.html" class="Module">Tactic.RingSolver.NonReflective</a>
+<a id="72624" class="Comment">-- Bundles of parameters for passing to the Ring Solver</a>
+<a id="72680" class="Keyword">import</a> <a id="72687" href="Tactic.RingSolver.Core.Polynomial.Parameters.html" class="Module">Tactic.RingSolver.Core.Polynomial.Parameters</a>
 
-<a id="72740" class="Comment">-- Format strings for Printf and Scanf</a>
-<a id="72779" class="Keyword">import</a> <a id="72786" href="Text.Format.html" class="Module">Text.Format</a>
+<a id="72733" class="Comment">-- Polynomial reasoning</a>
+<a id="72757" class="Keyword">import</a> <a id="72764" href="Tactic.RingSolver.Core.Polynomial.Reasoning.html" class="Module">Tactic.RingSolver.Core.Polynomial.Reasoning</a>
 
-<a id="72799" class="Comment">-- Format strings for Printf and Scanf</a>
-<a id="72838" class="Keyword">import</a> <a id="72845" href="Text.Format.Generic.html" class="Module">Text.Format.Generic</a>
+<a id="72809" class="Comment">-- &quot;Evaluating&quot; a polynomial, using Horner&#39;s method.</a>
+<a id="72862" class="Keyword">import</a> <a id="72869" href="Tactic.RingSolver.Core.Polynomial.Semantics.html" class="Module">Tactic.RingSolver.Core.Polynomial.Semantics</a>
 
-<a id="72866" class="Comment">-- Printf</a>
-<a id="72876" class="Keyword">import</a> <a id="72883" href="Text.Printf.html" class="Module">Text.Printf</a>
+<a id="72914" class="Comment">-- An implementation of the ring solver that requires you to manually</a>
+<a id="72984" class="Comment">-- pass the equation you wish to solve.</a>
+<a id="73024" class="Keyword">import</a> <a id="73031" href="Tactic.RingSolver.NonReflective.html" class="Module">Tactic.RingSolver.NonReflective</a>
 
-<a id="72896" class="Comment">-- Generic printf function.</a>
-<a id="72924" class="Keyword">import</a> <a id="72931" href="Text.Printf.Generic.html" class="Module">Text.Printf.Generic</a>
+<a id="73064" class="Comment">-- Format strings for Printf and Scanf</a>
+<a id="73103" class="Keyword">import</a> <a id="73110" href="Text.Format.html" class="Module">Text.Format</a>
 
-<a id="72952" class="Comment">-- Regular expressions</a>
-<a id="72975" class="Keyword">import</a> <a id="72982" href="Text.Regex.html" class="Module">Text.Regex</a>
+<a id="73123" class="Comment">-- Format strings for Printf and Scanf</a>
+<a id="73162" class="Keyword">import</a> <a id="73169" href="Text.Format.Generic.html" class="Module">Text.Format.Generic</a>
 
-<a id="72994" class="Comment">-- Regular expressions: basic types and semantics</a>
-<a id="73044" class="Keyword">import</a> <a id="73051" href="Text.Regex.Base.html" class="Module">Text.Regex.Base</a>
+<a id="73190" class="Comment">-- Printf</a>
+<a id="73200" class="Keyword">import</a> <a id="73207" href="Text.Printf.html" class="Module">Text.Printf</a>
 
-<a id="73068" class="Comment">-- Regular expressions: Brzozowski derivative</a>
-<a id="73114" class="Keyword">import</a> <a id="73121" href="Text.Regex.Derivative.Brzozowski.html" class="Module">Text.Regex.Derivative.Brzozowski</a>
+<a id="73220" class="Comment">-- Generic printf function.</a>
+<a id="73248" class="Keyword">import</a> <a id="73255" href="Text.Printf.Generic.html" class="Module">Text.Printf.Generic</a>
 
-<a id="73155" class="Comment">-- Properties of regular expressions and their semantics</a>
-<a id="73212" class="Keyword">import</a> <a id="73219" href="Text.Regex.Properties.html" class="Module">Text.Regex.Properties</a>
+<a id="73276" class="Comment">-- Regular expressions</a>
+<a id="73299" class="Keyword">import</a> <a id="73306" href="Text.Regex.html" class="Module">Text.Regex</a>
 
-<a id="73242" class="Comment">-- Regular expressions: search algorithms</a>
-<a id="73284" class="Keyword">import</a> <a id="73291" href="Text.Regex.Search.html" class="Module">Text.Regex.Search</a>
+<a id="73318" class="Comment">-- Regular expressions: basic types and semantics</a>
+<a id="73368" class="Keyword">import</a> <a id="73375" href="Text.Regex.Base.html" class="Module">Text.Regex.Base</a>
 
-<a id="73310" class="Comment">-- Regular expressions: smart constructors</a>
-<a id="73353" class="Comment">-- Computing the Brzozowski derivative of a regular expression may lead</a>
-<a id="73425" class="Comment">-- to a blow-up in the size of the expression. To keep it tractable it</a>
-<a id="73496" class="Comment">-- is crucial to use smart constructors.</a>
-<a id="73537" class="Keyword">import</a> <a id="73544" href="Text.Regex.SmartConstructors.html" class="Module">Text.Regex.SmartConstructors</a>
+<a id="73392" class="Comment">-- Regular expressions: Brzozowski derivative</a>
+<a id="73438" class="Keyword">import</a> <a id="73445" href="Text.Regex.Derivative.Brzozowski.html" class="Module">Text.Regex.Derivative.Brzozowski</a>
 
-<a id="73574" class="Comment">-- Regular expressions acting on strings</a>
-<a id="73615" class="Keyword">import</a> <a id="73622" href="Text.Regex.String.html" class="Module">Text.Regex.String</a>
+<a id="73479" class="Comment">-- Properties of regular expressions and their semantics</a>
+<a id="73536" class="Keyword">import</a> <a id="73543" href="Text.Regex.Properties.html" class="Module">Text.Regex.Properties</a>
 
-<a id="73641" class="Comment">-- Fancy display functions for List-based tables</a>
-<a id="73690" class="Keyword">import</a> <a id="73697" href="Text.Tabular.Base.html" class="Module">Text.Tabular.Base</a>
+<a id="73566" class="Comment">-- Regular expressions: search algorithms</a>
+<a id="73608" class="Keyword">import</a> <a id="73615" href="Text.Regex.Search.html" class="Module">Text.Regex.Search</a>
 
-<a id="73716" class="Comment">-- Fancy display functions for List-based tables</a>
-<a id="73765" class="Keyword">import</a> <a id="73772" href="Text.Tabular.List.html" class="Module">Text.Tabular.List</a>
+<a id="73634" class="Comment">-- Regular expressions: smart constructors</a>
+<a id="73677" class="Comment">-- Computing the Brzozowski derivative of a regular expression may lead</a>
+<a id="73749" class="Comment">-- to a blow-up in the size of the expression. To keep it tractable it</a>
+<a id="73820" class="Comment">-- is crucial to use smart constructors.</a>
+<a id="73861" class="Keyword">import</a> <a id="73868" href="Text.Regex.SmartConstructors.html" class="Module">Text.Regex.SmartConstructors</a>
 
-<a id="73791" class="Comment">-- Fancy display functions for Vec-based tables</a>
-<a id="73839" class="Keyword">import</a> <a id="73846" href="Text.Tabular.Vec.html" class="Module">Text.Tabular.Vec</a>
+<a id="73898" class="Comment">-- Regular expressions acting on strings</a>
+<a id="73939" class="Keyword">import</a> <a id="73946" href="Text.Regex.String.html" class="Module">Text.Regex.String</a>
+
+<a id="73965" class="Comment">-- Fancy display functions for List-based tables</a>
+<a id="74014" class="Keyword">import</a> <a id="74021" href="Text.Tabular.Base.html" class="Module">Text.Tabular.Base</a>
+
+<a id="74040" class="Comment">-- Fancy display functions for List-based tables</a>
+<a id="74089" class="Keyword">import</a> <a id="74096" href="Text.Tabular.List.html" class="Module">Text.Tabular.List</a>
+
+<a id="74115" class="Comment">-- Fancy display functions for Vec-based tables</a>
+<a id="74163" class="Keyword">import</a> <a id="74170" href="Text.Tabular.Vec.html" class="Module">Text.Tabular.Vec</a>
 
 </pre></body></html>
