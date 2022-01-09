@@ -151,6 +151,22 @@ toℕ≤pred[n] (suc {n = suc n} i)  = s≤s (toℕ≤pred[n] i)
 toℕ≤pred[n]′ : ∀ {n} (i : Fin n) → toℕ i ℕ.≤ ℕ.pred n
 toℕ≤pred[n]′ i = ℕₚ.<⇒≤pred (toℕ<n i)
 
+toℕ-mono-< : ∀ {n} {i j : Fin n} → i < j → toℕ i ℕ.< toℕ j
+toℕ-mono-< {i = 0F}    {suc j}       (s≤s z≤n)       = s≤s z≤n
+toℕ-mono-< {i = suc i} {suc (suc j)} (s≤s (s≤s i<j)) = s≤s (toℕ-mono-< (s≤s i<j))
+
+toℕ-mono-≤ : ∀ {n} {i j : Fin n} → i ≤ j → toℕ i ℕ.≤ toℕ j
+toℕ-mono-≤ {i = 0F} {j} z≤n = z≤n
+toℕ-mono-≤ {i = suc i} {suc j} (s≤s i≤j) = s≤s (toℕ-mono-≤ i≤j)
+
+toℕ-cancel-≤ : ∀ {n} {i j : Fin n} → toℕ i ℕ.≤ toℕ j → i ≤ j
+toℕ-cancel-≤ {i = 0F} {j} z≤n = z≤n
+toℕ-cancel-≤ {i = suc i} {suc j} (s≤s i≤j) = s≤s (toℕ-cancel-≤ i≤j)
+
+toℕ-cancel-< : ∀ {n} {i j : Fin n} → toℕ i ℕ.< toℕ j → i < j
+toℕ-cancel-< {i = 0F} {suc j} (s≤s z≤n) = s≤s z≤n
+toℕ-cancel-< {i = suc i} {suc (suc j)} (s≤s (s≤s i<j)) = s≤s (toℕ-cancel-< (s≤s i<j))
+
 ------------------------------------------------------------------------
 -- fromℕ
 ------------------------------------------------------------------------

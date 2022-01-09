@@ -808,6 +808,11 @@ Other minor changes
   finTofun-funToFin  : funToFin ∘ finToFun ≗ id
   funTofin-funToFun  : finToFun (funToFin f) ≗ f
   ^↔→                : Extensionality _ _ → Fin (n ^ m) ↔ (Fin m → Fin n)
+
+  toℕ-mono-<         : i < j → toℕ i ℕ.< toℕ j
+  toℕ-mono-≤         : i ≤ j → toℕ i ℕ.≤ toℕ j
+  toℕ-cancel-≤       : toℕ i ℕ.≤ toℕ j → i ≤ j
+  toℕ-cancel-<       : toℕ i ℕ.< toℕ j → i < j
   ```
 
 * Added new functions in `Data.Integer.Base`:
