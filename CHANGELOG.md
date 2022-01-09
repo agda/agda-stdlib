@@ -658,14 +658,25 @@ New modules
   ```
   All contents is re-exported by `Relation.Binary.Lattice` as before.
 
+* Algebraic properties of `_∩_` and `_∪_` for predicates
+  ```
+  Relation.Unary.Algebra
+  ```
+
 * Both versions of equality on predications are equivalences
   ```
   Relation.Unary.Relation.Binary.Equality
   ```
 
-* Polymorphic verstions of some unary relations
+* The subset relations on predicates define an order
+  ```
+  Relation.Unary.Relation.Binary.Subset
+  ```
+
+* Polymorphic versions of some unary relations and their properties
   ```
   Relation.Unary.Polymorphic
+  Relation.Unary.Polymorphic.Properties
   ```
 
 * Alpha equality over reflected terms
@@ -1146,6 +1157,57 @@ Other minor changes
   _≐_  : Pred A ℓ₁ → Pred A ℓ₂ → Set _
   _≐′_ : Pred A ℓ₁ → Pred A ℓ₂ → Set _
   _∖_  : Pred A ℓ₁ → Pred A ℓ₂ → Pred A _
+  ```
+
+* Added new proofs in `Relation.Unary.Properties`:
+  ```
+  ⊆-reflexive : _≐_ ⇒ _⊆_
+  ⊆-antisym : Antisymmetric _≐_ _⊆_
+  ⊆-min : Min _⊆_ ∅
+  ⊆-max : Max _⊆_ U
+  ⊂⇒⊆ : _⊂_ ⇒ _⊆_
+  ⊂-trans : Trans _⊂_ _⊂_ _⊂_
+  ⊂-⊆-trans : Trans _⊂_ _⊆_ _⊂_
+  ⊆-⊂-trans : Trans _⊆_ _⊂_ _⊂_
+  ⊂-respʳ-≐ : _⊂_ Respectsʳ _≐_
+  ⊂-respˡ-≐ : _⊂_ Respectsˡ _≐_
+  ⊂-resp-≐ : _⊂_ Respects₂ _≐_
+  ⊂-irrefl : Irreflexive _≐_ _⊂_
+  ⊂-antisym : Antisymmetric _≐_ _⊂_
+  ∅-⊆′ : (P : Pred A ℓ) → ∅ ⊆′ P
+  ⊆′-U : (P : Pred A ℓ) → P ⊆′ U
+  ⊆′-refl : Reflexive {A = Pred A ℓ} _⊆′_
+  ⊆′-reflexive : _≐′_ ⇒ _⊆′_
+  ⊆′-trans : Trans _⊆′_ _⊆′_ _⊆′_
+  ⊆′-antisym : Antisymmetric _≐′_ _⊆′_
+  ⊆′-min : Min _⊆′_ ∅
+  ⊆′-max : Max _⊆′_ U
+  ⊂′⇒⊆′ : _⊂′_ ⇒ _⊆′_
+  ⊂′-trans : Trans _⊂′_ _⊂′_ _⊂′_
+  ⊂′-⊆′-trans : Trans _⊂′_ _⊆′_ _⊂′_
+  ⊆′-⊂′-trans : Trans _⊆′_ _⊂′_ _⊂′_
+  ⊂′-respʳ-≐′ : _⊂′_ Respectsʳ _≐′_
+  ⊂′-respˡ-≐′ : _⊂′_ Respectsˡ _≐′_
+  ⊂′-resp-≐′ : _⊂′_ Respects₂ _≐′_
+  ⊂′-irrefl : Irreflexive _≐′_ _⊂′_
+  ⊂′-antisym : Antisymmetric _≐′_ _⊂′_
+  ⊆⇒⊆′ : _⊆_ ⇒ _⊆′_
+  ⊆′⇒⊆ : _⊆′_ ⇒ _⊆_
+  ⊂⇒⊂′ : _⊂_ ⇒ _⊂′_
+  ⊂′⇒⊂ : _⊂′_ ⇒ _⊂_
+  ≐-refl : Reflexive _≐_
+  ≐-sym : Sym _≐_ _≐_
+  ≐-trans : Trans _≐_ _≐_ _≐_
+  ≐′-refl : Reflexive _≐′_
+  ≐′-sym : Sym _≐′_ _≐′_
+  ≐′-trans : Trans _≐′_ _≐′_ _≐′_
+  ≐⇒≐′ : _≐_ ⇒ _≐′_
+  ≐′⇒≐ : _≐′_ ⇒ _≐_
+  ```
+
+* Generalised proofs in `Relation.Unary.Properties`:
+  ```
+  ⊆-trans : Trans _⊆_ _⊆_ _⊆_
   ```
 
 * Added new operations in `Relation.Binary.PropositionalEquality.Properties`:
