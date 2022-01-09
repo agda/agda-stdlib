@@ -23,13 +23,14 @@ open import Data.Bool.Base using (Bool; false; true; T)
 open import Data.Bool.Properties using (T?)
 open import Data.Empty using (⊥)
 open import Data.Nat.Base
-open import Data.Product using (_×_; _,_)
+open import Data.Product using (∄; ∃; _×_; _,_)
 open import Data.Sum.Base as Sum
 open import Data.Unit using (tt)
 open import Function.Base
 open import Function.Bundles using (_↣_)
 open import Function.Metric.Nat
 open import Level using (0ℓ)
+open import Relation.Unary as U using (Pred)
 open import Relation.Binary
 open import Relation.Binary.Consequences using (flip-Connex)
 open import Relation.Binary.PropositionalEquality
@@ -2023,6 +2024,36 @@ _>‴?_ = flip _<‴?_
 
 eq? : ∀ {a} {A : Set a} → A ↣ ℕ → Decidable {A = A} _≡_
 eq? inj = via-injection inj _≟_
+
+-- It's possible to decide existential and universal predicates up to
+-- a limit.
+
+module _ {p} {P : Pred ℕ p} (P? : U.Decidable P) where
+
+  anyUpTo? : ∀ v → Dec (∃ λ n → n < v × P n)
+  anyUpTo? zero    = no λ {(_ , () , _)}
+  anyUpTo? (suc v) with P? v | anyUpTo? v
+  ... | yes Pv | _                  = yes (v , ≤-refl , Pv)
+  ... | _      | yes (n , n<v , Pn) = yes (n , ≤-step n<v , Pn)
+  ... | no ¬Pv | no ¬Pn<v           = no ¬Pn<1+v
+    where
+    ¬Pn<1+v : ∄ λ n → n < suc v × P n
+    ¬Pn<1+v (n , n<1+v , Pn) with n ≟ v
+    ... | yes refl = ¬Pv Pn
+    ... | no  n≢v  = ¬Pn<v (n , ≤∧≢⇒< (≤-pred n<1+v) n≢v , Pn)
+
+  allUpTo? : ∀ v → Dec (∀ {n} → n < v → P n)
+  allUpTo? zero    = yes λ()
+  allUpTo? (suc v) with P? v | allUpTo? v
+  ... | no ¬Pv | _        = no (λ prf → ¬Pv   (prf ≤-refl))
+  ... | _      | no ¬Pn<v = no (λ prf → ¬Pn<v (prf ∘ ≤-step))
+  ... | yes Pn | yes Pn<v = yes Pn<1+v
+    where
+      Pn<1+v : ∀ {n} → n < suc v → P n
+      Pn<1+v {n} n<1+v with n ≟ v
+      ... | yes refl = Pn
+      ... | no  n≢v  = Pn<v (≤∧≢⇒< (≤-pred n<1+v) n≢v)
+
 
 
 ------------------------------------------------------------------------

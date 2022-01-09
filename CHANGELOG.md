@@ -285,6 +285,27 @@ Non-backwards compatible changes
   ∣↥p∣≢0⇒p≄0 : ∀ p → ℤ.∣ (↥ p) ∣ ≢0 → p ≠ 0ℚᵘ
   ```
 
+### Change in the definition of `Prime`
+
+* The definition of `Prime` in `Data.Nat.Primality` was:
+  ```agda
+  Prime 0             = ⊥
+  Prime 1             = ⊥
+  Prime (suc (suc n)) = (i : Fin n) → 2 + toℕ i ∤ 2 + n
+  ```
+  which was very hard to reason about as not only did it involve conversion
+  to and from the `Fin` type, it also required that the divisor was of the form
+  `2 + toℕ i`, which has exactly the same problem as the `suc n` hack described
+  above used for non-zeroness.
+  
+* To make it easier to use, reason about and read, the definition has been
+  changed to:
+  ```agda
+  Prime 0 = ⊥
+  Prime 1 = ⊥
+  Prime n = ∀ {d} → 2 ≤ d → d < n → d ∤ n
+  ```
+
 ### Implementation of division and modulus for `ℤ`
 
 * The previous implementations of `_divℕ_`, `_div_`, `_modℕ_`, `_mod_`
@@ -855,6 +876,7 @@ Other minor changes
   ¬composite⇒prime : 2 ≤ n → ¬ Composite n → Prime n
   prime⇒¬composite : Prime n → ¬ Composite n
   ¬prime⇒composite : 2 ≤ n → ¬ Prime n → Composite n
+  euclidsLemma     : Prime p → p ∣ m * n → p ∣ m ⊎ p ∣ n
   ```
 
 * Added new proofs in `Data.Nat.Properties`:
@@ -862,11 +884,19 @@ Other minor changes
   n≮0       : n ≮ 0
   n+1+m≢m   : n + suc m ≢ m
   m*n≡0⇒m≡0 : .{{_ : NonZero n}} → m * n ≡ 0 → m ≡ 0
+  
+  anyUpTo? : ∀ (P? : U.Decidable P) (v : ℕ) → Dec (∃ λ n → n < v × P n)
+  allUpTo? : ∀ (P? : U.Decidable P) (v : ℕ) → Dec (∀ {n} → n < v → P n)
   ```
 
 * Added new proofs in `Data.Nat.DivMod`:
   ```agda
   m%n≤n : .{{_ : NonZero n}} → m % n ≤ n
+  ```
+
+* Added new proofs in `Data.Nat.Divisibility`:
+  ```agda
+  n∣m*n*o : n ∣ m * n * o
   ```
 
 * Added new patterns in `Data.Nat.Reflection`:
