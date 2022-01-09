@@ -526,9 +526,9 @@ module _ {f g : A → A → A} where
   zipWith-absorbs abs (x ∷ xs) (y ∷ ys) =
     cong₂ _∷_ (abs x y) (zipWith-absorbs abs xs ys)
 
-module _ {f g : A → A → B} where
+module _ {f : A → B → C} {g : B → A → C} where
 
-  zipWith-comm : ∀ (comm : ∀ x y → f x y ≡ g y x) (xs ys : Vec A n) →
+  zipWith-comm : ∀ (comm : ∀ x y → f x y ≡ g y x) (xs : Vec A n) ys →
                  zipWith f xs ys ≡ zipWith g ys xs
   zipWith-comm comm []       []       = refl
   zipWith-comm comm (x ∷ xs) (y ∷ ys) =

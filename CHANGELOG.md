@@ -537,7 +537,7 @@ Deprecated names
   ```
   to
   ```
-  zipWith-comm : ∀ {f g : A → A → B} (comm : ∀ x y → f x y ≡ g y x) (xs ys : Vec A n) → zipWith f xs ys ≡ zipWith g ys xs
+  zipWith-comm : ∀ {f : A → B → C} {g : B → A → C}  (comm : ∀ x y → f x y ≡ g y x) (xs : Vec A n) ys → zipWith f xs ys ≡ zipWith g ys xs
   ```
 
 * In `Function.Construct.Composition`:
