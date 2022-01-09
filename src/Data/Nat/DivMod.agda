@@ -257,7 +257,7 @@ m/n≡1+[m∸n]/n {m@(suc m-1)} {n@(suc n-1)} m≥n = begin-equality
 
 m*n/m*o≡n/o : ∀ m n o .{{_ : NonZero o}} .{{_ : NonZero (m * o)}} →
               (m * n) / (m * o) ≡ n / o
-m*n/m*o≡n/o m@(suc m-1) n o {{o≢0}} = helper (<-wellFounded n)
+m*n/m*o≡n/o m@(suc m-1) n o = helper (<-wellFounded n)
   where
   helper : ∀ {n} → Acc _<_ n → (m * n) / (m * o) ≡ n / o
   helper {n} (acc rec) with n <? o
@@ -270,7 +270,7 @@ m*n/m*o≡n/o m@(suc m-1) n o {{o≢0}} = helper (<-wellFounded n)
     o / o + (n ∸ o) / o           ≡˘⟨ +-distrib-/-∣ˡ (n ∸ o) (divides 1 ((sym (*-identityˡ o)))) ⟩
     (o + (n ∸ o)) / o             ≡⟨  cong (_/ o) (m+[n∸m]≡n (≮⇒≥ n≮o)) ⟩
     n / o                         ∎
-    where n∸o<n = ∸-monoʳ-< (n≢0⇒n>0 (≢-nonZero⁻¹ o≢0)) (≮⇒≥ n≮o)
+    where n∸o<n = ∸-monoʳ-< (n≢0⇒n>0 (≢-nonZero⁻¹ o)) (≮⇒≥ n≮o)
 
 *-/-assoc : ∀ m {n d} .{{_ : NonZero d}} → d ∣ n → m * n / d ≡ m * (n / d)
 *-/-assoc zero    {_} {d@(suc _)} d∣n = 0/n≡0 (suc d)

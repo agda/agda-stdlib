@@ -1168,6 +1168,12 @@ NonZero/Positive/Negative changes
 
 This is a full list of proofs that have changed form to use irrelevant instance arguments:
 
+* In `Data.Nat.Base`:
+  ```
+  ≢-nonZero⁻¹ : ∀ {n} → .(NonZero n) → n ≢ 0
+  >-nonZero⁻¹ : ∀ {n} → .(NonZero n) → n > 0
+  ```
+  
 * In `Data.Nat.Properties`:
   ```
   *-cancelʳ-≡ : ∀ m n {o} → m * suc o ≡ n * suc o → m ≡ n
