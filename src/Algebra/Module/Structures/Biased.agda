@@ -13,6 +13,7 @@ module Algebra.Module.Structures.Biased where
 
 open import Algebra.Bundles
 open import Algebra.Core
+open import Algebra.Module.Core
 open import Algebra.Module.Consequences
 open import Algebra.Module.Structures
 open import Function.Base using (flip)
