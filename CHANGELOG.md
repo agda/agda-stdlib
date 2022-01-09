@@ -818,6 +818,7 @@ Other minor changes
   combine-injectiveˡ : combine x z ≡ combine y z → x ≡ y
   combine-injectiveʳ : combine x y ≡ combine x z → y ≡ z
   combine-injective  : combine x y ≡ combine w z → x ≡ w × y ≡ z
+  combine-surjective : ∀ x → ∃₂ λ y z → combine y z ≡ x
   ```
 
 * Added new functions in `Data.Integer.Base`:

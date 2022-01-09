@@ -21,6 +21,7 @@ open import Data.Nat.Base as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_; _^_
 import Data.Nat.Properties as ℕₚ
 open import Data.Unit using (⊤; tt)
 open import Data.Product using (Σ-syntax; ∃; ∃₂; ∄; _×_; _,_; map; proj₁; proj₂; uncurry; <_,_>)
+open import Data.Product.Properties using (,-injective)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]; [_,_]′)
 open import Data.Sum.Properties using ([,]-map-commute; [,]-∘-distr)
 open import Function.Base using (_∘_; id; _$_; flip)
@@ -28,7 +29,7 @@ open import Function.Bundles using (_↣_; _⇔_; _↔_; mk⇔; mk↔′)
 open import Function.Definitions.Core2 using (Surjective)
 open import Relation.Binary as B hiding (Decidable; _⇔_)
 open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; _≢_; refl; sym; trans; cong; subst; _≗_; module ≡-Reasoning)
+  using (_≡_; _≢_; refl; sym; trans; cong; cong₂; subst; _≗_; module ≡-Reasoning)
 open import Relation.Nullary.Decidable as Dec using (map′)
 open import Relation.Nullary.Reflects
 open import Relation.Nullary.Negation using (contradiction)
@@ -647,6 +648,14 @@ combine-injective x y w z combine[x,y]≡combine[w,z] = lemma₂ x y w z combine
     combine w z ≡˘⟨ cong (λ h → combine h z) (lemma₂ x y w z combine[x,y]≡combine[w,z]) ⟩
     combine x z ∎)
     where open ≡-Reasoning
+
+combine-surjective : ∀ {n k} (x : Fin (n ℕ.* k)) → Σ[ y ∈ Fin n ] Σ[ z ∈ Fin k ] combine y z ≡ x
+combine-surjective {n} {k} x with remQuot {n} k x | P.inspect (remQuot {n} k) x
+... | y , z | P.[ eq ] = y , z , (begin
+  combine y z                       ≡˘⟨ uncurry (cong₂ combine) (,-injective eq) ⟩
+  uncurry combine (remQuot {n} k x) ≡⟨ combine-remQuot {n} k x ⟩
+  x ∎)
+  where open ≡-Reasoning
 
 ------------------------------------------------------------------------
 -- Bundles
