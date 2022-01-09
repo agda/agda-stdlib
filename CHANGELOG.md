@@ -675,7 +675,7 @@ New modules
 
 * `cong!` tactic for deriving arguments to `cong`
   ```
-  Tactic.Rewrite
+  Tactic.Cong
   ```
 
 * Various system types and primitives:

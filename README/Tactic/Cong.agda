@@ -1,5 +1,6 @@
 {-# OPTIONS --without-K --safe #-}
-module README.Tactic.Rewrite where
+
+module README.Tactic.Cong where
 
 open import Data.Nat
 open import Data.Nat.Properties
@@ -7,7 +8,7 @@ open import Data.Nat.Properties
 open import Relation.Binary.PropositionalEquality as Eq
 import Relation.Binary.Reasoning.Preorder as PR
 
-open import Tactic.Rewrite using (cong!)
+open import Tactic.Cong using (cong!)
 
 ----------------------------------------------------------------------
 -- Usage
