@@ -6,9 +6,9 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Reflection.TypeChecking.Monad.Instances where
+module Reflection.TCM.Instances where
 
-open import Reflection.TypeChecking.Monad.Categorical
+open import Reflection.TCM.Categorical
 
 instance
   tcFunctor = functor

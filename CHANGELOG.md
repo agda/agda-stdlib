@@ -306,6 +306,46 @@ Non-backwards compatible changes
   Prime n = ∀ {d} → 2 ≤ d → d < n → d ∤ n
   ```
 
+### Renaming of `Reflection` modules
+
+* Under the `Reflection` module, there were various impending name clashes 
+  between the core AST as exposed by Agda and the annotated AST defined in 
+  the library. 
+  
+* While the content of the modules remain the same, the modules themselves 
+  have therefore been renamed as follows:
+  ```
+  Reflection.Annotated              ↦ Reflection.AnnotatedAST
+  Reflection.Annotated.Free         ↦ Reflection.AnnotatedAST.Free
+  
+  Reflection.Abstraction            ↦ Reflection.AST.Abstraction
+  Reflection.Argument               ↦ Reflection.AST.Argument
+  Reflection.Argument.Information   ↦ Reflection.AST.Argument.Information
+  Reflection.Argument.Quantity      ↦ Reflection.AST.Argument.Quantity
+  Reflection.Argument.Relevance     ↦ Reflection.AST.Argument.Relevance
+  Reflection.Argument.Modality      ↦ Reflection.AST.Argument.Modality
+  Reflection.Argument.Visibility    ↦ Reflection.AST.Argument.Visibility
+  Reflection.DeBruijn               ↦ Reflection.AST.DeBruijn
+  Reflection.Definition             ↦ Reflection.AST.Definition
+  Reflection.Instances              ↦ Reflection.AST.Instances
+  Reflection.Literal                ↦ Reflection.AST.Literal
+  Reflection.Meta                   ↦ Reflection.AST.Meta
+  Reflection.Name                   ↦ Reflection.AST.Name
+  Reflection.Pattern                ↦ Reflection.AST.Pattern
+  Reflection.Show                   ↦ Reflection.AST.Show
+  Reflection.Traversal              ↦ Reflection.AST.Traversal
+  Reflection.Universe               ↦ Reflection.AST.Universe
+  
+  Reflection.TypeChecking.Monad             ↦ Reflection.TCM
+  Reflection.TypeChecking.Monad.Categorical ↦ Reflection.TCM.Categorical
+  Reflection.TypeChecking.Monad.Format      ↦ Reflection.TCM.Format
+  Reflection.TypeChecking.Monad.Syntax      ↦ Reflection.TCM.Instances
+  Reflection.TypeChecking.Monad.Instances   ↦ Reflection.TCM.Syntax
+  ``` 
+ 
+* A new module `Reflection.AST` that re-exports the contents of the
+  submodules has been addeed.
+
 ### Implementation of division and modulus for `ℤ`
 
 * The previous implementations of `_divℕ_`, `_div_`, `_modℕ_`, `_mod_`
@@ -689,7 +729,7 @@ New modules
 
 * Alpha equality over reflected terms
   ```
-  Reflection.AlphaEquality
+  Reflection.AST.AlphaEquality
   ```
 
 * `cong!` tactic for deriving arguments to `cong`
@@ -1123,10 +1163,10 @@ Other minor changes
   untilJust : IO (Maybe A) → IO A
   ```
 
-* Added new functions in `Reflection.Term`:
+* Added new functions in `Reflection.AST.Term`:
   ```
-  stripPis : Term → List (String × Arg Type) × Term
-  prependLams : List (String × Visibility) → Term → Term
+  stripPis     : Term → List (String × Arg Type) × Term
+  prependLams  : List (String × Visibility) → Term → Term
   prependHLams : List String → Term → Term
   prependVLams : List String → Term → Term
   ```

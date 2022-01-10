@@ -8,7 +8,8 @@
 
 open import Category.Applicative using (RawApplicative)
 
-module Reflection.Traversal {F : Set → Set} (AppF : RawApplicative F) where
+module Reflection.AST.Traversal
+  {F : Set → Set} (AppF : RawApplicative F) where
 
 open import Data.Nat     using (ℕ; zero; suc; _+_)
 open import Data.List    using (List; []; _∷_; _++_; reverse; length)

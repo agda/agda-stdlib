@@ -10,18 +10,18 @@
 
 {-# OPTIONS --safe --with-K #-}
 
-module Reflection.Annotated where
+module Reflection.AnnotatedAST where
 
-open import Level                               using (Level; 0ℓ; suc; _⊔_)
-open import Category.Applicative                using (RawApplicative)
-open import Data.Bool.Base                      using (Bool; false; true; if_then_else_)
-open import Data.List.Base                      using (List; []; _∷_)
-open import Data.List.Relation.Unary.All as All using (All; _∷_; [])
-open import Data.Product                        using (_×_; _,_; proj₁; proj₂)
-open import Data.String.Base                    using (String)
+open import Level                        using (Level; 0ℓ; suc; _⊔_)
+open import Category.Applicative         using (RawApplicative)
+open import Data.Bool.Base               using (Bool; false; true; if_then_else_)
+open import Data.List.Base               using (List; []; _∷_)
+open import Data.List.Relation.Unary.All using (All; _∷_; [])
+open import Data.Product                 using (_×_; _,_; proj₁; proj₂)
+open import Data.String.Base             using (String)
 
 open import Reflection
-open import Reflection.Universe
+open import Reflection.AST.Universe
 
 open Clause
 open Pattern

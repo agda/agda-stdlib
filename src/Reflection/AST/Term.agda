@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Reflection.Term where
+module Reflection.AST.Term where
 
 open import Data.List.Base as List hiding (_++_)
 import Data.List.Properties as Lₚ
@@ -22,13 +22,13 @@ open import Relation.Nullary.Decidable as Dec
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
 
-open import Reflection.Abstraction
-open import Reflection.Argument
-open import Reflection.Argument.Information using (visibility)
-open import Reflection.Argument.Visibility as Visibility hiding (_≟_)
-import Reflection.Literal as Literal
-import Reflection.Meta as Meta
-open import Reflection.Name as Name using (Name)
+open import Reflection.AST.Abstraction
+open import Reflection.AST.Argument
+open import Reflection.AST.Argument.Information using (visibility)
+open import Reflection.AST.Argument.Visibility as Visibility hiding (_≟_)
+import Reflection.AST.Literal as Literal
+import Reflection.AST.Meta as Meta
+open import Reflection.AST.Name as Name using (Name)
 
 ------------------------------------------------------------------------
 -- Re-exporting the builtin type and constructors

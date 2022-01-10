@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Reflection.Definition where
+module Reflection.AST.Definition where
 
 open import Data.List.Base using (map)
 import Data.List.Properties as Listₚ
@@ -21,9 +21,9 @@ open import Relation.Nullary.Product using (_×-dec_)
 open import Relation.Binary using (DecidableEquality)
 open import Relation.Binary.PropositionalEquality
 
-import Reflection.Argument as Arg
-import Reflection.Name     as Name
-import Reflection.Term     as Term
+import Reflection.AST.Argument as Arg
+import Reflection.AST.Name     as Name
+import Reflection.AST.Term     as Term
 
 ------------------------------------------------------------------------
 -- Re-exporting type publically

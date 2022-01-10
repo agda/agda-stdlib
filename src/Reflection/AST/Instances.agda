@@ -6,20 +6,20 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Reflection.Instances where
+module Reflection.AST.Instances where
 
 open import Level
 
-import Reflection.Literal as Literal
-import Reflection.Name as Name
-import Reflection.Meta as Meta
-import Reflection.Abstraction as Abstraction
-import Reflection.Argument as Argument
-import Reflection.Argument.Visibility as Visibility
-import Reflection.Argument.Relevance as Relevance
-import Reflection.Argument.Information as Information
-import Reflection.Pattern as Pattern
-import Reflection.Term as Term
+import Reflection.AST.Literal as Literal
+import Reflection.AST.Name as Name
+import Reflection.AST.Meta as Meta
+import Reflection.AST.Abstraction as Abstraction
+import Reflection.AST.Argument as Argument
+import Reflection.AST.Argument.Visibility as Visibility
+import Reflection.AST.Argument.Relevance as Relevance
+import Reflection.AST.Argument.Information as Information
+import Reflection.AST.Pattern as Pattern
+import Reflection.AST.Term as Term
 
 open import Relation.Binary.PropositionalEquality.Core
 open import Relation.Binary.PropositionalEquality.Properties

@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Reflection.Argument.Modality where
+module Reflection.AST.Argument.Modality where
 
 open import Data.Product
 import Relation.Nullary.Decidable as Dec
@@ -14,8 +14,8 @@ open import Relation.Nullary.Product using (_×-dec_)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality
 
-open import Reflection.Argument.Relevance as Relevance using (Relevance)
-open import Reflection.Argument.Quantity as Quantity using (Quantity)
+open import Reflection.AST.Argument.Relevance as Relevance using (Relevance)
+open import Reflection.AST.Argument.Quantity as Quantity using (Quantity)
 
 private
   variable

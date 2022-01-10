@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Reflection.Pattern where
+module Reflection.AST.Pattern where
 
 ------------------------------------------------------------------------
 -- Re-exporting the builtin type and constructors
@@ -17,7 +17,7 @@ open Pattern public
 ------------------------------------------------------------------------
 -- Re-exporting definitions that used to be here
 
-open import Reflection.Term public
+open import Reflection.AST.Term public
   using    ( proj-injective )
   renaming ( pat-con-injective₁ to con-injective₁
            ; pat-con-injective₂ to con-injective₂

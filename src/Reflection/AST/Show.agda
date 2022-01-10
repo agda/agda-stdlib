@@ -9,7 +9,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Reflection.Show where
+module Reflection.AST.Show where
 
 import Data.Char as Char
 import Data.Float as Float
@@ -22,16 +22,16 @@ import Data.Word as Word
 open import Relation.Nullary using (yes; no)
 open import Function.Base using (id; _∘′_; case_of_)
 
-open import Reflection.Abstraction hiding (map)
-open import Reflection.Argument hiding (map)
-open import Reflection.Argument.Relevance
-open import Reflection.Argument.Visibility
-open import Reflection.Argument.Modality
-open import Reflection.Argument.Information
-open import Reflection.Definition
-open import Reflection.Literal
-open import Reflection.Pattern
-open import Reflection.Term
+open import Reflection.AST.Abstraction hiding (map)
+open import Reflection.AST.Argument hiding (map)
+open import Reflection.AST.Argument.Relevance
+open import Reflection.AST.Argument.Visibility
+open import Reflection.AST.Argument.Modality
+open import Reflection.AST.Argument.Information
+open import Reflection.AST.Definition
+open import Reflection.AST.Literal
+open import Reflection.AST.Pattern
+open import Reflection.AST.Term
 
 ------------------------------------------------------------------------
 -- Re-export primitive show functions
