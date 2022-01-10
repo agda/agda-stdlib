@@ -8,30 +8,30 @@
 
 module Data.Fin.Injection.injection-Fin where
 
-open import Agda.Primitive using (Level; lzero; lsuc; _⊔_) public
+open import Agda.Primitive using (Level; lzero; lsuc; _⊔_)
+open import Data.Nat using (ℕ) renaming (suc to succ-ℕ; zero to zero-ℕ)
+open import Data.Unit renaming (⊤ to unit; tt to star)
+open import Data.Empty renaming (⊥ to empty)
 
-UU : (i : Level) → Set (lsuc i)
-UU i = Set i
-
-data raise (l : Level) {l1 : Level} (A : UU l1) : UU (l1 ⊔ l) where
+data raise (l : Level) {l1 : Level} (A : Set l1) : Set (l1 ⊔ l) where
   map-raise : A → raise l A
 
 map-inv-raise :
-  {l l1 : Level} {A : UU l1} → raise l A → A
+  {l l1 : Level} {A : Set l1} → raise l A → A
 map-inv-raise (map-raise x) = x
 
-id : {i : Level} {A : UU i} → A → A
+id : {i : Level} {A : Set i} → A → A
 id a = a 
 
 _∘_ : {i j k : Level}
-    → {A : UU i} {B : A → UU j} {C : (a : A) → B a → UU k}
+    → {A : Set i} {B : A → Set j} {C : (a : A) → B a → Set k}
     → ({a : A} → (b : B a) → C a b) → (f : (a : A) → B a) → (a : A) → C a (f a)
 (g ∘ f) a = g (f a)
 
-const : {i j : Level} (A : UU i) (B : UU j) (b : B) → A → B
+const : {i j : Level} (A : Set i) (B : Set j) (b : B) → A → B
 const A B b x = b
 
-record Σ {l1 l2} (A : UU l1) (B : A → UU l2) : UU (l1 ⊔ l2) where
+record Σ {l1 l2} (A : Set l1) (B : A → Set l2) : Set (l1 ⊔ l2) where
   constructor pair
   field
     pr1 : A
@@ -40,142 +40,133 @@ record Σ {l1 l2} (A : UU l1) (B : A → UU l2) : UU (l1 ⊔ l2) where
 open Σ
 
 ind-Σ :
-  {l1 l2 l3 : Level} {A : UU l1} {B : A → UU l2} {C : Σ A B → UU l3} →
+  {l1 l2 l3 : Level} {A : Set l1} {B : A → Set l2} {C : Σ A B → Set l3} →
   ((x : A) (y : B x) → C (pair x y)) → ((t : Σ A B) → C t)
 ind-Σ f (pair x y) = f x y
 
 
-prod : {l1 l2 : Level} (A : UU l1) (B : UU l2) → UU (l1 ⊔ l2)
+prod : {l1 l2 : Level} (A : Set l1) (B : Set l2) → Set (l1 ⊔ l2)
 prod A B = Σ A (λ a → B)
 
-_×_ :  {l1 l2 : Level} (A : UU l1) (B : UU l2) → UU (l1 ⊔ l2)
+_×_ :  {l1 l2 : Level} (A : Set l1) (B : Set l2) → Set (l1 ⊔ l2)
 A × B = prod A B
 
-data Id {i : Level} {A : UU i} (x : A) : A → UU i where
+data Id {i : Level} {A : Set i} (x : A) : A → Set i where
   refl : Id x x
 
 ind-Id :
-  {i j : Level} {A : UU i} (x : A) (B : (y : A) (p : Id x y) → UU j) →
+  {i j : Level} {A : Set i} (x : A) (B : (y : A) (p : Id x y) → Set j) →
   (B x refl) → (y : A) (p : Id x y) → B y p
 ind-Id x B b y refl = b
 
 _∙_ :
-  {i : Level} {A : UU i} {x y z : A} → Id x y → Id y z → Id x z
+  {i : Level} {A : Set i} {x y z : A} → Id x y → Id y z → Id x z
 refl ∙ q = q
 
 concat :
-  {i : Level} {A : UU i} {x y : A} → Id x y → (z : A) → Id y z → Id x z
+  {i : Level} {A : Set i} {x y : A} → Id x y → (z : A) → Id y z → Id x z
 concat p z q = p ∙ q
 
 -- Definition 5.2.2
 
 inv :
-  {i : Level} {A : UU i} {x y : A} → Id x y → Id y x
+  {i : Level} {A : Set i} {x y : A} → Id x y → Id y x
 inv refl = refl
 
 -- Definition 5.2.3
 
 assoc :
-  {i : Level} {A : UU i} {x y z w : A} (p : Id x y) (q : Id y z)
+  {i : Level} {A : Set i} {x y z w : A} (p : Id x y) (q : Id y z)
   (r : Id z w) → Id ((p ∙ q) ∙ r) (p ∙ (q ∙ r))
 assoc refl q r = refl
 
 -- Definition 5.2.4
 
 left-unit :
-  {i : Level} {A : UU i} {x y : A} {p : Id x y} → Id (refl ∙ p) p
+  {i : Level} {A : Set i} {x y : A} {p : Id x y} → Id (refl ∙ p) p
 left-unit = refl
 
 right-unit :
-  {i : Level} {A : UU i} {x y : A} {p : Id x y} → Id (p ∙ refl) p
+  {i : Level} {A : Set i} {x y : A} {p : Id x y} → Id (p ∙ refl) p
 right-unit {p = refl} = refl
 
 -- Definition 5.2.5
 
 left-inv :
-  {i : Level} {A : UU i} {x y : A} (p : Id x y) →
+  {i : Level} {A : Set i} {x y : A} (p : Id x y) →
   Id ((inv p) ∙ p) refl
 left-inv refl = refl
 
 right-inv :
-  {i : Level} {A : UU i} {x y : A} (p : Id x y) →
+  {i : Level} {A : Set i} {x y : A} (p : Id x y) →
   Id (p ∙ (inv p)) refl
 right-inv refl = refl
 
 ap :
-  {i j : Level} {A : UU i} {B : UU j} (f : A → B) {x y : A} (p : Id x y) →
+  {i j : Level} {A : Set i} {B : Set j} (f : A → B) {x y : A} (p : Id x y) →
   Id (f x) (f y)
 ap f refl = refl
 
 ap-id :
-  {i : Level} {A : UU i} {x y : A} (p : Id x y) → Id (ap id p) p
+  {i : Level} {A : Set i} {x y : A} (p : Id x y) → Id (ap id p) p
 ap-id refl = refl
 
 ap-comp :
-  {i j k : Level} {A : UU i} {B : UU j} {C : UU k} (g : B → C)
+  {i j k : Level} {A : Set i} {B : Set j} {C : Set k} (g : B → C)
   (f : A → B) {x y : A} (p : Id x y) → Id (ap (g ∘ f) p) (ap g (ap f p))
 ap-comp g f refl = refl
 
 tr :
-  {i j : Level} {A : UU i} (B : A → UU j) {x y : A} (p : Id x y) → B x → B y
+  {i j : Level} {A : Set i} (B : A → Set j) {x y : A} (p : Id x y) → B x → B y
 tr B refl b = b
 
 inv-con :
-  {i : Level} {A : UU i} {x y : A} (p : Id x y) {z : A} (q : Id y z)
+  {i : Level} {A : Set i} {x y : A} (p : Id x y) {z : A} (q : Id y z)
   (r : Id x z) → (Id (p ∙ q) r) → Id q ((inv p) ∙ r)
 inv-con refl q r = id 
 
 con-inv :
-  {i : Level} {A : UU i} {x y : A} (p : Id x y) {z : A} (q : Id y z)
+  {i : Level} {A : Set i} {x y : A} (p : Id x y) {z : A} (q : Id y z)
   (r : Id x z) → (Id (p ∙ q) r) → Id p (r ∙ (inv q))
 con-inv p refl r =
   ( λ α → α ∙ (inv right-unit)) ∘ (concat (inv right-unit) r)
 
 square :
-  {l1 : Level} {A : UU l1} {x y1 y2 z : A}
+  {l1 : Level} {A : Set l1} {x y1 y2 z : A}
   (p-left : Id x y1) (p-bottom : Id y1 z)
-  (p-top : Id x y2) (p-right : Id y2 z) → UU l1
+  (p-top : Id x y2) (p-right : Id y2 z) → Set l1
 square p-left p-bottom p-top p-right = Id (p-left ∙ p-bottom) (p-top ∙ p-right)
 
-is-injective : {l1 l2 : Level} {A : UU l1} {B : UU l2} → (A → B) → UU (l1 ⊔ l2)
+is-injective : {l1 l2 : Level} {A : Set l1} {B : Set l2} → (A → B) → Set (l1 ⊔ l2)
 is-injective {l1} {l2} {A} {B} f = ({x y : A} → Id (f x) (f y) → Id x y)
 
-data empty : UU lzero where
-
-¬ : {l : Level} → UU l → UU l
+¬ : {l : Level} → Set l → Set l
 ¬ A = A → empty
 
-is-empty : {l : Level} → UU l → UU l
+is-empty : {l : Level} → Set l → Set l
 is-empty = ¬
 
-is-nonempty : {l : Level} → UU l → UU l
+is-nonempty : {l : Level} → Set l → Set l
 is-nonempty A = ¬ (is-empty A)
 
-functor-neg : {l1 l2 : Level} {P : UU l1} {Q : UU l2} →
+functor-neg : {l1 l2 : Level} {P : Set l1} {Q : Set l2} →
   (P → Q) → (¬ Q → ¬ P)
 functor-neg f nq p = nq (f p)
 
-ex-falso : {l : Level} {A : UU l} → empty → A
+ex-falso : {l : Level} {A : Set l} → empty → A
 ex-falso ()
 
-raise-empty : (l : Level) → UU l
+raise-empty : (l : Level) → Set l
 raise-empty l = raise l empty
 
-data unit : UU lzero where
-  star : unit
-
-terminal-map : {l : Level} {A : UU l} → A → unit
+terminal-map : {l : Level} {A : Set l} → A → unit
 terminal-map a = star
 
-raise-unit : (l : Level) → UU l
+raise-unit : (l : Level) → Set l
 raise-unit l = raise l unit
 
 raise-star : {l : Level} → raise l unit
 raise-star = map-raise star
-
-data ℕ : UU lzero where
-  zero-ℕ : ℕ
-  succ-ℕ : ℕ → ℕ
 
 one-ℕ : ℕ
 one-ℕ = succ-ℕ zero-ℕ
@@ -183,7 +174,7 @@ one-ℕ = succ-ℕ zero-ℕ
 two-ℕ : ℕ
 two-ℕ = succ-ℕ one-ℕ
 
-Eq-ℕ : ℕ → ℕ → UU lzero
+Eq-ℕ : ℕ → ℕ → Set lzero
 Eq-ℕ zero-ℕ zero-ℕ = unit
 Eq-ℕ zero-ℕ (succ-ℕ n) = empty
 Eq-ℕ (succ-ℕ m) zero-ℕ = empty
@@ -200,28 +191,28 @@ eq-Eq-ℕ : (x y : ℕ) → Eq-ℕ x y → Id x y
 eq-Eq-ℕ zero-ℕ zero-ℕ e = refl
 eq-Eq-ℕ (succ-ℕ x) (succ-ℕ y) e = ap succ-ℕ (eq-Eq-ℕ x y e)
 
-is-zero-ℕ : ℕ → UU lzero
+is-zero-ℕ : ℕ → Set lzero
 is-zero-ℕ n = Id n zero-ℕ
 
-is-zero-ℕ' : ℕ → UU lzero
+is-zero-ℕ' : ℕ → Set lzero
 is-zero-ℕ' n = Id zero-ℕ n
 
-is-successor-ℕ : ℕ → UU lzero
+is-successor-ℕ : ℕ → Set lzero
 is-successor-ℕ n = Σ ℕ (λ y → Id n (succ-ℕ y))
 
-is-nonzero-ℕ : ℕ → UU lzero
+is-nonzero-ℕ : ℕ → Set lzero
 is-nonzero-ℕ n = ¬ (is-zero-ℕ n)
 
-is-one-ℕ : ℕ → UU lzero
+is-one-ℕ : ℕ → Set lzero
 is-one-ℕ n = Id n one-ℕ
 
-is-one-ℕ' : ℕ → UU lzero
+is-one-ℕ' : ℕ → Set lzero
 is-one-ℕ' n = Id one-ℕ n
 
-is-not-one-ℕ : ℕ → UU lzero
+is-not-one-ℕ : ℕ → Set lzero
 is-not-one-ℕ n = ¬ (is-one-ℕ n)
 
-is-not-one-ℕ' : ℕ → UU lzero
+is-not-one-ℕ' : ℕ → Set lzero
 is-not-one-ℕ' n = ¬ (is-one-ℕ' n)
 
 Peano-8 : (x : ℕ) → is-nonzero-ℕ (succ-ℕ x)
@@ -247,30 +238,30 @@ is-not-one-zero-ℕ = is-nonzero-one-ℕ ∘ inv
 is-not-one-two-ℕ : is-not-one-ℕ two-ℕ
 is-not-one-two-ℕ = Eq-eq-ℕ
 
-data coprod {l1 l2 : Level} (A : UU l1) (B : UU l2) : UU (l1 ⊔ l2)  where
+data coprod {l1 l2 : Level} (A : Set l1) (B : Set l2) : Set (l1 ⊔ l2)  where
   inl : A → coprod A B
   inr : B → coprod A B
 
 ind-coprod :
-  {l1 l2 l3 : Level} {A : UU l1} {B : UU l2} (C : coprod A B → UU l3) →
+  {l1 l2 l3 : Level} {A : Set l1} {B : Set l2} (C : coprod A B → Set l3) →
   ((x : A) → C (inl x)) → ((y : B) → C (inr y)) →
   (t : coprod A B) → C t
 ind-coprod C f g (inl x) = f x
 ind-coprod C f g (inr x) = g x
 
 map-coprod :
-  {l1 l2 l1' l2' : Level} {A : UU l1} {B : UU l2} {A' : UU l1'} {B' : UU l2'} →
+  {l1 l2 l1' l2' : Level} {A : Set l1} {B : Set l2} {A' : Set l1'} {B' : Set l2'} →
   (A → A') → (B → B') → coprod A B → coprod A' B'
 map-coprod f g (inl x) = inl (f x)
 map-coprod f g (inr y) = inr (g y)
 
 {- Definition 8.1.1 -}
 
-is-decidable : {l : Level} (A : UU l) → UU l
+is-decidable : {l : Level} (A : Set l) → Set l
 is-decidable A = coprod A (¬ A)
 
 is-decidable-fam :
-  {l1 l2 : Level} {A : UU l1} (P : A → UU l2) → UU (l1 ⊔ l2)
+  {l1 l2 : Level} {A : Set l1} (P : A → Set l2) → Set (l1 ⊔ l2)
 is-decidable-fam {A = A} P = (x : A) → is-decidable (P x)
 
 {- Example 8.1.2 -}
@@ -284,14 +275,14 @@ is-decidable-empty = inr id
 {- Example 8.1.3 -}
 
 is-decidable-coprod :
-  {l1 l2 : Level} {A : UU l1} {B : UU l2} →
+  {l1 l2 : Level} {A : Set l1} {B : Set l2} →
   is-decidable A → is-decidable B → is-decidable (coprod A B)
 is-decidable-coprod (inl a) y = inl (inl a)
 is-decidable-coprod (inr na) (inl b) = inl (inr b)
 is-decidable-coprod (inr na) (inr nb) = inr (ind-coprod (λ x → empty) na nb)
 
 is-decidable-prod :
-  {l1 l2 : Level} {A : UU l1} {B : UU l2} →
+  {l1 l2 : Level} {A : Set l1} {B : Set l2} →
   is-decidable A → is-decidable B → is-decidable (A × B)
 is-decidable-prod (inl a) (inl b) = inl (pair a b)
 is-decidable-prod (inl a) (inr g) = inr (g ∘ pr2)
@@ -299,7 +290,7 @@ is-decidable-prod (inr f) (inl b) = inr (f ∘ pr1)
 is-decidable-prod (inr f) (inr g) = inr (f ∘ pr1)
 
 is-decidable-function-type :
-  {l1 l2 : Level} {A : UU l1} {B : UU l2} →
+  {l1 l2 : Level} {A : Set l1} {B : Set l2} →
   is-decidable A → is-decidable B → is-decidable (A → B)
 is-decidable-function-type (inl a) (inl b) = inl (λ x → b)
 is-decidable-function-type (inl a) (inr g) = inr (λ h → g (h a))
@@ -307,19 +298,19 @@ is-decidable-function-type (inr f) (inl b) = inl (ex-falso ∘ f)
 is-decidable-function-type (inr f) (inr g) = inl (ex-falso ∘ f)
 
 is-decidable-neg :
-  {l : Level} {A : UU l} → is-decidable A → is-decidable (¬ A)
+  {l : Level} {A : Set l} → is-decidable A → is-decidable (¬ A)
 is-decidable-neg d = is-decidable-function-type d is-decidable-empty
 
 {- Example 8.1.4 -}
 
-leq-ℕ : ℕ → ℕ → UU lzero
+leq-ℕ : ℕ → ℕ → Set lzero
 leq-ℕ zero-ℕ m = unit
 leq-ℕ (succ-ℕ n) zero-ℕ = empty
 leq-ℕ (succ-ℕ n) (succ-ℕ m) = leq-ℕ n m
 
 _≤-ℕ_ = leq-ℕ
 
-data leq-ℕ' : ℕ → ℕ → UU lzero where
+data leq-ℕ' : ℕ → ℕ → Set lzero where
   refl-leq-ℕ' : (n : ℕ) → leq-ℕ' n n
   propagate-leq-ℕ' : {x y z : ℕ} → Id (succ-ℕ y) z → (leq-ℕ' x y) → (leq-ℕ' x z) 
 
@@ -386,7 +377,7 @@ antisymmetric-leq-ℕ zero-ℕ zero-ℕ p q = refl
 antisymmetric-leq-ℕ (succ-ℕ m) (succ-ℕ n) p q =
   ap succ-ℕ (antisymmetric-leq-ℕ m n p q)
 
-le-ℕ : ℕ → ℕ → UU lzero
+le-ℕ : ℕ → ℕ → Set lzero
 le-ℕ m zero-ℕ = empty
 le-ℕ zero-ℕ (succ-ℕ m) = unit
 le-ℕ (succ-ℕ n) (succ-ℕ m) = le-ℕ n m
@@ -516,13 +507,13 @@ is-decidable-le-ℕ (succ-ℕ m) (succ-ℕ n) = is-decidable-le-ℕ m n
 
 {- Definition 8.1.5 -}
    
-has-decidable-equality : {l : Level} (A : UU l) → UU l
+has-decidable-equality : {l : Level} (A : Set l) → Set l
 has-decidable-equality A = (x y : A) → is-decidable (Id x y)
 
 {- Proposition 8.1.6 -}
 
 is-decidable-iff :
-  {l1 l2 : Level} {A : UU l1} {B : UU l2} →
+  {l1 l2 : Level} {A : Set l1} {B : Set l2} →
   (A → B) → (B → A) → is-decidable A → is-decidable B
 is-decidable-iff f g =
   map-coprod f (functor-neg g)
@@ -568,26 +559,26 @@ has-decidable-equality-unit :
 has-decidable-equality-unit star star = inl refl
 
 _~_ :
-  {l1 l2 : Level} {A : UU l1} {B : A → UU l2}
-  (f g : (x : A) → B x) → UU (l1 ⊔ l2)
+  {l1 l2 : Level} {A : Set l1} {B : A → Set l2}
+  (f g : (x : A) → B x) → Set (l1 ⊔ l2)
 f ~ g = (x : _) → Id (f x) (g x)
 
 refl-htpy :
-  {l1 l2 : Level} {A : UU l1} {B : A → UU l2} {f : (x : A) → B x} → f ~ f
+  {l1 l2 : Level} {A : Set l1} {B : A → Set l2} {f : (x : A) → B x} → f ~ f
 refl-htpy x = refl
 
 inv-htpy :
-  {l1 l2 : Level} {A : UU l1} {B : A → UU l2} {f g : (x : A) → B x} →
+  {l1 l2 : Level} {A : Set l1} {B : A → Set l2} {f g : (x : A) → B x} →
   (f ~ g) → (g ~ f)
 inv-htpy H x = inv (H x)
 
 _∙h_ :
-  {l1 l2 : Level} {A : UU l1} {B : A → UU l2} {f g h : (x : A) → B x} →
+  {l1 l2 : Level} {A : Set l1} {B : A → Set l2} {f g h : (x : A) → B x} →
   (f ~ g) → (g ~ h) → (f ~ h)
 _∙h_ H K x = (H x) ∙ (K x)
 
 htpy-left-whisk :
-  {i j k : Level} {A : UU i} {B : UU j} {C : UU k}
+  {i j k : Level} {A : Set i} {B : Set j} {C : Set k}
   (h : B → C) {f g : A → B} → (f ~ g) → ((h ∘ f) ~ (h ∘ g))
 htpy-left-whisk h H x = ap h (H x)
 
@@ -596,45 +587,45 @@ _·l_ = htpy-left-whisk
 -- Definition 9.1.7 (ii)
 
 htpy-right-whisk :
-  {i j k : Level} {A : UU i} {B : UU j} {C : UU k}
+  {i j k : Level} {A : Set i} {B : Set j} {C : Set k}
   {g h : B → C} (H : g ~ h) (f : A → B) → ((g ∘ f) ~ (h ∘ f))
 htpy-right-whisk H f x = H (f x)
 
 _·r_ = htpy-right-whisk
 
 sq-left-whisk :
-  {i : Level} {A : UU i} {x y1 y2 z : A} {p1 p1' : Id x y1}
+  {i : Level} {A : Set i} {x y1 y2 z : A} {p1 p1' : Id x y1}
   (s : Id p1 p1') {q1 : Id y1 z} {p2 : Id x y2} {q2 : Id y2 z} →
   square p1 q1 p2 q2 → square p1' q1 p2 q2
 sq-left-whisk refl sq = sq
 
 sq-top-whisk :
-  {i : Level} {A : UU i} {x y1 y2 z : A}
+  {i : Level} {A : Set i} {x y1 y2 z : A}
   (p1 : Id x y1) (q1 : Id y1 z)
   (p2 : Id x y2) {p2' : Id x y2} (s : Id p2 p2') (q2 : Id y2 z) →
   square p1 q1 p2 q2 → square p1 q1 p2' q2
 sq-top-whisk p1 q1 p2 refl q2 sq = sq
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : UU l2}
+  {l1 l2 : Level} {A : Set l1} {B : Set l2}
   where
   
   -- Definition 9.2.1 (i)
 
-  sec : (f : A → B) → UU (l1 ⊔ l2)
+  sec : (f : A → B) → Set (l1 ⊔ l2)
   sec f = Σ (B → A) (λ g → (f ∘ g) ~ id)
 
   -- Definition 9.2.1 (ii)
   
-  retr : (f : A → B) → UU (l1 ⊔ l2)
+  retr : (f : A → B) → Set (l1 ⊔ l2)
   retr f = Σ (B → A) (λ g → (g ∘ f) ~ id)
 
 _retract-of_ :
-  {i j : Level} → UU i → UU j → UU (i ⊔ j)
+  {i j : Level} → Set i → Set j → Set (i ⊔ j)
 A retract-of B = Σ (A → B) retr
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : UU l2}
+  {l1 l2 : Level} {A : Set l1} {B : Set l2}
   where
   
   section-retract-of : A retract-of B → A → B
@@ -653,15 +644,15 @@ module _
 
   -- Definition 9.2.1 (ii)
   
-  is-equiv : (A → B) → UU (l1 ⊔ l2)
+  is-equiv : (A → B) → Set (l1 ⊔ l2)
   is-equiv f = sec f × retr f
 
 _≃_ :
-  {i j : Level} (A : UU i) (B : UU j) → UU (i ⊔ j)
+  {i j : Level} (A : Set i) (B : Set j) → Set (i ⊔ j)
 A ≃ B = Σ (A → B) (λ f → is-equiv f)
 
 module _
-  {l : Level} {A : UU l}
+  {l : Level} {A : Set l}
   where
 
   is-equiv-id : is-equiv (id {l} {A})
@@ -675,7 +666,7 @@ module _
   pr2 id-equiv = is-equiv-id
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : UU l2}
+  {l1 l2 : Level} {A : Set l1} {B : Set l2}
   where
 
   map-equiv : (A ≃ B) → (A → B)
@@ -685,16 +676,16 @@ module _
   is-equiv-map-equiv e = pr2 e
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : UU l2}
+  {l1 l2 : Level} {A : Set l1} {B : Set l2}
   where
 
-  has-inverse : (A → B) → UU (l1 ⊔ l2)
+  has-inverse : (A → B) → Set (l1 ⊔ l2)
   has-inverse f = Σ (B → A) (λ g → ((f ∘ g) ~ id) × ((g ∘ f) ~ id))
 
 -- Proposition 9.2.7
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : UU l2} {f : A → B}
+  {l1 l2 : Level} {A : Set l1} {B : Set l2} {f : A → B}
   where
 
   is-equiv-has-inverse' : has-inverse f → is-equiv f
@@ -711,7 +702,7 @@ module _
   -- Corollary 9.2.8
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : UU l2} {f : A → B}
+  {l1 l2 : Level} {A : Set l1} {B : Set l2} {f : A → B}
   where
   
   htpy-section-retraction : (H : is-equiv f) → ((pr1 (pr1 H))) ~ (pr1 (pr2 H))
@@ -742,7 +733,7 @@ module _
       ( issec-map-inv-is-equiv' H)
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : UU l2} (e : A ≃ B)
+  {l1 l2 : Level} {A : Set l1} {B : Set l2} (e : A ≃ B)
   where
 
   map-inv-equiv' : (B → A)
@@ -762,7 +753,7 @@ module _
   pr2 inv-equiv = is-equiv-map-inv-equiv
 
 module _
-  {l1 l2 l3 : Level} {A : UU l1} {B : UU l2} {X : UU l3}
+  {l1 l2 l3 : Level} {A : Set l1} {B : Set l2} {X : Set l3}
   (f : A → X) (g : B → X) (h : A → B) (H : f ~ (g ∘ h))
   where
 
@@ -820,7 +811,7 @@ module _
       retraction-comp' retr-g retr-h
 
 module _
-  {l1 l2 l3 : Level} {A : UU l1} {B : UU l2} {X : UU l3}
+  {l1 l2 l3 : Level} {A : Set l1} {B : Set l2} {X : Set l3}
   where
 
   abstract
@@ -837,7 +828,7 @@ module _
 
 abstract
   is-equiv-left-factor :
-    {i j k : Level} {A : UU i} {B : UU j} {X : UU k}
+    {i j k : Level} {A : Set i} {B : Set j} {X : Set k}
     (f : A → X) (g : B → X) (h : A → B) (H : f ~ (g ∘ h)) →
     is-equiv f → is-equiv h → is-equiv g
   pr1
@@ -856,14 +847,14 @@ abstract
 
 abstract
   is-equiv-left-factor' :
-    {i j k : Level} {A : UU i} {B : UU j} {X : UU k} (g : B → X) (h : A → B) →
+    {i j k : Level} {A : Set i} {B : Set j} {X : Set k} (g : B → X) (h : A → B) →
     is-equiv (g ∘ h) → is-equiv h → is-equiv g
   is-equiv-left-factor' g h =
     is-equiv-left-factor (g ∘ h) g h refl-htpy
 
 abstract
   is-equiv-right-factor :
-    {i j k : Level} {A : UU i} {B : UU j} {X : UU k}
+    {i j k : Level} {A : Set i} {B : Set j} {X : Set k}
     (f : A → X) (g : B → X) (h : A → B) (H : f ~ (g ∘ h)) →
     is-equiv g → is-equiv f → is-equiv h
   pr1
@@ -881,7 +872,7 @@ abstract
     retraction-comp f g h H (pair rg rg-isretr) retr-f
 
 module _
-  {l : Level} {A : UU l}
+  {l : Level} {A : Set l}
   where
 
   {- We show that inv is an equivalence. -}
@@ -956,7 +947,7 @@ module _
 
 abstract
   is-equiv-right-factor' :
-    {i j k : Level} {A : UU i} {B : UU j} {X : UU k} (g : B → X) (h : A → B) → 
+    {i j k : Level} {A : Set i} {B : Set j} {X : Set k} (g : B → X) (h : A → B) → 
     is-equiv g → is-equiv (g ∘ h) → is-equiv h
   is-equiv-right-factor' g h =
     is-equiv-right-factor (g ∘ h) g h refl-htpy
@@ -965,7 +956,7 @@ abstract
 -- Equivalences are injective
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : UU l2}
+  {l1 l2 : Level} {A : Set l1} {B : Set l2}
   where
 
   abstract
@@ -980,7 +971,7 @@ module _
     is-injective-map-equiv (pair f H) = is-injective-is-equiv H
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : UU l2}
+  {l1 l2 : Level} {A : Set l1} {B : Set l2}
   where
   
   abstract
@@ -993,7 +984,7 @@ module _
     is-equiv-has-inverse g G (λ x → H (G (f x)))
 
 module _
-  {l l1 : Level} {A : UU l1}
+  {l l1 : Level} {A : Set l1}
   where
 
   issec-map-inv-raise : (x : raise l A) → Id (map-raise (map-inv-raise x)) x
@@ -1009,7 +1000,7 @@ module _
       issec-map-inv-raise
       isretr-map-inv-raise
 
-equiv-raise : (l : Level) {l1 : Level} (A : UU l1) → A ≃ raise l A
+equiv-raise : (l : Level) {l1 : Level} (A : Set l1) → A ≃ raise l A
 pr1 (equiv-raise l A) = map-raise
 pr2 (equiv-raise l A) = is-equiv-map-raise
   
@@ -1019,24 +1010,24 @@ equiv-raise-unit l = equiv-raise l unit
 equiv-raise-empty : (l : Level) → empty ≃ raise-empty l
 equiv-raise-empty l = equiv-raise l empty
 
-Raise : (l : Level) {l1 : Level} (A : UU l1) → Σ (UU (l1 ⊔ l)) (λ X → A ≃ X)
+Raise : (l : Level) {l1 : Level} (A : Set l1) → Σ (Set (l1 ⊔ l)) (λ X → A ≃ X)
 pr1 (Raise l A) = raise l A
 pr2 (Raise l A) = equiv-raise l A
 
 -- Left unit law of coproducts
 
 map-right-unit-law-coprod-is-empty :
-  {l1 l2 : Level} (A : UU l1) (B : UU l2) → is-empty B → coprod A B → A
+  {l1 l2 : Level} (A : Set l1) (B : Set l2) → is-empty B → coprod A B → A
 map-right-unit-law-coprod-is-empty A B nb (inl a) = a
 map-right-unit-law-coprod-is-empty A B nb (inr b) = ex-falso (nb b)
 
 map-left-unit-law-coprod-is-empty :
-  {l1 l2 : Level} (A : UU l1) (B : UU l2) → is-empty A → coprod A B → B
+  {l1 l2 : Level} (A : Set l1) (B : Set l2) → is-empty A → coprod A B → B
 map-left-unit-law-coprod-is-empty A B na (inl a) = ex-falso (na a)
 map-left-unit-law-coprod-is-empty A B na (inr b) = b
 
 module _
-  {l1 l2 : Level} (A : UU l1) (B : UU l2) (H : is-empty A)
+  {l1 l2 : Level} (A : Set l1) (B : Set l2) (H : is-empty A)
   where
 
   map-inv-left-unit-law-coprod-is-empty : B → coprod A B
@@ -1074,7 +1065,7 @@ module _
       ( issec-map-inv-left-unit-law-coprod-is-empty)
 
 module _
-  {l : Level} (B : UU l)
+  {l : Level} (B : Set l)
   where
 
   map-left-unit-law-coprod : coprod empty B → B
@@ -1106,7 +1097,7 @@ module _
 -- The right unit law for coproducts
 
 module _
-  {l1 l2 : Level} (A : UU l1) (B : UU l2) (H : is-empty B)
+  {l1 l2 : Level} (A : Set l1) (B : Set l2) (H : is-empty B)
   where
   
   map-inv-right-unit-law-coprod-is-empty : A → coprod A B
@@ -1152,7 +1143,7 @@ module _
       ( issec-map-inv-right-unit-law-coprod-is-empty)
 
 module _
-  {l : Level} (A : UU l)
+  {l : Level} (A : Set l)
   where
 
   map-right-unit-law-coprod : coprod A empty → A
@@ -1185,7 +1176,7 @@ module _
 -- Commutativity of coproducts
 
 module _
-  {l1 l2 : Level} (A : UU l1) (B : UU l2)
+  {l1 l2 : Level} (A : Set l1) (B : Set l2)
   where
 
   map-commutative-coprod : coprod A B → coprod B A
@@ -1216,7 +1207,7 @@ module _
 -- Associativity of coproducts
 
 module _
-  {l1 l2 l3 : Level} {A : UU l1} {B : UU l2} {C : UU l3}
+  {l1 l2 l3 : Level} {A : Set l1} {B : Set l2} {C : Set l3}
   where
   
   map-assoc-coprod : coprod (coprod A B) C → coprod A (coprod B C)
@@ -1264,7 +1255,7 @@ module _
 {- We prove a left zero law for cartesian products. -}
 
 module _
-  {l : Level} (X : UU l)
+  {l : Level} (X : Set l)
   where
 
   inv-pr1-prod-empty : empty → empty × X
@@ -1290,7 +1281,7 @@ module _
 {- We prove the right zero law for cartesian products. -}
 
 module _
-  {l : Level} (X : UU l)
+  {l : Level} (X : Set l)
   where
 
   inv-pr2-prod-empty : empty → (X × empty)
@@ -1317,7 +1308,7 @@ module _
 
 abstract
   is-equiv-is-empty :
-    {l1 l2 : Level} {A : UU l1} {B : UU l2} (f : A → B) →
+    {l1 l2 : Level} {A : Set l1} {B : Set l2} (f : A → B) →
     is-empty B → is-equiv f
   is-equiv-is-empty f H =
     is-equiv-has-inverse
@@ -1327,11 +1318,11 @@ abstract
 
 abstract
   is-equiv-is-empty' :
-    {l : Level} {A : UU l} (f : is-empty A) → is-equiv f
+    {l : Level} {A : Set l} (f : is-empty A) → is-equiv f
   is-equiv-is-empty' f = is-equiv-is-empty f id
 
 module _
-  {l : Level} (A : UU l)
+  {l : Level} (A : Set l)
   where
   
   map-right-absorption-Σ : Σ A (λ x → empty) → empty
@@ -1356,7 +1347,7 @@ module _
 -- Left absorption law for Σ and cartesian products
 
 module _
-  {l : Level} (A : empty → UU l)
+  {l : Level} (A : empty → Set l)
   where
 
   map-left-absorption-Σ : Σ empty A → empty
@@ -1371,7 +1362,7 @@ module _
   pr2 left-absorption-Σ = is-equiv-map-left-absorption-Σ
 
 module _
-  {l : Level} (A : UU l)
+  {l : Level} (A : Set l)
   where
 
   map-left-absorption-prod : empty × A → empty
@@ -1387,7 +1378,7 @@ module _
 -- Unit laws for Σ-types and cartesian products
 
 module _
-  {l : Level} (A : unit → UU l)
+  {l : Level} (A : unit → Set l)
   where
 
   map-left-unit-law-Σ : Σ unit A → A star
@@ -1428,7 +1419,7 @@ module _
   pr2 inv-left-unit-law-Σ = is-equiv-map-inv-left-unit-law-Σ
 
 module _
-  {l : Level} {A : UU l}
+  {l : Level} {A : Set l}
   where
 
   map-left-unit-law-prod : unit × A → A
@@ -1497,21 +1488,21 @@ module _
 -- Associativity of Σ-types
 
 triple :
-  {l1 l2 l3 : Level} {A : UU l1} {B : A → UU l2} {C : (x : A) → B x → UU l3} →
+  {l1 l2 l3 : Level} {A : Set l1} {B : A → Set l2} {C : (x : A) → B x → Set l3} →
   (a : A) (b : B a) → C a b → Σ A (λ x → Σ (B x) (C x))
 pr1 (triple a b c) = a
 pr1 (pr2 (triple a b c)) = b
 pr2 (pr2 (triple a b c)) = c
 
 triple' :
-  {l1 l2 l3 : Level} {A : UU l1} {B : A → UU l2} {C : Σ A B → UU l3} →
+  {l1 l2 l3 : Level} {A : Set l1} {B : A → Set l2} {C : Σ A B → Set l3} →
   (a : A) (b : B a) → C (pair a b) → Σ (Σ A B) C
 pr1 (pr1 (triple' a b c)) = a
 pr2 (pr1 (triple' a b c)) = b
 pr2 (triple' a b c) = c
 
 module _
-  {l1 l2 l3 : Level} (A : UU l1) (B : A → UU l2) (C : Σ A B → UU l3)
+  {l1 l2 l3 : Level} (A : Set l1) (B : A → Set l2) (C : Σ A B → Set l3)
   where
 
   map-assoc-Σ : Σ (Σ A B) C → Σ A (λ x → Σ (B x) (λ y → C (pair x y)))
@@ -1550,7 +1541,7 @@ module _
 -- Another way to phrase associativity of Σ-types.
 
 module _
-  {l1 l2 l3 : Level} (A : UU l1) (B : A → UU l2) (C : (x : A) → B x → UU l3)
+  {l1 l2 l3 : Level} (A : Set l1) (B : A → Set l2) (C : (x : A) → B x → Set l3)
   where
   
   map-assoc-Σ' : Σ (Σ A B) (λ w → C (pr1 w) (pr2 w)) → Σ A (λ x → Σ (B x) (C x))
@@ -1588,7 +1579,7 @@ module _
 -- Commutativity of cartesian products
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : UU l2}
+  {l1 l2 : Level} {A : Set l1} {B : Set l2}
   where
 
   map-commutative-prod : A × B → B × A
@@ -1621,7 +1612,7 @@ module _
 -- Associativity of cartesian products
 
 module _
-  {l1 l2 l3 : Level} (A : UU l1) (B : UU l2) (C : UU l3)
+  {l1 l2 l3 : Level} (A : Set l1) (B : Set l2) (C : Set l3)
   where
   
   map-assoc-prod : (A × B) × C → A × (B × C)
@@ -1643,7 +1634,7 @@ module _
   assoc-prod = assoc-Σ A (λ x → B) (λ w → C)
 
 module _
-  {l1 l2 l3 : Level} (A : UU l1) (B : UU l2) (C : coprod A B → UU l3)
+  {l1 l2 l3 : Level} (A : Set l1) (B : Set l2) (C : coprod A B → Set l3)
   where
   
   map-right-distributive-Σ-coprod :
@@ -1687,7 +1678,7 @@ module _
 -- Left distributivity of Σ over coproducts
 
 module _
-  {l1 l2 l3 : Level} (A : UU l1) (B : A → UU l2) (C : A → UU l3)
+  {l1 l2 l3 : Level} (A : Set l1) (B : A → Set l2) (C : A → Set l3)
   where
 
   map-left-distributive-Σ-coprod :
@@ -1728,7 +1719,7 @@ module _
 -- Right distributivity of products over coproducts
 
 module _
-  {l1 l2 l3 : Level} (A : UU l1) (B : UU l2) (C : UU l3)
+  {l1 l2 l3 : Level} (A : Set l1) (B : Set l2) (C : Set l3)
   where
 
   map-right-distributive-prod-coprod : (coprod A B) × C → coprod (A × C) (B × C)
@@ -1764,7 +1755,7 @@ module _
 -- Left distributivity of products over coproducts
 
 module _
-  {l1 l2 l3 : Level} (A : UU l1) (B : UU l2) (C : UU l3)
+  {l1 l2 l3 : Level} (A : Set l1) (B : Set l2) (C : Set l3)
   where
 
   map-left-distributive-prod-coprod : A × (coprod B C) → coprod (A × B) (A × C)
@@ -1798,12 +1789,12 @@ module _
     left-distributive-Σ-coprod A (λ x → B) (λ x → C)
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : A → UU l2}
+  {l1 l2 : Level} {A : Set l1} {B : A → Set l2}
   where
 
   -- Definition 9.3.1
   
-  Eq-Σ : (s t : Σ A B) → UU (l1 ⊔ l2)
+  Eq-Σ : (s t : Σ A B) → Set (l1 ⊔ l2)
   Eq-Σ s t = Σ (Id (pr1 s) (pr1 t)) (λ α → Id (tr B α (pr2 s)) (pr2 t))
 
   -- Lemma 9.3.2
@@ -1864,10 +1855,10 @@ module _
 {- For our convenience, we repeat the above argument for cartesian products. -}
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : UU l2}
+  {l1 l2 : Level} {A : Set l1} {B : Set l2}
   where
   
-  Eq-prod : (s t : A × B) → UU (l1 ⊔ l2)
+  Eq-prod : (s t : A × B) → Set (l1 ⊔ l2)
   Eq-prod s t = (Id (pr1 s) (pr1 t)) × (Id (pr2 s) (pr2 t))
 
   eq-pair' : {s t : prod A B} → Eq-prod s t → Id s t
@@ -1926,7 +1917,7 @@ module _
   pr2 (equiv-pair-eq s t) = is-equiv-pair-eq s t
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : UU l2}
+  {l1 l2 : Level} {A : Set l1} {B : Set l2}
   where
 
   -- Exercise 9.3(a)
@@ -1965,7 +1956,7 @@ module _
         ( issec-map-inv-is-equiv' H b)))
 
 module _
-  {l1 l2 l3 : Level} {A : UU l1} {B : UU l2} {C : A → B → UU l3}
+  {l1 l2 l3 : Level} {A : Set l1} {B : Set l2} {C : A → B → Set l3}
   where
 
   map-left-swap-Σ : Σ A (λ x → Σ B (C x)) → Σ B (λ y → Σ A (λ x → C x y))
@@ -2000,7 +1991,7 @@ module _
 -- We also define swap on the right
 
 module _
-  {l1 l2 l3 : Level} {A : UU l1} {B : A → UU l2} {C : A → UU l3}
+  {l1 l2 l3 : Level} {A : Set l1} {B : A → Set l2} {C : A → Set l3}
   where
 
   map-right-swap-Σ : Σ (Σ A B) (C ∘ pr1) → Σ (Σ A C) (B ∘ pr1)
@@ -2031,70 +2022,70 @@ module _
   pr2 equiv-right-swap-Σ = is-equiv-map-right-swap-Σ
   
 is-contr :
-  {l : Level} → UU l → UU l
+  {l : Level} → Set l → Set l
 is-contr A = Σ A (λ a → (x : A) → Id a x)
 
 abstract
   center :
-    {l : Level} {A : UU l} → is-contr A → A
+    {l : Level} {A : Set l} → is-contr A → A
   center (pair c is-contr-A) = c
   
 -- We make sure that the contraction is coherent in a straightforward way
 eq-is-contr' :
-  {l : Level} {A : UU l} → is-contr A → (x y : A) → Id x y
+  {l : Level} {A : Set l} → is-contr A → (x y : A) → Id x y
 eq-is-contr' (pair c C) x y = (inv (C x)) ∙ (C y)
 
 eq-is-contr :
-  {l : Level} {A : UU l} → is-contr A → {x y : A} → Id x y
+  {l : Level} {A : Set l} → is-contr A → {x y : A} → Id x y
 eq-is-contr C {x} {y} = eq-is-contr' C x y
 
 abstract
   contraction :
-    {l : Level} {A : UU l} (is-contr-A : is-contr A) →
+    {l : Level} {A : Set l} (is-contr-A : is-contr A) →
     (const A A (center is-contr-A) ~ id)
   contraction C x = eq-is-contr C
   
   coh-contraction :
-    {l : Level} {A : UU l} (is-contr-A : is-contr A) →
+    {l : Level} {A : Set l} (is-contr-A : is-contr A) →
     Id (contraction is-contr-A (center is-contr-A)) refl
   coh-contraction (pair c C) = left-inv (C c)
 
 ev-pt :
-  {l1 l2 : Level} {A : UU l1} (a : A) (B : A → UU l2) → ((x : A) → B x) → B a
+  {l1 l2 : Level} {A : Set l1} (a : A) (B : A → Set l2) → ((x : A) → B x) → B a
 ev-pt a B f = f a
 
 is-singleton :
-  (l : Level) {i : Level} (A : UU i) → A → UU (lsuc l ⊔ i)
-is-singleton l A a = (B : A → UU l) → sec (ev-pt a B)
+  (l : Level) {i : Level} (A : Set i) → A → Set (lsuc l ⊔ i)
+is-singleton l A a = (B : A → Set l) → sec (ev-pt a B)
 
 ind-is-singleton :
-  {l1 l2 : Level} {A : UU l1} (a : A) →
-  ({l : Level} → is-singleton l A a) → (B : A → UU l2) →
+  {l1 l2 : Level} {A : Set l1} (a : A) →
+  ({l : Level} → is-singleton l A a) → (B : A → Set l2) →
   B a → (x : A) → B x
 ind-is-singleton a is-sing-A B = pr1 (is-sing-A B)
 
 comp-is-singleton :
-  {l1 l2 : Level} {A : UU l1} (a : A) (H : {l : Level} → is-singleton l A a) →
-  (B : A → UU l2) → (ev-pt a B ∘ ind-is-singleton a H B) ~ id
+  {l1 l2 : Level} {A : Set l1} (a : A) (H : {l : Level} → is-singleton l A a) →
+  (B : A → Set l2) → (ev-pt a B ∘ ind-is-singleton a H B) ~ id
 comp-is-singleton a H B = pr2 (H B)
 
 {- Theorem 10.2.3 -}
 
 abstract
   ind-singleton-is-contr :
-    {i j : Level} {A : UU i} (a : A) (is-contr-A : is-contr A) (B : A → UU j) →
+    {i j : Level} {A : Set i} (a : A) (is-contr-A : is-contr A) (B : A → Set j) →
     B a → (x : A) → B x
   ind-singleton-is-contr a is-contr-A B b x =
     tr B ((inv (contraction is-contr-A a)) ∙ (contraction is-contr-A x)) b
   
   comp-singleton-is-contr :
-    {i j : Level} {A : UU i} (a : A) (is-contr-A : is-contr A) (B : A → UU j) →
+    {i j : Level} {A : Set i} (a : A) (is-contr-A : is-contr A) (B : A → Set j) →
     ((ev-pt a B) ∘ (ind-singleton-is-contr a is-contr-A B)) ~ id
   comp-singleton-is-contr a is-contr-A B b =
     ap (λ ω → tr B ω b) (left-inv (contraction is-contr-A a))
 
 is-singleton-is-contr :
-  {l1 l2 : Level} {A : UU l1} (a : A) → is-contr A → is-singleton l2 A a
+  {l1 l2 : Level} {A : Set l1} (a : A) → is-contr A → is-singleton l2 A a
 pr1 (is-singleton-is-contr a is-contr-A B) =
   ind-singleton-is-contr a is-contr-A B
 pr2 (is-singleton-is-contr a is-contr-A B) =
@@ -2102,14 +2093,14 @@ pr2 (is-singleton-is-contr a is-contr-A B) =
 
 abstract
   is-contr-ind-singleton :
-    {i : Level} (A : UU i) (a : A) →
-    ({l : Level} (P : A → UU l) → P a → (x : A) → P x) → is-contr A
+    {i : Level} (A : Set i) (a : A) →
+    ({l : Level} (P : A → Set l) → P a → (x : A) → P x) → is-contr A
   pr1 (is-contr-ind-singleton A a S) = a
   pr2 (is-contr-ind-singleton A a S) = S (λ x → Id a x) refl
 
 abstract
   is-contr-is-singleton :
-    {i : Level} (A : UU i) (a : A) →
+    {i : Level} (A : Set i) (a : A) →
     ({l : Level} → is-singleton l A a) → is-contr A
   is-contr-is-singleton A a S = is-contr-ind-singleton A a (λ P → pr1 (S P))
 
@@ -2123,32 +2114,32 @@ is-contr-unit = is-contr-is-singleton unit star (is-singleton-unit)
 
 abstract
   is-singleton-total-path :
-    {i l : Level} (A : UU i) (a : A) →
+    {i l : Level} (A : Set i) (a : A) →
     is-singleton l (Σ A (λ x → Id a x)) (pair a refl)
   pr1 (is-singleton-total-path A a B) b (pair .a refl) = b
   pr2 (is-singleton-total-path A a B) = refl-htpy
 
 abstract
   is-contr-total-path :
-    {i : Level} {A : UU i} (a : A) → is-contr (Σ A (λ x → Id a x))
+    {i : Level} {A : Set i} (a : A) → is-contr (Σ A (λ x → Id a x))
   is-contr-total-path {A = A} a =
     is-contr-is-singleton _ _ (is-singleton-total-path A a)
   
 module _
-  {l1 l2 : Level} {A : UU l1} {B : UU l2} (f : A → B) (b : B)
+  {l1 l2 : Level} {A : Set l1} {B : Set l2} (f : A → B) (b : B)
   where
   
   {- Definition 10.3.1 -}
   
-  fib : UU (l1 ⊔ l2)
+  fib : Set (l1 ⊔ l2)
   fib = Σ A (λ x → Id (f x) b)
 
-  fib' : UU (l1 ⊔ l2)
+  fib' : Set (l1 ⊔ l2)
   fib' = Σ A (λ x → Id b (f x))
 
   {- Definition 10.3.2 -}
   
-  Eq-fib : fib → fib → UU (l1 ⊔ l2)
+  Eq-fib : fib → fib → Set (l1 ⊔ l2)
   Eq-fib s t = Σ (Id (pr1 s) (pr1 t)) (λ α → Id ((ap f α) ∙ (pr2 t)) (pr2 s))
 
   {- Proposition 10.3.3 -}
@@ -2200,14 +2191,14 @@ module _
   pr2 (equiv-eq-Eq-fib {s} {t}) = is-equiv-eq-Eq-fib
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : UU l2}
+  {l1 l2 : Level} {A : Set l1} {B : Set l2}
   where
 
-  is-contr-map : (A → B) → UU (l1 ⊔ l2)
+  is-contr-map : (A → B) → Set (l1 ⊔ l2)
   is-contr-map f = (y : B) → is-contr (fib f y)
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : UU l2} {f : A → B}
+  {l1 l2 : Level} {A : Set l1} {B : Set l2} {f : A → B}
   where
   
   map-inv-is-contr-map : is-contr-map f → B → A
@@ -2238,7 +2229,7 @@ module _
         ( isretr-map-inv-is-contr-map H)
 
 module _
-  {l : Level} {A : UU l}
+  {l : Level} {A : Set l}
   where
 
   abstract
@@ -2255,7 +2246,7 @@ module _
     pr2 (is-contr-is-equiv-const (pair (pair g issec) (pair h isretr))) = isretr
 
 module _
-  {l1 l2 : Level} {A : UU l1} (B : UU l2)
+  {l1 l2 : Level} {A : Set l1} (B : Set l2)
   where
   
   abstract
@@ -2275,7 +2266,7 @@ module _
       is-contr-is-equiv e is-equiv-e is-contr-B
 
 module _
-  {l1 l2 : Level} (A : UU l1) {B : UU l2}
+  {l1 l2 : Level} (A : Set l1) {B : Set l2}
   where
 
   abstract
@@ -2293,7 +2284,7 @@ module _
       is-contr-is-equiv' e is-equiv-e is-contr-A
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : UU l2}
+  {l1 l2 : Level} {A : Set l1} {B : Set l2}
   where
 
   abstract
@@ -2312,14 +2303,14 @@ module _
     is-equiv-is-contr _ is-contr-A is-contr-B
     
 module _
-  {l1 l2 : Level} {A : UU l1} {B : UU l2} (f : A → B)
+  {l1 l2 : Level} {A : Set l1} {B : Set l2} (f : A → B)
   where
   
   coherence-is-coherently-invertible :
-    (g : B → A) (G : (f ∘ g) ~ id) (H : (g ∘ f) ~ id) → UU (l1 ⊔ l2)
+    (g : B → A) (G : (f ∘ g) ~ id) (H : (g ∘ f) ~ id) → Set (l1 ⊔ l2)
   coherence-is-coherently-invertible g G H = (G ·r f) ~ (f ·l H)
 
-  is-coherently-invertible : UU (l1 ⊔ l2)
+  is-coherently-invertible : Set (l1 ⊔ l2)
   is-coherently-invertible =
     Σ ( B → A)
       ( λ g → Σ ((f ∘ g) ~ id)
@@ -2327,7 +2318,7 @@ module _
           (λ H → coherence-is-coherently-invertible g G H)))
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : UU l2} {f : A → B}
+  {l1 l2 : Level} {A : Set l1} {B : Set l2} {f : A → B}
   where
 
   inv-is-coherently-invertible : is-coherently-invertible f → B → A
@@ -2387,7 +2378,7 @@ module _
 {- Definition 10.4.3 -}
 
 htpy-nat :
-  {i j : Level} {A : UU i} {B : UU j} {f g : A → B} (H : f ~ g)
+  {i j : Level} {A : Set i} {B : Set j} {f g : A → B} (H : f ~ g)
   {x y : A} (p : Id x y) →
   Id ((H x) ∙ (ap g p)) ((ap f p) ∙ (H y))
 htpy-nat H refl = right-unit
@@ -2395,17 +2386,17 @@ htpy-nat H refl = right-unit
 {- Definition 10.4.4 -}
 
 left-unwhisk :
-  {i : Level} {A : UU i} {x y z : A} (p : Id x y) {q r : Id y z} →
+  {i : Level} {A : Set i} {x y z : A} (p : Id x y) {q r : Id y z} →
   Id (p ∙ q) (p ∙ r) → Id q r
 left-unwhisk refl s = (inv left-unit) ∙ (s ∙ left-unit)
 
 right-unwhisk :
-  {i : Level} {A : UU i} {x y z : A} {p q : Id x y}
+  {i : Level} {A : Set i} {x y z : A} {p q : Id x y}
   (r : Id y z) → Id (p ∙ r) (q ∙ r) → Id p q
 right-unwhisk refl s = (inv right-unit) ∙ (s ∙ right-unit)
 
 htpy-red :
-  {i : Level} {A : UU i} {f : A → A} (H : f ~ id) →
+  {i : Level} {A : Set i} {f : A → A} (H : f ~ id) →
   (x : A) → Id (H (f x)) (ap f (H x))
 htpy-red {_} {A} {f} H x =
   right-unwhisk (H x)
@@ -2415,7 +2406,7 @@ htpy-red {_} {A} {f} H x =
 {- Lemma 10.4.5 -}
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : UU l2} {f : A → B} (H : has-inverse f)
+  {l1 l2 : Level} {A : Set l1} {B : Set l2} {f : A → B} (H : has-inverse f)
   where
   
   inv-has-inverse : B → A
@@ -2456,7 +2447,7 @@ module _
 {- Theorem 10.4.6 -}
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : UU l2} {f : A → B}
+  {l1 l2 : Level} {A : Set l1} {B : Set l2} {f : A → B}
   where
   
   abstract
@@ -2467,7 +2458,7 @@ module _
           has-inverse-is-equiv)
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : UU l2} {f : A → B} (H : is-equiv f)
+  {l1 l2 : Level} {A : Set l1} {B : Set l2} {f : A → B} (H : is-equiv f)
   where
 
   issec-map-inv-is-equiv : (f ∘ map-inv-is-equiv H) ~ id
@@ -2483,7 +2474,7 @@ module _
     coherence-inv-has-inverse (has-inverse-is-equiv H)
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : UU l2} (e : A ≃ B)
+  {l1 l2 : Level} {A : Set l1} {B : Set l2} (e : A ≃ B)
   where
 
   map-inv-equiv : B → A
@@ -2503,7 +2494,7 @@ module _
     coherence-map-inv-is-equiv (is-equiv-map-equiv e)
 
 module _
-  {l : Level} {A : UU l}
+  {l : Level} {A : Set l}
   where
   
   contraction-is-prop-is-contr :
@@ -2517,7 +2508,7 @@ module _
     pr2 (is-prop-is-contr H x y) = contraction-is-prop-is-contr H
 
 module _
-  {l1 l2 : Level} {A : UU l1} (B : A → UU l2) (a : A)
+  {l1 l2 : Level} {A : Set l1} (B : A → Set l2) (a : A)
   where
 
   map-fib-pr1 : fib (pr1 {B = B}) a → B a
@@ -2557,7 +2548,7 @@ module _
   pr2 inv-equiv-fib-pr1 = is-equiv-map-inv-fib-pr1
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : A → UU l2} (C : is-contr A) (a : A)
+  {l1 l2 : Level} {A : Set l1} {B : A → Set l2} (C : is-contr A) (a : A)
   where
 
   map-inv-left-unit-law-Σ-is-contr : B a → Σ A B
@@ -2629,7 +2620,7 @@ module _
         ( is-contr-B)
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : A → UU l2}
+  {l1 l2 : Level} {A : Set l1} {B : A → Set l2}
   where
 
   abstract
@@ -2642,7 +2633,7 @@ module _
         ( is-contr-B (center is-contr-A))
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : UU l2} (C : is-contr A)
+  {l1 l2 : Level} {A : Set l1} {B : Set l2} (C : is-contr A)
   where
   
   left-unit-law-prod-is-contr : (A × B) ≃ B
@@ -2650,7 +2641,7 @@ module _
     left-unit-law-Σ-is-contr C (center C)
   
 module _
-  {l1 l2 l3 : Level} {A : UU l1} {B : A → UU l2} {C : A → UU l3}
+  {l1 l2 l3 : Level} {A : Set l1} {B : A → Set l2} {C : A → Set l3}
   (f : (x : A) → B x → C x)
   where
 
@@ -2701,28 +2692,28 @@ module _
      the induced map on total spaces is an equivalence if and only if each map
      in the family is an equivalence. -}
 
-  is-fiberwise-equiv : UU (l1 ⊔ l2 ⊔ l3)
+  is-fiberwise-equiv : Set (l1 ⊔ l2 ⊔ l3)
   is-fiberwise-equiv = (x : A) → is-equiv (f x)
 
 tot-htpy :
-  {i j k : Level} {A : UU i} {B : A → UU j} {C : A → UU k}
+  {i j k : Level} {A : Set i} {B : A → Set j} {C : A → Set k}
   {f g : (x : A) → B x → C x} → (H : (x : A) → f x ~ g x) → tot f ~ tot g
 tot-htpy H (pair x y) = eq-pair-Σ refl (H x y)
 
 tot-id :
-  {i j : Level} {A : UU i} (B : A → UU j) →
+  {i j : Level} {A : Set i} (B : A → Set j) →
   (tot (λ x (y : B x) → y)) ~ id
 tot-id B (pair x y) = refl
 
 tot-comp :
   {i j j' j'' : Level}
-  {A : UU i} {B : A → UU j} {B' : A → UU j'} {B'' : A → UU j''}
+  {A : Set i} {B : A → Set j} {B' : A → Set j'} {B'' : A → Set j''}
   (f : (x : A) → B x → B' x) (g : (x : A) → B' x → B'' x) →
   tot (λ x → (g x) ∘ (f x)) ~ ((tot g) ∘ (tot f))
 tot-comp f g (pair x y) = refl
 
 module _
-  {l1 l2 l3 : Level} {A : UU l1} {B : A → UU l2} {C : A → UU l3}
+  {l1 l2 l3 : Level} {A : Set l1} {B : A → Set l2} {C : A → Set l3}
   {f : (x : A) → B x → C x}
   where
 
@@ -2749,7 +2740,7 @@ module _
             ( is-contr-map-is-equiv is-equiv-tot-f (pair x z)))
 
 module _
-  {l1 l2 l3 : Level} {A : UU l1} {B : A → UU l2} {C : A → UU l3}
+  {l1 l2 l3 : Level} {A : Set l1} {B : A → Set l2} {C : A → Set l3}
   where
 
   equiv-tot : ((x : A) → B x ≃ C x) → (Σ A B) ≃ (Σ A C)
@@ -2758,7 +2749,7 @@ module _
     is-equiv-tot-is-fiberwise-equiv (λ x → is-equiv-map-equiv (e x))
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : A → UU l2} (a : A) (b : B a)
+  {l1 l2 : Level} {A : Set l1} {B : A → Set l2} (a : A) (b : B a)
   where
 
   -- The general form of the fundamental theorem of identity types
@@ -2781,7 +2772,7 @@ module _
         ( is-contr-total-path a)
 
 module _
-  {l1 l2 : Level} {A : UU l1} (B : UU l2)
+  {l1 l2 : Level} {A : Set l1} (B : Set l2)
   where
 
   abstract
@@ -2791,7 +2782,7 @@ module _
       ap r (contraction H (i x)) ∙ (isretr x)
 
 module _
-  {i j : Level} {A : UU i} {B : A → UU j} (a : A)
+  {i j : Level} {A : Set i} {B : A → Set j} (a : A)
   where
 
   abstract
@@ -2810,7 +2801,7 @@ module _
           ( is-contr-total-path a))
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : UU l2} (f : A → B)
+  {l1 l2 : Level} {A : Set l1} {B : Set l2} (f : A → B)
   where
 
   abstract
@@ -2826,7 +2817,7 @@ module _
       h = map-inv-is-equiv is-equiv-sec-f
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : A → UU l2} (a : A)
+  {l1 l2 : Level} {A : Set l1} {B : A → Set l2} (a : A)
   where
 
   abstract
@@ -2845,18 +2836,18 @@ module _
         is-fiberwise-equiv-i = fundamental-theorem-id-retr a i retr-i
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : UU l2}
+  {l1 l2 : Level} {A : Set l1} {B : Set l2}
   where
 
-  is-emb : (A → B) → UU (l1 ⊔ l2)
+  is-emb : (A → B) → Set (l1 ⊔ l2)
   is-emb f = (x y : A) → is-equiv (ap f {x} {y})
 
 _↪_ :
-  {l1 l2 : Level} → UU l1 → UU l2 → UU (l1 ⊔ l2)
+  {l1 l2 : Level} → Set l1 → Set l2 → Set (l1 ⊔ l2)
 A ↪ B = Σ (A → B) is-emb
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : UU l2}
+  {l1 l2 : Level} {A : Set l1} {B : Set l2}
   where
 
   map-emb : A ↪ B → A → B
@@ -2894,22 +2885,22 @@ module _
   pr2 (equiv-ap e x y) = is-emb-is-equiv (is-equiv-map-equiv e) x y
 
 is-prop :
-  {i : Level} (A : UU i) → UU i
+  {i : Level} (A : Set i) → Set i
 is-prop A = (x y : A) → is-contr (Id x y)
 
-UU-Prop :
-  (l : Level) → UU (lsuc l)
-UU-Prop l = Σ (UU l) is-prop
+Set-Prop :
+  (l : Level) → Set (lsuc l)
+Set-Prop l = Σ (Set l) is-prop
 
 module _
   {l : Level}
   where
 
-  type-Prop : UU-Prop l → UU l
+  type-Prop : Set-Prop l → Set l
   type-Prop P = pr1 P
 
   abstract
-    is-prop-type-Prop : (P : UU-Prop l) → is-prop (type-Prop P)
+    is-prop-type-Prop : (P : Set-Prop l) → is-prop (type-Prop P)
     is-prop-type-Prop P = pr2 P
 
 {- Example 12.1.2 -}
@@ -2918,7 +2909,7 @@ abstract
   is-prop-unit : is-prop unit
   is-prop-unit = is-prop-is-contr is-contr-unit
 
-unit-Prop : UU-Prop lzero
+unit-Prop : Set-Prop lzero
 pr1 unit-Prop = unit
 pr2 unit-Prop = is-prop-unit
 
@@ -2926,27 +2917,27 @@ abstract
   is-prop-empty : is-prop empty
   is-prop-empty ()
 
-empty-Prop : UU-Prop lzero
+empty-Prop : Set-Prop lzero
 pr1 empty-Prop = empty
 pr2 empty-Prop = is-prop-empty
 
 {- Proposition 12.1.3 -}
 
 module _
-  {l : Level} (A : UU l)
+  {l : Level} (A : Set l)
   where
   
-  all-elements-equal : UU l
+  all-elements-equal : Set l
   all-elements-equal = (x y : A) → Id x y
   
-  is-proof-irrelevant : UU l
+  is-proof-irrelevant : Set l
   is-proof-irrelevant = A → is-contr A
   
-  is-subterminal : UU l
+  is-subterminal : Set l
   is-subterminal = is-emb (terminal-map {A = A})
 
 module _
-  {l : Level} {A : UU l}
+  {l : Level} {A : Set l}
   where
   
   abstract
@@ -2983,7 +2974,7 @@ module _
 
   abstract
     is-emb-is-emb :
-      {l2 : Level} {B : UU l2} {f : A → B} → (A → is-emb f) → is-emb f
+      {l2 : Level} {B : Set l2} {f : A → B} → (A → is-emb f) → is-emb f
     is-emb-is-emb H x y = H x x y
 
   abstract
@@ -3025,7 +3016,7 @@ module _
 {- Proposition 12.1.4 -}
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : UU l2}
+  {l1 l2 : Level} {A : Set l1} {B : Set l2}
   where
 
   abstract
@@ -3048,33 +3039,33 @@ module _
 {- Definition 12.2.1 -}
 
 module _
-  {l1 l2 : Level} {A : UU l1} (B : A → UU l2)
+  {l1 l2 : Level} {A : Set l1} (B : A → Set l2)
   where
 
-  is-subtype : UU (l1 ⊔ l2)
+  is-subtype : Set (l1 ⊔ l2)
   is-subtype = (x : A) → is-prop (B x)
 
-  is-property : UU (l1 ⊔ l2)
+  is-property : Set (l1 ⊔ l2)
   is-property = is-subtype
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : UU l2}
+  {l1 l2 : Level} {A : Set l1} {B : Set l2}
   where
 
-  is-prop-map : (A → B) → UU (l1 ⊔ l2)
+  is-prop-map : (A → B) → Set (l1 ⊔ l2)
   is-prop-map f = (b : B) → is-prop (fib f b)
 
 module _
-  {l1 l2 : Level} {A : UU l1}
+  {l1 l2 : Level} {A : Set l1}
   where
 
-  total-subtype : (A → UU-Prop l2) → UU (l1 ⊔ l2)
+  total-subtype : (A → Set-Prop l2) → Set (l1 ⊔ l2)
   total-subtype P = Σ A (λ x → pr1 (P x))
 
 {- Lemma 12.2.2 -}
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : UU l2}
+  {l1 l2 : Level} {A : Set l1} {B : Set l2}
   where
 
   abstract
@@ -3087,7 +3078,7 @@ module _
     is-prop-equiv (pair f is-equiv-f) = is-prop-is-equiv is-equiv-f
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : UU l2}
+  {l1 l2 : Level} {A : Set l1} {B : Set l2}
   where
 
   abstract
@@ -3102,7 +3093,7 @@ module _
 {- Theorem 12.2.3 -}
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : UU l2} {f : A → B}
+  {l1 l2 : Level} {A : Set l1} {B : Set l2} {f : A → B}
   where
 
   abstract
@@ -3130,19 +3121,19 @@ module _
               ( is-equiv-inv (f x) (f y)))
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : UU l2}
+  {l1 l2 : Level} {A : Set l1} {B : Set l2}
   where
 
   abstract
     is-prop-map-emb : (f : B ↪ A) → is-prop-map (map-emb f)
     is-prop-map-emb f = is-prop-map-is-emb (is-emb-map-emb f)
 
-  fib-emb-Prop : A ↪ B → B → UU-Prop (l1 ⊔ l2)
+  fib-emb-Prop : A ↪ B → B → Set-Prop (l1 ⊔ l2)
   pr1 (fib-emb-Prop f y) = fib (map-emb f) y
   pr2 (fib-emb-Prop f y) = is-prop-map-is-emb (is-emb-map-emb f) y
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : A → UU l2}
+  {l1 l2 : Level} {A : Set l1} {B : A → Set l2}
   where
 
   abstract
@@ -3166,7 +3157,7 @@ module _
 {- Remark 12.2.5 -}
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : A → UU l2}
+  {l1 l2 : Level} {A : Set l1} {B : A → Set l2}
   where
 
 {- The following is a general construction that will help us show that
@@ -3176,7 +3167,7 @@ module _
 
   abstract
     is-contr-total-Eq-substructure :
-      {l3 : Level} {P : A → UU l3} →
+      {l3 : Level} {P : A → Set l3} →
       is-contr (Σ A B) → (is-subtype P) → (a : A) (b : B a) (p : P a) →
       is-contr (Σ (Σ A P) (λ t → B (pr1 t)))
     is-contr-total-Eq-substructure {l3} {P}
@@ -3192,10 +3183,10 @@ module _
           ( is-proof-irrelevant-is-prop (is-subtype-P a) p))
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : A → UU l2} (H : is-subtype B)
+  {l1 l2 : Level} {A : Set l1} {B : A → Set l2} (H : is-subtype B)
   where
 
-  Eq-total-subtype : (Σ A B) → (Σ A B) → UU l1
+  Eq-total-subtype : (Σ A B) → (Σ A B) → Set l1
   Eq-total-subtype p p' = Id (pr1 p) (pr1 p') 
 
   refl-Eq-total-subtype : (p : Σ A B) → Eq-total-subtype p p
@@ -3230,34 +3221,34 @@ module _
     map-inv-is-equiv (is-equiv-Eq-eq-total-subtype p p')
       
 is-set :
-  {i : Level} → UU i → UU i
+  {i : Level} → Set i → Set i
 is-set A = (x y : A) → is-prop (Id x y)
 
-UU-Set :
-  (i : Level) → UU (lsuc i)
-UU-Set i = Σ (UU i) is-set
+Set-Set :
+  (i : Level) → Set (lsuc i)
+Set-Set i = Σ (Set i) is-set
 
 module _
-  {l : Level} (X : UU-Set l)
+  {l : Level} (X : Set-Set l)
   where
 
-  type-Set : UU l
+  type-Set : Set l
   type-Set = pr1 X
 
   abstract
     is-set-type-Set : is-set type-Set
     is-set-type-Set = pr2 X
 
-  Id-Prop : (x y : type-Set) → UU-Prop l
+  Id-Prop : (x y : type-Set) → Set-Prop l
   pr1 (Id-Prop x y) = Id x y
   pr2 (Id-Prop x y) = is-set-type-Set x y
 
 axiom-K :
-  {i : Level} → UU i → UU i
+  {i : Level} → Set i → Set i
 axiom-K A = (x : A) (p : Id x x) → Id refl p
 
 module _
-  {l : Level} {A : UU l}
+  {l : Level} {A : Set l}
   where
 
   abstract
@@ -3276,7 +3267,7 @@ module _
       ( contraction (is-proof-irrelevant-is-prop (H x x) refl) p)
 
 module _
-  {l1 l2 : Level} {A : UU l1} (R : A → A → UU l2)
+  {l1 l2 : Level} {A : Set l1} (R : A → A → Set l2)
   (p : (x y : A) → is-prop (R x y)) (ρ : (x : A) → R x x)
   (i : (x y : A) → R x y → Id x y)
   where
@@ -3311,12 +3302,12 @@ abstract
       refl-Eq-ℕ
       eq-Eq-ℕ
 
-ℕ-Set : UU-Set lzero
+ℕ-Set : Set-Set lzero
 pr1 ℕ-Set = ℕ
 pr2 ℕ-Set = is-set-ℕ
 
 module _
-  {l : Level} {A : UU l}
+  {l : Level} {A : Set l}
   where
 
   {- Next, we show that types with decidable equality are sets. To see this, we 
@@ -3326,12 +3317,12 @@ module _
      ((x = y) + ¬(x = y)) that returns unit on the left and empty on the right.   -}
    
   Eq-has-decidable-equality' :
-    (x y : A) → is-decidable (Id x y) → UU lzero
+    (x y : A) → is-decidable (Id x y) → Set lzero
   Eq-has-decidable-equality' x y (inl p) = unit
   Eq-has-decidable-equality' x y (inr f) = empty
 
   Eq-has-decidable-equality :
-    (d : has-decidable-equality A) → A → A → UU lzero
+    (d : has-decidable-equality A) → A → A → Set lzero
   Eq-has-decidable-equality d x y = Eq-has-decidable-equality' x y (d x y)
 
   abstract
@@ -3387,8 +3378,8 @@ module _
         ( λ x y → eq-Eq-has-decidable-equality d)
 
 abstract
-  is-emb-is-injective' : {l1 l2 : Level} {A : UU l1} (is-set-A : is-set A)
-    {B : UU l2} (is-set-B : is-set B) (f : A → B) →
+  is-emb-is-injective' : {l1 l2 : Level} {A : Set l1} (is-set-A : is-set A)
+    {B : Set l2} (is-set-B : is-set B) (f : A → B) →
     is-injective f → is-emb f
   is-emb-is-injective' is-set-A is-set-B f is-injective-f x y =
     is-equiv-is-prop
@@ -3397,7 +3388,7 @@ abstract
       ( is-injective-f)
 
   is-set-is-injective :
-    {l1 l2 : Level} {A : UU l1} {B : UU l2} {f : A → B} →
+    {l1 l2 : Level} {A : Set l1} {B : Set l2} {f : A → B} →
     is-set B → is-injective f → is-set A
   is-set-is-injective {f = f} H I =
     is-set-prop-in-id
@@ -3407,20 +3398,20 @@ abstract
       ( λ x y → I)
 
   is-emb-is-injective :
-    {l1 l2 : Level} {A : UU l1} {B : UU l2} {f : A → B} →
+    {l1 l2 : Level} {A : Set l1} {B : Set l2} {f : A → B} →
     is-set B → is-injective f → is-emb f
   is-emb-is-injective {f = f} H I =
     is-emb-is-injective' (is-set-is-injective H I) H f I
 
   is-prop-map-is-injective :
-    {l1 l2 : Level} {A : UU l1} {B : UU l2} {f : A → B} →
+    {l1 l2 : Level} {A : Set l1} {B : Set l2} {f : A → B} →
     is-set B → is-injective f → is-prop-map f
   is-prop-map-is-injective {f = f} H I =
     is-prop-map-is-emb (is-emb-is-injective H I)
     
 Eq-coprod :
-  {l1 l2 : Level} (A : UU l1) (B : UU l2) →
-  coprod A B → coprod A B → UU (l1 ⊔ l2)
+  {l1 l2 : Level} (A : Set l1) (B : Set l2) →
+  coprod A B → coprod A B → Set (l1 ⊔ l2)
 Eq-coprod {l1} {l2} A B (inl x) (inl y) = raise (l1 ⊔ l2) (Id x y)
 Eq-coprod {l1} {l2} A B (inl x) (inr y) = raise-empty (l1 ⊔ l2)
 Eq-coprod {l1} {l2} A B (inr x) (inl y) = raise-empty (l1 ⊔ l2)
@@ -3429,18 +3420,18 @@ Eq-coprod {l1} {l2} A B (inr x) (inr y) = raise (l1 ⊔ l2) (Id x y)
 -- Exercise 8.7 (a)
 
 reflexive-Eq-coprod :
-  {l1 l2 : Level} (A : UU l1) (B : UU l2) →
+  {l1 l2 : Level} (A : Set l1) (B : Set l2) →
   (t : coprod A B) → Eq-coprod A B t t
 reflexive-Eq-coprod {l1} {l2} A B (inl x) = map-raise refl
 reflexive-Eq-coprod {l1} {l2} A B (inr x) = map-raise refl
 
 Eq-eq-coprod :
-  {l1 l2 : Level} (A : UU l1) (B : UU l2) →
+  {l1 l2 : Level} (A : Set l1) (B : Set l2) →
   (s t : coprod A B) → Id s t → Eq-coprod A B s t
 Eq-eq-coprod A B s .s refl = reflexive-Eq-coprod A B s
 
 eq-Eq-coprod :
-  {l1 l2 : Level} (A : UU l1) (B : UU l2) (s t : coprod A B) →
+  {l1 l2 : Level} (A : Set l1) (B : Set l2) (s t : coprod A B) →
   Eq-coprod A B s t → Id s t
 eq-Eq-coprod A B (inl x) (inl x') = ap inl ∘ map-inv-raise
 eq-Eq-coprod A B (inl x) (inr y') = ex-falso ∘ map-inv-raise
@@ -3448,23 +3439,23 @@ eq-Eq-coprod A B (inr y) (inl x') = ex-falso ∘ map-inv-raise
 eq-Eq-coprod A B (inr y) (inr y') = ap inr ∘ map-inv-raise
 
 is-injective-inl :
-  {l1 l2 : Level} {X : UU l1} {Y : UU l2} → is-injective (inl {A = X} {B = Y})
+  {l1 l2 : Level} {X : Set l1} {Y : Set l2} → is-injective (inl {A = X} {B = Y})
 is-injective-inl {l1} {l2} {X} {Y} {x} {y} p =
   map-inv-raise (Eq-eq-coprod X Y (inl x) (inl y) p)
 
 is-injective-inr :
-  {l1 l2 : Level} {X : UU l1} {Y : UU l2} → is-injective (inr {A = X} {B = Y})
+  {l1 l2 : Level} {X : Set l1} {Y : Set l2} → is-injective (inr {A = X} {B = Y})
 is-injective-inr {l1} {l2} {X} {Y} {x} {y} p =
   map-inv-raise (Eq-eq-coprod X Y (inr x) (inr y) p)
 
 neq-inl-inr :
-  {l1 l2 : Level} {A : UU l1} {B : UU l2} (x : A) (y : B) →
+  {l1 l2 : Level} {A : Set l1} {B : Set l2} (x : A) (y : B) →
   ¬ (Id (inl x) (inr y))
 neq-inl-inr {l1} {l2} {A} {B} x y =
   map-inv-raise ∘ Eq-eq-coprod A B (inl x) (inr y)
 
 module _
-  {l1 l2 : Level} (A : UU l1) (B : UU l2)
+  {l1 l2 : Level} (A : Set l1) (B : Set l2)
   where
   
   id-map-coprod : (map-coprod (id {A = A}) (id {A = B})) ~ id
@@ -3473,8 +3464,8 @@ module _
 
 module _
   {l1 l2 l1' l2' l1'' l2'' : Level}
-  {A : UU l1} {B : UU l2} {A' : UU l1'} {B' : UU l2'}
-  {A'' : UU l1''} {B'' : UU l2''}
+  {A : Set l1} {B : Set l2} {A' : Set l1'} {B' : Set l2'}
+  {A'' : Set l1''} {B'' : Set l2''}
   (f : A → A') (f' : A' → A'') (g : B → B') (g' : B' → B'')
   where
   
@@ -3484,7 +3475,7 @@ module _
   compose-map-coprod (inr y) = refl
 
 module _
-  {l1 l2 l1' l2' : Level} {A : UU l1} {B : UU l2} {A' : UU l1'} {B' : UU l2'}
+  {l1 l2 l1' l2' : Level} {A : Set l1} {B : Set l2} {A' : Set l1'} {B' : Set l2'}
   {f f' : A → A'} (H : f ~ f') {g g' : B → B'} (K : g ~ g')
   where
   
@@ -3493,7 +3484,7 @@ module _
   htpy-map-coprod (inr y) = ap inr (K y)
 
 module _
-  {l1 l2 l1' l2' : Level} {A : UU l1} {B : UU l2} {A' : UU l1'} {B' : UU l2'}
+  {l1 l2 l1' l2' : Level} {A : Set l1} {B : Set l2} {A' : Set l1'} {B' : Set l2'}
   {f : A → A'} {g : B → B'}
   where
 
@@ -3527,14 +3518,14 @@ module _
       ( id-map-coprod A B)
   
 equiv-coprod :
-  {l1 l2 l1' l2' : Level} {A : UU l1} {B : UU l2} {A' : UU l1'} {B' : UU l2'} →
+  {l1 l2 l1' l2' : Level} {A : Set l1} {B : Set l2} {A' : Set l1'} {B' : Set l2'} →
   (A ≃ A') → (B ≃ B') → ((coprod A B) ≃ (coprod A' B'))
 pr1 (equiv-coprod (pair e is-equiv-e) (pair f is-equiv-f)) = map-coprod e f
 pr2 (equiv-coprod (pair e is-equiv-e) (pair f is-equiv-f)) =
   is-equiv-map-coprod is-equiv-e is-equiv-f
 
 module _
-  {l1 l2 : Level} (A : UU l1) (B : UU l2)
+  {l1 l2 : Level} (A : Set l1) (B : Set l2)
   where
 
   -- The identity types of coproducts
@@ -3616,7 +3607,7 @@ module _
   pr2 (equiv-Eq-eq-coprod x y) = is-equiv-Eq-eq-coprod x y
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : UU l2}
+  {l1 l2 : Level} {A : Set l1} {B : Set l2}
   where
 
   -- It should be possible to make these definitions abstract,
@@ -3667,7 +3658,7 @@ module _
     map-equiv (compute-eq-coprod-inr-inr y y')
 
 module _
-  {l1 l2 : Level} (A : UU l1) (B : UU l2)
+  {l1 l2 : Level} (A : Set l1) (B : Set l2)
   where
   
   abstract
@@ -3698,7 +3689,7 @@ module _
   pr1 emb-inr = inr
   pr2 emb-inr = is-emb-inr
 
-Fin : ℕ → UU lzero
+Fin : ℕ → Set lzero
 Fin zero-ℕ = empty
 Fin (succ-ℕ k) = coprod (Fin k) unit
 
@@ -3709,20 +3700,20 @@ inl-Fin k = inl
 neg-one-Fin : {k : ℕ} → Fin (succ-ℕ k)
 neg-one-Fin {k} = inr star
 
-is-neg-one-Fin : {k : ℕ} → Fin k → UU lzero
+is-neg-one-Fin : {k : ℕ} → Fin k → Set lzero
 is-neg-one-Fin {succ-ℕ k} x = Id x neg-one-Fin
 
 zero-Fin : {k : ℕ} → Fin (succ-ℕ k)
 zero-Fin {zero-ℕ} = inr star
 zero-Fin {succ-ℕ k} = inl zero-Fin
 
-is-zero-Fin : {k : ℕ} → Fin k → UU lzero
+is-zero-Fin : {k : ℕ} → Fin k → Set lzero
 is-zero-Fin {succ-ℕ k} x = Id x zero-Fin
 
-is-zero-Fin' : {k : ℕ} → Fin k → UU lzero
+is-zero-Fin' : {k : ℕ} → Fin k → Set lzero
 is-zero-Fin' {succ-ℕ k} x = Id zero-Fin x
 
-is-nonzero-Fin : {k : ℕ} → Fin k → UU lzero
+is-nonzero-Fin : {k : ℕ} → Fin k → Set lzero
 is-nonzero-Fin {succ-ℕ k} x = ¬ (is-zero-Fin x)
 
 skip-zero-Fin : {k : ℕ} → Fin k → Fin (succ-ℕ k)
@@ -3749,7 +3740,7 @@ mod-two-ℕ = mod-succ-ℕ one-ℕ
 one-Fin : {k : ℕ} → Fin (succ-ℕ k)
 one-Fin {k} = mod-succ-ℕ k one-ℕ
 
-is-one-Fin : {k : ℕ} → Fin k → UU lzero
+is-one-Fin : {k : ℕ} → Fin k → Set lzero
 is-one-Fin {succ-ℕ k} x = Id x one-Fin
 
 is-zero-or-one-Fin-two-ℕ :
@@ -3762,7 +3753,7 @@ is-one-nat-one-Fin :
 is-one-nat-one-Fin zero-ℕ = refl
 is-one-nat-one-Fin (succ-ℕ k) = is-one-nat-one-Fin k
 
-Eq-Fin : (k : ℕ) → Fin k → Fin k → UU lzero
+Eq-Fin : (k : ℕ) → Fin k → Fin k → Set lzero
 Eq-Fin (succ-ℕ k) (inl x) (inl y) = Eq-Fin k x y
 Eq-Fin (succ-ℕ k) (inl x) (inr y) = empty
 Eq-Fin (succ-ℕ k) (inr x) (inl y) = empty
@@ -3811,12 +3802,12 @@ is-decidable-is-one-Fin {succ-ℕ k} x =
 is-set-empty : is-set empty
 is-set-empty ()
 
-empty-Set : UU-Set lzero
+empty-Set : Set-Set lzero
 pr1 empty-Set = empty
 pr2 empty-Set = is-set-empty
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : UU l2}
+  {l1 l2 : Level} {A : Set l1} {B : Set l2}
   where
 
   abstract
@@ -3832,7 +3823,7 @@ module _
 -- Exercise 12.3 (b)
 
 module _
-  {l1 l2 : Level} {P : UU l1} {Q : UU l2}
+  {l1 l2 : Level} {P : Set l1} {Q : Set l2}
   where
 
   abstract
@@ -3856,7 +3847,7 @@ module _
           ( eq-is-prop' is-prop-P)
           ( eq-is-prop' is-prop-Q))
 
-data 𝕋 : UU lzero where
+data 𝕋 : Set lzero where
   neg-two-𝕋 : 𝕋
   succ-𝕋 : 𝕋 → 𝕋
 
@@ -3883,7 +3874,7 @@ truncation-level-minus-two-ℕ zero-ℕ = neg-two-𝕋
 truncation-level-minus-two-ℕ (succ-ℕ k) =
   succ-𝕋 (truncation-level-minus-two-ℕ k)
 
-is-trunc : {i : Level} (k : 𝕋) → UU i → UU i
+is-trunc : {i : Level} (k : 𝕋) → Set i → Set i
 is-trunc neg-two-𝕋 A = is-contr A
 is-trunc (succ-𝕋 k) A = (x y : A) → is-trunc k (Id x y)
 
@@ -3891,14 +3882,14 @@ module _
   {l1 l2 : Level} (k : 𝕋)
   where
 
-  is-trunc-map : {A : UU l1} {B : UU l2} → (A → B) → UU (l1 ⊔ l2)
+  is-trunc-map : {A : Set l1} {B : Set l2} → (A → B) → Set (l1 ⊔ l2)
   is-trunc-map f = (y : _) → is-trunc k (fib f y)
   
-  trunc-map : (A : UU l1) (B : UU l2) → UU (l1 ⊔ l2)
+  trunc-map : (A : Set l1) (B : Set l2) → Set (l1 ⊔ l2)
   trunc-map A B = Σ (A → B) is-trunc-map
 
 module _
-  {l1 l2 : Level} {k : 𝕋} {A : UU l1} {B : UU l2}
+  {l1 l2 : Level} {k : 𝕋} {A : Set l1} {B : Set l2}
   where
 
   map-trunc-map : trunc-map k A B → A → B
@@ -3911,56 +3902,56 @@ module _
 
 -- We introduce some notation for the special case of 1-types --
 
-is-1-type : {l : Level} → UU l → UU l
+is-1-type : {l : Level} → Set l → Set l
 is-1-type = is-trunc one-𝕋
 
-UU-1-Type : (l : Level) → UU (lsuc l)
-UU-1-Type l = Σ (UU l) is-1-type
+Set-1-Type : (l : Level) → Set (lsuc l)
+Set-1-Type l = Σ (Set l) is-1-type
 
-type-1-Type : {l : Level} → UU-1-Type l → UU l
+type-1-Type : {l : Level} → Set-1-Type l → Set l
 type-1-Type = pr1
 
 abstract
   is-1-type-type-1-Type :
-    {l : Level} (A : UU-1-Type l) → is-1-type (type-1-Type A)
+    {l : Level} (A : Set-1-Type l) → is-1-type (type-1-Type A)
   is-1-type-type-1-Type = pr2
 
-Id-Set : {l : Level} (X : UU-1-Type l) (x y : type-1-Type X) → UU-Set l
+Id-Set : {l : Level} (X : Set-1-Type l) (x y : type-1-Type X) → Set-Set l
 pr1 (Id-Set X x y) = Id x y
 pr2 (Id-Set X x y) = is-1-type-type-1-Type X x y
 
 -- We introduce some notation for the special case of 2-types --
 
-is-2-type : {l : Level} → UU l → UU l
+is-2-type : {l : Level} → Set l → Set l
 is-2-type = is-trunc (succ-𝕋 one-𝕋)
 
-UU-2-Type : (l : Level) → UU (lsuc l)
-UU-2-Type l = Σ (UU l) is-2-type
+Set-2-Type : (l : Level) → Set (lsuc l)
+Set-2-Type l = Σ (Set l) is-2-type
 
 type-2-Type :
-  {l : Level} → UU-2-Type l → UU l
+  {l : Level} → Set-2-Type l → Set l
 type-2-Type = pr1
 
 abstract
   is-2-type-type-2-Type :
-    {l : Level} (A : UU-2-Type l) → is-2-type (type-2-Type A)
+    {l : Level} (A : Set-2-Type l) → is-2-type (type-2-Type A)
   is-2-type-type-2-Type = pr2
 
 -- We introduce some notation for the universe of k-truncated types --
 
-UU-Truncated-Type : 𝕋 → (l : Level) → UU (lsuc l)
-UU-Truncated-Type k l = Σ (UU l) (is-trunc k)
+Set-Truncated-Type : 𝕋 → (l : Level) → Set (lsuc l)
+Set-Truncated-Type k l = Σ (Set l) (is-trunc k)
 
 module _
   {k : 𝕋} {l : Level}
   where
   
-  type-Truncated-Type : UU-Truncated-Type k l → UU l
+  type-Truncated-Type : Set-Truncated-Type k l → Set l
   type-Truncated-Type = pr1
 
   abstract
     is-trunc-type-Truncated-Type :
-      (A : UU-Truncated-Type k l) → is-trunc k (type-Truncated-Type A)
+      (A : Set-Truncated-Type k l) → is-trunc k (type-Truncated-Type A)
     is-trunc-type-Truncated-Type = pr2
 
 {- Remark 12.4.2
@@ -3974,7 +3965,7 @@ differently. -}
 
 abstract
   is-trunc-succ-is-trunc :
-    (k : 𝕋) {i : Level} {A : UU i} →
+    (k : 𝕋) {i : Level} {A : Set i} →
     is-trunc k A → is-trunc (succ-𝕋 k) A
   is-trunc-succ-is-trunc neg-two-𝕋 H =
     is-prop-is-contr H
@@ -3983,49 +3974,49 @@ abstract
 
 abstract
   is-trunc-map-succ-is-trunc-map :
-    {l1 l2 : Level} (k : 𝕋) {A : UU l1} {B : UU l2}
+    {l1 l2 : Level} (k : 𝕋) {A : Set l1} {B : Set l2}
     (f : A → B) → is-trunc-map k f → is-trunc-map (succ-𝕋 k) f
   is-trunc-map-succ-is-trunc-map k f is-trunc-f b =
     is-trunc-succ-is-trunc k (is-trunc-f b)
 
 truncated-type-succ-Truncated-Type :
-  (k : 𝕋) {l : Level} → UU-Truncated-Type k l → UU-Truncated-Type (succ-𝕋 k) l
+  (k : 𝕋) {l : Level} → Set-Truncated-Type k l → Set-Truncated-Type (succ-𝕋 k) l
 pr1 (truncated-type-succ-Truncated-Type k A) = type-Truncated-Type A
 pr2 (truncated-type-succ-Truncated-Type k A) =
   is-trunc-succ-is-trunc k (is-trunc-type-Truncated-Type A)
 
 abstract
   is-set-is-prop :
-    {l : Level} {P : UU l} → is-prop P → is-set P
+    {l : Level} {P : Set l} → is-prop P → is-set P
   is-set-is-prop = is-trunc-succ-is-trunc neg-one-𝕋
 
 set-Prop :
-  {l : Level} → UU-Prop l → UU-Set l
+  {l : Level} → Set-Prop l → Set-Set l
 set-Prop P = truncated-type-succ-Truncated-Type neg-one-𝕋 P
 
 1-type-Set :
-  {l : Level} → UU-Set l → UU-1-Type l
+  {l : Level} → Set-Set l → Set-1-Type l
 1-type-Set A = truncated-type-succ-Truncated-Type zero-𝕋 A
 
 -- We conclude that a contractible type is k-truncated for any k
 
 abstract
   is-trunc-is-contr :
-    {l : Level} (k : 𝕋) {A : UU l} → is-contr A → is-trunc k A
+    {l : Level} (k : 𝕋) {A : Set l} → is-contr A → is-trunc k A
   is-trunc-is-contr neg-two-𝕋 is-contr-A = is-contr-A
   is-trunc-is-contr (succ-𝕋 k) is-contr-A =
     is-trunc-succ-is-trunc k (is-trunc-is-contr k is-contr-A)
 
 abstract
   is-set-is-contr :
-    {l : Level} {A : UU l} → is-contr A → is-set A
+    {l : Level} {A : Set l} → is-contr A → is-set A
   is-set-is-contr = is-trunc-is-contr zero-𝕋
 
 -- We also conclude that a proposition is (k+1)-truncated for any k
 
 abstract
   is-trunc-is-prop :
-    { l : Level} (k : 𝕋) {A : UU l} → is-prop A → is-trunc (succ-𝕋 k) A
+    { l : Level} (k : 𝕋) {A : Set l} → is-prop A → is-trunc (succ-𝕋 k) A
   is-trunc-is-prop k is-prop-A x y = is-trunc-is-contr k (is-prop-A x y)
 
 abstract
@@ -4034,13 +4025,13 @@ abstract
 
 abstract
   is-trunc-is-empty :
-    {l : Level} (k : 𝕋) {A : UU l} → is-empty A → is-trunc (succ-𝕋 k) A
+    {l : Level} (k : 𝕋) {A : Set l} → is-empty A → is-trunc (succ-𝕋 k) A
   is-trunc-is-empty k f = is-trunc-is-prop k (λ x → ex-falso (f x))
 
 -- Corollary 12.4.4
 
 abstract
-  is-trunc-Id : {l : Level} (k : 𝕋) {A : UU l} →
+  is-trunc-Id : {l : Level} (k : 𝕋) {A : Set l} →
     is-trunc k A → (x y : A) → is-trunc k (Id x y)
   is-trunc-Id neg-two-𝕋 is-trunc-A = is-prop-is-contr is-trunc-A
   is-trunc-Id (succ-𝕋 k) is-trunc-A x y =
@@ -4052,7 +4043,7 @@ abstract
 
 abstract
   is-trunc-is-equiv :
-    {i j : Level} (k : 𝕋) {A : UU i} (B : UU j) (f : A → B) → is-equiv f →
+    {i j : Level} (k : 𝕋) {A : Set i} (B : Set j) (f : A → B) → is-equiv f →
     is-trunc k B → is-trunc k A
   is-trunc-is-equiv neg-two-𝕋 B f is-equiv-f H =
     is-contr-is-equiv B f is-equiv-f H
@@ -4062,26 +4053,26 @@ abstract
 
 abstract
   is-set-is-equiv :
-    {i j : Level} {A : UU i} (B : UU j) (f : A → B) → is-equiv f →
+    {i j : Level} {A : Set i} (B : Set j) (f : A → B) → is-equiv f →
     is-set B → is-set A
   is-set-is-equiv = is-trunc-is-equiv zero-𝕋
 
 abstract
   is-trunc-equiv :
-    {i j : Level} (k : 𝕋) {A : UU i} (B : UU  j) (e : A ≃ B) →
+    {i j : Level} (k : 𝕋) {A : Set i} (B : Set  j) (e : A ≃ B) →
     is-trunc k B → is-trunc k A
   is-trunc-equiv k B (pair f is-equiv-f) =
     is-trunc-is-equiv k B f is-equiv-f
 
 abstract
   is-set-equiv :
-    {i j : Level} {A : UU i} (B : UU j) (e : A ≃ B) →
+    {i j : Level} {A : Set i} (B : Set j) (e : A ≃ B) →
     is-set B → is-set A
   is-set-equiv = is-trunc-equiv zero-𝕋
 
 abstract
   is-trunc-is-equiv' :
-    {i j : Level} (k : 𝕋) (A : UU i) {B : UU j} (f : A → B) →
+    {i j : Level} (k : 𝕋) (A : Set i) {B : Set j} (f : A → B) →
     is-equiv f → is-trunc k A → is-trunc k B
   is-trunc-is-equiv' k A  f is-equiv-f is-trunc-A =
     is-trunc-is-equiv k A
@@ -4091,20 +4082,20 @@ abstract
 
 abstract
   is-set-is-equiv' :
-    {i j : Level} (A : UU i) {B : UU j} (f : A → B) → is-equiv f →
+    {i j : Level} (A : Set i) {B : Set j} (f : A → B) → is-equiv f →
     is-set A → is-set B
   is-set-is-equiv' = is-trunc-is-equiv' zero-𝕋
 
 abstract
   is-trunc-equiv' :
-    {i j : Level} (k : 𝕋) (A : UU i) {B : UU j} (e : A ≃ B) →
+    {i j : Level} (k : 𝕋) (A : Set i) {B : Set j} (e : A ≃ B) →
     is-trunc k A → is-trunc k B
   is-trunc-equiv' k A (pair f is-equiv-f) =
     is-trunc-is-equiv' k A f is-equiv-f
 
 abstract
   is-set-equiv' :
-    {i j : Level} (A : UU i) {B : UU j} (e : A ≃ B) →
+    {i j : Level} (A : Set i) {B : Set j} (e : A ≃ B) →
     is-set A → is-set B
   is-set-equiv' = is-trunc-equiv' zero-𝕋
 
@@ -4114,20 +4105,20 @@ abstract
 
 abstract
   is-trunc-is-emb :
-    {i j : Level} (k : 𝕋) {A : UU i} {B : UU j} (f : A → B) →
+    {i j : Level} (k : 𝕋) {A : Set i} {B : Set j} (f : A → B) →
     is-emb f → is-trunc (succ-𝕋 k) B → is-trunc (succ-𝕋 k) A
   is-trunc-is-emb k f Ef H x y =
     is-trunc-is-equiv k (Id (f x) (f y)) (ap f {x} {y}) (Ef x y) (H (f x) (f y))
 
 abstract
   is-trunc-emb :
-    {i j : Level} (k : 𝕋) {A : UU i} {B : UU j} (f : A ↪ B) →
+    {i j : Level} (k : 𝕋) {A : Set i} {B : Set j} (f : A ↪ B) →
     is-trunc (succ-𝕋 k) B → is-trunc (succ-𝕋 k) A
   is-trunc-emb k f = is-trunc-is-emb k (map-emb f) (is-emb-map-emb f)
 
 
 module _
-  {l1 l2 : Level} {A : UU l1} {B : UU l2} (f : A → B) {b : B}
+  {l1 l2 : Level} {A : Set l1} {B : Set l2} (f : A → B) {b : B}
   where
 
   -- Characterizing the identity type of a fiber as the fiber of the action on
@@ -4177,7 +4168,7 @@ module _
           ( is-fiberwise-equiv-fib-ap-eq-fib-fiberwise s t))
 
 module _
-  {l1 l2 : Level} {A : UU l1} (B : A → UU l2) {x y : A}
+  {l1 l2 : Level} {A : Set l1} (B : A → Set l2) {x y : A}
   where
 
   {- We show that tr B p is an equivalence, for an path p and any type family B.
@@ -4205,7 +4196,7 @@ module _
   pr2 (equiv-tr p) = is-equiv-tr p
   
 module _
-  {l1 l2 : Level} {A : UU l1} {B : UU l2} (f : A → B) (x y : A)
+  {l1 l2 : Level} {A : Set l1} {B : Set l2} (f : A → B) (x y : A)
   where
   
   eq-fib-fib-ap :
@@ -4226,7 +4217,7 @@ module _
         ( is-equiv-tr (fib (ap f)) right-unit)
         
 module _
-  {l1 l2 : Level} (k : 𝕋) {A : UU l1} {B : UU l2} (f : A → B)
+  {l1 l2 : Level} (k : 𝕋) {A : Set l1} {B : Set l2} (f : A → B)
   where
   
   abstract
@@ -4253,27 +4244,27 @@ module _
 
 abstract
   is-trunc-pr1-is-trunc-fam :
-    {i j : Level} (k : 𝕋) {A : UU i} (B : A → UU j) →
+    {i j : Level} (k : 𝕋) {A : Set i} (B : A → Set j) →
     ((x : A) → is-trunc k (B x)) → is-trunc-map k (pr1 {i} {j} {A} {B})
   is-trunc-pr1-is-trunc-fam k B H x =
     is-trunc-equiv k (B x) (equiv-fib-pr1 B x) (H x)
 
 trunc-pr1 :
-  {i j : Level} (k : 𝕋) {A : UU i} (B : A → UU-Truncated-Type k j) →
+  {i j : Level} (k : 𝕋) {A : Set i} (B : A → Set-Truncated-Type k j) →
   trunc-map k (Σ A (λ x → pr1 (B x))) A
 pr1 (trunc-pr1 k B) = pr1
 pr2 (trunc-pr1 k B) =
   is-trunc-pr1-is-trunc-fam k (λ x → pr1 (B x)) (λ x → pr2 (B x))
 
 abstract
-  is-trunc-fam-is-trunc-pr1 : {i j : Level} (k : 𝕋) {A : UU i} (B : A → UU j) →
+  is-trunc-fam-is-trunc-pr1 : {i j : Level} (k : 𝕋) {A : Set i} (B : A → Set j) →
     is-trunc-map k (pr1 {i} {j} {A} {B}) → ((x : A) → is-trunc k (B x))
   is-trunc-fam-is-trunc-pr1 k B is-trunc-pr1 x =
     is-trunc-equiv k (fib pr1 x) (inv-equiv-fib-pr1 B x) (is-trunc-pr1 x)
     
 abstract
   is-trunc-succ-subtype :
-    {i j : Level} (k : 𝕋) {A : UU i} {P : A → UU j} →
+    {i j : Level} (k : 𝕋) {A : Set i} {P : A → Set j} →
     ((x : A) → is-prop (P x)) →
     is-trunc (succ-𝕋 k) A → is-trunc (succ-𝕋 k) (Σ A P)
   is-trunc-succ-subtype k H is-trunc-A =
@@ -4281,18 +4272,18 @@ abstract
 
 abstract
   is-prop-subtype :
-    {i j : Level} {A : UU i} {P : A → UU j} →
+    {i j : Level} {A : Set i} {P : A → Set j} →
     ((x : A) → is-prop (P x)) → is-prop A → is-prop (Σ A P)
   is-prop-subtype = is-trunc-succ-subtype neg-two-𝕋
 
 abstract
   is-set-subtype :
-    {i j : Level} {A : UU i} {P : A → UU j} →
+    {i j : Level} {A : Set i} {P : A → Set j} →
     ((x : A) → is-prop (P x)) → is-set A → is-set (Σ A P)
   is-set-subtype = is-trunc-succ-subtype neg-one-𝕋
   
 module _
-  {l1 l2 : Level} (k : 𝕋) {A : UU l1} {B : UU l2}
+  {l1 l2 : Level} (k : 𝕋) {A : Set l1} {B : Set l2}
   where
 
   abstract
@@ -4315,12 +4306,12 @@ module _
         ( is-trunc-B x y)
 
 abstract
-  is-set-coprod : {l1 l2 : Level} {A : UU l1} {B : UU l2} →
+  is-set-coprod : {l1 l2 : Level} {A : Set l1} {B : Set l2} →
     is-set A → is-set B → is-set (coprod A B)
   is-set-coprod = is-trunc-coprod neg-two-𝕋
 
 coprod-Set :
-  {l1 l2 : Level} (A : UU-Set l1) (B : UU-Set l2) → UU-Set (l1 ⊔ l2)
+  {l1 l2 : Level} (A : Set-Set l1) (B : Set-Set l2) → Set-Set (l1 ⊔ l2)
 pr1 (coprod-Set (pair A is-set-A) (pair B is-set-B)) = coprod A B
 pr2 (coprod-Set (pair A is-set-A) (pair B is-set-B)) =
   is-set-coprod is-set-A is-set-B
@@ -4329,7 +4320,7 @@ abstract
   is-set-unit : is-set unit
   is-set-unit = is-trunc-succ-is-trunc neg-one-𝕋 is-prop-unit
 
-unit-Set : UU-Set lzero
+unit-Set : Set-Set lzero
 pr1 unit-Set = unit
 pr2 unit-Set = is-set-unit
 
@@ -4339,13 +4330,13 @@ abstract
   is-set-Fin (succ-ℕ n) =
     is-set-coprod (is-set-Fin n) is-set-unit
 
-Fin-Set : (n : ℕ) → UU-Set lzero
+Fin-Set : (n : ℕ) → Set-Set lzero
 pr1 (Fin-Set n) = Fin n
 pr2 (Fin-Set n) = is-set-Fin n
 
 
 leq-Fin :
-  {k : ℕ} → Fin k → Fin k → UU lzero
+  {k : ℕ} → Fin k → Fin k → Set lzero
 leq-Fin {succ-ℕ k} (inl x) (inl y) = leq-Fin x y
 leq-Fin {succ-ℕ k} (inr x) (inl y) = empty
 leq-Fin {succ-ℕ k} (inl x) (inr y) = unit
@@ -4398,10 +4389,10 @@ emb-inl-Fin : (k : ℕ) → Fin k ↪ Fin (succ-ℕ k)
 pr1 (emb-inl-Fin k) = inl-Fin k
 pr2 (emb-inl-Fin k) = is-emb-inl (Fin k) unit
 
-is-inl-Fin : {k : ℕ} → Fin (succ-ℕ k) → UU lzero
+is-inl-Fin : {k : ℕ} → Fin (succ-ℕ k) → Set lzero
 is-inl-Fin {k} x = Σ (Fin k) (λ y → Id (inl y) x)
 
-is-star-Fin : {k : ℕ} → Fin (succ-ℕ k) → UU lzero
+is-star-Fin : {k : ℕ} → Fin (succ-ℕ k) → Set lzero
 is-star-Fin x = Id (inr star) x
 
 is-star-is-not-inl-Fin :
@@ -4595,7 +4586,7 @@ abstract
     functor-neg (leq-is-emb-Fin) (contradiction-le-ℕ l k p)
 
 is-not-injective :
-  {l1 l2 : Level} {A : UU l1} {B : UU l2} (f : A → B) → UU (l1 ⊔ l2)
+  {l1 l2 : Level} {A : Set l1} {B : Set l2} (f : A → B) → Set (l1 ⊔ l2)
 is-not-injective f = ¬ (is-injective f)
 
 abstract
@@ -4611,7 +4602,7 @@ abstract
     is-not-injective-le-Fin f (le-succ-ℕ {k})
 
 module _
-  {l1 l2 l3 l4 : Level} {A : UU l1} {B : UU l2} {C : UU l3} {D : UU l4}
+  {l1 l2 l3 l4 : Level} {A : Set l1} {B : Set l2} {C : Set l3} {D : Set l4}
   (f : A → B) (g : C → D) (h : A → C) (i : B → D) (H : (i ∘ f) ~ (g ∘ h))
   where
 
@@ -4658,7 +4649,7 @@ module _
       is-equiv-left-factor (i ∘ f) g h H (is-equiv-comp' i f Ef Ei) Eh
       
 module _
-  {l1 l2 : Level} {A : UU l1} {B : UU l2} (f g : A → B) (H : f ~ g)
+  {l1 l2 : Level} {A : Set l1} {B : Set l2} (f g : A → B) (H : f ~ g)
   where
 
   abstract
@@ -4675,7 +4666,7 @@ module _
         ( is-equiv-concat' (f x) (H y))
         
 module _
-  {l1 l2 l3 : Level} {A : UU l1} {B : UU l2} {C : UU l3}
+  {l1 l2 l3 : Level} {A : Set l1} {B : Set l2} {C : Set l3}
   where
 
   abstract
