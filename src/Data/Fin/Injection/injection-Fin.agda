@@ -8,17 +8,10 @@
 
 module Data.Fin.Injection.injection-Fin where
 
-open import Agda.Primitive using (Level; lzero; lsuc; _⊔_)
+open import Level using (Level; _⊔_) renaming (zero to lzero; suc to lsuc)
 open import Data.Nat using (ℕ) renaming (suc to succ-ℕ; zero to zero-ℕ)
 open import Data.Unit renaming (⊤ to unit; tt to star)
 open import Data.Empty renaming (⊥ to empty)
-
-data raise (l : Level) {l1 : Level} (A : Set l1) : Set (l1 ⊔ l) where
-  map-raise : A → raise l A
-
-map-inv-raise :
-  {l l1 : Level} {A : Set l1} → raise l A → A
-map-inv-raise (map-raise x) = x
 
 id : {i : Level} {A : Set i} → A → A
 id a = a 
@@ -43,7 +36,6 @@ ind-Σ :
   {l1 l2 l3 : Level} {A : Set l1} {B : A → Set l2} {C : Σ A B → Set l3} →
   ((x : A) (y : B x) → C (pair x y)) → ((t : Σ A B) → C t)
 ind-Σ f (pair x y) = f x y
-
 
 prod : {l1 l2 : Level} (A : Set l1) (B : Set l2) → Set (l1 ⊔ l2)
 prod A B = Σ A (λ a → B)
@@ -156,17 +148,8 @@ functor-neg f nq p = nq (f p)
 ex-falso : {l : Level} {A : Set l} → empty → A
 ex-falso ()
 
-raise-empty : (l : Level) → Set l
-raise-empty l = raise l empty
-
 terminal-map : {l : Level} {A : Set l} → A → unit
 terminal-map a = star
-
-raise-unit : (l : Level) → Set l
-raise-unit l = raise l unit
-
-raise-star : {l : Level} → raise l unit
-raise-star = map-raise star
 
 one-ℕ : ℕ
 one-ℕ = succ-ℕ zero-ℕ
@@ -983,37 +966,6 @@ module _
   is-equiv-is-injective {f} (pair g G) H =
     is-equiv-has-inverse g G (λ x → H (G (f x)))
 
-module _
-  {l l1 : Level} {A : Set l1}
-  where
-
-  issec-map-inv-raise : (x : raise l A) → Id (map-raise (map-inv-raise x)) x
-  issec-map-inv-raise (map-raise x) = refl
-
-  isretr-map-inv-raise : (x : A) → Id (map-inv-raise {l} (map-raise x)) x
-  isretr-map-inv-raise x = refl
-
-  is-equiv-map-raise : is-equiv (map-raise {l} {l1} {A})
-  is-equiv-map-raise =
-    is-equiv-has-inverse
-      map-inv-raise
-      issec-map-inv-raise
-      isretr-map-inv-raise
-
-equiv-raise : (l : Level) {l1 : Level} (A : Set l1) → A ≃ raise l A
-pr1 (equiv-raise l A) = map-raise
-pr2 (equiv-raise l A) = is-equiv-map-raise
-  
-equiv-raise-unit : (l : Level) → unit ≃ raise-unit l
-equiv-raise-unit l = equiv-raise l unit
-  
-equiv-raise-empty : (l : Level) → empty ≃ raise-empty l
-equiv-raise-empty l = equiv-raise l empty
-
-Raise : (l : Level) {l1 : Level} (A : Set l1) → Σ (Set (l1 ⊔ l)) (λ X → A ≃ X)
-pr1 (Raise l A) = raise l A
-pr2 (Raise l A) = equiv-raise l A
-
 -- Left unit law of coproducts
 
 map-right-unit-law-coprod-is-empty :
@@ -1360,20 +1312,6 @@ module _
   left-absorption-Σ : Σ empty A ≃ empty
   pr1 left-absorption-Σ = map-left-absorption-Σ
   pr2 left-absorption-Σ = is-equiv-map-left-absorption-Σ
-
-module _
-  {l : Level} (A : Set l)
-  where
-
-  map-left-absorption-prod : empty × A → empty
-  map-left-absorption-prod = map-left-absorption-Σ (λ x → A)
-  
-  is-equiv-map-left-absorption-prod : is-equiv map-left-absorption-prod
-  is-equiv-map-left-absorption-prod =
-    is-equiv-map-left-absorption-Σ (λ x → A)
-    
-  left-absorption-prod : (empty × A) ≃ empty
-  left-absorption-prod = left-absorption-Σ (λ x → A)
   
 -- Unit laws for Σ-types and cartesian products
 
@@ -1417,221 +1355,6 @@ module _
   inv-left-unit-law-Σ : A star ≃ Σ unit A
   pr1 inv-left-unit-law-Σ = map-inv-left-unit-law-Σ
   pr2 inv-left-unit-law-Σ = is-equiv-map-inv-left-unit-law-Σ
-
-module _
-  {l : Level} {A : Set l}
-  where
-
-  map-left-unit-law-prod : unit × A → A
-  map-left-unit-law-prod = pr2
-
-  map-inv-left-unit-law-prod : A → unit × A
-  map-inv-left-unit-law-prod = map-inv-left-unit-law-Σ (λ x → A)
-
-  issec-map-inv-left-unit-law-prod :
-    ( map-left-unit-law-prod ∘ map-inv-left-unit-law-prod) ~ id
-  issec-map-inv-left-unit-law-prod =
-    issec-map-inv-left-unit-law-Σ (λ x → A)
-
-  isretr-map-inv-left-unit-law-prod :
-    ( map-inv-left-unit-law-prod ∘ map-left-unit-law-prod) ~ id
-  isretr-map-inv-left-unit-law-prod (pair star a) = refl
-
-  is-equiv-map-left-unit-law-prod : is-equiv map-left-unit-law-prod
-  is-equiv-map-left-unit-law-prod =
-    is-equiv-has-inverse
-      map-inv-left-unit-law-prod
-      issec-map-inv-left-unit-law-prod
-      isretr-map-inv-left-unit-law-prod
-
-  left-unit-law-prod : (unit × A) ≃ A
-  pr1 left-unit-law-prod = map-left-unit-law-prod
-  pr2 left-unit-law-prod = is-equiv-map-left-unit-law-prod
-
-  is-equiv-map-inv-left-unit-law-prod : is-equiv map-inv-left-unit-law-prod
-  is-equiv-map-inv-left-unit-law-prod =
-    is-equiv-has-inverse
-      map-left-unit-law-prod
-      isretr-map-inv-left-unit-law-prod
-      issec-map-inv-left-unit-law-prod
-
-  inv-left-unit-law-prod : A ≃ (unit × A)
-  pr1 inv-left-unit-law-prod = map-inv-left-unit-law-prod
-  pr2 inv-left-unit-law-prod = is-equiv-map-inv-left-unit-law-prod
-
-  map-right-unit-law-prod : A × unit → A
-  map-right-unit-law-prod = pr1
-
-  map-inv-right-unit-law-prod : A → A × unit
-  pr1 (map-inv-right-unit-law-prod a) = a
-  pr2 (map-inv-right-unit-law-prod a) = star
-
-  issec-map-inv-right-unit-law-prod :
-    (map-right-unit-law-prod ∘ map-inv-right-unit-law-prod) ~ id
-  issec-map-inv-right-unit-law-prod a = refl
-
-  isretr-map-inv-right-unit-law-prod :
-    (map-inv-right-unit-law-prod ∘ map-right-unit-law-prod) ~ id
-  isretr-map-inv-right-unit-law-prod (pair a star) = refl
-
-  is-equiv-map-right-unit-law-prod : is-equiv map-right-unit-law-prod
-  is-equiv-map-right-unit-law-prod =
-    is-equiv-has-inverse
-      map-inv-right-unit-law-prod
-      issec-map-inv-right-unit-law-prod
-      isretr-map-inv-right-unit-law-prod
-
-  right-unit-law-prod : (A × unit) ≃ A
-  pr1 right-unit-law-prod = map-right-unit-law-prod
-  pr2 right-unit-law-prod = is-equiv-map-right-unit-law-prod
-
--- Associativity of Σ-types
-
-triple :
-  {l1 l2 l3 : Level} {A : Set l1} {B : A → Set l2} {C : (x : A) → B x → Set l3} →
-  (a : A) (b : B a) → C a b → Σ A (λ x → Σ (B x) (C x))
-pr1 (triple a b c) = a
-pr1 (pr2 (triple a b c)) = b
-pr2 (pr2 (triple a b c)) = c
-
-triple' :
-  {l1 l2 l3 : Level} {A : Set l1} {B : A → Set l2} {C : Σ A B → Set l3} →
-  (a : A) (b : B a) → C (pair a b) → Σ (Σ A B) C
-pr1 (pr1 (triple' a b c)) = a
-pr2 (pr1 (triple' a b c)) = b
-pr2 (triple' a b c) = c
-
-module _
-  {l1 l2 l3 : Level} (A : Set l1) (B : A → Set l2) (C : Σ A B → Set l3)
-  where
-
-  map-assoc-Σ : Σ (Σ A B) C → Σ A (λ x → Σ (B x) (λ y → C (pair x y)))
-  map-assoc-Σ (pair (pair x y) z) = triple x y z
-
-  map-inv-assoc-Σ : Σ A (λ x → Σ (B x) (λ y → C (pair x y))) → Σ (Σ A B) C
-  map-inv-assoc-Σ (pair x (pair y z)) = triple' x y z
-  -- map-inv-assoc-Σ t = triple' (pr1 t) (pr1 (pr2 t)) (pr2 (pr2 t))
-
-  isretr-map-inv-assoc-Σ : (map-inv-assoc-Σ ∘ map-assoc-Σ) ~ id
-  isretr-map-inv-assoc-Σ (pair (pair x y) z) = refl
-  
-  issec-map-inv-assoc-Σ : (map-assoc-Σ ∘ map-inv-assoc-Σ) ~ id
-  issec-map-inv-assoc-Σ (pair x (pair y z)) = refl
-
-  abstract
-    is-equiv-map-assoc-Σ : is-equiv map-assoc-Σ
-    is-equiv-map-assoc-Σ =
-      is-equiv-has-inverse
-        map-inv-assoc-Σ
-        issec-map-inv-assoc-Σ
-        isretr-map-inv-assoc-Σ
-
-  assoc-Σ : Σ (Σ A B) C ≃ Σ A (λ x → Σ (B x) (λ y → C (pair x y)))
-  pr1 assoc-Σ = map-assoc-Σ
-  pr2 assoc-Σ = is-equiv-map-assoc-Σ
-
-  inv-assoc-Σ : Σ A (λ x → Σ (B x) (λ y → C (pair x y))) ≃ Σ (Σ A B) C
-  pr1 inv-assoc-Σ = map-inv-assoc-Σ
-  pr2 inv-assoc-Σ =
-    is-equiv-has-inverse
-      map-assoc-Σ
-      isretr-map-inv-assoc-Σ
-      issec-map-inv-assoc-Σ
-
--- Another way to phrase associativity of Σ-types.
-
-module _
-  {l1 l2 l3 : Level} (A : Set l1) (B : A → Set l2) (C : (x : A) → B x → Set l3)
-  where
-  
-  map-assoc-Σ' : Σ (Σ A B) (λ w → C (pr1 w) (pr2 w)) → Σ A (λ x → Σ (B x) (C x))
-  map-assoc-Σ' (pair (pair x y) z) = triple x y z
-
-  map-inv-assoc-Σ' :
-    Σ A (λ x → Σ (B x) (C x)) → Σ (Σ A B) (λ w → C (pr1 w) (pr2 w))
-  map-inv-assoc-Σ' (pair x (pair y z)) = triple' x y z
-
-  issec-map-inv-assoc-Σ' : (map-assoc-Σ' ∘ map-inv-assoc-Σ') ~ id
-  issec-map-inv-assoc-Σ' (pair x (pair y z)) = refl
-
-  isretr-map-inv-assoc-Σ' : ( map-inv-assoc-Σ' ∘ map-assoc-Σ') ~ id
-  isretr-map-inv-assoc-Σ' (pair (pair x y) z) = refl
-
-  is-equiv-map-assoc-Σ' : is-equiv map-assoc-Σ'
-  is-equiv-map-assoc-Σ' =
-    is-equiv-has-inverse
-      map-inv-assoc-Σ'
-      issec-map-inv-assoc-Σ'
-      isretr-map-inv-assoc-Σ'
-
-  assoc-Σ' : Σ (Σ A B) (λ w → C (pr1 w) (pr2 w)) ≃ Σ A (λ x → Σ (B x) (C x))
-  pr1 assoc-Σ' = map-assoc-Σ'
-  pr2 assoc-Σ' = is-equiv-map-assoc-Σ'
-
-  inv-assoc-Σ' : Σ A (λ x → Σ (B x) (C x)) ≃ Σ (Σ A B) (λ w → C (pr1 w) (pr2 w))
-  pr1 inv-assoc-Σ' = map-inv-assoc-Σ'
-  pr2 inv-assoc-Σ' =
-    is-equiv-has-inverse
-      map-assoc-Σ'
-      isretr-map-inv-assoc-Σ'
-      issec-map-inv-assoc-Σ'
-
--- Commutativity of cartesian products
-
-module _
-  {l1 l2 : Level} {A : Set l1} {B : Set l2}
-  where
-
-  map-commutative-prod : A × B → B × A
-  pr1 (map-commutative-prod (pair a b)) = b
-  pr2 (map-commutative-prod (pair a b)) = a
-  
-  map-inv-commutative-prod : B × A → A × B
-  pr1 (map-inv-commutative-prod (pair b a)) = a
-  pr2 (map-inv-commutative-prod (pair b a)) = b
-
-  issec-map-inv-commutative-prod :
-    (map-commutative-prod ∘ map-inv-commutative-prod) ~ id
-  issec-map-inv-commutative-prod (pair b a) = refl
-
-  isretr-map-inv-commutative-prod :
-    (map-inv-commutative-prod ∘ map-commutative-prod) ~ id
-  isretr-map-inv-commutative-prod (pair a b) = refl
-
-  is-equiv-map-commutative-prod : is-equiv map-commutative-prod
-  is-equiv-map-commutative-prod =
-    is-equiv-has-inverse
-      map-inv-commutative-prod
-      issec-map-inv-commutative-prod
-      isretr-map-inv-commutative-prod
-
-  commutative-prod : (A × B) ≃ (B × A)
-  pr1 commutative-prod = map-commutative-prod
-  pr2 commutative-prod = is-equiv-map-commutative-prod
-
--- Associativity of cartesian products
-
-module _
-  {l1 l2 l3 : Level} (A : Set l1) (B : Set l2) (C : Set l3)
-  where
-  
-  map-assoc-prod : (A × B) × C → A × (B × C)
-  map-assoc-prod = map-assoc-Σ A (λ x → B) (λ w → C)
-
-  map-inv-assoc-prod : A × (B × C) → (A × B) × C
-  map-inv-assoc-prod = map-inv-assoc-Σ A (λ x → B) (λ w → C)
-
-  issec-map-inv-assoc-prod : (map-assoc-prod ∘ map-inv-assoc-prod) ~ id
-  issec-map-inv-assoc-prod = issec-map-inv-assoc-Σ A (λ x → B) (λ w → C)
-
-  isretr-map-inv-assoc-prod : (map-inv-assoc-prod ∘ map-assoc-prod) ~ id
-  isretr-map-inv-assoc-prod = isretr-map-inv-assoc-Σ A (λ x → B) (λ w → C)
-
-  is-equiv-map-assoc-prod : is-equiv map-assoc-prod
-  is-equiv-map-assoc-prod = is-equiv-map-assoc-Σ A (λ x → B) (λ w → C)
-
-  assoc-prod : ((A × B) × C) ≃ (A × (B × C))
-  assoc-prod = assoc-Σ A (λ x → B) (λ w → C)
 
 module _
   {l1 l2 l3 : Level} (A : Set l1) (B : Set l2) (C : coprod A B → Set l3)
@@ -3408,51 +3131,168 @@ abstract
     is-set B → is-injective f → is-prop-map f
   is-prop-map-is-injective {f = f} H I =
     is-prop-map-is-emb (is-emb-is-injective H I)
+
+module _
+  {l1 l2 : Level} {A : Set l1} {B : Set l2}
+  where
+
+  data
+    Eq-coprod : coprod A B → coprod A B → Set (l1 ⊔ l2)
+    where
+    Eq-eq-coprod-inl : (x y : A) → Id x y → Eq-coprod (inl x) (inl y)
+    Eq-eq-coprod-inr : (x y : B) → Id x y → Eq-coprod (inr x) (inr y)
+
+  refl-Eq-coprod : (x : coprod A B) → Eq-coprod x x
+  refl-Eq-coprod (inl x) = Eq-eq-coprod-inl x x refl
+  refl-Eq-coprod (inr x) = Eq-eq-coprod-inr x x refl
+
+  Eq-eq-coprod : (x y : coprod A B) → Id x y → Eq-coprod x y
+  Eq-eq-coprod x .x refl = refl-Eq-coprod x
+
+  is-contr-total-Eq-coprod :
+    (x : coprod A B) → is-contr (Σ (coprod A B) (Eq-coprod x))
+  pr1 (pr1 (is-contr-total-Eq-coprod (inl x))) = inl x
+  pr2 (pr1 (is-contr-total-Eq-coprod (inl x))) = Eq-eq-coprod-inl x x refl
+  pr2
+    ( is-contr-total-Eq-coprod (inl x))
+    ( pair (inl .x) (Eq-eq-coprod-inl .x .x refl)) = refl
+  pr1 (pr1 (is-contr-total-Eq-coprod (inr x))) = inr x
+  pr2 (pr1 (is-contr-total-Eq-coprod (inr x))) = Eq-eq-coprod-inr x x refl
+  pr2
+    ( is-contr-total-Eq-coprod (inr x))
+    ( pair .(inr x) (Eq-eq-coprod-inr .x .x refl)) = refl
+
+  is-equiv-Eq-eq-coprod : (x y : coprod A B) → is-equiv (Eq-eq-coprod x y)
+  is-equiv-Eq-eq-coprod x =
+    fundamental-theorem-id x
+      ( refl-Eq-coprod x)
+      ( is-contr-total-Eq-coprod x)
+      ( Eq-eq-coprod x)
+
+  extensionality-coprod : (x y : coprod A B) → Id x y ≃ Eq-coprod x y
+  pr1 (extensionality-coprod x y) = Eq-eq-coprod x y
+  pr2 (extensionality-coprod x y) = is-equiv-Eq-eq-coprod x y
+
+  module _
+    (x y : A)
+    where
     
-Eq-coprod :
-  {l1 l2 : Level} (A : Set l1) (B : Set l2) →
-  coprod A B → coprod A B → Set (l1 ⊔ l2)
-Eq-coprod {l1} {l2} A B (inl x) (inl y) = raise (l1 ⊔ l2) (Id x y)
-Eq-coprod {l1} {l2} A B (inl x) (inr y) = raise-empty (l1 ⊔ l2)
-Eq-coprod {l1} {l2} A B (inr x) (inl y) = raise-empty (l1 ⊔ l2)
-Eq-coprod {l1} {l2} A B (inr x) (inr y) = raise (l1 ⊔ l2) (Id x y)
+    map-compute-Eq-coprod-inl-inl : Eq-coprod (inl x) (inl y) → Id x y
+    map-compute-Eq-coprod-inl-inl (Eq-eq-coprod-inl .x .y p) = p
 
--- Exercise 8.7 (a)
+    issec-Eq-eq-coprod-inl :
+      (map-compute-Eq-coprod-inl-inl ∘ Eq-eq-coprod-inl x y) ~ id
+    issec-Eq-eq-coprod-inl p = refl
 
-reflexive-Eq-coprod :
-  {l1 l2 : Level} (A : Set l1) (B : Set l2) →
-  (t : coprod A B) → Eq-coprod A B t t
-reflexive-Eq-coprod {l1} {l2} A B (inl x) = map-raise refl
-reflexive-Eq-coprod {l1} {l2} A B (inr x) = map-raise refl
+    isretr-Eq-eq-coprod-inl :
+      (Eq-eq-coprod-inl x y ∘ map-compute-Eq-coprod-inl-inl) ~ id
+    isretr-Eq-eq-coprod-inl (Eq-eq-coprod-inl .x .y p) = refl
 
-Eq-eq-coprod :
-  {l1 l2 : Level} (A : Set l1) (B : Set l2) →
-  (s t : coprod A B) → Id s t → Eq-coprod A B s t
-Eq-eq-coprod A B s .s refl = reflexive-Eq-coprod A B s
+    is-equiv-map-compute-Eq-coprod-inl-inl :
+      is-equiv map-compute-Eq-coprod-inl-inl
+    is-equiv-map-compute-Eq-coprod-inl-inl =
+      is-equiv-has-inverse
+        ( Eq-eq-coprod-inl x y)
+        ( issec-Eq-eq-coprod-inl)
+        ( isretr-Eq-eq-coprod-inl)
 
-eq-Eq-coprod :
-  {l1 l2 : Level} (A : Set l1) (B : Set l2) (s t : coprod A B) →
-  Eq-coprod A B s t → Id s t
-eq-Eq-coprod A B (inl x) (inl x') = ap inl ∘ map-inv-raise
-eq-Eq-coprod A B (inl x) (inr y') = ex-falso ∘ map-inv-raise
-eq-Eq-coprod A B (inr y) (inl x') = ex-falso ∘ map-inv-raise
-eq-Eq-coprod A B (inr y) (inr y') = ap inr ∘ map-inv-raise
+    compute-Eq-coprod-inl-inl : Eq-coprod (inl x) (inl y) ≃ Id x y
+    pr1 compute-Eq-coprod-inl-inl = map-compute-Eq-coprod-inl-inl
+    pr2 compute-Eq-coprod-inl-inl = is-equiv-map-compute-Eq-coprod-inl-inl
 
-is-injective-inl :
-  {l1 l2 : Level} {X : Set l1} {Y : Set l2} → is-injective (inl {A = X} {B = Y})
-is-injective-inl {l1} {l2} {X} {Y} {x} {y} p =
-  map-inv-raise (Eq-eq-coprod X Y (inl x) (inl y) p)
+    compute-eq-coprod-inl-inl : Id {A = coprod A B} (inl x) (inl y) ≃ Id x y
+    compute-eq-coprod-inl-inl =
+      compute-Eq-coprod-inl-inl ∘e extensionality-coprod (inl x) (inl y)
+      
+    map-compute-eq-coprod-inl-inl : Id {A = coprod A B} (inl x) (inl y) → Id x y
+    map-compute-eq-coprod-inl-inl = map-equiv compute-eq-coprod-inl-inl
 
-is-injective-inr :
-  {l1 l2 : Level} {X : Set l1} {Y : Set l2} → is-injective (inr {A = X} {B = Y})
-is-injective-inr {l1} {l2} {X} {Y} {x} {y} p =
-  map-inv-raise (Eq-eq-coprod X Y (inr x) (inr y) p)
+  module _
+    (x : A) (y : B)
+    where
 
-neq-inl-inr :
-  {l1 l2 : Level} {A : Set l1} {B : Set l2} (x : A) (y : B) →
-  ¬ (Id (inl x) (inr y))
-neq-inl-inr {l1} {l2} {A} {B} x y =
-  map-inv-raise ∘ Eq-eq-coprod A B (inl x) (inr y)
+    map-compute-Eq-coprod-inl-inr : Eq-coprod (inl x) (inr y) → empty
+    map-compute-Eq-coprod-inl-inr ()
+
+    is-equiv-map-compute-Eq-coprod-inl-inr :
+      is-equiv map-compute-Eq-coprod-inl-inr
+    is-equiv-map-compute-Eq-coprod-inl-inr =
+      is-equiv-is-empty' map-compute-Eq-coprod-inl-inr
+
+    compute-Eq-coprod-inl-inr : Eq-coprod (inl x) (inr y) ≃ empty
+    pr1 compute-Eq-coprod-inl-inr = map-compute-Eq-coprod-inl-inr
+    pr2 compute-Eq-coprod-inl-inr = is-equiv-map-compute-Eq-coprod-inl-inr
+
+    compute-eq-coprod-inl-inr : Id {A = coprod A B} (inl x) (inr y) ≃ empty
+    compute-eq-coprod-inl-inr =
+      compute-Eq-coprod-inl-inr ∘e extensionality-coprod (inl x) (inr y)
+      
+    is-empty-eq-coprod-inl-inr : is-empty (Id {A = coprod A B} (inl x) (inr y))
+    is-empty-eq-coprod-inl-inr = map-equiv compute-eq-coprod-inl-inr
+
+  module _
+    (x : B) (y : A)
+    where
+
+    map-compute-Eq-coprod-inr-inl : Eq-coprod (inr x) (inl y) → empty
+    map-compute-Eq-coprod-inr-inl ()
+
+    is-equiv-map-compute-Eq-coprod-inr-inl :
+      is-equiv map-compute-Eq-coprod-inr-inl
+    is-equiv-map-compute-Eq-coprod-inr-inl =
+      is-equiv-is-empty' map-compute-Eq-coprod-inr-inl
+
+    compute-Eq-coprod-inr-inl : Eq-coprod (inr x) (inl y) ≃ empty
+    pr1 compute-Eq-coprod-inr-inl = map-compute-Eq-coprod-inr-inl
+    pr2 compute-Eq-coprod-inr-inl = is-equiv-map-compute-Eq-coprod-inr-inl
+
+    compute-eq-coprod-inr-inl : Id {A = coprod A B} (inr x) (inl y) ≃ empty
+    compute-eq-coprod-inr-inl =
+      compute-Eq-coprod-inr-inl ∘e extensionality-coprod (inr x) (inl y)
+      
+    is-empty-eq-coprod-inr-inl : is-empty (Id {A = coprod A B} (inr x) (inl y))
+    is-empty-eq-coprod-inr-inl = map-equiv compute-eq-coprod-inr-inl
+
+  module _
+    (x y : B)
+    where
+    
+    map-compute-Eq-coprod-inr-inr : Eq-coprod (inr x) (inr y) → Id x y
+    map-compute-Eq-coprod-inr-inr (Eq-eq-coprod-inr .x .y p) = p
+
+    issec-Eq-eq-coprod-inr :
+      (map-compute-Eq-coprod-inr-inr ∘ Eq-eq-coprod-inr x y) ~ id
+    issec-Eq-eq-coprod-inr p = refl
+
+    isretr-Eq-eq-coprod-inr :
+      (Eq-eq-coprod-inr x y ∘ map-compute-Eq-coprod-inr-inr) ~ id
+    isretr-Eq-eq-coprod-inr (Eq-eq-coprod-inr .x .y p) = refl
+
+    is-equiv-map-compute-Eq-coprod-inr-inr :
+      is-equiv map-compute-Eq-coprod-inr-inr
+    is-equiv-map-compute-Eq-coprod-inr-inr =
+      is-equiv-has-inverse
+        ( Eq-eq-coprod-inr x y)
+        ( issec-Eq-eq-coprod-inr)
+        ( isretr-Eq-eq-coprod-inr)
+
+    compute-Eq-coprod-inr-inr : Eq-coprod (inr x) (inr y) ≃ Id x y
+    pr1 compute-Eq-coprod-inr-inr = map-compute-Eq-coprod-inr-inr
+    pr2 compute-Eq-coprod-inr-inr = is-equiv-map-compute-Eq-coprod-inr-inr
+
+    compute-eq-coprod-inr-inr : Id {A = coprod A B} (inr x) (inr y) ≃ Id x y
+    compute-eq-coprod-inr-inr =
+      compute-Eq-coprod-inr-inr ∘e extensionality-coprod (inr x) (inr y)
+
+    map-compute-eq-coprod-inr-inr : Id {A = coprod A B} (inr x) (inr y) → Id x y
+    map-compute-eq-coprod-inr-inr = map-equiv compute-eq-coprod-inr-inr
+
+  is-injective-inl : is-injective (inl {A = A} {B = B})
+  is-injective-inl {x} {y} = map-compute-eq-coprod-inl-inl x y
+  
+  is-injective-inr : is-injective (inr {A = A} {B = B})
+  is-injective-inr {x} {y} =
+    map-compute-eq-coprod-inr-inr x y
 
 module _
   {l1 l2 : Level} (A : Set l1) (B : Set l2)
@@ -3523,139 +3363,6 @@ equiv-coprod :
 pr1 (equiv-coprod (pair e is-equiv-e) (pair f is-equiv-f)) = map-coprod e f
 pr2 (equiv-coprod (pair e is-equiv-e) (pair f is-equiv-f)) =
   is-equiv-map-coprod is-equiv-e is-equiv-f
-
-module _
-  {l1 l2 : Level} (A : Set l1) (B : Set l2)
-  where
-
-  -- The identity types of coproducts
-  
-  abstract
-    is-contr-total-Eq-coprod-inl :
-      (x : A) → is-contr (Σ (coprod A B) (Eq-coprod A B (inl x)))
-    is-contr-total-Eq-coprod-inl x =
-      is-contr-equiv
-        ( coprod
-          ( Σ A (λ y → Eq-coprod A B (inl x) (inl y)))
-          ( Σ B (λ y → Eq-coprod A B (inl x) (inr y))))
-        ( right-distributive-Σ-coprod A B (Eq-coprod A B (inl x)))
-        ( is-contr-equiv'
-          ( coprod
-            ( Σ A (Id x))
-            ( Σ B (λ y → empty)))
-          ( equiv-coprod
-            ( equiv-tot (λ y → equiv-raise _ (Id x y)))
-            ( equiv-tot (λ y → equiv-raise _ empty)))
-          ( is-contr-equiv
-            ( coprod (Σ A (Id x)) empty)
-            ( equiv-coprod id-equiv (right-absorption-Σ B))
-            ( is-contr-equiv'
-              ( Σ A (Id x))
-              ( inv-right-unit-law-coprod (Σ A (Id x)))
-              ( is-contr-total-path x))))
-
-  abstract
-    is-contr-total-Eq-coprod-inr :
-      (x : B) → is-contr (Σ (coprod A B) (Eq-coprod A B (inr x)))
-    is-contr-total-Eq-coprod-inr x =
-      is-contr-equiv
-        ( coprod
-          ( Σ A (λ y → Eq-coprod A B (inr x) (inl y)))
-          ( Σ B (λ y → Eq-coprod A B (inr x) (inr y))))
-        ( right-distributive-Σ-coprod A B (Eq-coprod A B (inr x)))
-        ( is-contr-equiv'
-          ( coprod (Σ A (λ y → empty)) (Σ B (Id x)))
-          ( equiv-coprod
-            ( equiv-tot (λ y → equiv-raise _ empty))
-            ( equiv-tot (λ y → equiv-raise _ (Id x y))))
-          ( is-contr-equiv
-            ( coprod empty (Σ B (Id x)))
-            ( equiv-coprod (right-absorption-Σ A) id-equiv)
-            ( is-contr-equiv'
-              ( Σ B (Id x))
-              ( inv-left-unit-law-coprod (Σ B (Id x)))
-              ( is-contr-total-path x))))
-
-  abstract
-    is-equiv-Eq-eq-coprod-inl :
-      (x : A) → is-fiberwise-equiv (Eq-eq-coprod A B (inl x))
-    is-equiv-Eq-eq-coprod-inl x =
-      fundamental-theorem-id
-        ( inl x)
-        ( reflexive-Eq-coprod A B (inl x))
-        ( is-contr-total-Eq-coprod-inl x)
-        ( Eq-eq-coprod A B (inl x))
-
-  abstract
-    is-equiv-Eq-eq-coprod-inr :
-      (x : B) → is-fiberwise-equiv (Eq-eq-coprod A B (inr x))
-    is-equiv-Eq-eq-coprod-inr x =
-      fundamental-theorem-id
-        ( inr x)
-        ( reflexive-Eq-coprod A B (inr x))
-        ( is-contr-total-Eq-coprod-inr x)
-        ( Eq-eq-coprod A B (inr x))
-
-  abstract
-    is-equiv-Eq-eq-coprod :
-      (s : coprod A B) → is-fiberwise-equiv (Eq-eq-coprod A B s)
-    is-equiv-Eq-eq-coprod (inl x) = is-equiv-Eq-eq-coprod-inl x
-    is-equiv-Eq-eq-coprod (inr x) = is-equiv-Eq-eq-coprod-inr x
-
-  equiv-Eq-eq-coprod : (x y : coprod A B) → Id x y ≃ Eq-coprod A B x y
-  pr1 (equiv-Eq-eq-coprod x y) = Eq-eq-coprod A B x y
-  pr2 (equiv-Eq-eq-coprod x y) = is-equiv-Eq-eq-coprod x y
-
-module _
-  {l1 l2 : Level} {A : Set l1} {B : Set l2}
-  where
-
-  -- It should be possible to make these definitions abstract,
-  -- but currently that breaks something in 23-pullbacks
-
-  compute-eq-coprod-inl-inl :
-    (x x' : A) → (Id (inl {B = B} x) (inl x')) ≃ (Id x x')
-  compute-eq-coprod-inl-inl x x' =
-    ( inv-equiv (equiv-raise (l1 ⊔ l2) (Id x x'))) ∘e
-    ( equiv-Eq-eq-coprod A B (inl x) (inl x'))
-
-  map-compute-eq-coprod-inl-inl :
-    (x x' : A) → Id (inl {B = B} x) (inl x') → Id x x'
-  map-compute-eq-coprod-inl-inl x x' =
-    map-equiv (compute-eq-coprod-inl-inl x x')
-
-  compute-eq-coprod-inl-inr :
-    (x : A) (y' : B) → (Id (inl x) (inr y')) ≃ empty
-  compute-eq-coprod-inl-inr x y' =
-    ( inv-equiv (equiv-raise (l1 ⊔ l2) empty)) ∘e
-    ( equiv-Eq-eq-coprod A B (inl x) (inr y'))
-
-  is-empty-eq-coprod-inl-inr :
-    (x : A) (y' : B) → is-empty (Id (inl x) (inr y'))
-  is-empty-eq-coprod-inl-inr x y' =
-    map-equiv (compute-eq-coprod-inl-inr x y')
-
-  compute-eq-coprod-inr-inl :
-    (y : B) (x' : A) → (Id (inr y) (inl x')) ≃ empty
-  compute-eq-coprod-inr-inl y x' =
-    ( inv-equiv (equiv-raise (l1 ⊔ l2) empty)) ∘e
-    ( equiv-Eq-eq-coprod A B (inr y) (inl x'))
-
-  is-empty-eq-coprod-inr-inl :
-    (y : B) (x' : A) → is-empty (Id (inr y) (inl x'))
-  is-empty-eq-coprod-inr-inl y x' =
-    map-equiv (compute-eq-coprod-inr-inl y x')
-
-  compute-eq-coprod-inr-inr :
-    (y y' : B) → (Id (inr {A = A} y) (inr y')) ≃ (Id y y')
-  compute-eq-coprod-inr-inr y y' =
-    ( inv-equiv (equiv-raise (l1 ⊔ l2) (Id y y'))) ∘e
-    ( equiv-Eq-eq-coprod A B (inr y) (inr y'))
-
-  map-compute-eq-coprod-inr-inr :
-    (y y' : B) → Id (inr {A = A} y) (inr y') → Id y y'
-  map-compute-eq-coprod-inr-inr y y' =
-    map-equiv (compute-eq-coprod-inr-inr y y')
 
 module _
   {l1 l2 : Level} (A : Set l1) (B : Set l2)
@@ -3814,11 +3521,7 @@ module _
     is-not-contractible-coprod-is-contr :
       is-contr A → is-contr B → ¬ (is-contr (coprod A B))
     is-not-contractible-coprod-is-contr HA HB HAB =
-      map-inv-raise
-        ( Eq-eq-coprod A B
-          ( inl (center HA))
-          ( inr (center HB))
-          ( eq-is-contr HAB))
+      is-empty-eq-coprod-inl-inr (center HA) (center HB) (eq-is-contr HAB)
 
 -- Exercise 12.3 (b)
 
