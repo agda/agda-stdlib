@@ -9,21 +9,11 @@
 module Data.Fin.Injection.injection-Fin where
 
 open import Level using (Level; _⊔_) renaming (zero to lzero; suc to lsuc)
+open import Function.Base
 open import Data.Nat using (ℕ) renaming (suc to succ-ℕ; zero to zero-ℕ)
 open import Data.Unit renaming (⊤ to unit; tt to star)
 open import Data.Empty renaming (⊥ to empty)
 open import Data.Sum.Base renaming (_⊎_ to coprod; inj₁ to inl; inj₂ to inr)
-
-id : {i : Level} {A : Set i} → A → A
-id a = a 
-
-_∘_ : {i j k : Level}
-    → {A : Set i} {B : A → Set j} {C : (a : A) → B a → Set k}
-    → ({a : A} → (b : B a) → C a b) → (f : (a : A) → B a) → (a : A) → C a (f a)
-(g ∘ f) a = g (f a)
-
-const : {i j : Level} (A : Set i) (B : Set j) (b : B) → A → B
-const A B b x = b
 
 record Σ {l1 l2} (A : Set l1) (B : A → Set l2) : Set (l1 ⊔ l2) where
   constructor pair
@@ -1751,7 +1741,7 @@ eq-is-contr C {x} {y} = eq-is-contr' C x y
 abstract
   contraction :
     {l : Level} {A : Set l} (is-contr-A : is-contr A) →
-    (const A A (center is-contr-A) ~ id)
+    (const (center is-contr-A) ~ id)
   contraction C x = eq-is-contr C
   
   coh-contraction :
@@ -2001,7 +1991,7 @@ module _
       (f : A → B) → is-contr A → is-contr B → is-equiv f
     is-equiv-is-contr f is-contr-A is-contr-B =
       is-equiv-has-inverse
-        ( const B A (center is-contr-A))
+        ( const (center is-contr-A))
         ( ind-singleton-is-contr _ is-contr-B _
           ( inv (contraction is-contr-B (f (center is-contr-A)))))
         ( contraction is-contr-A)
