@@ -12,6 +12,7 @@ open import Level using (Level; _⊔_) renaming (zero to lzero; suc to lsuc)
 open import Data.Nat using (ℕ) renaming (suc to succ-ℕ; zero to zero-ℕ)
 open import Data.Unit renaming (⊤ to unit; tt to star)
 open import Data.Empty renaming (⊥ to empty)
+open import Data.Sum.Base renaming (_⊎_ to coprod; inj₁ to inl; inj₂ to inr)
 
 id : {i : Level} {A : Set i} → A → A
 id a = a 
@@ -32,11 +33,6 @@ record Σ {l1 l2} (A : Set l1) (B : A → Set l2) : Set (l1 ⊔ l2) where
 
 open Σ
 
-ind-Σ :
-  {l1 l2 l3 : Level} {A : Set l1} {B : A → Set l2} {C : Σ A B → Set l3} →
-  ((x : A) (y : B x) → C (pair x y)) → ((t : Σ A B) → C t)
-ind-Σ f (pair x y) = f x y
-
 prod : {l1 l2 : Level} (A : Set l1) (B : Set l2) → Set (l1 ⊔ l2)
 prod A B = Σ A (λ a → B)
 
@@ -45,11 +41,6 @@ A × B = prod A B
 
 data Id {i : Level} {A : Set i} (x : A) : A → Set i where
   refl : Id x x
-
-ind-Id :
-  {i j : Level} {A : Set i} (x : A) (B : (y : A) (p : Id x y) → Set j) →
-  (B x refl) → (y : A) (p : Id x y) → B y p
-ind-Id x B b y refl = b
 
 _∙_ :
   {i : Level} {A : Set i} {x y z : A} → Id x y → Id y z → Id x z
@@ -111,6 +102,11 @@ ap-comp g f refl = refl
 tr :
   {i j : Level} {A : Set i} (B : A → Set j) {x y : A} (p : Id x y) → B x → B y
 tr B refl b = b
+
+tr-concat :
+  {l1 l2 : Level} {A : Set l1} {B : A → Set l2} {x y z : A} (p : Id x y)
+  (q : Id y z) (b : B x) → Id (tr B (p ∙ q) b) (tr B q (tr B p b))
+tr-concat refl q b = refl
 
 inv-con :
   {i : Level} {A : Set i} {x y : A} (p : Id x y) {z : A} (q : Id y z)
@@ -221,17 +217,6 @@ is-not-one-zero-ℕ = is-nonzero-one-ℕ ∘ inv
 is-not-one-two-ℕ : is-not-one-ℕ two-ℕ
 is-not-one-two-ℕ = Eq-eq-ℕ
 
-data coprod {l1 l2 : Level} (A : Set l1) (B : Set l2) : Set (l1 ⊔ l2)  where
-  inl : A → coprod A B
-  inr : B → coprod A B
-
-ind-coprod :
-  {l1 l2 l3 : Level} {A : Set l1} {B : Set l2} (C : coprod A B → Set l3) →
-  ((x : A) → C (inl x)) → ((y : B) → C (inr y)) →
-  (t : coprod A B) → C t
-ind-coprod C f g (inl x) = f x
-ind-coprod C f g (inr x) = g x
-
 map-coprod :
   {l1 l2 l1' l2' : Level} {A : Set l1} {B : Set l2} {A' : Set l1'} {B' : Set l2'} →
   (A → A') → (B → B') → coprod A B → coprod A' B'
@@ -262,7 +247,8 @@ is-decidable-coprod :
   is-decidable A → is-decidable B → is-decidable (coprod A B)
 is-decidable-coprod (inl a) y = inl (inl a)
 is-decidable-coprod (inr na) (inl b) = inl (inr b)
-is-decidable-coprod (inr na) (inr nb) = inr (ind-coprod (λ x → empty) na nb)
+is-decidable-coprod (inr na) (inr nb) =
+  inr (λ { (inl x) → na x ; (inr y) → nb y})
 
 is-decidable-prod :
   {l1 l2 : Level} {A : Set l1} {B : Set l2} →
@@ -2279,33 +2265,20 @@ module _
   pr2 (map-inv-left-unit-law-Σ-is-contr b) = b
 
   map-left-unit-law-Σ-is-contr : Σ A B → B a
-  map-left-unit-law-Σ-is-contr =
-    ind-Σ
-      ( ind-singleton-is-contr a C
-        ( λ x → B x → B a)
-        ( id))
+  map-left-unit-law-Σ-is-contr (pair x b) = tr B (eq-is-contr C) b
 
   issec-map-inv-left-unit-law-Σ-is-contr :
     ( map-left-unit-law-Σ-is-contr ∘ map-inv-left-unit-law-Σ-is-contr) ~ id
   issec-map-inv-left-unit-law-Σ-is-contr b =
-    ap ( λ (f : B a → B a) → f b)
-       ( comp-singleton-is-contr a C (λ x → B x → B a) id)
-  
+    ap (λ t → tr B t b) (eq-is-contr (is-prop-is-contr C a a))
+
   isretr-map-inv-left-unit-law-Σ-is-contr :
     ( map-inv-left-unit-law-Σ-is-contr ∘ map-left-unit-law-Σ-is-contr) ~ id
-  isretr-map-inv-left-unit-law-Σ-is-contr = 
-    ind-Σ
-      ( ind-singleton-is-contr a C
-        ( λ x →
-          ( y : B x) →
-            Id ( ( map-inv-left-unit-law-Σ-is-contr ∘
-                   map-left-unit-law-Σ-is-contr)
-                 ( pair x y))
-               ( pair x y))
-        ( λ y → ap
-          ( map-inv-left-unit-law-Σ-is-contr)
-          ( ap ( λ f → f y)
-               ( comp-singleton-is-contr a C (λ x → B x → B a) id))))
+  isretr-map-inv-left-unit-law-Σ-is-contr (pair x b) =
+    eq-pair-Σ
+      ( inv (eq-is-contr C))
+      ( ( inv (tr-concat {B = B} (eq-is-contr C) (inv (eq-is-contr C)) b)) ∙
+        ( ap (λ t → tr B t b) (right-inv (eq-is-contr C))))
 
   abstract
     is-equiv-map-left-unit-law-Σ-is-contr :
@@ -3001,8 +2974,11 @@ module _
       fundamental-theorem-id-retr x (i x)
         ( λ y →
           pair
-            ( ind-Id x (λ z p → R x z) (ρ x) y)
+            ( α y)
             ( λ r → eq-is-prop (p x y)))
+      where
+      α : (z : A) → Id x z → R x z
+      α .x refl = ρ x
 
   abstract
     is-set-prop-in-id : is-set A
