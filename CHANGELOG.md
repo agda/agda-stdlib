@@ -350,6 +350,7 @@ Non-backwards compatible changes
   pos⇒1/pos : ∀ p .{{_ : Positive p}} → Positive (1/ p)
   1/pos⇒pos : ∀ p .{{_ : NonZero p}} .{{Positive (1/ p)}} → Positive p
   ```
+* `Opₗ` and `Opᵣ` have moved from `Algebra.Core` to `Algebra.Module.Core`.
 
 Major improvements
 ------------------
@@ -574,6 +575,11 @@ Deprecated names
 
 New modules
 -----------
+
+* Operations for module-like algebraic structures:
+  ```
+  Algebra.Module.Core
+  ```
 
 * Morphisms between module-like algebraic structures:
   ```
