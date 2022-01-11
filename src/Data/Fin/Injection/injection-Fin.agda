@@ -7,26 +7,63 @@
 {-# OPTIONS --without-K --safe #-}
 
 module Data.Fin.Injection.injection-Fin where
+            
+open import Data.Nat
+  using
+    ( ℕ)
+  renaming
+    ( suc to succ-ℕ;
+      zero to zero-ℕ)
+      
+open import Data.Unit
+  using ()
+  renaming
+    ( ⊤ to unit;
+      tt to star)
+      
+open import Data.Empty
+  using ()
+  renaming
+    ( ⊥ to empty;
+      ⊥-elim to ex-falso)
 
-open import Level using (Level; _⊔_) renaming (zero to lzero; suc to lsuc)
+open import Data.Sum.Base using ()
+  renaming (_⊎_ to coprod; inj₁ to inl; inj₂ to inr)
+
+open import Data.Product using (Σ; _×_)
+  renaming (_,_ to pair; proj₁ to pr1; proj₂ to pr2)
+
 open import Function.Base
-open import Data.Nat using (ℕ) renaming (suc to succ-ℕ; zero to zero-ℕ)
-open import Data.Unit renaming (⊤ to unit; tt to star)
-open import Data.Empty renaming (⊥ to empty; ⊥-elim to ex-falso)
-open import Data.Sum.Base renaming (_⊎_ to coprod; inj₁ to inl; inj₂ to inr)
+  using
+    ( id;
+      _∘_;
+      const)
+
+open import Level
+  using
+    ( Level; _⊔_)
+  renaming
+    ( zero to lzero;
+      suc to lsuc)
+
 open import Relation.Binary.PropositionalEquality.Core
+  using
+    ( refl; cong)
   renaming
     ( _≡_ to Id;
       sym to inv;
       trans to _∙_;
       subst to tr)
+
 open import Relation.Binary.PropositionalEquality.Properties
+  using
+    ( cong-id)
   renaming
     ( cong-∘ to cong-comp;
       trans-symˡ to left-inv;
       trans-symʳ to right-inv;
-      trans-assoc to assoc)
-open import Data.Product renaming (_,_ to pair; proj₁ to pr1; proj₂ to pr2)
+      trans-assoc to assoc;
+      subst-subst to tr-concat)
 
 module _
   {l : Level} {A : Set l}
@@ -37,11 +74,6 @@ module _
   
   right-unit : {x y : A} {p : Id x y} → Id (p ∙ refl) p
   right-unit {p = refl} = refl
-
-tr-concat :
-  {l1 l2 : Level} {A : Set l1} {B : A → Set l2} {x y z : A} (p : Id x y)
-  (q : Id y z) (b : B x) → Id (tr B (p ∙ q) b) (tr B q (tr B p b))
-tr-concat refl q b = refl
 
 inv-con :
   {i : Level} {A : Set i} {x y : A} (p : Id x y) {z : A} (q : Id y z)
@@ -59,8 +91,9 @@ square :
   (p-top : Id x y2) (p-right : Id y2 z) → Set l1
 square p-left p-bottom p-top p-right = Id (p-left ∙ p-bottom) (p-top ∙ p-right)
 
-is-injective : {l1 l2 : Level} {A : Set l1} {B : Set l2} → (A → B) → Set (l1 ⊔ l2)
-is-injective {l1} {l2} {A} {B} f = ({x y : A} → Id (f x) (f y) → Id x y)
+is-injective :
+  {l1 l2 : Level} {A : Set l1} {B : Set l2} → (A → B) → Set (l1 ⊔ l2)
+is-injective {l1} {l2} {A} {B} f = {x y : A} → Id (f x) (f y) → Id x y
 
 ¬ : {l : Level} → Set l → Set l
 ¬ A = A → empty
@@ -2204,7 +2237,7 @@ module _
   isretr-map-inv-left-unit-law-Σ-is-contr (pair x b) =
     eq-pair-Σ
       ( inv (eq-is-contr C))
-      ( ( inv (tr-concat {B = B} (eq-is-contr C) (inv (eq-is-contr C)) b)) ∙
+      ( ( tr-concat (eq-is-contr C)) ∙
         ( cong (λ t → tr B t b) (right-inv (eq-is-contr C))))
 
   abstract
