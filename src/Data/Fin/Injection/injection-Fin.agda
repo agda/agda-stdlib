@@ -12,16 +12,20 @@ open import Level using (Level; _⊔_) renaming (zero to lzero; suc to lsuc)
 open import Function.Base
 open import Data.Nat using (ℕ) renaming (suc to succ-ℕ; zero to zero-ℕ)
 open import Data.Unit renaming (⊤ to unit; tt to star)
-open import Data.Empty renaming (⊥ to empty)
+open import Data.Empty renaming (⊥ to empty; ⊥-elim to ex-falso)
 open import Data.Sum.Base renaming (_⊎_ to coprod; inj₁ to inl; inj₂ to inr)
 open import Relation.Binary.PropositionalEquality.Core
   renaming
     ( _≡_ to Id;
       sym to inv;
-      trans to _∙_)
+      trans to _∙_;
+      subst to tr)
 open import Relation.Binary.PropositionalEquality.Properties
   renaming
-    ( cong-∘ to cong-comp)
+    ( cong-∘ to cong-comp;
+      trans-symˡ to left-inv;
+      trans-symʳ to right-inv;
+      trans-assoc to assoc)
 open import Data.Product renaming (_,_ to pair; proj₁ to pr1; proj₂ to pr2)
 
 module _
@@ -31,26 +35,8 @@ module _
   concat : {x y : A} → Id x y → (z : A) → Id y z → Id x z
   concat p z q = p ∙ q
   
-  assoc :
-    {x y z w : A} (p : Id x y) (q : Id y z)
-    (r : Id z w) → Id ((p ∙ q) ∙ r) (p ∙ (q ∙ r))
-  assoc refl q r = refl
-
-  left-unit : {x y : A} {p : Id x y} → Id (refl ∙ p) p
-  left-unit = refl
-
   right-unit : {x y : A} {p : Id x y} → Id (p ∙ refl) p
   right-unit {p = refl} = refl
-
-  left-inv : {x y : A} (p : Id x y) → Id ((inv p) ∙ p) refl
-  left-inv refl = refl
-
-  right-inv : {x y : A} (p : Id x y) → Id (p ∙ (inv p)) refl
-  right-inv refl = refl
-
-tr :
-  {i j : Level} {A : Set i} (B : A → Set j) {x y : A} (p : Id x y) → B x → B y
-tr B refl b = b
 
 tr-concat :
   {l1 l2 : Level} {A : Set l1} {B : A → Set l2} {x y z : A} (p : Id x y)
@@ -65,8 +51,7 @@ inv-con refl q r = id
 con-inv :
   {i : Level} {A : Set i} {x y : A} (p : Id x y) {z : A} (q : Id y z)
   (r : Id x z) → (Id (p ∙ q) r) → Id p (r ∙ (inv q))
-con-inv p refl r =
-  ( λ α → α ∙ (inv right-unit)) ∘ (concat (inv right-unit) r)
+con-inv p refl r s = ((inv right-unit) ∙ s) ∙ (inv right-unit)
 
 square :
   {l1 : Level} {A : Set l1} {x y1 y2 z : A}
@@ -89,9 +74,6 @@ is-nonempty A = ¬ (is-empty A)
 functor-neg : {l1 l2 : Level} {P : Set l1} {Q : Set l2} →
   (P → Q) → (¬ Q → ¬ P)
 functor-neg f nq p = nq (f p)
-
-ex-falso : {l : Level} {A : Set l} → empty → A
-ex-falso ()
 
 terminal-map : {l : Level} {A : Set l} → A → unit
 terminal-map a = star
@@ -2042,7 +2024,7 @@ htpy-nat H refl = right-unit
 left-unwhisk :
   {i : Level} {A : Set i} {x y z : A} (p : Id x y) {q r : Id y z} →
   Id (p ∙ q) (p ∙ r) → Id q r
-left-unwhisk refl s = (inv left-unit) ∙ (s ∙ left-unit)
+left-unwhisk refl s = s
 
 right-unwhisk :
   {i : Level} {A : Set i} {x y z : A} {p q : Id x y}
