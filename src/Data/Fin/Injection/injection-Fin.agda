@@ -14,6 +14,7 @@ open import Data.Nat using (ℕ) renaming (suc to succ-ℕ; zero to zero-ℕ)
 open import Data.Unit renaming (⊤ to unit; tt to star)
 open import Data.Empty renaming (⊥ to empty)
 open import Data.Sum.Base renaming (_⊎_ to coprod; inj₁ to inl; inj₂ to inr)
+open import Relation.Binary.PropositionalEquality.Core renaming (_≡_ to Id)
 
 record Σ {l1 l2} (A : Set l1) (B : A → Set l2) : Set (l1 ⊔ l2) where
   constructor pair
@@ -28,9 +29,6 @@ prod A B = Σ A (λ a → B)
 
 _×_ :  {l1 l2 : Level} (A : Set l1) (B : Set l2) → Set (l1 ⊔ l2)
 A × B = prod A B
-
-data Id {i : Level} {A : Set i} (x : A) : A → Set i where
-  refl : Id x x
 
 _∙_ :
   {i : Level} {A : Set i} {x y z : A} → Id x y → Id y z → Id x z
@@ -75,19 +73,14 @@ right-inv :
   Id (p ∙ (inv p)) refl
 right-inv refl = refl
 
-ap :
-  {i j : Level} {A : Set i} {B : Set j} (f : A → B) {x y : A} (p : Id x y) →
-  Id (f x) (f y)
-ap f refl = refl
+cong-id :
+  {i : Level} {A : Set i} {x y : A} (p : Id x y) → Id (cong id p) p
+cong-id refl = refl
 
-ap-id :
-  {i : Level} {A : Set i} {x y : A} (p : Id x y) → Id (ap id p) p
-ap-id refl = refl
-
-ap-comp :
+cong-comp :
   {i j k : Level} {A : Set i} {B : Set j} {C : Set k} (g : B → C)
-  (f : A → B) {x y : A} (p : Id x y) → Id (ap (g ∘ f) p) (ap g (ap f p))
-ap-comp g f refl = refl
+  (f : A → B) {x y : A} (p : Id x y) → Id (cong (g ∘ f) p) (cong g (cong f p))
+cong-comp g f refl = refl
 
 tr :
   {i j : Level} {A : Set i} (B : A → Set j) {x y : A} (p : Id x y) → B x → B y
@@ -158,7 +151,7 @@ Eq-eq-ℕ {x} {.x} refl = refl-Eq-ℕ x
 
 eq-Eq-ℕ : (x y : ℕ) → Eq-ℕ x y → Id x y
 eq-Eq-ℕ zero-ℕ zero-ℕ e = refl
-eq-Eq-ℕ (succ-ℕ x) (succ-ℕ y) e = ap succ-ℕ (eq-Eq-ℕ x y e)
+eq-Eq-ℕ (succ-ℕ x) (succ-ℕ y) e = cong succ-ℕ (eq-Eq-ℕ x y e)
 
 is-zero-ℕ : ℕ → Set lzero
 is-zero-ℕ n = Id n zero-ℕ
@@ -308,9 +301,9 @@ decide-leq-succ-ℕ :
 decide-leq-succ-ℕ zero-ℕ zero-ℕ l = inl star
 decide-leq-succ-ℕ zero-ℕ (succ-ℕ n) l = inl star
 decide-leq-succ-ℕ (succ-ℕ m) zero-ℕ l =
-  inr (ap succ-ℕ (is-zero-leq-zero-ℕ m l))
+  inr (cong succ-ℕ (is-zero-leq-zero-ℕ m l))
 decide-leq-succ-ℕ (succ-ℕ m) (succ-ℕ n) l =
-  map-coprod id (ap succ-ℕ) (decide-leq-succ-ℕ m n l)
+  map-coprod id (cong succ-ℕ) (decide-leq-succ-ℕ m n l)
 
 -- Exercise 6.3 (a)
 
@@ -334,7 +327,7 @@ preserves-leq-succ-ℕ m n p = transitive-leq-ℕ m n (succ-ℕ n) p (succ-leq-�
 antisymmetric-leq-ℕ : (m n : ℕ) → m ≤-ℕ n → n ≤-ℕ m → Id m n
 antisymmetric-leq-ℕ zero-ℕ zero-ℕ p q = refl
 antisymmetric-leq-ℕ (succ-ℕ m) (succ-ℕ n) p q =
-  ap succ-ℕ (antisymmetric-leq-ℕ m n p q)
+  cong succ-ℕ (antisymmetric-leq-ℕ m n p q)
 
 le-ℕ : ℕ → ℕ → Set lzero
 le-ℕ m zero-ℕ = empty
@@ -363,7 +356,7 @@ preserves-le-succ-ℕ m n H =
 
 anti-symmetric-le-ℕ : (m n : ℕ) → le-ℕ m n → le-ℕ n m → Id m n
 anti-symmetric-le-ℕ (succ-ℕ m) (succ-ℕ n) p q =
-  ap succ-ℕ (anti-symmetric-le-ℕ m n p q)
+  cong succ-ℕ (anti-symmetric-le-ℕ m n p q)
 
 contradiction-le-ℕ : (m n : ℕ) → le-ℕ m n → ¬ (n ≤-ℕ m)
 contradiction-le-ℕ zero-ℕ (succ-ℕ n) H K = K
@@ -425,14 +418,14 @@ le-leq-neq-ℕ : {x y : ℕ} → x ≤-ℕ y → ¬ (Id x y) → le-ℕ x y
 le-leq-neq-ℕ {zero-ℕ} {zero-ℕ} l f = ex-falso (f refl)
 le-leq-neq-ℕ {zero-ℕ} {succ-ℕ y} l f = star
 le-leq-neq-ℕ {succ-ℕ x} {succ-ℕ y} l f =
-  le-leq-neq-ℕ {x} {y} l (λ p → f (ap succ-ℕ p))
+  le-leq-neq-ℕ {x} {y} l (λ p → f (cong succ-ℕ p))
 
 linear-le-ℕ : (x y : ℕ) → coprod (le-ℕ x y) (coprod (Id x y) (le-ℕ y x))
 linear-le-ℕ zero-ℕ zero-ℕ = inr (inl refl)
 linear-le-ℕ zero-ℕ (succ-ℕ y) = inl star
 linear-le-ℕ (succ-ℕ x) zero-ℕ = inr (inr star)
 linear-le-ℕ (succ-ℕ x) (succ-ℕ y) =
-  map-coprod id (map-coprod (ap succ-ℕ) id) (linear-le-ℕ x y)
+  map-coprod id (map-coprod (cong succ-ℕ) id) (linear-le-ℕ x y)
 
 -- Exercise 6.3 (b)
 
@@ -539,7 +532,7 @@ _∙h_ H K x = (H x) ∙ (K x)
 htpy-left-whisk :
   {i j k : Level} {A : Set i} {B : Set j} {C : Set k}
   (h : B → C) {f g : A → B} → (f ~ g) → ((h ∘ f) ~ (h ∘ g))
-htpy-left-whisk h H x = ap h (H x)
+htpy-left-whisk h H x = cong h (H x)
 
 _·l_ = htpy-left-whisk
 
@@ -922,7 +915,7 @@ module _
     is-injective-is-equiv : {f : A → B} → is-equiv f → is-injective f
     is-injective-is-equiv H {x} {y} p =
       ( inv (isretr-map-inv-is-equiv' H x)) ∙
-      ( ( ap (map-inv-is-equiv H) p) ∙
+      ( ( cong (map-inv-is-equiv H) p) ∙
         ( isretr-map-inv-is-equiv' H y))
 
   abstract
@@ -1582,8 +1575,8 @@ module _
 -}
 
   pair-eq : {s t : prod A B} → Id s t → Eq-prod s t
-  pr1 (pair-eq α) = ap pr1 α
-  pr2 (pair-eq α) = ap pr2 α
+  pr1 (pair-eq α) = cong pr1 α
+  pr2 (pair-eq α) = cong pr2 α
 
   isretr-pair-eq :
     {s t : prod A B} → ((pair-eq {s} {t}) ∘ (eq-pair' {s} {t})) ~ id
@@ -1650,7 +1643,7 @@ module _
   inv-htpy-is-equiv G H K b =
     ( inv
       ( isretr-map-inv-is-equiv' K (map-inv-is-equiv H b))) ∙
-    ( ap (map-inv-is-equiv K)
+    ( cong (map-inv-is-equiv K)
       ( ( inv (G (map-inv-is-equiv H b))) ∙
         ( issec-map-inv-is-equiv' H b)))
 
@@ -1781,7 +1774,7 @@ abstract
     {i j : Level} {A : Set i} (a : A) (is-contr-A : is-contr A) (B : A → Set j) →
     ((ev-pt a B) ∘ (ind-singleton-is-contr a is-contr-A B)) ~ id
   comp-singleton-is-contr a is-contr-A B b =
-    ap (λ ω → tr B ω b) (left-inv (contraction is-contr-A a))
+    cong (λ ω → tr B ω b) (left-inv (contraction is-contr-A a))
 
 is-singleton-is-contr :
   {l1 l2 : Level} {A : Set l1} (a : A) → is-contr A → is-singleton l2 A a
@@ -1839,7 +1832,7 @@ module _
   {- Definition 10.3.2 -}
   
   Eq-fib : fib → fib → Set (l1 ⊔ l2)
-  Eq-fib s t = Σ (Id (pr1 s) (pr1 t)) (λ α → Id ((ap f α) ∙ (pr2 t)) (pr2 s))
+  Eq-fib s t = Σ (Id (pr1 s) (pr1 t)) (λ α → Id ((cong f α) ∙ (pr2 t)) (pr2 s))
 
   {- Proposition 10.3.3 -}
   
@@ -1855,7 +1848,7 @@ module _
 
   eq-Eq-fib :
     {s t : fib} (α : Id (pr1 s) (pr1 t)) →
-    Id ((ap f α) ∙ (pr2 t)) (pr2 s) → Id s t
+    Id ((cong f α) ∙ (pr2 t)) (pr2 s) → Id s t
   eq-Eq-fib α β = eq-Eq-fib' (pair α β)
 
   issec-eq-Eq-fib : {s t : fib} → (Eq-eq-fib {s} {t} ∘ eq-Eq-fib' {s} {t}) ~ id
@@ -1910,14 +1903,15 @@ module _
   isretr-map-inv-is-contr-map :
     (H : is-contr-map f) → ((map-inv-is-contr-map H) ∘ f) ~ id
   isretr-map-inv-is-contr-map H x =
-    ap ( pr1 {B = λ z → Id (f z) (f x)})
-       ( ( inv
-           ( contraction
-             ( H (f x))
-             ( pair
-               ( map-inv-is-contr-map H (f x))
-               ( issec-map-inv-is-contr-map H (f x))))) ∙
-         ( contraction (H (f x)) (pair x refl)))
+    cong
+      ( pr1 {B = λ z → Id (f z) (f x)})
+      ( ( inv
+          ( contraction
+            ( H (f x))
+            ( pair
+              ( map-inv-is-contr-map H (f x))
+              ( issec-map-inv-is-contr-map H (f x))))) ∙
+        ( contraction (H (f x)) (pair x refl)))
 
   abstract
     is-equiv-is-contr-map : is-contr-map f → is-equiv f
@@ -2079,7 +2073,7 @@ module _
 htpy-nat :
   {i j : Level} {A : Set i} {B : Set j} {f g : A → B} (H : f ~ g)
   {x y : A} (p : Id x y) →
-  Id ((H x) ∙ (ap g p)) ((ap f p) ∙ (H y))
+  Id ((H x) ∙ (cong g p)) ((cong f p) ∙ (H y))
 htpy-nat H refl = right-unit
 
 {- Definition 10.4.4 -}
@@ -2096,10 +2090,10 @@ right-unwhisk refl s = (inv right-unit) ∙ (s ∙ right-unit)
 
 htpy-red :
   {i : Level} {A : Set i} {f : A → A} (H : f ~ id) →
-  (x : A) → Id (H (f x)) (ap f (H x))
+  (x : A) → Id (H (f x)) (cong f (H x))
 htpy-red {_} {A} {f} H x =
   right-unwhisk (H x)
-    ( ( ap (concat (H (f x)) x) (inv (ap-id (H x)))) ∙
+    ( ( cong (concat (H (f x)) x) (inv (cong-id (H x)))) ∙
       ( htpy-nat H (H x)))
 
 {- Lemma 10.4.5 -}
@@ -2114,7 +2108,7 @@ module _
   issec-inv-has-inverse : (f ∘ inv-has-inverse) ~ id
   issec-inv-has-inverse y =
     ( inv (pr1 (pr2 H) (f (inv-has-inverse y)))) ∙
-    ( ap f (pr2 (pr2 H) (inv-has-inverse y)) ∙ (pr1 (pr2 H) y))
+    ( cong f (pr2 (pr2 H) (inv-has-inverse y)) ∙ (pr1 (pr2 H) y))
   
   isretr-inv-has-inverse : (inv-has-inverse ∘ f) ~ id
   isretr-inv-has-inverse = pr2 (pr2 H)
@@ -2125,14 +2119,14 @@ module _
     inv
       ( inv-con
         ( pr1 (pr2 H) (f (inv-has-inverse (f x))))
-        ( ap f (pr2 (pr2 H) x))
-        ( (ap f (pr2 (pr2 H) (inv-has-inverse (f x)))) ∙ (pr1 (pr2 H) (f x)))
+        ( cong f (pr2 (pr2 H) x))
+        ( (cong f (pr2 (pr2 H) (inv-has-inverse (f x)))) ∙ (pr1 (pr2 H) (f x)))
         ( sq-top-whisk
           ( pr1 (pr2 H) (f (inv-has-inverse (f x))))
-          ( ap f (pr2 (pr2 H) x))
-          ( (ap (f ∘ (inv-has-inverse ∘ f)) (pr2 (pr2 H) x)))
-          ( ( ap-comp f (inv-has-inverse ∘ f) (pr2 (pr2 H) x)) ∙
-            ( inv (ap (ap f) (htpy-red (pr2 (pr2 H)) x))))
+          ( cong f (pr2 (pr2 H) x))
+          ( (cong (f ∘ (inv-has-inverse ∘ f)) (pr2 (pr2 H) x)))
+          ( ( cong-comp f (inv-has-inverse ∘ f) (pr2 (pr2 H) x)) ∙
+            ( inv (cong (cong f) (htpy-red (pr2 (pr2 H)) x))))
           ( pr1 (pr2 H) (f x))
           ( htpy-nat (htpy-right-whisk (pr1 (pr2 H)) f) (pr2 (pr2 H) x))))
 
@@ -2260,7 +2254,7 @@ module _
   issec-map-inv-left-unit-law-Σ-is-contr :
     ( map-left-unit-law-Σ-is-contr ∘ map-inv-left-unit-law-Σ-is-contr) ~ id
   issec-map-inv-left-unit-law-Σ-is-contr b =
-    ap (λ t → tr B t b) (eq-is-contr (is-prop-is-contr C a a))
+    cong (λ t → tr B t b) (eq-is-contr (is-prop-is-contr C a a))
 
   isretr-map-inv-left-unit-law-Σ-is-contr :
     ( map-inv-left-unit-law-Σ-is-contr ∘ map-left-unit-law-Σ-is-contr) ~ id
@@ -2268,7 +2262,7 @@ module _
     eq-pair-Σ
       ( inv (eq-is-contr C))
       ( ( inv (tr-concat {B = B} (eq-is-contr C) (inv (eq-is-contr C)) b)) ∙
-        ( ap (λ t → tr B t b) (right-inv (eq-is-contr C))))
+        ( cong (λ t → tr B t b) (right-inv (eq-is-contr C))))
 
   abstract
     is-equiv-map-left-unit-law-Σ-is-contr :
@@ -2465,7 +2459,7 @@ module _
     is-contr-retract-of : A retract-of B → is-contr B → is-contr A
     pr1 (is-contr-retract-of (pair i (pair r isretr)) H) = r (center H)
     pr2 (is-contr-retract-of (pair i (pair r isretr)) H) x =
-      ap r (contraction H (i x)) ∙ (isretr x)
+      cong r (contraction H (i x)) ∙ (isretr x)
 
 module _
   {i j : Level} {A : Set i} {B : A → Set j} (a : A)
@@ -2526,7 +2520,7 @@ module _
   where
 
   is-emb : (A → B) → Set (l1 ⊔ l2)
-  is-emb f = (x y : A) → is-equiv (ap f {x} {y})
+  is-emb f = (x y : A) → is-equiv (cong f {x} {y})
 
 _↪_ :
   {l1 l2 : Level} → Set l1 → Set l2 → Set (l1 ⊔ l2)
@@ -2543,7 +2537,7 @@ module _
   is-emb-map-emb f = pr2 f
 
   equiv-ap-emb : (e : A ↪ B) {x y : A} → Id x y ≃ Id (map-emb e x) (map-emb e y)
-  pr1 (equiv-ap-emb e {x} {y}) = ap (map-emb e)
+  pr1 (equiv-ap-emb e {x} {y}) = cong (map-emb e)
   pr2 (equiv-ap-emb e {x} {y}) = is-emb-map-emb e x y
 
   is-injective-is-emb : {f : A → B} → is-emb f → is-injective f
@@ -2559,7 +2553,7 @@ module _
         ( fib f (f x))
         ( equiv-tot (λ y → equiv-inv (f x) (f y)))
         ( is-contr-map-is-equiv is-equiv-f (f x)))
-      ( λ y p → ap f p)
+      ( λ y p → cong f p)
 
   emb-equiv : (A ≃ B) → (A ↪ B)
   pr1 (emb-equiv e) = map-equiv e
@@ -2567,7 +2561,7 @@ module _
 
   equiv-ap :
     (e : A ≃ B) (x y : A) → (Id x y) ≃ (Id (map-equiv e x) (map-equiv e y))
-  pr1 (equiv-ap e x y) = ap (map-equiv e) {x} {y}
+  pr1 (equiv-ap e x y) = cong (map-equiv e) {x} {y}
   pr2 (equiv-ap e x y) = is-emb-is-equiv (is-equiv-map-equiv e) x y
 
 is-prop :
@@ -2685,7 +2679,7 @@ module _
     is-prop-is-subterminal H x y =
       is-contr-is-equiv
         ( Id star star)
-        ( ap terminal-map)
+        ( cong terminal-map)
         ( H x y)
         ( is-prop-is-contr is-contr-unit star star)
 
@@ -2757,7 +2751,10 @@ module _
   abstract
     is-prop-is-equiv : {f : A → B} → is-equiv f → is-prop B → is-prop A
     is-prop-is-equiv {f} E H x y =
-      is-contr-is-equiv _ (ap f {x} {y}) (is-emb-is-equiv E x y) (H (f x) (f y))
+      is-contr-is-equiv _
+        ( cong f {x} {y})
+        ( is-emb-is-equiv E x y)
+        ( H (f x) (f y))
 
   abstract
     is-prop-equiv : A ≃ B → is-prop B → is-prop A
@@ -2790,7 +2787,7 @@ module _
           ( fib f (f x))
           ( equiv-tot (λ y → equiv-inv (f x) (f y)))
           ( is-proof-irrelevant-is-prop (is-prop-map-f (f x)) (pair x refl)))
-        ( λ y → ap f)
+        ( λ y → cong f)
 
   abstract
     is-prop-map-is-emb : is-emb f → is-prop-map f
@@ -2800,9 +2797,9 @@ module _
       α : (t : fib f y) → is-contr (fib f y)
       α (pair x refl) =
         fundamental-theorem-id' x refl
-          ( λ y → inv ∘ ap f)
+          ( λ y → inv ∘ cong f)
           ( λ y →
-            is-equiv-comp' inv (ap f)
+            is-equiv-comp' inv (cong f)
               ( is-emb-f x y)
               ( is-equiv-inv (f x) (f y)))
 
@@ -2832,7 +2829,7 @@ module _
   pr2 (emb-pr1 H) = is-emb-pr1 H
 
   equiv-ap-pr1 : is-subtype B → {s t : Σ A B} → Id s t ≃ Id (pr1 s) (pr1 t)
-  pr1 (equiv-ap-pr1 is-subtype-B {s} {t}) = ap pr1
+  pr1 (equiv-ap-pr1 is-subtype-B {s} {t}) = cong pr1
   pr2 (equiv-ap-pr1 is-subtype-B {s} {t}) = is-emb-pr1 is-subtype-B s t
 
   abstract
@@ -3286,8 +3283,8 @@ module _
   where
   
   htpy-map-coprod : (map-coprod f g) ~ (map-coprod f' g')
-  htpy-map-coprod (inl x) = ap inl (H x)
-  htpy-map-coprod (inr y) = ap inr (K y)
+  htpy-map-coprod (inl x) = cong inl (H x)
+  htpy-map-coprod (inr y) = cong inr (K y)
 
 module _
   {l1 l2 l1' l2' : Level} {A : Set l1} {B : Set l2} {A' : Set l1'} {B' : Set l2'}
@@ -3342,7 +3339,7 @@ module _
           ( Σ A (Id x))
           ( equiv-tot (compute-eq-coprod-inl-inl x))
           ( is-contr-total-path x))
-        ( λ y → ap inl)
+        ( λ y → cong inl)
 
   emb-inl : A ↪ coprod A B
   pr1 emb-inl = inl
@@ -3356,7 +3353,7 @@ module _
           ( Σ B (Id x))
           ( equiv-tot (compute-eq-coprod-inr-inr x))
           ( is-contr-total-path x))
-        ( λ y → ap inr)
+        ( λ y → cong inr)
 
   emb-inr : B ↪ coprod A B
   pr1 emb-inr = inr
@@ -3443,7 +3440,7 @@ Eq-Fin-eq {k} refl = refl-Eq-Fin {k} _
 
 eq-Eq-Fin :
   {k : ℕ} {x y : Fin k} → Eq-Fin k x y → Id x y
-eq-Eq-Fin {succ-ℕ k} {inl x} {inl y} e = ap inl (eq-Eq-Fin e)
+eq-Eq-Fin {succ-ℕ k} {inl x} {inl y} e = cong inl (eq-Eq-Fin e)
 eq-Eq-Fin {succ-ℕ k} {inr star} {inr star} star = refl
 
 is-decidable-Eq-Fin : (k : ℕ) (x y : Fin k) → is-decidable (Eq-Fin k x y)
@@ -3500,13 +3497,13 @@ module _
       (P → ¬ Q) → all-elements-equal P → all-elements-equal Q →
       all-elements-equal (coprod P Q)
     all-elements-equal-coprod f is-prop-P is-prop-Q (inl p) (inl p') =
-      ap inl (is-prop-P p p')
+      cong inl (is-prop-P p p')
     all-elements-equal-coprod f is-prop-P is-prop-Q (inl p) (inr q') =
       ex-falso (f p q')
     all-elements-equal-coprod f is-prop-P is-prop-Q (inr q) (inl p') =
       ex-falso (f p' q)
     all-elements-equal-coprod f is-prop-P is-prop-Q (inr q) (inr q') =
-      ap inr (is-prop-Q q q')
+      cong inr (is-prop-Q q q')
   
   abstract
     is-prop-coprod : (P → ¬ Q) → is-prop P → is-prop Q → is-prop (coprod P Q)
@@ -3717,7 +3714,7 @@ abstract
   is-trunc-is-equiv neg-two-𝕋 B f is-equiv-f H =
     is-contr-is-equiv B f is-equiv-f H
   is-trunc-is-equiv (succ-𝕋 k) B f is-equiv-f H x y =
-    is-trunc-is-equiv k (Id (f x) (f y)) (ap f {x} {y})
+    is-trunc-is-equiv k (Id (f x) (f y)) (cong f {x} {y})
       ( is-emb-is-equiv is-equiv-f x y) (H (f x) (f y))
 
 abstract
@@ -3777,7 +3774,11 @@ abstract
     {i j : Level} (k : 𝕋) {A : Set i} {B : Set j} (f : A → B) →
     is-emb f → is-trunc (succ-𝕋 k) B → is-trunc (succ-𝕋 k) A
   is-trunc-is-emb k f Ef H x y =
-    is-trunc-is-equiv k (Id (f x) (f y)) (ap f {x} {y}) (Ef x y) (H (f x) (f y))
+    is-trunc-is-equiv k
+      ( Id (f x) (f y))
+      ( cong f {x} {y})
+      ( Ef x y)
+      ( H (f x) (f y))
 
 abstract
   is-trunc-emb :
@@ -3796,7 +3797,7 @@ module _
   fib-ap-eq-fib-fiberwise :
     (s t : fib f b) (p : Id (pr1 s) (pr1 t)) →
     (Id (tr (λ (a : A) → Id (f a) b) p (pr2 s)) (pr2 t)) →
-    (Id (ap f p) ((pr2 s) ∙ (inv (pr2 t))))
+    (Id (cong f p) ((pr2 s) ∙ (inv (pr2 t))))
   fib-ap-eq-fib-fiberwise (pair .x' p) (pair x' refl) refl =
     inv ∘ (concat right-unit refl)
 
@@ -3814,7 +3815,7 @@ module _
 
   fib-ap-eq-fib :
     (s t : fib f b) → Id s t →
-    fib (ap f {x = pr1 s} {y = pr1 t}) ((pr2 s) ∙ (inv (pr2 t)))
+    fib (cong f {x = pr1 s} {y = pr1 t}) ((pr2 s) ∙ (inv (pr2 t)))
   pr1 (fib-ap-eq-fib s .s refl) = refl
   pr2 (fib-ap-eq-fib s .s refl) = inv (right-inv (pr2 s))
 
@@ -3869,9 +3870,9 @@ module _
   where
   
   eq-fib-fib-ap :
-    (q : Id (f x) (f y)) → Id (pair x q) (pair y refl) → fib (ap f {x} {y}) q
+    (q : Id (f x) (f y)) → Id (pair x q) (pair y refl) → fib (cong f {x} {y}) q
   eq-fib-fib-ap q =
-    (tr (fib (ap f)) right-unit) ∘ (fib-ap-eq-fib f (pair x q) (pair y refl))
+    (tr (fib (cong f)) right-unit) ∘ (fib-ap-eq-fib f (pair x q) (pair y refl))
 
   abstract
     is-equiv-eq-fib-fib-ap :
@@ -3879,11 +3880,11 @@ module _
     is-equiv-eq-fib-fib-ap q =
       is-equiv-comp
         ( eq-fib-fib-ap q)
-        ( tr (fib (ap f)) right-unit)
+        ( tr (fib (cong f)) right-unit)
         ( fib-ap-eq-fib f (pair x q) (pair y refl))
         ( refl-htpy)
         ( is-equiv-fib-ap-eq-fib f (pair x q) (pair y refl))
-        ( is-equiv-tr (fib (ap f)) right-unit)
+        ( is-equiv-tr (fib (cong f)) right-unit)
         
 module _
   {l1 l2 : Level} (k : 𝕋) {A : Set l1} {B : Set l2} (f : A → B)
@@ -3891,17 +3892,17 @@ module _
   
   abstract
     is-trunc-map-is-trunc-ap :
-      ((x y : A) → is-trunc-map k (ap f {x} {y})) → is-trunc-map (succ-𝕋 k) f
+      ((x y : A) → is-trunc-map k (cong f {x} {y})) → is-trunc-map (succ-𝕋 k) f
     is-trunc-map-is-trunc-ap is-trunc-ap-f b (pair x p) (pair x' p') =
       is-trunc-is-equiv k
-        ( fib (ap f) (p ∙ (inv p')))
+        ( fib (cong f) (p ∙ (inv p')))
         ( fib-ap-eq-fib f (pair x p) (pair x' p'))
         ( is-equiv-fib-ap-eq-fib f (pair x p) (pair x' p'))
         ( is-trunc-ap-f x x' (p ∙ (inv p')))
 
   abstract
     is-trunc-ap-is-trunc-map :
-      is-trunc-map (succ-𝕋 k) f → (x y : A) → is-trunc-map k (ap f {x} {y})
+      is-trunc-map (succ-𝕋 k) f → (x y : A) → is-trunc-map k (cong f {x} {y})
     is-trunc-ap-is-trunc-map is-trunc-map-f x y p =
       is-trunc-is-equiv' k
         ( Id (pair x p) (pair y refl))
@@ -4024,7 +4025,7 @@ refl-leq-Fin {succ-ℕ k} (inr star) = star
 antisymmetric-leq-Fin :
   {k : ℕ} {x y : Fin k} → leq-Fin x y → leq-Fin y x → Id x y
 antisymmetric-leq-Fin {succ-ℕ k} {inl x} {inl y} H K =
-  ap inl (antisymmetric-leq-Fin H K)
+  cong inl (antisymmetric-leq-Fin H K)
 antisymmetric-leq-Fin {succ-ℕ k} {inr star} {inr star} H K = refl
 
 transitive-leq-Fin :
@@ -4079,9 +4080,10 @@ abstract
   is-injective-skip-Fin :
     {k : ℕ} (x : Fin (succ-ℕ k)) → is-injective (skip-Fin x)
   is-injective-skip-Fin {succ-ℕ k} (inl x) {inl y} {inl z} p =
-    ap ( inl)
-       ( is-injective-skip-Fin x
-         ( is-injective-is-emb (is-emb-inl (Fin (succ-ℕ k)) unit) p))
+    cong
+      ( inl)
+      ( is-injective-skip-Fin x
+        ( is-injective-is-emb (is-emb-inl (Fin (succ-ℕ k)) unit) p))
   is-injective-skip-Fin {succ-ℕ k} (inl x) {inr star} {inr star} p = refl
   is-injective-skip-Fin {succ-ℕ k} (inr star) {y} {z} p =
     is-injective-is-emb (is-emb-inl (Fin (succ-ℕ k)) unit) p
@@ -4111,11 +4113,12 @@ abstract
     ¬ (Id (inl x) y) → ¬ (Id (inl x) z) →
     Id (repeat-Fin x y) (repeat-Fin x z) → Id y z
   is-almost-injective-repeat-Fin {succ-ℕ k} (inl x) {inl y} {inl z} f g p =
-    ap ( inl)
-       ( is-almost-injective-repeat-Fin x
-         ( λ q → f (ap inl q))
-         ( λ q → g (ap inl q))
-         ( is-injective-inl p))
+    cong
+      ( inl)
+      ( is-almost-injective-repeat-Fin x
+        ( λ q → f (cong inl q))
+        ( λ q → g (cong inl q))
+        ( is-injective-inl p))
   is-almost-injective-repeat-Fin {succ-ℕ k} (inl x) {inl y} {inr star} f g p =
     ex-falso (Eq-Fin-eq p)
   is-almost-injective-repeat-Fin {succ-ℕ k} (inl x) {inr star} {inl z} f g p =
@@ -4124,13 +4127,13 @@ abstract
     {succ-ℕ k} (inl x) {inr star} {inr star} f g p =
     refl
   is-almost-injective-repeat-Fin {succ-ℕ k} (inr star) {inl y} {inl z} f g p =
-    ap inl p
+    cong inl p
   is-almost-injective-repeat-Fin
     {succ-ℕ k} (inr star) {inl y} {inr star} f g p =
-    ex-falso (f (ap inl (inv p)))
+    ex-falso (f (cong inl (inv p)))
   is-almost-injective-repeat-Fin
     {succ-ℕ k} (inr star) {inr star} {inl z} f g p =
-    ex-falso (g (ap inl p))
+    ex-falso (g (cong inl p))
   is-almost-injective-repeat-Fin
     {succ-ℕ k} (inr star) {inr star} {inr star} f g p = refl
 
@@ -4182,7 +4185,7 @@ abstract
           ( p)))
   is-injective-cases-map-reduce-emb-Fin
     f (inr g) x (inl (pair y q)) x' (inl (pair y' q')) p =
-    is-injective-inl (is-injective-emb f ((inv q) ∙ (ap inl p ∙ q')))
+    is-injective-inl (is-injective-emb f ((inv q) ∙ (cong inl p ∙ q')))
   is-injective-cases-map-reduce-emb-Fin
     f (inr g) x (inl (pair y q)) x' (inr h) p =
     ex-falso
@@ -4325,9 +4328,9 @@ module _
     is-emb-htpy : is-emb g → is-emb f
     is-emb-htpy is-emb-g x y =
       is-equiv-top-is-equiv-left-square
-        ( ap g)
+        ( cong g)
         ( concat' (f x) (H y))
-        ( ap f)
+        ( cong f)
         ( concat (H x) (g y))
         ( htpy-nat H)
         ( is-equiv-concat (H x) (g y))
@@ -4344,7 +4347,7 @@ module _
       is-emb h → is-emb f
     is-emb-comp f g h H is-emb-g is-emb-h =
       is-emb-htpy f (g ∘ h) H
-        ( λ x y → is-equiv-comp (ap (g ∘ h)) (ap g) (ap h) (ap-comp g h)
+        ( λ x y → is-equiv-comp (cong (g ∘ h)) (cong g) (cong h) (cong-comp g h)
           ( is-emb-h x y)
           ( is-emb-g (h x) (h y)))
 
@@ -4364,10 +4367,10 @@ module _
       is-emb f → is-emb h
     is-emb-right-factor f g h H is-emb-g is-emb-f x y =
       is-equiv-right-factor
-        ( ap (g ∘ h))
-        ( ap g)
-        ( ap h)
-        ( ap-comp g h)
+        ( cong (g ∘ h))
+        ( cong g)
+        ( cong h)
+        ( cong-comp g h)
         ( is-emb-g (h x) (h y))
         ( is-emb-htpy (g ∘ h) f (inv-htpy H) is-emb-f x y)
 
@@ -4398,7 +4401,7 @@ strict-upper-bound-nat-Fin {succ-ℕ k} (inr star) =
   
 is-injective-nat-Fin : {k : ℕ} → is-injective (nat-Fin {k})
 is-injective-nat-Fin {succ-ℕ k} {inl x} {inl y} p =
-  ap inl (is-injective-nat-Fin p)
+  cong inl (is-injective-nat-Fin p)
 is-injective-nat-Fin {succ-ℕ k} {inl x} {inr star} p =
   ex-falso (neq-le-ℕ (strict-upper-bound-nat-Fin x) p)
 is-injective-nat-Fin {succ-ℕ k} {inr star} {inl y} p =
