@@ -15,20 +15,7 @@ open import Data.Unit renaming (⊤ to unit; tt to star)
 open import Data.Empty renaming (⊥ to empty)
 open import Data.Sum.Base renaming (_⊎_ to coprod; inj₁ to inl; inj₂ to inr)
 open import Relation.Binary.PropositionalEquality.Core renaming (_≡_ to Id)
-
-record Σ {l1 l2} (A : Set l1) (B : A → Set l2) : Set (l1 ⊔ l2) where
-  constructor pair
-  field
-    pr1 : A
-    pr2 : B pr1
-
-open Σ
-
-prod : {l1 l2 : Level} (A : Set l1) (B : Set l2) → Set (l1 ⊔ l2)
-prod A B = Σ A (λ a → B)
-
-_×_ :  {l1 l2 : Level} (A : Set l1) (B : Set l2) → Set (l1 ⊔ l2)
-A × B = prod A B
+open import Data.Product renaming (_,_ to pair; proj₁ to pr1; proj₂ to pr2)
 
 _∙_ :
   {i : Level} {A : Set i} {x y z : A} → Id x y → Id y z → Id x z
@@ -1553,11 +1540,10 @@ module _
   Eq-prod : (s t : A × B) → Set (l1 ⊔ l2)
   Eq-prod s t = (Id (pr1 s) (pr1 t)) × (Id (pr2 s) (pr2 t))
 
-  eq-pair' : {s t : prod A B} → Eq-prod s t → Id s t
+  eq-pair' : {s t : A × B} → Eq-prod s t → Id s t
   eq-pair' {pair x y} {pair .x .y} (pair refl refl) = refl
 
-  eq-pair :
-    {s t : prod A B} → Id (pr1 s) (pr1 t) → Id (pr2 s) (pr2 t) → Id s t
+  eq-pair : {s t : A × B} → Id (pr1 s) (pr1 t) → Id (pr2 s) (pr2 t) → Id s t
   eq-pair p q = eq-pair' (pair p q)
 
 {- Ideally, we would use the 3-for-2 property of equivalences to show that 
@@ -1574,26 +1560,22 @@ module _
    equivalence is quickest for now. 
 -}
 
-  pair-eq : {s t : prod A B} → Id s t → Eq-prod s t
+  pair-eq : {s t : A × B} → Id s t → Eq-prod s t
   pr1 (pair-eq α) = cong pr1 α
   pr2 (pair-eq α) = cong pr2 α
 
-  isretr-pair-eq :
-    {s t : prod A B} → ((pair-eq {s} {t}) ∘ (eq-pair' {s} {t})) ~ id
+  isretr-pair-eq : {s t : A × B} → ((pair-eq {s} {t}) ∘ (eq-pair' {s} {t})) ~ id
   isretr-pair-eq {pair x y} {pair .x .y} (pair refl refl) = refl
 
-  issec-pair-eq :
-    {s t : prod A B} → ((eq-pair' {s} {t}) ∘ (pair-eq {s} {t})) ~ id
+  issec-pair-eq : {s t : A × B} → ((eq-pair' {s} {t}) ∘ (pair-eq {s} {t})) ~ id
   issec-pair-eq {pair x y} {pair .x .y} refl = refl
 
   abstract
-    is-equiv-eq-pair :
-      (s t : prod A B) → is-equiv (eq-pair' {s} {t})
+    is-equiv-eq-pair : (s t : A × B) → is-equiv (eq-pair' {s} {t})
     is-equiv-eq-pair s t =
       is-equiv-has-inverse pair-eq issec-pair-eq isretr-pair-eq
 
-  equiv-eq-pair :
-    (s t : prod A B) → Eq-prod s t ≃ Id s t
+  equiv-eq-pair : (s t : A × B) → Eq-prod s t ≃ Id s t
   pr1 (equiv-eq-pair s t) = eq-pair'
   pr2 (equiv-eq-pair s t) = is-equiv-eq-pair s t
 
