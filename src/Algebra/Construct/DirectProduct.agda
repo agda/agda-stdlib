@@ -211,7 +211,9 @@ ring R S = record
   { -_     = uncurry (λ x y → R.-_ x , S.-_ y)
   ; isRing = record
       { +-isAbelianGroup = AbelianGroup.isAbelianGroup A
-      ; *-isMonoid       = Semiring.*-isMonoid Semi
+      ; *-cong           = Semiring.*-cong Semi
+      ; *-assoc          = Semiring.*-assoc Semi
+      ; *-identity       = Semiring.*-identity Semi
       ; distrib          = Semiring.distrib Semi
       ; zero             = Semiring.zero Semi
       }

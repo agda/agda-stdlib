@@ -154,7 +154,9 @@ record IsRingWithoutAnnihilatingZero (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A)
   isRing : IsRing + * -_ 0# 1#
   isRing = record
     { +-isAbelianGroup = +-isAbelianGroup
-    ; *-isMonoid       = *-isMonoid
+    ; *-cong           = *.∙-cong
+    ; *-assoc          = *.assoc
+    ; *-identity       = *.identity
     ; distrib          = distrib
     ; zero             = zero
     }

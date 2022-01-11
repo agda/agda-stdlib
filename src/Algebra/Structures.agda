@@ -503,7 +503,9 @@ record IsCancellativeCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a �
 record IsRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
   field
     +-isAbelianGroup : IsAbelianGroup + 0# -_
-    *-isMonoid       : IsMonoid * 1#
+    *-cong           : Congruent₂ *
+    *-assoc          : Associative *
+    *-identity       : Identity 1# *
     distrib          : * DistributesOver +
     zero             : Zero 0# *
 
@@ -533,18 +535,31 @@ record IsRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
     ; isGroup                 to +-isGroup
     )
 
+  *-isMagma : IsMagma *
+  *-isMagma = record
+    { isEquivalence = isEquivalence
+    ; ∙-cong        = *-cong
+    }
+
+  *-isSemigroup : IsSemigroup *
+  *-isSemigroup = record
+    { isMagma = *-isMagma
+    ; assoc   = *-assoc
+    }
+
+  *-isMonoid : IsMonoid * 1#
+  *-isMonoid = record
+    { isSemigroup = *-isSemigroup
+    ; identity    = *-identity
+    }
+
   open IsMonoid *-isMonoid public
     using ()
     renaming
-    ( assoc       to *-assoc
-    ; ∙-cong      to *-cong
-    ; ∙-congˡ     to *-congˡ
+    ( ∙-congˡ     to *-congˡ
     ; ∙-congʳ     to *-congʳ
-    ; identity    to *-identity
     ; identityˡ   to *-identityˡ
     ; identityʳ   to *-identityʳ
-    ; isMagma     to *-isMagma
-    ; isSemigroup to *-isSemigroup
     )
 
   zeroˡ : LeftZero 0# *

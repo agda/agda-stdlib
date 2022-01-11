@@ -518,7 +518,9 @@ module XorRing
   ⊕-∧-isRing : IsRing _⊕_ _∧_ id ⊥ ⊤
   ⊕-∧-isRing = record
     { +-isAbelianGroup = ⊕-⊥-isAbelianGroup
-    ; *-isMonoid = ∧-⊤-isMonoid
+    ; *-cong = ∧-cong
+    ; *-assoc = ∧-assoc
+    ; *-identity = ∧-identity
     ; distrib = ∧-distrib-⊕
     ; zero = ∧-zero
     }
