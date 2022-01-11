@@ -260,7 +260,8 @@ record IsAbelianGroup (∙ : Op₂ A)
 record IsNearSemiring (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
   field
     +-isMonoid    : IsMonoid + 0#
-    *-isSemigroup : IsSemigroup *
+    *-cong        : Congruent₂ *
+    *-assoc       : Associative *
     distribʳ      : * DistributesOverʳ +
     zeroˡ         : LeftZero 0# *
 
@@ -278,14 +279,23 @@ record IsNearSemiring (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
     ; isSemigroup   to +-isSemigroup
     )
 
-  open IsSemigroup *-isSemigroup public
+  *-isMagma : IsMagma *
+  *-isMagma = record
+    { isEquivalence = isEquivalence
+    ; ∙-cong        = *-cong
+    }
+
+  *-isSemigroup : IsSemigroup *
+  *-isSemigroup = record
+    { isMagma = *-isMagma
+    ; assoc   = *-assoc
+    }
+
+  open IsMagma *-isMagma public
     using ()
     renaming
-    ( assoc    to *-assoc
-    ; ∙-cong   to *-cong
-    ; ∙-congˡ  to *-congˡ
+    ( ∙-congˡ  to *-congˡ
     ; ∙-congʳ  to *-congʳ
-    ; isMagma  to *-isMagma
     )
 
 
@@ -304,6 +314,16 @@ record IsSemiringWithoutOne (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
     ; isCommutativeSemigroup to +-isCommutativeSemigroup
     )
 
+  open IsSemigroup *-isSemigroup public
+    using ()
+    renaming
+    ( ∙-cong  to *-cong
+    ; ∙-congˡ to *-congˡ
+    ; ∙-congʳ to *-congʳ
+    ; assoc   to *-assoc
+    ; isMagma to *-isMagma
+    )
+
   zeroˡ : LeftZero 0# *
   zeroˡ = proj₁ zero
 
@@ -313,14 +333,11 @@ record IsSemiringWithoutOne (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
   isNearSemiring : IsNearSemiring + * 0#
   isNearSemiring = record
     { +-isMonoid    = +-isMonoid
-    ; *-isSemigroup = *-isSemigroup
+    ; *-cong        = *-cong
+    ; *-assoc       = *-assoc
     ; distribʳ      = proj₂ distrib
     ; zeroˡ         = zeroˡ
     }
-
-  open IsNearSemiring isNearSemiring public
-    hiding (+-isMonoid; zeroˡ; *-isSemigroup)
-
 
 record IsCommutativeSemiringWithoutOne
          (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
