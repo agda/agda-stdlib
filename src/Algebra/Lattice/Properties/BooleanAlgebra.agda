@@ -136,7 +136,9 @@ open DistribLatticeProperties distributiveLattice public
 ∨-∧-isSemiring = record
   { isSemiringWithoutAnnihilatingZero = record
     { +-isCommutativeMonoid = ∨-⊥-isCommutativeMonoid
-    ; *-isMonoid = ∧-⊤-isMonoid
+    ; *-cong = ∧-cong
+    ; *-assoc = ∧-assoc
+    ; *-identity = ∧-identity
     ; distrib = ∧-∨-distrib
     }
   ; zero = ∧-zero
@@ -146,7 +148,9 @@ open DistribLatticeProperties distributiveLattice public
 ∧-∨-isSemiring = record
   { isSemiringWithoutAnnihilatingZero = record
     { +-isCommutativeMonoid = ∧-⊤-isCommutativeMonoid
-    ; *-isMonoid = ∨-⊥-isMonoid
+    ; *-cong = ∨-cong
+    ; *-assoc = ∨-assoc
+    ; *-identity = ∨-identity
     ; distrib = ∨-∧-distrib
     }
   ; zero = ∨-zero

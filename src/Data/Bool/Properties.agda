@@ -506,7 +506,9 @@ true  <? _     = no  (λ())
 ∨-∧-isSemiring = record
   { isSemiringWithoutAnnihilatingZero = record
     { +-isCommutativeMonoid = ∨-isCommutativeMonoid
-    ; *-isMonoid = ∧-isMonoid
+    ; *-cong = cong₂ _∧_
+    ; *-assoc = ∧-assoc
+    ; *-identity = ∧-identity
     ; distrib = ∧-distrib-∨
     }
   ; zero = ∧-zero
@@ -532,7 +534,9 @@ true  <? _     = no  (λ())
 ∧-∨-isSemiring = record
   { isSemiringWithoutAnnihilatingZero = record
     { +-isCommutativeMonoid = ∧-isCommutativeMonoid
-    ; *-isMonoid = ∨-isMonoid
+    ; *-cong = cong₂ _∨_
+    ; *-assoc = ∨-assoc
+    ; *-identity = ∨-identity
     ; distrib = ∨-distrib-∧
     }
   ; zero = ∨-zero

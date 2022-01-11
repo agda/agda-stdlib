@@ -77,7 +77,9 @@ record IsCommutativeSemiringˡ (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) whe
     { isSemiring = record
       { isSemiringWithoutAnnihilatingZero = record
         { +-isCommutativeMonoid = +-isCommutativeMonoid
-        ; *-isMonoid            = *.isMonoid
+        ; *-cong                = *.∙-cong
+        ; *-assoc               = *.assoc
+        ; *-identity            = *.identity
         ; distrib               = comm+distrʳ⇒distr +.setoid +.∙-cong *.comm distribʳ
         }
       ; zero = comm+zeˡ⇒ze +.setoid *.comm zeroˡ
@@ -104,7 +106,9 @@ record IsCommutativeSemiringʳ (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) whe
     { isSemiring = record
       { isSemiringWithoutAnnihilatingZero = record
         { +-isCommutativeMonoid = +-isCommutativeMonoid
-        ; *-isMonoid            = *.isMonoid
+        ; *-cong                = *.∙-cong
+        ; *-assoc               = *.assoc
+        ; *-identity            = *.identity
         ; distrib               = comm+distrˡ⇒distr +.setoid +.∙-cong *.comm distribˡ
         }
       ; zero = comm+zeʳ⇒ze +.setoid *.comm zeroʳ

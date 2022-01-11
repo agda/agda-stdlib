@@ -377,7 +377,9 @@ record IsSemiringWithoutAnnihilatingZero (+ * : Op₂ A)
     -- Note that these structures do have an additive unit, but this
     -- unit does not necessarily annihilate multiplication.
     +-isCommutativeMonoid : IsCommutativeMonoid + 0#
-    *-isMonoid            : IsMonoid * 1#
+    *-cong                : Congruent₂ *
+    *-assoc               : Associative *
+    *-identity            : Identity 1# *
     distrib               : * DistributesOver +
 
   distribˡ : * DistributesOverˡ +
@@ -404,18 +406,31 @@ record IsSemiringWithoutAnnihilatingZero (+ * : Op₂ A)
     ; isCommutativeSemigroup to +-isCommutativeSemigroup
     )
 
+  *-isMagma : IsMagma *
+  *-isMagma = record
+    { isEquivalence = isEquivalence
+    ; ∙-cong        = *-cong
+    }
+
+  *-isSemigroup : IsSemigroup *
+  *-isSemigroup = record
+    { isMagma = *-isMagma
+    ; assoc   = *-assoc
+    }
+
+  *-isMonoid : IsMonoid * 1#
+  *-isMonoid = record
+    { isSemigroup = *-isSemigroup
+    ; identity    = *-identity
+    }
+
   open IsMonoid *-isMonoid public
     using ()
     renaming
-    ( assoc       to *-assoc
-    ; ∙-cong      to *-cong
-    ; ∙-congˡ     to *-congˡ
+    ( ∙-congˡ     to *-congˡ
     ; ∙-congʳ     to *-congʳ
-    ; identity    to *-identity
     ; identityˡ   to *-identityˡ
     ; identityʳ   to *-identityʳ
-    ; isMagma     to *-isMagma
-    ; isSemigroup to *-isSemigroup
     )
 
 
@@ -542,7 +557,9 @@ record IsRing (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
     : IsSemiringWithoutAnnihilatingZero + * 0# 1#
   isSemiringWithoutAnnihilatingZero = record
     { +-isCommutativeMonoid = +-isCommutativeMonoid
-    ; *-isMonoid            = *-isMonoid
+    ; *-cong                = *-cong
+    ; *-assoc               = *-assoc
+    ; *-identity            = *-identity
     ; distrib               = distrib
     }
 

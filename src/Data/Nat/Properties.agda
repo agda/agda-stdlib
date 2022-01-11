@@ -811,7 +811,9 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
 +-*-isSemiring = record
   { isSemiringWithoutAnnihilatingZero = record
     { +-isCommutativeMonoid = +-0-isCommutativeMonoid
-    ; *-isMonoid            = *-1-isMonoid
+    ; *-cong                = cong₂ _*_
+    ; *-assoc               = *-assoc
+    ; *-identity            = *-identity
     ; distrib               = *-distrib-+
     }
   ; zero = *-zero
