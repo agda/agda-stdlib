@@ -138,7 +138,8 @@ isSemiringWithoutOne : ∀ {+ * 0#} →
   IsSemiringWithoutOne ≈₁ + * 0# → IsSemiringWithoutOne ≈₂ + * 0#
 isSemiringWithoutOne {+} {*} S = record
   { +-isCommutativeMonoid = isCommutativeMonoid S.+-isCommutativeMonoid
-  ; *-isSemigroup         = isSemigroup S.*-isSemigroup
+  ; *-cong                = cong₂ S.*-cong
+  ; *-assoc               = assoc {*} S.*-assoc
   ; distrib               = distrib {*} {+} S.distrib
   ; zero                  = Prod.map (to ∘_) (to ∘_) S.zero
   } where module S = IsSemiringWithoutOne S

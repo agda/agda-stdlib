@@ -1309,7 +1309,8 @@ m⊔n≤m+n m n with ⊔-sel m n
 ⊔-⊓-isSemiringWithoutOne : IsSemiringWithoutOne _⊔_ _⊓_ 0
 ⊔-⊓-isSemiringWithoutOne = record
   { +-isCommutativeMonoid = ⊔-0-isCommutativeMonoid
-  ; *-isSemigroup         = ⊓-isSemigroup
+  ; *-cong                = cong₂ _⊓_
+  ; *-assoc               = ⊓-assoc
   ; distrib               = ⊓-distrib-⊔
   ; zero                  = ⊓-zero
   }

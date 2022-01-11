@@ -302,11 +302,13 @@ record IsNearSemiring (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
 record IsSemiringWithoutOne (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
   field
     +-isCommutativeMonoid : IsCommutativeMonoid + 0#
-    *-isSemigroup         : IsSemigroup *
+    *-cong                : Congruent₂ *
+    *-assoc               : Associative *
     distrib               : * DistributesOver +
     zero                  : Zero 0# *
 
-  open IsCommutativeMonoid +-isCommutativeMonoid public using ()
+  open IsCommutativeMonoid +-isCommutativeMonoid public
+    using (isEquivalence)
     renaming
     ( comm                   to +-comm
     ; isMonoid               to +-isMonoid
@@ -314,14 +316,23 @@ record IsSemiringWithoutOne (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
     ; isCommutativeSemigroup to +-isCommutativeSemigroup
     )
 
-  open IsSemigroup *-isSemigroup public
+  *-isMagma : IsMagma *
+  *-isMagma = record
+    { isEquivalence = isEquivalence
+    ; ∙-cong        = *-cong
+    }
+
+  *-isSemigroup : IsSemigroup *
+  *-isSemigroup = record
+    { isMagma = *-isMagma
+    ; assoc   = *-assoc
+    }
+
+  open IsMagma *-isMagma public
     using ()
     renaming
-    ( ∙-cong  to *-cong
-    ; ∙-congˡ to *-congˡ
+    ( ∙-congˡ to *-congˡ
     ; ∙-congʳ to *-congʳ
-    ; assoc   to *-assoc
-    ; isMagma to *-isMagma
     )
 
   zeroˡ : LeftZero 0# *
@@ -420,7 +431,8 @@ record IsSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
   isSemiringWithoutOne : IsSemiringWithoutOne + * 0#
   isSemiringWithoutOne = record
     { +-isCommutativeMonoid = +-isCommutativeMonoid
-    ; *-isSemigroup         = *-isSemigroup
+    ; *-cong                = *-cong
+    ; *-assoc               = *-assoc
     ; distrib               = distrib
     ; zero                  = zero
     }
