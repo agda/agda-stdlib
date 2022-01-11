@@ -14,55 +14,39 @@ open import Data.Nat using (ℕ) renaming (suc to succ-ℕ; zero to zero-ℕ)
 open import Data.Unit renaming (⊤ to unit; tt to star)
 open import Data.Empty renaming (⊥ to empty)
 open import Data.Sum.Base renaming (_⊎_ to coprod; inj₁ to inl; inj₂ to inr)
-open import Relation.Binary.PropositionalEquality.Core renaming (_≡_ to Id)
+open import Relation.Binary.PropositionalEquality.Core
+  renaming
+    ( _≡_ to Id;
+      sym to inv;
+      trans to _∙_)
 open import Data.Product renaming (_,_ to pair; proj₁ to pr1; proj₂ to pr2)
 
-_∙_ :
-  {i : Level} {A : Set i} {x y z : A} → Id x y → Id y z → Id x z
-refl ∙ q = q
+module _
+  {l : Level} {A : Set l}
+  where
+  
+  concat : {x y : A} → Id x y → (z : A) → Id y z → Id x z
+  concat p z q = p ∙ q
+  
+  assoc :
+    {x y z w : A} (p : Id x y) (q : Id y z)
+    (r : Id z w) → Id ((p ∙ q) ∙ r) (p ∙ (q ∙ r))
+  assoc refl q r = refl
 
-concat :
-  {i : Level} {A : Set i} {x y : A} → Id x y → (z : A) → Id y z → Id x z
-concat p z q = p ∙ q
+  left-unit : {x y : A} {p : Id x y} → Id (refl ∙ p) p
+  left-unit = refl
 
--- Definition 5.2.2
+  right-unit : {x y : A} {p : Id x y} → Id (p ∙ refl) p
+  right-unit {p = refl} = refl
 
-inv :
-  {i : Level} {A : Set i} {x y : A} → Id x y → Id y x
-inv refl = refl
+  left-inv : {x y : A} (p : Id x y) → Id ((inv p) ∙ p) refl
+  left-inv refl = refl
 
--- Definition 5.2.3
+  right-inv : {x y : A} (p : Id x y) → Id (p ∙ (inv p)) refl
+  right-inv refl = refl
 
-assoc :
-  {i : Level} {A : Set i} {x y z w : A} (p : Id x y) (q : Id y z)
-  (r : Id z w) → Id ((p ∙ q) ∙ r) (p ∙ (q ∙ r))
-assoc refl q r = refl
-
--- Definition 5.2.4
-
-left-unit :
-  {i : Level} {A : Set i} {x y : A} {p : Id x y} → Id (refl ∙ p) p
-left-unit = refl
-
-right-unit :
-  {i : Level} {A : Set i} {x y : A} {p : Id x y} → Id (p ∙ refl) p
-right-unit {p = refl} = refl
-
--- Definition 5.2.5
-
-left-inv :
-  {i : Level} {A : Set i} {x y : A} (p : Id x y) →
-  Id ((inv p) ∙ p) refl
-left-inv refl = refl
-
-right-inv :
-  {i : Level} {A : Set i} {x y : A} (p : Id x y) →
-  Id (p ∙ (inv p)) refl
-right-inv refl = refl
-
-cong-id :
-  {i : Level} {A : Set i} {x y : A} (p : Id x y) → Id (cong id p) p
-cong-id refl = refl
+  cong-id : {x y : A} (p : Id x y) → Id (cong id p) p
+  cong-id refl = refl
 
 cong-comp :
   {i j k : Level} {A : Set i} {B : Set j} {C : Set k} (g : B → C)
