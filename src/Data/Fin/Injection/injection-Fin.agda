@@ -19,6 +19,9 @@ open import Relation.Binary.PropositionalEquality.Core
     ( _≡_ to Id;
       sym to inv;
       trans to _∙_)
+open import Relation.Binary.PropositionalEquality.Properties
+  renaming
+    ( cong-∘ to cong-comp)
 open import Data.Product renaming (_,_ to pair; proj₁ to pr1; proj₂ to pr2)
 
 module _
@@ -44,14 +47,6 @@ module _
 
   right-inv : {x y : A} (p : Id x y) → Id (p ∙ (inv p)) refl
   right-inv refl = refl
-
-  cong-id : {x y : A} (p : Id x y) → Id (cong id p) p
-  cong-id refl = refl
-
-cong-comp :
-  {i j k : Level} {A : Set i} {B : Set j} {C : Set k} (g : B → C)
-  (f : A → B) {x y : A} (p : Id x y) → Id (cong (g ∘ f) p) (cong g (cong f p))
-cong-comp g f refl = refl
 
 tr :
   {i j : Level} {A : Set i} (B : A → Set j) {x y : A} (p : Id x y) → B x → B y
@@ -2091,7 +2086,7 @@ module _
           ( pr1 (pr2 H) (f (inv-has-inverse (f x))))
           ( cong f (pr2 (pr2 H) x))
           ( (cong (f ∘ (inv-has-inverse ∘ f)) (pr2 (pr2 H) x)))
-          ( ( cong-comp f (inv-has-inverse ∘ f) (pr2 (pr2 H) x)) ∙
+          ( ( cong-comp (pr2 (pr2 H) x)) ∙
             ( inv (cong (cong f) (htpy-red (pr2 (pr2 H)) x))))
           ( pr1 (pr2 H) (f x))
           ( htpy-nat (htpy-right-whisk (pr1 (pr2 H)) f) (pr2 (pr2 H) x))))
@@ -4313,7 +4308,7 @@ module _
       is-emb h → is-emb f
     is-emb-comp f g h H is-emb-g is-emb-h =
       is-emb-htpy f (g ∘ h) H
-        ( λ x y → is-equiv-comp (cong (g ∘ h)) (cong g) (cong h) (cong-comp g h)
+        ( λ x y → is-equiv-comp (cong (g ∘ h)) (cong g) (cong h) cong-comp
           ( is-emb-h x y)
           ( is-emb-g (h x) (h y)))
 
@@ -4336,7 +4331,7 @@ module _
         ( cong (g ∘ h))
         ( cong g)
         ( cong h)
-        ( cong-comp g h)
+        ( cong-comp)
         ( is-emb-g (h x) (h y))
         ( is-emb-htpy (g ∘ h) f (inv-htpy H) is-emb-f x y)
 
