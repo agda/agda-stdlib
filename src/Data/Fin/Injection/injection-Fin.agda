@@ -85,12 +85,6 @@ con-inv :
   (r : Id x z) → (Id (p ∙ q) r) → Id p (r ∙ (inv q))
 con-inv p refl r s = ((inv right-unit) ∙ s) ∙ (inv right-unit)
 
-square :
-  {l1 : Level} {A : Set l1} {x y1 y2 z : A}
-  (p-left : Id x y1) (p-bottom : Id y1 z)
-  (p-top : Id x y2) (p-right : Id y2 z) → Set l1
-square p-left p-bottom p-top p-right = Id (p-left ∙ p-bottom) (p-top ∙ p-right)
-
 is-injective :
   {l1 l2 : Level} {A : Set l1} {B : Set l2} → (A → B) → Set (l1 ⊔ l2)
 is-injective {l1} {l2} {A} {B} f = {x y : A} → Id (f x) (f y) → Id x y
@@ -526,17 +520,11 @@ htpy-right-whisk H f x = H (f x)
 
 _·r_ = htpy-right-whisk
 
-sq-left-whisk :
-  {i : Level} {A : Set i} {x y1 y2 z : A} {p1 p1' : Id x y1}
-  (s : Id p1 p1') {q1 : Id y1 z} {p2 : Id x y2} {q2 : Id y2 z} →
-  square p1 q1 p2 q2 → square p1' q1 p2 q2
-sq-left-whisk refl sq = sq
-
 sq-top-whisk :
   {i : Level} {A : Set i} {x y1 y2 z : A}
   (p1 : Id x y1) (q1 : Id y1 z)
   (p2 : Id x y2) {p2' : Id x y2} (s : Id p2 p2') (q2 : Id y2 z) →
-  square p1 q1 p2 q2 → square p1 q1 p2' q2
+  Id (p1 ∙ q1) (p2 ∙ q2) → Id (p1 ∙ q1) (p2' ∙ q2)
 sq-top-whisk p1 q1 p2 refl q2 sq = sq
 
 module _
