@@ -13,7 +13,9 @@ open import Data.Fin.Base using (Fin; toℕ; pinch)
   renaming
     ( zero to zero-Fin;
       suc to succ-Fin)
-open import Data.Fin.Properties using (toℕ-injective)
+open import Data.Fin.Properties using (¬Fin0; toℕ-injective)
+  renaming
+    ( suc-injective to is-injective-succ-Fin)
 open import Data.Nat.Base using (ℕ; _≤_; z≤n; s≤s; _<_)
   renaming (suc to succ-ℕ; zero to zero-ℕ)
 open import Data.Nat.Properties using (≤-refl; <-trans)
@@ -78,9 +80,6 @@ neq-le-ℕ {succ-ℕ x} {succ-ℕ .x} (s≤s H) refl = neq-le-ℕ H refl
       
 -- Finite types
 
-is-⊥-Fin-zero-ℕ : ¬ (Fin 0)
-is-⊥-Fin-zero-ℕ ()
-
 is-zero-Fin : {k : ℕ} (x : Fin (succ-ℕ k)) → Set lzero
 is-zero-Fin x = x ≡ zero-Fin
 
@@ -89,9 +88,6 @@ is-nonzero-Fin x = ¬ (is-zero-Fin x)
 
 is-nonzero-succ-Fin : {k : ℕ} {x : Fin k} → is-nonzero-Fin (succ-Fin x)
 is-nonzero-succ-Fin ()
-
-is-injective-succ-Fin : {k : ℕ} → Injective _≡_ _≡_ (succ-Fin {k})
-is-injective-succ-Fin {k} refl = refl
 
 is-succ-Fin : {k : ℕ} (x : Fin k) → Set lzero
 is-succ-Fin {succ-ℕ k} x = Σ (Fin k) (λ y → (succ-Fin y) ≡ x)
@@ -212,7 +208,7 @@ leq-inj-Fin : {k l : ℕ} → Fin k ↣ Fin l → k ≤ l
 leq-inj-Fin {zero-ℕ} {zero-ℕ} f = ≤-refl
 leq-inj-Fin {zero-ℕ} {succ-ℕ l} f = z≤n
 leq-inj-Fin {succ-ℕ k} {zero-ℕ} f =
-  ⊥-elim (is-⊥-Fin-zero-ℕ (map-inj f zero-Fin))
+  ⊥-elim (¬Fin0 (map-inj f zero-Fin))
 leq-inj-Fin {succ-ℕ k} {succ-ℕ l} f =
   s≤s (leq-inj-Fin (reduce-inj-Fin k l f))
 
