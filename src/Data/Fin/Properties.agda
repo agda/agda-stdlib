@@ -47,6 +47,9 @@ open import Relation.Unary.Properties using (U?)
 ¬Fin0 : ¬ Fin 0
 ¬Fin0 ()
 
+zero≢suc : {k : ℕ} (x : Fin k) → Fin.zero ≢ Fin.suc x
+zero≢suc x ()
+
 ------------------------------------------------------------------------
 -- Bundles
 

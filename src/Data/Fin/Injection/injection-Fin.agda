@@ -9,12 +9,13 @@
 module Data.Fin.Injection.injection-Fin where
             
 open import Data.Empty using (⊥; ⊥-elim)
-open import Data.Fin.Base as Fin using (Fin; toℕ; punchOut; pinch)
-open import Data.Fin.Properties as Fin using (¬Fin0; toℕ-injective; punchOut-injective)
+open import Data.Fin.Base using (Fin; zero; suc; toℕ; punchOut; pinch)
+open import Data.Fin.Properties using (¬Fin0; zero≢suc; toℕ-injective; punchOut-injective; suc-injective)
 open import Data.Nat.Base as ℕ using (ℕ; _≤_; z≤n; s≤s; _<_)
-open import Data.Nat.Properties using (≤-refl; ≤⇒≯)
+open import Data.Nat.Properties using (≤-refl; ≤⇒≯; <-irrefl)
 open import Function.Bundles as Bundles using (_↣_; mk↣)
-open import Function.Construct.Composition as Comp
+open import Function.Consequences using (contraInjective)
+open import Function.Construct.Composition as Comp hiding (injective)
 open import Function.Definitions using (Injective)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; sym; cong; _≢_)
 open import Relation.Nullary using (¬_)
@@ -22,72 +23,51 @@ open import Relation.Nullary.Negation.Core using (contraposition)
 
 --------------------------------------------------------------------------------
       
--- Finite types
+reduceInj :
+  {k l : ℕ} {f : Fin (ℕ.suc k) → Fin (ℕ.suc l)} →
+  Injective _≡_ _≡_ f → Fin k → Fin l
+reduceInj H x = punchOut (contraposition H (zero≢suc x))
 
-is-nonzero-succ-Fin : {k : ℕ} {x : Fin k} → Fin.zero ≢ Fin.suc x
-is-nonzero-succ-Fin ()
-
-map-reduce-inj-Fin :
-  {k l : ℕ} (f : Fin (ℕ.suc k) ↣ Fin (ℕ.suc l)) → Fin k → Fin l
-map-reduce-inj-Fin f x =
-  punchOut
-    ( contraposition (Bundles.Injection.injective f) (is-nonzero-succ-Fin {x = x}))
-
-is-injective-map-reduce-inj-Fin :
-  {k l : ℕ} (f : Fin (ℕ.suc k) ↣ Fin (ℕ.suc l)) →
-  Injective _≡_ _≡_ (map-reduce-inj-Fin f)
-is-injective-map-reduce-inj-Fin f {x} {y} p =
-  Fin.suc-injective
-    ( Bundles.Injection.injective f
-      ( punchOut-injective
-        ( contraposition
-          ( Bundles.Injection.injective f)
-          ( is-nonzero-succ-Fin))
-        ( contraposition
-          ( Bundles.Injection.injective f)
-          ( is-nonzero-succ-Fin))
-        ( p)))
-
-reduce-inj-Fin : {k l : ℕ} → Fin (ℕ.suc k) ↣ Fin (ℕ.suc l) → Fin k ↣ Fin l
-reduce-inj-Fin f = mk↣ (is-injective-map-reduce-inj-Fin f)
-
-leq-inj-Fin : {k l : ℕ} → Fin k ↣ Fin l → k ≤ l
-leq-inj-Fin {ℕ.zero} {_} f = z≤n
-leq-inj-Fin {ℕ.suc k} {ℕ.zero} f =
-  ⊥-elim (¬Fin0 (Bundles.Injection.f f Fin.zero))
-leq-inj-Fin {ℕ.suc k} {ℕ.suc l} f =
-  s≤s (leq-inj-Fin (reduce-inj-Fin f))
+reduceInj-injective :
+  {k l : ℕ} {f : Fin (ℕ.suc k) → Fin (ℕ.suc l)} (H : Injective _≡_ _≡_ f) →
+  Injective _≡_ _≡_ (reduceInj H)
+reduceInj-injective H p =
+  suc-injective
+    ( H ( punchOut-injective
+          ( contraInjective _≡_ _≡_ H (zero≢suc _))
+          ( contraInjective _≡_ _≡_ H (zero≢suc _))
+          ( p)))
 
 abstract
-  leq-is-injective-Fin :
+  Injective-≤ :
     {k l : ℕ} {f : Fin k → Fin l} → Injective _≡_ _≡_ f → k ≤ l
-  leq-is-injective-Fin {k} {l} {f} H = leq-inj-Fin (mk↣ H)
+  Injective-≤ {ℕ.zero} {l} {f} H = z≤n
+  Injective-≤ {ℕ.suc k} {ℕ.zero} {f} H = ⊥-elim (¬Fin0 (f zero))
+  Injective-≤ {ℕ.suc k} {ℕ.suc l} {f} H =
+    s≤s (Injective-≤ (reduceInj-injective H))
 
--- Finally, we show that there is no injection ℕ ↣ Fin k
+-- Any function f : ℕ → Fin k is not injective
 
-inj-toℕ : (k : ℕ) → Fin k ↣ ℕ
-inj-toℕ k = mk↣ toℕ-injective
+ℕ⇒Fin-notInjective : {k : ℕ} (f : ℕ → Fin k) → ¬ (Injective _≡_ _≡_ f)
+ℕ⇒Fin-notInjective f H =
+  <-irrefl refl (Injective-≤ (Comp.injective _≡_ _≡_ _≡_ toℕ-injective H))
 
-no-injection-ℕ-Fin : (k : ℕ) → ¬ (ℕ ↣ Fin k)
-no-injection-ℕ-Fin k f =
-  ≤⇒≯ ≤-refl (leq-inj-Fin (Comp.injection (inj-toℕ (ℕ.suc k)) f))
-
--- We also show that pinch is almost injectve
+-- Pinch is almost injectve
 
 pinch-injective :
   {k : ℕ} (x : Fin k) {y z : Fin (ℕ.suc k)} →
-  Fin.suc x ≢ y → Fin.suc x ≢ z → pinch x y ≡ pinch x z → y ≡ z
-pinch-injective _ {Fin.zero} {Fin.zero} f g p = refl
-pinch-injective Fin.zero {Fin.zero} {Fin.suc z} f g p =
-  ⊥-elim (g (cong Fin.suc p))
-pinch-injective Fin.zero {Fin.suc y} {Fin.zero} f g p =
-  ⊥-elim (f (cong Fin.suc (sym p)))
-pinch-injective Fin.zero {Fin.suc y} {Fin.suc z} f g p =
-  cong Fin.suc p
-pinch-injective (Fin.suc x) {Fin.suc y} {Fin.suc z} f g p =
+  suc x ≢ y → suc x ≢ z → pinch x y ≡ pinch x z → y ≡ z
+pinch-injective _ {zero} {zero} f g p = refl
+pinch-injective zero {zero} {suc z} f g p =
+  ⊥-elim (g (cong suc p))
+pinch-injective zero {suc y} {zero} f g p =
+  ⊥-elim (f (cong suc (sym p)))
+pinch-injective zero {suc y} {suc z} f g p =
+  cong suc p
+pinch-injective (suc x) {suc y} {suc z} f g p =
   cong
-    ( Fin.suc)
+    ( suc)
     ( pinch-injective x
-      ( λ q → f (cong Fin.suc q))
-      ( λ q → g (cong Fin.suc q))
-      ( Fin.suc-injective p))
+      ( λ q → f (cong suc q))
+      ( λ q → g (cong suc q))
+      ( suc-injective p))
