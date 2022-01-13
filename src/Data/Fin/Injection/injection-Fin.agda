@@ -10,7 +10,7 @@ module Data.Fin.Injection.injection-Fin where
             
 open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Fin.Base using (Fin; zero; suc; toℕ; punchOut; pinch)
-open import Data.Fin.Properties using (¬Fin0; zero≢suc; toℕ-injective; punchOut-injective; suc-injective)
+open import Data.Fin.Properties using (¬Fin0; 0≢1+n; toℕ-injective; punchOut-injective; suc-injective)
 open import Data.Nat.Base as ℕ using (ℕ; _≤_; z≤n; s≤s; _<_)
 open import Data.Nat.Properties using (≤-refl; ≤⇒≯; <-irrefl)
 open import Function.Bundles as Bundles using (_↣_; mk↣)
@@ -25,7 +25,7 @@ open import Relation.Nullary using (¬_)
 reduceInj :
   {k l : ℕ} {f : Fin (ℕ.suc k) → Fin (ℕ.suc l)} →
   Injective _≡_ _≡_ f → Fin k → Fin l
-reduceInj H x = punchOut (contraInjective _≡_ _≡_ H (zero≢suc x))
+reduceInj H x = punchOut (contraInjective _≡_ _≡_ H (0≢1+n x))
 
 reduceInj-injective :
   {k l : ℕ} {f : Fin (ℕ.suc k) → Fin (ℕ.suc l)} (H : Injective _≡_ _≡_ f) →
@@ -33,8 +33,8 @@ reduceInj-injective :
 reduceInj-injective H p =
   suc-injective
     ( H ( punchOut-injective
-          ( contraInjective _≡_ _≡_ H (zero≢suc _))
-          ( contraInjective _≡_ _≡_ H (zero≢suc _))
+          ( contraInjective _≡_ _≡_ H (0≢1+n _))
+          ( contraInjective _≡_ _≡_ H (0≢1+n _))
           ( p)))
 
 abstract
@@ -42,8 +42,7 @@ abstract
     {k l : ℕ} {f : Fin k → Fin l} → Injective _≡_ _≡_ f → k ≤ l
   Injective⇒≤ {ℕ.zero} {l} {f} H = z≤n
   Injective⇒≤ {ℕ.suc k} {ℕ.zero} {f} H = ⊥-elim (¬Fin0 (f zero))
-  Injective⇒≤ {ℕ.suc k} {ℕ.suc l} {f} H =
-    s≤s (Injective⇒≤ (reduceInj-injective H))
+  Injective⇒≤ {ℕ.suc k} {ℕ.suc l} {f} H = s≤s (Injective⇒≤ (reduceInj-injective H))
 
 -- Any function f : ℕ → Fin k is not injective
 
