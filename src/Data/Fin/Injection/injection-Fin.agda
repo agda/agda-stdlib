@@ -38,18 +38,18 @@ reduceInj-injective H p =
           ( p)))
 
 abstract
-  Injective-≤ :
+  Injective⇒≤ :
     {k l : ℕ} {f : Fin k → Fin l} → Injective _≡_ _≡_ f → k ≤ l
-  Injective-≤ {ℕ.zero} {l} {f} H = z≤n
-  Injective-≤ {ℕ.suc k} {ℕ.zero} {f} H = ⊥-elim (¬Fin0 (f zero))
-  Injective-≤ {ℕ.suc k} {ℕ.suc l} {f} H =
-    s≤s (Injective-≤ (reduceInj-injective H))
+  Injective⇒≤ {ℕ.zero} {l} {f} H = z≤n
+  Injective⇒≤ {ℕ.suc k} {ℕ.zero} {f} H = ⊥-elim (¬Fin0 (f zero))
+  Injective⇒≤ {ℕ.suc k} {ℕ.suc l} {f} H =
+    s≤s (Injective⇒≤ (reduceInj-injective H))
 
 -- Any function f : ℕ → Fin k is not injective
 
 ℕ→Fin-notInjective : {k : ℕ} (f : ℕ → Fin k) → ¬ (Injective _≡_ _≡_ f)
 ℕ→Fin-notInjective f H =
-  <-irrefl refl (Injective-≤ (Comp.injective _≡_ _≡_ _≡_ toℕ-injective H))
+  <-irrefl refl (Injective⇒≤ (Comp.injective _≡_ _≡_ _≡_ toℕ-injective H))
 
 -- Pinch is almost injectve
 
