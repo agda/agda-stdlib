@@ -47,8 +47,8 @@ abstract
 
 -- Any function f : ℕ → Fin k is not injective
 
-ℕ⇒Fin-notInjective : {k : ℕ} (f : ℕ → Fin k) → ¬ (Injective _≡_ _≡_ f)
-ℕ⇒Fin-notInjective f H =
+ℕ→Fin-notInjective : {k : ℕ} (f : ℕ → Fin k) → ¬ (Injective _≡_ _≡_ f)
+ℕ→Fin-notInjective f H =
   <-irrefl refl (Injective-≤ (Comp.injective _≡_ _≡_ _≡_ toℕ-injective H))
 
 -- Pinch is almost injectve
