@@ -19,14 +19,13 @@ open import Function.Construct.Composition as Comp hiding (injective)
 open import Function.Definitions using (Injective)
 open import Relation.Binary.PropositionalEquality.Core using (_≡_; refl; sym; cong; _≢_)
 open import Relation.Nullary using (¬_)
-open import Relation.Nullary.Negation.Core using (contraposition)
 
 --------------------------------------------------------------------------------
       
 reduceInj :
   {k l : ℕ} {f : Fin (ℕ.suc k) → Fin (ℕ.suc l)} →
   Injective _≡_ _≡_ f → Fin k → Fin l
-reduceInj H x = punchOut (contraposition H (zero≢suc x))
+reduceInj H x = punchOut (contraInjective _≡_ _≡_ H (zero≢suc x))
 
 reduceInj-injective :
   {k l : ℕ} {f : Fin (ℕ.suc k) → Fin (ℕ.suc l)} (H : Injective _≡_ _≡_ f) →
