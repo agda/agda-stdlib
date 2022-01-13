@@ -22,27 +22,15 @@ open import Relation.Nullary using (¬_)
 
 --------------------------------------------------------------------------------
       
-reduceInj :
-  {k l : ℕ} {f : Fin (ℕ.suc k) → Fin (ℕ.suc l)} →
-  Injective _≡_ _≡_ f → Fin k → Fin l
-reduceInj H x = punchOut (contraInjective _≡_ _≡_ H (0≢1+n x))
-
-reduceInj-injective :
-  {k l : ℕ} {f : Fin (ℕ.suc k) → Fin (ℕ.suc l)} (H : Injective _≡_ _≡_ f) →
-  Injective _≡_ _≡_ (reduceInj H)
-reduceInj-injective H p =
-  suc-injective
-    ( H ( punchOut-injective
-          ( contraInjective _≡_ _≡_ H (0≢1+n _))
-          ( contraInjective _≡_ _≡_ H (0≢1+n _))
-          ( p)))
-
-abstract
-  Injective⇒≤ :
-    {k l : ℕ} {f : Fin k → Fin l} → Injective _≡_ _≡_ f → k ≤ l
-  Injective⇒≤ {ℕ.zero} {l} {f} H = z≤n
-  Injective⇒≤ {ℕ.suc k} {ℕ.zero} {f} H = ⊥-elim (¬Fin0 (f zero))
-  Injective⇒≤ {ℕ.suc k} {ℕ.suc l} {f} H = s≤s (Injective⇒≤ (reduceInj-injective H))
+Injective⇒≤ : {k l : ℕ} {f : Fin k → Fin l} → Injective _≡_ _≡_ f → k ≤ l
+Injective⇒≤ {ℕ.zero} {l} {f} H = z≤n
+Injective⇒≤ {ℕ.suc k} {ℕ.zero} {f} H = ⊥-elim (¬Fin0 (f zero))
+Injective⇒≤ {ℕ.suc k} {ℕ.suc l} {f} H =
+  s≤s (Injective⇒≤ (λ p →
+    suc-injective (H (punchOut-injective
+      ( contraInjective _≡_ _≡_ H (0≢1+n _))
+      ( contraInjective _≡_ _≡_ H (0≢1+n _))
+      ( p)))))
 
 -- Any function f : ℕ → Fin k is not injective
 
