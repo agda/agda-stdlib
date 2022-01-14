@@ -870,8 +870,6 @@ pigeonhole (s≤s (s≤s m≤n)) f with any? (λ k → f zero ≟ f (suc k))
   suc i , suc j , i≢j ∘ suc-injective ,
   punchOut-injective (f₀≢fₖ ∘ (i ,_)) _ fᵢ≡fⱼ
 
-------------------------------------------------------------------------
-
 -- Cantor-Schröder-Bernstein for finite sets
 
 injective⇒≤ : ∀ {k l} {f : Fin k → Fin l} →
