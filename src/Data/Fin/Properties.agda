@@ -25,7 +25,10 @@ open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]; [_,_]′)
 open import Data.Sum.Properties using ([,]-map-commute; [,]-∘-distr)
 open import Function.Base using (_∘_; id; _$_; flip)
 open import Function.Bundles using (_↣_; _⇔_; _↔_; mk⇔; mk↔′)
+open import Function.Definitions using (Injective)
 open import Function.Definitions.Core2 using (Surjective)
+open import Function.Consequences using (contraInjective)
+open import Function.Construct.Composition as Comp hiding (injective)
 open import Relation.Binary as B hiding (Decidable; _⇔_)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; refl; sym; trans; cong; subst; _≗_; module ≡-Reasoning)
@@ -764,6 +767,24 @@ pinch-mono-≤ 0F      {suc j} {suc k} (s≤s j≤k) = j≤k
 pinch-mono-≤ (suc i) {0F}    {k}     0≤n       = z≤n
 pinch-mono-≤ (suc i) {suc j} {suc k} (s≤s j≤k) = s≤s (pinch-mono-≤ i j≤k)
 
+pinch-injective :
+  {k : ℕ} (x : Fin k) {y z : Fin (ℕ.suc k)} →
+  suc x ≢ y → suc x ≢ z → pinch x y ≡ pinch x z → y ≡ z
+pinch-injective _ {zero} {zero} f g p = refl
+pinch-injective zero {zero} {suc z} f g p =
+  ⊥-elim (g (cong suc p))
+pinch-injective zero {suc y} {zero} f g p =
+  ⊥-elim (f (cong suc (sym p)))
+pinch-injective zero {suc y} {suc z} f g p =
+  cong suc p
+pinch-injective (suc x) {suc y} {suc z} f g p =
+  cong
+    ( suc)
+    ( pinch-injective x
+      ( λ q → f (cong suc q))
+      ( λ q → g (cong suc q))
+      ( suc-injective p))
+
 ------------------------------------------------------------------------
 -- Quantification
 ------------------------------------------------------------------------
@@ -851,6 +872,24 @@ pigeonhole (s≤s (s≤s m≤n)) f with any? (λ k → f zero ≟ f (suc k))
 ...   | (i , j , i≢j , fᵢ≡fⱼ) =
   suc i , suc j , i≢j ∘ suc-injective ,
   punchOut-injective (f₀≢fₖ ∘ (i ,_)) _ fᵢ≡fⱼ
+
+-- Cantor-Schröder-Bernstein for finite sets
+
+injective⇒≤ : {k l : ℕ} {f : Fin k → Fin l} → Injective _≡_ _≡_ f → k ℕ.≤ l
+injective⇒≤ {ℕ.zero} {l} {f} H = z≤n
+injective⇒≤ {ℕ.suc k} {ℕ.zero} {f} H = contradiction (f zero) ¬Fin0 
+injective⇒≤ {ℕ.suc k} {ℕ.suc l} {f} H =
+  s≤s (injective⇒≤ (λ p → suc-injective (H (punchOut-injective
+    (contraInjective _≡_ _≡_ H (0≢1+n _)) (contraInjective _≡_ _≡_ H (0≢1+n _)) p))))
+
+ℕ→Fin-notInjective : {k : ℕ} (f : ℕ → Fin k) → ¬ (Injective _≡_ _≡_ f)
+ℕ→Fin-notInjective f H =
+  ℕₚ.<-irrefl refl (injective⇒≤ (Comp.injective _≡_ _≡_ _≡_ toℕ-injective H))
+
+cantor-schroder-bernstein :
+  {k l : ℕ} {f : Fin k → Fin l} {g : Fin l → Fin k} →
+  Injective _≡_ _≡_ f → Injective _≡_ _≡_ g → k ≡ l
+cantor-schroder-bernstein H K = ℕₚ.≤-antisym (injective⇒≤ H) (injective⇒≤ K)
 
 ------------------------------------------------------------------------
 -- Categorical
