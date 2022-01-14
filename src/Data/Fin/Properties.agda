@@ -767,9 +767,8 @@ pinch-mono-≤ 0F      {suc j} {suc k} (s≤s j≤k) = j≤k
 pinch-mono-≤ (suc i) {0F}    {k}     0≤n       = z≤n
 pinch-mono-≤ (suc i) {suc j} {suc k} (s≤s j≤k) = s≤s (pinch-mono-≤ i j≤k)
 
-pinch-injective :
-  {k : ℕ} {x : Fin k} {y z : Fin (ℕ.suc k)} →
-  suc x ≢ y → suc x ≢ z → pinch x y ≡ pinch x z → y ≡ z
+pinch-injective : {k : ℕ} {x : Fin k} {y z : Fin (ℕ.suc k)} →
+                  suc x ≢ y → suc x ≢ z → pinch x y ≡ pinch x z → y ≡ z
 pinch-injective {x = x}     {zero}  {zero}  _     _     _  = refl
 pinch-injective {x = zero}  {zero}  {suc z} _     1+x≢z eq =
   contradiction (cong suc eq) 1+x≢z
@@ -890,9 +889,10 @@ injective⇒≤ {ℕ.suc k} {ℕ.suc l} {f} inj =
   ℕₚ.<-irrefl refl
     (injective⇒≤ (Comp.injective _≡_ _≡_ _≡_ toℕ-injective inj))
 
-cantor-schröder-bernstein :
-  {k l : ℕ} {f : Fin k → Fin l} {g : Fin l → Fin k} →
-  Injective _≡_ _≡_ f → Injective _≡_ _≡_ g → k ≡ l
+cantor-schröder-bernstein : {k l : ℕ} {f : Fin k → Fin l}
+                            {g : Fin l → Fin k} →
+                            Injective _≡_ _≡_ f → Injective _≡_ _≡_ g →
+                            k ≡ l
 cantor-schröder-bernstein f-inj g-inj =
   ℕₚ.≤-antisym (injective⇒≤ f-inj) (injective⇒≤ g-inj)
 
