@@ -882,6 +882,9 @@ injective⇒≤ {ℕ.suc k} {ℕ.suc l} {f} H =
   s≤s (injective⇒≤ (λ p → suc-injective (H (punchOut-injective
     (contraInjective _≡_ _≡_ H (0≢1+n _)) (contraInjective _≡_ _≡_ H (0≢1+n _)) p))))
 
+<⇒notInjective : {k l : ℕ} {f : Fin k → Fin l} → l ℕ.< k → ¬ (Injective _≡_ _≡_ f)
+<⇒notInjective H K = ℕₚ.≤⇒≯ (injective⇒≤ K) H
+
 ℕ→Fin-notInjective : {k : ℕ} (f : ℕ → Fin k) → ¬ (Injective _≡_ _≡_ f)
 ℕ→Fin-notInjective f H =
   ℕₚ.<-irrefl refl (injective⇒≤ (Comp.injective _≡_ _≡_ _≡_ toℕ-injective H))
