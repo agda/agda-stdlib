@@ -22,7 +22,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Tactic.Rewrite where
+module Tactic.Cong where
 
 open import Function using (_$_)
 
