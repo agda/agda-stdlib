@@ -48,10 +48,9 @@ module _ (From : Setoid a ℓ₁) {≈₂ : Rel B ℓ₂} where
     (inverseʳ⇒injective cong₂ invʳ , inverseˡ⇒surjective ≈₁ ≈₂ invˡ)
 
 module _
-  {A : Set a} {B : Set b} {f : A → B}
-  (_≈₁_ : Rel A ℓ₁) (_≈₂_ : Rel B ℓ₂)
+  {f : A → B} (_≈₁_ : Rel A ℓ₁) (_≈₂_ : Rel B ℓ₂)
   where
 
   contraInjective : Injective _≈₁_ _≈₂_ f →
-    {x y : A} → ¬ (x ≈₁ y) → ¬ (f x ≈₂ f y)
-  contraInjective H p = contraposition H p
+                    ∀ {x y} → ¬ (x ≈₁ y) → ¬ (f x ≈₂ f y)
+  contraInjective inj p = contraposition inj p

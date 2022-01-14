@@ -770,19 +770,17 @@ pinch-mono-≤ (suc i) {suc j} {suc k} (s≤s j≤k) = s≤s (pinch-mono-≤ i j
 pinch-injective :
   {k : ℕ} {x : Fin k} {y z : Fin (ℕ.suc k)} →
   suc x ≢ y → suc x ≢ z → pinch x y ≡ pinch x z → y ≡ z
-pinch-injective {y = zero} {zero} f g p = refl
-pinch-injective {x = zero} {zero} {suc z} f g p =
-  contradiction (cong suc p) g
-pinch-injective {x = zero} {suc y} {zero} f g p =
-  contradiction (cong suc (sym p)) f
-pinch-injective {x = zero} {suc y} {suc z} f g p =
-  cong suc p
-pinch-injective {x = suc x} {suc y} {suc z} f g p =
+pinch-injective {x = x}     {zero}  {zero}  _     _     _  = refl
+pinch-injective {x = zero}  {zero}  {suc z} _     1+x≢z eq =
+  contradiction (cong suc eq) 1+x≢z
+pinch-injective {x = zero}  {suc y} {zero}  1+x≢y _     eq =
+  contradiction (cong suc (sym eq)) 1+x≢y
+pinch-injective {x = zero}  {suc y} {suc z} _     _     eq =
+  cong suc eq
+pinch-injective {x = suc x} {suc y} {suc z} 1+x≢y 1+x≢z eq =
   cong suc
-    ( pinch-injective
-      ( λ q → f (cong suc q))
-      ( λ q → g (cong suc q))
-      ( suc-injective p))
+    (pinch-injective (1+x≢y ∘ cong suc) (1+x≢z ∘ cong suc)
+      (suc-injective eq))
 
 ------------------------------------------------------------------------
 -- Quantification
@@ -872,26 +870,33 @@ pigeonhole (s≤s (s≤s m≤n)) f with any? (λ k → f zero ≟ f (suc k))
   suc i , suc j , i≢j ∘ suc-injective ,
   punchOut-injective (f₀≢fₖ ∘ (i ,_)) _ fᵢ≡fⱼ
 
+------------------------------------------------------------------------
+
 -- Cantor-Schröder-Bernstein for finite sets
 
-injective⇒≤ : {k l : ℕ} {f : Fin k → Fin l} → Injective _≡_ _≡_ f → k ℕ.≤ l
-injective⇒≤ {ℕ.zero} {l} {f} H = z≤n
-injective⇒≤ {ℕ.suc k} {ℕ.zero} {f} H = contradiction (f zero) ¬Fin0 
-injective⇒≤ {ℕ.suc k} {ℕ.suc l} {f} H =
-  s≤s (injective⇒≤ (λ p → suc-injective (H (punchOut-injective
-    (contraInjective _≡_ _≡_ H (0≢1+n _)) (contraInjective _≡_ _≡_ H (0≢1+n _)) p))))
+injective⇒≤ : ∀ {k l} {f : Fin k → Fin l} →
+              Injective _≡_ _≡_ f → k ℕ.≤ l
+injective⇒≤ {ℕ.zero}  {l}       {f} _   = z≤n
+injective⇒≤ {ℕ.suc k} {ℕ.zero}  {f} _   = contradiction (f zero) ¬Fin0 
+injective⇒≤ {ℕ.suc k} {ℕ.suc l} {f} inj =
+  s≤s (injective⇒≤ (λ eq → suc-injective (inj (punchOut-injective
+    (contraInjective _≡_ _≡_ inj (0≢1+n _))
+    (contraInjective _≡_ _≡_ inj (0≢1+n _)) eq))))
 
-<⇒notInjective : {k l : ℕ} {f : Fin k → Fin l} → l ℕ.< k → ¬ (Injective _≡_ _≡_ f)
+<⇒notInjective : {k l : ℕ} {f : Fin k → Fin l} →
+                 l ℕ.< k → ¬ (Injective _≡_ _≡_ f)
 <⇒notInjective H K = ℕₚ.≤⇒≯ (injective⇒≤ K) H
 
 ℕ→Fin-notInjective : {k : ℕ} (f : ℕ → Fin k) → ¬ (Injective _≡_ _≡_ f)
-ℕ→Fin-notInjective f H =
-  ℕₚ.<-irrefl refl (injective⇒≤ (Comp.injective _≡_ _≡_ _≡_ toℕ-injective H))
+ℕ→Fin-notInjective f inj =
+  ℕₚ.<-irrefl refl
+    (injective⇒≤ (Comp.injective _≡_ _≡_ _≡_ toℕ-injective inj))
 
-cantor-schroder-bernstein :
+cantor-schröder-bernstein :
   {k l : ℕ} {f : Fin k → Fin l} {g : Fin l → Fin k} →
   Injective _≡_ _≡_ f → Injective _≡_ _≡_ g → k ≡ l
-cantor-schroder-bernstein H K = ℕₚ.≤-antisym (injective⇒≤ H) (injective⇒≤ K)
+cantor-schröder-bernstein f-inj g-inj =
+  ℕₚ.≤-antisym (injective⇒≤ f-inj) (injective⇒≤ g-inj)
 
 ------------------------------------------------------------------------
 -- Categorical
