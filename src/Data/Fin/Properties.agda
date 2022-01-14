@@ -768,19 +768,18 @@ pinch-mono-≤ (suc i) {0F}    {k}     0≤n       = z≤n
 pinch-mono-≤ (suc i) {suc j} {suc k} (s≤s j≤k) = s≤s (pinch-mono-≤ i j≤k)
 
 pinch-injective :
-  {k : ℕ} (x : Fin k) {y z : Fin (ℕ.suc k)} →
+  {k : ℕ} {x : Fin k} {y z : Fin (ℕ.suc k)} →
   suc x ≢ y → suc x ≢ z → pinch x y ≡ pinch x z → y ≡ z
-pinch-injective _ {zero} {zero} f g p = refl
-pinch-injective zero {zero} {suc z} f g p =
-  ⊥-elim (g (cong suc p))
-pinch-injective zero {suc y} {zero} f g p =
-  ⊥-elim (f (cong suc (sym p)))
-pinch-injective zero {suc y} {suc z} f g p =
+pinch-injective {y = zero} {zero} f g p = refl
+pinch-injective {x = zero} {zero} {suc z} f g p =
+  contradiction (cong suc p) g
+pinch-injective {x = zero} {suc y} {zero} f g p =
+  contradiction (cong suc (sym p)) f
+pinch-injective {x = zero} {suc y} {suc z} f g p =
   cong suc p
-pinch-injective (suc x) {suc y} {suc z} f g p =
-  cong
-    ( suc)
-    ( pinch-injective x
+pinch-injective {x = suc x} {suc y} {suc z} f g p =
+  cong suc
+    ( pinch-injective
       ( λ q → f (cong suc q))
       ( λ q → g (cong suc q))
       ( suc-injective p))
