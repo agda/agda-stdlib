@@ -741,6 +741,7 @@ Other minor changes
   record Quasigroup c ℓ : Set (suc (c ⊔ ℓ))
   record RawLoop  c ℓ : Set (suc (c ⊔ ℓ))
   record Loop  c ℓ : Set (suc (c ⊔ ℓ))
+  record RingWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) 
   ```
   and the existing record `Lattice` now provides
   ```agda
@@ -805,6 +806,7 @@ Other minor changes
   record IsInvertibleUnitalMagma (_∙_ : Op₂ A) (ε : A) (⁻¹ : Op₁ A) : Set (a ⊔ ℓ)
   record IsQuasigroup (∙ \\ // : Op₂ A) : Set (a ⊔ ℓ)
   record IsLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ)
+  record IsRingWithoutOne (+ * : Op₂ A) (-_ : Op₁ A) (0# : A) : Set (a ⊔ ℓ)
   ```
   and the existing record `IsLattice` now provides
   ```
