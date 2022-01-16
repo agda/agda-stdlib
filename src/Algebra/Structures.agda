@@ -451,10 +451,10 @@ record IsCancellativeCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a �
   open IsCommutativeSemiring isCommutativeSemiring public
 
 ------------------------------------------------------------------------
--- Structures with 2 binary operations, 1 unary operation & 1 elements
+-- Structures with 2 binary operations, 1 unary operation & 1 element
 ------------------------------------------------------------------------
 
-record IsRng (+ * : Op₂ A) (-_ : Op₁ A) (0# : A) : Set (a ⊔ ℓ) where
+record IsRingWithoutOne (+ * : Op₂ A) (-_ : Op₁ A) (0# : A) : Set (a ⊔ ℓ) where
   field
     +-isAbelianGroup : IsAbelianGroup + 0# -_
     *-cong           : Congruent₂ *

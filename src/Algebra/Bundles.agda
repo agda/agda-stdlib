@@ -751,24 +751,24 @@ record CancellativeCommutativeSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
     )
 
 ------------------------------------------------------------------------
--- Bundles with 2 binary operations, 1 unary operation & 1 elements
+-- Bundles with 2 binary operations, 1 unary operation & 1 element
 ------------------------------------------------------------------------
 
-record Rng c ℓ : Set (suc (c ⊔ ℓ)) where
+record RingWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 -_
   infixl 7 _*_
   infixl 6 _+_
   infix  4 _≈_
   field
-    Carrier : Set c
-    _≈_     : Rel Carrier ℓ
-    _+_     : Op₂ Carrier
-    _*_     : Op₂ Carrier
-    -_      : Op₁ Carrier
-    0#      : Carrier
-    isRng  : IsRng _≈_ _+_ _*_ -_ 0#
+    Carrier           : Set c
+    _≈_               : Rel Carrier ℓ
+    _+_               : Op₂ Carrier
+    _*_               : Op₂ Carrier
+    -_                : Op₁ Carrier
+    0#                : Carrier
+    isRingWithoutOne  : IsRingWithoutOne _≈_ _+_ _*_ -_ 0#
 
-  open IsRng isRng public
+  open IsRingWithoutOne isRingWithoutOne public
 
   +-abelianGroup : AbelianGroup _ _
   +-abelianGroup = record { isAbelianGroup = +-isAbelianGroup }
