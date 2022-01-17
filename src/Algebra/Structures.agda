@@ -575,7 +575,7 @@ record IsQuasigroup (∙ \\ // : Op₂ A) : Set (a ⊔ ℓ) where
   rightDividesˡ = proj₁ rightDivides
 
   rightDividesʳ : RightDividesʳ ∙ //
-  rightDividesʳ = proj₂ rightDivides  
+  rightDividesʳ = proj₂ rightDivides
 
 
 record IsLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where

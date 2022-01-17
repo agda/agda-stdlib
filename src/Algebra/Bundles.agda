@@ -999,7 +999,7 @@ record Loop  c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open Quasigroup quasigroup public
     using (∙-rawMagma; \\-rawMagma; //-rawMagma)
-    
+
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
 ------------------------------------------------------------------------
