@@ -9,6 +9,9 @@
 module Data.Nat.Divisibility where
 
 open import Algebra
+open import Data.List.Base using (_∷_; product)
+open import Data.List.Membership.Propositional using (_∈_)
+open import Data.List.Relation.Unary.Any using (here; there)
 open import Data.Nat.Base
 open import Data.Nat.DivMod
 open import Data.Nat.Properties
@@ -284,6 +287,13 @@ m∣n*o⇒m/n∣o {_} {n@(suc _)} {o} (divides p refl) pn∣on = begin
     a * d ∸ (ad/n * b) * d ≡˘⟨ *-distribʳ-∸ d a (ad/n * b) ⟩
     (a ∸ ad/n * b) * d     ∎
   where open ≤-Reasoning; ad/n = a * d / n
+
+------------------------------------------------------------------------
+-- Properties of _∣_ and product
+
+∈⇒∣product : ∀ {n ns} → n ∈ ns → n ∣ product ns
+∈⇒∣product {n} {.n ∷ ns} (here  refl) = divides (product ns) (*-comm n (product ns))
+∈⇒∣product {n} {m  ∷ ns} (there n∈ns) = ∣n⇒∣m*n m (∈⇒∣product n∈ns)
 
 ------------------------------------------------------------------------
 -- DEPRECATED - please use new names as continuing support for the old

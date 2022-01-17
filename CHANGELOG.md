@@ -922,6 +922,7 @@ Other minor changes
 * Added new proofs in `Data.Nat.Divisibility`:
   ```agda
   n∣m*n*o : n ∣ m * n * o
+  ∈⇒∣product : n ∈ ns → n ∣ product ns
   ```
 
 * Added new patterns in `Data.Nat.Reflection`:
