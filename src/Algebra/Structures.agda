@@ -562,9 +562,31 @@ record IsQuasigroup (∙ \\ // : Op₂ A) : Set (a ⊔ ℓ) where
 
   open IsEquivalence isEquivalence public
 
+  setoid : Setoid a ℓ
+  setoid = record { isEquivalence = isEquivalence }
+
+  leftDividesˡ : LeftDividesˡ ∙ \\
+  leftDividesˡ = proj₁ leftDivides
+
+  leftDividesʳ : LeftDividesʳ ∙ \\
+  leftDividesʳ = proj₂ leftDivides
+
+  rightDividesˡ : RightDividesˡ ∙ //
+  rightDividesˡ = proj₁ rightDivides
+
+  rightDividesʳ : RightDividesʳ ∙ //
+  rightDividesʳ = proj₂ rightDivides  
+
+
 record IsLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
   field
     isQuasigroup : IsQuasigroup ∙ \\ //
     identity     : Identity ε ∙
 
   open IsQuasigroup isQuasigroup public
+
+  identityˡ : LeftIdentity ε ∙
+  identityˡ = proj₁ identity
+
+  identityʳ : RightIdentity ε ∙
+  identityʳ = proj₂ identity
