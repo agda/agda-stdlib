@@ -13,6 +13,7 @@
 .*.swp
 ./_build/*
 .DS_Store
+.vscode/*
 dist
 dist-newstyle
 Everything.agda
