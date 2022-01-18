@@ -228,157 +228,161 @@
 <a id="5981" class="Comment">------------------------------------------------------------------------</a>
 <a id="6054" class="Comment">-- Algebraic structures of _∩_ and _∪_</a>
 
-  <a id="6096" href="Relation.Unary.Algebra.html#6096" class="Function">∪-∩-isSemiringWithoutAnnihilatingZero</a> <a id="6134" class="Symbol">:</a> <a id="6136" href="Algebra.Structures.html#9173" class="Record">IsSemiringWithoutAnnihilatingZero</a> <a id="6170" href="Relation.Unary.html#4569" class="Function Operator">_∪_</a> <a id="6174" href="Relation.Unary.html#4655" class="Function Operator">_∩_</a> <a id="6178" href="Relation.Unary.Polymorphic.html#644" class="Function">∅</a> <a id="6180" href="Relation.Unary.Polymorphic.html#693" class="Function">U</a>
+  <a id="6096" href="Relation.Unary.Algebra.html#6096" class="Function">∪-∩-isSemiringWithoutAnnihilatingZero</a> <a id="6134" class="Symbol">:</a> <a id="6136" href="Algebra.Structures.html#9685" class="Record">IsSemiringWithoutAnnihilatingZero</a> <a id="6170" href="Relation.Unary.html#4569" class="Function Operator">_∪_</a> <a id="6174" href="Relation.Unary.html#4655" class="Function Operator">_∩_</a> <a id="6178" href="Relation.Unary.Polymorphic.html#644" class="Function">∅</a> <a id="6180" href="Relation.Unary.Polymorphic.html#693" class="Function">U</a>
   <a id="6184" href="Relation.Unary.Algebra.html#6096" class="Function">∪-∩-isSemiringWithoutAnnihilatingZero</a> <a id="6222" class="Symbol">=</a> <a id="6224" class="Keyword">record</a>
-    <a id="6235" class="Symbol">{</a> <a id="6237" href="Algebra.Structures.html#9435" class="Field">+-isCommutativeMonoid</a> <a id="6259" class="Symbol">=</a> <a id="6261" href="Relation.Unary.Algebra.html#5651" class="Function">∪-isCommutativeMonoid</a>
-    <a id="6287" class="Symbol">;</a> <a id="6289" href="Algebra.Structures.html#9488" class="Field">*-isMonoid</a> <a id="6300" class="Symbol">=</a> <a id="6302" href="Relation.Unary.Algebra.html#4523" class="Function">∩-isMonoid</a>
-    <a id="6317" class="Symbol">;</a> <a id="6319" href="Algebra.Structures.html#9530" class="Field">distrib</a> <a id="6327" class="Symbol">=</a> <a id="6329" href="Relation.Unary.Algebra.html#2970" class="Function">∩-distrib-∪</a>
-    <a id="6345" class="Symbol">}</a>
+    <a id="6235" class="Symbol">{</a> <a id="6237" href="Algebra.Structures.html#9947" class="Field">+-isCommutativeMonoid</a> <a id="6259" class="Symbol">=</a> <a id="6261" href="Relation.Unary.Algebra.html#5651" class="Function">∪-isCommutativeMonoid</a>
+    <a id="6287" class="Symbol">;</a> <a id="6289" href="Algebra.Structures.html#10000" class="Field">*-cong</a> <a id="6296" class="Symbol">=</a> <a id="6298" href="Relation.Unary.Algebra.html#1196" class="Function">∩-cong</a>
+    <a id="6309" class="Symbol">;</a> <a id="6311" href="Algebra.Structures.html#10041" class="Field">*-assoc</a> <a id="6319" class="Symbol">=</a> <a id="6321" href="Relation.Unary.Algebra.html#1371" class="Function">∩-assoc</a>
+    <a id="6333" class="Symbol">;</a> <a id="6335" href="Algebra.Structures.html#10083" class="Field">*-identity</a> <a id="6346" class="Symbol">=</a> <a id="6348" href="Relation.Unary.Algebra.html#1673" class="Function">∩-identity</a>
+    <a id="6363" class="Symbol">;</a> <a id="6365" href="Algebra.Structures.html#10125" class="Field">distrib</a> <a id="6373" class="Symbol">=</a> <a id="6375" href="Relation.Unary.Algebra.html#2970" class="Function">∩-distrib-∪</a>
+    <a id="6391" class="Symbol">}</a>
 
-  <a id="6350" href="Relation.Unary.Algebra.html#6350" class="Function">∪-∩-isSemiring</a> <a id="6365" class="Symbol">:</a> <a id="6367" href="Algebra.Structures.html#10747" class="Record">IsSemiring</a> <a id="6378" href="Relation.Unary.html#4569" class="Function Operator">_∪_</a> <a id="6382" href="Relation.Unary.html#4655" class="Function Operator">_∩_</a> <a id="6386" href="Relation.Unary.Polymorphic.html#644" class="Function">∅</a> <a id="6388" href="Relation.Unary.Polymorphic.html#693" class="Function">U</a>
-  <a id="6392" href="Relation.Unary.Algebra.html#6350" class="Function">∪-∩-isSemiring</a> <a id="6407" class="Symbol">=</a> <a id="6409" class="Keyword">record</a>
-    <a id="6420" class="Symbol">{</a> <a id="6422" href="Algebra.Structures.html#10816" class="Field">isSemiringWithoutAnnihilatingZero</a> <a id="6456" class="Symbol">=</a> <a id="6458" href="Relation.Unary.Algebra.html#6096" class="Function">∪-∩-isSemiringWithoutAnnihilatingZero</a>
-    <a id="6500" class="Symbol">;</a> <a id="6502" href="Algebra.Structures.html#10906" class="Field">zero</a> <a id="6507" class="Symbol">=</a> <a id="6509" href="Relation.Unary.Algebra.html#1860" class="Function">∩-zero</a>
-    <a id="6520" class="Symbol">}</a>
+  <a id="6396" href="Relation.Unary.Algebra.html#6396" class="Function">∪-∩-isSemiring</a> <a id="6411" class="Symbol">:</a> <a id="6413" href="Algebra.Structures.html#11541" class="Record">IsSemiring</a> <a id="6424" href="Relation.Unary.html#4569" class="Function Operator">_∪_</a> <a id="6428" href="Relation.Unary.html#4655" class="Function Operator">_∩_</a> <a id="6432" href="Relation.Unary.Polymorphic.html#644" class="Function">∅</a> <a id="6434" href="Relation.Unary.Polymorphic.html#693" class="Function">U</a>
+  <a id="6438" href="Relation.Unary.Algebra.html#6396" class="Function">∪-∩-isSemiring</a> <a id="6453" class="Symbol">=</a> <a id="6455" class="Keyword">record</a>
+    <a id="6466" class="Symbol">{</a> <a id="6468" href="Algebra.Structures.html#11610" class="Field">isSemiringWithoutAnnihilatingZero</a> <a id="6502" class="Symbol">=</a> <a id="6504" href="Relation.Unary.Algebra.html#6096" class="Function">∪-∩-isSemiringWithoutAnnihilatingZero</a>
+    <a id="6546" class="Symbol">;</a> <a id="6548" href="Algebra.Structures.html#11700" class="Field">zero</a> <a id="6553" class="Symbol">=</a> <a id="6555" href="Relation.Unary.Algebra.html#1860" class="Function">∩-zero</a>
+    <a id="6566" class="Symbol">}</a>
 
-  <a id="6525" href="Relation.Unary.Algebra.html#6525" class="Function">∪-∩-isCommutativeSemiring</a> <a id="6551" class="Symbol">:</a> <a id="6553" href="Algebra.Structures.html#11403" class="Record">IsCommutativeSemiring</a> <a id="6575" href="Relation.Unary.html#4569" class="Function Operator">_∪_</a> <a id="6579" href="Relation.Unary.html#4655" class="Function Operator">_∩_</a> <a id="6583" href="Relation.Unary.Polymorphic.html#644" class="Function">∅</a> <a id="6585" href="Relation.Unary.Polymorphic.html#693" class="Function">U</a>
-  <a id="6589" href="Relation.Unary.Algebra.html#6525" class="Function">∪-∩-isCommutativeSemiring</a> <a id="6615" class="Symbol">=</a> <a id="6617" class="Keyword">record</a>
-    <a id="6628" class="Symbol">{</a> <a id="6630" href="Algebra.Structures.html#11483" class="Field">isSemiring</a> <a id="6641" class="Symbol">=</a> <a id="6643" href="Relation.Unary.Algebra.html#6350" class="Function">∪-∩-isSemiring</a>
-    <a id="6662" class="Symbol">;</a> <a id="6664" href="Algebra.Structures.html#11521" class="Field">*-comm</a> <a id="6671" class="Symbol">=</a> <a id="6673" href="Relation.Unary.Algebra.html#1300" class="Function">∩-comm</a>
-    <a id="6684" class="Symbol">}</a>
+  <a id="6571" href="Relation.Unary.Algebra.html#6571" class="Function">∪-∩-isCommutativeSemiring</a> <a id="6597" class="Symbol">:</a> <a id="6599" href="Algebra.Structures.html#12228" class="Record">IsCommutativeSemiring</a> <a id="6621" href="Relation.Unary.html#4569" class="Function Operator">_∪_</a> <a id="6625" href="Relation.Unary.html#4655" class="Function Operator">_∩_</a> <a id="6629" href="Relation.Unary.Polymorphic.html#644" class="Function">∅</a> <a id="6631" href="Relation.Unary.Polymorphic.html#693" class="Function">U</a>
+  <a id="6635" href="Relation.Unary.Algebra.html#6571" class="Function">∪-∩-isCommutativeSemiring</a> <a id="6661" class="Symbol">=</a> <a id="6663" class="Keyword">record</a>
+    <a id="6674" class="Symbol">{</a> <a id="6676" href="Algebra.Structures.html#12308" class="Field">isSemiring</a> <a id="6687" class="Symbol">=</a> <a id="6689" href="Relation.Unary.Algebra.html#6396" class="Function">∪-∩-isSemiring</a>
+    <a id="6708" class="Symbol">;</a> <a id="6710" href="Algebra.Structures.html#12346" class="Field">*-comm</a> <a id="6717" class="Symbol">=</a> <a id="6719" href="Relation.Unary.Algebra.html#1300" class="Function">∩-comm</a>
+    <a id="6730" class="Symbol">}</a>
 
-  <a id="6689" href="Relation.Unary.Algebra.html#6689" class="Function">∪-∩-isLattice</a> <a id="6703" class="Symbol">:</a> <a id="6705" href="Algebra.Lattice.Structures.html#4004" class="Record">IsLattice</a> <a id="6715" href="Relation.Unary.html#4569" class="Function Operator">_∪_</a> <a id="6719" href="Relation.Unary.html#4655" class="Function Operator">_∩_</a>
-  <a id="6725" href="Relation.Unary.Algebra.html#6689" class="Function">∪-∩-isLattice</a> <a id="6739" class="Symbol">=</a> <a id="6741" class="Keyword">record</a>
-    <a id="6752" class="Symbol">{</a> <a id="6754" href="Algebra.Lattice.Structures.html#4060" class="Field">isEquivalence</a> <a id="6768" class="Symbol">=</a> <a id="6770" href="Relation.Unary.Relation.Binary.Equality.html#585" class="Function">≐-isEquivalence</a>
-    <a id="6790" class="Symbol">;</a> <a id="6792" href="Algebra.Lattice.Structures.html#4098" class="Field">∨-comm</a> <a id="6799" class="Symbol">=</a> <a id="6801" href="Relation.Unary.Algebra.html#2103" class="Function">∪-comm</a>
-    <a id="6812" class="Symbol">;</a> <a id="6814" href="Algebra.Lattice.Structures.html#4132" class="Field">∨-assoc</a> <a id="6822" class="Symbol">=</a> <a id="6824" href="Relation.Unary.Algebra.html#2166" class="Function">∪-assoc</a>
-    <a id="6836" class="Symbol">;</a> <a id="6838" href="Algebra.Lattice.Structures.html#4166" class="Field">∨-cong</a> <a id="6845" class="Symbol">=</a> <a id="6847" href="Relation.Unary.Algebra.html#2007" class="Function">∪-cong</a>
-    <a id="6858" class="Symbol">;</a> <a id="6860" href="Algebra.Lattice.Structures.html#4199" class="Field">∧-comm</a> <a id="6867" class="Symbol">=</a> <a id="6869" href="Relation.Unary.Algebra.html#1300" class="Function">∩-comm</a>
-    <a id="6880" class="Symbol">;</a> <a id="6882" href="Algebra.Lattice.Structures.html#4233" class="Field">∧-assoc</a> <a id="6890" class="Symbol">=</a> <a id="6892" href="Relation.Unary.Algebra.html#1371" class="Function">∩-assoc</a>
-    <a id="6904" class="Symbol">;</a> <a id="6906" href="Algebra.Lattice.Structures.html#4267" class="Field">∧-cong</a> <a id="6913" class="Symbol">=</a> <a id="6915" href="Relation.Unary.Algebra.html#1196" class="Function">∩-cong</a>
-    <a id="6926" class="Symbol">;</a> <a id="6928" href="Algebra.Lattice.Structures.html#4300" class="Field">absorptive</a> <a id="6939" class="Symbol">=</a> <a id="6941" href="Relation.Unary.Algebra.html#3658" class="Function">∪-∩-absorptive</a>
-    <a id="6960" class="Symbol">}</a>
+  <a id="6735" href="Relation.Unary.Algebra.html#6735" class="Function">∪-∩-isLattice</a> <a id="6749" class="Symbol">:</a> <a id="6751" href="Algebra.Lattice.Structures.html#4004" class="Record">IsLattice</a> <a id="6761" href="Relation.Unary.html#4569" class="Function Operator">_∪_</a> <a id="6765" href="Relation.Unary.html#4655" class="Function Operator">_∩_</a>
+  <a id="6771" href="Relation.Unary.Algebra.html#6735" class="Function">∪-∩-isLattice</a> <a id="6785" class="Symbol">=</a> <a id="6787" class="Keyword">record</a>
+    <a id="6798" class="Symbol">{</a> <a id="6800" href="Algebra.Lattice.Structures.html#4060" class="Field">isEquivalence</a> <a id="6814" class="Symbol">=</a> <a id="6816" href="Relation.Unary.Relation.Binary.Equality.html#585" class="Function">≐-isEquivalence</a>
+    <a id="6836" class="Symbol">;</a> <a id="6838" href="Algebra.Lattice.Structures.html#4098" class="Field">∨-comm</a> <a id="6845" class="Symbol">=</a> <a id="6847" href="Relation.Unary.Algebra.html#2103" class="Function">∪-comm</a>
+    <a id="6858" class="Symbol">;</a> <a id="6860" href="Algebra.Lattice.Structures.html#4132" class="Field">∨-assoc</a> <a id="6868" class="Symbol">=</a> <a id="6870" href="Relation.Unary.Algebra.html#2166" class="Function">∪-assoc</a>
+    <a id="6882" class="Symbol">;</a> <a id="6884" href="Algebra.Lattice.Structures.html#4166" class="Field">∨-cong</a> <a id="6891" class="Symbol">=</a> <a id="6893" href="Relation.Unary.Algebra.html#2007" class="Function">∪-cong</a>
+    <a id="6904" class="Symbol">;</a> <a id="6906" href="Algebra.Lattice.Structures.html#4199" class="Field">∧-comm</a> <a id="6913" class="Symbol">=</a> <a id="6915" href="Relation.Unary.Algebra.html#1300" class="Function">∩-comm</a>
+    <a id="6926" class="Symbol">;</a> <a id="6928" href="Algebra.Lattice.Structures.html#4233" class="Field">∧-assoc</a> <a id="6936" class="Symbol">=</a> <a id="6938" href="Relation.Unary.Algebra.html#1371" class="Function">∩-assoc</a>
+    <a id="6950" class="Symbol">;</a> <a id="6952" href="Algebra.Lattice.Structures.html#4267" class="Field">∧-cong</a> <a id="6959" class="Symbol">=</a> <a id="6961" href="Relation.Unary.Algebra.html#1196" class="Function">∩-cong</a>
+    <a id="6972" class="Symbol">;</a> <a id="6974" href="Algebra.Lattice.Structures.html#4300" class="Field">absorptive</a> <a id="6985" class="Symbol">=</a> <a id="6987" href="Relation.Unary.Algebra.html#3658" class="Function">∪-∩-absorptive</a>
+    <a id="7006" class="Symbol">}</a>
 
-  <a id="6965" href="Relation.Unary.Algebra.html#6965" class="Function">∪-∩-isDistributiveLattice</a> <a id="6991" class="Symbol">:</a> <a id="6993" href="Algebra.Lattice.Structures.html#4753" class="Record">IsDistributiveLattice</a> <a id="7015" href="Relation.Unary.html#4569" class="Function Operator">_∪_</a> <a id="7019" href="Relation.Unary.html#4655" class="Function Operator">_∩_</a>
-  <a id="7025" href="Relation.Unary.Algebra.html#6965" class="Function">∪-∩-isDistributiveLattice</a> <a id="7051" class="Symbol">=</a> <a id="7053" class="Keyword">record</a>
-    <a id="7064" class="Symbol">{</a> <a id="7066" href="Algebra.Lattice.Structures.html#4821" class="Field">isLattice</a> <a id="7076" class="Symbol">=</a> <a id="7078" href="Relation.Unary.Algebra.html#6689" class="Function">∪-∩-isLattice</a>
-    <a id="7096" class="Symbol">;</a> <a id="7098" href="Algebra.Lattice.Structures.html#4853" class="Field">∨-distrib-∧</a> <a id="7110" class="Symbol">=</a> <a id="7112" href="Relation.Unary.Algebra.html#3439" class="Function">∪-distrib-∩</a>
-    <a id="7128" class="Symbol">;</a> <a id="7130" href="Algebra.Lattice.Structures.html#4891" class="Field">∧-distrib-∨</a> <a id="7142" class="Symbol">=</a> <a id="7144" href="Relation.Unary.Algebra.html#2970" class="Function">∩-distrib-∪</a>
-    <a id="7160" class="Symbol">}</a>
+  <a id="7011" href="Relation.Unary.Algebra.html#7011" class="Function">∪-∩-isDistributiveLattice</a> <a id="7037" class="Symbol">:</a> <a id="7039" href="Algebra.Lattice.Structures.html#4753" class="Record">IsDistributiveLattice</a> <a id="7061" href="Relation.Unary.html#4569" class="Function Operator">_∪_</a> <a id="7065" href="Relation.Unary.html#4655" class="Function Operator">_∩_</a>
+  <a id="7071" href="Relation.Unary.Algebra.html#7011" class="Function">∪-∩-isDistributiveLattice</a> <a id="7097" class="Symbol">=</a> <a id="7099" class="Keyword">record</a>
+    <a id="7110" class="Symbol">{</a> <a id="7112" href="Algebra.Lattice.Structures.html#4821" class="Field">isLattice</a> <a id="7122" class="Symbol">=</a> <a id="7124" href="Relation.Unary.Algebra.html#6735" class="Function">∪-∩-isLattice</a>
+    <a id="7142" class="Symbol">;</a> <a id="7144" href="Algebra.Lattice.Structures.html#4853" class="Field">∨-distrib-∧</a> <a id="7156" class="Symbol">=</a> <a id="7158" href="Relation.Unary.Algebra.html#3439" class="Function">∪-distrib-∩</a>
+    <a id="7174" class="Symbol">;</a> <a id="7176" href="Algebra.Lattice.Structures.html#4891" class="Field">∧-distrib-∨</a> <a id="7188" class="Symbol">=</a> <a id="7190" href="Relation.Unary.Algebra.html#2970" class="Function">∩-distrib-∪</a>
+    <a id="7206" class="Symbol">}</a>
 
-  <a id="7165" href="Relation.Unary.Algebra.html#7165" class="Function">∩-∪-isSemiringWithoutAnnihilatingZero</a> <a id="7203" class="Symbol">:</a> <a id="7205" href="Algebra.Structures.html#9173" class="Record">IsSemiringWithoutAnnihilatingZero</a> <a id="7239" href="Relation.Unary.html#4655" class="Function Operator">_∩_</a> <a id="7243" href="Relation.Unary.html#4569" class="Function Operator">_∪_</a> <a id="7247" href="Relation.Unary.Polymorphic.html#693" class="Function">U</a> <a id="7249" href="Relation.Unary.Polymorphic.html#644" class="Function">∅</a>
-  <a id="7253" href="Relation.Unary.Algebra.html#7165" class="Function">∩-∪-isSemiringWithoutAnnihilatingZero</a> <a id="7291" class="Symbol">=</a> <a id="7293" class="Keyword">record</a>
-    <a id="7304" class="Symbol">{</a> <a id="7306" href="Algebra.Structures.html#9435" class="Field">+-isCommutativeMonoid</a> <a id="7328" class="Symbol">=</a> <a id="7330" href="Relation.Unary.Algebra.html#4644" class="Function">∩-isCommutativeMonoid</a>
-    <a id="7356" class="Symbol">;</a> <a id="7358" href="Algebra.Structures.html#9488" class="Field">*-isMonoid</a> <a id="7369" class="Symbol">=</a> <a id="7371" href="Relation.Unary.Algebra.html#5530" class="Function">∪-isMonoid</a>
-    <a id="7386" class="Symbol">;</a> <a id="7388" href="Algebra.Structures.html#9530" class="Field">distrib</a> <a id="7396" class="Symbol">=</a> <a id="7398" href="Relation.Unary.Algebra.html#3439" class="Function">∪-distrib-∩</a>
-    <a id="7414" class="Symbol">}</a>
+  <a id="7211" href="Relation.Unary.Algebra.html#7211" class="Function">∩-∪-isSemiringWithoutAnnihilatingZero</a> <a id="7249" class="Symbol">:</a> <a id="7251" href="Algebra.Structures.html#9685" class="Record">IsSemiringWithoutAnnihilatingZero</a> <a id="7285" href="Relation.Unary.html#4655" class="Function Operator">_∩_</a> <a id="7289" href="Relation.Unary.html#4569" class="Function Operator">_∪_</a> <a id="7293" href="Relation.Unary.Polymorphic.html#693" class="Function">U</a> <a id="7295" href="Relation.Unary.Polymorphic.html#644" class="Function">∅</a>
+  <a id="7299" href="Relation.Unary.Algebra.html#7211" class="Function">∩-∪-isSemiringWithoutAnnihilatingZero</a> <a id="7337" class="Symbol">=</a> <a id="7339" class="Keyword">record</a>
+    <a id="7350" class="Symbol">{</a> <a id="7352" href="Algebra.Structures.html#9947" class="Field">+-isCommutativeMonoid</a> <a id="7374" class="Symbol">=</a> <a id="7376" href="Relation.Unary.Algebra.html#4644" class="Function">∩-isCommutativeMonoid</a>
+    <a id="7402" class="Symbol">;</a> <a id="7404" href="Algebra.Structures.html#10000" class="Field">*-cong</a> <a id="7411" class="Symbol">=</a> <a id="7413" href="Relation.Unary.Algebra.html#2007" class="Function">∪-cong</a>
+    <a id="7424" class="Symbol">;</a> <a id="7426" href="Algebra.Structures.html#10041" class="Field">*-assoc</a> <a id="7434" class="Symbol">=</a> <a id="7436" href="Relation.Unary.Algebra.html#2166" class="Function">∪-assoc</a>
+    <a id="7448" class="Symbol">;</a> <a id="7450" href="Algebra.Structures.html#10083" class="Field">*-identity</a> <a id="7461" class="Symbol">=</a> <a id="7463" href="Relation.Unary.Algebra.html#2451" class="Function">∪-identity</a>
+    <a id="7478" class="Symbol">;</a> <a id="7480" href="Algebra.Structures.html#10125" class="Field">distrib</a> <a id="7488" class="Symbol">=</a> <a id="7490" href="Relation.Unary.Algebra.html#3439" class="Function">∪-distrib-∩</a>
+    <a id="7506" class="Symbol">}</a>
 
-<a id="7417" class="Comment">------------------------------------------------------------------------</a>
-<a id="7490" class="Comment">-- Algebraic bundles of _∩_</a>
+<a id="7509" class="Comment">------------------------------------------------------------------------</a>
+<a id="7582" class="Comment">-- Algebraic bundles of _∩_</a>
 
-  <a id="7521" href="Relation.Unary.Algebra.html#7521" class="Function">∩-magma</a> <a id="7529" class="Symbol">:</a> <a id="7531" href="Algebra.Bundles.html#1000" class="Record">Magma</a> <a id="7537" class="Symbol">_</a> <a id="7539" class="Symbol">_</a>
-  <a id="7543" href="Relation.Unary.Algebra.html#7521" class="Function">∩-magma</a> <a id="7551" class="Symbol">=</a> <a id="7553" class="Keyword">record</a>
-    <a id="7564" class="Symbol">{</a> <a id="7566" href="Algebra.Bundles.html#1152" class="Field">isMagma</a> <a id="7574" class="Symbol">=</a> <a id="7576" href="Relation.Unary.Algebra.html#4074" class="Function">∩-isMagma</a>
-    <a id="7590" class="Symbol">}</a>
+  <a id="7613" href="Relation.Unary.Algebra.html#7613" class="Function">∩-magma</a> <a id="7621" class="Symbol">:</a> <a id="7623" href="Algebra.Bundles.html#1000" class="Record">Magma</a> <a id="7629" class="Symbol">_</a> <a id="7631" class="Symbol">_</a>
+  <a id="7635" href="Relation.Unary.Algebra.html#7613" class="Function">∩-magma</a> <a id="7643" class="Symbol">=</a> <a id="7645" class="Keyword">record</a>
+    <a id="7656" class="Symbol">{</a> <a id="7658" href="Algebra.Bundles.html#1152" class="Field">isMagma</a> <a id="7666" class="Symbol">=</a> <a id="7668" href="Relation.Unary.Algebra.html#4074" class="Function">∩-isMagma</a>
+    <a id="7682" class="Symbol">}</a>
 
-  <a id="7595" href="Relation.Unary.Algebra.html#7595" class="Function">∩-semigroup</a> <a id="7607" class="Symbol">:</a> <a id="7609" href="Algebra.Bundles.html#2143" class="Record">Semigroup</a> <a id="7619" class="Symbol">_</a> <a id="7621" class="Symbol">_</a>
-  <a id="7625" href="Relation.Unary.Algebra.html#7595" class="Function">∩-semigroup</a> <a id="7637" class="Symbol">=</a> <a id="7639" class="Keyword">record</a>
-    <a id="7650" class="Symbol">{</a> <a id="7652" href="Algebra.Bundles.html#2311" class="Field">isSemigroup</a> <a id="7664" class="Symbol">=</a> <a id="7666" href="Relation.Unary.Algebra.html#4188" class="Function">∩-isSemigroup</a>
-    <a id="7684" class="Symbol">}</a>
+  <a id="7687" href="Relation.Unary.Algebra.html#7687" class="Function">∩-semigroup</a> <a id="7699" class="Symbol">:</a> <a id="7701" href="Algebra.Bundles.html#2143" class="Record">Semigroup</a> <a id="7711" class="Symbol">_</a> <a id="7713" class="Symbol">_</a>
+  <a id="7717" href="Relation.Unary.Algebra.html#7687" class="Function">∩-semigroup</a> <a id="7729" class="Symbol">=</a> <a id="7731" class="Keyword">record</a>
+    <a id="7742" class="Symbol">{</a> <a id="7744" href="Algebra.Bundles.html#2311" class="Field">isSemigroup</a> <a id="7756" class="Symbol">=</a> <a id="7758" href="Relation.Unary.Algebra.html#4188" class="Function">∩-isSemigroup</a>
+    <a id="7776" class="Symbol">}</a>
 
-  <a id="7689" href="Relation.Unary.Algebra.html#7689" class="Function">∩-band</a> <a id="7696" class="Symbol">:</a> <a id="7698" href="Algebra.Bundles.html#2506" class="Record">Band</a> <a id="7703" class="Symbol">_</a> <a id="7705" class="Symbol">_</a>
-  <a id="7709" href="Relation.Unary.Algebra.html#7689" class="Function">∩-band</a> <a id="7716" class="Symbol">=</a> <a id="7718" class="Keyword">record</a>
-    <a id="7729" class="Symbol">{</a> <a id="7731" href="Algebra.Bundles.html#2657" class="Field">isBand</a> <a id="7738" class="Symbol">=</a> <a id="7740" href="Relation.Unary.Algebra.html#4302" class="Function">∩-isBand</a>
-    <a id="7753" class="Symbol">}</a>
+  <a id="7781" href="Relation.Unary.Algebra.html#7781" class="Function">∩-band</a> <a id="7788" class="Symbol">:</a> <a id="7790" href="Algebra.Bundles.html#2506" class="Record">Band</a> <a id="7795" class="Symbol">_</a> <a id="7797" class="Symbol">_</a>
+  <a id="7801" href="Relation.Unary.Algebra.html#7781" class="Function">∩-band</a> <a id="7808" class="Symbol">=</a> <a id="7810" class="Keyword">record</a>
+    <a id="7821" class="Symbol">{</a> <a id="7823" href="Algebra.Bundles.html#2657" class="Field">isBand</a> <a id="7830" class="Symbol">=</a> <a id="7832" href="Relation.Unary.Algebra.html#4302" class="Function">∩-isBand</a>
+    <a id="7845" class="Symbol">}</a>
 
-  <a id="7758" href="Relation.Unary.Algebra.html#7758" class="Function">∩-semilattice</a> <a id="7772" class="Symbol">:</a> <a id="7774" href="Algebra.Lattice.Bundles.html#792" class="Record">Semilattice</a> <a id="7786" class="Symbol">_</a> <a id="7788" class="Symbol">_</a>
-  <a id="7792" href="Relation.Unary.Algebra.html#7758" class="Function">∩-semilattice</a> <a id="7806" class="Symbol">=</a> <a id="7808" class="Keyword">record</a>
-    <a id="7819" class="Symbol">{</a> <a id="7821" href="Algebra.Lattice.Bundles.html#968" class="Field">isSemilattice</a> <a id="7835" class="Symbol">=</a> <a id="7837" href="Relation.Unary.Algebra.html#4407" class="Function">∩-isSemilattice</a>
-    <a id="7857" class="Symbol">}</a>
+  <a id="7850" href="Relation.Unary.Algebra.html#7850" class="Function">∩-semilattice</a> <a id="7864" class="Symbol">:</a> <a id="7866" href="Algebra.Lattice.Bundles.html#792" class="Record">Semilattice</a> <a id="7878" class="Symbol">_</a> <a id="7880" class="Symbol">_</a>
+  <a id="7884" href="Relation.Unary.Algebra.html#7850" class="Function">∩-semilattice</a> <a id="7898" class="Symbol">=</a> <a id="7900" class="Keyword">record</a>
+    <a id="7911" class="Symbol">{</a> <a id="7913" href="Algebra.Lattice.Bundles.html#968" class="Field">isSemilattice</a> <a id="7927" class="Symbol">=</a> <a id="7929" href="Relation.Unary.Algebra.html#4407" class="Function">∩-isSemilattice</a>
+    <a id="7949" class="Symbol">}</a>
 
-  <a id="7862" href="Relation.Unary.Algebra.html#7862" class="Function">∩-monoid</a> <a id="7871" class="Symbol">:</a> <a id="7873" href="Algebra.Bundles.html#4419" class="Record">Monoid</a> <a id="7880" class="Symbol">_</a> <a id="7882" class="Symbol">_</a>
-  <a id="7886" href="Relation.Unary.Algebra.html#7862" class="Function">∩-monoid</a> <a id="7895" class="Symbol">=</a> <a id="7897" class="Keyword">record</a>
-    <a id="7908" class="Symbol">{</a> <a id="7910" href="Algebra.Bundles.html#4598" class="Field">isMonoid</a> <a id="7919" class="Symbol">=</a> <a id="7921" href="Relation.Unary.Algebra.html#4523" class="Function">∩-isMonoid</a>
-    <a id="7936" class="Symbol">}</a>
+  <a id="7954" href="Relation.Unary.Algebra.html#7954" class="Function">∩-monoid</a> <a id="7963" class="Symbol">:</a> <a id="7965" href="Algebra.Bundles.html#4419" class="Record">Monoid</a> <a id="7972" class="Symbol">_</a> <a id="7974" class="Symbol">_</a>
+  <a id="7978" href="Relation.Unary.Algebra.html#7954" class="Function">∩-monoid</a> <a id="7987" class="Symbol">=</a> <a id="7989" class="Keyword">record</a>
+    <a id="8000" class="Symbol">{</a> <a id="8002" href="Algebra.Bundles.html#4598" class="Field">isMonoid</a> <a id="8011" class="Symbol">=</a> <a id="8013" href="Relation.Unary.Algebra.html#4523" class="Function">∩-isMonoid</a>
+    <a id="8028" class="Symbol">}</a>
 
-  <a id="7941" href="Relation.Unary.Algebra.html#7941" class="Function">∩-commutativeMonoid</a> <a id="7961" class="Symbol">:</a> <a id="7963" href="Algebra.Bundles.html#4990" class="Record">CommutativeMonoid</a> <a id="7981" class="Symbol">_</a> <a id="7983" class="Symbol">_</a>
-  <a id="7987" href="Relation.Unary.Algebra.html#7941" class="Function">∩-commutativeMonoid</a> <a id="8007" class="Symbol">=</a> <a id="8009" class="Keyword">record</a>
-    <a id="8020" class="Symbol">{</a> <a id="8022" href="Algebra.Bundles.html#5224" class="Field">isCommutativeMonoid</a> <a id="8042" class="Symbol">=</a> <a id="8044" href="Relation.Unary.Algebra.html#4644" class="Function">∩-isCommutativeMonoid</a>
-    <a id="8070" class="Symbol">}</a>
+  <a id="8033" href="Relation.Unary.Algebra.html#8033" class="Function">∩-commutativeMonoid</a> <a id="8053" class="Symbol">:</a> <a id="8055" href="Algebra.Bundles.html#4990" class="Record">CommutativeMonoid</a> <a id="8073" class="Symbol">_</a> <a id="8075" class="Symbol">_</a>
+  <a id="8079" href="Relation.Unary.Algebra.html#8033" class="Function">∩-commutativeMonoid</a> <a id="8099" class="Symbol">=</a> <a id="8101" class="Keyword">record</a>
+    <a id="8112" class="Symbol">{</a> <a id="8114" href="Algebra.Bundles.html#5224" class="Field">isCommutativeMonoid</a> <a id="8134" class="Symbol">=</a> <a id="8136" href="Relation.Unary.Algebra.html#4644" class="Function">∩-isCommutativeMonoid</a>
+    <a id="8162" class="Symbol">}</a>
 
-  <a id="8075" href="Relation.Unary.Algebra.html#8075" class="Function">∩-idempotentCommutativeMonoid</a> <a id="8105" class="Symbol">:</a> <a id="8107" href="Algebra.Bundles.html#5723" class="Record">IdempotentCommutativeMonoid</a> <a id="8135" class="Symbol">_</a> <a id="8137" class="Symbol">_</a>
-  <a id="8141" href="Relation.Unary.Algebra.html#8075" class="Function">∩-idempotentCommutativeMonoid</a> <a id="8171" class="Symbol">=</a> <a id="8173" class="Keyword">record</a>
-    <a id="8184" class="Symbol">{</a> <a id="8186" href="Algebra.Bundles.html#6007" class="Field">isIdempotentCommutativeMonoid</a> <a id="8216" class="Symbol">=</a> <a id="8218" href="Relation.Unary.Algebra.html#4784" class="Function">∩-isIdempotentCommutativeMonoid</a>
-    <a id="8254" class="Symbol">}</a>
+  <a id="8167" href="Relation.Unary.Algebra.html#8167" class="Function">∩-idempotentCommutativeMonoid</a> <a id="8197" class="Symbol">:</a> <a id="8199" href="Algebra.Bundles.html#5723" class="Record">IdempotentCommutativeMonoid</a> <a id="8227" class="Symbol">_</a> <a id="8229" class="Symbol">_</a>
+  <a id="8233" href="Relation.Unary.Algebra.html#8167" class="Function">∩-idempotentCommutativeMonoid</a> <a id="8263" class="Symbol">=</a> <a id="8265" class="Keyword">record</a>
+    <a id="8276" class="Symbol">{</a> <a id="8278" href="Algebra.Bundles.html#6007" class="Field">isIdempotentCommutativeMonoid</a> <a id="8308" class="Symbol">=</a> <a id="8310" href="Relation.Unary.Algebra.html#4784" class="Function">∩-isIdempotentCommutativeMonoid</a>
+    <a id="8346" class="Symbol">}</a>
 
-<a id="8257" class="Comment">------------------------------------------------------------------------</a>
-<a id="8330" class="Comment">-- Algebraic bundles of _∪_</a>
+<a id="8349" class="Comment">------------------------------------------------------------------------</a>
+<a id="8422" class="Comment">-- Algebraic bundles of _∪_</a>
 
-  <a id="8361" href="Relation.Unary.Algebra.html#8361" class="Function">∪-magma</a> <a id="8369" class="Symbol">:</a> <a id="8371" href="Algebra.Bundles.html#1000" class="Record">Magma</a> <a id="8377" class="Symbol">_</a> <a id="8379" class="Symbol">_</a>
-  <a id="8383" href="Relation.Unary.Algebra.html#8361" class="Function">∪-magma</a> <a id="8391" class="Symbol">=</a> <a id="8393" class="Keyword">record</a>
-    <a id="8404" class="Symbol">{</a> <a id="8406" href="Algebra.Bundles.html#1152" class="Field">isMagma</a> <a id="8414" class="Symbol">=</a> <a id="8416" href="Relation.Unary.Algebra.html#5081" class="Function">∪-isMagma</a>
-    <a id="8430" class="Symbol">}</a>
+  <a id="8453" href="Relation.Unary.Algebra.html#8453" class="Function">∪-magma</a> <a id="8461" class="Symbol">:</a> <a id="8463" href="Algebra.Bundles.html#1000" class="Record">Magma</a> <a id="8469" class="Symbol">_</a> <a id="8471" class="Symbol">_</a>
+  <a id="8475" href="Relation.Unary.Algebra.html#8453" class="Function">∪-magma</a> <a id="8483" class="Symbol">=</a> <a id="8485" class="Keyword">record</a>
+    <a id="8496" class="Symbol">{</a> <a id="8498" href="Algebra.Bundles.html#1152" class="Field">isMagma</a> <a id="8506" class="Symbol">=</a> <a id="8508" href="Relation.Unary.Algebra.html#5081" class="Function">∪-isMagma</a>
+    <a id="8522" class="Symbol">}</a>
 
-  <a id="8435" href="Relation.Unary.Algebra.html#8435" class="Function">∪-semigroup</a> <a id="8447" class="Symbol">:</a> <a id="8449" href="Algebra.Bundles.html#2143" class="Record">Semigroup</a> <a id="8459" class="Symbol">_</a> <a id="8461" class="Symbol">_</a>
-  <a id="8465" href="Relation.Unary.Algebra.html#8435" class="Function">∪-semigroup</a> <a id="8477" class="Symbol">=</a> <a id="8479" class="Keyword">record</a>
-    <a id="8490" class="Symbol">{</a> <a id="8492" href="Algebra.Bundles.html#2311" class="Field">isSemigroup</a> <a id="8504" class="Symbol">=</a> <a id="8506" href="Relation.Unary.Algebra.html#5195" class="Function">∪-isSemigroup</a>
-    <a id="8524" class="Symbol">}</a>
+  <a id="8527" href="Relation.Unary.Algebra.html#8527" class="Function">∪-semigroup</a> <a id="8539" class="Symbol">:</a> <a id="8541" href="Algebra.Bundles.html#2143" class="Record">Semigroup</a> <a id="8551" class="Symbol">_</a> <a id="8553" class="Symbol">_</a>
+  <a id="8557" href="Relation.Unary.Algebra.html#8527" class="Function">∪-semigroup</a> <a id="8569" class="Symbol">=</a> <a id="8571" class="Keyword">record</a>
+    <a id="8582" class="Symbol">{</a> <a id="8584" href="Algebra.Bundles.html#2311" class="Field">isSemigroup</a> <a id="8596" class="Symbol">=</a> <a id="8598" href="Relation.Unary.Algebra.html#5195" class="Function">∪-isSemigroup</a>
+    <a id="8616" class="Symbol">}</a>
 
-  <a id="8529" href="Relation.Unary.Algebra.html#8529" class="Function">∪-band</a> <a id="8536" class="Symbol">:</a> <a id="8538" href="Algebra.Bundles.html#2506" class="Record">Band</a> <a id="8543" class="Symbol">_</a> <a id="8545" class="Symbol">_</a>
-  <a id="8549" href="Relation.Unary.Algebra.html#8529" class="Function">∪-band</a> <a id="8556" class="Symbol">=</a> <a id="8558" class="Keyword">record</a>
-    <a id="8569" class="Symbol">{</a> <a id="8571" href="Algebra.Bundles.html#2657" class="Field">isBand</a> <a id="8578" class="Symbol">=</a> <a id="8580" href="Relation.Unary.Algebra.html#5309" class="Function">∪-isBand</a>
-    <a id="8593" class="Symbol">}</a>
+  <a id="8621" href="Relation.Unary.Algebra.html#8621" class="Function">∪-band</a> <a id="8628" class="Symbol">:</a> <a id="8630" href="Algebra.Bundles.html#2506" class="Record">Band</a> <a id="8635" class="Symbol">_</a> <a id="8637" class="Symbol">_</a>
+  <a id="8641" href="Relation.Unary.Algebra.html#8621" class="Function">∪-band</a> <a id="8648" class="Symbol">=</a> <a id="8650" class="Keyword">record</a>
+    <a id="8661" class="Symbol">{</a> <a id="8663" href="Algebra.Bundles.html#2657" class="Field">isBand</a> <a id="8670" class="Symbol">=</a> <a id="8672" href="Relation.Unary.Algebra.html#5309" class="Function">∪-isBand</a>
+    <a id="8685" class="Symbol">}</a>
 
-  <a id="8598" href="Relation.Unary.Algebra.html#8598" class="Function">∪-semilattice</a> <a id="8612" class="Symbol">:</a> <a id="8614" href="Algebra.Lattice.Bundles.html#792" class="Record">Semilattice</a> <a id="8626" class="Symbol">_</a> <a id="8628" class="Symbol">_</a>
-  <a id="8632" href="Relation.Unary.Algebra.html#8598" class="Function">∪-semilattice</a> <a id="8646" class="Symbol">=</a> <a id="8648" class="Keyword">record</a>
-    <a id="8659" class="Symbol">{</a> <a id="8661" href="Algebra.Lattice.Bundles.html#968" class="Field">isSemilattice</a> <a id="8675" class="Symbol">=</a> <a id="8677" href="Relation.Unary.Algebra.html#5414" class="Function">∪-isSemilattice</a>
-    <a id="8697" class="Symbol">}</a>
+  <a id="8690" href="Relation.Unary.Algebra.html#8690" class="Function">∪-semilattice</a> <a id="8704" class="Symbol">:</a> <a id="8706" href="Algebra.Lattice.Bundles.html#792" class="Record">Semilattice</a> <a id="8718" class="Symbol">_</a> <a id="8720" class="Symbol">_</a>
+  <a id="8724" href="Relation.Unary.Algebra.html#8690" class="Function">∪-semilattice</a> <a id="8738" class="Symbol">=</a> <a id="8740" class="Keyword">record</a>
+    <a id="8751" class="Symbol">{</a> <a id="8753" href="Algebra.Lattice.Bundles.html#968" class="Field">isSemilattice</a> <a id="8767" class="Symbol">=</a> <a id="8769" href="Relation.Unary.Algebra.html#5414" class="Function">∪-isSemilattice</a>
+    <a id="8789" class="Symbol">}</a>
 
-  <a id="8702" href="Relation.Unary.Algebra.html#8702" class="Function">∪-monoid</a> <a id="8711" class="Symbol">:</a> <a id="8713" href="Algebra.Bundles.html#4419" class="Record">Monoid</a> <a id="8720" class="Symbol">_</a> <a id="8722" class="Symbol">_</a>
-  <a id="8726" href="Relation.Unary.Algebra.html#8702" class="Function">∪-monoid</a> <a id="8735" class="Symbol">=</a> <a id="8737" class="Keyword">record</a>
-    <a id="8748" class="Symbol">{</a> <a id="8750" href="Algebra.Bundles.html#4598" class="Field">isMonoid</a> <a id="8759" class="Symbol">=</a> <a id="8761" href="Relation.Unary.Algebra.html#5530" class="Function">∪-isMonoid</a>
-    <a id="8776" class="Symbol">}</a>
+  <a id="8794" href="Relation.Unary.Algebra.html#8794" class="Function">∪-monoid</a> <a id="8803" class="Symbol">:</a> <a id="8805" href="Algebra.Bundles.html#4419" class="Record">Monoid</a> <a id="8812" class="Symbol">_</a> <a id="8814" class="Symbol">_</a>
+  <a id="8818" href="Relation.Unary.Algebra.html#8794" class="Function">∪-monoid</a> <a id="8827" class="Symbol">=</a> <a id="8829" class="Keyword">record</a>
+    <a id="8840" class="Symbol">{</a> <a id="8842" href="Algebra.Bundles.html#4598" class="Field">isMonoid</a> <a id="8851" class="Symbol">=</a> <a id="8853" href="Relation.Unary.Algebra.html#5530" class="Function">∪-isMonoid</a>
+    <a id="8868" class="Symbol">}</a>
 
-  <a id="8781" href="Relation.Unary.Algebra.html#8781" class="Function">∪-commutativeMonoid</a> <a id="8801" class="Symbol">:</a> <a id="8803" href="Algebra.Bundles.html#4990" class="Record">CommutativeMonoid</a> <a id="8821" class="Symbol">_</a> <a id="8823" class="Symbol">_</a>
-  <a id="8827" href="Relation.Unary.Algebra.html#8781" class="Function">∪-commutativeMonoid</a> <a id="8847" class="Symbol">=</a> <a id="8849" class="Keyword">record</a>
-    <a id="8860" class="Symbol">{</a> <a id="8862" href="Algebra.Bundles.html#5224" class="Field">isCommutativeMonoid</a> <a id="8882" class="Symbol">=</a> <a id="8884" href="Relation.Unary.Algebra.html#5651" class="Function">∪-isCommutativeMonoid</a>
-    <a id="8910" class="Symbol">}</a>
+  <a id="8873" href="Relation.Unary.Algebra.html#8873" class="Function">∪-commutativeMonoid</a> <a id="8893" class="Symbol">:</a> <a id="8895" href="Algebra.Bundles.html#4990" class="Record">CommutativeMonoid</a> <a id="8913" class="Symbol">_</a> <a id="8915" class="Symbol">_</a>
+  <a id="8919" href="Relation.Unary.Algebra.html#8873" class="Function">∪-commutativeMonoid</a> <a id="8939" class="Symbol">=</a> <a id="8941" class="Keyword">record</a>
+    <a id="8952" class="Symbol">{</a> <a id="8954" href="Algebra.Bundles.html#5224" class="Field">isCommutativeMonoid</a> <a id="8974" class="Symbol">=</a> <a id="8976" href="Relation.Unary.Algebra.html#5651" class="Function">∪-isCommutativeMonoid</a>
+    <a id="9002" class="Symbol">}</a>
 
-  <a id="8915" href="Relation.Unary.Algebra.html#8915" class="Function">∪-idempotentCommutativeMonoid</a> <a id="8945" class="Symbol">:</a> <a id="8947" href="Algebra.Bundles.html#5723" class="Record">IdempotentCommutativeMonoid</a> <a id="8975" class="Symbol">_</a> <a id="8977" class="Symbol">_</a>
-  <a id="8981" href="Relation.Unary.Algebra.html#8915" class="Function">∪-idempotentCommutativeMonoid</a> <a id="9011" class="Symbol">=</a> <a id="9013" class="Keyword">record</a>
-    <a id="9024" class="Symbol">{</a> <a id="9026" href="Algebra.Bundles.html#6007" class="Field">isIdempotentCommutativeMonoid</a> <a id="9056" class="Symbol">=</a> <a id="9058" href="Relation.Unary.Algebra.html#5791" class="Function">∪-isIdempotentCommutativeMonoid</a>
-    <a id="9094" class="Symbol">}</a>
+  <a id="9007" href="Relation.Unary.Algebra.html#9007" class="Function">∪-idempotentCommutativeMonoid</a> <a id="9037" class="Symbol">:</a> <a id="9039" href="Algebra.Bundles.html#5723" class="Record">IdempotentCommutativeMonoid</a> <a id="9067" class="Symbol">_</a> <a id="9069" class="Symbol">_</a>
+  <a id="9073" href="Relation.Unary.Algebra.html#9007" class="Function">∪-idempotentCommutativeMonoid</a> <a id="9103" class="Symbol">=</a> <a id="9105" class="Keyword">record</a>
+    <a id="9116" class="Symbol">{</a> <a id="9118" href="Algebra.Bundles.html#6007" class="Field">isIdempotentCommutativeMonoid</a> <a id="9148" class="Symbol">=</a> <a id="9150" href="Relation.Unary.Algebra.html#5791" class="Function">∪-isIdempotentCommutativeMonoid</a>
+    <a id="9186" class="Symbol">}</a>
 
-<a id="9097" class="Comment">------------------------------------------------------------------------</a>
-<a id="9170" class="Comment">-- Algebraic bundles of _∩_ and _∪_</a>
+<a id="9189" class="Comment">------------------------------------------------------------------------</a>
+<a id="9262" class="Comment">-- Algebraic bundles of _∩_ and _∪_</a>
 
-  <a id="9209" href="Relation.Unary.Algebra.html#9209" class="Function">∪-∩-semiringWithoutAnnihilatingZero</a> <a id="9245" class="Symbol">:</a> <a id="9247" href="Algebra.Bundles.html#14583" class="Record">SemiringWithoutAnnihilatingZero</a> <a id="9279" class="Symbol">_</a> <a id="9281" class="Symbol">_</a>
-  <a id="9285" href="Relation.Unary.Algebra.html#9209" class="Function">∪-∩-semiringWithoutAnnihilatingZero</a> <a id="9321" class="Symbol">=</a> <a id="9323" class="Keyword">record</a>
-    <a id="9334" class="Symbol">{</a> <a id="9336" href="Algebra.Bundles.html#15002" class="Field">isSemiringWithoutAnnihilatingZero</a> <a id="9370" class="Symbol">=</a> <a id="9372" href="Relation.Unary.Algebra.html#6096" class="Function">∪-∩-isSemiringWithoutAnnihilatingZero</a>
-    <a id="9414" class="Symbol">}</a>
+  <a id="9301" href="Relation.Unary.Algebra.html#9301" class="Function">∪-∩-semiringWithoutAnnihilatingZero</a> <a id="9337" class="Symbol">:</a> <a id="9339" href="Algebra.Bundles.html#14583" class="Record">SemiringWithoutAnnihilatingZero</a> <a id="9371" class="Symbol">_</a> <a id="9373" class="Symbol">_</a>
+  <a id="9377" href="Relation.Unary.Algebra.html#9301" class="Function">∪-∩-semiringWithoutAnnihilatingZero</a> <a id="9413" class="Symbol">=</a> <a id="9415" class="Keyword">record</a>
+    <a id="9426" class="Symbol">{</a> <a id="9428" href="Algebra.Bundles.html#15002" class="Field">isSemiringWithoutAnnihilatingZero</a> <a id="9462" class="Symbol">=</a> <a id="9464" href="Relation.Unary.Algebra.html#6096" class="Function">∪-∩-isSemiringWithoutAnnihilatingZero</a>
+    <a id="9506" class="Symbol">}</a>
 
-  <a id="9419" href="Relation.Unary.Algebra.html#9419" class="Function">∪-∩-semiring</a> <a id="9432" class="Symbol">:</a> <a id="9434" href="Algebra.Bundles.html#16215" class="Record">Semiring</a> <a id="9443" class="Symbol">_</a> <a id="9445" class="Symbol">_</a>
-  <a id="9449" href="Relation.Unary.Algebra.html#9419" class="Function">∪-∩-semiring</a> <a id="9462" class="Symbol">=</a> <a id="9464" class="Keyword">record</a>
-    <a id="9475" class="Symbol">{</a> <a id="9477" href="Algebra.Bundles.html#16473" class="Field">isSemiring</a> <a id="9488" class="Symbol">=</a> <a id="9490" href="Relation.Unary.Algebra.html#6350" class="Function">∪-∩-isSemiring</a>
-    <a id="9509" class="Symbol">}</a>
+  <a id="9511" href="Relation.Unary.Algebra.html#9511" class="Function">∪-∩-semiring</a> <a id="9524" class="Symbol">:</a> <a id="9526" href="Algebra.Bundles.html#16215" class="Record">Semiring</a> <a id="9535" class="Symbol">_</a> <a id="9537" class="Symbol">_</a>
+  <a id="9541" href="Relation.Unary.Algebra.html#9511" class="Function">∪-∩-semiring</a> <a id="9554" class="Symbol">=</a> <a id="9556" class="Keyword">record</a>
+    <a id="9567" class="Symbol">{</a> <a id="9569" href="Algebra.Bundles.html#16473" class="Field">isSemiring</a> <a id="9580" class="Symbol">=</a> <a id="9582" href="Relation.Unary.Algebra.html#6396" class="Function">∪-∩-isSemiring</a>
+    <a id="9601" class="Symbol">}</a>
 
-  <a id="9514" href="Relation.Unary.Algebra.html#9514" class="Function">∪-∩-commutativeSemiring</a> <a id="9538" class="Symbol">:</a> <a id="9540" href="Algebra.Bundles.html#17340" class="Record">CommutativeSemiring</a> <a id="9560" class="Symbol">_</a> <a id="9562" class="Symbol">_</a>
-  <a id="9566" href="Relation.Unary.Algebra.html#9514" class="Function">∪-∩-commutativeSemiring</a> <a id="9590" class="Symbol">=</a> <a id="9592" class="Keyword">record</a>
-    <a id="9603" class="Symbol">{</a> <a id="9605" href="Algebra.Bundles.html#17675" class="Field">isCommutativeSemiring</a> <a id="9627" class="Symbol">=</a> <a id="9629" href="Relation.Unary.Algebra.html#6525" class="Function">∪-∩-isCommutativeSemiring</a>
-    <a id="9659" class="Symbol">}</a>
+  <a id="9606" href="Relation.Unary.Algebra.html#9606" class="Function">∪-∩-commutativeSemiring</a> <a id="9630" class="Symbol">:</a> <a id="9632" href="Algebra.Bundles.html#17340" class="Record">CommutativeSemiring</a> <a id="9652" class="Symbol">_</a> <a id="9654" class="Symbol">_</a>
+  <a id="9658" href="Relation.Unary.Algebra.html#9606" class="Function">∪-∩-commutativeSemiring</a> <a id="9682" class="Symbol">=</a> <a id="9684" class="Keyword">record</a>
+    <a id="9695" class="Symbol">{</a> <a id="9697" href="Algebra.Bundles.html#17675" class="Field">isCommutativeSemiring</a> <a id="9719" class="Symbol">=</a> <a id="9721" href="Relation.Unary.Algebra.html#6571" class="Function">∪-∩-isCommutativeSemiring</a>
+    <a id="9751" class="Symbol">}</a>
 
-  <a id="9664" href="Relation.Unary.Algebra.html#9664" class="Function">∪-∩-lattice</a> <a id="9676" class="Symbol">:</a> <a id="9678" href="Algebra.Lattice.Bundles.html#4381" class="Record">Lattice</a> <a id="9686" class="Symbol">_</a> <a id="9688" class="Symbol">_</a>
-  <a id="9692" href="Relation.Unary.Algebra.html#9664" class="Function">∪-∩-lattice</a> <a id="9704" class="Symbol">=</a> <a id="9706" class="Keyword">record</a>
-    <a id="9717" class="Symbol">{</a> <a id="9719" href="Algebra.Lattice.Bundles.html#4584" class="Field">isLattice</a> <a id="9729" class="Symbol">=</a> <a id="9731" href="Relation.Unary.Algebra.html#6689" class="Function">∪-∩-isLattice</a>
-    <a id="9749" class="Symbol">}</a>
+  <a id="9756" href="Relation.Unary.Algebra.html#9756" class="Function">∪-∩-lattice</a> <a id="9768" class="Symbol">:</a> <a id="9770" href="Algebra.Lattice.Bundles.html#4381" class="Record">Lattice</a> <a id="9778" class="Symbol">_</a> <a id="9780" class="Symbol">_</a>
+  <a id="9784" href="Relation.Unary.Algebra.html#9756" class="Function">∪-∩-lattice</a> <a id="9796" class="Symbol">=</a> <a id="9798" class="Keyword">record</a>
+    <a id="9809" class="Symbol">{</a> <a id="9811" href="Algebra.Lattice.Bundles.html#4584" class="Field">isLattice</a> <a id="9821" class="Symbol">=</a> <a id="9823" href="Relation.Unary.Algebra.html#6735" class="Function">∪-∩-isLattice</a>
+    <a id="9841" class="Symbol">}</a>
 
-  <a id="9754" href="Relation.Unary.Algebra.html#9754" class="Function">∪-∩-distributiveLattice</a> <a id="9778" class="Symbol">:</a> <a id="9780" href="Algebra.Lattice.Bundles.html#4964" class="Record">DistributiveLattice</a> <a id="9800" class="Symbol">_</a> <a id="9802" class="Symbol">_</a>
-  <a id="9806" href="Relation.Unary.Algebra.html#9754" class="Function">∪-∩-distributiveLattice</a> <a id="9830" class="Symbol">=</a> <a id="9832" class="Keyword">record</a>
-    <a id="9843" class="Symbol">{</a> <a id="9845" href="Algebra.Lattice.Bundles.html#5227" class="Field">isDistributiveLattice</a> <a id="9867" class="Symbol">=</a> <a id="9869" href="Relation.Unary.Algebra.html#6965" class="Function">∪-∩-isDistributiveLattice</a>
-    <a id="9899" class="Symbol">}</a>
+  <a id="9846" href="Relation.Unary.Algebra.html#9846" class="Function">∪-∩-distributiveLattice</a> <a id="9870" class="Symbol">:</a> <a id="9872" href="Algebra.Lattice.Bundles.html#4964" class="Record">DistributiveLattice</a> <a id="9892" class="Symbol">_</a> <a id="9894" class="Symbol">_</a>
+  <a id="9898" href="Relation.Unary.Algebra.html#9846" class="Function">∪-∩-distributiveLattice</a> <a id="9922" class="Symbol">=</a> <a id="9924" class="Keyword">record</a>
+    <a id="9935" class="Symbol">{</a> <a id="9937" href="Algebra.Lattice.Bundles.html#5227" class="Field">isDistributiveLattice</a> <a id="9959" class="Symbol">=</a> <a id="9961" href="Relation.Unary.Algebra.html#7011" class="Function">∪-∩-isDistributiveLattice</a>
+    <a id="9991" class="Symbol">}</a>
 
-  <a id="9904" href="Relation.Unary.Algebra.html#9904" class="Function">∩-∪-semiringWithoutAnnihilatingZero</a> <a id="9940" class="Symbol">:</a> <a id="9942" href="Algebra.Bundles.html#14583" class="Record">SemiringWithoutAnnihilatingZero</a> <a id="9974" class="Symbol">_</a> <a id="9976" class="Symbol">_</a>
-  <a id="9980" href="Relation.Unary.Algebra.html#9904" class="Function">∩-∪-semiringWithoutAnnihilatingZero</a> <a id="10016" class="Symbol">=</a> <a id="10018" class="Keyword">record</a>
-    <a id="10029" class="Symbol">{</a> <a id="10031" href="Algebra.Bundles.html#15002" class="Field">isSemiringWithoutAnnihilatingZero</a> <a id="10065" class="Symbol">=</a> <a id="10067" href="Relation.Unary.Algebra.html#7165" class="Function">∩-∪-isSemiringWithoutAnnihilatingZero</a>
-    <a id="10109" class="Symbol">}</a>
+  <a id="9996" href="Relation.Unary.Algebra.html#9996" class="Function">∩-∪-semiringWithoutAnnihilatingZero</a> <a id="10032" class="Symbol">:</a> <a id="10034" href="Algebra.Bundles.html#14583" class="Record">SemiringWithoutAnnihilatingZero</a> <a id="10066" class="Symbol">_</a> <a id="10068" class="Symbol">_</a>
+  <a id="10072" href="Relation.Unary.Algebra.html#9996" class="Function">∩-∪-semiringWithoutAnnihilatingZero</a> <a id="10108" class="Symbol">=</a> <a id="10110" class="Keyword">record</a>
+    <a id="10121" class="Symbol">{</a> <a id="10123" href="Algebra.Bundles.html#15002" class="Field">isSemiringWithoutAnnihilatingZero</a> <a id="10157" class="Symbol">=</a> <a id="10159" href="Relation.Unary.Algebra.html#7211" class="Function">∩-∪-isSemiringWithoutAnnihilatingZero</a>
+    <a id="10201" class="Symbol">}</a>
 </pre></body></html>
