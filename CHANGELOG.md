@@ -322,6 +322,22 @@ Non-backwards compatible changes
 
 * The contents of `Function.Strict` is now re-exported by `Function`.
 
+### Changes to ring structures
+
+* Several ring-like structures now have the multiplicative structure defined by
+  its laws rather than as a substructure, to avoid repeated proofs that the
+  underlying relation is an equivalence. These are:
+  * `IsNearSemiring`
+  * `IsSemiringWithoutOne`
+  * `IsSemiringWithoutAnnihilatingZero`
+  * `IsRing`
+* To aid with migration, structures matching the old style ones have been added
+  to `Algebra.Structures.Biased`, with conversionFunctions:
+  * `IsNearSemiring*` and `isNearSemiring*`
+  * `IsSemiringWithoutOne*` and `isSemiringWithoutOne*`
+  * `IsSemiringWithoutAnnihilatingZero*` and `isSemiringWithoutAnnihilatingZero*`
+  * `IsRing*` and `isRing*`
+
 ### Other
 
 * The first two arguments of `m≡n⇒m-n≡0` (now `i≡j⇒i-j≡0`) in `Data.Integer.Base`

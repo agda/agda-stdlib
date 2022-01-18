@@ -172,7 +172,10 @@ semiringWithoutAnnihilatingZero R S = record
       { +-isCommutativeMonoid = CommutativeMonoid.isCommutativeMonoid
                                   (commutativeMonoid R.+-commutativeMonoid
                                                      S.+-commutativeMonoid)
-      ; *-isMonoid = Monoid.isMonoid (monoid R.*-monoid S.*-monoid)
+      ; *-cong = zip R.*-cong S.*-cong
+      ; *-assoc = λ x y z → (R.*-assoc , S.*-assoc) <*> x <*> y <*> z
+      ; *-identity = (R.*-identityˡ , S.*-identityˡ <*>_)
+                   , (R.*-identityʳ , S.*-identityʳ <*>_)
       ; distrib    = (λ x y z → (R.distribˡ , S.distribˡ) <*> x <*> y <*> z)
                    , (λ x y z → (R.distribʳ , S.distribʳ) <*> x <*> y <*> z)
       }
@@ -208,7 +211,9 @@ ring R S = record
   { -_     = uncurry (λ x y → R.-_ x , S.-_ y)
   ; isRing = record
       { +-isAbelianGroup = AbelianGroup.isAbelianGroup A
-      ; *-isMonoid       = Semiring.*-isMonoid Semi
+      ; *-cong           = Semiring.*-cong Semi
+      ; *-assoc          = Semiring.*-assoc Semi
+      ; *-identity       = Semiring.*-identity Semi
       ; distrib          = Semiring.distrib Semi
       ; zero             = Semiring.zero Semi
       }
