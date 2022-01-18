@@ -71,7 +71,7 @@
 <a id="2227" href="Reflection.Term.html#2169" class="Function">getName</a> <a id="2235" class="Symbol">(</a><a id="2236" href="Agda.Builtin.Reflection.html#4903" class="InductiveConstructor">def</a> <a id="2240" href="Reflection.Term.html#2240" class="Bound">f</a> <a id="2242" href="Reflection.Term.html#2242" class="Bound">args</a><a id="2246" class="Symbol">)</a> <a id="2248" class="Symbol">=</a> <a id="2250" href="Agda.Builtin.Maybe.html#174" class="InductiveConstructor">just</a> <a id="2255" href="Reflection.Term.html#2240" class="Bound">f</a>
 <a id="2257" href="Reflection.Term.html#2169" class="CatchallClause Function">getName</a><a id="2264" class="CatchallClause"> </a><a id="2265" class="CatchallClause Symbol">_</a>            <a id="2278" class="Symbol">=</a> <a id="2280" href="Agda.Builtin.Maybe.html#195" class="InductiveConstructor">nothing</a>
 
-<a id="2289" class="Comment">-- &quot;n ⋯⟨∷⟩ xs&quot; prepends &quot;n&quot; visible unknown arguments to the list of</a>
+<a id="2289" class="Comment">-- &quot;n ⋯⟅∷⟆ xs&quot; prepends &quot;n&quot; visible unknown arguments to the list of</a>
 <a id="2358" class="Comment">-- arguments. Useful when constructing the list of arguments for a</a>
 <a id="2425" class="Comment">-- function with initial inferable arguments.</a>
 <a id="2471" class="Keyword">infixr</a> <a id="2478" class="Number">5</a> <a id="2480" href="Reflection.Term.html#2487" class="Function Operator">_⋯⟨∷⟩_</a>
@@ -80,7 +80,7 @@
 <a id="2541" href="Agda.Builtin.Nat.html#223" class="InductiveConstructor">suc</a> <a id="2545" href="Reflection.Term.html#2545" class="Bound">i</a> <a id="2547" href="Reflection.Term.html#2487" class="Function Operator">⋯⟨∷⟩</a> <a id="2552" href="Reflection.Term.html#2552" class="Bound">xs</a> <a id="2555" class="Symbol">=</a> <a id="2557" href="Agda.Builtin.Reflection.html#5246" class="InductiveConstructor">unknown</a> <a id="2565" href="Reflection.Argument.html#1631" class="InductiveConstructor Operator">⟨∷⟩</a> <a id="2569" class="Symbol">(</a><a id="2570" href="Reflection.Term.html#2545" class="Bound">i</a> <a id="2572" href="Reflection.Term.html#2487" class="Function Operator">⋯⟨∷⟩</a> <a id="2577" href="Reflection.Term.html#2552" class="Bound">xs</a><a id="2579" class="Symbol">)</a>
 <a id="2581" class="Symbol">{-#</a> <a id="2585" class="Keyword">INLINE</a> <a id="2592" href="Reflection.Term.html#2487" class="Function Operator">_⋯⟨∷⟩_</a> <a id="2599" class="Symbol">#-}</a>
 
-<a id="2604" class="Comment">-- &quot;n ⋯⟨∷⟩ xs&quot; prepends &quot;n&quot; hidden unknown arguments to the list of</a>
+<a id="2604" class="Comment">-- &quot;n ⋯⟅∷⟆ xs&quot; prepends &quot;n&quot; hidden unknown arguments to the list of</a>
 <a id="2672" class="Comment">-- arguments. Useful when constructing the list of arguments for a</a>
 <a id="2739" class="Comment">-- function with initial implicit arguments.</a>
 <a id="2784" class="Keyword">infixr</a> <a id="2791" class="Number">5</a> <a id="2793" href="Reflection.Term.html#2800" class="Function Operator">_⋯⟅∷⟆_</a>
