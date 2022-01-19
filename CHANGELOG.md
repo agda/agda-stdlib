@@ -893,6 +893,11 @@ Other minor changes
   decide :  Π[ P ∪ Q ] → Π[ All {R = R} P ∪ Any Q ]
   ```
 
+* Add new proofs in `Data.List.Properties`:
+  ```agda
+  ∈⇒∣product : n ∈ ns → n ∣ product ns
+  ```
+
 * Added new definitions and proofs to `Data.Nat.Primality`:
   ```agda
   Composite        : ℕ → Set
@@ -922,7 +927,6 @@ Other minor changes
 * Added new proofs in `Data.Nat.Divisibility`:
   ```agda
   n∣m*n*o : n ∣ m * n * o
-  ∈⇒∣product : n ∈ ns → n ∣ product ns
   ```
 
 * Added new patterns in `Data.Nat.Reflection`:
