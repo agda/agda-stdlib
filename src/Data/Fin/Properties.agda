@@ -643,12 +643,6 @@ combine-injective i j k l combine[i,j]≡combine[k,l] =
         open import Data.Nat.Solver
         open +-*-Solver
 
-combine-surjective : ∀ {n k} (x : Fin (n ℕ.* k)) → Σ[ y ∈ Fin n ] Σ[ z ∈ Fin k ] combine y z ≡ x
-combine-surjective {n} {k} x with remQuot {n} k x | P.inspect (remQuot {n} k) x
-... | y , z | P.[ eq ] = y , z , (begin
-  combine y z                       ≡˘⟨ uncurry (cong₂ combine) (,-injective eq) ⟩
-  uncurry combine (remQuot {n} k x) ≡⟨ combine-remQuot {n} k x ⟩
-  x ∎)
     lemma₂ : ∀ {n m} (i : Fin n) (j : Fin m) (k : Fin n) (l : Fin m) → combine i j ≡ combine k l → i ≡ k
     lemma₂ i j k l combine[i,j]≡combine[k,l] with <-cmp i k
     ... | tri< i<k _ _ = contradiction combine[i,j]≡combine[k,l] (<⇒≢ (lemma₁ i j k l i<k))
@@ -662,6 +656,12 @@ combine-surjective {n} {k} x with remQuot {n} k x | P.inspect (remQuot {n} k) x
       combine i l ∎)
       where open ≡-Reasoning
 
+combine-surjective : ∀ {n m} (i : Fin (n ℕ.* m)) → Σ[ j ∈ Fin n ] Σ[ k ∈ Fin m ] combine j k ≡ i
+combine-surjective {n} {m} i with remQuot {n} m i | P.inspect (remQuot {n} m) i
+... | j , k | P.[ eq ] = j , k , (begin
+  combine j k                       ≡˘⟨ uncurry (cong₂ combine) (,-injective eq) ⟩
+  uncurry combine (remQuot {n} m i) ≡⟨ combine-remQuot {n} m i ⟩
+  i                                 ∎)
   where open ≡-Reasoning
 
 ------------------------------------------------------------------------
