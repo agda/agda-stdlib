@@ -19,6 +19,7 @@ open import Data.Fin.Base
 open import Data.Fin.Patterns
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_; _^_)
 import Data.Nat.Properties as ℕₚ
+open import Data.Nat.Solver
 open import Data.Unit using (⊤; tt)
 open import Data.Product using (Σ-syntax; ∃; ∃₂; ∄; _×_; _,_; map; proj₁; proj₂; uncurry; <_,_>)
 open import Data.Product.Properties using (,-injective)
@@ -569,9 +570,9 @@ splitAt-≥ (suc m) (suc i) (s≤s i≥m) = cong (Sum.map suc id) (splitAt-≥ m
 
 -- Fin (m * n) ↔ Fin m × Fin n
 
-remQuot-combine : ∀ {n k} (x : Fin n) y → remQuot k (combine x y) ≡ (x , y)
-remQuot-combine {suc n} {k} 0F y rewrite splitAt-↑ˡ k y (n ℕ.* k) = refl
-remQuot-combine {suc n} {k} (suc x) y rewrite splitAt-↑ʳ k (n ℕ.* k) (combine x y) = cong (Data.Product.map₁ suc) (remQuot-combine x y)
+remQuot-combine : ∀ {n k} (i : Fin n) j → remQuot k (combine i j) ≡ (i , j)
+remQuot-combine {suc n} {k} 0F j rewrite splitAt-↑ˡ k j (n ℕ.* k) = refl
+remQuot-combine {suc n} {k} (suc i) j rewrite splitAt-↑ʳ k (n ℕ.* k) (combine i j) = cong (Data.Product.map₁ suc) (remQuot-combine i j)
 
 combine-remQuot : ∀ {n} k (i : Fin (n ℕ.* k)) → uncurry combine (remQuot {n} k i) ≡ i
 combine-remQuot {suc n} k i with splitAt k i | P.inspect (splitAt k) i
@@ -587,67 +588,60 @@ combine-remQuot {suc n} k i with splitAt k i | P.inspect (splitAt k) i
   i                                        ∎
   where open ≡-Reasoning
 
-toℕ-combine : ∀ {n k} (x : Fin n) (y : Fin k) → toℕ (combine x y) ≡ k ℕ.* toℕ x ℕ.+ toℕ y
-toℕ-combine {n = suc n} {k} x@0F y = begin
-  toℕ (combine x y)          ≡⟨⟩
-  toℕ (y ↑ˡ (n ℕ.* k))       ≡⟨ toℕ-↑ˡ y (n ℕ.* k) ⟩
-  toℕ y                      ≡⟨⟩
-  0 ℕ.+ toℕ y                ≡˘⟨ cong (ℕ._+ toℕ y) (ℕₚ.*-zeroʳ k) ⟩
-  k ℕ.* toℕ x ℕ.+ toℕ y      ∎
+toℕ-combine : ∀ {n m} (i : Fin n) (j : Fin m) → toℕ (combine i j) ≡ m ℕ.* toℕ i ℕ.+ toℕ j
+toℕ-combine {n = suc n} {m} i@0F j = begin
+  toℕ (combine i j)          ≡⟨⟩
+  toℕ (j ↑ˡ (n ℕ.* m))       ≡⟨ toℕ-↑ˡ j (n ℕ.* m) ⟩
+  toℕ j                      ≡⟨⟩
+  0 ℕ.+ toℕ j                ≡˘⟨ cong (ℕ._+ toℕ j) (ℕₚ.*-zeroʳ m) ⟩
+  m ℕ.* toℕ i ℕ.+ toℕ j      ∎
   where open ≡-Reasoning
-toℕ-combine {n = suc n} {k} (suc x) y = begin
-  toℕ (combine (suc x) y)        ≡⟨⟩
-  toℕ (k ↑ʳ combine x y)         ≡⟨ toℕ-↑ʳ k (combine x y) ⟩
-  k ℕ.+ toℕ (combine x y)        ≡⟨ cong (k ℕ.+_) (toℕ-combine x y) ⟩
-  k ℕ.+ (k ℕ.* toℕ x ℕ.+ toℕ y)  ≡⟨ solve 3 (λ k x y → k :+ (k :* x :+ y) := k :* (con 1 :+ x) :+ y) refl k (toℕ x) (toℕ y) ⟩
-  k ℕ.* toℕ (suc x) ℕ.+ toℕ y    ∎
+toℕ-combine {n = suc n} {m} (suc i) j = begin
+  toℕ (combine (suc i) j)        ≡⟨⟩
+  toℕ (m ↑ʳ combine i j)         ≡⟨ toℕ-↑ʳ m (combine i j) ⟩
+  m ℕ.+ toℕ (combine i j)        ≡⟨ cong (m ℕ.+_) (toℕ-combine i j) ⟩
+  m ℕ.+ (m ℕ.* toℕ i ℕ.+ toℕ j)  ≡⟨ solve 3 (λ m i j → m :+ (m :* i :+ j) := m :* (con 1 :+ i) :+ j) refl m (toℕ i) (toℕ j) ⟩
+  m ℕ.* toℕ (suc i) ℕ.+ toℕ j    ∎
   where
     open ≡-Reasoning
-    open import Data.Nat.Solver
     open +-*-Solver
 
-combine-injectiveˡ : ∀ {n k} (x y : Fin n) (z : Fin k) → combine x z ≡ combine y z → x ≡ y
-combine-injectiveˡ {n} {k@(suc _)} x y z combine[x,z]≡combine[y,z] = toℕ-injective (ℕₚ.*-cancelˡ-≡ k (ℕₚ.+-cancelʳ-≡ (k ℕ.* toℕ x) (k ℕ.* toℕ y) (begin
-  k ℕ.* toℕ x ℕ.+ toℕ z      ≡˘⟨ toℕ-combine x z ⟩
-  toℕ (combine x z)          ≡⟨ cong toℕ combine[x,z]≡combine[y,z] ⟩
-  toℕ (combine y z)          ≡⟨ toℕ-combine y z ⟩
-  k ℕ.* toℕ y ℕ.+ toℕ z      ∎)))
+combine-injectiveˡ : ∀ {n m} (i j : Fin n) (k : Fin m) → combine i k ≡ combine j k → i ≡ j
+combine-injectiveˡ {n} {m@(suc _)} i j k combine[i,k]≡combine[j,k] =
+  toℕ-injective (ℕₚ.*-cancelˡ-≡ m (ℕₚ.+-cancelʳ-≡ (m ℕ.* toℕ i) (m ℕ.* toℕ j) (begin
+    m ℕ.* toℕ i ℕ.+ toℕ k      ≡˘⟨ toℕ-combine i k ⟩
+    toℕ (combine i k)          ≡⟨ cong toℕ combine[i,k]≡combine[j,k] ⟩
+    toℕ (combine j k)          ≡⟨ toℕ-combine j k ⟩
+    m ℕ.* toℕ j ℕ.+ toℕ k      ∎)))
   where open ≡-Reasoning
 
-combine-injectiveʳ : ∀ {n k} (x : Fin n) (y z : Fin k) → combine x y ≡ combine x z → y ≡ z
-combine-injectiveʳ {n} {k} x y z combine[x,z]≡combine[y,z] = toℕ-injective (ℕₚ.+-cancelˡ-≡ (k ℕ.* toℕ x) (begin
-  k ℕ.* toℕ x ℕ.+ toℕ y ≡˘⟨ toℕ-combine x y ⟩
-  toℕ (combine x y)     ≡⟨ cong toℕ combine[x,z]≡combine[y,z] ⟩
-  toℕ (combine x z)     ≡⟨ toℕ-combine x z ⟩
-  k ℕ.* toℕ x ℕ.+ toℕ z ∎))
+combine-injectiveʳ : ∀ {n m} (i : Fin n) (j k : Fin m) → combine i j ≡ combine i k → j ≡ k
+combine-injectiveʳ {n} {m} i j k combine[i,k]≡combine[j,k] = toℕ-injective (ℕₚ.+-cancelˡ-≡ (m ℕ.* toℕ i) (begin
+  m ℕ.* toℕ i ℕ.+ toℕ j ≡˘⟨ toℕ-combine i j ⟩
+  toℕ (combine i j)     ≡⟨ cong toℕ combine[i,k]≡combine[j,k] ⟩
+  toℕ (combine i k)     ≡⟨ toℕ-combine i k ⟩
+  m ℕ.* toℕ i ℕ.+ toℕ k ∎))
   where open ≡-Reasoning
 
-combine-injective : ∀ {n k} (x : Fin n) (y : Fin k) (w : Fin n) (z : Fin k) → combine x y ≡ combine w z → x ≡ w × y ≡ z
-combine-injective x y w z combine[x,y]≡combine[w,z] = lemma₂ x y w z combine[x,y]≡combine[w,z] , lemma₃ x y w z combine[x,y]≡combine[w,z] where
-  lemma₁ : ∀ {n k} (x : Fin n) (y : Fin k) (w : Fin n) (z : Fin k) → x < w → combine x y < combine w z
-  lemma₁ {n} {k} x y w z x<w = toℕ-cancel-< (begin-strict
-    toℕ (combine x y)      ≡⟨ toℕ-combine x y ⟩
-    k ℕ.* toℕ x ℕ.+ toℕ y  <⟨ ℕₚ.+-monoʳ-< (k ℕ.* toℕ x) (toℕ<n y) ⟩
-    k ℕ.* toℕ x ℕ.+ k      ≡⟨ solve 2 (λ k x → k :* x :+ k := k :* (con 1 :+ x)) refl k (toℕ x) ⟩
-    k ℕ.* suc (toℕ x)      ≤⟨ ℕₚ.*-monoʳ-≤ k (toℕ-mono-< x<w) ⟩
-    k ℕ.* toℕ w            ≤⟨ ℕₚ.m≤m+n (k ℕ.* toℕ w) (toℕ z) ⟩
-    k ℕ.* toℕ w ℕ.+ toℕ z  ≡˘⟨ toℕ-combine w z ⟩
-    toℕ (combine w z)      ∎)
-    where
-      open ℕₚ.≤-Reasoning
-      open import Data.Nat.Solver
-      open +-*-Solver
-  lemma₂ : ∀ {n k} (x : Fin n) (y : Fin k) (w : Fin n) (z : Fin k) → combine x y ≡ combine w z → x ≡ w
-  lemma₂ x y w z combine[x,y]≡combine[w,z] with <-cmp x w
-  ... | tri< x<w _ _ = contradiction combine[x,y]≡combine[w,z] (<⇒≢ (lemma₁ x y w z x<w))
-  ... | tri≈ _ x≡w _ = x≡w
-  ... | tri> _ _ x>w = contradiction (sym combine[x,y]≡combine[w,z]) (<⇒≢ (lemma₁ w z x y x>w))
-  lemma₃ : ∀ {n k} (x : Fin n) (y : Fin k) (w : Fin n) (z : Fin k) → combine x y ≡ combine w z → y ≡ z
-  lemma₃ x y w z combine[x,y]≡combine[w,z] = combine-injectiveʳ x y z (begin
-    combine x y ≡⟨ combine[x,y]≡combine[w,z] ⟩
-    combine w z ≡˘⟨ cong (λ h → combine h z) (lemma₂ x y w z combine[x,y]≡combine[w,z]) ⟩
-    combine x z ∎)
-    where open ≡-Reasoning
+combine-injective : ∀ {n m} (i : Fin n) (j : Fin m) (k : Fin n) (l : Fin m) → combine i j ≡ combine k l → i ≡ k × j ≡ l
+combine-injective i j k l combine[i,j]≡combine[k,l] =
+  lemma₂ i j k l combine[i,j]≡combine[k,l] , lemma₃ i j k l combine[i,j]≡combine[k,l]
+  where
+    lemma₁ : ∀ {n m} (i : Fin n) (j : Fin m) (k : Fin n) (l : Fin m) → i < k → combine i j < combine k l
+    lemma₁ {n} {m} i j k l i<k = toℕ-cancel-< (begin-strict
+      toℕ (combine i j)      ≡⟨ toℕ-combine i j ⟩
+      m ℕ.* toℕ i ℕ.+ toℕ j  <⟨ ℕₚ.+-monoʳ-< (m ℕ.* toℕ i) (toℕ<n j) ⟩
+      m ℕ.* toℕ i ℕ.+ m      ≡⟨ ℕₚ.+-comm _ m ⟩
+      m ℕ.+ m ℕ.* toℕ i      ≡⟨ cong (m ℕ.+_) (ℕₚ.*-comm m _) ⟩
+      m ℕ.+ toℕ i ℕ.* m      ≡⟨ ℕₚ.*-comm (suc (toℕ i)) m ⟩
+      m ℕ.* suc (toℕ i)      ≤⟨ ℕₚ.*-monoʳ-≤ m (toℕ-mono-< i<k) ⟩
+      m ℕ.* toℕ k            ≤⟨ ℕₚ.m≤m+n (m ℕ.* toℕ k) (toℕ l) ⟩
+      m ℕ.* toℕ k ℕ.+ toℕ l  ≡˘⟨ toℕ-combine k l ⟩
+      toℕ (combine k l)      ∎)
+      where
+        open ℕₚ.≤-Reasoning
+        open import Data.Nat.Solver
+        open +-*-Solver
 
 combine-surjective : ∀ {n k} (x : Fin (n ℕ.* k)) → Σ[ y ∈ Fin n ] Σ[ z ∈ Fin k ] combine y z ≡ x
 combine-surjective {n} {k} x with remQuot {n} k x | P.inspect (remQuot {n} k) x
@@ -655,6 +649,19 @@ combine-surjective {n} {k} x with remQuot {n} k x | P.inspect (remQuot {n} k) x
   combine y z                       ≡˘⟨ uncurry (cong₂ combine) (,-injective eq) ⟩
   uncurry combine (remQuot {n} k x) ≡⟨ combine-remQuot {n} k x ⟩
   x ∎)
+    lemma₂ : ∀ {n m} (i : Fin n) (j : Fin m) (k : Fin n) (l : Fin m) → combine i j ≡ combine k l → i ≡ k
+    lemma₂ i j k l combine[i,j]≡combine[k,l] with <-cmp i k
+    ... | tri< i<k _ _ = contradiction combine[i,j]≡combine[k,l] (<⇒≢ (lemma₁ i j k l i<k))
+    ... | tri≈ _ i≡k _ = i≡k
+    ... | tri> _ _ i>k = contradiction (sym combine[i,j]≡combine[k,l]) (<⇒≢ (lemma₁ k l i j i>k))
+
+    lemma₃ : ∀ {n m} (i : Fin n) (j : Fin m) (k : Fin n) (l : Fin m) → combine i j ≡ combine k l → j ≡ l
+    lemma₃ i j k l combine[i,j]≡combine[k,l] = combine-injectiveʳ i j l (begin
+      combine i j ≡⟨ combine[i,j]≡combine[k,l] ⟩
+      combine k l ≡˘⟨ cong (λ h → combine h l) (lemma₂ i j k l combine[i,j]≡combine[k,l]) ⟩
+      combine i l ∎)
+      where open ≡-Reasoning
+
   where open ≡-Reasoning
 
 ------------------------------------------------------------------------
