@@ -493,6 +493,18 @@ record IsRingWithoutOne (+ * : Op₂ A) (-_ : Op₁ A) (0# : A) : Set (a ⊔ ℓ
     { isEquivalence = isEquivalence
     ; ∙-cong        = *-cong
     }
+  
+  zeroˡ : LeftZero 0# *
+  zeroˡ = proj₁ zero
+
+  zeroʳ : RightZero 0# *
+  zeroʳ = proj₂ zero
+
+  distribˡ : * DistributesOverˡ +
+  distribˡ = proj₁ distrib
+
+  distribʳ : * DistributesOverʳ +
+  distribʳ = proj₂ distrib
 
   *-isSemigroup : IsSemigroup *
   *-isSemigroup = record
