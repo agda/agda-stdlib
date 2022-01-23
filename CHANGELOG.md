@@ -1480,8 +1480,7 @@ This is a full list of proofs that have changed form to use irrelevant instance 
 * Added new proofs in `Data.List.NonEmpty.Properties`:
   ```agda
   length-++⁺ : (l : List A) (l′ : List⁺ A) → length (l ++⁺ l′) ≡ List.length l + length l′
-  length-++⁺ [] l′          = refl
-  length-++⁺′ : (l : List A) (l′ : List⁺ A) → length (l ++⁺ l′) ≡ suc (List.length l + List.length (List⁺.tail l′))
+  length-++⁺-tail : (l : List A) (l′ : List⁺ A) → length (l ++⁺ l′) ≡ suc (List.length l + List.length (List⁺.tail l′))
   ++-++⁺ : (l : List A) → ∀ {l′ l″} → (l ++ l′) ++⁺ l″ ≡ l ++⁺ l′ ++⁺ l″
   ++⁺-cancelˡ′ : ∀ l l′ {l″ l‴ : List⁺ A} → l ++⁺ l″ ≡ l′ ++⁺ l‴ → List.length l ≡ List.length l′ → l″ ≡ l‴
   ++⁺-cancelˡ : ∀ l {l″ l‴ : List⁺ A} → l ++⁺ l″ ≡ l ++⁺ l‴ → l″ ≡ l‴
