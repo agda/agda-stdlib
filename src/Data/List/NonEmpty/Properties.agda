@@ -67,10 +67,10 @@ length-++⁺ [] l′          = refl
 length-++⁺ (x ∷ l) l′
   rewrite length-++⁺ l l′ = refl
 
-length-++⁺′ : (l : List A) (l′ : List⁺ A) → length (l ++⁺ l′) ≡ suc (List.length l + List.length (List⁺.tail l′))
-length-++⁺′ [] l′          = refl
-length-++⁺′ (x ∷ l) l′
-  rewrite length-++⁺′ l l′ = refl
+length-++⁺-tail : (l : List A) (l′ : List⁺ A) → length (l ++⁺ l′) ≡ suc (List.length l + List.length (List⁺.tail l′))
+length-++⁺-tail [] l′          = refl
+length-++⁺-tail (x ∷ l) l′
+  rewrite length-++⁺-tail l l′ = refl
 
 ++-++⁺ : (l : List A) → ∀ {l′ l″} → (l ++ l′) ++⁺ l″ ≡ l ++⁺ l′ ++⁺ l″
 ++-++⁺ []      = refl
