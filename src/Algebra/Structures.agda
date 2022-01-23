@@ -493,7 +493,7 @@ record IsRingWithoutOne (+ * : Op₂ A) (-_ : Op₁ A) (0# : A) : Set (a ⊔ ℓ
     { isEquivalence = isEquivalence
     ; ∙-cong        = *-cong
     }
-  
+
   zeroˡ : LeftZero 0# *
   zeroˡ = proj₁ zero
 
