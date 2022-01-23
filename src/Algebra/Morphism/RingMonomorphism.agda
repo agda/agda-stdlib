@@ -146,7 +146,9 @@ module _ (+-isGroup : IsGroup _≈₂_ _⊕_ 0#₂ ⊝_)
 isRing : IsRing _≈₂_ _⊕_ _⊛_ ⊝_ 0#₂ 1#₂ → IsRing _≈₁_ _+_ _*_ -_ 0# 1#
 isRing isRing = record
   { +-isAbelianGroup = isAbelianGroup R.+-isAbelianGroup
-  ; *-isMonoid       = *-isMonoid R.*-isMonoid
+  ; *-cong           = *-cong R.*-isMagma
+  ; *-assoc          = *-assoc R.*-isMagma R.*-assoc
+  ; *-identity       = *-identity R.*-isMagma R.*-identity
   ; distrib          = distrib R.+-isGroup R.*-isMagma R.distrib
   ; zero             = zero R.+-isGroup R.*-isMagma R.zero
   } where module R = IsRing isRing

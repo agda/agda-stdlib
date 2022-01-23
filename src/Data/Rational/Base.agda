@@ -122,11 +122,11 @@ p ≤ᵇ q = (↥ p ℤ.* ↧ q) ℤ.≤ᵇ (↥ q ℤ.* ↧ p)
 -- and returns them in a normalized form, e.g. say 2 and 7
 
 normalize : ∀ (m n : ℕ) .{{_ : ℕ.NonZero n}} → ℚ
-normalize m n {{n≢0}} = mkℚ+ (m ℕ./ gcd m n) (n ℕ./ gcd m n) (coprime-/gcd m n)
+normalize m n = mkℚ+ (m ℕ./ gcd m n) (n ℕ./ gcd m n) (coprime-/gcd m n)
   where
     instance
-      g≢0   = ℕ.≢-nonZero (gcd[m,n]≢0 m n (inj₂ (ℕ.≢-nonZero⁻¹ n≢0)))
-      n/g≢0 = ℕ.≢-nonZero (n/gcd[m,n]≢0 m n {{n≢0}} {{g≢0}})
+      g≢0   = ℕ.≢-nonZero (gcd[m,n]≢0 m n (inj₂ (ℕ.≢-nonZero⁻¹ n)))
+      n/g≢0 = ℕ.≢-nonZero (n/gcd[m,n]≢0 m n {{gcd≢0 = g≢0}})
 
 -- A constructor for ℚ that (unlike mkℚ) automatically normalises it's
 -- arguments. See the constants section below for how to use this operator.

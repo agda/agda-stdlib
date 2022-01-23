@@ -362,6 +362,22 @@ Non-backwards compatible changes
 
 * The contents of `Function.Strict` is now re-exported by `Function`.
 
+### Changes to ring structures
+
+* Several ring-like structures now have the multiplicative structure defined by
+  its laws rather than as a substructure, to avoid repeated proofs that the
+  underlying relation is an equivalence. These are:
+  * `IsNearSemiring`
+  * `IsSemiringWithoutOne`
+  * `IsSemiringWithoutAnnihilatingZero`
+  * `IsRing`
+* To aid with migration, structures matching the old style ones have been added
+  to `Algebra.Structures.Biased`, with conversionFunctions:
+  * `IsNearSemiring*` and `isNearSemiring*`
+  * `IsSemiringWithoutOne*` and `isSemiringWithoutOne*`
+  * `IsSemiringWithoutAnnihilatingZero*` and `isSemiringWithoutAnnihilatingZero*`
+  * `IsRing*` and `isRing*`
+
 ### Other
 
 * The first two arguments of `m≡n⇒m-n≡0` (now `i≡j⇒i-j≡0`) in `Data.Integer.Base`
@@ -411,6 +427,7 @@ Non-backwards compatible changes
   pos⇒1/pos : ∀ p .{{_ : Positive p}} → Positive (1/ p)
   1/pos⇒pos : ∀ p .{{_ : NonZero p}} .{{Positive (1/ p)}} → Positive p
   ```
+* `Opₗ` and `Opᵣ` have moved from `Algebra.Core` to `Algebra.Module.Core`.
 
 Major improvements
 ------------------
@@ -644,6 +661,11 @@ Deprecated names
 New modules
 -----------
 
+* Operations for module-like algebraic structures:
+  ```
+  Algebra.Module.Core
+  ```
+
 * Morphisms between module-like algebraic structures:
   ```
   Algebra.Module.Morphism.Construct.Composition
@@ -734,7 +756,7 @@ New modules
 
 * `cong!` tactic for deriving arguments to `cong`
   ```
-  Tactic.Rewrite
+  Tactic.Cong
   ```
 
 * Various system types and primitives:
@@ -943,6 +965,8 @@ Other minor changes
   n≮0       : n ≮ 0
   n+1+m≢m   : n + suc m ≢ m
   m*n≡0⇒m≡0 : .{{_ : NonZero n}} → m * n ≡ 0 → m ≡ 0
+  m^n≢0     : .{{_ : NonZero m}} → NonZero (m ^ n)
+
   
   anyUpTo? : ∀ (P? : U.Decidable P) (v : ℕ) → Dec (∃ λ n → n < v × P n)
   allUpTo? : ∀ (P? : U.Decidable P) (v : ℕ) → Dec (∀ {n} → n < v → P n)
@@ -1278,6 +1302,12 @@ NonZero/Positive/Negative changes
 
 This is a full list of proofs that have changed form to use irrelevant instance arguments:
 
+* In `Data.Nat.Base`:
+  ```
+  ≢-nonZero⁻¹ : ∀ {n} → .(NonZero n) → n ≢ 0
+  >-nonZero⁻¹ : ∀ {n} → .(NonZero n) → n > 0
+  ```
+  
 * In `Data.Nat.Properties`:
   ```
   *-cancelʳ-≡ : ∀ m n {o} → m * suc o ≡ n * suc o → m ≡ n

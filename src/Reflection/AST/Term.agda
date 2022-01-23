@@ -70,7 +70,7 @@ getName (con c args) = just c
 getName (def f args) = just f
 getName _            = nothing
 
--- "n ⋯⟅∷⟆ xs" prepends "n" visible unknown arguments to the list of
+-- "n ⋯⟨∷⟩ xs" prepends "n" visible unknown arguments to the list of
 -- arguments. Useful when constructing the list of arguments for a
 -- function with initial inferable arguments.
 infixr 5 _⋯⟨∷⟩_
@@ -79,7 +79,7 @@ zero  ⋯⟨∷⟩ xs = xs
 suc i ⋯⟨∷⟩ xs = unknown ⟨∷⟩ (i ⋯⟨∷⟩ xs)
 {-# INLINE _⋯⟨∷⟩_ #-}
 
--- "n ⋯⟅∷⟆ xs" prepends "n" hidden unknown arguments to the list of
+-- "n ⋯⟨∷⟩ xs" prepends "n" hidden unknown arguments to the list of
 -- arguments. Useful when constructing the list of arguments for a
 -- function with initial implicit arguments.
 infixr 5 _⋯⟅∷⟆_

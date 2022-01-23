@@ -105,11 +105,11 @@ instance
 
 -- Destructors
 
-≢-nonZero⁻¹ : ∀ {n} → .(NonZero n) → n ≢ 0
-≢-nonZero⁻¹ {suc n} _ ()
+≢-nonZero⁻¹ : ∀ n → .{{NonZero n}} → n ≢ 0
+≢-nonZero⁻¹ (suc n) ()
 
->-nonZero⁻¹ : ∀ {n} → .(NonZero n) → n > 0
->-nonZero⁻¹ {suc n} _ = s≤s z≤n
+>-nonZero⁻¹ : ∀ n → .{{NonZero n}} → n > 0
+>-nonZero⁻¹ (suc n) = s≤s z≤n
 
 ------------------------------------------------------------------------
 -- Arithmetic

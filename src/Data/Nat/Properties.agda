@@ -811,7 +811,9 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
 +-*-isSemiring = record
   { isSemiringWithoutAnnihilatingZero = record
     { +-isCommutativeMonoid = +-0-isCommutativeMonoid
-    ; *-isMonoid            = *-1-isMonoid
+    ; *-cong                = cong₂ _*_
+    ; *-assoc               = *-assoc
+    ; *-identity            = *-identity
     ; distrib               = *-distrib-+
     }
   ; zero = *-zero
@@ -1025,6 +1027,9 @@ m^n≡0⇒m≡0 m (suc n) eq = [ id , m^n≡0⇒m≡0 m n ]′ (m*n≡0⇒m≡0�
 m^n≡1⇒n≡0∨m≡1 : ∀ m n → m ^ n ≡ 1 → n ≡ 0 ⊎ m ≡ 1
 m^n≡1⇒n≡0∨m≡1 m zero    _  = inj₁ refl
 m^n≡1⇒n≡0∨m≡1 m (suc n) eq = inj₂ (m*n≡1⇒m≡1 m (m ^ n) eq)
+
+m^n≢0 : ∀ m n .{{_ : NonZero m}} → NonZero (m ^ n)
+m^n≢0 m n = ≢-nonZero (≢-nonZero⁻¹ m ∘′ m^n≡0⇒m≡0 m n)
 
 ------------------------------------------------------------------------
 -- Properties of _⊓_ and _⊔_
@@ -1309,7 +1314,8 @@ m⊔n≤m+n m n with ⊔-sel m n
 ⊔-⊓-isSemiringWithoutOne : IsSemiringWithoutOne _⊔_ _⊓_ 0
 ⊔-⊓-isSemiringWithoutOne = record
   { +-isCommutativeMonoid = ⊔-0-isCommutativeMonoid
-  ; *-isSemigroup         = ⊓-isSemigroup
+  ; *-cong                = cong₂ _⊓_
+  ; *-assoc               = ⊓-assoc
   ; distrib               = ⊓-distrib-⊔
   ; zero                  = ⊓-zero
   }

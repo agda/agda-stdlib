@@ -139,7 +139,9 @@ module _ (ℓ : Level) where
   ⊎-×-isSemiringWithoutAnnihilatingZero : IsSemiringWithoutAnnihilatingZero _↔_ _⊎_ _×_ ⊥ ⊤
   ⊎-×-isSemiringWithoutAnnihilatingZero = record
     { +-isCommutativeMonoid = ⊎-isCommutativeMonoid ℓ
-    ; *-isMonoid            = ×-isMonoid
+    ; *-cong                = ×-cong
+    ; *-assoc               = ×-assoc
+    ; *-identity            = ×-identity
     ; distrib               = ×-distrib-⊎
     }
 

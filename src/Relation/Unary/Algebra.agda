@@ -230,7 +230,9 @@ module _ {a : Level} (A : Set a) (ℓ : Level) where
   ∪-∩-isSemiringWithoutAnnihilatingZero : IsSemiringWithoutAnnihilatingZero _∪_ _∩_ ∅ U
   ∪-∩-isSemiringWithoutAnnihilatingZero = record
     { +-isCommutativeMonoid = ∪-isCommutativeMonoid
-    ; *-isMonoid = ∩-isMonoid
+    ; *-cong = ∩-cong
+    ; *-assoc = ∩-assoc
+    ; *-identity = ∩-identity
     ; distrib = ∩-distrib-∪
     }
 
@@ -268,7 +270,9 @@ module _ {a : Level} (A : Set a) (ℓ : Level) where
   ∩-∪-isSemiringWithoutAnnihilatingZero : IsSemiringWithoutAnnihilatingZero _∩_ _∪_ U ∅
   ∩-∪-isSemiringWithoutAnnihilatingZero = record
     { +-isCommutativeMonoid = ∩-isCommutativeMonoid
-    ; *-isMonoid = ∪-isMonoid
+    ; *-cong = ∪-cong
+    ; *-assoc = ∪-assoc
+    ; *-identity = ∪-identity
     ; distrib = ∪-distrib-∩
     }
 
