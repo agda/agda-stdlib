@@ -1471,3 +1471,22 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   1/neg⇒neg : ∀ p .{{_ : NonZero p}} → (1/p : Negative (1/ p)) → Negative p
   ```
 
+* In `Data.List.NonEmpty.Base`:
+  ```agda
+  drop : ℕ → List⁺ A → List⁺ A
+  ```
+  
+* Added new proofs in `Data.List.NonEmpty.Properties`:
+  ```agda
+  length-++⁺ : (l : List A) (l′ : List⁺ A) → length (l ++⁺ l′) ≡ List.length l + length l′
+  length-++⁺ [] l′          = refl
+  length-++⁺′ : (l : List A) (l′ : List⁺ A) → length (l ++⁺ l′) ≡ suc (List.length l + List.length (List⁺.tail l′))
+  ++-++⁺ : (l : List A) → ∀ {l′ l″} → (l ++ l′) ++⁺ l″ ≡ l ++⁺ l′ ++⁺ l″
+  ++⁺-cancelˡ′ : ∀ l l′ {l″ l‴ : List⁺ A} → l ++⁺ l″ ≡ l′ ++⁺ l‴ → List.length l ≡ List.length l′ → l″ ≡ l‴
+  ++⁺-cancelˡ : ∀ l {l″ l‴ : List⁺ A} → l ++⁺ l″ ≡ l ++⁺ l‴ → l″ ≡ l‴
+  drop-++⁺ : ∀ (xs : List A) ys → drop (List.length xs) (xs ++⁺ ys) ≡ ys
+  map-++⁺-commute : ∀ (f : A → B) xs ys → map f (xs ++⁺ ys) ≡ List.map f xs ++⁺ map f ys
+  length-map : ∀ (f : A → B) xs → length (map f xs) ≡ length xs
+  map-cong : ∀ {f g : A → B} → f ≗ g → map f ≗ map g
+  map-compose : {g : B → C} {f : A → B} → map (g ∘ f) ≗ map g ∘ map f
+  ```
