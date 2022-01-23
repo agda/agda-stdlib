@@ -494,7 +494,74 @@ record IsCancellativeCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a �
 
   open IsCommutativeSemiring isCommutativeSemiring public
 
+------------------------------------------------------------------------
+-- Structures with 2 binary operations, 1 unary operation & 1 element
+------------------------------------------------------------------------
 
+record IsRingWithoutOne (+ * : Op₂ A) (-_ : Op₁ A) (0# : A) : Set (a ⊔ ℓ) where
+  field
+    +-isAbelianGroup : IsAbelianGroup + 0# -_
+    *-cong           : Congruent₂ *
+    *-assoc          : Associative *
+    distrib          : * DistributesOver +
+    zero             : Zero 0# *
+
+  open IsAbelianGroup +-isAbelianGroup public
+    renaming
+    ( assoc                   to +-assoc
+    ; ∙-cong                  to +-cong
+    ; ∙-congˡ                 to +-congˡ
+    ; ∙-congʳ                 to +-congʳ
+    ; identity                to +-identity
+    ; identityˡ               to +-identityˡ
+    ; identityʳ               to +-identityʳ
+    ; inverse                 to -‿inverse
+    ; inverseˡ                to -‿inverseˡ
+    ; inverseʳ                to -‿inverseʳ
+    ; ⁻¹-cong                 to -‿cong
+    ; comm                    to +-comm
+    ; isMagma                 to +-isMagma
+    ; isSemigroup             to +-isSemigroup
+    ; isMonoid                to +-isMonoid
+    ; isUnitalMagma           to +-isUnitalMagma
+    ; isCommutativeMagma      to +-isCommutativeMagma
+    ; isCommutativeMonoid     to +-isCommutativeMonoid
+    ; isCommutativeSemigroup  to +-isCommutativeSemigroup
+    ; isInvertibleMagma       to +-isInvertibleMagma
+    ; isInvertibleUnitalMagma to +-isInvertibleUnitalMagma
+    ; isGroup                 to +-isGroup
+    )
+
+  *-isMagma : IsMagma *
+  *-isMagma = record
+    { isEquivalence = isEquivalence
+    ; ∙-cong        = *-cong
+    }
+
+  zeroˡ : LeftZero 0# *
+  zeroˡ = proj₁ zero
+
+  zeroʳ : RightZero 0# *
+  zeroʳ = proj₂ zero
+
+  distribˡ : * DistributesOverˡ +
+  distribˡ = proj₁ distrib
+
+  distribʳ : * DistributesOverʳ +
+  distribʳ = proj₂ distrib
+
+  *-isSemigroup : IsSemigroup *
+  *-isSemigroup = record
+    { isMagma = *-isMagma
+    ; assoc   = *-assoc
+    }
+
+  open IsMagma *-isMagma public
+    using ()
+    renaming
+    ( ∙-congˡ  to *-congˡ
+    ; ∙-congʳ  to *-congʳ
+    )
 
 ------------------------------------------------------------------------
 -- Structures with 2 binary operations, 1 unary operation & 2 elements
