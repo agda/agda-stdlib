@@ -1475,6 +1475,7 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   ```agda
   drop : ℕ → List⁺ A → List⁺ A
   ```
+  When droping more than the size of the length of the list, the last element remains.
   
 * Added new proofs in `Data.List.NonEmpty.Properties`:
   ```agda
