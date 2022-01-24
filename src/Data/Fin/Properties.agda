@@ -640,7 +640,6 @@ combine-injective i j k l combine[i,j]≡combine[k,l] =
       toℕ (combine k l)      ∎)
       where
         open ℕₚ.≤-Reasoning
-        open import Data.Nat.Solver
         open +-*-Solver
 
     lemma₂ : ∀ {n m} (i : Fin n) (j : Fin m) (k : Fin n) (l : Fin m) → combine i j ≡ combine k l → i ≡ k
