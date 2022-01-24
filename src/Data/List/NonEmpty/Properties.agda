@@ -62,27 +62,25 @@ toList->>= f (x ∷ xs) = begin
   List.concat (List.map List⁺.toList (List.map f (x ∷ xs)))
     ∎
 
-length-++⁺ : (l : List A) (l′ : List⁺ A) → length (l ++⁺ l′) ≡ List.length l + length l′
-length-++⁺ [] l′          = refl
-length-++⁺ (x ∷ l) l′
-  rewrite length-++⁺ l l′ = refl
+length-++⁺ : (xs : List A) (ys : List⁺ A) → length (xs ++⁺ ys) ≡ List.length xs + length ys
+length-++⁺ [] ys                                = refl
+length-++⁺ (x ∷ xs) ys rewrite length-++⁺ xs ys = refl
 
-length-++⁺-tail : (l : List A) (l′ : List⁺ A) → length (l ++⁺ l′) ≡ suc (List.length l + List.length (List⁺.tail l′))
-length-++⁺-tail [] l′          = refl
-length-++⁺-tail (x ∷ l) l′
-  rewrite length-++⁺-tail l l′ = refl
+length-++⁺-tail : (xs : List A) (ys : List⁺ A) → length (xs ++⁺ ys) ≡ suc (List.length xs + List.length (List⁺.tail ys))
+length-++⁺-tail [] ys                                     = refl
+length-++⁺-tail (x ∷ xs) ys rewrite length-++⁺-tail xs ys = refl
 
-++-++⁺ : (l : List A) → ∀ {l′ l″} → (l ++ l′) ++⁺ l″ ≡ l ++⁺ l′ ++⁺ l″
+++-++⁺ : (xs : List A) → ∀ {ys zs} → (xs ++ ys) ++⁺ zs ≡ xs ++⁺ ys ++⁺ zs
 ++-++⁺ []      = refl
 ++-++⁺ (x ∷ l) = cong (x ∷_) (cong toList (++-++⁺ l))
 
-++⁺-cancelˡ′ : ∀ l l′ {l″ l‴ : List⁺ A} → l ++⁺ l″ ≡ l′ ++⁺ l‴ → List.length l ≡ List.length l′ → l″ ≡ l‴
-++⁺-cancelˡ′ [] [] eq eql            = eq
-++⁺-cancelˡ′ (x ∷ l) (y ∷ l′) eq eql = ++⁺-cancelˡ′ l l′ (just-injective (cong fromList (cong List⁺.tail eq)))
-                                                         (suc-injective eql)
+++⁺-cancelˡ′ : ∀ xs ys {zs ws : List⁺ A} → xs ++⁺ zs ≡ ys ++⁺ ws → List.length xs ≡ List.length ys → zs ≡ ws
+++⁺-cancelˡ′ [] [] eq eqxs            = eq
+++⁺-cancelˡ′ (x ∷ xs) (y ∷ ys) eq eql = ++⁺-cancelˡ′ xs ys (just-injective (cong fromList (cong List⁺.tail eq)))
+                                                           (suc-injective eql)
 
-++⁺-cancelˡ : ∀ l {l″ l‴ : List⁺ A} → l ++⁺ l″ ≡ l ++⁺ l‴ → l″ ≡ l‴
-++⁺-cancelˡ l eq = ++⁺-cancelˡ′ l l eq refl
+++⁺-cancelˡ : ∀ xs {zs ys : List⁺ A} → xs ++⁺ zs ≡ xs ++⁺ ys → zs ≡ ys
+++⁺-cancelˡ xs eq = ++⁺-cancelˡ′ xs xs eq refl
 
 drop-++⁺ : ∀ (xs : List A) ys → drop (List.length xs) (xs ++⁺ ys) ≡ ys
 drop-++⁺ []       ys = refl
