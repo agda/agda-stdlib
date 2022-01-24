@@ -684,11 +684,48 @@ record IsCommutativeRing
 
 record IsQuasigroup (∙ \\ // : Op₂ A) : Set (a ⊔ ℓ) where
   field
-    isEquivalence :  IsEquivalence _≈_
-    leftDivides  :  LeftDivides ∙ \\
-    rightDivides :  RightDivides ∙ //
+    isEquivalence : IsEquivalence _≈_
+    ∙-cong        : Congruent₂ ∙
+    \\-cong       : Congruent₂ \\
+    //-cong       : Congruent₂ //
+    leftDivides   : LeftDivides ∙ \\
+    rightDivides  : RightDivides ∙ //
 
   open IsEquivalence isEquivalence public
+
+  setoid : Setoid a ℓ
+  setoid = record { isEquivalence = isEquivalence }
+
+  ∙-congˡ : LeftCongruent ∙
+  ∙-congˡ y≈z = ∙-cong refl y≈z
+
+  ∙-congʳ : RightCongruent ∙
+  ∙-congʳ y≈z = ∙-cong y≈z refl
+
+  \\-congˡ : LeftCongruent \\
+  \\-congˡ y≈z = \\-cong refl y≈z
+
+  \\-congʳ : RightCongruent \\
+  \\-congʳ y≈z = \\-cong y≈z refl
+
+  //-congˡ : LeftCongruent //
+  //-congˡ y≈z = //-cong refl y≈z
+
+  //-congʳ : RightCongruent //
+  //-congʳ y≈z = //-cong y≈z refl
+
+  leftDividesˡ : LeftDividesˡ ∙ \\
+  leftDividesˡ = proj₁ leftDivides
+
+  leftDividesʳ : LeftDividesʳ ∙ \\
+  leftDividesʳ = proj₂ leftDivides
+
+  rightDividesˡ : RightDividesˡ ∙ //
+  rightDividesˡ = proj₁ rightDivides
+
+  rightDividesʳ : RightDividesʳ ∙ //
+  rightDividesʳ = proj₂ rightDivides
+
 
 record IsLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
   field
@@ -696,3 +733,9 @@ record IsLoop (∙ \\ // : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
     identity     : Identity ε ∙
 
   open IsQuasigroup isQuasigroup public
+
+  identityˡ : LeftIdentity ε ∙
+  identityˡ = proj₁ identity
+
+  identityʳ : RightIdentity ε ∙
+  identityʳ = proj₂ identity

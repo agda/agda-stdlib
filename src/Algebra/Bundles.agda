@@ -979,12 +979,6 @@ record Quasigroup c ℓ : Set (suc (c ⊔ ℓ)) where
   open RawQuasigroup rawQuasigroup public
     using (_≈_; //-rawMagma; \\-rawMagma; ∙-rawMagma)
 
-  setoid : Setoid _ _
-  setoid = record { isEquivalence = isEquivalence }
-
-  open Setoid setoid public
-    using (_≉_)
-
 record RawLoop  c ℓ : Set (suc (c ⊔ ℓ)) where
   infixl 7 _∙_
   infixl 7 _\\_
@@ -1038,7 +1032,8 @@ record Loop  c ℓ : Set (suc (c ⊔ ℓ)) where
   quasigroup = record { isQuasigroup = isQuasigroup }
 
   open Quasigroup quasigroup public
-    using (_≉_; ∙-rawMagma; \\-rawMagma; //-rawMagma)
+    using (∙-rawMagma; \\-rawMagma; //-rawMagma)
+
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
 ------------------------------------------------------------------------
