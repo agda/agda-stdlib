@@ -8,16 +8,14 @@
 
 module Data.Nat.Induction where
 
-open import Function
 open import Data.Nat.Base
-open import Data.Nat.Properties using (≤⇒≤′; n<1+n)
+open import Data.Nat.Properties using (≤⇒≤′)
 open import Data.Product
-open import Data.Unit.Polymorphic
+open import Data.Unit.Polymorphic.Base
+open import Function.Base
 open import Induction
 open import Induction.WellFounded as WF
 open import Level using (Level)
-open import Relation.Binary.PropositionalEquality
-open import Relation.Unary
 
 private
   variable
@@ -35,11 +33,11 @@ Rec : ∀ ℓ → RecStruct ℕ ℓ ℓ
 Rec ℓ P zero    = ⊤
 Rec ℓ P (suc n) = P n
 
-recBuilder : ∀ {ℓ} → RecursorBuilder (Rec ℓ)
+recBuilder : RecursorBuilder (Rec ℓ)
 recBuilder P f zero    = _
 recBuilder P f (suc n) = f n (recBuilder P f n)
 
-rec : ∀ {ℓ} → Recursor (Rec ℓ)
+rec : Recursor (Rec ℓ)
 rec = build recBuilder
 
 ------------------------------------------------------------------------
@@ -49,30 +47,29 @@ CRec : ∀ ℓ → RecStruct ℕ ℓ ℓ
 CRec ℓ P zero    = ⊤
 CRec ℓ P (suc n) = P n × CRec ℓ P n
 
-cRecBuilder : ∀ {ℓ} → RecursorBuilder (CRec ℓ)
+cRecBuilder : RecursorBuilder (CRec ℓ)
 cRecBuilder P f zero    = _
 cRecBuilder P f (suc n) = f n ih , ih
   where ih = cRecBuilder P f n
 
-cRec : ∀ {ℓ} → Recursor (CRec ℓ)
+cRec : Recursor (CRec ℓ)
 cRec = build cRecBuilder
 
 ------------------------------------------------------------------------
 -- Complete induction based on _<′_
 
-<′-Rec : ∀ {ℓ} → RecStruct ℕ ℓ ℓ
+<′-Rec : RecStruct ℕ ℓ ℓ
 <′-Rec = WfRec _<′_
 
 mutual
-
   <′-wellFounded : WellFounded _<′_
   <′-wellFounded n = acc (<′-wellFounded′ n)
 
   <′-wellFounded′ : ∀ n → <′-Rec (Acc _<′_) n
-  <′-wellFounded′ (suc n) .n ≤′-refl       = <′-wellFounded n
-  <′-wellFounded′ (suc n)  m (≤′-step m<n) = <′-wellFounded′ n m m<n
+  <′-wellFounded′ (suc n) n ≤′-refl       = <′-wellFounded n
+  <′-wellFounded′ (suc n) m (≤′-step m<n) = <′-wellFounded′ n m m<n
 
-module _ {ℓ} where
+module _ {ℓ : Level} where
   open WF.All <′-wellFounded ℓ public
     renaming ( wfRecBuilder to <′-recBuilder
              ; wfRec        to <′-rec
@@ -82,7 +79,7 @@ module _ {ℓ} where
 ------------------------------------------------------------------------
 -- Complete induction based on _<_
 
-<-Rec : ∀ {ℓ} → RecStruct ℕ ℓ ℓ
+<-Rec : RecStruct ℕ ℓ ℓ
 <-Rec = WfRec _<_
 
 <-wellFounded : WellFounded _<_
@@ -104,7 +101,7 @@ module _ {ℓ} where
   <-wellFounded-skip (suc k) zero    = <-wellFounded 0
   <-wellFounded-skip (suc k) (suc n) = acc (λ m _ → <-wellFounded-skip k m)
 
-module _ {ℓ} where
+module _ {ℓ : Level} where
   open WF.All <-wellFounded ℓ public
     renaming ( wfRecBuilder to <-recBuilder
              ; wfRec        to <-rec
