@@ -912,6 +912,17 @@ Other minor changes
   finTofun-funToFin  : funToFin ∘ finToFun ≗ id
   funTofin-funToFun  : finToFun (funToFin f) ≗ f
   ^↔→                : Extensionality _ _ → Fin (n ^ m) ↔ (Fin m → Fin n)
+
+  toℕ-mono-<         : i < j → toℕ i ℕ.< toℕ j
+  toℕ-mono-≤         : i ≤ j → toℕ i ℕ.≤ toℕ j
+  toℕ-cancel-≤       : toℕ i ℕ.≤ toℕ j → i ≤ j
+  toℕ-cancel-<       : toℕ i ℕ.< toℕ j → i < j
+
+  toℕ-combine        : toℕ (combine x y) ≡ k ℕ.* toℕ x ℕ.+ toℕ y
+  combine-injectiveˡ : combine x z ≡ combine y z → x ≡ y
+  combine-injectiveʳ : combine x y ≡ combine x z → y ≡ z
+  combine-injective  : combine x y ≡ combine w z → x ≡ w × y ≡ z
+  combine-surjective : ∀ x → ∃₂ λ y z → combine y z ≡ x
   ```
 
 * Added new functions in `Data.Integer.Base`:
