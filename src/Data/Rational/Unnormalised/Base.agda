@@ -11,8 +11,7 @@ module Data.Rational.Unnormalised.Base where
 open import Data.Bool.Base using (Bool; true; false; if_then_else_)
 open import Data.Integer.Base as ℤ
   using (ℤ; +_; +0; +[1+_]; -[1+_]; +<+; +≤+)
-import Data.Integer.DivMod as ℤ
-open import Data.Nat as ℕ using (ℕ; zero; suc)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc)
 open import Level using (0ℓ)
 open import Relation.Nullary using (¬_)
 open import Relation.Nullary.Negation using (contradiction)
@@ -239,7 +238,7 @@ p ⊓ q = if p ≤ᵇ q then p else q
 
 -- Floor (round towards -∞)
 floor : ℚᵘ → ℤ
-floor p = (↥ p) ℤ.div (↧ p)
+floor p = ↥ p ℤ./ ↧ p
 
 -- Ceiling (round towards +∞)
 ceiling : ℚᵘ → ℤ
@@ -262,6 +261,6 @@ fracPart : ℚᵘ → ℚᵘ
 fracPart p = ∣ p - truncate p / 1 ∣
 
 -- Extra notations  ⌊ ⌋ floor,  ⌈ ⌉ ceiling,  [ ] truncate
-syntax floor p = ⌊ p ⌋
-syntax ceiling p = ⌈ p ⌉
+syntax floor    p = ⌊ p ⌋
+syntax ceiling  p = ⌈ p ⌉
 syntax truncate p = [ p ]

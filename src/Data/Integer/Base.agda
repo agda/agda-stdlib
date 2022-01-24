@@ -31,7 +31,7 @@ open import Relation.Unary using (Pred)
 
 infix  8 -_
 infixr 8 _^_
-infixl 7 _*_ _⊓_
+infixl 7 _*_ _⊓_ _/ℕ_ _/_ _%ℕ_ _%_
 infixl 6 _+_ _-_ _⊖_ _⊔_
 infix  4 _≤_ _≥_ _<_ _>_ _≰_ _≱_ _≮_ _≯_
 infix  4 _≤ᵇ_
@@ -274,6 +274,33 @@ _⊓_ : ℤ → ℤ → ℤ
 -[1+ m ] ⊓ +    n   = -[1+ m ]
 +    m   ⊓ -[1+ n ] = -[1+ n ]
 +    m   ⊓ +    n   = + (ℕ._⊓_ m n)
+
+-- Division by a natural
+
+_/ℕ_ : (dividend : ℤ) (divisor : ℕ) .{{_ : ℕ.NonZero divisor}} → ℤ
+(+ n      /ℕ d) = + (n ℕ./ d)
+(-[1+ n ] /ℕ d) with ℕ.suc n ℕ.% d
+... | ℕ.zero  = - (+ (ℕ.suc n ℕ./ d))
+... | ℕ.suc r = -[1+ (ℕ.suc n ℕ./ d) ]
+
+-- Division
+
+_/_ : (dividend divisor : ℤ) .{{_ : NonZero divisor}} → ℤ
+n / d = (sign d ◃ 1) * (n /ℕ ∣ d ∣)
+
+-- Modulus by a natural
+
+_%ℕ_ : (dividend : ℤ) (divisor : ℕ) .{{_ : ℕ.NonZero divisor}} → ℕ
+(+ n      %ℕ d) = n ℕ.% d
+(-[1+ n ] %ℕ d) with ℕ.suc n ℕ.% d
+... | ℕ.zero      = 0
+... | r@(ℕ.suc _) = d ℕ.∸ r
+
+-- Modulus
+
+_%_ : (dividend divisor : ℤ) .{{_ : NonZero divisor}} → ℕ
+n % d = n %ℕ ∣ d ∣
+
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

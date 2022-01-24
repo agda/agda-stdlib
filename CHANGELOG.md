@@ -479,6 +479,15 @@ Deprecated names
   reverse-suc        ↦ Data.Fin.Properties.opposite-suc
   ```
 
+* In `Data.Integer.DivMod` the operator names have been renamed to
+  be consistent with those in `Data.Nat.DivMod`:
+  ```
+  _divℕ_  ↦ _/ℕ_
+  _div_   ↦ _/_
+  _modℕ_  ↦ _%ℕ_
+  _mod_   ↦ _%_
+  ```
+
 * In `Data.Integer.Properties` references to variables in names have
   been made consistent so that `m`, `n` always refer to naturals and
   `i` and `j` always refer to integers:

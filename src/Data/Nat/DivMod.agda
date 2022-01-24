@@ -28,25 +28,8 @@ open ≤-Reasoning
 ------------------------------------------------------------------------
 -- Definitions
 
--- The division and modulus operations are only defined when the divisor
--- is non-zero. The proof of non-zero-ness is provided as an irrelevant
--- instance argument which is defined in terms of `⊤` and `⊥`. This
--- allows it to be automatically inferred when the divisor is of the
--- form `suc n`, and hence minimises the number of these proofs that
--- need be passed around. You can therefore write `m / suc n` without
--- further elaboration.
-
-infixl 7 _/_ _%_
-
--- Natural division
-
-_/_ : (dividend divisor : ℕ) .{{_ : NonZero divisor}} → ℕ
-m / (suc n) = div-helper 0 n m n
-
--- Natural remainder/modulus
-
-_%_ : (dividend divisor : ℕ) .{{_ : NonZero divisor}} → ℕ
-m % (suc n) = mod-helper 0 n m n
+open import Data.Nat.Base public
+  using (_%_; _/_)
 
 ------------------------------------------------------------------------
 -- Relationship between _%_ and _div_
