@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Reflection.AST</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- The reflected abstract syntax tree</a>
+<a id="144" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="218" class="Symbol">{-#</a> <a id="222" class="Keyword">OPTIONS</a> <a id="230" class="Pragma">--without-K</a> <a id="242" class="Pragma">--safe</a> <a id="249" class="Symbol">#-}</a>
+
+<a id="254" class="Keyword">module</a> <a id="261" href="Reflection.AST.html" class="Module">Reflection.AST</a> <a id="276" class="Keyword">where</a>
+
+<a id="283" class="Keyword">import</a> <a id="290" href="Agda.Builtin.Reflection.html" class="Module">Agda.Builtin.Reflection</a> <a id="314" class="Symbol">as</a> <a id="317" class="Module">Builtin</a>
+
+<a id="326" class="Comment">------------------------------------------------------------------------</a>
+<a id="399" class="Comment">-- Names, Metas, and Literals re-exported publicly</a>
+
+<a id="451" class="Keyword">open</a> <a id="456" class="Keyword">import</a> <a id="463" href="Reflection.AST.Abstraction.html" class="Module">Reflection.AST.Abstraction</a> <a id="490" class="Symbol">as</a> <a id="493" class="Module">Abstraction</a> <a id="505" class="Keyword">public</a>
+  <a id="514" class="Keyword">using</a> <a id="520" class="Symbol">(</a><a id="521" href="Agda.Builtin.Reflection.html#3944" class="Datatype">Abs</a><a id="524" class="Symbol">;</a> <a id="526" href="Agda.Builtin.Reflection.html#3980" class="InductiveConstructor">abs</a><a id="529" class="Symbol">)</a>
+<a id="531" class="Keyword">open</a> <a id="536" class="Keyword">import</a> <a id="543" href="Reflection.AST.Argument.html" class="Module">Reflection.AST.Argument</a> <a id="567" class="Symbol">as</a> <a id="570" class="Module">Argument</a> <a id="579" class="Keyword">public</a>
+  <a id="588" class="Keyword">using</a> <a id="594" class="Symbol">(</a><a id="595" href="Agda.Builtin.Reflection.html#3697" class="Datatype">Arg</a><a id="598" class="Symbol">;</a> <a id="600" href="Agda.Builtin.Reflection.html#3733" class="InductiveConstructor">arg</a><a id="603" class="Symbol">;</a> <a id="605" href="Reflection.AST.Argument.html#1538" class="Function">Args</a><a id="609" class="Symbol">;</a> <a id="611" href="Reflection.AST.Argument.html#1263" class="InductiveConstructor">vArg</a><a id="615" class="Symbol">;</a> <a id="617" href="Reflection.AST.Argument.html#1325" class="InductiveConstructor">hArg</a><a id="621" class="Symbol">;</a> <a id="623" href="Reflection.AST.Argument.html#1387" class="InductiveConstructor">iArg</a><a id="627" class="Symbol">;</a> <a id="629" href="Reflection.AST.Argument.html#1207" class="InductiveConstructor">defaultModality</a><a id="644" class="Symbol">)</a>
+<a id="646" class="Keyword">open</a> <a id="651" class="Keyword">import</a> <a id="658" href="Reflection.AST.Definition.html" class="Module">Reflection.AST.Definition</a> <a id="684" class="Symbol">as</a> <a id="687" class="Module">Definition</a>  <a id="699" class="Keyword">public</a>
+  <a id="708" class="Keyword">using</a> <a id="714" class="Symbol">(</a><a id="715" href="Agda.Builtin.Reflection.html#7179" class="Datatype">Definition</a><a id="725" class="Symbol">)</a>
+<a id="727" class="Keyword">open</a> <a id="732" class="Keyword">import</a> <a id="739" href="Reflection.AST.Meta.html" class="Module">Reflection.AST.Meta</a> <a id="759" class="Symbol">as</a> <a id="762" class="Module">Meta</a> <a id="767" class="Keyword">public</a>
+  <a id="776" class="Keyword">using</a> <a id="782" class="Symbol">(</a><a id="783" href="Agda.Builtin.Reflection.html#2458" class="Postulate">Meta</a><a id="787" class="Symbol">)</a>
+<a id="789" class="Keyword">open</a> <a id="794" class="Keyword">import</a> <a id="801" href="Reflection.AST.Name.html" class="Module">Reflection.AST.Name</a> <a id="821" class="Symbol">as</a> <a id="824" class="Module">Name</a> <a id="829" class="Keyword">public</a>
+  <a id="838" class="Keyword">using</a> <a id="844" class="Symbol">(</a><a id="845" href="Agda.Builtin.Reflection.html#489" class="Postulate">Name</a><a id="849" class="Symbol">;</a> <a id="851" href="Reflection.AST.Name.html#1089" class="Function">Names</a><a id="856" class="Symbol">)</a>
+<a id="858" class="Keyword">open</a> <a id="863" class="Keyword">import</a> <a id="870" href="Reflection.AST.Literal.html" class="Module">Reflection.AST.Literal</a> <a id="893" class="Symbol">as</a> <a id="896" class="Module">Literal</a> <a id="904" class="Keyword">public</a>
+  <a id="913" class="Keyword">using</a> <a id="919" class="Symbol">(</a><a id="920" href="Agda.Builtin.Reflection.html#4092" class="Datatype">Literal</a><a id="927" class="Symbol">)</a>
+<a id="929" class="Keyword">open</a> <a id="934" class="Keyword">import</a> <a id="941" href="Reflection.AST.Pattern.html" class="Module">Reflection.AST.Pattern</a> <a id="964" class="Symbol">as</a> <a id="967" class="Module">Pattern</a> <a id="975" class="Keyword">public</a>
+  <a id="984" class="Keyword">using</a> <a id="990" class="Symbol">(</a><a id="991" href="Agda.Builtin.Reflection.html#4726" class="Datatype">Pattern</a><a id="998" class="Symbol">)</a>
+<a id="1000" class="Keyword">open</a> <a id="1005" class="Keyword">import</a> <a id="1012" href="Reflection.AST.Term.html" class="Module">Reflection.AST.Term</a> <a id="1032" class="Symbol">as</a> <a id="1035" class="Module">Term</a> <a id="1040" class="Keyword">public</a>
+  <a id="1049" class="Keyword">using</a> <a id="1055" class="Symbol">(</a><a id="1056" href="Agda.Builtin.Reflection.html#4688" class="Datatype">Term</a><a id="1060" class="Symbol">;</a> <a id="1062" href="Agda.Builtin.Reflection.html#4759" class="Function">Type</a><a id="1066" class="Symbol">;</a> <a id="1068" href="Agda.Builtin.Reflection.html#4745" class="Datatype">Clause</a><a id="1074" class="Symbol">;</a> <a id="1076" href="Reflection.AST.Term.html#1611" class="Function">Clauses</a><a id="1083" class="Symbol">;</a> <a id="1085" href="Agda.Builtin.Reflection.html#4707" class="Datatype">Sort</a><a id="1089" class="Symbol">)</a>
+
+<a id="1092" class="Keyword">import</a> <a id="1099" href="Reflection.AST.Argument.Modality.html" class="Module">Reflection.AST.Argument.Modality</a>    <a id="1135" class="Symbol">as</a> <a id="1138" class="Module">Modality</a>
+<a id="1147" class="Keyword">import</a> <a id="1154" href="Reflection.AST.Argument.Quantity.html" class="Module">Reflection.AST.Argument.Quantity</a>    <a id="1190" class="Symbol">as</a> <a id="1193" class="Module">Quantity</a>
+<a id="1202" class="Keyword">import</a> <a id="1209" href="Reflection.AST.Argument.Relevance.html" class="Module">Reflection.AST.Argument.Relevance</a>   <a id="1245" class="Symbol">as</a> <a id="1248" class="Module">Relevance</a>
+<a id="1258" class="Keyword">import</a> <a id="1265" href="Reflection.AST.Argument.Visibility.html" class="Module">Reflection.AST.Argument.Visibility</a>  <a id="1301" class="Symbol">as</a> <a id="1304" class="Module">Visibility</a>
+<a id="1315" class="Keyword">import</a> <a id="1322" href="Reflection.AST.Argument.Information.html" class="Module">Reflection.AST.Argument.Information</a> <a id="1358" class="Symbol">as</a> <a id="1361" class="Module">Information</a>
+
+<a id="1374" class="Keyword">open</a> <a id="1379" href="Agda.Builtin.Reflection.html#7179" class="Module">Definition.Definition</a> <a id="1401" class="Keyword">public</a>
+<a id="1408" class="Keyword">open</a> <a id="1413" href="Agda.Builtin.Reflection.html#3616" class="Module">Information.ArgInfo</a> <a id="1433" class="Keyword">public</a>
+<a id="1440" class="Keyword">open</a> <a id="1445" href="Agda.Builtin.Reflection.html#4092" class="Module">Literal.Literal</a> <a id="1461" class="Keyword">public</a>
+<a id="1468" class="Keyword">open</a> <a id="1473" href="Agda.Builtin.Reflection.html#3441" class="Module">Modality.Modality</a> <a id="1491" class="Keyword">public</a>
+<a id="1498" class="Keyword">open</a> <a id="1503" href="Agda.Builtin.Reflection.html#3208" class="Module">Quantity.Quantity</a> <a id="1521" class="Keyword">public</a>
+<a id="1528" class="Keyword">open</a> <a id="1533" href="Agda.Builtin.Reflection.html#2996" class="Module">Relevance.Relevance</a> <a id="1553" class="Keyword">public</a>
+<a id="1560" class="Keyword">open</a> <a id="1565" href="Agda.Builtin.Reflection.html#4688" class="Module">Term.Term</a> <a id="1575" class="Keyword">public</a>
+<a id="1582" class="Keyword">open</a> <a id="1587" href="Agda.Builtin.Reflection.html#2738" class="Module">Visibility.Visibility</a> <a id="1609" class="Keyword">public</a>
+
+<a id="1617" class="Keyword">open</a> <a id="1622" class="Keyword">import</a> <a id="1629" href="Reflection.AST.Show.html" class="Module">Reflection.AST.Show</a> <a id="1649" class="Keyword">public</a>
+
+<a id="1657" class="Comment">------------------------------------------------------------------------</a>
+<a id="1730" class="Comment">-- Fixity</a>
+
+<a id="1741" class="Keyword">open</a> <a id="1746" href="Agda.Builtin.Reflection.html" class="Module">Builtin</a> <a id="1754" class="Keyword">public</a>
+  <a id="1763" class="Keyword">using</a> <a id="1769" class="Symbol">(</a><a id="1770" href="Agda.Builtin.Reflection.html#764" class="InductiveConstructor">non-assoc</a><a id="1779" class="Symbol">;</a> <a id="1781" href="Agda.Builtin.Reflection.html#823" class="InductiveConstructor">related</a><a id="1788" class="Symbol">;</a> <a id="1790" href="Agda.Builtin.Reflection.html#856" class="InductiveConstructor">unrelated</a><a id="1799" class="Symbol">;</a> <a id="1801" href="Agda.Builtin.Reflection.html#906" class="InductiveConstructor">fixity</a><a id="1807" class="Symbol">)</a>
+  <a id="1811" class="Keyword">renaming</a>
+  <a id="1822" class="Symbol">(</a> <a id="1824" href="Agda.Builtin.Reflection.html#704" class="InductiveConstructor">left-assoc</a>      <a id="1840" class="Symbol">to</a> <a id="1843" class="InductiveConstructor">assocˡ</a>
+  <a id="1852" class="Symbol">;</a> <a id="1854" href="Agda.Builtin.Reflection.html#734" class="InductiveConstructor">right-assoc</a>     <a id="1870" class="Symbol">to</a> <a id="1873" class="InductiveConstructor">assocʳ</a>
+  <a id="1882" class="Symbol">;</a> <a id="1884" href="Agda.Builtin.Reflection.html#2340" class="Primitive">primQNameFixity</a> <a id="1900" class="Symbol">to</a> <a id="1903" class="Primitive">getFixity</a>
+  <a id="1915" class="Symbol">)</a>
+
+</pre></body></html>
