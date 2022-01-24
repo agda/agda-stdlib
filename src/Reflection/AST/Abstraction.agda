@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Reflection.Abstraction where
+module Reflection.AST.Abstraction where
 
 open import Data.List.Base as List using (List)
 open import Data.Product using (_×_; _,_; uncurry; <_,_>)

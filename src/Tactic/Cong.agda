@@ -43,17 +43,17 @@ open import Relation.Binary.PropositionalEquality as Eq using (_≡_; refl; cong
 import Agda.Builtin.String as String renaming (primStringEquality to _≡ᵇ_)
 
 open import Reflection
-open import Reflection.Abstraction
-open import Reflection.AlphaEquality        as Alpha
-open import Reflection.Argument             as Arg
-open import Reflection.Argument.Information as ArgInfo
-open import Reflection.Argument.Visibility  as Visibility
-open import Reflection.Literal              as Literal
-open import Reflection.Meta                 as Meta
-open import Reflection.Name                 as Name
-open import Reflection.Term                 as Term
+open import Reflection.AST.Abstraction
+open import Reflection.AST.AlphaEquality        as Alpha
+open import Reflection.AST.Argument             as Arg
+open import Reflection.AST.Argument.Information as ArgInfo
+open import Reflection.AST.Argument.Visibility  as Visibility
+open import Reflection.AST.Literal              as Literal
+open import Reflection.AST.Meta                 as Meta
+open import Reflection.AST.Name                 as Name
+open import Reflection.AST.Term                 as Term
 
-open import Reflection.TypeChecking.Monad.Syntax
+open import Reflection.TCM.Syntax
 
 ----------------------------------------------------------------------
 -- Utilities
@@ -131,10 +131,10 @@ private
 ----------------------------------------------------------------------
 
 private
-  antiUnify : ℕ → Term → Term → Term
-  antiUnifyArgs : ℕ → Args Term → Args Term → Maybe (Args Term)
+  antiUnify        : ℕ → Term → Term → Term
+  antiUnifyArgs    : ℕ → Args Term → Args Term → Maybe (Args Term)
   antiUnifyClauses : ℕ → Clauses → Clauses → Maybe Clauses
-  antiUnifyClause : ℕ → Clause → Clause → Maybe Clause
+  antiUnifyClause  : ℕ → Clause → Clause → Maybe Clause
 
   antiUnify ϕ (var x args) (var y args') with x Nat.≡ᵇ y | antiUnifyArgs ϕ args args'
   ... | _     | nothing    = var ϕ []

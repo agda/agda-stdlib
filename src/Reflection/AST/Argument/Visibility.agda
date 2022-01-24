@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Reflection.Argument.Visibility where
+module Reflection.AST.Argument.Visibility where
 
 open import Data.String as String using (String)
 open import Relation.Nullary

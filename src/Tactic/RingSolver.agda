@@ -23,11 +23,11 @@ open import Function
 open import Relation.Nullary.Decidable
 
 open import Reflection
-open import Reflection.Argument
-open import Reflection.Term as Term
-open import Reflection.AlphaEquality
-open import Reflection.Name as Name
-open import Reflection.TypeChecking.Monad.Syntax
+open import Reflection.AST.Argument
+open import Reflection.AST.Term as Term
+open import Reflection.AST.AlphaEquality
+open import Reflection.AST.Name as Name
+open import Reflection.TCM.Syntax
 open import Data.Nat.Reflection
 open import Data.List.Reflection
 import Data.Vec.Reflection as Vec

@@ -6,16 +6,16 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Reflection.Argument where
+module Reflection.AST.Argument where
 
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.Product using (_×_; _,_; uncurry; <_,_>)
 open import Data.Nat using (ℕ)
-open import Reflection.Argument.Visibility
-open import Reflection.Argument.Relevance
-open import Reflection.Argument.Quantity
-open import Reflection.Argument.Modality
-open import Reflection.Argument.Information as Information
+open import Reflection.AST.Argument.Visibility
+open import Reflection.AST.Argument.Relevance
+open import Reflection.AST.Argument.Quantity
+open import Reflection.AST.Argument.Modality
+open import Reflection.AST.Argument.Information as Information
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 open import Relation.Nullary.Product using (_×-dec_)

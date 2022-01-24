@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Reflection.Name where
+module Reflection.AST.Name where
 
 open import Data.List.Base
 import Data.Product.Properties as Prodₚ

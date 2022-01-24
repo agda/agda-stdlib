@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Reflection.AlphaEquality where
+module Reflection.AST.AlphaEquality where
 
 open import Data.Bool.Base using (Bool; true; false; _∧_)
 open import Data.List.Base using ([]; _∷_)
@@ -16,15 +16,15 @@ open import Relation.Nullary
 open import Relation.Nullary.Decidable
 open import Relation.Binary
 
-open import Reflection.Abstraction
-open import Reflection.Argument
-open import Reflection.Argument.Information as ArgInfo
-open import Reflection.Argument.Modality    as Modality
-open import Reflection.Argument.Visibility  as Visibility
-open import Reflection.Meta                 as Meta
-open import Reflection.Name                 as Name
-open import Reflection.Literal              as Literal
-open import Reflection.Term
+open import Reflection.AST.Abstraction
+open import Reflection.AST.Argument
+open import Reflection.AST.Argument.Information as ArgInfo
+open import Reflection.AST.Argument.Modality    as Modality
+open import Reflection.AST.Argument.Visibility  as Visibility
+open import Reflection.AST.Meta                 as Meta
+open import Reflection.AST.Name                 as Name
+open import Reflection.AST.Literal              as Literal
+open import Reflection.AST.Term
 open import Level using (Level)
 
 private

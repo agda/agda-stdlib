@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Reflection.TypeChecking.Monad.Categorical where
+module Reflection.TCM.Categorical where
 
 open import Category.Functor
 open import Category.Applicative
@@ -14,7 +14,8 @@ open import Category.Monad
 open import Data.List.Base using ([])
 open import Function.Base using (_∘_)
 open import Level
-open import Reflection.TypeChecking.Monad
+
+open import Reflection.TCM
 
 private
   variable

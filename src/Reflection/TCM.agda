@@ -6,11 +6,11 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Reflection.TypeChecking.Monad where
+module Reflection.TCM where
 
-open import Reflection.Term
+open import Reflection.AST.Term
 import Agda.Builtin.Reflection as Builtin
-import Reflection.TypeChecking.Format as Format
+import Reflection.TCM.Format as Format
 
 ------------------------------------------------------------------------
 -- Type errors

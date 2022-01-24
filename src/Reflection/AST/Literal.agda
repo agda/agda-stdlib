@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Reflection.Literal where
+module Reflection.AST.Literal where
 
 open import Data.Bool.Base as Bool using (Bool; true; false)
 import Data.Char as Char
@@ -14,8 +14,8 @@ import Data.Float as Float
 import Data.Nat as ℕ
 open import Data.String as String using (String)
 import Data.Word as Word
-import Reflection.Meta as Meta
-import Reflection.Name as Name
+import Reflection.AST.Meta as Meta
+import Reflection.AST.Name as Name
 open import Relation.Nullary
 import Relation.Nullary.Decidable as Dec
 open import Relation.Binary

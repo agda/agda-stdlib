@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Reflection.DeBruijn where
+module Reflection.AST.DeBruijn where
 
 open import Data.Bool.Base using (Bool; true; false; _∨_; if_then_else_)
 open import Data.Nat.Base as Nat using (ℕ; zero; suc; _+_; _∸_; _<ᵇ_; _≡ᵇ_)
@@ -17,8 +17,8 @@ import Function.Identity.Categorical as Identity
 open import Category.Applicative using (RawApplicative)
 
 open import Reflection
-open import Reflection.Argument.Visibility using (Visibility)
-import Reflection.Traversal as Traverse
+open import Reflection.AST.Argument.Visibility using (Visibility)
+import Reflection.AST.Traversal as Traverse
 
 private
   variable A : Set

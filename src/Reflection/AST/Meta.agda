@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Reflection.Meta where
+module Reflection.AST.Meta where
 
 import Data.Nat.Properties as ℕₚ
 open import Function

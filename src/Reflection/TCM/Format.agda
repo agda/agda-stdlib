@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Reflection.TypeChecking.Format where
+module Reflection.TCM.Format where
 
 open import Agda.Builtin.Reflection using (Name; Term; ErrorPart; termErr; nameErr; strErr;
                                            TC; typeError; debugPrint)

@@ -11,8 +11,8 @@ module Data.Nat.Reflection where
 open import Data.Nat.Base as ℕ
 import Data.Fin.Base as Fin
 open import Data.List.Base using ([])
-open import Reflection.Term
-open import Reflection.Argument
+open import Reflection.AST.Term
+open import Reflection.AST.Argument
 
 ------------------------------------------------------------------------
 -- Term

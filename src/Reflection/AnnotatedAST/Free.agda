@@ -6,7 +6,7 @@
 
 {-# OPTIONS --safe --with-K #-}
 
-module Reflection.Annotated.Free where
+module Reflection.AnnotatedAST.Free where
 
 open import Data.Bool.Base               using (if_then_else_)
 open import Data.Nat.Base                using (ℕ; _∸_; compare; _<ᵇ_; less; equal; greater)
@@ -16,8 +16,8 @@ open import Data.Product                 using (_×_; _,_; proj₁; proj₂)
 open import Data.String.Base             using (String)
 
 open import Reflection
-open import Reflection.Universe
-open import Reflection.Annotated
+open import Reflection.AST.Universe
+open import Reflection.AnnotatedAST
 
 ------------------------------------------------------------------------
 -- Free variable sets as lists of natural numbers
