@@ -1473,18 +1473,18 @@ This is a full list of proofs that have changed form to use irrelevant instance 
 
 * In `Data.List.NonEmpty.Base`:
   ```agda
-  drop : ℕ → List⁺ A → List⁺ A
+  drop+ : ℕ → List⁺ A → List⁺ A
   ```
-  When dropping more than the size of the length of the list, the last element remains.
+  When drop+ping more than the size of the length of the list, the last element remains.
   
 * Added new proofs in `Data.List.NonEmpty.Properties`:
   ```agda
   length-++⁺ : length (xs ++⁺ ys) ≡ length xs + length ys
   length-++⁺-tail : length (xs ++⁺ ys) ≡ suc (length xs + length (tail ys))
   ++-++⁺ : (xs ++ ys) ++⁺ zs ≡ xs ++⁺ ys ++⁺ zs
-  ++⁺-cancelˡ′ : xs ++⁺ zs ≡ ys ++⁺ ws → length xs ≡ length ys → zs ≡ ws
-  ++⁺-cancelˡ : xs ++⁺ zs ≡ xs ++⁺ ys → zs ≡ ys
-  drop-++⁺ : drop (length xs) (xs ++⁺ ys) ≡ ys
+  ++⁺-cancelˡ′ : xs ++⁺ zs ≡ ys ++⁺ zs′ → List.length xs ≡ List.length ys → zs ≡ zs′
+  ++⁺-cancelˡ : xs ++⁺ ys ≡ xs ++⁺ zs → ys ≡ zs
+  drop+-++⁺ : drop+ (length xs) (xs ++⁺ ys) ≡ ys
   map-++⁺-commute : map f (xs ++⁺ ys) ≡ map f xs ++⁺ map f ys
   length-map : length (map f xs) ≡ length xs
   map-cong : f ≗ g → map f ≗ map g

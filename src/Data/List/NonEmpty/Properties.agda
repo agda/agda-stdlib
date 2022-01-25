@@ -74,17 +74,17 @@ length-++⁺-tail (x ∷ xs) ys rewrite length-++⁺-tail xs ys = refl
 ++-++⁺ []      = refl
 ++-++⁺ (x ∷ l) = cong (x ∷_) (cong toList (++-++⁺ l))
 
-++⁺-cancelˡ′ : ∀ xs ys {zs ws : List⁺ A} → xs ++⁺ zs ≡ ys ++⁺ ws → List.length xs ≡ List.length ys → zs ≡ ws
+++⁺-cancelˡ′ : ∀ xs ys {zs zs′ : List⁺ A} → xs ++⁺ zs ≡ ys ++⁺ zs′ → List.length xs ≡ List.length ys → zs ≡ zs′
 ++⁺-cancelˡ′ [] [] eq eqxs            = eq
 ++⁺-cancelˡ′ (x ∷ xs) (y ∷ ys) eq eql = ++⁺-cancelˡ′ xs ys (just-injective (cong fromList (cong List⁺.tail eq)))
                                                            (suc-injective eql)
 
-++⁺-cancelˡ : ∀ xs {zs ys : List⁺ A} → xs ++⁺ zs ≡ xs ++⁺ ys → zs ≡ ys
+++⁺-cancelˡ : ∀ xs {ys zs : List⁺ A} → xs ++⁺ ys ≡ xs ++⁺ zs → ys ≡ zs
 ++⁺-cancelˡ xs eq = ++⁺-cancelˡ′ xs xs eq refl
 
-drop-++⁺ : ∀ (xs : List A) ys → drop (List.length xs) (xs ++⁺ ys) ≡ ys
-drop-++⁺ []       ys = refl
-drop-++⁺ (x ∷ xs) ys = drop-++⁺ xs ys
+drop-+-++⁺ : ∀ (xs : List A) ys → drop+ (List.length xs) (xs ++⁺ ys) ≡ ys
+drop-+-++⁺ []       ys = refl
+drop-+-++⁺ (x ∷ xs) ys = drop-+-++⁺ xs ys
 
 map-++⁺-commute : ∀ (f : A → B) xs ys →
                  map f (xs ++⁺ ys) ≡ List.map f xs ++⁺ map f ys
