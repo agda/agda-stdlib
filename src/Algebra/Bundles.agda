@@ -1038,7 +1038,7 @@ record Loop  c ℓ : Set (suc (c ⊔ ℓ)) where
   quasigroup = record { isQuasigroup = isQuasigroup }
 
   open Quasigroup quasigroup public
-    using (∙-rawMagma; \\-rawMagma; //-rawMagma)
+    using (_≉_; ∙-rawMagma; \\-rawMagma; //-rawMagma)
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
