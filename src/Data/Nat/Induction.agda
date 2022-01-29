@@ -10,8 +10,9 @@ module Data.Nat.Induction where
 
 open import Function
 open import Data.Nat.Base
-open import Data.Nat.Properties using (≤⇒≤′; n<1+n)
+open import Data.Nat.Properties using (m<1+n⇒m<n∨m≡n)
 open import Data.Product
+open import Data.Sum using (inj₁; inj₂)
 open import Data.Unit.Polymorphic
 open import Induction
 open import Induction.WellFounded as WF
@@ -85,8 +86,16 @@ module _ {ℓ} where
 <-Rec : ∀ {ℓ} → RecStruct ℕ ℓ ℓ
 <-Rec = WfRec _<_
 
-<-wellFounded : WellFounded _<_
-<-wellFounded = Subrelation.wellFounded ≤⇒≤′ <′-wellFounded
+mutual
+
+  <-wellFounded : WellFounded _<_
+  <-wellFounded n = acc (<-wellFounded′ n)
+
+  <-wellFounded′ : ∀ n → WfRec _<_ (Acc _<_) n
+  <-wellFounded′ zero    y ()
+  <-wellFounded′ (suc n) y y<1+n with <-wellFounded n | m<1+n⇒m<n∨m≡n y<1+n
+  ... | wfn | inj₁ y<n  = acc-inverse wfn y y<n
+  ... | wfn | inj₂ refl = wfn
 
 -- A version of `<-wellFounded` that cheats by skipping building
 -- the first billion proofs. Use this when you require the function
