@@ -1529,3 +1529,22 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   1/neg⇒neg : ∀ p .{{_ : NonZero p}} → (1/p : Negative (1/ p)) → Negative p
   ```
 
+* In `Data.List.NonEmpty.Base`:
+  ```agda
+  drop+ : ℕ → List⁺ A → List⁺ A
+  ```
+  When drop+ping more than the size of the length of the list, the last element remains.
+  
+* Added new proofs in `Data.List.NonEmpty.Properties`:
+  ```agda
+  length-++⁺ : length (xs ++⁺ ys) ≡ length xs + length ys
+  length-++⁺-tail : length (xs ++⁺ ys) ≡ suc (length xs + length (tail ys))
+  ++-++⁺ : (xs ++ ys) ++⁺ zs ≡ xs ++⁺ ys ++⁺ zs
+  ++⁺-cancelˡ′ : xs ++⁺ zs ≡ ys ++⁺ zs′ → List.length xs ≡ List.length ys → zs ≡ zs′
+  ++⁺-cancelˡ : xs ++⁺ ys ≡ xs ++⁺ zs → ys ≡ zs
+  drop+-++⁺ : drop+ (length xs) (xs ++⁺ ys) ≡ ys
+  map-++⁺-commute : map f (xs ++⁺ ys) ≡ map f xs ++⁺ map f ys
+  length-map : length (map f xs) ≡ length xs
+  map-cong : f ≗ g → map f ≗ map g
+  map-compose : map (g ∘ f) ≗ map g ∘ map f
+  ```
