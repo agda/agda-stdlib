@@ -91,7 +91,7 @@ mutual
   <-wellFounded : WellFounded _<_
   <-wellFounded n = acc (<-wellFounded′ n)
 
-  <-wellFounded′ : ∀ n → WfRec _<_ (Acc _<_) n
+  <-wellFounded′ : ∀ n → <-Rec (Acc _<_) n
   <-wellFounded′ zero    y ()
   <-wellFounded′ (suc n) y y<1+n with <-wellFounded n | m<1+n⇒m<n∨m≡n y<1+n
   ... | wfn | inj₁ y<n  = acc-inverse wfn y y<n
