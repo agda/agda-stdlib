@@ -451,6 +451,14 @@ toℕ-lower₁ {ℕ.zero} zero p     = contradiction refl p
 toℕ-lower₁ {ℕ.suc m} zero p    = refl
 toℕ-lower₁ {ℕ.suc m} (suc x) p = cong ℕ.suc (toℕ-lower₁ x (p ∘ cong ℕ.suc))
 
+lower₁-injective : ∀ {n} {i j} {n≢i : n ≢ toℕ i} {n≢j : n ≢ toℕ j} →
+                   lower₁ i n≢i ≡ lower₁ j n≢j → i ≡ j
+lower₁-injective {zero}  {zero}  {_}     {n≢i} {_}   _ = ⊥-elim (n≢i refl)
+lower₁-injective {zero}  {_}     {zero}  {_}   {n≢j} _ = ⊥-elim (n≢j refl)
+lower₁-injective {suc n} {0F}    {0F}    {_}   {_}   refl = refl
+lower₁-injective {suc n} {suc i} {suc j} {n≢i} {n≢j} eq =
+  cong suc (lower₁-injective (suc-injective eq))
+
 ------------------------------------------------------------------------
 -- inject₁ and lower₁
 
