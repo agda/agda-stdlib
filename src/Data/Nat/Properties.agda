@@ -49,9 +49,9 @@ open import Algebra.Structures {A = ℕ} _≡_
 -- Properties of NonZero
 ------------------------------------------------------------------------
 
-_≢0? : U.Decidable NonZero
-zero  ≢0? = no NonZero.nonZero
-suc n ≢0? = yes _
+nonZero? : U.Decidable NonZero
+nonZero? zero    = no NonZero.nonZero
+nonZero? (suc n) = yes _
 
 ------------------------------------------------------------------------
 -- Properties of _≡_

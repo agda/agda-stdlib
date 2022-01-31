@@ -684,23 +684,13 @@ record IsCommutativeRing
 
 record IsQuasigroup (∙ \\ // : Op₂ A) : Set (a ⊔ ℓ) where
   field
-    isEquivalence : IsEquivalence _≈_
-    ∙-cong        : Congruent₂ ∙
+    isMagma       : IsMagma ∙
     \\-cong       : Congruent₂ \\
     //-cong       : Congruent₂ //
     leftDivides   : LeftDivides ∙ \\
     rightDivides  : RightDivides ∙ //
 
-  open IsEquivalence isEquivalence public
-
-  setoid : Setoid a ℓ
-  setoid = record { isEquivalence = isEquivalence }
-
-  ∙-congˡ : LeftCongruent ∙
-  ∙-congˡ y≈z = ∙-cong refl y≈z
-
-  ∙-congʳ : RightCongruent ∙
-  ∙-congʳ y≈z = ∙-cong y≈z refl
+  open IsMagma isMagma public
 
   \\-congˡ : LeftCongruent \\
   \\-congˡ y≈z = \\-cong refl y≈z

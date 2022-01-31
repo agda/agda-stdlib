@@ -19,7 +19,8 @@ open import Level
 open import Relation.Unary
 
 -- A RecStruct describes the allowed structure of recursion. The
--- examples in Induction.Nat should explain what this is all about.
+-- examples in Data.Nat.Induction should explain what this is all
+-- about.
 
 RecStruct : ∀ {a} → Set a → (ℓ₁ ℓ₂ : Level) → Set _
 RecStruct A ℓ₁ ℓ₂ = Pred A ℓ₁ → Pred A ℓ₂
