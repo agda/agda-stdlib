@@ -1,5 +1,5 @@
 ------------------------------------------------------------------------
--- The Agda standard libary
+-- The Agda standard library
 --
 -- Coinductive pointwise lifting of relations to streams
 ------------------------------------------------------------------------
