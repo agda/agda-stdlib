@@ -16,11 +16,8 @@ open import Relation.Binary
 
 private
   variable
-    a b c d ℓ : Level
-    A : Set a
-    B : Set b
-    C : Set c
-    D : Set d
+    a ℓ : Level
+    A B C D : Set a
     R S T : REL A B ℓ
     xs ys : Stream A
 
