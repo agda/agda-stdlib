@@ -1,7 +1,11 @@
-{-# OPTIONS --safe --without-K --guardedness #-}
 ------------------------------------------------------------------------
+-- The Agda standard library
+--
 -- Infinite streams defined as coinductive records
 ------------------------------------------------------------------------
+
+{-# OPTIONS --safe --without-K --guardedness #-}
+
 module Codata.Guarded.Stream where
 
 open import Data.List.Base using (List)

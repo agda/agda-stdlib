@@ -1,4 +1,11 @@
+------------------------------------------------------------------------
+-- The Agda standard library
+--
+-- Streams where at least one element satisfies a given property
+------------------------------------------------------------------------
+
 {-# OPTIONS --safe --without-K --guardedness #-}
+
 module Codata.Guarded.Stream.Relation.Unary.Any where
 
 open import Codata.Guarded.Stream as Stream using (Stream)

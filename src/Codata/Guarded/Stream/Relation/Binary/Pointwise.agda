@@ -1,3 +1,9 @@
+------------------------------------------------------------------------
+-- The Agda standard libary
+--
+-- Coinductive pointwise lifting of relations to streams
+------------------------------------------------------------------------
+
 {-# OPTIONS --safe --without-K --guardedness #-}
 
 module Codata.Guarded.Stream.Relation.Binary.Pointwise where
