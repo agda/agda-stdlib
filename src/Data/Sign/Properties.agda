@@ -170,6 +170,11 @@ s*s≡+ - = refl
   ; comm = *-comm
   }
 
+*-abelianGroup : AbelianGroup 0ℓ 0ℓ
+*-abelianGroup = record
+  { isAbelianGroup = *-isAbelianGroup
+  }
+
 -- Other properties of _*_
 
 s*opposite[s]≡- : ∀ s → s * opposite s ≡ -
