@@ -968,6 +968,12 @@ record Quasigroup c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open IsQuasigroup isQuasigroup public
 
+  magma : Magma c ℓ
+  magma = record { isMagma = isMagma }
+
+  open Magma magma public
+    using (_≉_; rawMagma)
+
   rawQuasigroup : RawQuasigroup c ℓ
   rawQuasigroup = record
     { _≈_  = _≈_
@@ -1032,7 +1038,7 @@ record Loop  c ℓ : Set (suc (c ⊔ ℓ)) where
   quasigroup = record { isQuasigroup = isQuasigroup }
 
   open Quasigroup quasigroup public
-    using (∙-rawMagma; \\-rawMagma; //-rawMagma)
+    using (_≉_; ∙-rawMagma; \\-rawMagma; //-rawMagma)
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
