@@ -110,10 +110,16 @@ _⁺++_ : List⁺ A → Stream A → Stream A
 head (xs ⁺++ ys) = List⁺.head xs
 tail (xs ⁺++ ys) = List⁺.tail xs ++ ys
 
-{-
 interleave⁺ : List⁺ (Stream A) → Stream A
-interleave⁺ xss = {!!}
--}
+interleave⁺ {A = A} (xs ∷ xss) = go [] xs xss
+  where
+    --    ,- tails of the streams we have already dealt with
+    --   |                 ,-- current focus
+    --   v                 v          v-- future work
+    go : List (Stream A) → Stream A → List (Stream A) → Stream A
+    head (go rev xs yss)        = head xs
+    tail (go rev xs [])         = interleave⁺ (List⁺.reverse (tail xs ∷ rev))
+    tail (go rev xs (ys ∷ yss)) = go (tail xs ∷ rev) ys yss
 
 cycle : List⁺ A → Stream A
 cycle {A = A} (x ∷ xs) = cycleAux List.[]
