@@ -8,11 +8,11 @@
 
 module Codata.Guarded.Stream where
 
-open import Data.List.Base using (List)
-open import Data.List.NonEmpty.Base as List⁺ using (List⁺)
+open import Data.List.Base using (List; []; _∷_)
+open import Data.List.NonEmpty.Base as List⁺ using (List⁺; _∷_; _∷⁺_)
 open import Data.Nat.Base hiding (_⊔_)
 open import Data.Product as P using (Σ; proj₁; proj₂; _×_; _,_)
-open import Data.Vec.Base using (Vec)
+open import Data.Vec.Base using (Vec; []; _∷_)
 open import Function.Base using (_∘_)
 open import Level using (Level; _⊔_)
 open import Relation.Nullary
@@ -39,8 +39,8 @@ head (repeat x) = x
 tail (repeat x) = repeat x
 
 _++_ : List A → Stream A → Stream A
-List.[] ++ ys = ys
-(x List.∷ xs) ++ ys = record
+[] ++ ys = ys
+(x ∷ xs) ++ ys = record
   { head = x
   ; tail = xs ++ ys
   }
@@ -81,8 +81,8 @@ head (scanl f b xs) = b
 tail (scanl f b xs) = scanl f (f b (head xs)) (tail xs)
 
 splitAt : (n : ℕ) → Stream A → Vec A n × Stream A
-splitAt 0 xs = Vec.[] , xs
-splitAt (suc n) xs = P.map₁ (head xs Vec.∷_) (splitAt n (tail xs))
+splitAt 0 xs = [] , xs
+splitAt (suc n) xs = P.map₁ (head xs ∷_) (splitAt n (tail xs))
 
 take : (n : ℕ) → Stream A → Vec A n
 take n xs = P.proj₁ (splitAt n xs)
@@ -116,27 +116,27 @@ interleave⁺ xss = {!!}
 -}
 
 cycle : List⁺ A → Stream A
-cycle {A = A} (x List⁺.∷ xs) = cycleAux List.[]
+cycle {A = A} (x ∷ xs) = cycleAux List.[]
   where
     cycleAux : List A → Stream A
-    head (cycleAux List.[]) = x
-    tail (cycleAux List.[]) = cycleAux xs
-    head (cycleAux (x List.∷ xs)) = x
-    tail (cycleAux (x List.∷ xs)) = cycleAux xs
+    head (cycleAux []) = x
+    tail (cycleAux []) = cycleAux xs
+    head (cycleAux (x ∷ xs)) = x
+    tail (cycleAux (x ∷ xs)) = cycleAux xs
   
 
 cantor : Stream (Stream A) → Stream A
-cantor ls = zig (head ls List⁺.∷ List.[]) (tail ls)
+cantor ls = zig (head ls ∷ []) (tail ls)
   where
     zig : List⁺ (Stream A) → Stream (Stream A) → Stream A
     zag : List⁺ A → List⁺ (Stream A) → Stream (Stream A) → Stream A
 
     zig xss = zag (List⁺.map head xss) (List⁺.map tail xss)
 
-    head (zag (x List⁺.∷ List.[]) zs ls) = x
-    tail (zag (x List⁺.∷ List.[]) zs ls) = zig (head ls List⁺.∷⁺ zs) (tail ls)
-    head (zag (x List⁺.∷ y List.∷ xs) zs ls) = x
-    tail (zag (x List⁺.∷ y List.∷ xs) zs ls) = zag (y List⁺.∷ xs) zs ls
+    head (zag (x ∷ []) zs ls) = x
+    tail (zag (x ∷ []) zs ls) = zig (head ls ∷⁺ zs) (tail ls)
+    head (zag (x ∷ y ∷ xs) zs ls) = x
+    tail (zag (x ∷ y ∷ xs) zs ls) = zag (y ∷ xs) zs ls
 
 plane : {B : A → Set b} → Stream A → ((a : A) → Stream (B a)) → Stream (Σ A B)
 plane as bs = cantor (map (λ a → map (a ,_) (bs a)) as)
