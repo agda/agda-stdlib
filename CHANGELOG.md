@@ -404,6 +404,19 @@ Major improvements
      it is defined immediately in terms of `_+_` and `-_`. This is the case for
 	 `Data.Integer` and `Data.Rational`.
 
+### Moved `_%_` and `_/_` operators to `Data.Nat.Base`
+
+* Previously the division and modulus operators were defined in `Data.Nat.DivMod`
+  which in turn meant that using them required importing `Data.Nat.Properties`
+  which is a very heavy dependency.
+  
+* To fix this, these operators have been moved to `Data.Nat.Base`. The properties
+  for them still live in `Data.Nat.DivMod` (which also publicly re-exports them
+  to provide backwards compatability).
+
+* Beneficieries of this change include `Data.Rational.Unnormalised.Base` whose
+  dependencies are now significantly smaller.
+
 Deprecated modules
 ------------------
 

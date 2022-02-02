@@ -172,11 +172,13 @@ x ^ suc n = x * x ^ n
 ∣ suc x - suc y ∣ = ∣ x - y ∣
 
 -- Division
+-- Note properties of these are in `Nat.DivMod` not `Nat.Properties`
 
 _/_ : (dividend divisor : ℕ) .{{_ : NonZero divisor}} → ℕ
 m / (suc n) = div-helper 0 n m n
 
 -- Remainder/modulus
+-- Note properties of these are in `Nat.DivMod` not `Nat.Properties`
 
 _%_ : (dividend divisor : ℕ) .{{_ : NonZero divisor}} → ℕ
 m % (suc n) = mod-helper 0 n m n
