@@ -135,12 +135,18 @@ toℕ-↑ʳ (suc n) i = cong suc (toℕ-↑ʳ n i)
 ↑ʳ-injective zero i i refl = refl
 ↑ʳ-injective (suc n) i j eq = ↑ʳ-injective n i j (suc-injective eq)
 
-toℕ<n : ∀ {n} (i : Fin n) → toℕ i ℕ.< n
-toℕ<n zero    = s≤s z≤n
-toℕ<n (suc i) = s≤s (toℕ<n i)
+------------------------------------------------------------------------
+-- toℕ and the ordering relations
+------------------------------------------------------------------------
 
-toℕ≤n : ∀ {n} → (i : Fin n) → toℕ i ℕ.≤ n
-toℕ≤n = ℕₚ.<⇒≤ ∘ toℕ<n
+new-toℕ≤n : ∀ {n} → (i : Fin (suc n)) → toℕ i ℕ.≤ n
+new-toℕ≤n {_}     zero    = z≤n
+new-toℕ≤n {suc n} (suc i) = s≤s (new-toℕ≤n i)
+
+toℕ<n : ∀ {n} (i : Fin n) → toℕ i ℕ.< n
+--toℕ<n zero    = s≤s z≤n
+--toℕ<n (suc i) = s≤s (toℕ<n i)
+toℕ<n {suc n} i = s≤s (new-toℕ≤n i)
 
 toℕ≤pred[n] : ∀ {n} (i : Fin n) → toℕ i ℕ.≤ ℕ.pred n
 toℕ≤pred[n] zero                 = z≤n
@@ -182,7 +188,7 @@ fromℕ-toℕ zero    = refl
 fromℕ-toℕ (suc i) = cong suc (fromℕ-toℕ i)
 
 ≤fromℕ : ∀ {n} → (i : Fin (ℕ.suc n)) → i ≤ fromℕ n
-≤fromℕ {n} i = subst (toℕ i ℕ.≤_) (sym (toℕ-fromℕ n)) (ℕₚ.≤-pred (toℕ<n i))
+≤fromℕ {n} i = subst (toℕ i ℕ.≤_) (sym (toℕ-fromℕ n)) (new-toℕ≤n i)
 
 ------------------------------------------------------------------------
 -- fromℕ<
@@ -492,18 +498,18 @@ inject₁≡⇒lower₁≡ ≢p ≡p = inject₁-injective (trans (inject₁-low
 toℕ-inject≤ : ∀ {m n} (i : Fin m) (le : m ℕ.≤ n) →
                 toℕ (inject≤ i le) ≡ toℕ i
 toℕ-inject≤ {_} {suc n} zero    _  = refl
-toℕ-inject≤ {_} {suc n} (suc i) le = cong suc (toℕ-inject≤ i (ℕₚ.≤-pred le))
+toℕ-inject≤ {_} {suc n} (suc i) (s≤s le) = cong suc (toℕ-inject≤ i le)
 
 inject≤-refl : ∀ {n} (i : Fin n) (n≤n : n ℕ.≤ n) → inject≤ i n≤n ≡ i
 inject≤-refl {suc n} zero    _   = refl
-inject≤-refl {suc n} (suc i) n≤n = cong suc (inject≤-refl i (ℕₚ.≤-pred n≤n))
+inject≤-refl {suc n} (suc i) (s≤s n≤n) = cong suc (inject≤-refl i n≤n)
 
 inject≤-idempotent : ∀ {m n k} (i : Fin m)
                      (m≤n : m ℕ.≤ n) (n≤k : n ℕ.≤ k) (m≤k : m ℕ.≤ k) →
                      inject≤ (inject≤ i m≤n) n≤k ≡ inject≤ i m≤k
 inject≤-idempotent {_} {suc n} {suc k} zero    _   _   _ = refl
-inject≤-idempotent {_} {suc n} {suc k} (suc i) m≤n n≤k _ =
-  cong suc (inject≤-idempotent i (ℕₚ.≤-pred m≤n) (ℕₚ.≤-pred n≤k) _)
+inject≤-idempotent {_} {suc n} {suc k} (suc i) (s≤s m≤n) (s≤s n≤k) (s≤s m≤k) =
+  cong suc (inject≤-idempotent i m≤n n≤k m≤k)
 
 inject≤-injective : ∀ {n m} (n≤m n≤m′ : n ℕ.≤ m) x y → inject≤ x n≤m ≡ inject≤ y n≤m′ → x ≡ y
 inject≤-injective (s≤s p) (s≤s q) zero zero eq = refl
@@ -988,7 +994,7 @@ opposite-involutive : ∀ {n} → Involutive {A = Fin n} _≡_ opposite
 opposite-involutive {suc n} i = toℕ-injective (begin
   toℕ (opposite (opposite i)) ≡⟨ opposite-prop (opposite i) ⟩
   n ∸ (toℕ (opposite i))     ≡⟨ cong (n ∸_) (opposite-prop i) ⟩
-  n ∸ (n ∸ (toℕ i))         ≡⟨ ℕₚ.m∸[m∸n]≡n (ℕₚ.≤-pred (toℕ<n i)) ⟩
+  n ∸ (n ∸ (toℕ i))         ≡⟨ ℕₚ.m∸[m∸n]≡n (new-toℕ≤n i) ⟩
   toℕ i                     ∎)
   where open ≡-Reasoning
 
@@ -1083,6 +1089,13 @@ Please use join-splitAt instead."
 #-}
 
 -- Version 2.0
+
+toℕ≤n : ∀ {n} → (i : Fin n) → toℕ i ℕ.≤ n
+toℕ≤n {suc n} i = ℕₚ.≤-step (new-toℕ≤n i)
+{-# WARNING_ON_USAGE toℕ≤n
+"Warning: toℕ≤n deprecated in v2.0.
+Please use toℕ<n or new-toℕ≤n instead."
+#-}
 
 toℕ-raise = toℕ-↑ʳ
 {-# WARNING_ON_USAGE toℕ-raise

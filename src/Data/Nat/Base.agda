@@ -101,7 +101,7 @@ instance
 ≢-nonZero {suc n} n≢0 = _
 
 >-nonZero : ∀ {n} → n > 0 → NonZero n
->-nonZero (s≤s 0<n) = _
+>-nonZero (s≤s 0≤n) = _
 
 -- Destructors
 

@@ -16,3 +16,4 @@ open import Data.Nat.Base
 
 ≤-pred : ∀ {m n} → suc m ≤ suc n → m ≤ n
 ≤-pred (s≤s m≤n) = m≤n
+

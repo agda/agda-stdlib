@@ -99,16 +99,26 @@ m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
 1+n≢n {suc n} = 1+n≢n ∘ suc-injective
 
 ------------------------------------------------------------------------
+-- Smart constructors of _<_
+------------------------------------------------------------------------
+
+z<s : ∀ {n} → zero < suc n
+z<s = s≤s z≤n
+
+s<s : ∀ {m n} (m<n : m < n) → suc m < suc n
+s<s = s≤s
+
+------------------------------------------------------------------------
 -- Properties of _<ᵇ_
 ------------------------------------------------------------------------
 
 <ᵇ⇒< : ∀ m n → T (m <ᵇ n) → m < n
-<ᵇ⇒< zero    (suc n) m<n = s≤s z≤n
-<ᵇ⇒< (suc m) (suc n) m<n = s≤s (<ᵇ⇒< m n m<n)
+<ᵇ⇒< zero    (suc n) m<n = z<s
+<ᵇ⇒< (suc m) (suc n) m<n = s<s (<ᵇ⇒< m n m<n)
 
 <⇒<ᵇ : ∀ {m n} → m < n → T (m <ᵇ n)
 <⇒<ᵇ (s≤s z≤n)       = tt
-<⇒<ᵇ (s≤s (s≤s m<n)) = <⇒<ᵇ (s≤s m<n)
+<⇒<ᵇ (s≤s m<n@(s≤s _)) = <⇒<ᵇ m<n
 
 <ᵇ-reflects-< : ∀ m n → Reflects (m < n) (m <ᵇ n)
 <ᵇ-reflects-< m n = fromEquivalence (<ᵇ⇒< m n) <⇒<ᵇ
@@ -132,7 +142,8 @@ m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
 -- Properties of _≤_
 ------------------------------------------------------------------------
 
-open import Data.Nat.Properties.Core public
+≤-pred : ∀ {m n} → suc m ≤ suc n → m ≤ n
+≤-pred (s≤s m≤n) = m≤n
 
 ------------------------------------------------------------------------
 -- Relational properties of _≤_
@@ -288,8 +299,8 @@ n≤0⇒n≡0 z≤n = refl
 
 ≰⇒> : _≰_ ⇒ _>_
 ≰⇒> {zero}          z≰n = contradiction z≤n z≰n
-≰⇒> {suc m} {zero}  _   = s≤s z≤n
-≰⇒> {suc m} {suc n} m≰n = s≤s (≰⇒> (m≰n ∘ s≤s))
+≰⇒> {suc m} {zero}  _   = z<s
+≰⇒> {suc m} {suc n} m≰n = s<s (≰⇒> (m≰n ∘ s≤s))
 
 ≰⇒≥ : _≰_ ⇒ _≥_
 ≰⇒≥ = <⇒≤ ∘ ≰⇒>
@@ -301,7 +312,7 @@ n≤0⇒n≡0 z≤n = refl
 
 ≤∧≢⇒< : ∀ {m n} → m ≤ n → m ≢ n → m < n
 ≤∧≢⇒< {_} {zero}  z≤n       m≢n     = contradiction refl m≢n
-≤∧≢⇒< {_} {suc n} z≤n       m≢n     = s≤s z≤n
+≤∧≢⇒< {_} {suc n} z≤n       m≢n     = z<s
 ≤∧≢⇒< {_} {suc n} (s≤s m≤n) 1+m≢1+n =
   s≤s (≤∧≢⇒< m≤n (1+m≢1+n ∘ cong suc))
 
@@ -403,9 +414,6 @@ n≮0 ()
 n≮n : ∀ n → n ≮ n
 n≮n n = <-irrefl (refl {x = n})
 
-0<1+n : ∀ {n} → 0 < suc n
-0<1+n = s≤s z≤n
-
 n<1+n : ∀ n → n < suc n
 n<1+n n = ≤-refl
 
@@ -414,10 +422,10 @@ n<1⇒n≡0 (s≤s n≤0) = n≤0⇒n≡0 n≤0
 
 n≢0⇒n>0 : ∀ {n} → n ≢ 0 → n > 0
 n≢0⇒n>0 {zero}  0≢0 =  contradiction refl 0≢0
-n≢0⇒n>0 {suc n} _   =  0<1+n
+n≢0⇒n>0 {suc n} _   =  z<s
 
 m<n⇒0<n : ∀ {m n} → m < n → 0 < n
-m<n⇒0<n = ≤-trans 0<1+n
+m<n⇒0<n = ≤-trans z<s
 
 m<n⇒n≢0 : ∀ {m n} → m < n → n ≢ 0
 m<n⇒n≢0 (s≤s m≤n) ()
@@ -427,7 +435,7 @@ m<n⇒m≤1+n = ≤-step ∘ <⇒≤
 
 m<1+n⇒m<n∨m≡n :  ∀ {m n} → m < suc n → m < n ⊎ m ≡ n
 m<1+n⇒m<n∨m≡n {0}     {0}     _          =  inj₂ refl
-m<1+n⇒m<n∨m≡n {0}     {suc n} _          =  inj₁ 0<1+n
+m<1+n⇒m<n∨m≡n {0}     {suc n} _          =  inj₁ z<s
 m<1+n⇒m<n∨m≡n {suc m} {suc n} (s≤s m≤n)  with m<1+n⇒m<n∨m≡n m≤n
 ... | inj₂ m≡n = inj₂ (cong suc m≡n)
 ... | inj₁ m<n = inj₁ (s≤s m<n)
@@ -437,7 +445,7 @@ m≤n⇒m<n∨m≡n m≤n = m<1+n⇒m<n∨m≡n (s≤s m≤n)
 
 ∀[m≤n⇒m≢o]⇒n<o : ∀ n o → (∀ {m} → m ≤ n → m ≢ o) → n < o
 ∀[m≤n⇒m≢o]⇒n<o _       zero    m≤n⇒n≢0 = contradiction refl (m≤n⇒n≢0 z≤n)
-∀[m≤n⇒m≢o]⇒n<o zero    (suc o) _       = 0<1+n
+∀[m≤n⇒m≢o]⇒n<o zero    (suc o) _       = z<s
 ∀[m≤n⇒m≢o]⇒n<o (suc n) (suc o) m≤n⇒n≢o = s≤s (∀[m≤n⇒m≢o]⇒n<o n o rec)
   where
   rec : ∀ {m} → m ≤ n → m ≢ o
@@ -445,7 +453,7 @@ m≤n⇒m<n∨m≡n m≤n = m<1+n⇒m<n∨m≡n (s≤s m≤n)
 
 ∀[m<n⇒m≢o]⇒n≤o : ∀ n o → (∀ {m} → m < n → m ≢ o) → n ≤ o
 ∀[m<n⇒m≢o]⇒n≤o zero    n       _       = z≤n
-∀[m<n⇒m≢o]⇒n≤o (suc n) zero    m<n⇒m≢0 = contradiction refl (m<n⇒m≢0 0<1+n)
+∀[m<n⇒m≢o]⇒n≤o (suc n) zero    m<n⇒m≢0 = contradiction refl (m<n⇒m≢0 z<s)
 ∀[m<n⇒m≢o]⇒n≤o (suc n) (suc o) m<n⇒m≢o = s≤s (∀[m<n⇒m≢o]⇒n≤o n o rec)
   where
   rec : ∀ {m} → m < n → m ≢ o
@@ -690,7 +698,7 @@ m+n≤o⇒n≤o (suc m) m+n<o = m+n≤o⇒n≤o m (<⇒≤ m+n<o)
 +-monoʳ-< (suc n) m≤o = s≤s (+-monoʳ-< n m≤o)
 
 m+1+n≰m : ∀ m {n} → m + suc n ≰ m
-m+1+n≰m (suc m) le = m+1+n≰m m (≤-pred le)
+m+1+n≰m (suc m) (s≤s le) = m+1+n≰m m le
 
 m<m+n : ∀ m {n} → n > 0 → m < m + n
 m<m+n zero    n>0 = n>0
@@ -936,12 +944,12 @@ m*n≡1⇒n≡1 m n eq = m*n≡1⇒m≡1 n m (trans (*-comm n m) eq)
 *-monoʳ-≤ n m≤o = *-mono-≤ (≤-refl {n}) m≤o
 
 *-mono-< : _*_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
-*-mono-< (s≤s z≤n)       (s≤s u≤v) = s≤s z≤n
+*-mono-< (s≤s z≤n)       (s≤s u≤v) = z<s
 *-mono-< (s≤s (s≤s m≤n)) (s≤s u≤v) =
   +-mono-< (s≤s u≤v) (*-mono-< (s≤s m≤n) (s≤s u≤v))
 
 *-monoˡ-< : ∀ n .{{_ : NonZero n}} → (_* n) Preserves _<_ ⟶ _<_
-*-monoˡ-< (suc n) (s≤s z≤n)       = s≤s z≤n
+*-monoˡ-< (suc n) (s≤s z≤n)       = z<s
 *-monoˡ-< (suc n) (s≤s (s≤s m≤o)) =
   +-mono-≤-< (≤-refl {suc n}) (*-monoˡ-< (suc n) (s≤s m≤o))
 
@@ -970,8 +978,8 @@ m<m*n m@(suc m-1) n@(suc (suc n-2)) (s≤s (s≤s _)) = begin-strict
   m * n       ∎
 
 *-cancelʳ-< : RightCancellative _<_ _*_
-*-cancelʳ-< {zero}  zero    (suc o) _     = 0<1+n
-*-cancelʳ-< {suc m} zero    (suc o) _     = 0<1+n
+*-cancelʳ-< {zero}  zero    (suc o) _     = z<s
+*-cancelʳ-< {suc m} zero    (suc o) _     = z<s
 *-cancelʳ-< {m}     (suc n) (suc o) nm<om =
   s≤s (*-cancelʳ-< n o (+-cancelˡ-< m nm<om))
 
@@ -1466,7 +1474,7 @@ m≮m∸n (suc m) (suc n) = m≮m∸n m n ∘ ≤-trans (n≤1+n (suc m))
 
 ∸-cancelʳ-< : ∀ {m n o} → o ∸ m < o ∸ n → n < m
 ∸-cancelʳ-< {zero}  {n}     {o}     o<o∸n   = contradiction o<o∸n (m≮m∸n o n)
-∸-cancelʳ-< {suc m} {zero}  {_}     o∸n<o∸m = 0<1+n
+∸-cancelʳ-< {suc m} {zero}  {_}     o∸n<o∸m = z<s
 ∸-cancelʳ-< {suc m} {suc n} {suc o} o∸n<o∸m = s≤s (∸-cancelʳ-< o∸n<o∸m)
 
 ∸-cancelˡ-≡ :  ∀ {m n o} → n ≤ m → o ≤ m → m ∸ n ≡ m ∸ o → n ≡ o
@@ -1488,7 +1496,7 @@ m≤n⇒m∸n≡0 {n = n} z≤n      = 0∸n≡0 n
 m≤n⇒m∸n≡0 {_}    (s≤s m≤n) = m≤n⇒m∸n≡0 m≤n
 
 m<n⇒0<n∸m : ∀ {m n} → m < n → 0 < n ∸ m
-m<n⇒0<n∸m {zero}  {suc n} _         = 0<1+n
+m<n⇒0<n∸m {zero}  {suc n} _         = z<s
 m<n⇒0<n∸m {suc m} {suc n} (s≤s m<n) = m<n⇒0<n∸m m<n
 
 m∸n≢0⇒n<m : ∀ {m n} → m ∸ n ≢ 0 → n < m
@@ -1848,7 +1856,7 @@ m≤∣m-n∣+n m n = subst (m ≤_) (+-comm n _) (m≤n+∣m-n∣ m n)
 ⌊n/2⌋≤n (suc (suc n)) = s≤s (≤-step (⌊n/2⌋≤n n))
 
 ⌊n/2⌋<n : ∀ n → ⌊ suc n /2⌋ < suc n
-⌊n/2⌋<n zero    = s≤s z≤n
+⌊n/2⌋<n zero    = z<s
 ⌊n/2⌋<n (suc n) = s≤s (s≤s (⌊n/2⌋≤n n))
 
 ⌈n/2⌉≤n : ∀ n → ⌈ n /2⌉ ≤ n
@@ -2047,9 +2055,9 @@ module _ {p} {P : Pred ℕ p} (P? : U.Decidable P) where
   ... | no ¬Pv | no ¬Pn<v           = no ¬Pn<1+v
     where
     ¬Pn<1+v : ∄ λ n → n < suc v × P n
-    ¬Pn<1+v (n , n<1+v , Pn) with n ≟ v
+    ¬Pn<1+v (n , s≤s n≤v , Pn) with n ≟ v
     ... | yes refl = ¬Pv Pn
-    ... | no  n≢v  = ¬Pn<v (n , ≤∧≢⇒< (≤-pred n<1+v) n≢v , Pn)
+    ... | no  n≢v  = ¬Pn<v (n , ≤∧≢⇒< n≤v n≢v , Pn)
 
   allUpTo? : ∀ v → Dec (∀ {n} → n < v → P n)
   allUpTo? zero    = yes λ()
@@ -2059,9 +2067,9 @@ module _ {p} {P : Pred ℕ p} (P? : U.Decidable P) where
   ... | yes Pn | yes Pn<v = yes Pn<1+v
     where
       Pn<1+v : ∀ {n} → n < suc v → P n
-      Pn<1+v {n} n<1+v with n ≟ v
+      Pn<1+v {n} (s≤s n≤v) with n ≟ v
       ... | yes refl = Pn
-      ... | no  n≢v  = Pn<v (≤∧≢⇒< (≤-pred n<1+v) n≢v)
+      ... | no  n≢v  = Pn<v (≤∧≢⇒< n≤v n≢v)
 
 
 
@@ -2314,4 +2322,8 @@ suc[pred[n]]≡n {zero}  0≢0 = contradiction refl 0≢0
 suc[pred[n]]≡n {suc n} _   = refl
 {-# WARNING_ON_USAGE suc[pred[n]]≡n
 "Warning: suc[pred[n]]≡n was deprecated in v2.0. Please use suc-pred instead. Note that the proof now uses instance arguments"
+#-}
+0<1+n = z<s
+{-# WARNING_ON_USAGE 0<1+n
+"Warning: 0<1+n was deprecated in v2.0. Please use z<s instead."
 #-}
