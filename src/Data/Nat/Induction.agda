@@ -15,7 +15,7 @@ open import Data.Product
 open import Data.Sum using (inj₁; inj₂)
 open import Data.Unit.Polymorphic
 open import Induction
-open import Induction.WellFounded as WF
+open import Induction.WellFounded as WF using (WellFounded; WfRec)
 open import Level using (Level)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Unary
@@ -94,9 +94,9 @@ mutual
   <-wellFounded′ : ∀ n → <-Rec (Acc _<_) n
   <-wellFounded′ zero    y ()
   <-wellFounded′ (suc n) y y<1+n with <-wellFounded n | m<1+n⇒m<n∨m≡n y<1+n
-  ... | wfn | inj₁ y<n  = acc-inverse wfn y y<n
-  ... | wfn | inj₂ refl = wfn
-
+  ... | wfn@(acc wf-ih) | inj₁ y<n  = wf-ih y y<n
+  ... | wfn             | inj₂ refl = wfn
+  
 -- A version of `<-wellFounded` that cheats by skipping building
 -- the first billion proofs. Use this when you require the function
 -- using the proof of well-foundedness to evaluate fast.
