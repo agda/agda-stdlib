@@ -96,7 +96,7 @@ mutual
   <-wellFounded′ (suc n) y y<1+n with <-wellFounded n | m<1+n⇒m<n∨m≡n y<1+n
   ... | wfn@(acc wf-ih) | inj₁ y<n  = wf-ih y y<n
   ... | wfn             | inj₂ refl = wfn
-  
+
 -- A version of `<-wellFounded` that cheats by skipping building
 -- the first billion proofs. Use this when you require the function
 -- using the proof of well-foundedness to evaluate fast.
