@@ -212,8 +212,8 @@ fromℕ<-cong : ∀ m n {o} → m ≡ n →
               (n<o : n ℕ.< o) →
               fromℕ< m<o ≡ fromℕ< n<o
 fromℕ<-cong 0       0       r (s≤s z≤n)     (s≤s z≤n)     = refl
-fromℕ<-cong (suc _) (suc _) r (s≤s (s≤s p)) (s≤s (s≤s q))
-  = cong suc (fromℕ<-cong _ _ (ℕₚ.suc-injective r) (s≤s p) (s≤s q))
+fromℕ<-cong (suc _) (suc _) r (s≤s m<n@(s≤s _)) (s≤s n<o@(s≤s _))
+  = cong suc (fromℕ<-cong _ _ (ℕₚ.suc-injective r) m<n n<o)
 
 fromℕ<-injective : ∀ m n {o} →
                    (m<o : m ℕ.< o) →
@@ -221,8 +221,8 @@ fromℕ<-injective : ∀ m n {o} →
                    fromℕ< m<o ≡ fromℕ< n<o →
                    m ≡ n
 fromℕ<-injective 0 0 (s≤s z≤n) (s≤s z≤n) r = refl
-fromℕ<-injective (suc _) (suc _) (s≤s (s≤s p)) (s≤s (s≤s q)) r
-  = cong suc (fromℕ<-injective _ _ (s≤s p) (s≤s q) (suc-injective r))
+fromℕ<-injective (suc _) (suc _) (s≤s m<n@(s≤s _)) (s≤s n<o@(s≤s _)) r
+  = cong suc (fromℕ<-injective _ _ m<n n<o (suc-injective r))
 
 ------------------------------------------------------------------------
 -- fromℕ<″
