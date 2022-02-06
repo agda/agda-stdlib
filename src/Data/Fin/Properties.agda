@@ -17,7 +17,7 @@ open import Data.Bool.Base using (Bool; true; false; not; _∧_; _∨_)
 open import Data.Empty using (⊥; ⊥-elim)
 open import Data.Fin.Base
 open import Data.Fin.Patterns
-open import Data.Nat.Base as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_; _^_)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc; s≤s; z≤n; z<s; s<s; _∸_; _^_)
 import Data.Nat.Properties as ℕₚ
 open import Data.Nat.Solver
 open import Data.Unit using (⊤; tt)
@@ -144,9 +144,10 @@ new-toℕ≤n {_}     zero    = z≤n
 new-toℕ≤n {suc n} (suc i) = s≤s (new-toℕ≤n i)
 
 toℕ<n : ∀ {n} (i : Fin n) → toℕ i ℕ.< n
---toℕ<n zero    = s≤s z≤n
---toℕ<n (suc i) = s≤s (toℕ<n i)
 toℕ<n {suc n} i = s≤s (new-toℕ≤n i)
+
+old-toℕ≤n : ∀ {n} → (i : Fin n) → toℕ i ℕ.≤ n
+old-toℕ≤n {suc n} i = ℕₚ.≤-step (new-toℕ≤n i)
 
 toℕ≤pred[n] : ∀ {n} (i : Fin n) → toℕ i ℕ.≤ ℕ.pred n
 toℕ≤pred[n] zero                 = z≤n
@@ -160,8 +161,8 @@ toℕ≤pred[n]′ : ∀ {n} (i : Fin n) → toℕ i ℕ.≤ ℕ.pred n
 toℕ≤pred[n]′ i = ℕₚ.<⇒≤pred (toℕ<n i)
 
 toℕ-mono-< : ∀ {n} {i j : Fin n} → i < j → toℕ i ℕ.< toℕ j
-toℕ-mono-< {i = 0F}    {suc j}       (s≤s z≤n)       = s≤s z≤n
-toℕ-mono-< {i = suc i} {suc (suc j)} (s≤s (s≤s i<j)) = s≤s (toℕ-mono-< (s≤s i<j))
+toℕ-mono-< {i = 0F}    {suc j}       z<s       = z<s
+toℕ-mono-< {i = suc i} {suc (suc j)} (s<s i<j@(s≤s _)) = s≤s (toℕ-mono-< i<j)
 
 toℕ-mono-≤ : ∀ {n} {i j : Fin n} → i ≤ j → toℕ i ℕ.≤ toℕ j
 toℕ-mono-≤ {i = 0F} {j} z≤n = z≤n
@@ -172,8 +173,8 @@ toℕ-cancel-≤ {i = 0F} {j} z≤n = z≤n
 toℕ-cancel-≤ {i = suc i} {suc j} (s≤s i≤j) = s≤s (toℕ-cancel-≤ i≤j)
 
 toℕ-cancel-< : ∀ {n} {i j : Fin n} → toℕ i ℕ.< toℕ j → i < j
-toℕ-cancel-< {i = 0F} {suc j} (s≤s z≤n) = s≤s z≤n
-toℕ-cancel-< {i = suc i} {suc (suc j)} (s≤s (s≤s i<j)) = s≤s (toℕ-cancel-< (s≤s i<j))
+toℕ-cancel-< {i = 0F} {suc j} z<s       = z<s
+toℕ-cancel-< {i = suc i} {suc (suc j)} (s<s i<j@(s≤s _)) = s<s (toℕ-cancel-< i<j)
 
 ------------------------------------------------------------------------
 -- fromℕ
@@ -1089,14 +1090,11 @@ Please use join-splitAt instead."
 #-}
 
 -- Version 2.0
-
-toℕ≤n : ∀ {n} → (i : Fin n) → toℕ i ℕ.≤ n
-toℕ≤n {suc n} i = ℕₚ.≤-step (new-toℕ≤n i)
+toℕ≤n = old-toℕ≤n
 {-# WARNING_ON_USAGE toℕ≤n
-"Warning: toℕ≤n deprecated in v2.0.
-Please use toℕ<n or new-toℕ≤n instead."
+"Warning: toℕ≤n was deprecated in v2.0.
+Please use old-toℕ≤n, toℕ<n or new-toℕ≤n instead."
 #-}
-
 toℕ-raise = toℕ-↑ʳ
 {-# WARNING_ON_USAGE toℕ-raise
 "Warning: toℕ-raise was deprecated in v2.0.

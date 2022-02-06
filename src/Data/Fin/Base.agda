@@ -13,8 +13,7 @@
 module Data.Fin.Base where
 
 open import Data.Empty using (⊥-elim)
-open import Data.Nat.Base as ℕ using (ℕ; zero; suc; z≤n; s≤s; _^_)
---open import Data.Nat.Properties.Core using (≤-pred)
+open import Data.Nat.Base as ℕ using (ℕ; zero; suc; z≤n; s≤s; z<s; s<s; _^_)
 open import Data.Product as Product using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (id; _∘_; _on_; flip)
@@ -68,7 +67,7 @@ fromℕ (suc n) = suc (fromℕ n)
 
 fromℕ< : ∀ {m n} → m ℕ.< n → Fin n
 fromℕ< {zero}  {suc n} m<n = zero
-fromℕ< {suc m} {suc n} (s≤s m<n) = suc (fromℕ< m<n)
+fromℕ< {suc m} {suc n} (s<s m<n) = suc (fromℕ< m<n)
 
 -- fromℕ<″ m _ = "m".
 
@@ -112,7 +111,7 @@ inject₁ zero    = zero
 inject₁ (suc i) = suc (inject₁ i)
 
 inject≤ : ∀ {m n} → Fin m → m ℕ.≤ n → Fin n
-inject≤ {_} {suc n} zero    le = zero
+inject≤ {_} {suc n} zero    _        = zero
 inject≤ {_} {suc n} (suc i) (s≤s le) = suc (inject≤ i le)
 
 -- lower₁ "i" _ = "i".

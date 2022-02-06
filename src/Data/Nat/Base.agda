@@ -55,6 +55,12 @@ data _≤_ : Rel ℕ 0ℓ where
 _<_ : Rel ℕ 0ℓ
 m < n = suc m ≤ n
 
+------------------------------------------------------------------------
+-- Smart constructors of _<_
+
+pattern z<s {n}         = s≤s (z≤n {n})
+pattern s<s {m} {n} m<n = s≤s {m} {n} m<n
+
 _≥_ : Rel ℕ 0ℓ
 m ≥ n = n ≤ m
 

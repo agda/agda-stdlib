@@ -99,16 +99,6 @@ m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
 1+n≢n {suc n} = 1+n≢n ∘ suc-injective
 
 ------------------------------------------------------------------------
--- Smart constructors of _<_
-------------------------------------------------------------------------
-
-z<s : ∀ {n} → zero < suc n
-z<s = s≤s z≤n
-
-s<s : ∀ {m n} (m<n : m < n) → suc m < suc n
-s<s = s≤s
-
-------------------------------------------------------------------------
 -- Properties of _<ᵇ_
 ------------------------------------------------------------------------
 
@@ -117,8 +107,8 @@ s<s = s≤s
 <ᵇ⇒< (suc m) (suc n) m<n = s<s (<ᵇ⇒< m n m<n)
 
 <⇒<ᵇ : ∀ {m n} → m < n → T (m <ᵇ n)
-<⇒<ᵇ (s≤s z≤n)       = tt
-<⇒<ᵇ (s≤s m<n@(s≤s _)) = <⇒<ᵇ m<n
+<⇒<ᵇ z<s               = tt
+<⇒<ᵇ (s<s m<n@(s<s _)) = <⇒<ᵇ m<n
 
 <ᵇ-reflects-< : ∀ m n → Reflects (m < n) (m <ᵇ n)
 <ᵇ-reflects-< m n = fromEquivalence (<ᵇ⇒< m n) <⇒<ᵇ
@@ -141,9 +131,6 @@ s<s = s≤s
 ------------------------------------------------------------------------
 -- Properties of _≤_
 ------------------------------------------------------------------------
-
-≤-pred : ∀ {m n} → suc m ≤ suc n → m ≤ n
-≤-pred (s≤s m≤n) = m≤n
 
 ------------------------------------------------------------------------
 -- Relational properties of _≤_
@@ -257,6 +244,9 @@ _≥?_ = flip _≤?_
 s≤s-injective : ∀ {m n} {p q : m ≤ n} → s≤s p ≡ s≤s q → p ≡ q
 s≤s-injective refl = refl
 
+≤-pred : ∀ {m n} → suc m ≤ suc n → m ≤ n
+≤-pred (s≤s m≤n) = m≤n
+
 ≤-step : ∀ {m n} → m ≤ n → m ≤ 1 + n
 ≤-step z≤n       = z≤n
 ≤-step (s≤s m≤n) = s≤s (≤-step m≤n)
@@ -277,7 +267,7 @@ n≤0⇒n≡0 z≤n = refl
 -- Relationships between the various relations
 
 <⇒≤ : _<_ ⇒ _≤_
-<⇒≤ (s≤s m≤n) = ≤-step m≤n
+<⇒≤ (s<s m≤n) = ≤-step m≤n
 
 <⇒≢ : _<_ ⇒ _≢_
 <⇒≢ m<n refl = 1+n≰n m<n
@@ -307,14 +297,14 @@ n≤0⇒n≡0 z≤n = refl
 
 ≮⇒≥ : _≮_ ⇒ _≥_
 ≮⇒≥ {_}     {zero}  _       = z≤n
-≮⇒≥ {zero}  {suc j} 1≮j+1   = contradiction (s≤s z≤n) 1≮j+1
-≮⇒≥ {suc i} {suc j} i+1≮j+1 = s≤s (≮⇒≥ (i+1≮j+1 ∘ s≤s))
+≮⇒≥ {zero}  {suc j} 1≮j+1   = contradiction z<s 1≮j+1
+≮⇒≥ {suc i} {suc j} i+1≮j+1 = s≤s (≮⇒≥ (i+1≮j+1 ∘ s<s))
 
 ≤∧≢⇒< : ∀ {m n} → m ≤ n → m ≢ n → m < n
 ≤∧≢⇒< {_} {zero}  z≤n       m≢n     = contradiction refl m≢n
 ≤∧≢⇒< {_} {suc n} z≤n       m≢n     = z<s
 ≤∧≢⇒< {_} {suc n} (s≤s m≤n) 1+m≢1+n =
-  s≤s (≤∧≢⇒< m≤n (1+m≢1+n ∘ cong suc))
+  s<s (≤∧≢⇒< m≤n (1+m≢1+n ∘ cong suc))
 
 ≤∧≮⇒≡ : ∀ {m n} → m ≤ n → m ≮ n → m ≡ n
 ≤∧≮⇒≡ m≤n m≮n = ≤-antisym m≤n (≮⇒≥ m≮n)
@@ -337,10 +327,10 @@ n≤0⇒n≡0 z≤n = refl
 -- Relational properties of _<_
 
 <-irrefl : Irreflexive _≡_ _<_
-<-irrefl refl (s≤s n<n) = <-irrefl refl n<n
+<-irrefl refl (s<s n<n) = <-irrefl refl n<n
 
 <-asym : Asymmetric _<_
-<-asym (s≤s n<m) (s≤s m<n) = <-asym n<m m<n
+<-asym (s<s n<m) (s<s m<n) = <-asym n<m m<n
 
 <-trans : Transitive _<_
 <-trans (s≤s i≤j) (s≤s j<k) = s≤s (≤-trans i≤j (≤-trans (n≤1+n _) j<k))
@@ -408,11 +398,24 @@ _>?_ = flip _<?_
 ------------------------------------------------------------------------
 -- Other properties of _<_
 
+s<s-injective : ∀ {m n} {p q : m < n} → s<s p ≡ s<s q → p ≡ q
+s<s-injective refl = refl
+
+<-pred : ∀ {m n} → suc m < suc n → m < n
+<-pred (s<s m<n) = m<n
+
+<-step : ∀ {m n} → m < n → m < 1 + n
+<-step z<s               = z<s
+<-step (s<s m<n@(s≤s _)) = s<s (<-step m<n)
+
 n≮0 : ∀ {n} → n ≮ 0
 n≮0 ()
 
 n≮n : ∀ n → n ≮ n
 n≮n n = <-irrefl (refl {x = n})
+
+0<1+n : ∀ {n} → 0 < suc n
+0<1+n = z<s
 
 n<1+n : ∀ n → n < suc n
 n<1+n n = ≤-refl
@@ -436,9 +439,9 @@ m<n⇒m≤1+n = ≤-step ∘ <⇒≤
 m<1+n⇒m<n∨m≡n :  ∀ {m n} → m < suc n → m < n ⊎ m ≡ n
 m<1+n⇒m<n∨m≡n {0}     {0}     _          =  inj₂ refl
 m<1+n⇒m<n∨m≡n {0}     {suc n} _          =  inj₁ z<s
-m<1+n⇒m<n∨m≡n {suc m} {suc n} (s≤s m≤n)  with m<1+n⇒m<n∨m≡n m≤n
+m<1+n⇒m<n∨m≡n {suc m} {suc n} (s<s m<1+n)  with m<1+n⇒m<n∨m≡n m<1+n
 ... | inj₂ m≡n = inj₂ (cong suc m≡n)
-... | inj₁ m<n = inj₁ (s≤s m<n)
+... | inj₁ m<n = inj₁ (s<s m<n)
 
 m≤n⇒m<n∨m≡n :  ∀ {m n} → m ≤ n → m < n ⊎ m ≡ n
 m≤n⇒m<n∨m≡n m≤n = m<1+n⇒m<n∨m≡n (s≤s m≤n)
@@ -702,14 +705,14 @@ m+1+n≰m (suc m) (s≤s le) = m+1+n≰m m le
 
 m<m+n : ∀ m {n} → n > 0 → m < m + n
 m<m+n zero    n>0 = n>0
-m<m+n (suc m) n>0 = s≤s (m<m+n m n>0)
+m<m+n (suc m) n>0 = s<s (m<m+n m n>0)
 
 m<n+m : ∀ m {n} → n > 0 → m < n + m
 m<n+m m {n} n>0 rewrite +-comm n m = m<m+n m n>0
 
 m+n≮n : ∀ m n → m + n ≮ n
 m+n≮n zero    n                   = n≮n n
-m+n≮n (suc m) (suc n) (s≤s m+n<n) = m+n≮n m (suc n) (≤-step m+n<n)
+m+n≮n (suc m) (suc n) (s<s m+n<n) = m+n≮n m (suc n) (<-step m+n<n)
 
 m+n≮m : ∀ m n → m + n ≮ m
 m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
@@ -944,14 +947,13 @@ m*n≡1⇒n≡1 m n eq = m*n≡1⇒m≡1 n m (trans (*-comm n m) eq)
 *-monoʳ-≤ n m≤o = *-mono-≤ (≤-refl {n}) m≤o
 
 *-mono-< : _*_ Preserves₂ _<_ ⟶ _<_ ⟶ _<_
-*-mono-< (s≤s z≤n)       (s≤s u≤v) = z<s
-*-mono-< (s≤s (s≤s m≤n)) (s≤s u≤v) =
-  +-mono-< (s≤s u≤v) (*-mono-< (s≤s m≤n) (s≤s u≤v))
+*-mono-< z<s               u<v@(s≤s _) = z<s
+*-mono-< (s<s m<n@(s≤s _)) u<v@(s≤s _) = +-mono-< u<v (*-mono-< m<n u<v)
 
 *-monoˡ-< : ∀ n .{{_ : NonZero n}} → (_* n) Preserves _<_ ⟶ _<_
-*-monoˡ-< (suc n) (s≤s z≤n)       = z<s
-*-monoˡ-< (suc n) (s≤s (s≤s m≤o)) =
-  +-mono-≤-< (≤-refl {suc n}) (*-monoˡ-< (suc n) (s≤s m≤o))
+*-monoˡ-< (suc n) z<s       = z<s
+*-monoˡ-< (suc n) (s<s m<o@(s≤s _)) =
+  +-mono-≤-< (≤-refl {suc n}) (*-monoˡ-< (suc n) m<o)
 
 *-monoʳ-< : ∀ n .{{_ : NonZero n}} → (n *_) Preserves _<_ ⟶ _<_
 *-monoʳ-< (suc zero)    (s≤s m≤o) = +-mono-≤ (s≤s m≤o) z≤n
@@ -961,7 +963,7 @@ m*n≡1⇒n≡1 m n eq = m*n≡1⇒m≡1 n m (trans (*-comm n m) eq)
 m≤m*n : ∀ m n .{{_ : NonZero n}} → m ≤ m * n
 m≤m*n m n@(suc _) = begin
   m     ≡⟨ sym (*-identityʳ m) ⟩
-  m * 1 ≤⟨ *-monoʳ-≤ m (s≤s z≤n) ⟩
+  m * 1 ≤⟨ *-monoʳ-≤ m z<s ⟩
   m * n ∎
 
 m≤n*m : ∀ m n .{{_ : NonZero n}} → m ≤ n * m
@@ -1864,7 +1866,7 @@ m≤∣m-n∣+n m n = subst (m ≤_) (+-comm n _) (m≤n+∣m-n∣ m n)
 ⌈n/2⌉≤n (suc n) = s≤s (⌊n/2⌋≤n n)
 
 ⌈n/2⌉<n : ∀ n → ⌈ suc (suc n) /2⌉ < suc (suc n)
-⌈n/2⌉<n n = s≤s (⌊n/2⌋<n n)
+⌈n/2⌉<n n = s<s (⌊n/2⌋<n n)
 
 ------------------------------------------------------------------------
 -- Properties of _≤′_ and _<′_
@@ -2323,7 +2325,4 @@ suc[pred[n]]≡n {suc n} _   = refl
 {-# WARNING_ON_USAGE suc[pred[n]]≡n
 "Warning: suc[pred[n]]≡n was deprecated in v2.0. Please use suc-pred instead. Note that the proof now uses instance arguments"
 #-}
-0<1+n = z<s
-{-# WARNING_ON_USAGE 0<1+n
-"Warning: 0<1+n was deprecated in v2.0. Please use z<s instead."
-#-}
+
