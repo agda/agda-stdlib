@@ -683,8 +683,8 @@ m+n≤o⇒n≤o (suc m) m+n<o = m+n≤o⇒n≤o m (<⇒≤ m+n<o)
 +-monoʳ-≤ n m≤o = +-mono-≤ (≤-refl {n}) m≤o
 
 +-mono-<-≤ : _+_ Preserves₂ _<_ ⟶ _≤_ ⟶ _<_
-+-mono-<-≤ {_} {suc n} (s≤s z≤n)       o≤p = s≤s (≤-stepsˡ n o≤p)
-+-mono-<-≤ {_} {_}     (s≤s (s≤s m<n)) o≤p = s≤s (+-mono-<-≤ (s≤s m<n) o≤p)
++-mono-<-≤ {_} {suc n} z<s       o≤p = s≤s (≤-stepsˡ n o≤p)
++-mono-<-≤ {_} {_}     (s<s m<n@(s≤s _)) o≤p = s≤s (+-mono-<-≤ m<n o≤p)
 
 +-mono-≤-< : _+_ Preserves₂ _≤_ ⟶ _<_ ⟶ _<_
 +-mono-≤-< {_} {n} z≤n       o<p = ≤-trans o<p (m≤n+m _ n)
@@ -956,9 +956,9 @@ m*n≡1⇒n≡1 m n eq = m*n≡1⇒m≡1 n m (trans (*-comm n m) eq)
   +-mono-≤-< (≤-refl {suc n}) (*-monoˡ-< (suc n) m<o)
 
 *-monoʳ-< : ∀ n .{{_ : NonZero n}} → (n *_) Preserves _<_ ⟶ _<_
-*-monoʳ-< (suc zero)    (s≤s m≤o) = +-mono-≤ (s≤s m≤o) z≤n
-*-monoʳ-< (suc (suc n)) (s≤s m≤o) =
-  +-mono-≤ (s≤s m≤o) (<⇒≤ (*-monoʳ-< (suc n) (s≤s m≤o)))
+*-monoʳ-< (suc zero)    m<o@(s≤s _) = +-mono-≤ m<o z≤n
+*-monoʳ-< (suc (suc n)) m<o@(s≤s _) =
+  +-mono-≤ m<o (<⇒≤ (*-monoʳ-< (suc n) m<o))
 
 m≤m*n : ∀ m n .{{_ : NonZero n}} → m ≤ m * n
 m≤m*n m n@(suc _) = begin
@@ -1859,7 +1859,7 @@ m≤∣m-n∣+n m n = subst (m ≤_) (+-comm n _) (m≤n+∣m-n∣ m n)
 
 ⌊n/2⌋<n : ∀ n → ⌊ suc n /2⌋ < suc n
 ⌊n/2⌋<n zero    = z<s
-⌊n/2⌋<n (suc n) = s≤s (s≤s (⌊n/2⌋≤n n))
+⌊n/2⌋<n (suc n) = s<s (s≤s (⌊n/2⌋≤n n))
 
 ⌈n/2⌉≤n : ∀ n → ⌈ n /2⌉ ≤ n
 ⌈n/2⌉≤n zero = z≤n
