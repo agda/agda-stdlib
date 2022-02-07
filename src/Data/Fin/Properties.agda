@@ -221,8 +221,8 @@ fromℕ<-injective : ∀ m n {o} →
                    (n<o : n ℕ.< o) →
                    fromℕ< m<o ≡ fromℕ< n<o →
                    m ≡ n
-fromℕ<-injective 0 0 (s≤s z≤n) (s≤s z≤n) r = refl
-fromℕ<-injective (suc _) (suc _) (s≤s m<n@(s≤s _)) (s≤s n<o@(s≤s _)) r
+fromℕ<-injective 0 0 z<s z<s r = refl
+fromℕ<-injective (suc _) (suc _) (s<s m<n@(s≤s _)) (s<s n<o@(s≤s _)) r
   = cong suc (fromℕ<-injective _ _ m<n n<o (suc-injective r))
 
 ------------------------------------------------------------------------
@@ -407,9 +407,9 @@ m <? n = suc (toℕ m) ℕₚ.≤? toℕ n
 
 ≤∧≢⇒< : ∀ {n} {i j : Fin n} → i ≤ j → i ≢ j → i < j
 ≤∧≢⇒< {i = zero}  {zero}  _         0≢0     = contradiction refl 0≢0
-≤∧≢⇒< {i = zero}  {suc j} _         _       = s≤s z≤n
+≤∧≢⇒< {i = zero}  {suc j} _         _       = z<s
 ≤∧≢⇒< {i = suc i} {suc j} (s≤s i≤j) 1+i≢1+j =
-  s≤s (≤∧≢⇒< i≤j (1+i≢1+j ∘ (cong suc)))
+  s<s (≤∧≢⇒< i≤j (1+i≢1+j ∘ (cong suc)))
 
 ------------------------------------------------------------------------
 -- inject
@@ -759,8 +759,8 @@ lift-injective f inj (suc k) {suc i} {suc y} eq = cong suc (lift-injective f inj
 ------------------------------------------------------------------------
 
 <⇒≤pred : ∀ {n} {i j : Fin n} → j < i → j ≤ pred i
-<⇒≤pred {i = suc i} {zero}  j<i       = z≤n
-<⇒≤pred {i = suc i} {suc j} (s≤s j<i) =
+<⇒≤pred {i = suc i} {zero}  z<s       = z≤n
+<⇒≤pred {i = suc i} {suc j} (s<s j<i) =
   subst (_ ℕ.≤_) (sym (toℕ-inject₁ i)) j<i
 
 ------------------------------------------------------------------------
