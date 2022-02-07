@@ -195,8 +195,8 @@ m <′ n = suc m ≤′ n
 ------------------------------------------------------------------------
 -- Smart constructors of _<′_
 
-pattern n<′1+n                   = ≤′-refl
-pattern m<′n⇒m<′1+n {n} m<′n = ≤′-step {n} m<′n
+pattern n<′1+n           = ≤′-refl
+pattern <′-step {n} m<′n = ≤′-step {n} m<′n
 
 _≥′_ : Rel ℕ 0ℓ
 m ≥′ n = n ≤′ m

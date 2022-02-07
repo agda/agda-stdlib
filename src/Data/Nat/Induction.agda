@@ -9,7 +9,7 @@
 module Data.Nat.Induction where
 
 open import Function
-open import Data.Nat.Base using (ℕ; zero; suc; _<_; _<′_; n<′1+n; m<′n⇒m<′1+n)
+open import Data.Nat.Base using (ℕ; zero; suc; _<_; _<′_; n<′1+n; <′-step)
 open import Data.Nat.Properties using (m<1+n⇒m<n∨m≡n)
 open import Data.Product
 open import Data.Sum using (inj₁; inj₂)
@@ -70,8 +70,8 @@ mutual
   <′-wellFounded n = acc (<′-wellFounded′ n)
 
   <′-wellFounded′ : ∀ n → <′-Rec (Acc _<′_) n
-  <′-wellFounded′ (suc n) .n n<′1+n            = <′-wellFounded n
-  <′-wellFounded′ (suc n)  m (m<′n⇒m<′1+n m<n) = <′-wellFounded′ n m m<n
+  <′-wellFounded′ (suc n) .n n<′1+n        = <′-wellFounded n
+  <′-wellFounded′ (suc n)  m (<′-step m<n) = <′-wellFounded′ n m m<n
 
 module _ {ℓ} where
   open WF.All <′-wellFounded ℓ public
