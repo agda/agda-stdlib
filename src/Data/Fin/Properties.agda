@@ -162,7 +162,7 @@ toℕ≤pred[n]′ i = ℕₚ.<⇒≤pred (toℕ<n i)
 
 toℕ-mono-< : ∀ {n} {i j : Fin n} → i < j → toℕ i ℕ.< toℕ j
 toℕ-mono-< {i = 0F}    {suc j}       z<s       = z<s
-toℕ-mono-< {i = suc i} {suc (suc j)} (s<s i<j@(s≤s _)) = s≤s (toℕ-mono-< i<j)
+toℕ-mono-< {i = suc i} {suc (suc j)} (s<s i<j@(s≤s _)) = s<s (toℕ-mono-< i<j)
 
 toℕ-mono-≤ : ∀ {n} {i j : Fin n} → i ≤ j → toℕ i ℕ.≤ toℕ j
 toℕ-mono-≤ {i = 0F} {j} z≤n = z≤n
@@ -556,8 +556,8 @@ join-splitAt (suc m) n (suc i) = begin
 -- splitAt "m" "i" ≡ inj₁ "i" if i < m
 
 splitAt-< : ∀ m {n} i → (i<m : toℕ i ℕ.< m) → splitAt m {n} i ≡ inj₁ (fromℕ< i<m)
-splitAt-< (suc m) zero    _         = refl
-splitAt-< (suc m) (suc i) (s≤s i<m) = cong (Sum.map suc id) (splitAt-< m i i<m)
+splitAt-< (suc m) zero    z<s               = refl
+splitAt-< (suc m) (suc i) (s<s i<m@(s≤s _)) = cong (Sum.map suc id) (splitAt-< m i i<m)
 
 -- splitAt "m" "i" ≡ inj₂ "i - m" if i ≥ m
 

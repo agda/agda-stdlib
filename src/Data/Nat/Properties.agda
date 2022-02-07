@@ -108,7 +108,7 @@ m ≟ n = map′ (≡ᵇ⇒≡ m n) (≡⇒≡ᵇ m n) (T? (m ≡ᵇ n))
 
 <⇒<ᵇ : ∀ {m n} → m < n → T (m <ᵇ n)
 <⇒<ᵇ z<s               = tt
-<⇒<ᵇ (s<s m<n@(s<s _)) = <⇒<ᵇ m<n
+<⇒<ᵇ (s<s m<n@(s≤s _)) = <⇒<ᵇ m<n
 
 <ᵇ-reflects-< : ∀ m n → Reflects (m < n) (m <ᵇ n)
 <ᵇ-reflects-< m n = fromEquivalence (<ᵇ⇒< m n) <⇒<ᵇ
