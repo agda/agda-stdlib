@@ -61,6 +61,9 @@ m < n = suc m ≤ n
 pattern z<s {n}         = s≤s (z≤n {n})
 pattern s<s {m} {n} m<n = s≤s {m} {n} m<n
 
+------------------------------------------------------------------------
+-- other ordering relations
+
 _≥_ : Rel ℕ 0ℓ
 m ≥ n = n ≤ m
 
@@ -188,6 +191,12 @@ data _≤′_ (m : ℕ) : ℕ → Set where
 
 _<′_ : Rel ℕ 0ℓ
 m <′ n = suc m ≤′ n
+
+------------------------------------------------------------------------
+-- Smart constructors of _<′_
+
+pattern n<′1+n                   = ≤′-refl
+pattern m<′n⇒m<′1+n {n} m<′n = ≤′-step {n} m<′n
 
 _≥′_ : Rel ℕ 0ℓ
 m ≥′ n = n ≤′ m
