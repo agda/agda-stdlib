@@ -1,7 +1,8 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- ≤-pred definition so as to not cause dependency problems.
+-- This module is DEPRECATED, please use `Data.Record` directly.
+--
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
