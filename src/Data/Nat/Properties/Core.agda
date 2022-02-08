@@ -1,7 +1,8 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- This module is DEPRECATED, please use `Data.Record` directly.
+-- This module is DEPRECATED. Please use
+-- `Data.Nat.Properties` directly.
 --
 ------------------------------------------------------------------------
 
