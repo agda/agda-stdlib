@@ -146,8 +146,8 @@ new-toℕ≤n {suc n} (suc i) = s≤s (new-toℕ≤n i)
 toℕ<n : ∀ {n} (i : Fin n) → toℕ i ℕ.< n
 toℕ<n {suc n} i = s≤s (new-toℕ≤n i)
 
-old-toℕ≤n : ∀ {n} → (i : Fin n) → toℕ i ℕ.≤ n
-old-toℕ≤n {suc n} i = ℕₚ.≤-step (new-toℕ≤n i)
+toℕ≤n : ∀ {n} → (i : Fin n) → toℕ i ℕ.≤ n
+toℕ≤n {suc n} i = ℕₚ.≤-step (new-toℕ≤n i)
 
 toℕ≤pred[n] : ∀ {n} (i : Fin n) → toℕ i ℕ.≤ ℕ.pred n
 toℕ≤pred[n] zero                 = z≤n
@@ -1090,11 +1090,6 @@ Please use join-splitAt instead."
 #-}
 
 -- Version 2.0
-toℕ≤n = old-toℕ≤n
-{-# WARNING_ON_USAGE toℕ≤n
-"Warning: toℕ≤n was deprecated in v2.0.
-Please use old-toℕ≤n, toℕ<n or new-toℕ≤n instead."
-#-}
 toℕ-raise = toℕ-↑ʳ
 {-# WARNING_ON_USAGE toℕ-raise
 "Warning: toℕ-raise was deprecated in v2.0.
