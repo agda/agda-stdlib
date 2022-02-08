@@ -455,6 +455,9 @@ m<1+n⇒m<n∨m≡n {suc m} {suc n} (s<s m<1+n)  with m<1+n⇒m<n∨m≡n m<1+n
 m≤n⇒m<n∨m≡n :  ∀ {m n} → m ≤ n → m < n ⊎ m ≡ n
 m≤n⇒m<n∨m≡n m≤n = m<1+n⇒m<n∨m≡n (s≤s m≤n)
 
+m<1+n⇒m≤n : ∀ {m n} → m < suc n → m ≤ n
+m<1+n⇒m≤n (s≤s m≤n) = m≤n
+
 ∀[m≤n⇒m≢o]⇒n<o : ∀ n o → (∀ {m} → m ≤ n → m ≢ o) → n < o
 ∀[m≤n⇒m≢o]⇒n<o _       zero    m≤n⇒n≢0 = contradiction refl (m≤n⇒n≢0 z≤n)
 ∀[m≤n⇒m≢o]⇒n<o zero    (suc o) _       = z<s
