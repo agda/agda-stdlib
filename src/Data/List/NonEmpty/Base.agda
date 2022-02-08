@@ -85,6 +85,12 @@ map f (x ∷ xs) = (f x ∷ List.map f xs)
 replicate : ∀ n → n ≢ 0 → A → List⁺ A
 replicate n n≢0 a = a ∷ List.replicate (pred n) a
 
+-- when dropping more than the size of the length of the list, the last element remains
+drop+ : ℕ → List⁺ A → List⁺ A
+drop+ zero    xs           = xs
+drop+ (suc n) (x ∷ [])     = x ∷ []
+drop+ (suc n) (x ∷ y ∷ xs) = drop+ n (y ∷ xs)
+
 -- Right fold. Note that s is only applied to the last element (see
 -- the examples below).
 
