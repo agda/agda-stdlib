@@ -161,19 +161,19 @@ toℕ≤pred[n]′ : ∀ {n} (i : Fin n) → toℕ i ℕ.≤ ℕ.pred n
 toℕ≤pred[n]′ i = ℕₚ.<⇒≤pred (toℕ<n i)
 
 toℕ-mono-< : ∀ {n} {i j : Fin n} → i < j → toℕ i ℕ.< toℕ j
-toℕ-mono-< {i = 0F}    {suc j}       z<s       = z<s
+toℕ-mono-< {i = 0F}    {suc j}       z<s               = z<s
 toℕ-mono-< {i = suc i} {suc (suc j)} (s<s i<j@(s≤s _)) = s<s (toℕ-mono-< i<j)
 
 toℕ-mono-≤ : ∀ {n} {i j : Fin n} → i ≤ j → toℕ i ℕ.≤ toℕ j
-toℕ-mono-≤ {i = 0F} {j} z≤n = z≤n
+toℕ-mono-≤ {i = 0F}    {j}     z≤n       = z≤n
 toℕ-mono-≤ {i = suc i} {suc j} (s≤s i≤j) = s≤s (toℕ-mono-≤ i≤j)
 
 toℕ-cancel-≤ : ∀ {n} {i j : Fin n} → toℕ i ℕ.≤ toℕ j → i ≤ j
-toℕ-cancel-≤ {i = 0F} {j} z≤n = z≤n
+toℕ-cancel-≤ {i = 0F}    {j}     z≤n       = z≤n
 toℕ-cancel-≤ {i = suc i} {suc j} (s≤s i≤j) = s≤s (toℕ-cancel-≤ i≤j)
 
 toℕ-cancel-< : ∀ {n} {i j : Fin n} → toℕ i ℕ.< toℕ j → i < j
-toℕ-cancel-< {i = 0F} {suc j} z<s       = z<s
+toℕ-cancel-< {i = 0F}    {suc j}       z<s               = z<s
 toℕ-cancel-< {i = suc i} {suc (suc j)} (s<s i<j@(s≤s _)) = s<s (toℕ-cancel-< i<j)
 
 ------------------------------------------------------------------------
@@ -196,12 +196,12 @@ fromℕ-toℕ (suc i) = cong suc (fromℕ-toℕ i)
 ------------------------------------------------------------------------
 
 fromℕ<-toℕ : ∀ {m} (i : Fin m) (i<m : toℕ i ℕ.< m) → fromℕ< i<m ≡ i
-fromℕ<-toℕ zero    (s≤s z≤n)       = refl
-fromℕ<-toℕ (suc i) (s≤s (s≤s m≤n)) = cong suc (fromℕ<-toℕ i (s≤s m≤n))
+fromℕ<-toℕ zero    z<s               = refl
+fromℕ<-toℕ (suc i) (s<s m<n@(s≤s _)) = cong suc (fromℕ<-toℕ i m<n)
 
 toℕ-fromℕ< : ∀ {m n} (m<n : m ℕ.< n) → toℕ (fromℕ< m<n) ≡ m
-toℕ-fromℕ< (s≤s z≤n)       = refl
-toℕ-fromℕ< (s≤s (s≤s m<n)) = cong suc (toℕ-fromℕ< (s≤s m<n))
+toℕ-fromℕ< z<s               = refl
+toℕ-fromℕ< (s<s m<n@(s≤s _)) = cong suc (toℕ-fromℕ< m<n)
 
 -- fromℕ is a special case of fromℕ<.
 fromℕ-def : ∀ n → fromℕ n ≡ fromℕ< ℕₚ.≤-refl
@@ -212,8 +212,8 @@ fromℕ<-cong : ∀ m n {o} → m ≡ n →
               (m<o : m ℕ.< o) →
               (n<o : n ℕ.< o) →
               fromℕ< m<o ≡ fromℕ< n<o
-fromℕ<-cong 0       0       r (s≤s z≤n)     (s≤s z≤n)     = refl
-fromℕ<-cong (suc _) (suc _) r (s≤s m<n@(s≤s _)) (s≤s n<o@(s≤s _))
+fromℕ<-cong 0       0       r z<s               z<s  = refl
+fromℕ<-cong (suc _) (suc _) r (s<s m<n@(s≤s _)) (s<s n<o@(s≤s _))
   = cong suc (fromℕ<-cong _ _ (ℕₚ.suc-injective r) m<n n<o)
 
 fromℕ<-injective : ∀ m n {o} →
@@ -221,7 +221,7 @@ fromℕ<-injective : ∀ m n {o} →
                    (n<o : n ℕ.< o) →
                    fromℕ< m<o ≡ fromℕ< n<o →
                    m ≡ n
-fromℕ<-injective 0 0 z<s z<s r = refl
+fromℕ<-injective 0       0       z<s               z<s r = refl
 fromℕ<-injective (suc _) (suc _) (s<s m<n@(s≤s _)) (s<s n<o@(s≤s _)) r
   = cong suc (fromℕ<-injective _ _ m<n n<o (suc-injective r))
 
@@ -231,9 +231,9 @@ fromℕ<-injective (suc _) (suc _) (s<s m<n@(s≤s _)) (s<s n<o@(s≤s _)) r
 
 fromℕ<≡fromℕ<″ : ∀ {m n} (m<n : m ℕ.< n) (m<″n : m ℕ.<″ n) →
                  fromℕ< m<n ≡ fromℕ<″ m m<″n
-fromℕ<≡fromℕ<″ (s≤s z≤n)       (ℕ.less-than-or-equal refl) = refl
-fromℕ<≡fromℕ<″ (s≤s (s≤s m<n)) (ℕ.less-than-or-equal refl) =
-  cong suc (fromℕ<≡fromℕ<″ (s≤s m<n) (ℕ.less-than-or-equal refl))
+fromℕ<≡fromℕ<″ z<s               (ℕ.less-than-or-equal refl) = refl
+fromℕ<≡fromℕ<″ (s<s m<n@(s≤s _)) (ℕ.less-than-or-equal refl) =
+  cong suc (fromℕ<≡fromℕ<″ m<n (ℕ.less-than-or-equal refl))
 
 toℕ-fromℕ<″ : ∀ {m n} (m<n : m ℕ.<″ n) → toℕ (fromℕ<″ m m<n) ≡ m
 toℕ-fromℕ<″ {m} {n} m<n = begin
@@ -348,12 +348,12 @@ m <? n = suc (toℕ m) ℕₚ.≤? toℕ n
 <-trans = ℕₚ.<-trans
 
 <-cmp : ∀ {n} → Trichotomous _≡_ (_<_ {n})
-<-cmp zero    zero    = tri≈ (λ())     refl  (λ())
-<-cmp zero    (suc j) = tri< (s≤s z≤n) (λ()) (λ())
-<-cmp (suc i) zero    = tri> (λ())     (λ()) (s≤s z≤n)
+<-cmp zero    zero    = tri≈ (λ()) refl  (λ())
+<-cmp zero    (suc j) = tri< z<s   (λ()) (λ())
+<-cmp (suc i) zero    = tri> (λ()) (λ()) z<s
 <-cmp (suc i) (suc j) with <-cmp i j
-... | tri< i<j i≢j j≮i = tri< (s≤s i<j)         (i≢j ∘ suc-injective) (j≮i ∘ ℕₚ.≤-pred)
-... | tri> i≮j i≢j j<i = tri> (i≮j ∘ ℕₚ.≤-pred) (i≢j ∘ suc-injective) (s≤s j<i)
+... | tri< i<j i≢j j≮i = tri< (s<s i<j)         (i≢j ∘ suc-injective) (j≮i ∘ ℕₚ.≤-pred)
+... | tri> i≮j i≢j j<i = tri> (i≮j ∘ ℕₚ.≤-pred) (i≢j ∘ suc-injective) (s<s j<i)
 ... | tri≈ i≮j i≡j j≮i = tri≈ (i≮j ∘ ℕₚ.≤-pred) (cong suc i≡j)        (j≮i ∘ ℕₚ.≤-pred)
 
 <-respˡ-≡ : ∀ {m n} → (_<_ {m} {n}) Respectsˡ _≡_
@@ -443,7 +443,7 @@ inject₁ℕ≤ : ∀ {n} → (i : Fin n) → toℕ (inject₁ i) ℕ.≤ n
 inject₁ℕ≤ = ℕₚ.<⇒≤ ∘ inject₁ℕ<
 
 ≤̄⇒inject₁< : ∀ {n} → {i j : Fin n} → j ≤ i → inject₁ j < suc i
-≤̄⇒inject₁< {i = i} {j} p = subst (ℕ._< toℕ (suc i)) (sym (toℕ-inject₁ j)) (s≤s p)
+≤̄⇒inject₁< {i = i} {j} p = subst (ℕ._< toℕ (suc i)) (sym (toℕ-inject₁ j)) (s<s p)
 
 ℕ<⇒inject₁< : ∀ {n} → {i : Fin (ℕ.suc n)} → {j : Fin n} →
               toℕ j ℕ.< toℕ i → inject₁ j < i
@@ -941,10 +941,10 @@ private
 
 pigeonhole : ∀ {m n} → m ℕ.< n → (f : Fin n → Fin m) →
              ∃₂ λ i j → i ≢ j × f i ≡ f j
-pigeonhole (s≤s z≤n)       f = contradiction (f zero) λ()
-pigeonhole (s≤s (s≤s m≤n)) f with any? (λ k → f zero ≟ f (suc k))
+pigeonhole z<s       f = contradiction (f zero) λ()
+pigeonhole (s<s m<n@(s≤s _)) f with any? (λ k → f zero ≟ f (suc k))
 ... | yes (j , f₀≡fⱼ) = zero , suc j , (λ()) , f₀≡fⱼ
-... | no  f₀≢fₖ with pigeonhole (s≤s m≤n) (λ j → punchOut (f₀≢fₖ ∘ (j ,_ )))
+... | no  f₀≢fₖ with pigeonhole m<n (λ j → punchOut (f₀≢fₖ ∘ (j ,_ )))
 ...   | (i , j , i≢j , fᵢ≡fⱼ) =
   suc i , suc j , i≢j ∘ suc-injective ,
   punchOut-injective (f₀≢fₖ ∘ (i ,_)) _ fᵢ≡fⱼ
