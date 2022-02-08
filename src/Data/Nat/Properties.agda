@@ -267,7 +267,8 @@ n≤0⇒n≡0 z≤n = refl
 -- Relationships between the various relations
 
 <⇒≤ : _<_ ⇒ _≤_
-<⇒≤ (s≤s m≤n) = ≤-step m≤n
+<⇒≤ z<s               = z≤n
+<⇒≤ (s<s m<n@(s≤s _)) = s≤s (<⇒≤ m<n)
 
 <⇒≢ : _<_ ⇒ _≢_
 <⇒≢ m<n refl = 1+n≰n m<n
