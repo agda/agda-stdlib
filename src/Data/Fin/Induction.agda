@@ -53,7 +53,8 @@ open WF public using (Acc; acc)
 
 private
   acc-map : ∀ {x : Fin n} → Acc ℕ._<_ (n ∸ toℕ x) → Acc _>_ x
-  acc-map {n} {x} (acc rs) = acc λ y y>x → acc-map (rs (n ∸ toℕ y) (ℕ.∸-monoʳ-< y>x (toℕ≤n y)))
+  acc-map {n} {x} (acc rs) = acc λ y y>x →
+    acc-map (rs (n ∸ toℕ y) (ℕ.∸-monoʳ-< y>x (toℕ≤n y)))
 
 >-wellFounded : WellFounded {A = Fin n} _>_
 >-wellFounded {n} x = acc-map (ℕ.<-wellFounded (n ∸ toℕ x))
