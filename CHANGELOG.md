@@ -1072,6 +1072,19 @@ Other minor changes
   ×-≡,≡←≡ : p₁ ≡ p₂ → (proj₁ p₁ ≡ proj₁ p₂ × proj₂ p₁ ≡ proj₂ p₂)
   ```
 
+* Added new proofs to `Data.Sign.Properties`:
+  ```agda
+  *-inverse : Inverse + id _*_
+  *-isCommutativeSemigroup : IsCommutativeSemigroup _*_
+  *-isCommutativeMonoid : IsCommutativeMonoid _*_ +
+  *-isGroup : IsGroup _*_ + id
+  *-isAbelianGroup : IsAbelianGroup _*_ + id
+  *-commutativeSemigroup : CommutativeSemigroup 0ℓ 0ℓ
+  *-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
+  *-group : Group 0ℓ 0ℓ
+  *-abelianGroup : AbelianGroup 0ℓ 0ℓ
+  ```
+
 * Added new proofs in `Data.String.Properties`:
   ```
   ≤-isDecTotalOrder-≈ : IsDecTotalOrder _≈_ _≤_
