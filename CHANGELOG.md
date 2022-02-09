@@ -832,6 +832,17 @@ Other minor changes
   ring : Ring a ℓ₁ → Ring b ℓ₂ → Ring (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
   commutativeRing : CommutativeRing a ℓ₁ → CommutativeRing b ℓ₂ →
                     CommutativeRing (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  rawQuasigroup : RawQuasigroup a ℓ₁ → RawQuasigroup b ℓ₂ → 
+                  RawQuasigroup (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  rawLoop : RawLoop a ℓ₁ → RawLoop b ℓ₂ → RawLoop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  unitalMagma : UnitalMagma a ℓ₁ → UnitalMagma b ℓ₂ → 
+                UnitalMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  invertibleMagma : InvertibleMagma a ℓ₁ → InvertibleMagma b ℓ₂ → 
+                    InvertibleMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  invertibleUnitalMagma : InvertibleUnitalMagma a ℓ₁ → InvertibleUnitalMagma b ℓ₂ → 
+                          InvertibleUnitalMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  quasigroup : Quasigroup a ℓ₁ → Quasigroup b ℓ₂ → Quasigroup (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  loop : Loop a ℓ₁ → Loop b ℓ₂ → Loop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
  ```
 
 * Added new definition to `Algebra.Definitions`:
