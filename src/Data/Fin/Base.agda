@@ -67,7 +67,7 @@ fromℕ (suc n) = suc (fromℕ n)
 
 fromℕ< : ∀ {m n} → m ℕ.< n → Fin n
 fromℕ< {zero}  {suc n} z<s = zero
-fromℕ< {suc m} {suc n} (s<s m<n@(s≤s _)) = suc (fromℕ< m<n)
+fromℕ< {suc m} {suc n} (s<s m<n) = suc (fromℕ< m<n)
 
 -- fromℕ<″ m _ = "m".
 
@@ -112,7 +112,7 @@ inject₁ (suc i) = suc (inject₁ i)
 
 inject≤ : ∀ {m n} → Fin m → m ℕ.≤ n → Fin n
 inject≤ {_} {suc n} zero    _        = zero
-inject≤ {_} {suc n} (suc i) (s≤s le) = suc (inject≤ i le)
+inject≤ {_} {suc n} (suc i) (s≤s m≤n) = suc (inject≤ i m≤n)
 
 -- lower₁ "i" _ = "i".
 
