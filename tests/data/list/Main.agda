@@ -13,7 +13,7 @@ import Data.Nat.Properties as ℕₚ
 open import Data.String.Base as String using (String)
 import Data.Vec.Base as Vec
 
-open import Codata.Stream using (nats; take)
+open import Codata.Sized.Stream using (nats; take)
 
 open Sort ℕₚ.≤-decTotalOrder
 
