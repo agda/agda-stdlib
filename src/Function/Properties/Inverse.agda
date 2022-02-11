@@ -51,6 +51,13 @@ isEquivalence = record
 ------------------------------------------------------------------------
 -- Conversion functions
 
+Inverse⇒Injection : Inverse S T → Injection S T
+Inverse⇒Injection {S = S} I = record
+  { f = f
+  ; cong = cong₁
+  ; injective =  inverseʳ⇒injective S {f⁻¹ = f⁻¹} cong₂ inverseʳ
+  } where open Inverse I
+
 Inverse⇒Bijection : Inverse S T → Bijection S T
 Inverse⇒Bijection {S = S} I = record
   { f         = f
@@ -65,6 +72,9 @@ Inverse⇒Equivalence I = record
   ; cong₁ = cong₁
   ; cong₂ = cong₂
   } where open Inverse I
+
+↔⇒↣ : A ↔ B → A ↣ B
+↔⇒↣ = Inverse⇒Injection
 
 ↔⇒⤖ : A ↔ B → A ⤖ B
 ↔⇒⤖ = Inverse⇒Bijection

@@ -16,13 +16,13 @@ open import Data.Fin.Properties
 import Data.Fin.Permutation.Components as PC
 open import Data.Nat.Base using (ℕ; suc; zero)
 open import Data.Product using (_,_; proj₂)
-open import Function.Bundles using (_↔_; Inverse; mk↔′)
-open import Function.Consequences using (inverseʳ⇒injective)
+open import Function.Bundles using (_↔_; Injection; Inverse; mk↔′)
 open import Function.Construct.Composition using (_↔-∘_)
 open import Function.Construct.Identity using (↔-id)
 open import Function.Construct.Symmetry using (↔-sym)
 open import Function.Definitions using (Inverseˡ; Inverseʳ)
 open import Function.Equality using (_⟨$⟩_)
+open import Function.Properties.Inverse using (↔⇒↣)
 open import Function.Base using (_∘_)
 open import Level using (0ℓ)
 open import Relation.Binary using (Rel)
@@ -125,7 +125,7 @@ remove {m} {n} i π = permutation to from inverseˡ′ inverseʳ′
   πˡ = π ⟨$⟩ˡ_
 
   permute-≢ : ∀ {i j} → i ≢ j → πʳ i ≢ πʳ j
-  permute-≢ p = p ∘ inverseʳ⇒injective (P.setoid (Fin (suc m))) {_≡_} (Inverse.cong₂ π) (Inverse.inverseʳ π)
+  permute-≢ p = p ∘ Injection.injective (↔⇒↣ π)
 
   to-punchOut : ∀ {j : Fin m} → πʳ i ≢ πʳ (punchIn i j)
   to-punchOut = permute-≢ (punchInᵢ≢i _ _ ∘ sym)
@@ -286,7 +286,7 @@ insert-remove : ∀ i (π : Permutation (suc m) (suc n)) → insert i (π ⟨$�
 insert-remove {m = m} {n = n} i π j with i ≟ j
 ... | yes i≡j = cong (π ⟨$⟩ʳ_) i≡j
 ... | no  i≢j = begin
-  punchIn (π ⟨$⟩ʳ i) (punchOut (punchInᵢ≢i i (punchOut i≢j) ∘ sym ∘ inverseʳ⇒injective (P.setoid (Fin (suc m))) {_≡_} (Inverse.cong₂ π) (Inverse.inverseʳ π))) ≡⟨ punchIn-punchOut _ ⟩
+  punchIn (π ⟨$⟩ʳ i) (punchOut (punchInᵢ≢i i (punchOut i≢j) ∘ sym ∘ Injection.injective (↔⇒↣ π))) ≡⟨ punchIn-punchOut _ ⟩
   π ⟨$⟩ʳ punchIn i (punchOut i≢j) ≡⟨ cong (π ⟨$⟩ʳ_) (punchIn-punchOut i≢j) ⟩
   π ⟨$⟩ʳ j ∎
 
