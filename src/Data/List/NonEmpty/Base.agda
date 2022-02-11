@@ -10,6 +10,7 @@ module Data.List.NonEmpty.Base where
 
 open import Level using (Level)
 open import Data.Bool.Base using (Bool; false; true; not; T)
+open import Data.Bool.Properties using (T?)
 open import Data.List.Base as List using (List; []; _∷_)
 open import Data.Maybe.Base using (Maybe ; nothing; just)
 open import Data.Nat.Base as ℕ
@@ -18,17 +19,19 @@ open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂)
 open import Data.These.Base as These using (These; this; that; these)
 open import Data.Vec.Base as Vec using (Vec; []; _∷_)
 open import Function.Base
-open import Relation.Binary.PropositionalEquality.Core using (_≢_)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; _≢_; refl)
+open import Relation.Unary using (Pred; Decidable; U; ∅)
+open import Relation.Unary.Properties using (U?; ∅?)
+open import Relation.Nullary using (does)
 
 private
   variable
-    a b c : Level
-    A : Set a
-    B : Set b
-    C : Set c
+    a p : Level
+    A B C : Set a
 
 ------------------------------------------------------------------------
--- Non-empty lists
+-- Definition
 
 infixr 5 _∷_
 
@@ -40,6 +43,7 @@ record List⁺ (A : Set a) : Set a where
 
 open List⁺ public
 
+------------------------------------------------------------------------
 -- Basic combinators
 
 uncons : List⁺ A → A × List A
@@ -85,7 +89,8 @@ map f (x ∷ xs) = (f x ∷ List.map f xs)
 replicate : ∀ n → n ≢ 0 → A → List⁺ A
 replicate n n≢0 a = a ∷ List.replicate (pred n) a
 
--- when dropping more than the size of the length of the list, the last element remains
+-- when dropping more than the size of the length of the list, the
+-- last element remains
 drop+ : ℕ → List⁺ A → List⁺ A
 drop+ zero    xs           = xs
 drop+ (suc n) (x ∷ [])     = x ∷ []
@@ -199,3 +204,117 @@ snocView (x ∷ .(xs List.∷ʳ y)) | xs List.∷ʳ′ y = (x ∷ xs) ∷ʳ′ y
 last : List⁺ A → A
 last xs with snocView xs
 last .(ys ∷ʳ y) | ys ∷ʳ′ y = y
+
+-- Groups all contiguous elements for which the predicate returns the
+-- same result into lists. The left sums are the ones for which the
+-- predicate holds, the right ones are the ones for which it doesn't.
+groupSequencesᵇ : (A → Bool) → List A → List (List⁺ A ⊎ List⁺ A)
+groupSequencesᵇ p []       = []
+groupSequencesᵇ p (x ∷ xs) with p x | groupSequencesᵇ p xs
+... | true  | inj₁ xs′ ∷ xss = inj₁ (x ∷⁺ xs′) ∷ xss
+... | true  | xss            = inj₁ [ x ]      ∷ xss
+... | false | inj₂ xs′ ∷ xss = inj₂ (x ∷⁺ xs′) ∷ xss
+... | false | xss            = inj₂ [ x ]      ∷ xss
+
+-- Groups all contiguous elements /not/ satisfying the predicate into
+-- lists. Elements satisfying the predicate are dropped.
+wordsByᵇ : (A → Bool) → List A → List (List⁺ A)
+wordsByᵇ p = List.mapMaybe Sum.[ const nothing , just ] ∘ groupSequencesᵇ p
+
+groupSequences : {P : Pred A p} → Decidable P → List A → List (List⁺ A ⊎ List⁺ A)
+groupSequences P? = groupSequencesᵇ (does ∘ P?)
+
+wordsBy : {P : Pred A p} → Decidable P → List A → List (List⁺ A)
+wordsBy P? = wordsByᵇ (does ∘ P?)
+
+-- Inverse operation for groupSequences.
+ungroupSequences : List (List⁺ A ⊎ List⁺ A) → List A
+ungroupSequences = List.concat ∘ List.map Sum.[ toList , toList ]
+
+------------------------------------------------------------------------
+-- Examples
+
+-- Note that these examples are simple unit tests, because the type
+-- checker verifies them.
+
+private
+ module Examples {A B : Set}
+                 (_⊕_ : A → B → B)
+                 (_⊗_ : B → A → B)
+                 (_⊙_ : A → A → A)
+                 (f : A → B)
+                 (a b c : A)
+                 where
+
+  hd : head (a ∷⁺ b ∷⁺ [ c ]) ≡ a
+  hd = refl
+
+  tl : tail (a ∷⁺ b ∷⁺ [ c ]) ≡ b ∷ c ∷ []
+  tl = refl
+
+  mp : map f (a ∷⁺ b ∷⁺ [ c ]) ≡ f a ∷⁺ f b ∷⁺ [ f c ]
+  mp = refl
+
+  right : foldr _⊕_ f (a ∷⁺ b ∷⁺ [ c ]) ≡ (a ⊕ (b ⊕ f c))
+  right = refl
+
+  right₁ : foldr₁ _⊙_ (a ∷⁺ b ∷⁺ [ c ]) ≡ (a ⊙ (b ⊙ c))
+  right₁ = refl
+
+  left : foldl _⊗_ f (a ∷⁺ b ∷⁺ [ c ]) ≡ ((f a ⊗ b) ⊗ c)
+  left = refl
+
+  left₁ : foldl₁ _⊙_ (a ∷⁺ b ∷⁺ [ c ]) ≡ ((a ⊙ b) ⊙ c)
+  left₁ = refl
+
+  ⁺app⁺ : (a ∷⁺ b ∷⁺ [ c ]) ⁺++⁺ (b ∷⁺ [ c ]) ≡
+          a ∷⁺ b ∷⁺ c ∷⁺ b ∷⁺ [ c ]
+  ⁺app⁺ = refl
+
+  ⁺app : (a ∷⁺ b ∷⁺ [ c ]) ⁺++ (b ∷ c ∷ []) ≡
+          a ∷⁺ b ∷⁺ c ∷⁺ b ∷⁺ [ c ]
+  ⁺app = refl
+
+  app⁺ : (a ∷ b ∷ c ∷ []) ++⁺ (b ∷⁺ [ c ]) ≡
+          a ∷⁺ b ∷⁺ c ∷⁺ b ∷⁺ [ c ]
+  app⁺ = refl
+
+  conc : concat ((a ∷⁺ b ∷⁺ [ c ]) ∷⁺ [ b ∷⁺ [ c ] ]) ≡
+         a ∷⁺ b ∷⁺ c ∷⁺ b ∷⁺ [ c ]
+  conc = refl
+
+  rev : reverse (a ∷⁺ b ∷⁺ [ c ]) ≡ c ∷⁺ b ∷⁺ [ a ]
+  rev = refl
+
+  snoc : (a ∷ b ∷ c ∷ []) ∷ʳ a ≡ a ∷⁺ b ∷⁺ c ∷⁺ [ a ]
+  snoc = refl
+
+  snoc⁺ : (a ∷⁺ b ∷⁺ [ c ]) ⁺∷ʳ a ≡ a ∷⁺ b ∷⁺ c ∷⁺ [ a ]
+  snoc⁺ = refl
+
+  groupSequences-true : groupSequences U? (a ∷ b ∷ c ∷ []) ≡
+               inj₁ (a ∷⁺ b ∷⁺ [ c ]) ∷ []
+  groupSequences-true = refl
+
+  groupSequences-false : groupSequences ∅? (a ∷ b ∷ c ∷ []) ≡
+                inj₂ (a ∷⁺ b ∷⁺ [ c ]) ∷ []
+  groupSequences-false = refl
+
+  groupSequences-≡1 :
+    groupSequences (T? ∘ (ℕ._≡ᵇ 1)) (1 ∷ 2 ∷ 3 ∷ 1 ∷ 1 ∷ 2 ∷ 1 ∷ []) ≡
+    inj₁ [ 1 ] ∷ inj₂ (2 ∷⁺ [ 3 ]) ∷
+    inj₁ (1 ∷⁺ [ 1 ]) ∷ inj₂ [ 2 ] ∷ inj₁ [ 1 ] ∷
+    []
+  groupSequences-≡1 = refl
+
+  wordsBy-true : wordsByᵇ (const true) (a ∷ b ∷ c ∷ []) ≡ []
+  wordsBy-true = refl
+
+  wordsBy-false : wordsByᵇ (const false) (a ∷ b ∷ c ∷ []) ≡
+                  (a ∷⁺ b ∷⁺ [ c ]) ∷ []
+  wordsBy-false = refl
+
+  wordsBy-≡1 :
+    wordsByᵇ (ℕ._≡ᵇ 1) (1 ∷ 2 ∷ 3 ∷ 1 ∷ 1 ∷ 2 ∷ 1 ∷ []) ≡
+    (2 ∷⁺ [ 3 ]) ∷ [ 2 ] ∷ []
+  wordsBy-≡1 = refl
