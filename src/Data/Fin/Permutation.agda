@@ -71,7 +71,7 @@ inverseˡ : ∀ (π : Permutation m n) {i} → π ⟨$⟩ˡ (π ⟨$⟩ʳ i) ≡
 inverseˡ π = Inverse.inverseʳ π _
 
 inverseʳ : ∀ (π : Permutation m n) {i} → π ⟨$⟩ʳ (π ⟨$⟩ˡ i) ≡ i
-inverseʳ π =  Inverse.inverseˡ π _
+inverseʳ π = Inverse.inverseˡ π _
 
 ------------------------------------------------------------------------
 -- Equality
