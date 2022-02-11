@@ -70,8 +70,8 @@ mutual
   <′-wellFounded n = acc (<′-wellFounded′ n)
 
   <′-wellFounded′ : ∀ n → <′-Rec (Acc _<′_) n
-  <′-wellFounded′ (suc n) .n n<′1+n        = <′-wellFounded n
-  <′-wellFounded′ (suc n)  m (<′-step m<n) = <′-wellFounded′ n m m<n
+  <′-wellFounded′ (suc n) n n<′1+n        = <′-wellFounded n
+  <′-wellFounded′ (suc n) m (<′-step m<n) = <′-wellFounded′ n m m<n
 
 module _ {ℓ} where
   open WF.All <′-wellFounded ℓ public
