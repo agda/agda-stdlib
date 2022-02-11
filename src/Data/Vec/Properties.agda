@@ -857,12 +857,18 @@ map-ʳ++ {ys = ys} f xs = begin
 ------------------------------------------------------------------------
 -- sum
 
+sum-fold-sum : ∀ (xs : Vec ℕ m) n → fold-sum n xs ≡ sum xs + n
+sum-fold-sum []       n = refl
+sum-fold-sum (x ∷ xs) n = begin
+  x + fold-sum n xs ≡⟨  cong (x +_) (sum-fold-sum xs n) ⟩
+  x + (sum xs + n)  ≡˘⟨ +-assoc x (sum xs) n ⟩
+  sum (x ∷ xs) + n  ∎
+
 sum-++ : ∀ (xs : Vec ℕ m) → sum (xs ++ ys) ≡ sum xs + sum ys
-sum-++ {_}       []       = refl
-sum-++ {ys = ys} (x ∷ xs) = begin
-  x + sum (xs ++ ys)     ≡⟨  cong (x +_) (sum-++ xs) ⟩
-  x + (sum xs + sum ys)  ≡˘⟨ +-assoc x (sum xs) (sum ys) ⟩
-  sum (x ∷ xs) + sum ys  ∎
+sum-++ {ys = ys} xs = begin
+  sum (xs ++ ys)       ≡⟨  foldr-++ _ _+_ xs ⟩
+  fold-sum (sum ys) xs ≡⟨ sum-fold-sum xs (sum ys) ⟩
+  sum xs + sum ys  ∎
 
 ------------------------------------------------------------------------
 -- replicate

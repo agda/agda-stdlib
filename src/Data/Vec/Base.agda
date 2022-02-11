@@ -218,8 +218,11 @@ foldl₁ _⊕_ (x ∷ xs) = foldl _ _⊕_ x xs
 
 -- Special folds
 
+fold-sum : ℕ → Vec ℕ n → ℕ
+fold-sum n = foldr′ _+_ n
+
 sum : Vec ℕ n → ℕ
-sum = foldr _ _+_ 0
+sum = fold-sum 0
 
 count : ∀ {P : Pred A p} → Decidable P → Vec A n → ℕ
 count P? []       = zero
