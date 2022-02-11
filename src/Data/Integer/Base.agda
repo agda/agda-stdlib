@@ -15,14 +15,10 @@
 module Data.Integer.Base where
 
 open import Data.Bool.Base using (Bool; T; true; false)
-open import Data.Empty using (⊥)
-open import Data.Unit.Base using (⊤)
-open import Data.Nat.Base as ℕ
-  using (ℕ; z≤n; s≤s) renaming (_+_ to _ℕ+_; _*_ to _ℕ*_)
-open import Data.Sign as Sign using (Sign) renaming (_*_ to _S*_)
-open import Function
+open import Data.Nat.Base as ℕ using (ℕ; z≤n; s≤s)
+open import Data.Sign.Base as Sign using (Sign)
 open import Level using (0ℓ)
-open import Relation.Binary using (Rel)
+open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; _≢_; refl)
 open import Relation.Nullary using (¬_)
@@ -228,10 +224,10 @@ m ⊖ n with m ℕ.<ᵇ n
 -- Addition.
 
 _+_ : ℤ → ℤ → ℤ
--[1+ m ] + -[1+ n ] = -[1+ ℕ.suc (m ℕ+ n) ]
+-[1+ m ] + -[1+ n ] = -[1+ ℕ.suc (m ℕ.+ n) ]
 -[1+ m ] + +    n   = n ⊖ ℕ.suc m
 +    m   + -[1+ n ] = m ⊖ ℕ.suc n
-+    m   + +    n   = + (m ℕ+ n)
++    m   + +    n   = + (m ℕ.+ n)
 
 -- Subtraction.
 
@@ -251,7 +247,7 @@ pred i = -1ℤ + i
 -- Multiplication.
 
 _*_ : ℤ → ℤ → ℤ
-i * j = sign i S* sign j ◃ ∣ i ∣ ℕ* ∣ j ∣
+i * j = sign i Sign.* sign j ◃ ∣ i ∣ ℕ.* ∣ j ∣
 
 -- Naïve exponentiation.
 
