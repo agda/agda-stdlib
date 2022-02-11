@@ -263,7 +263,7 @@ n≤1+n : ∀ n → n ≤ 1 + n
 n≤1+n _ = ≤-step ≤-refl
 
 1+n≰n : ∀ {n} → 1 + n ≰ n
-1+n≰n (s≤s le) = 1+n≰n le
+1+n≰n (s≤s 1+n≤n) = 1+n≰n 1+n≤n
 
 n≤0⇒n≡0 : ∀ {n} → n ≤ 0 → n ≡ 0
 n≤0⇒n≡0 z≤n = refl
@@ -695,7 +695,7 @@ m+n≤o⇒n≤o (suc m) m+n<o = m+n≤o⇒n≤o m (<⇒≤ m+n<o)
 +-monoʳ-≤ n m≤o = +-mono-≤ (≤-refl {n}) m≤o
 
 +-mono-<-≤ : _+_ Preserves₂ _<_ ⟶ _≤_ ⟶ _<_
-+-mono-<-≤ {_} {suc n} z<s       o≤p = s≤s (≤-stepsˡ n o≤p)
++-mono-<-≤ {_} {suc n} z<s               o≤p = s≤s (≤-stepsˡ n o≤p)
 +-mono-<-≤ {_} {_}     (s<s m<n@(s≤s _)) o≤p = s≤s (+-mono-<-≤ m<n o≤p)
 
 +-mono-≤-< : _+_ Preserves₂ _≤_ ⟶ _<_ ⟶ _<_
