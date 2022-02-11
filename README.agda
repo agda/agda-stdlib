@@ -202,7 +202,7 @@ import Data.Nat.Induction
 -- • Support for coinduction
 
 import Codata.Musical.Notation
-import Codata.Thunk
+import Codata.Sized.Thunk
 
 -- • IO
 
