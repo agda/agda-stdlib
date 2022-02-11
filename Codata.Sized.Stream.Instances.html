@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="utf-8"><title>Codata.Sized.Stream.Instances</title><link rel="stylesheet" href="Agda.css"></head><body><pre class="Agda"><a id="1" class="Comment">------------------------------------------------------------------------</a>
+<a id="74" class="Comment">-- The Agda standard library</a>
+<a id="103" class="Comment">--</a>
+<a id="106" class="Comment">-- Typeclass instances for Stream</a>
+<a id="140" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="214" class="Symbol">{-#</a> <a id="218" class="Keyword">OPTIONS</a> <a id="226" class="Pragma">--without-K</a> <a id="238" class="Pragma">--sized-types</a> <a id="252" class="Symbol">#-}</a>
+
+<a id="257" class="Keyword">module</a> <a id="264" href="Codata.Sized.Stream.Instances.html" class="Module">Codata.Sized.Stream.Instances</a> <a id="294" class="Keyword">where</a>
+
+<a id="301" class="Keyword">open</a> <a id="306" class="Keyword">import</a> <a id="313" href="Codata.Sized.Stream.Categorical.html" class="Module">Codata.Sized.Stream.Categorical</a>
+
+<a id="346" class="Keyword">instance</a>
+  <a id="streamFunctor"></a><a id="357" href="Codata.Sized.Stream.Instances.html#357" class="Function">streamFunctor</a> <a id="371" class="Symbol">=</a> <a id="373" href="Codata.Sized.Stream.Categorical.html#490" class="Function">functor</a>
+  <a id="streamApplicative"></a><a id="383" href="Codata.Sized.Stream.Instances.html#383" class="Function">streamApplicative</a> <a id="401" class="Symbol">=</a> <a id="403" href="Codata.Sized.Stream.Categorical.html#586" class="Function">applicative</a>
+  <a id="streamComonad"></a><a id="417" href="Codata.Sized.Stream.Instances.html#417" class="Function">streamComonad</a> <a id="431" class="Symbol">=</a> <a id="433" href="Codata.Sized.Stream.Categorical.html#706" class="Function">comonad</a>
+</pre></body></html>
