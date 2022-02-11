@@ -162,7 +162,7 @@ toℕ≤pred[n]′ i = ℕₚ.<⇒≤pred (toℕ<n i)
 
 toℕ-mono-< : ∀ {n} {i j : Fin n} → i < j → toℕ i ℕ.< toℕ j
 toℕ-mono-< {i = 0F}    {suc j}       z<s               = z<s
-toℕ-mono-< {i = suc i} {suc (suc j)} (s<s i<j@(s≤s _)) = s<s (toℕ-mono-< i<j)
+toℕ-mono-< {i = suc i} {suc (suc j)} (s<s i<j) = s<s (toℕ-mono-< i<j)
 
 toℕ-mono-≤ : ∀ {n} {i j : Fin n} → i ≤ j → toℕ i ℕ.≤ toℕ j
 toℕ-mono-≤ {i = 0F}    {j}     z≤n       = z≤n
@@ -174,7 +174,7 @@ toℕ-cancel-≤ {i = suc i} {suc j} (s≤s i≤j) = s≤s (toℕ-cancel-≤ i�
 
 toℕ-cancel-< : ∀ {n} {i j : Fin n} → toℕ i ℕ.< toℕ j → i < j
 toℕ-cancel-< {i = 0F}    {suc j}       z<s               = z<s
-toℕ-cancel-< {i = suc i} {suc (suc j)} (s<s i<j@(s≤s _)) = s<s (toℕ-cancel-< i<j)
+toℕ-cancel-< {i = suc i} {suc (suc j)} (s<s i<j) = s<s (toℕ-cancel-< i<j)
 
 ------------------------------------------------------------------------
 -- fromℕ
@@ -196,8 +196,8 @@ fromℕ-toℕ (suc i) = cong suc (fromℕ-toℕ i)
 ------------------------------------------------------------------------
 
 fromℕ<-toℕ : ∀ {m} (i : Fin m) (i<m : toℕ i ℕ.< m) → fromℕ< i<m ≡ i
-fromℕ<-toℕ zero    z<s               = refl
-fromℕ<-toℕ (suc i) (s<s m<n@(s≤s _)) = cong suc (fromℕ<-toℕ i m<n)
+fromℕ<-toℕ zero    z<s       = refl
+fromℕ<-toℕ (suc i) (s<s m<n) = cong suc (fromℕ<-toℕ i m<n)
 
 toℕ-fromℕ< : ∀ {m n} (m<n : m ℕ.< n) → toℕ (fromℕ< m<n) ≡ m
 toℕ-fromℕ< z<s               = refl
@@ -212,8 +212,8 @@ fromℕ<-cong : ∀ m n {o} → m ≡ n →
               (m<o : m ℕ.< o) →
               (n<o : n ℕ.< o) →
               fromℕ< m<o ≡ fromℕ< n<o
-fromℕ<-cong 0       0       r z<s               z<s  = refl
-fromℕ<-cong (suc _) (suc _) r (s<s m<n@(s≤s _)) (s<s n<o@(s≤s _))
+fromℕ<-cong 0       0       r z<s       z<s  = refl
+fromℕ<-cong (suc _) (suc _) r (s<s m<n) (s<s n<o)
   = cong suc (fromℕ<-cong _ _ (ℕₚ.suc-injective r) m<n n<o)
 
 fromℕ<-injective : ∀ m n {o} →
@@ -447,7 +447,7 @@ inject₁ℕ≤ = ℕₚ.<⇒≤ ∘ inject₁ℕ<
 
 ℕ<⇒inject₁< : ∀ {n} → {i : Fin (ℕ.suc n)} → {j : Fin n} →
               toℕ j ℕ.< toℕ i → inject₁ j < i
-ℕ<⇒inject₁< {i = suc i} (s≤s p) = ≤̄⇒inject₁< p
+ℕ<⇒inject₁< {i = suc i} (s≤s j≤i) = ≤̄⇒inject₁< j≤i
 
 ------------------------------------------------------------------------
 -- lower₁
@@ -499,7 +499,7 @@ inject₁≡⇒lower₁≡ ≢p ≡p = inject₁-injective (trans (inject₁-low
 toℕ-inject≤ : ∀ {m n} (i : Fin m) (le : m ℕ.≤ n) →
                 toℕ (inject≤ i le) ≡ toℕ i
 toℕ-inject≤ {_} {suc n} zero    _  = refl
-toℕ-inject≤ {_} {suc n} (suc i) (s≤s le) = cong suc (toℕ-inject≤ i le)
+toℕ-inject≤ {_} {suc n} (suc i) (s≤s m≤n) = cong suc (toℕ-inject≤ i m≤n)
 
 inject≤-refl : ∀ {n} (i : Fin n) (n≤n : n ℕ.≤ n) → inject≤ i n≤n ≡ i
 inject≤-refl {suc n} zero    _   = refl
@@ -557,7 +557,7 @@ join-splitAt (suc m) n (suc i) = begin
 
 splitAt-< : ∀ m {n} i → (i<m : toℕ i ℕ.< m) → splitAt m {n} i ≡ inj₁ (fromℕ< i<m)
 splitAt-< (suc m) zero    z<s               = refl
-splitAt-< (suc m) (suc i) (s<s i<m@(s≤s _)) = cong (Sum.map suc id) (splitAt-< m i i<m)
+splitAt-< (suc m) (suc i) (s<s i<m) = cong (Sum.map suc id) (splitAt-< m i i<m)
 
 -- splitAt "m" "i" ≡ inj₂ "i - m" if i ≥ m
 
@@ -1090,6 +1090,7 @@ Please use join-splitAt instead."
 #-}
 
 -- Version 2.0
+
 toℕ-raise = toℕ-↑ʳ
 {-# WARNING_ON_USAGE toℕ-raise
 "Warning: toℕ-raise was deprecated in v2.0.

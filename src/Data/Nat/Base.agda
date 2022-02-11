@@ -55,7 +55,6 @@ data _≤_ : Rel ℕ 0ℓ where
 _<_ : Rel ℕ 0ℓ
 m < n = suc m ≤ n
 
-------------------------------------------------------------------------
 -- Smart constructors of _<_
 
 pattern z<s {n}         = s≤s (z≤n {n})
@@ -192,7 +191,6 @@ data _≤′_ (m : ℕ) : ℕ → Set where
 _<′_ : Rel ℕ 0ℓ
 m <′ n = suc m ≤′ n
 
-------------------------------------------------------------------------
 -- Smart constructors of _<′_
 
 pattern n<′1+n           = ≤′-refl
