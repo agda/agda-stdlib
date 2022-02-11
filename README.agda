@@ -70,7 +70,7 @@ import README.Axiom
 
 -- • Codata
 --     Coinductive data types and properties. There are two different
---     approaches taken. The `Codata` folder contains the new more
+--     approaches taken. The `Codata.Sized` folder contains the new more
 --     standard approach using sized types. The `Codata.Musical`
 --     folder contains modules using the old musical notation.
 
@@ -157,8 +157,8 @@ import Data.Vec      -- Fixed-length vectors.
 
 -- • Some co-inductive data types
 
-import Codata.Stream -- Streams.
-import Codata.Colist -- Colists.
+import Codata.Sized.Stream -- Streams.
+import Codata.Sized.Colist -- Colists.
 
 -- • Some types used to structure computations
 
@@ -202,7 +202,7 @@ import Data.Nat.Induction
 -- • Support for coinduction
 
 import Codata.Musical.Notation
-import Codata.Thunk
+import Codata.Sized.Thunk
 
 -- • IO
 

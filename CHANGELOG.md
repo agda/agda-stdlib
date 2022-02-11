@@ -50,6 +50,14 @@ Non-backwards compatible changes
 
 * All modules and names that were deprecated prior to v1.0 have been removed.
 
+#### Moved `Codata` modules to `Codata.Sized`
+
+* Due to the change in Agda 2.6.2 where sized types are no longer compatible
+  with the `--safe` flag, it has become clear that a third variant of codata
+  will be needed using coinductive records. Therefore all existing modules in
+  `Codata` which used sized types have been moved inside a new folder named
+  `Sized`, e.g. `Codata.Stream` has become `Codata.Sized.Stream`.
+
 ### Improvements to pretty printing and regexes
 
 * In `Text.Pretty`, `Doc` is now a record rather than a type alias. This
