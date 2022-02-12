@@ -1008,6 +1008,7 @@ Other minor changes
 * Add new proofs in `Data.List.Properties`:
   ```agda
   ∈⇒∣product : n ∈ ns → n ∣ product ns
+  ∷ʳ-++ : xs ∷ʳ a ++ ys ≡ xs ++ a ∷ ys
   ```
 
 * Added new definitions and proofs to `Data.Nat.Primality`:
