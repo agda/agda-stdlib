@@ -46,7 +46,7 @@ open WF public using (Acc; acc)
   induct : ∀ {i} → Acc _<_ i → P i
   induct {zero}  _         = P₀
   induct {suc i} (acc rec) = Pᵢ⇒Pᵢ₊₁ i (induct (rec (inject₁ i) i<i+1))
-    where i<i+1 = ℕ<⇒inject₁< (ℕ.n<1+n (toℕ i))
+    where i<i+1 = ℕ<⇒inject₁< (i<1+i i)
 
 ------------------------------------------------------------------------
 -- Induction over _>_

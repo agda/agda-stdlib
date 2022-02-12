@@ -160,8 +160,10 @@ toℕ≤pred[n] (suc {n = suc n} i)  = s≤s (toℕ≤pred[n] i)
 toℕ≤pred[n]′ : ∀ {n} (i : Fin n) → toℕ i ℕ.≤ ℕ.pred n
 toℕ≤pred[n]′ i = ℕₚ.<⇒≤pred (toℕ<n i)
 
+-- In view of the defintions now in Data.Fin.Base,
+-- are these four lemmas not all the identity function?
 toℕ-mono-< : ∀ {n} {i j : Fin n} → i < j → toℕ i ℕ.< toℕ j
-toℕ-mono-< {i = 0F}    {suc j}       z<s               = z<s
+toℕ-mono-< {i = 0F}    {suc j}       z<s       = z<s
 toℕ-mono-< {i = suc i} {suc (suc j)} (s<s i<j) = s<s (toℕ-mono-< i<j)
 
 toℕ-mono-≤ : ∀ {n} {i j : Fin n} → i ≤ j → toℕ i ℕ.≤ toℕ j
@@ -173,7 +175,7 @@ toℕ-cancel-≤ {i = 0F}    {j}     z≤n       = z≤n
 toℕ-cancel-≤ {i = suc i} {suc j} (s≤s i≤j) = s≤s (toℕ-cancel-≤ i≤j)
 
 toℕ-cancel-< : ∀ {n} {i j : Fin n} → toℕ i ℕ.< toℕ j → i < j
-toℕ-cancel-< {i = 0F}    {suc j}       z<s               = z<s
+toℕ-cancel-< {i = 0F}    {suc j}       z<s       = z<s
 toℕ-cancel-< {i = suc i} {suc (suc j)} (s<s i<j) = s<s (toℕ-cancel-< i<j)
 
 ------------------------------------------------------------------------
@@ -402,6 +404,9 @@ m <? n = suc (toℕ m) ℕₚ.≤? toℕ n
 ------------------------------------------------------------------------
 -- Other properties
 
+i<1+i : ∀ {n} (i : Fin n) → i < suc i
+i<1+i = ℕₚ.n<1+n ∘ toℕ
+
 <⇒≢ : ∀ {n} {i j : Fin n} → i < j → i ≢ j
 <⇒≢ i<i refl = ℕₚ.n≮n _ i<i
 
@@ -496,9 +501,9 @@ inject₁≡⇒lower₁≡ ≢p ≡p = inject₁-injective (trans (inject₁-low
 -- inject≤
 ------------------------------------------------------------------------
 
-toℕ-inject≤ : ∀ {m n} (i : Fin m) (le : m ℕ.≤ n) →
-                toℕ (inject≤ i le) ≡ toℕ i
-toℕ-inject≤ {_} {suc n} zero    _  = refl
+toℕ-inject≤ : ∀ {m n} (i : Fin m) (m≤n : m ℕ.≤ n) →
+                toℕ (inject≤ i m≤n) ≡ toℕ i
+toℕ-inject≤ {_} {suc n} zero    _         = refl
 toℕ-inject≤ {_} {suc n} (suc i) (s≤s m≤n) = cong suc (toℕ-inject≤ i m≤n)
 
 inject≤-refl : ∀ {n} (i : Fin n) (n≤n : n ℕ.≤ n) → inject≤ i n≤n ≡ i
@@ -521,7 +526,7 @@ inject≤-injective (s≤s p) (s≤s q) (suc x) (suc y) eq =
 -- pred
 ------------------------------------------------------------------------
 
-pred< : ∀ {n} → (i : Fin (ℕ.suc n)) → i ≢ zero → pred i < i
+pred< : ∀ {n} → (i : Fin (suc n)) → i ≢ zero → pred i < i
 pred< zero p = contradiction refl p
 pred< (suc i) p = ≤̄⇒inject₁< ℕₚ.≤-refl
 
