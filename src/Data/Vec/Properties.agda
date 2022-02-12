@@ -419,14 +419,13 @@ map-⊛ f g (x ∷ xs) = cong (f x (g x) ∷_) (map-⊛ f g xs)
 lookup-++-< : ∀ (xs : Vec A m) (ys : Vec A n) →
               ∀ i (i<m : toℕ i < m) →
               lookup (xs ++ ys) i  ≡ lookup xs (Fin.fromℕ< i<m)
-lookup-++-< (x ∷ xs) ys zero    z<s               = refl
-lookup-++-< (x ∷ xs) ys (suc i) (s<s i<m@(s≤s _)) =
-  lookup-++-< xs ys i i<m
+lookup-++-< (x ∷ xs) ys zero    z<s       = refl
+lookup-++-< (x ∷ xs) ys (suc i) (s<s i<m) = lookup-++-< xs ys i i<m
 
 lookup-++-≥ : ∀ (xs : Vec A m) (ys : Vec A n) →
               ∀ i (i≥m : toℕ i ≥ m) →
               lookup (xs ++ ys) i ≡ lookup ys (Fin.reduce≥ i i≥m)
-lookup-++-≥ []       ys i       i≥m       = refl
+lookup-++-≥ []       ys i       z≤n       = refl
 lookup-++-≥ (x ∷ xs) ys (suc i) (s≤s i≥m) = lookup-++-≥ xs ys i i≥m
 
 lookup-++ˡ : ∀ (xs : Vec A m) (ys : Vec A n) i →
