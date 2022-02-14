@@ -48,7 +48,7 @@ Non-backwards compatible changes
 
 #### Removed deprecated names
 
-* All modules and names that were deprecated prior to v1.0 have been removed.
+* All modules and names that were deprecated in v1.2 and before have been removed.
 
 #### Moved `Codata` modules to `Codata.Sized`
 
@@ -589,6 +589,9 @@ Deprecated names
   *-monoˡ-≤-neg    ↦  *-monoˡ-≤-nonPos
   *-cancelˡ-<-neg  ↦  *-cancelˡ-<-nonPos
   *-cancelʳ-<-neg  ↦  *-cancelʳ-<-nonPos
+  
+  ^-semigroup-morphism ↦ ^-isMagmaHomomorphism
+  ^-monoid-morphism    ↦ ^-isMonoidHomomorphism
   ```
 
 * In `Data.List.Properties`:
@@ -992,8 +995,11 @@ Other minor changes
   ^-*-assoc      : (i ^ m) ^ n ≡ i ^ (m ℕ.* n)
   ^-distribˡ-+-* : i ^ (m ℕ.+ n) ≡ i ^ m * i ^ n
 
-  ^-semigroup-morphism : IsSemigroupMorphism ℕ.+-semigroup *-semigroup (i ^_)
-  ^-monoid-morphism    : IsMonoidMorphism ℕ.+-0-monoid *-1-monoid (i ^_)
+  *-rawMagma    : RawMagma 0ℓ 0ℓ
+  *-1-rawMonoid : RawMonoid 0ℓ 0ℓ
+
+  ^-isMagmaHomomorphism  : IsMagmaHomomorphism  ℕ.+-rawMagma    *-rawMagma    (i ^_)
+  ^-isMonoidHomomorphism : IsMonoidHomomorphism ℕ.+-0-rawMonoid *-1-rawMonoid (i ^_)
   ```
 
 * Added new proofs in `Data.List.Relation.Binary.Lex.Strict`:

@@ -284,25 +284,3 @@ m∣n*o⇒m/n∣o {_} {n@(suc _)} {o} (divides p refl) pn∣on = begin
     a * d ∸ (ad/n * b) * d ≡˘⟨ *-distribʳ-∸ d a (ad/n * b) ⟩
     (a ∸ ad/n * b) * d     ∎
   where open ≤-Reasoning; ad/n = a * d / n
-
-------------------------------------------------------------------------
--- DEPRECATED - please use new names as continuing support for the old
--- names is not guaranteed.
-
--- Version 1.1
-
-poset = ∣-poset
-{-# WARNING_ON_USAGE poset
-"Warning: poset was deprecated in v1.1.
-Please use ∣-poset instead."
-#-}
-*-cong = *-monoʳ-∣
-{-# WARNING_ON_USAGE *-cong
-"Warning: *-cong was deprecated in v1.1.
-Please use *-monoʳ-∣ instead."
-#-}
-/-cong = *-cancelˡ-∣
-{-# WARNING_ON_USAGE /-cong
-"Warning: /-cong was deprecated in v1.1.
-Please use *-cancelˡ-∣ instead."
-#-}

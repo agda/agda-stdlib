@@ -30,17 +30,3 @@ open import Agda.Builtin.Equality.Erase
 
 ≡-irrelevant : ∀ {a} {A : Set a} → Irrelevant {A = A} _≡_
 ≡-irrelevant = uip
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 1.0
-
-≡-irrelevance = ≡-irrelevant
-{-# WARNING_ON_USAGE ≡-irrelevance
-"Warning: ≡-irrelevance was deprecated in v1.0.
-Please use ≡-irrelevant instead."
-#-}

@@ -274,17 +274,3 @@ Pointwise-≡↔≡ = record
     ; right-inverse-of = λ _ → P.refl
     }
   }
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 1.0
-
-decidable-≡ = ≡-dec
-{-# WARNING_ON_USAGE decidable-≡
-"Warning: decidable-≡ was deprecated in v1.0.
-Please use ≡-dec from `Data.List.Properties` instead."
-#-}

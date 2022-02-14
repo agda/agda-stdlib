@@ -6,9 +6,6 @@
 
 {-# OPTIONS --without-K --guardedness #-}
 
--- Disabled to prevent warnings from BoundedVec
-{-# OPTIONS --warn=noUserWarning #-}
-
 module Codata.Musical.Colist where
 
 open import Level using (Level)
@@ -258,34 +255,3 @@ not-finite-and-infinite :
   ∀ {xs : Colist A} → Finite xs → Infinite xs → ⊥
 not-finite-and-infinite (x ∷ fin) (.x ∷ inf) =
   not-finite-and-infinite fin (♭ inf)
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 1.3
-
-open import Data.BoundedVec.Inefficient as BVec
-  using (BoundedVec; []; _∷_)
-
-take′ : (n : ℕ) → Colist A → BoundedVec A n
-take′ zero    xs       = []
-take′ (suc n) []       = []
-take′ (suc n) (x ∷ xs) = x ∷ take′ n (♭ xs)
-{-# WARNING_ON_USAGE take′
-"Warning: take′ (and Data.BoundedVec) was deprecated in v1.3.
-Please use take (and Data.Vec.Bounded) instead."
-#-}
-
-take′-⊑ : ∀ n (xs : Colist A) →
-         let toColist = fromList {a} ∘ BVec.toList in
-         toColist (take′ n xs) ⊑ xs
-take′-⊑ zero    xs       = []
-take′-⊑ (suc n) []       = []
-take′-⊑ (suc n) (x ∷ xs) = x ∷ ♯ take′-⊑ n (♭ xs)
-{-# WARNING_ON_USAGE take′-⊑
-"Warning: take′-⊑ (and Data.BoundedVec) was deprecated in v1.3.
-Please use take-⊑ (and Data.Vec.Bounded) instead."
-#-}

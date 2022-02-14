@@ -113,29 +113,3 @@ mono⇒cong = Consequences.mono⇒cong _≈_ _≈_ Eq.sym reflexive antisym
 
 antimono⇒cong : ∀ {f} → f Preserves _≤_ ⟶ _≥_ → f Preserves _≈_ ⟶ _≈_
 antimono⇒cong = Consequences.antimono⇒cong _≈_ _≈_ Eq.sym reflexive antisym
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 1.2
-
-invIsPartialOrder = ≥-isPartialOrder
-{-# WARNING_ON_USAGE invIsPartialOrder
-"Warning: invIsPartialOrder was deprecated in v1.2.
-Please use ≥-isPartialOrder instead."
-#-}
-
-invPoset = ≥-poset
-{-# WARNING_ON_USAGE invPoset
-"Warning: invPoset was deprecated in v1.2.
-Please use ≥-poset instead."
-#-}
-
-strictPartialOrder = <-strictPartialOrder
-{-# WARNING_ON_USAGE strictPartialOrder
-"Warning: strictPartialOrder was deprecated in v1.2.
-Please use <-strictPartialOrder instead."
-#-}

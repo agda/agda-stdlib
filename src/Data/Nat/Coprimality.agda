@@ -6,9 +6,6 @@
 
 {-# OPTIONS --without-K --safe #-}
 
--- Disabled to prevent warnings from deprecated names
-{-# OPTIONS --warn=noUserWarning #-}
-
 module Data.Nat.Coprimality where
 
 open import Data.Empty
@@ -151,52 +148,3 @@ prime⇒coprime (suc (suc _)) _ _ _ _ {1} _         = refl
 prime⇒coprime (suc (suc _)) p (suc _) _ n<m {(suc (suc _))} (d∣m , d∣n) =
   contradiction d∣m (p 2≤d d<m)
   where 2≤d = s≤s (s≤s z≤n); d<m = <-transˡ (s≤s (∣⇒≤ d∣n)) n<m
-
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use GCD from `Data.Nat.GCD` as continued support for the
--- proofs below is not guaranteed.
-
--- Version 1.1.
-
-data GCD′ : ℕ → ℕ → ℕ → Set where
-  gcd-* : ∀ {d} q₁ q₂ (c : Coprime q₁ q₂) →
-          GCD′ (q₁ * d) (q₂ * d) d
-{-# WARNING_ON_USAGE GCD′
-"Warning: GCD′ was deprecated in v1.1."
-#-}
-gcd-gcd′ : ∀ {d m n} → GCD m n d → GCD′ m n d
-gcd-gcd′         g with GCD.commonDivisor g
-gcd-gcd′ {zero}  g | (divides q₁ refl , divides q₂ refl)
-  with q₁ * 0 | *-comm 0 q₁ | q₂ * 0 | *-comm 0 q₂
-... | .0 | refl | .0 | refl = gcd-* 1 1 (1-coprimeTo 1)
-gcd-gcd′ {suc d} g | (divides q₁ refl , divides q₂ refl) =
-  gcd-* q₁ q₂ (Bézout-coprime (Bézout.identity g))
-{-# WARNING_ON_USAGE gcd-gcd′
-"Warning: gcd-gcd′ was deprecated in v1.1."
-#-}
-gcd′-gcd : ∀ {m n d} → GCD′ m n d → GCD m n d
-gcd′-gcd (gcd-* q₁ q₂ c) = GCD.is (n∣m*n q₁ , n∣m*n q₂) (coprime-factors c)
-{-# WARNING_ON_USAGE gcd′-gcd
-"Warning: gcd′-gcd was deprecated in v1.1."
-#-}
-mkGCD′ : ∀ m n → ∃ λ d → GCD′ m n d
-mkGCD′ m n = Prod.map id gcd-gcd′ (mkGCD m n)
-{-# WARNING_ON_USAGE mkGCD′
-"Warning: mkGCD′ was deprecated in v1.1."
-#-}
-
--- Version 1.2
-
-coprime-gcd = coprime⇒GCD≡1
-{-# WARNING_ON_USAGE coprime-gcd
-"Warning: coprime-gcd was deprecated in v1.2.
-Please use coprime⇒GCD≡1 instead."
-#-}
-gcd-coprime = GCD≡1⇒coprime
-{-# WARNING_ON_USAGE gcd-coprime
-"Warning: gcd-coprime was deprecated in v1.2.
-Please use GCD≡1⇒coprime instead."
-#-}
