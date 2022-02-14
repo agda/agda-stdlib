@@ -811,6 +811,12 @@ New modules
   ```
   Foreign.Haskell.List.NonEmpty
   ```
+* Added new module `Algebra.Properties.RingWithoutOne`:
+  ```
+  -‿distribˡ-* : ∀ x y → - (x * y) ≈ - x * y
+  -‿distribʳ-* : ∀ x y → - (x * y) ≈ x * - y
+  ```
+  
 
 Other minor changes
 -------------------
