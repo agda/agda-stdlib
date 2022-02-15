@@ -1912,11 +1912,11 @@ s≤′s (≤′-step m≤′n) = ≤′-step (s≤′s m≤′n)
 ------------------------------------------------------------------------
 
 z<′s : ∀ {n} → zero <′ suc n
-z<′s {zero}  = n<′1+n
+z<′s {zero}  = <′-base
 z<′s {suc n} = <′-step (z<′s {n})
 
 s<′s : ∀ {m n} → m <′ n → suc m <′ suc n
-s<′s n<′1+n         = n<′1+n
+s<′s <′-base        = <′-base
 s<′s (<′-step m<′n) = <′-step (s<′s m<′n)
 
 <⇒<′ : ∀ {m n} → m < n → m <′ n
@@ -1924,12 +1924,12 @@ s<′s (<′-step m<′n) = <′-step (s<′s m<′n)
 <⇒<′ (s<s m<n@(s≤s _)) = s<′s (<⇒<′ m<n)
 
 <′⇒< : ∀ {m n} → m <′ n → m < n
-<′⇒< n<′1+n         = n<1+n _
+<′⇒< <′-base        = n<1+n _
 <′⇒< (<′-step m<′n) = <-step (<′⇒< m<′n)
 
 m<1+n⇒m<n∨m≡n′ :  ∀ {m n} → m < suc n → m < n ⊎ m ≡ n
 m<1+n⇒m<n∨m≡n′ m<n with <⇒<′ m<n
-... | n<′1+n       = inj₂ refl
+... | <′-base      = inj₂ refl
 ... | <′-step m<′n = inj₁ (<′⇒< m<′n)
 
 ------------------------------------------------------------------------
