@@ -302,6 +302,16 @@ m/n/o≡m/[n*o] m n@(suc _) o@(suc _) n*o∣m = *-cancelˡ-≡ (n * o) (begin-eq
   where open ≤-Reasoning; ad/n = a * d / n
 
 ------------------------------------------------------------------------
+-- Properties of _∣_ and !_
+
+m≤n⇒m!∣n! : ∀ {m n} → m ≤ n → m ! ∣ n !
+m≤n⇒m!∣n! m≤n = help (≤⇒≤′ m≤n)
+  where
+  help : ∀ {m n} → m ≤′ n → m ! ∣ n !
+  help {m} {n}     ≤′-refl        = ∣-refl
+  help {m} {suc n} (≤′-step m≤′n) = ∣n⇒∣m*n (suc n) (help m≤′n)
+
+------------------------------------------------------------------------
 -- DEPRECATED - please use new names as continuing support for the old
 -- names is not guaranteed.
 

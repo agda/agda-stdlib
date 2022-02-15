@@ -15,7 +15,6 @@ open import Data.Nat.Base
 open import Data.Nat.DivMod
 open import Data.Nat.Divisibility
 open import Data.Nat.Properties
-open import Data.Nat.Factorial
 open import Data.Nat.Combinatorics.Base
 open import Data.Sum using (inj₁; inj₂)
 open import Relation.Binary.PropositionalEquality
@@ -102,8 +101,8 @@ k!∣nP′k n@{suc n-1} k@{suc k-1} k≤n@(s≤s k-1≤n-1) with k-1 ≟ n-1
 ------------------------------------------------------------------------
 -- Properties of _P_
 
-k≤n⇒nPk≡n!/[n∸k]! : ∀ {n k} → k ≤ n → n P k ≡ (n ! / (n ∸ k) !) {{(n ∸ k) !≢0}}
-k≤n⇒nPk≡n!/[n∸k]! {n} {k} k≤n with k ≤ᵇ n in eq
+nPk≡n!/[n∸k]! : ∀ {n k} → k ≤ n → n P k ≡ (n ! / (n ∸ k) !) {{(n ∸ k) !≢0}}
+nPk≡n!/[n∸k]! {n} {k} k≤n with k ≤ᵇ n in eq
 ... | true  = nP′k≡n!/[n∸k]! k≤n
 ... | false = contradiction (≤⇒≤ᵇ k≤n) (subst T eq)
 
@@ -147,9 +146,9 @@ C′-sym {n} {k} k≤n = begin-equality
 ------------------------------------------------------------------------
 -- Properties of _C_
 
-k≤n⇒nCk≡n!/k![n-k]! : ∀ {n k} → k ≤ n →
-                      n C k ≡ (n ! / (k ! * (n ∸ k) !)) {{k !* (n ∸ k) !≢0}}
-k≤n⇒nCk≡n!/k![n-k]! {n} {k} k≤n with k ≤ᵇ n in eq2
+nCk≡n!/k![n-k]! : ∀ {n k} → k ≤ n →
+                  n C k ≡ (n ! / (k ! * (n ∸ k) !)) {{k !* (n ∸ k) !≢0}}
+nCk≡n!/k![n-k]! {n} {k} k≤n with k ≤ᵇ n in eq2
 ... | false = contradiction (≤⇒≤ᵇ k≤n) (subst T eq2)
 ... | true  with ⊓-sel k (n ∸ k)
 ...   | inj₁ k⊓[n∸k]≡k   rewrite k⊓[n∸k]≡k   = nC′k≡n!/k![n-k]! k≤n

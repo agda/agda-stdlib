@@ -10,7 +10,7 @@ module Data.Nat.Combinatorics.Base where
 
 open import Data.Bool.Base using (if_then_else_)
 open import Data.Nat.Base
-open import Data.Nat.Factorial
+open import Data.Nat.Properties using (_!≢0)
 
 -- NOTE: These operators are not implemented as efficiently as they
 -- could be. See the following link for more details.
