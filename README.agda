@@ -1,7 +1,9 @@
+{-# OPTIONS --rewriting --guardedness --sized-types #-}
+
 module README where
 
 ------------------------------------------------------------------------
--- The Agda standard library, version 1.6-dev
+-- The Agda standard library, version 2.0
 --
 -- Authors: Nils Anders Danielsson, Matthew Daggitt, Guillaume Allais
 -- with contributions from Andreas Abel, Stevan Andjelkovic,
@@ -16,14 +18,31 @@ module README where
 -- Noam Zeilberger and other anonymous contributors.
 ------------------------------------------------------------------------
 
--- This version of the library has been tested using Agda 2.6.1 and
--- 2.6.1.1.
+-- This version of the library has been tested using Agda 2.6.2.
 
 -- The library comes with a .agda-lib file, for use with the library
 -- management system.
 
 -- Currently the library does not support the JavaScript compiler
 -- backend.
+
+------------------------------------------------------------------------
+-- Stability guarantees
+------------------------------------------------------------------------
+
+-- We do our best to adhere to the spirit of semantic versioning in that
+-- minor versions should not break people's code. This applies to the
+-- the entire library with one exception: modules with names that end in
+-- either ".Core" or ".Primitive".
+
+-- The former have (mostly) been created to avoid mutual recursion
+-- between modules and the latter to bind primitive operations to the
+-- more efficient operations supplied by the relevant backend.
+
+-- These modules may undergo backwards incompatible changes between
+-- minor versions and therefore are imported directly at your own risk.
+-- Instead their contents should be accessed by their parent module,
+-- whose interface will remain stable.
 
 ------------------------------------------------------------------------
 -- High-level overview of contents
@@ -51,7 +70,7 @@ import README.Axiom
 
 -- • Codata
 --     Coinductive data types and properties. There are two different
---     approaches taken. The `Codata` folder contains the new more
+--     approaches taken. The `Codata.Sized` folder contains the new more
 --     standard approach using sized types. The `Codata.Musical`
 --     folder contains modules using the old musical notation.
 
@@ -138,8 +157,8 @@ import Data.Vec      -- Fixed-length vectors.
 
 -- • Some co-inductive data types
 
-import Codata.Stream -- Streams.
-import Codata.Colist -- Colists.
+import Codata.Sized.Stream -- Streams.
+import Codata.Sized.Colist -- Colists.
 
 -- • Some types used to structure computations
 
@@ -183,7 +202,7 @@ import Data.Nat.Induction
 -- • Support for coinduction
 
 import Codata.Musical.Notation
-import Codata.Thunk
+import Codata.Sized.Thunk
 
 -- • IO
 
@@ -246,15 +265,6 @@ import README.Text.Regex
 -- Explaining how to display tables of strings:
 
 import README.Text.Tabular
-
-------------------------------------------------------------------------
--- Core modules
-------------------------------------------------------------------------
-
--- Some modules have names ending in ".Core". These modules are
--- internal, and have (mostly) been created to avoid mutual recursion
--- between modules. They should not be imported directly; their
--- contents are reexported by other modules.
 
 ------------------------------------------------------------------------
 -- All library modules

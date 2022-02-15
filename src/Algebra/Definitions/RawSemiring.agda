@@ -8,7 +8,7 @@
 
 open import Algebra.Bundles using (RawSemiring)
 open import Data.Sum.Base using (_⊎_)
-open import Data.Nat using (ℕ)
+open import Data.Nat using (ℕ; zero; suc)
 open import Level using (_⊔_)
 open import Relation.Binary.Core using (Rel)
 
@@ -47,12 +47,23 @@ infixr 8 _^_
 _^_ : A → ℕ → A
 x ^ n  = n Mult.× x
 
--- Exponentiation optimsed for type-checking
+-- Exponentiation optimised for type-checking
 
 infixr 8 _^′_
 _^′_ : A → ℕ → A
 x ^′ n  = n Mult.×′ x
 {-# INLINE _^′_ #-}
+
+-- Exponentiation optimised for tail-recursion
+
+infixr 8 _^[_]*_ _^ᵗ_
+
+_^[_]*_ : A → ℕ → A → A
+x ^[ zero ]*  y = y
+x ^[ suc n ]* y = x ^[ n ]* (x * y)
+
+_^ᵗ_ : A → ℕ → A
+x ^ᵗ n = x ^[ n ]* 1#
 
 ------------------------------------------------------------------------
 -- Primality
@@ -70,5 +81,5 @@ record Prime (p : A) : Set (a ⊔ ℓ) where
   constructor mkPrime
   field
     p≉0     : p ≉ 0#
+    p∤1     : p ∤ 1#
     split-∣ : ∀ {x y} → p ∣ x * y → p ∣ x ⊎ p ∣ y
-

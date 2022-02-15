@@ -12,6 +12,7 @@ module Algebra.Module.Structures where
 
 open import Algebra.Bundles
 open import Algebra.Core
+open import Algebra.Module.Core
 import Algebra.Definitions as Defs
 open import Algebra.Module.Definitions
 open import Algebra.Structures

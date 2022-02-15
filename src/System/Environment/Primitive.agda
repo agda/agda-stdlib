@@ -16,10 +16,10 @@ module System.Environment.Primitive where
 
 open import IO.Primitive using (IO)
 open import Data.List.Base using (List)
+open import Data.Maybe.Base using (Maybe)
 open import Data.String.Base using (String)
 open import Data.Unit using (⊤)
 
-open import Foreign.Haskell.Maybe using (Maybe)
 open import Foreign.Haskell.Pair using (Pair)
 
 {-# FOREIGN GHC import qualified System.Environment as SE #-}

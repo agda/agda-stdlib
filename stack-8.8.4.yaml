@@ -1,0 +1,6 @@
+resolver: lts-16.31
+compiler: ghc-8.8.4
+compiler-check: match-exact
+
+packages:
+- '.'

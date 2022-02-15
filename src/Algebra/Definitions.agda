@@ -130,3 +130,21 @@ AlmostCancellative e _•_ = AlmostLeftCancellative e _•_ × AlmostRightCancel
 
 Interchangable : Op₂ A → Op₂ A → Set _
 Interchangable _∘_ _∙_ = ∀ w x y z → ((w ∙ x) ∘ (y ∙ z)) ≈ ((w ∘ y) ∙ (x ∘ z))
+
+LeftDividesˡ : Op₂ A → Op₂ A → Set _
+LeftDividesˡ _∙_  _\\_ = ∀ x y → (x ∙ (x \\ y)) ≈ y
+
+LeftDividesʳ : Op₂ A → Op₂ A → Set _
+LeftDividesʳ _∙_ _\\_ = ∀ x y → (x \\ (x ∙ y)) ≈ y
+
+RightDividesˡ : Op₂ A → Op₂ A → Set _
+RightDividesˡ _∙_ _//_ = ∀ x y → ((y // x) ∙ x) ≈ y
+
+RightDividesʳ : Op₂ A → Op₂ A → Set _
+RightDividesʳ _∙_ _//_ = ∀ x y → ((y ∙ x) // x) ≈ y
+
+LeftDivides : Op₂ A → Op₂ A → Set _
+LeftDivides ∙ \\ = (LeftDividesˡ ∙ \\) × (LeftDividesʳ ∙ \\)
+
+RightDivides : Op₂ A → Op₂ A → Set _
+RightDivides ∙ // = (RightDividesˡ ∙ //) × (RightDividesʳ ∙ //)

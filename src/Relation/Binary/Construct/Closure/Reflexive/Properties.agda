@@ -10,7 +10,7 @@ module Relation.Binary.Construct.Closure.Reflexive.Properties where
 
 open import Data.Product as Prod
 open import Data.Sum.Base as Sum
-open import Function.Equivalence using (_⇔_; equivalence)
+open import Function.Bundles using (_⇔_; mk⇔)
 open import Function.Base using (id)
 open import Level
 open import Relation.Binary hiding (_⇔_)
@@ -51,7 +51,7 @@ module _ {_~_ : Rel A ℓ} where
   toSum refl = inj₁ refl
 
   ⊎⇔Refl : ∀ {a b} → (a ≡ b ⊎ a ~ b) ⇔ a ~ᵒ b
-  ⊎⇔Refl = equivalence fromSum toSum
+  ⊎⇔Refl = mk⇔ fromSum toSum
 
   sym : Symmetric _~_ → Symmetric _~ᵒ_
   sym ~-sym [ x∼y ] = [ ~-sym x∼y ]

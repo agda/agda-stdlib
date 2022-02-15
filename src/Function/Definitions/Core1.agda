@@ -12,7 +12,7 @@
 open import Relation.Binary
 
 module Function.Definitions.Core1
-  {a ℓ₁} {A : Set a} (_≈₁_ : Rel A ℓ₁)
+  {a b ℓ₁} {A : Set a} {B : Set b} (_≈₁_ : Rel A ℓ₁)
   where
 
 open import Level using (_⊔_)
@@ -21,5 +21,5 @@ open import Level using (_⊔_)
 -- Definitions
 
 -- (Note the name `RightInverse` is used for the bundle)
-Inverseʳ : ∀ {b} {B : Set b} → (A → B) → (B → A) → Set (a ⊔ ℓ₁)
+Inverseʳ : (A → B) → (B → A) → Set (a ⊔ ℓ₁)
 Inverseʳ f g = ∀ x → g (f x) ≈₁ x

@@ -13,7 +13,7 @@ open import Codata.Musical.Costring
 open import Data.Unit.Polymorphic.Base
 open import Data.String.Base
 import Data.Unit.Base as Unit0
-open import Function.Base using (_∘_)
+open import Function.Base using (_∘_; flip)
 import IO.Primitive as Prim
 open import Level
 
@@ -54,6 +54,12 @@ module Colist where
   mapM′ : (A → IO B) → Colist A → IO ⊤
   mapM′ f = sequence′ ∘ map f
 
+  forM : Colist A → (A → IO B) → IO (Colist B)
+  forM = flip mapM
+
+  forM′ : Colist A → (A → IO B) → IO ⊤
+  forM′ = flip mapM′
+
 module List where
 
   open import Data.List.Base
@@ -74,6 +80,12 @@ module List where
 
   mapM′ : (A → IO B) → List A → IO ⊤
   mapM′ f = sequence′ ∘ map f
+
+  forM : List A → (A → IO B) → IO (List B)
+  forM = flip mapM
+
+  forM′ : List A → (A → IO B) → IO ⊤
+  forM′ = flip mapM′
 
 ------------------------------------------------------------------------
 -- Simple lazy IO

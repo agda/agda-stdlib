@@ -2,7 +2,7 @@
 -- The Agda standard library
 --
 -- Basic definition of an operator that computes the min/max value
--- with respect to a total ordering.
+-- with respect to a total preorder.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

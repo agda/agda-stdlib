@@ -9,15 +9,14 @@
 
 open import Relation.Binary using (Rel; Setoid; Substitutive; Symmetric; Total)
 
-module Algebra.Consequences.Setoid
-  {a ℓ} (S : Setoid a ℓ) where
+module Algebra.Consequences.Setoid {a ℓ} (S : Setoid a ℓ) where
 
 open Setoid S renaming (Carrier to A)
-
 open import Algebra.Core
 open import Algebra.Definitions _≈_
 open import Data.Sum.Base using (inj₁; inj₂)
 open import Data.Product using (_,_)
+open import Function.Base using (_$_)
 import Relation.Binary.Consequences as Bin
 open import Relation.Binary.Reasoning.Setoid S
 open import Relation.Unary using (Pred)
@@ -25,7 +24,7 @@ open import Relation.Unary using (Pred)
 ------------------------------------------------------------------------
 -- Re-exports
 
--- Export base lemmas that don't require the setoidd
+-- Export base lemmas that don't require the setoid
 
 open import Algebra.Consequences.Base public
 
@@ -34,19 +33,19 @@ open import Algebra.Consequences.Base public
 
 module _ {_•_ : Op₂ A} (comm : Commutative _•_) where
 
-  comm+cancelˡ⇒cancelʳ : LeftCancellative _•_ →  RightCancellative _•_
-  comm+cancelˡ⇒cancelʳ cancelˡ {x} y z eq = cancelˡ x (begin
+  comm+cancelˡ⇒cancelʳ : LeftCancellative _•_ → RightCancellative _•_
+  comm+cancelˡ⇒cancelʳ cancelˡ {x} y z eq = cancelˡ x $ begin
     x • y ≈⟨ comm x y ⟩
     y • x ≈⟨ eq ⟩
     z • x ≈⟨ comm z x ⟩
-    x • z ∎)
+    x • z ∎
 
   comm+cancelʳ⇒cancelˡ : RightCancellative _•_ → LeftCancellative _•_
-  comm+cancelʳ⇒cancelˡ cancelʳ x {y} {z} eq = cancelʳ y z (begin
+  comm+cancelʳ⇒cancelˡ cancelʳ x {y} {z} eq = cancelʳ y z $ begin
     y • x ≈⟨ comm y x ⟩
     x • y ≈⟨ eq ⟩
     x • z ≈⟨ comm x z ⟩
-    z • x ∎)
+    z • x ∎
 
 ------------------------------------------------------------------------
 -- Monoid-like structures
@@ -65,6 +64,12 @@ module _ {_•_ : Op₂ A} (comm : Commutative _•_) {e : A} where
     x • e ≈⟨ idʳ x ⟩
     x     ∎
 
+  comm+idˡ⇒id : LeftIdentity e _•_ → Identity e _•_
+  comm+idˡ⇒id idˡ = idˡ , comm+idˡ⇒idʳ idˡ
+
+  comm+idʳ⇒id : RightIdentity e _•_ → Identity e _•_
+  comm+idʳ⇒id idʳ = comm+idʳ⇒idˡ idʳ , idʳ
+
   comm+zeˡ⇒zeʳ : LeftZero e _•_ → RightZero e _•_
   comm+zeˡ⇒zeʳ zeˡ x = begin
     x • e ≈⟨ comm x e ⟩
@@ -77,6 +82,30 @@ module _ {_•_ : Op₂ A} (comm : Commutative _•_) {e : A} where
     x • e ≈⟨ zeʳ x ⟩
     e     ∎
 
+  comm+zeˡ⇒ze : LeftZero e _•_ → Zero e _•_
+  comm+zeˡ⇒ze zeˡ = zeˡ , comm+zeˡ⇒zeʳ zeˡ
+
+  comm+zeʳ⇒ze : RightZero e _•_ → Zero e _•_
+  comm+zeʳ⇒ze zeʳ = comm+zeʳ⇒zeˡ zeʳ , zeʳ
+
+  comm+almostCancelˡ⇒almostCancelʳ : AlmostLeftCancellative e _•_ →
+                                     AlmostRightCancellative e _•_
+  comm+almostCancelˡ⇒almostCancelʳ cancelˡ-nonZero {x} y z x≉e yx≈zx =
+    cancelˡ-nonZero y z x≉e $ begin
+      x • y ≈⟨ comm x y ⟩
+      y • x ≈⟨ yx≈zx ⟩
+      z • x ≈⟨ comm z x ⟩
+      x • z ∎
+
+  comm+almostCancelʳ⇒almostCancelˡ : AlmostRightCancellative e _•_ →
+                                     AlmostLeftCancellative e _•_
+  comm+almostCancelʳ⇒almostCancelˡ cancelʳ-nonZero {x} y z x≉e xy≈xz =
+    cancelʳ-nonZero y z x≉e $ begin
+      y • x ≈⟨ comm y x ⟩
+      x • y ≈⟨ xy≈xz ⟩
+      x • z ≈⟨ comm x z ⟩
+      z • x ∎
+
 ------------------------------------------------------------------------
 -- Group-like structures
 
@@ -88,11 +117,17 @@ module _ {_•_ : Op₂ A} {_⁻¹ : Op₁ A} {e} (comm : Commutative _•_) whe
     (x ⁻¹) • x ≈⟨ invˡ x ⟩
     e          ∎
 
+  comm+invˡ⇒inv : LeftInverse e _⁻¹ _•_ → Inverse e _⁻¹ _•_
+  comm+invˡ⇒inv invˡ = invˡ , comm+invˡ⇒invʳ invˡ
+
   comm+invʳ⇒invˡ : RightInverse e _⁻¹ _•_ → LeftInverse e _⁻¹ _•_
   comm+invʳ⇒invˡ invʳ x = begin
     (x ⁻¹) • x ≈⟨ comm (x ⁻¹) x ⟩
     x • (x ⁻¹) ≈⟨ invʳ x ⟩
     e          ∎
+
+  comm+invʳ⇒inv : RightInverse e _⁻¹ _•_ → Inverse e _⁻¹ _•_
+  comm+invʳ⇒inv invʳ = comm+invʳ⇒invˡ invʳ , invʳ
 
 module _ {_•_ : Op₂ A} {_⁻¹ : Op₁ A} {e} (cong : Congruent₂ _•_) where
 
@@ -140,12 +175,38 @@ module _ {_•_ _◦_ : Op₂ A}
     (y • x) ◦ (z • x) ≈⟨ ◦-cong (•-comm y x) (•-comm z x) ⟩
     (x • y) ◦ (x • z) ∎
 
+  comm+distrˡ⇒distr :  _•_ DistributesOverˡ _◦_ → _•_ DistributesOver _◦_
+  comm+distrˡ⇒distr distrˡ = distrˡ , comm+distrˡ⇒distrʳ distrˡ
+
+  comm+distrʳ⇒distr :  _•_ DistributesOverʳ _◦_ → _•_ DistributesOver _◦_
+  comm+distrʳ⇒distr distrʳ = comm+distrʳ⇒distrˡ distrʳ , distrʳ
+
   comm⇒sym[distribˡ] : ∀ x → Symmetric (λ y z → (x ◦ (y • z)) ≈ ((x ◦ y) • (x ◦ z)))
   comm⇒sym[distribˡ] x {y} {z} prf = begin
     x ◦ (z • y)       ≈⟨ ◦-cong refl (•-comm z y) ⟩
     x ◦ (y • z)       ≈⟨ prf ⟩
     (x ◦ y) • (x ◦ z) ≈⟨ •-comm (x ◦ y) (x ◦ z) ⟩
     (x ◦ z) • (x ◦ y) ∎
+
+
+module _ {_•_ _◦_ : Op₂ A}
+         (•-cong  : Congruent₂ _•_)
+         (•-assoc : Associative _•_)
+         (◦-comm  : Commutative _◦_)
+         where
+
+  distrib+absorbs⇒distribˡ : _•_ Absorbs _◦_ →
+                             _◦_ Absorbs _•_ →
+                             _◦_ DistributesOver _•_ →
+                             _•_ DistributesOverˡ _◦_
+  distrib+absorbs⇒distribˡ •-absorbs-◦ ◦-absorbs-• (◦-distribˡ-• , ◦-distribʳ-•) x y z = begin
+    x • (y ◦ z)                    ≈˘⟨ •-cong (•-absorbs-◦ _ _) refl ⟩
+    (x • (x ◦ y)) • (y ◦ z)        ≈⟨  •-cong (•-cong refl (◦-comm _ _)) refl ⟩
+    (x • (y ◦ x)) • (y ◦ z)        ≈⟨  •-assoc _ _ _ ⟩
+    x • ((y ◦ x) • (y ◦ z))        ≈˘⟨ •-cong refl (◦-distribˡ-• _ _ _) ⟩
+    x • (y ◦ (x • z))              ≈˘⟨ •-cong (◦-absorbs-• _ _) refl ⟩
+    (x ◦ (x • z)) • (y ◦ (x • z))  ≈˘⟨ ◦-distribʳ-• _ _ _ ⟩
+    (x • y) ◦ (x • z)              ∎
 
 ----------------------------------------------------------------------
 -- Ring-like structures

@@ -109,10 +109,10 @@ open StrictPartialOrder <-strictPartialOrder public
 -- Other properties
 
 mono⇒cong : ∀ {f} → f Preserves _≤_ ⟶ _≤_ → f Preserves _≈_ ⟶ _≈_
-mono⇒cong = Consequences.mono⇒cong _ Eq.sym reflexive antisym
+mono⇒cong = Consequences.mono⇒cong _≈_ _≈_ Eq.sym reflexive antisym
 
 antimono⇒cong : ∀ {f} → f Preserves _≤_ ⟶ _≥_ → f Preserves _≈_ ⟶ _≈_
-antimono⇒cong = Consequences.antimono⇒cong _ Eq.sym reflexive antisym
+antimono⇒cong = Consequences.antimono⇒cong _≈_ _≈_ Eq.sym reflexive antisym
 
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES

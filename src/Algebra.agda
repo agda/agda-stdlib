@@ -12,4 +12,5 @@ module Algebra where
 open import Algebra.Core public
 open import Algebra.Definitions public
 open import Algebra.Structures public
+open import Algebra.Structures.Biased public
 open import Algebra.Bundles public

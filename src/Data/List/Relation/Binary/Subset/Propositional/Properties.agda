@@ -134,6 +134,18 @@ map⁺ f xs⊆ys =
   _⟨$⟩_ (Inverse.from (map-∈↔ f))
 
 ------------------------------------------------------------------------
+-- ∷
+
+xs⊆x∷xs : ∀ (xs : List A) x → xs ⊆ x ∷ xs
+xs⊆x∷xs = Setoidₚ.xs⊆x∷xs (setoid _)
+
+∷⁺ʳ : ∀ x → xs ⊆ ys → x ∷ xs ⊆ x ∷ ys
+∷⁺ʳ = Setoidₚ.∷⁺ʳ (setoid _)
+
+∈-∷⁺ʳ : ∀ {x} → x ∈ ys → xs ⊆ ys → x ∷ xs ⊆ ys
+∈-∷⁺ʳ = Setoidₚ.∈-∷⁺ʳ (setoid _)
+
+------------------------------------------------------------------------
 -- _++_
 
 xs⊆xs++ys : ∀ (xs ys : List A) → xs ⊆ xs ++ ys
@@ -220,7 +232,7 @@ module _ {xs : List A} {f : ∀ {x} → x ∈ xs → B}
          where
 
   map-with-∈⁺ : (xs⊆ys : xs ⊆ ys) → (∀ {x} → f {x} ≗ g ∘ xs⊆ys) →
-                map-with-∈ xs f ⊆ map-with-∈ ys g
+                mapWith∈ xs f ⊆ mapWith∈ ys g
   map-with-∈⁺ xs⊆ys f≈g {x} =
     _⟨$⟩_ (Inverse.to Any.map-with-∈↔) ∘
     Prod.map₂ (Prod.map xs⊆ys (λ {x∈xs} x≡fx∈xs → begin
@@ -247,21 +259,6 @@ module _ {P : Pred A p} (P? : Decidable P) where
 ------------------------------------------------------------------------
 -- DEPRECATED
 ------------------------------------------------------------------------
-
--- Version 0.16
-
-boolFilter-⊆ : ∀ (p : A → Bool) →
-               (xs : List A) → boolFilter p xs ⊆ xs
-boolFilter-⊆ p (x ∷ xs) with p x | boolFilter-⊆ p xs
-... | false | hyp = there ∘ hyp
-... | true  | hyp =
-  λ { (here  eq)          → here eq
-    ; (there ∈boolFilter) → there (hyp ∈boolFilter)
-    }
-{-# WARNING_ON_USAGE boolFilter-⊆
-"Warning: boolFilter was deprecated in v0.16.
-Please use filter instead."
-#-}
 
 -- Version 1.5
 

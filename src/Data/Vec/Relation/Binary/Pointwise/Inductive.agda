@@ -15,7 +15,7 @@ open import Data.Vec.Base as Vec hiding ([_]; head; tail; map; lookup; uncons)
 open import Data.Vec.Relation.Unary.All using (All; []; _∷_)
 open import Level using (Level; _⊔_)
 open import Function.Base using (_∘_)
-open import Function.Equivalence using (_⇔_; equivalence)
+open import Function.Bundles using (_⇔_; mk⇔)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as P using (_≡_)
 open import Relation.Nullary
@@ -255,18 +255,4 @@ Pointwise-≡⇒≡ (P.refl ∷ xs∼ys) = P.cong (_ ∷_) (Pointwise-≡⇒≡ 
 ≡⇒Pointwise-≡ P.refl = refl P.refl
 
 Pointwise-≡↔≡ : ∀ {n} {xs ys : Vec A n} → Pointwise _≡_ xs ys ⇔ xs ≡ ys
-Pointwise-≡↔≡ = equivalence Pointwise-≡⇒≡ ≡⇒Pointwise-≡
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 0.15
-
-Pointwise-≡ = Pointwise-≡↔≡
-{-# WARNING_ON_USAGE Pointwise-≡
-"Warning: Pointwise-≡ was deprecated in v0.15.
-Please use Pointwise-≡↔≡ instead."
-#-}
+Pointwise-≡↔≡ = mk⇔ Pointwise-≡⇒≡ ≡⇒Pointwise-≡

@@ -25,7 +25,7 @@ open import Data.Product as Prod
 open import Function
 open import Level using (0ℓ)
 open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; _≢_; refl; cong; subst; module ≡-Reasoning)
+  using (_≡_; _≢_; refl; trans; cong; subst; module ≡-Reasoning)
 open import Relation.Nullary as Nullary hiding (recompute)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Binary
@@ -57,9 +57,9 @@ coprime⇒gcd≡1 coprime = GCD.unique (gcd-GCD _ _) (coprime⇒GCD≡1 coprime)
 gcd≡1⇒coprime : ∀ {m n} → gcd m n ≡ 1 → Coprime m n
 gcd≡1⇒coprime gcd≡1 = GCD≡1⇒coprime (subst (GCD _ _) gcd≡1 (gcd-GCD _ _))
 
-coprime-/gcd : ∀ m n {gcd≢0} →
-               Coprime ((m / gcd m n) {gcd≢0}) ((n / gcd m n) {gcd≢0})
-coprime-/gcd m n {gcd≢0} = GCD≡1⇒coprime (GCD-/gcd m n {gcd≢0})
+coprime-/gcd : ∀ m n .{{_ : NonZero (gcd m n)}} →
+               Coprime (m / gcd m n) (n / gcd m n)
+coprime-/gcd m n = GCD≡1⇒coprime (GCD-/gcd m n)
 
 ------------------------------------------------------------------------
 -- Relational properties of Coprime
@@ -112,12 +112,11 @@ recompute {n} {d} c = Nullary.recompute (coprime? n d) c
 -- If the "gcd" in Bézout's identity is non-zero, then the "other"
 -- divisors are coprime.
 
-Bézout-coprime : ∀ {i j d} →
-                 Bézout.Identity (suc d) (i * suc d) (j * suc d) →
-                 Coprime i j
-Bézout-coprime (Bézout.+- x y eq) (divides q₁ refl , divides q₂ refl) =
+Bézout-coprime : ∀ {i j d} .{{_ : NonZero d}} →
+                 Bézout.Identity d (i * d) (j * d) → Coprime i j
+Bézout-coprime {d = suc _} (Bézout.+- x y eq) (divides q₁ refl , divides q₂ refl) =
   lem₁₀ y q₂ x q₁ eq
-Bézout-coprime (Bézout.-+ x y eq) (divides q₁ refl , divides q₂ refl) =
+Bézout-coprime {d = suc _} (Bézout.-+ x y eq) (divides q₁ refl , divides q₂ refl) =
   lem₁₀ x q₁ y q₂ eq
 
 -- Coprime numbers satisfy Bézout's identity.
@@ -146,26 +145,12 @@ coprime-factors c (divides q₁ eq₁ , divides q₂ eq₂) with coprime-Bézout
 
 prime⇒coprime : ∀ m → Prime m →
                 ∀ n → 0 < n → n < m → Coprime m n
-prime⇒coprime (suc (suc m)) _  _ _  _ {1} _                       = refl
-prime⇒coprime (suc (suc m)) p  _ _  _ {0} (divides q 2+m≡q*0 , _) =
-  ⊥-elim $ m+1+n≢m 0 (begin-equality
-    2 + m  ≡⟨ 2+m≡q*0 ⟩
-    q * 0  ≡⟨ *-zeroʳ q ⟩
-    0      ∎)
-prime⇒coprime (suc (suc m)) p (suc n) _ 1+n<2+m {suc (suc i)}
-              (2+i∣2+m , 2+i∣1+n) =
-  ⊥-elim (p _ 2+i′∣2+m)
-  where
-  i<m : i < m
-  i<m = +-cancelˡ-< 2 (begin-strict
-    2 + i ≤⟨ ∣⇒≤ 2+i∣1+n ⟩
-    1 + n <⟨ 1+n<2+m ⟩
-    2 + m ∎)
-
-  2+i′∣2+m : 2 + toℕ (fromℕ< i<m) ∣ 2 + m
-  2+i′∣2+m = subst (_∣ 2 + m)
-    (P.sym (cong (2 +_) (toℕ-fromℕ< i<m)))
-    2+i∣2+m
+prime⇒coprime (suc (suc _)) p _ _ _ {0} (0∣m , _) =
+  contradiction (0∣⇒≡0 0∣m) λ()
+prime⇒coprime (suc (suc _)) _ _ _ _ {1} _         = refl
+prime⇒coprime (suc (suc _)) p (suc _) _ n<m {(suc (suc _))} (d∣m , d∣n) =
+  contradiction d∣m (p 2≤d d<m)
+  where 2≤d = s≤s (s≤s z≤n); d<m = <-transˡ (s≤s (∣⇒≤ d∣n)) n<m
 
 
 ------------------------------------------------------------------------

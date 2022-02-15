@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- The min operator derived from an arbitrary total order
+-- The min operator derived from an arbitrary total preorder.
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
