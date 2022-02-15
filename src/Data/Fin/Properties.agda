@@ -159,31 +159,15 @@ toℕ≤pred[n]′ i = ℕₚ.<⇒≤pred (toℕ<n i)
 -- In view of the defintions now in Data.Fin.Base,
 -- are these four lemmas not all the identity function?
 toℕ-mono-< : ∀ {n} {i j : Fin n} → i < j → toℕ i ℕ.< toℕ j
-{-
-toℕ-mono-< {i = 0F}    {suc j}       z<s       = z<s
-toℕ-mono-< {i = suc i} {suc (suc j)} (s<s i<j) = s<s (toℕ-mono-< i<j)
--}
 toℕ-mono-< i<j = i<j
 
 toℕ-mono-≤ : ∀ {n} {i j : Fin n} → i ≤ j → toℕ i ℕ.≤ toℕ j
-{-
-toℕ-mono-≤ {i = 0F}    {j}     z≤n       = z≤n
-toℕ-mono-≤ {i = suc i} {suc j} (s≤s i≤j) = s≤s (toℕ-mono-≤ i≤j)
--}
 toℕ-mono-≤ i≤j = i≤j
 
 toℕ-cancel-≤ : ∀ {n} {i j : Fin n} → toℕ i ℕ.≤ toℕ j → i ≤ j
-{-
-toℕ-cancel-≤ {i = 0F}    {j}     z≤n       = z≤n
-toℕ-cancel-≤ {i = suc i} {suc j} (s≤s i≤j) = s≤s (toℕ-cancel-≤ i≤j)
--}
 toℕ-cancel-≤ i≤j = i≤j
 
 toℕ-cancel-< : ∀ {n} {i j : Fin n} → toℕ i ℕ.< toℕ j → i < j
-{-
-toℕ-cancel-< {i = 0F}    {suc j}       z<s       = z<s
-toℕ-cancel-< {i = suc i} {suc (suc j)} (s<s i<j) = s<s (toℕ-cancel-< i<j)
--}
 toℕ-cancel-< i<j = i<j
 
 ------------------------------------------------------------------------
