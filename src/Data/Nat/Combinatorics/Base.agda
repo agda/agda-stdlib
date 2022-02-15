@@ -6,19 +6,16 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-open import Data.Bool using (true; false)
-open import Data.Nat.Base
-open import Data.Nat.DivMod
-open import Data.Nat.Properties
-open import Data.Nat.Factorial
-open import Relation.Nullary using (yes; no; does)
-open import Relation.Nullary.Decidable using (False; fromWitnessFalse)
-
 module Data.Nat.Combinatorics.Base where
 
-private
-  _!≢0 : ∀ n → False (n ! ≟ 0)
-  n !≢0 = fromWitnessFalse (n!≢0 n)
+open import Data.Bool.Base using (if_then_else_)
+open import Data.Nat.Base
+open import Data.Nat.Factorial
+
+-- NOTE: These operators are not implemented as efficiently as they
+-- could be. See the following link for more details.
+--
+-- https://math.stackexchange.com/questions/202554/how-do-i-compute-binomial-coefficients-efficiently
 
 ------------------------------------------------------------------------
 -- Permutations / falling factorial
@@ -37,9 +34,7 @@ n P′ (suc k) = (n ∸ k) * (n P′ k)
 -- Main definition. Valid for all k as deals with boundary case.
 
 _P_ : ℕ → ℕ → ℕ
-n P k with k ≤ᵇ n
-... | false = 0
-... | true  = n P′ k
+n P k = if k ≤ᵇ n then n P′ k else 0
 
 ------------------------------------------------------------------------
 -- Combinations / binomial coefficient
@@ -52,12 +47,11 @@ n P k with k ≤ᵇ n
 -- Base definition. Only valid for k ≤ n.
 
 _C′_ : ℕ → ℕ → ℕ
-n C′ k = ((n P′ k) / k !) {k !≢0}
+n C′ k = (n P′ k) / k !
+  where instance _ = k !≢0
 
 -- Main definition. Valid for all k.
 -- Deals with boundary case and exploits symmetry to improve performance.
 
 _C_ : ℕ → ℕ → ℕ
-n C k with k ≤ᵇ n
-... | false = 0
-... | true  = n C′ (k ⊓ (n ∸ k))
+n C k = if k ≤ᵇ n then n C′ (k ⊓ (n ∸ k)) else 0
