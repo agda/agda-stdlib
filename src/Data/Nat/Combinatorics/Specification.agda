@@ -41,7 +41,7 @@ nP′k≡n!/[n∸k]! {n} {zero}  z≤n = sym (n/n≡1 (n !) {{n !≢0}})
 nP′k≡n!/[n∸k]! {n} {suc k} k<n = begin-equality
   (n ∸ k) * (n P′ k)             ≡⟨ cong ((n ∸ k) *_) (nP′k≡n!/[n∸k]! (<⇒≤ k<n)) ⟩
   (n ∸ k) * (n ! / (n ∸ k) !)    ≡˘⟨ *-/-assoc (n ∸ k) (m≤n⇒m!∣n! (m∸n≤m n k)) ⟩
-  (((n ∸ k) * n !) / (n ∸ k) !)  ≡⟨ mn/m!≡n/[m∸1]! (n ∸ k) (n !) ⟩
+  (((n ∸ k) * n !) / (n ∸ k) !)  ≡⟨ m*n/m!≡n/[m∸1]! (n ∸ k) (n !) ⟩
   (n ! / (pred (n ∸ k) !))       ≡⟨ /-congʳ (cong _! (pred[m∸n]≡m∸[1+n] n k)) ⟩
   (n ! / (n ∸ suc k) !)          ∎
   where

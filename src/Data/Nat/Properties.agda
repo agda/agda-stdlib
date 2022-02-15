@@ -902,8 +902,8 @@ m*n≡0⇒m≡0∨n≡0 : ∀ m {n} → m * n ≡ 0 → m ≡ 0 ⊎ n ≡ 0
 m*n≡0⇒m≡0∨n≡0 zero    {n}     eq = inj₁ refl
 m*n≡0⇒m≡0∨n≡0 (suc m) {zero}  eq = inj₂ refl
 
-m≢0∧n≢0⇒m*n≢0 : ∀ m n → .{{_ : NonZero m}} .{{_ : NonZero n}} → NonZero (m * n)
-m≢0∧n≢0⇒m*n≢0 (suc m) (suc n) = _
+m*n≢0 : ∀ m n → .{{_ : NonZero m}} .{{_ : NonZero n}} → NonZero (m * n)
+m*n≢0 (suc m) (suc n) = _
 
 m*n≡0⇒m≡0 : ∀ m n .{{_ : NonZero n}} → m * n ≡ 0 → m ≡ 0
 m*n≡0⇒m≡0 zero (suc _) eq = refl
@@ -1884,7 +1884,7 @@ _!≢0 : ∀ n → NonZero (n !)
 n !≢0 = >-nonZero (1≤n! n)
 
 _!*_!≢0 : ∀ m n → NonZero (m ! * n !)
-m !* n !≢0 = m≢0∧n≢0⇒m*n≢0 _ _ {{m !≢0}} {{n !≢0}}
+m !* n !≢0 = m*n≢0 _ _ {{m !≢0}} {{n !≢0}}
 
 ------------------------------------------------------------------------
 -- Properties of _≤′_ and _<′_

@@ -269,7 +269,7 @@ m∣n*o⇒m/n∣o {_} {n@(suc _)} {o} (divides p refl) pn∣on = begin
   where open ∣-Reasoning
 
 m/n/o≡m/[n*o] : ∀ m n o .{{_ : NonZero n}} .{{_ : NonZero o}} → n * o ∣ m →
-                ((m / n) / o) ≡ (m / (n * o)) {{m≢0∧n≢0⇒m*n≢0 n o}}
+                ((m / n) / o) ≡ (m / (n * o)) {{m*n≢0 n o}}
 m/n/o≡m/[n*o] m n@(suc _) o@(suc _) n*o∣m = *-cancelˡ-≡ (n * o) (begin-equality
   (n * o) * (m / n / o)   ≡⟨ *-assoc n o _ ⟩
   n * (o * (m / n / o))   ≡⟨ cong (n *_) (m*[n/m]≡n (m*n∣o⇒n∣o/m n o n*o∣m)) ⟩
