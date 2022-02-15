@@ -139,19 +139,15 @@ toℕ-↑ʳ (suc n) i = cong suc (toℕ-↑ʳ n i)
 -- toℕ and the ordering relations
 ------------------------------------------------------------------------
 
-new-toℕ≤n : ∀ {n} → (i : Fin (suc n)) → toℕ i ℕ.≤ n
-new-toℕ≤n {_}     zero    = z≤n
-new-toℕ≤n {suc n} (suc i) = s≤s (new-toℕ≤n i)
-
-toℕ<n : ∀ {n} (i : Fin n) → toℕ i ℕ.< n
-toℕ<n {suc n} i = s≤s (new-toℕ≤n i)
-
-toℕ≤n : ∀ {n} → (i : Fin n) → toℕ i ℕ.≤ n
-toℕ≤n {suc n} i = ℕₚ.≤-step (new-toℕ≤n i)
-
 toℕ≤pred[n] : ∀ {n} (i : Fin n) → toℕ i ℕ.≤ ℕ.pred n
 toℕ≤pred[n] zero                 = z≤n
 toℕ≤pred[n] (suc {n = suc n} i)  = s≤s (toℕ≤pred[n] i)
+
+toℕ≤n : ∀ {n} → (i : Fin n) → toℕ i ℕ.≤ n
+toℕ≤n {suc n} i = ℕₚ.≤-step (toℕ≤pred[n] i)
+
+toℕ<n : ∀ {n} (i : Fin n) → toℕ i ℕ.< n
+toℕ<n {suc n} i = s≤s (toℕ≤pred[n] i)
 
 -- A simpler implementation of toℕ≤pred[n],
 -- however, with a different reduction behavior.
@@ -163,20 +159,32 @@ toℕ≤pred[n]′ i = ℕₚ.<⇒≤pred (toℕ<n i)
 -- In view of the defintions now in Data.Fin.Base,
 -- are these four lemmas not all the identity function?
 toℕ-mono-< : ∀ {n} {i j : Fin n} → i < j → toℕ i ℕ.< toℕ j
+{-
 toℕ-mono-< {i = 0F}    {suc j}       z<s       = z<s
 toℕ-mono-< {i = suc i} {suc (suc j)} (s<s i<j) = s<s (toℕ-mono-< i<j)
+-}
+toℕ-mono-< i<j = i<j
 
 toℕ-mono-≤ : ∀ {n} {i j : Fin n} → i ≤ j → toℕ i ℕ.≤ toℕ j
+{-
 toℕ-mono-≤ {i = 0F}    {j}     z≤n       = z≤n
 toℕ-mono-≤ {i = suc i} {suc j} (s≤s i≤j) = s≤s (toℕ-mono-≤ i≤j)
+-}
+toℕ-mono-≤ i≤j = i≤j
 
 toℕ-cancel-≤ : ∀ {n} {i j : Fin n} → toℕ i ℕ.≤ toℕ j → i ≤ j
+{-
 toℕ-cancel-≤ {i = 0F}    {j}     z≤n       = z≤n
 toℕ-cancel-≤ {i = suc i} {suc j} (s≤s i≤j) = s≤s (toℕ-cancel-≤ i≤j)
+-}
+toℕ-cancel-≤ i≤j = i≤j
 
 toℕ-cancel-< : ∀ {n} {i j : Fin n} → toℕ i ℕ.< toℕ j → i < j
+{-
 toℕ-cancel-< {i = 0F}    {suc j}       z<s       = z<s
 toℕ-cancel-< {i = suc i} {suc (suc j)} (s<s i<j) = s<s (toℕ-cancel-< i<j)
+-}
+toℕ-cancel-< i<j = i<j
 
 ------------------------------------------------------------------------
 -- fromℕ
@@ -191,7 +199,7 @@ fromℕ-toℕ zero    = refl
 fromℕ-toℕ (suc i) = cong suc (fromℕ-toℕ i)
 
 ≤fromℕ : ∀ {n} → (i : Fin (ℕ.suc n)) → i ≤ fromℕ n
-≤fromℕ {n} i = subst (toℕ i ℕ.≤_) (sym (toℕ-fromℕ n)) (new-toℕ≤n i)
+≤fromℕ {n} i = subst (toℕ i ℕ.≤_) (sym (toℕ-fromℕ n)) (toℕ≤pred[n] i)
 
 ------------------------------------------------------------------------
 -- fromℕ<
@@ -640,7 +648,7 @@ combine-injective i j k l combine[i,j]≡combine[k,l] =
   lemma₂ i j k l combine[i,j]≡combine[k,l] , lemma₃ i j k l combine[i,j]≡combine[k,l]
   where
     lemma₁ : ∀ {n m} (i : Fin n) (j : Fin m) (k : Fin n) (l : Fin m) → i < k → combine i j < combine k l
-    lemma₁ {n} {m} i j k l i<k = toℕ-cancel-< (begin-strict
+    lemma₁ {n} {m} i j k l i<k = begin-strict
       toℕ (combine i j)      ≡⟨ toℕ-combine i j ⟩
       m ℕ.* toℕ i ℕ.+ toℕ j  <⟨ ℕₚ.+-monoʳ-< (m ℕ.* toℕ i) (toℕ<n j) ⟩
       m ℕ.* toℕ i ℕ.+ m      ≡⟨ ℕₚ.+-comm _ m ⟩
@@ -649,7 +657,7 @@ combine-injective i j k l combine[i,j]≡combine[k,l] =
       m ℕ.* suc (toℕ i)      ≤⟨ ℕₚ.*-monoʳ-≤ m (toℕ-mono-< i<k) ⟩
       m ℕ.* toℕ k            ≤⟨ ℕₚ.m≤m+n (m ℕ.* toℕ k) (toℕ l) ⟩
       m ℕ.* toℕ k ℕ.+ toℕ l  ≡˘⟨ toℕ-combine k l ⟩
-      toℕ (combine k l)      ∎)
+      toℕ (combine k l)      ∎
       where
         open ℕₚ.≤-Reasoning
         open +-*-Solver
@@ -1000,7 +1008,7 @@ opposite-involutive : ∀ {n} → Involutive {A = Fin n} _≡_ opposite
 opposite-involutive {suc n} i = toℕ-injective (begin
   toℕ (opposite (opposite i)) ≡⟨ opposite-prop (opposite i) ⟩
   n ∸ (toℕ (opposite i))     ≡⟨ cong (n ∸_) (opposite-prop i) ⟩
-  n ∸ (n ∸ (toℕ i))         ≡⟨ ℕₚ.m∸[m∸n]≡n (new-toℕ≤n i) ⟩
+  n ∸ (n ∸ (toℕ i))         ≡⟨ ℕₚ.m∸[m∸n]≡n (toℕ≤pred[n] i) ⟩
   toℕ i                     ∎)
   where open ≡-Reasoning
 
