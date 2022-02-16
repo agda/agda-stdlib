@@ -162,6 +162,12 @@ isPreorder = record
   ; trans         = trans
   }
 
+isPartialOrder : IsPartialOrder {A = A} _≡_ _≡_
+isPartialOrder = record
+  { isPreorder = isPreorder
+  ; antisym    = λ eq _ → eq
+  }
+
 ------------------------------------------------------------------------
 -- Bundles for equality as a binary relation
 
@@ -184,4 +190,12 @@ preorder A = record
   ; _≈_        = _≡_
   ; _∼_        = _≡_
   ; isPreorder = isPreorder
+  }
+
+poset : Set a → Poset _ _ _
+poset A = record
+  { Carrier        = A
+  ; _≈_            = _≡_
+  ; _≤_            = _≡_
+  ; isPartialOrder = isPartialOrder
   }

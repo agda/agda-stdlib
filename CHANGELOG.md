@@ -1393,6 +1393,9 @@ Other minor changes
   dcong₂  : (p : x₁ ≡ x₂) → subst B p y₁ ≡ y₂ → f x₁ y₁ ≡ f x₂ y₂
   dsubst₂ : (p : x₁ ≡ x₂) → subst B p y₁ ≡ y₂ → C x₁ y₁ → C x₂ y₂
   ddcong₂ : (p : x₁ ≡ x₂) (q : subst B p y₁ ≡ y₂) → dsubst₂ C p q (f x₁ y₁) ≡ f x₂ y₂
+  
+  isPartialOrder : IsPartialOrder _≡_ _≡_
+  poset          : Set a → Poset _ _ _
   ```
 
 * Added new operations in `System.Exit`:
