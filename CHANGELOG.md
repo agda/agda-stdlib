@@ -437,6 +437,13 @@ Non-backwards compatible changes
   ```
 * `Opₗ` and `Opᵣ` have moved from `Algebra.Core` to `Algebra.Module.Core`.
 
+* In `Data.Nat.GeneralisedArithmetic`, the `s` and `z` arguments to the following
+  functions have been made explicit:
+  * `fold-+`
+  * `fold-k`
+  * `fold-*`
+  * `fold-pull`
+
 Major improvements
 ------------------
 
@@ -1188,6 +1195,8 @@ Other minor changes
   foldr′ : (A → B → B) → B → Vec A n → B
   foldl′ : (B → A → B) → B → Vec A n → B
 
+  iterate : (A → A) → A → Vec A n
+
   diagonal           : Vec (Vec A n) n → Vec A n
   DiagonalBind._>>=_ : Vec A n → (A → Vec B n) → Vec B n
   _ʳ++_              : Vec A m → Vec A n → Vec A (m + n)
@@ -1642,4 +1651,10 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   length-map : length (map f xs) ≡ length xs
   map-cong : f ≗ g → map f ≗ map g
   map-compose : map (g ∘ f) ≗ map g ∘ map f
+  ```
+
+* Added new functions and proofs in `Data.Nat.GeneralisedArithmetic`:
+  ```agda
+  iterate : (A → A) → A → ℕ → A
+  iterate-is-fold : ∀ (z : A) s m → fold z s m ≡ iterate s z m
   ```

@@ -12,19 +12,21 @@ open import Codata.Guarded.Stream
 open import Codata.Guarded.Stream.Relation.Binary.Pointwise
   as B using (_≈_; head; tail; module ≈-Reasoning)
 
-open import Data.Nat.Base using (zero; suc)
+open import Data.Nat.Base using (zero; suc; _+_)
+import Data.Nat.GeneralisedArithmetic as ℕ
 open import Data.Product as Prod using (_,_; proj₁; proj₂)
 open import Data.Vec.Base as Vec using (Vec; _∷_)
-open import Function.Base using (const; flip; id; _∘′_; _$′_; _⟨_⟩_)
+open import Function.Base using (const; flip; id; _∘′_; _$′_; _⟨_⟩_; _∘₂′_)
 open import Level using (Level)
 open import Relation.Binary.PropositionalEquality as P using (_≡_; cong; cong₂)
 
 private
   variable
-    a b c : Level
+    a b c d : Level
     A : Set a
     B : Set b
     C : Set c
+    D : Set d
 
 ------------------------------------------------------------------------
 -- Congruence
@@ -45,6 +47,11 @@ cong-zipWith : ∀ (f : A → B → C) {as bs cs ds} → as ≈ bs → cs ≈ ds
                zipWith f as cs ≈ zipWith f bs ds
 cong-zipWith f as≈bs cs≈ds .head = cong₂ f (as≈bs .head) (cs≈ds .head)
 cong-zipWith f as≈bs cs≈ds .tail = cong-zipWith f (as≈bs .tail) (cs≈ds .tail)
+
+cong-interleave : {as bs cs ds : Stream A} → as ≈ bs → cs ≈ ds →
+                  interleave as cs ≈ interleave bs ds
+cong-interleave as≈bs cs≈ds .head = as≈bs .head
+cong-interleave as≈bs cs≈ds .tail = cong-interleave cs≈ds (as≈bs .tail)
 
 cong-chunksOf : ∀ n {as bs : Stream A} → as ≈ bs → chunksOf n as ≈ chunksOf n bs
 cong-chunksOf n as≈bs .head = cong-take n as≈bs
@@ -118,6 +125,54 @@ map-identity as .tail = map-identity (as .tail)
 map-fusion : ∀ (g : B → C) (f : A → B) as → map g (map f as) ≈ map (g ∘′ f) as
 map-fusion g f as .head = P.refl
 map-fusion g f as .tail = map-fusion g f (as .tail)
+
+map-drop : ∀ (f : A → B) n as → map f (drop n as) ≡ drop n (map f as)
+map-drop f zero    as = P.refl
+map-drop f (suc n) as = map-drop f n (as .tail)
+
+map-zipWith : ∀ (g : C → D) (f : A → B → C) as bs →
+              map g (zipWith f as bs) ≈ zipWith (g ∘₂′ f) as bs
+map-zipWith g f as bs .head = P.refl
+map-zipWith g f as bs .tail = map-zipWith g f (as .tail) (bs .tail)
+
+map-interleave : ∀ (f : A → B) as bs →
+                 map f (interleave as bs) ≈ interleave (map f as) (map f bs)
+map-interleave f as bs .head = P.refl
+map-interleave f as bs .tail = map-interleave f bs (as .tail)
+
+------------------------------------------------------------------------
+-- Properties of take
+
+take-iterate : ∀ n f (x : A) → take n (iterate f x) ≡ Vec.iterate f x
+take-iterate zero    f x = P.refl
+take-iterate (suc n) f x = cong (x ∷_) (take-iterate n f (f x))
+
+take-zipWith : ∀ n (f : A → B → C) as bs →
+               take n (zipWith f as bs) ≡ Vec.zipWith f (take n as) (take n bs)
+take-zipWith zero    f as bs = P.refl
+take-zipWith (suc n) f as bs =
+  cong (f (as .head) (bs .head) ∷_) (take-zipWith n f (as .tail) (bs . tail))
+
+------------------------------------------------------------------------
+-- Properties of drop
+
+drop-fusion : ∀ m n (as : Stream A) → drop n (drop m as) ≡ drop (m + n) as
+drop-fusion zero    n as = P.refl
+drop-fusion (suc m) n as = drop-fusion m n (as .tail)
+
+drop-zipWith : ∀ n (f : A → B → C) as bs →
+               drop n (zipWith f as bs) ≡ zipWith f (drop n as) (drop n bs)
+drop-zipWith zero    f as bs = P.refl
+drop-zipWith (suc n) f as bs = drop-zipWith n f (as .tail) (bs .tail)
+
+drop-ap : ∀ n (fs : Stream (A → B)) as →
+          drop n (ap fs as) ≡ ap (drop n fs) (drop n as)
+drop-ap zero    fs as = P.refl
+drop-ap (suc n) fs as = drop-ap n (fs .tail) (as .tail)
+
+drop-iterate : ∀ n f (x : A) → drop n (iterate f x) ≡ iterate f (ℕ.iterate f x n)
+drop-iterate zero    f x = P.refl
+drop-iterate (suc n) f x = drop-iterate n f (f x)
 
 ------------------------------------------------------------------------
 -- Properties of zipWith
