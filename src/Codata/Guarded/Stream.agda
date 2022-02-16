@@ -80,6 +80,10 @@ scanl : (B → A → B) → B → Stream A → Stream B
 head (scanl f b xs) = b
 tail (scanl f b xs) = scanl f (f b (head xs)) (tail xs)
 
+tails : Stream A → Stream (Stream A)
+head (tails xs) = xs
+tail (tails xs) = tails (tail xs)
+
 splitAt : (n : ℕ) → Stream A → Vec A n × Stream A
 splitAt 0 xs = [] , xs
 splitAt (suc n) xs = P.map₁ (head xs ∷_) (splitAt n (tail xs))
