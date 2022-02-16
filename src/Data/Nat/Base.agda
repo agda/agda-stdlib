@@ -17,7 +17,7 @@ open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; _≢_; refl)
 open import Relation.Nullary using (¬_)
-open import Relation.Nullary.Negation.Core using (contradiction)
+open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred)
 
 ------------------------------------------------------------------------
@@ -123,6 +123,7 @@ open import Agda.Builtin.Nat
 pred : ℕ → ℕ
 pred n = n ∸ 1
 
+infix  8 _!
 infixl 7 _⊓_ _/_ _%_
 infixl 6 _+⋎_ _⊔_
 
@@ -182,6 +183,12 @@ m / (suc n) = div-helper 0 n m n
 
 _%_ : (dividend divisor : ℕ) .{{_ : NonZero divisor}} → ℕ
 m % (suc n) = mod-helper 0 n m n
+
+-- Factorial
+
+_! : ℕ → ℕ
+zero  ! = 1
+suc n ! = suc n * n !
 
 ------------------------------------------------------------------------
 -- Alternative definition of _≤_
