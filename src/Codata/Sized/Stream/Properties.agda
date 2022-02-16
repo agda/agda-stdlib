@@ -114,7 +114,7 @@ lookup-iterate-identity zero     f a = P.refl
 lookup-iterate-identity (suc n)  f a = begin
   lookup (suc n) (iterate f a) ≡⟨⟩
   lookup n (iterate f (f a))   ≡⟨ lookup-iterate-identity n f (f a) ⟩
-  fold (f a) f n               ≡⟨ fold-pull (const ∘′ f) (f a) P.refl (λ _ → P.refl) n ⟩
+  fold (f a) f n               ≡⟨ fold-pull a f (const ∘′ f) (f a) P.refl (λ _ → P.refl) n ⟩
   f (fold a f n)               ≡⟨⟩
   fold a f (suc n)             ∎ where open P.≡-Reasoning
 

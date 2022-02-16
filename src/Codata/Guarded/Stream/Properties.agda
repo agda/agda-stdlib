@@ -12,7 +12,7 @@ open import Codata.Guarded.Stream
 open import Codata.Guarded.Stream.Relation.Binary.Pointwise
   as B using (_≈_; head; tail; module ≈-Reasoning)
 
-open import Data.Nat.Base using (zero; suc; _+_)
+open import Data.Nat.Base using (zero; suc; _+_; _*_)
 import Data.Nat.GeneralisedArithmetic as ℕ
 open import Data.Product as Prod using (_,_; proj₁; proj₂)
 open import Data.Vec.Base as Vec using (Vec; _∷_)
@@ -30,6 +30,10 @@ private
 
 ------------------------------------------------------------------------
 -- Congruence
+
+cong-lookup : ∀ n {as bs : Stream A} → as ≈ bs → lookup n as ≡ lookup n bs
+cong-lookup zero    as≈bs = as≈bs .head
+cong-lookup (suc n) as≈bs = cong-lookup n (as≈bs .tail)
 
 cong-take : ∀ n {as bs : Stream A} → as ≈ bs → take n as ≡ take n bs
 cong-take zero    as≈bs = P.refl
@@ -139,6 +143,29 @@ map-interleave : ∀ (f : A → B) as bs →
                  map f (interleave as bs) ≈ interleave (map f as) (map f bs)
 map-interleave f as bs .head = P.refl
 map-interleave f as bs .tail = map-interleave f bs (as .tail)
+
+------------------------------------------------------------------------
+-- Properties of lookup
+
+lookup-drop : ∀ m n (as : Stream A) → lookup n (drop m as) ≡ lookup (m + n) as
+lookup-drop zero    n as = P.refl
+lookup-drop (suc m) n as = lookup-drop m n (as .tail)
+
+lookup-map : ∀ n (f : A → B) as → lookup n (map f as) ≡ f (lookup n as)
+lookup-map zero    f as = P.refl
+lookup-map (suc n) f as = lookup-map n f (as . tail)
+
+lookup-iterate : ∀ n f (x : A) → lookup n (iterate f x) ≡ ℕ.iterate f x n
+lookup-iterate zero    f x = P.refl
+lookup-iterate (suc n) f x = lookup-iterate n f (f x)
+
+lookup-evens : ∀ n (as : Stream A) → lookup n (evens as) ≡ lookup (n * 2) as
+lookup-evens zero    as = P.refl
+lookup-evens (suc n) as = lookup-evens n (as .tail .tail)
+
+lookup-odds : ∀ n (as : Stream A) → lookup n (odds as) ≡ lookup (suc (n * 2)) as
+lookup-odds zero    as = P.refl
+lookup-odds (suc n) as = lookup-odds n (as .tail .tail)
 
 ------------------------------------------------------------------------
 -- Properties of take
