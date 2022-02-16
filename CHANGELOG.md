@@ -31,7 +31,7 @@ Bug-fixes
   meta-variable whenever this module was explicitly parameterised. This has
   been fixed.
 
-* Add module `Algebra.Module` that re-exports the contents of 
+* Add module `Algebra.Module` that re-exports the contents of
   `Algebra.Module.(Definitions/Structures/Bundles)`
 
 Non-backwards compatible changes
@@ -76,7 +76,7 @@ Non-backwards compatible changes
 
 ### Refactoring of algebraic lattice hierarchy
 
-* In order to improve modularity and consistency with `Relation.Binary.Lattice`, 
+* In order to improve modularity and consistency with `Relation.Binary.Lattice`,
   the structures & bundles for `Semilattice`, `Lattice`, `DistributiveLattice`
   & `BooleanAlgebra` have been moved out of the `Algebra` modules and into their
   own hierarchy in `Algebra.Lattice`.
@@ -86,7 +86,7 @@ Non-backwards compatible changes
   `Algebra.Lattice.Properties.Semilattice` or `Algebra.Lattice.Morphism.Lattice`). See
   the `Deprecated modules` section below for full details.
 
-* Changed definition of `IsDistributiveLattice` and `IsBooleanAlgebra` so that they are 
+* Changed definition of `IsDistributiveLattice` and `IsBooleanAlgebra` so that they are
   no longer right-biased which hinders compositionality. More concretely, `IsDistributiveLattice`
   now has fields:
   ```agda
@@ -269,7 +269,7 @@ Non-backwards compatible changes
   in order to keep another new definition of `_>>=_`, located in `DiagonalBind`
   which is also a submodule of `Data.Vec.Base`.
 
-* The constructors `+0` and `+[1+_]` from `Data.Integer.Base` are no longer 
+* The constructors `+0` and `+[1+_]` from `Data.Integer.Base` are no longer
   exported by `Data.Rational.Base`. You will have to open `Data.Integer(.Base)`
   directly to use them.
 
@@ -500,7 +500,7 @@ New modules
   Function.Properties.Surjection
   ```
 
-* In order to improve modularity, the contents of `Relation.Binary.Lattice` has been 
+* In order to improve modularity, the contents of `Relation.Binary.Lattice` has been
   split out into the standard:
   ```
   Relation.Binary.Lattice.Definitions
@@ -707,20 +707,20 @@ Other minor changes
 
 * Added new proofs in `Data.Vec.Properties`:
   ```agda
-  map-const : ∀ {n} (xs : Vec A n) (x : B) → map {n = n} (const x) xs ≡ replicate x
-  map-⊛ : ∀ {n} (f : A → B → C) (g : A → B) (xs : Vec A n) → (map f xs ⊛ map g xs) ≡ map (f ˢ g) xs
-  ⊛-is->>= : ∀ {n} (fs : Vec (A → B) n) (xs : Vec A n) → (fs ⊛ xs) ≡ (fs DiagonalBind.>>= flip map xs)
-  padRight-refl : ∀ {n} → (a : A) → (xs : Vec A n) → padRight ≤-refl a xs ≡ xs
-  padRight-replicate : ∀ {m n} → (le : m ≤ n) → (a : A) → replicate a ≡ padRight le a (replicate a)
-  padRight-trans : ∀ {m n p} → (le₁ : m ≤ n) → (le₂ : n ≤ p) → (a : A) → (xs : Vec A m) →
-              padRight (≤-trans le₁ le₂) a xs ≡ padRight le₂ a (padRight le₁ a xs)
+  map-const : map (const x) xs ≡ replicate x
+  map-⊛     : (map f xs ⊛ map g xs) ≡ map (f ˢ g) xs
+  ⊛-is->>=  : (fs ⊛ xs) ≡ (fs DiagonalBind.>>= flip map xs)
+
+  padRight-refl      : padRight ≤-refl a xs ≡ xs
+  padRight-replicate : replicate a ≡ padRight le a (replicate a)
+  padRight-trans     : padRight (≤-trans m≤n n≤p) a xs ≡ padRight n≤p a (padRight m≤n a xs)
+
   transpose-replicate : ∀ {m n} (xs : Vec A m) → transpose (replicate {n = n} xs) ≡ map replicate xs
   []≔-++-↑ʳ : ∀ {m n y} (xs : Vec A m) (ys : Vec A n) i → (xs ++ ys) [ m ↑ʳ i ]≔ y ≡ xs ++ (ys [ i ]≔ y)
 
-  truncate-refl : ∀ {n} → (xs : Vec A n) → truncate ≤-refl xs ≡ xs
-  truncate-trans : ∀ {m n p} → (le₁ : m ≤ n) → (le₂ : n ≤ p) → (xs : Vec A p) →
-                   truncate (≤-trans le₁ le₂) xs ≡ truncate le₁ (truncate le₂ xs)
-  truncate-padRight-id : ∀ {m n} → (le : m ≤ n) → (a : A) → (xs : Vec A m) → truncate le (padRight le a xs) ≡ xs
+  truncate-refl     : truncate ≤-refl xs ≡ xs
+  truncate-trans    : truncate (≤-trans m≤n n≤p) xs ≡ truncate m≤n (truncate n≤p xs)
+  truncate-padRight : truncate m≤n (padRight m≤n a xs) ≡ xs
   ```
 
 * Added new proofs in `Function.Construct.Symmetry`:
@@ -844,10 +844,10 @@ Other minor changes
          → dsubst₂ C p q (f x₁ y₁) ≡ f x₂ y₂
   ```
 
-* Added vector associativity proof to 
+* Added vector associativity proof to
   `Data/Vec/Relation/Binary/Equality/Setoid.agda`:
   ```
-  ++-assoc : ∀ {n m k} (xs : Vec A n) → (ys : Vec A m) 
+  ++-assoc : ∀ {n m k} (xs : Vec A n) → (ys : Vec A m)
       → (zs : Vec A k) → (xs ++ ys) ++ zs ≋ xs ++ (ys ++ zs)
   ```
 

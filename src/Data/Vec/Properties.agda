@@ -78,8 +78,8 @@ unfold-take : ∀ n {m} x (xs : Vec A (n + m)) → take (suc n) (x ∷ xs) ≡ x
 unfold-take n x xs with splitAt n xs
 unfold-take n x .(xs ++ ys) | xs , ys , refl = refl
 
-take-distr-zipWith : ∀ {m n} → (f : A → B → C) →
-                     (xs : Vec A (m + n)) → (ys : Vec B (m + n)) →
+take-distr-zipWith : ∀ {m n} (f : A → B → C)
+                     (xs : Vec A (m + n)) (ys : Vec B (m + n)) →
                      take m (zipWith f xs ys) ≡ zipWith f (take m xs) (take m ys)
 take-distr-zipWith {m = zero}  f  xs       ys = refl
 take-distr-zipWith {m = suc m} f (x ∷ xs) (y ∷ ys) = begin
@@ -96,7 +96,7 @@ take-distr-zipWith {m = suc m} f (x ∷ xs) (y ∷ ys) = begin
     zipWith f (take (suc m) (x ∷ xs)) (take (suc m) (y ∷ ys))
   ∎
 
-take-distr-map : ∀ {n} → (f : A → B) → (m : ℕ) → (xs : Vec A (m + n)) →
+take-distr-map : ∀ {n} (f : A → B) (m : ℕ) (xs : Vec A (m + n)) →
                  take m (map f xs) ≡ map f (take m xs)
 take-distr-map f zero xs = refl
 take-distr-map f (suc m) (x ∷ xs) =
@@ -115,8 +115,8 @@ unfold-drop : ∀ n {m} x (xs : Vec A (n + m)) → drop (suc n) (x ∷ xs) ≡ d
 unfold-drop n x xs with splitAt n xs
 unfold-drop n x .(xs ++ ys) | xs , ys , refl = refl
 
-drop-distr-zipWith : ∀ {m n} → (f : A → B → C) →
-                     (x : Vec A (m + n)) → (y : Vec B (m + n)) →
+drop-distr-zipWith : ∀ {m n} (f : A → B → C)
+                     (x : Vec A (m + n)) (y : Vec B (m + n)) →
                      drop m (zipWith f x y) ≡ zipWith f (drop m x) (drop m y)
 drop-distr-zipWith {m = zero} f   xs       ys = refl
 drop-distr-zipWith {m = suc m} f (x ∷ xs) (y ∷ ys) = begin
@@ -131,7 +131,7 @@ drop-distr-zipWith {m = suc m} f (x ∷ xs) (y ∷ ys) = begin
     zipWith f (drop (suc m) (x ∷ xs)) (drop (suc m) (y ∷ ys))
   ∎
 
-drop-distr-map : ∀ {n} → (f : A → B) → (m : ℕ) → (x : Vec A (m + n)) →
+drop-distr-map : ∀ {n} (f : A → B) (m : ℕ) (x : Vec A (m + n)) →
                  drop m (map f x) ≡ map f (drop m x)
 drop-distr-map f zero x = refl
 drop-distr-map f (suc m) (x ∷ xs) = begin
@@ -144,7 +144,7 @@ drop-distr-map f (suc m) (x ∷ xs) = begin
 ------------------------------------------------------------------------
 -- take and drop together
 
-take-drop-id : ∀ {n} → (m : ℕ) → (x : Vec A (m + n)) → take m x ++ drop m x ≡ x
+take-drop-id : ∀ {n} (m : ℕ) (x : Vec A (m + n)) → take m x ++ drop m x ≡ x
 take-drop-id zero x = refl
 take-drop-id (suc m) (x ∷ xs) = begin
     take (suc m) (x ∷ xs) ++ drop (suc m) (x ∷ xs)
@@ -159,37 +159,38 @@ take-drop-id (suc m) (x ∷ xs) = begin
 --------------------------------------------------------------------------------
 -- truncate
 
-truncate-refl : ∀ {n} → (xs : Vec A n) → truncate ≤-refl xs ≡ xs
+truncate-refl : ∀ {n} (xs : Vec A n) → truncate ≤-refl xs ≡ xs
 truncate-refl []       = refl
 truncate-refl (x ∷ xs) = cong (x ∷_) (truncate-refl xs)
 
-truncate-trans : ∀ {m n p} → (le₁ : m ≤ n) → (le₂ : n ≤ p) → (xs : Vec A p) →
-                 truncate (≤-trans le₁ le₂) xs ≡ truncate le₁ (truncate le₂ xs)
-truncate-trans z≤n       le₂       xs = refl
-truncate-trans (s≤s le₁) (s≤s le₂) (x ∷ xs) = cong (x ∷_) (truncate-trans le₁ le₂ xs)
+truncate-trans : ∀ {m n p} (m≤n : m ≤ n) (n≤p : n ≤ p) (xs : Vec A p) →
+                 truncate (≤-trans m≤n n≤p) xs ≡ truncate m≤n (truncate n≤p xs)
+truncate-trans z≤n       n≤p       xs = refl
+truncate-trans (s≤s m≤n) (s≤s n≤p) (x ∷ xs) = cong (x ∷_) (truncate-trans m≤n n≤p xs)
 
 --------------------------------------------------------------------------------
 -- pad
 
-padRight-refl : ∀ {n} → (a : A) → (xs : Vec A n) → padRight ≤-refl a xs ≡ xs
+padRight-refl : ∀ {n} (a : A) (xs : Vec A n) → padRight ≤-refl a xs ≡ xs
 padRight-refl a []       = refl
 padRight-refl a (x ∷ xs) = cong (x ∷_) (padRight-refl a xs)
 
-padRight-replicate : ∀ {m n} → (le : m ≤ n) → (a : A) → replicate a ≡ padRight le a (replicate a)
+padRight-replicate : ∀ {m n} (le : m ≤ n) (a : A) → replicate a ≡ padRight le a (replicate a)
 padRight-replicate z≤n      a = refl
 padRight-replicate (s≤s le) a = cong (a ∷_) (padRight-replicate le a)
 
-padRight-trans : ∀ {m n p} → (le₁ : m ≤ n) → (le₂ : n ≤ p) → (a : A) → (xs : Vec A m) →
-            padRight (≤-trans le₁ le₂) a xs ≡ padRight le₂ a (padRight le₁ a xs)
-padRight-trans z≤n       le₂       a []       = padRight-replicate le₂ a
-padRight-trans (s≤s le₁) (s≤s le₂) a (x ∷ xs) = cong (x ∷_) (padRight-trans le₁ le₂ a xs)
+padRight-trans : ∀ {m n p} (m≤n : m ≤ n) (n≤p : n ≤ p) (a : A) (xs : Vec A m) →
+            padRight (≤-trans m≤n n≤p) a xs ≡ padRight n≤p a (padRight m≤n a xs)
+padRight-trans z≤n       n≤p       a []       = padRight-replicate n≤p a
+padRight-trans (s≤s m≤n) (s≤s n≤p) a (x ∷ xs) = cong (x ∷_) (padRight-trans m≤n n≤p a xs)
 
 --------------------------------------------------------------------------------
 -- truncate and padRight together
 
-truncate-padRight-id : ∀ {m n} → (le : m ≤ n) → (a : A) → (xs : Vec A m) → truncate le (padRight le a xs) ≡ xs
-truncate-padRight-id z≤n      a []       = refl
-truncate-padRight-id (s≤s le) a (x ∷ xs) = cong (x ∷_) (truncate-padRight-id le a xs)
+truncate-padRight : ∀ {m n} (m≤n : m ≤ n) (a : A) (xs : Vec A m) →
+                    truncate m≤n (padRight m≤n a xs) ≡ xs
+truncate-padRight z≤n       a []       = refl
+truncate-padRight (s≤s m≤n) a (x ∷ xs) = cong (x ∷_) (truncate-padRight m≤n a xs)
 
 ------------------------------------------------------------------------
 -- lookup
