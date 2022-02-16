@@ -132,7 +132,7 @@ Minimum = Min
 
 -- Definitions for apartness relations
 
--- Note that Cotransitive's arguments are permuted with respect to Transitives.
+-- Note that Cotransitive's arguments are permuted with respect to Transitive's.
 Cotransitive : Rel A ℓ → Set _
 Cotransitive _#_ = ∀ {x y} z → x # y → (x # z) ⊎ (z # y)
 
