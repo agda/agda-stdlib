@@ -33,11 +33,11 @@ record HeytingCommutativeRing c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ�
 
   open IsHeytingCommutativeRing isHeytingCommutativeRing public
 
-  cring : CommutativeRing c ℓ₁
-  cring = record { isCommutativeRing = isCommutativeRing }
+  commutativeRing : CommutativeRing c ℓ₁
+  commutativeRing = record { isCommutativeRing = isCommutativeRing }
 
-  apart : ApartnessRelation c ℓ₁ ℓ₂
-  apart = record { isApartnessRelation = isApartnessRelation }
+  apartnessRelation : ApartnessRelation c ℓ₁ ℓ₂
+  apartnessRelation = record { isApartnessRelation = isApartnessRelation }
 
 
 record HeytingField c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
@@ -58,8 +58,8 @@ record HeytingField c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
 
   open IsHeytingField isHeytingField public
 
-  heyting-cring : HeytingCommutativeRing c ℓ₁ ℓ₂
-  heyting-cring = record { isHeytingCommutativeRing = isHeytingCommutativeRing }
+  heytingCommutativeRing : HeytingCommutativeRing c ℓ₁ ℓ₂
+  heytingCommutativeRing = record { isHeytingCommutativeRing = isHeytingCommutativeRing }
 
-  apart : ApartnessRelation c ℓ₁ ℓ₂
-  apart = record { isApartnessRelation = isApartnessRelation }
+  apartnessRelation : ApartnessRelation c ℓ₁ ℓ₂
+  apartnessRelation = record { isApartnessRelation = isApartnessRelation }
