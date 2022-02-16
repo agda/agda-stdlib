@@ -629,6 +629,14 @@ New modules
   Algebra.Properties.Semiring.Exp.TailRecursiveOptimised
   ```
 
+* A definition of infinite streams using coinductive records:
+  ```
+  Codata.Guarded.Stream
+  Codata.Guarded.Stream.Relation.Binary.Pointwise
+  Codata.Guarded.Stream.Relation.Unary.All
+  Codata.Guarded.Stream.Relation.Unary.Any
+  ```
+
 * A small library for function arguments with default values:
   ```
   Data.Default
