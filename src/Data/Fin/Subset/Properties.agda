@@ -28,7 +28,7 @@ open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Vec.Base
 open import Data.Vec.Properties
 open import Function.Base using (_∘_; const; id; case_of_)
-open import Function.Equivalence using (_⇔_; equivalence)
+open import Function.Bundles using (_⇔_; mk⇔)
 open import Level using (Level)
 open import Relation.Binary as B hiding (Decidable; _⇔_)
 open import Relation.Binary.PropositionalEquality
@@ -66,14 +66,14 @@ out⊆ : p ⊆ q → outside ∷ p ⊆ s ∷ q
 out⊆ p⊆q (there ∈p) = there (p⊆q ∈p)
 
 out⊆-⇔ : p ⊆ q ⇔ outside ∷ p ⊆ s ∷ q
-out⊆-⇔ = equivalence out⊆ drop-∷-⊆
+out⊆-⇔ = mk⇔ out⊆ drop-∷-⊆
 
 in⊆in : p ⊆ q → inside ∷ p ⊆ inside ∷ q
 in⊆in p⊆q here = here
 in⊆in p⊆q (there ∈p) = there (p⊆q ∈p)
 
 in⊆in-⇔ : p ⊆ q ⇔ inside ∷ p ⊆ inside ∷ q
-in⊆in-⇔ = equivalence in⊆in drop-∷-⊆
+in⊆in-⇔ = mk⇔ in⊆in drop-∷-⊆
 
 s⊆s : p ⊆ q → s ∷ p ⊆ s ∷ q
 s⊆s p⊆q here = here
@@ -92,13 +92,13 @@ out⊂in : p ⊆ q → outside ∷ p ⊂ inside ∷ q
 out⊂in p⊆q = out⊆ p⊆q , zero , here , λ ()
 
 out⊂in-⇔ : p ⊆ q ⇔ outside ∷ p ⊂ inside ∷ q
-out⊂in-⇔ = equivalence out⊂in (drop-∷-⊆ ∘ proj₁)
+out⊂in-⇔ = mk⇔ out⊂in (drop-∷-⊆ ∘ proj₁)
 
 out⊂out-⇔ : p ⊂ q ⇔ outside ∷ p ⊂ outside ∷ q
-out⊂out-⇔ = equivalence out⊂ drop-∷-⊂
+out⊂out-⇔ = mk⇔ out⊂ drop-∷-⊂
 
 in⊂in-⇔ : p ⊂ q ⇔ inside ∷ p ⊂ inside ∷ q
-in⊂in-⇔ = equivalence in⊂in drop-∷-⊂
+in⊂in-⇔ = mk⇔ in⊂in drop-∷-⊂
 
 ------------------------------------------------------------------------
 -- _∈_
@@ -179,7 +179,7 @@ x∈⁅y⁆⇒x≡y zero    (there p) = contradiction p ∉⊥
 x∈⁅y⁆⇒x≡y (suc y) (there p) = cong suc (x∈⁅y⁆⇒x≡y y p)
 
 x∈⁅y⁆⇔x≡y : x ∈ ⁅ y ⁆ ⇔ x ≡ y
-x∈⁅y⁆⇔x≡y {x = x} {y = y} = equivalence
+x∈⁅y⁆⇔x≡y {x = x} {y = y} = mk⇔
   (x∈⁅y⁆⇒x≡y y)
   (λ x≡y → subst (λ y → x ∈ ⁅ y ⁆) x≡y (x∈⁅x⁆ x))
 
@@ -503,7 +503,7 @@ x∈p∩q⁻ (s      ∷ p) (t      ∷ q) (there x∈p∩q) =
   Product.map there there (x∈p∩q⁻ p q x∈p∩q)
 
 ∩⇔× : x ∈ p ∩ q ⇔ (x ∈ p × x ∈ q)
-∩⇔× = equivalence (x∈p∩q⁻ _ _) x∈p∩q⁺
+∩⇔× = mk⇔ (x∈p∩q⁻ _ _) x∈p∩q⁺
 
 ∣p∩q∣≤∣p∣ : ∀ (p q : Subset n) → ∣ p ∩ q ∣ ≤ ∣ p ∣
 ∣p∩q∣≤∣p∣ p q = p⊆q⇒∣p∣≤∣q∣ (p∩q⊆p p q)
@@ -741,7 +741,7 @@ x∈p∪q⁺ (inj₁ x∈p) = p⊆p∪q _   x∈p
 x∈p∪q⁺ (inj₂ x∈q) = q⊆p∪q _ _ x∈q
 
 ∪⇔⊎ : x ∈ p ∪ q ⇔ (x ∈ p ⊎ x ∈ q)
-∪⇔⊎ = equivalence (x∈p∪q⁻ _ _) x∈p∪q⁺
+∪⇔⊎ = mk⇔ (x∈p∪q⁻ _ _) x∈p∪q⁺
 
 ∣p∣≤∣p∪q∣ : ∀ (p q : Subset n) → ∣ p ∣ ≤ ∣ p ∪ q ∣
 ∣p∣≤∣p∪q∣ p q = p⊆q⇒∣p∣≤∣q∣ (p⊆p∪q {p = p} q)
@@ -839,7 +839,7 @@ module _ {P : Pred (Subset 0) ℓ} where
   ∃-Subset-zero ([] , P[]) = P[]
 
   ∃-Subset-[]-⇔ : P [] ⇔ ∃⟨ P ⟩
-  ∃-Subset-[]-⇔ = equivalence ([] ,_) ∃-Subset-zero
+  ∃-Subset-[]-⇔ = mk⇔ ([] ,_) ∃-Subset-zero
 
 module _ {P : Pred (Subset (suc n)) ℓ} where
 
@@ -848,7 +848,7 @@ module _ {P : Pred (Subset (suc n)) ℓ} where
   ∃-Subset-suc ( inside ∷ p , Pip) = inj₁ (p , Pip)
 
   ∃-Subset-∷-⇔ : (∃⟨ P ∘ (inside ∷_) ⟩ ⊎ ∃⟨ P ∘ (outside ∷_) ⟩) ⇔ ∃⟨ P ⟩
-  ∃-Subset-∷-⇔ = equivalence
+  ∃-Subset-∷-⇔ = mk⇔
     [ Product.map _ id , Product.map _ id ]′
     ∃-Subset-suc
 

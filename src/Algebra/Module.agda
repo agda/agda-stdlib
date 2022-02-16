@@ -9,6 +9,7 @@
 
 module Algebra.Module where
 
+open import Algebra.Module.Core public
 open import Algebra.Module.Structures public
 open import Algebra.Module.Structures.Biased public
 open import Algebra.Module.Bundles public

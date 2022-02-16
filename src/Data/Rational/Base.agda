@@ -9,31 +9,21 @@
 module Data.Rational.Base where
 
 open import Data.Bool.Base using (Bool; true; false; if_then_else_)
-open import Function.Base using (id)
 open import Data.Integer.Base as ℤ using (ℤ; +_; +0; +[1+_]; -[1+_])
-import Data.Integer.GCD as ℤ
-import Data.Integer.DivMod as ℤ
 open import Data.Nat.GCD
-open import Data.Nat.Divisibility as ℕDiv using (divides; 0∣⇒≡0)
 open import Data.Nat.Coprimality as C
   using (Coprime; Bézout-coprime; coprime-/gcd; coprime?; ¬0-coprimeTo-2+)
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc) hiding (module ℕ)
-import Data.Nat.DivMod as ℕ
 open import Data.Rational.Unnormalised.Base as ℚᵘ using (ℚᵘ; mkℚᵘ)
-open import Data.Product
-open import Data.Sign using (Sign)
 open import Data.Sum.Base using (inj₂)
+open import Function.Base using (id)
 open import Level using (0ℓ)
 open import Relation.Nullary using (¬_; recompute)
-open import Relation.Nullary.Decidable
-  using (False; fromWitness; fromWitnessFalse; toWitnessFalse)
 open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred)
-open import Relation.Binary using (Rel)
-open import Relation.Binary.PropositionalEquality
-  using (_≡_; _≢_; refl; subst; cong; cong₂; module ≡-Reasoning)
-
-open ≡-Reasoning
+open import Relation.Binary.Core using (Rel)
+open import Relation.Binary.PropositionalEquality.Core
+  using (_≡_; _≢_; refl)
 
 ------------------------------------------------------------------------
 -- Rational numbers in reduced form. Note that there is exactly one
@@ -122,11 +112,11 @@ p ≤ᵇ q = (↥ p ℤ.* ↧ q) ℤ.≤ᵇ (↥ q ℤ.* ↧ p)
 -- and returns them in a normalized form, e.g. say 2 and 7
 
 normalize : ∀ (m n : ℕ) .{{_ : ℕ.NonZero n}} → ℚ
-normalize m n {{n≢0}} = mkℚ+ (m ℕ./ gcd m n) (n ℕ./ gcd m n) (coprime-/gcd m n)
+normalize m n = mkℚ+ (m ℕ./ gcd m n) (n ℕ./ gcd m n) (coprime-/gcd m n)
   where
     instance
-      g≢0   = ℕ.≢-nonZero (gcd[m,n]≢0 m n (inj₂ (ℕ.≢-nonZero⁻¹ n≢0)))
-      n/g≢0 = ℕ.≢-nonZero (n/gcd[m,n]≢0 m n {{n≢0}} {{g≢0}})
+      g≢0   = ℕ.≢-nonZero (gcd[m,n]≢0 m n (inj₂ (ℕ.≢-nonZero⁻¹ n)))
+      n/g≢0 = ℕ.≢-nonZero (n/gcd[m,n]≢0 m n {{gcd≢0 = g≢0}})
 
 -- A constructor for ℚ that (unlike mkℚ) automatically normalises it's
 -- arguments. See the constants section below for how to use this operator.
@@ -250,7 +240,7 @@ p ⊓ q = if p ≤ᵇ q then p else q
 
 -- Floor (round towards -∞)
 floor : ℚ → ℤ
-floor p = (↥ p) ℤ.div (↧ p)
+floor p = ↥ p ℤ./ ↧ p
 
 -- Ceiling (round towards +∞)
 ceiling : ℚ → ℤ

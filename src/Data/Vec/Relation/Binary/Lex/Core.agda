@@ -16,7 +16,7 @@ open import Data.Sum using (_⊎_; inj₁; inj₂; [_,_])
 open import Data.Vec using (Vec; []; _∷_)
 open import Data.Vec.Relation.Binary.Pointwise.Inductive using (Pointwise; []; _∷_)
 open import Function.Base using (flip)
-open import Function.Equivalence using (_⇔_; equivalence)
+open import Function.Bundles using (_⇔_; mk⇔)
 open import Relation.Binary hiding (_⇔_)
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; refl; cong)
@@ -83,14 +83,14 @@ module _ {P : Set} {_≈_ : Rel A ℓ₁} {_≺_ : Rel A ℓ₂} where
   ≰-next x≮y xs≮ys (next x≈y xs<ys) = contradiction xs<ys xs≮ys
 
   P⇔[]<[] : P ⇔ [] <ₗₑₓ []
-  P⇔[]<[] = equivalence base (λ { (base p) → p })
+  P⇔[]<[] = mk⇔ base (λ { (base p) → p })
 
   toSum : ∀ {x y n} {xs ys : Vec A n} → (x ∷ xs) <ₗₑₓ (y ∷ ys) → (x ≺ y ⊎ (x ≈ y × xs <ₗₑₓ ys))
   toSum (this x≺y m≡n)   = inj₁ x≺y
   toSum (next x≈y xs<ys) = inj₂ (x≈y , xs<ys)
 
   ∷<∷-⇔ : ∀ {x y n} {xs ys : Vec A n} → (x ≺ y ⊎ (x ≈ y × xs <ₗₑₓ ys)) ⇔ (x ∷ xs) <ₗₑₓ (y ∷ ys)
-  ∷<∷-⇔ = equivalence [ flip this refl , uncurry next ] toSum
+  ∷<∷-⇔ = mk⇔ [ flip this refl , uncurry next ] toSum
 
   module _ (≈-equiv : IsPartialEquivalence _≈_)
            ((≺-respʳ-≈ , ≺-respˡ-≈) : _≺_ Respects₂ _≈_)

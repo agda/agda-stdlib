@@ -23,19 +23,20 @@ open import Data.Bool.Base using (Bool; false; true; T)
 open import Data.Bool.Properties using (T?)
 open import Data.Empty using (⊥)
 open import Data.Nat.Base
-open import Data.Product using (_×_; _,_)
+open import Data.Product using (∄; ∃; _×_; _,_)
 open import Data.Sum.Base as Sum
 open import Data.Unit using (tt)
 open import Function.Base
-open import Function.Injection using (_↣_)
+open import Function.Bundles using (_↣_)
 open import Function.Metric.Nat
 open import Level using (0ℓ)
+open import Relation.Unary as U using (Pred)
 open import Relation.Binary
 open import Relation.Binary.Consequences using (flip-Connex)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary hiding (Irrelevant)
 open import Relation.Nullary.Decidable using (True; via-injection; map′)
-open import Relation.Nullary.Negation using (contradiction)
+open import Relation.Nullary.Negation using (contradiction; contradiction₂)
 open import Relation.Nullary.Reflects using (fromEquivalence)
 
 open import Algebra.Definitions {A = ℕ} _≡_
@@ -43,6 +44,14 @@ open import Algebra.Definitions {A = ℕ} _≡_
 open import Algebra.Definitions
   using (LeftCancellative; RightCancellative; Cancellative)
 open import Algebra.Structures {A = ℕ} _≡_
+
+------------------------------------------------------------------------
+-- Properties of NonZero
+------------------------------------------------------------------------
+
+nonZero? : U.Decidable NonZero
+nonZero? zero    = no NonZero.nonZero
+nonZero? (suc n) = yes _
 
 ------------------------------------------------------------------------
 -- Properties of _≡_
@@ -396,6 +405,9 @@ _>?_ = flip _<?_
 ------------------------------------------------------------------------
 -- Other properties of _<_
 
+n≮0 : ∀ {n} → n ≮ 0
+n≮0 ()
+
 n≮n : ∀ n → n ≮ n
 n≮n n = <-irrefl (refl {x = n})
 
@@ -407,6 +419,9 @@ n<1+n n = ≤-refl
 
 n<1⇒n≡0 : ∀ {n} → n < 1 → n ≡ 0
 n<1⇒n≡0 (s≤s n≤0) = n≤0⇒n≡0 n≤0
+
+n>0⇒n≢0 : ∀ {n} → n > 0 → n ≢ 0
+n>0⇒n≢0 {suc n} _ ()
 
 n≢0⇒n>0 : ∀ {n} → n ≢ 0 → n > 0
 n≢0⇒n>0 {zero}  0≢0 =  contradiction refl 0≢0
@@ -807,7 +822,9 @@ m+n≮m m n = subst (_≮ m) (+-comm n m) (m+n≮n n m)
 +-*-isSemiring = record
   { isSemiringWithoutAnnihilatingZero = record
     { +-isCommutativeMonoid = +-0-isCommutativeMonoid
-    ; *-isMonoid            = *-1-isMonoid
+    ; *-cong                = cong₂ _*_
+    ; *-assoc               = *-assoc
+    ; *-identity            = *-identity
     ; distrib               = *-distrib-+
     }
   ; zero = *-zero
@@ -885,13 +902,16 @@ m*n≡0⇒m≡0∨n≡0 : ∀ m {n} → m * n ≡ 0 → m ≡ 0 ⊎ n ≡ 0
 m*n≡0⇒m≡0∨n≡0 zero    {n}     eq = inj₁ refl
 m*n≡0⇒m≡0∨n≡0 (suc m) {zero}  eq = inj₂ refl
 
+m*n≢0 : ∀ m n → .{{_ : NonZero m}} .{{_ : NonZero n}} → NonZero (m * n)
+m*n≢0 (suc m) (suc n) = _
+
 m*n≡0⇒m≡0 : ∀ m n .{{_ : NonZero n}} → m * n ≡ 0 → m ≡ 0
 m*n≡0⇒m≡0 zero (suc _) eq = refl
 
 m*n≡1⇒m≡1 : ∀ m n → m * n ≡ 1 → m ≡ 1
-m*n≡1⇒m≡1 (suc zero)    n             _  = refl
-m*n≡1⇒m≡1 (suc (suc m)) (suc zero)    ()
-m*n≡1⇒m≡1 (suc (suc m)) zero          eq =
+m*n≡1⇒m≡1 (suc zero)    n          _  = refl
+m*n≡1⇒m≡1 (suc (suc m)) (suc zero) ()
+m*n≡1⇒m≡1 (suc (suc m)) zero       eq =
   contradiction (trans (sym $ *-zeroʳ m) eq) λ()
 
 m*n≡1⇒n≡1 : ∀ m n → m * n ≡ 1 → n ≡ 1
@@ -1021,6 +1041,9 @@ m^n≡0⇒m≡0 m (suc n) eq = [ id , m^n≡0⇒m≡0 m n ]′ (m*n≡0⇒m≡0�
 m^n≡1⇒n≡0∨m≡1 : ∀ m n → m ^ n ≡ 1 → n ≡ 0 ⊎ m ≡ 1
 m^n≡1⇒n≡0∨m≡1 m zero    _  = inj₁ refl
 m^n≡1⇒n≡0∨m≡1 m (suc n) eq = inj₂ (m*n≡1⇒m≡1 m (m ^ n) eq)
+
+m^n≢0 : ∀ m n .{{_ : NonZero m}} → NonZero (m ^ n)
+m^n≢0 m n = ≢-nonZero (≢-nonZero⁻¹ m ∘′ m^n≡0⇒m≡0 m n)
 
 ------------------------------------------------------------------------
 -- Properties of _⊓_ and _⊔_
@@ -1305,7 +1328,8 @@ m⊔n≤m+n m n with ⊔-sel m n
 ⊔-⊓-isSemiringWithoutOne : IsSemiringWithoutOne _⊔_ _⊓_ 0
 ⊔-⊓-isSemiringWithoutOne = record
   { +-isCommutativeMonoid = ⊔-0-isCommutativeMonoid
-  ; *-isSemigroup         = ⊓-isSemigroup
+  ; *-cong                = cong₂ _⊓_
+  ; *-assoc               = ⊓-assoc
   ; distrib               = ⊓-distrib-⊔
   ; zero                  = ⊓-zero
   }
@@ -1485,6 +1509,10 @@ m∸n≢0⇒n<m {m} {n} m∸n≢0 with n <? m
 
 m>n⇒m∸n≢0 : ∀ {m n} → m > n → m ∸ n ≢ 0
 m>n⇒m∸n≢0 {n = suc n} (s≤s m>n) = m>n⇒m∸n≢0 m>n
+
+m≤n⇒n∸m≤n : ∀ {m n} → m ≤ n → n ∸ m ≤ n
+m≤n⇒n∸m≤n z≤n       = ≤-refl
+m≤n⇒n∸m≤n (s≤s m≤n) = ≤-step (m≤n⇒n∸m≤n m≤n)
 
 ---------------------------------------------------------------
 -- Properties of _∸_ and _+_
@@ -1846,6 +1874,19 @@ m≤∣m-n∣+n m n = subst (m ≤_) (+-comm n _) (m≤n+∣m-n∣ m n)
 ⌈n/2⌉<n n = s≤s (⌊n/2⌋<n n)
 
 ------------------------------------------------------------------------
+-- Properties of !_
+
+1≤n! : ∀ n → 1 ≤ n !
+1≤n! zero    = ≤-refl
+1≤n! (suc n) = *-mono-≤ (m≤m+n 1 n) (1≤n! n)
+
+_!≢0 : ∀ n → NonZero (n !)
+n !≢0 = >-nonZero (1≤n! n)
+
+_!*_!≢0 : ∀ m n → NonZero (m ! * n !)
+m !* n !≢0 = m*n≢0 _ _ {{m !≢0}} {{n !≢0}}
+
+------------------------------------------------------------------------
 -- Properties of _≤′_ and _<′_
 ------------------------------------------------------------------------
 
@@ -2020,6 +2061,36 @@ _>‴?_ = flip _<‴?_
 
 eq? : ∀ {a} {A : Set a} → A ↣ ℕ → Decidable {A = A} _≡_
 eq? inj = via-injection inj _≟_
+
+-- It's possible to decide existential and universal predicates up to
+-- a limit.
+
+module _ {p} {P : Pred ℕ p} (P? : U.Decidable P) where
+
+  anyUpTo? : ∀ v → Dec (∃ λ n → n < v × P n)
+  anyUpTo? zero    = no λ {(_ , () , _)}
+  anyUpTo? (suc v) with P? v | anyUpTo? v
+  ... | yes Pv | _                  = yes (v , ≤-refl , Pv)
+  ... | _      | yes (n , n<v , Pn) = yes (n , ≤-step n<v , Pn)
+  ... | no ¬Pv | no ¬Pn<v           = no ¬Pn<1+v
+    where
+    ¬Pn<1+v : ∄ λ n → n < suc v × P n
+    ¬Pn<1+v (n , n<1+v , Pn) with n ≟ v
+    ... | yes refl = ¬Pv Pn
+    ... | no  n≢v  = ¬Pn<v (n , ≤∧≢⇒< (≤-pred n<1+v) n≢v , Pn)
+
+  allUpTo? : ∀ v → Dec (∀ {n} → n < v → P n)
+  allUpTo? zero    = yes λ()
+  allUpTo? (suc v) with P? v | allUpTo? v
+  ... | no ¬Pv | _        = no (λ prf → ¬Pv   (prf ≤-refl))
+  ... | _      | no ¬Pn<v = no (λ prf → ¬Pn<v (prf ∘ ≤-step))
+  ... | yes Pn | yes Pn<v = yes Pn<1+v
+    where
+      Pn<1+v : ∀ {n} → n < suc v → P n
+      Pn<1+v {n} n<1+v with n ≟ v
+      ... | yes refl = Pn
+      ... | no  n≢v  = Pn<v (≤∧≢⇒< (≤-pred n<1+v) n≢v)
+
 
 
 ------------------------------------------------------------------------

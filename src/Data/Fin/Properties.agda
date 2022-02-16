@@ -10,6 +10,7 @@
 module Data.Fin.Properties where
 
 open import Axiom.Extensionality.Propositional
+open import Algebra.Definitions using (Involutive)
 open import Category.Applicative using (RawApplicative)
 open import Category.Functor using (RawFunctor)
 open import Data.Bool.Base using (Bool; true; false; not; _∧_; _∨_)
@@ -18,18 +19,18 @@ open import Data.Fin.Base
 open import Data.Fin.Patterns
 open import Data.Nat.Base as ℕ using (ℕ; zero; suc; s≤s; z≤n; _∸_; _^_)
 import Data.Nat.Properties as ℕₚ
+open import Data.Nat.Solver
 open import Data.Unit using (⊤; tt)
 open import Data.Product using (Σ-syntax; ∃; ∃₂; ∄; _×_; _,_; map; proj₁; proj₂; uncurry; <_,_>)
+open import Data.Product.Properties using (,-injective)
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]; [_,_]′)
 open import Data.Sum.Properties using ([,]-map-commute; [,]-∘-distr)
 open import Function.Base using (_∘_; id; _$_; flip)
-open import Function.Bundles using (_↔_; mk↔′)
+open import Function.Bundles using (_↣_; _⇔_; _↔_; mk⇔; mk↔′)
 open import Function.Definitions.Core2 using (Surjective)
-open import Function.Equivalence using (_⇔_; equivalence)
-open import Function.Injection using (_↣_)
 open import Relation.Binary as B hiding (Decidable; _⇔_)
 open import Relation.Binary.PropositionalEquality as P
-  using (_≡_; _≢_; refl; sym; trans; cong; subst; _≗_; module ≡-Reasoning)
+  using (_≡_; _≢_; refl; sym; trans; cong; cong₂; subst; _≗_; module ≡-Reasoning)
 open import Relation.Nullary.Decidable as Dec using (map′)
 open import Relation.Nullary.Reflects
 open import Relation.Nullary.Negation using (contradiction)
@@ -151,6 +152,22 @@ toℕ≤pred[n] (suc {n = suc n} i)  = s≤s (toℕ≤pred[n] i)
 -- it can be removed in favor of toℕ≤pred[n]′.
 toℕ≤pred[n]′ : ∀ {n} (i : Fin n) → toℕ i ℕ.≤ ℕ.pred n
 toℕ≤pred[n]′ i = ℕₚ.<⇒≤pred (toℕ<n i)
+
+toℕ-mono-< : ∀ {n} {i j : Fin n} → i < j → toℕ i ℕ.< toℕ j
+toℕ-mono-< {i = 0F}    {suc j}       (s≤s z≤n)       = s≤s z≤n
+toℕ-mono-< {i = suc i} {suc (suc j)} (s≤s (s≤s i<j)) = s≤s (toℕ-mono-< (s≤s i<j))
+
+toℕ-mono-≤ : ∀ {n} {i j : Fin n} → i ≤ j → toℕ i ℕ.≤ toℕ j
+toℕ-mono-≤ {i = 0F} {j} z≤n = z≤n
+toℕ-mono-≤ {i = suc i} {suc j} (s≤s i≤j) = s≤s (toℕ-mono-≤ i≤j)
+
+toℕ-cancel-≤ : ∀ {n} {i j : Fin n} → toℕ i ℕ.≤ toℕ j → i ≤ j
+toℕ-cancel-≤ {i = 0F} {j} z≤n = z≤n
+toℕ-cancel-≤ {i = suc i} {suc j} (s≤s i≤j) = s≤s (toℕ-cancel-≤ i≤j)
+
+toℕ-cancel-< : ∀ {n} {i j : Fin n} → toℕ i ℕ.< toℕ j → i < j
+toℕ-cancel-< {i = 0F} {suc j} (s≤s z≤n) = s≤s z≤n
+toℕ-cancel-< {i = suc i} {suc (suc j)} (s≤s (s≤s i<j)) = s≤s (toℕ-cancel-< (s≤s i<j))
 
 ------------------------------------------------------------------------
 -- fromℕ
@@ -434,6 +451,14 @@ toℕ-lower₁ {ℕ.zero} zero p     = contradiction refl p
 toℕ-lower₁ {ℕ.suc m} zero p    = refl
 toℕ-lower₁ {ℕ.suc m} (suc x) p = cong ℕ.suc (toℕ-lower₁ x (p ∘ cong ℕ.suc))
 
+lower₁-injective : ∀ {n} {i j} {n≢i : n ≢ toℕ i} {n≢j : n ≢ toℕ j} →
+                   lower₁ i n≢i ≡ lower₁ j n≢j → i ≡ j
+lower₁-injective {zero}  {zero}  {_}     {n≢i} {_}   _ = ⊥-elim (n≢i refl)
+lower₁-injective {zero}  {_}     {zero}  {_}   {n≢j} _ = ⊥-elim (n≢j refl)
+lower₁-injective {suc n} {0F}    {0F}    {_}   {_}   refl = refl
+lower₁-injective {suc n} {suc i} {suc j} {n≢i} {n≢j} eq =
+  cong suc (lower₁-injective (suc-injective eq))
+
 ------------------------------------------------------------------------
 -- inject₁ and lower₁
 
@@ -553,9 +578,9 @@ splitAt-≥ (suc m) (suc i) (s≤s i≥m) = cong (Sum.map suc id) (splitAt-≥ m
 
 -- Fin (m * n) ↔ Fin m × Fin n
 
-remQuot-combine : ∀ {n k} (x : Fin n) y → remQuot k (combine x y) ≡ (x , y)
-remQuot-combine {suc n} {k} 0F y rewrite splitAt-↑ˡ k y (n ℕ.* k) = refl
-remQuot-combine {suc n} {k} (suc x) y rewrite splitAt-↑ʳ k (n ℕ.* k) (combine x y) = cong (Data.Product.map₁ suc) (remQuot-combine x y)
+remQuot-combine : ∀ {n k} (i : Fin n) j → remQuot k (combine i j) ≡ (i , j)
+remQuot-combine {suc n} {k} 0F j rewrite splitAt-↑ˡ k j (n ℕ.* k) = refl
+remQuot-combine {suc n} {k} (suc i) j rewrite splitAt-↑ʳ k (n ℕ.* k) (combine i j) = cong (Data.Product.map₁ suc) (remQuot-combine i j)
 
 combine-remQuot : ∀ {n} k (i : Fin (n ℕ.* k)) → uncurry combine (remQuot {n} k i) ≡ i
 combine-remQuot {suc n} k i with splitAt k i | P.inspect (splitAt k) i
@@ -569,6 +594,81 @@ combine-remQuot {suc n} k i with splitAt k i | P.inspect (splitAt k) i
   join k (n ℕ.* k) (inj₂ j)                ≡˘⟨ cong (join k (n ℕ.* k)) eq ⟩
   join k (n ℕ.* k) (splitAt k i)           ≡⟨ join-splitAt k (n ℕ.* k) i ⟩
   i                                        ∎
+  where open ≡-Reasoning
+
+toℕ-combine : ∀ {n m} (i : Fin n) (j : Fin m) → toℕ (combine i j) ≡ m ℕ.* toℕ i ℕ.+ toℕ j
+toℕ-combine {n = suc n} {m} i@0F j = begin
+  toℕ (combine i j)          ≡⟨⟩
+  toℕ (j ↑ˡ (n ℕ.* m))       ≡⟨ toℕ-↑ˡ j (n ℕ.* m) ⟩
+  toℕ j                      ≡⟨⟩
+  0 ℕ.+ toℕ j                ≡˘⟨ cong (ℕ._+ toℕ j) (ℕₚ.*-zeroʳ m) ⟩
+  m ℕ.* toℕ i ℕ.+ toℕ j      ∎
+  where open ≡-Reasoning
+toℕ-combine {n = suc n} {m} (suc i) j = begin
+  toℕ (combine (suc i) j)        ≡⟨⟩
+  toℕ (m ↑ʳ combine i j)         ≡⟨ toℕ-↑ʳ m (combine i j) ⟩
+  m ℕ.+ toℕ (combine i j)        ≡⟨ cong (m ℕ.+_) (toℕ-combine i j) ⟩
+  m ℕ.+ (m ℕ.* toℕ i ℕ.+ toℕ j)  ≡⟨ solve 3 (λ m i j → m :+ (m :* i :+ j) := m :* (con 1 :+ i) :+ j) refl m (toℕ i) (toℕ j) ⟩
+  m ℕ.* toℕ (suc i) ℕ.+ toℕ j    ∎
+  where
+    open ≡-Reasoning
+    open +-*-Solver
+
+combine-injectiveˡ : ∀ {n m} (i j : Fin n) (k : Fin m) → combine i k ≡ combine j k → i ≡ j
+combine-injectiveˡ {n} {m@(suc _)} i j k combine[i,k]≡combine[j,k] =
+  toℕ-injective (ℕₚ.*-cancelˡ-≡ m (ℕₚ.+-cancelʳ-≡ (m ℕ.* toℕ i) (m ℕ.* toℕ j) (begin
+    m ℕ.* toℕ i ℕ.+ toℕ k      ≡˘⟨ toℕ-combine i k ⟩
+    toℕ (combine i k)          ≡⟨ cong toℕ combine[i,k]≡combine[j,k] ⟩
+    toℕ (combine j k)          ≡⟨ toℕ-combine j k ⟩
+    m ℕ.* toℕ j ℕ.+ toℕ k      ∎)))
+  where open ≡-Reasoning
+
+combine-injectiveʳ : ∀ {n m} (i : Fin n) (j k : Fin m) → combine i j ≡ combine i k → j ≡ k
+combine-injectiveʳ {n} {m} i j k combine[i,k]≡combine[j,k] = toℕ-injective (ℕₚ.+-cancelˡ-≡ (m ℕ.* toℕ i) (begin
+  m ℕ.* toℕ i ℕ.+ toℕ j ≡˘⟨ toℕ-combine i j ⟩
+  toℕ (combine i j)     ≡⟨ cong toℕ combine[i,k]≡combine[j,k] ⟩
+  toℕ (combine i k)     ≡⟨ toℕ-combine i k ⟩
+  m ℕ.* toℕ i ℕ.+ toℕ k ∎))
+  where open ≡-Reasoning
+
+combine-injective : ∀ {n m} (i : Fin n) (j : Fin m) (k : Fin n) (l : Fin m) → combine i j ≡ combine k l → i ≡ k × j ≡ l
+combine-injective i j k l combine[i,j]≡combine[k,l] =
+  lemma₂ i j k l combine[i,j]≡combine[k,l] , lemma₃ i j k l combine[i,j]≡combine[k,l]
+  where
+    lemma₁ : ∀ {n m} (i : Fin n) (j : Fin m) (k : Fin n) (l : Fin m) → i < k → combine i j < combine k l
+    lemma₁ {n} {m} i j k l i<k = toℕ-cancel-< (begin-strict
+      toℕ (combine i j)      ≡⟨ toℕ-combine i j ⟩
+      m ℕ.* toℕ i ℕ.+ toℕ j  <⟨ ℕₚ.+-monoʳ-< (m ℕ.* toℕ i) (toℕ<n j) ⟩
+      m ℕ.* toℕ i ℕ.+ m      ≡⟨ ℕₚ.+-comm _ m ⟩
+      m ℕ.+ m ℕ.* toℕ i      ≡⟨ cong (m ℕ.+_) (ℕₚ.*-comm m _) ⟩
+      m ℕ.+ toℕ i ℕ.* m      ≡⟨ ℕₚ.*-comm (suc (toℕ i)) m ⟩
+      m ℕ.* suc (toℕ i)      ≤⟨ ℕₚ.*-monoʳ-≤ m (toℕ-mono-< i<k) ⟩
+      m ℕ.* toℕ k            ≤⟨ ℕₚ.m≤m+n (m ℕ.* toℕ k) (toℕ l) ⟩
+      m ℕ.* toℕ k ℕ.+ toℕ l  ≡˘⟨ toℕ-combine k l ⟩
+      toℕ (combine k l)      ∎)
+      where
+        open ℕₚ.≤-Reasoning
+        open +-*-Solver
+
+    lemma₂ : ∀ {n m} (i : Fin n) (j : Fin m) (k : Fin n) (l : Fin m) → combine i j ≡ combine k l → i ≡ k
+    lemma₂ i j k l combine[i,j]≡combine[k,l] with <-cmp i k
+    ... | tri< i<k _ _ = contradiction combine[i,j]≡combine[k,l] (<⇒≢ (lemma₁ i j k l i<k))
+    ... | tri≈ _ i≡k _ = i≡k
+    ... | tri> _ _ i>k = contradiction (sym combine[i,j]≡combine[k,l]) (<⇒≢ (lemma₁ k l i j i>k))
+
+    lemma₃ : ∀ {n m} (i : Fin n) (j : Fin m) (k : Fin n) (l : Fin m) → combine i j ≡ combine k l → j ≡ l
+    lemma₃ i j k l combine[i,j]≡combine[k,l] = combine-injectiveʳ i j l (begin
+      combine i j ≡⟨ combine[i,j]≡combine[k,l] ⟩
+      combine k l ≡˘⟨ cong (λ h → combine h l) (lemma₂ i j k l combine[i,j]≡combine[k,l]) ⟩
+      combine i l ∎)
+      where open ≡-Reasoning
+
+combine-surjective : ∀ {n m} (i : Fin (n ℕ.* m)) → Σ[ j ∈ Fin n ] Σ[ k ∈ Fin m ] combine j k ≡ i
+combine-surjective {n} {m} i with remQuot {n} m i | P.inspect (remQuot {n} m) i
+... | j , k | P.[ eq ] = j , k , (begin
+  combine j k                       ≡˘⟨ uncurry (cong₂ combine) (,-injective eq) ⟩
+  uncurry combine (remQuot {n} m i) ≡⟨ combine-remQuot {n} m i ⟩
+  i                                 ∎)
   where open ≡-Reasoning
 
 ------------------------------------------------------------------------
@@ -773,7 +873,7 @@ module _ {n p} {P : Pred (Fin (suc n)) p} where
   ∀-cons z s (suc i) = s i
 
   ∀-cons-⇔ : (P zero × Π[ P ∘ suc ]) ⇔ Π[ P ]
-  ∀-cons-⇔ = equivalence (uncurry ∀-cons) < _$ zero , _∘ suc >
+  ∀-cons-⇔ = mk⇔ (uncurry ∀-cons) < _$ zero , _∘ suc >
 
   ∃-here : P zero → ∃⟨ P ⟩
   ∃-here = zero ,_
@@ -786,7 +886,7 @@ module _ {n p} {P : Pred (Fin (suc n)) p} where
   ∃-toSum (suc f , P₁₊) = inj₂ (f , P₁₊)
 
   ⊎⇔∃ : (P zero ⊎ ∃⟨ P ∘ suc ⟩) ⇔ ∃⟨ P ⟩
-  ⊎⇔∃ = equivalence [ ∃-here , ∃-there ] ∃-toSum
+  ⊎⇔∃ = mk⇔ [ ∃-here , ∃-there ] ∃-toSum
 
 decFinSubset : ∀ {n p q} {P : Pred (Fin n) p} {Q : Pred (Fin n) q} →
                Decidable Q → (∀ {f} → Q f → Dec (P f)) → Dec (Q ⊆ P)
@@ -880,6 +980,34 @@ module _ {a} {A : Set a} where
   eq? : ∀ {n} → A ↣ Fin n → B.Decidable {A = A} _≡_
   eq? inj = Dec.via-injection inj _≟_
 
+------------------------------------------------------------------------
+-- Opposite
+------------------------------------------------------------------------
+
+opposite-prop : ∀ {n} → (i : Fin n) → toℕ (opposite i) ≡ n ∸ suc (toℕ i)
+opposite-prop {suc n} zero = toℕ-fromℕ n
+opposite-prop {suc n} (suc i) = begin
+  toℕ (inject₁ (opposite i)) ≡⟨ toℕ-inject₁ (opposite i) ⟩
+  toℕ (opposite i)           ≡⟨ opposite-prop i ⟩
+  n ∸ suc (toℕ i)            ∎
+  where open ≡-Reasoning
+
+opposite-involutive : ∀ {n} → Involutive {A = Fin n} _≡_ opposite
+opposite-involutive {suc n} i = toℕ-injective (begin
+  toℕ (opposite (opposite i)) ≡⟨ opposite-prop (opposite i) ⟩
+  n ∸ (toℕ (opposite i))     ≡⟨ cong (n ∸_) (opposite-prop i) ⟩
+  n ∸ (n ∸ (toℕ i))         ≡⟨ ℕₚ.m∸[m∸n]≡n (ℕₚ.≤-pred (toℕ<n i)) ⟩
+  toℕ i                     ∎)
+  where open ≡-Reasoning
+
+opposite-suc : ∀ {n} {i : Fin n} → toℕ (opposite (suc i)) ≡ toℕ (opposite i)
+opposite-suc {n} {i} = begin
+  toℕ (opposite (suc i))      ≡⟨ opposite-prop (suc i) ⟩
+  suc n ∸ suc (toℕ (suc i))  ≡⟨⟩
+  n ∸ toℕ (suc i)            ≡⟨⟩
+  n ∸ suc (toℕ i)            ≡⟨ sym (opposite-prop i) ⟩
+  toℕ (opposite i)            ∎
+  where open ≡-Reasoning
 
 
 ------------------------------------------------------------------------
@@ -997,3 +1125,4 @@ Fin0↔⊥ = 0↔⊥
 "Warning: Fin0↔⊥ was deprecated in v2.0.
 Please use 0↔⊥ instead."
 #-}
+

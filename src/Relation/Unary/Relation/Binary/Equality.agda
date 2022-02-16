@@ -8,27 +8,37 @@
 
 module Relation.Unary.Relation.Binary.Equality where
 
-open import Data.Product using (Σ; _,_; swap; zip′)
-open import Function.Base using (id)
 open import Level using (Level)
+open import Relation.Binary.Bundles using (Setoid)
 open import Relation.Binary.Structures using (IsEquivalence)
 open import Relation.Unary using (Pred; _≐_; _≐′_)
+open import Relation.Unary.Properties
 
 private
   variable
-    a ℓ₁ ℓ₂ : Level
+    a ℓ : Level
     A : Set a
 
-≐-isEquivalence : IsEquivalence {A = Pred A ℓ₁} _≐_
+≐-isEquivalence : IsEquivalence {A = Pred A ℓ} _≐_
 ≐-isEquivalence = record
-  { refl = id , id
-  ; sym = swap
-  ; trans = zip′ (λ P⊆Q Q⊆R {_} Px → Q⊆R (P⊆Q Px)) (λ Q⊆P R⊆Q {_} Rx → Q⊆P (R⊆Q Rx))
+  { refl = ≐-refl
+  ; sym = ≐-sym
+  ; trans = ≐-trans
   }
 
-≐′-isEquivalence : IsEquivalence {A = Pred A ℓ₁} _≐′_
+≐′-isEquivalence : IsEquivalence {A = Pred A ℓ} _≐′_
 ≐′-isEquivalence = record
-  { refl = (λ _ → id) , λ _ → id
-  ; sym = swap
-  ; trans = zip′ (λ P⊆Q Q⊆R a a∈P → Q⊆R a (P⊆Q a a∈P)) λ Q⊆P R⊆Q a a∈R → Q⊆P a (R⊆Q a a∈R)
+  { refl = ≐′-refl
+  ; sym = ≐′-sym
+  ; trans = ≐′-trans
+  }
+
+≐-setoid : ∀ {a} (A : Set a) ℓ → Setoid _ _
+≐-setoid A ℓ = record
+  { isEquivalence = ≐-isEquivalence {A = A} {ℓ}
+  }
+
+≐′-setoid : ∀ {a} (A : Set a) ℓ → Setoid _ _
+≐′-setoid A ℓ = record
+  { isEquivalence = ≐′-isEquivalence {A = A} {ℓ}
   }

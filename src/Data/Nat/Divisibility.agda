@@ -15,7 +15,7 @@ open import Data.Nat.Properties
 open import Data.Product
 open import Data.Unit using (tt)
 open import Function.Base
-open import Function.Equivalence using (_⇔_; equivalence)
+open import Function.Bundles using (_⇔_; mk⇔)
 open import Level using (0ℓ)
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable as Dec using (False)
@@ -48,7 +48,7 @@ n∣m⇒m%n≡0 m n (divides v eq) = begin-equality
   where open ≤-Reasoning
 
 m%n≡0⇔n∣m : ∀ m n .{{_ : NonZero n}} → m % n ≡ 0 ⇔ n ∣ m
-m%n≡0⇔n∣m m n = equivalence (m%n≡0⇒n∣m m n) (n∣m⇒m%n≡0 m n)
+m%n≡0⇔n∣m m n = mk⇔ (m%n≡0⇒n∣m m n) (n∣m⇒m%n≡0 m n)
 
 ------------------------------------------------------------------------
 -- Properties of _∣_ and _≤_
@@ -171,11 +171,20 @@ n∣m*n m = divides m refl
 m∣m*n : ∀ {m} n → m ∣ m * n
 m∣m*n n = divides n (*-comm _ n)
 
+n∣m*n*o : ∀ m {n} o → n ∣ m * n * o
+n∣m*n*o m o = ∣-trans (n∣m*n m) (m∣m*n o)
+
 ∣m⇒∣m*n : ∀ {i m} n → i ∣ m → i ∣ m * n
 ∣m⇒∣m*n {i} {m} n (divides q refl) = ∣-trans (n∣m*n q) (m∣m*n n)
 
 ∣n⇒∣m*n : ∀ {i} m {n} → i ∣ n → i ∣ m * n
-∣n⇒∣m*n {i} m {n} i∣n = subst (i ∣_) (*-comm n m) (∣m⇒∣m*n m i∣n)
+∣n⇒∣m*n m {n} rewrite *-comm m n = ∣m⇒∣m*n m
+
+m*n∣⇒m∣ : ∀ {i} m n → m * n ∣ i → m ∣ i
+m*n∣⇒m∣ m n (divides q refl) = ∣n⇒∣m*n q (m∣m*n n)
+
+m*n∣⇒n∣ : ∀ {i} m n → m * n ∣ i → n ∣ i
+m*n∣⇒n∣ m n rewrite *-comm m n = m*n∣⇒m∣ n m
 
 *-monoʳ-∣ : ∀ {i j} k → i ∣ j → k * i ∣ k * j
 *-monoʳ-∣ {i} {j} k (divides q refl) = divides q $ begin-equality
@@ -259,6 +268,16 @@ m∣n*o⇒m/n∣o {_} {n@(suc _)} {o} (divides p refl) pn∣on = begin
   o         ∎
   where open ∣-Reasoning
 
+m/n/o≡m/[n*o] : ∀ m n o .{{_ : NonZero n}} .{{_ : NonZero o}} → n * o ∣ m →
+                ((m / n) / o) ≡ (m / (n * o)) {{m*n≢0 n o}}
+m/n/o≡m/[n*o] m n@(suc _) o@(suc _) n*o∣m = *-cancelˡ-≡ (n * o) (begin-equality
+  (n * o) * (m / n / o)   ≡⟨ *-assoc n o _ ⟩
+  n * (o * (m / n / o))   ≡⟨ cong (n *_) (m*[n/m]≡n (m*n∣o⇒n∣o/m n o n*o∣m)) ⟩
+  n * (m / n)             ≡⟨ m*[n/m]≡n (m*n∣⇒m∣ n o n*o∣m) ⟩
+  m                       ≡˘⟨ m*[n/m]≡n n*o∣m ⟩
+  (n * o) * (m / (n * o)) ∎)
+  where open ≤-Reasoning
+
 ------------------------------------------------------------------------
 -- Properties of _∣_ and _%_
 
@@ -281,6 +300,16 @@ m∣n*o⇒m/n∣o {_} {n@(suc _)} {o} (divides p refl) pn∣on = begin
     a * d ∸ (ad/n * b) * d ≡˘⟨ *-distribʳ-∸ d a (ad/n * b) ⟩
     (a ∸ ad/n * b) * d     ∎
   where open ≤-Reasoning; ad/n = a * d / n
+
+------------------------------------------------------------------------
+-- Properties of _∣_ and !_
+
+m≤n⇒m!∣n! : ∀ {m n} → m ≤ n → m ! ∣ n !
+m≤n⇒m!∣n! m≤n = help (≤⇒≤′ m≤n)
+  where
+  help : ∀ {m n} → m ≤′ n → m ! ∣ n !
+  help {m} {n}     ≤′-refl        = ∣-refl
+  help {m} {suc n} (≤′-step m≤′n) = ∣n⇒∣m*n (suc n) (help m≤′n)
 
 ------------------------------------------------------------------------
 -- DEPRECATED - please use new names as continuing support for the old

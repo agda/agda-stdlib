@@ -29,7 +29,7 @@ open import Algebra.Definitions.RawSemiring rawSemiring public
   using () renaming (_^′_ to _^_)
 
 ------------------------------------------------------------------------
--- Properties of _×_
+-- Properties of _^_
 
 ^-congˡ : ∀ n → (_^ n) Preserves _≈_ ⟶ _≈_
 ^-congˡ = Mult.×-congʳ

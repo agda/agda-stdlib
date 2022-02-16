@@ -176,17 +176,23 @@ p≡0⇒↥p≡0 p refl = refl
 -- Basic properties of sign predicates
 ------------------------------------------------------------------------
 
-nonNeg≢neg : ∀ p q → NonNegative p → Negative q → p ≢ q
-nonNeg≢neg (mkℚ (+ _) _ _) (mkℚ -[1+ _ ] _ _) _ _ ()
+nonNeg≢neg : ∀ p q → .{{NonNegative p}} → .{{Negative q}} → p ≢ q
+nonNeg≢neg (mkℚ (+ _) _ _) (mkℚ -[1+ _ ] _ _) ()
 
-pos⇒nonNeg : ∀ p → Positive p → NonNegative p
-pos⇒nonNeg p = ℚᵘ.positive⇒nonNegative {toℚᵘ p}
+pos⇒nonNeg : ∀ p → .{{Positive p}} → NonNegative p
+pos⇒nonNeg p = ℚᵘ.pos⇒nonNeg (toℚᵘ p)
 
-neg⇒nonPos : ∀ p → Negative p → NonPositive p
-neg⇒nonPos p = ℚᵘ.negative⇒nonPositive {toℚᵘ p}
+neg⇒nonPos : ∀ p → .{{Negative p}} → NonPositive p
+neg⇒nonPos p = ℚᵘ.neg⇒nonPos (toℚᵘ p)
 
-nonNeg∧nonZero⇒pos : ∀ p → NonNegative p → NonZero p → Positive p
-nonNeg∧nonZero⇒pos (mkℚ +[1+ _ ] _ _) _ _ = _
+nonNeg∧nonZero⇒pos : ∀ p → .{{NonNegative p}} → .{{NonZero p}} → Positive p
+nonNeg∧nonZero⇒pos (mkℚ +[1+ _ ] _ _) = _
+
+pos⇒nonZero : ∀ p → .{{Positive p}} → NonZero p
+pos⇒nonZero (mkℚ +[1+ _ ] _ _) = _
+
+neg⇒nonZero : ∀ p → .{{Negative p}} → NonZero p
+neg⇒nonZero (mkℚ -[1+ _ ] _ _) = _
 
 ------------------------------------------------------------------------
 -- Properties of -_
@@ -238,22 +244,22 @@ normalize-coprime {n} {d-1} c = begin
     d/1≢0 = ℕ.≢-nonZero (subst (_≢ 0) (sym (ℕ.n/1≡n d)) λ())
 
 ↥-normalize : ∀ i n .{{_ : ℕ.NonZero n}} → ↥ (normalize i n) ℤ.* gcd (+ i) (+ n) ≡ + i
-↥-normalize i n {{n≢0}} = begin
-  ↥ (normalize i n) ℤ.* + g  ≡⟨ cong (ℤ._* + g) (↥-mkℚ+ _ ((n ℕ./ g) {{g≢0}})) ⟩
+↥-normalize i n = begin
+  ↥ (normalize i n) ℤ.* + g  ≡⟨ cong (ℤ._* + g) (↥-mkℚ+ _ (n ℕ./ g)) ⟩
   + i/g     ℤ.* + g          ≡⟨⟩
-  S.+ ◃ i/g ℕ.* g            ≡⟨ cong (S.+ ◃_) (ℕ.m/n*n≡m {{g≢0}} (ℕ.gcd[m,n]∣m i n)) ⟩
+  S.+ ◃ i/g ℕ.* g            ≡⟨ cong (S.+ ◃_) (ℕ.m/n*n≡m (ℕ.gcd[m,n]∣m i n)) ⟩
   S.+ ◃ i                    ≡⟨ ℤ.+◃n≡+n i ⟩
   + i                        ∎
   where
   open ≡-Reasoning
   g     = ℕ.gcd i n
-  g≢0 = ℕ.≢-nonZero (ℕ.gcd[m,n]≢0 i n (inj₂ (ℕ.≢-nonZero⁻¹ n≢0)))
-  instance n/g≢0 = ℕ.≢-nonZero (ℕ.n/gcd[m,n]≢0 i n {{n≢0}} {{g≢0}})
+  instance g≢0 = ℕ.≢-nonZero (ℕ.gcd[m,n]≢0 i n (inj₂ (ℕ.≢-nonZero⁻¹ n)))
+  instance n/g≢0 = ℕ.≢-nonZero (ℕ.n/gcd[m,n]≢0 i n {{gcd≢0 = g≢0}})
   i/g = (i ℕ./ g) {{g≢0}}
 
 ↧-normalize : ∀ i n .{{_ : ℕ.NonZero n}} → ↧ (normalize i n) ℤ.* gcd (+ i) (+ n) ≡ + n
-↧-normalize i n {{n≢0}} = begin
-  ↧ (normalize i n) ℤ.* + g  ≡⟨ cong (ℤ._* + g) (↧-mkℚ+ _ ((n ℕ./ g) {{g≢0}})) ⟩
+↧-normalize i n = begin
+  ↧ (normalize i n) ℤ.* + g  ≡⟨ cong (ℤ._* + g) (↧-mkℚ+ _ (n ℕ./ g)) ⟩
   + (n ℕ./ g)       ℤ.* + g  ≡⟨⟩
   S.+ ◃ n ℕ./ g     ℕ.* g    ≡⟨ cong (S.+ ◃_) (ℕ.m/n*n≡m (ℕ.gcd[m,n]∣n i n)) ⟩
   S.+ ◃ n                    ≡⟨ ℤ.+◃n≡+n n ⟩
@@ -261,40 +267,40 @@ normalize-coprime {n} {d-1} c = begin
   where
   open ≡-Reasoning
   g = ℕ.gcd i n
-  instance g≢0   = ℕ.≢-nonZero (ℕ.gcd[m,n]≢0   i n (inj₂ (ℕ.≢-nonZero⁻¹ n≢0)))
-  instance n/g≢0 = ℕ.≢-nonZero (ℕ.n/gcd[m,n]≢0 i n {{n≢0}} {{g≢0}})
+  instance g≢0   = ℕ.≢-nonZero (ℕ.gcd[m,n]≢0   i n (inj₂ (ℕ.≢-nonZero⁻¹ n)))
+  instance n/g≢0 = ℕ.≢-nonZero (ℕ.n/gcd[m,n]≢0 i n {{gcd≢0 = g≢0}})
 
 normalize-cong : ∀ {m₁ n₁ m₂ n₂} .{{_ : ℕ.NonZero n₁}} .{{_ : ℕ.NonZero n₂}} →
                  m₁ ≡ m₂ → n₁ ≡ n₂ → normalize m₁ n₁ ≡ normalize m₂ n₂
-normalize-cong {m} {n} {{n₁≢0}} {{n₂≢0}} refl refl =
+normalize-cong {m} {n} refl refl =
   mkℚ+-cong (ℕ./-congʳ {n = g} refl) (ℕ./-congʳ {n = g} refl)
   where
   g = ℕ.gcd m n
   instance
-    g≢0   = ℕ.≢-nonZero (ℕ.gcd[m,n]≢0 m n (inj₂ (ℕ.≢-nonZero⁻¹ n₂≢0)))
-    n/g≢0 = ℕ.≢-nonZero (ℕ.n/gcd[m,n]≢0 m n {{n₁≢0}} {{g≢0}})
+    g≢0   = ℕ.≢-nonZero (ℕ.gcd[m,n]≢0 m n (inj₂ (ℕ.≢-nonZero⁻¹ n)))
+    n/g≢0 = ℕ.≢-nonZero (ℕ.n/gcd[m,n]≢0 m n {{gcd≢0 = g≢0}})
 
 normalize-nonNeg : ∀ m n .{{_ : ℕ.NonZero n}} → NonNegative (normalize m n)
-normalize-nonNeg m n {{n≢0}} = mkℚ+-nonNeg ((m ℕ./ g) {{g≢0}}) ((n ℕ./ g) {{g≢0}})
+normalize-nonNeg m n = mkℚ+-nonNeg (m ℕ./ g) (n ℕ./ g)
   where
   g = ℕ.gcd m n
   instance
-    g≢0   = ℕ.≢-nonZero (ℕ.gcd[m,n]≢0 m n (inj₂ (ℕ.≢-nonZero⁻¹ n≢0)))
-    n/g≢0 = ℕ.≢-nonZero (ℕ.n/gcd[m,n]≢0 m n {{n≢0}} {{g≢0}})
+    g≢0   = ℕ.≢-nonZero (ℕ.gcd[m,n]≢0 m n (inj₂ (ℕ.≢-nonZero⁻¹ n)))
+    n/g≢0 = ℕ.≢-nonZero (ℕ.n/gcd[m,n]≢0 m n {{gcd≢0 = g≢0}})
 
 normalize-pos : ∀ m n .{{_ : ℕ.NonZero n}} .{{_ : ℕ.NonZero m}} → Positive (normalize m n)
-normalize-pos m n {{n≢0}} {{m≢0}} = mkℚ+-pos (m ℕ./ ℕ.gcd m n) (n ℕ./ ℕ.gcd m n)
+normalize-pos m n = mkℚ+-pos (m ℕ./ ℕ.gcd m n) (n ℕ./ ℕ.gcd m n)
   where
   g = ℕ.gcd m n
   instance
-    g≢0   = ℕ.≢-nonZero (ℕ.gcd[m,n]≢0 m n (inj₂ (ℕ.≢-nonZero⁻¹ n≢0)))
-    n/g≢0 = ℕ.≢-nonZero (ℕ.n/gcd[m,n]≢0 m n {{n≢0}} {{g≢0}})
-    m/g≢0 = ℕ.≢-nonZero (ℕ.m/gcd[m,n]≢0 m n {{m≢0}} {{g≢0}})
+    g≢0   = ℕ.≢-nonZero (ℕ.gcd[m,n]≢0 m n (inj₂ (ℕ.≢-nonZero⁻¹ n)))
+    n/g≢0 = ℕ.≢-nonZero (ℕ.n/gcd[m,n]≢0 m n {{gcd≢0 = g≢0}})
+    m/g≢0 = ℕ.≢-nonZero (ℕ.m/gcd[m,n]≢0 m n {{gcd≢0 = g≢0}})
 
 normalize-injective-≃ : ∀ m n c d {{_ : ℕ.NonZero c}} {{_ : ℕ.NonZero d}} →
                         normalize m c ≡ normalize n d →
                         m ℕ.* d ≡ n ℕ.* c
-normalize-injective-≃ m n c d {{c≢0}} {{d≢0}} eq = ℕ./-cancelʳ-≡
+normalize-injective-≃ m n c d eq = ℕ./-cancelʳ-≡
   md∣gcd[m,c]gcd[n,d]
   nc∣gcd[m,c]gcd[n,d]
   (begin
@@ -315,14 +321,14 @@ normalize-injective-≃ m n c d {{c≢0}} {{d≢0}} eq = ℕ./-cancelʳ-≡
   nc∣gcd[n,d]gcd[m,c] = *-pres-∣ gcd[n,d]∣n gcd[m,c]∣c
   nc∣gcd[m,c]gcd[n,d] = subst (_∣ n ℕ.* c) (ℕ.*-comm gcd[n,d] gcd[m,c]) nc∣gcd[n,d]gcd[m,c]
 
-  gcd[m,c]≢0′          = ℕ.gcd[m,n]≢0 m c (inj₂ (ℕ.≢-nonZero⁻¹ c≢0))
-  gcd[n,d]≢0′          = ℕ.gcd[m,n]≢0 n d (inj₂ (ℕ.≢-nonZero⁻¹ d≢0))
+  gcd[m,c]≢0′          = ℕ.gcd[m,n]≢0 m c (inj₂ (ℕ.≢-nonZero⁻¹ c))
+  gcd[n,d]≢0′          = ℕ.gcd[m,n]≢0 n d (inj₂ (ℕ.≢-nonZero⁻¹ d))
   gcd[m,c]*gcd[n,d]≢0′ = Sum.[ gcd[m,c]≢0′ , gcd[n,d]≢0′ ] ∘ ℕ.m*n≡0⇒m≡0∨n≡0 _
   instance
     gcd[m,c]≢0   = ℕ.≢-nonZero gcd[m,c]≢0′
     gcd[n,d]≢0   = ℕ.≢-nonZero gcd[n,d]≢0′
-    c/gcd[m,c]≢0 = ℕ.≢-nonZero (ℕ.n/gcd[m,n]≢0 m c {{c≢0}} {{gcd[m,c]≢0}})
-    d/gcd[n,d]≢0 = ℕ.≢-nonZero (ℕ.n/gcd[m,n]≢0 n d {{d≢0}} {{gcd[n,d]≢0}})
+    c/gcd[m,c]≢0 = ℕ.≢-nonZero (ℕ.n/gcd[m,n]≢0 m c {{gcd≢0 = gcd[m,c]≢0}})
+    d/gcd[n,d]≢0 = ℕ.≢-nonZero (ℕ.n/gcd[m,n]≢0 n d {{gcd≢0 = gcd[n,d]≢0}})
     gcd[m,c]*gcd[n,d]≢0 = ℕ.≢-nonZero gcd[m,c]*gcd[n,d]≢0′
     gcd[n,d]*gcd[m,c]≢0 = ℕ.≢-nonZero (subst (_≢ 0) (ℕ.*-comm gcd[m,c] gcd[n,d]) gcd[m,c]*gcd[n,d]≢0′)
 
@@ -380,7 +386,7 @@ private
   /-injective-≃-helper {m} {n} {c-1} {d-1} eq
     with normalize-pos (suc m) (suc c-1) | normalize-nonNeg n (suc d-1)
   ... | norm[m,c]-pos | norm[n,d]-nonNeg =
-    contradiction (sym eq) (nonNeg≢neg _ _ norm[n,d]-nonNeg (neg-pos norm[m,c]-pos))
+    contradiction (sym eq) (nonNeg≢neg _ _ {{norm[n,d]-nonNeg}} {{neg-pos norm[m,c]-pos}})
 
 /-injective-≃ : ∀ p q → ↥ᵘ p / ↧ₙᵘ p ≡ ↥ᵘ q / ↧ₙᵘ q → p ≃ᵘ q
 /-injective-≃ (mkℚᵘ (+ m)    c-1) (mkℚᵘ (+ n)    d-1) eq =
@@ -696,20 +702,20 @@ module ≤-Reasoning where
 ------------------------------------------------------------------------
 -- Properties of Positive/NonPositive/Negative/NonNegative and _≤_/_<_
 
-positive⁻¹ : Positive p → p > 0ℚ
-positive⁻¹ p>0 = toℚᵘ-cancel-< (ℚᵘ.positive⁻¹ p>0)
+positive⁻¹ : ∀ p → .{{Positive p}} → p > 0ℚ
+positive⁻¹ p = toℚᵘ-cancel-< (ℚᵘ.positive⁻¹ (toℚᵘ p))
 
-nonNegative⁻¹ : NonNegative p → p ≥ 0ℚ
-nonNegative⁻¹ p≥0 = toℚᵘ-cancel-≤ (ℚᵘ.nonNegative⁻¹ p≥0)
+nonNegative⁻¹ : ∀ p → .{{NonNegative p}} → p ≥ 0ℚ
+nonNegative⁻¹ p = toℚᵘ-cancel-≤ (ℚᵘ.nonNegative⁻¹ (toℚᵘ p))
 
-negative⁻¹ : Negative p → p < 0ℚ
-negative⁻¹ p<0 = toℚᵘ-cancel-< (ℚᵘ.negative⁻¹ p<0)
+negative⁻¹ : ∀ p → .{{Negative p}} → p < 0ℚ
+negative⁻¹ p = toℚᵘ-cancel-< (ℚᵘ.negative⁻¹ (toℚᵘ p))
 
-nonPositive⁻¹ : NonPositive p → p ≤ 0ℚ
-nonPositive⁻¹ p≤0 = toℚᵘ-cancel-≤ (ℚᵘ.nonPositive⁻¹ p≤0)
+nonPositive⁻¹ : ∀ p → .{{NonPositive p}} → p ≤ 0ℚ
+nonPositive⁻¹ p = toℚᵘ-cancel-≤ (ℚᵘ.nonPositive⁻¹ (toℚᵘ p))
 
-negative<positive : Negative p → Positive q → p < q
-negative<positive p<0 q>0 = toℚᵘ-cancel-< (ℚᵘ.negative<positive p<0 q>0)
+neg<pos : ∀ p q → .{{Negative p}} → .{{Positive q}} → p < q
+neg<pos p q = toℚᵘ-cancel-< (ℚᵘ.neg<pos (toℚᵘ p) (toℚᵘ q))
 
 ------------------------------------------------------------------------
 -- Properties of -_ and _≤_/_<_
@@ -1558,32 +1564,25 @@ antimono-≤-distrib-⊔ {f} = ⊓-⊔-properties.antimono-≤-distrib-⊔ (cong
 -- Properties of 1/_
 ------------------------------------------------------------------------
 
-private
-  pos⇒≢0 : ∀ p → Positive p → NonZero p
-  pos⇒≢0 (mkℚ +[1+ _ ] _ _) p>0 = _
+nonZero⇒1/nonZero : ∀ p .{{_ : NonZero p}} → NonZero (1/ p)
+nonZero⇒1/nonZero (mkℚ +[1+ _ ] _ _) = _
+nonZero⇒1/nonZero (mkℚ -[1+ _ ] _ _) = _
 
-  neg⇒≢0 : ∀ p → Negative p → NonZero p
-  neg⇒≢0 (mkℚ -[1+ _ ] _ _) p<0 = _
-
-  1/p≢0 : ∀ p .{{_ : NonZero p}} → NonZero (1/ p)
-  1/p≢0 (mkℚ +[1+ _ ] _ _) = _
-  1/p≢0 (mkℚ -[1+ _ ] _ _) = _
-
-1/-involutive : ∀ p .{{p≢0 : NonZero p}} → (1/ (1/ p)) {{1/p≢0 p}} ≡ p
+1/-involutive : ∀ p .{{_ : NonZero p}} → (1/ (1/ p)) {{nonZero⇒1/nonZero p}} ≡ p
 1/-involutive (mkℚ +[1+ n ] d-1 _) = refl
 1/-involutive (mkℚ -[1+ n ] d-1 _) = refl
 
-pos⇒1/pos : ∀ p .{{p>0 : Positive p}} → Positive ((1/ p) {{pos⇒≢0 p p>0}})
-pos⇒1/pos (mkℚ +[1+ _ ] _ _) = _
+1/pos⇒pos : ∀ p .{{_ : Positive p}} → Positive ((1/ p) {{pos⇒nonZero p}})
+1/pos⇒pos (mkℚ +[1+ _ ] _ _) = _
 
-neg⇒1/neg : ∀ p .{{p<0 : Negative p}} → Negative ((1/ p) {{neg⇒≢0 p p<0}})
-neg⇒1/neg (mkℚ -[1+ _ ] _ _) = _
+1/neg⇒neg : ∀ p .{{_ : Negative p}} → Negative ((1/ p) {{neg⇒nonZero p}})
+1/neg⇒neg (mkℚ -[1+ _ ] _ _) = _
 
-1/pos⇒pos : ∀ p .{{_ : NonZero p}} .{{_ : Positive (1/ p)}} → Positive p
-1/pos⇒pos p = subst Positive (1/-involutive p) (pos⇒1/pos (1/ p))
+pos⇒1/pos : ∀ p .{{_ : NonZero p}} .{{_ : Positive (1/ p)}} → Positive p
+pos⇒1/pos p = subst Positive (1/-involutive p) (1/pos⇒pos (1/ p))
 
-1/neg⇒neg : ∀ p .{{_ : NonZero p}} .{{_ : Negative (1/ p)}} → Negative p
-1/neg⇒neg p = subst Negative (1/-involutive p) (neg⇒1/neg (1/ p))
+neg⇒1/neg : ∀ p .{{_ : NonZero p}} .{{_ : Negative (1/ p)}} → Negative p
+neg⇒1/neg p = subst Negative (1/-involutive p) (1/neg⇒neg (1/ p))
 
 ------------------------------------------------------------------------
 -- Properties of ∣_∣
@@ -1729,4 +1728,10 @@ Please use *-cancelˡ-<-nonPos instead."
 {-# WARNING_ON_USAGE *-cancelʳ-<-neg
 "Warning: *-cancelʳ-<-neg was deprecated in v2.0.
 Please use *-cancelʳ-<-nonPos instead."
+#-}
+negative<positive : Negative p → Positive q → p < q
+negative<positive {p} {q} p<0 q>0 = neg<pos p q {{p<0}} {{q>0}}
+{-# WARNING_ON_USAGE negative<positive
+"Warning: negative<positive was deprecated in v2.0.
+Please use neg<pos instead."
 #-}

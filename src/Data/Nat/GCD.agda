@@ -142,10 +142,12 @@ c*gcd[m,n]≡gcd[cm,cn] c@(suc _) m n = begin
 gcd[m,n]≤n : ∀ m n .{{_ : NonZero n}} → gcd m n ≤ n
 gcd[m,n]≤n m n = ∣⇒≤ (gcd[m,n]∣n m n)
 
-n/gcd[m,n]≢0 : ∀ m n .{{_ : NonZero n}} .{{_ : NonZero (gcd m n)}} → n / gcd m n ≢ 0
+n/gcd[m,n]≢0 : ∀ m n .{{_ : NonZero n}} .{{gcd≢0 : NonZero (gcd m n)}} →
+               n / gcd m n ≢ 0
 n/gcd[m,n]≢0 m n = m<n⇒n≢0 (m≥n⇒m/n>0 {n} {gcd m n} (gcd[m,n]≤n m n))
 
-m/gcd[m,n]≢0 : ∀ m n .{{_ : NonZero m}} .{{_ : NonZero (gcd m n)}} → m / gcd m n ≢ 0
+m/gcd[m,n]≢0 : ∀ m n .{{_ : NonZero m}} .{{gcd≢0 : NonZero (gcd m n)}} →
+               m / gcd m n ≢ 0
 m/gcd[m,n]≢0 m n rewrite gcd-comm m n = n/gcd[m,n]≢0 n m
 
 ------------------------------------------------------------------------
@@ -166,7 +168,14 @@ module GCD where
       -- greatest common divisor according to the partial order _∣_.
       greatest : ∀ {d} → d ∣ m × d ∣ n → d ∣ gcd
 
+    gcd∣m : gcd ∣ m
+    gcd∣m = proj₁ commonDivisor
+
+    gcd∣n : gcd ∣ n
+    gcd∣n = proj₂ commonDivisor
+
   open GCD public
+
 
   -- The gcd is unique.
 

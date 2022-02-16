@@ -27,8 +27,7 @@ import Data.Nat.Properties as ℕₚ
 open import Data.Product using (∃; _,_; proj₂)
 
 open import Function.Base
-open import Function.Bijection   using (_⤖_)
-open import Function.Equivalence using (_⇔_)
+open import Function.Bundles using (_⇔_; _⤖_)
 
 open import Relation.Binary.PropositionalEquality using (_≡_; refl; cong)
 open import Relation.Unary using (Pred; Decidable; Irrelevant)

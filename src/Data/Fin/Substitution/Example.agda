@@ -11,7 +11,7 @@ module Data.Fin.Substitution.Example where
 
 open import Data.Fin.Substitution
 open import Data.Fin.Substitution.Lemmas
-open import Data.Nat.Base
+open import Data.Nat.Base hiding (_/_)
 open import Data.Fin.Base using (Fin)
 open import Data.Vec.Base
 open import Relation.Binary.PropositionalEquality as PropEq
