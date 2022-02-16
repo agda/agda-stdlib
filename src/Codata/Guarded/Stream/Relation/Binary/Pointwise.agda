@@ -13,6 +13,7 @@ open import Data.Nat.Base using (ℕ)
 open import Function.Base using (_∘_)
 open import Level
 open import Relation.Binary
+open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
 private
   variable
@@ -20,6 +21,9 @@ private
     A B C D : Set a
     R S T : REL A B ℓ
     xs ys : Stream A
+
+------------------------------------------------------------------------
+-- Bisimilarity
 
 record Pointwise (_∼_ : REL A B ℓ) (as : Stream A) (bs : Stream B) : Set ℓ where
   coinductive
@@ -34,21 +38,33 @@ map : R ⇒ S → Pointwise R ⇒ Pointwise S
 head (map R⇒S xs) = R⇒S (head xs)
 tail (map R⇒S xs) = map R⇒S (tail xs)
 
-refl : Reflexive R → Reflexive (Pointwise R)
-head (refl R-refl) = R-refl
-tail (refl R-refl) = refl R-refl
+reflexive : Reflexive R → Reflexive (Pointwise R)
+head (reflexive R-refl) = R-refl
+tail (reflexive R-refl) = reflexive R-refl
 
-sym : Sym R S → Sym (Pointwise R) (Pointwise S)
-head (sym R-sym-S xsRys) = R-sym-S (head xsRys)
-tail (sym R-sym-S xsRys) = sym R-sym-S (tail xsRys)
+symmetric : Sym R S → Sym (Pointwise R) (Pointwise S)
+head (symmetric R-sym-S xsRys) = R-sym-S (head xsRys)
+tail (symmetric R-sym-S xsRys) = symmetric R-sym-S (tail xsRys)
 
-trans : Trans R S T → Trans (Pointwise R) (Pointwise S) (Pointwise T)
-head (trans RST-trans xsRys ysSzs) = RST-trans (head xsRys) (head ysSzs)
-tail (trans RST-trans xsRys ysSzs) = trans RST-trans (tail xsRys) (tail ysSzs)
+transitive : Trans R S T → Trans (Pointwise R) (Pointwise S) (Pointwise T)
+head (transitive RST-trans xsRys ysSzs) = RST-trans (head xsRys) (head ysSzs)
+tail (transitive RST-trans xsRys ysSzs) = transitive RST-trans (tail xsRys) (tail ysSzs)
 
-antisym : Antisym R S T → Antisym (Pointwise R) (Pointwise S) (Pointwise T)
-head (antisym RST-antisym xsRys ysSxs) = RST-antisym (head xsRys) (head ysSxs)
-tail (antisym RST-antisym xsRys ysSxs) = antisym RST-antisym (tail xsRys) (tail ysSxs)
+isEquivalence : IsEquivalence R → IsEquivalence (Pointwise R)
+isEquivalence equiv^R = record
+  { refl  = reflexive equiv^R.refl
+  ; sym   = symmetric equiv^R.sym
+  ; trans = transitive equiv^R.trans
+  } where module equiv^R = IsEquivalence equiv^R
+
+setoid : Setoid a ℓ → Setoid a ℓ
+setoid S = record
+  { isEquivalence = isEquivalence (Setoid.isEquivalence S)
+  }
+
+antisymmetric : Antisym R S T → Antisym (Pointwise R) (Pointwise S) (Pointwise T)
+head (antisymmetric RST-antisym xsRys ysSxs) = RST-antisym (head xsRys) (head ysSxs)
+tail (antisymmetric RST-antisym xsRys ysSxs) = antisymmetric RST-antisym (tail xsRys) (tail ysSxs)
 
 tabulate⁺ : ∀ {f : ℕ → A} {g : ℕ → B} →
             (∀ i → R (f i) (g i)) → Pointwise R (Stream.tabulate f) (Stream.tabulate g)
@@ -71,3 +87,25 @@ map⁻ : ∀ (f : A → C) (g : B → D) →
        Pointwise (λ a b → R (f a) (g b)) xs ys
 head (map⁻ f g faRgb) = head faRgb
 tail (map⁻ f g faRgb) = map⁻ f g (tail faRgb)
+
+------------------------------------------------------------------------
+-- Pointwise Equality as a Bisimilarity
+
+module _ {A : Set a} where
+
+ infix 1 _≈_
+ _≈_ : Stream A → Stream A → Set a
+ _≈_ = Pointwise _≡_
+
+ refl : Reflexive _≈_
+ refl = reflexive Eq.refl
+
+ sym : Symmetric _≈_
+ sym = symmetric Eq.sym
+
+ trans : Transitive _≈_
+ trans = transitive Eq.trans
+
+module ≈-Reasoning {a} {A : Set a} where
+
+  open import Relation.Binary.Reasoning.Setoid (setoid (Eq.setoid A)) public

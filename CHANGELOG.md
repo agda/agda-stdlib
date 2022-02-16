@@ -457,7 +457,7 @@ Major improvements
 * Previously the division and modulus operators were defined in `Data.Nat.DivMod`
   which in turn meant that using them required importing `Data.Nat.Properties`
   which is a very heavy dependency.
-  
+
 * To fix this, these operators have been moved to `Data.Nat.Base`. The properties
   for them still live in `Data.Nat.DivMod` (which also publicly re-exports them
   to provide backwards compatability).
@@ -725,6 +725,7 @@ New modules
 * A definition of infinite streams using coinductive records:
   ```
   Codata.Guarded.Stream
+  Codata.Guarded.Stream.Properties
   Codata.Guarded.Stream.Relation.Binary.Pointwise
   Codata.Guarded.Stream.Relation.Unary.All
   Codata.Guarded.Stream.Relation.Unary.Any
@@ -831,7 +832,7 @@ New modules
   -‿distribˡ-* : ∀ x y → - (x * y) ≈ - x * y
   -‿distribʳ-* : ∀ x y → - (x * y) ≈ x * - y
   ```
-  
+
 
 Other minor changes
 -------------------
@@ -883,14 +884,14 @@ Other minor changes
   ring : Ring a ℓ₁ → Ring b ℓ₂ → Ring (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
   commutativeRing : CommutativeRing a ℓ₁ → CommutativeRing b ℓ₂ →
                     CommutativeRing (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
-  rawQuasigroup : RawQuasigroup a ℓ₁ → RawQuasigroup b ℓ₂ → 
+  rawQuasigroup : RawQuasigroup a ℓ₁ → RawQuasigroup b ℓ₂ →
                   RawQuasigroup (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
   rawLoop : RawLoop a ℓ₁ → RawLoop b ℓ₂ → RawLoop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
-  unitalMagma : UnitalMagma a ℓ₁ → UnitalMagma b ℓ₂ → 
+  unitalMagma : UnitalMagma a ℓ₁ → UnitalMagma b ℓ₂ →
                 UnitalMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
-  invertibleMagma : InvertibleMagma a ℓ₁ → InvertibleMagma b ℓ₂ → 
+  invertibleMagma : InvertibleMagma a ℓ₁ → InvertibleMagma b ℓ₂ →
                     InvertibleMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
-  invertibleUnitalMagma : InvertibleUnitalMagma a ℓ₁ → InvertibleUnitalMagma b ℓ₂ → 
+  invertibleUnitalMagma : InvertibleUnitalMagma a ℓ₁ → InvertibleUnitalMagma b ℓ₂ →
                           InvertibleUnitalMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
   quasigroup : Quasigroup a ℓ₁ → Quasigroup b ℓ₂ → Quasigroup (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
   loop : Loop a ℓ₁ → Loop b ℓ₂ → Loop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
@@ -985,7 +986,7 @@ Other minor changes
   combine-injectiveʳ : combine x y ≡ combine x z → y ≡ z
   combine-injective  : combine x y ≡ combine w z → x ≡ w × y ≡ z
   combine-surjective : ∀ x → ∃₂ λ y z → combine y z ≡ x
-  
+
   lower₁-injective   : lower₁ i n≢i ≡ lower₁ j n≢j → i ≡ j
   ```
 
@@ -1052,11 +1053,11 @@ Other minor changes
   m^n≢0     : .{{_ : NonZero m}} → NonZero (m ^ n)
   m*n≢0     : .{{_ : NonZero m}} .{{_ : NonZero n}} → NonZero (m * n)
   m≤n⇒n∸m≤n : m ≤ n → n ∸ m ≤ n
-  
+
   1≤n!    : 1 ≤ n !
   _!≢0    : NonZero (n !)
   _!*_!≢0 : NonZero (m ! * n !)
-  
+
   anyUpTo? : ∀ (P? : U.Decidable P) (v : ℕ) → Dec (∃ λ n → n < v × P n)
   allUpTo? : ∀ (P? : U.Decidable P) (v : ℕ) → Dec (∀ {n} → n < v → P n)
   ```
