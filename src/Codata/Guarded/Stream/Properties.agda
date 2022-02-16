@@ -10,14 +10,14 @@ module Codata.Guarded.Stream.Properties where
 
 open import Codata.Guarded.Stream
 open import Codata.Guarded.Stream.Relation.Binary.Pointwise
-  as B using (_≈_; head; tail)
+  as B using (_≈_; head; tail; module ≈-Reasoning)
 
 open import Data.Nat.Base using (zero; suc)
 open import Data.Product as Prod using (_,_; proj₁; proj₂)
 open import Data.Vec.Base as Vec using (Vec; _∷_)
 open import Function.Base using (const; flip; id; _∘′_; _$′_; _⟨_⟩_)
 open import Level using (Level)
-open import Relation.Binary.PropositionalEquality as P using (_≡_; cong)
+open import Relation.Binary.PropositionalEquality as P using (_≡_; cong; cong₂)
 
 private
   variable
@@ -25,6 +25,30 @@ private
     A : Set a
     B : Set b
     C : Set c
+
+------------------------------------------------------------------------
+-- Congruence
+
+cong-take : ∀ n {as bs : Stream A} → as ≈ bs → take n as ≡ take n bs
+cong-take zero    as≈bs = P.refl
+cong-take (suc n) as≈bs = cong₂ _∷_ (as≈bs .head) (cong-take n (as≈bs .tail))
+
+cong-drop : ∀ n {as bs : Stream A} → as ≈ bs → drop n as ≈ drop n bs
+cong-drop zero    as≈bs = as≈bs
+cong-drop (suc n) as≈bs = cong-drop n (as≈bs .tail)
+
+cong-map : ∀ (f : A → B) {as bs} → as ≈ bs → map f as ≈ map f bs
+cong-map f as≈bs .head = cong f (as≈bs .head)
+cong-map f as≈bs .tail = cong-map f (as≈bs .tail)
+
+cong-zipWith : ∀ (f : A → B → C) {as bs cs ds} → as ≈ bs → cs ≈ ds →
+               zipWith f as cs ≈ zipWith f bs ds
+cong-zipWith f as≈bs cs≈ds .head = cong₂ f (as≈bs .head) (cs≈ds .head)
+cong-zipWith f as≈bs cs≈ds .tail = cong-zipWith f (as≈bs .tail) (cs≈ds .tail)
+
+cong-chunksOf : ∀ n {as bs : Stream A} → as ≈ bs → chunksOf n as ≈ chunksOf n bs
+cong-chunksOf n as≈bs .head = cong-take n as≈bs
+cong-chunksOf n as≈bs .tail = cong-chunksOf n (cong-drop n as≈bs)
 
 ------------------------------------------------------------------------
 -- Properties of repeat
@@ -67,6 +91,18 @@ zipWith-repeat : ∀ (f : A → B → C) a b →
                  zipWith f (repeat a) (repeat b) ≈ repeat (f a b)
 zipWith-repeat f a b .head = P.refl
 zipWith-repeat f a b .tail = zipWith-repeat f a b
+
+{-
+
+-- Oops the productivity checker doesn't like this .tail case!
+chunksOf-repeat : ∀ n (a : A) → chunksOf n (repeat a) ≈ repeat (Vec.replicate a)
+chunksOf-repeat n a .head = take-repeat n a
+chunksOf-repeat n a .tail = begin
+  chunksOf n (drop n (repeat a)) ≡⟨ cong (chunksOf n) (drop-repeat n a) ⟩
+  chunksOf n (repeat a)          ≈⟨ chunksOf-repeat n a ⟩
+  repeat (Vec.replicate a)       ∎ where open ≈-Reasoning
+
+-}
 
 ------------------------------------------------------------------------
 -- Properties of map
