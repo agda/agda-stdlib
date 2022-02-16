@@ -160,7 +160,7 @@ truncate-refl : (xs : Vec A n) → truncate ≤-refl xs ≡ xs
 truncate-refl []       = refl
 truncate-refl (x ∷ xs) = cong (x ∷_) (truncate-refl xs)
 
-truncate-trans : (m≤n : m ≤ n) (n≤p : n ≤ p) (xs : Vec A p) →
+truncate-trans : ∀ {p} (m≤n : m ≤ n) (n≤p : n ≤ p) (xs : Vec A p) →
                  truncate (≤-trans m≤n n≤p) xs ≡ truncate m≤n (truncate n≤p xs)
 truncate-trans z≤n       n≤p       xs = refl
 truncate-trans (s≤s m≤n) (s≤s n≤p) (x ∷ xs) = cong (x ∷_) (truncate-trans m≤n n≤p xs)
@@ -176,7 +176,7 @@ padRight-replicate : (m≤n : m ≤ n) (a : A) → replicate a ≡ padRight m≤
 padRight-replicate z≤n       a = refl
 padRight-replicate (s≤s m≤n) a = cong (a ∷_) (padRight-replicate m≤n a)
 
-padRight-trans : (m≤n : m ≤ n) (n≤p : n ≤ p) (a : A) (xs : Vec A m) →
+padRight-trans : ∀ {p} (m≤n : m ≤ n) (n≤p : n ≤ p) (a : A) (xs : Vec A m) →
             padRight (≤-trans m≤n n≤p) a xs ≡ padRight n≤p a (padRight m≤n a xs)
 padRight-trans z≤n       n≤p       a []       = padRight-replicate n≤p a
 padRight-trans (s≤s m≤n) (s≤s n≤p) a (x ∷ xs) = cong (x ∷_) (padRight-trans m≤n n≤p a xs)
