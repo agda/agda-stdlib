@@ -2,7 +2,7 @@
 
 open import Algebra.Apartness.Bundles using (HeytingCommutativeRing)
 
-module Algebra.Properties.HeytingCommutativeRing
+module Algebra.Apartness.Properties.HeytingCommutativeRing
   {c ℓ₁ ℓ₂} (HRC : HeytingCommutativeRing c ℓ₁ ℓ₂) where
 
 open import Data.Product using (_,_; proj₂)

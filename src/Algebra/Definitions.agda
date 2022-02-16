@@ -143,7 +143,6 @@ AlmostCancellative e _•_ = AlmostLeftCancellative e _•_ × AlmostRightCancel
 
 Interchangable : Op₂ A → Op₂ A → Set _
 Interchangable _∘_ _∙_ = ∀ w x y z → ((w ∙ x) ∘ (y ∙ z)) ≈ ((w ∘ y) ∙ (x ∘ z))
-<<<<<<< HEAD
 
 LeftDividesˡ : Op₂ A → Op₂ A → Set _
 LeftDividesˡ _∙_  _\\_ = ∀ x y → (x ∙ (x \\ y)) ≈ y
@@ -162,5 +161,3 @@ LeftDivides ∙ \\ = (LeftDividesˡ ∙ \\) × (LeftDividesʳ ∙ \\)
 
 RightDivides : Op₂ A → Op₂ A → Set _
 RightDivides ∙ // = (RightDividesˡ ∙ //) × (RightDividesʳ ∙ //)
-=======
->>>>>>> dc50fad9b (removing old files)
