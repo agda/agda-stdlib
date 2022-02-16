@@ -270,6 +270,10 @@ m*n/m*o≡n/o m@(suc m-1) n o = helper (<-wellFounded n)
   (o * (m / o)) * (p * (n / p)) ≡⟨ [m*n]*[o*p]≡[m*o]*[n*p] o (m / o) p (n / p) ⟩
   (o * p) * ((m / o) * (n / p)) ∎)
 
+m*n/m!≡n/[m∸1]! : ∀ m n .{{_ : NonZero m}} →
+                 (m * n / m !) {{m !≢0}}  ≡ (n / (pred m) !) {{pred m !≢0}}
+m*n/m!≡n/[m∸1]! (suc m) n = m*n/m*o≡n/o (suc m) n (m !) {{m !≢0}} {{suc m !≢0}}
+
 ------------------------------------------------------------------------
 --  A specification of integer division.
 

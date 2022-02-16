@@ -672,6 +672,13 @@ Deprecated names
   id-↔   ↦   ↔-id
   ```
 
+* Factorial, combinations and permutations for ℕ.
+  ```
+  Data.Nat.Combinatorics
+  Data.Nat.Combinatorics.Base
+  Data.Nat.Combinatorics.Spec
+  ```
+
 * In `Function.Construct.Symmetry`:
   ```
   sym-⤖   ↦   ⤖-sym
@@ -1033,21 +1040,37 @@ Other minor changes
   n≮0       : n ≮ 0
   n+1+m≢m   : n + suc m ≢ m
   m*n≡0⇒m≡0 : .{{_ : NonZero n}} → m * n ≡ 0 → m ≡ 0
+  n>0⇒n≢0   : n > 0 → n ≢ 0
   m^n≢0     : .{{_ : NonZero m}} → NonZero (m ^ n)
-
-
+  m*n≢0     : .{{_ : NonZero m}} .{{_ : NonZero n}} → NonZero (m * n)
+  m≤n⇒n∸m≤n : m ≤ n → n ∸ m ≤ n
+  
+  1≤n!    : 1 ≤ n !
+  _!≢0    : NonZero (n !)
+  _!*_!≢0 : NonZero (m ! * n !)
+  
   anyUpTo? : ∀ (P? : U.Decidable P) (v : ℕ) → Dec (∃ λ n → n < v × P n)
   allUpTo? : ∀ (P? : U.Decidable P) (v : ℕ) → Dec (∀ {n} → n < v → P n)
   ```
 
+* Added new functions in `Data.Nat`:
+  ```agda
+  _! : ℕ → ℕ
+  ```
+
 * Added new proofs in `Data.Nat.DivMod`:
   ```agda
-  m%n≤n : .{{_ : NonZero n}} → m % n ≤ n
+  m%n≤n          : .{{_ : NonZero n}} → m % n ≤ n
+  m*n/m!≡n/[m∸1]! : .{{_ : NonZero m}} → m * n / m ! ≡ n / (pred m) !
   ```
 
 * Added new proofs in `Data.Nat.Divisibility`:
   ```agda
-  n∣m*n*o : n ∣ m * n * o
+  n∣m*n*o       : n ∣ m * n * o
+  m*n∣⇒m∣       : m * n ∣ i → m ∣ i
+  m*n∣⇒n∣       : m * n ∣ i → n ∣ i
+  m≤n⇒m!∣n!     : m ≤ n → m ! ∣ n !
+  m/n/o≡m/[n*o] : .{{NonZero n}} .{{NonZero o}} → n * o ∣ m → (m / n) / o ≡ m / (n * o)
   ```
 
 * Added new patterns in `Data.Nat.Reflection`:
