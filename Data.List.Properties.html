@@ -994,24 +994,26 @@
   <a id="37050" href="Data.List.Properties.html#37050" class="Function">∷ʳ-injectiveʳ</a> <a id="37064" class="Symbol">:</a> <a id="37066" class="Symbol">∀</a> <a id="37068" class="Symbol">(</a><a id="37069" href="Data.List.Properties.html#37069" class="Bound">xs</a> <a id="37072" href="Data.List.Properties.html#37072" class="Bound">ys</a> <a id="37075" class="Symbol">:</a> <a id="37077" href="Agda.Builtin.List.html#148" class="Datatype">List</a> <a id="37082" href="Data.List.Properties.html#36569" class="Bound">A</a><a id="37083" class="Symbol">)</a> <a id="37085" class="Symbol">→</a> <a id="37087" href="Data.List.Properties.html#37069" class="Bound">xs</a> <a id="37090" href="Data.List.Base.html#10043" class="Function Operator">∷ʳ</a> <a id="37093" href="Data.List.Properties.html#36563" class="Bound">x</a> <a id="37095" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="37097" href="Data.List.Properties.html#37072" class="Bound">ys</a> <a id="37100" href="Data.List.Base.html#10043" class="Function Operator">∷ʳ</a> <a id="37103" href="Data.List.Properties.html#36565" class="Bound">y</a> <a id="37105" class="Symbol">→</a> <a id="37107" href="Data.List.Properties.html#36563" class="Bound">x</a> <a id="37109" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="37111" href="Data.List.Properties.html#36565" class="Bound">y</a>
   <a id="37115" href="Data.List.Properties.html#37050" class="Function">∷ʳ-injectiveʳ</a> <a id="37129" href="Data.List.Properties.html#37129" class="Bound">xs</a> <a id="37132" href="Data.List.Properties.html#37132" class="Bound">ys</a> <a id="37135" href="Data.List.Properties.html#37135" class="Bound">eq</a> <a id="37138" class="Symbol">=</a> <a id="37140" href="Agda.Builtin.Sigma.html#264" class="Field">proj₂</a> <a id="37146" class="Symbol">(</a><a id="37147" href="Data.List.Properties.html#36581" class="Function">∷ʳ-injective</a> <a id="37160" href="Data.List.Properties.html#37129" class="Bound">xs</a> <a id="37163" href="Data.List.Properties.html#37132" class="Bound">ys</a> <a id="37166" href="Data.List.Properties.html#37135" class="Bound">eq</a><a id="37168" class="Symbol">)</a>
 
+<a id="∷ʳ-++"></a><a id="37171" href="Data.List.Properties.html#37171" class="Function">∷ʳ-++</a> <a id="37177" class="Symbol">:</a> <a id="37179" class="Symbol">∀</a> <a id="37181" class="Symbol">(</a><a id="37182" href="Data.List.Properties.html#37182" class="Bound">xs</a> <a id="37185" class="Symbol">:</a> <a id="37187" href="Agda.Builtin.List.html#148" class="Datatype">List</a> <a id="37192" href="Data.List.Properties.html#2027" class="Generalizable">A</a><a id="37193" class="Symbol">)</a> <a id="37195" class="Symbol">(</a><a id="37196" href="Data.List.Properties.html#37196" class="Bound">a</a> <a id="37198" class="Symbol">:</a> <a id="37200" href="Data.List.Properties.html#2027" class="Generalizable">A</a><a id="37201" class="Symbol">)</a> <a id="37203" class="Symbol">(</a><a id="37204" href="Data.List.Properties.html#37204" class="Bound">ys</a> <a id="37207" class="Symbol">:</a> <a id="37209" href="Agda.Builtin.List.html#148" class="Datatype">List</a> <a id="37214" href="Data.List.Properties.html#2027" class="Generalizable">A</a><a id="37215" class="Symbol">)</a> <a id="37217" class="Symbol">→</a> <a id="37219" href="Data.List.Properties.html#37182" class="Bound">xs</a> <a id="37222" href="Data.List.Base.html#10043" class="Function Operator">∷ʳ</a> <a id="37225" href="Data.List.Properties.html#37196" class="Bound">a</a> <a id="37227" href="Data.List.Base.html#1810" class="Function Operator">++</a> <a id="37230" href="Data.List.Properties.html#37204" class="Bound">ys</a> <a id="37233" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="37235" href="Data.List.Properties.html#37182" class="Bound">xs</a> <a id="37238" href="Data.List.Base.html#1810" class="Function Operator">++</a> <a id="37241" href="Data.List.Properties.html#37196" class="Bound">a</a> <a id="37243" class="InductiveConstructor Operator">∷</a> <a id="37245" href="Data.List.Properties.html#37204" class="Bound">ys</a>
+<a id="37248" href="Data.List.Properties.html#37171" class="Function">∷ʳ-++</a> <a id="37254" href="Data.List.Properties.html#37254" class="Bound">xs</a> <a id="37257" href="Data.List.Properties.html#37257" class="Bound">a</a> <a id="37259" href="Data.List.Properties.html#37259" class="Bound">ys</a> <a id="37262" class="Symbol">=</a> <a id="37264" href="Data.List.Properties.html#5518" class="Function">++-assoc</a> <a id="37273" href="Data.List.Properties.html#37254" class="Bound">xs</a> <a id="37276" href="Data.List.Base.html#5025" class="Function Operator">[</a> <a id="37278" href="Data.List.Properties.html#37257" class="Bound">a</a> <a id="37280" href="Data.List.Base.html#5025" class="Function Operator">]</a> <a id="37282" href="Data.List.Properties.html#37259" class="Bound">ys</a>
 
-<a id="37172" class="Comment">------------------------------------------------------------------------</a>
-<a id="37245" class="Comment">-- DEPRECATED</a>
-<a id="37259" class="Comment">------------------------------------------------------------------------</a>
-<a id="37332" class="Comment">-- Please use the new names as continuing support for the old names is</a>
-<a id="37403" class="Comment">-- not guaranteed.</a>
+<a id="37286" class="Comment">------------------------------------------------------------------------</a>
+<a id="37359" class="Comment">-- DEPRECATED</a>
+<a id="37373" class="Comment">------------------------------------------------------------------------</a>
+<a id="37446" class="Comment">-- Please use the new names as continuing support for the old names is</a>
+<a id="37517" class="Comment">-- not guaranteed.</a>
 
-<a id="37423" class="Comment">-- Version 2.0</a>
+<a id="37537" class="Comment">-- Version 2.0</a>
 
-<a id="zipWith-identityˡ"></a><a id="37439" href="Data.List.Properties.html#37439" class="Function">zipWith-identityˡ</a> <a id="37457" class="Symbol">=</a> <a id="37459" href="Data.List.Properties.html#10237" class="Function">zipWith-zeroˡ</a>
-<a id="37473" class="Symbol">{-#</a> <a id="37477" class="Keyword">WARNING_ON_USAGE</a> <a id="37494" class="Pragma">zipWith-identityˡ</a>
-<a id="37512" class="String">&quot;Warning: zipWith-identityˡ was deprecated in v2.0.
+<a id="zipWith-identityˡ"></a><a id="37553" href="Data.List.Properties.html#37553" class="Function">zipWith-identityˡ</a> <a id="37571" class="Symbol">=</a> <a id="37573" href="Data.List.Properties.html#10237" class="Function">zipWith-zeroˡ</a>
+<a id="37587" class="Symbol">{-#</a> <a id="37591" class="Keyword">WARNING_ON_USAGE</a> <a id="37608" class="Pragma">zipWith-identityˡ</a>
+<a id="37626" class="String">&quot;Warning: zipWith-identityˡ was deprecated in v2.0.
 Please use zipWith-zeroˡ instead.&quot;</a>
-<a id="37599" class="Symbol">#-}</a>
+<a id="37713" class="Symbol">#-}</a>
 
-<a id="zipWith-identityʳ"></a><a id="37604" href="Data.List.Properties.html#37604" class="Function">zipWith-identityʳ</a> <a id="37622" class="Symbol">=</a> <a id="37624" href="Data.List.Properties.html#10348" class="Function">zipWith-zeroʳ</a>
-<a id="37638" class="Symbol">{-#</a> <a id="37642" class="Keyword">WARNING_ON_USAGE</a> <a id="37659" class="Pragma">zipWith-identityʳ</a>
-<a id="37677" class="String">&quot;Warning: zipWith-identityʳ was deprecated in v2.0.
+<a id="zipWith-identityʳ"></a><a id="37718" href="Data.List.Properties.html#37718" class="Function">zipWith-identityʳ</a> <a id="37736" class="Symbol">=</a> <a id="37738" href="Data.List.Properties.html#10348" class="Function">zipWith-zeroʳ</a>
+<a id="37752" class="Symbol">{-#</a> <a id="37756" class="Keyword">WARNING_ON_USAGE</a> <a id="37773" class="Pragma">zipWith-identityʳ</a>
+<a id="37791" class="String">&quot;Warning: zipWith-identityʳ was deprecated in v2.0.
 Please use zipWith-zeroʳ instead.&quot;</a>
-<a id="37764" class="Symbol">#-}</a>
+<a id="37878" class="Symbol">#-}</a>
 </pre></body></html>
