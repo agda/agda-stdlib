@@ -32,17 +32,17 @@ private
 -- Congruence
 
 cong-lookup : ∀ n {as bs : Stream A} → as ≈ bs → lookup n as ≡ lookup n bs
-cong-lookup zero    as≈bs = as≈bs .head
-cong-lookup (suc n) as≈bs = cong-lookup n (as≈bs .tail)
+cong-lookup = B.lookup
 
 cong-take : ∀ n {as bs : Stream A} → as ≈ bs → take n as ≡ take n bs
 cong-take zero    as≈bs = P.refl
 cong-take (suc n) as≈bs = cong₂ _∷_ (as≈bs .head) (cong-take n (as≈bs .tail))
 
 cong-drop : ∀ n {as bs : Stream A} → as ≈ bs → drop n as ≈ drop n bs
-cong-drop zero    as≈bs = as≈bs
-cong-drop (suc n) as≈bs = cong-drop n (as≈bs .tail)
+cong-drop = B.drop⁺
 
+-- This is not map⁺ because the propositional equality relation is
+-- not the same on the input and output
 cong-map : ∀ (f : A → B) {as bs} → as ≈ bs → map f as ≈ map f bs
 cong-map f as≈bs .head = cong f (as≈bs .head)
 cong-map f as≈bs .tail = cong-map f (as≈bs .tail)

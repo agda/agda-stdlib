@@ -9,9 +9,9 @@
 module Codata.Guarded.Stream.Relation.Binary.Pointwise where
 
 open import Codata.Guarded.Stream as Stream using (Stream; head; tail)
-open import Data.Nat.Base using (ℕ)
-open import Function.Base using (_∘_)
-open import Level
+open import Data.Nat.Base using (ℕ; zero; suc)
+open import Function.Base using (_∘_; _on_)
+open import Level using (Level)
 open import Relation.Binary
 open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
 
@@ -33,6 +33,10 @@ record Pointwise (_∼_ : REL A B ℓ) (as : Stream A) (bs : Stream B) : Set ℓ
     tail : Pointwise _∼_ (tail as) (tail bs)
 
 open Pointwise public
+
+lookup : ∀ n → Pointwise R ⇒ (R on (Stream.lookup n))
+lookup zero    rs = rs .head
+lookup (suc n) rs = lookup n (rs .tail)
 
 map : R ⇒ S → Pointwise R ⇒ Pointwise S
 head (map R⇒S xs) = R⇒S (head xs)
@@ -69,12 +73,12 @@ tail (antisymmetric RST-antisym xsRys ysSxs) = antisymmetric RST-antisym (tail x
 tabulate⁺ : ∀ {f : ℕ → A} {g : ℕ → B} →
             (∀ i → R (f i) (g i)) → Pointwise R (Stream.tabulate f) (Stream.tabulate g)
 head (tabulate⁺ f∼g) = f∼g 0
-tail (tabulate⁺ f∼g) = tabulate⁺ (f∼g ∘ ℕ.suc)
+tail (tabulate⁺ f∼g) = tabulate⁺ (f∼g ∘ suc)
 
 tabulate⁻ : ∀ {f : ℕ → A} {g : ℕ → B} →
             Pointwise R (Stream.tabulate f) (Stream.tabulate g) → (∀ i → R (f i) (g i))
-tabulate⁻ xsRys ℕ.zero = head xsRys
-tabulate⁻ xsRys (ℕ.suc i) = tabulate⁻ (tail xsRys) i
+tabulate⁻ xsRys zero    = head xsRys
+tabulate⁻ xsRys (suc i) = tabulate⁻ (tail xsRys) i
 
 map⁺ : ∀ (f : A → C) (g : B → D) →
        Pointwise (λ a b → R (f a) (g b)) xs ys →
@@ -87,6 +91,10 @@ map⁻ : ∀ (f : A → C) (g : B → D) →
        Pointwise (λ a b → R (f a) (g b)) xs ys
 head (map⁻ f g faRgb) = head faRgb
 tail (map⁻ f g faRgb) = map⁻ f g (tail faRgb)
+
+drop⁺ : ∀ n → Pointwise R ⇒ (Pointwise R on Stream.drop n)
+drop⁺ zero    as≈bs = as≈bs
+drop⁺ (suc n) as≈bs = drop⁺ n (as≈bs .tail)
 
 ------------------------------------------------------------------------
 -- Pointwise Equality as a Bisimilarity
