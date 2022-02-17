@@ -11,9 +11,9 @@ module Codata.Guarded.Stream.Relation.Binary.Pointwise where
 open import Codata.Guarded.Stream as Stream using (Stream; head; tail)
 open import Data.Nat.Base using (ℕ; zero; suc)
 open import Function.Base using (_∘_; _on_)
-open import Level using (Level)
+open import Level using (Level; _⊔_)
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as Eq using (_≡_)
+open import Relation.Binary.PropositionalEquality as P using (_≡_)
 
 private
   variable
@@ -106,14 +106,88 @@ module _ {A : Set a} where
  _≈_ = Pointwise _≡_
 
  refl : Reflexive _≈_
- refl = reflexive Eq.refl
+ refl = reflexive P.refl
 
  sym : Symmetric _≈_
- sym = symmetric Eq.sym
+ sym = symmetric P.sym
 
  trans : Transitive _≈_
- trans = transitive Eq.trans
+ trans = transitive P.trans
+
+ ≈-setoid : Setoid _ _
+ ≈-setoid = setoid (P.setoid A)
+
+------------------------------------------------------------------------
+-- Pointwise DSL
+-- A guardedness check does not play well with compositional proofs.
+-- Luckily we can learn from Nils Anders Danielsson's
+-- Beating the Productivity Checker Using Embedded Languages
+-- and design a little compositional DSL to define such proofs
+
+module pw-Reasoning (S : Setoid a ℓ) where
+  private module S = Setoid S
+  open S using (Carrier) renaming (_≈_ to _∼_)
+
+  record `Pointwise∞ (as bs : Stream Carrier) : Set (a ⊔ ℓ)
+  data   `Pointwise  (as bs : Stream Carrier) : Set (a ⊔ ℓ)
+
+  record `Pointwise∞ as bs where
+    coinductive
+    field
+      head : (as .head) ∼ (bs .head)
+      tail : `Pointwise (as .tail) (bs .tail)
+
+  data `Pointwise as bs where
+    `lift  : Pointwise _∼_ as bs → `Pointwise as bs
+    `step  : `Pointwise∞ as bs → `Pointwise as bs
+    `refl  : as ≡ bs → `Pointwise as bs
+    `bisim : as ≈ bs → `Pointwise as bs
+    `sym   : `Pointwise bs as → `Pointwise as bs
+    `trans : ∀ {ms} → `Pointwise as ms → `Pointwise ms bs → `Pointwise as bs
+
+  open `Pointwise∞ public
+
+  `head : ∀ {as bs} → `Pointwise as bs → as .head ∼ bs .head
+  `head (`lift rs)         = rs .head
+  `head (`refl eq)         = S.reflexive (P.cong head eq)
+  `head (`bisim rs)        = S.reflexive (rs .head)
+  `head (`step `rs)        = `rs .head
+  `head (`sym `rs)         = S.sym (`head `rs)
+  `head (`trans `rs₁ `rs₂) = S.trans (`head `rs₁) (`head `rs₂)
+
+  `tail : ∀ {as bs} → `Pointwise as bs → `Pointwise (as .tail)  (bs .tail)
+  `tail (`lift rs)         = `lift (rs .tail)
+  `tail (`refl eq)         = `refl (P.cong tail eq)
+  `tail (`bisim rs)        = `bisim (rs .tail)
+  `tail (`step `rs)        = `rs .tail
+  `tail (`sym `rs)         = `sym (`tail `rs)
+  `tail (`trans `rs₁ `rs₂) = `trans (`tail `rs₁) (`tail `rs₂)
+
+  run : ∀ {as bs} → `Pointwise as bs → Pointwise _∼_ as bs
+  run `rs .head = `head `rs
+  run `rs .tail = run (`tail `rs)
+
+  infix  1 begin_
+  infixr 2 _↺⟨_⟩_ _↺˘⟨_⟩_ _∼⟨_⟩_ _∼˘⟨_⟩_ _≈⟨_⟩_ _≈˘⟨_⟩_ _≡⟨_⟩_ _≡˘⟨_⟩_ _≡⟨⟩_
+  infix  3 _∎
+
+  -- Beginning of a proof
+  begin_ : ∀ {as bs} → `Pointwise∞ as bs → Pointwise _∼_ as bs
+  (begin `rs) .head = `rs .head
+  (begin `rs) .tail = run (`rs .tail)
+
+  pattern _↺⟨_⟩_  as as∼bs bs∼cs = `trans {as = as} (`step as∼bs) bs∼cs
+  pattern _↺˘⟨_⟩_ as bs∼as bs∼cs = `trans {as = as} (`sym (`step bs∼as)) bs∼cs
+  pattern _∼⟨_⟩_  as as∼bs bs∼cs = `trans {as = as} (`lift as∼bs) bs∼cs
+  pattern _∼˘⟨_⟩_ as bs∼as bs∼cs = `trans {as = as} (`sym (`lift bs∼as)) bs∼cs
+  pattern _≈⟨_⟩_  as as∼bs bs∼cs = `trans {as = as} (`bisim as∼bs) bs∼cs
+  pattern _≈˘⟨_⟩_ as bs∼as bs∼cs = `trans {as = as} (`sym (`bisim bs∼as)) bs∼cs
+  pattern _≡⟨_⟩_  as as∼bs bs∼cs = `trans {as = as} (`refl as∼bs) bs∼cs
+  pattern _≡˘⟨_⟩_ as bs∼as bs∼cs = `trans {as = as} (`sym (`refl bs∼as)) bs∼cs
+  pattern _≡⟨⟩_   as as∼bs       = `trans {as = as} (`refl P.refl) as∼bs
+  pattern _∎      as             = `refl  {as = as} P.refl
 
 module ≈-Reasoning {a} {A : Set a} where
 
-  open import Relation.Binary.Reasoning.Setoid (setoid (Eq.setoid A)) public
+  open pw-Reasoning (P.setoid A) public
+  _≈∞_ = `Pointwise∞

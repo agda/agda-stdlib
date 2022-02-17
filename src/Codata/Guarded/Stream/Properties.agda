@@ -103,17 +103,17 @@ zipWith-repeat : ∀ (f : A → B → C) a b →
 zipWith-repeat f a b .head = P.refl
 zipWith-repeat f a b .tail = zipWith-repeat f a b
 
-{-
-
--- Oops the productivity checker doesn't like this .tail case!
 chunksOf-repeat : ∀ n (a : A) → chunksOf n (repeat a) ≈ repeat (Vec.replicate a)
-chunksOf-repeat n a .head = take-repeat n a
-chunksOf-repeat n a .tail = begin
-  chunksOf n (drop n (repeat a)) ≡⟨ cong (chunksOf n) (drop-repeat n a) ⟩
-  chunksOf n (repeat a)          ≈⟨ chunksOf-repeat n a ⟩
-  repeat (Vec.replicate a)       ∎ where open ≈-Reasoning
+chunksOf-repeat n a = begin go where
 
--}
+  open ≈-Reasoning
+
+  go : chunksOf n (repeat a) ≈∞ repeat (Vec.replicate a)
+  go .head = take-repeat n a
+  go .tail =
+    chunksOf n (drop n (repeat a)) ≡⟨ P.cong (chunksOf n) (drop-repeat n a) ⟩
+    chunksOf n (repeat a)          ↺⟨ go ⟩
+    repeat (Vec.replicate a)       ∎
 
 ------------------------------------------------------------------------
 -- Properties of map
