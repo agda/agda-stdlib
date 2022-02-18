@@ -130,6 +130,15 @@ Min R = Max (flip R)
 Minimum : Rel A ℓ → A → Set _
 Minimum = Min
 
+-- Definitions for apartness relations
+
+-- Note that Cotransitive's arguments are permuted with respect to Transitive's.
+Cotransitive : Rel A ℓ → Set _
+Cotransitive _#_ = ∀ {x y} z → x # y → (x # z) ⊎ (z # y)
+
+Tight : Rel A ℓ₁ → Rel A ℓ₂ → Set _
+Tight _≈_ _#_ = ∀ x y → (¬ x # y → x ≈ y) × (x ≈ y → ¬ x # y)
+
 -- Unary relations respecting a binary relation.
 
 _⟶_Respects_ : (A → Set ℓ₁) → (B → Set ℓ₂) → REL A B ℓ₃ → Set _
