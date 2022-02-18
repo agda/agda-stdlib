@@ -9,7 +9,7 @@ open import Data.Product using (_,_; proj₂)
 open import Algebra using (CommutativeRing; RightIdentity)
 
 open HeytingCommutativeRing HRC
-open CommutativeRing cring using (ring)
+open CommutativeRing commutativeRing using (ring)
 
 open import Algebra.Properties.Ring ring using (-0#≈0#)
 

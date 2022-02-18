@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Algebra.WithApartness where
+module Algebra.Apartness where
 
-open import Algebra.WithApartness.Structures public
-open import Algebra.WithApartness.Bundles public
+open import Algebra.Apartness.Structures public
+open import Algebra.Apartness.Bundles public
