@@ -17,7 +17,7 @@ open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; _≢_; refl)
 open import Relation.Nullary using (¬_)
-open import Relation.Nullary.Negation.Core using (contradiction)
+open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred)
 
 ------------------------------------------------------------------------
@@ -125,10 +125,14 @@ instance
 open import Agda.Builtin.Nat public
   using (_+_; _*_) renaming (_-_ to _∸_)
 
+open import Agda.Builtin.Nat
+  using (div-helper; mod-helper)
+
 pred : ℕ → ℕ
 pred n = n ∸ 1
 
-infixl 7 _⊓_
+infix  8 _!
+infixl 7 _⊓_ _/_ _%_
 infixl 6 _+⋎_ _⊔_
 
 -- Argument-swapping addition. Used by Data.Vec._⋎_.
@@ -175,6 +179,24 @@ x ^ suc n = x * x ^ n
 ∣ zero  - y     ∣ = y
 ∣ x     - zero  ∣ = x
 ∣ suc x - suc y ∣ = ∣ x - y ∣
+
+-- Division
+-- Note properties of these are in `Nat.DivMod` not `Nat.Properties`
+
+_/_ : (dividend divisor : ℕ) .{{_ : NonZero divisor}} → ℕ
+m / (suc n) = div-helper 0 n m n
+
+-- Remainder/modulus
+-- Note properties of these are in `Nat.DivMod` not `Nat.Properties`
+
+_%_ : (dividend divisor : ℕ) .{{_ : NonZero divisor}} → ℕ
+m % (suc n) = mod-helper 0 n m n
+
+-- Factorial
+
+_! : ℕ → ℕ
+zero  ! = 1
+suc n ! = suc n * n !
 
 ------------------------------------------------------------------------
 -- Alternative definition of _≤_

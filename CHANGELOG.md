@@ -50,6 +50,14 @@ Non-backwards compatible changes
 
 * All modules and names that were deprecated prior to v1.0 have been removed.
 
+#### Moved `Codata` modules to `Codata.Sized`
+
+* Due to the change in Agda 2.6.2 where sized types are no longer compatible
+  with the `--safe` flag, it has become clear that a third variant of codata
+  will be needed using coinductive records. Therefore all existing modules in
+  `Codata` which used sized types have been moved inside a new folder named
+  `Sized`, e.g. `Codata.Stream` has become `Codata.Sized.Stream`.
+
 ### Improvements to pretty printing and regexes
 
 * In `Text.Pretty`, `Doc` is now a record rather than a type alias. This
@@ -444,6 +452,19 @@ Major improvements
      it is defined immediately in terms of `_+_` and `-_`. This is the case for
 	 `Data.Integer` and `Data.Rational`.
 
+### Moved `_%_` and `_/_` operators to `Data.Nat.Base`
+
+* Previously the division and modulus operators were defined in `Data.Nat.DivMod`
+  which in turn meant that using them required importing `Data.Nat.Properties`
+  which is a very heavy dependency.
+
+* To fix this, these operators have been moved to `Data.Nat.Base`. The properties
+  for them still live in `Data.Nat.DivMod` (which also publicly re-exports them
+  to provide backwards compatability).
+
+* Beneficieries of this change include `Data.Rational.Unnormalised.Base` whose
+  dependencies are now significantly smaller.
+
 Deprecated modules
 ------------------
 
@@ -517,6 +538,15 @@ Deprecated names
   reverse-prop       ↦ Data.Fin.Properties.opposite-prop
   reverse-involutive ↦ Data.Fin.Properties.opposite-involutive
   reverse-suc        ↦ Data.Fin.Properties.opposite-suc
+  ```
+
+* In `Data.Integer.DivMod` the operator names have been renamed to
+  be consistent with those in `Data.Nat.DivMod`:
+  ```
+  _divℕ_  ↦ _/ℕ_
+  _div_   ↦ _/_
+  _modℕ_  ↦ _%ℕ_
+  _mod_   ↦ _%_
   ```
 
 * In `Data.Integer.Properties` references to variables in names have
@@ -642,6 +672,13 @@ Deprecated names
   id-↔   ↦   ↔-id
   ```
 
+* Factorial, combinations and permutations for ℕ.
+  ```
+  Data.Nat.Combinatorics
+  Data.Nat.Combinatorics.Base
+  Data.Nat.Combinatorics.Spec
+  ```
+
 * In `Function.Construct.Symmetry`:
   ```
   sym-⤖   ↦   ⤖-sym
@@ -683,6 +720,14 @@ New modules
 * 'Optimised' tail-recursive exponentiation properties:
   ```
   Algebra.Properties.Semiring.Exp.TailRecursiveOptimised
+  ```
+
+* A definition of infinite streams using coinductive records:
+  ```
+  Codata.Guarded.Stream
+  Codata.Guarded.Stream.Relation.Binary.Pointwise
+  Codata.Guarded.Stream.Relation.Unary.All
+  Codata.Guarded.Stream.Relation.Unary.Any
   ```
 
 * A small library for function arguments with default values:
@@ -781,6 +826,12 @@ New modules
   ```
   Foreign.Haskell.List.NonEmpty
   ```
+* Added new module `Algebra.Properties.RingWithoutOne`:
+  ```
+  -‿distribˡ-* : ∀ x y → - (x * y) ≈ - x * y
+  -‿distribʳ-* : ∀ x y → - (x * y) ≈ x * - y
+  ```
+
 
 Other minor changes
 -------------------
@@ -832,6 +883,17 @@ Other minor changes
   ring : Ring a ℓ₁ → Ring b ℓ₂ → Ring (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
   commutativeRing : CommutativeRing a ℓ₁ → CommutativeRing b ℓ₂ →
                     CommutativeRing (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  rawQuasigroup : RawQuasigroup a ℓ₁ → RawQuasigroup b ℓ₂ →
+                  RawQuasigroup (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  rawLoop : RawLoop a ℓ₁ → RawLoop b ℓ₂ → RawLoop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  unitalMagma : UnitalMagma a ℓ₁ → UnitalMagma b ℓ₂ →
+                UnitalMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  invertibleMagma : InvertibleMagma a ℓ₁ → InvertibleMagma b ℓ₂ →
+                    InvertibleMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  invertibleUnitalMagma : InvertibleUnitalMagma a ℓ₁ → InvertibleUnitalMagma b ℓ₂ →
+                          InvertibleUnitalMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  quasigroup : Quasigroup a ℓ₁ → Quasigroup b ℓ₂ → Quasigroup (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+  loop : Loop a ℓ₁ → Loop b ℓ₂ → Loop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
  ```
 
 * Added new definition to `Algebra.Definitions`:
@@ -923,6 +985,8 @@ Other minor changes
   combine-injectiveʳ : combine x y ≡ combine x z → y ≡ z
   combine-injective  : combine x y ≡ combine w z → x ≡ w × y ≡ z
   combine-surjective : ∀ x → ∃₂ λ y z → combine y z ≡ x
+
+  lower₁-injective   : lower₁ i n≢i ≡ lower₁ j n≢j → i ≡ j
   ```
 
 * Added new functions in `Data.Integer.Base`:
@@ -965,6 +1029,7 @@ Other minor changes
 * Add new proofs in `Data.List.Properties`:
   ```agda
   ∈⇒∣product : n ∈ ns → n ∣ product ns
+  ∷ʳ-++ : xs ∷ʳ a ++ ys ≡ xs ++ a ∷ ys
   ```
 
 * Added new definitions and proofs to `Data.Nat.Primality`:
@@ -984,21 +1049,37 @@ Other minor changes
   n≮0       : n ≮ 0
   n+1+m≢m   : n + suc m ≢ m
   m*n≡0⇒m≡0 : .{{_ : NonZero n}} → m * n ≡ 0 → m ≡ 0
+  n>0⇒n≢0   : n > 0 → n ≢ 0
   m^n≢0     : .{{_ : NonZero m}} → NonZero (m ^ n)
+  m*n≢0     : .{{_ : NonZero m}} .{{_ : NonZero n}} → NonZero (m * n)
+  m≤n⇒n∸m≤n : m ≤ n → n ∸ m ≤ n
 
+  1≤n!    : 1 ≤ n !
+  _!≢0    : NonZero (n !)
+  _!*_!≢0 : NonZero (m ! * n !)
 
   anyUpTo? : ∀ (P? : U.Decidable P) (v : ℕ) → Dec (∃ λ n → n < v × P n)
   allUpTo? : ∀ (P? : U.Decidable P) (v : ℕ) → Dec (∀ {n} → n < v → P n)
   ```
 
+* Added new functions in `Data.Nat`:
+  ```agda
+  _! : ℕ → ℕ
+  ```
+
 * Added new proofs in `Data.Nat.DivMod`:
   ```agda
-  m%n≤n : .{{_ : NonZero n}} → m % n ≤ n
+  m%n≤n          : .{{_ : NonZero n}} → m % n ≤ n
+  m*n/m!≡n/[m∸1]! : .{{_ : NonZero m}} → m * n / m ! ≡ n / (pred m) !
   ```
 
 * Added new proofs in `Data.Nat.Divisibility`:
   ```agda
-  n∣m*n*o : n ∣ m * n * o
+  n∣m*n*o       : n ∣ m * n * o
+  m*n∣⇒m∣       : m * n ∣ i → m ∣ i
+  m*n∣⇒n∣       : m * n ∣ i → n ∣ i
+  m≤n⇒m!∣n!     : m ≤ n → m ! ∣ n !
+  m/n/o≡m/[n*o] : .{{NonZero n}} .{{NonZero o}} → n * o ∣ m → (m / n) / o ≡ m / (n * o)
   ```
 
 * Added new patterns in `Data.Nat.Reflection`:
@@ -1072,6 +1153,19 @@ Other minor changes
   ×-≡,≡←≡ : p₁ ≡ p₂ → (proj₁ p₁ ≡ proj₁ p₂ × proj₂ p₁ ≡ proj₂ p₂)
   ```
 
+* Added new proofs to `Data.Sign.Properties`:
+  ```agda
+  *-inverse : Inverse + id _*_
+  *-isCommutativeSemigroup : IsCommutativeSemigroup _*_
+  *-isCommutativeMonoid : IsCommutativeMonoid _*_ +
+  *-isGroup : IsGroup _*_ + id
+  *-isAbelianGroup : IsAbelianGroup _*_ + id
+  *-commutativeSemigroup : CommutativeSemigroup 0ℓ 0ℓ
+  *-commutativeMonoid : CommutativeMonoid 0ℓ 0ℓ
+  *-group : Group 0ℓ 0ℓ
+  *-abelianGroup : AbelianGroup 0ℓ 0ℓ
+  ```
+
 * Added new proofs in `Data.String.Properties`:
   ```
   ≤-isDecTotalOrder-≈ : IsDecTotalOrder _≈_ _≤_
@@ -1088,6 +1182,9 @@ Other minor changes
 
 * Added new definitions in `Data.Vec.Base`:
   ```agda
+  truncate : m ≤ n → Vec A n → Vec A m
+  pad      : m ≤ n → A → Vec A m → Vec A n
+
   FoldrOp A B = ∀ {n} → A → B n → B (suc n)
   FoldlOp A B = ∀ {n} → B n → A → B (suc n)
 
@@ -1106,6 +1203,14 @@ Other minor changes
 
 * Added new proofs in `Data.Vec.Properties`:
   ```agda
+  padRight-refl      : padRight ≤-refl a xs ≡ xs
+  padRight-replicate : replicate a ≡ padRight le a (replicate a)
+  padRight-trans     : padRight (≤-trans m≤n n≤p) a xs ≡ padRight n≤p a (padRight m≤n a xs)
+
+  truncate-refl     : truncate ≤-refl xs ≡ xs
+  truncate-trans    : truncate (≤-trans m≤n n≤p) xs ≡ truncate m≤n (truncate n≤p xs)
+  truncate-padRight : truncate m≤n (padRight m≤n a xs) ≡ xs
+
   map-const    : map (const x) xs ≡ replicate x
   map-⊛        : map f xs ⊛ map g xs ≡ map (f ˢ g) xs
   map-++       : map f (xs ++ ys) ≡ map f xs ++ map f ys

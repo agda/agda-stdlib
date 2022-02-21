@@ -10,7 +10,7 @@ module Data.Container.Fixpoints.Sized where
 
 open import Level
 open import Size
-open import Codata.M
+open import Codata.Sized.M
 open import Data.W.Sized
 open import Data.Container hiding (μ) public
 
