@@ -1,5 +1,7 @@
 ------------------------------------------------------------------------
--- The Stream type and some operations
+-- The Agda standard library
+--
+-- Infinite streams defined as coinductive records
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe --guardedness #-}
