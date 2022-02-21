@@ -1,7 +1,5 @@
 ------------------------------------------------------------------------
--- The Agda standard library
---
--- Infinite streams defined as coinductive records
+-- The Stream type and some operations
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe --guardedness #-}
@@ -92,8 +90,8 @@ zipWith f s t .head = f (s .head) (t .head)
 zipWith f s t .tail = zipWith f (s .tail) (t .tail)
 
 transpose : List (Stream A) → Stream (List A)
-transpose ss .head = List.map head ss
-transpose ss .tail = transpose (List.map tail ss)
+transpose [] = repeat []
+transpose (s ∷ ss) = zipWith _∷_ s (transpose ss)
 
 tails : Stream A → Stream (Stream A)
 tails s .head = s
@@ -115,16 +113,15 @@ _⁺++_ : List⁺ A → Stream A → Stream A
 
 concat : Stream (List⁺ A) → Stream A
 concat s .head = s .head .List⁺.head
-concat s .tail with s .head .List⁺.tail
-... | [] = concat (s .tail)
-... | (x ∷ xs) = concat ((x ∷ xs) ∷ s .tail)
+concat s .tail with s .head
+... | (x ∷ []) = concat (s .tail)
+... | (x ∷ y ∷ ys) = concat ((y ∷ ys) ∷ s .tail)
 
 cycle : List⁺ A → Stream A
 cycle = concat ∘′ repeat
 
 transpose⁺ : List⁺ (Stream A) → Stream (List⁺ A)
-transpose⁺ ss .head = List⁺.map head ss
-transpose⁺ ss .tail = transpose⁺ (List⁺.map tail ss)
+transpose⁺ (s ∷ ss) = zipWith _∷_ s (transpose ss)
 
 ------------------------------------------------------------------------
 -- Chunking
