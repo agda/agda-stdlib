@@ -133,7 +133,7 @@ cycle {A = A} (x ∷ xs) = cycleAux List.[]
     tail (cycleAux []) = cycleAux xs
     head (cycleAux (x ∷ xs)) = x
     tail (cycleAux (x ∷ xs)) = cycleAux xs
-  
+
 
 cantor : Stream (Stream A) → Stream A
 cantor ls = zig (head ls ∷ []) (tail ls)
