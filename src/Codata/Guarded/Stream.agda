@@ -126,8 +126,8 @@ interleave⁺ {A = A} (xs ∷ xss) = go [] xs xss
     tail (go rev xs (ys ∷ yss)) = go (tail xs ∷ rev) ys yss
 
 cycle : List⁺ A → Stream A
-cycle {A = A} (x ∷ xs) = cycleAux List.[]
-  where
+cycle {A = A} (x ∷ xs) = cycleAux []
+  module Cycle where
     cycleAux : List A → Stream A
     head (cycleAux []) = x
     tail (cycleAux []) = cycleAux xs
