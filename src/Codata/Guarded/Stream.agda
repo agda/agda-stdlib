@@ -93,6 +93,17 @@ transpose : List (Stream A) → Stream (List A)
 transpose ss .head = List.map head ss
 transpose ss .tail = transpose (List.map tail ss)
 
+tails : Stream A → Stream (Stream A)
+tails s .head = s
+tails s .tail = tails (s .tail)
+
+evens : Stream A → Stream A
+evens s .head = s .head
+evens s .tail = evens (s .tail .tail)
+
+odds : Stream A → Stream A
+odds s = evens (s .tail)
+
 ------------------------------------------------------------------------
 -- List⁺-related functions
 
@@ -127,15 +138,8 @@ drop : ℕ → Stream A → Stream A
 drop = proj₂ ∘₂ splitAt
 
 chunksOf : ∀ n → Stream A → Stream (Vec A n)
-chunksOf n = chunksOfAcc n id
-  module ChunksOf where
-    chunksOfAcc : ∀ k → (Vec A k → Vec A n) → Stream A →
-                  Stream (Vec A n)
-    chunksOfAcc zero acc s .head = acc []
-    chunksOfAcc zero acc s .tail = chunksOfAcc n id s
-    chunksOfAcc (suc k) acc s = chunksOfAcc k
-                                            (acc ∘′ (s .head ∷_))
-                                            (s .tail)
+chunksOf n s .head = take n s
+chunksOf n s .tail = chunksOf n (drop n s)
 
 ------------------------------------------------------------------------
 -- Interleaving streams
