@@ -53,28 +53,6 @@ parensIfSpace s with does (' ' ∈? toList s)
 ... | true  = parens s
 ... | false = s
 
-------------------------------------------------------------------------
--- Splitting strings
-
-wordsBy : ∀ {p} {P : Pred Char p} → Decidable P → String → List String
-wordsBy P? = List.map fromList ∘ List.wordsBy P? ∘ toList
-
-words : String → List String
-words = wordsBy (T? ∘ Char.isSpace)
-
--- `words` ignores contiguous whitespace
-_ : words " abc  b   " ≡ "abc" ∷ "b" ∷ []
-_ = refl
-
-linesBy : ∀ {p} {P : Pred Char p} → Decidable P → String → List String
-linesBy P? = List.map fromList ∘ List.linesBy P? ∘ toList
-
-lines : String → List String
-lines = linesBy ('\n' Char.≟_)
-
--- `lines` preserves empty lines
-_ : lines "\nabc\n\nb\n\n\n" ≡ "" ∷ "abc" ∷ "" ∷ "b" ∷ "" ∷ "" ∷ []
-_ = refl
 
 ------------------------------------------------------------------------
 -- Rectangle

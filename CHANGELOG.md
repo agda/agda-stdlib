@@ -1019,6 +1019,20 @@ Other minor changes
   ^-monoid-morphism    : IsMonoidMorphism ℕ.+-0-monoid *-1-monoid (i ^_)
   ```
 
+* Added new functions in `Data.List`:
+  ```agda
+  takeWhileᵇ   : (A → Bool) → List A → List A
+  dropWhileᵇ   : (A → Bool) → List A → List A
+  filterᵇ      : (A → Bool) → List A → List A
+  partitionᵇ   : (A → Bool) → List A → List A × List A
+  spanᵇ        : (A → Bool) → List A → List A × List A
+  breakᵇ       : (A → Bool) → List A → List A × List A
+  linesByᵇ     : (A → Bool) → List A → List (List A)
+  wordsByᵇ     : (A → Bool) → List A → List (List A)
+  derunᵇ       : (A → A → Bool) → List A → List A
+  deduplicateᵇ : (A → A → Bool) → List A → List A
+  ```
+  
 * Added new proofs in `Data.List.Relation.Binary.Lex.Strict`:
   ```agda
   xs≮[] : ¬ xs < []
@@ -1174,6 +1188,12 @@ Other minor changes
   *-abelianGroup : AbelianGroup 0ℓ 0ℓ
   ```
 
+* Added new functions in `Data.String.Base`:
+  ```agda
+  wordsByᵇ : (Char → Bool) → String → List String
+  linesByᵇ : (Char → Bool) → String → List String 
+  ```
+  
 * Added new proofs in `Data.String.Properties`:
   ```
   ≤-isDecTotalOrder-≈ : IsDecTotalOrder _≈_ _≤_
@@ -1198,6 +1218,7 @@ Other minor changes
 
   foldr′ : (A → B → B) → B → Vec A n → B
   foldl′ : (B → A → B) → B → Vec A n → B
+  countᵇ : (A → Bool) → Vec A n → ℕ
 
   iterate : (A → A) → A → Vec A n
 
