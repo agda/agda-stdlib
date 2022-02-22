@@ -311,26 +311,4 @@
   <a id="10200" href="Data.Nat.Divisibility.html#10200" class="Function">help</a> <a id="10205" class="Symbol">:</a> <a id="10207" class="Symbol">∀</a> <a id="10209" class="Symbol">{</a><a id="10210" href="Data.Nat.Divisibility.html#10210" class="Bound">m</a> <a id="10212" href="Data.Nat.Divisibility.html#10212" class="Bound">n</a><a id="10213" class="Symbol">}</a> <a id="10215" class="Symbol">→</a> <a id="10217" href="Data.Nat.Divisibility.html#10210" class="Bound">m</a> <a id="10219" href="Data.Nat.Base.html#4431" class="Datatype Operator">≤′</a> <a id="10222" href="Data.Nat.Divisibility.html#10212" class="Bound">n</a> <a id="10224" class="Symbol">→</a> <a id="10226" href="Data.Nat.Divisibility.html#10210" class="Bound">m</a> <a id="10228" href="Data.Nat.Base.html#4136" class="Function Operator">!</a> <a id="10230" href="Data.Nat.Divisibility.Core.html#1137" class="Record Operator">∣</a> <a id="10232" href="Data.Nat.Divisibility.html#10212" class="Bound">n</a> <a id="10234" href="Data.Nat.Base.html#4136" class="Function Operator">!</a>
   <a id="10238" href="Data.Nat.Divisibility.html#10200" class="Function">help</a> <a id="10243" class="Symbol">{</a><a id="10244" href="Data.Nat.Divisibility.html#10244" class="Bound">m</a><a id="10245" class="Symbol">}</a> <a id="10247" class="Symbol">{</a><a id="10248" href="Data.Nat.Divisibility.html#10248" class="Bound">n</a><a id="10249" class="Symbol">}</a>     <a id="10255" href="Data.Nat.Base.html#4462" class="InductiveConstructor">≤′-refl</a>        <a id="10270" class="Symbol">=</a> <a id="10272" href="Data.Nat.Divisibility.html#2295" class="Function">∣-refl</a>
   <a id="10281" href="Data.Nat.Divisibility.html#10200" class="Function">help</a> <a id="10286" class="Symbol">{</a><a id="10287" href="Data.Nat.Divisibility.html#10287" class="Bound">m</a><a id="10288" class="Symbol">}</a> <a id="10290" class="Symbol">{</a><a id="10291" href="Agda.Builtin.Nat.html#223" class="InductiveConstructor">suc</a> <a id="10295" href="Data.Nat.Divisibility.html#10295" class="Bound">n</a><a id="10296" class="Symbol">}</a> <a id="10298" class="Symbol">(</a><a id="10299" href="Data.Nat.Base.html#4505" class="InductiveConstructor">≤′-step</a> <a id="10307" href="Data.Nat.Divisibility.html#10307" class="Bound">m≤′n</a><a id="10311" class="Symbol">)</a> <a id="10313" class="Symbol">=</a> <a id="10315" href="Data.Nat.Divisibility.html#5121" class="Function">∣n⇒∣m*n</a> <a id="10323" class="Symbol">(</a><a id="10324" href="Agda.Builtin.Nat.html#223" class="InductiveConstructor">suc</a> <a id="10328" href="Data.Nat.Divisibility.html#10295" class="Bound">n</a><a id="10329" class="Symbol">)</a> <a id="10331" class="Symbol">(</a><a id="10332" href="Data.Nat.Divisibility.html#10200" class="Function">help</a> <a id="10337" href="Data.Nat.Divisibility.html#10307" class="Bound">m≤′n</a><a id="10341" class="Symbol">)</a>
-
-<a id="10344" class="Comment">------------------------------------------------------------------------</a>
-<a id="10417" class="Comment">-- DEPRECATED - please use new names as continuing support for the old</a>
-<a id="10488" class="Comment">-- names is not guaranteed.</a>
-
-<a id="10517" class="Comment">-- Version 1.1</a>
-
-<a id="poset"></a><a id="10533" href="Data.Nat.Divisibility.html#10533" class="Function">poset</a> <a id="10539" class="Symbol">=</a> <a id="10541" href="Data.Nat.Divisibility.html#3275" class="Function">∣-poset</a>
-<a id="10549" class="Symbol">{-#</a> <a id="10553" class="Keyword">WARNING_ON_USAGE</a> <a id="10570" class="Pragma">poset</a>
-<a id="10576" class="String">&quot;Warning: poset was deprecated in v1.1.
-Please use ∣-poset instead.&quot;</a>
-<a id="10645" class="Symbol">#-}</a>
-<a id="*-cong"></a><a id="10649" href="Data.Nat.Divisibility.html#10649" class="Function">*-cong</a> <a id="10656" class="Symbol">=</a> <a id="10658" href="Data.Nat.Divisibility.html#5387" class="Function">*-monoʳ-∣</a>
-<a id="10668" class="Symbol">{-#</a> <a id="10672" class="Keyword">WARNING_ON_USAGE</a> <a id="10689" class="Pragma">*-cong</a>
-<a id="10696" class="String">&quot;Warning: *-cong was deprecated in v1.1.
-Please use *-monoʳ-∣ instead.&quot;</a>
-<a id="10768" class="Symbol">#-}</a>
-<a id="/-cong"></a><a id="10772" href="Data.Nat.Divisibility.html#10772" class="Function">/-cong</a> <a id="10779" class="Symbol">=</a> <a id="10781" href="Data.Nat.Divisibility.html#5774" class="Function">*-cancelˡ-∣</a>
-<a id="10793" class="Symbol">{-#</a> <a id="10797" class="Keyword">WARNING_ON_USAGE</a> <a id="10814" class="Pragma">/-cong</a>
-<a id="10821" class="String">&quot;Warning: /-cong was deprecated in v1.1.
-Please use *-cancelˡ-∣ instead.&quot;</a>
-<a id="10895" class="Symbol">#-}</a>
 </pre></body></html>

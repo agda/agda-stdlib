@@ -21,7 +21,7 @@
 <a id="647" class="Keyword">import</a> <a id="654" href="Algebra.Lattice.Construct.NaturalChoice.MinMaxOp.html" class="Module">Algebra.Lattice.Construct.NaturalChoice.MinMaxOp</a> <a id="703" class="Symbol">as</a> <a id="706" class="Module">LatticeMinMaxOp</a>
 <a id="722" class="Keyword">import</a> <a id="729" href="Algebra.Properties.CommutativeSemigroup.html" class="Module">Algebra.Properties.CommutativeSemigroup</a> <a id="769" class="Symbol">as</a> <a id="772" class="Module">CommSemigroupProperties</a>
 <a id="796" class="Keyword">open</a> <a id="801" class="Keyword">import</a> <a id="808" href="Data.Bool.Base.html" class="Module">Data.Bool.Base</a> <a id="823" class="Keyword">using</a> <a id="829" class="Symbol">(</a><a id="830" href="Agda.Builtin.Bool.html#163" class="Datatype">Bool</a><a id="834" class="Symbol">;</a> <a id="836" href="Agda.Builtin.Bool.html#182" class="InductiveConstructor">false</a><a id="841" class="Symbol">;</a> <a id="843" href="Agda.Builtin.Bool.html#188" class="InductiveConstructor">true</a><a id="847" class="Symbol">;</a> <a id="849" href="Data.Bool.Base.html#1451" class="Function">T</a><a id="850" class="Symbol">)</a>
-<a id="852" class="Keyword">open</a> <a id="857" class="Keyword">import</a> <a id="864" href="Data.Bool.Properties.html" class="Module">Data.Bool.Properties</a> <a id="885" class="Keyword">using</a> <a id="891" class="Symbol">(</a><a id="892" href="Data.Bool.Properties.html#15758" class="Function">T?</a><a id="894" class="Symbol">)</a>
+<a id="852" class="Keyword">open</a> <a id="857" class="Keyword">import</a> <a id="864" href="Data.Bool.Properties.html" class="Module">Data.Bool.Properties</a> <a id="885" class="Keyword">using</a> <a id="891" class="Symbol">(</a><a id="892" href="Data.Bool.Properties.html#15762" class="Function">T?</a><a id="894" class="Symbol">)</a>
 <a id="896" class="Keyword">open</a> <a id="901" class="Keyword">import</a> <a id="908" href="Data.Empty.html" class="Module">Data.Empty</a> <a id="919" class="Keyword">using</a> <a id="925" class="Symbol">(</a><a id="926" href="Data.Empty.html#526" class="Datatype">⊥</a><a id="927" class="Symbol">)</a>
 <a id="929" class="Keyword">open</a> <a id="934" class="Keyword">import</a> <a id="941" href="Data.Nat.Base.html" class="Module">Data.Nat.Base</a>
 <a id="955" class="Keyword">open</a> <a id="960" class="Keyword">import</a> <a id="967" href="Data.Product.html" class="Module">Data.Product</a> <a id="980" class="Keyword">using</a> <a id="986" class="Symbol">(</a><a id="987" href="Data.Product.html#1424" class="Function">∄</a><a id="988" class="Symbol">;</a> <a id="990" href="Data.Product.html#1369" class="Function">∃</a><a id="991" class="Symbol">;</a> <a id="993" href="Data.Product.html#1167" class="Function Operator">_×_</a><a id="996" class="Symbol">;</a> <a id="998" href="Agda.Builtin.Sigma.html#236" class="InductiveConstructor Operator">_,_</a><a id="1001" class="Symbol">)</a>
@@ -77,7 +77,7 @@
 
 <a id="2924" class="Keyword">infix</a> <a id="2930" class="Number">4</a> <a id="2932" href="Data.Nat.Properties.html#2936" class="Function Operator">_≟_</a>
 <a id="_≟_"></a><a id="2936" href="Data.Nat.Properties.html#2936" class="Function Operator">_≟_</a> <a id="2940" class="Symbol">:</a> <a id="2942" href="Relation.Binary.Definitions.html#4575" class="Function">Decidable</a> <a id="2952" class="Symbol">{</a><a id="2953" class="Argument">A</a> <a id="2955" class="Symbol">=</a> <a id="2957" href="Agda.Builtin.Nat.html#192" class="Datatype">ℕ</a><a id="2958" class="Symbol">}</a> <a id="2960" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a>
-<a id="2964" href="Data.Nat.Properties.html#2964" class="Bound">m</a> <a id="2966" href="Data.Nat.Properties.html#2936" class="Function Operator">≟</a> <a id="2968" href="Data.Nat.Properties.html#2968" class="Bound">n</a> <a id="2970" class="Symbol">=</a> <a id="2972" href="Relation.Nullary.Decidable.Core.html#3636" class="Function">map′</a> <a id="2977" class="Symbol">(</a><a id="2978" href="Data.Nat.Properties.html#2393" class="Function">≡ᵇ⇒≡</a> <a id="2983" href="Data.Nat.Properties.html#2964" class="Bound">m</a> <a id="2985" href="Data.Nat.Properties.html#2968" class="Bound">n</a><a id="2986" class="Symbol">)</a> <a id="2988" class="Symbol">(</a><a id="2989" href="Data.Nat.Properties.html#2508" class="Function">≡⇒≡ᵇ</a> <a id="2994" href="Data.Nat.Properties.html#2964" class="Bound">m</a> <a id="2996" href="Data.Nat.Properties.html#2968" class="Bound">n</a><a id="2997" class="Symbol">)</a> <a id="2999" class="Symbol">(</a><a id="3000" href="Data.Bool.Properties.html#15758" class="Function">T?</a> <a id="3003" class="Symbol">(</a><a id="3004" href="Data.Nat.Properties.html#2964" class="Bound">m</a> <a id="3006" href="Data.Nat.Base.html#1056" class="Primitive Operator">≡ᵇ</a> <a id="3009" href="Data.Nat.Properties.html#2968" class="Bound">n</a><a id="3010" class="Symbol">))</a>
+<a id="2964" href="Data.Nat.Properties.html#2964" class="Bound">m</a> <a id="2966" href="Data.Nat.Properties.html#2936" class="Function Operator">≟</a> <a id="2968" href="Data.Nat.Properties.html#2968" class="Bound">n</a> <a id="2970" class="Symbol">=</a> <a id="2972" href="Relation.Nullary.Decidable.Core.html#3636" class="Function">map′</a> <a id="2977" class="Symbol">(</a><a id="2978" href="Data.Nat.Properties.html#2393" class="Function">≡ᵇ⇒≡</a> <a id="2983" href="Data.Nat.Properties.html#2964" class="Bound">m</a> <a id="2985" href="Data.Nat.Properties.html#2968" class="Bound">n</a><a id="2986" class="Symbol">)</a> <a id="2988" class="Symbol">(</a><a id="2989" href="Data.Nat.Properties.html#2508" class="Function">≡⇒≡ᵇ</a> <a id="2994" href="Data.Nat.Properties.html#2964" class="Bound">m</a> <a id="2996" href="Data.Nat.Properties.html#2968" class="Bound">n</a><a id="2997" class="Symbol">)</a> <a id="2999" class="Symbol">(</a><a id="3000" href="Data.Bool.Properties.html#15762" class="Function">T?</a> <a id="3003" class="Symbol">(</a><a id="3004" href="Data.Nat.Properties.html#2964" class="Bound">m</a> <a id="3006" href="Data.Nat.Base.html#1056" class="Primitive Operator">≡ᵇ</a> <a id="3009" href="Data.Nat.Properties.html#2968" class="Bound">n</a><a id="3010" class="Symbol">))</a>
 
 <a id="≡-irrelevant"></a><a id="3014" href="Data.Nat.Properties.html#3014" class="Function">≡-irrelevant</a> <a id="3027" class="Symbol">:</a> <a id="3029" href="Relation.Binary.Definitions.html#5065" class="Function">Irrelevant</a> <a id="3040" class="Symbol">{</a><a id="3041" class="Argument">A</a> <a id="3043" class="Symbol">=</a> <a id="3045" href="Agda.Builtin.Nat.html#192" class="Datatype">ℕ</a><a id="3046" class="Symbol">}</a> <a id="3048" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a>
 <a id="3052" href="Data.Nat.Properties.html#3014" class="Function">≡-irrelevant</a> <a id="3065" class="Symbol">=</a> <a id="3067" href="Axiom.UniquenessOfIdentityProofs.html#2688" class="Function">Decidable⇒UIP.≡-irrelevant</a> <a id="3094" href="Data.Nat.Properties.html#2936" class="Function Operator">_≟_</a>
@@ -181,7 +181,7 @@
 <a id="5906" class="Keyword">infix</a> <a id="5912" class="Number">4</a> <a id="5914" href="Data.Nat.Properties.html#5925" class="Function Operator">_≤?_</a> <a id="5919" href="Data.Nat.Properties.html#5991" class="Function Operator">_≥?_</a>
 
 <a id="_≤?_"></a><a id="5925" href="Data.Nat.Properties.html#5925" class="Function Operator">_≤?_</a> <a id="5930" class="Symbol">:</a> <a id="5932" href="Relation.Binary.Definitions.html#4575" class="Function">Decidable</a> <a id="5942" href="Data.Nat.Base.html#1464" class="Datatype Operator">_≤_</a>
-<a id="5946" href="Data.Nat.Properties.html#5946" class="Bound">m</a> <a id="5948" href="Data.Nat.Properties.html#5925" class="Function Operator">≤?</a> <a id="5951" href="Data.Nat.Properties.html#5951" class="Bound">n</a> <a id="5953" class="Symbol">=</a> <a id="5955" href="Relation.Nullary.Decidable.Core.html#3636" class="Function">map′</a> <a id="5960" class="Symbol">(</a><a id="5961" href="Data.Nat.Properties.html#4263" class="Function">≤ᵇ⇒≤</a> <a id="5966" href="Data.Nat.Properties.html#5946" class="Bound">m</a> <a id="5968" href="Data.Nat.Properties.html#5951" class="Bound">n</a><a id="5969" class="Symbol">)</a> <a id="5971" href="Data.Nat.Properties.html#4357" class="Function">≤⇒≤ᵇ</a> <a id="5976" class="Symbol">(</a><a id="5977" href="Data.Bool.Properties.html#15758" class="Function">T?</a> <a id="5980" class="Symbol">(</a><a id="5981" href="Data.Nat.Properties.html#5946" class="Bound">m</a> <a id="5983" href="Data.Nat.Base.html#1250" class="Function Operator">≤ᵇ</a> <a id="5986" href="Data.Nat.Properties.html#5951" class="Bound">n</a><a id="5987" class="Symbol">))</a>
+<a id="5946" href="Data.Nat.Properties.html#5946" class="Bound">m</a> <a id="5948" href="Data.Nat.Properties.html#5925" class="Function Operator">≤?</a> <a id="5951" href="Data.Nat.Properties.html#5951" class="Bound">n</a> <a id="5953" class="Symbol">=</a> <a id="5955" href="Relation.Nullary.Decidable.Core.html#3636" class="Function">map′</a> <a id="5960" class="Symbol">(</a><a id="5961" href="Data.Nat.Properties.html#4263" class="Function">≤ᵇ⇒≤</a> <a id="5966" href="Data.Nat.Properties.html#5946" class="Bound">m</a> <a id="5968" href="Data.Nat.Properties.html#5951" class="Bound">n</a><a id="5969" class="Symbol">)</a> <a id="5971" href="Data.Nat.Properties.html#4357" class="Function">≤⇒≤ᵇ</a> <a id="5976" class="Symbol">(</a><a id="5977" href="Data.Bool.Properties.html#15762" class="Function">T?</a> <a id="5980" class="Symbol">(</a><a id="5981" href="Data.Nat.Properties.html#5946" class="Bound">m</a> <a id="5983" href="Data.Nat.Base.html#1250" class="Function Operator">≤ᵇ</a> <a id="5986" href="Data.Nat.Properties.html#5951" class="Bound">n</a><a id="5987" class="Symbol">))</a>
 
 <a id="_≥?_"></a><a id="5991" href="Data.Nat.Properties.html#5991" class="Function Operator">_≥?_</a> <a id="5996" class="Symbol">:</a> <a id="5998" href="Relation.Binary.Definitions.html#4575" class="Function">Decidable</a> <a id="6008" href="Data.Nat.Base.html#1608" class="Function Operator">_≥_</a>
 <a id="6012" href="Data.Nat.Properties.html#5991" class="Function Operator">_≥?_</a> <a id="6017" class="Symbol">=</a> <a id="6019" href="Function.Base.html#1629" class="Function">flip</a> <a id="6024" href="Data.Nat.Properties.html#5925" class="Function Operator">_≤?_</a>
@@ -356,7 +356,7 @@
 <a id="10126" class="Comment">-- backend erases proofs.</a>
 
 <a id="&lt;-cmp"></a><a id="10153" href="Data.Nat.Properties.html#10153" class="Function">&lt;-cmp</a> <a id="10159" class="Symbol">:</a> <a id="10161" href="Relation.Binary.Definitions.html#2955" class="Function">Trichotomous</a> <a id="10174" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">_≡_</a> <a id="10178" href="Data.Nat.Base.html#1574" class="Function Operator">_&lt;_</a>
-<a id="10182" href="Data.Nat.Properties.html#10153" class="Function">&lt;-cmp</a> <a id="10188" href="Data.Nat.Properties.html#10188" class="Bound">m</a> <a id="10190" href="Data.Nat.Properties.html#10190" class="Bound">n</a> <a id="10192" class="Keyword">with</a> <a id="10197" href="Data.Nat.Properties.html#10188" class="Bound">m</a> <a id="10199" href="Data.Nat.Properties.html#2936" class="Function Operator">≟</a> <a id="10201" href="Data.Nat.Properties.html#10190" class="Bound">n</a> <a id="10203" class="Symbol">|</a> <a id="10205" href="Data.Bool.Properties.html#15758" class="Function">T?</a> <a id="10208" class="Symbol">(</a><a id="10209" href="Data.Nat.Properties.html#10188" class="Bound">m</a> <a id="10211" href="Data.Nat.Base.html#1230" class="Primitive Operator">&lt;ᵇ</a> <a id="10214" href="Data.Nat.Properties.html#10190" class="Bound">n</a><a id="10215" class="Symbol">)</a>
+<a id="10182" href="Data.Nat.Properties.html#10153" class="Function">&lt;-cmp</a> <a id="10188" href="Data.Nat.Properties.html#10188" class="Bound">m</a> <a id="10190" href="Data.Nat.Properties.html#10190" class="Bound">n</a> <a id="10192" class="Keyword">with</a> <a id="10197" href="Data.Nat.Properties.html#10188" class="Bound">m</a> <a id="10199" href="Data.Nat.Properties.html#2936" class="Function Operator">≟</a> <a id="10201" href="Data.Nat.Properties.html#10190" class="Bound">n</a> <a id="10203" class="Symbol">|</a> <a id="10205" href="Data.Bool.Properties.html#15762" class="Function">T?</a> <a id="10208" class="Symbol">(</a><a id="10209" href="Data.Nat.Properties.html#10188" class="Bound">m</a> <a id="10211" href="Data.Nat.Base.html#1230" class="Primitive Operator">&lt;ᵇ</a> <a id="10214" href="Data.Nat.Properties.html#10190" class="Bound">n</a><a id="10215" class="Symbol">)</a>
 <a id="10217" class="Symbol">...</a> <a id="10221" class="Symbol">|</a> <a id="10223" href="Relation.Nullary.html#1648" class="InductiveConstructor">yes</a> <a id="10227" href="Data.Nat.Properties.html#10227" class="Bound">m≡n</a> <a id="10231" class="Symbol">|</a> <a id="10233" class="Symbol">_</a>       <a id="10241" class="Symbol">=</a> <a id="10243" href="Relation.Binary.Definitions.html#2832" class="InductiveConstructor">tri≈</a> <a id="10248" class="Symbol">(</a><a id="10249" href="Data.Nat.Properties.html#9455" class="Function">&lt;-irrefl</a> <a id="10258" href="Data.Nat.Properties.html#10227" class="Bound">m≡n</a><a id="10261" class="Symbol">)</a> <a id="10263" href="Data.Nat.Properties.html#10227" class="Bound">m≡n</a> <a id="10267" class="Symbol">(</a><a id="10268" href="Data.Nat.Properties.html#9455" class="Function">&lt;-irrefl</a> <a id="10277" class="Symbol">(</a><a id="10278" href="Relation.Binary.PropositionalEquality.Core.html#1684" class="Function">sym</a> <a id="10282" href="Data.Nat.Properties.html#10227" class="Bound">m≡n</a><a id="10285" class="Symbol">))</a>
 <a id="10288" class="Symbol">...</a> <a id="10292" class="Symbol">|</a> <a id="10294" href="Relation.Nullary.html#1685" class="InductiveConstructor">no</a>  <a id="10298" href="Data.Nat.Properties.html#10298" class="Bound">m≢n</a> <a id="10302" class="Symbol">|</a> <a id="10304" href="Relation.Nullary.html#1648" class="InductiveConstructor">yes</a> <a id="10308" href="Data.Nat.Properties.html#10308" class="Bound">m&lt;n</a> <a id="10312" class="Symbol">=</a> <a id="10314" href="Relation.Binary.Definitions.html#2778" class="InductiveConstructor">tri&lt;</a> <a id="10319" class="Symbol">(</a><a id="10320" href="Data.Nat.Properties.html#3774" class="Function">&lt;ᵇ⇒&lt;</a> <a id="10325" class="Bound">m</a> <a id="10327" class="Bound">n</a> <a id="10329" href="Data.Nat.Properties.html#10308" class="Bound">m&lt;n</a><a id="10332" class="Symbol">)</a> <a id="10334" href="Data.Nat.Properties.html#10298" class="Bound">m≢n</a> <a id="10338" class="Symbol">(</a><a id="10339" href="Data.Nat.Properties.html#8291" class="Function">&lt;⇒≯</a> <a id="10343" class="Symbol">(</a><a id="10344" href="Data.Nat.Properties.html#3774" class="Function">&lt;ᵇ⇒&lt;</a> <a id="10349" class="Bound">m</a> <a id="10351" class="Bound">n</a> <a id="10353" href="Data.Nat.Properties.html#10308" class="Bound">m&lt;n</a><a id="10356" class="Symbol">))</a>
 <a id="10359" class="Symbol">...</a> <a id="10363" class="Symbol">|</a> <a id="10365" href="Relation.Nullary.html#1685" class="InductiveConstructor">no</a>  <a id="10369" href="Data.Nat.Properties.html#10369" class="Bound">m≢n</a> <a id="10373" class="Symbol">|</a> <a id="10375" href="Relation.Nullary.html#1685" class="InductiveConstructor">no</a>  <a id="10379" href="Data.Nat.Properties.html#10379" class="Bound">m≮n</a> <a id="10383" class="Symbol">=</a> <a id="10385" href="Relation.Binary.Definitions.html#2886" class="InductiveConstructor">tri&gt;</a> <a id="10390" class="Symbol">(</a><a id="10391" href="Data.Nat.Properties.html#10379" class="Bound">m≮n</a> <a id="10395" href="Function.Base.html#1106" class="Function Operator">∘</a> <a id="10397" href="Data.Nat.Properties.html#3890" class="Function">&lt;⇒&lt;ᵇ</a><a id="10401" class="Symbol">)</a>   <a id="10405" href="Data.Nat.Properties.html#10369" class="Bound">m≢n</a> <a id="10409" class="Symbol">(</a><a id="10410" href="Data.Nat.Properties.html#8742" class="Function">≤∧≢⇒&lt;</a> <a id="10416" class="Symbol">(</a><a id="10417" href="Data.Nat.Properties.html#8575" class="Function">≮⇒≥</a> <a id="10421" class="Symbol">(</a><a id="10422" href="Data.Nat.Properties.html#10379" class="Bound">m≮n</a> <a id="10426" href="Function.Base.html#1106" class="Function Operator">∘</a> <a id="10428" href="Data.Nat.Properties.html#3890" class="Function">&lt;⇒&lt;ᵇ</a><a id="10432" class="Symbol">))</a> <a id="10435" class="Symbol">(</a><a id="10436" href="Data.Nat.Properties.html#10369" class="Bound">m≢n</a> <a id="10440" href="Function.Base.html#1106" class="Function Operator">∘</a> <a id="10442" href="Relation.Binary.PropositionalEquality.Core.html#1684" class="Function">sym</a><a id="10445" class="Symbol">))</a>
@@ -1979,7 +1979,7 @@
 <a id="60776" class="Keyword">infix</a> <a id="60782" class="Number">4</a> <a id="60784" href="Data.Nat.Properties.html#60809" class="Function Operator">_&lt;″?_</a> <a id="60790" href="Data.Nat.Properties.html#60874" class="Function Operator">_≤″?_</a> <a id="60796" href="Data.Nat.Properties.html#60964" class="Function Operator">_≥″?_</a> <a id="60802" href="Data.Nat.Properties.html#61007" class="Function Operator">_&gt;″?_</a>
 
 <a id="_&lt;″?_"></a><a id="60809" href="Data.Nat.Properties.html#60809" class="Function Operator">_&lt;″?_</a> <a id="60815" class="Symbol">:</a> <a id="60817" href="Relation.Binary.Definitions.html#4575" class="Function">Decidable</a> <a id="60827" href="Data.Nat.Base.html#4910" class="Function Operator">_&lt;″_</a>
-<a id="60832" href="Data.Nat.Properties.html#60832" class="Bound">m</a> <a id="60834" href="Data.Nat.Properties.html#60809" class="Function Operator">&lt;″?</a> <a id="60838" href="Data.Nat.Properties.html#60838" class="Bound">n</a> <a id="60840" class="Symbol">=</a> <a id="60842" href="Relation.Nullary.Decidable.Core.html#3636" class="Function">map′</a> <a id="60847" href="Data.Nat.Properties.html#60030" class="Function">&lt;ᵇ⇒&lt;″</a> <a id="60853" href="Data.Nat.Properties.html#60135" class="Function">&lt;″⇒&lt;ᵇ</a> <a id="60859" class="Symbol">(</a><a id="60860" href="Data.Bool.Properties.html#15758" class="Function">T?</a> <a id="60863" class="Symbol">(</a><a id="60864" href="Data.Nat.Properties.html#60832" class="Bound">m</a> <a id="60866" href="Data.Nat.Base.html#1230" class="Primitive Operator">&lt;ᵇ</a> <a id="60869" href="Data.Nat.Properties.html#60838" class="Bound">n</a><a id="60870" class="Symbol">))</a>
+<a id="60832" href="Data.Nat.Properties.html#60832" class="Bound">m</a> <a id="60834" href="Data.Nat.Properties.html#60809" class="Function Operator">&lt;″?</a> <a id="60838" href="Data.Nat.Properties.html#60838" class="Bound">n</a> <a id="60840" class="Symbol">=</a> <a id="60842" href="Relation.Nullary.Decidable.Core.html#3636" class="Function">map′</a> <a id="60847" href="Data.Nat.Properties.html#60030" class="Function">&lt;ᵇ⇒&lt;″</a> <a id="60853" href="Data.Nat.Properties.html#60135" class="Function">&lt;″⇒&lt;ᵇ</a> <a id="60859" class="Symbol">(</a><a id="60860" href="Data.Bool.Properties.html#15762" class="Function">T?</a> <a id="60863" class="Symbol">(</a><a id="60864" href="Data.Nat.Properties.html#60832" class="Bound">m</a> <a id="60866" href="Data.Nat.Base.html#1230" class="Primitive Operator">&lt;ᵇ</a> <a id="60869" href="Data.Nat.Properties.html#60838" class="Bound">n</a><a id="60870" class="Symbol">))</a>
 
 <a id="_≤″?_"></a><a id="60874" href="Data.Nat.Properties.html#60874" class="Function Operator">_≤″?_</a> <a id="60880" class="Symbol">:</a> <a id="60882" href="Relation.Binary.Definitions.html#4575" class="Function">Decidable</a> <a id="60892" href="Data.Nat.Base.html#4776" class="Record Operator">_≤″_</a>
 <a id="60897" href="Agda.Builtin.Nat.html#210" class="InductiveConstructor">zero</a>  <a id="60903" href="Data.Nat.Properties.html#60874" class="Function Operator">≤″?</a> <a id="60907" href="Data.Nat.Properties.html#60907" class="Bound">n</a> <a id="60909" class="Symbol">=</a> <a id="60911" href="Relation.Nullary.html#1648" class="InductiveConstructor">yes</a> <a id="60915" class="Symbol">(</a><a id="60916" href="Data.Nat.Base.html#4817" class="InductiveConstructor">less-than-or-equal</a> <a id="60935" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a><a id="60939" class="Symbol">)</a>
@@ -2035,7 +2035,7 @@
 <a id="62334" class="Keyword">infix</a> <a id="62340" class="Number">4</a> <a id="62342" href="Data.Nat.Properties.html#62367" class="Function Operator">_&lt;‴?_</a> <a id="62348" href="Data.Nat.Properties.html#62432" class="Function Operator">_≤‴?_</a> <a id="62354" href="Data.Nat.Properties.html#62500" class="Function Operator">_≥‴?_</a> <a id="62360" href="Data.Nat.Properties.html#62543" class="Function Operator">_&gt;‴?_</a>
 
 <a id="_&lt;‴?_"></a><a id="62367" href="Data.Nat.Properties.html#62367" class="Function Operator">_&lt;‴?_</a> <a id="62373" class="Symbol">:</a> <a id="62375" href="Relation.Binary.Definitions.html#4575" class="Function">Decidable</a> <a id="62385" href="Data.Nat.Base.html#5310" class="Function Operator">_&lt;‴_</a>
-<a id="62390" href="Data.Nat.Properties.html#62390" class="Bound">m</a> <a id="62392" href="Data.Nat.Properties.html#62367" class="Function Operator">&lt;‴?</a> <a id="62396" href="Data.Nat.Properties.html#62396" class="Bound">n</a> <a id="62398" class="Symbol">=</a> <a id="62400" href="Relation.Nullary.Decidable.Core.html#3636" class="Function">map′</a> <a id="62405" href="Data.Nat.Properties.html#62188" class="Function">&lt;ᵇ⇒&lt;‴</a> <a id="62411" href="Data.Nat.Properties.html#62265" class="Function">&lt;‴⇒&lt;ᵇ</a> <a id="62417" class="Symbol">(</a><a id="62418" href="Data.Bool.Properties.html#15758" class="Function">T?</a> <a id="62421" class="Symbol">(</a><a id="62422" href="Data.Nat.Properties.html#62390" class="Bound">m</a> <a id="62424" href="Data.Nat.Base.html#1230" class="Primitive Operator">&lt;ᵇ</a> <a id="62427" href="Data.Nat.Properties.html#62396" class="Bound">n</a><a id="62428" class="Symbol">))</a>
+<a id="62390" href="Data.Nat.Properties.html#62390" class="Bound">m</a> <a id="62392" href="Data.Nat.Properties.html#62367" class="Function Operator">&lt;‴?</a> <a id="62396" href="Data.Nat.Properties.html#62396" class="Bound">n</a> <a id="62398" class="Symbol">=</a> <a id="62400" href="Relation.Nullary.Decidable.Core.html#3636" class="Function">map′</a> <a id="62405" href="Data.Nat.Properties.html#62188" class="Function">&lt;ᵇ⇒&lt;‴</a> <a id="62411" href="Data.Nat.Properties.html#62265" class="Function">&lt;‴⇒&lt;ᵇ</a> <a id="62417" class="Symbol">(</a><a id="62418" href="Data.Bool.Properties.html#15762" class="Function">T?</a> <a id="62421" class="Symbol">(</a><a id="62422" href="Data.Nat.Properties.html#62390" class="Bound">m</a> <a id="62424" href="Data.Nat.Base.html#1230" class="Primitive Operator">&lt;ᵇ</a> <a id="62427" href="Data.Nat.Properties.html#62396" class="Bound">n</a><a id="62428" class="Symbol">))</a>
 
 <a id="_≤‴?_"></a><a id="62432" href="Data.Nat.Properties.html#62432" class="Function Operator">_≤‴?_</a> <a id="62438" class="Symbol">:</a> <a id="62440" href="Relation.Binary.Definitions.html#4575" class="Function">Decidable</a> <a id="62450" href="Data.Nat.Base.html#5188" class="Datatype Operator">_≤‴_</a>
 <a id="62455" href="Agda.Builtin.Nat.html#210" class="InductiveConstructor">zero</a> <a id="62460" href="Data.Nat.Properties.html#62432" class="Function Operator">≤‴?</a> <a id="62464" href="Data.Nat.Properties.html#62464" class="Bound">n</a> <a id="62466" class="Symbol">=</a> <a id="62468" href="Relation.Nullary.html#1648" class="InductiveConstructor">yes</a> <a id="62472" href="Data.Nat.Properties.html#62143" class="Function">0≤‴n</a>
@@ -2100,248 +2100,102 @@
 <a id="64238" class="Comment">-- Please use the new names as continuing support for the old names is</a>
 <a id="64309" class="Comment">-- not guaranteed.</a>
 
-<a id="64329" class="Comment">-- Version 1.0</a>
+<a id="64329" class="Comment">-- Version 1.3</a>
 
-<a id="≤-irrelevance"></a><a id="64345" href="Data.Nat.Properties.html#64345" class="Function">≤-irrelevance</a> <a id="64359" class="Symbol">=</a> <a id="64361" href="Data.Nat.Properties.html#5463" class="Function">≤-irrelevant</a>
-<a id="64374" class="Symbol">{-#</a> <a id="64378" class="Keyword">WARNING_ON_USAGE</a> <a id="64395" class="Pragma">≤-irrelevance</a>
-<a id="64409" class="String">&quot;Warning: ≤-irrelevance was deprecated in v1.0.
-Please use ≤-irrelevant instead.&quot;</a>
-<a id="64491" class="Symbol">#-}</a>
-<a id="&lt;-irrelevance"></a><a id="64495" href="Data.Nat.Properties.html#64495" class="Function">&lt;-irrelevance</a> <a id="64509" class="Symbol">=</a> <a id="64511" href="Data.Nat.Properties.html#10549" class="Function">&lt;-irrelevant</a>
-<a id="64524" class="Symbol">{-#</a> <a id="64528" class="Keyword">WARNING_ON_USAGE</a> <a id="64545" class="Pragma">&lt;-irrelevance</a>
-<a id="64559" class="String">&quot;Warning: &lt;-irrelevance was deprecated in v1.0.
-Please use &lt;-irrelevant instead.&quot;</a>
-<a id="64641" class="Symbol">#-}</a>
-
-<a id="64646" class="Comment">-- Version 1.1</a>
-
-<a id="i+1+j≢i"></a><a id="64662" href="Data.Nat.Properties.html#64662" class="Function">i+1+j≢i</a> <a id="64670" class="Symbol">=</a> <a id="64672" href="Data.Nat.Properties.html#16291" class="Function">m+1+n≢m</a>
-<a id="64680" class="Symbol">{-#</a> <a id="64684" class="Keyword">WARNING_ON_USAGE</a> <a id="64701" class="Pragma">i+1+j≢i</a>
-<a id="64709" class="String">&quot;Warning: i+1+j≢i was deprecated in v1.1.
-Please use m+1+n≢m instead.&quot;</a>
-<a id="64780" class="Symbol">#-}</a>
-<a id="i+j≡0⇒i≡0"></a><a id="64784" href="Data.Nat.Properties.html#64784" class="Function">i+j≡0⇒i≡0</a> <a id="64794" class="Symbol">=</a> <a id="64796" href="Data.Nat.Properties.html#16532" class="Function">m+n≡0⇒m≡0</a>
-<a id="64806" class="Symbol">{-#</a> <a id="64810" class="Keyword">WARNING_ON_USAGE</a> <a id="64827" class="Pragma">i+j≡0⇒i≡0</a>
-<a id="64837" class="String">&quot;Warning: i+j≡0⇒i≡0 was deprecated in v1.1.
-Please use m+n≡0⇒m≡0 instead.&quot;</a>
-<a id="64912" class="Symbol">#-}</a>
-<a id="i+j≡0⇒j≡0"></a><a id="64916" href="Data.Nat.Properties.html#64916" class="Function">i+j≡0⇒j≡0</a> <a id="64926" class="Symbol">=</a> <a id="64928" href="Data.Nat.Properties.html#16598" class="Function">m+n≡0⇒n≡0</a>
-<a id="64938" class="Symbol">{-#</a> <a id="64942" class="Keyword">WARNING_ON_USAGE</a> <a id="64959" class="Pragma">i+j≡0⇒j≡0</a>
-<a id="64969" class="String">&quot;Warning: i+j≡0⇒j≡0 was deprecated in v1.1.
-Please use m+n≡0⇒n≡0 instead.&quot;</a>
-<a id="65044" class="Symbol">#-}</a>
-<a id="i+1+j≰i"></a><a id="65048" href="Data.Nat.Properties.html#65048" class="Function">i+1+j≰i</a> <a id="65056" class="Symbol">=</a> <a id="65058" href="Data.Nat.Properties.html#19297" class="Function">m+1+n≰m</a>
-<a id="65066" class="Symbol">{-#</a> <a id="65070" class="Keyword">WARNING_ON_USAGE</a> <a id="65087" class="Pragma">i+1+j≰i</a>
-<a id="65095" class="String">&quot;Warning: i+1+j≰i was deprecated in v1.1.
-Please use m+1+n≰m instead.&quot;</a>
-<a id="65166" class="Symbol">#-}</a>
-<a id="i*j≡0⇒i≡0∨j≡0"></a><a id="65170" href="Data.Nat.Properties.html#65170" class="Function">i*j≡0⇒i≡0∨j≡0</a> <a id="65184" class="Symbol">=</a> <a id="65186" href="Data.Nat.Properties.html#24579" class="Function">m*n≡0⇒m≡0∨n≡0</a>
-<a id="65200" class="Symbol">{-#</a> <a id="65204" class="Keyword">WARNING_ON_USAGE</a> <a id="65221" class="Pragma">i*j≡0⇒i≡0∨j≡0</a>
-<a id="65235" class="String">&quot;Warning: i*j≡0⇒i≡0∨j≡0 was deprecated in v1.1.
-Please use m*n≡0⇒m≡0∨n≡0 instead.&quot;</a>
-<a id="65318" class="Symbol">#-}</a>
-<a id="i*j≡1⇒i≡1"></a><a id="65322" href="Data.Nat.Properties.html#65322" class="Function">i*j≡1⇒i≡1</a> <a id="65332" class="Symbol">=</a> <a id="65334" href="Data.Nat.Properties.html#24912" class="Function">m*n≡1⇒m≡1</a>
-<a id="65344" class="Symbol">{-#</a> <a id="65348" class="Keyword">WARNING_ON_USAGE</a> <a id="65365" class="Pragma">i*j≡1⇒i≡1</a>
-<a id="65375" class="String">&quot;Warning: i*j≡1⇒i≡1 was deprecated in v1.1.
-Please use m*n≡1⇒m≡1 instead.&quot;</a>
-<a id="65450" class="Symbol">#-}</a>
-<a id="i*j≡1⇒j≡1"></a><a id="65454" href="Data.Nat.Properties.html#65454" class="Function">i*j≡1⇒j≡1</a> <a id="65464" class="Symbol">=</a> <a id="65466" href="Data.Nat.Properties.html#25123" class="Function">m*n≡1⇒n≡1</a>
-<a id="65476" class="Symbol">{-#</a> <a id="65480" class="Keyword">WARNING_ON_USAGE</a> <a id="65497" class="Pragma">i*j≡1⇒j≡1</a>
-<a id="65507" class="String">&quot;Warning: i*j≡1⇒j≡1 was deprecated in v1.1.
-Please use m*n≡1⇒n≡1 instead.&quot;</a>
-<a id="65582" class="Symbol">#-}</a>
-<a id="i^j≡0⇒i≡0"></a><a id="65586" href="Data.Nat.Properties.html#65586" class="Function">i^j≡0⇒i≡0</a> <a id="65596" class="Symbol">=</a> <a id="65598" href="Data.Nat.Properties.html#29327" class="Function">m^n≡0⇒m≡0</a>
-<a id="65608" class="Symbol">{-#</a> <a id="65612" class="Keyword">WARNING_ON_USAGE</a> <a id="65629" class="Pragma">i^j≡0⇒i≡0</a>
-<a id="65639" class="String">&quot;Warning: i^j≡0⇒i≡0 was deprecated in v1.1.
-Please use m^n≡0⇒m≡0 instead.&quot;</a>
-<a id="65714" class="Symbol">#-}</a>
-<a id="i^j≡1⇒j≡0∨i≡1"></a><a id="65718" href="Data.Nat.Properties.html#65718" class="Function">i^j≡1⇒j≡0∨i≡1</a> <a id="65732" class="Symbol">=</a> <a id="65734" href="Data.Nat.Properties.html#29436" class="Function">m^n≡1⇒n≡0∨m≡1</a>
-<a id="65748" class="Symbol">{-#</a> <a id="65752" class="Keyword">WARNING_ON_USAGE</a> <a id="65769" class="Pragma">i^j≡1⇒j≡0∨i≡1</a>
-<a id="65783" class="String">&quot;Warning: i^j≡1⇒j≡0∨i≡1 was deprecated in v1.1.
-Please use m^n≡1⇒n≡0∨m≡1 instead.&quot;</a>
-<a id="65866" class="Symbol">#-}</a>
-<a id="[i+j]∸[i+k]≡j∸k"></a><a id="65870" href="Data.Nat.Properties.html#65870" class="Function">[i+j]∸[i+k]≡j∸k</a> <a id="65886" class="Symbol">=</a> <a id="65888" href="Data.Nat.Properties.html#48421" class="Function">[m+n]∸[m+o]≡n∸o</a>
-<a id="65904" class="Symbol">{-#</a> <a id="65908" class="Keyword">WARNING_ON_USAGE</a> <a id="65925" class="Pragma">[i+j]∸[i+k]≡j∸k</a>
-<a id="65941" class="String">&quot;Warning: [i+j]∸[i+k]≡j∸k was deprecated in v1.1.
-Please use [m+n]∸[m+o]≡n∸o instead.&quot;</a>
-<a id="66028" class="Symbol">#-}</a>
-<a id="m≢0⇒suc[pred[m]]≡m"></a><a id="66032" href="Data.Nat.Properties.html#66032" class="Function">m≢0⇒suc[pred[m]]≡m</a> <a id="66051" class="Symbol">=</a> <a id="66053" href="Data.Nat.Properties.html#51140" class="Function">suc-pred</a>
-<a id="66062" class="Symbol">{-#</a> <a id="66066" class="Keyword">WARNING_ON_USAGE</a> <a id="66083" class="Pragma">m≢0⇒suc[pred[m]]≡m</a>
-<a id="66102" class="String">&quot;Warning: m≢0⇒suc[pred[m]]≡m was deprecated in v1.1.
-Please use suc[pred[n]]≡n instead.&quot;</a>
-<a id="66191" class="Symbol">#-}</a>
-<a id="n≡m⇒∣n-m∣≡0"></a><a id="66195" href="Data.Nat.Properties.html#66195" class="Function">n≡m⇒∣n-m∣≡0</a> <a id="66207" class="Symbol">=</a> <a id="66209" href="Data.Nat.Properties.html#51471" class="Function">m≡n⇒∣m-n∣≡0</a>
-<a id="66221" class="Symbol">{-#</a> <a id="66225" class="Keyword">WARNING_ON_USAGE</a> <a id="66242" class="Pragma">n≡m⇒∣n-m∣≡0</a>
-<a id="66254" class="String">&quot;Warning: n≡m⇒∣n-m∣≡0 was deprecated in v1.1.
-Please use m≡n⇒∣m-n∣≡0 instead.&quot;</a>
-<a id="66333" class="Symbol">#-}</a>
-<a id="∣n-m∣≡0⇒n≡m"></a><a id="66337" href="Data.Nat.Properties.html#66337" class="Function">∣n-m∣≡0⇒n≡m</a> <a id="66349" class="Symbol">=</a> <a id="66351" href="Data.Nat.Properties.html#51598" class="Function">∣m-n∣≡0⇒m≡n</a>
-<a id="66363" class="Symbol">{-#</a> <a id="66367" class="Keyword">WARNING_ON_USAGE</a> <a id="66384" class="Pragma">∣n-m∣≡0⇒n≡m</a>
-<a id="66396" class="String">&quot;Warning: ∣n-m∣≡0⇒n≡m was deprecated in v1.1.
-Please use ∣m-n∣≡0⇒m≡n instead.&quot;</a>
-<a id="66475" class="Symbol">#-}</a>
-<a id="∣n-m∣≡n∸m⇒m≤n"></a><a id="66479" href="Data.Nat.Properties.html#66479" class="Function">∣n-m∣≡n∸m⇒m≤n</a> <a id="66493" class="Symbol">=</a> <a id="66495" href="Data.Nat.Properties.html#51937" class="Function">∣m-n∣≡m∸n⇒n≤m</a>
-<a id="66509" class="Symbol">{-#</a> <a id="66513" class="Keyword">WARNING_ON_USAGE</a> <a id="66530" class="Pragma">∣n-m∣≡n∸m⇒m≤n</a>
-<a id="66544" class="String">&quot;Warning: ∣n-m∣≡n∸m⇒m≤n was deprecated in v1.1.
-Please use ∣m-n∣≡m∸n⇒n≤m instead.&quot;</a>
-<a id="66627" class="Symbol">#-}</a>
-<a id="∣n-n+m∣≡m"></a><a id="66631" href="Data.Nat.Properties.html#66631" class="Function">∣n-n+m∣≡m</a> <a id="66641" class="Symbol">=</a> <a id="66643" href="Data.Nat.Properties.html#52190" class="Function">∣m-m+n∣≡n</a>
-<a id="66653" class="Symbol">{-#</a> <a id="66657" class="Keyword">WARNING_ON_USAGE</a> <a id="66674" class="Pragma">∣n-n+m∣≡m</a>
-<a id="66684" class="String">&quot;Warning: ∣n-n+m∣≡m was deprecated in v1.1.
-Please use ∣m-m+n∣≡n instead.&quot;</a>
-<a id="66759" class="Symbol">#-}</a>
-<a id="∣n+m-n+o∣≡∣m-o|"></a><a id="66763" href="Data.Nat.Properties.html#66763" class="Function">∣n+m-n+o∣≡∣m-o|</a> <a id="66779" class="Symbol">=</a> <a id="66781" href="Data.Nat.Properties.html#52292" class="Function">∣m+n-m+o∣≡∣n-o∣</a>
-<a id="66797" class="Symbol">{-#</a> <a id="66801" class="Keyword">WARNING_ON_USAGE</a> <a id="66818" class="Pragma">∣n+m-n+o∣≡∣m-o|</a>
-<a id="66834" class="String">&quot;Warning: ∣n+m-n+o∣≡∣m-o| was deprecated in v1.1.
-Please use ∣m+n-m+o∣≡∣n-o∣ instead.&quot;</a>
-<a id="66921" class="Symbol">#-}</a>
-<a id="∣m+n-m+o∣≡∣n-o|"></a><a id="66925" href="Data.Nat.Properties.html#66925" class="Function">∣m+n-m+o∣≡∣n-o|</a> <a id="66941" class="Symbol">=</a> <a id="66943" href="Data.Nat.Properties.html#52292" class="Function">∣m+n-m+o∣≡∣n-o∣</a>
-<a id="66959" class="Symbol">{-#</a> <a id="66963" class="Keyword">WARNING_ON_USAGE</a> <a id="66980" class="Pragma">∣m+n-m+o∣≡∣n-o|</a>
-<a id="66996" class="String">&quot;Warning: ∣m+n-m+o∣≡∣n-o| was deprecated in v1.6.
-Please use ∣m+n-m+o∣≡∣n-o∣ instead. Note the final is a \\| rather than a |&quot;</a>
-<a id="67123" class="Symbol">#-}</a>
-<a id="n∸m≤∣n-m∣"></a><a id="67127" href="Data.Nat.Properties.html#67127" class="Function">n∸m≤∣n-m∣</a> <a id="67137" class="Symbol">=</a> <a id="67139" href="Data.Nat.Properties.html#52438" class="Function">m∸n≤∣m-n∣</a>
-<a id="67149" class="Symbol">{-#</a> <a id="67153" class="Keyword">WARNING_ON_USAGE</a> <a id="67170" class="Pragma">n∸m≤∣n-m∣</a>
-<a id="67180" class="String">&quot;Warning: n∸m≤∣n-m∣ was deprecated in v1.1.
-Please use m∸n≤∣m-n∣ instead.&quot;</a>
-<a id="67255" class="Symbol">#-}</a>
-<a id="∣n-m∣≤n⊔m"></a><a id="67259" href="Data.Nat.Properties.html#67259" class="Function">∣n-m∣≤n⊔m</a> <a id="67269" class="Symbol">=</a> <a id="67271" href="Data.Nat.Properties.html#52639" class="Function">∣m-n∣≤m⊔n</a>
-<a id="67281" class="Symbol">{-#</a> <a id="67285" class="Keyword">WARNING_ON_USAGE</a> <a id="67302" class="Pragma">∣n-m∣≤n⊔m</a>
-<a id="67312" class="String">&quot;Warning: ∣n-m∣≤n⊔m was deprecated in v1.1.
-Please use ∣m-n∣≤m⊔n instead.&quot;</a>
-<a id="67387" class="Symbol">#-}</a>
-<a id="n≤m+n"></a><a id="67391" href="Data.Nat.Properties.html#67391" class="Function">n≤m+n</a> <a id="67397" class="Symbol">:</a> <a id="67399" class="Symbol">∀</a> <a id="67401" href="Data.Nat.Properties.html#67401" class="Bound">m</a> <a id="67403" href="Data.Nat.Properties.html#67403" class="Bound">n</a> <a id="67405" class="Symbol">→</a> <a id="67407" href="Data.Nat.Properties.html#67403" class="Bound">n</a> <a id="67409" href="Data.Nat.Base.html#1464" class="Datatype Operator">≤</a> <a id="67411" href="Data.Nat.Properties.html#67401" class="Bound">m</a> <a id="67413" href="Agda.Builtin.Nat.html#325" class="Primitive Operator">+</a> <a id="67415" href="Data.Nat.Properties.html#67403" class="Bound">n</a>
-<a id="67417" href="Data.Nat.Properties.html#67391" class="Function">n≤m+n</a> <a id="67423" href="Data.Nat.Properties.html#67423" class="Bound">m</a> <a id="67425" href="Data.Nat.Properties.html#67425" class="Bound">n</a> <a id="67427" class="Symbol">=</a> <a id="67429" href="Relation.Binary.PropositionalEquality.Core.html#1780" class="Function">subst</a> <a id="67435" class="Symbol">(</a><a id="67436" href="Data.Nat.Properties.html#67425" class="Bound">n</a> <a id="67438" href="Data.Nat.Base.html#1464" class="Datatype Operator">≤_</a><a id="67440" class="Symbol">)</a> <a id="67442" class="Symbol">(</a><a id="67443" href="Data.Nat.Properties.html#13867" class="Function">+-comm</a> <a id="67450" href="Data.Nat.Properties.html#67425" class="Bound">n</a> <a id="67452" href="Data.Nat.Properties.html#67423" class="Bound">m</a><a id="67453" class="Symbol">)</a> <a id="67455" class="Symbol">(</a><a id="67456" href="Data.Nat.Properties.html#17639" class="Function">m≤m+n</a> <a id="67462" href="Data.Nat.Properties.html#67425" class="Bound">n</a> <a id="67464" href="Data.Nat.Properties.html#67423" class="Bound">m</a><a id="67465" class="Symbol">)</a>
-<a id="67467" class="Symbol">{-#</a> <a id="67471" class="Keyword">WARNING_ON_USAGE</a> <a id="67488" class="Pragma">n≤m+n</a>
-<a id="67494" class="String">&quot;Warning: n≤m+n was deprecated in v1.1.
-Please use m≤n+m instead (note, you will need to switch the argument order).&quot;</a>
-<a id="67612" class="Symbol">#-}</a>
-<a id="n≤m+n∸m"></a><a id="67616" href="Data.Nat.Properties.html#67616" class="Function">n≤m+n∸m</a> <a id="67624" class="Symbol">:</a> <a id="67626" class="Symbol">∀</a> <a id="67628" href="Data.Nat.Properties.html#67628" class="Bound">m</a> <a id="67630" href="Data.Nat.Properties.html#67630" class="Bound">n</a> <a id="67632" class="Symbol">→</a> <a id="67634" href="Data.Nat.Properties.html#67630" class="Bound">n</a> <a id="67636" href="Data.Nat.Base.html#1464" class="Datatype Operator">≤</a> <a id="67638" href="Data.Nat.Properties.html#67628" class="Bound">m</a> <a id="67640" href="Agda.Builtin.Nat.html#325" class="Primitive Operator">+</a> <a id="67642" class="Symbol">(</a><a id="67643" href="Data.Nat.Properties.html#67630" class="Bound">n</a> <a id="67645" href="Data.Nat.Base.html#2926" class="Primitive Operator">∸</a> <a id="67647" href="Data.Nat.Properties.html#67628" class="Bound">m</a><a id="67648" class="Symbol">)</a>
-<a id="67650" href="Data.Nat.Properties.html#67616" class="Function">n≤m+n∸m</a> <a id="67658" href="Data.Nat.Properties.html#67658" class="Bound">m</a>       <a id="67666" href="Agda.Builtin.Nat.html#210" class="InductiveConstructor">zero</a>    <a id="67674" class="Symbol">=</a> <a id="67676" href="Data.Nat.Base.html#1487" class="InductiveConstructor">z≤n</a>
-<a id="67680" href="Data.Nat.Properties.html#67616" class="Function">n≤m+n∸m</a> <a id="67688" href="Agda.Builtin.Nat.html#210" class="InductiveConstructor">zero</a>    <a id="67696" class="Symbol">(</a><a id="67697" href="Agda.Builtin.Nat.html#223" class="InductiveConstructor">suc</a> <a id="67701" href="Data.Nat.Properties.html#67701" class="Bound">n</a><a id="67702" class="Symbol">)</a> <a id="67704" class="Symbol">=</a> <a id="67706" href="Data.Nat.Properties.html#4972" class="Function">≤-refl</a>
-<a id="67713" href="Data.Nat.Properties.html#67616" class="Function">n≤m+n∸m</a> <a id="67721" class="Symbol">(</a><a id="67722" href="Agda.Builtin.Nat.html#223" class="InductiveConstructor">suc</a> <a id="67726" href="Data.Nat.Properties.html#67726" class="Bound">m</a><a id="67727" class="Symbol">)</a> <a id="67729" class="Symbol">(</a><a id="67730" href="Agda.Builtin.Nat.html#223" class="InductiveConstructor">suc</a> <a id="67734" href="Data.Nat.Properties.html#67734" class="Bound">n</a><a id="67735" class="Symbol">)</a> <a id="67737" class="Symbol">=</a> <a id="67739" href="Data.Nat.Base.html#1529" class="InductiveConstructor">s≤s</a> <a id="67743" class="Symbol">(</a><a id="67744" href="Data.Nat.Properties.html#67616" class="Function">n≤m+n∸m</a> <a id="67752" href="Data.Nat.Properties.html#67726" class="Bound">m</a> <a id="67754" href="Data.Nat.Properties.html#67734" class="Bound">n</a><a id="67755" class="Symbol">)</a>
-<a id="67757" class="Symbol">{-#</a> <a id="67761" class="Keyword">WARNING_ON_USAGE</a> <a id="67778" class="Pragma">n≤m+n∸m</a>
-<a id="67786" class="String">&quot;Warning: n≤m+n∸m was deprecated in v1.1.
-Please use m≤n+m∸n instead (note, you will need to switch the argument order).&quot;</a>
-<a id="67908" class="Symbol">#-}</a>
-<a id="∣n-m∣≡[n∸m]∨[m∸n]"></a><a id="67912" href="Data.Nat.Properties.html#67912" class="Function">∣n-m∣≡[n∸m]∨[m∸n]</a> <a id="67930" class="Symbol">:</a> <a id="67932" class="Symbol">∀</a> <a id="67934" href="Data.Nat.Properties.html#67934" class="Bound">m</a> <a id="67936" href="Data.Nat.Properties.html#67936" class="Bound">n</a> <a id="67938" class="Symbol">→</a> <a id="67940" class="Symbol">(</a><a id="67941" href="Data.Nat.Base.html#3672" class="Function Operator">∣</a> <a id="67943" href="Data.Nat.Properties.html#67936" class="Bound">n</a> <a id="67945" href="Data.Nat.Base.html#3672" class="Function Operator">-</a> <a id="67947" href="Data.Nat.Properties.html#67934" class="Bound">m</a> <a id="67949" href="Data.Nat.Base.html#3672" class="Function Operator">∣</a> <a id="67951" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="67953" href="Data.Nat.Properties.html#67936" class="Bound">n</a> <a id="67955" href="Data.Nat.Base.html#2926" class="Primitive Operator">∸</a> <a id="67957" href="Data.Nat.Properties.html#67934" class="Bound">m</a><a id="67958" class="Symbol">)</a> <a id="67960" href="Data.Sum.Base.html#734" class="Datatype Operator">⊎</a> <a id="67962" class="Symbol">(</a><a id="67963" href="Data.Nat.Base.html#3672" class="Function Operator">∣</a> <a id="67965" href="Data.Nat.Properties.html#67936" class="Bound">n</a> <a id="67967" href="Data.Nat.Base.html#3672" class="Function Operator">-</a> <a id="67969" href="Data.Nat.Properties.html#67934" class="Bound">m</a> <a id="67971" href="Data.Nat.Base.html#3672" class="Function Operator">∣</a> <a id="67973" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="67975" href="Data.Nat.Properties.html#67934" class="Bound">m</a> <a id="67977" href="Data.Nat.Base.html#2926" class="Primitive Operator">∸</a> <a id="67979" href="Data.Nat.Properties.html#67936" class="Bound">n</a><a id="67980" class="Symbol">)</a>
-<a id="67982" href="Data.Nat.Properties.html#67912" class="Function">∣n-m∣≡[n∸m]∨[m∸n]</a> <a id="68000" href="Data.Nat.Properties.html#68000" class="Bound">m</a> <a id="68002" href="Data.Nat.Properties.html#68002" class="Bound">n</a> <a id="68004" class="Keyword">with</a> <a id="68009" href="Data.Nat.Properties.html#5267" class="Function">≤-total</a> <a id="68017" href="Data.Nat.Properties.html#68000" class="Bound">m</a> <a id="68019" href="Data.Nat.Properties.html#68002" class="Bound">n</a>
-<a id="68021" class="Symbol">...</a> <a id="68025" class="Symbol">|</a> <a id="68027" href="Data.Sum.Base.html#784" class="InductiveConstructor">inj₁</a> <a id="68032" href="Data.Nat.Properties.html#68032" class="Bound">m≤n</a> <a id="68036" class="Symbol">=</a> <a id="68038" href="Data.Sum.Base.html#784" class="InductiveConstructor">inj₁</a> <a id="68043" href="Function.Base.html#1994" class="Function Operator">$</a> <a id="68045" href="Data.Nat.Properties.html#51742" class="Function">m≤n⇒∣n-m∣≡n∸m</a> <a id="68059" href="Data.Nat.Properties.html#68032" class="Bound">m≤n</a>
-<a id="68063" class="Symbol">...</a> <a id="68067" class="Symbol">|</a> <a id="68069" href="Data.Sum.Base.html#809" class="InductiveConstructor">inj₂</a> <a id="68074" href="Data.Nat.Properties.html#68074" class="Bound">n≤m</a> <a id="68078" class="Symbol">=</a> <a id="68080" href="Data.Sum.Base.html#809" class="InductiveConstructor">inj₂</a> <a id="68085" href="Function.Base.html#1994" class="Function Operator">$</a> <a id="68087" href="Relation.Binary.Reasoning.Base.Triple.html#3286" class="Function Operator">begin-equality</a>
-  <a id="68104" href="Data.Nat.Base.html#3672" class="Function Operator">∣</a> <a id="68106" class="Bound">n</a> <a id="68108" href="Data.Nat.Base.html#3672" class="Function Operator">-</a> <a id="68110" class="Bound">m</a> <a id="68112" href="Data.Nat.Base.html#3672" class="Function Operator">∣</a> <a id="68114" href="Relation.Binary.Reasoning.Base.Triple.html#4518" class="Function">≡⟨</a> <a id="68117" href="Data.Nat.Properties.html#53035" class="Function">∣-∣-comm</a> <a id="68126" class="Bound">n</a> <a id="68128" class="Bound">m</a> <a id="68130" href="Relation.Binary.Reasoning.Base.Triple.html#4518" class="Function">⟩</a>
-  <a id="68134" href="Data.Nat.Base.html#3672" class="Function Operator">∣</a> <a id="68136" class="Bound">m</a> <a id="68138" href="Data.Nat.Base.html#3672" class="Function Operator">-</a> <a id="68140" class="Bound">n</a> <a id="68142" href="Data.Nat.Base.html#3672" class="Function Operator">∣</a> <a id="68144" href="Relation.Binary.Reasoning.Base.Triple.html#4518" class="Function">≡⟨</a> <a id="68147" href="Data.Nat.Properties.html#51742" class="Function">m≤n⇒∣n-m∣≡n∸m</a> <a id="68161" href="Data.Nat.Properties.html#68074" class="Bound">n≤m</a> <a id="68165" href="Relation.Binary.Reasoning.Base.Triple.html#4518" class="Function">⟩</a>
-  <a id="68169" class="Bound">m</a> <a id="68171" href="Data.Nat.Base.html#2926" class="Primitive Operator">∸</a> <a id="68173" class="Bound">n</a>     <a id="68179" href="Relation.Binary.Reasoning.Base.Triple.html#5119" class="Function Operator">∎</a>
-<a id="68181" class="Symbol">{-#</a> <a id="68185" class="Keyword">WARNING_ON_USAGE</a> <a id="68202" class="Pragma">∣n-m∣≡[n∸m]∨[m∸n]</a>
-<a id="68220" class="String">&quot;Warning: ∣n-m∣≡[n∸m]∨[m∸n] was deprecated in v1.1.
-Please use ∣m-n∣≡[m∸n]∨[n∸m] instead (note, you will need to switch the argument order).&quot;</a>
-<a id="68362" class="Symbol">#-}</a>
-
-<a id="68367" class="Comment">-- Version 1.2</a>
-
-<a id="+-*-suc"></a><a id="68383" href="Data.Nat.Properties.html#68383" class="Function">+-*-suc</a> <a id="68391" class="Symbol">=</a> <a id="68393" href="Data.Nat.Properties.html#19941" class="Function">*-suc</a>
-<a id="68399" class="Symbol">{-#</a> <a id="68403" class="Keyword">WARNING_ON_USAGE</a> <a id="68420" class="Pragma">+-*-suc</a>
-<a id="68428" class="String">&quot;Warning: +-*-suc was deprecated in v1.2.
-Please use *-suc instead.&quot;</a>
-<a id="68497" class="Symbol">#-}</a>
-
-<a id="n∸m≤n"></a><a id="68502" href="Data.Nat.Properties.html#68502" class="Function">n∸m≤n</a> <a id="68508" class="Symbol">:</a> <a id="68510" class="Symbol">∀</a> <a id="68512" href="Data.Nat.Properties.html#68512" class="Bound">m</a> <a id="68514" href="Data.Nat.Properties.html#68514" class="Bound">n</a> <a id="68516" class="Symbol">→</a> <a id="68518" href="Data.Nat.Properties.html#68514" class="Bound">n</a> <a id="68520" href="Data.Nat.Base.html#2926" class="Primitive Operator">∸</a> <a id="68522" href="Data.Nat.Properties.html#68512" class="Bound">m</a> <a id="68524" href="Data.Nat.Base.html#1464" class="Datatype Operator">≤</a> <a id="68526" href="Data.Nat.Properties.html#68514" class="Bound">n</a>
-<a id="68528" href="Data.Nat.Properties.html#68502" class="Function">n∸m≤n</a> <a id="68534" href="Data.Nat.Properties.html#68534" class="Bound">m</a> <a id="68536" href="Data.Nat.Properties.html#68536" class="Bound">n</a> <a id="68538" class="Symbol">=</a> <a id="68540" href="Data.Nat.Properties.html#43797" class="Function">m∸n≤m</a> <a id="68546" href="Data.Nat.Properties.html#68536" class="Bound">n</a> <a id="68548" href="Data.Nat.Properties.html#68534" class="Bound">m</a>
-<a id="68550" class="Symbol">{-#</a> <a id="68554" class="Keyword">WARNING_ON_USAGE</a> <a id="68571" class="Pragma">n∸m≤n</a>
-<a id="68577" class="String">&quot;Warning: n∸m≤n was deprecated in v1.2.
-Please use m∸n≤m instead (note, you will need to switch the argument order).&quot;</a>
-<a id="68695" class="Symbol">#-}</a>
-
-<a id="68700" class="Comment">-- Version 1.3</a>
-
-<a id="∀[m≤n⇒m≢o]⇒o&lt;n"></a><a id="68716" href="Data.Nat.Properties.html#68716" class="Function">∀[m≤n⇒m≢o]⇒o&lt;n</a> <a id="68731" class="Symbol">:</a> <a id="68733" class="Symbol">∀</a> <a id="68735" href="Data.Nat.Properties.html#68735" class="Bound">n</a> <a id="68737" href="Data.Nat.Properties.html#68737" class="Bound">o</a> <a id="68739" class="Symbol">→</a> <a id="68741" class="Symbol">(∀</a> <a id="68744" class="Symbol">{</a><a id="68745" href="Data.Nat.Properties.html#68745" class="Bound">m</a><a id="68746" class="Symbol">}</a> <a id="68748" class="Symbol">→</a> <a id="68750" href="Data.Nat.Properties.html#68745" class="Bound">m</a> <a id="68752" href="Data.Nat.Base.html#1464" class="Datatype Operator">≤</a> <a id="68754" href="Data.Nat.Properties.html#68735" class="Bound">n</a> <a id="68756" class="Symbol">→</a> <a id="68758" href="Data.Nat.Properties.html#68745" class="Bound">m</a> <a id="68760" href="Relation.Binary.PropositionalEquality.Core.html#830" class="Function Operator">≢</a> <a id="68762" href="Data.Nat.Properties.html#68737" class="Bound">o</a><a id="68763" class="Symbol">)</a> <a id="68765" class="Symbol">→</a> <a id="68767" href="Data.Nat.Properties.html#68735" class="Bound">n</a> <a id="68769" href="Data.Nat.Base.html#1574" class="Function Operator">&lt;</a> <a id="68771" href="Data.Nat.Properties.html#68737" class="Bound">o</a>
-<a id="68773" href="Data.Nat.Properties.html#68716" class="Function">∀[m≤n⇒m≢o]⇒o&lt;n</a> <a id="68788" class="Symbol">=</a> <a id="68790" href="Data.Nat.Properties.html#12084" class="Function">∀[m≤n⇒m≢o]⇒n&lt;o</a>
-<a id="68805" class="Symbol">{-#</a> <a id="68809" class="Keyword">WARNING_ON_USAGE</a> <a id="68826" class="Pragma">∀[m≤n⇒m≢o]⇒o&lt;n</a>
-<a id="68841" class="String">&quot;Warning: ∀[m≤n⇒m≢o]⇒o&lt;n was deprecated in v1.3.
+<a id="∀[m≤n⇒m≢o]⇒o&lt;n"></a><a id="64345" href="Data.Nat.Properties.html#64345" class="Function">∀[m≤n⇒m≢o]⇒o&lt;n</a> <a id="64360" class="Symbol">:</a> <a id="64362" class="Symbol">∀</a> <a id="64364" href="Data.Nat.Properties.html#64364" class="Bound">n</a> <a id="64366" href="Data.Nat.Properties.html#64366" class="Bound">o</a> <a id="64368" class="Symbol">→</a> <a id="64370" class="Symbol">(∀</a> <a id="64373" class="Symbol">{</a><a id="64374" href="Data.Nat.Properties.html#64374" class="Bound">m</a><a id="64375" class="Symbol">}</a> <a id="64377" class="Symbol">→</a> <a id="64379" href="Data.Nat.Properties.html#64374" class="Bound">m</a> <a id="64381" href="Data.Nat.Base.html#1464" class="Datatype Operator">≤</a> <a id="64383" href="Data.Nat.Properties.html#64364" class="Bound">n</a> <a id="64385" class="Symbol">→</a> <a id="64387" href="Data.Nat.Properties.html#64374" class="Bound">m</a> <a id="64389" href="Relation.Binary.PropositionalEquality.Core.html#830" class="Function Operator">≢</a> <a id="64391" href="Data.Nat.Properties.html#64366" class="Bound">o</a><a id="64392" class="Symbol">)</a> <a id="64394" class="Symbol">→</a> <a id="64396" href="Data.Nat.Properties.html#64364" class="Bound">n</a> <a id="64398" href="Data.Nat.Base.html#1574" class="Function Operator">&lt;</a> <a id="64400" href="Data.Nat.Properties.html#64366" class="Bound">o</a>
+<a id="64402" href="Data.Nat.Properties.html#64345" class="Function">∀[m≤n⇒m≢o]⇒o&lt;n</a> <a id="64417" class="Symbol">=</a> <a id="64419" href="Data.Nat.Properties.html#12084" class="Function">∀[m≤n⇒m≢o]⇒n&lt;o</a>
+<a id="64434" class="Symbol">{-#</a> <a id="64438" class="Keyword">WARNING_ON_USAGE</a> <a id="64455" class="Pragma">∀[m≤n⇒m≢o]⇒o&lt;n</a>
+<a id="64470" class="String">&quot;Warning: ∀[m≤n⇒m≢o]⇒o&lt;n was deprecated in v1.3.
 Please use ∀[m≤n⇒m≢o]⇒n&lt;o instead.&quot;</a>
-<a id="68926" class="Symbol">#-}</a>
-<a id="∀[m&lt;n⇒m≢o]⇒o≤n"></a><a id="68930" href="Data.Nat.Properties.html#68930" class="Function">∀[m&lt;n⇒m≢o]⇒o≤n</a> <a id="68945" class="Symbol">:</a> <a id="68947" class="Symbol">∀</a> <a id="68949" href="Data.Nat.Properties.html#68949" class="Bound">n</a> <a id="68951" href="Data.Nat.Properties.html#68951" class="Bound">o</a> <a id="68953" class="Symbol">→</a> <a id="68955" class="Symbol">(∀</a> <a id="68958" class="Symbol">{</a><a id="68959" href="Data.Nat.Properties.html#68959" class="Bound">m</a><a id="68960" class="Symbol">}</a> <a id="68962" class="Symbol">→</a> <a id="68964" href="Data.Nat.Properties.html#68959" class="Bound">m</a> <a id="68966" href="Data.Nat.Base.html#1574" class="Function Operator">&lt;</a> <a id="68968" href="Data.Nat.Properties.html#68949" class="Bound">n</a> <a id="68970" class="Symbol">→</a> <a id="68972" href="Data.Nat.Properties.html#68959" class="Bound">m</a> <a id="68974" href="Relation.Binary.PropositionalEquality.Core.html#830" class="Function Operator">≢</a> <a id="68976" href="Data.Nat.Properties.html#68951" class="Bound">o</a><a id="68977" class="Symbol">)</a> <a id="68979" class="Symbol">→</a> <a id="68981" href="Data.Nat.Properties.html#68949" class="Bound">n</a> <a id="68983" href="Data.Nat.Base.html#1464" class="Datatype Operator">≤</a> <a id="68985" href="Data.Nat.Properties.html#68951" class="Bound">o</a>
-<a id="68987" href="Data.Nat.Properties.html#68930" class="Function">∀[m&lt;n⇒m≢o]⇒o≤n</a> <a id="69002" class="Symbol">=</a> <a id="69004" href="Data.Nat.Properties.html#12411" class="Function">∀[m&lt;n⇒m≢o]⇒n≤o</a>
-<a id="69019" class="Symbol">{-#</a> <a id="69023" class="Keyword">WARNING_ON_USAGE</a> <a id="69040" class="Pragma">∀[m&lt;n⇒m≢o]⇒o≤n</a>
-<a id="69055" class="String">&quot;Warning: ∀[m&lt;n⇒m≢o]⇒o≤n was deprecated in v1.3.
+<a id="64555" class="Symbol">#-}</a>
+<a id="∀[m&lt;n⇒m≢o]⇒o≤n"></a><a id="64559" href="Data.Nat.Properties.html#64559" class="Function">∀[m&lt;n⇒m≢o]⇒o≤n</a> <a id="64574" class="Symbol">:</a> <a id="64576" class="Symbol">∀</a> <a id="64578" href="Data.Nat.Properties.html#64578" class="Bound">n</a> <a id="64580" href="Data.Nat.Properties.html#64580" class="Bound">o</a> <a id="64582" class="Symbol">→</a> <a id="64584" class="Symbol">(∀</a> <a id="64587" class="Symbol">{</a><a id="64588" href="Data.Nat.Properties.html#64588" class="Bound">m</a><a id="64589" class="Symbol">}</a> <a id="64591" class="Symbol">→</a> <a id="64593" href="Data.Nat.Properties.html#64588" class="Bound">m</a> <a id="64595" href="Data.Nat.Base.html#1574" class="Function Operator">&lt;</a> <a id="64597" href="Data.Nat.Properties.html#64578" class="Bound">n</a> <a id="64599" class="Symbol">→</a> <a id="64601" href="Data.Nat.Properties.html#64588" class="Bound">m</a> <a id="64603" href="Relation.Binary.PropositionalEquality.Core.html#830" class="Function Operator">≢</a> <a id="64605" href="Data.Nat.Properties.html#64580" class="Bound">o</a><a id="64606" class="Symbol">)</a> <a id="64608" class="Symbol">→</a> <a id="64610" href="Data.Nat.Properties.html#64578" class="Bound">n</a> <a id="64612" href="Data.Nat.Base.html#1464" class="Datatype Operator">≤</a> <a id="64614" href="Data.Nat.Properties.html#64580" class="Bound">o</a>
+<a id="64616" href="Data.Nat.Properties.html#64559" class="Function">∀[m&lt;n⇒m≢o]⇒o≤n</a> <a id="64631" class="Symbol">=</a> <a id="64633" href="Data.Nat.Properties.html#12411" class="Function">∀[m&lt;n⇒m≢o]⇒n≤o</a>
+<a id="64648" class="Symbol">{-#</a> <a id="64652" class="Keyword">WARNING_ON_USAGE</a> <a id="64669" class="Pragma">∀[m&lt;n⇒m≢o]⇒o≤n</a>
+<a id="64684" class="String">&quot;Warning: ∀[m&lt;n⇒m≢o]⇒o≤n was deprecated in v1.3.
 Please use ∀[m&lt;n⇒m≢o]⇒n≤o instead.&quot;</a>
-<a id="69140" class="Symbol">#-}</a>
+<a id="64769" class="Symbol">#-}</a>
 
-<a id="69145" class="Comment">-- Version 1.4</a>
+<a id="64774" class="Comment">-- Version 1.4</a>
 
-<a id="*-+-isSemiring"></a><a id="69161" href="Data.Nat.Properties.html#69161" class="Function">*-+-isSemiring</a> <a id="69176" class="Symbol">=</a> <a id="69178" href="Data.Nat.Properties.html#22597" class="Function">+-*-isSemiring</a>
-<a id="69193" class="Symbol">{-#</a> <a id="69197" class="Keyword">WARNING_ON_USAGE</a> <a id="69214" class="Pragma">*-+-isSemiring</a>
-<a id="69229" class="String">&quot;Warning: *-+-isSemiring was deprecated in v1.4.
+<a id="*-+-isSemiring"></a><a id="64790" href="Data.Nat.Properties.html#64790" class="Function">*-+-isSemiring</a> <a id="64805" class="Symbol">=</a> <a id="64807" href="Data.Nat.Properties.html#22597" class="Function">+-*-isSemiring</a>
+<a id="64822" class="Symbol">{-#</a> <a id="64826" class="Keyword">WARNING_ON_USAGE</a> <a id="64843" class="Pragma">*-+-isSemiring</a>
+<a id="64858" class="String">&quot;Warning: *-+-isSemiring was deprecated in v1.4.
 Please use +-*-isSemiring instead.&quot;</a>
-<a id="69314" class="Symbol">#-}</a>
-<a id="*-+-isCommutativeSemiring"></a><a id="69318" href="Data.Nat.Properties.html#69318" class="Function">*-+-isCommutativeSemiring</a> <a id="69344" class="Symbol">=</a> <a id="69346" href="Data.Nat.Properties.html#22952" class="Function">+-*-isCommutativeSemiring</a>
-<a id="69372" class="Symbol">{-#</a> <a id="69376" class="Keyword">WARNING_ON_USAGE</a> <a id="69393" class="Pragma">*-+-isCommutativeSemiring</a>
-<a id="69419" class="String">&quot;Warning: *-+-isCommutativeSemiring was deprecated in v1.4.
+<a id="64943" class="Symbol">#-}</a>
+<a id="*-+-isCommutativeSemiring"></a><a id="64947" href="Data.Nat.Properties.html#64947" class="Function">*-+-isCommutativeSemiring</a> <a id="64973" class="Symbol">=</a> <a id="64975" href="Data.Nat.Properties.html#22952" class="Function">+-*-isCommutativeSemiring</a>
+<a id="65001" class="Symbol">{-#</a> <a id="65005" class="Keyword">WARNING_ON_USAGE</a> <a id="65022" class="Pragma">*-+-isCommutativeSemiring</a>
+<a id="65048" class="String">&quot;Warning: *-+-isCommutativeSemiring was deprecated in v1.4.
 Please use +-*-isCommutativeSemiring instead.&quot;</a>
-<a id="69526" class="Symbol">#-}</a>
-<a id="*-+-semiring"></a><a id="69530" href="Data.Nat.Properties.html#69530" class="Function">*-+-semiring</a> <a id="69543" class="Symbol">=</a> <a id="69545" href="Data.Nat.Properties.html#23888" class="Function">+-*-semiring</a>
-<a id="69558" class="Symbol">{-#</a> <a id="69562" class="Keyword">WARNING_ON_USAGE</a> <a id="69579" class="Pragma">*-+-semiring</a>
-<a id="69592" class="String">&quot;Warning: *-+-semiring was deprecated in v1.4.
+<a id="65155" class="Symbol">#-}</a>
+<a id="*-+-semiring"></a><a id="65159" href="Data.Nat.Properties.html#65159" class="Function">*-+-semiring</a> <a id="65172" class="Symbol">=</a> <a id="65174" href="Data.Nat.Properties.html#23888" class="Function">+-*-semiring</a>
+<a id="65187" class="Symbol">{-#</a> <a id="65191" class="Keyword">WARNING_ON_USAGE</a> <a id="65208" class="Pragma">*-+-semiring</a>
+<a id="65221" class="String">&quot;Warning: *-+-semiring was deprecated in v1.4.
 Please use +-*-semiring instead.&quot;</a>
-<a id="69673" class="Symbol">#-}</a>
-<a id="*-+-commutativeSemiring"></a><a id="69677" href="Data.Nat.Properties.html#69677" class="Function">*-+-commutativeSemiring</a> <a id="69701" class="Symbol">=</a> <a id="69703" href="Data.Nat.Properties.html#23977" class="Function">+-*-commutativeSemiring</a>
-<a id="69727" class="Symbol">{-#</a> <a id="69731" class="Keyword">WARNING_ON_USAGE</a> <a id="69748" class="Pragma">*-+-commutativeSemiring</a>
-<a id="69772" class="String">&quot;Warning: *-+-commutativeSemiring was deprecated in v1.4.
+<a id="65302" class="Symbol">#-}</a>
+<a id="*-+-commutativeSemiring"></a><a id="65306" href="Data.Nat.Properties.html#65306" class="Function">*-+-commutativeSemiring</a> <a id="65330" class="Symbol">=</a> <a id="65332" href="Data.Nat.Properties.html#23977" class="Function">+-*-commutativeSemiring</a>
+<a id="65356" class="Symbol">{-#</a> <a id="65360" class="Keyword">WARNING_ON_USAGE</a> <a id="65377" class="Pragma">*-+-commutativeSemiring</a>
+<a id="65401" class="String">&quot;Warning: *-+-commutativeSemiring was deprecated in v1.4.
 Please use +-*-commutativeSemiring instead.&quot;</a>
-<a id="69875" class="Symbol">#-}</a>
+<a id="65504" class="Symbol">#-}</a>
 
-<a id="69880" class="Comment">-- Version 1.6</a>
+<a id="65509" class="Comment">-- Version 1.6</a>
 
-<a id="m≤n⇒n⊔m≡n"></a><a id="69896" href="Data.Nat.Properties.html#69896" class="Function">m≤n⇒n⊔m≡n</a> <a id="69906" class="Symbol">=</a> <a id="69908" href="Data.Nat.Properties.html#30038" class="Function">m≥n⇒m⊔n≡m</a>
-<a id="69918" class="Symbol">{-#</a> <a id="69922" class="Keyword">WARNING_ON_USAGE</a> <a id="69939" class="Pragma">m≤n⇒n⊔m≡n</a>
-<a id="69949" class="String">&quot;Warning: m≤n⇒n⊔m≡n was deprecated in v1.6. Please use m≥n⇒m⊔n≡m instead.&quot;</a>
-<a id="70024" class="Symbol">#-}</a>
-<a id="m≤n⇒n⊓m≡m"></a><a id="70028" href="Data.Nat.Properties.html#70028" class="Function">m≤n⇒n⊓m≡m</a> <a id="70038" class="Symbol">=</a> <a id="70040" href="Data.Nat.Properties.html#30359" class="Function">m≥n⇒m⊓n≡n</a>
-<a id="70050" class="Symbol">{-#</a> <a id="70054" class="Keyword">WARNING_ON_USAGE</a> <a id="70071" class="Pragma">m≤n⇒n⊓m≡m</a>
-<a id="70081" class="String">&quot;Warning: m≤n⇒n⊓m≡m was deprecated in v1.6. Please use m≥n⇒m⊓n≡n instead.&quot;</a>
-<a id="70156" class="Symbol">#-}</a>
-<a id="n⊔m≡m⇒n≤m"></a><a id="70160" href="Data.Nat.Properties.html#70160" class="Function">n⊔m≡m⇒n≤m</a> <a id="70170" class="Symbol">=</a> <a id="70172" href="Data.Nat.Properties.html#34315" class="Function">m⊔n≡n⇒m≤n</a>
-<a id="70182" class="Symbol">{-#</a> <a id="70186" class="Keyword">WARNING_ON_USAGE</a> <a id="70203" class="Pragma">n⊔m≡m⇒n≤m</a>
-<a id="70213" class="String">&quot;Warning: n⊔m≡m⇒n≤m was deprecated in v1.6. Please use m⊔n≡n⇒m≤n instead.&quot;</a>
-<a id="70288" class="Symbol">#-}</a>
-<a id="n⊔m≡n⇒m≤n"></a><a id="70292" href="Data.Nat.Properties.html#70292" class="Function">n⊔m≡n⇒m≤n</a> <a id="70302" class="Symbol">=</a> <a id="70304" href="Data.Nat.Properties.html#34378" class="Function">m⊔n≡m⇒n≤m</a>
-<a id="70314" class="Symbol">{-#</a> <a id="70318" class="Keyword">WARNING_ON_USAGE</a> <a id="70335" class="Pragma">n⊔m≡n⇒m≤n</a>
-<a id="70345" class="String">&quot;Warning: n⊔m≡n⇒m≤n was deprecated in v1.6. Please use m⊔n≡m⇒n≤m instead.&quot;</a>
-<a id="70420" class="Symbol">#-}</a>
-<a id="n≤m⊔n"></a><a id="70424" href="Data.Nat.Properties.html#70424" class="Function">n≤m⊔n</a> <a id="70430" class="Symbol">=</a> <a id="70432" href="Data.Nat.Properties.html#34494" class="Function">m≤n⊔m</a>
-<a id="70438" class="Symbol">{-#</a> <a id="70442" class="Keyword">WARNING_ON_USAGE</a> <a id="70459" class="Pragma">n≤m⊔n</a>
-<a id="70465" class="String">&quot;Warning: n≤m⊔n was deprecated in v1.6. Please use m≤n⊔m instead.&quot;</a>
-<a id="70532" class="Symbol">#-}</a>
-<a id="⊔-least"></a><a id="70536" href="Data.Nat.Properties.html#70536" class="Function">⊔-least</a> <a id="70544" class="Symbol">=</a> <a id="70546" href="Algebra.Construct.NaturalChoice.MaxOp.html#2116" class="Function">⊔-lub</a>
-<a id="70552" class="Symbol">{-#</a> <a id="70556" class="Keyword">WARNING_ON_USAGE</a> <a id="70573" class="Pragma">⊔-least</a>
-<a id="70581" class="String">&quot;Warning: ⊔-least was deprecated in v1.6. Please use ⊔-lub instead.&quot;</a>
-<a id="70650" class="Symbol">#-}</a>
-<a id="⊓-greatest"></a><a id="70654" href="Data.Nat.Properties.html#70654" class="Function">⊓-greatest</a> <a id="70665" class="Symbol">=</a> <a id="70667" href="Algebra.Construct.NaturalChoice.MinOp.html#6881" class="Function">⊓-glb</a>
-<a id="70673" class="Symbol">{-#</a> <a id="70677" class="Keyword">WARNING_ON_USAGE</a> <a id="70694" class="Pragma">⊓-greatest</a>
-<a id="70705" class="String">&quot;Warning: ⊓-greatest was deprecated in v1.6. Please use ⊓-glb instead.&quot;</a>
-<a id="70777" class="Symbol">#-}</a>
-<a id="⊔-pres-≤m"></a><a id="70781" href="Data.Nat.Properties.html#70781" class="Function">⊔-pres-≤m</a> <a id="70791" class="Symbol">=</a> <a id="70793" href="Algebra.Construct.NaturalChoice.MaxOp.html#2116" class="Function">⊔-lub</a>
-<a id="70799" class="Symbol">{-#</a> <a id="70803" class="Keyword">WARNING_ON_USAGE</a> <a id="70820" class="Pragma">⊔-pres-≤m</a>
-<a id="70830" class="String">&quot;Warning: ⊔-pres-≤m was deprecated in v1.6. Please use ⊔-lub instead.&quot;</a>
-<a id="70901" class="Symbol">#-}</a>
-<a id="⊓-pres-m≤"></a><a id="70905" href="Data.Nat.Properties.html#70905" class="Function">⊓-pres-m≤</a> <a id="70915" class="Symbol">=</a> <a id="70917" href="Algebra.Construct.NaturalChoice.MinOp.html#6881" class="Function">⊓-glb</a>
-<a id="70923" class="Symbol">{-#</a> <a id="70927" class="Keyword">WARNING_ON_USAGE</a> <a id="70944" class="Pragma">⊓-pres-m≤</a>
-<a id="70954" class="String">&quot;Warning: ⊓-pres-m≤ was deprecated in v1.6. Please use ⊓-glb instead.&quot;</a>
-<a id="71025" class="Symbol">#-}</a>
-<a id="⊔-abs-⊓"></a><a id="71029" href="Data.Nat.Properties.html#71029" class="Function">⊔-abs-⊓</a> <a id="71037" class="Symbol">=</a> <a id="71039" href="Algebra.Construct.NaturalChoice.MinMaxOp.html#2959" class="Function">⊔-absorbs-⊓</a>
-<a id="71051" class="Symbol">{-#</a> <a id="71055" class="Keyword">WARNING_ON_USAGE</a> <a id="71072" class="Pragma">⊔-abs-⊓</a>
-<a id="71080" class="String">&quot;Warning: ⊔-abs-⊓ was deprecated in v1.6. Please use ⊔-absorbs-⊓ instead.&quot;</a>
-<a id="71155" class="Symbol">#-}</a>
-<a id="⊓-abs-⊔"></a><a id="71159" href="Data.Nat.Properties.html#71159" class="Function">⊓-abs-⊔</a> <a id="71167" class="Symbol">=</a> <a id="71169" href="Algebra.Construct.NaturalChoice.MinMaxOp.html#2644" class="Function">⊓-absorbs-⊔</a>
-<a id="71181" class="Symbol">{-#</a> <a id="71185" class="Keyword">WARNING_ON_USAGE</a> <a id="71202" class="Pragma">⊓-abs-⊔</a>
-<a id="71210" class="String">&quot;Warning: ⊓-abs-⊔ was deprecated in v1.6. Please use ⊓-absorbs-⊔ instead.&quot;</a>
-<a id="71285" class="Symbol">#-}</a>
+<a id="∣m+n-m+o∣≡∣n-o|"></a><a id="65525" href="Data.Nat.Properties.html#65525" class="Function">∣m+n-m+o∣≡∣n-o|</a> <a id="65541" class="Symbol">=</a> <a id="65543" href="Data.Nat.Properties.html#52292" class="Function">∣m+n-m+o∣≡∣n-o∣</a>
+<a id="65559" class="Symbol">{-#</a> <a id="65563" class="Keyword">WARNING_ON_USAGE</a> <a id="65580" class="Pragma">∣m+n-m+o∣≡∣n-o|</a>
+<a id="65596" class="String">&quot;Warning: ∣m+n-m+o∣≡∣n-o| was deprecated in v1.6.
+Please use ∣m+n-m+o∣≡∣n-o∣ instead. Note the final is a \\| rather than a |&quot;</a>
+<a id="65723" class="Symbol">#-}</a>
+<a id="m≤n⇒n⊔m≡n"></a><a id="65727" href="Data.Nat.Properties.html#65727" class="Function">m≤n⇒n⊔m≡n</a> <a id="65737" class="Symbol">=</a> <a id="65739" href="Data.Nat.Properties.html#30038" class="Function">m≥n⇒m⊔n≡m</a>
+<a id="65749" class="Symbol">{-#</a> <a id="65753" class="Keyword">WARNING_ON_USAGE</a> <a id="65770" class="Pragma">m≤n⇒n⊔m≡n</a>
+<a id="65780" class="String">&quot;Warning: m≤n⇒n⊔m≡n was deprecated in v1.6. Please use m≥n⇒m⊔n≡m instead.&quot;</a>
+<a id="65855" class="Symbol">#-}</a>
+<a id="m≤n⇒n⊓m≡m"></a><a id="65859" href="Data.Nat.Properties.html#65859" class="Function">m≤n⇒n⊓m≡m</a> <a id="65869" class="Symbol">=</a> <a id="65871" href="Data.Nat.Properties.html#30359" class="Function">m≥n⇒m⊓n≡n</a>
+<a id="65881" class="Symbol">{-#</a> <a id="65885" class="Keyword">WARNING_ON_USAGE</a> <a id="65902" class="Pragma">m≤n⇒n⊓m≡m</a>
+<a id="65912" class="String">&quot;Warning: m≤n⇒n⊓m≡m was deprecated in v1.6. Please use m≥n⇒m⊓n≡n instead.&quot;</a>
+<a id="65987" class="Symbol">#-}</a>
+<a id="n⊔m≡m⇒n≤m"></a><a id="65991" href="Data.Nat.Properties.html#65991" class="Function">n⊔m≡m⇒n≤m</a> <a id="66001" class="Symbol">=</a> <a id="66003" href="Data.Nat.Properties.html#34315" class="Function">m⊔n≡n⇒m≤n</a>
+<a id="66013" class="Symbol">{-#</a> <a id="66017" class="Keyword">WARNING_ON_USAGE</a> <a id="66034" class="Pragma">n⊔m≡m⇒n≤m</a>
+<a id="66044" class="String">&quot;Warning: n⊔m≡m⇒n≤m was deprecated in v1.6. Please use m⊔n≡n⇒m≤n instead.&quot;</a>
+<a id="66119" class="Symbol">#-}</a>
+<a id="n⊔m≡n⇒m≤n"></a><a id="66123" href="Data.Nat.Properties.html#66123" class="Function">n⊔m≡n⇒m≤n</a> <a id="66133" class="Symbol">=</a> <a id="66135" href="Data.Nat.Properties.html#34378" class="Function">m⊔n≡m⇒n≤m</a>
+<a id="66145" class="Symbol">{-#</a> <a id="66149" class="Keyword">WARNING_ON_USAGE</a> <a id="66166" class="Pragma">n⊔m≡n⇒m≤n</a>
+<a id="66176" class="String">&quot;Warning: n⊔m≡n⇒m≤n was deprecated in v1.6. Please use m⊔n≡m⇒n≤m instead.&quot;</a>
+<a id="66251" class="Symbol">#-}</a>
+<a id="n≤m⊔n"></a><a id="66255" href="Data.Nat.Properties.html#66255" class="Function">n≤m⊔n</a> <a id="66261" class="Symbol">=</a> <a id="66263" href="Data.Nat.Properties.html#34494" class="Function">m≤n⊔m</a>
+<a id="66269" class="Symbol">{-#</a> <a id="66273" class="Keyword">WARNING_ON_USAGE</a> <a id="66290" class="Pragma">n≤m⊔n</a>
+<a id="66296" class="String">&quot;Warning: n≤m⊔n was deprecated in v1.6. Please use m≤n⊔m instead.&quot;</a>
+<a id="66363" class="Symbol">#-}</a>
+<a id="⊔-least"></a><a id="66367" href="Data.Nat.Properties.html#66367" class="Function">⊔-least</a> <a id="66375" class="Symbol">=</a> <a id="66377" href="Algebra.Construct.NaturalChoice.MaxOp.html#2116" class="Function">⊔-lub</a>
+<a id="66383" class="Symbol">{-#</a> <a id="66387" class="Keyword">WARNING_ON_USAGE</a> <a id="66404" class="Pragma">⊔-least</a>
+<a id="66412" class="String">&quot;Warning: ⊔-least was deprecated in v1.6. Please use ⊔-lub instead.&quot;</a>
+<a id="66481" class="Symbol">#-}</a>
+<a id="⊓-greatest"></a><a id="66485" href="Data.Nat.Properties.html#66485" class="Function">⊓-greatest</a> <a id="66496" class="Symbol">=</a> <a id="66498" href="Algebra.Construct.NaturalChoice.MinOp.html#6881" class="Function">⊓-glb</a>
+<a id="66504" class="Symbol">{-#</a> <a id="66508" class="Keyword">WARNING_ON_USAGE</a> <a id="66525" class="Pragma">⊓-greatest</a>
+<a id="66536" class="String">&quot;Warning: ⊓-greatest was deprecated in v1.6. Please use ⊓-glb instead.&quot;</a>
+<a id="66608" class="Symbol">#-}</a>
+<a id="⊔-pres-≤m"></a><a id="66612" href="Data.Nat.Properties.html#66612" class="Function">⊔-pres-≤m</a> <a id="66622" class="Symbol">=</a> <a id="66624" href="Algebra.Construct.NaturalChoice.MaxOp.html#2116" class="Function">⊔-lub</a>
+<a id="66630" class="Symbol">{-#</a> <a id="66634" class="Keyword">WARNING_ON_USAGE</a> <a id="66651" class="Pragma">⊔-pres-≤m</a>
+<a id="66661" class="String">&quot;Warning: ⊔-pres-≤m was deprecated in v1.6. Please use ⊔-lub instead.&quot;</a>
+<a id="66732" class="Symbol">#-}</a>
+<a id="⊓-pres-m≤"></a><a id="66736" href="Data.Nat.Properties.html#66736" class="Function">⊓-pres-m≤</a> <a id="66746" class="Symbol">=</a> <a id="66748" href="Algebra.Construct.NaturalChoice.MinOp.html#6881" class="Function">⊓-glb</a>
+<a id="66754" class="Symbol">{-#</a> <a id="66758" class="Keyword">WARNING_ON_USAGE</a> <a id="66775" class="Pragma">⊓-pres-m≤</a>
+<a id="66785" class="String">&quot;Warning: ⊓-pres-m≤ was deprecated in v1.6. Please use ⊓-glb instead.&quot;</a>
+<a id="66856" class="Symbol">#-}</a>
+<a id="⊔-abs-⊓"></a><a id="66860" href="Data.Nat.Properties.html#66860" class="Function">⊔-abs-⊓</a> <a id="66868" class="Symbol">=</a> <a id="66870" href="Algebra.Construct.NaturalChoice.MinMaxOp.html#2959" class="Function">⊔-absorbs-⊓</a>
+<a id="66882" class="Symbol">{-#</a> <a id="66886" class="Keyword">WARNING_ON_USAGE</a> <a id="66903" class="Pragma">⊔-abs-⊓</a>
+<a id="66911" class="String">&quot;Warning: ⊔-abs-⊓ was deprecated in v1.6. Please use ⊔-absorbs-⊓ instead.&quot;</a>
+<a id="66986" class="Symbol">#-}</a>
+<a id="⊓-abs-⊔"></a><a id="66990" href="Data.Nat.Properties.html#66990" class="Function">⊓-abs-⊔</a> <a id="66998" class="Symbol">=</a> <a id="67000" href="Algebra.Construct.NaturalChoice.MinMaxOp.html#2644" class="Function">⊓-absorbs-⊔</a>
+<a id="67012" class="Symbol">{-#</a> <a id="67016" class="Keyword">WARNING_ON_USAGE</a> <a id="67033" class="Pragma">⊓-abs-⊔</a>
+<a id="67041" class="String">&quot;Warning: ⊓-abs-⊔ was deprecated in v1.6. Please use ⊓-absorbs-⊔ instead.&quot;</a>
+<a id="67116" class="Symbol">#-}</a>
 
-<a id="71290" class="Comment">-- Version 2.0</a>
+<a id="67121" class="Comment">-- Version 2.0</a>
 
-<a id="suc[pred[n]]≡n"></a><a id="71306" href="Data.Nat.Properties.html#71306" class="Function">suc[pred[n]]≡n</a> <a id="71321" class="Symbol">:</a> <a id="71323" class="Symbol">∀</a> <a id="71325" class="Symbol">{</a><a id="71326" href="Data.Nat.Properties.html#71326" class="Bound">n</a><a id="71327" class="Symbol">}</a> <a id="71329" class="Symbol">→</a> <a id="71331" href="Data.Nat.Properties.html#71326" class="Bound">n</a> <a id="71333" href="Relation.Binary.PropositionalEquality.Core.html#830" class="Function Operator">≢</a> <a id="71335" class="Number">0</a> <a id="71337" class="Symbol">→</a> <a id="71339" href="Agda.Builtin.Nat.html#223" class="InductiveConstructor">suc</a> <a id="71343" class="Symbol">(</a><a id="71344" href="Data.Nat.Base.html#2995" class="Function">pred</a> <a id="71349" href="Data.Nat.Properties.html#71326" class="Bound">n</a><a id="71350" class="Symbol">)</a> <a id="71352" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="71354" href="Data.Nat.Properties.html#71326" class="Bound">n</a>
-<a id="71356" href="Data.Nat.Properties.html#71306" class="Function">suc[pred[n]]≡n</a> <a id="71371" class="Symbol">{</a><a id="71372" href="Agda.Builtin.Nat.html#210" class="InductiveConstructor">zero</a><a id="71376" class="Symbol">}</a>  <a id="71379" href="Data.Nat.Properties.html#71379" class="Bound">0≢0</a> <a id="71383" class="Symbol">=</a> <a id="71385" href="Relation.Nullary.Negation.Core.html#778" class="Function">contradiction</a> <a id="71399" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a> <a id="71404" href="Data.Nat.Properties.html#71379" class="Bound">0≢0</a>
-<a id="71408" href="Data.Nat.Properties.html#71306" class="Function">suc[pred[n]]≡n</a> <a id="71423" class="Symbol">{</a><a id="71424" href="Agda.Builtin.Nat.html#223" class="InductiveConstructor">suc</a> <a id="71428" href="Data.Nat.Properties.html#71428" class="Bound">n</a><a id="71429" class="Symbol">}</a> <a id="71431" class="Symbol">_</a>   <a id="71435" class="Symbol">=</a> <a id="71437" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
-<a id="71442" class="Symbol">{-#</a> <a id="71446" class="Keyword">WARNING_ON_USAGE</a> <a id="71463" class="Pragma">suc[pred[n]]≡n</a>
-<a id="71478" class="String">&quot;Warning: suc[pred[n]]≡n was deprecated in v2.0. Please use suc-pred instead. Note that the proof now uses instance arguments&quot;</a>
-<a id="71605" class="Symbol">#-}</a>
+<a id="suc[pred[n]]≡n"></a><a id="67137" href="Data.Nat.Properties.html#67137" class="Function">suc[pred[n]]≡n</a> <a id="67152" class="Symbol">:</a> <a id="67154" class="Symbol">∀</a> <a id="67156" class="Symbol">{</a><a id="67157" href="Data.Nat.Properties.html#67157" class="Bound">n</a><a id="67158" class="Symbol">}</a> <a id="67160" class="Symbol">→</a> <a id="67162" href="Data.Nat.Properties.html#67157" class="Bound">n</a> <a id="67164" href="Relation.Binary.PropositionalEquality.Core.html#830" class="Function Operator">≢</a> <a id="67166" class="Number">0</a> <a id="67168" class="Symbol">→</a> <a id="67170" href="Agda.Builtin.Nat.html#223" class="InductiveConstructor">suc</a> <a id="67174" class="Symbol">(</a><a id="67175" href="Data.Nat.Base.html#2995" class="Function">pred</a> <a id="67180" href="Data.Nat.Properties.html#67157" class="Bound">n</a><a id="67181" class="Symbol">)</a> <a id="67183" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="67185" href="Data.Nat.Properties.html#67157" class="Bound">n</a>
+<a id="67187" href="Data.Nat.Properties.html#67137" class="Function">suc[pred[n]]≡n</a> <a id="67202" class="Symbol">{</a><a id="67203" href="Agda.Builtin.Nat.html#210" class="InductiveConstructor">zero</a><a id="67207" class="Symbol">}</a>  <a id="67210" href="Data.Nat.Properties.html#67210" class="Bound">0≢0</a> <a id="67214" class="Symbol">=</a> <a id="67216" href="Relation.Nullary.Negation.Core.html#778" class="Function">contradiction</a> <a id="67230" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a> <a id="67235" href="Data.Nat.Properties.html#67210" class="Bound">0≢0</a>
+<a id="67239" href="Data.Nat.Properties.html#67137" class="Function">suc[pred[n]]≡n</a> <a id="67254" class="Symbol">{</a><a id="67255" href="Agda.Builtin.Nat.html#223" class="InductiveConstructor">suc</a> <a id="67259" href="Data.Nat.Properties.html#67259" class="Bound">n</a><a id="67260" class="Symbol">}</a> <a id="67262" class="Symbol">_</a>   <a id="67266" class="Symbol">=</a> <a id="67268" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
+<a id="67273" class="Symbol">{-#</a> <a id="67277" class="Keyword">WARNING_ON_USAGE</a> <a id="67294" class="Pragma">suc[pred[n]]≡n</a>
+<a id="67309" class="String">&quot;Warning: suc[pred[n]]≡n was deprecated in v2.0. Please use suc-pred instead. Note that the proof now uses instance arguments&quot;</a>
+<a id="67436" class="Symbol">#-}</a>
 </pre></body></html>

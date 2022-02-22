@@ -1045,36 +1045,23 @@
 <a id="41303" class="Comment">-- Please use the new names as continuing support for the old names is</a>
 <a id="41374" class="Comment">-- not guaranteed.</a>
 
-<a id="41394" class="Comment">-- Version 1.1</a>
+<a id="41394" class="Comment">-- Version 2.0</a>
 
-<a id="lookup-++-inject+"></a><a id="41410" href="Data.Vec.Properties.html#41410" class="Function">lookup-++-inject+</a> <a id="41428" class="Symbol">=</a> <a id="41430" href="Data.Vec.Properties.html#18611" class="Function">lookup-++ˡ</a>
-<a id="41441" class="Symbol">{-#</a> <a id="41445" class="Keyword">WARNING_ON_USAGE</a> <a id="41462" class="Pragma">lookup-++-inject+</a>
-<a id="41480" class="String">&quot;Warning: lookup-++-inject+ was deprecated in v1.1.
-Please use lookup-++ˡ instead.&quot;</a>
-<a id="41564" class="Symbol">#-}</a>
-<a id="lookup-++-+′"></a><a id="41568" href="Data.Vec.Properties.html#41568" class="Function">lookup-++-+′</a> <a id="41581" class="Symbol">=</a> <a id="41583" href="Data.Vec.Properties.html#18805" class="Function">lookup-++ʳ</a>
-<a id="41594" class="Symbol">{-#</a> <a id="41598" class="Keyword">WARNING_ON_USAGE</a> <a id="41615" class="Pragma">lookup-++-+′</a>
-<a id="41628" class="String">&quot;Warning: lookup-++-+′ was deprecated in v1.1.
-Please use lookup-++ʳ instead.&quot;</a>
-<a id="41707" class="Symbol">#-}</a>
-
-<a id="41712" class="Comment">-- Version 2.0</a>
-
-<a id="[]≔-++-inject+"></a><a id="41728" href="Data.Vec.Properties.html#41728" class="Function">[]≔-++-inject+</a> <a id="41743" class="Symbol">:</a> <a id="41745" class="Symbol">∀</a> <a id="41747" class="Symbol">{</a><a id="41748" href="Data.Vec.Properties.html#41748" class="Bound">m</a> <a id="41750" href="Data.Vec.Properties.html#41750" class="Bound">n</a> <a id="41752" href="Data.Vec.Properties.html#41752" class="Bound">x</a><a id="41753" class="Symbol">}</a> <a id="41755" class="Symbol">(</a><a id="41756" href="Data.Vec.Properties.html#41756" class="Bound">xs</a> <a id="41759" class="Symbol">:</a> <a id="41761" href="Data.Vec.Base.html#1051" class="Datatype">Vec</a> <a id="41765" href="Data.Vec.Properties.html#1410" class="Generalizable">A</a> <a id="41767" href="Data.Vec.Properties.html#41748" class="Bound">m</a><a id="41768" class="Symbol">)</a> <a id="41770" class="Symbol">(</a><a id="41771" href="Data.Vec.Properties.html#41771" class="Bound">ys</a> <a id="41774" class="Symbol">:</a> <a id="41776" href="Data.Vec.Base.html#1051" class="Datatype">Vec</a> <a id="41780" href="Data.Vec.Properties.html#1410" class="Generalizable">A</a> <a id="41782" href="Data.Vec.Properties.html#41750" class="Bound">n</a><a id="41783" class="Symbol">)</a> <a id="41785" href="Data.Vec.Properties.html#41785" class="Bound">i</a> <a id="41787" class="Symbol">→</a>
-                 <a id="41806" class="Symbol">(</a><a id="41807" href="Data.Vec.Properties.html#41756" class="Bound">xs</a> <a id="41810" href="Data.Vec.Base.html#2764" class="Function Operator">++</a> <a id="41813" href="Data.Vec.Properties.html#41771" class="Bound">ys</a><a id="41815" class="Symbol">)</a> <a id="41817" href="Data.Vec.Base.html#2457" class="Function Operator">[</a> <a id="41819" href="Data.Vec.Properties.html#41785" class="Bound">i</a> <a id="41821" href="Data.Fin.Base.html#2510" class="Function Operator">↑ˡ</a> <a id="41824" href="Data.Vec.Properties.html#41750" class="Bound">n</a> <a id="41826" href="Data.Vec.Base.html#2457" class="Function Operator">]≔</a> <a id="41829" href="Data.Vec.Properties.html#41752" class="Bound">x</a> <a id="41831" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="41833" class="Symbol">(</a><a id="41834" href="Data.Vec.Properties.html#41756" class="Bound">xs</a> <a id="41837" href="Data.Vec.Base.html#2457" class="Function Operator">[</a> <a id="41839" href="Data.Vec.Properties.html#41785" class="Bound">i</a> <a id="41841" href="Data.Vec.Base.html#2457" class="Function Operator">]≔</a> <a id="41844" href="Data.Vec.Properties.html#41752" class="Bound">x</a><a id="41845" class="Symbol">)</a> <a id="41847" href="Data.Vec.Base.html#2764" class="Function Operator">++</a> <a id="41850" href="Data.Vec.Properties.html#41771" class="Bound">ys</a>
-<a id="41853" href="Data.Vec.Properties.html#41728" class="Function">[]≔-++-inject+</a> <a id="41868" class="Symbol">=</a> <a id="41870" href="Data.Vec.Properties.html#14874" class="Function">[]≔-++-↑ˡ</a>
-<a id="41880" class="Symbol">{-#</a> <a id="41884" class="Keyword">WARNING_ON_USAGE</a> <a id="41901" class="Pragma">[]≔-++-inject+</a>
-<a id="41916" class="String">&quot;Warning: []≔-++-inject+ was deprecated in v2.0.
+<a id="[]≔-++-inject+"></a><a id="41410" href="Data.Vec.Properties.html#41410" class="Function">[]≔-++-inject+</a> <a id="41425" class="Symbol">:</a> <a id="41427" class="Symbol">∀</a> <a id="41429" class="Symbol">{</a><a id="41430" href="Data.Vec.Properties.html#41430" class="Bound">m</a> <a id="41432" href="Data.Vec.Properties.html#41432" class="Bound">n</a> <a id="41434" href="Data.Vec.Properties.html#41434" class="Bound">x</a><a id="41435" class="Symbol">}</a> <a id="41437" class="Symbol">(</a><a id="41438" href="Data.Vec.Properties.html#41438" class="Bound">xs</a> <a id="41441" class="Symbol">:</a> <a id="41443" href="Data.Vec.Base.html#1051" class="Datatype">Vec</a> <a id="41447" href="Data.Vec.Properties.html#1410" class="Generalizable">A</a> <a id="41449" href="Data.Vec.Properties.html#41430" class="Bound">m</a><a id="41450" class="Symbol">)</a> <a id="41452" class="Symbol">(</a><a id="41453" href="Data.Vec.Properties.html#41453" class="Bound">ys</a> <a id="41456" class="Symbol">:</a> <a id="41458" href="Data.Vec.Base.html#1051" class="Datatype">Vec</a> <a id="41462" href="Data.Vec.Properties.html#1410" class="Generalizable">A</a> <a id="41464" href="Data.Vec.Properties.html#41432" class="Bound">n</a><a id="41465" class="Symbol">)</a> <a id="41467" href="Data.Vec.Properties.html#41467" class="Bound">i</a> <a id="41469" class="Symbol">→</a>
+                 <a id="41488" class="Symbol">(</a><a id="41489" href="Data.Vec.Properties.html#41438" class="Bound">xs</a> <a id="41492" href="Data.Vec.Base.html#2764" class="Function Operator">++</a> <a id="41495" href="Data.Vec.Properties.html#41453" class="Bound">ys</a><a id="41497" class="Symbol">)</a> <a id="41499" href="Data.Vec.Base.html#2457" class="Function Operator">[</a> <a id="41501" href="Data.Vec.Properties.html#41467" class="Bound">i</a> <a id="41503" href="Data.Fin.Base.html#2510" class="Function Operator">↑ˡ</a> <a id="41506" href="Data.Vec.Properties.html#41432" class="Bound">n</a> <a id="41508" href="Data.Vec.Base.html#2457" class="Function Operator">]≔</a> <a id="41511" href="Data.Vec.Properties.html#41434" class="Bound">x</a> <a id="41513" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="41515" class="Symbol">(</a><a id="41516" href="Data.Vec.Properties.html#41438" class="Bound">xs</a> <a id="41519" href="Data.Vec.Base.html#2457" class="Function Operator">[</a> <a id="41521" href="Data.Vec.Properties.html#41467" class="Bound">i</a> <a id="41523" href="Data.Vec.Base.html#2457" class="Function Operator">]≔</a> <a id="41526" href="Data.Vec.Properties.html#41434" class="Bound">x</a><a id="41527" class="Symbol">)</a> <a id="41529" href="Data.Vec.Base.html#2764" class="Function Operator">++</a> <a id="41532" href="Data.Vec.Properties.html#41453" class="Bound">ys</a>
+<a id="41535" href="Data.Vec.Properties.html#41410" class="Function">[]≔-++-inject+</a> <a id="41550" class="Symbol">=</a> <a id="41552" href="Data.Vec.Properties.html#14874" class="Function">[]≔-++-↑ˡ</a>
+<a id="41562" class="Symbol">{-#</a> <a id="41566" class="Keyword">WARNING_ON_USAGE</a> <a id="41583" class="Pragma">[]≔-++-inject+</a>
+<a id="41598" class="String">&quot;Warning: []≔-++-inject+ was deprecated in v2.0.
 Please use []≔-++-↑ˡ instead.&quot;</a>
-<a id="41996" class="Symbol">#-}</a>
-<a id="idIsFold"></a><a id="42000" href="Data.Vec.Properties.html#42000" class="Function">idIsFold</a> <a id="42009" class="Symbol">=</a> <a id="42011" href="Data.Vec.Properties.html#30245" class="Function">id-is-foldr</a>
-<a id="42023" class="Symbol">{-#</a> <a id="42027" class="Keyword">WARNING_ON_USAGE</a> <a id="42044" class="Pragma">idIsFold</a>
-<a id="42053" class="String">&quot;Warning: idIsFold was deprecated in v2.0.
+<a id="41678" class="Symbol">#-}</a>
+<a id="idIsFold"></a><a id="41682" href="Data.Vec.Properties.html#41682" class="Function">idIsFold</a> <a id="41691" class="Symbol">=</a> <a id="41693" href="Data.Vec.Properties.html#30245" class="Function">id-is-foldr</a>
+<a id="41705" class="Symbol">{-#</a> <a id="41709" class="Keyword">WARNING_ON_USAGE</a> <a id="41726" class="Pragma">idIsFold</a>
+<a id="41735" class="String">&quot;Warning: idIsFold was deprecated in v2.0.
 Please use id-is-foldr instead.&quot;</a>
-<a id="42129" class="Symbol">#-}</a>
-<a id="sum-++-commute"></a><a id="42133" href="Data.Vec.Properties.html#42133" class="Function">sum-++-commute</a> <a id="42148" class="Symbol">=</a> <a id="42150" href="Data.Vec.Properties.html#35312" class="Function">sum-++</a>
-<a id="42157" class="Symbol">{-#</a> <a id="42161" class="Keyword">WARNING_ON_USAGE</a> <a id="42178" class="Pragma">sum-++-commute</a>
-<a id="42193" class="String">&quot;Warning: sum-++-commute was deprecated in v2.0.
+<a id="41811" class="Symbol">#-}</a>
+<a id="sum-++-commute"></a><a id="41815" href="Data.Vec.Properties.html#41815" class="Function">sum-++-commute</a> <a id="41830" class="Symbol">=</a> <a id="41832" href="Data.Vec.Properties.html#35312" class="Function">sum-++</a>
+<a id="41839" class="Symbol">{-#</a> <a id="41843" class="Keyword">WARNING_ON_USAGE</a> <a id="41860" class="Pragma">sum-++-commute</a>
+<a id="41875" class="String">&quot;Warning: sum-++-commute was deprecated in v2.0.
 Please use sum-++ instead.&quot;</a>
-<a id="42270" class="Symbol">#-}</a>
+<a id="41952" class="Symbol">#-}</a>
 </pre></body></html>

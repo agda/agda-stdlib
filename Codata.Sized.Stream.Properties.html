@@ -118,36 +118,4 @@
   <a id="4818" href="Data.Nat.GeneralisedArithmetic.html#564" class="Function">fold</a> <a id="4823" class="Symbol">(</a><a id="4824" href="Codata.Sized.Stream.Properties.html#4699" class="Bound">f</a> <a id="4826" href="Codata.Sized.Stream.Properties.html#4701" class="Bound">a</a><a id="4827" class="Symbol">)</a> <a id="4829" href="Codata.Sized.Stream.Properties.html#4699" class="Bound">f</a> <a id="4831" href="Codata.Sized.Stream.Properties.html#4695" class="Bound">n</a>               <a id="4847" href="Relation.Binary.PropositionalEquality.Core.html#2923" class="Function">≡⟨</a> <a id="4850" href="Data.Nat.GeneralisedArithmetic.html#1639" class="Function">fold-pull</a> <a id="4860" href="Codata.Sized.Stream.Properties.html#4701" class="Bound">a</a> <a id="4862" href="Codata.Sized.Stream.Properties.html#4699" class="Bound">f</a> <a id="4864" class="Symbol">(</a><a id="4865" href="Function.Base.html#716" class="Function">const</a> <a id="4871" href="Function.Base.html#3637" class="Function Operator">∘′</a> <a id="4874" href="Codata.Sized.Stream.Properties.html#4699" class="Bound">f</a><a id="4875" class="Symbol">)</a> <a id="4877" class="Symbol">(</a><a id="4878" href="Codata.Sized.Stream.Properties.html#4699" class="Bound">f</a> <a id="4880" href="Codata.Sized.Stream.Properties.html#4701" class="Bound">a</a><a id="4881" class="Symbol">)</a> <a id="4883" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">P.refl</a> <a id="4890" class="Symbol">(λ</a> <a id="4893" href="Codata.Sized.Stream.Properties.html#4893" class="Bound">_</a> <a id="4895" class="Symbol">→</a> <a id="4897" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">P.refl</a><a id="4903" class="Symbol">)</a> <a id="4905" href="Codata.Sized.Stream.Properties.html#4695" class="Bound">n</a> <a id="4907" href="Relation.Binary.PropositionalEquality.Core.html#2923" class="Function">⟩</a>
   <a id="4911" href="Codata.Sized.Stream.Properties.html#4699" class="Bound">f</a> <a id="4913" class="Symbol">(</a><a id="4914" href="Data.Nat.GeneralisedArithmetic.html#564" class="Function">fold</a> <a id="4919" href="Codata.Sized.Stream.Properties.html#4701" class="Bound">a</a> <a id="4921" href="Codata.Sized.Stream.Properties.html#4699" class="Bound">f</a> <a id="4923" href="Codata.Sized.Stream.Properties.html#4695" class="Bound">n</a><a id="4924" class="Symbol">)</a>               <a id="4940" href="Relation.Binary.PropositionalEquality.Core.html#2864" class="Function Operator">≡⟨⟩</a>
   <a id="4946" href="Data.Nat.GeneralisedArithmetic.html#564" class="Function">fold</a> <a id="4951" href="Codata.Sized.Stream.Properties.html#4701" class="Bound">a</a> <a id="4953" href="Codata.Sized.Stream.Properties.html#4699" class="Bound">f</a> <a id="4955" class="Symbol">(</a><a id="4956" href="Agda.Builtin.Nat.html#223" class="InductiveConstructor">suc</a> <a id="4960" href="Codata.Sized.Stream.Properties.html#4695" class="Bound">n</a><a id="4961" class="Symbol">)</a>             <a id="4975" href="Relation.Binary.PropositionalEquality.Core.html#3105" class="Function Operator">∎</a> <a id="4977" class="Keyword">where</a> <a id="4983" class="Keyword">open</a> <a id="4988" href="Relation.Binary.PropositionalEquality.Core.html#2708" class="Module">P.≡-Reasoning</a>
-
-<a id="5003" class="Comment">------------------------------------------------------------------------</a>
-<a id="5076" class="Comment">-- DEPRECATED NAMES</a>
-<a id="5096" class="Comment">------------------------------------------------------------------------</a>
-<a id="5169" class="Comment">-- Please use the new names as continuing support for the old names is</a>
-<a id="5240" class="Comment">-- not guaranteed.</a>
-
-<a id="5260" class="Comment">-- Version 1.1</a>
-
-<a id="repeat-ap-identity"></a><a id="5276" href="Codata.Sized.Stream.Properties.html#5276" class="Function">repeat-ap-identity</a> <a id="5295" class="Symbol">=</a> <a id="5297" href="Codata.Sized.Stream.Properties.html#2763" class="Function">ap-repeatˡ</a>
-<a id="5308" class="Symbol">{-#</a> <a id="5312" class="Keyword">WARNING_ON_USAGE</a> <a id="5329" class="Pragma">repeat-ap-identity</a>
-<a id="5348" class="String">&quot;Warning: repeat-ap-identity was deprecated in v1.1.
-Please use ap-repeatˡ instead.&quot;</a>
-<a id="5433" class="Symbol">#-}</a>
-
-<a id="ap-repeat-identity"></a><a id="5438" href="Codata.Sized.Stream.Properties.html#5438" class="Function">ap-repeat-identity</a> <a id="5457" class="Symbol">=</a> <a id="5459" href="Codata.Sized.Stream.Properties.html#2911" class="Function">ap-repeatʳ</a>
-<a id="5470" class="Symbol">{-#</a> <a id="5474" class="Keyword">WARNING_ON_USAGE</a> <a id="5491" class="Pragma">ap-repeat-identity</a>
-<a id="5510" class="String">&quot;Warning: ap-repeat-identity was deprecated in v1.1.
-Please use ap-repeatʳ instead.&quot;</a>
-<a id="5595" class="Symbol">#-}</a>
-
-<a id="ap-repeat-commute"></a><a id="5600" href="Codata.Sized.Stream.Properties.html#5600" class="Function">ap-repeat-commute</a> <a id="5618" class="Symbol">=</a> <a id="5620" href="Codata.Sized.Stream.Properties.html#2624" class="Function">ap-repeat</a>
-<a id="5630" class="Symbol">{-#</a> <a id="5634" class="Keyword">WARNING_ON_USAGE</a> <a id="5651" class="Pragma">ap-repeat-commute</a>
-<a id="5669" class="String">&quot;Warning: ap-repeat-commute was deprecated in v1.1.
-Please use ap-repeat instead.&quot;</a>
-<a id="5752" class="Symbol">#-}</a>
-
-<a id="map-repeat-commute"></a><a id="5757" href="Codata.Sized.Stream.Properties.html#5757" class="Function">map-repeat-commute</a> <a id="5776" class="Symbol">=</a> <a id="5778" href="Codata.Sized.Stream.Properties.html#2490" class="Function">map-repeat</a>
-<a id="5789" class="Symbol">{-#</a> <a id="5793" class="Keyword">WARNING_ON_USAGE</a> <a id="5810" class="Pragma">map-repeat-commute</a>
-<a id="5829" class="String">&quot;Warning: map-repeat-commute was deprecated in v1.1.
-Please use map-repeat instead.&quot;</a>
-<a id="5914" class="Symbol">#-}</a>
 </pre></body></html>

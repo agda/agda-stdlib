@@ -1017,114 +1017,48 @@
 <a id="39405" class="Comment">-- Please use the new names as continuing support for the old names is</a>
 <a id="39476" class="Comment">-- not guaranteed.</a>
 
-<a id="39496" class="Comment">-- Version 1.0</a>
+<a id="39496" class="Comment">-- Version 1.5</a>
 
-<a id="≤-irrelevance"></a><a id="39512" href="Data.Fin.Properties.html#39512" class="Function">≤-irrelevance</a> <a id="39526" class="Symbol">=</a> <a id="39528" href="Data.Fin.Properties.html#9806" class="Function">≤-irrelevant</a>
-<a id="39541" class="Symbol">{-#</a> <a id="39545" class="Keyword">WARNING_ON_USAGE</a> <a id="39562" class="Pragma">≤-irrelevance</a>
-<a id="39576" class="String">&quot;Warning: ≤-irrelevance was deprecated in v1.0.
-Please use ≤-irrelevant instead.&quot;</a>
-<a id="39658" class="Symbol">#-}</a>
-<a id="&lt;-irrelevance"></a><a id="39662" href="Data.Fin.Properties.html#39662" class="Function">&lt;-irrelevance</a> <a id="39676" class="Symbol">=</a> <a id="39678" href="Data.Fin.Properties.html#12384" class="Function">&lt;-irrelevant</a>
-<a id="39691" class="Symbol">{-#</a> <a id="39695" class="Keyword">WARNING_ON_USAGE</a> <a id="39712" class="Pragma">&lt;-irrelevance</a>
-<a id="39726" class="String">&quot;Warning: &lt;-irrelevance was deprecated in v1.0.
-Please use &lt;-irrelevant instead.&quot;</a>
-<a id="39808" class="Symbol">#-}</a>
-
-<a id="39813" class="Comment">-- Version 1.1</a>
-
-<a id="39829" class="Keyword">infixl</a> <a id="39836" class="Number">6</a> <a id="39838" href="Data.Fin.Properties.html#39843" class="Function Operator">_+′_</a>
-<a id="_+′_"></a><a id="39843" href="Data.Fin.Properties.html#39843" class="Function Operator">_+′_</a> <a id="39848" class="Symbol">:</a> <a id="39850" class="Symbol">∀</a> <a id="39852" class="Symbol">{</a><a id="39853" href="Data.Fin.Properties.html#39853" class="Bound">m</a> <a id="39855" href="Data.Fin.Properties.html#39855" class="Bound">n</a><a id="39856" class="Symbol">}</a> <a id="39858" class="Symbol">(</a><a id="39859" href="Data.Fin.Properties.html#39859" class="Bound">i</a> <a id="39861" class="Symbol">:</a> <a id="39863" href="Data.Fin.Base.html#1214" class="Datatype">Fin</a> <a id="39867" href="Data.Fin.Properties.html#39853" class="Bound">m</a><a id="39868" class="Symbol">)</a> <a id="39870" class="Symbol">(</a><a id="39871" href="Data.Fin.Properties.html#39871" class="Bound">j</a> <a id="39873" class="Symbol">:</a> <a id="39875" href="Data.Fin.Base.html#1214" class="Datatype">Fin</a> <a id="39879" href="Data.Fin.Properties.html#39855" class="Bound">n</a><a id="39880" class="Symbol">)</a> <a id="39882" class="Symbol">→</a> <a id="39884" href="Data.Fin.Base.html#1214" class="Datatype">Fin</a> <a id="39888" class="Symbol">(</a><a id="39889" href="Data.Nat.Base.html#2995" class="Function">ℕ.pred</a> <a id="39896" href="Data.Fin.Properties.html#39853" class="Bound">m</a> <a id="39898" href="Agda.Builtin.Nat.html#325" class="Primitive Operator">ℕ.+</a> <a id="39902" href="Data.Fin.Properties.html#39855" class="Bound">n</a><a id="39903" class="Symbol">)</a>
-<a id="39905" href="Data.Fin.Properties.html#39905" class="Bound">i</a> <a id="39907" href="Data.Fin.Properties.html#39843" class="Function Operator">+′</a> <a id="39910" href="Data.Fin.Properties.html#39910" class="Bound">j</a> <a id="39912" class="Symbol">=</a> <a id="39914" href="Data.Fin.Base.html#3349" class="Function">inject≤</a> <a id="39922" class="Symbol">(</a><a id="39923" href="Data.Fin.Properties.html#39905" class="Bound">i</a> <a id="39925" href="Data.Fin.Base.html#6178" class="Function Operator">+</a> <a id="39927" href="Data.Fin.Properties.html#39910" class="Bound">j</a><a id="39928" class="Symbol">)</a> <a id="39930" class="Symbol">(</a><a id="39931" href="Data.Nat.Properties.html#18495" class="Function">ℕₚ.+-monoˡ-≤</a> <a id="39944" class="Symbol">_</a> <a id="39946" class="Symbol">(</a><a id="39947" href="Data.Fin.Properties.html#5162" class="Function">toℕ≤pred[n]</a> <a id="39959" href="Data.Fin.Properties.html#39905" class="Bound">i</a><a id="39960" class="Symbol">))</a>
-<a id="39963" class="Symbol">{-#</a> <a id="39967" class="Keyword">WARNING_ON_USAGE</a> <a id="39984" class="Pragma">_+′_</a>
-<a id="39989" class="String">&quot;Warning: _+′_ was deprecated in v1.1.
-Please use `raise` or `inject+` from `Data.Fin` instead.&quot;</a>
-<a id="40086" class="Symbol">#-}</a>
-
-<a id="40091" class="Comment">-- Version 1.2</a>
-
-<a id="fromℕ≤-toℕ"></a><a id="40107" href="Data.Fin.Properties.html#40107" class="Function">fromℕ≤-toℕ</a> <a id="40118" class="Symbol">=</a> <a id="40120" href="Data.Fin.Properties.html#7004" class="Function">fromℕ&lt;-toℕ</a>
-<a id="40131" class="Symbol">{-#</a> <a id="40135" class="Keyword">WARNING_ON_USAGE</a> <a id="40152" class="Pragma">fromℕ≤-toℕ</a>
-<a id="40163" class="String">&quot;Warning: fromℕ≤-toℕ was deprecated in v1.2.
-Please use fromℕ&lt;-toℕ instead.&quot;</a>
-<a id="40240" class="Symbol">#-}</a>
-<a id="toℕ-fromℕ≤"></a><a id="40244" href="Data.Fin.Properties.html#40244" class="Function">toℕ-fromℕ≤</a> <a id="40255" class="Symbol">=</a> <a id="40257" href="Data.Fin.Properties.html#7186" class="Function">toℕ-fromℕ&lt;</a>
-<a id="40268" class="Symbol">{-#</a> <a id="40272" class="Keyword">WARNING_ON_USAGE</a> <a id="40289" class="Pragma">toℕ-fromℕ≤</a>
-<a id="40300" class="String">&quot;Warning: toℕ-fromℕ≤ was deprecated in v1.2.
-Please use toℕ-fromℕ&lt; instead.&quot;</a>
-<a id="40377" class="Symbol">#-}</a>
-<a id="fromℕ≤≡fromℕ≤″"></a><a id="40381" href="Data.Fin.Properties.html#40381" class="Function">fromℕ≤≡fromℕ≤″</a> <a id="40396" class="Symbol">=</a> <a id="40398" href="Data.Fin.Properties.html#8339" class="Function">fromℕ&lt;≡fromℕ&lt;″</a>
-<a id="40413" class="Symbol">{-#</a> <a id="40417" class="Keyword">WARNING_ON_USAGE</a> <a id="40434" class="Pragma">fromℕ≤≡fromℕ≤″</a>
-<a id="40449" class="String">&quot;Warning: fromℕ≤≡fromℕ≤″ was deprecated in v1.2.
-Please use fromℕ&lt;≡fromℕ&lt;″ instead.&quot;</a>
-<a id="40534" class="Symbol">#-}</a>
-<a id="toℕ-fromℕ≤″"></a><a id="40538" href="Data.Fin.Properties.html#40538" class="Function">toℕ-fromℕ≤″</a> <a id="40550" class="Symbol">=</a> <a id="40552" href="Data.Fin.Properties.html#8639" class="Function">toℕ-fromℕ&lt;″</a>
-<a id="40564" class="Symbol">{-#</a> <a id="40568" class="Keyword">WARNING_ON_USAGE</a> <a id="40585" class="Pragma">toℕ-fromℕ≤″</a>
-<a id="40597" class="String">&quot;Warning: toℕ-fromℕ≤″ was deprecated in v1.2.
-Please use toℕ-fromℕ&lt;″ instead.&quot;</a>
-<a id="40676" class="Symbol">#-}</a>
-<a id="isDecEquivalence"></a><a id="40680" href="Data.Fin.Properties.html#40680" class="Function">isDecEquivalence</a> <a id="40697" class="Symbol">=</a> <a id="40699" href="Data.Fin.Properties.html#3015" class="Function">≡-isDecEquivalence</a>
-<a id="40718" class="Symbol">{-#</a> <a id="40722" class="Keyword">WARNING_ON_USAGE</a> <a id="40739" class="Pragma">isDecEquivalence</a>
-<a id="40756" class="String">&quot;Warning: isDecEquivalence was deprecated in v1.2.
-Please use ≡-isDecEquivalence instead.&quot;</a>
-<a id="40847" class="Symbol">#-}</a>
-<a id="preorder"></a><a id="40851" href="Data.Fin.Properties.html#40851" class="Function">preorder</a> <a id="40860" class="Symbol">=</a> <a id="40862" href="Data.Fin.Properties.html#3257" class="Function">≡-preorder</a>
-<a id="40873" class="Symbol">{-#</a> <a id="40877" class="Keyword">WARNING_ON_USAGE</a> <a id="40894" class="Pragma">preorder</a>
-<a id="40903" class="String">&quot;Warning: preorder was deprecated in v1.2.
-Please use ≡-preorder instead.&quot;</a>
-<a id="40978" class="Symbol">#-}</a>
-<a id="setoid"></a><a id="40982" href="Data.Fin.Properties.html#40982" class="Function">setoid</a> <a id="40989" class="Symbol">=</a> <a id="40991" href="Data.Fin.Properties.html#3324" class="Function">≡-setoid</a>
-<a id="41000" class="Symbol">{-#</a> <a id="41004" class="Keyword">WARNING_ON_USAGE</a> <a id="41021" class="Pragma">setoid</a>
-<a id="41028" class="String">&quot;Warning: setoid was deprecated in v1.2.
-Please use ≡-setoid instead.&quot;</a>
-<a id="41099" class="Symbol">#-}</a>
-<a id="decSetoid"></a><a id="41103" href="Data.Fin.Properties.html#41103" class="Function">decSetoid</a> <a id="41113" class="Symbol">=</a> <a id="41115" href="Data.Fin.Properties.html#3381" class="Function">≡-decSetoid</a>
-<a id="41127" class="Symbol">{-#</a> <a id="41131" class="Keyword">WARNING_ON_USAGE</a> <a id="41148" class="Pragma">decSetoid</a>
-<a id="41158" class="String">&quot;Warning: decSetoid was deprecated in v1.2.
-Please use ≡-decSetoid instead.&quot;</a>
-<a id="41235" class="Symbol">#-}</a>
-
-<a id="41240" class="Comment">-- Version 1.5</a>
-
-<a id="inject+-raise-splitAt"></a><a id="41256" href="Data.Fin.Properties.html#41256" class="Function">inject+-raise-splitAt</a> <a id="41278" class="Symbol">=</a> <a id="41280" href="Data.Fin.Properties.html#19552" class="Function">join-splitAt</a>
-<a id="41293" class="Symbol">{-#</a> <a id="41297" class="Keyword">WARNING_ON_USAGE</a> <a id="41314" class="Pragma">inject+-raise-splitAt</a>
-<a id="41336" class="String">&quot;Warning: inject+-raise-splitAt was deprecated in v1.5.
+<a id="inject+-raise-splitAt"></a><a id="39512" href="Data.Fin.Properties.html#39512" class="Function">inject+-raise-splitAt</a> <a id="39534" class="Symbol">=</a> <a id="39536" href="Data.Fin.Properties.html#19552" class="Function">join-splitAt</a>
+<a id="39549" class="Symbol">{-#</a> <a id="39553" class="Keyword">WARNING_ON_USAGE</a> <a id="39570" class="Pragma">inject+-raise-splitAt</a>
+<a id="39592" class="String">&quot;Warning: inject+-raise-splitAt was deprecated in v1.5.
 Please use join-splitAt instead.&quot;</a>
-<a id="41426" class="Symbol">#-}</a>
+<a id="39682" class="Symbol">#-}</a>
 
-<a id="41431" class="Comment">-- Version 2.0</a>
+<a id="39687" class="Comment">-- Version 2.0</a>
 
-<a id="toℕ-raise"></a><a id="41447" href="Data.Fin.Properties.html#41447" class="Function">toℕ-raise</a> <a id="41457" class="Symbol">=</a> <a id="41459" href="Data.Fin.Properties.html#4711" class="Function">toℕ-↑ʳ</a>
-<a id="41466" class="Symbol">{-#</a> <a id="41470" class="Keyword">WARNING_ON_USAGE</a> <a id="41487" class="Pragma">toℕ-raise</a>
-<a id="41497" class="String">&quot;Warning: toℕ-raise was deprecated in v2.0.
+<a id="toℕ-raise"></a><a id="39703" href="Data.Fin.Properties.html#39703" class="Function">toℕ-raise</a> <a id="39713" class="Symbol">=</a> <a id="39715" href="Data.Fin.Properties.html#4711" class="Function">toℕ-↑ʳ</a>
+<a id="39722" class="Symbol">{-#</a> <a id="39726" class="Keyword">WARNING_ON_USAGE</a> <a id="39743" class="Pragma">toℕ-raise</a>
+<a id="39753" class="String">&quot;Warning: toℕ-raise was deprecated in v2.0.
 Please use toℕ-↑ʳ instead.&quot;</a>
-<a id="41569" class="Symbol">#-}</a>
-<a id="toℕ-inject+"></a><a id="41573" href="Data.Fin.Properties.html#41573" class="Function">toℕ-inject+</a> <a id="41585" class="Symbol">:</a> <a id="41587" class="Symbol">∀</a> <a id="41589" class="Symbol">{</a><a id="41590" href="Data.Fin.Properties.html#41590" class="Bound">m</a><a id="41591" class="Symbol">}</a> <a id="41593" href="Data.Fin.Properties.html#41593" class="Bound">n</a> <a id="41595" class="Symbol">(</a><a id="41596" href="Data.Fin.Properties.html#41596" class="Bound">i</a> <a id="41598" class="Symbol">:</a> <a id="41600" href="Data.Fin.Base.html#1214" class="Datatype">Fin</a> <a id="41604" href="Data.Fin.Properties.html#41590" class="Bound">m</a><a id="41605" class="Symbol">)</a> <a id="41607" class="Symbol">→</a> <a id="41609" href="Data.Fin.Base.html#1340" class="Function">toℕ</a> <a id="41613" href="Data.Fin.Properties.html#41596" class="Bound">i</a> <a id="41615" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="41617" href="Data.Fin.Base.html#1340" class="Function">toℕ</a> <a id="41621" class="Symbol">(</a><a id="41622" href="Data.Fin.Properties.html#41596" class="Bound">i</a> <a id="41624" href="Data.Fin.Base.html#2510" class="Function Operator">↑ˡ</a> <a id="41627" href="Data.Fin.Properties.html#41593" class="Bound">n</a><a id="41628" class="Symbol">)</a>
-<a id="41630" href="Data.Fin.Properties.html#41573" class="Function">toℕ-inject+</a> <a id="41642" href="Data.Fin.Properties.html#41642" class="Bound">n</a> <a id="41644" href="Data.Fin.Properties.html#41644" class="Bound">i</a> <a id="41646" class="Symbol">=</a> <a id="41648" href="Relation.Binary.PropositionalEquality.Core.html#1684" class="Function">sym</a> <a id="41652" class="Symbol">(</a><a id="41653" href="Data.Fin.Properties.html#4213" class="Function">toℕ-↑ˡ</a> <a id="41660" href="Data.Fin.Properties.html#41644" class="Bound">i</a> <a id="41662" href="Data.Fin.Properties.html#41642" class="Bound">n</a><a id="41663" class="Symbol">)</a>
-<a id="41665" class="Symbol">{-#</a> <a id="41669" class="Keyword">WARNING_ON_USAGE</a> <a id="41686" class="Pragma">toℕ-inject+</a>
-<a id="41698" class="String">&quot;Warning: toℕ-inject+ was deprecated in v2.0.
+<a id="39825" class="Symbol">#-}</a>
+<a id="toℕ-inject+"></a><a id="39829" href="Data.Fin.Properties.html#39829" class="Function">toℕ-inject+</a> <a id="39841" class="Symbol">:</a> <a id="39843" class="Symbol">∀</a> <a id="39845" class="Symbol">{</a><a id="39846" href="Data.Fin.Properties.html#39846" class="Bound">m</a><a id="39847" class="Symbol">}</a> <a id="39849" href="Data.Fin.Properties.html#39849" class="Bound">n</a> <a id="39851" class="Symbol">(</a><a id="39852" href="Data.Fin.Properties.html#39852" class="Bound">i</a> <a id="39854" class="Symbol">:</a> <a id="39856" href="Data.Fin.Base.html#1214" class="Datatype">Fin</a> <a id="39860" href="Data.Fin.Properties.html#39846" class="Bound">m</a><a id="39861" class="Symbol">)</a> <a id="39863" class="Symbol">→</a> <a id="39865" href="Data.Fin.Base.html#1340" class="Function">toℕ</a> <a id="39869" href="Data.Fin.Properties.html#39852" class="Bound">i</a> <a id="39871" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="39873" href="Data.Fin.Base.html#1340" class="Function">toℕ</a> <a id="39877" class="Symbol">(</a><a id="39878" href="Data.Fin.Properties.html#39852" class="Bound">i</a> <a id="39880" href="Data.Fin.Base.html#2510" class="Function Operator">↑ˡ</a> <a id="39883" href="Data.Fin.Properties.html#39849" class="Bound">n</a><a id="39884" class="Symbol">)</a>
+<a id="39886" href="Data.Fin.Properties.html#39829" class="Function">toℕ-inject+</a> <a id="39898" href="Data.Fin.Properties.html#39898" class="Bound">n</a> <a id="39900" href="Data.Fin.Properties.html#39900" class="Bound">i</a> <a id="39902" class="Symbol">=</a> <a id="39904" href="Relation.Binary.PropositionalEquality.Core.html#1684" class="Function">sym</a> <a id="39908" class="Symbol">(</a><a id="39909" href="Data.Fin.Properties.html#4213" class="Function">toℕ-↑ˡ</a> <a id="39916" href="Data.Fin.Properties.html#39900" class="Bound">i</a> <a id="39918" href="Data.Fin.Properties.html#39898" class="Bound">n</a><a id="39919" class="Symbol">)</a>
+<a id="39921" class="Symbol">{-#</a> <a id="39925" class="Keyword">WARNING_ON_USAGE</a> <a id="39942" class="Pragma">toℕ-inject+</a>
+<a id="39954" class="String">&quot;Warning: toℕ-inject+ was deprecated in v2.0.
 Please use toℕ-↑ˡ instead.
 NB argument order has been flipped:
 the left-hand argument is the Fin m
 the right-hand is the Nat index increment.&quot;</a>
-<a id="41887" class="Symbol">#-}</a>
-<a id="splitAt-inject+"></a><a id="41891" href="Data.Fin.Properties.html#41891" class="Function">splitAt-inject+</a> <a id="41907" class="Symbol">:</a> <a id="41909" class="Symbol">∀</a> <a id="41911" href="Data.Fin.Properties.html#41911" class="Bound">m</a> <a id="41913" href="Data.Fin.Properties.html#41913" class="Bound">n</a> <a id="41915" href="Data.Fin.Properties.html#41915" class="Bound">i</a> <a id="41917" class="Symbol">→</a> <a id="41919" href="Data.Fin.Base.html#4007" class="Function">splitAt</a> <a id="41927" href="Data.Fin.Properties.html#41911" class="Bound">m</a> <a id="41929" class="Symbol">(</a><a id="41930" href="Data.Fin.Properties.html#41915" class="Bound">i</a> <a id="41932" href="Data.Fin.Base.html#2510" class="Function Operator">↑ˡ</a> <a id="41935" href="Data.Fin.Properties.html#41913" class="Bound">n</a><a id="41936" class="Symbol">)</a> <a id="41938" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="41940" href="Data.Sum.Base.html#784" class="InductiveConstructor">inj₁</a> <a id="41945" href="Data.Fin.Properties.html#41915" class="Bound">i</a>
-<a id="41947" href="Data.Fin.Properties.html#41891" class="Function">splitAt-inject+</a> <a id="41963" href="Data.Fin.Properties.html#41963" class="Bound">m</a> <a id="41965" href="Data.Fin.Properties.html#41965" class="Bound">n</a> <a id="41967" href="Data.Fin.Properties.html#41967" class="Bound">i</a> <a id="41969" class="Symbol">=</a> <a id="41971" href="Data.Fin.Properties.html#19111" class="Function">splitAt-↑ˡ</a> <a id="41982" href="Data.Fin.Properties.html#41963" class="Bound">m</a> <a id="41984" href="Data.Fin.Properties.html#41967" class="Bound">i</a> <a id="41986" href="Data.Fin.Properties.html#41965" class="Bound">n</a>
-<a id="41988" class="Symbol">{-#</a> <a id="41992" class="Keyword">WARNING_ON_USAGE</a> <a id="42009" class="Pragma">splitAt-inject+</a>
-<a id="42025" class="String">&quot;Warning: splitAt-inject+ was deprecated in v2.0.
+<a id="40143" class="Symbol">#-}</a>
+<a id="splitAt-inject+"></a><a id="40147" href="Data.Fin.Properties.html#40147" class="Function">splitAt-inject+</a> <a id="40163" class="Symbol">:</a> <a id="40165" class="Symbol">∀</a> <a id="40167" href="Data.Fin.Properties.html#40167" class="Bound">m</a> <a id="40169" href="Data.Fin.Properties.html#40169" class="Bound">n</a> <a id="40171" href="Data.Fin.Properties.html#40171" class="Bound">i</a> <a id="40173" class="Symbol">→</a> <a id="40175" href="Data.Fin.Base.html#4007" class="Function">splitAt</a> <a id="40183" href="Data.Fin.Properties.html#40167" class="Bound">m</a> <a id="40185" class="Symbol">(</a><a id="40186" href="Data.Fin.Properties.html#40171" class="Bound">i</a> <a id="40188" href="Data.Fin.Base.html#2510" class="Function Operator">↑ˡ</a> <a id="40191" href="Data.Fin.Properties.html#40169" class="Bound">n</a><a id="40192" class="Symbol">)</a> <a id="40194" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="40196" href="Data.Sum.Base.html#784" class="InductiveConstructor">inj₁</a> <a id="40201" href="Data.Fin.Properties.html#40171" class="Bound">i</a>
+<a id="40203" href="Data.Fin.Properties.html#40147" class="Function">splitAt-inject+</a> <a id="40219" href="Data.Fin.Properties.html#40219" class="Bound">m</a> <a id="40221" href="Data.Fin.Properties.html#40221" class="Bound">n</a> <a id="40223" href="Data.Fin.Properties.html#40223" class="Bound">i</a> <a id="40225" class="Symbol">=</a> <a id="40227" href="Data.Fin.Properties.html#19111" class="Function">splitAt-↑ˡ</a> <a id="40238" href="Data.Fin.Properties.html#40219" class="Bound">m</a> <a id="40240" href="Data.Fin.Properties.html#40223" class="Bound">i</a> <a id="40242" href="Data.Fin.Properties.html#40221" class="Bound">n</a>
+<a id="40244" class="Symbol">{-#</a> <a id="40248" class="Keyword">WARNING_ON_USAGE</a> <a id="40265" class="Pragma">splitAt-inject+</a>
+<a id="40281" class="String">&quot;Warning: splitAt-inject+ was deprecated in v2.0.
 Please use splitAt-↑ˡ instead.
 NB argument order has been flipped.&quot;</a>
-<a id="42143" class="Symbol">#-}</a>
-<a id="splitAt-raise"></a><a id="42147" href="Data.Fin.Properties.html#42147" class="Function">splitAt-raise</a> <a id="42161" class="Symbol">:</a> <a id="42163" class="Symbol">∀</a> <a id="42165" href="Data.Fin.Properties.html#42165" class="Bound">m</a> <a id="42167" href="Data.Fin.Properties.html#42167" class="Bound">n</a> <a id="42169" href="Data.Fin.Properties.html#42169" class="Bound">i</a> <a id="42171" class="Symbol">→</a> <a id="42173" href="Data.Fin.Base.html#4007" class="Function">splitAt</a> <a id="42181" href="Data.Fin.Properties.html#42165" class="Bound">m</a> <a id="42183" class="Symbol">(</a><a id="42184" href="Data.Fin.Properties.html#42165" class="Bound">m</a> <a id="42186" href="Data.Fin.Base.html#2677" class="Function Operator">↑ʳ</a> <a id="42189" href="Data.Fin.Properties.html#42169" class="Bound">i</a><a id="42190" class="Symbol">)</a> <a id="42192" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="42194" href="Data.Sum.Base.html#809" class="InductiveConstructor">inj₂</a> <a id="42199" class="Symbol">{</a><a id="42200" class="Argument">B</a> <a id="42202" class="Symbol">=</a> <a id="42204" href="Data.Fin.Base.html#1214" class="Datatype">Fin</a> <a id="42208" href="Data.Fin.Properties.html#42167" class="Bound">n</a><a id="42209" class="Symbol">}</a> <a id="42211" href="Data.Fin.Properties.html#42169" class="Bound">i</a>
-<a id="42213" href="Data.Fin.Properties.html#42147" class="Function">splitAt-raise</a> <a id="42227" class="Symbol">=</a> <a id="42229" href="Data.Fin.Properties.html#19260" class="Function">splitAt-↑ʳ</a>
-<a id="42240" class="Symbol">{-#</a> <a id="42244" class="Keyword">WARNING_ON_USAGE</a> <a id="42261" class="Pragma">splitAt-raise</a>
-<a id="42275" class="String">&quot;Warning: splitAt-raise was deprecated in v2.0.
+<a id="40399" class="Symbol">#-}</a>
+<a id="splitAt-raise"></a><a id="40403" href="Data.Fin.Properties.html#40403" class="Function">splitAt-raise</a> <a id="40417" class="Symbol">:</a> <a id="40419" class="Symbol">∀</a> <a id="40421" href="Data.Fin.Properties.html#40421" class="Bound">m</a> <a id="40423" href="Data.Fin.Properties.html#40423" class="Bound">n</a> <a id="40425" href="Data.Fin.Properties.html#40425" class="Bound">i</a> <a id="40427" class="Symbol">→</a> <a id="40429" href="Data.Fin.Base.html#4007" class="Function">splitAt</a> <a id="40437" href="Data.Fin.Properties.html#40421" class="Bound">m</a> <a id="40439" class="Symbol">(</a><a id="40440" href="Data.Fin.Properties.html#40421" class="Bound">m</a> <a id="40442" href="Data.Fin.Base.html#2677" class="Function Operator">↑ʳ</a> <a id="40445" href="Data.Fin.Properties.html#40425" class="Bound">i</a><a id="40446" class="Symbol">)</a> <a id="40448" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="40450" href="Data.Sum.Base.html#809" class="InductiveConstructor">inj₂</a> <a id="40455" class="Symbol">{</a><a id="40456" class="Argument">B</a> <a id="40458" class="Symbol">=</a> <a id="40460" href="Data.Fin.Base.html#1214" class="Datatype">Fin</a> <a id="40464" href="Data.Fin.Properties.html#40423" class="Bound">n</a><a id="40465" class="Symbol">}</a> <a id="40467" href="Data.Fin.Properties.html#40425" class="Bound">i</a>
+<a id="40469" href="Data.Fin.Properties.html#40403" class="Function">splitAt-raise</a> <a id="40483" class="Symbol">=</a> <a id="40485" href="Data.Fin.Properties.html#19260" class="Function">splitAt-↑ʳ</a>
+<a id="40496" class="Symbol">{-#</a> <a id="40500" class="Keyword">WARNING_ON_USAGE</a> <a id="40517" class="Pragma">splitAt-raise</a>
+<a id="40531" class="String">&quot;Warning: splitAt-raise was deprecated in v2.0.
 Please use splitAt-↑ʳ instead.&quot;</a>
-<a id="42355" class="Symbol">#-}</a>
-<a id="Fin0↔⊥"></a><a id="42359" href="Data.Fin.Properties.html#42359" class="Function">Fin0↔⊥</a> <a id="42366" class="Symbol">:</a> <a id="42368" href="Data.Fin.Base.html#1214" class="Datatype">Fin</a> <a id="42372" class="Number">0</a> <a id="42374" href="Function.Bundles.html#8896" class="Function Operator">↔</a> <a id="42376" href="Data.Empty.html#526" class="Datatype">⊥</a>
-<a id="42378" href="Data.Fin.Properties.html#42359" class="Function">Fin0↔⊥</a> <a id="42385" class="Symbol">=</a> <a id="42387" href="Data.Fin.Properties.html#2338" class="Function">0↔⊥</a>
-<a id="42391" class="Symbol">{-#</a> <a id="42395" class="Keyword">WARNING_ON_USAGE</a> <a id="42412" class="Pragma">Fin0↔⊥</a>
-<a id="42419" class="String">&quot;Warning: Fin0↔⊥ was deprecated in v2.0.
+<a id="40611" class="Symbol">#-}</a>
+<a id="Fin0↔⊥"></a><a id="40615" href="Data.Fin.Properties.html#40615" class="Function">Fin0↔⊥</a> <a id="40622" class="Symbol">:</a> <a id="40624" href="Data.Fin.Base.html#1214" class="Datatype">Fin</a> <a id="40628" class="Number">0</a> <a id="40630" href="Function.Bundles.html#8896" class="Function Operator">↔</a> <a id="40632" href="Data.Empty.html#526" class="Datatype">⊥</a>
+<a id="40634" href="Data.Fin.Properties.html#40615" class="Function">Fin0↔⊥</a> <a id="40641" class="Symbol">=</a> <a id="40643" href="Data.Fin.Properties.html#2338" class="Function">0↔⊥</a>
+<a id="40647" class="Symbol">{-#</a> <a id="40651" class="Keyword">WARNING_ON_USAGE</a> <a id="40668" class="Pragma">Fin0↔⊥</a>
+<a id="40675" class="String">&quot;Warning: Fin0↔⊥ was deprecated in v2.0.
 Please use 0↔⊥ instead.&quot;</a>
-<a id="42485" class="Symbol">#-}</a>
+<a id="40741" class="Symbol">#-}</a>
 
 </pre></body></html>
