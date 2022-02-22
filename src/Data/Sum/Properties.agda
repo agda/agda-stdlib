@@ -11,10 +11,12 @@ module Data.Sum.Properties where
 open import Level
 open import Data.Sum.Base
 open import Function
+open import Function.Bundles using (mk↔′)
 open import Relation.Binary using (Decidable)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Nullary using (yes; no)
 open import Relation.Nullary.Decidable using (map′)
+
 
 private
   variable
@@ -113,3 +115,6 @@ map₂-cong : {g g′ : C → D} →
             g ≗ g′ →
             map₂ {A = A} g ≗ map₂ g′
 map₂-cong g≗g′ = [,-]-cong ((cong inj₂) ∘ g≗g′)
+
+swap↔ : (A ⊎ B) ↔ (B ⊎ A)
+swap↔ = mk↔′ swap swap swap-involutive swap-involutive
