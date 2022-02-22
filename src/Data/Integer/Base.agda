@@ -9,9 +9,6 @@
 
 {-# OPTIONS --without-K --safe #-}
 
--- Disabled to prevent warnings from deprecated names
-{-# OPTIONS --warn=noUserWarning #-}
-
 module Data.Integer.Base where
 
 open import Data.Bool.Base using (Bool; T; true; false)
@@ -266,10 +263,10 @@ _⊔_ : ℤ → ℤ → ℤ
 -- Minimum.
 
 _⊓_ : ℤ → ℤ → ℤ
--[1+ m ] ⊓ -[1+ n ] = -[1+ ℕ._⊔_ m n ]
+-[1+ m ] ⊓ -[1+ n ] = -[1+ m ℕ.⊔ n ]
 -[1+ m ] ⊓ +    n   = -[1+ m ]
 +    m   ⊓ -[1+ n ] = -[1+ n ]
-+    m   ⊓ +    n   = + (ℕ._⊓_ m n)
++    m   ⊓ +    n   = + (m ℕ.⊓ n)
 
 -- Division by a natural
 
@@ -282,7 +279,7 @@ _/ℕ_ : (dividend : ℤ) (divisor : ℕ) .{{_ : ℕ.NonZero divisor}} → ℤ
 -- Division
 
 _/_ : (dividend divisor : ℤ) .{{_ : NonZero divisor}} → ℤ
-n / d = (sign d ◃ 1) * (n /ℕ ∣ d ∣)
+i / j = (sign j ◃ 1) * (i /ℕ ∣ j ∣)
 
 -- Modulus by a natural
 
@@ -295,43 +292,4 @@ _%ℕ_ : (dividend : ℤ) (divisor : ℕ) .{{_ : ℕ.NonZero divisor}} → ℕ
 -- Modulus
 
 _%_ : (dividend divisor : ℤ) .{{_ : NonZero divisor}} → ℕ
-n % d = n %ℕ ∣ d ∣
-
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 1.1
-
--- The following definition of _<_ results in the unsolved metas for the
--- first argument in certain situations.
-
-infix  4 _<′_ _>′_ _≮′_ _≯′_
-
-_<′_ : Rel ℤ _
-x <′ y = suc x ≤ y
-{-# WARNING_ON_USAGE _<′_
-"Warning: _<′_ was deprecated in v1.1.
-Please use _<_ instead."
-#-}
-_>′_ : Rel ℤ _
-x >′ y = y <′ x
-{-# WARNING_ON_USAGE _>′_
-"Warning: _>′_ was deprecated in v1.1.
-Please use _>_ instead."
-#-}
-_≮′_ : Rel ℤ _
-x ≮′ y = ¬ (x <′ y)
-{-# WARNING_ON_USAGE _≮′_
-"Warning: _≮′_ was deprecated in v1.1.
-Please use _≮_ instead."
-#-}
-_≯′_ : Rel ℤ _
-x ≯′ y = ¬ (x >′ y)
-{-# WARNING_ON_USAGE _≯′_
-"Warning: _≯′_ was deprecated in v1.1.
-Please use _≯_ instead."
-#-}
+i % j = i %ℕ ∣ j ∣

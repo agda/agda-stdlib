@@ -205,19 +205,3 @@ record NonEmpty {A : Set a} {B : Set b}
     {x}   : A
     {y}   : B
     proof : T x y
-
-
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 1.1
-
-Conn = Connex
-{-# WARNING_ON_USAGE Conn
-"Warning: Conn was deprecated in v1.1.
-Please use Connex instead."
-#-}

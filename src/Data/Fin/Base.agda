@@ -314,19 +314,6 @@ compare (suc i) (suc j) with compare i j
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 1.2
-
-fromℕ≤ = fromℕ<
-{-# WARNING_ON_USAGE fromℕ≤
-"Warning: fromℕ≤ was deprecated in v1.2.
-Please use fromℕ< instead."
-#-}
-fromℕ≤″ = fromℕ<″
-{-# WARNING_ON_USAGE fromℕ≤″
-"Warning: fromℕ≤″ was deprecated in v1.2.
-Please use fromℕ<″ instead."
-#-}
-
 -- Version 2.0
 
 raise = _↑ʳ_

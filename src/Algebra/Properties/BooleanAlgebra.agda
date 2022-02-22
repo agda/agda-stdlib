@@ -38,19 +38,6 @@ open import Data.Product using (_,_)
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 1.1
-
-¬⊥=⊤ = ⊥≉⊤
-{-# WARNING_ON_USAGE ¬⊥=⊤
-"Warning: ¬⊥=⊤ was deprecated in v1.1.
-Please use ⊥≉⊤ instead."
-#-}
-¬⊤=⊥ = ⊤≉⊥
-{-# WARNING_ON_USAGE ¬⊤=⊥
-"Warning: ¬⊤=⊥ was deprecated in v1.1.
-Please use ⊤≉⊥ instead."
-#-}
-
 -- Version 1.4
 
 replace-equality : {_≈′_ : Rel Carrier b₂} →

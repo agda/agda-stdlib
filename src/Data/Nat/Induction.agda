@@ -9,7 +9,7 @@
 module Data.Nat.Induction where
 
 open import Function
-open import Data.Nat.Base using (ℕ; zero; suc; _<_; _<′_; <′-base; <′-step)
+open import Data.Nat.Base -- using (ℕ; zero; suc; _<_; _<′_; <′-base; <′-step)
 open import Data.Nat.Properties using (m<1+n⇒m<n∨m≡n)
 open import Data.Product
 open import Data.Sum using (inj₁; inj₂)

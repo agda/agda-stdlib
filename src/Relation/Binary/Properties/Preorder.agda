@@ -11,25 +11,20 @@ open import Relation.Binary
 module Relation.Binary.Properties.Preorder
   {p₁ p₂ p₃} (P : Preorder p₁ p₂ p₃) where
 
-open import Function
+open import Function.Base
 open import Data.Product as Prod
+import Relation.Binary.Construct.Converse as Converse
 
 open Preorder P
 
 ------------------------------------------------------------------------
 -- The inverse relation is also a preorder.
 
-invIsPreorder : IsPreorder _≈_ (flip _∼_)
-invIsPreorder = record
-  { isEquivalence = isEquivalence
-  ; reflexive     = reflexive ∘ Eq.sym
-  ; trans         = flip trans
-  }
+converse-isPreorder : IsPreorder _≈_ (flip _∼_)
+converse-isPreorder = Converse.isPreorder isPreorder
 
-invPreorder : Preorder p₁ p₂ p₃
-invPreorder = record
-  { isPreorder = invIsPreorder
-  }
+converse-preorder : Preorder p₁ p₂ p₃
+converse-preorder = Converse.preorder P
 
 ------------------------------------------------------------------------
 -- For every preorder there is an induced equivalence
@@ -43,3 +38,24 @@ InducedEquivalence = record
     ; trans = Prod.zip trans (flip trans)
     }
   }
+
+
+
+------------------------------------------------------------------------
+-- DEPRECATED NAMES
+------------------------------------------------------------------------
+-- Please use the new names as continuing support for the old names is
+-- not guaranteed.
+
+-- Version 2.0
+
+invIsPreorder = converse-isPreorder
+{-# WARNING_ON_USAGE invIsPreorder
+"Warning: invIsPreorder was deprecated in v2.0.
+Please use converse-isPreorder instead."
+#-}
+invPreorder = converse-preorder
+{-# WARNING_ON_USAGE invPreorder
+"Warning: invPreorder was deprecated in v2.0.
+Please use converse-preorder instead."
+#-}

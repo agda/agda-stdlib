@@ -110,7 +110,7 @@ module _ (A : Set a) where
 
 module ⊆-Reasoning (A : Set a) where
   open Setoidₚ.⊆-Reasoning (setoid A) public
-    hiding (step-≋; step-≋˘; _≋⟨⟩_)
+    hiding (step-≋; step-≋˘)
 
 ------------------------------------------------------------------------
 -- Properties of _⊆_ and various list predicates

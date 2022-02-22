@@ -10,15 +10,15 @@
 module Tactic.RingSolver where
 
 open import Algebra
-open import Data.Fin.Base   as Fin   using (Fin)
-open import Data.Vec.Base   as Vec   using (Vec; _∷_; [])
-open import Data.List.Base  as List  using (List; _∷_; [])
-open import Data.Maybe.Base as Maybe using (Maybe; just; nothing; fromMaybe)
-open import Data.Nat.Base            using (ℕ; suc; zero; _<ᵇ_)
-open import Data.Bool.Base           using (Bool; if_then_else_; true; false)
-open import Data.Unit.Base           using (⊤)
-open import Data.String as String    using (String; _++_; parens)
-open import Data.Product             using (_,_; proj₁)
+open import Data.Fin.Base   as Fin     using (Fin)
+open import Data.Vec.Base   as Vec     using (Vec; _∷_; [])
+open import Data.List.Base  as List    using (List; _∷_; [])
+open import Data.Maybe.Base as Maybe   using (Maybe; just; nothing; fromMaybe)
+open import Data.Nat.Base              using (ℕ; suc; zero; _<ᵇ_)
+open import Data.Bool.Base             using (Bool; if_then_else_; true; false)
+open import Data.Unit.Base             using (⊤)
+open import Data.String.Base as String using (String; _++_; parens)
+open import Data.Product               using (_,_; proj₁)
 open import Function
 open import Relation.Nullary.Decidable
 
