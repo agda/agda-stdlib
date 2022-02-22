@@ -29,15 +29,14 @@ _≥_ : Rel A p₃
 x ≥ y = y ≤ x
 
 open PreorderProperties public
-  using ()
-  renaming
-  ( invIsPreorder to ≥-isPreorder
-  ; invPreorder   to ≥-preorder
+  using () renaming
+  ( converse-isPreorder to ≥-isPreorder
+  ; converse-preorder   to ≥-preorder
   )
 
 ≥-isPartialOrder : IsPartialOrder _≈_ _≥_
 ≥-isPartialOrder = record
-  { isPreorder   = PreorderProperties.invIsPreorder
+  { isPreorder   = ≥-isPreorder
   ; antisym      = flip antisym
   }
 
@@ -47,8 +46,7 @@ open PreorderProperties public
   }
 
 open Poset ≥-poset public
-  using ()
-  renaming
+  using () renaming
   ( refl      to ≥-refl
   ; reflexive to ≥-reflexive
   ; trans     to ≥-trans

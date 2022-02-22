@@ -682,13 +682,6 @@ Deprecated names
   id-↔   ↦   ↔-id
   ```
 
-* Factorial, combinations and permutations for ℕ.
-  ```
-  Data.Nat.Combinatorics
-  Data.Nat.Combinatorics.Base
-  Data.Nat.Combinatorics.Spec
-  ```
-
 * In `Function.Construct.Symmetry`:
   ```
   sym-⤖   ↦   ⤖-sym
@@ -704,6 +697,11 @@ Deprecated names
   fromForeign ↦ Foreign.Haskell.Coerce.coerce
   ```
 
+* In `Relation.Binary.Properties.Preorder`:
+  ```
+  invIsPreorder ↦ converse-isPreorder
+  invPreorder   ↦ converse-preorder
+  ```
 
 New modules
 -----------
@@ -749,6 +747,13 @@ New modules
 * A small library for a non-empty fresh list:
   ```
   Data.List.Fresh.NonEmpty
+  ```
+
+* Combinations and permutations for ℕ.
+  ```
+  Data.Nat.Combinatorics
+  Data.Nat.Combinatorics.Base
+  Data.Nat.Combinatorics.Spec
   ```
 
 * Reflection utilities for some specific types:
