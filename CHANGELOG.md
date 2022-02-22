@@ -1007,6 +1007,8 @@ Other minor changes
   combine-surjective : ∀ x → ∃₂ λ y z → combine y z ≡ x
 
   lower₁-injective   : lower₁ i n≢i ≡ lower₁ j n≢j → i ≡ j
+
+  i<1+i              : i < suc i
   ```
 
 * Added new functions in `Data.Integer.Base`:
@@ -1069,6 +1071,16 @@ Other minor changes
   ∷ʳ-++ : xs ∷ʳ a ++ ys ≡ xs ++ a ∷ ys
   ```
 
+* Added new patterns and definitions to `Data.Nat.Base`:
+  ```agda
+  pattern z<s {n}         = s≤s (z≤n {n})
+  pattern s<s {m} {n} m<n = s≤s {m} {n} m<n
+
+  pattern <′-base          = ≤′-refl
+  pattern <′-step {n} m<′n = ≤′-step {n} m<′n
+  ```
+
+
 * Added new definitions and proofs to `Data.Nat.Primality`:
   ```agda
   Composite        : ℕ → Set
@@ -1090,6 +1102,17 @@ Other minor changes
   m^n≢0     : .{{_ : NonZero m}} → NonZero (m ^ n)
   m*n≢0     : .{{_ : NonZero m}} .{{_ : NonZero n}} → NonZero (m * n)
   m≤n⇒n∸m≤n : m ≤ n → n ∸ m ≤ n
+
+  ≤-pred        : suc m ≤ suc n → m ≤ n
+  s<s-injective : ∀ {p q : m < n} → s<s p ≡ s<s q → p ≡ q
+  <-pred        : suc m < suc n → m < n
+  <-step        : m < n → m < 1 + n
+  m<1+n⇒m<n∨m≡n : m < suc n → m < n ⊎ m ≡ n
+
+  z<′s : zero <′ suc n
+  s<′s : m <′ n → suc m <′ suc n
+  <⇒<′ : m < n → m <′ n
+  <′⇒< : m <′ n → m < n
 
   1≤n!    : 1 ≤ n !
   _!≢0    : NonZero (n !)

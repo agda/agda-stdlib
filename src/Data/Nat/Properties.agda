@@ -1949,7 +1949,7 @@ s<′s (<′-step m<′n) = <′-step (s<′s m<′n)
 <′⇒< <′-base        = n<1+n _
 <′⇒< (<′-step m<′n) = <-step (<′⇒< m<′n)
 
-m<1+n⇒m<n∨m≡n′ :  ∀ {m n} → m < suc n → m < n ⊎ m ≡ n
+m<1+n⇒m<n∨m≡n′ : ∀ {m n} → m < suc n → m < n ⊎ m ≡ n
 m<1+n⇒m<n∨m≡n′ m<n with <⇒<′ m<n
 ... | <′-base      = inj₂ refl
 ... | <′-step m<′n = inj₁ (<′⇒< m<′n)
