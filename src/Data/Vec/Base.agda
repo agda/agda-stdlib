@@ -8,7 +8,7 @@
 
 module Data.Vec.Base where
 
-open import Data.Bool.Base
+open import Data.Bool.Base using (Bool; true; false)
 open import Data.Nat.Base
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base as List using (List)
@@ -59,6 +59,10 @@ tail (x ∷ xs) = xs
 lookup : Vec A n → Fin n → A
 lookup (x ∷ xs) zero    = x
 lookup (x ∷ xs) (suc i) = lookup xs i
+
+iterate : (A → A) → A → ∀ {n} → Vec A n
+iterate s z {zero}  = []
+iterate s z {suc n} = z ∷ iterate s (s z)
 
 insert : Vec A n → Fin (suc n) → A → Vec A (suc n)
 insert xs       zero     v = v ∷ xs
@@ -221,11 +225,12 @@ foldl₁ _⊕_ (x ∷ xs) = foldl _ _⊕_ x xs
 sum : Vec ℕ n → ℕ
 sum = foldr _ _+_ 0
 
+countᵇ : (A → Bool) → Vec A n → ℕ
+countᵇ p []       = zero
+countᵇ p (x ∷ xs) = if p x then suc (countᵇ p xs) else countᵇ p xs
+
 count : ∀ {P : Pred A p} → Decidable P → Vec A n → ℕ
-count P? []       = zero
-count P? (x ∷ xs) with does (P? x)
-... | true  = suc (count P? xs)
-... | false = count P? xs
+count P? = countᵇ (does ∘ P?)
 
 ------------------------------------------------------------------------
 -- Operations for building vectors
@@ -277,6 +282,19 @@ split (x ∷ y ∷ xs) = Prod.map (x ∷_) (y ∷_) (split xs)
 
 uncons : Vec A (suc n) → A × Vec A n
 uncons (x ∷ xs) = x , xs
+
+------------------------------------------------------------------------
+-- Operations involving ≤
+
+-- Take the first 'm' elements of a vector.
+truncate : ∀ {m n} → m ≤ n → Vec A n → Vec A m
+truncate z≤n      _        = []
+truncate (s≤s le) (x ∷ xs) = x ∷ (truncate le xs)
+
+-- Pad out a vector with extra elements.
+padRight : ∀ {m n} → m ≤ n → A → Vec A m → Vec A n
+padRight z≤n      a xs       = replicate a
+padRight (s≤s le) a (x ∷ xs) = x ∷ padRight le a xs
 
 ------------------------------------------------------------------------
 -- Operations for converting between lists

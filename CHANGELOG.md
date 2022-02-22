@@ -437,6 +437,13 @@ Non-backwards compatible changes
   ```
 * `Opₗ` and `Opᵣ` have moved from `Algebra.Core` to `Algebra.Module.Core`.
 
+* In `Data.Nat.GeneralisedArithmetic`, the `s` and `z` arguments to the following
+  functions have been made explicit:
+  * `fold-+`
+  * `fold-k`
+  * `fold-*`
+  * `fold-pull`
+
 Major improvements
 ------------------
 
@@ -457,7 +464,7 @@ Major improvements
 * Previously the division and modulus operators were defined in `Data.Nat.DivMod`
   which in turn meant that using them required importing `Data.Nat.Properties`
   which is a very heavy dependency.
-  
+
 * To fix this, these operators have been moved to `Data.Nat.Base`. The properties
   for them still live in `Data.Nat.DivMod` (which also publicly re-exports them
   to provide backwards compatability).
@@ -725,6 +732,15 @@ New modules
   Algebra.Properties.Semiring.Exp.TailRecursiveOptimised
   ```
 
+* A definition of infinite streams using coinductive records:
+  ```
+  Codata.Guarded.Stream
+  Codata.Guarded.Stream.Properties
+  Codata.Guarded.Stream.Relation.Binary.Pointwise
+  Codata.Guarded.Stream.Relation.Unary.All
+  Codata.Guarded.Stream.Relation.Unary.Any
+  ```
+
 * A small library for function arguments with default values:
   ```
   Data.Default
@@ -826,7 +842,7 @@ New modules
   -‿distribˡ-* : ∀ x y → - (x * y) ≈ - x * y
   -‿distribʳ-* : ∀ x y → - (x * y) ≈ x * - y
   ```
-  
+
 
 Other minor changes
 -------------------
@@ -878,14 +894,14 @@ Other minor changes
   ring : Ring a ℓ₁ → Ring b ℓ₂ → Ring (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
   commutativeRing : CommutativeRing a ℓ₁ → CommutativeRing b ℓ₂ →
                     CommutativeRing (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
-  rawQuasigroup : RawQuasigroup a ℓ₁ → RawQuasigroup b ℓ₂ → 
+  rawQuasigroup : RawQuasigroup a ℓ₁ → RawQuasigroup b ℓ₂ →
                   RawQuasigroup (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
   rawLoop : RawLoop a ℓ₁ → RawLoop b ℓ₂ → RawLoop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
-  unitalMagma : UnitalMagma a ℓ₁ → UnitalMagma b ℓ₂ → 
+  unitalMagma : UnitalMagma a ℓ₁ → UnitalMagma b ℓ₂ →
                 UnitalMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
-  invertibleMagma : InvertibleMagma a ℓ₁ → InvertibleMagma b ℓ₂ → 
+  invertibleMagma : InvertibleMagma a ℓ₁ → InvertibleMagma b ℓ₂ →
                     InvertibleMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
-  invertibleUnitalMagma : InvertibleUnitalMagma a ℓ₁ → InvertibleUnitalMagma b ℓ₂ → 
+  invertibleUnitalMagma : InvertibleUnitalMagma a ℓ₁ → InvertibleUnitalMagma b ℓ₂ →
                           InvertibleUnitalMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
   quasigroup : Quasigroup a ℓ₁ → Quasigroup b ℓ₂ → Quasigroup (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
   loop : Loop a ℓ₁ → Loop b ℓ₂ → Loop (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
@@ -980,7 +996,7 @@ Other minor changes
   combine-injectiveʳ : combine x y ≡ combine x z → y ≡ z
   combine-injective  : combine x y ≡ combine w z → x ≡ w × y ≡ z
   combine-surjective : ∀ x → ∃₂ λ y z → combine y z ≡ x
-  
+
   lower₁-injective   : lower₁ i n≢i ≡ lower₁ j n≢j → i ≡ j
   ```
 
@@ -1009,6 +1025,20 @@ Other minor changes
   ^-isMonoidHomomorphism : IsMonoidHomomorphism ℕ.+-0-rawMonoid *-1-rawMonoid (i ^_)
   ```
 
+* Added new functions in `Data.List`:
+  ```agda
+  takeWhileᵇ   : (A → Bool) → List A → List A
+  dropWhileᵇ   : (A → Bool) → List A → List A
+  filterᵇ      : (A → Bool) → List A → List A
+  partitionᵇ   : (A → Bool) → List A → List A × List A
+  spanᵇ        : (A → Bool) → List A → List A × List A
+  breakᵇ       : (A → Bool) → List A → List A × List A
+  linesByᵇ     : (A → Bool) → List A → List (List A)
+  wordsByᵇ     : (A → Bool) → List A → List (List A)
+  derunᵇ       : (A → A → Bool) → List A → List A
+  deduplicateᵇ : (A → A → Bool) → List A → List A
+  ```
+  
 * Added new proofs in `Data.List.Relation.Binary.Lex.Strict`:
   ```agda
   xs≮[] : ¬ xs < []
@@ -1027,6 +1057,7 @@ Other minor changes
 * Add new proofs in `Data.List.Properties`:
   ```agda
   ∈⇒∣product : n ∈ ns → n ∣ product ns
+  ∷ʳ-++ : xs ∷ʳ a ++ ys ≡ xs ++ a ∷ ys
   ```
 
 * Added new definitions and proofs to `Data.Nat.Primality`:
@@ -1050,11 +1081,11 @@ Other minor changes
   m^n≢0     : .{{_ : NonZero m}} → NonZero (m ^ n)
   m*n≢0     : .{{_ : NonZero m}} .{{_ : NonZero n}} → NonZero (m * n)
   m≤n⇒n∸m≤n : m ≤ n → n ∸ m ≤ n
-  
+
   1≤n!    : 1 ≤ n !
   _!≢0    : NonZero (n !)
   _!*_!≢0 : NonZero (m ! * n !)
-  
+
   anyUpTo? : ∀ (P? : U.Decidable P) (v : ℕ) → Dec (∃ λ n → n < v × P n)
   allUpTo? : ∀ (P? : U.Decidable P) (v : ℕ) → Dec (∀ {n} → n < v → P n)
   ```
@@ -1163,6 +1194,12 @@ Other minor changes
   *-abelianGroup : AbelianGroup 0ℓ 0ℓ
   ```
 
+* Added new functions in `Data.String.Base`:
+  ```agda
+  wordsByᵇ : (Char → Bool) → String → List String
+  linesByᵇ : (Char → Bool) → String → List String 
+  ```
+  
 * Added new proofs in `Data.String.Properties`:
   ```
   ≤-isDecTotalOrder-≈ : IsDecTotalOrder _≈_ _≤_
@@ -1179,11 +1216,17 @@ Other minor changes
 
 * Added new definitions in `Data.Vec.Base`:
   ```agda
+  truncate : m ≤ n → Vec A n → Vec A m
+  pad      : m ≤ n → A → Vec A m → Vec A n
+
   FoldrOp A B = ∀ {n} → A → B n → B (suc n)
   FoldlOp A B = ∀ {n} → B n → A → B (suc n)
 
   foldr′ : (A → B → B) → B → Vec A n → B
   foldl′ : (B → A → B) → B → Vec A n → B
+  countᵇ : (A → Bool) → Vec A n → ℕ
+
+  iterate : (A → A) → A → Vec A n
 
   diagonal           : Vec (Vec A n) n → Vec A n
   DiagonalBind._>>=_ : Vec A n → (A → Vec B n) → Vec B n
@@ -1197,6 +1240,14 @@ Other minor changes
 
 * Added new proofs in `Data.Vec.Properties`:
   ```agda
+  padRight-refl      : padRight ≤-refl a xs ≡ xs
+  padRight-replicate : replicate a ≡ padRight le a (replicate a)
+  padRight-trans     : padRight (≤-trans m≤n n≤p) a xs ≡ padRight n≤p a (padRight m≤n a xs)
+
+  truncate-refl     : truncate ≤-refl xs ≡ xs
+  truncate-trans    : truncate (≤-trans m≤n n≤p) xs ≡ truncate m≤n (truncate n≤p xs)
+  truncate-padRight : truncate m≤n (padRight m≤n a xs) ≡ xs
+
   map-const    : map (const x) xs ≡ replicate x
   map-⊛        : map f xs ⊛ map g xs ≡ map (f ˢ g) xs
   map-++       : map f (xs ++ ys) ≡ map f xs ++ map f ys
@@ -1639,4 +1690,10 @@ This is a full list of proofs that have changed form to use irrelevant instance 
   length-map : length (map f xs) ≡ length xs
   map-cong : f ≗ g → map f ≗ map g
   map-compose : map (g ∘ f) ≗ map g ∘ map f
+  ```
+
+* Added new functions and proofs in `Data.Nat.GeneralisedArithmetic`:
+  ```agda
+  iterate : (A → A) → A → ℕ → A
+  iterate-is-fold : ∀ (z : A) s m → fold z s m ≡ iterate s z m
   ```
