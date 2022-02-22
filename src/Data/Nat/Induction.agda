@@ -12,7 +12,6 @@ open import Function
 open import Data.Nat.Base
 open import Data.Nat.Properties using (<⇒<′)
 open import Data.Product
-open import Data.Sum using (inj₁; inj₂)
 open import Data.Unit.Polymorphic
 open import Induction
 open import Induction.WellFounded as WF

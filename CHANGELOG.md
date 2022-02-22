@@ -518,6 +518,10 @@ Deprecated modules
   Relation.Binary.Properties.MeetSemilattice.agda         ↦ Relation.Binary.Lattice.Properties.MeetSemilattice.agda
   ```
 
+### Deprecation of `Data.Nat.Properties.Core`
+
+* The module `Data.Nat.Properties.Core` has been deprecated, and its one entry moved to `Data.Nat.Properties`
+
 Deprecated names
 ----------------
 
