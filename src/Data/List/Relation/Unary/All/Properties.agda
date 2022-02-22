@@ -742,19 +742,6 @@ module _ (S : Setoid c ℓ) where
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 1.0
-
-filter⁺₁ = all-filter
-{-# WARNING_ON_USAGE filter⁺₁
-"Warning: filter⁺₁ was deprecated in v1.0.
-Please use all-filter instead."
-#-}
-filter⁺₂ = filter⁺
-{-# WARNING_ON_USAGE filter⁺₂
-"Warning: filter⁺₂ was deprecated in v1.0.
-Please use filter⁺ instead."
-#-}
-
 -- Version 1.3
 
 Any¬→¬All = Any¬⇒¬All

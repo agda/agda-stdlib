@@ -169,23 +169,3 @@ private
 
   unit-test : P (_==_ "")
   unit-test = p _
-
--- Version 1.1
-
-setoid = ≡-setoid
-{-# WARNING_ON_USAGE setoid
-"Warning: setoid was deprecated in v1.1.
-Please use ≡-setoid instead."
-#-}
-
-decSetoid = ≡-decSetoid
-{-# WARNING_ON_USAGE decSetoid
-"Warning: decSetoid was deprecated in v1.1.
-Please use ≡-decSetoid instead."
-#-}
-
-strictTotalOrder = <-strictTotalOrder-≈
-{-# WARNING_ON_USAGE strictTotalOrder
-"Warning: strictTotalOrder was deprecated in v1.1.
-Please use <-strictTotalOrder-≈ instead."
-#-}

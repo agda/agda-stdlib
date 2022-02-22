@@ -10,7 +10,6 @@ module Data.Vec.Functional.Relation.Binary.Pointwise.Properties where
 
 open import Data.Fin.Base
 open import Data.Fin.Properties
-  hiding (isDecEquivalence; setoid; decSetoid)
 open import Data.Nat.Base
 open import Data.Product using (_×_; _,_; proj₁; proj₂)
 open import Data.Product.Relation.Binary.Pointwise.NonDependent

@@ -32,29 +32,6 @@ Use Algebra.Lattice.Properties.Lattice instead."
 
 open Lattice L
 
--- Version 1.1
-
-∧-idempotent = ∧-idem
-{-# WARNING_ON_USAGE ∧-idempotent
-"Warning: ∧-idempotent was deprecated in v1.1.
-Please use ∧-idem instead."
-#-}
-∨-idempotent = ∨-idem
-{-# WARNING_ON_USAGE ∨-idempotent
-"Warning: ∨-idempotent was deprecated in v1.1.
-Please use ∨-idem instead."
-#-}
-isOrderTheoreticLattice = ∨-∧-isOrderTheoreticLattice
-{-# WARNING_ON_USAGE isOrderTheoreticLattice
-"Warning: isOrderTheoreticLattice was deprecated in v1.1.
-Please use ∨-∧-isOrderTheoreticLattice instead."
-#-}
-orderTheoreticLattice = ∨-∧-orderTheoreticLattice
-{-# WARNING_ON_USAGE orderTheoreticLattice
-"Warning: orderTheoreticLattice was deprecated in v1.1.
-Please use ∨-∧-orderTheoreticLattice instead."
-#-}
-
 -- Version 1.4
 
 replace-equality : {_≈′_ : Rel Carrier l₂} →

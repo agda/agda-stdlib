@@ -92,7 +92,7 @@ algSemilattice = record { isSemilattice = isAlgSemilattice }
 
 dualIsMeetSemilattice : IsMeetSemilattice _≈_ (flip _≤_) _∨_
 dualIsMeetSemilattice = record
-  { isPartialOrder = invIsPartialOrder
+  { isPartialOrder = ≥-isPartialOrder
   ; infimum        = supremum
   }
 

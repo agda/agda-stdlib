@@ -310,25 +310,3 @@ m≤n⇒m!∣n! m≤n = help (≤⇒≤′ m≤n)
   help : ∀ {m n} → m ≤′ n → m ! ∣ n !
   help {m} {n}     ≤′-refl        = ∣-refl
   help {m} {suc n} (≤′-step m≤′n) = ∣n⇒∣m*n (suc n) (help m≤′n)
-
-------------------------------------------------------------------------
--- DEPRECATED - please use new names as continuing support for the old
--- names is not guaranteed.
-
--- Version 1.1
-
-poset = ∣-poset
-{-# WARNING_ON_USAGE poset
-"Warning: poset was deprecated in v1.1.
-Please use ∣-poset instead."
-#-}
-*-cong = *-monoʳ-∣
-{-# WARNING_ON_USAGE *-cong
-"Warning: *-cong was deprecated in v1.1.
-Please use *-monoʳ-∣ instead."
-#-}
-/-cong = *-cancelˡ-∣
-{-# WARNING_ON_USAGE /-cong
-"Warning: /-cong was deprecated in v1.1.
-Please use *-cancelˡ-∣ instead."
-#-}
