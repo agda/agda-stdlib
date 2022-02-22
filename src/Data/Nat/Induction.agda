@@ -9,13 +9,13 @@
 module Data.Nat.Induction where
 
 open import Function
-open import Data.Nat.Base -- using (ℕ; zero; suc; _<_; _<′_; <′-base; <′-step)
-open import Data.Nat.Properties using (m<1+n⇒m<n∨m≡n)
+open import Data.Nat.Base
+open import Data.Nat.Properties using (<⇒<′)
 open import Data.Product
 open import Data.Sum using (inj₁; inj₂)
 open import Data.Unit.Polymorphic
 open import Induction
-open import Induction.WellFounded as WF using (WellFounded; WfRec)
+open import Induction.WellFounded as WF
 open import Level using (Level)
 open import Relation.Binary.PropositionalEquality
 open import Relation.Unary
@@ -64,14 +64,15 @@ cRec = build cRecBuilder
 <′-Rec : ∀ {ℓ} → RecStruct ℕ ℓ ℓ
 <′-Rec = WfRec _<′_
 
-mutual
+-- mutual definition
 
-  <′-wellFounded : WellFounded _<′_
-  <′-wellFounded n = acc (<′-wellFounded′ n)
+<′-wellFounded : WellFounded _<′_
+<′-wellFounded′ : ∀ n → <′-Rec (Acc _<′_) n
 
-  <′-wellFounded′ : ∀ n → <′-Rec (Acc _<′_) n
-  <′-wellFounded′ (suc n) n <′-base       = <′-wellFounded n
-  <′-wellFounded′ (suc n) m (<′-step m<n) = <′-wellFounded′ n m m<n
+<′-wellFounded n = acc (<′-wellFounded′ n)
+
+<′-wellFounded′ (suc n) n <′-base       = <′-wellFounded n
+<′-wellFounded′ (suc n) m (<′-step m<n) = <′-wellFounded′ n m m<n
 
 module _ {ℓ} where
   open WF.All <′-wellFounded ℓ public
@@ -86,16 +87,8 @@ module _ {ℓ} where
 <-Rec : ∀ {ℓ} → RecStruct ℕ ℓ ℓ
 <-Rec = WfRec _<_
 
-mutual
-
-  <-wellFounded : WellFounded _<_
-  <-wellFounded n = acc (<-wellFounded′ n)
-
-  <-wellFounded′ : ∀ n → <-Rec (Acc _<_) n
-  <-wellFounded′ zero    y ()
-  <-wellFounded′ (suc n) y y<1+n with <-wellFounded n | m<1+n⇒m<n∨m≡n y<1+n
-  ... | wfn@(acc rec) | inj₁ y<n  = rec y y<n
-  ... | wfn           | inj₂ refl = wfn
+<-wellFounded : WellFounded _<_
+<-wellFounded = Subrelation.wellFounded <⇒<′ <′-wellFounded
 
 -- A version of `<-wellFounded` that cheats by skipping building
 -- the first billion proofs. Use this when you require the function
