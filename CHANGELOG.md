@@ -1171,6 +1171,10 @@ Other minor changes
   ≤-isDecTotalOrder-≈ : IsDecTotalOrder _≈_ _≤_
   ≤-decTotalOrder-≈   :  DecTotalOrder _ _ _
   ```
+* Added new definitions in `Data.Sum.Properties`:
+  ```
+  swap-↔ : (A ⊎ B) ↔ (B ⊎ A)
+  ```
 
 * Added new proofs in `Data.Sum.Properties`:
   ```
