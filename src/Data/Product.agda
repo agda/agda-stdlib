@@ -177,6 +177,9 @@ curry′ = curry
 uncurry′ : (A → B → C) → (A × B → C)
 uncurry′ = uncurry
 
+map₂′ : (B → C) → A × B → A × C
+map₂′ f = map₂ f
+
 dmap′ : ∀ {x y} {X : A → Set x} {Y : B → Set y} →
         ((a : A) → X a) → ((b : B) → Y b) →
         ((a , b) : A × B) → X a × Y b

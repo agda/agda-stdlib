@@ -114,38 +114,6 @@ lookup-iterate-identity zero     f a = P.refl
 lookup-iterate-identity (suc n)  f a = begin
   lookup (suc n) (iterate f a) ≡⟨⟩
   lookup n (iterate f (f a))   ≡⟨ lookup-iterate-identity n f (f a) ⟩
-  fold (f a) f n               ≡⟨ fold-pull (const ∘′ f) (f a) P.refl (λ _ → P.refl) n ⟩
+  fold (f a) f n               ≡⟨ fold-pull a f (const ∘′ f) (f a) P.refl (λ _ → P.refl) n ⟩
   f (fold a f n)               ≡⟨⟩
   fold a f (suc n)             ∎ where open P.≡-Reasoning
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 1.1
-
-repeat-ap-identity = ap-repeatˡ
-{-# WARNING_ON_USAGE repeat-ap-identity
-"Warning: repeat-ap-identity was deprecated in v1.1.
-Please use ap-repeatˡ instead."
-#-}
-
-ap-repeat-identity = ap-repeatʳ
-{-# WARNING_ON_USAGE ap-repeat-identity
-"Warning: ap-repeat-identity was deprecated in v1.1.
-Please use ap-repeatʳ instead."
-#-}
-
-ap-repeat-commute = ap-repeat
-{-# WARNING_ON_USAGE ap-repeat-commute
-"Warning: ap-repeat-commute was deprecated in v1.1.
-Please use ap-repeat instead."
-#-}
-
-map-repeat-commute = map-repeat
-{-# WARNING_ON_USAGE map-repeat-commute
-"Warning: map-repeat-commute was deprecated in v1.1.
-Please use map-repeat instead."
-#-}

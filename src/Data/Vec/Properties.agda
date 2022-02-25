@@ -1044,19 +1044,6 @@ toList∘fromList (x List.∷ xs) = cong (x List.∷_) (toList∘fromList xs)
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 1.1
-
-lookup-++-inject+ = lookup-++ˡ
-{-# WARNING_ON_USAGE lookup-++-inject+
-"Warning: lookup-++-inject+ was deprecated in v1.1.
-Please use lookup-++ˡ instead."
-#-}
-lookup-++-+′ = lookup-++ʳ
-{-# WARNING_ON_USAGE lookup-++-+′
-"Warning: lookup-++-+′ was deprecated in v1.1.
-Please use lookup-++ʳ instead."
-#-}
-
 -- Version 2.0
 
 []≔-++-inject+ : ∀ {m n x} (xs : Vec A m) (ys : Vec A n) i →
