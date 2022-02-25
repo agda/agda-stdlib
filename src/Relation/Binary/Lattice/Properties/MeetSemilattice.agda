@@ -24,7 +24,7 @@ import Relation.Binary.Lattice.Properties.JoinSemilattice as J
 
 dualIsJoinSemilattice : IsJoinSemilattice _≈_ (flip _≤_) _∧_
 dualIsJoinSemilattice = record
-  { isPartialOrder = invIsPartialOrder
+  { isPartialOrder = ≥-isPartialOrder
   ; supremum       = infimum
   }
 

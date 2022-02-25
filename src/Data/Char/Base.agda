@@ -59,23 +59,3 @@ _<_ = ℕ._<_ on toℕ
 infix 4 _≤_
 _≤_ : Rel Char zero
 _≤_ = ReflClosure _<_
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 1.1
-
-toNat = toℕ
-{-# WARNING_ON_USAGE toNat
-"Warning: toNat was deprecated in v1.1.
-Please use toℕ instead."
-#-}
-
-fromNat = fromℕ
-{-# WARNING_ON_USAGE fromNat
-"Warning: fromNat was deprecated in v1.1.
-Please use fromℕ instead."
-#-}

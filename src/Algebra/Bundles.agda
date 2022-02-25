@@ -1039,17 +1039,3 @@ record Loop  c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open Quasigroup quasigroup public
     using (_≉_; ∙-rawMagma; \\-rawMagma; //-rawMagma)
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 1.0
-
-RawSemigroup = RawMagma
-{-# WARNING_ON_USAGE RawSemigroup
-"Warning: RawSemigroup was deprecated in v1.0.
-Please use RawMagma instead."
-#-}

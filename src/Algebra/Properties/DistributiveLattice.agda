@@ -35,34 +35,6 @@ import Algebra.Properties.Lattice as LatticeProperties
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
 
--- Version 1.1
-
-∨-∧-distribˡ = ∨-distribˡ-∧
-{-# WARNING_ON_USAGE ∨-∧-distribˡ
-"Warning: ∨-∧-distribˡ was deprecated in v1.1.
-Please use ∨-distribˡ-∧ instead."
-#-}
-∨-∧-distrib = ∨-distrib-∧
-{-# WARNING_ON_USAGE ∨-∧-distrib
-"Warning: ∨-∧-distrib was deprecated in v1.1.
-Please use ∨-distrib-∧ instead."
-#-}
-∧-∨-distribˡ = ∧-distribˡ-∨
-{-# WARNING_ON_USAGE ∧-∨-distribˡ
-"Warning: ∧-∨-distribˡ was deprecated in v1.1.
-Please use ∧-distribˡ-∨ instead."
-#-}
-∧-∨-distribʳ = ∧-distribʳ-∨
-{-# WARNING_ON_USAGE ∧-∨-distribʳ
-"Warning: ∧-∨-distribʳ was deprecated in v1.1.
-Please use ∧-distribʳ-∨ instead."
-#-}
-∧-∨-distrib = ∧-distrib-∨
-{-# WARNING_ON_USAGE ∧-∨-distrib
-"Warning: ∧-∨-distrib was deprecated in v1.1.
-Please use ∧-distrib-∨ instead."
-#-}
-
 -- Version 1.4
 
 replace-equality : {_≈′_ : Rel Carrier ℓ₂} →
