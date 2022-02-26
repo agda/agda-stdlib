@@ -10,12 +10,12 @@ open import Data.Fin
 import Data.Fin.Show as Fin
 open import Data.String.Base using (String; _++_; parens)
 open import Data.Unit.Polymorphic.Base using (⊤)
-open import Codata.Thunk
+open import Codata.Sized.Thunk
 open import Function using (_$_; _∘_; id)
 open import Relation.Nullary
 
 open import Codata.Musical.Notation
-open import Codata.Colist using (Colist; _∷_; [])
+open import Codata.Sized.Colist using (Colist; _∷_; [])
 open import Codata.Musical.Colist renaming (Colist to Colist♩) using (_∷_; [])
 open import Codata.Musical.Conversion
 

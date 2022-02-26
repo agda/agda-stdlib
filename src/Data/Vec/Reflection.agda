@@ -10,8 +10,8 @@ module Data.Vec.Reflection where
 
 import Data.List as List
 open import Data.Vec.Base
-open import Reflection.Term
-open import Reflection.Argument
+open import Reflection.AST.Term
+open import Reflection.AST.Argument
 
 ------------------------------------------------------------------------
 -- Type

@@ -244,17 +244,3 @@ module _ {a b} {A : Set a} {B : Set b} where
       ; right-inverse-of = λ _ → P.refl
       }
     }
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 1.1
-
-≡?×≡?⇒≡?                  = ≡-dec
-{-# WARNING_ON_USAGE ≡?×≡?⇒≡?
-"Warning: ≡?×≡?⇒≡? was deprecated in v1.1.
-Please use ≡-dec from Data.Product.Properties instead."
-#-}

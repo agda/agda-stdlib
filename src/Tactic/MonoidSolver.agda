@@ -81,10 +81,12 @@ open import Data.List    as List    using (List; _∷_; [])
 open import Data.Nat     as ℕ       using (ℕ; suc; zero)
 open import Data.Product as Product using (_×_; _,_)
 
-open import Agda.Builtin.Reflection
-open import Reflection.Argument
-open import Reflection.Term using (getName; _⋯⟅∷⟆_)
-open import Reflection.TypeChecking.Monad.Syntax
+open import Reflection.AST
+open import Reflection.AST.Term
+open import Reflection.AST.Argument
+import Reflection.AST.Name as Name
+open import Reflection.TCM
+open import Reflection.TCM.Syntax
 
 import Relation.Binary.Reasoning.Setoid as SetoidReasoning
 
@@ -149,9 +151,6 @@ module _ {m₁ m₂} (monoid : Monoid m₁ m₂) where
 -- Helpers for reflection
 ----------------------------------------------------------------------
 
-_==_ = primQNameEquality
-{-# INLINE _==_ #-}
-
 getArgs : Term → Maybe (Term × Term)
 getArgs (def _ xs) = go xs
   where
@@ -180,14 +179,14 @@ record MonoidNames : Set where
     is-ε : Name → Bool
 
 buildMatcher : Name → Maybe Name → Name → Bool
-buildMatcher n nothing  x = n == x
-buildMatcher n (just m) x = n == x ∨ m == x
+buildMatcher n nothing  x = n Name.≡ᵇ x
+buildMatcher n (just m) x = n Name.≡ᵇ x ∨ m Name.≡ᵇ x
 
 findMonoidNames : Term → TC MonoidNames
 findMonoidNames mon = do
   ∙-altName ← normalise (def (quote Monoid._∙_) (2 ⋯⟅∷⟆ mon ⟨∷⟩ []))
   ε-altName ← normalise (def (quote Monoid.ε)   (2 ⋯⟅∷⟆ mon ⟨∷⟩ []))
-  returnTC record
+  return record
     { is-∙ = buildMatcher (quote Monoid._∙_) (getName ∙-altName)
     ; is-ε = buildMatcher (quote Monoid.ε)   (getName ε-altName)
     }
@@ -261,7 +260,7 @@ solve-macro : Term → Term → TC _
 solve-macro mon hole = do
   hole′ ← inferType hole >>= normalise
   names ← findMonoidNames mon
-  just (lhs , rhs) ← returnTC (getArgs hole′)
+  just (lhs , rhs) ← return (getArgs hole′)
     where nothing → typeError (termErr hole′ ∷ [])
   let soln = constructSoln mon names lhs rhs
   unify hole soln

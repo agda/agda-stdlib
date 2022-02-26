@@ -467,6 +467,7 @@ module RingMorphisms (R₁ : RawRing a ℓ₁) (R₂ : RawRing b ℓ₂) where
 ------------------------------------------------------------------------
 -- Morphisms over quasigroup-like structures
 ------------------------------------------------------------------------
+
 module QuasigroupMorphisms (Q₁ : RawQuasigroup a ℓ₁) (Q₂ : RawQuasigroup b ℓ₂) where
 
   open RawQuasigroup Q₁ renaming (Carrier to A; ∙-rawMagma to ∙-rawMagma₁;

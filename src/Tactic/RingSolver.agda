@@ -10,24 +10,24 @@
 module Tactic.RingSolver where
 
 open import Algebra
-open import Data.Fin.Base   as Fin   using (Fin)
-open import Data.Vec.Base   as Vec   using (Vec; _∷_; [])
-open import Data.List.Base  as List  using (List; _∷_; [])
-open import Data.Maybe.Base as Maybe using (Maybe; just; nothing; fromMaybe)
-open import Data.Nat.Base            using (ℕ; suc; zero; _<ᵇ_)
-open import Data.Bool.Base           using (Bool; if_then_else_; true; false)
-open import Data.Unit.Base           using (⊤)
-open import Data.String as String    using (String; _++_; parens)
-open import Data.Product             using (_,_; proj₁)
+open import Data.Fin.Base   as Fin     using (Fin)
+open import Data.Vec.Base   as Vec     using (Vec; _∷_; [])
+open import Data.List.Base  as List    using (List; _∷_; [])
+open import Data.Maybe.Base as Maybe   using (Maybe; just; nothing; fromMaybe)
+open import Data.Nat.Base              using (ℕ; suc; zero; _<ᵇ_)
+open import Data.Bool.Base             using (Bool; if_then_else_; true; false)
+open import Data.Unit.Base             using (⊤)
+open import Data.String.Base as String using (String; _++_; parens)
+open import Data.Product               using (_,_; proj₁)
 open import Function
 open import Relation.Nullary.Decidable
 
 open import Reflection
-open import Reflection.Argument
-open import Reflection.Term as Term
-open import Reflection.AlphaEquality
-open import Reflection.Name as Name
-open import Reflection.TypeChecking.Monad.Syntax
+open import Reflection.AST.Argument
+open import Reflection.AST.Term as Term
+open import Reflection.AST.AlphaEquality
+open import Reflection.AST.Name as Name
+open import Reflection.TCM.Syntax
 open import Data.Nat.Reflection
 open import Data.List.Reflection
 import Data.Vec.Reflection as Vec

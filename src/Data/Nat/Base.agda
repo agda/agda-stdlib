@@ -17,7 +17,7 @@ open import Relation.Binary.Core using (Rel)
 open import Relation.Binary.PropositionalEquality.Core
   using (_≡_; _≢_; refl)
 open import Relation.Nullary using (¬_)
-open import Relation.Nullary.Negation.Core using (contradiction)
+open import Relation.Nullary.Negation using (contradiction)
 open import Relation.Unary using (Pred)
 
 ------------------------------------------------------------------------
@@ -54,6 +54,14 @@ data _≤_ : Rel ℕ 0ℓ where
 
 _<_ : Rel ℕ 0ℓ
 m < n = suc m ≤ n
+
+-- Smart constructors of _<_
+
+pattern z<s {n}         = s≤s (z≤n {n})
+pattern s<s {m} {n} m<n = s≤s {m} {n} m<n
+
+------------------------------------------------------------------------
+-- other ordering relations
 
 _≥_ : Rel ℕ 0ℓ
 m ≥ n = n ≤ m
@@ -101,7 +109,7 @@ instance
 ≢-nonZero {suc n} n≢0 = _
 
 >-nonZero : ∀ {n} → n > 0 → NonZero n
->-nonZero (s≤s 0<n) = _
+>-nonZero z<s = _
 
 -- Destructors
 
@@ -109,7 +117,7 @@ instance
 ≢-nonZero⁻¹ (suc n) ()
 
 >-nonZero⁻¹ : ∀ n → .{{NonZero n}} → n > 0
->-nonZero⁻¹ (suc n) = s≤s z≤n
+>-nonZero⁻¹ (suc n) = z<s
 
 ------------------------------------------------------------------------
 -- Arithmetic
@@ -117,10 +125,14 @@ instance
 open import Agda.Builtin.Nat public
   using (_+_; _*_) renaming (_-_ to _∸_)
 
+open import Agda.Builtin.Nat
+  using (div-helper; mod-helper)
+
 pred : ℕ → ℕ
 pred n = n ∸ 1
 
-infixl 7 _⊓_
+infix  8 _!
+infixl 7 _⊓_ _/_ _%_
 infixl 6 _+⋎_ _⊔_
 
 -- Argument-swapping addition. Used by Data.Vec._⋎_.
@@ -168,6 +180,24 @@ x ^ suc n = x * x ^ n
 ∣ x     - zero  ∣ = x
 ∣ suc x - suc y ∣ = ∣ x - y ∣
 
+-- Division
+-- Note properties of these are in `Nat.DivMod` not `Nat.Properties`
+
+_/_ : (dividend divisor : ℕ) .{{_ : NonZero divisor}} → ℕ
+m / (suc n) = div-helper 0 n m n
+
+-- Remainder/modulus
+-- Note properties of these are in `Nat.DivMod` not `Nat.Properties`
+
+_%_ : (dividend divisor : ℕ) .{{_ : NonZero divisor}} → ℕ
+m % (suc n) = mod-helper 0 n m n
+
+-- Factorial
+
+_! : ℕ → ℕ
+zero  ! = 1
+suc n ! = suc n * n !
+
 ------------------------------------------------------------------------
 -- Alternative definition of _≤_
 
@@ -182,6 +212,11 @@ data _≤′_ (m : ℕ) : ℕ → Set where
 
 _<′_ : Rel ℕ 0ℓ
 m <′ n = suc m ≤′ n
+
+-- Smart constructors of _<′_
+
+pattern <′-base          = ≤′-refl
+pattern <′-step {n} m<′n = ≤′-step {n} m<′n
 
 _≥′_ : Rel ℕ 0ℓ
 m ≥′ n = n ≤′ m
