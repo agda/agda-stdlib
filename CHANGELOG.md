@@ -1007,7 +1007,8 @@ Other minor changes
   combine-injectiveʳ : combine i j ≡ combine k l → j ≡ l
   combine-injective  : combine i j ≡ combine k l → i ≡ k × j ≡ l
   combine-surjective : ∀ i → ∃₂ λ j k → combine j k ≡ i
-
+  combine-monoˡ-<    :  i < j → combine i k < combine j l
+  
   lower₁-injective   : lower₁ i n≢i ≡ lower₁ j n≢j → i ≡ j
 
   i<1+i              : i < suc i
