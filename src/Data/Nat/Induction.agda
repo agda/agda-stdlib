@@ -10,7 +10,7 @@ module Data.Nat.Induction where
 
 open import Function
 open import Data.Nat.Base
-open import Data.Nat.Properties using (≤⇒≤′; n<1+n)
+open import Data.Nat.Properties using (<⇒<′)
 open import Data.Product
 open import Data.Unit.Polymorphic
 open import Induction
@@ -63,14 +63,15 @@ cRec = build cRecBuilder
 <′-Rec : ∀ {ℓ} → RecStruct ℕ ℓ ℓ
 <′-Rec = WfRec _<′_
 
-mutual
+-- mutual definition
 
-  <′-wellFounded : WellFounded _<′_
-  <′-wellFounded n = acc (<′-wellFounded′ n)
+<′-wellFounded : WellFounded _<′_
+<′-wellFounded′ : ∀ n → <′-Rec (Acc _<′_) n
 
-  <′-wellFounded′ : ∀ n → <′-Rec (Acc _<′_) n
-  <′-wellFounded′ (suc n) .n ≤′-refl       = <′-wellFounded n
-  <′-wellFounded′ (suc n)  m (≤′-step m<n) = <′-wellFounded′ n m m<n
+<′-wellFounded n = acc (<′-wellFounded′ n)
+
+<′-wellFounded′ (suc n) n <′-base       = <′-wellFounded n
+<′-wellFounded′ (suc n) m (<′-step m<n) = <′-wellFounded′ n m m<n
 
 module _ {ℓ} where
   open WF.All <′-wellFounded ℓ public
@@ -86,7 +87,7 @@ module _ {ℓ} where
 <-Rec = WfRec _<_
 
 <-wellFounded : WellFounded _<_
-<-wellFounded = Subrelation.wellFounded ≤⇒≤′ <′-wellFounded
+<-wellFounded = Subrelation.wellFounded <⇒<′ <′-wellFounded
 
 -- A version of `<-wellFounded` that cheats by skipping building
 -- the first billion proofs. Use this when you require the function
