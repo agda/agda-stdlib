@@ -444,6 +444,8 @@ Non-backwards compatible changes
   * `fold-*`
   * `fold-pull`
 
+* In `Data.Fin.Properties` the `i` argument to `opposite-suc` has been made explicit.
+
 Major improvements
 ------------------
 
@@ -972,10 +974,10 @@ Other minor changes
 
 * Added new functions in `Data.Fin.Base`:
   ```
-  finToFun  : Fin (n ^ m) → (Fin m → Fin n)
+  finToFun  : Fin (m ^ n) → (Fin n → Fin m)
   funToFin  : (Fin m → Fin n) → Fin (n ^ m)
-  quotient  : Fin (n * k) → Fin n
-  remainder : Fin (n * k) → Fin k
+  quotient  : Fin (m * n) → Fin m
+  remainder : Fin (m * n) → Fin n
   ```
 
 * Added new definitions and proofs in `Data.Fin.Permutation`:
@@ -993,18 +995,18 @@ Other minor changes
   ↑ʳ-injective       : n ↑ʳ i ≡ n ↑ʳ j → i ≡ j
   finTofun-funToFin  : funToFin ∘ finToFun ≗ id
   funTofin-funToFun  : finToFun (funToFin f) ≗ f
-  ^↔→                : Extensionality _ _ → Fin (n ^ m) ↔ (Fin m → Fin n)
+  ^↔→                : Extensionality _ _ → Fin (m ^ n) ↔ (Fin n → Fin m)
 
   toℕ-mono-<         : i < j → toℕ i ℕ.< toℕ j
   toℕ-mono-≤         : i ≤ j → toℕ i ℕ.≤ toℕ j
   toℕ-cancel-≤       : toℕ i ℕ.≤ toℕ j → i ≤ j
   toℕ-cancel-<       : toℕ i ℕ.< toℕ j → i < j
 
-  toℕ-combine        : toℕ (combine x y) ≡ k ℕ.* toℕ x ℕ.+ toℕ y
-  combine-injectiveˡ : combine x z ≡ combine y z → x ≡ y
-  combine-injectiveʳ : combine x y ≡ combine x z → y ≡ z
-  combine-injective  : combine x y ≡ combine w z → x ≡ w × y ≡ z
-  combine-surjective : ∀ x → ∃₂ λ y z → combine y z ≡ x
+  toℕ-combine        : toℕ (combine i j) ≡ k ℕ.* toℕ i ℕ.+ toℕ j
+  combine-injectiveˡ : combine i j ≡ combine k l → i ≡ k
+  combine-injectiveʳ : combine i j ≡ combine k l → j ≡ l
+  combine-injective  : combine i j ≡ combine k l → i ≡ k × j ≡ l
+  combine-surjective : ∀ i → ∃₂ λ j k → combine j k ≡ i
 
   lower₁-injective   : lower₁ i n≢i ≡ lower₁ j n≢j → i ≡ j
 
