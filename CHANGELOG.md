@@ -148,10 +148,10 @@ Non-backwards compatible changes
 * Added new aliases `Is(Meet/Join)(Bounded)Semilattice` for `Is(Bounded)Semilattice`
   which can be used to indicate meet/join-ness of the original structures.
 
-#### Switch to new function hierarchy
+#### Function hierarchy
 
-* Various modules have changed the types of some definitions to use the new
-  function hierachy:
+* The switch to the new function hierarchy is complete and the following definitions
+  now use the new definitions instead of the old ones:
   * `Data.Fin.Properties`
     * `∀-cons-⇔`
     * `⊎⇔∃`
@@ -207,6 +207,9 @@ Non-backwards compatible changes
     * `equivalent`
   * `Relation.Nullary.Decidable`
     * `map`
+
+* The names of the fields in the records of the new hierarchy have been
+  changed from `f`, `g`, `cong₁`, `cong₂` to `to`, `from`, `to-cong`, `from-cong`.
 
 #### Proofs of non-zeroness/positivity/negativity as instance arguments
 
