@@ -219,7 +219,7 @@ lookup-inject≤-take : ∀ m (m≤m+n : m ≤ m + n) (i : Fin m) (xs : Vec A (m
                       lookup xs (Fin.inject≤ i m≤m+n) ≡ lookup (take m xs) i
 lookup-inject≤-take (suc m) m≤m+n zero (x ∷ xs)
   rewrite unfold-take m x xs = refl
-lookup-inject≤-take (suc (suc m)) m≤m+n (suc zero) (x ∷ y ∷ xs)
+lookup-inject≤-take (suc (suc m)) (s≤s m≤m+n) (suc zero) (x ∷ y ∷ xs)
   rewrite unfold-take (suc m) x (y ∷ xs) | unfold-take m y xs = refl
 lookup-inject≤-take (suc (suc m)) (s≤s (s≤s m≤m+n)) (suc (suc i)) (x ∷ y ∷ xs)
   rewrite unfold-take (suc m) x (y ∷ xs) | unfold-take m y xs = lookup-inject≤-take m m≤m+n i xs
@@ -456,9 +456,8 @@ map-⊛ f g (x ∷ xs) = cong (f x (g x) ∷_) (map-⊛ f g xs)
 lookup-++-< : ∀ (xs : Vec A m) (ys : Vec A n) →
               ∀ i (i<m : toℕ i < m) →
               lookup (xs ++ ys) i  ≡ lookup xs (Fin.fromℕ< i<m)
-lookup-++-< (x ∷ xs) ys zero    (s≤s z≤n)       = refl
-lookup-++-< (x ∷ xs) ys (suc i) (s≤s (s≤s i<m)) =
-  lookup-++-< xs ys i (s≤s i<m)
+lookup-++-< (x ∷ xs) ys zero    z<s       = refl
+lookup-++-< (x ∷ xs) ys (suc i) (s<s i<m) = lookup-++-< xs ys i i<m
 
 lookup-++-≥ : ∀ (xs : Vec A m) (ys : Vec A n) →
               ∀ i (i≥m : toℕ i ≥ m) →
@@ -1043,19 +1042,6 @@ toList∘fromList (x List.∷ xs) = cong (x List.∷_) (toList∘fromList xs)
 ------------------------------------------------------------------------
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
-
--- Version 1.1
-
-lookup-++-inject+ = lookup-++ˡ
-{-# WARNING_ON_USAGE lookup-++-inject+
-"Warning: lookup-++-inject+ was deprecated in v1.1.
-Please use lookup-++ˡ instead."
-#-}
-lookup-++-+′ = lookup-++ʳ
-{-# WARNING_ON_USAGE lookup-++-+′
-"Warning: lookup-++-+′ was deprecated in v1.1.
-Please use lookup-++ʳ instead."
-#-}
 
 -- Version 2.0
 

@@ -55,6 +55,14 @@ data _≤_ : Rel ℕ 0ℓ where
 _<_ : Rel ℕ 0ℓ
 m < n = suc m ≤ n
 
+-- Smart constructors of _<_
+
+pattern z<s {n}         = s≤s (z≤n {n})
+pattern s<s {m} {n} m<n = s≤s {m} {n} m<n
+
+------------------------------------------------------------------------
+-- other ordering relations
+
 _≥_ : Rel ℕ 0ℓ
 m ≥ n = n ≤ m
 
@@ -101,7 +109,7 @@ instance
 ≢-nonZero {suc n} n≢0 = _
 
 >-nonZero : ∀ {n} → n > 0 → NonZero n
->-nonZero (s≤s 0<n) = _
+>-nonZero z<s = _
 
 -- Destructors
 
@@ -109,7 +117,7 @@ instance
 ≢-nonZero⁻¹ (suc n) ()
 
 >-nonZero⁻¹ : ∀ n → .{{NonZero n}} → n > 0
->-nonZero⁻¹ (suc n) = s≤s z≤n
+>-nonZero⁻¹ (suc n) = z<s
 
 ------------------------------------------------------------------------
 -- Arithmetic
@@ -204,6 +212,11 @@ data _≤′_ (m : ℕ) : ℕ → Set where
 
 _<′_ : Rel ℕ 0ℓ
 m <′ n = suc m ≤′ n
+
+-- Smart constructors of _<′_
+
+pattern <′-base          = ≤′-refl
+pattern <′-step {n} m<′n = ≤′-step {n} m<′n
 
 _≥′_ : Rel ℕ 0ℓ
 m ≥′ n = n ≤′ m

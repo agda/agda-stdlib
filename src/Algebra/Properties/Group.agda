@@ -106,33 +106,3 @@ inverseʳ-unique x y eq = begin
   y       ≈⟨ sym (⁻¹-involutive y) ⟩
   y ⁻¹ ⁻¹ ≈⟨ ⁻¹-cong (sym (inverseˡ-unique x y eq)) ⟩
   x ⁻¹    ∎
-
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 1.1
-
-left-identity-unique = identityˡ-unique
-{-# WARNING_ON_USAGE left-identity-unique
-"Warning: left-identity-unique was deprecated in v1.1.
-Please use identityˡ-unique instead."
-#-}
-right-identity-unique = identityʳ-unique
-{-# WARNING_ON_USAGE right-identity-unique
-"Warning: right-identity-unique was deprecated in v1.1.
-Please use identityʳ-unique instead."
-#-}
-left-inverse-unique = inverseˡ-unique
-{-# WARNING_ON_USAGE left-inverse-unique
-"Warning: left-inverse-unique was deprecated in v1.1.
-Please use inverseˡ-unique instead."
-#-}
-right-inverse-unique = inverseʳ-unique
-{-# WARNING_ON_USAGE right-inverse-unique
-"Warning: right-inverse-unique was deprecated in v1.1.
-Please use inverseʳ-unique instead."
-#-}

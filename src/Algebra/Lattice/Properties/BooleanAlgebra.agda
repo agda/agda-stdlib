@@ -6,9 +6,6 @@
 
 {-# OPTIONS --without-K --safe #-}
 
--- Disabled to prevent warnings from deprecated names
-{-# OPTIONS --warn=noUserWarning #-}
-
 open import Algebra.Lattice.Bundles
 
 module Algebra.Lattice.Properties.BooleanAlgebra
@@ -17,7 +14,7 @@ module Algebra.Lattice.Properties.BooleanAlgebra
 
 open BooleanAlgebra B
 
-import Algebra.Properties.DistributiveLattice as DistribLatticeProperties
+import Algebra.Lattice.Properties.DistributiveLattice as DistribLatticeProperties
 open import Algebra.Core
 open import Algebra.Structures _≈_
 open import Algebra.Definitions _≈_
@@ -35,7 +32,6 @@ open import Data.Product using (_,_)
 -- Export properties from distributive lattices
 
 open DistribLatticeProperties distributiveLattice public
-  hiding (replace-equality)
 
 ------------------------------------------------------------------------
 -- The dual construction is also a boolean algebra
@@ -139,7 +135,7 @@ open DistribLatticeProperties distributiveLattice public
     ; *-cong = ∧-cong
     ; *-assoc = ∧-assoc
     ; *-identity = ∧-identity
-    ; distrib = ∧-∨-distrib
+    ; distrib = ∧-distrib-∨
     }
   ; zero = ∧-zero
   }
@@ -151,7 +147,7 @@ open DistribLatticeProperties distributiveLattice public
     ; *-cong = ∨-cong
     ; *-assoc = ∨-assoc
     ; *-identity = ∨-identity
-    ; distrib = ∨-∧-distrib
+    ; distrib = ∨-distrib-∧
     }
   ; zero = ∨-zero
   }
@@ -190,10 +186,10 @@ private
   lemma x y x∧y=⊥ x∨y=⊤ = begin
     ¬ x                ≈˘⟨ ∧-identityʳ _ ⟩
     ¬ x ∧ ⊤            ≈˘⟨ ∧-congˡ x∨y=⊤ ⟩
-    ¬ x ∧ (x ∨ y)      ≈⟨  ∧-∨-distribˡ _ _ _ ⟩
+    ¬ x ∧ (x ∨ y)      ≈⟨  ∧-distribˡ-∨ _ _ _ ⟩
     ¬ x ∧ x ∨ ¬ x ∧ y  ≈⟨  ∨-congʳ $ ∧-complementˡ _ ⟩
     ⊥ ∨ ¬ x ∧ y        ≈˘⟨ ∨-congʳ x∧y=⊥ ⟩
-    x ∧ y ∨ ¬ x ∧ y    ≈˘⟨ ∧-∨-distribʳ _ _ _ ⟩
+    x ∧ y ∨ ¬ x ∧ y    ≈˘⟨ ∧-distribʳ-∨ _ _ _ ⟩
     (x ∨ ¬ x) ∧ y      ≈⟨  ∧-congʳ $ ∨-complementʳ _ ⟩
     ⊤ ∧ y              ≈⟨  ∧-identityˡ _ ⟩
     y                  ∎
@@ -211,7 +207,7 @@ deMorgan₁ : ∀ x y → ¬ (x ∧ y) ≈ ¬ x ∨ ¬ y
 deMorgan₁ x y = lemma (x ∧ y) (¬ x ∨ ¬ y) lem₁ lem₂
   where
   lem₁ = begin
-    (x ∧ y) ∧ (¬ x ∨ ¬ y)          ≈⟨ ∧-∨-distribˡ _ _ _ ⟩
+    (x ∧ y) ∧ (¬ x ∨ ¬ y)          ≈⟨ ∧-distribˡ-∨ _ _ _ ⟩
     (x ∧ y) ∧ ¬ x ∨ (x ∧ y) ∧ ¬ y  ≈⟨ ∨-congʳ $ ∧-congʳ $ ∧-comm _ _ ⟩
     (y ∧ x) ∧ ¬ x ∨ (x ∧ y) ∧ ¬ y  ≈⟨ ∧-assoc _ _ _ ⟨ ∨-cong ⟩ ∧-assoc _ _ _ ⟩
     y ∧ (x ∧ ¬ x) ∨ x ∧ (y ∧ ¬ y)  ≈⟨ (∧-congˡ $ ∧-complementʳ _) ⟨ ∨-cong ⟩
@@ -279,7 +275,7 @@ module XorRing
   ¬-distribˡ-⊕ : ∀ x y → ¬ (x ⊕ y) ≈ ¬ x ⊕ y
   ¬-distribˡ-⊕ x y = begin
     ¬ (x ⊕ y)                              ≈⟨ ¬-cong $ ⊕-def _ _ ⟩
-    ¬ ((x ∨ y) ∧ (¬ (x ∧ y)))              ≈⟨ ¬-cong (∧-∨-distribʳ _ _ _) ⟩
+    ¬ ((x ∨ y) ∧ (¬ (x ∧ y)))              ≈⟨ ¬-cong (∧-distribʳ-∨ _ _ _) ⟩
     ¬ ((x ∧ ¬ (x ∧ y)) ∨ (y ∧ ¬ (x ∧ y)))  ≈⟨ ¬-cong $ ∨-congˡ $ ∧-congˡ $ ¬-cong (∧-comm _ _) ⟩
     ¬ ((x ∧ ¬ (x ∧ y)) ∨ (y ∧ ¬ (y ∧ x)))  ≈⟨ ¬-cong $ lem _ _ ⟨ ∨-cong ⟩ lem _ _ ⟩
     ¬ ((x ∧ ¬ y) ∨ (y ∧ ¬ x))              ≈⟨ deMorgan₂ _ _ ⟩
@@ -291,7 +287,7 @@ module XorRing
     lem : ∀ x y → x ∧ ¬ (x ∧ y) ≈ x ∧ ¬ y
     lem x y = begin
       x ∧ ¬ (x ∧ y)          ≈⟨ ∧-congˡ $ deMorgan₁ _ _ ⟩
-      x ∧ (¬ x ∨ ¬ y)        ≈⟨ ∧-∨-distribˡ _ _ _ ⟩
+      x ∧ (¬ x ∨ ¬ y)        ≈⟨ ∧-distribˡ-∨ _ _ _ ⟩
       (x ∧ ¬ x) ∨ (x ∧ ¬ y)  ≈⟨ ∨-congʳ $ ∧-complementʳ _ ⟩
       ⊥ ∨ (x ∧ ¬ y)          ≈⟨ ∨-identityˡ _ ⟩
       x ∧ ¬ y                ∎
@@ -349,7 +345,7 @@ module XorRing
     (¬ y ∨ ¬ z))               ≈⟨ ∨-congʳ lem₃ ⟩
     ((x ∧ (y ∨ z)) ∧ ¬ x) ∨
     ((x ∧ (y ∨ z)) ∧
-    (¬ y ∨ ¬ z))               ≈˘⟨ ∧-∨-distribˡ _ _ _ ⟩
+    (¬ y ∨ ¬ z))               ≈˘⟨ ∧-distribˡ-∨ _ _ _ ⟩
     (x ∧ (y ∨ z)) ∧
     (¬ x ∨ (¬ y ∨ ¬ z))        ≈˘⟨ ∧-congˡ $ ∨-congˡ (deMorgan₁ _ _) ⟩
     (x ∧ (y ∨ z)) ∧
@@ -357,7 +353,7 @@ module XorRing
     (x ∧ (y ∨ z)) ∧
     ¬ (x ∧ (y ∧ z))            ≈⟨ helper refl lem₁ ⟩
     (x ∧ (y ∨ z)) ∧
-    ¬ ((x ∧ y) ∧ (x ∧ z))      ≈⟨ ∧-congʳ $ ∧-∨-distribˡ _ _ _ ⟩
+    ¬ ((x ∧ y) ∧ (x ∧ z))      ≈⟨ ∧-congʳ $ ∧-distribˡ-∨ _ _ _ ⟩
     ((x ∧ y) ∨ (x ∧ z)) ∧
     ¬ ((x ∧ y) ∧ (x ∧ z))      ≈˘⟨ ⊕-def _ _ ⟩
     (x ∧ y) ⊕ (x ∧ z)          ∎
@@ -447,7 +443,7 @@ module XorRing
 
     lem₃ = begin
       x ∨ ((y ∨ z) ∧ ¬ (y ∧ z))          ≈⟨ ∨-congˡ $ ∧-congˡ $ deMorgan₁ _ _ ⟩
-      x ∨ ((y ∨ z) ∧ (¬ y ∨ ¬ z))        ≈⟨ ∨-∧-distribˡ _ _ _ ⟩
+      x ∨ ((y ∨ z) ∧ (¬ y ∨ ¬ z))        ≈⟨ ∨-distribˡ-∧ _ _ _ ⟩
       (x ∨ (y ∨ z)) ∧ (x ∨ (¬ y ∨ ¬ z))  ≈˘⟨ ∨-assoc _ _ _ ⟨ ∧-cong ⟩ ∨-assoc _ _ _ ⟩
       ((x ∨ y) ∨ z) ∧ ((x ∨ ¬ y) ∨ ¬ z)  ∎
 
@@ -466,7 +462,7 @@ module XorRing
     lem₄ = begin
       ¬ (x ∧ ((y ∨ z) ∧ ¬ (y ∧ z)))  ≈⟨ deMorgan₁ _ _ ⟩
       ¬ x ∨ ¬ ((y ∨ z) ∧ ¬ (y ∧ z))  ≈⟨ ∨-congˡ lem₄′ ⟩
-      ¬ x ∨ ((y ∨ ¬ z) ∧ (¬ y ∨ z))  ≈⟨ ∨-∧-distribˡ _ _ _ ⟩
+      ¬ x ∨ ((y ∨ ¬ z) ∧ (¬ y ∨ z))  ≈⟨ ∨-distribˡ-∧ _ _ _ ⟩
       (¬ x ∨ (y     ∨ ¬ z)) ∧
       (¬ x ∨ (¬ y ∨ z))              ≈˘⟨ ∨-assoc _ _ _ ⟨ ∧-cong ⟩ ∨-assoc _ _ _ ⟩
       ((¬ x ∨ y)     ∨ ¬ z) ∧
@@ -535,27 +531,6 @@ module XorRing
   ⊕-∧-commutativeRing = record
     { isCommutativeRing = ⊕-∧-isCommutativeRing
     }
-
-  ⊕-¬-distribˡ = ¬-distribˡ-⊕
-  {-# WARNING_ON_USAGE ⊕-¬-distribˡ
-  "Warning: ⊕-¬-distribˡ was deprecated in v1.1.
-  Please use ¬-distribˡ-⊕ instead."
-  #-}
-  ⊕-¬-distribʳ = ¬-distribʳ-⊕
-  {-# WARNING_ON_USAGE ⊕-¬-distribʳ
-  "Warning: ⊕-¬-distribʳ was deprecated in v1.1.
-  Please use ¬-distribʳ-⊕ instead."
-  #-}
-  isCommutativeRing = ⊕-∧-isCommutativeRing
-  {-# WARNING_ON_USAGE isCommutativeRing
-  "Warning: isCommutativeRing was deprecated in v1.1.
-  Please use ⊕-∧-isCommutativeRing instead."
-  #-}
-  commutativeRing = ⊕-∧-commutativeRing
-  {-# WARNING_ON_USAGE commutativeRing
-  "Warning: commutativeRing was deprecated in v1.1.
-  Please use ⊕-∧-commutativeRing instead."
-  #-}
 
 
 infixl 6 _⊕_

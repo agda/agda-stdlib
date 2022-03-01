@@ -17,32 +17,3 @@ open import Algebra.Lattice.Properties.Semilattice L public
 "Algebra.Properties.Semilattice was deprecated in v2.0.
 Use Algebra.Lattice.Properties.Semilattice instead."
 #-}
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 1.1
-
-isOrderTheoreticMeetSemilattice = ∧-isOrderTheoreticMeetSemilattice
-{-# WARNING_ON_USAGE isOrderTheoreticMeetSemilattice
-"Warning: isOrderTheoreticMeetSemilattice was deprecated in v1.1.
-Please use ∧-isOrderTheoreticMeetSemilattice instead."
-#-}
-isOrderTheoreticJoinSemilattice = ∧-isOrderTheoreticJoinSemilattice
-{-# WARNING_ON_USAGE isOrderTheoreticJoinSemilattice
-"Warning: isOrderTheoreticJoinSemilattice was deprecated in v1.1.
-Please use ∧-isOrderTheoreticJoinSemilattice instead."
-#-}
-orderTheoreticMeetSemilattice = ∧-orderTheoreticMeetSemilattice
-{-# WARNING_ON_USAGE orderTheoreticMeetSemilattice
-"Warning: orderTheoreticMeetSemilattice was deprecated in v1.1.
-Please use ∧-orderTheoreticMeetSemilattice instead."
-#-}
-orderTheoreticJoinSemilattice = ∧-orderTheoreticJoinSemilattice
-{-# WARNING_ON_USAGE orderTheoreticJoinSemilattice
-"Warning: orderTheoreticJoinSemilattice was deprecated in v1.1.
-Please use ∧-orderTheoreticJoinSemilattice instead."
-#-}
