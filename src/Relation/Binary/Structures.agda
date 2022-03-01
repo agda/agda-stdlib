@@ -280,7 +280,9 @@ record IsStrictTotalOrder (_<_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) wher
     using (irrefl; asym; <-respʳ-≈; <-respˡ-≈; <-resp-≈)
 
 
+------------------------------------------------------------------------
 -- Apartness relations
+------------------------------------------------------------------------
 
 record IsApartnessRelation (_#_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
   field

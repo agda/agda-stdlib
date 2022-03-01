@@ -299,13 +299,16 @@ record StrictTotalOrder c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) wh
   #-}
 
 
+------------------------------------------------------------------------
+-- Apartness relations
+------------------------------------------------------------------------
 
 record ApartnessRelation c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
   infix 4 _≈_ _#_
   field
-    Carrier     : Set c
-    _≈_         : Rel Carrier ℓ₁
-    _#_         : Rel Carrier ℓ₂
+    Carrier             : Set c
+    _≈_                 : Rel Carrier ℓ₁
+    _#_                 : Rel Carrier ℓ₂
     isApartnessRelation : IsApartnessRelation _≈_ _#_
 
   open IsApartnessRelation isApartnessRelation public

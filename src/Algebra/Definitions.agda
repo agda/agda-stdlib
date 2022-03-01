@@ -80,7 +80,7 @@ RightInvertible e _∙_ x = ∃[ x⁻¹ ] (x ∙ x⁻¹) ≈ e
 -- LeftInvertible e ∙ x × RightInvertible e ∙ x
 -- since the left and right inverses have to coincide.
 Invertible : A → Op₂ A → A → Set _
-Invertible e _∙_ x = ∃[ x⁻¹ ] ((x⁻¹ ∙ x) ≈ e) × ((x ∙ x⁻¹) ≈ e)
+Invertible e _∙_ x = ∃[ x⁻¹ ] (x⁻¹ ∙ x) ≈ e × (x ∙ x⁻¹) ≈ e
 
 LeftConical : A → Op₂ A → Set _
 LeftConical e _∙_ = ∀ x y → (x ∙ y) ≈ e → x ≈ e

@@ -23,11 +23,8 @@ open import Algebra.Structures _≈_ using (IsCommutativeRing)
 open import Relation.Binary.Structures using (IsEquivalence; IsApartnessRelation)
 open import Relation.Binary.Definitions using (Tight)
 open import Relation.Nullary using (¬_)
-import Relation.Binary.Properties.ApartnessRelation as ApartnessRelation
+import Relation.Binary.Properties.ApartnessRelation as AR
 
-private
-  Iso : ∀ {a b} → Set a → Set b → Set _
-  Iso A B = (A → B) × (B → A)
 
 record IsHeytingCommutativeRing : Set (c ⊔ ℓ₁ ⊔ ℓ₂) where
 
@@ -39,10 +36,11 @@ record IsHeytingCommutativeRing : Set (c ⊔ ℓ₁ ⊔ ℓ₂) where
   open IsApartnessRelation isApartnessRelation public
 
   field
-    #⇔invertible : ∀ {x y} → Iso (x # y) (Invertible 1# _*_ (x - y))
+    #⇒invertible : ∀ {x y} → x # y → Invertible 1# _*_ (x - y)
+    invertible⇒# : ∀ {x y} → Invertible 1# _*_ (x - y) → x # y
 
   ¬#-isEquivalence : IsEquivalence _¬#_
-  ¬#-isEquivalence = ApartnessRelation.¬#-isEquivalence refl isApartnessRelation
+  ¬#-isEquivalence = AR.¬#-isEquivalence refl isApartnessRelation
 
 
 record IsHeytingField : Set (c ⊔ ℓ₁ ⊔ ℓ₂) where

@@ -134,7 +134,7 @@ Minimum = Min
 
 -- Note that Cotransitive's arguments are permuted with respect to Transitive's.
 Cotransitive : Rel A ℓ → Set _
-Cotransitive _#_ = ∀ {x y} z → x # y → (x # z) ⊎ (z # y)
+Cotransitive _#_ = ∀ {x y} → x # y → ∀ z → (x # z) ⊎ (z # y)
 
 Tight : Rel A ℓ₁ → Rel A ℓ₂ → Set _
 Tight _≈_ _#_ = ∀ x y → (¬ x # y → x ≈ y) × (x ≈ y → ¬ x # y)
