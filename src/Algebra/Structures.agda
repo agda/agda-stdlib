@@ -166,6 +166,7 @@ record IsInvertibleMagma (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a 
   field
     isMagma  : IsMagma _∙_
     inverse   : Inverse ε _⁻¹ _∙_
+    ⁻¹-cong   : Congruent₁ _⁻¹
 
   open IsMagma isMagma public
 
@@ -174,7 +175,6 @@ record IsInvertibleMagma (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a 
 
   inverseʳ : RightInverse ε _⁻¹ _∙_
   inverseʳ = proj₂ inverse
-
 
 record IsInvertibleUnitalMagma (_∙_ : Op₂ A) (ε : A) (⁻¹ : Op₁ A) : Set (a ⊔ ℓ) where
   field
@@ -226,6 +226,7 @@ record IsGroup (_∙_ : Op₂ A) (ε : A) (_⁻¹ : Op₁ A) : Set (a ⊔ ℓ) w
   isInvertibleMagma = record
     { isMagma = isMagma
     ; inverse = inverse
+    ; ⁻¹-cong = ⁻¹-cong
     }
 
   isInvertibleUnitalMagma : IsInvertibleUnitalMagma _∙_ ε _⁻¹
