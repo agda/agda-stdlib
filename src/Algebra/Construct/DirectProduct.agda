@@ -269,6 +269,7 @@ invertibleMagma M N = record
     { isMagma = Magma.isMagma (magma M.magma N.magma)
     ; inverse = (λ x → (M.inverseˡ , N.inverseˡ) <*> x)
                 , (λ x → (M.inverseʳ , N.inverseʳ) <*> x)
+    ; ⁻¹-cong = map G.⁻¹-cong H.⁻¹-cong
     }
   } where module M = InvertibleMagma M; module N = InvertibleMagma N
 
