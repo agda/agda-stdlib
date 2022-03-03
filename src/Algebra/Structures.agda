@@ -497,8 +497,8 @@ record IsCancellativeCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a �
 
 record IsKleeneAlgebra (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
   field
-    isSemiring   : IsSemiring + * 0# 1#
-    +-idemptent  : Idempotent +
+    isSemiring  : IsSemiring + * 0# 1#
+    +-idem      : Idempotent +
 
   open IsSemiring isSemiring public
 
