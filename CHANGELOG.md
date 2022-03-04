@@ -717,6 +717,15 @@ New modules
   Algebra.Module.Core
   ```
 
+* Constructive algebraic structures with apartness relations:
+  ```
+  Algebra.Apartness
+  Algebra.Apartness.Bundles
+  Algebra.Apartness.Structures
+  Algebra.Apartness.Properties.CommutativeHeytingAlgebra
+  Relation.Binary.Properties.ApartnessRelation
+  ```
+
 * Morphisms between module-like algebraic structures:
   ```
   Algebra.Module.Morphism.Construct.Composition
@@ -920,12 +929,16 @@ Other minor changes
 
 * Added new definition to `Algebra.Definitions`:
   ```agda
-  LeftDividesˡ : Op₂ A → Op₂ A → Set _
-  LeftDividesʳ : Op₂ A → Op₂ A → Set _
+  LeftDividesˡ  : Op₂ A → Op₂ A → Set _
+  LeftDividesʳ  : Op₂ A → Op₂ A → Set _
   RightDividesˡ : Op₂ A → Op₂ A → Set _
   RightDividesʳ : Op₂ A → Op₂ A → Set _
-  LeftDivides : Op₂ A → Op₂ A → Set _
-  RightDivides : Op₂ A → Op₂ A → Set _
+  LeftDivides   : Op₂ A → Op₂ A → Set _
+  RightDivides  : Op₂ A → Op₂ A → Set _
+
+  LeftInvertible  e _∙_ x = ∃[ x⁻¹ ] (x⁻¹ ∙ x) ≈ e
+  RightInvertible e _∙_ x = ∃[ x⁻¹ ] (x ∙ x⁻¹) ≈ e
+  Invertible      e _∙_ x = ∃[ x⁻¹ ] ((x⁻¹ ∙ x) ≈ e) × ((x ∙ x⁻¹) ≈ e)
   ```
 
 * Added new functions to `Algebra.Definitions.RawSemiring`:
@@ -1480,6 +1493,29 @@ Other minor changes
 * Generalised proofs in `Relation.Unary.Properties`:
   ```
   ⊆-trans : Trans _⊆_ _⊆_ _⊆_
+  ```
+
+* Added new definitions in `Relation.Binary.Definitions`:
+  ```
+  Cotransitive _#_ = ∀ {x y} → x # y → ∀ z → (x # z) ⊎ (z # y)
+  Tight    _≈_ _#_ = ∀ x y → (¬ x # y → x ≈ y) × (x ≈ y → ¬ x # y)
+  ```
+
+* Added new definitions in `Relation.Binary.Bundles`:
+  ```
+  record ApartnessRelation c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
+  ```
+  
+* Added new definitions in `Relation.Binary.Structures`:
+  ```
+  record IsApartnessRelation (_#_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
+  ```
+
+* Added new proofs to `Relation.Binary.Consequences`:
+  ```
+  sym⇒¬-sym       : Symmetric _∼_ → Symmetric _≁_
+  cotrans⇒¬-trans : Cotransitive _∼_ → Transitive _≁_
+  irrefl⇒¬-refl   : Reflexive _≈_ → Irreflexive _≈_ _∼_ →  Reflexive _≁_
   ```
 
 * Added new operations in `Relation.Binary.PropositionalEquality.Properties`:
