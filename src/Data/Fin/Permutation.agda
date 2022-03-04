@@ -211,8 +211,10 @@ insert {m} {n} i j π = permutation to from record
   left-inverse-of : ∀ k → from (to k) ≡ k
   left-inverse-of k with i ≟ k
   ... | yes i≡k rewrite proj₂ (dec-yes (j ≟ j) refl) = i≡k
-  ... | no  i≢k with dec-no (j ≟ punchIn j (π ⟨$⟩ʳ punchOut i≢k)) (punchInᵢ≢i j (π ⟨$⟩ʳ punchOut i≢k) ∘ sym)
-  ... | j≢punchInⱼπʳpunchOuti≢k , p rewrite p = begin
+  ... | no  i≢k
+    with j≢punchInⱼπʳpunchOuti≢k ← punchInᵢ≢i j (π ⟨$⟩ʳ punchOut i≢k) ∘ sym
+    rewrite dec-no (j ≟ punchIn j (π ⟨$⟩ʳ punchOut i≢k)) j≢punchInⱼπʳpunchOuti≢k
+    = begin
     punchIn i (π ⟨$⟩ˡ punchOut j≢punchInⱼπʳpunchOuti≢k)                    ≡⟨ cong (λ l → punchIn i (π ⟨$⟩ˡ l)) (punchOut-cong j refl) ⟩
     punchIn i (π ⟨$⟩ˡ punchOut (punchInᵢ≢i j (π ⟨$⟩ʳ punchOut i≢k) ∘ sym)) ≡⟨ cong (λ l → punchIn i (π ⟨$⟩ˡ l)) (punchOut-punchIn j) ⟩
     punchIn i (π ⟨$⟩ˡ (π ⟨$⟩ʳ punchOut i≢k))                              ≡⟨ cong (punchIn i) (inverseˡ π) ⟩
@@ -222,8 +224,10 @@ insert {m} {n} i j π = permutation to from record
   right-inverse-of : ∀ k → to (from k) ≡ k
   right-inverse-of k with j ≟ k
   ... | yes j≡k rewrite proj₂ (dec-yes (i ≟ i) refl) = j≡k
-  ... | no  j≢k with dec-no (i ≟ punchIn i (π ⟨$⟩ˡ punchOut j≢k)) (punchInᵢ≢i i (π ⟨$⟩ˡ punchOut j≢k) ∘ sym)
-  ... | i≢punchInᵢπˡpunchOutj≢k , p rewrite p = begin
+  ... | no  j≢k
+    with i≢punchInᵢπˡpunchOutj≢k ← punchInᵢ≢i i (π ⟨$⟩ˡ punchOut j≢k) ∘ sym
+    rewrite dec-no (i ≟ punchIn i (π ⟨$⟩ˡ punchOut j≢k)) i≢punchInᵢπˡpunchOutj≢k
+    = begin
     punchIn j (π ⟨$⟩ʳ punchOut i≢punchInᵢπˡpunchOutj≢k)                    ≡⟨ cong (λ l → punchIn j (π ⟨$⟩ʳ l)) (punchOut-cong i refl) ⟩
     punchIn j (π ⟨$⟩ʳ punchOut (punchInᵢ≢i i (π ⟨$⟩ˡ punchOut j≢k) ∘ sym)) ≡⟨ cong (λ l → punchIn j (π ⟨$⟩ʳ l)) (punchOut-punchIn i) ⟩
     punchIn j (π ⟨$⟩ʳ (π ⟨$⟩ˡ punchOut j≢k))                              ≡⟨ cong (punchIn j) (inverseʳ π) ⟩

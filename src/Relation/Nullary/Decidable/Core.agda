@@ -113,9 +113,9 @@ dec-yes : (p? : Dec P) → P → ∃ λ p′ → p? ≡ yes p′
 dec-yes p? p with dec-true p? p
 dec-yes (yes p′) p | refl = p′ , refl
 
-dec-no : (p? : Dec P) → ¬ P → ∃ λ ¬p′ → p? ≡ no ¬p′
+dec-no : (p? : Dec P) (¬p : ¬ P) → p? ≡ no ¬p
 dec-no p? ¬p with dec-false p? ¬p
-dec-no (no ¬p′) ¬p | refl = ¬p′ , refl
+dec-no (no _) _ | refl = refl
 
 dec-yes-irr : (p? : Dec P) → Irrelevant P → (p : P) → p? ≡ yes p
 dec-yes-irr p? irr p with dec-yes p? p
