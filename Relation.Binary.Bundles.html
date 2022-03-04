@@ -298,4 +298,19 @@
   <a id="7596" class="String">&quot;Warning: decSetoid was deprecated in v1.3.
   Please use Eq.decSetoid instead.&quot;</a>
   <a id="7678" class="Symbol">#-}</a>
+
+
+<a id="7684" class="Comment">------------------------------------------------------------------------</a>
+<a id="7757" class="Comment">-- Apartness relations</a>
+<a id="7780" class="Comment">------------------------------------------------------------------------</a>
+
+<a id="7854" class="Keyword">record</a> <a id="ApartnessRelation"></a><a id="7861" href="Relation.Binary.Bundles.html#7861" class="Record">ApartnessRelation</a> <a id="7879" href="Relation.Binary.Bundles.html#7879" class="Bound">c</a> <a id="7881" href="Relation.Binary.Bundles.html#7881" class="Bound">ℓ₁</a> <a id="7884" href="Relation.Binary.Bundles.html#7884" class="Bound">ℓ₂</a> <a id="7887" class="Symbol">:</a> <a id="7889" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="7893" class="Symbol">(</a><a id="7894" href="Agda.Primitive.html#780" class="Primitive">suc</a> <a id="7898" class="Symbol">(</a><a id="7899" href="Relation.Binary.Bundles.html#7879" class="Bound">c</a> <a id="7901" href="Agda.Primitive.html#810" class="Primitive Operator">⊔</a> <a id="7903" href="Relation.Binary.Bundles.html#7881" class="Bound">ℓ₁</a> <a id="7906" href="Agda.Primitive.html#810" class="Primitive Operator">⊔</a> <a id="7908" href="Relation.Binary.Bundles.html#7884" class="Bound">ℓ₂</a><a id="7910" class="Symbol">))</a> <a id="7913" class="Keyword">where</a>
+  <a id="7921" class="Keyword">infix</a> <a id="7927" class="Number">4</a> <a id="7929" href="Relation.Binary.Bundles.html#7981" class="Field Operator">_≈_</a> <a id="7933" href="Relation.Binary.Bundles.html#8022" class="Field Operator">_#_</a>
+  <a id="7939" class="Keyword">field</a>
+    <a id="ApartnessRelation.Carrier"></a><a id="7949" href="Relation.Binary.Bundles.html#7949" class="Field">Carrier</a>             <a id="7969" class="Symbol">:</a> <a id="7971" href="Agda.Primitive.html#326" class="Primitive">Set</a> <a id="7975" href="Relation.Binary.Bundles.html#7879" class="Bound">c</a>
+    <a id="ApartnessRelation._≈_"></a><a id="7981" href="Relation.Binary.Bundles.html#7981" class="Field Operator">_≈_</a>                 <a id="8001" class="Symbol">:</a> <a id="8003" href="Relation.Binary.Core.html#882" class="Function">Rel</a> <a id="8007" href="Relation.Binary.Bundles.html#7949" class="Field">Carrier</a> <a id="8015" href="Relation.Binary.Bundles.html#7881" class="Bound">ℓ₁</a>
+    <a id="ApartnessRelation._#_"></a><a id="8022" href="Relation.Binary.Bundles.html#8022" class="Field Operator">_#_</a>                 <a id="8042" class="Symbol">:</a> <a id="8044" href="Relation.Binary.Core.html#882" class="Function">Rel</a> <a id="8048" href="Relation.Binary.Bundles.html#7949" class="Field">Carrier</a> <a id="8056" href="Relation.Binary.Bundles.html#7884" class="Bound">ℓ₂</a>
+    <a id="ApartnessRelation.isApartnessRelation"></a><a id="8063" href="Relation.Binary.Bundles.html#8063" class="Field">isApartnessRelation</a> <a id="8083" class="Symbol">:</a> <a id="8085" href="Relation.Binary.Structures.html#7649" class="Record">IsApartnessRelation</a> <a id="8105" href="Relation.Binary.Bundles.html#7981" class="Field Operator">_≈_</a> <a id="8109" href="Relation.Binary.Bundles.html#8022" class="Field Operator">_#_</a>
+
+  <a id="8116" class="Keyword">open</a> <a id="8121" href="Relation.Binary.Structures.html#7649" class="Module">IsApartnessRelation</a> <a id="8141" href="Relation.Binary.Bundles.html#8063" class="Field">isApartnessRelation</a> <a id="8161" class="Keyword">public</a>
 </pre></body></html>
