@@ -8,7 +8,7 @@
 
 module Data.Empty where
 
-open import Data.Erased using (Erased)
+open import Data.Irrelevant using (Irrelevant)
 
 ------------------------------------------------------------------------
 -- Definition
@@ -20,15 +20,15 @@ open import Data.Erased using (Erased)
 private
   data Empty : Set where
 
--- ⊥ is defined via Data.Erased (a record with a single irrelevant field)
+-- ⊥ is defined via Data.Irrelevant (a record with a single irrelevant field)
 -- so that Agda can judgementally declare that all proofs of ⊥ are equal
 -- to each other. In particular this means that all functions returning a
 -- proof of ⊥ are equal.
 
 ⊥ : Set
-⊥ = Erased Empty
+⊥ = Irrelevant Empty
 
-{-# DISPLAY Erased Empty = ⊥ #-}
+{-# DISPLAY Irrelevant Empty = ⊥ #-}
 
 ------------------------------------------------------------------------
 -- Functions

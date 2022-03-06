@@ -393,7 +393,7 @@ Non-backwards compatible changes
     data Empty : Set where
 
   ⊥ : Set
-  ⊥ = Erased Empty
+  ⊥ = Irrelevant Empty
   ```
   in order to make ⊥ proof irrelevant. Any two proofs of `⊥` or of a negated
   statements are now *judgementally* equal to each other.
@@ -732,6 +732,11 @@ Deprecated names
   invIsPreorder ↦ converse-isPreorder
   invPreorder   ↦ converse-preorder
   ```
+
+### Renamed Data.Erased to Data.Irrelevant
+s
+* This fixes the fact we had picked the wrong name originally. The erased modality
+  corresponds to @0 whereas the irrelevance one corresponds to `.`.
 
 New modules
 -----------
