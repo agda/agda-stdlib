@@ -115,27 +115,27 @@ map-compose : {g : B → C} {f : A → B} → map (g ∘ f) ≗ map g ∘ map f
 map-compose (x ∷ xs) = cong (_ ∷_) (List.map-compose xs)
 
 ------------------------------------------------------------------------
--- groupSequences
+-- groupSeqs
 
 -- Groups all contiguous elements for which the predicate returns the
 -- same result into lists.
 
 module _ {P : Pred A p} (P? : Decidable P) where
 
-  groupSequences-groups : ∀ xs → ListAll (Sum.All (All P) (All (∁ P))) (groupSequences P? xs)
-  groupSequences-groups []       = []
-  groupSequences-groups (x ∷ xs) with P? x | groupSequences P? xs | groupSequences-groups xs
+  groupSeqs-groups : ∀ xs → ListAll (Sum.All (All P) (All (∁ P))) (groupSeqs P? xs)
+  groupSeqs-groups []       = []
+  groupSeqs-groups (x ∷ xs) with P? x | groupSeqs P? xs | groupSeqs-groups xs
   ... | yes px | []             | hyp             = inj₁ (px  ∷ []) ∷ hyp
-  ... | yes px | inj₁ xs′ ∷ xss | inj₁ pxs ∷ pxss = inj₁ (px  ∷ toListAll pxs) ∷ pxss
+  ... | yes px | inj₁ xs′ ∷ xss | inj₁ pxs ∷ pxss = inj₁ (px  ∷ toList⁺ pxs) ∷ pxss
   ... | yes px | inj₂ xs′ ∷ xss | inj₂ pxs ∷ pxss = inj₁ (px  ∷ []) ∷ inj₂ pxs ∷ pxss
   ... | no ¬px | []             | hyp             = inj₂ (¬px ∷ []) ∷ hyp
-  ... | no ¬px | inj₂ xs′ ∷ xss | inj₂ pxs ∷ pxss = inj₂ (¬px ∷ toListAll pxs) ∷ pxss
+  ... | no ¬px | inj₂ xs′ ∷ xss | inj₂ pxs ∷ pxss = inj₂ (¬px ∷ toList⁺ pxs) ∷ pxss
   ... | no ¬px | inj₁ xs′ ∷ xss | inj₁ pxs ∷ pxss = inj₂ (¬px ∷ []) ∷ inj₁ pxs ∷ pxss
 
-  ungroupSequences-groupSequences : ∀ xs → ungroupSequences (groupSequences P? xs) ≡ xs
-  ungroupSequences-groupSequences []       = refl
-  ungroupSequences-groupSequences (x ∷ xs)
-    with does (P? x) | groupSequences P? xs | ungroupSequences-groupSequences xs
+  ungroupSeqs-groupSeqs : ∀ xs → ungroupSeqs (groupSeqs P? xs) ≡ xs
+  ungroupSeqs-groupSeqs []       = refl
+  ungroupSeqs-groupSeqs (x ∷ xs)
+    with does (P? x) | groupSeqs P? xs | ungroupSeqs-groupSeqs xs
   ... | true  | []         | hyp = cong (x ∷_) hyp
   ... | true  | inj₁ _ ∷ _ | hyp = cong (x ∷_) hyp
   ... | true  | inj₂ _ ∷ _ | hyp = cong (x ∷_) hyp

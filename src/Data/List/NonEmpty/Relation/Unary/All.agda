@@ -35,5 +35,5 @@ data All {A : Set a} (P : Pred A p) : Pred (List⁺ A) (a ⊔ p) where
 ------------------------------------------------------------------------
 -- Functions
 
-toListAll : ∀ {xs : List⁺ A} → All P xs → List.All P (toList xs)
-toListAll (px ∷ pxs) = px ∷ pxs
+toList⁺ : ∀ {xs : List⁺ A} → All P xs → List.All P (toList xs)
+toList⁺ (px ∷ pxs) = px ∷ pxs

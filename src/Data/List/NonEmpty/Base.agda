@@ -208,9 +208,9 @@ last .(ys ∷ʳ y) | ys ∷ʳ′ y = y
 -- Groups all contiguous elements for which the predicate returns the
 -- same result into lists. The left sums are the ones for which the
 -- predicate holds, the right ones are the ones for which it doesn't.
-groupSequencesᵇ : (A → Bool) → List A → List (List⁺ A ⊎ List⁺ A)
-groupSequencesᵇ p []       = []
-groupSequencesᵇ p (x ∷ xs) with p x | groupSequencesᵇ p xs
+groupSeqsᵇ : (A → Bool) → List A → List (List⁺ A ⊎ List⁺ A)
+groupSeqsᵇ p []       = []
+groupSeqsᵇ p (x ∷ xs) with p x | groupSeqsᵇ p xs
 ... | true  | inj₁ xs′ ∷ xss = inj₁ (x ∷⁺ xs′) ∷ xss
 ... | true  | xss            = inj₁ [ x ]      ∷ xss
 ... | false | inj₂ xs′ ∷ xss = inj₂ (x ∷⁺ xs′) ∷ xss
@@ -219,17 +219,17 @@ groupSequencesᵇ p (x ∷ xs) with p x | groupSequencesᵇ p xs
 -- Groups all contiguous elements /not/ satisfying the predicate into
 -- lists. Elements satisfying the predicate are dropped.
 wordsByᵇ : (A → Bool) → List A → List (List⁺ A)
-wordsByᵇ p = List.mapMaybe Sum.[ const nothing , just ] ∘ groupSequencesᵇ p
+wordsByᵇ p = List.mapMaybe Sum.[ const nothing , just ] ∘ groupSeqsᵇ p
 
-groupSequences : {P : Pred A p} → Decidable P → List A → List (List⁺ A ⊎ List⁺ A)
-groupSequences P? = groupSequencesᵇ (does ∘ P?)
+groupSeqs : {P : Pred A p} → Decidable P → List A → List (List⁺ A ⊎ List⁺ A)
+groupSeqs P? = groupSeqsᵇ (does ∘ P?)
 
 wordsBy : {P : Pred A p} → Decidable P → List A → List (List⁺ A)
 wordsBy P? = wordsByᵇ (does ∘ P?)
 
 -- Inverse operation for groupSequences.
-ungroupSequences : List (List⁺ A ⊎ List⁺ A) → List A
-ungroupSequences = List.concat ∘ List.map Sum.[ toList , toList ]
+ungroupSeqs : List (List⁺ A ⊎ List⁺ A) → List A
+ungroupSeqs = List.concat ∘ List.map Sum.[ toList , toList ]
 
 ------------------------------------------------------------------------
 -- Examples
@@ -292,20 +292,22 @@ private
   snoc⁺ : (a ∷⁺ b ∷⁺ [ c ]) ⁺∷ʳ a ≡ a ∷⁺ b ∷⁺ c ∷⁺ [ a ]
   snoc⁺ = refl
 
-  groupSequences-true : groupSequences U? (a ∷ b ∷ c ∷ []) ≡
+  groupSeqs-true : groupSeqs U? (a ∷ b ∷ c ∷ []) ≡
                inj₁ (a ∷⁺ b ∷⁺ [ c ]) ∷ []
-  groupSequences-true = refl
+  groupSeqs-true = refl
 
-  groupSequences-false : groupSequences ∅? (a ∷ b ∷ c ∷ []) ≡
+  groupSeqs-false : groupSeqs ∅? (a ∷ b ∷ c ∷ []) ≡
                 inj₂ (a ∷⁺ b ∷⁺ [ c ]) ∷ []
-  groupSequences-false = refl
+  groupSeqs-false = refl
 
-  groupSequences-≡1 :
-    groupSequences (T? ∘ (ℕ._≡ᵇ 1)) (1 ∷ 2 ∷ 3 ∷ 1 ∷ 1 ∷ 2 ∷ 1 ∷ []) ≡
-    inj₁ [ 1 ] ∷ inj₂ (2 ∷⁺ [ 3 ]) ∷
-    inj₁ (1 ∷⁺ [ 1 ]) ∷ inj₂ [ 2 ] ∷ inj₁ [ 1 ] ∷
-    []
-  groupSequences-≡1 = refl
+  groupSeqs-≡1 : groupSeqsᵇ (ℕ._≡ᵇ 1) (1 ∷ 2 ∷ 3 ∷ 1 ∷ 1 ∷ 2 ∷ 1 ∷ []) ≡
+                 inj₁ [ 1 ] ∷
+                 inj₂ (2 ∷⁺ [ 3 ]) ∷
+                 inj₁ (1 ∷⁺ [ 1 ]) ∷
+                 inj₂ [ 2 ] ∷
+                 inj₁ [ 1 ] ∷
+                 []
+  groupSeqs-≡1 = refl
 
   wordsBy-true : wordsByᵇ (const true) (a ∷ b ∷ c ∷ []) ≡ []
   wordsBy-true = refl
@@ -314,7 +316,8 @@ private
                   (a ∷⁺ b ∷⁺ [ c ]) ∷ []
   wordsBy-false = refl
 
-  wordsBy-≡1 :
-    wordsByᵇ (ℕ._≡ᵇ 1) (1 ∷ 2 ∷ 3 ∷ 1 ∷ 1 ∷ 2 ∷ 1 ∷ []) ≡
-    (2 ∷⁺ [ 3 ]) ∷ [ 2 ] ∷ []
+  wordsBy-≡1 : wordsByᵇ (ℕ._≡ᵇ 1) (1 ∷ 2 ∷ 3 ∷ 1 ∷ 1 ∷ 2 ∷ 1 ∷ []) ≡
+               (2 ∷⁺ [ 3 ]) ∷
+               [ 2 ] ∷
+               []
   wordsBy-≡1 = refl
