@@ -6,9 +6,9 @@
 
 {-# OPTIONS --without-K --safe --guardedness #-}
 
-module Category.Monad.Partiality.Instances where
+module Effect.Monad.Partiality.Instances where
 
-open import Category.Monad.Partiality
+open import Effect.Monad.Partiality
 
 instance
   partialityMonad = monad

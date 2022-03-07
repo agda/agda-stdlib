@@ -14,7 +14,7 @@ open import Data.Product
 open import Data.Container
 open import Data.Container.Combinator using (const; _⊎_)
 open import Data.W using (sup)
-open import Category.Monad
+open import Effect.Monad
 
 infixl 1 _⋆C_
 infix  1 _⋆_

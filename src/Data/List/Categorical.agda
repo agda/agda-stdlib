@@ -8,9 +8,9 @@
 
 module Data.List.Categorical where
 
-open import Category.Functor
-open import Category.Applicative
-open import Category.Monad
+open import Effect.Functor
+open import Effect.Applicative
+open import Effect.Monad
 open import Data.Bool.Base using (false; true)
 open import Data.List.Base
 open import Data.List.Properties

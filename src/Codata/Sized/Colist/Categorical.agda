@@ -10,8 +10,8 @@ module Codata.Sized.Colist.Categorical where
 
 open import Codata.Sized.Conat using (infinity)
 open import Codata.Sized.Colist
-open import Category.Functor
-open import Category.Applicative
+open import Effect.Functor
+open import Effect.Applicative
 
 functor : ∀ {ℓ i} → RawFunctor {ℓ} (λ A → Colist A i)
 functor = record { _<$>_ = map }

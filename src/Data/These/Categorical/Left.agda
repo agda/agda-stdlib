@@ -29,8 +29,8 @@ open Semigroup W
 open import Data.These.Categorical.Left.Base Carrier b public
 
 open import Data.These.Base
-open import Category.Applicative
-open import Category.Monad
+open import Effect.Applicative
+open import Effect.Monad
 
 module _ {a b} {A : Set a} {B : Set b} where
 

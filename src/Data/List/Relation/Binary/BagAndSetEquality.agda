@@ -10,7 +10,7 @@ module Data.List.Relation.Binary.BagAndSetEquality where
 
 open import Algebra using (Idempotent; CommutativeMonoid)
 open import Algebra.Structures.Biased using (isCommutativeMonoidˡ)
-open import Category.Monad using (RawMonad)
+open import Effect.Monad using (RawMonad)
 open import Data.Empty
 open import Data.Fin.Base
 open import Data.List.Base

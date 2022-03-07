@@ -14,7 +14,7 @@ open import Data.List.Base using (List; []; _∷_; _++_)
 open import Data.Maybe.Base using (Maybe; nothing; just)
 import Data.Maybe.Categorical as Maybe
 import Function.Identity.Categorical as Identity
-open import Category.Applicative using (RawApplicative)
+open import Effect.Applicative using (RawApplicative)
 
 open import Reflection
 open import Reflection.AST.Argument.Visibility using (Visibility)

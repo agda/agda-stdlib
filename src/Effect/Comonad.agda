@@ -8,7 +8,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Category.Comonad where
+module Effect.Comonad where
 
 open import Level
 open import Function

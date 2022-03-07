@@ -11,9 +11,9 @@ module Codata.Sized.Stream.Categorical where
 open import Data.Product using (<_,_>)
 open import Codata.Sized.Stream
 open import Function.Base
-open import Category.Functor
-open import Category.Applicative
-open import Category.Comonad
+open import Effect.Functor
+open import Effect.Applicative
+open import Effect.Comonad
 
 functor : ∀ {ℓ i} → RawFunctor {ℓ} (λ A → Stream A i)
 functor = record { _<$>_ = λ f → map f }

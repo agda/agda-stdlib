@@ -6,10 +6,10 @@
 
 {-# OPTIONS --without-K --safe --guardedness #-}
 
-module Category.Monad.Partiality.All where
+module Effect.Monad.Partiality.All where
 
-open import Category.Monad
-open import Category.Monad.Partiality as Partiality using (_⊥; ⇒≈)
+open import Effect.Monad
+open import Effect.Monad.Partiality as Partiality using (_⊥; ⇒≈)
 open import Codata.Musical.Notation
 open import Function
 open import Level

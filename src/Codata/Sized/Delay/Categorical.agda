@@ -10,9 +10,9 @@ module Codata.Sized.Delay.Categorical where
 
 open import Codata.Sized.Delay
 open import Function
-open import Category.Functor
-open import Category.Applicative
-open import Category.Monad
+open import Effect.Functor
+open import Effect.Applicative
+open import Effect.Monad
 open import Data.These using (leftMost)
 
 functor : ∀ {i ℓ} → RawFunctor {ℓ} (λ A → Delay A i)

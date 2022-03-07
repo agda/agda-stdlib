@@ -6,13 +6,13 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Category.Monad.Continuation where
+module Effect.Monad.Continuation where
 
-open import Category.Applicative
-open import Category.Applicative.Indexed
-open import Category.Monad
+open import Effect.Applicative
+open import Effect.Applicative.Indexed
+open import Effect.Monad
 open import Function.Identity.Categorical as Id using (Identity)
-open import Category.Monad.Indexed
+open import Effect.Monad.Indexed
 open import Function
 open import Level
 

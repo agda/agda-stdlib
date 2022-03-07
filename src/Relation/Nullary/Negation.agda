@@ -8,7 +8,7 @@
 
 module Relation.Nullary.Negation where
 
-open import Category.Monad
+open import Effect.Monad
 open import Data.Bool.Base using (Bool; false; true; if_then_else_; not)
 open import Data.Empty
 open import Data.Product as Prod

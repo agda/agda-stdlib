@@ -8,11 +8,11 @@
 
 module Data.Vec.Categorical {a n} where
 
-open import Category.Applicative using (RawApplicative)
-open import Category.Applicative.Indexed using (Morphism)
-open import Category.Functor as Fun using (RawFunctor)
+open import Effect.Applicative using (RawApplicative)
+open import Effect.Applicative.Indexed using (Morphism)
+open import Effect.Functor as Fun using (RawFunctor)
 import Function.Identity.Categorical as Id
-open import Category.Monad using (RawMonad)
+open import Effect.Monad using (RawMonad)
 open import Data.Fin.Base using (Fin)
 open import Data.Vec.Base as Vec hiding (_⊛_)
 open import Data.Vec.Properties

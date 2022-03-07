@@ -11,8 +11,8 @@ module Data.Sum.Categorical.Examples where
 open import Level
 open import Data.Sum.Base
 import Data.Sum.Categorical.Left as Sumₗ
-open import Category.Functor
-open import Category.Monad
+open import Effect.Functor
+open import Effect.Monad
 
 -- Note that these examples are simple unit tests, because the type
 -- checker verifies them.

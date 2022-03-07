@@ -6,10 +6,10 @@
 
 {-# OPTIONS --without-K --safe --guardedness #-}
 
-module Category.Monad.Partiality where
+module Effect.Monad.Partiality where
 
 open import Codata.Musical.Notation
-open import Category.Monad
+open import Effect.Monad
 open import Data.Bool.Base using (Bool; false; true)
 open import Data.Nat using (ℕ; zero; suc; _+_)
 open import Data.Product as Prod hiding (map)

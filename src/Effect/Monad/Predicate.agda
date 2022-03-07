@@ -8,11 +8,11 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Category.Monad.Predicate where
+module Effect.Monad.Predicate where
 
-open import Category.Applicative.Indexed
-open import Category.Monad
-open import Category.Monad.Indexed
+open import Effect.Applicative.Indexed
+open import Effect.Monad
+open import Effect.Monad.Indexed
 open import Data.Unit
 open import Data.Product
 open import Function

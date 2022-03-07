@@ -11,7 +11,7 @@ open import Relation.Binary hiding (Decidable)
 module Data.List.Relation.Binary.Subset.Propositional.Properties
   where
 
-open import Category.Monad
+open import Effect.Monad
 open import Data.Bool.Base using (Bool; true; false; T)
 open import Data.List.Base
 open import Data.List.Relation.Unary.Any using (Any; here; there)

@@ -8,10 +8,10 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Category.Monad where
+module Effect.Monad where
 
 open import Function
-open import Category.Monad.Indexed
+open import Effect.Monad.Indexed
 open import Data.Unit
 open import Level
 

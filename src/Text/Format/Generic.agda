@@ -12,7 +12,7 @@ open import Data.Maybe.Base using (Maybe)
 module Text.Format.Generic where
 
 open import Level using (0ℓ)
-open import Category.Applicative
+open import Effect.Applicative
 open import Data.List.Base as List
 open import Data.Maybe as Maybe
 open import Data.Nat.Base

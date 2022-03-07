@@ -9,7 +9,7 @@
 
 module README.Data.Container.FreeMonad where
 
-open import Category.Monad
+open import Effect.Monad
 open import Data.Empty
 open import Data.Unit
 open import Data.Bool.Base using (Bool; true)

@@ -8,9 +8,9 @@
 
 module Reflection.TCM.Categorical where
 
-open import Category.Functor
-open import Category.Applicative
-open import Category.Monad
+open import Effect.Functor
+open import Effect.Applicative
+open import Effect.Monad
 open import Data.List.Base using ([])
 open import Function.Base using (_∘_)
 open import Level

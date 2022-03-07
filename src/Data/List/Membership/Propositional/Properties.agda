@@ -9,7 +9,7 @@
 module Data.List.Membership.Propositional.Properties where
 
 open import Algebra using (Op₂; Selective)
-open import Category.Monad using (RawMonad)
+open import Effect.Monad using (RawMonad)
 open import Data.Bool.Base using (Bool; false; true; T)
 open import Data.Fin.Base using (Fin)
 open import Data.List.Base as List

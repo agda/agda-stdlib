@@ -8,7 +8,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Category.Functor where
+module Effect.Functor where
 
 open import Function hiding (Morphism)
 open import Level

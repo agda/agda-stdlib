@@ -8,11 +8,11 @@
 
 module Data.List.Relation.Unary.Any.Properties where
 
-open import Category.Monad
+open import Effect.Monad
 open import Data.Bool.Base using (Bool; false; true; T)
 open import Data.Bool.Properties using (T-∨; T-≡)
 open import Data.Empty using (⊥)
-open import Data.Fin.Base using (Fin) renaming (zero to fzero; suc to fsuc)
+open import Data.Fin.Base using (Fin; zero; suc) -- renaming (zero to fzero; suc to fsuc)
 open import Data.List.Base as List
 open import Data.List.Properties using (ʳ++-defn)
 open import Data.List.Categorical using (monad)
@@ -22,7 +22,7 @@ open import Data.List.Membership.Propositional.Properties.Core
   using (Any↔; find∘map; map∘find; lose∘find)
 open import Data.List.Relation.Binary.Pointwise
   using (Pointwise; []; _∷_)
-open import Data.Nat using (zero; suc; _<_; z≤n; s≤s)
+open import Data.Nat using (zero; suc; _<_; z≤n; s≤s; z<s; s<s)
 open import Data.Nat.Properties using (_≟_; ≤∧≢⇒<; ≤-refl; ≤-step)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.Any as MAny using (just)
@@ -482,15 +482,15 @@ cartesianProduct⁻ = cartesianProductWith⁻ _,_ id
 -- applyUpTo
 
 applyUpTo⁺ : ∀ f {i n} → P (f i) → i < n → Any P (applyUpTo f n)
-applyUpTo⁺ _ p (s≤s z≤n)       = here p
-applyUpTo⁺ f p (s≤s (s≤s i<n)) =
-  there (applyUpTo⁺ (f ∘ suc) p (s≤s i<n))
+applyUpTo⁺ _ p (z<s)       = here p
+applyUpTo⁺ f p (s<s i<n@(s≤s _)) =
+  there (applyUpTo⁺ (f ∘ suc) p i<n)
 
 applyUpTo⁻ : ∀ f {n} → Any P (applyUpTo f n) →
              ∃ λ i → i < n × P (f i)
-applyUpTo⁻ f {suc n} (here p)  = zero , s≤s z≤n , p
+applyUpTo⁻ f {suc n} (here p)  = zero , z<s , p
 applyUpTo⁻ f {suc n} (there p) with applyUpTo⁻ (f ∘ suc) p
-... | i , i<n , q = suc i , s≤s i<n , q
+... | i , i<n , q = suc i , s<s i<n , q
 
 ------------------------------------------------------------------------
 -- applyDownFrom
@@ -512,12 +512,12 @@ module _ {P : A → Set p} where
 -- tabulate
 
 tabulate⁺ : ∀ {n} {f : Fin n → A} i → P (f i) → Any P (tabulate f)
-tabulate⁺ fzero    p = here p
-tabulate⁺ (fsuc i) p = there (tabulate⁺ i p)
+tabulate⁺ zero    p = here p
+tabulate⁺ (suc i) p = there (tabulate⁺ i p)
 
 tabulate⁻ : ∀ {n} {f : Fin n → A} → Any P (tabulate f) → ∃ λ i → P (f i)
-tabulate⁻ {n = suc n} (here p)   = fzero , p
-tabulate⁻ {n = suc n} (there p) = Prod.map fsuc id (tabulate⁻ p)
+tabulate⁻ {n = suc _} (here p)  = zero , p
+tabulate⁻ {n = suc _} (there p) = Prod.map suc id (tabulate⁻ p)
 
 ------------------------------------------------------------------------
 -- filter

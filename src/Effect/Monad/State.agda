@@ -6,12 +6,12 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Category.Monad.State where
+module Effect.Monad.State where
 
-open import Category.Applicative.Indexed
-open import Category.Monad
+open import Effect.Applicative.Indexed
+open import Effect.Monad
 open import Function.Identity.Categorical as Id using (Identity)
-open import Category.Monad.Indexed
+open import Effect.Monad.Indexed
 open import Data.Product
 open import Data.Unit
 open import Function

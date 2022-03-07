@@ -13,9 +13,9 @@ open import Data.Product hiding (map)
 open import Data.Vec.Recursive
 open import Function
 
-open import Category.Functor
-open import Category.Applicative
-open import Category.Monad
+open import Effect.Functor
+open import Effect.Applicative
+open import Effect.Monad
 
 ------------------------------------------------------------------------
 -- Functor and applicative

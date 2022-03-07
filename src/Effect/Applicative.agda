@@ -9,11 +9,11 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Category.Applicative where
+module Effect.Applicative where
 
 open import Level using (Level; suc; _⊔_)
 open import Data.Unit
-open import Category.Applicative.Indexed
+open import Effect.Applicative.Indexed
 
 private
   variable

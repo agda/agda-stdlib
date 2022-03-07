@@ -12,7 +12,7 @@ module Data.Trie.NonEmpty {k e r} (S : StrictTotalOrder k e r) where
 
 open import Level
 open import Size
-open import Category.Monad
+open import Effect.Monad
 open import Data.Product as Prod using (∃; uncurry; -,_)
 open import Data.List.Base as List using (List; []; _∷_; _++_)
 open import Data.List.NonEmpty as List⁺ using (List⁺; [_]; concatMap)

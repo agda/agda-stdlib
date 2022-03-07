@@ -9,9 +9,9 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Category.Applicative.Indexed where
+module Effect.Applicative.Indexed where
 
-open import Category.Functor using (RawFunctor)
+open import Effect.Functor using (RawFunctor)
 open import Data.Product using (_×_; _,_)
 open import Function hiding (Morphism)
 open import Level

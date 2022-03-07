@@ -20,8 +20,8 @@ module Data.Product.Categorical.Right
 
 open import Data.Product
 import Data.Product.Categorical.Right.Base as Base
-open import Category.Applicative using (RawApplicative)
-open import Category.Monad using (RawMonad; RawMonadT)
+open import Effect.Applicative using (RawApplicative)
+open import Effect.Monad using (RawMonad; RawMonadT)
 open import Function.Base using (id; flip; _∘_; _∘′_)
 import Function.Identity.Categorical as Id
 

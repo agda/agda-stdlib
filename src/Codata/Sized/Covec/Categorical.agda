@@ -11,8 +11,8 @@ module Codata.Sized.Covec.Categorical where
 open import Codata.Sized.Conat
 open import Codata.Sized.Covec
 
-open import Category.Functor
-open import Category.Applicative
+open import Effect.Functor
+open import Effect.Applicative
 
 functor : ∀ {ℓ i n} → RawFunctor {ℓ} (λ A → Covec A n i)
 functor = record { _<$>_ = map }

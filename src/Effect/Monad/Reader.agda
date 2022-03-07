@@ -8,13 +8,13 @@
 
 open import Level
 
-module Category.Monad.Reader {r} (R : Set r) (a : Level) where
+module Effect.Monad.Reader {r} (R : Set r) (a : Level) where
 
 open import Function
 open import Function.Identity.Categorical as Id using (Identity)
-open import Category.Applicative.Indexed
-open import Category.Monad.Indexed
-open import Category.Monad
+open import Effect.Applicative.Indexed
+open import Effect.Monad.Indexed
+open import Effect.Monad
 open import Data.Unit
 
 private

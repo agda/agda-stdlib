@@ -9,9 +9,9 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Category.Applicative.Predicate where
+module Effect.Applicative.Predicate where
 
-open import Category.Functor.Predicate
+open import Effect.Functor.Predicate
 open import Data.Product
 open import Function
 open import Level

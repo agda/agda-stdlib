@@ -10,7 +10,7 @@ module Data.List.NonEmpty.Properties where
 
 open import Level using (Level)
 
-open import Category.Monad
+open import Effect.Monad
 open import Data.Nat
 open import Data.Nat.Properties
 open import Data.Maybe.Properties using (just-injective)

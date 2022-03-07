@@ -8,7 +8,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Category.Functor.Predicate where
+module Effect.Functor.Predicate where
 
 open import Function
 open import Level

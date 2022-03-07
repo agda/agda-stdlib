@@ -8,9 +8,9 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Category.Monad.Indexed where
+module Effect.Monad.Indexed where
 
-open import Category.Applicative.Indexed
+open import Effect.Applicative.Indexed
 open import Function
 open import Level
 

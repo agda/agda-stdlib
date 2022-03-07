@@ -8,10 +8,10 @@
 
 module Function.Identity.Categorical {ℓ} where
 
-open import Category.Functor
-open import Category.Applicative
-open import Category.Monad
-open import Category.Comonad
+open import Effect.Functor
+open import Effect.Applicative
+open import Effect.Monad
+open import Effect.Comonad
 open import Function
 
 Identity : Set ℓ → Set ℓ

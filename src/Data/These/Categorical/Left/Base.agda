@@ -18,9 +18,9 @@ open import Level
 module Data.These.Categorical.Left.Base {a} (A : Set a) (b : Level) where
 
 open import Data.These.Base
-open import Category.Functor
-open import Category.Applicative
-open import Category.Monad
+open import Effect.Functor
+open import Effect.Applicative
+open import Effect.Monad
 open import Function
 
 Theseₗ : Set (a ⊔ b) → Set (a ⊔ b)

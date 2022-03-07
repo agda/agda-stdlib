@@ -9,7 +9,7 @@
 module Codata.Musical.Colist where
 
 open import Level using (Level)
-open import Category.Monad
+open import Effect.Monad
 open import Codata.Musical.Notation
 open import Codata.Musical.Conat using (Coℕ; zero; suc)
 import Codata.Musical.Colist.Properties

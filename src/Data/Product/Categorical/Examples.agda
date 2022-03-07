@@ -12,8 +12,8 @@ module Data.Product.Categorical.Examples
   {a e b} {A : Monoid a e} {B : Set b} where
 
 open import Level using (Lift; lift; _⊔_)
-open import Category.Functor using (RawFunctor)
-open import Category.Monad using (RawMonad)
+open import Effect.Functor using (RawFunctor)
+open import Effect.Monad using (RawMonad)
 open import Data.Product
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
 open import Function

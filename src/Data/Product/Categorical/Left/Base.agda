@@ -18,8 +18,8 @@ module Data.Product.Categorical.Left.Base
   {a} (A : Set a) (b : Level) where
 
 open import Data.Product using (_×_; map₂; proj₁; proj₂; <_,_>)
-open import Category.Functor using (RawFunctor)
-open import Category.Comonad using (RawComonad)
+open import Effect.Functor using (RawFunctor)
+open import Effect.Comonad using (RawComonad)
 
 ------------------------------------------------------------------------
 -- Definitions
