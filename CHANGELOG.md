@@ -58,6 +58,17 @@ Non-backwards compatible changes
   `Codata` which used sized types have been moved inside a new folder named
   `Sized`, e.g. `Codata.Stream` has become `Codata.Sized.Stream`.
 
+#### Moved `Category` modules to `Effect`
+
+* As observed by Wen Kokke in Issue #1636, it no longer really makes sense
+  to group the modules which correspond to the variety of concepts of 
+  (effectful) type constructor arising in functional programming (esp. in haskell) 
+  such as `Monad`, `Applicative`, ¬Functor`, etc, under `Category.*`, as this
+  obstructs the importing of the `agda-categories` development into the Standard Library,
+  and moreover needlessly restricts the applicability of categorical concepts to this
+  (highly specific) mode of use. Correspondingly, modules grouped under `*.Categorical`
+  which exploited these tsructures for effectful programming have been renamed `*.Effectful`.  
+
 ### Improvements to pretty printing and regexes
 
 * In `Text.Pretty`, `Doc` is now a record rather than a type alias. This
