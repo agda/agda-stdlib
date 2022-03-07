@@ -12,7 +12,7 @@ open import Level
 open import Data.Bool.Base using (true; false)
 open import Data.Empty using (⊥-elim)
 open import Data.List.Base as List using (List; []; _∷_; length; map; filter; replicate)
-open import Data.Nat.Base using (zero; suc; _≤_; s≤s)
+open import Data.Nat.Base using (zero; suc; _≤_)
 import Data.Nat.Properties as ℕₚ
 open import Data.Sum.Base using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Function.Base using (case_of_; _$′_)
