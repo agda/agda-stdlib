@@ -60,7 +60,7 @@ toNatDigits base@(suc (suc b)) n = aux (<-wellFounded-fast n) []
   ... | true  = aux (wf (n / base) q<n) ((n % base) ∷ xs)
     where
     q<n : n / base < n
-    q<n = m/n<m n base (s≤s (s≤s z≤n))
+    q<n = m/n<m n base (s<s z<s)
 
 ------------------------------------------------------------------------
 -- Converting between `ℕ` and expansions of `Digit base`
