@@ -1,13 +1,13 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Base definitions for the left-biased universe-sensitive functor and
+-- Base definitions for the right-biased universe-sensitive functor and
 -- monad instances for These.
 --
 -- To minimize the universe level of the RawFunctor, we require that
 -- elements of B are "lifted" to a copy of B at a higher universe level
 -- (a ⊔ b).
--- See the Data.Product.Categorical.Examples for how this is done in a
+-- See the Data.Product.Effectful.Examples for how this is done in a
 -- Product-based similar setting.
 ------------------------------------------------------------------------
 
@@ -15,7 +15,7 @@
 
 open import Level
 
-module Data.These.Categorical.Left.Base {a} (A : Set a) (b : Level) where
+module Data.These.Effectful.Right.Base (a : Level) {b} (B : Set b) where
 
 open import Data.These.Base
 open import Effect.Functor
@@ -23,11 +23,11 @@ open import Effect.Applicative
 open import Effect.Monad
 open import Function
 
-Theseₗ : Set (a ⊔ b) → Set (a ⊔ b)
-Theseₗ B = These A B
+Theseᵣ : Set (a ⊔ b) → Set (a ⊔ b)
+Theseᵣ A = These A B
 
-functor : RawFunctor Theseₗ
-functor = record { _<$>_ = map₂ }
+functor : RawFunctor Theseᵣ
+functor = record { _<$>_ = map₁ }
 
 ------------------------------------------------------------------------
 -- Get access to other monadic functions
@@ -36,26 +36,26 @@ module _ {F} (App : RawApplicative {a ⊔ b} F) where
 
   open RawApplicative App
 
-  sequenceA : ∀ {A} → Theseₗ (F A) → F (Theseₗ A)
-  sequenceA (this a)    = pure (this a)
-  sequenceA (that b)    = that <$> b
-  sequenceA (these a b) = these a <$> b
+  sequenceA : ∀ {A} → Theseᵣ (F A) → F (Theseᵣ A)
+  sequenceA (this a)    = this <$> a
+  sequenceA (that b)    = pure (that b)
+  sequenceA (these a b) = flip these b <$> a
 
-  mapA : ∀ {A B} → (A → F B) → Theseₗ A → F (Theseₗ B)
-  mapA f = sequenceA ∘ map₂ f
+  mapA : ∀ {A B} → (A → F B) → Theseᵣ A → F (Theseᵣ B)
+  mapA f = sequenceA ∘ map₁ f
 
-  forA : ∀ {A B} → Theseₗ A → (A → F B) → F (Theseₗ B)
+  forA : ∀ {A B} → Theseᵣ A → (A → F B) → F (Theseᵣ B)
   forA = flip mapA
 
 module _ {M} (Mon : RawMonad {a ⊔ b} M) where
 
   private App = RawMonad.rawIApplicative Mon
 
-  sequenceM : ∀ {A} → Theseₗ (M A) → M (Theseₗ A)
+  sequenceM : ∀ {A} → Theseᵣ (M A) → M (Theseᵣ A)
   sequenceM = sequenceA App
 
-  mapM : ∀ {A B} → (A → M B) → Theseₗ A → M (Theseₗ B)
+  mapM : ∀ {A B} → (A → M B) → Theseᵣ A → M (Theseᵣ B)
   mapM = mapA App
 
-  forM : ∀ {A B} → Theseₗ A → (A → M B) → M (Theseₗ B)
+  forM : ∀ {A B} → Theseᵣ A → (A → M B) → M (Theseᵣ B)
   forM = forA App

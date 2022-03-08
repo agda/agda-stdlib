@@ -7,14 +7,14 @@
 -- To minimize the universe level of the RawFunctor, we require that
 -- elements of B are "lifted" to a copy of B at a higher universe level
 -- (a ⊔ b).
--- See the Data.Product.Categorical.Examples for how this is done in a
+-- See the Data.Product.Effectful.Examples for how this is done in a
 -- Product-based similar setting.
 
 -- This functor can be understood as a notion of computation which can
 -- either fail (that), succeed (this) or accumulate warnings whilst
 -- delivering a successful computation (these).
 
--- It is a good alternative to Data.Product.Categorical when the notion
+-- It is a good alternative to Data.Product.Effectful when the notion
 -- of warnings does not have a neutral element (e.g. List⁺).
 
 {-# OPTIONS --without-K --safe #-}
@@ -22,10 +22,10 @@
 open import Level
 open import Algebra
 
-module Data.These.Categorical.Right (a : Level) {c ℓ} (W : Semigroup c ℓ) where
+module Data.These.Effectful.Right (a : Level) {c ℓ} (W : Semigroup c ℓ) where
 
 open Semigroup W
-open import Data.These.Categorical.Right.Base a Carrier public
+open import Data.These.Effectful.Right.Base a Carrier public
 
 open import Data.These.Base
 open import Effect.Applicative
