@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Data.Vec.Recursive.Categorical where
+module Data.Vec.Recursive.Effectful where
 
 open import Agda.Builtin.Nat
 open import Data.Product hiding (map)

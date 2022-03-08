@@ -1,23 +1,24 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- A categorical view of Colist
+-- A categorical view of Covec
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --sized-types #-}
 
-module Codata.Sized.Colist.Categorical where
+module Codata.Sized.Covec.Effectful where
 
-open import Codata.Sized.Conat using (infinity)
-open import Codata.Sized.Colist
+open import Codata.Sized.Conat
+open import Codata.Sized.Covec
+
 open import Effect.Functor
 open import Effect.Applicative
 
-functor : ∀ {ℓ i} → RawFunctor {ℓ} (λ A → Colist A i)
+functor : ∀ {ℓ i n} → RawFunctor {ℓ} (λ A → Covec A n i)
 functor = record { _<$>_ = map }
 
-applicative : ∀ {ℓ i} → RawApplicative {ℓ} (λ A → Colist A i)
+applicative : ∀ {ℓ i n} → RawApplicative {ℓ} (λ A → Covec A n i)
 applicative = record
-  { pure = replicate infinity
+  { pure = replicate _
   ; _⊛_  = ap
   }
