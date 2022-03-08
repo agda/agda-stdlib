@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- A categorical view of vectors defined by recursion
+-- A effectful view of vectors defined by recursion
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

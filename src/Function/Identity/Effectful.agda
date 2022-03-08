@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- A categorical view of the identity function
+-- A effectful view of the identity function
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

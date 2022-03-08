@@ -1,12 +1,12 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- A categorical view of Delay
+-- A effectful view of Delay
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --sized-types #-}
 
-module Codata.Sized.Delay.Categorical where
+module Codata.Sized.Delay.Effectful where
 
 open import Codata.Sized.Delay
 open import Function

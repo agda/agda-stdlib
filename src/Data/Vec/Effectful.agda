@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- A categorical view of Vec
+-- A effectful view of Vec
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

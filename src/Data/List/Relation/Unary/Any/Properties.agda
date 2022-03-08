@@ -15,7 +15,7 @@ open import Data.Empty using (⊥)
 open import Data.Fin.Base using (Fin; zero; suc) -- renaming (zero to fzero; suc to fsuc)
 open import Data.List.Base as List
 open import Data.List.Properties using (ʳ++-defn)
-open import Data.List.Categorical using (monad)
+open import Data.List.Effectful using (monad)
 open import Data.List.Relation.Unary.Any as Any using (Any; here; there)
 open import Data.List.Membership.Propositional
 open import Data.List.Membership.Propositional.Properties.Core

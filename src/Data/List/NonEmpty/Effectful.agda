@@ -1,15 +1,15 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- A categorical view of List⁺
+-- A effectful view of List⁺
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
-module Data.List.NonEmpty.Categorical where
+module Data.List.NonEmpty.Effectful where
 
 open import Agda.Builtin.List
-import Data.List.Categorical as List
+import Data.List.Effectful as List
 open import Data.List.NonEmpty
 open import Data.Product using (uncurry)
 open import Effect.Functor

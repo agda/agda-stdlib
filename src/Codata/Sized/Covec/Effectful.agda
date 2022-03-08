@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- A categorical view of Covec
+-- A effectful view of Covec
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --sized-types #-}

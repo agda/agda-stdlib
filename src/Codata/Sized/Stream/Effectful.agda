@@ -1,12 +1,12 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- A categorical view of Stream
+-- A effectful view of Stream
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --sized-types #-}
 
-module Codata.Sized.Stream.Categorical where
+module Codata.Sized.Stream.Effectful where
 
 open import Data.Product using (<_,_>)
 open import Codata.Sized.Stream

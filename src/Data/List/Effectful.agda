@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- A categorical view of List
+-- A effectful view of List
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

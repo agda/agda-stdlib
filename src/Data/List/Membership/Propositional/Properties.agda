@@ -19,7 +19,7 @@ open import Data.List.Membership.Propositional
 import Data.List.Membership.Setoid.Properties as Membershipₛ
 open import Data.List.Relation.Binary.Equality.Propositional
   using (_≋_; ≡⇒≋; ≋⇒≡)
-open import Data.List.Categorical using (monad)
+open import Data.List.Effectful using (monad)
 open import Data.Nat.Base using (ℕ; zero; suc; pred; s≤s; _≤_; _<_; _≤ᵇ_)
 open import Data.Nat.Properties
 open import Data.Product hiding (map)

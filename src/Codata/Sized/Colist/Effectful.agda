@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- A categorical view of Colist
+-- A effectful view of Colist
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --sized-types #-}
