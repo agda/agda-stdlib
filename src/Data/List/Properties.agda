@@ -17,10 +17,12 @@ import Algebra.Structures as AlgebraicStructures
 open import Data.Bool.Base using (Bool; false; true; not; if_then_else_)
 open import Data.Fin.Base using (Fin; zero; suc; cast; toℕ; inject₁)
 open import Data.List.Base as List
+open import Data.List.Membership.Propositional using (_∈_)
 open import Data.List.Relation.Unary.All using (All; []; _∷_)
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Nat.Base
+open import Data.Nat.Divisibility
 open import Data.Nat.Properties
 open import Data.Product as Prod hiding (map; zip)
 import Data.Product.Relation.Unary.All as Prod using (All)
@@ -524,6 +526,13 @@ sum-++-commute (x ∷ xs) ys = begin
   (x + sum xs) + sum ys  ∎
 
 ------------------------------------------------------------------------
+-- product
+
+∈⇒∣product : ∀ {n ns} → n ∈ ns → n ∣ product ns
+∈⇒∣product {n} {n ∷ ns} (here  refl) = divides (product ns) (*-comm n (product ns))
+∈⇒∣product {n} {m ∷ ns} (there n∈ns) = ∣n⇒∣m*n m (∈⇒∣product n∈ns)
+
+------------------------------------------------------------------------
 -- replicate
 
 length-replicate : ∀ n {x : A} → length (replicate n x) ≡ n
@@ -984,6 +993,8 @@ module _ {x y : A} where
   ∷ʳ-injectiveʳ : ∀ (xs ys : List A) → xs ∷ʳ x ≡ ys ∷ʳ y → x ≡ y
   ∷ʳ-injectiveʳ xs ys eq = proj₂ (∷ʳ-injective xs ys eq)
 
+∷ʳ-++ : ∀ (xs : List A) (a : A) (ys : List A) → xs ∷ʳ a ++ ys ≡ xs ++ a ∷ ys
+∷ʳ-++ xs a ys = ++-assoc xs [ a ] ys
 
 ------------------------------------------------------------------------
 -- DEPRECATED

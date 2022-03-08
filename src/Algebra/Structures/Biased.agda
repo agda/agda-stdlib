@@ -61,6 +61,70 @@ record IsCommutativeMonoidʳ (∙ : Op₂ A) (ε : A) : Set (a ⊔ ℓ) where
 open IsCommutativeMonoidʳ public
   using () renaming (isCommutativeMonoid to isCommutativeMonoidʳ)
 
+------------------------------------------------------------------------
+-- IsSemiringWithoutOne
+
+record IsSemiringWithoutOne* (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
+  field
+    +-isCommutativeMonoid : IsCommutativeMonoid + 0#
+    *-isSemigroup         : IsSemigroup *
+    distrib               : * DistributesOver +
+    zero                  : Zero 0# *
+
+  isSemiringWithoutOne : IsSemiringWithoutOne + * 0#
+  isSemiringWithoutOne = record
+    { +-isCommutativeMonoid = +-isCommutativeMonoid
+    ; *-cong = ∙-cong
+    ; *-assoc = assoc
+    ; distrib = distrib
+    ; zero = zero
+    } where open IsSemigroup *-isSemigroup
+
+open IsSemiringWithoutOne* public
+  using () renaming (isSemiringWithoutOne to isSemiringWithoutOne*)
+
+------------------------------------------------------------------------
+-- IsNearSemiring
+
+record IsNearSemiring* (+ * : Op₂ A) (0# : A) : Set (a ⊔ ℓ) where
+  field
+    +-isMonoid    : IsMonoid + 0#
+    *-isSemigroup : IsSemigroup *
+    distribʳ      : * DistributesOverʳ +
+    zeroˡ         : LeftZero 0# *
+
+  isNearSemiring : IsNearSemiring + * 0#
+  isNearSemiring = record
+    { +-isMonoid = +-isMonoid
+    ; *-cong = ∙-cong
+    ; *-assoc = assoc
+    ; distribʳ = distribʳ
+    ; zeroˡ = zeroˡ
+    } where open IsSemigroup *-isSemigroup
+
+open IsNearSemiring* public
+  using () renaming (isNearSemiring to isNearSemiring*)
+
+------------------------------------------------------------------------
+-- IsSemiringWithoutAnnihilatingZero
+
+record IsSemiringWithoutAnnihilatingZero* (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
+  field
+    +-isCommutativeMonoid : IsCommutativeMonoid + 0#
+    *-isMonoid            : IsMonoid * 1#
+    distrib               : * DistributesOver +
+
+  isSemiringWithoutAnnihilatingZero : IsSemiringWithoutAnnihilatingZero + * 0# 1#
+  isSemiringWithoutAnnihilatingZero = record
+    { +-isCommutativeMonoid = +-isCommutativeMonoid
+    ; *-cong = ∙-cong
+    ; *-assoc = assoc
+    ; *-identity = identity
+    ; distrib = distrib
+    } where open IsMonoid *-isMonoid
+
+open IsSemiringWithoutAnnihilatingZero* public
+  using () renaming (isSemiringWithoutAnnihilatingZero to isSemiringWithoutAnnihilatingZero*)
 
 ------------------------------------------------------------------------
 -- IsCommutativeSemiring
@@ -77,7 +141,9 @@ record IsCommutativeSemiringˡ (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) whe
     { isSemiring = record
       { isSemiringWithoutAnnihilatingZero = record
         { +-isCommutativeMonoid = +-isCommutativeMonoid
-        ; *-isMonoid            = *.isMonoid
+        ; *-cong                = *.∙-cong
+        ; *-assoc               = *.assoc
+        ; *-identity            = *.identity
         ; distrib               = comm+distrʳ⇒distr +.setoid +.∙-cong *.comm distribʳ
         }
       ; zero = comm+zeˡ⇒ze +.setoid *.comm zeroˡ
@@ -104,7 +170,9 @@ record IsCommutativeSemiringʳ (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) whe
     { isSemiring = record
       { isSemiringWithoutAnnihilatingZero = record
         { +-isCommutativeMonoid = +-isCommutativeMonoid
-        ; *-isMonoid            = *.isMonoid
+        ; *-cong                = *.∙-cong
+        ; *-assoc               = *.assoc
+        ; *-identity            = *.identity
         ; distrib               = comm+distrˡ⇒distr +.setoid +.∙-cong *.comm distribˡ
         }
       ; zero = comm+zeʳ⇒ze +.setoid *.comm zeroʳ
@@ -150,10 +218,32 @@ record IsRingWithoutAnnihilatingZero (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A)
   isRing : IsRing + * -_ 0# 1#
   isRing = record
     { +-isAbelianGroup = +-isAbelianGroup
-    ; *-isMonoid       = *-isMonoid
+    ; *-cong           = *.∙-cong
+    ; *-assoc          = *.assoc
+    ; *-identity       = *.identity
     ; distrib          = distrib
     ; zero             = zero
     }
 
 open IsRingWithoutAnnihilatingZero public
   using () renaming (isRing to isRingWithoutAnnihilatingZero)
+
+record IsRing* (+ * : Op₂ A) (-_ : Op₁ A) (0# 1# : A) : Set (a ⊔ ℓ) where
+  field
+    +-isAbelianGroup : IsAbelianGroup + 0# -_
+    *-isMonoid       : IsMonoid * 1#
+    distrib          : * DistributesOver +
+    zero             : Zero 0# *
+
+  isRing : IsRing + * -_ 0# 1#
+  isRing = record
+    { +-isAbelianGroup = +-isAbelianGroup
+    ; *-cong = ∙-cong
+    ; *-assoc = assoc
+    ; *-identity = identity
+    ; distrib = distrib
+    ; zero = zero
+    } where open IsMonoid *-isMonoid
+
+open IsRing* public
+  using () renaming (isRing to isRing*)

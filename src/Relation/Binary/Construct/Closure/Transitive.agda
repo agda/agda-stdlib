@@ -9,7 +9,7 @@
 module Relation.Binary.Construct.Closure.Transitive where
 
 open import Function.Base
-open import Function.Equivalence as Equiv using (_⇔_)
+open import Function.Bundles using (_⇔_; mk⇔)
 open import Induction.WellFounded
 open import Level
 open import Relation.Binary hiding (_⇔_)
@@ -124,7 +124,7 @@ map R₁⇒R₂ (x ∼⁺⟨ xR⁺z ⟩ zR⁺y) =
 -- Plus and TransClosure are equivalent.
 equivalent : ∀ {_∼_ : Rel A ℓ} {x y} →
              Plus _∼_ x y ⇔ TransClosure _∼_ x y
-equivalent {_∼_ = _∼_} = Equiv.equivalence complete sound
+equivalent {_∼_ = _∼_} = mk⇔ complete sound
   where
   complete : Plus _∼_ ⇒ TransClosure _∼_
   complete [ x∼y ]             = [ x∼y ]

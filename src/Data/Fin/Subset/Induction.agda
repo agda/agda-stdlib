@@ -14,7 +14,13 @@ open import Data.Fin.Subset using (Subset; _⊂_; ∣_∣)
 open import Data.Fin.Subset.Properties
 open import Induction
 open import Induction.WellFounded as WF
+open import Level using (Level)
 import Relation.Binary.Construct.On as On
+
+private
+  variable
+    ℓ : Level
+    n : ℕ
 
 ------------------------------------------------------------------------
 -- Re-export accessability
@@ -24,9 +30,9 @@ open WF public using (Acc; acc)
 ------------------------------------------------------------------------
 -- Complete induction based on _⊂_
 
-⊂-Rec : ∀ {n ℓ} → RecStruct (Subset n) ℓ ℓ
+⊂-Rec : RecStruct (Subset n) ℓ ℓ
 ⊂-Rec = WfRec _⊂_
 
-⊂-wellFounded : ∀ {n} → WellFounded {A = Subset n} _⊂_
-⊂-wellFounded {n} = Subrelation.wellFounded p⊂q⇒∣p∣<∣q∣
+⊂-wellFounded : WellFounded {A = Subset n} _⊂_
+⊂-wellFounded = Subrelation.wellFounded p⊂q⇒∣p∣<∣q∣
   (On.wellFounded ∣_∣ <-wellFounded)

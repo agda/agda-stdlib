@@ -11,8 +11,8 @@ module Data.Fin.Reflection where
 open import Data.Nat.Base as ℕ hiding (module ℕ)
 open import Data.Fin.Base as Fin hiding (module Fin)
 open import Data.List.Base
-open import Reflection.Term
-open import Reflection.Argument
+open import Reflection.AST.Term
+open import Reflection.AST.Argument
 
 ------------------------------------------------------------------------
 -- Term

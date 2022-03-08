@@ -15,14 +15,13 @@
 
 module Data.Fin.Substitution where
 
-open import Data.Nat hiding (_⊔_)
+open import Data.Nat.Base hiding (_⊔_; _/_)
 open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.Vec.Base
-open import Function as Fun using (flip)
+open import Function.Base as Fun using (flip)
 open import Relation.Binary.Construct.Closure.ReflexiveTransitive
   as Star using (Star; ε; _◅_)
-open import Level using (Level; _⊔_)
-import Level as L
+open import Level using (Level; _⊔_; 0ℓ)
 open import Relation.Unary using (Pred)
 
 ------------------------------------------------------------------------
@@ -146,12 +145,12 @@ module VarSubst where
 
 -- "Term" substitutions.
 
-record TermSubst (T : Pred ℕ L.zero) : Set₁ where
+record TermSubst (T : Pred ℕ 0ℓ) : Set₁ where
   field
     var : ∀ {n} → Fin n → T n
-    app : ∀ {T′ : Pred ℕ L.zero} → Lift T′ T → ∀ {m n} → T m → Sub T′ m n → T n
+    app : ∀ {T′ : Pred ℕ 0ℓ} → Lift T′ T → ∀ {m n} → T m → Sub T′ m n → T n
 
-  module Lifted {T′ : Pred ℕ L.zero} (lift : Lift T′ T) where
+  module Lifted {T′ : Pred ℕ 0ℓ} (lift : Lift T′ T) where
     application : Application T T′
     application = record { _/_ = app lift }
 

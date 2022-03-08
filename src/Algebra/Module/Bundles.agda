@@ -27,6 +27,7 @@ module Algebra.Module.Bundles where
 
 open import Algebra.Bundles
 open import Algebra.Core
+open import Algebra.Module.Core
 open import Algebra.Module.Structures
 open import Algebra.Module.Definitions
 open import Function.Base

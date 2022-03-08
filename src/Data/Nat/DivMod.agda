@@ -28,25 +28,8 @@ open ≤-Reasoning
 ------------------------------------------------------------------------
 -- Definitions
 
--- The division and modulus operations are only defined when the divisor
--- is non-zero. The proof of non-zero-ness is provided as an irrelevant
--- instance argument which is defined in terms of `⊤` and `⊥`. This
--- allows it to be automatically inferred when the divisor is of the
--- form `suc n`, and hence minimises the number of these proofs that
--- need be passed around. You can therefore write `m / suc n` without
--- further elaboration.
-
-infixl 7 _/_ _%_
-
--- Natural division
-
-_/_ : (dividend divisor : ℕ) .{{_ : NonZero divisor}} → ℕ
-m / (suc n) = div-helper 0 n m n
-
--- Natural remainder/modulus
-
-_%_ : (dividend divisor : ℕ) .{{_ : NonZero divisor}} → ℕ
-m % (suc n) = mod-helper 0 n m n
+open import Data.Nat.Base public
+  using (_%_; _/_)
 
 ------------------------------------------------------------------------
 -- Relationship between _%_ and _div_
@@ -239,9 +222,9 @@ m≥n⇒m/n>0 {m@(suc _)} {n@(suc _)} m≥n = begin
   n % d             <⟨ m%n<n n d ⟩
   d                 ∎)
 
-+-distrib-/-∣ʳ : ∀ {m} n {d} .{{_ : NonZero d}} →
++-distrib-/-∣ʳ : ∀ m {n} {d} .{{_ : NonZero d}} →
                  d ∣ n → (m + n) / d ≡ m / d + n / d
-+-distrib-/-∣ʳ {m} n {d} (divides p refl) = +-distrib-/ m n (begin-strict
++-distrib-/-∣ʳ m {n} {d} (divides p refl) = +-distrib-/ m n (begin-strict
   m % d + p * d % d ≡⟨ cong (m % d +_) (m*n%n≡0 p d) ⟩
   m % d + 0         ≡⟨ +-identityʳ _ ⟩
   m % d             <⟨ m%n<n m d ⟩
@@ -257,7 +240,7 @@ m/n≡1+[m∸n]/n {m@(suc m-1)} {n@(suc n-1)} m≥n = begin-equality
 
 m*n/m*o≡n/o : ∀ m n o .{{_ : NonZero o}} .{{_ : NonZero (m * o)}} →
               (m * n) / (m * o) ≡ n / o
-m*n/m*o≡n/o m@(suc m-1) n o {{o≢0}} = helper (<-wellFounded n)
+m*n/m*o≡n/o m@(suc m-1) n o = helper (<-wellFounded n)
   where
   helper : ∀ {n} → Acc _<_ n → (m * n) / (m * o) ≡ n / o
   helper {n} (acc rec) with n <? o
@@ -270,7 +253,7 @@ m*n/m*o≡n/o m@(suc m-1) n o {{o≢0}} = helper (<-wellFounded n)
     o / o + (n ∸ o) / o           ≡˘⟨ +-distrib-/-∣ˡ (n ∸ o) (divides 1 ((sym (*-identityˡ o)))) ⟩
     (o + (n ∸ o)) / o             ≡⟨  cong (_/ o) (m+[n∸m]≡n (≮⇒≥ n≮o)) ⟩
     n / o                         ∎
-    where n∸o<n = ∸-monoʳ-< (n≢0⇒n>0 (≢-nonZero⁻¹ o≢0)) (≮⇒≥ n≮o)
+    where n∸o<n = ∸-monoʳ-< (n≢0⇒n>0 (≢-nonZero⁻¹ o)) (≮⇒≥ n≮o)
 
 *-/-assoc : ∀ m {n d} .{{_ : NonZero d}} → d ∣ n → m * n / d ≡ m * (n / d)
 *-/-assoc zero    {_} {d@(suc _)} d∣n = 0/n≡0 (suc d)
@@ -286,6 +269,10 @@ m*n/m*o≡n/o m@(suc m-1) n o {{o≢0}} = helper (<-wellFounded n)
   m * n                         ≡˘⟨ cong₂ _*_ (m*[n/m]≡n o∣m) (m*[n/m]≡n p∣n) ⟩
   (o * (m / o)) * (p * (n / p)) ≡⟨ [m*n]*[o*p]≡[m*o]*[n*p] o (m / o) p (n / p) ⟩
   (o * p) * ((m / o) * (n / p)) ∎)
+
+m*n/m!≡n/[m∸1]! : ∀ m n .{{_ : NonZero m}} →
+                 (m * n / m !) {{m !≢0}}  ≡ (n / (pred m) !) {{pred m !≢0}}
+m*n/m!≡n/[m∸1]! (suc m) n = m*n/m*o≡n/o (suc m) n (m !) {{m !≢0}} {{suc m !≢0}}
 
 ------------------------------------------------------------------------
 --  A specification of integer division.
@@ -312,47 +299,3 @@ m divMod n@(suc n-1) = result (m / n) (m mod n) (begin-equality
   m % n                    + [m/n]*n  ≡˘⟨ cong (_+ [m/n]*n) (toℕ-fromℕ< (m%n<n m n)) ⟩
   toℕ (fromℕ< (m%n<n m n)) + [m/n]*n  ∎)
   where [m/n]*n = m / n * n
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 1.1
-
-a≡a%n+[a/n]*n = m≡m%n+[m/n]*n
-{-# WARNING_ON_USAGE a≡a%n+[a/n]*n
-"Warning: a≡a%n+[a/n]*n was deprecated in v1.1.
-Please use m≡m%n+[m/n]*n instead."
-#-}
-a%1≡0   = n%1≡0
-{-# WARNING_ON_USAGE a%1≡0
-"Warning: a%1≡0 was deprecated in v1.1.
-Please use n%1≡0 instead."
-#-}
-a%n%n≡a%n = m%n%n≡m%n
-{-# WARNING_ON_USAGE a%n%n≡a%n
-"Warning: a%n%n≡a%n was deprecated in v1.1.
-Please use m%n%n≡m%n instead."
-#-}
-[a+n]%n≡a%n = [m+n]%n≡m%n
-{-# WARNING_ON_USAGE [a+n]%n≡a%n
-"Warning: [a+n]%n≡a%n was deprecated in v1.1.
-Please use [m+n]%n≡m%n instead."
-#-}
-[a+kn]%n≡a%n = [m+kn]%n≡m%n
-{-# WARNING_ON_USAGE [a+kn]%n≡a%n
-"Warning: [a+kn]%n≡a%n was deprecated in v1.1.
-Please use [m+kn]%n≡m%n instead."
-#-}
-kn%n≡0 = m*n%n≡0
-{-# WARNING_ON_USAGE kn%n≡0
-"Warning: kn%n≡0 was deprecated in v1.1.
-Please use m*n%n≡0 instead."
-#-}
-a%n<n = m%n<n
-{-# WARNING_ON_USAGE a%n<n
-"Warning: a%n<n was deprecated in v1.1.
-Please use m%n<n instead."
-#-}

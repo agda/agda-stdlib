@@ -9,6 +9,8 @@
 module Data.Bool.Properties where
 
 open import Algebra.Bundles
+open import Algebra.Lattice.Bundles
+import Algebra.Lattice.Properties.BooleanAlgebra as BooleanAlgebraProperties
 open import Data.Bool.Base
 open import Data.Empty
 open import Data.Product
@@ -26,6 +28,8 @@ import Relation.Unary as U
 
 open import Algebra.Definitions {A = Bool} _≡_
 open import Algebra.Structures {A = Bool} _≡_
+open import Algebra.Lattice.Structures {A = Bool} _≡_
+
 open ≡-Reasoning
 
 private
@@ -502,7 +506,9 @@ true  <? _     = no  (λ())
 ∨-∧-isSemiring = record
   { isSemiringWithoutAnnihilatingZero = record
     { +-isCommutativeMonoid = ∨-isCommutativeMonoid
-    ; *-isMonoid = ∧-isMonoid
+    ; *-cong = cong₂ _∧_
+    ; *-assoc = ∧-assoc
+    ; *-identity = ∧-identity
     ; distrib = ∧-distrib-∨
     }
   ; zero = ∧-zero
@@ -528,7 +534,9 @@ true  <? _     = no  (λ())
 ∧-∨-isSemiring = record
   { isSemiringWithoutAnnihilatingZero = record
     { +-isCommutativeMonoid = ∧-isCommutativeMonoid
-    ; *-isMonoid = ∨-isMonoid
+    ; *-cong = cong₂ _∨_
+    ; *-assoc = ∨-assoc
+    ; *-identity = ∨-identity
     ; distrib = ∨-distrib-∧
     }
   ; zero = ∨-zero
@@ -569,8 +577,9 @@ true  <? _     = no  (λ())
 
 ∨-∧-isDistributiveLattice : IsDistributiveLattice _∨_ _∧_
 ∨-∧-isDistributiveLattice = record
-  { isLattice    = ∨-∧-isLattice
-  ; ∨-distribʳ-∧ = ∨-distribʳ-∧
+  { isLattice   = ∨-∧-isLattice
+  ; ∨-distrib-∧ = ∨-distrib-∧
+  ; ∧-distrib-∨ = ∧-distrib-∨
   }
 
 ∨-∧-distributiveLattice : DistributiveLattice 0ℓ 0ℓ
@@ -581,9 +590,9 @@ true  <? _     = no  (λ())
 ∨-∧-isBooleanAlgebra : IsBooleanAlgebra _∨_ _∧_ not true false
 ∨-∧-isBooleanAlgebra = record
   { isDistributiveLattice = ∨-∧-isDistributiveLattice
-  ; ∨-complementʳ = ∨-inverseʳ
-  ; ∧-complementʳ = ∧-inverseʳ
-  ; ¬-cong        = cong not
+  ; ∨-complement          = ∨-inverse
+  ; ∧-complement          = ∧-inverse
+  ; ¬-cong                = cong not
   }
 
 ∨-∧-booleanAlgebra : BooleanAlgebra 0ℓ 0ℓ
@@ -599,10 +608,9 @@ xor-is-ok true  y = refl
 xor-is-ok false y = sym (∧-identityʳ _)
 
 xor-∧-commutativeRing : CommutativeRing 0ℓ 0ℓ
-xor-∧-commutativeRing = commutativeRing
+xor-∧-commutativeRing = ⊕-∧-commutativeRing
   where
-  import Algebra.Properties.BooleanAlgebra as BA
-  open BA ∨-∧-booleanAlgebra
+  open BooleanAlgebraProperties ∨-∧-booleanAlgebra
   open XorRing _xor_ xor-is-ok
 
 ------------------------------------------------------------------------
@@ -667,17 +675,3 @@ push-function-into-if : ∀ (f : A → B) x {y z} →
                         f (if x then y else z) ≡ (if x then f y else f z)
 push-function-into-if _ true  = refl
 push-function-into-if _ false = refl
-
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
-
--- Version 1.0
-
-T-irrelevance = T-irrelevant
-{-# WARNING_ON_USAGE T-irrelevance
-"Warning: T-irrelevance was deprecated in v1.0.
-Please use T-irrelevant instead."
-#-}

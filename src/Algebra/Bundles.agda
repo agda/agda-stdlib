@@ -143,25 +143,6 @@ record CommutativeSemigroup c ℓ : Set (suc (c ⊔ ℓ)) where
   commutativeMagma : CommutativeMagma c ℓ
   commutativeMagma = record { isCommutativeMagma = isCommutativeMagma }
 
-
-record Semilattice c ℓ : Set (suc (c ⊔ ℓ)) where
-  infixr 7 _∧_
-  infix  4 _≈_
-  field
-    Carrier       : Set c
-    _≈_           : Rel Carrier ℓ
-    _∧_           : Op₂ Carrier
-    isSemilattice : IsSemilattice _≈_ _∧_
-
-  open IsSemilattice isSemilattice public
-
-  band : Band c ℓ
-  band = record { isBand = isBand }
-
-  open Band band public
-    using (_≉_; rawMagma; magma; semigroup)
-
-
 ------------------------------------------------------------------------
 -- Bundles with 1 binary operation & 1 element
 ------------------------------------------------------------------------
@@ -315,7 +296,7 @@ record RawGroup c ℓ : Set (suc (c ⊔ ℓ)) where
     using (_≉_; rawMagma)
 
 
-record Quasigroup c ℓ : Set (suc (c ⊔ ℓ)) where
+record InvertibleMagma c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 _⁻¹
   infixl 7 _∙_
   infix  4 _≈_
@@ -325,9 +306,9 @@ record Quasigroup c ℓ : Set (suc (c ⊔ ℓ)) where
     _∙_     : Op₂ Carrier
     ε       : Carrier
     _⁻¹     : Op₁ Carrier
-    isQuasigroup : IsQuasigroup _≈_ _∙_ ε _⁻¹
+    isInvertibleMagma : IsInvertibleMagma _≈_ _∙_ ε _⁻¹
 
-  open IsQuasigroup isQuasigroup public
+  open IsInvertibleMagma isInvertibleMagma public
 
   magma : Magma _ _
   magma = record { isMagma = isMagma }
@@ -336,24 +317,24 @@ record Quasigroup c ℓ : Set (suc (c ⊔ ℓ)) where
     using (_≉_; rawMagma)
 
 
-record Loop c ℓ : Set (suc (c ⊔ ℓ)) where
+record InvertibleUnitalMagma c ℓ : Set (suc (c ⊔ ℓ)) where
   infix  8 _⁻¹
   infixl 7 _∙_
   infix  4 _≈_
   field
-    Carrier : Set c
-    _≈_     : Rel Carrier ℓ
-    _∙_     : Op₂ Carrier
-    ε       : Carrier
-    _⁻¹     : Op₁ Carrier
-    isLoop : IsLoop _≈_ _∙_ ε _⁻¹
+    Carrier                  : Set c
+    _≈_                      : Rel Carrier ℓ
+    _∙_                      : Op₂ Carrier
+    ε                        : Carrier
+    _⁻¹                      : Op₁ Carrier
+    isInvertibleUnitalMagma  : IsInvertibleUnitalMagma _≈_ _∙_ ε _⁻¹
 
-  open IsLoop isLoop public
+  open IsInvertibleUnitalMagma isInvertibleUnitalMagma public
 
-  quasigroup : Quasigroup _ _
-  quasigroup = record { isQuasigroup = isQuasigroup }
+  invertibleMagma : InvertibleMagma _ _
+  invertibleMagma = record { isInvertibleMagma = isInvertibleMagma }
 
-  open Quasigroup quasigroup public
+  open InvertibleMagma invertibleMagma public
     using (_≉_; rawMagma; magma)
 
 record Group c ℓ : Set (suc (c ⊔ ℓ)) where
@@ -379,14 +360,14 @@ record Group c ℓ : Set (suc (c ⊔ ℓ)) where
   open Monoid monoid public
     using (_≉_; rawMagma; magma; semigroup; unitalMagma; rawMonoid)
 
-  quasigroup : Quasigroup c ℓ
-  quasigroup = record
-    { isQuasigroup = isQuasigroup
+  invertibleMagma : InvertibleMagma c ℓ
+  invertibleMagma = record
+    { isInvertibleMagma = isInvertibleMagma
     }
 
-  loop : Loop c ℓ
-  loop = record
-    { isLoop = isLoop
+  invertibleUnitalMagma : InvertibleUnitalMagma c ℓ
+  invertibleUnitalMagma = record
+    { isInvertibleUnitalMagma = isInvertibleUnitalMagma
     }
 
 record AbelianGroup c ℓ : Set (suc (c ⊔ ℓ)) where
@@ -408,7 +389,7 @@ record AbelianGroup c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open Group group public using
     (_≉_; rawMagma; magma; semigroup
-    ; rawMonoid; monoid; rawGroup; quasigroup; loop
+    ; rawMonoid; monoid; rawGroup; invertibleMagma; invertibleUnitalMagma
     )
 
   commutativeMonoid : CommutativeMonoid _ _
@@ -416,81 +397,6 @@ record AbelianGroup c ℓ : Set (suc (c ⊔ ℓ)) where
 
   open CommutativeMonoid commutativeMonoid public
     using (commutativeMagma; commutativeSemigroup)
-
-
-------------------------------------------------------------------------
--- Bundles with 2 binary operations
-------------------------------------------------------------------------
-
-record RawLattice c ℓ : Set (suc (c ⊔ ℓ)) where
-  infixr 7 _∧_
-  infixr 6 _∨_
-  infix  4 _≈_
-  field
-    Carrier : Set c
-    _≈_     : Rel Carrier ℓ
-    _∧_     : Op₂ Carrier
-    _∨_     : Op₂ Carrier
-
-  ∨-rawMagma : RawMagma c ℓ
-  ∨-rawMagma = record { _≈_ = _≈_; _∙_ = _∨_ }
-
-  ∧-rawMagma : RawMagma c ℓ
-  ∧-rawMagma = record { _≈_ = _≈_; _∙_ = _∧_ }
-
-  open RawMagma ∨-rawMagma public
-    using (_≉_)
-
-
-record Lattice c ℓ : Set (suc (c ⊔ ℓ)) where
-  infixr 7 _∧_
-  infixr 6 _∨_
-  infix  4 _≈_
-  field
-    Carrier   : Set c
-    _≈_       : Rel Carrier ℓ
-    _∨_       : Op₂ Carrier
-    _∧_       : Op₂ Carrier
-    isLattice : IsLattice _≈_ _∨_ _∧_
-
-  open IsLattice isLattice public
-
-  rawLattice : RawLattice c ℓ
-  rawLattice = record
-    { _≈_  = _≈_
-    ; _∧_  = _∧_
-    ; _∨_  = _∨_
-    }
-
-  open RawLattice rawLattice public
-    using (∨-rawMagma; ∧-rawMagma)
-
-  setoid : Setoid _ _
-  setoid = record { isEquivalence = isEquivalence }
-
-  open Setoid setoid public
-    using (_≉_)
-
-
-record DistributiveLattice c ℓ : Set (suc (c ⊔ ℓ)) where
-  infixr 7 _∧_
-  infixr 6 _∨_
-  infix  4 _≈_
-  field
-    Carrier               : Set c
-    _≈_                   : Rel Carrier ℓ
-    _∨_                   : Op₂ Carrier
-    _∧_                   : Op₂ Carrier
-    isDistributiveLattice : IsDistributiveLattice _≈_ _∨_ _∧_
-
-  open IsDistributiveLattice isDistributiveLattice public
-
-  lattice : Lattice _ _
-  lattice = record { isLattice = isLattice }
-
-  open Lattice lattice public
-    using (_≉_; rawLattice; setoid)
-
 
 ------------------------------------------------------------------------
 -- Bundles with 2 binary operations & 1 element
@@ -844,6 +750,40 @@ record CancellativeCommutativeSemiring c ℓ : Set (suc (c ⊔ ℓ)) where
     ; _≉_
     )
 
+------------------------------------------------------------------------
+-- Bundles with 2 binary operations, 1 unary operation & 1 element
+------------------------------------------------------------------------
+
+record RingWithoutOne c ℓ : Set (suc (c ⊔ ℓ)) where
+  infix  8 -_
+  infixl 7 _*_
+  infixl 6 _+_
+  infix  4 _≈_
+  field
+    Carrier           : Set c
+    _≈_               : Rel Carrier ℓ
+    _+_               : Op₂ Carrier
+    _*_               : Op₂ Carrier
+    -_                : Op₁ Carrier
+    0#                : Carrier
+    isRingWithoutOne  : IsRingWithoutOne _≈_ _+_ _*_ -_ 0#
+
+  open IsRingWithoutOne isRingWithoutOne public
+
+  +-abelianGroup : AbelianGroup _ _
+  +-abelianGroup = record { isAbelianGroup = +-isAbelianGroup }
+
+  *-semigroup : Semigroup _ _
+  *-semigroup = record { isSemigroup = *-isSemigroup }
+
+  open AbelianGroup +-abelianGroup public
+    using () renaming (group to +-group; invertibleMagma to +-invertibleMagma; invertibleUnitalMagma to +-invertibleUnitalMagma)
+
+  open Semigroup *-semigroup public
+    using () renaming
+    ( rawMagma to *-rawMagma
+    ; magma    to *-magma
+    )
 
 ------------------------------------------------------------------------
 -- Bundles with 2 binary operations, 1 unary operation & 2 elements
@@ -925,7 +865,7 @@ record Ring c ℓ : Set (suc (c ⊔ ℓ)) where
     )
 
   open AbelianGroup +-abelianGroup public
-    using () renaming (group to +-group; quasigroup to +-quasigroup; loop to +-loop)
+    using () renaming (group to +-group; invertibleMagma to +-invertibleMagma; invertibleUnitalMagma to +-invertibleUnitalMagma)
 
   rawRing : RawRing _ _
   rawRing = record
@@ -958,7 +898,7 @@ record CommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
   ring : Ring _ _
   ring = record { isRing = isRing }
 
-  open Ring ring public using (_≉_; rawRing; +-quasigroup; +-loop; +-group; +-abelianGroup)
+  open Ring ring public using (_≉_; rawRing; +-invertibleMagma; +-invertibleUnitalMagma; +-group; +-abelianGroup)
 
   commutativeSemiring : CommutativeSemiring _ _
   commutativeSemiring =
@@ -976,41 +916,126 @@ record CommutativeRing c ℓ : Set (suc (c ⊔ ℓ)) where
     ; commutativeSemiringWithoutOne
     )
 
+------------------------------------------------------------------------
+-- Bundles with 3 binary operations
+------------------------------------------------------------------------
 
-record BooleanAlgebra c ℓ : Set (suc (c ⊔ ℓ)) where
-  infix  8 ¬_
-  infixr 7 _∧_
-  infixr 6 _∨_
+record RawQuasigroup c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _∙_
+  infixl 7 _\\_
+  infixl 7 _//_
   infix  4 _≈_
   field
-    Carrier          : Set c
-    _≈_              : Rel Carrier ℓ
-    _∨_              : Op₂ Carrier
-    _∧_              : Op₂ Carrier
-    ¬_               : Op₁ Carrier
-    ⊤                : Carrier
-    ⊥                : Carrier
-    isBooleanAlgebra : IsBooleanAlgebra _≈_ _∨_ _∧_ ¬_ ⊤ ⊥
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    _∙_     : Op₂ Carrier
+    _\\_    : Op₂ Carrier
+    _//_    : Op₂ Carrier
 
-  open IsBooleanAlgebra isBooleanAlgebra public
+  ∙-rawMagma : RawMagma c ℓ
+  ∙-rawMagma = record
+    { _≈_ = _≈_
+    ; _∙_ = _∙_
+    }
 
-  distributiveLattice : DistributiveLattice _ _
-  distributiveLattice = record { isDistributiveLattice = isDistributiveLattice }
+  \\-rawMagma : RawMagma c ℓ
+  \\-rawMagma = record
+    { _≈_ = _≈_
+    ; _∙_ = _\\_
+    }
 
-  open DistributiveLattice distributiveLattice public
-    using (_≉_; setoid; lattice)
+  //-rawMagma : RawMagma c ℓ
+  //-rawMagma = record
+    { _≈_ = _≈_
+    ; _∙_ = _//_
+    }
 
+  open RawMagma \\-rawMagma public
+    using (_≉_)
 
-------------------------------------------------------------------------
--- DEPRECATED NAMES
-------------------------------------------------------------------------
--- Please use the new names as continuing support for the old names is
--- not guaranteed.
+record Quasigroup c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _∙_
+  infixl 7 _\\_
+  infixl 7 _//_
+  infix  4 _≈_
+  field
+    Carrier      : Set c
+    _≈_          : Rel Carrier ℓ
+    _∙_          : Op₂ Carrier
+    _\\_         : Op₂ Carrier
+    _//_         : Op₂ Carrier
+    isQuasigroup : IsQuasigroup  _≈_ _∙_ _\\_ _//_
 
--- Version 1.0
+  open IsQuasigroup isQuasigroup public
 
-RawSemigroup = RawMagma
-{-# WARNING_ON_USAGE RawSemigroup
-"Warning: RawSemigroup was deprecated in v1.0.
-Please use RawMagma instead."
-#-}
+  magma : Magma c ℓ
+  magma = record { isMagma = isMagma }
+
+  open Magma magma public
+    using (_≉_; rawMagma)
+
+  rawQuasigroup : RawQuasigroup c ℓ
+  rawQuasigroup = record
+    { _≈_  = _≈_
+    ; _∙_  = _∙_
+    ; _\\_  = _\\_
+    ; _//_  = _//_
+    }
+
+  open RawQuasigroup rawQuasigroup public
+    using (_≈_; //-rawMagma; \\-rawMagma; ∙-rawMagma)
+
+record RawLoop  c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _∙_
+  infixl 7 _\\_
+  infixl 7 _//_
+  infix  4 _≈_
+  field
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    _∙_     : Op₂ Carrier
+    _\\_    : Op₂ Carrier
+    _//_    : Op₂ Carrier
+    ε       : Carrier
+
+  rawQuasigroup : RawQuasigroup c ℓ
+  rawQuasigroup = record
+    { _≈_ = _≈_
+    ; _∙_ = _∙_
+    ; _\\_ = _\\_
+    ; _//_ = _//_
+    }
+
+  open RawQuasigroup rawQuasigroup public
+    using (_≉_ ; ∙-rawMagma; \\-rawMagma; //-rawMagma)
+
+record Loop  c ℓ : Set (suc (c ⊔ ℓ)) where
+  infixl 7 _∙_
+  infixl 7 _\\_
+  infixl 7 _//_
+  infix  4 _≈_
+  field
+    Carrier : Set c
+    _≈_     : Rel Carrier ℓ
+    _∙_     : Op₂ Carrier
+    _\\_    : Op₂ Carrier
+    _//_    : Op₂ Carrier
+    ε       : Carrier
+    isLoop : IsLoop  _≈_ _∙_ _\\_ _//_ ε
+
+  open IsLoop isLoop public
+
+  rawLoop : RawLoop c ℓ
+  rawLoop = record
+    { _≈_ = _≈_
+    ; _∙_ = _∙_
+    ; _\\_ = _\\_
+    ; _//_ = _//_
+    ; ε = ε
+    }
+
+  quasigroup : Quasigroup _ _
+  quasigroup = record { isQuasigroup = isQuasigroup }
+
+  open Quasigroup quasigroup public
+    using (_≉_; ∙-rawMagma; \\-rawMagma; //-rawMagma)

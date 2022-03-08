@@ -261,7 +261,7 @@ line of code, indented by two spaces.
 * Instead, private blocks should only be used to prevent temporary terms and
   records that are defined for convenience from being exported by the module.
 
-* The mutual block is considered obselete. Please use the standard approach
+* The mutual block is considered obsolete. Please use the standard approach
   of placing the type signatures of the mutually recursive functions before
   their definitions.
 
@@ -465,3 +465,12 @@ word within a compound word is capitalized except for the first word.
 
 * If the name of something clashes with a keyword in Agda, then convention
   is to place angular brackets around the name, e.g. `⟨set⟩` and `⟨module⟩`.
+
+#### Reflected syntax
+
+* When using reflection, the name of anything of type `Term` should be preceded
+  by a backtick. For example ```List : Term → Term`` would be the function
+  constructing the reflection of the `List` type.
+
+* The names of patterns for reflected syntax are also *appended* with an
+  additional backtick.

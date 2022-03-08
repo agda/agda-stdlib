@@ -8,8 +8,9 @@
 
 module Algebra.Module.Consequences where
 
-open import Algebra.Core using (Op₂; Opₗ; Opᵣ)
+open import Algebra.Core using (Op₂)
 import Algebra.Definitions as Defs
+open import Algebra.Module.Core using (Opₗ; Opᵣ)
 open import Algebra.Module.Definitions
 open import Function.Base using (flip)
 open import Level using (Level)

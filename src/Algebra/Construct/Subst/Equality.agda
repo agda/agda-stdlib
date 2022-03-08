@@ -83,12 +83,6 @@ isBand {∙} S = record
   ; idem        = idem {∙} S.idem
   } where module S = IsBand S
 
-isSemilattice : ∀ {∧} → IsSemilattice ≈₁ ∧ → IsSemilattice ≈₂ ∧
-isSemilattice S = record
-  { isBand = isBand S.isBand
-  ; comm   = comm S.comm
-  } where module S = IsSemilattice S
-
 isSelectiveMagma : ∀ {∙} → IsSelectiveMagma ≈₁ ∙ → IsSelectiveMagma ≈₂ ∙
 isSelectiveMagma S = record
   { isMagma = isMagma S.isMagma
@@ -130,39 +124,12 @@ isAbelianGroup S = record
   ; comm    = comm S.comm
   } where module S = IsAbelianGroup S
 
-isLattice : ∀ {∨ ∧} → IsLattice ≈₁ ∨ ∧ → IsLattice ≈₂ ∨ ∧
-isLattice {∨} {∧} S = record
-  { isEquivalence = isEquivalence S.isEquivalence
-  ; ∨-comm        = comm S.∨-comm
-  ; ∨-assoc       = assoc {∨} S.∨-assoc
-  ; ∨-cong        = cong₂ S.∨-cong
-  ; ∧-comm        = comm S.∧-comm
-  ; ∧-assoc       = assoc {∧} S.∧-assoc
-  ; ∧-cong        = cong₂ S.∧-cong
-  ; absorptive    = absorptive {∨} {∧} S.absorptive
-  } where module S = IsLattice S
-
-isDistributiveLattice : ∀ {∨ ∧} →
-  IsDistributiveLattice ≈₁ ∨ ∧ → IsDistributiveLattice ≈₂ ∨ ∧
-isDistributiveLattice S = record
-  { isLattice    = isLattice S.isLattice
-  ; ∨-distribʳ-∧ = λ x y z → to (S.∨-distribʳ-∧ x y z)
-  } where module S = IsDistributiveLattice S
-
-isBooleanAlgebra : ∀ {∨ ∧ ¬ ⊤ ⊥} →
-  IsBooleanAlgebra ≈₁ ∨ ∧ ¬ ⊤ ⊥ → IsBooleanAlgebra ≈₂ ∨ ∧ ¬ ⊤ ⊥
-isBooleanAlgebra S = record
-  { isDistributiveLattice = isDistributiveLattice S.isDistributiveLattice
-  ; ∨-complementʳ         = to ∘ S.∨-complementʳ
-  ; ∧-complementʳ         = to ∘ S.∧-complementʳ
-  ; ¬-cong                = cong₁ S.¬-cong
-  } where module S = IsBooleanAlgebra S
-
 isNearSemiring : ∀ {+ * 0#} →
   IsNearSemiring ≈₁ + * 0# → IsNearSemiring ≈₂ + * 0#
-isNearSemiring S = record
+isNearSemiring {* = *} S = record
   { +-isMonoid    = isMonoid S.+-isMonoid
-  ; *-isSemigroup = isSemigroup S.*-isSemigroup
+  ; *-cong        = cong₂ S.*-cong
+  ; *-assoc       = assoc {*} S.*-assoc
   ; distribʳ      = λ x y z → to (S.distribʳ x y z)
   ; zeroˡ         = to ∘ S.zeroˡ
   } where module S = IsNearSemiring S
@@ -171,7 +138,8 @@ isSemiringWithoutOne : ∀ {+ * 0#} →
   IsSemiringWithoutOne ≈₁ + * 0# → IsSemiringWithoutOne ≈₂ + * 0#
 isSemiringWithoutOne {+} {*} S = record
   { +-isCommutativeMonoid = isCommutativeMonoid S.+-isCommutativeMonoid
-  ; *-isSemigroup         = isSemigroup S.*-isSemigroup
+  ; *-cong                = cong₂ S.*-cong
+  ; *-assoc               = assoc {*} S.*-assoc
   ; distrib               = distrib {*} {+} S.distrib
   ; zero                  = Prod.map (to ∘_) (to ∘_) S.zero
   } where module S = IsSemiringWithoutOne S

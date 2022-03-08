@@ -13,12 +13,13 @@
 module Codata.Musical.Conversion where
 
 open import Level using (Level)
-import Codata.Cofin as Sized
-import Codata.Colist as Sized
-import Codata.Conat as Sized
-import Codata.Covec as Sized
-import Codata.M
-import Codata.Stream as Sized
+import Codata.Sized.Cofin  as Sized
+import Codata.Sized.Colist as Sized
+import Codata.Sized.Conat  as Sized
+import Codata.Sized.Covec  as Sized
+import Codata.Sized.M      as Sized
+import Codata.Sized.Stream as Sized
+open import Codata.Sized.Thunk
 open import Codata.Musical.Cofin hiding (module Cofin)
 open import Codata.Musical.Colist hiding (module Colist)
 open import Codata.Musical.Conat
@@ -26,7 +27,6 @@ open import Codata.Musical.Covec hiding (module Covec)
 open import Codata.Musical.M hiding (module M)
 open import Codata.Musical.Notation
 open import Codata.Musical.Stream hiding (module Stream)
-open import Codata.Thunk
 open import Data.Product
 open import Data.Container.Core as C using (Container)
 import Size
@@ -78,12 +78,12 @@ module Covec where
 
 module M {s p} {C : Container s p} where
 
-  fromMusical : ∀ {i} → M C → Codata.M.M C i
-  fromMusical (inf t) = Codata.M.inf (C.map rec t) where
+  fromMusical : ∀ {i} → M C → Sized.M C i
+  fromMusical (inf t) = Sized.M.inf (C.map rec t) where
     rec = λ x → λ where .force → fromMusical (♭ x)
 
-  toMusical : Codata.M.M C Size.∞ → M C
-  toMusical (Codata.M.inf (s , f)) = inf (s , λ p → ♯ toMusical (f p .force))
+  toMusical : Sized.M C Size.∞ → M C
+  toMusical (Sized.M.inf (s , f)) = inf (s , λ p → ♯ toMusical (f p .force))
 
 module Stream where
 

@@ -103,29 +103,12 @@ module _ (_≟_ : Decidable {A = A} _≡_) {x y : A} where
   ≢-≟-identity : x ≢ y → ∃ λ ¬eq → x ≟ y ≡ no ¬eq
   ≢-≟-identity ¬eq = dec-no (x ≟ y) ¬eq
 
+
 ------------------------------------------------------------------------
 -- DEPRECATED NAMES
 ------------------------------------------------------------------------
 -- Please use the new names as continuing support for the old names is
 -- not guaranteed.
-
--- Version 1.0
-
-Extensionality = Ext.Extensionality
-{-# WARNING_ON_USAGE Extensionality
-"Warning: Extensionality was deprecated in v1.0.
-Please use Extensionality from `Axiom.Extensionality.Propositional` instead."
-#-}
-extensionality-for-lower-levels = Ext.lower-extensionality
-{-# WARNING_ON_USAGE extensionality-for-lower-levels
-"Warning: extensionality-for-lower-levels was deprecated in v1.0.
-Please use lower-extensionality from `Axiom.Extensionality.Propositional` instead."
-#-}
-∀-extensionality = Ext.∀-extensionality
-{-# WARNING_ON_USAGE ∀-extensionality
-"Warning: ∀-extensionality was deprecated in v1.0.
-Please use ∀-extensionality from `Axiom.Extensionality.Propositional` instead."
-#-}
 
 -- Version 2.0
 

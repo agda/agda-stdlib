@@ -104,9 +104,5 @@ show : Time →   -- Time in seconds and nanoseconds
 show (mkTime s ns) prec = secs ++ "s" ++ padLeft '0' decimals nsecs where
   decimals = toℕ prec
   secs     = ℕ.show s
-
-  exp-nz : ∀ x n {x≠0 : ℕ.NonZero x} → ℕ.NonZero (x ^ n)
-  exp-nz x n {x≠0} =  ℕ.≢-nonZero (ℕ.≢-nonZero⁻¹ x≠0 ∘′ ℕₚ.m^n≡0⇒m≡0 x n)
-
-  prf      = exp-nz 10 (9 ∸ decimals)
+  prf      = ℕₚ.m^n≢0 10 (9 ∸ decimals)
   nsecs    = ℕ.show ((ns / (10 ^ (9 ∸ decimals))) {{prf}})

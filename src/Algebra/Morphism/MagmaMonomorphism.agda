@@ -116,12 +116,6 @@ isBand isBand = record
   ; idem        = idem        B.isMagma B.idem
   } where module B = IsBand isBand
 
-isSemilattice : IsSemilattice _≈₂_ _◦_ → IsSemilattice _≈₁_ _∙_
-isSemilattice isSemilattice = record
-  { isBand = isBand S.isBand
-  ; comm   = comm   S.isMagma S.comm
-  } where module S = IsSemilattice isSemilattice
-
 isSelectiveMagma : IsSelectiveMagma _≈₂_ _◦_ → IsSelectiveMagma _≈₁_ _∙_
 isSelectiveMagma isSelMagma = record
   { isMagma = isMagma S.isMagma

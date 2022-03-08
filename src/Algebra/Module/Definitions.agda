@@ -11,8 +11,6 @@ open import Relation.Binary
 
 module Algebra.Module.Definitions where
 
-  open import Algebra.Core
-
   import Algebra.Module.Definitions.Left as L
   import Algebra.Module.Definitions.Right as R
   import Algebra.Module.Definitions.Bi as B
