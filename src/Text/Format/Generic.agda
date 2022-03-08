@@ -20,7 +20,7 @@ open import Data.Product
 open import Data.Product.Nary.NonDependent
 open import Data.Sum.Base
 open import Data.String.Base
-import Data.Sum.Categorical.Left as Sumₗ
+import Data.Sum.Effectful.Left as Sumₗ
 open import Function
 open import Function.Nary.NonDependent using (0ℓs; Sets)
 open import Function.Strict

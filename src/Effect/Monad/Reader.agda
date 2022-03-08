@@ -11,7 +11,7 @@ open import Level
 module Effect.Monad.Reader {r} (R : Set r) (a : Level) where
 
 open import Function
-open import Function.Identity.Categorical as Id using (Identity)
+open import Function.Identity.Effectful as Id using (Identity)
 open import Effect.Applicative.Indexed
 open import Effect.Monad.Indexed
 open import Effect.Monad

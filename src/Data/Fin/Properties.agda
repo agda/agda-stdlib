@@ -938,7 +938,7 @@ pigeonhole (s<s m<n@(s≤s _)) f with any? (λ k → f zero ≟ f (suc k))
   punchOut-injective (f₀≢fₖ ∘ (i ,_)) _ fᵢ≡fⱼ
 
 ------------------------------------------------------------------------
--- Categorical
+-- Effectful
 ------------------------------------------------------------------------
 
 module _ {f} {F : Set f → Set f} (RA : RawApplicative F) where

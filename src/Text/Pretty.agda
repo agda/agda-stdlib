@@ -23,7 +23,7 @@ open import Data.String.Base   using (String; fromList; replicate)
 open import Function.Base
 
 open import Effect.Monad using (RawMonad)
-import Data.List.Categorical as Cat
+import Data.List.Effectful as Cat
 open RawMonad (Cat.monad {Level.zero})
 
 import Data.Nat.Properties as ℕₚ

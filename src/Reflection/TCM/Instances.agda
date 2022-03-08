@@ -8,7 +8,7 @@
 
 module Reflection.TCM.Instances where
 
-open import Reflection.TCM.Categorical
+open import Reflection.TCM.Effectful
 
 instance
   tcFunctor = functor

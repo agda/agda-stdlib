@@ -10,7 +10,7 @@ module Effect.Monad.State where
 
 open import Effect.Applicative.Indexed
 open import Effect.Monad
-open import Function.Identity.Categorical as Id using (Identity)
+open import Function.Identity.Effectful as Id using (Identity)
 open import Effect.Monad.Indexed
 open import Data.Product
 open import Data.Unit

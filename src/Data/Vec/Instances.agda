@@ -9,7 +9,7 @@
 module Data.Vec.Instances where
 
 open import Data.Vec.Base
-open import Data.Vec.Categorical
+open import Data.Vec.Effectful
 open import Data.Vec.Properties
   using (≡-dec)
 open import Level
