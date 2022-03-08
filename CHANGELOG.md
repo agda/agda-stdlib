@@ -418,6 +418,13 @@ Non-backwards compatible changes
   in order to keep another new definition of `_>>=_`, located in `DiagonalBind`
   which is also a submodule of `Data.Vec.Base`.
 
+* The functions `split`, `flatten` and `flatten-split` have been removed from
+  `Data.List.NonEmpty`. In their place `groupSeqs` and `ungroupSeqs`
+  have been added to `Data.List.NonEmpty.Base` which morally perform the same 
+  operations but without computing the accompanying proofs. The proofs can be
+  found in `Data.List.NonEmpty.Properties` under the names `groupSeqs-groups`
+  and `ungroupSeqs` and `groupSeqs`.
+
 * The constructors `+0` and `+[1+_]` from `Data.Integer.Base` are no longer
   exported by `Data.Rational.Base`. You will have to open `Data.Integer(.Base)`
   directly to use them.
@@ -443,6 +450,8 @@ Non-backwards compatible changes
   * `fold-k`
   * `fold-*`
   * `fold-pull`
+
+* In `Data.Fin.Properties` the `i` argument to `opposite-suc` has been made explicit.
 
 Major improvements
 ------------------
@@ -715,6 +724,15 @@ New modules
   Algebra.Module.Core
   ```
 
+* Constructive algebraic structures with apartness relations:
+  ```
+  Algebra.Apartness
+  Algebra.Apartness.Bundles
+  Algebra.Apartness.Structures
+  Algebra.Apartness.Properties.CommutativeHeytingAlgebra
+  Relation.Binary.Properties.ApartnessRelation
+  ```
+
 * Morphisms between module-like algebraic structures:
   ```
   Algebra.Module.Morphism.Construct.Composition
@@ -764,6 +782,11 @@ New modules
   ```
   Data.List.Reflection
   Data.Vec.Reflection
+  ```
+
+* The `All` predicate over non-empty lists:
+  ```
+  Data.List.NonEmpty.Relation.Unary.All
   ```
 
 * A small library for heterogenous equational reasoning on vectors:
@@ -921,12 +944,16 @@ Other minor changes
 
 * Added new definition to `Algebra.Definitions`:
   ```agda
-  LeftDividesˡ : Op₂ A → Op₂ A → Set _
-  LeftDividesʳ : Op₂ A → Op₂ A → Set _
+  LeftDividesˡ  : Op₂ A → Op₂ A → Set _
+  LeftDividesʳ  : Op₂ A → Op₂ A → Set _
   RightDividesˡ : Op₂ A → Op₂ A → Set _
   RightDividesʳ : Op₂ A → Op₂ A → Set _
-  LeftDivides : Op₂ A → Op₂ A → Set _
-  RightDivides : Op₂ A → Op₂ A → Set _
+  LeftDivides   : Op₂ A → Op₂ A → Set _
+  RightDivides  : Op₂ A → Op₂ A → Set _
+
+  LeftInvertible  e _∙_ x = ∃[ x⁻¹ ] (x⁻¹ ∙ x) ≈ e
+  RightInvertible e _∙_ x = ∃[ x⁻¹ ] (x ∙ x⁻¹) ≈ e
+  Invertible      e _∙_ x = ∃[ x⁻¹ ] ((x⁻¹ ∙ x) ≈ e) × ((x ∙ x⁻¹) ≈ e)
   ```
 
 * Added new functions to `Algebra.Definitions.RawSemiring`:
@@ -976,10 +1003,10 @@ Other minor changes
 
 * Added new functions in `Data.Fin.Base`:
   ```
-  finToFun  : Fin (n ^ m) → (Fin m → Fin n)
+  finToFun  : Fin (m ^ n) → (Fin n → Fin m)
   funToFin  : (Fin m → Fin n) → Fin (n ^ m)
-  quotient  : Fin (n * k) → Fin n
-  remainder : Fin (n * k) → Fin k
+  quotient  : Fin (m * n) → Fin m
+  remainder : Fin (m * n) → Fin n
   ```
 
 * Added new definitions and proofs in `Data.Fin.Permutation`:
@@ -997,19 +1024,20 @@ Other minor changes
   ↑ʳ-injective       : n ↑ʳ i ≡ n ↑ʳ j → i ≡ j
   finTofun-funToFin  : funToFin ∘ finToFun ≗ id
   funTofin-funToFun  : finToFun (funToFin f) ≗ f
-  ^↔→                : Extensionality _ _ → Fin (n ^ m) ↔ (Fin m → Fin n)
+  ^↔→                : Extensionality _ _ → Fin (m ^ n) ↔ (Fin n → Fin m)
 
   toℕ-mono-<         : i < j → toℕ i ℕ.< toℕ j
   toℕ-mono-≤         : i ≤ j → toℕ i ℕ.≤ toℕ j
   toℕ-cancel-≤       : toℕ i ℕ.≤ toℕ j → i ≤ j
   toℕ-cancel-<       : toℕ i ℕ.< toℕ j → i < j
 
-  toℕ-combine        : toℕ (combine x y) ≡ k ℕ.* toℕ x ℕ.+ toℕ y
-  combine-injectiveˡ : combine x z ≡ combine y z → x ≡ y
-  combine-injectiveʳ : combine x y ≡ combine x z → y ≡ z
-  combine-injective  : combine x y ≡ combine w z → x ≡ w × y ≡ z
-  combine-surjective : ∀ x → ∃₂ λ y z → combine y z ≡ x
-
+  toℕ-combine        : toℕ (combine i j) ≡ k ℕ.* toℕ i ℕ.+ toℕ j
+  combine-injectiveˡ : combine i j ≡ combine k l → i ≡ k
+  combine-injectiveʳ : combine i j ≡ combine k l → j ≡ l
+  combine-injective  : combine i j ≡ combine k l → i ≡ k × j ≡ l
+  combine-surjective : ∀ i → ∃₂ λ j k → combine j k ≡ i
+  combine-monoˡ-<    :  i < j → combine i k < combine j l
+  
   lower₁-injective   : lower₁ i n≢i ≡ lower₁ j n≢j → i ≡ j
 
   i<1+i              : i < suc i
@@ -1481,6 +1509,29 @@ Other minor changes
 * Generalised proofs in `Relation.Unary.Properties`:
   ```
   ⊆-trans : Trans _⊆_ _⊆_ _⊆_
+  ```
+
+* Added new definitions in `Relation.Binary.Definitions`:
+  ```
+  Cotransitive _#_ = ∀ {x y} → x # y → ∀ z → (x # z) ⊎ (z # y)
+  Tight    _≈_ _#_ = ∀ x y → (¬ x # y → x ≈ y) × (x ≈ y → ¬ x # y)
+  ```
+
+* Added new definitions in `Relation.Binary.Bundles`:
+  ```
+  record ApartnessRelation c ℓ₁ ℓ₂ : Set (suc (c ⊔ ℓ₁ ⊔ ℓ₂)) where
+  ```
+  
+* Added new definitions in `Relation.Binary.Structures`:
+  ```
+  record IsApartnessRelation (_#_ : Rel A ℓ₂) : Set (a ⊔ ℓ ⊔ ℓ₂) where
+  ```
+
+* Added new proofs to `Relation.Binary.Consequences`:
+  ```
+  sym⇒¬-sym       : Symmetric _∼_ → Symmetric _≁_
+  cotrans⇒¬-trans : Cotransitive _∼_ → Transitive _≁_
+  irrefl⇒¬-refl   : Reflexive _≈_ → Irreflexive _≈_ _∼_ →  Reflexive _≁_
   ```
 
 * Added new operations in `Relation.Binary.PropositionalEquality.Properties`:
