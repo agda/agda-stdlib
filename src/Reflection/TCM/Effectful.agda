@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Reflection.TCM.Categorical where
+module Reflection.TCM.Effectful where
 
 open import Effect.Functor
 open import Effect.Applicative

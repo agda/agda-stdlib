@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Function.Identity.Categorical {ℓ} where
+module Function.Identity.Effectful {ℓ} where
 
 open import Effect.Functor
 open import Effect.Applicative

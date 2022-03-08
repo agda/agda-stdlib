@@ -6,7 +6,7 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Data.List.Categorical where
+module Data.List.Effectful where
 
 open import Effect.Functor
 open import Effect.Applicative

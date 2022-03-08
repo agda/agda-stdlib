@@ -6,14 +6,14 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Data.Maybe.Categorical where
+module Data.Maybe.Effectful where
 
 open import Level
 open import Data.Maybe.Base
 open import Effect.Functor
 open import Effect.Applicative
 open import Effect.Monad
-import Function.Identity.Categorical as Id
+import Function.Identity.Effectful as Id
 open import Function
 
 private

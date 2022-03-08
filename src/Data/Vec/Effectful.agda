@@ -6,12 +6,12 @@
 
 {-# OPTIONS --without-K --safe #-}
 
-module Data.Vec.Categorical {a n} where
+module Data.Vec.Effectful {a n} where
 
 open import Effect.Applicative using (RawApplicative)
 open import Effect.Applicative.Indexed using (Morphism)
 open import Effect.Functor as Fun using (RawFunctor)
-import Function.Identity.Categorical as Id
+import Function.Identity.Effectful as Id
 open import Effect.Monad using (RawMonad)
 open import Data.Fin.Base using (Fin)
 open import Data.Vec.Base as Vec hiding (_⊛_)
