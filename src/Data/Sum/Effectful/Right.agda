@@ -1,21 +1,21 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- A Categorical view of the Sum type (Right-biased)
+-- A Effectful view of the Sum type (Right-biased)
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
 open import Level
 
-module Data.Sum.Categorical.Right (a : Level) {b} (B : Set b) where
+module Data.Sum.Effectful.Right (a : Level) {b} (B : Set b) where
 
 open import Data.Sum.Base
 open import Effect.Functor
 open import Effect.Applicative
 open import Effect.Monad
 open import Function
-import Function.Identity.Categorical as Id
+import Function.Identity.Effectful as Id
 
 Sumᵣ : Set (a ⊔ b) → Set (a ⊔ b)
 Sumᵣ A = A ⊎ B

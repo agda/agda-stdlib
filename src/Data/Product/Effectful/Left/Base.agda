@@ -6,7 +6,7 @@
 --
 -- To minimize the universe level of the RawFunctor, we require that
 -- elements of B are "lifted" to a copy of B at a higher universe level
--- (a ⊔ b). See the Data.Product.Categorical.Examples for how this is
+-- (a ⊔ b). See the Data.Product.Effectful.Examples for how this is
 -- done.
 ------------------------------------------------------------------------
 
@@ -14,7 +14,7 @@
 
 open import Level
 
-module Data.Product.Categorical.Left.Base
+module Data.Product.Effectful.Left.Base
   {a} (A : Set a) (b : Level) where
 
 open import Data.Product using (_×_; map₂; proj₁; proj₂; <_,_>)

@@ -1,20 +1,20 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- A Categorical view of the Sum type (Left-biased)
+-- A Effectful view of the Sum type (Left-biased)
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
 open import Level
 
-module Data.Sum.Categorical.Left {a} (A : Set a) (b : Level) where
+module Data.Sum.Effectful.Left {a} (A : Set a) (b : Level) where
 
 open import Data.Sum.Base
 open import Effect.Functor
 open import Effect.Applicative
 open import Effect.Monad
-import Function.Identity.Categorical as Id
+import Function.Identity.Effectful as Id
 open import Function
 
 -- To minimize the universe level of the RawFunctor, we require that elements of

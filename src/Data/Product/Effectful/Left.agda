@@ -6,7 +6,7 @@
 --
 -- To minimize the universe level of the RawFunctor, we require that
 -- elements of B are "lifted" to a copy of B at a higher universe level
--- (a ⊔ b). See the Data.Product.Categorical.Examples for how this is
+-- (a ⊔ b). See the Data.Product.Effectful.Examples for how this is
 -- done.
 ------------------------------------------------------------------------
 
@@ -15,15 +15,15 @@
 open import Algebra
 open import Level
 
-module Data.Product.Categorical.Left
+module Data.Product.Effectful.Left
   {a e} (A : RawMonoid a e) (b : Level) where
 
 open import Data.Product
-import Data.Product.Categorical.Left.Base as Base
+import Data.Product.Effectful.Left.Base as Base
 open import Effect.Applicative using (RawApplicative)
 open import Effect.Monad using (RawMonad; RawMonadT)
 open import Function.Base using (id; flip; _∘_; _∘′_)
-import Function.Identity.Categorical as Id
+import Function.Identity.Effectful as Id
 
 open RawMonoid A
 

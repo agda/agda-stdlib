@@ -1,16 +1,16 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- Usage examples of the categorical view of the Sum type
+-- Usage examples of the effectful view of the Sum type
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
-module Data.Sum.Categorical.Examples where
+module Data.Sum.Effectful.Examples where
 
 open import Level
 open import Data.Sum.Base
-import Data.Sum.Categorical.Left as Sumₗ
+import Data.Sum.Effectful.Left as Sumₗ
 open import Effect.Functor
 open import Effect.Monad
 

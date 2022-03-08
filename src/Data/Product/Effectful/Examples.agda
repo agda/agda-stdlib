@@ -8,7 +8,7 @@
 
 open import Algebra
 
-module Data.Product.Categorical.Examples
+module Data.Product.Effectful.Examples
   {a e b} {A : Monoid a e} {B : Set b} where
 
 open import Level using (Lift; lift; _⊔_)
@@ -17,7 +17,7 @@ open import Effect.Monad using (RawMonad)
 open import Data.Product
 open import Data.Product.Relation.Binary.Pointwise.NonDependent
 open import Function
-import Function.Identity.Categorical as Id
+import Function.Identity.Effectful as Id
 open import Relation.Binary using (Rel)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 
@@ -31,7 +31,7 @@ private
 
   module A = Monoid A
 
-  open import Data.Product.Categorical.Left A.rawMonoid b
+  open import Data.Product.Effectful.Left A.rawMonoid b
 
   _≈_ : Rel (A.Carrier × Lift a B) (e ⊔ a ⊔ b)
   _≈_ = Pointwise A._≈_ _≡_
