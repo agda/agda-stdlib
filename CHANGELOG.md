@@ -429,6 +429,13 @@ Non-backwards compatible changes
   in order to keep another new definition of `_>>=_`, located in `DiagonalBind`
   which is also a submodule of `Data.Vec.Base`.
 
+* The functions `split`, `flatten` and `flatten-split` have been removed from
+  `Data.List.NonEmpty`. In their place `groupSeqs` and `ungroupSeqs`
+  have been added to `Data.List.NonEmpty.Base` which morally perform the same 
+  operations but without computing the accompanying proofs. The proofs can be
+  found in `Data.List.NonEmpty.Properties` under the names `groupSeqs-groups`
+  and `ungroupSeqs` and `groupSeqs`.
+
 * The constructors `+0` and `+[1+_]` from `Data.Integer.Base` are no longer
   exported by `Data.Rational.Base`. You will have to open `Data.Integer(.Base)`
   directly to use them.
@@ -786,6 +793,11 @@ New modules
   ```
   Data.List.Reflection
   Data.Vec.Reflection
+  ```
+
+* The `All` predicate over non-empty lists:
+  ```
+  Data.List.NonEmpty.Relation.Unary.All
   ```
 
 * A small library for heterogenous equational reasoning on vectors:
