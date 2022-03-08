@@ -14,7 +14,7 @@ open import Effect.Monad using (RawMonad)
 open import Data.Empty
 open import Data.Fin.Base
 open import Data.List.Base
-open import Data.List.Categorical using (monad; module MonadProperties)
+open import Data.List.Effectful using (monad; module MonadProperties)
 import Data.List.Properties as LP
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.List.Relation.Unary.Any.Properties hiding (++-comm)

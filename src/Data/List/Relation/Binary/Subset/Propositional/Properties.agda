@@ -17,7 +17,7 @@ open import Data.List.Base
 open import Data.List.Relation.Unary.Any using (Any; here; there)
 open import Data.List.Relation.Unary.All using (All)
 import Data.List.Relation.Unary.Any.Properties as Any hiding (filter⁺)
-open import Data.List.Categorical
+open import Data.List.Effectful
 open import Data.List.Relation.Unary.Any using (Any)
 open import Data.List.Membership.Propositional
 open import Data.List.Membership.Propositional.Properties
