@@ -10,7 +10,7 @@ module Data.Integer.DivMod where
 
 open import Data.Integer.Base
 open import Data.Integer.Properties
-open import Data.Nat.Base as ℕ using (ℕ; z≤n; s≤s)
+open import Data.Nat.Base as ℕ using (ℕ; z≤n; s≤s; z<s; s<s)
 import Data.Nat.Properties as ℕ
 import Data.Nat.DivMod as ℕ
 import Data.Sign as S
@@ -32,8 +32,8 @@ open import Data.Integer.Base public
 n%ℕd<d : ∀ n d .{{_ : ℕ.NonZero d}} → n %ℕ d ℕ.< d
 n%ℕd<d (+ n)    d           = ℕ.m%n<n n d
 n%ℕd<d -[1+ n ] d@(ℕ.suc _) with ℕ.suc n ℕ.% d
-... | ℕ.zero  = s≤s z≤n
-... | ℕ.suc r = s≤s (ℕ.m∸n≤m _ r)
+... | ℕ.zero  = z<s
+... | ℕ.suc r = s<s (ℕ.m∸n≤m _ r)
 
 n%d<d : ∀ n d .{{_ : NonZero d}} → n % d ℕ.< ∣ d ∣
 n%d<d n (+ d)    = n%ℕd<d n d

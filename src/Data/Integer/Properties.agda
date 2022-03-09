@@ -17,7 +17,7 @@ import Algebra.Properties.AbelianGroup
 open import Data.Bool.Base using (T; true; false)
 open import Data.Integer.Base renaming (suc to sucℤ)
 open import Data.Nat as ℕ
-  using (ℕ; suc; zero; _∸_; s≤s; z≤n)
+  using (ℕ; suc; zero; _∸_; s≤s; z≤n; s<s; z<s)
   hiding (module ℕ)
 import Data.Nat.Properties as ℕ
 open import Data.Nat.Solver
@@ -288,8 +288,8 @@ drop‿-<- (-<- n<m) = n<m
 
 <-cmp : Trichotomous _≡_ _<_
 <-cmp +0       +0       = tri≈ +≮0 refl +≮0
-<-cmp +0       +[1+ n ] = tri< (+<+ (s≤s z≤n)) (λ()) +≮0
-<-cmp +[1+ n ] +0       = tri> +≮0 (λ()) (+<+ (s≤s z≤n))
+<-cmp +0       +[1+ n ] = tri< (+<+ z<s) (λ()) +≮0
+<-cmp +[1+ n ] +0       = tri> +≮0 (λ()) (+<+ z<s)
 <-cmp (+ m)    -[1+ n ] = tri> +≮- (λ()) -<+
 <-cmp -[1+ m ] (+ n)    = tri< -<+ (λ()) +≮-
 <-cmp -[1+ m ] -[1+ n ] with ℕ.<-cmp m n
@@ -297,9 +297,9 @@ drop‿-<- (-<- n<m) = n<m
 ... | tri≈ m≮n m≡n n≯m = tri≈ (n≯m ∘ drop‿-<-) (cong -[1+_] m≡n) (m≮n ∘ drop‿-<-)
 ... | tri> m≮n m≢n n>m = tri< (-<- n>m) (m≢n ∘ -[1+-injective) (m≮n ∘ drop‿-<-)
 <-cmp +[1+ m ] +[1+ n ] with ℕ.<-cmp m n
-... | tri< m<n m≢n n≯m = tri< (+<+ (s≤s m<n))              (m≢n ∘ +[1+-injective) (n≯m ∘ ℕ.≤-pred ∘ drop‿+<+)
+... | tri< m<n m≢n n≯m = tri< (+<+ (s<s m<n))              (m≢n ∘ +[1+-injective) (n≯m ∘ ℕ.≤-pred ∘ drop‿+<+)
 ... | tri≈ m≮n m≡n n≯m = tri≈ (m≮n ∘ ℕ.≤-pred ∘ drop‿+<+) (cong (+_ ∘ suc) m≡n)  (n≯m ∘ ℕ.≤-pred ∘ drop‿+<+)
-... | tri> m≮n m≢n n>m = tri> (m≮n ∘ ℕ.≤-pred ∘ drop‿+<+) (m≢n ∘ +[1+-injective) (+<+ (s≤s n>m))
+... | tri> m≮n m≢n n>m = tri> (m≮n ∘ ℕ.≤-pred ∘ drop‿+<+) (m≢n ∘ +[1+-injective) (+<+ (s<s n>m))
 
 infix 4 _<?_
 _<?_ : Decidable _<_
@@ -372,7 +372,7 @@ module ≤-Reasoning where
 -- Properties of Positive/NonPositive/Negative/NonNegative and _≤_/_<_
 
 positive⁻¹ : ∀ i → .{{Positive i}} → i > 0ℤ
-positive⁻¹ +[1+ n ] = +<+ (s≤s z≤n)
+positive⁻¹ +[1+ n ] = +<+ z<s
 
 negative⁻¹ : ∀ i → .{{Negative i}} → i < 0ℤ
 negative⁻¹ -[1+ n ] = -<+
@@ -423,20 +423,20 @@ neg-cancel-≤ { -[1+ m ]} { +0}        (+≤+ ())
 neg-cancel-≤ { -[1+ m ]} { -[1+ n ]}  (+≤+ (s≤s m≤n)) = -≤- m≤n
 
 neg-mono-< : -_ Preserves _<_ ⟶ _>_
-neg-mono-< { -[1+ _ ]} { -[1+ _ ]} (-<- n<m) = +<+ (s≤s n<m)
-neg-mono-< { -[1+ _ ]} { +0}       -<+       = +<+ (s≤s z≤n)
+neg-mono-< { -[1+ _ ]} { -[1+ _ ]} (-<- n<m) = +<+ (s<s n<m)
+neg-mono-< { -[1+ _ ]} { +0}       -<+       = +<+ z<s
 neg-mono-< { -[1+ _ ]} { +[1+ n ]} -<+       = -<+
 neg-mono-< { +0}       { +[1+ n ]} (+<+ _)   = -<+
 neg-mono-< { +[1+ m ]} { +[1+ n ]} (+<+ m<n) = -<- (ℕ.≤-pred m<n)
 
 neg-cancel-< : - i < - j → i > j
-neg-cancel-< { +[1+ m ]} { +[1+ n ]} (-<- n<m)       = +<+ (s≤s n<m)
-neg-cancel-< { +[1+ m ]} { +0}        -<+            = +<+ (s≤s z≤n)
+neg-cancel-< { +[1+ m ]} { +[1+ n ]} (-<- n<m)       = +<+ (s<s n<m)
+neg-cancel-< { +[1+ m ]} { +0}        -<+            = +<+ z<s
 neg-cancel-< { +[1+ m ]} { -[1+ n ]}  -<+            = -<+
 neg-cancel-< { +0}       { +0}       (+<+ ())
 neg-cancel-< { +0}       { -[1+ n ]} _               = -<+
 neg-cancel-< { -[1+ m ]} { +0}       (+<+ ())
-neg-cancel-< { -[1+ m ]} { -[1+ n ]} (+<+ (s≤s m<n)) = -<- m<n
+neg-cancel-< { -[1+ m ]} { -[1+ n ]} (+<+ (s<s m<n)) = -<- m<n
 
 ------------------------------------------------------------------------
 -- Properties of ∣_∣
@@ -692,7 +692,7 @@ m⊖n≤m (suc m) (suc n) = begin
   +[1+ m ]      ∎ where open ≤-Reasoning
 
 m⊖n<1+m : ∀ m n → m ⊖ n < +[1+ m ]
-m⊖n<1+m m n = ≤-<-trans (m⊖n≤m m n) (+<+ (ℕ.m<n+m m (s≤s z≤n)))
+m⊖n<1+m m n = ≤-<-trans (m⊖n≤m m n) (+<+ (ℕ.m<n+m m z<s))
 
 m⊖1+n<m : ∀ m n .{{_ : ℕ.NonZero n}} → m ⊖ n < + m
 m⊖1+n<m zero    (suc n) = -<+
@@ -763,27 +763,27 @@ sign-⊖-≰ = sign-⊖-< ∘ ℕ.≰⇒>
   suc o ⊖ suc n ∎ where open ≤-Reasoning
 
 ⊖-monoʳ->-< : ∀ p → (p ⊖_) Preserves ℕ._>_ ⟶ _<_
-⊖-monoʳ->-< zero    {_}     (s≤s z≤n)       = -<+
-⊖-monoʳ->-< zero    {_}     (s≤s (s≤s m≤n)) = -<- (s≤s m≤n)
-⊖-monoʳ->-< (suc p) {suc m} (s≤s z≤n)       = begin-strict
+⊖-monoʳ->-< zero    {_}     z<s       = -<+
+⊖-monoʳ->-< zero    {_}     (s<s m<n@(s≤s _)) = -<- m<n
+⊖-monoʳ->-< (suc p) {suc m} z<s       = begin-strict
   suc p ⊖ suc m ≡⟨ [1+m]⊖[1+n]≡m⊖n p m ⟩
   p ⊖ m         <⟨ m⊖n<1+m p m ⟩
   +[1+ p ]      ∎ where open ≤-Reasoning
-⊖-monoʳ->-< (suc p) {suc m} {suc n} (s≤s (s≤s m≤n)) = begin-strict
+⊖-monoʳ->-< (suc p) {suc m} {suc n} (s<s m<n@(s≤s _)) = begin-strict
   suc p ⊖ suc m ≡⟨  [1+m]⊖[1+n]≡m⊖n p m ⟩
-  p ⊖ m         <⟨  ⊖-monoʳ->-< p (s≤s m≤n) ⟩
+  p ⊖ m         <⟨  ⊖-monoʳ->-< p m<n ⟩
   p ⊖ n         ≡˘⟨ [1+m]⊖[1+n]≡m⊖n p n ⟩
   suc p ⊖ suc n ∎ where open ≤-Reasoning
 
 ⊖-monoˡ-< : ∀ n → (_⊖ n) Preserves ℕ._<_ ⟶ _<_
 ⊖-monoˡ-< zero    m<o             = +<+ m<o
-⊖-monoˡ-< (suc n) {_} {suc o} (s≤s (z≤n)) = begin-strict
+⊖-monoˡ-< (suc n) {_} {suc o} z<s = begin-strict
   -[1+ n ]      <⟨  -1+m<n⊖m n _ ⟩
   o ⊖ n         ≡˘⟨ [1+m]⊖[1+n]≡m⊖n o n ⟩
   suc o ⊖ suc n ∎ where open ≤-Reasoning
-⊖-monoˡ-< (suc n) {suc m} {suc (suc o)} (s≤s (s≤s m<o)) = begin-strict
+⊖-monoˡ-< (suc n) {suc m} {suc (suc o)} (s<s m<o@(s≤s _)) = begin-strict
   suc m ⊖ suc n       ≡⟨  [1+m]⊖[1+n]≡m⊖n m n ⟩
-  m ⊖ n               <⟨  ⊖-monoˡ-< n (s≤s m<o) ⟩
+  m ⊖ n               <⟨  ⊖-monoˡ-< n m<o ⟩
   suc o ⊖ n           ≡˘⟨ [1+m]⊖[1+n]≡m⊖n (suc o) n ⟩
   suc (suc o) ⊖ suc n ∎ where open ≤-Reasoning
 
@@ -1047,7 +1047,7 @@ i≤i+j i j rewrite +-comm i j = i≤j+i i j
 -- Properties of _+_ and _<_
 
 +-monoʳ-< : ∀ i → (_+_ i) Preserves _<_ ⟶ _<_
-+-monoʳ-< (+ n)    {_} {_}   (-<- o<m) = ⊖-monoʳ->-< n (s≤s o<m)
++-monoʳ-< (+ n)    {_} {_}   (-<- o<m) = ⊖-monoʳ->-< n (s<s o<m)
 +-monoʳ-< (+ n)    {_} {_}   -<+       = <-≤-trans (m⊖1+n<m n _) (+≤+ (ℕ.m≤m+n n _))
 +-monoʳ-< (+ n)    {_} {_}   (+<+ m<o) = +<+ (ℕ.+-monoʳ-< n m<o)
 +-monoʳ-< -[1+ n ] {_} {_}   (-<- o<m) = -<- (ℕ.+-monoʳ-< (suc n) o<m)
