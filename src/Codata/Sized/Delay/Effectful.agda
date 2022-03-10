@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- A effectful view of Delay
+-- An effectful view of Delay
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --sized-types #-}

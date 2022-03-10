@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- A Effectful view of the Sum type (Right-biased)
+-- An effectful view of the Sum type (Right-biased)
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

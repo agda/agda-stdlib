@@ -1,21 +1,21 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- A effectful view of Vec
+-- An effectful view of Vec
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
 module Data.Vec.Effectful {a n} where
 
-open import Effect.Applicative using (RawApplicative)
-open import Effect.Applicative.Indexed using (Morphism)
-open import Effect.Functor as Fun using (RawFunctor)
-import Function.Identity.Effectful as Id
-open import Effect.Monad using (RawMonad)
 open import Data.Fin.Base using (Fin)
 open import Data.Vec.Base as Vec hiding (_⊛_)
 open import Data.Vec.Properties
+open import Effect.Applicative using (RawApplicative)
+open import Effect.Applicative.Indexed using (Morphism)
+open import Effect.Functor as Fun using (RawFunctor)
+open import Effect.Monad using (RawMonad)
+import Function.Identity.Effectful as Id
 open import Function hiding (Morphism)
 
 ------------------------------------------------------------------------

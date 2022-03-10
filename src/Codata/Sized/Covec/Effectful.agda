@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- A effectful view of Covec
+-- An effectful view of Covec
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --sized-types #-}
@@ -10,7 +10,6 @@ module Codata.Sized.Covec.Effectful where
 
 open import Codata.Sized.Conat
 open import Codata.Sized.Covec
-
 open import Effect.Functor
 open import Effect.Applicative
 

@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- A effectful view of List⁺
+-- An effectful view of List⁺
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}

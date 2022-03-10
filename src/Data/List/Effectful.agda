@@ -1,19 +1,19 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- A effectful view of List
+-- An effectful view of List
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
 
 module Data.List.Effectful where
 
-open import Effect.Functor
-open import Effect.Applicative
-open import Effect.Monad
 open import Data.Bool.Base using (false; true)
 open import Data.List.Base
 open import Data.List.Properties
+open import Effect.Functor
+open import Effect.Applicative
+open import Effect.Monad
 open import Function
 open import Relation.Binary.PropositionalEquality as P
   using (_≡_; _≢_; _≗_; refl)

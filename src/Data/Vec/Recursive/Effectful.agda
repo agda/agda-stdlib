@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- A effectful view of vectors defined by recursion
+-- An effectful view of vectors defined by recursion
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
@@ -11,11 +11,10 @@ module Data.Vec.Recursive.Effectful where
 open import Agda.Builtin.Nat
 open import Data.Product hiding (map)
 open import Data.Vec.Recursive
-open import Function
-
 open import Effect.Functor
 open import Effect.Applicative
 open import Effect.Monad
+open import Function
 
 ------------------------------------------------------------------------
 -- Functor and applicative

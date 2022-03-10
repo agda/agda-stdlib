@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- The Agda standard library
 --
--- A effectful view of Maybe
+-- An effectful view of Maybe
 ------------------------------------------------------------------------
 
 {-# OPTIONS --without-K --safe #-}
