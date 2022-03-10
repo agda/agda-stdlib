@@ -734,7 +734,7 @@ Deprecated names
   ```
 
 ### Renamed Data.Erased to Data.Irrelevant
-s
+
 * This fixes the fact we had picked the wrong name originally. The erased modality
   corresponds to @0 whereas the irrelevance one corresponds to `.`.
 
