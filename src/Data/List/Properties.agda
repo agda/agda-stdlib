@@ -744,7 +744,7 @@ module _ {P : Pred A p} (P? : Decidable P) where
 
   filter-some : ∀ {xs} → Any P xs → 0 < length (filter P? xs)
   filter-some {x ∷ xs} (here px)   with P? x
-  ... | true because _ = s≤s z≤n
+  ... | true because _ = z<s
   ... | no         ¬px = contradiction px ¬px
   filter-some {x ∷ xs} (there pxs) with does (P? x)
   ... | true  = ≤-step (filter-some pxs)

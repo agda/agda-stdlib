@@ -8,11 +8,10 @@
 
 module Data.List.Relation.Unary.Any.Properties where
 
-open import Effect.Monad
 open import Data.Bool.Base using (Bool; false; true; T)
 open import Data.Bool.Properties using (T-∨; T-≡)
 open import Data.Empty using (⊥)
-open import Data.Fin.Base using (Fin; zero; suc) -- renaming (zero to fzero; suc to fsuc)
+open import Data.Fin.Base using (Fin; zero; suc)
 open import Data.List.Base as List
 open import Data.List.Properties using (ʳ++-defn)
 open import Data.List.Effectful using (monad)
@@ -22,7 +21,7 @@ open import Data.List.Membership.Propositional.Properties.Core
   using (Any↔; find∘map; map∘find; lose∘find)
 open import Data.List.Relation.Binary.Pointwise
   using (Pointwise; []; _∷_)
-open import Data.Nat using (zero; suc; _<_; z≤n; s≤s; z<s; s<s)
+open import Data.Nat using (zero; suc; _<_; z<s; s<s; s≤s)
 open import Data.Nat.Properties using (_≟_; ≤∧≢⇒<; ≤-refl; ≤-step)
 open import Data.Maybe.Base using (Maybe; just; nothing)
 open import Data.Maybe.Relation.Unary.Any as MAny using (just)
@@ -34,6 +33,7 @@ open import Data.Product.Function.NonDependent.Propositional
 import Data.Product.Function.Dependent.Propositional as Σ
 open import Data.Sum.Base as Sum using (_⊎_; inj₁; inj₂; [_,_]′)
 open import Data.Sum.Function.Propositional using (_⊎-cong_)
+open import Effect.Monad
 open import Function.Base
 open import Function.Equality using (_⟨$⟩_)
 open import Function.Equivalence using (_⇔_; equivalence; Equivalence)
@@ -482,7 +482,7 @@ cartesianProduct⁻ = cartesianProductWith⁻ _,_ id
 -- applyUpTo
 
 applyUpTo⁺ : ∀ f {i n} → P (f i) → i < n → Any P (applyUpTo f n)
-applyUpTo⁺ _ p (z<s)       = here p
+applyUpTo⁺ _ p z<s       = here p
 applyUpTo⁺ f p (s<s i<n@(s≤s _)) =
   there (applyUpTo⁺ (f ∘ suc) p i<n)
 

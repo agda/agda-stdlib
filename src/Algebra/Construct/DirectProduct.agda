@@ -130,6 +130,16 @@ commutativeSemigroup G H = record
     }
   } where module G = CommutativeSemigroup G; module H = CommutativeSemigroup H
 
+unitalMagma : UnitalMagma a ℓ₁ → UnitalMagma b ℓ₂ → UnitalMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+unitalMagma M N = record
+  { ε = M.ε , N.ε
+  ; isUnitalMagma = record
+    { isMagma = Magma.isMagma (magma M.magma N.magma)
+    ; identity = (M.identityˡ , N.identityˡ <*>_)
+               , (M.identityʳ , N.identityʳ <*>_)
+    }
+  } where module M = UnitalMagma M; module N = UnitalMagma N
+
 monoid : Monoid a ℓ₁ → Monoid b ℓ₂ → Monoid (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
 monoid M N = record
   { ε = M.ε , N.ε
@@ -162,6 +172,27 @@ idempotentCommutativeMonoid M N = record
   where
   module M = IdempotentCommutativeMonoid M
   module N = IdempotentCommutativeMonoid N
+
+invertibleMagma : InvertibleMagma a ℓ₁ → InvertibleMagma b ℓ₂ → InvertibleMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+invertibleMagma M N = record
+  { _⁻¹ = map M._⁻¹ N._⁻¹
+  ; isInvertibleMagma = record
+    { isMagma = Magma.isMagma (magma M.magma N.magma)
+    ; inverse = (λ x → (M.inverseˡ , N.inverseˡ) <*> x)
+                , (λ x → (M.inverseʳ , N.inverseʳ) <*> x)
+    ; ⁻¹-cong = map M.⁻¹-cong N.⁻¹-cong
+    }
+  } where module M = InvertibleMagma M; module N = InvertibleMagma N
+
+invertibleUnitalMagma : InvertibleUnitalMagma a ℓ₁ → InvertibleUnitalMagma b ℓ₂ → InvertibleUnitalMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+invertibleUnitalMagma M N = record
+  { ε = M.ε , N.ε
+  ; isInvertibleUnitalMagma = record
+    { isInvertibleMagma = InvertibleMagma.isInvertibleMagma (invertibleMagma M.invertibleMagma N.invertibleMagma)
+    ; identity = (M.identityˡ , N.identityˡ <*>_)
+               , (M.identityʳ , N.identityʳ <*>_)
+    }
+  } where module M = InvertibleUnitalMagma M; module N = InvertibleUnitalMagma N
 
 group : Group a ℓ₁ → Group b ℓ₂ → Group (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
 group G H = record
@@ -225,6 +256,14 @@ commutativeSemiring R S = record
       }
   } where module R = CommutativeSemiring R;  module S = CommutativeSemiring S
 
+kleeneAlgebra : KleeneAlgebra a ℓ₁ → KleeneAlgebra b ℓ₂ → KleeneAlgebra (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
+kleeneAlgebra K L = record
+  { isKleeneAlgebra = record
+      { isSemiring = Semiring.isSemiring (semiring K.semiring L.semiring)
+      ; +-idem = λ x → (K.+-idem , L.+-idem) <*> x
+      }
+  } where module K = KleeneAlgebra K;  module L = KleeneAlgebra L
+
 ring : Ring a ℓ₁ → Ring b ℓ₂ → Ring (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
 ring R S = record
   { -_     = uncurry (λ x y → R.-_ x , S.-_ y)
@@ -251,37 +290,6 @@ commutativeRing R S = record
       ; *-comm = λ x y → (R.*-comm , S.*-comm) <*> x <*> y
       }
   } where module R = CommutativeRing R; module S = CommutativeRing S
-
-unitalMagma : UnitalMagma a ℓ₁ → UnitalMagma b ℓ₂ → UnitalMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
-unitalMagma M N = record
-  { ε = M.ε , N.ε
-  ; isUnitalMagma = record
-    { isMagma = Magma.isMagma (magma M.magma N.magma)
-    ; identity = (M.identityˡ , N.identityˡ <*>_)
-               , (M.identityʳ , N.identityʳ <*>_)
-    }
-  } where module M = UnitalMagma M; module N = UnitalMagma N
-
-invertibleMagma : InvertibleMagma a ℓ₁ → InvertibleMagma b ℓ₂ → InvertibleMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
-invertibleMagma M N = record
-  { _⁻¹ = map M._⁻¹ N._⁻¹
-  ; isInvertibleMagma = record
-    { isMagma = Magma.isMagma (magma M.magma N.magma)
-    ; inverse = (λ x → (M.inverseˡ , N.inverseˡ) <*> x)
-                , (λ x → (M.inverseʳ , N.inverseʳ) <*> x)
-    ; ⁻¹-cong = map M.⁻¹-cong N.⁻¹-cong
-    }
-  } where module M = InvertibleMagma M; module N = InvertibleMagma N
-
-invertibleUnitalMagma : InvertibleUnitalMagma a ℓ₁ → InvertibleUnitalMagma b ℓ₂ → InvertibleUnitalMagma (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
-invertibleUnitalMagma M N = record
-  { ε = M.ε , N.ε
-  ; isInvertibleUnitalMagma = record
-    { isInvertibleMagma = InvertibleMagma.isInvertibleMagma (invertibleMagma M.invertibleMagma N.invertibleMagma)
-    ; identity = (M.identityˡ , N.identityˡ <*>_)
-               , (M.identityʳ , N.identityʳ <*>_)
-    }
-  } where module M = InvertibleUnitalMagma M; module N = InvertibleUnitalMagma N
 
 quasigroup : Quasigroup a ℓ₁ → Quasigroup b ℓ₂ → Quasigroup (a ⊔ b) (ℓ₁ ⊔ ℓ₂)
 quasigroup M N = record

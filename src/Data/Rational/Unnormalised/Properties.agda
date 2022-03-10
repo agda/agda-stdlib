@@ -515,7 +515,7 @@ module ≤-Reasoning where
 -- Properties of sign predicates
 
 positive⁻¹ : ∀ p → .{{Positive p}} → p > 0ℚᵘ
-positive⁻¹ (mkℚᵘ +[1+ n ] _) = *<* (ℤ.+<+ (ℕ.s≤s ℕ.z≤n))
+positive⁻¹ (mkℚᵘ +[1+ n ] _) = *<* (ℤ.+<+ ℕ.z<s)
 
 nonNegative⁻¹ : ∀ p → .{{NonNegative p}} → p ≥ 0ℚᵘ
 nonNegative⁻¹ (mkℚᵘ +0       _) = *≤* (ℤ.+≤+ ℕ.z≤n)

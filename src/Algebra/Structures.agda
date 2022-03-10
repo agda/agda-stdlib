@@ -496,6 +496,14 @@ record IsCancellativeCommutativeSemiring (+ * : Op₂ A) (0# 1# : A) : Set (a �
 
   open IsCommutativeSemiring isCommutativeSemiring public
 
+
+record IsKleeneAlgebra (+ * : Op₂ A) (0# 1# : A) : Set (a ⊔ ℓ) where
+  field
+    isSemiring  : IsSemiring + * 0# 1#
+    +-idem      : Idempotent +
+
+  open IsSemiring isSemiring public
+
 ------------------------------------------------------------------------
 -- Structures with 2 binary operations, 1 unary operation & 1 element
 ------------------------------------------------------------------------

@@ -21,7 +21,7 @@ open import Data.List.Relation.Binary.Permutation.Propositional
 import Data.List.Relation.Binary.Permutation.Propositional.Properties as Perm
 open import Data.Maybe.Base using (just)
 open import Relation.Nullary using (does)
-open import Data.Nat using (_<_; _>_; z≤n; s≤s)
+open import Data.Nat using (_<_; _>_; z<s; s<s)
 open import Data.Nat.Induction
 open import Data.Nat.Properties using (≤-step)
 open import Data.Product as Prod using (_,_)
@@ -49,9 +49,9 @@ mergePairs xss             = xss
 
 private
   length-mergePairs : ∀ xs ys xss → length (mergePairs (xs ∷ ys ∷ xss)) < length (xs ∷ ys ∷ xss)
-  length-mergePairs _ _ []              = s≤s (s≤s z≤n)
-  length-mergePairs _ _ (xss ∷ [])      = s≤s (s≤s (s≤s z≤n))
-  length-mergePairs _ _ (xs ∷ ys ∷ xss) = s≤s (≤-step (length-mergePairs xs ys xss))
+  length-mergePairs _ _ []              = s<s z<s
+  length-mergePairs _ _ (xss ∷ [])      = s<s (s<s z<s)
+  length-mergePairs _ _ (xs ∷ ys ∷ xss) = s<s (≤-step (length-mergePairs xs ys xss))
 
 mergeAll : (xss : List (List A)) → Acc _<_ (length xss) → List A
 mergeAll []        _               = []

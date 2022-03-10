@@ -25,7 +25,7 @@ import Data.List.Relation.Binary.Subset.Setoid.Properties as Setoidₚ
 open import Data.List.Relation.Binary.Subset.Propositional
 open import Data.List.Relation.Binary.Permutation.Propositional
 import Data.List.Relation.Binary.Permutation.Propositional.Properties as Permutation
-open import Data.Nat using (ℕ; _≤_; s≤s)
+open import Data.Nat using (ℕ; _≤_)
 import Data.Product as Prod
 import Data.Sum.Base as Sum
 open import Function.Base using (_∘_; _∘′_; id; _$_)
