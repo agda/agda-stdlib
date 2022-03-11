@@ -38,7 +38,7 @@ private
 module _ (S : Setoid a ℓ₁) (T : Setoid b ℓ₂) (surj : Surjection S T) where
   open Surjection surj
 
-  map⁺ : ∀ {xs} → IsEnumeration S xs → IsEnumeration T (map f xs)
+  map⁺ : ∀ {xs} → IsEnumeration S xs → IsEnumeration T (map to xs)
   map⁺ _∈xs y with surjective y
   ... | (x , fx≈y) = ∈-resp-≈ T fx≈y (∈-map⁺ S T cong (x ∈xs))
 

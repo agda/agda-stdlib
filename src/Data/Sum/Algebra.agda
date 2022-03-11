@@ -45,7 +45,7 @@ private
 -- Algebraic properties
 
 ⊎-cong : A ↔ B → C ↔ D → (A ⊎ C) ↔ (B ⊎ D)
-⊎-cong i j = mk↔′ (map I.f J.f) (map I.f⁻¹ J.f⁻¹)
+⊎-cong i j = mk↔′ (map I.to J.to) (map I.from J.from)
   [ cong inj₁ ∘ I.inverseˡ , cong inj₂ ∘ J.inverseˡ ]
   [ cong inj₁ ∘ I.inverseʳ , cong inj₂ ∘ J.inverseʳ ]
   where module I = Inverse i; module J = Inverse j

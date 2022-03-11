@@ -16,9 +16,7 @@ open import Relation.Binary as B hiding (_⇔_; IsEquivalence)
 private
   variable
     a b c ℓ₁ ℓ₂ ℓ₃ : Level
-    A : Set a
-    B : Set b
-    C : Set c
+    A B C : Set a
 
 ------------------------------------------------------------------------
 -- Properties
@@ -95,7 +93,7 @@ module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} {≈₃ : Rel C ℓ₃}
                  IsSurjection ≈₁ ≈₃ (g ∘ f)
   isSurjection f-surj g-surj = record
     { isCongruent = isCongruent F.isCongruent G.isCongruent
-    ; surjective   = surjective ≈₁ ≈₂ ≈₃ G.Eq₂.trans G.cong F.surjective G.surjective
+    ; surjective  = surjective ≈₁ ≈₂ ≈₃ G.Eq₂.trans G.cong F.surjective G.surjective
     } where module F = IsSurjection f-surj; module G = IsSurjection g-surj
 
   isBijection : IsBijection ≈₁ ≈₂ f → IsBijection ≈₂ ≈₃ g →
@@ -113,23 +111,23 @@ module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂} {≈₃ : Rel C ℓ₃}
                   IsLeftInverse ≈₁ ≈₃ (g ∘ f) (f⁻¹ ∘ g⁻¹)
   isLeftInverse f-invˡ g-invˡ = record
     { isCongruent = isCongruent F.isCongruent G.isCongruent
-    ; cong₂       = congruent ≈₃ ≈₂ ≈₁ G.cong₂ F.cong₂
-    ; inverseˡ    = inverseˡ ≈₁ ≈₂ ≈₃ f _ G.Eq₂.trans G.cong₁ F.inverseˡ G.inverseˡ
+    ; from-cong       = congruent ≈₃ ≈₂ ≈₁ G.from-cong F.from-cong
+    ; inverseˡ    = inverseˡ ≈₁ ≈₂ ≈₃ f _ G.Eq₂.trans G.to-cong F.inverseˡ G.inverseˡ
     } where module F = IsLeftInverse f-invˡ; module G = IsLeftInverse g-invˡ
 
   isRightInverse : IsRightInverse ≈₁ ≈₂ f f⁻¹ → IsRightInverse ≈₂ ≈₃ g g⁻¹ →
                    IsRightInverse ≈₁ ≈₃ (g ∘ f) (f⁻¹ ∘ g⁻¹)
   isRightInverse f-invʳ g-invʳ = record
     { isCongruent = isCongruent F.isCongruent G.isCongruent
-    ; cong₂       = congruent ≈₃ ≈₂ ≈₁ G.cong₂ F.cong₂
-    ; inverseʳ    = inverseʳ ≈₁ ≈₂ ≈₃ _ g⁻¹ F.Eq₁.trans F.cong₂ F.inverseʳ G.inverseʳ
+    ; from-cong       = congruent ≈₃ ≈₂ ≈₁ G.from-cong F.from-cong
+    ; inverseʳ    = inverseʳ ≈₁ ≈₂ ≈₃ _ g⁻¹ F.Eq₁.trans F.from-cong F.inverseʳ G.inverseʳ
     } where module F = IsRightInverse f-invʳ; module G = IsRightInverse g-invʳ
 
   isInverse : IsInverse ≈₁ ≈₂ f f⁻¹ → IsInverse ≈₂ ≈₃ g g⁻¹ →
               IsInverse ≈₁ ≈₃ (g ∘ f) (f⁻¹ ∘ g⁻¹)
   isInverse f-inv g-inv = record
     { isLeftInverse = isLeftInverse F.isLeftInverse G.isLeftInverse
-    ; inverseʳ      = inverseʳ ≈₁ ≈₂ ≈₃ _ g⁻¹ F.Eq₁.trans F.cong₂ F.inverseʳ G.inverseʳ
+    ; inverseʳ      = inverseʳ ≈₁ ≈₂ ≈₃ _ g⁻¹ F.Eq₁.trans F.from-cong F.inverseʳ G.inverseʳ
     } where module F = IsInverse f-inv; module G = IsInverse g-inv
 
 ------------------------------------------------------------------------
@@ -141,64 +139,64 @@ module _ {R : Setoid a ℓ₁} {S : Setoid b ℓ₂} {T : Setoid c ℓ₃} where
 
   function : Func R S → Func S T → Func R T
   function f g = record
-    { f    = G.f ∘ F.f
+    { to   = G.to ∘ F.to
     ; cong = congruent (≈ R) (≈ S) (≈ T) F.cong G.cong
     } where module F = Func f; module G = Func g
 
   injection : Injection R S → Injection S T → Injection R T
   injection inj₁ inj₂ = record
-    { f         = G.f ∘ F.f
+    { to        = G.to ∘ F.to
     ; cong      = congruent (≈ R) (≈ S) (≈ T) F.cong G.cong
     ; injective = injective (≈ R) (≈ S) (≈ T) F.injective G.injective
     } where module F = Injection inj₁; module G = Injection inj₂
 
   surjection : Surjection R S → Surjection S T → Surjection R T
   surjection surj₁ surj₂ = record
-    { f          = G.f ∘ F.f
+    { to         = G.to ∘ F.to
     ; cong       = congruent (≈ R) (≈ S) (≈ T) F.cong G.cong
     ; surjective = surjective (≈ R) (≈ S) (≈ T) G.Eq₂.trans G.cong F.surjective G.surjective
     } where module F = Surjection surj₁; module G = Surjection surj₂
 
   bijection : Bijection R S → Bijection S T → Bijection R T
   bijection bij₁ bij₂ = record
-    { f         = G.f ∘ F.f
+    { to        = G.to ∘ F.to
     ; cong      = congruent (≈ R) (≈ S) (≈ T) F.cong G.cong
     ; bijective = bijective (≈ R) (≈ S) (≈ T) (trans T) G.cong F.bijective G.bijective
     } where module F = Bijection bij₁; module G = Bijection bij₂
 
   equivalence : Equivalence R S → Equivalence S T → Equivalence R T
   equivalence equiv₁ equiv₂ = record
-    { f        = G.f ∘ F.f
-    ; g        = F.g ∘ G.g
-    ; cong₁    = congruent (≈ R) (≈ S) (≈ T) F.cong₁ G.cong₁
-    ; cong₂    = congruent (≈ T) (≈ S) (≈ R) G.cong₂ F.cong₂
+    { to        = G.to ∘ F.to
+    ; from      = F.from ∘ G.from
+    ; to-cong   = congruent (≈ R) (≈ S) (≈ T) F.to-cong G.to-cong
+    ; from-cong = congruent (≈ T) (≈ S) (≈ R) G.from-cong F.from-cong
     } where module F = Equivalence equiv₁; module G = Equivalence equiv₂
 
   leftInverse : LeftInverse R S → LeftInverse S T → LeftInverse R T
   leftInverse invˡ₁ invˡ₂ = record
-    { f        = G.f ∘ F.f
-    ; g        = F.g ∘ G.g
-    ; cong₁    = congruent (≈ R) (≈ S) (≈ T) F.cong₁ G.cong₁
-    ; cong₂    = congruent (≈ T) (≈ S) (≈ R) G.cong₂ F.cong₂
-    ; inverseˡ = inverseˡ (≈ R) (≈ S) (≈ T) F.f _ (trans T) G.cong₁ F.inverseˡ G.inverseˡ
+    { to        = G.to ∘ F.to
+    ; from      = F.from ∘ G.from
+    ; to-cong   = congruent (≈ R) (≈ S) (≈ T) F.to-cong G.to-cong
+    ; from-cong = congruent (≈ T) (≈ S) (≈ R) G.from-cong F.from-cong
+    ; inverseˡ  = inverseˡ  (≈ R) (≈ S) (≈ T) F.to _ (trans T) G.to-cong F.inverseˡ G.inverseˡ
     } where module F = LeftInverse invˡ₁; module G = LeftInverse invˡ₂
 
   rightInverse : RightInverse R S → RightInverse S T → RightInverse R T
   rightInverse invʳ₁ invʳ₂ = record
-    { f        = G.f ∘ F.f
-    ; g        = F.g ∘ G.g
-    ; cong₁    = congruent (≈ R) (≈ S) (≈ T) F.cong₁ G.cong₁
-    ; cong₂    = congruent (≈ T) (≈ S) (≈ R) G.cong₂ F.cong₂
-    ; inverseʳ = inverseʳ (≈ R) (≈ S) (≈ T) _ G.g (trans R) F.cong₂ F.inverseʳ G.inverseʳ
+    { to        = G.to ∘ F.to
+    ; from      = F.from ∘ G.from
+    ; to-cong   = congruent (≈ R) (≈ S) (≈ T) F.to-cong G.to-cong
+    ; from-cong = congruent (≈ T) (≈ S) (≈ R) G.from-cong F.from-cong
+    ; inverseʳ  = inverseʳ  (≈ R) (≈ S) (≈ T) _ G.from (trans R) F.from-cong F.inverseʳ G.inverseʳ
     } where module F = RightInverse invʳ₁; module G = RightInverse invʳ₂
 
   inverse : Inverse R S → Inverse S T → Inverse R T
   inverse inv₁ inv₂ = record
-    { f       = G.f ∘ F.f
-    ; f⁻¹     = F.f⁻¹ ∘ G.f⁻¹
-    ; cong₁   = congruent (≈ R) (≈ S) (≈ T) F.cong₁ G.cong₁
-    ; cong₂   = congruent (≈ T) (≈ S) (≈ R) G.cong₂ F.cong₂
-    ; inverse = inverseᵇ (≈ R) (≈ S) (≈ T) _ G.f⁻¹ (trans R) (trans T) G.cong₁ F.cong₂ F.inverse G.inverse
+    { to        = G.to ∘ F.to
+    ; from      = F.from ∘ G.from
+    ; to-cong   = congruent (≈ R) (≈ S) (≈ T) F.to-cong G.to-cong
+    ; from-cong = congruent (≈ T) (≈ S) (≈ R) G.from-cong F.from-cong
+    ; inverse   = inverseᵇ  (≈ R) (≈ S) (≈ T) _ G.from (trans R) (trans T) G.to-cong F.from-cong F.inverse G.inverse
     } where module F = Inverse inv₁; module G = Inverse inv₂
 
 ------------------------------------------------------------------------

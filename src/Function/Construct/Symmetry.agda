@@ -17,9 +17,7 @@ open import Relation.Binary.PropositionalEquality
 private
   variable
     a b c ℓ₁ ℓ₂ ℓ₃ : Level
-    A : Set a
-    B : Set b
-    C : Set c
+    A B C : Set a
 
 ------------------------------------------------------------------------
 -- Properties
@@ -101,15 +99,15 @@ module _ {≈₁ : Rel A ℓ₁} {≈₂ : Rel B ℓ₂}
 
   isLeftInverse : IsRightInverse ≈₁ ≈₂ f f⁻¹ → IsLeftInverse ≈₂ ≈₁ f⁻¹ f
   isLeftInverse inv = record
-    { isCongruent = isCongruent F.isCongruent F.cong₂
-    ; cong₂       = F.cong₁
+    { isCongruent = isCongruent F.isCongruent F.from-cong
+    ; from-cong   = F.cong₁
     ; inverseˡ    = inverseˡ ≈₁ ≈₂ f {f⁻¹} F.inverseʳ
     } where module F = IsRightInverse inv
 
   isRightInverse : IsLeftInverse ≈₁ ≈₂ f f⁻¹ → IsRightInverse ≈₂ ≈₁ f⁻¹ f
   isRightInverse inv = record
-    { isCongruent = isCongruent F.isCongruent F.cong₂
-    ; cong₂       = F.cong₁
+    { isCongruent = isCongruent F.isCongruent F.from-cong
+    ; from-cong   = F.to-cong
     ; inverseʳ    = inverseʳ ≈₁ ≈₂ f {f⁻¹} F.inverseˡ
     } where module F = IsLeftInverse inv
 
@@ -126,13 +124,13 @@ module _ {R : Setoid a ℓ₁} {S : Setoid b ℓ₂} (bij : Bijection R S) where
 
   private
     module IB = Bijection bij
-    f⁻¹       = proj₁ ∘ IB.surjective
+    from      = proj₁ ∘ IB.surjective
 
   -- We can only flip a bijection if the witness produced by the
   -- surjection proof respects the equality on the codomain.
-  bijection : Congruent IB.Eq₂._≈_ IB.Eq₁._≈_ f⁻¹ → Bijection S R
+  bijection : Congruent IB.Eq₂._≈_ IB.Eq₁._≈_ from → Bijection S R
   bijection cong = record
-    { f         = f⁻¹
+    { to        = from
     ; cong      = cong
     ; bijective = bijective IB.bijective IB.Eq₂.sym IB.Eq₂.trans IB.cong
     }
@@ -148,37 +146,37 @@ module _ {R : Setoid a ℓ₁} {S : Setoid b ℓ₂} where
 
   equivalence : Equivalence R S → Equivalence S R
   equivalence equiv = record
-    { f     = E.g
-    ; g     = E.f
-    ; cong₁ = E.cong₂
-    ; cong₂ = E.cong₁
+    { to        = E.from
+    ; from      = E.to
+    ; to-cong   = E.from-cong
+    ; from-cong = E.to-cong
     } where module E = Equivalence equiv
 
   rightInverse : LeftInverse R S → RightInverse S R
   rightInverse left = record
-    { f        = L.g
-    ; g        = L.f
-    ; cong₁    = L.cong₂
-    ; cong₂    = L.cong₁
-    ; inverseʳ = L.inverseˡ
+    { to         = L.from
+    ; from       = L.to
+    ; to-cong    = L.from-cong
+    ; from-cong  = L.to-cong
+    ; inverseʳ   = L.inverseˡ
     } where module L = LeftInverse left
 
   leftInverse : RightInverse R S → LeftInverse S R
   leftInverse right = record
-    { f     = R.g
-    ; g     = R.f
-    ; cong₁ = R.cong₂
-    ; cong₂ = R.cong₁
-    ; inverseˡ = R.inverseʳ
+    { to        = R.from
+    ; from      = R.to
+    ; to-cong   = R.from-cong
+    ; from-cong = R.to-cong
+    ; inverseˡ  = R.inverseʳ
     } where module R = RightInverse right
 
   inverse : Inverse R S → Inverse S R
   inverse inv = record
-    { f       = I.f⁻¹
-    ; f⁻¹     = I.f
-    ; cong₁   = I.cong₂
-    ; cong₂   = I.cong₁
-    ; inverse = swap I.inverse
+    { to        = I.from
+    ; from      = I.to
+    ; to-cong   = I.from-cong
+    ; from-cong = I.to-cong
+    ; inverse   = swap I.inverse
     } where module I = Inverse inv
 
 ------------------------------------------------------------------------

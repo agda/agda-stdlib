@@ -55,7 +55,7 @@ private
 
 -- × is a congruence
 ×-cong : A ↔ B → C ↔ D → (A × C) ↔ (B × D)
-×-cong i j = mk↔′ (map I.f J.f) (map I.f⁻¹ J.f⁻¹)
+×-cong i j = mk↔′ (map I.to J.to) (map I.from J.from)
   (λ {(a , b) → cong₂ _,_ (I.inverseˡ a) (J.inverseˡ b)})
   (λ {(a , b) → cong₂ _,_ (I.inverseʳ a) (J.inverseʳ b)})
   where module I = Inverse i; module J = Inverse j
