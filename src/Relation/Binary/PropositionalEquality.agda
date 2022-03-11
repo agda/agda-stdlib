@@ -113,10 +113,10 @@ cong-≡id {f = f} {x} f≡id =
   f≡id (f x)                                     ∎
   where open ≡-Reasoning; fx≡x = f≡id x; f²x≡x = f≡id (f x)
 
-module _ (_≟_ : Decidable {A = A} _≡_) {x y : A} where
+module _ (_≟_ : DecidableEquality A) {x y : A} where
 
   ≡-≟-identity : (eq : x ≡ y) → x ≟ y ≡ yes eq
   ≡-≟-identity eq = dec-yes-irr (x ≟ y) (Decidable⇒UIP.≡-irrelevant _≟_) eq
 
-  ≢-≟-identity : x ≢ y → ∃ λ ¬eq → x ≟ y ≡ no ¬eq
-  ≢-≟-identity ¬eq = dec-no (x ≟ y) ¬eq
+  ≢-≟-identity : (x≢y : x ≢ y) → x ≟ y ≡ no x≢y
+  ≢-≟-identity = dec-no (x ≟ y)
