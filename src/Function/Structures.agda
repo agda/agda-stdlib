@@ -100,7 +100,7 @@ record IsLeftInverse (to : A → B) (from : B → A) : Set (a ⊔ b ⊔ ℓ₁ �
 
   open IsCongruent isCongruent public
     renaming (cong to to-cong)
-    
+
   strictInverseˡ : ∀ x → to (from x) ≈₂ x
   strictInverseˡ x = inverseˡ x Eq₁.refl
 
